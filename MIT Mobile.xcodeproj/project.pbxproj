@@ -1473,7 +1473,7 @@
 				);
 				PREBINDING = NO;
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
-				SDKROOT = iphoneos4.0;
+				SDKROOT = iphoneos3.0;
 			};
 			name = "Debug - Development";
 		};
@@ -1493,7 +1493,7 @@
 					"-ObjC",
 				);
 				PREBINDING = NO;
-				SDKROOT = iphoneos4.0;
+				SDKROOT = iphoneos3.0;
 			};
 			name = "Release - Production";
 		};
@@ -1514,7 +1514,7 @@
 				);
 				PREBINDING = NO;
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "33A1EE45-68B9-4353-BB39-822B2C1CDEA1";
-				SDKROOT = iphoneos4.0;
+				SDKROOT = iphoneos3.0;
 			};
 			name = "Distribution - Production - App Store";
 		};
@@ -1549,7 +1549,7 @@
 					"-ObjC",
 				);
 				PREBINDING = NO;
-				SDKROOT = iphoneos4.0;
+				SDKROOT = iphoneos3.0;
 			};
 			name = "Debug - Staging";
 		};
@@ -1581,7 +1581,7 @@
 					"-ObjC",
 				);
 				PREBINDING = NO;
-				SDKROOT = iphoneos4.0;
+				SDKROOT = iphoneos3.0;
 			};
 			name = "Debug - Production";
 		};
@@ -1614,7 +1614,7 @@
 					"-ObjC",
 				);
 				PREBINDING = NO;
-				SDKROOT = iphoneos4.0;
+				SDKROOT = iphoneos3.0;
 			};
 			name = "Release - Staging";
 		};
@@ -1648,7 +1648,7 @@
 				);
 				PREBINDING = NO;
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "6D4E4408-4F17-480E-9796-64857BBB49B6";
-				SDKROOT = iphoneos4.0;
+				SDKROOT = iphoneos3.0;
 			};
 			name = "Distribution - Production - Ad Hoc";
 		};
@@ -1685,7 +1685,7 @@
 				);
 				PREBINDING = NO;
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "6D4E4408-4F17-480E-9796-64857BBB49B6";
-				SDKROOT = iphoneos4.0;
+				SDKROOT = iphoneos3.0;
 			};
 			name = "Distribution - Staging - Ad Hoc";
 		};

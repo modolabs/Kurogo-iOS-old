@@ -1,3 +1,10 @@
+//
+//  CampusMapViewController.h
+//  MIT Mobile
+//
+//  Created by Craig on 12/11/09.
+//
+
 #import <UIKit/UIKit.h>
 #import "MITMapView.h"
 //#import "ConnectionWrapper.h"

@@ -1,3 +1,10 @@
+//
+//  CampusMapViewController.m
+//  MIT Mobile
+//
+//  Created by Craig on 12/11/09.
+//
+
 #import "CampusMapViewController.h"
 #import "NSString+SBJSON.h"
 #import "MITMapSearchResultAnnotation.h"

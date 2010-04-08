@@ -9,6 +9,8 @@ static ShuttleDataManager* s_dataManager = nil;
 
 @interface ShuttleDataManager ()
 
+// TODO: Make ShuttleDataManager use MITMobileWebAPI instead of direct URLs
+
 @property (nonatomic, readonly) NSString *s_apiRoutes;
 @property (nonatomic, readonly) NSString *s_apiStops;
 @property (nonatomic, readonly) NSString *s_apiRouteInfo;

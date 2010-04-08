@@ -147,6 +147,7 @@ NSString * const NewsTagImageHeight     = @"height";
 	self.downloadAndParsePool = nil;
 }
 
+// TODO: Use separate context for Core Data in separate thread. Current code is not thread-safe
 - (void)connection:(ConnectionWrapper *)wrapper handleData:(NSData *)data {
     NSXMLParser *parser = [[NSXMLParser alloc] initWithData:data];
 	parser.delegate = self;
