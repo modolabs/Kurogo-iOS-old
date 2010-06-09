@@ -4,6 +4,8 @@
 #import "UIKit+MITAdditions.h"
 #import "UITableViewCell+MITUIAdditions.h"
 #import "EmergencyData.h"
+#import "MITModuleList.h"
+#import "MITModule.h"
 
 @interface EmergencyContactsViewController(Private)
 
@@ -23,6 +25,8 @@
     if (!self.emergencyContacts) {
         [[EmergencyData sharedData] reloadContacts];
     }
+	
+	[MIT_MobileAppDelegate moduleForTag:EmergencyTag].currentPath = @"contacts";
 }
 
 - (void)viewWillDisappear:(BOOL)animated {

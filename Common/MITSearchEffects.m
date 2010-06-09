@@ -22,13 +22,24 @@
 - (void)setController:(UIViewController *)controller {
 	theController = nil;
 	theController = controller;
-	if ([theController respondsToSelector:@selector(cancelSearch)]) {
-		[self addTarget:theController action:@selector(cancelSearch) forControlEvents:UIControlEventTouchDown];
+	if ([theController respondsToSelector:@selector(searchOverlayTapped)]) {
+		[self addTarget:theController action:@selector(searchOverlayTapped) forControlEvents:UIControlEventTouchDown];
 	}
 }
 
 - (void)dealloc {
 	[super dealloc];
+}
+
+- (void)removeBuiltInOverlay {
+	for (UIView *view in self.controller.view.subviews) {
+		// make sure the view controller doesn't have any other UIControl objects
+		if ([view isMemberOfClass:[UIControl class]]) {
+			//[view removeFromSuperview];
+			view.hidden = YES;
+			break;
+		}
+	}
 }
 
 + (MITSearchEffects *) overlayForTableviewController: (UITableViewController *)controller {

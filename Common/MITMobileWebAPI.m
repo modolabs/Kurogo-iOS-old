@@ -5,12 +5,13 @@
 
 @implementation MITMobileWebAPI
 
-@synthesize jsonDelegate, connectionWrapper;
+@synthesize jsonDelegate, connectionWrapper, params, userData;
 
 - (id) initWithJSONLoadedDelegate: (id<JSONLoadedDelegate>)delegate {
 	if(self = [super init]) {
 		jsonDelegate = [delegate retain];
         connectionWrapper = nil;
+		userData = nil;
 	}
 	return self;
 }
@@ -25,6 +26,7 @@
     [connectionWrapper release];
 	[jsonDelegate release];
     jsonDelegate = nil;
+	self.userData = nil;
 	[super dealloc];
 }
 
@@ -84,6 +86,7 @@
 
 - (BOOL)requestObject:(NSDictionary *)parameters pathExtension: (NSString *)extendedPath {
 	[self retain]; // retain self until connection completes;
+	self.params = parameters;
 	
 	NSString *path;
 	if(extendedPath) {
@@ -96,7 +99,7 @@
 	
     // TODO: see if this needs and autorelease
 	self.connectionWrapper = [[[ConnectionWrapper alloc] initWithDelegate:self] autorelease];
-	BOOL requestSuccessfullyBegun = [connectionWrapper requestDataFromURL:[MITMobileWebAPI buildQuery:parameters queryBase:path]];
+	BOOL requestSuccessfullyBegun = [connectionWrapper requestDataFromURL:[MITMobileWebAPI buildURL:self.params queryBase:path]];
 	
 	[((MIT_MobileAppDelegate *)[[UIApplication sharedApplication] delegate]) showNetworkActivityIndicator];
 	
@@ -106,21 +109,20 @@
 	return requestSuccessfullyBegun;
 }
 
-// internal method used to construct URL
-+(NSURL *)buildQuery:(NSDictionary *)dict queryBase:(NSString *)base {
-	NSMutableString *urlString = [[NSMutableString alloc] initWithString:base];
++ (NSString *)buildQuery:(NSDictionary *)dict {
 	NSArray *keys = [dict allKeys];
-	for (int i = 0; i < [dict count]; i++ ) {
-		if (i == 0) {
-			[urlString appendString:@"?"];
-		} else {
-			[urlString appendString:@"&"];
-		}
-		NSString *key = [keys objectAtIndex:i];
-		[urlString appendString:[NSString stringWithFormat:@"%@=%@", key, [[dict objectForKey:key] stringByReplacingOccurrencesOfString:@" " withString:@"+"]]];
+	NSMutableArray *components = [NSMutableArray arrayWithCapacity:[keys count]];
+	for (NSString *key in keys) {
+		NSString *value = [[dict objectForKey:key] stringByReplacingOccurrencesOfString:@" " withString:@"+"];
+		[components addObject:[NSString stringWithFormat:@"%@=%@", key, value]];
 	}
+	return [components componentsJoinedByString:@"&"];
+}
+
+// internal method used to construct URL
++(NSURL *)buildURL:(NSDictionary *)dict queryBase:(NSString *)base {
+	NSString *urlString = [NSString stringWithFormat:@"%@?%@", base, [MITMobileWebAPI buildQuery:dict]];	
 	NSURL *url = [NSURL URLWithString:[urlString stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
-	[urlString release];
 	return url;
 }
 

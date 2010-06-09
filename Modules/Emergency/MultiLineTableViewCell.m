@@ -7,38 +7,83 @@
 
 @implementation MultiLineTableViewCell
 @synthesize topPadding, bottomPadding;
-
-+ (void) layoutLabel: (UILabel *)label atHeight: (CGFloat)height topPadding: (CGFloat)topPadding {
-	CGSize labelSize = [label.text sizeWithFont:label.font 
-						constrainedToSize:CGSizeMake(label.frame.size.width, 600.0) 
-						lineBreakMode:UILineBreakModeWordWrap];
-	label.frame = CGRectMake(label.frame.origin.x, 
-									  topPadding + height, 
-									  label.frame.size.width, 
-									  labelSize.height);
-	label.lineBreakMode = UILineBreakModeWordWrap;
-	label.numberOfLines = 0;
-}
-
-+ (CGFloat) defaultTopPadding {
-	return DEFAULT_TOP_PADDING;
-}
+@synthesize textLabelLineBreakMode, textLabelNumberOfLines, detailTextLabelLineBreakMode, detailTextLabelNumberOfLines;
 
 - (void) layoutLabel: (UILabel *)label atHeight: (CGFloat)height {
-	[MultiLineTableViewCell layoutLabel:label atHeight:height topPadding:topPadding];
+    CGSize labelSize = [label.text sizeWithFont:label.font 
+                              constrainedToSize:CGSizeMake(label.frame.size.width, 600.0) 
+                                  lineBreakMode:UILineBreakModeWordWrap];
+    
+    if (label == self.textLabel && textLabelLineBreakMode == UILineBreakModeTailTruncation) {
+        CGSize oneLineSize = [label.text sizeWithFont:label.font];
+        labelSize.height = (labelSize.height > oneLineSize.height) ? oneLineSize.height * textLabelNumberOfLines : oneLineSize.height;
+    } else if (label == self.detailTextLabel && detailTextLabelLineBreakMode == UILineBreakModeTailTruncation) {
+        CGSize oneLineSize = [label.text sizeWithFont:label.font];
+        labelSize.height = (labelSize.height > oneLineSize.height) ? oneLineSize.height * detailTextLabelNumberOfLines : oneLineSize.height;
+    }
+    
+    label.frame = CGRectMake(label.frame.origin.x, topPadding + height, label.frame.size.width, labelSize.height);
 }
 
 - (void) layoutSubviews {
-	[super layoutSubviews];
+    
+    CGFloat textWidth = self.textLabel.frame.size.width;
+    CGFloat detailWidth = self.detailTextLabel.frame.size.width;
+    
+	[super layoutSubviews]; // this resizes labels to default size
+    
+    if (textWidth > 0) {
+        CGRect frame = self.textLabel.frame;
+        frame.size.width = textWidth;
+        self.textLabel.frame = frame;
+    }
+    if (detailWidth > 0) {
+        CGRect frame = self.detailTextLabel.frame;
+        frame.size.width = detailWidth;
+        self.detailTextLabel.frame = frame;
+    }
+    
+    self.textLabel.lineBreakMode = textLabelLineBreakMode;
+    self.textLabel.numberOfLines = textLabelNumberOfLines;
+    
+    self.detailTextLabel.lineBreakMode = detailTextLabelLineBreakMode;
+    self.detailTextLabel.numberOfLines = detailTextLabelNumberOfLines;
 
-	[self layoutLabel:self.textLabel atHeight:0];
-	[self layoutLabel:self.detailTextLabel atHeight:self.textLabel.frame.size.height];
+    if (textLabelNumberOfLines != 1) {
+        [self layoutLabel:self.textLabel atHeight:0];
+    }
+    
+    [self layoutLabel:self.detailTextLabel atHeight:self.textLabel.frame.size.height];
+
+	// make sure any extra views are drawn on top of standard testLabel and detailTextLabel
+	NSMutableArray *extraSubviews = [NSMutableArray arrayWithCapacity:[self.contentView.subviews count]];
+	for (UIView *aView in self.contentView.subviews) {
+		if (aView != self.textLabel && aView != self.detailTextLabel) {
+			[extraSubviews addObject:aView];
+			[aView removeFromSuperview];
+		}
+	}
+	for (UIView *aView in extraSubviews) {
+        // TODO: generalize this more if the following assumption no longer holds
+        // right now we assume extra views are on the same line as the detailTextLabel
+        // (true for stellar announcements and events calendar)
+        CGRect frame = aView.frame;
+        frame.origin.y = self.detailTextLabel.frame.origin.y;
+        aView.frame = frame;
+		[self.contentView addSubview:aView];
+	}
 }
 
 - (id) initWithStyle: (UITableViewCellStyle)cellStyle reuseIdentifier: (NSString *)reuseIdentifier {
     if(self = [super initWithStyle:cellStyle reuseIdentifier:reuseIdentifier]) {		
 		topPadding = DEFAULT_TOP_PADDING;
 		bottomPadding = DEFAULT_BOTTOM_PADDING;
+        
+        textLabelLineBreakMode = UILineBreakModeWordWrap;
+        textLabelNumberOfLines = 0;
+        
+        detailTextLabelLineBreakMode = UILineBreakModeWordWrap;
+        detailTextLabelNumberOfLines = 0;
     }
     return self;
 }

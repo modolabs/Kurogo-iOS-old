@@ -1,4 +1,3 @@
-
 #import <Foundation/Foundation.h>
 #import "ConnectionWrapper.h"
 #import "StellarCourse.h"
@@ -74,7 +73,15 @@ extern NSString * const MyStellarChanged;
  *  @param delegate receives an NSArray of StellarClass objects
  *  @param stellarCourse the course for which classes are being looked up
  */
-- (id) initWithDelegate: (id<ClassesLoadedDelegate>)delegate course: (StellarCourse *)stellarCourse;
+- (id) initWithDelegate: (NSObject<ClassesLoadedDelegate>*)delegate course: (StellarCourse *)stellarCourse;
+- (void) notifyClassesLoadedDelegate;
+- (void) markCourseAsNew;
+@end
+
+@interface ClassesChecksumRequest : NSObject <JSONLoadedDelegate> {
+	ClassesRequest *classesRequest;
+}
+- (id) initWithClassesRequest:(ClassesRequest *)aClassesRequest;
 @end
 
 #pragma mark Class Info Loading
@@ -233,7 +240,7 @@ extern NSString * const MyStellarChanged;
  *  loads the classes for a course.
  *  @param delegate recieves an NSArray of StellarClass objects
  */
-+ (void) loadClassesForCourse: (StellarCourse *)stellarCourse delegate: (id<ClassesLoadedDelegate>)delegate;
++ (void) loadClassesForCourse: (StellarCourse *)stellarCourse delegate: (NSObject<ClassesLoadedDelegate> *)delegate;
 
 /**
  *  loads the detailed class information for a given courses
@@ -264,11 +271,6 @@ extern NSString * const MyStellarChanged;
  *  lookup the current semester from the server and remove old classes based on server response
  */
 + (void) removeOldFavorites: (id<ClearMyStellarDelegate>)delegate;
-/**
- *  retreives a class from cache or disk
- *  @param class with masterSubjectId property set
- */
-+ (StellarClass *) getOldClass: (StellarClass *)class;
 
 /**
  *  retreives all the classes stored on cache
@@ -282,11 +284,15 @@ extern NSString * const MyStellarChanged;
  */
 + (NSArray *) myStellarClasses;
 
++ (NSArray *) sortedAnnouncements: (StellarClass *)class;
+
 #pragma mark factory methods for stellar data objects (currently using CoreData)
-/**
- *  @returns a StellarClass object with only masterSubjectId property set
+
++ (StellarCourse *) courseWithId: (NSString *)courseId;
+/** 
+ *  @returns a StellarClass object, does query based on masterSubjectId
  */
-+ (StellarClass *) emptyClassWithMasterId: (NSString *)masterSubjectId;
++ (StellarClass *) classWithMasterId: (NSString *)masterId;
 
 #pragma mark factory JSON -> Stellar
 + (StellarClass *) StellarClassFromDictionary: (NSDictionary *)aDict;
@@ -295,5 +301,3 @@ extern NSString * const MyStellarChanged;
 + (StellarAnnouncement *) stellarAnnouncementFromDict: (NSDictionary *)dict;
 
 @end
-
-NSInteger classNameCompare(id class1, id class2, void *context);

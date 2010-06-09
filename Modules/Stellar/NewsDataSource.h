@@ -7,9 +7,10 @@
 }
 
 @end
-
+/*
 @interface NewsTeaserTableViewCell : UITableViewCell {
 	UILabel *dateTextLabel;
 }
 @property (nonatomic, retain) UILabel *dateTextLabel;
 @end
+*/

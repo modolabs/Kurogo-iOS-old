@@ -6,7 +6,6 @@ NSInteger strLenSort(NSString *str1, NSString *str2, void *context);
 
 @interface PeopleSearchViewController : UITableViewController <UISearchBarDelegate, UISearchDisplayDelegate, JSONLoadedDelegate, UIAlertViewDelegate, UIActionSheetDelegate> {
 	
-	NSMutableArray *recents;
 	UISearchDisplayController *searchController;
 	NSArray *searchResults;
 	NSString *searchTerms;
@@ -14,22 +13,24 @@ NSInteger strLenSort(NSString *str1, NSString *str2, void *context);
 	UIView *loadingView;
 	MITSearchEffects *searchBackground;
 	UISearchBar *theSearchBar;
-	BOOL didBeginExternalSearchBeforeLoading;
 	BOOL requestWasDispatched;
 	MITMobileWebAPI *api;
 	UIView *recentlyViewedHeader;
+	SEL actionAfterAppearing;
+	BOOL viewAppeared;
 }
 
-- (void)reloadIfDidExternalSearch;
+- (void)prepSearchBar;
 - (void)beginExternalSearch:(NSString *)externalSearchTerms;
-- (void)cancelSearch;
+- (void)searchOverlayTapped;
 - (void)performSearch;
 - (void)showLoadingView;
 - (void)cleanUpConnection;
 - (void)phoneIconTapped;
 - (void)showActionSheet;
 
-@property (nonatomic, retain) NSMutableArray *recents;
+@property (nonatomic, readonly) BOOL viewAppeared;
+@property (nonatomic, assign) SEL actionAfterAppearing;
 @property (nonatomic, retain) UISearchDisplayController *searchController;
 @property (nonatomic, retain) NSArray *searchResults;
 @property (nonatomic, retain) NSString *searchTerms;

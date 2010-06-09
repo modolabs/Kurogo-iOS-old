@@ -1,27 +1,38 @@
-
 #import "StellarClassesTableController.h"
+#import "StellarCoursesTableController.h"
 #import "StellarDetailViewController.h"
 #import "StellarClassTableCell.h"
+#import "MITModuleList.h"
+#import "MITModule.h"
 #import "MITLoadingActivityView.h"
 #import "MITSearchEffects.h"
 #import "UITableView+MITUIAdditions.h"
+#import "MultiLineTableViewCell.h"
 
+
+@interface StellarClassesTableController (Private)
+- (void) alertViewCancel: (UIAlertView *)alertView;
+- (void) alertView:(UIAlertView *)alertView didDismissWithButtonIndex: (NSInteger)buttonIndex;
+@end
 
 @implementation StellarClassesTableController
 @synthesize classes, currentClassLoader;
 @synthesize loadingView;
+@synthesize url;
 
 - (id) initWithCourse: (StellarCourse *)aCourse {
 	if (self = [super initWithStyle:UITableViewStylePlain]) {
 		course = [aCourse retain];
 		classes = [[NSArray array] retain];
 		loadingView = nil;
+		url = [[MITModuleURL alloc] initWithTag:StellarTag];
 	}
 	return self;
 }
 
 - (void) dealloc {
 	currentClassLoader.tableController = nil;
+	[url release];
 	[loadingView release];
 	[currentClassLoader release];
 	[classes release];
@@ -52,6 +63,12 @@
 	[self showLoadingView];
 	
 	[StellarModel loadClassesForCourse:course delegate:self.currentClassLoader];
+	
+	[url setPathWithViewController:self extension:course.number];
+}
+
+- (void) viewDidAppear: (BOOL)animated {
+	[url setAsModulePath];
 }
 
 - (NSInteger) numberOfSectionsInTableView: (UITableView *)tableView {
@@ -61,7 +78,7 @@
 - (UITableViewCell *)tableView: (UITableView *)tableView cellForRowAtIndexPath: (NSIndexPath *)indexPath {
 	UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"StellarClasses"];
 	if(cell == nil) {
-		cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"StellarClasses"] autorelease];
+		cell = [[[StellarClassTableCell alloc] initWithReusableCellIdentifier:@"StellarClasses"] autorelease];
 	}
 	
 	StellarClass *stellarClass = [classes objectAtIndex:indexPath.row];
@@ -76,6 +93,10 @@
 	[StellarDetailViewController 
 		launchClass:(StellarClass *)[classes objectAtIndex:indexPath.row]
 		viewController: self];
+}
+
+- (CGFloat) tableView: (UITableView *)tableView heightForRowAtIndexPath: (NSIndexPath *)indexPath {
+	return [StellarClassTableCell cellHeightForTableView:tableView class:[classes objectAtIndex:indexPath.row]];
 }
 
 - (void) alertView:(UIAlertView *)alertView didDismissWithButtonIndex: (NSInteger)buttonIndex {
