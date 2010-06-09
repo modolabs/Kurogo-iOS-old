@@ -37,23 +37,58 @@
 
 - (UITableViewCell *)tableView: (UITableView *)tableView cellForRowAtIndexPath: (NSIndexPath *)indexPath {
 	UITableViewCell *cell = nil;
-	NewsTeaserTableViewCell *newsCell = nil;
+	//NewsTeaserTableViewCell *newsCell = nil;
+    MultiLineTableViewCell *newsCell = nil;
 	if([self.viewController.news count]) {
-		newsCell = (NewsTeaserTableViewCell *)[tableView dequeueReusableCellWithIdentifier:@"StellarNewsTeaser"];
+		//newsCell = (NewsTeaserTableViewCell *)[tableView dequeueReusableCellWithIdentifier:@"StellarNewsTeaser"];
+        newsCell = (MultiLineTableViewCell *)[tableView dequeueReusableCellWithIdentifier:@"StellarNewsTeaser"];
+        
 		if(newsCell == nil) {
-			newsCell = [[[NewsTeaserTableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"StellarNewsTeaser"] autorelease];
-			[newsCell applyStandardFonts];
+			//newsCell = [[[NewsTeaserTableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"StellarNewsTeaser"] autorelease];
+            newsCell = [[[MultiLineTableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"StellarNewsTeaser"] autorelease];
+			
+            [newsCell applyStandardFonts];
 			makeCellWhite(newsCell);
-			newsCell.dateTextLabel.font = [UIFont fontWithName:STANDARD_FONT size:CELL_DETAIL_FONT_SIZE];
-			newsCell.dateTextLabel.textColor = CELL_DETAIL_FONT_COLOR;
+			//newsCell.dateTextLabel.font = [UIFont fontWithName:STANDARD_FONT size:CELL_DETAIL_FONT_SIZE];
+			//newsCell.dateTextLabel.textColor = CELL_DETAIL_FONT_COLOR;
 			newsCell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-		}
+
+            UILabel *dateTextLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 100, 16)];
+			dateTextLabel.font = [UIFont fontWithName:STANDARD_FONT size:CELL_DETAIL_FONT_SIZE];
+			dateTextLabel.textColor = CELL_DETAIL_FONT_COLOR;
+            dateTextLabel.highlightedTextColor = [UIColor whiteColor];
+            dateTextLabel.tag = 678;
+            [[newsCell contentView] addSubview:dateTextLabel];
+            [dateTextLabel release];
+		}	
 		
 		StellarAnnouncement *newsItem = [self.viewController.news objectAtIndex:indexPath.row];
 		newsCell.textLabel.text = newsItem.title;
 		newsCell.detailTextLabel.text = newsItem.text;
-		newsCell.dateTextLabel.text = [dateFormatter stringFromDate:newsItem.pubDate];
-		
+        newsCell.detailTextLabelNumberOfLines = 1;
+        newsCell.detailTextLabelLineBreakMode = UILineBreakModeTailTruncation;
+		//newsCell.dateTextLabel.text = [dateFormatter stringFromDate:newsItem.pubDate];
+
+        UILabel *dateTextLabel = (UILabel *)[newsCell viewWithTag:678];
+        dateTextLabel.text = [dateFormatter stringFromDate:newsItem.pubDate];
+        
+        CGRect frame = newsCell.detailTextLabel.frame;
+        frame.size = [newsCell.detailTextLabel.text sizeWithFont:newsCell.detailTextLabel.font					  
+                                                        forWidth:279 - 85  // 279 is total width for content and 85 is the maximum width of the date
+                                                   lineBreakMode:UILineBreakModeTailTruncation];
+        newsCell.detailTextLabel.frame = frame;
+        
+        if(frame.origin.x < 1) {
+            // work around for strange behavior on iPhone 3.1.2
+            frame.origin.x = 10;
+        }
+        CGFloat datePadding = [newsCell.detailTextLabel.text length] ? 3.0 : 0.0;
+        frame.origin.y = newsCell.detailTextLabel.frame.origin.y;
+        frame.origin.x += frame.size.width + datePadding;
+        frame.size.width = 85;
+
+		dateTextLabel.frame = frame;
+        
 		cell = newsCell;
 	} else {
 		cell = [tableView dequeueReusableCellWithIdentifier:@"StellarNewsDisclaimer"];
@@ -120,7 +155,9 @@
 	}
 	
 	UIViewController *announcementViewController = [[StellarAnnouncementViewController alloc]
-		initWithAnnouncement:(StellarAnnouncement *)[self.viewController.news objectAtIndex:indexPath.row]];
+		initWithAnnouncement:(StellarAnnouncement *)[self.viewController.news objectAtIndex:indexPath.row]
+		rowIndex:indexPath.row
+	];
 
 	[self.viewController.navigationController
 		pushViewController:announcementViewController
@@ -129,7 +166,7 @@
 	[announcementViewController release];
 }
 @end
-
+/*
 @implementation NewsTeaserTableViewCell
 @synthesize dateTextLabel;
 
@@ -137,6 +174,7 @@
     if(self = [super initWithStyle:cellStyle reuseIdentifier:reuseIdentifier]) {		
 		dateTextLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 100, 16)];		
 		[[self contentView] addSubview:dateTextLabel];
+		dateTextLabel.highlightedTextColor = [UIColor whiteColor];
 		[dateTextLabel release];
     }
     return self;
@@ -174,4 +212,4 @@
 	dateTextLabel.frame = textFrame;	
 }
 @end
-
+*/

@@ -21,6 +21,8 @@
 - (void)reloadContacts;
 - (void)checkForEmergencies;
 
+- (BOOL)hasNeverLoaded;
+
 @property (nonatomic, readonly) NSString *htmlString;
 @property (nonatomic, readonly) NSDate *lastUpdated;
 @property (nonatomic, readonly) NSDate *lastFetched;

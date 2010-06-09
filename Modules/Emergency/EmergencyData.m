@@ -3,6 +3,7 @@
 #import "MIT_MobileAppDelegate.h"
 #import "CoreDataManager.h"
 #import "MITMobileWebAPI.h"
+#import "Foundation+MITAdditions.h"
 
 @implementation EmergencyData
 
@@ -101,6 +102,10 @@ static EmergencyData *sharedEmergencyData = nil;
 #pragma mark -
 #pragma mark Accessors
 
+- (BOOL) hasNeverLoaded {
+	return ([[info valueForKey:@"htmlString"] length] == 0);
+}
+
 - (NSDate *)lastUpdated {
     return [info valueForKey:@"lastUpdated"];
 }
@@ -117,24 +122,21 @@ static EmergencyData *sharedEmergencyData = nil;
     NSString *lastUpdatedString = [formatter stringFromDate:lastUpdated];
     [formatter release];
     
-    NSString *htmlString = [NSString stringWithFormat:
-                            @"<html>"
-                            "<head>"
-                            "<style type=\"text/css\" media=\"screen\">"
-                            "body { margin: 0; padding: 0; overflow: hidden; font-family: Helvetica; font-size: 17px; }"
-                            "a { color: #990000; }"
-                            ".stamp { font-size: 14px; }"
-                            "</style>"
-                            "</head>"
-                            "<body>"
-                            "<div id=\"something_unique\">"
-                            "%@"
-                            "<p class=\"stamp\">Posted %@</p>"
-                            "</div>"
-                            "</body>"
-                            "</html>",
-                            [info valueForKey:@"htmlString"], lastUpdatedString];
+    NSURL *baseURL = [NSURL fileURLWithPath:[[NSBundle mainBundle] resourcePath] isDirectory:YES];
+    NSURL *fileURL = [NSURL URLWithString:@"emergency_template.html" relativeToURL:baseURL];
     
+    NSError *error = nil;
+    NSMutableString *htmlString = [NSMutableString stringWithContentsOfURL:fileURL encoding:NSUTF8StringEncoding error:&error];
+    if (!htmlString) {
+        //NSLog(@"Failed to load template at %@. %@", fileURL, [error userInfo]);
+        return nil;
+    }
+    
+    NSArray *keys = [NSArray arrayWithObjects:@"__BODY__", @"__POST_DATE__", nil];
+    
+    NSArray *values = [NSArray arrayWithObjects:[info valueForKey:@"htmlString"], lastUpdatedString, nil];
+    
+    [htmlString replaceOccurrencesOfStrings:keys withStrings:values options:NSLiteralSearch];
     
     return htmlString;
 }
@@ -149,8 +151,8 @@ static EmergencyData *sharedEmergencyData = nil;
     }
     // TODO: use Reachability to wait until app gets a connection to perform check
     self.infoConnection = [[[ConnectionWrapper alloc] initWithDelegate:self] autorelease];
-    NSURL *url = [MITMobileWebAPI buildQuery:[NSDictionary dictionaryWithObjectsAndKeys:@"emergency", @"module", nil]
-                                   queryBase:MITMobileWebAPIURLString];
+    NSURL *url = [MITMobileWebAPI buildURL:[NSDictionary dictionaryWithObjectsAndKeys:@"emergency", @"module", nil]
+								 queryBase:MITMobileWebAPIURLString];
     BOOL dispatchedSuccessfully = [infoConnection requestDataFromURL:url];
     if (dispatchedSuccessfully) {
         [(MIT_MobileAppDelegate *)[[UIApplication sharedApplication] delegate] showNetworkActivityIndicator];
@@ -163,8 +165,8 @@ static EmergencyData *sharedEmergencyData = nil;
         return; // a connection already exists
     }
     self.contactsConnection = [[[ConnectionWrapper alloc] initWithDelegate:self] autorelease];
-    NSURL *url = [MITMobileWebAPI buildQuery:[NSDictionary dictionaryWithObjectsAndKeys:@"emergency", @"module", @"contacts", @"command", nil]
-                                   queryBase:MITMobileWebAPIURLString];
+    NSURL *url = [MITMobileWebAPI buildURL:[NSDictionary dictionaryWithObjectsAndKeys:@"emergency", @"module", @"contacts", @"command", nil]
+								 queryBase:MITMobileWebAPIURLString];
     if ([self.contactsConnection requestDataFromURL:url]) {
         [(MIT_MobileAppDelegate *)[[UIApplication sharedApplication] delegate] showNetworkActivityIndicator];
     }
@@ -237,6 +239,7 @@ static EmergencyData *sharedEmergencyData = nil;
     // TODO: possibly retry at a later date if connection dropped or server was unavailable
     if (wrapper == infoConnection) {
         self.infoConnection = nil;
+		[[NSNotificationCenter defaultCenter] postNotificationName:EmergencyInfoDidFailToLoadNotification object:self];
     } else if (wrapper == contactsConnection) {
         self.contactsConnection = nil;
     }

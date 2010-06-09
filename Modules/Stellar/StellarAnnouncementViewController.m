@@ -11,7 +11,7 @@
 
 @implementation StellarAnnouncementViewController
 
-- (id) initWithAnnouncement: (StellarAnnouncement *)anAnnouncement {
+- (id) initWithAnnouncement: (StellarAnnouncement *)anAnnouncement rowIndex:(NSUInteger)index{
 	if(self = [super initWithStyle:UITableViewStyleGrouped]) {
 		announcement = [anAnnouncement retain];
 		dateFormatter = [NSDateFormatter new];
@@ -19,6 +19,8 @@
 		titleFont = [[UIFont fontWithName:BOLD_FONT size:20.0] retain];
 		dateFont = [[UIFont fontWithName:STANDARD_FONT size:14.0] retain]; 
 		textFont = [[UIFont fontWithName:STANDARD_FONT size:STANDARD_CONTENT_FONT_SIZE] retain];
+		url = [[MITModuleURL alloc] initWithTag:StellarTag];
+		rowIndex = index;
 	}
 	return self;
 }
@@ -27,6 +29,11 @@
 	self.tableView.allowsSelection = NO;
 	self.title = @"News";
 	[self.tableView applyStandardColors];
+	[url setPathWithViewController:self extension:[NSString stringWithFormat:@"%i", rowIndex]];
+}
+
+- (void) viewDidAppear:(BOOL)animated {
+	[url setAsModulePath];
 }
 
 #pragma mark Table view methods
@@ -107,6 +114,7 @@
 }
 
 - (void)dealloc {
+	[url release];
 	[dateFormatter release];
 	[titleFont release];
 	[dateFont release];

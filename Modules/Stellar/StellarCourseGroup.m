@@ -1,6 +1,6 @@
-
 #import "StellarCourseGroup.h"
 #import "StellarCourse.h"
+#import "StellarModel.h"
 
 NSInteger courseNameCompare(id course1, id course2, void *context);
 
@@ -49,7 +49,39 @@ NSInteger courseNameCompare(id course1, id course2, void *context);
 	}
 	return courseGroups;
 }
+
+- (NSString *) serialize {
+	BOOL first = YES;
+	NSMutableString *coursesString = [NSMutableString string];
+	for (StellarCourse *course in courses) {
+		if (!first) {
+			[coursesString appendString:@"-"];
+		} else {
+			first = NO;
+		}
+		[coursesString appendString:course.number];
+	}
 	
+	return [NSString stringWithFormat:@"%@:%@", title, coursesString];
+}
+	
++ (StellarCourseGroup *) deserialize: (NSString *)serializedCourseGroup {
+	NSArray *partsByColon = [serializedCourseGroup componentsSeparatedByString:@":"];
+	NSString *title = [partsByColon objectAtIndex:0];
+	NSArray *courseIds = [[partsByColon objectAtIndex:1] componentsSeparatedByString:@"-"];
+	NSMutableArray *courses = [NSMutableArray arrayWithCapacity:courseIds.count];
+	for (NSString *courseId in courseIds) {
+		StellarCourse *course = [StellarModel courseWithId:courseId];
+		if (course) {
+			[courses addObject:course];
+		} else {
+			// if we fail to look up a course
+			// consider the whole deserialization a failure
+			return nil;
+		}
+	}
+	return [[[StellarCourseGroup alloc] initWithTitle:title courses:courses] autorelease];
+}
 
 - (void) dealloc {
 	[title release];

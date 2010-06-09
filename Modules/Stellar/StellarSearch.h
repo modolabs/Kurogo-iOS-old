@@ -13,7 +13,7 @@
 	ClassesSearchDelegate> {
 
 		BOOL activeMode;
-		BOOL hasSearchCompleted;
+		BOOL hasSearchInitiated;
 		NSArray *lastResults;
 		StellarMainTableController *viewController;
 		UISearchBar *searchBar;
@@ -25,7 +25,7 @@
 
 - (id) initWithSearchBar: (UISearchBar *)theSearchBar viewController: (StellarMainTableController *)controller;
 
-- (void) cancelSearch;
+- (void) searchOverlayTapped;
 
 - (BOOL) isSearchResultsVisible;
 

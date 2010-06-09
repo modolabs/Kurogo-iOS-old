@@ -8,6 +8,8 @@
 
 }
 
+- (void)removeBuiltInOverlay;
+
 + (MITSearchEffects *) overlayForTableviewController: (UITableViewController *)controller;
 
 + (CGRect) frameWithHeader: (UIView *)headerView;

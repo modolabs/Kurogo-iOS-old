@@ -1,4 +1,3 @@
-
 #import "StellarModule.h"
 #import "StellarMainTableController.h"
 #import "StellarCoursesTableController.h"
@@ -8,19 +7,34 @@
 #import "StellarSearch.h"
 #import "UITableView+MITUIAdditions.h"
 #import "UITableViewCell+MITUIAdditions.h"
+#import "MITConstants.h"
 #import "MITUIConstants.h"
 #import "MITLoadingActivityView.h"
+#import "MITModuleURL.h"
 
 #define myStellarGroup 0
 #define browseGroup 1
 
-#define searchBarHeight 44
+#define searchBarHeight NAVIGATION_BAR_HEIGHT
+@interface StellarMainTableController(Private)
+@property (nonatomic, retain) NSString *doSearchTerms;
+@end
+
 @implementation StellarMainTableController
 
 @synthesize courseGroups, myStellar;
 @synthesize searchController;
 @synthesize translucentOverlay, loadingView;
 @synthesize myStellarUIisUpToDate;
+@synthesize url;
+
+- (id) init {
+	if (self = [super initWithStyle:UITableViewStyleGrouped]) {
+		url = [[MITModuleURL alloc] initWithTag:StellarTag];
+		isViewAppeared = NO;
+	}
+	return self;
+}
 
 - (void) viewDidLoad {
 	[self.tableView applyStandardColors];
@@ -51,13 +65,28 @@
 	
 	[self reloadMyStellarData];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadMyStellarData) name:MyStellarChanged object:nil];	
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadMyStellarNotifications) name:MyStellarAlertNotification object:nil];
 	
 	// load all course groups (asynchronously) in case it requires server access
 	[StellarModel loadCoursesFromServerAndNotify:self];
 	
 	[StellarModel removeOldFavorites:self];
+	
+	self.doSearchTerms = nil;
 }
- 
+
+- (void) viewDidAppear:(BOOL)animated {
+	isViewAppeared = YES;
+	if (doSearchTerms) {
+		[self doSearch:doSearchTerms execute:doSearchExecute];
+	}
+	[url setAsModulePath];
+}
+
+- (void) viewDidDisappear:(BOOL)animated {
+	isViewAppeared = NO;
+}
+
 - (void) reloadMyStellarData {
 	self.myStellar = [StellarModel myStellarClasses];
 	if(![stellarSearch isSearchResultsVisible]) {
@@ -68,6 +97,16 @@
 	}
 }
 	
+- (void) reloadMyStellarNotifications {
+	if(myStellar.count) {
+		NSMutableArray *indexPaths = [NSMutableArray array];
+		for (NSUInteger rowIndex=0; rowIndex < myStellar.count; rowIndex++) {
+			[indexPaths addObject:[NSIndexPath indexPathForRow:rowIndex inSection:myStellarGroup]];
+		}
+		[self.tableView reloadRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationNone];
+	}
+}
+		
 - (void) reloadMyStellarUI {
 	if(!myStellarUIisUpToDate) {
 		[self.tableView reloadData];
@@ -201,18 +240,54 @@
     [alert release];
 }
 
-- (void) cancelSearch {
-	[stellarSearch cancelSearch];
+- (void) searchOverlayTapped {
+	[stellarSearch searchOverlayTapped];
+}
+
+- (void) doSearch:(NSString *)searchTerms execute:(BOOL)execute {
+	if(isViewAppeared) {
+		self.searchController.active = YES;
+		self.searchController.searchBar.text = searchTerms;
+		if (execute) {
+			self.searchController.searchBar.text = searchTerms;
+			[stellarSearch performSelector:@selector(searchBarSearchButtonClicked:) withObject:self.searchController.searchBar afterDelay:0.3];
+		} else {
+			// using a delay gets rid of a mysterious wait_fences warning
+			[self.searchController.searchBar performSelector:@selector(becomeFirstResponder) withObject:nil afterDelay:0.001];
+			[self showTranslucentOverlayWithDelay:YES];
+		}
+		self.doSearchTerms = nil;
+	} else {
+		// since view has not appeared yet, this search needs to be delay to either viewWillAppear or viewDidAppear
+		// this is a work around for funky behavior when module is in the more list controller
+		self.doSearchTerms = searchTerms;
+		doSearchExecute = execute;
+	}
+}
+
+- (void) setDoSearchTerms:(NSString *)searhTerms {
+	[doSearchTerms release];
+	doSearchTerms = [searhTerms retain];
+}
+
+- (NSString *) doSearchTerms {
+	return doSearchTerms;
 }
 
 - (void) showSearchResultsTable {
 	[self.view addSubview:searchController.searchResultsTableView];
 }
 
-- (void) showTranslucentOverlay {
-	[self.view addSubview:translucentOverlay];
+- (void) showTranslucentOverlayWithDelay:(BOOL)useDelay {
+	[translucentOverlay removeBuiltInOverlay];
+	if (useDelay) {
+		[translucentOverlay removeFromSuperview];
+		[self.view performSelector:@selector(addSubview:) withObject:translucentOverlay afterDelay:0.01];
+	} else {
+		[self.view addSubview:translucentOverlay];
+	}
 }
-
+	
 - (void) showLoadingView {
 	[self.view addSubview:loadingView];
 }
@@ -230,6 +305,8 @@
 }
 
 - (void) dealloc {
+	[doSearchTerms release];
+	
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
 	
 	[myStellar release];
@@ -241,6 +318,7 @@
 	[translucentOverlay release];
 	
 	[loadingView release];
+	[url release];
 	[super dealloc];
 }
 

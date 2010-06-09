@@ -5,15 +5,22 @@
 	CGFloat topPadding;
 	CGFloat bottomPadding;
 
+    UILineBreakMode textLabelLineBreakMode;
+    NSInteger textLabelNumberOfLines;
+    
+    UILineBreakMode detailTextLabelLineBreakMode;
+    NSInteger detailTextLabelNumberOfLines;
 }
 @property CGFloat topPadding;
 @property CGFloat bottomPadding;
 
+@property UILineBreakMode textLabelLineBreakMode;
+@property NSInteger textLabelNumberOfLines;
+
+@property UILineBreakMode detailTextLabelLineBreakMode;
+@property NSInteger detailTextLabelNumberOfLines;
+
 - (void) layoutLabel: (UILabel *)label atHeight: (CGFloat)height;
-
-+ (void) layoutLabel: (UILabel *)label atHeight: (CGFloat)height topPadding: (CGFloat)topPadding;
-
-+ (CGFloat) defaultTopPadding;
 
 // various methods to calculate cell height
 + (CGFloat) cellHeightForTableView: (UITableView *)tableView
