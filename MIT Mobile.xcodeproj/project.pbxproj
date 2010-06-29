@@ -2027,6 +2027,7 @@
 					"${SDK_DIR}/usr/include/libxml2",
 				);
 				PRODUCT_NAME = "MIT Mobile";
+				SDKROOT = iphoneos4.0;
 			};
 			name = "Debug - Development";
 		};
