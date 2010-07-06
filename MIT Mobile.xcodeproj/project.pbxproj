@@ -198,21 +198,21 @@
 		BD1E930D103B5D60004429AA /* SBJsonParser.m in Sources */ = {isa = PBXBuildFile; fileRef = BD1E92FE103B5D60004429AA /* SBJsonParser.m */; };
 		BD1E930E103B5D60004429AA /* SBJsonWriter.m in Sources */ = {isa = PBXBuildFile; fileRef = BD1E9300103B5D60004429AA /* SBJsonWriter.m */; };
 		BD9FA7EE1047A05E00BC3C0A /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BD9FA7ED1047A05E00BC3C0A /* MessageUI.framework */; };
-		C7F225D011DB9F2100F8F04B /* HarvardDiningAPI.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = C7F225C311DB9F2100F8F04B /* HarvardDiningAPI.h */; settings = {JAVA_ARCHIVE_SUBDIR = Modules; }; };
-		C7F225D111DB9F2100F8F04B /* HarvardDiningAPI.m in Sources */ = {isa = PBXBuildFile; fileRef = C7F225C411DB9F2100F8F04B /* HarvardDiningAPI.m */; };
-		C7F225D211DB9F2100F8F04B /* diningTempAppDelegate.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = C7F225C511DB9F2100F8F04B /* diningTempAppDelegate.h */; settings = {JAVA_ARCHIVE_SUBDIR = Modules; }; };
-		C7F225D311DB9F2100F8F04B /* diningTempAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = C7F225C611DB9F2100F8F04B /* diningTempAppDelegate.m */; };
-		C7F225D411DB9F2100F8F04B /* DiningTabViewControl.m in Sources */ = {isa = PBXBuildFile; fileRef = C7F225C711DB9F2100F8F04B /* DiningTabViewControl.m */; };
-		C7F225D511DB9F2100F8F04B /* DiningTabViewControl.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = C7F225C811DB9F2100F8F04B /* DiningTabViewControl.h */; settings = {JAVA_ARCHIVE_SUBDIR = Modules; }; };
-		C7F225D611DB9F2100F8F04B /* DiningFirstViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C7F225C911DB9F2100F8F04B /* DiningFirstViewController.xib */; };
-		C7F225D711DB9F2100F8F04B /* DiningFirstViewController.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = C7F225CA11DB9F2100F8F04B /* DiningFirstViewController.h */; settings = {JAVA_ARCHIVE_SUBDIR = Modules; }; };
-		C7F225D811DB9F2100F8F04B /* DiningFirstViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C7F225CB11DB9F2100F8F04B /* DiningFirstViewController.m */; };
-		C7F225D911DB9F2100F8F04B /* MenuItems.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = C7F225CC11DB9F2100F8F04B /* MenuItems.h */; settings = {JAVA_ARCHIVE_SUBDIR = Modules; }; };
-		C7F225DA11DB9F2100F8F04B /* MenuItems.m in Sources */ = {isa = PBXBuildFile; fileRef = C7F225CD11DB9F2100F8F04B /* MenuItems.m */; };
-		C7F225DB11DB9F2100F8F04B /* MenuDetailsController.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = C7F225CE11DB9F2100F8F04B /* MenuDetailsController.h */; settings = {JAVA_ARCHIVE_SUBDIR = Modules; }; };
-		C7F225DC11DB9F2100F8F04B /* MenuDetailsController.m in Sources */ = {isa = PBXBuildFile; fileRef = C7F225CF11DB9F2100F8F04B /* MenuDetailsController.m */; };
-		C7F225DF11DB9F2F00F8F04B /* DiningModule.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = C7F225DD11DB9F2F00F8F04B /* DiningModule.h */; settings = {JAVA_ARCHIVE_SUBDIR = Modules; }; };
-		C7F225E011DB9F2F00F8F04B /* DiningModule.m in Sources */ = {isa = PBXBuildFile; fileRef = C7F225DE11DB9F2F00F8F04B /* DiningModule.m */; };
+		C704EFA911E3DE1D00621406 /* DiningFirstViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C704EF9A11E3DE1D00621406 /* DiningFirstViewController.xib */; };
+		C704EFAA11E3DE1D00621406 /* DiningFirstViewController.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = C704EF9B11E3DE1D00621406 /* DiningFirstViewController.h */; settings = {JAVA_ARCHIVE_SUBDIR = Modules; }; };
+		C704EFAB11E3DE1D00621406 /* DiningFirstViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C704EF9C11E3DE1D00621406 /* DiningFirstViewController.m */; };
+		C704EFAC11E3DE1D00621406 /* DiningModule.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = C704EF9D11E3DE1D00621406 /* DiningModule.h */; settings = {JAVA_ARCHIVE_SUBDIR = Modules; }; };
+		C704EFAD11E3DE1D00621406 /* DiningModule.m in Sources */ = {isa = PBXBuildFile; fileRef = C704EF9E11E3DE1D00621406 /* DiningModule.m */; };
+		C704EFAE11E3DE1D00621406 /* DiningTabViewControl.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = C704EF9F11E3DE1D00621406 /* DiningTabViewControl.h */; settings = {JAVA_ARCHIVE_SUBDIR = Modules; }; };
+		C704EFAF11E3DE1D00621406 /* DiningTabViewControl.m in Sources */ = {isa = PBXBuildFile; fileRef = C704EFA011E3DE1D00621406 /* DiningTabViewControl.m */; };
+		C704EFB011E3DE1D00621406 /* diningTempAppDelegate.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = C704EFA111E3DE1D00621406 /* diningTempAppDelegate.h */; settings = {JAVA_ARCHIVE_SUBDIR = Modules; }; };
+		C704EFB111E3DE1D00621406 /* diningTempAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = C704EFA211E3DE1D00621406 /* diningTempAppDelegate.m */; };
+		C704EFB211E3DE1D00621406 /* HarvardDiningAPI.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = C704EFA311E3DE1D00621406 /* HarvardDiningAPI.h */; settings = {JAVA_ARCHIVE_SUBDIR = Modules; }; };
+		C704EFB311E3DE1D00621406 /* HarvardDiningAPI.m in Sources */ = {isa = PBXBuildFile; fileRef = C704EFA411E3DE1D00621406 /* HarvardDiningAPI.m */; };
+		C704EFB411E3DE1D00621406 /* MenuDetailsController.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = C704EFA511E3DE1D00621406 /* MenuDetailsController.h */; settings = {JAVA_ARCHIVE_SUBDIR = Modules; }; };
+		C704EFB511E3DE1D00621406 /* MenuDetailsController.m in Sources */ = {isa = PBXBuildFile; fileRef = C704EFA611E3DE1D00621406 /* MenuDetailsController.m */; };
+		C704EFB611E3DE1D00621406 /* MenuItems.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = C704EFA711E3DE1D00621406 /* MenuItems.h */; settings = {JAVA_ARCHIVE_SUBDIR = Modules; }; };
+		C704EFB711E3DE1D00621406 /* MenuItems.m in Sources */ = {isa = PBXBuildFile; fileRef = C704EFA811E3DE1D00621406 /* MenuItems.m */; };
 		C7F2270611DBAD2C00F8F04B /* scrim-button-background.png in Resources */ = {isa = PBXBuildFile; fileRef = C7F2270111DBAD2C00F8F04B /* scrim-button-background.png */; };
 		C7F2270711DBAD2C00F8F04B /* action-arrow.png in Resources */ = {isa = PBXBuildFile; fileRef = C7F2270211DBAD2C00F8F04B /* action-arrow.png */; };
 		C7F2270811DBAD2C00F8F04B /* arrow-white-left.png in Resources */ = {isa = PBXBuildFile; fileRef = C7F2270311DBAD2C00F8F04B /* arrow-white-left.png */; };
@@ -610,21 +610,21 @@
 		BD1E92FF103B5D60004429AA /* SBJsonWriter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SBJsonWriter.h; sourceTree = "<group>"; };
 		BD1E9300103B5D60004429AA /* SBJsonWriter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SBJsonWriter.m; sourceTree = "<group>"; };
 		BD9FA7ED1047A05E00BC3C0A /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
-		C7F225C311DB9F2100F8F04B /* HarvardDiningAPI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HarvardDiningAPI.h; sourceTree = "<group>"; };
-		C7F225C411DB9F2100F8F04B /* HarvardDiningAPI.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HarvardDiningAPI.m; sourceTree = "<group>"; };
-		C7F225C511DB9F2100F8F04B /* diningTempAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = diningTempAppDelegate.h; sourceTree = "<group>"; };
-		C7F225C611DB9F2100F8F04B /* diningTempAppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = diningTempAppDelegate.m; sourceTree = "<group>"; };
-		C7F225C711DB9F2100F8F04B /* DiningTabViewControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DiningTabViewControl.m; sourceTree = "<group>"; };
-		C7F225C811DB9F2100F8F04B /* DiningTabViewControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DiningTabViewControl.h; sourceTree = "<group>"; };
-		C7F225C911DB9F2100F8F04B /* DiningFirstViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DiningFirstViewController.xib; sourceTree = "<group>"; };
-		C7F225CA11DB9F2100F8F04B /* DiningFirstViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DiningFirstViewController.h; sourceTree = "<group>"; };
-		C7F225CB11DB9F2100F8F04B /* DiningFirstViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DiningFirstViewController.m; sourceTree = "<group>"; };
-		C7F225CC11DB9F2100F8F04B /* MenuItems.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenuItems.h; sourceTree = "<group>"; };
-		C7F225CD11DB9F2100F8F04B /* MenuItems.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenuItems.m; sourceTree = "<group>"; };
-		C7F225CE11DB9F2100F8F04B /* MenuDetailsController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenuDetailsController.h; sourceTree = "<group>"; };
-		C7F225CF11DB9F2100F8F04B /* MenuDetailsController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenuDetailsController.m; sourceTree = "<group>"; };
-		C7F225DD11DB9F2F00F8F04B /* DiningModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DiningModule.h; sourceTree = "<group>"; };
-		C7F225DE11DB9F2F00F8F04B /* DiningModule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DiningModule.m; sourceTree = "<group>"; };
+		C704EF9A11E3DE1D00621406 /* DiningFirstViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DiningFirstViewController.xib; sourceTree = "<group>"; };
+		C704EF9B11E3DE1D00621406 /* DiningFirstViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DiningFirstViewController.h; sourceTree = "<group>"; };
+		C704EF9C11E3DE1D00621406 /* DiningFirstViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DiningFirstViewController.m; sourceTree = "<group>"; };
+		C704EF9D11E3DE1D00621406 /* DiningModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DiningModule.h; sourceTree = "<group>"; };
+		C704EF9E11E3DE1D00621406 /* DiningModule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DiningModule.m; sourceTree = "<group>"; };
+		C704EF9F11E3DE1D00621406 /* DiningTabViewControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DiningTabViewControl.h; sourceTree = "<group>"; };
+		C704EFA011E3DE1D00621406 /* DiningTabViewControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DiningTabViewControl.m; sourceTree = "<group>"; };
+		C704EFA111E3DE1D00621406 /* diningTempAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = diningTempAppDelegate.h; sourceTree = "<group>"; };
+		C704EFA211E3DE1D00621406 /* diningTempAppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = diningTempAppDelegate.m; sourceTree = "<group>"; };
+		C704EFA311E3DE1D00621406 /* HarvardDiningAPI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HarvardDiningAPI.h; sourceTree = "<group>"; };
+		C704EFA411E3DE1D00621406 /* HarvardDiningAPI.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HarvardDiningAPI.m; sourceTree = "<group>"; };
+		C704EFA511E3DE1D00621406 /* MenuDetailsController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenuDetailsController.h; sourceTree = "<group>"; };
+		C704EFA611E3DE1D00621406 /* MenuDetailsController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenuDetailsController.m; sourceTree = "<group>"; };
+		C704EFA711E3DE1D00621406 /* MenuItems.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenuItems.h; sourceTree = "<group>"; };
+		C704EFA811E3DE1D00621406 /* MenuItems.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenuItems.m; sourceTree = "<group>"; };
 		C7F2270111DBAD2C00F8F04B /* scrim-button-background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "scrim-button-background.png"; sourceTree = "<group>"; };
 		C7F2270211DBAD2C00F8F04B /* action-arrow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "action-arrow.png"; sourceTree = "<group>"; };
 		C7F2270311DBAD2C00F8F04B /* arrow-white-left.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "arrow-white-left.png"; sourceTree = "<group>"; };
@@ -1240,24 +1240,24 @@
 			path = JSON;
 			sourceTree = "<group>";
 		};
-		C7F225C211DB9EF200F8F04B /* Dining */ = {
+		C704EF9911E3DDE500621406 /* Dining */ = {
 			isa = PBXGroup;
 			children = (
-				C7F225C311DB9F2100F8F04B /* HarvardDiningAPI.h */,
-				C7F225C411DB9F2100F8F04B /* HarvardDiningAPI.m */,
-				C7F225DD11DB9F2F00F8F04B /* DiningModule.h */,
-				C7F225DE11DB9F2F00F8F04B /* DiningModule.m */,
-				C7F225C511DB9F2100F8F04B /* diningTempAppDelegate.h */,
-				C7F225C611DB9F2100F8F04B /* diningTempAppDelegate.m */,
-				C7F225C711DB9F2100F8F04B /* DiningTabViewControl.m */,
-				C7F225C811DB9F2100F8F04B /* DiningTabViewControl.h */,
-				C7F225C911DB9F2100F8F04B /* DiningFirstViewController.xib */,
-				C7F225CA11DB9F2100F8F04B /* DiningFirstViewController.h */,
-				C7F225CB11DB9F2100F8F04B /* DiningFirstViewController.m */,
-				C7F225CC11DB9F2100F8F04B /* MenuItems.h */,
-				C7F225CD11DB9F2100F8F04B /* MenuItems.m */,
-				C7F225CE11DB9F2100F8F04B /* MenuDetailsController.h */,
-				C7F225CF11DB9F2100F8F04B /* MenuDetailsController.m */,
+				C704EF9A11E3DE1D00621406 /* DiningFirstViewController.xib */,
+				C704EF9B11E3DE1D00621406 /* DiningFirstViewController.h */,
+				C704EF9C11E3DE1D00621406 /* DiningFirstViewController.m */,
+				C704EF9D11E3DE1D00621406 /* DiningModule.h */,
+				C704EF9E11E3DE1D00621406 /* DiningModule.m */,
+				C704EF9F11E3DE1D00621406 /* DiningTabViewControl.h */,
+				C704EFA011E3DE1D00621406 /* DiningTabViewControl.m */,
+				C704EFA111E3DE1D00621406 /* diningTempAppDelegate.h */,
+				C704EFA211E3DE1D00621406 /* diningTempAppDelegate.m */,
+				C704EFA311E3DE1D00621406 /* HarvardDiningAPI.h */,
+				C704EFA411E3DE1D00621406 /* HarvardDiningAPI.m */,
+				C704EFA511E3DE1D00621406 /* MenuDetailsController.h */,
+				C704EFA611E3DE1D00621406 /* MenuDetailsController.m */,
+				C704EFA711E3DE1D00621406 /* MenuItems.h */,
+				C704EFA811E3DE1D00621406 /* MenuItems.m */,
 			);
 			name = Dining;
 			sourceTree = "<group>";
@@ -1334,7 +1334,7 @@
 		DE715445102FE468005E6111 /* Modules */ = {
 			isa = PBXGroup;
 			children = (
-				C7F225C211DB9EF200F8F04B /* Dining */,
+				C704EF9911E3DDE500621406 /* Dining */,
 				EB86CA6C115D273800C8F3D1 /* Calendar */,
 				EB7F326610CD6C5B00188BCD /* People */,
 				DE81CF5F10C6BC390085573D /* News */,
@@ -1737,13 +1737,13 @@
 				4499332D11A371CF00A7041B /* RecentSearchesViewController.h in JavaArchive */,
 				44C1A4C411A412E2000FD653 /* MapSearch.h in JavaArchive */,
 				4499341E11A5E53D00A7041B /* CategoriesTableViewController.h in JavaArchive */,
-				C7F225D011DB9F2100F8F04B /* HarvardDiningAPI.h in JavaArchive */,
-				C7F225D211DB9F2100F8F04B /* diningTempAppDelegate.h in JavaArchive */,
-				C7F225D511DB9F2100F8F04B /* DiningTabViewControl.h in JavaArchive */,
-				C7F225D711DB9F2100F8F04B /* DiningFirstViewController.h in JavaArchive */,
-				C7F225D911DB9F2100F8F04B /* MenuItems.h in JavaArchive */,
-				C7F225DB11DB9F2100F8F04B /* MenuDetailsController.h in JavaArchive */,
-				C7F225DF11DB9F2F00F8F04B /* DiningModule.h in JavaArchive */,
+				C704EFAA11E3DE1D00621406 /* DiningFirstViewController.h in JavaArchive */,
+				C704EFAC11E3DE1D00621406 /* DiningModule.h in JavaArchive */,
+				C704EFAE11E3DE1D00621406 /* DiningTabViewControl.h in JavaArchive */,
+				C704EFB011E3DE1D00621406 /* diningTempAppDelegate.h in JavaArchive */,
+				C704EFB211E3DE1D00621406 /* HarvardDiningAPI.h in JavaArchive */,
+				C704EFB411E3DE1D00621406 /* MenuDetailsController.h in JavaArchive */,
+				C704EFB611E3DE1D00621406 /* MenuItems.h in JavaArchive */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1884,12 +1884,12 @@
 				4415CA8C11AC679A002B6847 /* bookmark_off.png in Resources */,
 				4415CA8D11AC679A002B6847 /* bookmark_on_pressed.png in Resources */,
 				4415CA8E11AC679A002B6847 /* bookmark_on.png in Resources */,
-				C7F225D611DB9F2100F8F04B /* DiningFirstViewController.xib in Resources */,
 				C7F2270611DBAD2C00F8F04B /* scrim-button-background.png in Resources */,
 				C7F2270711DBAD2C00F8F04B /* action-arrow.png in Resources */,
 				C7F2270811DBAD2C00F8F04B /* arrow-white-left.png in Resources */,
 				C7F2270911DBAD2C00F8F04B /* arrow-white-right.png in Resources */,
 				C7F2270A11DBAD2C00F8F04B /* body-background.png in Resources */,
+				C704EFA911E3DE1D00621406 /* DiningFirstViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2086,13 +2086,13 @@
 				4499332E11A371CF00A7041B /* RecentSearchesViewController.m in Sources */,
 				44C1A4C511A412E2000FD653 /* MapSearch.m in Sources */,
 				4499341F11A5E53D00A7041B /* CategoriesTableViewController.m in Sources */,
-				C7F225D111DB9F2100F8F04B /* HarvardDiningAPI.m in Sources */,
-				C7F225D311DB9F2100F8F04B /* diningTempAppDelegate.m in Sources */,
-				C7F225D411DB9F2100F8F04B /* DiningTabViewControl.m in Sources */,
-				C7F225D811DB9F2100F8F04B /* DiningFirstViewController.m in Sources */,
-				C7F225DA11DB9F2100F8F04B /* MenuItems.m in Sources */,
-				C7F225DC11DB9F2100F8F04B /* MenuDetailsController.m in Sources */,
-				C7F225E011DB9F2F00F8F04B /* DiningModule.m in Sources */,
+				C704EFAB11E3DE1D00621406 /* DiningFirstViewController.m in Sources */,
+				C704EFAD11E3DE1D00621406 /* DiningModule.m in Sources */,
+				C704EFAF11E3DE1D00621406 /* DiningTabViewControl.m in Sources */,
+				C704EFB111E3DE1D00621406 /* diningTempAppDelegate.m in Sources */,
+				C704EFB311E3DE1D00621406 /* HarvardDiningAPI.m in Sources */,
+				C704EFB511E3DE1D00621406 /* MenuDetailsController.m in Sources */,
+				C704EFB711E3DE1D00621406 /* MenuItems.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
