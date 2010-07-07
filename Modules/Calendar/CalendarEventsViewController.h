@@ -1,5 +1,5 @@
 #import <UIKit/UIKit.h>
-#import "MITMobileWebAPI.h"
+#import "JSONAPIRequest.h"
 #import "MITMapView.h"
 #import "CalendarConstants.h"
 #import "EventCategoriesTableView.h"
@@ -10,7 +10,7 @@
 @class EventListTableView;
 @class CalendarEventMapAnnotation;
 
-@interface CalendarEventsViewController : UIViewController <UIScrollViewDelegate, UISearchBarDelegate, UISearchDisplayDelegate, MITMapViewDelegate, JSONLoadedDelegate> {
+@interface CalendarEventsViewController : UIViewController <UIScrollViewDelegate, UISearchBarDelegate, UISearchDisplayDelegate, MITMapViewDelegate, JSONAPIDelegate> {
 
 	CalendarEventListType activeEventList; // today, browse, acad, holidays...
 	NSDate *startDate;
@@ -47,7 +47,7 @@
 	BOOL dateRangeDidChange;
 	
 	BOOL requestDispatched;
-	MITMobileWebAPI *apiRequest;
+	JSONAPIRequest *apiRequest;
 	
 }
 

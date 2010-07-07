@@ -1,8 +1,8 @@
 
 #import "HarvardDiningAPI.h"
 //#import "MIT_MobileAppDelegate.h"
-#import "MITJSON.h"
-#import "MITConstants.h"
+#import "JSONAPIRequest.h"
+#import "Constants.h"
 
 
 //#define HarvardDiningAPIURLString @"http://food.cs50.net/api/1.1/items?date="
@@ -35,14 +35,14 @@
 }
 
 -(void)connection:(ConnectionWrapper *)wrapper handleData:(NSData *)data {
-	id result = [MITJSON objectWithJSONData:data];
+	id result = [JSONAPIRequest objectWithJSONData:data];
 	if(result) {
 //		[((MIT_MobileAppDelegate *)[[UIApplication sharedApplication] delegate]) hideNetworkActivityIndicator];
 		[jsonDelegate request:self jsonLoaded:result];
         self.connectionWrapper = nil;
 			//[self release];	
 	} else {
-		NSError *error = [NSError errorWithDomain:@"MITMobileWebAPI" code:0 
+		NSError *error = [NSError errorWithDomain:@"JSONAPIRequest" code:0 
 										 userInfo:[NSDictionary dictionaryWithObjectsAndKeys:@"failed to handle JSON data", @"message", data, @"data", nil]];
 		[self connection:wrapper handleConnectionFailureWithError:error];
 	}

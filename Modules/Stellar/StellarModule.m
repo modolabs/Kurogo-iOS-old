@@ -6,7 +6,7 @@
 #import "StellarDetailViewController.h"
 #import "StellarClassesTableController.h"
 #import "StellarCoursesTableController.h"
-#import "MITConstants.h"
+#import "Constants.h"
 
 @implementation StellarModule
 

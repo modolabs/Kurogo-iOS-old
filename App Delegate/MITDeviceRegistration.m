@@ -48,7 +48,7 @@
 		[parameters setObject:[[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleIdentifier"] forKey:@"app_id"];
 	}		
 		
-	[[MITMobileWebAPI jsonLoadedDelegate:[MITIdentityLoadedDelegate withDeviceToken:deviceToken]]
+	[[JSONAPIRequest requestWithJSONAPIDelegate:[MITIdentityLoadedDelegate withDeviceToken:deviceToken]]
 		requestObjectFromModule:@"push" command:@"register" parameters:parameters];
 }
 
@@ -58,7 +58,7 @@
 	[parameters setObject:[self stringFromToken:deviceToken] forKey:@"device_token"];
 	[parameters setObject:[[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleIdentifier"] forKey:@"app_id"];
 	
-	[[MITMobileWebAPI jsonLoadedDelegate:[MITIdentityLoadedDelegate withDeviceToken:deviceToken]]
+	[[JSONAPIRequest requestWithJSONAPIDelegate:[MITIdentityLoadedDelegate withDeviceToken:deviceToken]]
 		requestObjectFromModule:@"push" command:@"newDeviceToken" parameters:parameters];
 }
 	
@@ -89,7 +89,7 @@
 	[super dealloc];
 }
 
-- (void)request:(MITMobileWebAPI *)request jsonLoaded: (id)JSONObject {
+- (void)request:(JSONAPIRequest *)request jsonLoaded: (id)JSONObject {
 	
 	[[NSUserDefaults standardUserDefaults] setObject:self.deviceToken forKey:DeviceTokenKey];
 

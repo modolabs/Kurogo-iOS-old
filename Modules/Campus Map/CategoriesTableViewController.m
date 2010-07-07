@@ -56,7 +56,7 @@
 	
 	if (_topLevel) {
 		_headerText = @"Browse map by:";
-		MITMobileWebAPI *apiRequest = [MITMobileWebAPI jsonLoadedDelegate:self];
+		JSONAPIRequest *apiRequest = [JSONAPIRequest requestWithJSONAPIDelegate:self];
 		apiRequest.userData = @"CategoryTitles";
 		[apiRequest requestObject:[NSDictionary dictionaryWithObjectsAndKeys:@"categorytitles", @"command", nil]
 					pathExtension:@"map/"];
@@ -296,8 +296,8 @@
     // For example: self.myOutlet = nil;
 }
 
-#pragma mark JSONLoadedDelegate
-- (void)request:(MITMobileWebAPI *)request jsonLoaded:(id)JSONObject
+#pragma mark JSONAPIDelegate
+- (void)request:(JSONAPIRequest *)request jsonLoaded:(id)JSONObject
 {
 	NSArray *categoryResults = JSONObject;
 	
@@ -317,7 +317,7 @@
 	[self.tableView reloadData];
 }
 
-- (void)handleConnectionFailureForRequest:(MITMobileWebAPI *)request
+- (void)handleConnectionFailureForRequest:(JSONAPIRequest *)request
 {
 	if (_loadingView) {
 		//self.tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
@@ -339,7 +339,7 @@
 
 -(void) executeServerCategoryRequestWithQuery:(NSString *)query 
 {
-	MITMobileWebAPI *apiRequest = [MITMobileWebAPI jsonLoadedDelegate:self];
+	JSONAPIRequest *apiRequest = [JSONAPIRequest requestWithJSONAPIDelegate:self];
 	apiRequest.userData = @"Category";
 	[apiRequest requestObject:[NSDictionary dictionaryWithObjectsAndKeys:@"category", @"command", query, @"id", nil]
 				pathExtension:@"map/"];

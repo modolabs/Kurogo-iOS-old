@@ -1,4 +1,4 @@
-#import "MITConstants.h"
+#import "Constants.h"
 
 // common URLs
 #ifdef USE_MOBILE_DEV
@@ -111,3 +111,6 @@ NSString * const MITImageNameDownArrow = @"global/arrow-white-down.png";
 
 NSString * const MITImageNameSearch = @"global/search.png";
 NSString * const MITImageNameBookmark = @"global/bookmark.png";
+
+// errors
+NSString * const ShuttlesErrorDomain = @"com.modolabs.Shuttles.ErrorDomain";

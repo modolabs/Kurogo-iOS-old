@@ -1,11 +1,11 @@
 #import <UIKit/UIKit.h>
-#import "MITMobileWebAPI.h"
+#import "JSONAPIRequest.h"
 #import "CalendarConstants.h"
 #import "ShareDetailViewController.h"
 
 @class MITCalendarEvent;
 
-@interface CalendarDetailViewController : ShareDetailViewController <UITableViewDelegate, UITableViewDataSource, JSONLoadedDelegate, ShareItemDelegate, UIWebViewDelegate> {
+@interface CalendarDetailViewController : ShareDetailViewController <UITableViewDelegate, UITableViewDataSource, JSONAPIDelegate, ShareItemDelegate, UIWebViewDelegate> {
 	
     BOOL isRegularEvent;
     

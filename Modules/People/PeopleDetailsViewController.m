@@ -87,7 +87,7 @@
 	if ([[self.personDetails valueForKey:@"lastUpdate"] timeIntervalSinceNow] < -300) { // 5 mins for testing
 		if ([ConnectionDetector isConnected]) {
 			// issue this query but don't care too much if it fails
-			MITMobileWebAPI *api = [MITMobileWebAPI jsonLoadedDelegate:self];
+			JSONAPIRequest *api = [JSONAPIRequest requestWithJSONAPIDelegate:self];
 			[api requestObject:[NSDictionary dictionaryWithObjectsAndKeys:@"people", @"module", self.fullname, @"q", nil]];
 		}
 	}
@@ -112,7 +112,7 @@
 #pragma mark -
 #pragma mark Connection methods + wrapper delegate
 
-- (void)request:(MITMobileWebAPI *)request jsonLoaded:(id)result {
+- (void)request:(JSONAPIRequest *)request jsonLoaded:(id)result {
 	if (result && [result isKindOfClass:[NSArray class]]) { // fail silently
 		for (NSDictionary *entry in result) {
 			if ([[entry objectForKey:@"id"] isEqualToString:[self.personDetails valueForKey:@"uid"]]) {

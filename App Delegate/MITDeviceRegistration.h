@@ -1,6 +1,6 @@
 
 #import <Foundation/Foundation.h>
-#import "MITMobileWebAPI.h"
+#import "JSONAPIRequest.h"
 
 @interface MITIdentity : NSObject
 {
@@ -26,7 +26,7 @@
 + (MITIdentity *) identity;
 @end
 
-@interface MITIdentityLoadedDelegate : NSObject <JSONLoadedDelegate> {
+@interface MITIdentityLoadedDelegate : NSObject <JSONAPIDelegate> {
 	NSData *deviceToken;
 }
 

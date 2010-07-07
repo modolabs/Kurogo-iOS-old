@@ -7,7 +7,7 @@
 #import "StellarSearch.h"
 #import "UITableView+MITUIAdditions.h"
 #import "UITableViewCell+MITUIAdditions.h"
-#import "MITConstants.h"
+#import "Constants.h"
 #import "MITUIConstants.h"
 #import "MITLoadingActivityView.h"
 #import "MITModuleURL.h"

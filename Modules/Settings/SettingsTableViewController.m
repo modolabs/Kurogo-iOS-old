@@ -130,12 +130,12 @@ NSString * const SectionSubtitleString = @"Turn off Notifications to disable ale
 	NSString *enabledString = aSwitch.on ? @"1" : @"0";
 	[parameters setObject:enabledString forKey:@"enabled"];
 	
-	MITMobileWebAPI *existingRequest = [apiRequests objectForKey:moduleTag];
+	JSONAPIRequest *existingRequest = [apiRequests objectForKey:moduleTag];
 	if (existingRequest != nil) {
 		[existingRequest abortRequest];
 		[apiRequests removeObjectForKey:moduleTag];
 	}
-	MITMobileWebAPI *request = [MITMobileWebAPI jsonLoadedDelegate:self];
+	JSONAPIRequest *request = [JSONAPIRequest requestWithJSONAPIDelegate:self];
 	[request requestObjectFromModule:@"push" command:@"moduleSetting" parameters:parameters];
 	[apiRequests setObject:request forKey:moduleTag];
 }
@@ -144,10 +144,10 @@ NSString * const SectionSubtitleString = @"Turn off Notifications to disable ale
 	[self.tableView reloadData];
 }
 
-- (void)request:(MITMobileWebAPI *)request jsonLoaded: (id)object {
+- (void)request:(JSONAPIRequest *)request jsonLoaded: (id)object {
 	if (object && [object isKindOfClass:[NSDictionary class]] && [object objectForKey:@"success"]) {
 		for (id moduleTag in apiRequests) {
-			MITMobileWebAPI *aRequest = [apiRequests objectForKey:moduleTag];
+			JSONAPIRequest *aRequest = [apiRequests objectForKey:moduleTag];
 			if (aRequest == request) {
 				// this backwards finding would be a lot simpler if 
 				// the backend would just return module and enabled status
@@ -168,9 +168,9 @@ NSString * const SectionSubtitleString = @"Turn off Notifications to disable ale
 	}
 }
 
-- (void)handleConnectionFailureForRequest:(MITMobileWebAPI *)request {
+- (void)handleConnectionFailureForRequest:(JSONAPIRequest *)request {
 	for (id moduleTag in apiRequests) {
-		MITMobileWebAPI *aRequest = [apiRequests objectForKey:moduleTag];
+		JSONAPIRequest *aRequest = [apiRequests objectForKey:moduleTag];
 		if (aRequest == request) {
 			[apiRequests removeObjectForKey:moduleTag];
 			break;

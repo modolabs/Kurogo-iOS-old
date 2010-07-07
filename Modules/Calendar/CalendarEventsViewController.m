@@ -876,7 +876,7 @@
 {
 	[self abortExtraneousRequest];
 
-	apiRequest = [MITMobileWebAPI jsonLoadedDelegate:self];
+	apiRequest = [JSONAPIRequest requestWithJSONAPIDelegate:self];
 	apiRequest.userData = CalendarEventAPISearch;
 	requestDispatched = [apiRequest requestObjectFromModule:CalendarTag 
 												   command:@"search" 
@@ -902,7 +902,7 @@
 {
 	[self abortExtraneousRequest];
 	
-	apiRequest = [MITMobileWebAPI jsonLoadedDelegate:self];
+	apiRequest = [JSONAPIRequest requestWithJSONAPIDelegate:self];
 	apiRequest.userData = [CalendarConstants titleForEventType:activeEventList];
 	
 	switch (activeEventList) {
@@ -956,7 +956,7 @@
 	}
 }
 
-- (void)request:(MITMobileWebAPI *)request jsonLoaded:(id)result {
+- (void)request:(JSONAPIRequest *)request jsonLoaded:(id)result {
 	
 	[self removeLoadingIndicator];
 	
@@ -1059,7 +1059,7 @@
 	[self focusSearchBar];
 }
 
-- (void)handleConnectionFailureForRequest:(MITMobileWebAPI *)request
+- (void)handleConnectionFailureForRequest:(JSONAPIRequest *)request
 {
 	requestDispatched = NO;
     [self removeLoadingIndicator];

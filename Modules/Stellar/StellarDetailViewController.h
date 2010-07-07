@@ -13,7 +13,7 @@
 @property (nonatomic, assign) StellarDetailViewController *viewController;
 @end
 
-@interface MyStellarStatusDelegate : NSObject <JSONLoadedDelegate>
+@interface MyStellarStatusDelegate : NSObject <JSONAPIDelegate>
 {
 	StellarDetailViewController *viewController;
 	BOOL status;

@@ -7,12 +7,12 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "MITMobileWebAPI.h"
+#import "JSONAPIRequest.h"
 #import "MITLoadingActivityView.h"
 
 @class MapSelectionController;
 
-@interface CategoriesTableViewController : UITableViewController <JSONLoadedDelegate> {
+@interface CategoriesTableViewController : UITableViewController <JSONAPIDelegate> {
 	MapSelectionController* _mapSelectionController;
 	
 	NSMutableArray* _itemsInTable;

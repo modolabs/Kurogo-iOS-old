@@ -18,7 +18,7 @@ NSString * const MyStellarChanged = @"MyStellarChanged";
  
  CoreData (semi permanent on disk storage)
  
- MITMobileWebAPI (requires server connection to call the mit mobile web server)
+ JSONAPIRequest (requires server connection to call the mit mobile web server)
 **/
 
 
@@ -52,8 +52,8 @@ NSString* cleanPersonName(NSString *personName);
 		return;
 	}
 	
-	MITMobileWebAPI *apiRequest = [MITMobileWebAPI 
-		jsonLoadedDelegate:[[[CoursesRequest alloc] 
+	JSONAPIRequest *apiRequest = [JSONAPIRequest 
+		requestWithJSONAPIDelegate:[[[CoursesRequest alloc] 
 			initWithCoursesDelegate:delegate] autorelease]];
 	[apiRequest requestObjectFromModule:@"stellar" command:@"courses" parameters:nil];
 }
@@ -87,8 +87,8 @@ NSString* cleanPersonName(NSString *personName);
 	} else {
 		// see if the class info has changed using a checksum		
 		if(stellarCourse.lastChecksum) {
-			MITMobileWebAPI *apiRequest = [MITMobileWebAPI
-										   jsonLoadedDelegate:[[[ClassesChecksumRequest alloc] initWithClassesRequest:classesRequest] autorelease]];
+			JSONAPIRequest *apiRequest = [JSONAPIRequest
+										   requestWithJSONAPIDelegate:[[[ClassesChecksumRequest alloc] initWithClassesRequest:classesRequest] autorelease]];
 		
 			[apiRequest 
 				requestObjectFromModule:@"stellar" 
@@ -107,7 +107,7 @@ NSString* cleanPersonName(NSString *personName);
    along with a checksum for detecting changes to a course
  */
 + (void) classesForCourseCompleteRequest:(ClassesRequest *)classesRequest {
-	MITMobileWebAPI *apiRequest = [MITMobileWebAPI jsonLoadedDelegate:classesRequest];
+	JSONAPIRequest *apiRequest = [JSONAPIRequest requestWithJSONAPIDelegate:classesRequest];
 	[apiRequest 
 	 requestObjectFromModule:@"stellar" 
 	 command:@"subjectList" 
@@ -123,8 +123,8 @@ NSString* cleanPersonName(NSString *personName);
 }
 
 + (void) executeStellarSearch: (NSString *)searchTerms delegate: (id<ClassesSearchDelegate>)delegate {
-	MITMobileWebAPI *apiRequest = [MITMobileWebAPI
-		jsonLoadedDelegate:[[[ClassesSearchRequest alloc]
+	JSONAPIRequest *apiRequest = [JSONAPIRequest
+		requestWithJSONAPIDelegate:[[[ClassesSearchRequest alloc]
 			initWithDelegate:delegate searchTerms:searchTerms] autorelease]];
 	[apiRequest 
 		requestObjectFromModule:@"stellar" 
@@ -163,8 +163,8 @@ NSString* cleanPersonName(NSString *personName);
 	}
 	
 	// finally we call the server to get the most definitive data
-	MITMobileWebAPI *apiRequest = [MITMobileWebAPI
-		jsonLoadedDelegate:[[[ClassInfoRequest alloc] 
+	JSONAPIRequest *apiRequest = [JSONAPIRequest
+		requestWithJSONAPIDelegate:[[[ClassInfoRequest alloc] 
 			initWithClassInfoDelegate:delegate] autorelease]];
 	
 	[apiRequest 
@@ -196,8 +196,8 @@ NSString* cleanPersonName(NSString *personName);
 + (void) removeOldFavorites: (id<ClearMyStellarDelegate>)delegate {
 	// we call the server to get the current semester
 	NSArray *favorites = [self myStellarClasses];
-	MITMobileWebAPI *apiRequest = [MITMobileWebAPI
-		jsonLoadedDelegate:[[[TermRequest alloc] 
+	JSONAPIRequest *apiRequest = [JSONAPIRequest
+		requestWithJSONAPIDelegate:[[[TermRequest alloc] 
 			initWithClearMyStellarDelegate:delegate stellarClasses:favorites] autorelease]];
 		
 	[apiRequest requestObjectFromModule:@"stellar" command:@"term" parameters:nil];
@@ -312,7 +312,7 @@ NSString* cleanPersonName(NSString *personName);
 	return self;
 }
 
-- (void)request:(MITMobileWebAPI *)request jsonLoaded: (id)object {
+- (void)request:(JSONAPIRequest *)request jsonLoaded: (id)object {
 	NSArray *courses = (NSArray *)object;
 	if (courses.count == 0) {
 		// no courses to save
@@ -341,7 +341,7 @@ NSString* cleanPersonName(NSString *personName);
 	[super dealloc];
 }
 
-- (void)handleConnectionFailureForRequest:(MITMobileWebAPI *)request {
+- (void)handleConnectionFailureForRequest:(JSONAPIRequest *)request {
 	[self.coursesLoadedDelegate handleCouldNotReachStellar];
 }
 
@@ -360,7 +360,7 @@ NSString* cleanPersonName(NSString *personName);
 	[super dealloc];
 }
 
-- (void)request:(MITMobileWebAPI *)request jsonLoaded: (id)object {
+- (void)request:(JSONAPIRequest *)request jsonLoaded: (id)object {
 	if([classesRequest.stellarCourse.lastChecksum isEqualToString:[(NSDictionary *)object objectForKey:@"checksum"]]) {
 		// checksum is the same no need to update class list
 		[classesRequest markCourseAsNew];
@@ -370,7 +370,7 @@ NSString* cleanPersonName(NSString *personName);
 	}
 }
 
-- (void)handleConnectionFailureForRequest:(MITMobileWebAPI *)request {
+- (void)handleConnectionFailureForRequest:(JSONAPIRequest *)request {
 	[classesRequest handleConnectionFailureForRequest:request];
 }
 
@@ -386,7 +386,7 @@ NSString* cleanPersonName(NSString *personName);
 	return self;
 }
 
-- (void)request:(MITMobileWebAPI *)request jsonLoaded: (id)object {
+- (void)request:(JSONAPIRequest *)request jsonLoaded: (id)object {
 	NSArray *classes = [object objectForKey:@"classes"];
 	for(NSDictionary *aDict in classes) {
 		[[StellarModel StellarClassFromDictionary:aDict] addCourseObject:self.stellarCourse];
@@ -411,7 +411,7 @@ NSString* cleanPersonName(NSString *personName);
 	[super dealloc];
 }
 
-- (void)handleConnectionFailureForRequest:(MITMobileWebAPI *)request {
+- (void)handleConnectionFailureForRequest:(JSONAPIRequest *)request {
 	[self.classesLoadedDelegate handleCouldNotReachStellar];
 }
 
@@ -427,7 +427,7 @@ NSString* cleanPersonName(NSString *personName);
 	return self;
 }
 
-- (void)request:(MITMobileWebAPI *)request jsonLoaded: (id)object {
+- (void)request:(JSONAPIRequest *)request jsonLoaded: (id)object {
 	NSMutableArray *classes = [NSMutableArray array];
 	for(NSDictionary *aDict in (NSArray *)object) {
 		[classes addObject:[StellarModel StellarClassFromDictionary:aDict]];
@@ -442,7 +442,7 @@ NSString* cleanPersonName(NSString *personName);
 	[super dealloc];
 }
 
-- (void)handleConnectionFailureForRequest:(MITMobileWebAPI *)request {
+- (void)handleConnectionFailureForRequest:(JSONAPIRequest *)request {
 	[classesSearchDelegate handleCouldNotReachStellarWithSearchTerms:searchTerms];
 }
 
@@ -463,7 +463,7 @@ NSString* cleanPersonName(NSString *personName);
 	[super dealloc];
 }
 
-- (void)request:(MITMobileWebAPI *)request jsonLoaded: (id)object {	
+- (void)request:(JSONAPIRequest *)request jsonLoaded: (id)object {	
 	if([(NSDictionary *)object objectForKey:@"error"]) {
 		[self.classInfoLoadedDelegate handleClassNotFound];
 		return;
@@ -475,7 +475,7 @@ NSString* cleanPersonName(NSString *personName);
 	[self.classInfoLoadedDelegate finalAllClassInfoLoaded:class];
 }
 
-- (void)handleConnectionFailureForRequest:(MITMobileWebAPI *)request {
+- (void)handleConnectionFailureForRequest:(JSONAPIRequest *)request {
 	[self.classInfoLoadedDelegate handleCouldNotReachStellar];
 }
 
@@ -499,7 +499,7 @@ NSString* cleanPersonName(NSString *personName);
 	[super dealloc];
 }
 
-- (void)request:(MITMobileWebAPI *)request jsonLoaded: (id)object {
+- (void)request:(JSONAPIRequest *)request jsonLoaded: (id)object {
 	NSString *term = [(NSDictionary *)object objectForKey:@"term"];
 	[[NSUserDefaults standardUserDefaults] setObject:term forKey:StellarTermKey];
 	

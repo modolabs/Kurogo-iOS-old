@@ -189,7 +189,7 @@ NSString * termText(NSString *termCode) {
 		[parameters setObject:stellarClass.term forKey:@"term"];
 	
 		self.myStellarStatusDelegate = [[MyStellarStatusDelegate alloc] initWithClass:stellarClass status:newMyStellarStatus viewController:self];
-		[[MITMobileWebAPI jsonLoadedDelegate:myStellarStatusDelegate]
+		[[JSONAPIRequest requestWithJSONAPIDelegate:myStellarStatusDelegate]
 			requestObjectFromModule:StellarTag command:@"myStellar" parameters:parameters];
 
 		[myStellarStatusDelegate release];
@@ -464,7 +464,7 @@ NSString * termText(NSString *termCode) {
 	[super dealloc];
 }
 
-- (void)request:(MITMobileWebAPI *)request jsonLoaded: (id)JSONObject {
+- (void)request:(JSONAPIRequest *)request jsonLoaded: (id)JSONObject {
 	if(viewController.myStellarStatusDelegate == self) {
 		if(status) {
 			[StellarModel saveClassToFavorites:stellarClass];
@@ -474,7 +474,7 @@ NSString * termText(NSString *termCode) {
 	}
 }
 
-- (void)handleConnectionFailureForRequest:(MITMobileWebAPI *)request {
+- (void)handleConnectionFailureForRequest:(JSONAPIRequest *)request {
 	if(viewController.myStellarStatusDelegate == self) {
 		viewController.myStellarButton.selected = [stellarClass.isFavorited boolValue];
 	}

@@ -1709,7 +1709,7 @@
 }
 	
 // there was an error connecting to the specified URL. 
-- (void)handleConnectionFailureForRequest:(MITMobileWebAPI *)request 
+- (void)handleConnectionFailureForRequest:(JSONAPIRequest *)request 
 {
 	
 }

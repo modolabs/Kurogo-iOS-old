@@ -3,7 +3,7 @@
 //#import "ConnectionWrapper.h"
 #import "ShuttleDataManager.h"
 #import "CampusMapToolbar.h"
-#import "MITMobileWebAPI.h"
+#import "JSONAPIRequest.h"
 #import "MITModuleURL.h"
 #import "CMModule.h"
 
@@ -13,7 +13,7 @@
 
 @interface CampusMapViewController : UIViewController <UISearchBarDelegate, 
 														MITMapViewDelegate,
-														JSONLoadedDelegate,
+														JSONAPIDelegate,
 														ShuttleDataManagerDelegate, 
 														UIAlertViewDelegate>
 {

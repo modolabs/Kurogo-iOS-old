@@ -1,5 +1,5 @@
 #import <Foundation/Foundation.h>
-#import "MITMobileWebAPI.h"
+#import "JSONAPIRequest.h"
 
 @class ShuttleStop;
 @class ShuttleRoute;
@@ -26,7 +26,7 @@
 @end
 
 
-@interface ShuttleDataManager : NSObject <JSONLoadedDelegate> {
+@interface ShuttleDataManager : NSObject <JSONAPIDelegate> {
 
 	// cached shuttle routes.
 	NSMutableArray* _shuttleRoutes;
