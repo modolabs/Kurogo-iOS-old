@@ -109,6 +109,7 @@
 #pragma mark ConnectionWrapper delegation
 
 -(void)connection:(ConnectionWrapper *)wrapper handleData:(NSData *)data {
+	DLog(@"Loaded data as string: %@", [[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding] autorelease]);
     NSError *error = nil;
 	id result = [JSONAPIRequest objectWithJSONData:data error:&error];
 	if (result) {
