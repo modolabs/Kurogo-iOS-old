@@ -258,7 +258,7 @@ NSInteger strLenSort(NSString *str1, NSString *str2, void *context)
 	[tempTokens sortUsingFunction:strLenSort context:NULL]; // match longer tokens first
 	self.searchTokens = [NSArray arrayWithArray:tempTokens];
 	
-	api = [MITMobileWebAPI jsonLoadedDelegate:self];
+	api = [JSONAPIRequest requestWithJSONAPIDelegate:self];
 	requestWasDispatched = [api requestObject:[NSDictionary dictionaryWithObjectsAndKeys:@"people", @"module", self.searchTerms, @"q", nil]];
 	
     if (requestWasDispatched) {
@@ -499,7 +499,7 @@ NSInteger strLenSort(NSString *str1, NSString *str2, void *context)
 	[self.loadingView removeFromSuperview];	
 }
 
-- (void)request:(MITMobileWebAPI *)request jsonLoaded:(id)result {
+- (void)request:(JSONAPIRequest *)request jsonLoaded:(id)result {
     [self cleanUpConnection];
 	
 	if (result && [result isKindOfClass:[NSArray class]]) {
@@ -526,7 +526,7 @@ NSInteger strLenSort(NSString *str1, NSString *str2, void *context)
 	[self.searchController.searchResultsTableView reloadData];
 }
 
-- (void)handleConnectionFailureForRequest:(MITMobileWebAPI *)request
+- (void)handleConnectionFailureForRequest:(JSONAPIRequest *)request
 {
 	[self cleanUpConnection];
 	

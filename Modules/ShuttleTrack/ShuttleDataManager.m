@@ -3,7 +3,7 @@
 #import "ShuttleStop.h"
 #import "ShuttleRouteStop.h"
 #import "CoreDataManager.h"
-#import "MITConstants.h"
+#import "Constants.h"
 
 static ShuttleDataManager* s_dataManager = nil;
 
@@ -153,7 +153,9 @@ NSString * const shuttlePathExtension = @"shuttles/";
 	} else {
 		if (error != NULL) {
         NSString *message = [NSString stringWithFormat:@"route %@ does not exist", routeID];
-        *error = [NSError errorWithDomain:@"MIT Mobile" code:4567 userInfo:[NSDictionary dictionaryWithObjectsAndKeys:message, @"message", nil]];
+        *error = [NSError errorWithDomain:ShuttlesErrorDomain
+                                     code:errShuttleRouteNotAvailable
+                                 userInfo:[NSDictionary dictionaryWithObjectsAndKeys:message, @"message", nil]];
     }
 		return nil;
     }
@@ -198,7 +200,7 @@ NSString * const shuttlePathExtension = @"shuttles/";
 
 -(void) requestRoutes
 {
-	MITMobileWebAPI *api = [MITMobileWebAPI jsonLoadedDelegate:self];
+	JSONAPIRequest *api = [JSONAPIRequest requestWithJSONAPIDelegate:self];
 	BOOL dispatched = [api requestObject:[NSDictionary dictionaryWithObjectsAndKeys:@"routes", @"command", @"true", @"compact", nil]
 						   pathExtension:shuttlePathExtension];
 	if (!dispatched) {
@@ -208,7 +210,7 @@ NSString * const shuttlePathExtension = @"shuttles/";
 
 -(void) requestStops
 {
-	MITMobileWebAPI *api = [MITMobileWebAPI jsonLoadedDelegate:self];
+	JSONAPIRequest *api = [JSONAPIRequest requestWithJSONAPIDelegate:self];
 	BOOL dispatched = [api requestObject:[NSDictionary dictionaryWithObjectsAndKeys:@"stops", @"command", nil]
 						   pathExtension:shuttlePathExtension];
 	if (!dispatched) {
@@ -219,7 +221,7 @@ NSString * const shuttlePathExtension = @"shuttles/";
 
 -(void) requestStop:(NSString*)stopID
 {
-	MITMobileWebAPI *api = [MITMobileWebAPI jsonLoadedDelegate:self];
+	JSONAPIRequest *api = [JSONAPIRequest requestWithJSONAPIDelegate:self];
 	BOOL dispatched = [api requestObject:[NSDictionary dictionaryWithObjectsAndKeys:@"stopInfo", @"command", stopID, @"id", nil]
 						   pathExtension:shuttlePathExtension];
 	if (!dispatched) {
@@ -228,7 +230,7 @@ NSString * const shuttlePathExtension = @"shuttles/";
 }
 
 -(void) requestRoute:(NSString*)routeID
-{	MITMobileWebAPI *api = [MITMobileWebAPI jsonLoadedDelegate:self];
+{	JSONAPIRequest *api = [JSONAPIRequest requestWithJSONAPIDelegate:self];
 	BOOL dispatched = [api requestObject:[NSDictionary dictionaryWithObjectsAndKeys:@"routeInfo", @"command", routeID, @"id", @"true", @"full", nil]
 						   pathExtension:shuttlePathExtension];
 	if (!dispatched) {
@@ -302,9 +304,9 @@ NSString * const shuttlePathExtension = @"shuttles/";
 }
 
 
-#pragma mark JSONLoadedDelegate
+#pragma mark JSONAPIDelegate
 
-- (void)request:(MITMobileWebAPI *)request jsonLoaded:(id)result
+- (void)request:(JSONAPIRequest *)request jsonLoaded:(id)result
 {	
 	if ([[request.params valueForKey:@"command"] isEqualToString:@"routes"] && [result isKindOfClass:[NSArray class]]) {
 
@@ -413,7 +415,7 @@ NSString * const shuttlePathExtension = @"shuttles/";
 }
 
 
-- (void)handleConnectionFailureForRequest:(MITMobileWebAPI *)request
+- (void)handleConnectionFailureForRequest:(JSONAPIRequest *)request
 {
 	if ([[request.params valueForKey:@"command"] isEqualToString:@"routes"]) {
 		[self sendRoutesToDelegates:nil];

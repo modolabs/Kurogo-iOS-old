@@ -2,14 +2,14 @@
 #import <UIKit/UIKit.h>
 #import "TabViewControl.h"
 #import "MITMapView.h"
-#import "MITMobileWebAPI.h"
+#import "JSONAPIRequest.h"
 #import "ConnectionWrapper.h"
 
 
 @class MITMapSearchResultAnnotation;
 @class CampusMapViewController;
 
-@interface MITMapDetailViewController : UIViewController <ConnectionWrapperDelegate, TabViewControlDelegate, JSONLoadedDelegate> {
+@interface MITMapDetailViewController : UIViewController <ConnectionWrapperDelegate, TabViewControlDelegate, JSONAPIDelegate> {
 
 	// tab controller for which we are a delegate.
 	IBOutlet TabViewControl* _tabViewControl;

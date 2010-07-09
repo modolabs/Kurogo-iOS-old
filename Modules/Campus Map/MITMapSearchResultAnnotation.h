@@ -2,7 +2,7 @@
 #import <Foundation/Foundation.h>
 #import <MapKit/MapKit.h>
 #import <CoreLocation/CoreLocation.h>
-#import "MITMobileWebAPI.h"
+#import "JSONAPIRequest.h"
 
 @interface MITMapSearchResultAnnotation : NSObject <MKAnnotation>{
 
@@ -49,7 +49,7 @@
 @property BOOL dataPopulated;
 @property BOOL bookmark;
 
-+(void) executeServerSearchWithQuery:(NSString *)query jsonDelegate: (id<JSONLoadedDelegate>)delegate object:(id)object;
++(void) executeServerSearchWithQuery:(NSString *)query jsonDelegate: (id<JSONAPIDelegate>)delegate object:(id)object;
 
 // initialize the annotation with data from the MIT webservice.
 -(id) initWithInfo:(NSDictionary*)info;

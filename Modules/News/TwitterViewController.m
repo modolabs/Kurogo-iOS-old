@@ -1,6 +1,6 @@
 #import "TwitterViewController.h"
 #import "MITUIConstants.h"
-#import "MITConstants.h"
+#import "Constants.h"
 #import "MIT_MobileAppDelegate.h"
 #import "SFHFKeychainUtils.h"
 

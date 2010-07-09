@@ -1,16 +1,16 @@
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
-#import "ConnectionWrapper.h"
+#import "JSONAPIRequest.h"
 
-@interface EmergencyData : NSObject <ConnectionWrapperDelegate> {
+@interface EmergencyData : NSObject <JSONAPIDelegate> {
     NSManagedObject *info;
     NSArray *contacts;
     
     NSArray *primaryPhoneNumbers;
     NSArray *allPhoneNumbers;
     
-    ConnectionWrapper *infoConnection;
-    ConnectionWrapper *contactsConnection;
+    JSONAPIRequest *infoConnection;
+    JSONAPIRequest *contactsConnection;
 }
 
 + (EmergencyData *)sharedData;
@@ -28,7 +28,7 @@
 @property (nonatomic, readonly) NSDate *lastFetched;
 @property (nonatomic, readonly) NSArray *primaryPhoneNumbers;
 @property (nonatomic, readonly) NSArray *allPhoneNumbers;
-@property (retain) ConnectionWrapper *infoConnection;
-@property (retain) ConnectionWrapper *contactsConnection;
+@property (retain) JSONAPIRequest *infoConnection;
+@property (retain) JSONAPIRequest *contactsConnection;
 
 @end

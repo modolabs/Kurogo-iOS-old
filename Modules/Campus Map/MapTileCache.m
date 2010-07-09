@@ -44,7 +44,7 @@ static MapTileCache* s_cache;
 		NSDictionary* dictionary = [NSDictionary dictionaryWithContentsOfFile:[self mapTimestampFilename]];
 		_mapTimestamp = [[dictionary objectForKey:kLastUpdatedKey] longLongValue];
 		
-		MITMobileWebAPI* api = [MITMobileWebAPI jsonLoadedDelegate:self];
+		JSONAPIRequest* api = [JSONAPIRequest requestWithJSONAPIDelegate:self];
 		[api requestObject:[NSDictionary dictionaryWithObject:@"tilesupdated" forKey:@"command"] pathExtension:@"map"];
 		
 		//_recentTilesIndex = [[NSMutableArray alloc] initWithCapacity:kInMemoryTileLimit + 1];
@@ -284,8 +284,8 @@ static MapTileCache* s_cache;
 	return [documentPath stringByAppendingPathComponent:@"mapTimestamp.plist"];	
 }
 
-#pragma mark JSONLoadedDelegate
-- (void)request:(MITMobileWebAPI *)request jsonLoaded:(id)JSONObject
+#pragma mark JSONAPIDelegate
+- (void)request:(JSONAPIRequest *)request jsonLoaded:(id)JSONObject
 {
 	NSDictionary* dictionary = (NSDictionary*)JSONObject;
 	
@@ -315,7 +315,7 @@ static MapTileCache* s_cache;
 	}
 }
 
-- (void)handleConnectionFailureForRequest:(MITMobileWebAPI *)request
+- (void)handleConnectionFailureForRequest:(JSONAPIRequest *)request
 {
 	NSLog(@"Check tile update failed. ");	
 }

@@ -115,3 +115,7 @@ typedef enum {
 	MITAccessoryViewEmergency,
     MITAccessoryViewSecure
 } MITAccessoryViewType;
+
+// errors
+extern NSString * const ShuttlesErrorDomain;
+#define errShuttleRouteNotAvailable 0

@@ -96,7 +96,7 @@ enum CalendarDetailRowTypes {
 
 - (void)requestEventDetails
 {
-	MITMobileWebAPI *apiRequest = [MITMobileWebAPI jsonLoadedDelegate:self];
+	JSONAPIRequest *apiRequest = [JSONAPIRequest requestWithJSONAPIDelegate:self];
 	NSString *eventID = [NSString stringWithFormat:@"%d", [self.event.eventID intValue]];
 	
 	[apiRequest requestObjectFromModule:@"calendar" 
@@ -481,9 +481,9 @@ enum CalendarDetailRowTypes {
 	return event.title;
 }
 
-#pragma mark JSONLoadedDelegate for background refreshing of events
+#pragma mark JSONAPIDelegate for background refreshing of events
 
-- (void)request:(MITMobileWebAPI *)request jsonLoaded:(id)result {
+- (void)request:(JSONAPIRequest *)request jsonLoaded:(id)result {
 	if (result && [result isKindOfClass:[NSDictionary class]]) {
 		[self.event updateWithDict:result];
 		[self reloadEvent];

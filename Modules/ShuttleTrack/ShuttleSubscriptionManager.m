@@ -16,10 +16,10 @@
 	NSString *unixtime_string = [NSString stringWithFormat:@"%i", unixtime_int];	
 	[parameters setObject:unixtime_string forKey:@"time"];	
 	
-	MITMobileWebAPI *mobileWebApi = [MITMobileWebAPI jsonLoadedDelegate:
+	JSONAPIRequest *request = [JSONAPIRequest requestWithJSONAPIDelegate:
 		[[[SubscribeRequest alloc] initWithDelegate:delegate routeID:routeID stopID:stopID object:object] autorelease]];
 
-	[mobileWebApi requestObject:parameters pathExtension:@"shuttles"];
+	[request requestObject:parameters pathExtension:@"shuttles"];
 }
 
 + (void) unsubscribeForRoute:(NSString *)routeID atStop:(NSString *)stopID delegate: (id<ShuttleSubscriptionDelegate>)delegate object: (id)object {
@@ -28,10 +28,10 @@
 	[parameters setObject:routeID forKey:@"route"];
 	[parameters setObject:stopID forKey:@"stop"];
 	
-	MITMobileWebAPI *mobileWebApi = [MITMobileWebAPI jsonLoadedDelegate:
+	JSONAPIRequest *request = [JSONAPIRequest requestWithJSONAPIDelegate:
 		[[[UnsubscribeRequest alloc] initWithDelegate:delegate routeID:routeID stopID:stopID object:object] autorelease]];
 	
-	[mobileWebApi requestObject:parameters pathExtension:@"shuttles"];
+	[request requestObject:parameters pathExtension:@"shuttles"];
 }
 	
 + (BOOL) hasSubscription: (NSString *)routeID atStop: (NSString *)stopID scheduleTime: (NSDate *)time {
@@ -134,7 +134,7 @@
 	[super dealloc];
 }
 
-- (void)request:(MITMobileWebAPI *)request jsonLoaded: (id)jsonObject {
+- (void)request:(JSONAPIRequest *)request jsonLoaded: (id)jsonObject {
 	NSDictionary *jsonDict = jsonObject;
 	
 	if([jsonDict objectForKey:@"success"]) {		
@@ -151,7 +151,7 @@
 	}
 }
 
-- (void)handleConnectionFailureForRequest:(MITMobileWebAPI *)request {
+- (void)handleConnectionFailureForRequest:(JSONAPIRequest *)request {
 	[delegate subscriptionFailedWithObject:object];
 }
 
@@ -177,12 +177,12 @@
 	[super dealloc];
 }
 
-- (void)request:(MITMobileWebAPI *)request jsonLoaded: (id)jsonObject {
+- (void)request:(JSONAPIRequest *)request jsonLoaded: (id)jsonObject {
 	[ShuttleSubscriptionManager removeSubscriptionForRouteID:routeID atStopID:stopID];
 	[delegate subscriptionSucceededWithObject:object];
 }
 
-- (void)handleConnectionFailureForRequest:(MITMobileWebAPI *)request {
+- (void)handleConnectionFailureForRequest:(JSONAPIRequest *)request {
 	[delegate subscriptionFailedWithObject:object];
 }
 

@@ -1,10 +1,10 @@
 #import <UIKit/UIKit.h>
-#import "MITMobileWebAPI.h"
+#import "JSONAPIRequest.h"
 #import "MITSearchEffects.h"
 
 NSInteger strLenSort(NSString *str1, NSString *str2, void *context);
 
-@interface PeopleSearchViewController : UITableViewController <UISearchBarDelegate, UISearchDisplayDelegate, JSONLoadedDelegate, UIAlertViewDelegate, UIActionSheetDelegate> {
+@interface PeopleSearchViewController : UITableViewController <UISearchBarDelegate, UISearchDisplayDelegate, JSONAPIDelegate, UIAlertViewDelegate, UIActionSheetDelegate> {
 	
 	UISearchDisplayController *searchController;
 	NSArray *searchResults;
@@ -14,7 +14,7 @@ NSInteger strLenSort(NSString *str1, NSString *str2, void *context);
 	MITSearchEffects *searchBackground;
 	UISearchBar *theSearchBar;
 	BOOL requestWasDispatched;
-	MITMobileWebAPI *api;
+	JSONAPIRequest *api;
 	UIView *recentlyViewedHeader;
 	SEL actionAfterAppearing;
 	BOOL viewAppeared;

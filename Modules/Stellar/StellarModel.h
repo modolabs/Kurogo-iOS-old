@@ -4,7 +4,7 @@
 #import "StellarClass.h"
 #import "StellarClassTime.h"
 #import "StellarStaffMember.h"
-#import "MITMobileWebAPI.h"
+#import "JSONAPIRequest.h"
 
 extern NSString * const MyStellarChanged;
 /** @brief Callback for stellar courses
@@ -25,9 +25,9 @@ extern NSString * const MyStellarChanged;
 @end
 
 /** 
- * Receives JSON from MITMobileWebApi for a stellar courses request
+ * Receives JSON from JSONAPIRequest for a stellar courses request
  */
-@interface CoursesRequest : NSObject <JSONLoadedDelegate> {
+@interface CoursesRequest : NSObject <JSONAPIDelegate> {
 	id<CoursesLoadedDelegate> coursesLoadedDelegate;
 }
 @property(nonatomic, retain) id<CoursesLoadedDelegate> coursesLoadedDelegate;
@@ -59,9 +59,9 @@ extern NSString * const MyStellarChanged;
 @end
 
 /** 
- * Receives JSON from MITMobileWebApi for a stellar class list request
+ * Receives JSON from JSONAPIRequest for a stellar class list request
  */
-@interface ClassesRequest : NSObject <JSONLoadedDelegate> {
+@interface ClassesRequest : NSObject <JSONAPIDelegate> {
 	id<ClassesLoadedDelegate> classesLoadedDelegate;
 	StellarCourse *stellarCourse;
 }
@@ -78,7 +78,7 @@ extern NSString * const MyStellarChanged;
 - (void) markCourseAsNew;
 @end
 
-@interface ClassesChecksumRequest : NSObject <JSONLoadedDelegate> {
+@interface ClassesChecksumRequest : NSObject <JSONAPIDelegate> {
 	ClassesRequest *classesRequest;
 }
 - (id) initWithClassesRequest:(ClassesRequest *)aClassesRequest;
@@ -129,11 +129,11 @@ extern NSString * const MyStellarChanged;
 @end
 
 /** 
- *  Receives JSON from MITMobileWebApi for a stellar class
+ *  Receives JSON from JSONAPIRequest for a stellar class
  *  including all class information such as announcements
  *  times and location
  */ 
-@interface ClassInfoRequest : NSObject <JSONLoadedDelegate> {
+@interface ClassInfoRequest : NSObject <JSONAPIDelegate> {
 	id<ClassInfoLoadedDelegate> classInfoLoadedDelegate;
 }
 
@@ -167,9 +167,9 @@ extern NSString * const MyStellarChanged;
 @end
 
 /** 
- *  Receives JSON from MITMobileWebApi for a stellar class search
+ *  Receives JSON from JSONAPIRequest for a stellar class search
  */
-@interface ClassesSearchRequest : NSObject <JSONLoadedDelegate> {
+@interface ClassesSearchRequest : NSObject <JSONAPIDelegate> {
 	id<ClassesSearchDelegate> classesSearchDelegate;
 	NSString *searchTerms;
 }
@@ -199,7 +199,7 @@ extern NSString * const MyStellarChanged;
  *  Receives a JSON representation indicating the current semester
  *  and removes class in the NSArray which are old
  */
-@interface TermRequest : NSObject <JSONLoadedDelegate> {
+@interface TermRequest : NSObject <JSONAPIDelegate> {
 	id<ClearMyStellarDelegate> clearMyStellarDelegate;
 	NSArray *myStellarClasses;
 }

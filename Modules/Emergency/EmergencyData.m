@@ -1,8 +1,7 @@
 #import "EmergencyData.h"
-#import "MITJSON.h"
 #import "MIT_MobileAppDelegate.h"
 #import "CoreDataManager.h"
-#import "MITMobileWebAPI.h"
+#import "JSONAPIRequest.h"
 #import "Foundation+MITAdditions.h"
 
 @implementation EmergencyData
@@ -146,38 +145,27 @@ static EmergencyData *sharedEmergencyData = nil;
 
 // Send request
 - (void)checkForEmergencies {
-    if ([self.infoConnection isConnected]) {
+    if (self.infoConnection) {
         return; // a connection already exists
     }
-    // TODO: use Reachability to wait until app gets a connection to perform check
-    self.infoConnection = [[[ConnectionWrapper alloc] initWithDelegate:self] autorelease];
-    NSURL *url = [MITMobileWebAPI buildURL:[NSDictionary dictionaryWithObjectsAndKeys:@"emergency", @"module", nil]
-								 queryBase:MITMobileWebAPIURLString];
-    BOOL dispatchedSuccessfully = [infoConnection requestDataFromURL:url];
-    if (dispatchedSuccessfully) {
-        [(MIT_MobileAppDelegate *)[[UIApplication sharedApplication] delegate] showNetworkActivityIndicator];
-    }
+    self.infoConnection = [JSONAPIRequest requestWithJSONAPIDelegate:self];
+    [self.infoConnection requestObject:[NSDictionary dictionaryWithObjectsAndKeys:@"emergency", @"module", nil]];
 }
 
 // request contacts
 - (void)reloadContacts {
-    if ([self.contactsConnection isConnected]) {
+    if (self.contactsConnection) {
         return; // a connection already exists
     }
-    self.contactsConnection = [[[ConnectionWrapper alloc] initWithDelegate:self] autorelease];
-    NSURL *url = [MITMobileWebAPI buildURL:[NSDictionary dictionaryWithObjectsAndKeys:@"emergency", @"module", @"contacts", @"command", nil]
-								 queryBase:MITMobileWebAPIURLString];
-    if ([self.contactsConnection requestDataFromURL:url]) {
-        [(MIT_MobileAppDelegate *)[[UIApplication sharedApplication] delegate] showNetworkActivityIndicator];
-    }
+    self.contactsConnection = [JSONAPIRequest requestWithJSONAPIDelegate:self];
+    [self.contactsConnection requestObjectFromModule:@"emergency" command:@"contacts" parameters:nil];
 }
 
 // Receive response
-- (void)connection:(ConnectionWrapper *)wrapper handleData:(NSData *)data {
+- (void)request:(JSONAPIRequest *)request jsonLoaded:(id)jsonObject {
     [(MIT_MobileAppDelegate *)[[UIApplication sharedApplication] delegate] hideNetworkActivityIndicator];
-    if (wrapper == infoConnection) {
+    if (request == infoConnection) {
         self.infoConnection = nil;
-        id jsonObject = [MITJSON objectWithJSONData:data];
         NSDictionary *response = nil;
         
         if (![jsonObject isKindOfClass:[NSArray class]]) {
@@ -201,9 +189,8 @@ static EmergencyData *sharedEmergencyData = nil;
             // notify listeners that the info is done loading, regardless of whether it's changed
             [[NSNotificationCenter defaultCenter] postNotificationName:EmergencyInfoDidLoadNotification object:self];
         }
-    } else if (wrapper == contactsConnection) {
+    } else if (request == contactsConnection) {
         self.contactsConnection = nil;
-        id jsonObject = [MITJSON objectWithJSONData:data];
         if (jsonObject && [jsonObject isKindOfClass:[NSArray class]]) {
             NSArray *contactsArray = (NSArray *)jsonObject;
             
@@ -234,13 +221,13 @@ static EmergencyData *sharedEmergencyData = nil;
     
 }
 
-- (void)connection:(ConnectionWrapper *)wrapper handleConnectionFailureWithError:(NSError *)error {
+- (void)handleConnectionFailureForRequest:(JSONAPIRequest *)request {
     [(MIT_MobileAppDelegate *)[[UIApplication sharedApplication] delegate] hideNetworkActivityIndicator];
     // TODO: possibly retry at a later date if connection dropped or server was unavailable
-    if (wrapper == infoConnection) {
+    if (request == infoConnection) {
         self.infoConnection = nil;
 		[[NSNotificationCenter defaultCenter] postNotificationName:EmergencyInfoDidFailToLoadNotification object:self];
-    } else if (wrapper == contactsConnection) {
+    } else {
         self.contactsConnection = nil;
     }
 }

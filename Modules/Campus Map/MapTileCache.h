@@ -2,11 +2,11 @@
 #import <Foundation/Foundation.h>
 
 #import "SaveOperation.h"
-#import "MITMobileWebAPI.h"
+#import "JSONAPIRequest.h"
 
 extern NSString * const MapCacheReset;
 
-@interface MapTileCache : NSObject  <SaveOperationDelegate, JSONLoadedDelegate> {
+@interface MapTileCache : NSObject  <SaveOperationDelegate, JSONAPIDelegate> {
 
 	// map service URL from where we will pull map cells
 	NSURL* _serviceURL;

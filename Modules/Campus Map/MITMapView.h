@@ -9,7 +9,7 @@
 #import "MITMapAnnotationCalloutView.h"
 #import "MITMapScrollView.h"
 #import "MITProjection.h"
-#import "MITMobileWebAPI.h"
+#import "JSONAPIRequest.h"
 #import "MITMapRoute.h"
 
 @class MapLevel;
