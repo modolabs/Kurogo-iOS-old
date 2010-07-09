@@ -288,7 +288,7 @@
 	[searchResultsTableView removeFromSuperview];
     [self.tableView removeFromSuperview];
     
-	BOOL requestNeeded = NO;
+	BOOL requestNeeded = YES;
 	
 	if (listType != activeEventList) {
 		activeEventList = listType;
@@ -351,7 +351,7 @@
 			
 			if (categories == nil) {
 				requestNeeded = YES;
-			} else {
+			} else if (requestNeeded == NO){
 				categoriesTV.categories = categories;
 			}
 			
@@ -363,7 +363,8 @@
 			NSArray *someEvents = [CalendarDataManager eventsWithStartDate:startDate
                                                                   listType:activeEventList
 																  category:(theCatID == kCalendarTopLevelCategoryID) ? nil : [NSNumber numberWithInt:theCatID]];
-			if (someEvents != nil && [someEvents count]) {
+			
+			if (someEvents != nil && [someEvents count] && (requestNeeded == NO)) {
 				self.events = someEvents;
 				((EventListTableView *)self.tableView).events = self.events;
 				theMapView.events = self.events;
@@ -401,6 +402,9 @@
 	if ([self shouldShowDatePicker:activeEventList]) {
 		[self setupDatePicker];
 	}
+	
+	
+	requestNeeded = YES;
 	
 	if (requestNeeded) {
 		[self makeRequest];
