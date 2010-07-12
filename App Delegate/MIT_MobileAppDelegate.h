@@ -1,11 +1,13 @@
 #import "MITTabBarController.h"
 
 @class MITModule;
+@class SpringboardViewController;
 
 @interface MIT_MobileAppDelegate : NSObject <UIApplicationDelegate, MITTabBarControllerDelegate> {
     
     UIWindow *window;
     MITTabBarController *theTabBarController;
+    SpringboardViewController *theSpringboard;
     UIViewController *appModalHolder;
     
     NSArray *modules; // all registered modules as defined in MITModuleList.m
@@ -14,6 +16,7 @@
     NSInteger networkActivityRefCount; // the number of concurrent network connections the user should know about. If > 0, spinny in status bar is shown
 }
 
+- (void)switchContainerView;
 - (void)updateCustomizableViewControllers;
 
 - (void)showNetworkActivityIndicator;

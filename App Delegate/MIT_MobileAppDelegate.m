@@ -4,6 +4,7 @@
 #import "MITDeviceRegistration.h"
 #import "MITUnreadNotifications.h"
 #import "AudioToolbox/AudioToolbox.h"
+#import "SpringboardViewController.h"
 
 @implementation MIT_MobileAppDelegate
 
@@ -14,6 +15,16 @@
 
 #pragma mark -
 #pragma mark Application lifecycle
+
+- (void)switchContainerView {
+    if ([theSpringboard.view isDescendantOfView:self.window]) {
+        [theSpringboard.view removeFromSuperview];
+        [self.window addSubview:theTabBarController.view];
+    } else if ([theTabBarController.view isDescendantOfView:self.window]) {
+        [theTabBarController.view removeFromSuperview];
+        [self.window addSubview:theSpringboard.view];
+    }
+}
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     
@@ -53,16 +64,19 @@
 	}
     
     // Set up window
-    [self.window addSubview:theTabBarController.view];
+    //[self.window addSubview:theTabBarController.view];
+    theSpringboard = [[SpringboardViewController alloc] initWithNibName:nil bundle:nil];
+    [self.window addSubview:theSpringboard.view];
     
     appModalHolder = [[UIViewController alloc] initWithNibName:nil bundle:nil];
     appModalHolder.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     appModalHolder.view.userInteractionEnabled = NO;
     appModalHolder.view.hidden = YES;
-    [self.window addSubview:appModalHolder.view];
+    //[self.window addSubview:appModalHolder.view];
 
     self.window.backgroundColor = [UIColor blackColor]; // necessary for horizontal flip transitions -- background shows through
     [self.window makeKeyAndVisible];
+    NSLog(@"%@", [self.window.subviews description]);
 
     // Override point for customization after view hierarchy is set
     for (MITModule *aModule in self.modules) {

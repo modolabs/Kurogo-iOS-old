@@ -2,8 +2,8 @@
 
 // common URLs
 #ifdef USE_MOBILE_DEV
-    NSString * const MITMobileWebDomainString =        @"mobile-dev.mit.edu";
-    NSString * const MITMobileWebAPIURLString = @"http://mobile-dev.mit.edu/api/";
+    NSString * const MITMobileWebDomainString =        @"localhost:8888";
+    NSString * const MITMobileWebAPIURLString = @"http://localhost:8888/api/";
 #else
     #ifdef USE_MOBILE_STAGE
     NSString * const MITMobileWebDomainString =        @"mobile-stage.mit.edu";

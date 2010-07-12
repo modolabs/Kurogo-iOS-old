@@ -17,7 +17,7 @@
 - (void)parser:(StoryXMLParser *)parser didFailWithParseError:(NSError *)error;
 @end
 
-@interface StoryXMLParser : NSObject <ConnectionWrapperDelegate> {
+@interface StoryXMLParser : NSObject <ConnectionWrapperDelegate, NSXMLParserDelegate> {
     id <StoryXMLParserDelegate> delegate;
     
 	NSThread *thread;

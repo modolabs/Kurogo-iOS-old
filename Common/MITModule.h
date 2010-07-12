@@ -1,6 +1,7 @@
 #import <Foundation/Foundation.h>
 
 #import "MITUnreadNotifications.h"
+#import "ModoNavigationController.h"
 
 @class MIT_MobileAppDelegate;
 
@@ -22,7 +23,7 @@
     // tabBarItem.badgeValue, because they are actually affecting the 
     // moreNavigationController. There will be more changes to MITModule later 
     // to simplify tab badging and navigation stack management.
-    UINavigationController *tabNavController;
+    ModoNavigationController *tabNavController;
     
     BOOL isMovableTab; // TRUE if this module's tab can be rearranged during UITabBar customization. FALSE otherwise.
     BOOL canBecomeDefault; // TRUE if this module can become the default tab at startup
@@ -77,7 +78,7 @@
 @property (nonatomic, copy) NSString *shortName;
 @property (nonatomic, copy) NSString *longName;
 @property (nonatomic, copy) NSString *iconName;
-@property (nonatomic, readonly) UINavigationController *tabNavController;
+@property (nonatomic, readonly) ModoNavigationController *tabNavController;
 @property (nonatomic, assign) BOOL isMovableTab;
 @property (nonatomic, assign) BOOL canBecomeDefault;
 @property (nonatomic, assign) BOOL pushNotificationSupported;

@@ -170,7 +170,7 @@
 	
 	[_mapSelectionController.mapVC.mapView removeAnnotations:_mapSelectionController.mapVC.mapView.annotations];
 	[_mapSelectionController.mapVC.mapView addAnnotation:annotation];
-	[_mapSelectionController.mapVC.mapView selectAnnotation:annotation];
+	[_mapSelectionController.mapVC.mapView selectAnnotation:annotation animated:NO];
 	
 	[_mapSelectionController.mapVC pushAnnotationDetails:annotation animated:NO];
 	

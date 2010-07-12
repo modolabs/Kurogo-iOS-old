@@ -3,6 +3,7 @@
 #import "Foundation+MITAdditions.h"
 #import "MITTabBarItem.h"
 #import "MITMoreListController.h"
+#import "ModoNavigationController.h"
 
 @implementation MITModule
 
@@ -42,7 +43,7 @@
         // Give it a throwaway view controller because it cannot start with nothing.
         UIViewController *dummyVC = [[UIViewController alloc] initWithNibName:nil bundle:nil];
         dummyVC.navigationItem.title = @"Placeholder";
-        tabNavController = [[UINavigationController alloc] initWithRootViewController:dummyVC];
+        tabNavController = [[ModoNavigationController alloc] initWithRootViewController:dummyVC];
 		
         // Custom tab bar item supports having a different icon in the tab bar and the More list
         MITTabBarItem *item = [[MITTabBarItem alloc] initWithTitle:self.shortName image:self.tabBarIcon tag:0];
@@ -50,7 +51,7 @@
         [item release];
         
 		tabNavController.navigationBar.opaque = NO;
-        tabNavController.navigationBar.barStyle = UIBarStyleBlack;
+        //tabNavController.navigationBar.barStyle = UIBarStyleBlack;
 		
 		// set overall background
 		tabNavController.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:MITImageNameBackground]];	

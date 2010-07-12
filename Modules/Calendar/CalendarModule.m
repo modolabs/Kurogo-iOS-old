@@ -76,7 +76,7 @@
 				[queryDict setObject:[NSString stringWithFormat:@"%d", eventID] forKey:@"eventID"];
 			}
 			
-			[queryDict setObject:[eventsVC.mapView serializeCurrentRegion] forKey:@"region"];
+			//[queryDict setObject:[eventsVC.mapView serializeCurrentRegion] forKey:@"region"];
 		}
 		
 		if (eventsVC.catID != kCalendarTopLevelCategoryID) {
@@ -271,7 +271,7 @@
 	NSString *regionString = [queryDict objectForKey:@"region"];
 	if (regionString != nil) {
 		calVC.view;
-		[calVC.mapView unserializeRegion:regionString];
+		//[calVC.mapView unserializeRegion:regionString];
 	}
 	
 	NSString *eventIDString = [queryDict objectForKey:@"eventID"];
@@ -279,12 +279,12 @@
 		NSInteger eventID = [eventIDString intValue];
 		MITCalendarEvent *event = [CalendarDataManager eventWithID:eventID];
 		calVC.view;
-		calVC.mapView.shouldNotDropPins = YES;
+		//calVC.mapView.shouldNotDropPins = YES;
 		calVC.events = [calVC.events arrayByAddingObject:event];
 		
 		for (CalendarEventMapAnnotation *annotation in calVC.mapView.annotations) {
 			if ([annotation.event.eventID intValue] == eventID) {
-				[calVC.mapView selectAnnotation:annotation animated:NO withRecenter:NO];
+				[calVC.mapView selectAnnotation:annotation animated:NO];
 				break;
 			}
 		}

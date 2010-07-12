@@ -4,7 +4,7 @@
 #import "ShuttleRoute.h"
 #import "ShuttleDataManager.h"
 
-@interface RouteMapViewController : UIViewController <MITMapViewDelegate, ShuttleDataManagerDelegate>{
+@interface RouteMapViewController : UIViewController <MKMapViewDelegate, ShuttleDataManagerDelegate>{
 
 	IBOutlet MITMapView* _mapView;
 	

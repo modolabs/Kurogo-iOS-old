@@ -272,6 +272,13 @@
 		EB54947310DFF7E200B708B3 /* global in Resources */ = {isa = PBXBuildFile; fileRef = EB54947210DFF7E200B708B3 /* global */; };
 		EB676032114A9316004596BB /* ShuttleRouteCache.m in Sources */ = {isa = PBXBuildFile; fileRef = EB67602F114A9316004596BB /* ShuttleRouteCache.m */; };
 		EB676033114A9316004596BB /* ShuttleStopLocation.m in Sources */ = {isa = PBXBuildFile; fileRef = EB676031114A9316004596BB /* ShuttleStopLocation.m */; };
+		EB6D02A911E3784100B65CE3 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EB6D02A811E3784100B65CE3 /* MapKit.framework */; };
+		EB6DFE3711DE28F800B65CE3 /* ModoNavigationController.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB6DFE3511DE28F800B65CE3 /* ModoNavigationController.h */; settings = {JAVA_ARCHIVE_SUBDIR = Common; }; };
+		EB6DFE3811DE28F800B65CE3 /* ModoNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = EB6DFE3611DE28F800B65CE3 /* ModoNavigationController.m */; };
+		EB6DFE3F11DE294700B65CE3 /* ModoNavigationBar.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB6DFE3D11DE294700B65CE3 /* ModoNavigationBar.h */; settings = {JAVA_ARCHIVE_SUBDIR = Common; }; };
+		EB6DFE4011DE294700B65CE3 /* ModoNavigationBar.m in Sources */ = {isa = PBXBuildFile; fileRef = EB6DFE3E11DE294700B65CE3 /* ModoNavigationBar.m */; };
+		EB6DFFF011DE69F600B65CE3 /* SpringboardViewController.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB6DFFEE11DE69F600B65CE3 /* SpringboardViewController.h */; settings = {JAVA_ARCHIVE_SUBDIR = "App Delegate"; }; };
+		EB6DFFF111DE69F600B65CE3 /* SpringboardViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EB6DFFEF11DE69F600B65CE3 /* SpringboardViewController.m */; };
 		EB6F2B6610E901E000A29A2A /* UITableView+MITUIAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = EB6F2B6210E901E000A29A2A /* UITableView+MITUIAdditions.m */; };
 		EB6F2B6710E901E000A29A2A /* UITableViewCell+MITUIAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = EB6F2B6410E901E000A29A2A /* UITableViewCell+MITUIAdditions.m */; };
 		EB6F2B6D10E9026200A29A2A /* PeopleDetailsTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = EB6F2B6C10E9026200A29A2A /* PeopleDetailsTableViewCell.m */; };
@@ -734,6 +741,13 @@
 		EB67602F114A9316004596BB /* ShuttleRouteCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ShuttleRouteCache.m; path = Model/ShuttleRouteCache.m; sourceTree = "<group>"; };
 		EB676030114A9316004596BB /* ShuttleStopLocation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ShuttleStopLocation.h; path = Model/ShuttleStopLocation.h; sourceTree = "<group>"; };
 		EB676031114A9316004596BB /* ShuttleStopLocation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ShuttleStopLocation.m; path = Model/ShuttleStopLocation.m; sourceTree = "<group>"; };
+		EB6D02A811E3784100B65CE3 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
+		EB6DFE3511DE28F800B65CE3 /* ModoNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ModoNavigationController.h; sourceTree = "<group>"; };
+		EB6DFE3611DE28F800B65CE3 /* ModoNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ModoNavigationController.m; sourceTree = "<group>"; };
+		EB6DFE3D11DE294700B65CE3 /* ModoNavigationBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ModoNavigationBar.h; sourceTree = "<group>"; };
+		EB6DFE3E11DE294700B65CE3 /* ModoNavigationBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ModoNavigationBar.m; sourceTree = "<group>"; };
+		EB6DFFEE11DE69F600B65CE3 /* SpringboardViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SpringboardViewController.h; path = "App Delegate/SpringboardViewController.h"; sourceTree = "<group>"; };
+		EB6DFFEF11DE69F600B65CE3 /* SpringboardViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SpringboardViewController.m; path = "App Delegate/SpringboardViewController.m"; sourceTree = "<group>"; };
 		EB6F2B6110E901E000A29A2A /* UITableView+MITUIAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UITableView+MITUIAdditions.h"; sourceTree = "<group>"; };
 		EB6F2B6210E901E000A29A2A /* UITableView+MITUIAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UITableView+MITUIAdditions.m"; sourceTree = "<group>"; };
 		EB6F2B6310E901E000A29A2A /* UITableViewCell+MITUIAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UITableViewCell+MITUIAdditions.h"; sourceTree = "<group>"; };
@@ -835,6 +849,7 @@
 				29C45475118B55E100A321B0 /* libOAuth.a in Frameworks */,
 				29366C1A118E401C009D6863 /* libxml2.dylib in Frameworks */,
 				29366C1E118E4151009D6863 /* Security.framework in Frameworks */,
+				EB6D02A911E3784100B65CE3 /* MapKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -879,6 +894,10 @@
 				29E308851176018C005211A7 /* MITModuleURL.m */,
 				EB74ED2C11924E7C006673F9 /* ShareDetailViewController.h */,
 				EB74ED2D11924E7C006673F9 /* ShareDetailViewController.m */,
+				EB6DFE3511DE28F800B65CE3 /* ModoNavigationController.h */,
+				EB6DFE3611DE28F800B65CE3 /* ModoNavigationController.m */,
+				EB6DFE3D11DE294700B65CE3 /* ModoNavigationBar.h */,
+				EB6DFE3E11DE294700B65CE3 /* ModoNavigationBar.m */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -1017,6 +1036,7 @@
 				DE7720DF10C57E1C00620A7D /* QuartzCore.framework */,
 				29366C19118E401C009D6863 /* libxml2.dylib */,
 				29366C1D118E4151009D6863 /* Security.framework */,
+				EB6D02A811E3784100B65CE3 /* MapKit.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -1284,6 +1304,7 @@
 		DE715446102FE468005E6111 /* Campus Map */ = {
 			isa = PBXGroup;
 			children = (
+				EB6D036911E3989100B65CE3 /* ArcGISServer */,
 				44C1A3C511A3388A000FD653 /* Selection */,
 				44C1A26011A2E865000FD653 /* Model */,
 				441009DC110A6DAF00451B23 /* CampusMapToolbar.h */,
@@ -1428,6 +1449,8 @@
 		DE783C9810C8651300931EC5 /* App Delegate */ = {
 			isa = PBXGroup;
 			children = (
+				EB6DFFEE11DE69F600B65CE3 /* SpringboardViewController.h */,
+				EB6DFFEF11DE69F600B65CE3 /* SpringboardViewController.m */,
 				2978864110F03656002670CC /* MITDeviceRegistration.h */,
 				2978864210F03656002670CC /* MITDeviceRegistration.m */,
 				2978864310F03656002670CC /* MITUnreadNotifications.h */,
@@ -1505,6 +1528,13 @@
 				DE6D9319110A8EFA00DAF213 /* SettingsTableViewController.m */,
 			);
 			name = Settings;
+			sourceTree = "<group>";
+		};
+		EB6D036911E3989100B65CE3 /* ArcGISServer */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = ArcGISServer;
 			sourceTree = "<group>";
 		};
 		EB7F326610CD6C5B00188BCD /* People */ = {
@@ -1669,6 +1699,9 @@
 				4499332D11A371CF00A7041B /* RecentSearchesViewController.h in JavaArchive */,
 				44C1A4C411A412E2000FD653 /* MapSearch.h in JavaArchive */,
 				4499341E11A5E53D00A7041B /* CategoriesTableViewController.h in JavaArchive */,
+				EB6DFE3711DE28F800B65CE3 /* ModoNavigationController.h in JavaArchive */,
+				EB6DFE3F11DE294700B65CE3 /* ModoNavigationBar.h in JavaArchive */,
+				EB6DFFF011DE69F600B65CE3 /* SpringboardViewController.h in JavaArchive */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2005,6 +2038,9 @@
 				4499332E11A371CF00A7041B /* RecentSearchesViewController.m in Sources */,
 				44C1A4C511A412E2000FD653 /* MapSearch.m in Sources */,
 				4499341F11A5E53D00A7041B /* CategoriesTableViewController.m in Sources */,
+				EB6DFE3811DE28F800B65CE3 /* ModoNavigationController.m in Sources */,
+				EB6DFE4011DE294700B65CE3 /* ModoNavigationBar.m in Sources */,
+				EB6DFFF111DE69F600B65CE3 /* SpringboardViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -38,7 +38,7 @@
     [super viewDidLoad];
 
 	self.mapView.delegate = self;
-	self.mapView.shouldNotDropPins = YES;
+	//self.mapView.shouldNotDropPins = YES;
 	
 	_largeStopImage = [[UIImage imageNamed:@"map_pin_shuttle_stop_complete.png"] retain];
 	_largeUpcomingStopImage = [[UIImage imageNamed:@"pin_shuttle_stop_complete_next.png"] retain];
@@ -54,7 +54,7 @@
 	[self.mapView setShowsUserLocation:YES];
 
 	if ([self.route.pathLocations count]) {
-		[self.mapView addRoute:self.route];
+		//[self.mapView addRoute:self.route];
 		self.mapView.region = [self regionForRoute];
 	}
 	
@@ -169,7 +169,7 @@
 	}
 	
 	// tell the map to refresh whatever its current callout is. 
-	[_mapView refreshCallout];
+	//[_mapView refreshCallout];
 }
 
 -(MKCoordinateRegion) regionForRoute
@@ -248,8 +248,9 @@
 -(void) updateStopAnnotation:(ShuttleStopMapAnnotation*)annotation
 {
 	UIImage* image = nil;
-	MITMapAnnotationView* annotationView = [_mapView viewForAnnotation:annotation];		
+	MKAnnotationView * annotationView = [_mapView viewForAnnotation:annotation];		
 	
+    /*
 	// determine which image to use for this annotation. If our map is above 2.0, use the big one
 	if (_mapView.zoomLevel >= 2.0) {
 		image = annotation.shuttleStop.upcoming ? _largeUpcomingStopImage : _largeStopImage;
@@ -260,13 +261,13 @@
 		annotationView.layer.anchorPoint = CGPointMake(0.5, 0.5);
 		image = annotation.shuttleStop.upcoming ? _smallUpcomingStopImage : _smallStopImage;
 	}
-	
+	*/
 	UIImageView* imageView = [annotationView.subviews objectAtIndex:0];
 	imageView.image = image;
 	imageView.frame = CGRectMake(0, 0, image.size.width, image.size.height);
 	annotationView.frame = imageView.frame;
 	
-	[_mapView positionAnnotationView:annotationView];
+	//[_mapView positionAnnotationView:annotationView];
 	
 }
 
@@ -274,10 +275,10 @@
 -(IBAction) gpsTouched:(id)sender
 {
 	
-	_mapView.stayCenteredOnUserLocation = !_mapView.stayCenteredOnUserLocation;
+	//_mapView.stayCenteredOnUserLocation = !_mapView.stayCenteredOnUserLocation;
 
-	NSString *bgImageName = [NSString stringWithFormat:@"scrim-button-background%@.png", _mapView.stayCenteredOnUserLocation ? @"-highlighted" : @""];
-	[_gpsButton setBackgroundImage:[UIImage imageNamed:bgImageName] forState:UIControlStateNormal];
+	//NSString *bgImageName = [NSString stringWithFormat:@"scrim-button-background%@.png", _mapView.stayCenteredOnUserLocation ? @"-highlighted" : @""];
+	//[_gpsButton setBackgroundImage:[UIImage imageNamed:bgImageName] forState:UIControlStateNormal];
 
 }
 
@@ -285,7 +286,7 @@
 {
 	//_gpsButton.style = UIBarButtonItemStyleBordered;
 	[_gpsButton setBackgroundImage:[UIImage imageNamed:@"scrim-button-background"] forState:UIControlStateNormal];
-	_mapView.stayCenteredOnUserLocation = NO;
+	//_mapView.stayCenteredOnUserLocation = NO;
 	
 	[_mapView setRegion:[self regionForRoute]];
 }
@@ -295,17 +296,17 @@
 - (void)mapViewRegionWillChange:(MITMapView*)mapView
 {
 	//_gpsButton.style = _mapView.stayCenteredOnUserLocation ? UIBarButtonItemStyleDone : UIBarButtonItemStyleBordered;
-	NSString *bgImageName = [NSString stringWithFormat:@"scrim-button-background%@.png", _mapView.stayCenteredOnUserLocation ? @"-highlighted" : @""];
-	[_gpsButton setBackgroundImage:[UIImage imageNamed:bgImageName] forState:UIControlStateNormal];
+	//NSString *bgImageName = [NSString stringWithFormat:@"scrim-button-background%@.png", _mapView.stayCenteredOnUserLocation ? @"-highlighted" : @""];
+	//[_gpsButton setBackgroundImage:[UIImage imageNamed:bgImageName] forState:UIControlStateNormal];
 }
 
 
 -(void) mapViewRegionDidChange:(MITMapView*)mapView
 {
-	NSString *bgImageName = [NSString stringWithFormat:@"scrim-button-background%@.png", _mapView.stayCenteredOnUserLocation ? @"-highlighted" : @""];
-	[_gpsButton setBackgroundImage:[UIImage imageNamed:bgImageName] forState:UIControlStateNormal];
+	//NSString *bgImageName = [NSString stringWithFormat:@"scrim-button-background%@.png", _mapView.stayCenteredOnUserLocation ? @"-highlighted" : @""];
+	//[_gpsButton setBackgroundImage:[UIImage imageNamed:bgImageName] forState:UIControlStateNormal];
 	//_gpsButton.style = _mapView.stayCenteredOnUserLocation ? UIBarButtonItemStyleDone : UIBarButtonItemStyleBordered;
-	
+	/*
 	CGFloat newZoomLevel = mapView.zoomLevel;
 	
 	if (newZoomLevel != _lastZoomLevel)
@@ -322,38 +323,39 @@
 		}
 	}
 	_lastZoomLevel = mapView.zoomLevel;
+     */
 }
 
 -(void) locateUserFailed
 {
-	if (_mapView.stayCenteredOnUserLocation) 
-	{
-		[_gpsButton setBackgroundImage:[UIImage imageNamed:@"scrim-button-background.png"] forState:UIControlStateNormal];
-	}	
+	//if (_mapView.stayCenteredOnUserLocation) 
+	//{
+	//	[_gpsButton setBackgroundImage:[UIImage imageNamed:@"scrim-button-background.png"] forState:UIControlStateNormal];
+	//}	
 }
 
-- (MITMapAnnotationView *)mapView:(MITMapView *)mapView viewForAnnotation:(id <MKAnnotation>)annotation
+- (MKAnnotationView *)mapView:(MITMapView *)mapView viewForAnnotation:(id <MKAnnotation>)annotation
 {
-	MITMapAnnotationView* annotationView = nil;
+	MKAnnotationView* annotationView = nil;
 	
 	if ([annotation isKindOfClass:[ShuttleStopMapAnnotation class]]) 
 	{
-		annotationView = [[[MITMapAnnotationView alloc] initWithAnnotation:annotation] autorelease];
+		annotationView = [[[MKAnnotationView alloc] initWithAnnotation:annotation] autorelease];
 		UIImage* pin = [UIImage imageNamed:@"shuttle-stop-dot.png"];
 		UIImageView* imageView = [[[UIImageView alloc] initWithImage:pin] autorelease];
 		annotationView.frame = imageView.frame;
 		annotationView.canShowCallout = YES;
 		[annotationView addSubview:imageView];
 		annotationView.backgroundColor = [UIColor clearColor];
-		annotationView.centeredVertically = YES;
-		annotationView.alreadyOnMap = YES;
+		//annotationView.centeredVertically = YES;
+		//annotationView.alreadyOnMap = YES;
 		//annotationView.layer.anchorPoint = CGPointMake(0.5, 0.5);
 	}
 	else if([annotation isKindOfClass:[ShuttleLocation class]])
 	{
 		ShuttleLocation* shuttleLocation = (ShuttleLocation*) annotation;
 		
-		annotationView = [[[MITMapAnnotationView alloc] initWithAnnotation:annotation] autorelease];
+		annotationView = [[[MKAnnotationView alloc] initWithAnnotation:annotation] autorelease];
 		UIImage* pin = [UIImage imageNamed:@"shuttle-bus-location.png"];
 		UIImageView* imageView = [[[UIImageView alloc] initWithImage:pin] autorelease];
 		
@@ -372,7 +374,7 @@
 		[annotationView addSubview:arrowImageView];
 		
 		annotationView.backgroundColor = [UIColor clearColor];
-		annotationView.alreadyOnMap = YES;
+		//annotationView.alreadyOnMap = YES;
 		//annotationView.layer.anchorPoint = CGPointMake(0.5, 1.0);
 	}
 	
@@ -431,10 +433,10 @@
 		
 		self.routeInfo = shuttleRoute;
 
-		if (![self.mapView.routes count]) {
-			[self.mapView addRoute:self.route];
-			self.mapView.region = [self regionForRoute];
-		}
+		//if (![self.mapView.routes count]) {
+		//	[self.mapView addRoute:self.route];
+		//	self.mapView.region = [self regionForRoute];
+		//}
 		
 		[self addShuttles];
 		[self updateUpcomingStops];

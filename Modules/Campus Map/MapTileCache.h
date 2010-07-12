@@ -1,5 +1,6 @@
 
 #import <Foundation/Foundation.h>
+#import <MapKit/MapKit.h>
 
 #import "SaveOperation.h"
 #import "MITMobileWebAPI.h"

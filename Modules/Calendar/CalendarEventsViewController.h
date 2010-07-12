@@ -10,7 +10,7 @@
 @class EventListTableView;
 @class CalendarEventMapAnnotation;
 
-@interface CalendarEventsViewController : UIViewController <UIScrollViewDelegate, UISearchBarDelegate, UISearchDisplayDelegate, MITMapViewDelegate, JSONLoadedDelegate> {
+@interface CalendarEventsViewController : UIViewController <UIScrollViewDelegate, UISearchBarDelegate, UISearchDisplayDelegate, MKMapViewDelegate, JSONLoadedDelegate> {
 
 	CalendarEventListType activeEventList; // today, browse, acad, holidays...
 	NSDate *startDate;
@@ -57,7 +57,7 @@
 @property (nonatomic, assign) CalendarEventListType activeEventList;
 
 @property (nonatomic, retain) UITableView *tableView;
-@property (nonatomic, retain) MITMapView *mapView;
+@property (nonatomic, retain) MKMapView *mapView;
 
 @property (nonatomic, retain) NSDate *startDate;
 @property (nonatomic, retain) NSDate *endDate;

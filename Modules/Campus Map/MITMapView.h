@@ -12,13 +12,19 @@
 #import "MITMobileWebAPI.h"
 #import "MITMapRoute.h"
 
+@interface MKMapView (MITAdditions)
+
+- (id<MKAnnotation>)currentAnnotation;
+
+@end
+
+
 @class MapLevel;
 @class MITMapUserLocation;
 @class MITMapView;
 @class MITMapSearchResultAnnotation;
 @class RouteView;
 @class GridLayer;
-
 
 @protocol MITMapViewDelegate<NSObject>
 
@@ -43,6 +49,16 @@
 
 @end
 
+@interface MITMapView : MKMapView
+{
+    
+}
+
+@end
+
+
+
+/*
 @interface MITMapView : UIView <UIScrollViewDelegate, CLLocationManagerDelegate>{
 
 	NSArray* _mapLevels;
@@ -168,3 +184,4 @@
 
 
 @end
+ */

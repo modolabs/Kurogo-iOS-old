@@ -835,7 +835,7 @@
 
 #pragma mark Map View Delegate
  
-- (void)mapView:(MITMapView *)mapView annotationViewcalloutAccessoryTapped:(MITMapAnnotationCalloutView *)view
+- (void)mapView:(MKMapView *)mapView annotationViewcalloutAccessoryTapped:(MITMapAnnotationCalloutView *)view
 {
 	CalendarEventMapAnnotation *annotation = view.annotation;
 	MITCalendarEvent *event = nil;
@@ -855,9 +855,9 @@
 }
 
 
-- (MITMapAnnotationView *)mapView:(MITMapView *)mapView viewForAnnotation:(id <MKAnnotation>)annotation
+- (MKAnnotationView *)mapView:(MKMapView *)mapView viewForAnnotation:(id <MKAnnotation>)annotation
 {
-	MITMapAnnotationView *annotationView = [/*theMapView*/mapView viewForAnnotation:annotation];
+	MKAnnotationView *annotationView = [/*theMapView*/mapView viewForAnnotation:annotation];
 	return annotationView;
 }
 

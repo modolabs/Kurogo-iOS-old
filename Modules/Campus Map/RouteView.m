@@ -19,7 +19,7 @@
 
 	// get the context 
 	CGContextRef c = UIGraphicsGetCurrentContext();	
-	
+	/*
 	// draw all the segments of all the routes. 
 	for (ShuttleRoute* route in _map.routes)
 	{
@@ -49,7 +49,7 @@
 		///CGContextClosePath(c);
 		//CGContextStrokePath(c);
 	}
-	
+	*/
 }
 
 

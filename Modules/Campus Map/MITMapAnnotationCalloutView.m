@@ -111,9 +111,9 @@ static const CGFloat kSubTitleFontSize = 12;
 	
 	if(CGRectContainsPoint(accessoryRect, locationInView))
 	{
-		if ([_mapView.delegate respondsToSelector:@selector(mapView:annotationViewcalloutAccessoryTapped:)]) {
-			[_mapView.delegate mapView:_mapView annotationViewcalloutAccessoryTapped:self];
-		}
+		//if ([_mapView.delegate respondsToSelector:@selector(mapView:annotationViewcalloutAccessoryTapped:)]) {
+		//	[_mapView.delegate mapView:_mapView annotationViewcalloutAccessoryTapped:self];
+		//}
 	}
 	
 	

@@ -12,7 +12,7 @@ extern NSString* const kMITMapAnnotationViewTapped;
 	
 	BOOL _canShowCallout;
 	
-	MITMapView* _mapView;
+	MKMapView* _mapView;
 	
 	// bool indicating if this view should be positioned based on its center or its bottom
 	BOOL _centeredVertically;
@@ -25,7 +25,7 @@ extern NSString* const kMITMapAnnotationViewTapped;
 
 @property (nonatomic, retain) id<MKAnnotation> annotation;
 @property BOOL canShowCallout;
-@property (nonatomic, assign) MITMapView* mapView;
+@property (nonatomic, assign) MKMapView* mapView;
 @property BOOL centeredVertically;
 @property (nonatomic, retain) UIImageView* shadowView;
 @property BOOL alreadyOnMap;

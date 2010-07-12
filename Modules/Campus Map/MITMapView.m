@@ -15,6 +15,15 @@
 #define kPinDropTimerFrequency				0.05
 #define kPinDropAnimationDuration			1.6
 
+@implementation MKMapView (MITAdditions)
+
+- (id<MKAnnotation>)currentAnnotation {
+    return [self.selectedAnnotations lastObject];
+}
+
+@end
+
+/*
 @interface MITMapView(Private) 
 
 -(void) createSubviews;
@@ -346,13 +355,13 @@
 	int rootMinCol = rootMapLevel.minCol + (unscaledRect.origin.x / kTileSize);
 	int rootMinRow = rootMapLevel.minRow + (unscaledRect.origin.y / kTileSize);
 	
-	/*
-	int rootMaxCol = rootMinCol + ((unscaledRect.size.width - kTileSize) / kTileSize);
-	int rootMaxRow = rootMinRow + ((unscaledRect.size.height - kTileSize) / kTileSize);
 	
-	if (rootMaxCol < rootMinCol) rootMaxCol = rootMinCol;
-	if (rootMaxRow < rootMinRow) rootMaxRow = rootMinRow;
-	*/
+	//int rootMaxCol = rootMinCol + ((unscaledRect.size.width - kTileSize) / kTileSize);
+	//int rootMaxRow = rootMinRow + ((unscaledRect.size.height - kTileSize) / kTileSize);
+	
+	//if (rootMaxCol < rootMinCol) rootMaxCol = rootMinCol;
+	//if (rootMaxRow < rootMinRow) rootMaxRow = rootMinRow;
+	
 	
 	// determine the rootX and rootY
 	int rootMinX = (rootMinCol - rootMapLevel.minCol) * kTileSize;
@@ -421,9 +430,7 @@
 	return coordinate;
 }
 
-/*
- *	This calculates the correct radius in pixels for the location based on its coordinate and horizontal accuracy.
- */
+// This calculates the correct radius in pixels for the location based on its coordinate and horizontal accuracy.
 -(CGFloat) pixelRadiusForAccuracyOfLocation:(CLLocation*)location
 {
 	if (location) {
@@ -816,10 +823,8 @@
 }
 
 #pragma mark Circle Animation
-/*
- *	This method adds three layers to the location layer: an accuracy circle and two radiating circles.
- *	Different animations are called on these layers based on the accuracy of the new and previous points.
- */
+// This method adds three layers to the location layer: an accuracy circle and two radiating circles.
+// Different animations are called on these layers based on the accuracy of the new and previous points.
 -(void) animateCircleLayerForLocations:(NSArray*)locationsArray
 {
 	CLLocation* newLocation = [locationsArray objectAtIndex:0];
@@ -895,10 +900,8 @@
 	}
 }
 
-/*
- *	This animates the accuracy circle to the appropriate radius to begin bounce animation.  
- *	It should be called if accuracy changes from good to poor.
- */
+// This animates the accuracy circle to the appropriate radius to begin bounce animation.  
+// It should be called if accuracy changes from good to poor.
 -(void) animateToBounceForLocation:(CLLocation*)location 
 {
 	CABasicAnimation* animation = [self animationToRadiusPathForLocation:location];
@@ -906,9 +909,7 @@
 	[_locationAccuracyCircleLayer addAnimation:animation forKey:@"animateToBounce"];
 }
 
-/*	
- *	This animates the accuracy circle endlessly between two paths when accuracy is poor.
- */
+// This animates the accuracy circle endlessly between two paths when accuracy is poor.
 -(void) bounceAccuracyAnimationForLocation:(CLLocation*)location
 {
 
@@ -941,9 +942,7 @@
 	CGPathRelease(wobblePath);
 }
 
-/*
- *	This animates the accuracy circle from its bounce radius to the accuracy radius.
- */
+// This animates the accuracy circle from its bounce radius to the accuracy radius.
 -(void) animateToAccuracyOfLocation:(CLLocation*)location
 {
 	_animationIsBouncing = NO;
@@ -955,10 +954,8 @@
 	CGPathRelease(radiusPath);
 }
 
-/*
- *	This is a convenience method called in the above methods.  It returns the animation from the accuracy
- *	circle's present (radius) path to the path (radius) for its current accuracy. 
- */
+// This is a convenience method called in the above methods.  It returns the animation from the accuracy
+// circle's present (radius) path to the path (radius) for its current accuracy. 
 -(CABasicAnimation*) animationToRadiusPathForLocation:(CLLocation*)location
 {	
 	CAShapeLayer* presentationLayer = (CAShapeLayer*)[_locationAccuracyCircleLayer presentationLayer];
@@ -980,9 +977,7 @@
 	return animation;
 }
 
-/*
- *	This returns the correct path given the location of the GPS point.
- */
+// This returns the correct path given the location of the GPS point.
 -(CGMutablePathRef) newRadiusPathFromLocation:(CLLocation*)location
 {
 	CGFloat pixelRadius = [self pixelRadiusForAccuracyOfLocation:location];
@@ -1000,11 +995,9 @@
 	return radiusPath;
 }
 
-/*
- *	This animates the two radiation circle layers.  
- *	First it calculates the radius of the radiation circles so they are the same radius as the present accuracy circle.
- *	Then it animates both circles path and opacity.
- */
+// This animates the two radiation circle layers.  
+// First it calculates the radius of the radiation circles so they are the same radius as the present accuracy circle.
+// Then it animates both circles path and opacity.
 -(void) addRadiationAnimationForLocation:(CLLocation*)location
 {
 	if (!_animationIsRadiating) 
@@ -1060,9 +1053,7 @@
 	}
 }
 
-/*
- *	This removes all animations from the radiation layers.  It should be called whenever accuracy becomes poor.
- */
+// This removes all animations from the radiation layers.  It should be called whenever accuracy becomes poor.
 -(void) removeRadiationAnimation
 {
 	[_radiationLayer1 removeAllAnimations];
@@ -1070,9 +1061,7 @@
 	_animationIsRadiating = NO;
 }
 
-/*
- *	When the user scrolls, we update the sizes of our circle layers appropriately.
- */
+// When the user scrolls, we update the sizes of our circle layers appropriately.
 -(void) handleLayerAnimationDuringScroll
 {
 	CGFloat pixelRadius = [self pixelRadiusForAccuracyOfLocation:_lastLocation];
@@ -1211,10 +1200,8 @@
 	}
 }
 
-/*
- *	If the annotationView is already on the map, this positions it appropriately given its location and image size.
- *	If the annotationView is not yet on the map, this calls the animation code on the main thread so pin appears to drop from above with shadow.
- */
+// If the annotationView is already on the map, this positions it appropriately given its location and image size.
+// If the annotationView is not yet on the map, this calls the animation code on the main thread so pin appears to drop from above with shadow.
 -(void) positionAnnotationView:(MITMapAnnotationView*)annotationView
 {
 	// determine pixel coordinates for our location relative to the full view of our map
@@ -1240,9 +1227,7 @@
 	}
 }
 
-/*
- *	This creates the keyframe animations for one pin and shadow to drop onto the map.
- */
+// This creates the keyframe animations for one pin and shadow to drop onto the map.
 -(void) animateAnnotationOntoMap:(MITMapAnnotationView*)annotationView
 {
 	
@@ -1355,10 +1340,8 @@
 	}
 }
 
-/*
- *	After each pin drop animation has finished, we mark that annotation view as alreadyOnMap and replace the two layers (pin and shadow)
- *	with one UIImageView that has the combined image.
- */
+// After each pin drop animation has finished, we mark that annotation view as alreadyOnMap and replace the two layers (pin and shadow)
+// with one UIImageView that has the combined image.
 - (void)animationDidStop:(CAAnimation *)theAnimation finished:(BOOL)flag
 {
 	UIImageView* pinWithShadowImageView = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"map_pin_complete.png"]] autorelease];
@@ -1402,11 +1385,11 @@
 	MITMapAnnotationView* annotationView = [self viewForAnnotation:_currentCallout.annotation];
 	
 	//CGFloat zoomScale = _scrollView.zoomScale;
-	/*
-	_currentCallout.frame = CGRectMake((int)round(annotationPoint.x * zoomScale -  _scrollView.contentOffset.x - _currentCallout.frame.size.width / 2),
-									   (int)round(annotationPoint.y * zoomScale - _scrollView.contentOffset.y - annotationView.frame.size.height * annotationView.layer.anchorPoint.y - _currentCallout.frame.size.height),
-									   _currentCallout.frame.size.width, _currentCallout.frame.size.height);
-	*/
+	
+	//_currentCallout.frame = CGRectMake((int)round(annotationPoint.x * zoomScale -  _scrollView.contentOffset.x - _currentCallout.frame.size.width / 2),
+	//								   (int)round(annotationPoint.y * zoomScale - _scrollView.contentOffset.y - annotationView.frame.size.height * annotationView.layer.anchorPoint.y - _currentCallout.frame.size.height),
+	//								   _currentCallout.frame.size.width, _currentCallout.frame.size.height);
+	
 	_currentCallout.frame = CGRectMake((int)round(annotationView.frame.origin.x + annotationView.frame.size.width / 2 - _currentCallout.frame.size.width / 2),
 									   (int)(annotationView.frame.origin.y - _currentCallout.frame.size.height),
 									   _currentCallout.frame.size.width, _currentCallout.frame.size.height);
@@ -1436,9 +1419,8 @@
 	[self selectAnnotation:annotation animated:NO withRecenter:NO];
 }
 
-/*
- *	If there are pins to animate onto the map, this timer is created.  Each time it is fired, we drop one pin onto the map.
- */
+
+// If there are pins to animate onto the map, this timer is created.  Each time it is fired, we drop one pin onto the map.
 -(void) pinDropTimerFired:(NSTimer*)timer
 {
 	BOOL allPinsDropped = YES;
@@ -1719,3 +1701,4 @@
 }
 
 @end
+ */

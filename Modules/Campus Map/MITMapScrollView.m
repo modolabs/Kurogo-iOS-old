@@ -56,8 +56,8 @@
 		{
 			[UIView cancelPreviousPerformRequestsWithTarget:self.superview selector:@selector(hideCallout) object:nil];
 			
-			MITMapView* mapView = (MITMapView*)[self superview];
-			mapView.stayCenteredOnUserLocation = NO;
+			//MKMapView* mapView = (MKMapView*)[self superview];
+			//mapView.stayCenteredOnUserLocation = NO;
 			
 			// we want to zoom in to just below the next zoom level
 			// determine our highest map level
@@ -90,7 +90,7 @@
 		else
 		{
 			// hide any displayed callouts
-			MITMapView* mapView = (MITMapView*)[self superview];
+			MKMapView* mapView = (MKMapView*)[self superview];
 			[mapView performSelector:@selector(hideCallout) withObject:nil afterDelay:0.30];
 		}
 
@@ -120,16 +120,17 @@
 {
 	//[super touchesBegan:touches withEvent:event];
 	
-	MITMapView* mapView = (MITMapView*)[self superview];
+	MKMapView* mapView = (MKMapView*)[self superview];
 	if (![mapView.delegate respondsToSelector:@selector(mapView:wasTouched:)]) {
 		return;
 	}
 	
 	UITouch* touch = nil;
 	NSEnumerator* enumerator = [touches objectEnumerator];
-	
+	/*
 	while (touch = [enumerator nextObject]) {
 		[mapView.delegate mapView:mapView wasTouched:touch];
 	}
+     */
 }
 @end

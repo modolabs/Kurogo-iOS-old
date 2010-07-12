@@ -1,9 +1,9 @@
-
 #import "MapTileCache.h"
-//#import "PostData.h"
 #import "SaveOperation.h"
 #import "MIT_MobileAppDelegate.h"
 #import "MapLevel.h"
+#import "TileServerManager.h"
+#import "MapZoomLevel.h"
 
 #define kInMemoryTileLimit 4
 #define kTileSize 256
@@ -22,10 +22,7 @@ static MapTileCache* s_cache;
 @synthesize mapLevels = _mapLevels;
 
 
-
-
-+(MapTileCache*) cache
-{
++(MapTileCache*) cache {
 	if(s_cache == nil)
 	{
 		s_cache = [[MapTileCache alloc] init];
@@ -34,101 +31,70 @@ static MapTileCache* s_cache;
 	return s_cache;
 }
 
--(id) init
-{
-	if(self = [super init])
-	{
+- (id)init {
+	if(self = [super init]) {
 		_saveOperationQueue = [[NSOperationQueue alloc] init];
-		
 		
 		NSDictionary* dictionary = [NSDictionary dictionaryWithContentsOfFile:[self mapTimestampFilename]];
 		_mapTimestamp = [[dictionary objectForKey:kLastUpdatedKey] longLongValue];
 		
 		MITMobileWebAPI* api = [MITMobileWebAPI jsonLoadedDelegate:self];
 		[api requestObject:[NSDictionary dictionaryWithObject:@"tilesupdated" forKey:@"command"] pathExtension:@"map"];
-		
-		//_recentTilesIndex = [[NSMutableArray alloc] initWithCapacity:kInMemoryTileLimit + 1];
-		//_recentTiles = [[NSMutableDictionary alloc] initWithCapacity:kInMemoryTileLimit + 1];
 	}
 	
-	NSString* path = [[NSBundle mainBundle] pathForResource:@"MapLevels" ofType:@"plist" inDirectory:@"Modules/Campus Map"];
-	NSDictionary* mapInfo = [NSDictionary dictionaryWithContentsOfFile:path];
+	//NSString* path = [[NSBundle mainBundle] pathForResource:@"MapLevels" ofType:@"plist" inDirectory:@"Modules/Campus Map"];
+	//NSDictionary* mapInfo = [NSDictionary dictionaryWithContentsOfFile:path];
 	
-	NSArray* levels = [mapInfo objectForKey:@"MapLevels"];
+	//NSArray* levels = [mapInfo objectForKey:@"MapLevels"];
 	
-	NSMutableArray* mapLevels = [NSMutableArray arrayWithCapacity:levels.count];
-	for (NSDictionary* levelInfo in levels) {
-		MapLevel* level = [MapLevel levelWithInfo:levelInfo];
-		[mapLevels addObject:level];
-	}
+	//NSMutableArray* mapLevels = [NSMutableArray arrayWithCapacity:levels.count];
+	//for (NSDictionary* levelInfo in levels) {
+	//	MapLevel* level = [MapLevel levelWithInfo:levelInfo];
+	//	[mapLevels addObject:level];
+	//}
 	
-	self.mapLevels = mapLevels;
-	
-	// load the default tiles.
-	/*
-	[self getTileForLevel:15 row:12120 col:9913];
-	[self getTileForLevel:15 row:12120 col:9912];
-	[self getTileForLevel:15 row:12119 col:9913];
-	[self getTileForLevel:15 row:12119 col:9913];
-	*/
+	//self.mapLevels = mapLevels;
 	
 	return self;
 }
 
--(NSString*) pathForTileAtLevel:(int)level row:(int)row col:(int)col
-{
+- (NSString*)pathForTileAtLevel:(int)level row:(int)row col:(int)col {
 	NSString* tileCachePath = [MapTileCache tileCachePath];
 	return [tileCachePath stringByAppendingPathComponent:[NSString stringWithFormat:@"%d/%d/%d", level, row, col]];
 }
 
-+(NSString*) tileCachePath
-{
++ (NSString *)tileCachePath {
 	NSArray *paths = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
 	NSString* cachePath = [paths objectAtIndex:0];
 	return [cachePath stringByAppendingPathComponent:@"tile"];
 }
 
--(UIImage*) getTileForLevel:(int)level row:(int)row col:(int)col
-{
+- (UIImage *)getTileForLevel:(int)level row:(int)row col:(int)col {
 	return [self getTileForLevel:level row:row col:col onlyFromCache:NO];
 }
 
--(UIImage*) getTileForLevel:(int)level row:(int)row col:(int)col onlyFromCache:(BOOL)onlyFromCache;
-{
+- (UIImage*)getTileForLevel:(int)level row:(int)row col:(int)col onlyFromCache:(BOOL)onlyFromCache; {
 	UIImage* image = nil;
-	
-	// see if it is in our cache
-	/*
-	NSString* cacheIndex = [NSString stringWithFormat:@"%d-%d-%d", level, row, col];
-	image = [_recentTiles objectForKey:cacheIndex];
-	if (nil != image) {
-		return image;
-	}
-	 */
 	
     // TODO: Don't save images as separate files. Save them in one flat file. The more files in an app, the longer it takes for a user to sync their device in iTunes.
     
-	NSString* cacheFile = [self pathForTileAtLevel:level row:row col:col];
-	cacheFile = [cacheFile stringByAppendingPathComponent:@"tile"];
+	NSString *cacheFile = [self pathForTileAtLevel:level row:row col:col];
+	//cacheFile = [cacheFile stringByAppendingPathComponent:@"tile"];
 	
     // get the image from disk if it was cached
-	if([[NSFileManager defaultManager] fileExistsAtPath:cacheFile])
-	{
+	if ([[NSFileManager defaultManager] fileExistsAtPath:cacheFile]) {
 		NSData* data = [NSData dataWithContentsOfFile:cacheFile];
 		image = [UIImage imageWithData:data];
 	}
+    
     // if image wasn't cached OR the cached file was not even a valid image (unless we only want to display cached images)
-	if(!image && !onlyFromCache)
-	{
+	if (!image && !onlyFromCache) {
 		MIT_MobileAppDelegate *appDelegate = (MIT_MobileAppDelegate *)[[UIApplication sharedApplication] delegate];
         [appDelegate showNetworkActivityIndicator];
-#if 0
-        NSString *sUrl = [NSString stringWithFormat:@"%@/%d.png", [[NSBundle mainBundle] resourcePath], level]; 
-        NSURL *url = [NSURL fileURLWithPath:sUrl];
-#else
+        
         NSString* sUrl = [[_serviceURL absoluteString] stringByAppendingFormat:@"/tile2/%d/%d/%d", level, row, col];
         NSURL* url = [NSURL URLWithString:sUrl];
-#endif
+
 		NSURLRequest* request = [[NSURLRequest alloc] initWithURL:url];
 		
 		NSError* error = nil;
@@ -145,66 +111,23 @@ static MapTileCache* s_cache;
                 NSString *path = [self pathForTileAtLevel:level row:row col:col];
                 
                 SaveOperation *saveOperation = [[[SaveOperation alloc] initWithData:data
-                                                                         saveToPath:path filename:@"tile" userData:nil] autorelease];
+                                                                         saveToPath:path
+                                                                           filename:@"tile"
+                                                                           userData:nil] autorelease];
                 saveOperation.delegate = self;
                 [_saveOperationQueue addOperation:saveOperation];
             }
 		}
 	}
-
-	// in memory cache.
-	/*
-	if (nil != image) {
-		
-		[_recentTilesIndex insertObject:cacheIndex atIndex:0];
-		[_recentTiles setObject:image forKey:cacheIndex];
-		if (_recentTilesIndex.count > kInMemoryTileLimit)
-		{
-			cacheIndex = [_recentTilesIndex lastObject];
-			[_recentTiles removeObjectForKey:cacheIndex];
-			[_recentTilesIndex removeLastObject];
-		}
-
-	}
-	*/
 	
 	return image;
 	
 }
-
-/*
-#pragma mark PostDataDelegate
-// data was received from the post data request. 
--(void) postData:(PostData*)postData receivedData:(NSData*) data
-{
-	if ([postData.api isEqualToString:@"mapTile"]) 
-	{
-		int row   = [[postData.userData objectForKey:@"row"] intValue];
-		int col   = [[postData.userData objectForKey:@"col"] intValue];
-		int level = [[postData.userData objectForKey:@"level"] intValue];
-		
-
-		
-		// save it to the cache.
-		NSString* path = [self pathForTileAtLevel:level row:row col:col];
-		SaveOperation* saveOperation = [[[SaveOperation alloc] initWithData:data
-																 saveToPath:path filename:@"tile" userData:postData.userData] autorelease];
-		saveOperation.delegate = self;
-		[_saveOperationQueue addOperation:saveOperation];
-	}
-}
-
-// there was an error connecting to the specified URL. 
--(void) postData:(PostData*)postData error:(NSString*)error
-{
-	
-}
-*/
  
 #pragma mark SaveOperationDelegate
--(void) saveOperationCompleteForFile:(NSString*)path withUserData:(NSDictionary*)userData
-{
-	/*
+
+-(void) saveOperationCompleteForFile:(NSString*)path withUserData:(NSDictionary*)userData {
+    /*
 	int row   = [[userData objectForKey:@"row"] intValue];
 	int col   = [[userData objectForKey:@"col"] intValue];
 	int level = [[userData objectForKey:@"level"] intValue];
@@ -212,10 +135,11 @@ static MapTileCache* s_cache;
 	UIImage* image = [UIImage imageWithContentsOfFile:path];
 	
 	// tell the delegate about it
-	[self.delegate tileReceived:image forLevel:level row:row col:col];
-	 */
+	//[self.delegate tileReceived:image forLevel:level row:row col:col];
+    */
 }
 
+/*
 #pragma mark CALayerDelegate
 - (void)drawLayer:(CALayer *)layer inContext:(CGContextRef)ctx
 {
@@ -276,8 +200,9 @@ static MapTileCache* s_cache;
 	
 	
 }
+*/
 
--(NSString*) mapTimestampFilename
+- (NSString*)mapTimestampFilename
 {
 	NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
 	NSString* documentPath = [paths objectAtIndex:0];
@@ -291,9 +216,7 @@ static MapTileCache* s_cache;
 	
 	long long newMapTimestamp = [[dictionary objectForKey:kLastUpdatedKey] longLongValue];
 	
-	if (newMapTimestamp > _mapTimestamp) 
-	{
-		//NSLog(@"New tiles on server. Wiping out map cache");
+	if (newMapTimestamp > _mapTimestamp) {
 		
 		// store the new timestamp and wipe out the cache.
 		[dictionary writeToFile:[self mapTimestampFilename] atomically:YES];
@@ -315,8 +238,7 @@ static MapTileCache* s_cache;
 	}
 }
 
-- (void)handleConnectionFailureForRequest:(MITMobileWebAPI *)request
-{
+- (void)handleConnectionFailureForRequest:(MITMobileWebAPI *)request {
 	NSLog(@"Check tile update failed. ");	
 }
 

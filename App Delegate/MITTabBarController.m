@@ -3,6 +3,7 @@
 #import "MITModuleList.h"
 #import "MITModule.h"
 #import "MITMoreListController.h"
+#import "ModoNavigationController.h"
 
 #define TAB_COUNT 4
 
@@ -54,10 +55,10 @@
         moreListController.navigationItem.title = @"More";
         moreListController.theTabBarController = self;
 
-        moreNavigationController = [[UINavigationController alloc] initWithRootViewController:moreListController];
+        moreNavigationController = [[ModoNavigationController alloc] initWithRootViewController:moreListController];
         moreNavigationController.tabBarItem = moreTabItem;
         moreNavigationController.delegate = self;
-		moreNavigationController.navigationBar.barStyle = UIBarStyleBlack;
+		//moreNavigationController.navigationBar.barStyle = UIBarStyleBlack;
 
         [editButton release];
         [moreTabItem release];
@@ -235,14 +236,14 @@
     }
     if (vc) {
         // Don't waste time if this is already the active tab
-        if ([vc isKindOfClass:[UINavigationController class]] && vc != selectedViewController) {
+        if ([vc isKindOfClass:[ModoNavigationController class]] && vc != selectedViewController) {
             // This little dance is required in case this tab was last used 
             // under the More tab, meaning its navigation stack was stolen
             // by the moreListController. Without unsetting and resetting the 
             // tab's nav controller's viewControllers, the tab's navbar will
             // have no title and may not even allow the pushing of other 
             // viewcontrollers onto its stack.
-            UINavigationController *navC = (UINavigationController *)vc;
+            ModoNavigationController *navC = (ModoNavigationController *)vc;
             NSArray *otherNavStack = [navC.viewControllers retain];
             [navC setViewControllers:nil animated:NO];
             [navC setViewControllers:otherNavStack animated:NO];
@@ -264,7 +265,7 @@
     // update old module's navstack
     if (self.activeTabNavStack) {
         NSInteger i = [allItems indexOfObject:self.activeItem];
-        UINavigationController *navC = [viewControllers objectAtIndex:i];
+        ModoNavigationController *navC = [viewControllers objectAtIndex:i];
         [navC setViewControllers:nil animated:NO];
         [navC setViewControllers:activeTabNavStack animated:NO];
         self.activeTabNavStack = nil;
@@ -352,7 +353,7 @@
         // so update old module's navstack
         if (self.activeTabNavStack) {
             NSInteger i = [allItems indexOfObject:self.activeItem];
-            UINavigationController *navC = [viewControllers objectAtIndex:i];
+            ModoNavigationController *navC = [viewControllers objectAtIndex:i];
             [navC setViewControllers:nil animated:NO];
             [navC setViewControllers:activeTabNavStack animated:NO];
             self.activeTabNavStack = nil;
@@ -396,8 +397,8 @@
     // -navigationController:didShowViewController:animated: above),
     // we replace the entire navigation stack in a non-animated (and
     // non-buggy) way.
-    if ([vc isKindOfClass:[UINavigationController class]]) {
-        UINavigationController *navVC = (UINavigationController *)vc;
+    if ([vc isKindOfClass:[ModoNavigationController class]]) {
+        ModoNavigationController *navVC = (ModoNavigationController *)vc;
         [navStack addObjectsFromArray:navVC.viewControllers];
     } else {
         [navStack addObject:vc];

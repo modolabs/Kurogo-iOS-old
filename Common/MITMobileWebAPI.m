@@ -38,8 +38,12 @@
         self.connectionWrapper = nil;
 		[self release];	
 	} else {
+        NSString *maybeJSONString = [[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding] autorelease];
 		NSError *error = [NSError errorWithDomain:@"MITMobileWebAPI" code:0 
-										 userInfo:[NSDictionary dictionaryWithObjectsAndKeys:@"failed to handle JSON data", @"message", data, @"data", nil]];
+										 userInfo:[NSDictionary dictionaryWithObjectsAndKeys:
+                                                   @"failed to handle JSON data", @"message",
+                                                   (maybeJSONString) ? maybeJSONString : [data description], @"data",
+                                                   nil]];
 		[self connection:wrapper handleConnectionFailureWithError:error];
 	}
 }
@@ -48,7 +52,7 @@
 	[((MIT_MobileAppDelegate *)[[UIApplication sharedApplication] delegate]) hideNetworkActivityIndicator];
 	
     self.connectionWrapper = nil;
-	//NSLog(@"connection failed in %@, userinfo: %@, url: %@", [error domain], [error userInfo], wrapper.theURL);
+	NSLog(@"connection failed. domain: %@, userinfo: %@, url: %@", [error domain], [error userInfo], wrapper.theURL);
     
 	if([jsonDelegate respondsToSelector:@selector(handleConnectionFailureForRequest:)]) {
 		[jsonDelegate handleConnectionFailureForRequest:self];

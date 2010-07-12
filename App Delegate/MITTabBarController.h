@@ -1,4 +1,5 @@
 #import <UIKit/UIKit.h>
+#import "ModoNavigationController.h"
 
 @protocol MITTabBarControllerDelegate;
 
@@ -9,7 +10,7 @@
     UITabBar *theTabBar;
     UIView *containingView;
     UIView *limboView;
-    UINavigationController *moreNavigationController;
+    ModoNavigationController *moreNavigationController;
     MITMoreListController *moreListController;
     
     NSArray *allItems; // all UITabBarItems managed by this controller, not just the visible ones and not including More tab itself
@@ -38,7 +39,7 @@
 @property (nonatomic, retain) UITabBar *tabBar;
 @property (nonatomic, copy) NSArray *viewControllers;
 @property (nonatomic, copy) NSArray *customizableViewControllers;
-@property (nonatomic, readonly) UINavigationController *moreNavigationController;
+@property (nonatomic, readonly) ModoNavigationController *moreNavigationController;
 @property (nonatomic, retain) UIViewController *selectedViewController;
 @property (nonatomic, retain) UITabBarItem *activeItem;
 @property (nonatomic, retain) NSArray *activeTabNavStack;

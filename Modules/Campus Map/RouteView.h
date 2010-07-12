@@ -1,13 +1,13 @@
-
 #import <UIKit/UIKit.h>
+#import <MapKit/MapKit.h>
 
 @class MITMapView;
 
 @interface RouteView : UIView {
 
-	MITMapView* _map;
+	MKMapView* _map;
 }
 
-@property (nonatomic, assign) MITMapView* map;
+@property (nonatomic, assign) MKMapView* map;
 
 @end

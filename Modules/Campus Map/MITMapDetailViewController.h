@@ -32,7 +32,7 @@
 	IBOutlet UIView* _tabViewContainer;
 	
 	// map view
-	IBOutlet MITMapView* _mapView;
+	IBOutlet MKMapView* _mapView;
 	IBOutlet UIButton* _mapViewContainer;
 
 	//

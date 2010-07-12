@@ -8,7 +8,7 @@
 @class ShuttleStopMapAnnotation;
 @class ShuttleRoute;
 
-@interface ShuttleStopViewController : UITableViewController <ShuttleDataManagerDelegate, ShuttleSubscriptionDelegate, MITMapViewDelegate> 
+@interface ShuttleStopViewController : UITableViewController <ShuttleDataManagerDelegate, ShuttleSubscriptionDelegate, MKMapViewDelegate> 
 {
 	// the shuttle stop at which we are looking
 	ShuttleStop* _shuttleStop;

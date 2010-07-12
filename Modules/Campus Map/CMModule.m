@@ -89,7 +89,7 @@
 		self.campusMapVC.searchBar.text = query;
 		self.campusMapVC.lastSearchText = query;
 		// don't drop pins (we set this back at the end of this method)
-		self.campusMapVC.mapView.shouldNotDropPins = YES;
+		//self.campusMapVC.mapView.shouldNotDropPins = YES;
 		self.campusMapVC.hasSearchResults = YES;
 		
 		// grab our search results
@@ -132,7 +132,7 @@
 			// look for the selected annotation among the array of annotations
 			for (MITMapSearchResultAnnotation* annotation in self.campusMapVC.mapView.annotations) {
 				if([[(MITMapSearchResultAnnotation*)annotation uniqueID] isEqualToString:annotationUniqueID]) {
-					[self.campusMapVC.mapView selectAnnotation:annotation animated:NO withRecenter:NO];
+					[self.campusMapVC.mapView selectAnnotation:annotation animated:NO];
 					currentAnnotation = (MITMapSearchResultAnnotation*)annotation;
 				}
 			}
@@ -169,7 +169,7 @@
 		}
 		
 		if ([[components lastObject] isEqualToString:@"userLoc"]) {
-			self.campusMapVC.mapView.stayCenteredOnUserLocation = YES;
+			//self.campusMapVC.mapView.stayCenteredOnUserLocation = YES;
 			self.campusMapVC.geoButton.style = UIBarButtonItemStyleDone;
 		} else {
 			if (regionDictionary != nil) {
@@ -181,7 +181,7 @@
 		[self.campusMapVC.url setAsModulePath];
 		
 		// reset the map to drop pins for the next search
-		self.campusMapVC.mapView.shouldNotDropPins = NO;
+		//self.campusMapVC.mapView.shouldNotDropPins = NO;
 		return YES;
 	}
 	
