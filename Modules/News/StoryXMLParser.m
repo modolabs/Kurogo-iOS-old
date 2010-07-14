@@ -141,7 +141,7 @@ NSString * const NewsTagImageHeight     = @"height";
     //}
     //[pathString appendString:[params componentsJoinedByString:@"&"]];
 
-    NSURL *fullURL = [MITMobileWebAPI buildURL:params queryBase:MITMobileWebAPIURLString];
+    NSURL *fullURL = [JSONAPIRequest buildURL:params queryBase:MITMobileWebAPIURLString];
     
     //NSURL *fullURL = [NSURL URLWithString:pathString relativeToURL:baseURL];
     

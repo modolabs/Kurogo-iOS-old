@@ -1,7 +1,5 @@
 #import <UIKit/UIKit.h>
 #import <MapKit/MapKit.h>
-//#import "MITMapView.h"
-//#import "ConnectionWrapper.h"
 #import "ShuttleDataManager.h"
 #import "CampusMapToolbar.h"
 #import "JSONAPIRequest.h"

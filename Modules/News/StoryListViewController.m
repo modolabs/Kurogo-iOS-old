@@ -122,7 +122,7 @@ NSString *titleForCategoryId(NewsCategoryId category_id) {
     NSPredicate *truePredicate = [NSPredicate predicateWithFormat:@"TRUEPREDICATE"];
     NSArray *categoryObjects = [CoreDataManager objectsForEntity:NewsCategoryEntityName matchingPredicate:truePredicate];
     if (![categoryObjects count]) {
-        MITMobileWebAPI *request = [MITMobileWebAPI jsonLoadedDelegate:self];
+        JSONAPIRequest *request = [JSONAPIRequest requestWithJSONAPIDelegate:self];
         BOOL success = [request requestObjectFromModule:@"news" command:@"channels" parameters:nil];
         if (!success) {
             NSLog(@"failed to dispatch request");
@@ -1250,9 +1250,9 @@ NSString *titleForCategoryId(NewsCategoryId category_id) {
 	return nextStory;
 }
 
-#pragma mark JSONLoadedDelegate
+#pragma mark JSONAPIDelegate
 
-- (void)request:(MITMobileWebAPI *)request jsonLoaded:(id)result {
+- (void)request:(JSONAPIRequest *)request jsonLoaded:(id)result {
     if (result && [result isKindOfClass:[NSArray class]]) {
         NSMutableArray *newCategories = [NSMutableArray arrayWithCapacity:[result count]];
         for (NewsCategoryId i = 0; i < [result count]; i++) {

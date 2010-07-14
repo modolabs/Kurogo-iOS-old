@@ -33,7 +33,7 @@
 - (NSInteger)tilesPerRow;
 - (NSInteger)tilesPerCol;
 
-- (MapTile *)tileForMapPoint:(MKMapPoint)mapPoint;
+//- (MapTile *)tileForMapPoint:(MKMapPoint)mapPoint;
 
 - (NSString *)pathForTileAtRow:(int)row col:(int)col;
 - (NSArray *)tilesForMapRect:(MKMapRect)mapRect;

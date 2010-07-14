@@ -1,6 +1,6 @@
 #import <UIKit/UIKit.h>
 #import "StoryXMLParser.h"
-#import "MITMobileWebAPI.h"
+#import "JSONAPIRequest.h"
 
 /*
 typedef enum {
@@ -19,7 +19,7 @@ typedef int NewsCategoryId;
 @class MITSearchEffects;
 @class NewsStory;
 
-@interface StoryListViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate, StoryXMLParserDelegate, JSONLoadedDelegate> {
+@interface StoryListViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate, StoryXMLParserDelegate, JSONAPIDelegate> {
 	UITableView *storyTable;
     NSArray *stories;
     NSArray *categories;

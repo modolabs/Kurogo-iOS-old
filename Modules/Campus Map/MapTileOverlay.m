@@ -10,7 +10,7 @@
 		NSDictionary* dictionary = [NSDictionary dictionaryWithContentsOfFile:[MapTileOverlay mapTimestampFilename]];
 		_mapTimestamp = [[dictionary objectForKey:kLastUpdatedKey] longLongValue];
 		
-		MITMobileWebAPI* api = [MITMobileWebAPI jsonLoadedDelegate:self];
+		JSONAPIRequest* api = [JSONAPIRequest requestWithJSONAPIDelegate:self];
 		[api requestObjectFromModule:@"map" command:@"tilesupdated" parameters:nil];
         
         CLLocationCoordinate2D nw = [TileServerManager northWestBoundary];
@@ -54,9 +54,9 @@
 	return [documentPath stringByAppendingPathComponent:@"mapTimestamp.plist"];	
 }
 
-- (void)request:(MITMobileWebAPI *)request jsonLoaded:(id)JSONObject {
+- (void)request:(JSONAPIRequest *)request jsonLoaded:(id)JSONObject {
 	NSDictionary* dictionary = (NSDictionary*)JSONObject;
-	long long newMapTimestamp = [[dictionary objectForKey:kLastUpdatedKey] longLongValue];
+	//long long newMapTimestamp = [[dictionary objectForKey:kLastUpdatedKey] longLongValue];
 	
 	if (YES) {// (newMapTimestamp > _mapTimestamp) {
 		// store the new timestamp and wipe out the cache.
@@ -77,7 +77,7 @@
 	}
 }
 
-- (void)handleConnectionFailureForRequest:(MITMobileWebAPI *)request {
+- (void)handleConnectionFailureForRequest:(JSONAPIRequest *)request {
 	NSLog(@"Check tile update failed.");	
 }
 

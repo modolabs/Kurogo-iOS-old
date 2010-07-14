@@ -1,8 +1,8 @@
 #import <Foundation/Foundation.h>
 #import <MapKit/MapKit.h>
-#import "MITMobileWebAPI.h"
+#import "JSONAPIRequest.h"
 
-@interface MapTileOverlay : NSObject <MKOverlay, JSONLoadedDelegate> {
+@interface MapTileOverlay : NSObject <MKOverlay, JSONAPIDelegate> {
     
     CLLocationCoordinate2D coordinate;
     MKMapRect boundingMapRect;

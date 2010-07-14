@@ -156,7 +156,7 @@ static NSString * s_tileServerFilename = @"tileServer.plist";
         }
         
         if (!didSetup) {
-            MITMobileWebAPI *request = [MITMobileWebAPI jsonLoadedDelegate:self];
+            JSONAPIRequest *request = [JSONAPIRequest requestWithJSONAPIDelegate:self];
             [request requestObjectFromModule:@"map" command:@"capabilities" parameters:nil];
         }
     }
@@ -317,7 +317,7 @@ static NSString * s_tileServerFilename = @"tileServer.plist";
 
 - (void)getProjectionArgs {
     NSString *wkid = [NSString stringWithFormat:@"%d", _wkid];
-    MITMobileWebAPI *request = [MITMobileWebAPI jsonLoadedDelegate:self];
+    JSONAPIRequest *request = [JSONAPIRequest requestWithJSONAPIDelegate:self];
     request.userData = @"projection";
     [request requestObjectFromModule:@"map" command:@"proj4specs" parameters:[NSDictionary dictionaryWithObjectsAndKeys:wkid, @"wkid", nil]];
 }
@@ -486,7 +486,7 @@ static NSString * s_tileServerFilename = @"tileServer.plist";
     }
 }
 
-- (void)request:(MITMobileWebAPI *)request jsonLoaded:(id)result {
+- (void)request:(JSONAPIRequest *)request jsonLoaded:(id)result {
     if (result && [result isKindOfClass:[NSDictionary class]]) {
         if ([request.userData isEqualToString:@"projection"]) {
             

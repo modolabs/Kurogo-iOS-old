@@ -1,5 +1,5 @@
 #import <Foundation/Foundation.h>
-#import "MITMobileWebAPI.h"
+#import "JSONAPIRequest.h"
 #import "MapZoomLevel.h"
 #import "proj_api.h"
 
@@ -14,7 +14,7 @@
 
 @class MapZoomLevel;
 
-@interface TileServerManager : NSObject <JSONLoadedDelegate> {
+@interface TileServerManager : NSObject <JSONAPIDelegate> {
 
     NSArray *_mapLevels;
 
