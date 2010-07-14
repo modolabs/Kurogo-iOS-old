@@ -141,6 +141,19 @@ function verifySearchResultInfoPairs(expectedResultsDict)
 	return result;
 }
 
+// searchTerm_to_expectedSearchResultValues_map is a dictionary. Its keys are search terms.
+// Its values are a dictionary mapping expected result fields (e.g. email) to their expected values (e.g. jim.kang@modolabs.com).
+function runSearchTestSuite(testNameBase, searchTerm_to_expectedSearchResultValues_map)
+{
+	for (searchTerm in searchTerm_to_expectedSearchResultValues_map)
+	{
+		runSearch(searchTerm);
+		searchResult = verifySearchResultInfoPairs(searchTerm_to_expectedSearchResultValues_map[searchTerm]);
+		logTestResult(searchResult, "" + testNameBase + " search for " + searchTerm);
+		navigateBack();
+	}
+}
+
 function testSuite1()
 {	
 	var expectedSearchResultValues = {
@@ -149,35 +162,54 @@ function testSuite1()
 		"fax": "+1-617-864-1637"
 	};
 	
-	// When searching for just the last name, this person should be found, and that person's details 
-	// should match the ones in expectedSearchResultValues.
-	runSearch("Mercure");
-	logTestResult(verifySearchResultInfoPairs(expectedSearchResultValues), "Test Last Name Search");
-	navigateBack();
+	var termsToExpectedValues = {
+		"Mercure": expectedSearchResultValues, // Search for just the last name.
+		"Amy Mercure": expectedSearchResultValues // Search for the full name.
+	};
 
-	// When searching for the full name, this person should be found, and that person's details 
-	// should match the ones in expectedSearchResultValues.
-	runSearch("Amy Mercure");
-	logTestResult(verifySearchResultInfoPairs(expectedSearchResultValues), "Test Full Name Search");
-	navigateBack();
+	runSearchTestSuite("Test suite 1", termsToExpectedValues);
+}
 
-	var expectedSearchResultValuesForPhoneSearch = {
+function testSuite2()
+{	
+	var expectedSearchResultValues = {
 		"email": "filipe_campante@harvard.edu",
 		"phone": "+1-617-384-7958",
 		"dept": "KSG^Faculty Members",
 		"title": "Assistant Professor in Public Policy at the John F. Kennedy School of Government"
 	};
+	
+	var termsToExpectedValues = {
+		"4795": expectedSearchResultValues // Search for part of the phone number.
+	};
 
-	// When searching for just the last name, this person should be found, and that person's details 
-	// should match the ones in expectedSearchResultValues.
-	runSearch("4795");
-	logTestResult(verifySearchResultInfoPairs(expectedSearchResultValuesForPhoneSearch), "Test Partial Phone Number Search");	
+	runSearchTestSuite("Test suite 2", termsToExpectedValues);
 }
 
+function testSuite3()
+{	
+	var expectedSearchResultValues = {
+		"email": "lwisniewski@iq.harvard.edu",
+		"phone": "+1-617-496-7971",
+		"dept": "FAS^FCOR^Inst Quant SocSci-Stf",
+		"title": "IQSS Director of Technology Services"
+	};
+	
+	var termsToExpectedValues = {
+		"Wisniewski": expectedSearchResultValues, // Search for the last name
+		"Leonard Wisniewski": expectedSearchResultValues, // Search for the full name
+		"496 7971": expectedSearchResultValues, // Search for the phone number
+	};
+
+	runSearchTestSuite("Test suite 3", termsToExpectedValues);			
+}
 
 // "Main" block.
 
 // Provide a default grace period of 0.25 seconds for each action to complete.
 target.setTimeout(0.25);
 navigateToPeopleView();
+
 testSuite1();
+testSuite2();
+testSuite3();
