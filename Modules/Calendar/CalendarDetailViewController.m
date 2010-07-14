@@ -35,7 +35,7 @@ enum CalendarDetailRowTypes {
 	self.tableView.delegate = self;
 	self.tableView.dataSource = self;
 	self.tableView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
-
+	
 	[self.view addSubview:_tableView];
     
     if (isRegularEvent) {
@@ -47,15 +47,15 @@ enum CalendarDetailRowTypes {
     if (isRegularEvent) {
         [self requestEventDetails];
     }
-
+	
 	descriptionString = nil;
     categoriesString = nil;
 	
 	// setup nav bar
 	if (self.events.count > 1) {
 		UISegmentedControl *segmentControl = [[UISegmentedControl alloc] initWithItems:[NSArray arrayWithObjects:
-																						 [UIImage imageNamed:MITImageNameUpArrow],
-																						 [UIImage imageNamed:MITImageNameDownArrow], nil]];
+																						[UIImage imageNamed:MITImageNameUpArrow],
+																						[UIImage imageNamed:MITImageNameDownArrow], nil]];
 		[segmentControl setMomentary:YES];
 		[segmentControl addTarget:self action:@selector(showNextEvent:) forControlEvents:UIControlEventValueChanged];
 		segmentControl.segmentedControlStyle = UISegmentedControlStyleBar;
@@ -156,7 +156,7 @@ enum CalendarDetailRowTypes {
         CGSize textSize = [CalendarTag sizeWithFont:cellFont];
         // one line height per category, +1 each for "Categorized as" and <ul> spacing, 5px between lines
         categoriesHeight = (textSize.height + 5.0) * ([event.categories count] + 2);
-
+		
         numRows++;
 	}
 	
@@ -214,12 +214,12 @@ enum CalendarDetailRowTypes {
 }
 
 /*
-// Override to allow orientations other than the default portrait orientation.
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
-    // Return YES for supported orientations
-    return (interfaceOrientation == UIInterfaceOrientationPortrait);
-}
-*/
+ // Override to allow orientations other than the default portrait orientation.
+ - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
+ // Return YES for supported orientations
+ return (interfaceOrientation == UIInterfaceOrientationPortrait);
+ }
+ */
 
 - (void)didReceiveMemoryWarning {
 	// Releases the view if it doesn't have a superview.
@@ -238,10 +238,10 @@ enum CalendarDetailRowTypes {
     
     [descriptionString release];
     [categoriesString release];
-
+	
     descriptionString = nil;
     categoriesString = nil;
-
+	
     NSInteger catID = [[[self.event.categories anyObject] catID] intValue];
     isRegularEvent = (catID != kCalendarAcademicCategoryID && catID != kCalendarHolidayCategoryID);
 }
@@ -264,7 +264,7 @@ enum CalendarDetailRowTypes {
     
 	NSInteger rowType = rowTypes[indexPath.row];
 	NSString *CellIdentifier = [NSString stringWithFormat:@"%d", rowType];
-
+	
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil) {
         if (rowType == CalendarDetailRowTypeCategories || rowType == CalendarDetailRowTypeDescription) {
@@ -307,9 +307,10 @@ enum CalendarDetailRowTypes {
 			if (descriptionHeight > 0) {
 				webViewHeight = descriptionHeight;
 			} else {
-				webViewHeight = 2000;
+				webViewHeight =200; //was 2000
 			}
-
+			
+			descriptionString = [[self htmlStringFromString:self.event.summary] retain];
             CGRect frame = CGRectMake(WEB_VIEW_PADDING, WEB_VIEW_PADDING, self.tableView.frame.size.width - 2 * WEB_VIEW_PADDING, webViewHeight);
             if (!webView) {
                 webView = [[UIWebView alloc] initWithFrame:frame];
@@ -321,11 +322,29 @@ enum CalendarDetailRowTypes {
                 webView.frame = frame;
                 [webView loadHTMLString:descriptionString baseURL:nil];
             }
-					
+			
 			break;
         }
 		case CalendarDetailRowTypeCategories:
         {
+			NSMutableString *categoriesBody = [NSMutableString stringWithString:@"Categorized as:<ul>"];
+			for (EventCategory *category in event.categories) {
+				//NSString *catIDString = [NSString stringWithFormat:@"catID=%d", [category.catID intValue]];
+				//NSURL *categoryURL = [NSURL internalURLWithModuleTag:CalendarTag path:CalendarStateCategoryEventList query:catIDString];
+				NSURL *categoryURL = [NSURL internalURLWithModuleTag:CalendarTag path:CalendarStateCategoryEventList query:nil];
+				[categoriesBody appendString:[NSString stringWithFormat:
+											  @"<li><a href=\"%@\">%@</a></li>", [categoryURL absoluteString], category.title]];
+			}
+			
+			[categoriesBody appendString:@"</ul>"];
+			categoriesString = [[self htmlStringFromString:categoriesBody] retain];
+		
+			UIFont *cellFont = [UIFont fontWithName:STANDARD_FONT size:CELL_STANDARD_FONT_SIZE];
+			cell.textLabel.textColor = EMBEDDED_LINK_FONT_COLOR;
+			CGSize textSize = [CalendarTag sizeWithFont:cellFont];
+			// one line height per category, +1 each for "Categorized as" and <ul> spacing, 5px between lines
+			categoriesHeight = (textSize.height + 5.0) * ([event.categories count] + 2);
+			
             UIWebView *webView = (UIWebView *)[cell viewWithTag:kCategoriesWebViewTag];
             CGRect frame = CGRectMake(WEB_VIEW_PADDING, WEB_VIEW_PADDING, self.tableView.frame.size.width - 2 * WEB_VIEW_PADDING, categoriesHeight);
             if (!webView) {
@@ -338,7 +357,7 @@ enum CalendarDetailRowTypes {
                 webView.frame = frame;
                 [webView loadHTMLString:categoriesString baseURL:nil];
             }
-
+			
 			break;
         }
 	}
@@ -367,11 +386,11 @@ enum CalendarDetailRowTypes {
 	NSString *cellText = nil;
 	UIFont *cellFont = nil;
 	CGFloat constraintWidth;
-
+	
 	switch (rowType) {
 		case CalendarDetailRowTypeCategories:
 			return categoriesHeight;
-
+			
 		case CalendarDetailRowTypeTime:
 			cellText = [event dateStringWithDateStyle:NSDateFormatterFullStyle timeStyle:NSDateFormatterShortStyle separator:@"\n"];
 			cellFont = [UIFont fontWithName:BOLD_FONT size:CELL_STANDARD_FONT_SIZE];
@@ -384,7 +403,7 @@ enum CalendarDetailRowTypes {
 			} else {
 				return 400.0;
 			}
-
+			
 			break;
 		case CalendarDetailRowTypeURL:
 			cellText = event.url;
@@ -401,7 +420,7 @@ enum CalendarDetailRowTypes {
 		default:
 			return 44.0;
 	}
-
+	
 	CGSize textSize = [cellText sizeWithFont:cellFont
 						   constrainedToSize:CGSizeMake(constraintWidth, 2010.0)
 							   lineBreakMode:UILineBreakModeWordWrap];
@@ -411,7 +430,7 @@ enum CalendarDetailRowTypes {
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-
+	
 	NSInteger rowType = rowTypes[indexPath.row];
 	
 	switch (rowType) {
@@ -494,7 +513,7 @@ enum CalendarDetailRowTypes {
 - (void)dealloc {
 	self.event = nil;
 	free(rowTypes);
-
+	
 	[shareButton release];
     [categoriesString release];
     [descriptionString release];

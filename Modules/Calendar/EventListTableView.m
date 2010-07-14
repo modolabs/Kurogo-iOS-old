@@ -42,6 +42,8 @@
         if (searchSpan) {
             titleString = [NSString stringWithFormat:@"%@ in the next %@", titleString, searchSpan];
         }
+		else
+			 titleString = [NSString stringWithFormat:@"%@ in the next %@", titleString, @"Week"];
         
         titleView = [UITableView ungroupedSectionHeaderWithTitle:titleString];
 	}
@@ -67,7 +69,7 @@
     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     
 	CGSize textSize = [event.title sizeWithFont:cell.textLabel.font];
-	CGFloat textHeight = 10.0 + (textSize.width > maxWidth ? textSize.height * 2 : textSize.height);
+	CGFloat textHeight = 10.0 + (textSize.width > maxWidth ? textSize.height * 1 : textSize.height);
 
     cell.textLabelNumberOfLines = 2;
     cell.textLabelLineBreakMode = UILineBreakModeTailTruncation;
@@ -82,7 +84,7 @@
         locationTextLength = 20;
     } else {
         cell.detailTextLabel.text = [event dateStringWithDateStyle:NSDateFormatterShortStyle timeStyle:NSDateFormatterShortStyle separator:@" "];
-        locationTextLength = 10;
+        locationTextLength = 20; //was 10
     }
         
     if (event.shortloc) {

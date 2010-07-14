@@ -47,6 +47,7 @@
 	BOOL dateRangeDidChange;
 	
 	BOOL requestDispatched;
+	BOOL categoriesRequestDispatched;
 	JSONAPIRequest *apiRequest;
 	
 }
