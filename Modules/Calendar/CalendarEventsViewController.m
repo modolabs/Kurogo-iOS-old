@@ -835,7 +835,7 @@
 
 #pragma mark Map View Delegate
  
-- (void)mapView:(MKMapView *)mapView annotationViewcalloutAccessoryTapped:(MITMapAnnotationCalloutView *)view
+- (void)mapView:(MKMapView *)mapView annotationView:(MKAnnotationView *)view calloutAccessoryControlTapped:(UIControl *)control
 {
 	CalendarEventMapAnnotation *annotation = view.annotation;
 	MITCalendarEvent *event = nil;

@@ -1,5 +1,6 @@
 #import <Foundation/Foundation.h>
-#import "MITMapView.h"
+#import <MapKit/MapKit.h>
+//#import "MITMapView.h"
 
 @interface CalendarMapView : MKMapView {
 

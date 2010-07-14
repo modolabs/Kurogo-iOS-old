@@ -337,6 +337,9 @@
 
 - (void)navigationController:(UINavigationController *)navigationController didShowViewController:(UIViewController *)viewController animated:(BOOL)animated {
     
+    NSLog(@"%@", [navigationController description]);
+    //[(ModoNavigationController *)navigationController updateNavBar];
+    
     // See -tableView:didSelectRowAtIndexPath:indexPath below for the reason 
     // for this code.
     if (pendingNavigationStack) {
@@ -347,7 +350,7 @@
     
     NSArray *moreVCs = moreNavigationController.viewControllers;
     UIViewController *rootVC = [moreVCs objectAtIndex:0];
-    
+    NSLog(@"%@", [self.activeTabNavStack description]);
     if (viewController == rootVC) {
         // We've popped all the way back to the more list, 
         // so update old module's navstack
@@ -363,6 +366,7 @@
         // We're still in a module within the more list, 
         // so keep the separate copy of the nav stack in sync.
         self.activeTabNavStack = [moreVCs subarrayWithRange:NSMakeRange(1, [moreVCs count] - 1)];
+        [(ModoNavigationController *)navigationController updateNavBar];
     }
 }
 
@@ -405,6 +409,7 @@
     }
     self.activeTabNavStack = navStack;
     pendingNavigationStack = navStack;
+    NSLog(@"%@", [navStack description]);
     [moreNavigationController pushViewController:[navStack lastObject] animated:animated];    
 }
 

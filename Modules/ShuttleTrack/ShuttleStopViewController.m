@@ -121,13 +121,13 @@
 	_mapThumbnail.centerCoordinate = self.annotation.coordinate;
 	_mapThumbnail.scrollEnabled = NO;
 	_mapThumbnail.userInteractionEnabled = NO;
-	_mapThumbnail.layer.cornerRadius = 6.0;
+	//_mapThumbnail.layer.cornerRadius = 6.0;
 	
 	// add a button on top of the map
 	_mapButton = [[UIButton alloc] initWithFrame:CGRectMake(mapBuffer, mapBuffer, mapSize, mapSize)];
     
 	_mapButton.backgroundColor = [UIColor whiteColor];
-	_mapButton.layer.cornerRadius = 8.0;
+	//_mapButton.layer.cornerRadius = 8.0;
 	[_mapButton addSubview:_mapThumbnail];
     
 	[headerView addSubview:_mapButton];
@@ -460,14 +460,15 @@
 	[alertView release];	
 }
 
-#pragma mark MITMapViewDelegate
+#pragma mark MKMapViewDelegate
+
 - (MKAnnotationView *)mapView:(MKMapView *)mapView viewForAnnotation:(id <MKAnnotation>)annotation
 {
 	MKAnnotationView* annotationView = nil;
 	
 	if ([annotation isKindOfClass:[ShuttleStopMapAnnotation class]]) 
 	{
-		annotationView = [[[MKAnnotationView alloc] initWithAnnotation:annotation] autorelease];
+		annotationView = [[[MKAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:@"annotation"] autorelease];
 		UIImage* pin = [UIImage imageNamed:@"map_pin_shuttle_stop_complete.png"];
 		UIImageView* imageView = [[[UIImageView alloc] initWithImage:pin] autorelease];
 		annotationView.frame = imageView.frame;

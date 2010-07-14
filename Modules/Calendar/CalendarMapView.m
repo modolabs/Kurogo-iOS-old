@@ -21,11 +21,11 @@
 	// make sure these events always belong to the controller that owns us
 	_events = events;
 	
-	if (self.currentAnnotation == nil) {
+	if (![[self selectedAnnotations] count]) {
 		[self removeAnnotations:[self annotations]];
 	} else {
 		for (CalendarEventMapAnnotation *annotation in self.annotations) {
-			if (annotation != self.currentAnnotation) {
+			if (annotation != [[self selectedAnnotations] lastObject]) {
 				[self removeAnnotation:annotation];
 			}
 		}
@@ -59,17 +59,18 @@
 		}
 	}
 	
-    
-	CLLocationCoordinate2D center;
-	center.latitude = minLat + (maxLat - minLat) / 2;
-	center.longitude = minLon + (maxLon - minLon) / 2;
-	
-	double latDelta = maxLat - minLat;
-	double lonDelta = maxLon - minLon; 
-	
-	MKCoordinateSpan span = MKCoordinateSpanMake(latDelta + latDelta / 4, lonDelta + lonDelta / 4);
-	
-	[self setRegion:MKCoordinateRegionMake(center, span)];
+    if (minLat != 90) {
+        CLLocationCoordinate2D center;
+        center.latitude = minLat + (maxLat - minLat) / 2;
+        center.longitude = minLon + (maxLon - minLon) / 2;
+        
+        double latDelta = maxLat - minLat;
+        double lonDelta = maxLon - minLon; 
+        
+        MKCoordinateSpan span = MKCoordinateSpanMake(latDelta + latDelta / 4, lonDelta + lonDelta / 4);
+        
+        [self setRegion:MKCoordinateRegionMake(center, span)];
+    }
 }
 
 

@@ -1,7 +1,8 @@
 #import <UIKit/UIKit.h>
+#import <MapKit/MapKit.h>
 #import "ShuttleDataManager.h"
 #import "ShuttleSubscriptionManager.h"
-#import "MITMapView.h"
+//#import "MITMapView.h"
 #import "MITModuleURL.h"
 
 @class ShuttleStop;
@@ -38,7 +39,7 @@
 	NSMutableArray* _loadingSubscriptionRequests;
 	
 	// map thumbnail
-	MITMapView* _mapThumbnail;
+	MKMapView* _mapThumbnail;
 	
 	// button over the map thumbnail
 	UIButton* _mapButton;

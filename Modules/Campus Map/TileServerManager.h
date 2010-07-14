@@ -68,8 +68,8 @@
 + (CGPoint)projectedPointForCoord:(CLLocationCoordinate2D)coord;
 + (CLLocationCoordinate2D)coordForProjectedPoint:(CGPoint)point;
 
-+ (CGPoint)pixelPointForCoord:(CLLocationCoordinate2D)coord mapLevel:(MapZoomLevel *)mapLevel;
-+ (CLLocationCoordinate2D)coordForPixelPoint:(CGPoint)pixel mapLevel:(MapZoomLevel *)mapLevel;
+//+ (CGPoint)pixelPointForCoord:(CLLocationCoordinate2D)coord mapLevel:(MapZoomLevel *)mapLevel;
+//+ (CLLocationCoordinate2D)coordForPixelPoint:(CGPoint)pixel mapLevel:(MapZoomLevel *)mapLevel;
 
 //+ (MapTile)mapLevel:(MapZoomLevel *)mapLevel tileForRowAtScreenPixel:(CGPoint)pixel;
 //+ (CGSize)pixelSizeForMapLevel:(MapZoomLevel *)mapLevel;

@@ -79,8 +79,9 @@
 	[_mapView addAnnotation:self.annotation];
 	//_mapView.scrollEnabled = NO;
 	//_mapView.userInteractionEnabled = NO;
+
 	//_mapView.layer.cornerRadius = 6.0;
-	_mapViewContainer.layer.cornerRadius = 8.0;
+	//_mapViewContainer.layer.cornerRadius = 8.0;
 	
 	// buffer the annotation by 5px so it fits in the map thumbnail window.
 	//CGPoint screenPoint = [_mapView unscaledScreenPointForCoordinate:self.annotation.coordinate];

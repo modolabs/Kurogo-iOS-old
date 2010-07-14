@@ -11,14 +11,6 @@
     return self;
 }
 
-/*
- - (CGPoint)pointForMapPoint:(MKMapPoint)mapPoint
- - (MKMapPoint)mapPointForPoint:(CGPoint)point
- - (CGRect)rectForMapRect:(MKMapRect)mapRect
- - (MKMapRect)mapRectForRect:(CGRect)rect
- */
-
-
 - (BOOL)canDrawMapRect:(MKMapRect)mapRect zoomScale:(MKZoomScale)zoomScale {
 
     // get coordinate for map point; tile for coordinate
@@ -55,10 +47,10 @@
     
     for (MapTile *tile in tiles) {
         
-        NSLog(@"maprect: %.1f %.1f %.1f %.1f", tile.frame.origin.x, tile.frame.origin.y, tile.frame.size.width, tile.frame.size.height);
-        NSLog(@"maprect: %.1f %.1f %.1f %.1f", mapRect.origin.x, mapRect.origin.y, mapRect.size.width, mapRect.size.height);
+        //NSLog(@"maprect: %.1f %.1f %.1f %.1f", tile.frame.origin.x, tile.frame.origin.y, tile.frame.size.width, tile.frame.size.height);
+        //NSLog(@"maprect: %.1f %.1f %.1f %.1f", mapRect.origin.x, mapRect.origin.y, mapRect.size.width, mapRect.size.height);
         CGRect rect = [self rectForMapRect:tile.frame];
-        NSLog(@"rect: %.1f %.1f %.1f %.1f", rect.origin.x, rect.origin.y, rect.size.width, rect.size.height);
+        //NSLog(@"rect: %.1f %.1f %.1f %.1f", rect.origin.x, rect.origin.y, rect.size.width, rect.size.height);
         UIImage *image = [[UIImage alloc] initWithContentsOfFile:tile.path];
         if (image == nil) {
             NSLog(@"image is nil");

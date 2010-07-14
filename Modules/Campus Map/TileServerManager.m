@@ -34,8 +34,8 @@
 - (CGPoint)projectedPointForCoord:(CLLocationCoordinate2D)coord;
 - (CLLocationCoordinate2D)coordForProjectedPoint:(CGPoint)point;
 
-- (CGPoint)pixelPointForCoord:(CLLocationCoordinate2D)coord mapLevel:(MapZoomLevel *)mapLevel;
-- (CLLocationCoordinate2D)coordForPixelPoint:(CGPoint)pixel mapLevel:(MapZoomLevel *)mapLevel;
+//- (CGPoint)pixelPointForCoord:(CLLocationCoordinate2D)coord mapLevel:(MapZoomLevel *)mapLevel;
+//- (CLLocationCoordinate2D)coordForPixelPoint:(CGPoint)pixel mapLevel:(MapZoomLevel *)mapLevel;
 
 - (void)setupProjection:(const char *)projString;
 
@@ -114,7 +114,7 @@ static NSString * s_tileServerFilename = @"tileServer.plist";
 + (CLLocationCoordinate2D)coordForProjectedPoint:(CGPoint)point {
     return [[TileServerManager manager] coordForProjectedPoint:point];
 }
-
+/*
 + (CGPoint)pixelPointForCoord:(CLLocationCoordinate2D)coord mapLevel:(MapZoomLevel *)mapLevel {
     return [[TileServerManager manager] pixelPointForCoord:coord mapLevel:mapLevel];
 }
@@ -122,7 +122,7 @@ static NSString * s_tileServerFilename = @"tileServer.plist";
 + (CLLocationCoordinate2D)coordForPixelPoint:(CGPoint)pixel mapLevel:(MapZoomLevel *)mapLevel {
     return [[TileServerManager manager] coordForPixelPoint:pixel mapLevel:mapLevel];
 }
-
+*/
 + (void)registerDelegate:(id<TileServerDelegate>)delegate {
     [[TileServerManager manager] registerDelegate:delegate];
 }
@@ -156,9 +156,8 @@ static NSString * s_tileServerFilename = @"tileServer.plist";
         }
         
         if (!didSetup) {
-            NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:@"capabilities", @"command", nil];
             MITMobileWebAPI *request = [MITMobileWebAPI jsonLoadedDelegate:self];
-            [request requestObject:params pathExtension:@"map/"];
+            [request requestObjectFromModule:@"map" command:@"capabilities" parameters:nil];
         }
     }
     return self;
@@ -273,6 +272,7 @@ static NSString * s_tileServerFilename = @"tileServer.plist";
     }
 }
 
+/*
 - (CLLocationCoordinate2D)coordForPixelPoint:(CGPoint)pixel mapLevel:(MapZoomLevel *)mapLevel {
     NSLog(@"converting from pixel: %.1f %.1f", pixel.x, pixel.y);
     if (_isWebMercator) {
@@ -313,13 +313,13 @@ static NSString * s_tileServerFilename = @"tileServer.plist";
         return [mapLevel pixelPointForProjectedCoord:projected];
     }
 }
+*/
 
 - (void)getProjectionArgs {
     NSString *wkid = [NSString stringWithFormat:@"%d", _wkid];
-    NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:wkid, @"wkid", @"proj4specs", @"command", nil];
     MITMobileWebAPI *request = [MITMobileWebAPI jsonLoadedDelegate:self];
     request.userData = @"projection";
-    [request requestObject:params pathExtension:@"map/"];
+    [request requestObjectFromModule:@"map" command:@"proj4specs" parameters:[NSDictionary dictionaryWithObjectsAndKeys:wkid, @"wkid", nil]];
 }
 
 - (void)registerDelegate:(id<TileServerDelegate>)delegate {
@@ -403,10 +403,6 @@ static NSString * s_tileServerFilename = @"tileServer.plist";
         [zoomLevels addObject:zoomLevel];
     }
     
-    //for (MapZoomLevel *zoomLevel in zoomLevels) {
-    //    zoomLevel.zoomScale = zoomLevel.resolution / baseResolution;
-    //}
-    
     _mapLevels = [[NSArray arrayWithArray:zoomLevels] retain];
     
     // take care of projection
@@ -448,6 +444,7 @@ static NSString * s_tileServerFilename = @"tileServer.plist";
 
     CGPoint wp = [self projectedPointForCoord:west];
     CGPoint ep = [self projectedPointForCoord:east];
+    NSLog(@"equator could be %.1f units", fabs(ep.x) + fabs(wp.x));
     
     //_circumferenceInProjectedUnits = fabs(ep.x) + fabs(wp.x);
     _circumferenceInProjectedUnits = -2 * _originX;

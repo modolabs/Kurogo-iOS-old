@@ -45,7 +45,7 @@
 - (NSString *)pathForTileAtRow:(int)row col:(int)col {
     return [[MapZoomLevel tileCachePath] stringByAppendingPathComponent:[NSString stringWithFormat:@"%d-%d-%d", self.level, row, col]];
 }
-
+/*
 - (MapTile *)tileForMapPoint:(MKMapPoint)mapPoint {
     NSLog(@"mappoint: %.1f, %.1f", mapPoint.x, mapPoint.y);
     
@@ -76,7 +76,7 @@
     if (![[NSFileManager defaultManager] fileExistsAtPath:tile.path]) {
 		//MIT_MobileAppDelegate *appDelegate = (MIT_MobileAppDelegate *)[[UIApplication sharedApplication] delegate];
         //[appDelegate showNetworkActivityIndicator];
-        NSString* sUrl = [NSString stringWithFormat:@"%@%@/tile2/%d/%d/%d", MITMobileWebAPIURLString, @"map", level, row, col];
+        NSString* sUrl = [NSString stringWithFormat:@"%@/maptile/%d/%d/%d", MITMobileWebAPIURLString, level, row, col];
         NSURL* url = [NSURL URLWithString:sUrl];
         NSLog(@"requesting from %@", sUrl);
         
@@ -99,7 +99,7 @@
     //tile.row = [self tilesPerRow] * (int)floor(projPoint.y / [TileServerManager meridianLengthInProjectedUnits]);
     return tile;
 }
-
+*/
 - (MapTile *)tileForRow:(int)row col:(int)col {
     CGPoint tileOrigin = CGPointMake(col * self.resolution * [TileServerManager tileWidth] + [TileServerManager originX],
                                      [TileServerManager originY] - row * self.resolution * [TileServerManager tileHeight]);
@@ -120,7 +120,7 @@
         NSLog(@"%@", tile.path);
 		//MIT_MobileAppDelegate *appDelegate = (MIT_MobileAppDelegate *)[[UIApplication sharedApplication] delegate];
         //[appDelegate showNetworkActivityIndicator];
-        NSString* sUrl = [NSString stringWithFormat:@"%@%@/tile2/%d/%d/%d", MITMobileWebAPIURLString, @"map", level, row, col];
+        NSString* sUrl = [NSString stringWithFormat:@"%@/maptile/%d/%d/%d", MITMobileWebAPIURLString, level, row, col];
         NSURL* url = [NSURL URLWithString:sUrl];
         NSLog(@"requesting from %@", sUrl);
         
@@ -207,7 +207,6 @@
 - (CGFloat)radiusInPixels {
     return [self circumferenceInPixels] / (2 * M_PI);
 }
-*/
 
 #pragma mark Conversions between projected units and pixels for web mercator projection
 
@@ -224,5 +223,7 @@
     projected.y = pixel.y * resolution;
     return projected;
 }
+ 
+*/
 
 @end

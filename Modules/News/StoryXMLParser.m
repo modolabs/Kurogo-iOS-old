@@ -41,20 +41,25 @@
 
 NSString * const NewsTagItem            = @"item";
 NSString * const NewsTagTitle           = @"title";
-NSString * const NewsTagAuthor          = @"author";
+NSString * const NewsTagAuthor          = @"dc:creator";
 NSString * const NewsTagCategory        = @"category";
 NSString * const NewsTagLink            = @"link";
-NSString * const NewsTagStoryId         = @"story_id";
+NSString * const NewsTagStoryId         = @"WPID";
 NSString * const NewsTagFeatured        = @"featured";
 NSString * const NewsTagSummary         = @"description";
-NSString * const NewsTagPostDate        = @"postDate";
-NSString * const NewsTagBody            = @"body";
+NSString * const NewsTagPostDate        = @"pubDate";
+NSString * const NewsTagBody            = @"content:encoded";
 
 NSString * const NewsTagImage           = @"image";
+NSString * const NewsTagImageTitle      = @"title";
+NSString * const NewsTagImageLink       = @"link";
+NSString * const NewsTagFullURL         = @"url";
+
+// stuff to remove
 NSString * const NewsTagOtherImages     = @"otherImages";
 NSString * const NewsTagThumbnailURL    = @"thumbURL";
 NSString * const NewsTagSmallURL        = @"smallURL";
-NSString * const NewsTagFullURL         = @"fullURL";
+//NSString * const NewsTagFullURL         = @"fullURL";
 NSString * const NewsTagImageCredits    = @"imageCredits";
 NSString * const NewsTagImageCaption    = @"imageCaption";
 
@@ -106,29 +111,39 @@ NSString * const NewsTagImageHeight     = @"height";
 
 - (void)loadStoriesForCategory:(NSInteger)category afterStoryId:(NSInteger)storyId count:(NSInteger)count {
 	self.isSearch = NO;
+    /*
 #ifdef USE_MOBILE_DEV
     NSString *newsPath = @"newsoffice-dev";
 #else
     NSString *newsPath = @"newsoffice";
 #endif
     NSURL *baseURL = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@/", MITMobileWebAPIURLString, newsPath]];
-    NSMutableString *pathString = [NSMutableString stringWithCapacity:22];
-    NSMutableArray *params = [NSMutableArray arrayWithCapacity:2];
+    */
+    //NSMutableString *pathString = [NSMutableString stringWithCapacity:22];
+    NSMutableDictionary *params = [NSMutableDictionary dictionaryWithCapacity:3];
+    [params setObject:@"news" forKey:@"module"];
+    
+    //NSMutableArray *params = [NSMutableArray arrayWithCapacity:2];
     if (category != 0) {
-        [params addObject:[NSString stringWithFormat:@"channel=%d", category]];
+        //[params addObject:[NSString stringWithFormat:@"channel=%d", category]];
+        [params setObject:[NSString stringWithFormat:@"%d", category] forKey:@"channel"];
     } else {
         parsingTopStories = TRUE;
     }
 	self.loadingMore = NO;
     if (storyId != 0) {
 		self.loadingMore = YES;
-        [params addObject:[NSString stringWithFormat:@"story_id=%d", storyId]];
+        [params setObject:[NSString stringWithFormat:@"%d", storyId] forKey:@"storyId"];
+        //[params addObject:[NSString stringWithFormat:@"story_id=%d", storyId]];
     }
-    if ([params count] > 0) {
-        [pathString appendString:@"?"];
-    }
-    [pathString appendString:[params componentsJoinedByString:@"&"]];
-    NSURL *fullURL = [NSURL URLWithString:pathString relativeToURL:baseURL];
+    //if ([params count] > 0) {
+    //    [pathString appendString:@"?"];
+    //}
+    //[pathString appendString:[params componentsJoinedByString:@"&"]];
+
+    NSURL *fullURL = [MITMobileWebAPI buildURL:params queryBase:MITMobileWebAPIURLString];
+    
+    //NSURL *fullURL = [NSURL URLWithString:pathString relativeToURL:baseURL];
     
     expectedStoryCount = 10; // if the server is ever made to support a range param, set this to count instead
     
@@ -246,11 +261,20 @@ NSString * const NewsTagImageHeight     = @"height";
     
     if (!imageWhitelist) {
         imageWhitelist = [[NSArray arrayWithObjects:
+                           NewsTagImageTitle,
+                           NewsTagImageLink,
+                           NewsTagFullURL,
+                           NewsTagImageWidth,
+                           NewsTagImageHeight, nil] retain];
+
+        /*
+        imageWhitelist = [[NSArray arrayWithObjects:
                       NewsTagThumbnailURL,
                       NewsTagSmallURL,
                       NewsTagFullURL,
                       NewsTagImageCredits,
                       NewsTagImageCaption, nil] retain];
+         */
     }
     return imageWhitelist;
 }
@@ -268,9 +292,9 @@ NSString * const NewsTagImageHeight     = @"height";
         for (NSString *key in whitelist) {
             [currentContents setObject:[NSMutableString string] forKey:key];
         }
-	} else if ([elementName isEqualToString:NewsTagOtherImages]) {
+	}/* else if ([elementName isEqualToString:NewsTagOtherImages]) {
         [currentContents setObject:[NSMutableArray array] forKey:NewsTagOtherImages];
-    } else if ([elementName isEqualToString:NewsTagImage]) {
+    }*/ else if ([elementName isEqualToString:NewsTagImage]) {
         // prep new image element
         self.currentImage = [NSMutableDictionary dictionary];
         NSArray *whitelist = [self imageWhitelist];
@@ -285,11 +309,11 @@ NSString * const NewsTagImageHeight     = @"height";
             NSMutableArray *otherImages = [currentContents objectForKey:NewsTagOtherImages];
             [otherImages addObject:currentImage];
         }
-    } else if ([elementName isEqualToString:NewsTagSmallURL] && currentImage) {
+    }/* else if ([elementName isEqualToString:NewsTagSmallURL] && currentImage) {
         [currentImage setObject:attributeDict forKey:@"smallSize"];
     } else if ([elementName isEqualToString:NewsTagFullURL] && currentImage) {
         [currentImage setObject:attributeDict forKey:@"fullSize"];
-    } else if ([elementName isEqualToString:@"items"]) {
+    }*/ else if ([elementName isEqualToString:@"items"]) {
 		NSNumber *totalResults = [attributeDict objectForKey:@"totalResults"];
 		if (totalResults) {
 			self.totalAvailableResults = [totalResults integerValue];
@@ -375,7 +399,7 @@ NSString * const NewsTagImageHeight     = @"height";
                     [story addGalleryImage:anImage];
                 }
             }
-
+        
             [self performSelectorOnMainThread:@selector(reportProgress:) withObject:[NSNumber numberWithFloat:[newStories count] / (0.01 * expectedStoryCount)] waitUntilDone:NO];
 
             [newStories addObject:story];
@@ -471,6 +495,8 @@ NSString * const NewsTagImageHeight     = @"height";
 }
          
 - (void)parserDidEndDocument:(NSXMLParser *)parser {
+    //NSLog(@"%@", [newStories description]);
+    
     if (shouldAbort) {
         [parser abortParsing];
         return;

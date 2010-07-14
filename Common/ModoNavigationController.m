@@ -14,6 +14,10 @@
     return self;
 }
 
+- (void)updateNavBar {
+    [self.modoNavBar update];
+}
+
 - (void)loadView {
     [super loadView];
     [self.navigationBar removeFromSuperview];
@@ -22,25 +26,30 @@
 
 - (void)pushViewController:(UIViewController *)viewController animated:(BOOL)animated {
     [super pushViewController:viewController animated:animated];
-    [self.modoNavBar update];
+    [self updateNavBar];
 }
 
 - (UIViewController *)popViewControllerAnimated:(BOOL)animated {
     UIViewController *vc = [super popViewControllerAnimated:animated];
-    [self.modoNavBar update];
+    [self updateNavBar];
     return vc;
 }
 
 - (NSArray *)popToRootViewControllerAnimated:(BOOL)animated {
     NSArray *vcArray = [super popToRootViewControllerAnimated:animated];
-    [self.modoNavBar update];
+    [self updateNavBar];
     return vcArray;
 }
 
 - (NSArray *)popToViewController:(UIViewController *)viewController animated:(BOOL)animated {
     NSArray *vcArray = [super popToViewController:viewController animated:animated];
-    [self.modoNavBar update];
+    [self updateNavBar];
     return vcArray;
+}
+
+- (void)setViewControllers:(NSArray *)viewControllers animated:(BOOL)animated {
+    [super setViewControllers:viewControllers animated:animated];
+    [self updateNavBar];
 }
 
 /*

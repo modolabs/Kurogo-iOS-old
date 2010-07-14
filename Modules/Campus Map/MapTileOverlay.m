@@ -11,7 +11,7 @@
 		_mapTimestamp = [[dictionary objectForKey:kLastUpdatedKey] longLongValue];
 		
 		MITMobileWebAPI* api = [MITMobileWebAPI jsonLoadedDelegate:self];
-		[api requestObject:[NSDictionary dictionaryWithObject:@"tilesupdated" forKey:@"command"] pathExtension:@"map"];
+		[api requestObjectFromModule:@"map" command:@"tilesupdated" parameters:nil];
         
         CLLocationCoordinate2D nw = [TileServerManager northWestBoundary];
         CLLocationCoordinate2D se = [TileServerManager southEastBoundary];

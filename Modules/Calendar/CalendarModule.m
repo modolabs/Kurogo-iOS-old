@@ -70,7 +70,7 @@
 		if (!eventsVC.showList) {
 			[queryDict setObject:@"yes" forKey:@"map"];
 			
-			CalendarEventMapAnnotation *annotation = (CalendarEventMapAnnotation *)eventsVC.mapView.currentAnnotation;
+			CalendarEventMapAnnotation *annotation = (CalendarEventMapAnnotation *)[[eventsVC.mapView selectedAnnotations] lastObject];
 			if (annotation != nil) {
 				NSInteger eventID = annotation.eventID;
 				[queryDict setObject:[NSString stringWithFormat:@"%d", eventID] forKey:@"eventID"];

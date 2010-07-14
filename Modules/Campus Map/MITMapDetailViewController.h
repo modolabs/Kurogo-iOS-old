@@ -1,7 +1,8 @@
 
 #import <UIKit/UIKit.h>
+#import <MapKit/MapKit.h>
 #import "TabViewControl.h"
-#import "MITMapView.h"
+//#import "MITMapView.h"
 #import "MITMobileWebAPI.h"
 #import "ConnectionWrapper.h"
 

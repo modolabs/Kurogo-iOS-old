@@ -37,10 +37,10 @@
 
 - (NSString *)pathForTileAtRow:(int)row col:(int)col;
 - (NSArray *)tilesForMapRect:(MKMapRect)mapRect;
-
+/*
 - (CGPoint)pixelPointForProjectedCoord:(CGPoint)projected;
 - (CGPoint)projectedCoordForPixelPoint:(CGPoint)pixel;
-/*
+
 - (NSInteger)pixelsPerCol;
 - (NSInteger)pixelsPerRow;
 - (CGFloat)circumferenceInPixels;

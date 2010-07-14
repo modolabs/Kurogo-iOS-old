@@ -292,8 +292,9 @@
 }
 
 
-#pragma mark MITMapViewDelegate
-- (void)mapViewRegionWillChange:(MITMapView*)mapView
+#pragma mark MKMapViewDelegate
+
+- (void)mapViewRegionWillChange:(MKMapView *)mapView
 {
 	//_gpsButton.style = _mapView.stayCenteredOnUserLocation ? UIBarButtonItemStyleDone : UIBarButtonItemStyleBordered;
 	//NSString *bgImageName = [NSString stringWithFormat:@"scrim-button-background%@.png", _mapView.stayCenteredOnUserLocation ? @"-highlighted" : @""];
@@ -301,7 +302,7 @@
 }
 
 
--(void) mapViewRegionDidChange:(MITMapView*)mapView
+- (void)mapViewRegionDidChange:(MKMapView *)mapView
 {
 	//NSString *bgImageName = [NSString stringWithFormat:@"scrim-button-background%@.png", _mapView.stayCenteredOnUserLocation ? @"-highlighted" : @""];
 	//[_gpsButton setBackgroundImage:[UIImage imageNamed:bgImageName] forState:UIControlStateNormal];
@@ -334,13 +335,13 @@
 	//}	
 }
 
-- (MKAnnotationView *)mapView:(MITMapView *)mapView viewForAnnotation:(id <MKAnnotation>)annotation
+- (MKAnnotationView *)mapView:(MKMapView *)mapView viewForAnnotation:(id <MKAnnotation>)annotation
 {
 	MKAnnotationView* annotationView = nil;
 	
 	if ([annotation isKindOfClass:[ShuttleStopMapAnnotation class]]) 
 	{
-		annotationView = [[[MKAnnotationView alloc] initWithAnnotation:annotation] autorelease];
+		annotationView = [[[MKAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:@"gufileg"] autorelease];
 		UIImage* pin = [UIImage imageNamed:@"shuttle-stop-dot.png"];
 		UIImageView* imageView = [[[UIImageView alloc] initWithImage:pin] autorelease];
 		annotationView.frame = imageView.frame;
@@ -355,7 +356,7 @@
 	{
 		ShuttleLocation* shuttleLocation = (ShuttleLocation*) annotation;
 		
-		annotationView = [[[MKAnnotationView alloc] initWithAnnotation:annotation] autorelease];
+		annotationView = [[[MKAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:@"asdf"] autorelease];
 		UIImage* pin = [UIImage imageNamed:@"shuttle-bus-location.png"];
 		UIImageView* imageView = [[[UIImageView alloc] initWithImage:pin] autorelease];
 		
@@ -365,7 +366,7 @@
 		CGAffineTransform cgCTM = CGAffineTransformMakeRotation(DEGREES_TO_RADIANS(shuttleLocation.heading));
 		arrowImageView.frame = CGRectMake(9, 10, arrowImageView.frame.size.width, arrowImageView.frame.size.height);
 		CGFloat verticalAnchor = (arrowImageView.frame.size.height / 2 + 1.5) / arrowImageView.frame.size.height;
-		arrowImageView.layer.anchorPoint = CGPointMake(0.5, verticalAnchor);
+		//arrowImageView.layer.anchorPoint = CGPointMake(0.5, verticalAnchor);
 		arrowImageView.transform = cgCTM;
 		
 		annotationView.frame = imageView.frame;
@@ -382,7 +383,7 @@
 	
 }
 
-- (void)mapView:(MITMapView *)mapView annotationViewcalloutAccessoryTapped:(MITMapAnnotationCalloutView *)view
+- (void)mapView:(MKMapView *)mapView annotationView:(MKAnnotationView *)view calloutAccessoryControlTapped:(UIControl *)control
 {
 	if ([view.annotation isKindOfClass:[ShuttleStopMapAnnotation class]])
 	{
@@ -398,12 +399,6 @@
 -(void) showSelectedStop:(id)sender
 {
 	[self.navigationController popViewControllerAnimated:YES];
-}
-
-// any touch on the map will invoke this.  
-- (void)mapView:(MITMapView *)mapView wasTouched:(UITouch*)touch
-{
-	
 }
 
 -(void) annotationSelected:(id<MKAnnotation>)annotation {

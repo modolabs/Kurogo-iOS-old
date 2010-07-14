@@ -1,6 +1,6 @@
 #import <UIKit/UIKit.h>
 #import "MITMobileWebAPI.h"
-#import "MITMapView.h"
+//#import "MITMapView.h"
 #import "CalendarConstants.h"
 #import "EventCategoriesTableView.h"
 #import "EventListTableView.h"
