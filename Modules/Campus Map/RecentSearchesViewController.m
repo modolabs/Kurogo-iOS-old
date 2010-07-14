@@ -8,7 +8,7 @@
 
 #import "RecentSearchesViewController.h"
 #import "CoreDataManager.h"
-#import "MITConstants.h"
+#import "Constants.h"
 #import "MITUIConstants.h"
 #import "MapSelectionController.h"
 #import "MapSearch.h"

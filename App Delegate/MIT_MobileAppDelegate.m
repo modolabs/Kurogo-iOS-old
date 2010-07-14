@@ -269,9 +269,8 @@ didReceiveRemoteNotification:(NSDictionary *)userInfo {
 	[notificationView release];
 }
 
-- (void)application:(UIApplication *)application 
-didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
-	//NSLog(@"Registered for push notifications. deviceToken == %@", deviceToken);
+- (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
+	NSLog(@"Registered for push notifications. deviceToken == %@", deviceToken);
     self.deviceToken = deviceToken;
     
 	MITIdentity *identity = [MITDeviceRegistration identity];
@@ -286,9 +285,8 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
 	}
 }
 
-- (void)application:(UIApplication *)application 
-didFailToRegisterForRemoteNotificationsWithError:(NSError *)error {
-    //NSLog(@"Failed to register for remote notifications. Error: %@", error);
+- (void)application:(UIApplication *)application didFailToRegisterForRemoteNotificationsWithError:(NSError *)error {
+    NSLog(@"Failed to register for remote notifications. Error: %@", error);
 	MITIdentity *identity = [MITDeviceRegistration identity];
 	if(!identity) {
 		[MITDeviceRegistration registerNewDeviceWithToken:nil];

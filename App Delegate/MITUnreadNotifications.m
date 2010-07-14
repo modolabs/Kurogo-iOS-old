@@ -113,7 +113,7 @@
 	
 	if(identity) {
 		NSMutableDictionary *parameters = [identity mutableDictionary];
-		[[MITMobileWebAPI jsonLoadedDelegate:[[SynchronizeUnreadNotificationsDelegate new] autorelease]]
+		[[JSONAPIRequest requestWithJSONAPIDelegate:[[SynchronizeUnreadNotificationsDelegate new] autorelease]]
 			requestObjectFromModule:@"push" command:@"getUnreadNotifications" parameters:parameters];
 	}
 }
@@ -134,7 +134,7 @@
 			NSMutableDictionary *parameters = [identity mutableDictionary];
 			[parameters setObject:[sbjson stringWithObject:noticeStrings] forKey:@"tags"];
 		
-			[[MITMobileWebAPI jsonLoadedDelegate:[[SynchronizeUnreadNotificationsDelegate new] autorelease]]
+			[[JSONAPIRequest requestWithJSONAPIDelegate:[[SynchronizeUnreadNotificationsDelegate new] autorelease]]
 				requestObjectFromModule:@"push" command:@"markNotificationsAsRead" parameters:parameters];
 		
 			[sbjson release];
@@ -209,7 +209,7 @@
 
 @implementation SynchronizeUnreadNotificationsDelegate 
 
-- (void)request:(MITMobileWebAPI *)request jsonLoaded: (id)JSONObject {
+- (void)request:(JSONAPIRequest *)request jsonLoaded: (id)JSONObject {
 	if (JSONObject && [JSONObject isKindOfClass:[NSArray class]]) {
 		NSMutableArray *notifications = [NSMutableArray array];
 		for(NSString *noticeString in (NSArray *)JSONObject) {

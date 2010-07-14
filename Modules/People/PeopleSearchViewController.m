@@ -258,7 +258,7 @@ NSInteger strLenSort(NSString *str1, NSString *str2, void *context)
 	[tempTokens sortUsingFunction:strLenSort context:NULL]; // match longer tokens first
 	self.searchTokens = [NSArray arrayWithArray:tempTokens];
 	
-	api = [MITMobileWebAPI jsonLoadedDelegate:self];
+	api = [JSONAPIRequest requestWithJSONAPIDelegate:self];
 	requestWasDispatched = [api requestObject:[NSDictionary dictionaryWithObjectsAndKeys:@"people", @"module", self.searchTerms, @"q", nil]];
 	
     if (requestWasDispatched) {
@@ -304,31 +304,29 @@ NSInteger strLenSort(NSString *str1, NSString *str2, void *context)
     
 	static NSString *secondaryCellID = @"InfoCell";
 	static NSString *recentCellID = @"RecentCell";
+	UITableViewCell *cell = nil;
 
-	if (tableView == self.tableView) { // show phone directory tel #, recents
-	
+	if (tableView == self.tableView) { // show phone directory tel #, recents	
 	
 		if (indexPath.section == 0) {
 			
-			SecondaryGroupedTableViewCell *cell = (SecondaryGroupedTableViewCell *)[tableView dequeueReusableCellWithIdentifier:secondaryCellID];
+			cell = [tableView dequeueReusableCellWithIdentifier:secondaryCellID];
 			if (cell == nil) {
 				cell = [[[SecondaryGroupedTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:secondaryCellID] autorelease];
 
 				if (indexPath.row == 0) {
 					cell.textLabel.text = @"Phone Directory";
-					cell.secondaryTextLabel.text = @"(617.253.1000)";
+					[(SecondaryGroupedTableViewCell *)cell secondaryTextLabel].text = @"(617.253.1000)";
 					cell.accessoryView = [UIImageView accessoryViewWithMITType:MITAccessoryViewPhone];
 				} else {
 					cell.textLabel.text = @"Emergency Contacts";
 					cell.accessoryView = [UIImageView accessoryViewWithMITType:MITAccessoryViewEmergency];
 				}
 			}
-			
-			return cell;
 		
 		} else { // recents
 			
-			UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:recentCellID];
+			cell = [tableView dequeueReusableCellWithIdentifier:recentCellID];
 			if (cell == nil) {
 				cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:recentCellID] autorelease];
 			}
@@ -349,13 +347,11 @@ NSInteger strLenSort(NSString *str1, NSString *str2, void *context)
 					break;
 				}
 			}
-			
-			return cell;
 		}
 		
 	} else { // search results
 		
-		PartialHighlightTableViewCell *cell = (PartialHighlightTableViewCell *)[tableView dequeueReusableCellWithIdentifier:@"ResultCell"];
+		cell = [tableView dequeueReusableCellWithIdentifier:@"ResultCell"];
 		if (cell == nil) {
 			cell = [[[PartialHighlightTableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"ResultCell"] autorelease];
 			cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
@@ -397,11 +393,12 @@ NSInteger strLenSort(NSString *str1, NSString *str2, void *context)
 		}
 		
 		cell.textLabel.text = preformatString;
-
-		
-		return cell;
 	}
 	
+	cell.isAccessibilityElement = YES;
+	cell.accessibilityLabel = cell.textLabel.text;
+
+	return cell;	
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -499,7 +496,7 @@ NSInteger strLenSort(NSString *str1, NSString *str2, void *context)
 	[self.loadingView removeFromSuperview];	
 }
 
-- (void)request:(MITMobileWebAPI *)request jsonLoaded:(id)result {
+- (void)request:(JSONAPIRequest *)request jsonLoaded:(id)result {
     [self cleanUpConnection];
 	
 	if (result && [result isKindOfClass:[NSArray class]]) {
@@ -526,7 +523,7 @@ NSInteger strLenSort(NSString *str1, NSString *str2, void *context)
 	[self.searchController.searchResultsTableView reloadData];
 }
 
-- (void)handleConnectionFailureForRequest:(MITMobileWebAPI *)request
+- (void)handleConnectionFailureForRequest:(JSONAPIRequest *)request
 {
 	[self cleanUpConnection];
 	

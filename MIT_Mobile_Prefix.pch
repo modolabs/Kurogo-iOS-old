@@ -11,5 +11,11 @@
 #ifdef __OBJC__
     #import <Foundation/Foundation.h>
     #import <UIKit/UIKit.h>
-    #import "MITConstants.h" // shared constants (common URLs, NSUserDefaults keys, etc)
+    #import "Constants.h" // shared constants (common URLs, NSUserDefaults keys, etc)
+#endif
+
+#ifdef USE_MOBILE_DEV
+#define DLog( s, ... ) NSLog( @"<%p %@:(%d)> %@", self, [[NSString stringWithUTF8String:__FILE__] lastPathComponent], __LINE__, [NSString stringWithFormat:(s), ##__VA_ARGS__] )
+#else
+#define DLog( s, ... ) 
 #endif

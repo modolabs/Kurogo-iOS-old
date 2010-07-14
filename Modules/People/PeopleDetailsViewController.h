@@ -3,13 +3,13 @@
 #import <AddressBookUI/AddressBookUI.h>
 #import <MessageUI/MFMailComposeViewController.h>
 #import "PersonDetails.h"
-#import "MITMobileWebAPI.h"
+#import "JSONAPIRequest.h"
 
 @interface PeopleDetailsViewController : UITableViewController 
 	<ABPeoplePickerNavigationControllerDelegate, 
 	 ABNewPersonViewControllerDelegate, 
 	 ABPersonViewControllerDelegate, 
-	 JSONLoadedDelegate,
+	 JSONAPIDelegate,
 	 //UIAlertViewDelegate, 
 	 MFMailComposeViewControllerDelegate> 
 {

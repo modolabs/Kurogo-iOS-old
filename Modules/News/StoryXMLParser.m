@@ -2,7 +2,7 @@
 #import "NewsStory.h"
 #import "CoreDataManager.h"
 #import "MIT_MobileAppDelegate.h"
-#import "MITMobileWebAPI.h"
+#import "JSONAPIRequest.h"
 
 @interface StoryXMLParser (Private)
 

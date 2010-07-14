@@ -9,6 +9,7 @@
 #import "SettingsModule.h"
 #import "AboutModule.h"
 #import "CalendarModule.h"
+#import "DiningModule.h"
 #import "MITTabBarController.h"
 
 // #import your module's header here
@@ -27,6 +28,7 @@
     
     // add your MITModule subclass here by duplicating this line
     //[result addObject:[[[YourMITModuleSubclass alloc] init] autorelease]];
+	
     [result addObject:[[[NewsModule alloc] init] autorelease]];
     [result addObject:[[[ShuttleModule alloc] init] autorelease]];
 	[result addObject:[[[CMModule alloc] init] autorelease]];
@@ -37,7 +39,8 @@
     [result addObject:[[[MobileWebModule alloc] init] autorelease]];
     [result addObject:[[[SettingsModule alloc] init] autorelease]];
     [result addObject:[[[AboutModule alloc] init] autorelease]];
-    
+	[result addObject:[[[DiningModule alloc] init] autorelease]];
+	
     return result;
 }
 
@@ -109,6 +112,7 @@
             [newModules addObject:aModule];
         }
     }
+
     [newModules addObjectsFromArray:oldModules]; // in case modules have been added
     self.modules = [[newModules copy] autorelease]; // immutable copy
 }

@@ -4,7 +4,7 @@
 #import "CalendarDetailViewController.h"
 #import "CalendarDataManager.h"
 #import "MITModuleURL.h"
-#import "MITMobileWebAPI.h"
+#import "JSONAPIRequest.h"
 #import "CalendarEventMapAnnotation.h"
 #import <MapKit/MapKit.h>
 
@@ -105,7 +105,7 @@
 		[df release];
 	}
 
-	[url setPath:path query:[MITMobileWebAPI buildQuery:queryDict]];
+	[url setPath:path query:[JSONAPIRequest buildQuery:queryDict]];
 	[url setAsModulePath];
 	[url release];
 }

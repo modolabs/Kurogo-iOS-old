@@ -19,8 +19,8 @@
 @synthesize info = _info;
 @synthesize bookmark = _bookmark;
 
-+(void) executeServerSearchWithQuery:(NSString *)query jsonDelegate:(id<JSONLoadedDelegate>)delegate object:(id)object {
-	MITMobileWebAPI *apiRequest = [MITMobileWebAPI jsonLoadedDelegate:delegate];
++(void) executeServerSearchWithQuery:(NSString *)query jsonDelegate:(id<JSONAPIDelegate>)delegate object:(id)object {
+	JSONAPIRequest *apiRequest = [JSONAPIRequest requestWithJSONAPIDelegate:delegate];
 	apiRequest.userData = object;
 	[apiRequest requestObject:[NSDictionary dictionaryWithObjectsAndKeys:@"search", @"command", query, @"q", nil]
 				pathExtension:@"map/"];

@@ -1,5 +1,5 @@
 #import "CalendarDataManager.h"
-#import "MITConstants.h"
+#import "Constants.h"
 #import "CoreDataManager.h"
 
 @implementation CalendarDataManager

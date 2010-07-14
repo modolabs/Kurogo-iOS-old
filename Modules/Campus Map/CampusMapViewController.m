@@ -8,7 +8,6 @@
 #import "ShuttleStopMapAnnotation.h"
 #import "ShuttleStopViewController.h"
 #import "MITUIConstants.h"
-#import "MITConstants.h"
 #import "MapTileOverlayView.h"
 #import "MapTileOverlay.h"
 
@@ -896,9 +895,9 @@
     */
 }
 
-#pragma mark JSONLoadedDelegate
+#pragma mark JSONAPIDelegate
 
-- (void) request:(MITMobileWebAPI *)request jsonLoaded:(id)JSONObject
+- (void) request:(JSONAPIRequest *)request jsonLoaded:(id)JSONObject
 {	
 	NSArray *searchResults = JSONObject;
 	if ([request.userData isKindOfClass:[NSString class]]) {
@@ -951,7 +950,8 @@
 	}	
 }
 
-- (void) handleConnectionFailureForRequest:(MITMobileWebAPI *)request {
+// there was an error connecting to the specified URL. 
+- (void) handleConnectionFailureForRequest:(JSONAPIRequest *)request {
 	if ([(NSString *)request.userData isEqualToString:kAPISearch]) {
 		[self errorConnectingAlert];
 	}

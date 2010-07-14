@@ -1,6 +1,5 @@
 #import <UIKit/UIKit.h>
-#import "MITMobileWebAPI.h"
-//#import "MITMapView.h"
+#import "JSONAPIRequest.h"
 #import "CalendarConstants.h"
 #import "EventCategoriesTableView.h"
 #import "EventListTableView.h"
@@ -47,7 +46,7 @@
 	BOOL dateRangeDidChange;
 	
 	BOOL requestDispatched;
-	MITMobileWebAPI *apiRequest;
+	JSONAPIRequest *apiRequest;
 	
 }
 

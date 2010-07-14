@@ -1,8 +1,8 @@
 #import <UIKit/UIKit.h>
-#import "MITMobileWebAPI.h"
+#import "JSONAPIRequest.h"
 #import "MITModule.h"
 
-@interface SettingsTableViewController : UITableViewController <JSONLoadedDelegate> {
+@interface SettingsTableViewController : UITableViewController <JSONAPIDelegate> {
 
     NSArray *notifications;
 	NSMutableDictionary *apiRequests;

@@ -38,6 +38,7 @@ extern NSString * const ShuttleTag;
 extern NSString * const MobileWebTag;
 extern NSString * const SettingsTag;
 extern NSString * const AboutTag;
+extern NSString * const DiningTag;
 
 // notification names
 extern NSString * const EmergencyInfoDidLoadNotification;
@@ -114,3 +115,7 @@ typedef enum {
 	MITAccessoryViewEmergency,
     MITAccessoryViewSecure
 } MITAccessoryViewType;
+
+// errors
+extern NSString * const ShuttlesErrorDomain;
+#define errShuttleRouteNotAvailable 0

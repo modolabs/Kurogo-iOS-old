@@ -4,7 +4,7 @@
 //#import "ConnectionWrapper.h"
 #import "ShuttleDataManager.h"
 #import "CampusMapToolbar.h"
-#import "MITMobileWebAPI.h"
+#import "JSONAPIRequest.h"
 #import "MITModuleURL.h"
 #import "CMModule.h"
 #import "TileServerManager.h"
@@ -14,7 +14,7 @@
 @class MapSelectionController;
 
 @interface CampusMapViewController : UIViewController <UISearchBarDelegate, MKMapViewDelegate, TileServerDelegate,
-														JSONLoadedDelegate,
+														JSONAPIDelegate,
 														ShuttleDataManagerDelegate, 
 														UIAlertViewDelegate>
 {

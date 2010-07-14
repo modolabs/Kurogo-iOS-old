@@ -1,16 +1,16 @@
-#import "MITConstants.h"
+#import "Constants.h"
 
 // common URLs
 #ifdef USE_MOBILE_DEV
-    NSString * const MITMobileWebDomainString =        @"localhost:8888";
-    NSString * const MITMobileWebAPIURLString = @"http://localhost:8888/api/";
+NSString * const MITMobileWebDomainString =        @"localhost:8888";
+NSString * const MITMobileWebAPIURLString = @"http://localhost:8888/api/";
 #else
-    #ifdef USE_MOBILE_STAGE
-    NSString * const MITMobileWebDomainString =        @"mobile-stage.mit.edu";
-    NSString * const MITMobileWebAPIURLString = @"http://mobile-stage.mit.edu/api/";
-    #else
-    NSString * const MITMobileWebDomainString =        @"m.mit.edu";
-    NSString * const MITMobileWebAPIURLString = @"http://m.mit.edu/api/";
+#ifdef USE_MOBILE_STAGE
+NSString * const MITMobileWebDomainString = @"localhost:8888";        //@"mobile-stage.mit.edu";
+NSString * const MITMobileWebAPIURLString = @"http://localhost:8888/api/"; //@"http://mobile-stage.mit.edu/api/";
+#else
+NSString * const MITMobileWebDomainString = @"localhost:8888";        //@"m.mit.edu";
+NSString * const MITMobileWebAPIURLString = @"http://localhost:8888/api/"; //@"http://m.mit.edu/api/";
     #endif
 #endif
 
@@ -45,6 +45,7 @@ NSString * const ShuttleTag    = @"shuttletrack";
 NSString * const MobileWebTag  = @"mobileweb";
 NSString * const SettingsTag   = @"settings";
 NSString * const AboutTag      = @"about";
+NSString * const DiningTag	   = @"dining";
 
 // notification names
 NSString * const EmergencyInfoDidLoadNotification = @"MITEmergencyInfoDidLoadNotification";
@@ -110,3 +111,6 @@ NSString * const MITImageNameDownArrow = @"global/arrow-white-down.png";
 
 NSString * const MITImageNameSearch = @"global/search.png";
 NSString * const MITImageNameBookmark = @"global/bookmark.png";
+
+// errors
+NSString * const ShuttlesErrorDomain = @"com.modolabs.Shuttles.ErrorDomain";
