@@ -10,37 +10,6 @@
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
     
     if ((self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil])) {
-
-        self.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-        containingView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, self.view.bounds.size.height)];
-		containingView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:MITImageNameBackground]];
-        //self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:MITImageNameBackground]];
-        [self.view addSubview:containingView];
-        
-        navigationBar = [[ModoNavigationBar alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, 44.0)];
-        UIBarButtonItem *editButton = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemEdit
-                                                                                     target:self
-                                                                                     action:@selector(customizeIcons:)] autorelease];
-        UINavigationItem *navigationItem = [[[UINavigationItem alloc] initWithTitle:@"Springboard"] autorelease];
-        navigationItem.rightBarButtonItem = editButton;
-        [navigationBar setItems:[NSArray arrayWithObject:navigationItem]];
-        [containingView addSubview:navigationBar];
-        //[self.view addSubview:navigationBar];
-        
-        NSArray *modules = ((MIT_MobileAppDelegate *)[[UIApplication sharedApplication] delegate]).modules;
-        _icons = [[NSMutableArray alloc] initWithCapacity:[modules count]];
-        
-        for (MITModule *aModule in modules) {
-            SpringboardIcon *anIcon = [SpringboardIcon buttonWithType:UIButtonTypeCustom];
-            UIImage *image = [aModule icon];
-            anIcon.frame = CGRectMake(0, 0, image.size.width, image.size.height);
-            [anIcon setImage:image forState:UIControlStateNormal];
-            anIcon.moduleTag = aModule.tag;
-            [anIcon addTarget:self action:@selector(buttonPressed:) forControlEvents:UIControlEventTouchUpInside];
-            [_icons addObject:anIcon];
-        }
-        
-        [self layoutIcons:_icons];
     }
     return self;
 }
@@ -50,7 +19,7 @@
     CGFloat viewWidth = self.view.frame.size.width;
     
     CGFloat xOrigin = GRID_PADDING;
-    CGFloat yOrigin = GRID_PADDING + navigationBar.frame.size.height;
+    CGFloat yOrigin = GRID_PADDING;// + navigationBar.frame.size.height;
     bottomRight = CGPointZero;
     
     for (UIView *anIcon in icons) {
@@ -78,7 +47,7 @@
 }
 
 - (void)customizeIcons:(id)sender {
-    CGRect frame = CGRectMake(0, navigationBar.frame.size.height, self.view.frame.size.width, self.view.frame.size.height - navigationBar.frame.size.height);
+    CGRect frame = CGRectMake(0, /*navigationBar.frame.size.height*/0, self.view.frame.size.width, self.view.frame.size.height/* - navigationBar.frame.size.height*/);
     transparentOverlay = [[UIView alloc] initWithFrame:frame];
     transparentOverlay.backgroundColor = [UIColor clearColor];
     [containingView addSubview:transparentOverlay];
@@ -110,14 +79,39 @@
 
 - (void)loadView {
     [super loadView];
-    //[self setEditing:YES animated:NO];
+    
+    self.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+    containingView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, self.view.bounds.size.height)];
+    //containingView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:MITImageNameBackground]];
+    [self.view addSubview:containingView];
+    
+    UIBarButtonItem *editButton = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemEdit
+                                                                                 target:self
+                                                                                 action:@selector(customizeIcons:)] autorelease];
+    self.navigationItem.rightBarButtonItem = editButton;
+    self.navigationItem.title = @"Home";
+    
+    NSArray *modules = ((MIT_MobileAppDelegate *)[[UIApplication sharedApplication] delegate]).modules;
+    _icons = [[NSMutableArray alloc] initWithCapacity:[modules count]];
+    
+    for (MITModule *aModule in modules) {
+        SpringboardIcon *anIcon = [SpringboardIcon buttonWithType:UIButtonTypeCustom];
+        UIImage *image = [aModule icon];
+        anIcon.frame = CGRectMake(0, 0, image.size.width, image.size.height);
+        [anIcon setImage:image forState:UIControlStateNormal];
+        anIcon.moduleTag = aModule.tag;
+        [anIcon addTarget:self action:@selector(buttonPressed:) forControlEvents:UIControlEventTouchUpInside];
+        [_icons addObject:anIcon];
+    }
+    
+    [self layoutIcons:_icons];
 }
 
 
 - (void)buttonPressed:(id)sender {
     SpringboardIcon *anIcon = (SpringboardIcon *)sender;
     MIT_MobileAppDelegate *appDelegate = (MIT_MobileAppDelegate *)[[UIApplication sharedApplication] delegate];
-    [appDelegate switchContainerView];
+    //[appDelegate switchContainerView];
     [appDelegate showModuleForTag:anIcon.moduleTag];
 }
 

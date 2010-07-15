@@ -19,7 +19,8 @@
 		self.campusMapVC.title = @"Campus Map";
 		self.campusMapVC.campusMapModule = self;
 		
-        [self.tabNavController setViewControllers:[NSArray arrayWithObject:self.campusMapVC]];
+        self.viewControllers = [NSArray arrayWithObject:self.campusMapVC];
+        //[self.tabNavController setViewControllers:[NSArray arrayWithObject:self.campusMapVC]];
     }
     return self;
 }

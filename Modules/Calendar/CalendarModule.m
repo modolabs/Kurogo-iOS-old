@@ -32,7 +32,8 @@
 		calendarVC.activeEventList = CalendarEventListTypeEvents;
 		calendarVC.showList = YES;
 		calendarVC.showScroller = YES;
-        [self.tabNavController setViewControllers:[NSArray arrayWithObject:calendarVC]];
+        self.viewControllers = [NSArray arrayWithObject:calendarVC];
+        //[self.tabNavController setViewControllers:[NSArray arrayWithObject:calendarVC]];
     }
     return self;
 }

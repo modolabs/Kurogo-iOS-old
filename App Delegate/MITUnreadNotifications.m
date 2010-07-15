@@ -2,7 +2,7 @@
 #import "MITUnreadNotifications.h"
 #import "MITDeviceRegistration.h"
 #import "MIT_MobileAppDelegate.h"
-#import "MITTabBarController.h"
+//#import "MITTabBarController.h"
 #import "MITModule.h"
 #import "SBJSON.h"
 
@@ -40,6 +40,7 @@
 	return notifications;
 }
 
+// TODO: update the springboard instead of tab bar
 // this method will update the badge numbers in the tab bar
 + (void) updateUI {
 	NSNumber *badgeCount = nil;
@@ -73,7 +74,7 @@
 	[UIApplication sharedApplication].applicationIconBadgeNumber = [notifications count];
 	
 	[[NSNotificationCenter defaultCenter] postNotificationName:UnreadBadgeValuesChangeNotification object:nil];
-	
+	/*
 	// update the total shown under more tab
 	NSInteger tabIndex;
 	NSInteger moreTabTotal = 0;
@@ -100,7 +101,7 @@
 	} else {
 		moreTabBarItem.badgeValue = nil;
 	}
-
+    */
 }
 		
 

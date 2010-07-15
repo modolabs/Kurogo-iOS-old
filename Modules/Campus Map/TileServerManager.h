@@ -6,11 +6,13 @@
 #define DEGREES_PER_RADIAN 180.0 / M_PI
 #define RADIANS_PER_DEGREE M_PI / 180.0
 
+/*
 @protocol TileServerDelegate
 
 - (void)tileServerDidSetup;
 
 @end
+*/
 
 @class MapZoomLevel;
 
@@ -24,7 +26,8 @@
     projPJ *geo;
     projPJ *projection;
 
-    NSMutableSet *_delegates;
+    //NSMutableSet *_delegates;
+    NSMutableSet *_mapViews;
     
     CGFloat _originX;
     CGFloat _originY;
@@ -42,6 +45,8 @@
     CGFloat _radiusInProjectedUnits;
     CGFloat _meridianLengthInProjectedUnits;
     BOOL _isWebMercator;
+    
+    long long _mapTimestamp;
 }
 
 + (BOOL)isInitialized;
@@ -74,7 +79,12 @@
 //+ (MapTile)mapLevel:(MapZoomLevel *)mapLevel tileForRowAtScreenPixel:(CGPoint)pixel;
 //+ (CGSize)pixelSizeForMapLevel:(MapZoomLevel *)mapLevel;
 
-+ (void)registerDelegate:(id<TileServerDelegate>)delegate;
-+ (void)unregisterDelegate:(id<TileServerDelegate>)delegate;
+//+ (void)registerDelegate:(id<TileServerDelegate>)delegate;
+//+ (void)unregisterDelegate:(id<TileServerDelegate>)delegate;
+
++ (void)registerMapView:(MKMapView *)mapView;
++ (void)unregisterMapView:(MKMapView *)mapView;
+
++ (NSString *)tileCachePath;
 
 @end

@@ -1,14 +1,15 @@
 #import "MITModule.h"
 #import "MITModuleList.h"
 #import "Foundation+MITAdditions.h"
-#import "MITTabBarItem.h"
-#import "MITMoreListController.h"
+//#import "MITTabBarItem.h"
+//#import "MITMoreListController.h"
 #import "ModoNavigationController.h"
 
 @implementation MITModule
 
 @synthesize tag, shortName, longName, iconName, tabNavController, isMovableTab, canBecomeDefault, pushNotificationSupported, pushNotificationEnabled;
 @synthesize hasLaunchedBegun, currentPath, currentQuery;
+@synthesize viewControllers;
 @dynamic badgeValue, icon, tabBarIcon;
 
 #pragma mark -
@@ -40,6 +41,7 @@
         self.pushNotificationSupported = NO;
         // self.pushNotificationEnabled is set in applicationDidFinishLaunching, because that's when the tag is set
 
+        /*
         // Give it a throwaway view controller because it cannot start with nothing.
         UIViewController *dummyVC = [[UIViewController alloc] initWithNibName:nil bundle:nil];
         dummyVC.navigationItem.title = @"Placeholder";
@@ -57,6 +59,7 @@
 		tabNavController.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:MITImageNameBackground]];	
         tabNavController.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
         [dummyVC release];
+        */
     }
     return self;
 }
@@ -78,11 +81,15 @@
     NSDictionary *pushDisabledSettings = [[NSUserDefaults standardUserDefaults] objectForKey:PushNotificationSettingsKey];
     self.pushNotificationEnabled = ([pushDisabledSettings objectForKey:self.tag] == nil) ? YES : NO; // enabled by default
 
-    self.tabNavController.navigationItem.title = self.longName;
-    MITTabBarItem *item = (MITTabBarItem *)self.tabNavController.tabBarItem;
-    item.title = self.shortName;
-    item.image = self.tabBarIcon;
-    item.tableImage = self.icon;
+    //self.tabNavController.navigationItem.title = self.longName;
+    UIViewController *aVC = [self rootViewController];
+    if (aVC) {
+        aVC.navigationItem.title = self.longName;
+    }
+    //MITTabBarItem *item = (MITTabBarItem *)self.tabNavController.tabBarItem;
+    //item.title = self.shortName;
+    //item.image = self.tabBarIcon;
+    //item.tableImage = self.icon;
 }
 
 - (void)applicationWillTerminate {
@@ -117,12 +124,14 @@
 #pragma mark -
 #pragma mark Use, but don't override
 
+// TODO: get this property reflected in springboard
 - (NSString *)badgeValue {
-    return self.tabNavController.tabBarItem.badgeValue;
+    return nil;
+    //return self.tabNavController.tabBarItem.badgeValue;
 }
 
 - (void)setBadgeValue:(NSString *)newBadgeValue {
-    self.tabNavController.tabBarItem.badgeValue = newBadgeValue;
+    //self.tabNavController.tabBarItem.badgeValue = newBadgeValue;
 }
 
 - (UIImage *)icon {
@@ -185,6 +194,10 @@
 }
 
 - (UIViewController *) rootViewController {
+    if ([self.viewControllers count]) {
+        return [self.viewControllers objectAtIndex:0];
+    }
+    /*
 	if(tabNavController.viewControllers.count > 0) {
 		UIViewController *firstViewController = [tabNavController.viewControllers objectAtIndex:0];
 		if(![firstViewController isKindOfClass:[MITMoreListController class]]) {
@@ -195,6 +208,7 @@
 			return [tabNavController.viewControllers objectAtIndex:1];
 		}
 	}
+    */
 	return nil;
 }
 		 

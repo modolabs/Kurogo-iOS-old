@@ -104,7 +104,7 @@
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad {
 	[super viewDidLoad];
-    [TileServerManager registerDelegate:self];
+    [TileServerManager registerMapView:_mapView];
 	
 	// turn on the location dot
 	_mapView.showsUserLocation = YES;
@@ -191,7 +191,7 @@
 {
 	[super dealloc];
 }
-
+/*
 - (void)tileServerDidSetup {
     CLLocationCoordinate2D initialLocation;
     CLLocationCoordinate2D nw = [TileServerManager northWestBoundary];
@@ -210,7 +210,7 @@
     NSLog(@"%@", [_mapView.overlays description]);
     [overlay release];
 }
-
+*/
 -(void) hideAnnotations:(BOOL)hide
 {
 	for (id<MKAnnotation> annotation in _searchResults) {

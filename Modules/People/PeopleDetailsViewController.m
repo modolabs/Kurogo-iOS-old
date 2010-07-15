@@ -6,6 +6,7 @@
 #import "MITUIConstants.h"
 #import "UIKit+MITAdditions.h"
 #import "Foundation+MITAdditions.h"
+#import "ModoNavigationController.h"
 
 @implementation PeopleDetailsViewController
 

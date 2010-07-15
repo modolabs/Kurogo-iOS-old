@@ -14,7 +14,8 @@
         self.iconName = @"webmitedu";
         
         storyListChannelController = [[StoryListViewController alloc] init];
-        [self.tabNavController setViewControllers:[NSArray arrayWithObject:storyListChannelController]];
+        self.viewControllers = [NSArray arrayWithObject:storyListChannelController];
+        //[self.tabNavController setViewControllers:[NSArray arrayWithObject:storyListChannelController]];
     }
     return self;
 }

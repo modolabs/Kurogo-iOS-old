@@ -1,6 +1,7 @@
 #import "TileServerManager.h"
 #import "CoreDataManager.h"
 #import <MapKit/MapKit.h>
+#import "MKMapView+ArcGISAdditions.h"
 
 @interface TileServerManager (Private)
 
@@ -34,13 +35,15 @@
 - (CGPoint)projectedPointForCoord:(CLLocationCoordinate2D)coord;
 - (CLLocationCoordinate2D)coordForProjectedPoint:(CGPoint)point;
 
-//- (CGPoint)pixelPointForCoord:(CLLocationCoordinate2D)coord mapLevel:(MapZoomLevel *)mapLevel;
-//- (CLLocationCoordinate2D)coordForPixelPoint:(CGPoint)pixel mapLevel:(MapZoomLevel *)mapLevel;
-
 - (void)setupProjection:(const char *)projString;
 
-- (void)registerDelegate:(id<TileServerDelegate>)delegate;
-- (void)unregisterDelegate:(id<TileServerDelegate>)delegate;
+- (void)registerMapView:(MKMapView *)mapView;
+- (void)unregisterMapView:(MKMapView *)mapView;
+
++ (NSString*)mapTimestampFilename;
+
+//- (void)registerDelegate:(id<TileServerDelegate>)delegate;
+//- (void)unregisterDelegate:(id<TileServerDelegate>)delegate;
 
 @end
 
@@ -114,15 +117,15 @@ static NSString * s_tileServerFilename = @"tileServer.plist";
 + (CLLocationCoordinate2D)coordForProjectedPoint:(CGPoint)point {
     return [[TileServerManager manager] coordForProjectedPoint:point];
 }
-/*
-+ (CGPoint)pixelPointForCoord:(CLLocationCoordinate2D)coord mapLevel:(MapZoomLevel *)mapLevel {
-    return [[TileServerManager manager] pixelPointForCoord:coord mapLevel:mapLevel];
+
++ (void)registerMapView:(MKMapView *)mapView {
+    [[TileServerManager manager] registerMapView:mapView];
 }
 
-+ (CLLocationCoordinate2D)coordForPixelPoint:(CGPoint)pixel mapLevel:(MapZoomLevel *)mapLevel {
-    return [[TileServerManager manager] coordForPixelPoint:pixel mapLevel:mapLevel];
++ (void)unregisterMapView:(MKMapView *)mapView {
+    [[TileServerManager manager] unregisterMapView:mapView];
 }
-*/
+/*
 + (void)registerDelegate:(id<TileServerDelegate>)delegate {
     [[TileServerManager manager] registerDelegate:delegate];
 }
@@ -130,7 +133,7 @@ static NSString * s_tileServerFilename = @"tileServer.plist";
 + (void)unregisterDelegate:(id<TileServerDelegate>)delegate {
     [[TileServerManager manager] unregisterDelegate:delegate];
 }
-
+*/
 #pragma mark -
 
 + (TileServerManager *)manager {
@@ -139,6 +142,8 @@ static NSString * s_tileServerFilename = @"tileServer.plist";
     }
     return s_manager;
 }
+
+#define kLastUpdatedKey @"last_updated"
 
 - (id)init {
     if (self = [super init]) {
@@ -149,6 +154,7 @@ static NSString * s_tileServerFilename = @"tileServer.plist";
         
         if (_serverInfo != nil) {
             NSDate *date = [_serverInfo objectForKey:@"lastupdated"];
+            NSLog(@"%@", _serverInfo);
             if ([[NSDate date] timeIntervalSinceDate:date] <= 86400) {
                 [self setupServerInfo:_serverInfo];
                 didSetup = YES;
@@ -157,8 +163,18 @@ static NSString * s_tileServerFilename = @"tileServer.plist";
         
         if (!didSetup) {
             JSONAPIRequest *request = [JSONAPIRequest requestWithJSONAPIDelegate:self];
+            request.userData = [NSString stringWithString:@"capabilities"];
             [request requestObjectFromModule:@"map" command:@"capabilities" parameters:nil];
         }
+        
+        // handle last update
+        
+		NSDictionary* dictionary = [NSDictionary dictionaryWithContentsOfFile:[TileServerManager mapTimestampFilename]];
+		_mapTimestamp = [[dictionary objectForKey:kLastUpdatedKey] longLongValue];
+        
+        JSONAPIRequest *updateRequest = [JSONAPIRequest requestWithJSONAPIDelegate:self];
+        updateRequest.userData = [NSString stringWithString:@"updated"];
+        [updateRequest requestObjectFromModule:@"map" command:@"tilesupdated" parameters:nil];
     }
     return self;
 }
@@ -186,6 +202,19 @@ static NSString * s_tileServerFilename = @"tileServer.plist";
 	NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
 	NSString* documentPath = [paths objectAtIndex:0];
 	return [documentPath stringByAppendingPathComponent:s_tileServerFilename];
+}
+
++ (NSString*)mapTimestampFilename
+{
+	NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+	NSString* documentPath = [paths objectAtIndex:0];
+	return [documentPath stringByAppendingPathComponent:@"mapTimestamp.plist"];	
+}
+
++ (NSString *)tileCachePath {
+	NSArray *paths = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
+	NSString* cachePath = [paths objectAtIndex:0];
+	return [cachePath stringByAppendingPathComponent:@"tile"];
 }
 
 - (void)saveData {
@@ -272,56 +301,13 @@ static NSString * s_tileServerFilename = @"tileServer.plist";
     }
 }
 
-/*
-- (CLLocationCoordinate2D)coordForPixelPoint:(CGPoint)pixel mapLevel:(MapZoomLevel *)mapLevel {
-    NSLog(@"converting from pixel: %.1f %.1f", pixel.x, pixel.y);
-    if (_isWebMercator) {
-        CLLocationCoordinate2D coord;
-        CGFloat c = _circumferenceInProjectedUnits / mapLevel.resolution;
-        CGFloat r = _radiusInProjectedUnits / mapLevel.resolution;
-        coord.longitude = pixel.x * (360.0 / c); // second multiplicand is longitude degrees per pixel
-        coord.latitude = 2 * (atan(exp(pixel.y / r)) - M_PI / 4) * DEGREES_PER_RADIAN;
-        NSLog(@"converted to coord: %.3f %.3f", coord.longitude, coord.latitude);
-        return coord;
-    } else {
-        CGPoint projected = [mapLevel projectedCoordForPixelPoint:pixel];
-        projected.x -= -_originX; // correct for false easting
-        projected.y = _originY - projected.y; // correct for false northing
-        NSLog(@"using projected point: %.1f %.1f", projected.x, projected.y);
-        CLLocationCoordinate2D coord = [self coordForProjectedPoint:projected];
-        NSLog(@"converted to coord: %.3f %.3f", coord.longitude, coord.latitude);
-        return [self coordForProjectedPoint:projected];
-    }
-}
-
-- (CGPoint)pixelPointForCoord:(CLLocationCoordinate2D)coord mapLevel:(MapZoomLevel *)mapLevel {
-    NSLog(@"converting from coord: %.4f %.4f", coord.longitude, coord.latitude);
-    if (_isWebMercator) {
-        CGFloat c = _circumferenceInProjectedUnits / mapLevel.resolution;
-        CGFloat r = _radiusInProjectedUnits / mapLevel.resolution;
-        CGFloat x = coord.longitude * (c / 360.0); // second multiplicand is pixels per degree longitude
-        CGFloat y = r * log(tan(M_PI / 4 + coord.latitude / 2)) * RADIANS_PER_DEGREE;
-        NSLog(@"converted to pixel: %.1f %.1f", x, y);
-        return CGPointMake(x, y);
-    } else {
-        CGPoint projected = [self projectedPointForCoord:coord];
-        projected.x += -_originX; // correct for false easting
-        projected.y = _originY - projected.y; // correct for false northing
-        NSLog(@"using projected point: %.1f %.1f", projected.x, projected.y);
-        CGPoint pixel = [mapLevel pixelPointForProjectedCoord:projected];
-        NSLog(@"converted to pixel: %.1f %.1f", pixel.x, pixel.y);
-        return [mapLevel pixelPointForProjectedCoord:projected];
-    }
-}
-*/
-
 - (void)getProjectionArgs {
     NSString *wkid = [NSString stringWithFormat:@"%d", _wkid];
     JSONAPIRequest *request = [JSONAPIRequest requestWithJSONAPIDelegate:self];
     request.userData = @"projection";
     [request requestObjectFromModule:@"map" command:@"proj4specs" parameters:[NSDictionary dictionaryWithObjectsAndKeys:wkid, @"wkid", nil]];
 }
-
+/*
 - (void)registerDelegate:(id<TileServerDelegate>)delegate {
     if (!_delegates) {
         _delegates = [[NSMutableSet alloc] initWithCapacity:1];
@@ -337,11 +323,30 @@ static NSString * s_tileServerFilename = @"tileServer.plist";
         [_delegates removeObject:delegate];
     }
 }
+*/
+
+- (void)registerMapView:(MKMapView *)mapView {
+    if (!_mapViews) {
+        _mapViews = [[NSMutableSet alloc] initWithCapacity:1];
+    }
+    [_mapViews addObject:mapView];
+    
+    if ([TileServerManager isInitialized]) {
+        [mapView tileServerDidSetup];
+    } else {
+        [mapView waitForTileServer];
+    }
+}
+
+- (void)unregisterMapView:(MKMapView *)mapView {
+    if ([_mapViews containsObject:mapView]) {
+        [_mapViews removeObject:mapView];
+    }
+}
 
 - (void)setupServerInfo:(NSMutableDictionary *)serverInfo {
     
     NSInteger rootLevel = 0;
-    //NSInteger rootLevel = 13;
     
     NSArray *layers = [serverInfo objectForKey:@"layers"];
     NSMutableArray *cleanedUpLayers = [NSMutableArray arrayWithCapacity:[layers count]];
@@ -431,8 +436,8 @@ static NSString * s_tileServerFilename = @"tileServer.plist";
         }
     }
     
-    for (id<TileServerDelegate> aDelegate in _delegates) {
-        [aDelegate tileServerDidSetup];
+    for (MKMapView *aMapView in _mapViews) {
+        [aMapView tileServerDidSetup];
     }
 }
 
@@ -487,6 +492,28 @@ static NSString * s_tileServerFilename = @"tileServer.plist";
 }
 
 - (void)request:(JSONAPIRequest *)request jsonLoaded:(id)result {
+    if ([request.userData isEqualToString:@"updated"]) {
+        NSDictionary* dictionary = (NSDictionary *)result;
+        long long newMapTimestamp = [[dictionary objectForKey:kLastUpdatedKey] longLongValue];
+        
+        if (newMapTimestamp > _mapTimestamp) {
+            // store the new timestamp and wipe out the cache.
+            NSLog(@"new map tiles found");
+            [dictionary writeToFile:[TileServerManager mapTimestampFilename] atomically:YES];
+            
+            NSString* tileCachePath = [TileServerManager tileCachePath];
+            
+            if ([[NSFileManager defaultManager] fileExistsAtPath:tileCachePath]) {
+                NSError* error = nil;
+                if (![[NSFileManager defaultManager] removeItemAtPath:tileCachePath error:&error]) {
+                    NSLog(@"Error wiping out map cache: %@", error);
+                }
+            }
+        }
+        
+        return;
+    }
+    
     if (result && [result isKindOfClass:[NSDictionary class]]) {
         if ([request.userData isEqualToString:@"projection"]) {
             
@@ -497,8 +524,8 @@ static NSString * s_tileServerFilename = @"tileServer.plist";
             [self setupProjection:[projectionArgs cStringUsingEncoding:[NSString defaultCStringEncoding]]];
             //projection = pj_init_plus([projectionArgs cStringUsingEncoding:[NSString defaultCStringEncoding]]);
             
-            for (id<TileServerDelegate> aDelegate in _delegates) {
-                [aDelegate tileServerDidSetup];
+            for (MKMapView *aMapView in _mapViews) {
+                [aMapView tileServerDidSetup];
             }
             
         } else {
@@ -508,6 +535,10 @@ static NSString * s_tileServerFilename = @"tileServer.plist";
             [self setupServerInfo:_serverInfo];
         }
     }
+}
+
+- (void)handleConnectionFailureForRequest:(JSONAPIRequest *)request {
+	// TODO: handle connection failure
 }
 
 - (void)dealloc {

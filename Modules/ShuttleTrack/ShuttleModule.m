@@ -16,7 +16,8 @@
         self.pushNotificationSupported = YES;
 
         ShuttleRoutes *theVC = [[[ShuttleRoutes alloc] initWithStyle:UITableViewStyleGrouped] autorelease];
-        [self.tabNavController setViewControllers:[NSArray arrayWithObject:theVC]];
+        self.viewControllers = [NSArray arrayWithObject:theVC];
+        //[self.tabNavController setViewControllers:[NSArray arrayWithObject:theVC]];
     }
     return self;
 }

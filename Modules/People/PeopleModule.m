@@ -23,7 +23,8 @@ static NSString * const PeopleStateDetail = @"detail";
 		viewController = [[[PeopleSearchViewController alloc] initWithStyle:UITableViewStyleGrouped] autorelease];
 		viewController.navigationItem.title = self.longName;
         
-        [self.tabNavController setViewControllers:[NSArray arrayWithObject:viewController]];
+        self.viewControllers = [NSArray arrayWithObject:viewController];
+        //[self.tabNavController setViewControllers:[NSArray arrayWithObject:viewController]];
     }
     return self;
 }

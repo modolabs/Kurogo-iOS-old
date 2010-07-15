@@ -6,7 +6,7 @@
 @synthesize navigationBar = _navigationBar;
 
 - (id)initWithNavigationBar:(UINavigationBar *)navigationBar {
-    navigationBar.frame = CGRectMake(0, 0, 320, 44);
+    //navigationBar.frame = CGRectMake(0, 0, 320, 44);
     if (self = [super initWithFrame:navigationBar.frame]) {
         _navigationBar = navigationBar;
         self.delegate = _navigationBar.delegate;
@@ -42,7 +42,7 @@
 }
 
 - (void)update {
-    self.frame = _navigationBar.frame;
+    self.frame = CGRectMake(0, 0, _navigationBar.frame.size.width, _navigationBar.frame.size.height);
     self.items = _navigationBar.items;
 }
 

@@ -11,19 +11,12 @@
     return self;
 }
 
+// TODO: don't draw above certain zoomscale and outside certain maprect
+/*
 - (BOOL)canDrawMapRect:(MKMapRect)mapRect zoomScale:(MKZoomScale)zoomScale {
-
-    // get coordinate for map point; tile for coordinate
-    
-    
-    // Number of tiles wide or high (but not wide * high)
-    //NSInteger tilesAtZ = pow(2, z);
-    
-    //NSLog(@"minX: %d minY: %d maxX: %d maxY: %d", minX, minY, maxX, maxY);
-    
-    return [super canDrawMapRect:mapRect zoomScale:zoomScale];
+   return [super canDrawMapRect:mapRect zoomScale:zoomScale];
 }
-
+*/
 
 - (void)drawMapRect:(MKMapRect)mapRect zoomScale:(MKZoomScale)zoomScale inContext:(CGContextRef)context {
     
@@ -31,7 +24,7 @@
     MapZoomLevel *theZoomLevel = nil;
     CGFloat scale;
     NSLog(@"looking for zoomscale %.8f", 1 / zoomScale);
-    //NSLog(@"for mapRect %.1f %.1f %.1f %.1f",
+    // TODO: find a more efficient way to get zoomLevel
     for (theZoomLevel in zoomLevels) {
         // keep iterating until we reach the max scale, or hit one scale larger
         scale = theZoomLevel.zoomScale;

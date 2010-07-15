@@ -119,8 +119,10 @@ NSString *titleForCategoryId(NewsCategoryId category_id) {
     
     tempTableSelection = nil;
     
-    NSPredicate *truePredicate = [NSPredicate predicateWithFormat:@"TRUEPREDICATE"];
-    NSArray *categoryObjects = [CoreDataManager objectsForEntity:NewsCategoryEntityName matchingPredicate:truePredicate];
+    //NSPredicate *truePredicate = [NSPredicate predicateWithFormat:@"TRUEPREDICATE"];
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"isMainCategory = YES"];
+    NSSortDescriptor *sort = [[NSSortDescriptor alloc] initWithKey:@"category_id" ascending:YES];
+    NSArray *categoryObjects = [CoreDataManager objectsForEntity:NewsCategoryEntityName matchingPredicate:predicate sortDescriptors:[NSArray arrayWithObject:sort]];
     if (![categoryObjects count]) {
         JSONAPIRequest *request = [JSONAPIRequest requestWithJSONAPIDelegate:self];
         BOOL success = [request requestObjectFromModule:@"news" command:@"channels" parameters:nil];
@@ -717,6 +719,7 @@ NSString *titleForCategoryId(NewsCategoryId category_id) {
 // It also forces odd behavior of the paging controls when a memory warning occurs while looking at a story
 
 - (void)switchToCategory:(NewsCategoryId)category {
+    numTries = 0;
     if (category != self.activeCategoryId) {
 		if (self.xmlParser) {
 			[self.xmlParser abort]; // cancel previous category's request if it's still going
@@ -780,7 +783,7 @@ NSString *titleForCategoryId(NewsCategoryId category_id) {
 		NSArray *results = [CoreDataManager objectsForEntity:NewsStoryEntityName matchingPredicate:predicate sortDescriptors:sortDescriptors];
 		NewsCategory *aCategory = [[self.categories filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"category_id == %d", self.activeCategoryId]] lastObject];
 
-        NSLog(@"results: %@", [results description]);
+        //NSLog(@"results: %@", [results description]);
 		NSLog(@"activecategoryid: %d", self.activeCategoryId);
         NSDate *lastUpdatedDate = [aCategory valueForKey:@"lastUpdated"];
 
@@ -789,7 +792,6 @@ NSString *titleForCategoryId(NewsCategoryId category_id) {
 		NSInteger maxLength = [[aCategory valueForKey:@"expectedCount"] integerValue];
 		NSInteger resultsCount = [results count];
 		if (maxLength == 0) {
-            NSLog(@"category: %@", [aCategory description]);
 			[self loadFromServer:NO]; // this creates a loop which will keep trying until there is at least something in this category
 			// TODO: make sure this doesn't become an infinite loop.
 			maxLength = 10;
@@ -939,7 +941,7 @@ NSString *titleForCategoryId(NewsCategoryId category_id) {
             }
 			length += [self.xmlParser.newStories count];
             
-            NSLog(@"%@", [self.xmlParser.newStories description]);
+            //NSLog(@"%@", [self.xmlParser.newStories description]);
             NSLog(@"setting expectedCount = %d", length);            
 			[aCategory setValue:[NSNumber numberWithInteger:length] forKey:@"expectedCount"];
 			if (!parser.loadingMore && [self.stories count] > 0) {
@@ -1260,10 +1262,11 @@ NSString *titleForCategoryId(NewsCategoryId category_id) {
             NewsCategory *aCategory = [CoreDataManager insertNewObjectForEntityForName:NewsCategoryEntityName];
             aCategory.title = categoryTitle;
             aCategory.category_id = [NSNumber numberWithInt:i];
+            aCategory.isMainCategory = [NSNumber numberWithBool:YES];
             [newCategories addObject:aCategory];
         }
         self.categories = newCategories;
-        NSLog(@"we now have categories %@", [self.categories description]);
+        //NSLog(@"we now have categories %@", [self.categories description]);
         [CoreDataManager saveData];
         
         [self setupNavScroller];

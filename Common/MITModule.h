@@ -25,6 +25,8 @@
     // to simplify tab badging and navigation stack management.
     ModoNavigationController *tabNavController;
     
+    NSArray *viewControllers;
+    
     BOOL isMovableTab; // TRUE if this module's tab can be rearranged during UITabBar customization. FALSE otherwise.
     BOOL canBecomeDefault; // TRUE if this module can become the default tab at startup
     BOOL pushNotificationSupported;
@@ -79,6 +81,7 @@
 @property (nonatomic, copy) NSString *longName;
 @property (nonatomic, copy) NSString *iconName;
 @property (nonatomic, readonly) ModoNavigationController *tabNavController;
+@property (nonatomic, retain) NSArray *viewControllers;
 @property (nonatomic, assign) BOOL isMovableTab;
 @property (nonatomic, assign) BOOL canBecomeDefault;
 @property (nonatomic, assign) BOOL pushNotificationSupported;

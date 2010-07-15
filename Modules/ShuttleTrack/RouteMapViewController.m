@@ -3,6 +3,7 @@
 #import "ShuttleStopViewController.h"
 #import "ShuttleStop.h"
 #import "ShuttleLocation.h"
+#import "TileServerManager.h"
 
 #define DEGREES_TO_RADIANS(__ANGLE__) ((__ANGLE__) / 180.0 * M_PI)
 
@@ -38,6 +39,7 @@
     [super viewDidLoad];
 
 	self.mapView.delegate = self;
+    [TileServerManager registerMapView:self.mapView];
 	//self.mapView.shouldNotDropPins = YES;
 	
 	_largeStopImage = [[UIImage imageNamed:@"map_pin_shuttle_stop_complete.png"] retain];

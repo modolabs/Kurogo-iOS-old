@@ -141,6 +141,7 @@
 }
 
 -(id)insertNewObjectForEntityForName:(NSString *)entityName context:(NSManagedObjectContext *)aManagedObjectContext {
+    NSLog(@"inserting new %@ object", entityName);
     self.managedObjectContext;
 	NSEntityDescription *entityDescription = [[managedObjectModel entitiesByName] objectForKey:entityName];
 	return [[[NSManagedObject alloc] initWithEntity:entityDescription insertIntoManagedObjectContext:aManagedObjectContext] autorelease];
@@ -261,8 +262,8 @@
 		NSLog(@"CoreDataManager failed to create or access the persistent store: %@", [error userInfo]);
 		
 		// see if we failed because of changes to the db
-		if (![[self storeFileName] isEqualToString:[self currentStoreFileName]]) {
-			NSLog(@"This app has been upgraded since last use of Core Data. If it crashes on launch, reinstalling should fix it.");
+		//if (![[self storeFileName] isEqualToString:[self currentStoreFileName]]) {
+		//	NSLog(@"This app has been upgraded since last use of Core Data. If it crashes on launch, reinstalling should fix it.");
 			if ([self migrateData]) {
 				NSLog(@"Attempting to recreate the persistent store...");
 				storeURL = [NSURL fileURLWithPath:[self storeFileName]];
@@ -271,9 +272,22 @@
 					NSLog(@"Failed to recreate the persistent store: %@", [error userInfo]);
 				}
 			} else {
-				NSLog(@"Could not migrate data");
+				NSLog(@"Could not migrate data.  Wiping out data...");
+                NSString *backupFile = [NSString stringWithFormat:@"%@.bak", [self storeFileName]];
+                NSError *error = nil;
+#ifdef USE_MOBILE_DEV
+                if ([[NSFileManager defaultManager] moveItemAtPath:[self storeFileName] toPath:backupFile error:&error]) {
+                    NSLog(@"Old core data is stored at %@", backupFile);
+                } else {
+                    NSLog(@"Could not move old file.  Error %d: %@ %@\nApp will now crash.", [error code], [error domain], [error userInfo]);
+                }
+#else
+                if ([[NSFileManager defaultManager] removeItemAtPath:[self storeFileName] error:&error]) {
+                    NSLog(@"Could not delete old file.  App will now crash.");
+                }                
+#endif
 			}
-		}
+		//}
     }
 	
     return persistentStoreCoordinator;
@@ -300,7 +314,7 @@
 		NSArray *files = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:[self applicationDocumentsDirectory] error:NULL];
 		// find all files like CoreDataXML.* and pick the latest one
 		for (NSString *file in files) {
-			if ([file hasPrefix:@"CoreDataXML."]) {
+			if ([file hasPrefix:@"CoreDataXML."] && [file hasSuffix:@"sqlite"]) {
 				// if version is something like 3:4M, this takes 3 to be the pre-existing version
 				NSInteger version = [[[file componentsSeparatedByString:@"."] objectAtIndex:1] intValue];
 				if (version >= maxVersion) {

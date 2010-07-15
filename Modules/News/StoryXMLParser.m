@@ -3,6 +3,7 @@
 #import "CoreDataManager.h"
 #import "MIT_MobileAppDelegate.h"
 #import "JSONAPIRequest.h"
+#import "NewsCategory.h"
 
 @interface StoryXMLParser (Private)
 
@@ -19,6 +20,11 @@
 - (void)parseEnded;
 - (void)downloadError:(NSError *)error;
 - (void)parseError:(NSError *)error;
+
+- (NSInteger)idForCategoryString:(NSString *)aString;
+- (NSString *)stringForCategoryID:(NSInteger)anID;
+- (NewsCategory *)categoryForID:(NSInteger)anID;
+- (NewsCategory *)categoryForString:(NSString *)aString;
 
 @end
 
@@ -44,8 +50,8 @@ NSString * const NewsTagTitle           = @"title";
 NSString * const NewsTagAuthor          = @"dc:creator";
 NSString * const NewsTagCategory        = @"category";
 NSString * const NewsTagLink            = @"link";
-NSString * const NewsTagStoryId         = @"WPID";
-NSString * const NewsTagFeatured        = @"featured";
+NSString * const NewsTagStoryId         = @"harvard:WPID";
+NSString * const NewsTagFeatured        = @"harvard:featured";
 NSString * const NewsTagSummary         = @"description";
 NSString * const NewsTagPostDate        = @"pubDate";
 NSString * const NewsTagBody            = @"content:encoded";
@@ -65,6 +71,39 @@ NSString * const NewsTagImageCaption    = @"imageCaption";
 
 NSString * const NewsTagImageWidth      = @"width";
 NSString * const NewsTagImageHeight     = @"height";
+
+
+#pragma mark Categories
+
+- (NewsCategory *)categoryForString:(NSString *)aString {
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"title like %@", aString];
+    return [[CoreDataManager objectsForEntity:NewsCategoryEntityName matchingPredicate:predicate] lastObject];
+}
+
+- (NSInteger)idForCategoryString:(NSString *)aString {
+    NSInteger result = NSNotFound;
+    NewsCategory *category = [self categoryForString:aString];
+    if (category) {
+        result = [category.category_id intValue];
+    }
+    return result;
+}
+
+- (NewsCategory *)categoryForID:(NSInteger)anID {
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"category_id == %d", anID];
+    return [[CoreDataManager objectsForEntity:NewsCategoryEntityName matchingPredicate:predicate] lastObject];
+}
+
+- (NSString *)stringForCategoryID:(NSInteger)anID {
+    NSString *result = nil;
+    NewsCategory *category = [self categoryForID:anID];
+    if (category) {
+        result = category.title;
+    }
+    return result;
+}
+
+#pragma mark -
 
 - (id) init
 {
@@ -292,6 +331,8 @@ NSString * const NewsTagImageHeight     = @"height";
         for (NSString *key in whitelist) {
             [currentContents setObject:[NSMutableString string] forKey:key];
         }
+        [currentCategories release];
+        currentCategories = [[NSMutableArray alloc] initWithCapacity:5];
 	}/* else if ([elementName isEqualToString:NewsTagOtherImages]) {
         [currentContents setObject:[NSMutableArray array] forKey:NewsTagOtherImages];
     }*/ else if ([elementName isEqualToString:NewsTagImage]) {
@@ -339,6 +380,21 @@ NSString * const NewsTagImageHeight     = @"height";
     } else if ([currentStack indexOfObject:NewsTagItem] != NSNotFound) {
         currentDict = currentContents;
         whitelist = [self itemWhitelist];
+        if ([[currentStack lastObject] isEqualToString:NewsTagCategory]) {
+            NewsCategory *category = [self categoryForString:string];
+            if (!category) {
+                NSPredicate *truePredicate = [NSPredicate predicateWithFormat:@"TRUEPREDICATE"];
+                NSInteger numCategories = [[CoreDataManager objectsForEntity:NewsCategoryEntityName matchingPredicate:truePredicate] count];
+                
+                category = [CoreDataManager insertNewObjectForEntityForName:NewsCategoryEntityName];
+                category.title = string;
+                category.category_id = [NSNumber numberWithInt:numCategories];
+                [CoreDataManager saveData];
+            }
+            
+            //NSLog(@"received category %@", string);
+            [currentCategories addObject:category];
+        }
     } else {
         return;
     }
@@ -356,56 +412,59 @@ NSString * const NewsTagImageHeight     = @"height";
     [currentStack removeLastObject];
 
 	if ([elementName isEqualToString:NewsTagItem]) {
-            // use existing story if it's already in the db
-            NSPredicate *predicate = [NSPredicate predicateWithFormat:@"story_id == %d", [[currentContents objectForKey:NewsTagStoryId] integerValue]];
-            NewsStory *story = [[CoreDataManager objectsForEntity:NewsStoryEntityName matchingPredicate:predicate] lastObject];
-            // otherwise create new
-            if (!story) {
-                story = (NewsStory *)[CoreDataManager insertNewObjectForEntityForName:NewsStoryEntityName];
-            }
-
-            NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-            formatter.locale = [[[NSLocale alloc] initWithLocaleIdentifier:@"en_US"] autorelease];
-            [formatter setDateFormat:@"EEE, d MMM y HH:mm:ss zzz"];
-            [formatter setTimeZone:[NSTimeZone localTimeZone]];
-            NSDate *postDate = [formatter dateFromString:[currentContents objectForKey:NewsTagPostDate]];
-            [formatter release];
-            
-            story.story_id = [NSNumber numberWithInteger:[[currentContents objectForKey:NewsTagStoryId] integerValue]];
-            story.postDate = postDate;
-            story.title = [currentContents objectForKey:NewsTagTitle];
-            story.link = [currentContents objectForKey:NewsTagLink];
-            story.author = [currentContents objectForKey:NewsTagAuthor];
-            story.summary = [currentContents objectForKey:NewsTagSummary];
-            story.body = [currentContents objectForKey:NewsTagBody];
-            [story addCategory:[[currentContents objectForKey:NewsTagCategory] integerValue]];
-            if (parsingTopStories) {
-                // because NewsStory objects are shared between categories, only set this to YES, never revert it to NO
-                story.topStory = [NSNumber numberWithBool:parsingTopStories];
-            }
-			story.searchResult = [NSNumber numberWithBool:isSearch]; // gets reset to NO before every search
-
-            story.featured = [NSNumber numberWithBool:[[currentContents objectForKey:NewsTagFeatured] boolValue]];
-            
-            story.inlineImage = [self imageWithDictionary:[currentContents objectForKey:NewsTagImage]];
-            
-            NSMutableArray *otherImagesDict = [currentContents objectForKey:NewsTagOtherImages];
-            NSInteger i = 0;
-            for (NSDictionary *otherImage in otherImagesDict) {
-                NewsImage *anImage = [self imageWithDictionary:otherImage];
-                if (anImage) {
-                    anImage.ordinality = [NSNumber numberWithInteger:i];
-                    i++;
-                    [story addGalleryImage:anImage];
-                }
-            }
+        // use existing story if it's already in the db
+        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"story_id == %d", [[currentContents objectForKey:NewsTagStoryId] integerValue]];
+        NewsStory *story = [[CoreDataManager objectsForEntity:NewsStoryEntityName matchingPredicate:predicate] lastObject];
+        // otherwise create new
+        if (!story) {
+            story = (NewsStory *)[CoreDataManager insertNewObjectForEntityForName:NewsStoryEntityName];
+        }
         
-            [self performSelectorOnMainThread:@selector(reportProgress:) withObject:[NSNumber numberWithFloat:[newStories count] / (0.01 * expectedStoryCount)] waitUntilDone:NO];
-
-            [newStories addObject:story];
-            
-            // prepare for next item
-            [currentContents removeAllObjects];
+        NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+        formatter.locale = [[[NSLocale alloc] initWithLocaleIdentifier:@"en_US"] autorelease];
+        [formatter setDateFormat:@"EEE, d MMM y HH:mm:ss zzz"];
+        [formatter setTimeZone:[NSTimeZone localTimeZone]];
+        NSDate *postDate = [formatter dateFromString:[currentContents objectForKey:NewsTagPostDate]];
+        [formatter release];
+        
+        story.story_id = [NSNumber numberWithInteger:[[currentContents objectForKey:NewsTagStoryId] integerValue]];
+        story.postDate = postDate;
+        story.title = [currentContents objectForKey:NewsTagTitle];
+        story.link = [currentContents objectForKey:NewsTagLink];
+        story.author = [currentContents objectForKey:NewsTagAuthor];
+        story.summary = [currentContents objectForKey:NewsTagSummary];
+        story.body = [currentContents objectForKey:NewsTagBody];
+        
+        //NSLog(@"current categories: %@", [currentCategories description]);
+        //[story addCategory:[[currentContents objectForKey:NewsTagCategory] integerValue]];
+        story.categories = [NSSet setWithSet:currentCategories];
+        if (parsingTopStories) {
+            // because NewsStory objects are shared between categories, only set this to YES, never revert it to NO
+            story.topStory = [NSNumber numberWithBool:parsingTopStories];
+        }
+        story.searchResult = [NSNumber numberWithBool:isSearch]; // gets reset to NO before every search
+        
+        story.featured = [NSNumber numberWithBool:[[currentContents objectForKey:NewsTagFeatured] boolValue]];
+        
+        story.inlineImage = [self imageWithDictionary:[currentContents objectForKey:NewsTagImage]];
+        
+        NSMutableArray *otherImagesDict = [currentContents objectForKey:NewsTagOtherImages];
+        NSInteger i = 0;
+        for (NSDictionary *otherImage in otherImagesDict) {
+            NewsImage *anImage = [self imageWithDictionary:otherImage];
+            if (anImage) {
+                anImage.ordinality = [NSNumber numberWithInteger:i];
+                i++;
+                [story addGalleryImage:anImage];
+            }
+        }
+        
+        [self performSelectorOnMainThread:@selector(reportProgress:) withObject:[NSNumber numberWithFloat:[newStories count] / (0.01 * expectedStoryCount)] waitUntilDone:NO];
+        
+        [newStories addObject:story];
+        
+        // prepare for next item
+        [currentContents removeAllObjects];
 	}
     [tinyPool release];
     

@@ -10,7 +10,7 @@
 #import "AboutModule.h"
 #import "CalendarModule.h"
 #import "DiningModule.h"
-#import "MITTabBarController.h"
+//#import "MITTabBarController.h"
 
 // #import your module's header here
 
@@ -45,19 +45,22 @@
 }
 
 - (MITModule *)moduleForTabBarItem:(UITabBarItem *)item {
-    for (MITModule *aModule in self.modules) {
-        if ([aModule.tabNavController.tabBarItem isEqual:item]) {
-            return aModule;
-        }
-    }
+    //for (MITModule *aModule in self.modules) {
+    //    if ([aModule.tabNavController.tabBarItem isEqual:item]) {
+    //        return aModule;
+    //    }
+    //}
     return nil;
 }
 
 - (MITModule *)moduleForViewController:(UIViewController *)aViewController {
     for (MITModule *aModule in self.modules) {
-        if ([aModule.tabNavController isEqual:aViewController]) {
+        if ([aModule.viewControllers containsObject:aViewController]) {
             return aModule;
         }
+        //if ([aModule.tabNavController isEqual:aViewController]) {
+        //    return aModule;
+        //}
     }
     return nil;
 }
@@ -73,7 +76,20 @@
 
 - (void)showModuleForTag:(NSString *)tag {
     MITModule *module = [self moduleForTag:tag];
-    [self.tabBarController showItem:module.tabNavController.tabBarItem];
+    NSArray *navStack = [[NSArray arrayWithObject:theSpringboard] arrayByAddingObjectsFromArray:module.viewControllers];
+    [self.theNavController popViewControllerAnimated:NO];
+    if ([module.viewControllers count]) {
+        //UIViewController *topVC = [module.viewControllers lastObject];
+        //[self.theNavController pushViewController:topVC animated:YES];
+        [self.theNavController setViewControllers:navStack animated:YES];
+    }
+    
+    //[self.theNavController setViewControllers:newViewControllers animated:YES];
+    //[self.tabBarController showItem:module.tabNavController.tabBarItem];
+}
+
+- (void)returnToHome {
+    [self.theNavController popToRootViewControllerAnimated:YES];
 }
 
 #pragma mark Preferences
@@ -123,15 +139,18 @@
     NSString *activeModuleTag = [[NSUserDefaults standardUserDefaults] objectForKey:MITActiveModuleKey];
     MITModule *activeModule = [self moduleForTag:activeModuleTag];
     if (activeModule && activeModule.canBecomeDefault) {
-        self.tabBarController.activeItem = activeModule.tabNavController.tabBarItem;
+        // TODO: launch module from springboard
+        //self.tabBarController.activeItem = activeModule.tabNavController.tabBarItem;
     }
 }
 
+
+// TODO: get this to work with springboard
 - (void)saveModuleOrder {
     NSMutableArray *newModules = [NSMutableArray arrayWithCapacity:[self.modules count]];
     NSMutableArray *moduleNames = [NSMutableArray arrayWithCapacity:[self.modules count]]; 
     MITModule *aModule = nil;
-    
+    /*
     for (UITabBarItem *item in self.tabBarController.allItems) {
         aModule = [self moduleForTabBarItem:item];
         if (aModule && ![moduleNames containsObject:aModule.tag]) {
@@ -139,6 +158,7 @@
             [moduleNames addObject:aModule.tag];
         }
     }
+    */
     self.modules = [[newModules copy] autorelease]; // immutable copy
 
     // Save updated order: module list into an array of strings, then save that array to disk
@@ -155,9 +175,11 @@
 	}
 	[[NSUserDefaults standardUserDefaults] setObject:modulesSavedState forKey:MITModulesSavedStateKey];
 }
-		
+
+// TODO: make this work with springboard
 - (NSString *) activeModuleTag {
-	return [[self moduleForTabBarItem:self.tabBarController.activeItem] tag];
+    return nil;
+	//return [[self moduleForTabBarItem:self.tabBarController.activeItem] tag];
 }
 
 @end

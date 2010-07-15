@@ -5,6 +5,7 @@
 
 @dynamic category_id;
 @dynamic expectedCount;
+@dynamic isMainCategory;
 @dynamic lastUpdated;
 @dynamic stories;
 @dynamic title;

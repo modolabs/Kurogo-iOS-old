@@ -16,7 +16,8 @@
         AboutTableViewController *aboutVC = [[[AboutTableViewController alloc] initWithStyle:UITableViewStyleGrouped] autorelease];
         aboutVC.title = self.longName;
         
-        [self.tabNavController setViewControllers:[NSArray arrayWithObject:aboutVC]];
+        self.viewControllers = [NSArray arrayWithObject:aboutVC];
+        //[self.tabNavController setViewControllers:[NSArray arrayWithObject:aboutVC]];
     }
     return self;
 }

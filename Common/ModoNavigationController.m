@@ -16,12 +16,23 @@
 
 - (void)updateNavBar {
     [self.modoNavBar update];
+    
+    // popping nav controllers doesn't pop navigationItems in the built in nav bar
+    // so this is a workaround
+    NSLog(@"nav controllers are now set to: %@", [self.viewControllers description]);
+    while ([self.modoNavBar.items count] > [self.viewControllers count] + 1) {
+        [self.modoNavBar popNavigationItemAnimated:NO];
+    }
+    
+    NSLog(@"%@", [self.modoNavBar.items description]);
+    NSLog(@"%@", [self.navigationBar.items description]);
 }
 
 - (void)loadView {
     [super loadView];
-    [self.navigationBar removeFromSuperview];
-    [self.view addSubview:_modoNavBar];
+    //[self.navigationBar removeFromSuperview];
+    //[self.view addSubview:_modoNavBar];
+    [self.navigationBar addSubview:_modoNavBar];
 }
 
 - (void)pushViewController:(UIViewController *)viewController animated:(BOOL)animated {

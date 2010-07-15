@@ -11,7 +11,7 @@
 @class MITMapSearchResultsVC;
 @class MapSelectionController;
 
-@interface CampusMapViewController : UIViewController <UISearchBarDelegate, MKMapViewDelegate, TileServerDelegate,
+@interface CampusMapViewController : UIViewController <UISearchBarDelegate, MKMapViewDelegate,
 														JSONAPIDelegate,
 														ShuttleDataManagerDelegate, 
 														UIAlertViewDelegate>

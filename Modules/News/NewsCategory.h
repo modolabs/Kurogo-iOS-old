@@ -5,6 +5,7 @@
 
 @property (nonatomic, retain) NSNumber *category_id;
 @property (nonatomic, retain) NSNumber *expectedCount;
+@property (nonatomic, retain) NSNumber *isMainCategory;
 @property (nonatomic, retain) NSDate *lastUpdated;
 @property (nonatomic, retain) NSSet *stories;
 @property (nonatomic, retain) NSString *title;

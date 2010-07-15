@@ -204,7 +204,6 @@
 		DE0A62AC10CDAEA90058B2C2 /* MITBuildInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = DE0A62AB10CDAEA90058B2C2 /* MITBuildInfo.m */; };
 		DE0F6B3411109BC500F064D6 /* AboutMITVC.m in Sources */ = {isa = PBXBuildFile; fileRef = DE0F6B3311109BC500F064D6 /* AboutMITVC.m */; };
 		DE18F9EE10F19105009A69B9 /* News.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = DE18F9ED10F19105009A69B9 /* News.xcdatamodeld */; };
-		DE47589710D0BEE700139BC1 /* MITTabBarController.m in Sources */ = {isa = PBXBuildFile; fileRef = DE47589510D0BEE700139BC1 /* MITTabBarController.m */; };
 		DE4AB0B410ED5148007476D9 /* NewsStory.m in Sources */ = {isa = PBXBuildFile; fileRef = DE4AB0B310ED5148007476D9 /* NewsStory.m */; };
 		DE5E99D31124B57C00498760 /* emergency_template.html in Resources */ = {isa = PBXBuildFile; fileRef = DE5E99D21124B57C00498760 /* emergency_template.html */; };
 		DE6AFDC710D99C4D00B48BA7 /* Foundation+MITAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = DE6AFDC610D99C4D00B48BA7 /* Foundation+MITAdditions.m */; };
@@ -213,7 +212,6 @@
 		DE6D332D10346F78008A5823 /* ShuttleRoutes.xib in Resources */ = {isa = PBXBuildFile; fileRef = DE6D332C10346F78008A5823 /* ShuttleRoutes.xib */; };
 		DE6D570610F05C59006431A8 /* TabScrollerBackgroundView.m in Sources */ = {isa = PBXBuildFile; fileRef = DE6D570510F05C59006431A8 /* TabScrollerBackgroundView.m */; };
 		DE6D579B10F07212006431A8 /* news_story_template.html in Resources */ = {isa = PBXBuildFile; fileRef = DE6D579A10F07212006431A8 /* news_story_template.html */; };
-		DE6D907111095B2D00DAF213 /* MITMoreListController.m in Sources */ = {isa = PBXBuildFile; fileRef = DE6D907011095B2D00DAF213 /* MITMoreListController.m */; };
 		DE6D9401110AD1ED00DAF213 /* SettingsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DE6D9319110A8EFA00DAF213 /* SettingsTableViewController.m */; };
 		DE6E1553110BA934002D9C60 /* shuttle-secondary-scrim.png in Resources */ = {isa = PBXBuildFile; fileRef = DE6E1552110BA934002D9C60 /* shuttle-secondary-scrim.png */; };
 		DE6F045A11139CA40046684B /* FBConnectGlobal.m in Sources */ = {isa = PBXBuildFile; fileRef = DE6F044811139CA40046684B /* FBConnectGlobal.m */; };
@@ -249,7 +247,6 @@
 		DE821E8110EAB4F500B4C4C8 /* UIKit+MITAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = DE821E8010EAB4F500B4C4C8 /* UIKit+MITAdditions.m */; };
 		DE89FB95103D019A000E35B4 /* Modules in Resources */ = {isa = PBXBuildFile; fileRef = DE89FB82103D019A000E35B4 /* Modules */; };
 		DE89FB96103D019A000E35B4 /* navbar_mit_logo.png in Resources */ = {isa = PBXBuildFile; fileRef = DE89FB93103D019A000E35B4 /* navbar_mit_logo.png */; };
-		DE8ECED810F27F9C00D4C5CE /* MITTabBarItem.m in Sources */ = {isa = PBXBuildFile; fileRef = DE8ECED710F27F9C00D4C5CE /* MITTabBarItem.m */; };
 		DE9EFBD210FE7D8900F5F07E /* SettingsModule.m in Sources */ = {isa = PBXBuildFile; fileRef = DE9EFBD110FE7D8900F5F07E /* SettingsModule.m */; };
 		DEA3B48D10C9BB7300BDA774 /* AboutModule.m in Sources */ = {isa = PBXBuildFile; fileRef = DEA3B48C10C9BB7300BDA774 /* AboutModule.m */; };
 		DEA3B6F810CB126200BDA774 /* Constants.m in Sources */ = {isa = PBXBuildFile; fileRef = DEA3B6F710CB126200BDA774 /* Constants.m */; };
@@ -435,6 +432,10 @@
 		EB6D111611EE143900B65CE3 /* TileServerManager.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB6D111411EE143900B65CE3 /* TileServerManager.h */; settings = {JAVA_ARCHIVE_SUBDIR = "Modules/Campus Map"; }; };
 		EB6D111711EE143900B65CE3 /* TileServerManager.m in Sources */ = {isa = PBXBuildFile; fileRef = EB6D111511EE143900B65CE3 /* TileServerManager.m */; };
 		EB6D114211EE191000B65CE3 /* PJ_geos.c in Sources */ = {isa = PBXBuildFile; fileRef = EB6D114111EE191000B65CE3 /* PJ_geos.c */; };
+		EB6D133311EE4A9C00B65CE3 /* MKMapView+ArcGISAdditions.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB6D133111EE4A9C00B65CE3 /* MKMapView+ArcGISAdditions.h */; settings = {JAVA_ARCHIVE_SUBDIR = "Modules/Campus Map"; }; };
+		EB6D133411EE4A9C00B65CE3 /* MKMapView+ArcGISAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = EB6D133211EE4A9C00B65CE3 /* MKMapView+ArcGISAdditions.m */; };
+		EB6D141511EE979500B65CE3 /* NewsCategory.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB6D141311EE979500B65CE3 /* NewsCategory.h */; settings = {JAVA_ARCHIVE_SUBDIR = Modules/News; }; };
+		EB6D141611EE979500B65CE3 /* NewsCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = EB6D141411EE979500B65CE3 /* NewsCategory.m */; };
 		EB6DFE3711DE28F800B65CE3 /* ModoNavigationController.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB6DFE3511DE28F800B65CE3 /* ModoNavigationController.h */; settings = {JAVA_ARCHIVE_SUBDIR = Common; }; };
 		EB6DFE3811DE28F800B65CE3 /* ModoNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = EB6DFE3611DE28F800B65CE3 /* ModoNavigationController.m */; };
 		EB6DFE3F11DE294700B65CE3 /* ModoNavigationBar.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB6DFE3D11DE294700B65CE3 /* ModoNavigationBar.h */; settings = {JAVA_ARCHIVE_SUBDIR = Common; }; };
@@ -775,8 +776,6 @@
 		DE13490A10FFC2CC006FFF33 /* 7.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 7.png; sourceTree = "<group>"; };
 		DE13490B10FFC2CC006FFF33 /* 8.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 8.png; sourceTree = "<group>"; };
 		DE13490C10FFC2CC006FFF33 /* 9.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 9.png; sourceTree = "<group>"; };
-		DE47589410D0BEE700139BC1 /* MITTabBarController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MITTabBarController.h; path = "App Delegate/MITTabBarController.h"; sourceTree = "<group>"; };
-		DE47589510D0BEE700139BC1 /* MITTabBarController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MITTabBarController.m; path = "App Delegate/MITTabBarController.m"; sourceTree = "<group>"; };
 		DE4AB0B210ED5148007476D9 /* NewsStory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NewsStory.h; sourceTree = "<group>"; };
 		DE4AB0B310ED5148007476D9 /* NewsStory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NewsStory.m; sourceTree = "<group>"; };
 		DE5E99D21124B57C00498760 /* emergency_template.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; name = emergency_template.html; path = Resources/emergency_template.html; sourceTree = "<group>"; };
@@ -790,8 +789,6 @@
 		DE6D570410F05C59006431A8 /* TabScrollerBackgroundView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TabScrollerBackgroundView.h; sourceTree = "<group>"; };
 		DE6D570510F05C59006431A8 /* TabScrollerBackgroundView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TabScrollerBackgroundView.m; sourceTree = "<group>"; };
 		DE6D579A10F07212006431A8 /* news_story_template.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; name = news_story_template.html; path = Resources/news_story_template.html; sourceTree = "<group>"; };
-		DE6D906F11095B2D00DAF213 /* MITMoreListController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MITMoreListController.h; path = "App Delegate/MITMoreListController.h"; sourceTree = "<group>"; };
-		DE6D907011095B2D00DAF213 /* MITMoreListController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MITMoreListController.m; path = "App Delegate/MITMoreListController.m"; sourceTree = "<group>"; };
 		DE6D9318110A8EFA00DAF213 /* SettingsTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SettingsTableViewController.h; path = Settings/SettingsTableViewController.h; sourceTree = "<group>"; };
 		DE6D9319110A8EFA00DAF213 /* SettingsTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SettingsTableViewController.m; path = Settings/SettingsTableViewController.m; sourceTree = "<group>"; };
 		DE6E1552110BA934002D9C60 /* shuttle-secondary-scrim.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "shuttle-secondary-scrim.png"; path = "Resources/shuttle-secondary-scrim.png"; sourceTree = "<group>"; };
@@ -853,8 +850,6 @@
 		DE821E8010EAB4F500B4C4C8 /* UIKit+MITAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIKit+MITAdditions.m"; sourceTree = "<group>"; };
 		DE89FB82103D019A000E35B4 /* Modules */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Modules; path = Resources/Modules; sourceTree = "<group>"; };
 		DE89FB93103D019A000E35B4 /* navbar_mit_logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = navbar_mit_logo.png; path = Resources/navbar_mit_logo.png; sourceTree = "<group>"; };
-		DE8ECED610F27F9C00D4C5CE /* MITTabBarItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MITTabBarItem.h; path = "App Delegate/MITTabBarItem.h"; sourceTree = "<group>"; };
-		DE8ECED710F27F9C00D4C5CE /* MITTabBarItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MITTabBarItem.m; path = "App Delegate/MITTabBarItem.m"; sourceTree = "<group>"; };
 		DE9EFBD010FE7D8900F5F07E /* SettingsModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SettingsModule.h; path = Settings/SettingsModule.h; sourceTree = "<group>"; };
 		DE9EFBD110FE7D8900F5F07E /* SettingsModule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SettingsModule.m; path = Settings/SettingsModule.m; sourceTree = "<group>"; };
 		DEA3B48B10C9BB7300BDA774 /* AboutModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AboutModule.h; sourceTree = "<group>"; };
@@ -1052,6 +1047,10 @@
 		EB6D111411EE143900B65CE3 /* TileServerManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TileServerManager.h; sourceTree = "<group>"; };
 		EB6D111511EE143900B65CE3 /* TileServerManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TileServerManager.m; sourceTree = "<group>"; };
 		EB6D114111EE191000B65CE3 /* PJ_geos.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = PJ_geos.c; sourceTree = "<group>"; };
+		EB6D133111EE4A9C00B65CE3 /* MKMapView+ArcGISAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "MKMapView+ArcGISAdditions.h"; sourceTree = "<group>"; };
+		EB6D133211EE4A9C00B65CE3 /* MKMapView+ArcGISAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "MKMapView+ArcGISAdditions.m"; sourceTree = "<group>"; };
+		EB6D141311EE979500B65CE3 /* NewsCategory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NewsCategory.h; sourceTree = "<group>"; };
+		EB6D141411EE979500B65CE3 /* NewsCategory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NewsCategory.m; sourceTree = "<group>"; };
 		EB6DFE3511DE28F800B65CE3 /* ModoNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ModoNavigationController.h; sourceTree = "<group>"; };
 		EB6DFE3611DE28F800B65CE3 /* ModoNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ModoNavigationController.m; sourceTree = "<group>"; };
 		EB6DFE3D11DE294700B65CE3 /* ModoNavigationBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ModoNavigationBar.h; sourceTree = "<group>"; };
@@ -1577,6 +1576,8 @@
 		DE4AAFAC10ED4E63007476D9 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				EB6D141311EE979500B65CE3 /* NewsCategory.h */,
+				EB6D141411EE979500B65CE3 /* NewsCategory.m */,
 				DE4AB0B210ED5148007476D9 /* NewsStory.h */,
 				DE4AB0B310ED5148007476D9 /* NewsStory.m */,
 				DECBF6A010F8F71D009FAE35 /* NewsImage.h */,
@@ -1662,6 +1663,8 @@
 				442C11DD10EC112700CB44EC /* TouchableTableView.h */,
 				442C11DE10EC112700CB44EC /* TouchableTableView.m */,
 				442C195410F3B21400CB44EC /* MITMapRoute.h */,
+				EB6D133111EE4A9C00B65CE3 /* MKMapView+ArcGISAdditions.h */,
+				EB6D133211EE4A9C00B65CE3 /* MKMapView+ArcGISAdditions.m */,
 			);
 			path = "Campus Map";
 			sourceTree = "<group>";
@@ -1769,12 +1772,6 @@
 				1D3623250D0F684500981E51 /* MIT_MobileAppDelegate.m */,
 				DE71537A102FD66A005E6111 /* MITModuleList.h */,
 				DE71537B102FD66A005E6111 /* MITModuleList.m */,
-				DE47589410D0BEE700139BC1 /* MITTabBarController.h */,
-				DE47589510D0BEE700139BC1 /* MITTabBarController.m */,
-				DE8ECED610F27F9C00D4C5CE /* MITTabBarItem.h */,
-				DE8ECED710F27F9C00D4C5CE /* MITTabBarItem.m */,
-				DE6D906F11095B2D00DAF213 /* MITMoreListController.h */,
-				DE6D907011095B2D00DAF213 /* MITMoreListController.m */,
 			);
 			name = "App Delegate";
 			sourceTree = "<group>";
@@ -2196,6 +2193,8 @@
 				EB6D10DC11EE13F100B65CE3 /* MapTileOverlayView.h in JavaArchive */,
 				EB6D10DE11EE13F100B65CE3 /* MapZoomLevel.h in JavaArchive */,
 				EB6D111611EE143900B65CE3 /* TileServerManager.h in JavaArchive */,
+				EB6D133311EE4A9C00B65CE3 /* MKMapView+ArcGISAdditions.h in JavaArchive */,
+				EB6D141511EE979500B65CE3 /* NewsCategory.h in JavaArchive */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2413,7 +2412,6 @@
 				297746D210D3526200ACFCE6 /* StellarClassTime.m in Sources */,
 				297746D310D3526200ACFCE6 /* StellarCourse.m in Sources */,
 				EBCB4DEE10D30AA2001219FD /* EmergencyContactsViewController.m in Sources */,
-				DE47589710D0BEE700139BC1 /* MITTabBarController.m in Sources */,
 				EB3EE78010D6ADCA00F6D707 /* MultiLineTableViewCell.m in Sources */,
 				4463CC9110D6F4A50048CA83 /* CampusMapViewController.m in Sources */,
 				4463CC9810D6F4A50048CA83 /* CMModule.m in Sources */,
@@ -2449,7 +2447,6 @@
 				DE18F9EE10F19105009A69B9 /* News.xcdatamodeld in Sources */,
 				2978864510F03656002670CC /* MITDeviceRegistration.m in Sources */,
 				2978864610F03656002670CC /* MITUnreadNotifications.m in Sources */,
-				DE8ECED810F27F9C00D4C5CE /* MITTabBarItem.m in Sources */,
 				442C192A10F3AE3400CB44EC /* RouteMapViewController.m in Sources */,
 				DEE283EE10F5109800B39531 /* Emergency.xcdatamodeld in Sources */,
 				442C1CA310F4FE8900CB44EC /* ShuttleLocation.m in Sources */,
@@ -2463,7 +2460,6 @@
 				DEC02D2D11053A850054BE32 /* StoryImageView.m in Sources */,
 				44BF602011050AC000E150D5 /* ShuttleStopCell.m in Sources */,
 				DEC02F9D110578240054BE32 /* AboutTableViewController.m in Sources */,
-				DE6D907111095B2D00DAF213 /* MITMoreListController.m in Sources */,
 				441009DE110A6DAF00451B23 /* CampusMapToolbar.m in Sources */,
 				DE6D9401110AD1ED00DAF213 /* SettingsTableViewController.m in Sources */,
 				DE0F6B3411109BC500F064D6 /* AboutMITVC.m in Sources */,
@@ -2678,6 +2674,8 @@
 				EB6D10DF11EE13F100B65CE3 /* MapZoomLevel.m in Sources */,
 				EB6D111711EE143900B65CE3 /* TileServerManager.m in Sources */,
 				EB6D114211EE191000B65CE3 /* PJ_geos.c in Sources */,
+				EB6D133411EE4A9C00B65CE3 /* MKMapView+ArcGISAdditions.m in Sources */,
+				EB6D141611EE979500B65CE3 /* NewsCategory.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
