@@ -75,18 +75,19 @@
 	}
 	*/
 	
-	_mapView.shouldNotDropPins = YES;
+	//_mapView.shouldNotDropPins = YES;
 	[_mapView addAnnotation:self.annotation];
-	_mapView.scrollEnabled = NO;
-	_mapView.userInteractionEnabled = NO;
-	_mapView.layer.cornerRadius = 6.0;
-	_mapViewContainer.layer.cornerRadius = 8.0;
+	//_mapView.scrollEnabled = NO;
+	//_mapView.userInteractionEnabled = NO;
+
+	//_mapView.layer.cornerRadius = 6.0;
+	//_mapViewContainer.layer.cornerRadius = 8.0;
 	
 	// buffer the annotation by 5px so it fits in the map thumbnail window.
-	CGPoint screenPoint = [_mapView unscaledScreenPointForCoordinate:self.annotation.coordinate];
-	screenPoint.y -= 5;
-	CLLocationCoordinate2D coordinate = [_mapView coordinateForScreenPoint:screenPoint];
-	_mapView.centerCoordinate = coordinate;
+	//CGPoint screenPoint = [_mapView unscaledScreenPointForCoordinate:self.annotation.coordinate];
+	//screenPoint.y -= 5;
+	//CLLocationCoordinate2D coordinate = [_mapView coordinateForScreenPoint:screenPoint];
+	//_mapView.centerCoordinate = coordinate;
 	
 	self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithTitle:@"Google Map"
 																			   style:UIBarButtonItemStylePlain
@@ -372,7 +373,7 @@
 {
 	
 	// on the map, select the current annotation
-	[_campusMapVC.mapView selectAnnotation:self.annotation animated:NO withRecenter:YES];
+	//[_campusMapVC.mapView selectAnnotation:self.annotation animated:NO withRecenter:YES];
 	
 	// make sure the map is showing. 
 	[_campusMapVC showListView:NO];

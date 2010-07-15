@@ -1,6 +1,5 @@
 #import <UIKit/UIKit.h>
 #import "JSONAPIRequest.h"
-#import "MITMapView.h"
 #import "CalendarConstants.h"
 #import "EventCategoriesTableView.h"
 #import "EventListTableView.h"
@@ -10,7 +9,7 @@
 @class EventListTableView;
 @class CalendarEventMapAnnotation;
 
-@interface CalendarEventsViewController : UIViewController <UIScrollViewDelegate, UISearchBarDelegate, UISearchDisplayDelegate, MITMapViewDelegate, JSONAPIDelegate> {
+@interface CalendarEventsViewController : UIViewController <UIScrollViewDelegate, UISearchBarDelegate, UISearchDisplayDelegate, MKMapViewDelegate, JSONAPIDelegate> {
 
 	CalendarEventListType activeEventList; // today, browse, acad, holidays...
 	NSDate *startDate;
@@ -58,7 +57,7 @@
 @property (nonatomic, assign) CalendarEventListType activeEventList;
 
 @property (nonatomic, retain) UITableView *tableView;
-@property (nonatomic, retain) MITMapView *mapView;
+@property (nonatomic, retain) MKMapView *mapView;
 
 @property (nonatomic, retain) NSDate *startDate;
 @property (nonatomic, retain) NSDate *endDate;

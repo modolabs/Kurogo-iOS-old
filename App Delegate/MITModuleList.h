@@ -11,6 +11,7 @@
 - (MITModule *)moduleForViewController:(UIViewController *)aViewController;
 - (MITModule *)moduleForTag:(NSString *)aTag;
 
+- (void)returnToHome;
 - (void)showModuleForTag:(NSString *)tag;
 
 - (NSString *)activeModuleTag;

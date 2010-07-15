@@ -24,7 +24,8 @@
 		
 		StellarMainTableController *stellarMainTableController = [[[StellarMainTableController alloc] init] autorelease];
 		stellarMainTableController.navigationItem.title = @"MIT Stellar";
-        [self.tabNavController setViewControllers:[NSArray arrayWithObject:stellarMainTableController]];
+        self.viewControllers = [NSArray arrayWithObject:stellarMainTableController];
+        //[self.tabNavController setViewControllers:[NSArray arrayWithObject:stellarMainTableController]];
     }
     return self;
 }

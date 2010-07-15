@@ -2,10 +2,10 @@
 
 @interface StellarModule : MITModule {
 
-	UINavigationController *navigationController;
+	ModoNavigationController *navigationController;
 }
 
-@property (nonatomic, retain) UINavigationController *navigationController;
+@property (nonatomic, retain) ModoNavigationController *navigationController;
 
 @end
 

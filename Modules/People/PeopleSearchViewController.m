@@ -543,8 +543,10 @@ NSInteger strLenSort(NSString *str1, NSString *str2, void *context)
 - (void)showActionSheet
 {
 	UIActionSheet *sheet = [[UIActionSheet alloc] initWithTitle:@"Clear Recents?" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:@"Clear" otherButtonTitles:nil];
-    MIT_MobileAppDelegate *appDelegate = (MIT_MobileAppDelegate *)[UIApplication sharedApplication].delegate;
-    [sheet showFromTabBar:appDelegate.tabBarController.tabBar];
+    //MIT_MobileAppDelegate *appDelegate = (MIT_MobileAppDelegate *)[UIApplication sharedApplication].delegate;
+    
+    //[sheet showFromTabBar:appDelegate.tabBarController.tabBar];
+    [sheet showInView:self.view];
     [sheet release];
 }
 

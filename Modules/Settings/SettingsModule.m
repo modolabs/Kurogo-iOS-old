@@ -15,7 +15,8 @@
         SettingsTableViewController *settingsVC = [[[SettingsTableViewController alloc] initWithStyle:UITableViewStyleGrouped] autorelease];
         settingsVC.title = self.longName;
 		
-        [self.tabNavController setViewControllers:[NSArray arrayWithObject:settingsVC]];
+        self.viewControllers = [NSArray arrayWithObject:settingsVC];
+        //[self.tabNavController setViewControllers:[NSArray arrayWithObject:settingsVC]];
     }
     return self;
 }

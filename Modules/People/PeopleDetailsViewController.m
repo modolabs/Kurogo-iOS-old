@@ -6,6 +6,7 @@
 #import "MITUIConstants.h"
 #import "UIKit+MITAdditions.h"
 #import "Foundation+MITAdditions.h"
+#import "ModoNavigationController.h"
 
 @implementation PeopleDetailsViewController
 
@@ -275,7 +276,7 @@
 			
 			// present newPersonController in a separate navigationController
 			// since it doesn't have its own nav bar
-			UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:creator];
+			ModoNavigationController *navController = [[ModoNavigationController alloc] initWithRootViewController:creator];
 			
 			MIT_MobileAppDelegate *appDelegate = (MIT_MobileAppDelegate *)[[UIApplication sharedApplication] delegate];
 			[appDelegate presentAppModalViewController:navController animated:YES];

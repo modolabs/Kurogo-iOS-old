@@ -14,7 +14,6 @@
 		28AD73600D9D9599002E5188 /* MainWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 28AD735F0D9D9599002E5188 /* MainWindow.xib */; };
 		29366C1A118E401C009D6863 /* libxml2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 29366C19118E401C009D6863 /* libxml2.dylib */; };
 		29366C1E118E4151009D6863 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 29366C1D118E4151009D6863 /* Security.framework */; };
-		294AC7B010E46786003830C3 /* MITMapScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 294AC7AF10E46786003830C3 /* MITMapScrollView.m */; };
 		296F9EDD110A0F5400EC8FCA /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 296F9EDC110A0F5400EC8FCA /* AudioToolbox.framework */; };
 		296FC55610CF4E8D00EA7FF7 /* StellarDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 296FC55510CF4E8D00EA7FF7 /* StellarDetailViewController.m */; };
 		2970ABE610E053F700C543D7 /* StellarClassTableCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 2970ABE510E053F700C543D7 /* StellarClassTableCell.m */; };
@@ -120,7 +119,6 @@
 		4420F23110E9513700A8CD05 /* ShuttleDataManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 4420F23010E9513700A8CD05 /* ShuttleDataManager.m */; };
 		4420F31B10E96EBE00A8CD05 /* ShuttleStopMapAnnotation.m in Sources */ = {isa = PBXBuildFile; fileRef = 4420F31A10E96EBE00A8CD05 /* ShuttleStopMapAnnotation.m */; };
 		4420F62910EBA5D000A8CD05 /* ShuttleStopViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4420F62810EBA5D000A8CD05 /* ShuttleStopViewController.m */; };
-		44259C7110DBDCDC008FCAF1 /* MITMapAnnotationCalloutView.m in Sources */ = {isa = PBXBuildFile; fileRef = 44259C7010DBDCDC008FCAF1 /* MITMapAnnotationCalloutView.m */; };
 		44293B4210DABD3700273119 /* map_button_shuttle.png in Resources */ = {isa = PBXBuildFile; fileRef = 44293B3410DABD3700273119 /* map_button_shuttle.png */; };
 		44293B4310DABD3700273119 /* map_button_location.png in Resources */ = {isa = PBXBuildFile; fileRef = 44293B3510DABD3700273119 /* map_button_location.png */; };
 		44293B4410DABD3700273119 /* map_location_complete.png in Resources */ = {isa = PBXBuildFile; fileRef = 44293B3610DABD3700273119 /* map_location_complete.png */; };
@@ -140,25 +138,16 @@
 		442C11DF10EC112700CB44EC /* TouchableTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 442C11DE10EC112700CB44EC /* TouchableTableView.m */; };
 		442C192A10F3AE3400CB44EC /* RouteMapViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 442C192810F3AE3400CB44EC /* RouteMapViewController.m */; };
 		442C192B10F3AE3400CB44EC /* RouteMapViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 442C192910F3AE3400CB44EC /* RouteMapViewController.xib */; };
-		442C19AE10F3D70900CB44EC /* RouteView.m in Sources */ = {isa = PBXBuildFile; fileRef = 442C19AD10F3D70900CB44EC /* RouteView.m */; };
 		442C1CA310F4FE8900CB44EC /* ShuttleLocation.m in Sources */ = {isa = PBXBuildFile; fileRef = 442C1CA210F4FE8900CB44EC /* ShuttleLocation.m */; };
 		4463CC9110D6F4A50048CA83 /* CampusMapViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4463CC7A10D6F4A50048CA83 /* CampusMapViewController.m */; };
-		4463CC9210D6F4A50048CA83 /* MapLevel.m in Sources */ = {isa = PBXBuildFile; fileRef = 4463CC7C10D6F4A50048CA83 /* MapLevel.m */; };
-		4463CC9310D6F4A50048CA83 /* MapTileExtent.m in Sources */ = {isa = PBXBuildFile; fileRef = 4463CC7E10D6F4A50048CA83 /* MapTileExtent.m */; };
-		4463CC9510D6F4A50048CA83 /* MapTileCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 4463CC8210D6F4A50048CA83 /* MapTileCache.m */; };
-		4463CC9710D6F4A50048CA83 /* SaveOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 4463CC8610D6F4A50048CA83 /* SaveOperation.m */; };
 		4463CC9810D6F4A50048CA83 /* CMModule.m in Sources */ = {isa = PBXBuildFile; fileRef = 4463CC8810D6F4A50048CA83 /* CMModule.m */; };
-		4463CC9910D6F4A50048CA83 /* MITProjection.m in Sources */ = {isa = PBXBuildFile; fileRef = 4463CC8A10D6F4A50048CA83 /* MITProjection.m */; };
-		4463CC9A10D6F4A50048CA83 /* MITMapUserLocation.m in Sources */ = {isa = PBXBuildFile; fileRef = 4463CC8C10D6F4A50048CA83 /* MITMapUserLocation.m */; };
 		4463CC9B10D6F4A50048CA83 /* MITMapSearchResultAnnotation.m in Sources */ = {isa = PBXBuildFile; fileRef = 4463CC8E10D6F4A50048CA83 /* MITMapSearchResultAnnotation.m */; };
-		4463CC9C10D6F4A50048CA83 /* MITMapAnnotationView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4463CC9010D6F4A50048CA83 /* MITMapAnnotationView.m */; };
 		4463CCB210D6F5750048CA83 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4463CCB110D6F5750048CA83 /* CoreLocation.framework */; };
 		4463CCEA10D6F7090048CA83 /* map_red_pin.png in Resources */ = {isa = PBXBuildFile; fileRef = 4463CCE710D6F7090048CA83 /* map_red_pin.png */; };
 		4463CE8F10D8052A0048CA83 /* MITMapSearchResultCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 4463CE8E10D8052A0048CA83 /* MITMapSearchResultCell.m */; };
 		4463D09410D92CB00048CA83 /* MITMapDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4463D09210D92CB00048CA83 /* MITMapDetailViewController.m */; };
 		4463D09510D92CB00048CA83 /* MITMapDetailViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4463D09310D92CB00048CA83 /* MITMapDetailViewController.xib */; };
 		4463D0A010D92F6B0048CA83 /* TabViewControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 4463D09F10D92F6B0048CA83 /* TabViewControl.m */; };
-		4463D5E210DA74240048CA83 /* MITMapView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4463D5E110DA74240048CA83 /* MITMapView.m */; };
 		448B309410F685B0007A91E4 /* map_grid_placeholder.png in Resources */ = {isa = PBXBuildFile; fileRef = 448B309310F685B0007A91E4 /* map_grid_placeholder.png */; };
 		448B32AF10F770A6007A91E4 /* shuttle-bus-location-arrow.png in Resources */ = {isa = PBXBuildFile; fileRef = 448B32AB10F770A6007A91E4 /* shuttle-bus-location-arrow.png */; };
 		448B32B010F770A6007A91E4 /* shuttle-bus-location.png in Resources */ = {isa = PBXBuildFile; fileRef = 448B32AC10F770A6007A91E4 /* shuttle-bus-location.png */; };
@@ -215,7 +204,6 @@
 		DE0A62AC10CDAEA90058B2C2 /* MITBuildInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = DE0A62AB10CDAEA90058B2C2 /* MITBuildInfo.m */; };
 		DE0F6B3411109BC500F064D6 /* AboutMITVC.m in Sources */ = {isa = PBXBuildFile; fileRef = DE0F6B3311109BC500F064D6 /* AboutMITVC.m */; };
 		DE18F9EE10F19105009A69B9 /* News.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = DE18F9ED10F19105009A69B9 /* News.xcdatamodeld */; };
-		DE47589710D0BEE700139BC1 /* MITTabBarController.m in Sources */ = {isa = PBXBuildFile; fileRef = DE47589510D0BEE700139BC1 /* MITTabBarController.m */; };
 		DE4AB0B410ED5148007476D9 /* NewsStory.m in Sources */ = {isa = PBXBuildFile; fileRef = DE4AB0B310ED5148007476D9 /* NewsStory.m */; };
 		DE5E99D31124B57C00498760 /* emergency_template.html in Resources */ = {isa = PBXBuildFile; fileRef = DE5E99D21124B57C00498760 /* emergency_template.html */; };
 		DE6AFDC710D99C4D00B48BA7 /* Foundation+MITAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = DE6AFDC610D99C4D00B48BA7 /* Foundation+MITAdditions.m */; };
@@ -224,7 +212,6 @@
 		DE6D332D10346F78008A5823 /* ShuttleRoutes.xib in Resources */ = {isa = PBXBuildFile; fileRef = DE6D332C10346F78008A5823 /* ShuttleRoutes.xib */; };
 		DE6D570610F05C59006431A8 /* TabScrollerBackgroundView.m in Sources */ = {isa = PBXBuildFile; fileRef = DE6D570510F05C59006431A8 /* TabScrollerBackgroundView.m */; };
 		DE6D579B10F07212006431A8 /* news_story_template.html in Resources */ = {isa = PBXBuildFile; fileRef = DE6D579A10F07212006431A8 /* news_story_template.html */; };
-		DE6D907111095B2D00DAF213 /* MITMoreListController.m in Sources */ = {isa = PBXBuildFile; fileRef = DE6D907011095B2D00DAF213 /* MITMoreListController.m */; };
 		DE6D9401110AD1ED00DAF213 /* SettingsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DE6D9319110A8EFA00DAF213 /* SettingsTableViewController.m */; };
 		DE6E1553110BA934002D9C60 /* shuttle-secondary-scrim.png in Resources */ = {isa = PBXBuildFile; fileRef = DE6E1552110BA934002D9C60 /* shuttle-secondary-scrim.png */; };
 		DE6F045A11139CA40046684B /* FBConnectGlobal.m in Sources */ = {isa = PBXBuildFile; fileRef = DE6F044811139CA40046684B /* FBConnectGlobal.m */; };
@@ -260,7 +247,6 @@
 		DE821E8110EAB4F500B4C4C8 /* UIKit+MITAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = DE821E8010EAB4F500B4C4C8 /* UIKit+MITAdditions.m */; };
 		DE89FB95103D019A000E35B4 /* Modules in Resources */ = {isa = PBXBuildFile; fileRef = DE89FB82103D019A000E35B4 /* Modules */; };
 		DE89FB96103D019A000E35B4 /* navbar_mit_logo.png in Resources */ = {isa = PBXBuildFile; fileRef = DE89FB93103D019A000E35B4 /* navbar_mit_logo.png */; };
-		DE8ECED810F27F9C00D4C5CE /* MITTabBarItem.m in Sources */ = {isa = PBXBuildFile; fileRef = DE8ECED710F27F9C00D4C5CE /* MITTabBarItem.m */; };
 		DE9EFBD210FE7D8900F5F07E /* SettingsModule.m in Sources */ = {isa = PBXBuildFile; fileRef = DE9EFBD110FE7D8900F5F07E /* SettingsModule.m */; };
 		DEA3B48D10C9BB7300BDA774 /* AboutModule.m in Sources */ = {isa = PBXBuildFile; fileRef = DEA3B48C10C9BB7300BDA774 /* AboutModule.m */; };
 		DEA3B6F810CB126200BDA774 /* Constants.m in Sources */ = {isa = PBXBuildFile; fileRef = DEA3B6F710CB126200BDA774 /* Constants.m */; };
@@ -285,8 +271,177 @@
 		EB54947310DFF7E200B708B3 /* global in Resources */ = {isa = PBXBuildFile; fileRef = EB54947210DFF7E200B708B3 /* global */; };
 		EB676032114A9316004596BB /* ShuttleRouteCache.m in Sources */ = {isa = PBXBuildFile; fileRef = EB67602F114A9316004596BB /* ShuttleRouteCache.m */; };
 		EB676033114A9316004596BB /* ShuttleStopLocation.m in Sources */ = {isa = PBXBuildFile; fileRef = EB676031114A9316004596BB /* ShuttleStopLocation.m */; };
+		EB6D02A911E3784100B65CE3 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EB6D02A811E3784100B65CE3 /* MapKit.framework */; };
 		EB6D076811E50E5B00B65CE3 /* JSONAPIRequest.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB6D076611E50E5B00B65CE3 /* JSONAPIRequest.h */; settings = {JAVA_ARCHIVE_SUBDIR = Common/Connection; }; };
 		EB6D076911E50E5B00B65CE3 /* JSONAPIRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = EB6D076711E50E5B00B65CE3 /* JSONAPIRequest.m */; };
+		EB6D0FB211EE0F9100B65CE3 /* aasincos.c in Sources */ = {isa = PBXBuildFile; fileRef = EB6D0F0D11EE0F9000B65CE3 /* aasincos.c */; };
+		EB6D0FB311EE0F9100B65CE3 /* adjlon.c in Sources */ = {isa = PBXBuildFile; fileRef = EB6D0F0E11EE0F9000B65CE3 /* adjlon.c */; };
+		EB6D0FB411EE0F9100B65CE3 /* bch2bps.c in Sources */ = {isa = PBXBuildFile; fileRef = EB6D0F0F11EE0F9000B65CE3 /* bch2bps.c */; };
+		EB6D0FB511EE0F9100B65CE3 /* bchgen.c in Sources */ = {isa = PBXBuildFile; fileRef = EB6D0F1011EE0F9000B65CE3 /* bchgen.c */; };
+		EB6D0FB611EE0F9100B65CE3 /* biveval.c in Sources */ = {isa = PBXBuildFile; fileRef = EB6D0F1111EE0F9000B65CE3 /* biveval.c */; };
+		EB6D0FB811EE0F9100B65CE3 /* dmstor.c in Sources */ = {isa = PBXBuildFile; fileRef = EB6D0F1311EE0F9000B65CE3 /* dmstor.c */; };
+		EB6D0FBC11EE0F9100B65CE3 /* geocent.c in Sources */ = {isa = PBXBuildFile; fileRef = EB6D0F1711EE0F9000B65CE3 /* geocent.c */; };
+		EB6D0FBD11EE0F9100B65CE3 /* geocent.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB6D0F1811EE0F9000B65CE3 /* geocent.h */; settings = {JAVA_ARCHIVE_SUBDIR = proj.4; }; };
+		EB6D0FC311EE0F9100B65CE3 /* jniproj.c in Sources */ = {isa = PBXBuildFile; fileRef = EB6D0F1E11EE0F9000B65CE3 /* jniproj.c */; };
+		EB6D0FC711EE0F9100B65CE3 /* mk_cheby.c in Sources */ = {isa = PBXBuildFile; fileRef = EB6D0F2211EE0F9000B65CE3 /* mk_cheby.c */; };
+		EB6D0FCA11EE0F9100B65CE3 /* nad_cvt.c in Sources */ = {isa = PBXBuildFile; fileRef = EB6D0F2511EE0F9000B65CE3 /* nad_cvt.c */; };
+		EB6D0FCB11EE0F9100B65CE3 /* nad_init.c in Sources */ = {isa = PBXBuildFile; fileRef = EB6D0F2611EE0F9000B65CE3 /* nad_init.c */; };
+		EB6D0FCC11EE0F9100B65CE3 /* nad_intr.c in Sources */ = {isa = PBXBuildFile; fileRef = EB6D0F2711EE0F9000B65CE3 /* nad_intr.c */; };
+		EB6D0FCD11EE0F9100B65CE3 /* nad_list.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB6D0F2811EE0F9000B65CE3 /* nad_list.h */; settings = {JAVA_ARCHIVE_SUBDIR = proj.4; }; };
+		EB6D0FCE11EE0F9100B65CE3 /* org_proj4_Projections.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB6D0F2911EE0F9000B65CE3 /* org_proj4_Projections.h */; settings = {JAVA_ARCHIVE_SUBDIR = proj.4; }; };
+		EB6D0FCF11EE0F9100B65CE3 /* p_series.c in Sources */ = {isa = PBXBuildFile; fileRef = EB6D0F2A11EE0F9000B65CE3 /* p_series.c */; };
+		EB6D0FD011EE0F9100B65CE3 /* PJ_aea.c in Sources */ = {isa = PBXBuildFile; fileRef = EB6D0F2B11EE0F9000B65CE3 /* PJ_aea.c */; };
+		EB6D0FD111EE0F9100B65CE3 /* PJ_aeqd.c in Sources */ = {isa = PBXBuildFile; fileRef = EB6D0F2C11EE0F9000B65CE3 /* PJ_aeqd.c */; };
+		EB6D0FD211EE0F9100B65CE3 /* PJ_airy.c in Sources */ = {isa = PBXBuildFile; fileRef = EB6D0F2D11EE0F9000B65CE3 /* PJ_airy.c */; };
+		EB6D0FD311EE0F9100B65CE3 /* PJ_aitoff.c in Sources */ = {isa = PBXBuildFile; fileRef = EB6D0F2E11EE0F9000B65CE3 /* PJ_aitoff.c */; };
+		EB6D0FD411EE0F9100B65CE3 /* pj_apply_gridshift.c in Sources */ = {isa = PBXBuildFile; fileRef = EB6D0F2F11EE0F9000B65CE3 /* pj_apply_gridshift.c */; };
+		EB6D0FD511EE0F9100B65CE3 /* PJ_august.c in Sources */ = {isa = PBXBuildFile; fileRef = EB6D0F3011EE0F9000B65CE3 /* PJ_august.c */; };
+		EB6D0FD611EE0F9100B65CE3 /* pj_auth.c in Sources */ = {isa = PBXBuildFile; fileRef = EB6D0F3111EE0F9000B65CE3 /* pj_auth.c */; };
+		EB6D0FD711EE0F9100B65CE3 /* PJ_bacon.c in Sources */ = {isa = PBXBuildFile; fileRef = EB6D0F3211EE0F9000B65CE3 /* PJ_bacon.c */; };
+		EB6D0FD811EE0F9100B65CE3 /* PJ_bipc.c in Sources */ = {isa = PBXBuildFile; fileRef = EB6D0F3311EE0F9000B65CE3 /* PJ_bipc.c */; };
+		EB6D0FD911EE0F9100B65CE3 /* PJ_boggs.c in Sources */ = {isa = PBXBuildFile; fileRef = EB6D0F3411EE0F9000B65CE3 /* PJ_boggs.c */; };
+		EB6D0FDA11EE0F9100B65CE3 /* PJ_bonne.c in Sources */ = {isa = PBXBuildFile; fileRef = EB6D0F3511EE0F9000B65CE3 /* PJ_bonne.c */; };
+		EB6D0FDB11EE0F9100B65CE3 /* PJ_cass.c in Sources */ = {isa = PBXBuildFile; fileRef = EB6D0F3611EE0F9000B65CE3 /* PJ_cass.c */; };
+		EB6D0FDC11EE0F9100B65CE3 /* PJ_cc.c in Sources */ = {isa = PBXBuildFile; fileRef = EB6D0F3711EE0F9000B65CE3 /* PJ_cc.c */; };
+		EB6D0FDD11EE0F9100B65CE3 /* PJ_cea.c in Sources */ = {isa = PBXBuildFile; fileRef = EB6D0F3811EE0F9000B65CE3 /* PJ_cea.c */; };
+		EB6D0FDE11EE0F9100B65CE3 /* PJ_chamb.c in Sources */ = {isa = PBXBuildFile; fileRef = EB6D0F3911EE0F9000B65CE3 /* PJ_chamb.c */; };
+		EB6D0FDF11EE0F9100B65CE3 /* PJ_collg.c in Sources */ = {isa = PBXBuildFile; fileRef = EB6D0F3A11EE0F9000B65CE3 /* PJ_collg.c */; };
+		EB6D0FE011EE0F9100B65CE3 /* PJ_crast.c in Sources */ = {isa = PBXBuildFile; fileRef = EB6D0F3B11EE0F9000B65CE3 /* PJ_crast.c */; };
+		EB6D0FE111EE0F9100B65CE3 /* pj_datum_set.c in Sources */ = {isa = PBXBuildFile; fileRef = EB6D0F3C11EE0F9000B65CE3 /* pj_datum_set.c */; };
+		EB6D0FE211EE0F9100B65CE3 /* pj_datums.c in Sources */ = {isa = PBXBuildFile; fileRef = EB6D0F3D11EE0F9000B65CE3 /* pj_datums.c */; };
+		EB6D0FE311EE0F9100B65CE3 /* PJ_denoy.c in Sources */ = {isa = PBXBuildFile; fileRef = EB6D0F3E11EE0F9000B65CE3 /* PJ_denoy.c */; };
+		EB6D0FE411EE0F9100B65CE3 /* pj_deriv.c in Sources */ = {isa = PBXBuildFile; fileRef = EB6D0F3F11EE0F9000B65CE3 /* pj_deriv.c */; };
+		EB6D0FE511EE0F9100B65CE3 /* PJ_eck1.c in Sources */ = {isa = PBXBuildFile; fileRef = EB6D0F4011EE0F9000B65CE3 /* PJ_eck1.c */; };
+		EB6D0FE611EE0F9100B65CE3 /* PJ_eck2.c in Sources */ = {isa = PBXBuildFile; fileRef = EB6D0F4111EE0F9000B65CE3 /* PJ_eck2.c */; };
+		EB6D0FE711EE0F9100B65CE3 /* PJ_eck3.c in Sources */ = {isa = PBXBuildFile; fileRef = EB6D0F4211EE0F9000B65CE3 /* PJ_eck3.c */; };
+		EB6D0FE811EE0F9100B65CE3 /* PJ_eck4.c in Sources */ = {isa = PBXBuildFile; fileRef = EB6D0F4311EE0F9000B65CE3 /* PJ_eck4.c */; };
+		EB6D0FE911EE0F9100B65CE3 /* PJ_eck5.c in Sources */ = {isa = PBXBuildFile; fileRef = EB6D0F4411EE0F9000B65CE3 /* PJ_eck5.c */; };
+		EB6D0FEA11EE0F9100B65CE3 /* pj_ell_set.c in Sources */ = {isa = PBXBuildFile; fileRef = EB6D0F4511EE0F9000B65CE3 /* pj_ell_set.c */; };
+		EB6D0FEB11EE0F9100B65CE3 /* pj_ellps.c in Sources */ = {isa = PBXBuildFile; fileRef = EB6D0F4611EE0F9000B65CE3 /* pj_ellps.c */; };
+		EB6D0FEC11EE0F9100B65CE3 /* PJ_eqc.c in Sources */ = {isa = PBXBuildFile; fileRef = EB6D0F4711EE0F9000B65CE3 /* PJ_eqc.c */; };
+		EB6D0FED11EE0F9100B65CE3 /* PJ_eqdc.c in Sources */ = {isa = PBXBuildFile; fileRef = EB6D0F4811EE0F9000B65CE3 /* PJ_eqdc.c */; };
+		EB6D0FEE11EE0F9100B65CE3 /* pj_errno.c in Sources */ = {isa = PBXBuildFile; fileRef = EB6D0F4911EE0F9000B65CE3 /* pj_errno.c */; };
+		EB6D0FEF11EE0F9100B65CE3 /* pj_factors.c in Sources */ = {isa = PBXBuildFile; fileRef = EB6D0F4A11EE0F9000B65CE3 /* pj_factors.c */; };
+		EB6D0FF011EE0F9100B65CE3 /* PJ_fahey.c in Sources */ = {isa = PBXBuildFile; fileRef = EB6D0F4B11EE0F9000B65CE3 /* PJ_fahey.c */; };
+		EB6D0FF111EE0F9100B65CE3 /* PJ_fouc_s.c in Sources */ = {isa = PBXBuildFile; fileRef = EB6D0F4C11EE0F9000B65CE3 /* PJ_fouc_s.c */; };
+		EB6D0FF211EE0F9100B65CE3 /* pj_fwd.c in Sources */ = {isa = PBXBuildFile; fileRef = EB6D0F4D11EE0F9000B65CE3 /* pj_fwd.c */; };
+		EB6D0FF311EE0F9100B65CE3 /* PJ_gall.c in Sources */ = {isa = PBXBuildFile; fileRef = EB6D0F4E11EE0F9000B65CE3 /* PJ_gall.c */; };
+		EB6D0FF411EE0F9100B65CE3 /* pj_gauss.c in Sources */ = {isa = PBXBuildFile; fileRef = EB6D0F4F11EE0F9000B65CE3 /* pj_gauss.c */; };
+		EB6D0FF511EE0F9100B65CE3 /* pj_geocent.c in Sources */ = {isa = PBXBuildFile; fileRef = EB6D0F5011EE0F9000B65CE3 /* pj_geocent.c */; };
+		EB6D0FF711EE0F9100B65CE3 /* PJ_gins8.c in Sources */ = {isa = PBXBuildFile; fileRef = EB6D0F5211EE0F9000B65CE3 /* PJ_gins8.c */; };
+		EB6D0FF811EE0F9100B65CE3 /* PJ_gn_sinu.c in Sources */ = {isa = PBXBuildFile; fileRef = EB6D0F5311EE0F9000B65CE3 /* PJ_gn_sinu.c */; };
+		EB6D0FF911EE0F9100B65CE3 /* PJ_gnom.c in Sources */ = {isa = PBXBuildFile; fileRef = EB6D0F5411EE0F9000B65CE3 /* PJ_gnom.c */; };
+		EB6D0FFA11EE0F9100B65CE3 /* PJ_goode.c in Sources */ = {isa = PBXBuildFile; fileRef = EB6D0F5511EE0F9000B65CE3 /* PJ_goode.c */; };
+		EB6D0FFB11EE0F9100B65CE3 /* pj_gridinfo.c in Sources */ = {isa = PBXBuildFile; fileRef = EB6D0F5611EE0F9000B65CE3 /* pj_gridinfo.c */; };
+		EB6D0FFC11EE0F9100B65CE3 /* pj_gridlist.c in Sources */ = {isa = PBXBuildFile; fileRef = EB6D0F5711EE0F9000B65CE3 /* pj_gridlist.c */; };
+		EB6D0FFD11EE0F9100B65CE3 /* PJ_gstmerc.c in Sources */ = {isa = PBXBuildFile; fileRef = EB6D0F5811EE0F9000B65CE3 /* PJ_gstmerc.c */; };
+		EB6D0FFE11EE0F9100B65CE3 /* PJ_hammer.c in Sources */ = {isa = PBXBuildFile; fileRef = EB6D0F5911EE0F9000B65CE3 /* PJ_hammer.c */; };
+		EB6D0FFF11EE0F9100B65CE3 /* PJ_hatano.c in Sources */ = {isa = PBXBuildFile; fileRef = EB6D0F5A11EE0F9000B65CE3 /* PJ_hatano.c */; };
+		EB6D100011EE0F9100B65CE3 /* PJ_imw_p.c in Sources */ = {isa = PBXBuildFile; fileRef = EB6D0F5B11EE0F9000B65CE3 /* PJ_imw_p.c */; };
+		EB6D100111EE0F9100B65CE3 /* pj_init.c in Sources */ = {isa = PBXBuildFile; fileRef = EB6D0F5C11EE0F9000B65CE3 /* pj_init.c */; };
+		EB6D100211EE0F9100B65CE3 /* pj_initcache.c in Sources */ = {isa = PBXBuildFile; fileRef = EB6D0F5D11EE0F9000B65CE3 /* pj_initcache.c */; };
+		EB6D100311EE0F9100B65CE3 /* pj_inv.c in Sources */ = {isa = PBXBuildFile; fileRef = EB6D0F5E11EE0F9000B65CE3 /* pj_inv.c */; };
+		EB6D100411EE0F9100B65CE3 /* PJ_krovak.c in Sources */ = {isa = PBXBuildFile; fileRef = EB6D0F5F11EE0F9000B65CE3 /* PJ_krovak.c */; };
+		EB6D100511EE0F9100B65CE3 /* PJ_labrd.c in Sources */ = {isa = PBXBuildFile; fileRef = EB6D0F6011EE0F9000B65CE3 /* PJ_labrd.c */; };
+		EB6D100611EE0F9100B65CE3 /* PJ_laea.c in Sources */ = {isa = PBXBuildFile; fileRef = EB6D0F6111EE0F9000B65CE3 /* PJ_laea.c */; };
+		EB6D100711EE0F9100B65CE3 /* PJ_lagrng.c in Sources */ = {isa = PBXBuildFile; fileRef = EB6D0F6211EE0F9000B65CE3 /* PJ_lagrng.c */; };
+		EB6D100811EE0F9100B65CE3 /* PJ_larr.c in Sources */ = {isa = PBXBuildFile; fileRef = EB6D0F6311EE0F9000B65CE3 /* PJ_larr.c */; };
+		EB6D100911EE0F9100B65CE3 /* PJ_lask.c in Sources */ = {isa = PBXBuildFile; fileRef = EB6D0F6411EE0F9000B65CE3 /* PJ_lask.c */; };
+		EB6D100A11EE0F9100B65CE3 /* pj_latlong.c in Sources */ = {isa = PBXBuildFile; fileRef = EB6D0F6511EE0F9000B65CE3 /* pj_latlong.c */; };
+		EB6D100B11EE0F9100B65CE3 /* PJ_lcc.c in Sources */ = {isa = PBXBuildFile; fileRef = EB6D0F6611EE0F9000B65CE3 /* PJ_lcc.c */; };
+		EB6D100C11EE0F9100B65CE3 /* PJ_lcca.c in Sources */ = {isa = PBXBuildFile; fileRef = EB6D0F6711EE0F9000B65CE3 /* PJ_lcca.c */; };
+		EB6D100D11EE0F9100B65CE3 /* pj_list.c in Sources */ = {isa = PBXBuildFile; fileRef = EB6D0F6811EE0F9000B65CE3 /* pj_list.c */; };
+		EB6D100E11EE0F9100B65CE3 /* pj_list.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB6D0F6911EE0F9000B65CE3 /* pj_list.h */; settings = {JAVA_ARCHIVE_SUBDIR = proj.4; }; };
+		EB6D100F11EE0F9100B65CE3 /* PJ_loxim.c in Sources */ = {isa = PBXBuildFile; fileRef = EB6D0F6A11EE0F9000B65CE3 /* PJ_loxim.c */; };
+		EB6D101011EE0F9100B65CE3 /* PJ_lsat.c in Sources */ = {isa = PBXBuildFile; fileRef = EB6D0F6B11EE0F9000B65CE3 /* PJ_lsat.c */; };
+		EB6D101111EE0F9100B65CE3 /* pj_malloc.c in Sources */ = {isa = PBXBuildFile; fileRef = EB6D0F6C11EE0F9000B65CE3 /* pj_malloc.c */; };
+		EB6D101211EE0F9100B65CE3 /* PJ_mbt_fps.c in Sources */ = {isa = PBXBuildFile; fileRef = EB6D0F6D11EE0F9000B65CE3 /* PJ_mbt_fps.c */; };
+		EB6D101311EE0F9100B65CE3 /* PJ_mbtfpp.c in Sources */ = {isa = PBXBuildFile; fileRef = EB6D0F6E11EE0F9100B65CE3 /* PJ_mbtfpp.c */; };
+		EB6D101411EE0F9100B65CE3 /* PJ_mbtfpq.c in Sources */ = {isa = PBXBuildFile; fileRef = EB6D0F6F11EE0F9100B65CE3 /* PJ_mbtfpq.c */; };
+		EB6D101511EE0F9100B65CE3 /* PJ_merc.c in Sources */ = {isa = PBXBuildFile; fileRef = EB6D0F7011EE0F9100B65CE3 /* PJ_merc.c */; };
+		EB6D101611EE0F9100B65CE3 /* PJ_mill.c in Sources */ = {isa = PBXBuildFile; fileRef = EB6D0F7111EE0F9100B65CE3 /* PJ_mill.c */; };
+		EB6D101711EE0F9100B65CE3 /* pj_mlfn.c in Sources */ = {isa = PBXBuildFile; fileRef = EB6D0F7211EE0F9100B65CE3 /* pj_mlfn.c */; };
+		EB6D101811EE0F9100B65CE3 /* PJ_mod_ster.c in Sources */ = {isa = PBXBuildFile; fileRef = EB6D0F7311EE0F9100B65CE3 /* PJ_mod_ster.c */; };
+		EB6D101911EE0F9100B65CE3 /* PJ_moll.c in Sources */ = {isa = PBXBuildFile; fileRef = EB6D0F7411EE0F9100B65CE3 /* PJ_moll.c */; };
+		EB6D101A11EE0F9100B65CE3 /* pj_msfn.c in Sources */ = {isa = PBXBuildFile; fileRef = EB6D0F7511EE0F9100B65CE3 /* pj_msfn.c */; };
+		EB6D101B11EE0F9100B65CE3 /* pj_mutex.c in Sources */ = {isa = PBXBuildFile; fileRef = EB6D0F7611EE0F9100B65CE3 /* pj_mutex.c */; };
+		EB6D101C11EE0F9100B65CE3 /* PJ_nell.c in Sources */ = {isa = PBXBuildFile; fileRef = EB6D0F7711EE0F9100B65CE3 /* PJ_nell.c */; };
+		EB6D101D11EE0F9100B65CE3 /* PJ_nell_h.c in Sources */ = {isa = PBXBuildFile; fileRef = EB6D0F7811EE0F9100B65CE3 /* PJ_nell_h.c */; };
+		EB6D101E11EE0F9100B65CE3 /* PJ_nocol.c in Sources */ = {isa = PBXBuildFile; fileRef = EB6D0F7911EE0F9100B65CE3 /* PJ_nocol.c */; };
+		EB6D101F11EE0F9100B65CE3 /* PJ_nsper.c in Sources */ = {isa = PBXBuildFile; fileRef = EB6D0F7A11EE0F9100B65CE3 /* PJ_nsper.c */; };
+		EB6D102011EE0F9100B65CE3 /* PJ_nzmg.c in Sources */ = {isa = PBXBuildFile; fileRef = EB6D0F7B11EE0F9100B65CE3 /* PJ_nzmg.c */; };
+		EB6D102111EE0F9100B65CE3 /* PJ_ob_tran.c in Sources */ = {isa = PBXBuildFile; fileRef = EB6D0F7C11EE0F9100B65CE3 /* PJ_ob_tran.c */; };
+		EB6D102211EE0F9100B65CE3 /* PJ_ocea.c in Sources */ = {isa = PBXBuildFile; fileRef = EB6D0F7D11EE0F9100B65CE3 /* PJ_ocea.c */; };
+		EB6D102311EE0F9100B65CE3 /* PJ_oea.c in Sources */ = {isa = PBXBuildFile; fileRef = EB6D0F7E11EE0F9100B65CE3 /* PJ_oea.c */; };
+		EB6D102411EE0F9100B65CE3 /* PJ_omerc.c in Sources */ = {isa = PBXBuildFile; fileRef = EB6D0F7F11EE0F9100B65CE3 /* PJ_omerc.c */; };
+		EB6D102511EE0F9100B65CE3 /* pj_open_lib.c in Sources */ = {isa = PBXBuildFile; fileRef = EB6D0F8011EE0F9100B65CE3 /* pj_open_lib.c */; };
+		EB6D102611EE0F9100B65CE3 /* PJ_ortho.c in Sources */ = {isa = PBXBuildFile; fileRef = EB6D0F8111EE0F9100B65CE3 /* PJ_ortho.c */; };
+		EB6D102711EE0F9100B65CE3 /* pj_param.c in Sources */ = {isa = PBXBuildFile; fileRef = EB6D0F8211EE0F9100B65CE3 /* pj_param.c */; };
+		EB6D102811EE0F9100B65CE3 /* pj_phi2.c in Sources */ = {isa = PBXBuildFile; fileRef = EB6D0F8311EE0F9100B65CE3 /* pj_phi2.c */; };
+		EB6D102911EE0F9100B65CE3 /* PJ_poly.c in Sources */ = {isa = PBXBuildFile; fileRef = EB6D0F8411EE0F9100B65CE3 /* PJ_poly.c */; };
+		EB6D102A11EE0F9100B65CE3 /* pj_pr_list.c in Sources */ = {isa = PBXBuildFile; fileRef = EB6D0F8511EE0F9100B65CE3 /* pj_pr_list.c */; };
+		EB6D102B11EE0F9100B65CE3 /* PJ_putp2.c in Sources */ = {isa = PBXBuildFile; fileRef = EB6D0F8611EE0F9100B65CE3 /* PJ_putp2.c */; };
+		EB6D102C11EE0F9100B65CE3 /* PJ_putp3.c in Sources */ = {isa = PBXBuildFile; fileRef = EB6D0F8711EE0F9100B65CE3 /* PJ_putp3.c */; };
+		EB6D102D11EE0F9100B65CE3 /* PJ_putp4p.c in Sources */ = {isa = PBXBuildFile; fileRef = EB6D0F8811EE0F9100B65CE3 /* PJ_putp4p.c */; };
+		EB6D102E11EE0F9100B65CE3 /* PJ_putp5.c in Sources */ = {isa = PBXBuildFile; fileRef = EB6D0F8911EE0F9100B65CE3 /* PJ_putp5.c */; };
+		EB6D102F11EE0F9100B65CE3 /* PJ_putp6.c in Sources */ = {isa = PBXBuildFile; fileRef = EB6D0F8A11EE0F9100B65CE3 /* PJ_putp6.c */; };
+		EB6D103011EE0F9100B65CE3 /* pj_qsfn.c in Sources */ = {isa = PBXBuildFile; fileRef = EB6D0F8B11EE0F9100B65CE3 /* pj_qsfn.c */; };
+		EB6D103111EE0F9100B65CE3 /* pj_release.c in Sources */ = {isa = PBXBuildFile; fileRef = EB6D0F8C11EE0F9100B65CE3 /* pj_release.c */; };
+		EB6D103211EE0F9100B65CE3 /* PJ_robin.c in Sources */ = {isa = PBXBuildFile; fileRef = EB6D0F8D11EE0F9100B65CE3 /* PJ_robin.c */; };
+		EB6D103311EE0F9100B65CE3 /* PJ_rpoly.c in Sources */ = {isa = PBXBuildFile; fileRef = EB6D0F8E11EE0F9100B65CE3 /* PJ_rpoly.c */; };
+		EB6D103411EE0F9100B65CE3 /* PJ_sconics.c in Sources */ = {isa = PBXBuildFile; fileRef = EB6D0F8F11EE0F9100B65CE3 /* PJ_sconics.c */; };
+		EB6D103511EE0F9100B65CE3 /* PJ_somerc.c in Sources */ = {isa = PBXBuildFile; fileRef = EB6D0F9011EE0F9100B65CE3 /* PJ_somerc.c */; };
+		EB6D103611EE0F9100B65CE3 /* PJ_stere.c in Sources */ = {isa = PBXBuildFile; fileRef = EB6D0F9111EE0F9100B65CE3 /* PJ_stere.c */; };
+		EB6D103711EE0F9100B65CE3 /* PJ_sterea.c in Sources */ = {isa = PBXBuildFile; fileRef = EB6D0F9211EE0F9100B65CE3 /* PJ_sterea.c */; };
+		EB6D103811EE0F9100B65CE3 /* pj_strerrno.c in Sources */ = {isa = PBXBuildFile; fileRef = EB6D0F9311EE0F9100B65CE3 /* pj_strerrno.c */; };
+		EB6D103911EE0F9100B65CE3 /* PJ_sts.c in Sources */ = {isa = PBXBuildFile; fileRef = EB6D0F9411EE0F9100B65CE3 /* PJ_sts.c */; };
+		EB6D103A11EE0F9100B65CE3 /* PJ_tcc.c in Sources */ = {isa = PBXBuildFile; fileRef = EB6D0F9511EE0F9100B65CE3 /* PJ_tcc.c */; };
+		EB6D103B11EE0F9100B65CE3 /* PJ_tcea.c in Sources */ = {isa = PBXBuildFile; fileRef = EB6D0F9611EE0F9100B65CE3 /* PJ_tcea.c */; };
+		EB6D103C11EE0F9100B65CE3 /* PJ_tmerc.c in Sources */ = {isa = PBXBuildFile; fileRef = EB6D0F9711EE0F9100B65CE3 /* PJ_tmerc.c */; };
+		EB6D103D11EE0F9100B65CE3 /* PJ_tpeqd.c in Sources */ = {isa = PBXBuildFile; fileRef = EB6D0F9811EE0F9100B65CE3 /* PJ_tpeqd.c */; };
+		EB6D103E11EE0F9100B65CE3 /* pj_transform.c in Sources */ = {isa = PBXBuildFile; fileRef = EB6D0F9911EE0F9100B65CE3 /* pj_transform.c */; };
+		EB6D103F11EE0F9100B65CE3 /* pj_tsfn.c in Sources */ = {isa = PBXBuildFile; fileRef = EB6D0F9A11EE0F9100B65CE3 /* pj_tsfn.c */; };
+		EB6D104011EE0F9100B65CE3 /* pj_units.c in Sources */ = {isa = PBXBuildFile; fileRef = EB6D0F9B11EE0F9100B65CE3 /* pj_units.c */; };
+		EB6D104111EE0F9100B65CE3 /* PJ_urm5.c in Sources */ = {isa = PBXBuildFile; fileRef = EB6D0F9C11EE0F9100B65CE3 /* PJ_urm5.c */; };
+		EB6D104211EE0F9100B65CE3 /* PJ_urmfps.c in Sources */ = {isa = PBXBuildFile; fileRef = EB6D0F9D11EE0F9100B65CE3 /* PJ_urmfps.c */; };
+		EB6D104311EE0F9100B65CE3 /* pj_utils.c in Sources */ = {isa = PBXBuildFile; fileRef = EB6D0F9E11EE0F9100B65CE3 /* pj_utils.c */; };
+		EB6D104411EE0F9100B65CE3 /* PJ_vandg.c in Sources */ = {isa = PBXBuildFile; fileRef = EB6D0F9F11EE0F9100B65CE3 /* PJ_vandg.c */; };
+		EB6D104511EE0F9100B65CE3 /* PJ_vandg2.c in Sources */ = {isa = PBXBuildFile; fileRef = EB6D0FA011EE0F9100B65CE3 /* PJ_vandg2.c */; };
+		EB6D104611EE0F9100B65CE3 /* PJ_vandg4.c in Sources */ = {isa = PBXBuildFile; fileRef = EB6D0FA111EE0F9100B65CE3 /* PJ_vandg4.c */; };
+		EB6D104711EE0F9100B65CE3 /* PJ_wag2.c in Sources */ = {isa = PBXBuildFile; fileRef = EB6D0FA211EE0F9100B65CE3 /* PJ_wag2.c */; };
+		EB6D104811EE0F9100B65CE3 /* PJ_wag3.c in Sources */ = {isa = PBXBuildFile; fileRef = EB6D0FA311EE0F9100B65CE3 /* PJ_wag3.c */; };
+		EB6D104911EE0F9100B65CE3 /* PJ_wag7.c in Sources */ = {isa = PBXBuildFile; fileRef = EB6D0FA411EE0F9100B65CE3 /* PJ_wag7.c */; };
+		EB6D104A11EE0F9100B65CE3 /* PJ_wink1.c in Sources */ = {isa = PBXBuildFile; fileRef = EB6D0FA511EE0F9100B65CE3 /* PJ_wink1.c */; };
+		EB6D104B11EE0F9100B65CE3 /* PJ_wink2.c in Sources */ = {isa = PBXBuildFile; fileRef = EB6D0FA611EE0F9100B65CE3 /* PJ_wink2.c */; };
+		EB6D104C11EE0F9100B65CE3 /* pj_zpoly1.c in Sources */ = {isa = PBXBuildFile; fileRef = EB6D0FA711EE0F9100B65CE3 /* pj_zpoly1.c */; };
+		EB6D104E11EE0F9100B65CE3 /* proj.def in Resources */ = {isa = PBXBuildFile; fileRef = EB6D0FA911EE0F9100B65CE3 /* proj.def */; };
+		EB6D104F11EE0F9100B65CE3 /* proj_api.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB6D0FAA11EE0F9100B65CE3 /* proj_api.h */; settings = {JAVA_ARCHIVE_SUBDIR = proj.4; }; };
+		EB6D105011EE0F9100B65CE3 /* proj_config.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB6D0FAB11EE0F9100B65CE3 /* proj_config.h */; settings = {JAVA_ARCHIVE_SUBDIR = proj.4; }; };
+		EB6D105111EE0F9100B65CE3 /* proj_config.h.in in Resources */ = {isa = PBXBuildFile; fileRef = EB6D0FAC11EE0F9100B65CE3 /* proj_config.h.in */; };
+		EB6D105211EE0F9100B65CE3 /* proj_mdist.c in Sources */ = {isa = PBXBuildFile; fileRef = EB6D0FAD11EE0F9100B65CE3 /* proj_mdist.c */; };
+		EB6D105311EE0F9100B65CE3 /* proj_rouss.c in Sources */ = {isa = PBXBuildFile; fileRef = EB6D0FAE11EE0F9100B65CE3 /* proj_rouss.c */; };
+		EB6D105411EE0F9100B65CE3 /* projects.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB6D0FAF11EE0F9100B65CE3 /* projects.h */; settings = {JAVA_ARCHIVE_SUBDIR = proj.4; }; };
+		EB6D105511EE0F9100B65CE3 /* rtodms.c in Sources */ = {isa = PBXBuildFile; fileRef = EB6D0FB011EE0F9100B65CE3 /* rtodms.c */; };
+		EB6D105611EE0F9100B65CE3 /* vector1.c in Sources */ = {isa = PBXBuildFile; fileRef = EB6D0FB111EE0F9100B65CE3 /* vector1.c */; };
+		EB6D10DA11EE13F100B65CE3 /* MapTileOverlay.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB6D10D411EE13F100B65CE3 /* MapTileOverlay.h */; settings = {JAVA_ARCHIVE_SUBDIR = "Modules/Campus Map"; }; };
+		EB6D10DB11EE13F100B65CE3 /* MapTileOverlay.m in Sources */ = {isa = PBXBuildFile; fileRef = EB6D10D511EE13F100B65CE3 /* MapTileOverlay.m */; };
+		EB6D10DC11EE13F100B65CE3 /* MapTileOverlayView.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB6D10D611EE13F100B65CE3 /* MapTileOverlayView.h */; settings = {JAVA_ARCHIVE_SUBDIR = "Modules/Campus Map"; }; };
+		EB6D10DD11EE13F100B65CE3 /* MapTileOverlayView.m in Sources */ = {isa = PBXBuildFile; fileRef = EB6D10D711EE13F100B65CE3 /* MapTileOverlayView.m */; };
+		EB6D10DE11EE13F100B65CE3 /* MapZoomLevel.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB6D10D811EE13F100B65CE3 /* MapZoomLevel.h */; settings = {JAVA_ARCHIVE_SUBDIR = "Modules/Campus Map"; }; };
+		EB6D10DF11EE13F100B65CE3 /* MapZoomLevel.m in Sources */ = {isa = PBXBuildFile; fileRef = EB6D10D911EE13F100B65CE3 /* MapZoomLevel.m */; };
+		EB6D111611EE143900B65CE3 /* TileServerManager.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB6D111411EE143900B65CE3 /* TileServerManager.h */; settings = {JAVA_ARCHIVE_SUBDIR = "Modules/Campus Map"; }; };
+		EB6D111711EE143900B65CE3 /* TileServerManager.m in Sources */ = {isa = PBXBuildFile; fileRef = EB6D111511EE143900B65CE3 /* TileServerManager.m */; };
+		EB6D114211EE191000B65CE3 /* PJ_geos.c in Sources */ = {isa = PBXBuildFile; fileRef = EB6D114111EE191000B65CE3 /* PJ_geos.c */; };
+		EB6D133311EE4A9C00B65CE3 /* MKMapView+ArcGISAdditions.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB6D133111EE4A9C00B65CE3 /* MKMapView+ArcGISAdditions.h */; settings = {JAVA_ARCHIVE_SUBDIR = "Modules/Campus Map"; }; };
+		EB6D133411EE4A9C00B65CE3 /* MKMapView+ArcGISAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = EB6D133211EE4A9C00B65CE3 /* MKMapView+ArcGISAdditions.m */; };
+		EB6D141511EE979500B65CE3 /* NewsCategory.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB6D141311EE979500B65CE3 /* NewsCategory.h */; settings = {JAVA_ARCHIVE_SUBDIR = Modules/News; }; };
+		EB6D141611EE979500B65CE3 /* NewsCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = EB6D141411EE979500B65CE3 /* NewsCategory.m */; };
+		EB6DFE3711DE28F800B65CE3 /* ModoNavigationController.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB6DFE3511DE28F800B65CE3 /* ModoNavigationController.h */; settings = {JAVA_ARCHIVE_SUBDIR = Common; }; };
+		EB6DFE3811DE28F800B65CE3 /* ModoNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = EB6DFE3611DE28F800B65CE3 /* ModoNavigationController.m */; };
+		EB6DFE3F11DE294700B65CE3 /* ModoNavigationBar.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB6DFE3D11DE294700B65CE3 /* ModoNavigationBar.h */; settings = {JAVA_ARCHIVE_SUBDIR = Common; }; };
+		EB6DFE4011DE294700B65CE3 /* ModoNavigationBar.m in Sources */ = {isa = PBXBuildFile; fileRef = EB6DFE3E11DE294700B65CE3 /* ModoNavigationBar.m */; };
+		EB6DFFF011DE69F600B65CE3 /* SpringboardViewController.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB6DFFEE11DE69F600B65CE3 /* SpringboardViewController.h */; settings = {JAVA_ARCHIVE_SUBDIR = "App Delegate"; }; };
+		EB6DFFF111DE69F600B65CE3 /* SpringboardViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EB6DFFEF11DE69F600B65CE3 /* SpringboardViewController.m */; };
 		EB6F2B6610E901E000A29A2A /* UITableView+MITUIAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = EB6F2B6210E901E000A29A2A /* UITableView+MITUIAdditions.m */; };
 		EB6F2B6710E901E000A29A2A /* UITableViewCell+MITUIAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = EB6F2B6410E901E000A29A2A /* UITableViewCell+MITUIAdditions.m */; };
 		EB6F2B6D10E9026200A29A2A /* PeopleDetailsTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = EB6F2B6C10E9026200A29A2A /* PeopleDetailsTableViewCell.m */; };
@@ -358,8 +513,6 @@
 		28AD735F0D9D9599002E5188 /* MainWindow.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MainWindow.xib; sourceTree = "<group>"; };
 		29366C19118E401C009D6863 /* libxml2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libxml2.dylib; path = usr/lib/libxml2.dylib; sourceTree = SDKROOT; };
 		29366C1D118E4151009D6863 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
-		294AC7AE10E46774003830C3 /* MITMapScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MITMapScrollView.h; sourceTree = "<group>"; };
-		294AC7AF10E46786003830C3 /* MITMapScrollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MITMapScrollView.m; sourceTree = "<group>"; };
 		296F9EDC110A0F5400EC8FCA /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = /System/Library/Frameworks/AudioToolbox.framework; sourceTree = "<absolute>"; };
 		296FC55410CF4E8D00EA7FF7 /* StellarDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StellarDetailViewController.h; sourceTree = "<group>"; };
 		296FC55510CF4E8D00EA7FF7 /* StellarDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StellarDetailViewController.m; sourceTree = "<group>"; };
@@ -495,8 +648,6 @@
 		4420F31A10E96EBE00A8CD05 /* ShuttleStopMapAnnotation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShuttleStopMapAnnotation.m; sourceTree = "<group>"; };
 		4420F62710EBA5D000A8CD05 /* ShuttleStopViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShuttleStopViewController.h; sourceTree = "<group>"; };
 		4420F62810EBA5D000A8CD05 /* ShuttleStopViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShuttleStopViewController.m; sourceTree = "<group>"; };
-		44259C6F10DBDCDC008FCAF1 /* MITMapAnnotationCalloutView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MITMapAnnotationCalloutView.h; sourceTree = "<group>"; };
-		44259C7010DBDCDC008FCAF1 /* MITMapAnnotationCalloutView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MITMapAnnotationCalloutView.m; sourceTree = "<group>"; };
 		44293B3410DABD3700273119 /* map_button_shuttle.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = map_button_shuttle.png; path = Resources/map_button_shuttle.png; sourceTree = "<group>"; };
 		44293B3510DABD3700273119 /* map_button_location.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = map_button_location.png; path = Resources/map_button_location.png; sourceTree = "<group>"; };
 		44293B3610DABD3700273119 /* map_location_complete.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = map_location_complete.png; path = Resources/map_location_complete.png; sourceTree = "<group>"; };
@@ -520,30 +671,14 @@
 		442C192810F3AE3400CB44EC /* RouteMapViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RouteMapViewController.m; sourceTree = "<group>"; };
 		442C192910F3AE3400CB44EC /* RouteMapViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RouteMapViewController.xib; sourceTree = "<group>"; };
 		442C195410F3B21400CB44EC /* MITMapRoute.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MITMapRoute.h; sourceTree = "<group>"; };
-		442C19AC10F3D70900CB44EC /* RouteView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RouteView.h; sourceTree = "<group>"; };
-		442C19AD10F3D70900CB44EC /* RouteView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RouteView.m; sourceTree = "<group>"; };
 		442C1CA110F4FE8900CB44EC /* ShuttleLocation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShuttleLocation.h; sourceTree = "<group>"; };
 		442C1CA210F4FE8900CB44EC /* ShuttleLocation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShuttleLocation.m; sourceTree = "<group>"; };
 		4463CC7910D6F4A50048CA83 /* CampusMapViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CampusMapViewController.h; sourceTree = "<group>"; };
 		4463CC7A10D6F4A50048CA83 /* CampusMapViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CampusMapViewController.m; sourceTree = "<group>"; };
-		4463CC7B10D6F4A50048CA83 /* MapLevel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MapLevel.h; sourceTree = "<group>"; };
-		4463CC7C10D6F4A50048CA83 /* MapLevel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MapLevel.m; sourceTree = "<group>"; };
-		4463CC7D10D6F4A50048CA83 /* MapTileExtent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MapTileExtent.h; sourceTree = "<group>"; };
-		4463CC7E10D6F4A50048CA83 /* MapTileExtent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MapTileExtent.m; sourceTree = "<group>"; };
-		4463CC8110D6F4A50048CA83 /* MapTileCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MapTileCache.h; sourceTree = "<group>"; };
-		4463CC8210D6F4A50048CA83 /* MapTileCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MapTileCache.m; sourceTree = "<group>"; };
-		4463CC8510D6F4A50048CA83 /* SaveOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SaveOperation.h; sourceTree = "<group>"; };
-		4463CC8610D6F4A50048CA83 /* SaveOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SaveOperation.m; sourceTree = "<group>"; };
 		4463CC8710D6F4A50048CA83 /* CMModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CMModule.h; sourceTree = "<group>"; };
 		4463CC8810D6F4A50048CA83 /* CMModule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CMModule.m; sourceTree = "<group>"; };
-		4463CC8910D6F4A50048CA83 /* MITProjection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MITProjection.h; sourceTree = "<group>"; };
-		4463CC8A10D6F4A50048CA83 /* MITProjection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MITProjection.m; sourceTree = "<group>"; };
-		4463CC8B10D6F4A50048CA83 /* MITMapUserLocation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MITMapUserLocation.h; sourceTree = "<group>"; };
-		4463CC8C10D6F4A50048CA83 /* MITMapUserLocation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MITMapUserLocation.m; sourceTree = "<group>"; };
 		4463CC8D10D6F4A50048CA83 /* MITMapSearchResultAnnotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MITMapSearchResultAnnotation.h; sourceTree = "<group>"; };
 		4463CC8E10D6F4A50048CA83 /* MITMapSearchResultAnnotation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MITMapSearchResultAnnotation.m; sourceTree = "<group>"; };
-		4463CC8F10D6F4A50048CA83 /* MITMapAnnotationView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MITMapAnnotationView.h; sourceTree = "<group>"; };
-		4463CC9010D6F4A50048CA83 /* MITMapAnnotationView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MITMapAnnotationView.m; sourceTree = "<group>"; };
 		4463CCB110D6F5750048CA83 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		4463CCE710D6F7090048CA83 /* map_red_pin.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = map_red_pin.png; path = Resources/map_red_pin.png; sourceTree = "<group>"; };
 		4463CE8D10D8052A0048CA83 /* MITMapSearchResultCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MITMapSearchResultCell.h; sourceTree = "<group>"; };
@@ -553,8 +688,6 @@
 		4463D09310D92CB00048CA83 /* MITMapDetailViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MITMapDetailViewController.xib; sourceTree = "<group>"; };
 		4463D09E10D92F6B0048CA83 /* TabViewControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TabViewControl.h; sourceTree = "<group>"; };
 		4463D09F10D92F6B0048CA83 /* TabViewControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TabViewControl.m; sourceTree = "<group>"; };
-		4463D5E010DA74240048CA83 /* MITMapView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MITMapView.h; sourceTree = "<group>"; };
-		4463D5E110DA74240048CA83 /* MITMapView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MITMapView.m; sourceTree = "<group>"; };
 		448B309310F685B0007A91E4 /* map_grid_placeholder.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = map_grid_placeholder.png; path = Resources/map_grid_placeholder.png; sourceTree = "<group>"; };
 		448B32AB10F770A6007A91E4 /* shuttle-bus-location-arrow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "shuttle-bus-location-arrow.png"; path = "Resources/shuttle-bus-location-arrow.png"; sourceTree = "<group>"; };
 		448B32AC10F770A6007A91E4 /* shuttle-bus-location.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "shuttle-bus-location.png"; path = "Resources/shuttle-bus-location.png"; sourceTree = "<group>"; };
@@ -643,9 +776,6 @@
 		DE13490A10FFC2CC006FFF33 /* 7.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 7.png; sourceTree = "<group>"; };
 		DE13490B10FFC2CC006FFF33 /* 8.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 8.png; sourceTree = "<group>"; };
 		DE13490C10FFC2CC006FFF33 /* 9.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 9.png; sourceTree = "<group>"; };
-		DE18F9E910F19085009A69B9 /* News.xcdatamodel */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = wrapper.xcdatamodel; path = News.xcdatamodel; sourceTree = "<group>"; };
-		DE47589410D0BEE700139BC1 /* MITTabBarController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MITTabBarController.h; path = "App Delegate/MITTabBarController.h"; sourceTree = "<group>"; };
-		DE47589510D0BEE700139BC1 /* MITTabBarController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MITTabBarController.m; path = "App Delegate/MITTabBarController.m"; sourceTree = "<group>"; };
 		DE4AB0B210ED5148007476D9 /* NewsStory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NewsStory.h; sourceTree = "<group>"; };
 		DE4AB0B310ED5148007476D9 /* NewsStory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NewsStory.m; sourceTree = "<group>"; };
 		DE5E99D21124B57C00498760 /* emergency_template.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; name = emergency_template.html; path = Resources/emergency_template.html; sourceTree = "<group>"; };
@@ -659,8 +789,6 @@
 		DE6D570410F05C59006431A8 /* TabScrollerBackgroundView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TabScrollerBackgroundView.h; sourceTree = "<group>"; };
 		DE6D570510F05C59006431A8 /* TabScrollerBackgroundView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TabScrollerBackgroundView.m; sourceTree = "<group>"; };
 		DE6D579A10F07212006431A8 /* news_story_template.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; name = news_story_template.html; path = Resources/news_story_template.html; sourceTree = "<group>"; };
-		DE6D906F11095B2D00DAF213 /* MITMoreListController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MITMoreListController.h; path = "App Delegate/MITMoreListController.h"; sourceTree = "<group>"; };
-		DE6D907011095B2D00DAF213 /* MITMoreListController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MITMoreListController.m; path = "App Delegate/MITMoreListController.m"; sourceTree = "<group>"; };
 		DE6D9318110A8EFA00DAF213 /* SettingsTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SettingsTableViewController.h; path = Settings/SettingsTableViewController.h; sourceTree = "<group>"; };
 		DE6D9319110A8EFA00DAF213 /* SettingsTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SettingsTableViewController.m; path = Settings/SettingsTableViewController.m; sourceTree = "<group>"; };
 		DE6E1552110BA934002D9C60 /* shuttle-secondary-scrim.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "shuttle-secondary-scrim.png"; path = "Resources/shuttle-secondary-scrim.png"; sourceTree = "<group>"; };
@@ -722,8 +850,6 @@
 		DE821E8010EAB4F500B4C4C8 /* UIKit+MITAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIKit+MITAdditions.m"; sourceTree = "<group>"; };
 		DE89FB82103D019A000E35B4 /* Modules */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Modules; path = Resources/Modules; sourceTree = "<group>"; };
 		DE89FB93103D019A000E35B4 /* navbar_mit_logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = navbar_mit_logo.png; path = Resources/navbar_mit_logo.png; sourceTree = "<group>"; };
-		DE8ECED610F27F9C00D4C5CE /* MITTabBarItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MITTabBarItem.h; path = "App Delegate/MITTabBarItem.h"; sourceTree = "<group>"; };
-		DE8ECED710F27F9C00D4C5CE /* MITTabBarItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MITTabBarItem.m; path = "App Delegate/MITTabBarItem.m"; sourceTree = "<group>"; };
 		DE9EFBD010FE7D8900F5F07E /* SettingsModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SettingsModule.h; path = Settings/SettingsModule.h; sourceTree = "<group>"; };
 		DE9EFBD110FE7D8900F5F07E /* SettingsModule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SettingsModule.m; path = Settings/SettingsModule.m; sourceTree = "<group>"; };
 		DEA3B48B10C9BB7300BDA774 /* AboutModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AboutModule.h; sourceTree = "<group>"; };
@@ -760,8 +886,177 @@
 		EB67602F114A9316004596BB /* ShuttleRouteCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ShuttleRouteCache.m; path = Model/ShuttleRouteCache.m; sourceTree = "<group>"; };
 		EB676030114A9316004596BB /* ShuttleStopLocation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ShuttleStopLocation.h; path = Model/ShuttleStopLocation.h; sourceTree = "<group>"; };
 		EB676031114A9316004596BB /* ShuttleStopLocation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ShuttleStopLocation.m; path = Model/ShuttleStopLocation.m; sourceTree = "<group>"; };
+		EB6D02A811E3784100B65CE3 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		EB6D076611E50E5B00B65CE3 /* JSONAPIRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JSONAPIRequest.h; sourceTree = "<group>"; };
 		EB6D076711E50E5B00B65CE3 /* JSONAPIRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JSONAPIRequest.m; sourceTree = "<group>"; };
+		EB6D0F0D11EE0F9000B65CE3 /* aasincos.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = aasincos.c; sourceTree = "<group>"; };
+		EB6D0F0E11EE0F9000B65CE3 /* adjlon.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = adjlon.c; sourceTree = "<group>"; };
+		EB6D0F0F11EE0F9000B65CE3 /* bch2bps.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = bch2bps.c; sourceTree = "<group>"; };
+		EB6D0F1011EE0F9000B65CE3 /* bchgen.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = bchgen.c; sourceTree = "<group>"; };
+		EB6D0F1111EE0F9000B65CE3 /* biveval.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = biveval.c; sourceTree = "<group>"; };
+		EB6D0F1311EE0F9000B65CE3 /* dmstor.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = dmstor.c; sourceTree = "<group>"; };
+		EB6D0F1711EE0F9000B65CE3 /* geocent.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = geocent.c; sourceTree = "<group>"; };
+		EB6D0F1811EE0F9000B65CE3 /* geocent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = geocent.h; sourceTree = "<group>"; };
+		EB6D0F1E11EE0F9000B65CE3 /* jniproj.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = jniproj.c; sourceTree = "<group>"; };
+		EB6D0F2211EE0F9000B65CE3 /* mk_cheby.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = mk_cheby.c; sourceTree = "<group>"; };
+		EB6D0F2511EE0F9000B65CE3 /* nad_cvt.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = nad_cvt.c; sourceTree = "<group>"; };
+		EB6D0F2611EE0F9000B65CE3 /* nad_init.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = nad_init.c; sourceTree = "<group>"; };
+		EB6D0F2711EE0F9000B65CE3 /* nad_intr.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = nad_intr.c; sourceTree = "<group>"; };
+		EB6D0F2811EE0F9000B65CE3 /* nad_list.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = nad_list.h; sourceTree = "<group>"; };
+		EB6D0F2911EE0F9000B65CE3 /* org_proj4_Projections.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = org_proj4_Projections.h; sourceTree = "<group>"; };
+		EB6D0F2A11EE0F9000B65CE3 /* p_series.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = p_series.c; sourceTree = "<group>"; };
+		EB6D0F2B11EE0F9000B65CE3 /* PJ_aea.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = PJ_aea.c; sourceTree = "<group>"; };
+		EB6D0F2C11EE0F9000B65CE3 /* PJ_aeqd.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = PJ_aeqd.c; sourceTree = "<group>"; };
+		EB6D0F2D11EE0F9000B65CE3 /* PJ_airy.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = PJ_airy.c; sourceTree = "<group>"; };
+		EB6D0F2E11EE0F9000B65CE3 /* PJ_aitoff.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = PJ_aitoff.c; sourceTree = "<group>"; };
+		EB6D0F2F11EE0F9000B65CE3 /* pj_apply_gridshift.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = pj_apply_gridshift.c; sourceTree = "<group>"; };
+		EB6D0F3011EE0F9000B65CE3 /* PJ_august.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = PJ_august.c; sourceTree = "<group>"; };
+		EB6D0F3111EE0F9000B65CE3 /* pj_auth.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = pj_auth.c; sourceTree = "<group>"; };
+		EB6D0F3211EE0F9000B65CE3 /* PJ_bacon.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = PJ_bacon.c; sourceTree = "<group>"; };
+		EB6D0F3311EE0F9000B65CE3 /* PJ_bipc.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = PJ_bipc.c; sourceTree = "<group>"; };
+		EB6D0F3411EE0F9000B65CE3 /* PJ_boggs.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = PJ_boggs.c; sourceTree = "<group>"; };
+		EB6D0F3511EE0F9000B65CE3 /* PJ_bonne.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = PJ_bonne.c; sourceTree = "<group>"; };
+		EB6D0F3611EE0F9000B65CE3 /* PJ_cass.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = PJ_cass.c; sourceTree = "<group>"; };
+		EB6D0F3711EE0F9000B65CE3 /* PJ_cc.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = PJ_cc.c; sourceTree = "<group>"; };
+		EB6D0F3811EE0F9000B65CE3 /* PJ_cea.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = PJ_cea.c; sourceTree = "<group>"; };
+		EB6D0F3911EE0F9000B65CE3 /* PJ_chamb.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = PJ_chamb.c; sourceTree = "<group>"; };
+		EB6D0F3A11EE0F9000B65CE3 /* PJ_collg.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = PJ_collg.c; sourceTree = "<group>"; };
+		EB6D0F3B11EE0F9000B65CE3 /* PJ_crast.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = PJ_crast.c; sourceTree = "<group>"; };
+		EB6D0F3C11EE0F9000B65CE3 /* pj_datum_set.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = pj_datum_set.c; sourceTree = "<group>"; };
+		EB6D0F3D11EE0F9000B65CE3 /* pj_datums.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = pj_datums.c; sourceTree = "<group>"; };
+		EB6D0F3E11EE0F9000B65CE3 /* PJ_denoy.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = PJ_denoy.c; sourceTree = "<group>"; };
+		EB6D0F3F11EE0F9000B65CE3 /* pj_deriv.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = pj_deriv.c; sourceTree = "<group>"; };
+		EB6D0F4011EE0F9000B65CE3 /* PJ_eck1.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = PJ_eck1.c; sourceTree = "<group>"; };
+		EB6D0F4111EE0F9000B65CE3 /* PJ_eck2.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = PJ_eck2.c; sourceTree = "<group>"; };
+		EB6D0F4211EE0F9000B65CE3 /* PJ_eck3.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = PJ_eck3.c; sourceTree = "<group>"; };
+		EB6D0F4311EE0F9000B65CE3 /* PJ_eck4.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = PJ_eck4.c; sourceTree = "<group>"; };
+		EB6D0F4411EE0F9000B65CE3 /* PJ_eck5.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = PJ_eck5.c; sourceTree = "<group>"; };
+		EB6D0F4511EE0F9000B65CE3 /* pj_ell_set.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = pj_ell_set.c; sourceTree = "<group>"; };
+		EB6D0F4611EE0F9000B65CE3 /* pj_ellps.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = pj_ellps.c; sourceTree = "<group>"; };
+		EB6D0F4711EE0F9000B65CE3 /* PJ_eqc.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = PJ_eqc.c; sourceTree = "<group>"; };
+		EB6D0F4811EE0F9000B65CE3 /* PJ_eqdc.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = PJ_eqdc.c; sourceTree = "<group>"; };
+		EB6D0F4911EE0F9000B65CE3 /* pj_errno.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = pj_errno.c; sourceTree = "<group>"; };
+		EB6D0F4A11EE0F9000B65CE3 /* pj_factors.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = pj_factors.c; sourceTree = "<group>"; };
+		EB6D0F4B11EE0F9000B65CE3 /* PJ_fahey.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = PJ_fahey.c; sourceTree = "<group>"; };
+		EB6D0F4C11EE0F9000B65CE3 /* PJ_fouc_s.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = PJ_fouc_s.c; sourceTree = "<group>"; };
+		EB6D0F4D11EE0F9000B65CE3 /* pj_fwd.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = pj_fwd.c; sourceTree = "<group>"; };
+		EB6D0F4E11EE0F9000B65CE3 /* PJ_gall.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = PJ_gall.c; sourceTree = "<group>"; };
+		EB6D0F4F11EE0F9000B65CE3 /* pj_gauss.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = pj_gauss.c; sourceTree = "<group>"; };
+		EB6D0F5011EE0F9000B65CE3 /* pj_geocent.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = pj_geocent.c; sourceTree = "<group>"; };
+		EB6D0F5211EE0F9000B65CE3 /* PJ_gins8.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = PJ_gins8.c; sourceTree = "<group>"; };
+		EB6D0F5311EE0F9000B65CE3 /* PJ_gn_sinu.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = PJ_gn_sinu.c; sourceTree = "<group>"; };
+		EB6D0F5411EE0F9000B65CE3 /* PJ_gnom.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = PJ_gnom.c; sourceTree = "<group>"; };
+		EB6D0F5511EE0F9000B65CE3 /* PJ_goode.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = PJ_goode.c; sourceTree = "<group>"; };
+		EB6D0F5611EE0F9000B65CE3 /* pj_gridinfo.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = pj_gridinfo.c; sourceTree = "<group>"; };
+		EB6D0F5711EE0F9000B65CE3 /* pj_gridlist.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = pj_gridlist.c; sourceTree = "<group>"; };
+		EB6D0F5811EE0F9000B65CE3 /* PJ_gstmerc.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = PJ_gstmerc.c; sourceTree = "<group>"; };
+		EB6D0F5911EE0F9000B65CE3 /* PJ_hammer.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = PJ_hammer.c; sourceTree = "<group>"; };
+		EB6D0F5A11EE0F9000B65CE3 /* PJ_hatano.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = PJ_hatano.c; sourceTree = "<group>"; };
+		EB6D0F5B11EE0F9000B65CE3 /* PJ_imw_p.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = PJ_imw_p.c; sourceTree = "<group>"; };
+		EB6D0F5C11EE0F9000B65CE3 /* pj_init.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = pj_init.c; sourceTree = "<group>"; };
+		EB6D0F5D11EE0F9000B65CE3 /* pj_initcache.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = pj_initcache.c; sourceTree = "<group>"; };
+		EB6D0F5E11EE0F9000B65CE3 /* pj_inv.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = pj_inv.c; sourceTree = "<group>"; };
+		EB6D0F5F11EE0F9000B65CE3 /* PJ_krovak.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = PJ_krovak.c; sourceTree = "<group>"; };
+		EB6D0F6011EE0F9000B65CE3 /* PJ_labrd.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = PJ_labrd.c; sourceTree = "<group>"; };
+		EB6D0F6111EE0F9000B65CE3 /* PJ_laea.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = PJ_laea.c; sourceTree = "<group>"; };
+		EB6D0F6211EE0F9000B65CE3 /* PJ_lagrng.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = PJ_lagrng.c; sourceTree = "<group>"; };
+		EB6D0F6311EE0F9000B65CE3 /* PJ_larr.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = PJ_larr.c; sourceTree = "<group>"; };
+		EB6D0F6411EE0F9000B65CE3 /* PJ_lask.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = PJ_lask.c; sourceTree = "<group>"; };
+		EB6D0F6511EE0F9000B65CE3 /* pj_latlong.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = pj_latlong.c; sourceTree = "<group>"; };
+		EB6D0F6611EE0F9000B65CE3 /* PJ_lcc.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = PJ_lcc.c; sourceTree = "<group>"; };
+		EB6D0F6711EE0F9000B65CE3 /* PJ_lcca.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = PJ_lcca.c; sourceTree = "<group>"; };
+		EB6D0F6811EE0F9000B65CE3 /* pj_list.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = pj_list.c; sourceTree = "<group>"; };
+		EB6D0F6911EE0F9000B65CE3 /* pj_list.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = pj_list.h; sourceTree = "<group>"; };
+		EB6D0F6A11EE0F9000B65CE3 /* PJ_loxim.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = PJ_loxim.c; sourceTree = "<group>"; };
+		EB6D0F6B11EE0F9000B65CE3 /* PJ_lsat.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = PJ_lsat.c; sourceTree = "<group>"; };
+		EB6D0F6C11EE0F9000B65CE3 /* pj_malloc.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = pj_malloc.c; sourceTree = "<group>"; };
+		EB6D0F6D11EE0F9000B65CE3 /* PJ_mbt_fps.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = PJ_mbt_fps.c; sourceTree = "<group>"; };
+		EB6D0F6E11EE0F9100B65CE3 /* PJ_mbtfpp.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = PJ_mbtfpp.c; sourceTree = "<group>"; };
+		EB6D0F6F11EE0F9100B65CE3 /* PJ_mbtfpq.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = PJ_mbtfpq.c; sourceTree = "<group>"; };
+		EB6D0F7011EE0F9100B65CE3 /* PJ_merc.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = PJ_merc.c; sourceTree = "<group>"; };
+		EB6D0F7111EE0F9100B65CE3 /* PJ_mill.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = PJ_mill.c; sourceTree = "<group>"; };
+		EB6D0F7211EE0F9100B65CE3 /* pj_mlfn.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = pj_mlfn.c; sourceTree = "<group>"; };
+		EB6D0F7311EE0F9100B65CE3 /* PJ_mod_ster.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = PJ_mod_ster.c; sourceTree = "<group>"; };
+		EB6D0F7411EE0F9100B65CE3 /* PJ_moll.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = PJ_moll.c; sourceTree = "<group>"; };
+		EB6D0F7511EE0F9100B65CE3 /* pj_msfn.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = pj_msfn.c; sourceTree = "<group>"; };
+		EB6D0F7611EE0F9100B65CE3 /* pj_mutex.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = pj_mutex.c; sourceTree = "<group>"; };
+		EB6D0F7711EE0F9100B65CE3 /* PJ_nell.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = PJ_nell.c; sourceTree = "<group>"; };
+		EB6D0F7811EE0F9100B65CE3 /* PJ_nell_h.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = PJ_nell_h.c; sourceTree = "<group>"; };
+		EB6D0F7911EE0F9100B65CE3 /* PJ_nocol.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = PJ_nocol.c; sourceTree = "<group>"; };
+		EB6D0F7A11EE0F9100B65CE3 /* PJ_nsper.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = PJ_nsper.c; sourceTree = "<group>"; };
+		EB6D0F7B11EE0F9100B65CE3 /* PJ_nzmg.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = PJ_nzmg.c; sourceTree = "<group>"; };
+		EB6D0F7C11EE0F9100B65CE3 /* PJ_ob_tran.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = PJ_ob_tran.c; sourceTree = "<group>"; };
+		EB6D0F7D11EE0F9100B65CE3 /* PJ_ocea.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = PJ_ocea.c; sourceTree = "<group>"; };
+		EB6D0F7E11EE0F9100B65CE3 /* PJ_oea.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = PJ_oea.c; sourceTree = "<group>"; };
+		EB6D0F7F11EE0F9100B65CE3 /* PJ_omerc.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = PJ_omerc.c; sourceTree = "<group>"; };
+		EB6D0F8011EE0F9100B65CE3 /* pj_open_lib.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = pj_open_lib.c; sourceTree = "<group>"; };
+		EB6D0F8111EE0F9100B65CE3 /* PJ_ortho.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = PJ_ortho.c; sourceTree = "<group>"; };
+		EB6D0F8211EE0F9100B65CE3 /* pj_param.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = pj_param.c; sourceTree = "<group>"; };
+		EB6D0F8311EE0F9100B65CE3 /* pj_phi2.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = pj_phi2.c; sourceTree = "<group>"; };
+		EB6D0F8411EE0F9100B65CE3 /* PJ_poly.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = PJ_poly.c; sourceTree = "<group>"; };
+		EB6D0F8511EE0F9100B65CE3 /* pj_pr_list.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = pj_pr_list.c; sourceTree = "<group>"; };
+		EB6D0F8611EE0F9100B65CE3 /* PJ_putp2.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = PJ_putp2.c; sourceTree = "<group>"; };
+		EB6D0F8711EE0F9100B65CE3 /* PJ_putp3.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = PJ_putp3.c; sourceTree = "<group>"; };
+		EB6D0F8811EE0F9100B65CE3 /* PJ_putp4p.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = PJ_putp4p.c; sourceTree = "<group>"; };
+		EB6D0F8911EE0F9100B65CE3 /* PJ_putp5.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = PJ_putp5.c; sourceTree = "<group>"; };
+		EB6D0F8A11EE0F9100B65CE3 /* PJ_putp6.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = PJ_putp6.c; sourceTree = "<group>"; };
+		EB6D0F8B11EE0F9100B65CE3 /* pj_qsfn.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = pj_qsfn.c; sourceTree = "<group>"; };
+		EB6D0F8C11EE0F9100B65CE3 /* pj_release.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = pj_release.c; sourceTree = "<group>"; };
+		EB6D0F8D11EE0F9100B65CE3 /* PJ_robin.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = PJ_robin.c; sourceTree = "<group>"; };
+		EB6D0F8E11EE0F9100B65CE3 /* PJ_rpoly.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = PJ_rpoly.c; sourceTree = "<group>"; };
+		EB6D0F8F11EE0F9100B65CE3 /* PJ_sconics.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = PJ_sconics.c; sourceTree = "<group>"; };
+		EB6D0F9011EE0F9100B65CE3 /* PJ_somerc.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = PJ_somerc.c; sourceTree = "<group>"; };
+		EB6D0F9111EE0F9100B65CE3 /* PJ_stere.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = PJ_stere.c; sourceTree = "<group>"; };
+		EB6D0F9211EE0F9100B65CE3 /* PJ_sterea.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = PJ_sterea.c; sourceTree = "<group>"; };
+		EB6D0F9311EE0F9100B65CE3 /* pj_strerrno.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = pj_strerrno.c; sourceTree = "<group>"; };
+		EB6D0F9411EE0F9100B65CE3 /* PJ_sts.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = PJ_sts.c; sourceTree = "<group>"; };
+		EB6D0F9511EE0F9100B65CE3 /* PJ_tcc.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = PJ_tcc.c; sourceTree = "<group>"; };
+		EB6D0F9611EE0F9100B65CE3 /* PJ_tcea.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = PJ_tcea.c; sourceTree = "<group>"; };
+		EB6D0F9711EE0F9100B65CE3 /* PJ_tmerc.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = PJ_tmerc.c; sourceTree = "<group>"; };
+		EB6D0F9811EE0F9100B65CE3 /* PJ_tpeqd.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = PJ_tpeqd.c; sourceTree = "<group>"; };
+		EB6D0F9911EE0F9100B65CE3 /* pj_transform.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = pj_transform.c; sourceTree = "<group>"; };
+		EB6D0F9A11EE0F9100B65CE3 /* pj_tsfn.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = pj_tsfn.c; sourceTree = "<group>"; };
+		EB6D0F9B11EE0F9100B65CE3 /* pj_units.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = pj_units.c; sourceTree = "<group>"; };
+		EB6D0F9C11EE0F9100B65CE3 /* PJ_urm5.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = PJ_urm5.c; sourceTree = "<group>"; };
+		EB6D0F9D11EE0F9100B65CE3 /* PJ_urmfps.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = PJ_urmfps.c; sourceTree = "<group>"; };
+		EB6D0F9E11EE0F9100B65CE3 /* pj_utils.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = pj_utils.c; sourceTree = "<group>"; };
+		EB6D0F9F11EE0F9100B65CE3 /* PJ_vandg.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = PJ_vandg.c; sourceTree = "<group>"; };
+		EB6D0FA011EE0F9100B65CE3 /* PJ_vandg2.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = PJ_vandg2.c; sourceTree = "<group>"; };
+		EB6D0FA111EE0F9100B65CE3 /* PJ_vandg4.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = PJ_vandg4.c; sourceTree = "<group>"; };
+		EB6D0FA211EE0F9100B65CE3 /* PJ_wag2.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = PJ_wag2.c; sourceTree = "<group>"; };
+		EB6D0FA311EE0F9100B65CE3 /* PJ_wag3.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = PJ_wag3.c; sourceTree = "<group>"; };
+		EB6D0FA411EE0F9100B65CE3 /* PJ_wag7.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = PJ_wag7.c; sourceTree = "<group>"; };
+		EB6D0FA511EE0F9100B65CE3 /* PJ_wink1.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = PJ_wink1.c; sourceTree = "<group>"; };
+		EB6D0FA611EE0F9100B65CE3 /* PJ_wink2.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = PJ_wink2.c; sourceTree = "<group>"; };
+		EB6D0FA711EE0F9100B65CE3 /* pj_zpoly1.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = pj_zpoly1.c; sourceTree = "<group>"; };
+		EB6D0FA911EE0F9100B65CE3 /* proj.def */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = proj.def; sourceTree = "<group>"; };
+		EB6D0FAA11EE0F9100B65CE3 /* proj_api.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = proj_api.h; sourceTree = "<group>"; };
+		EB6D0FAB11EE0F9100B65CE3 /* proj_config.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = proj_config.h; sourceTree = "<group>"; };
+		EB6D0FAC11EE0F9100B65CE3 /* proj_config.h.in */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = proj_config.h.in; sourceTree = "<group>"; };
+		EB6D0FAD11EE0F9100B65CE3 /* proj_mdist.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = proj_mdist.c; sourceTree = "<group>"; };
+		EB6D0FAE11EE0F9100B65CE3 /* proj_rouss.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = proj_rouss.c; sourceTree = "<group>"; };
+		EB6D0FAF11EE0F9100B65CE3 /* projects.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = projects.h; sourceTree = "<group>"; };
+		EB6D0FB011EE0F9100B65CE3 /* rtodms.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = rtodms.c; sourceTree = "<group>"; };
+		EB6D0FB111EE0F9100B65CE3 /* vector1.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = vector1.c; sourceTree = "<group>"; };
+		EB6D10D411EE13F100B65CE3 /* MapTileOverlay.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MapTileOverlay.h; sourceTree = "<group>"; };
+		EB6D10D511EE13F100B65CE3 /* MapTileOverlay.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MapTileOverlay.m; sourceTree = "<group>"; };
+		EB6D10D611EE13F100B65CE3 /* MapTileOverlayView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MapTileOverlayView.h; sourceTree = "<group>"; };
+		EB6D10D711EE13F100B65CE3 /* MapTileOverlayView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MapTileOverlayView.m; sourceTree = "<group>"; };
+		EB6D10D811EE13F100B65CE3 /* MapZoomLevel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MapZoomLevel.h; sourceTree = "<group>"; };
+		EB6D10D911EE13F100B65CE3 /* MapZoomLevel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MapZoomLevel.m; sourceTree = "<group>"; };
+		EB6D111411EE143900B65CE3 /* TileServerManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TileServerManager.h; sourceTree = "<group>"; };
+		EB6D111511EE143900B65CE3 /* TileServerManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TileServerManager.m; sourceTree = "<group>"; };
+		EB6D114111EE191000B65CE3 /* PJ_geos.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = PJ_geos.c; sourceTree = "<group>"; };
+		EB6D133111EE4A9C00B65CE3 /* MKMapView+ArcGISAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "MKMapView+ArcGISAdditions.h"; sourceTree = "<group>"; };
+		EB6D133211EE4A9C00B65CE3 /* MKMapView+ArcGISAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "MKMapView+ArcGISAdditions.m"; sourceTree = "<group>"; };
+		EB6D141311EE979500B65CE3 /* NewsCategory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NewsCategory.h; sourceTree = "<group>"; };
+		EB6D141411EE979500B65CE3 /* NewsCategory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NewsCategory.m; sourceTree = "<group>"; };
+		EB6DFE3511DE28F800B65CE3 /* ModoNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ModoNavigationController.h; sourceTree = "<group>"; };
+		EB6DFE3611DE28F800B65CE3 /* ModoNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ModoNavigationController.m; sourceTree = "<group>"; };
+		EB6DFE3D11DE294700B65CE3 /* ModoNavigationBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ModoNavigationBar.h; sourceTree = "<group>"; };
+		EB6DFE3E11DE294700B65CE3 /* ModoNavigationBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ModoNavigationBar.m; sourceTree = "<group>"; };
+		EB6DFFEE11DE69F600B65CE3 /* SpringboardViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SpringboardViewController.h; path = "App Delegate/SpringboardViewController.h"; sourceTree = "<group>"; };
+		EB6DFFEF11DE69F600B65CE3 /* SpringboardViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SpringboardViewController.m; path = "App Delegate/SpringboardViewController.m"; sourceTree = "<group>"; };
 		EB6F2B6110E901E000A29A2A /* UITableView+MITUIAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UITableView+MITUIAdditions.h"; sourceTree = "<group>"; };
 		EB6F2B6210E901E000A29A2A /* UITableView+MITUIAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UITableView+MITUIAdditions.m"; sourceTree = "<group>"; };
 		EB6F2B6310E901E000A29A2A /* UITableViewCell+MITUIAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UITableViewCell+MITUIAdditions.h"; sourceTree = "<group>"; };
@@ -863,6 +1158,7 @@
 				29C45475118B55E100A321B0 /* libOAuth.a in Frameworks */,
 				29366C1A118E401C009D6863 /* libxml2.dylib in Frameworks */,
 				29366C1E118E4151009D6863 /* Security.framework in Frameworks */,
+				EB6D02A911E3784100B65CE3 /* MapKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -905,6 +1201,10 @@
 				29E308851176018C005211A7 /* MITModuleURL.m */,
 				EB74ED2C11924E7C006673F9 /* ShareDetailViewController.h */,
 				EB74ED2D11924E7C006673F9 /* ShareDetailViewController.m */,
+				EB6DFE3511DE28F800B65CE3 /* ModoNavigationController.h */,
+				EB6DFE3611DE28F800B65CE3 /* ModoNavigationController.m */,
+				EB6DFE3D11DE294700B65CE3 /* ModoNavigationBar.h */,
+				EB6DFE3E11DE294700B65CE3 /* ModoNavigationBar.m */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -934,6 +1234,7 @@
 		29B97315FDCFA39411CA2CEA /* Other Sources */ = {
 			isa = PBXGroup;
 			children = (
+				EB6D0F0C11EE0F9000B65CE3 /* proj.4 */,
 				DE6F044511139CA40046684B /* FBConnect */,
 				28A0AAE50D9B0CCF005BE974 /* MIT_Mobile_Prefix.pch */,
 				29B97316FDCFA39411CA2CEA /* main.m */,
@@ -1043,6 +1344,7 @@
 				DE7720DF10C57E1C00620A7D /* QuartzCore.framework */,
 				29366C19118E401C009D6863 /* libxml2.dylib */,
 				29366C1D118E4151009D6863 /* Security.framework */,
+				EB6D02A811E3784100B65CE3 /* MapKit.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -1274,6 +1576,8 @@
 		DE4AAFAC10ED4E63007476D9 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				EB6D141311EE979500B65CE3 /* NewsCategory.h */,
+				EB6D141411EE979500B65CE3 /* NewsCategory.m */,
 				DE4AB0B210ED5148007476D9 /* NewsStory.h */,
 				DE4AB0B310ED5148007476D9 /* NewsStory.m */,
 				DECBF6A010F8F71D009FAE35 /* NewsImage.h */,
@@ -1333,34 +1637,17 @@
 		DE715446102FE468005E6111 /* Campus Map */ = {
 			isa = PBXGroup;
 			children = (
+				EB6D036911E3989100B65CE3 /* ArcGISServer */,
 				44C1A3C511A3388A000FD653 /* Selection */,
 				44C1A26011A2E865000FD653 /* Model */,
 				441009DC110A6DAF00451B23 /* CampusMapToolbar.h */,
 				441009DD110A6DAF00451B23 /* CampusMapToolbar.m */,
-				294AC7AF10E46786003830C3 /* MITMapScrollView.m */,
-				294AC7AE10E46774003830C3 /* MITMapScrollView.h */,
 				4463CC7910D6F4A50048CA83 /* CampusMapViewController.h */,
 				4463CC7A10D6F4A50048CA83 /* CampusMapViewController.m */,
-				4463CC7B10D6F4A50048CA83 /* MapLevel.h */,
-				4463CC7C10D6F4A50048CA83 /* MapLevel.m */,
-				4463CC7D10D6F4A50048CA83 /* MapTileExtent.h */,
-				4463CC7E10D6F4A50048CA83 /* MapTileExtent.m */,
-				4463CC8110D6F4A50048CA83 /* MapTileCache.h */,
-				4463CC8210D6F4A50048CA83 /* MapTileCache.m */,
-				4463CC8510D6F4A50048CA83 /* SaveOperation.h */,
-				4463CC8610D6F4A50048CA83 /* SaveOperation.m */,
 				4463CC8710D6F4A50048CA83 /* CMModule.h */,
 				4463CC8810D6F4A50048CA83 /* CMModule.m */,
-				4463CC8910D6F4A50048CA83 /* MITProjection.h */,
-				4463CC8A10D6F4A50048CA83 /* MITProjection.m */,
-				44259C6F10DBDCDC008FCAF1 /* MITMapAnnotationCalloutView.h */,
-				44259C7010DBDCDC008FCAF1 /* MITMapAnnotationCalloutView.m */,
-				4463CC8B10D6F4A50048CA83 /* MITMapUserLocation.h */,
-				4463CC8C10D6F4A50048CA83 /* MITMapUserLocation.m */,
 				4463CC8D10D6F4A50048CA83 /* MITMapSearchResultAnnotation.h */,
 				4463CC8E10D6F4A50048CA83 /* MITMapSearchResultAnnotation.m */,
-				4463CC8F10D6F4A50048CA83 /* MITMapAnnotationView.h */,
-				4463CC9010D6F4A50048CA83 /* MITMapAnnotationView.m */,
 				4463CE8D10D8052A0048CA83 /* MITMapSearchResultCell.h */,
 				4463CE8E10D8052A0048CA83 /* MITMapSearchResultCell.m */,
 				4463D09110D92CB00048CA83 /* MITMapDetailViewController.h */,
@@ -1368,8 +1655,6 @@
 				4463D09310D92CB00048CA83 /* MITMapDetailViewController.xib */,
 				4463D09E10D92F6B0048CA83 /* TabViewControl.h */,
 				4463D09F10D92F6B0048CA83 /* TabViewControl.m */,
-				4463D5E010DA74240048CA83 /* MITMapView.h */,
-				4463D5E110DA74240048CA83 /* MITMapView.m */,
 				44293C3210DAE88500273119 /* MITMapSearchResultsVC.h */,
 				44293C3310DAE88500273119 /* MITMapSearchResultsVC.m */,
 				44293C3410DAE88500273119 /* MITMapSearchResultsVC.xib */,
@@ -1378,8 +1663,8 @@
 				442C11DD10EC112700CB44EC /* TouchableTableView.h */,
 				442C11DE10EC112700CB44EC /* TouchableTableView.m */,
 				442C195410F3B21400CB44EC /* MITMapRoute.h */,
-				442C19AC10F3D70900CB44EC /* RouteView.h */,
-				442C19AD10F3D70900CB44EC /* RouteView.m */,
+				EB6D133111EE4A9C00B65CE3 /* MKMapView+ArcGISAdditions.h */,
+				EB6D133211EE4A9C00B65CE3 /* MKMapView+ArcGISAdditions.m */,
 			);
 			path = "Campus Map";
 			sourceTree = "<group>";
@@ -1477,6 +1762,8 @@
 		DE783C9810C8651300931EC5 /* App Delegate */ = {
 			isa = PBXGroup;
 			children = (
+				EB6DFFEE11DE69F600B65CE3 /* SpringboardViewController.h */,
+				EB6DFFEF11DE69F600B65CE3 /* SpringboardViewController.m */,
 				2978864110F03656002670CC /* MITDeviceRegistration.h */,
 				2978864210F03656002670CC /* MITDeviceRegistration.m */,
 				2978864310F03656002670CC /* MITUnreadNotifications.h */,
@@ -1485,12 +1772,6 @@
 				1D3623250D0F684500981E51 /* MIT_MobileAppDelegate.m */,
 				DE71537A102FD66A005E6111 /* MITModuleList.h */,
 				DE71537B102FD66A005E6111 /* MITModuleList.m */,
-				DE47589410D0BEE700139BC1 /* MITTabBarController.h */,
-				DE47589510D0BEE700139BC1 /* MITTabBarController.m */,
-				DE8ECED610F27F9C00D4C5CE /* MITTabBarItem.h */,
-				DE8ECED710F27F9C00D4C5CE /* MITTabBarItem.m */,
-				DE6D906F11095B2D00DAF213 /* MITMoreListController.h */,
-				DE6D907011095B2D00DAF213 /* MITMoreListController.m */,
 			);
 			name = "App Delegate";
 			sourceTree = "<group>";
@@ -1554,6 +1835,178 @@
 				DE6D9319110A8EFA00DAF213 /* SettingsTableViewController.m */,
 			);
 			name = Settings;
+			sourceTree = "<group>";
+		};
+		EB6D036911E3989100B65CE3 /* ArcGISServer */ = {
+			isa = PBXGroup;
+			children = (
+				EB6D111411EE143900B65CE3 /* TileServerManager.h */,
+				EB6D111511EE143900B65CE3 /* TileServerManager.m */,
+				EB6D10D411EE13F100B65CE3 /* MapTileOverlay.h */,
+				EB6D10D511EE13F100B65CE3 /* MapTileOverlay.m */,
+				EB6D10D611EE13F100B65CE3 /* MapTileOverlayView.h */,
+				EB6D10D711EE13F100B65CE3 /* MapTileOverlayView.m */,
+				EB6D10D811EE13F100B65CE3 /* MapZoomLevel.h */,
+				EB6D10D911EE13F100B65CE3 /* MapZoomLevel.m */,
+			);
+			name = ArcGISServer;
+			sourceTree = "<group>";
+		};
+		EB6D0F0C11EE0F9000B65CE3 /* proj.4 */ = {
+			isa = PBXGroup;
+			children = (
+				EB6D0F0D11EE0F9000B65CE3 /* aasincos.c */,
+				EB6D0F0E11EE0F9000B65CE3 /* adjlon.c */,
+				EB6D0F0F11EE0F9000B65CE3 /* bch2bps.c */,
+				EB6D0F1011EE0F9000B65CE3 /* bchgen.c */,
+				EB6D0F1111EE0F9000B65CE3 /* biveval.c */,
+				EB6D0F1311EE0F9000B65CE3 /* dmstor.c */,
+				EB6D0F1711EE0F9000B65CE3 /* geocent.c */,
+				EB6D0F1811EE0F9000B65CE3 /* geocent.h */,
+				EB6D0F1E11EE0F9000B65CE3 /* jniproj.c */,
+				EB6D0F2211EE0F9000B65CE3 /* mk_cheby.c */,
+				EB6D0F2511EE0F9000B65CE3 /* nad_cvt.c */,
+				EB6D0F2611EE0F9000B65CE3 /* nad_init.c */,
+				EB6D0F2711EE0F9000B65CE3 /* nad_intr.c */,
+				EB6D0F2811EE0F9000B65CE3 /* nad_list.h */,
+				EB6D0F2911EE0F9000B65CE3 /* org_proj4_Projections.h */,
+				EB6D0F2A11EE0F9000B65CE3 /* p_series.c */,
+				EB6D0F2B11EE0F9000B65CE3 /* PJ_aea.c */,
+				EB6D0F2C11EE0F9000B65CE3 /* PJ_aeqd.c */,
+				EB6D0F2D11EE0F9000B65CE3 /* PJ_airy.c */,
+				EB6D0F2E11EE0F9000B65CE3 /* PJ_aitoff.c */,
+				EB6D0F2F11EE0F9000B65CE3 /* pj_apply_gridshift.c */,
+				EB6D0F3011EE0F9000B65CE3 /* PJ_august.c */,
+				EB6D0F3111EE0F9000B65CE3 /* pj_auth.c */,
+				EB6D0F3211EE0F9000B65CE3 /* PJ_bacon.c */,
+				EB6D0F3311EE0F9000B65CE3 /* PJ_bipc.c */,
+				EB6D0F3411EE0F9000B65CE3 /* PJ_boggs.c */,
+				EB6D0F3511EE0F9000B65CE3 /* PJ_bonne.c */,
+				EB6D0F3611EE0F9000B65CE3 /* PJ_cass.c */,
+				EB6D0F3711EE0F9000B65CE3 /* PJ_cc.c */,
+				EB6D0F3811EE0F9000B65CE3 /* PJ_cea.c */,
+				EB6D0F3911EE0F9000B65CE3 /* PJ_chamb.c */,
+				EB6D0F3A11EE0F9000B65CE3 /* PJ_collg.c */,
+				EB6D0F3B11EE0F9000B65CE3 /* PJ_crast.c */,
+				EB6D0F3C11EE0F9000B65CE3 /* pj_datum_set.c */,
+				EB6D0F3D11EE0F9000B65CE3 /* pj_datums.c */,
+				EB6D0F3E11EE0F9000B65CE3 /* PJ_denoy.c */,
+				EB6D0F3F11EE0F9000B65CE3 /* pj_deriv.c */,
+				EB6D0F4011EE0F9000B65CE3 /* PJ_eck1.c */,
+				EB6D0F4111EE0F9000B65CE3 /* PJ_eck2.c */,
+				EB6D0F4211EE0F9000B65CE3 /* PJ_eck3.c */,
+				EB6D0F4311EE0F9000B65CE3 /* PJ_eck4.c */,
+				EB6D0F4411EE0F9000B65CE3 /* PJ_eck5.c */,
+				EB6D0F4511EE0F9000B65CE3 /* pj_ell_set.c */,
+				EB6D0F4611EE0F9000B65CE3 /* pj_ellps.c */,
+				EB6D0F4711EE0F9000B65CE3 /* PJ_eqc.c */,
+				EB6D0F4811EE0F9000B65CE3 /* PJ_eqdc.c */,
+				EB6D0F4911EE0F9000B65CE3 /* pj_errno.c */,
+				EB6D0F4A11EE0F9000B65CE3 /* pj_factors.c */,
+				EB6D0F4B11EE0F9000B65CE3 /* PJ_fahey.c */,
+				EB6D0F4C11EE0F9000B65CE3 /* PJ_fouc_s.c */,
+				EB6D0F4D11EE0F9000B65CE3 /* pj_fwd.c */,
+				EB6D0F4E11EE0F9000B65CE3 /* PJ_gall.c */,
+				EB6D0F4F11EE0F9000B65CE3 /* pj_gauss.c */,
+				EB6D0F5011EE0F9000B65CE3 /* pj_geocent.c */,
+				EB6D114111EE191000B65CE3 /* PJ_geos.c */,
+				EB6D0F5211EE0F9000B65CE3 /* PJ_gins8.c */,
+				EB6D0F5311EE0F9000B65CE3 /* PJ_gn_sinu.c */,
+				EB6D0F5411EE0F9000B65CE3 /* PJ_gnom.c */,
+				EB6D0F5511EE0F9000B65CE3 /* PJ_goode.c */,
+				EB6D0F5611EE0F9000B65CE3 /* pj_gridinfo.c */,
+				EB6D0F5711EE0F9000B65CE3 /* pj_gridlist.c */,
+				EB6D0F5811EE0F9000B65CE3 /* PJ_gstmerc.c */,
+				EB6D0F5911EE0F9000B65CE3 /* PJ_hammer.c */,
+				EB6D0F5A11EE0F9000B65CE3 /* PJ_hatano.c */,
+				EB6D0F5B11EE0F9000B65CE3 /* PJ_imw_p.c */,
+				EB6D0F5C11EE0F9000B65CE3 /* pj_init.c */,
+				EB6D0F5D11EE0F9000B65CE3 /* pj_initcache.c */,
+				EB6D0F5E11EE0F9000B65CE3 /* pj_inv.c */,
+				EB6D0F5F11EE0F9000B65CE3 /* PJ_krovak.c */,
+				EB6D0F6011EE0F9000B65CE3 /* PJ_labrd.c */,
+				EB6D0F6111EE0F9000B65CE3 /* PJ_laea.c */,
+				EB6D0F6211EE0F9000B65CE3 /* PJ_lagrng.c */,
+				EB6D0F6311EE0F9000B65CE3 /* PJ_larr.c */,
+				EB6D0F6411EE0F9000B65CE3 /* PJ_lask.c */,
+				EB6D0F6511EE0F9000B65CE3 /* pj_latlong.c */,
+				EB6D0F6611EE0F9000B65CE3 /* PJ_lcc.c */,
+				EB6D0F6711EE0F9000B65CE3 /* PJ_lcca.c */,
+				EB6D0F6811EE0F9000B65CE3 /* pj_list.c */,
+				EB6D0F6911EE0F9000B65CE3 /* pj_list.h */,
+				EB6D0F6A11EE0F9000B65CE3 /* PJ_loxim.c */,
+				EB6D0F6B11EE0F9000B65CE3 /* PJ_lsat.c */,
+				EB6D0F6C11EE0F9000B65CE3 /* pj_malloc.c */,
+				EB6D0F6D11EE0F9000B65CE3 /* PJ_mbt_fps.c */,
+				EB6D0F6E11EE0F9100B65CE3 /* PJ_mbtfpp.c */,
+				EB6D0F6F11EE0F9100B65CE3 /* PJ_mbtfpq.c */,
+				EB6D0F7011EE0F9100B65CE3 /* PJ_merc.c */,
+				EB6D0F7111EE0F9100B65CE3 /* PJ_mill.c */,
+				EB6D0F7211EE0F9100B65CE3 /* pj_mlfn.c */,
+				EB6D0F7311EE0F9100B65CE3 /* PJ_mod_ster.c */,
+				EB6D0F7411EE0F9100B65CE3 /* PJ_moll.c */,
+				EB6D0F7511EE0F9100B65CE3 /* pj_msfn.c */,
+				EB6D0F7611EE0F9100B65CE3 /* pj_mutex.c */,
+				EB6D0F7711EE0F9100B65CE3 /* PJ_nell.c */,
+				EB6D0F7811EE0F9100B65CE3 /* PJ_nell_h.c */,
+				EB6D0F7911EE0F9100B65CE3 /* PJ_nocol.c */,
+				EB6D0F7A11EE0F9100B65CE3 /* PJ_nsper.c */,
+				EB6D0F7B11EE0F9100B65CE3 /* PJ_nzmg.c */,
+				EB6D0F7C11EE0F9100B65CE3 /* PJ_ob_tran.c */,
+				EB6D0F7D11EE0F9100B65CE3 /* PJ_ocea.c */,
+				EB6D0F7E11EE0F9100B65CE3 /* PJ_oea.c */,
+				EB6D0F7F11EE0F9100B65CE3 /* PJ_omerc.c */,
+				EB6D0F8011EE0F9100B65CE3 /* pj_open_lib.c */,
+				EB6D0F8111EE0F9100B65CE3 /* PJ_ortho.c */,
+				EB6D0F8211EE0F9100B65CE3 /* pj_param.c */,
+				EB6D0F8311EE0F9100B65CE3 /* pj_phi2.c */,
+				EB6D0F8411EE0F9100B65CE3 /* PJ_poly.c */,
+				EB6D0F8511EE0F9100B65CE3 /* pj_pr_list.c */,
+				EB6D0F8611EE0F9100B65CE3 /* PJ_putp2.c */,
+				EB6D0F8711EE0F9100B65CE3 /* PJ_putp3.c */,
+				EB6D0F8811EE0F9100B65CE3 /* PJ_putp4p.c */,
+				EB6D0F8911EE0F9100B65CE3 /* PJ_putp5.c */,
+				EB6D0F8A11EE0F9100B65CE3 /* PJ_putp6.c */,
+				EB6D0F8B11EE0F9100B65CE3 /* pj_qsfn.c */,
+				EB6D0F8C11EE0F9100B65CE3 /* pj_release.c */,
+				EB6D0F8D11EE0F9100B65CE3 /* PJ_robin.c */,
+				EB6D0F8E11EE0F9100B65CE3 /* PJ_rpoly.c */,
+				EB6D0F8F11EE0F9100B65CE3 /* PJ_sconics.c */,
+				EB6D0F9011EE0F9100B65CE3 /* PJ_somerc.c */,
+				EB6D0F9111EE0F9100B65CE3 /* PJ_stere.c */,
+				EB6D0F9211EE0F9100B65CE3 /* PJ_sterea.c */,
+				EB6D0F9311EE0F9100B65CE3 /* pj_strerrno.c */,
+				EB6D0F9411EE0F9100B65CE3 /* PJ_sts.c */,
+				EB6D0F9511EE0F9100B65CE3 /* PJ_tcc.c */,
+				EB6D0F9611EE0F9100B65CE3 /* PJ_tcea.c */,
+				EB6D0F9711EE0F9100B65CE3 /* PJ_tmerc.c */,
+				EB6D0F9811EE0F9100B65CE3 /* PJ_tpeqd.c */,
+				EB6D0F9911EE0F9100B65CE3 /* pj_transform.c */,
+				EB6D0F9A11EE0F9100B65CE3 /* pj_tsfn.c */,
+				EB6D0F9B11EE0F9100B65CE3 /* pj_units.c */,
+				EB6D0F9C11EE0F9100B65CE3 /* PJ_urm5.c */,
+				EB6D0F9D11EE0F9100B65CE3 /* PJ_urmfps.c */,
+				EB6D0F9E11EE0F9100B65CE3 /* pj_utils.c */,
+				EB6D0F9F11EE0F9100B65CE3 /* PJ_vandg.c */,
+				EB6D0FA011EE0F9100B65CE3 /* PJ_vandg2.c */,
+				EB6D0FA111EE0F9100B65CE3 /* PJ_vandg4.c */,
+				EB6D0FA211EE0F9100B65CE3 /* PJ_wag2.c */,
+				EB6D0FA311EE0F9100B65CE3 /* PJ_wag3.c */,
+				EB6D0FA411EE0F9100B65CE3 /* PJ_wag7.c */,
+				EB6D0FA511EE0F9100B65CE3 /* PJ_wink1.c */,
+				EB6D0FA611EE0F9100B65CE3 /* PJ_wink2.c */,
+				EB6D0FA711EE0F9100B65CE3 /* pj_zpoly1.c */,
+				EB6D0FA911EE0F9100B65CE3 /* proj.def */,
+				EB6D0FAA11EE0F9100B65CE3 /* proj_api.h */,
+				EB6D0FAB11EE0F9100B65CE3 /* proj_config.h */,
+				EB6D0FAC11EE0F9100B65CE3 /* proj_config.h.in */,
+				EB6D0FAD11EE0F9100B65CE3 /* proj_mdist.c */,
+				EB6D0FAE11EE0F9100B65CE3 /* proj_rouss.c */,
+				EB6D0FAF11EE0F9100B65CE3 /* projects.h */,
+				EB6D0FB011EE0F9100B65CE3 /* rtodms.c */,
+				EB6D0FB111EE0F9100B65CE3 /* vector1.c */,
+			);
+			path = proj.4;
 			sourceTree = "<group>";
 		};
 		EB7F326610CD6C5B00188BCD /* People */ = {
@@ -1718,6 +2171,9 @@
 				4499332D11A371CF00A7041B /* RecentSearchesViewController.h in JavaArchive */,
 				44C1A4C411A412E2000FD653 /* MapSearch.h in JavaArchive */,
 				4499341E11A5E53D00A7041B /* CategoriesTableViewController.h in JavaArchive */,
+				EB6DFE3711DE28F800B65CE3 /* ModoNavigationController.h in JavaArchive */,
+				EB6DFE3F11DE294700B65CE3 /* ModoNavigationBar.h in JavaArchive */,
+				EB6DFFF011DE69F600B65CE3 /* SpringboardViewController.h in JavaArchive */,
 				C704F06211E3E31F00621406 /* DiningFirstViewController.h in JavaArchive */,
 				C704F06411E3E31F00621406 /* DiningModule.h in JavaArchive */,
 				C704F06611E3E31F00621406 /* DiningTabViewControl.h in JavaArchive */,
@@ -1726,6 +2182,19 @@
 				C704F06C11E3E31F00621406 /* MenuDetailsController.h in JavaArchive */,
 				C704F06E11E3E31F00621406 /* MenuItems.h in JavaArchive */,
 				EB6D076811E50E5B00B65CE3 /* JSONAPIRequest.h in JavaArchive */,
+				EB6D0FBD11EE0F9100B65CE3 /* geocent.h in JavaArchive */,
+				EB6D0FCD11EE0F9100B65CE3 /* nad_list.h in JavaArchive */,
+				EB6D0FCE11EE0F9100B65CE3 /* org_proj4_Projections.h in JavaArchive */,
+				EB6D100E11EE0F9100B65CE3 /* pj_list.h in JavaArchive */,
+				EB6D104F11EE0F9100B65CE3 /* proj_api.h in JavaArchive */,
+				EB6D105011EE0F9100B65CE3 /* proj_config.h in JavaArchive */,
+				EB6D105411EE0F9100B65CE3 /* projects.h in JavaArchive */,
+				EB6D10DA11EE13F100B65CE3 /* MapTileOverlay.h in JavaArchive */,
+				EB6D10DC11EE13F100B65CE3 /* MapTileOverlayView.h in JavaArchive */,
+				EB6D10DE11EE13F100B65CE3 /* MapZoomLevel.h in JavaArchive */,
+				EB6D111611EE143900B65CE3 /* TileServerManager.h in JavaArchive */,
+				EB6D133311EE4A9C00B65CE3 /* MKMapView+ArcGISAdditions.h in JavaArchive */,
+				EB6D141511EE979500B65CE3 /* NewsCategory.h in JavaArchive */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1867,6 +2336,8 @@
 				4415CA8D11AC679A002B6847 /* bookmark_on_pressed.png in Resources */,
 				4415CA8E11AC679A002B6847 /* bookmark_on.png in Resources */,
 				C704F06111E3E31F00621406 /* DiningFirstViewController.xib in Resources */,
+				EB6D104E11EE0F9100B65CE3 /* proj.def in Resources */,
+				EB6D105111EE0F9100B65CE3 /* proj_config.h.in in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1941,18 +2412,10 @@
 				297746D210D3526200ACFCE6 /* StellarClassTime.m in Sources */,
 				297746D310D3526200ACFCE6 /* StellarCourse.m in Sources */,
 				EBCB4DEE10D30AA2001219FD /* EmergencyContactsViewController.m in Sources */,
-				DE47589710D0BEE700139BC1 /* MITTabBarController.m in Sources */,
 				EB3EE78010D6ADCA00F6D707 /* MultiLineTableViewCell.m in Sources */,
 				4463CC9110D6F4A50048CA83 /* CampusMapViewController.m in Sources */,
-				4463CC9210D6F4A50048CA83 /* MapLevel.m in Sources */,
-				4463CC9310D6F4A50048CA83 /* MapTileExtent.m in Sources */,
-				4463CC9510D6F4A50048CA83 /* MapTileCache.m in Sources */,
-				4463CC9710D6F4A50048CA83 /* SaveOperation.m in Sources */,
 				4463CC9810D6F4A50048CA83 /* CMModule.m in Sources */,
-				4463CC9910D6F4A50048CA83 /* MITProjection.m in Sources */,
-				4463CC9A10D6F4A50048CA83 /* MITMapUserLocation.m in Sources */,
 				4463CC9B10D6F4A50048CA83 /* MITMapSearchResultAnnotation.m in Sources */,
-				4463CC9C10D6F4A50048CA83 /* MITMapAnnotationView.m in Sources */,
 				DE728E6C10D6FF4700BFED37 /* StoryThumbnailView.m in Sources */,
 				DE728E7B10D6FF4700BFED37 /* StoryDetailViewController.m in Sources */,
 				DE728E7C10D6FF4700BFED37 /* StoryListViewController.m in Sources */,
@@ -1964,16 +2427,13 @@
 				4463D09410D92CB00048CA83 /* MITMapDetailViewController.m in Sources */,
 				4463D0A010D92F6B0048CA83 /* TabViewControl.m in Sources */,
 				DE6AFDC710D99C4D00B48BA7 /* Foundation+MITAdditions.m in Sources */,
-				4463D5E210DA74240048CA83 /* MITMapView.m in Sources */,
 				44293C3510DAE88500273119 /* MITMapSearchResultsVC.m in Sources */,
 				2971CE0B10DB116800FAF160 /* StellarAnnouncementViewController.m in Sources */,
-				44259C7110DBDCDC008FCAF1 /* MITMapAnnotationCalloutView.m in Sources */,
 				299149A010DDB50300B01A8E /* StellarSearch.m in Sources */,
 				2970ABE610E053F700C543D7 /* StellarClassTableCell.m in Sources */,
 				EBA2865610E07E140003BA01 /* PeopleSearchViewController.m in Sources */,
 				EBA2867910E082010003BA01 /* MITLoadingActivityView.m in Sources */,
 				EB6FD1F910E19D7900D56BE1 /* SecondaryGroupedTableViewCell.m in Sources */,
-				294AC7B010E46786003830C3 /* MITMapScrollView.m in Sources */,
 				EB6F2B6610E901E000A29A2A /* UITableView+MITUIAdditions.m in Sources */,
 				EB6F2B6710E901E000A29A2A /* UITableViewCell+MITUIAdditions.m in Sources */,
 				EB6F2B6D10E9026200A29A2A /* PeopleDetailsTableViewCell.m in Sources */,
@@ -1987,9 +2447,7 @@
 				DE18F9EE10F19105009A69B9 /* News.xcdatamodeld in Sources */,
 				2978864510F03656002670CC /* MITDeviceRegistration.m in Sources */,
 				2978864610F03656002670CC /* MITUnreadNotifications.m in Sources */,
-				DE8ECED810F27F9C00D4C5CE /* MITTabBarItem.m in Sources */,
 				442C192A10F3AE3400CB44EC /* RouteMapViewController.m in Sources */,
-				442C19AE10F3D70900CB44EC /* RouteView.m in Sources */,
 				DEE283EE10F5109800B39531 /* Emergency.xcdatamodeld in Sources */,
 				442C1CA310F4FE8900CB44EC /* ShuttleLocation.m in Sources */,
 				DECBF6A210F8F71D009FAE35 /* NewsImage.m in Sources */,
@@ -2002,7 +2460,6 @@
 				DEC02D2D11053A850054BE32 /* StoryImageView.m in Sources */,
 				44BF602011050AC000E150D5 /* ShuttleStopCell.m in Sources */,
 				DEC02F9D110578240054BE32 /* AboutTableViewController.m in Sources */,
-				DE6D907111095B2D00DAF213 /* MITMoreListController.m in Sources */,
 				441009DE110A6DAF00451B23 /* CampusMapToolbar.m in Sources */,
 				DE6D9401110AD1ED00DAF213 /* SettingsTableViewController.m in Sources */,
 				DE0F6B3411109BC500F064D6 /* AboutMITVC.m in Sources */,
@@ -2061,6 +2518,9 @@
 				4499332E11A371CF00A7041B /* RecentSearchesViewController.m in Sources */,
 				44C1A4C511A412E2000FD653 /* MapSearch.m in Sources */,
 				4499341F11A5E53D00A7041B /* CategoriesTableViewController.m in Sources */,
+				EB6DFE3811DE28F800B65CE3 /* ModoNavigationController.m in Sources */,
+				EB6DFE4011DE294700B65CE3 /* ModoNavigationBar.m in Sources */,
+				EB6DFFF111DE69F600B65CE3 /* SpringboardViewController.m in Sources */,
 				C704F06311E3E31F00621406 /* DiningFirstViewController.m in Sources */,
 				C704F06511E3E31F00621406 /* DiningModule.m in Sources */,
 				C704F06711E3E31F00621406 /* DiningTabViewControl.m in Sources */,
@@ -2069,6 +2529,153 @@
 				C704F06D11E3E31F00621406 /* MenuDetailsController.m in Sources */,
 				C704F06F11E3E31F00621406 /* MenuItems.m in Sources */,
 				EB6D076911E50E5B00B65CE3 /* JSONAPIRequest.m in Sources */,
+				EB6D0FB211EE0F9100B65CE3 /* aasincos.c in Sources */,
+				EB6D0FB311EE0F9100B65CE3 /* adjlon.c in Sources */,
+				EB6D0FB411EE0F9100B65CE3 /* bch2bps.c in Sources */,
+				EB6D0FB511EE0F9100B65CE3 /* bchgen.c in Sources */,
+				EB6D0FB611EE0F9100B65CE3 /* biveval.c in Sources */,
+				EB6D0FB811EE0F9100B65CE3 /* dmstor.c in Sources */,
+				EB6D0FBC11EE0F9100B65CE3 /* geocent.c in Sources */,
+				EB6D0FC311EE0F9100B65CE3 /* jniproj.c in Sources */,
+				EB6D0FC711EE0F9100B65CE3 /* mk_cheby.c in Sources */,
+				EB6D0FCA11EE0F9100B65CE3 /* nad_cvt.c in Sources */,
+				EB6D0FCB11EE0F9100B65CE3 /* nad_init.c in Sources */,
+				EB6D0FCC11EE0F9100B65CE3 /* nad_intr.c in Sources */,
+				EB6D0FCF11EE0F9100B65CE3 /* p_series.c in Sources */,
+				EB6D0FD011EE0F9100B65CE3 /* PJ_aea.c in Sources */,
+				EB6D0FD111EE0F9100B65CE3 /* PJ_aeqd.c in Sources */,
+				EB6D0FD211EE0F9100B65CE3 /* PJ_airy.c in Sources */,
+				EB6D0FD311EE0F9100B65CE3 /* PJ_aitoff.c in Sources */,
+				EB6D0FD411EE0F9100B65CE3 /* pj_apply_gridshift.c in Sources */,
+				EB6D0FD511EE0F9100B65CE3 /* PJ_august.c in Sources */,
+				EB6D0FD611EE0F9100B65CE3 /* pj_auth.c in Sources */,
+				EB6D0FD711EE0F9100B65CE3 /* PJ_bacon.c in Sources */,
+				EB6D0FD811EE0F9100B65CE3 /* PJ_bipc.c in Sources */,
+				EB6D0FD911EE0F9100B65CE3 /* PJ_boggs.c in Sources */,
+				EB6D0FDA11EE0F9100B65CE3 /* PJ_bonne.c in Sources */,
+				EB6D0FDB11EE0F9100B65CE3 /* PJ_cass.c in Sources */,
+				EB6D0FDC11EE0F9100B65CE3 /* PJ_cc.c in Sources */,
+				EB6D0FDD11EE0F9100B65CE3 /* PJ_cea.c in Sources */,
+				EB6D0FDE11EE0F9100B65CE3 /* PJ_chamb.c in Sources */,
+				EB6D0FDF11EE0F9100B65CE3 /* PJ_collg.c in Sources */,
+				EB6D0FE011EE0F9100B65CE3 /* PJ_crast.c in Sources */,
+				EB6D0FE111EE0F9100B65CE3 /* pj_datum_set.c in Sources */,
+				EB6D0FE211EE0F9100B65CE3 /* pj_datums.c in Sources */,
+				EB6D0FE311EE0F9100B65CE3 /* PJ_denoy.c in Sources */,
+				EB6D0FE411EE0F9100B65CE3 /* pj_deriv.c in Sources */,
+				EB6D0FE511EE0F9100B65CE3 /* PJ_eck1.c in Sources */,
+				EB6D0FE611EE0F9100B65CE3 /* PJ_eck2.c in Sources */,
+				EB6D0FE711EE0F9100B65CE3 /* PJ_eck3.c in Sources */,
+				EB6D0FE811EE0F9100B65CE3 /* PJ_eck4.c in Sources */,
+				EB6D0FE911EE0F9100B65CE3 /* PJ_eck5.c in Sources */,
+				EB6D0FEA11EE0F9100B65CE3 /* pj_ell_set.c in Sources */,
+				EB6D0FEB11EE0F9100B65CE3 /* pj_ellps.c in Sources */,
+				EB6D0FEC11EE0F9100B65CE3 /* PJ_eqc.c in Sources */,
+				EB6D0FED11EE0F9100B65CE3 /* PJ_eqdc.c in Sources */,
+				EB6D0FEE11EE0F9100B65CE3 /* pj_errno.c in Sources */,
+				EB6D0FEF11EE0F9100B65CE3 /* pj_factors.c in Sources */,
+				EB6D0FF011EE0F9100B65CE3 /* PJ_fahey.c in Sources */,
+				EB6D0FF111EE0F9100B65CE3 /* PJ_fouc_s.c in Sources */,
+				EB6D0FF211EE0F9100B65CE3 /* pj_fwd.c in Sources */,
+				EB6D0FF311EE0F9100B65CE3 /* PJ_gall.c in Sources */,
+				EB6D0FF411EE0F9100B65CE3 /* pj_gauss.c in Sources */,
+				EB6D0FF511EE0F9100B65CE3 /* pj_geocent.c in Sources */,
+				EB6D0FF711EE0F9100B65CE3 /* PJ_gins8.c in Sources */,
+				EB6D0FF811EE0F9100B65CE3 /* PJ_gn_sinu.c in Sources */,
+				EB6D0FF911EE0F9100B65CE3 /* PJ_gnom.c in Sources */,
+				EB6D0FFA11EE0F9100B65CE3 /* PJ_goode.c in Sources */,
+				EB6D0FFB11EE0F9100B65CE3 /* pj_gridinfo.c in Sources */,
+				EB6D0FFC11EE0F9100B65CE3 /* pj_gridlist.c in Sources */,
+				EB6D0FFD11EE0F9100B65CE3 /* PJ_gstmerc.c in Sources */,
+				EB6D0FFE11EE0F9100B65CE3 /* PJ_hammer.c in Sources */,
+				EB6D0FFF11EE0F9100B65CE3 /* PJ_hatano.c in Sources */,
+				EB6D100011EE0F9100B65CE3 /* PJ_imw_p.c in Sources */,
+				EB6D100111EE0F9100B65CE3 /* pj_init.c in Sources */,
+				EB6D100211EE0F9100B65CE3 /* pj_initcache.c in Sources */,
+				EB6D100311EE0F9100B65CE3 /* pj_inv.c in Sources */,
+				EB6D100411EE0F9100B65CE3 /* PJ_krovak.c in Sources */,
+				EB6D100511EE0F9100B65CE3 /* PJ_labrd.c in Sources */,
+				EB6D100611EE0F9100B65CE3 /* PJ_laea.c in Sources */,
+				EB6D100711EE0F9100B65CE3 /* PJ_lagrng.c in Sources */,
+				EB6D100811EE0F9100B65CE3 /* PJ_larr.c in Sources */,
+				EB6D100911EE0F9100B65CE3 /* PJ_lask.c in Sources */,
+				EB6D100A11EE0F9100B65CE3 /* pj_latlong.c in Sources */,
+				EB6D100B11EE0F9100B65CE3 /* PJ_lcc.c in Sources */,
+				EB6D100C11EE0F9100B65CE3 /* PJ_lcca.c in Sources */,
+				EB6D100D11EE0F9100B65CE3 /* pj_list.c in Sources */,
+				EB6D100F11EE0F9100B65CE3 /* PJ_loxim.c in Sources */,
+				EB6D101011EE0F9100B65CE3 /* PJ_lsat.c in Sources */,
+				EB6D101111EE0F9100B65CE3 /* pj_malloc.c in Sources */,
+				EB6D101211EE0F9100B65CE3 /* PJ_mbt_fps.c in Sources */,
+				EB6D101311EE0F9100B65CE3 /* PJ_mbtfpp.c in Sources */,
+				EB6D101411EE0F9100B65CE3 /* PJ_mbtfpq.c in Sources */,
+				EB6D101511EE0F9100B65CE3 /* PJ_merc.c in Sources */,
+				EB6D101611EE0F9100B65CE3 /* PJ_mill.c in Sources */,
+				EB6D101711EE0F9100B65CE3 /* pj_mlfn.c in Sources */,
+				EB6D101811EE0F9100B65CE3 /* PJ_mod_ster.c in Sources */,
+				EB6D101911EE0F9100B65CE3 /* PJ_moll.c in Sources */,
+				EB6D101A11EE0F9100B65CE3 /* pj_msfn.c in Sources */,
+				EB6D101B11EE0F9100B65CE3 /* pj_mutex.c in Sources */,
+				EB6D101C11EE0F9100B65CE3 /* PJ_nell.c in Sources */,
+				EB6D101D11EE0F9100B65CE3 /* PJ_nell_h.c in Sources */,
+				EB6D101E11EE0F9100B65CE3 /* PJ_nocol.c in Sources */,
+				EB6D101F11EE0F9100B65CE3 /* PJ_nsper.c in Sources */,
+				EB6D102011EE0F9100B65CE3 /* PJ_nzmg.c in Sources */,
+				EB6D102111EE0F9100B65CE3 /* PJ_ob_tran.c in Sources */,
+				EB6D102211EE0F9100B65CE3 /* PJ_ocea.c in Sources */,
+				EB6D102311EE0F9100B65CE3 /* PJ_oea.c in Sources */,
+				EB6D102411EE0F9100B65CE3 /* PJ_omerc.c in Sources */,
+				EB6D102511EE0F9100B65CE3 /* pj_open_lib.c in Sources */,
+				EB6D102611EE0F9100B65CE3 /* PJ_ortho.c in Sources */,
+				EB6D102711EE0F9100B65CE3 /* pj_param.c in Sources */,
+				EB6D102811EE0F9100B65CE3 /* pj_phi2.c in Sources */,
+				EB6D102911EE0F9100B65CE3 /* PJ_poly.c in Sources */,
+				EB6D102A11EE0F9100B65CE3 /* pj_pr_list.c in Sources */,
+				EB6D102B11EE0F9100B65CE3 /* PJ_putp2.c in Sources */,
+				EB6D102C11EE0F9100B65CE3 /* PJ_putp3.c in Sources */,
+				EB6D102D11EE0F9100B65CE3 /* PJ_putp4p.c in Sources */,
+				EB6D102E11EE0F9100B65CE3 /* PJ_putp5.c in Sources */,
+				EB6D102F11EE0F9100B65CE3 /* PJ_putp6.c in Sources */,
+				EB6D103011EE0F9100B65CE3 /* pj_qsfn.c in Sources */,
+				EB6D103111EE0F9100B65CE3 /* pj_release.c in Sources */,
+				EB6D103211EE0F9100B65CE3 /* PJ_robin.c in Sources */,
+				EB6D103311EE0F9100B65CE3 /* PJ_rpoly.c in Sources */,
+				EB6D103411EE0F9100B65CE3 /* PJ_sconics.c in Sources */,
+				EB6D103511EE0F9100B65CE3 /* PJ_somerc.c in Sources */,
+				EB6D103611EE0F9100B65CE3 /* PJ_stere.c in Sources */,
+				EB6D103711EE0F9100B65CE3 /* PJ_sterea.c in Sources */,
+				EB6D103811EE0F9100B65CE3 /* pj_strerrno.c in Sources */,
+				EB6D103911EE0F9100B65CE3 /* PJ_sts.c in Sources */,
+				EB6D103A11EE0F9100B65CE3 /* PJ_tcc.c in Sources */,
+				EB6D103B11EE0F9100B65CE3 /* PJ_tcea.c in Sources */,
+				EB6D103C11EE0F9100B65CE3 /* PJ_tmerc.c in Sources */,
+				EB6D103D11EE0F9100B65CE3 /* PJ_tpeqd.c in Sources */,
+				EB6D103E11EE0F9100B65CE3 /* pj_transform.c in Sources */,
+				EB6D103F11EE0F9100B65CE3 /* pj_tsfn.c in Sources */,
+				EB6D104011EE0F9100B65CE3 /* pj_units.c in Sources */,
+				EB6D104111EE0F9100B65CE3 /* PJ_urm5.c in Sources */,
+				EB6D104211EE0F9100B65CE3 /* PJ_urmfps.c in Sources */,
+				EB6D104311EE0F9100B65CE3 /* pj_utils.c in Sources */,
+				EB6D104411EE0F9100B65CE3 /* PJ_vandg.c in Sources */,
+				EB6D104511EE0F9100B65CE3 /* PJ_vandg2.c in Sources */,
+				EB6D104611EE0F9100B65CE3 /* PJ_vandg4.c in Sources */,
+				EB6D104711EE0F9100B65CE3 /* PJ_wag2.c in Sources */,
+				EB6D104811EE0F9100B65CE3 /* PJ_wag3.c in Sources */,
+				EB6D104911EE0F9100B65CE3 /* PJ_wag7.c in Sources */,
+				EB6D104A11EE0F9100B65CE3 /* PJ_wink1.c in Sources */,
+				EB6D104B11EE0F9100B65CE3 /* PJ_wink2.c in Sources */,
+				EB6D104C11EE0F9100B65CE3 /* pj_zpoly1.c in Sources */,
+				EB6D105211EE0F9100B65CE3 /* proj_mdist.c in Sources */,
+				EB6D105311EE0F9100B65CE3 /* proj_rouss.c in Sources */,
+				EB6D105511EE0F9100B65CE3 /* rtodms.c in Sources */,
+				EB6D105611EE0F9100B65CE3 /* vector1.c in Sources */,
+				EB6D10DB11EE13F100B65CE3 /* MapTileOverlay.m in Sources */,
+				EB6D10DD11EE13F100B65CE3 /* MapTileOverlayView.m in Sources */,
+				EB6D10DF11EE13F100B65CE3 /* MapZoomLevel.m in Sources */,
+				EB6D111711EE143900B65CE3 /* TileServerManager.m in Sources */,
+				EB6D114211EE191000B65CE3 /* PJ_geos.c in Sources */,
+				EB6D133411EE4A9C00B65CE3 /* MKMapView+ArcGISAdditions.m in Sources */,
+				EB6D141611EE979500B65CE3 /* NewsCategory.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2455,7 +3062,6 @@
 		DE18F9ED10F19105009A69B9 /* News.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
-				DE18F9E910F19085009A69B9 /* News.xcdatamodel */,
 				DE10571411985D4B0090A505 /* News 2.xcdatamodel */,
 			);
 			currentVersion = DE10571411985D4B0090A505 /* News 2.xcdatamodel */;

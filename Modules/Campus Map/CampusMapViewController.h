@@ -1,18 +1,17 @@
 #import <UIKit/UIKit.h>
-#import "MITMapView.h"
-//#import "ConnectionWrapper.h"
+#import <MapKit/MapKit.h>
 #import "ShuttleDataManager.h"
 #import "CampusMapToolbar.h"
 #import "JSONAPIRequest.h"
 #import "MITModuleURL.h"
 #import "CMModule.h"
+#import "TileServerManager.h"
 
 //@class MITMapSearchResultsTable;
 @class MITMapSearchResultsVC;
 @class MapSelectionController;
 
-@interface CampusMapViewController : UIViewController <UISearchBarDelegate, 
-														MITMapViewDelegate,
+@interface CampusMapViewController : UIViewController <UISearchBarDelegate, MKMapViewDelegate,
 														JSONAPIDelegate,
 														ShuttleDataManagerDelegate, 
 														UIAlertViewDelegate>
@@ -22,32 +21,22 @@
 	CMModule* _campusMapModule;
 	
 	// our map view controller which renders the map display
-	MITMapView* _mapView;
-	
+	MKMapView* _mapView;
 	CampusMapToolbar* _toolBar;
-
 	UIBarButtonItem* _geoButton;
-	
 	UIBarButtonItem* _cancelSearchButton;
-	
 	UIBarButtonItem* _shuttleButton;
-	
+
 	NSArray* _searchResults;
-	
 	BOOL _hasSearchResults;
-	
 	NSArray* _filteredSearchResults;
-	 
 	SEL _searchFilter;
-	
-	NSArray* _categories;
-	
-	UITableView* _categoryTableView;
-	 
 	NSString* _lastSearchText;
+
+	NSArray* _categories;
+	UITableView* _categoryTableView;
 	
 	BOOL _displayShuttles;
-	
 	NSMutableArray* _shuttleAnnotations;
 	
 	// flag indicating whether to display a list of search results or categories. 
@@ -74,7 +63,7 @@
 @property (nonatomic, retain) NSArray* searchResults;
 @property (nonatomic, assign) CMModule* campusMapModule;
 
-@property (readonly) MITMapView* mapView;
+@property (readonly) MKMapView* mapView;
 @property (nonatomic, retain) NSString* lastSearchText;
 @property BOOL hasSearchResults;
 @property (readonly) BOOL displayingList;

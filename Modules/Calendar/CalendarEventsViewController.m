@@ -6,6 +6,7 @@
 #import "CalendarEventMapAnnotation.h"
 #import "MITSearchEffects.h"
 #import <QuartzCore/QuartzCore.h>
+#import "TileServerManager.h"
 
 #define SCROLL_TAB_HORIZONTAL_PADDING 5.0
 #define SCROLL_TAB_HORIZONTAL_MARGIN  5.0
@@ -327,6 +328,7 @@
 	} else if (self.mapView == nil) {
 		self.mapView = [[CalendarMapView alloc] initWithFrame:contentFrame];
 		self.mapView.delegate = self;
+        [TileServerManager registerMapView:self.mapView];
 	}
 
 	if (dateRangeDidChange && activeEventList != CalendarEventListTypeCategory) {
@@ -836,8 +838,9 @@
 	if (!isSearch && [self shouldShowDatePicker:activeEventList]) {
 		yOffset += datePicker.frame.size.height;
 	}
-	MIT_MobileAppDelegate *appDelegate = (MIT_MobileAppDelegate *)[[UIApplication sharedApplication] delegate];
-	CGFloat heightAdjustment = appDelegate.tabBarController.tabBar.frame.size.height;
+	//MIT_MobileAppDelegate *appDelegate = (MIT_MobileAppDelegate *)[[UIApplication sharedApplication] delegate];
+	//CGFloat heightAdjustment = appDelegate.tabBarController.tabBar.frame.size.height;
+    CGFloat heightAdjustment = 0;
 	CGPoint center = CGPointMake(appFrame.size.width / 2, (appFrame.size.height + yOffset) / 2 - heightAdjustment);
 	loadingIndicator.center = center;
 	
@@ -853,7 +856,7 @@
 
 #pragma mark Map View Delegate
  
-- (void)mapView:(MITMapView *)mapView annotationViewcalloutAccessoryTapped:(MITMapAnnotationCalloutView *)view
+- (void)mapView:(MKMapView *)mapView annotationView:(MKAnnotationView *)view calloutAccessoryControlTapped:(UIControl *)control
 {
 	CalendarEventMapAnnotation *annotation = view.annotation;
 	MITCalendarEvent *event = nil;
@@ -873,9 +876,9 @@
 }
 
 
-- (MITMapAnnotationView *)mapView:(MITMapView *)mapView viewForAnnotation:(id <MKAnnotation>)annotation
+- (MKAnnotationView *)mapView:(MKMapView *)mapView viewForAnnotation:(id <MKAnnotation>)annotation
 {
-	MITMapAnnotationView *annotationView = [/*theMapView*/mapView viewForAnnotation:annotation];
+	MKAnnotationView *annotationView = [/*theMapView*/mapView viewForAnnotation:annotation];
 	return annotationView;
 }
 
