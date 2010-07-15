@@ -205,7 +205,7 @@
 	[self.navigationController popToViewController:self animated:animated];
 	[self setMapViewMode:YES animated:animated];
 
-	[_routeMapViewController.mapView selectAnnotation:annotation];
+	[_routeMapViewController.mapView selectAnnotation:annotation animated:NO];
 }
 
 // set the view to either map or list mode
@@ -220,7 +220,7 @@
 	// flip to the correct view. 
 	if (animated) {
 		[UIView beginAnimations:@"flip" context:nil];
-		[UIView setAnimationTransition:UIViewAnimationTransitionFlipFromRight forView:self.view cache:NO];
+		[UIView setAnimationTransition:UIViewAnimationTransitionCurlDown forView:self.view cache:NO];
 	}
 	
 	if (!showMap) {

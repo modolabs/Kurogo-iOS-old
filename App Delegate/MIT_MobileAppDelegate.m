@@ -4,16 +4,30 @@
 #import "MITDeviceRegistration.h"
 #import "MITUnreadNotifications.h"
 #import "AudioToolbox/AudioToolbox.h"
+#import "SpringboardViewController.h"
 
 @implementation MIT_MobileAppDelegate
 
 @synthesize window, 
-            tabBarController = theTabBarController, 
+            //tabBarController = theTabBarController, 
             modules;
 @synthesize deviceToken = devicePushToken;
+@synthesize theNavController;
 
 #pragma mark -
 #pragma mark Application lifecycle
+
+/*
+- (void)switchContainerView {
+    if ([theSpringboard.view isDescendantOfView:self.window]) {
+        [theSpringboard.view removeFromSuperview];
+        [self.window addSubview:theTabBarController.view];
+    } else if ([theTabBarController.view isDescendantOfView:self.window]) {
+        [theTabBarController.view removeFromSuperview];
+        [self.window addSubview:theSpringboard.view];
+    }
+}
+*/
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     
@@ -26,15 +40,15 @@
     [self loadSavedModuleOrder];
         
     // Add modules to tab bar
-    NSMutableArray *tabbedViewControllers = [[NSMutableArray alloc] initWithCapacity:[self.modules count]];
-    for (MITModule *aModule in self.modules) {
-        [tabbedViewControllers addObject:aModule.tabNavController];
-    }
-    theTabBarController = [[MITTabBarController alloc] initWithNibName:nil bundle:nil];
-    theTabBarController.delegate = self;
-    theTabBarController.viewControllers = tabbedViewControllers;
-    [tabbedViewControllers release];
-    [self updateCustomizableViewControllers];
+    //NSMutableArray *tabbedViewControllers = [[NSMutableArray alloc] initWithCapacity:[self.modules count]];
+    //for (MITModule *aModule in self.modules) {
+    //    [tabbedViewControllers addObject:aModule.tabNavController];
+    //}
+    //theTabBarController = [[MITTabBarController alloc] initWithNibName:nil bundle:nil];
+    //theTabBarController.delegate = self;
+    //theTabBarController.viewControllers = tabbedViewControllers;
+    //[tabbedViewControllers release];
+    //[self updateCustomizableViewControllers];
     
 	// set modules state
 	NSDictionary *modulesState = [[NSUserDefaults standardUserDefaults] objectForKey:MITModulesSavedStateKey];
@@ -53,13 +67,17 @@
 	}
     
     // Set up window
-    [self.window addSubview:theTabBarController.view];
+    //[self.window addSubview:theTabBarController.view];
+    theSpringboard = [[SpringboardViewController alloc] initWithNibName:nil bundle:nil];
+    theNavController = [[ModoNavigationController alloc] initWithRootViewController:theSpringboard];
+    theNavController.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:MITImageNameBackground]];
+    [self.window addSubview:theNavController.view];
     
     appModalHolder = [[UIViewController alloc] initWithNibName:nil bundle:nil];
     appModalHolder.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     appModalHolder.view.userInteractionEnabled = NO;
     appModalHolder.view.hidden = YES;
-    [self.window addSubview:appModalHolder.view];
+    //[self.window addSubview:appModalHolder.view];
 
     self.window.backgroundColor = [UIColor blackColor]; // necessary for horizontal flip transitions -- background shows through
     [self.window makeKeyAndVisible];
@@ -81,8 +99,10 @@
 	if(apnsDict) {
 		MITNotification *notification = [MITUnreadNotifications addNotification:apnsDict];
 		[[self moduleForTag:notification.moduleName] handleNotification:notification appDelegate:self shouldOpen:YES];
-		//NSLog(@"Application opened in response to notification=%@", notification);
+		NSLog(@"Application opened in response to notification=%@", notification);
 	}	
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(returnToHome) name:@"shake" object:nil];
     
     return YES;
 }
@@ -168,7 +188,7 @@
 //        NSLog(@"network indicator off");
     }
 }
-
+/*
 #pragma mark -
 #pragma mark Tab bar delegation
 
@@ -209,7 +229,7 @@
 - (void)beginCustomizingTabs {
     [self.tabBarController.tabBar beginCustomizingItems:[self.tabBarController customizableViewControllers]];
 }
-
+*/
 #pragma mark -
 #pragma mark App-modal view controllers
 

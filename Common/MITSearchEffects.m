@@ -51,11 +51,11 @@
 }
 
 + (CGRect) frameWithHeader: (UIView *)headerView {
-	MIT_MobileAppDelegate *appDelegate = (MIT_MobileAppDelegate *)[[UIApplication sharedApplication] delegate];
+	//MIT_MobileAppDelegate *appDelegate = (MIT_MobileAppDelegate *)[[UIApplication sharedApplication] delegate];
 
     CGRect appFrame = [[UIScreen mainScreen] applicationFrame];
     CGFloat y = headerView.frame.size.height;
-    CGFloat height = appFrame.size.height - y - appDelegate.tabBarController.tabBar.frame.size.height;
+    CGFloat height = appFrame.size.height - y/* - appDelegate.tabBarController.tabBar.frame.size.height*/;
 
 	return CGRectMake(0.0, y, appFrame.size.width, height);
 }

@@ -1,7 +1,7 @@
 
 #import <UIKit/UIKit.h>
+#import <MapKit/MapKit.h>
 #import "TabViewControl.h"
-#import "MITMapView.h"
 #import "JSONAPIRequest.h"
 #import "ConnectionWrapper.h"
 
@@ -32,7 +32,7 @@
 	IBOutlet UIView* _tabViewContainer;
 	
 	// map view
-	IBOutlet MITMapView* _mapView;
+	IBOutlet MKMapView* _mapView;
 	IBOutlet UIButton* _mapViewContainer;
 
 	//

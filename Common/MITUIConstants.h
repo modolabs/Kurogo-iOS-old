@@ -9,7 +9,7 @@
 
 /*** search bar ***/
 
-#define SEARCH_BAR_TINT_COLOR [UIColor colorWithRed:0.6 green:0.0 blue:0.0 alpha:1.0] /* just a guess */
+#define SEARCH_BAR_TINT_COLOR [UIColor colorWithWhite:0.4 alpha:1.0]
 
 /*** table view constants ***/
 

@@ -32,6 +32,7 @@
     
 	NSString *currentElement;
     NSMutableArray *currentStack;
+    NSMutableSet *currentCategories;
     NSMutableDictionary *currentContents;
     NSMutableDictionary *currentImage;
 	BOOL done;

@@ -1,6 +1,8 @@
 #import <UIKit/UIKit.h>
 #import "StoryXMLParser.h"
+#import "JSONAPIRequest.h"
 
+/*
 typedef enum {
     NewsCategoryIdTopNews = 0,
     NewsCategoryIdEngineering = 1,
@@ -10,15 +12,18 @@ typedef enum {
     NewsCategoryIdHumanities = 6,
     NewsCategoryIdCampus = 99
 } NewsCategoryId;
+*/
+
+typedef int NewsCategoryId;
 
 @class MITSearchEffects;
 @class NewsStory;
 
-@interface StoryListViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate, StoryXMLParserDelegate> {
+@interface StoryListViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate, StoryXMLParserDelegate, JSONAPIDelegate> {
 	UITableView *storyTable;
     NSArray *stories;
     NSArray *categories;
-    NSInteger activeCategoryId;
+    NewsCategoryId activeCategoryId;
 	StoryXMLParser *xmlParser;
     
     NSArray *navButtons;
@@ -48,7 +53,7 @@ typedef enum {
 @property (nonatomic, retain) NSString *searchQuery;
 @property (nonatomic, retain) NSArray *searchResults;
 @property (nonatomic, retain) NSArray *categories;
-@property (nonatomic, assign) NSInteger activeCategoryId;
+@property (nonatomic, assign) NewsCategoryId activeCategoryId;
 @property (nonatomic, retain) StoryXMLParser *xmlParser;
 
 - (void)pruneStories;

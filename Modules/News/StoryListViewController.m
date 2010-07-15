@@ -9,6 +9,7 @@
 #import "TabScrollerBackgroundView.h"
 #import "MITSearchEffects.h"
 #import "MITUIConstants.h"
+#import "NewsCategory.h"
 
 #define SCROLL_TAB_HORIZONTAL_PADDING 5.0
 #define SCROLL_TAB_HORIZONTAL_MARGIN  5.0
@@ -26,6 +27,8 @@
 
 #define SEARCH_BUTTON_TAG 7947
 #define BOOKMARK_BUTTON_TAG 7948
+
+#define MAX_ARTICLES 50
 
 @interface StoryListViewController (Private)
 
@@ -57,6 +60,9 @@
 @synthesize activeCategoryId;
 @synthesize xmlParser;
 
+static NSInteger numTries = 0;
+
+/*
 NSString * const NewsCategoryTopNews = @"Top News";
 NSString * const NewsCategoryCampus = @"Campus";
 NSString * const NewsCategoryEngineering = @"Engineering";
@@ -101,11 +107,11 @@ NSString *titleForCategoryId(NewsCategoryId category_id) {
     }
     return result;
 }
-
+*/
 - (void)loadView {
 	[super loadView];
 	
-    self.navigationItem.title = @"MIT News";
+    self.navigationItem.title = @"Harvard Gazette";
     self.navigationItem.backBarButtonItem = [[[UIBarButtonItem alloc] initWithTitle:@"Headlines" style:UIBarButtonItemStylePlain target:nil action:nil] autorelease];
     self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh target:self action:@selector(refresh:)] autorelease];
 	
@@ -115,6 +121,21 @@ NSString *titleForCategoryId(NewsCategoryId category_id) {
     
     tempTableSelection = nil;
     
+    //NSPredicate *truePredicate = [NSPredicate predicateWithFormat:@"TRUEPREDICATE"];
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"isMainCategory = YES"];
+    NSSortDescriptor *sort = [[NSSortDescriptor alloc] initWithKey:@"category_id" ascending:YES];
+    NSArray *categoryObjects = [CoreDataManager objectsForEntity:NewsCategoryEntityName matchingPredicate:predicate sortDescriptors:[NSArray arrayWithObject:sort]];
+    if (![categoryObjects count]) {
+        JSONAPIRequest *request = [JSONAPIRequest requestWithJSONAPIDelegate:self];
+        BOOL success = [request requestObjectFromModule:@"news" command:@"channels" parameters:nil];
+        if (!success) {
+            NSLog(@"failed to dispatch request");
+        }
+    } else {
+        self.categories = categoryObjects;
+    }
+    
+    /*
     NSMutableArray *newCategories = [NSMutableArray array];
     NSInteger i, count = sizeof(buttonCategories) / sizeof(NewsCategoryId);
     for (i = 0; i < count; i++) {
@@ -128,7 +149,8 @@ NSString *titleForCategoryId(NewsCategoryId category_id) {
         [newCategories addObject:aCategory];
     }
     self.categories = newCategories;
-	
+	*/
+    
 	[self pruneStories];
     // reduce number of saved stories to 10 when app quits
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(pruneStories) name:@"UIApplicationWillTerminateNotification" object:nil];
@@ -230,19 +252,23 @@ NSString *titleForCategoryId(NewsCategoryId category_id) {
     id originalMergePolicy = [context mergePolicy];
     [context setMergePolicy:NSOverwriteMergePolicy];
 
+    /*
     NewsCategoryId allCategories[] = {
         NewsCategoryIdTopNews, NewsCategoryIdCampus,
         NewsCategoryIdEngineering, NewsCategoryIdScience, 
         NewsCategoryIdManagement, NewsCategoryIdArchitecture, 
         NewsCategoryIdHumanities
     };
-	
+	*/
     NSMutableSet *allStoriesToSave = [NSMutableSet setWithCapacity:100];
-    NSInteger i, count = sizeof(allCategories) / sizeof(NewsCategoryId);
-    for (i = 0; i < count; i++) {
-        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"ANY categories.category_id == %d", allCategories[i]];
+    //NSInteger i, count = sizeof(allCategories) / sizeof(NewsCategoryId);
+    //for (i = 0; i < count; i++) {
+    for (NewsCategory *aCategory in self.categories) {
+        //NSPredicate *predicate = [NSPredicate predicateWithFormat:@"ANY categories.category_id == %d", allCategories[i]];
         NSSortDescriptor *postDateSortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"postDate" ascending:NO];
-        NSArray *categoryStories = [CoreDataManager objectsForEntity:NewsStoryEntityName matchingPredicate:predicate sortDescriptors:[NSArray arrayWithObject:postDateSortDescriptor]];
+        //NSArray *categoryStories = [CoreDataManager objectsForEntity:NewsStoryEntityName matchingPredicate:predicate sortDescriptors:[NSArray arrayWithObject:postDateSortDescriptor]];
+        NSArray *categoryStories = [aCategory.stories sortedArrayUsingDescriptors:[NSArray arrayWithObject:postDateSortDescriptor]];
+        
         // only the 10 most recent
         if ([categoryStories count] > 10) {
             [allStoriesToSave addObjectsFromArray:[categoryStories subarrayWithRange:NSMakeRange(0, 10)]];
@@ -269,11 +295,15 @@ NSString *titleForCategoryId(NewsCategoryId category_id) {
 - (void)setupNavScroller {
     // Nav Scroller View
 
+    NSInteger navScrollTag = 1000;
+    navScrollView = (UIScrollView *)[self.view viewWithTag:navScrollTag];
+    if (!navScrollView) {
+
     // load scroller's background first to find its height
     UIImage *backgroundImage = [UIImage imageNamed:MITImageNameScrollTabBackgroundOpaque];
    
 	// Create nav scroll view and add it to the hierarchy
-    navScrollView = [[[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, 320, backgroundImage.size.height)] autorelease];
+    navScrollView = [[[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, backgroundImage.size.height)] autorelease];
 	navScrollView.delegate = self;
     navScrollView.scrollsToTop = NO; // otherwise this competes with the story list for status bar taps
 	navScrollView.showsHorizontalScrollIndicator = NO;
@@ -302,11 +332,14 @@ NSString *titleForCategoryId(NewsCategoryId category_id) {
 	rightScrollButton.hidden = NO;
     [rightScrollButton addTarget:self action:@selector(sideButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
 	[self.view addSubview:rightScrollButton];
+        
+    }
 	
 	[self setupNavScrollButtons];
 }
 
 - (void)setupNavScrollButtons {
+    
     // load scroller's background first to find its height
 	UIImage *buttonImage = [UIImage imageNamed:MITImageNameScrollTabSelectedTab];
 	UIImage *stretchableButtonImage = [buttonImage stretchableImageWithLeftCapWidth:15 topCapHeight:0];
@@ -362,6 +395,7 @@ NSString *titleForCategoryId(NewsCategoryId category_id) {
 	}
 	// add pile of text buttons
 	
+    /*
 	// create buttons for nav scroller view
     NSArray *buttonTitles = [[NSArray alloc] initWithObjects:
                              NewsCategoryTopNews, NewsCategoryCampus, 
@@ -369,19 +403,26 @@ NSString *titleForCategoryId(NewsCategoryId category_id) {
                              NewsCategoryScience, NewsCategoryManagement, 
                              NewsCategoryArchitecture, NewsCategoryHumanities, 
                              nil];
-    
     NSMutableArray *buttons = [[NSMutableArray alloc] initWithCapacity:[buttonTitles count]];
+     */
+    NSMutableArray *buttons = [[NSMutableArray alloc] initWithCapacity:[self.categories count]];
     
     NSInteger i = 0;
-    for (NSString *buttonTitle in buttonTitles) {
+    //for (NSString *buttonTitle in buttonTitles) {
+    for (NewsCategory *aCategory in self.categories) {
+        NSLog(@"%@", aCategory.title);
         UIButton *aButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        aButton.tag = buttonCategories[i];
+        //aButton.tag = buttonCategories[i];
+        aButton.tag = (NewsCategoryId)[aCategory.category_id intValue];
+        NSString *buttonTitle = aCategory.title;
+
         [aButton setBackgroundImage:nil forState:UIControlStateNormal];
         [aButton setBackgroundImage:stretchableButtonImage forState:UIControlStateHighlighted];            
         [aButton setTitle:buttonTitle forState:UIControlStateNormal];
         [aButton setTitleColor:[UIColor colorWithHexString:@"#FCCFCF"] forState:UIControlStateNormal];
         [aButton setTitleColor:[UIColor whiteColor] forState:UIControlStateHighlighted];
         aButton.titleLabel.font = [UIFont boldSystemFontOfSize:13.0];
+        aButton.titleLabel.tag = 1002;
         [aButton addTarget:self action:@selector(buttonPressed:) forControlEvents:UIControlEventTouchUpInside];
         
         aButton.titleEdgeInsets = UIEdgeInsetsMake(0, 0, 1.0, 0); // needed to center text vertically within button
@@ -400,8 +441,8 @@ NSString *titleForCategoryId(NewsCategoryId category_id) {
         [contentView addSubview:aButton];
         i++;
     }
-    
-    [buttonTitles release];
+
+    //[buttonTitles release];
     navButtons = buttons;
 	
     // now that the buttons have all been added, update the content frame
@@ -680,6 +721,7 @@ NSString *titleForCategoryId(NewsCategoryId category_id) {
 // It also forces odd behavior of the paging controls when a memory warning occurs while looking at a story
 
 - (void)switchToCategory:(NewsCategoryId)category {
+    numTries = 0;
     if (category != self.activeCategoryId) {
 		if (self.xmlParser) {
 			[self.xmlParser abort]; // cancel previous category's request if it's still going
@@ -732,7 +774,7 @@ NSString *titleForCategoryId(NewsCategoryId category_id) {
 		[postDateSortDescriptor release];
 		[featuredSortDescriptor release];
 		
-		if (self.activeCategoryId == NewsCategoryIdTopNews) {
+		if (self.activeCategoryId == 0) {//NewsCategoryIdTopNews) {
 			predicate = [NSPredicate predicateWithFormat:@"topStory == YES"];
 		} else {
 			predicate = [NSPredicate predicateWithFormat:@"ANY categories.category_id == %d", self.activeCategoryId];
@@ -741,8 +783,11 @@ NSString *titleForCategoryId(NewsCategoryId category_id) {
 		// if maxLength == 0, nothing's been loaded from the server this session -- show up to 10 results from core data
 		// else show up to maxLength
 		NSArray *results = [CoreDataManager objectsForEntity:NewsStoryEntityName matchingPredicate:predicate sortDescriptors:sortDescriptors];
-		NSManagedObject *aCategory = [[self.categories filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"category_id == %d", self.activeCategoryId]] lastObject];
-		NSDate *lastUpdatedDate = [aCategory valueForKey:@"lastUpdated"];
+		NewsCategory *aCategory = [[self.categories filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"category_id == %d", self.activeCategoryId]] lastObject];
+
+        //NSLog(@"results: %@", [results description]);
+		NSLog(@"activecategoryid: %d", self.activeCategoryId);
+        NSDate *lastUpdatedDate = [aCategory valueForKey:@"lastUpdated"];
 
 		[self setLastUpdated:lastUpdatedDate];
 		
@@ -763,6 +808,7 @@ NSString *titleForCategoryId(NewsCategoryId category_id) {
 }
 
 - (void)loadFromServer:(BOOL)loadMore {
+    
     // make an asynchronous call for more stories
     
     // start new request
@@ -771,9 +817,13 @@ NSString *titleForCategoryId(NewsCategoryId category_id) {
     if (self.xmlParser) {
 		[self.xmlParser abort];
 	}
-	self.xmlParser = [[[StoryXMLParser alloc] init] autorelease];
-	xmlParser.delegate = self;
-    [xmlParser loadStoriesForCategory:self.activeCategoryId afterStoryId:lastStoryId count:10]; // count doesn't do anything at the moment (no server support)
+    
+    if (numTries < 3) {
+        self.xmlParser = [[[StoryXMLParser alloc] init] autorelease];
+        xmlParser.delegate = self;
+        [xmlParser loadStoriesForCategory:self.activeCategoryId afterStoryId:lastStoryId count:10]; // count doesn't do anything at the moment (no server support)
+        numTries++;
+    }
 }
 
 - (void)loadSearchResultsFromCache {
@@ -888,8 +938,13 @@ NSString *titleForCategoryId(NewsCategoryId category_id) {
 			NSInteger length = [[aCategory valueForKey:@"expectedCount"] integerValue];
 			if (length == 0) { // fresh load of category, set its updated date
 				[aCategory setValue:[NSDate date] forKey:@"lastUpdated"];
-			}
+			} else {
+                numTries = 0;
+            }
 			length += [self.xmlParser.newStories count];
+            
+            //NSLog(@"%@", [self.xmlParser.newStories description]);
+            NSLog(@"setting expectedCount = %d", length);            
 			[aCategory setValue:[NSNumber numberWithInteger:length] forKey:@"expectedCount"];
 			if (!parser.loadingMore && [self.stories count] > 0) {
 				[storyTable scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:NO];
@@ -955,7 +1010,7 @@ NSString *titleForCategoryId(NewsCategoryId category_id) {
 			// don't show "load x more" row if
 			if (!showingBookmarks && // showing bookmarks
 				!(searchResults && n >= searchTotalAvailableResults) && // showing all search results
-				!(!searchResults && n >= 200)) { // showing all of a category
+				!(!searchResults && n >= MAX_ARTICLES)) { // showing all of a category
 				n += 1; // + 1 for the "Load more articles..." row
 			}
             break;
@@ -1198,5 +1253,28 @@ NSString *titleForCategoryId(NewsCategoryId category_id) {
 	}
 	return nextStory;
 }
+
+#pragma mark JSONAPIDelegate
+
+- (void)request:(JSONAPIRequest *)request jsonLoaded:(id)result {
+    if (result && [result isKindOfClass:[NSArray class]]) {
+        NSMutableArray *newCategories = [NSMutableArray arrayWithCapacity:[result count]];
+        for (NewsCategoryId i = 0; i < [result count]; i++) {
+            NSString *categoryTitle = [result objectAtIndex:i];
+            NewsCategory *aCategory = [CoreDataManager insertNewObjectForEntityForName:NewsCategoryEntityName];
+            aCategory.title = categoryTitle;
+            aCategory.category_id = [NSNumber numberWithInt:i];
+            aCategory.isMainCategory = [NSNumber numberWithBool:YES];
+            [newCategories addObject:aCategory];
+        }
+        self.categories = newCategories;
+        //NSLog(@"we now have categories %@", [self.categories description]);
+        [CoreDataManager saveData];
+        
+        [self setupNavScroller];
+    }
+}
+
+
 
 @end

@@ -1,14 +1,15 @@
 #import <UIKit/UIKit.h>
+#import <MapKit/MapKit.h>
 #import "ShuttleDataManager.h"
 #import "ShuttleSubscriptionManager.h"
-#import "MITMapView.h"
+//#import "MITMapView.h"
 #import "MITModuleURL.h"
 
 @class ShuttleStop;
 @class ShuttleStopMapAnnotation;
 @class ShuttleRoute;
 
-@interface ShuttleStopViewController : UITableViewController <ShuttleDataManagerDelegate, ShuttleSubscriptionDelegate, MITMapViewDelegate> 
+@interface ShuttleStopViewController : UITableViewController <ShuttleDataManagerDelegate, ShuttleSubscriptionDelegate, MKMapViewDelegate> 
 {
 	// the shuttle stop at which we are looking
 	ShuttleStop* _shuttleStop;
@@ -38,7 +39,7 @@
 	NSMutableArray* _loadingSubscriptionRequests;
 	
 	// map thumbnail
-	MITMapView* _mapThumbnail;
+	MKMapView* _mapThumbnail;
 	
 	// button over the map thumbnail
 	UIButton* _mapButton;

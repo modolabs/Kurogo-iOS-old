@@ -62,7 +62,7 @@
 
 + (NSNumber *)idForCategory:(NSString *)categoryName
 {
-	NSPredicate *pred = [NSPredicate predicateWithFormat:@"title like %@", categoryName];
+	NSPredicate *pred = [NSPredicate predicateWithFormat:@"title contains %@", categoryName];
 	EventCategory *category = [[CoreDataManager objectsForEntity:CalendarCategoryEntityName
 											   matchingPredicate:pred] lastObject];
 	return category.catID;

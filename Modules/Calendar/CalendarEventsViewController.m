@@ -6,6 +6,7 @@
 #import "CalendarEventMapAnnotation.h"
 #import "MITSearchEffects.h"
 #import <QuartzCore/QuartzCore.h>
+#import "TileServerManager.h"
 
 #define SCROLL_TAB_HORIZONTAL_PADDING 5.0
 #define SCROLL_TAB_HORIZONTAL_MARGIN  5.0
@@ -89,6 +90,17 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+	
+	apiRequest = [JSONAPIRequest requestWithJSONAPIDelegate:self];
+	
+	// sending in the request for Categories List from the server
+	if (categoriesRequestDispatched == NO)
+		categoriesRequestDispatched = [apiRequest requestObjectFromModule:@"calendar"
+																   command:@"categories"
+																parameters:nil];
+	
+	//moved the following commented out code to the request:jsonLoaded function
+	/*
 	self.view.backgroundColor = [UIColor clearColor];
 	
 	if (showScroller) {
@@ -103,6 +115,7 @@
 	}
 	
 	[self reloadView:activeEventList];
+	 */
 }
 
 - (void)viewDidUnload {
@@ -131,12 +144,14 @@
 	requestDispatched = NO;
 	loadingIndicator = nil;
 	
-	CalendarEventListType buttonTypes[NumberOfCalendarEventListTypes] = {
+	// TODO: clean up the code to remvoe the types: Exhibits, Academic and Holiday
+	//CalendarEventListType buttonTypes[NumberOfCalendarEventListTypes] = {
+	CalendarEventListType buttonTypes[2] = {
 		CalendarEventListTypeEvents,
-		CalendarEventListTypeExhibits,
+		//CalendarEventListTypeExhibits,
 		CalendarEventListTypeCategory,
-		CalendarEventListTypeAcademic,
-		CalendarEventListTypeHoliday
+		//CalendarEventListTypeAcademic,
+		//CalendarEventListTypeHoliday
 	};
 	
 	CGRect appFrame = [[UIScreen mainScreen] applicationFrame];
@@ -313,6 +328,7 @@
 	} else if (self.mapView == nil) {
 		self.mapView = [[CalendarMapView alloc] initWithFrame:contentFrame];
 		self.mapView.delegate = self;
+        [TileServerManager registerMapView:self.mapView];
 	}
 
 	if (dateRangeDidChange && activeEventList != CalendarEventListTypeCategory) {
@@ -822,8 +838,9 @@
 	if (!isSearch && [self shouldShowDatePicker:activeEventList]) {
 		yOffset += datePicker.frame.size.height;
 	}
-	MIT_MobileAppDelegate *appDelegate = (MIT_MobileAppDelegate *)[[UIApplication sharedApplication] delegate];
-	CGFloat heightAdjustment = appDelegate.tabBarController.tabBar.frame.size.height;
+	//MIT_MobileAppDelegate *appDelegate = (MIT_MobileAppDelegate *)[[UIApplication sharedApplication] delegate];
+	//CGFloat heightAdjustment = appDelegate.tabBarController.tabBar.frame.size.height;
+    CGFloat heightAdjustment = 0;
 	CGPoint center = CGPointMake(appFrame.size.width / 2, (appFrame.size.height + yOffset) / 2 - heightAdjustment);
 	loadingIndicator.center = center;
 	
@@ -839,7 +856,7 @@
 
 #pragma mark Map View Delegate
  
-- (void)mapView:(MITMapView *)mapView annotationViewcalloutAccessoryTapped:(MITMapAnnotationCalloutView *)view
+- (void)mapView:(MKMapView *)mapView annotationView:(MKAnnotationView *)view calloutAccessoryControlTapped:(UIControl *)control
 {
 	CalendarEventMapAnnotation *annotation = view.annotation;
 	MITCalendarEvent *event = nil;
@@ -859,9 +876,9 @@
 }
 
 
-- (MITMapAnnotationView *)mapView:(MITMapView *)mapView viewForAnnotation:(id <MKAnnotation>)annotation
+- (MKAnnotationView *)mapView:(MKMapView *)mapView viewForAnnotation:(id <MKAnnotation>)annotation
 {
-	MITMapAnnotationView *annotationView = [/*theMapView*/mapView viewForAnnotation:annotation];
+	MKAnnotationView *annotationView = [/*theMapView*/mapView viewForAnnotation:annotation];
 	return annotationView;
 }
 
@@ -963,6 +980,38 @@
 - (void)request:(JSONAPIRequest *)request jsonLoaded:(id)result {
 	
 	[self removeLoadingIndicator];
+
+	// moved the following from viewDidLoad to ensure that the categories request completed before a load view
+	 if (categoriesRequestDispatched == YES)
+	 {
+		 NSMutableArray *arrayForTable = [NSMutableArray arrayWithCapacity:[result count]];
+			 
+		 
+			 for (NSDictionary *catDict in result) {
+				 EventCategory *category = [CalendarDataManager categoryWithDict:catDict];
+				 [arrayForTable addObject:category];
+			 }
+			 ((EventCategoriesTableView *)self.tableView).categories = [NSArray arrayWithArray:arrayForTable];
+		 
+		 self.view.backgroundColor = [UIColor clearColor];
+		 
+		 if (showScroller) {
+			 [self.view addSubview:navScrollView];
+			 [self.view addSubview:rightScrollButton];
+			 [self.view addSubview:leftScrollButton];
+			 [self.view addSubview:theSearchBar];
+		 }
+	 
+		 if ([self shouldShowDatePicker:activeEventList]) {
+			 [self.view addSubview:datePicker];
+		 }
+	 
+		 [self reloadView:activeEventList];
+	 
+		 categoriesRequestDispatched = NO;
+	 }	
+	
+			
 	
 	requestDispatched = NO;
 

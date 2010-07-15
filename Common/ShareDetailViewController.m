@@ -36,8 +36,9 @@
 												   cancelButtonTitle:@"Cancel"
 											  destructiveButtonTitle:nil
 												   otherButtonTitles:@"Email", @"Facebook", @"Twitter", nil];
-    MIT_MobileAppDelegate *appDelegate = (MIT_MobileAppDelegate *)[UIApplication sharedApplication].delegate;
-    [shareSheet showFromTabBar:appDelegate.tabBarController.tabBar];
+    //MIT_MobileAppDelegate *appDelegate = (MIT_MobileAppDelegate *)[UIApplication sharedApplication].delegate;
+    //[shareSheet showFromTabBar:appDelegate.tabBarController.tabBar];
+    [shareSheet showInView:self.view];
     [shareSheet release];
 }
 
