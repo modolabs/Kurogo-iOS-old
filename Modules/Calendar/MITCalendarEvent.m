@@ -97,9 +97,8 @@
 	BOOL contactInfoAvailable = NO;
 	NSString *locationDetail;
 	BOOL locationDetailAvailable = NO;
-	
-	NSMutableString *description = [[NSMutableString alloc] init];
-	
+
+	NSMutableString *description = [NSMutableString string];
 	// formatting the string to be html friendly
 	if ([dict objectForKey:@"description"])
 		description = [NSMutableString stringWithFormat:@"%@<br /><br />",[dict objectForKey:@"description"]];

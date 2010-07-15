@@ -81,10 +81,10 @@
     NSInteger locationTextLength;
     if (showTimeOnly) {
         cell.detailTextLabel.text = [event dateStringWithDateStyle:NSDateFormatterNoStyle timeStyle:NSDateFormatterShortStyle separator:@" "];
-        locationTextLength = 20;
+        locationTextLength = 25;
     } else {
         cell.detailTextLabel.text = [event dateStringWithDateStyle:NSDateFormatterShortStyle timeStyle:NSDateFormatterShortStyle separator:@" "];
-        locationTextLength = 20; //was 10
+        locationTextLength = 25; //was 10
     }
         
     if (event.shortloc) {

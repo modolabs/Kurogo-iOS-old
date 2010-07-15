@@ -251,8 +251,8 @@
 		[contentView release];
 		
 		// Prep left and right scrollers
-		leftScrollButton = [[self setupScrollButtonLeftButton:YES] retain];
-		rightScrollButton = [[self setupScrollButtonLeftButton:NO] retain];
+		//leftScrollButton = [[self setupScrollButtonLeftButton:YES] retain];
+		//rightScrollButton = [[self setupScrollButtonLeftButton:NO] retain];
 	}
 	
 }
@@ -1023,32 +1023,39 @@
     
     if (result && [request.userData isEqualToString:CalendarEventAPISearch] && [result isKindOfClass:[NSDictionary class]]) {
 		
+		BOOL resultEventsExist = NO;
         NSArray *resultEvents = [result objectForKey:@"events"];
-        NSString *resultSpan = [result objectForKey:@"span"];
-        
-		NSMutableArray *arrayForTable = [NSMutableArray arrayWithCapacity:[resultEvents count]];
+		NSString *resultSpan;
+		NSMutableArray *arrayForTable;
 		
-        for (NSDictionary *eventDict in resultEvents) {
-            MITCalendarEvent *event = [CalendarDataManager eventWithDict:eventDict];
-            [arrayForTable addObject:event];
+		if (![resultEvents isKindOfClass:[NSNull class]]) {
+			
+			resultEventsExist = YES;
+			resultSpan = [result objectForKey:@"span"];
+			arrayForTable = [NSMutableArray arrayWithCapacity:[resultEvents count]];
+		
+			for (NSDictionary *eventDict in resultEvents) {
+				MITCalendarEvent *event = [CalendarDataManager eventWithDict:eventDict];
+				[arrayForTable addObject:event];
+			}
         }
-        
-        if ([resultEvents count] > 0) {
+		
+		if ((resultEventsExist == YES) && ([resultEvents count] > 0)) {
             
-            NSArray *eventsArray = [NSArray arrayWithArray:arrayForTable];
-            searchResultsMapView.events = eventsArray;
-            searchResultsTableView.events = eventsArray;
-            searchResultsTableView.separatorColor = TABLE_SEPARATOR_COLOR;		
-            searchResultsTableView.searchSpan = resultSpan;
-            searchResultsTableView.isSearchResults = YES;
-            [self hideSearchOverlay];
-            [searchResultsTableView reloadData];
+			NSArray *eventsArray = [NSArray arrayWithArray:arrayForTable];
+			searchResultsMapView.events = eventsArray;
+			searchResultsTableView.events = eventsArray;
+			searchResultsTableView.separatorColor = TABLE_SEPARATOR_COLOR;		
+			searchResultsTableView.searchSpan = resultSpan;
+			searchResultsTableView.isSearchResults = YES;
+			[self hideSearchOverlay];
+			[searchResultsTableView reloadData];
             
-            if (showList) {
-                [self showSearchResultsTableView];
-            } else {
-                [self showSearchResultsMapView];
-            }
+			if (showList) {
+				[self showSearchResultsTableView];
+			} else {
+				[self showSearchResultsMapView];
+			}
             
         } else {
             UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil message:@"Nothing found" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];

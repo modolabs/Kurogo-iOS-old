@@ -15,7 +15,7 @@
 	<key>UIPrerenderedIcon</key>
 	<true/>
 	<key>CFBundleIdentifier</key>
-	<string>edu.mit.mitmobile</string>
+	<string>com.modolabs</string>
 	<key>CFBundleURLTypes</key>
 	<array>
 		<dict>
