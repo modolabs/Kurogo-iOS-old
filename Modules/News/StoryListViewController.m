@@ -28,6 +28,8 @@
 #define SEARCH_BUTTON_TAG 7947
 #define BOOKMARK_BUTTON_TAG 7948
 
+#define MAX_ARTICLES 50
+
 @interface StoryListViewController (Private)
 
 - (void)setupNavScroller;
@@ -1008,7 +1010,7 @@ NSString *titleForCategoryId(NewsCategoryId category_id) {
 			// don't show "load x more" row if
 			if (!showingBookmarks && // showing bookmarks
 				!(searchResults && n >= searchTotalAvailableResults) && // showing all search results
-				!(!searchResults && n >= 200)) { // showing all of a category
+				!(!searchResults && n >= MAX_ARTICLES)) { // showing all of a category
 				n += 1; // + 1 for the "Load more articles..." row
 			}
             break;
