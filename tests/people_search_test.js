@@ -53,18 +53,13 @@ function assertNotNull(thingie, message) {
 // Navigation functions.
 function navigateToPeopleView()
 {
-	tabbar = mainWindow.tabBar();
-	buttons = tabbar.buttons();	
-	moreButton = buttons.More;
-	moreButton.tap();
-	tableView = mainWindow.tableViews()[0];
-	peopleDirectoryCell = tableView.cells()["People Directory"];
-	peopleDirectoryCell.tap();
+	peopleDirectoryButton = mainWindow.buttons()["People Directory"];
+	peopleDirectoryButton.tap();
 }
 
 function navigateBack()
 {
-	mainWindow.navigationBar().leftButton().tap();
+	mainWindow.navigationBar().elements()[0].buttons()["People Directory"].tap();
 }
 
 // Test helpers.
@@ -80,7 +75,9 @@ function verifySearchTargetInfo(fieldName, fieldValue)
 	}
 	else
 	{
-		UIALogger.logError("Couldn't find the cell for " + fieldName + " and " + fieldValue);		
+		errorText = "Couldn't find the cell for " + fieldName + " and " + fieldValue;
+		UIALogger.logError(errorText);
+		//target.captureScreenWithName(errorText);
 	}
 	
 	return (cell.isValid());
@@ -125,7 +122,7 @@ function runSearch(searchTerm)
 
 	// Tap the spot containing the result cell.
 	target.tap({ x:120, y:120 }); 
-	resultCell.waitForInvalid(); 
+	resultTableView.waitForInvalid(); 
 	
 	target.popTimeout();
 }
