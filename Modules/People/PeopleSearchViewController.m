@@ -5,6 +5,7 @@
 #import "PartialHighlightTableViewCell.h"
 #import "MIT_MobileAppDelegate.h"
 #import "ConnectionDetector.h"
+#import "ModoNavigationController.h"
 // common UI elements
 #import "MITLoadingActivityView.h"
 #import "SecondaryGroupedTableViewCell.h"
@@ -217,6 +218,9 @@ NSInteger strLenSort(NSString *str1, NSString *str2, void *context)
 	}
 
 	[self.searchController.searchResultsTableView removeFromSuperview];
+	// Also get rid of nav bar button item for search results view.
+	MIT_MobileAppDelegate *appDelegate = (MIT_MobileAppDelegate *)[UIApplication sharedApplication].delegate;	
+	[appDelegate.theNavController.modoNavBar popNavigationItemAnimated:NO];
 }
 
 - (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText {	
