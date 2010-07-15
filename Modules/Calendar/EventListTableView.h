@@ -8,7 +8,7 @@
 	BOOL isSearchResults;
 	CalendarEventsViewController *parentViewController;
 	NSIndexPath *previousSelectedIndexPath;
-    NSString *searchSpan; // get this from server, e.g. "7 days"
+    NSString *searchSpan; // make it 7 days by default
 	
 }
 

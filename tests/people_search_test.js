@@ -94,12 +94,9 @@ function verifySearchTargetInfo(fieldName, fieldValue)
 
 // Tests.
 
-// After this runs, you should end up at the people details view.
-function runSearch(searchTerm, searchResultToPursue)
-{
-	// TODO: Get this to actually find the cell with searchResultToPursue instead of just going after the first 
-	// result.
-	
+// After this runs, you should end up at the people details view for the first search result.
+function runSearch(searchTerm)
+{	
 	// Type Mercure into the search field and run the search.
 	tableView = mainWindow.tableViews()[0];
 	searchBar = tableView.searchBars()[0];
@@ -116,14 +113,18 @@ function runSearch(searchTerm, searchResultToPursue)
 	target.pushTimeout(5);
 	
 	searchButton.waitForInvalid(); 
-	/*
+	msg("Number of table views: " + application.mainWindow().tableViews().length);
 	resultTableView = application.mainWindow().tableViews()[0];
-	resultCells = resultTableView.cells();
-	resultCell = resultCells[searchResultToPursue];
-	assertNotNull(resultCell);
-	resultCell.tap(); // Why doesn't this work? Most likely, another view is in front of this cell.
-	*/
-	target.tap({ x:120, y:120 }); // Tap the spot containing the result cell.
+	assertNotNull(resultTableView);
+	
+	//resultCells = resultTableView.cells();
+	//resultCell = resultCells[searchResultToPursue];
+	//resultCell.tap(); // Why doesn't this work? Most likely, another view is in front of this cell.
+	// TODO: Get this to tap the cell containing a desired result directly instead of hitting the location 
+	// containing the first result's cell.
+
+	// Tap the spot containing the result cell.
+	target.tap({ x:120, y:120 }); 
 	resultCell.waitForInvalid(); 
 	
 	target.popTimeout();
@@ -141,33 +142,42 @@ function verifySearchResultInfoPairs(expectedResultsDict)
 }
 
 function testSuite1()
-{
-	
+{	
 	var expectedSearchResultValues = {
 		"email": "amy@hillel.harvard.edu",
-		"phone": "+1-617-495-4695-x241"
+		"phone": "+1-617-495-4695-x241",
+		"fax": "+1-617-864-1637"
 	};
 	
-	runSearch("Mercure", "Amy Mercure");
+	// When searching for just the last name, this person should be found, and that person's details 
+	// should match the ones in expectedSearchResultValues.
+	runSearch("Mercure");
 	logTestResult(verifySearchResultInfoPairs(expectedSearchResultValues), "Test Last Name Search");
 	navigateBack();
 
-	runSearch("Amy Mercure", "Amy Mercure");
+	// When searching for the full name, this person should be found, and that person's details 
+	// should match the ones in expectedSearchResultValues.
+	runSearch("Amy Mercure");
 	logTestResult(verifySearchResultInfoPairs(expectedSearchResultValues), "Test Full Name Search");
 	navigateBack();
 
 	var expectedSearchResultValuesForPhoneSearch = {
 		"email": "filipe_campante@harvard.edu",
-		"phone": "+1-617-384-7958"
+		"phone": "+1-617-384-7958",
+		"dept": "KSG^Faculty Members",
+		"title": "Assistant Professor in Public Policy at the John F. Kennedy School of Government"
 	};
 
-	runSearch("4795", "Filipe R. Campante");
+	// When searching for just the last name, this person should be found, and that person's details 
+	// should match the ones in expectedSearchResultValues.
+	runSearch("4795");
 	logTestResult(verifySearchResultInfoPairs(expectedSearchResultValuesForPhoneSearch), "Test Partial Phone Number Search");	
 }
 
 
 // "Main" block.
 
+// Provide a default grace period of 0.25 seconds for each action to complete.
 target.setTimeout(0.25);
 navigateToPeopleView();
 testSuite1();
