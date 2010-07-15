@@ -45,7 +45,7 @@ enum CalendarDetailRowTypes {
 	// set up table rows
 	[self reloadEvent];
     if (isRegularEvent) {
-        [self requestEventDetails];
+       // [self requestEventDetails];
     }
 	
 	descriptionString = nil;
@@ -89,19 +89,34 @@ enum CalendarDetailRowTypes {
 		self.event = [self.events objectAtIndex:currentEventIndex];
 		[self reloadEvent];
         if (isRegularEvent) {
-            [self requestEventDetails];
+            //[self requestEventDetails];
         }
     }
 }
 
 - (void)requestEventDetails
 {
-	JSONAPIRequest *apiRequest = [JSONAPIRequest requestWithJSONAPIDelegate:self];
-	NSString *eventID = [NSString stringWithFormat:@"%d", [self.event.eventID intValue]];
-	
+	// No longer required as the details come with the initial header requests
+	//JSONAPIRequest *apiRequest = [JSONAPIRequest requestWithJSONAPIDelegate:self];
+	//NSString *eventID = [NSString stringWithFormat:@"%d", [self.event.eventID intValue]];
+	/*
 	[apiRequest requestObjectFromModule:@"calendar" 
 								command:@"detail" 
 							 parameters:[NSDictionary dictionaryWithObjectsAndKeys:eventID, @"id", nil]];
+	 */
+}
+
+// helper function that maintains consistency of descriptionString and descriptionHeight
+-(void)setDescriptionStringAndHeight:(NSString *)description
+{
+	descriptionString = [[self htmlStringFromString:description] retain];
+	
+	UIFont *cellFont = [UIFont fontWithName:STANDARD_FONT size:CELL_STANDARD_FONT_SIZE];
+	CGSize textSize = [CalendarTag sizeWithFont:cellFont];
+
+	descriptionHeight = (textSize.height + 4.0) * ((int)([descriptionString length])/50 + 2);
+	
+	return;
 }
 
 - (void)reloadEvent
@@ -133,7 +148,10 @@ enum CalendarDetailRowTypes {
 	if (self.event.summary) {
 		rowTypes[numRows] = CalendarDetailRowTypeDescription;
         [descriptionString release];
-        descriptionString = [[self htmlStringFromString:self.event.summary] retain];
+
+		//sets the description string and height of the views
+		[self setDescriptionStringAndHeight:self.event.summary];
+		
 		numRows++;
 	}
 	if ([self.event.categories count] > 0 && isRegularEvent) {
@@ -213,13 +231,6 @@ enum CalendarDetailRowTypes {
 	[titleView release];
 }
 
-/*
- // Override to allow orientations other than the default portrait orientation.
- - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
- // Return YES for supported orientations
- return (interfaceOrientation == UIInterfaceOrientationPortrait);
- }
- */
 
 - (void)didReceiveMemoryWarning {
 	// Releases the view if it doesn't have a superview.
@@ -300,17 +311,20 @@ enum CalendarDetailRowTypes {
 			cell.accessoryView = [UIImageView accessoryViewWithMITType:MITAccessoryViewExternal];
 			break;
 		case CalendarDetailRowTypeDescription:
-        {
+        {		
+			//sets the description string and height of the views
+			[self setDescriptionStringAndHeight:self.event.summary];
+			
             UIWebView *webView = (UIWebView *)[cell viewWithTag:kDescriptionWebViewTag];
 			webView.delegate = self;
 			CGFloat webViewHeight;
 			if (descriptionHeight > 0) {
 				webViewHeight = descriptionHeight;
 			} else {
-				webViewHeight =200; //was 2000
+				webViewHeight =500; //was 2000
 			}
 			
-			descriptionString = [[self htmlStringFromString:self.event.summary] retain];
+			
             CGRect frame = CGRectMake(WEB_VIEW_PADDING, WEB_VIEW_PADDING, self.tableView.frame.size.width - 2 * WEB_VIEW_PADDING, webViewHeight);
             if (!webView) {
                 webView = [[UIWebView alloc] initWithFrame:frame];
@@ -322,16 +336,15 @@ enum CalendarDetailRowTypes {
                 webView.frame = frame;
                 [webView loadHTMLString:descriptionString baseURL:nil];
             }
-			
 			break;
         }
 		case CalendarDetailRowTypeCategories:
         {
 			NSMutableString *categoriesBody = [NSMutableString stringWithString:@"Categorized as:<ul>"];
 			for (EventCategory *category in event.categories) {
-				//NSString *catIDString = [NSString stringWithFormat:@"catID=%d", [category.catID intValue]];
-				//NSURL *categoryURL = [NSURL internalURLWithModuleTag:CalendarTag path:CalendarStateCategoryEventList query:catIDString];
-				NSURL *categoryURL = [NSURL internalURLWithModuleTag:CalendarTag path:CalendarStateCategoryEventList query:nil];
+				NSString *catIDString = [NSString stringWithFormat:@"catID=%d", [category.catID intValue]];
+				NSURL *categoryURL = [NSURL internalURLWithModuleTag:CalendarTag path:CalendarStateCategoryEventList query:catIDString];
+				//NSURL *categoryURL = [NSURL internalURLWithModuleTag:CalendarTag path:CalendarStateCategoryEventList query:nil];
 				[categoriesBody appendString:[NSString stringWithFormat:
 											  @"<li><a href=\"%@\">%@</a></li>", [categoryURL absoluteString], category.title]];
 			}
@@ -401,7 +414,7 @@ enum CalendarDetailRowTypes {
 			if(descriptionHeight > 0) {
 				return (CGFloat) descriptionHeight + CELL_VERTICAL_PADDING * 2;
 			} else {
-				return 400.0;
+				return 500; //was 400.0;
 			}
 			
 			break;
@@ -526,11 +539,11 @@ enum CalendarDetailRowTypes {
 
 - (void)webViewDidFinishLoad:(UIWebView *)webView {
 	// calculate webView height, if it change we need to reload table
-	NSInteger newDescriptionHeight =[[webView stringByEvaluatingJavaScriptFromString:@"document.getElementById(\"main-content\").offsetHeight;"] intValue];
-	if(newDescriptionHeight != descriptionHeight) {
-		descriptionHeight = newDescriptionHeight;
-		[self.tableView reloadData];
-	}	
+	//NSInteger newDescriptionHeight =[[webView stringByEvaluatingJavaScriptFromString:@"document.getElementById(\"main-content\").offsetHeight;"] intValue];
+	//if(newDescriptionHeight != descriptionHeight) {
+		//descriptionHeight = newDescriptionHeight;
+	//	[self.tableView reloadData];
+	//}	
 }
 
 - (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType {
