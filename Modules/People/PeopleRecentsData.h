@@ -1,5 +1,5 @@
 #import <Foundation/Foundation.h>
-#import "PersonDetails.h"
+#import "PersonDetails+Methods.h"
 
 
 @interface PeopleRecentsData : NSObject {

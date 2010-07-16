@@ -179,6 +179,10 @@
 		4B108E9711A6D21E00FBF35A /* twitter_signout.png in Resources */ = {isa = PBXBuildFile; fileRef = 4B108E9611A6D21E00FBF35A /* twitter_signout.png */; };
 		950A8BA511AC0CDC00686132 /* map_viewall_pressed.png in Resources */ = {isa = PBXBuildFile; fileRef = 950A8BA311AC0CDC00686132 /* map_viewall_pressed.png */; };
 		950A8BA611AC0CDC00686132 /* map_viewall.png in Resources */ = {isa = PBXBuildFile; fileRef = 950A8BA411AC0CDC00686132 /* map_viewall.png */; };
+		A69A28A811F0258800B1D365 /* PersonDetails+Methods.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = A69A28A611F0258800B1D365 /* PersonDetails+Methods.h */; settings = {JAVA_ARCHIVE_SUBDIR = Modules/People/Model; }; };
+		A69A28A911F0258800B1D365 /* PersonDetails+Methods.m in Sources */ = {isa = PBXBuildFile; fileRef = A69A28A711F0258800B1D365 /* PersonDetails+Methods.m */; };
+		A69A290111F02E5100B1D365 /* PersonDetails.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = A69A28FF11F02E5100B1D365 /* PersonDetails.h */; settings = {JAVA_ARCHIVE_SUBDIR = Modules/People/Model/PeopleDataModel.xcdatamodeld; }; };
+		A69A290211F02E5100B1D365 /* PersonDetails.m in Sources */ = {isa = PBXBuildFile; fileRef = A69A290011F02E5100B1D365 /* PersonDetails.m */; };
 		BD1E9309103B5D60004429AA /* NSObject+SBJSON.m in Sources */ = {isa = PBXBuildFile; fileRef = BD1E92F6103B5D60004429AA /* NSObject+SBJSON.m */; };
 		BD1E930A103B5D60004429AA /* NSString+SBJSON.m in Sources */ = {isa = PBXBuildFile; fileRef = BD1E92F8103B5D60004429AA /* NSString+SBJSON.m */; };
 		BD1E930B103B5D60004429AA /* SBJSON.m in Sources */ = {isa = PBXBuildFile; fileRef = BD1E92FA103B5D60004429AA /* SBJSON.m */; };
@@ -450,7 +454,6 @@
 		EB74ED2E11924E7C006673F9 /* ShareDetailViewController.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB74ED2C11924E7C006673F9 /* ShareDetailViewController.h */; settings = {JAVA_ARCHIVE_SUBDIR = Common; }; };
 		EB74ED2F11924E7C006673F9 /* ShareDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EB74ED2D11924E7C006673F9 /* ShareDetailViewController.m */; };
 		EB7F327F10CD6C5B00188BCD /* PeopleDataModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = EB7F326A10CD6C5B00188BCD /* PeopleDataModel.xcdatamodeld */; };
-		EB7F328110CD6C5B00188BCD /* PersonDetails.m in Sources */ = {isa = PBXBuildFile; fileRef = EB7F326F10CD6C5B00188BCD /* PersonDetails.m */; };
 		EB7F328210CD6C5B00188BCD /* PartialHighlightTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = EB7F327110CD6C5B00188BCD /* PartialHighlightTableViewCell.m */; };
 		EB7F328310CD6C5B00188BCD /* PeopleDetailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EB7F327310CD6C5B00188BCD /* PeopleDetailsViewController.m */; };
 		EB7F328410CD6C5B00188BCD /* PeopleModule.m in Sources */ = {isa = PBXBuildFile; fileRef = EB7F327510CD6C5B00188BCD /* PeopleModule.m */; };
@@ -722,6 +725,10 @@
 		8D1107310486CEB800E47090 /* MIT_Mobile-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "MIT_Mobile-Info.plist"; plistStructureDefinitionIdentifier = "com.apple.xcode.plist.structure-definition.iphone.info-plist"; sourceTree = "<group>"; };
 		950A8BA311AC0CDC00686132 /* map_viewall_pressed.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = map_viewall_pressed.png; path = Resources/map_viewall_pressed.png; sourceTree = "<group>"; };
 		950A8BA411AC0CDC00686132 /* map_viewall.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = map_viewall.png; path = Resources/map_viewall.png; sourceTree = "<group>"; };
+		A69A28A611F0258800B1D365 /* PersonDetails+Methods.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "PersonDetails+Methods.h"; sourceTree = "<group>"; };
+		A69A28A711F0258800B1D365 /* PersonDetails+Methods.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "PersonDetails+Methods.m"; sourceTree = "<group>"; };
+		A69A28FF11F02E5100B1D365 /* PersonDetails.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PersonDetails.h; sourceTree = "<group>"; };
+		A69A290011F02E5100B1D365 /* PersonDetails.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PersonDetails.m; sourceTree = "<group>"; };
 		BD1E92F4103B5D60004429AA /* JSON.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JSON.h; sourceTree = "<group>"; };
 		BD1E92F5103B5D60004429AA /* NSObject+SBJSON.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+SBJSON.h"; sourceTree = "<group>"; };
 		BD1E92F6103B5D60004429AA /* NSObject+SBJSON.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+SBJSON.m"; sourceTree = "<group>"; };
@@ -1069,8 +1076,6 @@
 		EB6FDACE119B73E70055DD2A /* shuttle-blank.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "shuttle-blank.png"; path = "Resources/shuttle-blank.png"; sourceTree = "<group>"; };
 		EB74ED2C11924E7C006673F9 /* ShareDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShareDetailViewController.h; sourceTree = "<group>"; };
 		EB74ED2D11924E7C006673F9 /* ShareDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShareDetailViewController.m; sourceTree = "<group>"; };
-		EB7F326E10CD6C5B00188BCD /* PersonDetails.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PersonDetails.h; sourceTree = "<group>"; };
-		EB7F326F10CD6C5B00188BCD /* PersonDetails.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PersonDetails.m; sourceTree = "<group>"; };
 		EB7F327010CD6C5B00188BCD /* PartialHighlightTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PartialHighlightTableViewCell.h; sourceTree = "<group>"; };
 		EB7F327110CD6C5B00188BCD /* PartialHighlightTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PartialHighlightTableViewCell.m; sourceTree = "<group>"; };
 		EB7F327210CD6C5B00188BCD /* PeopleDetailsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PeopleDetailsViewController.h; sourceTree = "<group>"; };
@@ -2033,8 +2038,8 @@
 			isa = PBXGroup;
 			children = (
 				EB7F326A10CD6C5B00188BCD /* PeopleDataModel.xcdatamodeld */,
-				EB7F326E10CD6C5B00188BCD /* PersonDetails.h */,
-				EB7F326F10CD6C5B00188BCD /* PersonDetails.m */,
+				A69A28A611F0258800B1D365 /* PersonDetails+Methods.h */,
+				A69A28A711F0258800B1D365 /* PersonDetails+Methods.m */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -2195,6 +2200,8 @@
 				EB6D111611EE143900B65CE3 /* TileServerManager.h in JavaArchive */,
 				EB6D133311EE4A9C00B65CE3 /* MKMapView+ArcGISAdditions.h in JavaArchive */,
 				EB6D141511EE979500B65CE3 /* NewsCategory.h in JavaArchive */,
+				A69A28A811F0258800B1D365 /* PersonDetails+Methods.h in JavaArchive */,
+				A69A290111F02E5100B1D365 /* PersonDetails.h in JavaArchive */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2392,7 +2399,6 @@
 				DEA3B48D10C9BB7300BDA774 /* AboutModule.m in Sources */,
 				DEA3B6F810CB126200BDA774 /* Constants.m in Sources */,
 				EB7F327F10CD6C5B00188BCD /* PeopleDataModel.xcdatamodeld in Sources */,
-				EB7F328110CD6C5B00188BCD /* PersonDetails.m in Sources */,
 				EB7F328210CD6C5B00188BCD /* PartialHighlightTableViewCell.m in Sources */,
 				EB7F328310CD6C5B00188BCD /* PeopleDetailsViewController.m in Sources */,
 				EB7F328410CD6C5B00188BCD /* PeopleModule.m in Sources */,
@@ -2676,6 +2682,8 @@
 				EB6D114211EE191000B65CE3 /* PJ_geos.c in Sources */,
 				EB6D133411EE4A9C00B65CE3 /* MKMapView+ArcGISAdditions.m in Sources */,
 				EB6D141611EE979500B65CE3 /* NewsCategory.m in Sources */,
+				A69A28A911F0258800B1D365 /* PersonDetails+Methods.m in Sources */,
+				A69A290211F02E5100B1D365 /* PersonDetails.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3083,6 +3091,8 @@
 			isa = XCVersionGroup;
 			children = (
 				EBAA9F6210FFAB8B003379A5 /* PeopleDataModel 5.xcdatamodel */,
+				A69A28FF11F02E5100B1D365 /* PersonDetails.h */,
+				A69A290011F02E5100B1D365 /* PersonDetails.m */,
 			);
 			currentVersion = EBAA9F6210FFAB8B003379A5 /* PeopleDataModel 5.xcdatamodel */;
 			path = PeopleDataModel.xcdatamodeld;

@@ -1,5 +1,5 @@
 #import "PeopleSearchViewController.h"
-#import "PersonDetails.h"
+#import "PersonDetails+Methods.h"
 #import "PeopleDetailsViewController.h"
 #import "PeopleRecentsData.h"
 #import "PartialHighlightTableViewCell.h"
@@ -339,11 +339,11 @@ NSInteger strLenSort(NSString *str1, NSString *str2, void *context)
 			cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 
 			PersonDetails *recent = [[[PeopleRecentsData sharedData] recents] objectAtIndex:indexPath.row];
-			cell.textLabel.text = [NSString stringWithFormat:@"%@ %@", [recent valueForKey:@"givenname"], [recent valueForKey:@"surname"]];
+			cell.textLabel.text = [NSString stringWithFormat:@"%@ %@", [recent valueForKey:@"givenname"], [recent valueForKey:@"sn"]];
 			
 			// show person's title, dept, or email as cell's subtitle text
 			cell.detailTextLabel.text = @" "; // put something there so other cells' contents won't get drawn here
-			NSArray *displayPriority = [NSArray arrayWithObjects:@"title", @"dept", nil];
+			NSArray *displayPriority = [NSArray arrayWithObjects:@"title", @"ou", nil];
 			NSString *displayText;
 			for (NSString *tag in displayPriority) {
 				if (displayText = [recent valueForKey:tag]) {
@@ -362,16 +362,15 @@ NSInteger strLenSort(NSString *str1, NSString *str2, void *context)
 		}
 			
 		NSDictionary *searchResult = [self.searchResults objectAtIndex:indexPath.row];
-		NSString *fullname = [[searchResult objectForKey:@"name"] objectAtIndex:0];
+		NSString *fullname = 
+        [[PersonDetails realValueFromPersonDetailsJSONDict:searchResult forKey:@"cn"] objectAtIndex:0];
 		
 		// figure out which field (if any) to display as subtitle
 		// display priority: title, dept
 		cell.detailTextLabel.text = @" "; // if this is empty textlabel will be bottom aligned
-		NSArray *detailAttribute = nil;
-		if ((detailAttribute = [searchResult objectForKey:@"title"]) != nil) {
-			cell.detailTextLabel.text = [detailAttribute objectAtIndex:0];
-		} else if ((detailAttribute = [searchResult objectForKey:@"title"]) != nil) {
-			cell.detailTextLabel.text = [detailAttribute objectAtIndex:0];
+		NSArray *detailAttributeArray = [PersonDetails realValueFromPersonDetailsJSONDict:searchResult forKey:@"title"];
+		if ([detailAttributeArray count] > 0) {
+			cell.detailTextLabel.text = [detailAttributeArray objectAtIndex:0];
 		}
 		
 		// in this section we try to highlight the parts of the results that match the search terms

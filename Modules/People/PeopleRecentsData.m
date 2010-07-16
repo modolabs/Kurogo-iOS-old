@@ -87,24 +87,25 @@ static PeopleRecentsData *instance = nil;
 	// common) or something derived from another field (ldap "dn"), the
 	// former has an 8 char limit but until proven otherwise let's assume
 	// we can truncate the latter to 8 chars without sacrificing uniqueness
-	NSString *uid = [searchResult objectForKey:@"id"];
-	if (uid.length > 8)
-		uid = [uid substringToIndex:8];
-	
+	NSString *uid = [PersonDetails joinedValueFromPersonDetailsJSONDict:searchResult forKey:@"uid"];
+	if (uid.length > 8) {
+		uid = [uid substringToIndex:8];	
+    }
 	[personDetails setValue:uid forKey:@"uid"];
+    
 	[personDetails setValue:[NSDate date] forKey:@"lastUpdate"];
 	
 	NSArray *fetchTags = [NSArray arrayWithObjects:
-						  @"givenname", @"surname", @"title", @"dept", @"email", @"phone", // @"homephone", 
-						  @"fax", @"office", //@"room", @"address", @"city", @"state", 
+						  @"givenname", @"sn", @"title", @"ou", @"mail", @"telephoneNumber", // @"homephone", 
+						  @"facsimileTelephoneNumber", @"postalAddress", //@"room", @"address", @"city", @"state", 
 						  nil];
 	
 	for (NSString *key in fetchTags) {
-		NSArray *values = [searchResult objectForKey:key];
-		if (values != nil) {
+        NSString *value = [PersonDetails joinedValueFromPersonDetailsJSONDict:searchResult forKey:key];
+		if (value) {
 			// if someone has multiple emails/phones join them into a string
 			// we need to figure out which fields return multiple values
-			[personDetails setValue:[values componentsJoinedByString:@","] forKey:key];
+			[personDetails setValue:value forKey:key];
 		}
 	}
 	
