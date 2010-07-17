@@ -12,6 +12,6 @@
 - (id)initWithNavigationBar:(UINavigationBar *)navigationBar;
 - (void)update;
 
-@property (nonatomic, assign) UINavigationBar *navigationBar;
+@property (nonatomic, retain) UINavigationBar *navigationBar;
 
 @end

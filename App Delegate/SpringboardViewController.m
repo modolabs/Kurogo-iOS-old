@@ -30,8 +30,8 @@
             yOrigin += anIcon.frame.size.height + GRID_PADDING;
         }
         
-        if (![anIcon isDescendantOfView:containingView]) {
-            [containingView addSubview:anIcon];
+        if (![anIcon isDescendantOfView:self.view]) {
+            [self.view addSubview:anIcon];
         }
 
         if (bottomRight.x < xOrigin + anIcon.frame.size.width) {
@@ -50,7 +50,7 @@
     CGRect frame = CGRectMake(0, /*navigationBar.frame.size.height*/0, self.view.frame.size.width, self.view.frame.size.height/* - navigationBar.frame.size.height*/);
     transparentOverlay = [[UIView alloc] initWithFrame:frame];
     transparentOverlay.backgroundColor = [UIColor clearColor];
-    [containingView addSubview:transparentOverlay];
+    [self.view addSubview:transparentOverlay];
     
     UIBarButtonItem *doneButton = [[[UIBarButtonItem alloc] initWithTitle:@"Done"
                                                                     style:UIBarButtonItemStyleDone
@@ -81,14 +81,11 @@
     [super loadView];
     
     self.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-    containingView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, self.view.bounds.size.height)];
-    //containingView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:MITImageNameBackground]];
-    [self.view addSubview:containingView];
     
-    UIBarButtonItem *editButton = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemEdit
-                                                                                 target:self
-                                                                                 action:@selector(customizeIcons:)] autorelease];
-    self.navigationItem.rightBarButtonItem = editButton;
+    //UIBarButtonItem *editButton = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemEdit
+    //                                                                             target:self
+    //                                                                             action:@selector(customizeIcons:)] autorelease];
+    //self.navigationItem.rightBarButtonItem = editButton;
     self.navigationItem.title = @"Home";
     
     NSArray *modules = ((MIT_MobileAppDelegate *)[[UIApplication sharedApplication] delegate]).modules;
@@ -111,7 +108,6 @@
 - (void)buttonPressed:(id)sender {
     SpringboardIcon *anIcon = (SpringboardIcon *)sender;
     MIT_MobileAppDelegate *appDelegate = (MIT_MobileAppDelegate *)[[UIApplication sharedApplication] delegate];
-    //[appDelegate switchContainerView];
     [appDelegate showModuleForTag:anIcon.moduleTag];
 }
 
@@ -148,6 +144,7 @@
     [super dealloc];
 }
 
+/*
 #pragma mark UIResponder
 
 - (BOOL)canBecomeFirstResponder {
@@ -159,7 +156,7 @@
         selectedIcon = nil;
         UITouch *aTouch = [touches anyObject];
         for (SpringboardIcon *anIcon in editedIcons) {
-            CGPoint point = [aTouch locationInView:containingView];
+            CGPoint point = [aTouch locationInView:self.view];
             CGFloat xOffset = point.x - anIcon.frame.origin.x;
             CGFloat yOffset = point.y - anIcon.frame.origin.y;
             if (xOffset > 0 && yOffset > 0
@@ -202,8 +199,8 @@
     if (selectedIcon) {
         UITouch *aTouch = [touches anyObject];
         
-        CGPoint before = [aTouch previousLocationInView:containingView];
-        CGPoint after = [aTouch locationInView:containingView];
+        CGPoint before = [aTouch previousLocationInView:self.view];
+        CGPoint after = [aTouch locationInView:self.view];
         
         CGFloat xTransition = after.x - before.x;
         CGFloat yTransition = after.y - before.y;
@@ -251,7 +248,7 @@
         }
     }
 }
-
+*/
 @end
 
 
