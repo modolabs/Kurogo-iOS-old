@@ -1,11 +1,3 @@
-//
-//  PersonDetails.h
-//  MIT Mobile
-//
-//  Created by Jim on 7/16/10.
-//  Copyright 2010 Phalange Software. All rights reserved.
-//
-
 #import <CoreData/CoreData.h>
 
 
