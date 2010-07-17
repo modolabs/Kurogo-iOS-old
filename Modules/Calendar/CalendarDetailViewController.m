@@ -114,7 +114,7 @@ enum CalendarDetailRowTypes {
 	UIFont *cellFont = [UIFont fontWithName:STANDARD_FONT size:CELL_STANDARD_FONT_SIZE];
 	CGSize textSize = [CalendarTag sizeWithFont:cellFont];
 
-	descriptionHeight = (textSize.height + 4.0) * ((int)([descriptionString length])/50 + 2);
+	//descriptionHeight = (textSize.height + 4.0) * ((int)([descriptionString length])/50 + 2);
 	
 	return;
 }
@@ -321,7 +321,7 @@ enum CalendarDetailRowTypes {
 			if (descriptionHeight > 0) {
 				webViewHeight = descriptionHeight;
 			} else {
-				webViewHeight =500; //was 2000
+				webViewHeight =50; //was 2000
 			}
 			
 			
@@ -331,6 +331,7 @@ enum CalendarDetailRowTypes {
                 [webView loadHTMLString:descriptionString baseURL:nil];
                 webView.tag = kDescriptionWebViewTag;
                 [cell.contentView addSubview:webView];
+				[self webViewDidStartLoad:webView];
                 [webView release];
             } else {
                 webView.frame = frame;
@@ -412,9 +413,9 @@ enum CalendarDetailRowTypes {
 		case CalendarDetailRowTypeDescription:
 			// this is the same font defined in the html template
 			if(descriptionHeight > 0) {
-				return (CGFloat) descriptionHeight + CELL_VERTICAL_PADDING * 2;
+				return (CGFloat) descriptionHeight;// + CELL_VERTICAL_PADDING * 2;
 			} else {
-				return 500; //was 400.0;
+				return 50; //was 400.0;
 			}
 			
 			break;
@@ -537,13 +538,29 @@ enum CalendarDetailRowTypes {
 #pragma mark -
 #pragma mark UIWebView delegation
 
+-(void)webViewDidStartLoad:(UIWebView *)webView {
+	CGSize size = [webView sizeThatFits:CGSizeZero];
+	
+	
+	NSInteger newDescriptionHeight = size.height; 	
+	if(newDescriptionHeight != descriptionHeight) {
+		descriptionHeight = newDescriptionHeight;
+		[self.tableView reloadData];
+	}	
+	return;
+}
+
 - (void)webViewDidFinishLoad:(UIWebView *)webView {
 	// calculate webView height, if it change we need to reload table
 	//NSInteger newDescriptionHeight =[[webView stringByEvaluatingJavaScriptFromString:@"document.getElementById(\"main-content\").offsetHeight;"] intValue];
-	//if(newDescriptionHeight != descriptionHeight) {
-		//descriptionHeight = newDescriptionHeight;
-	//	[self.tableView reloadData];
-	//}	
+	CGSize size = [webView sizeThatFits:CGSizeZero];
+
+	
+	NSInteger newDescriptionHeight = size.height; 	
+	if(newDescriptionHeight != descriptionHeight) {
+		descriptionHeight = newDescriptionHeight;
+		[self.tableView reloadData];
+	}	
 }
 
 - (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType {
