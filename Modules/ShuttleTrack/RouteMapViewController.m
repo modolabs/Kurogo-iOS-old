@@ -42,10 +42,10 @@
     [TileServerManager registerMapView:self.mapView];
 	//self.mapView.shouldNotDropPins = YES;
 	
-	_largeStopImage = [[UIImage imageNamed:@"map_pin_shuttle_stop_complete.png"] retain];
-	_largeUpcomingStopImage = [[UIImage imageNamed:@"pin_shuttle_stop_complete_next.png"] retain];
-	_smallStopImage = [[UIImage imageNamed:@"shuttle-stop-dot.png"] retain];
-	_smallUpcomingStopImage = [[UIImage imageNamed:@"shuttle-stop-dot-next.png"] retain];
+	_largeStopImage = [[UIImage imageNamed:@"shuttles/map_pin_shuttle_stop_complete.png"] retain];
+	_largeUpcomingStopImage = [[UIImage imageNamed:@"shuttles/pin_shuttle_stop_complete_next.png"] retain];
+	_smallStopImage = [[UIImage imageNamed:@"shuttles/shuttle-stop-dot.png"] retain];
+	_smallUpcomingStopImage = [[UIImage imageNamed:@"shuttles/shuttle-stop-dot-next.png"] retain];
 
 	//_scrim.frame = CGRectMake(_scrim.frame.origin.x, _scrim.frame.origin.y, _scrim.frame.size.width, 53.0);
 	
@@ -287,7 +287,7 @@
 -(IBAction) refreshTouched:(id)sender
 {
 	//_gpsButton.style = UIBarButtonItemStyleBordered;
-	[_gpsButton setBackgroundImage:[UIImage imageNamed:@"scrim-button-background"] forState:UIControlStateNormal];
+	[_gpsButton setBackgroundImage:[UIImage imageNamed:@"shuttles/scrim-button-background"] forState:UIControlStateNormal];
 	//_mapView.stayCenteredOnUserLocation = NO;
 	
 	[_mapView setRegion:[self regionForRoute]];
@@ -344,7 +344,7 @@
 	if ([annotation isKindOfClass:[ShuttleStopMapAnnotation class]]) 
 	{
 		annotationView = [[[MKAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:@"gufileg"] autorelease];
-		UIImage* pin = [UIImage imageNamed:@"shuttle-stop-dot.png"];
+		UIImage* pin = [UIImage imageNamed:@"shuttles/shuttle-stop-dot.png"];
 		UIImageView* imageView = [[[UIImageView alloc] initWithImage:pin] autorelease];
 		annotationView.frame = imageView.frame;
 		annotationView.canShowCallout = YES;
@@ -359,10 +359,10 @@
 		ShuttleLocation* shuttleLocation = (ShuttleLocation*) annotation;
 		
 		annotationView = [[[MKAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:@"asdf"] autorelease];
-		UIImage* pin = [UIImage imageNamed:@"shuttle-bus-location.png"];
+		UIImage* pin = [UIImage imageNamed:@"shuttles/shuttle-bus-location.png"];
 		UIImageView* imageView = [[[UIImageView alloc] initWithImage:pin] autorelease];
 		
-		UIImage* arrow = [UIImage imageNamed:@"shuttle-bus-location-arrow.png"];
+		UIImage* arrow = [UIImage imageNamed:@"shuttles/shuttle-bus-location-arrow.png"];
 		UIImageView* arrowImageView = [[[UIImageView alloc] initWithImage:arrow] autorelease];
 
 		CGAffineTransform cgCTM = CGAffineTransformMakeRotation(DEGREES_TO_RADIANS(shuttleLocation.heading));

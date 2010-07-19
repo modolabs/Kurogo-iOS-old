@@ -88,22 +88,6 @@ static NSInteger numTries = 0;
         self.categories = categoryObjects;
     }
     
-    /*
-    NSMutableArray *newCategories = [NSMutableArray array];
-    NSInteger i, count = sizeof(buttonCategories) / sizeof(NewsCategoryId);
-    for (i = 0; i < count; i++) {
-        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"category_id == %d", buttonCategories[i]];
-        NSManagedObject *aCategory = [[CoreDataManager objectsForEntity:NewsCategoryEntityName matchingPredicate:predicate] lastObject];
-        if (!aCategory) {
-            aCategory = [CoreDataManager insertNewObjectForEntityForName:NewsCategoryEntityName];
-        }
-        [aCategory setValue:[NSNumber numberWithInteger:buttonCategories[i]] forKey:@"category_id"];
-        [aCategory setValue:[NSNumber numberWithInteger:0] forKey:@"expectedCount"];
-        [newCategories addObject:aCategory];
-    }
-    self.categories = newCategories;
-	*/
-    
 	[self pruneStories];
     // reduce number of saved stories to 10 when app quits
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(pruneStories) name:@"UIApplicationWillTerminateNotification" object:nil];
@@ -123,6 +107,13 @@ static NSInteger numTries = 0;
 
 	// set up results table
     storyTable.frame = CGRectMake(0, navScrollView.frame.size.height, self.view.frame.size.width, self.view.frame.size.height - navScrollView.frame.size.height);
+
+    // add drop shadow below nav scroller view
+    UIImageView *dropShadow = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"global/bar-drop-shadow.png"]];
+    dropShadow.frame = CGRectMake(0, navScrollView.frame.size.height, dropShadow.frame.size.width, dropShadow.frame.size.height);
+    [self.view addSubview:dropShadow];
+    [dropShadow release];
+
     [self setupActivityIndicator];
 
     [self loadFromCache];
@@ -205,21 +196,10 @@ static NSInteger numTries = 0;
     id originalMergePolicy = [context mergePolicy];
     [context setMergePolicy:NSOverwriteMergePolicy];
 
-    /*
-    NewsCategoryId allCategories[] = {
-        NewsCategoryIdTopNews, NewsCategoryIdCampus,
-        NewsCategoryIdEngineering, NewsCategoryIdScience, 
-        NewsCategoryIdManagement, NewsCategoryIdArchitecture, 
-        NewsCategoryIdHumanities
-    };
-	*/
     NSMutableSet *allStoriesToSave = [NSMutableSet setWithCapacity:100];
-    //NSInteger i, count = sizeof(allCategories) / sizeof(NewsCategoryId);
-    //for (i = 0; i < count; i++) {
+
     for (NewsCategory *aCategory in self.categories) {
-        //NSPredicate *predicate = [NSPredicate predicateWithFormat:@"ANY categories.category_id == %d", allCategories[i]];
         NSSortDescriptor *postDateSortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"postDate" ascending:NO];
-        //NSArray *categoryStories = [CoreDataManager objectsForEntity:NewsStoryEntityName matchingPredicate:predicate sortDescriptors:[NSArray arrayWithObject:postDateSortDescriptor]];
         NSArray *categoryStories = [aCategory.stories sortedArrayUsingDescriptors:[NSArray arrayWithObject:postDateSortDescriptor]];
         
         // only the 10 most recent
@@ -302,13 +282,12 @@ static NSInteger numTries = 0;
 	UIView *contentView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 828, navScrollView.frame.size.height)];
 	contentView.tag = 1001;
     
-    //
+    // create background image for scrolling view
     UIImage *backgroundImage = [UIImage imageNamed:MITImageNameScrollTabBackgroundOpaque];
     UIImageView *imageView = [[UIImageView alloc] initWithImage:[backgroundImage stretchableImageWithLeftCapWidth:0 topCapHeight:0]];
     imageView.tag = 1005;
     [contentView addSubview:imageView];
     [imageView release];
-	//
     
 	CGFloat leftOffset = 0.0;
 	

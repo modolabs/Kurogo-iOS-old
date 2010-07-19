@@ -79,7 +79,7 @@
 	[self.view addSubview:_toolBar];
 	
 	// create toolbar button item for geolocation  
-	UIImage* image = [UIImage imageNamed:@"map_button_icon_locate.png"];
+	UIImage* image = [UIImage imageNamed:@"maps/map_button_icon_locate.png"];
 	_geoButton = [[UIBarButtonItem alloc] initWithImage:image
 												  style:UIBarButtonItemStyleBordered
 												 target:self
@@ -91,7 +91,7 @@
 	// add our own bookmark button item since we are not using the default
 	// bookmark button of the UISearchBar
 	_bookmarkButton = [[UIButton alloc] initWithFrame:CGRectMake(231, 8, 32, 28)];
-	[_bookmarkButton setImage:[UIImage imageNamed:@"searchfield_star.png"] forState:UIControlStateNormal];
+	[_bookmarkButton setImage:[UIImage imageNamed:@"global/searchfield_star.png"] forState:UIControlStateNormal];
 	[self.view addSubview:_bookmarkButton];
 	[_bookmarkButton addTarget:self action:@selector(bookmarkButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
 	
@@ -808,7 +808,7 @@
 	if ([annotation isKindOfClass:[ShuttleStopMapAnnotation class]]) 
 	{
 		annotationView = [[[MKAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:@"gdfgh"] autorelease];
-		UIImage* pin = [UIImage imageNamed:@"map_pin_shuttle_stop_complete.png"];
+		UIImage* pin = [UIImage imageNamed:@"shuttles/map_pin_shuttle_stop_complete.png"];
 		UIImageView* imageView = [[[UIImageView alloc] initWithImage:pin] autorelease];
 		annotationView.frame = imageView.frame;
 		annotationView.canShowCallout = YES;

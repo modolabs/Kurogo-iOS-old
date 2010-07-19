@@ -185,13 +185,13 @@ enum CalendarDetailRowTypes {
     if (!shareButton) {
         CGRect tableFrame = self.tableView.frame;
         shareButton = [[UIButton buttonWithType:UIButtonTypeCustom] retain];
-        UIImage *buttonImage = [UIImage imageNamed:@"share.png"];
+        UIImage *buttonImage = [UIImage imageNamed:@"global/share.png"];
         shareButton.frame = CGRectMake(tableFrame.size.width - buttonImage.size.width - BUTTON_PADDING,
                                        BUTTON_PADDING,
                                        buttonImage.size.width,
                                        buttonImage.size.height);
         [shareButton setImage:buttonImage forState:UIControlStateNormal];
-        [shareButton setImage:[UIImage imageNamed:@"share_pressed.png"] forState:(UIControlStateNormal | UIControlStateHighlighted)];
+        [shareButton setImage:[UIImage imageNamed:@"global/share_pressed.png"] forState:(UIControlStateNormal | UIControlStateHighlighted)];
         [shareButton addTarget:self action:@selector(share:) forControlEvents:UIControlEventTouchUpInside];
     }
 }
@@ -381,7 +381,7 @@ enum CalendarDetailRowTypes {
 
 - (NSString *)htmlStringFromString:(NSString *)source {
 	NSURL *baseURL = [NSURL fileURLWithPath:[[NSBundle mainBundle] resourcePath] isDirectory:YES];
-	NSURL *fileURL = [NSURL URLWithString:@"events_template.html" relativeToURL:baseURL];
+	NSURL *fileURL = [NSURL URLWithString:@"events/events_template.html" relativeToURL:baseURL];
 	NSError *error;
 	NSMutableString *target = [NSMutableString stringWithContentsOfURL:fileURL encoding:NSUTF8StringEncoding error:&error];
 	if (!target) {

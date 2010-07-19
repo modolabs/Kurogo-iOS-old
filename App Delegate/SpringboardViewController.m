@@ -105,9 +105,9 @@
     [super loadView];
     
     containingView = [[UIScrollView alloc] initWithFrame:self.view.bounds];
+    UIImage *image = [UIImage imageNamed:ImageNameHomeScreenBackground];
     containingView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:ImageNameHomeScreenBackground]];
     containingView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-    NSLog(@"%@", [containingView description]);
     [self.view addSubview:containingView];
     
     //UIBarButtonItem *editButton = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemEdit

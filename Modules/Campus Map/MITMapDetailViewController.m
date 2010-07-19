@@ -59,8 +59,8 @@
 	// check if this item is already bookmarked
 	MapBookmarkManager* bookmarkManager = [MapBookmarkManager defaultManager];
 	if ([bookmarkManager isBookmarked:self.annotation.uniqueID]) {
-		[_bookmarkButton setImage:[UIImage imageNamed:@"bookmark_on.png"] forState:UIControlStateNormal];
-		[_bookmarkButton setImage:[UIImage imageNamed:@"bookmark_on_pressed.png"] forState:UIControlStateHighlighted];
+		[_bookmarkButton setImage:[UIImage imageNamed:@"global/bookmark_on.png"] forState:UIControlStateNormal];
+		[_bookmarkButton setImage:[UIImage imageNamed:@"global/bookmark_on_pressed.png"] forState:UIControlStateHighlighted];
 	}
 	
 	/*
@@ -391,8 +391,8 @@
 		// remove the bookmark and set the images
 		[bookmarkManager removeBookmark:self.annotation.uniqueID];
 		
-		[_bookmarkButton setImage:[UIImage imageNamed:@"bookmark_off.png"] forState:UIControlStateNormal];
-		[_bookmarkButton setImage:[UIImage imageNamed:@"bookmark_off_pressed.png"] forState:UIControlStateHighlighted];
+		[_bookmarkButton setImage:[UIImage imageNamed:@"global/bookmark_off.png"] forState:UIControlStateNormal];
+		[_bookmarkButton setImage:[UIImage imageNamed:@"global/bookmark_off_pressed.png"] forState:UIControlStateHighlighted];
 	}
 	else 
 	{
@@ -402,8 +402,8 @@
 		}
 		[bookmarkManager addBookmark:self.annotation.uniqueID title:self.annotation.name subtitle:subTitle data:self.annotation.info];
 		
-		[_bookmarkButton setImage:[UIImage imageNamed:@"bookmark_on.png"] forState:UIControlStateNormal];
-		[_bookmarkButton setImage:[UIImage imageNamed:@"bookmark_on_pressed.png"] forState:UIControlStateHighlighted];
+		[_bookmarkButton setImage:[UIImage imageNamed:@"global/bookmark_on.png"] forState:UIControlStateNormal];
+		[_bookmarkButton setImage:[UIImage imageNamed:@"global/bookmark_on_pressed.png"] forState:UIControlStateHighlighted];
 	}
 	
 }

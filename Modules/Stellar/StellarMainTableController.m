@@ -177,7 +177,7 @@
 			
 		// check if the class has an unread notice
 		if([MITUnreadNotifications hasUnreadNotification:[[[MITNotification alloc] initWithModuleName:StellarTag noticeId:myStellarClass.masterSubjectId] autorelease]]) {
-			cell.imageView.image = [UIImage imageNamed:@"unread-message.png"];
+			cell.imageView.image = [UIImage imageNamed:@"global/unread-message.png"];
 		} else {
 			cell.imageView.image = nil;
 		}

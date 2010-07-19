@@ -98,9 +98,9 @@ NSInteger strLenSort(NSString *str1, NSString *str2, void *context)
 	[button setTitle:@"Clear Recents" forState:UIControlStateNormal];
 	
 	// based on code from stackoverflow.com/questions/1427818/iphone-sdk-creating-a-big-red-uibutton
-	[button setBackgroundImage:[[UIImage imageNamed:@"redbutton2.png"] stretchableImageWithLeftCapWidth:10.0 topCapHeight:0.0] 
+	[button setBackgroundImage:[[UIImage imageNamed:@"people/redbutton2.png"] stretchableImageWithLeftCapWidth:10.0 topCapHeight:0.0] 
 					  forState:UIControlStateNormal];
-	[button setBackgroundImage:[[UIImage imageNamed:@"redbutton2highlighted.png"] stretchableImageWithLeftCapWidth:10.0 topCapHeight:0.0] 
+	[button setBackgroundImage:[[UIImage imageNamed:@"people/redbutton2highlighted.png"] stretchableImageWithLeftCapWidth:10.0 topCapHeight:0.0] 
 					  forState:UIControlStateHighlighted];
 	
 	[button addTarget:self action:@selector(showActionSheet) forControlEvents:UIControlEventTouchUpInside];	
