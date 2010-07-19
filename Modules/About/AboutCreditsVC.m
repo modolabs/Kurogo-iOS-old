@@ -8,7 +8,7 @@
     self.navigationItem.title = @"Credits";
     
     NSURL *baseURL = [NSURL fileURLWithPath:[[NSBundle mainBundle] resourcePath] isDirectory:YES];
-    NSURL *fileURL = [NSURL URLWithString:@"credits.html" relativeToURL:baseURL];
+    NSURL *fileURL = [NSURL URLWithString:@"about/credits.html" relativeToURL:baseURL];
     
     NSError *error = nil;
     NSMutableString *htmlString = [NSMutableString stringWithContentsOfURL:fileURL encoding:NSUTF8StringEncoding error:&error];

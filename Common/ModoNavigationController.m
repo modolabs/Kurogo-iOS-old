@@ -1,4 +1,6 @@
 #import "ModoNavigationController.h"
+#import "MIT_MobileAppDelegate.h"
+#import "MITModule.h"
 
 #define NAV_BAR_HEIGHT 44.0f
 
@@ -15,44 +17,50 @@
 }
 
 - (void)updateNavBar {
+
     [self.modoNavBar update];
-    
-    // popping nav controllers doesn't pop navigationItems in the built in nav bar
-    // so this is a workaround
-    NSLog(@"nav controllers are now set to: %@", [self.viewControllers description]);
-    while ([self.modoNavBar.items count] > [self.viewControllers count] + 1) {
-        [self.modoNavBar popNavigationItemAnimated:NO];
+
+    // save module's view controllers
+    if ([self.viewControllers count] > 1) {
+        MIT_MobileAppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+        for (MITModule *aModule in appDelegate.modules) {
+            if ([aModule rootViewController] == [self.viewControllers objectAtIndex:1]) {
+                aModule.viewControllers = [self.viewControllers subarrayWithRange:NSMakeRange(1, [self.viewControllers count] - 1)];
+                break;
+            }
+        }
     }
-    
-    NSLog(@"%@", [self.modoNavBar.items description]);
-    NSLog(@"%@", [self.navigationBar.items description]);
 }
+
 
 - (void)loadView {
     [super loadView];
-    //[self.navigationBar removeFromSuperview];
-    //[self.view addSubview:_modoNavBar];
     [self.navigationBar addSubview:_modoNavBar];
 }
 
 - (void)pushViewController:(UIViewController *)viewController animated:(BOOL)animated {
     [super pushViewController:viewController animated:animated];
-    [self updateNavBar];
+    [self setViewControllers:self.viewControllers animated:NO];
 }
 
 - (UIViewController *)popViewControllerAnimated:(BOOL)animated {
+    // this seemingly innocuous step somehow forces the navcontroller
+    // to show the nav item of the visible viewcontroller.
+    [self setViewControllers:self.viewControllers animated:NO];
     UIViewController *vc = [super popViewControllerAnimated:animated];
     [self updateNavBar];
     return vc;
 }
 
 - (NSArray *)popToRootViewControllerAnimated:(BOOL)animated {
+    [self setViewControllers:self.viewControllers animated:NO];
     NSArray *vcArray = [super popToRootViewControllerAnimated:animated];
     [self updateNavBar];
     return vcArray;
 }
 
 - (NSArray *)popToViewController:(UIViewController *)viewController animated:(BOOL)animated {
+    [self setViewControllers:self.viewControllers animated:NO];
     NSArray *vcArray = [super popToViewController:viewController animated:animated];
     [self updateNavBar];
     return vcArray;

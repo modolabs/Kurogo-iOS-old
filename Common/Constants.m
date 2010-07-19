@@ -82,6 +82,7 @@ NSString * const CampusMapSearchEntityName = @"MapSearch";
 
 // resource names
 
+NSString * const ImageNameHomeScreenBackground = @"home/home-background.png";
 NSString * const MITImageNameBackground      = @"global/body-background.png";
 
 NSString * const MITImageNameEmail           = @"global/action-email.png";

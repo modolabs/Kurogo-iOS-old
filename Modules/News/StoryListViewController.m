@@ -62,52 +62,6 @@
 
 static NSInteger numTries = 0;
 
-/*
-NSString * const NewsCategoryTopNews = @"Top News";
-NSString * const NewsCategoryCampus = @"Campus";
-NSString * const NewsCategoryEngineering = @"Engineering";
-NSString * const NewsCategoryScience = @"Science";
-NSString * const NewsCategoryManagement = @"Management";
-NSString * const NewsCategoryArchitecture = @"Architecture";
-NSString * const NewsCategoryHumanities = @"Humanities";
-
-NewsCategoryId buttonCategories[] = {
-	NewsCategoryIdTopNews, NewsCategoryIdCampus, 
-	NewsCategoryIdEngineering, NewsCategoryIdScience, 
-	NewsCategoryIdManagement, NewsCategoryIdArchitecture, 
-	NewsCategoryIdHumanities
-};
-
-NSString *titleForCategoryId(NewsCategoryId category_id) {
-    NSString *result = nil;
-    switch (category_id) {
-        case NewsCategoryIdTopNews:
-            result = NewsCategoryTopNews;
-            break;
-        case NewsCategoryIdCampus:
-            result = NewsCategoryCampus;
-            break;
-        case NewsCategoryIdEngineering:
-            result = NewsCategoryEngineering;
-            break;
-        case NewsCategoryIdScience:
-            result = NewsCategoryScience;
-            break;
-        case NewsCategoryIdManagement:
-            result = NewsCategoryManagement;
-            break;
-        case NewsCategoryIdArchitecture:
-            result = NewsCategoryArchitecture;
-            break;
-        case NewsCategoryIdHumanities:
-            result = NewsCategoryHumanities;
-            break;
-        default:
-            break;
-    }
-    return result;
-}
-*/
 - (void)loadView {
 	[super loadView];
 	
@@ -121,7 +75,6 @@ NSString *titleForCategoryId(NewsCategoryId category_id) {
     
     tempTableSelection = nil;
     
-    //NSPredicate *truePredicate = [NSPredicate predicateWithFormat:@"TRUEPREDICATE"];
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"isMainCategory = YES"];
     NSSortDescriptor *sort = [[NSSortDescriptor alloc] initWithKey:@"category_id" ascending:YES];
     NSArray *categoryObjects = [CoreDataManager objectsForEntity:NewsCategoryEntityName matchingPredicate:predicate sortDescriptors:[NSArray arrayWithObject:sort]];
@@ -134,22 +87,6 @@ NSString *titleForCategoryId(NewsCategoryId category_id) {
     } else {
         self.categories = categoryObjects;
     }
-    
-    /*
-    NSMutableArray *newCategories = [NSMutableArray array];
-    NSInteger i, count = sizeof(buttonCategories) / sizeof(NewsCategoryId);
-    for (i = 0; i < count; i++) {
-        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"category_id == %d", buttonCategories[i]];
-        NSManagedObject *aCategory = [[CoreDataManager objectsForEntity:NewsCategoryEntityName matchingPredicate:predicate] lastObject];
-        if (!aCategory) {
-            aCategory = [CoreDataManager insertNewObjectForEntityForName:NewsCategoryEntityName];
-        }
-        [aCategory setValue:[NSNumber numberWithInteger:buttonCategories[i]] forKey:@"category_id"];
-        [aCategory setValue:[NSNumber numberWithInteger:0] forKey:@"expectedCount"];
-        [newCategories addObject:aCategory];
-    }
-    self.categories = newCategories;
-	*/
     
 	[self pruneStories];
     // reduce number of saved stories to 10 when app quits
@@ -170,6 +107,13 @@ NSString *titleForCategoryId(NewsCategoryId category_id) {
 
 	// set up results table
     storyTable.frame = CGRectMake(0, navScrollView.frame.size.height, self.view.frame.size.width, self.view.frame.size.height - navScrollView.frame.size.height);
+
+    // add drop shadow below nav scroller view
+    UIImageView *dropShadow = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"global/bar-drop-shadow.png"]];
+    dropShadow.frame = CGRectMake(0, navScrollView.frame.size.height, dropShadow.frame.size.width, dropShadow.frame.size.height);
+    [self.view addSubview:dropShadow];
+    [dropShadow release];
+
     [self setupActivityIndicator];
 
     [self loadFromCache];
@@ -252,21 +196,10 @@ NSString *titleForCategoryId(NewsCategoryId category_id) {
     id originalMergePolicy = [context mergePolicy];
     [context setMergePolicy:NSOverwriteMergePolicy];
 
-    /*
-    NewsCategoryId allCategories[] = {
-        NewsCategoryIdTopNews, NewsCategoryIdCampus,
-        NewsCategoryIdEngineering, NewsCategoryIdScience, 
-        NewsCategoryIdManagement, NewsCategoryIdArchitecture, 
-        NewsCategoryIdHumanities
-    };
-	*/
     NSMutableSet *allStoriesToSave = [NSMutableSet setWithCapacity:100];
-    //NSInteger i, count = sizeof(allCategories) / sizeof(NewsCategoryId);
-    //for (i = 0; i < count; i++) {
+
     for (NewsCategory *aCategory in self.categories) {
-        //NSPredicate *predicate = [NSPredicate predicateWithFormat:@"ANY categories.category_id == %d", allCategories[i]];
         NSSortDescriptor *postDateSortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"postDate" ascending:NO];
-        //NSArray *categoryStories = [CoreDataManager objectsForEntity:NewsStoryEntityName matchingPredicate:predicate sortDescriptors:[NSArray arrayWithObject:postDateSortDescriptor]];
         NSArray *categoryStories = [aCategory.stories sortedArrayUsingDescriptors:[NSArray arrayWithObject:postDateSortDescriptor]];
         
         // only the 10 most recent
@@ -298,40 +231,40 @@ NSString *titleForCategoryId(NewsCategoryId category_id) {
     NSInteger navScrollTag = 1000;
     navScrollView = (UIScrollView *)[self.view viewWithTag:navScrollTag];
     if (!navScrollView) {
-
-    // load scroller's background first to find its height
-    UIImage *backgroundImage = [UIImage imageNamed:MITImageNameScrollTabBackgroundOpaque];
-   
-	// Create nav scroll view and add it to the hierarchy
-    navScrollView = [[[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, backgroundImage.size.height)] autorelease];
-	navScrollView.delegate = self;
-    navScrollView.scrollsToTop = NO; // otherwise this competes with the story list for status bar taps
-	navScrollView.showsHorizontalScrollIndicator = NO;
-    navScrollView.opaque = NO;
-	navScrollView.tag = 1000; // make sure it doesn't overlap with any of the buttons
-
-	[navScrollView setBackgroundColor:[UIColor colorWithPatternImage:backgroundImage]];
-
-	[self.view addSubview:navScrollView];
-    
-	// Prep left and right scrollers
-	UIImage *leftScrollImage = [UIImage imageNamed:MITImageNameScrollTabLeftEndCap];
-    leftScrollButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    [leftScrollButton setImage:leftScrollImage forState:UIControlStateNormal];
-	CGRect imageFrame = CGRectMake(0,0,leftScrollImage.size.width,leftScrollImage.size.height);
-    leftScrollButton.frame = imageFrame;
-	leftScrollButton.hidden = YES;
-    [leftScrollButton addTarget:self action:@selector(sideButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
-	[self.view addSubview:leftScrollButton];
-	
-	UIImage *rightScrollImage = [UIImage imageNamed:MITImageNameScrollTabRightEndCap];
-    rightScrollButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    [rightScrollButton setImage:rightScrollImage forState:UIControlStateNormal];
-	imageFrame = CGRectMake(self.view.frame.size.width - rightScrollImage.size.width,0,rightScrollImage.size.width,rightScrollImage.size.height);
-    rightScrollButton.frame = imageFrame;
-	rightScrollButton.hidden = NO;
-    [rightScrollButton addTarget:self action:@selector(sideButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
-	[self.view addSubview:rightScrollButton];
+        
+        // load scroller's background first to find its height
+        UIImage *backgroundImage = [UIImage imageNamed:MITImageNameScrollTabBackgroundOpaque];
+        
+        // Create nav scroll view and add it to the hierarchy
+        navScrollView = [[[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, backgroundImage.size.height)] autorelease];
+        navScrollView.delegate = self;
+        navScrollView.scrollsToTop = NO; // otherwise this competes with the story list for status bar taps
+        navScrollView.showsHorizontalScrollIndicator = NO;
+        navScrollView.opaque = NO;
+        navScrollView.tag = 1000; // make sure it doesn't overlap with any of the buttons
+        
+        //[navScrollView setBackgroundColor:[UIColor colorWithPatternImage:backgroundImage]];
+        
+        [self.view addSubview:navScrollView];
+        
+        // Prep left and right scrollers
+        UIImage *leftScrollImage = [UIImage imageNamed:MITImageNameScrollTabLeftEndCap];
+        leftScrollButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        [leftScrollButton setImage:leftScrollImage forState:UIControlStateNormal];
+        CGRect imageFrame = CGRectMake(0,0,leftScrollImage.size.width,leftScrollImage.size.height);
+        leftScrollButton.frame = imageFrame;
+        leftScrollButton.hidden = YES;
+        [leftScrollButton addTarget:self action:@selector(sideButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
+        [self.view addSubview:leftScrollButton];
+        
+        UIImage *rightScrollImage = [UIImage imageNamed:MITImageNameScrollTabRightEndCap];
+        rightScrollButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        [rightScrollButton setImage:rightScrollImage forState:UIControlStateNormal];
+        imageFrame = CGRectMake(self.view.frame.size.width - rightScrollImage.size.width,0,rightScrollImage.size.width,rightScrollImage.size.height);
+        rightScrollButton.frame = imageFrame;
+        rightScrollButton.hidden = NO;
+        [rightScrollButton addTarget:self action:@selector(sideButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
+        [self.view addSubview:rightScrollButton];
         
     }
 	
@@ -348,7 +281,14 @@ NSString *titleForCategoryId(NewsCategoryId category_id) {
     
 	UIView *contentView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 828, navScrollView.frame.size.height)];
 	contentView.tag = 1001;
-	
+    
+    // create background image for scrolling view
+    UIImage *backgroundImage = [UIImage imageNamed:MITImageNameScrollTabBackgroundOpaque];
+    UIImageView *imageView = [[UIImageView alloc] initWithImage:[backgroundImage stretchableImageWithLeftCapWidth:0 topCapHeight:0]];
+    imageView.tag = 1005;
+    [contentView addSubview:imageView];
+    [imageView release];
+    
 	CGFloat leftOffset = 0.0;
 	
 	// add search button
@@ -449,6 +389,9 @@ NSString *titleForCategoryId(NewsCategoryId category_id) {
     CGRect newFrame = contentView.frame;
     newFrame.size.width = leftOffset + SCROLL_TAB_HORIZONTAL_PADDING;
     contentView.frame = newFrame;
+    
+    imageView = (UIImageView *)[contentView viewWithTag:1005];
+    imageView.frame = contentView.frame;
 	
 	for (UIView *button in navScrollView.subviews) {
 		[button removeFromSuperview];

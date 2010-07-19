@@ -8,8 +8,9 @@
 - (id)initWithNavigationBar:(UINavigationBar *)navigationBar {
     //navigationBar.frame = CGRectMake(0, 0, 320, 44);
     if (self = [super initWithFrame:navigationBar.frame]) {
-        _navigationBar = navigationBar;
-        self.delegate = _navigationBar.delegate;
+        self.navigationBar = navigationBar;
+        //[self.navigationBar addSubview:self];
+        //self.delegate = self.navigationBar.delegate;
     }
     return self;
 }
@@ -21,12 +22,12 @@
 */
 
 - (id<UINavigationBarDelegate>)delegate {
-    return _navigationBar.delegate;
+    return self.navigationBar.delegate;
 }
 
 - (id)initWithFrame:(CGRect)frame {
     if ((self = [super initWithFrame:frame])) {
-        _navigationBar = self;
+        self.navigationBar = self;
     }
     return self;
 }
@@ -35,20 +36,47 @@
     [super drawRect:rect];
     
     self.tintColor = [UIColor blackColor]; // this is for color of buttons  
-    UIImage *image = [[UIImage imageNamed:@"global/scrolltabs-background.png"] stretchableImageWithLeftCapWidth:0.0 topCapHeight:0.0];
+    UIImage *image = [[UIImage imageNamed:@"global/navbar-background.png"] stretchableImageWithLeftCapWidth:0.0 topCapHeight:0.0];
     [image drawInRect:rect];
     
     [self update];
 }
 
 - (void)update {
-    self.frame = CGRectMake(0, 0, _navigationBar.frame.size.width, _navigationBar.frame.size.height);
-    self.items = _navigationBar.items;
+    self.frame = CGRectMake(0, 0, self.navigationBar.frame.size.width, self.navigationBar.frame.size.height);
+    self.items = self.navigationBar.items;
 }
+
+
+- (UINavigationItem *)popNavigationItemAnimated:(BOOL)animated {
+    UINavigationItem *item = [super popNavigationItemAnimated:animated];
+    if (item == nil) {
+        [self popNavigationItemAnimated:animated];
+    }
+    return item;
+}
+
+/*
+- (void)pushNavigationItem:(UINavigationItem *)item animated:(BOOL)animated {
+    [super pushNavigationItem:item animated:animated];
+}
+
+- (void)didAddSubview:(UIView *)subview {
+    [super didAddSubview:subview];
+}
+
+- (void)willRemoveSubview:(UIView *)subview {
+    [super willRemoveSubview:subview];
+}
+*/
 
 - (void)dealloc {
+    if (self.navigationBar.delegate != nil) { // someone else owns the nav bar
+        self.navigationBar = nil;
+    } else {
+        [self.navigationBar release];
+    }
     [super dealloc];
 }
-
 
 @end

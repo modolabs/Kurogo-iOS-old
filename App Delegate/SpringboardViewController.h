@@ -3,9 +3,9 @@
 #import "ModoNavigationController.h"
 #import "ModoNavigationBar.h"
 
-@interface SpringboardViewController : UIViewController {
+@interface SpringboardViewController : UIViewController/* <UIScrollViewDelegate>*/ {
 
-    UIView *containingView;
+    UIScrollView *containingView;
     MITModule *activeModule;
     ModoNavigationController *navigationController;
     ModoNavigationBar *navigationBar;

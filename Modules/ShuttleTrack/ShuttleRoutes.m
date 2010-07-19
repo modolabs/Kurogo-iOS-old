@@ -57,9 +57,9 @@
 																@"16172532997", @"phoneNumber",
 					  @"(617.253.2997)", @"formattedPhoneNumber", nil, nil], nil] retain];
 	
-	_shuttleRunningImage = [[UIImage imageNamed:@"shuttle.png"] retain];
-	_shuttleNotRunningImage = [[UIImage imageNamed:@"shuttle-off.png"] retain];
-	_shuttleLoadingImage = [[UIImage imageNamed:@"shuttle-blank.png"] retain];
+	_shuttleRunningImage = [[UIImage imageNamed:@"shuttles/shuttle.png"] retain];
+	_shuttleNotRunningImage = [[UIImage imageNamed:@"shuttles/shuttle-off.png"] retain];
+	_shuttleLoadingImage = [[UIImage imageNamed:@"shuttles/shuttle-blank.png"] retain];
 	
     [self.tableView applyStandardColors];
 

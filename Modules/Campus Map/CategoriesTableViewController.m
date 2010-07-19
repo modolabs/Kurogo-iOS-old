@@ -243,10 +243,10 @@
 			headerView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:MITImageNameBackground]];
 			headerLabel.frame = CGRectMake(headerLabel.frame.origin.x, headerLabel.frame.origin.y, 200, headerLabel.frame.size.height);
 			UIButton* viewAllButton = [UIButton buttonWithType:UIButtonTypeCustom];
-			UIImage* viewAllImage = [UIImage imageNamed:@"map_viewall.png"];
+			UIImage* viewAllImage = [UIImage imageNamed:@"maps/map_viewall.png"];
 			viewAllButton.frame = CGRectMake(320-viewAllImage.size.width-10, 10, viewAllImage.size.width, viewAllImage.size.height);
 			[viewAllButton setImage:viewAllImage forState:UIControlStateNormal];
-			[viewAllButton setImage:[UIImage imageNamed:@"map_viewall_pressed.png"] forState:UIControlStateHighlighted];
+			[viewAllButton setImage:[UIImage imageNamed:@"maps/map_viewall_pressed.png"] forState:UIControlStateHighlighted];
 			[viewAllButton addTarget:self action:@selector(mapAllButtonTapped) forControlEvents:UIControlEventTouchUpInside];
 			[headerView addSubview:viewAllButton];
 		}

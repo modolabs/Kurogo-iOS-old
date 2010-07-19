@@ -16,7 +16,6 @@
         settingsVC.title = self.longName;
 		
         self.viewControllers = [NSArray arrayWithObject:settingsVC];
-        //[self.tabNavController setViewControllers:[NSArray arrayWithObject:settingsVC]];
     }
     return self;
 }

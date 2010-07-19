@@ -206,8 +206,8 @@ MIT_MobileAppDelegate *appDelegate();
 		fakeMessageField.enabled = NO;
 		
 		signOutButton = [[UIButton buttonWithType:UIButtonTypeCustom] retain];
-		UIImage *signOutImage = [UIImage imageNamed:@"twitter_signout.png"];
-		UIImage *signOutImagePressed = [UIImage imageNamed:@"twitter_signout_pressed.png"];
+		UIImage *signOutImage = [UIImage imageNamed:@"global/twitter_signout.png"];
+		UIImage *signOutImagePressed = [UIImage imageNamed:@"global/twitter_signout_pressed.png"];
 		[signOutButton setImage:signOutImage forState:UIControlStateNormal];
 		[signOutButton setImage:signOutImagePressed forState:(UIControlStateNormal | UIControlStateHighlighted)];
 		signOutButton.frame = CGRectMake(USERNAME_MAX_WIDTH, MESSAGE_HEIGHT+BOTTOM_SECTION_TOP, signOutImage.size.width, signOutImage.size.height);

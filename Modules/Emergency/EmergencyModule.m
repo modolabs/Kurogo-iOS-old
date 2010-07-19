@@ -22,7 +22,6 @@
         self.mainViewController.delegate = self; // to receive -didReadNewestEmergencyInfo
         
         self.viewControllers = [NSArray arrayWithObject:self.mainViewController];
-        //[self.tabNavController setViewControllers:[NSArray arrayWithObject:mainViewController]];
         
         // preserve unread state
         if ([[NSUserDefaults standardUserDefaults] integerForKey:EmergencyUnreadCountKey] > 0) {

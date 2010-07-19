@@ -496,17 +496,17 @@
 		
 		datePicker = [[UIView alloc] initWithFrame:CGRectMake(0.0, yOffset, appFrame.size.width, 44.0)];
 		UIImageView *datePickerBackground = [[UIImageView alloc] initWithFrame:CGRectMake(0.0, 0.0, datePicker.frame.size.width, datePicker.frame.size.height)];
-		datePickerBackground.image = [[UIImage imageNamed:@"subheadbar_background.png"] stretchableImageWithLeftCapWidth:0 topCapHeight:0];
+		datePickerBackground.image = [[UIImage imageNamed:@"global/subheadbar_background.png"] stretchableImageWithLeftCapWidth:0 topCapHeight:0];
 		[datePicker addSubview:datePickerBackground];
 		[datePickerBackground release];
 		
-		UIImage *buttonImage = [UIImage imageNamed:@"subheadbar_button.png"];
+		UIImage *buttonImage = [UIImage imageNamed:@"global/subheadbar_button.png"];
 		
 		UIButton *prevDate = [UIButton buttonWithType:UIButtonTypeCustom];
 		prevDate.frame = CGRectMake(0, 0, buttonImage.size.width, buttonImage.size.height);
 		prevDate.center = CGPointMake(21.0, 21.0);
 		[prevDate setBackgroundImage:buttonImage forState:UIControlStateNormal];
-		[prevDate setBackgroundImage:[UIImage imageNamed:@"subheadbar_button_pressed"] forState:UIControlStateHighlighted];
+		[prevDate setBackgroundImage:[UIImage imageNamed:@"global/subheadbar_button_pressed"] forState:UIControlStateHighlighted];
 		[prevDate setImage:[UIImage imageNamed:MITImageNameLeftArrow] forState:UIControlStateNormal];	
 		[prevDate addTarget:self action:@selector(showPreviousDate) forControlEvents:UIControlEventTouchUpInside];
 		[datePicker addSubview:prevDate];
@@ -515,7 +515,7 @@
 		nextDate.frame = CGRectMake(0, 0, buttonImage.size.width, buttonImage.size.height);
 		nextDate.center = CGPointMake(appFrame.size.width - 21.0, 21.0);
 		[nextDate setBackgroundImage:buttonImage forState:UIControlStateNormal];
-		[nextDate setBackgroundImage:[UIImage imageNamed:@"subheadbar_button_pressed"] forState:UIControlStateHighlighted];
+		[nextDate setBackgroundImage:[UIImage imageNamed:@"global/subheadbar_button_pressed"] forState:UIControlStateHighlighted];
 		[nextDate setImage:[UIImage imageNamed:MITImageNameRightArrow] forState:UIControlStateNormal];
 		[nextDate addTarget:self action:@selector(showNextDate) forControlEvents:UIControlEventTouchUpInside];
 		[datePicker addSubview:nextDate];		

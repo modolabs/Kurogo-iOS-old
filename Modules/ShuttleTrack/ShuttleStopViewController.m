@@ -132,7 +132,7 @@
     
 	[headerView addSubview:_mapButton];
 	
-	UIImageView *alertHeaderIcon = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"shuttle-alert-descriptive.png"]] autorelease];
+	UIImageView *alertHeaderIcon = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"shuttles/shuttle-alert-descriptive.png"]] autorelease];
 	CGRect alertHeaderIconFrame = alertHeaderIcon.frame;
 	alertHeaderIconFrame.origin = CGPointMake(MARGIN, mapSize + mapBuffer * 2);
 	alertHeaderIcon.frame = alertHeaderIconFrame;
@@ -294,9 +294,9 @@
         if(minutes > NOTIFICATION_MINUTES) {
             
             if([self hasSubscription:indexPath]) {
-                cell.accessoryView = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"shuttle-alert-toggle-on.png"]] autorelease];
+                cell.accessoryView = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"shuttles/shuttle-alert-toggle-on.png"]] autorelease];
             } else {
-                cell.accessoryView = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"shuttle-alert-toggle-off.png"]] autorelease];
+                cell.accessoryView = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"shuttles/shuttle-alert-toggle-off.png"]] autorelease];
             }
             
             
@@ -469,7 +469,7 @@
 	if ([annotation isKindOfClass:[ShuttleStopMapAnnotation class]]) 
 	{
 		annotationView = [[[MKAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:@"annotation"] autorelease];
-		UIImage* pin = [UIImage imageNamed:@"map_pin_shuttle_stop_complete.png"];
+		UIImage* pin = [UIImage imageNamed:@"shuttles/map_pin_shuttle_stop_complete.png"];
 		UIImageView* imageView = [[[UIImageView alloc] initWithImage:pin] autorelease];
 		annotationView.frame = imageView.frame;
 		annotationView.canShowCallout = YES;

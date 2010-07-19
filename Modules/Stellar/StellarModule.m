@@ -19,13 +19,12 @@
         self.tag = StellarTag;
         self.shortName = @"Stellar";
         self.longName = @"MIT Stellar";
-        self.iconName = @"stellar";
+        self.iconName = @"courses";
         self.pushNotificationSupported = YES;
 		
 		StellarMainTableController *stellarMainTableController = [[[StellarMainTableController alloc] init] autorelease];
 		stellarMainTableController.navigationItem.title = @"MIT Stellar";
         self.viewControllers = [NSArray arrayWithObject:stellarMainTableController];
-        //[self.tabNavController setViewControllers:[NSArray arrayWithObject:stellarMainTableController]];
     }
     return self;
 }
