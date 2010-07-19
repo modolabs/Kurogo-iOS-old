@@ -16,6 +16,7 @@ enum CalendarDetailRowTypes {
 	CalendarDetailRowTypeLocation,
 	CalendarDetailRowTypePhone,
 	CalendarDetailRowTypeURL,
+	//CalendarDetailRowTypeEmail,
 	CalendarDetailRowTypeDescription,
 	CalendarDetailRowTypeCategories
 };
@@ -107,14 +108,9 @@ enum CalendarDetailRowTypes {
 }
 
 // helper function that maintains consistency of descriptionString and descriptionHeight
--(void)setDescriptionStringAndHeight:(NSString *)description
+-(void)setDescriptionString:(NSString *)description
 {
 	descriptionString = [[self htmlStringFromString:description] retain];
-	
-	UIFont *cellFont = [UIFont fontWithName:STANDARD_FONT size:CELL_STANDARD_FONT_SIZE];
-	CGSize textSize = [CalendarTag sizeWithFont:cellFont];
-
-	//descriptionHeight = (textSize.height + 4.0) * ((int)([descriptionString length])/50 + 2);
 	
 	return;
 }
@@ -145,12 +141,16 @@ enum CalendarDetailRowTypes {
 		rowTypes[numRows] = CalendarDetailRowTypeURL;
 		numRows++;
 	}
+	/*if (self.event.email) {
+		rowTypes[numRows] = CalendarDetailRowTypeEmail;
+		numRows++;
+	}*/
 	if (self.event.summary) {
 		rowTypes[numRows] = CalendarDetailRowTypeDescription;
         [descriptionString release];
 
 		//sets the description string and height of the views
-		[self setDescriptionStringAndHeight:self.event.summary];
+		[self setDescriptionString:self.event.summary];
 		
 		numRows++;
 	}
@@ -310,10 +310,18 @@ enum CalendarDetailRowTypes {
 			cell.textLabel.textColor = EMBEDDED_LINK_FONT_COLOR;
 			cell.accessoryView = [UIImageView accessoryViewWithMITType:MITAccessoryViewExternal];
 			break;
+		/*	
+		case CalendarDetailRowTypeEmail:
+			cell.textLabel.text = event.email;
+			cell.textLabel.font = [UIFont fontWithName:STANDARD_FONT size:CELL_STANDARD_FONT_SIZE];
+			cell.textLabel.textColor = EMBEDDED_LINK_FONT_COLOR;
+			cell.accessoryView = [[UIImageView accessoryViewWithMITType:MITAccessoryViewEmail];
+			break;
+		*/	
 		case CalendarDetailRowTypeDescription:
         {		
 			//sets the description string and height of the views
-			[self setDescriptionStringAndHeight:self.event.summary];
+			[self setDescriptionString:self.event.summary];
 			
             UIWebView *webView = (UIWebView *)[cell viewWithTag:kDescriptionWebViewTag];
 			webView.delegate = self;
@@ -470,6 +478,13 @@ enum CalendarDetailRowTypes {
 			}
 			break;
 		}
+		/*	
+		case CalendarDetailRowTypeEmail:
+		{
+			[self sendEmailWithSubject:[self.shareDelegate event.title]
+								  body:[self.shareDelegate @""];
+			break;
+		}*/
 		default:
 			break;
 	}
@@ -571,5 +586,51 @@ enum CalendarDetailRowTypes {
 	
 	return YES;
 }
+
+
+
+- (void)sendEmailWithSubject:(NSString *)emailSubject withBody:(NSString *)emailBody
+{
+	Class mailClass = (NSClassFromString(@"MFMailComposeViewController"));
+	if ((mailClass != nil) && [mailClass canSendMail]) {
+		
+		MFMailComposeViewController *aController = [[MFMailComposeViewController alloc] init];
+		aController.mailComposeDelegate = self;
+		
+		[aController setSubject:emailSubject];
+		
+		[aController setMessageBody:emailBody isHTML:NO];
+		
+		MIT_MobileAppDelegate *appDelegate = (MIT_MobileAppDelegate *)[[UIApplication sharedApplication] delegate];
+		[appDelegate presentAppModalViewController:aController animated:YES];
+		[aController release];
+		
+	} else {
+		NSString *mailtoString = [NSString stringWithFormat:@"mailto://?subject=%@&body=%@", 
+								  [emailSubject stringByAddingPercentEscapesUsingEncoding:NSASCIIStringEncoding],
+								  [emailBody stringByAddingPercentEscapesUsingEncoding:NSASCIIStringEncoding]];
+		
+		NSURL *externURL = [NSURL URLWithString:mailtoString];
+		if ([[UIApplication sharedApplication] canOpenURL:externURL])
+			[[UIApplication sharedApplication] openURL:externURL];
+	}
+	
+	/* Use the following to SEND the email once clicked
+	[self sendEmailWithSubject:[self.shareDelegate emailSubject]
+						  body:[self.shareDelegate emailBody]];
+	 */
+}
+
+
+
+#pragma mark -
+#pragma mark MFMailComposeViewController delegation
+
+- (void)mailComposeController:(MFMailComposeViewController*)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError*)error 
+{	
+	MIT_MobileAppDelegate *appDelegate = (MIT_MobileAppDelegate *)[[UIApplication sharedApplication] delegate];
+	[appDelegate dismissAppModalViewControllerAnimated:YES];
+}
+
 
 @end

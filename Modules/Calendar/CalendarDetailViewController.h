@@ -2,10 +2,12 @@
 #import "JSONAPIRequest.h"
 #import "CalendarConstants.h"
 #import "ShareDetailViewController.h"
+#import "MIT_MobileAppDelegate.h"
+#import <MessageUI/MFMailComposeViewController.h>;
 
 @class MITCalendarEvent;
 
-@interface CalendarDetailViewController : ShareDetailViewController <UITableViewDelegate, UITableViewDataSource, JSONAPIDelegate, ShareItemDelegate, UIWebViewDelegate> {
+@interface CalendarDetailViewController : ShareDetailViewController <UITableViewDelegate, UITableViewDataSource, JSONAPIDelegate, ShareItemDelegate, UIWebViewDelegate, MFMailComposeViewControllerDelegate> {
 	
     BOOL isRegularEvent;
     

@@ -205,6 +205,8 @@
 		C704F06D11E3E31F00621406 /* MenuDetailsController.m in Sources */ = {isa = PBXBuildFile; fileRef = C704F05E11E3E31F00621406 /* MenuDetailsController.m */; };
 		C704F06E11E3E31F00621406 /* MenuItems.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = C704F05F11E3E31F00621406 /* MenuItems.h */; settings = {JAVA_ARCHIVE_SUBDIR = Modules/Dining; }; };
 		C704F06F11E3E31F00621406 /* MenuItems.m in Sources */ = {isa = PBXBuildFile; fileRef = C704F06011E3E31F00621406 /* MenuItems.m */; };
+		C727B44A11F4A9D0007D53BB /* DiningHoursTableViewViewController.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = C727B44811F4A9D0007D53BB /* DiningHoursTableViewViewController.h */; settings = {JAVA_ARCHIVE_SUBDIR = Modules; }; };
+		C727B44B11F4A9D0007D53BB /* DiningHoursTableViewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C727B44911F4A9D0007D53BB /* DiningHoursTableViewViewController.m */; };
 		DE0A62AC10CDAEA90058B2C2 /* MITBuildInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = DE0A62AB10CDAEA90058B2C2 /* MITBuildInfo.m */; };
 		DE0F6B3411109BC500F064D6 /* AboutMITVC.m in Sources */ = {isa = PBXBuildFile; fileRef = DE0F6B3311109BC500F064D6 /* AboutMITVC.m */; };
 		DE18F9EE10F19105009A69B9 /* News.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = DE18F9ED10F19105009A69B9 /* News.xcdatamodeld */; };
@@ -758,6 +760,8 @@
 		C704F05E11E3E31F00621406 /* MenuDetailsController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MenuDetailsController.m; path = Dining/MenuDetailsController.m; sourceTree = "<group>"; };
 		C704F05F11E3E31F00621406 /* MenuItems.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MenuItems.h; path = Dining/MenuItems.h; sourceTree = "<group>"; };
 		C704F06011E3E31F00621406 /* MenuItems.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MenuItems.m; path = Dining/MenuItems.m; sourceTree = "<group>"; };
+		C727B44811F4A9D0007D53BB /* DiningHoursTableViewViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DiningHoursTableViewViewController.h; sourceTree = "<group>"; };
+		C727B44911F4A9D0007D53BB /* DiningHoursTableViewViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DiningHoursTableViewViewController.m; sourceTree = "<group>"; };
 		DE0A62AA10CDAEA90058B2C2 /* MITBuildInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MITBuildInfo.h; sourceTree = "<group>"; };
 		DE0A62AB10CDAEA90058B2C2 /* MITBuildInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MITBuildInfo.m; sourceTree = "<group>"; };
 		DE0F6B3211109BC500F064D6 /* AboutMITVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AboutMITVC.h; sourceTree = "<group>"; };
@@ -1546,6 +1550,8 @@
 				C704F05E11E3E31F00621406 /* MenuDetailsController.m */,
 				C704F05F11E3E31F00621406 /* MenuItems.h */,
 				C704F06011E3E31F00621406 /* MenuItems.m */,
+				C727B44811F4A9D0007D53BB /* DiningHoursTableViewViewController.h */,
+				C727B44911F4A9D0007D53BB /* DiningHoursTableViewViewController.m */,
 			);
 			name = Dining;
 			sourceTree = "<group>";
@@ -2202,6 +2208,7 @@
 				EB6D141511EE979500B65CE3 /* NewsCategory.h in JavaArchive */,
 				A69A28A811F0258800B1D365 /* PersonDetails+Methods.h in JavaArchive */,
 				A69A290111F02E5100B1D365 /* PersonDetails.h in JavaArchive */,
+				C727B44A11F4A9D0007D53BB /* DiningHoursTableViewViewController.h in JavaArchive */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2684,6 +2691,7 @@
 				EB6D141611EE979500B65CE3 /* NewsCategory.m in Sources */,
 				A69A28A911F0258800B1D365 /* PersonDetails+Methods.m in Sources */,
 				A69A290211F02E5100B1D365 /* PersonDetails.m in Sources */,
+				C727B44B11F4A9D0007D53BB /* DiningHoursTableViewViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
