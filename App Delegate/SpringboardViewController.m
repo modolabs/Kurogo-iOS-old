@@ -132,6 +132,9 @@
         } else {
             NSLog(@"skipping module %@", aModule.tag);
         }
+        // Add properties for accessibility/automation visibility.
+        anIcon.isAccessibilityElement = YES;
+        anIcon.accessibilityLabel = aModule.iconName;
     }
     
     [self layoutIcons:_icons];

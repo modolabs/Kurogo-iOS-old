@@ -53,7 +53,10 @@ function assertNotNull(thingie, message) {
 // Navigation functions.
 function navigateToPeopleView()
 {
-	peopleDirectoryButton = mainWindow.buttons()["People Directory"];
+	//mainWindow.logElementTree();
+	scrollView = mainWindow.scrollViews()[0];
+	//scrollView.logElementTree();
+	peopleDirectoryButton = scrollView.buttons()["people"];
 	peopleDirectoryButton.tap();
 }
 
@@ -172,7 +175,7 @@ function testSuite2()
 	var expectedSearchResultValues = {
 		"email": "filipe_campante@harvard.edu",
 		"phone": "+1-617-384-7958",
-		"dept": "KSG^Faculty Members",
+		"unit": "KSG^Faculty Members",
 		"title": "Assistant Professor in Public Policy at the John F. Kennedy School of Government"
 	};
 	
@@ -188,7 +191,7 @@ function testSuite3()
 	var expectedSearchResultValues = {
 		"email": "lwisniewski@iq.harvard.edu",
 		"phone": "+1-617-496-7971",
-		"dept": "FAS^FCOR^Inst Quant SocSci-Stf",
+		"unit": "FAS^FCOR^Inst Quant SocSci-Stf",
 		"title": "IQSS Director of Technology Services"
 	};
 	
@@ -203,8 +206,8 @@ function testSuite3()
 
 // "Main" block.
 
-// Provide a default grace period of 0.25 seconds for each action to complete.
-target.setTimeout(0.25);
+// Provide a default grace period in seconds for each action to complete.
+target.setTimeout(0.5);
 navigateToPeopleView();
 
 testSuite1();
