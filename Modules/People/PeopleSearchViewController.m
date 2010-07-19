@@ -364,8 +364,12 @@ NSInteger strLenSort(NSString *str1, NSString *str2, void *context)
 		}
 			
 		NSDictionary *searchResult = [self.searchResults objectAtIndex:indexPath.row];
-		NSString *fullname = 
-        [[PersonDetails realValuesFromPersonDetailsJSONDict:searchResult forKey:@"cn"] objectAtIndex:0];
+		NSString *fullname = @"";
+        NSArray *namesFromJSON = [PersonDetails realValuesFromPersonDetailsJSONDict:searchResult forKey:@"cn"];
+        if ([namesFromJSON count] > 0)
+        {
+            fullname = [namesFromJSON objectAtIndex:0];
+        }
 		
 		// figure out which field (if any) to display as subtitle
 		// display priority: title, dept
