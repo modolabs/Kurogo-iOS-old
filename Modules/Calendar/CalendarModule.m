@@ -26,14 +26,13 @@
         self.tag = CalendarTag;
         self.shortName = @"Events";
         self.longName = @"Events Calendar";
-        self.iconName = @"calendar";
+        self.iconName = @"events";
         
         calendarVC = [[CalendarEventsViewController alloc] init];
 		calendarVC.activeEventList = CalendarEventListTypeEvents;
 		calendarVC.showList = YES;
 		calendarVC.showScroller = YES;
         self.viewControllers = [NSArray arrayWithObject:calendarVC];
-        //[self.tabNavController setViewControllers:[NSArray arrayWithObject:calendarVC]];
     }
     return self;
 }

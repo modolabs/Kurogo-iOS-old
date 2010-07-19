@@ -17,7 +17,6 @@
 
         ShuttleRoutes *theVC = [[[ShuttleRoutes alloc] initWithStyle:UITableViewStyleGrouped] autorelease];
         self.viewControllers = [NSArray arrayWithObject:theVC];
-        //[self.tabNavController setViewControllers:[NSArray arrayWithObject:theVC]];
     }
     return self;
 }

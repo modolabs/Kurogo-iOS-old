@@ -86,6 +86,7 @@
     
     //[self.theNavController setViewControllers:newViewControllers animated:YES];
     //[self.tabBarController showItem:module.tabNavController.tabBarItem];
+    [module didAppear];
 }
 
 - (void)returnToHome {

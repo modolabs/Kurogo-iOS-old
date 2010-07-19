@@ -72,7 +72,9 @@ extern NSString * const ShuttleRouteStopEntityName;
 extern NSString * const CalendarEventEntityName;
 extern NSString * const CalendarCategoryEntityName;
 extern NSString * const CampusMapSearchEntityName;
+
 // resource names
+extern NSString * const ImageNameHomeScreenBackground;
 extern NSString * const MITImageNameBackground;
 
 extern NSString * const MITImageNameEmail;

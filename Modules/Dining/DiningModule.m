@@ -10,14 +10,13 @@
         self.tag = DiningTag;
         self.shortName = @"Dining";
         self.longName = @"Harvard Dining";
-        self.iconName = @"Dining";
+        self.iconName = @"dining";
         self.isMovableTab = FALSE;
         
         DiningFirstViewController *aboutVC = [[[DiningFirstViewController alloc] init] autorelease];
         aboutVC.title = self.longName;
         
         self.viewControllers = [NSArray arrayWithObject:aboutVC];
-        //[self.tabNavController setViewControllers:[NSArray arrayWithObject:aboutVC]];
     }
     return self;
 }

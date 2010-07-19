@@ -2,7 +2,7 @@
 #import "MIT_MobileAppDelegate.h"
 #import "MITModuleList.h"
 
-#define GRID_PADDING 30.0f
+#define GRID_PADDING 8.0f
 
 @implementation SpringboardViewController
 
@@ -16,22 +16,41 @@
 
 - (void)layoutIcons:(NSArray *)icons {
     
-    CGFloat viewWidth = self.view.frame.size.width;
+    CGSize viewSize = containingView.frame.size;
     
-    CGFloat xOrigin = GRID_PADDING;
-    CGFloat yOrigin = GRID_PADDING;// + navigationBar.frame.size.height;
+    // figure out number of icons per row to fit on screen
+    SpringboardIcon *anIcon = [icons objectAtIndex:0];
+    CGSize iconSize = anIcon.frame.size;
+
+    NSInteger iconsPerRow = (int)floor((viewSize.width - GRID_PADDING) / (iconSize.width + GRID_PADDING));
+    div_t result = div([icons count], iconsPerRow);
+    NSInteger numRows = (result.rem == 0) ? result.quot : result.quot + 1;
+    CGFloat rowHeight = anIcon.frame.size.height + GRID_PADDING;
+
+    if ((rowHeight + GRID_PADDING) * numRows > viewSize.height - GRID_PADDING) {
+        iconsPerRow++;
+        CGFloat iconWidth = floor((viewSize.width - GRID_PADDING) / iconsPerRow) - GRID_PADDING;
+        iconSize.height = floor(iconSize.height * (iconWidth / iconSize.width));
+        iconSize.width = iconWidth;
+    }
+    
+    // calculate xOrigin to keep icons centered
+    CGFloat xOriginInitial = (viewSize.width - ((iconSize.width + GRID_PADDING) * iconsPerRow - GRID_PADDING)) / 2;
+    CGFloat xOrigin = xOriginInitial;
+    CGFloat yOrigin = GRID_PADDING;
     bottomRight = CGPointZero;
     
-    for (UIView *anIcon in icons) {
-        anIcon.frame = CGRectMake(xOrigin, yOrigin, anIcon.frame.size.width, anIcon.frame.size.height);
+    for (anIcon in icons) {
+        anIcon.frame = CGRectMake(xOrigin, yOrigin, iconSize.width, iconSize.height);
+        NSLog(@"%@", [anIcon description]);
         xOrigin += anIcon.frame.size.width + GRID_PADDING;
-        if (xOrigin + anIcon.frame.size.width + GRID_PADDING >= viewWidth) {
-            xOrigin = GRID_PADDING;
+        if (xOrigin + anIcon.frame.size.width + GRID_PADDING >= viewSize.width) {
+            xOrigin = xOriginInitial;
             yOrigin += anIcon.frame.size.height + GRID_PADDING;
         }
         
-        if (![anIcon isDescendantOfView:self.view]) {
-            [self.view addSubview:anIcon];
+        if (![anIcon isDescendantOfView:containingView]) {
+            [containingView addSubview:anIcon];
         }
 
         if (bottomRight.x < xOrigin + anIcon.frame.size.width) {
@@ -44,13 +63,18 @@
     }
     
     topLeft = ((SpringboardIcon *)[icons objectAtIndex:0]).frame.origin;
+    
+    if (bottomRight.y > containingView.contentSize.height) {
+        containingView.contentSize = CGSizeMake(containingView.contentSize.width, bottomRight.y + GRID_PADDING);
+    }
+
 }
 
 - (void)customizeIcons:(id)sender {
-    CGRect frame = CGRectMake(0, /*navigationBar.frame.size.height*/0, self.view.frame.size.width, self.view.frame.size.height/* - navigationBar.frame.size.height*/);
+    CGRect frame = CGRectMake(0, 0, containingView.frame.size.width, containingView.frame.size.height);
     transparentOverlay = [[UIView alloc] initWithFrame:frame];
     transparentOverlay.backgroundColor = [UIColor clearColor];
-    [self.view addSubview:transparentOverlay];
+    [containingView addSubview:transparentOverlay];
     
     UIBarButtonItem *doneButton = [[[UIBarButtonItem alloc] initWithTitle:@"Done"
                                                                     style:UIBarButtonItemStyleDone
@@ -80,7 +104,11 @@
 - (void)loadView {
     [super loadView];
     
-    self.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+    containingView = [[UIScrollView alloc] initWithFrame:self.view.bounds];
+    containingView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:ImageNameHomeScreenBackground]];
+    containingView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+    NSLog(@"%@", [containingView description]);
+    [self.view addSubview:containingView];
     
     //UIBarButtonItem *editButton = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemEdit
     //                                                                             target:self
@@ -94,11 +122,16 @@
     for (MITModule *aModule in modules) {
         SpringboardIcon *anIcon = [SpringboardIcon buttonWithType:UIButtonTypeCustom];
         UIImage *image = [aModule icon];
-        anIcon.frame = CGRectMake(0, 0, image.size.width, image.size.height);
-        [anIcon setImage:image forState:UIControlStateNormal];
-        anIcon.moduleTag = aModule.tag;
-        [anIcon addTarget:self action:@selector(buttonPressed:) forControlEvents:UIControlEventTouchUpInside];
-        [_icons addObject:anIcon];
+        if (image) {
+            NSLog(@"adding icon for module %@", aModule.tag);
+            anIcon.frame = CGRectMake(0, 0, image.size.width, image.size.height);
+            [anIcon setImage:image forState:UIControlStateNormal];
+            anIcon.moduleTag = aModule.tag;
+            [anIcon addTarget:self action:@selector(buttonPressed:) forControlEvents:UIControlEventTouchUpInside];
+            [_icons addObject:anIcon];
+        } else {
+            NSLog(@"skipping module %@", aModule.tag);
+        }
     }
     
     [self layoutIcons:_icons];
@@ -156,7 +189,7 @@
         selectedIcon = nil;
         UITouch *aTouch = [touches anyObject];
         for (SpringboardIcon *anIcon in editedIcons) {
-            CGPoint point = [aTouch locationInView:self.view];
+            CGPoint point = [aTouch locationInView:containingView];
             CGFloat xOffset = point.x - anIcon.frame.origin.x;
             CGFloat yOffset = point.y - anIcon.frame.origin.y;
             if (xOffset > 0 && yOffset > 0
@@ -199,8 +232,8 @@
     if (selectedIcon) {
         UITouch *aTouch = [touches anyObject];
         
-        CGPoint before = [aTouch previousLocationInView:self.view];
-        CGPoint after = [aTouch locationInView:self.view];
+        CGPoint before = [aTouch previousLocationInView:containingView];
+        CGPoint after = [aTouch locationInView:containingView];
         
         CGFloat xTransition = after.x - before.x;
         CGFloat yTransition = after.y - before.y;

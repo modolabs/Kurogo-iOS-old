@@ -11,11 +11,10 @@
         self.tag = NewsOfficeTag;
         self.shortName = @"News";
         self.longName = @"News Office";
-        self.iconName = @"webmitedu";
+        self.iconName = @"news";
         
         storyListChannelController = [[StoryListViewController alloc] init];
         self.viewControllers = [NSArray arrayWithObject:storyListChannelController];
-        //[self.tabNavController setViewControllers:[NSArray arrayWithObject:storyListChannelController]];
     }
     return self;
 }

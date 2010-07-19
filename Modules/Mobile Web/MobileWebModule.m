@@ -8,7 +8,7 @@
         self.tag = MobileWebTag;
         self.shortName = @"Mobile Web";
         self.longName = @"MIT Mobile Web";
-        self.iconName = @"webmitedu";
+        self.iconName = @"full-website";
         self.isMovableTab = FALSE;
         self.canBecomeDefault = FALSE;
     }

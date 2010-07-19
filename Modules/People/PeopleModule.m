@@ -24,7 +24,6 @@ static NSString * const PeopleStateDetail = @"detail";
 		viewController.navigationItem.title = self.longName;
         
         self.viewControllers = [NSArray arrayWithObject:viewController];
-        //[self.tabNavController setViewControllers:[NSArray arrayWithObject:viewController]];
     }
     return self;
 }

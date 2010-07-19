@@ -36,7 +36,7 @@
     [super drawRect:rect];
     
     self.tintColor = [UIColor blackColor]; // this is for color of buttons  
-    UIImage *image = [[UIImage imageNamed:@"global/scrolltabs-background.png"] stretchableImageWithLeftCapWidth:0.0 topCapHeight:0.0];
+    UIImage *image = [[UIImage imageNamed:@"global/navbar-background.png"] stretchableImageWithLeftCapWidth:0.0 topCapHeight:0.0];
     [image drawInRect:rect];
     
     [self update];
