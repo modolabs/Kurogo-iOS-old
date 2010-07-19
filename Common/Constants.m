@@ -1,7 +1,7 @@
 #import "Constants.h"
 
 // common URLs
-#ifdef USE_MOBILE_DEV
+/*#ifdef USE_MOBILE_DEV
 NSString * const MITMobileWebDomainString =        @"localhost:8888";
 NSString * const MITMobileWebAPIURLString = @"http://localhost:8888/api/";
 #else
@@ -13,6 +13,21 @@ NSString * const MITMobileWebDomainString = @"localhost:8888";        //@"m.mit.
 NSString * const MITMobileWebAPIURLString = @"http://localhost:8888/api/"; //@"http://m.mit.edu/api/";
     #endif
 #endif
+*/
+
+#ifdef USE_MOBILE_DEV
+ NSString * const MITMobileWebDomainString =        @"184.106.197.212";
+ NSString * const MITMobileWebAPIURLString = @"http://184.106.197.212/api/";
+ #else
+ #ifdef USE_MOBILE_STAGE
+ NSString * const MITMobileWebDomainString = @"184.106.197.212";        //@"mobile-stage.mit.edu";
+ NSString * const MITMobileWebAPIURLString = @"http://184.106.197.212/api/"; //@"http://mobile-stage.mit.edu/api/";
+ #else
+ NSString * const MITMobileWebDomainString = @"184.106.197.212";        //@"m.mit.edu";
+ NSString * const MITMobileWebAPIURLString = @"http://184.106.197.212/api/"; //@"http://m.mit.edu/api/";
+ #endif
+ #endif
+ 
 
 // keys for NSUserDefaults dictionary go here (app preferences)
 NSString * const MITModuleTabOrderKey = @"MITModuleTabOrder";
