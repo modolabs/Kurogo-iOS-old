@@ -16,8 +16,8 @@ NSString * const MITMobileWebAPIURLString = @"http://localhost:8888/api/"; //@"h
 */
 
 #ifdef USE_MOBILE_DEV
- NSString * const MITMobileWebDomainString =        @"184.106.197.212";
- NSString * const MITMobileWebAPIURLString = @"http://184.106.197.212/api/";
+ NSString * const MITMobileWebDomainString =        @"localhost:8888";
+ NSString * const MITMobileWebAPIURLString = @"http://localhost:8888/api/";
  #else
  #ifdef USE_MOBILE_STAGE
  NSString * const MITMobileWebDomainString = @"184.106.197.212";        //@"mobile-stage.mit.edu";
