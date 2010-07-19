@@ -1,36 +1,44 @@
-#import "CalendarCategoriesViewController.h"
+//
+//  DiningHoursTableViewViewController.m
+//  MIT Mobile
+//
+//  Created by Muhammad Amjad on 7/19/10.
+//  Copyright 2010 Modo Labs. All rights reserved.
+//
+
+#import "DiningHoursTableViewController.h"
 
 
-@implementation CalendarCategoriesViewController
+@implementation DiningHoursTableViewViewController
 
-@synthesize categories;
+
+@synthesize diningHalls;
+@synthesize diningHallDetails;
+
+#pragma mark -
+#pragma mark Initialization
 
 /*
 - (id)initWithStyle:(UITableViewStyle)style {
     // Override initWithStyle: if you create the controller programmatically and want to perform customization that is not appropriate for viewDidLoad.
-    if (self = [super initWithStyle:style]) {
+    if ((self = [super initWithStyle:style])) {
     }
     return self;
 }
 */
 
 
+#pragma mark -
+#pragma mark View lifecycle
+
+/*
 - (void)viewDidLoad {
     [super viewDidLoad];
 
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
-
-	self.categories = nil;
-	
-	JSONAPIRequest *apiRequest = [JSONAPIRequest requestWithJSONAPIDelegate:self];
-	
-	[apiRequest requestObjectFromModule:@"calendar" 
-								command:@"categories" 
-							 parameters:nil];
-	
 }
-
+*/
 
 /*
 - (void)viewWillAppear:(BOOL)animated {
@@ -44,15 +52,14 @@
 */
 /*
 - (void)viewWillDisappear:(BOOL)animated {
-	[super viewWillDisappear:animated];
+    [super viewWillDisappear:animated];
 }
 */
 /*
 - (void)viewDidDisappear:(BOOL)animated {
-	[super viewDidDisappear:animated];
+    [super viewDidDisappear:animated];
 }
 */
-
 /*
 // Override to allow orientations other than the default portrait orientation.
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
@@ -61,32 +68,19 @@
 }
 */
 
-- (void)didReceiveMemoryWarning {
-	// Releases the view if it doesn't have a superview.
-    [super didReceiveMemoryWarning];
-	
-	// Release any cached data, images, etc that aren't in use.
-}
 
-- (void)viewDidUnload {
-	// Release any retained subviews of the main view.
-	// e.g. self.myOutlet = nil;
-}
-
-
-#pragma mark Table view methods
+#pragma mark -
+#pragma mark Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+    // Return the number of sections.
     return 1;
 }
 
 
-// Customize the number of rows in the table view.
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-	if (self.categories != nil) {
-		return [self.categories count];
-	}
-	return 0;
+    // Return the number of rows in the section.
+    return [self.diningHalls count];
 }
 
 
@@ -100,19 +94,11 @@
         cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
     }
     
-	NSDictionary *category = [self.categories objectAtIndex:indexPath.row];
-    // Set up the cell...
-	cell.textLabel.text = [category objectForKey:@"name"];
+    // Configure the cell...
+    int row = [indexPath row];
+	cell.textLabel.text = [[self.diningHalls objectAtIndex:row] objectForKey:@"name"];
 	
     return cell;
-}
-
-
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    // Navigation logic may go here. Create and push another view controller.
-	// AnotherViewController *anotherViewController = [[AnotherViewController alloc] initWithNibName:@"AnotherView" bundle:nil];
-	// [self.navigationController pushViewController:anotherViewController];
-	// [anotherViewController release];
 }
 
 
@@ -156,23 +142,52 @@
 */
 
 
+#pragma mark -
+#pragma mark Table view delegate
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    // Navigation logic may go here. Create and push another view controller.
+	/*
+	 <#DetailViewController#> *detailViewController = [[<#DetailViewController#> alloc] initWithNibName:@"<#Nib name#>" bundle:nil];
+     // ...
+     // Pass the selected object to the new view controller.
+	 [self.navigationController pushViewController:detailViewController animated:YES];
+	 [detailViewController release];
+	 */
+}
+
+
+#pragma mark -
+#pragma mark Memory management
+
+- (void)didReceiveMemoryWarning {
+    // Releases the view if it doesn't have a superview.
+    [super didReceiveMemoryWarning];
+    
+    // Relinquish ownership any cached data, images, etc that aren't in use.
+}
+
+- (void)viewDidUnload {
+    // Relinquish ownership of anything that can be recreated in viewDidLoad or on demand.
+    // For example: self.myOutlet = nil;
+}
+
+
 - (void)dealloc {
     [super dealloc];
 }
 
 
-- (void)request:(JSONAPIRequest *)request jsonLoaded:(id)result {
+#pragma mark -
+#pragma mark JSONLoadedDelegate Method
+
+- (void)request:(HarvardDiningAPI *)request jsonLoaded:(id)JSONObject;
+{
 	
-	if (result && [result isKindOfClass:[NSArray class]]) {
-		self.categories = result;
-		[self.tableView reloadData];
-	}
+	self.diningHalls = (NSArray *) JSONObject;	
+	
 }
 
-- (void)handleConnectionFailureForRequest:(JSONAPIRequest *)request
-{
-	NSLog(@"request failed");
-}
 
 @end
 
