@@ -1,5 +1,6 @@
 #import "PeopleRecentsData.h"
 #import "CoreDataManager.h"
+#import "PersonDetail.h"
 
 @implementation PeopleRecentsData
 
@@ -63,7 +64,7 @@ static PeopleRecentsData *instance = nil;
 	for (PersonDetails *person in [CoreDataManager fetchDataForAttribute:PersonDetailsEntityName 
 														  sortDescriptor:sortDescriptor]) {
 		// if the person's result was viewed over X days ago, remove it
-		if ([[person valueForKey:@"lastUpdate"] timeIntervalSinceNow] < -1500000) {
+		if ([[person actualValueForKey:@"lastUpdate"] timeIntervalSinceNow] < -1500000) {
 			[CoreDataManager deleteObject:person]; // this invokes saveData
 		} else {
 			[recents addObject:person]; // store in memory
@@ -82,38 +83,41 @@ static PeopleRecentsData *instance = nil;
 }
 
 + (PersonDetails *)updatePerson:(PersonDetails *)personDetails withSearchResult:(NSDictionary *)searchResult
-{
+{    
+	[personDetails setValue:[NSDate date] forKey:@"lastUpdate"];
+	
+	NSArray *fetchTags = [NSArray arrayWithObjects:
+						  @"uid", @"givenname", @"sn", @"title", @"ou", @"mail", @"telephonenumber", // @"homephone", 
+						  @"facsimiletelephonenumber", @"postaladdress", //@"room", @"address", @"city", @"state", 
+						  nil];
+	
+	for (NSString *key in fetchTags) {
+        // if someone has multiple emails/phones join them into a string
+        NSString *value = [PersonDetails joinedValueFromPersonDetailsJSONDict:searchResult forKey:key];
+		if (value) {
+            PersonDetail *personDetail = (PersonDetail *)[CoreDataManager insertNewObjectForEntityForName:PersonDetailEntityName];
+            personDetail.Value = value;
+            personDetail.DisplayName = [[searchResult objectForKey:key] objectForKey:@"DisplayName"];
+			// we need to figure out which fields return multiple values
+			[personDetails setValue:personDetail forKey:key];
+		}        
+	}
+
 	// the "id" field we receive from mobi is either the unix uid (more
 	// common) or something derived from another field (ldap "dn"), the
 	// former has an 8 char limit but until proven otherwise let's assume
 	// we can truncate the latter to 8 chars without sacrificing uniqueness
-	NSString *uid = [PersonDetails joinedValueFromPersonDetailsJSONDict:searchResult forKey:@"uid"];
+	NSString *uid = [personDetails actualValueForKey:@"uid"];
 	if (uid.length > 8) {
-		uid = [uid substringToIndex:8];	
-    }
-	[personDetails setValue:uid forKey:@"uid"];
-    
-	[personDetails setValue:[NSDate date] forKey:@"lastUpdate"];
-	
-	NSArray *fetchTags = [NSArray arrayWithObjects:
-						  @"givenname", @"sn", @"title", @"ou", @"mail", @"telephoneNumber", // @"homephone", 
-						  @"facsimileTelephoneNumber", @"postalAddress", //@"room", @"address", @"city", @"state", 
-						  nil];
-	
-	for (NSString *key in fetchTags) {
-        NSString *value = [PersonDetails joinedValueFromPersonDetailsJSONDict:searchResult forKey:key];
-		if (value) {
-			// if someone has multiple emails/phones join them into a string
-			// we need to figure out which fields return multiple values
-			[personDetails setValue:value forKey:key];
-		}
-	}
+		uid = [uid substringToIndex:8];
+        personDetails.uid.Value = uid;
+    }    
 	
 	// put latest person on top; remove if the person is already there
 	NSMutableArray *recentsData = [[self sharedData] recents];
 	for (NSInteger i = 0; i < [recentsData count]; i++) {
 		PersonDetails *oldPerson = [recentsData objectAtIndex:i];
-		if ([[oldPerson valueForKey:@"uid"] isEqualToString:[personDetails valueForKey:@"uid"]]) {
+		if ([[oldPerson actualValueForKey:@"uid"] isEqualToString:[personDetails actualValueForKey:@"uid"]]) {
 			[recentsData removeObjectAtIndex:i];
 			break;
 		}

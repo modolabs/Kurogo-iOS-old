@@ -4,6 +4,7 @@
 #import "PeopleDetailsViewController.h"
 #import "PeopleRecentsData.h"
 #import "PersonDetails.h"
+#import "PersonDetail.h"
 
 static NSString * const PeopleStateSearchBegin = @"search-begin";
 static NSString * const PeopleStateSearchComplete = @"search-complete";
@@ -47,7 +48,7 @@ static NSString * const PeopleStateDetail = @"detail";
 
 	} else if ([visibleVC isMemberOfClass:[PeopleDetailsViewController class]]) {
 		PeopleDetailsViewController *detailVC = (PeopleDetailsViewController *)visibleVC;
-		[url setPath:PeopleStateDetail query:detailVC.personDetails.uid];
+		[url setPath:PeopleStateDetail query:detailVC.personDetails.uid.Value];
 	}
 	
 	[url setAsModulePath];

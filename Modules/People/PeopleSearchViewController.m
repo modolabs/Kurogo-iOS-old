@@ -339,14 +339,16 @@ NSInteger strLenSort(NSString *str1, NSString *str2, void *context)
 			cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 
 			PersonDetails *recent = [[[PeopleRecentsData sharedData] recents] objectAtIndex:indexPath.row];
-			cell.textLabel.text = [NSString stringWithFormat:@"%@ %@", [recent valueForKey:@"givenname"], [recent valueForKey:@"sn"]];
+			cell.textLabel.text = [NSString stringWithFormat:@"%@ %@", 
+                                   [recent actualValueForKey:@"givenname"], 
+                                   [recent actualValueForKey:@"sn"]];
 			
 			// show person's title, dept, or email as cell's subtitle text
 			cell.detailTextLabel.text = @" "; // put something there so other cells' contents won't get drawn here
 			NSArray *displayPriority = [NSArray arrayWithObjects:@"title", @"ou", nil];
 			NSString *displayText;
 			for (NSString *tag in displayPriority) {
-				if (displayText = [recent valueForKey:tag]) {
+				if (displayText = [recent displayNameForKey:tag]) {
 					cell.detailTextLabel.text = displayText;
 					break;
 				}
@@ -363,12 +365,12 @@ NSInteger strLenSort(NSString *str1, NSString *str2, void *context)
 			
 		NSDictionary *searchResult = [self.searchResults objectAtIndex:indexPath.row];
 		NSString *fullname = 
-        [[PersonDetails realValueFromPersonDetailsJSONDict:searchResult forKey:@"cn"] objectAtIndex:0];
+        [[PersonDetails realValuesFromPersonDetailsJSONDict:searchResult forKey:@"cn"] objectAtIndex:0];
 		
 		// figure out which field (if any) to display as subtitle
 		// display priority: title, dept
 		cell.detailTextLabel.text = @" "; // if this is empty textlabel will be bottom aligned
-		NSArray *detailAttributeArray = [PersonDetails realValueFromPersonDetailsJSONDict:searchResult forKey:@"title"];
+		NSArray *detailAttributeArray = [PersonDetails realValuesFromPersonDetailsJSONDict:searchResult forKey:@"title"];
 		if ([detailAttributeArray count] > 0) {
 			cell.detailTextLabel.text = [detailAttributeArray objectAtIndex:0];
 		}

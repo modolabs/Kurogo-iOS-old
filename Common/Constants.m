@@ -80,6 +80,7 @@ NSString * const NewsCategoryEntityName = @"NewsCategory";
 NSString * const NewsImageEntityName = @"NewsImage";
 NSString * const NewsImageRepEntityName = @"NewsImageRep";
 NSString * const PersonDetailsEntityName = @"PersonDetails";
+NSString * const PersonDetailEntityName = @"PersonDetail";
 NSString * const StellarCourseEntityName = @"StellarCourse";
 NSString * const StellarClassEntityName = @"StellarClass";
 NSString * const StellarClassTimeEntityName = @"StellarClassTime";

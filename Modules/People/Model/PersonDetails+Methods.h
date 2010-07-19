@@ -5,8 +5,13 @@
 
 @interface PersonDetails (Methods)
 
+// "Actual" value as in not a PersonDetail object, but rather the value it contains if in fact
+// a PersonDetail object is stored with the given key.
+- (id)actualValueForKey:(NSString *)key;
+- (NSString *)formattedValueForKey:(NSString *)key;
+- (NSString *)displayNameForKey:(NSString *)key;
 + (PersonDetails *)retrieveOrCreate:(NSDictionary *)selectedResult;
-+ (id)realValueFromPersonDetailsJSONDict:(NSDictionary *)jsonDict forKey:(NSString *)key;
++ (NSArray *)realValuesFromPersonDetailsJSONDict:(NSDictionary *)jsonDict forKey:(NSString *)key;
 + (NSString *)joinedValueFromPersonDetailsJSONDict:(NSDictionary *)jsonDict forKey:(NSString *)key;
 
 @end

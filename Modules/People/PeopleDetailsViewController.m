@@ -20,9 +20,9 @@
 	// get fullname for header
 	NSMutableArray *multiPartAttribute = [[NSMutableArray alloc] initWithCapacity:2];	
 	NSString *value;
-	if (value = [self.personDetails valueForKey:@"givenname"])
+	if (value = [self.personDetails actualValueForKey:@"givenname"])
 		[multiPartAttribute addObject:value];
-	if (value = [self.personDetails valueForKey:@"sn"])
+	if (value = [self.personDetails actualValueForKey:@"sn"])
 		[multiPartAttribute addObject:value];
 	self.fullname = [multiPartAttribute componentsJoinedByString:@" "];
 	[multiPartAttribute release];
@@ -31,9 +31,9 @@
 	self.sectionArray = [[NSMutableArray alloc] init];
 	
 	NSArray *jobSection = [NSArray arrayWithObjects:@"title", @"ou", nil];
-	NSArray *phoneSection = [NSArray arrayWithObjects:@"telephoneNumber", @"facsimileTelephoneNumber", nil];
+	NSArray *phoneSection = [NSArray arrayWithObjects:@"telephonenumber", @"facsimiletelephonenumber", nil];
 	NSArray *emailSection = [NSArray arrayWithObject:@"mail"];
-	NSArray *officeSection = [NSArray arrayWithObject:@"postalAddress"];//, @"room", nil];
+	NSArray *officeSection = [NSArray arrayWithObject:@"postaladdress"];//, @"room", nil];
 	
 	NSArray *sectionCandidates = [NSArray arrayWithObjects:jobSection, emailSection, phoneSection, officeSection, nil];
 	
@@ -45,17 +45,17 @@
 		// each element of currentSection will be a 2-array of NSString *tag and NSString *value
 		currentSection = [[NSMutableArray alloc] init];
 		for (NSString *ldapTag in section) {
-			ldapValue = [self.personDetails valueForKey:ldapTag];
-			displayTag = ldapTag;
+			ldapValue = [self.personDetails formattedValueForKey:ldapTag];
+			displayTag = [self.personDetails displayNameForKey:ldapTag];
 			
-			if (ldapValue != nil) {
+			if ([ldapValue length] > 0) {
 				// create one tag/label pair for each email/phone/office label
 				if ([ldapTag isEqualToString:@"mail"] || 
-					[ldapTag isEqualToString:@"telephoneNumber"] ||
+					[ldapTag isEqualToString:@"telephonenumber"] ||
 					//[ldapTag isEqualToString:@"room"] || 
-					[ldapTag isEqualToString:@"office"]) {
+					[ldapTag isEqualToString:@"postalAddress"]) {
 					for (NSString *value in [ldapValue componentsSeparatedByString:@","])
-						[currentSection addObject:[NSArray arrayWithObjects:ldapTag, value, nil]];
+						[currentSection addObject:[NSArray arrayWithObjects:displayTag, value, nil]];
 					continue;
 				}
 				[currentSection addObject:[NSArray arrayWithObjects:displayTag, ldapValue, nil]];
@@ -85,7 +85,7 @@
 	
 	// if lastUpdate is sufficiently long ago, issue a background search
 	// TODO: change this time interval to something more reasonable
-	if ([[self.personDetails valueForKey:@"lastUpdate"] timeIntervalSinceNow] < -300) { // 5 mins for testing
+	if ([[self.personDetails actualValueForKey:@"lastUpdate"] timeIntervalSinceNow] < -300) { // 5 mins for testing
 		if ([ConnectionDetector isConnected]) {
 			// issue this query but don't care too much if it fails
 			JSONAPIRequest *api = [JSONAPIRequest requestWithJSONAPIDelegate:self];
@@ -116,7 +116,7 @@
 - (void)request:(JSONAPIRequest *)request jsonLoaded:(id)result {
 	if (result && [result isKindOfClass:[NSArray class]]) { // fail silently
 		for (NSDictionary *entry in result) {
-			if ([[entry objectForKey:@"id"] isEqualToString:[self.personDetails valueForKey:@"uid"]]) {
+			if ([[entry objectForKey:@"id"] isEqualToString:[self.personDetails actualValueForKey:@"uid"]]) {
 				self.personDetails = [PeopleRecentsData updatePerson:self.personDetails withSearchResult:entry];
 				[self.tableView reloadData];
 			}
@@ -189,7 +189,7 @@
 		
 		if ([tag isEqualToString:@"mail"]) {
             cell.accessoryView = [UIImageView accessoryViewWithMITType:MITAccessoryViewEmail];
-		} else if ([tag isEqualToString:@"telephoneNumber"]) {
+		} else if ([tag isEqualToString:@"telephonenumber"]) {
             cell.accessoryView = [UIImageView accessoryViewWithMITType:MITAccessoryViewPhone];
 		} else if ([tag isEqualToString:@"office"]) {//|| [tag isEqualToString:@"room"]) {
             cell.accessoryView = [UIImageView accessoryViewWithMITType:MITAccessoryViewMap];
@@ -215,7 +215,7 @@
 	NSString *data = [personInfo objectAtIndex:1];
 	// the following may be off by a pixel or 2 for different OS versions
 	// in the future we should prepare for the general case where widths can be way different (including flipping orientation)
-	CGFloat labelWidth = ([tag isEqualToString:@"telephoneNumber"] || [tag isEqualToString:@"mail"] || [tag isEqualToString:@"office"]) ? 182.0 : 207.0;
+	CGFloat labelWidth = ([tag isEqualToString:@"telephonenumber"] || [tag isEqualToString:@"mail"] || [tag isEqualToString:@"office"]) ? 182.0 : 207.0;
 	
 	CGSize labelSize = [data sizeWithFont:[UIFont boldSystemFontOfSize:15.0]
 						constrainedToSize:CGSizeMake(labelWidth, 2009.0f)
@@ -235,18 +235,18 @@
 			NSString *value;
 		
 			// set single value properties
-			if (value = [self.personDetails valueForKey:@"givenname"])
+			if (value = [self.personDetails actualValueForKey:@"givenname"])
 				ABRecordSetValue(person, kABPersonFirstNameProperty, value, &error);
-			if (value = [self.personDetails valueForKey:@"sn"])
+			if (value = [self.personDetails actualValueForKey:@"sn"])
 				ABRecordSetValue(person, kABPersonLastNameProperty, value, &error);
-			if (value = [self.personDetails valueForKey:@"title"])
+			if (value = [self.personDetails actualValueForKey:@"title"])
 				ABRecordSetValue(person, kABPersonJobTitleProperty, value, &error);
-			if (value = [self.personDetails valueForKey:@"ou"])
+			if (value = [self.personDetails actualValueForKey:@"ou"])
 				ABRecordSetValue(person, kABPersonDepartmentProperty, value, &error);
 		
 			// set multivalue properties: email and phone numbers
 			ABMutableMultiValueRef multiEmail = ABMultiValueCreateMutable(kABMultiStringPropertyType);
-			if (value = [self.personDetails valueForKey:@"mail"]) {
+			if (value = [self.personDetails actualValueForKey:@"mail"]) {
 				for (NSString *email in [value componentsSeparatedByString:@","])
 					ABMultiValueAddValueAndLabel(multiEmail, email, kABWorkLabel, NULL);
 				ABRecordSetValue(person, kABPersonEmailProperty, multiEmail, &error);
@@ -255,13 +255,13 @@
 		
 			BOOL haveValues = NO;
 			ABMutableMultiValueRef multiPhone = ABMultiValueCreateMutable(kABMultiStringPropertyType);
-			if (value = [self.personDetails valueForKey:@"telephoneNumber"]) {
+			if (value = [self.personDetails actualValueForKey:@"telephonenumber"]) {
 				for (NSString *phone in [value componentsSeparatedByString:@","])
 					ABMultiValueAddValueAndLabel(multiPhone, phone, kABWorkLabel, NULL);
 				ABRecordSetValue(person, kABPersonPhoneProperty, multiPhone, &error);
 				haveValues = YES;
 			}
-			if (value = [self.personDetails valueForKey:@"facsimileTelephoneNumber"]) {
+			if (value = [self.personDetails actualValueForKey:@"facsimiletelephonenumber"]) {
 				ABMultiValueAddValueAndLabel(multiPhone, value, kABPersonPhoneWorkFAXLabel, NULL);
 				haveValues = YES;
 			}
@@ -301,7 +301,7 @@
 		
 		if ([tag isEqualToString:@"mail"])
 			[self emailIconTapped:[personInfo objectAtIndex:1]];
-		else if ([tag isEqualToString:@"telephoneNumber"])
+		else if ([tag isEqualToString:@"telephonenumber"])
 			[self phoneIconTapped:[personInfo objectAtIndex:1]];
 		else if ([tag isEqualToString:@"office"])
 			[self mapIconTapped:[personInfo objectAtIndex:1]];
@@ -359,7 +359,7 @@
 		ABRecordSetValue(newPerson, kABPersonFirstNameProperty, recordValue, &error);
         CFRelease(recordValue);
     }
-	else if (ldapValue = [self.personDetails valueForKey:@"givenname"])
+	else if (ldapValue = [self.personDetails actualValueForKey:@"givenname"])
 		ABRecordSetValue(newPerson, kABPersonFirstNameProperty, ldapValue, &error);
 	
     recordValue = ABRecordCopyValue(person, kABPersonLastNameProperty);
@@ -367,7 +367,7 @@
         ABRecordSetValue(newPerson, kABPersonLastNameProperty, recordValue, &error);
         CFRelease(recordValue);
     }
-	else if (ldapValue = [self.personDetails valueForKey:@"sn"])
+	else if (ldapValue = [self.personDetails actualValueForKey:@"sn"])
 		ABRecordSetValue(newPerson, kABPersonLastNameProperty, ldapValue, &error);
 	
     recordValue = ABRecordCopyValue(person, kABPersonJobTitleProperty);
@@ -375,7 +375,7 @@
         ABRecordSetValue(newPerson, kABPersonJobTitleProperty, recordValue, &error);
         CFRelease(recordValue);
     }
-	else if (ldapValue = [self.personDetails valueForKey:@"title"])
+	else if (ldapValue = [self.personDetails actualValueForKey:@"title"])
 		ABRecordSetValue(newPerson, kABPersonJobTitleProperty, ldapValue, &error);
 	
     recordValue = ABRecordCopyValue(person, kABPersonDepartmentProperty);
@@ -383,21 +383,21 @@
         ABRecordSetValue(newPerson, kABPersonDepartmentProperty, recordValue, &error);
         CFRelease(recordValue);
     }
-	else if (ldapValue = [self.personDetails valueForKey:@"ou"])
+	else if (ldapValue = [self.personDetails actualValueForKey:@"ou"])
 		ABRecordSetValue(newPerson, kABPersonDepartmentProperty, ldapValue, &error);
 		
 	// multi value phone property
 	ABMultiValueRef multi = ABRecordCopyValue(person, kABPersonPhoneProperty);
 	ABMutableMultiValueRef phone = ABMultiValueCreateMutableCopy(multi);
 	NSArray *existingPhones = (NSArray *)ABMultiValueCopyArrayOfAllValues(phone);
-	if (ldapValue = [self.personDetails valueForKey:@"telephoneNumber"]) {
+	if (ldapValue = [self.personDetails actualValueForKey:@"telephonenumber"]) {
 		for (NSString *value in [ldapValue componentsSeparatedByString:@","]) {
 			if (![existingPhones containsObject:value]) {
 				ABMultiValueAddValueAndLabel(phone, value, kABWorkLabel, NULL);
 			}
 		}
 	}
-	if ((ldapValue = [self.personDetails valueForKey:@"facsimileTelephoneNumber"]) && ![existingPhones containsObject:ldapValue]) {
+	if ((ldapValue = [self.personDetails actualValueForKey:@"facsimiletelephonenumber"]) && ![existingPhones containsObject:ldapValue]) {
 		ABMultiValueAddValueAndLabel(phone, ldapValue, kABPersonPhoneWorkFAXLabel, NULL);
 	}
 	ABRecordSetValue(newPerson, kABPersonPhoneProperty, phone, &error);
@@ -409,7 +409,7 @@
 	multi = ABRecordCopyValue(person, kABPersonEmailProperty);
 	ABMutableMultiValueRef email = ABMultiValueCreateMutableCopy(multi);
 	NSArray *existingEmails = (NSArray *)ABMultiValueCopyArrayOfAllValues(email);
-	if (ldapValue = [self.personDetails valueForKey:@"mail"]) {
+	if (ldapValue = [self.personDetails actualValueForKey:@"mail"]) {
 		for (NSString *value in [ldapValue componentsSeparatedByString:@","]) {
 			if (![existingEmails containsObject:value]) {
 				ABMultiValueAddValueAndLabel(email, value, kABWorkLabel, NULL);

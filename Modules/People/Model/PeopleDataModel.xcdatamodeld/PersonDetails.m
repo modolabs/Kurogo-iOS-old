@@ -1,16 +1,18 @@
 #import "PersonDetails.h"
 
+#import "PersonDetail.h"
 
 @implementation PersonDetails 
 
-@dynamic telephoneNumber;
-@dynamic uid;
-@dynamic facsimileTelephoneNumber;
-@dynamic postalAddress;
-@dynamic title;
-@dynamic mail;
 @dynamic lastUpdate;
+@dynamic mail;
+@dynamic cn;
+@dynamic uid;
+@dynamic facsimiletelephonenumber;
+@dynamic title;
+@dynamic telephonenumber;
 @dynamic sn;
+@dynamic postaladdress;
 @dynamic ou;
 @dynamic givenname;
 

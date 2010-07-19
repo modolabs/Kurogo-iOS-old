@@ -138,8 +138,9 @@
 		44C1A4C511A412E2000FD653 /* MapSearch.m in Sources */ = {isa = PBXBuildFile; fileRef = 44C1A4C311A412E2000FD653 /* MapSearch.m */; };
 		A69A28A811F0258800B1D365 /* PersonDetails+Methods.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = A69A28A611F0258800B1D365 /* PersonDetails+Methods.h */; settings = {JAVA_ARCHIVE_SUBDIR = Modules/People/Model; }; };
 		A69A28A911F0258800B1D365 /* PersonDetails+Methods.m in Sources */ = {isa = PBXBuildFile; fileRef = A69A28A711F0258800B1D365 /* PersonDetails+Methods.m */; };
-		A69A290111F02E5100B1D365 /* PersonDetails.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = A69A28FF11F02E5100B1D365 /* PersonDetails.h */; settings = {JAVA_ARCHIVE_SUBDIR = Modules/People/Model/PeopleDataModel.xcdatamodeld; }; };
-		A69A290211F02E5100B1D365 /* PersonDetails.m in Sources */ = {isa = PBXBuildFile; fileRef = A69A290011F02E5100B1D365 /* PersonDetails.m */; };
+		A69A2BD711F4C36400B1D365 /* PersonDetail.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = A69A2BD311F4C36400B1D365 /* PersonDetail.h */; settings = {JAVA_ARCHIVE_SUBDIR = Modules/People/Model/PeopleDataModel.xcdatamodeld; }; };
+		A69A2BD811F4C36400B1D365 /* PersonDetail.m in Sources */ = {isa = PBXBuildFile; fileRef = A69A2BD411F4C36400B1D365 /* PersonDetail.m */; };
+		A6D5498811F4E6D00048CEDB /* PersonDetails.m in Sources */ = {isa = PBXBuildFile; fileRef = A69A2BD211F4C36400B1D365 /* PersonDetails.m */; };
 		BD1E9309103B5D60004429AA /* NSObject+SBJSON.m in Sources */ = {isa = PBXBuildFile; fileRef = BD1E92F6103B5D60004429AA /* NSObject+SBJSON.m */; };
 		BD1E930A103B5D60004429AA /* NSString+SBJSON.m in Sources */ = {isa = PBXBuildFile; fileRef = BD1E92F8103B5D60004429AA /* NSString+SBJSON.m */; };
 		BD1E930B103B5D60004429AA /* SBJSON.m in Sources */ = {isa = PBXBuildFile; fileRef = BD1E92FA103B5D60004429AA /* SBJSON.m */; };
@@ -626,8 +627,10 @@
 		8D1107310486CEB800E47090 /* MIT_Mobile-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "MIT_Mobile-Info.plist"; plistStructureDefinitionIdentifier = "com.apple.xcode.plist.structure-definition.iphone.info-plist"; sourceTree = "<group>"; };
 		A69A28A611F0258800B1D365 /* PersonDetails+Methods.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "PersonDetails+Methods.h"; sourceTree = "<group>"; };
 		A69A28A711F0258800B1D365 /* PersonDetails+Methods.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "PersonDetails+Methods.m"; sourceTree = "<group>"; };
-		A69A28FF11F02E5100B1D365 /* PersonDetails.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PersonDetails.h; sourceTree = "<group>"; };
-		A69A290011F02E5100B1D365 /* PersonDetails.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PersonDetails.m; sourceTree = "<group>"; };
+		A69A2BD111F4C36400B1D365 /* PersonDetails.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PersonDetails.h; sourceTree = "<group>"; };
+		A69A2BD211F4C36400B1D365 /* PersonDetails.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PersonDetails.m; sourceTree = "<group>"; };
+		A69A2BD311F4C36400B1D365 /* PersonDetail.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PersonDetail.h; sourceTree = "<group>"; };
+		A69A2BD411F4C36400B1D365 /* PersonDetail.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PersonDetail.m; sourceTree = "<group>"; };
 		BD1E92F4103B5D60004429AA /* JSON.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JSON.h; sourceTree = "<group>"; };
 		BD1E92F5103B5D60004429AA /* NSObject+SBJSON.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+SBJSON.h"; sourceTree = "<group>"; };
 		BD1E92F6103B5D60004429AA /* NSObject+SBJSON.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+SBJSON.m"; sourceTree = "<group>"; };
@@ -1978,7 +1981,7 @@
 				EB6D133311EE4A9C00B65CE3 /* MKMapView+ArcGISAdditions.h in JavaArchive */,
 				EB6D141511EE979500B65CE3 /* NewsCategory.h in JavaArchive */,
 				A69A28A811F0258800B1D365 /* PersonDetails+Methods.h in JavaArchive */,
-				A69A290111F02E5100B1D365 /* PersonDetails.h in JavaArchive */,
+				A69A2BD711F4C36400B1D365 /* PersonDetail.h in JavaArchive */,
 				C727B53A11F4E245007D53BB /* CalendarCategoriesViewController.h in JavaArchive */,
 				C727B56E11F4E551007D53BB /* DiningHoursTableViewController.h in JavaArchive */,
 			);
@@ -2400,9 +2403,10 @@
 				EB6D133411EE4A9C00B65CE3 /* MKMapView+ArcGISAdditions.m in Sources */,
 				EB6D141611EE979500B65CE3 /* NewsCategory.m in Sources */,
 				A69A28A911F0258800B1D365 /* PersonDetails+Methods.m in Sources */,
-				A69A290211F02E5100B1D365 /* PersonDetails.m in Sources */,
+				A69A2BD811F4C36400B1D365 /* PersonDetail.m in Sources */,
 				C727B53B11F4E245007D53BB /* CalendarCategoriesViewController.m in Sources */,
 				C727B56F11F4E551007D53BB /* DiningHoursTableViewController.m in Sources */,
+				A6D5498811F4E6D00048CEDB /* PersonDetails.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2810,8 +2814,10 @@
 			isa = XCVersionGroup;
 			children = (
 				EBAA9F6210FFAB8B003379A5 /* PeopleDataModel 5.xcdatamodel */,
-				A69A28FF11F02E5100B1D365 /* PersonDetails.h */,
-				A69A290011F02E5100B1D365 /* PersonDetails.m */,
+				A69A2BD111F4C36400B1D365 /* PersonDetails.h */,
+				A69A2BD211F4C36400B1D365 /* PersonDetails.m */,
+				A69A2BD311F4C36400B1D365 /* PersonDetail.h */,
+				A69A2BD411F4C36400B1D365 /* PersonDetail.m */,
 			);
 			currentVersion = EBAA9F6210FFAB8B003379A5 /* PeopleDataModel 5.xcdatamodel */;
 			path = PeopleDataModel.xcdatamodeld;
