@@ -60,10 +60,11 @@ NSString * const NewsTagImage           = @"image";
 NSString * const NewsTagImageTitle      = @"title";
 NSString * const NewsTagImageLink       = @"link";
 NSString * const NewsTagFullURL         = @"url";
+NSString * const NewsTagThumbnailURL    = @"url";
 
 // stuff to remove
 NSString * const NewsTagOtherImages     = @"otherImages";
-NSString * const NewsTagThumbnailURL    = @"thumbURL";
+//NSString * const NewsTagThumbnailURL    = @"thumbURL";
 NSString * const NewsTagSmallURL        = @"smallURL";
 //NSString * const NewsTagFullURL         = @"fullURL";
 NSString * const NewsTagImageCredits    = @"imageCredits";
@@ -306,14 +307,12 @@ NSString * const NewsTagImageHeight     = @"height";
                            NewsTagImageWidth,
                            NewsTagImageHeight, nil] retain];
 
-        /*
         imageWhitelist = [[NSArray arrayWithObjects:
                       NewsTagThumbnailURL,
-                      NewsTagSmallURL,
-                      NewsTagFullURL,
-                      NewsTagImageCredits,
-                      NewsTagImageCaption, nil] retain];
-         */
+                      //NewsTagSmallURL,
+                      //NewsTagFullURL,
+                      //NewsTagImageCredits,
+                      /*NewsTagImageCaption,*/ nil] retain];
     }
     return imageWhitelist;
 }
