@@ -179,6 +179,7 @@
 		calendarVC.activeEventList = listType;
 		calendarVC.showList = showList;
 
+		//NSNumber *catID = (listType == CalendarEventListTypeExhibits) ? [NSNumber numberWithInt:kCalendarExhibitCategoryID] : nil;
 		NSNumber *catID = (listType == CalendarEventListTypeExhibits) ? [NSNumber numberWithInt:kCalendarExhibitCategoryID] : nil;
 		calendarVC.events = [CalendarDataManager eventsWithStartDate:calendarVC.startDate listType:listType category:catID];
 		

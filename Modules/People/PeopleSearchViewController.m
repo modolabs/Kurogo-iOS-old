@@ -13,6 +13,7 @@
 // external modules
 #import "Foundation+MITAdditions.h"
 #import "UIKit+MITAdditions.h"
+#import "NSArray+Convenience.h"
 
 // this function puts longer strings first
 NSInteger strLenSort(NSString *str1, NSString *str2, void *context)
@@ -62,7 +63,7 @@ NSInteger strLenSort(NSString *str1, NSString *str2, void *context)
 	self.searchController.searchResultsDelegate = self;
 	self.searchController.searchResultsDataSource = self;
 	
-	static NSString *searchHints = @"Sample searches:\nName: 'john harvard', 'harvard'\nEmail: 'jharvard', 'jharvard@harvard.edu'\nPhone: '6172531000', '31000'";
+	static NSString *searchHints = @"Sample searches:\nName: 'john harvard', 'harvard'\nEmail: 'jharvard', 'jharvard@harvard.edu'\nPhone: '6174951000', '51000'";
 
 	UIFont *hintsFont = [UIFont systemFontOfSize:[UIFont systemFontSize]];
 	CGSize labelSize = [searchHints sizeWithFont:hintsFont
@@ -320,7 +321,7 @@ NSInteger strLenSort(NSString *str1, NSString *str2, void *context)
 
 				if (indexPath.row == 0) {
 					cell.textLabel.text = @"Phone Directory";
-					[(SecondaryGroupedTableViewCell *)cell secondaryTextLabel].text = @"(617.253.1000)";
+					[(SecondaryGroupedTableViewCell *)cell secondaryTextLabel].text = @"(617.495.1000)";
 					cell.accessoryView = [UIImageView accessoryViewWithMITType:MITAccessoryViewPhone];
 				} else {
 					cell.textLabel.text = @"Emergency Contacts";
@@ -338,7 +339,7 @@ NSInteger strLenSort(NSString *str1, NSString *str2, void *context)
 			[cell applyStandardFonts];
 			cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 
-			PersonDetails *recent = [[[PeopleRecentsData sharedData] recents] objectAtIndex:indexPath.row];
+			PersonDetails *recent = [[[PeopleRecentsData sharedData] recents] safeObjectAtIndex:indexPath.row];
 			cell.textLabel.text = [NSString stringWithFormat:@"%@ %@", 
                                    [recent actualValueForKey:@"givenname"], 
                                    [recent actualValueForKey:@"sn"]];
@@ -348,7 +349,7 @@ NSInteger strLenSort(NSString *str1, NSString *str2, void *context)
 			NSArray *displayPriority = [NSArray arrayWithObjects:@"title", @"ou", nil];
 			NSString *displayText;
 			for (NSString *tag in displayPriority) {
-				if (displayText = [recent displayNameForKey:tag]) {
+				if (displayText = [recent actualValueForKey:tag]) {
 					cell.detailTextLabel.text = displayText;
 					break;
 				}
@@ -363,12 +364,12 @@ NSInteger strLenSort(NSString *str1, NSString *str2, void *context)
 			cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 		}
 			
-		NSDictionary *searchResult = [self.searchResults objectAtIndex:indexPath.row];
+		NSDictionary *searchResult = [self.searchResults safeObjectAtIndex:indexPath.row];
 		NSString *fullname = @"";
         NSArray *namesFromJSON = [PersonDetails realValuesFromPersonDetailsJSONDict:searchResult forKey:@"cn"];
         if ([namesFromJSON count] > 0)
         {
-            fullname = [namesFromJSON objectAtIndex:0];
+            fullname = [namesFromJSON safeObjectAtIndex:0];
         }
 		
 		// figure out which field (if any) to display as subtitle
@@ -376,7 +377,7 @@ NSInteger strLenSort(NSString *str1, NSString *str2, void *context)
 		cell.detailTextLabel.text = @" "; // if this is empty textlabel will be bottom aligned
 		NSArray *detailAttributeArray = [PersonDetails realValuesFromPersonDetailsJSONDict:searchResult forKey:@"title"];
 		if ([detailAttributeArray count] > 0) {
-			cell.detailTextLabel.text = [detailAttributeArray objectAtIndex:0];
+			cell.detailTextLabel.text = [detailAttributeArray safeObjectAtIndex:0];
 		}
 		
 		// in this section we try to highlight the parts of the results that match the search terms
@@ -462,10 +463,10 @@ NSInteger strLenSort(NSString *str1, NSString *str2, void *context)
 		PersonDetails *personDetails;
 		PeopleDetailsViewController *detailView = [[PeopleDetailsViewController alloc] initWithStyle:UITableViewStyleGrouped];
 		if (tableView == self.searchController.searchResultsTableView) {
-			NSDictionary *selectedResult = [self.searchResults objectAtIndex:indexPath.row];
+			NSDictionary *selectedResult = [self.searchResults safeObjectAtIndex:indexPath.row];
 			personDetails = [PersonDetails retrieveOrCreate:selectedResult];
 		} else {
-			personDetails = [[[PeopleRecentsData sharedData] recents] objectAtIndex:indexPath.row];
+			personDetails = [[[PeopleRecentsData sharedData] recents] safeObjectAtIndex:indexPath.row];
 		}
 		detailView.personDetails = personDetails;
 		[self.navigationController pushViewController:detailView animated:YES];
@@ -574,19 +575,19 @@ NSInteger strLenSort(NSString *str1, NSString *str2, void *context)
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
 	if (buttonIndex != [alertView cancelButtonIndex]) { // user hit "Dial"
-		NSURL *externURL = [NSURL URLWithString:@"tel://6172531000"];
+		NSURL *externURL = [NSURL URLWithString:@"tel://6174951000"];
 		[[UIApplication sharedApplication] openURL:externURL];
 	}
 }
 */
 - (void)phoneIconTapped
 {
-	NSURL *externURL = [NSURL URLWithString:@"tel://6172531000"];
+	NSURL *externURL = [NSURL URLWithString:@"tel://6174951000"];
 	if ([[UIApplication sharedApplication] canOpenURL:externURL])
 		[[UIApplication sharedApplication] openURL:externURL];
 	
 	/*
-	UIAlertView *alert = [[[UIAlertView alloc] initWithTitle:@"Dial 6172531000?" 
+	UIAlertView *alert = [[[UIAlertView alloc] initWithTitle:@"Dial 6174951000?" 
 													 message:@"" 
 													delegate:self
 										   cancelButtonTitle:@"Cancel" 

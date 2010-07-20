@@ -47,9 +47,13 @@
 
 NSInteger tabRequestingInfo; // In order to prevent Race conditions for the selected tab and JSONDelegate loaded data
 
+BOOL requestDispatched = NO;
+HarvardDiningAPI *mitapi;
 
 -(void)requestBreakfastData
 {
+	if (requestDispatched == YES)
+		[mitapi abortRequest];
 
 	[_tabViews removeObjectAtIndex:kBreakfastTab];
 	[_tabViews insertObject:_loadingResultView atIndex:kBreakfastTab];
@@ -62,7 +66,8 @@ NSInteger tabRequestingInfo; // In order to prevent Race conditions for the sele
 	NSString *dateString = [dateFormat stringFromDate:self.todayDate];
 	[dateFormat release];
 
-	HarvardDiningAPI *mitapi = [[HarvardDiningAPI alloc] initWithJSONLoadedDelegate:self];	
+	mitapi = [[HarvardDiningAPI alloc] initWithJSONLoadedDelegate:self];	
+	
 	/*
 	NSString *bkfst = [dateString stringByAppendingString:@"&meal=Breakfast&output=json"];
 	
@@ -82,13 +87,17 @@ NSInteger tabRequestingInfo; // In order to prevent Race conditions for the sele
 	{
 		// set the requesting Tab index to the correct one
 		tabRequestingInfo = kBreakfastTab;	
+		requestDispatched = YES;
 	}
 	
-	[mitapi release];
+	//[mitapi release];
 }
 
 -(void)requestLunchData
 {
+	if (requestDispatched == YES)
+		[mitapi abortRequest];
+	
 	[_tabViews removeObjectAtIndex:kLunchTab];
 	[_tabViews insertObject:_loadingResultView atIndex:kLunchTab];
 	[_tabViewContainer addSubview:_loadingResultView];
@@ -100,7 +109,8 @@ NSInteger tabRequestingInfo; // In order to prevent Race conditions for the sele
 	NSString *dateString = [dateFormat stringFromDate:self.todayDate];
 	[dateFormat release];
 	
-	HarvardDiningAPI *mitapi = [[HarvardDiningAPI alloc] initWithJSONLoadedDelegate:self];	
+	mitapi = [[HarvardDiningAPI alloc] initWithJSONLoadedDelegate:self];	
+	
 	/*
 	NSString *lunch = [dateString stringByAppendingString:@"&meal=Lunch&output=json"];
 	
@@ -120,15 +130,19 @@ NSInteger tabRequestingInfo; // In order to prevent Race conditions for the sele
 	{
 		// set the requesting Tab index to the correct one
 		tabRequestingInfo = kLunchTab;	
+		requestDispatched = YES;
 	}
 	
-	[mitapi release];
+	//[mitapi release];
 	
 	
 }
 
 -(void)requestDinnerData
 {
+	if (requestDispatched == YES)
+		[mitapi abortRequest];
+	
 	[_tabViews removeObjectAtIndex:kDinnerTab];
 	[_tabViews insertObject:_loadingResultView atIndex:kDinnerTab];
 	[_tabViewContainer addSubview:_loadingResultView];
@@ -140,7 +154,8 @@ NSInteger tabRequestingInfo; // In order to prevent Race conditions for the sele
 	NSString *dateString = [dateFormat stringFromDate:self.todayDate];
 	[dateFormat release];
 	
-	HarvardDiningAPI *mitapi = [[HarvardDiningAPI alloc] initWithJSONLoadedDelegate:self];	
+	mitapi = [[HarvardDiningAPI alloc] initWithJSONLoadedDelegate:self];	
+	
 	/*
 	NSString *dinner = [dateString stringByAppendingString:@"&meal=Dinner&output=json"];
 	
@@ -160,9 +175,10 @@ NSInteger tabRequestingInfo; // In order to prevent Race conditions for the sele
 	{
 		// set the requesting Tab index to the correct one
 		tabRequestingInfo = kDinnerTab;	
+		requestDispatched = YES;
 	}
 	
-	[mitapi release];
+	//[mitapi release];
 	
 }
 
@@ -294,8 +310,8 @@ NSInteger tabRequestingInfo; // In order to prevent Race conditions for the sele
 
 		[_tabViewControl setSelectedTab:tabToOpen];
 		[self requestBreakfastData];
-		self.menuDict = _bkfstDict;
-		self.list = _bkfstList;
+		//self.menuDict = self._bkfstDict;
+		//self.list = self._bkfstList;
 	}
 	else if (doubleHourOfDay >= 9 && doubleHourOfDay < 14)
 	{
@@ -304,8 +320,8 @@ NSInteger tabRequestingInfo; // In order to prevent Race conditions for the sele
 		tabToOpen = kLunchTab;
 		[_tabViewControl setSelectedTab:tabToOpen];
 		[self requestLunchData];
-		self.menuDict = _lunchDict;
-		self.list = _lunchList;
+		//self.menuDict = self._lunchDict;
+		//self.list = self._lunchList;
 	}
 	
 	else if (doubleHourOfDay >=2 && doubleHourOfDay < 24)
@@ -313,8 +329,8 @@ NSInteger tabRequestingInfo; // In order to prevent Race conditions for the sele
 		tabToOpen = kDinnerTab;
 		[_tabViewControl setSelectedTab:tabToOpen];
 		[self requestDinnerData];
-		self.menuDict = _dinnerDict;
-		self.list = _dinnerList;
+		//self.menuDict = self._dinnerDict;
+		//self.list = self._dinnerList;
 	
 	}
 	
@@ -474,20 +490,20 @@ NSInteger tabRequestingInfo; // In order to prevent Race conditions for the sele
 {
 	if(_tabViewControl.selectedTab == kBreakfastTab)
 	{
-		self.list = _bkfstList;	
-		self.menuDict = _bkfstDict;
+		self.list = self._bkfstList;	
+		self.menuDict = self._bkfstDict;
 	}
 	
 	else if(_tabViewControl.selectedTab == kLunchTab)
 	{
-		self.list = _lunchList;
-		self.menuDict = _lunchDict;
+		self.list = self._lunchList;
+		self.menuDict = self._lunchDict;
 	}
 	
 	else if (_tabViewControl.selectedTab == kDinnerTab)
 	{
-		self.list = _dinnerList;
-		self.menuDict = _dinnerDict;
+		self.list = self._dinnerList;
+		self.menuDict = self._dinnerDict;
 	}	
 }
 
@@ -629,6 +645,7 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 
 - (void)request:(HarvardDiningAPI *)request jsonLoaded:(id)JSONObject;
 {
+	int test = 0;
 	
 	if ([_tabViewControl selectedTab] == tabRequestingInfo)
 	{
@@ -697,6 +714,7 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 		[List release];
 		[ListDictionary release];
 	}
+	requestDispatched = NO;
 	
 	
 }

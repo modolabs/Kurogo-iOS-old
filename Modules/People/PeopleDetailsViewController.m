@@ -7,6 +7,7 @@
 #import "UIKit+MITAdditions.h"
 #import "Foundation+MITAdditions.h"
 #import "ModoNavigationController.h"
+#import "NSArray+Convenience.h"
 
 @implementation PeopleDetailsViewController
 
@@ -144,7 +145,7 @@
 
 	if (section == [self.sectionArray count])
 		return 2;
-	return [[self.sectionArray objectAtIndex:section] count];
+	return [[self.sectionArray safeObjectAtIndex:section] count];
 }
 
 
@@ -180,9 +181,9 @@
 		if (cell == nil)
 			cell = [[[PeopleDetailsTableViewCell alloc] initWithStyle:UITableViewCellStyleValue2 reuseIdentifier:cellID] autorelease];
 		
-		NSArray *personInfo = [[self.sectionArray objectAtIndex:section] objectAtIndex:row];
-		NSString *tag = [personInfo objectAtIndex:0];
-		NSString *data = [personInfo objectAtIndex:1];
+		NSArray *personInfo = [[self.sectionArray safeObjectAtIndex:section] safeObjectAtIndex:row];
+		NSString *tag = [personInfo safeObjectAtIndex:0];
+		NSString *data = [personInfo safeObjectAtIndex:1];
 		
 		cell.textLabel.text = tag;
 		cell.detailTextLabel.text = data;
@@ -210,9 +211,9 @@
 		return 44.0;
 	}
 	
-	NSArray *personInfo = [[self.sectionArray objectAtIndex:section] objectAtIndex:row];
-	NSString *tag = [personInfo objectAtIndex:0];
-	NSString *data = [personInfo objectAtIndex:1];
+	NSArray *personInfo = [[self.sectionArray safeObjectAtIndex:section] safeObjectAtIndex:row];
+	NSString *tag = [personInfo safeObjectAtIndex:0];
+	NSString *data = [personInfo safeObjectAtIndex:1];
 	// the following may be off by a pixel or 2 for different OS versions
 	// in the future we should prepare for the general case where widths can be way different (including flipping orientation)
 	CGFloat labelWidth = ([tag isEqualToString:@"telephonenumber"] || [tag isEqualToString:@"mail"] || [tag isEqualToString:@"office"]) ? 182.0 : 207.0;
@@ -296,15 +297,15 @@
 		
 	} else {
 		
-		NSArray *personInfo = [[self.sectionArray objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
-		NSString *tag = [personInfo objectAtIndex:0];
+		NSArray *personInfo = [[self.sectionArray safeObjectAtIndex:indexPath.section] safeObjectAtIndex:indexPath.row];
+		NSString *tag = [personInfo safeObjectAtIndex:0];
 		
 		if ([tag isEqualToString:@"mail"])
-			[self emailIconTapped:[personInfo objectAtIndex:1]];
+			[self emailIconTapped:[personInfo safeObjectAtIndex:1]];
 		else if ([tag isEqualToString:@"telephonenumber"])
-			[self phoneIconTapped:[personInfo objectAtIndex:1]];
+			[self phoneIconTapped:[personInfo safeObjectAtIndex:1]];
 		else if ([tag isEqualToString:@"office"])
-			[self mapIconTapped:[personInfo objectAtIndex:1]];
+			[self mapIconTapped:[personInfo safeObjectAtIndex:1]];
 
 	}
 	
