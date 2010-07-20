@@ -12,6 +12,7 @@
 #import "HarvardDiningAPI.h"
 #import "MenuItems.h"
 #import "MIT_MobileAppDelegate.h"
+#import "HoursTableViewController.h"
 
 
 @class MenuDetailsController;
@@ -32,6 +33,8 @@
 	IBOutlet UITableView *breakfastTable;
 	IBOutlet UITableView *lunchTable;
 	IBOutlet UITableView *dinnerTable;
+	
+	IBOutlet UITableView *hoursTableView;
 
 	UILabel *label;
 	CGFloat _tabViewContainerMinHeight;
@@ -75,6 +78,8 @@
 
 @property (nonatomic, retain) IBOutlet UIButton *nextDateButton;
 @property (nonatomic, retain) IBOutlet UIButton *previousDateButton;
+
+@property (nonatomic, retain) IBOutlet UITableView *hoursTableView;
 
 -(IBAction)nextButtonPressed;
 -(IBAction)previousButtonPressed;

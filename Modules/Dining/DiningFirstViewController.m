@@ -41,6 +41,9 @@
 
 @synthesize todayDate;
 
+@synthesize hoursTableView;
+
+
 
 NSInteger tabRequestingInfo; // In order to prevent Race conditions for the selected tab and JSONDelegate loaded data
 
@@ -246,6 +249,10 @@ NSInteger tabRequestingInfo; // In order to prevent Race conditions for the sele
 		[_tabViews insertObject:_loadingResultView atIndex:kDinnerTab];
 		
 		[_tabViewControl addTab:@"Hours"];
+		HoursTableViewController *tableControl = [[HoursTableViewController alloc] init];
+		hoursTableView.delegate = (HoursTableViewController *)tableControl;
+		hoursTableView.dataSource = (HoursTableViewController *)tableControl;
+		[_hoursView addSubview:hoursTableView];
 		[_tabViews insertObject:_hoursView atIndex:kHoursTab];
 	
 		[_tabViewControl addTab:@"News"];
@@ -433,6 +440,7 @@ NSInteger tabRequestingInfo; // In order to prevent Race conditions for the sele
 	else if (tabIndex == kHoursTab)
 	{
 		[control setSelectedTab:kHoursTab];
+		
 		//[self requestDinnerData];
 		//[dinnerTable reloadData];
 		

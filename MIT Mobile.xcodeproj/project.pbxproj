@@ -165,8 +165,8 @@
 		C704F06F11E3E31F00621406 /* MenuItems.m in Sources */ = {isa = PBXBuildFile; fileRef = C704F06011E3E31F00621406 /* MenuItems.m */; };
 		C727B53A11F4E245007D53BB /* CalendarCategoriesViewController.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = C727B53811F4E245007D53BB /* CalendarCategoriesViewController.h */; settings = {JAVA_ARCHIVE_SUBDIR = Modules/Calendar; }; };
 		C727B53B11F4E245007D53BB /* CalendarCategoriesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C727B53911F4E245007D53BB /* CalendarCategoriesViewController.m */; };
-		C727B56E11F4E551007D53BB /* DiningHoursTableViewController.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = C727B56C11F4E551007D53BB /* DiningHoursTableViewController.h */; settings = {JAVA_ARCHIVE_SUBDIR = Modules/Dining; }; };
-		C727B56F11F4E551007D53BB /* DiningHoursTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C727B56D11F4E551007D53BB /* DiningHoursTableViewController.m */; };
+		C7B897F111F535C8002B3619 /* HoursTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C7B897EF11F535C8002B3619 /* HoursTableViewController.m */; };
+		C7B897F211F535C8002B3619 /* HoursTableViewController.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = C7B897F011F535C8002B3619 /* HoursTableViewController.h */; settings = {JAVA_ARCHIVE_SUBDIR = Modules/Dining; }; };
 		DE0A62AC10CDAEA90058B2C2 /* MITBuildInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = DE0A62AB10CDAEA90058B2C2 /* MITBuildInfo.m */; };
 		DE0F6B3411109BC500F064D6 /* AboutMITVC.m in Sources */ = {isa = PBXBuildFile; fileRef = DE0F6B3311109BC500F064D6 /* AboutMITVC.m */; };
 		DE18F9EE10F19105009A69B9 /* News.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = DE18F9ED10F19105009A69B9 /* News.xcdatamodeld */; };
@@ -662,8 +662,8 @@
 		C704F06011E3E31F00621406 /* MenuItems.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MenuItems.m; path = Dining/MenuItems.m; sourceTree = "<group>"; };
 		C727B53811F4E245007D53BB /* CalendarCategoriesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CalendarCategoriesViewController.h; sourceTree = "<group>"; };
 		C727B53911F4E245007D53BB /* CalendarCategoriesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CalendarCategoriesViewController.m; sourceTree = "<group>"; };
-		C727B56C11F4E551007D53BB /* DiningHoursTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DiningHoursTableViewController.h; path = Dining/DiningHoursTableViewController.h; sourceTree = "<group>"; };
-		C727B56D11F4E551007D53BB /* DiningHoursTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DiningHoursTableViewController.m; path = Dining/DiningHoursTableViewController.m; sourceTree = "<group>"; };
+		C7B897EF11F535C8002B3619 /* HoursTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = HoursTableViewController.m; path = Dining/HoursTableViewController.m; sourceTree = "<group>"; };
+		C7B897F011F535C8002B3619 /* HoursTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = HoursTableViewController.h; path = Dining/HoursTableViewController.h; sourceTree = "<group>"; };
 		DE0A62AA10CDAEA90058B2C2 /* MITBuildInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MITBuildInfo.h; sourceTree = "<group>"; };
 		DE0A62AB10CDAEA90058B2C2 /* MITBuildInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MITBuildInfo.m; sourceTree = "<group>"; };
 		DE0F6B3211109BC500F064D6 /* AboutMITVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AboutMITVC.h; sourceTree = "<group>"; };
@@ -1335,8 +1335,8 @@
 		C704F02311E3E13E00621406 /* Dining */ = {
 			isa = PBXGroup;
 			children = (
-				C727B56C11F4E551007D53BB /* DiningHoursTableViewController.h */,
-				C727B56D11F4E551007D53BB /* DiningHoursTableViewController.m */,
+				C7B897EF11F535C8002B3619 /* HoursTableViewController.m */,
+				C7B897F011F535C8002B3619 /* HoursTableViewController.h */,
 				C704F05211E3E31F00621406 /* DiningFirstViewController.xib */,
 				C704F05311E3E31F00621406 /* DiningFirstViewController.h */,
 				C704F05411E3E31F00621406 /* DiningFirstViewController.m */,
@@ -1983,7 +1983,7 @@
 				A69A28A811F0258800B1D365 /* PersonDetails+Methods.h in JavaArchive */,
 				A69A2BD711F4C36400B1D365 /* PersonDetail.h in JavaArchive */,
 				C727B53A11F4E245007D53BB /* CalendarCategoriesViewController.h in JavaArchive */,
-				C727B56E11F4E551007D53BB /* DiningHoursTableViewController.h in JavaArchive */,
+				C7B897F211F535C8002B3619 /* HoursTableViewController.h in JavaArchive */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2405,8 +2405,8 @@
 				A69A28A911F0258800B1D365 /* PersonDetails+Methods.m in Sources */,
 				A69A2BD811F4C36400B1D365 /* PersonDetail.m in Sources */,
 				C727B53B11F4E245007D53BB /* CalendarCategoriesViewController.m in Sources */,
-				C727B56F11F4E551007D53BB /* DiningHoursTableViewController.m in Sources */,
 				A6D5498811F4E6D00048CEDB /* PersonDetails.m in Sources */,
+				C7B897F111F535C8002B3619 /* HoursTableViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

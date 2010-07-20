@@ -1,19 +1,16 @@
 //
-//  DiningHoursTableViewViewController.m
+//  HoursTableViewController.m
 //  MIT Mobile
 //
 //  Created by Muhammad Amjad on 7/19/10.
 //  Copyright 2010 Modo Labs. All rights reserved.
 //
 
-#import "DiningHoursTableViewController.h"
+#import "HoursTableViewController.h"
 
 
-@implementation DiningHoursTableViewViewController
+@implementation HoursTableViewController
 
-
-@synthesize diningHalls;
-@synthesize diningHallDetails;
 
 #pragma mark -
 #pragma mark Initialization
@@ -31,14 +28,14 @@
 #pragma mark -
 #pragma mark View lifecycle
 
-/*
+
 - (void)viewDidLoad {
     [super viewDidLoad];
 
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
 }
-*/
+
 
 /*
 - (void)viewWillAppear:(BOOL)animated {
@@ -80,14 +77,14 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     // Return the number of rows in the section.
-    return [self.diningHalls count];
+    return 4;
 }
 
 
 // Customize the appearance of table view cells.
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     
-    static NSString *CellIdentifier = @"Cell";
+    static NSString *CellIdentifier = @"Cellulose";
     
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil) {
@@ -95,9 +92,7 @@
     }
     
     // Configure the cell...
-    int row = [indexPath row];
-	cell.textLabel.text = [[self.diningHalls objectAtIndex:row] objectForKey:@"name"];
-	
+    cell.textLabel.text = @"Random Test Text";
     return cell;
 }
 
@@ -175,17 +170,6 @@
 
 - (void)dealloc {
     [super dealloc];
-}
-
-
-#pragma mark -
-#pragma mark JSONLoadedDelegate Method
-
-- (void)request:(HarvardDiningAPI *)request jsonLoaded:(id)JSONObject;
-{
-	
-	self.diningHalls = (NSArray *) JSONObject;	
-	
 }
 
 
