@@ -62,7 +62,7 @@ NSInteger strLenSort(NSString *str1, NSString *str2, void *context)
 	self.searchController.searchResultsDelegate = self;
 	self.searchController.searchResultsDataSource = self;
 	
-	static NSString *searchHints = @"Sample searches:\nName: 'william barton rogers', 'rogers'\nEmail: 'wbrogers', 'wbrogers@mit.edu'\nPhone: '6172531000', '31000'";
+	static NSString *searchHints = @"Sample searches:\nName: 'john harvard', 'harvard'\nEmail: 'jharvard', 'jharvard@harvard.edu'\nPhone: '6172531000', '31000'";
 
 	UIFont *hintsFont = [UIFont systemFontOfSize:[UIFont systemFontSize]];
 	CGSize labelSize = [searchHints sizeWithFont:hintsFont
