@@ -37,7 +37,7 @@
     // calculate xOrigin to keep icons centered
     CGFloat xOriginInitial = (viewSize.width - ((iconSize.width + GRID_PADDING) * iconsPerRow - GRID_PADDING)) / 2;
     CGFloat xOrigin = xOriginInitial;
-    CGFloat yOrigin = GRID_PADDING;
+    CGFloat yOrigin = GRID_PADDING + 20.0;
     bottomRight = CGPointZero;
     
     for (anIcon in icons) {
@@ -65,7 +65,7 @@
     topLeft = ((SpringboardIcon *)[icons objectAtIndex:0]).frame.origin;
     
     if (bottomRight.y > containingView.contentSize.height) {
-        containingView.contentSize = CGSizeMake(containingView.contentSize.width, bottomRight.y + GRID_PADDING);
+        containingView.contentSize = CGSizeMake(containingView.contentSize.width, bottomRight.y + GRID_PADDING + 20.0);
     }
 
 }
@@ -105,7 +105,6 @@
     [super loadView];
     
     containingView = [[UIScrollView alloc] initWithFrame:self.view.bounds];
-    UIImage *image = [UIImage imageNamed:ImageNameHomeScreenBackground];
     containingView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:ImageNameHomeScreenBackground]];
     containingView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     [self.view addSubview:containingView];
@@ -143,8 +142,12 @@
 
 - (void)buttonPressed:(id)sender {
     SpringboardIcon *anIcon = (SpringboardIcon *)sender;
-    MIT_MobileAppDelegate *appDelegate = (MIT_MobileAppDelegate *)[[UIApplication sharedApplication] delegate];
-    [appDelegate showModuleForTag:anIcon.moduleTag];
+    if ([anIcon.moduleTag isEqualToString:MobileWebTag]) {
+        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"http://www.harvard.edu"]];
+    } else {
+        MIT_MobileAppDelegate *appDelegate = (MIT_MobileAppDelegate *)[[UIApplication sharedApplication] delegate];
+        [appDelegate showModuleForTag:anIcon.moduleTag];
+    }
 }
 
 /*

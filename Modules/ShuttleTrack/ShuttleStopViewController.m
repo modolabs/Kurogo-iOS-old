@@ -364,7 +364,7 @@
         // Shuttle alerts don't do anything with badges.
 		UIAlertView *alertView = [[UIAlertView alloc] 
                                   initWithTitle:@"Notifications Disabled"
-                                  message:@"All notifications for MIT Mobile have been disabled. Quit this application and go to Settings > Notifications to enable them."
+                                  message:@"All notifications for Harvard Mobile have been disabled. Quit this application and go to Settings > Notifications to enable them."
                                   delegate:nil 
                                   cancelButtonTitle:@"OK" 
                                   otherButtonTitles:nil];

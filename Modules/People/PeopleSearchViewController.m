@@ -219,8 +219,8 @@ NSInteger strLenSort(NSString *str1, NSString *str2, void *context)
 
 	[self.searchController.searchResultsTableView removeFromSuperview];
 	// Also get rid of nav bar button item for search results view.
-	MIT_MobileAppDelegate *appDelegate = (MIT_MobileAppDelegate *)[UIApplication sharedApplication].delegate;	
-	[appDelegate.theNavController.modoNavBar popNavigationItemAnimated:NO];
+	//MIT_MobileAppDelegate *appDelegate = (MIT_MobileAppDelegate *)[UIApplication sharedApplication].delegate;	
+	//[appDelegate.theNavController.modoNavBar popNavigationItemAnimated:NO];
 }
 
 - (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText {	

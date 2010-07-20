@@ -4,7 +4,7 @@
 @class SpringboardViewController;
 @class ModoNavigationController;
 
-@interface MIT_MobileAppDelegate : NSObject <UIApplicationDelegate/*, MITTabBarControllerDelegate*/> {
+@interface MIT_MobileAppDelegate : NSObject <UIApplicationDelegate> {
     
     UIWindow *window;
     //MITTabBarController *theTabBarController;
@@ -27,7 +27,6 @@
 - (void)dismissAppModalViewControllerAnimated:(BOOL)animated;
 
 @property (nonatomic, retain) IBOutlet UIWindow *window;
-//@property (nonatomic, retain) MITTabBarController *tabBarController;
 @property (nonatomic, retain) ModoNavigationController *theNavController;
 @property (nonatomic, retain) NSArray *modules;
 @property (nonatomic, retain) NSData *deviceToken;

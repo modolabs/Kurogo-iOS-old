@@ -181,6 +181,7 @@
 			cell = [[[PeopleDetailsTableViewCell alloc] initWithStyle:UITableViewCellStyleValue2 reuseIdentifier:cellID] autorelease];
 		
 		NSArray *personInfo = [[self.sectionArray objectAtIndex:section] objectAtIndex:row];
+        NSLog(@"%@", [personInfo description]);
 		NSString *tag = [personInfo objectAtIndex:0];
 		NSString *data = [personInfo objectAtIndex:1];
 		

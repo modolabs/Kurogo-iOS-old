@@ -7,7 +7,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self.tableView applyStandardColors];
-    self.navigationItem.title = @"About MIT";
+    self.navigationItem.title = @"About Harvard";
 }
 
 #pragma mark Table view methods
@@ -23,7 +23,7 @@
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    NSString *aboutText = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"MITAboutMITText"];
+    NSString *aboutText = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"AboutHarvardText"];
     UIFont *aboutFont = [UIFont systemFontOfSize:15.0];
     CGSize aboutSize = [aboutText sizeWithFont:aboutFont constrainedToSize:CGSizeMake(270, 2000) lineBreakMode:UILineBreakModeWordWrap];
     return aboutSize.height;
@@ -42,7 +42,7 @@
         cell.detailTextLabel.backgroundColor = [UIColor clearColor];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
     }
-    cell.textLabel.text = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"MITAboutMITText"];
+    cell.textLabel.text = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"AboutHarvardText"];
     cell.textLabel.font = [UIFont systemFontOfSize:15.0];
     cell.textLabel.textColor = CELL_STANDARD_FONT_COLOR;
     cell.textLabel.lineBreakMode = UILineBreakModeWordWrap;

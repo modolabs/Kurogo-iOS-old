@@ -58,8 +58,7 @@
 		_headerText = @"Browse map by:";
 		JSONAPIRequest *apiRequest = [JSONAPIRequest requestWithJSONAPIDelegate:self];
 		apiRequest.userData = @"CategoryTitles";
-		[apiRequest requestObject:[NSDictionary dictionaryWithObjectsAndKeys:@"categorytitles", @"command", nil]
-					pathExtension:@"map/"];
+		[apiRequest requestObjectFromModule:@"map" command:@"categorytitles" parameters:nil];
 		
 		if (!_loadingView) 
 		{
@@ -328,7 +327,7 @@
 	
 	UIAlertView *alert = [[[UIAlertView alloc]
 						  initWithTitle:@"Connection Failed" 
-						  message:@"Could not connect to MIT, please try again later."
+						  message:@"Could not connect to server, please try again later."
 						  delegate:nil
 						  cancelButtonTitle:@"OK" 
 						  otherButtonTitles:nil] autorelease];

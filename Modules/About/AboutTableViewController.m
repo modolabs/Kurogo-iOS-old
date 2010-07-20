@@ -14,7 +14,7 @@
     
     UIView *footerView = [[UIView alloc] initWithFrame:CGRectMake(10, 0, self.view.frame.size.width - 20, 45)];
     UILabel *footerLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, footerView.frame.size.width, 30)];
-    footerLabel.text = @"Copyright © 2010 Massachusetts Institute of Technology. All rights reserved.";
+    footerLabel.text = @"Copyright © 2010 Harvard University. All rights reserved.";
     footerLabel.backgroundColor = [UIColor clearColor];
     footerLabel.textAlignment = UITextAlignmentCenter;
     footerLabel.textColor = CELL_DETAIL_FONT_COLOR;
@@ -44,7 +44,7 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     if (indexPath.section == 0 && indexPath.row == 1) {
-        NSString *aboutText = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"MITAboutAppText"];
+        NSString *aboutText = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"AboutAppText"];
         UIFont *aboutFont = [UIFont systemFontOfSize:14.0];
         CGSize aboutSize = [aboutText sizeWithFont:aboutFont constrainedToSize:CGSizeMake(270, 2000) lineBreakMode:UILineBreakModeWordWrap];
         return aboutSize.height + 20;
@@ -88,7 +88,7 @@
                 case 1:
                 {
                     NSDictionary *infoDict = [[NSBundle mainBundle] infoDictionary];
-                    cell.textLabel.text = [infoDict objectForKey:@"MITAboutAppText"];
+                    cell.textLabel.text = [infoDict objectForKey:@"AboutAppText"];
                     cell.textLabel.lineBreakMode = UILineBreakModeWordWrap;
                     cell.textLabel.numberOfLines = 0;
                     cell.textLabel.font = [UIFont systemFontOfSize:15.0];
@@ -111,7 +111,7 @@
                     cell.textLabel.textColor = CELL_STANDARD_FONT_COLOR;
                     break;
                 case 1:
-                    cell.textLabel.text = @"About MIT";
+                    cell.textLabel.text = @"About Harvard";
                     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
                     cell.selectionStyle = UITableViewCellSelectionStyleBlue;
                     cell.textLabel.textColor = CELL_STANDARD_FONT_COLOR;
@@ -151,14 +151,14 @@
             }
             case 2: {
                 Class mailClass = (NSClassFromString(@"MFMailComposeViewController"));
-                NSString *subject = [NSString stringWithFormat:@"Feedback for MIT Mobile %@ (%@)", [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"], MITBuildNumber];
+                NSString *subject = [NSString stringWithFormat:@"Feedback for Harvard Mobile %@ (%@)", [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"], MITBuildNumber];
                 if ((mailClass != nil) && [mailClass canSendMail]) {
                     
                     MFMailComposeViewController *aController = [[MFMailComposeViewController alloc] init];
                     aController.mailComposeDelegate = self;
                     
                     [aController setSubject:subject];
-                    [aController setToRecipients:[NSArray arrayWithObject:[[[NSBundle mainBundle] infoDictionary] objectForKey:@"MITFeedbackAddress"]]];
+                    [aController setToRecipients:[NSArray arrayWithObject:[[[NSBundle mainBundle] infoDictionary] objectForKey:@"AppFeedbackAddress"]]];
                     
                     MIT_MobileAppDelegate *appDelegate = (MIT_MobileAppDelegate *)[[UIApplication sharedApplication] delegate];
                     [appDelegate presentAppModalViewController:aController animated:YES];

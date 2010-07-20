@@ -10,7 +10,6 @@
 #import "AboutModule.h"
 #import "CalendarModule.h"
 #import "DiningModule.h"
-//#import "MITTabBarController.h"
 
 // #import your module's header here
 
@@ -30,12 +29,12 @@
     //[result addObject:[[[YourMITModuleSubclass alloc] init] autorelease]];
 	
     [result addObject:[[[NewsModule alloc] init] autorelease]];
-    [result addObject:[[[ShuttleModule alloc] init] autorelease]];
+    //[result addObject:[[[ShuttleModule alloc] init] autorelease]];
 	[result addObject:[[[CMModule alloc] init] autorelease]];
 	[result addObject:[[[CalendarModule alloc] init] autorelease]];
-	[result addObject:[[[StellarModule alloc] init] autorelease]];
+	//[result addObject:[[[StellarModule alloc] init] autorelease]];
 	[result addObject:[[[PeopleModule alloc] init] autorelease]];
-    [result addObject:[[[EmergencyModule alloc] init] autorelease]];
+    //[result addObject:[[[EmergencyModule alloc] init] autorelease]];
     [result addObject:[[[MobileWebModule alloc] init] autorelease]];
     [result addObject:[[[SettingsModule alloc] init] autorelease]];
     [result addObject:[[[AboutModule alloc] init] autorelease]];
@@ -58,9 +57,6 @@
         if ([aModule.viewControllers containsObject:aViewController]) {
             return aModule;
         }
-        //if ([aModule.tabNavController isEqual:aViewController]) {
-        //    return aModule;
-        //}
     }
     return nil;
 }
@@ -79,13 +75,9 @@
     NSArray *navStack = [[NSArray arrayWithObject:theSpringboard] arrayByAddingObjectsFromArray:module.viewControllers];
     [self.theNavController popViewControllerAnimated:NO];
     if ([module.viewControllers count]) {
-        //UIViewController *topVC = [module.viewControllers lastObject];
-        //[self.theNavController pushViewController:topVC animated:YES];
         [self.theNavController setViewControllers:navStack animated:YES];
     }
-    
-    //[self.theNavController setViewControllers:newViewControllers animated:YES];
-    //[self.tabBarController showItem:module.tabNavController.tabBarItem];
+
     [module didAppear];
 }
 
@@ -150,16 +142,6 @@
 - (void)saveModuleOrder {
     NSMutableArray *newModules = [NSMutableArray arrayWithCapacity:[self.modules count]];
     NSMutableArray *moduleNames = [NSMutableArray arrayWithCapacity:[self.modules count]]; 
-    MITModule *aModule = nil;
-    /*
-    for (UITabBarItem *item in self.tabBarController.allItems) {
-        aModule = [self moduleForTabBarItem:item];
-        if (aModule && ![moduleNames containsObject:aModule.tag]) {
-            [newModules addObject:aModule];
-            [moduleNames addObject:aModule.tag];
-        }
-    }
-    */
     self.modules = [[newModules copy] autorelease]; // immutable copy
 
     // Save updated order: module list into an array of strings, then save that array to disk

@@ -2,6 +2,7 @@
 #import "TileServerManager.h"
 #import "MapZoomLevel.h"
 
+
 @implementation MapTileOverlayView
 
 - (id)initWithOverlay:(id <MKOverlay>)overlay {
@@ -10,6 +11,7 @@
     }
     return self;
 }
+
 
 // TODO: don't draw above certain zoomscale and outside certain maprect
 /*
@@ -65,6 +67,7 @@
     
     
 }
+
 
 /*
  - (void)setNeedsDisplayInMapRect:(MKMapRect)mapRect

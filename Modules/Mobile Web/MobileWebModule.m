@@ -6,8 +6,8 @@
     self = [super init];
     if (self != nil) {
         self.tag = MobileWebTag;
-        self.shortName = @"Mobile Web";
-        self.longName = @"MIT Mobile Web";
+        self.shortName = @"Full Website";
+        self.longName = @"Full Website";
         self.iconName = @"full-website";
         self.isMovableTab = FALSE;
         self.canBecomeDefault = FALSE;
