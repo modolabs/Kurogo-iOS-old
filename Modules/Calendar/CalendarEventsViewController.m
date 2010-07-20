@@ -185,6 +185,7 @@
         [searchTapRegion addTarget:self action:@selector(showSearchBar) forControlEvents:UIControlEventTouchUpInside];
 		
 		// create buttons for nav scroller view		
+		//navButtons = [[NSMutableArray alloc] initWithCapacity:NumberOfCalendarEventListTypes];
 		navButtons = [[NSMutableArray alloc] initWithCapacity:NumberOfCalendarEventListTypes];
 		
 		CGRect buttonFrame = CGRectZero;
