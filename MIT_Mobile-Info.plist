@@ -15,7 +15,7 @@
 	<key>UIPrerenderedIcon</key>
 	<true/>
 	<key>CFBundleIdentifier</key>
-	<string>com.modolabs</string>
+	<string>com.modolabs.harvardmobile</string>
 	<key>CFBundleURLTypes</key>
 	<array>
 		<dict>
