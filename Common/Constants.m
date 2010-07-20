@@ -46,7 +46,7 @@ NSString * const PushNotificationSettingsKey = @"ModulesDisabledForPush";
 NSString * const MITModulesSavedStateKey = @"MITModulesSavedState";
 NSString * const CachedMapSearchQueryKey = @"CachedMapSearchQuerey";
 
-NSString * const MITInternalURLScheme = @"mitmobile";
+NSString * const MITInternalURLScheme = @"harvardmobile";
 
 
 // module tags

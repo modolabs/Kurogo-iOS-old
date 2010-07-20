@@ -203,7 +203,7 @@ NSString * const NewsTagImageHeight     = @"height";
 		[CoreDataManager saveDataWithTemporaryMergePolicy:NSMergeByPropertyObjectTrumpMergePolicy];
 	}
 	
-    NSURL *fullURL = [NSURL URLWithString:[NSString stringWithFormat:@"http://web.mit.edu/newsoffice/index.php?option=com_search&view=isearch&searchword=%@&ordering=newest&limit=%d&start=%d", [query stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding], count, start]];
+    NSURL *fullURL = [NSURL URLWithString:[NSString stringWithFormat:@"http://news.harvard.edu/gazette/?s=%@&feed=rss2", [query stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding], count, start]];
     expectedStoryCount = count;
     
 	[self detachAndParseURL:fullURL];
@@ -354,12 +354,12 @@ NSString * const NewsTagImageHeight     = @"height";
         [currentImage setObject:attributeDict forKey:@"smallSize"];
     } else if ([elementName isEqualToString:NewsTagFullURL] && currentImage) {
         [currentImage setObject:attributeDict forKey:@"fullSize"];
-    }*/ else if ([elementName isEqualToString:@"items"]) {
+    } else if ([elementName isEqualToString:@"items"]) {
 		NSNumber *totalResults = [attributeDict objectForKey:@"totalResults"];
 		if (totalResults) {
 			self.totalAvailableResults = [totalResults integerValue];
 		}
-	}
+	}*/
     [currentStack addObject:elementName];
 }
 
@@ -561,7 +561,12 @@ NSString * const NewsTagImageHeight     = @"height";
         return;
     }
     
+    if (self.isSearch) {
+        self.totalAvailableResults = [newStories count];
+    }
+    
     parseSuccessful = YES;
+    
 	[CoreDataManager saveDataWithTemporaryMergePolicy:NSMergeByPropertyObjectTrumpMergePolicy];
     if (parseSuccessful) {
         [self performSelectorOnMainThread:@selector(parseEnded) withObject:nil waitUntilDone:NO];

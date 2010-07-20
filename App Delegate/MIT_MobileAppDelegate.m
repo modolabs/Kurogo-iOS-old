@@ -235,13 +235,15 @@
 
 // Call these instead of [appDelegate.tabbar presentModal...], because dismissing that crashes the app
 - (void)presentAppModalViewController:(UIViewController *)viewController animated:(BOOL)animated {
-    appModalHolder.view.hidden = NO;
-    [appModalHolder presentModalViewController:viewController animated:animated];
+    [theNavController presentModalViewController:viewController animated:animated];
+    //appModalHolder.view.hidden = NO;
+    //[appModalHolder presentModalViewController:viewController animated:animated];
 }
 
 - (void)dismissAppModalViewControllerAnimated:(BOOL)animated {
-    [appModalHolder dismissModalViewControllerAnimated:animated];
-    [self performSelector:@selector(checkIfOkToHideAppModalViewController) withObject:nil afterDelay:0.100];
+    [theNavController dismissModalViewControllerAnimated:animated];
+    //[appModalHolder dismissModalViewControllerAnimated:animated];
+    //[self performSelector:@selector(checkIfOkToHideAppModalViewController) withObject:nil afterDelay:0.100];
 }
 
 // This is a sad hack for telling when the dismissAppModalViewController animation has completed. It depends on appModalHolder.modalViewController being defined as long as the modal vc is still animating. If Apple ever changes this behavior, the slide-away transition will become a jarring pop.

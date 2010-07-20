@@ -319,7 +319,7 @@ static CGFloat kBorderWidth = 10;
     [_closeButton setTitleColor:[UIColor whiteColor] forState:UIControlStateHighlighted];
     [_closeButton addTarget:self action:@selector(cancel)
       forControlEvents:UIControlEventTouchUpInside];
-// NOTE: The MIT app doesn't care about iPhone OS 2.x
+// NOTE: We don't care about iPhone OS 2.x
 //	if ([_closeButton respondsToSelector:@selector(titleLabel)]) {
 		_closeButton.titleLabel.font = [UIFont boldSystemFontOfSize:12];
 //	}
