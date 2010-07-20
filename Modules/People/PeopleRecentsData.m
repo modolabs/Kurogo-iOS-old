@@ -97,7 +97,11 @@ static PeopleRecentsData *instance = nil;
 		if (value) {
             PersonDetail *personDetail = (PersonDetail *)[CoreDataManager insertNewObjectForEntityForName:PersonDetailEntityName];
             personDetail.Value = value;
-            personDetail.DisplayName = [[searchResult objectForKey:key] objectForKey:@"DisplayName"];
+			id detailJSONObject = [searchResult objectForKey:key];
+			if ([detailJSONObject respondsToSelector:@selector(objectForKey:)])
+			{
+				personDetail.DisplayName = [detailJSONObject objectForKey:@"DisplayName"];
+			}
 			// we need to figure out which fields return multiple values
 			[personDetails setValue:personDetail forKey:key];
 		}        
