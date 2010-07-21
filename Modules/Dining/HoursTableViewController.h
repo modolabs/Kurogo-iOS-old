@@ -7,10 +7,23 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "JSONAPIRequest.h"
+#import "HallDetailsTableViewController.h"
+#import "MIT_MobileAppDelegate.h";
+#import "DiningFirstViewController.h"
 
+@class HallDetailsTableViewController;
+@class DiningFirstViewController;
 
-@interface HoursTableViewController : UITableViewController {
+@interface HoursTableViewController : UITableViewController <JSONAPIDelegate>{
 
+	NSArray *hallProperties;
+	HallDetailsTableViewController *childHallViewController;
+	DiningFirstViewController *parentViewController;
 }
+
+
+@property (nonatomic, retain) NSArray *hallProperties;
+@property (nonatomic, retain) DiningFirstViewController *parentViewController;
 
 @end

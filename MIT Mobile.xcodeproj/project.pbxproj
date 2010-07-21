@@ -167,6 +167,10 @@
 		C704F06F11E3E31F00621406 /* MenuItems.m in Sources */ = {isa = PBXBuildFile; fileRef = C704F06011E3E31F00621406 /* MenuItems.m */; };
 		C727B53A11F4E245007D53BB /* CalendarCategoriesViewController.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = C727B53811F4E245007D53BB /* CalendarCategoriesViewController.h */; settings = {JAVA_ARCHIVE_SUBDIR = Modules/Calendar; }; };
 		C727B53B11F4E245007D53BB /* CalendarCategoriesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C727B53911F4E245007D53BB /* CalendarCategoriesViewController.m */; };
+		C77664FA11F64E74005496DD /* HallDetailsTableViewController.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = C77664F811F64E74005496DD /* HallDetailsTableViewController.h */; settings = {JAVA_ARCHIVE_SUBDIR = Modules; }; };
+		C77664FB11F64E74005496DD /* HallDetailsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C77664F911F64E74005496DD /* HallDetailsTableViewController.m */; };
+		C776675911F733E3005496DD /* DatePickerViewController.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = C776675711F733E3005496DD /* DatePickerViewController.h */; settings = {JAVA_ARCHIVE_SUBDIR = Modules/Calendar; }; };
+		C776675A11F733E3005496DD /* DatePickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C776675811F733E3005496DD /* DatePickerViewController.m */; };
 		C7B897F111F535C8002B3619 /* HoursTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C7B897EF11F535C8002B3619 /* HoursTableViewController.m */; };
 		C7B897F211F535C8002B3619 /* HoursTableViewController.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = C7B897F011F535C8002B3619 /* HoursTableViewController.h */; settings = {JAVA_ARCHIVE_SUBDIR = Modules/Dining; }; };
 		DE0A62AC10CDAEA90058B2C2 /* MITBuildInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = DE0A62AB10CDAEA90058B2C2 /* MITBuildInfo.m */; };
@@ -666,6 +670,10 @@
 		C704F06011E3E31F00621406 /* MenuItems.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MenuItems.m; path = Dining/MenuItems.m; sourceTree = "<group>"; };
 		C727B53811F4E245007D53BB /* CalendarCategoriesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CalendarCategoriesViewController.h; sourceTree = "<group>"; };
 		C727B53911F4E245007D53BB /* CalendarCategoriesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CalendarCategoriesViewController.m; sourceTree = "<group>"; };
+		C77664F811F64E74005496DD /* HallDetailsTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HallDetailsTableViewController.h; sourceTree = "<group>"; };
+		C77664F911F64E74005496DD /* HallDetailsTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HallDetailsTableViewController.m; sourceTree = "<group>"; };
+		C776675711F733E3005496DD /* DatePickerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DatePickerViewController.h; sourceTree = "<group>"; };
+		C776675811F733E3005496DD /* DatePickerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DatePickerViewController.m; sourceTree = "<group>"; };
 		C7B897EF11F535C8002B3619 /* HoursTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = HoursTableViewController.m; path = Dining/HoursTableViewController.m; sourceTree = "<group>"; };
 		C7B897F011F535C8002B3619 /* HoursTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = HoursTableViewController.h; path = Dining/HoursTableViewController.h; sourceTree = "<group>"; };
 		DE0A62AA10CDAEA90058B2C2 /* MITBuildInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MITBuildInfo.h; sourceTree = "<group>"; };
@@ -1358,6 +1366,8 @@
 				C704F05E11E3E31F00621406 /* MenuDetailsController.m */,
 				C704F05F11E3E31F00621406 /* MenuItems.h */,
 				C704F06011E3E31F00621406 /* MenuItems.m */,
+				C77664F811F64E74005496DD /* HallDetailsTableViewController.h */,
+				C77664F911F64E74005496DD /* HallDetailsTableViewController.m */,
 			);
 			name = Dining;
 			sourceTree = "<group>";
@@ -1882,6 +1892,8 @@
 				EBA273E811760BAE0033DD27 /* CalendarConstants.m */,
 				EB3F094F118F0FFE00540B8A /* CalendarMapView.h */,
 				EB3F0950118F0FFE00540B8A /* CalendarMapView.m */,
+				C776675711F733E3005496DD /* DatePickerViewController.h */,
+				C776675811F733E3005496DD /* DatePickerViewController.m */,
 			);
 			path = Calendar;
 			sourceTree = "<group>";
@@ -1991,6 +2003,8 @@
 				C727B53A11F4E245007D53BB /* CalendarCategoriesViewController.h in JavaArchive */,
 				C7B897F211F535C8002B3619 /* HoursTableViewController.h in JavaArchive */,
 				A6787A1611F605070034D559 /* NSArray+Convenience.h in JavaArchive */,
+				C77664FA11F64E74005496DD /* HallDetailsTableViewController.h in JavaArchive */,
+				C776675911F733E3005496DD /* DatePickerViewController.h in JavaArchive */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2415,6 +2429,8 @@
 				A6D5498811F4E6D00048CEDB /* PersonDetails.m in Sources */,
 				C7B897F111F535C8002B3619 /* HoursTableViewController.m in Sources */,
 				A6787A1711F605070034D559 /* NSArray+Convenience.m in Sources */,
+				C77664FB11F64E74005496DD /* HallDetailsTableViewController.m in Sources */,
+				C776675A11F733E3005496DD /* DatePickerViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
