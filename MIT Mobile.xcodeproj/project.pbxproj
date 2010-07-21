@@ -2110,7 +2110,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "REV=`git rev-parse HEAD | cut -c 1-8`\nBUILD_INFO_FILE=${PROJECT_DIR}/Common/MITBuildInfo.m\n\necho \"#import \\\"MITBuildInfo.h\\\";\" > ${BUILD_INFO_FILE}\necho \"\" >> ${BUILD_INFO_FILE}\necho \"NSString * const MITBuildNumber = @\\\"$REV\\\";\" >> ${BUILD_INFO_FILE}";
+			shellScript = "PATH=$PATH:/usr/local/git/bin\nREV=`git rev-parse HEAD | cut -c 1-8`\nBUILD_INFO_FILE=${PROJECT_DIR}/Common/MITBuildInfo.m\n\necho \"#import \\\"MITBuildInfo.h\\\";\" > ${BUILD_INFO_FILE}\necho \"\" >> ${BUILD_INFO_FILE}\necho \"NSString * const MITBuildNumber = @\\\"$REV\\\";\" >> ${BUILD_INFO_FILE}";
 		};
 /* End PBXShellScriptBuildPhase section */
 
