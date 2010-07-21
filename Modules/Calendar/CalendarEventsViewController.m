@@ -50,6 +50,7 @@
 @synthesize startDate, endDate, events;
 @synthesize activeEventList, showList, showScroller;
 @synthesize tableView = theTableView, mapView = theMapView, catID = theCatID;
+//@synthesize dateSelector;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
     if (self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil]) {
@@ -100,7 +101,7 @@
 																parameters:nil];
 	
 	//moved the following commented out code to the request:jsonLoaded function
-	/*
+	
 	self.view.backgroundColor = [UIColor clearColor];
 	
 	if (showScroller) {
@@ -114,6 +115,10 @@
 		[self.view addSubview:datePicker];
 	}
 	
+	if (categoriesRequestDispatched) {
+		[self addLoadingIndicatorForSearch:NO];
+	}
+	/*
 	[self reloadView:activeEventList];
 	 */
 }
@@ -295,6 +300,15 @@
     dateRangeDidChange = YES;
 }
 
+
+- (void)pickDate {
+	
+	DatePickerViewController *dateSelector = [[DatePickerViewController alloc] init];
+	dateSelector.delegate = self;
+	
+	[self.view addSubview:dateSelector.view];
+	
+}
 #pragma mark Redrawing logic and helper functions
 
 - (void)reloadView:(CalendarEventListType)listType {
@@ -543,9 +557,10 @@
     dateButton.titleLabel.textColor = [UIColor whiteColor];
     [dateButton setTitle:dateText forState:UIControlStateNormal];
     dateButton.center = CGPointMake(datePicker.center.x, datePicker.center.y - datePicker.frame.origin.y);
-    if (![dateText isEqualToString:@"Today"]) {
-        [dateButton addTarget:self action:@selector(returnToTodayAndReload) forControlEvents:UIControlEventTouchUpInside];
-    }
+    //if (![dateText isEqualToString:@"Today"]) {
+       // [dateButton addTarget:self action:@selector(returnToTodayAndReload) forControlEvents:UIControlEventTouchUpInside];
+		[dateButton addTarget:self action:@selector(pickDate) forControlEvents:UIControlEventTouchUpInside];
+    //}
     dateButton.tag = randomTag;
     [datePicker addSubview:dateButton];
 	
@@ -995,13 +1010,13 @@
 			 ((EventCategoriesTableView *)self.tableView).categories = [NSArray arrayWithArray:arrayForTable];
 		 
 		 self.view.backgroundColor = [UIColor clearColor];
-		 
+		 /*
 		 if (showScroller) {
 			 [self.view addSubview:navScrollView];
 			 [self.view addSubview:rightScrollButton];
 			 [self.view addSubview:leftScrollButton];
 			 [self.view addSubview:theSearchBar];
-		 }
+		 }*/
 	 
 		 if ([self shouldShowDatePicker:activeEventList]) {
 			 [self.view addSubview:datePicker];
@@ -1097,6 +1112,29 @@
                     break;
             }
             
+			if ([result count] == 0) {
+				UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(20, 20, 300, 20)];
+																		   
+				label.text = @"No Events Found";															   
+				NSInteger vertical_margin = 40;
+				
+				if (theCatID == -1)
+					vertical_margin += 50;
+				
+				CGRect contentFrame = CGRectMake(0,self.view.bounds.origin.y + vertical_margin, 
+												 self.view.bounds.size.width, 
+												 self.view.bounds.size.height);
+				
+				nothingFound = [[UIView alloc] initWithFrame:contentFrame];
+				[nothingFound setBackgroundColor:[UIColor whiteColor]];
+				
+				[nothingFound addSubview:label];
+				[self.view addSubview:nothingFound];
+			}
+			else if (nothingFound != nil) {
+				[nothingFound removeFromSuperview];
+				[nothingFound release];
+			}
 			for (NSDictionary *eventDict in result) {
 				MITCalendarEvent *event = [CalendarDataManager eventWithDict:eventDict];
                 // assign a category if we know already what it is
@@ -1105,6 +1143,8 @@
                 }
 				[arrayForTable addObject:event];
 			}
+			
+			
 			
 			self.events = [NSArray arrayWithArray:arrayForTable];			
 		}
@@ -1135,5 +1175,42 @@
 }
 
 
+#pragma mark -
+#pragma mark DatePickerViewControllerDelegate functions
+
+- (void)datePickerViewControllerDidCancel:(DatePickerViewController *)controller {
+	
+	if ([controller class] == [DatePickerViewController class]) {
+		[controller.view removeFromSuperview];
+		[controller release];		
+	}
+	return;
+}
+
+- (void)datePickerViewController:(DatePickerViewController *)controller didSelectDate:(NSDate *)date {
+	
+	if ([controller class] == [DatePickerViewController class]) {
+		startDate = nil;
+		startDate = date;    
+		dateRangeDidChange = YES;
+	
+		[controller.view removeFromSuperview];
+		[controller release];
+		[self reloadView:activeEventList];
+	}
+	return;
+}
+- (void)datePickerValueChanged:(id)sender {
+	return;
+}
+
 @end
+
+
+
+
+
+
+
+
 

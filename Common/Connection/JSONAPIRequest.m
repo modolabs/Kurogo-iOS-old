@@ -112,13 +112,13 @@
 	//DLog(@"Loaded data as string: %@", [[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding] autorelease]);
     NSError *error = nil;
 	id result = [JSONAPIRequest objectWithJSONData:data error:&error];
-	if (result) {
+	if (error) {
+		[self connection:wrapper handleConnectionFailureWithError:error];		
+	} else {
 		[((MIT_MobileAppDelegate *)[[UIApplication sharedApplication] delegate]) hideNetworkActivityIndicator];
 		[jsonDelegate request:self jsonLoaded:result];
         self.connectionWrapper = nil;
-		[self release];	
-	} else {
-		[self connection:wrapper handleConnectionFailureWithError:error];
+		[self release];		
 	}
 }
 

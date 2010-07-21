@@ -53,6 +53,7 @@
 				// create one tag/label pair for each email/phone/office label
 				if ([ldapTag isEqualToString:@"mail"] || 
 					[ldapTag isEqualToString:@"telephonenumber"] ||
+					[ldapTag isEqualToString:@"facsimiletelephonenumber"] ||
 					//[ldapTag isEqualToString:@"room"] || 
 					[ldapTag isEqualToString:@"postalAddress"]) {
 					for (NSString *value in [ldapValue componentsSeparatedByString:@","])

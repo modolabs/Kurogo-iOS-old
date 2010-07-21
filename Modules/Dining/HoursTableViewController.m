@@ -8,9 +8,10 @@
 
 #import "HoursTableViewController.h"
 
-
 @implementation HoursTableViewController
 
+@synthesize hallProperties;
+@synthesize parentViewController;
 
 #pragma mark -
 #pragma mark Initialization
@@ -23,7 +24,6 @@
     return self;
 }
 */
-
 
 #pragma mark -
 #pragma mark View lifecycle
@@ -47,23 +47,6 @@
     [super viewDidAppear:animated];
 }
 */
-/*
-- (void)viewWillDisappear:(BOOL)animated {
-    [super viewWillDisappear:animated];
-}
-*/
-/*
-- (void)viewDidDisappear:(BOOL)animated {
-    [super viewDidDisappear:animated];
-}
-*/
-/*
-// Override to allow orientations other than the default portrait orientation.
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
-    // Return YES for supported orientations
-    return (interfaceOrientation == UIInterfaceOrientationPortrait);
-}
-*/
 
 
 #pragma mark -
@@ -77,79 +60,64 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     // Return the number of rows in the section.
-    return 4;
+	
+	if (self.hallProperties != nil)
+		return [self.hallProperties count];
+	
+	else return 0;
 }
 
 
 // Customize the appearance of table view cells.
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     
-    static NSString *CellIdentifier = @"Cellulose";
+    static NSString *CellIdentifier = @"HallHours";
     
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil) {
         cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
     }
+	int row = [indexPath row];
     
     // Configure the cell...
-    cell.textLabel.text = @"Random Test Text";
+    cell.textLabel.text = [[self.hallProperties objectAtIndex:row] objectForKey:@"name"];
+	cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+	cell.selectionStyle = UITableViewCellSelectionStyleGray;
     return cell;
 }
 
-
-/*
-// Override to support conditional editing of the table view.
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
-    // Return NO if you do not want the specified item to be editable.
-    return YES;
-}
-*/
-
-
-/*
-// Override to support editing the table view.
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
-    
-    if (editingStyle == UITableViewCellEditingStyleDelete) {
-        // Delete the row from the data source
-        [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:YES];
-    }   
-    else if (editingStyle == UITableViewCellEditingStyleInsert) {
-        // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-    }   
-}
-*/
-
-
-/*
-// Override to support rearranging the table view.
-- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath {
-}
-*/
-
-
-/*
-// Override to support conditional rearranging of the table view.
-- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath {
-    // Return NO if you do not want the item to be re-orderable.
-    return YES;
-}
-*/
 
 
 #pragma mark -
 #pragma mark Table view delegate
 
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    // Navigation logic may go here. Create and push another view controller.
-	/*
-	 <#DetailViewController#> *detailViewController = [[<#DetailViewController#> alloc] initWithNibName:@"<#Nib name#>" bundle:nil];
-     // ...
-     // Pass the selected object to the new view controller.
-	 [self.navigationController pushViewController:detailViewController animated:YES];
-	 [detailViewController release];
-	 */
+
+-(void)tableView:(UITableView *)tableView
+didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+	//re-initialize the childController each time to get the correct Display
+	childHallViewController = nil;
+	
+	if (childHallViewController == nil)
+	{
+		childHallViewController = [[HallDetailsTableViewController alloc] init];
+	}
+	
+	NSUInteger row = [indexPath row];
+	
+	NSDictionary *test = [self.hallProperties objectAtIndex:row];
+	[childHallViewController setDetails:test];
+	childHallViewController.title = [[self.hallProperties objectAtIndex:row] objectForKey:@"name"];
+	
+	
+	NSString * str = [self.parentViewController description];
+	
+	[self.parentViewController.navigationController pushViewController:childHallViewController animated:YES];
+	// deselect the Row
+	//[tableView deselectRowAtIndexPath:indexPath animated:NO];
+	
 }
+
 
 
 #pragma mark -
@@ -173,5 +141,34 @@
 }
 
 
+#pragma mark -
+#pragma mark JSONAPIRequest Delegate function 
+
+- (void)request:(JSONAPIRequest *)request jsonLoaded:(id)result {
+	
+	NSMutableArray *properties = [[NSMutableArray alloc] init];
+	
+	for (int index=0; index < [result count]; index++) {
+		NSDictionary *dict = [result objectAtIndex:index];
+		[properties addObject:dict];	
+	}
+	
+	self.hallProperties = properties;
+	[self.tableView reloadData];
+}
+
+
+- (void)handleConnectionFailureForRequest:(JSONAPIRequest *)request
+{
+	
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Connection Failed"
+                                                    message:@"Could not retrieve The Dining Halls Infomation"
+                                                   delegate:nil
+                                          cancelButtonTitle:@"OK"
+                                          otherButtonTitles:nil];
+	
+    [alert show];
+    [alert release];
+}
 @end
 

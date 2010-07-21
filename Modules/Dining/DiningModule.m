@@ -1,6 +1,6 @@
 #import "DiningModule.h"
 #import "DiningFirstViewController.h"
-
+#import "HoursTableViewController.h"
 
 @implementation DiningModule
 
@@ -15,8 +15,9 @@
         
         DiningFirstViewController *aboutVC = [[[DiningFirstViewController alloc] init] autorelease];
         aboutVC.title = self.longName;
-        
+
         self.viewControllers = [NSArray arrayWithObject:aboutVC];
+		
     }
     return self;
 }

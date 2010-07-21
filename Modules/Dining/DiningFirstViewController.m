@@ -265,9 +265,14 @@ HarvardDiningAPI *mitapi;
 		[_tabViews insertObject:_loadingResultView atIndex:kDinnerTab];
 		
 		[_tabViewControl addTab:@"Hours"];
-		HoursTableViewController *tableControl = [[HoursTableViewController alloc] init];
+		tableControl = [[HoursTableViewController alloc] init];
 		hoursTableView.delegate = (HoursTableViewController *)tableControl;
 		hoursTableView.dataSource = (HoursTableViewController *)tableControl;
+		
+		tableControl.tableView = hoursTableView;
+		
+		tableControl.parentViewController = self;
+		
 		[_hoursView addSubview:hoursTableView];
 		[_tabViews insertObject:_hoursView atIndex:kHoursTab];
 	
@@ -384,6 +389,9 @@ HarvardDiningAPI *mitapi;
 
 	childController = nil;
 	todayDate = nil;
+	
+	hoursTableView = nil;
+	tableControl = nil;
 }
 
 
@@ -418,6 +426,9 @@ HarvardDiningAPI *mitapi;
 
 	[childController dealloc];
 	[todayDate dealloc];
+	
+	[hoursTableView dealloc];
+	[tableControl dealloc];
 	
     [super dealloc];
 }
@@ -457,6 +468,19 @@ HarvardDiningAPI *mitapi;
 	{
 		[control setSelectedTab:kHoursTab];
 		
+		JSONAPIRequest *hoursDelegate = [[JSONAPIRequest alloc] initWithJSONAPIDelegate:tableControl];
+		
+		
+		
+		if ([hoursDelegate requestObjectFromModule:@"dining" 
+									command:@"hours" 
+								 parameters:nil] == YES)
+		{
+			// set the requesting Tab index to the correct one
+			tabRequestingInfo = kHoursTab;	
+			requestDispatched = YES;
+		}
+
 		//[self requestDinnerData];
 		//[dinnerTable reloadData];
 		
@@ -632,7 +656,7 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 
 	[childController setDetails:details setItemCategory: categories];
 	childController.title = selectItem;
-
+	
 	[self.navigationController pushViewController:childController animated:YES];
 	
 	// deselect the Row
@@ -645,8 +669,7 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 
 - (void)request:(HarvardDiningAPI *)request jsonLoaded:(id)JSONObject;
 {
-	int test = 0;
-	
+
 	if ([_tabViewControl selectedTab] == tabRequestingInfo)
 	{
 		// Use the MenuItems class to retrieve Data in the required order/format

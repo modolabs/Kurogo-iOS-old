@@ -13,9 +13,11 @@
 #import "MenuItems.h"
 #import "MIT_MobileAppDelegate.h"
 #import "HoursTableViewController.h"
+#import "JSONAPIRequest.h"
 
 
 @class MenuDetailsController;
+@class HoursTableViewController;
 
 @interface DiningFirstViewController : UIViewController <TabViewControlDelegate, UITableViewDelegate, UITableViewDataSource, JSONLoadedDelegate>
 {
@@ -35,6 +37,7 @@
 	IBOutlet UITableView *dinnerTable;
 	
 	IBOutlet UITableView *hoursTableView;
+	HoursTableViewController *tableControl;
 
 	UILabel *label;
 	CGFloat _tabViewContainerMinHeight;

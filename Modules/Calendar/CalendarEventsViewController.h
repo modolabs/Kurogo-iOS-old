@@ -4,12 +4,14 @@
 #import "EventCategoriesTableView.h"
 #import "EventListTableView.h"
 #import "CalendarMapView.h"
+#import "DatePickerViewController.h"
 
 @class MITSearchEffects;
 @class EventListTableView;
 @class CalendarEventMapAnnotation;
+@class DatePickerViewController;
 
-@interface CalendarEventsViewController : UIViewController <UIScrollViewDelegate, UISearchBarDelegate, UISearchDisplayDelegate, MKMapViewDelegate, JSONAPIDelegate> {
+@interface CalendarEventsViewController : UIViewController <UIScrollViewDelegate, UISearchBarDelegate, UISearchDisplayDelegate, MKMapViewDelegate, JSONAPIDelegate, DatePickerViewControllerDelegate> {
 
 	CalendarEventListType activeEventList; // today, browse, acad, holidays...
 	NSDate *startDate;
@@ -28,6 +30,9 @@
 	UIButton *rightScrollButton;
 	
 	UIView *datePicker;
+	UIView *nothingFound;
+	
+	//DatePickerViewController *dateSelector;
 	
 	// search
 	//UISearchDisplayController *searchController;
@@ -63,6 +68,7 @@
 @property (nonatomic, retain) NSDate *endDate;
 @property (nonatomic, retain) NSArray *events;
 
+//@property (nonatomic, retain) DatePickerViewController *dateSelector;
 
 - (void)abortExtraneousRequest;
 - (void)makeRequest;
