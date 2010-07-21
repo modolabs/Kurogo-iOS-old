@@ -28,7 +28,11 @@
     {
         return [actualValue stringByReplacingOccurrencesOfString:@"$" withString:@"\n"];
     }
-
+    else if ([key isEqualToString:@"title"])
+    {
+        return [[actualValue stringByReplacingOccurrencesOfString:@", " withString:@"\n"]
+				stringByReplacingOccurrencesOfString:@"," withString:@"\n"];
+    }
     return actualValue;
 }
 

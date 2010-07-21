@@ -119,7 +119,7 @@ function runSearch(searchTerm)
 	enterSearchTermIntoSearchFieldAndHitGo(searchTerm);
 	
 	// Follow the search result.	
-	msg("Number of table views: " + application.mainWindow().tableViews().length);
+	//msg("Number of table views: " + application.mainWindow().tableViews().length);
 	resultTableView = application.mainWindow().tableViews()[0];
 	assertNotNull(resultTableView);
 	
@@ -252,15 +252,32 @@ function testSuite5()
 	mainWindow.tableViews()[0].buttons().Cancel.tap();
 }
 
+function testSuiteTitlesSeparatedByNewLine()
+{
+	var expectedSearchResultValues = {
+		"email": "jmurcian@law.harvard.edu",
+		"title": "Associate Director\nOPIA and Director of Fellowships\nTutor\nAssistant Sr (Harv Std)\nContin Ed/Spec Prog Instructor",
+		"fax": "+1-617-496-1900,+1-617-496-4944"
+	};
+	
+	var termsToExpectedValues = {
+		"Judith Murciano": expectedSearchResultValues
+	};
+
+	runSearchTestSuite("Test suite: Titles separated by newline", termsToExpectedValues);	
+}
+
 // "Main" block.
 
 // Provide a default grace period in seconds for each action to complete.
 target.setTimeout(0.5);
 navigateToPeopleView();
 
+testSuiteTitlesSeparatedByNewLine();
 testSuite1();
+/*
 testSuite2();
 testSuite3();
 testSuite4();
 testSuite5();
-
+*/
