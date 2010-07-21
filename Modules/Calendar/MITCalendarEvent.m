@@ -16,6 +16,7 @@
 @dynamic phone;
 @dynamic summary;
 @dynamic url;
+@dynamic email;
 @dynamic categories;
 @dynamic lastUpdated;
 @dynamic isRegular;
@@ -93,7 +94,7 @@
 	self.end = [NSDate dateWithTimeIntervalSince1970:[[dict objectForKey:@"end"] doubleValue]];
 	
 	
-	NSString *contactInfo; // to be extracted from the "custom" trumba fields
+	NSDictionary *contactInfo; // to be extracted from the "custom" trumba fields
 	BOOL contactInfoAvailable = NO;
 	NSString *locationDetail;
 	BOOL locationDetailAvailable = NO;
@@ -121,7 +122,9 @@
 	 fieldValueString = [fieldValueString stringByReplacingOccurrencesOfString:@"\\" withString:@""];
 	 
 	 if (![fieldKeyString isEqualToString:@"Location"] && 
-	 ![fieldKeyString isEqualToString:@"Event Type"]) 
+		 ![fieldKeyString isEqualToString:@"Event Type"] &&
+		 ![fieldKeyString isEqualToString:@"Contact Info"] &&
+		 ![fieldKeyString isEqualToString:@"Gazette Classification"]) 
 	 {
 	 
 	 fieldKeyString = [NSString stringWithFormat:@"<b><u>%@</b></u>", fieldKeyString];
@@ -144,12 +147,7 @@
 	 locationDetail = [customDict objectForKey:@"\"Location\""];
 	 }
 	 }
-	 
-	
-	
-	
-	self.summary = description;
-	//[description release];
+
 	self.title = [dict objectForKey:@"title"];
 	
 	// optional strings
@@ -162,22 +160,103 @@
 		self.location = maybeValue;
 	}
 	
-	// Phone Info
+	// Contact Info
 	if (contactInfoAvailable == YES) {
-		
-		NSString *phoneNumber = contactInfo;
-		if (phoneNumber.length == 8) {
-			phoneNumber = [NSString stringWithFormat:@"617-%@", phoneNumber];
-		} else {
-			// i'm seeing a lot of events use slashes to separate area code, not sure why
-			phoneNumber = [phoneNumber stringByReplacingOccurrencesOfString:@"." withString:@"-"];
+		NSString *phoneNumber;
+		if ([contactInfo valueForKey:@"phone"]) {
+			
+			// Only providing one phone number (the first) in case there are more coming in from the data-feed
+			if ([[contactInfo valueForKey:@"phone"] class] == [NSArray class])
+				phoneNumber =  [[[contactInfo valueForKey:@"phone"] objectAtIndex:0]description];
+			
+			phoneNumber = [[contactInfo valueForKey:@"phone"] description];
+			NSArray *phoneNumberArray = [phoneNumber componentsSeparatedByString:@"\""];
+			
+			if ([phoneNumberArray count] == 3) {
+				phoneNumber = [phoneNumberArray objectAtIndex:1];
+				
+				if (phoneNumber.length == 8) {
+					phoneNumber = [NSString stringWithFormat:@"617-%@", phoneNumber];
+				} else {
+					// i'm seeing a lot of events use slashes to separate area code, not sure why
+					phoneNumber = [phoneNumber stringByReplacingOccurrencesOfString:@"." withString:@"-"];
+				}
+				self.phone = phoneNumber;
+			}
 		}
-		self.phone = phoneNumber;
-	}
-	if ([dict objectForKey:@"infourl"] != [NSNull null]) {
-		self.url = [dict objectForKey:@"infourl"];
+		
+		NSString *urlLink;
+		if ([contactInfo valueForKey:@"url"]) {
+			
+			// Only providing one url-link (the first) in case there are more coming in from the data-feed
+			if ([[contactInfo valueForKey:@"url"] class] == [NSArray class])
+				urlLink =  [[[contactInfo valueForKey:@"url"] objectAtIndex:0]description];
+			
+			urlLink = [[contactInfo valueForKey:@"url"] description];
+			NSArray *urlLinkArray = [urlLink componentsSeparatedByString:@"\""];
+			
+			if ([urlLinkArray count] == 3) {
+				urlLink = [urlLinkArray objectAtIndex:1];
+				self.url = urlLink;
+			}
+		}
+
+		NSString *emailAdd;
+		if ([contactInfo valueForKey:@"email"]) {
+			
+			// Only providing one url-link (the first) in case there are more coming in from the data-feed
+			if ([[contactInfo valueForKey:@"email"] class] == [NSArray class])
+				emailAdd =  [[[contactInfo valueForKey:@"email"] objectAtIndex:0]description];
+			
+			emailAdd = [[contactInfo valueForKey:@"email"] description];
+			NSArray *emailArray = [emailAdd componentsSeparatedByString:@"\""];
+			
+			if ([emailArray count] == 3) {
+				emailAdd = [emailArray objectAtIndex:1];
+				self.email = emailAdd;
+			}
+		}
+		
+		NSMutableString *customContactText = [NSMutableString string];
+		if ([contactInfo valueForKey:@"text"]) {
+			
+			// Only providing one url-link (the first) in case there are more coming in from the data-feed
+			if ([[contactInfo valueForKey:@"text"] class] == [NSArray class])
+			{
+				for (int ind=0; ind < [[contactInfo valueForKey:@"text"] count]; ind++) {
+					NSString *stringText = [[contactInfo valueForKey:@"text"] objectAtIndex:ind];
+					NSArray *stringArray = [stringText componentsSeparatedByString:@"\""];
+					
+					if ([stringArray count] == 3)
+						[customContactText appendString:stringText];
+				}
+				
+			}
+			
+			else {
+				NSString *stringText = [[contactInfo valueForKey:@"text"] description];
+				NSArray *stringArray = [stringText componentsSeparatedByString:@"\""];
+				
+				if ([stringArray count] == 3)
+					[customContactText appendString:stringText];
+			}
+			
+			if ([customContactText length] > 0) {
+			NSString *fieldName = [NSString stringWithFormat:@"<b><u>%@</b></u>", @"More Information"];
+
+			[description appendString:fieldName];
+			[description appendString:@": "];
+			[description appendString:customContactText];
+			description = [NSMutableString stringWithFormat:@"%@<br /><br />", description];
+			}
+		}		
 	}
 
+		self.summary = description;
+	
+	if ([dict objectForKey:@"url"]) {
+		self.url = [dict objectForKey:@"url"];
+	}
 	
 	if (locationDetailAvailable == YES) {
 		NSArray *locDet = [locationDetail componentsSeparatedByString:@"<"];
@@ -205,9 +284,8 @@
 		NSArray *customFields = nil;
 		
 		customFields = [customDict allKeys];
-		
-		//index '0' has the Gazette Classification
-		NSString *gazetteClassification = @"\"Gazette Classification\"";//[[customFields objectAtIndex:0] description];
+
+		NSString *gazetteClassification = @"\"Gazette Classification\"";
 		NSString *classificationString = [customDict objectForKey:gazetteClassification];
 		
 		NSArray *classificationArray = [classificationString componentsSeparatedByString: @"\\, "];
@@ -215,7 +293,7 @@
 		for (int i=0; i < [classificationArray count]; i++) {
 			NSString *catName	= [classificationArray objectAtIndex:i];
 			
-			NSString *subcat = [catName substringFromIndex:1]; // get the coordinates
+			NSString *subcat = [catName substringFromIndex:1];
 			NSInteger cat_id = [[CalendarDataManager idForCategory:subcat] integerValue];
 			EventCategory *category = [CalendarDataManager categoryWithID:cat_id];
 			
