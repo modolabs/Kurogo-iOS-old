@@ -65,6 +65,25 @@ function navigateBack()
 	mainWindow.navigationBar().elements()[0].buttons()["People Directory"].tap();
 }
 
+function enterSearchTermIntoSearchFieldAndHitGo(searchTerm)
+{
+	// Type search term into search field and run search.
+	tableView = mainWindow.tableViews()[0];
+	searchBar = tableView.searchBars()[0];
+	searchBar.tap();
+	searchBar.setValue(searchTerm); 
+	keyboard = application.keyboard();
+	buttons = keyboard.buttons();	
+	searchButton = buttons["search"];
+	searchButton.tap();	
+		
+	// Will wait up to five seconds for the search button to go invalid before allowing the next thing to happen.
+	target.pushTimeout(5);
+		
+	searchButton.waitForInvalid(); 
+	target.popTimeout();	
+}
+
 // Test helpers.
 function verifySearchTargetInfo(fieldName, fieldValue)
 {
@@ -97,22 +116,9 @@ function verifySearchTargetInfo(fieldName, fieldValue)
 // After this runs, you should end up at the people details view for the first search result.
 function runSearch(searchTerm)
 {	
-	// Type Mercure into the search field and run the search.
-	tableView = mainWindow.tableViews()[0];
-	searchBar = tableView.searchBars()[0];
-	searchBar.tap();
-	searchBar.setValue(searchTerm); 
-	keyboard = application.keyboard();
-	buttons = keyboard.buttons();	
-	searchButton = buttons["search"];
-	searchButton.tap();
+	enterSearchTermIntoSearchFieldAndHitGo(searchTerm);
 	
-	// Follow the search result.
-	
-	// Will wait up to five seconds for the search button to go invalid.
-	target.pushTimeout(5);
-	
-	searchButton.waitForInvalid(); 
+	// Follow the search result.	
 	msg("Number of table views: " + application.mainWindow().tableViews().length);
 	resultTableView = application.mainWindow().tableViews()[0];
 	assertNotNull(resultTableView);
@@ -124,6 +130,8 @@ function runSearch(searchTerm)
 	// containing the first result's cell.
 
 	// Tap the spot containing the result cell.
+	// Will wait up to five seconds for the search button to go invalid.
+	target.pushTimeout(5);
 	target.tap({ x:120, y:120 }); 
 	resultTableView.waitForInvalid(); 
 	
@@ -204,6 +212,33 @@ function testSuite3()
 	runSearchTestSuite("Test suite 3", termsToExpectedValues);			
 }
 
+function testSuite4()
+{
+	enterSearchTermIntoSearchFieldAndHitGo("Dave");
+	// The result of this search should be an alert mentioning a search failure. 
+	// Harvard LDAP will return nothing but an error for a search this broad.
+
+	logTestResult(true, "Test suite 4 - make sure you saw the alert.");	
+	// Unfortunately, when run by Instruments, UIAlerts seems to be dismissed immediately, so we don't 
+	// really have a chance to check what's in them. This is puzzling because as a result, the 
+	// UIAApplication.alert() method is useless.
+
+	/*
+	assertNotNull(application.alert(), "Search error alert is missing.");
+	if (application.alert())
+	{
+		if (application.alert().staticTexts()[0] == "Search failed")
+		{
+			logTestResult(true, "Test suite 4");
+			navigateBack();
+			return;
+		}
+	}
+	*/
+//	logTestResult(false, "Test suite 4");	
+	navigateBack();
+}
+
 // "Main" block.
 
 // Provide a default grace period in seconds for each action to complete.
@@ -213,3 +248,4 @@ navigateToPeopleView();
 testSuite1();
 testSuite2();
 testSuite3();
+testSuite4();
