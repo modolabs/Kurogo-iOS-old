@@ -877,7 +877,7 @@
 	CalendarEventMapAnnotation *annotation = view.annotation;
 	MITCalendarEvent *event = nil;
 	CalendarMapView *calMapView = (CalendarMapView *)mapView;
-	for (event in /*self*/calMapView.events) {
+	for (event in calMapView.events) {
 		if (event.eventID == annotation.event.eventID) {
 			break;
 		}
@@ -894,7 +894,14 @@
 
 - (MKAnnotationView *)mapView:(MKMapView *)mapView viewForAnnotation:(id <MKAnnotation>)annotation
 {
-	MKAnnotationView *annotationView = [/*theMapView*/mapView viewForAnnotation:annotation];
+	MKPinAnnotationView *annotationView = [[[MKPinAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:@"adsf"] autorelease];
+    annotationView.animatesDrop = YES;
+    annotationView.canShowCallout = YES;
+    UIButton *disclosureButton = [UIButton buttonWithType:UIButtonTypeDetailDisclosure];
+    annotationView.rightCalloutAccessoryView = disclosureButton;
+	
+	//MKAnnotationView *annotationView = [mapView viewForAnnotation:annotation];
+    
 	return annotationView;
 }
 

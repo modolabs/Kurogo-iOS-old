@@ -66,7 +66,7 @@
 	// create the map view controller and its view to our view. 
 	_mapView = [[MKMapView alloc] initWithFrame: CGRectMake(0, _searchBar.frame.size.height, 320, self.view.frame.size.height - _searchBar.frame.size.height)];
 	_mapView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-    _mapView.mapType = MKMapTypeSatellite;
+    _mapView.mapType = MKMapTypeHybrid;
 	_mapView.delegate = self;
 	[self.view addSubview:_mapView];
 	
