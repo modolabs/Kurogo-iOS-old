@@ -63,7 +63,7 @@ NSInteger strLenSort(NSString *str1, NSString *str2, void *context)
 	self.searchController.searchResultsDelegate = self;
 	self.searchController.searchResultsDataSource = self;
 	
-	static NSString *searchHints = @"Sample searches:\nName: 'john harvard', 'harvard'\nEmail: 'jharvard', 'jharvard@harvard.edu'\nPhone: '6172531000', '31000'";
+	static NSString *searchHints = @"Sample searches:\nName: 'john harvard', 'harvard'\nEmail: 'jharvard', 'jharvard@harvard.edu'\nPhone: '6174951000', '51000'";
 
 	UIFont *hintsFont = [UIFont systemFontOfSize:[UIFont systemFontSize]];
 	CGSize labelSize = [searchHints sizeWithFont:hintsFont
@@ -321,7 +321,7 @@ NSInteger strLenSort(NSString *str1, NSString *str2, void *context)
 
 				if (indexPath.row == 0) {
 					cell.textLabel.text = @"Phone Directory";
-					[(SecondaryGroupedTableViewCell *)cell secondaryTextLabel].text = @"(617.253.1000)";
+					[(SecondaryGroupedTableViewCell *)cell secondaryTextLabel].text = @"(617.495.1000)";
 					cell.accessoryView = [UIImageView accessoryViewWithMITType:MITAccessoryViewPhone];
 				} else {
 					cell.textLabel.text = @"Emergency Contacts";
@@ -575,19 +575,19 @@ NSInteger strLenSort(NSString *str1, NSString *str2, void *context)
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
 	if (buttonIndex != [alertView cancelButtonIndex]) { // user hit "Dial"
-		NSURL *externURL = [NSURL URLWithString:@"tel://6172531000"];
+		NSURL *externURL = [NSURL URLWithString:@"tel://6174951000"];
 		[[UIApplication sharedApplication] openURL:externURL];
 	}
 }
 */
 - (void)phoneIconTapped
 {
-	NSURL *externURL = [NSURL URLWithString:@"tel://6172531000"];
+	NSURL *externURL = [NSURL URLWithString:@"tel://6174951000"];
 	if ([[UIApplication sharedApplication] canOpenURL:externURL])
 		[[UIApplication sharedApplication] openURL:externURL];
 	
 	/*
-	UIAlertView *alert = [[[UIAlertView alloc] initWithTitle:@"Dial 6172531000?" 
+	UIAlertView *alert = [[[UIAlertView alloc] initWithTitle:@"Dial 6174951000?" 
 													 message:@"" 
 													delegate:self
 										   cancelButtonTitle:@"Cancel" 

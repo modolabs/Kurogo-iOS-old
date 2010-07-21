@@ -62,13 +62,15 @@
 }
 
 + (NSArray *)realValuesFromPersonDetailsJSONDict:(NSDictionary *)jsonDict forKey:(NSString *)key {
-    NSArray *values = [[jsonDict objectForKey:key] objectForKey:@"Values"];
-    if ([values isKindOfClass:[NSArray class]]) {
-        return values;
-    }
-    else {
-        return [NSArray array];
-    }
+	id detailObject = [jsonDict objectForKey:key];
+	if ([detailObject respondsToSelector:@selector(objectForKey:)])
+	{
+		NSArray *values = [detailObject objectForKey:@"Values"];
+		if ([values isKindOfClass:[NSArray class]]) {
+			return values;
+		}
+	}
+	return [NSArray array];
 }
 
 + (NSString *)joinedValueFromPersonDetailsJSONDict:(NSDictionary *)jsonDict forKey:(NSString *)key

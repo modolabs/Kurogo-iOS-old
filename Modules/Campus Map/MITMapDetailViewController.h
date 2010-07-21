@@ -6,7 +6,7 @@
 #import "ConnectionWrapper.h"
 
 
-@class MITMapSearchResultAnnotation;
+@class ArcGISMapSearchResultAnnotation;
 @class CampusMapViewController;
 
 @interface MITMapDetailViewController : UIViewController <ConnectionWrapperDelegate, TabViewControlDelegate, JSONAPIDelegate> {
@@ -74,10 +74,10 @@
 	NSMutableArray* _tabViews;
 	
 	// the search result we are attempting to display
-	MITMapSearchResultAnnotation* _annotation;
+	ArcGISMapSearchResultAnnotation *_annotation;
 	
 	// updated search result details. Not the annotation we started with, but based on its ID. 
-	MITMapSearchResultAnnotation* _annotationDetails;
+	ArcGISMapSearchResultAnnotation *_annotationDetails;
 	
 	CampusMapViewController* _campusMapVC;
 	
@@ -95,8 +95,8 @@
 	int _startingTab;
 }
 
-@property (nonatomic, retain) MITMapSearchResultAnnotation* annotation;
-@property (nonatomic, retain) MITMapSearchResultAnnotation* annotationDetails;
+@property (nonatomic, retain) ArcGISMapSearchResultAnnotation *annotation;
+@property (nonatomic, retain) ArcGISMapSearchResultAnnotation *annotationDetails;
 
 @property (nonatomic, assign) CampusMapViewController* campusMapVC;
 

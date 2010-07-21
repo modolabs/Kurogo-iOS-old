@@ -76,11 +76,11 @@
     }
     
 	// get the annotation for this index
-	MITMapSearchResultAnnotation* annotation = [self.searchResults objectAtIndex:indexPath.row];
+	ArcGISMapSearchResultAnnotation *annotation = [self.searchResults objectAtIndex:indexPath.row];
 	cell.textLabel.text = annotation.name;
 	
-	if(nil != annotation.bldgnum)
-		cell.detailTextLabel.text = [NSString stringWithFormat:@"Building %@", annotation.bldgnum];
+	if(nil != annotation.name)
+		cell.detailTextLabel.text = [NSString stringWithFormat:@"Building %@", annotation.name];
 	else
 		cell.detailTextLabel.text = nil;
 	
@@ -97,7 +97,7 @@
 	MITMapDetailViewController* detailsVC = [[[MITMapDetailViewController alloc] initWithNibName:@"MITMapDetailViewController"
 																						  bundle:nil] autorelease];
 	
-	MITMapSearchResultAnnotation* annotation = (MITMapSearchResultAnnotation*)[self.searchResults objectAtIndex:indexPath.row];
+	ArcGISMapSearchResultAnnotation *annotation = (ArcGISMapSearchResultAnnotation *)[self.searchResults objectAtIndex:indexPath.row];
 	detailsVC.annotation = annotation;
 	detailsVC.title = @"Info";
 	detailsVC.campusMapVC = self.campusMapVC;
@@ -126,7 +126,7 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
 	
-	MITMapSearchResultAnnotation* annotation = [self.searchResults objectAtIndex:indexPath.row];
+	ArcGISMapSearchResultAnnotation *annotation = [self.searchResults objectAtIndex:indexPath.row];
 	
 	CGFloat width = self.view.frame.size.width - 33.0;
 	
@@ -136,7 +136,7 @@
 	
 	CGFloat height = labelSize.height;
 	
-	NSString *detailString = [NSString stringWithFormat:@"Building %@", annotation.bldgnum];
+	NSString *detailString = [NSString stringWithFormat:@"Building %@", annotation.name];
 	
 	labelSize = [detailString sizeWithFont:[UIFont systemFontOfSize:CELL_DETAIL_FONT_SIZE]
 						 constrainedToSize:CGSizeMake(width, 200.0)

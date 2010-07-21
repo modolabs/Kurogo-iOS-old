@@ -125,7 +125,7 @@
 		
 		[_scrollView addSubview:_loadingResultView];
 		
-		[MITMapSearchResultAnnotation executeServerSearchWithQuery:self.annotation.bldgnum jsonDelegate:self object:nil];		
+		[ArcGISMapSearchResultAnnotation executeServerSearchWithQuery:self.annotation.name jsonDelegate:self object:nil];		
 	}
 	else {
 		self.annotationDetails = self.annotation;
@@ -144,8 +144,8 @@
 	if (nil == self.annotation.street) {
 		NSString* desc = self.annotation.name;
 		
-		if (nil != self.annotation.bldgnum) {
-			desc = [desc stringByAppendingFormat:@" - Building %@", self.annotation.bldgnum];
+		if (nil != self.annotation.name) {
+			desc = [desc stringByAppendingFormat:@" - Building %@", self.annotation.name];
 		}
 
 		search = [NSString stringWithFormat:@"%lf,%lf(%@)", self.annotation.coordinate.latitude, self.annotation.coordinate.longitude, desc];
@@ -197,6 +197,7 @@
 	_nameLabel.hidden = NO;
 	_locationLabel.hidden = NO;
 	
+    /*
 	if (self.annotationDetails.contents.count > 0) {
 		
 		CGFloat padding = 10.0;
@@ -240,18 +241,18 @@
 			CGSize contentSize = CGSizeMake(_scrollView.frame.size.width, _tabViewContainer.frame.size.height + _tabViewContainer.frame.origin.y);
 			[_scrollView setContentSize:contentSize];
 		}
-	} else {
+	} else {*/
 		UILabel* noWhatsHereLabel = [[[UILabel alloc] initWithFrame:CGRectMake(13, 6, _whatsHereView.frame.size.width, 20)] autorelease];
 		noWhatsHereLabel.text = NSLocalizedString(@"No Information Available", nil);
 		[_whatsHereView addSubview:noWhatsHereLabel];
 		
-	}
+	//}
 	
 	[_tabViewControl addTab:@"What's Here"];
 	[_tabViews addObject:_whatsHereView];
-	
-	if (self.annotationDetails.bldgimg) 
-	{
+
+	/*
+	if (self.annotationDetails.bldgimg) {
 		// go get the image.
 		self.imageConnectionWrapper = [[ConnectionWrapper new] autorelease];
 		self.imageConnectionWrapper.delegate = self;
@@ -263,7 +264,8 @@
 		[_tabViewControl addTab:@"Photo"];	
 		[_tabViews addObject:_buildingView];
 	}
-	
+	*/
+
 	// if no tabs have been added, remove the tab view control and its container view. 
 	if (_tabViewControl.tabs.count <= 0) {
 		_tabViewControl.hidden = YES;
@@ -314,14 +316,14 @@
 	if(_tabViews.count > 0)
 	{
 
-		if (self.annotationDetails.contents.count == 0 && _tabViews.count > 1) {
-			_tabViewControl.selectedTab = 1;
-			[self tabControl:_tabViewControl changedToIndex:1 tabText:nil];
-		}
-		else {
+		//if (self.annotationDetails.contents.count == 0 && _tabViews.count > 1) {
+		//	_tabViewControl.selectedTab = 1;
+		//	[self tabControl:_tabViewControl changedToIndex:1 tabText:nil];
+		//}
+		//else {
 			_tabViewControl.selectedTab = 0;
 			[self tabControl:_tabViewControl changedToIndex:0 tabText:nil];
-		}
+		//}
 
 
 	}
@@ -397,8 +399,8 @@
 	else 
 	{
 		NSString* subTitle = nil;
-		if (self.annotation.bldgnum != nil) {
-			subTitle = [NSString stringWithFormat:@"Building %@", self.annotation.bldgnum];
+		if (self.annotation.name != nil) {
+			subTitle = [NSString stringWithFormat:@"%@", self.annotation.name];
 		}
 		[bookmarkManager addBookmark:self.annotation.uniqueID title:self.annotation.name subtitle:subTitle data:self.annotation.info];
 		
@@ -434,14 +436,18 @@
 
 
 // data was received from the MITMobileWeb request. 
--(void) request:request jsonLoaded:(id)results {
-	if ([(NSArray *)results count] > 0) {
-		MITMapSearchResultAnnotation* annotation = [[[MITMapSearchResultAnnotation alloc] initWithInfo:[results objectAtIndex:0]] autorelease];
-		self.annotationDetails = annotation;
-		
-		// load the new contents. 
-		[self loadAnnotationContent];
-	}
+- (void)request:request jsonLoaded:(id)results {
+    if (results && [results isKindOfClass:[NSDictionary class]]) {
+        NSArray *resultList = [results objectForKey:@"results"];
+
+    	if ([resultList count] > 0) {
+            ArcGISMapSearchResultAnnotation *annotation = [[[ArcGISMapSearchResultAnnotation alloc] initWithInfo:[resultList objectAtIndex:0]] autorelease];
+            self.annotationDetails = annotation;
+            
+            // load the new contents. 
+            [self loadAnnotationContent];
+        }
+    }
 }
 	
 -(void) connectionDidReceiveResponse: (ConnectionWrapper *)connectionWrapper {

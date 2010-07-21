@@ -184,7 +184,7 @@
 		
 		NSMutableArray* searchResultsArray = [NSMutableArray array];
 
-		MITMapSearchResultAnnotation* annotation = [[[MITMapSearchResultAnnotation alloc] initWithInfo:thisItem] autorelease];
+		ArcGISMapSearchResultAnnotation *annotation = [[[ArcGISMapSearchResultAnnotation alloc] initWithInfo:thisItem] autorelease];
 		[searchResultsArray addObject:annotation];
 		
 		// this will remove any old annotations and add the new ones. 
@@ -267,7 +267,7 @@
 	NSMutableArray* searchResultsArray = [NSMutableArray array];
 	
 	for (NSDictionary* thisItem in _itemsInTable) {
-		MITMapSearchResultAnnotation* annotation = [[[MITMapSearchResultAnnotation alloc] initWithInfo:thisItem] autorelease];
+		ArcGISMapSearchResultAnnotation *annotation = [[[ArcGISMapSearchResultAnnotation alloc] initWithInfo:thisItem] autorelease];
 		[searchResultsArray addObject:annotation];
 	}
 	

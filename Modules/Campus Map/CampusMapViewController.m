@@ -139,12 +139,12 @@
 	
 	// if we're in the list view, save that state
 	if (_displayingList) {
-		[url setPath:[NSString stringWithFormat:@"list", [(MITMapSearchResultAnnotation*)[[_mapView selectedAnnotations] lastObject] uniqueID]] query:_lastSearchText];
+		[url setPath:[NSString stringWithFormat:@"list", [(ArcGISMapSearchResultAnnotation *)[[_mapView selectedAnnotations] lastObject] uniqueID]] query:_lastSearchText];
 		[url setAsModulePath];
 		[self setURLPathUserLocation];
 	} else {
 		if (_lastSearchText != nil && ![_lastSearchText isEqualToString:@""] && [[_mapView selectedAnnotations] lastObject]) {
-			[url setPath:[NSString stringWithFormat:@"search/%@", [(MITMapSearchResultAnnotation*)[[_mapView selectedAnnotations] lastObject] uniqueID]] query:_lastSearchText];
+			[url setPath:[NSString stringWithFormat:@"search/%@", [(ArcGISMapSearchResultAnnotation *)[[_mapView selectedAnnotations] lastObject] uniqueID]] query:_lastSearchText];
 			[url setAsModulePath];
 			[self setURLPathUserLocation];
 		}
@@ -340,12 +340,11 @@
 	
 	// reformat the search results for the map. Combine items that are in common buildings into one annotation result.
 	NSMutableDictionary* mapSearchResults = [NSMutableDictionary dictionaryWithCapacity:_searchResults.count];
-	for (MITMapSearchResultAnnotation* annotation in _searchResults)
+	for (ArcGISMapSearchResultAnnotation *annotation in _searchResults)
 	{
-		MITMapSearchResultAnnotation* previousAnnotation = [mapSearchResults objectForKey:[annotation performSelector:filter]];
+		ArcGISMapSearchResultAnnotation *previousAnnotation = [mapSearchResults objectForKey:[annotation performSelector:filter]];
 		if (nil == previousAnnotation) {
-			MITMapSearchResultAnnotation* newAnnotation = [[[MITMapSearchResultAnnotation alloc] initWithCoordinate:annotation.coordinate] autorelease];
-			newAnnotation.bldgnum = annotation.bldgnum;
+			ArcGISMapSearchResultAnnotation *newAnnotation = [[[ArcGISMapSearchResultAnnotation alloc] initWithCoordinate:annotation.coordinate] autorelease];
 			[mapSearchResults setObject:newAnnotation forKey:[annotation performSelector:filter]];
 		}
 	}
@@ -556,7 +555,7 @@
 		// only let the user switch to the list view if there are search results. 
 		//_viewTypeButton.enabled = (_searchResults != nil && _searchResults.count > 0);
 		if (_lastSearchText != nil && ![_lastSearchText isEqualToString:@""] && [[_mapView selectedAnnotations] count])
-			[url setPath:[NSString stringWithFormat:@"search/%@", [(MITMapSearchResultAnnotation*)[[_mapView selectedAnnotations] lastObject] uniqueID]] query:_lastSearchText];
+			[url setPath:[NSString stringWithFormat:@"search/%@", [(ArcGISMapSearchResultAnnotation *)[[_mapView selectedAnnotations] lastObject] uniqueID]] query:_lastSearchText];
 		else 
 			[url setPath:@"" query:nil];
 		[url setAsModulePath];
@@ -601,7 +600,7 @@
 	
 	for (NSDictionary* info in searchResults)
 	{
-		MITMapSearchResultAnnotation* annotation = [[[MITMapSearchResultAnnotation alloc] initWithInfo:info] autorelease];
+		ArcGISMapSearchResultAnnotation *annotation = [[[ArcGISMapSearchResultAnnotation alloc] initWithInfo:info] autorelease];
 		[searchResultsArr addObject:annotation];
 	}
 	
@@ -685,8 +684,7 @@
 	
 	// delete any previous instance of this search term
 	MapSearch* mapSearch = [CoreDataManager getObjectForEntity:CampusMapSearchEntityName attribute:@"searchTerm" value:searchBar.text];
-	if(nil != mapSearch)
-	{
+	if (nil != mapSearch) {
 		[CoreDataManager deleteObject:mapSearch];
 	}
 	
@@ -695,7 +693,6 @@
 	mapSearch.searchTerm = searchBar.text;
 	mapSearch.date = [NSDate date];
 	[CoreDataManager saveData];
-	
 	
 	// determine if we are past our max search limit. If so, trim an item
 	NSError* error = nil;
@@ -715,8 +712,7 @@
 		[limitFetchRequest setFetchLimit:1];
 		NSArray* overLimit = [[CoreDataManager managedObjectContext] executeFetchRequest: limitFetchRequest error:nil];
 		 
-		if(overLimit && overLimit.count == 1)
-		{
+		if (overLimit && overLimit.count == 1) {
 			[[CoreDataManager managedObjectContext] deleteObject:[overLimit objectAtIndex:0]];
 		}
 
@@ -824,7 +820,7 @@
 -(void) pushAnnotationDetails:(id <MKAnnotation>) annotation animated:(BOOL)animated
 {
 	// determine the type of the annotation. If it is a search result annotation, display the details
-	if ([annotation isKindOfClass:[MITMapSearchResultAnnotation class]]) {
+	if ([annotation isKindOfClass:[ArcGISMapSearchResultAnnotation class]]) {
 		
 		// push the details page onto the stack for the item selected. 
 		MITMapDetailViewController* detailsVC = [[[MITMapDetailViewController alloc] initWithNibName:@"MITMapDetailViewController"
@@ -834,7 +830,7 @@
 		detailsVC.title = @"Info";
 		detailsVC.campusMapVC = self;
 		
-		if(!((MITMapSearchResultAnnotation*)annotation).bookmark) {
+		if(!((ArcGISMapSearchResultAnnotation *)annotation).bookmark) {
 			if(self.lastSearchText != nil && self.lastSearchText.length > 0) {
 				detailsVC.queryText = self.lastSearchText;
 			}
@@ -874,10 +870,10 @@
 }
 
 - (void) annotationSelected:(id<MKAnnotation>)annotation {
-	if([annotation isKindOfClass:[MITMapSearchResultAnnotation class]]) {
-		MITMapSearchResultAnnotation* searchAnnotation = (MITMapSearchResultAnnotation*)annotation;
+	if([annotation isKindOfClass:[ArcGISMapSearchResultAnnotation class]]) {
+		ArcGISMapSearchResultAnnotation *searchAnnotation = (ArcGISMapSearchResultAnnotation *)annotation;
 		if (!searchAnnotation.dataPopulated) {	
-			[MITMapSearchResultAnnotation executeServerSearchWithQuery:searchAnnotation.bldgnum jsonDelegate:self object:annotation];	
+			[ArcGISMapSearchResultAnnotation executeServerSearchWithQuery:searchAnnotation.name jsonDelegate:self object:annotation];	
 		}
 		[url setPath:[NSString stringWithFormat:@"search/%@", searchAnnotation.uniqueID] query:_lastSearchText];
 		[url setAsModulePath];
@@ -899,55 +895,54 @@
 
 - (void) request:(JSONAPIRequest *)request jsonLoaded:(id)JSONObject
 {	
-	NSArray *searchResults = JSONObject;
-	if ([request.userData isKindOfClass:[NSString class]]) {
-		NSString *searchType = request.userData;
-	
-		if ([searchType isEqualToString:kAPISearch]) {		
-		
-			[_lastSearchText release];
-			_lastSearchText = [request.params objectForKey:@"q"];
-		
-			[self receivedNewSearchResults:searchResults forQuery:_lastSearchText];
-		
-			// if there were no search results, tell the user about it. 
-			if(nil == searchResults || searchResults.count <= 0) {
-				[self noSearchResultsAlert];
-				_hasSearchResults = NO;
-				self.navigationItem.rightBarButtonItem.title = _displayingList ? @"Map" : @"Browse";
-			} else {
-				_hasSearchResults = YES;
-				if(!_displayingList)
-					self.navigationItem.rightBarButtonItem.title = @"List";
-			}
-		}
+    
+    if (JSONObject && [JSONObject isKindOfClass:[NSDictionary class]]) {
+        NSArray *searchResults = [JSONObject objectForKey:@"results"];
+        
+        if ([request.userData isKindOfClass:[NSString class]]) {
+            NSString *searchType = request.userData;
+            
+            if ([searchType isEqualToString:kAPISearch]) {		
+
+                [_lastSearchText release];
+                _lastSearchText = [request.params objectForKey:@"q"];
+                
+                [self receivedNewSearchResults:searchResults forQuery:_lastSearchText];
+                
+                // if there were no search results, tell the user about it. 
+                if (nil == searchResults || searchResults.count <= 0) {
+                    [self noSearchResultsAlert];
+                    _hasSearchResults = NO;
+                    self.navigationItem.rightBarButtonItem.title = _displayingList ? @"Map" : @"Browse";
+                } else {
+                    _hasSearchResults = YES;
+                    if(!_displayingList)
+                        self.navigationItem.rightBarButtonItem.title = @"List";
+                }
+            }
+        } else if ([request.userData isKindOfClass:[ArcGISMapSearchResultAnnotation class]]) {
+            // updating an annotation search request
+            ArcGISMapSearchResultAnnotation *oldAnnotation = request.userData;
+            
+            if (searchResults.count > 0) {
+                ArcGISMapSearchResultAnnotation* newAnnotation = [[[ArcGISMapSearchResultAnnotation alloc] initWithInfo:[searchResults objectAtIndex:0]] autorelease];
+                
+                BOOL isViewingAnnotation = ([[_mapView selectedAnnotations] lastObject] == oldAnnotation);
+                
+                [_mapView removeAnnotation:oldAnnotation];
+                [_mapView addAnnotation:newAnnotation];
+                
+                if (isViewingAnnotation) {
+                    [_mapView selectAnnotation:newAnnotation animated:NO];
+                }
+                _hasSearchResults = YES;
+                self.navigationItem.rightBarButtonItem.title = @"List";
+            } else {
+                _hasSearchResults = NO;
+                self.navigationItem.rightBarButtonItem.title = @"Browse";
+            }
+        }
 	}
-
-	
-	else if([request.userData isKindOfClass:[MITMapSearchResultAnnotation class]]) {
-		// updating an annotation search request
-		MITMapSearchResultAnnotation* oldAnnotation = request.userData;
-		NSArray* results = JSONObject;
-		
-		if (results.count > 0) {
-			MITMapSearchResultAnnotation* newAnnotation = [[[MITMapSearchResultAnnotation alloc] initWithInfo:[results objectAtIndex:0]] autorelease];
-			
-			BOOL isViewingAnnotation = ([[_mapView selectedAnnotations] lastObject] == oldAnnotation);
-			
-			[_mapView removeAnnotation:oldAnnotation];
-			[_mapView addAnnotation:newAnnotation];
-			
-			if (isViewingAnnotation) {
-				[_mapView selectAnnotation:newAnnotation animated:NO];
-			}
-			_hasSearchResults = YES;
-			self.navigationItem.rightBarButtonItem.title = @"List";
-		} else {
-			_hasSearchResults = NO;
-			self.navigationItem.rightBarButtonItem.title = @"Browse";
-		}
-
-	}	
 }
 
 // there was an error connecting to the specified URL. 
@@ -956,8 +951,6 @@
 		[self errorConnectingAlert];
 	}
 }
-
-#pragma mark UITableViewDataSource
 
 -(void) search:(NSString*)searchText
 {	
@@ -980,7 +973,7 @@
 		}
 		 */
 	} else {		
-		[MITMapSearchResultAnnotation executeServerSearchWithQuery:searchText jsonDelegate:self object:kAPISearch];
+		[ArcGISMapSearchResultAnnotation executeServerSearchWithQuery:searchText jsonDelegate:self object:kAPISearch];
 	}
     
     /*
