@@ -53,6 +53,7 @@
 				// create one tag/label pair for each email/phone/office label
 				if ([ldapTag isEqualToString:@"mail"] || 
 					[ldapTag isEqualToString:@"telephonenumber"] ||
+					[ldapTag isEqualToString:@"facsimiletelephonenumber"] ||
 					//[ldapTag isEqualToString:@"room"] || 
 					[ldapTag isEqualToString:@"postalAddress"]) {
 					for (NSString *value in [ldapValue componentsSeparatedByString:@","])
@@ -188,11 +189,11 @@
 		cell.textLabel.text = tag;
 		cell.detailTextLabel.text = data;
 		
-		if ([tag isEqualToString:@"mail"]) {
+		if ([tag isEqualToString:[personDetails displayNameForKey:@"mail"]]) {
             cell.accessoryView = [UIImageView accessoryViewWithMITType:MITAccessoryViewEmail];
-		} else if ([tag isEqualToString:@"telephonenumber"]) {
+		} else if ([tag isEqualToString:[personDetails displayNameForKey:@"telephonenumber"]]) {
             cell.accessoryView = [UIImageView accessoryViewWithMITType:MITAccessoryViewPhone];
-		} else if ([tag isEqualToString:@"office"]) {//|| [tag isEqualToString:@"room"]) {
+		} else if ([tag isEqualToString:[personDetails displayNameForKey:@"postaladdress"]]) {//|| [tag isEqualToString:@"room"]) {
             cell.accessoryView = [UIImageView accessoryViewWithMITType:MITAccessoryViewMap];
 		} else {
 			cell.selectionStyle = UITableViewCellSelectionStyleNone;
@@ -300,11 +301,12 @@
 		NSArray *personInfo = [[self.sectionArray safeObjectAtIndex:indexPath.section] safeObjectAtIndex:indexPath.row];
 		NSString *tag = [personInfo safeObjectAtIndex:0];
 		
-		if ([tag isEqualToString:@"mail"])
+		// React if the cell tapped has text that that matches the display name of mail, telephonenumber, or postaladdress.
+		if ([tag isEqualToString:[personDetails displayNameForKey:@"mail"]])
 			[self emailIconTapped:[personInfo safeObjectAtIndex:1]];
-		else if ([tag isEqualToString:@"telephonenumber"])
+		else if ([tag isEqualToString:[personDetails displayNameForKey:@"telephonenumber"]])
 			[self phoneIconTapped:[personInfo safeObjectAtIndex:1]];
-		else if ([tag isEqualToString:@"office"])
+		else if ([tag isEqualToString:[personDetails displayNameForKey:@"postaladdress"]])
 			[self mapIconTapped:[personInfo safeObjectAtIndex:1]];
 
 	}

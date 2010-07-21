@@ -2,17 +2,20 @@
 #import <MapKit/MapKit.h>
 #import <CoreLocation/CoreLocation.h>
 #import "JSONAPIRequest.h"
+#import "PolygonOverlay.h"
+
 
 @interface ArcGISMapSearchResultAnnotation : NSObject <MKAnnotation> {
 
 	CLLocationCoordinate2D _coordinate;
-    NSArray *_polygons;
     NSString *_uniqueID; // hidden
 	NSString *_name;
 	NSString *_street;
 	NSString *_city;
     NSInteger yearBuilt;
-	
+
+    PolygonOverlay *_polygon;
+    
 	// has the data of this object been populated yet
 	BOOL _dataPopulated;
 	
@@ -23,7 +26,8 @@
 }
 
 @property (nonatomic, assign) CLLocationCoordinate2D coordinate;
-@property (nonatomic, retain) NSArray *polygons;
+@property (nonatomic, retain) PolygonOverlay *polygon;
+
 @property (nonatomic, retain) NSString *uniqueID;
 @property (nonatomic, retain) NSString *name;
 @property (nonatomic, retain) NSString *street;
@@ -38,9 +42,15 @@
 
 - (id)initWithInfo:(NSDictionary*)info;
 - (id)initWithCoordinate:(CLLocationCoordinate2D)coordinate;
+- (BOOL)canAddOverlay;
 
 @end
 
+
+
+
+
+// the mapsearch for courses outputs this kind of data:
 
 /*
  "feature_type" : "Course Location",
@@ -50,6 +60,10 @@
  "ycoord" : "2961044.576"
  */
 
+// TODO: decide whether we need a separate annotation class for this
+
+
+/*
 
 @interface HarvardMapSearchResultAnnotation : NSObject <MKAnnotation> {
     NSString *_featureType;
@@ -64,3 +78,5 @@
 @property (nonatomic, assign) CLLocationCoordinate2D coordinate;
 
 @end
+
+*/

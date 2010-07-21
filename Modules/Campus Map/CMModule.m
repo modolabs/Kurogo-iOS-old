@@ -2,7 +2,7 @@
 #import "CampusMapViewController.h"
 //#import "MITMapViewController.h"
 #import "MITMapDetailViewController.h"
-#import "MITMapSearchResultAnnotation.h"
+#import "MapSearchResultAnnotation.h"
 
 @implementation CMModule
 @synthesize campusMapVC = _campusMapVC;

@@ -1,9 +1,10 @@
-#import "MITMapSearchResultAnnotation.h"
+#import "MapSearchResultAnnotation.h"
 #import "TileServerManager.h"
+
 
 @implementation ArcGISMapSearchResultAnnotation
 @synthesize uniqueID = _uniqueID;
-@synthesize polygons = _polygons;
+@synthesize polygon = _polygon;
 @synthesize name = _name;
 @synthesize street = _street;
 @synthesize city = _city;
@@ -27,7 +28,6 @@
 	self.street = nil;
 	self.city = nil;
 	self.info = nil;
-    self.polygons = nil;
 	
 	[super dealloc];
 }
@@ -35,7 +35,6 @@
 
 - (id)initWithInfo:(NSDictionary*)info
 {
-    NSLog(@"%@", [info description]);
 	if (self = [super init]) {
 		self.info = info;
 
@@ -48,33 +47,21 @@
         self.city = [infoAttributes objectForKey:@"City"];
         self.yearBuilt = [[infoAttributes objectForKey:@"Year Built"] intValue];
         
-        // already an array of coordinates
-        self.polygons = [infoGeometry objectForKey:@"rings"];
+        NSArray *rings = [infoGeometry objectForKey:@"rings"];
+        self.polygon = [[PolygonOverlay alloc] initWithRings:rings];
+        self.coordinate = self.polygon.coordinate;
 
-        
-        if ([self.polygons count] > 0) {
-            NSArray *ring = [self.polygons objectAtIndex:0];
-            NSInteger numPoints = 0;
-            CGFloat totalX = 0.0;
-            CGFloat totalY = 0.0;
+        NSLog(@"found %@ at %.4f, %.4f", self.name, self.coordinate.longitude, self.coordinate.latitude);
 
-            for (NSArray *point in ring) {
-                totalX += [[point objectAtIndex:0] doubleValue];
-                totalY += [[point objectAtIndex:1] doubleValue];
-                numPoints++;
-            }
-            
-            CGPoint centroid = CGPointMake(totalX / numPoints, totalY / numPoints);
-            _coordinate = [TileServerManager coordForProjectedPoint:centroid];
-        }
-        
-		//_coordinate.latitude = [[info objectForKey:@"lat_wgs84"] doubleValue];
-		//_coordinate.longitude = [[info objectForKey:@"long_wgs84"] doubleValue];
-				
+        NSLog(@"%@", [self.polygon description]);
 		self.dataPopulated = YES;
 	}
 	
 	return self;
+}
+
+- (BOOL)canAddOverlay {
+    return [self.polygon.rings count] > 0;
 }
 
 - (NSDictionary *)info {
@@ -87,14 +74,11 @@
 	if (nil == self.name)		[info setObject:self.name		forKey:@"name"];
 	if (nil == self.street)		[info setObject:self.street		forKey:@"street"];
 	if (nil == self.city)		[info setObject:self.city		forKey:@"city"];
-	
-	//[info setObject:[NSNumber numberWithDouble:_coordinate.latitude]	forKey:@"lat_wgs84"];
-	//[info setObject:[NSNumber numberWithDouble:_coordinate.longitude]	forKey:@"long_wgs84"];
-    
+	    
 	return info;
 }
 
-- (id)initWithCoordinate:(CLLocationCoordinate2D) coordinate {
+- (id)initWithCoordinate:(CLLocationCoordinate2D)coordinate {
 	if (self = [super init]) {
 		_coordinate = coordinate;
 	}
@@ -106,16 +90,12 @@
 
 - (NSString *)title
 {
-    if (nil != self.name) {
-		return self.name;
-	}
-	
-	return nil;
+    return self.name;
 }
 
 - (NSString *)subtitle
 {
-	return nil;
+    return self.street;
 }
                        
 @end
@@ -123,6 +103,7 @@
 
 
 
+/*
 
 @implementation HarvardMapSearchResultAnnotation
 
@@ -144,5 +125,6 @@
 
 
 
-
 @end
+ 
+*/

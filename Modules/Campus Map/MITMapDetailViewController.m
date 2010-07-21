@@ -1,7 +1,6 @@
-
 #import "MITMapDetailViewController.h"
 #import "TabViewControl.h"
-#import "MITMapSearchResultAnnotation.h"
+#import "MapSearchResultAnnotation.h"
 #import "CampusMapViewController.h"
 #import "NSString+SBJSON.h"
 #import "MITUIConstants.h"
@@ -431,7 +430,6 @@
 	else 
 		[_campusMapVC.url setPath:[NSString stringWithFormat:@"detail/%@/%d", _annotation.uniqueID, tabIndex] query:_campusMapVC.lastSearchText];
 	[_campusMapVC.url setAsModulePath];
-	[_campusMapVC setURLPathUserLocation];
 }
 
 

@@ -113,7 +113,7 @@
 		442C1CA310F4FE8900CB44EC /* ShuttleLocation.m in Sources */ = {isa = PBXBuildFile; fileRef = 442C1CA210F4FE8900CB44EC /* ShuttleLocation.m */; };
 		4463CC9110D6F4A50048CA83 /* CampusMapViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4463CC7A10D6F4A50048CA83 /* CampusMapViewController.m */; };
 		4463CC9810D6F4A50048CA83 /* CMModule.m in Sources */ = {isa = PBXBuildFile; fileRef = 4463CC8810D6F4A50048CA83 /* CMModule.m */; };
-		4463CC9B10D6F4A50048CA83 /* MITMapSearchResultAnnotation.m in Sources */ = {isa = PBXBuildFile; fileRef = 4463CC8E10D6F4A50048CA83 /* MITMapSearchResultAnnotation.m */; };
+		4463CC9B10D6F4A50048CA83 /* MapSearchResultAnnotation.m in Sources */ = {isa = PBXBuildFile; fileRef = 4463CC8E10D6F4A50048CA83 /* MapSearchResultAnnotation.m */; };
 		4463CCB210D6F5750048CA83 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4463CCB110D6F5750048CA83 /* CoreLocation.framework */; };
 		4463CE8F10D8052A0048CA83 /* MITMapSearchResultCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 4463CE8E10D8052A0048CA83 /* MITMapSearchResultCell.m */; };
 		4463D09410D92CB00048CA83 /* MITMapDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4463D09210D92CB00048CA83 /* MITMapDetailViewController.m */; };
@@ -418,6 +418,8 @@
 		EB6FD1F910E19D7900D56BE1 /* SecondaryGroupedTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = EB6FD1F810E19D7900D56BE1 /* SecondaryGroupedTableViewCell.m */; };
 		EB74ED2E11924E7C006673F9 /* ShareDetailViewController.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB74ED2C11924E7C006673F9 /* ShareDetailViewController.h */; settings = {JAVA_ARCHIVE_SUBDIR = Common; }; };
 		EB74ED2F11924E7C006673F9 /* ShareDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EB74ED2D11924E7C006673F9 /* ShareDetailViewController.m */; };
+		EB7BA33E11F7677F00B3DDA6 /* PolygonOverlay.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB7BA33C11F7677F00B3DDA6 /* PolygonOverlay.h */; settings = {JAVA_ARCHIVE_SUBDIR = "Modules/Campus Map"; }; };
+		EB7BA33F11F7677F00B3DDA6 /* PolygonOverlay.m in Sources */ = {isa = PBXBuildFile; fileRef = EB7BA33D11F7677F00B3DDA6 /* PolygonOverlay.m */; };
 		EB7F327F10CD6C5B00188BCD /* PeopleDataModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = EB7F326A10CD6C5B00188BCD /* PeopleDataModel.xcdatamodeld */; };
 		EB7F328210CD6C5B00188BCD /* PartialHighlightTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = EB7F327110CD6C5B00188BCD /* PartialHighlightTableViewCell.m */; };
 		EB7F328310CD6C5B00188BCD /* PeopleDetailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EB7F327310CD6C5B00188BCD /* PeopleDetailsViewController.m */; };
@@ -601,8 +603,8 @@
 		4463CC7A10D6F4A50048CA83 /* CampusMapViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CampusMapViewController.m; sourceTree = "<group>"; };
 		4463CC8710D6F4A50048CA83 /* CMModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CMModule.h; sourceTree = "<group>"; };
 		4463CC8810D6F4A50048CA83 /* CMModule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CMModule.m; sourceTree = "<group>"; };
-		4463CC8D10D6F4A50048CA83 /* MITMapSearchResultAnnotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MITMapSearchResultAnnotation.h; sourceTree = "<group>"; };
-		4463CC8E10D6F4A50048CA83 /* MITMapSearchResultAnnotation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MITMapSearchResultAnnotation.m; sourceTree = "<group>"; };
+		4463CC8D10D6F4A50048CA83 /* MapSearchResultAnnotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MapSearchResultAnnotation.h; sourceTree = "<group>"; };
+		4463CC8E10D6F4A50048CA83 /* MapSearchResultAnnotation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MapSearchResultAnnotation.m; sourceTree = "<group>"; };
 		4463CCB110D6F5750048CA83 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		4463CE8D10D8052A0048CA83 /* MITMapSearchResultCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MITMapSearchResultCell.h; sourceTree = "<group>"; };
 		4463CE8E10D8052A0048CA83 /* MITMapSearchResultCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MITMapSearchResultCell.m; sourceTree = "<group>"; };
@@ -971,6 +973,8 @@
 		EB6FD1F810E19D7900D56BE1 /* SecondaryGroupedTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SecondaryGroupedTableViewCell.m; sourceTree = "<group>"; };
 		EB74ED2C11924E7C006673F9 /* ShareDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShareDetailViewController.h; sourceTree = "<group>"; };
 		EB74ED2D11924E7C006673F9 /* ShareDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShareDetailViewController.m; sourceTree = "<group>"; };
+		EB7BA33C11F7677F00B3DDA6 /* PolygonOverlay.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PolygonOverlay.h; sourceTree = "<group>"; };
+		EB7BA33D11F7677F00B3DDA6 /* PolygonOverlay.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PolygonOverlay.m; sourceTree = "<group>"; };
 		EB7F327010CD6C5B00188BCD /* PartialHighlightTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PartialHighlightTableViewCell.h; sourceTree = "<group>"; };
 		EB7F327110CD6C5B00188BCD /* PartialHighlightTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PartialHighlightTableViewCell.m; sourceTree = "<group>"; };
 		EB7F327210CD6C5B00188BCD /* PeopleDetailsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PeopleDetailsViewController.h; sourceTree = "<group>"; };
@@ -1445,8 +1449,8 @@
 				4463CC7A10D6F4A50048CA83 /* CampusMapViewController.m */,
 				4463CC8710D6F4A50048CA83 /* CMModule.h */,
 				4463CC8810D6F4A50048CA83 /* CMModule.m */,
-				4463CC8D10D6F4A50048CA83 /* MITMapSearchResultAnnotation.h */,
-				4463CC8E10D6F4A50048CA83 /* MITMapSearchResultAnnotation.m */,
+				4463CC8D10D6F4A50048CA83 /* MapSearchResultAnnotation.h */,
+				4463CC8E10D6F4A50048CA83 /* MapSearchResultAnnotation.m */,
 				4463CE8D10D8052A0048CA83 /* MITMapSearchResultCell.h */,
 				4463CE8E10D8052A0048CA83 /* MITMapSearchResultCell.m */,
 				4463D09110D92CB00048CA83 /* MITMapDetailViewController.h */,
@@ -1464,6 +1468,8 @@
 				442C195410F3B21400CB44EC /* MITMapRoute.h */,
 				EB6D133111EE4A9C00B65CE3 /* MKMapView+ArcGISAdditions.h */,
 				EB6D133211EE4A9C00B65CE3 /* MKMapView+ArcGISAdditions.m */,
+				EB7BA33C11F7677F00B3DDA6 /* PolygonOverlay.h */,
+				EB7BA33D11F7677F00B3DDA6 /* PolygonOverlay.m */,
 			);
 			path = "Campus Map";
 			sourceTree = "<group>";
@@ -2003,6 +2009,7 @@
 				C727B53A11F4E245007D53BB /* CalendarCategoriesViewController.h in JavaArchive */,
 				C7B897F211F535C8002B3619 /* HoursTableViewController.h in JavaArchive */,
 				A6787A1611F605070034D559 /* NSArray+Convenience.h in JavaArchive */,
+				EB7BA33E11F7677F00B3DDA6 /* PolygonOverlay.h in JavaArchive */,
 				C77664FA11F64E74005496DD /* HallDetailsTableViewController.h in JavaArchive */,
 				C776675911F733E3005496DD /* DatePickerViewController.h in JavaArchive */,
 			);
@@ -2015,7 +2022,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 1D6058960D05DD3E006BFB54 /* Build configuration list for PBXNativeTarget "MIT Mobile" */;
 			buildPhases = (
-				DEE2B550104C17860037A4AB /* ShellScript */,
+				829673B111F798380098F2A3 /* ShellScript */,
 				1D60588D0D05DD3D006BFB54 /* Resources */,
 				1D60588E0D05DD3D006BFB54 /* Sources */,
 				1D60588F0D05DD3D006BFB54 /* Frameworks */,
@@ -2092,7 +2099,7 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		DEE2B550104C17860037A4AB /* ShellScript */ = {
+		829673B111F798380098F2A3 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -2102,9 +2109,8 @@
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = "/usr/bin/perl -w";
-			shellScript = "# Xcode auto-versioning script for Subversion\n# by Axel Andersson, modified by Daniel Jalkut to add\n# \"--revision HEAD\" to the svn info line, which allows\n# the latest revision to always be used.\n# Modified by Justin Anderson to work with iPhone\n# code signing.\n\n# Run this first script as a Run Script Build Phase to the beginning of your app target.\n\nuse strict;\n\ndie \"$0: Must be run from Xcode\" unless $ENV{\"BUILT_PRODUCTS_DIR\"};\n\n# Get the current subversion revision number\nmy $REV = `/usr/bin/svnversion -n ./`;\nmy $special_path = \"$ENV{PROJECT_DIR}\" . \"/Common/MITBuildInfo.m\";\nmy $version = $REV;\n\ndie \"$0: No Subversion revision found\" unless $version;\n\n# write the svn revision to an svn:ignored header file which is included in the prefix header\n# \n# outputs a Common/MITBuildInfo.m like:\n# #import \"MITBuildInfo.h\";\n# \n# NSString * MITBuildNumber const = @\"60\";\n\nopen(FH, \">$special_path\") or die \"$0: $special_path: $!\";\nprint FH \"#import \\\"MITBuildInfo.h\\\";\n\nNSString * const MITBuildNumber = @\\\"\" . $version . \"\\\";\";\n\nclose(FH);\n";
-			showEnvVarsInLog = 0;
+			shellPath = /bin/sh;
+			shellScript = "REV=`git rev-parse HEAD | cut -c 1-8`\nBUILD_INFO_FILE=${PROJECT_DIR}/Common/MITBuildInfo.m\n\necho \"#import \\\"MITBuildInfo.h\\\";\" > ${BUILD_INFO_FILE}\necho \"\" >> ${BUILD_INFO_FILE}\necho \"NSString * const MITBuildNumber = @\\\"$REV\\\";\" >> ${BUILD_INFO_FILE}";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -2162,7 +2168,7 @@
 				EB3EE78010D6ADCA00F6D707 /* MultiLineTableViewCell.m in Sources */,
 				4463CC9110D6F4A50048CA83 /* CampusMapViewController.m in Sources */,
 				4463CC9810D6F4A50048CA83 /* CMModule.m in Sources */,
-				4463CC9B10D6F4A50048CA83 /* MITMapSearchResultAnnotation.m in Sources */,
+				4463CC9B10D6F4A50048CA83 /* MapSearchResultAnnotation.m in Sources */,
 				DE728E6C10D6FF4700BFED37 /* StoryThumbnailView.m in Sources */,
 				DE728E7B10D6FF4700BFED37 /* StoryDetailViewController.m in Sources */,
 				DE728E7C10D6FF4700BFED37 /* StoryListViewController.m in Sources */,
@@ -2429,6 +2435,7 @@
 				A6D5498811F4E6D00048CEDB /* PersonDetails.m in Sources */,
 				C7B897F111F535C8002B3619 /* HoursTableViewController.m in Sources */,
 				A6787A1711F605070034D559 /* NSArray+Convenience.m in Sources */,
+				EB7BA33F11F7677F00B3DDA6 /* PolygonOverlay.m in Sources */,
 				C77664FB11F64E74005496DD /* HallDetailsTableViewController.m in Sources */,
 				C776675A11F733E3005496DD /* DatePickerViewController.m in Sources */,
 			);

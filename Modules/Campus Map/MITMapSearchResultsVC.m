@@ -1,7 +1,6 @@
-
 #import "MITMapSearchResultsVC.h"
 #import "MITMapSearchResultCell.h"
-#import "MITMapSearchResultAnnotation.h"
+#import "MapSearchResultAnnotation.h"
 #import "MITMapDetailViewController.h"
 #import "CampusMapViewController.h"
 #import "TouchableTableView.h"
@@ -29,8 +28,6 @@
 -(void) viewDidLoad
 {
 	[super viewDidLoad];
-		
-	
 }
 
 - (void)viewDidUnload {
@@ -111,7 +108,6 @@
 		detailsVC.queryText = self.campusMapVC.lastSearchText;
 		[self.campusMapVC.url setPath:[NSString stringWithFormat:@"detail/%@", annotation.uniqueID] query:self.campusMapVC.lastSearchText];
 		[self.campusMapVC.url setAsModulePath];
-		[self.campusMapVC setURLPathUserLocation];
 	}
 	
 	[self.campusMapVC.navigationController pushViewController:detailsVC animated:YES];

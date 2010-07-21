@@ -28,7 +28,12 @@
     {
         return [actualValue stringByReplacingOccurrencesOfString:@"$" withString:@"\n"];
     }
-
+    else if ([key isEqualToString:@"title"] || [key isEqualToString:@"ou"])
+    {
+        return [[actualValue stringByReplacingOccurrencesOfString:@", " withString:@"\n"]
+				stringByReplacingOccurrencesOfString:@"," withString:@"\n"];
+    }
+	
     return actualValue;
 }
 
