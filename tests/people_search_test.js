@@ -273,11 +273,11 @@ function testSuiteTitlesSeparatedByNewLine()
 target.setTimeout(0.5);
 navigateToPeopleView();
 
-testSuiteTitlesSeparatedByNewLine();
-testSuite1();
-/*
-testSuite2();
-testSuite3();
+// These two have to be watched (as in visually) by the test runner.
 testSuite4();
 testSuite5();
-*/
+
+testSuiteTitlesSeparatedByNewLine();
+testSuite1();
+testSuite2();
+testSuite3();
