@@ -165,7 +165,7 @@
 	NSDictionary* bookmark = [[[MapBookmarkManager defaultManager] bookmarks] objectAtIndex:indexPath.row];
 	
 	NSDictionary* data = [bookmark objectForKey:@"data"];
-	MITMapSearchResultAnnotation* annotation = [[[MITMapSearchResultAnnotation alloc] initWithInfo:data] autorelease];
+	ArcGISMapSearchResultAnnotation *annotation = [[[ArcGISMapSearchResultAnnotation alloc] initWithInfo:data] autorelease];
 	annotation.bookmark = YES;
 	
 	[_mapSelectionController.mapVC.mapView removeAnnotations:_mapSelectionController.mapVC.mapView.annotations];

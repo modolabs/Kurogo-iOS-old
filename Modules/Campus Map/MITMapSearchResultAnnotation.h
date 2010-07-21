@@ -1,27 +1,17 @@
-
 #import <Foundation/Foundation.h>
 #import <MapKit/MapKit.h>
 #import <CoreLocation/CoreLocation.h>
 #import "JSONAPIRequest.h"
 
-@interface MITMapSearchResultAnnotation : NSObject <MKAnnotation>{
+@interface ArcGISMapSearchResultAnnotation : NSObject <MKAnnotation> {
 
 	CLLocationCoordinate2D _coordinate;
-	
-	NSString* _architect;
-	NSString* _bldgimg;
-	NSString* _bldgnum;
-	
-	NSString* _uniqueID;
-	NSString* _mailing;
-	NSString* _name;
-	NSString* _street;
-	NSString* _city;
-	NSString* _viewAngle;
-	
-	NSArray* _contents;
-	
-	NSArray* _snippets;
+    NSArray *_polygons;
+    NSString *_uniqueID; // hidden
+	NSString *_name;
+	NSString *_street;
+	NSString *_city;
+    NSInteger yearBuilt;
 	
 	// has the data of this object been populated yet
 	BOOL _dataPopulated;
@@ -32,28 +22,45 @@
 	BOOL _bookmark;
 }
 
-@property (nonatomic, retain) NSString* architect;
-@property (nonatomic, retain) NSString* bldgimg;
-@property (nonatomic, retain) NSString* bldgnum;
-@property (nonatomic, retain) NSString* uniqueID;
-@property (nonatomic, retain) NSString* mailing;
-@property (nonatomic, retain) NSString* name;
-@property (nonatomic, retain) NSString* street;
-@property (nonatomic, retain) NSString* viewAngle;
-@property (nonatomic, retain) NSArray* contents;
-@property (nonatomic, retain) NSArray* snippets;
-@property (nonatomic, retain) NSString* city;
-
-@property (nonatomic, retain) NSDictionary* info;
+@property (nonatomic, assign) CLLocationCoordinate2D coordinate;
+@property (nonatomic, retain) NSArray *polygons;
+@property (nonatomic, retain) NSString *uniqueID;
+@property (nonatomic, retain) NSString *name;
+@property (nonatomic, retain) NSString *street;
+@property (nonatomic, retain) NSString *city;
+@property (nonatomic, assign) NSInteger yearBuilt;
+@property (nonatomic, retain) NSDictionary *info;
 
 @property BOOL dataPopulated;
 @property BOOL bookmark;
 
-+(void) executeServerSearchWithQuery:(NSString *)query jsonDelegate: (id<JSONAPIDelegate>)delegate object:(id)object;
++ (void)executeServerSearchWithQuery:(NSString *)query jsonDelegate:(id<JSONAPIDelegate>)delegate object:(id)object;
 
-// initialize the annotation with data from the MIT webservice.
--(id) initWithInfo:(NSDictionary*)info;
+- (id)initWithInfo:(NSDictionary*)info;
+- (id)initWithCoordinate:(CLLocationCoordinate2D)coordinate;
 
--(id) initWithCoordinate:(CLLocationCoordinate2D) coordinate;
+@end
+
+
+/*
+ "feature_type" : "Course Location",
+ "search_string" : "barker center 114 kresge room",
+ "match_string" : "Barker Center 114 Kresge Room",
+ "xcoord" : "760329.91",
+ "ycoord" : "2961044.576"
+ */
+
+
+@interface HarvardMapSearchResultAnnotation : NSObject <MKAnnotation> {
+    NSString *_featureType;
+    NSString *_searchString;
+    NSString *_matchString;
+    CLLocationCoordinate2D _coordinate;
+}
+
+@property (nonatomic, retain) NSString *featureType;
+@property (nonatomic, retain) NSString *matchString;
+@property (nonatomic, retain) NSString *searchString;
+@property (nonatomic, assign) CLLocationCoordinate2D coordinate;
 
 @end

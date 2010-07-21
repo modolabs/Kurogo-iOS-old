@@ -106,7 +106,7 @@
 		
 			for (NSDictionary* info in searchResultsArray)
 			{
-				MITMapSearchResultAnnotation* annotation = [[[MITMapSearchResultAnnotation alloc] initWithInfo:info] autorelease];
+				ArcGISMapSearchResultAnnotation *annotation = [[[ArcGISMapSearchResultAnnotation alloc] initWithInfo:info] autorelease];
 				[searchResultsArr addObject:annotation];
 			}
 			// this will remove old annotations and add the new ones. 
@@ -117,7 +117,7 @@
 			return YES;
 		}
 
-		MITMapSearchResultAnnotation* currentAnnotation = nil;
+		ArcGISMapSearchResultAnnotation *currentAnnotation = nil;
 
 		if (components.count > 1) {
 			// if there is a building number, show callout
@@ -130,10 +130,10 @@
 
 			
 			// look for the selected annotation among the array of annotations
-			for (MITMapSearchResultAnnotation* annotation in self.campusMapVC.mapView.annotations) {
-				if([[(MITMapSearchResultAnnotation*)annotation uniqueID] isEqualToString:annotationUniqueID]) {
+			for (ArcGISMapSearchResultAnnotation *annotation in self.campusMapVC.mapView.annotations) {
+				if([[(ArcGISMapSearchResultAnnotation *)annotation uniqueID] isEqualToString:annotationUniqueID]) {
 					[self.campusMapVC.mapView selectAnnotation:annotation animated:NO];
-					currentAnnotation = (MITMapSearchResultAnnotation*)annotation;
+					currentAnnotation = (ArcGISMapSearchResultAnnotation *)annotation;
 				}
 			}
 		}
