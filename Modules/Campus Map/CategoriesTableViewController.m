@@ -1,6 +1,6 @@
 #import "CategoriesTableViewController.h"
 #import "MapSelectionController.h"
-#import "MITMapSearchResultAnnotation.h"
+#import "MapSearchResultAnnotation.h"
 #import "CampusMapViewController.h"
 #import "MITSearchEffects.h"
 #import "MITUIConstants.h"

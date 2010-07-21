@@ -12,9 +12,9 @@
 		</object>
 		<object class="NSMutableArray" key="IBDocument.EditedObjectIDs">
 			<bool key="EncodedWithXMLCoder">YES</bool>
-			<integer value="21"/>
+			<integer value="31"/>
 			<integer value="15"/>
-			<integer value="58"/>
+			<integer value="21"/>
 		</object>
 		<object class="NSArray" key="IBDocument.PluginDependencies">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -219,11 +219,11 @@
 								<reference key="IBUINormalTitleShadowColor" ref="668158898"/>
 								<object class="NSCustomResource" key="IBUIHighlightedImage">
 									<string key="NSClassName">NSImage</string>
-									<string key="NSResourceName">bookmark_on.png</string>
+									<string key="NSResourceName">global/bookmark_on.png</string>
 								</object>
 								<object class="NSCustomResource" key="IBUINormalImage">
 									<string key="NSClassName">NSImage</string>
-									<string key="NSResourceName">bookmark_off.png</string>
+									<string key="NSResourceName">global/bookmark_off.png</string>
 								</object>
 							</object>
 						</object>
@@ -989,7 +989,7 @@
 					<string key="className">MKMapView</string>
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
 						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">Modules/Campus Map/MITMapView.h</string>
+						<string key="minorKey">Modules/Campus Map/MKMapView+ArcGISAdditions.h</string>
 					</object>
 				</object>
 				<object class="IBPartialClassDescription">
@@ -1040,13 +1040,13 @@
 			<bool key="EncodedWithXMLCoder">YES</bool>
 			<object class="NSArray" key="dict.sortedKeys">
 				<bool key="EncodedWithXMLCoder">YES</bool>
-				<string>bookmark_off.png</string>
-				<string>bookmark_on.png</string>
+				<string>global/bookmark_off.png</string>
+				<string>global/bookmark_on.png</string>
 			</object>
 			<object class="NSMutableArray" key="dict.values">
 				<bool key="EncodedWithXMLCoder">YES</bool>
-				<string>{44, 38}</string>
-				<string>{44, 38}</string>
+				<string>{16, 16}</string>
+				<string>{16, 16}</string>
 			</object>
 		</object>
 		<string key="IBCocoaTouchPluginVersion">117</string>

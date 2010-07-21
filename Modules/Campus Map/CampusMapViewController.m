@@ -1,11 +1,8 @@
 #import <QuartzCore/QuartzCore.h>
 #import "CampusMapViewController.h"
-#import "MITMapSearchResultAnnotation.h"
+#import "MapSearchResultAnnotation.h"
 #import "MITMapSearchResultsVC.h"
 #import "MITMapDetailViewController.h"
-#import "ShuttleDataManager.h"
-#import "ShuttleStopMapAnnotation.h"
-#import "ShuttleStopViewController.h"
 #import "MITUIConstants.h"
 #import "MapTileOverlayView.h"
 #import "MapTileOverlay.h"
@@ -31,7 +28,7 @@
 
 @interface CampusMapViewController(Private)
 
--(void) addAnnotationsForShuttleStops:(NSArray*)shuttleStops;
+//-(void) addAnnotationsForShuttleStops:(NSArray*)shuttleStops;
 -(void) noSearchResultsAlert;
 -(void) errorConnectingAlert;
 -(void) saveRegion;					// a convenience method for saving the mapView's current region (for saving state)
@@ -69,6 +66,7 @@
 	// create the map view controller and its view to our view. 
 	_mapView = [[MKMapView alloc] initWithFrame: CGRectMake(0, _searchBar.frame.size.height, 320, self.view.frame.size.height - _searchBar.frame.size.height)];
 	_mapView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+    _mapView.mapType = MKMapTypeSatellite;
 	_mapView.delegate = self;
 	[self.view addSubview:_mapView];
 	
@@ -99,9 +97,6 @@
 	
 }
 
-
-
-// Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad {
 	[super viewDidLoad];
     [TileServerManager registerMapView:_mapView];
@@ -110,7 +105,7 @@
 	_mapView.showsUserLocation = YES;
 }
 
--(void) viewWillAppear:(BOOL)animated
+- (void)viewWillAppear:(BOOL)animated
 {
 	if (_displayingList) {
 		self.navigationItem.rightBarButtonItem.title = @"Map";
@@ -125,28 +120,25 @@
 	}
 }
 
--(void) viewDidAppear:(BOOL)animated
+- (void)viewDidAppear:(BOOL)animated
 {
 	[super viewDidAppear:animated];
 	
 	// if there is a bookmarks view controller hanging around, dismiss and release it. 
-	if(nil != _selectionVC) {
+	if (nil != _selectionVC) {
 		[_selectionVC dismissModalViewControllerAnimated:NO];
 		[_selectionVC release];
 		_selectionVC = nil;
 	}
 	
-	
 	// if we're in the list view, save that state
 	if (_displayingList) {
 		[url setPath:[NSString stringWithFormat:@"list", [(ArcGISMapSearchResultAnnotation *)[[_mapView selectedAnnotations] lastObject] uniqueID]] query:_lastSearchText];
 		[url setAsModulePath];
-		[self setURLPathUserLocation];
 	} else {
 		if (_lastSearchText != nil && ![_lastSearchText isEqualToString:@""] && [[_mapView selectedAnnotations] lastObject]) {
 			[url setPath:[NSString stringWithFormat:@"search/%@", [(ArcGISMapSearchResultAnnotation *)[[_mapView selectedAnnotations] lastObject] uniqueID]] query:_lastSearchText];
 			[url setAsModulePath];
-			[self setURLPathUserLocation];
 		}
 	}
 	[self saveRegion];
@@ -161,17 +153,12 @@
 
 - (void)viewDidUnload {
 
-	[[ShuttleDataManager sharedDataManager] unregisterDelegate:self];
-	
 	[url release];
 	
 	_mapView.delegate = nil;
 	[_mapView release];
 	[_toolBar release];
 	[_geoButton release];
-    
-	[_shuttleButton release];
-	[_shuttleAnnotations release];
     
 	[_searchResults release];
 	_searchResults = nil;
@@ -191,26 +178,14 @@
 {
 	[super dealloc];
 }
-/*
-- (void)tileServerDidSetup {
-    CLLocationCoordinate2D initialLocation;
-    CLLocationCoordinate2D nw = [TileServerManager northWestBoundary];
-    CLLocationCoordinate2D se = [TileServerManager southEastBoundary];
-    initialLocation.longitude = (nw.longitude + se.longitude) / 2;
-    initialLocation.latitude = (nw.latitude + se.latitude) / 2;
-    NSLog(@"initial location: %.3f %.3f", initialLocation.longitude, initialLocation.latitude);
-    
-    MKCoordinateSpan span = MKCoordinateSpanMake(initialLocation.longitude - nw.longitude, initialLocation.latitude - nw.latitude);
-    MKCoordinateRegion region = MKCoordinateRegionMake(initialLocation, span);
-    
-    _mapView.region = region;
-    
+
+- (void)addTileOverlay {
     MapTileOverlay *overlay = [[MapTileOverlay alloc] init];
     [_mapView addOverlay:overlay];
-    NSLog(@"%@", [_mapView.overlays description]);
     [overlay release];
 }
-*/
+
+/*
 -(void) hideAnnotations:(BOOL)hide
 {
 	for (id<MKAnnotation> annotation in _searchResults) {
@@ -223,6 +198,7 @@
 		[annotationView setHidden:hide];		
 	}
 }
+*/
 
 -(void) setSearchResultsWithoutRecentering:(NSArray*)searchResults
 {
@@ -360,38 +336,9 @@
 	
 }
 
-#pragma mark ShuttleDataManagerDelegate
-
-// message sent when routes were received. If request failed, this is called with a nil routes array
--(void) routesReceived:(NSArray*) routes
-{
-}
-
-// message sent when stops were received. If request failed, this is called with a nil stops array
--(void) stopsReceived:(NSArray*) stops
-{
-	if (_displayShuttles) {
-		[self addAnnotationsForShuttleStops:stops];
-	}
-}
-
 #pragma mark CampusMapViewController(Private)
 
--(void) addAnnotationsForShuttleStops:(NSArray*)shuttleStops
-{
-	if (_shuttleAnnotations == nil) {
-		_shuttleAnnotations = [[NSMutableArray alloc] initWithCapacity:shuttleStops.count];
-	}
-	
-	for (ShuttleStop* shuttleStop in shuttleStops) 
-	{
-		ShuttleStopMapAnnotation* annotation = [[[ShuttleStopMapAnnotation alloc] initWithShuttleStop:shuttleStop] autorelease];
-		[_mapView addAnnotation:annotation];
-		[_shuttleAnnotations addObject:annotation];
-	}
-}
-
--(void) noSearchResultsAlert
+- (void)noSearchResultsAlert
 {
 	UIAlertView* alert = [[[UIAlertView alloc] initWithTitle:nil
 													 message:NSLocalizedString(@"Nothing found.", nil)
@@ -402,7 +349,7 @@
 	[alert show];
 }
 
--(void) errorConnectingAlert
+- (void)errorConnectingAlert
 {
 	UIAlertView* alert = [[[UIAlertView alloc] initWithTitle:nil
 													 message:NSLocalizedString(@"Error connecting. Please check your internet connection.", nil)
@@ -413,21 +360,8 @@
 	[alert show];
 }
 
--(void) setURLPathUserLocation {
-    /*
-	NSMutableArray *components = [NSMutableArray arrayWithArray:[url.path componentsSeparatedByString:@"/"]];
-	if (_mapView.stayCenteredOnUserLocation && ![[components lastObject] isEqualToString:@"userLoc"]) {
-		[url setPath:[NSString stringWithFormat:@"%@/%@", url.path, @"userLoc"] query:_lastSearchText];
-		[url setAsModulePath];
-	}
-	if (!_mapView.stayCenteredOnUserLocation && [[components lastObject] isEqualToString:@"userLoc"]) {
-		[url setPath:[url.path stringByReplacingOccurrencesOfString:@"userLoc" withString:@""] query:_lastSearchText];
-		[url setAsModulePath];
-	}
-    */
-}
-
--(void) saveRegion
+///
+- (void)saveRegion
 {	
 	// save this region so we can use it on launch
 	NSNumber* centerLat = [NSNumber numberWithDouble:_mapView.region.center.latitude];
@@ -456,42 +390,10 @@
 -(void) geoLocationTouched:(id)sender
 {
     _mapView.showsUserLocation = !_mapView.showsUserLocation;
-    
-    /*
-	//_mapVC.showsUserLocation = !_mapVC.showsUserLocation;
-	_mapView.stayCenteredOnUserLocation = !_mapView.stayCenteredOnUserLocation;
-	
-	_geoButton.style = _mapView.stayCenteredOnUserLocation ? UIBarButtonItemStyleDone : UIBarButtonItemStyleBordered;
-	
-	[self setURLPathUserLocation];
-    */
-}
-
--(void) shuttleButtonTouched:(id)sender
-{
-	_displayShuttles = !_displayShuttles;
-	_shuttleButton.style = _displayShuttles ? UIBarButtonItemStyleDone : UIBarButtonItemStyleBordered;
-	
-	if (_displayShuttles) {
-		// if we already have the shuttle information, just display it. If not, file a request. 
-		if (nil != [[ShuttleDataManager sharedDataManager] shuttleStops]) {
-			[self addAnnotationsForShuttleStops:[[ShuttleDataManager sharedDataManager] shuttleStops]];
-		}
-		else {
-			[[ShuttleDataManager sharedDataManager] requestStops];
-		}
-
-	} else {
-		[_mapView removeAnnotations:_shuttleAnnotations];
-		[_shuttleAnnotations release];
-		_shuttleAnnotations = nil;
-	}
-
 }
 
 -(void) showListView:(BOOL)showList
 {
-
 	if (showList) {
 		// if we are not already showing the list, do all this 
 		if (!_displayingList) {
@@ -522,15 +424,12 @@
 			
 			[url setPath:@"list" query:_lastSearchText];
 			[url setAsModulePath];
-			[self setURLPathUserLocation];
 		}
 		
 		// we can always allow the user to switch back to the map
 		//_viewTypeButton.enabled = YES;
 		
-	}
-	else 
-	{
+	} else {
 		// if we're not already showing the map
 		if (_displayingList)
 		{
@@ -559,7 +458,6 @@
 		else 
 			[url setPath:@"" query:nil];
 		[url setAsModulePath];
-		[self setURLPathUserLocation];
 	}
 	
 	_displayingList = showList;
@@ -781,8 +679,14 @@
 
 
 - (MKOverlayView *)mapView:(MKMapView *)mapView viewForOverlay:(id <MKOverlay>)overlay {
-    MapTileOverlayView *view = [[MapTileOverlayView alloc] initWithOverlay:overlay];
-    return [view autorelease];
+    if ([overlay isKindOfClass:[PolygonOverlay class]]) {
+        PolygonOverlayView *view = [[PolygonOverlayView alloc] initWithOverlay:overlay];
+        return [view autorelease];
+    } else if ([overlay isKindOfClass:[MapTileOverlay class]]) {
+        MapTileOverlayView *view = [[MapTileOverlayView alloc] initWithOverlay:overlay];
+        return [view autorelease];
+    }
+    return nil;
 }
 
 - (void)mapView:(MKMapView *)mapView regionDidChangeAnimated:(BOOL)animated {
@@ -796,34 +700,38 @@
 
 - (void)mapView:(MKMapView *)mapView regionWillChangeAnimated:(BOOL)animated {
 	//_geoButton.style = _mapView.stayCenteredOnUserLocation ? UIBarButtonItemStyleDone : UIBarButtonItemStyleBordered;
-    //[self setURLPathUserLocation];
 }
 
 - (MKAnnotationView *)mapView:(MKMapView *)mapView viewForAnnotation:(id <MKAnnotation>)annotation {
-	MKAnnotationView* annotationView = nil;
-	
-	if ([annotation isKindOfClass:[ShuttleStopMapAnnotation class]]) 
-	{
-		annotationView = [[[MKAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:@"gdfgh"] autorelease];
-		UIImage* pin = [UIImage imageNamed:@"shuttles/map_pin_shuttle_stop_complete.png"];
-		UIImageView* imageView = [[[UIImageView alloc] initWithImage:pin] autorelease];
-		annotationView.frame = imageView.frame;
-		annotationView.canShowCallout = YES;
-		[annotationView addSubview:imageView];
-		annotationView.backgroundColor = [UIColor clearColor];
-		annotationView.layer.anchorPoint = CGPointMake(0.5, 1.0);
-	}
+	MKPinAnnotationView *annotationView = [[[MKPinAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:@"hfauiwh"] autorelease];
+    annotationView.animatesDrop = YES;
+    annotationView.canShowCallout = YES;
+    UIButton *disclosureButton = [UIButton buttonWithType:UIButtonTypeDetailDisclosure];
+    annotationView.rightCalloutAccessoryView = disclosureButton;
 	
 	return annotationView;
 }
 
--(void) pushAnnotationDetails:(id <MKAnnotation>) annotation animated:(BOOL)animated
+- (void)mapView:(MKMapView *)mapView didAddAnnotationViews:(NSArray *)views {
+    for (MKAnnotationView *aView in views) {
+        id<MKAnnotation>annotation = aView.annotation;
+        if ([annotation isKindOfClass:[ArcGISMapSearchResultAnnotation class]]) {
+            ArcGISMapSearchResultAnnotation *polyAnnotation = (ArcGISMapSearchResultAnnotation *)annotation;
+            if ([polyAnnotation canAddOverlay]) {
+                PolygonOverlay *polyOverlay = polyAnnotation.polygon; //[[PolygonOverlay alloc] initWithAnnotation:polyAnnotation];
+                [mapView addOverlay:polyOverlay];
+            }
+        }
+    }
+}
+
+- (void)pushAnnotationDetails:(id <MKAnnotation>)annotation animated:(BOOL)animated
 {
 	// determine the type of the annotation. If it is a search result annotation, display the details
 	if ([annotation isKindOfClass:[ArcGISMapSearchResultAnnotation class]]) {
 		
 		// push the details page onto the stack for the item selected. 
-		MITMapDetailViewController* detailsVC = [[[MITMapDetailViewController alloc] initWithNibName:@"MITMapDetailViewController"
+		MITMapDetailViewController *detailsVC = [[[MITMapDetailViewController alloc] initWithNibName:@"MITMapDetailViewController"
 																							  bundle:nil] autorelease];
 		
 		detailsVC.annotation = annotation;
@@ -837,26 +745,6 @@
 		}
 		[self.navigationController pushViewController:detailsVC animated:animated];		
 	}
-	
-	else if ([annotation isKindOfClass:[ShuttleStopMapAnnotation class]]) {
-		
-		//TODO: move this logic to the shuttle module
-		ShuttleStopViewController* shuttleStopVC = [[[ShuttleStopViewController alloc] initWithStyle:UITableViewStyleGrouped] autorelease];
-		shuttleStopVC.shuttleStop = [(ShuttleStopMapAnnotation*)annotation shuttleStop];
-		[self.navigationController pushViewController:shuttleStopVC animated:animated];
-		
-	}
-    /*
-	if ([annotation class] == [MITMapSearchResultAnnotation class]) {
-		MITMapSearchResultAnnotation* theAnnotation = (MITMapSearchResultAnnotation*)annotation;
-		if (_displayingList)
-			[url setPath:[NSString stringWithFormat:@"list/detail/%@", theAnnotation.uniqueID] query:_lastSearchText];
-		else 
-			[url setPath:[NSString stringWithFormat:@"detail/%@", theAnnotation.uniqueID] query:_lastSearchText];
-		[url setAsModulePath];
-		[self setURLPathUserLocation];
-	}
-    */
 }
 
 - (void)mapView:(MKMapView *)mapView annotationView:(MKAnnotationView *)view calloutAccessoryControlTapped:(UIControl *)control
@@ -877,7 +765,6 @@
 		}
 		[url setPath:[NSString stringWithFormat:@"search/%@", searchAnnotation.uniqueID] query:_lastSearchText];
 		[url setAsModulePath];
-		[self setURLPathUserLocation];
 	}
 }
 
@@ -925,7 +812,7 @@
             ArcGISMapSearchResultAnnotation *oldAnnotation = request.userData;
             
             if (searchResults.count > 0) {
-                ArcGISMapSearchResultAnnotation* newAnnotation = [[[ArcGISMapSearchResultAnnotation alloc] initWithInfo:[searchResults objectAtIndex:0]] autorelease];
+                ArcGISMapSearchResultAnnotation *newAnnotation = [[[ArcGISMapSearchResultAnnotation alloc] initWithInfo:[searchResults objectAtIndex:0]] autorelease];
                 
                 BOOL isViewingAnnotation = ([[_mapView selectedAnnotations] lastObject] == oldAnnotation);
                 
@@ -984,7 +871,6 @@
 	else 
 		[url setPath:@"" query:nil];
 	[url setAsModulePath];
-	[self setURLPathUserLocation];
     */
 }
 
