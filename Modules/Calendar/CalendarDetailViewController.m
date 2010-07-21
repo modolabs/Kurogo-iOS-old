@@ -16,7 +16,7 @@ enum CalendarDetailRowTypes {
 	CalendarDetailRowTypeLocation,
 	CalendarDetailRowTypePhone,
 	CalendarDetailRowTypeURL,
-	//CalendarDetailRowTypeEmail,
+	CalendarDetailRowTypeEmail,
 	CalendarDetailRowTypeDescription,
 	CalendarDetailRowTypeCategories
 };
@@ -123,7 +123,7 @@ enum CalendarDetailRowTypes {
 		free(rowTypes);
 	}
 	
-	rowTypes = malloc(sizeof(CalendarEventListType) * 5);
+	rowTypes = malloc(sizeof(CalendarEventListType) * 6);
 	numRows = 0;
 	if (self.event.start) {
 		rowTypes[numRows] = CalendarDetailRowTypeTime;
@@ -141,10 +141,10 @@ enum CalendarDetailRowTypes {
 		rowTypes[numRows] = CalendarDetailRowTypeURL;
 		numRows++;
 	}
-	/*if (self.event.email) {
+	if (self.event.email) {
 		rowTypes[numRows] = CalendarDetailRowTypeEmail;
 		numRows++;
-	}*/
+	}
 	if (self.event.summary) {
 		rowTypes[numRows] = CalendarDetailRowTypeDescription;
         [descriptionString release];
@@ -310,14 +310,14 @@ enum CalendarDetailRowTypes {
 			cell.textLabel.textColor = EMBEDDED_LINK_FONT_COLOR;
 			cell.accessoryView = [UIImageView accessoryViewWithMITType:MITAccessoryViewExternal];
 			break;
-		/*	
+			
 		case CalendarDetailRowTypeEmail:
 			cell.textLabel.text = event.email;
 			cell.textLabel.font = [UIFont fontWithName:STANDARD_FONT size:CELL_STANDARD_FONT_SIZE];
 			cell.textLabel.textColor = EMBEDDED_LINK_FONT_COLOR;
-			cell.accessoryView = [[UIImageView accessoryViewWithMITType:MITAccessoryViewEmail];
+			cell.accessoryView = [UIImageView accessoryViewWithMITType:MITAccessoryViewEmail];
 			break;
-		*/	
+			
 		case CalendarDetailRowTypeDescription:
         {		
 			//sets the description string and height of the views
@@ -424,8 +424,7 @@ enum CalendarDetailRowTypes {
 				return (CGFloat) descriptionHeight;// + CELL_VERTICAL_PADDING * 2;
 			} else {
 				return 50; //was 400.0;
-			}
-			
+			}			
 			break;
 		case CalendarDetailRowTypeURL:
 			cellText = event.url;
@@ -478,13 +477,13 @@ enum CalendarDetailRowTypes {
 			}
 			break;
 		}
-		/*	
+			
 		case CalendarDetailRowTypeEmail:
 		{
-			[self sendEmailWithSubject:[self.shareDelegate event.title]
-								  body:[self.shareDelegate @""];
+			[self sendEmailWithSubject:[self emailSubject]
+								  body:@""];
 			break;
-		}*/
+		}
 		default:
 			break;
 	}
@@ -499,7 +498,7 @@ enum CalendarDetailRowTypes {
 }
 
 - (NSString *)emailSubject {
-	return [NSString stringWithFormat:@"MIT Event: %@", event.title];
+	return [NSString stringWithFormat:@"Harvard Event: %@", event.title];
 }
 
 - (NSString *)emailBody {
@@ -614,11 +613,7 @@ enum CalendarDetailRowTypes {
 		if ([[UIApplication sharedApplication] canOpenURL:externURL])
 			[[UIApplication sharedApplication] openURL:externURL];
 	}
-	
-	/* Use the following to SEND the email once clicked
-	[self sendEmailWithSubject:[self.shareDelegate emailSubject]
-						  body:[self.shareDelegate emailBody]];
-	 */
+
 }
 
 

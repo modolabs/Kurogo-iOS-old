@@ -15,6 +15,7 @@
 @property (nonatomic, retain) NSNumber * eventID;
 @property (nonatomic, retain) NSString * title;
 @property (nonatomic, retain) NSString * phone;
+@property (nonatomic, retain) NSString * email;
 @property (nonatomic, retain) NSString * summary;
 @property (nonatomic, retain) NSString * url;
 @property (nonatomic, retain) NSSet* categories;

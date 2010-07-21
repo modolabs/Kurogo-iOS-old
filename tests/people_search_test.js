@@ -65,6 +65,12 @@ function navigateBack()
 	mainWindow.navigationBar().elements()[0].buttons()["People Directory"].tap();
 }
 
+function hitSearchCancel()
+{
+	// Surprisingly, it's a child of the table view, not the search bar.	
+	mainWindow.tableViews()[0].buttons().Cancel.tap();	
+}
+
 function enterSearchTermIntoSearchFieldAndHitGo(searchTerm)
 {
 	// Type search term into search field and run search.
@@ -151,14 +157,17 @@ function verifySearchResultInfoPairs(expectedResultsDict)
 
 // searchTerm_to_expectedSearchResultValues_map is a dictionary. Its keys are search terms.
 // Its values are a dictionary mapping expected result fields (e.g. email) to their expected values (e.g. jim.kang@modolabs.com).
-function runSearchTestSuite(testNameBase, searchTerm_to_expectedSearchResultValues_map)
+function runSearchTestSuite(testNameBase, searchTerm_to_expectedSearchResultValues_map, dontNavigateBack)
 {
 	for (searchTerm in searchTerm_to_expectedSearchResultValues_map)
 	{
 		runSearch(searchTerm);
 		searchResult = verifySearchResultInfoPairs(searchTerm_to_expectedSearchResultValues_map[searchTerm]);
 		logTestResult(searchResult, "" + testNameBase + " search for " + searchTerm);
-		navigateBack();
+		if (dontNavigateBack !== true)
+		{
+			navigateBack();			
+		}
 	}
 }
 
@@ -237,8 +246,7 @@ function testSuite4()
 	logTestResult(false, "Test suite 4");	
 	*/
 	
-	// Hit cancel. Surprisingly, it's a child of the table view, not the search bar.
-	mainWindow.tableViews()[0].buttons().Cancel.tap();
+	hitSearchCancel();
 }
 
 
@@ -248,8 +256,7 @@ function testSuite5()
 	// Searching for garbage should return no results.
 
 	logTestResult(true, "Test suite 5 - make sure you saw No Results label.");	
-	// Hit cancel. Surprisingly, it's a child of the table view, not the search bar.
-	mainWindow.tableViews()[0].buttons().Cancel.tap();
+	hitSearchCancel();
 }
 
 function testSuiteFieldsSeparatedByNewLine()
@@ -268,13 +275,50 @@ function testSuiteFieldsSeparatedByNewLine()
 	runSearchTestSuite("Test suite: Titles and units separated by newline", termsToExpectedValues);	
 }
 
+function testSuiteActionsFromPersonDetails()
+{
+	var expectedSearchResultValues = {
+		"email": "amy_lavoie@harvard.edu",
+		"title": "Project Manager",
+		"phone": "+1-617-495-3014"
+	};
+	
+	var termsToExpectedValues = {
+		"Amy Lavoie": expectedSearchResultValues
+	};
+
+	runSearchTestSuite("Test suite: Basic search for actions from person details", termsToExpectedValues, true);
+	
+	// Launch email.
+	cell = mainWindow.tableViews()[0].cells().firstWithName("email, amy_lavoie@harvard.edu");
+	assertNotNull(cell, "Couldn't find email cell.");
+	if (cell.checkIsValid())
+	{
+		cell.tap();
+		// Test runner needs to visually verify that the mail sheet came up.
+		logTestResult(true, "Test suite actions from person details - make sure you saw the mail sheet.");	
+		// Hit cancel button.
+		cell.waitForInvalid();
+		target.tap({ x:28, y:42 });
+		// Hit "Delete Draft."
+		target.delay(1);
+		var deleteDraftButton = application.actionSheet().buttons()["Delete Draft"];
+		application.actionSheet().buttons()["Delete Draft"].tap();
+		deleteDraftButton.waitForInvalid();
+	}
+	
+	navigateBack();
+	hitSearchCancel();
+}
+
 // "Main" block.
 
 // Provide a default grace period in seconds for each action to complete.
 target.setTimeout(0.5);
 navigateToPeopleView();
 
-// These two have to be watched (as in visually) by the test runner.
+// These have to be watched (literally, meaning visually) by the test runner.
+testSuiteActionsFromPersonDetails();
 testSuite4();
 testSuite5();
 
@@ -283,3 +327,4 @@ testSuiteFieldsSeparatedByNewLine();
 testSuite1();
 testSuite2();
 testSuite3();
+

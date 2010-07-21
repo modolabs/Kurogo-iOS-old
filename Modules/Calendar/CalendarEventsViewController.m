@@ -1034,8 +1034,6 @@
 		 categoriesRequestDispatched = NO;
 	 }	
 	
-			
-	
 	requestDispatched = NO;
 
 	if (![request.userData isEqualToString:CalendarEventAPISearch]
@@ -1140,7 +1138,7 @@
 			}
 			else if (nothingFound != nil) {
 				[nothingFound removeFromSuperview];
-				[nothingFound release];
+				//[nothingFound release];
 			}
 			for (NSDictionary *eventDict in result) {
 				MITCalendarEvent *event = [CalendarDataManager eventWithDict:eventDict];
@@ -1150,8 +1148,6 @@
                 }
 				[arrayForTable addObject:event];
 			}
-			
-			
 			
 			self.events = [NSArray arrayWithArray:arrayForTable];			
 		}
@@ -1198,7 +1194,7 @@
 	
 	if ([controller class] == [DatePickerViewController class]) {
 		startDate = nil;
-		startDate = date;    
+		startDate = [[NSDate alloc] initWithTimeInterval:0 sinceDate:date];    
 		dateRangeDidChange = YES;
 	
 		[controller.view removeFromSuperview];
