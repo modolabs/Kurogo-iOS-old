@@ -234,9 +234,22 @@ function testSuite4()
 			return;
 		}
 	}
+	logTestResult(false, "Test suite 4");	
 	*/
-//	logTestResult(false, "Test suite 4");	
-	navigateBack();
+	
+	// Hit cancel. Surprisingly, it's a child of the table view, not the search bar.
+	mainWindow.tableViews()[0].buttons().Cancel.tap();
+}
+
+
+function testSuite5()
+{
+	enterSearchTermIntoSearchFieldAndHitGo("asd;fih;aosdfhasd");
+	// Searching for garbage should return no results.
+
+	logTestResult(true, "Test suite 5 - make sure you saw No Results label.");	
+	// Hit cancel. Surprisingly, it's a child of the table view, not the search bar.
+	mainWindow.tableViews()[0].buttons().Cancel.tap();
 }
 
 // "Main" block.
@@ -249,3 +262,5 @@ testSuite1();
 testSuite2();
 testSuite3();
 testSuite4();
+testSuite5();
+
