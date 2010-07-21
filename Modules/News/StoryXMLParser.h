@@ -63,7 +63,7 @@
 
 // called by main thread
 - (void)loadStoriesForCategory:(NSInteger)category afterStoryId:(NSInteger)storyId count:(NSInteger)count;
-- (void)loadStoriesforQuery:(NSString *)query afterIndex:(NSInteger)start count:(NSInteger)count;
+- (void)loadStoriesforQuery:(NSString *)query afterStoryId:(NSInteger)storyId count:(NSInteger)count;
 - (void)abort;
 
 @end

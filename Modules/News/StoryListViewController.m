@@ -810,13 +810,16 @@ static NSInteger numTries = 0;
 }
 
 - (void)loadSearchResultsFromServer:(BOOL)loadMore forQuery:(NSString *)query {
+    NewsStory *lastStory = [self.stories lastObject];
+    NSInteger lastStoryId = (loadMore) ? [lastStory.story_id integerValue] : 0;
+    
 	if (self.xmlParser) {
 		[self.xmlParser abort];
 	}
 	self.xmlParser = [[[StoryXMLParser alloc] init] autorelease];
 	xmlParser.delegate = self;
 	
-	[xmlParser loadStoriesforQuery:query afterIndex:((loadMore) ? [self.searchResults count] : 0) count:10];
+	[xmlParser loadStoriesforQuery:query afterStoryId:lastStoryId count:10];
 }
 
 #pragma mark -
@@ -897,10 +900,13 @@ static NSInteger numTries = 0;
 		}
 		// result of a search request
 		else {
-			searchTotalAvailableResults = self.xmlParser.totalAvailableResults;
-			if (!parser.loadingMore && [self.stories count] > 0) {
-				[storyTable scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:NO];
-			}
+            if (!parser.loadingMore) {
+                totalAvailableResults = self.xmlParser.totalAvailableResults;
+                if ([self.stories count] > 0) {
+                    [storyTable scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:NO];
+                }
+            }
+            
 			self.xmlParser = nil;
 			[self loadSearchResultsFromCache];
 		}
@@ -952,7 +958,7 @@ static NSInteger numTries = 0;
             n = self.stories.count;
 			// don't show "load x more" row if
 			if (!showingBookmarks && // showing bookmarks
-				!(searchResults && n >= searchTotalAvailableResults) && // showing all search results
+				!(searchResults && n >= totalAvailableResults) && // showing all search results
 				!(!searchResults && n >= MAX_ARTICLES)) { // showing all of a category
 				n += 1; // + 1 for the "Load more articles..." row
 			}
@@ -973,7 +979,7 @@ static NSInteger numTries = 0;
 	UIView *titleView = nil;
 	
 	if (section == 0 && self.searchResults) {
-		titleView = [UITableView ungroupedSectionHeaderWithTitle:[NSString stringWithFormat:@"%d found", searchTotalAvailableResults]];
+		titleView = [UITableView ungroupedSectionHeaderWithTitle:[NSString stringWithFormat:@"%d found", totalAvailableResults]];
 	}
 	
     return titleView;
@@ -1109,7 +1115,7 @@ static NSInteger numTries = 0;
 				
 				UILabel *moreArticlesLabel = (UILabel *)[cell viewWithTag:1234];
 				if (moreArticlesLabel) {
-					NSInteger remainingArticlesToLoad = (!searchResults) ? (200 - [self.stories count]) : (searchTotalAvailableResults - [self.stories count]);
+					NSInteger remainingArticlesToLoad = (!searchResults) ? (200 - [self.stories count]) : (totalAvailableResults - [self.stories count]);
 					moreArticlesLabel.text = [NSString stringWithFormat:@"Load %d more articles...", (remainingArticlesToLoad > 10) ? 10 : remainingArticlesToLoad];
 					if (!self.xmlParser) { // disable when a load is already in progress
 						moreArticlesLabel.textColor = [UIColor colorWithHexString:@"#990000"]; // enable

@@ -45,6 +45,8 @@
 @synthesize newStories;
 @synthesize downloadAndParsePool;
 
+NSString * const NewsTagChannel         = @"channel";
+
 NSString * const NewsTagItem            = @"item";
 NSString * const NewsTagTitle           = @"title";
 NSString * const NewsTagAuthor          = @"dc:creator";
@@ -151,21 +153,10 @@ NSString * const NewsTagImageHeight     = @"height";
 
 - (void)loadStoriesForCategory:(NSInteger)category afterStoryId:(NSInteger)storyId count:(NSInteger)count {
 	self.isSearch = NO;
-    /*
-#ifdef USE_MOBILE_DEV
-    NSString *newsPath = @"newsoffice-dev";
-#else
-    NSString *newsPath = @"newsoffice";
-#endif
-    NSURL *baseURL = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@/", MITMobileWebAPIURLString, newsPath]];
-    */
-    //NSMutableString *pathString = [NSMutableString stringWithCapacity:22];
     NSMutableDictionary *params = [NSMutableDictionary dictionaryWithCapacity:3];
     [params setObject:@"news" forKey:@"module"];
     
-    //NSMutableArray *params = [NSMutableArray arrayWithCapacity:2];
     if (category != 0) {
-        //[params addObject:[NSString stringWithFormat:@"channel=%d", category]];
         [params setObject:[NSString stringWithFormat:@"%d", category] forKey:@"channel"];
     } else {
         parsingTopStories = TRUE;
@@ -174,25 +165,18 @@ NSString * const NewsTagImageHeight     = @"height";
     if (storyId != 0) {
 		self.loadingMore = YES;
         [params setObject:[NSString stringWithFormat:@"%d", storyId] forKey:@"storyId"];
-        //[params addObject:[NSString stringWithFormat:@"story_id=%d", storyId]];
     }
-    //if ([params count] > 0) {
-    //    [pathString appendString:@"?"];
-    //}
-    //[pathString appendString:[params componentsJoinedByString:@"&"]];
 
     NSURL *fullURL = [JSONAPIRequest buildURL:params queryBase:MITMobileWebAPIURLString];
-    
-    //NSURL *fullURL = [NSURL URLWithString:pathString relativeToURL:baseURL];
     
     expectedStoryCount = 10; // if the server is ever made to support a range param, set this to count instead
     
 	[self detachAndParseURL:fullURL];
 }
 
-- (void)loadStoriesforQuery:(NSString *)query afterIndex:(NSInteger)start count:(NSInteger)count {
+- (void)loadStoriesforQuery:(NSString *)query afterStoryId:(NSInteger)storyId count:(NSInteger)count {
 	self.isSearch = YES;
-	self.loadingMore = (start == 0) ? NO : YES;
+	self.loadingMore = (storyId == 0) ? NO : YES;
 	
 	// before getting new results, clear old search results if this is a new search request
 	if (self.isSearch && !self.loadingMore) {
@@ -203,8 +187,18 @@ NSString * const NewsTagImageHeight     = @"height";
 		}
 		[CoreDataManager saveDataWithTemporaryMergePolicy:NSMergeByPropertyObjectTrumpMergePolicy];
 	}
-	
-    NSURL *fullURL = [NSURL URLWithString:[NSString stringWithFormat:@"http://news.harvard.edu/gazette/?s=%@&feed=rss2", [query stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding], count, start]];
+    
+	NSMutableDictionary *params = [NSMutableDictionary dictionaryWithObjectsAndKeys:
+                                   @"news", @"module",
+                                   @"search", @"command",
+                                   [query stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding], @"q",
+                                   nil];
+    if (self.loadingMore) {
+        [params setObject:[NSString stringWithFormat:@"%d", storyId] forKey:@"storyId"];
+    }
+    
+    NSURL *fullURL = [JSONAPIRequest buildURL:params queryBase:MITMobileWebAPIURLString];
+    
     expectedStoryCount = count;
     
 	[self detachAndParseURL:fullURL];
@@ -358,7 +352,11 @@ NSString * const NewsTagImageHeight     = @"height";
 		if (totalResults) {
 			self.totalAvailableResults = [totalResults integerValue];
 		}
-	}*/
+    }*/ else if ([elementName isEqualToString:NewsTagChannel]) {
+        if (!self.loadingMore) {
+            self.totalAvailableResults = [[attributeDict objectForKey:@"items"] intValue];
+        }
+    }
     [currentStack addObject:elementName];
 }
 
@@ -560,9 +558,9 @@ NSString * const NewsTagImageHeight     = @"height";
         return;
     }
     
-    if (self.isSearch) {
-        self.totalAvailableResults = [newStories count];
-    }
+    //if (self.isSearch) {
+    //    self.totalAvailableResults = [newStories count];
+    //}
     
     parseSuccessful = YES;
     

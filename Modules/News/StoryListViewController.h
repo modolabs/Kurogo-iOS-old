@@ -36,7 +36,7 @@ typedef int NewsCategoryId;
 	// Search bits
 	NSString *searchQuery;
 	NSArray *searchResults;
-	NSInteger searchTotalAvailableResults;
+	NSInteger totalAvailableResults;
 	UISearchBar *theSearchBar;
 	MITSearchEffects *searchOverlay;
 	

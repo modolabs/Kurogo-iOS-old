@@ -21,6 +21,10 @@
     
     CGContextSetRGBFillColor(context, 0.9, 0.5, 0.6, 0.7);
     
+    // thanks to Matt Gallagher at Cocoa with Love for
+    // advice on how to draw polygons with inner rings
+    // http://cocoawithlove.com/2010/05/5-ways-to-draw-2d-shape-with-hole-in.html
+    // which incidentally is already how the arcgis server returns coordinates
     for (PolygonRing *aRing in ((PolygonOverlay *)self.overlay).rings) {
         CGPoint startPoint;
         for (NSInteger j = 0; j < aRing.size; j++) {
