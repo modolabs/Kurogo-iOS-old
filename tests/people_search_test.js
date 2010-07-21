@@ -252,19 +252,20 @@ function testSuite5()
 	mainWindow.tableViews()[0].buttons().Cancel.tap();
 }
 
-function testSuiteTitlesSeparatedByNewLine()
+function testSuiteFieldsSeparatedByNewLine()
 {
 	var expectedSearchResultValues = {
 		"email": "jmurcian@law.harvard.edu",
 		"title": "Associate Director\nOPIA and Director of Fellowships\nTutor\nAssistant Sr (Harv Std)\nContin Ed/Spec Prog Instructor",
-		"fax": "+1-617-496-1900,+1-617-496-4944"
+		"fax": "+1-617-496-4944",
+		"unit": "HLS^Pblc Interest\nFAS^FCOL^Leverett-Oth\nFAS^FDCE^Other Academic"
 	};
 	
 	var termsToExpectedValues = {
 		"Judith Murciano": expectedSearchResultValues
 	};
 
-	runSearchTestSuite("Test suite: Titles separated by newline", termsToExpectedValues);	
+	runSearchTestSuite("Test suite: Titles and units separated by newline", termsToExpectedValues);	
 }
 
 // "Main" block.
@@ -277,7 +278,8 @@ navigateToPeopleView();
 testSuite4();
 testSuite5();
 
-testSuiteTitlesSeparatedByNewLine();
+// These should work without supervision.
+testSuiteFieldsSeparatedByNewLine();
 testSuite1();
 testSuite2();
 testSuite3();
