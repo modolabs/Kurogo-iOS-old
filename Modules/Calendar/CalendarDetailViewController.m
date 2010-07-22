@@ -534,7 +534,14 @@ enum CalendarDetailRowTypes {
 }
 
 - (NSString *)emailBody {
-	return [NSString stringWithFormat:@"I thought you might be interested in this event...\n\n%@\n\n%@", event.summary, event.url];
+	
+	NSString *summary = event.summary;
+	NSArray *summaryArray = [summary componentsSeparatedByString:@"<"];
+	
+	if ([summaryArray count] > 0)
+		summary = [summaryArray objectAtIndex:0];
+
+	return [NSString stringWithFormat:@"I thought you might be interested in this event...\n\n%@", summary];
 }
 
 - (NSString *)fbDialogPrompt {
