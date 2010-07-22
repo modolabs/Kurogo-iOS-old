@@ -16,6 +16,7 @@ enum CalendarDetailRowTypes {
 	CalendarDetailRowTypeLocation,
 	CalendarDetailRowTypePhone,
 	CalendarDetailRowTypeURL,
+	CalendarDetailRowTypeTicketURL,
 	CalendarDetailRowTypeEmail,
 	CalendarDetailRowTypeDescription,
 	CalendarDetailRowTypeCategories
@@ -89,7 +90,8 @@ enum CalendarDetailRowTypes {
 		}
 		self.event = [self.events objectAtIndex:currentEventIndex];
 		[self reloadEvent];
-        if (isRegularEvent) {
+		
+		if (isRegularEvent) {
             //[self requestEventDetails];
         }
     }
@@ -139,6 +141,10 @@ enum CalendarDetailRowTypes {
 	}
 	if (self.event.url) {
 		rowTypes[numRows] = CalendarDetailRowTypeURL;
+		numRows++;
+	}
+	if (self.event.ticketUrl) {
+		rowTypes[numRows] = CalendarDetailRowTypeTicketURL;
 		numRows++;
 	}
 	if (self.event.email) {
@@ -305,7 +311,14 @@ enum CalendarDetailRowTypes {
 			cell.accessoryView = [UIImageView accessoryViewWithMITType:MITAccessoryViewPhone];			
 			break;
 		case CalendarDetailRowTypeURL:
-			cell.textLabel.text = event.url;
+			cell.textLabel.text = @"Visit Website";
+			cell.textLabel.font = [UIFont fontWithName:STANDARD_FONT size:CELL_STANDARD_FONT_SIZE];
+			cell.textLabel.textColor = EMBEDDED_LINK_FONT_COLOR;
+			cell.accessoryView = [UIImageView accessoryViewWithMITType:MITAccessoryViewExternal];
+			break;
+			
+		case CalendarDetailRowTypeTicketURL:
+			cell.textLabel.text = @"Link to Tickets";
 			cell.textLabel.font = [UIFont fontWithName:STANDARD_FONT size:CELL_STANDARD_FONT_SIZE];
 			cell.textLabel.textColor = EMBEDDED_LINK_FONT_COLOR;
 			cell.accessoryView = [UIImageView accessoryViewWithMITType:MITAccessoryViewExternal];
@@ -326,6 +339,7 @@ enum CalendarDetailRowTypes {
             UIWebView *webView = (UIWebView *)[cell viewWithTag:kDescriptionWebViewTag];
 			webView.delegate = self;
 			CGFloat webViewHeight;
+			
 			if (descriptionHeight > 0) {
 				webViewHeight = descriptionHeight;
 			} else {
@@ -333,18 +347,26 @@ enum CalendarDetailRowTypes {
 			}
 			
 			
-            CGRect frame = CGRectMake(WEB_VIEW_PADDING, WEB_VIEW_PADDING, self.tableView.frame.size.width - 2 * WEB_VIEW_PADDING, webViewHeight);
+            //CGRect frame = CGRectMake(WEB_VIEW_PADDING, WEB_VIEW_PADDING, self.tableView.frame.size.width - 2 * WEB_VIEW_PADDING, webViewHeight);
+			CGRect frame = CGRectMake(WEB_VIEW_PADDING, WEB_VIEW_PADDING, self.tableView.frame.size.width - 2 * WEB_VIEW_PADDING, webViewHeight);
             if (!webView) {
                 webView = [[UIWebView alloc] initWithFrame:frame];
-                [webView loadHTMLString:descriptionString baseURL:nil];
+				//webview.frame.size.width
+				[webView loadHTMLString:descriptionString baseURL:nil];
                 webView.tag = kDescriptionWebViewTag;
                 [cell.contentView addSubview:webView];
 				[self webViewDidStartLoad:webView];
+				[(UIScrollView*)[webView.subviews objectAtIndex:0] setAlwaysBounceVertical:NO];
+				[(UIScrollView*)[webView.subviews objectAtIndex:0] setAlwaysBounceHorizontal:NO];
                 [webView release];
             } else {
-                webView.frame = frame;
-                [webView loadHTMLString:descriptionString baseURL:nil];
-            }
+              webView.frame = frame;
+			  [webView loadHTMLString:descriptionString baseURL:nil];
+				[self webViewDidStartLoad:webView];
+				[(UIScrollView*)[webView.subviews objectAtIndex:0] setAlwaysBounceVertical:NO];
+				[(UIScrollView*)[webView.subviews objectAtIndex:0] setAlwaysBounceHorizontal:NO];
+			}
+			
 			break;
         }
 		case CalendarDetailRowTypeCategories:
@@ -432,6 +454,7 @@ enum CalendarDetailRowTypes {
 			// 33 and 21 are from MultiLineTableViewCell.m
 			constraintWidth = tableView.frame.size.width - 33.0 - 21.0;
 			break;
+			
 		case CalendarDetailRowTypeLocation:
 			cellText = (event.location != nil) ? event.location : event.shortloc;
 			cellFont = [UIFont fontWithName:BOLD_FONT size:CELL_STANDARD_FONT_SIZE];
@@ -473,6 +496,15 @@ enum CalendarDetailRowTypes {
 		{
 			NSURL *eventURL = [NSURL URLWithString:event.url];
 			if (event.url && [[UIApplication sharedApplication] canOpenURL:eventURL]) {
+				[[UIApplication sharedApplication] openURL:eventURL];
+			}
+			break;
+		}
+			
+		case CalendarDetailRowTypeTicketURL:
+		{
+			NSURL *eventURL = [NSURL URLWithString:event.ticketUrl];
+			if (event.ticketUrl && [[UIApplication sharedApplication] canOpenURL:eventURL]) {
 				[[UIApplication sharedApplication] openURL:eventURL];
 			}
 			break;
@@ -554,8 +586,7 @@ enum CalendarDetailRowTypes {
 
 -(void)webViewDidStartLoad:(UIWebView *)webView {
 	CGSize size = [webView sizeThatFits:CGSizeZero];
-	
-	
+
 	NSInteger newDescriptionHeight = size.height; 	
 	if(newDescriptionHeight != descriptionHeight) {
 		descriptionHeight = newDescriptionHeight;
@@ -568,8 +599,8 @@ enum CalendarDetailRowTypes {
 	// calculate webView height, if it change we need to reload table
 	//NSInteger newDescriptionHeight =[[webView stringByEvaluatingJavaScriptFromString:@"document.getElementById(\"main-content\").offsetHeight;"] intValue];
 	CGSize size = [webView sizeThatFits:CGSizeZero];
-
 	
+	//[webView loadHTMLString:descriptionString baseURL:nil];
 	NSInteger newDescriptionHeight = size.height; 	
 	if(newDescriptionHeight != descriptionHeight) {
 		descriptionHeight = newDescriptionHeight;

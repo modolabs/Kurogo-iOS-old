@@ -18,6 +18,7 @@
 @property (nonatomic, retain) NSString * email;
 @property (nonatomic, retain) NSString * summary;
 @property (nonatomic, retain) NSString * url;
+@property (nonatomic, retain) NSString * ticketUrl;
 @property (nonatomic, retain) NSSet* categories;
 @property (nonatomic, retain) NSDate * lastUpdated;
 @property (nonatomic, retain) NSNumber * isRegular;

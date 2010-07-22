@@ -16,6 +16,7 @@
 @dynamic phone;
 @dynamic summary;
 @dynamic url;
+@dynamic ticketUrl;
 @dynamic email;
 @dynamic categories;
 @dynamic lastUpdated;
@@ -124,6 +125,7 @@
 	 if (![fieldKeyString isEqualToString:@"Location"] && 
 		 ![fieldKeyString isEqualToString:@"Event Type"] &&
 		 ![fieldKeyString isEqualToString:@"Contact Info"] &&
+		 ![fieldKeyString isEqualToString:@"Ticket Web Link"] &&
 		 ![fieldKeyString isEqualToString:@"Gazette Classification"]) 
 	 {
 	 
@@ -256,6 +258,10 @@
 	
 	if ([dict objectForKey:@"url"]) {
 		self.url = [dict objectForKey:@"url"];
+	}
+
+	if ([customDict objectForKey:@"\"Ticket Web Link\""]) {
+		self.ticketUrl = [customDict objectForKey:@"\"Ticket Web Link\""];
 	}
 	
 	if (locationDetailAvailable == YES) {

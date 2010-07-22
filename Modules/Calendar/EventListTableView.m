@@ -120,14 +120,6 @@
 	if (textSize.width > (constraintWidth - 20)) {
 		height += textSize.height + 2.0;
 	}
-	/*else {
-		NSString *tst = event.title;
-		NSInteger sdr1 = textSize.width;
-		NSInteger sdr2 = textSize.height;
-		NSInteger dett = constraintWidth;
-		height += 10.0;
-	}*/
-
 
 	return height;
 }
