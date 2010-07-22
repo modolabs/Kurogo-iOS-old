@@ -225,8 +225,8 @@ static NSInteger numTries = 0;
         navScrollView = [[NavScrollerView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 44.0)];
         navScrollView.navScrollerDelegate = self;
         [self.view addSubview:navScrollView];
-        [self setupNavScrollButtons];
     }
+    [self setupNavScrollButtons];
 }
 
 - (void)setupNavScrollButtons {
@@ -287,8 +287,7 @@ static NSInteger numTries = 0;
 
 - (void)showSearchBar {
 	if (!theSearchBar) {
-		theSearchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0.0, 0.0, self.view.frame.size.width, 44.0)];
-		theSearchBar.tintColor = SEARCH_BAR_TINT_COLOR;
+		theSearchBar = [[ModoSearchBar alloc] initWithFrame:CGRectMake(0.0, 0.0, self.view.frame.size.width, 44.0)];
 		theSearchBar.delegate = self;
 		theSearchBar.alpha = 0.0;
 		[self.view addSubview:theSearchBar];

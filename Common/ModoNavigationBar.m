@@ -1,5 +1,5 @@
 #import "ModoNavigationBar.h"
-
+#import "UIKit+MITAdditions.h"
 
 @implementation ModoNavigationBar
 
@@ -35,7 +35,8 @@
 - (void)drawRect:(CGRect)rect {
     [super drawRect:rect];
     
-    self.tintColor = [UIColor blackColor]; // this is for color of buttons  
+    self.tintColor = [UIColor colorWithHexString:@"#870E16"]; // this is for color of buttons  
+    self.navigationBar.tintColor = [UIColor colorWithHexString:@"#870E16"]; // since the background shows through when we click the buttons
     UIImage *image = [[UIImage imageNamed:@"global/navbar-background.png"] stretchableImageWithLeftCapWidth:0.0 topCapHeight:0.0];
     [image drawInRect:rect];
     

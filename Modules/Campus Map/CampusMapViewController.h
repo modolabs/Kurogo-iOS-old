@@ -6,6 +6,7 @@
 #import "MITModuleURL.h"
 #import "CMModule.h"
 #import "TileServerManager.h"
+#import "ModoSearchBar.h"
 
 //@class MITMapSearchResultsTable;
 @class MITMapSearchResultsVC;
@@ -48,10 +49,10 @@
 	// bar button to switch view types. 
 	UIBarButtonItem* _viewTypeButton;
 	
-	IBOutlet UISearchBar* _searchBar;
+	ModoSearchBar *_searchBar;
 	
 	// a custom button since we are not using the default bookmark button
-	IBOutlet UIButton* _bookmarkButton;
+	UIButton* _bookmarkButton;
 	
 	MapSelectionController* _selectionVC;
 	
@@ -67,7 +68,7 @@
 @property (nonatomic, retain) NSString* lastSearchText;
 @property BOOL hasSearchResults;
 @property (readonly) BOOL displayingList;
-@property (readonly) UISearchBar* searchBar;
+@property (readonly) ModoSearchBar* searchBar;
 @property (readonly) MITModuleURL* url;
 
 // execute a search

@@ -43,15 +43,6 @@
     return result;
 }
 
-- (MITModule *)moduleForTabBarItem:(UITabBarItem *)item {
-    //for (MITModule *aModule in self.modules) {
-    //    if ([aModule.tabNavController.tabBarItem isEqual:item]) {
-    //        return aModule;
-    //    }
-    //}
-    return nil;
-}
-
 - (MITModule *)moduleForViewController:(UIViewController *)aViewController {
     for (MITModule *aModule in self.modules) {
         if ([aModule.viewControllers containsObject:aViewController]) {

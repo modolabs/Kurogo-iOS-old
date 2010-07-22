@@ -420,6 +420,8 @@
 		EB74ED2F11924E7C006673F9 /* ShareDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EB74ED2D11924E7C006673F9 /* ShareDetailViewController.m */; };
 		EB7BA33E11F7677F00B3DDA6 /* PolygonOverlay.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB7BA33C11F7677F00B3DDA6 /* PolygonOverlay.h */; settings = {JAVA_ARCHIVE_SUBDIR = "Modules/Campus Map"; }; };
 		EB7BA33F11F7677F00B3DDA6 /* PolygonOverlay.m in Sources */ = {isa = PBXBuildFile; fileRef = EB7BA33D11F7677F00B3DDA6 /* PolygonOverlay.m */; };
+		EB7BA68411F8ED2100B3DDA6 /* ModoSearchBar.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB7BA68211F8ED2100B3DDA6 /* ModoSearchBar.h */; settings = {JAVA_ARCHIVE_SUBDIR = Modules/News; }; };
+		EB7BA68511F8ED2100B3DDA6 /* ModoSearchBar.m in Sources */ = {isa = PBXBuildFile; fileRef = EB7BA68311F8ED2100B3DDA6 /* ModoSearchBar.m */; };
 		EB7F327F10CD6C5B00188BCD /* PeopleDataModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = EB7F326A10CD6C5B00188BCD /* PeopleDataModel.xcdatamodeld */; };
 		EB7F328210CD6C5B00188BCD /* PartialHighlightTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = EB7F327110CD6C5B00188BCD /* PartialHighlightTableViewCell.m */; };
 		EB7F328310CD6C5B00188BCD /* PeopleDetailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EB7F327310CD6C5B00188BCD /* PeopleDetailsViewController.m */; };
@@ -975,6 +977,8 @@
 		EB74ED2D11924E7C006673F9 /* ShareDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShareDetailViewController.m; sourceTree = "<group>"; };
 		EB7BA33C11F7677F00B3DDA6 /* PolygonOverlay.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PolygonOverlay.h; sourceTree = "<group>"; };
 		EB7BA33D11F7677F00B3DDA6 /* PolygonOverlay.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PolygonOverlay.m; sourceTree = "<group>"; };
+		EB7BA68211F8ED2100B3DDA6 /* ModoSearchBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ModoSearchBar.h; sourceTree = "<group>"; };
+		EB7BA68311F8ED2100B3DDA6 /* ModoSearchBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ModoSearchBar.m; sourceTree = "<group>"; };
 		EB7F327010CD6C5B00188BCD /* PartialHighlightTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PartialHighlightTableViewCell.h; sourceTree = "<group>"; };
 		EB7F327110CD6C5B00188BCD /* PartialHighlightTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PartialHighlightTableViewCell.m; sourceTree = "<group>"; };
 		EB7F327210CD6C5B00188BCD /* PeopleDetailsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PeopleDetailsViewController.h; sourceTree = "<group>"; };
@@ -1618,6 +1622,8 @@
 				DE6D570510F05C59006431A8 /* TabScrollerBackgroundView.m */,
 				29B6038B11541AB200064E0A /* TwitterViewController.h */,
 				29B6038C11541AB200064E0A /* TwitterViewController.m */,
+				EB7BA68211F8ED2100B3DDA6 /* ModoSearchBar.h */,
+				EB7BA68311F8ED2100B3DDA6 /* ModoSearchBar.m */,
 			);
 			path = News;
 			sourceTree = "<group>";
@@ -2012,6 +2018,7 @@
 				EB7BA33E11F7677F00B3DDA6 /* PolygonOverlay.h in JavaArchive */,
 				C77664FA11F64E74005496DD /* HallDetailsTableViewController.h in JavaArchive */,
 				C776675911F733E3005496DD /* DatePickerViewController.h in JavaArchive */,
+				EB7BA68411F8ED2100B3DDA6 /* ModoSearchBar.h in JavaArchive */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2438,6 +2445,7 @@
 				EB7BA33F11F7677F00B3DDA6 /* PolygonOverlay.m in Sources */,
 				C77664FB11F64E74005496DD /* HallDetailsTableViewController.m in Sources */,
 				C776675A11F733E3005496DD /* DatePickerViewController.m in Sources */,
+				EB7BA68511F8ED2100B3DDA6 /* ModoSearchBar.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
