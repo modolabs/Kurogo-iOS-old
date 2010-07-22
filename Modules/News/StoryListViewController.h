@@ -1,25 +1,15 @@
 #import <UIKit/UIKit.h>
 #import "StoryXMLParser.h"
 #import "JSONAPIRequest.h"
-
-/*
-typedef enum {
-    NewsCategoryIdTopNews = 0,
-    NewsCategoryIdEngineering = 1,
-    NewsCategoryIdScience = 2,
-    NewsCategoryIdManagement = 3,
-    NewsCategoryIdArchitecture = 5,
-    NewsCategoryIdHumanities = 6,
-    NewsCategoryIdCampus = 99
-} NewsCategoryId;
-*/
+#import "TabScrollerBackgroundView.h"
 
 typedef int NewsCategoryId;
 
 @class MITSearchEffects;
 @class NewsStory;
 
-@interface StoryListViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate, StoryXMLParserDelegate, JSONAPIDelegate> {
+@interface StoryListViewController : UIViewController <UITableViewDataSource, UITableViewDelegate,
+UISearchBarDelegate, StoryXMLParserDelegate, JSONAPIDelegate, NavScrollerDelegate> {
 	UITableView *storyTable;
     NSArray *stories;
     NSArray *categories;
@@ -29,7 +19,8 @@ typedef int NewsCategoryId;
     NSArray *navButtons;
     
 	// Nav Scroll View
-	UIScrollView *navScrollView;
+	//UIScrollView *navScrollView;
+	NavScrollerView *navScrollView;
 	UIButton *leftScrollButton;
 	UIButton *rightScrollButton;  
 
