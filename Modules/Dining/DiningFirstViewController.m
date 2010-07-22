@@ -9,6 +9,7 @@
 #import "DiningFirstViewController.h"
 #import "MenuDetailsController.h"
 #import "DiningTabViewControl.h"
+#import "MITUIConstants.h"
 
 // separator color for the Grouped Tables
 #define kSeparatorColorR 69.0/255.0
@@ -254,8 +255,8 @@ HarvardDiningAPI *mitapi;
 	
 		[_scrollView setContentSize:contentSize];
 
-
 		[_tabViewControl addTab:@"Breakfast"];
+	
 		[_tabViews insertObject:_loadingResultView atIndex: kBreakfastTab];
 	
 		[_tabViewControl addTab:@"Lunch"];
@@ -271,14 +272,21 @@ HarvardDiningAPI *mitapi;
 		
 		tableControl.tableView = hoursTableView;
 		
+		[tableControl.tableView applyStandardColors];
+		
+		
 		tableControl.parentViewController = self;
 		
 		[_hoursView addSubview:hoursTableView];
 		[_tabViews insertObject:_hoursView atIndex:kHoursTab];
 	
+		//_newsView = [[UIView alloc] init];
+		[_newsView setBackgroundColor:[UIColor colorWithPatternImage:[[UIImage alloc] initWithContentsOfFile:@"global/body-background.png"]]];
+
 		[_tabViewControl addTab:@"News"];
 		[_tabViews insertObject:_newsView atIndex:kNewsTab];
-	
+		
+			
 		_tabViewControl.hidden = NO;
 		_tabViewContainer.hidden = NO;
 	
@@ -288,15 +296,18 @@ HarvardDiningAPI *mitapi;
 
 	}
 
-	
 	// set the Separator Colors
-	lunchTable.separatorColor = [UIColor colorWithRed:kSeparatorColorR 
+	/*lunchTable.separatorColor = [UIColor colorWithRed:kSeparatorColorR 
 												green: kSeparatorColorG
 												 blue:kSeparatorColorB
 												alpha:1];
 	
 	breakfastTable.separatorColor = lunchTable.separatorColor;	
-	dinnerTable.separatorColor = lunchTable.separatorColor;
+	dinnerTable.separatorColor = lunchTable.separatorColor;*/
+	
+	[lunchTable applyStandardColors];
+	[breakfastTable applyStandardColors];
+	[dinnerTable applyStandardColors];
 	
 	
 	// Open the Default Tab depending on the time of the day

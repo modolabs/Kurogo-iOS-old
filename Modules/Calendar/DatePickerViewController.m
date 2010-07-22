@@ -19,7 +19,7 @@
     [scrim release];
     
    // UINavigationBar *navBar = [[UINavigationBar alloc] initWithFrame:CGRectMake(0.0, 0.0, self.view.frame.size.width, 44.0)];
-	UINavigationBar *navBar = [[UINavigationBar alloc] initWithFrame:CGRectMake(0.0, -20.0, self.view.frame.size.width, 44.0)];
+	UINavigationBar *navBar = [[UINavigationBar alloc] initWithFrame:CGRectMake(0.0, 0.0, self.view.frame.size.width, 44.0)];
     navBar.barStyle = UIBarStyleBlack;
     
     UINavigationItem *navItem = [[UINavigationItem alloc] initWithTitle:@"Jump to a Date"];

@@ -7,6 +7,7 @@
 //
 
 #import "HoursTableViewController.h"
+#import "MITUIConstants.h"
 
 @implementation HoursTableViewController
 
@@ -31,6 +32,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+	[self.tableView applyStandardColors];
 
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
@@ -100,7 +102,7 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 	
 	if (childHallViewController == nil)
 	{
-		childHallViewController = [[HallDetailsTableViewController alloc] init];
+		childHallViewController = [[HallDetailsTableViewController alloc] initWithStyle:UITableViewStyleGrouped];
 	}
 	
 	NSUInteger row = [indexPath row];
@@ -108,13 +110,10 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 	NSDictionary *test = [self.hallProperties objectAtIndex:row];
 	[childHallViewController setDetails:test];
 	childHallViewController.title = [[self.hallProperties objectAtIndex:row] objectForKey:@"name"];
-	
-	
-	NSString * str = [self.parentViewController description];
-	
+
 	[self.parentViewController.navigationController pushViewController:childHallViewController animated:YES];
 	// deselect the Row
-	//[tableView deselectRowAtIndexPath:indexPath animated:NO];
+	[tableView deselectRowAtIndexPath:indexPath animated:NO];
 	
 }
 

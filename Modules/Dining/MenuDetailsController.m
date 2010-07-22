@@ -8,6 +8,7 @@
 
 #import "MenuDetailsController.h"
 #import "diningTempAppDelegate.h";
+#import "MITUIConstants.h"
 
 
 @implementation MenuDetailsController
@@ -17,6 +18,7 @@
 -(void)viewWillAppear:(BOOL)animated
 {
 	[super viewWillAppear:animated];
+	[self.tableView applyStandardColors];
 }
 
 -(void)viewDidUnload

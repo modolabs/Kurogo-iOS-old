@@ -104,6 +104,8 @@ extern NSString * const MITImageNameRightArrow;
 extern NSString * const MITImageNameUpArrow;
 extern NSString * const MITImageNameDownArrow;
 
+extern NSString * const MITImageNameSubheadBarBackground; 
+
 extern NSString * const MITImageNameSearch;
 extern NSString * const MITImageNameBookmark;
 

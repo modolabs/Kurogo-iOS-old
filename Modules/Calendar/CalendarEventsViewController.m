@@ -306,7 +306,9 @@
 	DatePickerViewController *dateSelector = [[DatePickerViewController alloc] init];
 	dateSelector.delegate = self;
 	
-	[self.view addSubview:dateSelector.view];
+	MIT_MobileAppDelegate *appDelegate = (MIT_MobileAppDelegate *)[[UIApplication sharedApplication] delegate];
+    [appDelegate presentAppModalViewController:dateSelector animated:YES];
+    [dateSelector release];
 	
 }
 #pragma mark Redrawing logic and helper functions
@@ -1121,7 +1123,7 @@
 				UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(20, 20, 300, 20)];
 																		   
 				label.text = @"No Events Found";															   
-				NSInteger vertical_margin = 40;
+				NSInteger vertical_margin = 45;
 				
 				if (theCatID == -1)
 					vertical_margin += 50;
@@ -1183,10 +1185,9 @@
 
 - (void)datePickerViewControllerDidCancel:(DatePickerViewController *)controller {
 	
-	if ([controller class] == [DatePickerViewController class]) {
-		[controller.view removeFromSuperview];
-		[controller release];		
-	}
+	MIT_MobileAppDelegate *appDelegate = (MIT_MobileAppDelegate *)[[UIApplication sharedApplication] delegate];
+    [appDelegate dismissAppModalViewControllerAnimated:YES];
+	
 	return;
 }
 
@@ -1196,9 +1197,10 @@
 		startDate = nil;
 		startDate = [[NSDate alloc] initWithTimeInterval:0 sinceDate:date];    
 		dateRangeDidChange = YES;
-	
-		[controller.view removeFromSuperview];
-		[controller release];
+
+		MIT_MobileAppDelegate *appDelegate = (MIT_MobileAppDelegate *)[[UIApplication sharedApplication] delegate];
+		[appDelegate dismissAppModalViewControllerAnimated:YES];
+		
 		[self reloadView:activeEventList];
 	}
 	return;
