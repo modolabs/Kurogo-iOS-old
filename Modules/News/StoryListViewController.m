@@ -11,9 +11,6 @@
 #import "MITUIConstants.h"
 #import "NewsCategory.h"
 
-#define SCROLL_TAB_HORIZONTAL_PADDING 5.0
-#define SCROLL_TAB_HORIZONTAL_MARGIN  5.0
-
 #define THUMBNAIL_WIDTH 76.0
 #define ACCESSORY_WIDTH_PLUS_PADDING 18.0
 #define STORY_TEXT_PADDING_TOP 3.0 // with 15pt titles, makes for 8px of actual whitespace
@@ -34,8 +31,6 @@
 
 - (void)setupNavScroller;
 - (void)setupNavScrollButtons;
-- (void)sideButtonPressed:(id)sender;
-- (void)buttonPressed:(id)sender;
 
 - (void)setupActivityIndicator;
 - (void)setStatusText:(NSString *)text;
@@ -226,258 +221,65 @@ static NSInteger numTries = 0;
 #pragma mark Category selector
 
 - (void)setupNavScroller {
-    // Nav Scroller View
-
-    NSInteger navScrollTag = 1000;
-    navScrollView = (UIScrollView *)[self.view viewWithTag:navScrollTag];
     if (!navScrollView) {
-        
-        // load scroller's background first to find its height
-        UIImage *backgroundImage = [UIImage imageNamed:MITImageNameScrollTabBackgroundOpaque];
-        
-        // Create nav scroll view and add it to the hierarchy
-        navScrollView = [[[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, backgroundImage.size.height)] autorelease];
-        navScrollView.delegate = self;
-        navScrollView.scrollsToTop = NO; // otherwise this competes with the story list for status bar taps
-        navScrollView.showsHorizontalScrollIndicator = NO;
-        navScrollView.opaque = NO;
-        navScrollView.tag = 1000; // make sure it doesn't overlap with any of the buttons
-        
-        //[navScrollView setBackgroundColor:[UIColor colorWithPatternImage:backgroundImage]];
-        
+        navScrollView = [[NavScrollerView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 44.0)];
+        navScrollView.navScrollerDelegate = self;
         [self.view addSubview:navScrollView];
-        
-        // Prep left and right scrollers
-        UIImage *leftScrollImage = [UIImage imageNamed:MITImageNameScrollTabLeftEndCap];
-        leftScrollButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        [leftScrollButton setImage:leftScrollImage forState:UIControlStateNormal];
-        CGRect imageFrame = CGRectMake(0,0,leftScrollImage.size.width,leftScrollImage.size.height);
-        leftScrollButton.frame = imageFrame;
-        leftScrollButton.hidden = YES;
-        [leftScrollButton addTarget:self action:@selector(sideButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
-        [self.view addSubview:leftScrollButton];
-        
-        UIImage *rightScrollImage = [UIImage imageNamed:MITImageNameScrollTabRightEndCap];
-        rightScrollButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        [rightScrollButton setImage:rightScrollImage forState:UIControlStateNormal];
-        imageFrame = CGRectMake(self.view.frame.size.width - rightScrollImage.size.width,0,rightScrollImage.size.width,rightScrollImage.size.height);
-        rightScrollButton.frame = imageFrame;
-        rightScrollButton.hidden = NO;
-        [rightScrollButton addTarget:self action:@selector(sideButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
-        [self.view addSubview:rightScrollButton];
-        
+        [self setupNavScrollButtons];
     }
-	
-	[self setupNavScrollButtons];
 }
 
 - (void)setupNavScrollButtons {
-    
-    // load scroller's background first to find its height
-	UIImage *buttonImage = [UIImage imageNamed:MITImageNameScrollTabSelectedTab];
-	UIImage *stretchableButtonImage = [buttonImage stretchableImageWithLeftCapWidth:15 topCapHeight:0];
-	
-	CGFloat buttonYOffset = floor((navScrollView.frame.size.height - buttonImage.size.height) / 2);
-    
-	UIView *contentView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 828, navScrollView.frame.size.height)];
-	contentView.tag = 1001;
-    
-    // create background image for scrolling view
-    UIImage *backgroundImage = [UIImage imageNamed:MITImageNameScrollTabBackgroundOpaque];
-    UIImageView *imageView = [[UIImageView alloc] initWithImage:[backgroundImage stretchableImageWithLeftCapWidth:0 topCapHeight:0]];
-    imageView.tag = 1005;
-    [contentView addSubview:imageView];
-    [imageView release];
-    
-	CGFloat leftOffset = 0.0;
-	
-	// add search button
-	
-	UIButton *searchButton = [UIButton buttonWithType:UIButtonTypeCustom];
-	UIImage *searchImage = [UIImage imageNamed:MITImageNameSearch];
-	[searchButton setImage:searchImage forState:UIControlStateNormal];
-	searchButton.adjustsImageWhenHighlighted = NO;
-	searchButton.tag = SEARCH_BUTTON_TAG; // random number that won't conflict with event list types
-	
-	// we want the search image to line up exactly with the gray magnifying glass in the search bar
-	// but there's no good way to determine the gray image's real position, so these pixel numbers
-	// are produced by eyeballing and hoping the position is similar in sdk versions other than 3.0
-	searchButton.frame = CGRectMake(leftOffset,
-									0,
-									searchImage.size.width + 20.0,
-									navScrollView.frame.size.height); 
-	[searchButton addTarget:self action:@selector(showSearchBar) forControlEvents:UIControlEventTouchUpInside];
-	searchButton.imageEdgeInsets = UIEdgeInsetsMake(-1,0,0,0);
-	
-	[contentView addSubview:searchButton];
-	
-	leftOffset += searchButton.frame.size.width;
+
+    UIButton *searchButton = [navScrollView buttonWithTag:SEARCH_BUTTON_TAG];
+    if (!searchButton) {
+        UIButton *searchButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        UIImage *searchImage = [UIImage imageNamed:MITImageNameSearch];
+        [searchButton setImage:searchImage forState:UIControlStateNormal];
+        searchButton.adjustsImageWhenHighlighted = NO;
+        searchButton.tag = SEARCH_BUTTON_TAG;
+        // TODO: adjust so that magnifying class lines up when searchbar is shown
+        navScrollView.currentXOffset += 4.0;
+        [navScrollView addButton:searchButton shouldHighlight:NO];
+    }
 	
 	if (hasBookmarks) {
-		UIButton *bookmarkButton = [UIButton buttonWithType:UIButtonTypeCustom];
-		UIImage *bookmarkImage = [UIImage imageNamed:MITImageNameBookmark];
-		[bookmarkButton setImage:bookmarkImage forState:UIControlStateNormal];
-		bookmarkButton.adjustsImageWhenHighlighted = NO;
-        [bookmarkButton setBackgroundImage:nil forState:UIControlStateNormal];
-        [bookmarkButton setBackgroundImage:stretchableButtonImage forState:UIControlStateHighlighted];            
-		bookmarkButton.tag = BOOKMARK_BUTTON_TAG; // random number that won't conflict with event list types
-		
-		bookmarkButton.frame = CGRectMake(leftOffset - 4.0,
-										  0,
-										  bookmarkImage.size.width + 14.0,
-										  stretchableButtonImage.size.height); 
-		[bookmarkButton addTarget:self action:@selector(buttonPressed:) forControlEvents:UIControlEventTouchUpInside];
-		bookmarkButton.imageEdgeInsets = UIEdgeInsetsMake(-1,0,0,0);
-		
-		[contentView addSubview:bookmarkButton];
-		
-		leftOffset += bookmarkButton.frame.size.width;
+        UIButton *bookmarkButton = [navScrollView buttonWithTag:BOOKMARK_BUTTON_TAG];
+        if (!bookmarkButton) {
+            UIButton *bookmarkButton = [UIButton buttonWithType:UIButtonTypeCustom];
+            UIImage *bookmarkImage = [UIImage imageNamed:MITImageNameBookmark];
+            [bookmarkButton setImage:bookmarkImage forState:UIControlStateNormal];
+            bookmarkButton.adjustsImageWhenHighlighted = NO;
+            [navScrollView addButton:bookmarkButton shouldHighlight:YES];
+        }
 	}
-	// add pile of text buttons
-	
-    /*
-	// create buttons for nav scroller view
-    NSArray *buttonTitles = [[NSArray alloc] initWithObjects:
-                             NewsCategoryTopNews, NewsCategoryCampus, 
-                             NewsCategoryEngineering, 
-                             NewsCategoryScience, NewsCategoryManagement, 
-                             NewsCategoryArchitecture, NewsCategoryHumanities, 
-                             nil];
-    NSMutableArray *buttons = [[NSMutableArray alloc] initWithCapacity:[buttonTitles count]];
-     */
-    NSMutableArray *buttons = [[NSMutableArray alloc] initWithCapacity:[self.categories count]];
     
-    NSInteger i = 0;
-    //for (NSString *buttonTitle in buttonTitles) {
     for (NewsCategory *aCategory in self.categories) {
-        NSLog(@"%@", aCategory.title);
-        UIButton *aButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        //aButton.tag = buttonCategories[i];
-        aButton.tag = (NewsCategoryId)[aCategory.category_id intValue];
-        NSString *buttonTitle = aCategory.title;
-
-        [aButton setBackgroundImage:nil forState:UIControlStateNormal];
-        [aButton setBackgroundImage:stretchableButtonImage forState:UIControlStateHighlighted];            
-        [aButton setTitle:buttonTitle forState:UIControlStateNormal];
-        [aButton setTitleColor:[UIColor colorWithHexString:@"#FCCFCF"] forState:UIControlStateNormal];
-        [aButton setTitleColor:[UIColor whiteColor] forState:UIControlStateHighlighted];
-        aButton.titleLabel.font = [UIFont boldSystemFontOfSize:13.0];
-        aButton.titleLabel.tag = 1002;
-        [aButton addTarget:self action:@selector(buttonPressed:) forControlEvents:UIControlEventTouchUpInside];
-        
-        aButton.titleEdgeInsets = UIEdgeInsetsMake(0, 0, 1.0, 0); // needed to center text vertically within button
-        
-        CGSize newSize = [aButton.titleLabel.text sizeWithFont:aButton.titleLabel.font];
-        newSize.width += SCROLL_TAB_HORIZONTAL_PADDING * 2 + SCROLL_TAB_HORIZONTAL_MARGIN;
-        newSize.height = stretchableButtonImage.size.height;
-        CGRect frame = aButton.frame;
-        frame.size = newSize;
-        frame.origin.x += leftOffset;
-        frame.origin.y = buttonYOffset;
-        aButton.frame = frame;
-        leftOffset += frame.size.width;
-        
-        [buttons addObject:aButton];
-        [contentView addSubview:aButton];
-        i++;
+        NewsCategoryId tagValue = (NewsCategoryId)[aCategory.category_id intValue];
+        UIButton *aButton = [navScrollView buttonWithTag:tagValue];
+        if (!aButton) {
+            aButton = [UIButton buttonWithType:UIButtonTypeCustom];
+            aButton.tag = tagValue;
+            NSString *buttonTitle = aCategory.title;
+            [aButton setTitle:buttonTitle forState:UIControlStateNormal];
+            [navScrollView addButton:aButton shouldHighlight:YES];
+        }
     }
 
-    //[buttonTitles release];
-    navButtons = buttons;
-	
-    // now that the buttons have all been added, update the content frame
-    CGRect newFrame = contentView.frame;
-    newFrame.size.width = leftOffset + SCROLL_TAB_HORIZONTAL_PADDING;
-    contentView.frame = newFrame;
-    
-    imageView = (UIImageView *)[contentView viewWithTag:1005];
-    imageView.frame = contentView.frame;
-	
-	for (UIView *button in navScrollView.subviews) {
-		[button removeFromSuperview];
-	}
-	navScrollView.contentSize = contentView.frame.size;
-	[navScrollView addSubview:contentView];
-	[contentView release];
-	
 	// highlight active category
-    UIButton *homeButton = (UIButton *)[navScrollView viewWithTag:self.activeCategoryId];
-    [homeButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-	[homeButton setBackgroundImage:stretchableButtonImage forState:UIControlStateNormal];
-}
-
-- (void)sideButtonPressed:(id)sender {
-	// This is a slight cheat. The bumpers scroll the next text button so it fits completely into view, 
-	// but if all of the buttons in navbuttons are already in view, this scrolls by default to the far
-	// left, where the search and bookmark buttons sit.
-    CGPoint offset = navScrollView.contentOffset;
-	CGRect tabRect = CGRectMake(0, 0, 1, 1); // Because CGRectZero is ignored by -scrollRectToVisible:
-	
-    if (sender == leftScrollButton) {
-        NSInteger i, count = [navButtons count];
-        for (i = count - 1; i >= 0; i--) {
-            UIButton *tab = [navButtons objectAtIndex:i];
-            if (CGRectGetMinX(tab.frame) - offset.x < 0) {
-                tabRect = tab.frame;
-                tabRect.origin.x -= leftScrollButton.frame.size.width - 8.0;
-                break;
-            }
-        }
-    } else if (sender == rightScrollButton) {
-        for (UIButton *tab in navButtons) {
-            if (CGRectGetMaxX(tab.frame) - (offset.x + navScrollView.frame.size.width) > 0) {
-                tabRect = tab.frame;
-                tabRect.origin.x += rightScrollButton.frame.size.width - 8.0;
-                break;
-            }
-        }
-    }
-	[navScrollView scrollRectToVisible:tabRect animated:YES];
-}
-
-- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
-	if ([scrollView isEqual:navScrollView]) {
-		CGPoint offset = scrollView.contentOffset;
-		if (offset.x <= 0) {
-			leftScrollButton.hidden = YES;
-		} else {
-			leftScrollButton.hidden = NO;
-		}
-		if (offset.x >= navScrollView.contentSize.width - navScrollView.frame.size.width) {
-			rightScrollButton.hidden = YES;
-		} else {
-			rightScrollButton.hidden = NO;
-		}
-	}
+    UIButton *homeButton = [navScrollView buttonWithTag:self.activeCategoryId];
+    [navScrollView buttonPressed:homeButton];
 }
 
 - (void)buttonPressed:(id)sender {
+    
     UIButton *pressedButton = (UIButton *)sender;
-    NSMutableArray *buttons = [navButtons mutableCopy];
-
-	UIButton *bookmarkButton = (UIButton *)[navScrollView viewWithTag:BOOKMARK_BUTTON_TAG];
-	if (bookmarkButton) {
-		[buttons addObject:bookmarkButton];
-	}
-	
-    if ([buttons containsObject:pressedButton]) {
-        [buttons removeObject:pressedButton];
-        
-        UIImage *buttonImage = [UIImage imageNamed:MITImageNameScrollTabSelectedTab];
-        UIImage *stretchableButtonImage = [buttonImage stretchableImageWithLeftCapWidth:15 topCapHeight:0];
-        
-        [pressedButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-        [pressedButton setBackgroundImage:stretchableButtonImage forState:UIControlStateNormal];
-        
-        for (UIButton *aButton in buttons) {
-            [aButton setTitleColor:[UIColor colorWithHexString:@"#FCCFCF"] forState:UIControlStateNormal];
-            [aButton setBackgroundImage:nil forState:UIControlStateNormal];
-        }
-        
+    
+    if (pressedButton.tag == SEARCH_BUTTON_TAG) {
+        [self showSearchBar];
+    } else {
         [self switchToCategory:pressedButton.tag];
     }
-    
-    [buttons release];
 }
 
 #pragma mark -
