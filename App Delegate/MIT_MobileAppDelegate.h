@@ -7,7 +7,6 @@
 @interface MIT_MobileAppDelegate : NSObject <UIApplicationDelegate> {
     
     UIWindow *window;
-    //MITTabBarController *theTabBarController;
     ModoNavigationController *theNavController;
     SpringboardViewController *theSpringboard;
     UIViewController *appModalHolder;
@@ -17,8 +16,6 @@
     
     NSInteger networkActivityRefCount; // the number of concurrent network connections the user should know about. If > 0, spinny in status bar is shown
 }
-
-//- (void)updateCustomizableViewControllers;
 
 - (void)showNetworkActivityIndicator;
 - (void)hideNetworkActivityIndicator;
