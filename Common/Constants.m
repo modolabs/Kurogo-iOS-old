@@ -126,6 +126,8 @@ NSString * const MITImageNameRightArrow = @"global/arrow-white-right.png";
 NSString * const MITImageNameUpArrow = @"global/arrow-white-up.png";
 NSString * const MITImageNameDownArrow = @"global/arrow-white-down.png";
 
+NSString * const MITImageNameSubheadBarBackground = @"global/subheadbar_background.png";
+
 NSString * const MITImageNameSearch = @"global/search.png";
 NSString * const MITImageNameBookmark = @"global/bookmark.png";
 

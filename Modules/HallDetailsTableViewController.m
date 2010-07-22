@@ -7,6 +7,7 @@
 //
 
 #import "HallDetailsTableViewController.h"
+#import "MITUIConstants.h"
 
 
 
@@ -17,6 +18,7 @@
 -(void)viewWillAppear:(BOOL)animated
 {
 	[super viewWillAppear:animated];
+	[self.tableView applyStandardColors];
 }
 
 -(void)viewDidUnload
@@ -51,24 +53,45 @@
 numberOfRowsInSection:(NSInteger)section
 {
 	//eturn [self.itemDetails count];
-	return 5;
+	if (section == 0)
+		return 5;
+	
+	else {
+		return 3;
+	}
+
 }
 
 -(UITableViewCell *)tableView:(UITableView *)tableView
 		cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-	static NSString *CellTableIdentifier = @"HallDetailsIdentifier";
+	NSInteger row = [indexPath row];
+	NSInteger col = [indexPath section];
 	
-	UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellTableIdentifier];
+	static NSString *CellTableIdentifier = @"HallHoursIdentifier";
+	
+	
+	if (col == 1)
+		CellTableIdentifier = @"HallRestrictionsIdentifier";
+	
+	//UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellTableIdentifier];
+	MultiLineTableViewCell *cell = (MultiLineTableViewCell *)[tableView dequeueReusableCellWithIdentifier:CellTableIdentifier];
 	
 	if (cell == nil)
 	{
+		if (col == 0) {
 		cell = [[[UITableViewCell alloc]
-				 initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CellTableIdentifier] autorelease];
+				 initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellTableIdentifier] autorelease];
+		}
+		
+		if (col == 1) {
+			cell = [[[MultiLineTableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellTableIdentifier] autorelease];
+			cell.textLabelNumberOfLines = 2;
+			cell.textLabelLineBreakMode = UILineBreakModeTailTruncation;
+		}
 	}
 	
-	NSInteger row = [indexPath row];
-	NSInteger col = [indexPath section];
+
 	
 	if (col == 0) {
 		
@@ -92,54 +115,143 @@ numberOfRowsInSection:(NSInteger)section
 				break;
 			case 3:
 				key = @"bb_hours";
-				displayKey = @"Brain-Break";
+				displayKey = @"Brain-Break(Sun-Thu)";
 				break;
 			case 4:
 				key = @"brunch_hours";
-				displayKey = @"Brunch(Sunday)";
+				displayKey = @"Sunday Brunch";
 				break;
 		}
 		NSString *cellText1 = displayKey;
-		cellText1 = [cellText1 stringByAppendingString:@" : "];
+		cellText1 = [cellText1 stringByAppendingString:@": "];
 		NSString *cellText2 = [self.itemDetails objectForKey:key];
-		cell.textLabel.text = cellText1;
-		cell.detailTextLabel.text = cellText2;
+		
+		if ([cellText2 isEqualToString:@"NA"])
+			cellText2 = @"";
+		
+		cell.textLabel.text = [cellText1 stringByAppendingString:cellText2];
+
+		
 		cell.selectionStyle =  UITableViewCellSelectionStyleNone;
 
 	}
 	
 	if (col == 1) {
+
 		
-		cell.textLabel.text = @"Testing1";
+		NSString *meal;
+		NSString *mealkey;
+		
+		switch (row) {
+			case 0:
+				meal = @"Lunch ";
+				mealkey = @"lunch_restrictions";				
+				break;
+			case 1:
+				meal = @"Dinner ";
+				mealkey = @"dinner_restrcitions";	
+				break;
+			case 2:
+				meal = @"Sunday Brunch ";
+				mealkey = @"brunch_restrcitions";	
+				break;
+			default:
+				break;
+		}
+		
+		NSDictionary *restrictions = [self.itemDetails objectForKey:mealkey];
+		NSString *message = [[restrictions valueForKey:@"message"] description];
+
+		NSArray *messageArray = [message componentsSeparatedByString:@"\""];
+		
+		if ([messageArray count] == 3) {
+			message = [messageArray objectAtIndex:1];
+		}
+		
+		else {
+			message = @"None";
+		}
+
+		//cell.textLabel.text = [meal stringByAppendingString:message];
+
+		[cell.textLabel setTextAlignment:UITextAlignmentLeft];
+		cell.textLabel.text = meal;
+		cell.detailTextLabel.text = message;
+		cell.detailTextLabel.font = [UIFont systemFontOfSize:15];
+		cell.selectionStyle =  UITableViewCellSelectionStyleNone;
 	}
 
 	return cell;
 }
 
--(CGFloat)tableView:(UITableView *)tableView
-heightForRowAtIndexPath:(NSIndexPath *)indexPath
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+	NSString *cellText = nil;
+	UIFont *cellFont = nil;
+	CGFloat constraintWidth;
+	
+	NSString *meal;
+	NSString *mealkey;
+	
+	constraintWidth = tableView.frame.size.width;
+	cellFont = [UIFont systemFontOfSize:15];
+	
+	int col = [indexPath section];
+	int row = [indexPath row];
+	
+	if (col == 1) {
+		
+		switch (row) {
+			case 0:
+				meal = @"Lunch ";
+				mealkey = @"lunch_restrictions";				
+				break;
+			case 1:
+				meal = @"Dinner ";
+				mealkey = @"dinner_restrcitions";	
+				break;
+			case 2:
+				meal = @"Sunday Brunch ";
+				mealkey = @"brunch_restrcitions";	
+				break;
+			default:
+				break;
+		}
+		
+		NSDictionary *restrictions = [self.itemDetails objectForKey:mealkey];
+		cellText = [[restrictions valueForKey:@"message"] description];
+		
+		NSArray *messageArray = [cellText componentsSeparatedByString:@"\""];
+		
+		if ([messageArray count] == 3) {
+			cellText = [messageArray objectAtIndex:1];
+		}
+		
+		else {
+			cellText = @"None";
+		}
+		
+		
+	CGSize textSize = [cellText sizeWithFont:cellFont
+						   constrainedToSize:CGSizeMake(constraintWidth, 5000.0)//2010.0)
+							   lineBreakMode:UILineBreakModeWordWrap];
+	
+	// constant defined in MultiLineTableViewcell.h
+		if (textSize.height < 35)
+			return 40 + 20;
+		
+		return textSize.height + 38;
+	}
+	
 	return 40;
 }
 
 
 
--(void)setDetails:(NSDictionary *)details {
-	
-	/*NSMutableDictionary *tempDetails = [[NSMutableDictionary alloc] init];
-	
-	NSArray *allKeys = [details allKeys];
-	
-	for (int ind=0; ind < [allKeys count]; ind++)
-	{
-		NSString *key = [allKeys objectAtIndex:ind];
-		[tempDetails setValue:[tempDetails objectForKey:key] forKey:key];
-	}
-	self.itemDetails = tempDetails;*/
-	
+-(void)setDetails:(NSDictionary *)details {	
 	self.itemDetails = details;
 
-	//[tempDetails release];
 }
 
 @end

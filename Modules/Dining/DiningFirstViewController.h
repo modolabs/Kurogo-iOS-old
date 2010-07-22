@@ -14,6 +14,7 @@
 #import "MIT_MobileAppDelegate.h"
 #import "HoursTableViewController.h"
 #import "JSONAPIRequest.h"
+#import "Constants.h";
 
 
 @class MenuDetailsController;
@@ -27,7 +28,7 @@
 	IBOutlet UIView* lunchViewLink;
 	IBOutlet UIView* dinnerViewLink;
 	IBOutlet UIView *breakfastViewLink;
-	IBOutlet UIView *_newsView;	
+	IBOutlet UIView *_newsView;
 	IBOutlet UIView *_hoursView;
 	IBOutlet UIView *_loadingResultView;
 	IBOutlet UIView *_noResultsView;

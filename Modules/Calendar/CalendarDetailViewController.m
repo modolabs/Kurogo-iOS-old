@@ -448,13 +448,13 @@ enum CalendarDetailRowTypes {
 				return 50; //was 400.0;
 			}			
 			break;
-		case CalendarDetailRowTypeURL:
+		/*case CalendarDetailRowTypeURL:
 			cellText = event.url;
 			cellFont = [UIFont fontWithName:STANDARD_FONT size:CELL_STANDARD_FONT_SIZE];
 			// 33 and 21 are from MultiLineTableViewCell.m
 			constraintWidth = tableView.frame.size.width - 33.0 - 21.0;
 			break;
-			
+		*/	
 		case CalendarDetailRowTypeLocation:
 			cellText = (event.location != nil) ? event.location : event.shortloc;
 			cellFont = [UIFont fontWithName:BOLD_FONT size:CELL_STANDARD_FONT_SIZE];
@@ -540,6 +540,7 @@ enum CalendarDetailRowTypes {
 	
 	if ([summaryArray count] > 0)
 		summary = [summaryArray objectAtIndex:0];
+
 
 	return [NSString stringWithFormat:@"I thought you might be interested in this event...\n\n%@", summary];
 }
