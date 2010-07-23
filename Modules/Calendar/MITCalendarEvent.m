@@ -150,8 +150,7 @@
 	 }
 	 }
 
-	self.title = [dict objectForKey:@"title"];
-	
+	self.title = [dict objectForKey:@"title"];	
 	// optional strings
 	NSString *maybeValue = [dict objectForKey:@"shortloc"];
 	if (maybeValue.length > 0) {

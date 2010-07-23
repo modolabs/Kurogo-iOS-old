@@ -1119,7 +1119,7 @@
                     break;
             }
             
-			if ([result count] == 0) {
+			if (([result count] == 0) && ([self.navigationItem.rightBarButtonItem.title isEqualToString:@"Map"])){
 				UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(20, 20, 300, 20)];
 																		   
 				label.text = @"No Events Found";															   
