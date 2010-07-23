@@ -92,8 +92,10 @@ heightForRowAtIndexPath:(NSIndexPath *)indexPath
 			![tempStr isEqualToString:@"meal"])
 			  
 		{
+			if (![[itemDet objectAtIndex:i] isEqualToString:@"No"]) {
 			[tempDetails addObject:[itemDet objectAtIndex:i]];
 			[tempCat addObject:[itemCat objectAtIndex:i]];
+			}
 		}
 	}
 

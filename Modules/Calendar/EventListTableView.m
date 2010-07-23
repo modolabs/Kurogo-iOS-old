@@ -73,7 +73,8 @@
 
     cell.textLabelNumberOfLines = 2;
     cell.textLabelLineBreakMode = UILineBreakModeTailTruncation;
-    cell.textLabel.text = event.title;
+    NSString *title = event.title;
+	cell.textLabel.text = event.title;
 
 	// show time only if date is shown; date plus time otherwise
 	BOOL showTimeOnly = !isSearchResults && ([CalendarConstants intervalForEventType:self.parentViewController.activeEventList fromDate:self.parentViewController.startDate forward:YES] == 86400.0);
