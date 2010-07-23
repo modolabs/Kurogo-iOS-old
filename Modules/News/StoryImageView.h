@@ -1,7 +1,7 @@
 #import <UIKit/UIKit.h>
 #import "ConnectionWrapper.h"
 
-@class NewsImageRep;
+@class NewsImage;
 @class StoryImageView;
 
 @protocol StoryImageViewDelegate <NSObject>
@@ -12,7 +12,7 @@
 
 @interface StoryImageView : UIView <ConnectionWrapperDelegate> {
     id <StoryImageViewDelegate> delegate;
-    NewsImageRep *imageRep;
+    NewsImage *image;
 	ConnectionWrapper *connection;
 	NSData *imageData;
     UIActivityIndicatorView *loadingView;
@@ -24,7 +24,7 @@
 - (BOOL)displayImage;
 
 @property (nonatomic, assign) id <StoryImageViewDelegate> delegate;
-@property (nonatomic, retain) NewsImageRep *imageRep;
+@property (nonatomic, retain) NewsImage *image;
 @property (nonatomic, retain) NSData *imageData;
 @property (nonatomic, retain) UIActivityIndicatorView *loadingView;
 @property (nonatomic, retain) UIImageView *imageView;

@@ -221,7 +221,6 @@
 		DEAFEFA910FFE35B00F0573E /* StoryGalleryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DEAFEFA810FFE35B00F0573E /* StoryGalleryViewController.m */; };
 		DEC02D2D11053A850054BE32 /* StoryImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = DEAFF07C110001E300F0573E /* StoryImageView.m */; };
 		DEC02F9D110578240054BE32 /* AboutTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DEC02F9C110578240054BE32 /* AboutTableViewController.m */; };
-		DECBF6A210F8F71D009FAE35 /* NewsImage.m in Sources */ = {isa = PBXBuildFile; fileRef = DECBF6A110F8F71D009FAE35 /* NewsImage.m */; };
 		DECBF6B610F8F91B009FAE35 /* NewsImageRep.m in Sources */ = {isa = PBXBuildFile; fileRef = DECBF6B510F8F91B009FAE35 /* NewsImageRep.m */; };
 		DED3CCE910418F5F003D3B74 /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = DED3CCE810418F5F003D3B74 /* Default.png */; };
 		DEE283EE10F5109800B39531 /* Emergency.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = DEE283ED10F5109800B39531 /* Emergency.xcdatamodeld */; };
@@ -229,7 +228,8 @@
 		DEE6B1CD111774300037F03C /* Entitlements.plist in Resources */ = {isa = PBXBuildFile; fileRef = DEE6B1CC111774300037F03C /* Entitlements.plist */; };
 		EB32946F1166777500DEDC8A /* CalendarEventMapAnnotation.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB32946D1166777500DEDC8A /* CalendarEventMapAnnotation.h */; settings = {JAVA_ARCHIVE_SUBDIR = Modules/Calendar; }; };
 		EB3294701166777500DEDC8A /* CalendarEventMapAnnotation.m in Sources */ = {isa = PBXBuildFile; fileRef = EB32946E1166777500DEDC8A /* CalendarEventMapAnnotation.m */; };
-		EB3EE78010D6ADCA00F6D707 /* MultiLineTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = EB3EE77F10D6ADCA00F6D707 /* MultiLineTableViewCell.m */; };
+		EB3721AA11FA2F5200705180 /* NewsImage.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB3721A811FA2F5200705180 /* NewsImage.h */; settings = {JAVA_ARCHIVE_SUBDIR = Modules/News; }; };
+		EB3721AB11FA2F5200705180 /* NewsImage.m in Sources */ = {isa = PBXBuildFile; fileRef = EB3721A911FA2F5200705180 /* NewsImage.m */; };
 		EB3F0951118F0FFE00540B8A /* CalendarMapView.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB3F094F118F0FFE00540B8A /* CalendarMapView.h */; settings = {JAVA_ARCHIVE_SUBDIR = Modules/Calendar; }; };
 		EB3F0952118F0FFE00540B8A /* CalendarMapView.m in Sources */ = {isa = PBXBuildFile; fileRef = EB3F0950118F0FFE00540B8A /* CalendarMapView.m */; };
 		EB49AD4811F4BFB900854791 /* about in Resources */ = {isa = PBXBuildFile; fileRef = EB49AD4511F4BFB900854791 /* about */; };
@@ -426,6 +426,8 @@
 		EB7BA33F11F7677F00B3DDA6 /* PolygonOverlay.m in Sources */ = {isa = PBXBuildFile; fileRef = EB7BA33D11F7677F00B3DDA6 /* PolygonOverlay.m */; };
 		EB7BA68411F8ED2100B3DDA6 /* ModoSearchBar.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB7BA68211F8ED2100B3DDA6 /* ModoSearchBar.h */; settings = {JAVA_ARCHIVE_SUBDIR = Modules/News; }; };
 		EB7BA68511F8ED2100B3DDA6 /* ModoSearchBar.m in Sources */ = {isa = PBXBuildFile; fileRef = EB7BA68311F8ED2100B3DDA6 /* ModoSearchBar.m */; };
+		EB7BA75A11F9CE7B00B3DDA6 /* MultiLineTableViewCell.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB7BA75811F9CE7B00B3DDA6 /* MultiLineTableViewCell.h */; settings = {JAVA_ARCHIVE_SUBDIR = Common; }; };
+		EB7BA75B11F9CE7B00B3DDA6 /* MultiLineTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = EB7BA75911F9CE7B00B3DDA6 /* MultiLineTableViewCell.m */; };
 		EB7F327F10CD6C5B00188BCD /* PeopleDataModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = EB7F326A10CD6C5B00188BCD /* PeopleDataModel.xcdatamodeld */; };
 		EB7F328210CD6C5B00188BCD /* PartialHighlightTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = EB7F327110CD6C5B00188BCD /* PartialHighlightTableViewCell.m */; };
 		EB7F328310CD6C5B00188BCD /* PeopleDetailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EB7F327310CD6C5B00188BCD /* PeopleDetailsViewController.m */; };
@@ -771,8 +773,6 @@
 		DEAFF07C110001E300F0573E /* StoryImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StoryImageView.m; sourceTree = "<group>"; };
 		DEC02F9B110578240054BE32 /* AboutTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AboutTableViewController.h; sourceTree = "<group>"; };
 		DEC02F9C110578240054BE32 /* AboutTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AboutTableViewController.m; sourceTree = "<group>"; };
-		DECBF6A010F8F71D009FAE35 /* NewsImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NewsImage.h; sourceTree = "<group>"; };
-		DECBF6A110F8F71D009FAE35 /* NewsImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NewsImage.m; sourceTree = "<group>"; };
 		DECBF6B410F8F91B009FAE35 /* NewsImageRep.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NewsImageRep.h; sourceTree = "<group>"; };
 		DECBF6B510F8F91B009FAE35 /* NewsImageRep.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NewsImageRep.m; sourceTree = "<group>"; };
 		DED3CCE810418F5F003D3B74 /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Default.png; path = Resources/Default.png; sourceTree = "<group>"; };
@@ -782,8 +782,8 @@
 		DEE6B1CC111774300037F03C /* Entitlements.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Entitlements.plist; sourceTree = "<group>"; };
 		EB32946D1166777500DEDC8A /* CalendarEventMapAnnotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CalendarEventMapAnnotation.h; sourceTree = "<group>"; };
 		EB32946E1166777500DEDC8A /* CalendarEventMapAnnotation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CalendarEventMapAnnotation.m; sourceTree = "<group>"; };
-		EB3EE77E10D6ADCA00F6D707 /* MultiLineTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MultiLineTableViewCell.h; sourceTree = "<group>"; };
-		EB3EE77F10D6ADCA00F6D707 /* MultiLineTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MultiLineTableViewCell.m; sourceTree = "<group>"; };
+		EB3721A811FA2F5200705180 /* NewsImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NewsImage.h; sourceTree = "<group>"; };
+		EB3721A911FA2F5200705180 /* NewsImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NewsImage.m; sourceTree = "<group>"; };
 		EB3F094F118F0FFE00540B8A /* CalendarMapView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CalendarMapView.h; sourceTree = "<group>"; };
 		EB3F0950118F0FFE00540B8A /* CalendarMapView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CalendarMapView.m; sourceTree = "<group>"; };
 		EB49AD4511F4BFB900854791 /* about */ = {isa = PBXFileReference; lastKnownFileType = folder; name = about; path = Resources/about; sourceTree = "<group>"; };
@@ -987,6 +987,8 @@
 		EB7BA33D11F7677F00B3DDA6 /* PolygonOverlay.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PolygonOverlay.m; sourceTree = "<group>"; };
 		EB7BA68211F8ED2100B3DDA6 /* ModoSearchBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ModoSearchBar.h; sourceTree = "<group>"; };
 		EB7BA68311F8ED2100B3DDA6 /* ModoSearchBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ModoSearchBar.m; sourceTree = "<group>"; };
+		EB7BA75811F9CE7B00B3DDA6 /* MultiLineTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MultiLineTableViewCell.h; sourceTree = "<group>"; };
+		EB7BA75911F9CE7B00B3DDA6 /* MultiLineTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MultiLineTableViewCell.m; sourceTree = "<group>"; };
 		EB7F327010CD6C5B00188BCD /* PartialHighlightTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PartialHighlightTableViewCell.h; sourceTree = "<group>"; };
 		EB7F327110CD6C5B00188BCD /* PartialHighlightTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PartialHighlightTableViewCell.m; sourceTree = "<group>"; };
 		EB7F327210CD6C5B00188BCD /* PeopleDetailsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PeopleDetailsViewController.h; sourceTree = "<group>"; };
@@ -1068,6 +1070,8 @@
 		080E96DDFE201D6D7F000001 /* Common */ = {
 			isa = PBXGroup;
 			children = (
+				EB7BA75811F9CE7B00B3DDA6 /* MultiLineTableViewCell.h */,
+				EB7BA75911F9CE7B00B3DDA6 /* MultiLineTableViewCell.m */,
 				29C454BE118B61CA00A321B0 /* SFHFKeychainUtils.h */,
 				29C454BF118B61CA00A321B0 /* SFHFKeychainUtils.m */,
 				29C45423118B55E100A321B0 /* Twitter+OAuth */,
@@ -1399,11 +1403,11 @@
 				EB6D141411EE979500B65CE3 /* NewsCategory.m */,
 				DE4AB0B210ED5148007476D9 /* NewsStory.h */,
 				DE4AB0B310ED5148007476D9 /* NewsStory.m */,
-				DECBF6A010F8F71D009FAE35 /* NewsImage.h */,
-				DECBF6A110F8F71D009FAE35 /* NewsImage.m */,
 				DECBF6B410F8F91B009FAE35 /* NewsImageRep.h */,
 				DECBF6B510F8F91B009FAE35 /* NewsImageRep.m */,
 				DE18F9ED10F19105009A69B9 /* News.xcdatamodeld */,
+				EB3721A811FA2F5200705180 /* NewsImage.h */,
+				EB3721A911FA2F5200705180 /* NewsImage.m */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -1493,8 +1497,6 @@
 		DE715447102FE468005E6111 /* Emergency */ = {
 			isa = PBXGroup;
 			children = (
-				EB3EE77E10D6ADCA00F6D707 /* MultiLineTableViewCell.h */,
-				EB3EE77F10D6ADCA00F6D707 /* MultiLineTableViewCell.m */,
 				DE705495103FB79D003B5F41 /* EmergencyData.h */,
 				DE705496103FB79D003B5F41 /* EmergencyData.m */,
 				DE705497103FB79D003B5F41 /* EmergencyModule.h */,
@@ -2031,6 +2033,8 @@
 				C77664FA11F64E74005496DD /* HallDetailsTableViewController.h in JavaArchive */,
 				C776675911F733E3005496DD /* DatePickerViewController.h in JavaArchive */,
 				EB7BA68411F8ED2100B3DDA6 /* ModoSearchBar.h in JavaArchive */,
+				EB7BA75A11F9CE7B00B3DDA6 /* MultiLineTableViewCell.h in JavaArchive */,
+				EB3721AA11FA2F5200705180 /* NewsImage.h in JavaArchive */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2188,7 +2192,6 @@
 				297746D210D3526200ACFCE6 /* StellarClassTime.m in Sources */,
 				297746D310D3526200ACFCE6 /* StellarCourse.m in Sources */,
 				EBCB4DEE10D30AA2001219FD /* EmergencyContactsViewController.m in Sources */,
-				EB3EE78010D6ADCA00F6D707 /* MultiLineTableViewCell.m in Sources */,
 				4463CC9110D6F4A50048CA83 /* CampusMapViewController.m in Sources */,
 				4463CC9810D6F4A50048CA83 /* CMModule.m in Sources */,
 				4463CC9B10D6F4A50048CA83 /* MapSearchResultAnnotation.m in Sources */,
@@ -2226,7 +2229,6 @@
 				442C192A10F3AE3400CB44EC /* RouteMapViewController.m in Sources */,
 				DEE283EE10F5109800B39531 /* Emergency.xcdatamodeld in Sources */,
 				442C1CA310F4FE8900CB44EC /* ShuttleLocation.m in Sources */,
-				DECBF6A210F8F71D009FAE35 /* NewsImage.m in Sources */,
 				DECBF6B610F8F91B009FAE35 /* NewsImageRep.m in Sources */,
 				29859FFA10F7C37600D137D6 /* MITSearchEffects.m in Sources */,
 				DE9EFBD210FE7D8900F5F07E /* SettingsModule.m in Sources */,
@@ -2462,6 +2464,8 @@
 				C77664FB11F64E74005496DD /* HallDetailsTableViewController.m in Sources */,
 				C776675A11F733E3005496DD /* DatePickerViewController.m in Sources */,
 				EB7BA68511F8ED2100B3DDA6 /* ModoSearchBar.m in Sources */,
+				EB7BA75B11F9CE7B00B3DDA6 /* MultiLineTableViewCell.m in Sources */,
+				EB3721AB11FA2F5200705180 /* NewsImage.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

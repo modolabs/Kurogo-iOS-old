@@ -1,10 +1,11 @@
 #import <UIKit/UIKit.h>
 #import "ConnectionWrapper.h"
 
-@class NewsImageRep;
+@class NewsImage;
 
 @interface StoryThumbnailView : UIView <ConnectionWrapperDelegate> {
-    NewsImageRep *imageRep;
+    //NewsImageRep *imageRep;
+    NewsImage *image;
 	ConnectionWrapper *connection;
 	NSData *imageData;
     UIActivityIndicatorView *loadingView;
@@ -15,7 +16,8 @@
 - (void)requestImage;
 - (BOOL)displayImage;
 
-@property (nonatomic, retain) NewsImageRep *imageRep;
+//@property (nonatomic, retain) NewsImageRep *imageRep;
+@property (nonatomic, retain) NewsImage *image;
 @property (nonatomic, retain) ConnectionWrapper *connection;
 @property (nonatomic, retain) NSData *imageData;
 @property (nonatomic, retain) UIActivityIndicatorView *loadingView;

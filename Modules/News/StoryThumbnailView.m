@@ -1,7 +1,7 @@
 #import "StoryThumbnailView.h"
 #import "MIT_MobileAppDelegate.h"
 #import "CoreDataManager.h"
-#import "NewsImageRep.h"
+#import "NewsImage.h"
 
 @interface StoryThumbnailView (Private)
 
@@ -12,7 +12,7 @@
 
 @implementation StoryThumbnailView
 
-@synthesize imageRep, connection, imageData, loadingView, imageView;
+@synthesize image, connection, imageData, loadingView, imageView;
 
 + (UIImage *)placeholderImage {
     static NSString * const placeholderImageName = @"news/news-placeholder.png";
@@ -27,7 +27,7 @@
     self = [super initWithFrame:frame];
     if (self != nil) {
         connection = nil;
-        imageRep = nil;
+        image = nil;
         imageData = nil;
         loadingView = nil;
         imageView = nil;
@@ -38,10 +38,10 @@
     return self;
 }
 
-- (void)setImageRep:(NewsImageRep *)newImageRep {
-    if (![newImageRep isEqual:imageRep]) {
-        [imageRep release];
-        imageRep = [newImageRep retain];
+- (void)setImage:(NewsImage *)newImage {
+    if (![newImage isEqual:image]) {
+        [image release];
+        image = [newImage retain];
         imageView.image = nil;
         imageView.hidden = YES;
         if ([self.connection isConnected]) {
@@ -53,7 +53,7 @@
             [self.loadingView stopAnimating];
             self.loadingView.hidden = YES;
         }
-        if (imageRep) {
+        if (image) {
             self.backgroundColor = [UIColor colorWithWhite:0.60 alpha:1.0];
         } else {
             self.backgroundColor = [UIColor colorWithPatternImage:[StoryThumbnailView placeholderImage]];
@@ -64,8 +64,8 @@
 
 - (void)loadImage {
     // show cached image if available
-    if (imageRep.data) {
-        self.imageData = imageRep.data;
+    if (image.data) {
+        self.imageData = image.data;
         [self displayImage];
     // otherwise try to fetch the image from
     } else {
@@ -79,10 +79,10 @@
     [loadingView stopAnimating];
     loadingView.hidden = YES;
 
-    UIImage *image = [[UIImage alloc] initWithData:self.imageData];
+    UIImage *anImage = [[UIImage alloc] initWithData:self.imageData];
     
     // don't show imageView if imageData isn't actually a valid image
-    if (image && image.size.width > 0 && image.size.height > 0) {
+    if (anImage && anImage.size.width > 0 && anImage.size.height > 0) {
         if (!imageView) {
             imageView = [[UIImageView alloc] initWithImage:nil]; // image is set below
             [self addSubview:imageView];
@@ -91,7 +91,7 @@
             imageView.autoresizingMask = (UIViewAutoresizingFlexibleWidth || UIViewAutoresizingFlexibleHeight);
         }
 
-        imageView.image = image;
+        imageView.image = anImage;
         imageView.hidden = NO;
         wasSuccessful = YES;
         [imageView setNeedsLayout];
@@ -100,7 +100,7 @@
     }
     [self setNeedsLayout];
     
-    [image release];
+    [anImage release];
     return wasSuccessful;
 }
 
@@ -111,7 +111,7 @@
     // need news office to improve feed
     // 
     // in the future, should spin off thumbnail as its own Core Data entity with an "not a valid image" flag
-    if ([[imageRep.url pathExtension] length] == 0) {
+    if ([[image.url pathExtension] length] == 0) {
         self.backgroundColor = [UIColor colorWithPatternImage:[StoryThumbnailView placeholderImage]];
         return;
     }
@@ -123,7 +123,7 @@
     if (!self.connection) {
         self.connection = [[[ConnectionWrapper alloc] initWithDelegate:self] autorelease];
     }
-    [self.connection requestDataFromURL:[NSURL URLWithString:imageRep.url] allowCachedResponse:YES];
+    [self.connection requestDataFromURL:[NSURL URLWithString:image.url] allowCachedResponse:YES];
 
     MIT_MobileAppDelegate *appDelegate = (MIT_MobileAppDelegate *)[[UIApplication sharedApplication] delegate];
     [appDelegate showNetworkActivityIndicator];
@@ -146,7 +146,7 @@
     self.imageData = data;
     BOOL validImage = [self displayImage];
     if (validImage) {
-        imageRep.data = data;
+        image.data = data;
         [CoreDataManager saveDataWithTemporaryMergePolicy:NSMergeByPropertyObjectTrumpMergePolicy];
     }
 

@@ -82,13 +82,10 @@ scrollView = _scrollView, navScrollerDelegate, currentXOffset = _currentXOffset;
 #define SCROLL_TAB_HORIZONTAL_MARGIN  5.0
 
 - (void)addButton:(UIButton *)aButton shouldHighlight:(BOOL)shouldHighlight {
+    NSLog(@"adding button with tag %d", aButton.tag);
     
     // set standard display properties
-	static UIImage *stretchableButtonImage;
-    
-    if (!stretchableButtonImage) {
-        stretchableButtonImage = [[UIImage imageNamed:MITImageNameScrollTabSelectedTab] stretchableImageWithLeftCapWidth:15 topCapHeight:0];
-    }
+	UIImage *stretchableButtonImage = [[UIImage imageNamed:MITImageNameScrollTabSelectedTab] stretchableImageWithLeftCapWidth:15 topCapHeight:0];
     
     CGFloat buttonYOffset = floor((self.frame.size.height - stretchableButtonImage.size.height) / 2);
 

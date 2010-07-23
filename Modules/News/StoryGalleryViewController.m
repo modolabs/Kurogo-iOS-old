@@ -87,13 +87,13 @@
     [super didReceiveMemoryWarning];
 	// Release any cached data, images, etc that aren't in use.
     for (NewsImage *anImage in self.images) {
-        anImage.fullImage.data = nil;
+        anImage.data = nil;
     }
 }
 
 - (void)dealloc {
     for (NewsImage *anImage in self.images) {
-        anImage.fullImage.data = nil;
+        anImage.data = nil;
     }
     [super dealloc];
 }
@@ -159,11 +159,11 @@
 	
     NewsImage *anImage = [self.images objectAtIndex:imageIndex];
     CGRect frame = storyImageView.frame;
-	CGFloat imageWidth = [anImage.fullImage.width floatValue];
-	CGFloat imageHeight = [anImage.fullImage.height floatValue];
+	CGFloat imageWidth = [anImage.width floatValue];
+	CGFloat imageHeight = [anImage.height floatValue];
     frame.size.height = (frame.size.width >= imageWidth) ? imageHeight : (imageHeight * frame.size.width / imageWidth); // scale height to predict how aspect scaling will affect the image's height
     storyImageView.frame = frame;
-    storyImageView.imageRep = anImage.fullImage;
+    storyImageView.image = anImage;
 	[storyImageView setNeedsLayout];
     
     captionLabel.text = anImage.caption;

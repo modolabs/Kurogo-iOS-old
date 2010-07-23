@@ -1,15 +1,18 @@
 #import "NewsImage.h"
+#import "NewsStory.h"
 
+@implementation NewsImage 
 
-@implementation NewsImage
-
-@dynamic thumbImage;
-@dynamic smallImage;
-@dynamic fullImage;
-
+@dynamic height;
+@dynamic data;
+@dynamic width;
+@dynamic ordinality;
 @dynamic credits;
 @dynamic caption;
-
-@dynamic ordinality;
+@dynamic link;
+@dynamic url;
+@dynamic thumbParent;
+@dynamic title;
+@dynamic featuredParent;
 
 @end

@@ -12,6 +12,7 @@ typedef int NewsCategoryId;
 @interface StoryListViewController : UIViewController <UITableViewDataSource, UITableViewDelegate,
 UISearchBarDelegate, StoryXMLParserDelegate, JSONAPIDelegate, NavScrollerDelegate> {
 	UITableView *storyTable;
+    NewsStory *featuredStory;
     NSArray *stories;
     NSArray *categories;
     NewsCategoryId activeCategoryId;
@@ -41,6 +42,7 @@ UISearchBarDelegate, StoryXMLParserDelegate, JSONAPIDelegate, NavScrollerDelegat
     BOOL lastRequestSucceeded;
 }
 
+@property (nonatomic, retain) NewsStory *featuredStory;
 @property (nonatomic, retain) NSArray *stories;
 @property (nonatomic, retain) NSString *searchQuery;
 @property (nonatomic, retain) NSArray *searchResults;

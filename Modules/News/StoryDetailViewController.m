@@ -8,6 +8,7 @@
 #import "StoryGalleryViewController.h"
 #import "ConnectionDetector.h"
 #import "URLShortener.h"
+#import "NewsImage.h"
 
 @implementation StoryDetailViewController
 
@@ -73,9 +74,10 @@
     NSString *postDate = [dateFormatter stringFromDate:story.postDate];
 	[dateFormatter release];
     
-    NSString *thumbnailURL = story.inlineImage.smallImage.url;
-    NSString *thumbnailWidth = [story.inlineImage.smallImage.width stringValue];
-    NSString *thumbnailHeight = [story.inlineImage.smallImage.height stringValue];
+    NSString *thumbnailURL = story.featuredImage.url;
+    NSString *thumbnailWidth = @"140";
+    NSString *thumbnailHeight = @"96";
+    
     if (!thumbnailURL) {
         thumbnailURL = @"";
     }
@@ -85,14 +87,14 @@
     if (!thumbnailHeight) {
         thumbnailHeight = @"";
     }
-    
-    NSInteger galleryCount = [story.galleryImages count];
-    if (story.inlineImage) {
-        galleryCount++;
-    }
+
+    //NSInteger galleryCount = [story.galleryImages count];
+    //if (story.inlineImage) {
+    //    galleryCount++;
+    //}
     
     // if not connected, pretend there are no images
-    NSString *galleryCountString = ([ConnectionDetector isConnected]) ? [[NSNumber numberWithInteger:galleryCount] stringValue] : @"0";
+    NSString *galleryCountString = /*([ConnectionDetector isConnected]) ? [[NSNumber numberWithInteger:galleryCount] stringValue] :*/ @"0";
     
     NSArray *keys = [NSArray arrayWithObjects:
                      @"__TITLE__", @"__AUTHOR__", @"__DATE__", @"__BOOKMARKED__",
@@ -143,10 +145,10 @@
             result = YES;
         } else {
 			if ([[url path] rangeOfString:@"image" options:NSBackwardsSearch].location != NSNotFound) {
-				StoryGalleryViewController *galleryVC = [[StoryGalleryViewController alloc] init];
-				galleryVC.images = story.allImages;
-				[self.navigationController pushViewController:galleryVC animated:YES];
-				[galleryVC release];
+				//StoryGalleryViewController *galleryVC = [[StoryGalleryViewController alloc] init];
+				//galleryVC.images = story.allImages;
+				//[self.navigationController pushViewController:galleryVC animated:YES];
+				//[galleryVC release];
 				result = NO;
 			} else if ([[url path] rangeOfString:@"bookmark" options:NSBackwardsSearch].location != NSNotFound) {
 				// toggle bookmarked state
@@ -165,11 +167,11 @@
 }
 
 - (NSString *)emailSubject {
-	return [NSString stringWithFormat:@"MIT News: %@", story.title];
+	return [NSString stringWithFormat:@"Harvard Gazette: %@", story.title];
 }
 
 - (NSString *)emailBody {
-	return [NSString stringWithFormat:@"I thought you might be interested in this story found on the MIT News Office:\n\n\"%@\"\n%@\n\n%@\n\nTo view this story, click the link above or paste it into your browser.", story.title, story.summary, story.link];
+	return [NSString stringWithFormat:@"I thought you might be interested in this story found on the Harvard Gazette:\n\n\"%@\"\n%@\n\n%@\n\nTo view this story, click the link above or paste it into your browser.", story.title, story.summary, story.link];
 }
 
 - (NSString *)fbDialogPrompt {
@@ -188,7 +190,7 @@
 			"\"href\":\"%@\"}]"
 			//,"\"properties\":{\"another link\":{\"text\":\"Facebook home page\",\"href\":\"http://www.facebook.com\"}}"
 			"}",
-			story.title, story.link, story.summary, story.inlineImage.smallImage.url, story.link];
+			story.title, story.link, story.summary, story.featuredImage.url, story.link];
 }
 
 - (NSString *)twitterUrl {

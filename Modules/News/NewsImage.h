@@ -1,15 +1,24 @@
 #import <CoreData/CoreData.h>
-#import "NewsImageRep.h"
 
-@interface NewsImage : NSManagedObject
+@class NewsStory;
 
-@property (nonatomic, retain) NewsImageRep *thumbImage;
-@property (nonatomic, retain) NewsImageRep *smallImage;
-@property (nonatomic, retain) NewsImageRep *fullImage;
+@interface NewsImage :  NSManagedObject  
+{
+}
 
-@property (nonatomic, retain) NSString *credits;
-@property (nonatomic, retain) NSString *caption;
-
-@property (nonatomic, retain) NSNumber *ordinality;
+@property (nonatomic, retain) NSNumber * height;
+@property (nonatomic, retain) NSData * data;
+@property (nonatomic, retain) NSNumber * width;
+@property (nonatomic, retain) NSNumber * ordinality;
+@property (nonatomic, retain) NSString * credits;
+@property (nonatomic, retain) NSString * caption;
+@property (nonatomic, retain) NSString * url;
+@property (nonatomic, retain) NSString * title;
+@property (nonatomic, retain) NSString * link;
+@property (nonatomic, retain) NewsStory * thumbParent;
+@property (nonatomic, retain) NewsStory * featuredParent;
 
 @end
+
+
+

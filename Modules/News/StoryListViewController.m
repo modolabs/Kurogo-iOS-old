@@ -54,6 +54,7 @@
 @synthesize categories;
 @synthesize activeCategoryId;
 @synthesize xmlParser;
+@synthesize featuredStory;
 
 static NSInteger numTries = 0;
 
@@ -262,9 +263,13 @@ static NSInteger numTries = 0;
             aButton.tag = tagValue;
             NSString *buttonTitle = aCategory.title;
             [aButton setTitle:buttonTitle forState:UIControlStateNormal];
+            NSLog(@"%@", [aButton description]);
+            NSLog(@"%@", [navScrollView description]);
             [navScrollView addButton:aButton shouldHighlight:YES];
         }
     }
+    
+    [navScrollView setNeedsLayout];
 
 	// highlight active category
     UIButton *homeButton = [navScrollView buttonWithTag:self.activeCategoryId];
@@ -510,13 +515,13 @@ static NSInteger numTries = 0;
 	} else {
 		// load what's in CoreData, up to categoryCount
 		NSPredicate *predicate = nil;
-		NSSortDescriptor *featuredSortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"featured" ascending:NO];
+		//NSSortDescriptor *featuredSortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"featured" ascending:NO];
 		NSSortDescriptor *postDateSortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"postDate" ascending:NO];
 		NSSortDescriptor *storyIdSortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"story_id" ascending:NO];
-		NSArray *sortDescriptors = [NSArray arrayWithObjects:featuredSortDescriptor, postDateSortDescriptor, storyIdSortDescriptor, nil];
+		NSArray *sortDescriptors = [NSArray arrayWithObjects:/*featuredSortDescriptor,*/ postDateSortDescriptor, storyIdSortDescriptor, nil];
 		[storyIdSortDescriptor release];
 		[postDateSortDescriptor release];
-		[featuredSortDescriptor release];
+		//[featuredSortDescriptor release];
 		
 		if (self.activeCategoryId == 0) {//NewsCategoryIdTopNews) {
 			predicate = [NSPredicate predicateWithFormat:@"topStory == YES"];
@@ -545,7 +550,18 @@ static NSInteger numTries = 0;
 		if (maxLength > resultsCount) {
 			maxLength = resultsCount;
 		}
+        
+        // grab the first featured story from the list, regardless of pubdate
+        NSArray *featuredStories = [results filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"(featured == YES)"]];
+        if ([featuredStories count]) {
+            self.featuredStory = [featuredStories objectAtIndex:0];
+            //NSLog(@"%@", [self.featuredStory.featuredImage description]);
+        }
+        
 		self.stories = [results subarrayWithRange:NSMakeRange(0, maxLength)];
+        if ([self.stories containsObject:self.featuredStory]) {
+            self.stories = [self.stories subarrayWithRange:NSMakeRange(0, maxLength - 1)];
+        }
 	}
 	[storyTable reloadData];
     [storyTable flashScrollIndicators];
@@ -787,13 +803,17 @@ static NSInteger numTries = 0;
 	
 }
 
+#define FEATURE_IMAGE_HEIGHT 180.0
+#define FEATURE_TEXT_HEIGHT 60.0
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     CGFloat rowHeight = THUMBNAIL_WIDTH;
 
     switch (indexPath.section) {
         case 0: {
-            if (indexPath.row < self.stories.count) {
+            if (indexPath.row == 0 && self.featuredStory != nil) {
+                rowHeight = FEATURE_IMAGE_HEIGHT;
+            } else if (indexPath.row < self.stories.count) {
                 rowHeight = THUMBNAIL_WIDTH;
             } else {
                 rowHeight = 50; // "Load more articles..."
@@ -805,13 +825,105 @@ static NSInteger numTries = 0;
     return rowHeight;
 }
 
+
 // Customize the appearance of table view cells.
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     UITableViewCell *result = nil;
     
     switch (indexPath.section) {
         case 0: {
-            if (indexPath.row < self.stories.count) {
+            if (indexPath.row == 0 && self.featuredStory != nil) {
+                
+                NewsStory *story = [self.stories objectAtIndex:indexPath.row];
+                
+                static NSString *StoryCellIdentifier = @"FeaturedCell";
+                UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:StoryCellIdentifier];
+                
+                UILabel *titleLabel = nil;
+                UILabel *dekLabel = nil;
+                UIView *textHolder = nil;
+                StoryThumbnailView *thumbnailView = nil;
+                
+                if (cell == nil) {
+                    // Set up the cell
+                    cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:StoryCellIdentifier] autorelease];
+                    
+                    // image goes first
+                    thumbnailView = [[StoryThumbnailView alloc] initWithFrame:CGRectMake(0, 0, 320.0, FEATURE_IMAGE_HEIGHT)];
+                    thumbnailView.tag = 3;
+                    [cell.contentView addSubview:thumbnailView];
+                    [thumbnailView release];
+                    
+                    textHolder = [[UIView alloc] initWithFrame:CGRectMake(0, FEATURE_IMAGE_HEIGHT - FEATURE_TEXT_HEIGHT, 320.0, FEATURE_TEXT_HEIGHT)];
+                    textHolder.backgroundColor = [UIColor colorWithWhite:1.0 alpha:0.8];
+                    
+                    // Title View
+                    titleLabel = [[UILabel alloc] initWithFrame:CGRectZero];
+                    titleLabel.tag = 1;
+                    titleLabel.backgroundColor = [UIColor clearColor];
+                    titleLabel.font = [UIFont boldSystemFontOfSize:STORY_TITLE_FONT_SIZE];
+                    titleLabel.numberOfLines = 0;
+                    titleLabel.lineBreakMode = UILineBreakModeTailTruncation;
+                    [textHolder addSubview:titleLabel];
+                    [titleLabel release];
+                    
+                    // Summary View
+                    dekLabel = [[UILabel alloc] initWithFrame:CGRectZero];
+                    dekLabel.tag = 2;
+                    dekLabel.backgroundColor = [UIColor clearColor];
+                    dekLabel.font = [UIFont systemFontOfSize:STORY_DEK_FONT_SIZE];
+                    dekLabel.textColor = [UIColor colorWithHexString:@"#0D0D0D"];
+                    dekLabel.highlightedTextColor = [UIColor whiteColor];
+                    dekLabel.numberOfLines = 0;
+                    dekLabel.lineBreakMode = UILineBreakModeTailTruncation;
+                    [textHolder addSubview:dekLabel];
+                    [dekLabel release];
+                    
+                    textHolder.tag = 4;
+                    [cell.contentView addSubview:textHolder];
+                    [textHolder release];
+                    
+                    //[cell setAccessoryType:UITableViewCellAccessoryDisclosureIndicator];
+                    cell.selectionStyle = UITableViewCellSelectionStyleGray;
+                }
+                
+                textHolder = (UIView *)[cell viewWithTag:4];
+                titleLabel = (UILabel *)[textHolder viewWithTag:1];
+                dekLabel = (UILabel *)[textHolder viewWithTag:2];
+                thumbnailView = (StoryThumbnailView *)[cell viewWithTag:3];
+                
+                titleLabel.text = story.title;
+                dekLabel.text = story.summary;
+                
+                titleLabel.textColor = ([story.read boolValue]) ? [UIColor colorWithHexString:@"#666666"] : [UIColor blackColor];
+                titleLabel.highlightedTextColor = [UIColor whiteColor];
+                
+                // Calculate height
+                CGFloat availableHeight = FEATURE_TEXT_HEIGHT;
+                CGSize titleDimensions = [titleLabel.text sizeWithFont:titleLabel.font constrainedToSize:CGSizeMake(STORY_TEXT_WIDTH, availableHeight) lineBreakMode:UILineBreakModeTailTruncation];
+                availableHeight -= titleDimensions.height;
+                
+                CGSize dekDimensions = CGSizeZero;
+                // if not even one line will fit, don't show the deck at all
+                if (availableHeight > dekLabel.font.leading) {
+                    dekDimensions = [dekLabel.text sizeWithFont:dekLabel.font constrainedToSize:CGSizeMake(STORY_TEXT_WIDTH, availableHeight) lineBreakMode:UILineBreakModeTailTruncation];
+                }
+                
+                titleLabel.frame = CGRectMake(STORY_TEXT_PADDING_LEFT,
+                                              STORY_TEXT_PADDING_TOP, 
+                                              STORY_TEXT_WIDTH + THUMBNAIL_WIDTH, 
+                                              titleDimensions.height);
+                dekLabel.frame = CGRectMake(STORY_TEXT_PADDING_LEFT, 
+                                            ceil(CGRectGetMaxY(titleLabel.frame)), 
+                                            STORY_TEXT_WIDTH + THUMBNAIL_WIDTH, 
+                                            dekDimensions.height);
+                
+                thumbnailView.image = story.featuredImage;
+                [thumbnailView loadImage];
+                
+                result = cell;
+                
+            } else if (indexPath.row < self.stories.count) {
                 NewsStory *story = [self.stories objectAtIndex:indexPath.row];
                 
                 static NSString *StoryCellIdentifier = @"StoryCell";
@@ -885,7 +997,7 @@ static NSInteger numTries = 0;
                                             STORY_TEXT_WIDTH, 
                                             dekDimensions.height);
                 
-                thumbnailView.imageRep = story.inlineImage.thumbImage;
+                thumbnailView.image = story.thumbImage;
                 [thumbnailView loadImage];
                 
                 result = cell;

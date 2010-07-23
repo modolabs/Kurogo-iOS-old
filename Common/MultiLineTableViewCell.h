@@ -2,17 +2,18 @@
 
 
 @interface MultiLineTableViewCell : UITableViewCell {
-	CGFloat topPadding;
-	CGFloat bottomPadding;
+	//CGFloat topPadding;
+	//CGFloat bottomPadding;
+    UITableViewCellStyle _style;
 
-    UILineBreakMode textLabelLineBreakMode;
+    //UILineBreakMode textLabelLineBreakMode;
     NSInteger textLabelNumberOfLines;
     
-    UILineBreakMode detailTextLabelLineBreakMode;
+    //UILineBreakMode detailTextLabelLineBreakMode;
     NSInteger detailTextLabelNumberOfLines;
 }
-@property CGFloat topPadding;
-@property CGFloat bottomPadding;
+//@property CGFloat topPadding;
+//@property CGFloat bottomPadding;
 
 @property UILineBreakMode textLabelLineBreakMode;
 @property NSInteger textLabelNumberOfLines;
@@ -20,8 +21,26 @@
 @property UILineBreakMode detailTextLabelLineBreakMode;
 @property NSInteger detailTextLabelNumberOfLines;
 
-- (void) layoutLabel: (UILabel *)label atHeight: (CGFloat)height;
+//- (void) layoutLabel: (UILabel *)label atHeight: (CGFloat)height;
 
++ (CGFloat)widthForTextLabel:(BOOL)isPrimary
+                   cellStyle:(UITableViewCellStyle)style
+                   tableView:(UITableView *)tableView 
+               accessoryType:(UITableViewCellAccessoryType)accessoryType
+                   cellImage:(BOOL)cellImage;
+
++ (CGFloat)heightForCellWithStyle:(UITableViewCellStyle)style
+                        tableView:(UITableView *)tableView 
+                             text:(NSString *)text
+                     maxTextLines:(NSInteger)maxTextLines
+                       detailText:(NSString *)detailText
+                   maxDetailLines:(NSInteger)maxDetailLines
+                             font:(UIFont *)font 
+                       detailFont:(UIFont *)detailFont 
+                    accessoryType:(UITableViewCellAccessoryType)accessoryType
+                        cellImage:(BOOL)cellImage;
+
+/*
 // various methods to calculate cell height
 + (CGFloat) cellHeightForTableView: (UITableView *)tableView
 							  main: (NSString *)main 
@@ -64,6 +83,7 @@
 
 // this method is used to calculate the horizontal constraint
 + (CGFloat) widthAdjustmentForAccessoryType: (UITableViewCellAccessoryType)accessoryType isGrouped: (BOOL)isGrouped;
-
+*/
+ 
 @end
 
