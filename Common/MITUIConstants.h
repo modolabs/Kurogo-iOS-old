@@ -15,7 +15,7 @@
 
 #define TABLE_HEADER_FONT_SIZE 20.0
 
-#define TABLE_SEPARATOR_COLOR [UIColor colorWithWhite:0.8 alpha:1.0] /* #BBBBBB */
+#define TABLE_SEPARATOR_COLOR [UIColor colorWithHexString:@"#C0C0BF"] /* #c0c0bf */
 
 #define PRIMARY_GROUP_BACKGROUND_COLOR [UIColor whiteColor]
 #define SECONDARY_GROUP_BACKGROUND_COLOR [UIColor colorWithWhite:1.0 alpha:0.65]

@@ -8,9 +8,7 @@
 
 @implementation MIT_MobileAppDelegate
 
-@synthesize window, 
-            //tabBarController = theTabBarController, 
-            modules;
+@synthesize window, modules;
 @synthesize deviceToken = devicePushToken;
 @synthesize theNavController;
 
@@ -177,7 +175,6 @@
 }
 
 - (void)dismissAppModalViewControllerAnimated:(BOOL)animated {
-    //[theNavController dismissModalViewControllerAnimated:animated];
     [appModalHolder dismissModalViewControllerAnimated:animated];
     [self performSelector:@selector(checkIfOkToHideAppModalViewController) withObject:nil afterDelay:0.100];
 }
@@ -266,6 +263,18 @@ didReceiveRemoteNotification:(NSDictionary *)userInfo {
 	[[appDelegate moduleForTag:notification.moduleName] handleNotification:notification appDelegate:appDelegate shouldOpen:(buttonIndex == 1)];
 	
 	[self release];
+}
+
+@end
+
+@implementation MotionDetectorWindow
+
+- (void)motionEnded:(UIEventSubtype)motion withEvent:(UIEvent *)event
+{
+    if (motion == UIEventSubtypeMotionShake) {
+        MIT_MobileAppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+        [appDelegate returnToHome];
+    }
 }
 
 @end

@@ -100,7 +100,7 @@ scrollView = _scrollView, navScrollerDelegate, currentXOffset = _currentXOffset;
     CGSize newSize;
     
     if ([aButton titleForState:UIControlStateNormal] != nil) {
-        [aButton setTitleColor:[UIColor colorWithHexString:@"#FCCFCF"] forState:UIControlStateNormal];
+        [aButton setTitleColor:[UIColor colorWithHexString:@"#E0E0E0"] forState:UIControlStateNormal];
         [aButton setTitleColor:[UIColor whiteColor] forState:UIControlStateHighlighted];
         aButton.titleLabel.font = [UIFont boldSystemFontOfSize:13.0];
         aButton.titleLabel.tag = 1002;
@@ -143,7 +143,7 @@ scrollView = _scrollView, navScrollerDelegate, currentXOffset = _currentXOffset;
         && pressedButton != _pressedButton
         && [self.buttons containsObject:pressedButton]) {
 
-        [_pressedButton setTitleColor:[UIColor colorWithHexString:@"#FCCFCF"] forState:UIControlStateNormal];
+        [_pressedButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
         [_pressedButton setBackgroundImage:nil forState:UIControlStateNormal];
         
         UIImage *buttonImage = [UIImage imageNamed:MITImageNameScrollTabSelectedTab];

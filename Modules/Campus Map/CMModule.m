@@ -88,8 +88,6 @@
 		// populate search bar
 		self.campusMapVC.searchBar.text = query;
 		self.campusMapVC.lastSearchText = query;
-		// don't drop pins (we set this back at the end of this method)
-		//self.campusMapVC.mapView.shouldNotDropPins = YES;
 		self.campusMapVC.hasSearchResults = YES;
 		
 		// grab our search results
@@ -180,8 +178,6 @@
 		[self.campusMapVC.url setPath:localPath query:query];
 		[self.campusMapVC.url setAsModulePath];
 		
-		// reset the map to drop pins for the next search
-		//self.campusMapVC.mapView.shouldNotDropPins = NO;
 		return YES;
 	}
 	

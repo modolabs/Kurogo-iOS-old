@@ -2,6 +2,7 @@
 #import "StoryXMLParser.h"
 #import "JSONAPIRequest.h"
 #import "TabScrollerBackgroundView.h"
+#import "ModoSearchBar.h"
 
 typedef int NewsCategoryId;
 
@@ -28,7 +29,7 @@ UISearchBarDelegate, StoryXMLParserDelegate, JSONAPIDelegate, NavScrollerDelegat
 	NSString *searchQuery;
 	NSArray *searchResults;
 	NSInteger totalAvailableResults;
-	UISearchBar *theSearchBar;
+	ModoSearchBar *theSearchBar;
 	MITSearchEffects *searchOverlay;
 	
 	BOOL hasBookmarks;
