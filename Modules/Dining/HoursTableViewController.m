@@ -85,6 +85,22 @@
     cell.textLabel.text = [[self.hallProperties objectAtIndex:row] objectForKey:@"name"];
 	cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 	cell.selectionStyle = UITableViewCellSelectionStyleGray;
+	
+	DiningHallStatus *status = [[DiningHallStatus alloc] init];
+	int stat = [status getStatusOfMeal:@"" usingDetails:[self.hallProperties objectAtIndex:row]];
+	
+	NSString *statString;
+	if (stat == 1)
+		statString = @" OPEN";
+	if (stat == 2)
+		statString = @" CLOSED";
+	if (stat == 3)
+		statString = @" NO RESTRICTION (!!)";
+	if (stat == 4)
+		statString = @" RESTRICTED but OPEN";
+	
+	cell.textLabel.text = [[[self.hallProperties objectAtIndex:row] objectForKey:@"name"] stringByAppendingString:statString];
+	
     return cell;
 }
 

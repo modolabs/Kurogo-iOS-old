@@ -32,10 +32,10 @@
                 titleString = [NSString stringWithString:@"Nothing found"];
 				break;
 			case 1:
-                titleString = [NSString stringWithString:@"1 found"];
+                titleString = [NSString stringWithString:@"1 event found"];
 				break;
 			default:
-                titleString = [NSString stringWithFormat:@"%d found", numResults];
+                titleString = [NSString stringWithFormat:@"%d events found", numResults];
 				break;
 		}
         
@@ -43,7 +43,7 @@
             titleString = [NSString stringWithFormat:@"%@ in the next %@", titleString, searchSpan];
         }
 		else
-			 titleString = [NSString stringWithFormat:@"%@ in the next %@", titleString, @"Week"];
+			 titleString = [NSString stringWithFormat:@"%@ in the next %@", titleString, @"7 days"];
         
         titleView = [UITableView ungroupedSectionHeaderWithTitle:titleString];
 	}
