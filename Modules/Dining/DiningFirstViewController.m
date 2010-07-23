@@ -11,11 +11,6 @@
 #import "DiningTabViewControl.h"
 #import "MITUIConstants.h"
 
-// separator color for the Grouped Tables
-#define kSeparatorColorR 69.0/255.0
-#define kSeparatorColorG 69.0/255.0
-#define kSeparatorColorB 69.0/255.0
-
 #define kBreakfastTab 0
 #define kLunchTab 1
 #define kDinnerTab 2
@@ -281,7 +276,7 @@ HarvardDiningAPI *mitapi;
 		[_tabViews insertObject:_hoursView atIndex:kHoursTab];
 	
 		//_newsView = [[UIView alloc] init];
-		[_newsView setBackgroundColor:[UIColor colorWithPatternImage:[[UIImage alloc] initWithContentsOfFile:@"global/body-background.png"]]];
+		//[_newsView setBackgroundColor:[UIColor colorWithPatternImage:[[UIImage alloc] initWithContentsOfFile:@"global/body-background.png"]]];
 
 		[_tabViewControl addTab:@"News"];
 		[_tabViews insertObject:_newsView atIndex:kNewsTab];
@@ -296,20 +291,7 @@ HarvardDiningAPI *mitapi;
 
 	}
 
-	// set the Separator Colors
-	/*lunchTable.separatorColor = [UIColor colorWithRed:kSeparatorColorR 
-												green: kSeparatorColorG
-												 blue:kSeparatorColorB
-												alpha:1];
-	
-	breakfastTable.separatorColor = lunchTable.separatorColor;	
-	dinnerTable.separatorColor = lunchTable.separatorColor;*/
-	
-	[lunchTable applyStandardColors];
-	[breakfastTable applyStandardColors];
-	[dinnerTable applyStandardColors];
-	
-	
+
 	// Open the Default Tab depending on the time of the day
 	NSDateFormatter *hourExtractionFormat = [[NSDateFormatter alloc] init];
 	[hourExtractionFormat setDateFormat:@"HH"];
@@ -354,8 +336,25 @@ HarvardDiningAPI *mitapi;
 	[self tabControl:_tabViewControl changedToIndex:tabToOpen tabText:nil];
 	[_tabViewControl setNeedsDisplay];
 
-	[super viewDidLoad];
+	[lunchTable applyStandardColors];
+	[breakfastTable applyStandardColors];
+	[dinnerTable applyStandardColors];
+	
+	self.view.backgroundColor = [UIColor clearColor];
+	nextDateButton.backgroundColor = [UIColor clearColor];
+	previousDateButton.backgroundColor = [UIColor clearColor];
+	breakfastViewLink.backgroundColor = [UIColor clearColor];
+	lunchViewLink.backgroundColor = [UIColor clearColor];
+	dinnerViewLink.backgroundColor = [UIColor clearColor];
+	lunchTable.backgroundColor = [UIColor clearColor];
+	dinnerTable.backgroundColor = [UIColor clearColor];
+	breakfastTable.backgroundColor = [UIColor clearColor];
+	_loadingResultView.backgroundColor = [UIColor clearColor];
+	_newsView.backgroundColor = [UIColor clearColor];
+	_tabViewControl.backgroundColor = [UIColor clearColor];
+	_tabViewContainer.backgroundColor = [UIColor clearColor];
 }
+
 
 
 - (void)didReceiveMemoryWarning {
