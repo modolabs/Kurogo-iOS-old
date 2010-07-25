@@ -11,6 +11,7 @@
 #import "HallDetailsTableViewController.h"
 #import "MIT_MobileAppDelegate.h";
 #import "DiningFirstViewController.h"
+#import "DiningHallStatus.h"
 
 @class HallDetailsTableViewController;
 @class DiningFirstViewController;

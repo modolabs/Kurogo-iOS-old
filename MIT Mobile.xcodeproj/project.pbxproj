@@ -175,6 +175,8 @@
 		C78243EC11F8A2E2003B3E3E /* arrow-white-left.png in Resources */ = {isa = PBXBuildFile; fileRef = C78243EA11F8A2E2003B3E3E /* arrow-white-left.png */; };
 		C78243ED11F8A2E2003B3E3E /* arrow-white-right.png in Resources */ = {isa = PBXBuildFile; fileRef = C78243EB11F8A2E2003B3E3E /* arrow-white-right.png */; };
 		C782463E11F8E4DB003B3E3E /* body-background.png in Resources */ = {isa = PBXBuildFile; fileRef = C782463D11F8E4DB003B3E3E /* body-background.png */; };
+		C7824BDB11FA2F8B003B3E3E /* DiningHallStatus.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = C7824BD911FA2F8B003B3E3E /* DiningHallStatus.h */; settings = {JAVA_ARCHIVE_SUBDIR = Modules; }; };
+		C7824BDC11FA2F8B003B3E3E /* DiningHallStatus.m in Sources */ = {isa = PBXBuildFile; fileRef = C7824BDA11FA2F8B003B3E3E /* DiningHallStatus.m */; };
 		C7B897F111F535C8002B3619 /* HoursTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C7B897EF11F535C8002B3619 /* HoursTableViewController.m */; };
 		C7B897F211F535C8002B3619 /* HoursTableViewController.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = C7B897F011F535C8002B3619 /* HoursTableViewController.h */; settings = {JAVA_ARCHIVE_SUBDIR = Modules/Dining; }; };
 		DE0A62AC10CDAEA90058B2C2 /* MITBuildInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = DE0A62AB10CDAEA90058B2C2 /* MITBuildInfo.m */; };
@@ -688,6 +690,8 @@
 		C78243EA11F8A2E2003B3E3E /* arrow-white-left.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "arrow-white-left.png"; sourceTree = "<group>"; };
 		C78243EB11F8A2E2003B3E3E /* arrow-white-right.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "arrow-white-right.png"; sourceTree = "<group>"; };
 		C782463D11F8E4DB003B3E3E /* body-background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "body-background.png"; sourceTree = "<group>"; };
+		C7824BD911FA2F8B003B3E3E /* DiningHallStatus.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DiningHallStatus.h; sourceTree = "<group>"; };
+		C7824BDA11FA2F8B003B3E3E /* DiningHallStatus.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DiningHallStatus.m; sourceTree = "<group>"; };
 		C7B897EF11F535C8002B3619 /* HoursTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = HoursTableViewController.m; path = Dining/HoursTableViewController.m; sourceTree = "<group>"; };
 		C7B897F011F535C8002B3619 /* HoursTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = HoursTableViewController.h; path = Dining/HoursTableViewController.h; sourceTree = "<group>"; };
 		DE0A62AA10CDAEA90058B2C2 /* MITBuildInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MITBuildInfo.h; sourceTree = "<group>"; };
@@ -1392,6 +1396,8 @@
 				C704F06011E3E31F00621406 /* MenuItems.m */,
 				C77664F811F64E74005496DD /* HallDetailsTableViewController.h */,
 				C77664F911F64E74005496DD /* HallDetailsTableViewController.m */,
+				C7824BD911FA2F8B003B3E3E /* DiningHallStatus.h */,
+				C7824BDA11FA2F8B003B3E3E /* DiningHallStatus.m */,
 			);
 			name = Dining;
 			sourceTree = "<group>";
@@ -2035,6 +2041,7 @@
 				EB7BA68411F8ED2100B3DDA6 /* ModoSearchBar.h in JavaArchive */,
 				EB7BA75A11F9CE7B00B3DDA6 /* MultiLineTableViewCell.h in JavaArchive */,
 				EB3721AA11FA2F5200705180 /* NewsImage.h in JavaArchive */,
+				C7824BDB11FA2F8B003B3E3E /* DiningHallStatus.h in JavaArchive */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2466,6 +2473,7 @@
 				EB7BA68511F8ED2100B3DDA6 /* ModoSearchBar.m in Sources */,
 				EB7BA75B11F9CE7B00B3DDA6 /* MultiLineTableViewCell.m in Sources */,
 				EB3721AB11FA2F5200705180 /* NewsImage.m in Sources */,
+				C7824BDC11FA2F8B003B3E3E /* DiningHallStatus.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

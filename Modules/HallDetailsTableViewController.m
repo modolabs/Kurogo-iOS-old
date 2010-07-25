@@ -10,7 +10,6 @@
 #import "MITUIConstants.h"
 
 
-
 @implementation HallDetailsTableViewController
 
 @synthesize itemDetails;
@@ -95,7 +94,6 @@ numberOfRowsInSection:(NSInteger)section
 	
 	if (col == 0) {
 		
-		NSArray *keys = [self.itemDetails allKeys];
 		
 		NSString *key;
 		NSString *displayKey;
@@ -137,7 +135,6 @@ numberOfRowsInSection:(NSInteger)section
 	}
 	
 	if (col == 1) {
-
 		
 		NSString *meal;
 		NSString *mealkey;
@@ -149,11 +146,11 @@ numberOfRowsInSection:(NSInteger)section
 				break;
 			case 1:
 				meal = @"Dinner ";
-				mealkey = @"dinner_restrcitions";	
+				mealkey = @"dinner_restrictions";	
 				break;
 			case 2:
 				meal = @"Sunday Brunch ";
-				mealkey = @"brunch_restrcitions";	
+				mealkey = @"brunch_restrictions";	
 				break;
 			default:
 				break;
@@ -172,14 +169,14 @@ numberOfRowsInSection:(NSInteger)section
 			message = @"None";
 		}
 
-		//cell.textLabel.text = [meal stringByAppendingString:message];
-
 		[cell.textLabel setTextAlignment:UITextAlignmentLeft];
 		cell.textLabel.text = meal;
 		cell.detailTextLabel.text = message;
 		cell.detailTextLabel.font = [UIFont systemFontOfSize:15];
-		cell.selectionStyle =  UITableViewCellSelectionStyleNone;
+		cell.selectionStyle =  UITableViewCellSelectionStyleNone;		
+	
 	}
+
 
 	return cell;
 }
@@ -209,11 +206,11 @@ numberOfRowsInSection:(NSInteger)section
 				break;
 			case 1:
 				meal = @"Dinner ";
-				mealkey = @"dinner_restrcitions";	
+				mealkey = @"dinner_restrictions";	
 				break;
 			case 2:
 				meal = @"Sunday Brunch ";
-				mealkey = @"brunch_restrcitions";	
+				mealkey = @"brunch_restrictions";	
 				break;
 			default:
 				break;
@@ -252,6 +249,10 @@ numberOfRowsInSection:(NSInteger)section
 -(void)setDetails:(NSDictionary *)details {	
 	self.itemDetails = details;
 
+}
+
+-(void)setStatus:(DiningHallStatus *)statusDetails {
+	hallStatus = statusDetails;
 }
 
 @end
