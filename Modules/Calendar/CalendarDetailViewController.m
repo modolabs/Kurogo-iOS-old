@@ -512,8 +512,9 @@ enum CalendarDetailRowTypes {
 			
 		case CalendarDetailRowTypeEmail:
 		{
-			[self sendEmailWithSubject:[self emailSubject]
-								  body:@""];
+			NSString *subject = [self emailSubject];
+			
+			[self emailTo:subject body:@"" email:event.email];
 			break;
 		}
 		default:
@@ -625,18 +626,18 @@ enum CalendarDetailRowTypes {
 	return YES;
 }
 
-
-
-- (void)sendEmailWithSubject:(NSString *)emailSubject withBody:(NSString *)emailBody
-{
+-(void)emailTo:(NSString*)subject body:(NSString *)emailBody email:(NSString *)emailAddress {
 	Class mailClass = (NSClassFromString(@"MFMailComposeViewController"));
 	if ((mailClass != nil) && [mailClass canSendMail]) {
 		
 		MFMailComposeViewController *aController = [[MFMailComposeViewController alloc] init];
 		aController.mailComposeDelegate = self;
 		
-		[aController setSubject:emailSubject];
 		
+		NSMutableArray *emailAddressArray = [[NSMutableArray alloc] init];
+		[emailAddressArray addObject:emailAddress];
+		[aController setSubject:subject];
+		[aController setToRecipients:emailAddressArray];		
 		[aController setMessageBody:emailBody isHTML:NO];
 		
 		MIT_MobileAppDelegate *appDelegate = (MIT_MobileAppDelegate *)[[UIApplication sharedApplication] delegate];
@@ -645,14 +646,14 @@ enum CalendarDetailRowTypes {
 		
 	} else {
 		NSString *mailtoString = [NSString stringWithFormat:@"mailto://?subject=%@&body=%@", 
-								  [emailSubject stringByAddingPercentEscapesUsingEncoding:NSASCIIStringEncoding],
+								  [subject stringByAddingPercentEscapesUsingEncoding:NSASCIIStringEncoding],
 								  [emailBody stringByAddingPercentEscapesUsingEncoding:NSASCIIStringEncoding]];
 		
 		NSURL *externURL = [NSURL URLWithString:mailtoString];
 		if ([[UIApplication sharedApplication] canOpenURL:externURL])
 			[[UIApplication sharedApplication] openURL:externURL];
 	}
-
+	
 }
 
 
