@@ -99,14 +99,16 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
 	switch (indexPath.row) {
 		case titleRow:
-			return [MultiLineTableViewCell 
-					cellHeightForTableView:tableView
-					main:announcement.title
-					mainFont:titleFont
-					detail:[dateFormatter stringFromDate:announcement.pubDate]
-					detailFont:dateFont
-					accessoryType:UITableViewCellAccessoryNone
-					isGrouped:YES]; 
+            return [MultiLineTableViewCell heightForCellWithStyle:UITableViewCellStyleSubtitle
+                                                        tableView:tableView 
+                                                             text:announcement.title
+                                                     maxTextLines:0
+                                                       detailText:[dateFormatter stringFromDate:announcement.pubDate]
+                                                   maxDetailLines:0
+                                                             font:titleFont 
+                                                       detailFont:dateFont 
+                                                    accessoryType:UITableViewCellAccessoryNone
+                                                        cellImage:NO];
 		case textRow:
 			return [announcement.text sizeWithFont:textFont constrainedToSize:CGSizeMake(textWidth-textViewHorizontalPadding, MAXFLOAT)].height + textViewVerticalPadding;
 	}

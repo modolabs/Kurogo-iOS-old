@@ -75,6 +75,11 @@ scrollView = _scrollView, navScrollerDelegate, currentXOffset = _currentXOffset;
     if ([view isKindOfClass:[UIButton class]]) {
         return (UIButton *)view;
     }
+    
+    // if we get to this point that means there's still some
+    // subview that isn't being assigned a non-conflicting tag
+    NSLog(@"%@", [view description]);
+    
     return nil;
 }
 
@@ -109,6 +114,7 @@ scrollView = _scrollView, navScrollerDelegate, currentXOffset = _currentXOffset;
     if (image != nil) {
 		aButton.imageEdgeInsets = UIEdgeInsetsMake(-1,0,0,0);
         newSize.width = image.size.width;// + 14.0;
+        aButton.imageView.tag = 1004;
     }
     [aButton addTarget:self action:@selector(buttonPressed:) forControlEvents:UIControlEventTouchUpInside];
     

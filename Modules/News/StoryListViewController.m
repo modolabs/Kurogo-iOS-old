@@ -834,7 +834,7 @@ static NSInteger numTries = 0;
         case 0: {
             if (indexPath.row == 0 && self.featuredStory != nil) {
                 
-                NewsStory *story = [self.stories objectAtIndex:indexPath.row];
+                NewsStory *story = self.featuredStory;
                 
                 static NSString *StoryCellIdentifier = @"FeaturedCell";
                 UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:StoryCellIdentifier];
@@ -1051,8 +1051,7 @@ static NSInteger numTries = 0;
 }
 
 - (void)tableView:(UITableView *)tv didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-	if(indexPath.row == self.stories.count)
-	{
+	if(indexPath.row == self.stories.count) {
 		if (!self.xmlParser) { // only "load x more..." if no other load is going on
 			if (!self.searchResults) {
 				[self loadFromServer:YES];
@@ -1060,12 +1059,15 @@ static NSInteger numTries = 0;
 				[self loadSearchResultsFromServer:YES forQuery:self.searchQuery];
 			}
 		}
-	}
-	else
-	{
+	} else {
         StoryDetailViewController *detailViewController = [[StoryDetailViewController alloc] init];
 		detailViewController.newsController = self;
-		NewsStory *story = [self.stories objectAtIndex:indexPath.row];
+		NewsStory *story = nil;
+        if (indexPath.row == 0 && self.featuredStory != nil) {
+            story = self.featuredStory;
+        } else {
+            story = [self.stories objectAtIndex:indexPath.row];
+        }
         detailViewController.story = story;
         
         [self.navigationController pushViewController:detailViewController animated:YES];

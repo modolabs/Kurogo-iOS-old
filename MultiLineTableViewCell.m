@@ -1,28 +1,44 @@
 #import "MultiLineTableViewCell.h"
 #import "MITUIConstants.h"
+#define DEFAULT_MAIN_FONT [UIFont fontWithName:BOLD_FONT size:CELL_STANDARD_FONT_SIZE]
+#define DEFAULT_DETAIL_FONT [UIFont fontWithName:STANDARD_FONT size:CELL_DETAIL_FONT_SIZE]
 
 @implementation MultiLineTableViewCell
-@synthesize textLabelNumberOfLines, detailTextLabelNumberOfLines;
+//@synthesize topPadding, bottomPadding;
+@synthesize textLabelLineBreakMode, textLabelNumberOfLines, detailTextLabelLineBreakMode, detailTextLabelNumberOfLines;
+
+/*
+- (void) layoutLabel: (UILabel *)label atHeight: (CGFloat)height {
+    CGSize labelSize = [label.text sizeWithFont:label.font 
+                              constrainedToSize:CGSizeMake(label.frame.size.width, 600.0) 
+                                  lineBreakMode:UILineBreakModeWordWrap];
+    
+    if (label == self.textLabel && textLabelLineBreakMode == UILineBreakModeTailTruncation) {
+        CGSize oneLineSize = [label.text sizeWithFont:label.font];
+        labelSize.height = (labelSize.height > oneLineSize.height) ? oneLineSize.height * textLabelNumberOfLines : oneLineSize.height;
+    } else if (label == self.detailTextLabel && detailTextLabelLineBreakMode == UILineBreakModeTailTruncation) {
+        CGSize oneLineSize = [label.text sizeWithFont:label.font];
+        labelSize.height = (labelSize.height > oneLineSize.height) ? oneLineSize.height * detailTextLabelNumberOfLines : oneLineSize.height;
+    }
+    
+    label.frame = CGRectMake(label.frame.origin.x, topPadding + height, label.frame.size.width, labelSize.height);
+}
+*/
 
 + (CGFloat)widthForTextLabel:(BOOL)isTextLabel
                    cellStyle:(UITableViewCellStyle)style
-                   tableView:(UITableView *)tableView
+                   tableView:(UITableView *)tableView 
                accessoryType:(UITableViewCellAccessoryType)accessoryType
                    cellImage:(BOOL)cellImage
 {
-    CGFloat width = tableView.frame.size.width;
+    CGFloat width = tableView.frame.size.width - 20.0; // 10px padding either side within cell
     if (tableView.style == UITableViewStyleGrouped) width -= 20.0; // 10px margin either side of table
-
-    width -= 20.0; // 10px padding either side within cell
 
     switch (style) {
         case UITableViewCellStyleValue2:
         {
             width -= 10.0; // 10px spacing between text and detailText
             if (isTextLabel) {
-                width = floor(width * 0.24);
-                if (cellImage) width -= 33.0;
-            } else {
                 width = floor(width * 0.76);
                 switch (accessoryType) {
                     case UITableViewCellAccessoryCheckmark:
@@ -33,6 +49,9 @@
                         width -= 15.0;
                         break;
                 }
+            } else {
+                width = floor(width * 0.24);
+                if (cellImage) width -= 33.0;
             }
             break;
         }
@@ -88,7 +107,6 @@
         CGSize size = CGSizeMake(width, height * maxLines);
         height = [text sizeWithFont:font constrainedToSize:size lineBreakMode:UILineBreakModeWordWrap].height;
     }
-    //NSLog(@"height for label with text %@ and width %.1f is %.1f", text, width, height);
     return height;
 }
 
@@ -104,7 +122,7 @@
                         cellImage:(BOOL)cellImage
 {
     CGFloat textWidth = [MultiLineTableViewCell widthForTextLabel:YES cellStyle:style tableView:tableView accessoryType:accessoryType cellImage:cellImage];
-    CGFloat detailTextWidth = [MultiLineTableViewCell widthForTextLabel:NO cellStyle:style tableView:tableView accessoryType:accessoryType cellImage:cellImage];
+    CGFloat detailTextWidth = [MultiLineTableViewCell widthForTextLabel:YES cellStyle:style tableView:tableView accessoryType:accessoryType cellImage:cellImage];
 
     if (font == nil) font = [UIFont fontWithName:STANDARD_FONT size:CELL_STANDARD_FONT_SIZE];
     CGFloat textHeight = [MultiLineTableViewCell heightForLabelWithText:text font:font width:textWidth maxLines:maxTextLines];
@@ -126,10 +144,9 @@
 
 - (void)layoutSubviews {    
 	[super layoutSubviews]; // this resizes labels to default size
-    
+
     CGFloat heightAdded;
     UITableView *tableView = (UITableView *)self.superview;
-    //NSLog(@"%@", [self.superview description]);
     BOOL cellImage = (self.imageView.image != nil);
     
     UITableViewCellAccessoryType accessoryType = self.accessoryType;
@@ -141,11 +158,6 @@
         self.textLabel.numberOfLines = textLabelNumberOfLines;
         self.textLabel.lineBreakMode = textLabelNumberOfLines == 0 ? UILineBreakModeWordWrap : UILineBreakModeTailTruncation;
         CGRect frame = self.textLabel.frame;
-        if (frame.origin.y == 0.0) {
-            // TODO: find out why this happens with rows in event detail screen
-            frame.origin.y = 10.0;
-        }
-        
         frame.size.width = [MultiLineTableViewCell widthForTextLabel:YES cellStyle:_style tableView:tableView accessoryType:accessoryType cellImage:cellImage];
         frame.size.height = [MultiLineTableViewCell heightForLabelWithText:self.textLabel.text
                                                                       font:self.textLabel.font
@@ -159,8 +171,7 @@
         self.detailTextLabel.numberOfLines = detailTextLabelNumberOfLines;
         self.detailTextLabel.lineBreakMode = detailTextLabelNumberOfLines == 0 ? UILineBreakModeWordWrap : UILineBreakModeTailTruncation;
         CGRect frame = self.detailTextLabel.frame;
-        if (_style == UITableViewCellStyleSubtitle)
-            frame.origin.y += heightAdded;
+        frame.origin.y += heightAdded;
         frame.size.width = [MultiLineTableViewCell widthForTextLabel:NO cellStyle:_style tableView:tableView accessoryType:accessoryType cellImage:cellImage];
         frame.size.height = [MultiLineTableViewCell heightForLabelWithText:self.detailTextLabel.text
                                                                       font:self.detailTextLabel.font
@@ -197,8 +208,14 @@
 
 - (id) initWithStyle: (UITableViewCellStyle)cellStyle reuseIdentifier: (NSString *)reuseIdentifier {
     if(self = [super initWithStyle:cellStyle reuseIdentifier:reuseIdentifier]) {		
+		//topPadding = CELL_VERTICAL_PADDING;
+		//bottomPadding = CELL_VERTICAL_PADDING;
         _style = cellStyle;
+        
+        //textLabelLineBreakMode = UILineBreakModeWordWrap;
         textLabelNumberOfLines = 0;
+        
+        //detailTextLabelLineBreakMode = UILineBreakModeWordWrap;
         detailTextLabelNumberOfLines = 0;
     }
     return self;
@@ -207,7 +224,129 @@
 - (void)dealloc {
     [super dealloc];
 }
+/*
++ (CGFloat) widthAdjustmentForAccessoryType: (UITableViewCellAccessoryType)accessoryType isGrouped: (BOOL)isGrouped {
+	
+	CGFloat adjustment = 0;
+	switch (accessoryType) {
+		case UITableViewCellAccessoryNone:
+			adjustment = 0;
+			break;
+		case UITableViewCellAccessoryDisclosureIndicator:
+			adjustment = 20;
+			break;
+		case UITableViewCellAccessoryDetailDisclosureButton:
+			adjustment = 33;
+			break;
+		case UITableViewCellAccessoryCheckmark:
+			adjustment = 20;
+			break;
+	}
+	
+	if(isGrouped) {
+		adjustment = adjustment + 21;
+	}
+	
+	return adjustment;
+}
+	
 
++ (CGFloat) cellHeightForTableView: (UITableView *)tableView
+							  main: (NSString *)main
+							detail: (NSString *)detail
+					 accessoryType: (UITableViewCellAccessoryType)accessoryType
+						 isGrouped: (BOOL)isGrouped {
+	
+	return [self 
+		cellHeightForTableView:tableView
+		main:main
+		mainFont:DEFAULT_MAIN_FONT
+		detail:detail
+		detailFont:DEFAULT_DETAIL_FONT
+		widthAdjustment:[self widthAdjustmentForAccessoryType:accessoryType isGrouped:isGrouped]
+		topPadding:CELL_VERTICAL_PADDING
+		bottomPadding:CELL_VERTICAL_PADDING];
+}
+
++ (CGFloat) cellHeightForTableView: (UITableView *)tableView
+							  main: (NSString *)main
+							detail: (NSString *)detail 
+					 accessoryType: (UITableViewCellAccessoryType)accessoryType
+						 isGrouped: (BOOL)isGrouped
+						topPadding: (CGFloat)topPadding {
+	
+	return [self cellHeightForTableView:tableView
+		main:main
+		mainFont:DEFAULT_MAIN_FONT
+		detail:detail
+		detailFont:DEFAULT_DETAIL_FONT
+		widthAdjustment:[self widthAdjustmentForAccessoryType:accessoryType isGrouped:isGrouped]
+		topPadding:topPadding
+		bottomPadding:CELL_VERTICAL_PADDING];
+}
+
++ (CGFloat) cellHeightForTableView: (UITableView *)tableView
+							  main: (NSString *)main 
+							detail: (NSString *)detail 
+				   widthAdjustment: (CGFloat)widthAdjustment {
+	
+	return [self cellHeightForTableView:tableView
+		main:main
+		mainFont:DEFAULT_MAIN_FONT
+		detail:detail
+		detailFont:DEFAULT_DETAIL_FONT
+		widthAdjustment:widthAdjustment
+		topPadding:CELL_VERTICAL_PADDING
+		bottomPadding:CELL_VERTICAL_PADDING];
+}	
+
++ (CGFloat) cellHeightForTableView: (UITableView *)tableView
+							  main: (NSString *)main 
+						  mainFont: (UIFont *)mainFont
+							detail: (NSString *)detail 
+						detailFont: (UIFont *)detailFont
+					accessoryType: (UITableViewCellAccessoryType)accessoryType 
+						 isGrouped: (BOOL)isGrouped {
+	
+	return [self cellHeightForTableView:tableView
+		main:main
+		mainFont:mainFont
+		detail:detail 
+		detailFont:detailFont
+		widthAdjustment:[self widthAdjustmentForAccessoryType:accessoryType isGrouped:isGrouped]
+		topPadding:CELL_VERTICAL_PADDING
+		bottomPadding:CELL_VERTICAL_PADDING];
+}	
+
++ (CGFloat) cellHeightForTableView: (UITableView *)tableView
+							  main: (NSString *)main 
+						  mainFont: (UIFont *)mainFont
+							detail: (NSString *)detail 
+						detailFont: (UIFont *)detailFont
+				   widthAdjustment: (CGFloat)widthAdjustment 
+						topPadding: (CGFloat)topPadding 
+					 bottomPadding: (CGFloat)bottomPadding {
+	
+	CGFloat width = tableView.frame.size.width - widthAdjustment - 21.0;
+
+	CGFloat mainHeight = [main 
+		sizeWithFont:mainFont
+		constrainedToSize:CGSizeMake(width, 600.0)         
+		lineBreakMode:UILineBreakModeWordWrap].height;
+	
+	CGFloat detailHeight;
+	if(detail) {
+		detailHeight = [detail
+			sizeWithFont:detailFont
+			constrainedToSize:CGSizeMake(width, 600.0)         
+			lineBreakMode:UILineBreakModeWordWrap].height;
+	} else {
+		detailHeight = 0;
+	}
+
+	return (mainHeight + detailHeight) + topPadding + bottomPadding;
+}
+*/
 
 @end
 

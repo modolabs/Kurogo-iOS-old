@@ -72,7 +72,7 @@
 	CGFloat textHeight = 10.0 + (textSize.width > maxWidth ? textSize.height * 1 : textSize.height);
 
     cell.textLabelNumberOfLines = 2;
-    cell.textLabelLineBreakMode = UILineBreakModeTailTruncation;
+    //cell.textLabelLineBreakMode = UILineBreakModeTailTruncation;
     cell.textLabel.text = event.title;
 
 	// show time only if date is shown; date plus time otherwise
@@ -111,17 +111,30 @@
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-	CGFloat height = CELL_TWO_LINE_HEIGHT;
+	//CGFloat height = CELL_TWO_LINE_HEIGHT;
 	UIFont *font = [UIFont fontWithName:BOLD_FONT size:CELL_STANDARD_FONT_SIZE];
-	CGFloat constraintWidth = self.frame.size.width - MULTILINE_ADJUSTMENT_ACCESSORY;
+	//CGFloat constraintWidth = self.frame.size.width - MULTILINE_ADJUSTMENT_ACCESSORY;
 
 	MITCalendarEvent *event = [self.events objectAtIndex:indexPath.row];
-	CGSize textSize = [event.title sizeWithFont:font];
-	if (textSize.width > (constraintWidth - 20)) {
-		height += textSize.height + 2.0;
-	}
+	//CGSize textSize = [event.title sizeWithFont:font];
+	//if (textSize.width > (constraintWidth - 20)) {
+	//	height += textSize.height + 2.0;
+	//}
 
-	return height;
+    return [MultiLineTableViewCell heightForCellWithStyle:UITableViewCellStyleSubtitle
+                                         tableView:tableView 
+                                              text:event.title
+                                      maxTextLines:2
+                                        detailText:CalendarTag // something with one line
+                                    maxDetailLines:1
+                                              font:font 
+                                        detailFont:nil 
+                                     accessoryType:UITableViewCellAccessoryDisclosureIndicator
+                                         cellImage:NO];
+    
+    
+    
+	//return height;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {

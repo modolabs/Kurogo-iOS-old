@@ -32,8 +32,8 @@
 		headerCell.textLabel.text = title;
 		headerCell.textLabel.textColor = HEADER_FONT_COLOR;
 		headerCell.selectionStyle = UITableViewCellSelectionStyleNone;
-		headerCell.topPadding = topPadding;
-		headerCell.height = topPadding + HEADER_HEIGHT;
+		//headerCell.topPadding = topPadding;
+		//headerCell.height = topPadding + HEADER_HEIGHT;
 	}
 	return headerCell;
 }

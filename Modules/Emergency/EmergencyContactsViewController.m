@@ -68,11 +68,16 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {    
 	NSManagedObject *contactInfo = [self.emergencyContacts objectAtIndex:indexPath.row];
-	return [MultiLineTableViewCell
-			cellHeightForTableView:tableView
-			main:[self mainText:contactInfo]
-			detail:[self detailText:contactInfo]
-			widthAdjustment: 26];	
+    return [MultiLineTableViewCell heightForCellWithStyle:UITableViewCellStyleSubtitle
+                                                tableView:tableView 
+                                                     text:[self mainText:contactInfo]
+                                             maxTextLines:0
+                                               detailText:[self detailText:contactInfo]
+                                           maxDetailLines:0
+                                                     font:nil 
+                                               detailFont:nil 
+                                            accessoryType:UITableViewCellAccessoryDetailDisclosureButton
+                                                cellImage:NO] + 2.0;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {

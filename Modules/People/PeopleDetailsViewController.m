@@ -1,5 +1,6 @@
 #import "PeopleDetailsViewController.h"
-#import "PeopleDetailsTableViewCell.h"
+#import "MultiLineTableViewCell.h"
+//#import "PeopleDetailsTableViewCell.h"
 #import "ConnectionDetector.h"
 #import "PeopleRecentsData.h"
 #import "MIT_MobileAppDelegate.h"
@@ -177,10 +178,10 @@
 		return cell;
 		
 	} else { // cells for displaying person details
-		PeopleDetailsTableViewCell *cell = (PeopleDetailsTableViewCell *)[tableView dequeueReusableCellWithIdentifier:cellID];
+		MultiLineTableViewCell *cell = (MultiLineTableViewCell *)[tableView dequeueReusableCellWithIdentifier:cellID];
 		
 		if (cell == nil)
-			cell = [[[PeopleDetailsTableViewCell alloc] initWithStyle:UITableViewCellStyleValue2 reuseIdentifier:cellID] autorelease];
+			cell = [[[MultiLineTableViewCell alloc] initWithStyle:UITableViewCellStyleValue2 reuseIdentifier:cellID] autorelease];
 		
 		NSArray *personInfo = [[self.sectionArray safeObjectAtIndex:section] safeObjectAtIndex:row];
 		NSString *tag = [personInfo safeObjectAtIndex:0];
@@ -188,15 +189,20 @@
 		
 		cell.textLabel.text = tag;
 		cell.detailTextLabel.text = data;
+        
 		
 		if ([tag isEqualToString:[personDetails displayNameForKey:@"mail"]]) {
+            cell.accessoryType = UITableViewCellAccessoryDetailDisclosureButton;
             cell.accessoryView = [UIImageView accessoryViewWithMITType:MITAccessoryViewEmail];
 		} else if ([tag isEqualToString:[personDetails displayNameForKey:@"telephonenumber"]]) {
+            cell.accessoryType = UITableViewCellAccessoryDetailDisclosureButton;
             cell.accessoryView = [UIImageView accessoryViewWithMITType:MITAccessoryViewPhone];
 		} else if ([tag isEqualToString:[personDetails displayNameForKey:@"postaladdress"]]) {//|| [tag isEqualToString:@"room"]) {
+            cell.accessoryType = UITableViewCellAccessoryDetailDisclosureButton;
             cell.accessoryView = [UIImageView accessoryViewWithMITType:MITAccessoryViewMap];
 		} else {
 			cell.selectionStyle = UITableViewCellSelectionStyleNone;
+            cell.accessoryType = UITableViewCellAccessoryNone;
 			return cell;
 		}
 		
@@ -215,6 +221,8 @@
 	NSArray *personInfo = [[self.sectionArray safeObjectAtIndex:section] safeObjectAtIndex:row];
 	NSString *tag = [personInfo safeObjectAtIndex:0];
 	NSString *data = [personInfo safeObjectAtIndex:1];
+    
+    /*
 	// the following may be off by a pixel or 2 for different OS versions
 	// in the future we should prepare for the general case where widths can be way different (including flipping orientation)
 	CGFloat labelWidth = ([tag isEqualToString:@"telephonenumber"] || [tag isEqualToString:@"mail"] || [tag isEqualToString:@"office"]) ? 182.0 : 207.0;
@@ -224,7 +232,23 @@
 							lineBreakMode:UILineBreakModeWordWrap];
 	
 	return labelSize.height + 26.0;
-
+     */
+    
+    UITableViewCellAccessoryType accessoryType = 
+        ([tag isEqualToString:@"telephonenumber"] || [tag isEqualToString:@"mail"] || [tag isEqualToString:@"office"])
+    ? UITableViewCellAccessoryDetailDisclosureButton
+    : UITableViewCellAccessoryNone;
+    
+    return [MultiLineTableViewCell heightForCellWithStyle:UITableViewCellStyleValue2
+                                                tableView:tableView 
+                                                     text:tag
+                                             maxTextLines:1
+                                               detailText:data
+                                           maxDetailLines:0
+                                                     font:nil
+                                               detailFont:[UIFont boldSystemFontOfSize:15.0]  
+                                            accessoryType:accessoryType
+                                                cellImage:NO];
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath

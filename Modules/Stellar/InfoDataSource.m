@@ -62,7 +62,7 @@
 				makeCellWhite(cell);
 				cell.detailTextLabel.textColor = CELL_STANDARD_FONT_COLOR;
 				cell.selectionStyle = UITableViewCellSelectionStyleNone;
-				cell.topPadding = DESCRIPTION_PADDING;
+				//cell.topPadding = DESCRIPTION_PADDING;
 			}
 
 			cell.detailTextLabel.text = self.viewController.stellarClass.blurb;
@@ -86,20 +86,28 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
 	switch (indexPath.section) {
 		case TIMES:
-			return [MultiLineTableViewCell
-				cellHeightForTableView:tableView
-				main:[self locationAndTime:indexPath.row]
-				detail:nil
-				widthAdjustment: 26];
+            return [MultiLineTableViewCell heightForCellWithStyle:UITableViewCellStyleSubtitle
+                                                        tableView:tableView 
+                                                             text:[self locationAndTime:indexPath.row]
+                                                     maxTextLines:0
+                                                       detailText:StellarTag // something with one line
+                                                   maxDetailLines:0
+                                                             font:nil 
+                                                       detailFont:nil 
+                                                    accessoryType:UITableViewCellAccessoryDisclosureIndicator
+                                                        cellImage:NO];
 			
 		case DESCRIPTION:
-			return [MultiLineTableViewCell 
-					cellHeightForTableView:tableView
-					main:@"Description"
-					detail:self.viewController.stellarClass.blurb
-					accessoryType:UITableViewCellAccessoryNone
-					isGrouped:NO
-					topPadding:DESCRIPTION_PADDING]; 
+            return [MultiLineTableViewCell heightForCellWithStyle:UITableViewCellStyleSubtitle
+                                                        tableView:tableView 
+                                                             text:@"Description"
+                                                     maxTextLines:0
+                                                       detailText:self.viewController.stellarClass.blurb
+                                                   maxDetailLines:0
+                                                             font:nil 
+                                                       detailFont:nil 
+                                                    accessoryType:UITableViewCellAccessoryNone
+                                                        cellImage:NO] + DESCRIPTION_PADDING;
 	}
 	return 0;
 } 

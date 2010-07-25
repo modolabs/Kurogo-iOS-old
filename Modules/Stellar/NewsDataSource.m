@@ -66,7 +66,7 @@
 		newsCell.textLabel.text = newsItem.title;
 		newsCell.detailTextLabel.text = newsItem.text;
         newsCell.detailTextLabelNumberOfLines = 1;
-        newsCell.detailTextLabelLineBreakMode = UILineBreakModeTailTruncation;
+        //newsCell.detailTextLabelLineBreakMode = UILineBreakModeTailTruncation;
 		//newsCell.dateTextLabel.text = [dateFormatter stringFromDate:newsItem.pubDate];
 
         UILabel *dateTextLabel = (UILabel *)[newsCell viewWithTag:678];
@@ -125,13 +125,17 @@
 	if([self.viewController.news count] == 0) {
 		return DISCLAIMER_HEIGHT;
 	}
-	
-	return [MultiLineTableViewCell 
-		cellHeightForTableView:tableView
-		main:((StellarAnnouncement *)[self.viewController.news objectAtIndex:indexPath.row]).title
-		detail:@"a line"        
-		accessoryType:UITableViewCellAccessoryDisclosureIndicator
-		isGrouped:NO] + 4; 
+    
+    return [MultiLineTableViewCell heightForCellWithStyle:UITableViewCellStyleSubtitle
+                                                tableView:tableView 
+                                                     text:((StellarAnnouncement *)[self.viewController.news objectAtIndex:indexPath.row]).title
+                                             maxTextLines:0
+                                               detailText:StellarTag // something with one line
+                                           maxDetailLines:1
+                                                     font:nil 
+                                               detailFont:nil 
+                                            accessoryType:UITableViewCellAccessoryDisclosureIndicator
+                                                cellImage:NO] + 4.0;	
 }
 
 - (CGFloat) heightOfTableView: (UITableView *)tableView {

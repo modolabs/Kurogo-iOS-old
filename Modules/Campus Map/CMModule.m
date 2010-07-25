@@ -1,6 +1,5 @@
 #import "CMModule.h"
 #import "CampusMapViewController.h"
-//#import "MITMapViewController.h"
 #import "MITMapDetailViewController.h"
 #import "MapSearchResultAnnotation.h"
 

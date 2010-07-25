@@ -429,6 +429,7 @@ enum CalendarDetailRowTypes {
 	
 	NSString *cellText = nil;
 	UIFont *cellFont = nil;
+    UITableViewCellAccessoryType accessoryType;
 	CGFloat constraintWidth;
 	
 	switch (rowType) {
@@ -438,6 +439,7 @@ enum CalendarDetailRowTypes {
 		case CalendarDetailRowTypeTime:
 			cellText = [event dateStringWithDateStyle:NSDateFormatterFullStyle timeStyle:NSDateFormatterShortStyle separator:@"\n"];
 			cellFont = [UIFont fontWithName:BOLD_FONT size:CELL_STANDARD_FONT_SIZE];
+            accessoryType = UITableViewCellAccessoryNone;
 			constraintWidth = tableView.frame.size.width - 21.0;
 			break;
 		case CalendarDetailRowTypeDescription:
@@ -459,11 +461,24 @@ enum CalendarDetailRowTypes {
 			cellText = (event.location != nil) ? event.location : event.shortloc;
 			cellFont = [UIFont fontWithName:BOLD_FONT size:CELL_STANDARD_FONT_SIZE];
 			// 33 and 21 are from MultiLineTableViewCell.m
+            accessoryType = UITableViewCellAccessoryDetailDisclosureButton;
 			constraintWidth = tableView.frame.size.width - 33.0 - 21.0;
 			break;
 		default:
 			return 44.0;
 	}
+    
+    return [MultiLineTableViewCell heightForCellWithStyle:UITableViewCellStyleDefault
+                                                tableView:tableView 
+                                                     text:cellText
+                                             maxTextLines:0
+                                               detailText:nil
+                                           maxDetailLines:0
+                                                     font:cellFont 
+                                               detailFont:nil 
+                                            accessoryType:accessoryType
+                                                cellImage:NO];
+    /*
 	
 	CGSize textSize = [cellText sizeWithFont:cellFont
 						   constrainedToSize:CGSizeMake(constraintWidth, 2010.0)
@@ -471,6 +486,7 @@ enum CalendarDetailRowTypes {
 	
 	// constant defined in MultiLineTableViewcell.h
 	return textSize.height + CELL_VERTICAL_PADDING * 2;
+    */
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {

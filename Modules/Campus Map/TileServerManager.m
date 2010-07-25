@@ -154,7 +154,7 @@ static NSString * s_tileServerFilename = @"tileServer.plist";
         
         if (_serverInfo != nil) {
             NSDate *date = [_serverInfo objectForKey:@"lastupdated"];
-            NSLog(@"%@", _serverInfo);
+            //NSLog(@"%@", _serverInfo);
             if ([[NSDate date] timeIntervalSinceDate:date] <= 86400) {
                 [self setupServerInfo:_serverInfo];
                 didSetup = YES;
@@ -222,7 +222,7 @@ static NSString * s_tileServerFilename = @"tileServer.plist";
 	BOOL saved = [_serverInfo writeToFile:filename atomically:YES];
 	NSLog(@"Saved file: %@ %@", filename, saved ? @"SUCCESS" : @"FAIL");
     if (!saved) {
-        NSLog(@"%@", [_serverInfo description]);
+        NSLog(@"could not save file with contents %@", [_serverInfo description]);
     }
 }
 
@@ -449,17 +449,17 @@ static NSString * s_tileServerFilename = @"tileServer.plist";
 
     CGPoint wp = [self projectedPointForCoord:west];
     CGPoint ep = [self projectedPointForCoord:east];
-    NSLog(@"equator could be %.1f units", fabs(ep.x) + fabs(wp.x));
+    //NSLog(@"equator could be %.1f units", fabs(ep.x) + fabs(wp.x));
     
     //_circumferenceInProjectedUnits = fabs(ep.x) + fabs(wp.x);
     _circumferenceInProjectedUnits = -2 * _originX;
-    NSLog(@"equator is %.1f units", _circumferenceInProjectedUnits);
+    //NSLog(@"equator is %.1f units", _circumferenceInProjectedUnits);
     
     for (MapZoomLevel *zoomLevel in _mapLevels) {
         CGFloat numTilesAcrossEquator = _circumferenceInProjectedUnits / zoomLevel.resolution;
-        NSLog(@"level %d has %d tiles across equator", zoomLevel.level, (int)floor(numTilesAcrossEquator));
-        NSLog(@"and %d tiles per row", zoomLevel.maxCol - zoomLevel.minCol + 1);
-        NSLog(@"and %d tiles per column", zoomLevel.maxRow - zoomLevel.minRow + 1);
+        //NSLog(@"level %d has %d tiles across equator", zoomLevel.level, (int)floor(numTilesAcrossEquator));
+        //NSLog(@"and %d tiles per row", zoomLevel.maxCol - zoomLevel.minCol + 1);
+        //NSLog(@"and %d tiles per column", zoomLevel.maxRow - zoomLevel.minRow + 1);
         
         zoomLevel.zoomScale = numTilesAcrossEquator / MKMapSizeWorld.width;
     }

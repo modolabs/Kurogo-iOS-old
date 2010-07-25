@@ -32,12 +32,17 @@
 	if (stellarClass.title) {
 		title = stellarClass.title;
 	}
-	
-	return 2.0 + [MultiLineTableViewCell cellHeightForTableView:tableView 
-														   main:name
-														 detail:title
-												  accessoryType:UITableViewCellAccessoryDisclosureIndicator
-													  isGrouped:NO];
+    
+	return 2.0 + [MultiLineTableViewCell heightForCellWithStyle:UITableViewCellStyleSubtitle
+                                                      tableView:tableView 
+                                                           text:name
+                                                   maxTextLines:0
+                                                     detailText:title
+                                                 maxDetailLines:0
+                                                           font:nil 
+                                                     detailFont:nil 
+                                                  accessoryType:UITableViewCellAccessoryDisclosureIndicator
+                                                      cellImage:NO];
 }
 	
 @end

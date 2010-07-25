@@ -87,7 +87,7 @@ numberOfRowsInSection:(NSInteger)section
 		if (col == 1) {
 			cell = [[[MultiLineTableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellTableIdentifier] autorelease];
 			cell.textLabelNumberOfLines = 2;
-			cell.textLabelLineBreakMode = UILineBreakModeTailTruncation;
+			//cell.textLabelLineBreakMode = UILineBreakModeTailTruncation;
 		}
 	}
 	

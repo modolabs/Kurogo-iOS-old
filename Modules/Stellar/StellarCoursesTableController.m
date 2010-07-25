@@ -64,11 +64,16 @@
 
 - (CGFloat) tableView: (UITableView *)tableView heightForRowAtIndexPath: (NSIndexPath *)indexPath {
 	StellarCourse *stellarCourse = (StellarCourse *)[self.courseGroup.courses objectAtIndex:indexPath.row];
-	return 2.0 + [MultiLineTableViewCell cellHeightForTableView:tableView 
-													 main:@"single line" 
-												   detail:stellarCourse.title
-											accessoryType:UITableViewCellAccessoryDisclosureIndicator
-												isGrouped:YES];
+    return [MultiLineTableViewCell heightForCellWithStyle:UITableViewCellStyleSubtitle
+                                                tableView:tableView 
+                                                     text:nil
+                                             maxTextLines:1
+                                               detailText:stellarCourse.title
+                                           maxDetailLines:0
+                                                     font:nil 
+                                               detailFont:nil 
+                                            accessoryType:UITableViewCellAccessoryDisclosureIndicator
+                                                cellImage:NO] + 2.0;
 }
 
 
