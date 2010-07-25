@@ -1,9 +1,9 @@
 #import "DiningTabViewControl.h"
 
-#define kTabFontSize 14 // was 15
-#define kTabCurveRadius 8 
-#define kTabTextPadding 6 // px between tab and start of text //was 22
-#define kTabSapcing 2      // px between tabs //was 4
+#define kTabFontSize 15 // was 15
+#define kTabCurveRadius 10 
+#define kTabTextPadding 9 // px between tab and start of text //was 22
+#define kTabSapcing 4      // px between tabs //was 4
 
 #define kUnselectedFillColorR 153.0
 #define kUnselectedFillColorG 172.0

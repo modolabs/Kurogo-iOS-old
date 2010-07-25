@@ -77,7 +77,7 @@
     
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil) {
-        cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
+        cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier] autorelease];
     }
 	int row = [indexPath row];
     
@@ -91,16 +91,39 @@
 	
 	NSString *statString;
 	if (stat == 1)
-		statString = @" OPEN";
+		statString = @"Open";
 	if (stat == 2)
-		statString = @" CLOSED";
+		statString = @"Closed";
 	if (stat == 3)
-		statString = @" NO RESTRICTION (!!)";
+		statString = @"No Interhosue Restriction";
 	if (stat == 4)
-		statString = @" RESTRICTED but OPEN";
+		statString = @"Open with Interhouse Restriction";
 	
-	cell.textLabel.text = [[[self.hallProperties objectAtIndex:row] objectForKey:@"name"] stringByAppendingString:statString];
+	//cell.textLabel.text = [[[self.hallProperties objectAtIndex:row] objectForKey:@"name"] stringByAppendingString:statString];
+	cell.textLabel.text = [[self.hallProperties objectAtIndex:row] objectForKey:@"name"];
 	
+	if ((stat == 1) || (stat == 3) || (stat == 4)) {
+		statString = [statString stringByAppendingString:@" for "];
+		statString = [statString stringByAppendingString:status.currentMeal];
+		cell.detailTextLabel.text = statString;
+
+		UIImage *image = [UIImage imageNamed:@"maps/map_location.png"];
+		cell.imageView.image = image;
+		
+	}
+	
+
+	else {
+		cell.detailTextLabel.text = @"Closed";
+		UIImage *image = [UIImage imageNamed:@"global/unread-message.png"];
+		cell.imageView.image = image;
+	}
+	
+	
+	if (stat == 4) {
+		UIImage *image = [UIImage imageNamed:@"maps/map_pin.png"];
+		cell.imageView.image = image;
+	}
     return cell;
 }
 
@@ -120,11 +143,16 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 	{
 		childHallViewController = [[HallDetailsTableViewController alloc] initWithStyle:UITableViewStyleGrouped];
 	}
+
 	
 	NSUInteger row = [indexPath row];
 	
+	DiningHallStatus *status = [[DiningHallStatus alloc] init];
+	[status getStatusOfMeal:@"" usingDetails:[self.hallProperties objectAtIndex:row]];
+	
 	NSDictionary *test = [self.hallProperties objectAtIndex:row];
 	[childHallViewController setDetails:test];
+	[childHallViewController setStatus:status];
 	childHallViewController.title = [[self.hallProperties objectAtIndex:row] objectForKey:@"name"];
 
 	[self.parentViewController.navigationController pushViewController:childHallViewController animated:YES];

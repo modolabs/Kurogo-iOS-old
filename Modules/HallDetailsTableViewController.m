@@ -80,7 +80,7 @@ numberOfRowsInSection:(NSInteger)section
 	{
 		if (col == 0) {
 		cell = [[[UITableViewCell alloc]
-				 initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellTableIdentifier] autorelease];
+				 initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellTableIdentifier] autorelease];
 		}
 		
 		if (col == 1) {
@@ -94,6 +94,8 @@ numberOfRowsInSection:(NSInteger)section
 	
 	if (col == 0) {
 		
+		int status;
+		int restriction;
 		
 		NSString *key;
 		NSString *displayKey;
@@ -102,35 +104,65 @@ numberOfRowsInSection:(NSInteger)section
 			case 0:
 				key = @"breakfast_hours";
 				displayKey = @"Breakfast";
+				status = hallStatus.breakfast_status;
+				restriction = hallStatus.breakfast_restriction;
 				break;
 			case 1:
 				key = @"lunch_hours";
 				displayKey = @"Lunch";
+				status = hallStatus.lunch_status;
+				restriction = hallStatus.lunch_restriction;
 				break;
 			case 2:
 				key = @"dinner_hours";
 				displayKey = @"Dinner";
+				status = hallStatus.dinner_status;
+				restriction = hallStatus.dinner_restriction;
 				break;
 			case 3:
 				key = @"bb_hours";
 				displayKey = @"Brain-Break(Sun-Thu)";
+				status = hallStatus.bb_status;
+				restriction = hallStatus.bb_restriction;
 				break;
 			case 4:
 				key = @"brunch_hours";
 				displayKey = @"Sunday Brunch";
+				status = hallStatus.brunch_status;
+				restriction = hallStatus.brunch_restriction;
 				break;
 		}
 		NSString *cellText1 = displayKey;
-		cellText1 = [cellText1 stringByAppendingString:@": "];
+		
 		NSString *cellText2 = [self.itemDetails objectForKey:key];
 		
 		if ([cellText2 isEqualToString:@"NA"])
 			cellText2 = @"";
 		
-		cell.textLabel.text = [cellText1 stringByAppendingString:cellText2];
+		//cellText1 = [cellText1 stringByAppendingString:@": "];
+		//cell.textLabel.text = [cellText1 stringByAppendingString:cellText2];
+		
+		cell.textLabel.text = cellText1;
+		cell.detailTextLabel.text = cellText2;
 
 		
 		cell.selectionStyle =  UITableViewCellSelectionStyleNone;
+		
+		if ((status == OPEN) && (restriction == NO_RESTRICTION)) {
+			UIImage *image = [UIImage imageNamed:@"maps/map_location.png"];
+			cell.imageView.image = image;
+		}
+		
+		else if ((status == OPEN) && (restriction = RESTRICTED)) {
+			UIImage *image = [UIImage imageNamed:@"maps/map_pin.png"];
+			cell.imageView.image = image;
+		}
+		
+		else {
+			UIImage *image = [UIImage imageNamed:@"global/unread-message.png"];
+			cell.imageView.image = image;
+		}
+
 
 	}
 	
@@ -196,6 +228,9 @@ numberOfRowsInSection:(NSInteger)section
 	
 	int col = [indexPath section];
 	int row = [indexPath row];
+	
+	if (col == 0)
+		return 50;
 	
 	if (col == 1) {
 		

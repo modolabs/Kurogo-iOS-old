@@ -18,7 +18,7 @@
 -(void)viewWillAppear:(BOOL)animated
 {
 	[super viewWillAppear:animated];
-	[self.tableView applyStandardColors];
+	//[self.tableView applyStandardColors];
 }
 
 -(void)viewDidUnload
