@@ -3,6 +3,7 @@
 #import "MITModuleList.h"
 
 #define GRID_PADDING 8.0f
+#define ICON_LABEL_HEIGHT 30.0f
 
 @implementation SpringboardViewController
 
@@ -123,8 +124,18 @@
         UIImage *image = [aModule icon];
         if (image) {
             NSLog(@"adding icon for module %@", aModule.tag);
-            anIcon.frame = CGRectMake(0, 0, image.size.width, image.size.height);
+            anIcon.frame = CGRectMake(0, 0, image.size.width, image.size.height + ICON_LABEL_HEIGHT);
+            
+            anIcon.imageEdgeInsets = UIEdgeInsetsMake(0, 0, ICON_LABEL_HEIGHT, 0);
             [anIcon setImage:image forState:UIControlStateNormal];
+
+            anIcon.titleEdgeInsets = UIEdgeInsetsMake(image.size.height, -image.size.width, 0, 0);
+            [anIcon setTitle:aModule.shortName forState:UIControlStateNormal];
+            [anIcon setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+            [anIcon setTitleColor:[UIColor whiteColor] forState:UIControlStateHighlighted];
+            anIcon.titleLabel.font = [UIFont boldSystemFontOfSize:13.0];
+            NSLog(@"%@", [anIcon.titleLabel description]);
+            
             anIcon.moduleTag = aModule.tag;
             [anIcon addTarget:self action:@selector(buttonPressed:) forControlEvents:UIControlEventTouchUpInside];
             [_icons addObject:anIcon];

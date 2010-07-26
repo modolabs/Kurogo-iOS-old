@@ -171,10 +171,6 @@
 		C77664FB11F64E74005496DD /* HallDetailsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C77664F911F64E74005496DD /* HallDetailsTableViewController.m */; };
 		C776675911F733E3005496DD /* DatePickerViewController.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = C776675711F733E3005496DD /* DatePickerViewController.h */; settings = {JAVA_ARCHIVE_SUBDIR = Modules/Calendar; }; };
 		C776675A11F733E3005496DD /* DatePickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C776675811F733E3005496DD /* DatePickerViewController.m */; };
-		C78243E911F8A2C1003B3E3E /* scrim-button-background.png in Resources */ = {isa = PBXBuildFile; fileRef = C78243E811F8A2C1003B3E3E /* scrim-button-background.png */; };
-		C78243EC11F8A2E2003B3E3E /* arrow-white-left.png in Resources */ = {isa = PBXBuildFile; fileRef = C78243EA11F8A2E2003B3E3E /* arrow-white-left.png */; };
-		C78243ED11F8A2E2003B3E3E /* arrow-white-right.png in Resources */ = {isa = PBXBuildFile; fileRef = C78243EB11F8A2E2003B3E3E /* arrow-white-right.png */; };
-		C782463E11F8E4DB003B3E3E /* body-background.png in Resources */ = {isa = PBXBuildFile; fileRef = C782463D11F8E4DB003B3E3E /* body-background.png */; };
 		C7824BDB11FA2F8B003B3E3E /* DiningHallStatus.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = C7824BD911FA2F8B003B3E3E /* DiningHallStatus.h */; settings = {JAVA_ARCHIVE_SUBDIR = Modules; }; };
 		C7824BDC11FA2F8B003B3E3E /* DiningHallStatus.m in Sources */ = {isa = PBXBuildFile; fileRef = C7824BDA11FA2F8B003B3E3E /* DiningHallStatus.m */; };
 		C7B897F111F535C8002B3619 /* HoursTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C7B897EF11F535C8002B3619 /* HoursTableViewController.m */; };
@@ -686,10 +682,6 @@
 		C77664F911F64E74005496DD /* HallDetailsTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HallDetailsTableViewController.m; sourceTree = "<group>"; };
 		C776675711F733E3005496DD /* DatePickerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DatePickerViewController.h; sourceTree = "<group>"; };
 		C776675811F733E3005496DD /* DatePickerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DatePickerViewController.m; sourceTree = "<group>"; };
-		C78243E811F8A2C1003B3E3E /* scrim-button-background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "scrim-button-background.png"; sourceTree = "<group>"; };
-		C78243EA11F8A2E2003B3E3E /* arrow-white-left.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "arrow-white-left.png"; sourceTree = "<group>"; };
-		C78243EB11F8A2E2003B3E3E /* arrow-white-right.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "arrow-white-right.png"; sourceTree = "<group>"; };
-		C782463D11F8E4DB003B3E3E /* body-background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "body-background.png"; sourceTree = "<group>"; };
 		C7824BD911FA2F8B003B3E3E /* DiningHallStatus.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DiningHallStatus.h; sourceTree = "<group>"; };
 		C7824BDA11FA2F8B003B3E3E /* DiningHallStatus.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DiningHallStatus.m; sourceTree = "<group>"; };
 		C7B897EF11F535C8002B3619 /* HoursTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = HoursTableViewController.m; path = Dining/HoursTableViewController.m; sourceTree = "<group>"; };
@@ -1155,10 +1147,6 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				C782463D11F8E4DB003B3E3E /* body-background.png */,
-				C78243EA11F8A2E2003B3E3E /* arrow-white-left.png */,
-				C78243EB11F8A2E2003B3E3E /* arrow-white-right.png */,
-				C78243E811F8A2C1003B3E3E /* scrim-button-background.png */,
 				EB49AD7B11F4BFFF00854791 /* news */,
 				EB49AD8211F4BFFF00854791 /* people */,
 				EB49AD8611F4BFFF00854791 /* shuttles */,
@@ -2123,10 +2111,6 @@
 				EB49AD9811F4BFFF00854791 /* news in Resources */,
 				EB49AD9911F4BFFF00854791 /* people in Resources */,
 				EB49AD9A11F4BFFF00854791 /* shuttles in Resources */,
-				C78243E911F8A2C1003B3E3E /* scrim-button-background.png in Resources */,
-				C78243EC11F8A2E2003B3E3E /* arrow-white-left.png in Resources */,
-				C78243ED11F8A2E2003B3E3E /* arrow-white-right.png in Resources */,
-				C782463E11F8E4DB003B3E3E /* body-background.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
