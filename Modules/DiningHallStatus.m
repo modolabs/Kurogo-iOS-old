@@ -8,10 +8,7 @@
 
 #import "DiningHallStatus.h"
 
-#define OPEN 1
-#define CLOSED 2
-#define NO_RESTRICTION 3
-#define RESTRICTED 4
+
 @implementation DiningHallStatus
 
 @synthesize breakfast_status;
@@ -24,6 +21,9 @@
 @synthesize bb_restriction;
 @synthesize brunch_status;
 @synthesize brunch_restriction;
+@synthesize currentMeal;
+@synthesize nextMeal;
+@synthesize currentMealTime;
 
 
 -(int)getStatusOfMeal:(NSString *)timeString usingDetails:(NSDictionary *)details {
@@ -177,34 +177,42 @@
 				breakfast_status = status;
 				breakfast_restriction = NO_RESTRICTION;
 				
-				if (status == OPEN)
-					current_meal_restriction = breakfast_restriction;					
+				if (status == OPEN) {
+					current_meal_restriction = breakfast_restriction;
+					currentMeal = @"Breakfast";
+				}
 				break;
 			case 1:
 				lunch_status = status;
 				lunch_restriction = restriction;
-				if (status == OPEN)
+				if (status == OPEN) {
 					current_meal_restriction = lunch_restriction;
-				
+					currentMeal = @"Lunch";
+				}
 				break;
 			case 2:
 				dinner_status = status;
 				dinner_restriction = restriction;
-				if (status == OPEN)
+				if (status == OPEN) {
 					current_meal_restriction = dinner_restriction;	
-				
+					currentMeal = @"Dinner";
+				}
 				break;
 			case 3:
 				bb_status = status;
 				bb_restriction = NO_RESTRICTION;
-				if (status == OPEN)
-					current_meal_restriction = bb_restriction;	
+				if (status == OPEN) {
+					current_meal_restriction = bb_restriction;
+					currentMeal = @"Brain-Break";
+				}
 				break;
 			case 4:
 				brunch_status = status;
 				brunch_restriction = restriction;
-				if (status == OPEN)
+				if (status == OPEN) {
 					current_meal_restriction = brunch_restriction;	
+					currentMeal = @"Brunch";
+				}
 				break;
 				
 		}

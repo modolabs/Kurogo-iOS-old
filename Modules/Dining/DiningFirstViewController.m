@@ -250,8 +250,7 @@ HarvardDiningAPI *mitapi;
 	
 		[_scrollView setContentSize:contentSize];
 
-		[_tabViewControl addTab:@"Breakfast"];
-	
+		[_tabViewControl addTab:@"Breakfast"];	
 		[_tabViews insertObject:_loadingResultView atIndex: kBreakfastTab];
 	
 		[_tabViewControl addTab:@"Lunch"];
@@ -278,8 +277,8 @@ HarvardDiningAPI *mitapi;
 		//_newsView = [[UIView alloc] init];
 		//[_newsView setBackgroundColor:[UIColor colorWithPatternImage:[[UIImage alloc] initWithContentsOfFile:@"global/body-background.png"]]];
 
-		[_tabViewControl addTab:@"News"];
-		[_tabViews insertObject:_newsView atIndex:kNewsTab];
+		//[_tabViewControl addTab:@"News"];
+		//[_tabViews insertObject:_newsView atIndex:kNewsTab];
 		
 			
 		_tabViewControl.hidden = NO;
@@ -332,27 +331,33 @@ HarvardDiningAPI *mitapi;
 	
 	}
 	
+	//label.backgroundColor = [UIColor colorWithPatternImage:[[UIImage alloc] initWithContentsOfFile:@"global/scrolltabs-background-opaque.png"]];
+	
 	// set Display Tab
 	[self tabControl:_tabViewControl changedToIndex:tabToOpen tabText:nil];
 	[_tabViewControl setNeedsDisplay];
 
-	[lunchTable applyStandardColors];
-	[breakfastTable applyStandardColors];
-	[dinnerTable applyStandardColors];
+	//[lunchTable applyStandardColors];
+	//[breakfastTable applyStandardColors];
+	//[dinnerTable applyStandardColors];
 	
 	self.view.backgroundColor = [UIColor clearColor];
 	nextDateButton.backgroundColor = [UIColor clearColor];
 	previousDateButton.backgroundColor = [UIColor clearColor];
-	breakfastViewLink.backgroundColor = [UIColor clearColor];
-	lunchViewLink.backgroundColor = [UIColor clearColor];
-	dinnerViewLink.backgroundColor = [UIColor clearColor];
-	lunchTable.backgroundColor = [UIColor clearColor];
-	dinnerTable.backgroundColor = [UIColor clearColor];
-	breakfastTable.backgroundColor = [UIColor clearColor];
-	_loadingResultView.backgroundColor = [UIColor clearColor];
-	_newsView.backgroundColor = [UIColor clearColor];
-	_tabViewControl.backgroundColor = [UIColor clearColor];
-	_tabViewContainer.backgroundColor = [UIColor clearColor];
+	//breakfastViewLink.backgroundColor = [UIColor clearColor];
+	//lunchViewLink.backgroundColor = [UIColor clearColor];
+	//dinnerViewLink.backgroundColor = [UIColor clearColor];
+
+	
+	//_loadingResultView.backgroundColor = [UIColor clearColor];
+	//_newsView.backgroundColor = [UIColor clearColor];
+	//_tabViewControl.backgroundColor = [UIColor clearColor];
+	//_tabViewContainer.backgroundColor = [UIColor clearColor];
+	
+	
+	//lunchTable.backgroundColor = [UIColor clearColor];
+	//dinnerTable.backgroundColor = [UIColor clearColor];
+	//breakfastTable.backgroundColor = [UIColor clearColor];
 }
 
 
@@ -589,7 +594,19 @@ numberOfRowsInSection:(NSInteger)section
 	
 	cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 	cell.selectionStyle = UITableViewCellSelectionStyleGray;
-
+	
+	/*
+	UIView* backgroundView = [ [ [ UIView alloc ] initWithFrame:CGRectZero ] autorelease ];
+	backgroundView.backgroundColor = [ UIColor grayColor ];
+	//cell.backgroundView = backgroundView;
+	
+	//cell.contentView = backgroundView;
+	
+	for ( UIView* view in cell.contentView.subviews ) 
+	{
+		view.backgroundColor = [ UIColor clearColor ];
+	}*/
+	
 	return cell;
 	
 }
