@@ -136,6 +136,8 @@
 		44C1A3CF11A33905000FD653 /* MapSelectionController.m in Sources */ = {isa = PBXBuildFile; fileRef = 44C1A3CD11A33905000FD653 /* MapSelectionController.m */; };
 		44C1A4C411A412E2000FD653 /* MapSearch.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = 44C1A4C211A412E2000FD653 /* MapSearch.h */; settings = {JAVA_ARCHIVE_SUBDIR = "Modules/Campus Map/CampusMap.xcdatamodeld"; }; };
 		44C1A4C511A412E2000FD653 /* MapSearch.m in Sources */ = {isa = PBXBuildFile; fileRef = 44C1A4C311A412E2000FD653 /* MapSearch.m */; };
+		A64C313D11FDFAB8006FE056 /* AddressFormatter.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = A64C313B11FDFAB8006FE056 /* AddressFormatter.h */; settings = {JAVA_ARCHIVE_SUBDIR = Common; }; };
+		A64C313E11FDFAB8006FE056 /* AddressFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = A64C313C11FDFAB8006FE056 /* AddressFormatter.m */; };
 		A6787A1611F605070034D559 /* NSArray+Convenience.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = A6787A1411F605070034D559 /* NSArray+Convenience.h */; settings = {JAVA_ARCHIVE_SUBDIR = Common; }; };
 		A6787A1711F605070034D559 /* NSArray+Convenience.m in Sources */ = {isa = PBXBuildFile; fileRef = A6787A1511F605070034D559 /* NSArray+Convenience.m */; };
 		A69A28A811F0258800B1D365 /* PersonDetails+Methods.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = A69A28A611F0258800B1D365 /* PersonDetails+Methods.h */; settings = {JAVA_ARCHIVE_SUBDIR = Modules/People/Model; }; };
@@ -639,6 +641,8 @@
 		44C1A4C211A412E2000FD653 /* MapSearch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MapSearch.h; sourceTree = "<group>"; };
 		44C1A4C311A412E2000FD653 /* MapSearch.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MapSearch.m; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* MIT_Mobile-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "MIT_Mobile-Info.plist"; plistStructureDefinitionIdentifier = "com.apple.xcode.plist.structure-definition.iphone.info-plist"; sourceTree = "<group>"; };
+		A64C313B11FDFAB8006FE056 /* AddressFormatter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddressFormatter.h; sourceTree = "<group>"; };
+		A64C313C11FDFAB8006FE056 /* AddressFormatter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddressFormatter.m; sourceTree = "<group>"; };
 		A6787A1411F605070034D559 /* NSArray+Convenience.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSArray+Convenience.h"; sourceTree = "<group>"; };
 		A6787A1511F605070034D559 /* NSArray+Convenience.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSArray+Convenience.m"; sourceTree = "<group>"; };
 		A69A28A611F0258800B1D365 /* PersonDetails+Methods.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "PersonDetails+Methods.h"; sourceTree = "<group>"; };
@@ -1068,6 +1072,7 @@
 			children = (
 				EB7BA75811F9CE7B00B3DDA6 /* MultiLineTableViewCell.h */,
 				EB7BA75911F9CE7B00B3DDA6 /* MultiLineTableViewCell.m */,
+				A64C313A11FDFAA1006FE056 /* Utilities */,
 				29C454BE118B61CA00A321B0 /* SFHFKeychainUtils.h */,
 				29C454BF118B61CA00A321B0 /* SFHFKeychainUtils.m */,
 				29C45423118B55E100A321B0 /* Twitter+OAuth */,
@@ -1340,6 +1345,15 @@
 				4499341D11A5E53D00A7041B /* CategoriesTableViewController.m */,
 			);
 			name = Selection;
+			sourceTree = "<group>";
+		};
+		A64C313A11FDFAA1006FE056 /* Utilities */ = {
+			isa = PBXGroup;
+			children = (
+				A64C313B11FDFAB8006FE056 /* AddressFormatter.h */,
+				A64C313C11FDFAB8006FE056 /* AddressFormatter.m */,
+			);
+			name = Utilities;
 			sourceTree = "<group>";
 		};
 		BD1E92F3103B5D60004429AA /* JSON */ = {
@@ -2030,6 +2044,7 @@
 				EB7BA75A11F9CE7B00B3DDA6 /* MultiLineTableViewCell.h in JavaArchive */,
 				EB3721AA11FA2F5200705180 /* NewsImage.h in JavaArchive */,
 				C7824BDB11FA2F8B003B3E3E /* DiningHallStatus.h in JavaArchive */,
+				A64C313D11FDFAB8006FE056 /* AddressFormatter.h in JavaArchive */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2458,6 +2473,7 @@
 				EB7BA75B11F9CE7B00B3DDA6 /* MultiLineTableViewCell.m in Sources */,
 				EB3721AB11FA2F5200705180 /* NewsImage.m in Sources */,
 				C7824BDC11FA2F8B003B3E3E /* DiningHallStatus.m in Sources */,
+				A64C313E11FDFAB8006FE056 /* AddressFormatter.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
