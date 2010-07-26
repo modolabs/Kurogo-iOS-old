@@ -814,7 +814,7 @@ static NSInteger numTries = 0;
 
     switch (indexPath.section) {
         case 0: {
-            if (indexPath.row == 0 && self.featuredStory != nil) {
+            if (indexPath.row == 0 && self.searchResults == nil && self.featuredStory != nil) {
                 rowHeight = FEATURE_IMAGE_HEIGHT;
             } else if (indexPath.row < self.stories.count) {
                 rowHeight = THUMBNAIL_WIDTH;
@@ -835,7 +835,7 @@ static NSInteger numTries = 0;
     
     switch (indexPath.section) {
         case 0: {
-            if (indexPath.row == 0 && self.featuredStory != nil) {
+            if (indexPath.row == 0 && self.searchResults == nil && self.featuredStory != nil) {
                 
                 NewsStory *story = self.featuredStory;
                 
@@ -1135,7 +1135,6 @@ static NSInteger numTries = 0;
             [newCategories addObject:aCategory];
         }
         self.categories = newCategories;
-        //NSLog(@"we now have categories %@", [self.categories description]);
         [CoreDataManager saveData];
         
         [self setupNavScroller];
