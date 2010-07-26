@@ -153,12 +153,16 @@
     if (self = [super init]) {
         _size = [ringPoints count];
         _coordinates = malloc(sizeof(CLLocationCoordinate2D) * _size);
-        for (NSInteger i = 0; i < _size; i++) {
-            NSArray *pointArray = [ringPoints objectAtIndex:i];
-            CGPoint point = CGPointMake([[pointArray objectAtIndex:0] doubleValue], [[pointArray objectAtIndex:1] doubleValue]);
-            CLLocationCoordinate2D coord = [TileServerManager coordForProjectedPoint:point];
-            _coordinates[i] = coord;
-        }
+		// TileServerManager coordForProjectedPoint will crash when it calls pj_transform if you don't check for this
+		// under a certain race condition. Usually: no breakpoints, first run on the device or simulator.
+		if ([TileServerManager isInitialized]) {
+			for (NSInteger i = 0; i < _size; i++) {
+				NSArray *pointArray = [ringPoints objectAtIndex:i];
+				CGPoint point = CGPointMake([[pointArray objectAtIndex:0] doubleValue], [[pointArray objectAtIndex:1] doubleValue]);
+				CLLocationCoordinate2D coord = [TileServerManager coordForProjectedPoint:point];
+				_coordinates[i] = coord;
+			}
+		}
     }
     return self;
 }
