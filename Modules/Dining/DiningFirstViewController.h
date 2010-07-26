@@ -15,12 +15,13 @@
 #import "HoursTableViewController.h"
 #import "JSONAPIRequest.h"
 #import "Constants.h";
+#import "DatePickerViewController.h"
 
 
 @class MenuDetailsController;
 @class HoursTableViewController;
 
-@interface DiningFirstViewController : UIViewController <TabViewControlDelegate, UITableViewDelegate, UITableViewDataSource, JSONLoadedDelegate>
+@interface DiningFirstViewController : UIViewController <TabViewControlDelegate, UITableViewDelegate, UITableViewDataSource, JSONLoadedDelegate, DatePickerViewControllerDelegate>
 {
 	IBOutlet DiningTabViewControl *_tabViewControl;
 	IBOutlet UIView *_tabViewContainer;
@@ -28,11 +29,9 @@
 	IBOutlet UIView* lunchViewLink;
 	IBOutlet UIView* dinnerViewLink;
 	IBOutlet UIView *breakfastViewLink;
-	IBOutlet UIView *_newsView;
 	IBOutlet UIView *_hoursView;
 	IBOutlet UIView *_loadingResultView;
 	IBOutlet UIView *_noResultsView;
-	IBOutlet UIActivityIndicatorView *_activityIndicator;	
 	IBOutlet UITableView *breakfastTable;
 	IBOutlet UITableView *lunchTable;
 	IBOutlet UITableView *dinnerTable;
@@ -40,7 +39,8 @@
 	IBOutlet UITableView *hoursTableView;
 	HoursTableViewController *tableControl;
 
-	UILabel *label;
+	UIView *datePicker;
+	UIView *loadingIndicator;
 	CGFloat _tabViewContainerMinHeight;
 		
 	NSMutableArray *_tabViews;
@@ -55,10 +55,7 @@
 	NSDictionary *_bkfstDict;
 	NSDictionary *_lunchDict;
 	NSDictionary *_dinnerDict;
-	
-	UIButton *nextDateButton;
-	UIButton *previousDateButton;
-	
+
 	NSDate *todayDate;
 	
 	BOOL _firstViewDone;
@@ -66,8 +63,6 @@
 }
 
 @property int startingTab;
-@property (nonatomic, retain) IBOutlet UILabel *label;
-
 @property (nonatomic, retain) NSArray *list;
 @property (nonatomic, retain) NSArray *_bkfstList;
 @property (nonatomic, retain) NSArray *_lunchList;
@@ -79,14 +74,13 @@
 @property (nonatomic, retain) NSDictionary *_dinnerDict;
 
 @property (nonatomic, retain) NSDate *todayDate;
-
-@property (nonatomic, retain) IBOutlet UIButton *nextDateButton;
-@property (nonatomic, retain) IBOutlet UIButton *previousDateButton;
-
 @property (nonatomic, retain) IBOutlet UITableView *hoursTableView;
 
 -(IBAction)nextButtonPressed;
 -(IBAction)previousButtonPressed;
+
+- (void)addLoadingIndicator;
+- (void)removeLoadingIndicator;
 
 @end
 

@@ -25,5 +25,6 @@
 
 @property (nonatomic, retain) NSDate *date;
 @property (nonatomic, assign) id<DatePickerViewControllerDelegate> delegate;
+@property (nonatomic, retain) UIDatePicker *datePicker;
 
 @end

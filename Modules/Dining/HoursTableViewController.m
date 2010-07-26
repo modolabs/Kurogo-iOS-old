@@ -198,6 +198,7 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 	
 	self.hallProperties = properties;
 	[self.tableView reloadData];
+	[parentViewController removeLoadingIndicator];
 }
 
 
