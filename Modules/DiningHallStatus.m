@@ -24,7 +24,11 @@
 @synthesize currentMeal;
 @synthesize nextMeal;
 @synthesize currentMealTime;
+@synthesize nextMealRestriction;
+@synthesize nextMealTime;
 
+
+int timeToNextMeal;  //starting with ONE DAY
 
 -(int)getStatusOfMeal:(NSString *)timeString usingDetails:(NSDictionary *)details {
 	
@@ -43,7 +47,7 @@
 	
 	[dateFormat setDateFormat:@"EEEE"];
 	dayOfWeek= [dateFormat stringFromDate:today];
-	
+	timeToNextMeal = 24*60*60;
 	for (int index=0; index < 5; index++) {
 		switch (index) {
 			case 0:
@@ -101,15 +105,13 @@
 		
 		if (![timeStr isEqualToString:@"NA"]) {
 			
-			status = [self getStatus:timeStr];
+			status = [self getStatus:timeStr mealTime:index];
 		}
 		
 		else {
 			status = CLOSED;
 		}
-		
 			
-		
 		NSDictionary *restrictions = [details objectForKey:restrictionKey];
 		message  = [[restrictions valueForKey:@"message"] description];
 
@@ -180,6 +182,7 @@
 				if (status == OPEN) {
 					current_meal_restriction = breakfast_restriction;
 					currentMeal = @"Breakfast";
+					currentMealTime = timeStr;
 				}
 				break;
 			case 1:
@@ -188,6 +191,7 @@
 				if (status == OPEN) {
 					current_meal_restriction = lunch_restriction;
 					currentMeal = @"Lunch";
+					currentMealTime = timeStr;
 				}
 				break;
 			case 2:
@@ -196,6 +200,7 @@
 				if (status == OPEN) {
 					current_meal_restriction = dinner_restriction;	
 					currentMeal = @"Dinner";
+					currentMealTime = timeStr;
 				}
 				break;
 			case 3:
@@ -204,6 +209,7 @@
 				if (status == OPEN) {
 					current_meal_restriction = bb_restriction;
 					currentMeal = @"Brain-Break";
+					currentMealTime = timeStr;
 				}
 				break;
 			case 4:
@@ -212,8 +218,11 @@
 				if (status == OPEN) {
 					current_meal_restriction = brunch_restriction;	
 					currentMeal = @"Brunch";
+					currentMealTime = timeStr;
 				}
 				break;
+				
+				
 				
 		}
 	}
@@ -228,13 +237,25 @@
 		}
 	}
 	else {
+		
+		if ([nextMeal isEqualToString:@"Breakfast"])
+				nextMealRestriction = breakfast_restriction;
+		else if ([nextMeal isEqualToString:@"Lunch"])
+			nextMealRestriction = lunch_restriction;
+		else if ([nextMeal isEqualToString:@"Dinner"])
+			nextMealRestriction = dinner_restriction;
+		else if ([nextMeal isEqualToString:@"Brain-Break"])
+			nextMealRestriction = bb_restriction;
+		else if ([nextMeal isEqualToString:@"Brunch"])
+			nextMealRestriction = brunch_restriction;
+		
 		return CLOSED;
 	}
 }
 
 
 
--(int)getStatus:(NSString *)timeString {
+-(int)getStatus:(NSString *)timeString mealTime:(int)mealIndex{
 	
 	
 	NSString *comp1;
@@ -276,10 +297,6 @@
 	// Display the Date in the Expected Format: Saturday, June 25
 	NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
 	[dateFormat setDateFormat:@"EEEE MMMM d"];
-	NSString *dateString = [dateFormat stringFromDate:today];
-	
-	[dateFormat setDateFormat:@"EEEE"];
-	NSString *day = [dateFormat stringFromDate:today];
 	
 	[dateFormat setDateFormat:@"HH:mm"];
 	NSString *time = [dateFormat stringFromDate:today];
@@ -292,10 +309,33 @@
 	if ((now >= start) && (now < end))
 		return OPEN;
 	
-	else
-		return CLOSED;
-	
-	return; 
+	else {
+		if (((start - now) >= 0) && ((start - now) < timeToNextMeal)) {
+			timeToNextMeal = (start - now);
+			
+			switch (mealIndex) {
+				case 0:
+					nextMeal = @"Breakfast";
+					break;
+				case 1:
+					nextMeal = @"Lunch";
+					break;
+				case 2:
+					nextMeal = @"Dinner";
+					break;
+				case 3:
+					nextMeal = @"Brain-Break";
+					break;
+				case 4:
+					nextMeal = @"Brunch";
+					break;
+			}
+		}
+		nextMealTime = timeString;
+		
+	return CLOSED;
+	}
+
 }
 
 
@@ -323,7 +363,6 @@
 	
 	if (range.location != NSNotFound) {
 		component = [component stringByReplacingOccurrencesOfString:@"Noon" withString:@"12:00"];
-		//hours +=  12;
 	}
 	
 	NSString *hourString = [[[component componentsSeparatedByString:@":"] objectAtIndex:0] description];
@@ -335,6 +374,5 @@
 	return (hours*60*60 + mins*60);
 	
 }
-
 
 @end
