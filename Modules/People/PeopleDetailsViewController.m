@@ -9,6 +9,7 @@
 #import "Foundation+MITAdditions.h"
 #import "ModoNavigationController.h"
 #import "NSArray+Convenience.h"
+#import "AddressFormatter.h"
 
 @implementation PeopleDetailsViewController
 
@@ -506,9 +507,13 @@
 #pragma mark -
 #pragma mark App-switching actions
 
-- (void)mapIconTapped:(NSString *)room
+- (void)mapIconTapped:(NSString *)address
 {
-	[[UIApplication sharedApplication] openURL:[NSURL internalURLWithModuleTag:CampusMapTag path:@"search" query:room]];	
+	// Harvard's ARCGIS server allows searches to one field at a time: Building Name, Address, or City (which is useless). 
+	// Address usually yields the best results, so we'll pass that.
+	[[UIApplication sharedApplication] openURL:
+	 [NSURL internalURLWithModuleTag:CampusMapTag path:@"search" 
+							   query:[AddressFormatter streetAddressFromAddressBlockText:address]]];
 }
 
 - (void)phoneIconTapped:(NSString *)phone

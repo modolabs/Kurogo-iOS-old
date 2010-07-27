@@ -312,8 +312,8 @@ NSInteger strLenSort(NSString *str1, NSString *str2, void *context)
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
 	if (tableView == self.tableView) {
 		switch (section) {
-			case 0: // phone directory & emergency contacts
-				return 2;
+			case 0: // phone directory
+				return 1;
 				break;
 			case 1: // recently viewed
 				return [[[PeopleRecentsData sharedData] recents] count];
@@ -347,10 +347,7 @@ NSInteger strLenSort(NSString *str1, NSString *str2, void *context)
 					cell.textLabel.text = @"Phone Directory";
 					[(SecondaryGroupedTableViewCell *)cell secondaryTextLabel].text = @"(617.495.1000)";
 					cell.accessoryView = [UIImageView accessoryViewWithMITType:MITAccessoryViewPhone];
-				} else {
-					cell.textLabel.text = @"Emergency Contacts";
-					cell.accessoryView = [UIImageView accessoryViewWithMITType:MITAccessoryViewEmergency];
-				}
+				} 
 			}
 		
 		} else { // recents
@@ -496,19 +493,14 @@ NSInteger strLenSort(NSString *str1, NSString *str2, void *context)
 		[self.navigationController pushViewController:detailView animated:YES];
 		[detailView release];
 		
-	} else { // we are on home screen and user selected phone or emergency contacts
+	} else { // we are on home screen and user selected phone
 		
 		switch (indexPath.row) {
 			case 0:
 				[self phoneIconTapped];				
 				[self.tableView deselectRowAtIndexPath:indexPath animated:YES];
 				break;
-			case 1: // push emergency contacts
-			{
-                [[UIApplication sharedApplication] openURL:[NSURL internalURLWithModuleTag:EmergencyTag path:@"contacts"]];
-				[self.tableView deselectRowAtIndexPath:indexPath animated:NO];
-				break;
-			}
+				// Leaving switch statement around in case we add other cells here.
 		}
 	}
 }

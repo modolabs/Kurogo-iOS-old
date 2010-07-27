@@ -328,3 +328,9 @@ testSuite1();
 testSuite2();
 testSuite3();
 
+// Don't have time to automate this at the moment, but you should look at addresses for the following people each regression check:
+// Leonard Wisniewski
+// Judith Murciano
+// David Carrasco
+// Rustam Ibragimov
+
