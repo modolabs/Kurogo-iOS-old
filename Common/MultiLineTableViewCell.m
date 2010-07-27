@@ -27,7 +27,7 @@
                 switch (accessoryType) {
                     case UITableViewCellAccessoryCheckmark:
                     case UITableViewCellAccessoryDetailDisclosureButton:
-                        width -= 10.0;
+                        width -= 20.0;
                         break;
                     case UITableViewCellAccessoryDisclosureIndicator:
                         width -= 15.0;
