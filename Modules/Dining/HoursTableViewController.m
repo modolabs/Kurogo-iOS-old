@@ -17,14 +17,6 @@
 #pragma mark -
 #pragma mark Initialization
 
-/*
-- (id)initWithStyle:(UITableViewStyle)style {
-    // Override initWithStyle: if you create the controller programmatically and want to perform customization that is not appropriate for viewDidLoad.
-    if ((self = [super initWithStyle:style])) {
-    }
-    return self;
-}
-*/
 
 #pragma mark -
 #pragma mark View lifecycle
@@ -34,31 +26,13 @@
     [super viewDidLoad];
 	[self.tableView applyStandardColors];
 
-    // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-    // self.navigationItem.rightBarButtonItem = self.editButtonItem;
 }
 
 
-/*
-- (void)viewWillAppear:(BOOL)animated {
-    [super viewWillAppear:animated];
-}
-*/
-/*
-- (void)viewDidAppear:(BOOL)animated {
-    [super viewDidAppear:animated];
-}
-*/
 
 
 #pragma mark -
 #pragma mark Table view data source
-/*
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    // Return the number of sections.
-    return 1;
-}*/
-
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     // Return the number of rows in the section.
@@ -124,7 +98,7 @@
 		statString = [statString stringByAppendingString:status.currentMealTime];
 		//cell.detailTextLabel.text = statString;
 		
-		cell.detailTextLabel.text = [NSString stringWithFormat:@"%@\n,No Interhouse"];
+		cell.detailTextLabel.text = [NSString stringWithFormat:@"%@\nNo Interhouse", statString];
 		UIImage *image = [UIImage imageNamed:@"maps/map_pin.png"];
 		cell.imageView.image = image;
 	}
@@ -195,15 +169,11 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 	int stat = [status getStatusOfMeal:@"" usingDetails:[self.hallProperties objectAtIndex:row]];
 
 	if (stat == 1)
-		return 40.0;
+		return 45.0;
 	
 	else {
 		return 60.0;
-	}
-
-	
-	
-	
+	}	
 }
 
 #pragma mark -
@@ -249,7 +219,7 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
 	
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Connection Failed"
-                                                    message:@"Could not retrieve The Dining Halls Infomation"
+                                                    message:@"Could not retrieve The Dining Halls Hours"
                                                    delegate:nil
                                           cancelButtonTitle:@"OK"
                                           otherButtonTitles:nil];

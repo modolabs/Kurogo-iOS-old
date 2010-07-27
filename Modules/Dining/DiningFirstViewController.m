@@ -41,7 +41,7 @@
 NSInteger tabRequestingInfo; // In order to prevent Race conditions for the selected tab and JSONDelegate loaded data
 
 BOOL requestDispatched = NO;
-HarvardDiningAPI *mitapi;
+JSONAPIRequest *mitapi;
 
 -(void)requestBreakfastData
 {
@@ -60,20 +60,8 @@ HarvardDiningAPI *mitapi;
 	NSString *dateString = [dateFormat stringFromDate:self.todayDate];
 	[dateFormat release];
 
-	mitapi = [[HarvardDiningAPI alloc] initWithJSONLoadedDelegate:self];	
-	
-	/*
-	NSString *bkfst = [dateString stringByAppendingString:@"&meal=Breakfast&output=json"];
-	
-	
-	NSMutableDictionary *dataDict = [[NSDictionary alloc] init];
-	
-	
-	if ([mitapi requestObject:dataDict pathExtension: bkfst] == YES)
-	{
-		// set the requesting Tab index to the correct one
-		tabRequestingInfo = kBreakfastTab;
-	}*/
+	mitapi = [[JSONAPIRequest alloc] initWithJSONAPIDelegate:self];	
+
 	
 	if ([mitapi requestObjectFromModule:@"dining" 
 								command:@"breakfast" 
@@ -83,8 +71,7 @@ HarvardDiningAPI *mitapi;
 		tabRequestingInfo = kBreakfastTab;	
 		requestDispatched = YES;
 	}
-	
-	//[mitapi release];
+
 }
 
 -(void)requestLunchData
@@ -104,20 +91,8 @@ HarvardDiningAPI *mitapi;
 	NSString *dateString = [dateFormat stringFromDate:self.todayDate];
 	[dateFormat release];
 	
-	mitapi = [[HarvardDiningAPI alloc] initWithJSONLoadedDelegate:self];	
-	
-	/*
-	NSString *lunch = [dateString stringByAppendingString:@"&meal=Lunch&output=json"];
-	
-	
-	NSMutableDictionary *dataDict = [[NSDictionary alloc] init];
-	
-	
-	if ([mitapi requestObject:dataDict pathExtension: lunch] == YES)
-	{
-		// set the requesting Tab index to the correct one
-		tabRequestingInfo = kLunchTab;
-	}*/
+	mitapi = [[JSONAPIRequest alloc] initWithJSONAPIDelegate:self];	
+
 	
 	if ([mitapi requestObjectFromModule:@"dining" 
 								command:@"lunch" 
@@ -127,9 +102,7 @@ HarvardDiningAPI *mitapi;
 		tabRequestingInfo = kLunchTab;	
 		requestDispatched = YES;
 	}
-	
-	//[mitapi release];
-	
+
 	
 }
 
@@ -150,21 +123,7 @@ HarvardDiningAPI *mitapi;
 	NSString *dateString = [dateFormat stringFromDate:self.todayDate];
 	[dateFormat release];
 	
-	mitapi = [[HarvardDiningAPI alloc] initWithJSONLoadedDelegate:self];	
-	
-	/*
-	NSString *dinner = [dateString stringByAppendingString:@"&meal=Dinner&output=json"];
-	
-	
-	NSMutableDictionary *dataDict = [[NSDictionary alloc] init];
-	
-	
-	if ([mitapi requestObject:dataDict pathExtension: dinner] == YES)
-	{
-		// set the requesting Tab index to the correct one
-		tabRequestingInfo = kDinnerTab;
-	}*/
-	
+	mitapi = [[JSONAPIRequest alloc] initWithJSONAPIDelegate:self];	
 	if ([mitapi requestObjectFromModule:@"dining" 
 								command:@"dinner" 
 							 parameters:[NSDictionary dictionaryWithObjectsAndKeys:dateString, @"date", nil]] == YES)
@@ -173,9 +132,7 @@ HarvardDiningAPI *mitapi;
 		tabRequestingInfo = kDinnerTab;	
 		requestDispatched = YES;
 	}
-	
-	//[mitapi release];
-	
+
 }
 
 
@@ -188,7 +145,24 @@ HarvardDiningAPI *mitapi;
     [offsetComponents release];
 	[gregorian release];
 	
-	self.todayDate = nextDate;	
+	NSDate *maxDate = [NSDate dateWithTimeIntervalSinceNow:-7*24*60*60];
+	
+	if ([maxDate compare:nextDate] == NSOrderedAscending)
+		self.todayDate = nextDate;	
+	
+	else {
+		
+		UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Cannot Select Date"
+														message:@"Can Only Retrieve Menus Up To One Week Back"
+													   delegate:nil
+											  cancelButtonTitle:@"OK"
+											  otherButtonTitles:nil];
+		
+		[alert show];
+		[alert release];
+	}
+	
+
 
 	[self viewDidLoad];
 
@@ -203,10 +177,26 @@ HarvardDiningAPI *mitapi;
     NSDate *nextDate = [gregorian dateByAddingComponents:offsetComponents toDate:self.todayDate options:0];
     [offsetComponents release];
 	[gregorian release];
+		
+	NSDate *maxDate = [NSDate dateWithTimeIntervalSinceNow:7*24*60*60];
 	
-	self.todayDate = nextDate;	
+	if ([maxDate compare:nextDate] == NSOrderedDescending)
+		self.todayDate = nextDate;	
+	
+	else {
+		
+		UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Cannot Select Date"
+														message:@"Can Only Retrieve Menus Up To One Week Ahead"
+													   delegate:nil
+											  cancelButtonTitle:@"OK"
+											  otherButtonTitles:nil];
+		
+		[alert show];
+		[alert release];
+	}
 
 
+	
 	[self viewDidLoad];
 }
 
@@ -746,7 +736,7 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 #pragma mark -
 #pragma mark JSONLoadedDelegate Method
 
-- (void)request:(HarvardDiningAPI *)request jsonLoaded:(id)JSONObject;
+- (void)request:(JSONAPIRequest *)request jsonLoaded:(id)JSONObject;
 {
 
 	if ([_tabViewControl selectedTab] == tabRequestingInfo)
@@ -817,6 +807,19 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 	requestDispatched = NO;
 	
 	
+}
+
+- (void)handleConnectionFailureForRequest:(JSONAPIRequest *)request
+{
+	
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Connection Failed"
+                                                    message:@"Could not retrieve Dining Hall Menus"
+                                                   delegate:nil
+                                          cancelButtonTitle:@"OK"
+                                          otherButtonTitles:nil];
+	
+    [alert show];
+    [alert release];
 }
 
 

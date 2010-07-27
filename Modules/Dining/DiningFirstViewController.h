@@ -9,7 +9,6 @@
 #import <UIKit/UIKit.h>
 #import "DiningTabViewControl.h"
 #import "ConnectionWrapper.h"
-#import "HarvardDiningAPI.h"
 #import "MenuItems.h"
 #import "MIT_MobileAppDelegate.h"
 #import "HoursTableViewController.h"
@@ -21,7 +20,7 @@
 @class MenuDetailsController;
 @class HoursTableViewController;
 
-@interface DiningFirstViewController : UIViewController <TabViewControlDelegate, UITableViewDelegate, UITableViewDataSource, JSONLoadedDelegate, DatePickerViewControllerDelegate>
+@interface DiningFirstViewController : UIViewController <TabViewControlDelegate, UITableViewDelegate, UITableViewDataSource, JSONAPIDelegate, DatePickerViewControllerDelegate>
 {
 	IBOutlet DiningTabViewControl *_tabViewControl;
 	IBOutlet UIView *_tabViewContainer;
@@ -81,6 +80,8 @@
 
 - (void)addLoadingIndicator;
 - (void)removeLoadingIndicator;
+
+- (void) setupDatePicker;
 
 @end
 
