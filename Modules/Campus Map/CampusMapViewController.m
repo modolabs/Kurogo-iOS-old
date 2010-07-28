@@ -31,6 +31,8 @@
 -(void) noSearchResultsAlert;
 -(void) errorConnectingAlert;
 -(void) saveRegion;					// a convenience method for saving the mapView's current region (for saving state)
+- (void)setUpAnnotationsWithNewSearchResults:(NSArray*)searchResults forQuery:(NSString *)searchQuery;
+- (void)handleTileServerManagerProjectionIsReady:(NSNotification *)notification;
 
 @end
 
@@ -44,6 +46,8 @@
 @synthesize searchBar = _searchBar;
 @synthesize url;
 @synthesize campusMapModule = _campusMapModule;
+@synthesize unprocessedSearchResults;
+@synthesize unprocessedSearchResultsQuery;
 
 // Implement loadView to create a view hierarchy programmatically, without using a nib.
 - (void)loadView {
@@ -96,7 +100,6 @@
 
 - (void)viewDidLoad {
 	[super viewDidLoad];
-    [TileServerManager registerMapView:_mapView];
 	
 	// turn on the location dot
 	_mapView.showsUserLocation = YES;
@@ -373,6 +376,43 @@
 	//NSLog(@"saved region");
 }
 
+- (void)setUpAnnotationsWithNewSearchResults:(NSArray*)searchResults forQuery:(NSString *)searchQuery {
+	
+	NSMutableArray* searchResultsArr = [NSMutableArray arrayWithCapacity:searchResults.count];
+	
+	// Don't try to create ArcGISMapSearchResultAnnotations before TileServerManager is ready. You'll get 
+	// garbage which will cause a SIGABRT when you try to set the map region.
+	if ([TileServerManager isInitialized])
+	{
+		for (NSDictionary* info in searchResults)
+		{
+			ArcGISMapSearchResultAnnotation *annotation = [[[ArcGISMapSearchResultAnnotation alloc] initWithInfo:info] autorelease];
+			[searchResultsArr addObject:annotation];
+		}
+		
+		// this will remove old annotations and add the new ones. 
+		self.searchResults = searchResultsArr;
+		
+		NSString* docsFolder = [NSHomeDirectory() stringByAppendingPathComponent:@"Documents"];
+		NSString* searchResultsFilename = [docsFolder stringByAppendingPathComponent:@"searchResults.plist"];
+		[searchResults writeToFile:searchResultsFilename atomically:YES];
+		[[NSUserDefaults standardUserDefaults] setObject:searchQuery forKey:CachedMapSearchQueryKey];
+	}
+}
+
+- (void)handleTileServerManagerProjectionIsReady:(NSNotification *)notification {
+	// If there's unprocessed search results that have been waiting around, get them into annotations.
+	if (unprocessedSearchResults) {
+		DLog(@"Processing stored search results for query %@.", unprocessedSearchResultsQuery);
+		[self setUpAnnotationsWithNewSearchResults:unprocessedSearchResults forQuery:unprocessedSearchResultsQuery];
+		// The map's region and span should be set correctly at this point.
+		self.unprocessedSearchResults = nil;
+		self.unprocessedSearchResultsQuery = nil;
+	}
+	
+	[[NSNotificationCenter defaultCenter] removeObserver:self];	
+}
+
 #pragma mark UIAlertViewDelegate
 -(void) alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
@@ -484,33 +524,29 @@
 	
 }
 
--(void) receivedNewSearchResults:(NSArray*)searchResults forQuery:(NSString *)searchQuery
+-(void)receivedNewSearchResults:(NSArray*)theSearchResults forQuery:(NSString *)searchQuery
 {
 	// clear the map view's annotations, and add new ones for these search results
 	//[_mapView removeAnnotations:_searchResults];
 	//[_searchResults release];
 	//_searchResults = nil;
 	
-	NSMutableArray* searchResultsArr = [NSMutableArray arrayWithCapacity:searchResults.count];
-	
-	// Don't try to create ArcGISMapSearchResultAnnotations before TileServerManager is ready. You'll get 
-	// garbage which will cause a SIGABRT when you try to set the map region.
-	if ([TileServerManager isInitialized])
-	{
-		for (NSDictionary* info in searchResults)
-		{
-			ArcGISMapSearchResultAnnotation *annotation = [[[ArcGISMapSearchResultAnnotation alloc] initWithInfo:info] autorelease];
-			[searchResultsArr addObject:annotation];
-		}
-		
-		// this will remove old annotations and add the new ones. 
-		self.searchResults = searchResultsArr;
-		
-		NSString* docsFolder = [NSHomeDirectory() stringByAppendingPathComponent:@"Documents"];
-		NSString* searchResultsFilename = [docsFolder stringByAppendingPathComponent:@"searchResults.plist"];
-		[searchResults writeToFile:searchResultsFilename atomically:YES];
-		[[NSUserDefaults standardUserDefaults] setObject:searchQuery forKey:CachedMapSearchQueryKey];
+	if ([TileServerManager isInitialized]) {
+		DLog(@"Received new search results for query %@, and TileServerManager is ready.", searchQuery);
+		[self setUpAnnotationsWithNewSearchResults:theSearchResults forQuery:searchQuery];
 	}
+	else {
+		DLog(@"Received new search results for query %@, but TileServerManager is not ready yet.", searchQuery);
+		// TileServerManager is not ready yet, so hold onto the search results and sign up for a 
+		// notification from TileServerManager so they can be used when it's ready.
+		self.unprocessedSearchResults = theSearchResults;
+		self.unprocessedSearchResultsQuery = searchQuery;
+		[[NSNotificationCenter defaultCenter] addObserver:self 
+												 selector:@selector(handleTileServerManagerProjectionIsReady:) 
+													 name:kTileServerManagerProjectionIsReady
+												   object:nil];
+	}
+
 	
 	/*
 	// if we have 2 view controllers, push a new search results controller onto the stack

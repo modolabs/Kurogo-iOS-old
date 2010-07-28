@@ -1,6 +1,7 @@
 #import "PeopleRecentsData.h"
 #import "CoreDataManager.h"
 #import "PersonDetail.h"
+#import "PersonDetails+Methods.h"
 
 @implementation PeopleRecentsData
 
@@ -109,13 +110,10 @@ static PeopleRecentsData *instance = nil;
 
 	// the "id" field we receive from mobi is either the unix uid (more
 	// common) or something derived from another field (ldap "dn"), the
-	// former has an 8 char limit but until proven otherwise let's assume
-	// we can truncate the latter to 8 chars without sacrificing uniqueness
-	NSString *uid = [personDetails actualValueForKey:@"uid"];
-	if (uid.length > 8) {
-		uid = [uid substringToIndex:8];
-        personDetails.uid.Value = uid;
-    }    
+	// former has an 8 char limit but the uids that come from some LDAP servers  
+	// will sometimes have a non-unique first eight characters. So, we used to 
+	// trim it down to 8, but now we let it go longer.
+	personDetails.uid.Value = [PersonDetails trimUID:[personDetails actualValueForKey:@"uid"]];;
 	
 	// put latest person on top; remove if the person is already there
 	NSMutableArray *recentsData = [[self sharedData] recents];

@@ -74,6 +74,8 @@ NSString * const UnreadBadgeValuesChangeNotification = @"UnreadBadgeValuesChange
 
 NSString * const MyStellarAlertNotification = @"MyStellarAlertNotification";
 
+NSString * const kTileServerManagerProjectionIsReady = @"TileServerManagerProjectionIsReadyNotification";
+
 // core data entity names
 NSString * const NewsStoryEntityName = @"NewsStory";
 NSString * const NewsCategoryEntityName = @"NewsCategory";

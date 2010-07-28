@@ -58,6 +58,10 @@
 	
 	// these are used for saving state
 	MITModuleURL* url;
+	
+	// Used for storing search results that need to wait on other resources before they are used.
+	NSArray *unprocessedSearchResults;
+	NSString *unprocessedSearchResultsQuery;
 }
 
 @property (nonatomic, retain) UIBarButtonItem* geoButton;
@@ -70,6 +74,8 @@
 @property (readonly) BOOL displayingList;
 @property (readonly) ModoSearchBar* searchBar;
 @property (readonly) MITModuleURL* url;
+@property (nonatomic, retain) NSArray *unprocessedSearchResults;
+@property (nonatomic, retain) NSString *unprocessedSearchResultsQuery;
 
 // execute a search
 -(void) search:(NSString*)searchText;
