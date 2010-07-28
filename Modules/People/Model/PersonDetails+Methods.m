@@ -60,16 +60,21 @@
 {
 	NSString *uid = [PersonDetails joinedValueFromPersonDetailsJSONDict:selectedResult 
                                                                  forKey:@"uid"];
-	if (uid.length > 8) {
-		uid = [uid substringToIndex:8];
-	}
-	NSPredicate *pred = [NSPredicate predicateWithFormat:@"(uid = %@)", uid];
+	uid = [PersonDetails trimUID:uid];
+	NSPredicate *pred = [NSPredicate predicateWithFormat:@"(uid.Value == %@)", uid];
 	NSArray *results = [CoreDataManager objectsForEntity:PersonDetailsEntityName matchingPredicate:pred];
     
 	if ([results count] == 0)
 		return [PeopleRecentsData createFromSearchResult:selectedResult];
 	else 
 		return [results objectAtIndex:0];
+}
+
++ (NSString *)trimUID:(NSString *)theUID {
+	if (theUID.length > kPersonUIDLength) {
+		theUID = [theUID substringToIndex:kPersonUIDLength - 1];
+	}
+	return theUID;
 }
 
 + (NSArray *)realValuesFromPersonDetailsJSONDict:(NSDictionary *)jsonDict forKey:(NSString *)key {

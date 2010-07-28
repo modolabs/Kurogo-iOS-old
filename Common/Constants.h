@@ -76,6 +76,9 @@ extern NSString * const CalendarEventEntityName;
 extern NSString * const CalendarCategoryEntityName;
 extern NSString * const CampusMapSearchEntityName;
 
+// Sizes
+static const NSUInteger kPersonUIDLength = 44;
+
 // resource names
 extern NSString * const ImageNameHomeScreenBackground;
 extern NSString * const MITImageNameBackground;

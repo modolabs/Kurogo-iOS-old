@@ -11,6 +11,7 @@
 - (NSString *)formattedValueForKey:(NSString *)key;
 - (NSString *)displayNameForKey:(NSString *)key;
 + (PersonDetails *)retrieveOrCreate:(NSDictionary *)selectedResult;
++ (NSString *)trimUID:(NSString *)theUID;
 + (NSArray *)realValuesFromPersonDetailsJSONDict:(NSDictionary *)jsonDict forKey:(NSString *)key;
 + (NSString *)joinedValueFromPersonDetailsJSONDict:(NSDictionary *)jsonDict forKey:(NSString *)key;
 
