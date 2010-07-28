@@ -26,6 +26,9 @@
 @synthesize currentMealTime;
 @synthesize nextMealRestriction;
 @synthesize nextMealTime;
+@synthesize nextMealStatus;
+
+@synthesize currentStat;
 
 
 int timeToNextMeal;  //starting with ONE DAY
@@ -238,16 +241,31 @@ int timeToNextMeal;  //starting with ONE DAY
 	}
 	else {
 		
-		if ([nextMeal isEqualToString:@"Breakfast"])
+		if ([nextMeal isEqualToString:@"Breakfast"]) {
+				nextMeal = @"Breakfast ";
 				nextMealRestriction = breakfast_restriction;
-		else if ([nextMeal isEqualToString:@"Lunch"])
+				nextMealStatus = breakfast_status;
+		}
+		else if ([nextMeal isEqualToString:@"Lunch"]) {
+			nextMeal = @"Lunch ";
 			nextMealRestriction = lunch_restriction;
-		else if ([nextMeal isEqualToString:@"Dinner"])
+			nextMealStatus = lunch_status;
+		}
+		else if ([nextMeal isEqualToString:@"Dinner"]) {
+			nextMeal = @"Dinner ";
 			nextMealRestriction = dinner_restriction;
-		else if ([nextMeal isEqualToString:@"Brain-Break"])
+			nextMealStatus = dinner_status;
+		}
+		else if ([nextMeal isEqualToString:@"Brain Break"]) {
+			nextMeal = @"Brain Break  ";
 			nextMealRestriction = bb_restriction;
-		else if ([nextMeal isEqualToString:@"Brunch"])
+			nextMealStatus = bb_status;
+		}
+		else if ([nextMeal isEqualToString:@"Brunch"]) {
+			nextMeal = @"Brunch ";
 			nextMealRestriction = brunch_restriction;
+			nextMealStatus = brunch_status;
+		}
 		
 		return CLOSED;
 	}
@@ -374,6 +392,11 @@ int timeToNextMeal;  //starting with ONE DAY
 	
 	return (hours*60*60 + mins*60);
 	
+}
+
+-(void)setStat:(int)status {
+	self.currentStat = status;
+	return;
 }
 
 @end

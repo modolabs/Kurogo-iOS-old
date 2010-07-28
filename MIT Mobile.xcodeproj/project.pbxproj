@@ -175,6 +175,14 @@
 		C776675A11F733E3005496DD /* DatePickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C776675811F733E3005496DD /* DatePickerViewController.m */; };
 		C7824BDB11FA2F8B003B3E3E /* DiningHallStatus.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = C7824BD911FA2F8B003B3E3E /* DiningHallStatus.h */; settings = {JAVA_ARCHIVE_SUBDIR = Modules; }; };
 		C7824BDC11FA2F8B003B3E3E /* DiningHallStatus.m in Sources */ = {isa = PBXBuildFile; fileRef = C7824BDA11FA2F8B003B3E3E /* DiningHallStatus.m */; };
+		C7AA23911200CB3E0023F880 /* dining-status-closed-w-restrictions.png in Resources */ = {isa = PBXBuildFile; fileRef = C7AA23891200CB3E0023F880 /* dining-status-closed-w-restrictions.png */; };
+		C7AA23921200CB3E0023F880 /* dining-status-closed-w-restrictions@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C7AA238A1200CB3E0023F880 /* dining-status-closed-w-restrictions@2x.png */; };
+		C7AA23931200CB3E0023F880 /* dining-status-closed.png in Resources */ = {isa = PBXBuildFile; fileRef = C7AA238B1200CB3E0023F880 /* dining-status-closed.png */; };
+		C7AA23941200CB3E0023F880 /* dining-status-closed@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C7AA238C1200CB3E0023F880 /* dining-status-closed@2x.png */; };
+		C7AA23951200CB3E0023F880 /* dining-status-open-w-restrictions.png in Resources */ = {isa = PBXBuildFile; fileRef = C7AA238D1200CB3E0023F880 /* dining-status-open-w-restrictions.png */; };
+		C7AA23961200CB3E0023F880 /* dining-status-open-w-restrictions@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C7AA238E1200CB3E0023F880 /* dining-status-open-w-restrictions@2x.png */; };
+		C7AA23971200CB3E0023F880 /* dining-status-open.png in Resources */ = {isa = PBXBuildFile; fileRef = C7AA238F1200CB3E0023F880 /* dining-status-open.png */; };
+		C7AA23981200CB3E0023F880 /* dining-status-open@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C7AA23901200CB3E0023F880 /* dining-status-open@2x.png */; };
 		C7B897F111F535C8002B3619 /* HoursTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C7B897EF11F535C8002B3619 /* HoursTableViewController.m */; };
 		C7B897F211F535C8002B3619 /* HoursTableViewController.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = C7B897F011F535C8002B3619 /* HoursTableViewController.h */; settings = {JAVA_ARCHIVE_SUBDIR = Modules/Dining; }; };
 		DE0A62AC10CDAEA90058B2C2 /* MITBuildInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = DE0A62AB10CDAEA90058B2C2 /* MITBuildInfo.m */; };
@@ -688,6 +696,14 @@
 		C776675811F733E3005496DD /* DatePickerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DatePickerViewController.m; sourceTree = "<group>"; };
 		C7824BD911FA2F8B003B3E3E /* DiningHallStatus.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DiningHallStatus.h; sourceTree = "<group>"; };
 		C7824BDA11FA2F8B003B3E3E /* DiningHallStatus.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DiningHallStatus.m; sourceTree = "<group>"; };
+		C7AA23891200CB3E0023F880 /* dining-status-closed-w-restrictions.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "dining-status-closed-w-restrictions.png"; sourceTree = "<group>"; };
+		C7AA238A1200CB3E0023F880 /* dining-status-closed-w-restrictions@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "dining-status-closed-w-restrictions@2x.png"; sourceTree = "<group>"; };
+		C7AA238B1200CB3E0023F880 /* dining-status-closed.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "dining-status-closed.png"; sourceTree = "<group>"; };
+		C7AA238C1200CB3E0023F880 /* dining-status-closed@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "dining-status-closed@2x.png"; sourceTree = "<group>"; };
+		C7AA238D1200CB3E0023F880 /* dining-status-open-w-restrictions.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "dining-status-open-w-restrictions.png"; sourceTree = "<group>"; };
+		C7AA238E1200CB3E0023F880 /* dining-status-open-w-restrictions@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "dining-status-open-w-restrictions@2x.png"; sourceTree = "<group>"; };
+		C7AA238F1200CB3E0023F880 /* dining-status-open.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "dining-status-open.png"; sourceTree = "<group>"; };
+		C7AA23901200CB3E0023F880 /* dining-status-open@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "dining-status-open@2x.png"; sourceTree = "<group>"; };
 		C7B897EF11F535C8002B3619 /* HoursTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = HoursTableViewController.m; path = Dining/HoursTableViewController.m; sourceTree = "<group>"; };
 		C7B897F011F535C8002B3619 /* HoursTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = HoursTableViewController.h; path = Dining/HoursTableViewController.h; sourceTree = "<group>"; };
 		DE0A62AA10CDAEA90058B2C2 /* MITBuildInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MITBuildInfo.h; sourceTree = "<group>"; };
@@ -1152,6 +1168,14 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				C7AA23891200CB3E0023F880 /* dining-status-closed-w-restrictions.png */,
+				C7AA238A1200CB3E0023F880 /* dining-status-closed-w-restrictions@2x.png */,
+				C7AA238B1200CB3E0023F880 /* dining-status-closed.png */,
+				C7AA238C1200CB3E0023F880 /* dining-status-closed@2x.png */,
+				C7AA238D1200CB3E0023F880 /* dining-status-open-w-restrictions.png */,
+				C7AA238E1200CB3E0023F880 /* dining-status-open-w-restrictions@2x.png */,
+				C7AA238F1200CB3E0023F880 /* dining-status-open.png */,
+				C7AA23901200CB3E0023F880 /* dining-status-open@2x.png */,
 				EB49AD7B11F4BFFF00854791 /* news */,
 				EB49AD8211F4BFFF00854791 /* people */,
 				EB49AD8611F4BFFF00854791 /* shuttles */,
@@ -2126,6 +2150,14 @@
 				EB49AD9811F4BFFF00854791 /* news in Resources */,
 				EB49AD9911F4BFFF00854791 /* people in Resources */,
 				EB49AD9A11F4BFFF00854791 /* shuttles in Resources */,
+				C7AA23911200CB3E0023F880 /* dining-status-closed-w-restrictions.png in Resources */,
+				C7AA23921200CB3E0023F880 /* dining-status-closed-w-restrictions@2x.png in Resources */,
+				C7AA23931200CB3E0023F880 /* dining-status-closed.png in Resources */,
+				C7AA23941200CB3E0023F880 /* dining-status-closed@2x.png in Resources */,
+				C7AA23951200CB3E0023F880 /* dining-status-open-w-restrictions.png in Resources */,
+				C7AA23961200CB3E0023F880 /* dining-status-open-w-restrictions@2x.png in Resources */,
+				C7AA23971200CB3E0023F880 /* dining-status-open.png in Resources */,
+				C7AA23981200CB3E0023F880 /* dining-status-open@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

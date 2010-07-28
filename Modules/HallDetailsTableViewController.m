@@ -17,7 +17,7 @@
 -(void)viewWillAppear:(BOOL)animated
 {	
 	[super viewWillAppear:animated];
-	[self viewDidLoad];
+	//[self viewDidLoad];
 	//[self.tableView applyStandardColors];
 }
 
@@ -25,18 +25,52 @@
 -(void)viewDidLoad {
 	[super viewDidLoad];
 	
-	UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(20.0, 20.0,45.0, 50.0)];
-	label.text = @"Testing this out properly";
-	
+	UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(5.0, 10.0,200.0, 40.0)];
+	label.text = [self.itemDetails valueForKey:@"name"];
+	label.font = [UIFont boldSystemFontOfSize:25];
+	label.backgroundColor = [UIColor clearColor];	
 	[self.view addSubview:label];
-	detailsTableView = [[UITableView alloc] initWithFrame:CGRectMake(20.0, 75.0, 200.0, 500.0)];
-	//detailsTableView = UITableViewStyleGrouped;
+	
+	UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(250.0, 15.0, 30.0, 30.0)];
+	
+	switch (hallStatus.currentStat) {
+		case OPEN:
+			imageView.image = [UIImage imageNamed:@"dining-status-open@2x.png"];
+			[self.view addSubview:imageView];
+			break;
+			
+		case CLOSED:
+			if (hallStatus.nextMealStatus == RESTRICTED) {
+				imageView.image = [UIImage imageNamed:@"dining-status-closed-w-restrictions@2x.png"];
+				[self.view addSubview:imageView];
+			}
+			else {
+				imageView.image = [UIImage imageNamed:@"dining-status-closed@2x.png"];
+				[self.view addSubview:imageView];
+			}
+			break;
+			
+		case NO_RESTRICTION:
+			imageView.image = [UIImage imageNamed:@"dining-status-open@2x.png"];
+			[self.view addSubview:imageView];
+			break;
+			
+		case RESTRICTED:
+			imageView.image = [UIImage imageNamed:@"dining-status-open-w-restrictions@2x.png"];
+			[self.view addSubview:imageView];
+			break;
+			
+
+	}
+	
+	detailsTableView = nil;
+	
+	detailsTableView = [[UITableView alloc] initWithFrame:CGRectMake(0.0, 55.0, 320.0, 410.0) style: UITableViewStyleGrouped];
+	[detailsTableView applyStandardColors];
 	detailsTableView.delegate= self;
 	detailsTableView.dataSource = self;
-	
+	detailsTableView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
 	[self.view addSubview:detailsTableView];
-	[detailsTableView reloadData];
-	
 }
 
 -(void)viewDidUnload
@@ -91,19 +125,18 @@ numberOfRowsInSection:(NSInteger)section
 	
 	if (col == 1)
 		CellTableIdentifier = @"HallRestrictionsIdentifier";
-	
-	//UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellTableIdentifier];
+
 	MultiLineTableViewCell *cell = (MultiLineTableViewCell *)[tableView dequeueReusableCellWithIdentifier:CellTableIdentifier];
 	
 	if (cell == nil)
 	{
 		if (col == 0) {
 		cell = [[[MultiLineTableViewCell alloc]
-				 initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellTableIdentifier] autorelease];
+				 initWithStyle:UITableViewCellStyleValue2 reuseIdentifier:CellTableIdentifier] autorelease];
 		}
 		
 		if (col == 1) {
-			cell = [[[MultiLineTableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellTableIdentifier] autorelease];
+			cell = [[[MultiLineTableViewCell alloc] initWithStyle:UITableViewCellStyleValue2 reuseIdentifier:CellTableIdentifier] autorelease];
 			cell.textLabelNumberOfLines = 2;
 			//cell.textLabelLineBreakMode = UILineBreakModeTailTruncation;
 		}
@@ -122,31 +155,31 @@ numberOfRowsInSection:(NSInteger)section
 		switch (row) {
 			case 0:
 				key = @"breakfast_hours";
-				displayKey = @"Breakfast";
+				displayKey = @"breakfast";
 				status = hallStatus.breakfast_status;
 				restriction = hallStatus.breakfast_restriction;
 				break;
 			case 1:
 				key = @"lunch_hours";
-				displayKey = @"Lunch";
+				displayKey = @"lunch";
 				status = hallStatus.lunch_status;
 				restriction = hallStatus.lunch_restriction;
 				break;
 			case 2:
 				key = @"dinner_hours";
-				displayKey = @"Dinner";
+				displayKey = @"dinner";
 				status = hallStatus.dinner_status;
 				restriction = hallStatus.dinner_restriction;
 				break;
 			case 3:
 				key = @"bb_hours";
-				displayKey = @"Brain-Break(Sun-Thu)";
+				displayKey = @"brain break";
 				status = hallStatus.bb_status;
 				restriction = hallStatus.bb_restriction;
 				break;
 			case 4:
 				key = @"brunch_hours";
-				displayKey = @"Sunday Brunch";
+				displayKey = @"brunch";
 				status = hallStatus.brunch_status;
 				restriction = hallStatus.brunch_restriction;
 				break;
@@ -162,31 +195,16 @@ numberOfRowsInSection:(NSInteger)section
 
 		cell.textLabel.text = cellText1;
 		cell.detailTextLabel.text = cellText2;
+		
+		if (row == 3) {
+			cell.detailTextLabel.text = [NSString stringWithFormat:@"Sunday-Thursday %@\n",cellText2];
+								
+		}
+			
 
 		
 		cell.selectionStyle =  UITableViewCellSelectionStyleNone;
 		
-		if ((status == OPEN) && (restriction == NO_RESTRICTION)) {
-			UIImage *image = [UIImage imageNamed:@"maps/map_location.png"];
-			cell.imageView.image = image;
-		}
-		
-		else if ((status == OPEN) && (restriction = RESTRICTED)) {
-			UIImage *image = [UIImage imageNamed:@"maps/map_pin.png"];
-			cell.imageView.image = image;
-		}
-		
-		else if ((status == CLOSED) && (restriction == RESTRICTED)) {
-			//UIImage *image = [UIImage imageNamed:@"maps/map_pin.png"];
-			//cell.imageView.image = image;
-		}
-		
-		else {
-			//UIImage *image = [UIImage imageNamed:@"global/unread-message.png"];
-			//cell.imageView.image = image;
-		}
-
-
 	}
 	
 	if (col == 1) {
@@ -227,7 +245,7 @@ numberOfRowsInSection:(NSInteger)section
 		[cell.textLabel setTextAlignment:UITextAlignmentLeft];
 		cell.textLabel.text = meal;
 		cell.detailTextLabel.text = message;
-		cell.detailTextLabel.font = [UIFont systemFontOfSize:15];
+		cell.detailTextLabel.font = [UIFont boldSystemFontOfSize:15]; //was 15
 		cell.selectionStyle =  UITableViewCellSelectionStyleNone;		
 	
 	}
@@ -247,7 +265,7 @@ numberOfRowsInSection:(NSInteger)section
 	NSString *mealkey;
 	
 	constraintWidth = tableView.frame.size.width;
-	cellFont = [UIFont systemFontOfSize:15];
+	cellFont = [UIFont boldSystemFontOfSize:15]; //was 15
 	
 	int col = [indexPath section];
 	int row = [indexPath row];
@@ -291,12 +309,11 @@ numberOfRowsInSection:(NSInteger)section
 	CGSize textSize = [cellText sizeWithFont:cellFont
 						   constrainedToSize:CGSizeMake(constraintWidth, 5000.0)//2010.0)
 							   lineBreakMode:UILineBreakModeWordWrap];
-	
-	// constant defined in MultiLineTableViewcell.h
-		if (textSize.height < 35)
-			return 40 + 20;
 		
-		return textSize.height + 38;
+		if (textSize.height < 35)
+		 return 40 + 20;
+		 
+		 return textSize.height + 75;
 	}
 	
 	return 40;
@@ -312,5 +329,6 @@ numberOfRowsInSection:(NSInteger)section
 -(void)setStatus:(DiningHallStatus *)statusDetails {
 	hallStatus = statusDetails;
 }
+
 
 @end

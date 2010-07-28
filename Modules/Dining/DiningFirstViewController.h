@@ -38,7 +38,10 @@
 	IBOutlet UIView *glossaryForHoursView;
 	IBOutlet UITableView *hoursTableView;
 	HoursTableViewController *tableControl;
-
+	
+	UIButton *prevDate;
+	UIButton *nextDate;
+	
 	UIView *datePicker;
 	UIView *loadingIndicator;
 	CGFloat _tabViewContainerMinHeight;

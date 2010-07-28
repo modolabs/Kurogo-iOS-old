@@ -18,6 +18,7 @@
 	DiningHallStatus *hallStatus;
 	
 	UITableView *detailsTableView;
+	NSInteger currentStat;
 
 }
 
@@ -25,6 +26,5 @@
 
 -(void)setDetails:(NSDictionary *)details;
 -(void)setStatus:(DiningHallStatus *)statusDetails;
-
 
 @end
