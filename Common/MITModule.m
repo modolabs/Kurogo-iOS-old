@@ -137,8 +137,7 @@
 - (UIImage *)icon {
     UIImage *result = nil;
     if (self.iconName) {
-        NSString *iconPath = [NSString stringWithFormat:@"%@%@%@%@", [[NSBundle mainBundle] resourcePath], @"/home/home-", self.iconName, @".png"];
-        result = [UIImage imageWithContentsOfFile:iconPath];
+        result = [UIImage imageNamed:[NSString stringWithFormat:@"home/home-%@.png", self.iconName]];
     }
     return result;
 }
