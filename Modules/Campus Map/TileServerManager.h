@@ -6,13 +6,6 @@
 #define DEGREES_PER_RADIAN 180.0 / M_PI
 #define RADIANS_PER_DEGREE M_PI / 180.0
 
-/*
-@protocol TileServerDelegate
-
-- (void)tileServerDidSetup;
-
-@end
-*/
 
 @class MapZoomLevel;
 
@@ -78,9 +71,6 @@
 
 //+ (MapTile)mapLevel:(MapZoomLevel *)mapLevel tileForRowAtScreenPixel:(CGPoint)pixel;
 //+ (CGSize)pixelSizeForMapLevel:(MapZoomLevel *)mapLevel;
-
-//+ (void)registerDelegate:(id<TileServerDelegate>)delegate;
-//+ (void)unregisterDelegate:(id<TileServerDelegate>)delegate;
 
 + (void)registerMapView:(MKMapView *)mapView;
 + (void)unregisterMapView:(MKMapView *)mapView;

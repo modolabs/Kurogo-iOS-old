@@ -42,9 +42,6 @@
 
 + (NSString*)mapTimestampFilename;
 
-//- (void)registerDelegate:(id<TileServerDelegate>)delegate;
-//- (void)unregisterDelegate:(id<TileServerDelegate>)delegate;
-
 @end
 
 static TileServerManager *s_manager = nil;
@@ -125,15 +122,7 @@ static NSString * s_tileServerFilename = @"tileServer.plist";
 + (void)unregisterMapView:(MKMapView *)mapView {
     [[TileServerManager manager] unregisterMapView:mapView];
 }
-/*
-+ (void)registerDelegate:(id<TileServerDelegate>)delegate {
-    [[TileServerManager manager] registerDelegate:delegate];
-}
 
-+ (void)unregisterDelegate:(id<TileServerDelegate>)delegate {
-    [[TileServerManager manager] unregisterDelegate:delegate];
-}
-*/
 #pragma mark -
 
 + (TileServerManager *)manager {
@@ -307,23 +296,6 @@ static NSString * s_tileServerFilename = @"tileServer.plist";
     request.userData = @"projection";
     [request requestObjectFromModule:@"map" command:@"proj4specs" parameters:[NSDictionary dictionaryWithObjectsAndKeys:wkid, @"wkid", nil]];
 }
-/*
-- (void)registerDelegate:(id<TileServerDelegate>)delegate {
-    if (!_delegates) {
-        _delegates = [[NSMutableSet alloc] initWithCapacity:1];
-    }
-    [_delegates addObject:delegate];
-    if ([TileServerManager isInitialized]) {
-        [delegate tileServerDidSetup];
-    }
-}
-
-- (void)unregisterDelegate:(id<TileServerDelegate>)delegate {
-    if ([_delegates containsObject:delegate]) {
-        [_delegates removeObject:delegate];
-    }
-}
-*/
 
 - (void)registerMapView:(MKMapView *)mapView {
     if (!_mapViews) {
