@@ -493,19 +493,24 @@
 	
 	NSMutableArray* searchResultsArr = [NSMutableArray arrayWithCapacity:searchResults.count];
 	
-	for (NSDictionary* info in searchResults)
+	// Don't try to create ArcGISMapSearchResultAnnotations before TileServerManager is ready. You'll get 
+	// garbage which will cause a SIGABRT when you try to set the map region.
+	if ([TileServerManager isInitialized])
 	{
-		ArcGISMapSearchResultAnnotation *annotation = [[[ArcGISMapSearchResultAnnotation alloc] initWithInfo:info] autorelease];
-		[searchResultsArr addObject:annotation];
+		for (NSDictionary* info in searchResults)
+		{
+			ArcGISMapSearchResultAnnotation *annotation = [[[ArcGISMapSearchResultAnnotation alloc] initWithInfo:info] autorelease];
+			[searchResultsArr addObject:annotation];
+		}
+		
+		// this will remove old annotations and add the new ones. 
+		self.searchResults = searchResultsArr;
+		
+		NSString* docsFolder = [NSHomeDirectory() stringByAppendingPathComponent:@"Documents"];
+		NSString* searchResultsFilename = [docsFolder stringByAppendingPathComponent:@"searchResults.plist"];
+		[searchResults writeToFile:searchResultsFilename atomically:YES];
+		[[NSUserDefaults standardUserDefaults] setObject:searchQuery forKey:CachedMapSearchQueryKey];
 	}
-	
-	// this will remove old annotations and add the new ones. 
-	self.searchResults = searchResultsArr;
-	
-	NSString* docsFolder = [NSHomeDirectory() stringByAppendingPathComponent:@"Documents"];
-	NSString* searchResultsFilename = [docsFolder stringByAppendingPathComponent:@"searchResults.plist"];
-	[searchResults writeToFile:searchResultsFilename atomically:YES];
-	[[NSUserDefaults standardUserDefaults] setObject:searchQuery forKey:CachedMapSearchQueryKey];
 	
 	/*
 	// if we have 2 view controllers, push a new search results controller onto the stack
@@ -710,16 +715,8 @@
 }
 
 - (void)mapView:(MKMapView *)mapView didAddAnnotationViews:(NSArray *)views {
-    for (MKAnnotationView *aView in views) {
-        id<MKAnnotation>annotation = aView.annotation;
-        if ([annotation isKindOfClass:[ArcGISMapSearchResultAnnotation class]]) {
-            ArcGISMapSearchResultAnnotation *polyAnnotation = (ArcGISMapSearchResultAnnotation *)annotation;
-            if ([polyAnnotation canAddOverlay]) {
-                PolygonOverlay *polyOverlay = polyAnnotation.polygon; //[[PolygonOverlay alloc] initWithAnnotation:polyAnnotation];
-                [mapView addOverlay:polyOverlay];
-            }
-        }
-    }
+    //for (MKAnnotationView *aView in views) {
+    //}
 }
 
 - (void)pushAnnotationDetails:(id <MKAnnotation>)annotation animated:(BOOL)animated
@@ -742,6 +739,28 @@
 		}
 		[self.navigationController pushViewController:detailsVC animated:animated];		
 	}
+}
+
+- (void)mapView:(MKMapView *)mapView didSelectAnnotationView:(MKAnnotationView *)view {
+    id<MKAnnotation>annotation = view.annotation;
+    if ([annotation isKindOfClass:[ArcGISMapSearchResultAnnotation class]]) {
+        ArcGISMapSearchResultAnnotation *polyAnnotation = (ArcGISMapSearchResultAnnotation *)annotation;
+        if ([polyAnnotation canAddOverlay]) {
+            PolygonOverlay *polyOverlay = polyAnnotation.polygon;
+            [mapView addOverlay:polyOverlay];
+        }
+    }
+}
+
+- (void)mapView:(MKMapView *)mapView didDeselectAnnotationView:(MKAnnotationView *)view {
+    id<MKAnnotation>annotation = view.annotation;
+    if ([annotation isKindOfClass:[ArcGISMapSearchResultAnnotation class]]) {
+        ArcGISMapSearchResultAnnotation *polyAnnotation = (ArcGISMapSearchResultAnnotation *)annotation;
+        if ([polyAnnotation canAddOverlay]) {
+            PolygonOverlay *polyOverlay = polyAnnotation.polygon;
+            [mapView removeOverlay:polyOverlay];
+        }
+    }
 }
 
 - (void)mapView:(MKMapView *)mapView annotationView:(MKAnnotationView *)view calloutAccessoryControlTapped:(UIControl *)control

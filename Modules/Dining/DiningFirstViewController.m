@@ -10,6 +10,7 @@
 #import "MenuDetailsController.h"
 #import "DiningTabViewControl.h"
 #import "MITUIConstants.h"
+#import "MIT_MobileAppDelegate.h"
 
 #define kBreakfastTab 0
 #define kLunchTab 1
@@ -20,7 +21,6 @@
 @implementation DiningFirstViewController
 
 @synthesize startingTab = _startingTab;
-@synthesize label;
 
 @synthesize list;
 @synthesize _bkfstList;
@@ -32,9 +32,6 @@
 @synthesize _lunchDict;
 @synthesize _dinnerDict;
 
-@synthesize nextDateButton;
-@synthesize previousDateButton;
-
 @synthesize todayDate;
 
 @synthesize hoursTableView;
@@ -44,7 +41,7 @@
 NSInteger tabRequestingInfo; // In order to prevent Race conditions for the selected tab and JSONDelegate loaded data
 
 BOOL requestDispatched = NO;
-HarvardDiningAPI *mitapi;
+JSONAPIRequest *mitapi;
 
 -(void)requestBreakfastData
 {
@@ -54,7 +51,8 @@ HarvardDiningAPI *mitapi;
 	[_tabViews removeObjectAtIndex:kBreakfastTab];
 	[_tabViews insertObject:_loadingResultView atIndex:kBreakfastTab];
 	[_tabViewContainer addSubview:_loadingResultView];
-	[_activityIndicator startAnimating];
+
+	[self addLoadingIndicator];
 	
 	// Format the requesting URL in the correct Format
 	NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
@@ -62,20 +60,8 @@ HarvardDiningAPI *mitapi;
 	NSString *dateString = [dateFormat stringFromDate:self.todayDate];
 	[dateFormat release];
 
-	mitapi = [[HarvardDiningAPI alloc] initWithJSONLoadedDelegate:self];	
-	
-	/*
-	NSString *bkfst = [dateString stringByAppendingString:@"&meal=Breakfast&output=json"];
-	
-	
-	NSMutableDictionary *dataDict = [[NSDictionary alloc] init];
-	
-	
-	if ([mitapi requestObject:dataDict pathExtension: bkfst] == YES)
-	{
-		// set the requesting Tab index to the correct one
-		tabRequestingInfo = kBreakfastTab;
-	}*/
+	mitapi = [[JSONAPIRequest alloc] initWithJSONAPIDelegate:self];	
+
 	
 	if ([mitapi requestObjectFromModule:@"dining" 
 								command:@"breakfast" 
@@ -85,8 +71,7 @@ HarvardDiningAPI *mitapi;
 		tabRequestingInfo = kBreakfastTab;	
 		requestDispatched = YES;
 	}
-	
-	//[mitapi release];
+
 }
 
 -(void)requestLunchData
@@ -97,7 +82,8 @@ HarvardDiningAPI *mitapi;
 	[_tabViews removeObjectAtIndex:kLunchTab];
 	[_tabViews insertObject:_loadingResultView atIndex:kLunchTab];
 	[_tabViewContainer addSubview:_loadingResultView];
-	[_activityIndicator startAnimating];
+
+	[self addLoadingIndicator];
 	
 	// Format the requesting URL in the correct Format
 	NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
@@ -105,20 +91,8 @@ HarvardDiningAPI *mitapi;
 	NSString *dateString = [dateFormat stringFromDate:self.todayDate];
 	[dateFormat release];
 	
-	mitapi = [[HarvardDiningAPI alloc] initWithJSONLoadedDelegate:self];	
-	
-	/*
-	NSString *lunch = [dateString stringByAppendingString:@"&meal=Lunch&output=json"];
-	
-	
-	NSMutableDictionary *dataDict = [[NSDictionary alloc] init];
-	
-	
-	if ([mitapi requestObject:dataDict pathExtension: lunch] == YES)
-	{
-		// set the requesting Tab index to the correct one
-		tabRequestingInfo = kLunchTab;
-	}*/
+	mitapi = [[JSONAPIRequest alloc] initWithJSONAPIDelegate:self];	
+
 	
 	if ([mitapi requestObjectFromModule:@"dining" 
 								command:@"lunch" 
@@ -128,9 +102,7 @@ HarvardDiningAPI *mitapi;
 		tabRequestingInfo = kLunchTab;	
 		requestDispatched = YES;
 	}
-	
-	//[mitapi release];
-	
+
 	
 }
 
@@ -142,7 +114,8 @@ HarvardDiningAPI *mitapi;
 	[_tabViews removeObjectAtIndex:kDinnerTab];
 	[_tabViews insertObject:_loadingResultView atIndex:kDinnerTab];
 	[_tabViewContainer addSubview:_loadingResultView];
-	[_activityIndicator startAnimating];
+
+	[self addLoadingIndicator];
 	
 	// Format the requesting URL in the correct Format
 	NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
@@ -150,21 +123,7 @@ HarvardDiningAPI *mitapi;
 	NSString *dateString = [dateFormat stringFromDate:self.todayDate];
 	[dateFormat release];
 	
-	mitapi = [[HarvardDiningAPI alloc] initWithJSONLoadedDelegate:self];	
-	
-	/*
-	NSString *dinner = [dateString stringByAppendingString:@"&meal=Dinner&output=json"];
-	
-	
-	NSMutableDictionary *dataDict = [[NSDictionary alloc] init];
-	
-	
-	if ([mitapi requestObject:dataDict pathExtension: dinner] == YES)
-	{
-		// set the requesting Tab index to the correct one
-		tabRequestingInfo = kDinnerTab;
-	}*/
-	
+	mitapi = [[JSONAPIRequest alloc] initWithJSONAPIDelegate:self];	
 	if ([mitapi requestObjectFromModule:@"dining" 
 								command:@"dinner" 
 							 parameters:[NSDictionary dictionaryWithObjectsAndKeys:dateString, @"date", nil]] == YES)
@@ -173,9 +132,7 @@ HarvardDiningAPI *mitapi;
 		tabRequestingInfo = kDinnerTab;	
 		requestDispatched = YES;
 	}
-	
-	//[mitapi release];
-	
+
 }
 
 
@@ -188,7 +145,24 @@ HarvardDiningAPI *mitapi;
     [offsetComponents release];
 	[gregorian release];
 	
-	self.todayDate = nextDate;	
+	NSDate *maxDate = [NSDate dateWithTimeIntervalSinceNow:-7*24*60*60];
+	
+	if ([maxDate compare:nextDate] == NSOrderedAscending)
+		self.todayDate = nextDate;	
+	
+	else {
+		
+		UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Cannot Select Date"
+														message:@"Can Only Retrieve Menus Up To One Week Back"
+													   delegate:nil
+											  cancelButtonTitle:@"OK"
+											  otherButtonTitles:nil];
+		
+		[alert show];
+		[alert release];
+	}
+	
+
 
 	[self viewDidLoad];
 
@@ -203,9 +177,26 @@ HarvardDiningAPI *mitapi;
     NSDate *nextDate = [gregorian dateByAddingComponents:offsetComponents toDate:self.todayDate options:0];
     [offsetComponents release];
 	[gregorian release];
+		
+	NSDate *maxDate = [NSDate dateWithTimeIntervalSinceNow:7*24*60*60];
 	
-	self.todayDate = nextDate;	
+	if ([maxDate compare:nextDate] == NSOrderedDescending)
+		self.todayDate = nextDate;	
+	
+	else {
+		
+		UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Cannot Select Date"
+														message:@"Can Only Retrieve Menus Up To One Week Ahead"
+													   delegate:nil
+											  cancelButtonTitle:@"OK"
+											  otherButtonTitles:nil];
+		
+		[alert show];
+		[alert release];
+	}
 
+
+	
 	[self viewDidLoad];
 }
 
@@ -217,14 +208,16 @@ HarvardDiningAPI *mitapi;
 	{
 		self.todayDate = [NSDate date];
 	}
+	
+	[self setupDatePicker];
 
 	// Display the Date in the Expected Format: Saturday, June 25
 	NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
 	[dateFormat setDateFormat:@"EEEE MMMM d"];
-	NSString *dateString = [dateFormat stringFromDate:self.todayDate];
+	//NSString *dateString = [dateFormat stringFromDate:self.todayDate];
 	[dateFormat release];
 
-	self.label.text = dateString;
+	//self.label.text = dateString;
 	
 	if (_tabViews == nil)
 		_tabViews = [[NSMutableArray alloc] initWithCapacity:5];
@@ -273,13 +266,6 @@ HarvardDiningAPI *mitapi;
 		
 		[_hoursView addSubview:hoursTableView];
 		[_tabViews insertObject:_hoursView atIndex:kHoursTab];
-	
-		//_newsView = [[UIView alloc] init];
-		//[_newsView setBackgroundColor:[UIColor colorWithPatternImage:[[UIImage alloc] initWithContentsOfFile:@"global/body-background.png"]]];
-
-		//[_tabViewControl addTab:@"News"];
-		//[_tabViews insertObject:_newsView atIndex:kNewsTab];
-		
 			
 		_tabViewControl.hidden = NO;
 		_tabViewContainer.hidden = NO;
@@ -307,8 +293,7 @@ HarvardDiningAPI *mitapi;
 
 		[_tabViewControl setSelectedTab:tabToOpen];
 		[self requestBreakfastData];
-		//self.menuDict = self._bkfstDict;
-		//self.list = self._bkfstList;
+
 	}
 	else if (doubleHourOfDay >= 9 && doubleHourOfDay < 14)
 	{
@@ -317,8 +302,6 @@ HarvardDiningAPI *mitapi;
 		tabToOpen = kLunchTab;
 		[_tabViewControl setSelectedTab:tabToOpen];
 		[self requestLunchData];
-		//self.menuDict = self._lunchDict;
-		//self.list = self._lunchList;
 	}
 	
 	else if (doubleHourOfDay >=2 && doubleHourOfDay < 24)
@@ -326,8 +309,6 @@ HarvardDiningAPI *mitapi;
 		tabToOpen = kDinnerTab;
 		[_tabViewControl setSelectedTab:tabToOpen];
 		[self requestDinnerData];
-		//self.menuDict = self._dinnerDict;
-		//self.list = self._dinnerList;
 	
 	}
 	
@@ -336,14 +317,10 @@ HarvardDiningAPI *mitapi;
 	// set Display Tab
 	[self tabControl:_tabViewControl changedToIndex:tabToOpen tabText:nil];
 	[_tabViewControl setNeedsDisplay];
-
-	//[lunchTable applyStandardColors];
-	//[breakfastTable applyStandardColors];
-	//[dinnerTable applyStandardColors];
 	
 	self.view.backgroundColor = [UIColor clearColor];
-	nextDateButton.backgroundColor = [UIColor clearColor];
-	previousDateButton.backgroundColor = [UIColor clearColor];
+	//nextDateButton.backgroundColor = [UIColor clearColor];
+	//previousDateButton.backgroundColor = [UIColor clearColor];
 	//breakfastViewLink.backgroundColor = [UIColor clearColor];
 	//lunchViewLink.backgroundColor = [UIColor clearColor];
 	//dinnerViewLink.backgroundColor = [UIColor clearColor];
@@ -353,11 +330,6 @@ HarvardDiningAPI *mitapi;
 	//_newsView.backgroundColor = [UIColor clearColor];
 	//_tabViewControl.backgroundColor = [UIColor clearColor];
 	//_tabViewContainer.backgroundColor = [UIColor clearColor];
-	
-	
-	//lunchTable.backgroundColor = [UIColor clearColor];
-	//dinnerTable.backgroundColor = [UIColor clearColor];
-	//breakfastTable.backgroundColor = [UIColor clearColor];
 }
 
 
@@ -377,18 +349,14 @@ HarvardDiningAPI *mitapi;
 	[lunchViewLink release];
 	[_scrollView release];
 	[dinnerViewLink release];
-	[_newsView release];
 	[_loadingResultView release];
 	[breakfastViewLink release];
-	[_activityIndicator release];
 	[_noResultsView release];
 	
 	self.list = nil;
 	self._bkfstList = nil;
 	self._lunchList = nil;
 	self._dinnerList = nil;
-	self.nextDateButton = nil;
-	self.label = nil;
 
 	breakfastTable = nil;
 	lunchTable = nil;
@@ -399,14 +367,14 @@ HarvardDiningAPI *mitapi;
 	self._lunchList = nil;
 	self._dinnerDict = nil;
 	
-	nextDateButton = nil;
-	previousDateButton = nil;
-
+	datePicker = nil;
 	childController = nil;
 	todayDate = nil;
 	
 	hoursTableView = nil;
 	tableControl = nil;
+	
+	loadingIndicator = nil;
 }
 
 
@@ -417,10 +385,10 @@ HarvardDiningAPI *mitapi;
 	[lunchViewLink dealloc];
 	[_scrollView dealloc];
 	[dinnerViewLink dealloc];
-	[_newsView dealloc];
 	[_loadingResultView dealloc];
 	[breakfastViewLink dealloc];
-	[_activityIndicator dealloc];
+	
+	[loadingIndicator dealloc];
 	[_noResultsView dealloc];
 	
 	[list dealloc];
@@ -432,9 +400,7 @@ HarvardDiningAPI *mitapi;
 	[_lunchDict dealloc];
 	[_dinnerDict dealloc];
 	
-	[nextDateButton dealloc];
-	[label dealloc];
-	
+	[datePicker dealloc];
 	[breakfastTable dealloc];
 	[lunchTable dealloc];
 	[dinnerTable dealloc];
@@ -495,17 +461,12 @@ HarvardDiningAPI *mitapi;
 			tabRequestingInfo = kHoursTab;	
 			requestDispatched = YES;
 		}
-
-		//[self requestDinnerData];
-		//[dinnerTable reloadData];
 		
 	}	
 	
 	else if (tabIndex == kNewsTab)
 	{
 		[control setSelectedTab:kNewsTab];
-		//[self requestDinnerData];
-		//[dinnerTable reloadData];
 		
 	}	
 	// set the size of the scroll view based on the size of the view being added and its parent's offset
@@ -514,10 +475,104 @@ HarvardDiningAPI *mitapi;
 										 _tabViewContainer.frame.origin.y + viewToAdd.frame.size.height);
 	
 	[_tabViewContainer addSubview:viewToAdd];
-	
-	[_activityIndicator startAnimating];
+
+	[self addLoadingIndicator];
 }
 
+
+#pragma mark -
+#pragma mark DakePicker setup
+
+
+- (void)setupDatePicker
+{
+	if (datePicker == nil) {
+		
+		CGFloat yOffset = 0.0;
+		CGRect appFrame = [[UIScreen mainScreen] applicationFrame];
+		
+		datePicker = [[UIView alloc] initWithFrame:CGRectMake(0.0, yOffset, appFrame.size.width, 44.0)];
+		UIImageView *datePickerBackground = [[UIImageView alloc] initWithFrame:CGRectMake(0.0, 0.0, datePicker.frame.size.width, datePicker.frame.size.height)];
+		datePickerBackground.image = [[UIImage imageNamed:@"global/subheadbar_background.png"] stretchableImageWithLeftCapWidth:0 topCapHeight:0];
+		[datePicker addSubview:datePickerBackground];
+		[datePickerBackground release];
+		
+		UIImage *buttonImage = [UIImage imageNamed:@"global/subheadbar_button.png"];
+		
+		UIButton *prevDate = [UIButton buttonWithType:UIButtonTypeCustom];
+		prevDate.frame = CGRectMake(0, 0, buttonImage.size.width, buttonImage.size.height);
+		prevDate.center = CGPointMake(21.0, 21.0);
+		[prevDate setBackgroundImage:buttonImage forState:UIControlStateNormal];
+		[prevDate setBackgroundImage:[UIImage imageNamed:@"global/subheadbar_button_pressed"] forState:UIControlStateHighlighted];
+		[prevDate setImage:[UIImage imageNamed:MITImageNameLeftArrow] forState:UIControlStateNormal];	
+		[prevDate addTarget:self action:@selector(previousButtonPressed) forControlEvents:UIControlEventTouchUpInside];
+		[datePicker addSubview:prevDate];
+		
+		UIButton *nextDate = [UIButton buttonWithType:UIButtonTypeCustom];
+		nextDate.frame = CGRectMake(0, 0, buttonImage.size.width, buttonImage.size.height);
+		nextDate.center = CGPointMake(appFrame.size.width - 21.0, 21.0);
+		[nextDate setBackgroundImage:buttonImage forState:UIControlStateNormal];
+		[nextDate setBackgroundImage:[UIImage imageNamed:@"global/subheadbar_button_pressed"] forState:UIControlStateHighlighted];
+		[nextDate setImage:[UIImage imageNamed:MITImageNameRightArrow] forState:UIControlStateNormal];
+		[nextDate addTarget:self action:@selector(nextButtonPressed) forControlEvents:UIControlEventTouchUpInside];
+		[datePicker addSubview:nextDate];		
+	}
+	
+	[datePicker removeFromSuperview];
+    
+    NSInteger randomTag = 3289;
+	
+	for (UIView *view in [datePicker subviews]) {
+		if (view.tag == randomTag) {
+			[view removeFromSuperview];
+		}
+	}
+    
+	NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
+	//[dateFormat setDateFormat:@"YYYY-MM-dd"];
+	[dateFormat setDateFormat:@"EEEE MMMM d"];
+	NSString *dateText = [dateFormat stringFromDate:self.todayDate];
+
+	NSString *currentDate = [dateFormat stringFromDate:[NSDate date]];
+	[dateFormat release];
+	
+	if([dateText isEqualToString:currentDate])
+		dateText = @"Today";
+	
+	UIFont *dateFont = [UIFont fontWithName:BOLD_FONT size:20.0];
+	CGSize textSize = [dateText sizeWithFont:dateFont];
+	
+    UIButton *dateButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    dateButton.frame = CGRectMake(0.0, 0.0, textSize.width, textSize.height);
+    dateButton.titleLabel.text = dateText;
+    dateButton.titleLabel.font = dateFont;
+    dateButton.titleLabel.textColor = [UIColor whiteColor];
+    [dateButton setTitle:dateText forState:UIControlStateNormal];
+    dateButton.center = CGPointMake(datePicker.center.x, datePicker.center.y - datePicker.frame.origin.y);
+	[dateButton addTarget:self action:@selector(pickDate) forControlEvents:UIControlEventTouchUpInside];
+    dateButton.tag = randomTag;
+    [datePicker addSubview:dateButton];
+	
+	[self.view addSubview:datePicker];
+}
+
+- (void)pickDate {
+	
+	DatePickerViewController *dateSelector = [[DatePickerViewController alloc] init];
+	dateSelector.delegate = self;
+
+	
+	MIT_MobileAppDelegate *appDelegate = (MIT_MobileAppDelegate *)[[UIApplication sharedApplication] delegate];
+    [appDelegate presentAppModalViewController:dateSelector animated:YES];
+	
+	/* Bound the dates to One week in the past and One week in the future */
+	NSDate *minDate = [NSDate dateWithTimeIntervalSinceNow:-7*24*60*60];
+	dateSelector.datePicker.minimumDate = minDate;
+	
+	NSDate *maxDate = [NSDate dateWithTimeIntervalSinceNow:7*24*60*60];
+	dateSelector.datePicker.maximumDate = maxDate;
+    [dateSelector release];
+}
 
 #pragma mark -
 #pragma mark Table Data Source Methods
@@ -594,18 +649,6 @@ numberOfRowsInSection:(NSInteger)section
 	
 	cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 	cell.selectionStyle = UITableViewCellSelectionStyleGray;
-	
-	/*
-	UIView* backgroundView = [ [ [ UIView alloc ] initWithFrame:CGRectZero ] autorelease ];
-	backgroundView.backgroundColor = [ UIColor grayColor ];
-	//cell.backgroundView = backgroundView;
-	
-	//cell.contentView = backgroundView;
-	
-	for ( UIView* view in cell.contentView.subviews ) 
-	{
-		view.backgroundColor = [ UIColor clearColor ];
-	}*/
 	
 	return cell;
 	
@@ -694,7 +737,7 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 #pragma mark -
 #pragma mark JSONLoadedDelegate Method
 
-- (void)request:(HarvardDiningAPI *)request jsonLoaded:(id)JSONObject;
+- (void)request:(JSONAPIRequest *)request jsonLoaded:(id)JSONObject;
 {
 
 	if ([_tabViewControl selectedTab] == tabRequestingInfo)
@@ -716,9 +759,7 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 			{
 				[subview removeFromSuperview];
 			}
-			
-			[_activityIndicator stopAnimating];
-			
+					
 			if(_tabViewControl.selectedTab == kBreakfastTab)
 			{
 				self._bkfstList = List;
@@ -755,7 +796,6 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 		
 		else 
 		{
-			[_activityIndicator stopAnimating];
 			[_tabViews removeObjectAtIndex:_tabViewControl.selectedTab];
 			[_tabViews insertObject:_noResultsView atIndex:_tabViewControl.selectedTab];
 			[_tabViewContainer addSubview:_noResultsView];
@@ -764,9 +804,110 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 		[List release];
 		[ListDictionary release];
 	}
+	[self removeLoadingIndicator];
 	requestDispatched = NO;
 	
 	
+}
+
+- (void)handleConnectionFailureForRequest:(JSONAPIRequest *)request
+{
+	
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Connection Failed"
+                                                    message:@"Could not retrieve Dining Hall Menus"
+                                                   delegate:nil
+                                          cancelButtonTitle:@"OK"
+                                          otherButtonTitles:nil];
+	
+    [alert show];
+    [alert release];
+}
+
+
+
+#pragma mark -
+#pragma mark DatePickerViewControllerDelegate functions
+
+- (void)datePickerViewControllerDidCancel:(DatePickerViewController *)controller {
+	
+	MIT_MobileAppDelegate *appDelegate = (MIT_MobileAppDelegate *)[[UIApplication sharedApplication] delegate];
+    [appDelegate dismissAppModalViewControllerAnimated:YES];
+	
+	return;
+}
+
+- (void)datePickerViewController:(DatePickerViewController *)controller didSelectDate:(NSDate *)date {
+	
+	if ([controller class] == [DatePickerViewController class]) {
+		self.todayDate = nil;
+		self.todayDate = [[NSDate alloc] initWithTimeInterval:0 sinceDate:date];    
+	
+		MIT_MobileAppDelegate *appDelegate = (MIT_MobileAppDelegate *)[[UIApplication sharedApplication] delegate];
+		[appDelegate dismissAppModalViewControllerAnimated:YES];
+		
+		[self viewDidLoad];
+	}
+	return;
+}
+- (void)datePickerValueChanged:(id)sender {
+	return;
+}
+
+#pragma mark -
+#pragma mark LoadingIndicator
+
+- (void)addLoadingIndicator
+{
+	if (loadingIndicator == nil) {
+		static NSString *loadingString = @"Loading...";
+		UIFont *loadingFont = [UIFont fontWithName:STANDARD_FONT size:17.0];
+		CGSize stringSize = [loadingString sizeWithFont:loadingFont];
+		
+        CGFloat verticalPadding = 10.0;
+        CGFloat horizontalPadding = 16.0;
+        CGFloat horizontalSpacing = 3.0;
+        //CGFloat cornerRadius = 8.0;
+        
+        UIActivityIndicatorViewStyle style = UIActivityIndicatorViewStyleGray; // : UIActivityIndicatorViewStyleWhite;
+		UIActivityIndicatorView *spinny = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:style];
+        spinny.center = CGPointMake(spinny.center.x + horizontalPadding, spinny.center.y + verticalPadding);
+		[spinny startAnimating];
+        
+		UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(spinny.frame.size.width + horizontalPadding + horizontalSpacing, verticalPadding, stringSize.width, stringSize.height + 2.0)];
+		label.textColor = [UIColor colorWithWhite:0.5 alpha:1.0];// : [UIColor whiteColor];
+		label.text = loadingString;
+		label.font = loadingFont;
+		label.backgroundColor = [UIColor clearColor];
+        
+		loadingIndicator = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, stringSize.width + spinny.frame.size.width + horizontalPadding * 2, stringSize.height + verticalPadding * 2)];
+       // loadingIndicator.layer.cornerRadius = cornerRadius;
+        loadingIndicator.backgroundColor = [UIColor clearColor]; // : [UIColor colorWithWhite:0.0 alpha:0.8];
+		[loadingIndicator addSubview:spinny];
+		[spinny release];
+		[loadingIndicator addSubview:label];
+		[label release];
+	}
+	
+	// self.view.frame changes depending on whether it's the first time we're looking at this,
+	// so we need to figure out its position based on things that don't change
+	CGRect appFrame = [[UIScreen mainScreen] applicationFrame];
+	CGFloat yOffset = 0.0;
+	
+	if (datePicker != nil)
+		yOffset += datePicker.frame.size.height;
+
+    CGFloat heightAdjustment = 0;
+	CGPoint center = CGPointMake(appFrame.size.width / 2, (appFrame.size.height + yOffset) / 2 - heightAdjustment);
+	loadingIndicator.center = center;
+	
+	[self.view addSubview:loadingIndicator];
+}
+
+- (void)removeLoadingIndicator
+{
+	[loadingIndicator removeFromSuperview];
+    [loadingIndicator release];
+    loadingIndicator = nil;
 }
 
 @end

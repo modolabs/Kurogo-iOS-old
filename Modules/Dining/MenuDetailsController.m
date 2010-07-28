@@ -67,7 +67,7 @@ cellForRowAtIndexPath:(NSIndexPath *)indexPath
 	return cell;
 }
 
--(CGFloat)tableView:(UITableView *)tableView
+-(CGFloat)tableView:(UITableView *)tableViewb
 heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
 	return 40;
@@ -89,6 +89,7 @@ heightForRowAtIndexPath:(NSIndexPath *)indexPath
 		
 		if (![tempStr isEqualToString:@"item"] &&
 			![tempStr isEqualToString:@"date"] &&
+			![tempStr isEqualToString:@"id"] &&
 			![tempStr isEqualToString:@"meal"])
 			  
 		{

@@ -29,6 +29,15 @@
 		
 		key = (NSString *) [[tempDict objectForKey:@"category"] description];
 		
+		NSString *servingSize = (NSString *) [[tempDict objectForKey:@"servingSize"] description];
+		NSString *servingUnit = (NSString *) [[tempDict objectForKey:@"servingUnit"] description];
+		
+		servingSize = [NSString stringWithFormat:@"%@ %@", servingSize, servingUnit];
+		
+		[tempDict removeObjectForKey:@"servingSize"];
+		[tempDict removeObjectForKey:@"servingUnit"];
+		[tempDict setValue:servingSize forKey:@"servingSize"];
+		
 		NSMutableArray * temp;
 		
 		temp = [ListDictionary objectForKey:key];
@@ -52,47 +61,47 @@
 	// NOTE: The order is very important here.
 	// Find a more efficient way of doing this.
 	
-	if ([List containsObject:@"BREAKFAST ENTREES"]) 
-		[List1 addObject:@"BREAKFAST ENTREES"];
+	if ([List containsObject:@"Breakfast Entrees"]) 
+		[List1 addObject:@"Breakfast Entrees"];
 
-	if ([List containsObject:@"TODAY'S SOUP"]) 
-		[List1 addObject:@"TODAY'S SOUP"];
+	if ([List containsObject:@"Today's Soup"]) 
+		[List1 addObject:@"Today's Soup"];
 	
-	if ([List containsObject:@"BRUNCH"]) 
-		[List1 addObject:@"BRUNCH"];
+	if ([List containsObject:@"Brunch"]) 
+		[List1 addObject:@"Brunch"];
 	
-	if ([List containsObject:@"ENTREES"]) 
-		[List1 addObject:@"ENTREES"];
+	if ([List containsObject:@"Entrees"]) 
+		[List1 addObject:@"Entrees"];
 	
-	if ([List containsObject:@"ACCOMPANIMENTS"]) 
-		[List1 addObject:@"ACCOMPANIMENTS"];
+	if ([List containsObject:@"Accompaniments"]) 
+		[List1 addObject:@"Accompaniments"];
 	
-	if ([List containsObject:@"DESSERTS"]) 
-		[List1 addObject:@"DESSERTS"];
+	if ([List containsObject:@"Desserts"]) 
+		[List1 addObject:@"Desserts"];
 	
-	if ([List containsObject:@"PASTA ALA CARTE"]) 
-		[List1 addObject:@"PASTA ALA CARTE"];
+	if ([List containsObject:@"Pasta a la Carte"]) 
+		[List1 addObject:@"Pasta a la Carte"];
 
-	if ([List containsObject:@"VEGETABLES"]) 
-		[List1 addObject:@"VEGETABLES"];
+	if ([List containsObject:@"Vegetables"]) 
+		[List1 addObject:@"Vegetables"];
 	
-	if ([List containsObject:@"STARCH & POTATOES"]) 
-		[List1 addObject:@"STARCH & POTATOES"];
+	if ([List containsObject:@"Starch & Potatoes"]) 
+		[List1 addObject:@"Starch & Potatoes"];
 	
 	// Insert all other Categories	
 	for (int j = 0; j < [List count]; j++)
 	{
 		NSString *item = [List objectAtIndex:j];
 		
-		if (![item isEqualToString:@"BREAKFAST ENTREES"] &&
-			![item isEqualToString:@"TODAY'S SOUP"] &&
-			![item isEqualToString:@"BRUNCH"] &&
-			![item isEqualToString:@"ENTREES"] &&
-			![item isEqualToString:@"ACCOMPANIMENTS"] &&
-			![item isEqualToString:@"DESSERTS"] &&
-			![item isEqualToString:@"PASTA ALA CARTE"] &&
-			![item isEqualToString:@"VEGETABLES"] &&
-			![item isEqualToString:@"STARCH & POTATOES"])
+		if (![item isEqualToString:@"Breakfast Entrees"] &&
+			![item isEqualToString:@"Today's Soup"] &&
+			![item isEqualToString:@"Brunch"] &&
+			![item isEqualToString:@"Entrees"] &&
+			![item isEqualToString:@"Accompaniments"] &&
+			![item isEqualToString:@"Desserts"] &&
+			![item isEqualToString:@"Pasta a la Carte"] &&
+			![item isEqualToString:@"Vegetables"] &&
+			![item isEqualToString:@"Starch & Potatoes"])
 		{	
 			[List1 addObject:[List objectAtIndex:j]];
 		}

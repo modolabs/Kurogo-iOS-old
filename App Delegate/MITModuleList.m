@@ -1,7 +1,7 @@
 #import "MITModuleList.h"
 #import "NewsModule.h"
 //#import "ShuttleModule.h"
-//#import "StellarModule.h"
+#import "StellarModule.h"
 #import "PeopleModule.h"
 #import	"CMModule.h"
 //#import "EmergencyModule.h"
@@ -32,7 +32,7 @@
     //[result addObject:[[[ShuttleModule alloc] init] autorelease]];
 	[result addObject:[[[CMModule alloc] init] autorelease]];
 	[result addObject:[[[CalendarModule alloc] init] autorelease]];
-	//[result addObject:[[[StellarModule alloc] init] autorelease]];
+	[result addObject:[[[StellarModule alloc] init] autorelease]];
 	[result addObject:[[[PeopleModule alloc] init] autorelease]];
     //[result addObject:[[[EmergencyModule alloc] init] autorelease]];
     [result addObject:[[[MobileWebModule alloc] init] autorelease]];

@@ -17,14 +17,6 @@
 #pragma mark -
 #pragma mark Initialization
 
-/*
-- (id)initWithStyle:(UITableViewStyle)style {
-    // Override initWithStyle: if you create the controller programmatically and want to perform customization that is not appropriate for viewDidLoad.
-    if ((self = [super initWithStyle:style])) {
-    }
-    return self;
-}
-*/
 
 #pragma mark -
 #pragma mark View lifecycle
@@ -34,31 +26,13 @@
     [super viewDidLoad];
 	[self.tableView applyStandardColors];
 
-    // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-    // self.navigationItem.rightBarButtonItem = self.editButtonItem;
 }
 
 
-/*
-- (void)viewWillAppear:(BOOL)animated {
-    [super viewWillAppear:animated];
-}
-*/
-/*
-- (void)viewDidAppear:(BOOL)animated {
-    [super viewDidAppear:animated];
-}
-*/
 
 
 #pragma mark -
 #pragma mark Table view data source
-/*
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    // Return the number of sections.
-    return 1;
-}*/
-
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     // Return the number of rows in the section.
@@ -75,10 +49,15 @@
     
     static NSString *CellIdentifier = @"HallHours";
     
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    MultiLineTableViewCell *cell = (MultiLineTableViewCell *)[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil) {
-        cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier] autorelease];
+        cell = [[[MultiLineTableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier] autorelease];
     }
+	
+	
+	cell.detailTextLabelNumberOfLines = 2;
+	cell.detailTextLabel.lineBreakMode = UILineBreakModeTailTruncation;
+	
 	int row = [indexPath row];
     
     // Configure the cell...
@@ -97,14 +76,15 @@
 	if (stat == 3)
 		statString = @"No Interhosue Restriction";
 	if (stat == 4)
-		statString = @"Open with Interhouse Restriction";
+		statString = @"Open";
 	
 	//cell.textLabel.text = [[[self.hallProperties objectAtIndex:row] objectForKey:@"name"] stringByAppendingString:statString];
 	cell.textLabel.text = [[self.hallProperties objectAtIndex:row] objectForKey:@"name"];
 	
-	if ((stat == 1) || (stat == 3) || (stat == 4)) {
+	if ((stat == 1) || (stat == 3)) {
 		statString = [statString stringByAppendingString:@" for "];
 		statString = [statString stringByAppendingString:status.currentMeal];
+		statString = [statString stringByAppendingString:status.currentMealTime];
 		cell.detailTextLabel.text = statString;
 
 		UIImage *image = [UIImage imageNamed:@"maps/map_location.png"];
@@ -112,18 +92,38 @@
 		
 	}
 	
+	else if (stat == 4) {
+		statString = [statString stringByAppendingString:@" for "];
+		statString = [statString stringByAppendingString:status.currentMeal];
+		statString = [statString stringByAppendingString:status.currentMealTime];
+		//cell.detailTextLabel.text = statString;
+		
+		cell.detailTextLabel.text = [NSString stringWithFormat:@"%@\nNo Interhouse", statString];
+		UIImage *image = [UIImage imageNamed:@"maps/map_pin.png"];
+		cell.imageView.image = image;
+	}
+	
 
 	else {
-		cell.detailTextLabel.text = @"Closed";
+		if (status.nextMeal != nil) {
+			NSString *nextMeal = status.nextMeal;
+			
+			//if (status.nextMealRestriction == RESTRICTED)
+			//	nextMeal = [NSString stringWithFormat:@"%@. No Interhouse", nextMeal]; //[nextMeal stringByAppendingString:@", No Interhouse"];
+			
+			cell.detailTextLabel.text = [NSString stringWithFormat:@"Closed.\nNext Meal: %@ %@", nextMeal, status.nextMealTime];
+		}
+		
+		else {
+			cell.detailTextLabel.text = @"Closed";
+		}
+
+		
 		UIImage *image = [UIImage imageNamed:@"global/unread-message.png"];
 		cell.imageView.image = image;
 	}
 	
-	
-	if (stat == 4) {
-		UIImage *image = [UIImage imageNamed:@"maps/map_pin.png"];
-		cell.imageView.image = image;
-	}
+	[status release];
     return cell;
 }
 
@@ -161,7 +161,20 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 	
 }
 
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+	
+	int row = [indexPath row];
+    
+	DiningHallStatus *status = [[DiningHallStatus alloc] init];
+	int stat = [status getStatusOfMeal:@"" usingDetails:[self.hallProperties objectAtIndex:row]];
 
+	if (stat == 1)
+		return 45.0;
+	
+	else {
+		return 60.0;
+	}	
+}
 
 #pragma mark -
 #pragma mark Memory management
@@ -198,6 +211,7 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 	
 	self.hallProperties = properties;
 	[self.tableView reloadData];
+	[parentViewController removeLoadingIndicator];
 }
 
 
@@ -205,7 +219,7 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
 	
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Connection Failed"
-                                                    message:@"Could not retrieve The Dining Halls Infomation"
+                                                    message:@"Could not retrieve The Dining Halls Hours"
                                                    delegate:nil
                                           cancelButtonTitle:@"OK"
                                           otherButtonTitles:nil];

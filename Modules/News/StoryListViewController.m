@@ -263,8 +263,6 @@ static NSInteger numTries = 0;
             aButton.tag = tagValue;
             NSString *buttonTitle = aCategory.title;
             [aButton setTitle:buttonTitle forState:UIControlStateNormal];
-            NSLog(@"%@", [aButton description]);
-            NSLog(@"%@", [navScrollView description]);
             [navScrollView addButton:aButton shouldHighlight:YES];
         }
     }
@@ -558,9 +556,14 @@ static NSInteger numTries = 0;
             //NSLog(@"%@", [self.featuredStory.featuredImage description]);
         }
         
-		self.stories = [results subarrayWithRange:NSMakeRange(0, maxLength)];
-        if ([self.stories containsObject:self.featuredStory]) {
-            self.stories = [self.stories subarrayWithRange:NSMakeRange(0, maxLength - 1)];
+        NSMutableArray *storyCandidates = [NSMutableArray arrayWithArray:[results subarrayWithRange:NSMakeRange(0, maxLength)]];
+        
+		//self.stories = [results subarrayWithRange:NSMakeRange(0, maxLength)];
+        if ([storyCandidates containsObject:self.featuredStory]) {
+            [storyCandidates removeObject:self.featuredStory];
+            self.stories = [[NSArray arrayWithObject:self.featuredStory] arrayByAddingObjectsFromArray:storyCandidates];
+        } else {
+            self.stories = storyCandidates;
         }
 	}
 	[storyTable reloadData];
@@ -811,7 +814,7 @@ static NSInteger numTries = 0;
 
     switch (indexPath.section) {
         case 0: {
-            if (indexPath.row == 0 && self.featuredStory != nil) {
+            if (indexPath.row == 0 && self.searchResults == nil && self.featuredStory != nil) {
                 rowHeight = FEATURE_IMAGE_HEIGHT;
             } else if (indexPath.row < self.stories.count) {
                 rowHeight = THUMBNAIL_WIDTH;
@@ -832,7 +835,7 @@ static NSInteger numTries = 0;
     
     switch (indexPath.section) {
         case 0: {
-            if (indexPath.row == 0 && self.featuredStory != nil) {
+            if (indexPath.row == 0 && self.searchResults == nil && self.featuredStory != nil) {
                 
                 NewsStory *story = self.featuredStory;
                 
@@ -1132,7 +1135,6 @@ static NSInteger numTries = 0;
             [newCategories addObject:aCategory];
         }
         self.categories = newCategories;
-        //NSLog(@"we now have categories %@", [self.categories description]);
         [CoreDataManager saveData];
         
         [self setupNavScroller];

@@ -79,7 +79,7 @@ numberOfRowsInSection:(NSInteger)section
 	if (cell == nil)
 	{
 		if (col == 0) {
-		cell = [[[UITableViewCell alloc]
+		cell = [[[MultiLineTableViewCell alloc]
 				 initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellTableIdentifier] autorelease];
 		}
 		
@@ -136,12 +136,11 @@ numberOfRowsInSection:(NSInteger)section
 		
 		NSString *cellText2 = [self.itemDetails objectForKey:key];
 		
-		if ([cellText2 isEqualToString:@"NA"])
+		if ([cellText2 isEqualToString:@"NA"]) {
 			cellText2 = @"";
+		}
 		
-		//cellText1 = [cellText1 stringByAppendingString:@": "];
-		//cell.textLabel.text = [cellText1 stringByAppendingString:cellText2];
-		
+
 		cell.textLabel.text = cellText1;
 		cell.detailTextLabel.text = cellText2;
 
@@ -158,9 +157,14 @@ numberOfRowsInSection:(NSInteger)section
 			cell.imageView.image = image;
 		}
 		
+		else if ((status == CLOSED) && (restriction == RESTRICTED)) {
+			//UIImage *image = [UIImage imageNamed:@"maps/map_pin.png"];
+			//cell.imageView.image = image;
+		}
+		
 		else {
-			UIImage *image = [UIImage imageNamed:@"global/unread-message.png"];
-			cell.imageView.image = image;
+			//UIImage *image = [UIImage imageNamed:@"global/unread-message.png"];
+			//cell.imageView.image = image;
 		}
 
 

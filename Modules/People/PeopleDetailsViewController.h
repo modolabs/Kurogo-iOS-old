@@ -23,7 +23,7 @@
 @property (nonatomic, retain) NSMutableArray *sectionArray;
 @property (nonatomic, retain) NSString *fullname;
 
-- (void)mapIconTapped:(NSString *)room;
+- (void)mapIconTapped:(NSString *)address;
 - (void)phoneIconTapped:(NSString *)phone;
 - (void)emailIconTapped:(NSString *)email;
 
