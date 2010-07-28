@@ -429,7 +429,6 @@ static NSString * s_tileServerFilename = @"tileServer.plist";
             const char *projString = [projectionArgs cStringUsingEncoding:[NSString defaultCStringEncoding]];
             [self setupProjection:projString];
             //projection = pj_init_plus(projString);
-            
         } else {
             [self getProjectionArgs];
             return;
@@ -463,6 +462,12 @@ static NSString * s_tileServerFilename = @"tileServer.plist";
         
         zoomLevel.zoomScale = numTilesAcrossEquator / MKMapSizeWorld.width;
     }
+	
+	// This lets those that have been waiting for the TileServerManager know that it's ready to use. 
+	// View controllers that want to react to this should register for this notification. 
+	// The alternative is for the view controller to pass the view to registerMapView. In that case, TileServerManager 
+	// will notify the view directly that it's ready via the tileServerDidSetup method, bypassing the view controller.
+	[[NSNotificationCenter defaultCenter] postNotificationName:kTileServerManagerProjectionIsReady object:nil];	
 }
 
 - (CGPoint)projectedPointForMapPoint:(MKMapPoint)mapPoint {

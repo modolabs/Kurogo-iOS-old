@@ -52,6 +52,8 @@ extern NSString * const UnreadBadgeValuesChangeNotification;
 
 extern NSString * const MyStellarAlertNotification;
 
+extern NSString * const kTileServerManagerProjectionIsReady;
+
 // core data entity names
 
 extern NSString * const NewsStoryEntityName;
