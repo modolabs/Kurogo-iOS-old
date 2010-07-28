@@ -262,18 +262,18 @@
 			NSString *value;
 		
 			// set single value properties
-			if (value = [self.personDetails actualValueForKey:@"givenname"])
+			if (value = [self.personDetails formattedValueForKey:@"givenname"])
 				ABRecordSetValue(person, kABPersonFirstNameProperty, value, &error);
-			if (value = [self.personDetails actualValueForKey:@"sn"])
+			if (value = [self.personDetails formattedValueForKey:@"sn"])
 				ABRecordSetValue(person, kABPersonLastNameProperty, value, &error);
-			if (value = [self.personDetails actualValueForKey:@"title"])
+			if (value = [self.personDetails formattedValueForKey:@"title"])
 				ABRecordSetValue(person, kABPersonJobTitleProperty, value, &error);
-			if (value = [self.personDetails actualValueForKey:@"ou"])
+			if (value = [self.personDetails formattedValueForKey:@"ou"])
 				ABRecordSetValue(person, kABPersonDepartmentProperty, value, &error);
 		
 			// set multivalue properties: email and phone numbers
 			ABMutableMultiValueRef multiEmail = ABMultiValueCreateMutable(kABMultiStringPropertyType);
-			if (value = [self.personDetails actualValueForKey:@"mail"]) {
+			if (value = [self.personDetails formattedValueForKey:@"mail"]) {
 				for (NSString *email in [value componentsSeparatedByString:@","])
 					ABMultiValueAddValueAndLabel(multiEmail, email, kABWorkLabel, NULL);
 				ABRecordSetValue(person, kABPersonEmailProperty, multiEmail, &error);
@@ -282,13 +282,13 @@
 		
 			BOOL haveValues = NO;
 			ABMutableMultiValueRef multiPhone = ABMultiValueCreateMutable(kABMultiStringPropertyType);
-			if (value = [self.personDetails actualValueForKey:@"telephonenumber"]) {
+			if (value = [self.personDetails formattedValueForKey:@"telephonenumber"]) {
 				for (NSString *phone in [value componentsSeparatedByString:@","])
 					ABMultiValueAddValueAndLabel(multiPhone, phone, kABWorkLabel, NULL);
 				ABRecordSetValue(person, kABPersonPhoneProperty, multiPhone, &error);
 				haveValues = YES;
 			}
-			if (value = [self.personDetails actualValueForKey:@"facsimiletelephonenumber"]) {
+			if (value = [self.personDetails formattedValueForKey:@"facsimiletelephonenumber"]) {
 				ABMultiValueAddValueAndLabel(multiPhone, value, kABPersonPhoneWorkFAXLabel, NULL);
 				haveValues = YES;
 			}
