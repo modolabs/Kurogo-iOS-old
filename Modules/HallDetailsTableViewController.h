@@ -16,6 +16,7 @@
 
 	NSDictionary *itemDetails;
 	DiningHallStatus *hallStatus;
+
 }
 
 @property (nonatomic, retain) NSDictionary *itemDetails;

@@ -209,7 +209,7 @@ int timeToNextMeal;  //starting with ONE DAY
 				if (status == OPEN) {
 					current_meal_restriction = bb_restriction;
 					currentMeal = @"Brain-Break";
-					currentMealTime = timeStr;
+					currentMealTime = [timeStr stringByReplacingOccurrencesOfString:@"starting" withString:@""];
 				}
 				break;
 			case 4:
@@ -330,8 +330,9 @@ int timeToNextMeal;  //starting with ONE DAY
 					nextMeal = @"Brunch";
 					break;
 			}
+			nextMealTime = [timeString stringByReplacingOccurrencesOfString:@"starting" withString:@""];
 		}
-		nextMealTime = timeString;
+		
 		
 	return CLOSED;
 	}

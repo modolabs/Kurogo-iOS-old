@@ -35,6 +35,7 @@
 	IBOutlet UITableView *lunchTable;
 	IBOutlet UITableView *dinnerTable;
 	
+	IBOutlet UIView *glossaryForHoursView;
 	IBOutlet UITableView *hoursTableView;
 	HoursTableViewController *tableControl;
 

@@ -253,19 +253,19 @@ JSONAPIRequest *mitapi;
 		[_tabViews insertObject:_loadingResultView atIndex:kDinnerTab];
 		
 		[_tabViewControl addTab:@"Hours"];
+		[_hoursView addSubview:glossaryForHoursView];
 		tableControl = [[HoursTableViewController alloc] init];
 		hoursTableView.delegate = (HoursTableViewController *)tableControl;
 		hoursTableView.dataSource = (HoursTableViewController *)tableControl;
 		
 		tableControl.tableView = hoursTableView;
 		
-		[tableControl.tableView applyStandardColors];
-		
-		
 		tableControl.parentViewController = self;
 		
-		[_hoursView addSubview:hoursTableView];
+		//[_hoursView addSubview:hoursTableView];
 		[_tabViews insertObject:_hoursView atIndex:kHoursTab];
+		
+		_hoursView.backgroundColor = [UIColor whiteColor];
 			
 		_tabViewControl.hidden = NO;
 		_tabViewContainer.hidden = NO;
@@ -328,8 +328,8 @@ JSONAPIRequest *mitapi;
 	
 	//_loadingResultView.backgroundColor = [UIColor clearColor];
 	//_newsView.backgroundColor = [UIColor clearColor];
-	//_tabViewControl.backgroundColor = [UIColor clearColor];
-	//_tabViewContainer.backgroundColor = [UIColor clearColor];
+	//_tabViewControl.backgroundColor = [UIColor whiteColor];
+	_tabViewContainer.backgroundColor = [UIColor whiteColor];
 }
 
 

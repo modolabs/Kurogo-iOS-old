@@ -15,7 +15,7 @@
 @synthesize itemDetails;
 
 -(void)viewWillAppear:(BOOL)animated
-{
+{	
 	[super viewWillAppear:animated];
 	[self.tableView applyStandardColors];
 }
@@ -37,7 +37,7 @@
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
 	
 	if(section == 0)
-		return @"Hours";
+		return @"";
 	else
 		return @"Interhouse Restrictions";
 }

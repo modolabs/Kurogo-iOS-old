@@ -167,6 +167,9 @@
 		C704F06D11E3E31F00621406 /* MenuDetailsController.m in Sources */ = {isa = PBXBuildFile; fileRef = C704F05E11E3E31F00621406 /* MenuDetailsController.m */; };
 		C704F06E11E3E31F00621406 /* MenuItems.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = C704F05F11E3E31F00621406 /* MenuItems.h */; settings = {JAVA_ARCHIVE_SUBDIR = Modules/Dining; }; };
 		C704F06F11E3E31F00621406 /* MenuItems.m in Sources */ = {isa = PBXBuildFile; fileRef = C704F06011E3E31F00621406 /* MenuItems.m */; };
+		C713658B1200874C00DA3A37 /* HallDetailsViewController.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = C71365881200874C00DA3A37 /* HallDetailsViewController.h */; settings = {JAVA_ARCHIVE_SUBDIR = Modules; }; };
+		C713658C1200874C00DA3A37 /* HallDetailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C71365891200874C00DA3A37 /* HallDetailsViewController.m */; };
+		C713658D1200874C00DA3A37 /* HallDetailsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C713658A1200874C00DA3A37 /* HallDetailsViewController.xib */; };
 		C727B53A11F4E245007D53BB /* CalendarCategoriesViewController.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = C727B53811F4E245007D53BB /* CalendarCategoriesViewController.h */; settings = {JAVA_ARCHIVE_SUBDIR = Modules/Calendar; }; };
 		C727B53B11F4E245007D53BB /* CalendarCategoriesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C727B53911F4E245007D53BB /* CalendarCategoriesViewController.m */; };
 		C77664FA11F64E74005496DD /* HallDetailsTableViewController.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = C77664F811F64E74005496DD /* HallDetailsTableViewController.h */; settings = {JAVA_ARCHIVE_SUBDIR = Modules; }; };
@@ -680,6 +683,9 @@
 		C704F05E11E3E31F00621406 /* MenuDetailsController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MenuDetailsController.m; path = Dining/MenuDetailsController.m; sourceTree = "<group>"; };
 		C704F05F11E3E31F00621406 /* MenuItems.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MenuItems.h; path = Dining/MenuItems.h; sourceTree = "<group>"; };
 		C704F06011E3E31F00621406 /* MenuItems.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MenuItems.m; path = Dining/MenuItems.m; sourceTree = "<group>"; };
+		C71365881200874C00DA3A37 /* HallDetailsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HallDetailsViewController.h; sourceTree = "<group>"; };
+		C71365891200874C00DA3A37 /* HallDetailsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HallDetailsViewController.m; sourceTree = "<group>"; };
+		C713658A1200874C00DA3A37 /* HallDetailsViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = HallDetailsViewController.xib; sourceTree = "<group>"; };
 		C727B53811F4E245007D53BB /* CalendarCategoriesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CalendarCategoriesViewController.h; sourceTree = "<group>"; };
 		C727B53911F4E245007D53BB /* CalendarCategoriesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CalendarCategoriesViewController.m; sourceTree = "<group>"; };
 		C77664F811F64E74005496DD /* HallDetailsTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HallDetailsTableViewController.h; sourceTree = "<group>"; };
@@ -1400,6 +1406,9 @@
 				C77664F911F64E74005496DD /* HallDetailsTableViewController.m */,
 				C7824BD911FA2F8B003B3E3E /* DiningHallStatus.h */,
 				C7824BDA11FA2F8B003B3E3E /* DiningHallStatus.m */,
+				C71365881200874C00DA3A37 /* HallDetailsViewController.h */,
+				C71365891200874C00DA3A37 /* HallDetailsViewController.m */,
+				C713658A1200874C00DA3A37 /* HallDetailsViewController.xib */,
 			);
 			name = Dining;
 			sourceTree = "<group>";
@@ -2045,6 +2054,7 @@
 				EB3721AA11FA2F5200705180 /* NewsImage.h in JavaArchive */,
 				C7824BDB11FA2F8B003B3E3E /* DiningHallStatus.h in JavaArchive */,
 				A64C313D11FDFAB8006FE056 /* AddressFormatter.h in JavaArchive */,
+				C713658B1200874C00DA3A37 /* HallDetailsViewController.h in JavaArchive */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2126,6 +2136,7 @@
 				EB49AD9811F4BFFF00854791 /* news in Resources */,
 				EB49AD9911F4BFFF00854791 /* people in Resources */,
 				EB49AD9A11F4BFFF00854791 /* shuttles in Resources */,
+				C713658D1200874C00DA3A37 /* HallDetailsViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2474,6 +2485,7 @@
 				EB3721AB11FA2F5200705180 /* NewsImage.m in Sources */,
 				C7824BDC11FA2F8B003B3E3E /* DiningHallStatus.m in Sources */,
 				A64C313E11FDFAB8006FE056 /* AddressFormatter.m in Sources */,
+				C713658C1200874C00DA3A37 /* HallDetailsViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

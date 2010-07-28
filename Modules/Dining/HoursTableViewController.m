@@ -24,7 +24,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-	[self.tableView applyStandardColors];
+	//[self.tableView applyStandardColors];
 
 }
 
@@ -57,6 +57,7 @@
 	
 	cell.detailTextLabelNumberOfLines = 2;
 	cell.detailTextLabel.lineBreakMode = UILineBreakModeTailTruncation;
+	cell.detailTextLabel.font = [UIFont systemFontOfSize:13];
 	
 	int row = [indexPath row];
     
@@ -142,6 +143,10 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 	if (childHallViewController == nil)
 	{
 		childHallViewController = [[HallDetailsTableViewController alloc] initWithStyle:UITableViewStyleGrouped];
+
+		
+		//HallDetailsTableViewController *h = [[HallDetailsTableViewController alloc] initWithNibName:@"HallDetailsView" bundle:nil];
+		//childHallViewController = h;
 	}
 
 	
@@ -153,7 +158,7 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 	NSDictionary *test = [self.hallProperties objectAtIndex:row];
 	[childHallViewController setDetails:test];
 	[childHallViewController setStatus:status];
-	childHallViewController.title = [[self.hallProperties objectAtIndex:row] objectForKey:@"name"];
+	childHallViewController.title =  @"Dining Hall Details"; ;
 
 	[self.parentViewController.navigationController pushViewController:childHallViewController animated:YES];
 	// deselect the Row
@@ -169,10 +174,10 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 	int stat = [status getStatusOfMeal:@"" usingDetails:[self.hallProperties objectAtIndex:row]];
 
 	if (stat == 1)
-		return 45.0;
+		return 50.0;
 	
 	else {
-		return 60.0;
+		return 65.0;
 	}	
 }
 
