@@ -12,10 +12,12 @@
 
 @class DiningHallStatus;
 
-@interface HallDetailsTableViewController : UITableViewController {
+@interface HallDetailsTableViewController : UIViewController<UITableViewDelegate, UITableViewDataSource> {
 
 	NSDictionary *itemDetails;
 	DiningHallStatus *hallStatus;
+	
+	UITableView *detailsTableView;
 
 }
 

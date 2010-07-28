@@ -17,7 +17,26 @@
 -(void)viewWillAppear:(BOOL)animated
 {	
 	[super viewWillAppear:animated];
-	[self.tableView applyStandardColors];
+	[self viewDidLoad];
+	//[self.tableView applyStandardColors];
+}
+
+
+-(void)viewDidLoad {
+	[super viewDidLoad];
+	
+	UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(20.0, 20.0,45.0, 50.0)];
+	label.text = @"Testing this out properly";
+	
+	[self.view addSubview:label];
+	detailsTableView = [[UITableView alloc] initWithFrame:CGRectMake(20.0, 75.0, 200.0, 500.0)];
+	//detailsTableView = UITableViewStyleGrouped;
+	detailsTableView.delegate= self;
+	detailsTableView.dataSource = self;
+	
+	[self.view addSubview:detailsTableView];
+	[detailsTableView reloadData];
+	
 }
 
 -(void)viewDidUnload

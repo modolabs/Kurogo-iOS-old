@@ -142,11 +142,8 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 	
 	if (childHallViewController == nil)
 	{
-		childHallViewController = [[HallDetailsTableViewController alloc] initWithStyle:UITableViewStyleGrouped];
-
-		
-		//HallDetailsTableViewController *h = [[HallDetailsTableViewController alloc] initWithNibName:@"HallDetailsView" bundle:nil];
-		//childHallViewController = h;
+		//childHallViewController = [[HallDetailsTableViewController alloc] initWithStyle:UITableViewStyleGrouped];
+		childHallViewController = [[HallDetailsTableViewController alloc] init];
 	}
 
 	
@@ -158,7 +155,7 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 	NSDictionary *test = [self.hallProperties objectAtIndex:row];
 	[childHallViewController setDetails:test];
 	[childHallViewController setStatus:status];
-	childHallViewController.title =  @"Dining Hall Details"; ;
+	childHallViewController.title =  @"Dining Hall Details"; //[[self.hallProperties objectAtIndex:row] objectForKey:@"name"];
 
 	[self.parentViewController.navigationController pushViewController:childHallViewController animated:YES];
 	// deselect the Row
