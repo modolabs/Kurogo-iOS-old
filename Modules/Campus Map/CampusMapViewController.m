@@ -715,16 +715,8 @@
 }
 
 - (void)mapView:(MKMapView *)mapView didAddAnnotationViews:(NSArray *)views {
-    for (MKAnnotationView *aView in views) {
-        id<MKAnnotation>annotation = aView.annotation;
-        if ([annotation isKindOfClass:[ArcGISMapSearchResultAnnotation class]]) {
-            ArcGISMapSearchResultAnnotation *polyAnnotation = (ArcGISMapSearchResultAnnotation *)annotation;
-            if ([polyAnnotation canAddOverlay]) {
-                PolygonOverlay *polyOverlay = polyAnnotation.polygon; //[[PolygonOverlay alloc] initWithAnnotation:polyAnnotation];
-                [mapView addOverlay:polyOverlay];
-            }
-        }
-    }
+    //for (MKAnnotationView *aView in views) {
+    //}
 }
 
 - (void)pushAnnotationDetails:(id <MKAnnotation>)annotation animated:(BOOL)animated
@@ -747,6 +739,28 @@
 		}
 		[self.navigationController pushViewController:detailsVC animated:animated];		
 	}
+}
+
+- (void)mapView:(MKMapView *)mapView didSelectAnnotationView:(MKAnnotationView *)view {
+    id<MKAnnotation>annotation = view.annotation;
+    if ([annotation isKindOfClass:[ArcGISMapSearchResultAnnotation class]]) {
+        ArcGISMapSearchResultAnnotation *polyAnnotation = (ArcGISMapSearchResultAnnotation *)annotation;
+        if ([polyAnnotation canAddOverlay]) {
+            PolygonOverlay *polyOverlay = polyAnnotation.polygon;
+            [mapView addOverlay:polyOverlay];
+        }
+    }
+}
+
+- (void)mapView:(MKMapView *)mapView didDeselectAnnotationView:(MKAnnotationView *)view {
+    id<MKAnnotation>annotation = view.annotation;
+    if ([annotation isKindOfClass:[ArcGISMapSearchResultAnnotation class]]) {
+        ArcGISMapSearchResultAnnotation *polyAnnotation = (ArcGISMapSearchResultAnnotation *)annotation;
+        if ([polyAnnotation canAddOverlay]) {
+            PolygonOverlay *polyOverlay = polyAnnotation.polygon;
+            [mapView removeOverlay:polyOverlay];
+        }
+    }
 }
 
 - (void)mapView:(MKMapView *)mapView annotationView:(MKAnnotationView *)view calloutAccessoryControlTapped:(UIControl *)control
