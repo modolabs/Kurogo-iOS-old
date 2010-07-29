@@ -210,15 +210,15 @@ numberOfRowsInSection:(NSInteger)section
 		
 		switch (row) {
 			case 0:
-				meal = @"Lunch ";
+				meal = @"lunch ";
 				mealkey = @"lunch_restrictions";				
 				break;
 			case 1:
-				meal = @"Dinner ";
+				meal = @"dinner ";
 				mealkey = @"dinner_restrictions";	
 				break;
 			case 2:
-				meal = @"Sunday Brunch ";
+				meal = @"brunch ";
 				mealkey = @"brunch_restrictions";	
 				break;
 			default:
