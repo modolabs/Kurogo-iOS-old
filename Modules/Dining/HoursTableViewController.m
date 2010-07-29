@@ -116,7 +116,7 @@
 			if (status.nextMealRestriction == RESTRICTED) {
 				//nextMeal = [NSString stringWithFormat:@"%@. No Interhouse", nextMeal]; 
 				
-				cell.detailTextLabel.text = [NSString stringWithFormat:@"Closed. Upcoming Restriction\n%@", nextMeal];
+				cell.detailTextLabel.text = [NSString stringWithFormat:@"Closed. Upcoming Restriction\nNext Meal: %@", nextMeal];
 				
 				UIImage *image = [UIImage imageNamed:@"dining-status-closed-w-restrictions.png"];
 				cell.imageView.image = image;
@@ -135,6 +135,8 @@
 	}
 	
 	[status release];
+	
+	cell.backgroundColor = GROUPED_VIEW_CELL_COLOR;
     return cell;
 }
 

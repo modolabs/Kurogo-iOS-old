@@ -313,13 +313,13 @@ NSString* cleanPersonName(NSString *personName);
 }
 
 - (void)request:(JSONAPIRequest *)request jsonLoaded: (id)object {
-	NSArray *courses = (NSArray *)object;
-	if (courses.count == 0) {
+	NSArray *courseGroups = (NSArray *)object;
+	if (courseGroups.count == 0) {
 		// no courses to save
 		return;
 	}
-
-	for(NSDictionary *aDict in courses) {
+	
+	/*for(NSDictionary *aDict in courses) {
 		StellarCourse *oldStellarCourse = [CoreDataManager getObjectForEntity:StellarCourseEntityName attribute:@"number" value:[aDict objectForKey:@"short"]];
 		if(oldStellarCourse) {
 			// delete old course (will replace all the data, occasionally non-critical relationships
@@ -333,7 +333,36 @@ NSString* cleanPersonName(NSString *personName);
 	}
 	[CoreDataManager saveData];
 	[[NSUserDefaults standardUserDefaults] setObject:[NSDate date] forKey:@"stellarCoursesLastSaved"];
-	[self.coursesLoadedDelegate coursesLoaded];
+	[self.coursesLoadedDelegate coursesLoaded];*/
+	
+	NSMutableArray *coursesArray = [[NSMutableArray alloc] init];
+	for (NSDictionary *aDict in courseGroups) {
+		
+		NSArray *courses = [aDict objectForKey:@"courses"];
+		NSString *courseGroupName = [[aDict valueForKey:@"school_name"] description];
+		
+		for (NSDictionary *course in courses) {
+			
+			StellarCourse *oldStellarCourse = [CoreDataManager getObjectForEntity:StellarCourseEntityName attribute:@"title" value:[course objectForKey:@"name"]];
+			if(oldStellarCourse) {
+				// delete old course (will replace all the data, occasionally non-critical relationships
+				// between a course and its subject will be lost
+				[CoreDataManager deleteObject:oldStellarCourse];
+			}
+			
+			StellarCourse *newStellarCourse = (StellarCourse *)[CoreDataManager insertNewObjectForEntityForName:StellarCourseEntityName];
+			newStellarCourse.number = [course objectForKey:@"short"];
+			NSString *xr = [course valueForKey:@"name"];
+			newStellarCourse.title = [course valueForKey:@"name"];
+			newStellarCourse.courseGroup = courseGroupName;
+			
+			[coursesArray addObject:newStellarCourse];
+		}
+	}
+	
+	[CoreDataManager saveData];
+	[[NSUserDefaults standardUserDefaults] setObject:[NSDate date] forKey:@"stellarCoursesLastSaved"];
+	[self.coursesLoadedDelegate coursesLoaded];	
 }
 	
 - (void) dealloc {

@@ -17,6 +17,8 @@
 #import "DatePickerViewController.h"
 
 
+#define GROUPED_VIEW_CELL_COLOR [UIColor colorWithHexString:@"#FDFAF6"] 
+
 @class MenuDetailsController;
 @class HoursTableViewController;
 

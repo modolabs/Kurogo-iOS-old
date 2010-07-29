@@ -13,6 +13,7 @@
 @property (nonatomic, retain) NSString * title;
 @property (nonatomic, retain) NSSet* stellarClasses;
 @property (nonatomic, retain) NSString * term;
+@property (nonatomic, retain) NSString * courseGroup;
 
 @end
 

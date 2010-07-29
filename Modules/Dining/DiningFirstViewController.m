@@ -636,14 +636,14 @@ numberOfRowsInSection:(NSInteger)section
 	}
 
 	
-	NSString *t = (NSString *) [[keySection objectAtIndex:row] objectForKey:@"item"];
-	cell.textLabel.text = t;
+	cell.textLabel.text = (NSString *) [[keySection objectAtIndex:row] objectForKey:@"item"];
+	
 	
 	cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 	cell.selectionStyle = UITableViewCellSelectionStyleGray;
+	cell.backgroundColor = GROUPED_VIEW_CELL_COLOR;
 	
 	return cell;
-	
 }
 
 -(NSString *) tableView:(UITableView *)tableView

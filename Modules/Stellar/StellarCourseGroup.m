@@ -7,7 +7,7 @@ NSInteger courseNameCompare(id course1, id course2, void *context);
 @implementation StellarCourseGroup
 @synthesize title, courses;
 
-- (id) initWithTitle: (NSString *)aTitle courses:(NSArray *)aCourseGroup {
+- (id) initWithTitle: (NSString *)aTitle courses:(NSMutableArray *)aCourseGroup {
 	if(self = [super init]) {
 		self.title = aTitle;
 		self.courses = aCourseGroup;
@@ -16,7 +16,7 @@ NSInteger courseNameCompare(id course1, id course2, void *context);
 }
 
 + (NSArray *) allCourseGroups:(NSArray *)stellarCourses {
-	NSArray *courseCriterias = [NSArray arrayWithObjects:
+	/*NSArray *courseCriterias = [NSArray arrayWithObjects:
 		[CourseGroupCriteria numericLower:@"1" upper:@"11"],
 		[CourseGroupCriteria numericLower:@"11" upper:@"21"],
 		[CourseGroupCriteria numericLower:@"21"],
@@ -47,7 +47,41 @@ NSInteger courseNameCompare(id course1, id course2, void *context);
 			[courseGroups addObject:[[[StellarCourseGroup alloc] initWithTitle:title courses:sortedCourseGroup] autorelease]];
 		}	
 	}
-	return courseGroups;
+	return courseGroups;*/
+	
+	NSMutableDictionary *courseGroups = [[NSMutableDictionary alloc] init];
+	NSMutableArray *courseGroupNames = [[NSMutableArray alloc] init];
+	
+	for (StellarCourse *course in stellarCourses) {
+		
+		if (![[courseGroups allKeys] containsObject:course.courseGroup]) {
+			
+			[courseGroupNames addObject:course.courseGroup];
+			
+			StellarCourseGroup *group = [[StellarCourseGroup alloc] init];
+			group.title = course.courseGroup;
+			
+			NSMutableArray * cArray = [[NSMutableArray alloc] init];
+			group.courses = cArray;
+			[group.courses addObject:course];
+			[courseGroups setObject:group forKey:course.courseGroup];
+		}
+		
+		else {
+			StellarCourseGroup *group = [courseGroups objectForKey:course.courseGroup];
+			[courseGroups removeObjectForKey:course.courseGroup];
+			[group.courses addObject:course];
+			[courseGroups setObject:group forKey:course.courseGroup];
+		}
+
+	}
+	
+	NSMutableArray *courseGroupArray = [[NSMutableArray alloc] init];
+	for (NSString *groupName in [courseGroups allKeys]) {
+		[courseGroupArray addObject:[courseGroups objectForKey:groupName]]; 
+	}
+	
+	return courseGroupArray;
 }
 
 - (NSString *) serialize {

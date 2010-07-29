@@ -11,5 +11,6 @@
 @dynamic title;
 @dynamic stellarClasses;
 @dynamic term;
+@dynamic courseGroup;
 
 @end

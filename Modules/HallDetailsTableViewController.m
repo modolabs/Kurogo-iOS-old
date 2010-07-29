@@ -17,8 +17,6 @@
 -(void)viewWillAppear:(BOOL)animated
 {	
 	[super viewWillAppear:animated];
-	//[self viewDidLoad];
-	//[self.tableView applyStandardColors];
 }
 
 
@@ -40,7 +38,7 @@
 			break;
 			
 		case CLOSED:
-			if (hallStatus.nextMealStatus == RESTRICTED) {
+			if (hallStatus.nextMealRestriction == RESTRICTED) {
 				imageView.image = [UIImage imageNamed:@"dining-status-closed-w-restrictions@2x.png"];
 				[self.view addSubview:imageView];
 			}
@@ -59,8 +57,6 @@
 			imageView.image = [UIImage imageNamed:@"dining-status-open-w-restrictions@2x.png"];
 			[self.view addSubview:imageView];
 			break;
-			
-
 	}
 	
 	detailsTableView = nil;
