@@ -56,6 +56,7 @@ NSString* cleanPersonName(NSString *personName);
 		requestWithJSONAPIDelegate:[[[CoursesRequest alloc] 
 			initWithCoursesDelegate:delegate] autorelease]];
 	[apiRequest requestObjectFromModule:@"stellar" command:@"courses" parameters:nil];
+
 }
 
 + (BOOL) classesFreshForCourse: (StellarCourse *)course term: (NSString *)term {
@@ -343,6 +344,7 @@ NSString* cleanPersonName(NSString *personName);
 		
 		for (NSDictionary *course in courses) {
 			
+			
 			StellarCourse *oldStellarCourse = [CoreDataManager getObjectForEntity:StellarCourseEntityName attribute:@"title" value:[course objectForKey:@"name"]];
 			if(oldStellarCourse) {
 				// delete old course (will replace all the data, occasionally non-critical relationships
@@ -352,13 +354,15 @@ NSString* cleanPersonName(NSString *personName);
 			
 			StellarCourse *newStellarCourse = (StellarCourse *)[CoreDataManager insertNewObjectForEntityForName:StellarCourseEntityName];
 			newStellarCourse.number = [course objectForKey:@"short"];
-			NSString *xr = [course valueForKey:@"name"];
 			newStellarCourse.title = [course valueForKey:@"name"];
 			newStellarCourse.courseGroup = courseGroupName;
-			
+
 			[coursesArray addObject:newStellarCourse];
+
+		
 		}
 	}
+	
 	
 	[CoreDataManager saveData];
 	[[NSUserDefaults standardUserDefaults] setObject:[NSDate date] forKey:@"stellarCoursesLastSaved"];

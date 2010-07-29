@@ -69,6 +69,7 @@
 	
 	// load all course groups (asynchronously) in case it requires server access
 	[StellarModel loadCoursesFromServerAndNotify:self];
+	[self showLoadingView];
 	
 	[StellarModel removeOldFavorites:self];
 	
@@ -140,6 +141,7 @@
 - (void) coursesLoaded {
 	self.courseGroups = [StellarCourseGroup allCourseGroups:[StellarModel allCourses]];
 	[self.tableView reloadData];
+	[self hideLoadingView];
 }
 
 // "DataSource" methods
@@ -186,6 +188,8 @@
 		cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 		cell.imageView.image = nil;
 	}
+	
+	cell.textLabel.font = [UIFont boldSystemFontOfSize:14];
 	return cell;
 }
 
@@ -206,7 +210,7 @@
 	if(groupIndex == myStellarGroup) {
 		headerTitle = @"My Stellar:";
 	} else if(groupIndex == browseGroup) {
-		headerTitle = @"Browse By Course:";
+		headerTitle = @"Browse By School:";
 	}
 	return [UITableView groupedSectionHeaderWithTitle:headerTitle];
 }

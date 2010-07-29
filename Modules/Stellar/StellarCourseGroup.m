@@ -63,7 +63,10 @@ NSInteger courseNameCompare(id course1, id course2, void *context);
 			
 			NSMutableArray * cArray = [[NSMutableArray alloc] init];
 			group.courses = cArray;
-			[group.courses addObject:course];
+			if ([course.title length] > 0) {
+				[group.courses addObject:course];
+			}
+			
 			[courseGroups setObject:group forKey:course.courseGroup];
 		}
 		
@@ -75,13 +78,20 @@ NSInteger courseNameCompare(id course1, id course2, void *context);
 		}
 
 	}
-	
+
 	NSMutableArray *courseGroupArray = [[NSMutableArray alloc] init];
-	for (NSString *groupName in [courseGroups allKeys]) {
-		[courseGroupArray addObject:[courseGroups objectForKey:groupName]]; 
+		for (NSString *groupName in [courseGroups allKeys]) {
+			
+			StellarCourseGroup *group = [courseGroups objectForKey:groupName];
+			
+			NSMutableArray *temp = group.courses;
+			[temp sortUsingSelector:@selector(compare:)];
+			group.courses = temp;
+			[courseGroupArray addObject:group]; 
 	}
 	
-	return courseGroupArray;
+	
+	return [courseGroupArray sortedArrayUsingSelector:@selector(compare:)];
 }
 
 - (NSString *) serialize {
@@ -122,7 +132,11 @@ NSInteger courseNameCompare(id course1, id course2, void *context);
 	[courses release];
 	[super dealloc];
 }
-	
+
+- (NSComparisonResult)compare:(StellarCourseGroup *)otherObject {
+    return [self.title compare:otherObject.title];
+}
+
 @end
 
 @implementation CourseGroupCriteria
@@ -185,5 +199,8 @@ NSInteger courseNameCompare(id course1, id course2, void *context);
 @end
 
 NSInteger courseNameCompare(id course1, id course2, void *context) {
-	return [((StellarCourse *)course1).number compare:((StellarCourse *)course2).number options:NSNumericSearch];
+	return [((StellarCourse *)course1).title compare:((StellarCourse *)course2).title options:NSNumericSearch];
 }
+
+
+

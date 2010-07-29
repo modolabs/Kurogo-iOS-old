@@ -43,16 +43,17 @@
 }
 
 - (UITableViewCell *)tableView: (UITableView *)tableView cellForRowAtIndexPath: (NSIndexPath *)indexPath {
-	UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"StellarCourses"];
+	//UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"StellarCourses"];
+	MultiLineTableViewCell *cell = (MultiLineTableViewCell *)[tableView dequeueReusableCellWithIdentifier:@"StellarCourses"];
 	if(cell == nil) {
-		cell = [[[MultiLineTableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"StellarCourses"] autorelease];
+		cell = [[[MultiLineTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"StellarCourses"] autorelease];
 		[cell applyStandardFonts];
 	}
 	
 	StellarCourse *stellarCourse = (StellarCourse *)[self.courseGroup.courses objectAtIndex:indexPath.row];
 	
-	cell.textLabel.text = [@"Course " stringByAppendingString:stellarCourse.number];
-	cell.detailTextLabel.text = stellarCourse.title;
+	cell.textLabelNumberOfLines = 2;
+	cell.textLabel.text = stellarCourse.title;
 	cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 	return cell;
 }
@@ -66,14 +67,14 @@
 	StellarCourse *stellarCourse = (StellarCourse *)[self.courseGroup.courses objectAtIndex:indexPath.row];
     return [MultiLineTableViewCell heightForCellWithStyle:UITableViewCellStyleSubtitle
                                                 tableView:tableView 
-                                                     text:nil
-                                             maxTextLines:1
-                                               detailText:stellarCourse.title
+                                                     text:stellarCourse.title //was nil
+                                             maxTextLines:2 //was 1
+                                               detailText:nil // was stellarCourse.title
                                            maxDetailLines:0
                                                      font:nil 
                                                detailFont:nil 
                                             accessoryType:UITableViewCellAccessoryDisclosureIndicator
-                                                cellImage:NO] + 2.0;
+                                                cellImage:NO] + 14.0; // was 2.0;
 }
 
 
@@ -83,8 +84,5 @@
 			initWithCourse: (StellarCourse *)[self.courseGroup.courses objectAtIndex:indexPath.row]] autorelease]
 		animated:YES];
 }
-
-
-
 
 @end

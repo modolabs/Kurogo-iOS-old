@@ -116,7 +116,7 @@ numberOfRowsInSection:(NSInteger)section
 	NSInteger row = [indexPath row];
 	NSInteger col = [indexPath section];
 	
-	static NSString *CellTableIdentifier = @"HallHoursIdentifier";
+	NSString *CellTableIdentifier = @"HallHoursIdentifier";
 	
 	
 	if (col == 1)

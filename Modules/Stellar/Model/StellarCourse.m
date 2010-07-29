@@ -13,4 +13,8 @@
 @dynamic term;
 @dynamic courseGroup;
 
+- (NSComparisonResult)compare:(StellarCourse *)otherObject {
+    return [self.title compare:otherObject.title];
+}
+
 @end
