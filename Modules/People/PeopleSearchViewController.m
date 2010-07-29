@@ -15,6 +15,9 @@
 #import "UIKit+MITAdditions.h"
 #import "NSArray+Convenience.h"
 
+
+static const NSUInteger kPhoneDirectorySection = 0;
+
 // this function puts longer strings first
 NSInteger strLenSort(NSString *str1, NSString *str2, void *context)
 {
@@ -31,6 +34,7 @@ NSInteger strLenSort(NSString *str1, NSString *str2, void *context)
 @interface PeopleSearchViewController (Private)
 
 - (void)handleErrorFromLDAP:(NSString *)errorMessage;
++ (NSDictionary *)staticPhoneRowPropertiesForIndexPath:(NSIndexPath *)indexPath;
 
 @end
 
@@ -45,6 +49,20 @@ NSInteger strLenSort(NSString *str1, NSString *str2, void *context)
 										  otherButtonTitles:nil]; 
 	[alert show];
 	[alert release];
+}
+
++ (NSDictionary *)staticPhoneRowPropertiesForIndexPath:(NSIndexPath *)indexPath {
+
+	NSDictionary *properties = nil;
+	if (indexPath.section == kPhoneDirectorySection) {		
+		NSArray *staticPhoneEntries = 
+		[NSArray arrayWithContentsOfFile:[[[NSBundle mainBundle] bundlePath] stringByAppendingPathComponent:
+										  @"peopleSearchStaticPhoneRowsArray.plist"]];
+		if (indexPath.row < staticPhoneEntries.count) {
+			properties = [staticPhoneEntries objectAtIndex:indexPath.row];
+		}
+	}
+	return properties;
 }
 
 @end
@@ -313,7 +331,12 @@ NSInteger strLenSort(NSString *str1, NSString *str2, void *context)
 	if (tableView == self.tableView) {
 		switch (section) {
 			case 0: // phone directory
-				return 1;
+			{
+				NSArray *staticPhoneEntries = 
+				[NSArray arrayWithContentsOfFile:[[[NSBundle mainBundle] bundlePath] stringByAppendingPathComponent:
+												  @"peopleSearchStaticPhoneRowsArray.plist"]];				
+				return staticPhoneEntries.count;
+			}
 				break;
 			case 1: // recently viewed
 				return [[[PeopleRecentsData sharedData] recents] count];
@@ -337,17 +360,15 @@ NSInteger strLenSort(NSString *str1, NSString *str2, void *context)
 
 	if (tableView == self.tableView) { // show phone directory tel #, recents	
 	
-		if (indexPath.section == 0) {
+		if (indexPath.section == kPhoneDirectorySection) {
 			
 			cell = [tableView dequeueReusableCellWithIdentifier:secondaryCellID];
 			if (cell == nil) {
+				NSDictionary *rowProperties = [PeopleSearchViewController staticPhoneRowPropertiesForIndexPath:indexPath];
 				cell = [[[SecondaryGroupedTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:secondaryCellID] autorelease];
-
-				if (indexPath.row == 0) {
-					cell.textLabel.text = @"Phone Directory";
-					[(SecondaryGroupedTableViewCell *)cell secondaryTextLabel].text = @"(617.495.1000)";
-					cell.accessoryView = [UIImageView accessoryViewWithMITType:MITAccessoryViewPhone];
-				} 
+				cell.textLabel.text = [rowProperties objectForKey:@"mainText"];
+				[(SecondaryGroupedTableViewCell *)cell secondaryTextLabel].text = [rowProperties objectForKey:@"secondaryText"];
+				cell.accessoryView = [UIImageView accessoryViewWithMITType:MITAccessoryViewPhone];
 			}
 		
 		} else { // recents
@@ -434,8 +455,17 @@ NSInteger strLenSort(NSString *str1, NSString *str2, void *context)
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-	if (tableView == self.tableView && indexPath.section == 0) {
-		return 44.0;
+	if (tableView == self.tableView && indexPath.section == kPhoneDirectorySection) {
+		NSDictionary *rowProperties = [PeopleSearchViewController staticPhoneRowPropertiesForIndexPath:indexPath];
+		if (rowProperties) {
+			return [SecondaryGroupedTableViewCell suggestedHeightForCellWithText:[rowProperties objectForKey:@"mainText"] 
+																		mainFont:kSecondaryGroupMainFont
+																	  detailText:[rowProperties objectForKey:@"secondaryText"] 
+																	  detailFont:kSecondaryGroupDetailFont];
+		}
+		else {
+			return kStandardSecondaryGroupCellHeight;
+		}		
 	} else {
 		return CELL_TWO_LINE_HEIGHT;
 	}
@@ -493,15 +523,10 @@ NSInteger strLenSort(NSString *str1, NSString *str2, void *context)
 		[self.navigationController pushViewController:detailView animated:YES];
 		[detailView release];
 		
-	} else { // we are on home screen and user selected phone
-		
-		switch (indexPath.row) {
-			case 0:
-				[self phoneIconTapped];				
-				[self.tableView deselectRowAtIndexPath:indexPath animated:YES];
-				break;
-				// Leaving switch statement around in case we add other cells here.
-		}
+	} else if (indexPath.section == kPhoneDirectorySection) { 
+		// we are on home screen and user selected phone		
+		[self phoneIconTappedAtIndexPath:indexPath];				
+		[self.tableView deselectRowAtIndexPath:indexPath animated:YES];
 	}
 }
 
@@ -607,11 +632,17 @@ NSInteger strLenSort(NSString *str1, NSString *str2, void *context)
 	}
 }
 */
-- (void)phoneIconTapped
+- (void)phoneIconTappedAtIndexPath:(NSIndexPath *)indexPath
 {
-	NSURL *externURL = [NSURL URLWithString:@"tel://6174951000"];
-	if ([[UIApplication sharedApplication] canOpenURL:externURL])
-		[[UIApplication sharedApplication] openURL:externURL];
+	if (indexPath.section == kPhoneDirectorySection)
+	{
+		NSDictionary *rowProperties = [PeopleSearchViewController staticPhoneRowPropertiesForIndexPath:indexPath];
+		if (rowProperties) {			
+			NSURL *externURL = [NSURL URLWithString:[rowProperties objectForKey:@"URL"]];
+			if ([[UIApplication sharedApplication] canOpenURL:externURL])
+				[[UIApplication sharedApplication] openURL:externURL];
+		}
+	}
 	
 	/*
 	UIAlertView *alert = [[[UIAlertView alloc] initWithTitle:@"Dial 6174951000?" 

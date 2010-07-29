@@ -26,7 +26,7 @@ NSInteger strLenSort(NSString *str1, NSString *str2, void *context);
 - (void)performSearch;
 - (void)showLoadingView;
 - (void)cleanUpConnection;
-- (void)phoneIconTapped;
+- (void)phoneIconTappedAtIndexPath:(NSIndexPath *)indexPath;
 - (void)showActionSheet;
 
 @property (nonatomic, readonly) BOOL viewAppeared;
