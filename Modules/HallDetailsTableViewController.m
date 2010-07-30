@@ -185,19 +185,25 @@ numberOfRowsInSection:(NSInteger)section
 		NSString *cellText2 = [self.itemDetails objectForKey:key];
 		
 		if ([cellText2 isEqualToString:@"NA"]) {
-			cellText2 = @"";
+			cellText2 = @"Closed";
 		}
-		
 
 		cell.textLabel.text = cellText1;
 		cell.detailTextLabel.text = cellText2;
 		
-		if (row == 3) {
+		
+		if ([hallStatus.hallName isEqualToString:@"Hillel"]) {
+			
+			if (row == 1) {
+				cell.detailTextLabel.text = @"Saturday only";
+			}
+		}
+		
+		if ((row == 3) && ![cellText2 isEqualToString:@"Closed"]) {
 			cell.detailTextLabel.text = [NSString stringWithFormat:@"Sunday-Thursday %@\n",cellText2];
 								
 		}
 			
-
 		
 		cell.selectionStyle =  UITableViewCellSelectionStyleNone;
 		

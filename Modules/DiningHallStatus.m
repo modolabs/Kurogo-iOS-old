@@ -27,6 +27,7 @@
 @synthesize nextMealRestriction;
 @synthesize nextMealTime;
 @synthesize nextMealStatus;
+@synthesize hallName;
 
 @synthesize currentStat;
 
@@ -256,8 +257,8 @@ int timeToNextMeal;  //starting with ONE DAY
 			nextMealRestriction = dinner_restriction;
 			nextMealStatus = dinner_status;
 		}
-		else if ([nextMeal isEqualToString:@"Brain Break"]) {
-			nextMeal = @"Brain Break  ";
+		else if ([nextMeal isEqualToString:@"Brain-Break"]) {
+			nextMeal = @"Brain Break ";
 			nextMealRestriction = bb_restriction;
 			nextMealStatus = bb_status;
 		}

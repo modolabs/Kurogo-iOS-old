@@ -63,6 +63,7 @@
 	cell.selectionStyle = UITableViewCellSelectionStyleGray;
 	
 	DiningHallStatus *status = [[DiningHallStatus alloc] init];
+	status.hallName = cell.textLabel.text;
 	int stat = [status getStatusOfMeal:@"" usingDetails:[self.hallProperties objectAtIndex:row]];
 	
 	NSString *statString;
@@ -83,7 +84,7 @@
 		statString = [statString stringByAppendingString:status.currentMeal];
 		statString = [statString stringByAppendingString:@" "];
 		statString = [statString stringByAppendingString:status.currentMealTime];
-		cell.detailTextLabel.text = statString;
+		cell.detailTextLabel.text = [NSString stringWithFormat:@"%@\n  ", statString];
 
 		UIImage *image = [UIImage imageNamed:@"dining-status-open.png"];
 		cell.imageView.image = image;
@@ -161,6 +162,7 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 	NSUInteger row = [indexPath row];
 	
 	DiningHallStatus *status = [[DiningHallStatus alloc] init];
+	status.hallName = [[self.hallProperties objectAtIndex:row] objectForKey:@"name"];
 	int stat = [status getStatusOfMeal:@"" usingDetails:[self.hallProperties objectAtIndex:row]];
 	
 	[status setStat:stat];
@@ -184,7 +186,7 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 	int stat = [status getStatusOfMeal:@"" usingDetails:[self.hallProperties objectAtIndex:row]];
 
 	if (stat == 1)
-		return 50.0;
+		return 65.0;//50.0;
 	
 	else {
 		return 65.0;

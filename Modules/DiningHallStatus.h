@@ -34,6 +34,8 @@
 	NSInteger nextMealStatus;
 	
 	NSInteger currentStat;
+	
+	NSString *hallName;
 
 }
 
@@ -53,6 +55,8 @@
 @property NSInteger nextMealRestriction;
 @property (nonatomic, retain) NSString *nextMealTime;
 @property NSInteger nextMealStatus;
+
+@property (nonatomic, retain) NSString *hallName;
 
 @property NSInteger currentStat;
 
