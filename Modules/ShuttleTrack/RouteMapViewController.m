@@ -39,7 +39,7 @@
     [super viewDidLoad];
 
 	self.mapView.delegate = self;
-    [TileServerManager registerMapView:self.mapView];
+    //[TileServerManager registerMapView:self.mapView];
 	//self.mapView.shouldNotDropPins = YES;
 	
 	_largeStopImage = [[UIImage imageNamed:@"shuttles/map_pin_shuttle_stop_complete.png"] retain];

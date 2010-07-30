@@ -35,7 +35,7 @@
 															delegate:self
 												   cancelButtonTitle:@"Cancel"
 											  destructiveButtonTitle:nil
-												   otherButtonTitles:@"Email", @"Facebook", @"Twitter", nil];
+												   otherButtonTitles:@"Email"/*, @"Facebook", @"Twitter"*/, nil];
     //MIT_MobileAppDelegate *appDelegate = (MIT_MobileAppDelegate *)[UIApplication sharedApplication].delegate;
     //[shareSheet showFromTabBar:appDelegate.tabBarController.tabBar];
     [shareSheet showInView:self.view];
@@ -77,6 +77,7 @@
         [self sendEmailWithSubject:[self.shareDelegate emailSubject]
 							  body:[self.shareDelegate emailBody]];
 	}
+    /*
     else if (buttonIndex == 1) {
 		// Facebook session
 		[self showFacebookDialog];
@@ -84,6 +85,7 @@
 	else if (buttonIndex == 2) {
 		[self showTwitterView];
 	}
+    */
 }
 
 #pragma mark -

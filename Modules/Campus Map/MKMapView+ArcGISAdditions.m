@@ -1,7 +1,7 @@
 #import "MKMapView+ArcGISAdditions.h"
 #import "TileServerManager.h"
 #import "MapTileOverlay.h"
-
+/*
 @implementation MKMapView (ArcGISAdditions)
 
 - (void)waitForTileServer {
@@ -31,3 +31,4 @@
 }
 
 @end
+*/

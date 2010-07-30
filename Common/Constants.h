@@ -127,5 +127,9 @@ typedef enum {
 } MITAccessoryViewType;
 
 // errors
+extern NSString * const MapsErrorDomain;
+#define errMapProjection 0
+
 extern NSString * const ShuttlesErrorDomain;
 #define errShuttleRouteNotAvailable 0
+
