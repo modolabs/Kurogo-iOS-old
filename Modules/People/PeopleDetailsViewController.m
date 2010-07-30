@@ -236,7 +236,7 @@
      */
     
     UITableViewCellAccessoryType accessoryType = 
-        ([tag isEqualToString:@"telephonenumber"] || [tag isEqualToString:@"mail"] || [tag isEqualToString:@"office"])
+        ([tag isEqualToString:@"telephonenumber"] || [tag isEqualToString:@"email"] || [tag isEqualToString:@"office"])
     ? UITableViewCellAccessoryDetailDisclosureButton
     : UITableViewCellAccessoryNone;
     
