@@ -345,7 +345,7 @@
 	} else if (self.mapView == nil) {
 		self.mapView = [[CalendarMapView alloc] initWithFrame:contentFrame];
 		self.mapView.delegate = self;
-        [TileServerManager registerMapView:self.mapView];
+        //[TileServerManager registerMapView:self.mapView];
 	}
 
 	if (dateRangeDidChange && activeEventList != CalendarEventListTypeCategory) {
