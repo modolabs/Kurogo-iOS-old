@@ -20,7 +20,7 @@
     
     // Override point for customization after application launch.
 	
-	[window addSubview:navController.view];
+	//[window addSubview:navController.view];
     [window makeKeyAndVisible];
 	
 	return YES;
