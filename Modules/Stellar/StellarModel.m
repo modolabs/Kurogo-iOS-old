@@ -353,17 +353,23 @@ NSString* cleanPersonName(NSString *personName);
 			
 			
 			StellarCourse *oldStellarCourse = [CoreDataManager getObjectForEntity:StellarCourseEntityName attribute:@"title" value:[course objectForKey:@"name"]];
-			if(oldStellarCourse) {
+			//StellarCourse *oldStellarCourse = [CoreDataManager getObjectForEntity:StellarCourseEntityName attribute:@"courseGroup" value:courseGroupName];
+			if(oldStellarCourse){
 				// delete old course (will replace all the data, occasionally non-critical relationships
 				// between a course and its subject will be lost
-				[CoreDataManager deleteObject:oldStellarCourse];
+				
+				// Also, since a course (department) can be in multiple groups (schools), do not treat them as the same 
+				// if the courseGroupName is different. Here, do not delete if the courseGroupNames are different.
+				
+				if ([oldStellarCourse.courseGroup isEqualToString:courseGroupName])
+					[CoreDataManager deleteObject:oldStellarCourse];
 			}
 			
 			StellarCourse *newStellarCourse = (StellarCourse *)[CoreDataManager insertNewObjectForEntityForName:StellarCourseEntityName];
 			newStellarCourse.number = [course objectForKey:@"short"];
 			newStellarCourse.title = [course valueForKey:@"name"];
 			newStellarCourse.courseGroup = courseGroupName;
-
+			
 			[coursesArray addObject:newStellarCourse];
 
 		
