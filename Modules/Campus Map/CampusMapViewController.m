@@ -238,9 +238,11 @@
 		double minLon = 180;
 		double maxLon = -180;
 		
-		for (id<MKAnnotation> annotation in _searchResults) 
-		{
+		for (id<MKAnnotation> annotation in _searchResults) {
 			CLLocationCoordinate2D coordinate = annotation.coordinate;
+            
+            if (coordinate.latitude == 0 && coordinate.longitude == 0)
+                continue;
 			
 			if (coordinate.latitude < minLat) {
 				minLat = coordinate.latitude;
@@ -257,23 +259,26 @@
 			
 		}
         
-		CLLocationCoordinate2D center;
-		center.latitude = minLat + (maxLat - minLat) / 2;
-		center.longitude = minLon + (maxLon - minLon) / 2;
-		
-		// create the span and region with a little padding
-		double latDelta = maxLat - minLat;
-		double lonDelta = maxLon - minLon;
-		
-		if (latDelta < .002) latDelta = .002;
-		if (lonDelta < .002) lonDelta = .002;
-		
-		MKCoordinateRegion region = MKCoordinateRegionMake(center, 	MKCoordinateSpanMake(latDelta + latDelta / 4 , lonDelta + lonDelta / 4));
-		
-		_mapView.region = region;
-		
-		// turn off locate me
-		_geoButton.style = UIBarButtonItemStyleBordered;
+        if (maxLat != -90) {
+            
+            CLLocationCoordinate2D center;
+            center.latitude = minLat + (maxLat - minLat) / 2;
+            center.longitude = minLon + (maxLon - minLon) / 2;
+            
+            // create the span and region with a little padding
+            double latDelta = maxLat - minLat;
+            double lonDelta = maxLon - minLon;
+            
+            if (latDelta < .002) latDelta = .002;
+            if (lonDelta < .002) lonDelta = .002;
+            
+            MKCoordinateRegion region = MKCoordinateRegionMake(center, 	MKCoordinateSpanMake(latDelta + latDelta / 4 , lonDelta + lonDelta / 4));
+            
+            _mapView.region = region;
+            
+            // turn off locate me
+            _geoButton.style = UIBarButtonItemStyleBordered;
+        }
 	}
 	
 	//[self saveRegion];
@@ -764,8 +769,57 @@
     }
 }
 
-//- (void)mapView:(MKMapView *)mapView didAddAnnotationViews:(NSArray *)views {
-//}
+// TODO: consolidate this code with the other place somewhere in this file it was copied from
+- (void)mapView:(MKMapView *)mapView didAddAnnotationViews:(NSArray *)views {
+    double minLat = 90;
+    double maxLat = -90;
+    double minLon = 180;
+    double maxLon = -180;
+    
+    for (MKAnnotationView *aView in views) {
+        id<MKAnnotation> annotation = aView.annotation;
+
+        CLLocationCoordinate2D coordinate = annotation.coordinate;
+        
+        if (coordinate.latitude == 0 && coordinate.longitude == 0)
+            continue;
+        
+        if (coordinate.latitude < minLat) {
+            minLat = coordinate.latitude;
+        }
+        if (coordinate.latitude > maxLat ) {
+            maxLat = coordinate.latitude;
+        }
+        if (coordinate.longitude < minLon) {
+            minLon = coordinate.longitude;
+        }
+        if(coordinate.longitude > maxLon) {
+            maxLon = coordinate.longitude;
+        }
+        
+    }
+    
+    if (maxLat != -90) {
+        
+        CLLocationCoordinate2D center;
+        center.latitude = minLat + (maxLat - minLat) / 2;
+        center.longitude = minLon + (maxLon - minLon) / 2;
+        
+        // create the span and region with a little padding
+        double latDelta = maxLat - minLat;
+        double lonDelta = maxLon - minLon;
+        
+        if (latDelta < .002) latDelta = .002;
+        if (lonDelta < .002) lonDelta = .002;
+        
+        MKCoordinateRegion region = MKCoordinateRegionMake(center, 	MKCoordinateSpanMake(latDelta + latDelta / 4 , lonDelta + lonDelta / 4));
+        
+        _mapView.region = region;
+        
+        // turn off locate me
+        _geoButton.style = UIBarButtonItemStyleBordered;
+    }
+}
 
 - (void)pushAnnotationDetails:(id <MKAnnotation>)annotation animated:(BOOL)animated
 {
@@ -825,7 +879,7 @@
 	if([annotation isKindOfClass:[ArcGISMapSearchResultAnnotation class]]) {
 		ArcGISMapSearchResultAnnotation *searchAnnotation = (ArcGISMapSearchResultAnnotation *)annotation;
 		if (!searchAnnotation.dataPopulated) {	
-			[ArcGISMapSearchResultAnnotation executeServerSearchWithQuery:searchAnnotation.name jsonDelegate:self object:annotation];	
+			[searchAnnotation searchAnnotationWithDelegate:self];	
 		}
 		[url setPath:[NSString stringWithFormat:@"search/%@", searchAnnotation.uniqueID] query:_lastSearchText];
 		[url setAsModulePath];
@@ -916,8 +970,12 @@
 			
 		}
 		 */
-	} else {		
-		[ArcGISMapSearchResultAnnotation executeServerSearchWithQuery:searchText jsonDelegate:self object:kAPISearch];
+	} else {
+        JSONAPIRequest *apiRequest = [JSONAPIRequest requestWithJSONAPIDelegate:self];
+        apiRequest.userData = kAPISearch;
+        [apiRequest requestObjectFromModule:@"map"
+                                    command:@"search"
+                                 parameters:[NSDictionary dictionaryWithObjectsAndKeys:searchText, @"q", nil]];
 	}
     
     /*

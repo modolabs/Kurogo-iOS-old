@@ -115,7 +115,6 @@
 		4463CC9810D6F4A50048CA83 /* CMModule.m in Sources */ = {isa = PBXBuildFile; fileRef = 4463CC8810D6F4A50048CA83 /* CMModule.m */; };
 		4463CC9B10D6F4A50048CA83 /* MapSearchResultAnnotation.m in Sources */ = {isa = PBXBuildFile; fileRef = 4463CC8E10D6F4A50048CA83 /* MapSearchResultAnnotation.m */; };
 		4463CCB210D6F5750048CA83 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4463CCB110D6F5750048CA83 /* CoreLocation.framework */; };
-		4463CE8F10D8052A0048CA83 /* MITMapSearchResultCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 4463CE8E10D8052A0048CA83 /* MITMapSearchResultCell.m */; };
 		4463D09410D92CB00048CA83 /* MITMapDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4463D09210D92CB00048CA83 /* MITMapDetailViewController.m */; };
 		4463D09510D92CB00048CA83 /* MITMapDetailViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4463D09310D92CB00048CA83 /* MITMapDetailViewController.xib */; };
 		4463D0A010D92F6B0048CA83 /* TabViewControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 4463D09F10D92F6B0048CA83 /* TabViewControl.m */; };
@@ -414,8 +413,6 @@
 		EB6D111611EE143900B65CE3 /* TileServerManager.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB6D111411EE143900B65CE3 /* TileServerManager.h */; settings = {JAVA_ARCHIVE_SUBDIR = "Modules/Campus Map"; }; };
 		EB6D111711EE143900B65CE3 /* TileServerManager.m in Sources */ = {isa = PBXBuildFile; fileRef = EB6D111511EE143900B65CE3 /* TileServerManager.m */; };
 		EB6D114211EE191000B65CE3 /* PJ_geos.c in Sources */ = {isa = PBXBuildFile; fileRef = EB6D114111EE191000B65CE3 /* PJ_geos.c */; };
-		EB6D133311EE4A9C00B65CE3 /* MKMapView+ArcGISAdditions.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB6D133111EE4A9C00B65CE3 /* MKMapView+ArcGISAdditions.h */; settings = {JAVA_ARCHIVE_SUBDIR = "Modules/Campus Map"; }; };
-		EB6D133411EE4A9C00B65CE3 /* MKMapView+ArcGISAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = EB6D133211EE4A9C00B65CE3 /* MKMapView+ArcGISAdditions.m */; };
 		EB6D141511EE979500B65CE3 /* NewsCategory.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB6D141311EE979500B65CE3 /* NewsCategory.h */; settings = {JAVA_ARCHIVE_SUBDIR = Modules/News; }; };
 		EB6D141611EE979500B65CE3 /* NewsCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = EB6D141411EE979500B65CE3 /* NewsCategory.m */; };
 		EB6DFE3711DE28F800B65CE3 /* ModoNavigationController.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB6DFE3511DE28F800B65CE3 /* ModoNavigationController.h */; settings = {JAVA_ARCHIVE_SUBDIR = Common; }; };
@@ -622,8 +619,6 @@
 		4463CC8D10D6F4A50048CA83 /* MapSearchResultAnnotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MapSearchResultAnnotation.h; sourceTree = "<group>"; };
 		4463CC8E10D6F4A50048CA83 /* MapSearchResultAnnotation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MapSearchResultAnnotation.m; sourceTree = "<group>"; };
 		4463CCB110D6F5750048CA83 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
-		4463CE8D10D8052A0048CA83 /* MITMapSearchResultCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MITMapSearchResultCell.h; sourceTree = "<group>"; };
-		4463CE8E10D8052A0048CA83 /* MITMapSearchResultCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MITMapSearchResultCell.m; sourceTree = "<group>"; };
 		4463D09110D92CB00048CA83 /* MITMapDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MITMapDetailViewController.h; sourceTree = "<group>"; };
 		4463D09210D92CB00048CA83 /* MITMapDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MITMapDetailViewController.m; sourceTree = "<group>"; };
 		4463D09310D92CB00048CA83 /* MITMapDetailViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MITMapDetailViewController.xib; sourceTree = "<group>"; };
@@ -978,8 +973,6 @@
 		EB6D111411EE143900B65CE3 /* TileServerManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TileServerManager.h; sourceTree = "<group>"; };
 		EB6D111511EE143900B65CE3 /* TileServerManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TileServerManager.m; sourceTree = "<group>"; };
 		EB6D114111EE191000B65CE3 /* PJ_geos.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = PJ_geos.c; sourceTree = "<group>"; };
-		EB6D133111EE4A9C00B65CE3 /* MKMapView+ArcGISAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "MKMapView+ArcGISAdditions.h"; sourceTree = "<group>"; };
-		EB6D133211EE4A9C00B65CE3 /* MKMapView+ArcGISAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "MKMapView+ArcGISAdditions.m"; sourceTree = "<group>"; };
 		EB6D141311EE979500B65CE3 /* NewsCategory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NewsCategory.h; sourceTree = "<group>"; };
 		EB6D141411EE979500B65CE3 /* NewsCategory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NewsCategory.m; sourceTree = "<group>"; };
 		EB6DFE3511DE28F800B65CE3 /* ModoNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ModoNavigationController.h; sourceTree = "<group>"; };
@@ -1503,8 +1496,6 @@
 				4463CC8810D6F4A50048CA83 /* CMModule.m */,
 				4463CC8D10D6F4A50048CA83 /* MapSearchResultAnnotation.h */,
 				4463CC8E10D6F4A50048CA83 /* MapSearchResultAnnotation.m */,
-				4463CE8D10D8052A0048CA83 /* MITMapSearchResultCell.h */,
-				4463CE8E10D8052A0048CA83 /* MITMapSearchResultCell.m */,
 				4463D09110D92CB00048CA83 /* MITMapDetailViewController.h */,
 				4463D09210D92CB00048CA83 /* MITMapDetailViewController.m */,
 				4463D09310D92CB00048CA83 /* MITMapDetailViewController.xib */,
@@ -1518,8 +1509,6 @@
 				442C11DD10EC112700CB44EC /* TouchableTableView.h */,
 				442C11DE10EC112700CB44EC /* TouchableTableView.m */,
 				442C195410F3B21400CB44EC /* MITMapRoute.h */,
-				EB6D133111EE4A9C00B65CE3 /* MKMapView+ArcGISAdditions.h */,
-				EB6D133211EE4A9C00B65CE3 /* MKMapView+ArcGISAdditions.m */,
 				EB7BA33C11F7677F00B3DDA6 /* PolygonOverlay.h */,
 				EB7BA33D11F7677F00B3DDA6 /* PolygonOverlay.m */,
 			);
@@ -2054,7 +2043,6 @@
 				EB6D10DC11EE13F100B65CE3 /* MapTileOverlayView.h in JavaArchive */,
 				EB6D10DE11EE13F100B65CE3 /* MapZoomLevel.h in JavaArchive */,
 				EB6D111611EE143900B65CE3 /* TileServerManager.h in JavaArchive */,
-				EB6D133311EE4A9C00B65CE3 /* MKMapView+ArcGISAdditions.h in JavaArchive */,
 				EB6D141511EE979500B65CE3 /* NewsCategory.h in JavaArchive */,
 				A69A28A811F0258800B1D365 /* PersonDetails+Methods.h in JavaArchive */,
 				A69A2BD711F4C36400B1D365 /* PersonDetail.h in JavaArchive */,
@@ -2237,7 +2225,6 @@
 				DE728E7B10D6FF4700BFED37 /* StoryDetailViewController.m in Sources */,
 				DE728E7C10D6FF4700BFED37 /* StoryListViewController.m in Sources */,
 				DE728E7E10D6FF4700BFED37 /* StoryXMLParser.m in Sources */,
-				4463CE8F10D8052A0048CA83 /* MITMapSearchResultCell.m in Sources */,
 				2980C03210D9728800F19FF0 /* NewsDataSource.m in Sources */,
 				2970D4ED10DA85EC00F770DF /* InfoDataSource.m in Sources */,
 				2970D4F210DA871F00F770DF /* StaffDataSource.m in Sources */,
@@ -2490,7 +2477,6 @@
 				EB6D10DF11EE13F100B65CE3 /* MapZoomLevel.m in Sources */,
 				EB6D111711EE143900B65CE3 /* TileServerManager.m in Sources */,
 				EB6D114211EE191000B65CE3 /* PJ_geos.c in Sources */,
-				EB6D133411EE4A9C00B65CE3 /* MKMapView+ArcGISAdditions.m in Sources */,
 				EB6D141611EE979500B65CE3 /* NewsCategory.m in Sources */,
 				A69A28A911F0258800B1D365 /* PersonDetails+Methods.m in Sources */,
 				A69A2BD811F4C36400B1D365 /* PersonDetail.m in Sources */,

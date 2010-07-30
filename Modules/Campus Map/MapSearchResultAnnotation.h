@@ -11,8 +11,6 @@
     NSString *_uniqueID; // hidden
 	NSString *_name;
 	NSString *_street;
-	NSString *_city;
-    NSInteger yearBuilt;
 
     PolygonOverlay *_polygon;
     
@@ -31,16 +29,16 @@
 @property (nonatomic, retain) NSString *uniqueID;
 @property (nonatomic, retain) NSString *name;
 @property (nonatomic, retain) NSString *street;
-@property (nonatomic, retain) NSString *city;
-@property (nonatomic, assign) NSInteger yearBuilt;
+@property (nonatomic, readonly) NSDictionary *attributes;
 @property (nonatomic, retain) NSDictionary *info;
 
 @property BOOL dataPopulated;
 @property BOOL bookmark;
 
-+ (void)executeServerSearchWithQuery:(NSString *)query jsonDelegate:(id<JSONAPIDelegate>)delegate object:(id)object;
+- (void)searchAnnotationWithDelegate:(id<JSONAPIDelegate>)delegate;
 
 - (id)initWithInfo:(NSDictionary*)info;
+- (void)updateWithInfo:(NSDictionary *)info;
 - (id)initWithCoordinate:(CLLocationCoordinate2D)coordinate;
 - (BOOL)canAddOverlay;
 

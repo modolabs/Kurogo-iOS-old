@@ -18,6 +18,7 @@
 	NSMutableArray* _itemsInTable;
 	NSString* _headerText;
 	BOOL _topLevel;
+    
 	BOOL _leafLevel;
 	
 	MITLoadingActivityView* _loadingView;

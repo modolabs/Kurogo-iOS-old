@@ -57,7 +57,7 @@
 					[ldapTag isEqualToString:@"telephonenumber"] ||
 					[ldapTag isEqualToString:@"facsimiletelephonenumber"] ||
 					//[ldapTag isEqualToString:@"room"] || 
-					[ldapTag isEqualToString:@"postalAddress"]) {
+					[ldapTag isEqualToString:@"postaladdress"]) {
 					for (NSString *value in [ldapValue componentsSeparatedByString:@","])
 						[currentSection addObject:[NSArray arrayWithObjects:displayTag, value, nil]];
 					continue;

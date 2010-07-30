@@ -7,57 +7,72 @@
 @synthesize polygon = _polygon;
 @synthesize name = _name;
 @synthesize street = _street;
-@synthesize city = _city;
 @synthesize info = _info;
-@synthesize yearBuilt = _yearBuilt;
 @synthesize bookmark = _bookmark;
 @synthesize dataPopulated = _dataPopulated;
 @synthesize coordinate = _coordinate;
 
-+ (void)executeServerSearchWithQuery:(NSString *)query jsonDelegate:(id<JSONAPIDelegate>)delegate object:(id)object {
+// TODO: remove query (always self.name) and object (always self)
+- (void)searchAnnotationWithDelegate:(id<JSONAPIDelegate>)delegate {
 	JSONAPIRequest *apiRequest = [JSONAPIRequest requestWithJSONAPIDelegate:delegate];
-	apiRequest.userData = object;
+	apiRequest.userData = self;
 	[apiRequest requestObjectFromModule:@"map"
                                 command:@"search"
-                             parameters:[NSDictionary dictionaryWithObjectsAndKeys:query, @"q", nil]];
+                             parameters:[NSDictionary dictionaryWithObjectsAndKeys:self.name, @"q", nil]];
 }
 
 - (void)dealloc {
 	self.uniqueID = nil;
 	self.name = nil;
 	self.street = nil;
-	self.city = nil;
 	self.info = nil;
 	
 	[super dealloc];
 }
 
+- (NSDictionary *)attributes {
+    return [self.info objectForKey:@"attributes"];
+}
 
 - (id)initWithInfo:(NSDictionary*)info
 {
 	if (self = [super init]) {
-		self.info = info;
-
-        NSDictionary *infoAttributes = [self.info objectForKey:@"attributes"];
-        NSDictionary *infoGeometry = [self.info objectForKey:@"geometry"];
-        
-		self.uniqueID = [infoAttributes objectForKey:@"OBJECTID"];
-        self.name = [infoAttributes objectForKey:@"Building Name"];
-        self.street = [infoAttributes objectForKey:@"Address"];
-        self.city = [infoAttributes objectForKey:@"City"];
-        self.yearBuilt = [[infoAttributes objectForKey:@"Year Built"] intValue];
-        
-        NSArray *rings = [infoGeometry objectForKey:@"rings"];
-        self.polygon = [[PolygonOverlay alloc] initWithRings:rings];
-        self.coordinate = self.polygon.coordinate;
-
-        NSLog(@"found %@ at %.4f, %.4f", self.name, self.coordinate.longitude, self.coordinate.latitude);
-
-        NSLog(@"%@", [self.polygon description]);
-		self.dataPopulated = YES;
+		[self updateWithInfo:info];
+        //if (!self.dataPopulated) {
+        //    [self executeServerSearchWithQuery:self.name jsonDelegate:self object:nil];
+        //}
 	}
-	
 	return self;
+}
+
+- (void)updateWithInfo:(NSDictionary *)info 
+{
+    self.info = info;
+    
+    NSDictionary *infoAttributes = [self.info objectForKey:@"attributes"];
+    NSDictionary *infoGeometry = [self.info objectForKey:@"geometry"];
+    if (infoGeometry) {
+        NSArray *rings = [infoGeometry objectForKey:@"rings"];
+        if (rings) {
+            self.polygon = [[PolygonOverlay alloc] initWithRings:rings];
+            self.coordinate = self.polygon.coordinate;
+            NSLog(@"%@", [self.polygon description]);
+        }
+    }
+    
+    self.uniqueID = [infoAttributes objectForKey:@"OBJECTID"];
+    self.name = [infoAttributes objectForKey:@"Building Name"];
+    self.street = [infoAttributes objectForKey:@"Address"];
+    
+    if (self.name == nil) {
+        self.name = [info objectForKey:@"displayName"];
+    }
+    
+    NSLog(@"found %@ at %.4f, %.4f", self.name, self.coordinate.longitude, self.coordinate.latitude);
+    
+    if (infoAttributes) {
+        self.dataPopulated = YES;
+    }    
 }
 
 - (BOOL)canAddOverlay {
@@ -73,7 +88,6 @@
 	if (nil == self.uniqueID)	[info setObject:self.uniqueID	forKey:@"id"];
 	if (nil == self.name)		[info setObject:self.name		forKey:@"name"];
 	if (nil == self.street)		[info setObject:self.street		forKey:@"street"];
-	if (nil == self.city)		[info setObject:self.city		forKey:@"city"];
 	    
 	return info;
 }
@@ -97,7 +111,7 @@
 {
     return self.street;
 }
-                       
+
 @end
 
 
