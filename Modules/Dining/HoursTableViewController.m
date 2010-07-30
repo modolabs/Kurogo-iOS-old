@@ -137,10 +137,9 @@
 	[status release];
 	
 	cell.backgroundColor = GROUPED_VIEW_CELL_COLOR;
+	
     return cell;
 }
-
-
 
 #pragma mark -
 #pragma mark Table view delegate

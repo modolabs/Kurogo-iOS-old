@@ -210,15 +210,15 @@ numberOfRowsInSection:(NSInteger)section
 		
 		switch (row) {
 			case 0:
-				meal = @"lunch ";
+				meal = @"lunch";
 				mealkey = @"lunch_restrictions";				
 				break;
 			case 1:
-				meal = @"dinner ";
+				meal = @"dinner";
 				mealkey = @"dinner_restrictions";	
 				break;
 			case 2:
-				meal = @"brunch ";
+				meal = @"brunch";
 				mealkey = @"brunch_restrictions";	
 				break;
 			default:
@@ -238,7 +238,7 @@ numberOfRowsInSection:(NSInteger)section
 			message = @"None";
 		}
 
-		[cell.textLabel setTextAlignment:UITextAlignmentLeft];
+		//[cell.textLabel setTextAlignment:UITextAlignmentLeft];
 		cell.textLabel.text = meal;
 		cell.detailTextLabel.text = message;
 		cell.detailTextLabel.font = [UIFont boldSystemFontOfSize:15]; //was 15

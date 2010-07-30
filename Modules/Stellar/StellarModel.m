@@ -95,7 +95,7 @@ NSString* cleanPersonName(NSString *personName);
 				requestObjectFromModule:@"stellar" 
 				command:@"subjectList" 
 				parameters:[NSDictionary dictionaryWithObjectsAndKeys: 
-					stellarCourse.number, @"id", 
+					stellarCourse.title, @"id", 
 					@"true", @"checksum", 
 					nil]];
 		} else {
@@ -113,7 +113,7 @@ NSString* cleanPersonName(NSString *personName);
 	 requestObjectFromModule:@"stellar" 
 	 command:@"subjectList" 
 	 parameters:[NSDictionary dictionaryWithObjectsAndKeys: 
-		classesRequest.stellarCourse.number, @"id",
+		classesRequest.stellarCourse.title, @"id",
 		@"true", @"checksum",
 		@"true", @"full",
 		nil]];
@@ -230,7 +230,8 @@ NSString* cleanPersonName(NSString *personName);
 		stellarClass.name = name;
 		stellarClass.title = [aDict objectForKey:@"title"];
 		stellarClass.blurb = [aDict objectForKey:@"description"];
-		stellarClass.term = [aDict objectForKey:@"term"];
+		//stellarClass.term = [aDict objectForKey:@"term"];
+		stellarClass.term = @"Fall 2010";
 		stellarClass.url = [aDict objectForKey:@"stellarUrl"];
 		stellarClass.lastAccessedDate = [NSDate date];
 	
@@ -239,8 +240,14 @@ NSString* cleanPersonName(NSString *personName);
 			// remove the old version of the class times
 			[CoreDataManager deleteObject:managedObject];
 		}
+		/*NSDictionary *test = [aDict objectForKey:@"times"];
+		//NSDictionary *test1 = (NSArray *)[aDict valueForKey:@"times"];
+		
+		int cnt = [(NSArray *)[aDict objectForKey:@"times"] count];
+		int r = cnt*cnt;*/
+		
 		NSInteger orderId = 0;
-		for(NSDictionary *time in (NSArray *)[aDict objectForKey:@"times"]) {
+		for(NSDictionary *time in (NSArray *)[aDict valueForKey:@"times"]) {
 			[stellarClass addTimesObject:[StellarModel stellarTimeFromDictionary:time class:stellarClass orderId:orderId]];
 			orderId++;
 		}
@@ -261,7 +268,7 @@ NSString* cleanPersonName(NSString *personName);
 		}
 
 		// add the annoucements
-		NSArray *annoucements;
+		/*NSArray *annoucements;
 		if(annoucements = [aDict objectForKey:@"announcements"]) {
 			for(NSManagedObject *managedObject in stellarClass.announcement) {
 				// remove the old version of the class annoucements
@@ -270,7 +277,7 @@ NSString* cleanPersonName(NSString *personName);
 			for(NSDictionary *annoucementDict in annoucements) {
 				[stellarClass addAnnouncementObject:[StellarModel stellarAnnouncementFromDict:annoucementDict]];
 			}
-		}
+		}*/
 	}
 	return stellarClass;
 }
@@ -431,7 +438,8 @@ NSString* cleanPersonName(NSString *personName);
 
 - (void) markCourseAsNew {
 	self.stellarCourse.lastCache = [NSDate dateWithTimeIntervalSinceNow:0];
-	self.stellarCourse.term = [[NSUserDefaults standardUserDefaults] objectForKey:StellarTermKey];
+	//self.stellarCourse.term = [[NSUserDefaults standardUserDefaults] objectForKey:StellarTermKey];
+	self.stellarCourse.term = @"Fall 2010";
 	[CoreDataManager saveData];
 }
 	
@@ -548,6 +556,10 @@ NSString* cleanPersonName(NSString *personName);
 		[[NSNotificationCenter defaultCenter] postNotificationName:MyStellarChanged object:nil];
 		[clearMyStellarDelegate classesRemoved:oldClasses];
 	}
+}
+
+-(void)handleConnectionFailureForRequest:(JSONAPIRequest *)request {
+	return;
 }
 
 @end

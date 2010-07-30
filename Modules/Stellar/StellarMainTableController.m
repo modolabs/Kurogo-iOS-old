@@ -68,8 +68,9 @@
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadMyStellarNotifications) name:MyStellarAlertNotification object:nil];
 	
 	// load all course groups (asynchronously) in case it requires server access
-	[StellarModel loadCoursesFromServerAndNotify:self];
 	[self showLoadingView];
+	[StellarModel loadCoursesFromServerAndNotify:self];
+	
 	
 	[StellarModel removeOldFavorites:self];
 	
@@ -208,7 +209,7 @@
 	NSInteger groupIndex = [self groupIndexFromSectionIndex:section];
 	NSString *headerTitle = nil;
 	if(groupIndex == myStellarGroup) {
-		headerTitle = @"My Stellar:";
+		headerTitle = @"My Courses:";
 	} else if(groupIndex == browseGroup) {
 		headerTitle = @"Browse By School:";
 	}
