@@ -11,6 +11,7 @@
 #import "DiningTabViewControl.h"
 #import "MITUIConstants.h"
 #import "MIT_MobileAppDelegate.h"
+#import "DiningMultiLineCell.h"
 
 #define kBreakfastTab 0
 #define kLunchTab 1
@@ -39,6 +40,7 @@
 
 
 NSInteger tabRequestingInfo; // In order to prevent Race conditions for the selected tab and JSONDelegate loaded data
+BOOL hoursTabInfoRetrieved = NO;
 
 BOOL requestDispatched = NO;
 JSONAPIRequest *mitapi;
@@ -71,6 +73,19 @@ JSONAPIRequest *mitapi;
 		tabRequestingInfo = kBreakfastTab;	
 		requestDispatched = YES;
 	}
+	else {
+		requestDispatched = NO;
+		
+		UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Connection Failed"
+														message:@"Could not retrieve Breakfast Menu"
+													   delegate:nil
+											  cancelButtonTitle:@"OK"
+											  otherButtonTitles:nil];
+		
+		[alert show];
+		[alert release];
+	}
+
 
 }
 
@@ -102,6 +117,18 @@ JSONAPIRequest *mitapi;
 		tabRequestingInfo = kLunchTab;	
 		requestDispatched = YES;
 	}
+	else {
+		requestDispatched = NO;
+		
+		UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Connection Failed"
+														message:@"Could not retrieve Lunch Menu"
+													   delegate:nil
+											  cancelButtonTitle:@"OK"
+											  otherButtonTitles:nil];
+		
+		[alert show];
+		[alert release];
+	}
 
 	
 }
@@ -131,6 +158,18 @@ JSONAPIRequest *mitapi;
 		// set the requesting Tab index to the correct one
 		tabRequestingInfo = kDinnerTab;	
 		requestDispatched = YES;
+	}
+	else {
+		requestDispatched = NO;
+		
+		UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Connection Failed"
+														message:@"Could not retrieve Dinner Menu"
+													   delegate:nil
+											  cancelButtonTitle:@"OK"
+											  otherButtonTitles:nil];
+		
+		[alert show];
+		[alert release];
 	}
 
 }
@@ -314,14 +353,6 @@ JSONAPIRequest *mitapi;
 	
 	self.view.backgroundColor = [UIColor clearColor];
 	_tabViewContainer.backgroundColor = [UIColor whiteColor];
-
-	//breakfastViewLink.backgroundColor = [UIColor clearColor];
-	//lunchViewLink.backgroundColor = [UIColor clearColor];
-	//dinnerViewLink.backgroundColor = [UIColor clearColor];
-	//_loadingResultView.backgroundColor = [UIColor clearColor];
-	//_newsView.backgroundColor = [UIColor clearColor];
-	//_tabViewControl.backgroundColor = [UIColor whiteColor];
-	
 }
 
 
@@ -441,26 +472,35 @@ JSONAPIRequest *mitapi;
 	{
 		[control setSelectedTab:kHoursTab];
 		
-		JSONAPIRequest *hoursDelegate = [[JSONAPIRequest alloc] initWithJSONAPIDelegate:tableControl];
+		if (hoursTabInfoRetrieved == NO) {
+			JSONAPIRequest *hoursDelegate = [[JSONAPIRequest alloc] initWithJSONAPIDelegate:tableControl];
 		
-		
-		
-		if ([hoursDelegate requestObjectFromModule:@"dining" 
+			if ([hoursDelegate requestObjectFromModule:@"dining" 
 									command:@"hours" 
 								 parameters:nil] == YES)
-		{
-			// set the requesting Tab index to the correct one
-			tabRequestingInfo = kHoursTab;	
-			requestDispatched = YES;
+			{
+				// set the requesting Tab index to the correct one
+				tabRequestingInfo = kHoursTab;	
+				requestDispatched = YES;
+				hoursTabInfoRetrieved = YES;
+			}
+			
+			else {
+				UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Connection Failed"
+																message:@"Could not retrieve Dining Hall Hours information"
+															   delegate:nil
+													  cancelButtonTitle:@"OK"
+													  otherButtonTitles:nil];
+				
+				[alert show];
+				[alert release];
+			}
 		}
-		
-	}	
-	
-	else if (tabIndex == kNewsTab)
-	{
-		[control setSelectedTab:kNewsTab];
-		
-	}	
+		else {
+			requestDispatched = NO;
+		}
+	}
+
 	// set the size of the scroll view based on the size of the view being added and its parent's offset
 	UIView* viewToAdd = [_tabViews objectAtIndex:tabIndex];
 	_scrollView.contentSize = CGSizeMake(_scrollView.contentSize.width,
@@ -468,9 +508,10 @@ JSONAPIRequest *mitapi;
 	
 	[_tabViewContainer addSubview:viewToAdd];
 
-	[self addLoadingIndicator];
-}
+	if (requestDispatched == YES)
+		[self addLoadingIndicator];
 
+}
 
 #pragma mark -
 #pragma mark DakePicker setup
@@ -626,23 +667,44 @@ numberOfRowsInSection:(NSInteger)section
 	
 	static NSString *DisclosureButtonCellIdentifier = @"DisclosureButtonCellIdentifier";
 	
-	UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:DisclosureButtonCellIdentifier];
+	DiningMultiLineCell *cell = (DiningMultiLineCell *)[tableView dequeueReusableCellWithIdentifier:DisclosureButtonCellIdentifier];
 	
 	if (cell == nil)
 	{
-		cell = [[[UITableViewCell alloc]
+		cell = [[[DiningMultiLineCell alloc]
 				 initWithStyle:UITableViewCellStyleDefault
 				 reuseIdentifier:DisclosureButtonCellIdentifier] autorelease];
 	}
-
+	cell.textLabelNumberOfLines = 2;
 	
 	cell.textLabel.text = (NSString *) [[keySection objectAtIndex:row] objectForKey:@"item"];
 	
 	
-	cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+	//cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 	cell.selectionStyle = UITableViewCellSelectionStyleGray;
 	cell.backgroundColor = GROUPED_VIEW_CELL_COLOR;
 	
+	
+	cell.textLabel.lineBreakMode = UILineBreakModeWordWrap;
+	UIImage *image = [UIImage imageNamed:@"dining-local.png"];
+	UIImageView *imView = [[UIImageView alloc] initWithFrame:CGRectMake(265, 10, 20, 20)];
+	imView.image = image;
+
+	
+	UIImage *image2 = [UIImage imageNamed:@"dining-vegan.png"];
+	UIImageView *imView2 = [[UIImageView alloc] initWithFrame:CGRectMake(245, 10, 20, 20)];
+	imView2.image = image2;
+	
+	UIImage *image3 = [UIImage imageNamed:@"dining-organic.png"];
+	UIImageView *imView3 = [[UIImageView alloc] initWithFrame:CGRectMake(225, 10, 20, 20)];
+	imView3.image = image3;
+
+	
+	[cell.contentView addSubview:imView];
+	[cell.contentView addSubview:imView2];
+	[cell.contentView addSubview:imView3];
+	
+						   
 	return cell;
 }
 
@@ -658,7 +720,29 @@ titleForHeaderInSection:(NSInteger)section
 -(CGFloat)tableView:(UITableView *)tableView
 heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-	return 40;
+	NSUInteger section = [indexPath section];
+	NSUInteger row = [indexPath row];
+	
+	NSString *key = [self.list objectAtIndex:section];
+	NSArray *keySection = [self.menuDict objectForKey:key];
+
+	NSString *textL = (NSString *) [[keySection objectAtIndex:row] objectForKey:@"item"];
+	
+	int textLines = 1;
+	if ([textL length] >= 25)
+		 textLines = 2;
+		 
+	
+	return [DiningMultiLineCell heightForCellWithStyle:UITableViewStyleGrouped
+											 tableView:tableView 
+												  text:textL 
+										  maxTextLines:textLines 
+											detailText:nil
+										maxDetailLines:0
+												  font:nil
+											detailFont:nil
+										 accessoryType:UITableViewCellAccessoryDetailDisclosureButton
+											 cellImage:NO];
 }
 
 #pragma mark -
@@ -667,6 +751,9 @@ heightForRowAtIndexPath:(NSIndexPath *)indexPath
 -(void)tableView:(UITableView *)tableView
 didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+	// deselect the Row
+	[tableView deselectRowAtIndexPath:indexPath animated:NO];
+	/*
 	//re-initialize the childController each time to get the correct Display
 	childController = nil;
 	
@@ -720,9 +807,8 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 	childController.title = selectItem;
 	
 	[self.navigationController pushViewController:childController animated:YES];
-	
-	// deselect the Row
-	[tableView deselectRowAtIndexPath:indexPath animated:NO];
+	*/
+
 
 }
 
@@ -758,6 +844,8 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 				self._bkfstDict = ListDictionary;
 				[_tabViews removeObjectAtIndex:kBreakfastTab];
 				[_tabViews insertObject:breakfastViewLink atIndex:kBreakfastTab];
+				[glossaryForMealTypesView removeFromSuperview];
+				[_tabViewContainer addSubview:glossaryForMealTypesView];
 				[_tabViewContainer addSubview:breakfastViewLink];
 			}
 			
@@ -766,6 +854,8 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 				self._lunchList = List;
 				self._lunchDict = ListDictionary;
 				[_tabViews removeObjectAtIndex:kLunchTab];
+				[glossaryForMealTypesView removeFromSuperview];
+				[lunchViewLink addSubview:glossaryForMealTypesView];
 				[_tabViews insertObject:lunchViewLink atIndex:kLunchTab];
 				[_tabViewContainer addSubview:lunchViewLink];
 				
@@ -776,6 +866,8 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 				self._dinnerList = List;
 				self._dinnerDict = ListDictionary;
 				[_tabViews removeObjectAtIndex:kDinnerTab];
+				[glossaryForMealTypesView removeFromSuperview];
+				[dinnerViewLink addSubview:glossaryForMealTypesView];
 				[_tabViews insertObject:dinnerViewLink atIndex:kDinnerTab];
 				[_tabViewContainer addSubview:dinnerViewLink];
 				

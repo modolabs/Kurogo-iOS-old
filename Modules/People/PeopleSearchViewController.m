@@ -105,7 +105,7 @@ NSInteger strLenSort(NSString *str1, NSString *str2, void *context)
 	self.searchController.searchResultsDelegate = self;
 	self.searchController.searchResultsDataSource = self;
 	
-	static NSString *searchHints = @"Sample searches:\nName: 'john harvard', 'harvard'\nEmail: 'jharvard', 'jharvard@harvard.edu'\nPhone: '6174951000', '51000'";
+	static NSString *searchHints = @"Tip: You can search by a person's first or last name or email address.";
 
 	UIFont *hintsFont = [UIFont systemFontOfSize:[UIFont systemFontSize]];
 	CGSize labelSize = [searchHints sizeWithFont:hintsFont
@@ -118,6 +118,8 @@ NSInteger strLenSort(NSString *str1, NSString *str2, void *context)
 	hintsLabel.lineBreakMode = UILineBreakModeWordWrap;
 	hintsLabel.font = hintsFont;
 	hintsLabel.text = searchHints;	
+	// Make the text #404040.
+	hintsLabel.textColor = [UIColor colorWithRed:0.25f green:0.25f blue:0.25f alpha:1.0f];
 	UIView *hintsContainer = [[UIView alloc] initWithFrame:CGRectMake(0.0, theSearchBar.frame.size.height, labelSize.width, labelSize.height + 10.0)];
 	[hintsContainer addSubview:hintsLabel];
 	[hintsLabel release];

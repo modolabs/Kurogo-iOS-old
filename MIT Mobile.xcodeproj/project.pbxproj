@@ -169,12 +169,22 @@
 		C704F06F11E3E31F00621406 /* MenuItems.m in Sources */ = {isa = PBXBuildFile; fileRef = C704F06011E3E31F00621406 /* MenuItems.m */; };
 		C727B53A11F4E245007D53BB /* CalendarCategoriesViewController.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = C727B53811F4E245007D53BB /* CalendarCategoriesViewController.h */; settings = {JAVA_ARCHIVE_SUBDIR = Modules/Calendar; }; };
 		C727B53B11F4E245007D53BB /* CalendarCategoriesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C727B53911F4E245007D53BB /* CalendarCategoriesViewController.m */; };
-		C77664FA11F64E74005496DD /* HallDetailsTableViewController.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = C77664F811F64E74005496DD /* HallDetailsTableViewController.h */; settings = {JAVA_ARCHIVE_SUBDIR = Modules; }; };
-		C77664FB11F64E74005496DD /* HallDetailsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C77664F911F64E74005496DD /* HallDetailsTableViewController.m */; };
+		C759560812071BA3008474A9 /* dining-local.png in Resources */ = {isa = PBXBuildFile; fileRef = C759560012071BA3008474A9 /* dining-local.png */; };
+		C759560912071BA3008474A9 /* dining-local@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C759560112071BA3008474A9 /* dining-local@2x.png */; };
+		C759560A12071BA3008474A9 /* dining-organic.png in Resources */ = {isa = PBXBuildFile; fileRef = C759560212071BA3008474A9 /* dining-organic.png */; };
+		C759560B12071BA3008474A9 /* dining-organic@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C759560312071BA3008474A9 /* dining-organic@2x.png */; };
+		C759560C12071BA3008474A9 /* dining-vegan.png in Resources */ = {isa = PBXBuildFile; fileRef = C759560412071BA3008474A9 /* dining-vegan.png */; };
+		C759560D12071BA3008474A9 /* dining-vegan@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C759560512071BA3008474A9 /* dining-vegan@2x.png */; };
+		C759560E12071BA3008474A9 /* dining-vegetarian.png in Resources */ = {isa = PBXBuildFile; fileRef = C759560612071BA3008474A9 /* dining-vegetarian.png */; };
+		C759560F12071BA3008474A9 /* dining-vegetarian@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C759560712071BA3008474A9 /* dining-vegetarian@2x.png */; };
+		C759593E12074B47008474A9 /* HallDetailsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C759593812074B47008474A9 /* HallDetailsTableViewController.m */; };
+		C759593F12074B47008474A9 /* HallDetailsTableViewController.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = C759593912074B47008474A9 /* HallDetailsTableViewController.h */; settings = {JAVA_ARCHIVE_SUBDIR = Modules/Dining; }; };
+		C759594012074B47008474A9 /* DiningMultiLineCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C759593A12074B47008474A9 /* DiningMultiLineCell.m */; };
+		C759594112074B47008474A9 /* DiningMultiLineCell.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = C759593B12074B47008474A9 /* DiningMultiLineCell.h */; settings = {JAVA_ARCHIVE_SUBDIR = Modules/Dining; }; };
+		C759594212074B47008474A9 /* DiningHallStatus.m in Sources */ = {isa = PBXBuildFile; fileRef = C759593C12074B47008474A9 /* DiningHallStatus.m */; };
+		C759594312074B47008474A9 /* DiningHallStatus.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = C759593D12074B47008474A9 /* DiningHallStatus.h */; settings = {JAVA_ARCHIVE_SUBDIR = Modules/Dining; }; };
 		C776675911F733E3005496DD /* DatePickerViewController.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = C776675711F733E3005496DD /* DatePickerViewController.h */; settings = {JAVA_ARCHIVE_SUBDIR = Modules/Calendar; }; };
 		C776675A11F733E3005496DD /* DatePickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C776675811F733E3005496DD /* DatePickerViewController.m */; };
-		C7824BDB11FA2F8B003B3E3E /* DiningHallStatus.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = C7824BD911FA2F8B003B3E3E /* DiningHallStatus.h */; settings = {JAVA_ARCHIVE_SUBDIR = Modules; }; };
-		C7824BDC11FA2F8B003B3E3E /* DiningHallStatus.m in Sources */ = {isa = PBXBuildFile; fileRef = C7824BDA11FA2F8B003B3E3E /* DiningHallStatus.m */; };
 		C7AA23911200CB3E0023F880 /* dining-status-closed-w-restrictions.png in Resources */ = {isa = PBXBuildFile; fileRef = C7AA23891200CB3E0023F880 /* dining-status-closed-w-restrictions.png */; };
 		C7AA23921200CB3E0023F880 /* dining-status-closed-w-restrictions@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C7AA238A1200CB3E0023F880 /* dining-status-closed-w-restrictions@2x.png */; };
 		C7AA23931200CB3E0023F880 /* dining-status-closed.png in Resources */ = {isa = PBXBuildFile; fileRef = C7AA238B1200CB3E0023F880 /* dining-status-closed.png */; };
@@ -687,12 +697,22 @@
 		C704F06011E3E31F00621406 /* MenuItems.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MenuItems.m; path = Dining/MenuItems.m; sourceTree = "<group>"; };
 		C727B53811F4E245007D53BB /* CalendarCategoriesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CalendarCategoriesViewController.h; sourceTree = "<group>"; };
 		C727B53911F4E245007D53BB /* CalendarCategoriesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CalendarCategoriesViewController.m; sourceTree = "<group>"; };
-		C77664F811F64E74005496DD /* HallDetailsTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HallDetailsTableViewController.h; sourceTree = "<group>"; };
-		C77664F911F64E74005496DD /* HallDetailsTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HallDetailsTableViewController.m; sourceTree = "<group>"; };
+		C759560012071BA3008474A9 /* dining-local.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "dining-local.png"; sourceTree = "<group>"; };
+		C759560112071BA3008474A9 /* dining-local@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "dining-local@2x.png"; sourceTree = "<group>"; };
+		C759560212071BA3008474A9 /* dining-organic.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "dining-organic.png"; sourceTree = "<group>"; };
+		C759560312071BA3008474A9 /* dining-organic@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "dining-organic@2x.png"; sourceTree = "<group>"; };
+		C759560412071BA3008474A9 /* dining-vegan.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "dining-vegan.png"; sourceTree = "<group>"; };
+		C759560512071BA3008474A9 /* dining-vegan@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "dining-vegan@2x.png"; sourceTree = "<group>"; };
+		C759560612071BA3008474A9 /* dining-vegetarian.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "dining-vegetarian.png"; sourceTree = "<group>"; };
+		C759560712071BA3008474A9 /* dining-vegetarian@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "dining-vegetarian@2x.png"; sourceTree = "<group>"; };
+		C759593812074B47008474A9 /* HallDetailsTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = HallDetailsTableViewController.m; path = Dining/HallDetailsTableViewController.m; sourceTree = "<group>"; };
+		C759593912074B47008474A9 /* HallDetailsTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = HallDetailsTableViewController.h; path = Dining/HallDetailsTableViewController.h; sourceTree = "<group>"; };
+		C759593A12074B47008474A9 /* DiningMultiLineCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DiningMultiLineCell.m; path = Dining/DiningMultiLineCell.m; sourceTree = "<group>"; };
+		C759593B12074B47008474A9 /* DiningMultiLineCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DiningMultiLineCell.h; path = Dining/DiningMultiLineCell.h; sourceTree = "<group>"; };
+		C759593C12074B47008474A9 /* DiningHallStatus.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DiningHallStatus.m; path = Dining/DiningHallStatus.m; sourceTree = "<group>"; };
+		C759593D12074B47008474A9 /* DiningHallStatus.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DiningHallStatus.h; path = Dining/DiningHallStatus.h; sourceTree = "<group>"; };
 		C776675711F733E3005496DD /* DatePickerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DatePickerViewController.h; sourceTree = "<group>"; };
 		C776675811F733E3005496DD /* DatePickerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DatePickerViewController.m; sourceTree = "<group>"; };
-		C7824BD911FA2F8B003B3E3E /* DiningHallStatus.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DiningHallStatus.h; sourceTree = "<group>"; };
-		C7824BDA11FA2F8B003B3E3E /* DiningHallStatus.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DiningHallStatus.m; sourceTree = "<group>"; };
 		C7AA23891200CB3E0023F880 /* dining-status-closed-w-restrictions.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "dining-status-closed-w-restrictions.png"; sourceTree = "<group>"; };
 		C7AA238A1200CB3E0023F880 /* dining-status-closed-w-restrictions@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "dining-status-closed-w-restrictions@2x.png"; sourceTree = "<group>"; };
 		C7AA238B1200CB3E0023F880 /* dining-status-closed.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "dining-status-closed.png"; sourceTree = "<group>"; };
@@ -1172,6 +1192,14 @@
 				C7AA238E1200CB3E0023F880 /* dining-status-open-w-restrictions@2x.png */,
 				C7AA238F1200CB3E0023F880 /* dining-status-open.png */,
 				C7AA23901200CB3E0023F880 /* dining-status-open@2x.png */,
+				C759560012071BA3008474A9 /* dining-local.png */,
+				C759560112071BA3008474A9 /* dining-local@2x.png */,
+				C759560212071BA3008474A9 /* dining-organic.png */,
+				C759560312071BA3008474A9 /* dining-organic@2x.png */,
+				C759560412071BA3008474A9 /* dining-vegan.png */,
+				C759560512071BA3008474A9 /* dining-vegan@2x.png */,
+				C759560612071BA3008474A9 /* dining-vegetarian.png */,
+				C759560712071BA3008474A9 /* dining-vegetarian@2x.png */,
 				EB49AD7B11F4BFFF00854791 /* news */,
 				EB49AD8211F4BFFF00854791 /* people */,
 				EB49AD8611F4BFFF00854791 /* shuttles */,
@@ -1399,6 +1427,12 @@
 		C704F02311E3E13E00621406 /* Dining */ = {
 			isa = PBXGroup;
 			children = (
+				C759593812074B47008474A9 /* HallDetailsTableViewController.m */,
+				C759593912074B47008474A9 /* HallDetailsTableViewController.h */,
+				C759593A12074B47008474A9 /* DiningMultiLineCell.m */,
+				C759593B12074B47008474A9 /* DiningMultiLineCell.h */,
+				C759593C12074B47008474A9 /* DiningHallStatus.m */,
+				C759593D12074B47008474A9 /* DiningHallStatus.h */,
 				C7B897EF11F535C8002B3619 /* HoursTableViewController.m */,
 				C7B897F011F535C8002B3619 /* HoursTableViewController.h */,
 				C704F05211E3E31F00621406 /* DiningFirstViewController.xib */,
@@ -1416,10 +1450,6 @@
 				C704F05E11E3E31F00621406 /* MenuDetailsController.m */,
 				C704F05F11E3E31F00621406 /* MenuItems.h */,
 				C704F06011E3E31F00621406 /* MenuItems.m */,
-				C77664F811F64E74005496DD /* HallDetailsTableViewController.h */,
-				C77664F911F64E74005496DD /* HallDetailsTableViewController.m */,
-				C7824BD911FA2F8B003B3E3E /* DiningHallStatus.h */,
-				C7824BDA11FA2F8B003B3E3E /* DiningHallStatus.m */,
 			);
 			name = Dining;
 			sourceTree = "<group>";
@@ -2053,13 +2083,14 @@
 				C7B897F211F535C8002B3619 /* HoursTableViewController.h in JavaArchive */,
 				A6787A1611F605070034D559 /* NSArray+Convenience.h in JavaArchive */,
 				EB7BA33E11F7677F00B3DDA6 /* PolygonOverlay.h in JavaArchive */,
-				C77664FA11F64E74005496DD /* HallDetailsTableViewController.h in JavaArchive */,
 				C776675911F733E3005496DD /* DatePickerViewController.h in JavaArchive */,
 				EB7BA68411F8ED2100B3DDA6 /* ModoSearchBar.h in JavaArchive */,
 				EB7BA75A11F9CE7B00B3DDA6 /* MultiLineTableViewCell.h in JavaArchive */,
 				EB3721AA11FA2F5200705180 /* NewsImage.h in JavaArchive */,
-				C7824BDB11FA2F8B003B3E3E /* DiningHallStatus.h in JavaArchive */,
 				A64C313D11FDFAB8006FE056 /* AddressFormatter.h in JavaArchive */,
+				C759593F12074B47008474A9 /* HallDetailsTableViewController.h in JavaArchive */,
+				C759594112074B47008474A9 /* DiningMultiLineCell.h in JavaArchive */,
+				C759594312074B47008474A9 /* DiningHallStatus.h in JavaArchive */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2150,6 +2181,14 @@
 				C7AA23971200CB3E0023F880 /* dining-status-open.png in Resources */,
 				C7AA23981200CB3E0023F880 /* dining-status-open@2x.png in Resources */,
 				A64C36CB1207066D006FE056 /* peopleSearchStaticPhoneRowsArray.plist in Resources */,
+				C759560812071BA3008474A9 /* dining-local.png in Resources */,
+				C759560912071BA3008474A9 /* dining-local@2x.png in Resources */,
+				C759560A12071BA3008474A9 /* dining-organic.png in Resources */,
+				C759560B12071BA3008474A9 /* dining-organic@2x.png in Resources */,
+				C759560C12071BA3008474A9 /* dining-vegan.png in Resources */,
+				C759560D12071BA3008474A9 /* dining-vegan@2x.png in Resources */,
+				C759560E12071BA3008474A9 /* dining-vegetarian.png in Resources */,
+				C759560F12071BA3008474A9 /* dining-vegetarian@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2489,13 +2528,14 @@
 				C7B897F111F535C8002B3619 /* HoursTableViewController.m in Sources */,
 				A6787A1711F605070034D559 /* NSArray+Convenience.m in Sources */,
 				EB7BA33F11F7677F00B3DDA6 /* PolygonOverlay.m in Sources */,
-				C77664FB11F64E74005496DD /* HallDetailsTableViewController.m in Sources */,
 				C776675A11F733E3005496DD /* DatePickerViewController.m in Sources */,
 				EB7BA68511F8ED2100B3DDA6 /* ModoSearchBar.m in Sources */,
 				EB7BA75B11F9CE7B00B3DDA6 /* MultiLineTableViewCell.m in Sources */,
 				EB3721AB11FA2F5200705180 /* NewsImage.m in Sources */,
-				C7824BDC11FA2F8B003B3E3E /* DiningHallStatus.m in Sources */,
 				A64C313E11FDFAB8006FE056 /* AddressFormatter.m in Sources */,
+				C759593E12074B47008474A9 /* HallDetailsTableViewController.m in Sources */,
+				C759594012074B47008474A9 /* DiningMultiLineCell.m in Sources */,
+				C759594212074B47008474A9 /* DiningHallStatus.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
