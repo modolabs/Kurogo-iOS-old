@@ -11,6 +11,36 @@
 #import "NSArray+Convenience.h"
 #import "AddressFormatter.h"
 
+@interface PeopleDetailsViewController (Private)
+
+// Finds values in PersonDetails corresponding to the given ldapKey and adds them to multiValue without 
+// overwriting existing values.
+- (void)addMultivalueValuesAndLabelsTo:(ABMutableMultiValueRef)multiValue
+							usingLabel:(CFStringRef)label
+				 withValuesFromLDAPKey:(NSString *)ldapKey;
+
+@end
+
+@implementation PeopleDetailsViewController (Private)
+
+- (void)addMultivalueValuesAndLabelsTo:(ABMutableMultiValueRef)multiValue
+							usingLabel:(CFStringRef)label
+				 withValuesFromLDAPKey:(NSString *)ldapKey {
+	
+	NSArray *existingValues = (NSArray *)ABMultiValueCopyArrayOfAllValues(multiValue);
+	NSString *ldapValue;
+	if (ldapValue = [self.personDetails actualValueForKey:ldapKey]) {
+		for (NSString *value in [ldapValue componentsSeparatedByString:@","]) {
+			if (![existingValues containsObject:value]) {
+				ABMultiValueAddValueAndLabel(multiValue, value, label, NULL);
+			}
+		}
+	}	
+	[existingValues release];
+}
+
+@end
+
 @implementation PeopleDetailsViewController
 
 @synthesize personDetails, sectionArray, fullname;
@@ -235,8 +265,12 @@
 	return labelSize.height + 26.0;
      */
     
+	// If the cell's 'tag' string matches the display name for any of these personDetails properties, 
+	// add a disclosure button.
     UITableViewCellAccessoryType accessoryType = 
-        ([tag isEqualToString:@"telephonenumber"] || [tag isEqualToString:@"email"] || [tag isEqualToString:@"office"])
+	([tag isEqualToString:[personDetails displayNameForKey:@"telephonenumber"]] || 
+	 [tag isEqualToString:[personDetails displayNameForKey:@"mail"]] || 
+	 [tag isEqualToString:[personDetails displayNameForKey:@"postaladdress"]])
     ? UITableViewCellAccessoryDetailDisclosureButton
     : UITableViewCellAccessoryNone;
     
@@ -274,8 +308,7 @@
 			// set multivalue properties: email and phone numbers
 			ABMutableMultiValueRef multiEmail = ABMultiValueCreateMutable(kABMultiStringPropertyType);
 			if (value = [self.personDetails formattedValueForKey:@"mail"]) {
-				for (NSString *email in [value componentsSeparatedByString:@","])
-					ABMultiValueAddValueAndLabel(multiEmail, email, kABWorkLabel, NULL);
+				[self addMultivalueValuesAndLabelsTo:multiEmail usingLabel:kABWorkLabel withValuesFromLDAPKey:@"mail"];
 				ABRecordSetValue(person, kABPersonEmailProperty, multiEmail, &error);
 			}
 			CFRelease(multiEmail);
@@ -283,13 +316,12 @@
 			BOOL haveValues = NO;
 			ABMutableMultiValueRef multiPhone = ABMultiValueCreateMutable(kABMultiStringPropertyType);
 			if (value = [self.personDetails formattedValueForKey:@"telephonenumber"]) {
-				for (NSString *phone in [value componentsSeparatedByString:@","])
-					ABMultiValueAddValueAndLabel(multiPhone, phone, kABWorkLabel, NULL);
+				[self addMultivalueValuesAndLabelsTo:multiPhone usingLabel:kABWorkLabel withValuesFromLDAPKey:@"telephonenumber"];
 				ABRecordSetValue(person, kABPersonPhoneProperty, multiPhone, &error);
 				haveValues = YES;
 			}
 			if (value = [self.personDetails formattedValueForKey:@"facsimiletelephonenumber"]) {
-				ABMultiValueAddValueAndLabel(multiPhone, value, kABPersonPhoneWorkFAXLabel, NULL);
+				[self addMultivalueValuesAndLabelsTo:multiPhone usingLabel:kABPersonPhoneWorkFAXLabel withValuesFromLDAPKey:@"facsimiletelephonenumber"];
 				haveValues = YES;
 			}
 			if (haveValues) {
@@ -414,39 +446,22 @@
 	else if (ldapValue = [self.personDetails actualValueForKey:@"ou"])
 		ABRecordSetValue(newPerson, kABPersonDepartmentProperty, ldapValue, &error);
 		
-	// multi value phone property
+	// multi value phone property (including fax numbers)
 	ABMultiValueRef multi = ABRecordCopyValue(person, kABPersonPhoneProperty);
 	ABMutableMultiValueRef phone = ABMultiValueCreateMutableCopy(multi);
-	NSArray *existingPhones = (NSArray *)ABMultiValueCopyArrayOfAllValues(phone);
-	if (ldapValue = [self.personDetails actualValueForKey:@"telephonenumber"]) {
-		for (NSString *value in [ldapValue componentsSeparatedByString:@","]) {
-			if (![existingPhones containsObject:value]) {
-				ABMultiValueAddValueAndLabel(phone, value, kABWorkLabel, NULL);
-			}
-		}
-	}
-	if ((ldapValue = [self.personDetails actualValueForKey:@"facsimiletelephonenumber"]) && ![existingPhones containsObject:ldapValue]) {
-		ABMultiValueAddValueAndLabel(phone, ldapValue, kABPersonPhoneWorkFAXLabel, NULL);
-	}
+	[self addMultivalueValuesAndLabelsTo:phone usingLabel:kABWorkLabel withValuesFromLDAPKey:@"telephonenumber"];
+	[self addMultivalueValuesAndLabelsTo:phone usingLabel:kABPersonPhoneWorkFAXLabel withValuesFromLDAPKey:@"facsimiletelephonenumber"];
+
 	ABRecordSetValue(newPerson, kABPersonPhoneProperty, phone, &error);
 	CFRelease(phone);
     CFRelease(multi);
-	[existingPhones release];
 	
 	// multi value email property
 	multi = ABRecordCopyValue(person, kABPersonEmailProperty);
 	ABMutableMultiValueRef email = ABMultiValueCreateMutableCopy(multi);
-	NSArray *existingEmails = (NSArray *)ABMultiValueCopyArrayOfAllValues(email);
-	if (ldapValue = [self.personDetails actualValueForKey:@"mail"]) {
-		for (NSString *value in [ldapValue componentsSeparatedByString:@","]) {
-			if (![existingEmails containsObject:value]) {
-				ABMultiValueAddValueAndLabel(email, value, kABWorkLabel, NULL);
-			}
-		}
-	}
+	[self addMultivalueValuesAndLabelsTo:email usingLabel:kABWorkLabel withValuesFromLDAPKey:@"mail"];
 	ABRecordSetValue(newPerson, kABPersonEmailProperty, email, &error);
 	CFRelease(email);
-	[existingEmails release];
 
 	CFRelease(multi);
 	
