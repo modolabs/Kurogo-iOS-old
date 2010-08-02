@@ -30,7 +30,7 @@
 	NSArray *existingValues = (NSArray *)ABMultiValueCopyArrayOfAllValues(multiValue);
 	NSString *ldapValue;
 	if (ldapValue = [self.personDetails actualValueForKey:ldapKey]) {
-		for (NSString *value in [ldapValue componentsSeparatedByString:@","]) {
+		for (NSString *value in [ldapValue componentsSeparatedByString:kPersonDetailsValueSeparatorToken]) {
 			if (![existingValues containsObject:value]) {
 				ABMultiValueAddValueAndLabel(multiValue, value, label, NULL);
 			}
@@ -88,7 +88,7 @@
 					[ldapTag isEqualToString:@"facsimiletelephonenumber"] ||
 					//[ldapTag isEqualToString:@"room"] || 
 					[ldapTag isEqualToString:@"postaladdress"]) {
-					for (NSString *value in [ldapValue componentsSeparatedByString:@","])
+					for (NSString *value in [ldapValue componentsSeparatedByString:kPersonDetailsValueSeparatorToken])
 						[currentSection addObject:[NSArray arrayWithObjects:displayTag, value, nil]];
 					continue;
 				}
