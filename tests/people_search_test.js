@@ -197,7 +197,7 @@ function testSuite2()
 	};
 	
 	var termsToExpectedValues = {
-		"4795": expectedSearchResultValues // Search for part of the phone number.
+		"7958": expectedSearchResultValues // Search for part of the phone number.
 	};
 
 	runSearchTestSuite("Test suite 2", termsToExpectedValues);
