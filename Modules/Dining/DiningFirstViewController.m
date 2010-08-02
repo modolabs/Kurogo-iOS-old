@@ -11,6 +11,7 @@
 #import "DiningTabViewControl.h"
 #import "MITUIConstants.h"
 #import "MIT_MobileAppDelegate.h"
+#import "DiningMultiLineCell.h"
 
 #define kBreakfastTab 0
 #define kLunchTab 1
@@ -666,23 +667,44 @@ numberOfRowsInSection:(NSInteger)section
 	
 	static NSString *DisclosureButtonCellIdentifier = @"DisclosureButtonCellIdentifier";
 	
-	UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:DisclosureButtonCellIdentifier];
+	DiningMultiLineCell *cell = (DiningMultiLineCell *)[tableView dequeueReusableCellWithIdentifier:DisclosureButtonCellIdentifier];
 	
 	if (cell == nil)
 	{
-		cell = [[[UITableViewCell alloc]
+		cell = [[[DiningMultiLineCell alloc]
 				 initWithStyle:UITableViewCellStyleDefault
 				 reuseIdentifier:DisclosureButtonCellIdentifier] autorelease];
 	}
-
+	cell.textLabelNumberOfLines = 2;
 	
 	cell.textLabel.text = (NSString *) [[keySection objectAtIndex:row] objectForKey:@"item"];
 	
 	
-	cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+	//cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 	cell.selectionStyle = UITableViewCellSelectionStyleGray;
 	cell.backgroundColor = GROUPED_VIEW_CELL_COLOR;
 	
+	
+	cell.textLabel.lineBreakMode = UILineBreakModeWordWrap;
+	UIImage *image = [UIImage imageNamed:@"dining-local.png"];
+	UIImageView *imView = [[UIImageView alloc] initWithFrame:CGRectMake(265, 10, 20, 20)];
+	imView.image = image;
+
+	
+	UIImage *image2 = [UIImage imageNamed:@"dining-vegan.png"];
+	UIImageView *imView2 = [[UIImageView alloc] initWithFrame:CGRectMake(245, 10, 20, 20)];
+	imView2.image = image2;
+	
+	UIImage *image3 = [UIImage imageNamed:@"dining-organic.png"];
+	UIImageView *imView3 = [[UIImageView alloc] initWithFrame:CGRectMake(225, 10, 20, 20)];
+	imView3.image = image3;
+
+	
+	[cell.contentView addSubview:imView];
+	[cell.contentView addSubview:imView2];
+	[cell.contentView addSubview:imView3];
+	
+						   
 	return cell;
 }
 
@@ -698,7 +720,29 @@ titleForHeaderInSection:(NSInteger)section
 -(CGFloat)tableView:(UITableView *)tableView
 heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-	return 40;
+	NSUInteger section = [indexPath section];
+	NSUInteger row = [indexPath row];
+	
+	NSString *key = [self.list objectAtIndex:section];
+	NSArray *keySection = [self.menuDict objectForKey:key];
+
+	NSString *textL = (NSString *) [[keySection objectAtIndex:row] objectForKey:@"item"];
+	
+	int textLines = 1;
+	if ([textL length] >= 25)
+		 textLines = 2;
+		 
+	
+	return [DiningMultiLineCell heightForCellWithStyle:UITableViewStyleGrouped
+											 tableView:tableView 
+												  text:textL 
+										  maxTextLines:textLines 
+											detailText:nil
+										maxDetailLines:0
+												  font:nil
+											detailFont:nil
+										 accessoryType:UITableViewCellAccessoryDetailDisclosureButton
+											 cellImage:NO];
 }
 
 #pragma mark -
@@ -707,6 +751,9 @@ heightForRowAtIndexPath:(NSIndexPath *)indexPath
 -(void)tableView:(UITableView *)tableView
 didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+	// deselect the Row
+	[tableView deselectRowAtIndexPath:indexPath animated:NO];
+	/*
 	//re-initialize the childController each time to get the correct Display
 	childController = nil;
 	
@@ -760,9 +807,8 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 	childController.title = selectItem;
 	
 	[self.navigationController pushViewController:childController animated:YES];
-	
-	// deselect the Row
-	[tableView deselectRowAtIndexPath:indexPath animated:NO];
+	*/
+
 
 }
 
