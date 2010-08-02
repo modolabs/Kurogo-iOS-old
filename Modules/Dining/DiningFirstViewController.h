@@ -39,6 +39,7 @@
 	
 	IBOutlet UIView *glossaryForHoursView;
 	IBOutlet UITableView *hoursTableView;
+	IBOutlet UIView *glossaryForMealTypesView;
 	HoursTableViewController *tableControl;
 	
 	UIButton *prevDate;

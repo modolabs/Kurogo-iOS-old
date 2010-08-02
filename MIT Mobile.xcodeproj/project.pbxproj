@@ -169,6 +169,14 @@
 		C704F06F11E3E31F00621406 /* MenuItems.m in Sources */ = {isa = PBXBuildFile; fileRef = C704F06011E3E31F00621406 /* MenuItems.m */; };
 		C727B53A11F4E245007D53BB /* CalendarCategoriesViewController.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = C727B53811F4E245007D53BB /* CalendarCategoriesViewController.h */; settings = {JAVA_ARCHIVE_SUBDIR = Modules/Calendar; }; };
 		C727B53B11F4E245007D53BB /* CalendarCategoriesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C727B53911F4E245007D53BB /* CalendarCategoriesViewController.m */; };
+		C759560812071BA3008474A9 /* dining-local.png in Resources */ = {isa = PBXBuildFile; fileRef = C759560012071BA3008474A9 /* dining-local.png */; };
+		C759560912071BA3008474A9 /* dining-local@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C759560112071BA3008474A9 /* dining-local@2x.png */; };
+		C759560A12071BA3008474A9 /* dining-organic.png in Resources */ = {isa = PBXBuildFile; fileRef = C759560212071BA3008474A9 /* dining-organic.png */; };
+		C759560B12071BA3008474A9 /* dining-organic@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C759560312071BA3008474A9 /* dining-organic@2x.png */; };
+		C759560C12071BA3008474A9 /* dining-vegan.png in Resources */ = {isa = PBXBuildFile; fileRef = C759560412071BA3008474A9 /* dining-vegan.png */; };
+		C759560D12071BA3008474A9 /* dining-vegan@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C759560512071BA3008474A9 /* dining-vegan@2x.png */; };
+		C759560E12071BA3008474A9 /* dining-vegetarian.png in Resources */ = {isa = PBXBuildFile; fileRef = C759560612071BA3008474A9 /* dining-vegetarian.png */; };
+		C759560F12071BA3008474A9 /* dining-vegetarian@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C759560712071BA3008474A9 /* dining-vegetarian@2x.png */; };
 		C77664FA11F64E74005496DD /* HallDetailsTableViewController.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = C77664F811F64E74005496DD /* HallDetailsTableViewController.h */; settings = {JAVA_ARCHIVE_SUBDIR = Modules; }; };
 		C77664FB11F64E74005496DD /* HallDetailsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C77664F911F64E74005496DD /* HallDetailsTableViewController.m */; };
 		C776675911F733E3005496DD /* DatePickerViewController.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = C776675711F733E3005496DD /* DatePickerViewController.h */; settings = {JAVA_ARCHIVE_SUBDIR = Modules/Calendar; }; };
@@ -687,6 +695,14 @@
 		C704F06011E3E31F00621406 /* MenuItems.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MenuItems.m; path = Dining/MenuItems.m; sourceTree = "<group>"; };
 		C727B53811F4E245007D53BB /* CalendarCategoriesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CalendarCategoriesViewController.h; sourceTree = "<group>"; };
 		C727B53911F4E245007D53BB /* CalendarCategoriesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CalendarCategoriesViewController.m; sourceTree = "<group>"; };
+		C759560012071BA3008474A9 /* dining-local.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "dining-local.png"; sourceTree = "<group>"; };
+		C759560112071BA3008474A9 /* dining-local@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "dining-local@2x.png"; sourceTree = "<group>"; };
+		C759560212071BA3008474A9 /* dining-organic.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "dining-organic.png"; sourceTree = "<group>"; };
+		C759560312071BA3008474A9 /* dining-organic@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "dining-organic@2x.png"; sourceTree = "<group>"; };
+		C759560412071BA3008474A9 /* dining-vegan.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "dining-vegan.png"; sourceTree = "<group>"; };
+		C759560512071BA3008474A9 /* dining-vegan@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "dining-vegan@2x.png"; sourceTree = "<group>"; };
+		C759560612071BA3008474A9 /* dining-vegetarian.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "dining-vegetarian.png"; sourceTree = "<group>"; };
+		C759560712071BA3008474A9 /* dining-vegetarian@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "dining-vegetarian@2x.png"; sourceTree = "<group>"; };
 		C77664F811F64E74005496DD /* HallDetailsTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HallDetailsTableViewController.h; sourceTree = "<group>"; };
 		C77664F911F64E74005496DD /* HallDetailsTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HallDetailsTableViewController.m; sourceTree = "<group>"; };
 		C776675711F733E3005496DD /* DatePickerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DatePickerViewController.h; sourceTree = "<group>"; };
@@ -1172,6 +1188,14 @@
 				C7AA238E1200CB3E0023F880 /* dining-status-open-w-restrictions@2x.png */,
 				C7AA238F1200CB3E0023F880 /* dining-status-open.png */,
 				C7AA23901200CB3E0023F880 /* dining-status-open@2x.png */,
+				C759560012071BA3008474A9 /* dining-local.png */,
+				C759560112071BA3008474A9 /* dining-local@2x.png */,
+				C759560212071BA3008474A9 /* dining-organic.png */,
+				C759560312071BA3008474A9 /* dining-organic@2x.png */,
+				C759560412071BA3008474A9 /* dining-vegan.png */,
+				C759560512071BA3008474A9 /* dining-vegan@2x.png */,
+				C759560612071BA3008474A9 /* dining-vegetarian.png */,
+				C759560712071BA3008474A9 /* dining-vegetarian@2x.png */,
 				EB49AD7B11F4BFFF00854791 /* news */,
 				EB49AD8211F4BFFF00854791 /* people */,
 				EB49AD8611F4BFFF00854791 /* shuttles */,
@@ -2150,6 +2174,14 @@
 				C7AA23971200CB3E0023F880 /* dining-status-open.png in Resources */,
 				C7AA23981200CB3E0023F880 /* dining-status-open@2x.png in Resources */,
 				A64C36CB1207066D006FE056 /* peopleSearchStaticPhoneRowsArray.plist in Resources */,
+				C759560812071BA3008474A9 /* dining-local.png in Resources */,
+				C759560912071BA3008474A9 /* dining-local@2x.png in Resources */,
+				C759560A12071BA3008474A9 /* dining-organic.png in Resources */,
+				C759560B12071BA3008474A9 /* dining-organic@2x.png in Resources */,
+				C759560C12071BA3008474A9 /* dining-vegan.png in Resources */,
+				C759560D12071BA3008474A9 /* dining-vegan@2x.png in Resources */,
+				C759560E12071BA3008474A9 /* dining-vegetarian.png in Resources */,
+				C759560F12071BA3008474A9 /* dining-vegetarian@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

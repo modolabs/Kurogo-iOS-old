@@ -39,6 +39,7 @@
 
 
 NSInteger tabRequestingInfo; // In order to prevent Race conditions for the selected tab and JSONDelegate loaded data
+BOOL hoursTabInfoRetrieved = NO;
 
 BOOL requestDispatched = NO;
 JSONAPIRequest *mitapi;
@@ -71,6 +72,19 @@ JSONAPIRequest *mitapi;
 		tabRequestingInfo = kBreakfastTab;	
 		requestDispatched = YES;
 	}
+	else {
+		requestDispatched = NO;
+		
+		UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Connection Failed"
+														message:@"Could not retrieve Breakfast Menu"
+													   delegate:nil
+											  cancelButtonTitle:@"OK"
+											  otherButtonTitles:nil];
+		
+		[alert show];
+		[alert release];
+	}
+
 
 }
 
@@ -102,6 +116,18 @@ JSONAPIRequest *mitapi;
 		tabRequestingInfo = kLunchTab;	
 		requestDispatched = YES;
 	}
+	else {
+		requestDispatched = NO;
+		
+		UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Connection Failed"
+														message:@"Could not retrieve Lunch Menu"
+													   delegate:nil
+											  cancelButtonTitle:@"OK"
+											  otherButtonTitles:nil];
+		
+		[alert show];
+		[alert release];
+	}
 
 	
 }
@@ -131,6 +157,18 @@ JSONAPIRequest *mitapi;
 		// set the requesting Tab index to the correct one
 		tabRequestingInfo = kDinnerTab;	
 		requestDispatched = YES;
+	}
+	else {
+		requestDispatched = NO;
+		
+		UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Connection Failed"
+														message:@"Could not retrieve Dinner Menu"
+													   delegate:nil
+											  cancelButtonTitle:@"OK"
+											  otherButtonTitles:nil];
+		
+		[alert show];
+		[alert release];
 	}
 
 }
@@ -314,14 +352,6 @@ JSONAPIRequest *mitapi;
 	
 	self.view.backgroundColor = [UIColor clearColor];
 	_tabViewContainer.backgroundColor = [UIColor whiteColor];
-
-	//breakfastViewLink.backgroundColor = [UIColor clearColor];
-	//lunchViewLink.backgroundColor = [UIColor clearColor];
-	//dinnerViewLink.backgroundColor = [UIColor clearColor];
-	//_loadingResultView.backgroundColor = [UIColor clearColor];
-	//_newsView.backgroundColor = [UIColor clearColor];
-	//_tabViewControl.backgroundColor = [UIColor whiteColor];
-	
 }
 
 
@@ -441,26 +471,35 @@ JSONAPIRequest *mitapi;
 	{
 		[control setSelectedTab:kHoursTab];
 		
-		JSONAPIRequest *hoursDelegate = [[JSONAPIRequest alloc] initWithJSONAPIDelegate:tableControl];
+		if (hoursTabInfoRetrieved == NO) {
+			JSONAPIRequest *hoursDelegate = [[JSONAPIRequest alloc] initWithJSONAPIDelegate:tableControl];
 		
-		
-		
-		if ([hoursDelegate requestObjectFromModule:@"dining" 
+			if ([hoursDelegate requestObjectFromModule:@"dining" 
 									command:@"hours" 
 								 parameters:nil] == YES)
-		{
-			// set the requesting Tab index to the correct one
-			tabRequestingInfo = kHoursTab;	
-			requestDispatched = YES;
+			{
+				// set the requesting Tab index to the correct one
+				tabRequestingInfo = kHoursTab;	
+				requestDispatched = YES;
+				hoursTabInfoRetrieved = YES;
+			}
+			
+			else {
+				UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Connection Failed"
+																message:@"Could not retrieve Dining Hall Hours information"
+															   delegate:nil
+													  cancelButtonTitle:@"OK"
+													  otherButtonTitles:nil];
+				
+				[alert show];
+				[alert release];
+			}
 		}
-		
-	}	
-	
-	else if (tabIndex == kNewsTab)
-	{
-		[control setSelectedTab:kNewsTab];
-		
-	}	
+		else {
+			requestDispatched = NO;
+		}
+	}
+
 	// set the size of the scroll view based on the size of the view being added and its parent's offset
 	UIView* viewToAdd = [_tabViews objectAtIndex:tabIndex];
 	_scrollView.contentSize = CGSizeMake(_scrollView.contentSize.width,
@@ -468,9 +507,10 @@ JSONAPIRequest *mitapi;
 	
 	[_tabViewContainer addSubview:viewToAdd];
 
-	[self addLoadingIndicator];
-}
+	if (requestDispatched == YES)
+		[self addLoadingIndicator];
 
+}
 
 #pragma mark -
 #pragma mark DakePicker setup
@@ -758,6 +798,8 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 				self._bkfstDict = ListDictionary;
 				[_tabViews removeObjectAtIndex:kBreakfastTab];
 				[_tabViews insertObject:breakfastViewLink atIndex:kBreakfastTab];
+				[glossaryForMealTypesView removeFromSuperview];
+				[_tabViewContainer addSubview:glossaryForMealTypesView];
 				[_tabViewContainer addSubview:breakfastViewLink];
 			}
 			
@@ -766,6 +808,8 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 				self._lunchList = List;
 				self._lunchDict = ListDictionary;
 				[_tabViews removeObjectAtIndex:kLunchTab];
+				[glossaryForMealTypesView removeFromSuperview];
+				[lunchViewLink addSubview:glossaryForMealTypesView];
 				[_tabViews insertObject:lunchViewLink atIndex:kLunchTab];
 				[_tabViewContainer addSubview:lunchViewLink];
 				
@@ -776,6 +820,8 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 				self._dinnerList = List;
 				self._dinnerDict = ListDictionary;
 				[_tabViews removeObjectAtIndex:kDinnerTab];
+				[glossaryForMealTypesView removeFromSuperview];
+				[dinnerViewLink addSubview:glossaryForMealTypesView];
 				[_tabViews insertObject:dinnerViewLink atIndex:kDinnerTab];
 				[_tabViewContainer addSubview:dinnerViewLink];
 				
