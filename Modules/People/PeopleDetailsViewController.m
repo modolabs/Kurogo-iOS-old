@@ -235,8 +235,12 @@
 	return labelSize.height + 26.0;
      */
     
+	// If the cell's 'tag' string matches the display name for any of these personDetails properties, 
+	// add a disclosure button.
     UITableViewCellAccessoryType accessoryType = 
-        ([tag isEqualToString:@"telephonenumber"] || [tag isEqualToString:@"email"] || [tag isEqualToString:@"office"])
+	([tag isEqualToString:[personDetails displayNameForKey:@"telephonenumber"]] || 
+	 [tag isEqualToString:[personDetails displayNameForKey:@"mail"]] || 
+	 [tag isEqualToString:[personDetails displayNameForKey:@"postaladdress"]])
     ? UITableViewCellAccessoryDetailDisclosureButton
     : UITableViewCellAccessoryNone;
     
