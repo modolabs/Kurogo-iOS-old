@@ -3,11 +3,11 @@
 
 @interface StellarCourseGroup : NSObject {
 	NSString *title;
-	NSArray *courses;
+	NSMutableArray *courses;
 }
 
 @property (retain) NSString *title;
-@property (retain) NSArray *courses;
+@property (retain) NSMutableArray *courses;
 
 - (id) initWithTitle: (NSString *)title courses:(NSArray *)courseGroup;
 - (NSString *) serialize;

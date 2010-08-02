@@ -1,7 +1,6 @@
 #import "TileServerManager.h"
 #import "CoreDataManager.h"
 #import <MapKit/MapKit.h>
-#import "MKMapView+ArcGISAdditions.h"
 
 @interface TileServerManager (Private)
 
@@ -24,6 +23,8 @@
 - (CGFloat)circumferenceInProjectedUnits;
 - (CGFloat)meridianLengthInProjectedUnits;
 
+- (MKCoordinateRegion)defaultRegion;
+
 - (BOOL)isInitialized;
 - (MapZoomLevel *)rootMapLevel;
 - (MapZoomLevel *)highestMapLevel;
@@ -32,18 +33,15 @@
 - (CGPoint)projectedPointForMapPoint:(MKMapPoint)mapPoint;
 - (MKMapPoint)mapPointForProjectedPoint:(CGPoint)point;
 
-- (CGPoint)projectedPointForCoord:(CLLocationCoordinate2D)coord;
-- (CLLocationCoordinate2D)coordForProjectedPoint:(CGPoint)point;
+- (CGPoint)projectedPointForCoord:(CLLocationCoordinate2D)coord error:(NSError **)error;
+- (CLLocationCoordinate2D)coordForProjectedPoint:(CGPoint)point error:(NSError **)error;
 
 - (void)setupProjection:(const char *)projString;
 
-- (void)registerMapView:(MKMapView *)mapView;
-- (void)unregisterMapView:(MKMapView *)mapView;
+//- (void)registerMapView:(MKMapView *)mapView;
+//- (void)unregisterMapView:(MKMapView *)mapView;
 
 + (NSString*)mapTimestampFilename;
-
-//- (void)registerDelegate:(id<TileServerDelegate>)delegate;
-//- (void)unregisterDelegate:(id<TileServerDelegate>)delegate;
 
 @end
 
@@ -111,13 +109,27 @@ static NSString * s_tileServerFilename = @"tileServer.plist";
 }
 
 + (CGPoint)projectedPointForCoord:(CLLocationCoordinate2D)coord {
-    return [[TileServerManager manager] projectedPointForCoord:coord];
+    NSError *error = nil;
+    CGPoint result = [[TileServerManager manager] projectedPointForCoord:coord error:&error];
+    if (error != nil) {
+        NSLog(@"%@ error %d: %@", error.domain, error.code, error.userInfo);
+    }
+    return result;
 }
 
 + (CLLocationCoordinate2D)coordForProjectedPoint:(CGPoint)point {
-    return [[TileServerManager manager] coordForProjectedPoint:point];
+    NSError *error = nil;
+    CLLocationCoordinate2D result = [[TileServerManager manager] coordForProjectedPoint:point error:&error];
+    if (error != nil) {
+        NSLog(@"%@ error %d: %@", error.domain, error.code, error.userInfo);
+    }
+    return result;
 }
 
++ (MKCoordinateRegion)defaultRegion {
+    return [[TileServerManager manager] defaultRegion];
+}
+/*
 + (void)registerMapView:(MKMapView *)mapView {
     [[TileServerManager manager] registerMapView:mapView];
 }
@@ -125,16 +137,9 @@ static NSString * s_tileServerFilename = @"tileServer.plist";
 + (void)unregisterMapView:(MKMapView *)mapView {
     [[TileServerManager manager] unregisterMapView:mapView];
 }
-/*
-+ (void)registerDelegate:(id<TileServerDelegate>)delegate {
-    [[TileServerManager manager] registerDelegate:delegate];
-}
-
-+ (void)unregisterDelegate:(id<TileServerDelegate>)delegate {
-    [[TileServerManager manager] unregisterDelegate:delegate];
-}
 */
 #pragma mark -
+#pragma mark Private methods
 
 + (TileServerManager *)manager {
     if (s_manager == nil) {
@@ -234,14 +239,47 @@ static NSString * s_tileServerFilename = @"tileServer.plist";
     return (MapZoomLevel *)[_mapLevels lastObject];
 }
 
+// TODO: figure out if i have the y coordinates backwards
+// i.e. increasing downwards when it should be upwards
+// (currently no class seems to be using these as direction
+// indicators so we haven't seen problems yet)
+
 - (CLLocationCoordinate2D)southEastBoundary {
     CGPoint topLeftProjectedPoint = CGPointMake(_xMax, _yMax);
-    return [[TileServerManager manager] coordForProjectedPoint:topLeftProjectedPoint];
+    NSError *error = nil;
+    CLLocationCoordinate2D se = [self coordForProjectedPoint:topLeftProjectedPoint error:&error];
+    return se;
 }
 
 - (CLLocationCoordinate2D)northWestBoundary {
     CGPoint topLeftProjectedPoint = CGPointMake(_xMin, _yMin);
-    return [self coordForProjectedPoint:topLeftProjectedPoint];
+    NSError *error = nil;
+    CLLocationCoordinate2D nw = [self coordForProjectedPoint:topLeftProjectedPoint error:&error];
+    return nw;
+}
+
+- (MKCoordinateRegion)defaultRegion {
+    if ([self isInitialized]) {
+        if (_defaultRegion.span.latitudeDelta == 0) {
+            NSError *error = nil;
+            CGPoint point = CGPointMake((_defaultXMin + _defaultXMax) / 2,
+                                        (_defaultYMin + _defaultYMax) / 2);
+            CLLocationCoordinate2D centerCoord = [self coordForProjectedPoint:point error:&error];
+
+            point = CGPointMake(_defaultXMax, _defaultYMax);
+            CLLocationCoordinate2D cornerCoord = [self coordForProjectedPoint:point error:&error];
+            
+            // the initialExtent returned by the harvard server is really zoomed in
+            // so we increase the span a little
+            MKCoordinateSpan span = MKCoordinateSpanMake((cornerCoord.latitude - centerCoord.latitude) * 4,
+                                                         (cornerCoord.longitude - centerCoord.longitude) * 4);
+            
+            _defaultRegion = MKCoordinateRegionMake(centerCoord, span);
+        }
+        return _defaultRegion;
+    } else {
+        return MKCoordinateRegionMake(DEFAULT_MAP_CENTER, DEFAULT_MAP_SPAN);
+    }
 }
 
 - (CGFloat)originX {
@@ -261,7 +299,7 @@ static NSString * s_tileServerFilename = @"tileServer.plist";
 }
 
 // TODO: add NSError argument if conversion fails
-- (CGPoint)projectedPointForCoord:(CLLocationCoordinate2D)coord {
+- (CGPoint)projectedPointForCoord:(CLLocationCoordinate2D)coord error:(NSError **)error {
     //NSLog(@"converting from coord: %.4f, %.4f", coord.longitude, coord.latitude);
     if (_isWebMercator) {
         CGFloat x = coord.longitude / 360.0 * _circumferenceInProjectedUnits;
@@ -273,15 +311,19 @@ static NSString * s_tileServerFilename = @"tileServer.plist";
         double y = coord.latitude * RADIANS_PER_DEGREE;
         int status = pj_transform(geo, projection, 1, 1, &x, &y, NULL);
         if (status != 0) {
-            NSLog(@"pj_transform returned %d", status);
-            // create error object
-        }        
+            if (error != NULL) {
+                NSString *message = [NSString stringWithFormat:@"failed to convert lat/lon to projected point: pj_transform error %d", status];
+                *error = [NSError errorWithDomain:MapsErrorDomain
+                                             code:errMapProjection
+                                         userInfo:[NSDictionary dictionaryWithObjectsAndKeys:message, @"message", nil]];
+            }
+        }
         //NSLog(@"converted to point: %.1f, %.1f", x, y);
         return CGPointMake(x, y);
     }
 }
 
-- (CLLocationCoordinate2D)coordForProjectedPoint:(CGPoint)point {
+- (CLLocationCoordinate2D)coordForProjectedPoint:(CGPoint)point error:(NSError **)error {
     //NSLog(@"converting from point: %.1f, %.1f", point.x, point.y);
     if (_isWebMercator) {
         CLLocationCoordinate2D coord;
@@ -294,7 +336,12 @@ static NSString * s_tileServerFilename = @"tileServer.plist";
         double y = point.y;
         int status = pj_transform(projection, geo, 1, 1, &x, &y, NULL);
         if (status != 0) {
-            NSLog(@"pj_transform returned %d", status);
+            if (error != NULL) {
+                NSString *message = [NSString stringWithFormat:@"failed to convert projected point to lat/lon: pj_transform error %d", status];
+                *error = [NSError errorWithDomain:MapsErrorDomain
+                                             code:errMapProjection
+                                         userInfo:[NSDictionary dictionaryWithObjectsAndKeys:message, @"message", nil]];
+            }
         }
         //NSLog(@"converted to coord: %.3f, %.3f", x * DEGREES_PER_RADIAN, y * DEGREES_PER_RADIAN);
         return CLLocationCoordinate2DMake(y * DEGREES_PER_RADIAN, x * DEGREES_PER_RADIAN);
@@ -308,23 +355,6 @@ static NSString * s_tileServerFilename = @"tileServer.plist";
     [request requestObjectFromModule:@"map" command:@"proj4specs" parameters:[NSDictionary dictionaryWithObjectsAndKeys:wkid, @"wkid", nil]];
 }
 /*
-- (void)registerDelegate:(id<TileServerDelegate>)delegate {
-    if (!_delegates) {
-        _delegates = [[NSMutableSet alloc] initWithCapacity:1];
-    }
-    [_delegates addObject:delegate];
-    if ([TileServerManager isInitialized]) {
-        [delegate tileServerDidSetup];
-    }
-}
-
-- (void)unregisterDelegate:(id<TileServerDelegate>)delegate {
-    if ([_delegates containsObject:delegate]) {
-        [_delegates removeObject:delegate];
-    }
-}
-*/
-
 - (void)registerMapView:(MKMapView *)mapView {
     if (!_mapViews) {
         _mapViews = [[NSMutableSet alloc] initWithCapacity:1];
@@ -343,7 +373,7 @@ static NSString * s_tileServerFilename = @"tileServer.plist";
         [_mapViews removeObject:mapView];
     }
 }
-
+*/
 - (void)setupServerInfo:(NSMutableDictionary *)serverInfo {
     
     NSInteger rootLevel = 0;
@@ -362,6 +392,13 @@ static NSString * s_tileServerFilename = @"tileServer.plist";
     _xMin = [[extent objectForKey:@"xmin"] doubleValue];
     _yMax = [[extent objectForKey:@"ymax"] doubleValue];
     _yMin = [[extent objectForKey:@"ymin"] doubleValue];
+
+    // one-time values for calculation of defaultRegion
+    extent = [serverInfo objectForKey:@"initialExtent"];
+    _defaultXMax = [[extent objectForKey:@"xmax"] doubleValue];
+    _defaultXMin = [[extent objectForKey:@"xmin"] doubleValue];
+    _defaultYMax = [[extent objectForKey:@"ymax"] doubleValue];
+    _defaultYMin = [[extent objectForKey:@"ymin"] doubleValue];
         
     NSDictionary *tileInfo = [serverInfo objectForKey:@"tileInfo"];
     _tileHeight = [[tileInfo objectForKey:@"rows"] doubleValue];
@@ -429,16 +466,15 @@ static NSString * s_tileServerFilename = @"tileServer.plist";
             const char *projString = [projectionArgs cStringUsingEncoding:[NSString defaultCStringEncoding]];
             [self setupProjection:projString];
             //projection = pj_init_plus(projString);
-            
         } else {
             [self getProjectionArgs];
             return;
         }
     }
     
-    for (MKMapView *aMapView in _mapViews) {
-        [aMapView tileServerDidSetup];
-    }
+    //for (MKMapView *aMapView in _mapViews) {
+    //    [aMapView tileServerDidSetup];
+    //}
 }
 
 - (void)setupProjection:(const char *)projString {
@@ -447,13 +483,7 @@ static NSString * s_tileServerFilename = @"tileServer.plist";
     CLLocationCoordinate2D west = CLLocationCoordinate2DMake(0.0, -180.0);
     CLLocationCoordinate2D east = CLLocationCoordinate2DMake(0.0, 180.0);
 
-    CGPoint wp = [self projectedPointForCoord:west];
-    CGPoint ep = [self projectedPointForCoord:east];
-    //NSLog(@"equator could be %.1f units", fabs(ep.x) + fabs(wp.x));
-    
-    //_circumferenceInProjectedUnits = fabs(ep.x) + fabs(wp.x);
     _circumferenceInProjectedUnits = -2 * _originX;
-    //NSLog(@"equator is %.1f units", _circumferenceInProjectedUnits);
     
     for (MapZoomLevel *zoomLevel in _mapLevels) {
         CGFloat numTilesAcrossEquator = _circumferenceInProjectedUnits / zoomLevel.resolution;
@@ -463,6 +493,12 @@ static NSString * s_tileServerFilename = @"tileServer.plist";
         
         zoomLevel.zoomScale = numTilesAcrossEquator / MKMapSizeWorld.width;
     }
+	
+	// This lets those that have been waiting for the TileServerManager know that it's ready to use. 
+	// View controllers that want to react to this should register for this notification. 
+	// The alternative is for the view controller to pass the view to registerMapView. In that case, TileServerManager 
+	// will notify the view directly that it's ready via the tileServerDidSetup method, bypassing the view controller.
+	[[NSNotificationCenter defaultCenter] postNotificationName:kTileServerManagerProjectionIsReady object:nil];	
 }
 
 - (CGPoint)projectedPointForMapPoint:(MKMapPoint)mapPoint {
@@ -474,7 +510,9 @@ static NSString * s_tileServerFilename = @"tileServer.plist";
         return point;
     } else {
         CLLocationCoordinate2D coord = MKCoordinateForMapPoint(mapPoint);
-        return [self projectedPointForCoord:coord];
+        NSError *error = nil;
+        CGPoint point = [self projectedPointForCoord:coord error:&error];
+        return point;
     }
 }
 
@@ -486,7 +524,8 @@ static NSString * s_tileServerFilename = @"tileServer.plist";
         mapPoint.y = point.y * _pixelsPerProjectedUnit;
         return mapPoint;
     } else {
-        CLLocationCoordinate2D coord = [self coordForProjectedPoint:point];
+        NSError *error = nil;
+        CLLocationCoordinate2D coord = [self coordForProjectedPoint:point error:&error];
         return MKMapPointForCoordinate(coord);
     }
 }
@@ -522,11 +561,10 @@ static NSString * s_tileServerFilename = @"tileServer.plist";
             [self saveData];
             
             [self setupProjection:[projectionArgs cStringUsingEncoding:[NSString defaultCStringEncoding]]];
-            //projection = pj_init_plus([projectionArgs cStringUsingEncoding:[NSString defaultCStringEncoding]]);
             
-            for (MKMapView *aMapView in _mapViews) {
-                [aMapView tileServerDidSetup];
-            }
+            //for (MKMapView *aMapView in _mapViews) {
+            //    [aMapView tileServerDidSetup];
+            //}
             
         } else {
             _serverInfo = [[NSMutableDictionary alloc] initWithDictionary:result];

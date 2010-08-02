@@ -6,13 +6,8 @@
 #define DEGREES_PER_RADIAN 180.0 / M_PI
 #define RADIANS_PER_DEGREE M_PI / 180.0
 
-/*
-@protocol TileServerDelegate
-
-- (void)tileServerDidSetup;
-
-@end
-*/
+#define DEFAULT_MAP_CENTER CLLocationCoordinate2DMake(42.374475, -71.117206)
+#define DEFAULT_MAP_SPAN MKCoordinateSpanMake(2.0, 2.0)
 
 @class MapZoomLevel;
 
@@ -39,6 +34,12 @@
     CGFloat _yMax;
     CGFloat _yMin;
     
+    MKCoordinateRegion _defaultRegion;
+    CGFloat _defaultXMin;
+    CGFloat _defaultXMax;
+    CGFloat _defaultYMin;
+    CGFloat _defaultYMax;
+    
     // earth measurements (for mercator projections)
     CGFloat _pixelsPerProjectedUnit;
     CGFloat _circumferenceInProjectedUnits;
@@ -63,9 +64,9 @@
 
 + (CLLocationCoordinate2D)northWestBoundary;
 + (CLLocationCoordinate2D)southEastBoundary;
++ (MKCoordinateRegion)defaultRegion;
 
 + (CGFloat)circumferenceInProjectedUnits;
-//+ (CGFloat)meridianLengthInProjectedUnits;
 
 + (CGPoint)projectedPointForMapPoint:(MKMapPoint)mapPoint;
 + (MKMapPoint)mapPointForProjectedPoint:(CGPoint)point;
@@ -73,17 +74,8 @@
 + (CGPoint)projectedPointForCoord:(CLLocationCoordinate2D)coord;
 + (CLLocationCoordinate2D)coordForProjectedPoint:(CGPoint)point;
 
-//+ (CGPoint)pixelPointForCoord:(CLLocationCoordinate2D)coord mapLevel:(MapZoomLevel *)mapLevel;
-//+ (CLLocationCoordinate2D)coordForPixelPoint:(CGPoint)pixel mapLevel:(MapZoomLevel *)mapLevel;
-
-//+ (MapTile)mapLevel:(MapZoomLevel *)mapLevel tileForRowAtScreenPixel:(CGPoint)pixel;
-//+ (CGSize)pixelSizeForMapLevel:(MapZoomLevel *)mapLevel;
-
-//+ (void)registerDelegate:(id<TileServerDelegate>)delegate;
-//+ (void)unregisterDelegate:(id<TileServerDelegate>)delegate;
-
-+ (void)registerMapView:(MKMapView *)mapView;
-+ (void)unregisterMapView:(MKMapView *)mapView;
+//+ (void)registerMapView:(MKMapView *)mapView;
+//+ (void)unregisterMapView:(MKMapView *)mapView;
 
 + (NSString *)tileCachePath;
 

@@ -76,9 +76,11 @@
 	
 	//_mapView.shouldNotDropPins = YES;
 	[_mapView addAnnotation:self.annotation];
-	//_mapView.scrollEnabled = NO;
-	//_mapView.userInteractionEnabled = NO;
+    // TODO: use something else for this map span
+    MKCoordinateSpan span = MKCoordinateSpanMake(0.002, 0.002);
+    _mapView.region = MKCoordinateRegionMake(self.annotation.coordinate, span);
 
+    // TODO: find a way to add rounded corner to this
 	//_mapView.layer.cornerRadius = 6.0;
 	//_mapViewContainer.layer.cornerRadius = 8.0;
 	
@@ -96,26 +98,17 @@
 	// never resize the tab view container below this height. 
 	_tabViewContainerMinHeight = _tabViewContainer.frame.size.height;
 	
-	// if there was a query, populate the query label, otherwise hide it and move everything else up
-	//if (_campusMapVC.lastSearchText != nil && _campusMapVC.lastSearchText.length > 0) {
-	//	_queryLabel.text = [NSString stringWithFormat:@"\"%@\" was found in:", _campusMapVC.lastSearchText];
-	//}
-	if(self.queryText != nil && self.queryText.length > 0)
-	{
-		_queryLabel.text = [NSString stringWithFormat:@"\"%@\" was found in:", self.queryText];
-	}
-	else {
-		_queryLabel.hidden = YES;
-		_nameLabel.frame = CGRectMake(_nameLabel.frame.origin.x, _nameLabel.frame.origin.y - _queryLabel.frame.size.height,
-									  _nameLabel.frame.size.width, _nameLabel.frame.size.height);
+    // TODO: if we never display "x was found in ..." then get rid of this altogether
+    _queryLabel.hidden = YES;
+
+    _nameLabel.frame = CGRectMake(_nameLabel.frame.origin.x, _nameLabel.frame.origin.y - _queryLabel.frame.size.height,
+                                  _nameLabel.frame.size.width, _nameLabel.frame.size.height);
 		
-		_locationLabel.frame = CGRectMake(_locationLabel.frame.origin.x, _locationLabel.frame.origin.y - _queryLabel.frame.size.height,
-										  _locationLabel.frame.size.width, _locationLabel.frame.size.height);
-	}
+    _locationLabel.frame = CGRectMake(_locationLabel.frame.origin.x, _locationLabel.frame.origin.y - _queryLabel.frame.size.height,
+                                      _locationLabel.frame.size.width, _locationLabel.frame.size.height);
 	
 	// if the annotation was not fully loaded, go get the rest of the data. 
-	if (!self.annotation.dataPopulated) 
-	{
+	if (!self.annotation.dataPopulated) {
 		// show the loading result view and hide the rest
 		_nameLabel.hidden = YES;
 		_locationLabel.hidden = YES;
@@ -124,9 +117,8 @@
 		
 		[_scrollView addSubview:_loadingResultView];
 		
-		[ArcGISMapSearchResultAnnotation executeServerSearchWithQuery:self.annotation.name jsonDelegate:self object:nil];		
-	}
-	else {
+		//[ArcGISMapSearchResultAnnotation executeServerSearchWithQuery:self.annotation.name jsonDelegate:self object:nil];		
+	} else {
 		self.annotationDetails = self.annotation;
 		[self loadAnnotationContent];
 	}
@@ -150,24 +142,13 @@
 		search = [NSString stringWithFormat:@"%lf,%lf(%@)", self.annotation.coordinate.latitude, self.annotation.coordinate.longitude, desc];
 
 	} else {
-		
 		search = self.annotation.street;
-	
-		// clean up the string
-		NSRange parenRange = [search rangeOfString:@"("];
-		if (parenRange.location != NSNotFound) {
-			search = [search substringToIndex:parenRange.location];
-		}
-		NSRange accessViaRange = [search rangeOfString:@"Access Via"];
-		if (accessViaRange.location != NSNotFound) {
-			search = [search substringFromIndex:accessViaRange.length];
-		}
-		
-		if (self.annotation.city == nil) {
+        
+        NSString *city = [self.annotation.attributes objectForKey:@"city"];
+		if (city == nil) {
 			search = [search stringByAppendingString:@", Cambridge, MA"];
-		}
-		else {
-			search = [search stringByAppendingFormat:@", %@", self.annotation.city];
+		} else {
+			search = [search stringByAppendingFormat:@", %@", city];
 		}
 	}
 	
@@ -196,15 +177,17 @@
 	_nameLabel.hidden = NO;
 	_locationLabel.hidden = NO;
 	
-    /*
-	if (self.annotationDetails.contents.count > 0) {
+    
+	//if (self.annotationDetails.contents.count > 0) {
 		
 		CGFloat padding = 10.0;
 		CGFloat currentHeight = padding;
 		CGFloat bulletWidth = 24.0;
 		UIFont *whatsHereFont = [UIFont systemFontOfSize:STANDARD_CONTENT_FONT_SIZE];
-		for (NSString* content in self.annotationDetails.contents) {
-			
+		//for (NSString* content in self.annotationDetails.contents) {
+    for (NSString *field in [self.annotation.attributes allKeys]) {
+
+        NSString *content = [NSString stringWithFormat:@"%@: %@", field, [self.annotation.attributes objectForKey:field]];
 			CGSize textSize = [content sizeWithFont:whatsHereFont 
 								  constrainedToSize:CGSizeMake(_whatsHereView.frame.size.width - bulletWidth - 2 * padding, 400.0) 
 									  lineBreakMode:UILineBreakModeWordWrap];
@@ -240,30 +223,29 @@
 			CGSize contentSize = CGSizeMake(_scrollView.frame.size.width, _tabViewContainer.frame.size.height + _tabViewContainer.frame.origin.y);
 			[_scrollView setContentSize:contentSize];
 		}
-	} else {*/
-		UILabel* noWhatsHereLabel = [[[UILabel alloc] initWithFrame:CGRectMake(13, 6, _whatsHereView.frame.size.width, 20)] autorelease];
-		noWhatsHereLabel.text = NSLocalizedString(@"No Information Available", nil);
-		[_whatsHereView addSubview:noWhatsHereLabel];
-		
+	//} else {
+	//	UILabel* noWhatsHereLabel = [[[UILabel alloc] initWithFrame:CGRectMake(13, 6, _whatsHereView.frame.size.width, 20)] autorelease];
+	//	noWhatsHereLabel.text = NSLocalizedString(@"No Information Available", nil);
+	//	[_whatsHereView addSubview:noWhatsHereLabel];
 	//}
 	
 	[_tabViewControl addTab:@"What's Here"];
 	[_tabViews addObject:_whatsHereView];
-
-	/*
-	if (self.annotationDetails.bldgimg) {
-		// go get the image.
+    
+    NSString *photofile = nil;
+    if (photofile = [self.annotation.attributes objectForKey:@"PHOTO_FILE"]) {
 		self.imageConnectionWrapper = [[ConnectionWrapper new] autorelease];
 		self.imageConnectionWrapper.delegate = self;
-		[imageConnectionWrapper requestDataFromURL:[NSURL URLWithString:self.annotationDetails.bldgimg] allowCachedResponse:YES];
+        NSString *urlString = [[NSString stringWithFormat:@"http://map.harvard.edu/mapserver/images/bldg_photos/%@", photofile]
+                               stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+		[imageConnectionWrapper requestDataFromURL:[NSURL URLWithString:urlString] allowCachedResponse:YES];
 		
-		NSString* decriptionText = self.annotationDetails.viewAngle ? [NSString stringWithFormat:@"View from: %@", self.annotationDetails.viewAngle] : nil ;
-		_buildingImageDescriptionLabel.text = decriptionText;
+		//NSString* decriptionText = self.annotationDetails.viewAngle ? [NSString stringWithFormat:@"View from: %@", self.annotationDetails.viewAngle] : nil ;
+		//_buildingImageDescriptionLabel.text = decriptionText;
 		
 		[_tabViewControl addTab:@"Photo"];	
 		[_tabViews addObject:_buildingView];
-	}
-	*/
+    }
 
 	// if no tabs have been added, remove the tab view control and its container view. 
 	if (_tabViewControl.tabs.count <= 0) {
@@ -401,7 +383,7 @@
 		if (self.annotation.name != nil) {
 			subTitle = [NSString stringWithFormat:@"%@", self.annotation.name];
 		}
-		[bookmarkManager addBookmark:self.annotation.uniqueID title:self.annotation.name subtitle:subTitle data:self.annotation.info];
+		[bookmarkManager addBookmark:self.annotation.uniqueID title:self.annotation.name subtitle:subTitle data:self.annotation.attributes];
 		
 		[_bookmarkButton setImage:[UIImage imageNamed:@"global/bookmark_on.png"] forState:UIControlStateNormal];
 		[_bookmarkButton setImage:[UIImage imageNamed:@"global/bookmark_on_pressed.png"] forState:UIControlStateHighlighted];
@@ -439,8 +421,10 @@
         NSArray *resultList = [results objectForKey:@"results"];
 
     	if ([resultList count] > 0) {
-            ArcGISMapSearchResultAnnotation *annotation = [[[ArcGISMapSearchResultAnnotation alloc] initWithInfo:[resultList objectAtIndex:0]] autorelease];
-            self.annotationDetails = annotation;
+            NSDictionary *firstResult = [resultList objectAtIndex:0];
+            [self.annotation updateWithInfo:firstResult];
+            //ArcGISMapSearchResultAnnotation *annotation = [[[ArcGISMapSearchResultAnnotation alloc] initWithInfo:[resultList objectAtIndex:0]] autorelease];
+            //self.annotationDetails = annotation;
             
             // load the new contents. 
             [self loadAnnotationContent];

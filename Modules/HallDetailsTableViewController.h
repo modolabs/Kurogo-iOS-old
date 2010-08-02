@@ -12,16 +12,19 @@
 
 @class DiningHallStatus;
 
-@interface HallDetailsTableViewController : UITableViewController {
+@interface HallDetailsTableViewController : UIViewController<UITableViewDelegate, UITableViewDataSource> {
 
 	NSDictionary *itemDetails;
 	DiningHallStatus *hallStatus;
+	
+	UITableView *detailsTableView;
+	NSInteger currentStat;
+
 }
 
 @property (nonatomic, retain) NSDictionary *itemDetails;
 
 -(void)setDetails:(NSDictionary *)details;
 -(void)setStatus:(DiningHallStatus *)statusDetails;
-
 
 @end

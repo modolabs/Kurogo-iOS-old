@@ -114,23 +114,24 @@
         if (detailFont == nil) detailFont = [UIFont fontWithName:STANDARD_FONT size:CELL_DETAIL_FONT_SIZE];
         detailTextHeight = [MultiLineTableViewCell heightForLabelWithText:detailText font:detailFont width:detailTextWidth maxLines:maxDetailLines];
     }
-
-    NSLog(@"text width: %.1f, height: %.1f; detail width: %.1f, height: %.1f", textWidth, textHeight, detailTextWidth, detailTextHeight);
     
+    CGFloat result;
     if (style == UITableViewCellStyleValue1 || style == UITableViewCellStyleValue2) {
-        return (textHeight > detailTextHeight ? textHeight : detailTextHeight) + 20.0;
+        result = (textHeight > detailTextHeight ? textHeight : detailTextHeight) + 20.0;
     } else {
-        return textHeight + detailTextHeight + 20.0;
+        result = textHeight + detailTextHeight + 20.0;
     }
+    
+    return result;
 }
 
-- (void)layoutSubviews {    
+- (void)layoutSubviews {
 	[super layoutSubviews]; // this resizes labels to default size
     
     CGFloat heightAdded;
     UITableView *tableView = (UITableView *)self.superview;
-    //NSLog(@"%@", [self.superview description]);
     BOOL cellImage = (self.imageView.image != nil);
+    CGRect frame;
     
     UITableViewCellAccessoryType accessoryType = self.accessoryType;
     if (accessoryType == UITableViewCellAccessoryNone && self.accessoryView != nil) {
@@ -140,7 +141,7 @@
     if (textLabelNumberOfLines != 1) {
         self.textLabel.numberOfLines = textLabelNumberOfLines;
         self.textLabel.lineBreakMode = textLabelNumberOfLines == 0 ? UILineBreakModeWordWrap : UILineBreakModeTailTruncation;
-        CGRect frame = self.textLabel.frame;
+        frame = self.textLabel.frame;
         if (frame.origin.y == 0.0) {
             // TODO: find out why this happens with rows in event detail screen
             frame.origin.y = 10.0;
@@ -158,7 +159,7 @@
     if (self.detailTextLabel.text && detailTextLabelNumberOfLines != 1) {
         self.detailTextLabel.numberOfLines = detailTextLabelNumberOfLines;
         self.detailTextLabel.lineBreakMode = detailTextLabelNumberOfLines == 0 ? UILineBreakModeWordWrap : UILineBreakModeTailTruncation;
-        CGRect frame = self.detailTextLabel.frame;
+        frame = self.detailTextLabel.frame;
         if (_style == UITableViewCellStyleSubtitle)
             frame.origin.y += heightAdded;
         frame.size.width = [MultiLineTableViewCell widthForTextLabel:NO cellStyle:_style tableView:tableView accessoryType:accessoryType cellImage:cellImage];
@@ -167,15 +168,36 @@
                                                                      width:frame.size.width
                                                                   maxLines:self.detailTextLabel.numberOfLines];
         self.detailTextLabel.frame = frame;
+        
+        
+        // for cells with detail text only...
+        // if the OS is more aggressive with accessory sizes,
+        // it will make the text narrower and taller
+        // than we make it, and recenter the labels within the cell.
+        // so we re-recenter the frame based on its actual size
+        CGFloat innerHeight = self.detailTextLabel.frame.origin.y + self.detailTextLabel.frame.size.height - self.textLabel.frame.origin.y;
+        frame = self.textLabel.frame;
+        frame.origin.y = (self.frame.size.height - innerHeight) / 2;
+        heightAdded = frame.origin.y - self.textLabel.frame.origin.y;
+        self.textLabel.frame = frame;
+        
+        frame = self.detailTextLabel.frame;
+        frame.origin.y += heightAdded;
+        self.detailTextLabel.frame = frame;
     }
     
-    NSLog(@"laying out text origin: %.1f width: %.1f, height: %.1f; detail width: %.1f, height: %.1f",
-          self.textLabel.frame.origin.y,
-          self.textLabel.frame.size.width,
-          self.textLabel.frame.size.height,
-          self.detailTextLabel.frame.size.width,
-          self.detailTextLabel.frame.size.height);
-
+    /*
+    if (self.textLabel.frame.size.height > 0) {
+        NSLog(@"margin: %.1f, height: %.1f, %.1f x %.1f; detail: %.1f x %.1f",
+              self.textLabel.frame.origin.y,
+              self.frame.size.height,
+              self.textLabel.frame.size.width,
+              self.textLabel.frame.size.height,
+              self.detailTextLabel.frame.size.width,
+              self.detailTextLabel.frame.size.height);
+    }
+    */
+    
 	// make sure any extra views are drawn on top of standard testLabel and detailTextLabel
 	NSMutableArray *extraSubviews = [NSMutableArray arrayWithCapacity:[self.contentView.subviews count]];
 	for (UIView *aView in self.contentView.subviews) {

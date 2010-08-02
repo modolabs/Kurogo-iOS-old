@@ -30,6 +30,12 @@
 	NSString *nextMeal;
 	NSString *currentMealTime;
 	NSString *nextMealTime;
+	
+	NSInteger nextMealStatus;
+	
+	NSInteger currentStat;
+	
+	NSString *hallName;
 
 }
 
@@ -48,8 +54,14 @@
 @property (nonatomic, retain) NSString *currentMealTime;
 @property NSInteger nextMealRestriction;
 @property (nonatomic, retain) NSString *nextMealTime;
+@property NSInteger nextMealStatus;
+
+@property (nonatomic, retain) NSString *hallName;
+
+@property NSInteger currentStat;
 
 -(int)getStatusOfMeal:(NSString *)timeString usingDetails:(NSDictionary *)details;
 -(int)getStatus:(NSString *)timeString mealTime:(int)mealIndex;
 -(int)gettime:(NSString *)component;
+-(void)setStat:(int)status;
 @end

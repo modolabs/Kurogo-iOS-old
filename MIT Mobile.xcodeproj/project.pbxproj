@@ -115,7 +115,6 @@
 		4463CC9810D6F4A50048CA83 /* CMModule.m in Sources */ = {isa = PBXBuildFile; fileRef = 4463CC8810D6F4A50048CA83 /* CMModule.m */; };
 		4463CC9B10D6F4A50048CA83 /* MapSearchResultAnnotation.m in Sources */ = {isa = PBXBuildFile; fileRef = 4463CC8E10D6F4A50048CA83 /* MapSearchResultAnnotation.m */; };
 		4463CCB210D6F5750048CA83 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4463CCB110D6F5750048CA83 /* CoreLocation.framework */; };
-		4463CE8F10D8052A0048CA83 /* MITMapSearchResultCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 4463CE8E10D8052A0048CA83 /* MITMapSearchResultCell.m */; };
 		4463D09410D92CB00048CA83 /* MITMapDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4463D09210D92CB00048CA83 /* MITMapDetailViewController.m */; };
 		4463D09510D92CB00048CA83 /* MITMapDetailViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4463D09310D92CB00048CA83 /* MITMapDetailViewController.xib */; };
 		4463D0A010D92F6B0048CA83 /* TabViewControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 4463D09F10D92F6B0048CA83 /* TabViewControl.m */; };
@@ -138,6 +137,7 @@
 		44C1A4C511A412E2000FD653 /* MapSearch.m in Sources */ = {isa = PBXBuildFile; fileRef = 44C1A4C311A412E2000FD653 /* MapSearch.m */; };
 		A64C313D11FDFAB8006FE056 /* AddressFormatter.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = A64C313B11FDFAB8006FE056 /* AddressFormatter.h */; settings = {JAVA_ARCHIVE_SUBDIR = Common; }; };
 		A64C313E11FDFAB8006FE056 /* AddressFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = A64C313C11FDFAB8006FE056 /* AddressFormatter.m */; };
+		A64C36CB1207066D006FE056 /* peopleSearchStaticPhoneRowsArray.plist in Resources */ = {isa = PBXBuildFile; fileRef = A64C36CA1207066D006FE056 /* peopleSearchStaticPhoneRowsArray.plist */; };
 		A6787A1611F605070034D559 /* NSArray+Convenience.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = A6787A1411F605070034D559 /* NSArray+Convenience.h */; settings = {JAVA_ARCHIVE_SUBDIR = Common; }; };
 		A6787A1711F605070034D559 /* NSArray+Convenience.m in Sources */ = {isa = PBXBuildFile; fileRef = A6787A1511F605070034D559 /* NSArray+Convenience.m */; };
 		A69A28A811F0258800B1D365 /* PersonDetails+Methods.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = A69A28A611F0258800B1D365 /* PersonDetails+Methods.h */; settings = {JAVA_ARCHIVE_SUBDIR = Modules/People/Model; }; };
@@ -175,6 +175,14 @@
 		C776675A11F733E3005496DD /* DatePickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C776675811F733E3005496DD /* DatePickerViewController.m */; };
 		C7824BDB11FA2F8B003B3E3E /* DiningHallStatus.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = C7824BD911FA2F8B003B3E3E /* DiningHallStatus.h */; settings = {JAVA_ARCHIVE_SUBDIR = Modules; }; };
 		C7824BDC11FA2F8B003B3E3E /* DiningHallStatus.m in Sources */ = {isa = PBXBuildFile; fileRef = C7824BDA11FA2F8B003B3E3E /* DiningHallStatus.m */; };
+		C7AA23911200CB3E0023F880 /* dining-status-closed-w-restrictions.png in Resources */ = {isa = PBXBuildFile; fileRef = C7AA23891200CB3E0023F880 /* dining-status-closed-w-restrictions.png */; };
+		C7AA23921200CB3E0023F880 /* dining-status-closed-w-restrictions@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C7AA238A1200CB3E0023F880 /* dining-status-closed-w-restrictions@2x.png */; };
+		C7AA23931200CB3E0023F880 /* dining-status-closed.png in Resources */ = {isa = PBXBuildFile; fileRef = C7AA238B1200CB3E0023F880 /* dining-status-closed.png */; };
+		C7AA23941200CB3E0023F880 /* dining-status-closed@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C7AA238C1200CB3E0023F880 /* dining-status-closed@2x.png */; };
+		C7AA23951200CB3E0023F880 /* dining-status-open-w-restrictions.png in Resources */ = {isa = PBXBuildFile; fileRef = C7AA238D1200CB3E0023F880 /* dining-status-open-w-restrictions.png */; };
+		C7AA23961200CB3E0023F880 /* dining-status-open-w-restrictions@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C7AA238E1200CB3E0023F880 /* dining-status-open-w-restrictions@2x.png */; };
+		C7AA23971200CB3E0023F880 /* dining-status-open.png in Resources */ = {isa = PBXBuildFile; fileRef = C7AA238F1200CB3E0023F880 /* dining-status-open.png */; };
+		C7AA23981200CB3E0023F880 /* dining-status-open@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C7AA23901200CB3E0023F880 /* dining-status-open@2x.png */; };
 		C7B897F111F535C8002B3619 /* HoursTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C7B897EF11F535C8002B3619 /* HoursTableViewController.m */; };
 		C7B897F211F535C8002B3619 /* HoursTableViewController.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = C7B897F011F535C8002B3619 /* HoursTableViewController.h */; settings = {JAVA_ARCHIVE_SUBDIR = Modules/Dining; }; };
 		DE0A62AC10CDAEA90058B2C2 /* MITBuildInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = DE0A62AB10CDAEA90058B2C2 /* MITBuildInfo.m */; };
@@ -406,8 +414,6 @@
 		EB6D111611EE143900B65CE3 /* TileServerManager.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB6D111411EE143900B65CE3 /* TileServerManager.h */; settings = {JAVA_ARCHIVE_SUBDIR = "Modules/Campus Map"; }; };
 		EB6D111711EE143900B65CE3 /* TileServerManager.m in Sources */ = {isa = PBXBuildFile; fileRef = EB6D111511EE143900B65CE3 /* TileServerManager.m */; };
 		EB6D114211EE191000B65CE3 /* PJ_geos.c in Sources */ = {isa = PBXBuildFile; fileRef = EB6D114111EE191000B65CE3 /* PJ_geos.c */; };
-		EB6D133311EE4A9C00B65CE3 /* MKMapView+ArcGISAdditions.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB6D133111EE4A9C00B65CE3 /* MKMapView+ArcGISAdditions.h */; settings = {JAVA_ARCHIVE_SUBDIR = "Modules/Campus Map"; }; };
-		EB6D133411EE4A9C00B65CE3 /* MKMapView+ArcGISAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = EB6D133211EE4A9C00B65CE3 /* MKMapView+ArcGISAdditions.m */; };
 		EB6D141511EE979500B65CE3 /* NewsCategory.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB6D141311EE979500B65CE3 /* NewsCategory.h */; settings = {JAVA_ARCHIVE_SUBDIR = Modules/News; }; };
 		EB6D141611EE979500B65CE3 /* NewsCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = EB6D141411EE979500B65CE3 /* NewsCategory.m */; };
 		EB6DFE3711DE28F800B65CE3 /* ModoNavigationController.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB6DFE3511DE28F800B65CE3 /* ModoNavigationController.h */; settings = {JAVA_ARCHIVE_SUBDIR = Common; }; };
@@ -614,8 +620,6 @@
 		4463CC8D10D6F4A50048CA83 /* MapSearchResultAnnotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MapSearchResultAnnotation.h; sourceTree = "<group>"; };
 		4463CC8E10D6F4A50048CA83 /* MapSearchResultAnnotation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MapSearchResultAnnotation.m; sourceTree = "<group>"; };
 		4463CCB110D6F5750048CA83 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
-		4463CE8D10D8052A0048CA83 /* MITMapSearchResultCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MITMapSearchResultCell.h; sourceTree = "<group>"; };
-		4463CE8E10D8052A0048CA83 /* MITMapSearchResultCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MITMapSearchResultCell.m; sourceTree = "<group>"; };
 		4463D09110D92CB00048CA83 /* MITMapDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MITMapDetailViewController.h; sourceTree = "<group>"; };
 		4463D09210D92CB00048CA83 /* MITMapDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MITMapDetailViewController.m; sourceTree = "<group>"; };
 		4463D09310D92CB00048CA83 /* MITMapDetailViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MITMapDetailViewController.xib; sourceTree = "<group>"; };
@@ -643,6 +647,7 @@
 		8D1107310486CEB800E47090 /* MIT_Mobile-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "MIT_Mobile-Info.plist"; plistStructureDefinitionIdentifier = "com.apple.xcode.plist.structure-definition.iphone.info-plist"; sourceTree = "<group>"; };
 		A64C313B11FDFAB8006FE056 /* AddressFormatter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddressFormatter.h; sourceTree = "<group>"; };
 		A64C313C11FDFAB8006FE056 /* AddressFormatter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddressFormatter.m; sourceTree = "<group>"; };
+		A64C36CA1207066D006FE056 /* peopleSearchStaticPhoneRowsArray.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = peopleSearchStaticPhoneRowsArray.plist; path = Resources/peopleSearchStaticPhoneRowsArray.plist; sourceTree = "<group>"; };
 		A6787A1411F605070034D559 /* NSArray+Convenience.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSArray+Convenience.h"; sourceTree = "<group>"; };
 		A6787A1511F605070034D559 /* NSArray+Convenience.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSArray+Convenience.m"; sourceTree = "<group>"; };
 		A69A28A611F0258800B1D365 /* PersonDetails+Methods.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "PersonDetails+Methods.h"; sourceTree = "<group>"; };
@@ -688,6 +693,14 @@
 		C776675811F733E3005496DD /* DatePickerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DatePickerViewController.m; sourceTree = "<group>"; };
 		C7824BD911FA2F8B003B3E3E /* DiningHallStatus.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DiningHallStatus.h; sourceTree = "<group>"; };
 		C7824BDA11FA2F8B003B3E3E /* DiningHallStatus.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DiningHallStatus.m; sourceTree = "<group>"; };
+		C7AA23891200CB3E0023F880 /* dining-status-closed-w-restrictions.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "dining-status-closed-w-restrictions.png"; sourceTree = "<group>"; };
+		C7AA238A1200CB3E0023F880 /* dining-status-closed-w-restrictions@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "dining-status-closed-w-restrictions@2x.png"; sourceTree = "<group>"; };
+		C7AA238B1200CB3E0023F880 /* dining-status-closed.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "dining-status-closed.png"; sourceTree = "<group>"; };
+		C7AA238C1200CB3E0023F880 /* dining-status-closed@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "dining-status-closed@2x.png"; sourceTree = "<group>"; };
+		C7AA238D1200CB3E0023F880 /* dining-status-open-w-restrictions.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "dining-status-open-w-restrictions.png"; sourceTree = "<group>"; };
+		C7AA238E1200CB3E0023F880 /* dining-status-open-w-restrictions@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "dining-status-open-w-restrictions@2x.png"; sourceTree = "<group>"; };
+		C7AA238F1200CB3E0023F880 /* dining-status-open.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "dining-status-open.png"; sourceTree = "<group>"; };
+		C7AA23901200CB3E0023F880 /* dining-status-open@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "dining-status-open@2x.png"; sourceTree = "<group>"; };
 		C7B897EF11F535C8002B3619 /* HoursTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = HoursTableViewController.m; path = Dining/HoursTableViewController.m; sourceTree = "<group>"; };
 		C7B897F011F535C8002B3619 /* HoursTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = HoursTableViewController.h; path = Dining/HoursTableViewController.h; sourceTree = "<group>"; };
 		DE0A62AA10CDAEA90058B2C2 /* MITBuildInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MITBuildInfo.h; sourceTree = "<group>"; };
@@ -962,8 +975,6 @@
 		EB6D111411EE143900B65CE3 /* TileServerManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TileServerManager.h; sourceTree = "<group>"; };
 		EB6D111511EE143900B65CE3 /* TileServerManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TileServerManager.m; sourceTree = "<group>"; };
 		EB6D114111EE191000B65CE3 /* PJ_geos.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = PJ_geos.c; sourceTree = "<group>"; };
-		EB6D133111EE4A9C00B65CE3 /* MKMapView+ArcGISAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "MKMapView+ArcGISAdditions.h"; sourceTree = "<group>"; };
-		EB6D133211EE4A9C00B65CE3 /* MKMapView+ArcGISAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "MKMapView+ArcGISAdditions.m"; sourceTree = "<group>"; };
 		EB6D141311EE979500B65CE3 /* NewsCategory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NewsCategory.h; sourceTree = "<group>"; };
 		EB6D141411EE979500B65CE3 /* NewsCategory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NewsCategory.m; sourceTree = "<group>"; };
 		EB6DFE3511DE28F800B65CE3 /* ModoNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ModoNavigationController.h; sourceTree = "<group>"; };
@@ -1152,6 +1163,15 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				A64C36CA1207066D006FE056 /* peopleSearchStaticPhoneRowsArray.plist */,
+				C7AA23891200CB3E0023F880 /* dining-status-closed-w-restrictions.png */,
+				C7AA238A1200CB3E0023F880 /* dining-status-closed-w-restrictions@2x.png */,
+				C7AA238B1200CB3E0023F880 /* dining-status-closed.png */,
+				C7AA238C1200CB3E0023F880 /* dining-status-closed@2x.png */,
+				C7AA238D1200CB3E0023F880 /* dining-status-open-w-restrictions.png */,
+				C7AA238E1200CB3E0023F880 /* dining-status-open-w-restrictions@2x.png */,
+				C7AA238F1200CB3E0023F880 /* dining-status-open.png */,
+				C7AA23901200CB3E0023F880 /* dining-status-open@2x.png */,
 				EB49AD7B11F4BFFF00854791 /* news */,
 				EB49AD8211F4BFFF00854791 /* people */,
 				EB49AD8611F4BFFF00854791 /* shuttles */,
@@ -1479,8 +1499,6 @@
 				4463CC8810D6F4A50048CA83 /* CMModule.m */,
 				4463CC8D10D6F4A50048CA83 /* MapSearchResultAnnotation.h */,
 				4463CC8E10D6F4A50048CA83 /* MapSearchResultAnnotation.m */,
-				4463CE8D10D8052A0048CA83 /* MITMapSearchResultCell.h */,
-				4463CE8E10D8052A0048CA83 /* MITMapSearchResultCell.m */,
 				4463D09110D92CB00048CA83 /* MITMapDetailViewController.h */,
 				4463D09210D92CB00048CA83 /* MITMapDetailViewController.m */,
 				4463D09310D92CB00048CA83 /* MITMapDetailViewController.xib */,
@@ -1494,8 +1512,6 @@
 				442C11DD10EC112700CB44EC /* TouchableTableView.h */,
 				442C11DE10EC112700CB44EC /* TouchableTableView.m */,
 				442C195410F3B21400CB44EC /* MITMapRoute.h */,
-				EB6D133111EE4A9C00B65CE3 /* MKMapView+ArcGISAdditions.h */,
-				EB6D133211EE4A9C00B65CE3 /* MKMapView+ArcGISAdditions.m */,
 				EB7BA33C11F7677F00B3DDA6 /* PolygonOverlay.h */,
 				EB7BA33D11F7677F00B3DDA6 /* PolygonOverlay.m */,
 			);
@@ -2030,7 +2046,6 @@
 				EB6D10DC11EE13F100B65CE3 /* MapTileOverlayView.h in JavaArchive */,
 				EB6D10DE11EE13F100B65CE3 /* MapZoomLevel.h in JavaArchive */,
 				EB6D111611EE143900B65CE3 /* TileServerManager.h in JavaArchive */,
-				EB6D133311EE4A9C00B65CE3 /* MKMapView+ArcGISAdditions.h in JavaArchive */,
 				EB6D141511EE979500B65CE3 /* NewsCategory.h in JavaArchive */,
 				A69A28A811F0258800B1D365 /* PersonDetails+Methods.h in JavaArchive */,
 				A69A2BD711F4C36400B1D365 /* PersonDetail.h in JavaArchive */,
@@ -2126,6 +2141,15 @@
 				EB49AD9811F4BFFF00854791 /* news in Resources */,
 				EB49AD9911F4BFFF00854791 /* people in Resources */,
 				EB49AD9A11F4BFFF00854791 /* shuttles in Resources */,
+				C7AA23911200CB3E0023F880 /* dining-status-closed-w-restrictions.png in Resources */,
+				C7AA23921200CB3E0023F880 /* dining-status-closed-w-restrictions@2x.png in Resources */,
+				C7AA23931200CB3E0023F880 /* dining-status-closed.png in Resources */,
+				C7AA23941200CB3E0023F880 /* dining-status-closed@2x.png in Resources */,
+				C7AA23951200CB3E0023F880 /* dining-status-open-w-restrictions.png in Resources */,
+				C7AA23961200CB3E0023F880 /* dining-status-open-w-restrictions@2x.png in Resources */,
+				C7AA23971200CB3E0023F880 /* dining-status-open.png in Resources */,
+				C7AA23981200CB3E0023F880 /* dining-status-open@2x.png in Resources */,
+				A64C36CB1207066D006FE056 /* peopleSearchStaticPhoneRowsArray.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2205,7 +2229,6 @@
 				DE728E7B10D6FF4700BFED37 /* StoryDetailViewController.m in Sources */,
 				DE728E7C10D6FF4700BFED37 /* StoryListViewController.m in Sources */,
 				DE728E7E10D6FF4700BFED37 /* StoryXMLParser.m in Sources */,
-				4463CE8F10D8052A0048CA83 /* MITMapSearchResultCell.m in Sources */,
 				2980C03210D9728800F19FF0 /* NewsDataSource.m in Sources */,
 				2970D4ED10DA85EC00F770DF /* InfoDataSource.m in Sources */,
 				2970D4F210DA871F00F770DF /* StaffDataSource.m in Sources */,
@@ -2458,7 +2481,6 @@
 				EB6D10DF11EE13F100B65CE3 /* MapZoomLevel.m in Sources */,
 				EB6D111711EE143900B65CE3 /* TileServerManager.m in Sources */,
 				EB6D114211EE191000B65CE3 /* PJ_geos.c in Sources */,
-				EB6D133411EE4A9C00B65CE3 /* MKMapView+ArcGISAdditions.m in Sources */,
 				EB6D141611EE979500B65CE3 /* NewsCategory.m in Sources */,
 				A69A28A911F0258800B1D365 /* PersonDetails+Methods.m in Sources */,
 				A69A2BD811F4C36400B1D365 /* PersonDetail.m in Sources */,

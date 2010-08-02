@@ -251,6 +251,7 @@ static NSInteger numTries = 0;
             UIImage *bookmarkImage = [UIImage imageNamed:MITImageNameBookmark];
             [bookmarkButton setImage:bookmarkImage forState:UIControlStateNormal];
             bookmarkButton.adjustsImageWhenHighlighted = NO;
+            bookmarkButton.tag = BOOKMARK_BUTTON_TAG;
             [navScrollView addButton:bookmarkButton shouldHighlight:YES];
         }
 	}
@@ -814,7 +815,11 @@ static NSInteger numTries = 0;
 
     switch (indexPath.section) {
         case 0: {
-            if (indexPath.row == 0 && self.searchResults == nil && self.featuredStory != nil) {
+            // only show A1 image in first row if
+            if (self.searchResults == nil     // this is not a search
+                && self.featuredStory != nil  // we have a featured story
+                && !showingBookmarks          // we are not looking at bookmarks
+                && indexPath.row == 0) {
                 rowHeight = FEATURE_IMAGE_HEIGHT;
             } else if (indexPath.row < self.stories.count) {
                 rowHeight = THUMBNAIL_WIDTH;
@@ -835,7 +840,11 @@ static NSInteger numTries = 0;
     
     switch (indexPath.section) {
         case 0: {
-            if (indexPath.row == 0 && self.searchResults == nil && self.featuredStory != nil) {
+            if (self.searchResults == nil     // this is not a search
+                && self.featuredStory != nil  // we have a featured story
+                && !showingBookmarks          // we are not looking at bookmarks
+                && indexPath.row == 0)
+            {
                 
                 NewsStory *story = self.featuredStory;
                 

@@ -141,28 +141,19 @@ JSONAPIRequest *mitapi;
 	NSCalendar *gregorian = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
 	NSDateComponents *offsetComponents = [[NSDateComponents alloc] init];
     [offsetComponents setDay:-1];
-    NSDate *nextDate = [gregorian dateByAddingComponents:offsetComponents toDate:self.todayDate options:0];
+    NSDate *next = [gregorian dateByAddingComponents:offsetComponents toDate:self.todayDate options:0];
     [offsetComponents release];
 	[gregorian release];
 	
-	NSDate *maxDate = [NSDate dateWithTimeIntervalSinceNow:-7*24*60*60];
-	
-	if ([maxDate compare:nextDate] == NSOrderedAscending)
-		self.todayDate = nextDate;	
-	
-	else {
-		
-		UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Cannot Select Date"
-														message:@"Can Only Retrieve Menus Up To One Week Back"
-													   delegate:nil
-											  cancelButtonTitle:@"OK"
-											  otherButtonTitles:nil];
-		
-		[alert show];
-		[alert release];
-	}
-	
+	NSDate *minDate = [NSDate dateWithTimeIntervalSinceNow:-7*24*60*60];
+	NSDate *maxDate = [NSDate dateWithTimeIntervalSinceNow:7*24*60*60];
+	self.todayDate = next;
 
+	if ([next timeIntervalSinceDate:minDate] <= (36*60*60))
+		prevDate.enabled = NO;
+	
+	if ([maxDate timeIntervalSinceDate:next] >= (24*60*60))
+		nextDate.enabled = YES;
 
 	[self viewDidLoad];
 
@@ -174,28 +165,20 @@ JSONAPIRequest *mitapi;
 	NSCalendar *gregorian = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
 	NSDateComponents *offsetComponents = [[NSDateComponents alloc] init];
     [offsetComponents setDay:1];
-    NSDate *nextDate = [gregorian dateByAddingComponents:offsetComponents toDate:self.todayDate options:0];
+    NSDate *next = [gregorian dateByAddingComponents:offsetComponents toDate:self.todayDate options:0];
     [offsetComponents release];
 	[gregorian release];
 		
 	NSDate *maxDate = [NSDate dateWithTimeIntervalSinceNow:7*24*60*60];
+	NSDate *minDate = [NSDate dateWithTimeIntervalSinceNow:-7*24*60*60];
+	self.todayDate = next;
 	
-	if ([maxDate compare:nextDate] == NSOrderedDescending)
-		self.todayDate = nextDate;	
+	if ([maxDate timeIntervalSinceDate:next] <= (36*60*60))
+		nextDate.enabled = NO;
 	
-	else {
-		
-		UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Cannot Select Date"
-														message:@"Can Only Retrieve Menus Up To One Week Ahead"
-													   delegate:nil
-											  cancelButtonTitle:@"OK"
-											  otherButtonTitles:nil];
-		
-		[alert show];
-		[alert release];
-	}
-
-
+	if ([next timeIntervalSinceDate:minDate] >= (24*60*60))
+		prevDate.enabled = YES;
+	
 	
 	[self viewDidLoad];
 }
@@ -253,19 +236,18 @@ JSONAPIRequest *mitapi;
 		[_tabViews insertObject:_loadingResultView atIndex:kDinnerTab];
 		
 		[_tabViewControl addTab:@"Hours"];
+		[_hoursView addSubview:glossaryForHoursView];
 		tableControl = [[HoursTableViewController alloc] init];
 		hoursTableView.delegate = (HoursTableViewController *)tableControl;
 		hoursTableView.dataSource = (HoursTableViewController *)tableControl;
 		
 		tableControl.tableView = hoursTableView;
 		
-		[tableControl.tableView applyStandardColors];
-		
-		
 		tableControl.parentViewController = self;
-		
-		[_hoursView addSubview:hoursTableView];
+
 		[_tabViews insertObject:_hoursView atIndex:kHoursTab];
+		
+		_hoursView.backgroundColor = [UIColor whiteColor];
 			
 		_tabViewControl.hidden = NO;
 		_tabViewContainer.hidden = NO;
@@ -273,8 +255,6 @@ JSONAPIRequest *mitapi;
 		[_tabViewControl setNeedsDisplay];
 		[_tabViewControl setDelegate:self];
 
-
-	}
 
 
 	// Open the Default Tab depending on the time of the day
@@ -312,24 +292,36 @@ JSONAPIRequest *mitapi;
 	
 	}
 	
-	//label.backgroundColor = [UIColor colorWithPatternImage:[[UIImage alloc] initWithContentsOfFile:@"global/scrolltabs-background-opaque.png"]];
 	
 	// set Display Tab
 	[self tabControl:_tabViewControl changedToIndex:tabToOpen tabText:nil];
 	[_tabViewControl setNeedsDisplay];
+	}
+	
+	else {
+		int tab = [_tabViewControl selectedTab];
+		
+		if (tab == kBreakfastTab)
+			[self requestBreakfastData];
+		
+		else if (tab == kLunchTab)
+			[self requestLunchData];
+		
+		else if (tab == kDinnerTab)
+			[self requestDinnerData];
+	}
+
 	
 	self.view.backgroundColor = [UIColor clearColor];
-	//nextDateButton.backgroundColor = [UIColor clearColor];
-	//previousDateButton.backgroundColor = [UIColor clearColor];
+	_tabViewContainer.backgroundColor = [UIColor whiteColor];
+
 	//breakfastViewLink.backgroundColor = [UIColor clearColor];
 	//lunchViewLink.backgroundColor = [UIColor clearColor];
 	//dinnerViewLink.backgroundColor = [UIColor clearColor];
-
-	
 	//_loadingResultView.backgroundColor = [UIColor clearColor];
 	//_newsView.backgroundColor = [UIColor clearColor];
-	//_tabViewControl.backgroundColor = [UIColor clearColor];
-	//_tabViewContainer.backgroundColor = [UIColor clearColor];
+	//_tabViewControl.backgroundColor = [UIColor whiteColor];
+	
 }
 
 
@@ -499,7 +491,7 @@ JSONAPIRequest *mitapi;
 		
 		UIImage *buttonImage = [UIImage imageNamed:@"global/subheadbar_button.png"];
 		
-		UIButton *prevDate = [UIButton buttonWithType:UIButtonTypeCustom];
+		prevDate = [UIButton buttonWithType:UIButtonTypeCustom];
 		prevDate.frame = CGRectMake(0, 0, buttonImage.size.width, buttonImage.size.height);
 		prevDate.center = CGPointMake(21.0, 21.0);
 		[prevDate setBackgroundImage:buttonImage forState:UIControlStateNormal];
@@ -508,7 +500,7 @@ JSONAPIRequest *mitapi;
 		[prevDate addTarget:self action:@selector(previousButtonPressed) forControlEvents:UIControlEventTouchUpInside];
 		[datePicker addSubview:prevDate];
 		
-		UIButton *nextDate = [UIButton buttonWithType:UIButtonTypeCustom];
+		nextDate = [UIButton buttonWithType:UIButtonTypeCustom];
 		nextDate.frame = CGRectMake(0, 0, buttonImage.size.width, buttonImage.size.height);
 		nextDate.center = CGPointMake(appFrame.size.width - 21.0, 21.0);
 		[nextDate setBackgroundImage:buttonImage forState:UIControlStateNormal];
@@ -566,10 +558,10 @@ JSONAPIRequest *mitapi;
     [appDelegate presentAppModalViewController:dateSelector animated:YES];
 	
 	/* Bound the dates to One week in the past and One week in the future */
-	NSDate *minDate = [NSDate dateWithTimeIntervalSinceNow:-7*24*60*60];
+	NSDate *minDate = [NSDate dateWithTimeIntervalSinceNow:-6*24*60*60];
 	dateSelector.datePicker.minimumDate = minDate;
 	
-	NSDate *maxDate = [NSDate dateWithTimeIntervalSinceNow:7*24*60*60];
+	NSDate *maxDate = [NSDate dateWithTimeIntervalSinceNow:6*24*60*60];
 	dateSelector.datePicker.maximumDate = maxDate;
     [dateSelector release];
 }
@@ -644,14 +636,14 @@ numberOfRowsInSection:(NSInteger)section
 	}
 
 	
-	NSString *t = (NSString *) [[keySection objectAtIndex:row] objectForKey:@"item"];
-	cell.textLabel.text = t;
+	cell.textLabel.text = (NSString *) [[keySection objectAtIndex:row] objectForKey:@"item"];
+	
 	
 	cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 	cell.selectionStyle = UITableViewCellSelectionStyleGray;
+	cell.backgroundColor = GROUPED_VIEW_CELL_COLOR;
 	
 	return cell;
-	
 }
 
 -(NSString *) tableView:(UITableView *)tableView
@@ -844,6 +836,21 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 	
 		MIT_MobileAppDelegate *appDelegate = (MIT_MobileAppDelegate *)[[UIApplication sharedApplication] delegate];
 		[appDelegate dismissAppModalViewControllerAnimated:YES];
+		
+		NSDate *minDate = [NSDate dateWithTimeIntervalSinceNow:-7*24*60*60];
+		NSDate *maxDate = [NSDate dateWithTimeIntervalSinceNow:7*24*60*60];
+		
+		if ([self.todayDate timeIntervalSinceDate:minDate] <= (36*60*60))
+			prevDate.enabled = NO;
+		
+		if ([maxDate timeIntervalSinceDate:self.todayDate] >= (24*60*60))
+			nextDate.enabled = YES;
+		
+		if ([maxDate timeIntervalSinceDate:self.todayDate] <= (36*60*60))
+			nextDate.enabled = NO;
+		
+		if ([self.todayDate timeIntervalSinceDate:minDate] >= (24*60*60))
+			prevDate.enabled = YES;
 		
 		[self viewDidLoad];
 	}

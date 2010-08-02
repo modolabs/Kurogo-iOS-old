@@ -1,18 +1,9 @@
-//
-//  BookmarksTableViewController.m
-//  MIT Mobile
-//
-//  Created by Anna Callahan on 4/26/10.
-//  Copyright 2010 __MyCompanyName__. All rights reserved.
-//
-
 #import "BookmarksTableViewController.h"
 #import "MapBookmarkManager.h"
 #import "MapSearchResultAnnotation.h"
 #import "CampusMapViewController.h"
 #import "MITUIConstants.h"
 #import "MapSelectionController.h"
-#import "MITMapSearchResultCell.h"
 
 @implementation BookmarksTableViewController
 

@@ -51,7 +51,8 @@
 }
 	
 - (void) viewDidLoad {
-	self.title = [@"Course " stringByAppendingString:course.number];
+	//self.title = [@"Course " stringByAppendingString:course.number];
+	self.title = course.title;
 	self.currentClassLoader = [[LoadClassesInTable new] autorelease];
 	self.currentClassLoader.tableController = self;
 	

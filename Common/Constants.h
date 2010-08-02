@@ -52,6 +52,8 @@ extern NSString * const UnreadBadgeValuesChangeNotification;
 
 extern NSString * const MyStellarAlertNotification;
 
+extern NSString * const kTileServerManagerProjectionIsReady;
+
 // core data entity names
 
 extern NSString * const NewsStoryEntityName;
@@ -73,6 +75,9 @@ extern NSString * const ShuttleRouteStopEntityName;
 extern NSString * const CalendarEventEntityName;
 extern NSString * const CalendarCategoryEntityName;
 extern NSString * const CampusMapSearchEntityName;
+
+// Sizes
+static const NSUInteger kPersonUIDLength = 44;
 
 // resource names
 extern NSString * const ImageNameHomeScreenBackground;
@@ -122,5 +127,9 @@ typedef enum {
 } MITAccessoryViewType;
 
 // errors
+extern NSString * const MapsErrorDomain;
+#define errMapProjection 0
+
 extern NSString * const ShuttlesErrorDomain;
 #define errShuttleRouteNotAvailable 0
+

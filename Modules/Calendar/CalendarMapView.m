@@ -1,6 +1,7 @@
 #import "CalendarMapView.h"
 #import "MITCalendarEvent.h"
 #import "CalendarEventMapAnnotation.h"
+#import "TileServerManager.h"
 
 @implementation CalendarMapView
 
@@ -70,6 +71,8 @@
         MKCoordinateSpan span = MKCoordinateSpanMake(latDelta + latDelta / 4, lonDelta + lonDelta / 4);
         
         [self setRegion:MKCoordinateRegionMake(center, span)];
+    } else {
+        [self setRegion:[TileServerManager defaultRegion]];
     }
 }
 

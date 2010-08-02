@@ -17,13 +17,16 @@
 	self = [super init];
     if (self != nil) {
         self.tag = StellarTag;
-        self.shortName = @"Stellar";
-        self.longName = @"MIT Stellar";
+       /* self.shortName = @"Stellar";
+        self.longName = @"MIT Stellar";*/
+		self.shortName = @"Courses";
+		self.longName = @"Course Catalogue";
         self.iconName = @"courses";
         self.pushNotificationSupported = YES;
 		
 		StellarMainTableController *stellarMainTableController = [[[StellarMainTableController alloc] init] autorelease];
-		stellarMainTableController.navigationItem.title = @"MIT Stellar";
+		//stellarMainTableController.navigationItem.title = @"MIT Stellar";
+		stellarMainTableController.navigationItem.title = @"Course Catalogue";
         self.viewControllers = [NSArray arrayWithObject:stellarMainTableController];
     }
     return self;

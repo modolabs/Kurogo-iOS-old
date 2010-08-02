@@ -68,7 +68,9 @@
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadMyStellarNotifications) name:MyStellarAlertNotification object:nil];
 	
 	// load all course groups (asynchronously) in case it requires server access
+	[self showLoadingView];
 	[StellarModel loadCoursesFromServerAndNotify:self];
+	
 	
 	[StellarModel removeOldFavorites:self];
 	
@@ -140,6 +142,7 @@
 - (void) coursesLoaded {
 	self.courseGroups = [StellarCourseGroup allCourseGroups:[StellarModel allCourses]];
 	[self.tableView reloadData];
+	[self hideLoadingView];
 }
 
 // "DataSource" methods
@@ -186,6 +189,8 @@
 		cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 		cell.imageView.image = nil;
 	}
+	
+	cell.textLabel.font = [UIFont boldSystemFontOfSize:14];
 	return cell;
 }
 
@@ -204,9 +209,9 @@
 	NSInteger groupIndex = [self groupIndexFromSectionIndex:section];
 	NSString *headerTitle = nil;
 	if(groupIndex == myStellarGroup) {
-		headerTitle = @"My Stellar:";
+		headerTitle = @"My Courses:";
 	} else if(groupIndex == browseGroup) {
-		headerTitle = @"Browse By Course:";
+		headerTitle = @"Browse By School:";
 	}
 	return [UITableView groupedSectionHeaderWithTitle:headerTitle];
 }

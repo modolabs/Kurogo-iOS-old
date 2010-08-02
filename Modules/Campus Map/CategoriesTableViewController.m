@@ -142,21 +142,12 @@
     
 	if ([[_itemsInTable objectAtIndex:indexPath.row] objectForKey:@"categoryName"]) {
 		cell.textLabel.text = [[_itemsInTable objectAtIndex:indexPath.row] objectForKey:@"categoryName"];
-	} 
-	else
-	{
-		NSString* displayName = [[_itemsInTable objectAtIndex:indexPath.row] objectForKey:@"displayName"];
-		if ([displayName isKindOfClass:[NSString class]]) {
-			cell.textLabel.text = displayName;
-		}
-		else
-			cell.textLabel.text = nil;
-
+	} else {
+		NSString *displayName = [[_itemsInTable objectAtIndex:indexPath.row] objectForKey:@"displayName"];
+        cell.textLabel.text = displayName;
 	}
 
-
-	if (!_leafLevel) 
-	{
+	if (!_leafLevel) {
 		cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 		cell.backgroundColor = [UIColor whiteColor];
 	}
@@ -185,33 +176,26 @@
 		NSMutableArray* searchResultsArray = [NSMutableArray array];
 
 		ArcGISMapSearchResultAnnotation *annotation = [[[ArcGISMapSearchResultAnnotation alloc] initWithInfo:thisItem] autorelease];
+        if (!annotation.dataPopulated) {
+            [annotation searchAnnotationWithDelegate:self.mapSelectionController.mapVC];
+        }
 		[searchResultsArray addObject:annotation];
 		
 		// this will remove any old annotations and add the new ones. 
-		//[[self.mapSelectionController.mapVC mapView] setShouldNotDropPins:YES];
 		[self.mapSelectionController.mapVC setSearchResults:searchResultsArray];
 		
 		// on the map, select the current annotation
 		//[[self.mapSelectionController.mapVC mapView] selectAnnotation:annotation animated:NO withRecenter:YES];
 		
 		[self dismissModalViewControllerAnimated:YES];
-		//[[self.mapSelectionController.mapVC mapView] setShouldNotDropPins:NO];
 	} else {
 	
 		CategoriesTableViewController* newCategoriesTVC = nil;
 		
-		if ([thisItem objectForKey:@"subcategories"]) 
-		{
-			newCategoriesTVC = [[[CategoriesTableViewController alloc] initWithMapSelectionController:self.mapSelectionController] autorelease];
-			newCategoriesTVC.itemsInTable = [thisItem objectForKey:@"subcategories"];
-			newCategoriesTVC.headerText = [NSString stringWithFormat:@"Buildings by %@:", [[thisItem objectForKey:@"categoryName"] isEqualToString:@"Building name"] ? @"name" : @"number"];
-		} else 
-		{
-			newCategoriesTVC = [[[CategoriesTableViewController alloc] initWithMapSelectionController:self.mapSelectionController andStyle:UITableViewStylePlain] autorelease];
-			[newCategoriesTVC executeServerCategoryRequestWithQuery:[thisItem objectForKey:@"categoryId"]];
-			newCategoriesTVC.leafLevel = YES;
-			newCategoriesTVC.headerText = [NSString stringWithFormat:@"%@:", [thisItem objectForKey:@"categoryName"]];
-		}
+        newCategoriesTVC = [[[CategoriesTableViewController alloc] initWithMapSelectionController:self.mapSelectionController andStyle:UITableViewStylePlain] autorelease];
+        [newCategoriesTVC executeServerCategoryRequestWithQuery:[thisItem objectForKey:@"categoryId"]];
+        newCategoriesTVC.leafLevel = YES;
+        newCategoriesTVC.headerText = [NSString stringWithFormat:@"%@:", [thisItem objectForKey:@"categoryName"]];
 		
 		newCategoriesTVC.topLevel = NO;
 		
@@ -298,22 +282,23 @@
 #pragma mark JSONAPIDelegate
 - (void)request:(JSONAPIRequest *)request jsonLoaded:(id)JSONObject
 {
-	NSArray *categoryResults = JSONObject;
-	
-	_itemsInTable = [categoryResults retain];
-	
-	if (_loadingView) {
-		self.tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
-		[_loadingView removeFromSuperview];
-		[_loadingView release];
-		_loadingView = nil;
-		
-		if(_leafLevel)
-			self.tableView.backgroundColor = [UIColor whiteColor];
-		
-	}
-	
-	[self.tableView reloadData];
+    if (JSONObject && [JSONObject isKindOfClass:[NSArray class]]) {
+        NSArray *categoryResults = JSONObject;
+        
+        _itemsInTable = [categoryResults retain];
+        
+        if (_loadingView) {
+            self.tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
+            [_loadingView removeFromSuperview];
+            [_loadingView release];
+            _loadingView = nil;
+            
+            if(_leafLevel)
+                self.tableView.backgroundColor = [UIColor whiteColor];
+        }
+        
+        [self.tableView reloadData];
+    }
 }
 
 - (void)handleConnectionFailureForRequest:(JSONAPIRequest *)request
@@ -340,8 +325,9 @@
 {
 	JSONAPIRequest *apiRequest = [JSONAPIRequest requestWithJSONAPIDelegate:self];
 	apiRequest.userData = @"Category";
-	[apiRequest requestObject:[NSDictionary dictionaryWithObjectsAndKeys:@"category", @"command", query, @"id", nil]
-				pathExtension:@"map/"];
+	[apiRequest requestObjectFromModule:@"map"
+                                command:@"category"
+                             parameters:[NSDictionary dictionaryWithObjectsAndKeys:query, @"id", nil]];
 }
 
 

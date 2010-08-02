@@ -1,12 +1,11 @@
 #import "MITMapSearchResultsVC.h"
-#import "MITMapSearchResultCell.h"
 #import "MapSearchResultAnnotation.h"
 #import "MITMapDetailViewController.h"
 #import "CampusMapViewController.h"
 #import "TouchableTableView.h"
 #import "MITUIConstants.h"
 #import "UITableView+MITUIAdditions.h"
-#import "MultiLineTableViewCell.h"
+//#import "MultiLineTableViewCell.h"
 
 @implementation MITMapSearchResultsVC
 @synthesize searchResults = _searchResults;
@@ -69,7 +68,7 @@
 	
 	UITableViewCell* cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil) {
-        cell = [[[MITMapSearchResultCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier] autorelease];
+        cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier] autorelease];
     }
     
 	// get the annotation for this index

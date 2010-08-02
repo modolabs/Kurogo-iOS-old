@@ -24,11 +24,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-	[self.tableView applyStandardColors];
-
 }
-
-
 
 
 #pragma mark -
@@ -57,6 +53,7 @@
 	
 	cell.detailTextLabelNumberOfLines = 2;
 	cell.detailTextLabel.lineBreakMode = UILineBreakModeTailTruncation;
+	cell.detailTextLabel.font = [UIFont systemFontOfSize:13];
 	
 	int row = [indexPath row];
     
@@ -66,40 +63,43 @@
 	cell.selectionStyle = UITableViewCellSelectionStyleGray;
 	
 	DiningHallStatus *status = [[DiningHallStatus alloc] init];
+	status.hallName = cell.textLabel.text;
 	int stat = [status getStatusOfMeal:@"" usingDetails:[self.hallProperties objectAtIndex:row]];
 	
 	NSString *statString;
-	if (stat == 1)
+	if (stat == OPEN)
 		statString = @"Open";
-	if (stat == 2)
+	if (stat == CLOSED)
 		statString = @"Closed";
-	if (stat == 3)
-		statString = @"No Interhosue Restriction";
-	if (stat == 4)
+	if (stat == NO_RESTRICTION)
+		statString = @"No Interhouse Restriction";
+	if (stat == RESTRICTED)
 		statString = @"Open";
 	
 	//cell.textLabel.text = [[[self.hallProperties objectAtIndex:row] objectForKey:@"name"] stringByAppendingString:statString];
 	cell.textLabel.text = [[self.hallProperties objectAtIndex:row] objectForKey:@"name"];
 	
-	if ((stat == 1) || (stat == 3)) {
+	if ((stat == OPEN) || (stat == NO_RESTRICTION)) {
 		statString = [statString stringByAppendingString:@" for "];
 		statString = [statString stringByAppendingString:status.currentMeal];
+		statString = [statString stringByAppendingString:@" "];
 		statString = [statString stringByAppendingString:status.currentMealTime];
-		cell.detailTextLabel.text = statString;
+		cell.detailTextLabel.text = [NSString stringWithFormat:@"%@\n  ", statString];
 
-		UIImage *image = [UIImage imageNamed:@"maps/map_location.png"];
+		UIImage *image = [UIImage imageNamed:@"dining-status-open.png"];
 		cell.imageView.image = image;
 		
 	}
 	
-	else if (stat == 4) {
+	else if (stat == RESTRICTED) {
 		statString = [statString stringByAppendingString:@" for "];
 		statString = [statString stringByAppendingString:status.currentMeal];
+		statString = [statString stringByAppendingString:@" "];
 		statString = [statString stringByAppendingString:status.currentMealTime];
 		//cell.detailTextLabel.text = statString;
 		
 		cell.detailTextLabel.text = [NSString stringWithFormat:@"%@\nNo Interhouse", statString];
-		UIImage *image = [UIImage imageNamed:@"maps/map_pin.png"];
+		UIImage *image = [UIImage imageNamed:@"dining-status-open-w-restrictions.png"];
 		cell.imageView.image = image;
 	}
 	
@@ -108,26 +108,39 @@
 		if (status.nextMeal != nil) {
 			NSString *nextMeal = status.nextMeal;
 			
-			//if (status.nextMealRestriction == RESTRICTED)
-			//	nextMeal = [NSString stringWithFormat:@"%@. No Interhouse", nextMeal]; //[nextMeal stringByAppendingString:@", No Interhouse"];
+			nextMeal = [nextMeal stringByAppendingString:status.nextMealTime];
+			cell.detailTextLabel.text = [NSString stringWithFormat:@"Closed.\nNext Meal: %@", nextMeal];
 			
-			cell.detailTextLabel.text = [NSString stringWithFormat:@"Closed.\nNext Meal: %@ %@", nextMeal, status.nextMealTime];
+			UIImage *image = [UIImage imageNamed:@"dining-status-closed.png"];
+			cell.imageView.image = image;
+			
+			if (status.nextMealRestriction == RESTRICTED) {
+				//nextMeal = [NSString stringWithFormat:@"%@. No Interhouse", nextMeal]; 
+				
+				cell.detailTextLabel.text = [NSString stringWithFormat:@"Closed. Upcoming Restriction\nNext Meal: %@", nextMeal];
+				
+				UIImage *image = [UIImage imageNamed:@"dining-status-closed-w-restrictions.png"];
+				cell.imageView.image = image;
+			}
+			
 		}
 		
 		else {
 			cell.detailTextLabel.text = @"Closed";
+			
+			
+			UIImage *image = [UIImage imageNamed:@"dining-status-closed.png"];
+			cell.imageView.image = image;
 		}
 
-		
-		UIImage *image = [UIImage imageNamed:@"global/unread-message.png"];
-		cell.imageView.image = image;
 	}
 	
 	[status release];
+	
+	cell.backgroundColor = GROUPED_VIEW_CELL_COLOR;
+	
     return cell;
 }
-
-
 
 #pragma mark -
 #pragma mark Table view delegate
@@ -141,19 +154,23 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 	
 	if (childHallViewController == nil)
 	{
-		childHallViewController = [[HallDetailsTableViewController alloc] initWithStyle:UITableViewStyleGrouped];
+		//childHallViewController = [[HallDetailsTableViewController alloc] initWithStyle:UITableViewStyleGrouped];
+		childHallViewController = [[HallDetailsTableViewController alloc] init];
 	}
 
 	
 	NSUInteger row = [indexPath row];
 	
 	DiningHallStatus *status = [[DiningHallStatus alloc] init];
-	[status getStatusOfMeal:@"" usingDetails:[self.hallProperties objectAtIndex:row]];
+	status.hallName = [[self.hallProperties objectAtIndex:row] objectForKey:@"name"];
+	int stat = [status getStatusOfMeal:@"" usingDetails:[self.hallProperties objectAtIndex:row]];
+	
+	[status setStat:stat];
 	
 	NSDictionary *test = [self.hallProperties objectAtIndex:row];
 	[childHallViewController setDetails:test];
 	[childHallViewController setStatus:status];
-	childHallViewController.title = [[self.hallProperties objectAtIndex:row] objectForKey:@"name"];
+	childHallViewController.title =  @"Dining Hall Details"; //[[self.hallProperties objectAtIndex:row] objectForKey:@"name"];
 
 	[self.parentViewController.navigationController pushViewController:childHallViewController animated:YES];
 	// deselect the Row
@@ -169,10 +186,10 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 	int stat = [status getStatusOfMeal:@"" usingDetails:[self.hallProperties objectAtIndex:row]];
 
 	if (stat == 1)
-		return 45.0;
+		return 65.0;//50.0;
 	
 	else {
-		return 60.0;
+		return 65.0;
 	}	
 }
 
@@ -189,10 +206,15 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 - (void)viewDidUnload {
     // Relinquish ownership of anything that can be recreated in viewDidLoad or on demand.
     // For example: self.myOutlet = nil;
+	
+	self.hallProperties = nil;
+	childHallViewController = nil;
 }
 
 
 - (void)dealloc {
+	[hallProperties release];
+	[childHallViewController release];
     [super dealloc];
 }
 

@@ -56,6 +56,7 @@ NSString* cleanPersonName(NSString *personName);
 		requestWithJSONAPIDelegate:[[[CoursesRequest alloc] 
 			initWithCoursesDelegate:delegate] autorelease]];
 	[apiRequest requestObjectFromModule:@"stellar" command:@"courses" parameters:nil];
+
 }
 
 + (BOOL) classesFreshForCourse: (StellarCourse *)course term: (NSString *)term {
@@ -94,7 +95,7 @@ NSString* cleanPersonName(NSString *personName);
 				requestObjectFromModule:@"stellar" 
 				command:@"subjectList" 
 				parameters:[NSDictionary dictionaryWithObjectsAndKeys: 
-					stellarCourse.number, @"id", 
+					stellarCourse.title, @"id", 
 					@"true", @"checksum", 
 					nil]];
 		} else {
@@ -112,7 +113,7 @@ NSString* cleanPersonName(NSString *personName);
 	 requestObjectFromModule:@"stellar" 
 	 command:@"subjectList" 
 	 parameters:[NSDictionary dictionaryWithObjectsAndKeys: 
-		classesRequest.stellarCourse.number, @"id",
+		classesRequest.stellarCourse.title, @"id",
 		@"true", @"checksum",
 		@"true", @"full",
 		nil]];
@@ -200,7 +201,7 @@ NSString* cleanPersonName(NSString *personName);
 		requestWithJSONAPIDelegate:[[[TermRequest alloc] 
 			initWithClearMyStellarDelegate:delegate stellarClasses:favorites] autorelease]];
 		
-	[apiRequest requestObjectFromModule:@"stellar" command:@"term" parameters:nil];
+	//[apiRequest requestObjectFromModule:@"stellar" command:@"term" parameters:nil];
 }
 
 + (StellarCourse *) courseWithId: (NSString *)courseId {
@@ -229,7 +230,8 @@ NSString* cleanPersonName(NSString *personName);
 		stellarClass.name = name;
 		stellarClass.title = [aDict objectForKey:@"title"];
 		stellarClass.blurb = [aDict objectForKey:@"description"];
-		stellarClass.term = [aDict objectForKey:@"term"];
+		//stellarClass.term = [aDict objectForKey:@"term"];
+		stellarClass.term = @"Fall 2010";
 		stellarClass.url = [aDict objectForKey:@"stellarUrl"];
 		stellarClass.lastAccessedDate = [NSDate date];
 	
@@ -238,8 +240,14 @@ NSString* cleanPersonName(NSString *personName);
 			// remove the old version of the class times
 			[CoreDataManager deleteObject:managedObject];
 		}
+		/*NSDictionary *test = [aDict objectForKey:@"times"];
+		//NSDictionary *test1 = (NSArray *)[aDict valueForKey:@"times"];
+		
+		int cnt = [(NSArray *)[aDict objectForKey:@"times"] count];
+		int r = cnt*cnt;*/
+		
 		NSInteger orderId = 0;
-		for(NSDictionary *time in (NSArray *)[aDict objectForKey:@"times"]) {
+		for(NSDictionary *time in (NSArray *)[aDict valueForKey:@"times"]) {
 			[stellarClass addTimesObject:[StellarModel stellarTimeFromDictionary:time class:stellarClass orderId:orderId]];
 			orderId++;
 		}
@@ -260,7 +268,7 @@ NSString* cleanPersonName(NSString *personName);
 		}
 
 		// add the annoucements
-		NSArray *annoucements;
+		/*NSArray *annoucements;
 		if(annoucements = [aDict objectForKey:@"announcements"]) {
 			for(NSManagedObject *managedObject in stellarClass.announcement) {
 				// remove the old version of the class annoucements
@@ -269,7 +277,7 @@ NSString* cleanPersonName(NSString *personName);
 			for(NSDictionary *annoucementDict in annoucements) {
 				[stellarClass addAnnouncementObject:[StellarModel stellarAnnouncementFromDict:annoucementDict]];
 			}
-		}
+		}*/
 	}
 	return stellarClass;
 }
@@ -313,13 +321,13 @@ NSString* cleanPersonName(NSString *personName);
 }
 
 - (void)request:(JSONAPIRequest *)request jsonLoaded: (id)object {
-	NSArray *courses = (NSArray *)object;
-	if (courses.count == 0) {
+	NSArray *courseGroups = (NSArray *)object;
+	if (courseGroups.count == 0) {
 		// no courses to save
 		return;
 	}
-
-	for(NSDictionary *aDict in courses) {
+	
+	/*for(NSDictionary *aDict in courses) {
 		StellarCourse *oldStellarCourse = [CoreDataManager getObjectForEntity:StellarCourseEntityName attribute:@"number" value:[aDict objectForKey:@"short"]];
 		if(oldStellarCourse) {
 			// delete old course (will replace all the data, occasionally non-critical relationships
@@ -333,7 +341,45 @@ NSString* cleanPersonName(NSString *personName);
 	}
 	[CoreDataManager saveData];
 	[[NSUserDefaults standardUserDefaults] setObject:[NSDate date] forKey:@"stellarCoursesLastSaved"];
-	[self.coursesLoadedDelegate coursesLoaded];
+	[self.coursesLoadedDelegate coursesLoaded];*/
+	
+	NSMutableArray *coursesArray = [[NSMutableArray alloc] init];
+	for (NSDictionary *aDict in courseGroups) {
+		
+		NSArray *courses = [aDict objectForKey:@"courses"];
+		NSString *courseGroupName = [[aDict valueForKey:@"school_name"] description];
+		
+		for (NSDictionary *course in courses) {
+			
+			
+			StellarCourse *oldStellarCourse = [CoreDataManager getObjectForEntity:StellarCourseEntityName attribute:@"title" value:[course objectForKey:@"name"]];
+			//StellarCourse *oldStellarCourse = [CoreDataManager getObjectForEntity:StellarCourseEntityName attribute:@"courseGroup" value:courseGroupName];
+			if(oldStellarCourse){
+				// delete old course (will replace all the data, occasionally non-critical relationships
+				// between a course and its subject will be lost
+				
+				// Also, since a course (department) can be in multiple groups (schools), do not treat them as the same 
+				// if the courseGroupName is different. Here, do not delete if the courseGroupNames are different.
+				
+				if ([oldStellarCourse.courseGroup isEqualToString:courseGroupName])
+					[CoreDataManager deleteObject:oldStellarCourse];
+			}
+			
+			StellarCourse *newStellarCourse = (StellarCourse *)[CoreDataManager insertNewObjectForEntityForName:StellarCourseEntityName];
+			newStellarCourse.number = [course objectForKey:@"short"];
+			newStellarCourse.title = [course valueForKey:@"name"];
+			newStellarCourse.courseGroup = courseGroupName;
+			
+			[coursesArray addObject:newStellarCourse];
+
+		
+		}
+	}
+	
+	
+	[CoreDataManager saveData];
+	[[NSUserDefaults standardUserDefaults] setObject:[NSDate date] forKey:@"stellarCoursesLastSaved"];
+	[self.coursesLoadedDelegate coursesLoaded];	
 }
 	
 - (void) dealloc {
@@ -398,7 +444,8 @@ NSString* cleanPersonName(NSString *personName);
 
 - (void) markCourseAsNew {
 	self.stellarCourse.lastCache = [NSDate dateWithTimeIntervalSinceNow:0];
-	self.stellarCourse.term = [[NSUserDefaults standardUserDefaults] objectForKey:StellarTermKey];
+	//self.stellarCourse.term = [[NSUserDefaults standardUserDefaults] objectForKey:StellarTermKey];
+	self.stellarCourse.term = @"Fall 2010";
 	[CoreDataManager saveData];
 }
 	
@@ -515,6 +562,10 @@ NSString* cleanPersonName(NSString *personName);
 		[[NSNotificationCenter defaultCenter] postNotificationName:MyStellarChanged object:nil];
 		[clearMyStellarDelegate classesRemoved:oldClasses];
 	}
+}
+
+-(void)handleConnectionFailureForRequest:(JSONAPIRequest *)request {
+	return;
 }
 
 @end
