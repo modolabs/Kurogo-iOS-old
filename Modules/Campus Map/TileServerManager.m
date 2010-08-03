@@ -480,9 +480,6 @@ static NSString * s_tileServerFilename = @"tileServer.plist";
 - (void)setupProjection:(const char *)projString {
     projection = pj_init_plus(projString);
     
-    CLLocationCoordinate2D west = CLLocationCoordinate2DMake(0.0, -180.0);
-    CLLocationCoordinate2D east = CLLocationCoordinate2DMake(0.0, 180.0);
-
     _circumferenceInProjectedUnits = -2 * _originX;
     
     for (MapZoomLevel *zoomLevel in _mapLevels) {

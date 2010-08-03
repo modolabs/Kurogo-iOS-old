@@ -104,8 +104,7 @@
 - (void)viewDidLoad {
 	[super viewDidLoad];
 	
-	// turn on the location dot
-	_mapView.showsUserLocation = YES;
+	_mapView.showsUserLocation = NO;
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -429,17 +428,14 @@
     
     if (_mapView.showsUserLocation) {
         _geoButton.style = UIBarButtonItemStyleDone;
-        MKCoordinateSpan span = MKCoordinateSpanMake(0.02, 0.02);
-        MKCoordinateRegion region = MKCoordinateRegionMake(_mapView.userLocation.coordinate, span);
-        _mapView.region = region;
     } else {
         _geoButton.style = UIBarButtonItemStyleBordered;
+
         // recenter if they moved too far
-        MKMapRect rect = _mapView.visibleMapRect;
         CLLocationCoordinate2D centerCoord = [TileServerManager defaultRegion].center;
         MKMapPoint centerPoint = MKMapPointForCoordinate(centerCoord);
         
-        if (!MKMapRectContainsPoint(rect, centerPoint)) {
+        if (!MKMapRectContainsPoint(_mapView.visibleMapRect, centerPoint)) {
             _mapView.region = [TileServerManager defaultRegion];
         }
     }
@@ -731,6 +727,9 @@
 
 #pragma mark MKMapView delegation
 
+- (void)mapView:(MKMapView *)mapView didUpdateUserLocation:(MKUserLocation *)userLocation {
+    NSLog(@"located; %@", _mapView.showsUserLocation ? @"YES" : @"NO");
+}
 
 - (MKOverlayView *)mapView:(MKMapView *)mapView viewForOverlay:(id <MKOverlay>)overlay {
     if ([overlay isKindOfClass:[PolygonOverlay class]]) {
@@ -744,15 +743,12 @@
 }
 
 - (void)mapView:(MKMapView *)mapView regionDidChangeAnimated:(BOOL)animated {
-    //if (_mapView.showsUserLocation
-    //    && _geoButton.style == UIBarButtonItemStyleDone
-    //    && MKMapRectContainsPoint(_mapView.visibleMapRect, MKMapPointForCoordinate(_mapView.showsUserLocation.coordinate))) {
-        
-    //}
+    //NSLog(@"%@", _mapView.showsUserLocation ? @"YES" : @"NO");
 }
 
-//- (void)mapView:(MKMapView *)mapView regionWillChangeAnimated:(BOOL)animated {
-//}
+- (void)mapView:(MKMapView *)mapView regionWillChangeAnimated:(BOOL)animated {
+    //NSLog(@"%@", _mapView.showsUserLocation ? @"YES" : @"NO");
+}
 
 - (MKAnnotationView *)mapView:(MKMapView *)mapView viewForAnnotation:(id <MKAnnotation>)annotation {
     if (annotation == mapView.userLocation) {
