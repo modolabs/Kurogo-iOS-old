@@ -295,6 +295,8 @@
 		
 		NSArray *classificationArray = [classificationString componentsSeparatedByString: @"\\, "];
 		
+		//classificationArray = [classificationArray sortedArrayUsingSelector:@selector(compare:)];
+		
 		for (int i=0; i < [classificationArray count]; i++) {
 			NSString *catName	= [classificationArray objectAtIndex:i];
 			
@@ -306,8 +308,7 @@
                 category.title = catName;
             }
 			
-            [self addCategory:category];
-			
+            [self addCategory:category];			
 		}
 	}
     

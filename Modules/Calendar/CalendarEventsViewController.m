@@ -1140,8 +1140,28 @@
 			}
 			else if (nothingFound != nil) {
 				[nothingFound removeFromSuperview];
-				//[nothingFound release];
 			}
+			
+			if (([result count] == 0) && (activeEventList == CalendarEventListTypeAcademic)) {
+				UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(20, 20, 300, 20)];
+				
+				label.text = @"No Events this month";															   
+				NSInteger vertical_margin = 45;
+				
+				if (theCatID == -1)
+					vertical_margin += 50;
+				
+				CGRect contentFrame = CGRectMake(0,self.view.bounds.origin.y + vertical_margin, 
+												 self.view.bounds.size.width, 
+												 self.view.bounds.size.height);
+				
+				nothingFound = [[UIView alloc] initWithFrame:contentFrame];
+				[nothingFound setBackgroundColor:[UIColor whiteColor]];
+				
+				[nothingFound addSubview:label];
+				[self.view addSubview:nothingFound];
+			}
+			
 			for (NSDictionary *eventDict in result) {
 				MITCalendarEvent *event = [CalendarDataManager eventWithDict:eventDict];
                 // assign a category if we know already what it is

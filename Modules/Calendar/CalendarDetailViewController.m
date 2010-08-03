@@ -166,7 +166,16 @@ enum CalendarDetailRowTypes {
         [categoriesString release];
         
         NSMutableString *categoriesBody = [NSMutableString stringWithString:@"Categorized as:<ul>"];
-        for (EventCategory *category in event.categories) {
+		
+		NSMutableArray *tempCats = [[NSMutableArray alloc] init];
+		
+		for (EventCategory *category in event.categories) {
+			[tempCats addObject:category];
+		}
+		
+		NSArray *tempA = [tempCats sortedArrayUsingSelector:@selector(compare:)];
+
+		for (EventCategory *category in tempA) {
             NSString *catIDString = [NSString stringWithFormat:@"catID=%d", [category.catID intValue]];
             NSURL *categoryURL = [NSURL internalURLWithModuleTag:CalendarTag path:CalendarStateCategoryEventList query:catIDString];
             [categoriesBody appendString:[NSString stringWithFormat:
@@ -372,6 +381,7 @@ enum CalendarDetailRowTypes {
 		case CalendarDetailRowTypeCategories:
         {
 			NSMutableString *categoriesBody = [NSMutableString stringWithString:@"Categorized as:<ul>"];
+
 			for (EventCategory *category in event.categories) {
 				NSString *catIDString = [NSString stringWithFormat:@"catID=%d", [category.catID intValue]];
 				NSURL *categoryURL = [NSURL internalURLWithModuleTag:CalendarTag path:CalendarStateCategoryEventList query:catIDString];
