@@ -21,7 +21,6 @@
 	NSMutableDictionary *ListDictionary = [[NSMutableDictionary alloc] init];
 	
 	int len = [allItems count];
-	int test = 0;
 	int i;
 	for (i=0; i<len; i++) {
 		
