@@ -31,13 +31,11 @@
     }
     else if ([key isEqualToString:@"title"])
     {
-        return [[actualValue stringByReplacingOccurrencesOfString:@", " withString:@"\n"]
-				stringByReplacingOccurrencesOfString:kPersonDetailsValueSeparatorToken withString:@"\n"];		
+        return [actualValue stringByReplacingOccurrencesOfString:kPersonDetailsValueSeparatorToken withString:@"\n"];		
     }
     else if ([key isEqualToString:@"ou"])
     {
-        return [[[actualValue stringByReplacingOccurrencesOfString:@", " withString:@"\n"]
-				 stringByReplacingOccurrencesOfString:kPersonDetailsValueSeparatorToken withString:@"\n"]
+        return [[actualValue stringByReplacingOccurrencesOfString:kPersonDetailsValueSeparatorToken withString:@"\n"]
 				stringByReplacingOccurrencesOfString:@"^" withString:@" / "];
     }
 	

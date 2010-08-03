@@ -3,7 +3,7 @@
 #import <Foundation/Foundation.h>
 #import "PersonDetails.h"
 
-#define kPersonDetailsValueSeparatorToken @"!@#$"
+#define kPersonDetailsValueSeparatorToken @"%/%"
 
 @interface PersonDetails (Methods)
 
