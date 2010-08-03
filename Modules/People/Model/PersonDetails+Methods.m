@@ -23,23 +23,30 @@
         NSAssert(FALSE, @"I don't know how to format this value."); 
         return nil;
     }
-                
-    if ([key isEqualToString:@"postaladdress"])
+	
+	// Replace with the token used to join multiple values for storage in a PersonDetails field with line breaks.
+	NSString *formattedValue = [actualValue stringByReplacingOccurrencesOfString:kPersonDetailsValueSeparatorToken withString:@"\n"];
+	
+    if ([key isEqualToString:@"sn"] || [key isEqualToString:@"givenname"] || [key isEqualToString:@"cn"])
+	{
+		// For names, use slashes instead of line breaks.
+		formattedValue = [actualValue stringByReplacingOccurrencesOfString:kPersonDetailsValueSeparatorToken withString:@"/"];		
+	}
+    else if ([key isEqualToString:@"postaladdress"])
     {
-        return [[actualValue stringByReplacingOccurrencesOfString:@"$" withString:@"\n"]				
-				stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+		formattedValue = [[formattedValue stringByReplacingOccurrencesOfString:@"$" withString:@"\n"]				
+						  stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
     }
-    else if ([key isEqualToString:@"title"])
-    {
-        return [actualValue stringByReplacingOccurrencesOfString:kPersonDetailsValueSeparatorToken withString:@"\n"];		
-    }
+    //else if ([key isEqualToString:@"title"])
+    //{
+		// Add any special formatting necessary for title here.
+    //}
     else if ([key isEqualToString:@"ou"])
     {
-        return [[actualValue stringByReplacingOccurrencesOfString:kPersonDetailsValueSeparatorToken withString:@"\n"]
-				stringByReplacingOccurrencesOfString:@"^" withString:@" / "];
+        formattedValue = [formattedValue stringByReplacingOccurrencesOfString:@"^" withString:@" / "];
     }
 	
-    return actualValue;
+    return formattedValue;
 }
 
 - (NSString *)displayNameForKey:(NSString *)key
