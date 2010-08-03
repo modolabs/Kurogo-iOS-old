@@ -28,6 +28,7 @@
 
 - (void) dealloc
 {
+	DLog(@"Deallocating JSONAPIRequest."); 
 	connectionWrapper.delegate = nil;
     [connectionWrapper release];
 	[jsonDelegate release];
