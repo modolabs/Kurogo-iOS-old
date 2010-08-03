@@ -13,6 +13,7 @@
 
 @optional 
 - (void)handleConnectionFailureForRequest:(JSONAPIRequest *)request;
+- (void)request:(JSONAPIRequest *)request madeProgress:(CGFloat)progress;
 @end
 
 

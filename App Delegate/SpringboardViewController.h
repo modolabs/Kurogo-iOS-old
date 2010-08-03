@@ -31,8 +31,10 @@
 }
 
 - (void)layoutIcons:(NSArray *)icons;
+- (void)searchAllModules;
 
 @property (nonatomic, retain) UITableView *searchResultsTableView;
+@property (nonatomic, readonly) NSArray *searchableModules;
 
 @end
 

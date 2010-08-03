@@ -887,7 +887,7 @@
 
 #pragma mark JSONAPIDelegate
 
-- (void) request:(JSONAPIRequest *)request jsonLoaded:(id)JSONObject
+- (void)request:(JSONAPIRequest *)request jsonLoaded:(id)JSONObject
 {	
     
     if (JSONObject && [JSONObject isKindOfClass:[NSDictionary class]]) {
@@ -954,18 +954,6 @@
 		[_lastSearchText release];
 		_lastSearchText = nil;
 		
-		/*
-		[_mapView removeAnnotations:_searchResults];
-		[_searchResults release];
-		_searchResults = nil;
-		[_lastSearchText release];
-		_lastSearchText = nil;
-
-		if (nil != _searchResultsVC) {
-			_searchResultsVC.searchResults = nil;
-			
-		}
-		 */
 	} else {
         JSONAPIRequest *apiRequest = [JSONAPIRequest requestWithJSONAPIDelegate:self];
         apiRequest.userData = kAPISearch;

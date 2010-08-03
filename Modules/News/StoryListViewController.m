@@ -42,7 +42,6 @@
 //- (void)unfocusSearchBar;
 - (void)hideSearchBar;
 - (void)showSearchOverlay;
-- (void)hideSearchOverlay;
 
 @end
 
@@ -55,6 +54,7 @@
 @synthesize activeCategoryId;
 @synthesize xmlParser;
 @synthesize featuredStory;
+@synthesize totalAvailableResults;
 
 static NSInteger numTries = 0;
 
@@ -288,6 +288,16 @@ static NSInteger numTries = 0;
 
 #pragma mark -
 #pragma mark Search UI
+
+- (void)presentSearchResults:(NSArray *)results searchText:(NSString *)searchText {
+    [self showSearchBar];
+    [self unfocusSearchBar];
+    theSearchBar.text = searchText;
+    [self hideSearchOverlay];
+    self.searchResults = results;
+    self.stories = results;
+    [storyTable reloadData];
+}
 
 - (void)showSearchBar {
 	if (!theSearchBar) {
@@ -844,8 +854,7 @@ static NSInteger numTries = 0;
                 && self.featuredStory != nil  // we have a featured story
                 && !showingBookmarks          // we are not looking at bookmarks
                 && indexPath.row == 0)
-            {
-                
+            {                
                 NewsStory *story = self.featuredStory;
                 
                 static NSString *StoryCellIdentifier = @"FeaturedCell";
@@ -1075,7 +1084,11 @@ static NSInteger numTries = 0;
         StoryDetailViewController *detailViewController = [[StoryDetailViewController alloc] init];
 		detailViewController.newsController = self;
 		NewsStory *story = nil;
-        if (indexPath.row == 0 && self.featuredStory != nil) {
+        if (self.searchResults == nil     // this is not a search
+            && self.featuredStory != nil  // we have a featured story
+            && !showingBookmarks          // we are not looking at bookmarks
+            && indexPath.row == 0)
+        {
             story = self.featuredStory;
         } else {
             story = [self.stories objectAtIndex:indexPath.row];

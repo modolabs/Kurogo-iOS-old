@@ -5,6 +5,7 @@
 
 @implementation CMModule
 @synthesize campusMapVC = _campusMapVC;
+@synthesize request = _request;
 
 - (id) init {
     self = [super init];
@@ -13,6 +14,7 @@
         self.shortName = @"Map";
         self.longName = @"Campus Map";
         self.iconName = @"maps";
+        self.supportsFederatedSearch = YES;
        
 		self.campusMapVC = [[[CampusMapViewController alloc] init] autorelease];
 		self.campusMapVC.title = @"Campus Map";
@@ -30,15 +32,112 @@
 	[super dealloc];
 }
 
-/*
- *	the path query syntax can have these syntaxes:
- *		search/<id#>					where id# is optional
- *		detail/<id#>/<tabIndex>			where tabIndex is optional
- *		list/detail/<id#>/<tabIndex>	where detail and tabIndex are optional.
- *	if list is followed by detail etc, then the detail view will load but the back button will lead to the list view.
- */
+#pragma mark JSONAPIDelegate
+
+- (void)request:(JSONAPIRequest *)request jsonLoaded:(id)JSONObject
+{	
+    self.request = nil;
+    if (JSONObject && [JSONObject isKindOfClass:[NSDictionary class]]) {
+        NSArray *results = [JSONObject objectForKey:@"results"];
+        NSMutableArray *annotations = [NSMutableArray arrayWithCapacity:[results count]];
+        for (NSDictionary *info in results) {
+            ArcGISMapSearchResultAnnotation *annotation = [[[ArcGISMapSearchResultAnnotation alloc] initWithInfo:info] autorelease];
+            [annotations addObject:annotation];
+        }
+        self.searchResults = annotations;
+	}
+}
+
+- (void)request:(JSONAPIRequest *)request madeProgress:(CGFloat)progress {
+    self.searchProgress = progress;
+}
+
+- (void)handleConnectionFailureForRequest:(JSONAPIRequest *)request {
+    self.request = nil;
+}
+
+#pragma mark Search and state
+
+NSString * const MapsLocalPathDetail = @"detail";
+NSString * const MapsLocalPathList = @"list";
+
+- (void)resetNavStack {
+    self.viewControllers = [NSArray arrayWithObject:self.campusMapVC];
+}
+
+- (void)performSearchForString:(NSString *)searchText {
+    [super performSearchForString:searchText];
+    
+    self.request = [JSONAPIRequest requestWithJSONAPIDelegate:self];
+    [self.request requestObjectFromModule:@"map"
+                                  command:@"search"
+                               parameters:[NSDictionary dictionaryWithObjectsAndKeys:searchText, @"q", nil]];
+}
+
+- (void)abortSearch {
+    if (self.request) {
+        [self.request abortRequest];
+        self.request = nil;
+    }
+    [super abortSearch];
+}
+
+- (NSString *)titleForSearchResult:(id)result {
+    ArcGISMapSearchResultAnnotation *annotation = (ArcGISMapSearchResultAnnotation *)result;
+    return annotation.name;
+}
+
+- (NSString *)subtitleForSearchResult:(id)result {
+    ArcGISMapSearchResultAnnotation *annotation = (ArcGISMapSearchResultAnnotation *)result;
+    return annotation.street;
+}
+
 - (BOOL)handleLocalPath:(NSString *)localPath query:(NSString *)query
 {
+    BOOL didHandle = NO;
+    
+    if ([localPath isEqualToString:LocalPathFederatedSearch]) {
+        // fedsearch?query
+        self.selectedResult = nil;
+        self.campusMapVC.searchResults = self.searchResults;
+        self.campusMapVC.lastSearchText = query;
+        self.viewControllers = [NSArray arrayWithObject:self.campusMapVC];
+        didHandle = YES;
+        
+    } else if ([localPath isEqualToString:LocalPathFederatedSearchResult]) {
+        // fedresult?q=query&row=rownum
+        NSArray *queryKeys = [query componentsSeparatedByString:@"&"];
+        NSInteger row = NSNotFound;
+        for (NSString *qKey in queryKeys) {
+            NSArray *qValues = [qKey componentsSeparatedByString:@"="];
+            if ([qValues count] == 2) {
+                if ([[qValues objectAtIndex:0] isEqualToString:@"row"]) {
+                    row = [[qValues objectAtIndex:1] intValue];
+                }
+            }
+        }
+        
+        if (row != NSNotFound) {
+            MITMapDetailViewController *detailVC = [[MITMapDetailViewController alloc] init];
+            self.selectedResult = [self.searchResults objectAtIndex:row];
+            detailVC.annotation = self.selectedResult;
+            self.viewControllers = [NSArray arrayWithObject:detailVC];
+        }
+        
+        didHandle = YES;
+        
+    }
+    
+    
+    /*
+     *	the path query syntax can have these syntaxes:
+     *		search/<id#>					where id# is optional
+     *		detail/<id#>/<tabIndex>			where tabIndex is optional
+     *		list/detail/<id#>/<tabIndex>	where detail and tabIndex are optional.
+     *	if list is followed by detail etc, then the detail view will load but the back button will lead to the list view.
+     */
+    
+    /*
 	// grab the users last location (it could change during the rest of this method)
 	NSString* docsFolder = [NSHomeDirectory() stringByAppendingPathComponent:@"Documents"];
 	NSString* regionFilename = [docsFolder stringByAppendingPathComponent:@"region.plist"];
@@ -179,8 +278,8 @@
 		
 		return YES;
 	}
-	
-	return NO;
+	*/
+	return didHandle;
 }
 
 @end
