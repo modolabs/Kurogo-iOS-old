@@ -192,12 +192,12 @@ function testSuite2()
 	var expectedSearchResultValues = {
 		"email": "filipe_campante@harvard.edu",
 		"phone": "+1-617-384-7958",
-		"unit": "KSG^Faculty Members",
+		"unit": "KSG / Faculty Members",
 		"title": "Assistant Professor in Public Policy at the John F. Kennedy School of Government"
 	};
 	
 	var termsToExpectedValues = {
-		"4795": expectedSearchResultValues // Search for part of the phone number.
+		"7958": expectedSearchResultValues // Search for part of the phone number.
 	};
 
 	runSearchTestSuite("Test suite 2", termsToExpectedValues);
@@ -208,7 +208,7 @@ function testSuite3()
 	var expectedSearchResultValues = {
 		"email": "lwisniewski@iq.harvard.edu",
 		"phone": "+1-617-496-7971",
-		"unit": "FAS^FCOR^Inst Quant SocSci-Stf",
+		"unit": "FAS / FCOR / Inst Quant SocSci-Stf",
 		"title": "IQSS Director of Technology Services"
 	};
 	
@@ -265,7 +265,7 @@ function testSuiteFieldsSeparatedByNewLine()
 		"email": "jmurcian@law.harvard.edu",
 		"title": "Associate Director\nOPIA and Director of Fellowships\nTutor\nAssistant Sr (Harv Std)\nContin Ed/Spec Prog Instructor",
 		"fax": "+1-617-496-4944",
-		"unit": "HLS^Pblc Interest\nFAS^FCOL^Leverett-Oth\nFAS^FDCE^Other Academic"
+		"unit": "HLS / Pblc Interest\nFAS / FCOL / Leverett-Oth\nFAS / FDCE / Other Academic"
 	};
 	
 	var termsToExpectedValues = {

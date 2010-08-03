@@ -26,18 +26,19 @@
                 
     if ([key isEqualToString:@"postaladdress"])
     {
-        return [actualValue stringByReplacingOccurrencesOfString:@"$" withString:@"\n"];
+        return [[actualValue stringByReplacingOccurrencesOfString:@"$" withString:@"\n"]				
+				stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
     }
     else if ([key isEqualToString:@"title"])
     {
         return [[actualValue stringByReplacingOccurrencesOfString:@", " withString:@"\n"]
-				stringByReplacingOccurrencesOfString:@"," withString:@"\n"];		
+				stringByReplacingOccurrencesOfString:kPersonDetailsValueSeparatorToken withString:@"\n"];		
     }
     else if ([key isEqualToString:@"ou"])
     {
         return [[[actualValue stringByReplacingOccurrencesOfString:@", " withString:@"\n"]
-				 stringByReplacingOccurrencesOfString:@"," withString:@"\n"]
-				stringByReplacingOccurrencesOfString:@"^" withString:@" / "];		
+				 stringByReplacingOccurrencesOfString:kPersonDetailsValueSeparatorToken withString:@"\n"]
+				stringByReplacingOccurrencesOfString:@"^" withString:@" / "];
     }
 	
     return actualValue;
@@ -92,7 +93,7 @@
 + (NSString *)joinedValueFromPersonDetailsJSONDict:(NSDictionary *)jsonDict forKey:(NSString *)key
 {
     return [[PersonDetails realValuesFromPersonDetailsJSONDict:jsonDict forKey:key] 
-            componentsJoinedByString:@","];
+            componentsJoinedByString:kPersonDetailsValueSeparatorToken];
 }
 
 @end
