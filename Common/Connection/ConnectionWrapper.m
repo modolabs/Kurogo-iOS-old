@@ -62,7 +62,7 @@
 // internal method used by NSURLConnection
 - (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data {	// should be repeatedly called until download is complete. this method will only be called after there are no more responses received (see above method)
 	[tempData appendData:data];		// got some data in, so append it
-    if (contentLength && [delegate respondsToSelector:@selector(connection:madeProgress:)]) {
+    if (contentLength != NSURLResponseUnknownLength && [delegate respondsToSelector:@selector(connection:madeProgress:)]) {
         NSUInteger lengthComplete = [tempData length];
         CGFloat progress = (CGFloat)lengthComplete / (CGFloat)contentLength;
         [delegate connection:self madeProgress:progress];

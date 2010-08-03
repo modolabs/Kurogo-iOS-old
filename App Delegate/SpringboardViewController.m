@@ -310,12 +310,17 @@
         if (indexPath.row == MAX_FEDERATED_SEARCH_RESULTS) {
             cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
             cell.textLabel.text = @"More results";
+            cell.detailTextLabel.text = nil;
             
         } else if (![aModule.searchResults count]) {
+            cell.accessoryType = UITableViewCellAccessoryNone;
             cell.textLabel.text = @"No results";
+            cell.detailTextLabel.text = nil;
+            cell.selectionStyle = UITableViewCellSelectionStyleNone;
 
         } else {
             id aResult = [aModule.searchResults objectAtIndex:indexPath.row];
+            cell.accessoryType = UITableViewCellAccessoryNone;
             cell.textLabel.text = [aModule titleForSearchResult:aResult];
             cell.detailTextLabel.text = [aModule subtitleForSearchResult:aResult];
         }
@@ -364,15 +369,17 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     MITModule *aModule = [self.searchableModules objectAtIndex:indexPath.section];
-    activeModule = aModule;
-    if (indexPath.row == MAX_FEDERATED_SEARCH_RESULTS) {
-        [activeModule handleLocalPath:LocalPathFederatedSearch query:[NSString stringWithFormat:@"%@", _searchBar.text, indexPath.row]];
-    } else {
-        // TODO: decide whether the query string really needs to be passed to the module
-        [activeModule handleLocalPath:LocalPathFederatedSearchResult query:[NSString stringWithFormat:@"q=%@&row=%d", _searchBar.text, indexPath.row]];
+    if ([aModule.searchResults count]) {
+        activeModule = aModule;
+        if (indexPath.row == MAX_FEDERATED_SEARCH_RESULTS) {
+            [activeModule handleLocalPath:LocalPathFederatedSearch query:[NSString stringWithFormat:@"%@", _searchBar.text, indexPath.row]];
+        } else {
+            // TODO: decide whether the query string really needs to be passed to the module
+            [activeModule handleLocalPath:LocalPathFederatedSearchResult query:[NSString stringWithFormat:@"q=%@&row=%d", _searchBar.text, indexPath.row]];
+        }
+        MIT_MobileAppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+        [appDelegate showModuleForTag:activeModule.tag];
     }
-    MIT_MobileAppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
-    [appDelegate showModuleForTag:activeModule.tag];
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {

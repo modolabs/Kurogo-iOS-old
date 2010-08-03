@@ -258,6 +258,13 @@ NSString * const NewsTagFullURL         = @"url";
 	done = YES;
 }
 
+- (void)connection:(ConnectionWrapper *)wrapper madeProgress:(CGFloat)progress {
+    NSLog(@"connection wrapper says %.2f", progress);
+	if (self.delegate != nil && [self.delegate respondsToSelector:@selector(parser:downloadMadeProgress:)]) {
+		[self.delegate parser:self downloadMadeProgress:progress];
+	}
+}
+
 - (void)connection:(ConnectionWrapper *)wrapper handleConnectionFailureWithError:(NSError *)error {
 	[self performSelectorOnMainThread:@selector(downloadError:) withObject:error waitUntilDone:NO];
 	done = YES;

@@ -146,6 +146,11 @@ NSString * const NewsLocalPathBookmarks = @"bookmarks";
     self.searchProgress = 0.1;
 }
 
+- (void)parser:(StoryXMLParser *)parser downloadMadeProgress:(CGFloat)progress {
+    self.searchProgress = 0.1 + 0.2 * progress;
+    NSLog(@"progress set to %.2f", self.searchProgress);
+}
+
 - (void)parserDidStartParsing:(StoryXMLParser *)parser {
     self.searchProgress = 0.3;
 }
