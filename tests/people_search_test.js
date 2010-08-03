@@ -96,6 +96,7 @@ function verifySearchTargetInfo(fieldName, fieldValue)
 	// Assumes current view is the people details view.
 	// The cells in the details view are labeled in the format "email, [the person's email]".
 	cell = mainWindow.tableViews()[0].cells().firstWithName(fieldName + ", " + fieldValue);
+	//mainWindow.tableViews()[0].logElementTree();
 	
 	if (cell.checkIsValid())
 	{
@@ -263,7 +264,7 @@ function testSuiteFieldsSeparatedByNewLine()
 {
 	var expectedSearchResultValues = {
 		"email": "jmurcian@law.harvard.edu",
-		"title": "Associate Director\nOPIA and Director of Fellowships\nTutor\nAssistant Sr (Harv Std)\nContin Ed/Spec Prog Instructor",
+		"title": "Associate Director, OPIA and Director of Fellowships\nTutor, Assistant Sr (Harv Std)\nContin Ed/Spec Prog Instructor",
 		"fax": "+1-617-496-4944",
 		"unit": "HLS / Pblc Interest\nFAS / FCOL / Leverett-Oth\nFAS / FDCE / Other Academic"
 	};
@@ -311,6 +312,46 @@ function testSuiteActionsFromPersonDetails()
 	hitSearchCancel();
 }
 
+function testSuiteMultipleTitles()
+{		
+	var termsToExpectedValues = {
+		"Bloembergen": {
+			"unit": "CADM / OPR / OGB / Univ Profs\nFAS / FCOL / Pforzheimer-Oth",
+			"title": "Gerhard Gade University Professor, Emeritus\nHonorary Associate of Pforzheimer House"
+		}, 
+		"darnton": {
+			"unit": "CADM / OPR / OGB / Univ Profs\nCADM / Prov / OPR / Provost Stf",
+			"title": "Carl H. Pforzheimer University Professor\nDirector of the Harvard University Library"
+		}, 
+		"galison peter": {
+			"unit": "CADM / OPR / OGB / Univ Profs\nFAS / FCOR / Soc of Fllws-Oth",
+			"title": "Pellegrino University Professor\nSenior Fellow of the Society of Fellows"
+		}, 
+		"henry louis gates": {
+			"unit": "CADM / OPR / OGB / Univ Profs\nFAS / FCOR / Du Bois Inst-Oth Acad",
+			"title": "Alphonse Fletcher, Jr., University Professor\nDirector of the W.E.B. Du Bois Institute for African and African American Research"
+		}, 
+		"Stephen Greenblatt": {
+			"unit": "CADM / OPR / OGB / Univ Profs",
+			"title": "Cogan University Professor"
+		},
+		"oscar handlin": {
+			"unit": "CADM / OPR / OGB / Univ Profs",
+			"title": "Carl M Loeb University Professor, Emeritus" // This guy actually only has one title?
+		},
+		"Dale Jorgenson": {
+			"unit": "CADM / OPR / OGB / Univ Profs\nKSG / Faculty Members",
+			"title": "Samuel W. Morris University Professor\nMember of Faculty"
+		},
+		"Barry Mazur": {
+			"unit": "CADM / OPR / OGB / Univ Profs\nFAS / FCOL / Cabot-Oth\nFAS / FCOR / Soc of Fllws-Oth",
+			"title": "Gade University Professor\nAssociate of Cabot House\nSenior Fellow of the Society of Fellows"
+		}		
+	};
+
+	runSearchTestSuite("Test suite: Multiple titles", termsToExpectedValues);			
+}
+
 // "Main" block.
 
 // Provide a default grace period in seconds for each action to complete.
@@ -321,6 +362,9 @@ navigateToPeopleView();
 testSuiteActionsFromPersonDetails();
 testSuite4();
 testSuite5();
+
+// You might want to watch a few of these to make sure the display is not messed up.
+testSuiteMultipleTitles();
 
 // These should work without supervision.
 testSuiteFieldsSeparatedByNewLine();

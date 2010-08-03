@@ -385,15 +385,15 @@ NSInteger strLenSort(NSString *str1, NSString *str2, void *context)
 
 			PersonDetails *recent = [[[PeopleRecentsData sharedData] recents] safeObjectAtIndex:indexPath.row];
 			cell.textLabel.text = [NSString stringWithFormat:@"%@ %@", 
-                                   [recent actualValueForKey:@"givenname"], 
-                                   [recent actualValueForKey:@"sn"]];
+                                   [recent formattedValueForKey:@"givenname"], 
+                                   [recent formattedValueForKey:@"sn"]];
 			
 			// show person's title, dept, or email as cell's subtitle text
 			cell.detailTextLabel.text = @" "; // put something there so other cells' contents won't get drawn here
 			NSArray *displayPriority = [NSArray arrayWithObjects:@"title", @"ou", nil];
 			NSString *displayText;
 			for (NSString *tag in displayPriority) {
-				if (displayText = [recent actualValueForKey:tag]) {
+				if (displayText = [recent formattedValueForKey:tag]) {
 					cell.detailTextLabel.text = displayText;
 					break;
 				}

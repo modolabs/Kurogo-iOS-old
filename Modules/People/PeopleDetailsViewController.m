@@ -29,7 +29,7 @@
 	
 	NSArray *existingValues = (NSArray *)ABMultiValueCopyArrayOfAllValues(multiValue);
 	NSString *ldapValue;
-	if (ldapValue = [self.personDetails actualValueForKey:ldapKey]) {
+	if (ldapValue = [self.personDetails formattedValueForKey:ldapKey]) {
 		for (NSString *value in [ldapValue componentsSeparatedByString:kPersonDetailsValueSeparatorToken]) {
 			if (![existingValues containsObject:value]) {
 				ABMultiValueAddValueAndLabel(multiValue, value, label, NULL);
@@ -53,9 +53,9 @@
 	// get fullname for header
 	NSMutableArray *multiPartAttribute = [[NSMutableArray alloc] initWithCapacity:2];	
 	NSString *value;
-	if (value = [self.personDetails actualValueForKey:@"givenname"])
+	if (value = [self.personDetails formattedValueForKey:@"givenname"])
 		[multiPartAttribute addObject:value];
-	if (value = [self.personDetails actualValueForKey:@"sn"])
+	if (value = [self.personDetails formattedValueForKey:@"sn"])
 		[multiPartAttribute addObject:value];
 	self.fullname = [multiPartAttribute componentsJoinedByString:@" "];
 	[multiPartAttribute release];
@@ -419,7 +419,7 @@
 		ABRecordSetValue(newPerson, kABPersonFirstNameProperty, recordValue, &error);
         CFRelease(recordValue);
     }
-	else if (ldapValue = [self.personDetails actualValueForKey:@"givenname"])
+	else if (ldapValue = [self.personDetails formattedValueForKey:@"givenname"])
 		ABRecordSetValue(newPerson, kABPersonFirstNameProperty, ldapValue, &error);
 	
     recordValue = ABRecordCopyValue(person, kABPersonLastNameProperty);
@@ -427,7 +427,7 @@
         ABRecordSetValue(newPerson, kABPersonLastNameProperty, recordValue, &error);
         CFRelease(recordValue);
     }
-	else if (ldapValue = [self.personDetails actualValueForKey:@"sn"])
+	else if (ldapValue = [self.personDetails formattedValueForKey:@"sn"])
 		ABRecordSetValue(newPerson, kABPersonLastNameProperty, ldapValue, &error);
 	
     recordValue = ABRecordCopyValue(person, kABPersonJobTitleProperty);
@@ -435,7 +435,7 @@
         ABRecordSetValue(newPerson, kABPersonJobTitleProperty, recordValue, &error);
         CFRelease(recordValue);
     }
-	else if (ldapValue = [self.personDetails actualValueForKey:@"title"])
+	else if (ldapValue = [self.personDetails formattedValueForKey:@"title"])
 		ABRecordSetValue(newPerson, kABPersonJobTitleProperty, ldapValue, &error);
 	
     recordValue = ABRecordCopyValue(person, kABPersonDepartmentProperty);
@@ -443,7 +443,7 @@
         ABRecordSetValue(newPerson, kABPersonDepartmentProperty, recordValue, &error);
         CFRelease(recordValue);
     }
-	else if (ldapValue = [self.personDetails actualValueForKey:@"ou"])
+	else if (ldapValue = [self.personDetails formattedValueForKey:@"ou"])
 		ABRecordSetValue(newPerson, kABPersonDepartmentProperty, ldapValue, &error);
 		
 	// multi value phone property (including fax numbers)
