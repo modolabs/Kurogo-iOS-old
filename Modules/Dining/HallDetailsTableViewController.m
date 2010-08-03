@@ -197,6 +197,17 @@ numberOfRowsInSection:(NSInteger)section
 			if (row == 1) {
 				cell.detailTextLabel.text = @"Saturday only";
 			}
+			
+			else if (row == 2) {
+				cell.detailTextLabel.text = [NSString stringWithFormat:@"%@ (Sunday-Thursday)", cellText2];
+			}
+		}
+		
+		else if ([hallStatus.hallName isEqualToString:@"Fly-By"]) {
+			
+			if (row == 1) {
+				cell.detailTextLabel.text = [NSString stringWithFormat:@"%@ (Monday-Friday)", cellText2];
+			}
 		}
 		
 		if ((row == 3) && ![cellText2 isEqualToString:@"Closed"]) {

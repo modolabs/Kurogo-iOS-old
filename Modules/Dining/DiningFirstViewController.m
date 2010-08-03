@@ -54,7 +54,7 @@ JSONAPIRequest *mitapi;
 	[_tabViews insertObject:_loadingResultView atIndex:kBreakfastTab];
 	[_tabViewContainer addSubview:_loadingResultView];
 
-	[self addLoadingIndicator];
+	
 	
 	// Format the requesting URL in the correct Format
 	NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
@@ -72,6 +72,7 @@ JSONAPIRequest *mitapi;
 		// set the requesting Tab index to the correct one
 		tabRequestingInfo = kBreakfastTab;	
 		requestDispatched = YES;
+		[self addLoadingIndicator];
 	}
 	else {
 		requestDispatched = NO;
@@ -98,8 +99,7 @@ JSONAPIRequest *mitapi;
 	[_tabViews insertObject:_loadingResultView atIndex:kLunchTab];
 	[_tabViewContainer addSubview:_loadingResultView];
 
-	[self addLoadingIndicator];
-	
+		
 	// Format the requesting URL in the correct Format
 	NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
 	[dateFormat setDateFormat:@"YYYY-MM-dd"];
@@ -116,6 +116,7 @@ JSONAPIRequest *mitapi;
 		// set the requesting Tab index to the correct one
 		tabRequestingInfo = kLunchTab;	
 		requestDispatched = YES;
+		[self addLoadingIndicator];
 	}
 	else {
 		requestDispatched = NO;
@@ -142,8 +143,7 @@ JSONAPIRequest *mitapi;
 	[_tabViews insertObject:_loadingResultView atIndex:kDinnerTab];
 	[_tabViewContainer addSubview:_loadingResultView];
 
-	[self addLoadingIndicator];
-	
+
 	// Format the requesting URL in the correct Format
 	NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
 	[dateFormat setDateFormat:@"YYYY-MM-dd"];
@@ -158,6 +158,7 @@ JSONAPIRequest *mitapi;
 		// set the requesting Tab index to the correct one
 		tabRequestingInfo = kDinnerTab;	
 		requestDispatched = YES;
+			[self addLoadingIndicator];
 	}
 	else {
 		requestDispatched = NO;
@@ -498,6 +499,7 @@ JSONAPIRequest *mitapi;
 		}
 		else {
 			requestDispatched = NO;
+			[self removeLoadingIndicator];
 		}
 	}
 
@@ -681,7 +683,7 @@ numberOfRowsInSection:(NSInteger)section
 	
 	
 	//cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-	cell.selectionStyle = UITableViewCellSelectionStyleGray;
+	cell.selectionStyle = UITableViewCellSelectionStyleNone;
 	cell.backgroundColor = GROUPED_VIEW_CELL_COLOR;
 	
 	
