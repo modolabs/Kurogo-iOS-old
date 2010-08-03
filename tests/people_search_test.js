@@ -264,7 +264,7 @@ function testSuiteFieldsSeparatedByNewLine()
 {
 	var expectedSearchResultValues = {
 		"email": "jmurcian@law.harvard.edu",
-		"title": "Associate Director\nOPIA and Director of Fellowships\nTutor\nAssistant Sr (Harv Std)\nContin Ed/Spec Prog Instructor",
+		"title": "Associate Director, OPIA and Director of Fellowships\nTutor, Assistant Sr (Harv Std)\nContin Ed/Spec Prog Instructor",
 		"fax": "+1-617-496-4944",
 		"unit": "HLS / Pblc Interest\nFAS / FCOL / Leverett-Oth\nFAS / FDCE / Other Academic"
 	};
