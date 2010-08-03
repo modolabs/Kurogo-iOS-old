@@ -212,7 +212,7 @@ typedef enum {
 		}
 		case kBehaviorSettingsSection:
 		{
-			label = @"Shake to go Home";
+			label = @"Shake To Go Home";
 			switchToggleHandler = @selector(behaviorSwitchDidToggle:);
 			switchIsOnNow = [[NSUserDefaults standardUserDefaults] boolForKey:ShakeToReturnPrefKey];
 			break;
