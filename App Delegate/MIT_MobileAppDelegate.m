@@ -273,7 +273,9 @@ didReceiveRemoteNotification:(NSDictionary *)userInfo {
 
 - (void)motionEnded:(UIEventSubtype)motion withEvent:(UIEvent *)event
 {
-    if (motion == UIEventSubtypeMotionShake) {
+    if ((motion == UIEventSubtypeMotionShake) &&
+		([[NSUserDefaults standardUserDefaults] boolForKey:ShakeToReturnPrefKey])) {
+			
         MIT_MobileAppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
         [appDelegate returnToHome];
     }

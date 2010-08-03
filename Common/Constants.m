@@ -45,6 +45,7 @@ NSString * const MITUnreadNotificationsKey = @"UnreadNotifications";
 NSString * const PushNotificationSettingsKey = @"ModulesDisabledForPush";
 NSString * const MITModulesSavedStateKey = @"MITModulesSavedState";
 NSString * const CachedMapSearchQueryKey = @"CachedMapSearchQuerey";
+NSString * const ShakeToReturnPrefKey = @"ShakeToReturnHomePref";
 
 NSString * const MITInternalURLScheme = @"harvardmobile";
 
