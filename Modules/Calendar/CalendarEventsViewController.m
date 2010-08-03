@@ -151,11 +151,11 @@
 	
 	// TODO: clean up the code to remvoe the types: Exhibits, Academic and Holiday
 	//CalendarEventListType buttonTypes[NumberOfCalendarEventListTypes] = {
-	CalendarEventListType buttonTypes[2] = {
+	CalendarEventListType buttonTypes[3] = {
 		CalendarEventListTypeEvents,
 		//CalendarEventListTypeExhibits,
 		CalendarEventListTypeCategory,
-		//CalendarEventListTypeAcademic,
+		CalendarEventListTypeAcademic,
 		//CalendarEventListTypeHoliday
 	};
 	

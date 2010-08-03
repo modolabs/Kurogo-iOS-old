@@ -18,9 +18,9 @@ typedef enum {
 	
 	CalendarEventListTypeEvents,
 	CalendarEventListTypeCategory,
-	NumberOfCalendarEventListTypes, // Changed the order so that the NumberOfCalendarEventListTypes = 2, and not 4
-	CalendarEventListTypeExhibits,	
 	CalendarEventListTypeAcademic,
+	NumberOfCalendarEventListTypes, // Changed the order so that the NumberOfCalendarEventListTypes = 2, and not 4
+	CalendarEventListTypeExhibits,		
 	CalendarEventListTypeHoliday
 } CalendarEventListType;
 
