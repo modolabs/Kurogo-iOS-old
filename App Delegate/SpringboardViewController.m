@@ -213,6 +213,7 @@
         [self.searchResultsTableView applyStandardColors];
     }
     [self.view addSubview:self.searchResultsTableView];
+    [self searchAllModules];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(searchDidMakeProgress:) name:@"SearchResultsProgressNotification" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(searchDidComplete:) name:@"SearchResultsCompleteNotification" object:nil];
 }
@@ -240,9 +241,11 @@
 - (void)searchBar:(UISearchBar *)searchBar selectedScopeButtonIndexDidChange:(NSInteger)selectedScope {
 }
 
+#pragma mark Federated search
+
 - (void)searchDidMakeProgress:(NSNotification *)aNotification {
     MITModule *sender = [aNotification object];
-    NSInteger section = [searchableModules indexOfObject:sender];
+    NSInteger section = [self.searchableModules indexOfObject:sender];
     NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:section];
     NSArray *indexPaths = [NSArray arrayWithObject:indexPath];
     [searchResultsTableView reloadRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationNone];
@@ -250,49 +253,77 @@
 
 - (void)searchDidComplete:(NSNotification *)aNotification {
     MITModule *sender = [aNotification object];
-    NSInteger section = [searchableModules indexOfObject:sender];
+    NSInteger section = [self.searchableModules indexOfObject:sender];
     NSIndexSet *sections = [NSIndexSet indexSetWithIndex:section];
     [searchResultsTableView reloadSections:sections withRowAnimation:UITableViewRowAnimationNone];
 }
 
-#pragma mark UITableView datasource
+- (void)searchAllModules {
+    for (MITModule *aModule in self.searchableModules) {
+        if (!aModule.isSearching) {
+            [aModule performSearchForString:_searchBar.text];
+        }
+    }
+    [self.searchResultsTableView reloadData];
+}
 
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+- (NSArray *)searchableModules {
     if (!searchableModules) {
         searchableModules = [[NSMutableArray alloc] initWithCapacity:4];
         NSArray *modules = ((MIT_MobileAppDelegate *)[[UIApplication sharedApplication] delegate]).modules;
         for (MITModule *aModule in modules) {
             if (aModule.supportsFederatedSearch) {
                 [searchableModules addObject:aModule];
-                if (!aModule.isSearching) {
-                    [aModule performSearchForString:_searchBar.text];
-                }
             }
         }
     }
-    return [searchableModules count];
+    return searchableModules;
+}
+
+#pragma mark UITableView datasource
+
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+    return [self.searchableModules count];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     
     static NSString *CellIdentifier = @"Cell";
     
-    MITModule *aModule = [searchableModules objectAtIndex:indexPath.section];
+    MITModule *aModule = [self.searchableModules objectAtIndex:indexPath.section];
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil) {
         cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier] autorelease];
     }
     
-    if (aModule.searchProgress == 1.0) {
+    if (indexPath.row == 0) {
         UIView *spinny = [cell viewWithTag:1234];
         if (spinny != nil) {
             [spinny removeFromSuperview];
         }
-
-        id aResult = [aModule.searchResults objectAtIndex:indexPath.row];
+    }
+    
+    if (aModule.searchProgress == 1.0) {
         cell.imageView.image = nil;
-        cell.textLabel.text = [aModule titleForSearchResult:aResult];
-        cell.detailTextLabel.text = [aModule subtitleForSearchResult:aResult];
+
+        // TODO: add result count -- either in the cell header or after "more results"
+        if (indexPath.row == MAX_FEDERATED_SEARCH_RESULTS) {
+            cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+            cell.textLabel.text = @"More results";
+            cell.detailTextLabel.text = nil;
+            
+        } else if (![aModule.searchResults count]) {
+            cell.accessoryType = UITableViewCellAccessoryNone;
+            cell.textLabel.text = @"No results";
+            cell.detailTextLabel.text = nil;
+            cell.selectionStyle = UITableViewCellSelectionStyleNone;
+
+        } else {
+            id aResult = [aModule.searchResults objectAtIndex:indexPath.row];
+            cell.accessoryType = UITableViewCellAccessoryNone;
+            cell.textLabel.text = [aModule titleForSearchResult:aResult];
+            cell.detailTextLabel.text = [aModule subtitleForSearchResult:aResult];
+        }
 
     } else if (aModule.searchProgress == 0.0) {
         // indeterminate loading indicator
@@ -308,11 +339,6 @@
         [spinny release];
         
     } else {
-        UIView *spinny = [cell viewWithTag:1234];
-        if (spinny != nil) {
-            [spinny removeFromSuperview];
-        }
-        
         // determinate loading indicator
         cell.imageView.image = nil;
         cell.textLabel.text = [NSString stringWithFormat:@"%.0f%% complete", aModule.searchProgress * 100];
@@ -323,25 +349,37 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     NSInteger num = 1;
-    MITModule *aModule = [searchableModules objectAtIndex:section];
+    MITModule *aModule = [self.searchableModules objectAtIndex:section];
     if (aModule.searchProgress == 1.0) {
         num = [aModule.searchResults count];
+        if (num > MAX_FEDERATED_SEARCH_RESULTS) {
+            num = MAX_FEDERATED_SEARCH_RESULTS + 1; // one extra row for "more"
+        } else if (num == 0) {
+            num = 1;
+        }
     }
     return num;
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
-    MITModule *aModule = [searchableModules objectAtIndex:section];
+    MITModule *aModule = [self.searchableModules objectAtIndex:section];
     NSString *title = aModule.longName;
     return [UITableView ungroupedSectionHeaderWithTitle:title];
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    MITModule *aModule = [searchableModules objectAtIndex:indexPath.section];
-    activeModule = aModule;
-    [activeModule handleLocalPath:@"search" query:[NSString stringWithFormat:@"q=%@&row=%d", _searchBar.text, indexPath.row]];
-    MIT_MobileAppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
-    [appDelegate showModuleForTag:activeModule.tag];
+    MITModule *aModule = [self.searchableModules objectAtIndex:indexPath.section];
+    if ([aModule.searchResults count]) {
+        activeModule = aModule;
+        if (indexPath.row == MAX_FEDERATED_SEARCH_RESULTS) {
+            [activeModule handleLocalPath:LocalPathFederatedSearch query:[NSString stringWithFormat:@"%@", _searchBar.text, indexPath.row]];
+        } else {
+            // TODO: decide whether the query string really needs to be passed to the module
+            [activeModule handleLocalPath:LocalPathFederatedSearchResult query:[NSString stringWithFormat:@"q=%@&row=%d", _searchBar.text, indexPath.row]];
+        }
+        MIT_MobileAppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+        [appDelegate showModuleForTag:activeModule.tag];
+    }
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {

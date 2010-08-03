@@ -10,7 +10,6 @@
         self.shortName = @"Settings";
         self.longName = @"Settings";
         self.iconName = @"settings";
-        //self.isMovableTab = FALSE;
         
         SettingsTableViewController *settingsVC = [[[SettingsTableViewController alloc] initWithStyle:UITableViewStyleGrouped] autorelease];
         settingsVC.title = self.longName;

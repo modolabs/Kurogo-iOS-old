@@ -52,15 +52,21 @@
 #pragma mark -
 #pragma mark NSURLConnection delegation
 - (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response {
+    contentLength = [response expectedContentLength];
 	[tempData setLength:0];	// could receive multiple responses (e.g. from redirect), so reset tempData with every request (last request received will deliver payload)
     if ([delegate respondsToSelector:@selector(connectionDidReceiveResponse:)]) {
         [delegate connectionDidReceiveResponse:self];	// have the delegate decide what to do with the error
-    }    
+    }
 }
 
 // internal method used by NSURLConnection
 - (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data {	// should be repeatedly called until download is complete. this method will only be called after there are no more responses received (see above method)
 	[tempData appendData:data];		// got some data in, so append it
+    if (contentLength != NSURLResponseUnknownLength && [delegate respondsToSelector:@selector(connection:madeProgress:)]) {
+        NSUInteger lengthComplete = [tempData length];
+        CGFloat progress = (CGFloat)lengthComplete / (CGFloat)contentLength;
+        [delegate connection:self madeProgress:progress];
+    }
 }
 
 // internal method used by NSURLConnection

@@ -134,6 +134,12 @@
 	[self release];
 }
 
+- (void)connection:(ConnectionWrapper *)wrapper madeProgress:(CGFloat)progress {
+    if ([jsonDelegate respondsToSelector:@selector(request:madeProgress:)]) {
+        [jsonDelegate request:self madeProgress:progress];
+    }
+}
+
 #pragma mark JSON object
 
 + (id)objectWithJSONString:(NSString *)jsonString error:(NSError **)error {

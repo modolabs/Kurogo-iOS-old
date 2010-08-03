@@ -3,13 +3,16 @@
 #import "Foundation+MITAdditions.h"
 #import "ModoNavigationController.h"
 
+NSString * const LocalPathFederatedSearch = @"fedsearch";
+NSString * const LocalPathFederatedSearchResult = @"fedresult";
+
 @implementation MITModule
 
-@synthesize tag, shortName, longName, iconName, /*tabNavController, isMovableTab,*/ canBecomeDefault, pushNotificationSupported, pushNotificationEnabled;
+@synthesize tag, shortName, longName, iconName, canBecomeDefault, pushNotificationSupported, pushNotificationEnabled;
 @synthesize hasLaunchedBegun, currentPath, currentQuery;
 @synthesize viewControllers;
-@synthesize supportsFederatedSearch, searchProgress, searchResults, isSearching;
-@dynamic badgeValue, icon, tabBarIcon;
+@synthesize supportsFederatedSearch, searchProgress, searchResults, selectedResult, isSearching/*, searchText = _searchText*/;
+@dynamic badgeValue, icon;
 
 #pragma mark -
 #pragma mark Required
@@ -29,7 +32,6 @@
         self.shortName = @"foo";
         self.longName = @"Override -init!";
         self.iconName = nil;
-        //self.isMovableTab = TRUE;
         self.canBecomeDefault = TRUE;
 
         // federated search properties
@@ -41,7 +43,6 @@
 		self.currentQuery = nil;
 		
         self.pushNotificationSupported = NO;
-        // self.pushNotificationEnabled is set in applicationDidFinishLaunching, because that's when the tag is set
     }
     return self;
 }
@@ -63,7 +64,6 @@
     NSDictionary *pushDisabledSettings = [[NSUserDefaults standardUserDefaults] objectForKey:PushNotificationSettingsKey];
     self.pushNotificationEnabled = ([pushDisabledSettings objectForKey:self.tag] == nil) ? YES : NO; // enabled by default
 
-    //self.tabNavController.navigationItem.title = self.longName;
     UIViewController *aVC = [self rootViewController];
     if (aVC) {
         aVC.navigationItem.title = self.longName;
@@ -81,7 +81,7 @@
     // If your module needs to do something whenever it appears and it doesn't make sense to do so in a view controller, override this.
 }
 
-#pragma mark Saving state and handling external calls
+#pragma mark State
 
 - (BOOL)handleLocalPath:(NSString *)localPath query:(NSString *)query {
     NSLog(@"%@ not handling localPath: %@ query: %@", NSStringFromClass([self class]), localPath, query);
@@ -96,6 +96,8 @@
 - (void)resetNavStack {
 }
 
+#pragma mark Notifications
+
 - (BOOL)handleNotification:(MITNotification *)notification appDelegate: (MIT_MobileAppDelegate *)appDelegate shouldOpen: (BOOL)shouldOpen {
 	//NSLog(@"%@ can not handle notification %@", NSStringFromClass([self class]), notification);
 	return NO;
@@ -104,23 +106,23 @@
 - (void)handleUnreadNotificationsSync: (NSArray *)unreadNotifications {
 }
 
+#pragma mark Federated search
+
 - (void)performSearchForString:(NSString *)searchText {
-    self.isSearching = YES;
-}
-
-- (void)setSearchProgress:(CGFloat)progress {
-    searchProgress = progress;
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"SearchResultsProgressNotification" object:self userInfo:nil];
-}
-
-- (void)setSearchResults:(NSArray *)results {
-    if (searchResults != results) {
-        [searchResults release];
-        searchResults = [results retain];
+    if (isSearching) {
+        [self abortSearch];
     }
-    searchProgress = 1.0;
-    self.isSearching = NO;
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"SearchResultsCompleteNotification" object:self userInfo:nil];
+    isSearching = YES;
+    //self.searchText = searchText;
+    self.searchResults = nil;
+    self.searchProgress = 0;
+}
+
+- (void)abortSearch {
+    if (isSearching) {
+        // close all connections, parsers, observers
+    }
+    isSearching = NO;
 }
 
 - (NSString *)titleForSearchResult:(id)result {
@@ -129,6 +131,25 @@
 
 - (NSString *)subtitleForSearchResult:(id)result {
     return nil;
+}
+
+// do not override
+- (void)setSearchProgress:(CGFloat)progress {
+    searchProgress = progress;
+    if (progress > 0) {
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"SearchResultsProgressNotification" object:self userInfo:nil];
+    }
+}
+
+// do not override
+- (void)setSearchResults:(NSArray *)results {
+    if (searchResults != results) {
+        [searchResults release];
+        searchResults = [results retain];
+    }
+    searchProgress = 1.0;
+    isSearching = NO;
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"SearchResultsCompleteNotification" object:self userInfo:nil];
 }
 
 #pragma mark -
@@ -148,15 +169,6 @@
     UIImage *result = nil;
     if (self.iconName) {
         result = [UIImage imageNamed:[NSString stringWithFormat:@"home/home-%@.png", self.iconName]];
-    }
-    return result;
-}
-
-- (UIImage *)tabBarIcon {
-    UIImage *result = nil;
-    if (self.iconName) {
-        NSString *iconPath = [NSString stringWithFormat:@"%@%@%@%@", [[NSBundle mainBundle] resourcePath], @"/icons/tab-", self.iconName, @".png"];
-        result = [UIImage imageWithContentsOfFile:iconPath];
     }
     return result;
 }

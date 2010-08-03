@@ -43,6 +43,7 @@ UISearchBarDelegate, StoryXMLParserDelegate, JSONAPIDelegate, NavScrollerDelegat
     BOOL lastRequestSucceeded;
 }
 
+@property (nonatomic, assign) NSInteger totalAvailableResults;
 @property (nonatomic, retain) NewsStory *featuredStory;
 @property (nonatomic, retain) NSArray *stories;
 @property (nonatomic, retain) NSString *searchQuery;
@@ -51,8 +52,10 @@ UISearchBarDelegate, StoryXMLParserDelegate, JSONAPIDelegate, NavScrollerDelegat
 @property (nonatomic, assign) NewsCategoryId activeCategoryId;
 @property (nonatomic, retain) StoryXMLParser *xmlParser;
 
+- (void)presentSearchResults:(NSArray *)results searchText:(NSString *)searchText;
 - (void)showSearchBar;
 - (void)unfocusSearchBar;
+- (void)hideSearchOverlay;
 
 - (void)pruneStories;
 - (void)switchToCategory:(NewsCategoryId)category;
