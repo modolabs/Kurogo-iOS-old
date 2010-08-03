@@ -3,6 +3,7 @@
 #import "JSONAPIRequest.h"
 #import "TabScrollerBackgroundView.h"
 #import "ModoSearchBar.h"
+#import "StoryDetailViewController.h"
 
 typedef int NewsCategoryId;
 
@@ -10,7 +11,7 @@ typedef int NewsCategoryId;
 @class NewsStory;
 
 @interface StoryListViewController : UIViewController <UITableViewDataSource, UITableViewDelegate,
-UISearchBarDelegate, StoryXMLParserDelegate, JSONAPIDelegate, NavScrollerDelegate> {
+UISearchBarDelegate, StoryXMLParserDelegate, JSONAPIDelegate, NavScrollerDelegate, NewsControllerDelegate> {
 	UITableView *storyTable;
     NewsStory *featuredStory;
     NSArray *stories;
@@ -50,14 +51,17 @@ UISearchBarDelegate, StoryXMLParserDelegate, JSONAPIDelegate, NavScrollerDelegat
 @property (nonatomic, assign) NewsCategoryId activeCategoryId;
 @property (nonatomic, retain) StoryXMLParser *xmlParser;
 
+- (void)showSearchBar;
+- (void)unfocusSearchBar;
+
 - (void)pruneStories;
 - (void)switchToCategory:(NewsCategoryId)category;
 - (void)loadFromCache;
 - (void)loadFromServer:(BOOL)loadMore;
 - (void)loadSearchResultsFromCache;
 - (void)loadSearchResultsFromServer:(BOOL)loadMore forQuery:(NSString *)query;
-- (BOOL)canSelectPreviousStory;
-- (BOOL)canSelectNextStory;
-- (NewsStory *)selectPreviousStory;
-- (NewsStory *)selectNextStory;
+//- (BOOL)canSelectPreviousStory;
+//- (BOOL)canSelectNextStory;
+//- (NewsStory *)selectPreviousStory;
+//- (NewsStory *)selectNextStory;
 @end

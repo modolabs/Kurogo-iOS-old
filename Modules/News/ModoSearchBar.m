@@ -25,8 +25,6 @@
     }
     
     [self insertSubview:backgroundView atIndex:viewIndex];
-
-    NSLog(@"%@", [self.subviews description]);
 }
 
 - (void)dealloc {

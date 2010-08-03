@@ -11,6 +11,7 @@
 @synthesize window, modules;
 @synthesize deviceToken = devicePushToken;
 @synthesize theNavController;
+@synthesize springboard = theSpringboard;
 
 #pragma mark -
 #pragma mark Application lifecycle
@@ -43,8 +44,8 @@
 	}
     
     // Set up window
-    theSpringboard = [[SpringboardViewController alloc] initWithNibName:nil bundle:nil];
-    theNavController = [[ModoNavigationController alloc] initWithRootViewController:theSpringboard];
+    self.springboard = [[SpringboardViewController alloc] initWithNibName:nil bundle:nil];
+    theNavController = [[ModoNavigationController alloc] initWithRootViewController:self.springboard];
     theNavController.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:MITImageNameBackground]];
     [self.window addSubview:theNavController.view];
     
@@ -140,6 +141,7 @@
 - (void)dealloc {
     [self.deviceToken release];
     [self.modules release];
+    [self.springboard release];
 	[window release];
 	[super dealloc];
 }

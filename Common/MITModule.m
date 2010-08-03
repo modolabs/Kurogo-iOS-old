@@ -1,15 +1,14 @@
 #import "MITModule.h"
 #import "MITModuleList.h"
 #import "Foundation+MITAdditions.h"
-//#import "MITTabBarItem.h"
-//#import "MITMoreListController.h"
 #import "ModoNavigationController.h"
 
 @implementation MITModule
 
-@synthesize tag, shortName, longName, iconName, tabNavController, isMovableTab, canBecomeDefault, pushNotificationSupported, pushNotificationEnabled;
+@synthesize tag, shortName, longName, iconName, /*tabNavController, isMovableTab,*/ canBecomeDefault, pushNotificationSupported, pushNotificationEnabled;
 @synthesize hasLaunchedBegun, currentPath, currentQuery;
 @synthesize viewControllers;
+@synthesize supportsFederatedSearch, searchProgress, searchResults, isSearching;
 @dynamic badgeValue, icon, tabBarIcon;
 
 #pragma mark -
@@ -30,8 +29,11 @@
         self.shortName = @"foo";
         self.longName = @"Override -init!";
         self.iconName = nil;
-        self.isMovableTab = TRUE;
+        //self.isMovableTab = TRUE;
         self.canBecomeDefault = TRUE;
+
+        // federated search properties
+        self.supportsFederatedSearch = NO;
 		
 		// state related properties
 		self.hasLaunchedBegun = NO;
@@ -40,26 +42,6 @@
 		
         self.pushNotificationSupported = NO;
         // self.pushNotificationEnabled is set in applicationDidFinishLaunching, because that's when the tag is set
-
-        /*
-        // Give it a throwaway view controller because it cannot start with nothing.
-        UIViewController *dummyVC = [[UIViewController alloc] initWithNibName:nil bundle:nil];
-        dummyVC.navigationItem.title = @"Placeholder";
-        tabNavController = [[ModoNavigationController alloc] initWithRootViewController:dummyVC];
-		
-        // Custom tab bar item supports having a different icon in the tab bar and the More list
-        MITTabBarItem *item = [[MITTabBarItem alloc] initWithTitle:self.shortName image:self.tabBarIcon tag:0];
-        tabNavController.tabBarItem = item;
-        [item release];
-        
-		tabNavController.navigationBar.opaque = NO;
-        //tabNavController.navigationBar.barStyle = UIBarStyleBlack;
-		
-		// set overall background
-		tabNavController.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:MITImageNameBackground]];	
-        tabNavController.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-        [dummyVC release];
-        */
     }
     return self;
 }
@@ -86,10 +68,6 @@
     if (aVC) {
         aVC.navigationItem.title = self.longName;
     }
-    //MITTabBarItem *item = (MITTabBarItem *)self.tabNavController.tabBarItem;
-    //item.title = self.shortName;
-    //item.image = self.tabBarIcon;
-    //item.tableImage = self.icon;
 }
 
 - (void)applicationWillTerminate {
@@ -103,8 +81,10 @@
     // If your module needs to do something whenever it appears and it doesn't make sense to do so in a view controller, override this.
 }
 
+#pragma mark Saving state and handling external calls
+
 - (BOOL)handleLocalPath:(NSString *)localPath query:(NSString *)query {
-    //NSLog(@"%@ not handling localPath: %@ query: %@", NSStringFromClass([self class]), localPath, query);
+    NSLog(@"%@ not handling localPath: %@ query: %@", NSStringFromClass([self class]), localPath, query);
     return NO;
 }
 
@@ -113,12 +93,42 @@
 	self.currentQuery = @"";
 }
 
+- (void)resetNavStack {
+}
+
 - (BOOL)handleNotification:(MITNotification *)notification appDelegate: (MIT_MobileAppDelegate *)appDelegate shouldOpen: (BOOL)shouldOpen {
 	//NSLog(@"%@ can not handle notification %@", NSStringFromClass([self class]), notification);
 	return NO;
 }
 
 - (void)handleUnreadNotificationsSync: (NSArray *)unreadNotifications {
+}
+
+- (void)performSearchForString:(NSString *)searchText {
+    self.isSearching = YES;
+}
+
+- (void)setSearchProgress:(CGFloat)progress {
+    searchProgress = progress;
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"SearchResultsProgressNotification" object:self userInfo:nil];
+}
+
+- (void)setSearchResults:(NSArray *)results {
+    if (searchResults != results) {
+        [searchResults release];
+        searchResults = [results retain];
+    }
+    searchProgress = 1.0;
+    self.isSearching = NO;
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"SearchResultsCompleteNotification" object:self userInfo:nil];
+}
+
+- (NSString *)titleForSearchResult:(id)result {
+    return @"placeholder";
+}
+
+- (NSString *)subtitleForSearchResult:(id)result {
+    return nil;
 }
 
 #pragma mark -
@@ -196,18 +206,6 @@
     if ([self.viewControllers count]) {
         return [self.viewControllers objectAtIndex:0];
     }
-    /*
-	if(tabNavController.viewControllers.count > 0) {
-		UIViewController *firstViewController = [tabNavController.viewControllers objectAtIndex:0];
-		if(![firstViewController isKindOfClass:[MITMoreListController class]]) {
-			// we only want to return a ViewController that belongs to the module
-			// not More List view controller, which can be the root, for modules in the more list
-			return firstViewController;
-		} else if (tabNavController.viewControllers.count > 1) {
-			return [tabNavController.viewControllers objectAtIndex:1];
-		}
-	}
-    */
 	return nil;
 }
 		 

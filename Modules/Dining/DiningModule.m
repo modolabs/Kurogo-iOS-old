@@ -11,7 +11,7 @@
         self.shortName = @"Dining";
         self.longName = @"Harvard Dining";
         self.iconName = @"dining";
-        self.isMovableTab = FALSE;
+        //self.isMovableTab = FALSE;
         
         DiningFirstViewController *aboutVC = [[[DiningFirstViewController alloc] init] autorelease];
         aboutVC.title = self.longName;

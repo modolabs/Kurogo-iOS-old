@@ -37,9 +37,9 @@
 - (void)setLastUpdated:(NSDate *)date;
 - (void)setProgress:(CGFloat)value;
 
-- (void)showSearchBar;
+//- (void)showSearchBar;
 - (void)focusSearchBar;
-- (void)unfocusSearchBar;
+//- (void)unfocusSearchBar;
 - (void)hideSearchBar;
 - (void)showSearchOverlay;
 - (void)hideSearchOverlay;

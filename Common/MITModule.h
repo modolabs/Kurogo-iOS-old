@@ -23,14 +23,19 @@
     // tabBarItem.badgeValue, because they are actually affecting the 
     // moreNavigationController. There will be more changes to MITModule later 
     // to simplify tab badging and navigation stack management.
-    ModoNavigationController *tabNavController;
+    //ModoNavigationController *tabNavController;
     
     NSArray *viewControllers;
     
-    BOOL isMovableTab; // TRUE if this module's tab can be rearranged during UITabBar customization. FALSE otherwise.
+    //BOOL isMovableTab; // TRUE if this module's tab can be rearranged during UITabBar customization. FALSE otherwise.
     BOOL canBecomeDefault; // TRUE if this module can become the default tab at startup
     BOOL pushNotificationSupported;
     BOOL pushNotificationEnabled; // toggled by user in SettingsModule
+    
+    BOOL supportsFederatedSearch;
+    CGFloat searchProgress; // between 0 and 1
+    NSArray *searchResults;
+    BOOL isSearching;
 	
 	// properties used for saving and restoring state
 	// if module keeps track of its state it is required respond to handleLocalPath:query
@@ -46,7 +51,6 @@
 #pragma mark Optional methods
 
 - (void)applicationDidFinishLaunching; // Called after all modules are initialized and have added their tabNavController to the tab bar
-
 - (void)applicationWillTerminate; // Called before app quits. Last chance to save state.
 
 - (NSString *)description; // what NSLog(@"%@", aModule); prints
@@ -54,35 +58,41 @@
 - (void)didAppear;
 
 - (BOOL)handleLocalPath:(NSString *)localPath query:(NSString *)query;
-
 - (void)resetURL; // reset the URL, (i.e. path and query to empty strings)
 
-- (BOOL)handleNotification: (MITNotification *)notification appDelegate: (MIT_MobileAppDelegate *)appDelegate shouldOpen: (BOOL)shouldOpen; // Called when a push notification arrives
+- (void)resetNavStack;
+- (void)performSearchForString:(NSString *)searchText;
+- (void)setSearchProgress:(CGFloat)progress;
+- (void)setSearchResults:(NSArray *)results;
+- (NSString *)titleForSearchResult:(id)result;
+- (NSString *)subtitleForSearchResult:(id)result;
 
+- (BOOL)handleNotification: (MITNotification *)notification appDelegate: (MIT_MobileAppDelegate *)appDelegate shouldOpen: (BOOL)shouldOpen; // Called when a push notification arrives
 - (void)handleUnreadNotificationsSync: (NSArray *)unreadNotifications; // called to let the module know the unreads may have changed
 
 - (void)becomeActiveTab;
-
 - (BOOL)isActiveTab;
 
 #pragma mark tabNavController methods
 
 - (void) popToRootViewController;
-
 - (UIViewController *) rootViewController;
-
 - (void) pushViewController: (UIViewController *)viewController;
-
-
 
 
 @property (nonatomic, copy) NSString *tag;
 @property (nonatomic, copy) NSString *shortName;
 @property (nonatomic, copy) NSString *longName;
 @property (nonatomic, copy) NSString *iconName;
-@property (nonatomic, readonly) ModoNavigationController *tabNavController;
+//@property (nonatomic, readonly) ModoNavigationController *tabNavController;
 @property (nonatomic, retain) NSArray *viewControllers;
-@property (nonatomic, assign) BOOL isMovableTab;
+//@property (nonatomic, assign) BOOL isMovableTab;
+
+@property (nonatomic, assign) CGFloat searchProgress;
+@property (nonatomic, retain) NSArray *searchResults;
+@property (nonatomic, assign) BOOL supportsFederatedSearch;
+@property (nonatomic, assign) BOOL isSearching;
+
 @property (nonatomic, assign) BOOL canBecomeDefault;
 @property (nonatomic, assign) BOOL pushNotificationSupported;
 @property (nonatomic, assign) BOOL pushNotificationEnabled;

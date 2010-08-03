@@ -1,16 +1,20 @@
 #import "SpringboardViewController.h"
 #import "MIT_MobileAppDelegate.h"
 #import "MITModuleList.h"
+#import "MITUIConstants.h"
 
-#define GRID_PADDING 8.0f
-#define ICON_LABEL_HEIGHT 30.0f
+#define GRID_HPADDING 12.0f
+#define GRID_VPADDING 8.0f
+#define ICON_LABEL_HEIGHT 26.0f
 
 @implementation SpringboardViewController
 
+@synthesize searchResultsTableView;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
     
     if ((self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil])) {
+        activeModule = nil;
     }
     return self;
 }
@@ -23,31 +27,32 @@
     SpringboardIcon *anIcon = [icons objectAtIndex:0];
     CGSize iconSize = anIcon.frame.size;
 
-    NSInteger iconsPerRow = (int)floor((viewSize.width - GRID_PADDING) / (iconSize.width + GRID_PADDING));
+    NSInteger iconsPerRow = (int)floor((viewSize.width - GRID_HPADDING) / (iconSize.width + GRID_HPADDING));
     div_t result = div([icons count], iconsPerRow);
     NSInteger numRows = (result.rem == 0) ? result.quot : result.quot + 1;
-    CGFloat rowHeight = anIcon.frame.size.height + GRID_PADDING;
+    CGFloat rowHeight = anIcon.frame.size.height + GRID_VPADDING;
 
-    if ((rowHeight + GRID_PADDING) * numRows > viewSize.height - GRID_PADDING) {
+    if ((rowHeight + GRID_VPADDING) * numRows > viewSize.height - GRID_VPADDING) {
         iconsPerRow++;
-        CGFloat iconWidth = floor((viewSize.width - GRID_PADDING) / iconsPerRow) - GRID_PADDING;
+        CGFloat iconWidth = floor((viewSize.width - GRID_HPADDING) / iconsPerRow) - GRID_HPADDING;
         iconSize.height = floor(iconSize.height * (iconWidth / iconSize.width));
         iconSize.width = iconWidth;
     }
     
     // calculate xOrigin to keep icons centered
-    CGFloat xOriginInitial = (viewSize.width - ((iconSize.width + GRID_PADDING) * iconsPerRow - GRID_PADDING)) / 2;
+    CGFloat xOriginInitial = (viewSize.width - ((iconSize.width + GRID_HPADDING) * iconsPerRow - GRID_HPADDING)) / 2;
     CGFloat xOrigin = xOriginInitial;
-    CGFloat yOrigin = GRID_PADDING + 20.0;
+    CGFloat yOrigin = _searchBar.frame.size.height + GRID_VPADDING + 16.0;
     bottomRight = CGPointZero;
     
     for (anIcon in icons) {
         anIcon.frame = CGRectMake(xOrigin, yOrigin, iconSize.width, iconSize.height);
-        NSLog(@"%@", [anIcon description]);
-        xOrigin += anIcon.frame.size.width + GRID_PADDING;
-        if (xOrigin + anIcon.frame.size.width + GRID_PADDING >= viewSize.width) {
+        bottomRight.y = yOrigin + anIcon.frame.size.height;
+        
+        xOrigin += anIcon.frame.size.width + GRID_HPADDING;
+        if (xOrigin + anIcon.frame.size.width + GRID_HPADDING >= viewSize.width) {
             xOrigin = xOriginInitial;
-            yOrigin += anIcon.frame.size.height + GRID_PADDING;
+            yOrigin += anIcon.frame.size.height + GRID_VPADDING;
         }
         
         if (![anIcon isDescendantOfView:containingView]) {
@@ -56,65 +61,25 @@
 
         if (bottomRight.x < xOrigin + anIcon.frame.size.width) {
             bottomRight.x = xOrigin + anIcon.frame.size.width;
-        }
-        
-        if (bottomRight.y < yOrigin + anIcon.frame.size.height) {
-            bottomRight.y = yOrigin + anIcon.frame.size.height;
-        }
+        }        
     }
     
     topLeft = ((SpringboardIcon *)[icons objectAtIndex:0]).frame.origin;
-    
+
     if (bottomRight.y > containingView.contentSize.height) {
-        containingView.contentSize = CGSizeMake(containingView.contentSize.width, bottomRight.y + GRID_PADDING + 20.0);
+        containingView.contentSize = CGSizeMake(containingView.contentSize.width, bottomRight.y + GRID_VPADDING + 20.0);
     }
 
-}
-
-- (void)customizeIcons:(id)sender {
-    CGRect frame = CGRectMake(0, 0, containingView.frame.size.width, containingView.frame.size.height);
-    transparentOverlay = [[UIView alloc] initWithFrame:frame];
-    transparentOverlay.backgroundColor = [UIColor clearColor];
-    [containingView addSubview:transparentOverlay];
-    
-    UIBarButtonItem *doneButton = [[[UIBarButtonItem alloc] initWithTitle:@"Done"
-                                                                    style:UIBarButtonItemStyleDone
-                                                                   target:self
-                                                                   action:@selector(endCustomize)] autorelease];
-    navigationBar.topItem.rightBarButtonItem = doneButton;
-    
-    editing = YES;
-    editedIcons = [_icons copy];
-    [self becomeFirstResponder];
-}
-
-- (void)endCustomize {
-    _icons = editedIcons;
-    [transparentOverlay removeFromSuperview];
-    [transparentOverlay release];
-    
-    UIBarButtonItem *editButton = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemEdit
-                                                                                 target:self
-                                                                                 action:@selector(customizeIcons:)] autorelease];
-    navigationBar.topItem.rightBarButtonItem = editButton;
-    
-    [self resignFirstResponder];
-    editing = NO;
 }
 
 - (void)loadView {
     [super loadView];
     
-    containingView = [[UIScrollView alloc] initWithFrame:self.view.bounds];
-    containingView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:ImageNameHomeScreenBackground]];
-    containingView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-    [self.view addSubview:containingView];
-    
     //UIBarButtonItem *editButton = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemEdit
     //                                                                             target:self
     //                                                                             action:@selector(customizeIcons:)] autorelease];
     //self.navigationItem.rightBarButtonItem = editButton;
-    self.navigationItem.title = @"Home";
+    
     
     NSArray *modules = ((MIT_MobileAppDelegate *)[[UIApplication sharedApplication] delegate]).modules;
     _icons = [[NSMutableArray alloc] initWithCapacity:[modules count]];
@@ -123,18 +88,17 @@
         SpringboardIcon *anIcon = [SpringboardIcon buttonWithType:UIButtonTypeCustom];
         UIImage *image = [aModule icon];
         if (image) {
-            NSLog(@"adding icon for module %@", aModule.tag);
             anIcon.frame = CGRectMake(0, 0, image.size.width, image.size.height + ICON_LABEL_HEIGHT);
             
             anIcon.imageEdgeInsets = UIEdgeInsetsMake(0, 0, ICON_LABEL_HEIGHT, 0);
             [anIcon setImage:image forState:UIControlStateNormal];
-
+            
+            // title by default is placed to the right of the image, we want it below
             anIcon.titleEdgeInsets = UIEdgeInsetsMake(image.size.height, -image.size.width, 0, 0);
             [anIcon setTitle:aModule.shortName forState:UIControlStateNormal];
             [anIcon setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
             [anIcon setTitleColor:[UIColor whiteColor] forState:UIControlStateHighlighted];
             anIcon.titleLabel.font = [UIFont boldSystemFontOfSize:13.0];
-            NSLog(@"%@", [anIcon.titleLabel description]);
             
             anIcon.moduleTag = aModule.tag;
             [anIcon addTarget:self action:@selector(buttonPressed:) forControlEvents:UIControlEventTouchUpInside];
@@ -147,9 +111,23 @@
         anIcon.accessibilityLabel = aModule.iconName;
     }
     
-    [self layoutIcons:_icons];
 }
 
+- (void)viewDidLoad
+{
+    self.navigationItem.title = @"Home";
+    
+    containingView = [[UIScrollView alloc] initWithFrame:self.view.bounds];
+    containingView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:ImageNameHomeScreenBackground]];
+    containingView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+    [self.view addSubview:containingView];
+
+    _searchBar = [[ModoSearchBar alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 44)];
+    _searchBar.delegate = self;
+    [self.view addSubview:_searchBar];
+
+    [self layoutIcons:_icons];
+}
 
 - (void)buttonPressed:(id)sender {
     SpringboardIcon *anIcon = (SpringboardIcon *)sender;
@@ -157,7 +135,14 @@
         [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"http://www.harvard.edu"]];
     } else {
         MIT_MobileAppDelegate *appDelegate = (MIT_MobileAppDelegate *)[[UIApplication sharedApplication] delegate];
+        activeModule = [appDelegate moduleForTag:anIcon.moduleTag];
         [appDelegate showModuleForTag:anIcon.moduleTag];
+    }
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+    if (isSearch) {
+        [activeModule resetNavStack];
     }
 }
 
@@ -191,12 +176,212 @@
 
 
 - (void)dealloc {
+    [_icons release];
+    [containingView release];
+    [_searchBar release];
     [super dealloc];
 }
 
-/*
-#pragma mark UIResponder
+#pragma mark Search Bar delegation
 
+- (BOOL)searchBarShouldBeginEditing:(UISearchBar *)searchBar {
+    [searchBar setShowsCancelButton:YES animated:YES];
+    [searchBar setShowsScopeBar:YES];
+    searchBar.scopeButtonTitles = [NSArray arrayWithObjects:@"one", @"two", @"three", nil];
+    return YES;
+}
+
+- (BOOL)searchBarShouldEndEditing:(UISearchBar *)searchBar {
+    return YES;
+}
+
+- (void)searchBarTextDidBeginEditing:(UISearchBar *)searchBar {
+}
+
+- (void)searchBarTextDidEndEditing:(UISearchBar *)searchBar {
+}
+
+- (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar {
+    [searchBar resignFirstResponder];
+    [searchBar setShowsCancelButton:NO animated:YES];
+    if (!self.searchResultsTableView) {
+        CGRect frame = CGRectMake(0, _searchBar.frame.size.height, self.view.frame.size.width,
+                                  self.view.frame.size.height - _searchBar.frame.size.height);
+        self.searchResultsTableView = [[[UITableView alloc] initWithFrame:frame style:UITableViewStyleGrouped] autorelease];
+        self.searchResultsTableView.dataSource = self;
+        self.searchResultsTableView.delegate = self;
+        [self.searchResultsTableView applyStandardColors];
+    }
+    [self.view addSubview:self.searchResultsTableView];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(searchDidMakeProgress:) name:@"SearchResultsProgressNotification" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(searchDidComplete:) name:@"SearchResultsCompleteNotification" object:nil];
+}
+
+- (void)searchBarResultsListButtonClicked:(UISearchBar *)searchBar {
+}
+
+- (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar {
+    [searchBar resignFirstResponder];
+    [searchBar setShowsCancelButton:NO animated:YES];
+    [self.searchResultsTableView removeFromSuperview];
+    self.searchResultsTableView = nil;
+}
+
+- (void)searchBarBookmarkButtonClicked:(UISearchBar *)searchBar {
+}
+
+- (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText {
+}
+
+- (BOOL)searchBar:(UISearchBar *)searchBar shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text {
+    return YES;
+}
+
+- (void)searchBar:(UISearchBar *)searchBar selectedScopeButtonIndexDidChange:(NSInteger)selectedScope {
+}
+
+- (void)searchDidMakeProgress:(NSNotification *)aNotification {
+    MITModule *sender = [aNotification object];
+    NSInteger section = [searchableModules indexOfObject:sender];
+    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:section];
+    NSArray *indexPaths = [NSArray arrayWithObject:indexPath];
+    [searchResultsTableView reloadRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationNone];
+}
+
+- (void)searchDidComplete:(NSNotification *)aNotification {
+    MITModule *sender = [aNotification object];
+    NSInteger section = [searchableModules indexOfObject:sender];
+    NSIndexSet *sections = [NSIndexSet indexSetWithIndex:section];
+    [searchResultsTableView reloadSections:sections withRowAnimation:UITableViewRowAnimationNone];
+}
+
+#pragma mark UITableView datasource
+
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+    if (!searchableModules) {
+        searchableModules = [[NSMutableArray alloc] initWithCapacity:4];
+        NSArray *modules = ((MIT_MobileAppDelegate *)[[UIApplication sharedApplication] delegate]).modules;
+        for (MITModule *aModule in modules) {
+            if (aModule.supportsFederatedSearch) {
+                [searchableModules addObject:aModule];
+                if (!aModule.isSearching) {
+                    [aModule performSearchForString:_searchBar.text];
+                }
+            }
+        }
+    }
+    return [searchableModules count];
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    
+    static NSString *CellIdentifier = @"Cell";
+    
+    MITModule *aModule = [searchableModules objectAtIndex:indexPath.section];
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    if (cell == nil) {
+        cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier] autorelease];
+    }
+    
+    if (aModule.searchProgress == 1.0) {
+        UIView *spinny = [cell viewWithTag:1234];
+        if (spinny != nil) {
+            [spinny removeFromSuperview];
+        }
+
+        id aResult = [aModule.searchResults objectAtIndex:indexPath.row];
+        cell.imageView.image = nil;
+        cell.textLabel.text = [aModule titleForSearchResult:aResult];
+        cell.detailTextLabel.text = [aModule subtitleForSearchResult:aResult];
+
+    } else if (aModule.searchProgress == 0.0) {
+        // indeterminate loading indicator
+        cell.textLabel.text = @"Loading...";
+        
+        // copied from shuttles module
+        cell.imageView.image = [UIImage imageNamed:@"shuttles/shuttle-blank.png"];
+        UIActivityIndicatorView *spinny = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+        spinny.center = CGPointMake(18.0, 22.0);
+        spinny.tag = 1234;
+        [spinny startAnimating];
+        [cell.contentView addSubview:spinny];
+        [spinny release];
+        
+    } else {
+        UIView *spinny = [cell viewWithTag:1234];
+        if (spinny != nil) {
+            [spinny removeFromSuperview];
+        }
+        
+        // determinate loading indicator
+        cell.imageView.image = nil;
+        cell.textLabel.text = [NSString stringWithFormat:@"%.0f%% complete", aModule.searchProgress * 100];
+    }
+    
+    return cell;
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    NSInteger num = 1;
+    MITModule *aModule = [searchableModules objectAtIndex:section];
+    if (aModule.searchProgress == 1.0) {
+        num = [aModule.searchResults count];
+    }
+    return num;
+}
+
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
+    MITModule *aModule = [searchableModules objectAtIndex:section];
+    NSString *title = aModule.longName;
+    return [UITableView ungroupedSectionHeaderWithTitle:title];
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    MITModule *aModule = [searchableModules objectAtIndex:indexPath.section];
+    activeModule = aModule;
+    [activeModule handleLocalPath:@"search" query:[NSString stringWithFormat:@"q=%@&row=%d", _searchBar.text, indexPath.row]];
+    MIT_MobileAppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+    [appDelegate showModuleForTag:activeModule.tag];
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+    return GROUPED_SECTION_HEADER_HEIGHT;
+}
+
+#pragma mark UIResponder / icon drag&drop
+
+- (void)customizeIcons:(id)sender {
+    CGRect frame = CGRectMake(0, 0, containingView.frame.size.width, containingView.frame.size.height);
+    transparentOverlay = [[UIView alloc] initWithFrame:frame];
+    transparentOverlay.backgroundColor = [UIColor clearColor];
+    [containingView addSubview:transparentOverlay];
+    
+    UIBarButtonItem *doneButton = [[[UIBarButtonItem alloc] initWithTitle:@"Done"
+                                                                    style:UIBarButtonItemStyleDone
+                                                                   target:self
+                                                                   action:@selector(endCustomize)] autorelease];
+    navigationBar.topItem.rightBarButtonItem = doneButton;
+    
+    editing = YES;
+    editedIcons = [_icons copy];
+    [self becomeFirstResponder];
+}
+
+- (void)endCustomize {
+    _icons = editedIcons;
+    [transparentOverlay removeFromSuperview];
+    [transparentOverlay release];
+    
+    UIBarButtonItem *editButton = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemEdit
+                                                                                 target:self
+                                                                                 action:@selector(customizeIcons:)] autorelease];
+    navigationBar.topItem.rightBarButtonItem = editButton;
+    
+    [self resignFirstResponder];
+    editing = NO;
+}
+
+/*
 - (BOOL)canBecomeFirstResponder {
     return editing;
 }
@@ -277,8 +462,8 @@
             for (SpringboardIcon *anIcon in tempIcons) {
                 CGFloat xDistance = anIcon.center.x - selectedIcon.center.x; // > 0 if aButton is to the right
                 CGFloat yDistance = selectedIcon.center.y - anIcon.center.y;
-                NSLog(@"%d %.1f %.1f %.1f %.1f", dummyIconIndex, xDistance, GRID_PADDING + anIcon.frame.size.width, yDistance, anIcon.frame.size.height / 2);// , aButton.center.x, selectedIcon.center.x);
-                if (xDistance > 0 && xDistance < GRID_PADDING + anIcon.frame.size.width
+                NSLog(@"%d %.1f %.1f %.1f %.1f", dummyIconIndex, xDistance, GRID_HPADDING + anIcon.frame.size.width, yDistance, anIcon.frame.size.height / 2);// , aButton.center.x, selectedIcon.center.x);
+                if (xDistance > 0 && xDistance < GRID_HPADDING + anIcon.frame.size.width
                     && fabs(yDistance) < anIcon.frame.size.height / 2) {
                     break;
                 }

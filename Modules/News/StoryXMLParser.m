@@ -69,14 +69,6 @@ NSString * const NewsTagImageWidth      = @"width";
 NSString * const NewsTagImageHeight     = @"height";
 NSString * const NewsTagFullURL         = @"url";
 
-// stuff to remove
-//NSString * const NewsTagOtherImages     = @"otherImages";
-//NSString * const NewsTagSmallURL        = @"smallURL";
-//NSString * const NewsTagImageCredits    = @"imageCredits";
-//NSString * const NewsTagImageCaption    = @"imageCaption";
-
-
-
 #pragma mark Categories
 
 - (NewsCategory *)categoryForString:(NSString *)aString {
@@ -294,16 +286,6 @@ NSString * const NewsTagFullURL         = @"url";
     return itemWhitelist;
 }
 
-/*
-<image>
-<title>Faust calls global health one of her main priorities</title>
-<link>http://news.harvard.edu/gazette/story/2010/05/faust-calls-global-health-one-of-her-main-priorities/</link>
-<url>http://news.harvard.edu/gazette/wp-content/uploads/2010/05/HIGH_Goldie2_140.jpg</url>
-
-<width>140</width>
-<height>140</height>
-*/
-
 - (NSArray *)imageWhitelist {
     static NSArray *imageWhitelist;
     
@@ -314,15 +296,6 @@ NSString * const NewsTagFullURL         = @"url";
                            NewsTagThumbnailURL,
                            NewsTagImageWidth,
                            NewsTagImageHeight, nil] retain];
-        /*
-        imageWhitelist = [[NSArray arrayWithObjects:
-                           NewsTagThumbnailURL,
-                           //NewsTagSmallURL,
-                           //NewsTagFullURL,
-                           //NewsTagImageCredits,
-                           //NewsTagImageCaption,
-                           nil] retain];
-        */
     }
     return imageWhitelist;
 }
@@ -342,33 +315,16 @@ NSString * const NewsTagFullURL         = @"url";
         }
         [currentCategories release];
         currentCategories = [[NSMutableArray alloc] initWithCapacity:5];
-	}/* else if ([elementName isEqualToString:NewsTagOtherImages]) {
-        [currentContents setObject:[NSMutableArray array] forKey:NewsTagOtherImages];
-    }*/ else if ([elementName isEqualToString:NewsTagImage]) {
+	} else if ([elementName isEqualToString:NewsTagImage]) {
         // prep new image element
         self.currentImage = [NSMutableDictionary dictionary];
         NSArray *whitelist = [self imageWhitelist];
         for (NSString *key in whitelist) {
             [currentImage setObject:[NSMutableString string] forKey:key];
         }
-        //if ([[currentStack lastObject] isEqualToString:NewsTagItem]) {
-        //    // if last tag on stack is <item>, then this is an inline image
-            [currentContents setObject:currentImage forKey:NewsTagImage];
-        //} else {
-        //    // otherwise, this belongs in <otherImages>
-        //    NSMutableArray *otherImages = [currentContents objectForKey:NewsTagOtherImages];
-        //    [otherImages addObject:currentImage];
-        //}
-    }/* else if ([elementName isEqualToString:NewsTagSmallURL] && currentImage) {
-        [currentImage setObject:attributeDict forKey:@"smallSize"];
-    } else if ([elementName isEqualToString:NewsTagFullURL] && currentImage) {
-        [currentImage setObject:attributeDict forKey:@"fullSize"];
-    } else if ([elementName isEqualToString:@"items"]) {
-		NSNumber *totalResults = [attributeDict objectForKey:@"totalResults"];
-		if (totalResults) {
-			self.totalAvailableResults = [totalResults integerValue];
-		}
-    }*/ else if ([elementName isEqualToString:NewsTagChannel]) {
+        [currentContents setObject:currentImage forKey:NewsTagImage];
+        
+    } else if ([elementName isEqualToString:NewsTagChannel]) {
         if (!self.loadingMore) {
             self.totalAvailableResults = [[attributeDict objectForKey:@"items"] intValue];
         }
@@ -407,7 +363,6 @@ NSString * const NewsTagFullURL         = @"url";
                 [CoreDataManager saveData];
             }
             
-            //NSLog(@"received category %@", string);
             [currentCategories addObject:category];
         }
     } else {
@@ -452,8 +407,6 @@ NSString * const NewsTagFullURL         = @"url";
         story.summary = [currentContents objectForKey:NewsTagSummary];
         story.body = [currentContents objectForKey:NewsTagBody];
         
-        //NSLog(@"current categories: %@", [currentCategories description]);
-        //[story addCategory:[[currentContents objectForKey:NewsTagCategory] integerValue]];
         story.categories = [NSSet setWithSet:currentCategories];
         if (parsingTopStories) {
             // because NewsStory objects are shared between categories, only set this to YES, never revert it to NO
@@ -472,18 +425,6 @@ NSString * const NewsTagFullURL         = @"url";
         story.featuredImage.featuredParent = story;
         story.thumbImage = [self imageWithDictionary:[currentContents objectForKey:NewsTagImage]];
         story.thumbImage.thumbParent = story;
-        /*
-        NSMutableArray *otherImagesDict = [currentContents objectForKey:NewsTagOtherImages];
-        NSInteger i = 0;
-        for (NSDictionary *otherImage in otherImagesDict) {
-            NewsImage *anImage = [self imageWithDictionary:otherImage];
-            if (anImage) {
-                anImage.ordinality = [NSNumber numberWithInteger:i];
-                i++;
-                [story addGalleryImage:anImage];
-            }
-        }
-        */
         
         [self performSelectorOnMainThread:@selector(reportProgress:) withObject:[NSNumber numberWithFloat:[newStories count] / (0.01 * expectedStoryCount)] waitUntilDone:NO];
         
@@ -531,55 +472,6 @@ NSString * const NewsTagFullURL         = @"url";
     }
 }
 
-/*
-- (NewsImage *)imageWithDictionary:(NSDictionary *)imageDict {
-    NewsImage *newsImage = nil;
-    if (imageDict) {
-        NSString *credits = [imageDict objectForKey:NewsTagImageCredits];
-        NSString *caption = [imageDict objectForKey:NewsTagImageCaption];
-        NSString *thumbURL = [imageDict objectForKey:NewsTagThumbnailURL];
-        NSString *smallURL = [imageDict objectForKey:NewsTagSmallURL];
-        NSString *fullURL = [imageDict objectForKey:NewsTagFullURL];
-        NSDictionary *smallSize = [imageDict objectForKey:@"smallSize"];
-        NSDictionary *fullSize = [imageDict objectForKey:@"fullSize"];
-		
-        // every <image> in the feed has at least a <fullURL>, so index on that
-        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"fullImage.url == %@", fullURL];
-        newsImage = [[CoreDataManager objectsForEntity:NewsImageEntityName matchingPredicate:predicate] lastObject];
-        if (!newsImage) {
-            newsImage = [CoreDataManager insertNewObjectForEntityForName:NewsImageEntityName];
-        }
-        
-        newsImage.credits = credits;
-        newsImage.caption = caption;
-        newsImage.thumbImage = [self imageRepForURLString:thumbURL];
-        newsImage.smallImage = [self imageRepForURLString:smallURL];
-        if (smallSize) {
-            newsImage.smallImage.width = [NSNumber numberWithInteger:[[smallSize objectForKey:NewsTagImageWidth] integerValue]];
-            newsImage.smallImage.height = [NSNumber numberWithInteger:[[smallSize objectForKey:NewsTagImageHeight] integerValue]];
-        }
-        newsImage.fullImage = [self imageRepForURLString:fullURL];
-        if (fullSize) {
-            newsImage.fullImage.width = [NSNumber numberWithInteger:[[fullSize objectForKey:NewsTagImageWidth] integerValue]];
-            newsImage.fullImage.height = [NSNumber numberWithInteger:[[fullSize objectForKey:NewsTagImageHeight] integerValue]];
-        }
-    }
-    return newsImage;
-}
-
-- (NewsImageRep *)imageRepForURLString:(NSString *)urlString {
-    NewsImageRep *imageRep = nil;
-    if (urlString && [urlString length] > 0) {
-        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"url == %@", urlString];
-        imageRep = [[CoreDataManager objectsForEntity:NewsImageRepEntityName matchingPredicate:predicate] lastObject];
-        if (!imageRep) {
-            imageRep = [CoreDataManager insertNewObjectForEntityForName:NewsImageRepEntityName];
-            imageRep.url = urlString;
-        }
-    }
-    return imageRep;
-}
-*/
 #pragma mark -
 #pragma mark StoryXMLParser delegation
 
@@ -610,16 +502,11 @@ NSString * const NewsTagFullURL         = @"url";
 }
          
 - (void)parserDidEndDocument:(NSXMLParser *)parser {
-    //NSLog(@"%@", [newStories description]);
     
     if (shouldAbort) {
         [parser abortParsing];
         return;
     }
-    
-    //if (self.isSearch) {
-    //    self.totalAvailableResults = [newStories count];
-    //}
     
     parseSuccessful = YES;
     

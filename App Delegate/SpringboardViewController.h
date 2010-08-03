@@ -2,14 +2,19 @@
 #import "MITModule.h"
 #import "ModoNavigationController.h"
 #import "ModoNavigationBar.h"
+#import "ModoSearchBar.h"
 
-@interface SpringboardViewController : UIViewController/* <UIScrollViewDelegate>*/ {
+@interface SpringboardViewController : UIViewController <UISearchBarDelegate, UITableViewDelegate, UITableViewDataSource> {
 
     UIScrollView *containingView;
     MITModule *activeModule;
     ModoNavigationController *navigationController;
     ModoNavigationBar *navigationBar;
 
+    ModoSearchBar *_searchBar;
+    NSMutableArray *searchableModules;
+    BOOL isSearch;
+    
     NSMutableArray *_icons;
     NSMutableArray *editedIcons;
     NSMutableArray *tempIcons;
@@ -26,6 +31,8 @@
 }
 
 - (void)layoutIcons:(NSArray *)icons;
+
+@property (nonatomic, retain) UITableView *searchResultsTableView;
 
 @end
 
