@@ -212,7 +212,7 @@
         // right now we assume extra views are on the same line as the detailTextLabel
         // (true for stellar announcements and events calendar)
         CGRect frame = aView.frame;
-        frame.origin.y = self.textLabel.frame.origin.y + 5;
+        frame.origin.y = self.textLabel.frame.origin.y;
         aView.frame = frame;
 		[self.contentView addSubview:aView];
 	}

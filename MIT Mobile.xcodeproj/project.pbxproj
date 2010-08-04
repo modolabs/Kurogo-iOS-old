@@ -183,6 +183,12 @@
 		C759594112074B47008474A9 /* DiningMultiLineCell.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = C759593B12074B47008474A9 /* DiningMultiLineCell.h */; settings = {JAVA_ARCHIVE_SUBDIR = Modules/Dining; }; };
 		C759594212074B47008474A9 /* DiningHallStatus.m in Sources */ = {isa = PBXBuildFile; fileRef = C759593C12074B47008474A9 /* DiningHallStatus.m */; };
 		C759594312074B47008474A9 /* DiningHallStatus.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = C759593D12074B47008474A9 /* DiningHallStatus.h */; settings = {JAVA_ARCHIVE_SUBDIR = Modules/Dining; }; };
+		C76E64A31209C299005399CC /* dining-local-crop.png in Resources */ = {isa = PBXBuildFile; fileRef = C76E649D1209C299005399CC /* dining-local-crop.png */; };
+		C76E64A41209C299005399CC /* dining-local-crop@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C76E649E1209C299005399CC /* dining-local-crop@2x.png */; };
+		C76E64A51209C299005399CC /* dining-organic-crop.png in Resources */ = {isa = PBXBuildFile; fileRef = C76E649F1209C299005399CC /* dining-organic-crop.png */; };
+		C76E64A61209C299005399CC /* dining-organic-crop@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C76E64A01209C299005399CC /* dining-organic-crop@2x.png */; };
+		C76E64A71209C299005399CC /* dining-vegetarian-crop.png in Resources */ = {isa = PBXBuildFile; fileRef = C76E64A11209C299005399CC /* dining-vegetarian-crop.png */; };
+		C76E64A81209C299005399CC /* dining-vegetarian-crop@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C76E64A21209C299005399CC /* dining-vegetarian-crop@2x.png */; };
 		C776675911F733E3005496DD /* DatePickerViewController.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = C776675711F733E3005496DD /* DatePickerViewController.h */; settings = {JAVA_ARCHIVE_SUBDIR = Modules/Calendar; }; };
 		C776675A11F733E3005496DD /* DatePickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C776675811F733E3005496DD /* DatePickerViewController.m */; };
 		C7AA23911200CB3E0023F880 /* dining-status-closed-w-restrictions.png in Resources */ = {isa = PBXBuildFile; fileRef = C7AA23891200CB3E0023F880 /* dining-status-closed-w-restrictions.png */; };
@@ -711,6 +717,12 @@
 		C759593B12074B47008474A9 /* DiningMultiLineCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DiningMultiLineCell.h; path = Dining/DiningMultiLineCell.h; sourceTree = "<group>"; };
 		C759593C12074B47008474A9 /* DiningHallStatus.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DiningHallStatus.m; path = Dining/DiningHallStatus.m; sourceTree = "<group>"; };
 		C759593D12074B47008474A9 /* DiningHallStatus.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DiningHallStatus.h; path = Dining/DiningHallStatus.h; sourceTree = "<group>"; };
+		C76E649D1209C299005399CC /* dining-local-crop.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "dining-local-crop.png"; sourceTree = "<group>"; };
+		C76E649E1209C299005399CC /* dining-local-crop@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "dining-local-crop@2x.png"; sourceTree = "<group>"; };
+		C76E649F1209C299005399CC /* dining-organic-crop.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "dining-organic-crop.png"; sourceTree = "<group>"; };
+		C76E64A01209C299005399CC /* dining-organic-crop@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "dining-organic-crop@2x.png"; sourceTree = "<group>"; };
+		C76E64A11209C299005399CC /* dining-vegetarian-crop.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "dining-vegetarian-crop.png"; sourceTree = "<group>"; };
+		C76E64A21209C299005399CC /* dining-vegetarian-crop@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "dining-vegetarian-crop@2x.png"; sourceTree = "<group>"; };
 		C776675711F733E3005496DD /* DatePickerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DatePickerViewController.h; sourceTree = "<group>"; };
 		C776675811F733E3005496DD /* DatePickerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DatePickerViewController.m; sourceTree = "<group>"; };
 		C7AA23891200CB3E0023F880 /* dining-status-closed-w-restrictions.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "dining-status-closed-w-restrictions.png"; sourceTree = "<group>"; };
@@ -1183,6 +1195,12 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				C76E649D1209C299005399CC /* dining-local-crop.png */,
+				C76E649E1209C299005399CC /* dining-local-crop@2x.png */,
+				C76E649F1209C299005399CC /* dining-organic-crop.png */,
+				C76E64A01209C299005399CC /* dining-organic-crop@2x.png */,
+				C76E64A11209C299005399CC /* dining-vegetarian-crop.png */,
+				C76E64A21209C299005399CC /* dining-vegetarian-crop@2x.png */,
 				A64C36CA1207066D006FE056 /* peopleSearchStaticPhoneRowsArray.plist */,
 				C7AA23891200CB3E0023F880 /* dining-status-closed-w-restrictions.png */,
 				C7AA238A1200CB3E0023F880 /* dining-status-closed-w-restrictions@2x.png */,
@@ -2189,6 +2207,12 @@
 				C759560D12071BA3008474A9 /* dining-vegan@2x.png in Resources */,
 				C759560E12071BA3008474A9 /* dining-vegetarian.png in Resources */,
 				C759560F12071BA3008474A9 /* dining-vegetarian@2x.png in Resources */,
+				C76E64A31209C299005399CC /* dining-local-crop.png in Resources */,
+				C76E64A41209C299005399CC /* dining-local-crop@2x.png in Resources */,
+				C76E64A51209C299005399CC /* dining-organic-crop.png in Resources */,
+				C76E64A61209C299005399CC /* dining-organic-crop@2x.png in Resources */,
+				C76E64A71209C299005399CC /* dining-vegetarian-crop.png in Resources */,
+				C76E64A81209C299005399CC /* dining-vegetarian-crop@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
