@@ -213,6 +213,7 @@
         // (true for stellar announcements and events calendar)
         CGRect frame = aView.frame;
         frame.origin.y = self.textLabel.frame.origin.y;
+		frame.origin.x = frame.origin.x - 3;
         aView.frame = frame;
 		[self.contentView addSubview:aView];
 	}

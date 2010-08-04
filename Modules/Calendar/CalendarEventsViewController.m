@@ -214,7 +214,8 @@
 			aButton.titleEdgeInsets = UIEdgeInsetsMake(0, 0, 1.0, 0); // needed to center text vertically within button
 			
 			CGSize newSize = [aButton.titleLabel.text sizeWithFont:aButton.titleLabel.font];			
-			newSize.width += SCROLL_TAB_HORIZONTAL_PADDING * 2 + SCROLL_TAB_HORIZONTAL_MARGIN;
+			//newSize.width += SCROLL_TAB_HORIZONTAL_PADDING * 2 + SCROLL_TAB_HORIZONTAL_MARGIN;
+			newSize.width += SCROLL_TAB_HORIZONTAL_PADDING + SCROLL_TAB_HORIZONTAL_MARGIN;
 			newSize.height = stretchableButtonImage.size.height;
 			
 			buttonFrame.size = newSize;
@@ -222,7 +223,7 @@
 			aButton.frame = buttonFrame;
 			
 			[navButtons addObject:aButton];
-			leftOffset += buttonFrame.size.width;
+			leftOffset += buttonFrame.size.width + 4;
 		}
 		
 		UIView *contentView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, leftOffset, backgroundImage.size.height)];

@@ -706,7 +706,6 @@ numberOfRowsInSection:(NSInteger)section
 	[cell.contentView addSubview:imView2];
 	[cell.contentView addSubview:imView3];
 	
-						   
 	return cell;
 }
 
