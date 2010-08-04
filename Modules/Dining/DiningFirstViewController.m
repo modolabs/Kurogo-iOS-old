@@ -275,7 +275,7 @@ JSONAPIRequest *mitapi;
 		[_tabViewControl addTab:@"Dinner"];
 		[_tabViews insertObject:_loadingResultView atIndex:kDinnerTab];
 		
-		[_tabViewControl addTab:@"Hours"];
+		[_tabViewControl addTab:@"Locations"];
 		[_hoursView addSubview:glossaryForHoursView];
 		tableControl = [[HoursTableViewController alloc] init];
 		hoursTableView.delegate = (HoursTableViewController *)tableControl;

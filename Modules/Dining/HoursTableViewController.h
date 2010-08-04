@@ -12,7 +12,8 @@
 #import "MIT_MobileAppDelegate.h";
 #import "DiningFirstViewController.h"
 #import "DiningHallStatus.h"
-#import "MultiLineTableViewCell.h"
+//#import "MultiLineTableViewCell.h"
+#import "DiningMultiLineCell.h"
 
 @class HallDetailsTableViewController;
 @class DiningFirstViewController;
