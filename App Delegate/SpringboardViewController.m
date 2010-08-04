@@ -210,7 +210,7 @@
         self.searchResultsTableView = [[[UITableView alloc] initWithFrame:frame style:UITableViewStyleGrouped] autorelease];
         self.searchResultsTableView.dataSource = self;
         self.searchResultsTableView.delegate = self;
-        [self.searchResultsTableView applyStandardColors];
+        //[self.searchResultsTableView applyStandardColors];
     }
     [self.view addSubview:self.searchResultsTableView];
     [self searchAllModules];
@@ -297,7 +297,7 @@
     }
     
     if (indexPath.row == 0) {
-        UIActivityIndicatorView *spinny = (UIActivityIndicatorView *)[cell viewWithTag:1234];
+        UIActivityIndicatorView *spinny = (UIActivityIndicatorView *)[cell.contentView viewWithTag:1234];
         if (spinny != nil) {
             [spinny stopAnimating];
             [spinny removeFromSuperview];
@@ -329,6 +329,7 @@
     } else if (aModule.searchProgress == 0.0) {
         // indeterminate loading indicator
         cell.textLabel.text = @"Loading...";
+        cell.detailTextLabel.text = nil;
         
         // copied from shuttles module
         cell.imageView.image = [UIImage imageNamed:@"shuttles/shuttle-blank.png"];
