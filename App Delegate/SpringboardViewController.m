@@ -297,8 +297,9 @@
     }
     
     if (indexPath.row == 0) {
-        UIView *spinny = [cell viewWithTag:1234];
+        UIActivityIndicatorView *spinny = (UIActivityIndicatorView *)[cell viewWithTag:1234];
         if (spinny != nil) {
+            [spinny stopAnimating];
             [spinny removeFromSuperview];
         }
     }

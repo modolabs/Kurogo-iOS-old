@@ -243,6 +243,8 @@ NSString * const NewsTagFullURL         = @"url";
 	self.downloadAndParsePool = nil;
 }
 
+#pragma mark ConnectionWrapper delegation
+
 - (void)connection:(ConnectionWrapper *)wrapper handleData:(NSData *)data {
 	if (shouldAbort) {
 		return;
@@ -256,6 +258,12 @@ NSString * const NewsTagFullURL         = @"url";
 	self.xmlParser = nil;
     self.currentStack = nil;
 	done = YES;
+}
+
+- (void)connectionDidReceiveResponse:(ConnectionWrapper *)wrapper {
+	if (self.delegate != nil && [self.delegate respondsToSelector:@selector(parserDidMakeConnection:)]) {
+		[self.delegate parserDidMakeConnection:self];
+	}
 }
 
 - (void)connection:(ConnectionWrapper *)wrapper madeProgress:(CGFloat)progress {

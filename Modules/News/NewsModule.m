@@ -127,7 +127,7 @@ NSString * const NewsLocalPathBookmarks = @"bookmarks";
 
 #pragma mark StoryXMLParser delegation
 
-- (void)parserDidStartDownloading:(StoryXMLParser *)parser {
+- (void)parserDidMakeConnection:(StoryXMLParser *)parser {
     self.searchProgress = 0.1;
 }
 
