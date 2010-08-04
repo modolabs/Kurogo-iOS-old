@@ -69,6 +69,10 @@
 	_mapView = [[MKMapView alloc] initWithFrame: CGRectMake(0, _searchBar.frame.size.height, 320, self.view.frame.size.height - _searchBar.frame.size.height)];
 	_mapView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     _mapView.mapType = MKMapTypeStandard;
+	NSInteger mapTypePref = [[NSUserDefaults standardUserDefaults] integerForKey:MapTypePrefKey];
+	if (mapTypePref) {
+		_mapView.mapType = mapTypePref;
+	}
 	_mapView.delegate = self;
     _mapView.region = [TileServerManager defaultRegion];
 	[self.view addSubview:_mapView];
@@ -119,6 +123,12 @@
 		}
 	} else {
 		self.navigationItem.rightBarButtonItem.title = @"Browse";
+	}
+
+	// Check to see if the user changed the desired map type.
+	NSInteger mapTypePref = [[NSUserDefaults standardUserDefaults] integerForKey:MapTypePrefKey];
+	if (_mapView.mapType != mapTypePref) {
+		_mapView.mapType = mapTypePref;
 	}
 }
 

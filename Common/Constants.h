@@ -24,6 +24,7 @@ extern NSString * const PushNotificationSettingsKey;
 extern NSString * const MITModulesSavedStateKey;
 extern NSString * const CachedMapSearchQueryKey;
 extern NSString * const ShakeToReturnPrefKey;
+extern NSString * const MapTypePrefKey;
 
 extern NSString * const MITInternalURLScheme;
 
