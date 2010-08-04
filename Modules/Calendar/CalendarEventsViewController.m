@@ -1137,7 +1137,8 @@
             }
             
 			if (([result count] == 0) && ([self.navigationItem.rightBarButtonItem.title isEqualToString:@"Map"])){
-				UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(20, 20, 300, 20)];
+				UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(100, 125, 300, 20)];
+				label.font = [UIFont systemFontOfSize:17];
 																		   
 				label.text = @"No Events Found";															   
 				NSInteger vertical_margin = 45;
@@ -1160,9 +1161,10 @@
 			}
 			
 			if (([result count] == 0) && (activeEventList == CalendarEventListTypeAcademic)) {
-				UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(20, 20, 300, 20)];
+				UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(75, 125, 300, 20)];
+				label.font = [UIFont systemFontOfSize:17];
 				
-				label.text = @"No Events this month";															   
+				label.text = @"No events this month";															   
 				NSInteger vertical_margin = 45;
 				
 				if (theCatID == -1)
