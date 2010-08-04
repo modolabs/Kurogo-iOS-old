@@ -275,7 +275,7 @@ JSONAPIRequest *mitapi;
 		[_tabViewControl addTab:@"Dinner"];
 		[_tabViews insertObject:_loadingResultView atIndex:kDinnerTab];
 		
-		[_tabViewControl addTab:@"Hours"];
+		[_tabViewControl addTab:@"Locations"];
 		[_hoursView addSubview:glossaryForHoursView];
 		tableControl = [[HoursTableViewController alloc] init];
 		hoursTableView.delegate = (HoursTableViewController *)tableControl;
@@ -688,7 +688,7 @@ numberOfRowsInSection:(NSInteger)section
 	
 	
 	cell.textLabel.lineBreakMode = UILineBreakModeWordWrap;
-	UIImage *image = [UIImage imageNamed:@"dining-local.png"];
+	UIImage *image = [UIImage imageNamed:@"dining-local-crop.png"];
 	UIImageView *imView = [[UIImageView alloc] initWithFrame:CGRectMake(265, 10, 20, 20)];
 	imView.image = image;
 
@@ -697,7 +697,7 @@ numberOfRowsInSection:(NSInteger)section
 	UIImageView *imView2 = [[UIImageView alloc] initWithFrame:CGRectMake(245, 10, 20, 20)];
 	imView2.image = image2;
 	
-	UIImage *image3 = [UIImage imageNamed:@"dining-organic.png"];
+	UIImage *image3 = [UIImage imageNamed:@"dining-organic-crop.png"];
 	UIImageView *imView3 = [[UIImageView alloc] initWithFrame:CGRectMake(225, 10, 20, 20)];
 	imView3.image = image3;
 
