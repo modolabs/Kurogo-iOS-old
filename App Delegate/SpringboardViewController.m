@@ -375,7 +375,7 @@
             [activeModule handleLocalPath:LocalPathFederatedSearch query:[NSString stringWithFormat:@"%@", _searchBar.text, indexPath.row]];
         } else {
             // TODO: decide whether the query string really needs to be passed to the module
-            [activeModule handleLocalPath:LocalPathFederatedSearchResult query:[NSString stringWithFormat:@"q=%@&row=%d", _searchBar.text, indexPath.row]];
+            [activeModule handleLocalPath:LocalPathFederatedSearchResult query:[NSString stringWithFormat:@"%d", indexPath.row]];
         }
         MIT_MobileAppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
         [appDelegate showModuleForTag:activeModule.tag];
