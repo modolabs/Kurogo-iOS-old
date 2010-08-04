@@ -307,7 +307,7 @@
 		
 			// set multivalue properties: email and phone numbers
 			ABMutableMultiValueRef multiEmail = ABMultiValueCreateMutable(kABMultiStringPropertyType);
-			if (value = [self.personDetails formattedValueForKey:@"mail"]) {
+			if ([self.personDetails formattedValueForKey:@"mail"]) {
 				[self addMultivalueValuesAndLabelsTo:multiEmail usingLabel:kABWorkLabel withValuesFromLDAPKey:@"mail"];
 				ABRecordSetValue(person, kABPersonEmailProperty, multiEmail, &error);
 			}
@@ -315,12 +315,12 @@
 		
 			BOOL haveValues = NO;
 			ABMutableMultiValueRef multiPhone = ABMultiValueCreateMutable(kABMultiStringPropertyType);
-			if (value = [self.personDetails formattedValueForKey:@"telephonenumber"]) {
+			if ([self.personDetails formattedValueForKey:@"telephonenumber"]) {
 				[self addMultivalueValuesAndLabelsTo:multiPhone usingLabel:kABWorkLabel withValuesFromLDAPKey:@"telephonenumber"];
 				ABRecordSetValue(person, kABPersonPhoneProperty, multiPhone, &error);
 				haveValues = YES;
 			}
-			if (value = [self.personDetails formattedValueForKey:@"facsimiletelephonenumber"]) {
+			if ([self.personDetails formattedValueForKey:@"facsimiletelephonenumber"]) {
 				[self addMultivalueValuesAndLabelsTo:multiPhone usingLabel:kABPersonPhoneWorkFAXLabel withValuesFromLDAPKey:@"facsimiletelephonenumber"];
 				haveValues = YES;
 			}
