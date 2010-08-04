@@ -10,6 +10,7 @@
 #define SUBTITLE_HEIGHT NAVIGATION_BAR_HEIGHT
 #define PADDING 10.0
 const CGFloat kMapTypeSwitchWidth = 180.0f;
+const CGFloat kMapTypeSwitchHeight = 29.0f;
 
 typedef enum {
 	kNotificationsSettingsSection = 0,
@@ -79,8 +80,7 @@ typedef enum {
 																			   andInactiveSegmentImages:inactiveImages];
 	[seg setSelectedSegmentIndex:index];
 	[seg setSegmentedControlStyle:UISegmentedControlStyleBar];
-	[seg setFrame:CGRectMake(0, 0, kMapTypeSwitchWidth, seg.frame.size.height)];
-	[seg setTintColor:[UIColor blueColor]];	
+	[seg setFrame:CGRectMake(0, 0, kMapTypeSwitchWidth, kMapTypeSwitchHeight)];
 	[seg addTarget:self action:controlValueChangedHandler forControlEvents:UIControlEventValueChanged];
 	[seg updateSegmentImages];
 
@@ -300,14 +300,14 @@ typedef enum {
 			case kMapsSettingsSection:
 			{
 				NSArray *activeSegmentImages = [NSArray arrayWithObjects:
-												[UIImage imageNamed:@"map_switch_active1.png"],
-												[UIImage imageNamed:@"map_switch_active2.png"],
-												[UIImage imageNamed:@"map_switch_active3.png"],
+												[UIImage imageNamed:@"settings/map_switch_active1.png"],
+												[UIImage imageNamed:@"settings/map_switch_active2.png"],
+												[UIImage imageNamed:@"settings/map_switch_active3.png"],
 												nil];
 				NSArray *inactiveSegmentImages = [NSArray arrayWithObjects:
-												  [UIImage imageNamed:@"map_switch_inactive1.png"],
-												  [UIImage imageNamed:@"map_switch_inactive2.png"],
-												  [UIImage imageNamed:@"map_switch_inactive3.png"],
+												  [UIImage imageNamed:@"settings/map_switch_inactive1.png"],
+												  [UIImage imageNamed:@"settings/map_switch_inactive2.png"],
+												  [UIImage imageNamed:@"settings/map_switch_inactive3.png"],
 												  nil];
 				[self addSegmentedControlToCell:cell 
 							  withToggleHandler:switchToggleHandler 

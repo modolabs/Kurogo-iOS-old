@@ -147,6 +147,7 @@
 		A69A2BD711F4C36400B1D365 /* PersonDetail.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = A69A2BD311F4C36400B1D365 /* PersonDetail.h */; settings = {JAVA_ARCHIVE_SUBDIR = Modules/People/Model/PeopleDataModel.xcdatamodeld; }; };
 		A69A2BD811F4C36400B1D365 /* PersonDetail.m in Sources */ = {isa = PBXBuildFile; fileRef = A69A2BD411F4C36400B1D365 /* PersonDetail.m */; };
 		A6D5498811F4E6D00048CEDB /* PersonDetails.m in Sources */ = {isa = PBXBuildFile; fileRef = A69A2BD211F4C36400B1D365 /* PersonDetails.m */; };
+		A6FC4C72120A2C200046FF36 /* settings in Resources */ = {isa = PBXBuildFile; fileRef = A623F2E5120A1BFC00341C5E /* settings */; };
 		BD1E9309103B5D60004429AA /* NSObject+SBJSON.m in Sources */ = {isa = PBXBuildFile; fileRef = BD1E92F6103B5D60004429AA /* NSObject+SBJSON.m */; };
 		BD1E930A103B5D60004429AA /* NSString+SBJSON.m in Sources */ = {isa = PBXBuildFile; fileRef = BD1E92F8103B5D60004429AA /* NSString+SBJSON.m */; };
 		BD1E930B103B5D60004429AA /* SBJSON.m in Sources */ = {isa = PBXBuildFile; fileRef = BD1E92FA103B5D60004429AA /* SBJSON.m */; };
@@ -2226,6 +2227,7 @@
 				C76E64A61209C299005399CC /* dining-organic-crop@2x.png in Resources */,
 				C76E64A71209C299005399CC /* dining-vegetarian-crop.png in Resources */,
 				C76E64A81209C299005399CC /* dining-vegetarian-crop@2x.png in Resources */,
+				A6FC4C72120A2C200046FF36 /* settings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
