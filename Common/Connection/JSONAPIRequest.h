@@ -22,6 +22,7 @@
     ConnectionWrapper *connectionWrapper;
 	NSDictionary *params;
 	id userData;
+	BOOL haveRetainedSelf;
 }
 
 /* returns a new JSONAPIRequest object.

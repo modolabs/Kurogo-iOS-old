@@ -75,9 +75,6 @@ typedef enum {
 	
 	JSONAPIRequest *existingRequest = [apiRequests objectForKey:moduleTag];
 	if (existingRequest != nil) {
-		// abortRequest causes JSONAPIRequest to release *itself*. removeObjectForKey will subsequently try to release it again, 
-		// after it's been dealloc'd, unless we retain it here.
-		[existingRequest retain];
 		[existingRequest abortRequest];
 		[apiRequests removeObjectForKey:moduleTag];
 	}
