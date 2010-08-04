@@ -73,6 +73,7 @@
 - (void)abortExtraneousRequest;
 - (void)makeRequest;
 - (void)makeSearchRequest:(NSString *)searchTerms;
+- (void)presentSearchResults:(NSArray *)results searchText:(NSString *)searchText searchSpan:(NSString *)searchSpan;
 
 - (void)mapButtonToggled;
 - (void)listButtonToggled;

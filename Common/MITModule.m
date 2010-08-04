@@ -84,8 +84,35 @@ NSString * const LocalPathFederatedSearchResult = @"fedresult";
 #pragma mark State
 
 - (BOOL)handleLocalPath:(NSString *)localPath query:(NSString *)query {
+    BOOL didHandle = NO;
+    
+    // here is a rough script for handling federated search
+    if ([localPath isEqualToString:LocalPathFederatedSearch]) {
+        self.selectedResult = nil;
+
+        // pass self.searchResults and any other desired information to 
+        // your module's root view controller here
+        
+        [self resetNavStack];
+        didHandle = YES;
+        
+    } else if ([localPath isEqualToString:LocalPathFederatedSearchResult]) {
+        NSInteger row = [query integerValue];
+        self.selectedResult = [self.searchResults objectAtIndex:row];
+
+        // construct a detail view controller
+        // pass self.selectedResult to the detailVC       
+        // self.viewControllers = [NSArray arrayWithObject:detailVC];
+        
+        didHandle = YES;
+        
+    }
+    
+    // the rest of this is whatever you want to do for recovering state
+    
+    didHandle = NO;
     NSLog(@"%@ not handling localPath: %@ query: %@", NSStringFromClass([self class]), localPath, query);
-    return NO;
+    return didHandle;
 }
 
 - (void)resetURL {
@@ -94,6 +121,7 @@ NSString * const LocalPathFederatedSearchResult = @"fedresult";
 }
 
 - (void)resetNavStack {
+    // set self.viewControllers to what it gets set to in -[MyModule init], but don't call this in -init
 }
 
 #pragma mark Notifications
@@ -108,12 +136,14 @@ NSString * const LocalPathFederatedSearchResult = @"fedresult";
 
 #pragma mark Federated search
 
+// set up your connection/request object here.
+// you should call [super performSearchForString:]
+// somewhere in your implementation of this function
 - (void)performSearchForString:(NSString *)searchText {
     if (isSearching) {
         [self abortSearch];
     }
     isSearching = YES;
-    //self.searchText = searchText;
     self.searchResults = nil;
     self.searchProgress = 0;
 }

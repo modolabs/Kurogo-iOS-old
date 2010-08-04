@@ -6,6 +6,7 @@
 #import "MITModuleURL.h"
 #import "JSONAPIRequest.h"
 #import "CalendarEventMapAnnotation.h"
+#import "MITCalendarEvent.h"
 #import <MapKit/MapKit.h>
 
 @interface CalendarModule (Private)
@@ -18,7 +19,7 @@
 
 @implementation CalendarModule
 
-@synthesize calendarVC;
+@synthesize calendarVC, request, searchSpan;
 
 - (id) init {
     self = [super init];
@@ -27,6 +28,7 @@
         self.shortName = @"Events";
         self.longName = @"Events Calendar";
         self.iconName = @"events";
+        self.supportsFederatedSearch = YES;
         
         calendarVC = [[CalendarEventsViewController alloc] init];
 		calendarVC.activeEventList = CalendarEventListTypeEvents;
@@ -113,10 +115,34 @@
 - (BOOL)handleLocalPath:(NSString *)localPath query:(NSString *)query
 {
 	BOOL didHandle = NO;
+
+    // these first two conditionals cover federated search.
+    // TODO: test out the remainder of state recovery in this module
+    // and merge all parts of handleLocalPath
+    if ([localPath isEqualToString:LocalPathFederatedSearch]) {
+        self.selectedResult = nil;
+        [calendarVC presentSearchResults:self.searchResults searchText:query searchSpan:self.searchSpan];
+        [self resetNavStack];
+        didHandle = YES;
+
+        // TODO: remove this when the rest of this function is merged
+        return didHandle;
+        
+    } else if ([localPath isEqualToString:LocalPathFederatedSearchResult]) {
+        NSInteger row = [query integerValue];
+        self.selectedResult = [self.searchResults objectAtIndex:row];
+        
+        CalendarDetailViewController *detailVC = [[CalendarDetailViewController alloc] init];
+        detailVC.event = self.selectedResult;
+        detailVC.events = self.searchResults;
+        self.viewControllers = [NSArray arrayWithObject:detailVC];
+        didHandle = YES;
+        
+        // TODO: remove this when the rest of this function is merged
+        return didHandle;
+    }
 	
-	while (calendarVC.navigationController.visibleViewController != calendarVC) {
-		[calendarVC.navigationController popViewControllerAnimated:NO];
-	}
+	[self resetNavStack];
 	
 	// optional query parameters: activeEventList, showList, startDate (, endDate?)
 	// parameters for subcategory screen only: catID
@@ -295,6 +321,105 @@
 - (void)dealloc {
     [calendarVC release];
     [super dealloc];
+}
+
+#pragma mark JSONAPIDelegate
+
+- (void)request:(JSONAPIRequest *)request jsonLoaded:(id)result
+{	
+    self.request = nil;
+    
+    // copied from -[CalendarEventsViewController request:jsonLoaded:]
+    NSArray *resultEvents = [result objectForKey:@"events"];
+    NSMutableArray *arrayForTable;
+    
+    if (![resultEvents isKindOfClass:[NSNull class]]) {
+        
+        self.searchSpan = [result objectForKey:@"span"];
+        arrayForTable = [NSMutableArray arrayWithCapacity:[resultEvents count]];
+		
+        for (NSDictionary *eventDict in resultEvents) {
+            MITCalendarEvent *event = [CalendarDataManager eventWithDict:eventDict];
+            [arrayForTable addObject:event];
+        }
+        
+        self.searchResults = arrayForTable;
+    }
+}
+
+- (void)request:(JSONAPIRequest *)request madeProgress:(CGFloat)progress {
+    self.searchProgress = progress;
+}
+
+- (void)handleConnectionFailureForRequest:(JSONAPIRequest *)request {
+    self.request = nil;
+}
+
+#pragma mark Search and state
+
+- (void)resetNavStack {
+    self.viewControllers = [NSArray arrayWithObject:calendarVC];
+}
+
+- (void)performSearchForString:(NSString *)searchText {
+    [super performSearchForString:searchText];
+    
+	self.request = [JSONAPIRequest requestWithJSONAPIDelegate:self];
+    // TODO: check for failure
+	[self.request requestObjectFromModule:CalendarTag 
+                                  command:@"search" 
+                               parameters:[NSDictionary dictionaryWithObjectsAndKeys:searchText, @"q", nil]];
+}
+
+- (void)abortSearch {
+    if (self.request) {
+        [self.request abortRequest];
+        self.request = nil;
+    }
+    [super abortSearch];
+}
+
+- (NSString *)titleForSearchResult:(id)result {
+    MITCalendarEvent *event = (MITCalendarEvent *)result;
+    return event.title;
+}
+
+- (NSString *)subtitleForSearchResult:(id)result {
+    MITCalendarEvent *event = (MITCalendarEvent *)result;
+    return [event dateStringWithDateStyle:NSDateFormatterShortStyle timeStyle:NSDateFormatterShortStyle separator:@" "];
+}
+
+#pragma mark Pager delegation
+
+// TODO: spin off NewsControllerDelegate into something shared between News and Events
+// then implement this protocol in EventListTableView as well as here
+
+- (BOOL)canSelectPrevious {
+    NSInteger currentIndex = [self.searchResults indexOfObject:self.selectedResult];
+    
+	if (currentIndex > 0) {
+		return YES;
+	} else {
+		return NO;
+	}
+}
+
+- (BOOL)canSelectNext {
+    NSInteger currentIndex = [self.searchResults indexOfObject:self.selectedResult];
+    
+	if (currentIndex + 1 < [self.searchResults count]) {
+		return YES;
+	} else {
+		return NO;
+	}
+}
+
+- (id)selectPrevious {
+    return nil;
+}
+
+- (id)selectNext {
+    return nil;
 }
 
 @end

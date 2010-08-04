@@ -28,7 +28,6 @@ extern NSString * const LocalPathFederatedSearchResult;
     NSArray *searchResults;
     id selectedResult;
     BOOL isSearching;
-    //NSString *_searchText;
 	
 	// properties used for saving and restoring state
 	// if module keeps track of its state it is required respond to handleLocalPath:query
@@ -82,10 +81,9 @@ extern NSString * const LocalPathFederatedSearchResult;
 
 @property (nonatomic, assign) CGFloat searchProgress;
 @property (nonatomic, retain) NSArray *searchResults;
-@property (nonatomic, assign) id selectedResult; // must be a member of searchResults
+@property (nonatomic, assign) id selectedResult;     // must be an object in searchResults
 @property (nonatomic, assign) BOOL supportsFederatedSearch;
 @property (nonatomic, readonly) BOOL isSearching;
-//@property (nonatomic, retain) NSString *searchText;
 
 @property (nonatomic, assign) BOOL canBecomeDefault;
 @property (nonatomic, assign) BOOL pushNotificationSupported;

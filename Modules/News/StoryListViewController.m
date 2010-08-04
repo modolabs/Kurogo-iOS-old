@@ -946,6 +946,7 @@ static NSInteger numTries = 0;
                 
             } else if (indexPath.row < self.stories.count) {
                 NewsStory *story = [self.stories objectAtIndex:indexPath.row];
+//NSLog(@"%@", [story description]);
                 
                 static NSString *StoryCellIdentifier = @"StoryCell";
                 UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:StoryCellIdentifier];
@@ -990,7 +991,9 @@ static NSInteger numTries = 0;
                 titleLabel = (UILabel *)[cell viewWithTag:1];
                 dekLabel = (UILabel *)[cell viewWithTag:2];
                 thumbnailView = (StoryThumbnailView *)[cell viewWithTag:3];
-                
+
+if ([story isFault]) NSLog(@"%@", [story description]);
+
                 titleLabel.text = story.title;
                 dekLabel.text = story.summary;
                 

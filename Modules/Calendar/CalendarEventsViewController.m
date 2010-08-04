@@ -675,6 +675,22 @@
 	}
 }
 
+- (void)presentSearchResults:(NSArray *)results searchText:(NSString *)searchText searchSpan:(NSString *)searchSpan
+{
+    [self showSearchBar];
+    [self unfocusSearchBar];
+    theSearchBar.text = searchText;
+    [self hideSearchOverlay];
+    searchResultsTableView.events = results;
+    searchResultsTableView.searchSpan = searchSpan;
+    searchResultsMapView.events = results;
+    if (showList) {
+        [self showSearchResultsTableView];
+    } else {
+        [self showSearchResultsMapView];
+    }
+}
+
 #pragma mark Search delegate
 
 - (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar

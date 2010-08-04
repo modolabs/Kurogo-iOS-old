@@ -101,28 +101,17 @@ NSString * const MapsLocalPathList = @"list";
         self.selectedResult = nil;
         self.campusMapVC.searchResults = self.searchResults;
         self.campusMapVC.lastSearchText = query;
-        self.viewControllers = [NSArray arrayWithObject:self.campusMapVC];
+        [self resetNavStack];
         didHandle = YES;
         
     } else if ([localPath isEqualToString:LocalPathFederatedSearchResult]) {
-        // fedresult?q=query&row=rownum
-        NSArray *queryKeys = [query componentsSeparatedByString:@"&"];
-        NSInteger row = NSNotFound;
-        for (NSString *qKey in queryKeys) {
-            NSArray *qValues = [qKey componentsSeparatedByString:@"="];
-            if ([qValues count] == 2) {
-                if ([[qValues objectAtIndex:0] isEqualToString:@"row"]) {
-                    row = [[qValues objectAtIndex:1] intValue];
-                }
-            }
-        }
+        // fedresult?rownum
+        NSInteger row = [query integerValue];
         
-        if (row != NSNotFound) {
-            MITMapDetailViewController *detailVC = [[MITMapDetailViewController alloc] init];
-            self.selectedResult = [self.searchResults objectAtIndex:row];
-            detailVC.annotation = self.selectedResult;
-            self.viewControllers = [NSArray arrayWithObject:detailVC];
-        }
+        MITMapDetailViewController *detailVC = [[MITMapDetailViewController alloc] init];
+        self.selectedResult = [self.searchResults objectAtIndex:row];
+        detailVC.annotation = self.selectedResult;
+        self.viewControllers = [NSArray arrayWithObject:detailVC];
         
         didHandle = YES;
         

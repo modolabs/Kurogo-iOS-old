@@ -46,35 +46,20 @@ NSString * const NewsLocalPathBookmarks = @"bookmarks";
     if ([localPath isEqualToString:LocalPathFederatedSearch]) {
         // fedsearch?query
         self.selectedResult = nil;
-        NSString *searchText = query;
         storyListChannelController.totalAvailableResults = self.xmlParser.totalAvailableResults;
-        [storyListChannelController presentSearchResults:self.searchResults searchText:searchText];
-        self.viewControllers = [NSArray arrayWithObject:storyListChannelController];
-        
+        [storyListChannelController presentSearchResults:self.searchResults searchText:query];
+        [self resetNavStack];
         didHandle = YES;
         
     } else if ([localPath isEqualToString:LocalPathFederatedSearchResult]) {
-        // fedresult?q=query&row=rownum
-        NSArray *queryKeys = [query componentsSeparatedByString:@"&"];
-        NSInteger row = NSNotFound;
-        for (NSString *qKey in queryKeys) {
-            NSArray *qValues = [qKey componentsSeparatedByString:@"="];
-            if ([qValues count] == 2) {
-                if ([[qValues objectAtIndex:0] isEqualToString:@"q"]) {
-                    //self.searchText = [qValues objectAtIndex:1];
-                } else if ([[qValues objectAtIndex:0] isEqualToString:@"row"]) {
-                    row = [[qValues objectAtIndex:1] intValue];
-                }
-            }
-        }
+        // fedresult?rownum
+        NSInteger row = [query integerValue];
         
-        if (row != NSNotFound) {
-            StoryDetailViewController *detailVC = [[StoryDetailViewController alloc] init];
-            self.selectedResult = [self.searchResults objectAtIndex:row];
-            detailVC.story = self.selectedResult;
-            detailVC.newsController = self;
-            self.viewControllers = [NSArray arrayWithObject:detailVC];
-        }
+        StoryDetailViewController *detailVC = [[StoryDetailViewController alloc] init];
+        self.selectedResult = [self.searchResults objectAtIndex:row];
+        detailVC.story = self.selectedResult;
+        detailVC.newsController = self;
+        self.viewControllers = [NSArray arrayWithObject:detailVC];
         
         didHandle = YES;
         
@@ -148,7 +133,6 @@ NSString * const NewsLocalPathBookmarks = @"bookmarks";
 
 - (void)parser:(StoryXMLParser *)parser downloadMadeProgress:(CGFloat)progress {
     self.searchProgress = 0.1 + 0.2 * progress;
-    NSLog(@"progress set to %.2f", self.searchProgress);
 }
 
 - (void)parserDidStartParsing:(StoryXMLParser *)parser {

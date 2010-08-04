@@ -259,7 +259,6 @@ NSString * const NewsTagFullURL         = @"url";
 }
 
 - (void)connection:(ConnectionWrapper *)wrapper madeProgress:(CGFloat)progress {
-    NSLog(@"connection wrapper says %.2f", progress);
 	if (self.delegate != nil && [self.delegate respondsToSelector:@selector(parser:downloadMadeProgress:)]) {
 		[self.delegate parser:self downloadMadeProgress:progress];
 	}
@@ -408,9 +407,15 @@ NSString * const NewsTagFullURL         = @"url";
         story.postDate = postDate;
         story.title = [currentContents objectForKey:NewsTagTitle];
         story.link = [currentContents objectForKey:NewsTagLink];
-        story.author = [NSString stringWithFormat:@"%@, %@",
-                        [currentContents objectForKey:NewsTagAuthor],
-                        [currentContents objectForKey:NewsTagAffiliation]];
+        NSString *author = [currentContents objectForKey:NewsTagAuthor];
+        NSString *affiliation = [currentContents objectForKey:NewsTagAffiliation];
+        if (author) {
+            if (affiliation) {
+                story.author = [NSString stringWithFormat:@"%@, %@", author, affiliation];
+            } else {
+                story.author = author;
+            }
+        }
         story.summary = [currentContents objectForKey:NewsTagSummary];
         story.body = [currentContents objectForKey:NewsTagBody];
         
