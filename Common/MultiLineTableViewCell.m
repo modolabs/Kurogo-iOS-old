@@ -128,7 +128,7 @@
 - (void)layoutSubviews {
 	[super layoutSubviews]; // this resizes labels to default size
     
-    CGFloat heightAdded;
+    CGFloat heightAdded = 0.0f;
     UITableView *tableView = (UITableView *)self.superview;
     BOOL cellImage = (self.imageView.image != nil);
     CGRect frame;
