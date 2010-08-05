@@ -7,7 +7,8 @@
 
 typedef int NewsCategoryId;
 
-@class MITSearchEffects;
+//@class MITSearchEffects;
+@class MITSearchDisplayController;
 @class NewsStory;
 
 @interface StoryListViewController : UIViewController <UITableViewDataSource, UITableViewDelegate,
@@ -32,7 +33,8 @@ UISearchBarDelegate, StoryXMLParserDelegate, JSONAPIDelegate, NavScrollerDelegat
 	NSArray *searchResults;
 	NSInteger totalAvailableResults;
 	ModoSearchBar *theSearchBar;
-	MITSearchEffects *searchOverlay;
+	//MITSearchEffects *searchOverlay;
+    MITSearchDisplayController *searchController;
 	
 	BOOL hasBookmarks;
 	BOOL showingBookmarks;
@@ -54,8 +56,6 @@ UISearchBarDelegate, StoryXMLParserDelegate, JSONAPIDelegate, NavScrollerDelegat
 
 - (void)presentSearchResults:(NSArray *)results searchText:(NSString *)searchText;
 - (void)showSearchBar;
-- (void)unfocusSearchBar;
-- (void)hideSearchOverlay;
 
 - (void)pruneStories;
 - (void)switchToCategory:(NewsCategoryId)category;
