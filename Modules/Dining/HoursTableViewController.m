@@ -86,7 +86,7 @@
 		statString = [statString stringByAppendingString:status.currentMealTime];
 		cell.detailTextLabel.text = [NSString stringWithFormat:@"%@\n  ", statString];
 
-		UIImage *image = [UIImage imageNamed:@"dining-status-open.png"];
+		UIImage *image = [UIImage imageNamed:@"dining/dining-status-open.png"];
 		cell.imageView.image = image;
 		
 	}
@@ -99,7 +99,7 @@
 		//cell.detailTextLabel.text = statString;
 		
 		cell.detailTextLabel.text = [NSString stringWithFormat:@"%@\nNo Interhouse", statString];
-		UIImage *image = [UIImage imageNamed:@"dining-status-open-w-restrictions.png"];
+		UIImage *image = [UIImage imageNamed:@"dining/dining-status-open-w-restrictions.png"];
 		cell.imageView.image = image;
 	}
 	
@@ -111,7 +111,7 @@
 			nextMeal = [nextMeal stringByAppendingString:status.nextMealTime];
 			cell.detailTextLabel.text = [NSString stringWithFormat:@"Closed.\nNext Meal: %@", nextMeal];
 			
-			UIImage *image = [UIImage imageNamed:@"dining-status-closed.png"];
+			UIImage *image = [UIImage imageNamed:@"dining/dining-status-closed.png"];
 			cell.imageView.image = image;
 			
 			if (status.nextMealRestriction == RESTRICTED) {
@@ -119,7 +119,7 @@
 				
 				cell.detailTextLabel.text = [NSString stringWithFormat:@"Closed. Upcoming Restriction\nNext Meal: %@", nextMeal];
 				
-				UIImage *image = [UIImage imageNamed:@"dining-status-closed-w-restrictions.png"];
+				UIImage *image = [UIImage imageNamed:@"dining/dining-status-closed-w-restrictions.png"];
 				cell.imageView.image = image;
 			}
 			
@@ -129,7 +129,7 @@
 			cell.detailTextLabel.text = @"Closed";
 			
 			
-			UIImage *image = [UIImage imageNamed:@"dining-status-closed.png"];
+			UIImage *image = [UIImage imageNamed:@"dining/dining-status-closed.png"];
 			cell.imageView.image = image;
 		}
 

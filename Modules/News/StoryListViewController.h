@@ -1,7 +1,7 @@
 #import <UIKit/UIKit.h>
 #import "StoryXMLParser.h"
 #import "JSONAPIRequest.h"
-#import "TabScrollerBackgroundView.h"
+#import "NavScrollerView.h"
 #import "ModoSearchBar.h"
 #import "StoryDetailViewController.h"
 

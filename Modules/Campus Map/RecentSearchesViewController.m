@@ -1,11 +1,3 @@
-//
-//  RecentSearchesViewController.m
-//  MIT Mobile
-//
-//  Created by Craig Spitzkoff on 5/18/10.
-//  Copyright 2010 Raizlabs. All rights reserved.
-//
-
 #import "RecentSearchesViewController.h"
 #import "CoreDataManager.h"
 #import "Constants.h"
@@ -13,6 +5,7 @@
 #import "MapSelectionController.h"
 #import "MapSearch.h"
 #import "CampusMapViewController.h"
+#import "ModoSearchBar.h"
 
 @implementation RecentSearchesViewController
 @synthesize mapSelectionController = _mapSelectionController;

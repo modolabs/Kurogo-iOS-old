@@ -406,12 +406,6 @@
 										 _tabViewContainer.frame.origin.y + viewToAdd.frame.size.height);
 	
 	[_tabViewContainer addSubview:viewToAdd];
-	
-	if (_campusMapVC.displayingList)
-		[_campusMapVC.url setPath:[NSString stringWithFormat:@"list/detail/%@/%d", _annotation.uniqueID, tabIndex] query:_campusMapVC.lastSearchText];
-	else 
-		[_campusMapVC.url setPath:[NSString stringWithFormat:@"detail/%@/%d", _annotation.uniqueID, tabIndex] query:_campusMapVC.lastSearchText];
-	[_campusMapVC.url setAsModulePath];
 }
 
 

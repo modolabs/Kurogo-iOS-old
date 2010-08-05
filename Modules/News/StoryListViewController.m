@@ -6,7 +6,7 @@
 #import "NewsStory.h"
 #import "CoreDataManager.h"
 #import "UIKit+MITAdditions.h"
-#import "TabScrollerBackgroundView.h"
+#import "NavScrollerView.h"
 #import "MITSearchDisplayController.h"
 #import "MITUIConstants.h"
 #import "NewsCategory.h"

@@ -4,6 +4,7 @@
 #import "CampusMapViewController.h"
 #import "MITSearchEffects.h"
 #import "MITUIConstants.h"
+#import "ModoSearchBar.h"
 
 #define kAPICategoryTitles	@"CategoryTitles"
 #define kAPICategory		@"Category"

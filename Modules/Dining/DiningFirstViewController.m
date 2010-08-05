@@ -690,16 +690,16 @@ numberOfRowsInSection:(NSInteger)section
 	
 	
 	cell.textLabel.lineBreakMode = UILineBreakModeWordWrap;
-	UIImage *image = [UIImage imageNamed:@"dining-local-crop.png"];
+	UIImage *image = [UIImage imageNamed:@"dining/dining-local-crop.png"];
 	UIImageView *imView = [[UIImageView alloc] initWithFrame:CGRectMake(265, 10, 17, 17)];
 	imView.image = image;
 
 	
-	UIImage *image2 = [UIImage imageNamed:@"dining-vegan.png"];
+	UIImage *image2 = [UIImage imageNamed:@"dining/dining-vegan.png"];
 	UIImageView *imView2 = [[UIImageView alloc] initWithFrame:CGRectMake(245, 10, 17, 17)];
 	imView2.image = image2;
 	
-	UIImage *image3 = [UIImage imageNamed:@"dining-organic-crop.png"];
+	UIImage *image3 = [UIImage imageNamed:@"dining/dining-organic-crop.png"];
 	UIImageView *imView3 = [[UIImageView alloc] initWithFrame:CGRectMake(225, 10, 17, 17)];
 	imView3.image = image3;
 

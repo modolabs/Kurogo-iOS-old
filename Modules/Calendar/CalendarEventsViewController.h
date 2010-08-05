@@ -4,7 +4,7 @@
 #import "EventCategoriesTableView.h"
 #import "CalendarMapView.h"
 #import "DatePickerViewController.h"
-#import "TabScrollerBackgroundView.h"
+#import "NavScrollerView.h"
 
 @class MITSearchDisplayController;
 @class EventListTableView;
