@@ -398,7 +398,8 @@
                                                                   listType:activeEventList
 																  category:(theCatID == kCalendarTopLevelCategoryID) ? nil : [NSNumber numberWithInt:theCatID]];
 			
-			if (someEvents != nil && [someEvents count] && (requestNeeded == NO)) {
+			//if (someEvents != nil && [someEvents count] && (requestNeeded == NO)) {
+			if (someEvents != nil && [someEvents count]) {
 				self.events = someEvents;
 				((EventListTableView *)self.tableView).events = self.events;
 				theMapView.events = self.events;
@@ -407,6 +408,7 @@
                 requestNeeded = NO;
 			} else {
 				self.tableView.separatorColor = [UIColor whiteColor];
+				requestNeeded = YES;
 			}
 		}
 		
@@ -436,9 +438,6 @@
 	if ([self shouldShowDatePicker:activeEventList]) {
 		[self setupDatePicker];
 	}
-	
-	
-	requestNeeded = YES;
 	
 	if (requestNeeded) {
 		[self makeRequest];
