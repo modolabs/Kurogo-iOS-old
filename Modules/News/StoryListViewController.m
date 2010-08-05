@@ -523,9 +523,7 @@ static NSInteger numTries = 0;
         // grab the first featured story from the list, regardless of pubdate
         NSArray *featuredStories = [results filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"(featured == YES)"]];
         if ([featuredStories count]) {
-            NSLog(@"%@", [featuredStories description]);
             self.featuredStory = [featuredStories objectAtIndex:0];
-            //NSLog(@"%@", [self.featuredStory.featuredImage description]);
         }
         
         NSMutableArray *storyCandidates = [NSMutableArray arrayWithArray:[results subarrayWithRange:NSMakeRange(0, maxLength)]];

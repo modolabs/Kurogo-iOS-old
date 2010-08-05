@@ -130,18 +130,28 @@
     _searchBar = [[ModoSearchBar alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 44)];
     _searchBar.placeholder = [NSString stringWithString:@"Search Harvard Mobile"];
     [self.view addSubview:_searchBar];
-    
-    _searchController = [[MITSearchDisplayController alloc] initWithSearchBar:_searchBar contentsController:self];
-    _searchController.delegate = self;
-    
-    CGRect frame = CGRectMake(0, _searchBar.frame.size.height, self.view.frame.size.width,
-                              self.view.frame.size.height - _searchBar.frame.size.height);
-    self.searchResultsTableView = [[[UITableView alloc] initWithFrame:frame style:UITableViewStyleGrouped] autorelease];
-    _searchController.searchResultsTableView = self.searchResultsTableView;
-    _searchController.searchResultsDelegate = self;
-    _searchController.searchResultsDataSource = self;
 
     [self layoutIcons:_icons];
+    
+    if (!_searchController) {
+        _searchController = [[MITSearchDisplayController alloc] initWithSearchBar:_searchBar contentsController:self];
+        _searchController.delegate = self;
+        
+        CGRect frame = CGRectMake(0, _searchBar.frame.size.height, containingView.frame.size.width,
+                                  containingView.frame.size.height - _searchBar.frame.size.height);
+        self.searchResultsTableView = [[[UITableView alloc] initWithFrame:frame style:UITableViewStyleGrouped] autorelease];
+        self.searchResultsTableView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+        // we need to add searchResultsTableView as a subview for
+        // autoresizing to happen properly.  we will set it to
+        // visible and add/remove it the normal way after the
+        // containing navigationController has been set up.
+        self.searchResultsTableView.hidden = YES;
+        [self.view addSubview:self.searchResultsTableView];
+        
+        _searchController.searchResultsTableView = self.searchResultsTableView;
+        _searchController.searchResultsDelegate = self;
+        _searchController.searchResultsDataSource = self;
+    }
 }
 
 - (void)buttonPressed:(id)sender {
@@ -157,7 +167,7 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     if (isSearch) {
-        [activeModule resetNavStack];
+        [activeModule restoreNavStack];
     }
 }
 
@@ -187,27 +197,28 @@
     [_icons release];
     [containingView release];
     [_searchBar release];
+    [_searchController release];
     [super dealloc];
 }
 
 #pragma mark Search Bar delegation
 
-- (BOOL)searchBarShouldBeginEditing:(UISearchBar *)searchBar {
-    [searchBar setShowsCancelButton:YES animated:YES];
-    [searchBar setShowsScopeBar:YES];
-    searchBar.scopeButtonTitles = [NSArray arrayWithObjects:@"one", @"two", @"three", nil];
-    return YES;
-}
-
-- (BOOL)searchBarShouldEndEditing:(UISearchBar *)searchBar {
-    return YES;
-}
-
 - (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar {
+    // see the comment in viewDidLoad for why we do this
+    [self.searchResultsTableView removeFromSuperview];
+    self.searchResultsTableView.hidden = NO;
     [self.view addSubview:self.searchResultsTableView];
+
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(searchDidMakeProgress:) name:@"SearchResultsProgressNotification" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(searchDidComplete:) name:@"SearchResultsCompleteNotification" object:nil];
     [self searchAllModules];
+}
+
+- (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar {
+    isSearch = NO;
+    for (MITModule *aModule in self.searchableModules) {
+        [aModule abortSearch];
+    }
 }
 
 #pragma mark Federated search
@@ -224,10 +235,13 @@
     MITModule *sender = [aNotification object];
     NSInteger section = [self.searchableModules indexOfObject:sender];
     NSIndexSet *sections = [NSIndexSet indexSetWithIndex:section];
+
     [searchResultsTableView reloadSections:sections withRowAnimation:UITableViewRowAnimationNone];
 }
 
 - (void)searchAllModules {
+    isSearch = YES;
+    
     for (MITModule *aModule in self.searchableModules) {
         if (!aModule.isSearching) {
             [aModule performSearchForString:_searchBar.text];
@@ -251,6 +265,7 @@
 
 #pragma mark UITableView datasource
 
+// TODO: don't waste space with modules that return no results
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     return [self.searchableModules count];
 }

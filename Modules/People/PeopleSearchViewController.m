@@ -237,6 +237,12 @@ NSInteger strLenSort(NSString *str1, NSString *str2, void *context)
     }
 }
 
+- (void)presentSearchResults:(NSArray *)theSearchResults {
+    self.searchResults = theSearchResults;
+    [self.view addSubview:self.searchController.searchResultsTableView];
+    [self.searchController.searchResultsTableView reloadData];
+}
+
 #pragma mark -
 #pragma mark Table view methods
 
@@ -491,21 +497,22 @@ NSInteger strLenSort(NSString *str1, NSString *str2, void *context)
 	}
 	else {
 		// Search success.
-		if (![self.searchController.searchResultsTableView isDescendantOfView:self.view]) {
+		//if (![self.searchController.searchResultsTableView isDescendantOfView:self.view]) {
 			// when we're called externally, searchResultsTableView doesn't realize
 			// it's supposed to have expanded by the height of the search bar
-			CGRect resultsFrame = self.searchController.searchResultsTableView.frame;
-			CGRect viewFrame = self.view.frame;
-			self.searchController.searchResultsTableView.frame = 
-				CGRectMake(resultsFrame.origin.x,
-						   resultsFrame.origin.y,
-						   resultsFrame.size.width,
-						   viewFrame.size.height - (resultsFrame.origin.y - viewFrame.origin.y));
+			//CGRect resultsFrame = self.searchController.searchResultsTableView.frame;
+			//CGRect viewFrame = self.view.frame;
+			//self.searchController.searchResultsTableView.frame = 
+			//	CGRectMake(resultsFrame.origin.x,
+			//			   resultsFrame.origin.y,
+			//			   resultsFrame.size.width,
+			//			   viewFrame.size.height - (resultsFrame.origin.y - viewFrame.origin.y));
 			
-			[self.view addSubview:self.searchController.searchResultsTableView];
-		}
+			//[self.view addSubview:self.searchController.searchResultsTableView];
+		//}
+        [self.view addSubview:self.searchController.searchResultsTableView];
 		
-		self.searchController.searchResultsTableView.hidden = NO;
+		//self.searchController.searchResultsTableView.hidden = NO;
 		[self.searchController.searchResultsTableView reloadData];
 	}
 }

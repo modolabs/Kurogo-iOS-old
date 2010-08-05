@@ -25,6 +25,7 @@ NSInteger strLenSort(NSString *str1, NSString *str2, void *context);
 //- (void)prepSearchBar;
 - (void)beginExternalSearch:(NSString *)externalSearchTerms;
 - (void)performSearch;
+- (void)presentSearchResults:(NSArray *)theSearchResults;
 - (void)showLoadingView;
 - (void)cleanUpConnection;
 - (void)phoneIconTappedAtIndexPath:(NSIndexPath *)indexPath;
