@@ -2,6 +2,11 @@
 #import "MIT_MobileAppDelegate.h"
 #import "MITModuleList.h"
 #import "MITUIConstants.h"
+#import "MITModule.h"
+#import "ModoNavigationController.h"
+#import "ModoNavigationBar.h"
+#import "ModoSearchBar.h"
+#import "MITSearchDisplayController.h"
 
 #define GRID_HPADDING 12.0f
 #define GRID_VPADDING 8.0f
@@ -123,8 +128,18 @@
     [self.view addSubview:containingView];
 
     _searchBar = [[ModoSearchBar alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 44)];
-    _searchBar.delegate = self;
+    _searchBar.placeholder = [NSString stringWithString:@"Search Harvard Mobile"];
     [self.view addSubview:_searchBar];
+    
+    _searchController = [[MITSearchDisplayController alloc] initWithSearchBar:_searchBar contentsController:self];
+    _searchController.delegate = self;
+    
+    CGRect frame = CGRectMake(0, _searchBar.frame.size.height, self.view.frame.size.width,
+                              self.view.frame.size.height - _searchBar.frame.size.height);
+    self.searchResultsTableView = [[[UITableView alloc] initWithFrame:frame style:UITableViewStyleGrouped] autorelease];
+    _searchController.searchResultsTableView = self.searchResultsTableView;
+    _searchController.searchResultsDelegate = self;
+    _searchController.searchResultsDataSource = self;
 
     [self layoutIcons:_icons];
 }
@@ -145,13 +160,6 @@
         [activeModule resetNavStack];
     }
 }
-
-/*
-// Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
-- (void)viewDidLoad {
-    [super viewDidLoad];
-}
-*/
 
 /*
 // Override to allow orientations other than the default portrait orientation.
@@ -195,50 +203,11 @@
     return YES;
 }
 
-- (void)searchBarTextDidBeginEditing:(UISearchBar *)searchBar {
-}
-
-- (void)searchBarTextDidEndEditing:(UISearchBar *)searchBar {
-}
-
 - (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar {
-    [searchBar resignFirstResponder];
-    [searchBar setShowsCancelButton:NO animated:YES];
-    if (!self.searchResultsTableView) {
-        CGRect frame = CGRectMake(0, _searchBar.frame.size.height, self.view.frame.size.width,
-                                  self.view.frame.size.height - _searchBar.frame.size.height);
-        self.searchResultsTableView = [[[UITableView alloc] initWithFrame:frame style:UITableViewStyleGrouped] autorelease];
-        self.searchResultsTableView.dataSource = self;
-        self.searchResultsTableView.delegate = self;
-        //[self.searchResultsTableView applyStandardColors];
-    }
     [self.view addSubview:self.searchResultsTableView];
-    [self searchAllModules];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(searchDidMakeProgress:) name:@"SearchResultsProgressNotification" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(searchDidComplete:) name:@"SearchResultsCompleteNotification" object:nil];
-}
-
-- (void)searchBarResultsListButtonClicked:(UISearchBar *)searchBar {
-}
-
-- (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar {
-    [searchBar resignFirstResponder];
-    [searchBar setShowsCancelButton:NO animated:YES];
-    [self.searchResultsTableView removeFromSuperview];
-    self.searchResultsTableView = nil;
-}
-
-- (void)searchBarBookmarkButtonClicked:(UISearchBar *)searchBar {
-}
-
-- (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText {
-}
-
-- (BOOL)searchBar:(UISearchBar *)searchBar shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text {
-    return YES;
-}
-
-- (void)searchBar:(UISearchBar *)searchBar selectedScopeButtonIndexDidChange:(NSInteger)selectedScope {
+    [self searchAllModules];
 }
 
 #pragma mark Federated search

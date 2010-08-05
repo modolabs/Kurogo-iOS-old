@@ -1,8 +1,10 @@
 #import <UIKit/UIKit.h>
-#import "MITModule.h"
-#import "ModoNavigationController.h"
-#import "ModoNavigationBar.h"
-#import "ModoSearchBar.h"
+
+@class MITModule;
+@class ModoSearchBar;
+@class ModoNavigationBar;
+@class MITSearchDisplayController;
+@class ModoNavigationController;
 
 @interface SpringboardViewController : UIViewController <UISearchBarDelegate, UITableViewDelegate, UITableViewDataSource> {
 
@@ -10,6 +12,7 @@
     MITModule *activeModule;
     ModoNavigationController *navigationController;
     ModoNavigationBar *navigationBar;
+    MITSearchDisplayController *_searchController;
 
     ModoSearchBar *_searchBar;
     NSMutableArray *searchableModules;
