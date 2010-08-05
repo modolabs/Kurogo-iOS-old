@@ -669,25 +669,21 @@ numberOfRowsInSection:(NSInteger)section
 	
 	static NSString *DisclosureButtonCellIdentifier = @"DisclosureButtonCellIdentifier";
 	
-	DiningMultiLineCell *cell = (DiningMultiLineCell *)[tableView dequeueReusableCellWithIdentifier:DisclosureButtonCellIdentifier];
+	DiningMultiLineCell *cell1 = (DiningMultiLineCell *)[tableView dequeueReusableCellWithIdentifier:DisclosureButtonCellIdentifier];
+	DiningMultiLineCell *cell;
 	
-	if (cell == nil)
-	{
-		cell = [[[DiningMultiLineCell alloc]
-				 initWithStyle:UITableViewCellStyleDefault
-				 reuseIdentifier:DisclosureButtonCellIdentifier] autorelease];
-	}
-	else {
-		for (UIView *aView in cell.contentView.subviews) {
-			[aView removeFromSuperview];
-			aView = nil;
-		}
-	}
+	// Due to multiple-imageViews being displayed, do not use a re-usable cell. Instead, release the re-usable one.
+	if (cell1 != nil)
+		cell1 = nil;
+
+	cell = [[[DiningMultiLineCell alloc]
+		 initWithStyle:UITableViewCellStyleDefault
+		 reuseIdentifier:DisclosureButtonCellIdentifier] autorelease];
 
 	cell.textLabelNumberOfLines = 2;	
 	cell.textLabel.text = (NSString *) [[keySection objectAtIndex:row] objectForKey:@"item"];
 	
-	
+	// If details of the Menu-Item are available, uncomment the following line.
 	//cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 	cell.selectionStyle = UITableViewCellSelectionStyleNone;
 	cell.backgroundColor = GROUPED_VIEW_CELL_COLOR;
@@ -695,16 +691,16 @@ numberOfRowsInSection:(NSInteger)section
 	
 	cell.textLabel.lineBreakMode = UILineBreakModeWordWrap;
 	UIImage *image = [UIImage imageNamed:@"dining-local-crop.png"];
-	UIImageView *imView = [[UIImageView alloc] initWithFrame:CGRectMake(265, 10, 20, 20)];
+	UIImageView *imView = [[UIImageView alloc] initWithFrame:CGRectMake(265, 10, 17, 17)];
 	imView.image = image;
 
 	
 	UIImage *image2 = [UIImage imageNamed:@"dining-vegan.png"];
-	UIImageView *imView2 = [[UIImageView alloc] initWithFrame:CGRectMake(245, 10, 20, 20)];
+	UIImageView *imView2 = [[UIImageView alloc] initWithFrame:CGRectMake(245, 10, 17, 17)];
 	imView2.image = image2;
 	
 	UIImage *image3 = [UIImage imageNamed:@"dining-organic-crop.png"];
-	UIImageView *imView3 = [[UIImageView alloc] initWithFrame:CGRectMake(225, 10, 20, 20)];
+	UIImageView *imView3 = [[UIImageView alloc] initWithFrame:CGRectMake(225, 10, 17, 17)];
 	imView3.image = image3;
 
 	
@@ -760,6 +756,8 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
 	// deselect the Row
 	[tableView deselectRowAtIndexPath:indexPath animated:NO];
+	
+	// If details of the Menu-Items are available, uncomment the code below
 	/*
 	//re-initialize the childController each time to get the correct Display
 	childController = nil;

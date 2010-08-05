@@ -187,18 +187,6 @@
         self.detailTextLabel.frame = frame;
     }
     
-    /*
-	 if (self.textLabel.frame.size.height > 0) {
-	 NSLog(@"margin: %.1f, height: %.1f, %.1f x %.1f; detail: %.1f x %.1f",
-	 self.textLabel.frame.origin.y,
-	 self.frame.size.height,
-	 self.textLabel.frame.size.width,
-	 self.textLabel.frame.size.height,
-	 self.detailTextLabel.frame.size.width,
-	 self.detailTextLabel.frame.size.height);
-	 }
-	 */
-    
 	// make sure any extra views are drawn on top of standard testLabel and detailTextLabel
 	NSMutableArray *extraSubviews = [NSMutableArray arrayWithCapacity:[self.contentView.subviews count]];
 	for (UIView *aView in self.contentView.subviews) {
@@ -209,11 +197,15 @@
 	}
 	for (UIView *aView in extraSubviews) {
         // TODO: generalize this more if the following assumption no longer holds
-        // right now we assume extra views are on the same line as the detailTextLabel
+        // right now we assume extra views are on the same line as the textLabel
         // (true for stellar announcements and events calendar)
         CGRect frame = aView.frame;
         frame.origin.y = self.textLabel.frame.origin.y;
-		frame.origin.x = frame.origin.x - 3;
+		
+		// Position of the Status Icon next to the textLabel
+		if (frame.origin.x < self.textLabel.frame.origin.x)
+			frame.origin.x = self.textLabel.frame.origin.x - 30;
+		
         aView.frame = frame;
 		[self.contentView addSubview:aView];
 	}
