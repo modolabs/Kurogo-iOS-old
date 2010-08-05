@@ -236,7 +236,7 @@ JSONAPIRequest *mitapi;
 
 	// Display the Date in the Expected Format: Saturday, June 25
 	NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
-	[dateFormat setDateFormat:@"EEEE MMMM d"];
+	[dateFormat setDateFormat:@"EEEE, MMMM d"];
 	//NSString *dateString = [dateFormat stringFromDate:self.todayDate];
 	[dateFormat release];
 
@@ -565,7 +565,7 @@ JSONAPIRequest *mitapi;
     
 	NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
 	//[dateFormat setDateFormat:@"YYYY-MM-dd"];
-	[dateFormat setDateFormat:@"EEEE MMMM d"];
+	[dateFormat setDateFormat:@"EEEE, MMMM d"];
 	NSString *dateText = [dateFormat stringFromDate:self.todayDate];
 
 	NSString *currentDate = [dateFormat stringFromDate:[NSDate date]];
