@@ -166,13 +166,6 @@
             navScrollView.navScrollerDelegate = self;
         }
         
-		/*
-		// lots of copy/paste from StoryListViewController in this section
-		
-		UIImage *backgroundImage = [UIImage imageNamed:MITImageNameScrollTabBackgroundOpaque];
-		UIImage *buttonImage = [UIImage imageNamed:MITImageNameScrollTabSelectedTab];
-		UIImage *stretchableButtonImage = [buttonImage stretchableImageWithLeftCapWidth:15 topCapHeight:0];
-		*/
 		UIButton *searchButton = [UIButton buttonWithType:UIButtonTypeCustom];
 		UIImage *searchImage = [UIImage imageNamed:MITImageNameSearch];
 		[searchButton setImage:searchImage forState:UIControlStateNormal];
@@ -181,99 +174,31 @@
         navScrollView.currentXOffset += 4.0;
         [navScrollView addButton:searchButton shouldHighlight:NO];
 
-        /*
-		// we want the search image to line up exactly with the gray magnifying glass in the search bar
-		// but there's no good way to determine the gray image's real position, so these pixel numbers
-		// are produced by eyeballing and hoping the position is similar in sdk versions other than 3.0
-		searchButton.frame = CGRectMake(10.0,
-										9.0,
-										searchImage.size.width,
-										searchImage.size.height); 
-		[searchButton addTarget:self action:@selector(showSearchBar) forControlEvents:UIControlEventTouchUpInside];
-		searchButton.titleEdgeInsets = UIEdgeInsetsMake(0, 0, 1.0, 0);
-         */
+        // increase tappable area for search button
         UIControl *searchTapRegion = [[UIControl alloc] initWithFrame:CGRectMake(0.0, 0.0, 44.0, 44.0)];
         searchTapRegion.backgroundColor = [UIColor clearColor];
         searchTapRegion.center = searchButton.center;
         [searchTapRegion addTarget:self action:@selector(showSearchBar) forControlEvents:UIControlEventTouchUpInside];
-		/*
+        
 		// create buttons for nav scroller view		
-		//navButtons = [[NSMutableArray alloc] initWithCapacity:NumberOfCalendarEventListTypes];
-		navButtons = [[NSMutableArray alloc] initWithCapacity:NumberOfCalendarEventListTypes];
-		
-		CGRect buttonFrame = CGRectZero;
-		CGFloat leftOffset = searchButton.frame.size.width + 20.0;
-		buttonFrame.origin.y = floor((backgroundImage.size.height - buttonImage.size.height) / 2);
-		*/
 		for (int i = 0; i < NumberOfCalendarEventListTypes; i++) {
 
 			CalendarEventListType listType = buttonTypes[i];
 			NSString *buttonTitle = [CalendarConstants titleForEventType:listType];
 			UIButton *aButton = [UIButton buttonWithType:UIButtonTypeCustom];
-			aButton.tag = listType;
-			//[aButton setBackgroundImage:nil forState:UIControlStateNormal];
-			//[aButton setBackgroundImage:stretchableButtonImage forState:UIControlStateHighlighted];            
+			aButton.tag = listType;           
 			[aButton setTitle:buttonTitle forState:UIControlStateNormal];
-			//[aButton setTitleColor:[UIColor colorWithHexString:@"#FCCFCF"] forState:UIControlStateNormal];
-			//[aButton setTitleColor:[UIColor whiteColor] forState:UIControlStateHighlighted];
-			//aButton.titleLabel.font = [UIFont boldSystemFontOfSize:13.0];
-			//[aButton addTarget:self action:@selector(buttonPressed:) forControlEvents:UIControlEventTouchUpInside];
-			
-			//aButton.titleEdgeInsets = UIEdgeInsetsMake(0, 0, 1.0, 0); // needed to center text vertically within button
-			
-			//CGSize newSize = [aButton.titleLabel.text sizeWithFont:aButton.titleLabel.font];			
-			//newSize.width += SCROLL_TAB_HORIZONTAL_PADDING * 2 + SCROLL_TAB_HORIZONTAL_MARGIN;
-			//newSize.height = stretchableButtonImage.size.height;
-			
-			//buttonFrame.size = newSize;
-			//buttonFrame.origin.x = leftOffset;
-			//aButton.frame = buttonFrame;
-			
-			//[navButtons addObject:aButton];
-			//leftOffset += buttonFrame.size.width;
             [navScrollView addButton:aButton shouldHighlight:YES];
 		}
         
         [navScrollView setNeedsLayout];
-		/*
-		UIView *contentView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, leftOffset, backgroundImage.size.height)];
-		[contentView addSubview:searchButton];
-		for (UIButton *aButton in navButtons) {
-			[contentView addSubview:aButton];
-		}
-		*/
-		// make Home button active by default
-		//UIButton *homeButton = [navButtons objectAtIndex:0];
-		//[homeButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-		//[homeButton setBackgroundImage:stretchableButtonImage forState:UIControlStateNormal];
+
+        // TODO: use active category instead of always start at first tab
 		UIButton *homeButton = [navScrollView buttonWithTag:0];
-        /*
-		// now that the buttons have all been added, update the content frame
-		CGRect newFrame = contentView.frame;
-		newFrame.size.width = leftOffset + SCROLL_TAB_HORIZONTAL_PADDING;
-		contentView.frame = newFrame;
-		
-		// Create nav scroll view and add it to the hierarchy
-		navScrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, appFrame.size.width, backgroundImage.size.height)];
-		navScrollView.delegate = self;
-		navScrollView.scrollsToTop = NO; // otherwise this competes with the story list for status bar taps
-		navScrollView.contentSize = contentView.frame.size;
-		navScrollView.showsHorizontalScrollIndicator = NO;
-		navScrollView.opaque = NO;
-		
-		[navScrollView setBackgroundColor:[UIColor colorWithPatternImage:backgroundImage]];
-		
-		[navScrollView addSubview:contentView];
-        [navScrollView addSubview:searchTapRegion];
-		[navScrollView addSubview:searchButton];
-		[contentView release];
-		*/
+
         [navScrollView buttonPressed:homeButton];
         searchTapRegion.tag = 8768; // all subviews of navscrollview need tag numbers that don't compete with buttons
         [navScrollView addSubview:searchTapRegion];
-		// Prep left and right scrollers
-		//leftScrollButton = [[self setupScrollButtonLeftButton:YES] retain];
-		//rightScrollButton = [[self setupScrollButtonLeftButton:NO] retain];
 	}
 	
 }
@@ -360,7 +285,6 @@
 	} else if (self.mapView == nil) {
 		self.mapView = [[CalendarMapView alloc] initWithFrame:contentFrame];
 		self.mapView.delegate = self;
-        //[TileServerManager registerMapView:self.mapView];
 	}
 
 	if (dateRangeDidChange && activeEventList != CalendarEventListTypeCategory) {
@@ -460,21 +384,6 @@
 	
 	dateRangeDidChange = NO;
 }
-
-/*
-- (UIButton *)setupScrollButtonLeftButton:(BOOL)isLeftButton
-{
-	UIImage *scrollImage = [UIImage imageNamed:(isLeftButton) ? MITImageNameScrollTabLeftEndCap : MITImageNameScrollTabRightEndCap];
-	UIButton *scrollButton = [UIButton buttonWithType:UIButtonTypeCustom];
-	[scrollButton setImage:scrollImage forState:UIControlStateNormal];
-	CGFloat leftOffset = (isLeftButton) ? 0.0 : [[UIScreen mainScreen] applicationFrame].size.width - scrollImage.size.width;
-	CGRect imageFrame = CGRectMake(leftOffset,0.0,scrollImage.size.width,scrollImage.size.height);
-	scrollButton.frame = imageFrame;
-	scrollButton.hidden = isLeftButton;
-	[scrollButton addTarget:self action:@selector(sideButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
-	return scrollButton;
-}
-*/
 
 - (void)selectScrollerButton:(NSString *)buttonTitle
 {
@@ -620,27 +529,9 @@
 	[UIView setAnimationDuration:0.4];
 	theSearchBar.alpha = 1.0;
 	[UIView commitAnimations];
-	//[self focusSearchBar];
     [searchController setActive:YES animated:YES];
 }
-/*
-- (void)focusSearchBar {
-    
-	// focus the search field, bring in the cancel button
-	[theSearchBar setShowsCancelButton:YES animated:YES];
-	[theSearchBar becomeFirstResponder];
-    
-	// put a dim overlay on the table
-	[self showSearchOverlay];
-}
 
-- (void)unfocusSearchBar {
-	if (theSearchBar) {
-		[theSearchBar resignFirstResponder];
-		[theSearchBar setShowsCancelButton:NO animated:YES];
-	}
-}
-*/
 - (void)hideSearchBar {
 	if (theSearchBar) {
 		[UIView beginAnimations:nil context:NULL];
@@ -732,50 +623,6 @@
 	[self reloadView:activeEventList];
 }
 
-/*
-- (void)sideButtonPressed:(id)sender {
-    // see comment in News/StoryListViewController.m
-    CGPoint offset = navScrollView.contentOffset;
-	CGRect tabRect = CGRectMake(0, 0, 1, 1);
-    
-    if (sender == leftScrollButton) {
-        NSInteger i, count = [navButtons count];
-        for (i = count - 1; i >= 0; i--) {
-            UIButton *tab = [navButtons objectAtIndex:i];
-            if (CGRectGetMinX(tab.frame) - offset.x < 0) {
-                tabRect = tab.frame;
-                tabRect.origin.x -= leftScrollButton.frame.size.width - 8.0;
-                break;
-            }
-        }
-    } else if (sender == rightScrollButton) {
-        for (UIButton *tab in navButtons) {
-            if (CGRectGetMaxX(tab.frame) - (offset.x + navScrollView.frame.size.width) > 0) {
-                tabRect = tab.frame;
-                tabRect.origin.x += rightScrollButton.frame.size.width - 8.0;
-                break;
-            }
-        }
-    }
-	[navScrollView scrollRectToVisible:tabRect animated:YES];
-}
-
-- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
-	if ([scrollView isEqual:navScrollView]) {
-		CGPoint offset = scrollView.contentOffset;
-		if (offset.x <= 0) {
-			leftScrollButton.hidden = YES;
-		} else {
-			leftScrollButton.hidden = NO;
-		}
-		if (offset.x >= navScrollView.contentSize.width - navScrollView.frame.size.width) {
-			rightScrollButton.hidden = YES;
-		} else {
-			rightScrollButton.hidden = NO;
-		}
-	}
-}
-*/
 - (void)buttonPressed:(id)sender {
     UIButton *pressedButton = (UIButton *)sender;
     if (pressedButton.tag == SEARCH_BUTTON_TAG) {
@@ -783,29 +630,6 @@
     } else {
         [self reloadView:pressedButton.tag];
     }
-    
-	/*
-    NSMutableArray *buttons = [navButtons mutableCopy];
-	
-    if ([buttons containsObject:pressedButton]) {
-        [buttons removeObject:pressedButton];
-        
-        UIImage *buttonImage = [UIImage imageNamed:MITImageNameScrollTabSelectedTab];
-        UIImage *stretchableButtonImage = [buttonImage stretchableImageWithLeftCapWidth:15 topCapHeight:0];
-        
-        [pressedButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-        [pressedButton setBackgroundImage:stretchableButtonImage forState:UIControlStateNormal];
-        
-        for (UIButton *aButton in buttons) {
-            [aButton setTitleColor:[UIColor colorWithHexString:@"#FCCFCF"] forState:UIControlStateNormal];
-            [aButton setBackgroundImage:nil forState:UIControlStateNormal];
-        }
-        
-		[self reloadView:pressedButton.tag];
-    }
-    
-    [buttons release];
-    */
 }
 
 - (void)addLoadingIndicatorForSearch:(BOOL)isSearch
@@ -1016,9 +840,6 @@
 		 self.view.backgroundColor = [UIColor clearColor];
 		 if (showScroller) {
 			 [self.view addSubview:navScrollView];
-			 //[self.view addSubview:rightScrollButton];
-			 //[self.view addSubview:leftScrollButton];
-			 //[self.view addSubview:theSearchBar];
 		 }
 	 
 		 if ([self shouldShowDatePicker:activeEventList]) {
@@ -1079,7 +900,6 @@
             UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil message:@"Nothing found" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
             [alertView show];
             [alertView release];
-            //[self releaseSearchOverlay];
         }
         
     } else if (result && [result isKindOfClass:[NSArray class]]) {
