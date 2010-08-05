@@ -455,6 +455,8 @@ static NSInteger numTries = 0;
 }
 
 - (void)refresh:(id)sender {
+    numTries = 0;
+    
 	if (!self.searchResults) {
 		// get active category
 		NSManagedObject *aCategory = [[self.categories filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"category_id == %d", self.activeCategoryId]] lastObject];
