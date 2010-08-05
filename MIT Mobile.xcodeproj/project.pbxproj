@@ -256,6 +256,8 @@
 		EB3721AB11FA2F5200705180 /* NewsImage.m in Sources */ = {isa = PBXBuildFile; fileRef = EB3721A911FA2F5200705180 /* NewsImage.m */; };
 		EB3F0951118F0FFE00540B8A /* CalendarMapView.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB3F094F118F0FFE00540B8A /* CalendarMapView.h */; settings = {JAVA_ARCHIVE_SUBDIR = Modules/Calendar; }; };
 		EB3F0952118F0FFE00540B8A /* CalendarMapView.m in Sources */ = {isa = PBXBuildFile; fileRef = EB3F0950118F0FFE00540B8A /* CalendarMapView.m */; };
+		EB420C07120A018000089FE0 /* MITSearchDisplayController.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB420C05120A018000089FE0 /* MITSearchDisplayController.h */; settings = {JAVA_ARCHIVE_SUBDIR = Common; }; };
+		EB420C08120A018000089FE0 /* MITSearchDisplayController.m in Sources */ = {isa = PBXBuildFile; fileRef = EB420C06120A018000089FE0 /* MITSearchDisplayController.m */; };
 		EB49AD4811F4BFB900854791 /* about in Resources */ = {isa = PBXBuildFile; fileRef = EB49AD4511F4BFB900854791 /* about */; };
 		EB49AD5511F4BFCE00854791 /* courses in Resources */ = {isa = PBXBuildFile; fileRef = EB49AD4911F4BFCE00854791 /* courses */; };
 		EB49AD5611F4BFCE00854791 /* emergency in Resources */ = {isa = PBXBuildFile; fileRef = EB49AD4F11F4BFCE00854791 /* emergency */; };
@@ -831,6 +833,8 @@
 		EB3721A911FA2F5200705180 /* NewsImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NewsImage.m; sourceTree = "<group>"; };
 		EB3F094F118F0FFE00540B8A /* CalendarMapView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CalendarMapView.h; sourceTree = "<group>"; };
 		EB3F0950118F0FFE00540B8A /* CalendarMapView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CalendarMapView.m; sourceTree = "<group>"; };
+		EB420C05120A018000089FE0 /* MITSearchDisplayController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MITSearchDisplayController.h; sourceTree = "<group>"; };
+		EB420C06120A018000089FE0 /* MITSearchDisplayController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MITSearchDisplayController.m; sourceTree = "<group>"; };
 		EB49AD4511F4BFB900854791 /* about */ = {isa = PBXFileReference; lastKnownFileType = folder; name = about; path = Resources/about; sourceTree = "<group>"; };
 		EB49AD4911F4BFCE00854791 /* courses */ = {isa = PBXFileReference; lastKnownFileType = folder; name = courses; path = Resources/courses; sourceTree = "<group>"; };
 		EB49AD4F11F4BFCE00854791 /* emergency */ = {isa = PBXFileReference; lastKnownFileType = folder; name = emergency; path = Resources/emergency; sourceTree = "<group>"; };
@@ -1155,6 +1159,8 @@
 				EB6DFE3E11DE294700B65CE3 /* ModoNavigationBar.m */,
 				A6787A1411F605070034D559 /* NSArray+Convenience.h */,
 				A6787A1511F605070034D559 /* NSArray+Convenience.m */,
+				EB420C05120A018000089FE0 /* MITSearchDisplayController.h */,
+				EB420C06120A018000089FE0 /* MITSearchDisplayController.m */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -2109,6 +2115,7 @@
 				C759593F12074B47008474A9 /* HallDetailsTableViewController.h in JavaArchive */,
 				C759594112074B47008474A9 /* DiningMultiLineCell.h in JavaArchive */,
 				C759594312074B47008474A9 /* DiningHallStatus.h in JavaArchive */,
+				EB420C07120A018000089FE0 /* MITSearchDisplayController.h in JavaArchive */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2560,6 +2567,7 @@
 				C759593E12074B47008474A9 /* HallDetailsTableViewController.m in Sources */,
 				C759594012074B47008474A9 /* DiningMultiLineCell.m in Sources */,
 				C759594212074B47008474A9 /* DiningHallStatus.m in Sources */,
+				EB420C08120A018000089FE0 /* MITSearchDisplayController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -43,7 +43,9 @@ scrollView = _scrollView, navScrollerDelegate, currentXOffset = _currentXOffset;
     self.scrollView.contentSize = self.contentView.frame.size;
     [self addSubview:self.scrollView];
     
-    if (self.contentView.frame.size.width > self.frame.size.width) {
+    // allow a few pixel overflow before we start adding scroll buttons
+    // TODO: stop cheating
+    if (self.contentView.frame.size.width > self.frame.size.width + 10) {
         if (!self.leftScrollButton) {
             UIImage *leftScrollImage = [UIImage imageNamed:MITImageNameScrollTabLeftEndCap];
             self.leftScrollButton = [UIButton buttonWithType:UIButtonTypeCustom];

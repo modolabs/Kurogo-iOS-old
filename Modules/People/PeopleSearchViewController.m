@@ -14,7 +14,8 @@
 #import "Foundation+MITAdditions.h"
 #import "UIKit+MITAdditions.h"
 #import "NSArray+Convenience.h"
-
+#import "ModoSearchBar.h"
+#import "MITSearchDisplayController.h"
 
 static const NSUInteger kPhoneDirectorySection = 0;
 
@@ -71,40 +72,37 @@ NSInteger strLenSort(NSString *str1, NSString *str2, void *context)
 @implementation PeopleSearchViewController
 
 @synthesize searchTerms, searchTokens, searchResults, searchController;
-@synthesize loadingView, searchBackground;
-@synthesize searchBar = theSearchBar;
-@synthesize actionAfterAppearing, viewAppeared;
-
-- (id)initWithStyle:(UITableViewStyle)style
-{
-	if (self = [super initWithStyle:style]) {
-		viewAppeared = NO;
-	}
-	return self;
-}
+@synthesize loadingView;
+@synthesize searchBar = theSearchBar, tableView = _tableView;
+//@synthesize actionAfterAppearing, viewAppeared;
 
 #pragma mark view
 
 - (void)viewDidLoad {
 	[super viewDidLoad];
 	
-	[self.tableView applyStandardColors];
-	requestWasDispatched = NO;
-	
-	// set up table header
-	theSearchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0.0f, 0.0f, self.tableView.frame.size.width, NAVIGATION_BAR_HEIGHT)];
+    theSearchBar = [[ModoSearchBar alloc] initWithFrame:CGRectMake(0.0f, 0.0f, self.view.frame.size.width, NAVIGATION_BAR_HEIGHT)];
+
 	theSearchBar.tintColor = SEARCH_BAR_TINT_COLOR;
-	
-	theSearchBar.delegate = self;
 	theSearchBar.placeholder = @"Search";
 	if ([self.searchTerms length] > 0)
 		theSearchBar.text = self.searchTerms;
-	self.searchController = [[UISearchDisplayController alloc] initWithSearchBar:theSearchBar
-															  contentsController:self];
+
+    self.searchController = [[[MITSearchDisplayController alloc] initWithSearchBar:theSearchBar contentsController:self] autorelease];
 	self.searchController.delegate = self;
 	self.searchController.searchResultsDelegate = self;
 	self.searchController.searchResultsDataSource = self;
-	
+
+    [self.view addSubview:theSearchBar];
+    CGRect frame = CGRectMake(0.0, theSearchBar.frame.size.height,
+                              self.view.frame.size.width,
+                              self.view.frame.size.height - theSearchBar.frame.size.height);
+    self.tableView = [[[UITableView alloc] initWithFrame:frame style:UITableViewStyleGrouped] autorelease];
+    self.tableView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
+    self.tableView.delegate = self;
+    self.tableView.dataSource = self;
+	[self.tableView applyStandardColors];
+    
 	static NSString *searchHints = @"Tip: You can search by a person's first or last name or email address.";
 
 	UIFont *hintsFont = [UIFont systemFontOfSize:[UIFont systemFontSize]];
@@ -118,16 +116,14 @@ NSInteger strLenSort(NSString *str1, NSString *str2, void *context)
 	hintsLabel.lineBreakMode = UILineBreakModeWordWrap;
 	hintsLabel.font = hintsFont;
 	hintsLabel.text = searchHints;	
-	// Make the text #404040.
-	hintsLabel.textColor = [UIColor colorWithRed:0.25f green:0.25f blue:0.25f alpha:1.0f];
-	UIView *hintsContainer = [[UIView alloc] initWithFrame:CGRectMake(0.0, theSearchBar.frame.size.height, labelSize.width, labelSize.height + 10.0)];
+    hintsLabel.textColor = [UIColor colorWithHexString:@"#404040"];
+    UIView *hintsContainer = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, labelSize.width, labelSize.height + 10.0)];
 	[hintsContainer addSubview:hintsLabel];
 	[hintsLabel release];
 
-	self.tableView.tableHeaderView = [[[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, 
+    self.tableView.tableHeaderView = [[[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, 
 																			   self.tableView.frame.size.width, 
-																			   theSearchBar.frame.size.height + hintsContainer.frame.size.height)] autorelease];
-	[self.tableView.tableHeaderView addSubview:theSearchBar];
+																			   hintsContainer.frame.size.height)] autorelease];
 	[self.tableView.tableHeaderView addSubview:hintsContainer];
 	[hintsContainer release];
 
@@ -158,28 +154,23 @@ NSInteger strLenSort(NSString *str1, NSString *str2, void *context)
 	if ([[[PeopleRecentsData sharedData] recents] count] == 0) {
 		self.tableView.tableFooterView.hidden = YES;
 	}
+    
+    [self.view addSubview:self.tableView];
 
-	// create search overlay
-	self.searchBackground = [[MITSearchEffects alloc]
-							 initWithFrame:CGRectMake(0.0, theSearchBar.frame.size.height, 
-													  self.tableView.frame.size.width,
-													  self.tableView.frame.size.height - theSearchBar.frame.size.height)];		
-	[self.searchBackground setController:self];
-	
 }
 
 - (void)viewWillAppear:(BOOL)animated
 {
 	[super viewWillAppear:animated];
 	
-	if (actionAfterAppearing) {
-		[self performSelector:actionAfterAppearing];
-		actionAfterAppearing = nil;
-	}
+	//if (actionAfterAppearing) {
+	//	[self performSelector:actionAfterAppearing];
+	//	actionAfterAppearing = nil;
+	//}
 
 	[self.tableView reloadData];
 	
-	viewAppeared = YES;
+	//viewAppeared = YES;
 }
 
 #pragma mark memory
@@ -193,8 +184,6 @@ NSInteger strLenSort(NSString *str1, NSString *str2, void *context)
 	[searchResults release];
 	[searchTerms release];
 	[searchTokens release];
-	searchBackground.controller = nil;
-	[searchBackground release];
 	[searchController release];
 	[loadingView release];
     [super dealloc];
@@ -203,99 +192,32 @@ NSInteger strLenSort(NSString *str1, NSString *str2, void *context)
 #pragma mark -
 #pragma mark Search methods
 
+/*
 - (void)prepSearchBar {
 	if (!self.searchController.active) {
 		[self.searchController setActive:YES];
-		[theSearchBar becomeFirstResponder];
-		[self.searchController.searchResultsTableView removeFromSuperview];
 	}
 }
-
+*/
 - (void)beginExternalSearch:(NSString *)externalSearchTerms {
 	self.searchTerms = externalSearchTerms;
 	theSearchBar.text = self.searchTerms;
-	[self.searchBackground removeFromSuperview];
 	
 	[self performSearch];
 }
 
-- (void)searchOverlayTapped { // activated by clicking on searchBackground as opposed to cancel button
-
-	[self.searchController setActive:NO animated:YES];
-	[self searchBarCancelButtonClicked:self.searchBar];
-}
-
-- (void)searchDisplayControllerDidBeginSearch:(UISearchDisplayController *)controller
-{
-	[self.searchBackground removeBuiltInOverlay];
-	self.searchBackground.alpha = 1.0;
-	if (!requestWasDispatched) {
-		// sometimes we will set searchController active after a request is dispatched
-		// (when called externally) which leads this being drawn on top
-		[self.tableView addSubview:self.searchBackground];
-	}
-}
-
-- (void)searchDisplayControllerWillEndSearch:(UISearchDisplayController *)controller {
-	if ([[[PeopleRecentsData sharedData] recents] count] > 0)
-		self.tableView.tableFooterView.hidden = NO;
-	[self.tableView reloadData];
-}
-
-- (void)searchDisplayControllerDidEndSearch:(UISearchDisplayController *)controller {
-	// in the rare case that user taps the built-in overlay while the
-	// search display controller is being set active
-	[self.searchBackground removeFromSuperview];
-}
-
 - (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar
 {
-	[UIView beginAnimations:nil context:NULL];
-	[UIView setAnimationDuration:UINavigationControllerHideShowBarDuration];
-	self.searchBackground.alpha = 0.0;
-	[UIView commitAnimations];
-	
 	self.searchResults = nil;
 	// if they cancelled while waiting for loading
 	if (requestWasDispatched) {
 		[api abortRequest];
 		[self cleanUpConnection];
 	}
-
-	[self.searchController.searchResultsTableView removeFromSuperview];
-	// Also get rid of nav bar button item for search results view.
-	//MIT_MobileAppDelegate *appDelegate = (MIT_MobileAppDelegate *)[UIApplication sharedApplication].delegate;	
-	//[appDelegate.theNavController.modoNavBar popNavigationItemAnimated:NO];
-}
-
-- (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText {	
-
-	[self.searchController.searchResultsTableView removeFromSuperview];
-	if (searchText.length == 0) {
-		[self.searchBackground removeBuiltInOverlay];			
-	}
-
-	// required if search results are present and user decides to edit the search text
-	self.searchBackground.alpha = 1.0;
-	if (![self.searchBackground isDescendantOfView:self.tableView]) {
-		[self.tableView addSubview:self.searchBackground];
-	}
-}
-
-- (BOOL)searchDisplayController:(UISearchDisplayController *)controller shouldReloadTableForSearchString:(NSString *)searchString
-{
-	self.searchTerms = searchString;
-    return NO;
-}
-
-- (void)searchDisplayController:(UISearchDisplayController *)controller didShowSearchResultsTableView:(UITableView *)tableView {
-	// this will be shown by handleData
-	tableView.hidden = YES;
 }
 
 - (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
 {
-	[self.searchBackground removeFromSuperview];
 	self.searchTerms = searchBar.text;
 	[self performSearch];
 }
@@ -538,7 +460,8 @@ NSInteger strLenSort(NSString *str1, NSString *str2, void *context)
 - (void)showLoadingView {
 	// manually add loading view because we're not using the built-in data source table
 	if (self.loadingView == nil) {
-		self.loadingView = [[MITLoadingActivityView alloc] initWithFrame:[MITSearchEffects frameWithHeader:self.tableView.tableFooterView]];
+		//self.loadingView = [[MITLoadingActivityView alloc] initWithFrame:[MITSearchEffects frameWithHeader:self.tableView.tableFooterView]];
+        self.loadingView = [[MITLoadingActivityView alloc] initWithFrame:self.tableView.frame];
 	}
 	
 	[self.tableView addSubview:self.loadingView];
@@ -597,7 +520,7 @@ NSInteger strLenSort(NSString *str1, NSString *str2, void *context)
 										   cancelButtonTitle:@"OK" 
 										   otherButtonTitles:nil];
 	[alert show];
-	[self searchOverlayTapped];
+	//[self searchOverlayTapped];
 	[alert release];
 }
 

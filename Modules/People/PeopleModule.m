@@ -5,6 +5,7 @@
 #import "PeopleRecentsData.h"
 #import "PersonDetails.h"
 #import "PersonDetail.h"
+#import "ModoSearchBar.h"
 
 static NSString * const PeopleStateSearchBegin = @"search-begin";
 static NSString * const PeopleStateSearchComplete = @"search-complete";
@@ -21,7 +22,7 @@ static NSString * const PeopleStateDetail = @"detail";
         self.longName = @"People Directory";
         self.iconName = @"people";
 
-		viewController = [[[PeopleSearchViewController alloc] initWithStyle:UITableViewStyleGrouped] autorelease];
+		viewController = [[[PeopleSearchViewController alloc] init/*WithStyle:UITableViewStyleGrouped*/] autorelease];
 		viewController.navigationItem.title = self.longName;
         
         self.viewControllers = [NSArray arrayWithObject:viewController];
@@ -36,7 +37,8 @@ static NSString * const PeopleStateDetail = @"detail";
 	UIViewController *visibleVC = viewController.navigationController.visibleViewController;
 	if ([visibleVC isMemberOfClass:[PeopleSearchViewController class]]) {
 		PeopleSearchViewController *searchVC = (PeopleSearchViewController *)visibleVC;
-		if (searchVC.searchController.active) {
+		//if (searchVC.searchController.active) {
+        if ([searchVC.searchController isActive]) {
 			if (searchVC.searchResults != nil) {
 				[url setPath:PeopleStateSearchComplete query:searchVC.searchTerms];
 			} else {
@@ -83,7 +85,7 @@ static NSString * const PeopleStateDetail = @"detail";
 		if (query != nil) {
 			viewController.searchBar.text = query;
 		}
-		viewController.actionAfterAppearing = @selector(prepSearchBar);
+		//viewController.actionAfterAppearing = @selector(prepSearchBar);
         didHandle = YES;
 		
 	} else if (!query || [query length] == 0) {
@@ -93,7 +95,7 @@ static NSString * const PeopleStateDetail = @"detail";
 		
 	} else if ([localPath isEqualToString:PeopleStateSearchComplete]) {
 		viewController.view;
-		viewController.actionAfterAppearing = @selector(prepSearchBar);
+		//viewController.actionAfterAppearing = @selector(prepSearchBar);
         [viewController beginExternalSearch:query];
 		didHandle = YES;
 		
@@ -101,11 +103,11 @@ static NSString * const PeopleStateDetail = @"detail";
 		// this path is reserved for calling from other modules
 		// do not save state with this path       
 		viewController.view;
-		if (viewController.viewAppeared) {
-			[viewController prepSearchBar];
-		} else {
-			[viewController setActionAfterAppearing:@selector(prepSearchBar)];
-		}
+		//if (viewController.viewAppeared) {
+		//	[viewController prepSearchBar];
+		//} else {
+		//	[viewController setActionAfterAppearing:@selector(prepSearchBar)];
+		//}
         [viewController beginExternalSearch:query];
         [self becomeActiveTab];
         didHandle = YES;
