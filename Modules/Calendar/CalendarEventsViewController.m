@@ -17,9 +17,6 @@
 
 - (void)returnToToday;
 
-// helper methods used in loadView
-//- (UIButton *)setupScrollButtonLeftButton:(BOOL)isLeftButton;
-
 // helper methods used in reloadView
 - (BOOL)canShowMap:(CalendarEventListType)listType;
 - (void)incrementStartDate:(BOOL)forward;
