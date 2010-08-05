@@ -677,8 +677,14 @@ numberOfRowsInSection:(NSInteger)section
 				 initWithStyle:UITableViewCellStyleDefault
 				 reuseIdentifier:DisclosureButtonCellIdentifier] autorelease];
 	}
-	cell.textLabelNumberOfLines = 2;
-	
+	else {
+		for (UIView *aView in cell.contentView.subviews) {
+			[aView removeFromSuperview];
+			aView = nil;
+		}
+	}
+
+	cell.textLabelNumberOfLines = 2;	
 	cell.textLabel.text = (NSString *) [[keySection objectAtIndex:row] objectForKey:@"item"];
 	
 	
@@ -706,7 +712,6 @@ numberOfRowsInSection:(NSInteger)section
 	[cell.contentView addSubview:imView2];
 	[cell.contentView addSubview:imView3];
 	
-						   
 	return cell;
 }
 

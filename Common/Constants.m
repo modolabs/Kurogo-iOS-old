@@ -46,6 +46,7 @@ NSString * const PushNotificationSettingsKey = @"ModulesDisabledForPush";
 NSString * const MITModulesSavedStateKey = @"MITModulesSavedState";
 NSString * const CachedMapSearchQueryKey = @"CachedMapSearchQuerey";
 NSString * const ShakeToReturnPrefKey = @"ShakeToReturnHomePref";
+NSString * const MapTypePrefKey = @"MapTypePref";
 
 NSString * const MITInternalURLScheme = @"harvardmobile";
 

@@ -3,10 +3,14 @@
 #import "MITModule.h"
 #import "UITableView+MITUIAdditions.h"
 #import "MITUIConstants.h"
+#import "ModoThreeStateSwitchControl.h"
+#import <MapKit/MapKit.h>
 
 #define TITLE_HEIGHT 20.0
 #define SUBTITLE_HEIGHT NAVIGATION_BAR_HEIGHT
 #define PADDING 10.0
+const CGFloat kMapTypeSwitchWidth = 180.0f;
+const CGFloat kMapTypeSwitchHeight = 29.0f;
 
 typedef enum {
 	kNotificationsSettingsSection = 0,
@@ -20,6 +24,11 @@ typedef enum {
 - (void)notificationSwitchDidToggle:(id)sender;
 - (void)behaviorSwitchDidToggle:(id)sender;
 - (void)addSwitchToCell:(UITableViewCell *)cell withToggleHandler:(SEL)switchToggleHandler;
+- (void)addSegmentedControlToCell:(UITableViewCell *)cell 
+				withToggleHandler:(SEL)controlValueChangedHandler 
+			  activeSegmentImages:(NSArray *)activeImages 
+			inactiveSegmentImages:(NSArray *)activeImages
+			   activeSegmentIndex:(NSInteger)index;
 
 @end
 
@@ -61,6 +70,24 @@ typedef enum {
 	[aSwitch release];	
 }
 
+- (void)addSegmentedControlToCell:(UITableViewCell *)cell 
+				withToggleHandler:(SEL)controlValueChangedHandler 
+			  activeSegmentImages:(NSArray *)activeImages 
+			inactiveSegmentImages:(NSArray *)inactiveImages
+			   activeSegmentIndex:(NSInteger)index {
+	
+	ModoThreeStateSwitchControl* seg = [[ModoThreeStateSwitchControl alloc] initWithActiveSegmentImages:activeImages 
+																			   andInactiveSegmentImages:inactiveImages];
+	[seg setSelectedSegmentIndex:index];
+	[seg setSegmentedControlStyle:UISegmentedControlStyleBar];
+	[seg setFrame:CGRectMake(0, 0, kMapTypeSwitchWidth, kMapTypeSwitchHeight)];
+	[seg addTarget:self action:controlValueChangedHandler forControlEvents:UIControlEventValueChanged];
+	[seg updateSegmentImages];
+
+	cell.accessoryView = seg;
+	[seg release];
+}
+
 #pragma mark Accessory view handlers
 
 - (void)notificationSwitchDidToggle:(id)sender {
@@ -75,9 +102,6 @@ typedef enum {
 	
 	JSONAPIRequest *existingRequest = [apiRequests objectForKey:moduleTag];
 	if (existingRequest != nil) {
-		// abortRequest causes JSONAPIRequest to release *itself*. removeObjectForKey will subsequently try to release it again, 
-		// after it's been dealloc'd, unless we retain it here.
-		[existingRequest retain];
 		[existingRequest abortRequest];
 		[apiRequests removeObjectForKey:moduleTag];
 	}
@@ -92,6 +116,43 @@ typedef enum {
 	[[NSUserDefaults standardUserDefaults] setBool:!currentShakePref forKey:ShakeToReturnPrefKey];
 }
 
+- (void)mapControlDidChangeValue:(id)sender {
+	if ([sender isKindOfClass:[ModoThreeStateSwitchControl class]])
+	{
+		ModoThreeStateSwitchControl *threeSwitch = (ModoThreeStateSwitchControl *)sender;
+		[threeSwitch updateSegmentImages];
+		// Save preference.
+		MKMapType mapType = MKMapTypeStandard;
+		// Map types and segmented indexes might coincide, but just to be safe let's check the index, then assign a map type.
+		switch ([threeSwitch selectedSegmentIndex]) {
+			case 0:
+				break;
+			case 1:
+				mapType = MKMapTypeSatellite;
+				break;
+			case 2:
+				mapType = MKMapTypeHybrid;
+				break;
+			default:
+				break;
+		}
+		[[NSUserDefaults standardUserDefaults] setInteger:mapType forKey:MapTypePrefKey];
+	}
+}
+
+- (NSInteger)segmentIndexForMapType:(MKMapType)mapType {
+	switch (mapType) {
+		case MKMapTypeStandard:
+			return 0;
+		case MKMapTypeSatellite:
+			return 1;
+		case MKMapTypeHybrid:
+			return 2;
+		default:
+			return 0;
+	}	
+}
+	
 @end
 
 @implementation SettingsTableViewController
@@ -140,7 +201,7 @@ typedef enum {
             rows = [notifications count];
             break;
 		case kMapsSettingsSection:
-			rows = 0;
+			rows = 1;
 			break;
 		case kBehaviorSettingsSection:
 			rows = 1;
@@ -207,7 +268,8 @@ typedef enum {
 		}
 		case kMapsSettingsSection:
 		{
-			// TODO.
+			label = @"Map Type";
+			switchToggleHandler = @selector(mapControlDidChangeValue:);
 			break;
 		}
 		case kBehaviorSettingsSection:
@@ -232,11 +294,27 @@ typedef enum {
 			case kBehaviorSettingsSection:
 			{
 				[self addSwitchToCell:cell withToggleHandler:switchToggleHandler];
+				[((UISwitch *)(cell.accessoryView)) setOn:switchIsOnNow];
 				break;
 			}
 			case kMapsSettingsSection:
 			{
-				// TODO.
+				NSArray *activeSegmentImages = [NSArray arrayWithObjects:
+												[UIImage imageNamed:@"settings/map_switch_active1.png"],
+												[UIImage imageNamed:@"settings/map_switch_active2.png"],
+												[UIImage imageNamed:@"settings/map_switch_active3.png"],
+												nil];
+				NSArray *inactiveSegmentImages = [NSArray arrayWithObjects:
+												  [UIImage imageNamed:@"settings/map_switch_inactive1.png"],
+												  [UIImage imageNamed:@"settings/map_switch_inactive2.png"],
+												  [UIImage imageNamed:@"settings/map_switch_inactive3.png"],
+												  nil];
+				[self addSegmentedControlToCell:cell 
+							  withToggleHandler:switchToggleHandler 
+							activeSegmentImages:activeSegmentImages
+						  inactiveSegmentImages:inactiveSegmentImages
+							 activeSegmentIndex:[self segmentIndexForMapType:
+												 [[NSUserDefaults standardUserDefaults] integerForKey:MapTypePrefKey]]];
 				break;
 			}	
 			default:
@@ -249,7 +327,6 @@ typedef enum {
     cell.detailTextLabel.text = nil;
     cell.accessoryType = UITableViewCellAccessoryNone;
     cell.accessoryView.tag = indexPath.row;
-	[((UISwitch *)(cell.accessoryView)) setOn:switchIsOnNow];
     
     return cell;    
 }

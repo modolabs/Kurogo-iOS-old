@@ -146,9 +146,9 @@
             // TODO: find out why this happens with rows in event detail screen
             frame.origin.y = 10.0;
         }
-        
+
         frame.size.width = [DiningMultiLineCell widthForTextLabel:YES cellStyle:_style tableView:tableView accessoryType:accessoryType cellImage:YES];
-		frame.size.width = frame.size.width - 25;
+		frame.size.width = frame.size.width - 30;
         frame.size.height = [DiningMultiLineCell heightForLabelWithText:self.textLabel.text
                                                                       font:self.textLabel.font
                                                                      width:frame.size.width
@@ -213,6 +213,7 @@
         // (true for stellar announcements and events calendar)
         CGRect frame = aView.frame;
         frame.origin.y = self.textLabel.frame.origin.y;
+		frame.origin.x = frame.origin.x - 3;
         aView.frame = frame;
 		[self.contentView addSubview:aView];
 	}

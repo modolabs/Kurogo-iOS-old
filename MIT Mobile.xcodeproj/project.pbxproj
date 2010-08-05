@@ -135,6 +135,8 @@
 		44C1A3CF11A33905000FD653 /* MapSelectionController.m in Sources */ = {isa = PBXBuildFile; fileRef = 44C1A3CD11A33905000FD653 /* MapSelectionController.m */; };
 		44C1A4C411A412E2000FD653 /* MapSearch.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = 44C1A4C211A412E2000FD653 /* MapSearch.h */; settings = {JAVA_ARCHIVE_SUBDIR = "Modules/Campus Map/CampusMap.xcdatamodeld"; }; };
 		44C1A4C511A412E2000FD653 /* MapSearch.m in Sources */ = {isa = PBXBuildFile; fileRef = 44C1A4C311A412E2000FD653 /* MapSearch.m */; };
+		A623F1F1120A035A00341C5E /* ModoThreeStateSwitchControl.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = A623F1EF120A035A00341C5E /* ModoThreeStateSwitchControl.h */; settings = {JAVA_ARCHIVE_SUBDIR = Modules; }; };
+		A623F1F2120A035A00341C5E /* ModoThreeStateSwitchControl.m in Sources */ = {isa = PBXBuildFile; fileRef = A623F1F0120A035A00341C5E /* ModoThreeStateSwitchControl.m */; };
 		A64C313D11FDFAB8006FE056 /* AddressFormatter.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = A64C313B11FDFAB8006FE056 /* AddressFormatter.h */; settings = {JAVA_ARCHIVE_SUBDIR = Common; }; };
 		A64C313E11FDFAB8006FE056 /* AddressFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = A64C313C11FDFAB8006FE056 /* AddressFormatter.m */; };
 		A64C36CB1207066D006FE056 /* peopleSearchStaticPhoneRowsArray.plist in Resources */ = {isa = PBXBuildFile; fileRef = A64C36CA1207066D006FE056 /* peopleSearchStaticPhoneRowsArray.plist */; };
@@ -145,6 +147,7 @@
 		A69A2BD711F4C36400B1D365 /* PersonDetail.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = A69A2BD311F4C36400B1D365 /* PersonDetail.h */; settings = {JAVA_ARCHIVE_SUBDIR = Modules/People/Model/PeopleDataModel.xcdatamodeld; }; };
 		A69A2BD811F4C36400B1D365 /* PersonDetail.m in Sources */ = {isa = PBXBuildFile; fileRef = A69A2BD411F4C36400B1D365 /* PersonDetail.m */; };
 		A6D5498811F4E6D00048CEDB /* PersonDetails.m in Sources */ = {isa = PBXBuildFile; fileRef = A69A2BD211F4C36400B1D365 /* PersonDetails.m */; };
+		A6FC4C72120A2C200046FF36 /* settings in Resources */ = {isa = PBXBuildFile; fileRef = A623F2E5120A1BFC00341C5E /* settings */; };
 		BD1E9309103B5D60004429AA /* NSObject+SBJSON.m in Sources */ = {isa = PBXBuildFile; fileRef = BD1E92F6103B5D60004429AA /* NSObject+SBJSON.m */; };
 		BD1E930A103B5D60004429AA /* NSString+SBJSON.m in Sources */ = {isa = PBXBuildFile; fileRef = BD1E92F8103B5D60004429AA /* NSString+SBJSON.m */; };
 		BD1E930B103B5D60004429AA /* SBJSON.m in Sources */ = {isa = PBXBuildFile; fileRef = BD1E92FA103B5D60004429AA /* SBJSON.m */; };
@@ -265,7 +268,6 @@
 		EB49AD6411F4BFE200854791 /* home in Resources */ = {isa = PBXBuildFile; fileRef = EB49AD5811F4BFE200854791 /* home */; };
 		EB49AD7A11F4BFF100854791 /* maps in Resources */ = {isa = PBXBuildFile; fileRef = EB49AD6511F4BFF100854791 /* maps */; };
 		EB49AD9811F4BFFF00854791 /* news in Resources */ = {isa = PBXBuildFile; fileRef = EB49AD7B11F4BFFF00854791 /* news */; };
-		EB49AD9911F4BFFF00854791 /* people in Resources */ = {isa = PBXBuildFile; fileRef = EB49AD8211F4BFFF00854791 /* people */; };
 		EB49AD9A11F4BFFF00854791 /* shuttles in Resources */ = {isa = PBXBuildFile; fileRef = EB49AD8611F4BFFF00854791 /* shuttles */; };
 		EB54943810DFF03600B708B3 /* icons in Resources */ = {isa = PBXBuildFile; fileRef = EB54942710DFF03600B708B3 /* icons */; };
 		EB54947310DFF7E200B708B3 /* global in Resources */ = {isa = PBXBuildFile; fileRef = EB54947210DFF7E200B708B3 /* global */; };
@@ -663,6 +665,9 @@
 		44C1A4C211A412E2000FD653 /* MapSearch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MapSearch.h; sourceTree = "<group>"; };
 		44C1A4C311A412E2000FD653 /* MapSearch.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MapSearch.m; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* MIT_Mobile-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "MIT_Mobile-Info.plist"; plistStructureDefinitionIdentifier = "com.apple.xcode.plist.structure-definition.iphone.info-plist"; sourceTree = "<group>"; };
+		A623F1EF120A035A00341C5E /* ModoThreeStateSwitchControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ModoThreeStateSwitchControl.h; sourceTree = "<group>"; };
+		A623F1F0120A035A00341C5E /* ModoThreeStateSwitchControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ModoThreeStateSwitchControl.m; sourceTree = "<group>"; };
+		A623F2E5120A1BFC00341C5E /* settings */ = {isa = PBXFileReference; lastKnownFileType = folder; name = settings; path = Resources/settings; sourceTree = "<group>"; };
 		A64C313B11FDFAB8006FE056 /* AddressFormatter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddressFormatter.h; sourceTree = "<group>"; };
 		A64C313C11FDFAB8006FE056 /* AddressFormatter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddressFormatter.m; sourceTree = "<group>"; };
 		A64C36CA1207066D006FE056 /* peopleSearchStaticPhoneRowsArray.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = peopleSearchStaticPhoneRowsArray.plist; path = Resources/peopleSearchStaticPhoneRowsArray.plist; sourceTree = "<group>"; };
@@ -842,7 +847,6 @@
 		EB49AD5811F4BFE200854791 /* home */ = {isa = PBXFileReference; lastKnownFileType = folder; name = home; path = Resources/home; sourceTree = "<group>"; };
 		EB49AD6511F4BFF100854791 /* maps */ = {isa = PBXFileReference; lastKnownFileType = folder; name = maps; path = Resources/maps; sourceTree = "<group>"; };
 		EB49AD7B11F4BFFF00854791 /* news */ = {isa = PBXFileReference; lastKnownFileType = folder; name = news; path = Resources/news; sourceTree = "<group>"; };
-		EB49AD8211F4BFFF00854791 /* people */ = {isa = PBXFileReference; lastKnownFileType = folder; name = people; path = Resources/people; sourceTree = "<group>"; };
 		EB49AD8611F4BFFF00854791 /* shuttles */ = {isa = PBXFileReference; lastKnownFileType = folder; name = shuttles; path = Resources/shuttles; sourceTree = "<group>"; };
 		EB54942710DFF03600B708B3 /* icons */ = {isa = PBXFileReference; lastKnownFileType = folder; name = icons; path = Resources/icons; sourceTree = "<group>"; };
 		EB54947210DFF7E200B708B3 /* global */ = {isa = PBXFileReference; lastKnownFileType = folder; name = global; path = Resources/global; sourceTree = "<group>"; };
@@ -1207,6 +1211,7 @@
 				C76E64A01209C299005399CC /* dining-organic-crop@2x.png */,
 				C76E64A11209C299005399CC /* dining-vegetarian-crop.png */,
 				C76E64A21209C299005399CC /* dining-vegetarian-crop@2x.png */,
+				A623F2E5120A1BFC00341C5E /* settings */,
 				A64C36CA1207066D006FE056 /* peopleSearchStaticPhoneRowsArray.plist */,
 				C7AA23891200CB3E0023F880 /* dining-status-closed-w-restrictions.png */,
 				C7AA238A1200CB3E0023F880 /* dining-status-closed-w-restrictions@2x.png */,
@@ -1225,7 +1230,6 @@
 				C759560612071BA3008474A9 /* dining-vegetarian.png */,
 				C759560712071BA3008474A9 /* dining-vegetarian@2x.png */,
 				EB49AD7B11F4BFFF00854791 /* news */,
-				EB49AD8211F4BFFF00854791 /* people */,
 				EB49AD8611F4BFFF00854791 /* shuttles */,
 				EB49AD6511F4BFF100854791 /* maps */,
 				EB49AD5811F4BFE200854791 /* home */,
@@ -1417,6 +1421,15 @@
 				4499341D11A5E53D00A7041B /* CategoriesTableViewController.m */,
 			);
 			name = Selection;
+			sourceTree = "<group>";
+		};
+		A623F1EE120A033100341C5E /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				A623F1EF120A035A00341C5E /* ModoThreeStateSwitchControl.h */,
+				A623F1F0120A035A00341C5E /* ModoThreeStateSwitchControl.m */,
+			);
+			name = Views;
 			sourceTree = "<group>";
 		};
 		A64C313A11FDFAA1006FE056 /* Utilities */ = {
@@ -1732,6 +1745,7 @@
 		DE9EFBCE10FE7D3200F5F07E /* Settings */ = {
 			isa = PBXGroup;
 			children = (
+				A623F1EE120A033100341C5E /* Views */,
 				DE9EFBD010FE7D8900F5F07E /* SettingsModule.h */,
 				DE9EFBD110FE7D8900F5F07E /* SettingsModule.m */,
 				DE6D9318110A8EFA00DAF213 /* SettingsTableViewController.h */,
@@ -2116,6 +2130,7 @@
 				C759594112074B47008474A9 /* DiningMultiLineCell.h in JavaArchive */,
 				C759594312074B47008474A9 /* DiningHallStatus.h in JavaArchive */,
 				EB420C07120A018000089FE0 /* MITSearchDisplayController.h in JavaArchive */,
+				A623F1F1120A035A00341C5E /* ModoThreeStateSwitchControl.h in JavaArchive */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2195,7 +2210,6 @@
 				EB49AD6411F4BFE200854791 /* home in Resources */,
 				EB49AD7A11F4BFF100854791 /* maps in Resources */,
 				EB49AD9811F4BFFF00854791 /* news in Resources */,
-				EB49AD9911F4BFFF00854791 /* people in Resources */,
 				EB49AD9A11F4BFFF00854791 /* shuttles in Resources */,
 				C7AA23911200CB3E0023F880 /* dining-status-closed-w-restrictions.png in Resources */,
 				C7AA23921200CB3E0023F880 /* dining-status-closed-w-restrictions@2x.png in Resources */,
@@ -2220,6 +2234,7 @@
 				C76E64A61209C299005399CC /* dining-organic-crop@2x.png in Resources */,
 				C76E64A71209C299005399CC /* dining-vegetarian-crop.png in Resources */,
 				C76E64A81209C299005399CC /* dining-vegetarian-crop@2x.png in Resources */,
+				A6FC4C72120A2C200046FF36 /* settings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2568,6 +2583,7 @@
 				C759594012074B47008474A9 /* DiningMultiLineCell.m in Sources */,
 				C759594212074B47008474A9 /* DiningHallStatus.m in Sources */,
 				EB420C08120A018000089FE0 /* MITSearchDisplayController.m in Sources */,
+				A623F1F2120A035A00341C5E /* ModoThreeStateSwitchControl.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
