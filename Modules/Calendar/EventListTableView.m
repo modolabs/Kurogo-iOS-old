@@ -73,7 +73,6 @@
 
     cell.textLabelNumberOfLines = 2;
     //cell.textLabelLineBreakMode = UILineBreakModeTailTruncation;
-    NSString *title = event.title;
 	cell.textLabel.text = event.title;
 
 	// show time only if date is shown; date plus time otherwise

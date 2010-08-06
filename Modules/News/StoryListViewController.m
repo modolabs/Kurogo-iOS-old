@@ -7,7 +7,7 @@
 #import "CoreDataManager.h"
 #import "UIKit+MITAdditions.h"
 #import "TabScrollerBackgroundView.h"
-#import "MITSearchEffects.h"
+#import "MITSearchDisplayController.h"
 #import "MITUIConstants.h"
 #import "NewsCategory.h"
 
@@ -37,11 +37,9 @@
 - (void)setLastUpdated:(NSDate *)date;
 - (void)setProgress:(CGFloat)value;
 
-//- (void)showSearchBar;
-- (void)focusSearchBar;
-//- (void)unfocusSearchBar;
+- (void)showSearchBar;
+- (void)releaseSearchBar;
 - (void)hideSearchBar;
-- (void)showSearchOverlay;
 
 @end
 
@@ -111,9 +109,7 @@ static NSInteger numTries = 0;
     [dropShadow release];
 
     [self setupActivityIndicator];
-
     [self loadFromCache];
-
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -291,9 +287,9 @@ static NSInteger numTries = 0;
 
 - (void)presentSearchResults:(NSArray *)results searchText:(NSString *)searchText {
     [self showSearchBar];
-    [self unfocusSearchBar];
+    [searchController setActive:NO animated:NO];
+    
     theSearchBar.text = searchText;
-    [self hideSearchOverlay];
     self.searchResults = results;
     self.stories = results;
     [storyTable reloadData];
@@ -304,6 +300,10 @@ static NSInteger numTries = 0;
 		theSearchBar = [[ModoSearchBar alloc] initWithFrame:CGRectMake(0.0, 0.0, self.view.frame.size.width, 44.0)];
 		theSearchBar.delegate = self;
 		theSearchBar.alpha = 0.0;
+        CGRect frame = CGRectMake(0.0, theSearchBar.frame.size.height, self.view.frame.size.width,
+                                  self.view.frame.size.height - (theSearchBar.frame.size.height + activityView.frame.size.height));
+        searchController = [[MITSearchDisplayController alloc] initWithFrame:frame searchBar:theSearchBar contentsController:self];
+        searchController.delegate = self;
 		[self.view addSubview:theSearchBar];
 	}
 	[self.view bringSubviewToFront:theSearchBar];
@@ -311,67 +311,33 @@ static NSInteger numTries = 0;
 	[UIView setAnimationDuration:0.4];
 	theSearchBar.alpha = 1.0;
 	[UIView commitAnimations];
-	[self focusSearchBar];
-}
-
-- (void)focusSearchBar {
-	// focus the search field, bring in the cancel button
-	[theSearchBar setShowsCancelButton:YES animated:YES];
-	[theSearchBar becomeFirstResponder];
-
-	// put a dim overlay on the table
-	[self showSearchOverlay];
-}
-
-- (void)unfocusSearchBar {
-	if (theSearchBar) {
-		[theSearchBar resignFirstResponder];
-		[theSearchBar setShowsCancelButton:NO animated:YES];
-	}
+    [searchController setActive:YES animated:YES];
 }
 
 - (void)hideSearchBar {
 	if (theSearchBar) {
 		[UIView beginAnimations:nil context:NULL];
 		[UIView setAnimationDuration:0.4];
+        [UIView setAnimationDelegate:self];
+        [UIView setAnimationDidStopSelector:@selector(releaseSearchBar)];
 		theSearchBar.alpha = 0.0;
 		[UIView commitAnimations];
-		// TODO: add an animation callback to remove the searchbar view and release it
 	}
 }
 
-- (void)showSearchOverlay {
-	if (!searchOverlay) {
-		searchOverlay = [[MITSearchEffects alloc] initWithFrame:CGRectMake(0.0, theSearchBar.frame.size.height, self.view.frame.size.width, self.view.frame.size.height - (theSearchBar.frame.size.height + activityView.frame.size.height))];
-		searchOverlay.controller = self;
-		searchOverlay.alpha = 0.0;
-		[self.view addSubview:searchOverlay];
-	}
-	[UIView beginAnimations:nil context:NULL];
-	[UIView setAnimationDuration:0.4];
-	searchOverlay.alpha = 1.0;
-	[UIView commitAnimations];
+- (void)releaseSearchBar {
+    [theSearchBar removeFromSuperview];
+    [theSearchBar release];
+    theSearchBar = nil;
+    [searchController release];
 }
 
-- (void)hideSearchOverlay {
-	if (searchOverlay) {
-		[UIView beginAnimations:nil context:NULL];
-		[UIView setAnimationDuration:0.4];
-		searchOverlay.alpha = 0.0;
-		[UIView commitAnimations];
-		// TODO: add an animation callback to remove the overlay view and release it
-	}
-}
-
-// called when searchOverlay is touched
 - (void)searchOverlayTapped {
-	// if there is a search result already up, just get rid of the searchOverlay
-	if (self.searchResults) {
-		[self unfocusSearchBar];
-		[self hideSearchOverlay];
-	} else {
-		[self searchBarCancelButtonClicked:theSearchBar];
-	}
+    // don't get rid of search results
+	// if there is a search result already up
+    if (!self.searchResults) {
+        [self searchBarCancelButtonClicked:theSearchBar];
+    }
 }
 
 #pragma mark UISearchBar delegation
@@ -384,22 +350,14 @@ static NSInteger numTries = 0;
 	}
 	
 	// hide search interface
-	theSearchBar.text = nil;
-	[self unfocusSearchBar];
 	[self hideSearchBar];
-	[self hideSearchOverlay];
+    self.searchResults = nil;
+    [self loadFromCache];
 }
 
 - (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar {
-	[self unfocusSearchBar];
-
 	self.searchQuery = searchBar.text;
 	[self loadSearchResultsFromServer:NO forQuery:self.searchQuery];
-}
-
-- (void)searchBarTextDidBeginEditing:(UISearchBar *)searchBar {
-	[self focusSearchBar];
-	[self showSearchOverlay];
 }
 
 - (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText {
@@ -497,6 +455,8 @@ static NSInteger numTries = 0;
 }
 
 - (void)refresh:(id)sender {
+    numTries = 0;
+    
 	if (!self.searchResults) {
 		// get active category
 		NSManagedObject *aCategory = [[self.categories filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"category_id == %d", self.activeCategoryId]] lastObject];
@@ -564,7 +524,6 @@ static NSInteger numTries = 0;
         NSArray *featuredStories = [results filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"(featured == YES)"]];
         if ([featuredStories count]) {
             self.featuredStory = [featuredStories objectAtIndex:0];
-            //NSLog(@"%@", [self.featuredStory.featuredImage description]);
         }
         
         NSMutableArray *storyCandidates = [NSMutableArray arrayWithArray:[results subarrayWithRange:NSMakeRange(0, maxLength)]];
@@ -628,7 +587,7 @@ static NSInteger numTries = 0;
 		self.stories = results;
 		
 		// hide translucent overlay
-		[self hideSearchOverlay];
+        [searchController hideSearchOverlayAnimated:YES];
 		
 		// show results
 		[storyTable reloadData];
@@ -637,7 +596,7 @@ static NSInteger numTries = 0;
 }
 
 - (void)alertView:(UIAlertView *)alertView willDismissWithButtonIndex:(NSInteger)buttonIndex {
-	[self focusSearchBar];
+    [searchController focusSearchBarAnimated:YES];
 }
 
 - (void)loadSearchResultsFromServer:(BOOL)loadMore forQuery:(NSString *)query {
@@ -658,8 +617,20 @@ static NSInteger numTries = 0;
 
 - (void)parserDidStartDownloading:(StoryXMLParser *)parser {
     if (parser == self.xmlParser) {
+		[self setProgress:0.0];
+    }
+}
+
+- (void)parserDidMakeConnection:(StoryXMLParser *)parser {
+    if (parser == self.xmlParser) {
 		[self setProgress:0.1];
 		[storyTable reloadData];
+    }
+}
+
+- (void)parser:(StoryXMLParser *)parser downloadMadeProgress:(CGFloat)progress {
+    if (parser == self.xmlParser) {
+		[self setProgress:0.1 + 0.2 * progress];
     }
 }
 

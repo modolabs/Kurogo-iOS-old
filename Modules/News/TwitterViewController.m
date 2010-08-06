@@ -271,6 +271,7 @@ MIT_MobileAppDelegate *appDelegate();
 		usernameField.borderStyle = UITextBorderStyleRoundedRect;
 		usernameField.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
 		usernameField.font = INPUT_FIELDS_FONT;
+        usernameField.autocapitalizationType = UITextAutocapitalizationTypeNone;
 		usernameField.placeholder = @"Username";
 		usernameField.returnKeyType = UIReturnKeyNext;
 		usernameField.clearButtonMode = UITextFieldViewModeWhileEditing;

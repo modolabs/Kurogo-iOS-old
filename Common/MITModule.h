@@ -18,6 +18,7 @@ extern NSString * const LocalPathFederatedSearchResult;
     NSString *iconName; // Filename of module artwork. The foo in "Resources/Modules/foo.png".
     
     NSArray *viewControllers;
+    NSArray *previousViewController;
     
     BOOL canBecomeDefault; // TRUE if this module can become the default tab at startup
     BOOL pushNotificationSupported;
@@ -53,6 +54,7 @@ extern NSString * const LocalPathFederatedSearchResult;
 - (void)resetURL; // reset the URL, (i.e. path and query to empty strings)
 
 - (void)resetNavStack;
+- (void)restoreNavStack;
 - (void)performSearchForString:(NSString *)searchText;
 - (void)setSearchProgress:(CGFloat)progress;
 - (void)setSearchResults:(NSArray *)results;
@@ -78,6 +80,7 @@ extern NSString * const LocalPathFederatedSearchResult;
 @property (nonatomic, copy) NSString *longName;
 @property (nonatomic, copy) NSString *iconName;
 @property (nonatomic, retain) NSArray *viewControllers;
+@property (nonatomic, retain) NSArray *previousViewControllers;
 
 @property (nonatomic, assign) CGFloat searchProgress;
 @property (nonatomic, retain) NSArray *searchResults;

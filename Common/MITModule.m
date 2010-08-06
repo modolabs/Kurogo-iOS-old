@@ -10,7 +10,7 @@ NSString * const LocalPathFederatedSearchResult = @"fedresult";
 
 @synthesize tag, shortName, longName, iconName, canBecomeDefault, pushNotificationSupported, pushNotificationEnabled;
 @synthesize hasLaunchedBegun, currentPath, currentQuery;
-@synthesize viewControllers;
+@synthesize viewControllers, previousViewControllers;
 @synthesize supportsFederatedSearch, searchProgress, searchResults, selectedResult, isSearching/*, searchText = _searchText*/;
 @dynamic badgeValue, icon;
 
@@ -122,6 +122,19 @@ NSString * const LocalPathFederatedSearchResult = @"fedresult";
 
 - (void)resetNavStack {
     // set self.viewControllers to what it gets set to in -[MyModule init], but don't call this in -init
+
+    // do the following if you want to preserve the state of
+    // the module's nav stack prior to being set via federated search
+    //self.previousViewControllers = [[self.viewControllers copy] autorelease];
+}
+
+- (void)restoreNavStack {
+    if (previousViewControllers) {
+        if (self.viewControllers != previousViewControllers)
+            self.viewControllers = self.previousViewControllers;
+    } else {
+        [self resetNavStack];
+    }
 }
 
 #pragma mark Notifications
