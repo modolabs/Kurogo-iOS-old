@@ -378,9 +378,11 @@ NSString* cleanPersonName(NSString *personName);
 				// between a course and its subject will be lost
 				
 				// Also, since a course (department) can be in multiple groups (schools), do not treat them as the same 
-				// if the courseGroupName is different. Here, do not delete if the courseGroupNames are different.				
-				if ([coursesStored containsObject:oldStellarCourse])
-					[CoreDataManager deleteObject:oldStellarCourse];
+				// if the courseGroupName is different. Here, do not delete if the courseGroupNames are different.						
+				for (StellarCourse *oldCourse in coursesStored) {
+					if ([oldCourse.courseGroup isEqualToString:courseGroupName])
+						[CoreDataManager deleteObject:oldStellarCourse];
+				}
 			}
 			
 			StellarCourse *newStellarCourse = (StellarCourse *)[CoreDataManager insertNewObjectForEntityForName:StellarCourseEntityName];
