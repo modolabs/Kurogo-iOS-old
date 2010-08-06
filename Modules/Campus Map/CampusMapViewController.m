@@ -47,8 +47,6 @@
 @synthesize displayingList = _displayingList;
 @synthesize searchBar = _searchBar;
 @synthesize campusMapModule = _campusMapModule;
-@synthesize unprocessedSearchResults;
-@synthesize unprocessedSearchResultsQuery;
 
 
 - (CGFloat)searchBarWidth {
@@ -70,8 +68,14 @@
 	_searchBar.showsBookmarkButton = NO; // we'll be adding a custom bookmark button
 	[self.view addSubview:_searchBar];
     
-    _searchController = [[MITSearchDisplayController alloc] initWithSearchBar:_searchBar contentsController:self];
-    _searchController.delegate = self;
+    // we depend on tileServerManager to set default map region
+    // and tell us where to place map annotations
+    if (![TileServerManager isInitialized]) {
+        [[NSNotificationCenter defaultCenter] addObserver:self 
+                                                 selector:@selector(handleTileServerManagerProjectionIsReady:) 
+                                                     name:kTileServerManagerProjectionIsReady
+                                                   object:nil];
+    }
 
 	// create the map view 
 	_mapView = [[MKMapView alloc] initWithFrame: CGRectMake(0, _searchBar.frame.size.height, self.view.frame.size.height,
@@ -105,6 +109,7 @@
 	
 	// add our own bookmark button item since we are not using the default
 	// bookmark button of the UISearchBar
+    // TODO: don't hard code this frame
 	_bookmarkButton = [[UIButton alloc] initWithFrame:CGRectMake(231, 8, 32, 28)];
 	[_bookmarkButton setImage:[UIImage imageNamed:@"global/searchfield_star.png"] forState:UIControlStateNormal];
 	[self.view addSubview:_bookmarkButton];
@@ -112,11 +117,14 @@
 	
 }
 
-/*
 - (void)viewDidLoad {
 	[super viewDidLoad];
+    
+    if (!_searchController) {
+        _searchController = [[MITSearchDisplayController alloc] initWithSearchBar:_searchBar contentsController:self];
+        _searchController.delegate = self;
+    }
 }
-*/
 
 - (void)viewWillAppear:(BOOL)animated
 {
@@ -164,7 +172,7 @@
 	_searchResults = nil;
 	
 	[_viewTypeButton release];
-	[_searchResultsVC release];
+	[_searchResultsTableView release];
 	[_searchBar release];
 	
 	[_bookmarkButton release];
@@ -183,7 +191,7 @@
 	_searchResults = nil;
 	
 	[_viewTypeButton release];
-	[_searchResultsVC release];
+	[_searchResultsTableView release];
 	[_searchBar release];
 	
 	[_bookmarkButton release];
@@ -200,7 +208,7 @@
     [overlay release];
 }
 
--(void) setSearchResultsWithoutRecentering:(NSArray*)searchResults
+- (void)setSearchResultsWithoutRecentering:(NSArray*)searchResults
 {
 	_searchFilter = nil;
 	
@@ -216,16 +224,18 @@
 	// remove any remaining annotations
     [_mapView removeAnnotations:_mapView.annotations];
 	
-	if (nil != _searchResultsVC) {
-		_searchResultsVC.searchResults = _searchResults;
+	if (nil != _searchResultsTableView) {
+		_searchResultsTableView.searchResults = _searchResults;
 	}
-	
-	[_mapView addAnnotations:_searchResults];
+    
+    if ([TileServerManager isInitialized]) {
+        [_mapView addAnnotations:_searchResults];
+    }
 }
 
 - (MKCoordinateRegion)regionForAnnotations:(NSArray *)annotations {
 
-    MKCoordinateRegion region = MKCoordinateRegionMake(DEFAULT_MAP_CENTER, DEFAULT_MAP_SPAN);
+    MKCoordinateRegion region = [TileServerManager defaultRegion];
     
     double minLat = 90;
     double maxLat = -90;
@@ -349,42 +359,17 @@
 	[alert show];
 }
 
-- (void)setUpAnnotationsWithNewSearchResults:(NSArray*)searchResults forQuery:(NSString *)searchQuery {
-	
-	NSMutableArray* searchResultsArr = [NSMutableArray arrayWithCapacity:searchResults.count];
-	
-	// Don't try to create ArcGISMapSearchResultAnnotations before TileServerManager is ready. You'll get 
-	// garbage which will cause a SIGABRT when you try to set the map region.
-	if ([TileServerManager isInitialized])
-	{
-		for (NSDictionary* info in searchResults)
-		{
-			ArcGISMapSearchResultAnnotation *annotation = [[[ArcGISMapSearchResultAnnotation alloc] initWithInfo:info] autorelease];
-			[searchResultsArr addObject:annotation];
-		}
-		
-		// this will remove old annotations and add the new ones. 
-		self.searchResults = searchResultsArr;
-		
-		NSString* docsFolder = [NSHomeDirectory() stringByAppendingPathComponent:@"Documents"];
-		NSString* searchResultsFilename = [docsFolder stringByAppendingPathComponent:@"searchResults.plist"];
-		[searchResults writeToFile:searchResultsFilename atomically:YES];
-		[[NSUserDefaults standardUserDefaults] setObject:searchQuery forKey:CachedMapSearchQueryKey];
-	}
-}
-
 - (void)handleTileServerManagerProjectionIsReady:(NSNotification *)notification {
     
     // TODO: don't do this if the user has intentially scrolled somewhere else
     _mapView.region = [TileServerManager defaultRegion];
-    
-	// If there's unprocessed search results that have been waiting around, get them into annotations.
-	if (unprocessedSearchResults) {
-		DLog(@"Processing stored search results for query %@.", unprocessedSearchResultsQuery);
-		[self setUpAnnotationsWithNewSearchResults:unprocessedSearchResults forQuery:unprocessedSearchResultsQuery];
-		self.unprocessedSearchResults = nil;
-		self.unprocessedSearchResultsQuery = nil;
-	}
+
+    if (self.searchResults != nil) {
+        for (ArcGISMapSearchResultAnnotation *annotation in self.searchResults) {
+            [annotation updateWithInfo:annotation.info]; // updateWithInfo acts differently when tile server is up
+        }
+        [_mapView addAnnotations:self.searchResults];
+    }
 	
 	[[NSNotificationCenter defaultCenter] removeObserver:self];	
 }
@@ -427,16 +412,17 @@
         _viewTypeButton.title = @"Map";
         
         // show the list.
-        if (nil == _searchResultsVC) {
-            _searchResultsVC = [[MapSearchResultsTableView alloc] initWithFrame:_mapView.frame];
-            _searchResultsVC.delegate = _searchResultsVC;
-            _searchResultsVC.dataSource = _searchResultsVC;
-            _searchResultsVC.campusMapVC = self;
+        if (nil == _searchResultsTableView) {
+            _searchResultsTableView = [[MapSearchResultsTableView alloc] initWithFrame:_mapView.frame];
+            _searchResultsTableView.campusMapVC = self;
+            _searchController.searchResultsTableView = _searchResultsTableView;
+            _searchController.searchResultsDelegate = _searchResultsTableView;
+            _searchController.searchResultsDataSource = _searchResultsTableView;
         }
         
-        _searchResultsVC.searchResults = _searchResults;
+        _searchResultsTableView.searchResults = _searchResults;
         
-        [self.view addSubview:_searchResultsVC];
+        [self.view addSubview:_searchResultsTableView];
         
         // hide the toolbar and stretch the search bar
         _toolBar.alpha = 0.0;
@@ -446,9 +432,9 @@
         _viewTypeButton.title = @"List";
         
         // show the map, by hiding the list. 
-        [_searchResultsVC removeFromSuperview];
-        [_searchResultsVC release];
-        _searchResultsVC = nil;
+        [_searchResultsTableView removeFromSuperview];
+        [_searchResultsTableView release];
+        _searchResultsTableView = nil;
         
         if (!_searchResults) {
             // show the toolbar and shrink the search bar. 
@@ -482,31 +468,18 @@
 	} else {	
 		[self showListView:!_displayingList];
 	}
-	
 }
 
--(void)receivedNewSearchResults:(NSArray*)theSearchResults forQuery:(NSString *)searchQuery
-{
-	// clear the map view's annotations, and add new ones for these search results
-	//[_mapView removeAnnotations:_searchResults];
-	//[_searchResults release];
-	//_searchResults = nil;
-	
-	if ([TileServerManager isInitialized]) {
-		DLog(@"Received new search results for query %@, and TileServerManager is ready.", searchQuery);
-		[self setUpAnnotationsWithNewSearchResults:theSearchResults forQuery:searchQuery];
-	}
-	else {
-		DLog(@"Received new search results for query %@, but TileServerManager is not ready yet.", searchQuery);
-		// TileServerManager is not ready yet, so hold onto the search results and sign up for a 
-		// notification from TileServerManager so they can be used when it's ready.
-		self.unprocessedSearchResults = theSearchResults;
-		self.unprocessedSearchResultsQuery = searchQuery;
-		[[NSNotificationCenter defaultCenter] addObserver:self 
-												 selector:@selector(handleTileServerManagerProjectionIsReady:) 
-													 name:kTileServerManagerProjectionIsReady
-												   object:nil];
-	}
+-(void)receivedNewSearchResults:(NSArray*)searchResults forQuery:(NSString *)searchQuery
+{	
+    NSMutableArray *searchResultsArr = [NSMutableArray arrayWithCapacity:searchResults.count];
+    
+    for (NSDictionary* info in searchResults) {
+        ArcGISMapSearchResultAnnotation *annotation = [[[ArcGISMapSearchResultAnnotation alloc] initWithInfo:info] autorelease];
+        [searchResultsArr addObject:annotation];
+    }
+
+    self.searchResults = searchResultsArr;
 }
 
 

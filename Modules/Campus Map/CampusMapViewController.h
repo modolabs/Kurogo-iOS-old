@@ -35,24 +35,19 @@
 	
 	// flag indicating whether to display a list of search results or categories. 
 	BOOL _displayingList;
-	
-	// view controller for our search results list display
-	MapSearchResultsTableView* _searchResultsVC;
-	
+
 	// bar button to switch view types. 
 	UIBarButtonItem* _viewTypeButton;
 	
+    // search UI
 	ModoSearchBar *_searchBar;
     MITSearchDisplayController *_searchController;
+	MapSearchResultsTableView *_searchResultsTableView;	
 	
 	// a custom button since we are not using the default bookmark button
 	UIButton* _bookmarkButton;
 	
-	MapSelectionController* _selectionVC;
-	
-	// Used for storing search results that need to wait on other resources before they are used.
-	NSArray *unprocessedSearchResults;
-	NSString *unprocessedSearchResultsQuery;
+	MapSelectionController *_selectionVC;
 }
 
 @property (nonatomic, retain) UIBarButtonItem* geoButton;
@@ -64,16 +59,14 @@
 @property BOOL hasSearchResults;
 @property (readonly) BOOL displayingList;
 @property (readonly) ModoSearchBar* searchBar;
-@property (nonatomic, retain) NSArray *unprocessedSearchResults;
-@property (nonatomic, retain) NSString *unprocessedSearchResultsQuery;
 
 // execute a search
 - (void)search:(NSString*)searchText;
 
 // this is called in handleLocalPath: query: and also by setSearchResults:
-- (void) setSearchResultsWithoutRecentering:(NSArray*)searchResults;
+- (void)setSearchResultsWithoutRecentering:(NSArray*)searchResults;
 - (void)setSearchResults:(NSArray *)searchResults withFilter:(SEL)filter; // filter is unique category for each search result, e.g. bldgnum
-- (void)showListView:(BOOL)showList; // showList indicates whether we show list view or not (map view)
+- (void)showListView:(BOOL)showList;                                      // if showList is true, show list view; otherwise show map view
 - (void)pushAnnotationDetails:(id <MKAnnotation>) annotation animated:(BOOL)animated;
 
 @end

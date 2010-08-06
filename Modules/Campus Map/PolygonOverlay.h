@@ -6,7 +6,7 @@
 
 @end
 
-
+// this class should never be instantiated before +[TileServerManager isInitialized] returns true
 @interface PolygonOverlay : NSObject <MKOverlay>
 {
     CLLocationCoordinate2D _coordinate;

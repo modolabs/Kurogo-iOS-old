@@ -211,9 +211,8 @@
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
+    // TODO: remove hard coded frames
 	UIView* headerView = [[[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 60)] autorelease];
-//	headerView.backgroundColor = [UIColor yellowColor];
-//	headerView.alpha = 0.5;
 	if (section == 0) {
 		UILabel* headerLabel = [[[UILabel alloc] initWithFrame:CGRectMake(16, 10, 226, 40)] autorelease];
 		headerLabel.text = self.headerText;
@@ -242,26 +241,25 @@
 #pragma mark MapAll
 -(void) mapAllButtonTapped
 {
-	//NSLog(@"map all button tapped");
 	// make sure the map is showing. 
 	[self.mapSelectionController.mapVC showListView:NO];
 	
 	// clear the search bar
-	self.mapSelectionController.mapVC.searchBar.text = @"";
+	self.mapSelectionController.mapVC.searchBar.text = nil;
 	
 	NSMutableArray* searchResultsArray = [NSMutableArray array];
 	
 	for (NSDictionary* thisItem in _itemsInTable) {
 		ArcGISMapSearchResultAnnotation *annotation = [[[ArcGISMapSearchResultAnnotation alloc] initWithInfo:thisItem] autorelease];
+        if (!annotation.dataPopulated) {
+            [annotation searchAnnotationWithDelegate:self.mapSelectionController.mapVC];
+        }
 		[searchResultsArray addObject:annotation];
 	}
 	
 	// this will remove any old annotations and add the new ones. 
-	//[[self.mapSelectionController.mapVC mapView] setShouldNotDropPins:YES];
 	[self.mapSelectionController.mapVC setSearchResults:searchResultsArray];
-		
 	[self dismissModalViewControllerAnimated:YES];
-	//[[self.mapSelectionController.mapVC mapView] setShouldNotDropPins:NO];
 }
 
 
