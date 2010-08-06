@@ -6,6 +6,7 @@
 @interface InfoDataSource : StellarDetailViewControllerComponent <StellarDetailTableViewDelegate> {
 
 }
+-(CGFloat)getHeightForRows:(NSString *)text detailedText:(NSString *) detailedText tableView:(UITableView *)tableView;
 
 @end
 

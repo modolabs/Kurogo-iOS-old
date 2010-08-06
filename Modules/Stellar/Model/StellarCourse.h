@@ -14,7 +14,6 @@
 @property (nonatomic, retain) NSSet* stellarClasses;
 @property (nonatomic, retain) NSString * term;
 @property (nonatomic, retain) NSString * courseGroup;
-//@property (nonatomic, retain) NSMutableArray *groupArray;
 
 @end
 
