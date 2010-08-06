@@ -20,6 +20,7 @@ UITableViewDelegate, UITableViewDataSource, CoursesLoadedDelegate, ClearMyStella
 	NSString *doSearchTerms;
 	BOOL doSearchExecute;
     BOOL hasSearchInitiated;
+	BOOL firstTimeLoaded;
 }
 
 @property (nonatomic, retain) UITableView *tableView;
