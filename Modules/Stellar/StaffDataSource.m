@@ -8,9 +8,9 @@
 #import "UITableViewCell+MITUIAdditions.h"
 #import "MITUIConstants.h"
 
-#define INSTRUCTORS_PADDING 15
+#define INSTRUCTORS_PADDING 15//was 15
 #define TAS_PADDING 23
-#define HEADER_HEIGHT 24
+#define HEADER_HEIGHT 24//was 24
 
 #define INSTRUCTORS 0
 #define TAS 1
@@ -51,6 +51,7 @@
 	
 	// return nil for empty sections                                                                                                                                               
 	if([self tableView:tableView numberOfRowsInSection:section]) {
+		header.backgroundColor = [UIColor whiteColor];
 		return header;
 	} else {
 		return nil;
@@ -60,10 +61,10 @@
 - (CGFloat) tableView:(UITableView *)tableView heightForHeaderInSection: (NSInteger)section {
 	switch (section) {
 		case INSTRUCTORS:
-			return INSTRUCTORS_PADDING + HEADER_HEIGHT;
+			return 0;//INSTRUCTORS_PADDING + HEADER_HEIGHT;
 			
 		case TAS:
-			return TAS_PADDING + HEADER_HEIGHT;
+			return 0;//TAS_PADDING + HEADER_HEIGHT;
 	}
 	return 0;
 }
@@ -87,7 +88,7 @@
 		case INSTRUCTORS:
 			return [self.viewController.instructors count];
 		case TAS:
-			return [self.viewController.tas count];
+			return 0; //[self.viewController.tas count];
 	}
 	
 	return 0;
@@ -117,6 +118,7 @@
 	}
 	
 	cell.textLabel.text = [self staffMemberForIndexPath:indexPath].name;
+	cell.selectionStyle = UITableViewCellSelectionStyleGray;
 	return cell;
 }
 
