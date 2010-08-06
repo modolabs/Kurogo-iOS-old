@@ -96,7 +96,7 @@ NSString* cleanPersonName(NSString *personName);
 				command:@"subjectList" 
 				parameters:[NSDictionary dictionaryWithObjectsAndKeys: 
 					stellarCourse.title, @"id", 
-					@"true", @"checksum", 
+					@"true", @"checksum", stellarCourse.courseGroup, @"coursegroup",
 					nil]];
 		} else {
 			[self classesForCourseCompleteRequest:classesRequest];
@@ -115,7 +115,7 @@ NSString* cleanPersonName(NSString *personName);
 	 parameters:[NSDictionary dictionaryWithObjectsAndKeys: 
 		classesRequest.stellarCourse.title, @"id",
 		@"true", @"checksum",
-		@"true", @"full",
+		@"true", @"full", classesRequest.stellarCourse.courseGroup, @"coursegroup",
 		nil]];
 }
 
@@ -201,7 +201,7 @@ NSString* cleanPersonName(NSString *personName);
 		requestWithJSONAPIDelegate:[[[TermRequest alloc] 
 			initWithClearMyStellarDelegate:delegate stellarClasses:favorites] autorelease]];
 		
-	//[apiRequest requestObjectFromModule:@"stellar" command:@"term" parameters:nil];
+	[apiRequest requestObjectFromModule:@"stellar" command:@"term" parameters:nil];
 }
 
 + (StellarCourse *) courseWithId: (NSString *)courseId {
@@ -257,14 +257,20 @@ NSString* cleanPersonName(NSString *personName);
 			// remove the old version of the class staff
 			[CoreDataManager deleteObject:managedObject];
 		}
+	
+		
 		NSDictionary *staff = (NSDictionary *)[aDict objectForKey:@"staff"];
+		
+		
 		NSArray *instructors = (NSArray *)[staff objectForKey:@"instructors"];
 		NSArray *tas = (NSArray *)[staff objectForKey:@"tas"];
 		for(NSString *staff in instructors) {
-			[stellarClass addStaffObject:[StellarModel stellarStaffFromName:staff class:stellarClass type:@"instructor"]];
+			if ([staff length] > 0)
+				[stellarClass addStaffObject:[StellarModel stellarStaffFromName:staff class:stellarClass type:@"instructor"]];
 		}
 		for(NSString *staff in tas) {
-			[stellarClass addStaffObject:[StellarModel stellarStaffFromName:staff class:stellarClass type:@"ta"]];
+			if ([staff length] > 0)
+				[stellarClass addStaffObject:[StellarModel stellarStaffFromName:staff class:stellarClass type:@"ta"]];
 		}
 
 		// add the annoucements
@@ -348,6 +354,7 @@ NSString* cleanPersonName(NSString *personName);
 		
 		NSArray *courses = [aDict objectForKey:@"courses"];
 		NSString *courseGroupName = [[aDict valueForKey:@"school_name"] description];
+	
 		
 		for (NSDictionary *course in courses) {
 			
@@ -371,7 +378,6 @@ NSString* cleanPersonName(NSString *personName);
 			newStellarCourse.courseGroup = courseGroupName;
 			
 			[coursesArray addObject:newStellarCourse];
-
 		
 		}
 	}
@@ -445,7 +451,7 @@ NSString* cleanPersonName(NSString *personName);
 - (void) markCourseAsNew {
 	self.stellarCourse.lastCache = [NSDate dateWithTimeIntervalSinceNow:0];
 	//self.stellarCourse.term = [[NSUserDefaults standardUserDefaults] objectForKey:StellarTermKey];
-	self.stellarCourse.term = @"Fall 2010";
+	//self.stellarCourse.term = @"Fall 2010";
 	[CoreDataManager saveData];
 }
 	

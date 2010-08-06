@@ -55,7 +55,6 @@ typedef enum {
 
 	BOOL refreshClass;
 	StellarNewsLoadingState loadingState;
-	
 	MITModuleURL *url;
 }
 
