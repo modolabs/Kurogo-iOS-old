@@ -10,8 +10,8 @@
 #define CredentialsKey @"Credentials"
 #define TwitterServiceName @"Twitter"
 
-#define kOAuthConsumerKey @"TwitterConsumerKey"
-#define kOAuthConsumerSecret @"TwitterConsumerSecret"
+#define kOAuthConsumerKey @"uStgs4HxpAs6EWHj1C3mA"
+#define kOAuthConsumerSecret @"tWpAalpYgn0TGp4M2Jz8CKPfNRvyMkM21Nvud4HVxXc"
 
 
 #define INPUT_FIELDS_MARGIN 10.0
@@ -271,6 +271,7 @@ MIT_MobileAppDelegate *appDelegate();
 		usernameField.borderStyle = UITextBorderStyleRoundedRect;
 		usernameField.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
 		usernameField.font = INPUT_FIELDS_FONT;
+        usernameField.autocapitalizationType = UITextAutocapitalizationTypeNone;
 		usernameField.placeholder = @"Username";
 		usernameField.returnKeyType = UIReturnKeyNext;
 		usernameField.clearButtonMode = UITextFieldViewModeWhileEditing;

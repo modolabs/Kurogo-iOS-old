@@ -11,7 +11,6 @@
         self.shortName = @"About";
         self.longName = @"About";
         self.iconName = @"about";
-        self.isMovableTab = FALSE;
         
         AboutTableViewController *aboutVC = [[[AboutTableViewController alloc] initWithStyle:UITableViewStyleGrouped] autorelease];
         aboutVC.title = self.longName;

@@ -38,4 +38,8 @@
 	[CoreDataManager saveData];
 }
 
+- (NSComparisonResult)compare:(EventCategory *)otherCat {
+    return [self.title compare:otherCat.title];
+}
+
 @end

@@ -3,6 +3,8 @@
 #import <Foundation/Foundation.h>
 #import "PersonDetails.h"
 
+#define kPersonDetailsValueSeparatorToken @"%/%"
+
 @interface PersonDetails (Methods)
 
 // "Actual" value as in not a PersonDetail object, but rather the value it contains if in fact

@@ -5,6 +5,7 @@
 #import "PeopleRecentsData.h"
 #import "PersonDetails.h"
 #import "PersonDetail.h"
+#import "ModoSearchBar.h"
 
 static NSString * const PeopleStateSearchBegin = @"search-begin";
 static NSString * const PeopleStateSearchComplete = @"search-complete";
@@ -13,6 +14,8 @@ static NSString * const PeopleStateDetail = @"detail";
 
 @implementation PeopleModule
 
+@synthesize viewController, request;
+
 - (id)init
 {
     if (self = [super init]) {
@@ -20,9 +23,10 @@ static NSString * const PeopleStateDetail = @"detail";
         self.shortName = @"Directory";
         self.longName = @"People Directory";
         self.iconName = @"people";
+        self.supportsFederatedSearch = YES;
 
-		viewController = [[[PeopleSearchViewController alloc] initWithStyle:UITableViewStyleGrouped] autorelease];
-		viewController.navigationItem.title = self.longName;
+		self.viewController = [[[PeopleSearchViewController alloc] init] autorelease];
+		self.viewController.navigationItem.title = self.longName;
         
         self.viewControllers = [NSArray arrayWithObject:viewController];
     }
@@ -33,10 +37,11 @@ static NSString * const PeopleStateDetail = @"detail";
 {
 	MITModuleURL *url = [[MITModuleURL alloc] initWithTag:DirectoryTag];
 	
-	UIViewController *visibleVC = viewController.navigationController.visibleViewController;
+	UIViewController *visibleVC = self.viewController.navigationController.visibleViewController;
 	if ([visibleVC isMemberOfClass:[PeopleSearchViewController class]]) {
 		PeopleSearchViewController *searchVC = (PeopleSearchViewController *)visibleVC;
-		if (searchVC.searchController.active) {
+		//if (searchVC.searchController.active) {
+        if ([searchVC.searchController isActive]) {
 			if (searchVC.searchResults != nil) {
 				[url setPath:PeopleStateSearchComplete query:searchVC.searchTerms];
 			} else {
@@ -65,13 +70,31 @@ static NSString * const PeopleStateDetail = @"detail";
 - (BOOL)handleLocalPath:(NSString *)localPath query:(NSString *)query {
     BOOL didHandle = NO;
 	
-	UIViewController *visibleVC = viewController.navigationController.visibleViewController;
+    if ([localPath isEqualToString:LocalPathFederatedSearch]) {
+        // fedsearch?query
+        self.selectedResult = nil;
+        [self.viewController presentSearchResults:self.searchResults];
+        self.viewController.searchBar.text = query;
+        [self resetNavStack];
+        didHandle = YES;
 
-	if (visibleVC != viewController) {
-		// start from root view of directory.  the only time this is really
-		// needed is when we're called from another module, not on startup
-		[viewController.navigationController popViewControllerAnimated:NO];
-	}
+        // TODO: remove this line when state restoration is merged
+        return didHandle;
+        
+    } else if ([localPath isEqualToString:LocalPathFederatedSearchResult]) {
+        // fedresult?rownum
+        NSInteger row = [query integerValue];
+        PeopleDetailsViewController *detailVC = [[PeopleDetailsViewController alloc] initWithStyle:UITableViewStyleGrouped];
+        self.selectedResult = [self.searchResults objectAtIndex:row];
+        detailVC.personDetails = [PersonDetails retrieveOrCreate:self.selectedResult];
+        self.viewControllers = [NSArray arrayWithObject:detailVC];
+        didHandle = YES;
+        
+        // TODO: remove this line when state restoration is merged
+        return didHandle;
+    }
+    
+	[self resetNavStack];
  
 	if (localPath == nil) {
 		didHandle = YES;
@@ -79,11 +102,11 @@ static NSString * const PeopleStateDetail = @"detail";
 	
 	// search
 	else if ([localPath isEqualToString:PeopleStateSearchBegin]) {
-		viewController.view;
+		self.viewController.view;
 		if (query != nil) {
-			viewController.searchBar.text = query;
+			self.viewController.searchBar.text = query;
 		}
-		viewController.actionAfterAppearing = @selector(prepSearchBar);
+		//viewController.actionAfterAppearing = @selector(prepSearchBar);
         didHandle = YES;
 		
 	} else if (!query || [query length] == 0) {
@@ -92,21 +115,21 @@ static NSString * const PeopleStateDetail = @"detail";
 		didHandle = NO;
 		
 	} else if ([localPath isEqualToString:PeopleStateSearchComplete]) {
-		viewController.view;
-		viewController.actionAfterAppearing = @selector(prepSearchBar);
-        [viewController beginExternalSearch:query];
+		self.viewController.view;
+		//viewController.actionAfterAppearing = @selector(prepSearchBar);
+        [self.viewController beginExternalSearch:query];
 		didHandle = YES;
 		
 	} else if ([localPath isEqualToString:PeopleStateSearchExternal]) {
 		// this path is reserved for calling from other modules
 		// do not save state with this path       
-		viewController.view;
-		if (viewController.viewAppeared) {
-			[viewController prepSearchBar];
-		} else {
-			[viewController setActionAfterAppearing:@selector(prepSearchBar)];
-		}
-        [viewController beginExternalSearch:query];
+		self.viewController.view;
+		//if (viewController.viewAppeared) {
+		//	[viewController prepSearchBar];
+		//} else {
+		//	[viewController setActionAfterAppearing:@selector(prepSearchBar)];
+		//}
+        [self.viewController beginExternalSearch:query];
         [self becomeActiveTab];
         didHandle = YES;
     
@@ -127,12 +150,63 @@ static NSString * const PeopleStateDetail = @"detail";
     return didHandle;
 }
 
-
 - (void)dealloc
 {
 	[super dealloc];
 }
 
+- (void)resetNavStack {
+    self.viewControllers = [NSArray arrayWithObject:viewController];
+}
+
+- (NSString *)titleForSearchResult:(id)result {
+    NSDictionary *person = (NSDictionary *)result;
+    NSString *fullname = nil;
+    NSArray *namesFromJSON = [PersonDetails realValuesFromPersonDetailsJSONDict:person forKey:@"cn"];
+    if ([namesFromJSON count] > 0) {
+        fullname = [namesFromJSON objectAtIndex:0];
+    }
+    return fullname;
+}
+
+- (NSString *)subtitleForSearchResult:(id)result {
+    NSDictionary *person = (NSDictionary *)result;
+    NSString *title = nil;
+    NSArray *detailAttributeArray = [PersonDetails realValuesFromPersonDetailsJSONDict:person forKey:@"title"];
+    if ([detailAttributeArray count] > 0) {
+        title = [detailAttributeArray objectAtIndex:0];
+    }
+    return title;
+}
+
+- (void)performSearchForString:(NSString *)searchText {
+    [super performSearchForString:searchText];
+    
+    self.request = [JSONAPIRequest requestWithJSONAPIDelegate:self];
+    // TODO: handle failure to make request
+	[self.request requestObject:[NSDictionary dictionaryWithObjectsAndKeys:@"people", @"module", searchText, @"q", nil]];
+}
+
+- (void)abortSearch {
+    if (self.request) {
+        [self.request abortRequest];
+        self.request = nil;
+    }
+    [super abortSearch];
+}
+
+- (void)request:(JSONAPIRequest *)request jsonLoaded:(id)result {
+    self.request = nil;
+
+	if (result && [result isKindOfClass:[NSArray class]]) {
+		self.searchResults = result;
+    }
+}
+
+- (void)handleConnectionFailureForRequest:(JSONAPIRequest *)request {
+    self.request = nil;
+    self.searchProgress = 1.0;
+}
 
 @end
 

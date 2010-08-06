@@ -37,6 +37,8 @@
 }
 
 - (void) viewDidLoad {
+	self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh target:self action:@selector(refresh:)] autorelease];
+	
 	[self.tableView applyStandardColors];
 	
 	// initialize with an empty array, to be replaced with data when available
@@ -190,7 +192,9 @@
 		cell.imageView.image = nil;
 	}
 	
-	cell.textLabel.font = [UIFont boldSystemFontOfSize:14];
+	//cell.textLabel.font = [UIFont boldSystemFontOfSize:14];
+	cell.textLabel.font =  [UIFont fontWithName:STANDARD_FONT size:CELL_STANDARD_FONT_SIZE];
+	cell.selectionStyle = UITableViewCellSelectionStyleGray;
 	return cell;
 }
 
@@ -238,11 +242,14 @@
 	UIAlertView *alert = [[UIAlertView alloc] 
 		initWithTitle:@"Connection Failed" 
 		message:@"Could not connect to Stellar, please try again later"
-		delegate:nil
+		delegate:self
 		cancelButtonTitle:@"OK" 
-		otherButtonTitles:nil];
+		otherButtonTitles:@"Reload", nil];
 	[alert show];
     [alert release];
+	
+	[self hideLoadingView];
+	
 }
 
 - (void) searchOverlayTapped {
@@ -326,5 +333,39 @@
 	[url release];
 	[super dealloc];
 }
+
+#pragma mark -
+#pragma mark Refresh Button 
+- (void)refresh:(id)sender {
+	
+	[self reloadData];	
+}
+
+-(void)reloadData {
+	[self reloadMyStellarData];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadMyStellarData) name:MyStellarChanged object:nil];	
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadMyStellarNotifications) name:MyStellarAlertNotification object:nil];
+	
+	// load all course groups (asynchronously) in case it requires server access
+	[self showLoadingView];
+	[StellarModel loadCoursesFromServerAndNotify:self];
+	
+	
+	[StellarModel removeOldFavorites:self];
+	
+	self.doSearchTerms = nil;
+	
+}
+
+#pragma mark -
+#pragma mark Reload Button delegate
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
+	
+	if (buttonIndex == 1) {
+		[self reloadData];		
+	}
+}
+
 
 @end

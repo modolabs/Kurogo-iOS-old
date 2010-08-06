@@ -54,7 +54,7 @@ JSONAPIRequest *mitapi;
 	[_tabViews insertObject:_loadingResultView atIndex:kBreakfastTab];
 	[_tabViewContainer addSubview:_loadingResultView];
 
-	[self addLoadingIndicator];
+	
 	
 	// Format the requesting URL in the correct Format
 	NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
@@ -72,6 +72,7 @@ JSONAPIRequest *mitapi;
 		// set the requesting Tab index to the correct one
 		tabRequestingInfo = kBreakfastTab;	
 		requestDispatched = YES;
+		[self addLoadingIndicator];
 	}
 	else {
 		requestDispatched = NO;
@@ -98,8 +99,7 @@ JSONAPIRequest *mitapi;
 	[_tabViews insertObject:_loadingResultView atIndex:kLunchTab];
 	[_tabViewContainer addSubview:_loadingResultView];
 
-	[self addLoadingIndicator];
-	
+		
 	// Format the requesting URL in the correct Format
 	NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
 	[dateFormat setDateFormat:@"YYYY-MM-dd"];
@@ -116,6 +116,7 @@ JSONAPIRequest *mitapi;
 		// set the requesting Tab index to the correct one
 		tabRequestingInfo = kLunchTab;	
 		requestDispatched = YES;
+		[self addLoadingIndicator];
 	}
 	else {
 		requestDispatched = NO;
@@ -142,8 +143,7 @@ JSONAPIRequest *mitapi;
 	[_tabViews insertObject:_loadingResultView atIndex:kDinnerTab];
 	[_tabViewContainer addSubview:_loadingResultView];
 
-	[self addLoadingIndicator];
-	
+
 	// Format the requesting URL in the correct Format
 	NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
 	[dateFormat setDateFormat:@"YYYY-MM-dd"];
@@ -158,6 +158,7 @@ JSONAPIRequest *mitapi;
 		// set the requesting Tab index to the correct one
 		tabRequestingInfo = kDinnerTab;	
 		requestDispatched = YES;
+			[self addLoadingIndicator];
 	}
 	else {
 		requestDispatched = NO;
@@ -235,7 +236,7 @@ JSONAPIRequest *mitapi;
 
 	// Display the Date in the Expected Format: Saturday, June 25
 	NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
-	[dateFormat setDateFormat:@"EEEE MMMM d"];
+	[dateFormat setDateFormat:@"EEEE, MMMM d"];
 	//NSString *dateString = [dateFormat stringFromDate:self.todayDate];
 	[dateFormat release];
 
@@ -274,7 +275,7 @@ JSONAPIRequest *mitapi;
 		[_tabViewControl addTab:@"Dinner"];
 		[_tabViews insertObject:_loadingResultView atIndex:kDinnerTab];
 		
-		[_tabViewControl addTab:@"Hours"];
+		[_tabViewControl addTab:@"Locations"];
 		[_hoursView addSubview:glossaryForHoursView];
 		tableControl = [[HoursTableViewController alloc] init];
 		hoursTableView.delegate = (HoursTableViewController *)tableControl;
@@ -498,6 +499,7 @@ JSONAPIRequest *mitapi;
 		}
 		else {
 			requestDispatched = NO;
+			[self removeLoadingIndicator];
 		}
 	}
 
@@ -563,7 +565,7 @@ JSONAPIRequest *mitapi;
     
 	NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
 	//[dateFormat setDateFormat:@"YYYY-MM-dd"];
-	[dateFormat setDateFormat:@"EEEE MMMM d"];
+	[dateFormat setDateFormat:@"EEEE, MMMM d"];
 	NSString *dateText = [dateFormat stringFromDate:self.todayDate];
 
 	NSString *currentDate = [dateFormat stringFromDate:[NSDate date]];
@@ -667,36 +669,38 @@ numberOfRowsInSection:(NSInteger)section
 	
 	static NSString *DisclosureButtonCellIdentifier = @"DisclosureButtonCellIdentifier";
 	
-	DiningMultiLineCell *cell = (DiningMultiLineCell *)[tableView dequeueReusableCellWithIdentifier:DisclosureButtonCellIdentifier];
+	DiningMultiLineCell *cell1 = (DiningMultiLineCell *)[tableView dequeueReusableCellWithIdentifier:DisclosureButtonCellIdentifier];
+	DiningMultiLineCell *cell;
 	
-	if (cell == nil)
-	{
-		cell = [[[DiningMultiLineCell alloc]
-				 initWithStyle:UITableViewCellStyleDefault
-				 reuseIdentifier:DisclosureButtonCellIdentifier] autorelease];
-	}
-	cell.textLabelNumberOfLines = 2;
-	
+	// Due to multiple-imageViews being displayed, do not use a re-usable cell. Instead, release the re-usable one.
+	if (cell1 != nil)
+		cell1 = nil;
+
+	cell = [[[DiningMultiLineCell alloc]
+		 initWithStyle:UITableViewCellStyleDefault
+		 reuseIdentifier:DisclosureButtonCellIdentifier] autorelease];
+
+	cell.textLabelNumberOfLines = 2;	
 	cell.textLabel.text = (NSString *) [[keySection objectAtIndex:row] objectForKey:@"item"];
 	
-	
+	// If details of the Menu-Item are available, uncomment the following line.
 	//cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-	cell.selectionStyle = UITableViewCellSelectionStyleGray;
+	cell.selectionStyle = UITableViewCellSelectionStyleNone;
 	cell.backgroundColor = GROUPED_VIEW_CELL_COLOR;
 	
 	
 	cell.textLabel.lineBreakMode = UILineBreakModeWordWrap;
-	UIImage *image = [UIImage imageNamed:@"dining-local.png"];
-	UIImageView *imView = [[UIImageView alloc] initWithFrame:CGRectMake(265, 10, 20, 20)];
+	UIImage *image = [UIImage imageNamed:@"dining-local-crop.png"];
+	UIImageView *imView = [[UIImageView alloc] initWithFrame:CGRectMake(265, 10, 17, 17)];
 	imView.image = image;
 
 	
 	UIImage *image2 = [UIImage imageNamed:@"dining-vegan.png"];
-	UIImageView *imView2 = [[UIImageView alloc] initWithFrame:CGRectMake(245, 10, 20, 20)];
+	UIImageView *imView2 = [[UIImageView alloc] initWithFrame:CGRectMake(245, 10, 17, 17)];
 	imView2.image = image2;
 	
-	UIImage *image3 = [UIImage imageNamed:@"dining-organic.png"];
-	UIImageView *imView3 = [[UIImageView alloc] initWithFrame:CGRectMake(225, 10, 20, 20)];
+	UIImage *image3 = [UIImage imageNamed:@"dining-organic-crop.png"];
+	UIImageView *imView3 = [[UIImageView alloc] initWithFrame:CGRectMake(225, 10, 17, 17)];
 	imView3.image = image3;
 
 	
@@ -704,7 +708,6 @@ numberOfRowsInSection:(NSInteger)section
 	[cell.contentView addSubview:imView2];
 	[cell.contentView addSubview:imView3];
 	
-						   
 	return cell;
 }
 
@@ -753,6 +756,8 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
 	// deselect the Row
 	[tableView deselectRowAtIndexPath:indexPath animated:NO];
+	
+	// If details of the Menu-Items are available, uncomment the code below
 	/*
 	//re-initialize the childController each time to get the correct Display
 	childController = nil;

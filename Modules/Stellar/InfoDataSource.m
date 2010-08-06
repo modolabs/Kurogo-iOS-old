@@ -17,6 +17,7 @@
 - (NSInteger) numberOfSectionsInTableView: (UITableView *)tableView {
 	return 2;
 }
+
  
 - (NSString *) locationAndTime: (NSUInteger)index {
 	StellarClassTime *classTime = [self.viewController.times objectAtIndex:index];
@@ -44,7 +45,7 @@
 			StellarClassTime *classTime = [self.viewController.times objectAtIndex:indexPath.row];
 			if([classTime.location length]) {
 				cell.accessoryView = [UIImageView accessoryViewWithMITType:MITAccessoryViewMap];
-				cell.selectionStyle = UITableViewCellSelectionStyleBlue;
+				cell.selectionStyle = UITableViewCellSelectionStyleGray;
 			} else {
 				cell.accessoryView = nil;
 				cell.selectionStyle = UITableViewCellSelectionStyleNone;
@@ -75,7 +76,7 @@
 - (NSInteger) tableView: (UITableView *)tableView numberOfRowsInSection: (NSInteger)section {
 	switch (section) {			
 		case TIMES:
-			return [self.viewController.times count];
+			return 1; //return [self.viewController.times count];
 		case DESCRIPTION:
 			return 1;			
 	}

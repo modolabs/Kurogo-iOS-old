@@ -2,16 +2,18 @@
 #import "JSONAPIRequest.h"
 #import "CalendarConstants.h"
 #import "EventCategoriesTableView.h"
-#import "EventListTableView.h"
 #import "CalendarMapView.h"
 #import "DatePickerViewController.h"
+#import "TabScrollerBackgroundView.h"
 
-@class MITSearchEffects;
+@class MITSearchDisplayController;
 @class EventListTableView;
 @class CalendarEventMapAnnotation;
 @class DatePickerViewController;
+@class NavScrollerView;
 
-@interface CalendarEventsViewController : UIViewController <UIScrollViewDelegate, UISearchBarDelegate, UISearchDisplayDelegate, MKMapViewDelegate, JSONAPIDelegate, DatePickerViewControllerDelegate> {
+@interface CalendarEventsViewController : UIViewController <NavScrollerDelegate, UISearchBarDelegate, UISearchDisplayDelegate, MKMapViewDelegate, JSONAPIDelegate, DatePickerViewControllerDelegate> {
+//@interface CalendarEventsViewController : UIViewController <UIScrollViewDelegate, UISearchBarDelegate, UISearchDisplayDelegate, MKMapViewDelegate, JSONAPIDelegate, DatePickerViewControllerDelegate> {
 
 	CalendarEventListType activeEventList; // today, browse, acad, holidays...
 	NSDate *startDate;
@@ -23,11 +25,14 @@
 	CalendarMapView *theMapView;
 	
 	// views in the header
+    /*
 	UIScrollView *navScrollView;
 	UISearchBar *theSearchBar;
 	NSMutableArray *navButtons;
 	UIButton *leftScrollButton;
 	UIButton *rightScrollButton;
+     */
+    NavScrollerView *navScrollView;
 	
 	UIView *datePicker;
 	UIView *nothingFound;
@@ -35,8 +40,8 @@
 	//DatePickerViewController *dateSelector;
 	
 	// search
-	//UISearchDisplayController *searchController;
-	MITSearchEffects *searchOverlay;
+    UISearchBar *theSearchBar;
+    MITSearchDisplayController *searchController;
 	UIView *loadingIndicator;
 	// this is a tableview subclass but we're only using it for
 	// its delegate methods
@@ -73,10 +78,11 @@
 - (void)abortExtraneousRequest;
 - (void)makeRequest;
 - (void)makeSearchRequest:(NSString *)searchTerms;
+- (void)presentSearchResults:(NSArray *)results searchText:(NSString *)searchText searchSpan:(NSString *)searchSpan;
 
 - (void)mapButtonToggled;
 - (void)listButtonToggled;
-- (void)sideButtonPressed:(id)sender;
+//- (void)sideButtonPressed:(id)sender;
 - (void)buttonPressed:(id)sender;
 
 - (void)reloadView:(CalendarEventListType)listType;

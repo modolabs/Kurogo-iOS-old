@@ -71,12 +71,13 @@ NSString * termText(NSString *termCode) {
 		self.tas = [NSArray array];
 		self.times = [NSArray array];
 		
-		self.dataSources = [[NSMutableArray alloc] initWithCapacity:3];
+		self.dataSources = [[NSMutableArray alloc] initWithCapacity:2];
 		
 		actionButton = nil;
 		
-		self.currentTabName = @"News";
-		currentTabNames = [[NSMutableArray alloc] initWithCapacity:3];
+		//self.currentTabName = @"News";
+		//self.currentTabName = @"N";
+		currentTabNames = [[NSMutableArray alloc] initWithCapacity:2];
 		tabViewControl = nil;
 		myStellarButton = nil;
 		loadingState = StellarNewsLoadingInProcess;
@@ -141,16 +142,16 @@ NSString * termText(NSString *termCode) {
 	myStellarButton.frame = CGRectMake(
 		self.tableView.tableHeaderView.frame.size.width-leftMargin-buttonWidth, myStellarPadding,
 		buttonWidth, buttonHeight);
-	myStellarButton.enabled = NO;
-	[myStellarButton setImage:[UIImage imageNamed:@"courses/mystellar-off.png"] forState:UIControlStateNormal];
-	[myStellarButton setImage:[UIImage imageNamed:@"courses/mystellar-off-pressed.png"] forState:(UIControlStateNormal | UIControlStateHighlighted)];
-	[myStellarButton setImage:[UIImage imageNamed:@"courses/mystellar-on.png"] forState:UIControlStateSelected];
-	[myStellarButton setImage:[UIImage imageNamed:@"courses/mystellar-on-pressed.png"] forState:(UIControlStateSelected | UIControlStateHighlighted)];
+	myStellarButton.enabled = YES;
+	[myStellarButton setImage:[UIImage imageNamed:@"global/bookmark_off.png"] forState:UIControlStateNormal];
+	[myStellarButton setImage:[UIImage imageNamed:@"global/bookmark_off_pressed.png"] forState:(UIControlStateNormal | UIControlStateHighlighted)];
+	[myStellarButton setImage:[UIImage imageNamed:@"global/bookmark_on.png"] forState:UIControlStateSelected];
+	[myStellarButton setImage:[UIImage imageNamed:@"global/bookmark_on_pressed.png"] forState:(UIControlStateSelected | UIControlStateHighlighted)];
 	[myStellarButton addTarget:self action:@selector(myStellarButtonToggled) forControlEvents:UIControlEventTouchUpInside];
 	[self.tableView.tableHeaderView addSubview:myStellarButton];
 	
 	// initialize the action button
-	actionButton = [[UIBarButtonItem alloc] initWithTitle:@"Stellar Site" style:UIBarButtonItemStylePlain target:self action:@selector(openSite)];
+	actionButton = [[UIBarButtonItem alloc] initWithTitle:@"Course Website" style:UIBarButtonItemStylePlain target:self action:@selector(openSite)];
 	actionButton.enabled = NO; // will enabled it when valid actions are known to exist
 	self.navigationItem.rightBarButtonItem = actionButton;
 	
@@ -179,39 +180,17 @@ NSString * termText(NSString *termCode) {
 
 - (void) myStellarButtonToggled {
 	BOOL newMyStellarStatus = !myStellarButton.selected;
-	NSString *action = newMyStellarStatus ? @"subscribe" : @"unsubscribe";
 	
-	MITIdentity *identity = [MITDeviceRegistration identity];
-	if(identity) {
-		NSMutableDictionary *parameters = [[MITDeviceRegistration identity] mutableDictionary];
-		[parameters setObject:action forKey:@"action"];
-		[parameters setObject:stellarClass.masterSubjectId forKey:@"subject"];
-		[parameters setObject:stellarClass.term forKey:@"term"];
-	
-		self.myStellarStatusDelegate = [[MyStellarStatusDelegate alloc] initWithClass:stellarClass status:newMyStellarStatus viewController:self];
-		[[JSONAPIRequest requestWithJSONAPIDelegate:myStellarStatusDelegate]
-			requestObjectFromModule:StellarTag command:@"myStellar" parameters:parameters];
-
-		[myStellarStatusDelegate release];
-
-		myStellarButton.selected = !(myStellarButton.selected);
-	} else {
-		NSString *message;
-		if([[UIApplication sharedApplication] enabledRemoteNotificationTypes] == UIRemoteNotificationTypeNone) {
-			message = @"Notifications are currently disabled, Quit this application and go to Settings > Notifications to enable them.";
-		} else {
-			message = @"Can not register your device for myStellar notifications, try restarting the application to register device.";
-		}
-
-		UIAlertView *alert = [[UIAlertView alloc] 
-			initWithTitle:@"Unregistered Device"
-			message:message
-			delegate:nil
-			cancelButtonTitle:@"OK" 
-			otherButtonTitles:nil];
-		[alert show];
-		[alert release];
+	if (newMyStellarStatus) {
+		[StellarModel saveClassToFavorites:stellarClass];
+		myStellarButton.selected = YES;
 	}
+	
+	else {
+		[StellarModel removeClassFromFavorites:stellarClass];
+		myStellarButton.selected = NO;
+	}
+
 }
 
 // this method is only activated by an actual user interaction with the tab
@@ -233,7 +212,8 @@ NSString * termText(NSString *termCode) {
 	}
 	
 	CGRect footerFrame = self.tableView.tableFooterView.frame;
-	footerFrame.size.height = footerFrameHeight;
+	//footerFrame.size.height = footerFrameHeight;
+	footerFrame.size.height = self.view.frame.size.height;
 	self.tableView.tableFooterView.frame = footerFrame;
 }
 
@@ -256,7 +236,7 @@ NSString * termText(NSString *termCode) {
 	tabViewControl.delegate = self;
 	
 	// determine which tabs need to be displayed
-	[self addTabName:@"News" dataSource:[NewsDataSource viewController:self]];
+	//[self addTabName:@"News" dataSource:[NewsDataSource viewController:self]];
 
 	if([stellarClass.blurb length]) {
 		[self addTabName:@"Info" dataSource:[InfoDataSource viewController:self]];
@@ -265,7 +245,11 @@ NSString * termText(NSString *termCode) {
 		[self addTabName:@"Staff" dataSource:[StaffDataSource viewController:self]];
 	}
 	
-	[self setCurrentTab:currentTabName];	
+	//[self setCurrentTab:currentTabName];	
+	
+	if (currentTabNames.count)
+		[self switchTab:0];
+	
 	[self.tableView.tableHeaderView addSubview:tabViewControl];
 	[tabViewControl release];
 }	
@@ -341,7 +325,8 @@ NSString * termText(NSString *termCode) {
 	self.titleView.frame = newFrame;	
 	
 	self.titleView.text = classTitle;
-	self.termView.text = termText(class.term);
+	//self.termView.text = termText(class.term);
+	self.termView.text = class.term;
 	
 	CGFloat classAndTermHeight = classTitleHeight + termHeight + verticalPadding + paddingHeight;
 	[self buildTabs:classAndTermHeight];	
@@ -359,7 +344,7 @@ NSString * termText(NSString *termCode) {
 }
 
 - (void) openSite {
-	[[UIApplication sharedApplication] openURL:[NSURL URLWithString:[@"http://stellar.mit.edu" stringByAppendingString:stellarClass.url]]];
+	[[UIApplication sharedApplication] openURL:[NSURL URLWithString:[stellarClass.url stringByAppendingString:@""]]];
 }	
 
 - (BOOL) dataLoadingComplete {

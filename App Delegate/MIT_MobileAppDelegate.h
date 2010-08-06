@@ -31,6 +31,7 @@
 
 @property (nonatomic, retain) IBOutlet MotionDetectorWindow *window;
 @property (nonatomic, retain) ModoNavigationController *theNavController;
+@property (nonatomic, retain) SpringboardViewController *springboard;
 @property (nonatomic, retain) NSArray *modules;
 @property (nonatomic, retain) NSData *deviceToken;
 

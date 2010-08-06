@@ -3,6 +3,10 @@
 #import "MITUnreadNotifications.h"
 #import "ModoNavigationController.h"
 
+#define MAX_FEDERATED_SEARCH_RESULTS 5
+extern NSString * const LocalPathFederatedSearch;
+extern NSString * const LocalPathFederatedSearchResult;
+
 @class MIT_MobileAppDelegate;
 
 @interface MITModule : NSObject {
@@ -13,24 +17,18 @@
     
     NSString *iconName; // Filename of module artwork. The foo in "Resources/Modules/foo.png".
     
-    // The root UIViewController for a module's tab is always a 
-    // UINavigationController. This is because any tab reached via the More 
-    // tab is automatically wrapped in a UINavigationController anyway, and a 
-    // consistent experience is important to this application. Note that when 
-    // reached via the More tab, a module's views temporarily become 
-    // children of the UITabBarController's moreNavigationController. This can 
-    // lead to seemingly ignored messages like when changing a module's 
-    // tabBarItem.badgeValue, because they are actually affecting the 
-    // moreNavigationController. There will be more changes to MITModule later 
-    // to simplify tab badging and navigation stack management.
-    ModoNavigationController *tabNavController;
-    
     NSArray *viewControllers;
+    NSArray *previousViewController;
     
-    BOOL isMovableTab; // TRUE if this module's tab can be rearranged during UITabBar customization. FALSE otherwise.
     BOOL canBecomeDefault; // TRUE if this module can become the default tab at startup
     BOOL pushNotificationSupported;
     BOOL pushNotificationEnabled; // toggled by user in SettingsModule
+    
+    BOOL supportsFederatedSearch;
+    CGFloat searchProgress; // between 0 and 1
+    NSArray *searchResults;
+    id selectedResult;
+    BOOL isSearching;
 	
 	// properties used for saving and restoring state
 	// if module keeps track of its state it is required respond to handleLocalPath:query
@@ -46,7 +44,6 @@
 #pragma mark Optional methods
 
 - (void)applicationDidFinishLaunching; // Called after all modules are initialized and have added their tabNavController to the tab bar
-
 - (void)applicationWillTerminate; // Called before app quits. Last chance to save state.
 
 - (NSString *)description; // what NSLog(@"%@", aModule); prints
@@ -54,42 +51,49 @@
 - (void)didAppear;
 
 - (BOOL)handleLocalPath:(NSString *)localPath query:(NSString *)query;
-
 - (void)resetURL; // reset the URL, (i.e. path and query to empty strings)
 
-- (BOOL)handleNotification: (MITNotification *)notification appDelegate: (MIT_MobileAppDelegate *)appDelegate shouldOpen: (BOOL)shouldOpen; // Called when a push notification arrives
+- (void)resetNavStack;
+- (void)restoreNavStack;
+- (void)performSearchForString:(NSString *)searchText;
+- (void)setSearchProgress:(CGFloat)progress;
+- (void)setSearchResults:(NSArray *)results;
+- (void)abortSearch;
+- (NSString *)titleForSearchResult:(id)result;
+- (NSString *)subtitleForSearchResult:(id)result;
 
+- (BOOL)handleNotification: (MITNotification *)notification appDelegate: (MIT_MobileAppDelegate *)appDelegate shouldOpen: (BOOL)shouldOpen; // Called when a push notification arrives
 - (void)handleUnreadNotificationsSync: (NSArray *)unreadNotifications; // called to let the module know the unreads may have changed
 
 - (void)becomeActiveTab;
-
 - (BOOL)isActiveTab;
 
 #pragma mark tabNavController methods
 
 - (void) popToRootViewController;
-
 - (UIViewController *) rootViewController;
-
 - (void) pushViewController: (UIViewController *)viewController;
-
-
 
 
 @property (nonatomic, copy) NSString *tag;
 @property (nonatomic, copy) NSString *shortName;
 @property (nonatomic, copy) NSString *longName;
 @property (nonatomic, copy) NSString *iconName;
-@property (nonatomic, readonly) ModoNavigationController *tabNavController;
 @property (nonatomic, retain) NSArray *viewControllers;
-@property (nonatomic, assign) BOOL isMovableTab;
+@property (nonatomic, retain) NSArray *previousViewControllers;
+
+@property (nonatomic, assign) CGFloat searchProgress;
+@property (nonatomic, retain) NSArray *searchResults;
+@property (nonatomic, assign) id selectedResult;     // must be an object in searchResults
+@property (nonatomic, assign) BOOL supportsFederatedSearch;
+@property (nonatomic, readonly) BOOL isSearching;
+
 @property (nonatomic, assign) BOOL canBecomeDefault;
 @property (nonatomic, assign) BOOL pushNotificationSupported;
 @property (nonatomic, assign) BOOL pushNotificationEnabled;
 
-@property (nonatomic, retain) NSString *badgeValue;          // What appears in the red bubble in the module's tab. Set to nil to make it disappear. Will eventually show in the More tab's table as well.
+@property (nonatomic, retain) NSString *badgeValue;  // What appears in the red bubble in the module's tab. Set to nil to make it disappear. Will eventually show in the More tab's table as well.
 @property (nonatomic, readonly) UIImage *icon;       // The icon used for the More tab's table (color)
-@property (nonatomic, readonly) UIImage *tabBarIcon; // The icon used for the UITabBar (black and white)
 
 @property (nonatomic) BOOL hasLaunchedBegun;
 @property (nonatomic, retain) NSString *currentPath;

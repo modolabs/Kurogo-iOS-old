@@ -75,8 +75,10 @@ NSString * const CalendarEventAPISearch = @"search";
 	NSDateFormatter *df = [[NSDateFormatter alloc] init];
 	if (listType == CalendarEventListTypeAcademic) {
 		[df setDateFormat:@"MMMM yyyy"];
+		
 	} else {
-		[df setDateStyle:kCFDateFormatterMediumStyle];
+		//[df setDateStyle:kCFDateFormatterMediumStyle];
+		[df setDateFormat:@"EEEE, MMMM dd"];
 	}
 	
 	dateString = [df stringFromDate:aDate];

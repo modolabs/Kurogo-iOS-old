@@ -12,9 +12,11 @@
 @optional
 - (void)parserDidStartDownloading:(StoryXMLParser *)parser;
 - (void)parserDidStartParsing:(StoryXMLParser *)parser;
+- (void)parserDidMakeConnection:(StoryXMLParser *)parser;
 - (void)parser:(StoryXMLParser *)parser didMakeProgress:(CGFloat)percentDone;
 - (void)parser:(StoryXMLParser *)parser didFailWithDownloadError:(NSError *)error;
 - (void)parser:(StoryXMLParser *)parser didFailWithParseError:(NSError *)error;
+- (void)parser:(StoryXMLParser *)parser downloadMadeProgress:(CGFloat)progress;
 @end
 
 @interface StoryXMLParser : NSObject <ConnectionWrapperDelegate, NSXMLParserDelegate> {

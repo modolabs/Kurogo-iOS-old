@@ -9,7 +9,6 @@
 	
 }
 
-- (void)switchDidToggle:(id)sender;
 - (void)reloadSettings;
 
 @property (nonatomic, retain) NSArray *notifications;

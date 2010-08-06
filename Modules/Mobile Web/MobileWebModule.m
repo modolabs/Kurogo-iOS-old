@@ -9,7 +9,6 @@
         self.shortName = @"Full Website";
         self.longName = @"Full Website";
         self.iconName = @"full-website";
-        self.isMovableTab = FALSE;
         self.canBecomeDefault = FALSE;
     }
     return self;

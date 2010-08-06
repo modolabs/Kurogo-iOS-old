@@ -13,6 +13,7 @@
 
 @optional 
 - (void)handleConnectionFailureForRequest:(JSONAPIRequest *)request;
+- (void)request:(JSONAPIRequest *)request madeProgress:(CGFloat)progress;
 @end
 
 
@@ -21,6 +22,7 @@
     ConnectionWrapper *connectionWrapper;
 	NSDictionary *params;
 	id userData;
+	BOOL haveRetainedSelf;
 }
 
 /* returns a new JSONAPIRequest object.

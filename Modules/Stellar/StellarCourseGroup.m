@@ -63,7 +63,8 @@ NSInteger courseNameCompare(id course1, id course2, void *context);
 			
 			NSMutableArray * cArray = [[NSMutableArray alloc] init];
 			group.courses = cArray;
-			if ([course.title length] > 0) {
+			
+			if ([course.title length] >= 1) {
 				[group.courses addObject:course];
 			}
 			
@@ -73,7 +74,8 @@ NSInteger courseNameCompare(id course1, id course2, void *context);
 		else {
 			StellarCourseGroup *group = [courseGroups objectForKey:course.courseGroup];
 			[courseGroups removeObjectForKey:course.courseGroup];
-			[group.courses addObject:course];
+			if ([course.title length] >= 1)
+				[group.courses addObject:course];
 			[courseGroups setObject:group forKey:course.courseGroup];
 		}
 

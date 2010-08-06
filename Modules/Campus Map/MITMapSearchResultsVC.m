@@ -75,8 +75,8 @@
 	ArcGISMapSearchResultAnnotation *annotation = [self.searchResults objectAtIndex:indexPath.row];
 	cell.textLabel.text = annotation.name;
 	
-	if(nil != annotation.name)
-		cell.detailTextLabel.text = [NSString stringWithFormat:@"Building %@", annotation.name];
+	if (nil != annotation.name)
+		cell.detailTextLabel.text = annotation.street;
 	else
 		cell.detailTextLabel.text = nil;
 	

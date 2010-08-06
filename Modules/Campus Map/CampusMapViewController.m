@@ -69,6 +69,10 @@
 	_mapView = [[MKMapView alloc] initWithFrame: CGRectMake(0, _searchBar.frame.size.height, 320, self.view.frame.size.height - _searchBar.frame.size.height)];
 	_mapView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     _mapView.mapType = MKMapTypeStandard;
+	NSInteger mapTypePref = [[NSUserDefaults standardUserDefaults] integerForKey:MapTypePrefKey];
+	if (mapTypePref) {
+		_mapView.mapType = mapTypePref;
+	}
 	_mapView.delegate = self;
     _mapView.region = [TileServerManager defaultRegion];
 	[self.view addSubview:_mapView];
@@ -104,8 +108,7 @@
 - (void)viewDidLoad {
 	[super viewDidLoad];
 	
-	// turn on the location dot
-	_mapView.showsUserLocation = YES;
+	_mapView.showsUserLocation = NO;
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -120,6 +123,12 @@
 		}
 	} else {
 		self.navigationItem.rightBarButtonItem.title = @"Browse";
+	}
+
+	// Check to see if the user changed the desired map type.
+	NSInteger mapTypePref = [[NSUserDefaults standardUserDefaults] integerForKey:MapTypePrefKey];
+	if (_mapView.mapType != mapTypePref) {
+		_mapView.mapType = mapTypePref;
 	}
 }
 
@@ -429,17 +438,14 @@
     
     if (_mapView.showsUserLocation) {
         _geoButton.style = UIBarButtonItemStyleDone;
-        MKCoordinateSpan span = MKCoordinateSpanMake(0.02, 0.02);
-        MKCoordinateRegion region = MKCoordinateRegionMake(_mapView.userLocation.coordinate, span);
-        _mapView.region = region;
     } else {
         _geoButton.style = UIBarButtonItemStyleBordered;
+
         // recenter if they moved too far
-        MKMapRect rect = _mapView.visibleMapRect;
         CLLocationCoordinate2D centerCoord = [TileServerManager defaultRegion].center;
         MKMapPoint centerPoint = MKMapPointForCoordinate(centerCoord);
         
-        if (!MKMapRectContainsPoint(rect, centerPoint)) {
+        if (!MKMapRectContainsPoint(_mapView.visibleMapRect, centerPoint)) {
             _mapView.region = [TileServerManager defaultRegion];
         }
     }
@@ -731,6 +737,9 @@
 
 #pragma mark MKMapView delegation
 
+- (void)mapView:(MKMapView *)mapView didUpdateUserLocation:(MKUserLocation *)userLocation {
+    NSLog(@"located; %@", _mapView.showsUserLocation ? @"YES" : @"NO");
+}
 
 - (MKOverlayView *)mapView:(MKMapView *)mapView viewForOverlay:(id <MKOverlay>)overlay {
     if ([overlay isKindOfClass:[PolygonOverlay class]]) {
@@ -744,15 +753,12 @@
 }
 
 - (void)mapView:(MKMapView *)mapView regionDidChangeAnimated:(BOOL)animated {
-    //if (_mapView.showsUserLocation
-    //    && _geoButton.style == UIBarButtonItemStyleDone
-    //    && MKMapRectContainsPoint(_mapView.visibleMapRect, MKMapPointForCoordinate(_mapView.showsUserLocation.coordinate))) {
-        
-    //}
+    //NSLog(@"%@", _mapView.showsUserLocation ? @"YES" : @"NO");
 }
 
-//- (void)mapView:(MKMapView *)mapView regionWillChangeAnimated:(BOOL)animated {
-//}
+- (void)mapView:(MKMapView *)mapView regionWillChangeAnimated:(BOOL)animated {
+    //NSLog(@"%@", _mapView.showsUserLocation ? @"YES" : @"NO");
+}
 
 - (MKAnnotationView *)mapView:(MKMapView *)mapView viewForAnnotation:(id <MKAnnotation>)annotation {
     if (annotation == mapView.userLocation) {
@@ -891,7 +897,7 @@
 
 #pragma mark JSONAPIDelegate
 
-- (void) request:(JSONAPIRequest *)request jsonLoaded:(id)JSONObject
+- (void)request:(JSONAPIRequest *)request jsonLoaded:(id)JSONObject
 {	
     
     if (JSONObject && [JSONObject isKindOfClass:[NSDictionary class]]) {
@@ -958,18 +964,6 @@
 		[_lastSearchText release];
 		_lastSearchText = nil;
 		
-		/*
-		[_mapView removeAnnotations:_searchResults];
-		[_searchResults release];
-		_searchResults = nil;
-		[_lastSearchText release];
-		_lastSearchText = nil;
-
-		if (nil != _searchResultsVC) {
-			_searchResultsVC.searchResults = nil;
-			
-		}
-		 */
 	} else {
         JSONAPIRequest *apiRequest = [JSONAPIRequest requestWithJSONAPIDelegate:self];
         apiRequest.userData = kAPISearch;

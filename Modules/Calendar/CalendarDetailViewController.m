@@ -51,7 +51,7 @@ enum CalendarDetailRowTypes {
     }
 	
 	descriptionString = nil;
-    categoriesString = nil;
+    //categoriesString = nil;
 	
 	// setup nav bar
 	if (self.events.count > 1) {
@@ -164,17 +164,6 @@ enum CalendarDetailRowTypes {
         rowTypes[numRows] = CalendarDetailRowTypeCategories;
         
         [categoriesString release];
-        
-        NSMutableString *categoriesBody = [NSMutableString stringWithString:@"Categorized as:<ul>"];
-        for (EventCategory *category in event.categories) {
-            NSString *catIDString = [NSString stringWithFormat:@"catID=%d", [category.catID intValue]];
-            NSURL *categoryURL = [NSURL internalURLWithModuleTag:CalendarTag path:CalendarStateCategoryEventList query:catIDString];
-            [categoriesBody appendString:[NSString stringWithFormat:
-                                          @"<li><a href=\"%@\">%@</a></li>", [categoryURL absoluteString], category.title]];
-        }
-        
-        [categoriesBody appendString:@"</ul>"];
-        categoriesString = [[self htmlStringFromString:categoriesBody] retain];
         
         UIFont *cellFont = [UIFont fontWithName:STANDARD_FONT size:CELL_STANDARD_FONT_SIZE];
         CGSize textSize = [CalendarTag sizeWithFont:cellFont];
@@ -371,8 +360,17 @@ enum CalendarDetailRowTypes {
         }
 		case CalendarDetailRowTypeCategories:
         {
-			NSMutableString *categoriesBody = [NSMutableString stringWithString:@"Categorized as:<ul>"];
+			NSMutableString *categoriesBody = [NSMutableString stringWithString:@"Gazette Classification: <ul>"];
+			
+			NSMutableArray *tempCats = [[NSMutableArray alloc] init];
+			
 			for (EventCategory *category in event.categories) {
+				[tempCats addObject:category];
+			}
+			
+			NSArray *tempA = [tempCats sortedArrayUsingSelector:@selector(compare:)];
+			
+			for (EventCategory *category in tempA) {
 				NSString *catIDString = [NSString stringWithFormat:@"catID=%d", [category.catID intValue]];
 				NSURL *categoryURL = [NSURL internalURLWithModuleTag:CalendarTag path:CalendarStateCategoryEventList query:catIDString];
 				//NSURL *categoryURL = [NSURL internalURLWithModuleTag:CalendarTag path:CalendarStateCategoryEventList query:nil];

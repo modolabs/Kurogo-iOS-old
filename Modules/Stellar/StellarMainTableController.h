@@ -39,5 +39,6 @@
 - (void) hideSearchResultsTable;
 - (void) hideTranslucentOverlay;
 - (void) hideLoadingView;
+- (void) reloadData;
 
 @end
