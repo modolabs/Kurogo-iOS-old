@@ -67,6 +67,11 @@ NSInteger courseNameCompare(id course1, id course2, void *context);
 			if ([course.title length] >= 1) {
 				[group.courses addObject:course];
 			}
+			else {
+				course.title = course.courseGroup;
+				[group.courses addObject:course];
+			}
+
 			
 			[courseGroups setObject:group forKey:course.courseGroup];
 		}
@@ -76,6 +81,12 @@ NSInteger courseNameCompare(id course1, id course2, void *context);
 			[courseGroups removeObjectForKey:course.courseGroup];
 			if ([course.title length] >= 1)
 				[group.courses addObject:course];
+			
+			else {
+				course.title = course.courseGroup;
+				[group.courses addObject:course];
+			}
+			
 			[courseGroups setObject:group forKey:course.courseGroup];
 		}
 

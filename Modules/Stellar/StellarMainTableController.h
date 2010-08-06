@@ -18,6 +18,7 @@
 	BOOL isViewAppeared;		
 	NSString *doSearchTerms;
 	BOOL doSearchExecute;
+	BOOL firstTimeLoaded;
 }
 
 @property (retain) NSArray *courseGroups;

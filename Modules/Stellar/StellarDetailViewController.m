@@ -238,7 +238,7 @@ NSString * termText(NSString *termCode) {
 	// determine which tabs need to be displayed
 	//[self addTabName:@"News" dataSource:[NewsDataSource viewController:self]];
 
-	if([stellarClass.blurb length]) {
+	if(([stellarClass.blurb length]) || ([times count] > 0)){
 		[self addTabName:@"Info" dataSource:[InfoDataSource viewController:self]];
 	}
 	if([instructors count]+[tas count]) {

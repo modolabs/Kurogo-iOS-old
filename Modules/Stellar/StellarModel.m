@@ -357,9 +357,12 @@ NSString* cleanPersonName(NSString *personName);
 	
 		
 		for (NSDictionary *course in courses) {
+			NSString *courseName = [course valueForKey:@"name"];
+			if ([courseName length] < 1)
+				courseName = [[NSString alloc] initWithFormat:@"%@-other", courseGroupName];
+			 
 			
-			
-			StellarCourse *oldStellarCourse = [CoreDataManager getObjectForEntity:StellarCourseEntityName attribute:@"title" value:[course objectForKey:@"name"]];
+			StellarCourse *oldStellarCourse = [CoreDataManager getObjectForEntity:StellarCourseEntityName attribute:@"title" value:courseName];
 			//StellarCourse *oldStellarCourse = [CoreDataManager getObjectForEntity:StellarCourseEntityName attribute:@"courseGroup" value:courseGroupName];
 			if(oldStellarCourse){
 				// delete old course (will replace all the data, occasionally non-critical relationships
@@ -374,7 +377,7 @@ NSString* cleanPersonName(NSString *personName);
 			
 			StellarCourse *newStellarCourse = (StellarCourse *)[CoreDataManager insertNewObjectForEntityForName:StellarCourseEntityName];
 			newStellarCourse.number = [course objectForKey:@"short"];
-			newStellarCourse.title = [course valueForKey:@"name"];
+			newStellarCourse.title = courseName;
 			newStellarCourse.courseGroup = courseGroupName;
 			
 			[coursesArray addObject:newStellarCourse];

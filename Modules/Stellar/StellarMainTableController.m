@@ -11,6 +11,8 @@
 #import "MITUIConstants.h"
 #import "MITLoadingActivityView.h"
 #import "MITModuleURL.h"
+#import "StellarClassesTableController.h"
+#import "CoreDataManager.h"
 
 #define myStellarGroup 0
 #define browseGroup 1
@@ -37,8 +39,6 @@
 }
 
 - (void) viewDidLoad {
-	self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh target:self action:@selector(refresh:)] autorelease];
-	
 	[self.tableView applyStandardColors];
 	
 	// initialize with an empty array, to be replaced with data when available
@@ -65,6 +65,7 @@
 		initWithFrame:[MITSearchEffects frameWithHeader:searchBar]]
 			autorelease];
 	
+	firstTimeLoaded = NO;
 	[self reloadMyStellarData];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadMyStellarData) name:MyStellarChanged object:nil];	
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadMyStellarNotifications) name:MyStellarAlertNotification object:nil];
@@ -72,14 +73,27 @@
 	// load all course groups (asynchronously) in case it requires server access
 	[self showLoadingView];
 	[StellarModel loadCoursesFromServerAndNotify:self];
-	
-	
+		
 	[StellarModel removeOldFavorites:self];
 	
 	self.doSearchTerms = nil;
 }
 
 - (void) viewDidAppear:(BOOL)animated {
+	
+	if (firstTimeLoaded == NO) {
+		[self reloadMyStellarData];
+		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadMyStellarData) name:MyStellarChanged object:nil];	
+		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadMyStellarNotifications) name:MyStellarAlertNotification object:nil];
+		
+		// load all course groups (asynchronously) in case it requires server access
+		[self showLoadingView];
+		[StellarModel loadCoursesFromServerAndNotify:self];
+		
+		[StellarModel removeOldFavorites:self];
+		self.doSearchTerms = nil;
+	}
+	
 	isViewAppeared = YES;
 	if (doSearchTerms) {
 		[self doSearch:doSearchTerms execute:doSearchExecute];
@@ -143,8 +157,11 @@
 
 - (void) coursesLoaded {
 	self.courseGroups = [StellarCourseGroup allCourseGroups:[StellarModel allCourses]];
-	[self.tableView reloadData];
+	[self.tableView reloadData];	
 	[self hideLoadingView];
+	
+	if (firstTimeLoaded == NO)
+		firstTimeLoaded = YES;
 }
 
 // "DataSource" methods
@@ -230,7 +247,22 @@
 		[StellarDetailViewController
 			launchClass:(StellarClass *)[myStellar objectAtIndex:indexPath.row]
 			viewController: self];
-	} else if(groupIndex == browseGroup) {
+	} else if ([((StellarCourseGroup *)[courseGroups objectAtIndex:indexPath.row]).courses count] == 0) {
+		
+		StellarCourse * dummyCourse= (StellarCourse *)[CoreDataManager insertNewObjectForEntityForName:StellarCourseEntityName];
+		dummyCourse.title = ((StellarCourseGroup *)[courseGroups objectAtIndex:indexPath.row]).title;
+		
+		[self.navigationController
+		 pushViewController: [[[StellarClassesTableController alloc] 
+							   initWithCourse:dummyCourse] autorelease]				  
+		 animated:YES];
+	}	else if ([((StellarCourseGroup *)[courseGroups objectAtIndex:indexPath.row]).courses count] == 1) {
+		[self.navigationController
+		 pushViewController: [[[StellarClassesTableController alloc] 
+							   initWithCourse:(StellarCourse *) [((StellarCourseGroup *)[courseGroups objectAtIndex:indexPath.row]).courses objectAtIndex:0]] autorelease]				  
+		 animated:YES];
+	}	
+	else if(groupIndex == browseGroup) {
 		[self.navigationController
 			pushViewController: [[[StellarCoursesTableController alloc] 
 				initWithCourseGroup: (StellarCourseGroup *)[courseGroups objectAtIndex:indexPath.row]] autorelease]
@@ -355,16 +387,6 @@
 	
 	self.doSearchTerms = nil;
 	
-}
-
-#pragma mark -
-#pragma mark Reload Button delegate
-
-- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
-	
-	if (buttonIndex == 1) {
-		[self reloadData];		
-	}
 }
 
 
