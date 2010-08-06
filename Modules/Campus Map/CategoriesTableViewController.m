@@ -2,7 +2,6 @@
 #import "MapSelectionController.h"
 #import "MapSearchResultAnnotation.h"
 #import "CampusMapViewController.h"
-#import "MITSearchEffects.h"
 #import "MITUIConstants.h"
 #import "ModoSearchBar.h"
 
@@ -64,8 +63,7 @@
 		if (!_loadingView) 
 		{
 			self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-			_loadingView = [[[MITLoadingActivityView alloc] initWithFrame:[MITSearchEffects frameWithHeader:self.navigationController.navigationBar]]
-							retain];
+			_loadingView = [[[MITLoadingActivityView alloc] initWithFrame:self.tableView.frame] retain];
 			[self.view addSubview:_loadingView];
 		}
 	}
@@ -75,8 +73,7 @@
 		if (!_loadingView) 
 		{
 			self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-			_loadingView = [[[MITLoadingActivityView alloc] initWithFrame:[MITSearchEffects frameWithHeader:self.navigationController.navigationBar]]
-							retain];
+			_loadingView = [[[MITLoadingActivityView alloc] initWithFrame:self.tableView.frame] retain];
 			[self.view addSubview:_loadingView];
 		}
 	}

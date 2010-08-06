@@ -8,24 +8,20 @@
 @interface StellarSearch : NSObject <
 	UITableViewDataSource, 
 	UITableViewDelegate, 
-	UISearchDisplayDelegate, 
-	UISearchBarDelegate,
 	ClassesSearchDelegate> {
 
 		BOOL activeMode;
 		BOOL hasSearchInitiated;
 		NSArray *lastResults;
 		StellarMainTableController *viewController;
-		UISearchBar *searchBar;
 }
 
 @property (nonatomic, retain) NSArray *lastResults;
 @property (nonatomic, readonly) BOOL activeMode;
-@property (nonatomic, retain) UISearchBar *searchBar;
 
-- (id) initWithSearchBar: (UISearchBar *)theSearchBar viewController: (StellarMainTableController *)controller;
+- (id) initWithViewController: (StellarMainTableController *)controller;
 
-- (void) searchOverlayTapped;
+//- (void) searchOverlayTapped;
 
 - (BOOL) isSearchResultsVisible;
 

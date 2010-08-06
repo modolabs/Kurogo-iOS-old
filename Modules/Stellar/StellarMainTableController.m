@@ -5,12 +5,12 @@
 #import "StellarCourseGroup.h"
 #import "StellarModel.h"
 #import "StellarSearch.h"
-#import "UITableView+MITUIAdditions.h"
-#import "UITableViewCell+MITUIAdditions.h"
 #import "Constants.h"
 #import "MITUIConstants.h"
 #import "MITLoadingActivityView.h"
 #import "MITModuleURL.h"
+#import "ModoSearchBar.h"
+#import "MITSearchDisplayController.h"
 
 #define myStellarGroup 0
 #define browseGroup 1
@@ -22,14 +22,15 @@
 
 @implementation StellarMainTableController
 
+@synthesize tableView = _tableView;
 @synthesize courseGroups, myStellar;
 @synthesize searchController;
-@synthesize translucentOverlay, loadingView;
+@synthesize loadingView;
 @synthesize myStellarUIisUpToDate;
 @synthesize url;
 
 - (id) init {
-	if (self = [super initWithStyle:UITableViewStyleGrouped]) {
+	if (self = [super init]) {
 		url = [[MITModuleURL alloc] initWithTag:StellarTag];
 		isViewAppeared = NO;
 	}
@@ -37,33 +38,36 @@
 }
 
 - (void) viewDidLoad {
+    //[super viewDidLoad];
+    
 	self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh target:self action:@selector(refresh:)] autorelease];
-	
-	[self.tableView applyStandardColors];
-	
+
 	// initialize with an empty array, to be replaced with data when available
 	self.courseGroups = [NSArray array];
 	self.myStellar = [NSArray array];
 	
 	CGRect viewFrame = self.view.frame;
-	UISearchBar *searchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0, 0, viewFrame.size.width, searchBarHeight)];
-	searchBar.tintColor = SEARCH_BAR_TINT_COLOR;
+	ModoSearchBar *searchBar = [[[ModoSearchBar alloc] initWithFrame:CGRectMake(0, 0, viewFrame.size.width, searchBarHeight)] autorelease];
+    [self.view addSubview:searchBar];
 	
-	self.tableView.tableHeaderView = searchBar;	
+	self.searchController = [[[MITSearchDisplayController alloc] initWithSearchBar:searchBar contentsController:self] autorelease];
+    self.searchController.delegate = self;
 	
-	self.searchController = [[[UISearchDisplayController alloc] 
-		initWithSearchBar:searchBar contentsController:self] autorelease];
-	
-	stellarSearch = [[StellarSearch alloc] initWithSearchBar:searchBar viewController:self];	
-	self.searchController.delegate = stellarSearch;
+	stellarSearch = [[StellarSearch alloc] initWithViewController:self];
 	self.searchController.searchResultsDelegate = stellarSearch;
 	self.searchController.searchResultsDataSource = stellarSearch;
 	searchBar.placeholder = @"Search by keyword or subject #";
-	self.translucentOverlay = [MITSearchEffects overlayForTableviewController:self];
 	 
-	self.loadingView = [[[MITLoadingActivityView alloc] 
-		initWithFrame:[MITSearchEffects frameWithHeader:searchBar]]
-			autorelease];
+	if (!self.tableView) {
+        self.tableView = [[[UITableView alloc] initWithFrame:CGRectMake(0.0, searchBar.frame.size.height, self.view.frame.size.width, self.view.frame.size.height - searchBar.frame.size.height)
+                                                       style:UITableViewStyleGrouped] autorelease];
+        [self.tableView applyStandardColors];
+        self.tableView.delegate = self;
+        self.tableView.dataSource = self;
+    }
+    [self.view addSubview:self.tableView];
+	
+	self.loadingView = [[[MITLoadingActivityView alloc] initWithFrame:self.tableView.frame] autorelease];
 	
 	[self reloadMyStellarData];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadMyStellarData) name:MyStellarChanged object:nil];	
@@ -147,7 +151,8 @@
 	[self hideLoadingView];
 }
 
-// "DataSource" methods
+#pragma mark UITableViewDataSource
+
 - (NSInteger) numberOfSectionsInTableView: (UITableView *)tableView {
 	if([myStellar count]) {
 		return 2;
@@ -252,10 +257,44 @@
 	
 }
 
-- (void) searchOverlayTapped {
-	[stellarSearch searchOverlayTapped];
+#pragma mark Search and search UI
+
+
+- (void) searchBarSearchButtonClicked: (UISearchBar *)theSearchBar {
+	[self showLoadingView];
+	hasSearchInitiated = YES;
+	[StellarModel executeStellarSearch:theSearchBar.text delegate:stellarSearch];
+	
+	[self.url setPath:@"search-complete" query:theSearchBar.text];
+	[self.url setAsModulePath];
 }
 
+- (BOOL)searchBarShouldBeginEditing:(UISearchBar *)searchBar {
+    
+	[self.url setPath:@"search-begin" query:nil];
+	[self.url setAsModulePath];
+    
+    return YES;
+}
+
+- (void) searchBar: (UISearchBar *)searchBar textDidChange: (NSString *)searchText {
+	[self hideLoadingView]; // just in case the loading view is showing
+	
+	hasSearchInitiated = NO;
+	
+	[self.url setPath:@"search-begin" query:searchText];
+	[self.url setAsModulePath];
+}
+
+- (void) searchOverlayTapped {
+	[self hideLoadingView];
+	[self reloadMyStellarUI];
+	
+	[self.url setPath:@"" query:nil];
+	[self.url setAsModulePath];
+}
+
+// TODO: clean up redundant -[searchBar becomeFirstResponder]
 - (void) doSearch:(NSString *)searchTerms execute:(BOOL)execute {
 	if(isViewAppeared) {
 		self.searchController.active = YES;
@@ -266,7 +305,6 @@
 		} else {
 			// using a delay gets rid of a mysterious wait_fences warning
 			[self.searchController.searchBar performSelector:@selector(becomeFirstResponder) withObject:nil afterDelay:0.001];
-			[self showTranslucentOverlayWithDelay:YES];
 		}
 		self.doSearchTerms = nil;
 	} else {
@@ -290,26 +328,12 @@
 	[self.view addSubview:searchController.searchResultsTableView];
 }
 
-- (void) showTranslucentOverlayWithDelay:(BOOL)useDelay {
-	[translucentOverlay removeBuiltInOverlay];
-	if (useDelay) {
-		[translucentOverlay removeFromSuperview];
-		[self.view performSelector:@selector(addSubview:) withObject:translucentOverlay afterDelay:0.01];
-	} else {
-		[self.view addSubview:translucentOverlay];
-	}
-}
-	
 - (void) showLoadingView {
 	[self.view addSubview:loadingView];
 }
 
 - (void) hideSearchResultsTable {
 	[searchController.searchResultsTableView removeFromSuperview];
-}
-
-- (void) hideTranslucentOverlay {
-	[translucentOverlay removeFromSuperview];
 }
 
 - (void) hideLoadingView {
@@ -325,9 +349,6 @@
 	[courseGroups release];
 	[stellarSearch release];
 	[searchController release];
-	
-	translucentOverlay.controller = nil;
-	[translucentOverlay release];
 	
 	[loadingView release];
 	[url release];

@@ -7,7 +7,6 @@
 
 typedef int NewsCategoryId;
 
-//@class MITSearchEffects;
 @class MITSearchDisplayController;
 @class NewsStory;
 
@@ -23,7 +22,6 @@ UISearchBarDelegate, StoryXMLParserDelegate, JSONAPIDelegate, NavScrollerDelegat
     NSArray *navButtons;
     
 	// Nav Scroll View
-	//UIScrollView *navScrollView;
 	NavScrollerView *navScrollView;
 	UIButton *leftScrollButton;
 	UIButton *rightScrollButton;  
@@ -33,7 +31,6 @@ UISearchBarDelegate, StoryXMLParserDelegate, JSONAPIDelegate, NavScrollerDelegat
 	NSArray *searchResults;
 	NSInteger totalAvailableResults;
 	ModoSearchBar *theSearchBar;
-	//MITSearchEffects *searchOverlay;
     MITSearchDisplayController *searchController;
 	
 	BOOL hasBookmarks;

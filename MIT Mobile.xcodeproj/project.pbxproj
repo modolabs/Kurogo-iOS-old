@@ -28,7 +28,6 @@
 		2978864510F03656002670CC /* MITDeviceRegistration.m in Sources */ = {isa = PBXBuildFile; fileRef = 2978864210F03656002670CC /* MITDeviceRegistration.m */; };
 		2978864610F03656002670CC /* MITUnreadNotifications.m in Sources */ = {isa = PBXBuildFile; fileRef = 2978864410F03656002670CC /* MITUnreadNotifications.m */; };
 		2980C03210D9728800F19FF0 /* NewsDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 2980C03110D9728800F19FF0 /* NewsDataSource.m */; };
-		29859FFA10F7C37600D137D6 /* MITSearchEffects.m in Sources */ = {isa = PBXBuildFile; fileRef = 29859FF910F7C37600D137D6 /* MITSearchEffects.m */; };
 		299149A010DDB50300B01A8E /* StellarSearch.m in Sources */ = {isa = PBXBuildFile; fileRef = 2991499F10DDB50300B01A8E /* StellarSearch.m */; };
 		29974B711160F1DA009D03B9 /* URLShortener.m in Sources */ = {isa = PBXBuildFile; fileRef = 29974B701160F1DA009D03B9 /* URLShortener.m */; };
 		29A0D12110CDD0E8009FC010 /* StellarCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 29A0D11E10CDD0E8009FC010 /* StellarCache.m */; };
@@ -508,8 +507,6 @@
 		2978864410F03656002670CC /* MITUnreadNotifications.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MITUnreadNotifications.m; path = "App Delegate/MITUnreadNotifications.m"; sourceTree = "<group>"; };
 		2980C03010D9728800F19FF0 /* NewsDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NewsDataSource.h; sourceTree = "<group>"; };
 		2980C03110D9728800F19FF0 /* NewsDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NewsDataSource.m; sourceTree = "<group>"; };
-		29859FF810F7C37600D137D6 /* MITSearchEffects.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MITSearchEffects.h; sourceTree = "<group>"; };
-		29859FF910F7C37600D137D6 /* MITSearchEffects.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MITSearchEffects.m; sourceTree = "<group>"; };
 		2991499E10DDB50300B01A8E /* StellarSearch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StellarSearch.h; sourceTree = "<group>"; };
 		2991499F10DDB50300B01A8E /* StellarSearch.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StellarSearch.m; sourceTree = "<group>"; };
 		29974B6F1160F1DA009D03B9 /* URLShortener.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = URLShortener.h; sourceTree = "<group>"; };
@@ -1108,8 +1105,6 @@
 				29974B6F1160F1DA009D03B9 /* URLShortener.h */,
 				29974B701160F1DA009D03B9 /* URLShortener.m */,
 				BD1E92F3103B5D60004429AA /* JSON */,
-				29859FF810F7C37600D137D6 /* MITSearchEffects.h */,
-				29859FF910F7C37600D137D6 /* MITSearchEffects.m */,
 				29E308841176018C005211A7 /* MITModuleURL.h */,
 				29E308851176018C005211A7 /* MITModuleURL.m */,
 				EB74ED2C11924E7C006673F9 /* ShareDetailViewController.h */,
@@ -2262,7 +2257,6 @@
 				DEE283EE10F5109800B39531 /* Emergency.xcdatamodeld in Sources */,
 				442C1CA310F4FE8900CB44EC /* ShuttleLocation.m in Sources */,
 				DECBF6B610F8F91B009FAE35 /* NewsImageRep.m in Sources */,
-				29859FFA10F7C37600D137D6 /* MITSearchEffects.m in Sources */,
 				DE9EFBD210FE7D8900F5F07E /* SettingsModule.m in Sources */,
 				29EB610B10FE47220085D32B /* ShuttleSubscriptionManager.m in Sources */,
 				DEAFEFA910FFE35B00F0573E /* StoryGalleryViewController.m in Sources */,

@@ -5,7 +5,6 @@
 #import "MITModuleList.h"
 #import "MITModule.h"
 #import "MITLoadingActivityView.h"
-#import "MITSearchEffects.h"
 #import "UITableView+MITUIAdditions.h"
 #import "MultiLineTableViewCell.h"
 
@@ -58,8 +57,7 @@
 	
 	[self.tableView applyStandardCellHeight];
 	
-	self.loadingView = [[[MITLoadingActivityView alloc] initWithFrame:[MITSearchEffects frameWithHeader:self.navigationController.navigationBar]]
-		autorelease];
+	self.loadingView = [[[MITLoadingActivityView alloc] initWithFrame:self.tableView.frame] autorelease];
 	
 	[self showLoadingView];
 	
