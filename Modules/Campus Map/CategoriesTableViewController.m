@@ -95,7 +95,7 @@
 
     NSMutableArray *searchResultsArray = [NSMutableArray array];
     
-    ArcGISMapSearchResultAnnotation *annotation = [[[ArcGISMapSearchResultAnnotation alloc] initWithInfo:thisItem] autorelease];
+    ArcGISMapAnnotation *annotation = [[[ArcGISMapAnnotation alloc] initWithInfo:thisItem] autorelease];
     if (!annotation.dataPopulated) {
         [annotation searchAnnotationWithDelegate:self.mapSelectionController.mapVC];
     }
@@ -154,7 +154,7 @@
 	NSMutableArray* searchResultsArray = [NSMutableArray array];
 	
 	for (NSDictionary *thisItem in _itemsInTable) {
-		ArcGISMapSearchResultAnnotation *annotation = [[[ArcGISMapSearchResultAnnotation alloc] initWithInfo:thisItem] autorelease];
+		ArcGISMapAnnotation *annotation = [[[ArcGISMapAnnotation alloc] initWithInfo:thisItem] autorelease];
         if (!annotation.dataPopulated) {
             [annotation searchAnnotationWithDelegate:self.mapSelectionController.mapVC];
         }

@@ -10,7 +10,6 @@
 #import "NSArray+Convenience.h"
 #import "AddressFormatter.h"
 #import "MapBookmarkManager.h"
-#import "CMModule.h"
 
 @interface PeopleDetailsViewController (Private)
 
@@ -168,8 +167,9 @@ NSString * const RequestLookupAddress = @"address";
         
         NSArray *searchResults = [result objectForKey:@"results"];
         if ([searchResults count]) {
+            [[MapBookmarkManager defaultManager] pruneNonBookmarks];
             NSDictionary *info = [searchResults objectAtIndex:0];
-            addressSearchAnnotation = [[ArcGISMapSearchResultAnnotation alloc] initWithInfo:info];
+            addressSearchAnnotation = [[ArcGISMapAnnotation alloc] initWithInfo:info];
             [[MapBookmarkManager defaultManager] saveAnnotationWithoutBookmarking:addressSearchAnnotation];
             CGPoint contentOffset = self.tableView.contentOffset;
             NSIndexSet *sections = [NSIndexSet indexSetWithIndex:addressSection];

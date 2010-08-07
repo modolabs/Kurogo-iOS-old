@@ -5,8 +5,6 @@
 #import "MapSavedAnnotation.h"
 #import "MapBookmarkManager.h"
 
-NSString * const LocalPathMapsSelectedAnnotation = @"annotation";
-
 @implementation CMModule
 @synthesize campusMapVC = _campusMapVC;
 @synthesize request = _request;
@@ -45,7 +43,7 @@ NSString * const LocalPathMapsSelectedAnnotation = @"annotation";
         NSArray *results = [JSONObject objectForKey:@"results"];
         NSMutableArray *annotations = [NSMutableArray arrayWithCapacity:[results count]];
         for (NSDictionary *info in results) {
-            ArcGISMapSearchResultAnnotation *annotation = [[[ArcGISMapSearchResultAnnotation alloc] initWithInfo:info] autorelease];
+            ArcGISMapAnnotation *annotation = [[[ArcGISMapAnnotation alloc] initWithInfo:info] autorelease];
             [annotations addObject:annotation];
         }
         self.searchResults = annotations;
@@ -88,12 +86,12 @@ NSString * const MapsLocalPathList = @"list";
 }
 
 - (NSString *)titleForSearchResult:(id)result {
-    ArcGISMapSearchResultAnnotation *annotation = (ArcGISMapSearchResultAnnotation *)result;
+    ArcGISMapAnnotation *annotation = (ArcGISMapAnnotation *)result;
     return annotation.name;
 }
 
 - (NSString *)subtitleForSearchResult:(id)result {
-    ArcGISMapSearchResultAnnotation *annotation = (ArcGISMapSearchResultAnnotation *)result;
+    ArcGISMapAnnotation *annotation = (ArcGISMapAnnotation *)result;
     return annotation.street;
 }
 
@@ -125,7 +123,11 @@ NSString * const MapsLocalPathList = @"list";
         MapSavedAnnotation *saved = [[MapBookmarkManager defaultManager] savedAnnotationForID:query];
         if (saved) {
             NSDictionary *info = [NSKeyedUnarchiver unarchiveObjectWithData:saved.info];
-            ArcGISMapSearchResultAnnotation *annotation = [[[ArcGISMapSearchResultAnnotation alloc] initWithInfo:info] autorelease];
+            ArcGISMapAnnotation *annotation = [[[ArcGISMapAnnotation alloc] initWithInfo:info] autorelease];
+            if (!annotation.dataPopulated) {
+                annotation.coordinate = CLLocationCoordinate2DMake([saved.latitude floatValue], [saved.longitude floatValue]);
+                annotation.name = saved.name;
+            }
             self.campusMapVC.view; // make sure mapview is loaded
             NSArray *annotations = [NSArray arrayWithObject:annotation];
             self.campusMapVC.searchResults = annotations;

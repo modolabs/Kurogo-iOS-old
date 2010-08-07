@@ -5,6 +5,8 @@
 #import "MultiLineTableViewCell.h"
 #import "Foundation+MITAdditions.h"
 #import "URLShortener.h"
+#import "MapBookmarkManager.h"
+#import "MapSearchResultAnnotation.h"
 
 #define WEB_VIEW_PADDING 10.0
 #define BUTTON_PADDING 10.0
@@ -494,7 +496,19 @@ enum CalendarDetailRowTypes {
 	switch (rowType) {
 		case CalendarDetailRowTypeLocation:
             if ([event hasCoords]) {
-                [[UIApplication sharedApplication] openURL:[NSURL internalURLWithModuleTag:CampusMapTag path:@"search" query:event.shortloc]];
+                [[MapBookmarkManager defaultManager] pruneNonBookmarks];
+                
+                CLLocationCoordinate2D coord = CLLocationCoordinate2DMake([event.latitude floatValue], [event.longitude floatValue]);
+                ArcGISMapAnnotation *annotation = [[ArcGISMapAnnotation alloc] initWithCoordinate:coord];
+                annotation.name = event.title;
+                annotation.uniqueID = [NSString stringWithFormat:@"%@@%.4f,%.4f", event.title, coord.latitude, coord.longitude];
+                [[MapBookmarkManager defaultManager] saveAnnotationWithoutBookmarking:annotation];
+                
+                NSURL *internalURL = [NSURL internalURLWithModuleTag:CampusMapTag
+                                                                path:LocalPathMapsSelectedAnnotation
+                                                               query:annotation.uniqueID];
+                
+                [[UIApplication sharedApplication] openURL:internalURL];
             }
 			break;
 		case CalendarDetailRowTypePhone:

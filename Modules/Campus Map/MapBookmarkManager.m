@@ -3,7 +3,7 @@
 
 @interface MapBookmarkManager (Private)
 
-- (MapSavedAnnotation *)savedAnnotationWithAnnotation:(ArcGISMapSearchResultAnnotation *)annotation;
+- (MapSavedAnnotation *)savedAnnotationWithAnnotation:(ArcGISMapAnnotation *)annotation;
 - (void)refreshBookmarks;
 
 @end
@@ -48,7 +48,7 @@ static MapBookmarkManager* s_mapBookmarksManager = nil;
                                         sortDescriptors:[NSArray arrayWithObject:sort]] mutableCopy];
 }
 
-- (void)pruneNonBookarks {
+- (void)pruneNonBookmarks {
     NSPredicate *pred = [NSPredicate predicateWithFormat:@"isBookmark == NO"];
     NSArray *nonBookmarks = [CoreDataManager objectsForEntity:CampusMapAnnotationEntityName
                                             matchingPredicate:pred];
@@ -66,7 +66,7 @@ static MapBookmarkManager* s_mapBookmarksManager = nil;
     return saved;
 }
 
-- (MapSavedAnnotation *)savedAnnotationWithAnnotation:(ArcGISMapSearchResultAnnotation *)annotation {
+- (MapSavedAnnotation *)savedAnnotationWithAnnotation:(ArcGISMapAnnotation *)annotation {
     MapSavedAnnotation *savedAnnotation = [CoreDataManager insertNewObjectForEntityForName:CampusMapAnnotationEntityName];
     
     savedAnnotation.id = annotation.uniqueID;
@@ -81,7 +81,7 @@ static MapBookmarkManager* s_mapBookmarksManager = nil;
     return savedAnnotation;
 }
 
-- (void)bookmarkAnnotation:(ArcGISMapSearchResultAnnotation *)annotation {
+- (void)bookmarkAnnotation:(ArcGISMapAnnotation *)annotation {
     MapSavedAnnotation *savedAnnotation = [self savedAnnotationWithAnnotation:annotation];
     savedAnnotation.isBookmark = [NSNumber numberWithBool:YES];
     savedAnnotation.sortOrder = [NSNumber numberWithInt:[_bookmarks count]];
@@ -89,7 +89,7 @@ static MapBookmarkManager* s_mapBookmarksManager = nil;
     [CoreDataManager saveData];
 }
 
-- (void)saveAnnotationWithoutBookmarking:(ArcGISMapSearchResultAnnotation *)annotation {
+- (void)saveAnnotationWithoutBookmarking:(ArcGISMapAnnotation *)annotation {
     MapSavedAnnotation *savedAnnotation = [self savedAnnotationWithAnnotation:annotation];
     savedAnnotation.isBookmark = [NSNumber numberWithBool:NO];
     [CoreDataManager saveData];

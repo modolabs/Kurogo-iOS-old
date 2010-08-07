@@ -42,7 +42,7 @@
     }
     
 	// get the annotation for this index
-	ArcGISMapSearchResultAnnotation *annotation = [self.searchResults objectAtIndex:indexPath.row];
+	ArcGISMapAnnotation *annotation = [self.searchResults objectAtIndex:indexPath.row];
 	cell.textLabel.text = annotation.name;
 	cell.detailTextLabel.text = annotation.street;
 	cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
@@ -57,7 +57,7 @@
 	MITMapDetailViewController* detailsVC = [[[MITMapDetailViewController alloc] initWithNibName:@"MITMapDetailViewController"
 																						  bundle:nil] autorelease];
 	
-	ArcGISMapSearchResultAnnotation *annotation = (ArcGISMapSearchResultAnnotation *)[self.searchResults objectAtIndex:indexPath.row];
+	ArcGISMapAnnotation *annotation = (ArcGISMapAnnotation *)[self.searchResults objectAtIndex:indexPath.row];
 	detailsVC.annotation = annotation;
 	detailsVC.title = @"Info";
 	detailsVC.campusMapVC = self.campusMapVC;

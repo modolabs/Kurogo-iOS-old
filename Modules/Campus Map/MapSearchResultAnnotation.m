@@ -2,7 +2,7 @@
 #import "TileServerManager.h"
 
 
-@implementation ArcGISMapSearchResultAnnotation
+@implementation ArcGISMapAnnotation
 @synthesize uniqueID = _uniqueID;
 @synthesize polygon = _polygon;
 @synthesize name = _name;
@@ -83,9 +83,9 @@
 		return _info;
 	
 	NSMutableDictionary* info = [NSMutableDictionary dictionary];
-	if (nil == self.uniqueID)	[info setObject:self.uniqueID	forKey:@"id"];
-	if (nil == self.name)		[info setObject:self.name		forKey:@"name"];
-	if (nil == self.street)		[info setObject:self.street		forKey:@"street"];
+	if (nil != self.uniqueID)	[info setObject:self.uniqueID	forKey:@"id"];
+	if (nil != self.name)		[info setObject:self.name		forKey:@"name"];
+	if (nil != self.street)		[info setObject:self.street		forKey:@"street"];
 	    
 	return info;
 }

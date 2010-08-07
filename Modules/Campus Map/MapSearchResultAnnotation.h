@@ -5,7 +5,7 @@
 #import "PolygonOverlay.h"
 
 
-@interface ArcGISMapSearchResultAnnotation : NSObject <MKAnnotation> {
+@interface ArcGISMapAnnotation : NSObject <MKAnnotation> {
 
 	CLLocationCoordinate2D _coordinate;
     NSString *_uniqueID; // hidden

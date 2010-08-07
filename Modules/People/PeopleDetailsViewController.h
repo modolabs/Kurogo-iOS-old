@@ -19,7 +19,7 @@
 	NSString *fullname;
     
     // issue a background search for address, which if found enables an action icon to view the map
-    ArcGISMapSearchResultAnnotation *addressSearchAnnotation;
+    ArcGISMapAnnotation *addressSearchAnnotation;
     NSInteger addressSection; // tell the tableView which section to reload if address is found
 }
 

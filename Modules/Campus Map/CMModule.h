@@ -1,7 +1,5 @@
 #import "MITModule.h"
 
-extern NSString * const LocalPathMapsSelectedAnnotation;
-
 @class CampusMapViewController;
 
 @interface CMModule : MITModule <JSONAPIDelegate> {

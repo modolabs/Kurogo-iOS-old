@@ -99,7 +99,7 @@
 		
 		[_scrollView addSubview:_loadingResultView];
 		
-		//[ArcGISMapSearchResultAnnotation executeServerSearchWithQuery:self.annotation.name jsonDelegate:self object:nil];		
+		//[ArcGISMapAnnotation executeServerSearchWithQuery:self.annotation.name jsonDelegate:self object:nil];		
 	} else {
 		self.annotationDetails = self.annotation;
 		[self loadAnnotationContent];

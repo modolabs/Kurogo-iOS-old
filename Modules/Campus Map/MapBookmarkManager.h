@@ -11,9 +11,10 @@
 + (MapBookmarkManager *)defaultManager;
 
 - (MapSavedAnnotation *)savedAnnotationForID:(NSString *)uniqueID;
+- (void)pruneNonBookmarks;
 
-- (void)bookmarkAnnotation:(ArcGISMapSearchResultAnnotation *)annotation;
-- (void)saveAnnotationWithoutBookmarking:(ArcGISMapSearchResultAnnotation *)annotation;
+- (void)bookmarkAnnotation:(ArcGISMapAnnotation *)annotation;
+- (void)saveAnnotationWithoutBookmarking:(ArcGISMapAnnotation *)annotation;
 - (void)removeBookmark:(MapSavedAnnotation *)savedAnnotation;
 - (BOOL)isBookmarked:(NSString *)uniqueID;
 

@@ -360,7 +360,7 @@
             MapSavedAnnotation *bookmark = [[[MapBookmarkManager defaultManager] bookmarks] objectAtIndex:indexPath.row];
             
             NSDictionary *info = [NSKeyedUnarchiver unarchiveObjectWithData:bookmark.info];
-            ArcGISMapSearchResultAnnotation *annotation = [[[ArcGISMapSearchResultAnnotation alloc] initWithInfo:info] autorelease];
+            ArcGISMapAnnotation *annotation = [[[ArcGISMapAnnotation alloc] initWithInfo:info] autorelease];
             
             [self.mapVC.mapView removeAnnotations:self.mapVC.mapView.annotations];
             [self.mapVC.mapView addAnnotation:annotation];

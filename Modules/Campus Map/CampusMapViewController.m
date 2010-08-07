@@ -320,11 +320,11 @@
 	
 	// reformat the search results for the map. Combine items that are in common buildings into one annotation result.
 	NSMutableDictionary* mapSearchResults = [NSMutableDictionary dictionaryWithCapacity:_searchResults.count];
-	for (ArcGISMapSearchResultAnnotation *annotation in _searchResults)
+	for (ArcGISMapAnnotation *annotation in _searchResults)
 	{
-		ArcGISMapSearchResultAnnotation *previousAnnotation = [mapSearchResults objectForKey:[annotation performSelector:filter]];
+		ArcGISMapAnnotation *previousAnnotation = [mapSearchResults objectForKey:[annotation performSelector:filter]];
 		if (nil == previousAnnotation) {
-			ArcGISMapSearchResultAnnotation *newAnnotation = [[[ArcGISMapSearchResultAnnotation alloc] initWithCoordinate:annotation.coordinate] autorelease];
+			ArcGISMapAnnotation *newAnnotation = [[[ArcGISMapAnnotation alloc] initWithCoordinate:annotation.coordinate] autorelease];
 			[mapSearchResults setObject:newAnnotation forKey:[annotation performSelector:filter]];
 		}
 	}
@@ -364,8 +364,9 @@
     _mapView.region = [TileServerManager defaultRegion];
 
     if (self.searchResults != nil) {
-        for (ArcGISMapSearchResultAnnotation *annotation in self.searchResults) {
-            [annotation updateWithInfo:annotation.info]; // updateWithInfo acts differently when tile server is up
+        for (ArcGISMapAnnotation *annotation in self.searchResults) {
+            if (!annotation.coordinate.latitude)
+                [annotation updateWithInfo:annotation.info]; // updateWithInfo acts differently when tile server is up
         }
         [_mapView addAnnotations:self.searchResults];
     }
@@ -479,7 +480,7 @@
     NSMutableArray *searchResultsArr = [NSMutableArray arrayWithCapacity:searchResults.count];
     
     for (NSDictionary* info in searchResults) {
-        ArcGISMapSearchResultAnnotation *annotation = [[[ArcGISMapSearchResultAnnotation alloc] initWithInfo:info] autorelease];
+        ArcGISMapAnnotation *annotation = [[[ArcGISMapAnnotation alloc] initWithInfo:info] autorelease];
         [searchResultsArr addObject:annotation];
     }
 
@@ -635,8 +636,10 @@
         MKPinAnnotationView *annotationView = [[[MKPinAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:@"hfauiwh"] autorelease];
         annotationView.animatesDrop = YES;
         annotationView.canShowCallout = YES;
-        UIButton *disclosureButton = [UIButton buttonWithType:UIButtonTypeDetailDisclosure];
-        annotationView.rightCalloutAccessoryView = disclosureButton;
+        if ([annotation isKindOfClass:[ArcGISMapAnnotation class]] && ((ArcGISMapAnnotation *)annotation).dataPopulated) {
+            UIButton *disclosureButton = [UIButton buttonWithType:UIButtonTypeDetailDisclosure];
+            annotationView.rightCalloutAccessoryView = disclosureButton;
+        }
         return annotationView;
     }
 }
@@ -648,7 +651,7 @@
 - (void)pushAnnotationDetails:(id <MKAnnotation>)annotation animated:(BOOL)animated
 {
 	// determine the type of the annotation. If it is a search result annotation, display the details
-	if ([annotation isKindOfClass:[ArcGISMapSearchResultAnnotation class]]) {
+	if ([annotation isKindOfClass:[ArcGISMapAnnotation class]]) {
 		
 		// push the details page onto the stack for the item selected. 
 		MITMapDetailViewController *detailsVC = [[[MITMapDetailViewController alloc] initWithNibName:@"MITMapDetailViewController" bundle:nil] autorelease];
@@ -663,8 +666,8 @@
 
 - (void)mapView:(MKMapView *)mapView didSelectAnnotationView:(MKAnnotationView *)view {
     id<MKAnnotation>annotation = view.annotation;
-    if ([annotation isKindOfClass:[ArcGISMapSearchResultAnnotation class]]) {
-        ArcGISMapSearchResultAnnotation *polyAnnotation = (ArcGISMapSearchResultAnnotation *)annotation;
+    if ([annotation isKindOfClass:[ArcGISMapAnnotation class]]) {
+        ArcGISMapAnnotation *polyAnnotation = (ArcGISMapAnnotation *)annotation;
         if ([polyAnnotation canAddOverlay]) {
             PolygonOverlay *polyOverlay = polyAnnotation.polygon;
             [mapView addOverlay:polyOverlay];
@@ -674,8 +677,8 @@
 
 - (void)mapView:(MKMapView *)mapView didDeselectAnnotationView:(MKAnnotationView *)view {
     id<MKAnnotation>annotation = view.annotation;
-    if ([annotation isKindOfClass:[ArcGISMapSearchResultAnnotation class]]) {
-        ArcGISMapSearchResultAnnotation *polyAnnotation = (ArcGISMapSearchResultAnnotation *)annotation;
+    if ([annotation isKindOfClass:[ArcGISMapAnnotation class]]) {
+        ArcGISMapAnnotation *polyAnnotation = (ArcGISMapAnnotation *)annotation;
         if ([polyAnnotation canAddOverlay]) {
             PolygonOverlay *polyOverlay = polyAnnotation.polygon;
             [mapView removeOverlay:polyOverlay];
@@ -691,8 +694,8 @@
 
 // TODO: this doesn't seem to be used anywhere
 - (void)annotationSelected:(id<MKAnnotation>)annotation {
-	if([annotation isKindOfClass:[ArcGISMapSearchResultAnnotation class]]) {
-		ArcGISMapSearchResultAnnotation *searchAnnotation = (ArcGISMapSearchResultAnnotation *)annotation;
+	if([annotation isKindOfClass:[ArcGISMapAnnotation class]]) {
+		ArcGISMapAnnotation *searchAnnotation = (ArcGISMapAnnotation *)annotation;
 		if (!searchAnnotation.dataPopulated) {
 			[searchAnnotation searchAnnotationWithDelegate:self];	
 		}
@@ -732,12 +735,12 @@
                         self.navigationItem.rightBarButtonItem.title = @"List";
                 }
             }
-        } else if ([request.userData isKindOfClass:[ArcGISMapSearchResultAnnotation class]]) {
+        } else if ([request.userData isKindOfClass:[ArcGISMapAnnotation class]]) {
             // updating an annotation search request
-            ArcGISMapSearchResultAnnotation *oldAnnotation = request.userData;
+            ArcGISMapAnnotation *oldAnnotation = request.userData;
             
             if (searchResults.count > 0) {
-                ArcGISMapSearchResultAnnotation *newAnnotation = [[[ArcGISMapSearchResultAnnotation alloc] initWithInfo:[searchResults objectAtIndex:0]] autorelease];
+                ArcGISMapAnnotation *newAnnotation = [[[ArcGISMapAnnotation alloc] initWithInfo:[searchResults objectAtIndex:0]] autorelease];
                 
                 BOOL isViewingAnnotation = ([[_mapView selectedAnnotations] lastObject] == oldAnnotation);
                 

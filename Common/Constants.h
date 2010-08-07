@@ -81,6 +81,10 @@ extern NSString * const CampusMapAnnotationEntityName;
 // Sizes
 static const NSUInteger kPersonUIDLength = 44;
 
+
+// local path names for handleLocalPath
+extern NSString * const LocalPathMapsSelectedAnnotation;
+
 // resource names
 extern NSString * const ImageNameHomeScreenBackground;
 extern NSString * const MITImageNameBackground;

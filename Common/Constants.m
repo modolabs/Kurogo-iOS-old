@@ -85,6 +85,9 @@ NSString * const CalendarCategoryEntityName = @"EventCategory";
 NSString * const CampusMapSearchEntityName = @"MapSearch";
 NSString * const CampusMapAnnotationEntityName = @"MapSavedAnnotation";
 
+// local paths for handleLocalPath
+NSString * const LocalPathMapsSelectedAnnotation = @"annotation";
+
 
 // resource names
 

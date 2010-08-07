@@ -1,4 +1,4 @@
-/* This is the cached counterpart to ArcGISMapSearchResultAnnotation
+/* This is the cached counterpart to ArcGISMapAnnotation
  * (defined in MapSearchResultAnnotation.h)
  *
  */
