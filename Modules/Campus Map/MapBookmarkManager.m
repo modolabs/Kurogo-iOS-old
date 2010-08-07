@@ -1,19 +1,10 @@
-//
-//  MapBookmarkManager.m
-//  MIT Mobile
-//
-//  Created by Craig on 4/27/10.
-//  Copyright 2010 Raizlabs. All rights reserved.
-//
-
 #import "MapBookmarkManager.h"
-
+#import "CoreDataManager.h"
 
 @interface MapBookmarkManager (Private)
 
--(NSString*) getBookmarkFilename;
-
--(void) save;
+- (MapSavedAnnotation *)savedAnnotationWithAnnotation:(ArcGISMapSearchResultAnnotation *)annotation;
+- (void)refreshBookmarks;
 
 @end
 
@@ -25,132 +16,123 @@ static MapBookmarkManager* s_mapBookmarksManager = nil;
 @synthesize bookmarks = _bookmarks;
 
 #pragma mark Creation and initialization
-+(MapBookmarkManager*) defaultManager
+
++ (MapBookmarkManager*)defaultManager
 {
-	if(nil == s_mapBookmarksManager)
-	{
+	if (nil == s_mapBookmarksManager) {
 		s_mapBookmarksManager = [[MapBookmarkManager alloc] init];
 	}
-	
 	return s_mapBookmarksManager;
 }
 
-
--(id) init
+- (id)init
 {
-	if(self = [super init])
-	{
-		NSString* filename = [self getBookmarkFilename];
-		
-		// see if we can load the bookmarks from disk. 
-		_bookmarks = [[NSMutableArray arrayWithContentsOfFile:filename] retain];
-		
-		// if there was no file on disk, create the array from scratch
-		if (nil == _bookmarks) {
-			_bookmarks = [[NSMutableArray alloc] init];
-		}
+	if (self = [super init]) {
+        [self refreshBookmarks];
 	}
 	
 	return self;
 }
 
--(void) dealloc
+- (void)dealloc
 {
 	[_bookmarks release];
-	
 	[super dealloc];
 }
 
-#pragma mark Private category
--(NSString*) getBookmarkFilename
-{
-	NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-	NSString* documentPath = [paths objectAtIndex:0];
-	return [documentPath stringByAppendingPathComponent:@"mapBookmarks.plist"];
+- (void)refreshBookmarks {
+    NSPredicate *pred = [NSPredicate predicateWithFormat:@"isBookmark == YES"];
+    NSSortDescriptor *sort = [NSSortDescriptor sortDescriptorWithKey:@"sortOrder" ascending:YES];
+    self.bookmarks = [CoreDataManager objectsForEntity:CampusMapAnnotationEntityName
+                                     matchingPredicate:pred
+                                       sortDescriptors:[NSArray arrayWithObject:sort]];
 }
 
--(void) save
-{
-	NSString* filename = [self getBookmarkFilename];
-	[_bookmarks writeToFile:filename atomically:YES];
-	//BOOL saved = [_bookmarks writeToFile:filename atomically:YES];
-	//NSLog(@"Saved file: %@ %@", filename, saved ? @"SUCCESS" : @"FAIL");
+- (void)pruneNonBookarks {
+    NSPredicate *pred = [NSPredicate predicateWithFormat:@"isBookmark == NO"];
+    NSArray *nonBookmarks = [CoreDataManager objectsForEntity:CampusMapAnnotationEntityName
+                                            matchingPredicate:pred];
+    for (MapSavedAnnotation *nonBookmark in nonBookmarks) {
+        [CoreDataManager deleteObject:nonBookmark];
+    }
 }
-
 
 #pragma mark Bookmark Management
--(void) addBookmark:(NSString*) bookmarkID title:(NSString*)title subtitle:(NSString*)subtitle data:(NSDictionary*) data
-{
-	NSMutableDictionary* dictionary = [NSMutableDictionary dictionaryWithObjectsAndKeys:bookmarkID, @"id", title, @"title", nil, nil];
 
-	if (nil != subtitle) {
-		[dictionary setObject:subtitle forKey:@"subtitle"];
-	}
-	
-	if(nil != data)
-	{
-		[dictionary setObject:data forKey:@"data"];
-	}
-	
-	[_bookmarks addObject:dictionary];
-	[self save];
+- (MapSavedAnnotation *)savedAnnotationForID:(NSString *)uniqueID {
+    MapSavedAnnotation *saved = (MapSavedAnnotation *)[CoreDataManager getObjectForEntity:CampusMapAnnotationEntityName
+                                                                                attribute:@"id"
+                                                                                    value:uniqueID];
+    return saved;
 }
 
--(void) removeBookmark:(NSString*) bookmarkID
-{
-	NSString* idfield = @"id";
-	
-	for(int idx = _bookmarks.count - 1; idx >= 0; idx--)
-	{
-		NSDictionary* dictionary = [_bookmarks objectAtIndex:idx];
-		NSString* uniqueID = [dictionary objectForKey:idfield];
-		if([uniqueID isEqualToString:bookmarkID])
-		{
-			[_bookmarks removeObjectAtIndex:idx];
-			[self save];
-			break;
-		}
-	}
-}
-
--(BOOL) isBookmarked:(NSString*) bookmarkID
-{
-	NSString* idfield = @"id";
-	
-	for (NSDictionary* dictionary in _bookmarks) 
-	{
-		NSString* uniqueID = [dictionary objectForKey:idfield];
-		if([uniqueID isEqualToString:bookmarkID])
-		{
-			return YES;
-		}
-	}
-	
-	return NO;
-}
-
--(void) moveBookmarkFromRow:(int) from toRow:(int)to
-{
-    if (to != from) 
-	{
-        
-		id obj = [_bookmarks objectAtIndex:from];
-        [obj retain];
-
-        [_bookmarks removeObjectAtIndex:from];
-        
-		if (to >= [_bookmarks count]) 
-		{
-            [_bookmarks addObject:obj];
-        }
-		else 
-		{
-            [_bookmarks insertObject:obj atIndex:to];
-        }
-        [obj release];
+- (MapSavedAnnotation *)savedAnnotationWithAnnotation:(ArcGISMapSearchResultAnnotation *)annotation {
+    MapSavedAnnotation *savedAnnotation = [CoreDataManager insertNewObjectForEntityForName:CampusMapAnnotationEntityName];
+    
+    savedAnnotation.id = annotation.uniqueID;
+    savedAnnotation.latitude = [NSNumber numberWithFloat:annotation.coordinate.latitude];
+    savedAnnotation.longitude = [NSNumber numberWithFloat:annotation.coordinate.longitude];
+    if (annotation.name) savedAnnotation.name = annotation.name;
+    if (annotation.street) savedAnnotation.street = annotation.street;
+    if (annotation.dataPopulated) {
+        savedAnnotation.info = [NSKeyedArchiver archivedDataWithRootObject:annotation.info];
     }
-	
-	[self save];
+    
+    return savedAnnotation;
+}
+
+- (void)bookmarkAnnotation:(ArcGISMapSearchResultAnnotation *)annotation {
+    MapSavedAnnotation *savedAnnotation = [self savedAnnotationWithAnnotation:annotation];
+    savedAnnotation.isBookmark = [NSNumber numberWithBool:YES];
+    savedAnnotation.sortOrder = [NSNumber numberWithInt:[_bookmarks count]];
+    [_bookmarks addObject:savedAnnotation];
+    [CoreDataManager saveData];
+}
+
+- (void)saveAnnotationWithoutBookmarking:(ArcGISMapSearchResultAnnotation *)annotation {
+    MapSavedAnnotation *savedAnnotation = [self savedAnnotationWithAnnotation:annotation];
+    savedAnnotation.isBookmark = [NSNumber numberWithBool:NO];
+    [CoreDataManager saveData];
+}
+
+- (void)removeBookmark:(MapSavedAnnotation *)savedAnnotation {
+    NSInteger sortOrder = [savedAnnotation.sortOrder integerValue];
+    // decrement sortOrder of all bookmarks after this
+    for (NSInteger i = sortOrder + 1; i < [_bookmarks count]; i++) {
+        MapSavedAnnotation *savedAnnotation = [_bookmarks objectAtIndex:i];
+        savedAnnotation.sortOrder = [NSNumber numberWithInt:i - 1];
+    }
+    [_bookmarks removeObject:savedAnnotation];
+    [CoreDataManager deleteObject:savedAnnotation];
+    [CoreDataManager saveData];
+}
+
+- (BOOL)isBookmarked:(NSString *)uniqueID {
+    MapSavedAnnotation *saved = [self savedAnnotationForID:uniqueID];
+    return (saved != nil && [saved.isBookmark boolValue]);
+}
+
+- (void)moveBookmarkFromRow:(int) from toRow:(int)to
+{
+    if (to != from) {
+		MapSavedAnnotation *savedAnnotation = nil;
+
+        // if the row is moving down (from < to), the sortOrder of the
+        // moved item increases and everything between decreases by 1
+        NSInteger startIndex = (from < to) ? from + 1 : to;
+        NSInteger endIndex = (from < to) ? to + 1 : from;
+        NSInteger sortOrderDiff = (from < to) ? -1 : 1;
+        
+        for (NSInteger i = startIndex; i < endIndex; i++) {
+            savedAnnotation = [self.bookmarks objectAtIndex:i];
+            savedAnnotation.sortOrder = [NSNumber numberWithInt:i + sortOrderDiff];
+        }
+
+        savedAnnotation = [self.bookmarks objectAtIndex:from];
+        savedAnnotation.sortOrder = [NSNumber numberWithInt:to];
+        
+        [CoreDataManager saveData];
+    }
 }
 
 @end

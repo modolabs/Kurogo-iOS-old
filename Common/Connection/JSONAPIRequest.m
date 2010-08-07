@@ -176,6 +176,9 @@
     return [JSONAPIRequest objectWithJSONString:jsonString error:NULL];
 }
 
+// TODO: this should really not happen.
+// it is a bug we have to fix, not allow to fail silently.
+
 - (void)safeReleaseSelf {
 	// If we release self after already having released self, we may cause a crash.
 	// (This can happen if a client calls abortRequest after connection:handleData: has already been hit. Both methods

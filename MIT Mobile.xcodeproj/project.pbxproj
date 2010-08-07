@@ -114,12 +114,8 @@
 		4463D09410D92CB00048CA83 /* MITMapDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4463D09210D92CB00048CA83 /* MITMapDetailViewController.m */; };
 		4463D09510D92CB00048CA83 /* MITMapDetailViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4463D09310D92CB00048CA83 /* MITMapDetailViewController.xib */; };
 		448FF58F10FA4BDE00850BC0 /* ShuttleRouteViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 448FF58E10FA4BDE00850BC0 /* ShuttleRouteViewController.xib */; };
-		4499332D11A371CF00A7041B /* RecentSearchesViewController.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = 4499332B11A371CE00A7041B /* RecentSearchesViewController.h */; settings = {JAVA_ARCHIVE_SUBDIR = "Modules/Campus Map"; }; };
-		4499332E11A371CF00A7041B /* RecentSearchesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4499332C11A371CF00A7041B /* RecentSearchesViewController.m */; };
 		4499341E11A5E53D00A7041B /* CategoriesTableViewController.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = 4499341C11A5E53D00A7041B /* CategoriesTableViewController.h */; settings = {JAVA_ARCHIVE_SUBDIR = "Modules/Campus Map"; }; };
 		4499341F11A5E53D00A7041B /* CategoriesTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4499341D11A5E53D00A7041B /* CategoriesTableViewController.m */; };
-		44ACF76C1187884300F1F4B2 /* BookmarksTableViewController.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = 44ACF7681187884300F1F4B2 /* BookmarksTableViewController.h */; settings = {JAVA_ARCHIVE_SUBDIR = "Modules/Campus Map"; }; };
-		44ACF76D1187884300F1F4B2 /* BookmarksTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 44ACF7691187884300F1F4B2 /* BookmarksTableViewController.m */; };
 		44ACF76E1187884300F1F4B2 /* MapBookmarkManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 44ACF76A1187884300F1F4B2 /* MapBookmarkManager.m */; };
 		44ACF76F1187884300F1F4B2 /* MapBookmarkManager.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = 44ACF76B1187884300F1F4B2 /* MapBookmarkManager.h */; settings = {JAVA_ARCHIVE_SUBDIR = "Modules/Campus Map"; }; };
 		44BF5B431100A75C00E150D5 /* RouteInfoTitleCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 44BF5B421100A75C00E150D5 /* RouteInfoTitleCell.m */; };
@@ -248,6 +244,8 @@
 		EB4210E7120B82C000089FE0 /* TwitterViewController.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB4210E5120B82C000089FE0 /* TwitterViewController.h */; settings = {JAVA_ARCHIVE_SUBDIR = Common; }; };
 		EB4210E8120B82C000089FE0 /* TwitterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EB4210E6120B82C000089FE0 /* TwitterViewController.m */; };
 		EB421101120B831500089FE0 /* dining in Resources */ = {isa = PBXBuildFile; fileRef = EB4210E9120B831500089FE0 /* dining */; };
+		EB4211B8120C92C600089FE0 /* MapSavedAnnotation.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB4211B6120C92C600089FE0 /* MapSavedAnnotation.h */; settings = {JAVA_ARCHIVE_SUBDIR = "Modules/Campus Map"; }; };
+		EB4211B9120C92C600089FE0 /* MapSavedAnnotation.m in Sources */ = {isa = PBXBuildFile; fileRef = EB4211B7120C92C600089FE0 /* MapSavedAnnotation.m */; };
 		EB49AD4811F4BFB900854791 /* about in Resources */ = {isa = PBXBuildFile; fileRef = EB49AD4511F4BFB900854791 /* about */; };
 		EB49AD5511F4BFCE00854791 /* courses in Resources */ = {isa = PBXBuildFile; fileRef = EB49AD4911F4BFCE00854791 /* courses */; };
 		EB49AD5611F4BFCE00854791 /* emergency in Resources */ = {isa = PBXBuildFile; fileRef = EB49AD4F11F4BFCE00854791 /* emergency */; };
@@ -427,7 +425,6 @@
 		EB6DFFF111DE69F600B65CE3 /* SpringboardViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EB6DFFEF11DE69F600B65CE3 /* SpringboardViewController.m */; };
 		EB6F2B6610E901E000A29A2A /* UITableView+MITUIAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = EB6F2B6210E901E000A29A2A /* UITableView+MITUIAdditions.m */; };
 		EB6F2B6710E901E000A29A2A /* UITableViewCell+MITUIAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = EB6F2B6410E901E000A29A2A /* UITableViewCell+MITUIAdditions.m */; };
-		EB6F2B6D10E9026200A29A2A /* PeopleDetailsTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = EB6F2B6C10E9026200A29A2A /* PeopleDetailsTableViewCell.m */; };
 		EB6FD1F910E19D7900D56BE1 /* SecondaryGroupedTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = EB6FD1F810E19D7900D56BE1 /* SecondaryGroupedTableViewCell.m */; };
 		EB74ED2E11924E7C006673F9 /* ShareDetailViewController.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB74ED2C11924E7C006673F9 /* ShareDetailViewController.h */; settings = {JAVA_ARCHIVE_SUBDIR = Common; }; };
 		EB74ED2F11924E7C006673F9 /* ShareDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EB74ED2D11924E7C006673F9 /* ShareDetailViewController.m */; };
@@ -616,12 +613,8 @@
 		4463D09210D92CB00048CA83 /* MITMapDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MITMapDetailViewController.m; sourceTree = "<group>"; };
 		4463D09310D92CB00048CA83 /* MITMapDetailViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MITMapDetailViewController.xib; sourceTree = "<group>"; };
 		448FF58E10FA4BDE00850BC0 /* ShuttleRouteViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ShuttleRouteViewController.xib; sourceTree = "<group>"; };
-		4499332B11A371CE00A7041B /* RecentSearchesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RecentSearchesViewController.h; sourceTree = "<group>"; };
-		4499332C11A371CF00A7041B /* RecentSearchesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RecentSearchesViewController.m; sourceTree = "<group>"; };
 		4499341C11A5E53D00A7041B /* CategoriesTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CategoriesTableViewController.h; sourceTree = "<group>"; };
 		4499341D11A5E53D00A7041B /* CategoriesTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CategoriesTableViewController.m; sourceTree = "<group>"; };
-		44ACF7681187884300F1F4B2 /* BookmarksTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BookmarksTableViewController.h; sourceTree = "<group>"; };
-		44ACF7691187884300F1F4B2 /* BookmarksTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BookmarksTableViewController.m; sourceTree = "<group>"; };
 		44ACF76A1187884300F1F4B2 /* MapBookmarkManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MapBookmarkManager.m; sourceTree = "<group>"; };
 		44ACF76B1187884300F1F4B2 /* MapBookmarkManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MapBookmarkManager.h; sourceTree = "<group>"; };
 		44BF5B411100A75C00E150D5 /* RouteInfoTitleCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RouteInfoTitleCell.h; sourceTree = "<group>"; };
@@ -801,6 +794,8 @@
 		EB4210E5120B82C000089FE0 /* TwitterViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TwitterViewController.h; sourceTree = "<group>"; };
 		EB4210E6120B82C000089FE0 /* TwitterViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TwitterViewController.m; sourceTree = "<group>"; };
 		EB4210E9120B831500089FE0 /* dining */ = {isa = PBXFileReference; lastKnownFileType = folder; name = dining; path = Resources/dining; sourceTree = "<group>"; };
+		EB4211B6120C92C600089FE0 /* MapSavedAnnotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MapSavedAnnotation.h; sourceTree = "<group>"; };
+		EB4211B7120C92C600089FE0 /* MapSavedAnnotation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MapSavedAnnotation.m; sourceTree = "<group>"; };
 		EB49AD4511F4BFB900854791 /* about */ = {isa = PBXFileReference; lastKnownFileType = folder; name = about; path = Resources/about; sourceTree = "<group>"; };
 		EB49AD4911F4BFCE00854791 /* courses */ = {isa = PBXFileReference; lastKnownFileType = folder; name = courses; path = Resources/courses; sourceTree = "<group>"; };
 		EB49AD4F11F4BFCE00854791 /* emergency */ = {isa = PBXFileReference; lastKnownFileType = folder; name = emergency; path = Resources/emergency; sourceTree = "<group>"; };
@@ -985,8 +980,6 @@
 		EB6F2B6310E901E000A29A2A /* UITableViewCell+MITUIAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UITableViewCell+MITUIAdditions.h"; sourceTree = "<group>"; };
 		EB6F2B6410E901E000A29A2A /* UITableViewCell+MITUIAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UITableViewCell+MITUIAdditions.m"; sourceTree = "<group>"; };
 		EB6F2B6910E9023300A29A2A /* MITUIConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MITUIConstants.h; sourceTree = "<group>"; };
-		EB6F2B6B10E9026200A29A2A /* PeopleDetailsTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PeopleDetailsTableViewCell.h; sourceTree = "<group>"; };
-		EB6F2B6C10E9026200A29A2A /* PeopleDetailsTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PeopleDetailsTableViewCell.m; sourceTree = "<group>"; };
 		EB6FD1F710E19D7900D56BE1 /* SecondaryGroupedTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SecondaryGroupedTableViewCell.h; sourceTree = "<group>"; };
 		EB6FD1F810E19D7900D56BE1 /* SecondaryGroupedTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SecondaryGroupedTableViewCell.m; sourceTree = "<group>"; };
 		EB74ED2C11924E7C006673F9 /* ShareDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShareDetailViewController.h; sourceTree = "<group>"; };
@@ -1327,6 +1320,8 @@
 				44C1A4C211A412E2000FD653 /* MapSearch.h */,
 				44C1A4C311A412E2000FD653 /* MapSearch.m */,
 				44C1A2A711A2F49B000FD653 /* CampusMap.xcdatamodeld */,
+				EB4211B6120C92C600089FE0 /* MapSavedAnnotation.h */,
+				EB4211B7120C92C600089FE0 /* MapSavedAnnotation.m */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -1336,10 +1331,6 @@
 			children = (
 				44ACF76B1187884300F1F4B2 /* MapBookmarkManager.h */,
 				44ACF76A1187884300F1F4B2 /* MapBookmarkManager.m */,
-				44ACF7681187884300F1F4B2 /* BookmarksTableViewController.h */,
-				44ACF7691187884300F1F4B2 /* BookmarksTableViewController.m */,
-				4499332B11A371CE00A7041B /* RecentSearchesViewController.h */,
-				4499332C11A371CF00A7041B /* RecentSearchesViewController.m */,
 				44C1A3CC11A33905000FD653 /* MapSelectionController.h */,
 				44C1A3CD11A33905000FD653 /* MapSelectionController.m */,
 				4499341C11A5E53D00A7041B /* CategoriesTableViewController.h */,
@@ -1873,8 +1864,6 @@
 				EBA2865510E07E140003BA01 /* PeopleSearchViewController.m */,
 				EB7F327210CD6C5B00188BCD /* PeopleDetailsViewController.h */,
 				EB7F327310CD6C5B00188BCD /* PeopleDetailsViewController.m */,
-				EB6F2B6B10E9026200A29A2A /* PeopleDetailsTableViewCell.h */,
-				EB6F2B6C10E9026200A29A2A /* PeopleDetailsTableViewCell.m */,
 				EB7F327010CD6C5B00188BCD /* PartialHighlightTableViewCell.h */,
 				EB7F327110CD6C5B00188BCD /* PartialHighlightTableViewCell.m */,
 			);
@@ -1981,7 +1970,6 @@
 				EB976D1B116CF6A10036A18E /* EventCategoriesTableView.h in JavaArchive */,
 				EBA273E911760BAE0033DD27 /* CalendarConstants.h in JavaArchive */,
 				29E308861176018C005211A7 /* MITModuleURL.h in JavaArchive */,
-				44ACF76C1187884300F1F4B2 /* BookmarksTableViewController.h in JavaArchive */,
 				44ACF76F1187884300F1F4B2 /* MapBookmarkManager.h in JavaArchive */,
 				29C4546F118B55E100A321B0 /* ExchangeCredentialsOperation.h in JavaArchive */,
 				29C45471118B55E100A321B0 /* ExchangeCredentialsOperationDelegate.h in JavaArchive */,
@@ -2024,7 +2012,6 @@
 				EB3F0951118F0FFE00540B8A /* CalendarMapView.h in JavaArchive */,
 				EB74ED2E11924E7C006673F9 /* ShareDetailViewController.h in JavaArchive */,
 				44C1A3CE11A33905000FD653 /* MapSelectionController.h in JavaArchive */,
-				4499332D11A371CF00A7041B /* RecentSearchesViewController.h in JavaArchive */,
 				44C1A4C411A412E2000FD653 /* MapSearch.h in JavaArchive */,
 				4499341E11A5E53D00A7041B /* CategoriesTableViewController.h in JavaArchive */,
 				EB6DFFF011DE69F600B65CE3 /* SpringboardViewController.h in JavaArchive */,
@@ -2069,6 +2056,7 @@
 				EB4210DF120B81D500089FE0 /* NavScrollerView.h in JavaArchive */,
 				EB4210E1120B81D500089FE0 /* TabViewControl.h in JavaArchive */,
 				EB4210E7120B82C000089FE0 /* TwitterViewController.h in JavaArchive */,
+				EB4211B8120C92C600089FE0 /* MapSavedAnnotation.h in JavaArchive */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2244,7 +2232,6 @@
 				EB6FD1F910E19D7900D56BE1 /* SecondaryGroupedTableViewCell.m in Sources */,
 				EB6F2B6610E901E000A29A2A /* UITableView+MITUIAdditions.m in Sources */,
 				EB6F2B6710E901E000A29A2A /* UITableViewCell+MITUIAdditions.m in Sources */,
-				EB6F2B6D10E9026200A29A2A /* PeopleDetailsTableViewCell.m in Sources */,
 				4420F23110E9513700A8CD05 /* ShuttleDataManager.m in Sources */,
 				4420F31B10E96EBE00A8CD05 /* ShuttleStopMapAnnotation.m in Sources */,
 				DE821E8110EAB4F500B4C4C8 /* UIKit+MITAdditions.m in Sources */,
@@ -2295,7 +2282,6 @@
 				EB976D1C116CF6A10036A18E /* EventCategoriesTableView.m in Sources */,
 				EBA273EA11760BAE0033DD27 /* CalendarConstants.m in Sources */,
 				29E308871176018C005211A7 /* MITModuleURL.m in Sources */,
-				44ACF76D1187884300F1F4B2 /* BookmarksTableViewController.m in Sources */,
 				44ACF76E1187884300F1F4B2 /* MapBookmarkManager.m in Sources */,
 				29C45470118B55E100A321B0 /* ExchangeCredentialsOperation.m in Sources */,
 				29C45473118B55E100A321B0 /* XAuthTwitterEngine.m in Sources */,
@@ -2318,7 +2304,6 @@
 				EB74ED2F11924E7C006673F9 /* ShareDetailViewController.m in Sources */,
 				44C1A2A811A2F49B000FD653 /* CampusMap.xcdatamodeld in Sources */,
 				44C1A3CF11A33905000FD653 /* MapSelectionController.m in Sources */,
-				4499332E11A371CF00A7041B /* RecentSearchesViewController.m in Sources */,
 				44C1A4C511A412E2000FD653 /* MapSearch.m in Sources */,
 				4499341F11A5E53D00A7041B /* CategoriesTableViewController.m in Sources */,
 				EB6DFFF111DE69F600B65CE3 /* SpringboardViewController.m in Sources */,
@@ -2498,6 +2483,7 @@
 				EB4210E0120B81D500089FE0 /* NavScrollerView.m in Sources */,
 				EB4210E2120B81D500089FE0 /* TabViewControl.m in Sources */,
 				EB4210E8120B82C000089FE0 /* TwitterViewController.m in Sources */,
+				EB4211B9120C92C600089FE0 /* MapSavedAnnotation.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -76,6 +76,7 @@ extern NSString * const ShuttleRouteStopEntityName;
 extern NSString * const CalendarEventEntityName;
 extern NSString * const CalendarCategoryEntityName;
 extern NSString * const CampusMapSearchEntityName;
+extern NSString * const CampusMapAnnotationEntityName;
 
 // Sizes
 static const NSUInteger kPersonUIDLength = 44;

@@ -1,28 +1,22 @@
-//
-//  MapBookmarkManager.h
-//  MIT Mobile
-//
-//  Created by Craig on 4/27/10.
-//  Copyright 2010 Raizlabs. All rights reserved.
-//
-
 #import <Foundation/Foundation.h>
-
+#import "MapSearchResultAnnotation.h"
+#import "MapSavedAnnotation.h"
 
 @interface MapBookmarkManager : NSObject {
 	NSMutableArray* _bookmarks;
 }
 
-@property (readonly) NSArray* bookmarks;
+@property (nonatomic, retain) NSArray *bookmarks;
 
-+(MapBookmarkManager*) defaultManager;
++ (MapBookmarkManager *)defaultManager;
 
--(void) addBookmark:(NSString*) bookmarkID title:(NSString*)title subtitle:(NSString*)subtitle data:(NSDictionary*)data;
+- (MapSavedAnnotation *)savedAnnotationForID:(NSString *)uniqueID;
 
--(void) removeBookmark:(NSString*) bookmarkID;
+- (void)bookmarkAnnotation:(ArcGISMapSearchResultAnnotation *)annotation;
+- (void)saveAnnotationWithoutBookmarking:(ArcGISMapSearchResultAnnotation *)annotation;
+- (void)removeBookmark:(MapSavedAnnotation *)savedAnnotation;
+- (BOOL)isBookmarked:(NSString *)uniqueID;
 
--(BOOL) isBookmarked:(NSString*) bookmarkID;
-
--(void) moveBookmarkFromRow:(int) from toRow:(int)to;
+- (void)moveBookmarkFromRow:(int)from toRow:(int)to;
 
 @end

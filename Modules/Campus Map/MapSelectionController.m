@@ -1,121 +1,386 @@
-//
-//  MapSelectionController.m
-//  MIT Mobile
-//
-//  Created by Craig on 5/18/10.
-//  Copyright 2010 Raizlabs. All rights reserved.
-//
-
 #import "MapSelectionController.h"
-#import "BookmarksTableViewController.h"
-#import "RecentSearchesViewController.h"
 #import "CategoriesTableViewController.h"
+#import "MapBookmarkManager.h"
+#import "CoreDataManager.h"
+#import "MapSavedAnnotation.h"
+#import "MITUIConstants.h"
+#import "MapSearchResultAnnotation.h"
+#import "CampusMapViewController.h"
+#import "MapSearch.h"
 
 @implementation MapSelectionController
 @synthesize toolbarButtonItems = _toolbarButtonItems;
 @synthesize mapVC = _mapVC;
 @synthesize cancelButton = _cancelButton;
+@synthesize tableView = _tableView;
+@synthesize tableItems = _tableItems;
 
--(id) initWithMapSelectionControllerSegment:(MapSelectionControllerSegment) segment campusMap:(CampusMapViewController*)mapVC;
-{
-	_mapVC = [mapVC retain];
-	
-	UIViewController* vc = nil;
-	
-	
-	switch (segment) {
-		case MapSelectionControllerSegmentBookmarks:
-			vc = [[[BookmarksTableViewController alloc] initWithMapSelectionController:self] autorelease];
-			break;
-		case MapSelectionControllerSegmentRecents:
-			vc = [[[RecentSearchesViewController alloc] initWithMapSelectionController:self] autorelease];			
-			break;
-		
-		case MapSelectionControllerSegmentBrowse:
-			vc = [[[CategoriesTableViewController alloc] initWithMapSelectionController:self] autorelease];
-			[(CategoriesTableViewController*)vc setTopLevel:YES];
-			break;
-			
-		default:
-			
-			break;
-	}
-	
-	if(vc != nil)
-	{
-		self = [super initWithRootViewController:vc];
-	}
-	else {
-		self = [super init];
-	}
-	
-	UISegmentedControl* seg = [[[UISegmentedControl alloc] initWithItems:[NSArray arrayWithObjects:@"Bookmarks", @"Recents", @"Browse", nil]] autorelease];
-	[seg setSelectedSegmentIndex:segment];
+/*
+- (id)initWithMapViewController:(CampusMapViewController *)vc {
+    if (self = [super init]) {
+        _mapVC = vc;
+    }
+    return self;
+}
+*/
+- (void)viewDidLoad {
+    [super viewDidLoad];
+
+	NSLog(@"%@", [self.mapVC description]);
+    
+	self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:MITImageNameBackground]];
+    
+	UISegmentedControl *seg = [[[UISegmentedControl alloc] initWithItems:[NSArray arrayWithObjects:@"Bookmarks", @"Recents", @"Browse", nil]] autorelease];
 	[seg setSegmentedControlStyle:UISegmentedControlStyleBar];
-	[seg setFrame:CGRectMake(0, 0, 290, seg.frame.size.height)];
+	[seg setFrame:CGRectMake(0, 0, self.view.frame.size.width - 30, seg.frame.size.height)];
 	[seg setTintColor:[UIColor darkGrayColor]];
+	[seg addTarget:self action:@selector(switchToSegment:) forControlEvents:UIControlEventValueChanged];
 	
-	[seg addTarget:self action:@selector(segmentChanged:) forControlEvents:UIControlEventValueChanged];
+	UIBarButtonItem *item = [[[UIBarButtonItem alloc] initWithCustomView:seg] autorelease];
 	
-	UIBarButtonItem* item = [[[UIBarButtonItem alloc] initWithCustomView:seg] autorelease];
+    if (!_toolbarButtonItems) {
+        _toolbarButtonItems = [[NSArray arrayWithObject:item] retain];
+    }
 	
-	_toolbarButtonItems = [[NSArray arrayWithObject:item] retain];
-
-	
-	[self setToolbarHidden:NO];
-	[self.toolbar setBarStyle:UIBarStyleBlack];
-	
-	
-	_cancelButton = [[UIBarButtonItem alloc] initWithTitle:@"Cancel" 
-																	  style:UIBarButtonItemStyleBordered 
-																	 target:self 
-																	 action:@selector(cancelButtonTapped)];
-
-	return self;
-	
+	[self.navigationController setToolbarHidden:NO];
+	[self.navigationController.toolbar setBarStyle:UIBarStyleBlack];
+    
+    if (!_cancelButton) {
+        _cancelButton = [[UIBarButtonItem alloc] initWithTitle:@"Cancel" 
+                                                         style:UIBarButtonItemStyleBordered 
+                                                        target:self 
+                                                        action:@selector(cancelButtonTapped)];
+    }
+    
+    self.hidesBottomBarWhenPushed = YES;
+	self.navigationItem.rightBarButtonItem = _cancelButton;
+	[self.navigationController.navigationBar setBarStyle:UIBarStyleBlack];
+    
+    [self switchToSegment:MapSelectionControllerSegmentBrowse];
 }
 
--(void) dealloc
+
+- (void)dealloc
 {
 	[_toolbarButtonItems release];
 	[_mapVC release];
 	[_cancelButton release];
+    [_categoryItems release];
+    self.tableView = nil;
+    self.tableItems = nil;
 	[super dealloc];
 }
 
+
 #pragma mark User Actions
--(void) cancelButtonTapped
-{
+
+- (void)cancelButtonTapped {
 	[self dismissModalViewControllerAnimated:YES];
 }
 
-
--(void) segmentChanged:(id)sender
-{
-	UISegmentedControl* segmentedControl = (UISegmentedControl*)sender;
-	
-	UIViewController* vc = nil;
-	
-	switch (segmentedControl.selectedSegmentIndex) {
+- (void)switchToSegment:(MapSelectionControllerSegment)segment {
+    
+    if (_selectedSegment == segment) return;
+    
+    _selectedSegment = segment;
+    [self.tableView removeFromSuperview];
+    CGRect frame = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height);
+    
+	switch (_selectedSegment) {
 		case MapSelectionControllerSegmentBookmarks:
-			vc = [[[BookmarksTableViewController alloc] initWithMapSelectionController:self] autorelease];
+        {
+            self.navigationItem.title = @"Bookmarks";
+            self.navigationItem.leftBarButtonItem = self.editButtonItem;
+            
+            self.tableView = [[[UITableView alloc] initWithFrame:frame style:UITableViewStylePlain] autorelease];
+            self.tableItems = [[MapBookmarkManager defaultManager] bookmarks];
+            
+            if ([self.tableItems count] <= 0) {
+            	self.editButtonItem.enabled = NO;
+            }
+            
 			break;
-			
+        }
 		case MapSelectionControllerSegmentRecents:
-			vc = [[[RecentSearchesViewController alloc] initWithMapSelectionController:self] autorelease];
+        {
+            self.navigationItem.title = @"Recent Searches";
+            self.navigationItem.leftBarButtonItem = nil;
+            
+            self.tableView = [[[UITableView alloc] initWithFrame:frame style:UITableViewStylePlain] autorelease];
+
+            NSSortDescriptor* sortDescriptor = [[[NSSortDescriptor alloc] initWithKey:@"date" ascending:NO] autorelease];
+            self.tableItems = [[CoreDataManager fetchDataForAttribute:CampusMapSearchEntityName sortDescriptor:sortDescriptor] retain];
+            
 			break;
-		
+        }
 		case MapSelectionControllerSegmentBrowse:
-			vc = [[[CategoriesTableViewController alloc] initWithMapSelectionController:self] autorelease];
-			[(CategoriesTableViewController*)vc setTopLevel:YES];
+        {
+            self.navigationItem.title = @"Browse";
+            self.navigationItem.leftBarButtonItem = nil;
+            
+            self.tableView = [[[UITableView alloc] initWithFrame:frame style:UITableViewStyleGrouped] autorelease];
+            self.tableItems = _categoryItems;
+            
+            if (!self.tableItems) {
+                JSONAPIRequest *apiRequest = [JSONAPIRequest requestWithJSONAPIDelegate:self];
+                [apiRequest requestObjectFromModule:@"map" command:@"categorytitles" parameters:nil];
+            }
+            
+            if (!_loadingView) {
+                self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+                _loadingView = [[[MITLoadingActivityView alloc] initWithFrame:self.tableView.frame] retain];
+                [self.view addSubview:_loadingView];
+            }
+            
 			break;
-			
+        }
 		default:
 			break;
 	}
+    
+    self.tableView.delegate = self;
+    self.tableView.dataSource = self;
+    self.tableView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+    
+    [self.view addSubview:self.tableView];
+    [self.tableView reloadData];
+}
+
+
+#pragma mark JSONAPIDelegate
+
+- (void)request:(JSONAPIRequest *)request jsonLoaded:(id)JSONObject
+{
+    if (_selectedSegment == MapSelectionControllerSegmentBrowse
+        && JSONObject && [JSONObject isKindOfClass:[NSArray class]]) {
+
+        _categoryItems = [[NSArray alloc] initWithArray:JSONObject];
+        self.tableItems = _categoryItems;
+        
+        if (_loadingView) {
+            self.tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
+            [_loadingView removeFromSuperview];
+            [_loadingView release];
+            _loadingView = nil;
+        }
+        
+        [self.tableView reloadData];
+    }
+}
+- (void)handleConnectionFailureForRequest:(JSONAPIRequest *)request
+{
+	if (_loadingView) {
+		[_loadingView removeFromSuperview];
+		[_loadingView release];
+		_loadingView = nil;
+	}
 	
-	if(nil != vc)
-		[self setViewControllers:[NSArray arrayWithObject:vc]];
+	UIAlertView *alert = [[[UIAlertView alloc]
+                           initWithTitle:@"Connection Failed" 
+                           message:@"Could not connect to server, please try again later."
+                           delegate:nil
+                           cancelButtonTitle:@"OK" 
+                           otherButtonTitles:nil] autorelease];
+	[alert show];
+    
+	
+}
+
+#pragma mark -
+#pragma mark Table view data source
+
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+    return 1;
+}
+
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    NSInteger rows = [self.tableItems count];
+    return rows;
+}
+
+
+// Customize the appearance of table view cells.
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    
+    static NSString *CellIdentifier = @"Cell";
+    
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    if (cell == nil) {
+        cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier] autorelease];
+		cell.textLabel.textColor = CELL_STANDARD_FONT_COLOR;
+		cell.textLabel.font = [UIFont boldSystemFontOfSize:CELL_STANDARD_FONT_SIZE];
+    }
+    
+	switch (_selectedSegment) {
+		case MapSelectionControllerSegmentBookmarks:
+        {
+            NSDictionary *bookmark = [self.tableItems objectAtIndex:indexPath.row];
+            cell.textLabel.text = [bookmark objectForKey:@"title"];
+            cell.detailTextLabel.text = [bookmark objectForKey:@"subtitle"];
+            cell.detailTextLabel.textColor = CELL_DETAIL_FONT_COLOR;
+            cell.detailTextLabel.font = [UIFont systemFontOfSize:CELL_DETAIL_FONT_SIZE];
+			break;
+        }
+		case MapSelectionControllerSegmentRecents:
+        {
+            if (indexPath.row < self.tableItems.count) {
+                MapSearch *search = [self.tableItems objectAtIndex:indexPath.row];
+                cell.textLabel.text = search.searchTerm;
+            }
+			break;
+        }
+		case MapSelectionControllerSegmentBrowse:
+        {
+            if ([[self.tableItems objectAtIndex:indexPath.row] objectForKey:@"categoryName"]) {
+                cell.textLabel.text = [[self.tableItems objectAtIndex:indexPath.row] objectForKey:@"categoryName"];
+            } else {
+                NSString *displayName = [[self.tableItems objectAtIndex:indexPath.row] objectForKey:@"displayName"];
+                cell.textLabel.text = displayName;
+            }
+            
+            cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+            cell.backgroundColor = [UIColor whiteColor];
+			
+            break;
+        }
+		default:
+			break;
+	}
+    
+    return cell;
+}
+
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+{
+    UIView *headerView = nil;
+    
+    if (_selectedSegment == MapSelectionControllerSegmentBrowse && section == 0) {
+        headerView = [[[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 60)] autorelease];
+        UILabel* headerLabel = [[[UILabel alloc] initWithFrame:CGRectMake(16, 10, 226, 40)] autorelease];
+        headerLabel.text = [NSString stringWithString:@"Browse map by:"];;
+        headerLabel.font = [UIFont boldSystemFontOfSize:16];
+        headerLabel.textColor = [UIColor darkGrayColor];
+        headerLabel.numberOfLines = 0;
+        headerLabel.backgroundColor = [UIColor clearColor];
+        [headerView addSubview:headerLabel];
+    }
+	return headerView;
+}
+
+- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
+    
+    if (editingStyle == UITableViewCellEditingStyleDelete) {
+        
+		MapSavedAnnotation *bookmark = [[[MapBookmarkManager defaultManager] bookmarks] objectAtIndex:indexPath.row];
+		[[MapBookmarkManager defaultManager] removeBookmark:bookmark];
+        
+        [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:YES];
+		
+        // turn off edit mode if they delete everything
+		if ([[[MapBookmarkManager defaultManager] bookmarks] count] <= 0) {
+			[self.tableView setEditing:NO animated:YES];
+			self.editButtonItem.enabled = NO;
+		}
+    }
+}
+
+- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath 
+{
+	int fromRow = [fromIndexPath row];
+	int toRow = [toIndexPath row];
+	
+	[[MapBookmarkManager defaultManager] moveBookmarkFromRow:fromRow toRow:toRow];
+	
+}
+
+- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath {
+    // Return NO if you do not want the item to be re-orderable.
+    return YES;
+}
+
+#pragma mark -
+#pragma mark Table view delegate
+
+/*
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    CGFloat height = tableView.rowHeight;
+    
+	switch (_selectedSegment) {
+		case MapSelectionControllerSegmentBookmarks:
+            rows = [[[MapBookmarkManager defaultManager] bookmarks] count];
+			break;
+		case MapSelectionControllerSegmentRecents:
+            rows = _searches.count;
+			break;
+		case MapSelectionControllerSegmentBrowse:
+			break;
+		default:
+			break;
+	}
+}
+*/
+
+
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
+    if (_selectedSegment == MapSelectionControllerSegmentBrowse) {
+        return 60;
+    }
+    return 0;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath 
+{
+	[tableView deselectRowAtIndexPath:indexPath animated:YES];
+    
+	switch (_selectedSegment) {
+		case MapSelectionControllerSegmentBookmarks:
+        {
+            MapSavedAnnotation *bookmark = [[[MapBookmarkManager defaultManager] bookmarks] objectAtIndex:indexPath.row];
+            
+            NSDictionary *info = [NSKeyedUnarchiver unarchiveObjectWithData:bookmark.info];
+            ArcGISMapSearchResultAnnotation *annotation = [[[ArcGISMapSearchResultAnnotation alloc] initWithInfo:info] autorelease];
+            
+            [self.mapVC.mapView removeAnnotations:self.mapVC.mapView.annotations];
+            [self.mapVC.mapView addAnnotation:annotation];
+            [self.mapVC.mapView selectAnnotation:annotation animated:NO];
+            
+            [self.mapVC pushAnnotationDetails:annotation animated:NO];
+            
+            [self dismissModalViewControllerAnimated:YES];
+            
+			break;
+        }
+		case MapSelectionControllerSegmentRecents:
+        {
+            // determine the search term they selected. 
+            MapSearch *search = [self.tableItems objectAtIndex:indexPath.row];
+            
+            self.mapVC.searchBar.text = search.searchTerm;
+            [self.mapVC search:search.searchTerm];
+            
+            [self dismissModalViewControllerAnimated:YES];
+            
+			break;
+        }
+		case MapSelectionControllerSegmentBrowse:
+        {
+            NSDictionary* thisItem = [self.tableItems objectAtIndex:indexPath.row];
+
+            CategoriesTableViewController *newCategoriesTVC = [[[CategoriesTableViewController alloc] init] autorelease];
+            newCategoriesTVC.mapSelectionController = self;
+            [newCategoriesTVC executeServerCategoryRequestWithQuery:[thisItem objectForKey:@"categoryId"]];
+            newCategoriesTVC.headerText = [NSString stringWithFormat:@"%@:", [thisItem objectForKey:@"categoryName"]];
+            
+            [self.navigationController pushViewController:newCategoriesTVC animated:YES];
+            
+			break;
+        }
+		default:
+			break;
+	}
 }
 
 @end

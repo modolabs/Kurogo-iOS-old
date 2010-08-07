@@ -13,13 +13,11 @@
 @class MapSelectionController;
 
 @interface CategoriesTableViewController : UITableViewController <JSONAPIDelegate> {
-	MapSelectionController* _mapSelectionController;
+	MapSelectionController *_mapSelectionController;
 	
-	NSMutableArray* _itemsInTable;
-	NSString* _headerText;
-	BOOL _topLevel;
-    
-	BOOL _leafLevel;
+	NSMutableArray *_itemsInTable;
+	NSString *_headerText;
+    UIView *_headerView;
 	
 	MITLoadingActivityView* _loadingView;
 }
@@ -27,8 +25,6 @@
 @property (nonatomic, assign) MapSelectionController* mapSelectionController;
 @property (nonatomic, retain) NSMutableArray* itemsInTable;
 @property (nonatomic, retain) NSString* headerText;
-@property BOOL topLevel;
-@property BOOL leafLevel;
 
 -(void) executeServerCategoryRequestWithQuery:(NSString *)query;
 

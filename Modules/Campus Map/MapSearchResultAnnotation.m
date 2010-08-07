@@ -8,13 +8,12 @@
 @synthesize name = _name;
 @synthesize street = _street;
 @synthesize info = _info;
-@synthesize bookmark = _bookmark;
 @synthesize dataPopulated = _dataPopulated;
 @synthesize coordinate = _coordinate;
 
-// TODO: remove query (always self.name) and object (always self)
 - (void)searchAnnotationWithDelegate:(id<JSONAPIDelegate>)delegate {
 	JSONAPIRequest *apiRequest = [JSONAPIRequest requestWithJSONAPIDelegate:delegate];
+    NSLog(@"%@", [delegate description]);
 	apiRequest.userData = self;
 	[apiRequest requestObjectFromModule:@"map"
                                 command:@"search"
@@ -103,16 +102,20 @@
 
 - (NSString *)title
 {
-    if ([self.name length])
+    if ([self.name length]) {
         return self.name;
-    else if ([self.street length]) // at least we have a subtitle, so don't turn off the annotation
-        return [NSString stringWithString:@" "];
+    } else if ([self.street length]) {
+        return self.street; // don't turn off the annotation if we have something to show
+    }
     return nil;
 }
 
 - (NSString *)subtitle
 {
-    return self.street;
+    if ([self.name length]) {
+        return self.street;
+    } // otherwise street would be returned in title
+    return nil;
 }
 
 @end

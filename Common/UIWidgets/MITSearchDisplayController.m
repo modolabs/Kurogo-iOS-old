@@ -102,7 +102,7 @@ searchResultsTableView = _searchResultsTableView;
     if (!_searchOverlay) {
         CGFloat yOrigin = _searchBar.frame.origin.y + _searchBar.frame.size.height;
 
-        if (_searchResultsTableView) {
+        if (self.searchResultsTableView) {
             _searchOverlay = [[UIControl alloc] initWithFrame:_searchResultsTableView.frame];
         } else {
             // just in case user set searchResultsTableView to nil

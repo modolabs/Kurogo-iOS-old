@@ -18,9 +18,6 @@
 	BOOL _dataPopulated;
 	
 	NSDictionary* _info;
-	
-	// flag indicating if this instance was loaded from a bookmark
-	BOOL _bookmark;
 }
 
 @property (nonatomic, assign) CLLocationCoordinate2D coordinate;
@@ -33,7 +30,6 @@
 @property (nonatomic, retain) NSDictionary *info;
 
 @property BOOL dataPopulated;
-@property BOOL bookmark;
 
 - (void)searchAnnotationWithDelegate:(id<JSONAPIDelegate>)delegate;
 

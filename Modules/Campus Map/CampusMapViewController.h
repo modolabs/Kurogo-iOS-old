@@ -1,13 +1,11 @@
 #import <UIKit/UIKit.h>
 #import <MapKit/MapKit.h>
-//#import "ShuttleDataManager.h"
 #import "JSONAPIRequest.h"
 #import "CMModule.h"
+#import "ModoSearchBar.h"
 
-//@class MITMapSearchResultsTable;
 @class MapSearchResultsTableView;
 @class MapSelectionController;
-@class ModoSearchBar;
 @class MITSearchDisplayController;
 @class CampusMapToolbar;
 
@@ -50,21 +48,22 @@
 	MapSelectionController *_selectionVC;
 }
 
-@property (nonatomic, retain) UIBarButtonItem* geoButton;
-@property (nonatomic, retain) NSArray* searchResults;
-@property (nonatomic, assign) CMModule* campusMapModule;
+@property (nonatomic, retain) UIBarButtonItem *geoButton;
+@property (nonatomic, retain) NSArray *searchResults;
+@property (nonatomic, assign) CMModule *campusMapModule;
+@property (nonatomic, retain) MapSearchResultsTableView *searchResultsTableView;
 
-@property (readonly) MKMapView* mapView;
-@property (nonatomic, retain) NSString* lastSearchText;
+@property (readonly) MKMapView *mapView;
+@property (nonatomic, retain) NSString *lastSearchText;
 @property BOOL hasSearchResults;
 @property (readonly) BOOL displayingList;
-@property (readonly) ModoSearchBar* searchBar;
+@property (readonly) ModoSearchBar *searchBar;
 
 // execute a search
-- (void)search:(NSString*)searchText;
+- (void)search:(NSString *)searchText;
 
 // this is called in handleLocalPath: query: and also by setSearchResults:
-- (void)setSearchResultsWithoutRecentering:(NSArray*)searchResults;
+- (void)setSearchResultsWithoutRecentering:(NSArray *)searchResults;
 - (void)setSearchResults:(NSArray *)searchResults withFilter:(SEL)filter; // filter is unique category for each search result, e.g. bldgnum
 - (void)showListView:(BOOL)showList;                                      // if showList is true, show list view; otherwise show map view
 - (void)pushAnnotationDetails:(id <MKAnnotation>) annotation animated:(BOOL)animated;

@@ -9,14 +9,10 @@
 #import "MapSearch.h"
 #import "CoreDataManager.h"
 #import "TileServerManager.h"
-#import "ModoSearchBar.h"
 #import "CampusMapToolbar.h"
 #import "MITSearchDisplayController.h"
 
 #import "MapSelectionController.h"
-
-// TODO: Remove this import when done integrating the new bookmark table
-#import "BookmarksTableViewController.h"
 
 #define kAPISearch		@"Search"
 
@@ -47,6 +43,7 @@
 @synthesize displayingList = _displayingList;
 @synthesize searchBar = _searchBar;
 @synthesize campusMapModule = _campusMapModule;
+@synthesize searchResultsTableView = _searchResultsTableView;
 
 
 - (CGFloat)searchBarWidth {
@@ -164,6 +161,8 @@
 
 - (void)viewDidUnload {
 	_mapView.delegate = nil;
+	self.searchResultsTableView = nil;
+    
 	[_mapView release];
 	[_toolBar release];
 	[_geoButton release];
@@ -172,7 +171,6 @@
 	_searchResults = nil;
 	
 	[_viewTypeButton release];
-	[_searchResultsTableView release];
 	[_searchBar release];
 	
 	[_bookmarkButton release];
@@ -183,6 +181,8 @@
 - (void)dealloc 
 {
 	_mapView.delegate = nil;
+	self.searchResultsTableView = nil;
+    
 	[_mapView release];
 	[_toolBar release];
 	[_geoButton release];
@@ -191,7 +191,6 @@
 	_searchResults = nil;
 	
 	[_viewTypeButton release];
-	[_searchResultsTableView release];
 	[_searchBar release];
 	
 	[_bookmarkButton release];
@@ -224,8 +223,8 @@
 	// remove any remaining annotations
     [_mapView removeAnnotations:_mapView.annotations];
 	
-	if (nil != _searchResultsTableView) {
-		_searchResultsTableView.searchResults = _searchResults;
+	if (nil != self.searchResultsTableView) {
+		self.searchResultsTableView.searchResults = _searchResults;
 	}
     
     if ([TileServerManager isInitialized]) {
@@ -412,17 +411,17 @@
         _viewTypeButton.title = @"Map";
         
         // show the list.
-        if (nil == _searchResultsTableView) {
-            _searchResultsTableView = [[MapSearchResultsTableView alloc] initWithFrame:_mapView.frame];
-            _searchResultsTableView.campusMapVC = self;
-            _searchController.searchResultsTableView = _searchResultsTableView;
-            _searchController.searchResultsDelegate = _searchResultsTableView;
-            _searchController.searchResultsDataSource = _searchResultsTableView;
+        if (nil == self.searchResultsTableView) {
+            self.searchResultsTableView = [[[MapSearchResultsTableView alloc] initWithFrame:_mapView.frame] autorelease];
+            self.searchResultsTableView.campusMapVC = self;
+            _searchController.searchResultsTableView = self.searchResultsTableView;
+            _searchController.searchResultsDelegate = self.searchResultsTableView;
+            _searchController.searchResultsDataSource = self.searchResultsTableView;
         }
         
-        _searchResultsTableView.searchResults = _searchResults;
+        self.searchResultsTableView.searchResults = _searchResults;
         
-        [self.view addSubview:_searchResultsTableView];
+        [self.view addSubview:self.searchResultsTableView];
         
         // hide the toolbar and stretch the search bar
         _toolBar.alpha = 0.0;
@@ -432,9 +431,8 @@
         _viewTypeButton.title = @"List";
         
         // show the map, by hiding the list. 
-        [_searchResultsTableView removeFromSuperview];
-        [_searchResultsTableView release];
-        _searchResultsTableView = nil;
+        [self.searchResultsTableView removeFromSuperview];
+        self.searchResultsTableView = nil;
         
         if (!_searchResults) {
             // show the toolbar and shrink the search bar. 
@@ -452,7 +450,7 @@
 	
 }
 
--(void) viewTypeChanged:(id)sender
+- (void)viewTypeChanged:(id)sender
 {
 	// if there is nothing in the search bar, we are browsing categories; otherwise go to list view
 	if (!_displayingList && !_hasSearchResults) {
@@ -462,15 +460,21 @@
 			_selectionVC = nil;
 		}
 		
-		_selectionVC = [[MapSelectionController alloc]  initWithMapSelectionControllerSegment:MapSelectionControllerSegmentBrowse campusMap:self];
+		//_selectionVC = [[MapSelectionController alloc] initWithMapViewController:self];
+        _selectionVC = [[MapSelectionController alloc] init];
+        _selectionVC.mapVC = self;
+
+        UINavigationController *dummyNavC = [[UINavigationController alloc] initWithRootViewController:_selectionVC];
+        
 		MIT_MobileAppDelegate *appDelegate = (MIT_MobileAppDelegate *)[[UIApplication sharedApplication] delegate];
-		[appDelegate presentAppModalViewController:_selectionVC animated:YES];
+		[appDelegate presentAppModalViewController:dummyNavC animated:YES];
+        
 	} else {	
 		[self showListView:!_displayingList];
 	}
 }
 
--(void)receivedNewSearchResults:(NSArray*)searchResults forQuery:(NSString *)searchQuery
+- (void)receivedNewSearchResults:(NSArray*)searchResults forQuery:(NSString *)searchQuery
 {	
     NSMutableArray *searchResultsArr = [NSMutableArray arrayWithCapacity:searchResults.count];
     
@@ -484,10 +488,11 @@
 
 
 #pragma mark UISearchBarDelegate
+
 - (void)searchBarTextDidBeginEditing:(UISearchBar *)searchBar
 {
     [self hideToolBar];
-    [_searchController setActive:YES animated:YES];
+    //[_searchController setActive:YES animated:YES];
 }
 
 - (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
@@ -577,19 +582,19 @@
 
 - (void)bookmarkButtonClicked:(UIButton *)sender
 {
-	if(nil != _selectionVC)
-	{
+	if (nil != _selectionVC) {
 		[_selectionVC dismissModalViewControllerAnimated:NO];
 		[_selectionVC release];
 		_selectionVC = nil;
 	}
 	
-	_selectionVC = [[MapSelectionController alloc]  initWithMapSelectionControllerSegment:MapSelectionControllerSegmentBookmarks campusMap:self];
+	//_selectionVC = [[MapSelectionController alloc] initWithMapViewController:self];
+    _selectionVC = [[MapSelectionController alloc] init];
+    _selectionVC.mapVC = self;
+    [_selectionVC switchToSegment:MapSelectionControllerSegmentBookmarks];
+    
 	MIT_MobileAppDelegate *appDelegate = (MIT_MobileAppDelegate *)[[UIApplication sharedApplication] delegate];
 	[appDelegate presentAppModalViewController:_selectionVC animated:YES];
-		
-	//UINavigationController* navController = [[[UINavigationController alloc] initWithRootViewController:_bookmarksVC] autorelease];
-	//[self presentModalViewController:navController animated:YES];
 }
 
 #pragma mark MKMapView delegation
@@ -642,18 +647,12 @@
 	if ([annotation isKindOfClass:[ArcGISMapSearchResultAnnotation class]]) {
 		
 		// push the details page onto the stack for the item selected. 
-		MITMapDetailViewController *detailsVC = [[[MITMapDetailViewController alloc] initWithNibName:@"MITMapDetailViewController"
-																							  bundle:nil] autorelease];
+		MITMapDetailViewController *detailsVC = [[[MITMapDetailViewController alloc] initWithNibName:@"MITMapDetailViewController" bundle:nil] autorelease];
 		
 		detailsVC.annotation = annotation;
 		detailsVC.title = @"Info";
 		detailsVC.campusMapVC = self;
 		
-		if(!((ArcGISMapSearchResultAnnotation *)annotation).bookmark) {
-			if(self.lastSearchText != nil && self.lastSearchText.length > 0) {
-				detailsVC.queryText = self.lastSearchText;
-			}
-		}
 		[self.navigationController pushViewController:detailsVC animated:animated];		
 	}
 }
@@ -685,10 +684,12 @@
 	[self pushAnnotationDetails:view.annotation animated:YES];
 }
 
-- (void) annotationSelected:(id<MKAnnotation>)annotation {
+
+// TODO: this doesn't seem to be used anywhere
+- (void)annotationSelected:(id<MKAnnotation>)annotation {
 	if([annotation isKindOfClass:[ArcGISMapSearchResultAnnotation class]]) {
 		ArcGISMapSearchResultAnnotation *searchAnnotation = (ArcGISMapSearchResultAnnotation *)annotation;
-		if (!searchAnnotation.dataPopulated) {	
+		if (!searchAnnotation.dataPopulated) {
 			[searchAnnotation searchAnnotationWithDelegate:self];	
 		}
 	}
