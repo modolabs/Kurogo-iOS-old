@@ -484,13 +484,11 @@ static NSInteger numTries = 0;
 	} else {
 		// load what's in CoreData, up to categoryCount
 		NSPredicate *predicate = nil;
-		//NSSortDescriptor *featuredSortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"featured" ascending:NO];
 		NSSortDescriptor *postDateSortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"postDate" ascending:NO];
 		NSSortDescriptor *storyIdSortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"story_id" ascending:NO];
 		NSArray *sortDescriptors = [NSArray arrayWithObjects:/*featuredSortDescriptor,*/ postDateSortDescriptor, storyIdSortDescriptor, nil];
 		[storyIdSortDescriptor release];
 		[postDateSortDescriptor release];
-		//[featuredSortDescriptor release];
 		
 		if (self.activeCategoryId == 0) {//NewsCategoryIdTopNews) {
 			predicate = [NSPredicate predicateWithFormat:@"topStory == YES"];
@@ -503,7 +501,6 @@ static NSInteger numTries = 0;
 		NSArray *results = [CoreDataManager objectsForEntity:NewsStoryEntityName matchingPredicate:predicate sortDescriptors:sortDescriptors];
 		NewsCategory *aCategory = [[self.categories filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"category_id == %d", self.activeCategoryId]] lastObject];
 
-        //NSLog(@"results: %@", [results description]);
 		NSLog(@"activecategoryid: %d", self.activeCategoryId);
         NSDate *lastUpdatedDate = [aCategory valueForKey:@"lastUpdated"];
 
@@ -528,7 +525,6 @@ static NSInteger numTries = 0;
         
         NSMutableArray *storyCandidates = [NSMutableArray arrayWithArray:[results subarrayWithRange:NSMakeRange(0, maxLength)]];
         
-		//self.stories = [results subarrayWithRange:NSMakeRange(0, maxLength)];
         if ([storyCandidates containsObject:self.featuredStory]) {
             [storyCandidates removeObject:self.featuredStory];
             self.stories = [[NSArray arrayWithObject:self.featuredStory] arrayByAddingObjectsFromArray:storyCandidates];
