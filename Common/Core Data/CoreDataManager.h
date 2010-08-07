@@ -1,6 +1,9 @@
 #import <Foundation/Foundation.h>
-
 #import <CoreData/CoreData.h>
+
+// TODO: the several variations of
+// -[CoreDataManager fetchDataForAttribute] and -[CoreDatamanager objectsForEntity]
+// are basically the same function.  we should standardize on one or two and remove the rest.
 
 @interface CoreDataManager : NSObject {
 	NSManagedObjectModel *managedObjectModel;

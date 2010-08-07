@@ -8,13 +8,12 @@
 @synthesize name = _name;
 @synthesize street = _street;
 @synthesize info = _info;
-@synthesize bookmark = _bookmark;
 @synthesize dataPopulated = _dataPopulated;
 @synthesize coordinate = _coordinate;
 
-// TODO: remove query (always self.name) and object (always self)
 - (void)searchAnnotationWithDelegate:(id<JSONAPIDelegate>)delegate {
 	JSONAPIRequest *apiRequest = [JSONAPIRequest requestWithJSONAPIDelegate:delegate];
+    NSLog(@"%@", [delegate description]);
 	apiRequest.userData = self;
 	[apiRequest requestObjectFromModule:@"map"
                                 command:@"search"
@@ -38,9 +37,6 @@
 {
 	if (self = [super init]) {
 		[self updateWithInfo:info];
-        //if (!self.dataPopulated) {
-        //    [self executeServerSearchWithQuery:self.name jsonDelegate:self object:nil];
-        //}
 	}
 	return self;
 }
@@ -49,34 +45,36 @@
 {
     self.info = info;
     
-    NSDictionary *infoAttributes = [self.info objectForKey:@"attributes"];
-    NSDictionary *infoGeometry = [self.info objectForKey:@"geometry"];
-    if (infoGeometry) {
-        NSArray *rings = [infoGeometry objectForKey:@"rings"];
-        if (rings) {
-            self.polygon = [[PolygonOverlay alloc] initWithRings:rings];
-            self.coordinate = self.polygon.coordinate;
-            NSLog(@"%@", [self.polygon description]);
+    if ([TileServerManager isInitialized]) {
+        NSDictionary *infoAttributes = [self.info objectForKey:@"attributes"];
+        NSDictionary *infoGeometry = [self.info objectForKey:@"geometry"];
+        if (infoGeometry) {
+            NSArray *rings = [infoGeometry objectForKey:@"rings"];
+            if (rings) {
+                self.polygon = [[PolygonOverlay alloc] initWithRings:rings];
+                self.coordinate = self.polygon.coordinate;
+                NSLog(@"%@", [self.polygon description]);
+            }
+        }
+        
+        self.uniqueID = [infoAttributes objectForKey:@"OBJECTID"];
+        self.name = [infoAttributes objectForKey:@"Building Name"];
+        self.street = [infoAttributes objectForKey:@"Address"];
+        
+        if (self.name == nil) {
+            self.name = [info objectForKey:@"displayName"];
+        }
+        
+        NSLog(@"found %@ at %.4f, %.4f", self.name, self.coordinate.longitude, self.coordinate.latitude);
+        
+        if (infoAttributes) {
+            self.dataPopulated = YES;
         }
     }
-    
-    self.uniqueID = [infoAttributes objectForKey:@"OBJECTID"];
-    self.name = [infoAttributes objectForKey:@"Building Name"];
-    self.street = [infoAttributes objectForKey:@"Address"];
-    
-    if (self.name == nil) {
-        self.name = [info objectForKey:@"displayName"];
-    }
-    
-    NSLog(@"found %@ at %.4f, %.4f", self.name, self.coordinate.longitude, self.coordinate.latitude);
-    
-    if (infoAttributes) {
-        self.dataPopulated = YES;
-    }    
 }
 
 - (BOOL)canAddOverlay {
-    return [self.polygon.rings count] > 0;
+    return (self.dataPopulated && [self.polygon.rings count] > 0);
 }
 
 - (NSDictionary *)info {
@@ -104,12 +102,20 @@
 
 - (NSString *)title
 {
-    return self.name;
+    if ([self.name length]) {
+        return self.name;
+    } else if ([self.street length]) {
+        return self.street; // don't turn off the annotation if we have something to show
+    }
+    return nil;
 }
 
 - (NSString *)subtitle
 {
-    return self.street;
+    if ([self.name length]) {
+        return self.street;
+    } // otherwise street would be returned in title
+    return nil;
 }
 
 @end

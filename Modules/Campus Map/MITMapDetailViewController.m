@@ -12,9 +12,6 @@
 // load the content of the current annotation into the view.
 -(void) loadAnnotationContent;
 
-// determine the best name string for this result
-//-(NSString*) nameString;
-
 @end
 
 
@@ -47,9 +44,6 @@
     [super dealloc];
 }
 
-
-
-// Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad {
     [super viewDidLoad];
 	
@@ -61,18 +55,6 @@
 		[_bookmarkButton setImage:[UIImage imageNamed:@"global/bookmark_on.png"] forState:UIControlStateNormal];
 		[_bookmarkButton setImage:[UIImage imageNamed:@"global/bookmark_on_pressed.png"] forState:UIControlStateHighlighted];
 	}
-	
-	/*
-	NSString* docsFolder = [NSHomeDirectory() stringByAppendingPathComponent:@"Documents"];
-	NSArray* bookmarks = [NSArray arrayWithContentsOfFile:[docsFolder stringByAppendingPathComponent:@"bookmarks.plist"]];
-	for (NSDictionary* bookmark in bookmarks) {
-		if ([[bookmark objectForKey:@"bldgnum"] isEqualToString:self.annotation.bldgnum]) {
-			[_bookmarkButton setImage:[UIImage imageNamed:@"bookmark_on.png"] forState:UIControlStateNormal];
-			[_bookmarkButton setImage:[UIImage imageNamed:@"bookmark_on_pressed.png"] forState:UIControlStateHighlighted];
-			break;
-		}
-	}
-	*/
 	
 	//_mapView.shouldNotDropPins = YES;
 	[_mapView addAnnotation:self.annotation];
@@ -156,20 +138,6 @@
 	
 	[[UIApplication sharedApplication] openURL:[NSURL URLWithString:url]];
 }
-/*
--(NSString*) nameString
-{
-	NSString* nameString = nil;
-	if (self.annotationDetails.bldgnum != nil) {
-		nameString = [NSString stringWithFormat:@"Building %@ (%@)", self.annotationDetails.bldgnum, self.annotationDetails.name];
-	}
-	else {
-		nameString = self.annotation.name;
-	}
-	
-	return nameString;
-}
-*/
 
 -(void) loadAnnotationContent
 {
@@ -178,56 +146,48 @@
 	_locationLabel.hidden = NO;
 	
     
-	//if (self.annotationDetails.contents.count > 0) {
-		
-		CGFloat padding = 10.0;
-		CGFloat currentHeight = padding;
-		CGFloat bulletWidth = 24.0;
-		UIFont *whatsHereFont = [UIFont systemFontOfSize:STANDARD_CONTENT_FONT_SIZE];
-		//for (NSString* content in self.annotationDetails.contents) {
-    for (NSString *field in [self.annotation.attributes allKeys]) {
-
+    CGFloat padding = 10.0;
+    CGFloat currentHeight = padding;
+    CGFloat bulletWidth = 24.0;
+    UIFont *whatsHereFont = [UIFont systemFontOfSize:STANDARD_CONTENT_FONT_SIZE];
+	for (NSString *field in [self.annotation.attributes allKeys]) {
+        
         NSString *content = [NSString stringWithFormat:@"%@: %@", field, [self.annotation.attributes objectForKey:field]];
-			CGSize textSize = [content sizeWithFont:whatsHereFont 
-								  constrainedToSize:CGSizeMake(_whatsHereView.frame.size.width - bulletWidth - 2 * padding, 400.0) 
-									  lineBreakMode:UILineBreakModeWordWrap];
-
-			UILabel *bullet = [[UILabel alloc] initWithFrame:CGRectMake(padding, currentHeight, bulletWidth - padding, 20.0)];
-			bullet.text = @"•";
-			[_whatsHereView addSubview:bullet];
-			[bullet release];
-			
-			UILabel *listItem = [[UILabel alloc] initWithFrame:CGRectMake(bulletWidth, currentHeight, textSize.width, textSize.height)];
-			listItem.text = content;
-			listItem.lineBreakMode = UILineBreakModeWordWrap;
-			listItem.numberOfLines = 0;
-			[_whatsHereView addSubview:listItem];
-			[listItem release];
-			
-			currentHeight += textSize.height;
-		}
-		// resize the what's here view to contain the full label
-		_whatsHereView.frame = CGRectMake(_whatsHereView.frame.origin.x,
-										  _whatsHereView.frame.origin.y,
-										  _whatsHereView.frame.size.width,
-										  currentHeight + padding);
-		
-		
-		// resize the content container if the what's here view is bigger than it
-		if (_whatsHereView.frame.size.height > _tabViewContainer.frame.size.height) {
-			_tabViewContainer.frame = CGRectMake(_tabViewContainer.frame.origin.x,
-												 _tabViewContainer.frame.origin.y,
-												 _tabViewContainer.frame.size.width,
-												 (_whatsHereView.frame.size.height > _tabViewContainerMinHeight ) ? _whatsHereView.frame.size.height : _tabViewContainerMinHeight);
-			
-			CGSize contentSize = CGSizeMake(_scrollView.frame.size.width, _tabViewContainer.frame.size.height + _tabViewContainer.frame.origin.y);
-			[_scrollView setContentSize:contentSize];
-		}
-	//} else {
-	//	UILabel* noWhatsHereLabel = [[[UILabel alloc] initWithFrame:CGRectMake(13, 6, _whatsHereView.frame.size.width, 20)] autorelease];
-	//	noWhatsHereLabel.text = NSLocalizedString(@"No Information Available", nil);
-	//	[_whatsHereView addSubview:noWhatsHereLabel];
-	//}
+        CGSize textSize = [content sizeWithFont:whatsHereFont 
+                              constrainedToSize:CGSizeMake(_whatsHereView.frame.size.width - bulletWidth - 2 * padding, 400.0) 
+                                  lineBreakMode:UILineBreakModeWordWrap];
+        
+        UILabel *bullet = [[UILabel alloc] initWithFrame:CGRectMake(padding, currentHeight, bulletWidth - padding, 20.0)];
+        bullet.text = @"•";
+        [_whatsHereView addSubview:bullet];
+        [bullet release];
+        
+        UILabel *listItem = [[UILabel alloc] initWithFrame:CGRectMake(bulletWidth, currentHeight, textSize.width, textSize.height)];
+        listItem.text = content;
+        listItem.lineBreakMode = UILineBreakModeWordWrap;
+        listItem.numberOfLines = 0;
+        [_whatsHereView addSubview:listItem];
+        [listItem release];
+        
+        currentHeight += textSize.height;
+    }
+    // resize the what's here view to contain the full label
+    _whatsHereView.frame = CGRectMake(_whatsHereView.frame.origin.x,
+                                      _whatsHereView.frame.origin.y,
+                                      _whatsHereView.frame.size.width,
+                                      currentHeight + padding);
+    
+    
+    // resize the content container if the what's here view is bigger than it
+    if (_whatsHereView.frame.size.height > _tabViewContainer.frame.size.height) {
+        _tabViewContainer.frame = CGRectMake(_tabViewContainer.frame.origin.x,
+                                             _tabViewContainer.frame.origin.y,
+                                             _tabViewContainer.frame.size.width,
+                                             (_whatsHereView.frame.size.height > _tabViewContainerMinHeight ) ? _whatsHereView.frame.size.height : _tabViewContainerMinHeight);
+        
+        CGSize contentSize = CGSizeMake(_scrollView.frame.size.width, _tabViewContainer.frame.size.height + _tabViewContainer.frame.origin.y);
+        [_scrollView setContentSize:contentSize];
+    }
 	
 	[_tabViewControl addTab:@"What's Here"];
 	[_tabViews addObject:_whatsHereView];
@@ -251,21 +211,16 @@
 	if (_tabViewControl.tabs.count <= 0) {
 		_tabViewControl.hidden = YES;
 		_tabViewContainer.hidden = YES;
-	}
-	else
-	{
+	} else {
 		_tabViewControl.hidden = NO;
 		_tabViewContainer.hidden = NO;
 	}
 	
 	[_tabViewControl setNeedsDisplay];
-	
-	
 	[_tabViewControl setDelegate:self];
 	
 	
 	// set the labels
-	//NSString* nameString = [self nameString];
 	_nameLabel.text = self.annotation.title;
 	_nameLabel.numberOfLines = 0;
 	CGSize stringSize = [self.annotation.title sizeWithFont:_nameLabel.font 
@@ -294,19 +249,9 @@
 	}
 	
 	// force the correct tab to load
-	if(_tabViews.count > 0)
-	{
-
-		//if (self.annotationDetails.contents.count == 0 && _tabViews.count > 1) {
-		//	_tabViewControl.selectedTab = 1;
-		//	[self tabControl:_tabViewControl changedToIndex:1 tabText:nil];
-		//}
-		//else {
-			_tabViewControl.selectedTab = 0;
-			[self tabControl:_tabViewControl changedToIndex:0 tabText:nil];
-		//}
-
-
+	if(_tabViews.count > 0) {
+        _tabViewControl.selectedTab = 0;
+        [self tabControl:_tabViewControl changedToIndex:0 tabText:nil];
 	}
 	
 }
@@ -328,25 +273,15 @@
 - (void)viewDidUnload {
 	
 	[_tabViewControl release];
-	
 	[_nameLabel release];
-	
 	[_locationLabel release];
-	
 	[_tabViewContainer release];
-
 	[_buildingView release];
-	
 	[_buildingImageView release];
-	
 	[_buildingImageDescriptionLabel release];
-	
 	[_whatsHereView release];
-	
 	[_tabViews release];
-	
 	[_loadingImageView release];
-	
 	[_loadingResultView release];
 	
 }
@@ -368,23 +303,18 @@
 
 -(IBAction) bookmarkButtonTapped
 {
-	MapBookmarkManager* bookmarkManager = [MapBookmarkManager defaultManager];
-	if ([bookmarkManager isBookmarked:self.annotation.uniqueID])
-	{
+	MapBookmarkManager *bookmarkManager = [MapBookmarkManager defaultManager];
+	if ([bookmarkManager isBookmarked:self.annotation.uniqueID]) {
 		// remove the bookmark and set the images
-		[bookmarkManager removeBookmark:self.annotation.uniqueID];
+        MapSavedAnnotation *saved = [bookmarkManager savedAnnotationForID:self.annotation.uniqueID];
+		[bookmarkManager removeBookmark:saved];
 		
 		[_bookmarkButton setImage:[UIImage imageNamed:@"global/bookmark_off.png"] forState:UIControlStateNormal];
 		[_bookmarkButton setImage:[UIImage imageNamed:@"global/bookmark_off_pressed.png"] forState:UIControlStateHighlighted];
-	}
-	else 
-	{
-		NSString* subTitle = nil;
-		if (self.annotation.name != nil) {
-			subTitle = [NSString stringWithFormat:@"%@", self.annotation.name];
-		}
-		[bookmarkManager addBookmark:self.annotation.uniqueID title:self.annotation.name subtitle:subTitle data:self.annotation.attributes];
-		
+
+	} else {
+        [bookmarkManager bookmarkAnnotation:self.annotation];
+        
 		[_bookmarkButton setImage:[UIImage imageNamed:@"global/bookmark_on.png"] forState:UIControlStateNormal];
 		[_bookmarkButton setImage:[UIImage imageNamed:@"global/bookmark_on_pressed.png"] forState:UIControlStateHighlighted];
 	}
@@ -406,12 +336,6 @@
 										 _tabViewContainer.frame.origin.y + viewToAdd.frame.size.height);
 	
 	[_tabViewContainer addSubview:viewToAdd];
-	
-	if (_campusMapVC.displayingList)
-		[_campusMapVC.url setPath:[NSString stringWithFormat:@"list/detail/%@/%d", _annotation.uniqueID, tabIndex] query:_campusMapVC.lastSearchText];
-	else 
-		[_campusMapVC.url setPath:[NSString stringWithFormat:@"detail/%@/%d", _annotation.uniqueID, tabIndex] query:_campusMapVC.lastSearchText];
-	[_campusMapVC.url setAsModulePath];
 }
 
 
@@ -423,8 +347,6 @@
     	if ([resultList count] > 0) {
             NSDictionary *firstResult = [resultList objectAtIndex:0];
             [self.annotation updateWithInfo:firstResult];
-            //ArcGISMapSearchResultAnnotation *annotation = [[[ArcGISMapSearchResultAnnotation alloc] initWithInfo:[resultList objectAtIndex:0]] autorelease];
-            //self.annotationDetails = annotation;
             
             // load the new contents. 
             [self loadAnnotationContent];
@@ -433,12 +355,12 @@
 }
 	
 -(void) connectionDidReceiveResponse: (ConnectionWrapper *)connectionWrapper {
-	//[(MIT_MobileAppDelegate *)[[UIApplication sharedApplication] delegate] showNetworkActivityIndicator];
+	[(MIT_MobileAppDelegate *)[[UIApplication sharedApplication] delegate] showNetworkActivityIndicator];
 	networkActivity = YES;
 }
 
 -(void) connection:(ConnectionWrapper *)wrapper handleData:(NSData *)data {
-	//[(MIT_MobileAppDelegate *)[[UIApplication sharedApplication] delegate] hideNetworkActivityIndicator];
+	[(MIT_MobileAppDelegate *)[[UIApplication sharedApplication] delegate] hideNetworkActivityIndicator];
 	networkActivity = NO;
 	
 	_loadingImageView.hidden = YES;
@@ -450,7 +372,7 @@
 }
 	
 -(void) connection:(ConnectionWrapper *)wrapper handleConnectionFailureWithError:(NSError *)error {
-	//[(MIT_MobileAppDelegate *)[[UIApplication sharedApplication] delegate] hideNetworkActivityIndicator];
+	[(MIT_MobileAppDelegate *)[[UIApplication sharedApplication] delegate] hideNetworkActivityIndicator];
 	networkActivity = NO;
 	
 	self.imageConnectionWrapper = nil;

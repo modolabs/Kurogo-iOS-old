@@ -1,32 +1,18 @@
 #import "Constants.h"
 
-// common URLs
-/*#ifdef USE_MOBILE_DEV
-NSString * const MITMobileWebDomainString =        @"localhost:8888";b
+// TODO: add USE_MOBILE_TEST configuration
+#ifdef USE_MOBILE_DEV
+NSString * const MITMobileWebDomainString =        @"localhost:8888";
 NSString * const MITMobileWebAPIURLString = @"http://localhost:8888/api/";
 #else
-#ifdef USE_MOBILE_STAGE
-NSString * const MITMobileWebDomainString = @"localhost:8888";        //@"mobile-stage.mit.edu";
-NSString * const MITMobileWebAPIURLString = @"http://localhost:8888/api/"; //@"http://mobile-stage.mit.edu/api/";
-#else
-NSString * const MITMobileWebDomainString = @"localhost:8888";        //@"m.mit.edu";
-NSString * const MITMobileWebAPIURLString = @"http://localhost:8888/api/"; //@"http://m.mit.edu/api/";
+    #ifdef USE_MOBILE_STAGE
+    NSString * const MITMobileWebDomainString = @"184.106.197.212";
+    NSString * const MITMobileWebAPIURLString = @"http://184.106.197.212/api/";
+    #else
+    NSString * const MITMobileWebDomainString = @"184.106.197.212";
+    NSString * const MITMobileWebAPIURLString = @"http://184.106.197.212/api/";
     #endif
 #endif
-*/
-
-#ifdef USE_MOBILE_DEV
- NSString * const MITMobileWebDomainString =        @"localhost:8888";
- NSString * const MITMobileWebAPIURLString = @"http://localhost:8888/api/";
- #else
- #ifdef USE_MOBILE_STAGE
- NSString * const MITMobileWebDomainString = @"184.106.197.212";        //@"mobile-stage.mit.edu";
- NSString * const MITMobileWebAPIURLString = @"http://184.106.197.212/api/"; //@"http://mobile-stage.mit.edu/api/";
- #else
- NSString * const MITMobileWebDomainString = @"184.106.197.212";        //@"m.mit.edu";
- NSString * const MITMobileWebAPIURLString = @"http://184.106.197.212/api/"; //@"http://m.mit.edu/api/";
- #endif
- #endif
  
 
 // keys for NSUserDefaults dictionary go here (app preferences)
@@ -44,7 +30,6 @@ NSString * const DeviceTokenKey = @"DeviceToken";
 NSString * const MITUnreadNotificationsKey = @"UnreadNotifications";
 NSString * const PushNotificationSettingsKey = @"ModulesDisabledForPush";
 NSString * const MITModulesSavedStateKey = @"MITModulesSavedState";
-NSString * const CachedMapSearchQueryKey = @"CachedMapSearchQuerey";
 NSString * const ShakeToReturnPrefKey = @"ShakeToReturnHomePref";
 NSString * const MapTypePrefKey = @"MapTypePref";
 
@@ -98,6 +83,8 @@ NSString * const ShuttleRouteStopEntityName = @"ShuttleRouteStop";
 NSString * const CalendarEventEntityName = @"MITCalendarEvent";
 NSString * const CalendarCategoryEntityName = @"EventCategory";
 NSString * const CampusMapSearchEntityName = @"MapSearch";
+NSString * const CampusMapAnnotationEntityName = @"MapSavedAnnotation";
+
 
 // resource names
 

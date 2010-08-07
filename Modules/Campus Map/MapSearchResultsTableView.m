@@ -1,13 +1,11 @@
-#import "MITMapSearchResultsVC.h"
+#import "MapSearchResultsTableView.h"
 #import "MapSearchResultAnnotation.h"
 #import "MITMapDetailViewController.h"
 #import "CampusMapViewController.h"
-#import "TouchableTableView.h"
 #import "MITUIConstants.h"
-#import "UITableView+MITUIAdditions.h"
-//#import "MultiLineTableViewCell.h"
 
-@implementation MITMapSearchResultsVC
+@implementation MapSearchResultsTableView
+
 @synthesize searchResults = _searchResults;
 @synthesize isCategory = _isCategory;
 @synthesize campusMapVC = _campusMapVC;
@@ -16,57 +14,29 @@
     [super dealloc];
 }
 
-
-- (void)didReceiveMemoryWarning {
-	// Releases the view if it doesn't have a superview.
-    [super didReceiveMemoryWarning];
-	
-	// Release any cached data, images, etc that aren't in use.
-}
-
--(void) viewDidLoad
+- (void)setSearchResults:(NSArray *)searchResults
 {
-	[super viewDidLoad];
+    if (_searchResults != searchResults) {
+        [_searchResults release];
+        _searchResults = [searchResults retain];
+    }
+    [self reloadData];
 }
 
-- (void)viewDidUnload {
-	
-	self.searchResults = nil;
-	[_tableView release];
-	
-	[super viewDidUnload];
-}
-
--(void) setSearchResults:(NSArray *)searchResults
-{
-	[_searchResults release];
-	_searchResults = [searchResults retain];
-	[_tableView reloadData];
-}
-
--(void) touchEnded
-{
-	[self.campusMapVC.searchBar resignFirstResponder];
-}
 #pragma mark Table view methods
-
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     return 1;
 }
 
-
-// Customize the number of rows in the table view.
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     return self.searchResults.count;
 }
 
-
-// Customize the appearance of table view cells.
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-	static NSString* CellIdentifier = @"Cell";
+	static NSString *CellIdentifier = @"Cell";
 	
-	UITableViewCell* cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+	UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil) {
         cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier] autorelease];
     }
@@ -74,17 +44,11 @@
 	// get the annotation for this index
 	ArcGISMapSearchResultAnnotation *annotation = [self.searchResults objectAtIndex:indexPath.row];
 	cell.textLabel.text = annotation.name;
-	
-	if (nil != annotation.name)
-		cell.detailTextLabel.text = annotation.street;
-	else
-		cell.detailTextLabel.text = nil;
-	
+	cell.detailTextLabel.text = annotation.street;
 	cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 	
     return cell;
 }
-
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath 
 {
@@ -98,50 +62,22 @@
 	detailsVC.title = @"Info";
 	detailsVC.campusMapVC = self.campusMapVC;
 
-	if (self.isCategory) 
-	{
+	if (self.isCategory) {
 		detailsVC.queryText = detailsVC.annotation.name;
-	}
-	else if(self.campusMapVC.lastSearchText != nil && self.campusMapVC.lastSearchText.length > 0)
-	{
+	} else if(self.campusMapVC.lastSearchText != nil && self.campusMapVC.lastSearchText.length > 0) {
 		detailsVC.queryText = self.campusMapVC.lastSearchText;
-		[self.campusMapVC.url setPath:[NSString stringWithFormat:@"detail/%@", annotation.uniqueID] query:self.campusMapVC.lastSearchText];
-		[self.campusMapVC.url setAsModulePath];
 	}
 	
 	[self.campusMapVC.navigationController pushViewController:detailsVC animated:YES];
      
 }
 
+/*
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
 {
 	[cell setNeedsLayout];
 }
-
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-	
-	ArcGISMapSearchResultAnnotation *annotation = [self.searchResults objectAtIndex:indexPath.row];
-	
-	CGFloat width = self.view.frame.size.width - 33.0;
-	
-	CGSize labelSize = [annotation.name sizeWithFont:[UIFont boldSystemFontOfSize:CELL_STANDARD_FONT_SIZE]
-								   constrainedToSize:CGSizeMake(width, self.view.frame.size.height)
-									   lineBreakMode:UILineBreakModeWordWrap];
-	
-	CGFloat height = labelSize.height;
-	
-	NSString *detailString = [NSString stringWithFormat:@"Building %@", annotation.name];
-	
-	labelSize = [detailString sizeWithFont:[UIFont systemFontOfSize:CELL_DETAIL_FONT_SIZE]
-						 constrainedToSize:CGSizeMake(width, 200.0)
-							 lineBreakMode:UILineBreakModeWordWrap];
-	
-	CGFloat cellheight = round((height + labelSize.height) * 1.2 + 6.0);
-	
-	return cellheight;
-
-}
+*/
 
 - (UIView *) tableView: (UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
 	return [UITableView ungroupedSectionHeaderWithTitle:

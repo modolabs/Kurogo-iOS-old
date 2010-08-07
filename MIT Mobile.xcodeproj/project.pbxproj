@@ -28,12 +28,10 @@
 		2978864510F03656002670CC /* MITDeviceRegistration.m in Sources */ = {isa = PBXBuildFile; fileRef = 2978864210F03656002670CC /* MITDeviceRegistration.m */; };
 		2978864610F03656002670CC /* MITUnreadNotifications.m in Sources */ = {isa = PBXBuildFile; fileRef = 2978864410F03656002670CC /* MITUnreadNotifications.m */; };
 		2980C03210D9728800F19FF0 /* NewsDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 2980C03110D9728800F19FF0 /* NewsDataSource.m */; };
-		29859FFA10F7C37600D137D6 /* MITSearchEffects.m in Sources */ = {isa = PBXBuildFile; fileRef = 29859FF910F7C37600D137D6 /* MITSearchEffects.m */; };
 		299149A010DDB50300B01A8E /* StellarSearch.m in Sources */ = {isa = PBXBuildFile; fileRef = 2991499F10DDB50300B01A8E /* StellarSearch.m */; };
 		29974B711160F1DA009D03B9 /* URLShortener.m in Sources */ = {isa = PBXBuildFile; fileRef = 29974B701160F1DA009D03B9 /* URLShortener.m */; };
 		29A0D12110CDD0E8009FC010 /* StellarCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 29A0D11E10CDD0E8009FC010 /* StellarCache.m */; };
 		29A0D12210CDD0E8009FC010 /* StellarClassesTableController.m in Sources */ = {isa = PBXBuildFile; fileRef = 29A0D12010CDD0E8009FC010 /* StellarClassesTableController.m */; };
-		29B6038D11541AB200064E0A /* TwitterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B6038C11541AB200064E0A /* TwitterViewController.m */; };
 		29C4546D118B55E100A321B0 /* jQueryInject.txt in Resources */ = {isa = PBXBuildFile; fileRef = 29C45425118B55E100A321B0 /* jQueryInject.txt */; };
 		29C4546E118B55E100A321B0 /* jQueryInjectLandscape.txt in Resources */ = {isa = PBXBuildFile; fileRef = 29C45426118B55E100A321B0 /* jQueryInjectLandscape.txt */; };
 		29C4546F118B55E100A321B0 /* ExchangeCredentialsOperation.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = 29C45429118B55E100A321B0 /* ExchangeCredentialsOperation.h */; settings = {JAVA_ARCHIVE_SUBDIR = "Common/Libraries & Headers"; }; };
@@ -105,9 +103,7 @@
 		4420F23110E9513700A8CD05 /* ShuttleDataManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 4420F23010E9513700A8CD05 /* ShuttleDataManager.m */; };
 		4420F31B10E96EBE00A8CD05 /* ShuttleStopMapAnnotation.m in Sources */ = {isa = PBXBuildFile; fileRef = 4420F31A10E96EBE00A8CD05 /* ShuttleStopMapAnnotation.m */; };
 		4420F62910EBA5D000A8CD05 /* ShuttleStopViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4420F62810EBA5D000A8CD05 /* ShuttleStopViewController.m */; };
-		44293C3510DAE88500273119 /* MITMapSearchResultsVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 44293C3310DAE88500273119 /* MITMapSearchResultsVC.m */; };
-		44293C3610DAE88500273119 /* MITMapSearchResultsVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 44293C3410DAE88500273119 /* MITMapSearchResultsVC.xib */; };
-		442C11DF10EC112700CB44EC /* TouchableTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 442C11DE10EC112700CB44EC /* TouchableTableView.m */; };
+		44293C3510DAE88500273119 /* MapSearchResultsTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 44293C3310DAE88500273119 /* MapSearchResultsTableView.m */; };
 		442C192A10F3AE3400CB44EC /* RouteMapViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 442C192810F3AE3400CB44EC /* RouteMapViewController.m */; };
 		442C192B10F3AE3400CB44EC /* RouteMapViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 442C192910F3AE3400CB44EC /* RouteMapViewController.xib */; };
 		442C1CA310F4FE8900CB44EC /* ShuttleLocation.m in Sources */ = {isa = PBXBuildFile; fileRef = 442C1CA210F4FE8900CB44EC /* ShuttleLocation.m */; };
@@ -117,14 +113,9 @@
 		4463CCB210D6F5750048CA83 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4463CCB110D6F5750048CA83 /* CoreLocation.framework */; };
 		4463D09410D92CB00048CA83 /* MITMapDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4463D09210D92CB00048CA83 /* MITMapDetailViewController.m */; };
 		4463D09510D92CB00048CA83 /* MITMapDetailViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4463D09310D92CB00048CA83 /* MITMapDetailViewController.xib */; };
-		4463D0A010D92F6B0048CA83 /* TabViewControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 4463D09F10D92F6B0048CA83 /* TabViewControl.m */; };
 		448FF58F10FA4BDE00850BC0 /* ShuttleRouteViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 448FF58E10FA4BDE00850BC0 /* ShuttleRouteViewController.xib */; };
-		4499332D11A371CF00A7041B /* RecentSearchesViewController.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = 4499332B11A371CE00A7041B /* RecentSearchesViewController.h */; settings = {JAVA_ARCHIVE_SUBDIR = "Modules/Campus Map"; }; };
-		4499332E11A371CF00A7041B /* RecentSearchesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4499332C11A371CF00A7041B /* RecentSearchesViewController.m */; };
 		4499341E11A5E53D00A7041B /* CategoriesTableViewController.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = 4499341C11A5E53D00A7041B /* CategoriesTableViewController.h */; settings = {JAVA_ARCHIVE_SUBDIR = "Modules/Campus Map"; }; };
 		4499341F11A5E53D00A7041B /* CategoriesTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4499341D11A5E53D00A7041B /* CategoriesTableViewController.m */; };
-		44ACF76C1187884300F1F4B2 /* BookmarksTableViewController.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = 44ACF7681187884300F1F4B2 /* BookmarksTableViewController.h */; settings = {JAVA_ARCHIVE_SUBDIR = "Modules/Campus Map"; }; };
-		44ACF76D1187884300F1F4B2 /* BookmarksTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 44ACF7691187884300F1F4B2 /* BookmarksTableViewController.m */; };
 		44ACF76E1187884300F1F4B2 /* MapBookmarkManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 44ACF76A1187884300F1F4B2 /* MapBookmarkManager.m */; };
 		44ACF76F1187884300F1F4B2 /* MapBookmarkManager.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = 44ACF76B1187884300F1F4B2 /* MapBookmarkManager.h */; settings = {JAVA_ARCHIVE_SUBDIR = "Modules/Campus Map"; }; };
 		44BF5B431100A75C00E150D5 /* RouteInfoTitleCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 44BF5B421100A75C00E150D5 /* RouteInfoTitleCell.m */; };
@@ -172,36 +163,14 @@
 		C704F06F11E3E31F00621406 /* MenuItems.m in Sources */ = {isa = PBXBuildFile; fileRef = C704F06011E3E31F00621406 /* MenuItems.m */; };
 		C727B53A11F4E245007D53BB /* CalendarCategoriesViewController.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = C727B53811F4E245007D53BB /* CalendarCategoriesViewController.h */; settings = {JAVA_ARCHIVE_SUBDIR = Modules/Calendar; }; };
 		C727B53B11F4E245007D53BB /* CalendarCategoriesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C727B53911F4E245007D53BB /* CalendarCategoriesViewController.m */; };
-		C759560812071BA3008474A9 /* dining-local.png in Resources */ = {isa = PBXBuildFile; fileRef = C759560012071BA3008474A9 /* dining-local.png */; };
-		C759560912071BA3008474A9 /* dining-local@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C759560112071BA3008474A9 /* dining-local@2x.png */; };
-		C759560A12071BA3008474A9 /* dining-organic.png in Resources */ = {isa = PBXBuildFile; fileRef = C759560212071BA3008474A9 /* dining-organic.png */; };
-		C759560B12071BA3008474A9 /* dining-organic@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C759560312071BA3008474A9 /* dining-organic@2x.png */; };
-		C759560C12071BA3008474A9 /* dining-vegan.png in Resources */ = {isa = PBXBuildFile; fileRef = C759560412071BA3008474A9 /* dining-vegan.png */; };
-		C759560D12071BA3008474A9 /* dining-vegan@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C759560512071BA3008474A9 /* dining-vegan@2x.png */; };
-		C759560E12071BA3008474A9 /* dining-vegetarian.png in Resources */ = {isa = PBXBuildFile; fileRef = C759560612071BA3008474A9 /* dining-vegetarian.png */; };
-		C759560F12071BA3008474A9 /* dining-vegetarian@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C759560712071BA3008474A9 /* dining-vegetarian@2x.png */; };
 		C759593E12074B47008474A9 /* HallDetailsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C759593812074B47008474A9 /* HallDetailsTableViewController.m */; };
 		C759593F12074B47008474A9 /* HallDetailsTableViewController.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = C759593912074B47008474A9 /* HallDetailsTableViewController.h */; settings = {JAVA_ARCHIVE_SUBDIR = Modules/Dining; }; };
 		C759594012074B47008474A9 /* DiningMultiLineCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C759593A12074B47008474A9 /* DiningMultiLineCell.m */; };
 		C759594112074B47008474A9 /* DiningMultiLineCell.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = C759593B12074B47008474A9 /* DiningMultiLineCell.h */; settings = {JAVA_ARCHIVE_SUBDIR = Modules/Dining; }; };
 		C759594212074B47008474A9 /* DiningHallStatus.m in Sources */ = {isa = PBXBuildFile; fileRef = C759593C12074B47008474A9 /* DiningHallStatus.m */; };
 		C759594312074B47008474A9 /* DiningHallStatus.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = C759593D12074B47008474A9 /* DiningHallStatus.h */; settings = {JAVA_ARCHIVE_SUBDIR = Modules/Dining; }; };
-		C76E64A31209C299005399CC /* dining-local-crop.png in Resources */ = {isa = PBXBuildFile; fileRef = C76E649D1209C299005399CC /* dining-local-crop.png */; };
-		C76E64A41209C299005399CC /* dining-local-crop@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C76E649E1209C299005399CC /* dining-local-crop@2x.png */; };
-		C76E64A51209C299005399CC /* dining-organic-crop.png in Resources */ = {isa = PBXBuildFile; fileRef = C76E649F1209C299005399CC /* dining-organic-crop.png */; };
-		C76E64A61209C299005399CC /* dining-organic-crop@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C76E64A01209C299005399CC /* dining-organic-crop@2x.png */; };
-		C76E64A71209C299005399CC /* dining-vegetarian-crop.png in Resources */ = {isa = PBXBuildFile; fileRef = C76E64A11209C299005399CC /* dining-vegetarian-crop.png */; };
-		C76E64A81209C299005399CC /* dining-vegetarian-crop@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C76E64A21209C299005399CC /* dining-vegetarian-crop@2x.png */; };
 		C776675911F733E3005496DD /* DatePickerViewController.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = C776675711F733E3005496DD /* DatePickerViewController.h */; settings = {JAVA_ARCHIVE_SUBDIR = Modules/Calendar; }; };
 		C776675A11F733E3005496DD /* DatePickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C776675811F733E3005496DD /* DatePickerViewController.m */; };
-		C7AA23911200CB3E0023F880 /* dining-status-closed-w-restrictions.png in Resources */ = {isa = PBXBuildFile; fileRef = C7AA23891200CB3E0023F880 /* dining-status-closed-w-restrictions.png */; };
-		C7AA23921200CB3E0023F880 /* dining-status-closed-w-restrictions@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C7AA238A1200CB3E0023F880 /* dining-status-closed-w-restrictions@2x.png */; };
-		C7AA23931200CB3E0023F880 /* dining-status-closed.png in Resources */ = {isa = PBXBuildFile; fileRef = C7AA238B1200CB3E0023F880 /* dining-status-closed.png */; };
-		C7AA23941200CB3E0023F880 /* dining-status-closed@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C7AA238C1200CB3E0023F880 /* dining-status-closed@2x.png */; };
-		C7AA23951200CB3E0023F880 /* dining-status-open-w-restrictions.png in Resources */ = {isa = PBXBuildFile; fileRef = C7AA238D1200CB3E0023F880 /* dining-status-open-w-restrictions.png */; };
-		C7AA23961200CB3E0023F880 /* dining-status-open-w-restrictions@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C7AA238E1200CB3E0023F880 /* dining-status-open-w-restrictions@2x.png */; };
-		C7AA23971200CB3E0023F880 /* dining-status-open.png in Resources */ = {isa = PBXBuildFile; fileRef = C7AA238F1200CB3E0023F880 /* dining-status-open.png */; };
-		C7AA23981200CB3E0023F880 /* dining-status-open@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C7AA23901200CB3E0023F880 /* dining-status-open@2x.png */; };
 		C7B897F111F535C8002B3619 /* HoursTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C7B897EF11F535C8002B3619 /* HoursTableViewController.m */; };
 		C7B897F211F535C8002B3619 /* HoursTableViewController.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = C7B897F011F535C8002B3619 /* HoursTableViewController.h */; settings = {JAVA_ARCHIVE_SUBDIR = Modules/Dining; }; };
 		DE0A62AC10CDAEA90058B2C2 /* MITBuildInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = DE0A62AB10CDAEA90058B2C2 /* MITBuildInfo.m */; };
@@ -212,7 +181,6 @@
 		DE6D32F610346D02008A5823 /* ShuttleModule.m in Sources */ = {isa = PBXBuildFile; fileRef = DE6D32F510346D02008A5823 /* ShuttleModule.m */; };
 		DE6D332B10346F6D008A5823 /* ShuttleRoutes.m in Sources */ = {isa = PBXBuildFile; fileRef = DE6D332A10346F6D008A5823 /* ShuttleRoutes.m */; };
 		DE6D332D10346F78008A5823 /* ShuttleRoutes.xib in Resources */ = {isa = PBXBuildFile; fileRef = DE6D332C10346F78008A5823 /* ShuttleRoutes.xib */; };
-		DE6D570610F05C59006431A8 /* TabScrollerBackgroundView.m in Sources */ = {isa = PBXBuildFile; fileRef = DE6D570510F05C59006431A8 /* TabScrollerBackgroundView.m */; };
 		DE6D9401110AD1ED00DAF213 /* SettingsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DE6D9319110A8EFA00DAF213 /* SettingsTableViewController.m */; };
 		DE6F045A11139CA40046684B /* FBConnectGlobal.m in Sources */ = {isa = PBXBuildFile; fileRef = DE6F044811139CA40046684B /* FBConnectGlobal.m */; };
 		DE6F045B11139CA40046684B /* FBSession.m in Sources */ = {isa = PBXBuildFile; fileRef = DE6F044A11139CA40046684B /* FBSession.m */; };
@@ -259,8 +227,25 @@
 		EB3721AB11FA2F5200705180 /* NewsImage.m in Sources */ = {isa = PBXBuildFile; fileRef = EB3721A911FA2F5200705180 /* NewsImage.m */; };
 		EB3F0951118F0FFE00540B8A /* CalendarMapView.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB3F094F118F0FFE00540B8A /* CalendarMapView.h */; settings = {JAVA_ARCHIVE_SUBDIR = Modules/Calendar; }; };
 		EB3F0952118F0FFE00540B8A /* CalendarMapView.m in Sources */ = {isa = PBXBuildFile; fileRef = EB3F0950118F0FFE00540B8A /* CalendarMapView.m */; };
-		EB420C07120A018000089FE0 /* MITSearchDisplayController.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB420C05120A018000089FE0 /* MITSearchDisplayController.h */; settings = {JAVA_ARCHIVE_SUBDIR = Common; }; };
-		EB420C08120A018000089FE0 /* MITSearchDisplayController.m in Sources */ = {isa = PBXBuildFile; fileRef = EB420C06120A018000089FE0 /* MITSearchDisplayController.m */; };
+		EB4210D5120B81D500089FE0 /* MITSearchDisplayController.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB4210C7120B81D500089FE0 /* MITSearchDisplayController.h */; settings = {JAVA_ARCHIVE_SUBDIR = Common/UIWidgets; }; };
+		EB4210D6120B81D500089FE0 /* MITSearchDisplayController.m in Sources */ = {isa = PBXBuildFile; fileRef = EB4210C8120B81D500089FE0 /* MITSearchDisplayController.m */; };
+		EB4210D7120B81D500089FE0 /* ModoNavigationBar.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB4210C9120B81D500089FE0 /* ModoNavigationBar.h */; settings = {JAVA_ARCHIVE_SUBDIR = Common/UIWidgets; }; };
+		EB4210D8120B81D500089FE0 /* ModoNavigationBar.m in Sources */ = {isa = PBXBuildFile; fileRef = EB4210CA120B81D500089FE0 /* ModoNavigationBar.m */; };
+		EB4210D9120B81D500089FE0 /* ModoNavigationController.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB4210CB120B81D500089FE0 /* ModoNavigationController.h */; settings = {JAVA_ARCHIVE_SUBDIR = Common/UIWidgets; }; };
+		EB4210DA120B81D500089FE0 /* ModoNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = EB4210CC120B81D500089FE0 /* ModoNavigationController.m */; };
+		EB4210DB120B81D500089FE0 /* ModoSearchBar.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB4210CD120B81D500089FE0 /* ModoSearchBar.h */; settings = {JAVA_ARCHIVE_SUBDIR = Common/UIWidgets; }; };
+		EB4210DC120B81D500089FE0 /* ModoSearchBar.m in Sources */ = {isa = PBXBuildFile; fileRef = EB4210CE120B81D500089FE0 /* ModoSearchBar.m */; };
+		EB4210DD120B81D500089FE0 /* MultiLineTableViewCell.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB4210CF120B81D500089FE0 /* MultiLineTableViewCell.h */; settings = {JAVA_ARCHIVE_SUBDIR = Common/UIWidgets; }; };
+		EB4210DE120B81D500089FE0 /* MultiLineTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = EB4210D0120B81D500089FE0 /* MultiLineTableViewCell.m */; };
+		EB4210DF120B81D500089FE0 /* NavScrollerView.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB4210D1120B81D500089FE0 /* NavScrollerView.h */; settings = {JAVA_ARCHIVE_SUBDIR = Common/UIWidgets; }; };
+		EB4210E0120B81D500089FE0 /* NavScrollerView.m in Sources */ = {isa = PBXBuildFile; fileRef = EB4210D2120B81D500089FE0 /* NavScrollerView.m */; };
+		EB4210E1120B81D500089FE0 /* TabViewControl.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB4210D3120B81D500089FE0 /* TabViewControl.h */; settings = {JAVA_ARCHIVE_SUBDIR = Common/UIWidgets; }; };
+		EB4210E2120B81D500089FE0 /* TabViewControl.m in Sources */ = {isa = PBXBuildFile; fileRef = EB4210D4120B81D500089FE0 /* TabViewControl.m */; };
+		EB4210E7120B82C000089FE0 /* TwitterViewController.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB4210E5120B82C000089FE0 /* TwitterViewController.h */; settings = {JAVA_ARCHIVE_SUBDIR = Common; }; };
+		EB4210E8120B82C000089FE0 /* TwitterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EB4210E6120B82C000089FE0 /* TwitterViewController.m */; };
+		EB421101120B831500089FE0 /* dining in Resources */ = {isa = PBXBuildFile; fileRef = EB4210E9120B831500089FE0 /* dining */; };
+		EB4211B8120C92C600089FE0 /* MapSavedAnnotation.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB4211B6120C92C600089FE0 /* MapSavedAnnotation.h */; settings = {JAVA_ARCHIVE_SUBDIR = "Modules/Campus Map"; }; };
+		EB4211B9120C92C600089FE0 /* MapSavedAnnotation.m in Sources */ = {isa = PBXBuildFile; fileRef = EB4211B7120C92C600089FE0 /* MapSavedAnnotation.m */; };
 		EB49AD4811F4BFB900854791 /* about in Resources */ = {isa = PBXBuildFile; fileRef = EB49AD4511F4BFB900854791 /* about */; };
 		EB49AD5511F4BFCE00854791 /* courses in Resources */ = {isa = PBXBuildFile; fileRef = EB49AD4911F4BFCE00854791 /* courses */; };
 		EB49AD5611F4BFCE00854791 /* emergency in Resources */ = {isa = PBXBuildFile; fileRef = EB49AD4F11F4BFCE00854791 /* emergency */; };
@@ -436,24 +421,15 @@
 		EB6D114211EE191000B65CE3 /* PJ_geos.c in Sources */ = {isa = PBXBuildFile; fileRef = EB6D114111EE191000B65CE3 /* PJ_geos.c */; };
 		EB6D141511EE979500B65CE3 /* NewsCategory.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB6D141311EE979500B65CE3 /* NewsCategory.h */; settings = {JAVA_ARCHIVE_SUBDIR = Modules/News; }; };
 		EB6D141611EE979500B65CE3 /* NewsCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = EB6D141411EE979500B65CE3 /* NewsCategory.m */; };
-		EB6DFE3711DE28F800B65CE3 /* ModoNavigationController.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB6DFE3511DE28F800B65CE3 /* ModoNavigationController.h */; settings = {JAVA_ARCHIVE_SUBDIR = Common; }; };
-		EB6DFE3811DE28F800B65CE3 /* ModoNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = EB6DFE3611DE28F800B65CE3 /* ModoNavigationController.m */; };
-		EB6DFE3F11DE294700B65CE3 /* ModoNavigationBar.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB6DFE3D11DE294700B65CE3 /* ModoNavigationBar.h */; settings = {JAVA_ARCHIVE_SUBDIR = Common; }; };
-		EB6DFE4011DE294700B65CE3 /* ModoNavigationBar.m in Sources */ = {isa = PBXBuildFile; fileRef = EB6DFE3E11DE294700B65CE3 /* ModoNavigationBar.m */; };
 		EB6DFFF011DE69F600B65CE3 /* SpringboardViewController.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB6DFFEE11DE69F600B65CE3 /* SpringboardViewController.h */; settings = {JAVA_ARCHIVE_SUBDIR = "App Delegate"; }; };
 		EB6DFFF111DE69F600B65CE3 /* SpringboardViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EB6DFFEF11DE69F600B65CE3 /* SpringboardViewController.m */; };
 		EB6F2B6610E901E000A29A2A /* UITableView+MITUIAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = EB6F2B6210E901E000A29A2A /* UITableView+MITUIAdditions.m */; };
 		EB6F2B6710E901E000A29A2A /* UITableViewCell+MITUIAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = EB6F2B6410E901E000A29A2A /* UITableViewCell+MITUIAdditions.m */; };
-		EB6F2B6D10E9026200A29A2A /* PeopleDetailsTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = EB6F2B6C10E9026200A29A2A /* PeopleDetailsTableViewCell.m */; };
 		EB6FD1F910E19D7900D56BE1 /* SecondaryGroupedTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = EB6FD1F810E19D7900D56BE1 /* SecondaryGroupedTableViewCell.m */; };
 		EB74ED2E11924E7C006673F9 /* ShareDetailViewController.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB74ED2C11924E7C006673F9 /* ShareDetailViewController.h */; settings = {JAVA_ARCHIVE_SUBDIR = Common; }; };
 		EB74ED2F11924E7C006673F9 /* ShareDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EB74ED2D11924E7C006673F9 /* ShareDetailViewController.m */; };
 		EB7BA33E11F7677F00B3DDA6 /* PolygonOverlay.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB7BA33C11F7677F00B3DDA6 /* PolygonOverlay.h */; settings = {JAVA_ARCHIVE_SUBDIR = "Modules/Campus Map"; }; };
 		EB7BA33F11F7677F00B3DDA6 /* PolygonOverlay.m in Sources */ = {isa = PBXBuildFile; fileRef = EB7BA33D11F7677F00B3DDA6 /* PolygonOverlay.m */; };
-		EB7BA68411F8ED2100B3DDA6 /* ModoSearchBar.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB7BA68211F8ED2100B3DDA6 /* ModoSearchBar.h */; settings = {JAVA_ARCHIVE_SUBDIR = Modules/News; }; };
-		EB7BA68511F8ED2100B3DDA6 /* ModoSearchBar.m in Sources */ = {isa = PBXBuildFile; fileRef = EB7BA68311F8ED2100B3DDA6 /* ModoSearchBar.m */; };
-		EB7BA75A11F9CE7B00B3DDA6 /* MultiLineTableViewCell.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB7BA75811F9CE7B00B3DDA6 /* MultiLineTableViewCell.h */; settings = {JAVA_ARCHIVE_SUBDIR = Common; }; };
-		EB7BA75B11F9CE7B00B3DDA6 /* MultiLineTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = EB7BA75911F9CE7B00B3DDA6 /* MultiLineTableViewCell.m */; };
 		EB7F327F10CD6C5B00188BCD /* PeopleDataModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = EB7F326A10CD6C5B00188BCD /* PeopleDataModel.xcdatamodeld */; };
 		EB7F328210CD6C5B00188BCD /* PartialHighlightTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = EB7F327110CD6C5B00188BCD /* PartialHighlightTableViewCell.m */; };
 		EB7F328310CD6C5B00188BCD /* PeopleDetailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EB7F327310CD6C5B00188BCD /* PeopleDetailsViewController.m */; };
@@ -528,8 +504,6 @@
 		2978864410F03656002670CC /* MITUnreadNotifications.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MITUnreadNotifications.m; path = "App Delegate/MITUnreadNotifications.m"; sourceTree = "<group>"; };
 		2980C03010D9728800F19FF0 /* NewsDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NewsDataSource.h; sourceTree = "<group>"; };
 		2980C03110D9728800F19FF0 /* NewsDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NewsDataSource.m; sourceTree = "<group>"; };
-		29859FF810F7C37600D137D6 /* MITSearchEffects.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MITSearchEffects.h; sourceTree = "<group>"; };
-		29859FF910F7C37600D137D6 /* MITSearchEffects.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MITSearchEffects.m; sourceTree = "<group>"; };
 		2991499E10DDB50300B01A8E /* StellarSearch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StellarSearch.h; sourceTree = "<group>"; };
 		2991499F10DDB50300B01A8E /* StellarSearch.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StellarSearch.m; sourceTree = "<group>"; };
 		29974B6F1160F1DA009D03B9 /* URLShortener.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = URLShortener.h; sourceTree = "<group>"; };
@@ -539,8 +513,6 @@
 		29A0D11F10CDD0E8009FC010 /* StellarClassesTableController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StellarClassesTableController.h; sourceTree = "<group>"; };
 		29A0D12010CDD0E8009FC010 /* StellarClassesTableController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StellarClassesTableController.m; sourceTree = "<group>"; };
 		29B14B71114842D200BC8CCE /* Stellar 3.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Stellar 3.xcdatamodel"; sourceTree = "<group>"; };
-		29B6038B11541AB200064E0A /* TwitterViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TwitterViewController.h; sourceTree = "<group>"; };
-		29B6038C11541AB200064E0A /* TwitterViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TwitterViewController.m; sourceTree = "<group>"; };
 		29B97316FDCFA39411CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		29C45425118B55E100A321B0 /* jQueryInject.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = jQueryInject.txt; sourceTree = "<group>"; };
 		29C45426118B55E100A321B0 /* jQueryInjectLandscape.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = jQueryInjectLandscape.txt; sourceTree = "<group>"; };
@@ -622,11 +594,8 @@
 		4420F31A10E96EBE00A8CD05 /* ShuttleStopMapAnnotation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShuttleStopMapAnnotation.m; sourceTree = "<group>"; };
 		4420F62710EBA5D000A8CD05 /* ShuttleStopViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShuttleStopViewController.h; sourceTree = "<group>"; };
 		4420F62810EBA5D000A8CD05 /* ShuttleStopViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShuttleStopViewController.m; sourceTree = "<group>"; };
-		44293C3210DAE88500273119 /* MITMapSearchResultsVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MITMapSearchResultsVC.h; sourceTree = "<group>"; };
-		44293C3310DAE88500273119 /* MITMapSearchResultsVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MITMapSearchResultsVC.m; sourceTree = "<group>"; };
-		44293C3410DAE88500273119 /* MITMapSearchResultsVC.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MITMapSearchResultsVC.xib; sourceTree = "<group>"; };
-		442C11DD10EC112700CB44EC /* TouchableTableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TouchableTableView.h; sourceTree = "<group>"; };
-		442C11DE10EC112700CB44EC /* TouchableTableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TouchableTableView.m; sourceTree = "<group>"; };
+		44293C3210DAE88500273119 /* MapSearchResultsTableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MapSearchResultsTableView.h; sourceTree = "<group>"; };
+		44293C3310DAE88500273119 /* MapSearchResultsTableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MapSearchResultsTableView.m; sourceTree = "<group>"; };
 		442C192710F3AE3400CB44EC /* RouteMapViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RouteMapViewController.h; sourceTree = "<group>"; };
 		442C192810F3AE3400CB44EC /* RouteMapViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RouteMapViewController.m; sourceTree = "<group>"; };
 		442C192910F3AE3400CB44EC /* RouteMapViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RouteMapViewController.xib; sourceTree = "<group>"; };
@@ -643,15 +612,9 @@
 		4463D09110D92CB00048CA83 /* MITMapDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MITMapDetailViewController.h; sourceTree = "<group>"; };
 		4463D09210D92CB00048CA83 /* MITMapDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MITMapDetailViewController.m; sourceTree = "<group>"; };
 		4463D09310D92CB00048CA83 /* MITMapDetailViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MITMapDetailViewController.xib; sourceTree = "<group>"; };
-		4463D09E10D92F6B0048CA83 /* TabViewControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TabViewControl.h; sourceTree = "<group>"; };
-		4463D09F10D92F6B0048CA83 /* TabViewControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TabViewControl.m; sourceTree = "<group>"; };
 		448FF58E10FA4BDE00850BC0 /* ShuttleRouteViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ShuttleRouteViewController.xib; sourceTree = "<group>"; };
-		4499332B11A371CE00A7041B /* RecentSearchesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RecentSearchesViewController.h; sourceTree = "<group>"; };
-		4499332C11A371CF00A7041B /* RecentSearchesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RecentSearchesViewController.m; sourceTree = "<group>"; };
 		4499341C11A5E53D00A7041B /* CategoriesTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CategoriesTableViewController.h; sourceTree = "<group>"; };
 		4499341D11A5E53D00A7041B /* CategoriesTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CategoriesTableViewController.m; sourceTree = "<group>"; };
-		44ACF7681187884300F1F4B2 /* BookmarksTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BookmarksTableViewController.h; sourceTree = "<group>"; };
-		44ACF7691187884300F1F4B2 /* BookmarksTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BookmarksTableViewController.m; sourceTree = "<group>"; };
 		44ACF76A1187884300F1F4B2 /* MapBookmarkManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MapBookmarkManager.m; sourceTree = "<group>"; };
 		44ACF76B1187884300F1F4B2 /* MapBookmarkManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MapBookmarkManager.h; sourceTree = "<group>"; };
 		44BF5B411100A75C00E150D5 /* RouteInfoTitleCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RouteInfoTitleCell.h; sourceTree = "<group>"; };
@@ -710,36 +673,14 @@
 		C704F06011E3E31F00621406 /* MenuItems.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MenuItems.m; path = Dining/MenuItems.m; sourceTree = "<group>"; };
 		C727B53811F4E245007D53BB /* CalendarCategoriesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CalendarCategoriesViewController.h; sourceTree = "<group>"; };
 		C727B53911F4E245007D53BB /* CalendarCategoriesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CalendarCategoriesViewController.m; sourceTree = "<group>"; };
-		C759560012071BA3008474A9 /* dining-local.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "dining-local.png"; sourceTree = "<group>"; };
-		C759560112071BA3008474A9 /* dining-local@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "dining-local@2x.png"; sourceTree = "<group>"; };
-		C759560212071BA3008474A9 /* dining-organic.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "dining-organic.png"; sourceTree = "<group>"; };
-		C759560312071BA3008474A9 /* dining-organic@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "dining-organic@2x.png"; sourceTree = "<group>"; };
-		C759560412071BA3008474A9 /* dining-vegan.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "dining-vegan.png"; sourceTree = "<group>"; };
-		C759560512071BA3008474A9 /* dining-vegan@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "dining-vegan@2x.png"; sourceTree = "<group>"; };
-		C759560612071BA3008474A9 /* dining-vegetarian.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "dining-vegetarian.png"; sourceTree = "<group>"; };
-		C759560712071BA3008474A9 /* dining-vegetarian@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "dining-vegetarian@2x.png"; sourceTree = "<group>"; };
 		C759593812074B47008474A9 /* HallDetailsTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = HallDetailsTableViewController.m; path = Dining/HallDetailsTableViewController.m; sourceTree = "<group>"; };
 		C759593912074B47008474A9 /* HallDetailsTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = HallDetailsTableViewController.h; path = Dining/HallDetailsTableViewController.h; sourceTree = "<group>"; };
 		C759593A12074B47008474A9 /* DiningMultiLineCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DiningMultiLineCell.m; path = Dining/DiningMultiLineCell.m; sourceTree = "<group>"; };
 		C759593B12074B47008474A9 /* DiningMultiLineCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DiningMultiLineCell.h; path = Dining/DiningMultiLineCell.h; sourceTree = "<group>"; };
 		C759593C12074B47008474A9 /* DiningHallStatus.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DiningHallStatus.m; path = Dining/DiningHallStatus.m; sourceTree = "<group>"; };
 		C759593D12074B47008474A9 /* DiningHallStatus.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DiningHallStatus.h; path = Dining/DiningHallStatus.h; sourceTree = "<group>"; };
-		C76E649D1209C299005399CC /* dining-local-crop.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "dining-local-crop.png"; sourceTree = "<group>"; };
-		C76E649E1209C299005399CC /* dining-local-crop@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "dining-local-crop@2x.png"; sourceTree = "<group>"; };
-		C76E649F1209C299005399CC /* dining-organic-crop.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "dining-organic-crop.png"; sourceTree = "<group>"; };
-		C76E64A01209C299005399CC /* dining-organic-crop@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "dining-organic-crop@2x.png"; sourceTree = "<group>"; };
-		C76E64A11209C299005399CC /* dining-vegetarian-crop.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "dining-vegetarian-crop.png"; sourceTree = "<group>"; };
-		C76E64A21209C299005399CC /* dining-vegetarian-crop@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "dining-vegetarian-crop@2x.png"; sourceTree = "<group>"; };
 		C776675711F733E3005496DD /* DatePickerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DatePickerViewController.h; sourceTree = "<group>"; };
 		C776675811F733E3005496DD /* DatePickerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DatePickerViewController.m; sourceTree = "<group>"; };
-		C7AA23891200CB3E0023F880 /* dining-status-closed-w-restrictions.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "dining-status-closed-w-restrictions.png"; sourceTree = "<group>"; };
-		C7AA238A1200CB3E0023F880 /* dining-status-closed-w-restrictions@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "dining-status-closed-w-restrictions@2x.png"; sourceTree = "<group>"; };
-		C7AA238B1200CB3E0023F880 /* dining-status-closed.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "dining-status-closed.png"; sourceTree = "<group>"; };
-		C7AA238C1200CB3E0023F880 /* dining-status-closed@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "dining-status-closed@2x.png"; sourceTree = "<group>"; };
-		C7AA238D1200CB3E0023F880 /* dining-status-open-w-restrictions.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "dining-status-open-w-restrictions.png"; sourceTree = "<group>"; };
-		C7AA238E1200CB3E0023F880 /* dining-status-open-w-restrictions@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "dining-status-open-w-restrictions@2x.png"; sourceTree = "<group>"; };
-		C7AA238F1200CB3E0023F880 /* dining-status-open.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "dining-status-open.png"; sourceTree = "<group>"; };
-		C7AA23901200CB3E0023F880 /* dining-status-open@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "dining-status-open@2x.png"; sourceTree = "<group>"; };
 		C7B897EF11F535C8002B3619 /* HoursTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = HoursTableViewController.m; path = Dining/HoursTableViewController.m; sourceTree = "<group>"; };
 		C7B897F011F535C8002B3619 /* HoursTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = HoursTableViewController.h; path = Dining/HoursTableViewController.h; sourceTree = "<group>"; };
 		DE0A62AA10CDAEA90058B2C2 /* MITBuildInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MITBuildInfo.h; sourceTree = "<group>"; };
@@ -756,8 +697,6 @@
 		DE6D332910346F6D008A5823 /* ShuttleRoutes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShuttleRoutes.h; sourceTree = "<group>"; };
 		DE6D332A10346F6D008A5823 /* ShuttleRoutes.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShuttleRoutes.m; sourceTree = "<group>"; };
 		DE6D332C10346F78008A5823 /* ShuttleRoutes.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ShuttleRoutes.xib; sourceTree = "<group>"; };
-		DE6D570410F05C59006431A8 /* TabScrollerBackgroundView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TabScrollerBackgroundView.h; sourceTree = "<group>"; };
-		DE6D570510F05C59006431A8 /* TabScrollerBackgroundView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TabScrollerBackgroundView.m; sourceTree = "<group>"; };
 		DE6D9318110A8EFA00DAF213 /* SettingsTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SettingsTableViewController.h; path = Settings/SettingsTableViewController.h; sourceTree = "<group>"; };
 		DE6D9319110A8EFA00DAF213 /* SettingsTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SettingsTableViewController.m; path = Settings/SettingsTableViewController.m; sourceTree = "<group>"; };
 		DE6F044611139CA40046684B /* FBConnect.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FBConnect.h; path = "Facebook Connect/FBConnect/FBConnect.h"; sourceTree = "<group>"; };
@@ -838,8 +777,25 @@
 		EB3721A911FA2F5200705180 /* NewsImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NewsImage.m; sourceTree = "<group>"; };
 		EB3F094F118F0FFE00540B8A /* CalendarMapView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CalendarMapView.h; sourceTree = "<group>"; };
 		EB3F0950118F0FFE00540B8A /* CalendarMapView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CalendarMapView.m; sourceTree = "<group>"; };
-		EB420C05120A018000089FE0 /* MITSearchDisplayController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MITSearchDisplayController.h; sourceTree = "<group>"; };
-		EB420C06120A018000089FE0 /* MITSearchDisplayController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MITSearchDisplayController.m; sourceTree = "<group>"; };
+		EB4210C7120B81D500089FE0 /* MITSearchDisplayController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MITSearchDisplayController.h; sourceTree = "<group>"; };
+		EB4210C8120B81D500089FE0 /* MITSearchDisplayController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MITSearchDisplayController.m; sourceTree = "<group>"; };
+		EB4210C9120B81D500089FE0 /* ModoNavigationBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ModoNavigationBar.h; sourceTree = "<group>"; };
+		EB4210CA120B81D500089FE0 /* ModoNavigationBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ModoNavigationBar.m; sourceTree = "<group>"; };
+		EB4210CB120B81D500089FE0 /* ModoNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ModoNavigationController.h; sourceTree = "<group>"; };
+		EB4210CC120B81D500089FE0 /* ModoNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ModoNavigationController.m; sourceTree = "<group>"; };
+		EB4210CD120B81D500089FE0 /* ModoSearchBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ModoSearchBar.h; sourceTree = "<group>"; };
+		EB4210CE120B81D500089FE0 /* ModoSearchBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ModoSearchBar.m; sourceTree = "<group>"; };
+		EB4210CF120B81D500089FE0 /* MultiLineTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MultiLineTableViewCell.h; sourceTree = "<group>"; };
+		EB4210D0120B81D500089FE0 /* MultiLineTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MultiLineTableViewCell.m; sourceTree = "<group>"; };
+		EB4210D1120B81D500089FE0 /* NavScrollerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NavScrollerView.h; sourceTree = "<group>"; };
+		EB4210D2120B81D500089FE0 /* NavScrollerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NavScrollerView.m; sourceTree = "<group>"; };
+		EB4210D3120B81D500089FE0 /* TabViewControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TabViewControl.h; sourceTree = "<group>"; };
+		EB4210D4120B81D500089FE0 /* TabViewControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TabViewControl.m; sourceTree = "<group>"; };
+		EB4210E5120B82C000089FE0 /* TwitterViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TwitterViewController.h; sourceTree = "<group>"; };
+		EB4210E6120B82C000089FE0 /* TwitterViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TwitterViewController.m; sourceTree = "<group>"; };
+		EB4210E9120B831500089FE0 /* dining */ = {isa = PBXFileReference; lastKnownFileType = folder; name = dining; path = Resources/dining; sourceTree = "<group>"; };
+		EB4211B6120C92C600089FE0 /* MapSavedAnnotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MapSavedAnnotation.h; sourceTree = "<group>"; };
+		EB4211B7120C92C600089FE0 /* MapSavedAnnotation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MapSavedAnnotation.m; sourceTree = "<group>"; };
 		EB49AD4511F4BFB900854791 /* about */ = {isa = PBXFileReference; lastKnownFileType = folder; name = about; path = Resources/about; sourceTree = "<group>"; };
 		EB49AD4911F4BFCE00854791 /* courses */ = {isa = PBXFileReference; lastKnownFileType = folder; name = courses; path = Resources/courses; sourceTree = "<group>"; };
 		EB49AD4F11F4BFCE00854791 /* emergency */ = {isa = PBXFileReference; lastKnownFileType = folder; name = emergency; path = Resources/emergency; sourceTree = "<group>"; };
@@ -1017,10 +973,6 @@
 		EB6D114111EE191000B65CE3 /* PJ_geos.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = PJ_geos.c; sourceTree = "<group>"; };
 		EB6D141311EE979500B65CE3 /* NewsCategory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NewsCategory.h; sourceTree = "<group>"; };
 		EB6D141411EE979500B65CE3 /* NewsCategory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NewsCategory.m; sourceTree = "<group>"; };
-		EB6DFE3511DE28F800B65CE3 /* ModoNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ModoNavigationController.h; sourceTree = "<group>"; };
-		EB6DFE3611DE28F800B65CE3 /* ModoNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ModoNavigationController.m; sourceTree = "<group>"; };
-		EB6DFE3D11DE294700B65CE3 /* ModoNavigationBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ModoNavigationBar.h; sourceTree = "<group>"; };
-		EB6DFE3E11DE294700B65CE3 /* ModoNavigationBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ModoNavigationBar.m; sourceTree = "<group>"; };
 		EB6DFFEE11DE69F600B65CE3 /* SpringboardViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SpringboardViewController.h; path = "App Delegate/SpringboardViewController.h"; sourceTree = "<group>"; };
 		EB6DFFEF11DE69F600B65CE3 /* SpringboardViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SpringboardViewController.m; path = "App Delegate/SpringboardViewController.m"; sourceTree = "<group>"; };
 		EB6F2B6110E901E000A29A2A /* UITableView+MITUIAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UITableView+MITUIAdditions.h"; sourceTree = "<group>"; };
@@ -1028,18 +980,12 @@
 		EB6F2B6310E901E000A29A2A /* UITableViewCell+MITUIAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UITableViewCell+MITUIAdditions.h"; sourceTree = "<group>"; };
 		EB6F2B6410E901E000A29A2A /* UITableViewCell+MITUIAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UITableViewCell+MITUIAdditions.m"; sourceTree = "<group>"; };
 		EB6F2B6910E9023300A29A2A /* MITUIConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MITUIConstants.h; sourceTree = "<group>"; };
-		EB6F2B6B10E9026200A29A2A /* PeopleDetailsTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PeopleDetailsTableViewCell.h; sourceTree = "<group>"; };
-		EB6F2B6C10E9026200A29A2A /* PeopleDetailsTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PeopleDetailsTableViewCell.m; sourceTree = "<group>"; };
 		EB6FD1F710E19D7900D56BE1 /* SecondaryGroupedTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SecondaryGroupedTableViewCell.h; sourceTree = "<group>"; };
 		EB6FD1F810E19D7900D56BE1 /* SecondaryGroupedTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SecondaryGroupedTableViewCell.m; sourceTree = "<group>"; };
 		EB74ED2C11924E7C006673F9 /* ShareDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShareDetailViewController.h; sourceTree = "<group>"; };
 		EB74ED2D11924E7C006673F9 /* ShareDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShareDetailViewController.m; sourceTree = "<group>"; };
 		EB7BA33C11F7677F00B3DDA6 /* PolygonOverlay.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PolygonOverlay.h; sourceTree = "<group>"; };
 		EB7BA33D11F7677F00B3DDA6 /* PolygonOverlay.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PolygonOverlay.m; sourceTree = "<group>"; };
-		EB7BA68211F8ED2100B3DDA6 /* ModoSearchBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ModoSearchBar.h; sourceTree = "<group>"; };
-		EB7BA68311F8ED2100B3DDA6 /* ModoSearchBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ModoSearchBar.m; sourceTree = "<group>"; };
-		EB7BA75811F9CE7B00B3DDA6 /* MultiLineTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MultiLineTableViewCell.h; sourceTree = "<group>"; };
-		EB7BA75911F9CE7B00B3DDA6 /* MultiLineTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MultiLineTableViewCell.m; sourceTree = "<group>"; };
 		EB7F327010CD6C5B00188BCD /* PartialHighlightTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PartialHighlightTableViewCell.h; sourceTree = "<group>"; };
 		EB7F327110CD6C5B00188BCD /* PartialHighlightTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PartialHighlightTableViewCell.m; sourceTree = "<group>"; };
 		EB7F327210CD6C5B00188BCD /* PeopleDetailsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PeopleDetailsViewController.h; sourceTree = "<group>"; };
@@ -1121,8 +1067,9 @@
 		080E96DDFE201D6D7F000001 /* Common */ = {
 			isa = PBXGroup;
 			children = (
-				EB7BA75811F9CE7B00B3DDA6 /* MultiLineTableViewCell.h */,
-				EB7BA75911F9CE7B00B3DDA6 /* MultiLineTableViewCell.m */,
+				EB4210E5120B82C000089FE0 /* TwitterViewController.h */,
+				EB4210E6120B82C000089FE0 /* TwitterViewController.m */,
+				EB4210C6120B81D500089FE0 /* UIWidgets */,
 				A64C313A11FDFAA1006FE056 /* Utilities */,
 				29C454BE118B61CA00A321B0 /* SFHFKeychainUtils.h */,
 				29C454BF118B61CA00A321B0 /* SFHFKeychainUtils.m */,
@@ -1151,20 +1098,12 @@
 				29974B6F1160F1DA009D03B9 /* URLShortener.h */,
 				29974B701160F1DA009D03B9 /* URLShortener.m */,
 				BD1E92F3103B5D60004429AA /* JSON */,
-				29859FF810F7C37600D137D6 /* MITSearchEffects.h */,
-				29859FF910F7C37600D137D6 /* MITSearchEffects.m */,
 				29E308841176018C005211A7 /* MITModuleURL.h */,
 				29E308851176018C005211A7 /* MITModuleURL.m */,
 				EB74ED2C11924E7C006673F9 /* ShareDetailViewController.h */,
 				EB74ED2D11924E7C006673F9 /* ShareDetailViewController.m */,
-				EB6DFE3511DE28F800B65CE3 /* ModoNavigationController.h */,
-				EB6DFE3611DE28F800B65CE3 /* ModoNavigationController.m */,
-				EB6DFE3D11DE294700B65CE3 /* ModoNavigationBar.h */,
-				EB6DFE3E11DE294700B65CE3 /* ModoNavigationBar.m */,
 				A6787A1411F605070034D559 /* NSArray+Convenience.h */,
 				A6787A1511F605070034D559 /* NSArray+Convenience.m */,
-				EB420C05120A018000089FE0 /* MITSearchDisplayController.h */,
-				EB420C06120A018000089FE0 /* MITSearchDisplayController.m */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -1205,30 +1144,9 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				C76E649D1209C299005399CC /* dining-local-crop.png */,
-				C76E649E1209C299005399CC /* dining-local-crop@2x.png */,
-				C76E649F1209C299005399CC /* dining-organic-crop.png */,
-				C76E64A01209C299005399CC /* dining-organic-crop@2x.png */,
-				C76E64A11209C299005399CC /* dining-vegetarian-crop.png */,
-				C76E64A21209C299005399CC /* dining-vegetarian-crop@2x.png */,
+				EB4210E9120B831500089FE0 /* dining */,
 				A623F2E5120A1BFC00341C5E /* settings */,
 				A64C36CA1207066D006FE056 /* peopleSearchStaticPhoneRowsArray.plist */,
-				C7AA23891200CB3E0023F880 /* dining-status-closed-w-restrictions.png */,
-				C7AA238A1200CB3E0023F880 /* dining-status-closed-w-restrictions@2x.png */,
-				C7AA238B1200CB3E0023F880 /* dining-status-closed.png */,
-				C7AA238C1200CB3E0023F880 /* dining-status-closed@2x.png */,
-				C7AA238D1200CB3E0023F880 /* dining-status-open-w-restrictions.png */,
-				C7AA238E1200CB3E0023F880 /* dining-status-open-w-restrictions@2x.png */,
-				C7AA238F1200CB3E0023F880 /* dining-status-open.png */,
-				C7AA23901200CB3E0023F880 /* dining-status-open@2x.png */,
-				C759560012071BA3008474A9 /* dining-local.png */,
-				C759560112071BA3008474A9 /* dining-local@2x.png */,
-				C759560212071BA3008474A9 /* dining-organic.png */,
-				C759560312071BA3008474A9 /* dining-organic@2x.png */,
-				C759560412071BA3008474A9 /* dining-vegan.png */,
-				C759560512071BA3008474A9 /* dining-vegan@2x.png */,
-				C759560612071BA3008474A9 /* dining-vegetarian.png */,
-				C759560712071BA3008474A9 /* dining-vegetarian@2x.png */,
 				EB49AD7B11F4BFFF00854791 /* news */,
 				EB49AD8611F4BFFF00854791 /* shuttles */,
 				EB49AD6511F4BFF100854791 /* maps */,
@@ -1402,6 +1320,8 @@
 				44C1A4C211A412E2000FD653 /* MapSearch.h */,
 				44C1A4C311A412E2000FD653 /* MapSearch.m */,
 				44C1A2A711A2F49B000FD653 /* CampusMap.xcdatamodeld */,
+				EB4211B6120C92C600089FE0 /* MapSavedAnnotation.h */,
+				EB4211B7120C92C600089FE0 /* MapSavedAnnotation.m */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -1411,10 +1331,6 @@
 			children = (
 				44ACF76B1187884300F1F4B2 /* MapBookmarkManager.h */,
 				44ACF76A1187884300F1F4B2 /* MapBookmarkManager.m */,
-				44ACF7681187884300F1F4B2 /* BookmarksTableViewController.h */,
-				44ACF7691187884300F1F4B2 /* BookmarksTableViewController.m */,
-				4499332B11A371CE00A7041B /* RecentSearchesViewController.h */,
-				4499332C11A371CF00A7041B /* RecentSearchesViewController.m */,
 				44C1A3CC11A33905000FD653 /* MapSelectionController.h */,
 				44C1A3CD11A33905000FD653 /* MapSelectionController.m */,
 				4499341C11A5E53D00A7041B /* CategoriesTableViewController.h */,
@@ -1569,15 +1485,10 @@
 				4463D09110D92CB00048CA83 /* MITMapDetailViewController.h */,
 				4463D09210D92CB00048CA83 /* MITMapDetailViewController.m */,
 				4463D09310D92CB00048CA83 /* MITMapDetailViewController.xib */,
-				4463D09E10D92F6B0048CA83 /* TabViewControl.h */,
-				4463D09F10D92F6B0048CA83 /* TabViewControl.m */,
-				44293C3210DAE88500273119 /* MITMapSearchResultsVC.h */,
-				44293C3310DAE88500273119 /* MITMapSearchResultsVC.m */,
-				44293C3410DAE88500273119 /* MITMapSearchResultsVC.xib */,
+				44293C3210DAE88500273119 /* MapSearchResultsTableView.h */,
+				44293C3310DAE88500273119 /* MapSearchResultsTableView.m */,
 				4420F31910E96EBE00A8CD05 /* ShuttleStopMapAnnotation.h */,
 				4420F31A10E96EBE00A8CD05 /* ShuttleStopMapAnnotation.m */,
-				442C11DD10EC112700CB44EC /* TouchableTableView.h */,
-				442C11DE10EC112700CB44EC /* TouchableTableView.m */,
 				442C195410F3B21400CB44EC /* MITMapRoute.h */,
 				EB7BA33C11F7677F00B3DDA6 /* PolygonOverlay.h */,
 				EB7BA33D11F7677F00B3DDA6 /* PolygonOverlay.m */,
@@ -1723,12 +1634,6 @@
 				DE728E4610D6FF4700BFED37 /* StoryThumbnailView.m */,
 				DE728E6A10D6FF4700BFED37 /* StoryXMLParser.h */,
 				DE728E6B10D6FF4700BFED37 /* StoryXMLParser.m */,
-				DE6D570410F05C59006431A8 /* TabScrollerBackgroundView.h */,
-				DE6D570510F05C59006431A8 /* TabScrollerBackgroundView.m */,
-				29B6038B11541AB200064E0A /* TwitterViewController.h */,
-				29B6038C11541AB200064E0A /* TwitterViewController.m */,
-				EB7BA68211F8ED2100B3DDA6 /* ModoSearchBar.h */,
-				EB7BA68311F8ED2100B3DDA6 /* ModoSearchBar.m */,
 			);
 			path = News;
 			sourceTree = "<group>";
@@ -1752,6 +1657,27 @@
 				DE6D9319110A8EFA00DAF213 /* SettingsTableViewController.m */,
 			);
 			name = Settings;
+			sourceTree = "<group>";
+		};
+		EB4210C6120B81D500089FE0 /* UIWidgets */ = {
+			isa = PBXGroup;
+			children = (
+				EB4210C7120B81D500089FE0 /* MITSearchDisplayController.h */,
+				EB4210C8120B81D500089FE0 /* MITSearchDisplayController.m */,
+				EB4210C9120B81D500089FE0 /* ModoNavigationBar.h */,
+				EB4210CA120B81D500089FE0 /* ModoNavigationBar.m */,
+				EB4210CB120B81D500089FE0 /* ModoNavigationController.h */,
+				EB4210CC120B81D500089FE0 /* ModoNavigationController.m */,
+				EB4210CD120B81D500089FE0 /* ModoSearchBar.h */,
+				EB4210CE120B81D500089FE0 /* ModoSearchBar.m */,
+				EB4210CF120B81D500089FE0 /* MultiLineTableViewCell.h */,
+				EB4210D0120B81D500089FE0 /* MultiLineTableViewCell.m */,
+				EB4210D1120B81D500089FE0 /* NavScrollerView.h */,
+				EB4210D2120B81D500089FE0 /* NavScrollerView.m */,
+				EB4210D3120B81D500089FE0 /* TabViewControl.h */,
+				EB4210D4120B81D500089FE0 /* TabViewControl.m */,
+			);
+			path = UIWidgets;
 			sourceTree = "<group>";
 		};
 		EB6D036911E3989100B65CE3 /* ArcGISServer */ = {
@@ -1938,8 +1864,6 @@
 				EBA2865510E07E140003BA01 /* PeopleSearchViewController.m */,
 				EB7F327210CD6C5B00188BCD /* PeopleDetailsViewController.h */,
 				EB7F327310CD6C5B00188BCD /* PeopleDetailsViewController.m */,
-				EB6F2B6B10E9026200A29A2A /* PeopleDetailsTableViewCell.h */,
-				EB6F2B6C10E9026200A29A2A /* PeopleDetailsTableViewCell.m */,
 				EB7F327010CD6C5B00188BCD /* PartialHighlightTableViewCell.h */,
 				EB7F327110CD6C5B00188BCD /* PartialHighlightTableViewCell.m */,
 			);
@@ -2046,7 +1970,6 @@
 				EB976D1B116CF6A10036A18E /* EventCategoriesTableView.h in JavaArchive */,
 				EBA273E911760BAE0033DD27 /* CalendarConstants.h in JavaArchive */,
 				29E308861176018C005211A7 /* MITModuleURL.h in JavaArchive */,
-				44ACF76C1187884300F1F4B2 /* BookmarksTableViewController.h in JavaArchive */,
 				44ACF76F1187884300F1F4B2 /* MapBookmarkManager.h in JavaArchive */,
 				29C4546F118B55E100A321B0 /* ExchangeCredentialsOperation.h in JavaArchive */,
 				29C45471118B55E100A321B0 /* ExchangeCredentialsOperationDelegate.h in JavaArchive */,
@@ -2089,11 +2012,8 @@
 				EB3F0951118F0FFE00540B8A /* CalendarMapView.h in JavaArchive */,
 				EB74ED2E11924E7C006673F9 /* ShareDetailViewController.h in JavaArchive */,
 				44C1A3CE11A33905000FD653 /* MapSelectionController.h in JavaArchive */,
-				4499332D11A371CF00A7041B /* RecentSearchesViewController.h in JavaArchive */,
 				44C1A4C411A412E2000FD653 /* MapSearch.h in JavaArchive */,
 				4499341E11A5E53D00A7041B /* CategoriesTableViewController.h in JavaArchive */,
-				EB6DFE3711DE28F800B65CE3 /* ModoNavigationController.h in JavaArchive */,
-				EB6DFE3F11DE294700B65CE3 /* ModoNavigationBar.h in JavaArchive */,
 				EB6DFFF011DE69F600B65CE3 /* SpringboardViewController.h in JavaArchive */,
 				C704F06211E3E31F00621406 /* DiningFirstViewController.h in JavaArchive */,
 				C704F06411E3E31F00621406 /* DiningModule.h in JavaArchive */,
@@ -2122,15 +2042,21 @@
 				A6787A1611F605070034D559 /* NSArray+Convenience.h in JavaArchive */,
 				EB7BA33E11F7677F00B3DDA6 /* PolygonOverlay.h in JavaArchive */,
 				C776675911F733E3005496DD /* DatePickerViewController.h in JavaArchive */,
-				EB7BA68411F8ED2100B3DDA6 /* ModoSearchBar.h in JavaArchive */,
-				EB7BA75A11F9CE7B00B3DDA6 /* MultiLineTableViewCell.h in JavaArchive */,
 				EB3721AA11FA2F5200705180 /* NewsImage.h in JavaArchive */,
 				A64C313D11FDFAB8006FE056 /* AddressFormatter.h in JavaArchive */,
 				C759593F12074B47008474A9 /* HallDetailsTableViewController.h in JavaArchive */,
 				C759594112074B47008474A9 /* DiningMultiLineCell.h in JavaArchive */,
 				C759594312074B47008474A9 /* DiningHallStatus.h in JavaArchive */,
-				EB420C07120A018000089FE0 /* MITSearchDisplayController.h in JavaArchive */,
 				A623F1F1120A035A00341C5E /* ModoThreeStateSwitchControl.h in JavaArchive */,
+				EB4210D5120B81D500089FE0 /* MITSearchDisplayController.h in JavaArchive */,
+				EB4210D7120B81D500089FE0 /* ModoNavigationBar.h in JavaArchive */,
+				EB4210D9120B81D500089FE0 /* ModoNavigationController.h in JavaArchive */,
+				EB4210DB120B81D500089FE0 /* ModoSearchBar.h in JavaArchive */,
+				EB4210DD120B81D500089FE0 /* MultiLineTableViewCell.h in JavaArchive */,
+				EB4210DF120B81D500089FE0 /* NavScrollerView.h in JavaArchive */,
+				EB4210E1120B81D500089FE0 /* TabViewControl.h in JavaArchive */,
+				EB4210E7120B82C000089FE0 /* TwitterViewController.h in JavaArchive */,
+				EB4211B8120C92C600089FE0 /* MapSavedAnnotation.h in JavaArchive */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2190,7 +2116,6 @@
 				DE89FB95103D019A000E35B4 /* Modules in Resources */,
 				DED3CCE910418F5F003D3B74 /* Default.png in Resources */,
 				4463D09510D92CB00048CA83 /* MITMapDetailViewController.xib in Resources */,
-				44293C3610DAE88500273119 /* MITMapSearchResultsVC.xib in Resources */,
 				EB54943810DFF03600B708B3 /* icons in Resources */,
 				EB54947310DFF7E200B708B3 /* global in Resources */,
 				442C192B10F3AE3400CB44EC /* RouteMapViewController.xib in Resources */,
@@ -2211,30 +2136,9 @@
 				EB49AD7A11F4BFF100854791 /* maps in Resources */,
 				EB49AD9811F4BFFF00854791 /* news in Resources */,
 				EB49AD9A11F4BFFF00854791 /* shuttles in Resources */,
-				C7AA23911200CB3E0023F880 /* dining-status-closed-w-restrictions.png in Resources */,
-				C7AA23921200CB3E0023F880 /* dining-status-closed-w-restrictions@2x.png in Resources */,
-				C7AA23931200CB3E0023F880 /* dining-status-closed.png in Resources */,
-				C7AA23941200CB3E0023F880 /* dining-status-closed@2x.png in Resources */,
-				C7AA23951200CB3E0023F880 /* dining-status-open-w-restrictions.png in Resources */,
-				C7AA23961200CB3E0023F880 /* dining-status-open-w-restrictions@2x.png in Resources */,
-				C7AA23971200CB3E0023F880 /* dining-status-open.png in Resources */,
-				C7AA23981200CB3E0023F880 /* dining-status-open@2x.png in Resources */,
 				A64C36CB1207066D006FE056 /* peopleSearchStaticPhoneRowsArray.plist in Resources */,
-				C759560812071BA3008474A9 /* dining-local.png in Resources */,
-				C759560912071BA3008474A9 /* dining-local@2x.png in Resources */,
-				C759560A12071BA3008474A9 /* dining-organic.png in Resources */,
-				C759560B12071BA3008474A9 /* dining-organic@2x.png in Resources */,
-				C759560C12071BA3008474A9 /* dining-vegan.png in Resources */,
-				C759560D12071BA3008474A9 /* dining-vegan@2x.png in Resources */,
-				C759560E12071BA3008474A9 /* dining-vegetarian.png in Resources */,
-				C759560F12071BA3008474A9 /* dining-vegetarian@2x.png in Resources */,
-				C76E64A31209C299005399CC /* dining-local-crop.png in Resources */,
-				C76E64A41209C299005399CC /* dining-local-crop@2x.png in Resources */,
-				C76E64A51209C299005399CC /* dining-organic-crop.png in Resources */,
-				C76E64A61209C299005399CC /* dining-organic-crop@2x.png in Resources */,
-				C76E64A71209C299005399CC /* dining-vegetarian-crop.png in Resources */,
-				C76E64A81209C299005399CC /* dining-vegetarian-crop@2x.png in Resources */,
 				A6FC4C72120A2C200046FF36 /* settings in Resources */,
+				EB421101120B831500089FE0 /* dining in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2318,9 +2222,8 @@
 				2970D4ED10DA85EC00F770DF /* InfoDataSource.m in Sources */,
 				2970D4F210DA871F00F770DF /* StaffDataSource.m in Sources */,
 				4463D09410D92CB00048CA83 /* MITMapDetailViewController.m in Sources */,
-				4463D0A010D92F6B0048CA83 /* TabViewControl.m in Sources */,
 				DE6AFDC710D99C4D00B48BA7 /* Foundation+MITAdditions.m in Sources */,
-				44293C3510DAE88500273119 /* MITMapSearchResultsVC.m in Sources */,
+				44293C3510DAE88500273119 /* MapSearchResultsTableView.m in Sources */,
 				2971CE0B10DB116800FAF160 /* StellarAnnouncementViewController.m in Sources */,
 				299149A010DDB50300B01A8E /* StellarSearch.m in Sources */,
 				2970ABE610E053F700C543D7 /* StellarClassTableCell.m in Sources */,
@@ -2329,14 +2232,11 @@
 				EB6FD1F910E19D7900D56BE1 /* SecondaryGroupedTableViewCell.m in Sources */,
 				EB6F2B6610E901E000A29A2A /* UITableView+MITUIAdditions.m in Sources */,
 				EB6F2B6710E901E000A29A2A /* UITableViewCell+MITUIAdditions.m in Sources */,
-				EB6F2B6D10E9026200A29A2A /* PeopleDetailsTableViewCell.m in Sources */,
 				4420F23110E9513700A8CD05 /* ShuttleDataManager.m in Sources */,
 				4420F31B10E96EBE00A8CD05 /* ShuttleStopMapAnnotation.m in Sources */,
 				DE821E8110EAB4F500B4C4C8 /* UIKit+MITAdditions.m in Sources */,
 				4420F62910EBA5D000A8CD05 /* ShuttleStopViewController.m in Sources */,
-				442C11DF10EC112700CB44EC /* TouchableTableView.m in Sources */,
 				DE4AB0B410ED5148007476D9 /* NewsStory.m in Sources */,
-				DE6D570610F05C59006431A8 /* TabScrollerBackgroundView.m in Sources */,
 				DE18F9EE10F19105009A69B9 /* News.xcdatamodeld in Sources */,
 				2978864510F03656002670CC /* MITDeviceRegistration.m in Sources */,
 				2978864610F03656002670CC /* MITUnreadNotifications.m in Sources */,
@@ -2344,7 +2244,6 @@
 				DEE283EE10F5109800B39531 /* Emergency.xcdatamodeld in Sources */,
 				442C1CA310F4FE8900CB44EC /* ShuttleLocation.m in Sources */,
 				DECBF6B610F8F91B009FAE35 /* NewsImageRep.m in Sources */,
-				29859FFA10F7C37600D137D6 /* MITSearchEffects.m in Sources */,
 				DE9EFBD210FE7D8900F5F07E /* SettingsModule.m in Sources */,
 				29EB610B10FE47220085D32B /* ShuttleSubscriptionManager.m in Sources */,
 				DEAFEFA910FFE35B00F0573E /* StoryGalleryViewController.m in Sources */,
@@ -2370,7 +2269,6 @@
 				EB676032114A9316004596BB /* ShuttleRouteCache.m in Sources */,
 				EB676033114A9316004596BB /* ShuttleStopLocation.m in Sources */,
 				EB86944D115120C4003AEDFA /* ShuttleRouteStop.m in Sources */,
-				29B6038D11541AB200064E0A /* TwitterViewController.m in Sources */,
 				29974B711160F1DA009D03B9 /* URLShortener.m in Sources */,
 				EB86CA6F115D276700C8F3D1 /* CalendarModule.m in Sources */,
 				EB86CAC6115D4ED500C8F3D1 /* CalendarEventsViewController.m in Sources */,
@@ -2384,7 +2282,6 @@
 				EB976D1C116CF6A10036A18E /* EventCategoriesTableView.m in Sources */,
 				EBA273EA11760BAE0033DD27 /* CalendarConstants.m in Sources */,
 				29E308871176018C005211A7 /* MITModuleURL.m in Sources */,
-				44ACF76D1187884300F1F4B2 /* BookmarksTableViewController.m in Sources */,
 				44ACF76E1187884300F1F4B2 /* MapBookmarkManager.m in Sources */,
 				29C45470118B55E100A321B0 /* ExchangeCredentialsOperation.m in Sources */,
 				29C45473118B55E100A321B0 /* XAuthTwitterEngine.m in Sources */,
@@ -2407,11 +2304,8 @@
 				EB74ED2F11924E7C006673F9 /* ShareDetailViewController.m in Sources */,
 				44C1A2A811A2F49B000FD653 /* CampusMap.xcdatamodeld in Sources */,
 				44C1A3CF11A33905000FD653 /* MapSelectionController.m in Sources */,
-				4499332E11A371CF00A7041B /* RecentSearchesViewController.m in Sources */,
 				44C1A4C511A412E2000FD653 /* MapSearch.m in Sources */,
 				4499341F11A5E53D00A7041B /* CategoriesTableViewController.m in Sources */,
-				EB6DFE3811DE28F800B65CE3 /* ModoNavigationController.m in Sources */,
-				EB6DFE4011DE294700B65CE3 /* ModoNavigationBar.m in Sources */,
 				EB6DFFF111DE69F600B65CE3 /* SpringboardViewController.m in Sources */,
 				C704F06311E3E31F00621406 /* DiningFirstViewController.m in Sources */,
 				C704F06511E3E31F00621406 /* DiningModule.m in Sources */,
@@ -2575,15 +2469,21 @@
 				A6787A1711F605070034D559 /* NSArray+Convenience.m in Sources */,
 				EB7BA33F11F7677F00B3DDA6 /* PolygonOverlay.m in Sources */,
 				C776675A11F733E3005496DD /* DatePickerViewController.m in Sources */,
-				EB7BA68511F8ED2100B3DDA6 /* ModoSearchBar.m in Sources */,
-				EB7BA75B11F9CE7B00B3DDA6 /* MultiLineTableViewCell.m in Sources */,
 				EB3721AB11FA2F5200705180 /* NewsImage.m in Sources */,
 				A64C313E11FDFAB8006FE056 /* AddressFormatter.m in Sources */,
 				C759593E12074B47008474A9 /* HallDetailsTableViewController.m in Sources */,
 				C759594012074B47008474A9 /* DiningMultiLineCell.m in Sources */,
 				C759594212074B47008474A9 /* DiningHallStatus.m in Sources */,
-				EB420C08120A018000089FE0 /* MITSearchDisplayController.m in Sources */,
 				A623F1F2120A035A00341C5E /* ModoThreeStateSwitchControl.m in Sources */,
+				EB4210D6120B81D500089FE0 /* MITSearchDisplayController.m in Sources */,
+				EB4210D8120B81D500089FE0 /* ModoNavigationBar.m in Sources */,
+				EB4210DA120B81D500089FE0 /* ModoNavigationController.m in Sources */,
+				EB4210DC120B81D500089FE0 /* ModoSearchBar.m in Sources */,
+				EB4210DE120B81D500089FE0 /* MultiLineTableViewCell.m in Sources */,
+				EB4210E0120B81D500089FE0 /* NavScrollerView.m in Sources */,
+				EB4210E2120B81D500089FE0 /* TabViewControl.m in Sources */,
+				EB4210E8120B82C000089FE0 /* TwitterViewController.m in Sources */,
+				EB4211B9120C92C600089FE0 /* MapSavedAnnotation.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

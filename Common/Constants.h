@@ -22,7 +22,6 @@ extern NSString * const DeviceTokenKey;
 extern NSString * const MITUnreadNotificationsKey;
 extern NSString * const PushNotificationSettingsKey;
 extern NSString * const MITModulesSavedStateKey;
-extern NSString * const CachedMapSearchQueryKey;
 extern NSString * const ShakeToReturnPrefKey;
 extern NSString * const MapTypePrefKey;
 
@@ -77,6 +76,7 @@ extern NSString * const ShuttleRouteStopEntityName;
 extern NSString * const CalendarEventEntityName;
 extern NSString * const CalendarCategoryEntityName;
 extern NSString * const CampusMapSearchEntityName;
+extern NSString * const CampusMapAnnotationEntityName;
 
 // Sizes
 static const NSUInteger kPersonUIDLength = 44;

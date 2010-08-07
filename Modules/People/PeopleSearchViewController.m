@@ -466,7 +466,6 @@ NSInteger strLenSort(NSString *str1, NSString *str2, void *context)
 - (void)showLoadingView {
 	// manually add loading view because we're not using the built-in data source table
 	if (self.loadingView == nil) {
-		//self.loadingView = [[MITLoadingActivityView alloc] initWithFrame:[MITSearchEffects frameWithHeader:self.tableView.tableFooterView]];
         self.loadingView = [[MITLoadingActivityView alloc] initWithFrame:self.tableView.frame];
 	}
 	

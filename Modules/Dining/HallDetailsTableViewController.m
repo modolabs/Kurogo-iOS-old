@@ -33,28 +33,28 @@
 	
 	switch (hallStatus.currentStat) {
 		case OPEN:
-			imageView.image = [UIImage imageNamed:@"dining-status-open@2x.png"];
+			imageView.image = [UIImage imageNamed:@"dining/dining-status-open@2x.png"];
 			[self.view addSubview:imageView];
 			break;
 			
 		case CLOSED:
 			if (hallStatus.nextMealRestriction == RESTRICTED) {
-				imageView.image = [UIImage imageNamed:@"dining-status-closed-w-restrictions@2x.png"];
+				imageView.image = [UIImage imageNamed:@"dining/dining-status-closed-w-restrictions@2x.png"];
 				[self.view addSubview:imageView];
 			}
 			else {
-				imageView.image = [UIImage imageNamed:@"dining-status-closed@2x.png"];
+				imageView.image = [UIImage imageNamed:@"dining/dining-status-closed@2x.png"];
 				[self.view addSubview:imageView];
 			}
 			break;
 			
 		case NO_RESTRICTION:
-			imageView.image = [UIImage imageNamed:@"dining-status-open@2x.png"];
+			imageView.image = [UIImage imageNamed:@"dining/dining-status-open@2x.png"];
 			[self.view addSubview:imageView];
 			break;
 			
 		case RESTRICTED:
-			imageView.image = [UIImage imageNamed:@"dining-status-open-w-restrictions@2x.png"];
+			imageView.image = [UIImage imageNamed:@"dining/dining-status-open-w-restrictions@2x.png"];
 			[self.view addSubview:imageView];
 			break;
 	}

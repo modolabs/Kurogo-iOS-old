@@ -1,14 +1,8 @@
-//
-//  MapSelectionController.h
-//  MIT Mobile
-//
-//  Created by Craig on 5/18/10.
-//  Copyright 2010 Raizlabs. All rights reserved.
-//
-
 #import <Foundation/Foundation.h>
+#import "JSONAPIRequest.h"
 
 @class CampusMapViewController;
+@class MITLoadingActivityView;
 
 typedef enum {
 	MapSelectionControllerSegmentBookmarks = 0,
@@ -16,21 +10,25 @@ typedef enum {
 	MapSelectionControllerSegmentBrowse,
 } MapSelectionControllerSegment;
 
+@interface MapSelectionController : UIViewController <UITableViewDelegate, UITableViewDataSource, JSONAPIDelegate> {
+    
+	CampusMapViewController *_mapVC;
 
-@interface MapSelectionController : UINavigationController 
-{
-	NSArray* _toolbarButtonItems;
-	
-	CampusMapViewController* _mapVC;
-	
-	UIBarButtonItem* _cancelButton;
+    UITableView *_tableView;
+    NSArray *_categoryItems;
+    NSArray *_tableItems;
+    MITLoadingActivityView *_loadingView;
+
+	UIBarButtonItem *_cancelButton;
+    MapSelectionControllerSegment _selectedSegment;
 }
 
-@property(nonatomic, readonly) NSArray* toolbarButtonItems;
-@property(nonatomic, readonly) CampusMapViewController* mapVC;
-@property(nonatomic, readonly) UIBarButtonItem* cancelButton;
+- (void)switchToSegment:(id)sender;
+- (void)switchToSegmentIndex:(MapSelectionControllerSegment)segment;
 
--(id) initWithMapSelectionControllerSegment:(MapSelectionControllerSegment) segment campusMap:(CampusMapViewController*)mapVC;
-
+@property (nonatomic, retain) UITableView *tableView;
+@property (nonatomic, retain) NSArray *tableItems;
+@property (nonatomic, assign) CampusMapViewController *mapVC;
+@property (nonatomic, readonly) UIBarButtonItem *cancelButton;
 
 @end

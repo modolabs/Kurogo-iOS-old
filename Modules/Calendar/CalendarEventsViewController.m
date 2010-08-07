@@ -62,6 +62,14 @@
 
 - (void)dealloc {
 	
+	[theTableView release];
+    theMapView.delegate = nil;
+	[theMapView release];
+	[searchResultsTableView release];
+    searchResultsMapView.delegate = nil;
+    [searchResultsMapView release];
+	[navScrollView release];
+	[datePicker release];
 	[events release];
 	[startDate release];
 	[endDate release];
@@ -75,6 +83,7 @@
 	
 	// Release any cached data, images, etc that aren't in use.
 	if (showList) {
+        theMapView.delegate = nil;
 		[theMapView release];
 		theMapView = nil;
 	} else {
@@ -122,10 +131,11 @@
 - (void)viewDidUnload {
 	
 	[theTableView release];
+    theMapView.delegate = nil;
 	[theMapView release];
 	[searchResultsTableView release];
-	//[leftScrollButton release];
-	//[rightScrollButton release];
+    searchResultsMapView.delegate = nil;
+    [searchResultsMapView release];
 	[navScrollView release];
 	[datePicker release];
 }

@@ -2,133 +2,62 @@
 #import "MapSelectionController.h"
 #import "MapSearchResultAnnotation.h"
 #import "CampusMapViewController.h"
-#import "MITSearchEffects.h"
 #import "MITUIConstants.h"
-
-#define kAPICategoryTitles	@"CategoryTitles"
-#define kAPICategory		@"Category"
+#import "ModoSearchBar.h"
 
 @implementation CategoriesTableViewController
 @synthesize mapSelectionController = _mapSelectionController;
 @synthesize itemsInTable = _itemsInTable;
 @synthesize headerText = _headerText;
-@synthesize topLevel = _topLevel;
-@synthesize leafLevel = _leafLevel;
-
-#pragma mark -
-#pragma mark Initialization
-
-
--(id) initWithMapSelectionController:(MapSelectionController*)mapSelectionController
-{
-	if(self = [super initWithStyle:UITableViewStyleGrouped])
-	{
-		_mapSelectionController = [mapSelectionController retain];
-	}
-	
-	return self;
-}
-
--(id) initWithMapSelectionController:(MapSelectionController *)mapSelectionController andStyle:(UITableViewStyle)style
-{
-	if(self = [super initWithStyle:style])
-	{
-		_mapSelectionController = [mapSelectionController retain];
-	}
-	
-	return self;
-}
 
 #pragma mark -
 #pragma mark View lifecycle
-
 
 - (void)viewDidLoad {
     [super viewDidLoad];
 	
 	self.tableView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:MITImageNameBackground]];
 	
-//	self.hidesBottomBarWhenPushed = YES;
 	[self.navigationController.navigationBar setBarStyle:UIBarStyleBlack];
-    self.title = @"Browse";
-	self.navigationItem.leftBarButtonItem.title = @"Back";
 	self.navigationItem.rightBarButtonItem = self.mapSelectionController.cancelButton;
 	
-	if (_topLevel) {
-		_headerText = @"Browse map by:";
-		JSONAPIRequest *apiRequest = [JSONAPIRequest requestWithJSONAPIDelegate:self];
-		apiRequest.userData = @"CategoryTitles";
-		[apiRequest requestObjectFromModule:@"map" command:@"categorytitles" parameters:nil];
-		
-		if (!_loadingView) 
-		{
-			self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-			_loadingView = [[[MITLoadingActivityView alloc] initWithFrame:[MITSearchEffects frameWithHeader:self.navigationController.navigationBar]]
-							retain];
-			[self.view addSubview:_loadingView];
-		}
-	}
-	
-	if(_leafLevel)
-	{
-		if (!_loadingView) 
-		{
-			self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-			_loadingView = [[[MITLoadingActivityView alloc] initWithFrame:[MITSearchEffects frameWithHeader:self.navigationController.navigationBar]]
-							retain];
-			[self.view addSubview:_loadingView];
-		}
-	}
-	
-	[self setToolbarItems:self.mapSelectionController.toolbarButtonItems];
+    if (!_loadingView) {
+        self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+        _loadingView = [[[MITLoadingActivityView alloc] initWithFrame:self.tableView.frame] retain];
+        [self.view addSubview:_loadingView];
+    }
 }
 
+- (void)didReceiveMemoryWarning {
+    // Releases the view if it doesn't have a superview.
+    [super didReceiveMemoryWarning];
+    
+    // Relinquish ownership any cached data, images, etc that aren't in use.
+}
 
-/*
-- (void)viewWillAppear:(BOOL)animated {
-    [super viewWillAppear:animated];
+- (void)viewDidUnload {
+    // Relinquish ownership of anything that can be recreated in viewDidLoad or on demand.
+    // For example: self.myOutlet = nil;
 }
-*/
-/*
-- (void)viewDidAppear:(BOOL)animated {
-    [super viewDidAppear:animated];
-}
-*/
-/*
-- (void)viewWillDisappear:(BOOL)animated {
-    [super viewWillDisappear:animated];
-}
-*/
-/*
-- (void)viewDidDisappear:(BOOL)animated {
-    [super viewDidDisappear:animated];
-}
-*/
-/*
-// Override to allow orientations other than the default portrait orientation.
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
-    // Return YES for supported orientations
-    return (interfaceOrientation == UIInterfaceOrientationPortrait);
-}
-*/
 
+- (void)dealloc {
+	[_itemsInTable release];
+	[_headerText release];
+    [super dealloc];
+}
 
 #pragma mark -
 #pragma mark Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    // Return the number of sections.
     return 1;
 }
 
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    // Return the number of rows in the section.
     return _itemsInTable.count;
 }
 
-
-// Customize the appearance of table view cells.
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     
     static NSString *CellIdentifier = @"Cell";
@@ -147,11 +76,6 @@
         cell.textLabel.text = displayName;
 	}
 
-	if (!_leafLevel) {
-		cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-		cell.backgroundColor = [UIColor whiteColor];
-	}
-    
     return cell;
 }
 
@@ -163,44 +87,27 @@
 {
 	[tableView deselectRowAtIndexPath:indexPath animated:YES];
 	
-	NSDictionary* thisItem = [_itemsInTable objectAtIndex:indexPath.row];
-	
-	if (_leafLevel) {
-		
-		// make sure the map is showing. 
-		[self.mapSelectionController.mapVC showListView:NO];
-		
-		// clear the search bar
-		self.mapSelectionController.mapVC.searchBar.text = @"";
-		
-		NSMutableArray* searchResultsArray = [NSMutableArray array];
+	NSDictionary *thisItem = [_itemsInTable objectAtIndex:indexPath.row];
+    
+    // make sure the map is showing. 
+    [self.mapSelectionController.mapVC showListView:NO];
+    self.mapSelectionController.mapVC.searchBar.text = nil;
 
-		ArcGISMapSearchResultAnnotation *annotation = [[[ArcGISMapSearchResultAnnotation alloc] initWithInfo:thisItem] autorelease];
-        if (!annotation.dataPopulated) {
-            [annotation searchAnnotationWithDelegate:self.mapSelectionController.mapVC];
-        }
-		[searchResultsArray addObject:annotation];
-		
-		// this will remove any old annotations and add the new ones. 
-		[self.mapSelectionController.mapVC setSearchResults:searchResultsArray];
-		
-		// on the map, select the current annotation
-		//[[self.mapSelectionController.mapVC mapView] selectAnnotation:annotation animated:NO withRecenter:YES];
-		
-		[self dismissModalViewControllerAnimated:YES];
-	} else {
-	
-		CategoriesTableViewController* newCategoriesTVC = nil;
-		
-        newCategoriesTVC = [[[CategoriesTableViewController alloc] initWithMapSelectionController:self.mapSelectionController andStyle:UITableViewStylePlain] autorelease];
-        [newCategoriesTVC executeServerCategoryRequestWithQuery:[thisItem objectForKey:@"categoryId"]];
-        newCategoriesTVC.leafLevel = YES;
-        newCategoriesTVC.headerText = [NSString stringWithFormat:@"%@:", [thisItem objectForKey:@"categoryName"]];
-		
-		newCategoriesTVC.topLevel = NO;
-		
-		[self.navigationController pushViewController:newCategoriesTVC animated:YES];
-	}
+    NSMutableArray *searchResultsArray = [NSMutableArray array];
+    
+    ArcGISMapSearchResultAnnotation *annotation = [[[ArcGISMapSearchResultAnnotation alloc] initWithInfo:thisItem] autorelease];
+    if (!annotation.dataPopulated) {
+        [annotation searchAnnotationWithDelegate:self.mapSelectionController.mapVC];
+    }
+    [searchResultsArray addObject:annotation];
+    
+    // this will remove any old annotations and add the new ones. 
+    [self.mapSelectionController.mapVC setSearchResults:searchResultsArray];
+    
+    // on the map, select the current annotation
+    //[[self.mapVC mapView] selectAnnotation:annotation animated:NO withRecenter:YES];
+    
+    [self dismissModalViewControllerAnimated:YES];
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
@@ -210,73 +117,53 @@
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
-	UIView* headerView = [[[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 60)] autorelease];
-//	headerView.backgroundColor = [UIColor yellowColor];
-//	headerView.alpha = 0.5;
-	if (section == 0) {
-		UILabel* headerLabel = [[[UILabel alloc] initWithFrame:CGRectMake(16, 10, 226, 40)] autorelease];
+    if (!_headerView) {
+        CGFloat headerWidth = self.view.frame.size.width;
+        _headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, headerWidth, 60)];
+
+		UILabel *headerLabel = [[[UILabel alloc] initWithFrame:CGRectMake(16, 10, 200, 40)] autorelease];
 		headerLabel.text = self.headerText;
 		headerLabel.font = [UIFont boldSystemFontOfSize:16];
 		headerLabel.textColor = [UIColor darkGrayColor];
 		headerLabel.numberOfLines = 0;
 		headerLabel.backgroundColor = [UIColor clearColor];
-		//			[headerLabel sizeToFit];
-		[headerView addSubview:headerLabel];
-		if (_leafLevel) {
-			headerView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:MITImageNameBackground]];
-			headerLabel.frame = CGRectMake(headerLabel.frame.origin.x, headerLabel.frame.origin.y, 200, headerLabel.frame.size.height);
-			UIButton* viewAllButton = [UIButton buttonWithType:UIButtonTypeCustom];
-			UIImage* viewAllImage = [UIImage imageNamed:@"maps/map_viewall.png"];
-			viewAllButton.frame = CGRectMake(320-viewAllImage.size.width-10, 10, viewAllImage.size.width, viewAllImage.size.height);
-			[viewAllButton setImage:viewAllImage forState:UIControlStateNormal];
-			[viewAllButton setImage:[UIImage imageNamed:@"maps/map_viewall_pressed.png"] forState:UIControlStateHighlighted];
-			[viewAllButton addTarget:self action:@selector(mapAllButtonTapped) forControlEvents:UIControlEventTouchUpInside];
-			[headerView addSubview:viewAllButton];
-		}
+		[_headerView addSubview:headerLabel];
+        _headerView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:MITImageNameBackground]];
+
+        UIButton* viewAllButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        UIImage* viewAllImage = [UIImage imageNamed:@"maps/map_viewall.png"];
+        viewAllButton.frame = CGRectMake(headerWidth - viewAllImage.size.width - 10, 10, viewAllImage.size.width, viewAllImage.size.height);
+        [viewAllButton setImage:viewAllImage forState:UIControlStateNormal];
+        [viewAllButton setImage:[UIImage imageNamed:@"maps/map_viewall_pressed.png"] forState:UIControlStateHighlighted];
+        [viewAllButton addTarget:self action:@selector(mapAllButtonTapped) forControlEvents:UIControlEventTouchUpInside];
+        [_headerView addSubview:viewAllButton];
 	}
-	return headerView;
+	return _headerView;
 }
 
 
 #pragma mark MapAll
 -(void) mapAllButtonTapped
 {
-	//NSLog(@"map all button tapped");
 	// make sure the map is showing. 
 	[self.mapSelectionController.mapVC showListView:NO];
 	
 	// clear the search bar
-	self.mapSelectionController.mapVC.searchBar.text = @"";
+	self.mapSelectionController.mapVC.searchBar.text = nil;
 	
 	NSMutableArray* searchResultsArray = [NSMutableArray array];
 	
-	for (NSDictionary* thisItem in _itemsInTable) {
+	for (NSDictionary *thisItem in _itemsInTable) {
 		ArcGISMapSearchResultAnnotation *annotation = [[[ArcGISMapSearchResultAnnotation alloc] initWithInfo:thisItem] autorelease];
+        if (!annotation.dataPopulated) {
+            [annotation searchAnnotationWithDelegate:self.mapSelectionController.mapVC];
+        }
 		[searchResultsArray addObject:annotation];
 	}
 	
 	// this will remove any old annotations and add the new ones. 
-	//[[self.mapSelectionController.mapVC mapView] setShouldNotDropPins:YES];
 	[self.mapSelectionController.mapVC setSearchResults:searchResultsArray];
-		
 	[self dismissModalViewControllerAnimated:YES];
-	//[[self.mapSelectionController.mapVC mapView] setShouldNotDropPins:NO];
-}
-
-
-#pragma mark -
-#pragma mark Memory management
-
-- (void)didReceiveMemoryWarning {
-    // Releases the view if it doesn't have a superview.
-    [super didReceiveMemoryWarning];
-    
-    // Relinquish ownership any cached data, images, etc that aren't in use.
-}
-
-- (void)viewDidUnload {
-    // Relinquish ownership of anything that can be recreated in viewDidLoad or on demand.
-    // For example: self.myOutlet = nil;
 }
 
 #pragma mark JSONAPIDelegate
@@ -293,8 +180,7 @@
             [_loadingView release];
             _loadingView = nil;
             
-            if(_leafLevel)
-                self.tableView.backgroundColor = [UIColor whiteColor];
+            self.tableView.backgroundColor = [UIColor whiteColor];
         }
         
         [self.tableView reloadData];
@@ -304,38 +190,28 @@
 - (void)handleConnectionFailureForRequest:(JSONAPIRequest *)request
 {
 	if (_loadingView) {
-		//self.tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
 		[_loadingView removeFromSuperview];
 		[_loadingView release];
 		_loadingView = nil;
 	}
 	
-	UIAlertView *alert = [[[UIAlertView alloc]
-						  initWithTitle:@"Connection Failed" 
-						  message:@"Could not connect to server, please try again later."
-						  delegate:nil
-						  cancelButtonTitle:@"OK" 
-						  otherButtonTitles:nil] autorelease];
+	UIAlertView *alert = [[[UIAlertView alloc] initWithTitle:@"Connection Failed" 
+                                                     message:@"Could not connect to server, please try again later."
+                                                    delegate:nil
+                                           cancelButtonTitle:@"OK" 
+                                           otherButtonTitles:nil] autorelease];
 	[alert show];
-
-	
 }
 
--(void) executeServerCategoryRequestWithQuery:(NSString *)query 
+- (void)executeServerCategoryRequestWithQuery:(NSString *)query 
 {
 	JSONAPIRequest *apiRequest = [JSONAPIRequest requestWithJSONAPIDelegate:self];
-	apiRequest.userData = @"Category";
 	[apiRequest requestObjectFromModule:@"map"
                                 command:@"category"
                              parameters:[NSDictionary dictionaryWithObjectsAndKeys:query, @"id", nil]];
 }
 
 
-- (void)dealloc {
-	[_itemsInTable release];
-	[_headerText release];
-    [super dealloc];
-}
 
 
 @end

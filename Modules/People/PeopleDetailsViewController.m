@@ -1,6 +1,5 @@
 #import "PeopleDetailsViewController.h"
 #import "MultiLineTableViewCell.h"
-//#import "PeopleDetailsTableViewCell.h"
 #import "ConnectionDetector.h"
 #import "PeopleRecentsData.h"
 #import "MIT_MobileAppDelegate.h"
@@ -10,6 +9,8 @@
 #import "ModoNavigationController.h"
 #import "NSArray+Convenience.h"
 #import "AddressFormatter.h"
+#import "MapBookmarkManager.h"
+#import "CMModule.h"
 
 @interface PeopleDetailsViewController (Private)
 
@@ -21,7 +22,12 @@
 
 @end
 
-@implementation PeopleDetailsViewController (Private)
+@implementation PeopleDetailsViewController
+
+@synthesize personDetails, sectionArray, fullname;
+
+NSString * const RequestUpdatePersonDetails = @"update";
+NSString * const RequestLookupAddress = @"address";
 
 - (void)addMultivalueValuesAndLabelsTo:(ABMutableMultiValueRef)multiValue
 							usingLabel:(CFStringRef)label
@@ -38,12 +44,6 @@
 	}	
 	[existingValues release];
 }
-
-@end
-
-@implementation PeopleDetailsViewController
-
-@synthesize personDetails, sectionArray, fullname;
 
 - (void)viewDidLoad
 {
@@ -118,11 +118,15 @@
 	self.tableView.tableHeaderView = header;
 	
 	// if lastUpdate is sufficiently long ago, issue a background search
-	// TODO: change this time interval to something more reasonable
-	if ([[self.personDetails actualValueForKey:@"lastUpdate"] timeIntervalSinceNow] < -300) { // 5 mins for testing
+#ifdef USE_MOBILE_DEV
+	if ([[self.personDetails actualValueForKey:@"lastUpdate"] timeIntervalSinceNow] < -300) {
+#else
+    if ([[self.personDetails actualValueForKey:@"lastUpdate"] timeIntervalSinceNow] < -86400 * 14) {
+#endif
 		if ([ConnectionDetector isConnected]) {
 			// issue this query but don't care too much if it fails
 			JSONAPIRequest *api = [JSONAPIRequest requestWithJSONAPIDelegate:self];
+            api.userData = RequestUpdatePersonDetails;
 			[api requestObject:[NSDictionary dictionaryWithObjectsAndKeys:@"people", @"module", self.fullname, @"q", nil]];
 		}
 	}
@@ -148,21 +152,29 @@
 #pragma mark Connection methods + wrapper delegate
 
 - (void)request:(JSONAPIRequest *)request jsonLoaded:(id)result {
-	if (result && [result isKindOfClass:[NSArray class]]) { // fail silently
-		for (NSDictionary *entry in result) {
-			if ([[entry objectForKey:@"id"] isEqualToString:[self.personDetails actualValueForKey:@"uid"]]) {
-				self.personDetails = [PeopleRecentsData updatePerson:self.personDetails withSearchResult:entry];
-				[self.tableView reloadData];
-			}
-		}
-	}
-}
+    if ([request.userData isEqualToString:RequestUpdatePersonDetails]) {
+        
+        if (result && [result isKindOfClass:[NSArray class]]) { // fail silently
+            for (NSDictionary *entry in result) {
+                if ([[entry objectForKey:@"id"] isEqualToString:[self.personDetails actualValueForKey:@"uid"]]) {
+                    self.personDetails = [PeopleRecentsData updatePerson:self.personDetails withSearchResult:entry];
+                    [self.tableView reloadData];
+                }
+            }
+        }
 
-/*
--(void)handleConnectionFailure
-{
+    } else if ([request.userData isEqualToString:RequestLookupAddress]) {
+        
+        NSArray *searchResults = [result objectForKey:@"results"];
+        if ([searchResults count]) {
+            NSDictionary *info = [searchResults objectAtIndex:0];
+            addressSearchAnnotation = [[ArcGISMapSearchResultAnnotation alloc] initWithInfo:info];
+            [[MapBookmarkManager defaultManager] saveAnnotationWithoutBookmarking:addressSearchAnnotation];
+            NSIndexSet *sections = [NSIndexSet indexSetWithIndex:addressSection];
+            [self.tableView reloadSections:sections withRowAnimation:UITableViewRowAnimationFade];
+        }
+    }
 }
-*/
 
 #pragma mark -
 #pragma mark Table view methods
@@ -173,16 +185,13 @@
 	
 }
 
-// Customize the number of rows in the table view.
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-
 	if (section == [self.sectionArray count])
 		return 2;
 	return [[self.sectionArray safeObjectAtIndex:section] count];
 }
 
 
-// Customize the appearance of table view cells.
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     
 	NSInteger section = indexPath.section;
@@ -219,7 +228,38 @@
 		NSString *data = [personInfo safeObjectAtIndex:1];
 		
 		cell.textLabel.text = tag;
-		cell.detailTextLabel.text = data;
+        
+        // use a textView for the address so people can copy/paste.
+        // TODO: decide if we want more universal copy/paste functionality across the board.
+        if ([tag isEqualToString:[personDetails displayNameForKey:@"postaladdress"]]) {
+            addressSection = section;
+            
+            UIFont *font = [UIFont boldSystemFontOfSize:15.0];
+            CGFloat width = [MultiLineTableViewCell widthForTextLabel:NO
+                                                            cellStyle:UITableViewCellStyleValue2
+                                                            tableView:self.tableView
+                                                        accessoryType:UITableViewCellAccessoryDetailDisclosureButton
+                                                            cellImage:NO];
+            
+            // in MultiLineTableViewCell, we are assuming the detailTextLabel starts at 24% of the cell width
+            // the following line is just replicates part of the calculation made in MultiLineTableViewCell
+            CGFloat originX = 30.0 + floor((self.view.frame.size.width - 50.0) * 0.24);
+            CGSize size = [data sizeWithFont:font
+                           constrainedToSize:CGSizeMake(width, 2000.0f)
+                               lineBreakMode:UILineBreakModeWordWrap];
+            
+            // -[MultiLineTableViewCell layoutSubviews] will adjust the originY to where the detailTextLabel is
+            UITextView *textView = [[[UITextView alloc] initWithFrame:CGRectMake(originX, 0, width + 10.0, size.height + 10.0)] autorelease];
+            textView.text = data;
+            textView.backgroundColor = [UIColor clearColor];
+            textView.font = font;
+            textView.textColor = cell.detailTextLabel.textColor;
+            textView.scrollEnabled = NO;
+
+            [cell.contentView addSubview:textView];
+        } else {
+            cell.detailTextLabel.text = data;
+        }
         
 		
 		if ([tag isEqualToString:[personDetails displayNameForKey:@"mail"]]) {
@@ -228,7 +268,7 @@
 		} else if ([tag isEqualToString:[personDetails displayNameForKey:@"telephonenumber"]]) {
             cell.accessoryType = UITableViewCellAccessoryDetailDisclosureButton;
             cell.accessoryView = [UIImageView accessoryViewWithMITType:MITAccessoryViewPhone];
-		} else if ([tag isEqualToString:[personDetails displayNameForKey:@"postaladdress"]]) {//|| [tag isEqualToString:@"room"]) {
+		} else if ([tag isEqualToString:[personDetails displayNameForKey:@"postaladdress"]] && addressSearchAnnotation) {
             cell.accessoryType = UITableViewCellAccessoryDetailDisclosureButton;
             cell.accessoryView = [UIImageView accessoryViewWithMITType:MITAccessoryViewMap];
 		} else {
@@ -252,27 +292,28 @@
 	NSArray *personInfo = [[self.sectionArray safeObjectAtIndex:section] safeObjectAtIndex:row];
 	NSString *tag = [personInfo safeObjectAtIndex:0];
 	NSString *data = [personInfo safeObjectAtIndex:1];
-    
-    /*
-	// the following may be off by a pixel or 2 for different OS versions
-	// in the future we should prepare for the general case where widths can be way different (including flipping orientation)
-	CGFloat labelWidth = ([tag isEqualToString:@"telephonenumber"] || [tag isEqualToString:@"mail"] || [tag isEqualToString:@"office"]) ? 182.0 : 207.0;
-	
-	CGSize labelSize = [data sizeWithFont:[UIFont boldSystemFontOfSize:15.0]
-						constrainedToSize:CGSizeMake(labelWidth, 2009.0f)
-							lineBreakMode:UILineBreakModeWordWrap];
-	
-	return labelSize.height + 26.0;
-     */
-    
+        
 	// If the cell's 'tag' string matches the display name for any of these personDetails properties, 
 	// add a disclosure button.
     UITableViewCellAccessoryType accessoryType = 
 	([tag isEqualToString:[personDetails displayNameForKey:@"telephonenumber"]] || 
-	 [tag isEqualToString:[personDetails displayNameForKey:@"mail"]] || 
-	 [tag isEqualToString:[personDetails displayNameForKey:@"postaladdress"]])
+	 [tag isEqualToString:[personDetails displayNameForKey:@"mail"]])
     ? UITableViewCellAccessoryDetailDisclosureButton
     : UITableViewCellAccessoryNone;
+    
+    // special case for addresses: add a disclosure button if we find something,
+    // otherwise don't indicate this as an actionable cell
+    if ([tag isEqualToString:[personDetails displayNameForKey:@"postaladdress"]] && !addressSearchAnnotation) {
+        // issue a prelim search for person's address
+        
+        NSString *searchText = [AddressFormatter streetAddressFromAddressBlockText:data];
+        JSONAPIRequest *apiRequest = [JSONAPIRequest requestWithJSONAPIDelegate:self];
+        apiRequest.userData = RequestLookupAddress;
+        [apiRequest requestObjectFromModule:@"map"
+                                    command:@"search"
+                                 parameters:[NSDictionary dictionaryWithObjectsAndKeys:searchText, @"q", nil]];
+        
+    }
     
     return [MultiLineTableViewCell heightForCellWithStyle:UITableViewCellStyleValue2
                                                 tableView:tableView 
@@ -335,7 +376,7 @@
 			
 			// present newPersonController in a separate navigationController
 			// since it doesn't have its own nav bar
-			ModoNavigationController *navController = [[ModoNavigationController alloc] initWithRootViewController:creator];
+			UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:creator];
 			
 			MIT_MobileAppDelegate *appDelegate = (MIT_MobileAppDelegate *)[[UIApplication sharedApplication] delegate];
 			[appDelegate presentAppModalViewController:navController animated:YES];
@@ -372,15 +413,13 @@
 }
 
 #pragma mark -
-#pragma mark Address book new person methods
+#pragma mark Address book methods
 
 - (void)newPersonViewController:(ABNewPersonViewController *)newPersonViewController didCompleteWithNewPerson:(ABRecordRef)person
 {	
 	MIT_MobileAppDelegate *appDelegate = (MIT_MobileAppDelegate *)[[UIApplication sharedApplication] delegate];
 	[appDelegate dismissAppModalViewControllerAnimated:YES];
 }
-
-#pragma mark Address book person controller methods
 
 - (BOOL)        personViewController:(ABPersonViewController *)personViewController 
  shouldPerformDefaultActionForPerson:(ABRecordRef)person 
@@ -389,9 +428,6 @@
 {
 	return NO;
 }
-
-#pragma mark Address Book People Picker nav controller methods
-
 
 /* when they pick a person we are recreating the entire record using
  * the union of what was previously there and what we received from
@@ -475,8 +511,6 @@
 	
 	MIT_MobileAppDelegate *appDelegate = (MIT_MobileAppDelegate *)[[UIApplication sharedApplication] delegate];
 	[appDelegate dismissAppModalViewControllerAnimated:YES];
-	//[self.navigationController pushViewController:personController animated:YES];
-	//[appDelegate presentAppModalViewController:personController animated:YES];
 	
 	return NO; // don't navigate to built-in view
 }
@@ -495,40 +529,17 @@
 	[appDelegate dismissAppModalViewControllerAnimated:YES];
 }
 
-/*
-#pragma mark -
-#pragma mark Alert view delegate methods
-
-- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
-{
-	if (buttonIndex != [alertView cancelButtonIndex]) {
-		// we always set up the title to be "Dial xxxxxxxxxx?" or "Email xxx@xxx.xxx?"
-		NSArray *titleParts = [alertView.title componentsSeparatedByString:@" "];
-		NSString *titleAction = [titleParts objectAtIndex:1];
-		titleAction = [titleAction substringToIndex:[titleAction length] - 1];
-		NSString *urlString;
-		
-		if ([[alertView buttonTitleAtIndex:buttonIndex] isEqualToString:@"Dial"])
-			urlString = [@"tel://" stringByAppendingString:titleAction];
-		else if ([[alertView buttonTitleAtIndex:buttonIndex] isEqualToString:@"Email"])
-			urlString = [@"mailto://" stringByAppendingString:titleAction];
-	
-		NSURL *externURL = [NSURL URLWithString:urlString];
-		[[UIApplication sharedApplication] openURL:externURL];
-	}
-}
-*/
 
 #pragma mark -
 #pragma mark App-switching actions
 
 - (void)mapIconTapped:(NSString *)address
 {
-	// Harvard's ARCGIS server allows searches to one field at a time: Building Name, Address, or City (which is useless). 
-	// Address usually yields the best results, so we'll pass that.
-	[[UIApplication sharedApplication] openURL:
-	 [NSURL internalURLWithModuleTag:CampusMapTag path:@"search" 
-							   query:[AddressFormatter streetAddressFromAddressBlockText:address]]];
+    NSURL *internalURL = [NSURL internalURLWithModuleTag:CampusMapTag
+                                                    path:LocalPathMapsSelectedAnnotation
+                                                   query:addressSearchAnnotation.uniqueID];
+
+    [[UIApplication sharedApplication] openURL:internalURL];
 }
 
 - (void)phoneIconTapped:(NSString *)phone
@@ -560,7 +571,6 @@
 	}
 }
 
-#pragma mark Email modal view controller methods
 
 // Dismisses the email composition interface when users tap Cancel or Send. Proceeds to update the message field with the result of the operation.
 - (void)mailComposeController:(MFMailComposeViewController*)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError*)error 

@@ -36,10 +36,3 @@
 
 @end
 
-
-
-@interface TabScrollerBackgroundView : UIView {
-    UIImage *backgroundImage;
-}
-
-@end
