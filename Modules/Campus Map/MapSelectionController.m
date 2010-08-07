@@ -8,8 +8,15 @@
 #import "CampusMapViewController.h"
 #import "MapSearch.h"
 
+@interface MapSelectionController (Private)
+
+- (void)beginEditing;
+- (void)endEditing;
+
+@end
+
+
 @implementation MapSelectionController
-@synthesize toolbarButtonItems = _toolbarButtonItems;
 @synthesize mapVC = _mapVC;
 @synthesize cancelButton = _cancelButton;
 @synthesize tableView = _tableView;
@@ -18,9 +25,8 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 
-	NSLog(@"%@", [self.mapVC description]);
-    
 	self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:MITImageNameBackground]];
+    self.navigationController.navigationBar.tintColor = [UIColor blackColor];
     
 	UISegmentedControl *seg = [[[UISegmentedControl alloc] initWithItems:[NSArray arrayWithObjects:@"Bookmarks", @"Recents", @"Browse", nil]] autorelease];
 	[seg setSegmentedControlStyle:UISegmentedControlStyleBar];
@@ -30,12 +36,9 @@
 	
 	UIBarButtonItem *item = [[[UIBarButtonItem alloc] initWithCustomView:seg] autorelease];
 	
-    if (!_toolbarButtonItems) {
-        _toolbarButtonItems = [[NSArray arrayWithObject:item] retain];
-    }
-	
 	[self.navigationController setToolbarHidden:NO];
 	[self.navigationController.toolbar setBarStyle:UIBarStyleBlack];
+    self.toolbarItems = [NSArray arrayWithObject:item];
     
     if (!_cancelButton) {
         _cancelButton = [[UIBarButtonItem alloc] initWithTitle:@"Cancel" 
@@ -48,15 +51,12 @@
 	self.navigationItem.rightBarButtonItem = _cancelButton;
 	[self.navigationController.navigationBar setBarStyle:UIBarStyleBlack];
     
-    [self switchToSegment:MapSelectionControllerSegmentBrowse];
+    [self switchToSegmentIndex:MapSelectionControllerSegmentBrowse];
 }
 
 
 - (void)dealloc
 {
-    if (_toolbarButtonItems) {
-        [_toolbarButtonItems release];
-    }
 	[_mapVC release];
 	[_cancelButton release];
     [_categoryItems release];
@@ -72,11 +72,20 @@
 	[self dismissModalViewControllerAnimated:YES];
 }
 
-- (void)switchToSegment:(MapSelectionControllerSegment)segment {
+
+- (void)switchToSegment:(id)sender {
     
+    UISegmentedControl *seg = (UISegmentedControl *)sender;
+    MapSelectionControllerSegment segment = seg.selectedSegmentIndex;
+    [self switchToSegmentIndex:segment];
+}
+
+- (void)switchToSegmentIndex:(MapSelectionControllerSegment)segment {
+
     if (_selectedSegment == segment) return;
     
     _selectedSegment = segment;
+    
     [self.tableView removeFromSuperview];
     CGRect frame = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height);
     
@@ -299,6 +308,14 @@
 
 - (void)beginEditing {
     [self.tableView setEditing:YES animated:YES];
+    self.navigationItem.leftBarButtonItem = [[[UIBarButtonItem alloc] initWithTitle:@"Done" style:UIBarButtonItemStyleDone target:self action:@selector(endEditing)] autorelease];
+    self.navigationItem.rightBarButtonItem = nil;
+}
+
+- (void)endEditing {
+    [self.tableView setEditing:NO animated:YES];
+    self.navigationItem.leftBarButtonItem = [[[UIBarButtonItem alloc] initWithTitle:@"Edit" style:UIBarButtonItemStyleBordered target:self action:@selector(beginEditing)] autorelease];
+    self.navigationItem.rightBarButtonItem = _cancelButton;
 }
 
 #pragma mark -

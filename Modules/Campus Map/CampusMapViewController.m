@@ -55,7 +55,7 @@
     
     CGFloat searchBarWidth = [self searchBarWidth];
 	
-	_viewTypeButton = [[[UIBarButtonItem alloc] initWithTitle:@"List" style:UIBarButtonItemStylePlain target:self action:@selector(viewTypeChanged:)] autorelease];
+	_viewTypeButton = [[UIBarButtonItem alloc] initWithTitle:@"List" style:UIBarButtonItemStylePlain target:self action:@selector(viewTypeChanged:)];
 	self.navigationItem.rightBarButtonItem = _viewTypeButton;
 	
 	// add a search bar to our view
@@ -591,10 +591,10 @@
 	
     _selectionVC = [[MapSelectionController alloc] init];
     _selectionVC.mapVC = self;
-    _selectionVC.view;
-    [_selectionVC switchToSegment:MapSelectionControllerSegmentBookmarks];
-
     UINavigationController *dummyNavC = [[UINavigationController alloc] initWithRootViewController:_selectionVC];
+    
+    _selectionVC.view;
+    [_selectionVC switchToSegmentIndex:MapSelectionControllerSegmentBookmarks];
 
 	MIT_MobileAppDelegate *appDelegate = (MIT_MobileAppDelegate *)[[UIApplication sharedApplication] delegate];
 	[appDelegate presentAppModalViewController:dummyNavC animated:YES];

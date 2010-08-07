@@ -26,8 +26,6 @@
         _loadingView = [[[MITLoadingActivityView alloc] initWithFrame:self.tableView.frame] retain];
         [self.view addSubview:_loadingView];
     }
-	
-	[self setToolbarItems:self.mapSelectionController.toolbarButtonItems];
 }
 
 - (void)didReceiveMemoryWarning {
