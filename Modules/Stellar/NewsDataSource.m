@@ -160,8 +160,7 @@
 	
 	UIViewController *announcementViewController = [[StellarAnnouncementViewController alloc]
 		initWithAnnouncement:(StellarAnnouncement *)[self.viewController.news objectAtIndex:indexPath.row]
-		rowIndex:indexPath.row
-	];
+		rowIndex:indexPath.row];
 
 	[self.viewController.navigationController
 		pushViewController:announcementViewController

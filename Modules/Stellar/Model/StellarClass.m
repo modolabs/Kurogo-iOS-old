@@ -21,5 +21,12 @@
 @dynamic announcement;
 @dynamic staff;
 @dynamic course;
+@dynamic credits;
+@dynamic preReqs;
+@dynamic cross_reg;
+@dynamic examGroup;
+@dynamic department;
+@dynamic school;
+@dynamic order;
 
 @end

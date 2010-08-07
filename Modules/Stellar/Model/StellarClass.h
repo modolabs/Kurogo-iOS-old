@@ -23,6 +23,13 @@
 @property (nonatomic, retain) NSSet* announcement;
 @property (nonatomic, retain) NSSet* staff;
 @property (nonatomic, retain) NSSet* course;
+@property (nonatomic, retain) NSString *credits;
+@property (nonatomic, retain) NSString *preReqs;
+@property (nonatomic, retain) NSString *cross_reg;
+@property (nonatomic, retain) NSString *examGroup;
+@property (nonatomic, retain) NSString *department;
+@property (nonatomic, retain) NSString *school;
+@property (nonatomic, retain) NSNumber *order;
 
 @end
 

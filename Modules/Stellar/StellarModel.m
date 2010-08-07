@@ -140,8 +140,7 @@ NSString* cleanPersonName(NSString *personName);
 + (NSArray *) myStellarClasses {
 	return [[CoreDataManager objectsForEntity:StellarClassEntityName 
 				matchingPredicate:[NSPredicate predicateWithFormat:@"isFavorited == 1"]]
-			 sortedArrayUsingFunction:classNameCompare context:NULL];
-				
+			 sortedArrayUsingFunction:classNameCompare context:NULL];	
 }
 
 + (NSArray *) sortedAnnouncements: (StellarClass *)class {
@@ -221,15 +220,38 @@ NSString* cleanPersonName(NSString *personName);
 	return stellarClass;
 }
 	
-+ (StellarClass *) StellarClassFromDictionary: (NSDictionary *)aDict {
++ (StellarClass *) StellarClassFromDictionary: (NSDictionary *)aDict index:(NSInteger)index{
 	StellarClass *stellarClass = [StellarModel classWithMasterId:[aDict objectForKey:@"masterId"]];
 	
 	NSString *name = [aDict objectForKey:@"name"];
 	// if name is not defined do not attempt to overwrite with new information
-	if([name length]) {		
+	if([name length]) {
+		if (index >= 0)
+			stellarClass.order = [NSNumber numberWithInt:(int)index];
+		
 		stellarClass.name = name;
 		stellarClass.title = [aDict objectForKey:@"title"];
 		stellarClass.blurb = [aDict objectForKey:@"description"];
+		
+		if ([aDict objectForKey:@"preReq"]) {
+			stellarClass.preReqs = [aDict objectForKey:@"preReq"];
+		}
+		if ([aDict objectForKey:@"credits"]) {
+			stellarClass.credits = [aDict objectForKey:@"credits"];
+		}
+		if ([aDict objectForKey:@"cross_reg"]) {
+			stellarClass.cross_reg = [aDict objectForKey:@"cross_reg"];
+		}
+		if ([aDict objectForKey:@"exam_group"]) {
+			stellarClass.examGroup = [aDict objectForKey:@"exam_group"];
+		}
+		if ([aDict objectForKey:@"department"]) {
+			stellarClass.department = [aDict objectForKey:@"department"];
+		}
+		if ([aDict objectForKey:@"school"]) {
+			stellarClass.school = [aDict objectForKey:@"school"];
+		}
+		
 		//stellarClass.term = [aDict objectForKey:@"term"];
 		stellarClass.term = @"Fall 2010";
 		stellarClass.url = [aDict objectForKey:@"stellarUrl"];
@@ -333,22 +355,6 @@ NSString* cleanPersonName(NSString *personName);
 		return;
 	}
 	
-	/*for(NSDictionary *aDict in courses) {
-		StellarCourse *oldStellarCourse = [CoreDataManager getObjectForEntity:StellarCourseEntityName attribute:@"number" value:[aDict objectForKey:@"short"]];
-		if(oldStellarCourse) {
-			// delete old course (will replace all the data, occasionally non-critical relationships
-			// between a course and its subject will be lost
-			[CoreDataManager deleteObject:oldStellarCourse];
-		}
-		
-		StellarCourse *newStellarCourse = (StellarCourse *)[CoreDataManager insertNewObjectForEntityForName:StellarCourseEntityName];
-		newStellarCourse.number = [aDict objectForKey:@"short"];
-		newStellarCourse.title = [aDict objectForKey:@"name"];
-	}
-	[CoreDataManager saveData];
-	[[NSUserDefaults standardUserDefaults] setObject:[NSDate date] forKey:@"stellarCoursesLastSaved"];
-	[self.coursesLoadedDelegate coursesLoaded];*/
-	
 	NSMutableArray *coursesArray = [[NSMutableArray alloc] init];
 	for (NSDictionary *aDict in courseGroups) {
 		
@@ -360,7 +366,12 @@ NSString* cleanPersonName(NSString *personName);
 			NSString *courseName = [course valueForKey:@"name"];
 			if ([courseName length] < 1)
 				courseName = [[NSString alloc] initWithFormat:@"%@-other", courseGroupName];
-			 
+			
+			NSString *title = @"title";
+			NSString *predicateFormat = [title stringByAppendingString:@" like %@"];
+			NSPredicate *predicate = [NSPredicate predicateWithFormat:predicateFormat, courseName];
+			
+			NSArray * coursesStored = [CoreDataManager objectsForEntity:StellarCourseEntityName matchingPredicate:predicate];
 			
 			StellarCourse *oldStellarCourse = [CoreDataManager getObjectForEntity:StellarCourseEntityName attribute:@"title" value:courseName];
 			//StellarCourse *oldStellarCourse = [CoreDataManager getObjectForEntity:StellarCourseEntityName attribute:@"courseGroup" value:courseGroupName];
@@ -369,10 +380,11 @@ NSString* cleanPersonName(NSString *personName);
 				// between a course and its subject will be lost
 				
 				// Also, since a course (department) can be in multiple groups (schools), do not treat them as the same 
-				// if the courseGroupName is different. Here, do not delete if the courseGroupNames are different.
-				
-				if ([oldStellarCourse.courseGroup isEqualToString:courseGroupName])
-					[CoreDataManager deleteObject:oldStellarCourse];
+				// if the courseGroupName is different. Here, do not delete if the courseGroupNames are different.						
+				for (StellarCourse *oldCourse in coursesStored) {
+					if ([oldCourse.courseGroup isEqualToString:courseGroupName])
+						[CoreDataManager deleteObject:oldStellarCourse];
+				}
 			}
 			
 			StellarCourse *newStellarCourse = (StellarCourse *)[CoreDataManager insertNewObjectForEntityForName:StellarCourseEntityName];
@@ -443,8 +455,10 @@ NSString* cleanPersonName(NSString *personName);
 
 - (void)request:(JSONAPIRequest *)request jsonLoaded: (id)object {
 	NSArray *classes = [object objectForKey:@"classes"];
+	int index = 0;
 	for(NSDictionary *aDict in classes) {
-		[[StellarModel StellarClassFromDictionary:aDict] addCourseObject:self.stellarCourse];
+		[[StellarModel StellarClassFromDictionary:aDict index:index] addCourseObject:self.stellarCourse];
+		index++;
 	}
 	self.stellarCourse.lastChecksum = [object objectForKey:@"checksum"];
 	[self markCourseAsNew];
@@ -485,8 +499,10 @@ NSString* cleanPersonName(NSString *personName);
 
 - (void)request:(JSONAPIRequest *)request jsonLoaded: (id)object {
 	NSMutableArray *classes = [NSMutableArray array];
+	int ind = 0;
 	for(NSDictionary *aDict in (NSArray *)object) {
-		[classes addObject:[StellarModel StellarClassFromDictionary:aDict]];
+		[classes addObject:[StellarModel StellarClassFromDictionary:aDict index:ind]];
+		ind++;
 	}
 	[CoreDataManager saveData];
 	[classesSearchDelegate searchComplete:classes searchTerms:searchTerms];
@@ -525,7 +541,7 @@ NSString* cleanPersonName(NSString *personName);
 		return;
 	}
 	
-	StellarClass *class = [StellarModel StellarClassFromDictionary:(NSDictionary *)object];
+	StellarClass *class = [StellarModel StellarClassFromDictionary:(NSDictionary *)object index:-1];
 	
 	[CoreDataManager saveData];
 	[self.classInfoLoadedDelegate finalAllClassInfoLoaded:class];
@@ -643,17 +659,17 @@ NSDictionary *firstClassId(StellarClass *class) {
 NSInteger classNameCompare(id class1, id class2, void *context) {
 	// examples.. if class is "6.002 / 8.003", coursePart=@"6", classPart=@"002" 
 
-	NSString *name1 = ((StellarClass *)class1).name;
+	//NSString *name1 = ((StellarClass *)class1).name;
 	NSDictionary *classId1 = firstClassId((StellarClass *)class1);
 	
-	NSString *name2 = ((StellarClass *)class2).name;
+	//NSString *name2 = ((StellarClass *)class2).name;
 	NSDictionary *classId2 = firstClassId((StellarClass *)class2);
 
 	NSInteger classIdCompareResult = classIdCompare(classId1, classId2);
 	if(classIdCompareResult) {
 		return classIdCompareResult;
 	}
-	return [name1 compare:name2];
+	return [((StellarClass *)class1).order compare: ((StellarClass *)class2).order];//[name1 compare:name2];
 }
 
 // compares class name by the part of the name that corresponds to certain class
@@ -680,7 +696,7 @@ NSInteger classNameInCourseCompare(id class1, id class2, void *context) {
 		}
 	}
 	
-	NSInteger classIdCompareResult = classIdCompare(classId1, classId2);
+	/*NSInteger classIdCompareResult = classIdCompare(classId1, classId2);
 	if(classIdCompareResult) {
 		return classIdCompareResult;
 	}
@@ -688,9 +704,9 @@ NSInteger classNameInCourseCompare(id class1, id class2, void *context) {
 	NSInteger nameCompare = [stellarClass1.name compare:stellarClass2.name];
 	if(nameCompare) {
 		return nameCompare;
-	}
+	}*/
 	
-	return [stellarClass1.title compare:stellarClass2.title];
+	return [stellarClass1.order compare:stellarClass2.order];   //[stellarClass1.title compare:stellarClass2.title];
 }	
 
 NSString* cleanPersonName(NSString *personName) {

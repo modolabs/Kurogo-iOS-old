@@ -84,7 +84,7 @@ NSInteger courseNameCompare(id course1, id course2, void *context);
 			
 			else {
 				course.title = course.courseGroup;
-				[group.courses addObject:course];
+					[group.courses addObject:course];
 			}
 			
 			[courseGroups setObject:group forKey:course.courseGroup];
@@ -100,6 +100,7 @@ NSInteger courseNameCompare(id course1, id course2, void *context);
 			NSMutableArray *temp = group.courses;
 			[temp sortUsingSelector:@selector(compare:)];
 			group.courses = temp;
+			
 			[courseGroupArray addObject:group]; 
 	}
 	
