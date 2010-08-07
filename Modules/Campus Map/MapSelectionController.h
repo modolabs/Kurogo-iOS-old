@@ -25,7 +25,6 @@ typedef enum {
 }
 
 - (void)switchToSegment:(MapSelectionControllerSegment)segment;
-//- (id)initWithMapViewController:(CampusMapViewController *)vc;
 
 @property (nonatomic, retain) UITableView *tableView;
 @property (nonatomic, retain) NSArray *tableItems;

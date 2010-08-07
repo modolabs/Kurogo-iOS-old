@@ -43,9 +43,9 @@ static MapBookmarkManager* s_mapBookmarksManager = nil;
 - (void)refreshBookmarks {
     NSPredicate *pred = [NSPredicate predicateWithFormat:@"isBookmark == YES"];
     NSSortDescriptor *sort = [NSSortDescriptor sortDescriptorWithKey:@"sortOrder" ascending:YES];
-    self.bookmarks = [CoreDataManager objectsForEntity:CampusMapAnnotationEntityName
-                                     matchingPredicate:pred
-                                       sortDescriptors:[NSArray arrayWithObject:sort]];
+    self.bookmarks = [[CoreDataManager objectsForEntity:CampusMapAnnotationEntityName
+                                      matchingPredicate:pred
+                                        sortDescriptors:[NSArray arrayWithObject:sort]] mutableCopy];
 }
 
 - (void)pruneNonBookarks {

@@ -6,7 +6,7 @@
 	NSMutableArray* _bookmarks;
 }
 
-@property (nonatomic, retain) NSArray *bookmarks;
+@property (nonatomic, retain) NSMutableArray *bookmarks;
 
 + (MapBookmarkManager *)defaultManager;
 

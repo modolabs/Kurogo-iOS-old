@@ -15,14 +15,6 @@
 @synthesize tableView = _tableView;
 @synthesize tableItems = _tableItems;
 
-/*
-- (id)initWithMapViewController:(CampusMapViewController *)vc {
-    if (self = [super init]) {
-        _mapVC = vc;
-    }
-    return self;
-}
-*/
 - (void)viewDidLoad {
     [super viewDidLoad];
 
@@ -62,7 +54,9 @@
 
 - (void)dealloc
 {
-	[_toolbarButtonItems release];
+    if (_toolbarButtonItems) {
+        [_toolbarButtonItems release];
+    }
 	[_mapVC release];
 	[_cancelButton release];
     [_categoryItems release];
@@ -91,6 +85,8 @@
         {
             self.navigationItem.title = @"Bookmarks";
             self.navigationItem.leftBarButtonItem = self.editButtonItem;
+            self.editButtonItem.target = self;
+            self.editButtonItem.action = @selector(beginEditing);
             
             self.tableView = [[[UITableView alloc] initWithFrame:frame style:UITableViewStylePlain] autorelease];
             self.tableItems = [[MapBookmarkManager defaultManager] bookmarks];
@@ -215,9 +211,9 @@
 	switch (_selectedSegment) {
 		case MapSelectionControllerSegmentBookmarks:
         {
-            NSDictionary *bookmark = [self.tableItems objectAtIndex:indexPath.row];
-            cell.textLabel.text = [bookmark objectForKey:@"title"];
-            cell.detailTextLabel.text = [bookmark objectForKey:@"subtitle"];
+            MapSavedAnnotation *savedAnnotation = [self.tableItems objectAtIndex:indexPath.row];
+            cell.textLabel.text = savedAnnotation.name;
+            cell.detailTextLabel.text = savedAnnotation.street;
             cell.detailTextLabel.textColor = CELL_DETAIL_FONT_COLOR;
             cell.detailTextLabel.font = [UIFont systemFontOfSize:CELL_DETAIL_FONT_SIZE];
 			break;
@@ -295,8 +291,14 @@
 }
 
 - (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath {
-    // Return NO if you do not want the item to be re-orderable.
-    return YES;
+    if (_selectedSegment == MapSelectionControllerSegmentBookmarks) {
+        return YES;
+    }
+    return NO;
+}
+
+- (void)beginEditing {
+    [self.tableView setEditing:YES animated:YES];
 }
 
 #pragma mark -

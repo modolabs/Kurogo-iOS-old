@@ -460,7 +460,6 @@
 			_selectionVC = nil;
 		}
 		
-		//_selectionVC = [[MapSelectionController alloc] initWithMapViewController:self];
         _selectionVC = [[MapSelectionController alloc] init];
         _selectionVC.mapVC = self;
 
@@ -468,6 +467,7 @@
         
 		MIT_MobileAppDelegate *appDelegate = (MIT_MobileAppDelegate *)[[UIApplication sharedApplication] delegate];
 		[appDelegate presentAppModalViewController:dummyNavC animated:YES];
+        [dummyNavC release];
         
 	} else {	
 		[self showListView:!_displayingList];
@@ -580,6 +580,7 @@
 
 #pragma mark Custom Bookmark Button Functionality
 
+// TODO: merge this code with -[self viewTypeChanged:]
 - (void)bookmarkButtonClicked:(UIButton *)sender
 {
 	if (nil != _selectionVC) {
@@ -588,13 +589,16 @@
 		_selectionVC = nil;
 	}
 	
-	//_selectionVC = [[MapSelectionController alloc] initWithMapViewController:self];
     _selectionVC = [[MapSelectionController alloc] init];
     _selectionVC.mapVC = self;
+    _selectionVC.view;
     [_selectionVC switchToSegment:MapSelectionControllerSegmentBookmarks];
-    
+
+    UINavigationController *dummyNavC = [[UINavigationController alloc] initWithRootViewController:_selectionVC];
+
 	MIT_MobileAppDelegate *appDelegate = (MIT_MobileAppDelegate *)[[UIApplication sharedApplication] delegate];
-	[appDelegate presentAppModalViewController:_selectionVC animated:YES];
+	[appDelegate presentAppModalViewController:dummyNavC animated:YES];
+    [dummyNavC release];
 }
 
 #pragma mark MKMapView delegation
