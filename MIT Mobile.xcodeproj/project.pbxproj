@@ -463,6 +463,7 @@
 		EBA273EA11760BAE0033DD27 /* CalendarConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = EBA273E811760BAE0033DD27 /* CalendarConstants.m */; };
 		EBA2865610E07E140003BA01 /* PeopleSearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EBA2865510E07E140003BA01 /* PeopleSearchViewController.m */; };
 		EBA2867910E082010003BA01 /* MITLoadingActivityView.m in Sources */ = {isa = PBXBuildFile; fileRef = EBA2867810E082010003BA01 /* MITLoadingActivityView.m */; };
+		EBAE8072120E0B5400F370BE /* people in Resources */ = {isa = PBXBuildFile; fileRef = EBAE806E120E0B5400F370BE /* people */; };
 		EBCB4DEE10D30AA2001219FD /* EmergencyContactsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EBCB4DED10D30AA2001219FD /* EmergencyContactsViewController.m */; };
 		EBDB0C4D11484072008AAE42 /* ShuttleTrack.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = EBDB0C4C11484072008AAE42 /* ShuttleTrack.xcdatamodeld */; };
 /* End PBXBuildFile section */
@@ -1032,6 +1033,7 @@
 		EBA2867710E082010003BA01 /* MITLoadingActivityView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MITLoadingActivityView.h; sourceTree = "<group>"; };
 		EBA2867810E082010003BA01 /* MITLoadingActivityView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MITLoadingActivityView.m; sourceTree = "<group>"; };
 		EBAA9F6210FFAB8B003379A5 /* PeopleDataModel 5.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "PeopleDataModel 5.xcdatamodel"; sourceTree = "<group>"; };
+		EBAE806E120E0B5400F370BE /* people */ = {isa = PBXFileReference; lastKnownFileType = folder; name = people; path = Resources/people; sourceTree = "<group>"; };
 		EBCA123210CEF3C400577C5D /* PeopleSearchViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PeopleSearchViewController.h; sourceTree = "<group>"; };
 		EBCB4DEC10D30AA1001219FD /* EmergencyContactsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EmergencyContactsViewController.h; sourceTree = "<group>"; };
 		EBCB4DED10D30AA2001219FD /* EmergencyContactsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EmergencyContactsViewController.m; sourceTree = "<group>"; };
@@ -1144,6 +1146,7 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				EBAE806E120E0B5400F370BE /* people */,
 				EB4210E9120B831500089FE0 /* dining */,
 				A623F2E5120A1BFC00341C5E /* settings */,
 				A64C36CA1207066D006FE056 /* peopleSearchStaticPhoneRowsArray.plist */,
@@ -2139,6 +2142,7 @@
 				A64C36CB1207066D006FE056 /* peopleSearchStaticPhoneRowsArray.plist in Resources */,
 				A6FC4C72120A2C200046FF36 /* settings in Resources */,
 				EB421101120B831500089FE0 /* dining in Resources */,
+				EBAE8072120E0B5400F370BE /* people in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

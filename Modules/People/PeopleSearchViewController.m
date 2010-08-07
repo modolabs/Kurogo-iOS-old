@@ -163,14 +163,9 @@ NSInteger strLenSort(NSString *str1, NSString *str2, void *context)
 {
 	[super viewWillAppear:animated];
 	
-	//if (actionAfterAppearing) {
-	//	[self performSelector:actionAfterAppearing];
-	//	actionAfterAppearing = nil;
-	//}
+    self.tableView.tableFooterView.hidden = ([[[PeopleRecentsData sharedData] recents] count] == 0);
 
 	[self.tableView reloadData];
-	
-	//viewAppeared = YES;
 }
 
 #pragma mark memory
