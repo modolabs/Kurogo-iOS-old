@@ -126,8 +126,9 @@ NSString * const MapsLocalPathList = @"list";
         if (saved) {
             NSDictionary *info = [NSKeyedUnarchiver unarchiveObjectWithData:saved.info];
             ArcGISMapSearchResultAnnotation *annotation = [[[ArcGISMapSearchResultAnnotation alloc] initWithInfo:info] autorelease];
-            [self.campusMapVC.mapView removeAnnotations:self.campusMapVC.mapView.annotations];
-            [self.campusMapVC.mapView addAnnotation:annotation];
+            self.campusMapVC.view; // make sure mapview is loaded
+            NSArray *annotations = [NSArray arrayWithObject:annotation];
+            self.campusMapVC.searchResults = annotations;
             [self resetNavStack];
 
             didHandle = YES;

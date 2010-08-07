@@ -116,13 +116,14 @@ NSString * const RequestLookupAddress = @"address";
 	[nameLabel release];
 
 	self.tableView.tableHeaderView = header;
-	
-	// if lastUpdate is sufficiently long ago, issue a background search
+
 #ifdef USE_MOBILE_DEV
-	if ([[self.personDetails actualValueForKey:@"lastUpdate"] timeIntervalSinceNow] < -300) {
+	CGFloat timeLimit = 300;
 #else
-    if ([[self.personDetails actualValueForKey:@"lastUpdate"] timeIntervalSinceNow] < -86400 * 14) {
+    CGFloat timeLimit = 86400 * 14;
 #endif
+	// if lastUpdate is sufficiently long ago, issue a background search
+	if ([[self.personDetails actualValueForKey:@"lastUpdate"] timeIntervalSinceNow] < -timeLimit) {
 		if ([ConnectionDetector isConnected]) {
 			// issue this query but don't care too much if it fails
 			JSONAPIRequest *api = [JSONAPIRequest requestWithJSONAPIDelegate:self];
@@ -170,14 +171,16 @@ NSString * const RequestLookupAddress = @"address";
             NSDictionary *info = [searchResults objectAtIndex:0];
             addressSearchAnnotation = [[ArcGISMapSearchResultAnnotation alloc] initWithInfo:info];
             [[MapBookmarkManager defaultManager] saveAnnotationWithoutBookmarking:addressSearchAnnotation];
+            CGPoint contentOffset = self.tableView.contentOffset;
             NSIndexSet *sections = [NSIndexSet indexSetWithIndex:addressSection];
             [self.tableView reloadSections:sections withRowAnimation:UITableViewRowAnimationFade];
+            self.tableView.contentOffset = contentOffset;
         }
     }
 }
 
 #pragma mark -
-#pragma mark Table view methods
+#pragma mark Table view meth
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
 	
@@ -230,8 +233,7 @@ NSString * const RequestLookupAddress = @"address";
 		cell.textLabel.text = tag;
         
         // use a textView for the address so people can copy/paste.
-        // TODO: decide if we want more universal copy/paste functionality across the board.
-        if ([tag isEqualToString:[personDetails displayNameForKey:@"postaladdress"]]) {
+        if ([tag isEqualToString:[personDetails displayNameForKey:@"postaladdress"]] && !addressSearchAnnotation) {
             addressSection = section;
             
             UIFont *font = [UIFont boldSystemFontOfSize:15.0];
@@ -243,20 +245,34 @@ NSString * const RequestLookupAddress = @"address";
             
             // in MultiLineTableViewCell, we are assuming the detailTextLabel starts at 24% of the cell width
             // the following line is just replicates part of the calculation made in MultiLineTableViewCell
-            CGFloat originX = 30.0 + floor((self.view.frame.size.width - 50.0) * 0.24);
+            CGFloat originX = 20.0 + floor((self.view.frame.size.width - 50.0) * 0.24);
             CGSize size = [data sizeWithFont:font
                            constrainedToSize:CGSizeMake(width, 2000.0f)
                                lineBreakMode:UILineBreakModeWordWrap];
             
             // -[MultiLineTableViewCell layoutSubviews] will adjust the originY to where the detailTextLabel is
-            UITextView *textView = [[[UITextView alloc] initWithFrame:CGRectMake(originX, 0, width + 10.0, size.height + 10.0)] autorelease];
+            UITextView *textView = [[[UITextView alloc] initWithFrame:CGRectMake(originX, 0, width + 10, size.height)] autorelease];
             textView.text = data;
             textView.backgroundColor = [UIColor clearColor];
             textView.font = font;
             textView.textColor = cell.detailTextLabel.textColor;
+            textView.editable = NO;
             textView.scrollEnabled = NO;
-
+            textView.contentInset = UIEdgeInsetsMake(-8, -9, -8, -9); // imitate the margins of UILabel (which detailTextLabel is)
+            
             [cell.contentView addSubview:textView];
+            
+            // put a placeholder in the detailText so the textLabel will be top-aligned
+            CGSize oneLineSize = [DirectoryTag sizeWithFont:font];
+            NSInteger numLines = floor(size.height / oneLineSize.height);
+            NSMutableString *placeholder = [NSMutableString stringWithString:@" "];
+            while (numLines > 1) {
+                [placeholder appendString:@"\n "];
+                numLines--;
+            }
+            
+            cell.detailTextLabel.text = placeholder;
+
         } else {
             cell.detailTextLabel.text = data;
         }
