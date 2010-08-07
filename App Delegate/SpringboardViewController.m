@@ -3,8 +3,8 @@
 #import "MITModuleList.h"
 #import "MITUIConstants.h"
 
-#define GRID_HPADDING 12.0f
-#define GRID_VPADDING 8.0f
+#define GRID_HPADDING 28.0f
+#define GRID_VPADDING 11.0f
 #define ICON_LABEL_HEIGHT 26.0f
 
 @implementation SpringboardViewController
@@ -98,7 +98,7 @@
             [anIcon setTitle:aModule.shortName forState:UIControlStateNormal];
             [anIcon setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
             [anIcon setTitleColor:[UIColor whiteColor] forState:UIControlStateHighlighted];
-            anIcon.titleLabel.font = [UIFont boldSystemFontOfSize:13.0];
+            anIcon.titleLabel.font = [UIFont systemFontOfSize:14.0];
             
             anIcon.moduleTag = aModule.tag;
             [anIcon addTarget:self action:@selector(buttonPressed:) forControlEvents:UIControlEventTouchUpInside];
