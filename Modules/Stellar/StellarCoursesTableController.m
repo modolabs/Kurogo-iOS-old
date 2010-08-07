@@ -57,7 +57,10 @@
 	cell.textLabelNumberOfLines = 2;
 	cell.textLabel.text = stellarCourse.title;
 	cell.textLabel.font =  [UIFont fontWithName:STANDARD_FONT size:CELL_STANDARD_FONT_SIZE];
-	cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+	
+	if ([self.courseGroup.courses count] < 10)
+		cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+	
 	cell.selectionStyle = UITableViewCellSelectionStyleGray;
 	return cell;
 }

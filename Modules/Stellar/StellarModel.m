@@ -226,7 +226,9 @@ NSString* cleanPersonName(NSString *personName);
 	NSString *name = [aDict objectForKey:@"name"];
 	// if name is not defined do not attempt to overwrite with new information
 	if([name length]) {
-		stellarClass.order = [NSNumber numberWithInt:(int)index];
+		if (index >= 0)
+			stellarClass.order = [NSNumber numberWithInt:(int)index];
+		
 		stellarClass.name = name;
 		stellarClass.title = [aDict objectForKey:@"title"];
 		stellarClass.blurb = [aDict objectForKey:@"description"];
@@ -539,7 +541,7 @@ NSString* cleanPersonName(NSString *personName);
 		return;
 	}
 	
-	StellarClass *class = [StellarModel StellarClassFromDictionary:(NSDictionary *)object index:0];
+	StellarClass *class = [StellarModel StellarClassFromDictionary:(NSDictionary *)object index:-1];
 	
 	[CoreDataManager saveData];
 	[self.classInfoLoadedDelegate finalAllClassInfoLoaded:class];
