@@ -373,20 +373,17 @@ NSString* cleanPersonName(NSString *personName);
 			
 			NSArray * coursesStored = [CoreDataManager objectsForEntity:StellarCourseEntityName matchingPredicate:predicate];
 			
-			StellarCourse *oldStellarCourse = [CoreDataManager getObjectForEntity:StellarCourseEntityName attribute:@"title" value:courseName];
+			//StellarCourse *oldStellarCourse = [CoreDataManager getObjectForEntity:StellarCourseEntityName attribute:@"title" value:courseName];
 			//StellarCourse *oldStellarCourse = [CoreDataManager getObjectForEntity:StellarCourseEntityName attribute:@"courseGroup" value:courseGroupName];
-			if(oldStellarCourse){
-				// delete old course (will replace all the data, occasionally non-critical relationships
-				// between a course and its subject will be lost
+			//if(oldStellarCourse){
 				
 				// Also, since a course (department) can be in multiple groups (schools), do not treat them as the same 
 				// if the courseGroupName is different. Here, do not delete if the courseGroupNames are different.						
 				for (StellarCourse *oldCourse in coursesStored) {
-					if ([oldCourse.courseGroup isEqualToString:courseGroupName] && [oldStellarCourse.courseGroup isEqualToString:courseGroupName])
-						[CoreDataManager deleteObject:oldStellarCourse];
+					if ([oldCourse.courseGroup isEqualToString:courseGroupName])	
+						[CoreDataManager deleteObject:oldCourse];
+						//[CoreDataManager deleteObject:oldStellarCourse];
 				}
-				
-			}
 			
 			StellarCourse *newStellarCourse = (StellarCourse *)[CoreDataManager insertNewObjectForEntityForName:StellarCourseEntityName];
 			newStellarCourse.number = [course objectForKey:@"short"];
@@ -499,9 +496,17 @@ NSString* cleanPersonName(NSString *personName);
 }
 
 - (void)request:(JSONAPIRequest *)request jsonLoaded: (id)object {
+	
+	if ((int)[object valueForKey:@"count"] > 100) {
+		[classesSearchDelegate handleTooManySearchResults];
+		return;
+	}
+	
 	NSMutableArray *classes = [NSMutableArray array];
+	NSArray *searchResult = [object objectForKey:@"classes"];
 	int ind = 0;
-	for(NSDictionary *aDict in (NSArray *)object) {
+	//for(NSDictionary *aDict in (NSArray *)object) {
+	for(NSDictionary *aDict in searchResult) {
 		[classes addObject:[StellarModel StellarClassFromDictionary:aDict index:ind]];
 		ind++;
 	}

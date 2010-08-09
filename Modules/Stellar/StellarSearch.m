@@ -123,4 +123,20 @@
 	}
 }
 
+- (void) handleTooManySearchResults {
+	
+	[viewController hideLoadingView];
+	UIAlertView *alert = [[UIAlertView alloc]
+						  initWithTitle:@"Narrow Search" 
+						  message:@"Retrieved more than 100 results. Please refine your query"
+						  delegate:nil
+						  cancelButtonTitle:@"OK" 
+						  otherButtonTitles:nil];
+	
+	[viewController.searchController.searchResultsTableView reloadData];
+	
+	[alert show];
+	[alert release];
+}
+
 @end

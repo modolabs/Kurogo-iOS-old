@@ -164,6 +164,11 @@ extern NSString * const MyStellarChanged;
  *  Called when a search attempt fails to connect to the server
  */
 - (void) handleCouldNotReachStellarWithSearchTerms: (NSString *)searchTerms;
+
+/**
+ *  Called when a search attempt returns more than 100 terms
+ */
+- (void) handleTooManySearchResults;
 @end
 
 /** 
