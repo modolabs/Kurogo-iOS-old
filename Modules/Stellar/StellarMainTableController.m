@@ -139,7 +139,7 @@
 }
 
 - (void) classesRemoved: (NSArray *)classes {
-	NSString *message = @"The following old classes have been removed from your My Stellar settings:";
+	NSString *message = @"The following old classes have been removed from your Courses settings:";
 	BOOL firstId = YES;
 	for(StellarClass *class in classes) {
 		if(firstId) {
@@ -250,6 +250,9 @@
 
 - (void) tableView: (UITableView *)tableView didSelectRowAtIndexPath: (NSIndexPath *)indexPath {
 	NSInteger groupIndex = [self groupIndexFromSectionIndex:indexPath.section];
+	// deselect the Row
+	[tableView deselectRowAtIndexPath:indexPath animated:NO];
+	
 	if(groupIndex == myStellarGroup) {
 		[StellarDetailViewController
 			launchClass:(StellarClass *)[myStellar objectAtIndex:indexPath.row]
@@ -280,7 +283,7 @@
 - (void) handleCouldNotReachStellar {
 	UIAlertView *alert = [[UIAlertView alloc] 
 		initWithTitle:@"Connection Failed" 
-		message:@"Could not connect to Stellar, please try again later"
+		message:@"Could not connect to the Courses-Server, please try again later"
 		delegate:self
 		cancelButtonTitle:@"OK" 
 		otherButtonTitles:@"Reload", nil];
