@@ -497,10 +497,14 @@ NSString* cleanPersonName(NSString *personName);
 
 - (void)request:(JSONAPIRequest *)request jsonLoaded: (id)object {
 	
-	if ((int)[object valueForKey:@"count"] > 100) {
+	int count = (int)[object valueForKey:@"count"];
+	
+	int d = count*count + 10;
+	
+	/*if ((int)[object valueForKey:@"count"] > 100) {
 		[classesSearchDelegate handleTooManySearchResults];
 		return;
-	}
+	}*/
 	
 	NSMutableArray *classes = [NSMutableArray array];
 	NSArray *searchResult = [object objectForKey:@"classes"];
