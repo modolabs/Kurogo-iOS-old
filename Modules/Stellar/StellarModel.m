@@ -497,9 +497,9 @@ NSString* cleanPersonName(NSString *personName);
 
 - (void)request:(JSONAPIRequest *)request jsonLoaded: (id)object {
 	
-	int count = (int)[object valueForKey:@"count"];
+	//int count = (int)[object objectbForKey:@"count"];
 	
-	int d = count*count + 10;
+	//int d = count*count + 10;
 	
 	/*if ((int)[object valueForKey:@"count"] > 100) {
 		[classesSearchDelegate handleTooManySearchResults];
