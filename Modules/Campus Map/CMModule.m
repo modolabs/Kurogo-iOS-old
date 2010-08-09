@@ -125,6 +125,7 @@ NSString * const MapsLocalPathList = @"list";
             NSDictionary *info = [NSKeyedUnarchiver unarchiveObjectWithData:saved.info];
             ArcGISMapAnnotation *annotation = [[[ArcGISMapAnnotation alloc] initWithInfo:info] autorelease];
             if (!annotation.dataPopulated) {
+                // TODO: issue an identify API request instead of showing a useless annotation
                 annotation.coordinate = CLLocationCoordinate2DMake([saved.latitude floatValue], [saved.longitude floatValue]);
                 annotation.name = saved.name;
             }

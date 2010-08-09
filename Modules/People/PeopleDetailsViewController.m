@@ -10,6 +10,7 @@
 #import "NSArray+Convenience.h"
 #import "AddressFormatter.h"
 #import "MapBookmarkManager.h"
+#import "TileServerManager.h"
 
 @interface PeopleDetailsViewController (Private)
 
@@ -170,13 +171,27 @@ NSString * const RequestLookupAddress = @"address";
             [[MapBookmarkManager defaultManager] pruneNonBookmarks];
             NSDictionary *info = [searchResults objectAtIndex:0];
             addressSearchAnnotation = [[ArcGISMapAnnotation alloc] initWithInfo:info];
-            [[MapBookmarkManager defaultManager] saveAnnotationWithoutBookmarking:addressSearchAnnotation];
-            CGPoint contentOffset = self.tableView.contentOffset;
-            NSIndexSet *sections = [NSIndexSet indexSetWithIndex:addressSection];
-            [self.tableView reloadSections:sections withRowAnimation:UITableViewRowAnimationFade];
-            self.tableView.contentOffset = contentOffset;
+            if ([TileServerManager isInitialized]) {
+                [[MapBookmarkManager defaultManager] saveAnnotationWithoutBookmarking:addressSearchAnnotation];
+                NSIndexSet *sections = [NSIndexSet indexSetWithIndex:addressSection];
+                [self.tableView reloadSections:sections withRowAnimation:UITableViewRowAnimationFade];
+            } else {
+                [[NSNotificationCenter defaultCenter] addObserver:self 
+                                                         selector:@selector(tileServerNotificationReceived)
+                                                             name:kTileServerManagerProjectionIsReady
+                                                           object:nil];
+            }
         }
     }
+}
+
+- (void)tileServerNotificationReceived {
+    [addressSearchAnnotation updateWithInfo:addressSearchAnnotation.info];
+    
+    // TODO: make a separate function for these three lines
+    [[MapBookmarkManager defaultManager] saveAnnotationWithoutBookmarking:addressSearchAnnotation];
+    NSIndexSet *sections = [NSIndexSet indexSetWithIndex:addressSection];
+    [self.tableView reloadSections:sections withRowAnimation:UITableViewRowAnimationFade];
 }
 
 #pragma mark -
