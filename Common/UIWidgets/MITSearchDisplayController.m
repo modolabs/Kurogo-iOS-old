@@ -4,6 +4,7 @@
 
 - (void)searchOverlayTapped;
 - (void)releaseSearchOverlay;
+- (NSString *)searchBarAccessibilityLabelForViewController:(UIViewController *)viewController labelBase:(NSString *)labelBase;
 
 @end
 
@@ -23,6 +24,8 @@ searchResultsTableView = _searchResultsTableView;
     if (self = [super init]) {
         _searchBar = searchBar;
         _searchBar.delegate = self;
+		_searchBar.isAccessibilityElement = YES; // Make search bar available to automation and accessibility features.
+		_searchBar.accessibilityLabel = [self searchBarAccessibilityLabelForViewController:viewController labelBase:@"Search Bar"];
         _searchContentsController = viewController;
         CGRect frame = CGRectMake(0.0, _searchBar.frame.size.height, viewController.view.frame.size.width,
                                   viewController.view.frame.size.height - _searchBar.frame.size.height);
@@ -158,6 +161,16 @@ searchResultsTableView = _searchResultsTableView;
         // this is just a dumb way to dodge a compiler warning
         [self.delegate performSelector:@selector(searchOverlayTapped)];
     }
+}
+
+- (NSString *)searchBarAccessibilityLabelForViewController:(UIViewController *)viewController labelBase:(NSString *)labelBase {
+	NSString *viewTitle = viewController.navigationItem.title;
+	if ([viewTitle length] > 0) {
+		return [NSString stringWithFormat:@"%@ %@", viewTitle, labelBase];
+	}
+	else {
+		return labelBase;
+	}
 }
 
 #pragma mark UISearchBarDelegate forwarding

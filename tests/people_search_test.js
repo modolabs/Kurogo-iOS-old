@@ -65,27 +65,21 @@ function navigateBack()
 	mainWindow.navigationBar().elements()[0].buttons()["People Directory"].tap();
 }
 
-function hitSearchCancel()
-{
-	// Surprisingly, it's a child of the table view, not the search bar.	
-	mainWindow.tableViews()[0].buttons().Cancel.tap();	
-}
-
 function enterSearchTermIntoSearchFieldAndHitGo(searchTerm)
 {
 	// Type search term into search field and run search.
-	tableView = mainWindow.tableViews()[0];
-	searchBar = tableView.searchBars()[0];
+	searchBar = mainWindow.elements()["People Directory Search Bar"];
 	searchBar.tap();
-	searchBar.setValue(searchTerm); 
+	searchBar.setValue(searchTerm);
+	mainWindow.tableViews()[0].waitForInvalid();
+	
 	keyboard = application.keyboard();
 	buttons = keyboard.buttons();	
 	searchButton = buttons["search"];
 	searchButton.tap();	
 		
-	// Will wait up to five seconds for the search button to go invalid before allowing the next thing to happen.
-	target.pushTimeout(5);
-		
+	// Will wait up to five seconds for elements to go invalid before allowing the next thing to happen.
+	target.pushTimeout(5);		
 	searchButton.waitForInvalid(); 
 	target.popTimeout();	
 }
@@ -125,21 +119,22 @@ function runSearch(searchTerm)
 {	
 	enterSearchTermIntoSearchFieldAndHitGo(searchTerm);
 	
-	// Follow the search result.	
-	//msg("Number of table views: " + application.mainWindow().tableViews().length);
-	resultTableView = application.mainWindow().tableViews()[0];
+	// Follow the search result.
+	// There's going to be two tables. One is the Home search results table, I think, and the second one is the 
+	// People Directory one, which we want.
+	resultTableView = application.mainWindow().tableViews()[1];
 	assertNotNull(resultTableView);
 	
-	//resultCells = resultTableView.cells();
-	//resultCell = resultCells[searchResultToPursue];
-	//resultCell.tap(); // Why doesn't this work? Most likely, another view is in front of this cell.
-	// TODO: Get this to tap the cell containing a desired result directly instead of hitting the location 
-	// containing the first result's cell.
+	resultCells = resultTableView.cells();
+//	resultCell = resultCells[searchResultToPursue];
+	resultCell = resultCells[0];
+	resultCell.tap();
+	// TODO: Get this to tap the cell containing a desired result directly instead of just grabbing the top 
+	// search result.
 
-	// Tap the spot containing the result cell.
 	// Will wait up to five seconds for the search button to go invalid.
 	target.pushTimeout(5);
-	target.tap({ x:120, y:120 }); 
+//	target.tap({ x:120, y:120 }); 
 	resultTableView.waitForInvalid(); 
 	
 	target.popTimeout();
@@ -245,9 +240,7 @@ function testSuite4()
 		}
 	}
 	logTestResult(false, "Test suite 4");	
-	*/
-	
-	hitSearchCancel();
+	*/	
 }
 
 
@@ -257,7 +250,6 @@ function testSuite5()
 	// Searching for garbage should return no results.
 
 	logTestResult(true, "Test suite 5 - make sure you saw No Results label.");	
-	hitSearchCancel();
 }
 
 function testSuiteFieldsSeparatedByNewLine()
@@ -309,7 +301,6 @@ function testSuiteActionsFromPersonDetails()
 	}
 	
 	navigateBack();
-	hitSearchCancel();
 }
 
 function testSuiteMultipleTitles()
