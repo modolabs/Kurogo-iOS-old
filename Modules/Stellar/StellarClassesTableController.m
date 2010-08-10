@@ -50,7 +50,6 @@
 }
 	
 - (void) viewDidLoad {
-	//self.title = [@"Course " stringByAppendingString:course.number];
 	self.title = course.title;
 	self.currentClassLoader = [[LoadClassesInTable new] autorelease];
 	self.currentClassLoader.tableController = self;
@@ -89,6 +88,7 @@
 }
 
 - (void) tableView: (UITableView *)tableView didSelectRowAtIndexPath: (NSIndexPath *)indexPath {
+	[tableView deselectRowAtIndexPath:indexPath animated:NO];
 	[StellarDetailViewController 
 		launchClass:(StellarClass *)[classes objectAtIndex:indexPath.row]
 		viewController: self];

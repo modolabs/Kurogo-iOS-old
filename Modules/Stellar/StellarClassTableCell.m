@@ -15,6 +15,7 @@
 	
 	cell.detailTextLabel.text = class.title;
 	cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+	cell.selectionStyle = UITableViewCellSelectionStyleGray;
 	[cell applyStandardFonts];
 	return cell;
 }

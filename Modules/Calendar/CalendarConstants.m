@@ -74,7 +74,7 @@ NSString * const CalendarEventAPISearch = @"search";
 	NSString *dateString = nil;
 	NSDateFormatter *df = [[NSDateFormatter alloc] init];
 	if (listType == CalendarEventListTypeAcademic) {
-		[df setDateFormat:@"MMMM yyyy"];
+		[df setDateFormat:@"yyyy"];
 		
 	} else {
 		//[df setDateStyle:kCFDateFormatterMediumStyle];
@@ -98,7 +98,8 @@ NSString * const CalendarEventAPISearch = @"search";
 			//NSLog(@"%@", [aDate description]);
 			NSCalendar *calendar = [NSCalendar currentCalendar];
 			NSDateComponents *comps = [[NSDateComponents alloc] init];
-			[comps setMonth:sign];
+			//[comps setMonth:sign];
+			[comps setYear:sign];
 			NSDate *targetDate = [calendar dateByAddingComponents:comps toDate:aDate options:0];
 			[comps release];
 			return [targetDate timeIntervalSinceDate:aDate];
