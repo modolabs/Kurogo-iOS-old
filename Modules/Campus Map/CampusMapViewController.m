@@ -86,6 +86,8 @@
 	_mapView.delegate = self;
     _mapView.region = [TileServerManager defaultRegion];
 	_mapView.showsUserLocation = NO;
+	_mapView.isAccessibilityElement = YES;
+	_mapView.accessibilityLabel = @"Map View";
 	[self.view addSubview:_mapView];
 	
 	// add the rest of the toolbar to which we can add buttons.
@@ -342,6 +344,8 @@
 													 message:NSLocalizedString(@"Nothing found.", nil)
 													delegate:self cancelButtonTitle:NSLocalizedString(@"OK", nil)
 										   otherButtonTitles:nil] autorelease];
+	alert.isAccessibilityElement = YES;
+	alert.accessibilityLabel = @"No search results alert";
 	alert.tag = kNoSearchResultsTag;
 	alert.delegate = self;
 	[alert show];
