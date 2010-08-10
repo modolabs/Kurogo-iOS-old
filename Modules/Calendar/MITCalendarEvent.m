@@ -74,7 +74,7 @@
 		else {
 			timeString = [NSString stringWithFormat:@"%@-%@", [formatter stringFromDate:self.start], [formatter stringFromDate:self.end]];
 		}
-		
+
 		[parts addObject:timeString];
 	}
 	

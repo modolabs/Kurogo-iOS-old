@@ -965,10 +965,10 @@
 			}
 			
 			if (([result count] == 0) && (activeEventList == CalendarEventListTypeAcademic)) {
-				UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(75, 125, 300, 20)];
+				UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(25, 125, 300, 20)];
 				label.font = [UIFont systemFontOfSize:17];
 				
-				label.text = @"No events this month";															   
+				label.text = @"No events for this Academic Year";															   
 				NSInteger vertical_margin = 45;
 				
 				if (theCatID == -1)
