@@ -497,10 +497,19 @@ NSString* cleanPersonName(NSString *personName);
 
 - (void)request:(JSONAPIRequest *)request jsonLoaded: (id)object {
 	
-	//int count = (int)[object objectbForKey:@"count"];
+	int count = (int)[object objectForKey:@"count"];
+	NSString *countStr = [object objectForKey:@"count"];
+	NSString *countStrDes = [[object objectForKey:@"count"] description];
 	
-	//int d = count*count + 10;
+	NSString * mixMatch = [[NSString alloc] initWithFormat:@"%@ and %@", countStr, countStrDes];
 	
+	
+	int d = count*count + 10;
+	
+	int tax = d + d + count;
+	if (tax == 36)
+	{
+	}
 	/*if ((int)[object valueForKey:@"count"] > 100) {
 		[classesSearchDelegate handleTooManySearchResults];
 		return;
