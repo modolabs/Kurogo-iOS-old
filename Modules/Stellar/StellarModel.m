@@ -497,28 +497,17 @@ NSString* cleanPersonName(NSString *personName);
 
 - (void)request:(JSONAPIRequest *)request jsonLoaded: (id)object {
 	
-	int count = (int)[object objectForKey:@"count"];
-	NSString *countStr = [object objectForKey:@"count"];
-	NSString *countStrDes = [[object objectForKey:@"count"] description];
+	NSString *countString = [[object objectForKey:@"count"] description];
+	int count = [countString intValue];
 	
-	NSString * mixMatch = [[NSString alloc] initWithFormat:@"%@ and %@", countStr, countStrDes];
-	
-	
-	int d = count*count + 10;
-	
-	int tax = d + d + count;
-	if (tax == 36)
-	{
-	}
-	/*if ((int)[object valueForKey:@"count"] > 100) {
+	if (count> 100) {
 		[classesSearchDelegate handleTooManySearchResults];
 		return;
-	}*/
+	}
 	
 	NSMutableArray *classes = [NSMutableArray array];
 	NSArray *searchResult = [object objectForKey:@"classes"];
 	int ind = 0;
-	//for(NSDictionary *aDict in (NSArray *)object) {
 	for(NSDictionary *aDict in searchResult) {
 		[classes addObject:[StellarModel StellarClassFromDictionary:aDict index:ind]];
 		ind++;
