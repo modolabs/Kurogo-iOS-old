@@ -1,4 +1,11 @@
 // Globals.
+
+var g_csvData = null;
+// If you want to use spreadsheetDrivenTestSuite:
+// 1. Grab RandomSampleUniqueOFFIAddrPublic.csv.
+// 2. Use http://www.cparker15.com/utilities/csv-to-json/ to convert it to an array.
+// 3. Paste that array in here as the value of g_csvData.
+
 target = UIATarget.localTarget();
 //application = target.frontMostApp(); 
 // Do not cache frontMostApp. For some reason, sometimes this gets the wrong app. Always call frontMostApp right when you need it.
@@ -144,11 +151,28 @@ function runSearch(searchTerm)
 }
 
 
-function testSuite()
+function basicTestSuite()
 {	
 	runSearch("1737 Cambridge St");	
 	runSearch("garbage");	
 	runSearch("65 Winthrop St");	
+}
+
+function spreadsheetDrivenTestSuite()
+{
+	for (var i = 0; i < g_csvData.length; ++i)
+	{
+		var row = g_csvData[i];
+		var address = row.ADDR_LINE3;
+		if (address.length < 1)
+		{
+			address = row.ADDR_LINE2;
+			if (address.length > 0)
+			{
+				runSearch(address);
+			}
+		}
+	}
 }
 
 
@@ -169,4 +193,6 @@ target.onAlert = function onAlert(anAlert)
 target.setTimeout(0.5);
 navigateToMapView();
 
-testSuite();
+basicTestSuite();
+//spreadsheetDrivenTestSuite();
+
