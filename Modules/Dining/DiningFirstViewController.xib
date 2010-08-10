@@ -12,7 +12,8 @@
 		</object>
 		<object class="NSMutableArray" key="IBDocument.EditedObjectIDs">
 			<bool key="EncodedWithXMLCoder">YES</bool>
-			<integer value="263"/>
+			<integer value="371"/>
+			<integer value="406"/>
 		</object>
 		<object class="NSArray" key="IBDocument.PluginDependencies">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -38,7 +39,7 @@
 				<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 			</object>
 			<object class="IBUIView" id="774585933">
-				<nil key="NSNextResponder"/>
+				<reference key="NSNextResponder"/>
 				<int key="NSvFlags">274</int>
 				<object class="NSMutableArray" key="NSSubviews">
 					<bool key="EncodedWithXMLCoder">YES</bool>
@@ -47,6 +48,7 @@
 						<int key="NSvFlags">261</int>
 						<string key="NSFrame">{{0, 54}, {320, 33}}</string>
 						<reference key="NSSuperview" ref="774585933"/>
+						<reference key="NSWindow"/>
 						<object class="NSColor" key="IBUIBackgroundColor">
 							<int key="NSColorSpace">3</int>
 							<bytes key="NSWhite">MSAwAA</bytes>
@@ -72,6 +74,7 @@
 										<int key="NSvFlags">274</int>
 										<string key="NSFrame">{{0, 70}, {320, 255}}</string>
 										<reference key="NSSuperview" ref="659416906"/>
+										<reference key="NSWindow"/>
 										<object class="NSColor" key="IBUIBackgroundColor" id="373387045">
 											<int key="NSColorSpace">3</int>
 											<bytes key="NSWhite">MQA</bytes>
@@ -90,6 +93,7 @@
 								</object>
 								<string key="NSFrameSize">{320, 374}</string>
 								<reference key="NSSuperview" ref="697530573"/>
+								<reference key="NSWindow"/>
 								<object class="NSColor" key="IBUIBackgroundColor" id="692168930">
 									<int key="NSColorSpace">3</int>
 									<bytes key="NSWhite">MQA</bytes>
@@ -101,6 +105,7 @@
 						</object>
 						<string key="NSFrame">{{0, 86}, {320, 374}}</string>
 						<reference key="NSSuperview" ref="774585933"/>
+						<reference key="NSWindow"/>
 						<bool key="IBUIClipsSubviews">YES</bool>
 						<bool key="IBUIMultipleTouchEnabled">YES</bool>
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
@@ -109,6 +114,8 @@
 					</object>
 				</object>
 				<string key="NSFrameSize">{320, 460}</string>
+				<reference key="NSSuperview"/>
+				<reference key="NSWindow"/>
 				<object class="NSColor" key="IBUIBackgroundColor">
 					<int key="NSColorSpace">3</int>
 					<bytes key="NSWhite">MC43NQA</bytes>
@@ -168,6 +175,7 @@
 						<int key="NSvFlags">292</int>
 						<string key="NSFrame">{{20, 133}, {282, 43}}</string>
 						<reference key="NSSuperview" ref="231521071"/>
+						<reference key="NSWindow"/>
 						<bool key="IBUIOpaque">NO</bool>
 						<bool key="IBUIClipsSubviews">YES</bool>
 						<int key="IBUIContentMode">4</int>
@@ -191,6 +199,7 @@
 				</object>
 				<string key="NSFrameSize">{317, 339}</string>
 				<reference key="NSSuperview"/>
+				<reference key="NSWindow"/>
 				<reference key="IBUIBackgroundColor" ref="26980767"/>
 				<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 			</object>
@@ -223,7 +232,7 @@
 				<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 			</object>
 			<object class="IBUIView" id="798837089">
-				<nil key="NSNextResponder"/>
+				<reference key="NSNextResponder"/>
 				<int key="NSvFlags">292</int>
 				<object class="NSMutableArray" key="NSSubviews">
 					<bool key="EncodedWithXMLCoder">YES</bool>
@@ -312,7 +321,7 @@
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 						<object class="NSCustomResource" key="IBUIImage">
 							<string key="NSClassName">NSImage</string>
-							<string key="NSResourceName">dining-status-closed.png</string>
+							<string key="NSResourceName">dining/dining-status-closed.png</string>
 						</object>
 					</object>
 					<object class="IBUIImageView" id="691900241">
@@ -325,7 +334,7 @@
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 						<object class="NSCustomResource" key="IBUIImage">
 							<string key="NSClassName">NSImage</string>
-							<string key="NSResourceName">dining-status-open.png</string>
+							<string key="NSResourceName">dining/dining-status-open.png</string>
 						</object>
 					</object>
 					<object class="IBUIImageView" id="1056535069">
@@ -338,7 +347,7 @@
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 						<object class="NSCustomResource" key="IBUIImage">
 							<string key="NSClassName">NSImage</string>
-							<string key="NSResourceName">dining-status-open-w-restrictions.png</string>
+							<string key="NSResourceName">dining/dining-status-open-w-restrictions.png</string>
 						</object>
 					</object>
 					<object class="IBUIImageView" id="866446637">
@@ -351,11 +360,12 @@
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 						<object class="NSCustomResource" key="IBUIImage">
 							<string key="NSClassName">NSImage</string>
-							<string key="NSResourceName">dining-status-closed-w-restrictions.png</string>
+							<string key="NSResourceName">dining/dining-status-closed-w-restrictions.png</string>
 						</object>
 					</object>
 				</object>
 				<string key="NSFrameSize">{316, 79}</string>
+				<reference key="NSSuperview"/>
 				<object class="NSColor" key="IBUIBackgroundColor">
 					<int key="NSColorSpace">3</int>
 					<bytes key="NSWhite">MQA</bytes>
@@ -395,7 +405,7 @@
 				<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 			</object>
 			<object class="IBUIView" id="224683576">
-				<nil key="NSNextResponder"/>
+				<reference key="NSNextResponder"/>
 				<int key="NSvFlags">292</int>
 				<object class="NSMutableArray" key="NSSubviews">
 					<bool key="EncodedWithXMLCoder">YES</bool>
@@ -477,7 +487,7 @@
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 						<object class="NSCustomResource" key="IBUIImage">
 							<string key="NSClassName">NSImage</string>
-							<string key="NSResourceName">dining-organic@2x.png</string>
+							<string key="NSResourceName">dining/dining-organic@2x.png</string>
 						</object>
 					</object>
 					<object class="IBUIImageView" id="1047137933">
@@ -490,7 +500,7 @@
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 						<object class="NSCustomResource" key="IBUIImage">
 							<string key="NSClassName">NSImage</string>
-							<string key="NSResourceName">dining-vegetarian@2x.png</string>
+							<string key="NSResourceName">dining/dining-vegetarian@2x.png</string>
 						</object>
 					</object>
 					<object class="IBUIImageView" id="980218601">
@@ -503,7 +513,7 @@
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 						<object class="NSCustomResource" key="IBUIImage">
 							<string key="NSClassName">NSImage</string>
-							<string key="NSResourceName">dining-vegan@2x.png</string>
+							<string key="NSResourceName">dining/dining-vegan@2x.png</string>
 						</object>
 					</object>
 					<object class="IBUIImageView" id="997224916">
@@ -516,11 +526,12 @@
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 						<object class="NSCustomResource" key="IBUIImage">
 							<string key="NSClassName">NSImage</string>
-							<string key="NSResourceName">dining-local@2x.png</string>
+							<string key="NSResourceName">dining/dining-local@2x.png</string>
 						</object>
 					</object>
 				</object>
 				<string key="NSFrameSize">{321, 72}</string>
+				<reference key="NSSuperview"/>
 				<object class="NSColor" key="IBUIBackgroundColor">
 					<int key="NSColorSpace">3</int>
 					<bytes key="NSWhite">MQA</bytes>
@@ -1327,25 +1338,25 @@
 			<bool key="EncodedWithXMLCoder">YES</bool>
 			<object class="NSArray" key="dict.sortedKeys">
 				<bool key="EncodedWithXMLCoder">YES</bool>
-				<string>dining-local@2x.png</string>
-				<string>dining-organic@2x.png</string>
-				<string>dining-status-closed-w-restrictions.png</string>
-				<string>dining-status-closed.png</string>
-				<string>dining-status-open-w-restrictions.png</string>
-				<string>dining-status-open.png</string>
-				<string>dining-vegan@2x.png</string>
-				<string>dining-vegetarian@2x.png</string>
+				<string>dining/dining-local@2x.png</string>
+				<string>dining/dining-organic@2x.png</string>
+				<string>dining/dining-status-closed-w-restrictions.png</string>
+				<string>dining/dining-status-closed.png</string>
+				<string>dining/dining-status-open-w-restrictions.png</string>
+				<string>dining/dining-status-open.png</string>
+				<string>dining/dining-vegan@2x.png</string>
+				<string>dining/dining-vegetarian@2x.png</string>
 			</object>
 			<object class="NSMutableArray" key="dict.values">
 				<bool key="EncodedWithXMLCoder">YES</bool>
-				<string>{46, 34}</string>
-				<string>{46, 34}</string>
-				<string>{20, 20}</string>
-				<string>{20, 20}</string>
-				<string>{20, 20}</string>
-				<string>{20, 20}</string>
-				<string>{46, 34}</string>
-				<string>{46, 34}</string>
+				<string>{16, 16}</string>
+				<string>{16, 16}</string>
+				<string>{16, 16}</string>
+				<string>{16, 16}</string>
+				<string>{16, 16}</string>
+				<string>{16, 16}</string>
+				<string>{16, 16}</string>
+				<string>{16, 16}</string>
 			</object>
 		</object>
 		<string key="IBCocoaTouchPluginVersion">117</string>

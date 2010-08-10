@@ -52,9 +52,12 @@
 		else {
 			[ListDictionary removeObjectForKey:key];
 		}
+			
+		if (![temp containsObject:tempDict])
+			[temp addObject:tempDict];
 		
-		[temp addObject:tempDict];
 		[ListDictionary setValue:temp forKey:key];
+		
 		
 	}
 	
@@ -103,6 +106,7 @@
 			![item isEqualToString:@"Vegetables"] &&
 			![item isEqualToString:@"Starch & Potatoes"])
 		{	
+
 			[List1 addObject:[List objectAtIndex:j]];
 		}
 	}
