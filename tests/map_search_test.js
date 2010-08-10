@@ -2,9 +2,10 @@
 
 var g_csvData = null;
 // If you want to use spreadsheetDrivenTestSuite:
-// 1. Grab RandomSampleUniqueOFFIAddrPublic.csv.
-// 2. Use http://www.cparker15.com/utilities/csv-to-json/ to convert it to an array.
-// 3. Paste that array in here as the value of g_csvData.
+// 1. Get your spreadsheet data into JSON form - an array of dictionaries, with each row being represented by a dictionary.
+// There should be ADDR_LINE3 and ADDR_LINE2 keys in that dictionary that indicate the values containing the street address. 
+// This script checks ADDR_LINE3 for the address first, then looks to ADDR_LINE2.
+// 2. Paste that array in here as the value of g_csvData.
 
 target = UIATarget.localTarget();
 //application = target.frontMostApp(); 
