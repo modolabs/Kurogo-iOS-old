@@ -273,9 +273,9 @@
 				}
 			} else {
 				NSLog(@"Could not migrate data.  Wiping out data...");
+#ifdef USE_MOBILE_DEV
                 NSString *backupFile = [NSString stringWithFormat:@"%@.bak", [self storeFileName]];
                 NSError *error = nil;
-#ifdef USE_MOBILE_DEV
                 if ([[NSFileManager defaultManager] moveItemAtPath:[self storeFileName] toPath:backupFile error:&error]) {
                     NSLog(@"Old core data is stored at %@", backupFile);
                 } else {

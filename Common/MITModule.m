@@ -85,7 +85,8 @@ NSString * const LocalPathFederatedSearchResult = @"fedresult";
 
 - (BOOL)handleLocalPath:(NSString *)localPath query:(NSString *)query {
     BOOL didHandle = NO;
-    
+
+    /*
     // here is a rough script for handling federated search
     if ([localPath isEqualToString:LocalPathFederatedSearch]) {
         self.selectedResult = nil;
@@ -107,7 +108,7 @@ NSString * const LocalPathFederatedSearchResult = @"fedresult";
         didHandle = YES;
         
     }
-    
+    */
     // the rest of this is whatever you want to do for recovering state
     
     didHandle = NO;

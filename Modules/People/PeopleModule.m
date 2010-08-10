@@ -84,7 +84,7 @@ static NSString * const PeopleStateDetail = @"detail";
     } else if ([localPath isEqualToString:LocalPathFederatedSearchResult]) {
         // fedresult?rownum
         NSInteger row = [query integerValue];
-        PeopleDetailsViewController *detailVC = [[PeopleDetailsViewController alloc] initWithStyle:UITableViewStyleGrouped];
+        PeopleDetailsViewController *detailVC = [[[PeopleDetailsViewController alloc] initWithStyle:UITableViewStyleGrouped] autorelease];
         self.selectedResult = [self.searchResults objectAtIndex:row];
         detailVC.personDetails = [PersonDetails retrieveOrCreate:self.selectedResult];
         self.viewControllers = [NSArray arrayWithObject:detailVC];

@@ -474,7 +474,7 @@ JSONAPIRequest *mitapi;
 		[control setSelectedTab:kHoursTab];
 		
 		if (hoursTabInfoRetrieved == NO) {
-			JSONAPIRequest *hoursDelegate = [[JSONAPIRequest alloc] initWithJSONAPIDelegate:tableControl];
+			JSONAPIRequest *hoursDelegate = [[[JSONAPIRequest alloc] initWithJSONAPIDelegate:tableControl] autorelease];
 		
 			if ([hoursDelegate requestObjectFromModule:@"dining" 
 									command:@"hours" 
@@ -705,8 +705,11 @@ numberOfRowsInSection:(NSInteger)section
 
 	
 	[cell.contentView addSubview:imView];
+    [imView release];
 	[cell.contentView addSubview:imView2];
+    [imView2 release];
 	[cell.contentView addSubview:imView3];
+    [imView3 release];
 	
 	return cell;
 }
@@ -890,7 +893,6 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 			[_tabViewContainer addSubview:_noResultsView];
 		}
 
-		[List release];
 		[ListDictionary release];
 	}
 	[self removeLoadingIndicator];

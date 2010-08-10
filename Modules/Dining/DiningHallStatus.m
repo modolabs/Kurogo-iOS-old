@@ -51,6 +51,7 @@ int timeToNextMeal;  //starting with ONE DAY
 	
 	[dateFormat setDateFormat:@"EEEE"];
 	dayOfWeek= [dateFormat stringFromDate:today];
+    [dateFormat release];
 	timeToNextMeal = 24*60*60;
 	for (int index=0; index < 5; index++) {
 		switch (index) {

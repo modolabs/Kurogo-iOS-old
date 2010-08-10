@@ -111,7 +111,7 @@ NSString * const MapsLocalPathList = @"list";
         // fedresult?rownum
         NSInteger row = [query integerValue];
         
-        MITMapDetailViewController *detailVC = [[MITMapDetailViewController alloc] init];
+        MITMapDetailViewController *detailVC = [[[MITMapDetailViewController alloc] init] autorelease];
         self.selectedResult = [self.searchResults objectAtIndex:row];
         detailVC.annotation = self.selectedResult;
         self.viewControllers = [NSArray arrayWithObject:detailVC];

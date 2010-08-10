@@ -72,6 +72,7 @@ static NSInteger numTries = 0;
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"isMainCategory = YES"];
     NSSortDescriptor *sort = [[NSSortDescriptor alloc] initWithKey:@"category_id" ascending:YES];
     NSArray *categoryObjects = [CoreDataManager objectsForEntity:NewsCategoryEntityName matchingPredicate:predicate sortDescriptors:[NSArray arrayWithObject:sort]];
+    [sort release];
     if (![categoryObjects count]) {
         JSONAPIRequest *request = [JSONAPIRequest requestWithJSONAPIDelegate:self];
         BOOL success = [request requestObjectFromModule:@"news" command:@"channels" parameters:nil];

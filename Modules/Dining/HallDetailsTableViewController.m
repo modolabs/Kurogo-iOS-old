@@ -28,8 +28,9 @@
 	label.font = [UIFont boldSystemFontOfSize:25];
 	label.backgroundColor = [UIColor clearColor];	
 	[self.view addSubview:label];
+    [label release];
 	
-	UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(250.0, 15.0, 30.0, 30.0)];
+	UIImageView *imageView = [[[UIImageView alloc] initWithFrame:CGRectMake(250.0, 15.0, 30.0, 30.0)] autorelease];
 	
 	switch (hallStatus.currentStat) {
 		case OPEN:

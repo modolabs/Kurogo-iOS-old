@@ -49,8 +49,8 @@ NSInteger courseNameCompare(id course1, id course2, void *context);
 	}
 	return courseGroups;*/
 	
-	NSMutableDictionary *courseGroups = [[NSMutableDictionary alloc] init];
-	NSMutableArray *courseGroupNames = [[NSMutableArray alloc] init];
+	NSMutableDictionary *courseGroups = [NSMutableDictionary dictionary];
+	NSMutableArray *courseGroupNames = [NSMutableArray array];
 	
 	for (StellarCourse *course in stellarCourses) {
 		
@@ -58,7 +58,7 @@ NSInteger courseNameCompare(id course1, id course2, void *context);
 			
 			[courseGroupNames addObject:course.courseGroup];
 			
-			StellarCourseGroup *group = [[StellarCourseGroup alloc] init];
+			StellarCourseGroup *group = [[[StellarCourseGroup alloc] init] autorelease];
 			group.title = course.courseGroup;
 			
 			NSMutableArray * cArray = [[NSMutableArray alloc] init];
@@ -92,7 +92,7 @@ NSInteger courseNameCompare(id course1, id course2, void *context);
 
 	}
 
-	NSMutableArray *courseGroupArray = [[NSMutableArray alloc] init];
+	NSMutableArray *courseGroupArray = [NSMutableArray array];
 		for (NSString *groupName in [courseGroups allKeys]) {
 			
 			StellarCourseGroup *group = [courseGroups objectForKey:groupName];

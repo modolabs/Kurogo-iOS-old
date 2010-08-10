@@ -34,7 +34,7 @@
             break;
         }
     }
-    NSLog(@"map level is set to %d with scale %.8f", theZoomLevel.level, 1 / scale);
+    //NSLog(@"map level is set to %d with scale %.8f", theZoomLevel.level, 1 / scale);
     
     NSArray *tiles = [theZoomLevel tilesForMapRect:mapRect];
 
@@ -61,6 +61,7 @@
             CGContextDrawImage(context, CGRectMake(0, 0, image.size.width, image.size.height), [image CGImage]);
             CGContextRestoreGState(context);
         }
+        [image release];
     }
     
     //MapTile aTile = [theZoomLevel tileForMapPoint:mapRect.origin];

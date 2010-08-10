@@ -26,7 +26,7 @@
     // http://cocoawithlove.com/2010/05/5-ways-to-draw-2d-shape-with-hole-in.html
     // which incidentally is already how the arcgis server returns coordinates
     for (PolygonRing *aRing in ((PolygonOverlay *)self.overlay).rings) {
-        CGPoint startPoint;
+        CGPoint startPoint = CGPointZero;
         for (NSInteger j = 0; j < aRing.size; j++) {
             MKMapPoint mapPoint = MKMapPointForCoordinate(aRing.coordinates[j]);
             CGPoint point = [self pointForMapPoint:mapPoint];
@@ -74,7 +74,7 @@
         NSMutableArray *convertedRings = [NSMutableArray arrayWithCapacity:[rings count]];
         
         for (NSArray *ringPoints in rings) {
-            PolygonRing *ring = [[PolygonRing alloc] initWithPoints:ringPoints];
+            PolygonRing *ring = [[[PolygonRing alloc] initWithPoints:ringPoints] autorelease];
             [convertedRings addObject:ring];
         }
         

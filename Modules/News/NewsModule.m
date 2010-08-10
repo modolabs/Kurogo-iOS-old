@@ -55,7 +55,7 @@ NSString * const NewsLocalPathBookmarks = @"bookmarks";
         // fedresult?rownum
         NSInteger row = [query integerValue];
         
-        StoryDetailViewController *detailVC = [[StoryDetailViewController alloc] init];
+        StoryDetailViewController *detailVC = [[[StoryDetailViewController alloc] init] autorelease];
         self.selectedResult = [self.searchResults objectAtIndex:row];
         detailVC.story = self.selectedResult;
         detailVC.newsController = self;

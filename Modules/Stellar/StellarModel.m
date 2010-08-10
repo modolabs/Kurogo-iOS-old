@@ -355,7 +355,7 @@ NSString* cleanPersonName(NSString *personName);
 		return;
 	}
 	
-	NSMutableArray *coursesArray = [[NSMutableArray alloc] init];
+	NSMutableArray *coursesArray = [NSMutableArray array];
 	for (NSDictionary *aDict in courseGroups) {
 		
 		NSArray *courses = [aDict objectForKey:@"courses"];

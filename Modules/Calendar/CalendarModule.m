@@ -132,7 +132,7 @@
         NSInteger row = [query integerValue];
         self.selectedResult = [self.searchResults objectAtIndex:row];
         
-        CalendarDetailViewController *detailVC = [[CalendarDetailViewController alloc] init];
+        CalendarDetailViewController *detailVC = [[[CalendarDetailViewController alloc] init] autorelease];
         detailVC.event = self.selectedResult;
         detailVC.events = self.searchResults;
         self.viewControllers = [NSArray arrayWithObject:detailVC];

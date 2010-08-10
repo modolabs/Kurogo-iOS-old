@@ -161,6 +161,10 @@
 		self.location = maybeValue;
 	}
 	
+    // TODO: all fields below have conditional values that
+    // are unconditionally overridden.  figure out which
+    // values to use or get rid of the conditional statements.
+    
 	// Contact Info
 	if (contactInfoAvailable == YES) {
 		NSString *phoneNumber;

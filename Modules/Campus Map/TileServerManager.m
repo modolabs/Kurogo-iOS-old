@@ -420,10 +420,10 @@ static NSString * s_tileServerFilename = @"tileServer.plist";
     NSArray *levelsOfDetail = [tileInfo objectForKey:@"lods"];
     NSMutableArray *zoomLevels = [NSMutableArray arrayWithCapacity:[levelsOfDetail count]];
                                   
-    CGFloat baseResolution;
+    //CGFloat baseResolution;
     
     for (NSDictionary *levelOfDetail in levelsOfDetail) {
-        MapZoomLevel *zoomLevel = [[MapZoomLevel alloc] init];
+        MapZoomLevel *zoomLevel = [[[MapZoomLevel alloc] init] autorelease];
         
         CGFloat resolution = [[levelOfDetail objectForKey:@"resolution"] doubleValue];
         zoomLevel.resolution = resolution;
@@ -437,7 +437,7 @@ static NSString * s_tileServerFilename = @"tileServer.plist";
         zoomLevel.level = level;
         
         if (level == rootLevel) {
-            baseResolution = resolution;
+            //baseResolution = resolution;
             _baseMapLevel = zoomLevel;
         }
         

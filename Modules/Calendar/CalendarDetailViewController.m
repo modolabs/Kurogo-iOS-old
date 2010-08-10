@@ -364,7 +364,7 @@ enum CalendarDetailRowTypes {
         {
 			NSMutableString *categoriesBody = [NSMutableString stringWithString:@"Gazette Classification: <ul>"];
 			
-			NSMutableArray *tempCats = [[NSMutableArray alloc] init];
+			NSMutableArray *tempCats = [NSMutableArray array];
 			
 			for (EventCategory *category in event.categories) {
 				[tempCats addObject:category];
@@ -499,7 +499,7 @@ enum CalendarDetailRowTypes {
                 [[MapBookmarkManager defaultManager] pruneNonBookmarks];
                 
                 CLLocationCoordinate2D coord = CLLocationCoordinate2DMake([event.latitude floatValue], [event.longitude floatValue]);
-                ArcGISMapAnnotation *annotation = [[ArcGISMapAnnotation alloc] initWithCoordinate:coord];
+                ArcGISMapAnnotation *annotation = [[[ArcGISMapAnnotation alloc] initWithCoordinate:coord] autorelease];
                 annotation.name = event.title;
                 annotation.uniqueID = [NSString stringWithFormat:@"%@@%.4f,%.4f", event.title, coord.latitude, coord.longitude];
                 [[MapBookmarkManager defaultManager] saveAnnotationWithoutBookmarking:annotation];
@@ -662,7 +662,7 @@ enum CalendarDetailRowTypes {
 		aController.mailComposeDelegate = self;
 		
 		
-		NSMutableArray *emailAddressArray = [[NSMutableArray alloc] init];
+		NSMutableArray *emailAddressArray = [NSMutableArray array];
 		[emailAddressArray addObject:emailAddress];
 		[aController setSubject:subject];
 		[aController setToRecipients:emailAddressArray];		

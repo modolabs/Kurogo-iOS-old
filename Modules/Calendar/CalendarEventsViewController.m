@@ -959,6 +959,7 @@
 				
 				[nothingFound addSubview:label];
 				[self.view addSubview:nothingFound];
+                [nothingFound release];
 			}
 			else if (nothingFound != nil) {
 				[nothingFound removeFromSuperview];
@@ -983,6 +984,7 @@
 				
 				[nothingFound addSubview:label];
 				[self.view addSubview:nothingFound];
+                [nothingFound release];
 			}
 			
 			for (NSDictionary *eventDict in result) {

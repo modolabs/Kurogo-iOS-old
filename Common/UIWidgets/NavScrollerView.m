@@ -101,7 +101,7 @@ scrollView = _scrollView, navScrollerDelegate, currentXOffset = _currentXOffset;
         [aButton setBackgroundImage:stretchableButtonImage forState:UIControlStateHighlighted];
     }
     
-    CGSize newSize;
+    CGSize newSize = CGSizeZero;
     
     if ([aButton titleForState:UIControlStateNormal] != nil) {
         [aButton setTitleColor:[UIColor colorWithHexString:@"#E0E0E0"] forState:UIControlStateNormal];

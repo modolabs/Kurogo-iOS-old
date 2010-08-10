@@ -161,7 +161,7 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 	
 	NSUInteger row = [indexPath row];
 	
-	DiningHallStatus *status = [[DiningHallStatus alloc] init];
+	DiningHallStatus *status = [[[DiningHallStatus alloc] init] autorelease];
 	status.hallName = [[self.hallProperties objectAtIndex:row] objectForKey:@"name"];
 	int stat = [status getStatusOfMeal:@"" usingDetails:[self.hallProperties objectAtIndex:row]];
 	
@@ -184,6 +184,7 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath
     
 	DiningHallStatus *status = [[DiningHallStatus alloc] init];
 	int stat = [status getStatusOfMeal:@"" usingDetails:[self.hallProperties objectAtIndex:row]];
+    [status release];
 
 	if (stat == 1)
 		return 65.0;//50.0;

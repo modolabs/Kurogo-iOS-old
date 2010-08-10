@@ -16,9 +16,9 @@
 	NSArray *allItems;
 	allItems = (NSArray *) JSONObject;
 	
-	NSMutableArray *List = [[NSMutableArray alloc] init];
-	NSMutableArray *List1 = [[NSMutableArray alloc] init];
-	NSMutableDictionary *ListDictionary = [[NSMutableDictionary alloc] init];
+	NSMutableArray *List = [NSMutableArray array];
+	NSMutableArray *List1 = [NSMutableArray array];
+	NSMutableDictionary *ListDictionary = [NSMutableDictionary dictionary];
 	
 	int len = [allItems count];
 	int i;
@@ -44,7 +44,7 @@
 		
 		if (temp == nil)
 		{
-			temp = [[NSMutableArray alloc] init];
+			temp = [NSMutableArray array];
 			[List addObject:key];
 			
 		}
@@ -110,8 +110,8 @@
 			[List1 addObject:[List objectAtIndex:j]];
 		}
 	}
-	menuItems = List1;
-	menuDetails = ListDictionary;
+	menuItems = [List1 retain];
+	menuDetails = [ListDictionary retain];
 }
 
 // This methods needs the "getData:" methods to have been called first
