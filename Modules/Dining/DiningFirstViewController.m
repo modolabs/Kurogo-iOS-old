@@ -565,7 +565,7 @@ JSONAPIRequest *mitapi;
     
 	NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
 	//[dateFormat setDateFormat:@"YYYY-MM-dd"];
-	[dateFormat setDateFormat:@"EEEE, MMMM d"];
+	[dateFormat setDateFormat:@"EEEE, MMM. d"];
 	NSString *dateText = [dateFormat stringFromDate:self.todayDate];
 
 	NSString *currentDate = [dateFormat stringFromDate:[NSDate date]];
