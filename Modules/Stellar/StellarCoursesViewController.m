@@ -65,7 +65,7 @@
 	
 	coursesTableView = nil;
 	
-	coursesTableView = [[UITableView alloc] initWithFrame:CGRectMake(0.0, 40.0, 320.0, 420.0) style: UITableViewStylePlain];
+	coursesTableView = [[UITableView alloc] initWithFrame:CGRectMake(0.0, searchBarHeight, 320.0, 420.0) style: UITableViewStylePlain];
 	coursesTableView.delegate= self;
 	coursesTableView.dataSource = self;
 	coursesTableView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;

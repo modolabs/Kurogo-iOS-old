@@ -79,7 +79,9 @@
 	
 	harvardClassesTableView = nil;
 	
-	harvardClassesTableView = [[UITableView alloc] initWithFrame:CGRectMake(0.0, 40.0, 320.0, 420.0) style: UITableViewStylePlain];
+	harvardClassesTableView = [[UITableView alloc] initWithFrame:CGRectMake(0.0, searchBarHeight, 320.0, 420.0) style: UITableViewStylePlain];
+	harvardClassesTableView.backgroundColor = [UIColor whiteColor];
+	self.view.backgroundColor = [UIColor whiteColor];
 	harvardClassesTableView.delegate= self;
 	harvardClassesTableView.dataSource = self;
 	harvardClassesTableView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
