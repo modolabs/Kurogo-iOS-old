@@ -1,11 +1,16 @@
 #import "MITModule.h"
+#import "JSONAPIRequest.h"
 
-@interface StellarModule : MITModule {
+@class StellarMainTableController;
 
-	ModoNavigationController *navigationController;
+@interface StellarModule : MITModule <JSONAPIDelegate> {
+
+	StellarMainTableController *mainController;
+    JSONAPIRequest *request;
 }
 
-@property (nonatomic, retain) ModoNavigationController *navigationController;
+@property (nonatomic, retain) StellarMainTableController *mainController;
+@property (nonatomic, retain) JSONAPIRequest *request;
 
 @end
 

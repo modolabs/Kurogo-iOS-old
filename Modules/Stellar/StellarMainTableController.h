@@ -23,6 +23,7 @@ UITableViewDelegate, UITableViewDataSource, CoursesLoadedDelegate, ClearMyStella
 	BOOL firstTimeLoaded;
 }
 
+@property (nonatomic, retain) NSString *doSearchTerms;
 @property (nonatomic, retain) UITableView *tableView;
 @property (retain) NSArray *courseGroups;
 @property (retain) NSArray *myStellar;
@@ -37,11 +38,10 @@ UITableViewDelegate, UITableViewDataSource, CoursesLoadedDelegate, ClearMyStella
 
 - (void) doSearch:(NSString *)searchTerms execute:(BOOL)execute;
 - (void) showSearchResultsTable;
-//- (void) showTranslucentOverlayWithDelay:(BOOL)useDelay;
 - (void) showLoadingView;
 - (void) hideSearchResultsTable;
-//- (void) hideTranslucentOverlay;
 - (void) hideLoadingView;
 - (void) reloadData;
+- (void)presentSearchResults:(NSArray *)searchResults query:(NSString *)query;
 
 @end

@@ -30,6 +30,7 @@
 @synthesize loadingView;
 @synthesize myStellarUIisUpToDate;
 @synthesize url;
+@synthesize doSearchTerms;
 
 - (id) init {
 	if (self = [super init]) {
@@ -331,6 +332,11 @@
 	[self.url setAsModulePath];
 }
 
+- (void)presentSearchResults:(NSArray *)searchResults query:(NSString *)query {
+    self.searchController.searchBar.text = query;
+    [stellarSearch searchComplete:searchResults searchTerms:query];
+}
+
 // TODO: clean up redundant -[searchBar becomeFirstResponder]
 - (void) doSearch:(NSString *)searchTerms execute:(BOOL)execute {
 	if(isViewAppeared) {
@@ -350,15 +356,6 @@
 		self.doSearchTerms = searchTerms;
 		doSearchExecute = execute;
 	}
-}
-
-- (void) setDoSearchTerms:(NSString *)searhTerms {
-	[doSearchTerms release];
-	doSearchTerms = [searhTerms retain];
-}
-
-- (NSString *) doSearchTerms {
-	return doSearchTerms;
 }
 
 - (void) showSearchResultsTable {
