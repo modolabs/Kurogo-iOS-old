@@ -8,6 +8,7 @@
 #import <QuartzCore/QuartzCore.h>
 #import "TileServerManager.h"
 #import "EventListTableView.h"
+#import "ModoSearchBar.h"
 
 #define SCROLL_TAB_HORIZONTAL_PADDING 5.0
 #define SCROLL_TAB_HORIZONTAL_MARGIN  5.0
@@ -509,7 +510,7 @@
 - (void)showSearchBar
 {
     if (!theSearchBar) {
-        theSearchBar = [[UISearchBar alloc] initWithFrame:navScrollView.frame];
+        theSearchBar = [[ModoSearchBar alloc] initWithFrame:navScrollView.frame];
         theSearchBar.tintColor = SEARCH_BAR_TINT_COLOR;
         theSearchBar.delegate = self;
         theSearchBar.alpha = 0.0;
@@ -530,7 +531,7 @@
         searchResultsMapView.region = self.mapView.region;
 		searchResultsMapView.delegate = self;
 	}
-    
+    [self.view bringSubviewToFront:theSearchBar];
 	[UIView beginAnimations:nil context:NULL];
 	[UIView setAnimationDuration:0.4];
 	theSearchBar.alpha = 1.0;

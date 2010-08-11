@@ -11,6 +11,7 @@
 @class CalendarEventMapAnnotation;
 @class DatePickerViewController;
 @class NavScrollerView;
+@class ModoSearchBar;
 
 @interface CalendarEventsViewController : UIViewController <NavScrollerDelegate, UISearchBarDelegate, UISearchDisplayDelegate, MKMapViewDelegate, JSONAPIDelegate, DatePickerViewControllerDelegate> {
 //@interface CalendarEventsViewController : UIViewController <UIScrollViewDelegate, UISearchBarDelegate, UISearchDisplayDelegate, MKMapViewDelegate, JSONAPIDelegate, DatePickerViewControllerDelegate> {
@@ -25,13 +26,6 @@
 	CalendarMapView *theMapView;
 	
 	// views in the header
-    /*
-	UIScrollView *navScrollView;
-	UISearchBar *theSearchBar;
-	NSMutableArray *navButtons;
-	UIButton *leftScrollButton;
-	UIButton *rightScrollButton;
-     */
     NavScrollerView *navScrollView;
 	
 	UIView *datePicker;
@@ -40,7 +34,7 @@
 	//DatePickerViewController *dateSelector;
 	
 	// search
-    UISearchBar *theSearchBar;
+    ModoSearchBar *theSearchBar;
     MITSearchDisplayController *searchController;
 	UIView *loadingIndicator;
 	// this is a tableview subclass but we're only using it for
