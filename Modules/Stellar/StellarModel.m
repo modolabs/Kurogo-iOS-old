@@ -123,14 +123,16 @@ NSString* cleanPersonName(NSString *personName);
 	return [[course.stellarClasses allObjects] sortedArrayUsingFunction:classNameInCourseCompare context:course];
 }
 
-+ (void) executeStellarSearch: (NSString *)searchTerms delegate: (id<ClassesSearchDelegate>)delegate {
++ (void) executeStellarSearch: (NSString *)searchTerms courseGroupName: (NSString *)courseGroupName courseName: (NSString *)courseName delegate: (id<ClassesSearchDelegate>)delegate {
 	JSONAPIRequest *apiRequest = [JSONAPIRequest
 		requestWithJSONAPIDelegate:[[[ClassesSearchRequest alloc]
-			initWithDelegate:delegate searchTerms:searchTerms] autorelease]];
+									 initWithDelegate:delegate searchTerms:searchTerms] autorelease]];
 	[apiRequest 
 		requestObjectFromModule:@"stellar" 
 		command:@"search" 
-		parameters:[NSDictionary dictionaryWithObject:searchTerms forKey:@"query"]];
+		parameters:[NSDictionary dictionaryWithObjectsAndKeys: 
+					searchTerms, @"query",
+					courseGroupName, @"courseGroup", courseName, @"courseName", nil]]; //[NSDictionary dictionaryWithObject:searchTerms forKey:@"query"]];
 }
 	
 + (NSArray *) allCourses {

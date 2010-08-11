@@ -1,6 +1,7 @@
 #import "StellarModule.h"
 #import "StellarMainTableController.h"
-#import "StellarCoursesTableController.h"
+//#import "StellarCoursesTableController.h"
+#import "StellarCoursesViewController.h"
 #import "StellarDetailViewController.h"
 #import "StellarCourseGroup.h"
 #import "StellarModel.h"
@@ -11,7 +12,7 @@
 #import "MITModuleURL.h"
 #import "ModoSearchBar.h"
 #import "MITSearchDisplayController.h"
-#import "StellarClassesTableController.h"
+#import "StellarClassesViewController.h"
 #import "CoreDataManager.h"
 
 #define myStellarGroup 0
@@ -265,20 +266,24 @@
 		dummyCourse.title = ((StellarCourseGroup *)[courseGroups objectAtIndex:indexPath.row]).title;
 		
 		[self.navigationController
-		 pushViewController: [[[StellarClassesTableController alloc] 
+		 pushViewController: [[[StellarClassesViewController alloc] 
 							   initWithCourse:dummyCourse] autorelease]				  
 		 animated:YES];
 	}	else if ([((StellarCourseGroup *)[courseGroups objectAtIndex:indexPath.row]).courses count] == 1) {
 		[self.navigationController
-		 pushViewController: [[[StellarClassesTableController alloc] 
+		 pushViewController: [[[StellarClassesViewController alloc] 
 							   initWithCourse:(StellarCourse *) [((StellarCourseGroup *)[courseGroups objectAtIndex:indexPath.row]).courses objectAtIndex:0]] autorelease]				  
 		 animated:YES];
 	}	
 	else if(groupIndex == browseGroup) {
-		[self.navigationController
+		/*[self.navigationController
 			pushViewController: [[[StellarCoursesTableController alloc] 
 				initWithCourseGroup: (StellarCourseGroup *)[courseGroups objectAtIndex:indexPath.row]] autorelease]
-			animated:YES];
+			animated:YES];*/
+		[self.navigationController
+		 pushViewController: [[[StellarCoursesViewController alloc] 
+							   initWithCourseGroup: (StellarCourseGroup *)[courseGroups objectAtIndex:indexPath.row]] autorelease]
+		 animated:YES];
 	}
 }
 
@@ -302,7 +307,7 @@
 - (void) searchBarSearchButtonClicked: (UISearchBar *)theSearchBar {
 	[self showLoadingView];
 	hasSearchInitiated = YES;
-	[StellarModel executeStellarSearch:theSearchBar.text delegate:stellarSearch];
+	[StellarModel executeStellarSearch:theSearchBar.text courseGroupName:@"" courseName:@"" delegate:stellarSearch];
 	
 	[self.url setPath:@"search-complete" query:theSearchBar.text];
 	[self.url setAsModulePath];

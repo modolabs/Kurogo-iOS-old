@@ -177,6 +177,7 @@ extern NSString * const MyStellarChanged;
 @interface ClassesSearchRequest : NSObject <JSONAPIDelegate> {
 	id<ClassesSearchDelegate> classesSearchDelegate;
 	NSString *searchTerms;
+	NSString *courseGroupName;
 }
 
 /**
@@ -259,7 +260,7 @@ extern NSString * const MyStellarChanged;
  *  @param searchTerms the terms used for the search
  *  @param delegate receives the NSArray of StellarClass objects the search returned
  */
-+ (void) executeStellarSearch: (NSString *)searchTerms delegate: (id<ClassesSearchDelegate>)delegate;
++ (void) executeStellarSearch: (NSString *)searchTerms courseGroupName:(NSString *)courseGroupName courseName:(NSString *)courseName delegate: (id<ClassesSearchDelegate>)delegate;
 
 /**
  *  adds a class to the list of bookmarked classes

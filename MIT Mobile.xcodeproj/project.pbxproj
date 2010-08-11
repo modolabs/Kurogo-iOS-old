@@ -31,7 +31,6 @@
 		299149A010DDB50300B01A8E /* StellarSearch.m in Sources */ = {isa = PBXBuildFile; fileRef = 2991499F10DDB50300B01A8E /* StellarSearch.m */; };
 		29974B711160F1DA009D03B9 /* URLShortener.m in Sources */ = {isa = PBXBuildFile; fileRef = 29974B701160F1DA009D03B9 /* URLShortener.m */; };
 		29A0D12110CDD0E8009FC010 /* StellarCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 29A0D11E10CDD0E8009FC010 /* StellarCache.m */; };
-		29A0D12210CDD0E8009FC010 /* StellarClassesTableController.m in Sources */ = {isa = PBXBuildFile; fileRef = 29A0D12010CDD0E8009FC010 /* StellarClassesTableController.m */; };
 		29C4546D118B55E100A321B0 /* jQueryInject.txt in Resources */ = {isa = PBXBuildFile; fileRef = 29C45425118B55E100A321B0 /* jQueryInject.txt */; };
 		29C4546E118B55E100A321B0 /* jQueryInjectLandscape.txt in Resources */ = {isa = PBXBuildFile; fileRef = 29C45426118B55E100A321B0 /* jQueryInjectLandscape.txt */; };
 		29C4546F118B55E100A321B0 /* ExchangeCredentialsOperation.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = 29C45429118B55E100A321B0 /* ExchangeCredentialsOperation.h */; settings = {JAVA_ARCHIVE_SUBDIR = "Common/Libraries & Headers"; }; };
@@ -171,6 +170,10 @@
 		C759594312074B47008474A9 /* DiningHallStatus.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = C759593D12074B47008474A9 /* DiningHallStatus.h */; settings = {JAVA_ARCHIVE_SUBDIR = Modules/Dining; }; };
 		C776675911F733E3005496DD /* DatePickerViewController.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = C776675711F733E3005496DD /* DatePickerViewController.h */; settings = {JAVA_ARCHIVE_SUBDIR = Modules/Calendar; }; };
 		C776675A11F733E3005496DD /* DatePickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C776675811F733E3005496DD /* DatePickerViewController.m */; };
+		C7B10CFF12130E2300CFB837 /* StellarCoursesViewController.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = C7B10CFD12130E2300CFB837 /* StellarCoursesViewController.h */; settings = {JAVA_ARCHIVE_SUBDIR = Modules/Stellar; }; };
+		C7B10D0012130E2300CFB837 /* StellarCoursesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C7B10CFE12130E2300CFB837 /* StellarCoursesViewController.m */; };
+		C7B10E031213270200CFB837 /* StellarClassesViewController.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = C7B10E011213270200CFB837 /* StellarClassesViewController.h */; settings = {JAVA_ARCHIVE_SUBDIR = Modules/Stellar; }; };
+		C7B10E041213270200CFB837 /* StellarClassesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C7B10E021213270200CFB837 /* StellarClassesViewController.m */; };
 		C7B897F111F535C8002B3619 /* HoursTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C7B897EF11F535C8002B3619 /* HoursTableViewController.m */; };
 		C7B897F211F535C8002B3619 /* HoursTableViewController.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = C7B897F011F535C8002B3619 /* HoursTableViewController.h */; settings = {JAVA_ARCHIVE_SUBDIR = Modules/Dining; }; };
 		DE0A62AC10CDAEA90058B2C2 /* MITBuildInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = DE0A62AB10CDAEA90058B2C2 /* MITBuildInfo.m */; };
@@ -436,7 +439,6 @@
 		EB7F328410CD6C5B00188BCD /* PeopleModule.m in Sources */ = {isa = PBXBuildFile; fileRef = EB7F327510CD6C5B00188BCD /* PeopleModule.m */; };
 		EB7F328510CD6C5B00188BCD /* PeopleRecentsData.m in Sources */ = {isa = PBXBuildFile; fileRef = EB7F327710CD6C5B00188BCD /* PeopleRecentsData.m */; };
 		EB7F32AA10CD6CB100188BCD /* StellarCourseGroup.m in Sources */ = {isa = PBXBuildFile; fileRef = EB7F329810CD6CB100188BCD /* StellarCourseGroup.m */; };
-		EB7F32AB10CD6CB100188BCD /* StellarCoursesTableController.m in Sources */ = {isa = PBXBuildFile; fileRef = EB7F329A10CD6CB100188BCD /* StellarCoursesTableController.m */; };
 		EB7F32AC10CD6CB100188BCD /* StellarMainTableController.m in Sources */ = {isa = PBXBuildFile; fileRef = EB7F329C10CD6CB100188BCD /* StellarMainTableController.m */; };
 		EB7F32AD10CD6CB100188BCD /* StellarModel.m in Sources */ = {isa = PBXBuildFile; fileRef = EB7F329E10CD6CB100188BCD /* StellarModel.m */; };
 		EB7F32AE10CD6CB100188BCD /* StellarModule.m in Sources */ = {isa = PBXBuildFile; fileRef = EB7F32A010CD6CB100188BCD /* StellarModule.m */; };
@@ -511,8 +513,6 @@
 		29974B701160F1DA009D03B9 /* URLShortener.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = URLShortener.m; sourceTree = "<group>"; };
 		29A0D11D10CDD0E8009FC010 /* StellarCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StellarCache.h; sourceTree = "<group>"; };
 		29A0D11E10CDD0E8009FC010 /* StellarCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StellarCache.m; sourceTree = "<group>"; };
-		29A0D11F10CDD0E8009FC010 /* StellarClassesTableController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StellarClassesTableController.h; sourceTree = "<group>"; };
-		29A0D12010CDD0E8009FC010 /* StellarClassesTableController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StellarClassesTableController.m; sourceTree = "<group>"; };
 		29B14B71114842D200BC8CCE /* Stellar 3.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Stellar 3.xcdatamodel"; sourceTree = "<group>"; };
 		29B97316FDCFA39411CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		29C45425118B55E100A321B0 /* jQueryInject.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = jQueryInject.txt; sourceTree = "<group>"; };
@@ -682,6 +682,10 @@
 		C759593D12074B47008474A9 /* DiningHallStatus.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DiningHallStatus.h; path = Dining/DiningHallStatus.h; sourceTree = "<group>"; };
 		C776675711F733E3005496DD /* DatePickerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DatePickerViewController.h; sourceTree = "<group>"; };
 		C776675811F733E3005496DD /* DatePickerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DatePickerViewController.m; sourceTree = "<group>"; };
+		C7B10CFD12130E2300CFB837 /* StellarCoursesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StellarCoursesViewController.h; sourceTree = "<group>"; };
+		C7B10CFE12130E2300CFB837 /* StellarCoursesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StellarCoursesViewController.m; sourceTree = "<group>"; };
+		C7B10E011213270200CFB837 /* StellarClassesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StellarClassesViewController.h; sourceTree = "<group>"; };
+		C7B10E021213270200CFB837 /* StellarClassesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StellarClassesViewController.m; sourceTree = "<group>"; };
 		C7B897EF11F535C8002B3619 /* HoursTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = HoursTableViewController.m; path = Dining/HoursTableViewController.m; sourceTree = "<group>"; };
 		C7B897F011F535C8002B3619 /* HoursTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = HoursTableViewController.h; path = Dining/HoursTableViewController.h; sourceTree = "<group>"; };
 		DE0A62AA10CDAEA90058B2C2 /* MITBuildInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MITBuildInfo.h; sourceTree = "<group>"; };
@@ -997,8 +1001,6 @@
 		EB7F327710CD6C5B00188BCD /* PeopleRecentsData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PeopleRecentsData.m; sourceTree = "<group>"; };
 		EB7F329710CD6CB100188BCD /* StellarCourseGroup.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StellarCourseGroup.h; sourceTree = "<group>"; };
 		EB7F329810CD6CB100188BCD /* StellarCourseGroup.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StellarCourseGroup.m; sourceTree = "<group>"; };
-		EB7F329910CD6CB100188BCD /* StellarCoursesTableController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StellarCoursesTableController.h; sourceTree = "<group>"; };
-		EB7F329A10CD6CB100188BCD /* StellarCoursesTableController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StellarCoursesTableController.m; sourceTree = "<group>"; };
 		EB7F329B10CD6CB100188BCD /* StellarMainTableController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StellarMainTableController.h; sourceTree = "<group>"; };
 		EB7F329C10CD6CB100188BCD /* StellarMainTableController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StellarMainTableController.m; sourceTree = "<group>"; };
 		EB7F329D10CD6CB100188BCD /* StellarModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StellarModel.h; sourceTree = "<group>"; };
@@ -1556,13 +1558,9 @@
 			children = (
 				29A0D11D10CDD0E8009FC010 /* StellarCache.h */,
 				29A0D11E10CDD0E8009FC010 /* StellarCache.m */,
-				29A0D11F10CDD0E8009FC010 /* StellarClassesTableController.h */,
-				29A0D12010CDD0E8009FC010 /* StellarClassesTableController.m */,
 				EB7F328910CD6CB100188BCD /* Model */,
 				EB7F329710CD6CB100188BCD /* StellarCourseGroup.h */,
 				EB7F329810CD6CB100188BCD /* StellarCourseGroup.m */,
-				EB7F329910CD6CB100188BCD /* StellarCoursesTableController.h */,
-				EB7F329A10CD6CB100188BCD /* StellarCoursesTableController.m */,
 				EB7F329B10CD6CB100188BCD /* StellarMainTableController.h */,
 				EB7F329C10CD6CB100188BCD /* StellarMainTableController.m */,
 				EB7F329D10CD6CB100188BCD /* StellarModel.h */,
@@ -1583,6 +1581,10 @@
 				2991499F10DDB50300B01A8E /* StellarSearch.m */,
 				2970ABE410E053F700C543D7 /* StellarClassTableCell.h */,
 				2970ABE510E053F700C543D7 /* StellarClassTableCell.m */,
+				C7B10CFD12130E2300CFB837 /* StellarCoursesViewController.h */,
+				C7B10CFE12130E2300CFB837 /* StellarCoursesViewController.m */,
+				C7B10E011213270200CFB837 /* StellarClassesViewController.h */,
+				C7B10E021213270200CFB837 /* StellarClassesViewController.m */,
 			);
 			path = Stellar;
 			sourceTree = "<group>";
@@ -2060,6 +2062,8 @@
 				EB4210E1120B81D500089FE0 /* TabViewControl.h in JavaArchive */,
 				EB4210E7120B82C000089FE0 /* TwitterViewController.h in JavaArchive */,
 				EB4211B8120C92C600089FE0 /* MapSavedAnnotation.h in JavaArchive */,
+				C7B10CFF12130E2300CFB837 /* StellarCoursesViewController.h in JavaArchive */,
+				C7B10E031213270200CFB837 /* StellarClassesViewController.h in JavaArchive */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2202,13 +2206,11 @@
 				EB7F328510CD6C5B00188BCD /* PeopleRecentsData.m in Sources */,
 				EBA0A46710D405F5005B0D96 /* Stellar.xcdatamodeld in Sources */,
 				EB7F32AA10CD6CB100188BCD /* StellarCourseGroup.m in Sources */,
-				EB7F32AB10CD6CB100188BCD /* StellarCoursesTableController.m in Sources */,
 				EB7F32AC10CD6CB100188BCD /* StellarMainTableController.m in Sources */,
 				EB7F32AD10CD6CB100188BCD /* StellarModel.m in Sources */,
 				EB7F32AE10CD6CB100188BCD /* StellarModule.m in Sources */,
 				DE0A62AC10CDAEA90058B2C2 /* MITBuildInfo.m in Sources */,
 				29A0D12110CDD0E8009FC010 /* StellarCache.m in Sources */,
-				29A0D12210CDD0E8009FC010 /* StellarClassesTableController.m in Sources */,
 				296FC55610CF4E8D00EA7FF7 /* StellarDetailViewController.m in Sources */,
 				297746D010D3526200ACFCE6 /* StellarStaffMember.m in Sources */,
 				297746D110D3526200ACFCE6 /* StellarAnnouncement.m in Sources */,
@@ -2488,6 +2490,8 @@
 				EB4210E2120B81D500089FE0 /* TabViewControl.m in Sources */,
 				EB4210E8120B82C000089FE0 /* TwitterViewController.m in Sources */,
 				EB4211B9120C92C600089FE0 /* MapSavedAnnotation.m in Sources */,
+				C7B10D0012130E2300CFB837 /* StellarCoursesViewController.m in Sources */,
+				C7B10E041213270200CFB837 /* StellarClassesViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
