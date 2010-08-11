@@ -80,6 +80,7 @@
 #pragma mark UITableViewDelegate methods
 
 - (void) tableView: (UITableView *)tableView didSelectRowAtIndexPath: (NSIndexPath *)indexPath {
+	[tableView deselectRowAtIndexPath:indexPath animated:NO];
 	[StellarDetailViewController 
 		launchClass:(StellarClass *)[self.lastResults objectAtIndex:indexPath.row]
 		viewController:viewController];

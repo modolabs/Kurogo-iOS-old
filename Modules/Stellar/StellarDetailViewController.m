@@ -242,7 +242,7 @@ NSString * termText(NSString *termCode) {
 		[self addTabName:@"Info" dataSource:[InfoDataSource viewController:self]];
 	}
 	if([instructors count]+[tas count]) {
-		[self addTabName:@"Staff" dataSource:[StaffDataSource viewController:self]];
+		[self addTabName:@"Instructor(s)" dataSource:[StaffDataSource viewController:self]];
 	}
 	
 	//[self setCurrentTab:currentTabName];	

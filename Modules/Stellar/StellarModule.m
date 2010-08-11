@@ -20,7 +20,7 @@
     if (self != nil) {
         self.tag = StellarTag;
 		self.shortName = @"Courses";
-		self.longName = @"Course Catalogue";
+		self.longName = @"Course Catalog";
         self.iconName = @"courses";
         self.pushNotificationSupported = YES;
         self.supportsFederatedSearch = YES;

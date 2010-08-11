@@ -691,16 +691,16 @@ numberOfRowsInSection:(NSInteger)section
 	
 	cell.textLabel.lineBreakMode = UILineBreakModeWordWrap;
 	UIImage *image = [UIImage imageNamed:@"dining/dining-local-crop.png"];
-	UIImageView *imView = [[UIImageView alloc] initWithFrame:CGRectMake(265, 10, 17, 17)];
+	UIImageView *imView = [[UIImageView alloc] initWithFrame:CGRectMake(273, 12, 17, 17)];
 	imView.image = image;
 
 	
 	UIImage *image2 = [UIImage imageNamed:@"dining/dining-vegan.png"];
-	UIImageView *imView2 = [[UIImageView alloc] initWithFrame:CGRectMake(245, 10, 17, 17)];
+	UIImageView *imView2 = [[UIImageView alloc] initWithFrame:CGRectMake(253, 12, 17, 17)];
 	imView2.image = image2;
 	
 	UIImage *image3 = [UIImage imageNamed:@"dining/dining-organic-crop.png"];
-	UIImageView *imView3 = [[UIImageView alloc] initWithFrame:CGRectMake(225, 10, 17, 17)];
+	UIImageView *imView3 = [[UIImageView alloc] initWithFrame:CGRectMake(233, 12, 17, 17)];
 	imView3.image = image3;
 
 	
@@ -735,9 +735,8 @@ heightForRowAtIndexPath:(NSIndexPath *)indexPath
 	NSString *textL = (NSString *) [[keySection objectAtIndex:row] objectForKey:@"item"];
 	
 	int textLines = 1;
-	if ([textL length] >= 25)
+	if ([textL length] > 22)
 		 textLines = 2;
-		 
 	
 	return [DiningMultiLineCell heightForCellWithStyle:UITableViewStyleGrouped
 											 tableView:tableView 

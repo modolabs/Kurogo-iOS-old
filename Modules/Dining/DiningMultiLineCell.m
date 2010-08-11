@@ -72,7 +72,7 @@
             break;
         }
     }
-    return width;
+    return width - 3.0;
 }
 
 + (CGFloat)heightForLabelWithText:(NSString *)text font:(UIFont *)font width:(CGFloat)width maxLines:(NSInteger)maxLines
@@ -163,7 +163,7 @@
         frame = self.detailTextLabel.frame;
         if (_style == UITableViewCellStyleSubtitle)
             frame.origin.y += heightAdded;
-        frame.size.width = [DiningMultiLineCell widthForTextLabel:NO cellStyle:_style tableView:tableView accessoryType:accessoryType cellImage:cellImage];
+        frame.size.width = [DiningMultiLineCell widthForTextLabel:NO cellStyle:_style tableView:tableView accessoryType:accessoryType cellImage:YES];
         frame.size.height = [DiningMultiLineCell heightForLabelWithText:self.detailTextLabel.text
                                                                       font:self.detailTextLabel.font
                                                                      width:frame.size.width
