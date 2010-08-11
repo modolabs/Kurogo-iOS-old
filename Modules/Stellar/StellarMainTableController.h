@@ -1,7 +1,7 @@
 #import <Foundation/Foundation.h>
 #import	"StellarCourseGroup.h"
 #import "StellarModel.h"
-#import "StellarSearch.h"
+#import "StellarMainSearch.h"
 #import "MITModuleURL.h"
 
 @class MITSearchDisplayController;
@@ -12,7 +12,7 @@ UITableViewDelegate, UITableViewDataSource, CoursesLoadedDelegate, ClearMyStella
 	NSArray *courseGroups;
 	NSArray *myStellar;
 	BOOL myStellarUIisUpToDate;
-	StellarSearch *stellarSearch;
+	StellarMainSearch *stellarSearch;
     MITSearchDisplayController *searchController;
 	UIView *loadingView;
 	MITModuleURL *url;

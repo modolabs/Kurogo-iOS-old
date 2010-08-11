@@ -5,6 +5,7 @@
 #import "StellarCache.h"
 #import "ConnectionWrapper.h"
 #import "CoreDataManager.h"
+#import "StellarMainSearch.h"
 
 #define DAY 24 * 60 * 60
 #define MONTH 30 * DAY
@@ -502,6 +503,10 @@ NSString* cleanPersonName(NSString *personName);
 	NSString *countString = [[object objectForKey:@"count"] description];
 	int count = [countString intValue];
 	
+	/*if ([classesSearchDelegate class] == [StellarMainSearch class]) {
+		int r = 4;
+		int e = r*r;
+	}*/
 	if (count> 100) {
 		[classesSearchDelegate handleTooManySearchResults];
 		return;

@@ -5,7 +5,7 @@
 #import "StellarDetailViewController.h"
 #import "StellarCourseGroup.h"
 #import "StellarModel.h"
-#import "StellarSearch.h"
+#import "StellarMainSearch.h"
 #import "Constants.h"
 #import "MITUIConstants.h"
 #import "MITLoadingActivityView.h"
@@ -57,7 +57,7 @@
 	self.searchController = [[[MITSearchDisplayController alloc] initWithSearchBar:searchBar contentsController:self] autorelease];
     self.searchController.delegate = self;
 	
-	stellarSearch = [[StellarSearch alloc] initWithViewController:self];
+	stellarSearch = [[StellarMainSearch alloc] initWithViewController:self];
 	self.searchController.searchResultsDelegate = stellarSearch;
 	self.searchController.searchResultsDataSource = stellarSearch;
 	searchBar.placeholder = @"Search by keyword or subject #";
@@ -308,7 +308,6 @@
 	[self showLoadingView];
 	hasSearchInitiated = YES;
 	[StellarModel executeStellarSearch:theSearchBar.text courseGroupName:@"" courseName:@"" delegate:stellarSearch];
-	
 	[self.url setPath:@"search-complete" query:theSearchBar.text];
 	[self.url setAsModulePath];
 }
