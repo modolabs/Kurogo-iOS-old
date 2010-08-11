@@ -68,6 +68,7 @@
         self.tableView.delegate = self;
         self.tableView.dataSource = self;
     }
+    self.tableView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     [self.view addSubview:self.tableView];
 	
 	self.loadingView = [[[MITLoadingActivityView alloc] initWithFrame:self.tableView.frame] autorelease];
