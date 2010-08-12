@@ -354,17 +354,25 @@ NSString * termText(NSString *termCode) {
 	self.termView.text = class.term;
 	
 	CGFloat classAndTermHeight = classTitleHeight + termHeight + verticalPadding + paddingHeight;
-	[self buildTabs:classAndTermHeight];	
+	
+	if (self.classDetailsLoaded == NO) {
+		
+		self.loadingView = [[[MITLoadingActivityView alloc] initWithFrame:CGRectMake(0.0,classAndTermHeight, 320.0, 420.0)] autorelease];
+
+		[self.view addSubview:loadingView];
+	}
+	else {
+		[self buildTabs:classAndTermHeight];	
+	}
+	
 	
 	newFrame = self.tableView.tableHeaderView.frame;
 	newFrame.size.height = classAndTermHeight + tabHeight;
 	self.tableView.tableHeaderView.frame = newFrame;
 	self.tableView.tableHeaderView = self.tableView.tableHeaderView; //strangely enough this seems to be required
+
 	
-	self.loadingView = [[[MITLoadingActivityView alloc] initWithFrame:CGRectMake(0.0,classAndTermHeight, 320.0, 420.0)] autorelease];
-	
-	if (self.classDetailsLoaded == NO)
-		[self.tableView.tableHeaderView addSubview:loadingView];
+
 	
 	/*else {
 		[loadingView removeFromSuperview];
