@@ -251,13 +251,14 @@
 
 - (void)pickDate {
 	
+	if (activeEventList != CalendarEventListTypeAcademic) {
 	DatePickerViewController *dateSelector = [[DatePickerViewController alloc] init];
 	dateSelector.delegate = self;
 	
 	MIT_MobileAppDelegate *appDelegate = (MIT_MobileAppDelegate *)[[UIApplication sharedApplication] delegate];
     [appDelegate presentAppModalViewController:dateSelector animated:YES];
     [dateSelector release];
-	
+	}
 }
 #pragma mark Redrawing logic and helper functions
 
