@@ -114,21 +114,6 @@ NSString * termText(NSString *termCode) {
 	[super dealloc];
 }
 
-- (void) showLoadingView {
-	//self.tableView.tableHeaderView = loadingView;
-	//self.tableView.backgroundColor = [UIColor clearColor];
-	//[self addSubview:loadingView];
-	//self.mainSearchClassesTableView.tableHeaderView = loadingView;
-	//self.mainSearchClassesTableView.backgroundColor = [UIColor clearColor];
-}
-
-- (void) hideLoadingView {
-	//self.tableView.tableHeaderView = nil;
-	//self.tableView.backgroundColor = [UIColor whiteColor];
-	//[loadingView removeFromSuperview];
-	//self.mainSearchClassesTableView.tableHeaderView = nil;
-	//self.mainSearchClassesTableView.backgroundColor = [UIColor whiteColor];
-}
 
 - (void) viewDidLoad {
 	
@@ -370,14 +355,6 @@ NSString * termText(NSString *termCode) {
 	newFrame.size.height = classAndTermHeight + tabHeight;
 	self.tableView.tableHeaderView.frame = newFrame;
 	self.tableView.tableHeaderView = self.tableView.tableHeaderView; //strangely enough this seems to be required
-
-	
-
-	
-	/*else {
-		[loadingView removeFromSuperview];
-	}*/
-
 		
 	// check if any "Actions" are available
 	// Actions = (loading the stellar site) or (toggling favorites which requires data loading to be complete)

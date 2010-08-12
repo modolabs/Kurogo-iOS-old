@@ -276,10 +276,11 @@ JSONAPIRequest *mitapi;
 		[_tabViews insertObject:_loadingResultView atIndex:kDinnerTab];
 		
 		[_tabViewControl addTab:@"Locations"];
-		[_hoursView addSubview:glossaryForHoursView];
+		//[_hoursView addSubview:glossaryForHoursView];
 		tableControl = [[HoursTableViewController alloc] init];
 		hoursTableView.delegate = (HoursTableViewController *)tableControl;
 		hoursTableView.dataSource = (HoursTableViewController *)tableControl;
+		hoursTableView.tableHeaderView = glossaryForHoursView;
 		
 		tableControl.tableView = hoursTableView;
 		
@@ -354,6 +355,11 @@ JSONAPIRequest *mitapi;
 	
 	self.view.backgroundColor = [UIColor clearColor];
 	_tabViewContainer.backgroundColor = [UIColor whiteColor];
+	
+	//[breakfastTable.tableHeaderView  addSubView:glossaryForHoursView];
+	//breakfastTable.tableHeaderView = glossaryForMealTypesView;
+	///lunchTable.tableHeaderView = glossaryForMealTypesView;
+	//dinnerTable.tableHeaderView = glossaryForMealTypesView;
 }
 
 
@@ -453,12 +459,22 @@ JSONAPIRequest *mitapi;
 		[control setSelectedTab:kBreakfastTab];
 		[self requestBreakfastData];
 		[breakfastTable reloadData];
+		lunchTable.tableHeaderView = nil;
+		dinnerTable.tableHeaderView = nil;
+		breakfastTable.tableHeaderView = glossaryForMealTypesView;
+		breakfastTable.tableHeaderView = breakfastTable.tableHeaderView;
+		
 	}	
 	else if (tabIndex == kLunchTab)
 	{
 		[control setSelectedTab:kLunchTab];
 		[self requestLunchData];	
 		[lunchTable reloadData];
+		breakfastTable.tableHeaderView = nil;
+		dinnerTable.tableHeaderView = nil;
+		lunchTable.tableHeaderView = glossaryForMealTypesView;
+		lunchTable.tableHeaderView = lunchTable.tableHeaderView;
+
 	}	
 		
 	else if (tabIndex == kDinnerTab)
@@ -466,6 +482,10 @@ JSONAPIRequest *mitapi;
 		[control setSelectedTab:kDinnerTab];
 		[self requestDinnerData];
 		[dinnerTable reloadData];
+		breakfastTable.tableHeaderView = nil;
+		lunchTable.tableHeaderView = nil;
+		dinnerTable.tableHeaderView = glossaryForMealTypesView;
+		dinnerTable.tableHeaderView = dinnerTable.tableHeaderView;
 		
 	}	
 		
@@ -621,18 +641,23 @@ JSONAPIRequest *mitapi;
 	{
 		self.list = self._bkfstList;	
 		self.menuDict = self._bkfstDict;
+		//breakfastTable.tableHeaderView = glossaryForMealTypesView;
+		//lunchTable.tableHeaderView = nil;
+		//dinnerTable.tableHeaderView = nil;
 	}
 	
 	else if(_tabViewControl.selectedTab == kLunchTab)
 	{
 		self.list = self._lunchList;
 		self.menuDict = self._lunchDict;
+		//lunchTable.tableHeaderView = glossaryForMealTypesView;
 	}
 	
 	else if (_tabViewControl.selectedTab == kDinnerTab)
 	{
 		self.list = self._dinnerList;
 		self.menuDict = self._dinnerDict;
+		//dinnerTable.tableHeaderView = glossaryForMealTypesView;
 	}	
 }
 
@@ -851,8 +876,8 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 				self._bkfstDict = ListDictionary;
 				[_tabViews removeObjectAtIndex:kBreakfastTab];
 				[_tabViews insertObject:breakfastViewLink atIndex:kBreakfastTab];
-				[glossaryForMealTypesView removeFromSuperview];
-				[_tabViewContainer addSubview:glossaryForMealTypesView];
+				//[glossaryForMealTypesView removeFromSuperview];
+				//[_tabViewContainer addSubview:glossaryForMealTypesView];
 				[_tabViewContainer addSubview:breakfastViewLink];
 			}
 			
@@ -861,8 +886,8 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 				self._lunchList = List;
 				self._lunchDict = ListDictionary;
 				[_tabViews removeObjectAtIndex:kLunchTab];
-				[glossaryForMealTypesView removeFromSuperview];
-				[lunchViewLink addSubview:glossaryForMealTypesView];
+				//[glossaryForMealTypesView removeFromSuperview];
+				//[lunchViewLink addSubview:glossaryForMealTypesView];
 				[_tabViews insertObject:lunchViewLink atIndex:kLunchTab];
 				[_tabViewContainer addSubview:lunchViewLink];
 				
@@ -873,8 +898,8 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 				self._dinnerList = List;
 				self._dinnerDict = ListDictionary;
 				[_tabViews removeObjectAtIndex:kDinnerTab];
-				[glossaryForMealTypesView removeFromSuperview];
-				[dinnerViewLink addSubview:glossaryForMealTypesView];
+				//[glossaryForMealTypesView removeFromSuperview];
+				//[dinnerViewLink addSubview:glossaryForMealTypesView];
 				[_tabViews insertObject:dinnerViewLink atIndex:kDinnerTab];
 				[_tabViewContainer addSubview:dinnerViewLink];
 				
