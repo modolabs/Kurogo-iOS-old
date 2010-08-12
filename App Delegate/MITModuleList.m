@@ -73,6 +73,7 @@
 }
 
 - (void)returnToHome {
+	[self dismissAppModalViewControllerAnimated:YES];
     [self.theNavController popToRootViewControllerAnimated:YES];
 }
 
