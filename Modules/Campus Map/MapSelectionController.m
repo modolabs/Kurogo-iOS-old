@@ -57,7 +57,7 @@
 
 - (void)dealloc
 {
-	[_mapVC release];
+	self.mapVC = nil;
 	[_cancelButton release];
     [_categoryItems release];
     self.tableView = nil;
