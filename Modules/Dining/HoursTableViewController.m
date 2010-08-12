@@ -161,7 +161,7 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 	
 	NSUInteger row = [indexPath row];
 	
-	DiningHallStatus *status = [[[DiningHallStatus alloc] init] autorelease];
+	DiningHallStatus *status = [[DiningHallStatus alloc] init];
 	status.hallName = [[self.hallProperties objectAtIndex:row] objectForKey:@"name"];
 	int stat = [status getStatusOfMeal:@"" usingDetails:[self.hallProperties objectAtIndex:row]];
 	
