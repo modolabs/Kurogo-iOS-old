@@ -258,24 +258,6 @@ NSString * termText(NSString *termCode) {
 		initWithFrame:CGRectMake(0, originY, self.tableView.tableHeaderView.frame.size.width, tabHeight)];
 	tabViewControl.delegate = self;
 	
-	self.loadingView = [[[MITLoadingActivityView alloc] initWithFrame:CGRectMake(0.0,0.0, 320.0, 420.0 - originY)] autorelease];
-	if (self.classDetailsLoaded == NO) {
-		
-		//UIActivityIndicatorView *spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
-		//tabViewControl.view = spinner;
-		//[self.view addSubview:spinner];
-		//[spinner startAnimating];
-		///[spinner release];
-		
-		[tabViewControl addSubview:loadingView];
-		//[self showLoadingView];
-	}
-	
-	else {
-		[loadingView removeFromSuperview];
-		//[self hideLoadingView];
-	}
-	
 	// determine which tabs need to be displayed
 	//[self addTabName:@"News" dataSource:[NewsDataSource viewController:self]];
 
@@ -330,6 +312,8 @@ NSString * termText(NSString *termCode) {
 }
 	
 - (void) loadClassInfo: (StellarClass *)class {
+	[loadingView removeFromSuperview];
+	
 	self.stellarClass = class;
 	
 	myStellarButton.selected = [class.isFavorited boolValue];
@@ -377,10 +361,16 @@ NSString * termText(NSString *termCode) {
 	self.tableView.tableHeaderView.frame = newFrame;
 	self.tableView.tableHeaderView = self.tableView.tableHeaderView; //strangely enough this seems to be required
 	
-
-
-
+	self.loadingView = [[[MITLoadingActivityView alloc] initWithFrame:CGRectMake(0.0,classAndTermHeight, 320.0, 420.0)] autorelease];
 	
+	if (self.classDetailsLoaded == NO)
+		[self.tableView.tableHeaderView addSubview:loadingView];
+	
+	/*else {
+		[loadingView removeFromSuperview];
+	}*/
+
+		
 	// check if any "Actions" are available
 	// Actions = (loading the stellar site) or (toggling favorites which requires data loading to be complete)
 	if([class.url length]) {
