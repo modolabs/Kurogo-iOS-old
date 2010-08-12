@@ -88,13 +88,9 @@
 		cell = [[[MultiLineTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"StellarCourses"] autorelease];
 		[cell applyStandardFonts];
 	}
-	
-	//StellarCourse *stellarCourse = (StellarCourse *)[self.courseGroup.courses objectAtIndex:indexPath.row];
 	StellarCourse *stellarCourse = (StellarCourse *)[self.courseGroup.courses objectAtIndex:indexPath.section];
-	
-	cell.textLabelNumberOfLines = 2;
+
 	cell.textLabel.text = stellarCourse.title;
-	cell.textLabel.font =  [UIFont fontWithName:STANDARD_FONT size:CELL_STANDARD_FONT_SIZE];
 	
 	if ([self.courseGroup.courses count] < 10)
 		cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
@@ -135,37 +131,19 @@
 
 - (NSArray *)sectionIndexTitlesForTableView:(UITableView *)tableView {
 	
-	if ([self.courseGroup.courses count] < 10)
+	if ([self.courseGroup.courses count] <= 10)
 		return nil;
 	
-	NSArray  *indexArray = [NSArray arrayWithObjects:@"A",
-							@"B",
-							@"C",
-							@"D",
-							@"E",
-							@"F",
-							@"G",
-							@"H",
-							@"I",
-							@"J",
-							@"K",
-							@"L",
-							@"M",
-							@"N",
-							@"O",
-							@"P",
-							@"Q",
-							@"R",
-							@"S",
-							@"T",
-							@"U",
-							@"V",
-							@"W",
-							@"X",
-							@"Y",
-							@"Z",
-							nil];
+	NSMutableArray *tempIndexArray = [[NSMutableArray alloc] init];
 	
+	
+	for(StellarCourse *course in self.courseGroup.courses) {
+		if (![tempIndexArray containsObject:[course.title substringToIndex:1]])
+			[tempIndexArray addObject:[course.title substringToIndex:1]];		
+	}
+
+	NSArray *indexArray = (NSArray *)tempIndexArray;
+			 
 	return indexArray;
 }
 

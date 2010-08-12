@@ -220,8 +220,10 @@
 	}
 	
 	//cell.textLabel.font = [UIFont boldSystemFontOfSize:14];
-	cell.textLabel.font =  [UIFont fontWithName:STANDARD_FONT size:CELL_STANDARD_FONT_SIZE];
+	//cell.textLabel.font =  [UIFont fontWithName:STANDARD_FONT size:CELL_STANDARD_FONT_SIZE];
 	cell.selectionStyle = UITableViewCellSelectionStyleGray;
+	
+	[cell applyStandardFonts];
 	return cell;
 }
 

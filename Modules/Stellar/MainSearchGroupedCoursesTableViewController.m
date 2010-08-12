@@ -71,7 +71,7 @@
 	//self.tableView.tableHeaderView = loadingView;
 	//self.tableView.backgroundColor = [UIColor clearColor];
 	[self.view addSubview:loadingView];
-	self.mainSearchClassesTableView.tableHeaderView = loadingView;
+	//self.mainSearchClassesTableView.tableHeaderView = loadingView;
 	self.mainSearchClassesTableView.backgroundColor = [UIColor clearColor];
 }
 
@@ -99,7 +99,7 @@
 	
 	mainSearchClassesTableView = nil;
 	
-	mainSearchClassesTableView = [[UITableView alloc] initWithFrame:CGRectMake(0.0, searchBarHeight, 320.0, 420.0) style: UITableViewStylePlain];
+	mainSearchClassesTableView = [[UITableView alloc] initWithFrame:CGRectMake(0.0, searchBarHeight, 320.0, 420.0 - searchBarHeight) style: UITableViewStylePlain];
 	mainSearchClassesTableView.backgroundColor = [UIColor whiteColor];
 	self.view.backgroundColor = [UIColor whiteColor];
 	mainSearchClassesTableView.delegate= self;
@@ -113,9 +113,7 @@
 	
 	//[self.tableView applyStandardCellHeight];
 	[mainSearchClassesTableView applyStandardCellHeight];
-	
-	//self.loadingView = [[[MITLoadingActivityView alloc] initWithFrame:self.tableView.frame] autorelease];
-	self.loadingView = [[[MITLoadingActivityView alloc] initWithFrame:self.mainSearchClassesTableView.frame] autorelease];
+	self.loadingView = [[[MITLoadingActivityView alloc] initWithFrame:CGRectMake(0.0, searchBarHeight, 320.0, 420.0)] autorelease];
 	
 	[self showLoadingView];
 	
@@ -164,6 +162,28 @@
 - (void) alertViewCancel: (UIAlertView *)alertView {
 	[self.navigationController popViewControllerAnimated:YES];
 }
+
+- (NSString *) tableView: (UITableView *)tableView titleForHeaderInSection: (NSInteger)section {
+	if([classes count]) {
+		return [NSString stringWithFormat:@"%i found", [classes count]];
+	}
+	return nil;
+}
+
+- (UIView *) tableView: (UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
+	NSString *headerTitle = nil;
+	
+	if([classes count]) {
+		headerTitle = [NSString stringWithFormat:@"%i found", [classes count]];
+		return [UITableView ungroupedSectionHeaderWithTitle:headerTitle];
+	}
+	return nil;
+}
+
+- (CGFloat)tableView: (UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+	return UNGROUPED_SECTION_HEADER_HEIGHT;//UNGROUPED_SECTION_HEADER_HEIGHT;
+}
+
 
 #pragma mark Search and search UI
 

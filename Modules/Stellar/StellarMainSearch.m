@@ -25,7 +25,7 @@
 		viewController = controller;
 		self.lastResults = [NSArray array];
 		hasSearchInitiated = NO;
-		resultsTableView = [[UITableView alloc] initWithFrame:CGRectMake(0.0, 55.0, 320.0, 420.0) style: UITableViewStyleGrouped];
+		resultsTableView = [[UITableView alloc] initWithFrame:CGRectMake(0.0, 55.0, 320.0, 365.0) style: UITableViewStyleGrouped];
 		resultsTableView.delegate = self;
 		resultsTableView.dataSource = self;
 		resultsTableView.backgroundColor = [UIColor whiteColor];
@@ -52,12 +52,14 @@
 		cell = [[[MultiLineTableViewCell alloc] initWithStyle:UITableViewCellStyleValue2 reuseIdentifier:@"StellarMainSearch"] autorelease];
 	}
 	
-	//StellarClass *stellarClass = [self.lastResults objectAtIndex:indexPath.row];
-	//[StellarClassTableCell configureCell:cell withStellarClass:stellarClass];
-	
+	cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+	cell.selectionStyle = UITableViewCellSelectionStyleGray;
 	NSString *key = [[groups allKeys] objectAtIndex: indexPath.row];
-	cell.textLabel.text =  [[groups valueForKey:key] description];//@"100";
-	cell.detailTextLabel.text = key;//((StellarClass *)[self.lastResults objectAtIndex:indexPath.row]).school;
+	cell.textLabel.text =  [[groups valueForKey:key] description];
+	cell.detailTextLabel.text = key;
+	
+	[cell applyStandardFonts];
+
 
 	return cell;
 }
@@ -89,7 +91,7 @@
 }
 
 - (CGFloat)tableView: (UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
-	return UNGROUPED_SECTION_HEADER_HEIGHT;
+	return UNGROUPED_SECTION_HEADER_HEIGHT;//UNGROUPED_SECTION_HEADER_HEIGHT;
 }
 
 #pragma mark UITableViewDelegate methods
