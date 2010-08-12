@@ -56,6 +56,9 @@ typedef enum {
 	BOOL refreshClass;
 	StellarNewsLoadingState loadingState;
 	MITModuleURL *url;
+	
+	BOOL classDetailsLoaded;
+	UIView *loadingView;
 }
 
 @property (nonatomic, retain) ClassInfoLoader *currentClassInfoLoader;
@@ -79,6 +82,10 @@ typedef enum {
 
 @property (readonly) MITModuleURL *url;
 
+@property (nonatomic, assign) BOOL classDetailsLoaded;
+
+@property (nonatomic, retain) UIView *loadingView;
+
 + (StellarDetailViewController *) launchClass: (StellarClass *)stellarClass viewController: (UIViewController *)controller;
 
 - (id) initWithClass: (StellarClass *)stellarClass;
@@ -90,6 +97,10 @@ typedef enum {
 - (void) openSite;
 
 - (BOOL) dataLoadingComplete;
+
+- (void) showLoadingView;
+
+- (void) hideLoadingView;
 
 @end
 

@@ -38,125 +38,146 @@
 
 - (UITableViewCell *)tableView: (UITableView *)tableView cellForRowAtIndexPath: (NSIndexPath *)indexPath {
 	MultiLineTableViewCell *cell = nil;
-	switch (indexPath.section) {
-			
-		case TIMES:
-			cell = (MultiLineTableViewCell *)[tableView dequeueReusableCellWithIdentifier:@"StellarTimes"];
-			if(cell == nil) {
-				cell = [[[StellarLocationTableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"StellarTimes"] autorelease];
-				[cell applyStandardFonts];
-				makeCellWhite(cell);
-			}
-
-			StellarClassTime *classTime = [self.viewController.times objectAtIndex:indexPath.row];
-			if([classTime.location length]) {
-				cell.accessoryView = [UIImageView accessoryViewWithMITType:MITAccessoryViewMap];
-				cell.selectionStyle = UITableViewCellSelectionStyleGray;
-			} else {
-				cell.accessoryView = nil;
-				cell.selectionStyle = UITableViewCellSelectionStyleNone;
-			}
-			cell.textLabel.text = [self locationAndTime:indexPath.row];
-			break;
-			
-			
-		case DESCRIPTION:
-			cell = (MultiLineTableViewCell *)[tableView dequeueReusableCellWithIdentifier:@"StellarDescription"];
-			if(cell == nil) {
-				cell = [[[MultiLineTableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"StellarDescription"] autorelease];
-				cell.textLabel.text = @"Description:";
-				[cell applyStandardFonts];
-				makeCellWhite(cell);
-				cell.detailTextLabel.textColor = CELL_STANDARD_FONT_COLOR;
-				cell.selectionStyle = UITableViewCellSelectionStyleNone;
-				//cell.topPadding = DESCRIPTION_PADDING;
-			}
-			cell.detailTextLabel.text = self.viewController.stellarClass.blurb;
-			break;
-			
-		case CREDITS:
-			cell = (MultiLineTableViewCell *)[tableView dequeueReusableCellWithIdentifier:@"StellarCredits"];
-			if(cell == nil) {
-				cell = [[[MultiLineTableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"StellarCredits"] autorelease];
-				cell.textLabel.text = @"Credits:";
-				[cell applyStandardFonts];
-				makeCellWhite(cell);
-				cell.detailTextLabel.textColor = CELL_STANDARD_FONT_COLOR;
-				cell.selectionStyle = UITableViewCellSelectionStyleNone;
-				//cell.topPadding = DESCRIPTION_PADDING;
-			}
-			cell.detailTextLabel.text = self.viewController.stellarClass.credits;
-			break;
-			
-		case PREREQS:
-			cell = (MultiLineTableViewCell *)[tableView dequeueReusableCellWithIdentifier:@"StellarPreReqs"];
-			if(cell == nil) {
-				cell = [[[MultiLineTableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"StellarPreReqs"] autorelease];
-				cell.textLabel.text = @"Pre-Requisites:";
-				[cell applyStandardFonts];
-				makeCellWhite(cell);
-				cell.detailTextLabel.textColor = CELL_STANDARD_FONT_COLOR;
-				cell.selectionStyle = UITableViewCellSelectionStyleNone;
-				//cell.topPadding = DESCRIPTION_PADDING;
-			}
-			cell.detailTextLabel.text = self.viewController.stellarClass.preReqs;
-			break;
-			
-		case CROSS_REG:
-			cell = (MultiLineTableViewCell *)[tableView dequeueReusableCellWithIdentifier:@"StellarCrossReg"];
-			if(cell == nil) {
-				cell = [[[MultiLineTableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"StellarCrossReg"] autorelease];
-				cell.textLabel.text = @"Cross-Registration:";
-				[cell applyStandardFonts];
-				makeCellWhite(cell);
-				cell.detailTextLabel.textColor = CELL_STANDARD_FONT_COLOR;
-				cell.selectionStyle = UITableViewCellSelectionStyleNone;
-				//cell.topPadding = DESCRIPTION_PADDING;
-			}
-			cell.detailTextLabel.text = self.viewController.stellarClass.cross_reg;
-			break;
-			
-		case EXAM_GROUP:
-			cell = (MultiLineTableViewCell *)[tableView dequeueReusableCellWithIdentifier:@"StellarExamGroup"];
-			if(cell == nil) {
-				cell = [[[MultiLineTableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"StellarExamGroup"] autorelease];
-				cell.textLabel.text = @"Exam Group:";
-				[cell applyStandardFonts];
-				makeCellWhite(cell);
-				cell.detailTextLabel.textColor = CELL_STANDARD_FONT_COLOR;
-				cell.selectionStyle = UITableViewCellSelectionStyleNone;
-				//cell.topPadding = DESCRIPTION_PADDING;
-			}
-			cell.detailTextLabel.text = self.viewController.stellarClass.examGroup;
-			break;
-			
-		case DEPARTMENT:
-			cell = (MultiLineTableViewCell *)[tableView dequeueReusableCellWithIdentifier:@"StellarDepartment"];
-			if(cell == nil) {
-				cell = [[[MultiLineTableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"StellarDepartment"] autorelease];
-				cell.textLabel.text = @"Department:";
-				[cell applyStandardFonts];
-				makeCellWhite(cell);
-				cell.detailTextLabel.textColor = CELL_STANDARD_FONT_COLOR;
-				cell.selectionStyle = UITableViewCellSelectionStyleNone;
-				//cell.topPadding = DESCRIPTION_PADDING;
-			}
-			cell.detailTextLabel.text = self.viewController.stellarClass.department;
-			break;
-			
-		case SCHOOL:
-			cell = (MultiLineTableViewCell *)[tableView dequeueReusableCellWithIdentifier:@"StellarSchool"];
-			if(cell == nil) {
-				cell = [[[MultiLineTableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"StellarSchool"] autorelease];
-				cell.textLabel.text = @"School:";
-				[cell applyStandardFonts];
-				makeCellWhite(cell);
-				cell.detailTextLabel.textColor = CELL_STANDARD_FONT_COLOR;
-				cell.selectionStyle = UITableViewCellSelectionStyleNone;
-				//cell.topPadding = DESCRIPTION_PADDING;
-			}
-			cell.detailTextLabel.text = self.viewController.stellarClass.school;
-			break;
+	 {
+		switch (indexPath.section) {
+				
+			case TIMES:
+				cell = (MultiLineTableViewCell *)[tableView dequeueReusableCellWithIdentifier:@"StellarTimes"];
+				if(cell == nil) {
+					cell = [[[StellarLocationTableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"StellarTimes"] autorelease];
+					[cell applyStandardFonts];
+					makeCellWhite(cell);
+				}
+				
+				/*if (viewController.loadingState == YES) {
+					//cell.textLabel.text = announcementsLoadingMessage;
+					UIActivityIndicatorView *spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+					cell.accessoryView = spinner;
+					[spinner startAnimating];
+					[spinner release];
+					break;					
+				}*/
+				
+				StellarClassTime *classTime = [self.viewController.times objectAtIndex:indexPath.row];
+				if([classTime.location length]) {
+					cell.accessoryView = [UIImageView accessoryViewWithMITType:MITAccessoryViewMap];
+					cell.selectionStyle = UITableViewCellSelectionStyleGray;
+				} else {
+					cell.accessoryView = nil;
+					cell.selectionStyle = UITableViewCellSelectionStyleNone;
+				}
+				cell.textLabel.text = [self locationAndTime:indexPath.row];
+				break;
+				
+				
+			case DESCRIPTION:
+				cell = (MultiLineTableViewCell *)[tableView dequeueReusableCellWithIdentifier:@"StellarDescription"];
+				if(cell == nil) {
+					cell = [[[MultiLineTableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"StellarDescription"] autorelease];
+					
+					/*if (viewController.loadingState == YES) {
+						//cell.textLabel.text = announcementsLoadingMessage;
+						UIActivityIndicatorView *spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+						cell.accessoryView = spinner;
+						[spinner startAnimating];
+						[spinner release];
+						break;					
+					}*/
+					
+					cell.textLabel.text = @"Description:";
+					[cell applyStandardFonts];
+					makeCellWhite(cell);
+					cell.detailTextLabel.textColor = CELL_STANDARD_FONT_COLOR;
+					cell.selectionStyle = UITableViewCellSelectionStyleNone;
+					//cell.topPadding = DESCRIPTION_PADDING;
+				}
+				cell.detailTextLabel.text = self.viewController.stellarClass.blurb;
+				break;
+				
+			case CREDITS:
+				cell = (MultiLineTableViewCell *)[tableView dequeueReusableCellWithIdentifier:@"StellarCredits"];
+				if(cell == nil) {
+					cell = [[[MultiLineTableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"StellarCredits"] autorelease];
+					cell.textLabel.text = @"Credits:";
+					[cell applyStandardFonts];
+					makeCellWhite(cell);
+					cell.detailTextLabel.textColor = CELL_STANDARD_FONT_COLOR;
+					cell.selectionStyle = UITableViewCellSelectionStyleNone;
+					//cell.topPadding = DESCRIPTION_PADDING;
+				}
+				cell.detailTextLabel.text = self.viewController.stellarClass.credits;
+				break;
+				
+			case PREREQS:
+				cell = (MultiLineTableViewCell *)[tableView dequeueReusableCellWithIdentifier:@"StellarPreReqs"];
+				if(cell == nil) {
+					cell = [[[MultiLineTableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"StellarPreReqs"] autorelease];
+					cell.textLabel.text = @"Pre-Requisites:";
+					[cell applyStandardFonts];
+					makeCellWhite(cell);
+					cell.detailTextLabel.textColor = CELL_STANDARD_FONT_COLOR;
+					cell.selectionStyle = UITableViewCellSelectionStyleNone;
+					//cell.topPadding = DESCRIPTION_PADDING;
+				}
+				cell.detailTextLabel.text = self.viewController.stellarClass.preReqs;
+				break;
+				
+			case CROSS_REG:
+				cell = (MultiLineTableViewCell *)[tableView dequeueReusableCellWithIdentifier:@"StellarCrossReg"];
+				if(cell == nil) {
+					cell = [[[MultiLineTableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"StellarCrossReg"] autorelease];
+					cell.textLabel.text = @"Cross-Registration:";
+					[cell applyStandardFonts];
+					makeCellWhite(cell);
+					cell.detailTextLabel.textColor = CELL_STANDARD_FONT_COLOR;
+					cell.selectionStyle = UITableViewCellSelectionStyleNone;
+					//cell.topPadding = DESCRIPTION_PADDING;
+				}
+				cell.detailTextLabel.text = self.viewController.stellarClass.cross_reg;
+				break;
+				
+			case EXAM_GROUP:
+				cell = (MultiLineTableViewCell *)[tableView dequeueReusableCellWithIdentifier:@"StellarExamGroup"];
+				if(cell == nil) {
+					cell = [[[MultiLineTableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"StellarExamGroup"] autorelease];
+					cell.textLabel.text = @"Exam Group:";
+					[cell applyStandardFonts];
+					makeCellWhite(cell);
+					cell.detailTextLabel.textColor = CELL_STANDARD_FONT_COLOR;
+					cell.selectionStyle = UITableViewCellSelectionStyleNone;
+					//cell.topPadding = DESCRIPTION_PADDING;
+				}
+				cell.detailTextLabel.text = self.viewController.stellarClass.examGroup;
+				break;
+				
+			case DEPARTMENT:
+				cell = (MultiLineTableViewCell *)[tableView dequeueReusableCellWithIdentifier:@"StellarDepartment"];
+				if(cell == nil) {
+					cell = [[[MultiLineTableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"StellarDepartment"] autorelease];
+					cell.textLabel.text = @"Department:";
+					[cell applyStandardFonts];
+					makeCellWhite(cell);
+					cell.detailTextLabel.textColor = CELL_STANDARD_FONT_COLOR;
+					cell.selectionStyle = UITableViewCellSelectionStyleNone;
+					//cell.topPadding = DESCRIPTION_PADDING;
+				}
+				cell.detailTextLabel.text = self.viewController.stellarClass.department;
+				break;
+				
+			case SCHOOL:
+				cell = (MultiLineTableViewCell *)[tableView dequeueReusableCellWithIdentifier:@"StellarSchool"];
+				if(cell == nil) {
+					cell = [[[MultiLineTableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"StellarSchool"] autorelease];
+					cell.textLabel.text = @"School:";
+					[cell applyStandardFonts];
+					makeCellWhite(cell);
+					cell.detailTextLabel.textColor = CELL_STANDARD_FONT_COLOR;
+					cell.selectionStyle = UITableViewCellSelectionStyleNone;
+					//cell.topPadding = DESCRIPTION_PADDING;
+				}
+				cell.detailTextLabel.text = self.viewController.stellarClass.school;
+				break;
+		}
 	}
 	return cell;	
 }

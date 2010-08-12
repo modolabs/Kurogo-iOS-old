@@ -87,7 +87,12 @@
 	harvardClassesTableView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
 	[self.view addSubview:harvardClassesTableView];
 	
-	self.title = course.title;
+	if ([[course.title substringToIndex:1] isEqualToString:@"0"])
+		self.title = [course.title substringFromIndex:1];
+	
+	else
+		self.title = course.title;
+
 	self.currentClassLoader = [[LoadClassesInTable new] autorelease];
 	self.currentClassLoader.tableController = self;
 	

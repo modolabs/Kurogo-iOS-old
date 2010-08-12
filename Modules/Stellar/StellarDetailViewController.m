@@ -8,6 +8,7 @@
 #import "InfoDataSource.h"
 #import "StaffDataSource.h"
 #import "MITUIConstants.h"
+#import "MITLoadingActivityView.h"
 
 #define leftMargin 10.0
 #define verticalPadding 10.0
@@ -55,6 +56,8 @@ NSString * termText(NSString *termCode) {
 @synthesize loadingState;
 @synthesize url;
 @synthesize refreshClass;
+@synthesize classDetailsLoaded;
+@synthesize loadingView;
 
 + (StellarDetailViewController *) launchClass: (StellarClass *)stellarClass viewController: (UIViewController *)controller {
 	StellarDetailViewController *detailViewController = [[StellarDetailViewController alloc] initWithClass:stellarClass];
@@ -111,6 +114,22 @@ NSString * termText(NSString *termCode) {
 	[super dealloc];
 }
 
+- (void) showLoadingView {
+	//self.tableView.tableHeaderView = loadingView;
+	//self.tableView.backgroundColor = [UIColor clearColor];
+	//[self addSubview:loadingView];
+	//self.mainSearchClassesTableView.tableHeaderView = loadingView;
+	//self.mainSearchClassesTableView.backgroundColor = [UIColor clearColor];
+}
+
+- (void) hideLoadingView {
+	//self.tableView.tableHeaderView = nil;
+	//self.tableView.backgroundColor = [UIColor whiteColor];
+	//[loadingView removeFromSuperview];
+	//self.mainSearchClassesTableView.tableHeaderView = nil;
+	//self.mainSearchClassesTableView.backgroundColor = [UIColor whiteColor];
+}
+
 - (void) viewDidLoad {
 	
 	self.tableView.tableHeaderView = [[UIView alloc]
@@ -155,7 +174,10 @@ NSString * termText(NSString *termCode) {
 	actionButton.enabled = NO; // will enabled it when valid actions are known to exist
 	self.navigationItem.rightBarButtonItem = actionButton;
 	
+	
+	
 	if (refreshClass) {
+		
 		// initiate server-side data collection
 		self.currentClassInfoLoader = [[ClassInfoLoader new] autorelease];
 		self.currentClassInfoLoader.viewController = self;
@@ -171,6 +193,7 @@ NSString * termText(NSString *termCode) {
 		myStellarButton.enabled = YES;
 	}
 	
+	classDetailsLoaded = NO;
 	[url setPath:[NSString stringWithFormat:@"class/%@/News", self.stellarClass.masterSubjectId] query:nil];
 }
 
@@ -234,6 +257,24 @@ NSString * termText(NSString *termCode) {
 	tabViewControl = [[TabViewControl alloc]
 		initWithFrame:CGRectMake(0, originY, self.tableView.tableHeaderView.frame.size.width, tabHeight)];
 	tabViewControl.delegate = self;
+	
+	self.loadingView = [[[MITLoadingActivityView alloc] initWithFrame:CGRectMake(0.0,0.0, 320.0, 420.0 - originY)] autorelease];
+	if (self.classDetailsLoaded == NO) {
+		
+		//UIActivityIndicatorView *spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+		//tabViewControl.view = spinner;
+		//[self.view addSubview:spinner];
+		//[spinner startAnimating];
+		///[spinner release];
+		
+		[tabViewControl addSubview:loadingView];
+		//[self showLoadingView];
+	}
+	
+	else {
+		[loadingView removeFromSuperview];
+		//[self hideLoadingView];
+	}
 	
 	// determine which tabs need to be displayed
 	//[self addTabName:@"News" dataSource:[NewsDataSource viewController:self]];
@@ -336,6 +377,10 @@ NSString * termText(NSString *termCode) {
 	self.tableView.tableHeaderView.frame = newFrame;
 	self.tableView.tableHeaderView = self.tableView.tableHeaderView; //strangely enough this seems to be required
 	
+
+
+
+	
 	// check if any "Actions" are available
 	// Actions = (loading the stellar site) or (toggling favorites which requires data loading to be complete)
 	if([class.url length]) {
@@ -365,9 +410,11 @@ NSString * termText(NSString *termCode) {
 @synthesize viewController;
 
 - (void) generalClassInfoLoaded: (StellarClass *)class {
+	self.viewController.classDetailsLoaded = NO;
 	if(self.viewController.currentClassInfoLoader == self) {
 		[self.viewController loadClassInfo:class];
 	}
+	
 }
 
 - (void) initialAllClassInfoLoaded: (StellarClass *)class {
@@ -384,6 +431,7 @@ NSString * termText(NSString *termCode) {
 }
 
 - (void) finalAllClassInfoLoaded: (StellarClass *)class {
+	self.viewController.classDetailsLoaded = YES;
 	if(self.viewController.currentClassInfoLoader == self) {
 		self.viewController.loadingState = StellarNewsLoadingSucceeded;
 		[self.viewController loadClassInfo:class];
