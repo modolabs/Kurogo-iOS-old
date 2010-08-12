@@ -60,8 +60,20 @@
 				
 				StellarClassTime *classTime = [self.viewController.times objectAtIndex:indexPath.row];
 				if([classTime.location length]) {
-					cell.accessoryView = [UIImageView accessoryViewWithMITType:MITAccessoryViewMap];
-					cell.selectionStyle = UITableViewCellSelectionStyleGray;
+					if (![classTime.location isEqualToString:@"TBA"] && 
+						![classTime.location isEqualToString:@"tba"] &&
+						![classTime.location isEqualToString:@"TBD"] &&
+						![classTime.location isEqualToString:@"tbd"] && 
+						![classTime.location isEqualToString:@"Tbd"] && 
+						![classTime.location isEqualToString:@"Tba"]) {
+						
+						cell.accessoryView = [UIImageView accessoryViewWithMITType:MITAccessoryViewMap];
+						cell.selectionStyle = UITableViewCellSelectionStyleGray;
+					}
+					else {
+						cell.accessoryView = nil;
+						cell.selectionStyle = UITableViewCellSelectionStyleNone;
+					}					
 				} else {
 					cell.accessoryView = nil;
 					cell.selectionStyle = UITableViewCellSelectionStyleNone;
@@ -74,15 +86,6 @@
 				cell = (MultiLineTableViewCell *)[tableView dequeueReusableCellWithIdentifier:@"StellarDescription"];
 				if(cell == nil) {
 					cell = [[[MultiLineTableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"StellarDescription"] autorelease];
-					
-					/*if (viewController.loadingState == YES) {
-						//cell.textLabel.text = announcementsLoadingMessage;
-						UIActivityIndicatorView *spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
-						cell.accessoryView = spinner;
-						[spinner startAnimating];
-						[spinner release];
-						break;					
-					}*/
 					
 					cell.textLabel.text = @"Description:";
 					[cell applyStandardFonts];
@@ -300,10 +303,20 @@
 	if(indexPath.section == TIMES) {
 		StellarClassTime *classTime = [self.viewController.times objectAtIndex:indexPath.row];
 		if([classTime.location length]) {
-			[[UIApplication sharedApplication] openURL:[NSURL internalURLWithModuleTag:CampusMapTag path:@"search" query:classTime.location]];
+			if (![classTime.location isEqualToString:@"TBA"] && 
+				![classTime.location isEqualToString:@"tba"] &&
+				![classTime.location isEqualToString:@"TBD"] &&
+				![classTime.location isEqualToString:@"tbd"] && 
+				![classTime.location isEqualToString:@"Tbd"] && 
+				![classTime.location isEqualToString:@"Tba"]) {
+				StellarClassTime *classTime = [self.viewController.times objectAtIndex:indexPath.row];
+				if([classTime.location length]) {
+					[[UIApplication sharedApplication] openURL:[NSURL internalURLWithModuleTag:CampusMapTag path:@"search" query:classTime.location]];
+				}
+			}
 		}
+		[tableView deselectRowAtIndexPath:indexPath animated:NO];
 	}
-	[tableView deselectRowAtIndexPath:indexPath animated:NO];
 }
 
 @end
