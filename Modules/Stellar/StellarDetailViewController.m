@@ -342,7 +342,9 @@ NSString * termText(NSString *termCode) {
 	
 	if (self.classDetailsLoaded == NO) {
 		
-		self.loadingView = [[[MITLoadingActivityView alloc] initWithFrame:CGRectMake(0.0,classAndTermHeight, 320.0, 420.0)] autorelease];
+		self.loadingView = [[[MITLoadingActivityView alloc] initWithFrame:CGRectMake(0.0,classAndTermHeight, 320.0, 420.0)
+														xDimensionScaling: 2
+														yDimensionScaling: 4] autorelease];
 
 		[self.view addSubview:loadingView];
 	}
