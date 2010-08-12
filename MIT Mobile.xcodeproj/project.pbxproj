@@ -180,6 +180,8 @@
 		C7B10F7412134F2800CFB837 /* CoursesSearchTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C7B10F7212134F2800CFB837 /* CoursesSearchTableViewController.m */; };
 		C7B897F111F535C8002B3619 /* HoursTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C7B897EF11F535C8002B3619 /* HoursTableViewController.m */; };
 		C7B897F211F535C8002B3619 /* HoursTableViewController.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = C7B897F011F535C8002B3619 /* HoursTableViewController.h */; settings = {JAVA_ARCHIVE_SUBDIR = Modules/Dining; }; };
+		C7DA11B912138C2F00FE8756 /* MainSearchGroupedCoursesTableViewController.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = C7DA11B712138C2F00FE8756 /* MainSearchGroupedCoursesTableViewController.h */; settings = {JAVA_ARCHIVE_SUBDIR = Modules/Stellar; }; };
+		C7DA11BA12138C2F00FE8756 /* MainSearchGroupedCoursesTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C7DA11B812138C2F00FE8756 /* MainSearchGroupedCoursesTableViewController.m */; };
 		DE0A62AC10CDAEA90058B2C2 /* MITBuildInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = DE0A62AB10CDAEA90058B2C2 /* MITBuildInfo.m */; };
 		DE0F6B3411109BC500F064D6 /* AboutMITVC.m in Sources */ = {isa = PBXBuildFile; fileRef = DE0F6B3311109BC500F064D6 /* AboutMITVC.m */; };
 		DE18F9EE10F19105009A69B9 /* News.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = DE18F9ED10F19105009A69B9 /* News.xcdatamodeld */; };
@@ -696,6 +698,8 @@
 		C7B10F7212134F2800CFB837 /* CoursesSearchTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CoursesSearchTableViewController.m; sourceTree = "<group>"; };
 		C7B897EF11F535C8002B3619 /* HoursTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = HoursTableViewController.m; path = Dining/HoursTableViewController.m; sourceTree = "<group>"; };
 		C7B897F011F535C8002B3619 /* HoursTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = HoursTableViewController.h; path = Dining/HoursTableViewController.h; sourceTree = "<group>"; };
+		C7DA11B712138C2F00FE8756 /* MainSearchGroupedCoursesTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainSearchGroupedCoursesTableViewController.h; sourceTree = "<group>"; };
+		C7DA11B812138C2F00FE8756 /* MainSearchGroupedCoursesTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainSearchGroupedCoursesTableViewController.m; sourceTree = "<group>"; };
 		DE0A62AA10CDAEA90058B2C2 /* MITBuildInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MITBuildInfo.h; sourceTree = "<group>"; };
 		DE0A62AB10CDAEA90058B2C2 /* MITBuildInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MITBuildInfo.m; sourceTree = "<group>"; };
 		DE0F6B3211109BC500F064D6 /* AboutMITVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AboutMITVC.h; sourceTree = "<group>"; };
@@ -1597,6 +1601,8 @@
 				C7B10F521213488100CFB837 /* StellarMainSearch.m */,
 				C7B10F7112134F2800CFB837 /* CoursesSearchTableViewController.h */,
 				C7B10F7212134F2800CFB837 /* CoursesSearchTableViewController.m */,
+				C7DA11B712138C2F00FE8756 /* MainSearchGroupedCoursesTableViewController.h */,
+				C7DA11B812138C2F00FE8756 /* MainSearchGroupedCoursesTableViewController.m */,
 			);
 			path = Stellar;
 			sourceTree = "<group>";
@@ -2078,6 +2084,7 @@
 				C7B10E031213270200CFB837 /* StellarClassesViewController.h in JavaArchive */,
 				C7B10F531213488100CFB837 /* StellarMainSearch.h in JavaArchive */,
 				C7B10F7312134F2800CFB837 /* CoursesSearchTableViewController.h in JavaArchive */,
+				C7DA11B912138C2F00FE8756 /* MainSearchGroupedCoursesTableViewController.h in JavaArchive */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2508,6 +2515,7 @@
 				C7B10E041213270200CFB837 /* StellarClassesViewController.m in Sources */,
 				C7B10F541213488100CFB837 /* StellarMainSearch.m in Sources */,
 				C7B10F7412134F2800CFB837 /* CoursesSearchTableViewController.m in Sources */,
+				C7DA11BA12138C2F00FE8756 /* MainSearchGroupedCoursesTableViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -507,7 +507,7 @@ NSString* cleanPersonName(NSString *personName);
 		int r = 4;
 		int e = r*r;
 	}*/
-	if (count> 100) {
+	if (count> 200) {
 		[classesSearchDelegate handleTooManySearchResults];
 		return;
 	}

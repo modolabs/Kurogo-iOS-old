@@ -7,6 +7,8 @@
 #import "MITUIConstants.h"
 #import "MITSearchDisplayController.h"
 #import "MultiLineTableViewCell.h"
+#import "StellarSearch.h"
+#import "MainSearchGroupedCoursesTableViewController.h"
 
 @implementation StellarMainSearch
 
@@ -94,9 +96,24 @@
 
 - (void) tableView: (UITableView *)tableView didSelectRowAtIndexPath: (NSIndexPath *)indexPath {
 	[tableView deselectRowAtIndexPath:indexPath animated:NO];
-	[StellarDetailViewController 
+	
+	//viewController.searchController.searchBar.text = @"art and blue";
+	
+	MainSearchGroupedCoursesTableViewController * vc = [[MainSearchGroupedCoursesTableViewController alloc] initWithViewController:viewController];	
+	
+	//StellarSearch *s_search = [[StellarSearch alloc] initWithViewController:viewController];
+	UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+	[vc setCourseGroupString:cell.detailTextLabel.text];
+	[vc setSearchString: viewController.searchController.searchBar.text];
+	//NSString *newSearchString = [[NSString alloc] initWithFormat:@"%@ %@", viewController.searchController.searchBar.text, cell.detailTextLabel.text];
+	//vc.searchController.searchBar.text = viewController.searchController.searchBar.text;
+	[StellarModel executeStellarSearch:viewController.searchController.searchBar.text courseGroupName:cell.detailTextLabel.text courseName:@"" delegate:vc];
+	
+	//[self.url setPath:@"search-complete" query:@"water"];
+	//[self.url setAsModulePath];
+	/*[StellarDetailViewController 
 	 launchClass:(StellarClass *)[self.lastResults objectAtIndex:indexPath.row]
-	 viewController:viewController];
+	 viewController:viewController];*/
 }
 
 #pragma mark ClassesSearchDelegate methods
@@ -110,9 +127,12 @@
 		if ([classes count] > 0)
 			viewController.searchController.searchResultsTableView = resultsTableView;
 		
+			[viewController.searchController.searchResultsTableView applyStandardCellHeight];
+			viewController.searchController.searchResultsTableView.allowsSelection = YES;
 			[viewController.searchController.searchResultsTableView reloadData];
 			[viewController hideLoadingView];
 			[viewController showSearchResultsTable];
+		
 		
 		// if exactly one result found forward user to that result
 		if([classes count] == 1) {
@@ -145,7 +165,7 @@
 	[viewController hideLoadingView];
 	UIAlertView *alert = [[UIAlertView alloc]
 						  initWithTitle:@"Narrow Search" 
-						  message:@"Retrieved more than 100 results. Please refine your query"
+						  message:@"Retrieved more than 200 results. Please refine your query"
 						  delegate:nil
 						  cancelButtonTitle:@"OK" 
 						  otherButtonTitles:nil];
