@@ -11,7 +11,12 @@
 	} else {
 		name = class.masterSubjectId;
 	}
-	cell.textLabel.text = name;
+	if ([[name substringToIndex:1] isEqualToString:@"0"])
+		cell.textLabel.text = [name substringFromIndex:1];
+	
+	else
+		cell.textLabel.text = name;
+
 	
 	cell.detailTextLabel.text = class.title;
 	cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
