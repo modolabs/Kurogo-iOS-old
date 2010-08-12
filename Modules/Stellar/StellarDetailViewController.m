@@ -380,7 +380,7 @@ NSString * termText(NSString *termCode) {
 
 		
 	// check if any "Actions" are available
-	// Actions = (loading the stellar site) or (toggling favorites which requires data loading to be complete)
+	// Actions = (loading the Courses site) or (toggling favorites which requires data loading to be complete)
 	if([class.url length]) {
 		self.navigationItem.rightBarButtonItem.enabled = YES;
 	}
@@ -463,7 +463,7 @@ NSString * termText(NSString *termCode) {
 }
 
 - (void) handleCouldNotReachStellar {
-	[self showErrorTitle:@"Connection Failed" message:@"Could not connect to Stellar to retrieve class info, please try again later"];
+	[self showErrorTitle:@"Connection Failed" message:@"Could not connect to retrieve class info, please try again later"];
 }
 	
 @end

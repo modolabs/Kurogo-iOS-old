@@ -290,7 +290,7 @@
 		//[viewController hideLoadingView];
 		UIAlertView *alert = [[UIAlertView alloc]
 							  initWithTitle:@"Connection Failed" 
-							  message:@"Could not connect to Stellar to execute search, please try again later."
+							  message:@"Could not connect to execute search, please try again later."
 							  delegate:nil
 							  cancelButtonTitle:@"OK" 
 							  otherButtonTitles:nil];
@@ -342,7 +342,7 @@
 		
 		UIAlertView *alert = [[UIAlertView alloc] 
 							  initWithTitle:@"Connection Failed" 
-							  message:[NSString stringWithFormat:@"Could not connect to Stellar to retrieve classes for %@, please try again later", tableController.title]
+							  message:[NSString stringWithFormat:@"Could not connect to retrieve classes for %@, please try again later", tableController.title]
 							  delegate:tableController
 							  cancelButtonTitle:@"OK" 
 							  otherButtonTitles:nil];

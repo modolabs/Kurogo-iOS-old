@@ -150,7 +150,7 @@
 		[viewController hideLoadingView];
 		UIAlertView *alert = [[UIAlertView alloc]
 							  initWithTitle:@"Connection Failed" 
-							  message:@"Could not connect to Stellar to execute search, please try again later."
+							  message:@"Could not connect to execute search, please try again later."
 							  delegate:nil
 							  cancelButtonTitle:@"OK" 
 							  otherButtonTitles:nil];

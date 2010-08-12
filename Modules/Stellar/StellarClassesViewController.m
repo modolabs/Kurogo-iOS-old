@@ -246,7 +246,7 @@
 		
 		UIAlertView *alert = [[UIAlertView alloc] 
 							  initWithTitle:@"Connection Failed" 
-							  message:[NSString stringWithFormat:@"Could not connect to Stellar to retrieve classes for %@, please try again later", tableController.title]
+							  message:[NSString stringWithFormat:@"Could not connect to retrieve classes for %@, please try again later", tableController.title]
 							  delegate:tableController
 							  cancelButtonTitle:@"OK" 
 							  otherButtonTitles:nil];

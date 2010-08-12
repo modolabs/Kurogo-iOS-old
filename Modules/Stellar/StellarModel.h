@@ -7,7 +7,7 @@
 #import "JSONAPIRequest.h"
 
 extern NSString * const MyStellarChanged;
-/** @brief Callback for stellar courses
+/** @brief Callback for Courses
  * 
  *  Notify's client code that courses are now saved in Core Data. 
  *  If course can not be saved in Core Date because the server was unreachable
@@ -25,7 +25,7 @@ extern NSString * const MyStellarChanged;
 @end
 
 /** 
- * Receives JSON from JSONAPIRequest for a stellar courses request
+ * Receives JSON from JSONAPIRequest for a Courses request
  */
 @interface CoursesRequest : NSObject <JSONAPIDelegate> {
 	id<CoursesLoadedDelegate> coursesLoadedDelegate;
@@ -59,7 +59,7 @@ extern NSString * const MyStellarChanged;
 @end
 
 /** 
- * Receives JSON from JSONAPIRequest for a stellar class list request
+ * Receives JSON from JSONAPIRequest for a class list request
  */
 @interface ClassesRequest : NSObject <JSONAPIDelegate> {
 	id<ClassesLoadedDelegate> classesLoadedDelegate;
@@ -107,14 +107,14 @@ extern NSString * const MyStellarChanged;
 
 /**
  *  Called when some detailed information is available
- *  The detail information is the general information plus the stellar announcements
+ *  The detail information is the general information plus the announcements
  *  @param class needs at minimum the masterSubjectId to be populated
  */
 - (void) initialAllClassInfoLoaded: (StellarClass *)class;
 
 /**
  *  Called when all the class information is available
- *  The detail information is the general information plus the stellar announcements
+ *  The detail information is the general information plus the announcements
  *  @param class needs at minimum the masterSubjectId to be populated
  */
 - (void) finalAllClassInfoLoaded: (StellarClass *)class;
@@ -172,7 +172,7 @@ extern NSString * const MyStellarChanged;
 @end
 
 /** 
- *  Receives JSON from JSONAPIRequest for a stellar class search
+ *  Receives JSON from JSONAPIRequest for a class search
  */
 @interface ClassesSearchRequest : NSObject <JSONAPIDelegate> {
 	id<ClassesSearchDelegate> classesSearchDelegate;
@@ -183,13 +183,13 @@ extern NSString * const MyStellarChanged;
 /**
  *  designated initalizer 
  *  @param delegate receives an NSArray of StellarClass objects
- *  @param searchTerms the string used to search for classes from Stellar
+ *  @param searchTerms the string used to search for classes
  */
 - (id) initWithDelegate: (id<ClassesSearchDelegate>)delegate searchTerms: (NSString *)searchTerms;
 @end
 
 /**
- *  Callback to notify client code that all the stellar bookmarks have been removed
+ *  Callback to notify client code that all the bookmarks have been removed
  *  this is usually due to a change of semester
  */
 @protocol ClearMyStellarDelegate <NSObject>
@@ -220,7 +220,7 @@ extern NSString * const MyStellarChanged;
 
 
 /**
- *  @brief Singleton class to access stellar data.
+ *  @brief Singleton class to access Course data.
  *
  *  Data is retrieved from network or disk or memory cache.
  *  Most the methods use specially defined protocol to receive the data.
