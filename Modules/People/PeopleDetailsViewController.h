@@ -33,3 +33,5 @@
 
 @end
 
+@interface PhoneCallAlertViewDelegate : NSObject<UIAlertViewDelegate> {}
+@end

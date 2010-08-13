@@ -575,9 +575,34 @@ NSString * const RequestLookupAddress = @"address";
 
 - (void)phoneIconTapped:(NSString *)phone
 {
-	NSURL *externURL = [NSURL URLWithString:[NSString stringWithFormat:@"tel://%@", phone]];
-	if ([[UIApplication sharedApplication] canOpenURL:externURL])
-		[[UIApplication sharedApplication] openURL:externURL];
+	NSArray *phoneNumbers = [phone componentsSeparatedByString:@"\n"];
+	if(phoneNumbers.count > 0) {
+		NSString *firstNumber = [phoneNumbers objectAtIndex:0];
+		NSURL *externURL = [NSURL URLWithString:[NSString stringWithFormat:@"tel://%@", firstNumber]];
+		if ([[UIApplication sharedApplication] canOpenURL:externURL]) {
+			if (phoneNumbers.count == 1) {
+				// just call the single number
+				[[UIApplication sharedApplication] openURL:externURL];
+			} else {
+				// for multiple numbers bring up a dialog 
+				// asking the user which number to call
+				UIAlertView *alertView = [[UIAlertView alloc] 
+											  initWithTitle:@"Call"	
+											  message:nil
+											  delegate:[PhoneCallAlertViewDelegate new]
+											  cancelButtonTitle:@"Cancel"					
+											  otherButtonTitles:nil];
+				
+				// add phone number button
+				for (NSString *phoneNumber in phoneNumbers) {
+					[alertView addButtonWithTitle:phoneNumber];
+				}
+				
+				[alertView show];
+				[alertView release];
+			}
+		}
+	}
 }
 
 - (void)emailIconTapped:(NSString *)email
@@ -612,4 +637,19 @@ NSString * const RequestLookupAddress = @"address";
 
 
 @end
+
+#pragma mark Phone call action sheet
+
+@implementation PhoneCallAlertViewDelegate
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger) buttonIndex {
+	if(buttonIndex != alertView.cancelButtonIndex) {
+		NSString *phoneNumber = [alertView buttonTitleAtIndex:buttonIndex];
+		NSURL *externURL = [NSURL URLWithString:[NSString stringWithFormat:@"tel://%@", phoneNumber]];
+		[[UIApplication sharedApplication] openURL:externURL];
+	}
+} 
+	 
+@end
+
 
