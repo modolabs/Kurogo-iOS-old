@@ -209,6 +209,7 @@ NSString * const RequestLookupAddress = @"address";
 	return [[self.sectionArray safeObjectAtIndex:section] count];
 }
 
+#define TEXTVIEW_TAG 235
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     
@@ -268,6 +269,7 @@ NSString * const RequestLookupAddress = @"address";
             // -[MultiLineTableViewCell layoutSubviews] will adjust the originY to where the detailTextLabel is
             UITextView *textView = [[[UITextView alloc] initWithFrame:CGRectMake(originX, 0, width + 10, size.height)] autorelease];
             textView.text = data;
+            textView.tag = TEXTVIEW_TAG;
             textView.backgroundColor = [UIColor clearColor];
             textView.font = font;
             textView.textColor = cell.detailTextLabel.textColor;
@@ -289,6 +291,9 @@ NSString * const RequestLookupAddress = @"address";
             cell.detailTextLabel.text = placeholder;
 
         } else {
+            UIView *textView = [cell.contentView viewWithTag:TEXTVIEW_TAG];
+            if (textView)
+                [textView removeFromSuperview];
             cell.detailTextLabel.text = data;
         }
         
