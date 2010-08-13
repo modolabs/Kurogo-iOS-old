@@ -744,14 +744,18 @@
         } else if ([request.userData isKindOfClass:[ArcGISMapAnnotation class]]) {
             // updating an annotation search request
             ArcGISMapAnnotation *oldAnnotation = request.userData;
+            NSMutableArray *oldSearchResults = [self.searchResults mutableCopy];
             
             if (searchResults.count > 0) {
                 ArcGISMapAnnotation *newAnnotation = [[[ArcGISMapAnnotation alloc] initWithInfo:[searchResults objectAtIndex:0]] autorelease];
-                
                 BOOL isViewingAnnotation = ([[_mapView selectedAnnotations] lastObject] == oldAnnotation);
                 
                 [_mapView removeAnnotation:oldAnnotation];
                 [_mapView addAnnotation:newAnnotation];
+                
+                [oldSearchResults removeObject:oldAnnotation];
+                [oldSearchResults addObject:newAnnotation];
+                self.searchResults = oldSearchResults;
                 
                 if (isViewingAnnotation) {
                     [_mapView selectAnnotation:newAnnotation animated:NO];

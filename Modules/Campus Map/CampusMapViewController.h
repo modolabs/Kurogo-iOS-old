@@ -22,7 +22,7 @@
 	UIBarButtonItem* _geoButton;
 	UIBarButtonItem* _cancelSearchButton;
 
-	NSArray* _searchResults;
+	NSArray *_searchResults;
 	BOOL _hasSearchResults;
 	NSArray* _filteredSearchResults;
 	SEL _searchFilter;
