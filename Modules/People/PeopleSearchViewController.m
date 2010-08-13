@@ -156,7 +156,7 @@ NSInteger strLenSort(NSString *str1, NSString *str2, void *context)
 	}
     
     [self.view addSubview:self.tableView];
-
+    [self.searchBar addDropShadow];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -236,6 +236,7 @@ NSInteger strLenSort(NSString *str1, NSString *str2, void *context)
     self.searchResults = theSearchResults;
     self.searchController.searchResultsTableView.frame = self.tableView.frame;
     [self.view addSubview:self.searchController.searchResultsTableView];
+    [self.searchBar addDropShadow];
     [self.searchController.searchResultsTableView reloadData];
 }
 
@@ -468,6 +469,7 @@ NSInteger strLenSort(NSString *str1, NSString *str2, void *context)
 	}
 	
 	[self.tableView addSubview:self.loadingView];
+    [self.searchBar addDropShadow];
 }
 
 - (void)cleanUpConnection {
@@ -495,6 +497,7 @@ NSInteger strLenSort(NSString *str1, NSString *str2, void *context)
 	else {
         self.searchController.searchResultsTableView.frame = self.tableView.frame;
         [self.view addSubview:self.searchController.searchResultsTableView];
+        [self.searchBar addDropShadow];
 		
 		//self.searchController.searchResultsTableView.hidden = NO;
 		[self.searchController.searchResultsTableView reloadData];

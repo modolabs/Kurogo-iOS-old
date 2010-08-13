@@ -89,6 +89,7 @@
 	_mapView.isAccessibilityElement = YES;
 	_mapView.accessibilityLabel = @"Map View";
 	[self.view addSubview:_mapView];
+    [_searchBar addDropShadow];
 	
 	// add the rest of the toolbar to which we can add buttons.
 	_toolBar = [[CampusMapToolbar alloc] initWithFrame:CGRectMake(searchBarWidth, 0, self.view.frame.size.width - searchBarWidth, NAVIGATION_BAR_HEIGHT)];
@@ -428,6 +429,7 @@
         self.searchResultsTableView.searchResults = _searchResults;
         
         [self.view addSubview:self.searchResultsTableView];
+        [_searchBar addDropShadow];
         
         // hide the toolbar and stretch the search bar
         _toolBar.alpha = 0.0;

@@ -31,5 +31,20 @@
     [super dealloc];
 }
 
+- (void)addDropShadow {
+    NSInteger dropShadowTag = 6372;
+    UIView *superview = [self superview];
+    UIView *view = [superview viewWithTag:dropShadowTag];
+    if (view) {
+        [view removeFromSuperview];
+    }
+    
+    UIImageView *dropShadow = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"global/bar-drop-shadow.png"]];
+    dropShadow.frame = CGRectMake(0, self.frame.size.height, dropShadow.frame.size.width, dropShadow.frame.size.height);
+    dropShadow.tag = dropShadowTag;
+    [superview addSubview:dropShadow];
+    [dropShadow release];
+}
+
 
 @end

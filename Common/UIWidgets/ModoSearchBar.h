@@ -5,4 +5,6 @@
 
 }
 
+- (void)addDropShadow;
+
 @end
