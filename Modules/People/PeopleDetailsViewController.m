@@ -435,7 +435,7 @@ NSString * const RequestLookupAddress = @"address";
 			[self emailIconTapped:[personInfo safeObjectAtIndex:1]];
 		else if ([tag isEqualToString:[personDetails displayNameForKey:@"telephonenumber"]])
 			[self phoneIconTapped:[personInfo safeObjectAtIndex:1]];
-		else if ([tag isEqualToString:[personDetails displayNameForKey:@"postaladdress"]])
+		else if ([tag isEqualToString:[personDetails displayNameForKey:@"postaladdress"]] && addressSearchAnnotation)
 			[self mapIconTapped:[personInfo safeObjectAtIndex:1]];
 
 	}
