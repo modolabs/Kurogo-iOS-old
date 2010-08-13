@@ -434,6 +434,8 @@ NSInteger strLenSort(NSString *str1, NSString *str2, void *context)
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 	
+	[tableView deselectRowAtIndexPath:indexPath animated:YES];
+	
 	if (tableView == self.searchController.searchResultsTableView || indexPath.section == 1) { // user selected search result or recently viewed
 
 		PersonDetails *personDetails;
