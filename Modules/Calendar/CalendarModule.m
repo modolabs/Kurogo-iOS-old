@@ -251,7 +251,7 @@
 		
 		calendarVC.activeEventList = CalendarEventListTypeCategory;
 		calendarVC.view;
-		[calendarVC selectScrollerButton:[CalendarConstants titleForEventType:CalendarEventListTypeCategory]];
+		//[calendarVC selectScrollerButton:[CalendarConstants titleForEventType:CalendarEventListTypeCategory]];
 		
 		NSString *catID = [queryDict objectForKey:@"catID"];
 		if (catID != nil) {
