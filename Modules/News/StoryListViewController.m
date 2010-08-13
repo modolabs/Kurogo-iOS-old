@@ -228,6 +228,8 @@ static NSInteger numTries = 0;
 }
 
 - (void)setupNavScrollButtons {
+    
+    [navScrollView removeAllButtons];
 
     UIButton *searchButton = [navScrollView buttonWithTag:SEARCH_BUTTON_TAG];
     if (!searchButton) {

@@ -10,7 +10,7 @@ scrollView = _scrollView, navScrollerDelegate, currentXOffset = _currentXOffset;
 - (id)initWithFrame:(CGRect)frame
 {
     if (self = [super initWithFrame:frame]) {
-        self.buttons = [[NSMutableArray alloc] init];
+        self.buttons = [NSMutableArray array];
         self.scrollView = [[UIScrollView alloc] initWithFrame:frame];
         self.scrollView.delegate = self;
         self.scrollView.scrollsToTop = NO; // otherwise this competes with the story list for status bar taps
@@ -72,6 +72,13 @@ scrollView = _scrollView, navScrollerDelegate, currentXOffset = _currentXOffset;
     }
 }
 
+- (void)removeAllButtons {
+    for (UIButton *aButton in _buttons) {
+        [aButton removeFromSuperview];
+    }
+    self.currentXOffset = 0.0;
+}
+
 - (UIButton *)buttonWithTag:(NSInteger)tag {
     UIView *view = [self.contentView viewWithTag:tag];
     if ([view isKindOfClass:[UIButton class]]) {
@@ -129,7 +136,9 @@ scrollView = _scrollView, navScrollerDelegate, currentXOffset = _currentXOffset;
     aButton.frame = frame;
     _currentXOffset += frame.size.width;
     
-    [_buttons addObject:aButton];
+    if (![_buttons containsObject:aButton]) {
+        [_buttons addObject:aButton];
+    }
     [_contentView addSubview:aButton];
     
     // update the content frame

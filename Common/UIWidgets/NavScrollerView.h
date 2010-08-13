@@ -21,6 +21,7 @@
     CGFloat _currentXOffset;
 }
 
+- (void)removeAllButtons;
 - (UIButton *)buttonWithTag:(NSInteger)tag;
 - (void)sideButtonPressed:(id)sender;
 - (void)buttonPressed:(id)sender;
