@@ -256,7 +256,7 @@ NSString * const RequestLookupAddress = @"address";
             CGFloat width = [MultiLineTableViewCell widthForTextLabel:NO
                                                             cellStyle:UITableViewCellStyleValue2
                                                             tableView:self.tableView
-                                                        accessoryType:UITableViewCellAccessoryDetailDisclosureButton
+                                                        accessoryType:UITableViewCellAccessoryNone
                                                             cellImage:NO];
             
             // in MultiLineTableViewCell, we are assuming the detailTextLabel starts at 24% of the cell width
