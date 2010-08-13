@@ -88,7 +88,7 @@
 								<bool key="IBUIUserInteractionEnabled">NO</bool>
 								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 								<string key="IBUIText">Label</string>
-								<object class="NSFont" key="IBUIFont" id="144576984">
+								<object class="NSFont" key="IBUIFont">
 									<string key="NSName">Helvetica</string>
 									<double key="NSSize">14</double>
 									<int key="NSfFlags">16</int>
@@ -267,23 +267,6 @@
 						<bool key="IBUIUserInteractionEnabled">NO</bool>
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 					</object>
-					<object class="IBUILabel" id="194098726">
-						<reference key="NSNextResponder" ref="419245486"/>
-						<int key="NSvFlags">290</int>
-						<string key="NSFrame">{{20, 200}, {280, 21}}</string>
-						<reference key="NSSuperview" ref="419245486"/>
-						<bool key="IBUIOpaque">NO</bool>
-						<bool key="IBUIClipsSubviews">YES</bool>
-						<bool key="IBUIUserInteractionEnabled">NO</bool>
-						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
-						<string key="IBUIText">Label</string>
-						<reference key="IBUIFont" ref="144576984"/>
-						<reference key="IBUITextColor" ref="791684172"/>
-						<nil key="IBUIHighlightedColor"/>
-						<int key="IBUIBaselineAdjustment">1</int>
-						<float key="IBUIMinimumFontSize">10</float>
-						<int key="IBUITextAlignment">1</int>
-					</object>
 					<object class="IBUIView" id="651643514">
 						<reference key="NSNextResponder" ref="419245486"/>
 						<int key="NSvFlags">292</int>
@@ -433,14 +416,6 @@
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchOutletConnection" key="connection">
-						<string key="label">_buildingImageDescriptionLabel</string>
-						<reference key="source" ref="372490531"/>
-						<reference key="destination" ref="194098726"/>
-					</object>
-					<int key="connectionID">18</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBCocoaTouchOutletConnection" key="connection">
 						<string key="label">_buildingImageView</string>
 						<reference key="source" ref="372490531"/>
 						<reference key="destination" ref="595496040"/>
@@ -580,7 +555,6 @@
 						<object class="NSMutableArray" key="children">
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<reference ref="595496040"/>
-							<reference ref="194098726"/>
 							<reference ref="651643514"/>
 						</object>
 						<reference key="parent" ref="0"/>
@@ -589,11 +563,6 @@
 					<object class="IBObjectRecord">
 						<int key="objectID">16</int>
 						<reference key="object" ref="595496040"/>
-						<reference key="parent" ref="419245486"/>
-					</object>
-					<object class="IBObjectRecord">
-						<int key="objectID">17</int>
-						<reference key="object" ref="194098726"/>
 						<reference key="parent" ref="419245486"/>
 					</object>
 					<object class="IBObjectRecord">
@@ -732,7 +701,6 @@
 					<string>15.IBEditorWindowLastContentRect</string>
 					<string>15.IBPluginDependency</string>
 					<string>16.IBPluginDependency</string>
-					<string>17.IBPluginDependency</string>
 					<string>21.IBEditorWindowLastContentRect</string>
 					<string>21.IBPluginDependency</string>
 					<string>31.IBEditorWindowLastContentRect</string>
@@ -764,7 +732,6 @@
 					<string>MITMapDetailViewController</string>
 					<string>UIResponder</string>
 					<string>{{457, 238}, {320, 231}}</string>
-					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>{{329, 625}, {320, 231}}</string>
@@ -986,13 +953,6 @@
 					</object>
 				</object>
 				<object class="IBPartialClassDescription">
-					<string key="className">MKMapView</string>
-					<object class="IBClassDescriptionSource" key="sourceIdentifier">
-						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">Modules/Campus Map/MKMapView+ArcGISAdditions.h</string>
-					</object>
-				</object>
-				<object class="IBPartialClassDescription">
 					<string key="className">NSObject</string>
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
 						<string key="majorKey">IBProjectSource</string>
@@ -1011,7 +971,7 @@
 					<string key="superclassName">UIControl</string>
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
 						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">Modules/Campus Map/TabViewControl.h</string>
+						<string key="minorKey">Common/UIWidgets/TabViewControl.h</string>
 					</object>
 				</object>
 				<object class="IBPartialClassDescription">
