@@ -247,6 +247,7 @@ NSString * const RequestLookupAddress = @"address";
 		NSString *data = [personInfo safeObjectAtIndex:1];
 		
 		cell.textLabel.text = tag;
+        cell.textLabel.textColor = [UIColor colorWithHexString:@"#554C41"];
         
         // use a textView for the address so people can copy/paste.
         if ([tag isEqualToString:[personDetails displayNameForKey:@"postaladdress"]] && !addressSearchAnnotation) {

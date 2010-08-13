@@ -137,6 +137,8 @@ numberOfRowsInSection:(NSInteger)section
 			cell.textLabelNumberOfLines = 2;
 			//cell.textLabelLineBreakMode = UILineBreakModeTailTruncation;
 		}
+        
+        cell.textLabel.textColor = [UIColor colorWithHexString:@"#554C41"];
 	}
 	
 
