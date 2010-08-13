@@ -102,7 +102,6 @@
             anIcon.titleEdgeInsets = UIEdgeInsetsMake(image.size.height, -image.size.width, 0, 0);
             [anIcon setTitle:aModule.shortName forState:UIControlStateNormal];
             [anIcon setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-            [anIcon setTitleColor:[UIColor whiteColor] forState:UIControlStateHighlighted];
             anIcon.titleLabel.font = [UIFont systemFontOfSize:14.0];
             
             anIcon.moduleTag = aModule.tag;
