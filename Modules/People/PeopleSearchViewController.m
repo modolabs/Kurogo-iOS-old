@@ -234,6 +234,7 @@ NSInteger strLenSort(NSString *str1, NSString *str2, void *context)
 
 - (void)presentSearchResults:(NSArray *)theSearchResults {
     self.searchResults = theSearchResults;
+    self.searchController.searchResultsTableView.frame = self.tableView.frame;
     [self.view addSubview:self.searchController.searchResultsTableView];
     [self.searchController.searchResultsTableView reloadData];
 }
@@ -492,20 +493,7 @@ NSInteger strLenSort(NSString *str1, NSString *str2, void *context)
 		[self handleErrorFromLDAP:errorMessage];
 	}
 	else {
-		// Search success.
-		//if (![self.searchController.searchResultsTableView isDescendantOfView:self.view]) {
-			// when we're called externally, searchResultsTableView doesn't realize
-			// it's supposed to have expanded by the height of the search bar
-			//CGRect resultsFrame = self.searchController.searchResultsTableView.frame;
-			//CGRect viewFrame = self.view.frame;
-			//self.searchController.searchResultsTableView.frame = 
-			//	CGRectMake(resultsFrame.origin.x,
-			//			   resultsFrame.origin.y,
-			//			   resultsFrame.size.width,
-			//			   viewFrame.size.height - (resultsFrame.origin.y - viewFrame.origin.y));
-			
-			//[self.view addSubview:self.searchController.searchResultsTableView];
-		//}
+        self.searchController.searchResultsTableView.frame = self.tableView.frame;
         [self.view addSubview:self.searchController.searchResultsTableView];
 		
 		//self.searchController.searchResultsTableView.hidden = NO;
