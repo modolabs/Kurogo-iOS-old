@@ -163,6 +163,7 @@
 
 - (void)viewDidUnload {
 	_mapView.delegate = nil;
+    _searchController.searchResultsTableView = nil;
 	self.searchResultsTableView = nil;
     
 	[_mapView release];
@@ -437,6 +438,7 @@
         
         // show the map, by hiding the list. 
         [self.searchResultsTableView removeFromSuperview];
+        _searchController.searchResultsTableView = nil;
         self.searchResultsTableView = nil;
         
         if (!_searchResults) {
