@@ -26,7 +26,6 @@
         self.supportsFederatedSearch = YES;
 		
 		self.mainController = [[[StellarMainTableController alloc] init] autorelease];
-		//stellarMainTableController.navigationItem.title = @"MIT Stellar";
 		mainController.navigationItem.title = @"Course Catalogue";
         self.viewControllers = [NSArray arrayWithObject:mainController];
     }
