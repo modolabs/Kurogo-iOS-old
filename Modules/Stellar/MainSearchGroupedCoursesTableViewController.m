@@ -38,6 +38,7 @@
 
 -(void)setSearchString: (NSString *)searchTerms {
 	searchTerm = searchTerms;
+	searchController.searchBar.text = searchTerm;
 }
 
 -(void)setCourseGroupString: (NSString *)courseGroupString {
@@ -95,7 +96,7 @@
 	stellarSearch = [[StellarSearch alloc] initWithViewController:self];
 	self.searchController.searchResultsDelegate = stellarSearch;
 	self.searchController.searchResultsDataSource = stellarSearch;
-	searchBar.placeholder = [[NSString alloc] initWithFormat:@"Search within %@", stellarCourseGroupString];
+	//searchBar.placeholder = [[NSString alloc] initWithFormat:@"Search within %@", stellarCourseGroupString];
 	
 	mainSearchClassesTableView = nil;
 	
@@ -174,7 +175,7 @@
 	NSString *headerTitle = nil;
 	
 	if([classes count]) {
-		headerTitle = [NSString stringWithFormat:@"%i found", [classes count]];
+		headerTitle = [NSString stringWithFormat:@"%i found in %@", [classes count], stellarCourseGroupString];
 		return [UITableView ungroupedSectionHeaderWithTitle:headerTitle];
 	}
 	return nil;

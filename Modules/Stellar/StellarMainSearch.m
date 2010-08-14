@@ -29,6 +29,8 @@
 		resultsTableView.delegate = self;
 		resultsTableView.dataSource = self;
 		resultsTableView.backgroundColor = [UIColor whiteColor];
+		
+		resultsTableView.tableHeaderView = [UITableView ungroupedSectionHeaderWithTitle:@"Search Results"];
 		//[resultsTableView applyStandardColors];
 		
 	}
@@ -72,26 +74,26 @@
 - (NSInteger) numberOfSectionsInTableView: (UITableView *)tableView {
 	return 1;
 }
-
+/*
 - (NSString *) tableView: (UITableView *)tableView titleForHeaderInSection: (NSInteger)section {
 	if([lastResults count]) {
 		return [NSString stringWithFormat:@"%i found", [lastResults count]];
 	}
 	return nil;
-}
+}*/
 
 - (UIView *) tableView: (UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
 	NSString *headerTitle = nil;
 	
 	if([lastResults count]) {
 		headerTitle = [NSString stringWithFormat:@"%i found", [lastResults count]];
-		return [UITableView ungroupedSectionHeaderWithTitle:headerTitle];
+		return [[UIView alloc] initWithFrame: CGRectMake(0, 0, 320.0, UNGROUPED_SECTION_HEADER_HEIGHT + 15.0)];
 	}
 	return nil;
 }
 
 - (CGFloat)tableView: (UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
-	return UNGROUPED_SECTION_HEADER_HEIGHT;//UNGROUPED_SECTION_HEADER_HEIGHT;
+	return UNGROUPED_SECTION_HEADER_HEIGHT + 15.0;//UNGROUPED_SECTION_HEADER_HEIGHT;
 }
 
 #pragma mark UITableViewDelegate methods
