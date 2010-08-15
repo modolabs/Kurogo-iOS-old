@@ -54,7 +54,7 @@ static EmergencyData *sharedEmergencyData = nil;
 - (id) init {
     self = [super init];
     if (self != nil) {
-        // TODO: get primary numbers from m.mit.edu (it's unlikely, but numbers might change)
+        // TODO: get primary numbers (it's unlikely, but numbers might change)
         primaryPhoneNumbers = [[NSArray arrayWithObjects:
                                     [NSDictionary dictionaryWithObjectsAndKeys:
                                      @"Campus Police", @"title",
