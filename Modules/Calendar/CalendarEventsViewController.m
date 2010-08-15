@@ -74,6 +74,8 @@
 	[events release];
 	[startDate release];
 	[endDate release];
+	[loadingIndicator release];
+	[nothingFound release];
 	
     [super dealloc];
 }
@@ -139,6 +141,8 @@
     [searchResultsMapView release];
 	[navScrollView release];
 	[datePicker release];
+	[loadingIndicator release];
+	[nothingFound release];
 }
 
 #pragma mark View controller
@@ -344,6 +348,8 @@
 			NSArray *someEvents = [CalendarDataManager eventsWithStartDate:startDate
                                                                   listType:activeEventList
 																  category:(theCatID == kCalendarTopLevelCategoryID) ? nil : [NSNumber numberWithInt:theCatID]];
+			
+			someEvents = nil;
 			
 			//if (someEvents != nil && [someEvents count] && (requestNeeded == NO)) {
 			if (someEvents != nil && [someEvents count]) {
@@ -956,12 +962,14 @@
 												 self.view.bounds.size.width, 
 												 self.view.bounds.size.height);
 				
-				nothingFound = [[UIView alloc] initWithFrame:contentFrame];
+				if (nothingFound == nil)
+					nothingFound = [[UIView alloc] initWithFrame:contentFrame];
+				
 				[nothingFound setBackgroundColor:[UIColor whiteColor]];
 				
 				[nothingFound addSubview:label];
 				[self.view addSubview:nothingFound];
-                [nothingFound release];
+               // [nothingFound release];
 			}
 			else if (nothingFound != nil) {
 				[nothingFound removeFromSuperview];
@@ -981,12 +989,14 @@
 												 self.view.bounds.size.width, 
 												 self.view.bounds.size.height);
 				
-				nothingFound = [[UIView alloc] initWithFrame:contentFrame];
+				if (nothingFound == nil)
+					nothingFound = [[UIView alloc] initWithFrame:contentFrame];
+				
 				[nothingFound setBackgroundColor:[UIColor whiteColor]];
 				
 				[nothingFound addSubview:label];
 				[self.view addSubview:nothingFound];
-                [nothingFound release];
+                //[nothingFound release];
 			}
 			
 			for (NSDictionary *eventDict in result) {
