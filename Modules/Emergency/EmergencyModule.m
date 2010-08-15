@@ -60,7 +60,7 @@
 
 - (void)didReceiveNewEmergencyInfo:(NSNotification *)aNotification {    
     // uncomment to show a popup dialog of the current emergency
-//    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"MIT Emergency Update" message:info delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+//    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Emergency Update" message:info delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
 //    [alertView show];
 //    [alertView release];
 }

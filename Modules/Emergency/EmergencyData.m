@@ -58,15 +58,15 @@ static EmergencyData *sharedEmergencyData = nil;
         primaryPhoneNumbers = [[NSArray arrayWithObjects:
                                     [NSDictionary dictionaryWithObjectsAndKeys:
                                      @"Campus Police", @"title",
-                                     @"617.253.1212", @"phone",
+                                     @"555.555.5555", @"phone",
                                      nil],
                                     [NSDictionary dictionaryWithObjectsAndKeys:
-                                     @"MIT Medical", @"title",
-                                     @"617.253.1311", @"phone",
+                                     @"Medical", @"title",
+                                     @"555.555.5555", @"phone",
                                      nil],
                                     [NSDictionary dictionaryWithObjectsAndKeys:
                                      @"Emergency Status", @"title",
-                                     @"617.253.7669", @"phone",
+                                     @"555.555.5555", @"phone",
                                      nil],
                                     nil] retain];
         [self fetchEmergencyInfo];
