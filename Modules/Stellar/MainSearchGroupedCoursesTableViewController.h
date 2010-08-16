@@ -40,6 +40,7 @@
 @property (nonatomic, retain) UITableView *mainSearchClassesTableView;
 
 @property (readonly) MITModuleURL *url;
+@property (nonatomic, retain) NSString * searchTerm;
 
 - (id) initWithCourse: (StellarCourse *)course;
 

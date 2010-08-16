@@ -25,6 +25,7 @@
 
 @synthesize searchController;
 @synthesize doSearchTerms;
+@synthesize searchTerm;
 
 @synthesize mainSearchClassesTableView;
 
@@ -34,12 +35,14 @@
 	[controller.navigationController pushViewController:viewController animated:YES];
 	viewController.navigationItem.title = @"Search Results";
 	actualCount = 0;
+	self.searchTerm = nil;
 	return [viewController autorelease];
 }
 
 -(void)setSearchString: (NSString *)searchTerms {
-	searchTerm = searchTerms;
-	searchController.searchBar.text = searchTerm;
+	self.searchTerm = nil;
+	self.searchTerm = searchTerms;
+	searchController.searchBar.text = self.searchTerm;
 }
 
 -(void)setCourseGroupString: (NSString *)courseGroupString {
@@ -66,6 +69,12 @@
 	//[currentClassLoader release];
 	[classes release];
 	[course release];
+	[searchTerm release];
+	[mainSearchClassesTableView release];
+	[viewController release];
+	[stellarSearch release];
+	[searchController release];
+	
 	[super dealloc];
 }
 
@@ -98,6 +107,8 @@
 	self.searchController.searchResultsDelegate = stellarSearch;
 	self.searchController.searchResultsDataSource = stellarSearch;
 	//searchBar.placeholder = [[NSString alloc] initWithFormat:@"Search within %@", stellarCourseGroupString];
+	if (self.searchTerm != nil)
+		searchController.searchBar.text = self.searchTerm;
 	
 	mainSearchClassesTableView = nil;
 	

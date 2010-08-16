@@ -216,7 +216,7 @@
 			cell.imageView.image = nil;
 		}
 	} else if(groupIndex == browseGroup) {
-		cell.textLabel.text = ((StellarCourseGroup *)[courseGroups objectAtIndex:indexPath.row]).title;
+		cell.textLabel.text = ((StellarCourseGroup *)[courseGroups objectAtIndex:indexPath.row]).short_name;
 		cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 		cell.imageView.image = nil;
 	}
@@ -267,7 +267,7 @@
 	} else if ([((StellarCourseGroup *)[courseGroups objectAtIndex:indexPath.row]).courses count] == 0) {
 		
 		StellarCourse * dummyCourse= (StellarCourse *)[CoreDataManager insertNewObjectForEntityForName:StellarCourseEntityName];
-		dummyCourse.title = ((StellarCourseGroup *)[courseGroups objectAtIndex:indexPath.row]).title;
+		dummyCourse.title = ((StellarCourseGroup *)[courseGroups objectAtIndex:indexPath.row]).short_name;
 		
 		[self.navigationController
 		 pushViewController: [[[StellarClassesViewController alloc] 

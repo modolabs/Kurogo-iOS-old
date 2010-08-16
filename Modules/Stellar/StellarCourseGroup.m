@@ -5,11 +5,12 @@
 NSInteger courseNameCompare(id course1, id course2, void *context);
 
 @implementation StellarCourseGroup
-@synthesize title, courses;
+@synthesize title, courses, short_name;
 
 - (id) initWithTitle: (NSString *)aTitle courses:(NSMutableArray *)aCourseGroup {
 	if(self = [super init]) {
 		self.title = aTitle;
+		self.short_name = aTitle;
 		self.courses = aCourseGroup;
 	}
 	return self;
@@ -60,6 +61,7 @@ NSInteger courseNameCompare(id course1, id course2, void *context);
 			
 			StellarCourseGroup *group = [[[StellarCourseGroup alloc] init] autorelease];
 			group.title = course.courseGroup;
+			group.short_name = course.courseGroupShort;
 			
 			NSMutableArray * cArray = [[NSMutableArray alloc] init];
 			group.courses = cArray;
@@ -148,7 +150,7 @@ NSInteger courseNameCompare(id course1, id course2, void *context);
 }
 
 - (NSComparisonResult)compare:(StellarCourseGroup *)otherObject {
-    return [self.title compare:otherObject.title];
+    return [self.short_name compare:otherObject.short_name];
 }
 
 @end

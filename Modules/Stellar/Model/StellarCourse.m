@@ -12,6 +12,7 @@
 @dynamic stellarClasses;
 @dynamic term;
 @dynamic courseGroup;
+@dynamic courseGroupShort;
 //@synthesize groupArray;
 
 - (NSComparisonResult)compare:(StellarCourse *)otherObject {
