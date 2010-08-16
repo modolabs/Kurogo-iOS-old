@@ -28,10 +28,14 @@ enum CalendarDetailRowTypes {
 
 @synthesize event, events, tableView = _tableView;
 
-- (void)viewDidLoad {
-    [super viewDidLoad];
+- (void)loadView {
+    [super loadView];
 	
 	self.shareDelegate = self;
+}
+
+- (void)viewDidLoad {
+    [super viewDidLoad];
 	
 	// setup table view
 	self.tableView = [[UITableView alloc] initWithFrame:CGRectMake(0.0, 0.0, self.view.frame.size.width, self.view.frame.size.height)
@@ -579,18 +583,33 @@ enum CalendarDetailRowTypes {
 }
 
 - (NSString *)fbDialogAttachment {
-	return [NSString stringWithFormat:
-			@"{\"name\":\"%@\","
-			"\"href\":\"%@\","
-			"\"description\":\"%@\""
-			"}",
-			[event.title stringByReplacingOccurrencesOfString:@"\"" withString:@"\\\""],
-            event.url,
-            [event.summary stringByReplacingOccurrencesOfString:@"\"" withString:@"\\\""]];
+    
+    NSString *escapedTitle = [event.title stringByReplacingOccurrencesOfString:@"\"" withString:@"\\\""];
+    
+    NSString *attachment = [NSString stringWithFormat:
+                            @"\"name\":\"%@\","
+                            "\"href\":\"%@\","
+                            "\"description\":\"%@\"",
+                            escapedTitle,
+                            event.url,
+                            [event.summary stringByReplacingOccurrencesOfString:@"\"" withString:@"\\\""]];
+    
+    NSString *mobileUrl = [self twitterUrl];
+    if (mobileUrl) {
+        attachment = [NSString stringWithFormat:@"{%@,%@}",
+                      attachment,
+                      [NSString stringWithFormat:@"\"properties\":{\"Mobile web link\":{\"text\":\"%@\",\"href\":\"%@\"}}",
+                       mobileUrl, escapedTitle]];
+    } else {
+        attachment = [NSString stringWithFormat:@"{%@}", attachment];
+    }
+    NSLog(@"%@", attachment);
+
+    return attachment;
 }
 
 - (NSString *)twitterUrl {
-	return [NSString stringWithFormat:@"http://%@/e/%@", MITMobileWebDomainString, [URLShortener compressedIdFromNumber:event.eventID]];
+	return [NSString stringWithFormat:@"http://%@/calendar/detail.php?id=%d", MITMobileWebDomainString, [event.eventID integerValue]];
 }
 
 - (NSString *)twitterTitle {
