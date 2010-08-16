@@ -72,7 +72,7 @@
             break;
         }
     }
-    return width - 3.0;
+    return width;
 }
 
 + (CGFloat)heightForLabelWithText:(NSString *)text font:(UIFont *)font width:(CGFloat)width maxLines:(NSInteger)maxLines
@@ -148,7 +148,7 @@
         }
 
         frame.size.width = [DiningMultiLineCell widthForTextLabel:YES cellStyle:_style tableView:tableView accessoryType:accessoryType cellImage:YES];
-		frame.size.width = frame.size.width - 30;
+		frame.size.width = frame.size.width; //frame.size.width - 30;
         frame.size.height = [DiningMultiLineCell heightForLabelWithText:self.textLabel.text
                                                                       font:self.textLabel.font
                                                                      width:frame.size.width
