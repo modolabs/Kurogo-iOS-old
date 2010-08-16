@@ -91,7 +91,6 @@
 		29C454C1118B61CA00A321B0 /* SFHFKeychainUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 29C454BF118B61CA00A321B0 /* SFHFKeychainUtils.m */; };
 		29E308861176018C005211A7 /* MITModuleURL.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = 29E308841176018C005211A7 /* MITModuleURL.h */; settings = {JAVA_ARCHIVE_SUBDIR = Common; }; };
 		29E308871176018C005211A7 /* MITModuleURL.m in Sources */ = {isa = PBXBuildFile; fileRef = 29E308851176018C005211A7 /* MITModuleURL.m */; };
-		29EB610B10FE47220085D32B /* ShuttleSubscriptionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 29EB610A10FE47220085D32B /* ShuttleSubscriptionManager.m */; };
 		3A827081103DAA0500BB4109 /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A827080103DAA0500BB4109 /* Reachability.m */; };
 		3A82708D103DAA2400BB4109 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3A82708C103DAA2400BB4109 /* SystemConfiguration.framework */; };
 		3A827171103DBC6F00BB4109 /* ConnectionDetector.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A82716F103DBC6F00BB4109 /* ConnectionDetector.m */; };
@@ -99,27 +98,17 @@
 		3AA21C531039DDE000DB7637 /* ConnectionWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AA21C511039DDE000DB7637 /* ConnectionWrapper.m */; };
 		3AA21C561039DDEA00DB7637 /* CoreDataManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AA21C551039DDEA00DB7637 /* CoreDataManager.m */; };
 		441009DE110A6DAF00451B23 /* CampusMapToolbar.m in Sources */ = {isa = PBXBuildFile; fileRef = 441009DD110A6DAF00451B23 /* CampusMapToolbar.m */; };
-		4420F23110E9513700A8CD05 /* ShuttleDataManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 4420F23010E9513700A8CD05 /* ShuttleDataManager.m */; };
-		4420F31B10E96EBE00A8CD05 /* ShuttleStopMapAnnotation.m in Sources */ = {isa = PBXBuildFile; fileRef = 4420F31A10E96EBE00A8CD05 /* ShuttleStopMapAnnotation.m */; };
-		4420F62910EBA5D000A8CD05 /* ShuttleStopViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4420F62810EBA5D000A8CD05 /* ShuttleStopViewController.m */; };
 		44293C3510DAE88500273119 /* MapSearchResultsTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 44293C3310DAE88500273119 /* MapSearchResultsTableView.m */; };
-		442C192A10F3AE3400CB44EC /* RouteMapViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 442C192810F3AE3400CB44EC /* RouteMapViewController.m */; };
-		442C192B10F3AE3400CB44EC /* RouteMapViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 442C192910F3AE3400CB44EC /* RouteMapViewController.xib */; };
-		442C1CA310F4FE8900CB44EC /* ShuttleLocation.m in Sources */ = {isa = PBXBuildFile; fileRef = 442C1CA210F4FE8900CB44EC /* ShuttleLocation.m */; };
 		4463CC9110D6F4A50048CA83 /* CampusMapViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4463CC7A10D6F4A50048CA83 /* CampusMapViewController.m */; };
 		4463CC9810D6F4A50048CA83 /* CMModule.m in Sources */ = {isa = PBXBuildFile; fileRef = 4463CC8810D6F4A50048CA83 /* CMModule.m */; };
 		4463CC9B10D6F4A50048CA83 /* MapSearchResultAnnotation.m in Sources */ = {isa = PBXBuildFile; fileRef = 4463CC8E10D6F4A50048CA83 /* MapSearchResultAnnotation.m */; };
 		4463CCB210D6F5750048CA83 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4463CCB110D6F5750048CA83 /* CoreLocation.framework */; };
 		4463D09410D92CB00048CA83 /* MITMapDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4463D09210D92CB00048CA83 /* MITMapDetailViewController.m */; };
 		4463D09510D92CB00048CA83 /* MITMapDetailViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4463D09310D92CB00048CA83 /* MITMapDetailViewController.xib */; };
-		448FF58F10FA4BDE00850BC0 /* ShuttleRouteViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 448FF58E10FA4BDE00850BC0 /* ShuttleRouteViewController.xib */; };
 		4499341E11A5E53D00A7041B /* CategoriesTableViewController.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = 4499341C11A5E53D00A7041B /* CategoriesTableViewController.h */; settings = {JAVA_ARCHIVE_SUBDIR = "Modules/Campus Map"; }; };
 		4499341F11A5E53D00A7041B /* CategoriesTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4499341D11A5E53D00A7041B /* CategoriesTableViewController.m */; };
 		44ACF76E1187884300F1F4B2 /* MapBookmarkManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 44ACF76A1187884300F1F4B2 /* MapBookmarkManager.m */; };
 		44ACF76F1187884300F1F4B2 /* MapBookmarkManager.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = 44ACF76B1187884300F1F4B2 /* MapBookmarkManager.h */; settings = {JAVA_ARCHIVE_SUBDIR = "Modules/Campus Map"; }; };
-		44BF5B431100A75C00E150D5 /* RouteInfoTitleCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 44BF5B421100A75C00E150D5 /* RouteInfoTitleCell.m */; };
-		44BF602011050AC000E150D5 /* ShuttleStopCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 44BF601F11050AC000E150D5 /* ShuttleStopCell.m */; };
-		44BF602211050ACE00E150D5 /* ShuttleStopCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 44BF602111050ACE00E150D5 /* ShuttleStopCell.xib */; };
 		44C1A2A811A2F49B000FD653 /* CampusMap.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 44C1A2A711A2F49B000FD653 /* CampusMap.xcdatamodeld */; };
 		44C1A3CE11A33905000FD653 /* MapSelectionController.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = 44C1A3CC11A33905000FD653 /* MapSelectionController.h */; settings = {JAVA_ARCHIVE_SUBDIR = "Modules/Campus Map"; }; };
 		44C1A3CF11A33905000FD653 /* MapSelectionController.m in Sources */ = {isa = PBXBuildFile; fileRef = 44C1A3CD11A33905000FD653 /* MapSelectionController.m */; };
@@ -187,9 +176,6 @@
 		DE18F9EE10F19105009A69B9 /* News.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = DE18F9ED10F19105009A69B9 /* News.xcdatamodeld */; };
 		DE4AB0B410ED5148007476D9 /* NewsStory.m in Sources */ = {isa = PBXBuildFile; fileRef = DE4AB0B310ED5148007476D9 /* NewsStory.m */; };
 		DE6AFDC710D99C4D00B48BA7 /* Foundation+MITAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = DE6AFDC610D99C4D00B48BA7 /* Foundation+MITAdditions.m */; };
-		DE6D32F610346D02008A5823 /* ShuttleModule.m in Sources */ = {isa = PBXBuildFile; fileRef = DE6D32F510346D02008A5823 /* ShuttleModule.m */; };
-		DE6D332B10346F6D008A5823 /* ShuttleRoutes.m in Sources */ = {isa = PBXBuildFile; fileRef = DE6D332A10346F6D008A5823 /* ShuttleRoutes.m */; };
-		DE6D332D10346F78008A5823 /* ShuttleRoutes.xib in Resources */ = {isa = PBXBuildFile; fileRef = DE6D332C10346F78008A5823 /* ShuttleRoutes.xib */; };
 		DE6D9401110AD1ED00DAF213 /* SettingsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DE6D9319110A8EFA00DAF213 /* SettingsTableViewController.m */; };
 		DE6F045A11139CA40046684B /* FBConnectGlobal.m in Sources */ = {isa = PBXBuildFile; fileRef = DE6F044811139CA40046684B /* FBConnectGlobal.m */; };
 		DE6F045B11139CA40046684B /* FBSession.m in Sources */ = {isa = PBXBuildFile; fileRef = DE6F044A11139CA40046684B /* FBSession.m */; };
@@ -201,14 +187,8 @@
 		DE6F046111139CA40046684B /* FBPermissionDialog.m in Sources */ = {isa = PBXBuildFile; fileRef = DE6F045611139CA40046684B /* FBPermissionDialog.m */; };
 		DE6F046211139CA40046684B /* FBStreamDialog.m in Sources */ = {isa = PBXBuildFile; fileRef = DE6F045811139CA40046684B /* FBStreamDialog.m */; };
 		DE6F046311139CA40046684B /* FBConnect.bundle in Resources */ = {isa = PBXBuildFile; fileRef = DE6F045911139CA40046684B /* FBConnect.bundle */; };
-		DE705493103FB792003B5F41 /* ShuttleRoute.m in Sources */ = {isa = PBXBuildFile; fileRef = DE705491103FB792003B5F41 /* ShuttleRoute.m */; };
-		DE70549B103FB79D003B5F41 /* EmergencyData.m in Sources */ = {isa = PBXBuildFile; fileRef = DE705496103FB79D003B5F41 /* EmergencyData.m */; };
-		DE70549C103FB79D003B5F41 /* EmergencyModule.m in Sources */ = {isa = PBXBuildFile; fileRef = DE705498103FB79D003B5F41 /* EmergencyModule.m */; };
-		DE70549D103FB79D003B5F41 /* EmergencyViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DE70549A103FB79D003B5F41 /* EmergencyViewController.m */; };
 		DE715349102FC897005E6111 /* MITModule.m in Sources */ = {isa = PBXBuildFile; fileRef = DE715348102FC897005E6111 /* MITModule.m */; };
 		DE71537C102FD66A005E6111 /* MITModuleList.m in Sources */ = {isa = PBXBuildFile; fileRef = DE71537B102FD66A005E6111 /* MITModuleList.m */; };
-		DE71F6E3104234F900661DED /* ShuttleRouteViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DE71F6E2104234F900661DED /* ShuttleRouteViewController.m */; };
-		DE71F7D510424E3400661DED /* ShuttleStop.m in Sources */ = {isa = PBXBuildFile; fileRef = DE71F7D410424E3400661DED /* ShuttleStop.m */; };
 		DE728E6C10D6FF4700BFED37 /* StoryThumbnailView.m in Sources */ = {isa = PBXBuildFile; fileRef = DE728E4610D6FF4700BFED37 /* StoryThumbnailView.m */; };
 		DE728E7B10D6FF4700BFED37 /* StoryDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DE728E6510D6FF4700BFED37 /* StoryDetailViewController.m */; };
 		DE728E7C10D6FF4700BFED37 /* StoryListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DE728E6710D6FF4700BFED37 /* StoryListViewController.m */; };
@@ -227,7 +207,6 @@
 		DEC02F9D110578240054BE32 /* AboutTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DEC02F9C110578240054BE32 /* AboutTableViewController.m */; };
 		DECBF6B610F8F91B009FAE35 /* NewsImageRep.m in Sources */ = {isa = PBXBuildFile; fileRef = DECBF6B510F8F91B009FAE35 /* NewsImageRep.m */; };
 		DED3CCE910418F5F003D3B74 /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = DED3CCE810418F5F003D3B74 /* Default.png */; };
-		DEE283EE10F5109800B39531 /* Emergency.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = DEE283ED10F5109800B39531 /* Emergency.xcdatamodeld */; };
 		DEE6AECF111740BF0037F03C /* AboutCreditsVC.m in Sources */ = {isa = PBXBuildFile; fileRef = DEE6AECE111740BF0037F03C /* AboutCreditsVC.m */; };
 		DEE6B1CD111774300037F03C /* Entitlements.plist in Resources */ = {isa = PBXBuildFile; fileRef = DEE6B1CC111774300037F03C /* Entitlements.plist */; };
 		EB32946F1166777500DEDC8A /* CalendarEventMapAnnotation.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB32946D1166777500DEDC8A /* CalendarEventMapAnnotation.h */; settings = {JAVA_ARCHIVE_SUBDIR = Modules/Calendar; }; };
@@ -257,16 +236,12 @@
 		EB4211B9120C92C600089FE0 /* MapSavedAnnotation.m in Sources */ = {isa = PBXBuildFile; fileRef = EB4211B7120C92C600089FE0 /* MapSavedAnnotation.m */; };
 		EB49AD4811F4BFB900854791 /* about in Resources */ = {isa = PBXBuildFile; fileRef = EB49AD4511F4BFB900854791 /* about */; };
 		EB49AD5511F4BFCE00854791 /* courses in Resources */ = {isa = PBXBuildFile; fileRef = EB49AD4911F4BFCE00854791 /* courses */; };
-		EB49AD5611F4BFCE00854791 /* emergency in Resources */ = {isa = PBXBuildFile; fileRef = EB49AD4F11F4BFCE00854791 /* emergency */; };
 		EB49AD5711F4BFCE00854791 /* events in Resources */ = {isa = PBXBuildFile; fileRef = EB49AD5211F4BFCE00854791 /* events */; };
 		EB49AD6411F4BFE200854791 /* home in Resources */ = {isa = PBXBuildFile; fileRef = EB49AD5811F4BFE200854791 /* home */; };
 		EB49AD7A11F4BFF100854791 /* maps in Resources */ = {isa = PBXBuildFile; fileRef = EB49AD6511F4BFF100854791 /* maps */; };
 		EB49AD9811F4BFFF00854791 /* news in Resources */ = {isa = PBXBuildFile; fileRef = EB49AD7B11F4BFFF00854791 /* news */; };
-		EB49AD9A11F4BFFF00854791 /* shuttles in Resources */ = {isa = PBXBuildFile; fileRef = EB49AD8611F4BFFF00854791 /* shuttles */; };
 		EB54943810DFF03600B708B3 /* icons in Resources */ = {isa = PBXBuildFile; fileRef = EB54942710DFF03600B708B3 /* icons */; };
 		EB54947310DFF7E200B708B3 /* global in Resources */ = {isa = PBXBuildFile; fileRef = EB54947210DFF7E200B708B3 /* global */; };
-		EB676032114A9316004596BB /* ShuttleRouteCache.m in Sources */ = {isa = PBXBuildFile; fileRef = EB67602F114A9316004596BB /* ShuttleRouteCache.m */; };
-		EB676033114A9316004596BB /* ShuttleStopLocation.m in Sources */ = {isa = PBXBuildFile; fileRef = EB676031114A9316004596BB /* ShuttleStopLocation.m */; };
 		EB6D02A911E3784100B65CE3 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EB6D02A811E3784100B65CE3 /* MapKit.framework */; };
 		EB6D076811E50E5B00B65CE3 /* JSONAPIRequest.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB6D076611E50E5B00B65CE3 /* JSONAPIRequest.h */; settings = {JAVA_ARCHIVE_SUBDIR = Common/Connection; }; };
 		EB6D076911E50E5B00B65CE3 /* JSONAPIRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = EB6D076711E50E5B00B65CE3 /* JSONAPIRequest.m */; };
@@ -459,7 +434,6 @@
 		EB83926B1163F7B00067C0A3 /* CalendarDataManager.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB8392691163F7B00067C0A3 /* CalendarDataManager.h */; settings = {JAVA_ARCHIVE_SUBDIR = Modules/Calendar; }; };
 		EB83926C1163F7B00067C0A3 /* CalendarDataManager.m in Sources */ = {isa = PBXBuildFile; fileRef = EB83926A1163F7B00067C0A3 /* CalendarDataManager.m */; };
 		EB8392A01163FD6E0067C0A3 /* Calendar.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = EB83929F1163FD6E0067C0A3 /* Calendar.xcdatamodeld */; };
-		EB86944D115120C4003AEDFA /* ShuttleRouteStop.m in Sources */ = {isa = PBXBuildFile; fileRef = EB86944C115120C4003AEDFA /* ShuttleRouteStop.m */; };
 		EB86CA6F115D276700C8F3D1 /* CalendarModule.m in Sources */ = {isa = PBXBuildFile; fileRef = EB86CA6E115D276700C8F3D1 /* CalendarModule.m */; };
 		EB86CAC6115D4ED500C8F3D1 /* CalendarEventsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EB86CAC5115D4ED500C8F3D1 /* CalendarEventsViewController.m */; };
 		EB976D17116CF6630036A18E /* EventListTableView.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB976D15116CF6630036A18E /* EventListTableView.h */; settings = {JAVA_ARCHIVE_SUBDIR = Modules/Calendar; }; };
@@ -475,8 +449,11 @@
 		EBAE86401215FB0D00F370BE /* Harvard-Mobile-Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = EBAE863E1215FB0D00F370BE /* Harvard-Mobile-Icon.png */; };
 		EBAE86411215FB0D00F370BE /* Harvard-Mobile-Icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = EBAE863F1215FB0D00F370BE /* Harvard-Mobile-Icon@2x.png */; };
 		EBAE86451215FB4900F370BE /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = EBAE86441215FB4900F370BE /* Default@2x.png */; };
-		EBCB4DEE10D30AA2001219FD /* EmergencyContactsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EBCB4DED10D30AA2001219FD /* EmergencyContactsViewController.m */; };
-		EBDB0C4D11484072008AAE42 /* ShuttleTrack.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = EBDB0C4C11484072008AAE42 /* ShuttleTrack.xcdatamodeld */; };
+		EBAE877612197EF400F370BE /* schools.plist in Resources */ = {isa = PBXBuildFile; fileRef = EBAE877512197EF400F370BE /* schools.plist */; };
+		EBAE878512198B2500F370BE /* SchoolsModule.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EBAE878112198B2500F370BE /* SchoolsModule.h */; settings = {JAVA_ARCHIVE_SUBDIR = Modules/Schools; }; };
+		EBAE878612198B2500F370BE /* SchoolsModule.m in Sources */ = {isa = PBXBuildFile; fileRef = EBAE878212198B2500F370BE /* SchoolsModule.m */; };
+		EBAE878712198B2500F370BE /* SchoolsViewController.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EBAE878312198B2500F370BE /* SchoolsViewController.h */; settings = {JAVA_ARCHIVE_SUBDIR = Modules/Schools; }; };
+		EBAE878812198B2500F370BE /* SchoolsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EBAE878412198B2500F370BE /* SchoolsViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -584,8 +561,6 @@
 		29C454BF118B61CA00A321B0 /* SFHFKeychainUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFHFKeychainUtils.m; sourceTree = "<group>"; };
 		29E308841176018C005211A7 /* MITModuleURL.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MITModuleURL.h; sourceTree = "<group>"; };
 		29E308851176018C005211A7 /* MITModuleURL.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MITModuleURL.m; sourceTree = "<group>"; };
-		29EB610910FE47220085D32B /* ShuttleSubscriptionManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShuttleSubscriptionManager.h; sourceTree = "<group>"; };
-		29EB610A10FE47220085D32B /* ShuttleSubscriptionManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShuttleSubscriptionManager.m; sourceTree = "<group>"; };
 		3A82707F103DAA0500BB4109 /* Reachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Reachability.h; sourceTree = "<group>"; };
 		3A827080103DAA0500BB4109 /* Reachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Reachability.m; sourceTree = "<group>"; };
 		3A82708C103DAA2400BB4109 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = ../../../../../System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SOURCE_ROOT; };
@@ -598,20 +573,9 @@
 		3AA21C551039DDEA00DB7637 /* CoreDataManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CoreDataManager.m; sourceTree = "<group>"; };
 		441009DC110A6DAF00451B23 /* CampusMapToolbar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CampusMapToolbar.h; sourceTree = "<group>"; };
 		441009DD110A6DAF00451B23 /* CampusMapToolbar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CampusMapToolbar.m; sourceTree = "<group>"; };
-		4420F22F10E9513700A8CD05 /* ShuttleDataManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShuttleDataManager.h; sourceTree = "<group>"; };
-		4420F23010E9513700A8CD05 /* ShuttleDataManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShuttleDataManager.m; sourceTree = "<group>"; };
-		4420F31910E96EBE00A8CD05 /* ShuttleStopMapAnnotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShuttleStopMapAnnotation.h; sourceTree = "<group>"; };
-		4420F31A10E96EBE00A8CD05 /* ShuttleStopMapAnnotation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShuttleStopMapAnnotation.m; sourceTree = "<group>"; };
-		4420F62710EBA5D000A8CD05 /* ShuttleStopViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShuttleStopViewController.h; sourceTree = "<group>"; };
-		4420F62810EBA5D000A8CD05 /* ShuttleStopViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShuttleStopViewController.m; sourceTree = "<group>"; };
 		44293C3210DAE88500273119 /* MapSearchResultsTableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MapSearchResultsTableView.h; sourceTree = "<group>"; };
 		44293C3310DAE88500273119 /* MapSearchResultsTableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MapSearchResultsTableView.m; sourceTree = "<group>"; };
-		442C192710F3AE3400CB44EC /* RouteMapViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RouteMapViewController.h; sourceTree = "<group>"; };
-		442C192810F3AE3400CB44EC /* RouteMapViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RouteMapViewController.m; sourceTree = "<group>"; };
-		442C192910F3AE3400CB44EC /* RouteMapViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RouteMapViewController.xib; sourceTree = "<group>"; };
 		442C195410F3B21400CB44EC /* MITMapRoute.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MITMapRoute.h; sourceTree = "<group>"; };
-		442C1CA110F4FE8900CB44EC /* ShuttleLocation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShuttleLocation.h; sourceTree = "<group>"; };
-		442C1CA210F4FE8900CB44EC /* ShuttleLocation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShuttleLocation.m; sourceTree = "<group>"; };
 		4463CC7910D6F4A50048CA83 /* CampusMapViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CampusMapViewController.h; sourceTree = "<group>"; };
 		4463CC7A10D6F4A50048CA83 /* CampusMapViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CampusMapViewController.m; sourceTree = "<group>"; };
 		4463CC8710D6F4A50048CA83 /* CMModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CMModule.h; sourceTree = "<group>"; };
@@ -622,16 +586,10 @@
 		4463D09110D92CB00048CA83 /* MITMapDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MITMapDetailViewController.h; sourceTree = "<group>"; };
 		4463D09210D92CB00048CA83 /* MITMapDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MITMapDetailViewController.m; sourceTree = "<group>"; };
 		4463D09310D92CB00048CA83 /* MITMapDetailViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MITMapDetailViewController.xib; sourceTree = "<group>"; };
-		448FF58E10FA4BDE00850BC0 /* ShuttleRouteViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ShuttleRouteViewController.xib; sourceTree = "<group>"; };
 		4499341C11A5E53D00A7041B /* CategoriesTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CategoriesTableViewController.h; sourceTree = "<group>"; };
 		4499341D11A5E53D00A7041B /* CategoriesTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CategoriesTableViewController.m; sourceTree = "<group>"; };
 		44ACF76A1187884300F1F4B2 /* MapBookmarkManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MapBookmarkManager.m; sourceTree = "<group>"; };
 		44ACF76B1187884300F1F4B2 /* MapBookmarkManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MapBookmarkManager.h; sourceTree = "<group>"; };
-		44BF5B411100A75C00E150D5 /* RouteInfoTitleCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RouteInfoTitleCell.h; sourceTree = "<group>"; };
-		44BF5B421100A75C00E150D5 /* RouteInfoTitleCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RouteInfoTitleCell.m; sourceTree = "<group>"; };
-		44BF601E11050ABF00E150D5 /* ShuttleStopCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShuttleStopCell.h; sourceTree = "<group>"; };
-		44BF601F11050AC000E150D5 /* ShuttleStopCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShuttleStopCell.m; sourceTree = "<group>"; };
-		44BF602111050ACE00E150D5 /* ShuttleStopCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ShuttleStopCell.xib; sourceTree = "<group>"; };
 		44C1A26E11A2EA04000FD653 /* CampusMap.xcdatamodel */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = wrapper.xcdatamodel; path = CampusMap.xcdatamodel; sourceTree = "<group>"; };
 		44C1A3CC11A33905000FD653 /* MapSelectionController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MapSelectionController.h; sourceTree = "<group>"; };
 		44C1A3CD11A33905000FD653 /* MapSelectionController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MapSelectionController.m; sourceTree = "<group>"; };
@@ -712,11 +670,6 @@
 		DE4AB0B310ED5148007476D9 /* NewsStory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NewsStory.m; sourceTree = "<group>"; };
 		DE6AFDC510D99C4D00B48BA7 /* Foundation+MITAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Foundation+MITAdditions.h"; sourceTree = "<group>"; };
 		DE6AFDC610D99C4D00B48BA7 /* Foundation+MITAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "Foundation+MITAdditions.m"; sourceTree = "<group>"; };
-		DE6D32F410346D02008A5823 /* ShuttleModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShuttleModule.h; sourceTree = "<group>"; };
-		DE6D32F510346D02008A5823 /* ShuttleModule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShuttleModule.m; sourceTree = "<group>"; };
-		DE6D332910346F6D008A5823 /* ShuttleRoutes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShuttleRoutes.h; sourceTree = "<group>"; };
-		DE6D332A10346F6D008A5823 /* ShuttleRoutes.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShuttleRoutes.m; sourceTree = "<group>"; };
-		DE6D332C10346F78008A5823 /* ShuttleRoutes.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ShuttleRoutes.xib; sourceTree = "<group>"; };
 		DE6D9318110A8EFA00DAF213 /* SettingsTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SettingsTableViewController.h; path = Settings/SettingsTableViewController.h; sourceTree = "<group>"; };
 		DE6D9319110A8EFA00DAF213 /* SettingsTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SettingsTableViewController.m; path = Settings/SettingsTableViewController.m; sourceTree = "<group>"; };
 		DE6F044611139CA40046684B /* FBConnect.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FBConnect.h; path = "Facebook Connect/FBConnect/FBConnect.h"; sourceTree = "<group>"; };
@@ -739,22 +692,10 @@
 		DE6F045711139CA40046684B /* FBStreamDialog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FBStreamDialog.h; path = "Facebook Connect/FBConnect/FBStreamDialog.h"; sourceTree = "<group>"; };
 		DE6F045811139CA40046684B /* FBStreamDialog.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FBStreamDialog.m; path = "Facebook Connect/FBStreamDialog.m"; sourceTree = "<group>"; };
 		DE6F045911139CA40046684B /* FBConnect.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = FBConnect.bundle; path = "Facebook Connect/FBConnect.bundle"; sourceTree = "<group>"; };
-		DE705490103FB792003B5F41 /* ShuttleRoute.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShuttleRoute.h; sourceTree = "<group>"; };
-		DE705491103FB792003B5F41 /* ShuttleRoute.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShuttleRoute.m; sourceTree = "<group>"; };
-		DE705495103FB79D003B5F41 /* EmergencyData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EmergencyData.h; sourceTree = "<group>"; };
-		DE705496103FB79D003B5F41 /* EmergencyData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EmergencyData.m; sourceTree = "<group>"; };
-		DE705497103FB79D003B5F41 /* EmergencyModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EmergencyModule.h; sourceTree = "<group>"; };
-		DE705498103FB79D003B5F41 /* EmergencyModule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EmergencyModule.m; sourceTree = "<group>"; };
-		DE705499103FB79D003B5F41 /* EmergencyViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EmergencyViewController.h; sourceTree = "<group>"; };
-		DE70549A103FB79D003B5F41 /* EmergencyViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EmergencyViewController.m; sourceTree = "<group>"; };
 		DE715347102FC897005E6111 /* MITModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MITModule.h; sourceTree = "<group>"; };
 		DE715348102FC897005E6111 /* MITModule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MITModule.m; sourceTree = "<group>"; };
 		DE71537A102FD66A005E6111 /* MITModuleList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MITModuleList.h; path = "App Delegate/MITModuleList.h"; sourceTree = "<group>"; };
 		DE71537B102FD66A005E6111 /* MITModuleList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MITModuleList.m; path = "App Delegate/MITModuleList.m"; sourceTree = "<group>"; };
-		DE71F6E1104234F900661DED /* ShuttleRouteViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShuttleRouteViewController.h; sourceTree = "<group>"; };
-		DE71F6E2104234F900661DED /* ShuttleRouteViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShuttleRouteViewController.m; sourceTree = "<group>"; };
-		DE71F7D310424E3400661DED /* ShuttleStop.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShuttleStop.h; sourceTree = "<group>"; };
-		DE71F7D410424E3400661DED /* ShuttleStop.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShuttleStop.m; sourceTree = "<group>"; };
 		DE728E4510D6FF4700BFED37 /* StoryThumbnailView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StoryThumbnailView.h; sourceTree = "<group>"; };
 		DE728E4610D6FF4700BFED37 /* StoryThumbnailView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StoryThumbnailView.m; sourceTree = "<group>"; };
 		DE728E6410D6FF4700BFED37 /* StoryDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StoryDetailViewController.h; sourceTree = "<group>"; };
@@ -787,7 +728,6 @@
 		DECBF6B410F8F91B009FAE35 /* NewsImageRep.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NewsImageRep.h; sourceTree = "<group>"; };
 		DECBF6B510F8F91B009FAE35 /* NewsImageRep.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NewsImageRep.m; sourceTree = "<group>"; };
 		DED3CCE810418F5F003D3B74 /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Default.png; path = Resources/Default.png; sourceTree = "<group>"; };
-		DEE283E910F5109000B39531 /* Emergency.xcdatamodel */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = wrapper.xcdatamodel; path = Emergency.xcdatamodel; sourceTree = "<group>"; };
 		DEE6AECD111740BF0037F03C /* AboutCreditsVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AboutCreditsVC.h; sourceTree = "<group>"; };
 		DEE6AECE111740BF0037F03C /* AboutCreditsVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AboutCreditsVC.m; sourceTree = "<group>"; };
 		DEE6B1CC111774300037F03C /* Entitlements.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Entitlements.plist; sourceTree = "<group>"; };
@@ -818,18 +758,12 @@
 		EB4211B7120C92C600089FE0 /* MapSavedAnnotation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MapSavedAnnotation.m; sourceTree = "<group>"; };
 		EB49AD4511F4BFB900854791 /* about */ = {isa = PBXFileReference; lastKnownFileType = folder; name = about; path = Resources/about; sourceTree = "<group>"; };
 		EB49AD4911F4BFCE00854791 /* courses */ = {isa = PBXFileReference; lastKnownFileType = folder; name = courses; path = Resources/courses; sourceTree = "<group>"; };
-		EB49AD4F11F4BFCE00854791 /* emergency */ = {isa = PBXFileReference; lastKnownFileType = folder; name = emergency; path = Resources/emergency; sourceTree = "<group>"; };
 		EB49AD5211F4BFCE00854791 /* events */ = {isa = PBXFileReference; lastKnownFileType = folder; name = events; path = Resources/events; sourceTree = "<group>"; };
 		EB49AD5811F4BFE200854791 /* home */ = {isa = PBXFileReference; lastKnownFileType = folder; name = home; path = Resources/home; sourceTree = "<group>"; };
 		EB49AD6511F4BFF100854791 /* maps */ = {isa = PBXFileReference; lastKnownFileType = folder; name = maps; path = Resources/maps; sourceTree = "<group>"; };
 		EB49AD7B11F4BFFF00854791 /* news */ = {isa = PBXFileReference; lastKnownFileType = folder; name = news; path = Resources/news; sourceTree = "<group>"; };
-		EB49AD8611F4BFFF00854791 /* shuttles */ = {isa = PBXFileReference; lastKnownFileType = folder; name = shuttles; path = Resources/shuttles; sourceTree = "<group>"; };
 		EB54942710DFF03600B708B3 /* icons */ = {isa = PBXFileReference; lastKnownFileType = folder; name = icons; path = Resources/icons; sourceTree = "<group>"; };
 		EB54947210DFF7E200B708B3 /* global */ = {isa = PBXFileReference; lastKnownFileType = folder; name = global; path = Resources/global; sourceTree = "<group>"; };
-		EB67602E114A9316004596BB /* ShuttleRouteCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ShuttleRouteCache.h; path = Model/ShuttleRouteCache.h; sourceTree = "<group>"; };
-		EB67602F114A9316004596BB /* ShuttleRouteCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ShuttleRouteCache.m; path = Model/ShuttleRouteCache.m; sourceTree = "<group>"; };
-		EB676030114A9316004596BB /* ShuttleStopLocation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ShuttleStopLocation.h; path = Model/ShuttleStopLocation.h; sourceTree = "<group>"; };
-		EB676031114A9316004596BB /* ShuttleStopLocation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ShuttleStopLocation.m; path = Model/ShuttleStopLocation.m; sourceTree = "<group>"; };
 		EB6D02A811E3784100B65CE3 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		EB6D076611E50E5B00B65CE3 /* JSONAPIRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JSONAPIRequest.h; sourceTree = "<group>"; };
 		EB6D076711E50E5B00B65CE3 /* JSONAPIRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JSONAPIRequest.m; sourceTree = "<group>"; };
@@ -1033,8 +967,6 @@
 		EB8392451163EF340067C0A3 /* EventCategory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EventCategory.m; sourceTree = "<group>"; };
 		EB8392691163F7B00067C0A3 /* CalendarDataManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CalendarDataManager.h; sourceTree = "<group>"; };
 		EB83926A1163F7B00067C0A3 /* CalendarDataManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CalendarDataManager.m; sourceTree = "<group>"; };
-		EB86944B115120C4003AEDFA /* ShuttleRouteStop.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ShuttleRouteStop.h; path = Model/ShuttleRouteStop.h; sourceTree = "<group>"; };
-		EB86944C115120C4003AEDFA /* ShuttleRouteStop.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ShuttleRouteStop.m; path = Model/ShuttleRouteStop.m; sourceTree = "<group>"; };
 		EB86CA6D115D276700C8F3D1 /* CalendarModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CalendarModule.h; sourceTree = "<group>"; };
 		EB86CA6E115D276700C8F3D1 /* CalendarModule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CalendarModule.m; sourceTree = "<group>"; };
 		EB86CAC4115D4ED500C8F3D1 /* CalendarEventsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CalendarEventsViewController.h; sourceTree = "<group>"; };
@@ -1054,10 +986,12 @@
 		EBAE863E1215FB0D00F370BE /* Harvard-Mobile-Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Harvard-Mobile-Icon.png"; path = "Resources/Harvard-Mobile-Icon.png"; sourceTree = "<group>"; };
 		EBAE863F1215FB0D00F370BE /* Harvard-Mobile-Icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Harvard-Mobile-Icon@2x.png"; path = "Resources/Harvard-Mobile-Icon@2x.png"; sourceTree = "<group>"; };
 		EBAE86441215FB4900F370BE /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Default@2x.png"; path = "Resources/Default@2x.png"; sourceTree = "<group>"; };
+		EBAE877512197EF400F370BE /* schools.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = schools.plist; path = Resources/schools.plist; sourceTree = "<group>"; };
+		EBAE878112198B2500F370BE /* SchoolsModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SchoolsModule.h; path = Schools/SchoolsModule.h; sourceTree = "<group>"; };
+		EBAE878212198B2500F370BE /* SchoolsModule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SchoolsModule.m; path = Schools/SchoolsModule.m; sourceTree = "<group>"; };
+		EBAE878312198B2500F370BE /* SchoolsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SchoolsViewController.h; path = Schools/SchoolsViewController.h; sourceTree = "<group>"; };
+		EBAE878412198B2500F370BE /* SchoolsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SchoolsViewController.m; path = Schools/SchoolsViewController.m; sourceTree = "<group>"; };
 		EBCA123210CEF3C400577C5D /* PeopleSearchViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PeopleSearchViewController.h; sourceTree = "<group>"; };
-		EBCB4DEC10D30AA1001219FD /* EmergencyContactsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EmergencyContactsViewController.h; sourceTree = "<group>"; };
-		EBCB4DED10D30AA2001219FD /* EmergencyContactsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EmergencyContactsViewController.m; sourceTree = "<group>"; };
-		EBDB0C4811484057008AAE42 /* ShuttleTrack.xcdatamodel */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = wrapper.xcdatamodel; path = ShuttleTrack.xcdatamodel; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1174,11 +1108,9 @@
 				A623F2E5120A1BFC00341C5E /* settings */,
 				A64C36CA1207066D006FE056 /* peopleSearchStaticPhoneRowsArray.plist */,
 				EB49AD7B11F4BFFF00854791 /* news */,
-				EB49AD8611F4BFFF00854791 /* shuttles */,
 				EB49AD6511F4BFF100854791 /* maps */,
 				EB49AD5811F4BFE200854791 /* home */,
 				EB49AD4911F4BFCE00854791 /* courses */,
-				EB49AD4F11F4BFCE00854791 /* emergency */,
 				EB49AD5211F4BFCE00854791 /* events */,
 				EB49AD4511F4BFB900854791 /* about */,
 				EB54947210DFF7E200B708B3 /* global */,
@@ -1188,6 +1120,7 @@
 				8D1107310486CEB800E47090 /* MIT_Mobile-Info.plist */,
 				DED3CCE810418F5F003D3B74 /* Default.png */,
 				DEE6B1CC111774300037F03C /* Entitlements.plist */,
+				EBAE877512197EF400F370BE /* schools.plist */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -1484,11 +1417,10 @@
 				EB7F326610CD6C5B00188BCD /* People */,
 				DE81CF5F10C6BC390085573D /* News */,
 				DE715446102FE468005E6111 /* Campus Map */,
-				DE715447102FE468005E6111 /* Emergency */,
-				DE715449102FE468005E6111 /* ShuttleTrack */,
 				DE71544A102FE468005E6111 /* Stellar */,
 				DE9EFBCE10FE7D3200F5F07E /* Settings */,
 				DE81CF5E10C6BC390085573D /* About */,
+				EBAE877C12198AA300F370BE /* Schools */,
 				DE81CF6310C6BC490085573D /* Mobile Web */,
 			);
 			path = Modules;
@@ -1513,65 +1445,11 @@
 				4463D09310D92CB00048CA83 /* MITMapDetailViewController.xib */,
 				44293C3210DAE88500273119 /* MapSearchResultsTableView.h */,
 				44293C3310DAE88500273119 /* MapSearchResultsTableView.m */,
-				4420F31910E96EBE00A8CD05 /* ShuttleStopMapAnnotation.h */,
-				4420F31A10E96EBE00A8CD05 /* ShuttleStopMapAnnotation.m */,
 				442C195410F3B21400CB44EC /* MITMapRoute.h */,
 				EB7BA33C11F7677F00B3DDA6 /* PolygonOverlay.h */,
 				EB7BA33D11F7677F00B3DDA6 /* PolygonOverlay.m */,
 			);
 			path = "Campus Map";
-			sourceTree = "<group>";
-		};
-		DE715447102FE468005E6111 /* Emergency */ = {
-			isa = PBXGroup;
-			children = (
-				DE705495103FB79D003B5F41 /* EmergencyData.h */,
-				DE705496103FB79D003B5F41 /* EmergencyData.m */,
-				DE705497103FB79D003B5F41 /* EmergencyModule.h */,
-				DE705498103FB79D003B5F41 /* EmergencyModule.m */,
-				DE705499103FB79D003B5F41 /* EmergencyViewController.h */,
-				DE70549A103FB79D003B5F41 /* EmergencyViewController.m */,
-				EBCB4DEC10D30AA1001219FD /* EmergencyContactsViewController.h */,
-				EBCB4DED10D30AA2001219FD /* EmergencyContactsViewController.m */,
-				DEE283ED10F5109800B39531 /* Emergency.xcdatamodeld */,
-			);
-			path = Emergency;
-			sourceTree = "<group>";
-		};
-		DE715449102FE468005E6111 /* ShuttleTrack */ = {
-			isa = PBXGroup;
-			children = (
-				DE6D332910346F6D008A5823 /* ShuttleRoutes.h */,
-				DE6D332A10346F6D008A5823 /* ShuttleRoutes.m */,
-				DE6D332C10346F78008A5823 /* ShuttleRoutes.xib */,
-				44BF5B411100A75C00E150D5 /* RouteInfoTitleCell.h */,
-				44BF5B421100A75C00E150D5 /* RouteInfoTitleCell.m */,
-				DE71F6E1104234F900661DED /* ShuttleRouteViewController.h */,
-				DE71F6E2104234F900661DED /* ShuttleRouteViewController.m */,
-				448FF58E10FA4BDE00850BC0 /* ShuttleRouteViewController.xib */,
-				442C192710F3AE3400CB44EC /* RouteMapViewController.h */,
-				442C192810F3AE3400CB44EC /* RouteMapViewController.m */,
-				442C192910F3AE3400CB44EC /* RouteMapViewController.xib */,
-				4420F62710EBA5D000A8CD05 /* ShuttleStopViewController.h */,
-				4420F62810EBA5D000A8CD05 /* ShuttleStopViewController.m */,
-				44BF601E11050ABF00E150D5 /* ShuttleStopCell.h */,
-				44BF601F11050AC000E150D5 /* ShuttleStopCell.m */,
-				44BF602111050ACE00E150D5 /* ShuttleStopCell.xib */,
-				EBDB0C4711483FE3008AAE42 /* Model */,
-				DE6D32F410346D02008A5823 /* ShuttleModule.h */,
-				DE6D32F510346D02008A5823 /* ShuttleModule.m */,
-				DE705490103FB792003B5F41 /* ShuttleRoute.h */,
-				DE705491103FB792003B5F41 /* ShuttleRoute.m */,
-				DE71F7D310424E3400661DED /* ShuttleStop.h */,
-				DE71F7D410424E3400661DED /* ShuttleStop.m */,
-				4420F22F10E9513700A8CD05 /* ShuttleDataManager.h */,
-				4420F23010E9513700A8CD05 /* ShuttleDataManager.m */,
-				442C1CA110F4FE8900CB44EC /* ShuttleLocation.h */,
-				442C1CA210F4FE8900CB44EC /* ShuttleLocation.m */,
-				29EB610910FE47220085D32B /* ShuttleSubscriptionManager.h */,
-				29EB610A10FE47220085D32B /* ShuttleSubscriptionManager.m */,
-			);
-			path = ShuttleTrack;
 			sourceTree = "<group>";
 		};
 		DE71544A102FE468005E6111 /* Stellar */ = {
@@ -1972,18 +1850,15 @@
 			path = Calendar;
 			sourceTree = "<group>";
 		};
-		EBDB0C4711483FE3008AAE42 /* Model */ = {
+		EBAE877C12198AA300F370BE /* Schools */ = {
 			isa = PBXGroup;
 			children = (
-				EB67602E114A9316004596BB /* ShuttleRouteCache.h */,
-				EB67602F114A9316004596BB /* ShuttleRouteCache.m */,
-				EB676030114A9316004596BB /* ShuttleStopLocation.h */,
-				EB676031114A9316004596BB /* ShuttleStopLocation.m */,
-				EB86944B115120C4003AEDFA /* ShuttleRouteStop.h */,
-				EB86944C115120C4003AEDFA /* ShuttleRouteStop.m */,
-				EBDB0C4C11484072008AAE42 /* ShuttleTrack.xcdatamodeld */,
+				EBAE878112198B2500F370BE /* SchoolsModule.h */,
+				EBAE878212198B2500F370BE /* SchoolsModule.m */,
+				EBAE878312198B2500F370BE /* SchoolsViewController.h */,
+				EBAE878412198B2500F370BE /* SchoolsViewController.m */,
 			);
-			name = Model;
+			name = Schools;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -2094,6 +1969,8 @@
 				C7B10F531213488100CFB837 /* StellarMainSearch.h in JavaArchive */,
 				C7B10F7312134F2800CFB837 /* CoursesSearchTableViewController.h in JavaArchive */,
 				C7DA11B912138C2F00FE8756 /* MainSearchGroupedCoursesTableViewController.h in JavaArchive */,
+				EBAE878512198B2500F370BE /* SchoolsModule.h in JavaArchive */,
+				EBAE878712198B2500F370BE /* SchoolsViewController.h in JavaArchive */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2149,15 +2026,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				28AD73600D9D9599002E5188 /* MainWindow.xib in Resources */,
-				DE6D332D10346F78008A5823 /* ShuttleRoutes.xib in Resources */,
 				DE89FB95103D019A000E35B4 /* Modules in Resources */,
 				DED3CCE910418F5F003D3B74 /* Default.png in Resources */,
 				4463D09510D92CB00048CA83 /* MITMapDetailViewController.xib in Resources */,
 				EB54943810DFF03600B708B3 /* icons in Resources */,
 				EB54947310DFF7E200B708B3 /* global in Resources */,
-				442C192B10F3AE3400CB44EC /* RouteMapViewController.xib in Resources */,
-				448FF58F10FA4BDE00850BC0 /* ShuttleRouteViewController.xib in Resources */,
-				44BF602211050ACE00E150D5 /* ShuttleStopCell.xib in Resources */,
 				DE6F046311139CA40046684B /* FBConnect.bundle in Resources */,
 				DEE6B1CD111774300037F03C /* Entitlements.plist in Resources */,
 				29C4546D118B55E100A321B0 /* jQueryInject.txt in Resources */,
@@ -2167,12 +2040,10 @@
 				EB6D105111EE0F9100B65CE3 /* proj_config.h.in in Resources */,
 				EB49AD4811F4BFB900854791 /* about in Resources */,
 				EB49AD5511F4BFCE00854791 /* courses in Resources */,
-				EB49AD5611F4BFCE00854791 /* emergency in Resources */,
 				EB49AD5711F4BFCE00854791 /* events in Resources */,
 				EB49AD6411F4BFE200854791 /* home in Resources */,
 				EB49AD7A11F4BFF100854791 /* maps in Resources */,
 				EB49AD9811F4BFFF00854791 /* news in Resources */,
-				EB49AD9A11F4BFFF00854791 /* shuttles in Resources */,
 				A64C36CB1207066D006FE056 /* peopleSearchStaticPhoneRowsArray.plist in Resources */,
 				A6FC4C72120A2C200046FF36 /* settings in Resources */,
 				EB421101120B831500089FE0 /* dining in Resources */,
@@ -2180,6 +2051,7 @@
 				EBAE86401215FB0D00F370BE /* Harvard-Mobile-Icon.png in Resources */,
 				EBAE86411215FB0D00F370BE /* Harvard-Mobile-Icon@2x.png in Resources */,
 				EBAE86451215FB4900F370BE /* Default@2x.png in Resources */,
+				EBAE877612197EF400F370BE /* schools.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2210,8 +2082,6 @@
 				1D3623260D0F684500981E51 /* MIT_MobileAppDelegate.m in Sources */,
 				DE715349102FC897005E6111 /* MITModule.m in Sources */,
 				DE71537C102FD66A005E6111 /* MITModuleList.m in Sources */,
-				DE6D32F610346D02008A5823 /* ShuttleModule.m in Sources */,
-				DE6D332B10346F6D008A5823 /* ShuttleRoutes.m in Sources */,
 				3AA21C531039DDE000DB7637 /* ConnectionWrapper.m in Sources */,
 				3AA21C561039DDEA00DB7637 /* CoreDataManager.m in Sources */,
 				BD1E9309103B5D60004429AA /* NSObject+SBJSON.m in Sources */,
@@ -2222,12 +2092,6 @@
 				BD1E930E103B5D60004429AA /* SBJsonWriter.m in Sources */,
 				3A827081103DAA0500BB4109 /* Reachability.m in Sources */,
 				3A827171103DBC6F00BB4109 /* ConnectionDetector.m in Sources */,
-				DE705493103FB792003B5F41 /* ShuttleRoute.m in Sources */,
-				DE70549B103FB79D003B5F41 /* EmergencyData.m in Sources */,
-				DE70549C103FB79D003B5F41 /* EmergencyModule.m in Sources */,
-				DE70549D103FB79D003B5F41 /* EmergencyViewController.m in Sources */,
-				DE71F6E3104234F900661DED /* ShuttleRouteViewController.m in Sources */,
-				DE71F7D510424E3400661DED /* ShuttleStop.m in Sources */,
 				DE81CF6210C6BC390085573D /* NewsModule.m in Sources */,
 				DE81CF6610C6BC630085573D /* MobileWebModule.m in Sources */,
 				DEA3B48D10C9BB7300BDA774 /* AboutModule.m in Sources */,
@@ -2249,7 +2113,6 @@
 				297746D110D3526200ACFCE6 /* StellarAnnouncement.m in Sources */,
 				297746D210D3526200ACFCE6 /* StellarClassTime.m in Sources */,
 				297746D310D3526200ACFCE6 /* StellarCourse.m in Sources */,
-				EBCB4DEE10D30AA2001219FD /* EmergencyContactsViewController.m in Sources */,
 				4463CC9110D6F4A50048CA83 /* CampusMapViewController.m in Sources */,
 				4463CC9810D6F4A50048CA83 /* CMModule.m in Sources */,
 				4463CC9B10D6F4A50048CA83 /* MapSearchResultAnnotation.m in Sources */,
@@ -2271,24 +2134,15 @@
 				EB6FD1F910E19D7900D56BE1 /* SecondaryGroupedTableViewCell.m in Sources */,
 				EB6F2B6610E901E000A29A2A /* UITableView+MITUIAdditions.m in Sources */,
 				EB6F2B6710E901E000A29A2A /* UITableViewCell+MITUIAdditions.m in Sources */,
-				4420F23110E9513700A8CD05 /* ShuttleDataManager.m in Sources */,
-				4420F31B10E96EBE00A8CD05 /* ShuttleStopMapAnnotation.m in Sources */,
 				DE821E8110EAB4F500B4C4C8 /* UIKit+MITAdditions.m in Sources */,
-				4420F62910EBA5D000A8CD05 /* ShuttleStopViewController.m in Sources */,
 				DE4AB0B410ED5148007476D9 /* NewsStory.m in Sources */,
 				DE18F9EE10F19105009A69B9 /* News.xcdatamodeld in Sources */,
 				2978864510F03656002670CC /* MITDeviceRegistration.m in Sources */,
 				2978864610F03656002670CC /* MITUnreadNotifications.m in Sources */,
-				442C192A10F3AE3400CB44EC /* RouteMapViewController.m in Sources */,
-				DEE283EE10F5109800B39531 /* Emergency.xcdatamodeld in Sources */,
-				442C1CA310F4FE8900CB44EC /* ShuttleLocation.m in Sources */,
 				DECBF6B610F8F91B009FAE35 /* NewsImageRep.m in Sources */,
 				DE9EFBD210FE7D8900F5F07E /* SettingsModule.m in Sources */,
-				29EB610B10FE47220085D32B /* ShuttleSubscriptionManager.m in Sources */,
 				DEAFEFA910FFE35B00F0573E /* StoryGalleryViewController.m in Sources */,
-				44BF5B431100A75C00E150D5 /* RouteInfoTitleCell.m in Sources */,
 				DEC02D2D11053A850054BE32 /* StoryImageView.m in Sources */,
-				44BF602011050AC000E150D5 /* ShuttleStopCell.m in Sources */,
 				DEC02F9D110578240054BE32 /* AboutTableViewController.m in Sources */,
 				441009DE110A6DAF00451B23 /* CampusMapToolbar.m in Sources */,
 				DE6D9401110AD1ED00DAF213 /* SettingsTableViewController.m in Sources */,
@@ -2304,10 +2158,6 @@
 				DE6F046211139CA40046684B /* FBStreamDialog.m in Sources */,
 				DEE6AECF111740BF0037F03C /* AboutCreditsVC.m in Sources */,
 				29747C70114AEFBA0091F18C /* StellarClass.m in Sources */,
-				EBDB0C4D11484072008AAE42 /* ShuttleTrack.xcdatamodeld in Sources */,
-				EB676032114A9316004596BB /* ShuttleRouteCache.m in Sources */,
-				EB676033114A9316004596BB /* ShuttleStopLocation.m in Sources */,
-				EB86944D115120C4003AEDFA /* ShuttleRouteStop.m in Sources */,
 				29974B711160F1DA009D03B9 /* URLShortener.m in Sources */,
 				EB86CA6F115D276700C8F3D1 /* CalendarModule.m in Sources */,
 				EB86CAC6115D4ED500C8F3D1 /* CalendarEventsViewController.m in Sources */,
@@ -2528,6 +2378,8 @@
 				C7B10F541213488100CFB837 /* StellarMainSearch.m in Sources */,
 				C7B10F7412134F2800CFB837 /* CoursesSearchTableViewController.m in Sources */,
 				C7DA11BA12138C2F00FE8756 /* MainSearchGroupedCoursesTableViewController.m in Sources */,
+				EBAE878612198B2500F370BE /* SchoolsModule.m in Sources */,
+				EBAE878812198B2500F370BE /* SchoolsViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2873,6 +2725,51 @@
 			};
 			name = "Distribution - Staging - Ad Hoc";
 		};
+		EBAE87911219905300F370BE /* Debug - Testing */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				GCC_C_LANGUAGE_STANDARD = c99;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = (
+					"${SDK_DIR}/usr/include/libxml2",
+					"\"Facebook Connect\"",
+				);
+				ONLY_ACTIVE_ARCH = YES;
+				OTHER_CFLAGS = "-DUSE_MOBILE_TEST";
+				OTHER_LDFLAGS = (
+					"-all_load",
+					"-ObjC",
+				);
+				PREBINDING = NO;
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
+				SDKROOT = iphoneos3.0;
+			};
+			name = "Debug - Testing";
+		};
+		EBAE87921219905300F370BE /* Debug - Testing */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				COPY_PHASE_STRIP = NO;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = MIT_Mobile_Prefix.pch;
+				INFOPLIST_FILE = "MIT_Mobile-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 3.0;
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/Common/Libraries & Headers/OAuthConsumer\"",
+					"${SDK_DIR}/usr/include/libxml2",
+				);
+				PRODUCT_NAME = "Harvard Mobile";
+				SDKROOT = iphoneos4.0;
+			};
+			name = "Debug - Testing";
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -2880,6 +2777,7 @@
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				1D6058940D05DD3E006BFB54 /* Debug - Development */,
+				EBAE87921219905300F370BE /* Debug - Testing */,
 				DE8B4CF8110F92DC00B7D991 /* Debug - Staging */,
 				DE8B4DBF110FAB1100B7D991 /* Debug - Production */,
 				DEB0B3DE11122D3200021561 /* Release - Staging */,
@@ -2895,6 +2793,7 @@
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				C01FCF4F08A954540054247B /* Debug - Development */,
+				EBAE87911219905300F370BE /* Debug - Testing */,
 				DE8B4CF7110F92DC00B7D991 /* Debug - Staging */,
 				DE8B4DBE110FAB1100B7D991 /* Debug - Production */,
 				DEB0B3DD11122D3200021561 /* Release - Staging */,
@@ -2926,16 +2825,6 @@
 			);
 			currentVersion = DE10571411985D4B0090A505 /* News 2.xcdatamodel */;
 			path = News.xcdatamodeld;
-			sourceTree = "<group>";
-			versionGroupType = wrapper.xcdatamodel;
-		};
-		DEE283ED10F5109800B39531 /* Emergency.xcdatamodeld */ = {
-			isa = XCVersionGroup;
-			children = (
-				DEE283E910F5109000B39531 /* Emergency.xcdatamodel */,
-			);
-			currentVersion = DEE283E910F5109000B39531 /* Emergency.xcdatamodel */;
-			path = Emergency.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;
 		};
@@ -2971,17 +2860,6 @@
 			);
 			currentVersion = 29B14B71114842D200BC8CCE /* Stellar 3.xcdatamodel */;
 			path = Stellar.xcdatamodeld;
-			sourceTree = "<group>";
-			versionGroupType = wrapper.xcdatamodel;
-		};
-		EBDB0C4C11484072008AAE42 /* ShuttleTrack.xcdatamodeld */ = {
-			isa = XCVersionGroup;
-			children = (
-				EBDB0C4811484057008AAE42 /* ShuttleTrack.xcdatamodel */,
-			);
-			currentVersion = EBDB0C4811484057008AAE42 /* ShuttleTrack.xcdatamodel */;
-			name = ShuttleTrack.xcdatamodeld;
-			path = Model/ShuttleTrack.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;
 		};

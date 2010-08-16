@@ -712,6 +712,7 @@ static NSInteger numTries = 0;
 			[self loadSearchResultsFromCache];
 		}
     }
+    
 }
 
 #pragma mark -

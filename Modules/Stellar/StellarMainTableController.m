@@ -71,7 +71,9 @@
     }
     self.tableView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     [self.view addSubview:self.tableView];
-	
+
+    [searchBar addDropShadow];
+
 	self.loadingView = [[[MITLoadingActivityView alloc] initWithFrame:self.tableView.frame] autorelease];
 	
 	firstTimeLoaded = NO;
