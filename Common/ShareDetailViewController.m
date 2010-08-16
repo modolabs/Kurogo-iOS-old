@@ -35,9 +35,7 @@
 															delegate:self
 												   cancelButtonTitle:@"Cancel"
 											  destructiveButtonTitle:nil
-												   otherButtonTitles:@"Email"/*, @"Facebook"*/, @"Twitter", nil];
-    //MIT_MobileAppDelegate *appDelegate = (MIT_MobileAppDelegate *)[UIApplication sharedApplication].delegate;
-    //[shareSheet showFromTabBar:appDelegate.tabBarController.tabBar];
+												   otherButtonTitles:@"Email", @"Facebook", @"Twitter", nil];
     [shareSheet showInView:self.view];
     [shareSheet release];
 }
@@ -78,12 +76,10 @@
 							  body:[self.shareDelegate emailBody]];
 	}
     else if (buttonIndex == 1) {
-    /*
 		// Facebook session
 		[self showFacebookDialog];
 	}
 	else if (buttonIndex == 2) {
-     */
 		[self showTwitterView];
 	}
 }
@@ -103,9 +99,7 @@
 - (void)showFacebookDialog {
 	BOOL resuming = NO;
 	if (!self.fbSession && !(self.fbSession = [FBSession session])) {
-		NSString *apiKey = @"FacebookApiKey";
-		NSString *apiSecret = @"FacebookApiSecret";
-		self.fbSession = [FBSession sessionForApplication:apiKey secret:apiSecret delegate:self];
+		self.fbSession = [FBSession sessionForApplication:FacebookAPIKey secret:FacebookAPISecret delegate:self];
 		resuming = [self.fbSession resume];
 	}
 	
