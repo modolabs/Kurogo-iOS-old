@@ -59,8 +59,11 @@
 	//_mapView.shouldNotDropPins = YES;
 	[_mapView addAnnotation:self.annotation];
     // TODO: use something else for this map span
-    MKCoordinateSpan span = MKCoordinateSpanMake(0.002, 0.002);
-    _mapView.region = MKCoordinateRegionMake(self.annotation.coordinate, span);
+    MKCoordinateSpan span = MKCoordinateSpanMake(0.001, 0.001);
+    CLLocationCoordinate2D center = self.annotation.coordinate;
+    // move the region up a bit so the pin shows up fully
+    center.latitude += 0.0001;
+    _mapView.region = MKCoordinateRegionMake(center, span);
 
     // TODO: find a way to add rounded corner to this
 	//_mapView.layer.cornerRadius = 6.0;
