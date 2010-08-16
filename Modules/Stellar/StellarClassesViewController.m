@@ -86,6 +86,8 @@
 	harvardClassesTableView.dataSource = self;
 	harvardClassesTableView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
 	[self.view addSubview:harvardClassesTableView];
+    
+    [searchBar addDropShadow];
 	
 	if ([[course.title substringToIndex:1] isEqualToString:@"0"])
 		self.title = [course.title substringFromIndex:1];

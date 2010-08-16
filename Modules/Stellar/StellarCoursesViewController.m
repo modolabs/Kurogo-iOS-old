@@ -70,6 +70,7 @@
 	coursesTableView.dataSource = self;
 	coursesTableView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
 	[self.view addSubview:coursesTableView];
+    [searchBar addDropShadow];
 	
 }
 

@@ -108,6 +108,8 @@
 	mainSearchClassesTableView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
 	[self.view addSubview:mainSearchClassesTableView];
 	
+    [searchBar addDropShadow];
+
 	self.title = course.title;
 	//self.currentClassLoader = [[LoadClassesInTable new] autorelease];
 	//self.currentClassLoader.tableController = self;
