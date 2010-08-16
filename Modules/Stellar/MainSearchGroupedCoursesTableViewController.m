@@ -98,6 +98,8 @@
 	self.searchController.searchResultsDelegate = stellarSearch;
 	self.searchController.searchResultsDataSource = stellarSearch;
 	//searchBar.placeholder = [[NSString alloc] initWithFormat:@"Search within %@", stellarCourseGroupString];
+	if (searchTerm != nil)
+		searchController.searchBar.text = searchTerm;
 	
 	mainSearchClassesTableView = nil;
 	

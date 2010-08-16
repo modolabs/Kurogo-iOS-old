@@ -33,7 +33,7 @@
 		self.courseGroup = aCourseGroup;
 		NSString *path = [NSString stringWithFormat:@"courses/%@", [courseGroup serialize]];
 		url = [[MITModuleURL alloc] initWithTag:StellarTag path:path query:nil];
-		self.title = aCourseGroup.title;
+		self.title = aCourseGroup.short_name;
 	//}
 	return self;
 }
@@ -50,6 +50,8 @@
 }
 
 - (void) viewDidLoad {
+	self.title = courseGroup.short_name;
+	self.navigationItem.title = courseGroup.short_name;
 	CGRect viewFrame = self.view.frame;
 	ModoSearchBar *searchBar = [[[ModoSearchBar alloc] initWithFrame:CGRectMake(0, 0, viewFrame.size.width, searchBarHeight)] autorelease];
     [self.view addSubview:searchBar];

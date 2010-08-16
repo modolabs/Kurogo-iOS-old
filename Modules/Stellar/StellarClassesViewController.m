@@ -35,6 +35,13 @@
 	loadingView = nil;
 	url = [[MITModuleURL alloc] initWithTag:StellarTag];
 	//}
+	
+	NSString *courseName = [[NSString alloc] initWithFormat:@"%@-other",course.courseGroup];
+	if ([course.title isEqualToString:courseName]) {
+		self.navigationItem.title = course.courseGroupShort;
+		self.title = course.courseGroupShort;
+	}
+	
 	return self;
 }
 
@@ -65,6 +72,8 @@
 }
 
 - (void) viewDidLoad {
+
+
 	CGRect viewFrame = self.view.frame;
 	ModoSearchBar *searchBar = [[[ModoSearchBar alloc] initWithFrame:CGRectMake(0, 0, viewFrame.size.width, searchBarHeight)] autorelease];
     [self.view addSubview:searchBar];
@@ -89,7 +98,13 @@
     
     [searchBar addDropShadow];
 	
-	if ([[course.title substringToIndex:1] isEqualToString:@"0"])
+	NSString *courseName = [[NSString alloc] initWithFormat:@"%@-other",course.courseGroup];
+	if ([course.title isEqualToString:courseName]) {
+		self.navigationItem.title = course.courseGroupShort;
+		self.title = course.courseGroupShort;
+	}
+	
+	else if ([[course.title substringToIndex:1] isEqualToString:@"0"])
 		self.title = [course.title substringFromIndex:1];
 	
 	else

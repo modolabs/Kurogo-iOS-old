@@ -363,6 +363,7 @@ NSString* cleanPersonName(NSString *personName);
 		
 		NSArray *courses = [aDict objectForKey:@"courses"];
 		NSString *courseGroupName = [[aDict valueForKey:@"school_name"] description];
+		NSString *courseGroupShortName = [[aDict valueForKey:@"school_name_short"] description];
 	
 		
 		for (NSDictionary *course in courses) {
@@ -392,6 +393,7 @@ NSString* cleanPersonName(NSString *personName);
 			newStellarCourse.number = [course objectForKey:@"short"];
 			newStellarCourse.title = courseName;
 			newStellarCourse.courseGroup = courseGroupName;
+			newStellarCourse.courseGroupShort = courseGroupShortName;
 			
 			[coursesArray addObject:newStellarCourse];
 		
