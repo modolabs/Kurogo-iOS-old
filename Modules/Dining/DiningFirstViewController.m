@@ -708,33 +708,45 @@ numberOfRowsInSection:(NSInteger)section
 	cell.textLabelNumberOfLines = 2;	
 	cell.textLabel.text = (NSString *) [[keySection objectAtIndex:row] objectForKey:@"item"];
 	
+	NSString *type = (NSString *) [[[keySection objectAtIndex:row] objectForKey:@"type"] description];
+	
 	// If details of the Menu-Item are available, uncomment the following line.
 	//cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 	cell.selectionStyle = UITableViewCellSelectionStyleNone;
 	cell.backgroundColor = GROUPED_VIEW_CELL_COLOR;
 	
 	
-	cell.textLabel.lineBreakMode = UILineBreakModeWordWrap;
+	/*cell.textLabel.lineBreakMode = UILineBreakModeWordWrap;
 	UIImage *image = [UIImage imageNamed:@"dining/dining-local-crop.png"];
 	UIImageView *imView = [[UIImageView alloc] initWithFrame:CGRectMake(273, 12, 17, 17)];
-	imView.image = image;
+	imView.image = image;*/
 
+	if ([type isEqualToString:@"VGT"]) {
+		UIImage *image2 = [UIImage imageNamed:@"dining/dining-vegan.png"];
+		UIImageView *imView2 = [[UIImageView alloc] initWithFrame:CGRectMake(273, 12, 17, 17)];
+		imView2.image = image2;
+		[cell.contentView addSubview:imView2];
+		[imView2 release];
+	}
 	
-	UIImage *image2 = [UIImage imageNamed:@"dining/dining-vegan.png"];
-	UIImageView *imView2 = [[UIImageView alloc] initWithFrame:CGRectMake(253, 12, 17, 17)];
-	imView2.image = image2;
+	else if ([type isEqualToString:@"VGN"]) {
+		UIImage *image2 = [UIImage imageNamed:@"dining/dining-vegetarian.png"];
+		UIImageView *imView2 = [[UIImageView alloc] initWithFrame:CGRectMake(273, 12, 17, 17)];
+		imView2.image = image2;
+		[cell.contentView addSubview:imView2];
+		[imView2 release];
+	}
 	
-	UIImage *image3 = [UIImage imageNamed:@"dining/dining-organic-crop.png"];
+	/*UIImage *image3 = [UIImage imageNamed:@"dining/dining-organic-crop.png"];
 	UIImageView *imView3 = [[UIImageView alloc] initWithFrame:CGRectMake(233, 12, 17, 17)];
-	imView3.image = image3;
+	imView3.image = image3;*/
 
 	
-	[cell.contentView addSubview:imView];
-    [imView release];
-	[cell.contentView addSubview:imView2];
-    [imView2 release];
-	[cell.contentView addSubview:imView3];
-    [imView3 release];
+	/*[cell.contentView addSubview:imView];
+    [imView release];*/
+
+	/*[cell.contentView addSubview:imView3];
+    [imView3 release];*/
 	
 	return cell;
 }
@@ -760,7 +772,7 @@ heightForRowAtIndexPath:(NSIndexPath *)indexPath
 	NSString *textL = (NSString *) [[keySection objectAtIndex:row] objectForKey:@"item"];
 	
 	int textLines = 1;
-	if ([textL length] > 22)
+	if ([textL length] > 33)
 		 textLines = 2;
 	
 	return [DiningMultiLineCell heightForCellWithStyle:UITableViewStyleGrouped
