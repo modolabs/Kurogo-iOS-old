@@ -475,6 +475,11 @@
 		EBAE86401215FB0D00F370BE /* Harvard-Mobile-Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = EBAE863E1215FB0D00F370BE /* Harvard-Mobile-Icon.png */; };
 		EBAE86411215FB0D00F370BE /* Harvard-Mobile-Icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = EBAE863F1215FB0D00F370BE /* Harvard-Mobile-Icon@2x.png */; };
 		EBAE86451215FB4900F370BE /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = EBAE86441215FB4900F370BE /* Default@2x.png */; };
+		EBAE877612197EF400F370BE /* schools.plist in Resources */ = {isa = PBXBuildFile; fileRef = EBAE877512197EF400F370BE /* schools.plist */; };
+		EBAE878512198B2500F370BE /* SchoolsModule.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EBAE878112198B2500F370BE /* SchoolsModule.h */; settings = {JAVA_ARCHIVE_SUBDIR = Modules/Schools; }; };
+		EBAE878612198B2500F370BE /* SchoolsModule.m in Sources */ = {isa = PBXBuildFile; fileRef = EBAE878212198B2500F370BE /* SchoolsModule.m */; };
+		EBAE878712198B2500F370BE /* SchoolsViewController.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EBAE878312198B2500F370BE /* SchoolsViewController.h */; settings = {JAVA_ARCHIVE_SUBDIR = Modules/Schools; }; };
+		EBAE878812198B2500F370BE /* SchoolsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EBAE878412198B2500F370BE /* SchoolsViewController.m */; };
 		EBCB4DEE10D30AA2001219FD /* EmergencyContactsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EBCB4DED10D30AA2001219FD /* EmergencyContactsViewController.m */; };
 		EBDB0C4D11484072008AAE42 /* ShuttleTrack.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = EBDB0C4C11484072008AAE42 /* ShuttleTrack.xcdatamodeld */; };
 /* End PBXBuildFile section */
@@ -1054,6 +1059,11 @@
 		EBAE863E1215FB0D00F370BE /* Harvard-Mobile-Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Harvard-Mobile-Icon.png"; path = "Resources/Harvard-Mobile-Icon.png"; sourceTree = "<group>"; };
 		EBAE863F1215FB0D00F370BE /* Harvard-Mobile-Icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Harvard-Mobile-Icon@2x.png"; path = "Resources/Harvard-Mobile-Icon@2x.png"; sourceTree = "<group>"; };
 		EBAE86441215FB4900F370BE /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Default@2x.png"; path = "Resources/Default@2x.png"; sourceTree = "<group>"; };
+		EBAE877512197EF400F370BE /* schools.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = schools.plist; path = Resources/schools.plist; sourceTree = "<group>"; };
+		EBAE878112198B2500F370BE /* SchoolsModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SchoolsModule.h; path = Schools/SchoolsModule.h; sourceTree = "<group>"; };
+		EBAE878212198B2500F370BE /* SchoolsModule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SchoolsModule.m; path = Schools/SchoolsModule.m; sourceTree = "<group>"; };
+		EBAE878312198B2500F370BE /* SchoolsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SchoolsViewController.h; path = Schools/SchoolsViewController.h; sourceTree = "<group>"; };
+		EBAE878412198B2500F370BE /* SchoolsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SchoolsViewController.m; path = Schools/SchoolsViewController.m; sourceTree = "<group>"; };
 		EBCA123210CEF3C400577C5D /* PeopleSearchViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PeopleSearchViewController.h; sourceTree = "<group>"; };
 		EBCB4DEC10D30AA1001219FD /* EmergencyContactsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EmergencyContactsViewController.h; sourceTree = "<group>"; };
 		EBCB4DED10D30AA2001219FD /* EmergencyContactsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EmergencyContactsViewController.m; sourceTree = "<group>"; };
@@ -1188,6 +1198,7 @@
 				8D1107310486CEB800E47090 /* MIT_Mobile-Info.plist */,
 				DED3CCE810418F5F003D3B74 /* Default.png */,
 				DEE6B1CC111774300037F03C /* Entitlements.plist */,
+				EBAE877512197EF400F370BE /* schools.plist */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -1489,6 +1500,7 @@
 				DE71544A102FE468005E6111 /* Stellar */,
 				DE9EFBCE10FE7D3200F5F07E /* Settings */,
 				DE81CF5E10C6BC390085573D /* About */,
+				EBAE877C12198AA300F370BE /* Schools */,
 				DE81CF6310C6BC490085573D /* Mobile Web */,
 			);
 			path = Modules;
@@ -1972,6 +1984,17 @@
 			path = Calendar;
 			sourceTree = "<group>";
 		};
+		EBAE877C12198AA300F370BE /* Schools */ = {
+			isa = PBXGroup;
+			children = (
+				EBAE878112198B2500F370BE /* SchoolsModule.h */,
+				EBAE878212198B2500F370BE /* SchoolsModule.m */,
+				EBAE878312198B2500F370BE /* SchoolsViewController.h */,
+				EBAE878412198B2500F370BE /* SchoolsViewController.m */,
+			);
+			name = Schools;
+			sourceTree = "<group>";
+		};
 		EBDB0C4711483FE3008AAE42 /* Model */ = {
 			isa = PBXGroup;
 			children = (
@@ -2094,6 +2117,8 @@
 				C7B10F531213488100CFB837 /* StellarMainSearch.h in JavaArchive */,
 				C7B10F7312134F2800CFB837 /* CoursesSearchTableViewController.h in JavaArchive */,
 				C7DA11B912138C2F00FE8756 /* MainSearchGroupedCoursesTableViewController.h in JavaArchive */,
+				EBAE878512198B2500F370BE /* SchoolsModule.h in JavaArchive */,
+				EBAE878712198B2500F370BE /* SchoolsViewController.h in JavaArchive */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2180,6 +2205,7 @@
 				EBAE86401215FB0D00F370BE /* Harvard-Mobile-Icon.png in Resources */,
 				EBAE86411215FB0D00F370BE /* Harvard-Mobile-Icon@2x.png in Resources */,
 				EBAE86451215FB4900F370BE /* Default@2x.png in Resources */,
+				EBAE877612197EF400F370BE /* schools.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2528,6 +2554,8 @@
 				C7B10F541213488100CFB837 /* StellarMainSearch.m in Sources */,
 				C7B10F7412134F2800CFB837 /* CoursesSearchTableViewController.m in Sources */,
 				C7DA11BA12138C2F00FE8756 /* MainSearchGroupedCoursesTableViewController.m in Sources */,
+				EBAE878612198B2500F370BE /* SchoolsModule.m in Sources */,
+				EBAE878812198B2500F370BE /* SchoolsViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2873,6 +2901,51 @@
 			};
 			name = "Distribution - Staging - Ad Hoc";
 		};
+		EBAE87911219905300F370BE /* Debug - Testing */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				GCC_C_LANGUAGE_STANDARD = c99;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = (
+					"${SDK_DIR}/usr/include/libxml2",
+					"\"Facebook Connect\"",
+				);
+				ONLY_ACTIVE_ARCH = YES;
+				OTHER_CFLAGS = "-DUSE_MOBILE_TEST";
+				OTHER_LDFLAGS = (
+					"-all_load",
+					"-ObjC",
+				);
+				PREBINDING = NO;
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
+				SDKROOT = iphoneos3.0;
+			};
+			name = "Debug - Testing";
+		};
+		EBAE87921219905300F370BE /* Debug - Testing */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				COPY_PHASE_STRIP = NO;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = MIT_Mobile_Prefix.pch;
+				INFOPLIST_FILE = "MIT_Mobile-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 3.0;
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/Common/Libraries & Headers/OAuthConsumer\"",
+					"${SDK_DIR}/usr/include/libxml2",
+				);
+				PRODUCT_NAME = "Harvard Mobile";
+				SDKROOT = iphoneos4.0;
+			};
+			name = "Debug - Testing";
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -2880,6 +2953,7 @@
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				1D6058940D05DD3E006BFB54 /* Debug - Development */,
+				EBAE87921219905300F370BE /* Debug - Testing */,
 				DE8B4CF8110F92DC00B7D991 /* Debug - Staging */,
 				DE8B4DBF110FAB1100B7D991 /* Debug - Production */,
 				DEB0B3DE11122D3200021561 /* Release - Staging */,
@@ -2895,6 +2969,7 @@
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				C01FCF4F08A954540054247B /* Debug - Development */,
+				EBAE87911219905300F370BE /* Debug - Testing */,
 				DE8B4CF7110F92DC00B7D991 /* Debug - Staging */,
 				DE8B4DBE110FAB1100B7D991 /* Debug - Production */,
 				DEB0B3DD11122D3200021561 /* Release - Staging */,

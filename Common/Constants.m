@@ -1,16 +1,20 @@
 #import "Constants.h"
 
-// TODO: add USE_MOBILE_TEST configuration
 #ifdef USE_MOBILE_DEV
 NSString * const MITMobileWebDomainString =        @"localhost:8888";
 NSString * const MITMobileWebAPIURLString = @"http://localhost:8888/api/";
 #else
-    #ifdef USE_MOBILE_STAGE
+    #ifdef USE_MOBILE_TEST
     NSString * const MITMobileWebDomainString = @"184.106.197.212";
     NSString * const MITMobileWebAPIURLString = @"http://184.106.197.212/api/";
     #else
-    NSString * const MITMobileWebDomainString = @"184.106.197.212";
-    NSString * const MITMobileWebAPIURLString = @"http://184.106.197.212/api/";
+        #ifdef USE_MOBILE_STAGE
+        NSString * const MITMobileWebDomainString = @"184.106.197.212";
+        NSString * const MITMobileWebAPIURLString = @"http://184.106.197.212/api/";
+        #else
+        NSString * const MITMobileWebDomainString = @"184.106.197.212";
+        NSString * const MITMobileWebAPIURLString = @"http://184.106.197.212/api/";
+        #endif
     #endif
 #endif
  

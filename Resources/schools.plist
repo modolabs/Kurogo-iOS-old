@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<array>
+	<dict>
+		<key>name</key>
+		<string>Faculty of Arts and Sciences</string>
+		<key>shortName</key>
+		<string>Faculty of Arts and Sciences</string>
+		<key>iconName</key>
+		<string>schools-fas</string>
+	</dict>
+	<dict>
+		<key>name</key>
+		<string>Harvard Business School</string>
+		<key>shortName</key>
+		<string>Business</string>
+		<key>iconName</key>
+		<string>schools-hbs</string>
+	</dict>
+	<dict>
+		<key>name</key>
+		<string>Harvard Divinity School</string>
+		<key>shortName</key>
+		<string>Divinity</string>
+		<key>iconName</key>
+		<string>schools-divinity</string>
+	</dict>
+	<dict>
+		<key>name</key>
+		<string>Harvard College</string>
+		<key>shortName</key>
+		<string>Harvard College</string>
+		<key>iconName</key>
+		<string>schools-college</string>
+	</dict>
+	<dict>
+		<key>name</key>
+		<string>Harvard University Division of Continuing Education</string>
+		<key>shortName</key>
+		<string>Extension School</string>
+		<key>iconName</key>
+		<string>schools-extension</string>
+	</dict>
+	<dict>
+		<key>name</key>
+		<string>Harvard Graduation School of Design</string>
+		<key>shortName</key>
+		<string>Design</string>
+		<key>iconName</key>
+		<string>schools-gsd</string>
+	</dict>
+	<dict>
+		<key>name</key>
+		<string>Harvard Kennedy School</string>
+		<key>shortName</key>
+		<string>Government</string>
+		<key>iconName</key>
+		<string>schools-hks</string>
+	</dict>
+	<dict>
+		<key>name</key>
+		<string>Harvard Medical School</string>
+		<key>shortName</key>
+		<string>Medical</string>
+		<key>iconName</key>
+		<string>schools-hms</string>
+	</dict>
+	<dict>
+		<key>name</key>
+		<string>Harvard School of Dental Medicine</string>
+		<key>shortName</key>
+		<string>Dental</string>
+		<key>iconName</key>
+		<string>schools-dental</string>
+	</dict>
+	<dict>
+		<key>name</key>
+		<string>Harvard School of Public Health</string>
+		<key>shortName</key>
+		<string>Public Health</string>
+		<key>iconName</key>
+		<string>schools-hsph</string>
+	</dict>
+</array>
+</plist>
