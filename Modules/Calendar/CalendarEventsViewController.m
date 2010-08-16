@@ -589,6 +589,7 @@
 
 - (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
 {
+	NSString *searchBarText = searchBar.text;
 	[self makeSearchRequest:searchBar.text];
 }
 
