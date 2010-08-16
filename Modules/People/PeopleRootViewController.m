@@ -30,7 +30,7 @@
 	[super viewDidLoad];
 	self.recents = [[PeopleRecentsData sharedData] recents];
 	self.title = @"Directory";
-	self.searchHints = @"Sample searches:\nName: 'william barton rogers', 'rogers'\nEmail: 'wbrogers', 'wbrogers@mit.edu'\nPhone: '6172531000', '31000'";
+	self.searchHints = @"Sample searches:\nName: 'prof john harvard', 'harvard'\nEmail: 'jharvard', 'jharvard@harvard.edu'";
 }
 
 /*

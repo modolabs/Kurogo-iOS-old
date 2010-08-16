@@ -54,19 +54,19 @@ static EmergencyData *sharedEmergencyData = nil;
 - (id) init {
     self = [super init];
     if (self != nil) {
-        // TODO: get primary numbers from m.mit.edu (it's unlikely, but numbers might change)
+        // TODO: get primary numbers (it's unlikely, but numbers might change)
         primaryPhoneNumbers = [[NSArray arrayWithObjects:
                                     [NSDictionary dictionaryWithObjectsAndKeys:
                                      @"Campus Police", @"title",
-                                     @"617.253.1212", @"phone",
+                                     @"555.555.5555", @"phone",
                                      nil],
                                     [NSDictionary dictionaryWithObjectsAndKeys:
-                                     @"MIT Medical", @"title",
-                                     @"617.253.1311", @"phone",
+                                     @"Medical", @"title",
+                                     @"555.555.5555", @"phone",
                                      nil],
                                     [NSDictionary dictionaryWithObjectsAndKeys:
                                      @"Emergency Status", @"title",
-                                     @"617.253.7669", @"phone",
+                                     @"555.555.5555", @"phone",
                                      nil],
                                     nil] retain];
         [self fetchEmergencyInfo];
