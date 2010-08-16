@@ -18,7 +18,7 @@
 #define tabHeight 36.0
 #define termHeight 20.0
 #define paddingHeight 5.0
-#define buttonWidth  78
+#define buttonWidth  58
 #define buttonHeight 38
 #define myStellarPadding 10.0
 
@@ -144,7 +144,7 @@ NSString * termText(NSString *termCode) {
 	// initialize the myStellar button
 	myStellarButton = [UIButton buttonWithType:UIButtonTypeCustom];
 	myStellarButton.frame = CGRectMake(
-		self.tableView.tableHeaderView.frame.size.width-leftMargin-buttonWidth, myStellarPadding,
+		self.tableView.tableHeaderView.frame.size.width-leftMargin-buttonWidth+myStellarPadding, myStellarPadding,
 		buttonWidth, buttonHeight);
 	myStellarButton.enabled = YES;
 	[myStellarButton setImage:[UIImage imageNamed:@"global/bookmark_off.png"] forState:UIControlStateNormal];

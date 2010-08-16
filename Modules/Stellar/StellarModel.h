@@ -159,7 +159,7 @@ extern NSString * const MyStellarChanged;
  *  @param classes the found NSArray of StellarClass objects returned by the search
  *  @param searchTerms the string used for the search
  */
-- (void) searchComplete: (NSArray *)classes searchTerms: (NSString *)searchTerms;
+- (void) searchComplete: (NSArray *)classes searchTerms: (NSString *)searchTerms actualCount:(int) actual_count;
 /**
  *  Called when a search attempt fails to connect to the server
  */
@@ -169,6 +169,12 @@ extern NSString * const MyStellarChanged;
  *  Called when a search attempt returns more than 100 terms
  */
 - (void) handleTooManySearchResults;
+
+/**
+ *  Called when a search attempt returns more than 100 terms AND it is the first level search
+ */
+- (void) handleTooManySearchResultsForMainSearch: (id)object;
+
 @end
 
 /** 

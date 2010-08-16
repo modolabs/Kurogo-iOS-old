@@ -22,6 +22,7 @@
 		viewController = controller;
 		self.lastResults = [NSArray array];
 		hasSearchInitiated = NO;
+		actualCount = 0;
 	}
 	return self;
 }
@@ -58,6 +59,9 @@
 
 - (NSString *) tableView: (UITableView *)tableView titleForHeaderInSection: (NSInteger)section {
 	if([lastResults count]) {
+		if (actualCount > [lastResults count])
+			return [NSString stringWithFormat:@"Displaying %i of many", [lastResults count]];
+		
 		return [NSString stringWithFormat:@"%i found", [lastResults count]];
 	}
 	return nil;
@@ -67,7 +71,11 @@
 	NSString *headerTitle = nil;
 	
 	if([lastResults count]) {
-		headerTitle = [NSString stringWithFormat:@"%i found", [lastResults count]];
+		if (actualCount > [lastResults count])
+			headerTitle =  [NSString stringWithFormat:@"Displaying %i of many", [lastResults count]];
+		else
+			headerTitle = [NSString stringWithFormat:@"%i found", [lastResults count]];
+		
 		return [UITableView ungroupedSectionHeaderWithTitle:headerTitle];
 	}
 	return nil;
@@ -88,8 +96,10 @@
 
 #pragma mark ClassesSearchDelegate methods
 
-- (void) searchComplete: (NSArray *)classes searchTerms:searchTerms {
+- (void) searchComplete: (NSArray *)classes searchTerms:searchTerms actualCount:(int) actual_count{
 	if([viewController.searchController.searchBar.text isEqualToString:searchTerms]) {
+		
+		actualCount = actual_count;
 		self.lastResults = classes;
 		
 		[viewController.searchController.searchResultsTableView applyStandardCellHeight];

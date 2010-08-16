@@ -33,6 +33,7 @@
 	viewController = [[MainSearchGroupedCoursesTableViewController alloc] initWithCourse:nil];
 	[controller.navigationController pushViewController:viewController animated:YES];
 	viewController.navigationItem.title = @"Search Results";
+	actualCount = 0;
 	return [viewController autorelease];
 }
 
@@ -165,7 +166,15 @@
 }
 
 - (NSString *) tableView: (UITableView *)tableView titleForHeaderInSection: (NSInteger)section {
+	
+	/*if (actualCount > [classes count]) {
+		return [NSString stringWithFormat:@"Displaying %i of many", [classes count]];
+	}*/
+	
 	if([classes count]) {
+		if (actualCount > [classes count])
+			return [NSString stringWithFormat:@"Displaying %i of many", [classes count]];
+		
 		return [NSString stringWithFormat:@"%i found", [classes count]];
 	}
 	return nil;
@@ -174,8 +183,17 @@
 - (UIView *) tableView: (UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
 	NSString *headerTitle = nil;
 	
+	/*if (actualCount > [classes count]) {
+		return [NSString stringWithFormat:@"Displaying %i of many in %@", [classes count], stellarCourseGroupString];
+	}*/
+	
 	if([classes count]) {
-		headerTitle = [NSString stringWithFormat:@"%i found in %@", [classes count], stellarCourseGroupString];
+		if (actualCount > [classes count])
+			headerTitle = [NSString stringWithFormat:@"Displaying %i of many in %@", [classes count], stellarCourseGroupString];
+
+		else {
+			headerTitle = [NSString stringWithFormat:@"%i found in %@", [classes count], stellarCourseGroupString];
+		}
 		return [UITableView ungroupedSectionHeaderWithTitle:headerTitle];
 	}
 	return nil;
@@ -229,7 +247,7 @@
 
 - (void)presentSearchResults:(NSArray *)searchResults query:(NSString *)query {
     self.searchController.searchBar.text = query;
-    [stellarSearch searchComplete:searchResults searchTerms:query];
+    [stellarSearch searchComplete:searchResults searchTerms:query actualCount:actualCount];
 }
 
 // TODO: clean up redundant -[searchBar becomeFirstResponder]
@@ -265,13 +283,13 @@
 
 #pragma mark ClassesSearchDelegate methods
 
-- (void) searchComplete: (NSArray *)classesLoaded searchTerms:searchTerms {
+- (void) searchComplete: (NSArray *)classesLoaded searchTerms:searchTerms actualCount:(int)actual_count{
 	//if([viewController.searchController.searchBar.text isEqualToString:searchTerms]) {
 	
-		
-		self.classes = classesLoaded;
+	actualCount = actual_count;
+	self.classes = classesLoaded;
 	[self viewDidLoad];
-		[mainSearchClassesTableView reloadData];
+	[mainSearchClassesTableView reloadData];
 	[self hideLoadingView];
 	
 		

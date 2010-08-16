@@ -86,6 +86,9 @@
 	NSString *headerTitle = nil;
 	
 	if([lastResults count]) {
+		if (actualCount > [lastResults count])
+			headerTitle =  [NSString stringWithFormat:@"Displaying %i of many", [lastResults count]];
+		
 		headerTitle = [NSString stringWithFormat:@"%i found", [lastResults count]];
 		return [[UIView alloc] initWithFrame: CGRectMake(0, 0, 320.0, UNGROUPED_SECTION_HEADER_HEIGHT + 15.0)];
 	}
@@ -122,8 +125,10 @@
 
 #pragma mark ClassesSearchDelegate methods
 
-- (void) searchComplete: (NSArray *)classes searchTerms:searchTerms {
+- (void) searchComplete: (NSArray *)classes searchTerms:searchTerms actualCount:(int) actual_count{
 	if([viewController.searchController.searchBar.text isEqualToString:searchTerms]) {
+		
+		actualCount = actual_count;
 		self.lastResults = classes;
 		
 		groups = [self uniqueCourseGroups];
@@ -178,6 +183,23 @@
 	
 	[alert show];
 	[alert release];
+	
+}
+
+- (void) handleTooManySearchResultsForMainSearch: (id)object {
+		
+	groups = [self uniqueCourseGroupsForCountDisplayOnly: (id) object];
+		
+		viewController.searchController.searchResultsTableView = resultsTableView;
+		
+		[viewController.searchController.searchResultsTableView applyStandardCellHeight];
+		viewController.searchController.searchResultsTableView.allowsSelection = YES;
+		[viewController.searchController.searchResultsTableView reloadData];
+		[viewController hideLoadingView];
+		[viewController showSearchResultsTable];
+
+	return;	
+	
 }
 
 
@@ -206,9 +228,24 @@
 		
 	}
 	
-	return tempDict;
+	return tempDict;	
+}
 
+
+-(NSMutableDictionary *) uniqueCourseGroupsForCountDisplayOnly:(id) object {
+	NSMutableDictionary *tempDict = [[NSMutableDictionary alloc] init];
 	
+	NSArray *results = (NSArray *) [object objectForKey:@"schools"];
+	/*NSString *countString = [[object objectForKey:@"count"] description];
+	 int count = [countString intValue];*/
+	
+	for (int index=0; index < [results count]; index++) {
+		
+		NSString *schoolName = [[[results objectAtIndex:index] objectForKey:@"name"] description];
+		[tempDict setObject:[[[results objectAtIndex:index] objectForKey:@"count"] description] forKey: schoolName];		
+	}
+	
+	return tempDict;		
 }
 
 @end

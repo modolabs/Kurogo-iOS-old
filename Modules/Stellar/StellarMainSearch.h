@@ -16,6 +16,8 @@ ClassesSearchDelegate> {
 	StellarMainTableController *viewController;
 	UITableView *resultsTableView;
 	NSMutableDictionary *groups;
+	
+	NSInteger actualCount;
 }
 
 @property (nonatomic, retain) NSArray *lastResults;
@@ -28,5 +30,6 @@ ClassesSearchDelegate> {
 - (BOOL) isSearchResultsVisible;
 
 -(NSMutableDictionary *) uniqueCourseGroups;
+-(NSMutableDictionary *) uniqueCourseGroupsForCountDisplayOnly: (id)object;
 
 @end

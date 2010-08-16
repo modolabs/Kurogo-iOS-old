@@ -14,6 +14,8 @@
 		BOOL hasSearchInitiated;
 		NSArray *lastResults;
 		StellarMainTableController *viewController;
+		
+		NSInteger actualCount;
 }
 
 @property (nonatomic, retain) NSArray *lastResults;

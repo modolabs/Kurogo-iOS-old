@@ -503,12 +503,21 @@ NSString* cleanPersonName(NSString *personName);
 	NSString *countString = [[object objectForKey:@"count"] description];
 	int count = [countString intValue];
 	
+	NSString *actual_countString = [[object objectForKey:@"actual_count"] description];
+	int actual_count = [actual_countString intValue];
+	
 	/*if ([classesSearchDelegate class] == [StellarMainSearch class]) {
 		int r = 4;
 		int e = r*r;
 	}*/
-	if (count> 200) {
-		[classesSearchDelegate handleTooManySearchResults];
+	if (count > 100) {
+		
+		if ([classesSearchDelegate class] == [StellarMainSearch class]) {
+			[classesSearchDelegate handleTooManySearchResultsForMainSearch:object];
+		}
+		//else
+		//[classesSearchDelegate handleTooManySearchResults];
+		
 		return;
 	}
 	
@@ -520,7 +529,7 @@ NSString* cleanPersonName(NSString *personName);
 		ind++;
 	}
 	[CoreDataManager saveData];
-	[classesSearchDelegate searchComplete:classes searchTerms:searchTerms];
+	[classesSearchDelegate searchComplete:classes searchTerms:searchTerms actualCount:actual_count];
 }	
 
 - (void) dealloc {

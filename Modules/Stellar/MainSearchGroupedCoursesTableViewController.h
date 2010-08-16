@@ -27,6 +27,8 @@
 	UITableView *mainSearchClassesTableView;
 	MainSearchGroupedCoursesTableViewController *viewController;
 	NSString *searchTerm;
+	
+	NSInteger actualCount;
 }
 
 @property (nonatomic, retain) NSArray *classes;
