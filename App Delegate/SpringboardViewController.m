@@ -80,9 +80,10 @@
     
     topLeft = ((SpringboardIcon *)[icons objectAtIndex:0]).frame.origin;
 
-    if (bottomRight.y > containingView.contentSize.height) {
-        containingView.contentSize = CGSizeMake(containingView.contentSize.width, bottomRight.y);
-    }
+    // uncomment later if we have so many icons that we need to scroll
+    //if (bottomRight.y > containingView.contentSize.height) {
+    //    containingView.contentSize = CGSizeMake(containingView.contentSize.width, bottomRight.y);
+    //}
 
 }
 
