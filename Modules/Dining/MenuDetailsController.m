@@ -7,7 +7,6 @@
 //
 
 #import "MenuDetailsController.h"
-#import "diningTempAppDelegate.h";
 #import "MITUIConstants.h"
 
 
