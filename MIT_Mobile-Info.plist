@@ -8,8 +8,6 @@
 	<string>Harvard</string>
 	<key>CFBundleExecutable</key>
 	<string>${EXECUTABLE_NAME}</string>
-	<key>CFBundleIconFile</key>
-	<string>Harvard-Mobile-Icon.png</string>
 	<key>CFBundleShortVersionString</key>
 	<string>1.0</string>
 	<key>UIPrerenderedIcon</key>

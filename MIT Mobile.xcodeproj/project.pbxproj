@@ -443,8 +443,8 @@
 		EBA2865610E07E140003BA01 /* PeopleSearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EBA2865510E07E140003BA01 /* PeopleSearchViewController.m */; };
 		EBA2867910E082010003BA01 /* MITLoadingActivityView.m in Sources */ = {isa = PBXBuildFile; fileRef = EBA2867810E082010003BA01 /* MITLoadingActivityView.m */; };
 		EBAE8072120E0B5400F370BE /* people in Resources */ = {isa = PBXBuildFile; fileRef = EBAE806E120E0B5400F370BE /* people */; };
-		EBAE86401215FB0D00F370BE /* Harvard-Mobile-Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = EBAE863E1215FB0D00F370BE /* Harvard-Mobile-Icon.png */; };
-		EBAE86411215FB0D00F370BE /* Harvard-Mobile-Icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = EBAE863F1215FB0D00F370BE /* Harvard-Mobile-Icon@2x.png */; };
+		EBAE86401215FB0D00F370BE /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = EBAE863E1215FB0D00F370BE /* Icon.png */; };
+		EBAE86411215FB0D00F370BE /* Icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = EBAE863F1215FB0D00F370BE /* Icon@2x.png */; };
 		EBAE86451215FB4900F370BE /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = EBAE86441215FB4900F370BE /* Default@2x.png */; };
 		EBAE877612197EF400F370BE /* schools.plist in Resources */ = {isa = PBXBuildFile; fileRef = EBAE877512197EF400F370BE /* schools.plist */; };
 		EBAE878512198B2500F370BE /* SchoolsModule.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EBAE878112198B2500F370BE /* SchoolsModule.h */; settings = {JAVA_ARCHIVE_SUBDIR = Modules/Schools; }; };
@@ -978,8 +978,8 @@
 		EBA2867810E082010003BA01 /* MITLoadingActivityView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MITLoadingActivityView.m; sourceTree = "<group>"; };
 		EBAA9F6210FFAB8B003379A5 /* PeopleDataModel 5.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "PeopleDataModel 5.xcdatamodel"; sourceTree = "<group>"; };
 		EBAE806E120E0B5400F370BE /* people */ = {isa = PBXFileReference; lastKnownFileType = folder; name = people; path = Resources/people; sourceTree = "<group>"; };
-		EBAE863E1215FB0D00F370BE /* Harvard-Mobile-Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Harvard-Mobile-Icon.png"; path = "Resources/Harvard-Mobile-Icon.png"; sourceTree = "<group>"; };
-		EBAE863F1215FB0D00F370BE /* Harvard-Mobile-Icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Harvard-Mobile-Icon@2x.png"; path = "Resources/Harvard-Mobile-Icon@2x.png"; sourceTree = "<group>"; };
+		EBAE863E1215FB0D00F370BE /* Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Icon.png; path = Resources/Icon.png; sourceTree = "<group>"; };
+		EBAE863F1215FB0D00F370BE /* Icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Icon@2x.png"; path = "Resources/Icon@2x.png"; sourceTree = "<group>"; };
 		EBAE86441215FB4900F370BE /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Default@2x.png"; path = "Resources/Default@2x.png"; sourceTree = "<group>"; };
 		EBAE877512197EF400F370BE /* schools.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = schools.plist; path = Resources/schools.plist; sourceTree = "<group>"; };
 		EBAE878112198B2500F370BE /* SchoolsModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SchoolsModule.h; path = Schools/SchoolsModule.h; sourceTree = "<group>"; };
@@ -1101,8 +1101,8 @@
 			children = (
 				EBAE89A4121A081900F370BE /* schools */,
 				EBAE86441215FB4900F370BE /* Default@2x.png */,
-				EBAE863E1215FB0D00F370BE /* Harvard-Mobile-Icon.png */,
-				EBAE863F1215FB0D00F370BE /* Harvard-Mobile-Icon@2x.png */,
+				EBAE863E1215FB0D00F370BE /* Icon.png */,
+				EBAE863F1215FB0D00F370BE /* Icon@2x.png */,
 				EBAE806E120E0B5400F370BE /* people */,
 				EB4210E9120B831500089FE0 /* dining */,
 				A623F2E5120A1BFC00341C5E /* settings */,
@@ -2042,8 +2042,8 @@
 				A6FC4C72120A2C200046FF36 /* settings in Resources */,
 				EB421101120B831500089FE0 /* dining in Resources */,
 				EBAE8072120E0B5400F370BE /* people in Resources */,
-				EBAE86401215FB0D00F370BE /* Harvard-Mobile-Icon.png in Resources */,
-				EBAE86411215FB0D00F370BE /* Harvard-Mobile-Icon@2x.png in Resources */,
+				EBAE86401215FB0D00F370BE /* Icon.png in Resources */,
+				EBAE86411215FB0D00F370BE /* Icon@2x.png in Resources */,
 				EBAE86451215FB4900F370BE /* Default@2x.png in Resources */,
 				EBAE877612197EF400F370BE /* schools.plist in Resources */,
 				EBAE89C4121A081900F370BE /* schools in Resources */,
