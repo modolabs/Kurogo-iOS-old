@@ -146,7 +146,8 @@
 
 - (void)viewDidLoad
 {
-    self.navigationItem.title = @"Home";
+    UIImage *masthead = [UIImage imageNamed:@"home/home-masthead.png"];
+    self.navigationItem.titleView = [[[UIImageView alloc] initWithImage:masthead] autorelease];
     
     containingView = [[UIScrollView alloc] initWithFrame:self.view.bounds];
     containingView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:ImageNameHomeScreenBackground]];
