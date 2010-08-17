@@ -346,7 +346,7 @@
                                                                   listType:activeEventList
 																  category:(theCatID == kCalendarTopLevelCategoryID) ? nil : [NSNumber numberWithInt:theCatID]];
 			
-			//someEvents = nil;
+			someEvents = nil;
 			
 			//if (someEvents != nil && [someEvents count] && (requestNeeded == NO)) {
 			if (someEvents != nil && [someEvents count]) {
