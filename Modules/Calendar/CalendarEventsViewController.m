@@ -314,6 +314,9 @@
 		self.tableView = nil;
 		
 		if (activeEventList == CalendarEventListTypeCategory) {
+			if (nothingFound != nil) {
+				[nothingFound removeFromSuperview];
+			}
 			self.tableView = [[EventCategoriesTableView alloc] initWithFrame:contentFrame style:UITableViewStyleGrouped];			
 			[self.tableView applyStandardColors];
 			EventCategoriesTableView *categoriesTV = (EventCategoriesTableView *)self.tableView;
