@@ -1,9 +1,9 @@
 #import "MIT_MobileAppDelegate.h"
 #import "MITModuleList.h"
 #import "MITModule.h"
-#import "MITDeviceRegistration.h"
-#import "MITUnreadNotifications.h"
-#import "AudioToolbox/AudioToolbox.h"
+//#import "MITDeviceRegistration.h"
+//#import "MITUnreadNotifications.h"
+//#import "AudioToolbox/AudioToolbox.h"
 #import "SpringboardViewController.h"
 
 @implementation MIT_MobileAppDelegate
@@ -63,6 +63,7 @@
         [aModule applicationDidFinishLaunching];
     }
 
+    /*
     // Register for push notifications
     [[UIApplication sharedApplication] registerForRemoteNotificationTypes:(UIRemoteNotificationTypeAlert | UIRemoteNotificationTypeBadge | UIRemoteNotificationTypeSound)];
     // get deviceToken if it exists
@@ -79,7 +80,7 @@
 	}	
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(returnToHome) name:@"shake" object:nil];
-    
+    */
     return YES;
 }
 
@@ -191,6 +192,7 @@
     }
 }
 
+/*
 #pragma mark -
 #pragma mark Push notifications
 
@@ -266,7 +268,7 @@ didReceiveRemoteNotification:(NSDictionary *)userInfo {
 	
 	[self release];
 }
-
+*/
 @end
 
 @implementation MotionDetectorWindow
