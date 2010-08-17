@@ -13,15 +13,13 @@ const CGFloat kMapTypeSwitchWidth = 180.0f;
 const CGFloat kMapTypeSwitchHeight = 29.0f;
 
 typedef enum {
-	kNotificationsSettingsSection = 0,
-	kMapsSettingsSection,
+	kMapsSettingsSection = 0,
 	kBehaviorSettingsSection
 } SettingsTableSection;
 
 @interface SettingsTableViewController (Private)
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderWithTitle:(NSString *)aTitle andSubtitle:(NSString *)subtitle;
-- (void)notificationSwitchDidToggle:(id)sender;
 - (void)behaviorSwitchDidToggle:(id)sender;
 - (void)addSwitchToCell:(UITableViewCell *)cell withToggleHandler:(SEL)switchToggleHandler;
 - (void)addSegmentedControlToCell:(UITableViewCell *)cell 
@@ -90,26 +88,6 @@ typedef enum {
 
 #pragma mark Accessory view handlers
 
-- (void)notificationSwitchDidToggle:(id)sender {
-    UISwitch *aSwitch = sender;
-    MITModule *aModule = [notifications objectAtIndex:aSwitch.tag];
-    NSString *moduleTag = aModule.tag;
-    
-	NSMutableDictionary *parameters = [[MITDeviceRegistration identity] mutableDictionary];
-	[parameters setObject:moduleTag forKey:@"module_name"];
-	NSString *enabledString = aSwitch.on ? @"1" : @"0";
-	[parameters setObject:enabledString forKey:@"enabled"];
-	
-	JSONAPIRequest *existingRequest = [apiRequests objectForKey:moduleTag];
-	if (existingRequest != nil) {
-		[existingRequest abortRequest];
-		[apiRequests removeObjectForKey:moduleTag];
-	}
-	JSONAPIRequest *request = [JSONAPIRequest requestWithJSONAPIDelegate:self];
-	[request requestObjectFromModule:@"push" command:@"moduleSetting" parameters:parameters];
-	[apiRequests setObject:request forKey:moduleTag];
-}
-
 - (void)behaviorSwitchDidToggle:(id)sender {
 	// If there are ever other behavior switches, check the sender's tag before doing anything.
 	BOOL currentShakePref = [[NSUserDefaults standardUserDefaults] boolForKey:ShakeToReturnPrefKey];
@@ -157,16 +135,9 @@ typedef enum {
 
 @implementation SettingsTableViewController
 
-@synthesize notifications;
-@synthesize apiRequests;
-
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self.tableView applyStandardColors];
-	self.apiRequests = [[NSMutableDictionary alloc] initWithCapacity:1];
-	
-    MIT_MobileAppDelegate *appDelegate = (MIT_MobileAppDelegate *)[[UIApplication sharedApplication] delegate];
-    self.notifications = [appDelegate.modules filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"pushNotificationSupported == TRUE"]];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -178,28 +149,22 @@ typedef enum {
 - (void)viewDidUnload {
 	// Release any retained subviews of the main view.
 	// e.g. self.myOutlet = nil;
-    self.notifications = nil;
 }
 
 - (void)dealloc {
     [super dealloc];
-	[self.apiRequests release];
-    self.notifications = nil;
 }
 
 
 #pragma mark Table view methods
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-	return 3;
+	return 2;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     NSInteger rows = 0;
     switch (section) {
-        case kNotificationsSettingsSection:
-            rows = [notifications count];
-            break;
 		case kMapsSettingsSection:
 			rows = 1;
 			break;
@@ -218,10 +183,6 @@ typedef enum {
 	UIView *headerView = nil;
 	
 	switch (section) {
-		case kNotificationsSettingsSection:
-			headerView = [self tableView:tableView viewForHeaderWithTitle:@"Notifications" 
-							 andSubtitle:@"Turn off Notifications to disable alerts for that module."];
-			break;
 		case kMapsSettingsSection:
 			headerView = [self tableView:tableView viewForHeaderWithTitle:@"Maps" andSubtitle:nil];
 			break;
@@ -236,17 +197,7 @@ typedef enum {
 
 - (CGFloat)tableView: (UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
 	CGFloat height = TITLE_HEIGHT + 2.5 * PADDING;
-	
-	switch (section) {
-		case kNotificationsSettingsSection:
-			height += SUBTITLE_HEIGHT;
-			break;
-		case kMapsSettingsSection:
-		case kBehaviorSettingsSection:
-		default:
-			break;
-	}
-	
+		
 	return height;
 }
 
@@ -258,14 +209,6 @@ typedef enum {
 	BOOL switchIsOnNow = NO;
 	
 	switch (indexPath.section) {
-        case kNotificationsSettingsSection:
-		{
-			MITModule *aModule = [self.notifications objectAtIndex:indexPath.row];
-			label = aModule.longName;
-			switchToggleHandler = @selector(notificationSwitchDidToggle:);
-			switchIsOnNow = aModule.pushNotificationEnabled;
-			break;
-		}
 		case kMapsSettingsSection:
 		{
 			label = @"Map Type";
@@ -290,7 +233,6 @@ typedef enum {
         cell.backgroundColor = [UIColor colorWithWhite:1.0 alpha:0.65];
 		
 		switch (indexPath.section) {
-			case kNotificationsSettingsSection:
 			case kBehaviorSettingsSection:
 			{
 				[self addSwitchToCell:cell withToggleHandler:switchToggleHandler];
@@ -333,55 +275,6 @@ typedef enum {
 
 - (void) reloadSettings {
 	[self.tableView reloadData];
-}
-
-- (void)request:(JSONAPIRequest *)request jsonLoaded: (id)object {
-	if (object && [object isKindOfClass:[NSDictionary class]] && [object objectForKey:@"success"]) {
-		for (id moduleTag in apiRequests) {
-			JSONAPIRequest *aRequest = [apiRequests objectForKey:moduleTag];
-			if (aRequest == request) {
-				// this backwards finding would be a lot simpler if 
-				// the backend would just return module and enabled status
-				MIT_MobileAppDelegate *appDelegate = (MIT_MobileAppDelegate *)[[UIApplication sharedApplication] delegate];
-				MITModule *module = [appDelegate moduleForTag:moduleTag];
-				NSUInteger tag = [notifications indexOfObject:module];
-				NSIndexPath *indexPath = [NSIndexPath indexPathForRow:tag inSection:0];
-				[indexPath indexPathByAddingIndex:tag];
-				UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:indexPath];
-				UISwitch *aSwitch = (UISwitch *)cell.accessoryView;
-				BOOL enabled = aSwitch.on;
-				[module setPushNotificationEnabled:enabled];
-				
-				[apiRequests removeObjectForKey:moduleTag];
-				break;
-			}
-		}
-	}
-}
-
-- (void)handleConnectionFailureForRequest:(JSONAPIRequest *)request {
-	for (id moduleTag in apiRequests) {
-		JSONAPIRequest *aRequest = [apiRequests objectForKey:moduleTag];
-		if (aRequest == request) {
-			[apiRequests removeObjectForKey:moduleTag];
-			break;
-		}
-	}
-	
-	//for (MITModule *aModule in notifications) {
-	//	NSLog(@"%@ %@", [aModule description], aModule.pushNotificationEnabled ? @"yes" : @"no");
-	//}
-	
-	[self reloadSettings];
-	
-	UIAlertView *alertView = [[UIAlertView alloc] 
-                              initWithTitle:@"Connection Failure"
-                              message:@"Failed to update your settings please try again later" 
-                              delegate:nil 
-                              cancelButtonTitle:@"OK" 
-                              otherButtonTitles:nil];
-	[alertView show];
-	[alertView release];
 }
 
 @end
