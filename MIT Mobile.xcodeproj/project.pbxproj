@@ -454,6 +454,8 @@
 		EBAE878612198B2500F370BE /* SchoolsModule.m in Sources */ = {isa = PBXBuildFile; fileRef = EBAE878212198B2500F370BE /* SchoolsModule.m */; };
 		EBAE878712198B2500F370BE /* SchoolsViewController.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EBAE878312198B2500F370BE /* SchoolsViewController.h */; settings = {JAVA_ARCHIVE_SUBDIR = Modules/Schools; }; };
 		EBAE878812198B2500F370BE /* SchoolsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EBAE878412198B2500F370BE /* SchoolsViewController.m */; };
+		EBAE88051219960700F370BE /* Secret.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EBAE88031219960700F370BE /* Secret.h */; settings = {JAVA_ARCHIVE_SUBDIR = Common; }; };
+		EBAE88061219960700F370BE /* Secret.m in Sources */ = {isa = PBXBuildFile; fileRef = EBAE88041219960700F370BE /* Secret.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -991,6 +993,8 @@
 		EBAE878212198B2500F370BE /* SchoolsModule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SchoolsModule.m; path = Schools/SchoolsModule.m; sourceTree = "<group>"; };
 		EBAE878312198B2500F370BE /* SchoolsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SchoolsViewController.h; path = Schools/SchoolsViewController.h; sourceTree = "<group>"; };
 		EBAE878412198B2500F370BE /* SchoolsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SchoolsViewController.m; path = Schools/SchoolsViewController.m; sourceTree = "<group>"; };
+		EBAE88031219960700F370BE /* Secret.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Secret.h; sourceTree = "<group>"; };
+		EBAE88041219960700F370BE /* Secret.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Secret.m; sourceTree = "<group>"; };
 		EBCA123210CEF3C400577C5D /* PeopleSearchViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PeopleSearchViewController.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -1060,6 +1064,8 @@
 				EB74ED2D11924E7C006673F9 /* ShareDetailViewController.m */,
 				A6787A1411F605070034D559 /* NSArray+Convenience.h */,
 				A6787A1511F605070034D559 /* NSArray+Convenience.m */,
+				EBAE88031219960700F370BE /* Secret.h */,
+				EBAE88041219960700F370BE /* Secret.m */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -1971,6 +1977,7 @@
 				C7DA11B912138C2F00FE8756 /* MainSearchGroupedCoursesTableViewController.h in JavaArchive */,
 				EBAE878512198B2500F370BE /* SchoolsModule.h in JavaArchive */,
 				EBAE878712198B2500F370BE /* SchoolsViewController.h in JavaArchive */,
+				EBAE88051219960700F370BE /* Secret.h in JavaArchive */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2380,6 +2387,7 @@
 				C7DA11BA12138C2F00FE8756 /* MainSearchGroupedCoursesTableViewController.m in Sources */,
 				EBAE878612198B2500F370BE /* SchoolsModule.m in Sources */,
 				EBAE878812198B2500F370BE /* SchoolsViewController.m in Sources */,
+				EBAE88061219960700F370BE /* Secret.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

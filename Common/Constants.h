@@ -1,5 +1,6 @@
 #import <Foundation/Foundation.h>
 #import "MITBuildInfo.h"
+#import "Secret.h"
 
 // common URLs
 extern NSString * const MITMobileWebDomainString;

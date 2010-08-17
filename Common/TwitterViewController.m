@@ -10,10 +10,6 @@
 #define CredentialsKey @"Credentials"
 #define TwitterServiceName @"Twitter"
 
-#define kOAuthConsumerKey @"uStgs4HxpAs6EWHj1C3mA"
-#define kOAuthConsumerSecret @"tWpAalpYgn0TGp4M2Jz8CKPfNRvyMkM21Nvud4HVxXc"
-
-
 #define INPUT_FIELDS_MARGIN 10.0
 #define INPUT_FIELDS_HEIGHT 32.0
 #define INPUT_FIELDS_TOP 69.0
@@ -110,8 +106,8 @@ MIT_MobileAppDelegate *appDelegate();
 	[super loadView];
 	
 	twitterEngine = [[XAuthTwitterEngine alloc] initXAuthWithDelegate:self];
-	twitterEngine.consumerKey = kOAuthConsumerKey;
-	twitterEngine.consumerSecret = kOAuthConsumerSecret;
+	twitterEngine.consumerKey = TwitterOAuthConsumerKey;
+	twitterEngine.consumerSecret = TwitterOAuthConsumerSecret;
 	
 	CGRect appFrame = [[UIScreen mainScreen] applicationFrame];
 	appFrame.origin.y = 0;

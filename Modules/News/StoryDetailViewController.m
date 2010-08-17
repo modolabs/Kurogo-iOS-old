@@ -16,12 +16,12 @@
 
 - (void)loadView {
     [super loadView]; // surprisingly necessary empty call to super due to the way memory warnings work
+	
+	self.shareDelegate = self;
 }
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-	
-	self.shareDelegate = self;
 	
 	storyPager = [[UISegmentedControl alloc] initWithItems:
 											[NSArray arrayWithObjects:
@@ -179,22 +179,34 @@
 }
 
 - (NSString *)fbDialogAttachment {
-	return [NSString stringWithFormat:
-			@"{\"name\":\"%@\","
-			"\"href\":\"%@\","
-			//"\"caption\":\"%@\","
-			"\"description\":\"%@\","
-			"\"media\":["
-			"{\"type\":\"image\","
-			"\"src\":\"%@\","
-			"\"href\":\"%@\"}]"
-			//,"\"properties\":{\"another link\":{\"text\":\"Facebook home page\",\"href\":\"http://www.facebook.com\"}}"
-			"}",
-			story.title, story.link, story.summary, story.featuredImage.url, story.link];
+    NSString *attachment = [NSString stringWithFormat:
+                            @"\"name\":\"%@\","
+                            "\"href\":\"%@\","
+                            //"\"caption\":\"%@\","
+                            "\"description\":\"%@\","
+                            "\"media\":["
+                            "{\"type\":\"image\","
+                            "\"src\":\"%@\","
+                            "\"href\":\"%@\"}]",
+                            story.title, story.link, story.summary, story.featuredImage.url, story.link, [self twitterUrl]];    
+
+    NSString *mobileUrl = [self twitterUrl];
+    if (mobileUrl) {
+        attachment = [NSString stringWithFormat:@"{%@,%@}",
+                      attachment,
+                      [NSString stringWithFormat:@"\"properties\":{\"Mobile web link\":{\"text\":\"%@\",\"href\":\"%@\"}}",
+                       mobileUrl, story.title]];
+    } else {
+        attachment = [NSString stringWithFormat:@"{%@}", attachment];
+    }
+
+	return attachment;
 }
 
 - (NSString *)twitterUrl {
-	return [NSString stringWithFormat:@"http://%@/n/%@", MITMobileWebDomainString, [URLShortener compressedIdFromNumber:story.story_id]];
+    NSLog(@"%@", MITMobileWebDomainString);
+    
+	return [NSString stringWithFormat:@"http://%@/news/story.php?story_id=%d", MITMobileWebDomainString, [story.story_id integerValue]];
 }
 
 - (NSString *)twitterTitle {
