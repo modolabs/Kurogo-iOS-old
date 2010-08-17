@@ -4,6 +4,7 @@
 #import "MapSearchResultAnnotation.h"
 #import "MapSavedAnnotation.h"
 #import "MapBookmarkManager.h"
+#import "TileServerManager.h"
 
 @implementation CMModule
 @synthesize campusMapVC = _campusMapVC;
@@ -69,12 +70,25 @@ NSString * const MapsLocalPathList = @"list";
 }
 
 - (void)performSearchForString:(NSString *)searchText {
+    if (![TileServerManager isInitialized]) {
+        [[NSNotificationCenter defaultCenter] addObserver:self 
+                                                 selector:@selector(tileServerDidSetup) 
+                                                     name:kTileServerManagerProjectionIsReady
+                                                   object:nil];
+    }
+    
     [super performSearchForString:searchText];
     
     self.request = [JSONAPIRequest requestWithJSONAPIDelegate:self];
     [self.request requestObjectFromModule:@"map"
                                   command:@"search"
                                parameters:[NSDictionary dictionaryWithObjectsAndKeys:searchText, @"q", nil]];
+}
+
+- (void)tileServerDidSetup {
+    for (ArcGISMapAnnotation *annotation in self.searchResults) {
+        [annotation updateWithInfo:annotation.info];
+    }
 }
 
 - (void)abortSearch {
