@@ -151,6 +151,26 @@ NSString * const MapsLocalPathList = @"list";
             didHandle = YES;
         }
     } else if ([localPath isEqualToString:@"search"]) {
+
+        NSArray *queryParts = [query componentsSeparatedByString:@"&"];
+        NSDictionary *params = nil;
+        if ([queryParts count] > 1) {
+            NSMutableDictionary *mutableParams = [NSMutableDictionary dictionaryWithCapacity:[queryParts count] - 1];
+            for (NSString *queryPart in queryParts) {
+                NSArray *args = [queryPart componentsSeparatedByString:@"="];
+                switch ([args count]) {
+                    case 1:
+                        query = queryPart;
+                        break;
+                    case 2:
+                        [mutableParams setObject:[args objectAtIndex:1] forKey:[args objectAtIndex:0]];
+                        break;
+                    default:
+                        break;
+                }
+            }
+            params = [NSDictionary dictionaryWithDictionary:mutableParams];
+        }
         
         [self resetNavStack];
         self.campusMapVC.view;
@@ -161,7 +181,7 @@ NSString * const MapsLocalPathList = @"list";
         self.campusMapVC.hasSearchResults = YES;
             
         // perform the search from the network
-        [self.campusMapVC search:query];
+        [self.campusMapVC search:query params:params];
         didHandle = YES;
 
     }

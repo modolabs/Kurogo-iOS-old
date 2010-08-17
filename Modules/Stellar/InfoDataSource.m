@@ -311,7 +311,8 @@
 				![classTime.location isEqualToString:@"Tba"]) {
 				StellarClassTime *classTime = [self.viewController.times objectAtIndex:indexPath.row];
 				if([classTime.location length]) {
-					[[UIApplication sharedApplication] openURL:[NSURL internalURLWithModuleTag:CampusMapTag path:@"search" query:classTime.location]];
+                    NSString *courseQuery = [NSString stringWithFormat:@"%@&loc=course", classTime.location];
+					[[UIApplication sharedApplication] openURL:[NSURL internalURLWithModuleTag:CampusMapTag path:@"search" query:courseQuery]];
 				}
 			}
 		}

@@ -382,7 +382,7 @@
             MapSearch *search = [self.tableItems objectAtIndex:indexPath.row];
             
             self.mapVC.searchBar.text = search.searchTerm;
-            [self.mapVC search:search.searchTerm];
+            [self.mapVC search:search.searchTerm params:nil];
             
             [self dismissModalViewControllerAnimated:YES];
             

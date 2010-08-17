@@ -31,6 +31,7 @@
 - (void)restoreToolBar;
 - (void)hideToolBar;
 - (CGFloat)searchBarWidth;
+- (void)receivedNewSearchResults:(NSArray*)searchResults query:(NSString *)searchQuery type:(NSString *)searchType;
 
 @end
 
@@ -302,8 +303,7 @@
 	[self setSearchResultsWithoutRecentering:searchResults];
 	
     if (_searchResults.count == 1) {
-        ArcGISMapAnnotation *annotation = [_mapView.annotations lastObject];
-        _mapView.region = MKCoordinateRegionMake(annotation.coordinate, MKCoordinateSpanMake(0.002, 0.002));
+        id<MKAnnotation> annotation = [_mapView.annotations lastObject];
         [_mapView selectAnnotation:annotation animated:YES];
 
     } else if (_searchResults.count > 0) {
@@ -491,13 +491,20 @@
 	}
 }
 
-- (void)receivedNewSearchResults:(NSArray*)searchResults forQuery:(NSString *)searchQuery
+- (void)receivedNewSearchResults:(NSArray*)searchResults query:(NSString *)searchQuery type:(NSString *)searchType
 {	
     NSMutableArray *searchResultsArr = [NSMutableArray arrayWithCapacity:searchResults.count];
     
-    for (NSDictionary* info in searchResults) {
-        ArcGISMapAnnotation *annotation = [[[ArcGISMapAnnotation alloc] initWithInfo:info] autorelease];
-        [searchResultsArr addObject:annotation];
+    if (searchType == nil) {
+        for (NSDictionary *info in searchResults) {
+            ArcGISMapAnnotation *annotation = [[[ArcGISMapAnnotation alloc] initWithInfo:info] autorelease];
+            [searchResultsArr addObject:annotation];
+        }
+    } else if ([searchType isEqualToString:@"course"]) {
+        for (NSDictionary *info in searchResults) {
+            HarvardMapSearchAnnotation *annotation = [[[HarvardMapSearchAnnotation alloc] initWithInfo:info] autorelease];
+            [searchResultsArr addObject:annotation];
+        }
     }
 
     self.searchResults = searchResultsArr;
@@ -513,7 +520,9 @@
 }
 
 - (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
-{	
+{
+    [self restoreToolBar];
+
 	// delete any previous instance of this search term
 	MapSearch* mapSearch = [CoreDataManager getObjectForEntity:CampusMapSearchEntityName attribute:@"searchTerm" value:searchBar.text];
 	if (nil != mapSearch) {
@@ -552,7 +561,7 @@
 	}
 	
 	// ask the campus map view controller to perform the search
-	[self search:searchBar.text];
+	[self search:searchBar.text params:nil];
 	
 }
 
@@ -561,11 +570,14 @@
 	self.navigationItem.rightBarButtonItem.title = _displayingList ? @"Map" : @"Browse";
 	_hasSearchResults = NO;
     [_mapView removeAnnotations:_mapView.annotations];
+    _searchBar.text = nil;
     [self restoreToolBar];
 }
 
 - (void)searchOverlayTapped {
-    [self restoreToolBar];
+    // be more aggressive about clearing results
+    // because "browse" only appears when there are no results
+    [self searchBarCancelButtonClicked:_searchBar];
 }
 
 - (void)hideToolBar {
@@ -708,6 +720,7 @@
 }
 
 
+/*
 // TODO: this doesn't seem to be used anywhere
 - (void)annotationSelected:(id<MKAnnotation>)annotation {
 	if([annotation isKindOfClass:[ArcGISMapAnnotation class]]) {
@@ -717,6 +730,7 @@
 		}
 	}
 }
+*/
 
 //- (void)mapView:(MKMapView *)mapView didFailToLocateUserWithError:(NSError *)error {
 //}
@@ -728,29 +742,31 @@
     
     if (JSONObject && [JSONObject isKindOfClass:[NSDictionary class]]) {
         NSArray *searchResults = [JSONObject objectForKey:@"results"];
-        
-        if ([request.userData isKindOfClass:[NSString class]]) {
-            NSString *searchType = request.userData;
-            
-            if ([searchType isEqualToString:kAPISearch]) {		
 
-                [_lastSearchText release];
-                _lastSearchText = [request.params objectForKey:@"q"];
-                
-                [self receivedNewSearchResults:searchResults forQuery:_lastSearchText];
-                
-                // if there were no search results, tell the user about it. 
-                if (nil == searchResults || searchResults.count <= 0) {
-                    [self noSearchResultsAlert];
-                    _hasSearchResults = NO;
-                    self.navigationItem.rightBarButtonItem.title = _displayingList ? @"Map" : @"Browse";
-                } else {
-                    _hasSearchResults = YES;
-                    [_searchController hideSearchOverlayAnimated:YES];
-                    if(!_displayingList)
-                        self.navigationItem.rightBarButtonItem.title = @"List";
-                }
+        if ([request.userData isKindOfClass:[NSString class]]
+            && [request.userData isEqualToString:kAPISearch])
+        {
+            // result is coming in from -[self search:params:]
+
+            [_lastSearchText release];
+            _lastSearchText = [request.params objectForKey:@"q"];
+            
+            NSString *searchType = [request.params objectForKey:@"loc"];
+            
+            [self receivedNewSearchResults:searchResults query:_lastSearchText type:searchType];
+            
+            // if there were no search results, tell the user about it. 
+            if (nil == searchResults || searchResults.count <= 0) {
+                [self noSearchResultsAlert];
+                _hasSearchResults = NO;
+                self.navigationItem.rightBarButtonItem.title = _displayingList ? @"Map" : @"Browse";
+            } else {
+                _hasSearchResults = YES;
+                [_searchController hideSearchOverlayAnimated:YES];
+                if(!_displayingList)
+                    self.navigationItem.rightBarButtonItem.title = @"List";
             }
+            
         } else if ([request.userData isKindOfClass:[ArcGISMapAnnotation class]]) {
             // updating an annotation search request
             ArcGISMapAnnotation *annotation = request.userData;
@@ -782,12 +798,8 @@
 	}
 }
 
-- (void)search:(NSString*)searchText
+- (void)search:(NSString *)searchText params:(NSDictionary *)params
 {
-    if (![_searchController isActive]) {
-        // happens if we tap on a cell from "Recent searches"
-        [_searchController setActive:YES animated:NO];
-    }
      
 	if (nil == searchText) {
 		self.searchResults = nil;
@@ -798,9 +810,17 @@
 	} else {
         JSONAPIRequest *apiRequest = [JSONAPIRequest requestWithJSONAPIDelegate:self];
         apiRequest.userData = kAPISearch;
+
+        NSMutableDictionary *searchParams = [params mutableCopy];
+        if (!searchParams) {
+            searchParams = [NSMutableDictionary dictionaryWithCapacity:1];
+        }
+        
+        [searchParams setObject:searchText forKey:@"q"];
+        
         [apiRequest requestObjectFromModule:@"map"
                                     command:@"search"
-                                 parameters:[NSDictionary dictionaryWithObjectsAndKeys:searchText, @"q", nil]];
+                                 parameters:searchParams];
 	}
 }
 
