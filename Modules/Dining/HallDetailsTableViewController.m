@@ -261,7 +261,8 @@ numberOfRowsInSection:(NSInteger)section
 		//[cell.textLabel setTextAlignment:UITextAlignmentLeft];
 		cell.textLabel.text = meal;
 		cell.detailTextLabel.text = message;
-		cell.detailTextLabel.font = [UIFont boldSystemFontOfSize:15]; //was 15
+		//cell.detailTextLabel.font = [UIFont boldSystemFontOfSize:15]; //was 15
+		cell.detailTextLabel.font = [UIFont boldSystemFontOfSize:CELL_STANDARD_FONT_SIZE];
 		cell.selectionStyle =  UITableViewCellSelectionStyleNone;		
 	
 	}
@@ -281,7 +282,7 @@ numberOfRowsInSection:(NSInteger)section
 	NSString *mealkey;
 	
 	constraintWidth = tableView.frame.size.width;
-	cellFont = [UIFont boldSystemFontOfSize:15]; //was 15
+	cellFont = [UIFont boldSystemFontOfSize:CELL_STANDARD_FONT_SIZE]; //was 15
 	
 	int col = [indexPath section];
 	int row = [indexPath row];
@@ -321,15 +322,28 @@ numberOfRowsInSection:(NSInteger)section
 			cellText = @"None";
 		}
 		
-		
+		if ([cellText length] > 25) {
+			
 	CGSize textSize = [cellText sizeWithFont:cellFont
-						   constrainedToSize:CGSizeMake(constraintWidth, 5000.0)//2010.0)
+						   constrainedToSize:CGSizeMake(constraintWidth, 5000.0)//5000.0)//2010.0)
 							   lineBreakMode:UILineBreakModeWordWrap];
 		
-		if (textSize.height < 35)
-		 return 40 + 20;
-		 
-		 return textSize.height + 75;
+		if (textSize.height < 40)
+		 return 60;
+
+		else if (textSize.height < 65)
+			return textSize.height + 45;
+			
+		else if (textSize.height < 100)
+			return textSize.height + 75;
+		
+		else if (textSize.height > 100)
+			return textSize.height + 75;
+			
+		 return textSize.height + 55;
+		
+		//return textSize.height + 20;
+		}
 	}
 	
 	return 40;

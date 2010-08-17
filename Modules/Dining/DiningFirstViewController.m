@@ -723,7 +723,7 @@ numberOfRowsInSection:(NSInteger)section
 
 	if ([type isEqualToString:@"VGT"]) {
 		UIImage *image2 = [UIImage imageNamed:@"dining/dining-vegan.png"];
-		UIImageView *imView2 = [[UIImageView alloc] initWithFrame:CGRectMake(273, 12, 17, 17)];
+		UIImageView *imView2 = [[UIImageView alloc] initWithFrame:CGRectMake(253, 12, 17, 17)];
 		imView2.image = image2;
 		[cell.contentView addSubview:imView2];
 		[imView2 release];
@@ -731,7 +731,7 @@ numberOfRowsInSection:(NSInteger)section
 	
 	else if ([type isEqualToString:@"VGN"]) {
 		UIImage *image2 = [UIImage imageNamed:@"dining/dining-vegetarian.png"];
-		UIImageView *imView2 = [[UIImageView alloc] initWithFrame:CGRectMake(273, 12, 17, 17)];
+		UIImageView *imView2 = [[UIImageView alloc] initWithFrame:CGRectMake(253, 12, 17, 17)];
 		imView2.image = image2;
 		[cell.contentView addSubview:imView2];
 		[imView2 release];
@@ -772,7 +772,7 @@ heightForRowAtIndexPath:(NSIndexPath *)indexPath
 	NSString *textL = (NSString *) [[keySection objectAtIndex:row] objectForKey:@"item"];
 	
 	int textLines = 1;
-	if ([textL length] > 33)
+	if ([textL length] > 27)
 		 textLines = 2;
 	
 	return [DiningMultiLineCell heightForCellWithStyle:UITableViewStyleGrouped
