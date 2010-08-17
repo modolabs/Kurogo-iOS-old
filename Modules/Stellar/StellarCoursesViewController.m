@@ -110,9 +110,10 @@
 - (CGFloat) tableView: (UITableView *)tableView heightForRowAtIndexPath: (NSIndexPath *)indexPath {
 	//StellarCourse *stellarCourse = (StellarCourse *)[self.courseGroup.courses objectAtIndex:indexPath.row];
 	StellarCourse *stellarCourse = (StellarCourse *)[self.courseGroup.courses objectAtIndex:indexPath.section];
+
     return [MultiLineTableViewCell heightForCellWithStyle:UITableViewCellStyleSubtitle
                                                 tableView:tableView 
-                                                     text:stellarCourse.title //was nil
+                                                     text:stellarCourse.title//was nil
                                              maxTextLines:2 //was 1
                                                detailText:nil // was stellarCourse.title
                                            maxDetailLines:0
@@ -134,7 +135,7 @@
 
 - (NSArray *)sectionIndexTitlesForTableView:(UITableView *)tableView {
 	
-	if ([self.courseGroup.courses count] <= 10)
+	if ([self.courseGroup.courses count] < 10)
 		return nil;
 	
 	NSMutableArray *tempIndexArray = [[NSMutableArray alloc] init];

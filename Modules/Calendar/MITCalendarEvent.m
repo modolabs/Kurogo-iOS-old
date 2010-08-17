@@ -129,7 +129,7 @@
 		 ![fieldKeyString isEqualToString:@"Gazette Classification"]) 
 	 {
 	 
-	 fieldKeyString = [NSString stringWithFormat:@"<b><u>%@</b></u>", fieldKeyString];
+	 fieldKeyString = [NSString stringWithFormat:@"<b><font color=\"#554c41\">%@</font></b>", fieldKeyString];
 	 [description appendString:fieldKeyString];
 	 [description appendString:@": "];
 	 [description appendString:fieldValueString];
