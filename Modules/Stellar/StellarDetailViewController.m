@@ -15,6 +15,7 @@
 #define lineHeight 25.0
 #define headerHeight 150.0
 #define footerHeight 20.0
+// TODO: use the size of the image tab-*.png instead of a constant
 #define tabHeight 36.0
 #define termHeight 20.0
 #define paddingHeight 5.0
