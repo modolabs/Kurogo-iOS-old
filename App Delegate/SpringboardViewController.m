@@ -8,9 +8,17 @@
 #import "ModoSearchBar.h"
 #import "MITSearchDisplayController.h"
 
-#define GRID_HPADDING 28.0f
-#define GRID_VPADDING 11.0f
-#define ICON_LABEL_HEIGHT 26.0f
+// horizontal spacing between icons
+#define GRID_HPADDING 16.0f
+
+// vertical spacing between icons
+#define GRID_VPADDING 26.0f
+
+// height to allocate to icon text label
+#define ICON_LABEL_HEIGHT 28.0f
+
+// internal padding within each icon
+#define ICON_PADDING 5.0f
 
 @implementation SpringboardViewController
 
@@ -47,17 +55,18 @@
     // calculate xOrigin to keep icons centered
     CGFloat xOriginInitial = (viewSize.width - ((iconSize.width + GRID_HPADDING) * iconsPerRow - GRID_HPADDING)) / 2;
     CGFloat xOrigin = xOriginInitial;
-    CGFloat yOrigin = _searchBar.frame.size.height + GRID_VPADDING + 16.0;
-    bottomRight = CGPointZero;
+    //CGFloat yOrigin = _searchBar.frame.size.height + GRID_VPADDING + 16.0;
+    //bottomRight = CGPointZero;
     
     for (anIcon in icons) {
-        anIcon.frame = CGRectMake(xOrigin, yOrigin, iconSize.width, iconSize.height);
-        bottomRight.y = yOrigin + anIcon.frame.size.height;
+        anIcon.frame = CGRectMake(xOrigin, bottomRight.y, iconSize.width, iconSize.height);
+        //bottomRight.y = yOrigin + anIcon.frame.size.height;
         
         xOrigin += anIcon.frame.size.width + GRID_HPADDING;
         if (xOrigin + anIcon.frame.size.width + GRID_HPADDING >= viewSize.width) {
             xOrigin = xOriginInitial;
-            yOrigin += anIcon.frame.size.height + GRID_VPADDING;
+            bottomRight.y += anIcon.frame.size.height + GRID_VPADDING;
+            //yOrigin += anIcon.frame.size.height + GRID_VPADDING;
         }
         
         if (![anIcon isDescendantOfView:containingView]) {
@@ -72,7 +81,7 @@
     topLeft = ((SpringboardIcon *)[icons objectAtIndex:0]).frame.origin;
 
     if (bottomRight.y > containingView.contentSize.height) {
-        containingView.contentSize = CGSizeMake(containingView.contentSize.width, bottomRight.y + GRID_VPADDING + 20.0);
+        containingView.contentSize = CGSizeMake(containingView.contentSize.width, bottomRight.y);
     }
 
 }
@@ -88,25 +97,43 @@
     
     NSArray *modules = ((MIT_MobileAppDelegate *)[[UIApplication sharedApplication] delegate]).modules;
     _icons = [[NSMutableArray alloc] initWithCapacity:[modules count]];
+    _fixedIcons = [[NSMutableArray alloc] init];
     
     for (MITModule *aModule in modules) {
         SpringboardIcon *anIcon = [SpringboardIcon buttonWithType:UIButtonTypeCustom];
         UIImage *image = [aModule icon];
         if (image) {
-            anIcon.frame = CGRectMake(0, 0, image.size.width, image.size.height + ICON_LABEL_HEIGHT);
             
-            anIcon.imageEdgeInsets = UIEdgeInsetsMake(0, 0, ICON_LABEL_HEIGHT, 0);
+            if (aModule.canBecomeDefault) {
+                [_icons addObject:anIcon];
+                anIcon.titleLabel.font = [UIFont systemFontOfSize:13.0];
+
+                anIcon.frame = CGRectMake(0, 0, image.size.width, image.size.height + ICON_LABEL_HEIGHT);
+                anIcon.imageEdgeInsets = UIEdgeInsetsMake(0, 0, ICON_LABEL_HEIGHT, 0);
+                // title by default is placed to the right of the image, we want it below
+                anIcon.titleEdgeInsets = UIEdgeInsetsMake(image.size.height, -image.size.width, 0, 0);
+            } else {
+                [_fixedIcons addObject:anIcon];
+                anIcon.titleLabel.font = [UIFont systemFontOfSize:10.0];
+
+                anIcon.frame = CGRectMake(0, 0, image.size.width + ICON_PADDING * 2, image.size.height + ICON_PADDING * 2 + ICON_LABEL_HEIGHT);
+                anIcon.imageEdgeInsets = UIEdgeInsetsMake(ICON_PADDING, ICON_PADDING, ICON_LABEL_HEIGHT + ICON_PADDING, ICON_PADDING);
+                // title by default is placed to the right of the image, we want it below
+                anIcon.titleEdgeInsets = UIEdgeInsetsMake(image.size.height + ICON_PADDING, -image.size.width, 0, 0);
+            }
+            
             [anIcon setImage:image forState:UIControlStateNormal];
+
+            anIcon.titleLabel.numberOfLines = 0;
+            anIcon.titleLabel.lineBreakMode = UILineBreakModeWordWrap;
+            anIcon.titleLabel.textAlignment = UITextAlignmentCenter;
             
-            // title by default is placed to the right of the image, we want it below
-            anIcon.titleEdgeInsets = UIEdgeInsetsMake(image.size.height, -image.size.width, 0, 0);
-            [anIcon setTitle:aModule.shortName forState:UIControlStateNormal];
+            [anIcon setTitle:aModule.longName forState:UIControlStateNormal];
             [anIcon setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-            anIcon.titleLabel.font = [UIFont systemFontOfSize:14.0];
             
             anIcon.moduleTag = aModule.tag;
             [anIcon addTarget:self action:@selector(buttonPressed:) forControlEvents:UIControlEventTouchUpInside];
-            [_icons addObject:anIcon];
+            
         } else {
             NSLog(@"skipping module %@", aModule.tag);
         }
@@ -119,7 +146,8 @@
 
 - (void)viewDidLoad
 {
-    self.navigationItem.title = @"Home";
+    UIImage *masthead = [UIImage imageNamed:@"home/home-masthead.png"];
+    self.navigationItem.titleView = [[[UIImageView alloc] initWithImage:masthead] autorelease];
     
     containingView = [[UIScrollView alloc] initWithFrame:self.view.bounds];
     containingView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:ImageNameHomeScreenBackground]];
@@ -131,7 +159,10 @@
     [self.view addSubview:_searchBar];
     [_searchBar addDropShadow];
 
+    bottomRight = CGPointZero;
+    bottomRight.y = _searchBar.frame.size.height + GRID_VPADDING;
     [self layoutIcons:_icons];
+    [self layoutIcons:_fixedIcons];
     
     if (!_searchController) {
         _searchController = [[MITSearchDisplayController alloc] initWithSearchBar:_searchBar contentsController:self];
@@ -171,30 +202,10 @@
     }
 }
 
-/*
-// Override to allow orientations other than the default portrait orientation.
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
-    // Return YES for supported orientations
-    return (interfaceOrientation == UIInterfaceOrientationPortrait);
-}
-*/
-
-- (void)didReceiveMemoryWarning {
-    // Releases the view if it doesn't have a superview.
-    [super didReceiveMemoryWarning];
-    
-    // Release any cached data, images, etc that aren't in use.
-}
-
-- (void)viewDidUnload {
-    [super viewDidUnload];
-    // Release any retained subviews of the main view.
-    // e.g. self.myOutlet = nil;
-}
-
 
 - (void)dealloc {
     [_icons release];
+    [_fixedIcons release];
     [containingView release];
     [_searchBar release];
     [_searchController release];

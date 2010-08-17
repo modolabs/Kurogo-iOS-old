@@ -9,7 +9,7 @@
     if (self != nil) {
         self.tag = DiningTag;
         self.shortName = @"Dining";
-        self.longName = @"Harvard Dining";
+        self.longName = @"Student Dining";
         self.iconName = @"dining";
         
         DiningFirstViewController *aboutVC = [[[DiningFirstViewController alloc] init] autorelease];

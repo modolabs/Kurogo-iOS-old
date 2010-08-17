@@ -1,15 +1,14 @@
 #import "MITModuleList.h"
 #import "NewsModule.h"
-//#import "ShuttleModule.h"
 #import "StellarModule.h"
 #import "PeopleModule.h"
 #import	"CMModule.h"
-//#import "EmergencyModule.h"
 #import "MobileWebModule.h"
 #import "SettingsModule.h"
 #import "AboutModule.h"
 #import "CalendarModule.h"
 #import "DiningModule.h"
+#import "SchoolsModule.h"
 
 // #import your module's header here
 
@@ -34,11 +33,10 @@
 	[result addObject:[[[StellarModule alloc] init] autorelease]];
     [result addObject:[[[NewsModule alloc] init] autorelease]];
 	[result addObject:[[[DiningModule alloc] init] autorelease]];
+    [result addObject:[[[SchoolsModule alloc] init] autorelease]];
     [result addObject:[[[MobileWebModule alloc] init] autorelease]];
-    [result addObject:[[[AboutModule alloc] init] autorelease]];
     [result addObject:[[[SettingsModule alloc] init] autorelease]];
-    //[result addObject:[[[EmergencyModule alloc] init] autorelease]];
-    //[result addObject:[[[ShuttleModule alloc] init] autorelease]];
+    [result addObject:[[[AboutModule alloc] init] autorelease]];
 	
     return result;
 }

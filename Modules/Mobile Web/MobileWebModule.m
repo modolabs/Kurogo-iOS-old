@@ -6,8 +6,8 @@
     self = [super init];
     if (self != nil) {
         self.tag = MobileWebTag;
-        self.shortName = @"Full Website";
-        self.longName = @"Full Website";
+        self.shortName = @"harvard.edu";
+        self.longName = @"harvard.edu";
         self.iconName = @"full-website";
         self.canBecomeDefault = FALSE;
     }
