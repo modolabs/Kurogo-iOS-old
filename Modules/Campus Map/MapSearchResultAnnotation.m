@@ -145,11 +145,24 @@
 
 
 
-/*
 
-@implementation HarvardMapSearchResultAnnotation
+
+@implementation HarvardMapSearchAnnotation
 
 @synthesize featureType = _featureType, matchString = _matchString, searchString = _searchString, coordinate = _coordinate;
+
+- (id)initWithInfo:(NSDictionary*)info {
+	if (self = [super init]) {
+        self.matchString = [info objectForKey:@"match_string"];
+        self.searchString = [info objectForKey:@"feature_type"];
+        self.featureType = [info objectForKey:@"feature_type"];
+        CGFloat lat = [[info objectForKey:@"lat"] doubleValue];
+        CGFloat lon = [[info objectForKey:@"lon"] doubleValue];
+        self.coordinate = CLLocationCoordinate2DMake(lat, lon);
+	}
+        
+	return self;
+}
 
 - (NSString *)title
 {
@@ -169,4 +182,3 @@
 
 @end
  
-*/

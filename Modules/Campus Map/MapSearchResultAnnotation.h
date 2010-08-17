@@ -54,17 +54,17 @@
  "ycoord" : "2961044.576"
  */
 
-// TODO: decide whether we need a separate annotation class for this
 
 
-/*
 
-@interface HarvardMapSearchResultAnnotation : NSObject <MKAnnotation> {
+@interface HarvardMapSearchAnnotation : NSObject <MKAnnotation> {
     NSString *_featureType;
     NSString *_searchString;
     NSString *_matchString;
     CLLocationCoordinate2D _coordinate;
 }
+
+- (id)initWithInfo:(NSDictionary*)info;
 
 @property (nonatomic, retain) NSString *featureType;
 @property (nonatomic, retain) NSString *matchString;
@@ -73,4 +73,4 @@
 
 @end
 
-*/
+

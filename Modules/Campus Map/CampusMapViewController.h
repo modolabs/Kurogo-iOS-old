@@ -60,7 +60,7 @@
 @property (readonly) ModoSearchBar *searchBar;
 
 // execute a search
-- (void)search:(NSString *)searchText;
+- (void)search:(NSString *)searchText params:(NSDictionary *)params;
 
 // this is called in handleLocalPath: query: and also by setSearchResults:
 - (void)setSearchResultsWithoutRecentering:(NSArray *)searchResults;
