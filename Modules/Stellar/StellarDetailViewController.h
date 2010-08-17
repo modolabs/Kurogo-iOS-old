@@ -46,6 +46,7 @@ typedef enum {
 	
 	UILabel *titleView;
 	UILabel *termView;
+	UILabel *classNumberView;
 	UIBarButtonItem *actionButton;
 	UIButton *myStellarButton;
 	
@@ -73,6 +74,7 @@ typedef enum {
 
 @property (nonatomic, assign) UILabel *titleView;
 @property (nonatomic, assign) UILabel *termView;
+@property (nonatomic, assign) UILabel *classNumberView;
 @property (nonatomic, assign) UIButton *myStellarButton;
 
 @property (nonatomic, retain) NSMutableArray *dataSources;

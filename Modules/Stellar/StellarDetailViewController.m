@@ -51,7 +51,7 @@ NSString * termText(NSString *termCode) {
 @synthesize stellarClass;
 @synthesize currentClassInfoLoader, myStellarStatusDelegate;
 @synthesize news, instructors, tas, times;
-@synthesize titleView, termView;
+@synthesize titleView, termView, classNumberView;
 @synthesize myStellarButton;
 @synthesize dataSources;
 @synthesize loadingState;
@@ -127,17 +127,31 @@ NSString * termText(NSString *termCode) {
 	
 	[self.tableView applyStandardColors];
 	
-	CGRect titleFrame = CGRectMake(
-		leftMargin, verticalPadding,
-		self.tableView.tableHeaderView.frame.size.width-2*leftMargin-buttonWidth-myStellarPadding-2, headerHeight);
+	CGRect classNumberFrame = CGRectMake(
+								   leftMargin, verticalPadding,
+								   self.tableView.tableHeaderView.frame.size.width-2*leftMargin-buttonWidth-myStellarPadding-2, verticalPadding*2);
+	self.classNumberView = [[UILabel alloc] initWithFrame:classNumberFrame];
+	self.classNumberView.lineBreakMode = UILineBreakModeWordWrap;
+	self.classNumberView.font = [UIFont fontWithName:COURSE_NUMBER_FONT size:COURSE_NUMBER_FONT_SIZE];
+	self.classNumberView.backgroundColor = [UIColor clearColor];
+	[self.tableView.tableHeaderView addSubview:self.classNumberView];
+	
+	
+	/*CGRect titleFrame = CGRectMake(
+		leftMargin, verticalPadding*3,
+	self.tableView.tableHeaderView.frame.size.width-2*leftMargin-buttonWidth-myStellarPadding-2, headerHeight - verticalPadding);*/
+	CGRect titleFrame = CGRectMake(leftMargin, verticalPadding*3,
+			self.tableView.tableHeaderView.frame.size.width-2*leftMargin-buttonWidth-2, headerHeight - verticalPadding);
 	self.titleView = [[UILabel alloc] initWithFrame:titleFrame];
 	self.titleView.lineBreakMode = UILineBreakModeWordWrap;
 	self.titleView.numberOfLines = 0;
-	self.titleView.font = [UIFont fontWithName:BOLD_FONT size:20.0];
+	//self.titleView.font = [UIFont fontWithName:BOLD_FONT size:20.0];
+	self.titleView.font = [UIFont fontWithName:CONTENT_TITLE_FONT size:CONTENT_TITLE_FONT_SIZE];
 	self.titleView.backgroundColor = [UIColor clearColor];
 	[self.tableView.tableHeaderView addSubview:self.titleView];
 	
 	self.termView = [[UILabel alloc] initWithFrame:CGRectMake(leftMargin, 0, 100.0, termHeight)];
+	//self.termView = [[UILabel alloc] initWithFrame:CGRectMake(leftMargin, verticalPadding, 100.0, termHeight)];
 	self.termView.font = [UIFont fontWithName:STANDARD_FONT size:CELL_DETAIL_FONT_SIZE];
 	self.termView.backgroundColor = [UIColor clearColor];
 	[self.tableView.tableHeaderView addSubview:self.termView];
@@ -319,7 +333,10 @@ NSString * termText(NSString *termCode) {
 		sortedArrayUsingDescriptors:[NSArray 
 		arrayWithObject:[ [[NSSortDescriptor alloc] initWithKey:@"order" ascending:YES] autorelease]]];
 					
-	NSString *classTitle = [[class.name stringByAppendingString:@": "] stringByAppendingString:class.title];
+	//NSString *classTitle = [[class.name stringByAppendingString:@"\n"] stringByAppendingString:class.title];
+	NSString *classTitle = class.title;
+	NSString *classNumber = class.name;
+	
 	CGFloat classTitleHeight = [classTitle
 		sizeWithFont:self.titleView.font
 		constrainedToSize:CGSizeMake(self.titleView.frame.size.width, headerHeight)         
@@ -328,18 +345,20 @@ NSString * termText(NSString *termCode) {
 	// reposition the contents of all the header items based on the size of the title
 	// several frames will need to be readjusted
 	CGRect newFrame = self.termView.frame;
-	newFrame.origin.y = classTitleHeight + verticalPadding;
+	newFrame.origin.y = classTitleHeight + verticalPadding*3;
 	self.termView.frame = newFrame;
 	
 	newFrame = self.titleView.frame;
 	newFrame.size.height = classTitleHeight;
 	self.titleView.frame = newFrame;	
-	
+
 	self.titleView.text = classTitle;
+	
+	self.classNumberView.text = classNumber;
 	//self.termView.text = termText(class.term);
 	self.termView.text = class.term;
 	
-	CGFloat classAndTermHeight = classTitleHeight + termHeight + verticalPadding + paddingHeight;
+	CGFloat classAndTermHeight = classTitleHeight + termHeight + verticalPadding*3 + paddingHeight;
 	
 	if (self.classDetailsLoaded == NO) {
 		

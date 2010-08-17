@@ -62,7 +62,7 @@
 		if (actualCount > [lastResults count])
 			return [NSString stringWithFormat:@"Displaying %i of many", [lastResults count]];
 		
-		return [NSString stringWithFormat:@"%i found", [lastResults count]];
+		return [NSString stringWithFormat:@"%i found in %@", [lastResults count], viewController.navigationItem.title];
 	}
 	return nil;
 }
@@ -74,7 +74,7 @@
 		if (actualCount > [lastResults count])
 			headerTitle =  [NSString stringWithFormat:@"Displaying %i of many", [lastResults count]];
 		else
-			headerTitle = [NSString stringWithFormat:@"%i found", [lastResults count]];
+			headerTitle = [NSString stringWithFormat:@"%i found in %@", [lastResults count], viewController.navigationItem.title];
 		
 		return [UITableView ungroupedSectionHeaderWithTitle:headerTitle];
 	}
