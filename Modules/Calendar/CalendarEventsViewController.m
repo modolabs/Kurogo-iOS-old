@@ -360,6 +360,7 @@
 				self.tableView.separatorColor = [UIColor whiteColor];
 				requestNeeded = YES;
 			}
+			
 		}
 		
 		self.tableView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
