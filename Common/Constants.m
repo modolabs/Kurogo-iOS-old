@@ -5,15 +5,15 @@ NSString * const MITMobileWebDomainString =        @"localhost:8888";
 NSString * const MITMobileWebAPIURLString = @"http://localhost:8888/api/";
 #else
     #ifdef USE_MOBILE_TEST
-    NSString * const MITMobileWebDomainString = @"184.106.197.212";
-    NSString * const MITMobileWebAPIURLString = @"http://184.106.197.212/api/";
+    NSString * const MITMobileWebDomainString = @"mobile-dev.harvard.edu";
+    NSString * const MITMobileWebAPIURLString = @"http://mobile-dev.harvard.edu/api/";
     #else
         #ifdef USE_MOBILE_STAGE
-        NSString * const MITMobileWebDomainString = @"184.106.197.212";
-        NSString * const MITMobileWebAPIURLString = @"http://184.106.197.212/api/";
+        NSString * const MITMobileWebDomainString = @"mobile-staging.harvard.edu";
+        NSString * const MITMobileWebAPIURLString = @"http://mobile-staging.harvard.edu/api/";
         #else
-        NSString * const MITMobileWebDomainString = @"184.106.197.212";
-        NSString * const MITMobileWebAPIURLString = @"http://184.106.197.212/api/";
+        NSString * const MITMobileWebDomainString = @"m.harvard.edu";
+        NSString * const MITMobileWebAPIURLString = @"http://m.harvard.edu/api/";
         #endif
     #endif
 #endif
