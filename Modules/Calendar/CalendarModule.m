@@ -121,6 +121,7 @@
     // and merge all parts of handleLocalPath
     if ([localPath isEqualToString:LocalPathFederatedSearch]) {
         self.selectedResult = nil;
+        calendarVC.view;
         [calendarVC presentSearchResults:self.searchResults searchText:query searchSpan:self.searchSpan];
         [self resetNavStack];
         didHandle = YES;

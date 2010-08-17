@@ -18,6 +18,7 @@ typedef enum {
     NSArray *_categoryItems;
     NSArray *_tableItems;
     MITLoadingActivityView *_loadingView;
+    UISegmentedControl *segControl;
 
 	UIBarButtonItem *_cancelButton;
     MapSelectionControllerSegment _selectedSegment;
@@ -26,6 +27,7 @@ typedef enum {
 - (void)switchToSegment:(id)sender;
 - (void)switchToSegmentIndex:(MapSelectionControllerSegment)segment;
 
+@property (nonatomic, retain) UISegmentedControl *segControl;
 @property (nonatomic, retain) UITableView *tableView;
 @property (nonatomic, retain) NSArray *tableItems;
 @property (nonatomic, assign) CampusMapViewController *mapVC;

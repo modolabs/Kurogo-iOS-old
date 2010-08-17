@@ -11,13 +11,19 @@
 @synthesize dataPopulated = _dataPopulated;
 @synthesize coordinate = _coordinate;
 
-- (void)searchAnnotationWithDelegate:(id<JSONAPIDelegate>)delegate {
+- (void)searchAnnotationWithDelegate:(id<JSONAPIDelegate>)delegate category:(NSString *)category {
 	JSONAPIRequest *apiRequest = [JSONAPIRequest requestWithJSONAPIDelegate:delegate];
     NSLog(@"%@", [delegate description]);
 	apiRequest.userData = self;
+    NSDictionary *params = nil;
+    if (category) {
+        params = [NSDictionary dictionaryWithObjectsAndKeys:self.name, @"q", category, @"category", nil];
+    } else {
+        params = [NSDictionary dictionaryWithObjectsAndKeys:self.name, @"q", nil];
+    }
 	[apiRequest requestObjectFromModule:@"map"
                                 command:@"search"
-                             parameters:[NSDictionary dictionaryWithObjectsAndKeys:self.name, @"q", nil]];
+                             parameters:params];
 }
 
 - (void)dealloc {
@@ -45,25 +51,41 @@
 {
     self.info = info;
     
+    if (!self.name) {
+        //self.name = [infoAttributes objectForKey:@"Building Name"];
+        //if (self.name == nil) {
+        self.name = [info objectForKey:@"displayName"];
+        //}
+    }
+    
     if ([TileServerManager isInitialized]) {
         NSDictionary *infoAttributes = [self.info objectForKey:@"attributes"];
+        NSString *geometryType = [self.info objectForKey:@"geometryType"];
         NSDictionary *infoGeometry = [self.info objectForKey:@"geometry"];
-        if (infoGeometry) {
+        if ([geometryType isEqualToString:@"esriGeometryPolygon"]) {
             NSArray *rings = [infoGeometry objectForKey:@"rings"];
             if (rings) {
                 self.polygon = [[PolygonOverlay alloc] initWithRings:rings];
                 self.coordinate = self.polygon.coordinate;
-                NSLog(@"%@", [self.polygon description]);
+            }
+        } else if ([geometryType isEqualToString:@"esriGeometryPoint"]) {
+            CGFloat x = [[infoGeometry objectForKey:@"x"] doubleValue];
+            CGFloat y = [[infoGeometry objectForKey:@"y"] doubleValue];
+            self.coordinate = [TileServerManager coordForProjectedPoint:CGPointMake(x, y)];
+            
+        } else {
+            NSLog(@"info: %@", [self.info description]);
+        }
+
+        if (!self.uniqueID) {
+            self.uniqueID = [infoAttributes objectForKey:@"OBJECTID"];
+            if (!self.uniqueID) {
+                self.uniqueID = [NSString stringWithFormat:@"%d", [self hash]];
             }
         }
         
-        self.uniqueID = [infoAttributes objectForKey:@"OBJECTID"];
-        self.name = [infoAttributes objectForKey:@"Building Name"];
-        self.street = [infoAttributes objectForKey:@"Address"];
-        
-        if (self.name == nil) {
-            self.name = [info objectForKey:@"displayName"];
-        }
+        if (!self.street)
+            self.street = [infoAttributes objectForKey:@"Address"];
         
         NSLog(@"found %@ at %.4f, %.4f", self.name, self.coordinate.longitude, self.coordinate.latitude);
         
@@ -74,7 +96,7 @@
 }
 
 - (BOOL)canAddOverlay {
-    return (self.dataPopulated && [self.polygon.rings count] > 0);
+    return (self.dataPopulated && [[self.polygon rings] count] > 0);
 }
 
 - (NSDictionary *)info {

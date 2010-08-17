@@ -31,7 +31,7 @@
 
 @property BOOL dataPopulated;
 
-- (void)searchAnnotationWithDelegate:(id<JSONAPIDelegate>)delegate;
+- (void)searchAnnotationWithDelegate:(id<JSONAPIDelegate>)delegate category:(NSString *)category;
 
 - (id)initWithInfo:(NSDictionary*)info;
 - (void)updateWithInfo:(NSDictionary *)info;

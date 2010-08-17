@@ -12,6 +12,7 @@
 
 - (void)beginEditing;
 - (void)endEditing;
+- (void)hideLoadingView;
 
 @end
 
@@ -21,6 +22,7 @@
 @synthesize cancelButton = _cancelButton;
 @synthesize tableView = _tableView;
 @synthesize tableItems = _tableItems;
+@synthesize segControl;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -28,13 +30,13 @@
 	self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:MITImageNameBackground]];
     self.navigationController.navigationBar.tintColor = [UIColor blackColor];
     
-	UISegmentedControl *seg = [[[UISegmentedControl alloc] initWithItems:[NSArray arrayWithObjects:@"Bookmarks", @"Recents", @"Browse", nil]] autorelease];
-	[seg setSegmentedControlStyle:UISegmentedControlStyleBar];
-	[seg setFrame:CGRectMake(0, 0, self.view.frame.size.width - 30, seg.frame.size.height)];
-	[seg setTintColor:[UIColor darkGrayColor]];
-	[seg addTarget:self action:@selector(switchToSegment:) forControlEvents:UIControlEventValueChanged];
+	self.segControl = [[[UISegmentedControl alloc] initWithItems:[NSArray arrayWithObjects:@"Bookmarks", @"Recents", @"Browse", nil]] autorelease];
+	[segControl setSegmentedControlStyle:UISegmentedControlStyleBar];
+	[segControl setFrame:CGRectMake(0, 0, self.view.frame.size.width - 30, segControl.frame.size.height)];
+	[segControl setTintColor:[UIColor darkGrayColor]];
+	[segControl addTarget:self action:@selector(switchToSegment:) forControlEvents:UIControlEventValueChanged];
 	
-	UIBarButtonItem *item = [[[UIBarButtonItem alloc] initWithCustomView:seg] autorelease];
+	UIBarButtonItem *item = [[[UIBarButtonItem alloc] initWithCustomView:segControl] autorelease];
 	
 	[self.navigationController setToolbarHidden:NO];
 	[self.navigationController.toolbar setBarStyle:UIBarStyleBlack];
@@ -82,6 +84,9 @@
 
 - (void)switchToSegmentIndex:(MapSelectionControllerSegment)segment {
 
+    self.segControl.selectedSegmentIndex = segment;
+    [self hideLoadingView];
+    
     if (_selectedSegment == segment) return;
     
     _selectedSegment = segment;
@@ -129,12 +134,12 @@
             if (!self.tableItems) {
                 JSONAPIRequest *apiRequest = [JSONAPIRequest requestWithJSONAPIDelegate:self];
                 [apiRequest requestObjectFromModule:@"map" command:@"categorytitles" parameters:nil];
-            }
-            
-            if (!_loadingView) {
-                self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-                _loadingView = [[[MITLoadingActivityView alloc] initWithFrame:self.tableView.frame] retain];
-                [self.view addSubview:_loadingView];
+                
+                if (!_loadingView) {
+                    self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+                    _loadingView = [[[MITLoadingActivityView alloc] initWithFrame:self.tableView.frame] retain];
+                    [self.view addSubview:_loadingView];
+                }
             }
             
 			break;
@@ -142,7 +147,8 @@
 		default:
 			break;
 	}
-    
+
+    [self.tableView applyStandardColors];
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
     self.tableView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
@@ -154,6 +160,15 @@
 
 #pragma mark JSONAPIDelegate
 
+- (void)hideLoadingView {
+    if (_loadingView) {
+        self.tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
+        [_loadingView removeFromSuperview];
+        [_loadingView release];
+        _loadingView = nil;
+    }
+}
+
 - (void)request:(JSONAPIRequest *)request jsonLoaded:(id)JSONObject
 {
     if (_selectedSegment == MapSelectionControllerSegmentBrowse
@@ -161,24 +176,13 @@
 
         _categoryItems = [[NSArray alloc] initWithArray:JSONObject];
         self.tableItems = _categoryItems;
-        
-        if (_loadingView) {
-            self.tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
-            [_loadingView removeFromSuperview];
-            [_loadingView release];
-            _loadingView = nil;
-        }
-        
+        [self hideLoadingView];
         [self.tableView reloadData];
     }
 }
 - (void)handleConnectionFailureForRequest:(JSONAPIRequest *)request
 {
-	if (_loadingView) {
-		[_loadingView removeFromSuperview];
-		[_loadingView release];
-		_loadingView = nil;
-	}
+    [self hideLoadingView];
 	
 	UIAlertView *alert = [[[UIAlertView alloc]
                            initWithTitle:@"Connection Failed" 
@@ -390,8 +394,9 @@
 
             CategoriesTableViewController *newCategoriesTVC = [[[CategoriesTableViewController alloc] init] autorelease];
             newCategoriesTVC.mapSelectionController = self;
-            [newCategoriesTVC executeServerCategoryRequestWithQuery:[thisItem objectForKey:@"categoryId"]];
             newCategoriesTVC.headerText = [NSString stringWithFormat:@"%@:", [thisItem objectForKey:@"categoryName"]];
+            newCategoriesTVC.category = [thisItem objectForKey:@"categoryId"];
+            [newCategoriesTVC executeServerCategoryRequest];
             
             [self.navigationController pushViewController:newCategoriesTVC animated:YES];
             

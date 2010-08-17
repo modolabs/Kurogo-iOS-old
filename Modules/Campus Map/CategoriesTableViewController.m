@@ -9,6 +9,7 @@
 @synthesize mapSelectionController = _mapSelectionController;
 @synthesize itemsInTable = _itemsInTable;
 @synthesize headerText = _headerText;
+@synthesize category;
 
 #pragma mark -
 #pragma mark View lifecycle
@@ -97,12 +98,13 @@
     
     ArcGISMapAnnotation *annotation = [[[ArcGISMapAnnotation alloc] initWithInfo:thisItem] autorelease];
     if (!annotation.dataPopulated) {
-        [annotation searchAnnotationWithDelegate:self.mapSelectionController.mapVC];
+        [annotation searchAnnotationWithDelegate:self.mapSelectionController.mapVC category:self.category];
     }
     [searchResultsArray addObject:annotation];
     
     // this will remove any old annotations and add the new ones. 
     [self.mapSelectionController.mapVC setSearchResults:searchResultsArray];
+    self.mapSelectionController.mapVC.searchBar.text = annotation.name;
     
     // on the map, select the current annotation
     //[[self.mapVC mapView] selectAnnotation:annotation animated:NO withRecenter:YES];
@@ -156,7 +158,7 @@
 	for (NSDictionary *thisItem in _itemsInTable) {
 		ArcGISMapAnnotation *annotation = [[[ArcGISMapAnnotation alloc] initWithInfo:thisItem] autorelease];
         if (!annotation.dataPopulated) {
-            [annotation searchAnnotationWithDelegate:self.mapSelectionController.mapVC];
+            [annotation searchAnnotationWithDelegate:self.mapSelectionController.mapVC category:self.category];
         }
 		[searchResultsArray addObject:annotation];
 	}
@@ -203,12 +205,12 @@
 	[alert show];
 }
 
-- (void)executeServerCategoryRequestWithQuery:(NSString *)query 
+- (void)executeServerCategoryRequest 
 {
 	JSONAPIRequest *apiRequest = [JSONAPIRequest requestWithJSONAPIDelegate:self];
 	[apiRequest requestObjectFromModule:@"map"
                                 command:@"category"
-                             parameters:[NSDictionary dictionaryWithObjectsAndKeys:query, @"id", nil]];
+                             parameters:[NSDictionary dictionaryWithObjectsAndKeys:self.category, @"id", nil]];
 }
 
 

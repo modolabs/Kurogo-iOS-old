@@ -17,6 +17,7 @@
 	
 	NSMutableArray *_itemsInTable;
 	NSString *_headerText;
+    NSString *_category;
     UIView *_headerView;
 	
 	MITLoadingActivityView* _loadingView;
@@ -25,7 +26,8 @@
 @property (nonatomic, assign) MapSelectionController* mapSelectionController;
 @property (nonatomic, retain) NSMutableArray* itemsInTable;
 @property (nonatomic, retain) NSString* headerText;
+@property (nonatomic, retain) NSString *category;
 
--(void) executeServerCategoryRequestWithQuery:(NSString *)query;
+-(void) executeServerCategoryRequest;
 
 @end

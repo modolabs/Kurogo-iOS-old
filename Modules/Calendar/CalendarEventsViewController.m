@@ -114,9 +114,6 @@
 	
 	if (showScroller) {
 		[self.view addSubview:navScrollView];
-		//[self.view addSubview:rightScrollButton];
-		//[self.view addSubview:leftScrollButton];
-		//[self.view addSubview:theSearchBar];
 	}
 	
 	if ([self shouldShowDatePicker:activeEventList]) {
@@ -126,9 +123,6 @@
 	if (categoriesRequestDispatched) {
 		[self addLoadingIndicatorForSearch:NO];
 	}
-	/*
-	[self reloadView:activeEventList];
-	 */
 }
 
 - (void)viewDidUnload {
@@ -525,19 +519,6 @@
         searchController.delegate = self;
         [self.view addSubview:theSearchBar];
     }
-    
-	if (searchResultsTableView == nil) {
-		searchResultsTableView = [[EventListTableView alloc] initWithFrame:CGRectMake(0.0, theSearchBar.frame.size.height, self.view.frame.size.width, self.view.frame.size.height - theSearchBar.frame.size.height)];
-		searchResultsTableView.parentViewController = self;
-		searchResultsTableView.delegate = searchResultsTableView;
-		searchResultsTableView.dataSource = searchResultsTableView;
-	}
-	
-	if (searchResultsMapView == nil) {
-		searchResultsMapView = [[CalendarMapView alloc] initWithFrame:CGRectMake(0.0, theSearchBar.frame.size.height, self.view.frame.size.width, self.view.frame.size.height - theSearchBar.frame.size.height)];
-        searchResultsMapView.region = self.mapView.region;
-		searchResultsMapView.delegate = self;
-	}
     [self.view bringSubviewToFront:theSearchBar];
 	[UIView beginAnimations:nil context:NULL];
 	[UIView setAnimationDuration:0.4];
@@ -573,23 +554,26 @@
 - (void)presentSearchResults:(NSArray *)results searchText:(NSString *)searchText searchSpan:(NSString *)searchSpan
 {
     [self showSearchBar];
-    [searchController setActive:NO animated:NO];
+    [theSearchBar resignFirstResponder];
     theSearchBar.text = searchText;
-    searchResultsTableView.events = results;
-    searchResultsTableView.searchSpan = searchSpan;
-    searchResultsMapView.events = results;
+    
     if (showList) {
         [self showSearchResultsTableView];
+        searchResultsTableView.events = results;
+        searchResultsTableView.searchSpan = searchSpan;
     } else {
         [self showSearchResultsMapView];
+        searchResultsMapView.events = results;
     }
+    
+    NSLog(@"%@", [searchResultsTableView description]);
+    NSLog(@"%@", [self.view.subviews description]);
 }
 
 #pragma mark Search delegate
 
 - (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
 {
-	NSString *searchBarText = searchBar.text;
 	[self makeSearchRequest:searchBar.text];
 }
 
@@ -607,6 +591,13 @@
 
 - (void)showSearchResultsMapView {
 	showList = NO;
+
+	if (searchResultsMapView == nil) {
+		searchResultsMapView = [[CalendarMapView alloc] initWithFrame:CGRectMake(0.0, theSearchBar.frame.size.height, self.view.frame.size.width, self.view.frame.size.height - theSearchBar.frame.size.height)];
+        searchResultsMapView.region = self.mapView.region;
+		searchResultsMapView.delegate = self;
+	}
+    
 	[self.view addSubview:searchResultsMapView];
 	[searchResultsTableView removeFromSuperview];
 	self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithTitle:@"List"
@@ -617,6 +608,14 @@
 
 - (void)showSearchResultsTableView {
 	showList = YES;
+
+	if (searchResultsTableView == nil) {
+		searchResultsTableView = [[EventListTableView alloc] initWithFrame:CGRectMake(0.0, theSearchBar.frame.size.height, self.view.frame.size.width, self.view.frame.size.height - theSearchBar.frame.size.height)];
+		searchResultsTableView.parentViewController = self;
+		searchResultsTableView.delegate = searchResultsTableView;
+		searchResultsTableView.dataSource = searchResultsTableView;
+	}
+	
 	[self.view addSubview:searchResultsTableView];
 	[searchResultsMapView removeFromSuperview];
 	self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithTitle:@"Map"

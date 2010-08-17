@@ -75,7 +75,7 @@
     }
 
 	// create the map view 
-	_mapView = [[MKMapView alloc] initWithFrame: CGRectMake(0, _searchBar.frame.size.height, self.view.frame.size.height,
+	_mapView = [[MKMapView alloc] initWithFrame: CGRectMake(0, _searchBar.frame.size.height, self.view.frame.size.width,
                                                             self.view.frame.size.height - _searchBar.frame.size.height)];
 	_mapView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     _mapView.mapType = MKMapTypeStandard;
@@ -287,6 +287,9 @@
         // create the span and region with a little padding
         double latDelta = maxLat - minLat;
         double lonDelta = maxLon - minLon;
+        
+        if (latDelta < 0.002) latDelta = 0.002;
+        if (lonDelta < 0.002) lonDelta = 0.002;
 
         region = MKCoordinateRegionMake(center, MKCoordinateSpanMake(latDelta + latDelta / 4 , lonDelta + lonDelta / 4));        
     }
@@ -298,7 +301,12 @@
 {
 	[self setSearchResultsWithoutRecentering:searchResults];
 	
-	if (_searchResults.count > 0) {
+    if (_searchResults.count == 1) {
+        ArcGISMapAnnotation *annotation = [_mapView.annotations lastObject];
+        _mapView.region = MKCoordinateRegionMake(annotation.coordinate, MKCoordinateSpanMake(0.002, 0.002));
+        [_mapView selectAnnotation:annotation animated:YES];
+
+    } else if (_searchResults.count > 0) {
         _mapView.region = [self regionForAnnotations:_searchResults];
 	}
 }
@@ -385,7 +393,7 @@
 {
 	// if the alert view was "no search results", give focus back to the search bar
 	if (alertView.tag = kNoSearchResultsTag) {
-		[_searchBar becomeFirstResponder];
+        [_searchController setActive:YES animated:YES];
 	}
 }
 
@@ -705,7 +713,7 @@
 	if([annotation isKindOfClass:[ArcGISMapAnnotation class]]) {
 		ArcGISMapAnnotation *searchAnnotation = (ArcGISMapAnnotation *)annotation;
 		if (!searchAnnotation.dataPopulated) {
-			[searchAnnotation searchAnnotationWithDelegate:self];	
+			[searchAnnotation searchAnnotationWithDelegate:self category:nil];	
 		}
 	}
 }
@@ -745,22 +753,17 @@
             }
         } else if ([request.userData isKindOfClass:[ArcGISMapAnnotation class]]) {
             // updating an annotation search request
-            ArcGISMapAnnotation *oldAnnotation = request.userData;
-            NSMutableArray *oldSearchResults = [self.searchResults mutableCopy];
+            ArcGISMapAnnotation *annotation = request.userData;
             
             if (searchResults.count > 0) {
-                ArcGISMapAnnotation *newAnnotation = [[[ArcGISMapAnnotation alloc] initWithInfo:[searchResults objectAtIndex:0]] autorelease];
-                BOOL isViewingAnnotation = ([[_mapView selectedAnnotations] lastObject] == oldAnnotation);
-                
-                [_mapView removeAnnotation:oldAnnotation];
-                [_mapView addAnnotation:newAnnotation];
-                
-                [oldSearchResults removeObject:oldAnnotation];
-                [oldSearchResults addObject:newAnnotation];
-                self.searchResults = oldSearchResults;
+                BOOL isViewingAnnotation = ([[_mapView selectedAnnotations] lastObject] == annotation);
+                [_mapView removeAnnotation:annotation];
+
+                [annotation updateWithInfo:[searchResults objectAtIndex:0]];
+                [_mapView addAnnotation:annotation];
                 
                 if (isViewingAnnotation) {
-                    [_mapView selectAnnotation:newAnnotation animated:NO];
+                    [_mapView selectAnnotation:annotation animated:NO];
                 }
                 _hasSearchResults = YES;
                 self.navigationItem.rightBarButtonItem.title = @"List";
