@@ -3,7 +3,7 @@
 #import "MITUnreadNotifications.h"
 #import "ModoNavigationController.h"
 
-#define MAX_FEDERATED_SEARCH_RESULTS 5
+#define MAX_FEDERATED_SEARCH_RESULTS 3
 extern NSString * const LocalPathFederatedSearch;
 extern NSString * const LocalPathFederatedSearchResult;
 
