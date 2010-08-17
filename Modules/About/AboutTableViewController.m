@@ -2,7 +2,6 @@
 #import "MIT_MobileAppDelegate.h"
 #import "UIKit+MITAdditions.h"
 #import "AboutMITVC.h"
-//#import "AboutCreditsVC.h"
 #import "UITableView+MITUIAdditions.h"
 #import "MITUIConstants.h"
 
@@ -37,7 +36,6 @@
             return 2;
         case 1:
             return 2;
-            //return 3;
         default:
             return 0;
     }
@@ -106,19 +104,11 @@
         case 1:
             switch (indexPath.row) {
                 case 0:
-                    // TODO: remove AboutCreditsVC.* and credits.html
-                    //cell.textLabel.text = @"Credits";
-                    //cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-                    //cell.selectionStyle = UITableViewCellSelectionStyleBlue;
-                    //cell.textLabel.textColor = CELL_STANDARD_FONT_COLOR;
-                    //break;
-                //case 1:
                     cell.textLabel.text = @"About Harvard";
                     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
                     cell.selectionStyle = UITableViewCellSelectionStyleBlue;
                     cell.textLabel.textColor = CELL_STANDARD_FONT_COLOR;
                     break;
-                //case 2:
                 case 1:
                     cell.textLabel.text = @"Send Feedback";
                     cell.accessoryView = [UIImageView accessoryViewWithMITType:MITAccessoryViewEmail];
@@ -141,19 +131,12 @@
     else if (indexPath.section == 1) {
         switch (indexPath.row) {
             case 0: {
-                //AboutCreditsVC *aboutCreditsVC = [[AboutCreditsVC alloc] init];
-                //[self.navigationController pushViewController:aboutCreditsVC animated:YES];
-                //[aboutCreditsVC release];
-                //break;
-            //}
-            //case 1: {
                 AboutMITVC *aboutMITVC = [[AboutMITVC alloc] initWithStyle:UITableViewStyleGrouped];
                 [self.navigationController pushViewController:aboutMITVC animated:YES];
                 [aboutMITVC release];
                 break;
             }
             case 1: {
-            //case 2: {
                 Class mailClass = (NSClassFromString(@"MFMailComposeViewController"));
                 NSString *subject = [NSString stringWithFormat:@"Feedback for Harvard Mobile %@ (%@)", [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"], MITBuildNumber];
                 if ((mailClass != nil) && [mailClass canSendMail]) {
