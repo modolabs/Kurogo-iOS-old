@@ -8,10 +8,10 @@
 - (id) init {
     self = [super init];
     if (self != nil) {
-        self.tag = MobileWebTag;
+        self.tag = SchoolsTag;
         self.shortName = @"Schools";
         self.longName = @"Schools";
-        self.iconName = @"full-website";
+        self.iconName = @"schools";
         self.canBecomeDefault = FALSE;
         
         self.schoolsVC = [[[SchoolsViewController alloc] init] autorelease];

@@ -1,9 +1,16 @@
 #import "SchoolsViewController.h"
 
-#define ICON_LABEL_HEIGHT 26
-#define GRID_HPADDING 16
-#define GRID_VPADDING 11
+// height to allocate to icon text label
+#define ICON_LABEL_HEIGHT 22
 
+// horizontal spacing between icons
+#define GRID_HPADDING 6
+
+// vertical spacing between icons
+#define GRID_VPADDING 16
+
+// internal padding within each icon
+#define ICON_HPADDING 10
 
 @implementation SchoolsViewController
 
@@ -17,6 +24,23 @@
 }
 */
 
+- (void)buttonPressed:(id)sender {
+    UIButton *aButton = (UIButton *)sender;
+    NSInteger tag = aButton.tag;
+
+    NSArray *schools = [NSArray arrayWithContentsOfFile:[[[NSBundle mainBundle] bundlePath] stringByAppendingPathComponent:
+                                                         @"schools.plist"]];
+    
+    NSDictionary *schoolData = [schools objectAtIndex:tag - 1];
+    NSURL *url = [NSURL URLWithString:[schoolData objectForKey:@"url"]];
+    
+    if ([[UIApplication sharedApplication] canOpenURL:url]) {
+        [[UIApplication sharedApplication] openURL:url];
+    }
+}
+
+
+// TODO: refactor this with springboard code
 - (void)layoutIcons {
     
     NSArray *schools = [NSArray arrayWithContentsOfFile:[[[NSBundle mainBundle] bundlePath] stringByAppendingPathComponent:
@@ -28,24 +52,29 @@
          
         NSDictionary *schoolData = [schools objectAtIndex:i];
         UIButton *aButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        UIImage *image = [UIImage imageNamed:[schoolData objectForKey:@"iconName"]];
+        NSString *imageName = [NSString stringWithFormat:@"schools/%@.png", [schoolData objectForKey:@"iconName"]];
+        UIImage *image = [UIImage imageNamed:imageName];
         NSString *title = [schoolData objectForKey:@"name"];
 
         if (image) {
-            aButton.frame = CGRectMake(0, 0, image.size.width, image.size.height + ICON_LABEL_HEIGHT);
+            aButton.frame = CGRectMake(0, 0, image.size.width + ICON_HPADDING * 2, image.size.height + ICON_LABEL_HEIGHT);
             
-            aButton.imageEdgeInsets = UIEdgeInsetsMake(0, 0, ICON_LABEL_HEIGHT, 0);
+            aButton.imageEdgeInsets = UIEdgeInsetsMake(0, ICON_HPADDING, ICON_LABEL_HEIGHT, ICON_HPADDING);
             [aButton setImage:image forState:UIControlStateNormal];
             
             // title by default is placed to the right of the image, we want it below
             aButton.titleEdgeInsets = UIEdgeInsetsMake(image.size.height, -image.size.width, 0, 0);
         } else {
-            aButton.frame = CGRectMake(0, 0, 80, 80);
+            aButton.frame = CGRectMake(0, 0, 50, 50);
         }
+        
+        aButton.titleLabel.numberOfLines = 0;
+        aButton.titleLabel.lineBreakMode = UILineBreakModeWordWrap;
+        aButton.titleLabel.textAlignment = UITextAlignmentCenter;
         
         [aButton setTitle:title forState:UIControlStateNormal];
         [aButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-        aButton.titleLabel.font = [UIFont systemFontOfSize:14.0];
+        aButton.titleLabel.font = [UIFont systemFontOfSize:11.0];
         aButton.tag = i + 1; // don't use zero for tag
         
         [aButton addTarget:self action:@selector(buttonPressed:) forControlEvents:UIControlEventTouchUpInside];
@@ -77,7 +106,7 @@
     // calculate xOrigin to keep icons centered
     CGFloat xOriginInitial = (viewSize.width - ((iconSize.width + GRID_HPADDING) * iconsPerRow - GRID_HPADDING)) / 2;
     CGFloat xOrigin = xOriginInitial;
-    CGFloat yOrigin = GRID_VPADDING + 16.0;
+    CGFloat yOrigin = GRID_VPADDING + hintLabel.frame.origin.y + hintLabel.frame.size.height;
     
     for (aButton in icons) {
         aButton.frame = CGRectMake(xOrigin, yOrigin, iconSize.width, iconSize.height);
@@ -95,19 +124,34 @@
         
 }
 
-/*
-// Implement loadView to create a view hierarchy programmatically, without using a nib.
+
 - (void)loadView {
+    [super loadView];
     
+    static NSString *hint = @"Links to websites for each Harvard school.\n"
+        "Note: many of these sites are not mobile-optimized.";
+
+    UIFont *hintFont = [UIFont systemFontOfSize:12.0];
+    CGFloat width = self.view.frame.size.width;
+    CGSize textSize = [hint sizeWithFont:hintFont constrainedToSize:CGSizeMake(width, 2010.0)];
+
+    hintLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 10.0, width, textSize.height)];
+    hintLabel.text = hint;
+    hintLabel.font = hintFont;
+    hintLabel.textAlignment = UITextAlignmentCenter;
+    hintLabel.numberOfLines = 0;
+    hintLabel.lineBreakMode = UILineBreakModeWordWrap;
+    hintLabel.backgroundColor = [UIColor clearColor];
+    hintLabel.textColor = [UIColor blackColor];
 }
-*/
 
 
-// Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad {
     //[super viewDidLoad];
     
-    self.navigationItem.title = @"Home";
+    self.navigationItem.title = @"Schools";
+    
+    [self.view addSubview:hintLabel];
     [self layoutIcons];
     
 }
@@ -136,6 +180,7 @@
 
 
 - (void)dealloc {
+    [hintLabel release];
     [super dealloc];
 }
 

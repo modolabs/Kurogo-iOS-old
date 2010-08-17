@@ -18,6 +18,7 @@
     NSMutableArray *searchableModules;
     BOOL isSearch;
     
+    NSMutableArray *_fixedIcons;
     NSMutableArray *_icons;
     NSMutableArray *editedIcons;
     NSMutableArray *tempIcons;

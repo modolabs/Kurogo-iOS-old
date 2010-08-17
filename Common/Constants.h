@@ -41,6 +41,7 @@ extern NSString * const MobileWebTag;
 extern NSString * const SettingsTag;
 extern NSString * const AboutTag;
 extern NSString * const DiningTag;
+extern NSString * const SchoolsTag;
 
 // notification names
 extern NSString * const EmergencyInfoDidLoadNotification;

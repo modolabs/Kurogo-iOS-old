@@ -11,6 +11,7 @@
         self.shortName = @"About";
         self.longName = @"About";
         self.iconName = @"about";
+        self.canBecomeDefault = FALSE;
         
         AboutTableViewController *aboutVC = [[[AboutTableViewController alloc] initWithStyle:UITableViewStyleGrouped] autorelease];
         aboutVC.title = self.longName;

@@ -2,6 +2,7 @@
 
 @interface SchoolsViewController : UIViewController {
 
+    UILabel *hintLabel;
 }
 
 - (void)layoutIcons;

@@ -52,6 +52,7 @@ NSString * const MobileWebTag  = @"mobileweb";
 NSString * const SettingsTag   = @"settings";
 NSString * const AboutTag      = @"about";
 NSString * const DiningTag	   = @"dining";
+NSString * const SchoolsTag    = @"schools";
 
 // notification names
 NSString * const EmergencyInfoDidLoadNotification = @"MITEmergencyInfoDidLoadNotification";

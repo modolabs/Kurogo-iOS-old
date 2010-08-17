@@ -456,6 +456,7 @@
 		EBAE878812198B2500F370BE /* SchoolsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EBAE878412198B2500F370BE /* SchoolsViewController.m */; };
 		EBAE88051219960700F370BE /* Secret.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EBAE88031219960700F370BE /* Secret.h */; settings = {JAVA_ARCHIVE_SUBDIR = Common; }; };
 		EBAE88061219960700F370BE /* Secret.m in Sources */ = {isa = PBXBuildFile; fileRef = EBAE88041219960700F370BE /* Secret.m */; };
+		EBAE89C4121A081900F370BE /* schools in Resources */ = {isa = PBXBuildFile; fileRef = EBAE89A4121A081900F370BE /* schools */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -995,6 +996,7 @@
 		EBAE878412198B2500F370BE /* SchoolsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SchoolsViewController.m; path = Schools/SchoolsViewController.m; sourceTree = "<group>"; };
 		EBAE88031219960700F370BE /* Secret.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Secret.h; sourceTree = "<group>"; };
 		EBAE88041219960700F370BE /* Secret.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Secret.m; sourceTree = "<group>"; };
+		EBAE89A4121A081900F370BE /* schools */ = {isa = PBXFileReference; lastKnownFileType = folder; name = schools; path = Resources/schools; sourceTree = "<group>"; };
 		EBCA123210CEF3C400577C5D /* PeopleSearchViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PeopleSearchViewController.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -1106,6 +1108,7 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				EBAE89A4121A081900F370BE /* schools */,
 				EBAE86441215FB4900F370BE /* Default@2x.png */,
 				EBAE863E1215FB0D00F370BE /* Harvard-Mobile-Icon.png */,
 				EBAE863F1215FB0D00F370BE /* Harvard-Mobile-Icon@2x.png */,
@@ -2059,6 +2062,7 @@
 				EBAE86411215FB0D00F370BE /* Harvard-Mobile-Icon@2x.png in Resources */,
 				EBAE86451215FB4900F370BE /* Default@2x.png in Resources */,
 				EBAE877612197EF400F370BE /* schools.plist in Resources */,
+				EBAE89C4121A081900F370BE /* schools in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
