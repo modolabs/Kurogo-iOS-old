@@ -62,9 +62,10 @@
 - (void)showModuleForTag:(NSString *)tag {
     MITModule *module = [self moduleForTag:tag];
     NSArray *navStack = [[NSArray arrayWithObject:theSpringboard] arrayByAddingObjectsFromArray:module.viewControllers];
+    NSInteger prevCount = [self.theNavController.viewControllers count];
     [self.theNavController popViewControllerAnimated:NO];
     if ([module.viewControllers count]) {
-        [self.theNavController setViewControllers:navStack animated:YES];
+        [self.theNavController setViewControllers:navStack animated:(prevCount < 2)];
     }
 
     [module didAppear];
