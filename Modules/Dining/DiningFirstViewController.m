@@ -276,7 +276,6 @@ JSONAPIRequest *mitapi;
 		[_tabViews insertObject:_loadingResultView atIndex:kDinnerTab];
 		
 		[_tabViewControl addTab:@"Locations"];
-		//[_hoursView addSubview:glossaryForHoursView];
 		tableControl = [[HoursTableViewController alloc] init];
 		hoursTableView.delegate = (HoursTableViewController *)tableControl;
 		hoursTableView.dataSource = (HoursTableViewController *)tableControl;
@@ -461,8 +460,8 @@ JSONAPIRequest *mitapi;
 		[breakfastTable reloadData];
 		lunchTable.tableHeaderView = nil;
 		dinnerTable.tableHeaderView = nil;
-		breakfastTable.tableHeaderView = glossaryForMealTypesView;
-		breakfastTable.tableHeaderView = breakfastTable.tableHeaderView;
+		/*breakfastTable.tableHeaderView = glossaryForMealTypesView;
+		breakfastTable.tableHeaderView = breakfastTable.tableHeaderView;*/
 		
 	}	
 	else if (tabIndex == kLunchTab)
@@ -472,8 +471,8 @@ JSONAPIRequest *mitapi;
 		[lunchTable reloadData];
 		breakfastTable.tableHeaderView = nil;
 		dinnerTable.tableHeaderView = nil;
-		lunchTable.tableHeaderView = glossaryForMealTypesView;
-		lunchTable.tableHeaderView = lunchTable.tableHeaderView;
+		/*lunchTable.tableHeaderView = glossaryForMealTypesView;
+		lunchTable.tableHeaderView = lunchTable.tableHeaderView;*/
 
 	}	
 		
@@ -484,8 +483,8 @@ JSONAPIRequest *mitapi;
 		[dinnerTable reloadData];
 		breakfastTable.tableHeaderView = nil;
 		lunchTable.tableHeaderView = nil;
-		dinnerTable.tableHeaderView = glossaryForMealTypesView;
-		dinnerTable.tableHeaderView = dinnerTable.tableHeaderView;
+		/*dinnerTable.tableHeaderView = glossaryForMealTypesView;
+		dinnerTable.tableHeaderView = dinnerTable.tableHeaderView;*/
 		
 	}	
 		
@@ -641,23 +640,18 @@ JSONAPIRequest *mitapi;
 	{
 		self.list = self._bkfstList;	
 		self.menuDict = self._bkfstDict;
-		//breakfastTable.tableHeaderView = glossaryForMealTypesView;
-		//lunchTable.tableHeaderView = nil;
-		//dinnerTable.tableHeaderView = nil;
 	}
 	
 	else if(_tabViewControl.selectedTab == kLunchTab)
 	{
 		self.list = self._lunchList;
 		self.menuDict = self._lunchDict;
-		//lunchTable.tableHeaderView = glossaryForMealTypesView;
 	}
 	
 	else if (_tabViewControl.selectedTab == kDinnerTab)
 	{
 		self.list = self._dinnerList;
 		self.menuDict = self._dinnerDict;
-		//dinnerTable.tableHeaderView = glossaryForMealTypesView;
 	}	
 }
 
@@ -705,23 +699,27 @@ numberOfRowsInSection:(NSInteger)section
 		 initWithStyle:UITableViewCellStyleDefault
 		 reuseIdentifier:DisclosureButtonCellIdentifier] autorelease];
 
-	cell.textLabelNumberOfLines = 2;	
+	cell.textLabelNumberOfLines = 1;	
 	cell.textLabel.text = (NSString *) [[keySection objectAtIndex:row] objectForKey:@"item"];
-	
-	NSString *type = (NSString *) [[[keySection objectAtIndex:row] objectForKey:@"type"] description];
-	
-	// If details of the Menu-Item are available, uncomment the following line.
-	//cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 	cell.selectionStyle = UITableViewCellSelectionStyleNone;
 	cell.backgroundColor = GROUPED_VIEW_CELL_COLOR;
 	
+
+	
+	// If details of the Menu-Item are available, uncomment the following line.
+	//cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+
+	/******* The following lines deal with displaying the meal "type" icons ****************/
+	
+	/*NSString *type = (NSString *) [[[keySection objectAtIndex:row] objectForKey:@"type"] description];
+	 */
 	
 	/*cell.textLabel.lineBreakMode = UILineBreakModeWordWrap;
 	UIImage *image = [UIImage imageNamed:@"dining/dining-local-crop.png"];
 	UIImageView *imView = [[UIImageView alloc] initWithFrame:CGRectMake(273, 12, 17, 17)];
 	imView.image = image;*/
 
-	if ([type isEqualToString:@"VGT"]) {
+	/*if ([type isEqualToString:@"VGT"]) {
 		UIImage *image2 = [UIImage imageNamed:@"dining/dining-vegan.png"];
 		UIImageView *imView2 = [[UIImageView alloc] initWithFrame:CGRectMake(253, 12, 17, 17)];
 		imView2.image = image2;
@@ -735,7 +733,7 @@ numberOfRowsInSection:(NSInteger)section
 		imView2.image = image2;
 		[cell.contentView addSubview:imView2];
 		[imView2 release];
-	}
+	}*/
 	
 	/*UIImage *image3 = [UIImage imageNamed:@"dining/dining-organic-crop.png"];
 	UIImageView *imView3 = [[UIImageView alloc] initWithFrame:CGRectMake(233, 12, 17, 17)];
@@ -751,14 +749,37 @@ numberOfRowsInSection:(NSInteger)section
 	return cell;
 }
 
--(NSString *) tableView:(UITableView *)tableView
-titleForHeaderInSection:(NSInteger)section
-{
-
+- (UIView *) tableView: (UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
+	
+	//	return [[UIView alloc] initWithFrame: CGRectMake(0, 0, 320.0, UNGROUPED_SECTION_HEADER_HEIGHT)];
+	
+	
+	// create the parent view that will hold header Label
+	UIView* customView = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, 300.0, GROUPED_SECTION_HEADER_HEIGHT)];
+	
+	// create the button object
+	UILabel * headerLabel = [[UILabel alloc] initWithFrame:CGRectZero];
+	headerLabel.backgroundColor = [UIColor clearColor];
+	headerLabel.opaque = NO;
+	//headerLabel.textColor = [UIColor blackColor];
+	//headerLabel.highlightedTextColor = [UIColor whiteColor];
+	headerLabel.font = [UIFont fontWithName:BOLD_FONT size:STANDARD_CONTENT_FONT_SIZE];
+	headerLabel.textColor= [UIColor colorWithHexString:@"#554c41"];
+	headerLabel.frame = CGRectMake(10.0, 0.0, 300.0, GROUPED_SECTION_HEADER_HEIGHT);
+	
 	[self correctTableForTabSelected];
 	NSString *key = [self.list objectAtIndex:section];
-	return key;
+	headerLabel.text = key;
+	[customView addSubview:headerLabel];
+	return customView;
+
 }
+
+- (CGFloat) tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
+	return GROUPED_SECTION_HEADER_HEIGHT;
+}
+
 
 -(CGFloat)tableView:(UITableView *)tableView
 heightForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -888,8 +909,6 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 				self._bkfstDict = ListDictionary;
 				[_tabViews removeObjectAtIndex:kBreakfastTab];
 				[_tabViews insertObject:breakfastViewLink atIndex:kBreakfastTab];
-				//[glossaryForMealTypesView removeFromSuperview];
-				//[_tabViewContainer addSubview:glossaryForMealTypesView];
 				[_tabViewContainer addSubview:breakfastViewLink];
 			}
 			
@@ -898,8 +917,6 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 				self._lunchList = List;
 				self._lunchDict = ListDictionary;
 				[_tabViews removeObjectAtIndex:kLunchTab];
-				//[glossaryForMealTypesView removeFromSuperview];
-				//[lunchViewLink addSubview:glossaryForMealTypesView];
 				[_tabViews insertObject:lunchViewLink atIndex:kLunchTab];
 				[_tabViewContainer addSubview:lunchViewLink];
 				
@@ -910,8 +927,6 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 				self._dinnerList = List;
 				self._dinnerDict = ListDictionary;
 				[_tabViews removeObjectAtIndex:kDinnerTab];
-				//[glossaryForMealTypesView removeFromSuperview];
-				//[dinnerViewLink addSubview:glossaryForMealTypesView];
 				[_tabViews insertObject:dinnerViewLink atIndex:kDinnerTab];
 				[_tabViewContainer addSubview:dinnerViewLink];
 				

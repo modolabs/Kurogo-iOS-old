@@ -117,7 +117,7 @@
 	[harvardClassesTableView applyStandardCellHeight];
 	
 	//self.loadingView = [[[MITLoadingActivityView alloc] initWithFrame:self.tableView.frame] autorelease];
-	self.loadingView = [[[MITLoadingActivityView alloc] initWithFrame:self.harvardClassesTableView.frame] autorelease];
+	self.loadingView = [[[MITLoadingActivityView alloc] initWithFrame:self.harvardClassesTableView.frame xDimensionScaling:2 yDimensionScaling:2.5] autorelease];
 	
 	[self showLoadingView];
 	
