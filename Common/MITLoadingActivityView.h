@@ -6,4 +6,6 @@
 
 }
 
+- (id)initWithFrame:(CGRect)frame xDimensionScaling: (double)xdim yDimensionScaling: (double) ydim;
+
 @end

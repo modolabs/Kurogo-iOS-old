@@ -23,9 +23,10 @@
 -(void)viewDidLoad {
 	[super viewDidLoad];
 	
-	UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(5.0, 10.0,200.0, 40.0)];
+	UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(12.0, 10.0,200.0, 40.0)];
 	label.text = [self.itemDetails valueForKey:@"name"];
-	label.font = [UIFont boldSystemFontOfSize:25];
+	label.font = [UIFont fontWithName:CONTENT_TITLE_FONT size:CONTENT_TITLE_FONT_SIZE];
+	label.textColor = [UIColor colorWithHexString:@"#1a1611"];
 	label.backgroundColor = [UIColor clearColor];	
 	[self.view addSubview:label];
     [label release];

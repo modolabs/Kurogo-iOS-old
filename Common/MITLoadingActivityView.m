@@ -29,7 +29,7 @@
     return self;
 }
 
-- (id)initWithFrame:(CGRect)frame xDimensionScaling: (int)xdim yDimensionScaling: (int) ydim{
+- (id)initWithFrame:(CGRect)frame xDimensionScaling: (double)xdim yDimensionScaling: (double) ydim{
     if (self = [super initWithFrame:frame]) {
 		// Initialization code
 		

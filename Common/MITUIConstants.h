@@ -47,3 +47,12 @@
 /*** Layout constants ***/
 #define NAVIGATION_BAR_HEIGHT 44.0f
 
+/*** Tab View constants ***/
+#define CONTENT_TITLE_FONT @"Georgia"
+#define CONTENT_TITLE_FONT_SIZE 22.0
+
+/*** Courses Module constants ***/
+#define COURSE_NUMBER_FONT @"Helvetica"
+#define COURSE_NUMBER_FONT_SIZE 17.0
+ 
+

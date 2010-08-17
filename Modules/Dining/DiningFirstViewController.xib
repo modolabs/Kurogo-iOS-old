@@ -12,10 +12,10 @@
 		</object>
 		<object class="NSMutableArray" key="IBDocument.EditedObjectIDs">
 			<bool key="EncodedWithXMLCoder">YES</bool>
+			<integer value="371"/>
+			<integer value="266"/>
 			<integer value="237"/>
 			<integer value="13"/>
-			<integer value="266"/>
-			<integer value="371"/>
 			<integer value="406"/>
 			<integer value="27"/>
 		</object>
@@ -208,7 +208,7 @@
 					<object class="IBUITableView" id="965268484">
 						<reference key="NSNextResponder" ref="578520804"/>
 						<int key="NSvFlags">274</int>
-						<string key="NSFrame">{{0, 11}, {320, 327}}</string>
+						<string key="NSFrameSize">{320, 327}</string>
 						<reference key="NSSuperview" ref="578520804"/>
 						<reference key="IBUIBackgroundColor" ref="373387045"/>
 						<bool key="IBUIClipsSubviews">YES</bool>
@@ -362,7 +362,7 @@
 						</object>
 					</object>
 				</object>
-				<string key="NSFrameSize">{316, 79}</string>
+				<string key="NSFrameSize">{316, 65}</string>
 				<reference key="NSSuperview"/>
 				<object class="NSColor" key="IBUIBackgroundColor">
 					<int key="NSColorSpace">3</int>
@@ -1053,13 +1053,13 @@
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>{{808, 118}, {320, 481}}</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
-					<string>{{1303, 207}, {319, 341}}</string>
+					<string>{{1215, 207}, {319, 341}}</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>{{662, 206}, {318, 341}}</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
-					<string>{{213, 278}, {316, 79}}</string>
+					<string>{{213, 292}, {316, 65}}</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>

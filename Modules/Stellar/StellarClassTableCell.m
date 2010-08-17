@@ -1,5 +1,6 @@
 #import "StellarClassTableCell.h"
 #import "UITableViewCell+MITUIAdditions.h"
+#import "MITUIConstants.h"
 
 
 @implementation StellarClassTableCell
@@ -12,16 +13,19 @@
 		name = class.masterSubjectId;
 	}
 	if ([[name substringToIndex:1] isEqualToString:@"0"])
-		cell.textLabel.text = [name substringFromIndex:1];
+		cell.detailTextLabel.text = [name substringFromIndex:1];
 	
 	else
-		cell.textLabel.text = name;
+		cell.detailTextLabel.text = name;
 
 	
-	cell.detailTextLabel.text = class.title;
+	cell.textLabel.text = class.title;
 	cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 	cell.selectionStyle = UITableViewCellSelectionStyleGray;
-	[cell applyStandardFonts];
+	
+	cell.textLabel.font = [UIFont fontWithName:STANDARD_FONT size:STANDARD_CONTENT_FONT_SIZE];
+	cell.detailTextLabel.font = [UIFont fontWithName:STANDARD_FONT size:13];
+
 	return cell;
 }
 
@@ -41,9 +45,9 @@
     
 	return 2.0 + [MultiLineTableViewCell heightForCellWithStyle:UITableViewCellStyleSubtitle
                                                       tableView:tableView 
-                                                           text:name
+                                                           text:title
                                                    maxTextLines:0
-                                                     detailText:title
+                                                     detailText:name
                                                  maxDetailLines:0
                                                            font:nil 
                                                      detailFont:nil 

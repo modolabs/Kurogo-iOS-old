@@ -74,7 +74,7 @@
 
     [searchBar addDropShadow];
 
-	self.loadingView = [[[MITLoadingActivityView alloc] initWithFrame:self.tableView.frame] autorelease];
+	self.loadingView = [[[MITLoadingActivityView alloc] initWithFrame:self.tableView.frame xDimensionScaling:2 yDimensionScaling:2.5] autorelease];
 	
 	firstTimeLoaded = NO;
 	[self reloadMyStellarData];
