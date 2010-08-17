@@ -16,7 +16,7 @@
         self.tag = CampusMapTag;
         self.shortName = @"Map";
         self.longName = @"Campus Map";
-        self.iconName = @"maps";
+        self.iconName = @"map";
         self.supportsFederatedSearch = YES;
        
 		self.campusMapVC = [[[CampusMapViewController alloc] init] autorelease];
