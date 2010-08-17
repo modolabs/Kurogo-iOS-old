@@ -57,6 +57,7 @@
 
 @property (nonatomic, assign) BOOL showScroller;
 @property (nonatomic, assign) BOOL showList;
+@property (nonatomic, assign) BOOL categoriesRequestDispatched;
 @property (nonatomic, assign) NSInteger catID;
 @property (nonatomic, assign) CalendarEventListType activeEventList;
 

@@ -43,7 +43,7 @@
 @implementation CalendarEventsViewController
 
 @synthesize startDate, endDate, events;
-@synthesize activeEventList, showList, showScroller;
+@synthesize activeEventList, showList, showScroller, categoriesRequestDispatched;
 @synthesize tableView = theTableView, mapView = theMapView, catID = theCatID;
 //@synthesize dateSelector;
 
@@ -98,6 +98,14 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 	
+	if (showScroller) {
+	 [self.view addSubview:navScrollView];
+	 }
+	 
+	 if ([self shouldShowDatePicker:activeEventList]) {
+	 [self.view addSubview:datePicker];
+	 }
+	
 	apiRequest = [[JSONAPIRequest requestWithJSONAPIDelegate:self] retain];
 	
 	// sending in the request for Categories List from the server
@@ -107,10 +115,14 @@
 																   command:@"categories"
 																parameters:nil];
     }
+	else {
+		[self reloadView:activeEventList];
+	}
+
 	
 	//moved the following commented out code to the request:jsonLoaded function
 	
-	self.view.backgroundColor = [UIColor clearColor];
+	//self.view.backgroundColor = [UIColor clearColor];
 	
 	if (showScroller) {
 		[self.view addSubview:navScrollView];
@@ -855,18 +867,10 @@
 			 ((EventCategoriesTableView *)self.tableView).categories = [NSArray arrayWithArray:arrayForTable];
         }
 		 
-		 self.view.backgroundColor = [UIColor clearColor];
-		 if (showScroller) {
-			 [self.view addSubview:navScrollView];
-		 }
-	 
-		 if ([self shouldShowDatePicker:activeEventList]) {
-			 [self.view addSubview:datePicker];
-		 }
-	 
+		 self.view.backgroundColor = [UIColor clearColor];	 
 		 [self reloadView:activeEventList];
 	 
-		 categoriesRequestDispatched = NO;
+		 categoriesRequestDispatched = YES;
         return;
 	 }	
 	

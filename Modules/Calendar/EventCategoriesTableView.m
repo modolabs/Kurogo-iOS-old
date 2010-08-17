@@ -64,6 +64,7 @@
 		vc.events = events;
 		vc.activeEventList = CalendarEventListTypeEvents;
 		vc.showList = YES;
+		vc.categoriesRequestDispatched = YES;
 	}
 
 	[self.parentViewController.navigationController pushViewController:vc animated:YES];
