@@ -86,14 +86,47 @@
 #pragma mark -
 #pragma mark Table Data Source Methods
 
-- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
+/*- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
 	
 	if(section == 0)
 		return @"";
 	else
 		return @"Interhouse Restrictions";
+}*/
+
+- (UIView *) tableView: (UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
+		UILabel *textLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 0, 300, GROUPED_SECTION_HEADER_HEIGHT)];
+		if(section == 0)
+			return nil;
+		else
+			textLabel.text =  @"Interhouse Restrictions";
+		
+	textLabel.font = [UIFont  fontWithName:STANDARD_FONT size:STANDARD_CONTENT_FONT_SIZE];
+	textLabel.textColor = [UIColor colorWithHexString:@"#554c41"];
+	textLabel.backgroundColor = [UIColor clearColor];
+
+						  
+	UIView* secondaryView = [[UIView alloc] initWithFrame: CGRectMake(0.0, 0.0, 320.0, GROUPED_SECTION_HEADER_HEIGHT)];
+	secondaryView.backgroundColor = [UIColor clearColor];
+	[secondaryView addSubview:textLabel];
+	[textLabel release];
+	
+	
+	return secondaryView;
 }
 
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
+    if (section == 0)
+    {
+        return 0;
+    }
+    else
+    {
+		return GROUPED_SECTION_HEADER_HEIGHT;
+    }
+    
+}
 
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
@@ -268,8 +301,7 @@ numberOfRowsInSection:(NSInteger)section
 		//[cell.textLabel setTextAlignment:UITextAlignmentLeft];
 		cell.textLabel.text = meal;
 		cell.detailTextLabel.text = message;
-		//cell.detailTextLabel.font = [UIFont boldSystemFontOfSize:15]; //was 15
-		cell.detailTextLabel.font = [UIFont boldSystemFontOfSize:CELL_STANDARD_FONT_SIZE];
+		cell.detailTextLabel.font = [UIFont systemFontOfSize:CELL_STANDARD_FONT_SIZE];
 		cell.selectionStyle =  UITableViewCellSelectionStyleNone;		
 	
 	}
@@ -289,7 +321,7 @@ numberOfRowsInSection:(NSInteger)section
 	NSString *mealkey;
 	
 	constraintWidth = tableView.frame.size.width;
-	cellFont = [UIFont boldSystemFontOfSize:CELL_STANDARD_FONT_SIZE]; //was 15
+	cellFont = [UIFont systemFontOfSize:CELL_STANDARD_FONT_SIZE]; //was 15
 	
 	int col = [indexPath section];
 	int row = [indexPath row];
