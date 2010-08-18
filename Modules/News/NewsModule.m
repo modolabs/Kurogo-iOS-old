@@ -88,6 +88,11 @@ NSString * const NewsLocalPathBookmarks = @"bookmarks";
 }
 
 - (void)performSearchForString:(NSString *)searchText {
+    // force main news viewController to load here
+    // because it fetches things from core data which
+    // affects search results we pass to it later on
+    storyListChannelController.view;
+    
     [super performSearchForString:searchText];
     
     if (self.xmlParser) {

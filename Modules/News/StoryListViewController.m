@@ -295,6 +295,7 @@ static NSInteger numTries = 0;
     theSearchBar.text = searchText;
     self.searchResults = results;
     self.stories = results;
+    
     [storyTable reloadData];
 }
 
@@ -961,9 +962,7 @@ static NSInteger numTries = 0;
                 titleLabel = (UILabel *)[cell viewWithTag:1];
                 dekLabel = (UILabel *)[cell viewWithTag:2];
                 thumbnailView = (StoryThumbnailView *)[cell viewWithTag:3];
-
-if ([story isFault]) NSLog(@"%d %@", indexPath.row, [story description]);
-
+                
                 titleLabel.text = story.title;
                 dekLabel.text = story.summary;
                 

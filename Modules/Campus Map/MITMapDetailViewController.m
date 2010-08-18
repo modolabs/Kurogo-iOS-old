@@ -292,16 +292,25 @@
 #pragma mark User Actions
 -(IBAction) mapThumbnailPressed:(id)sender
 {
+    if (self.campusMapVC) {
+        // on the map, select the current annotation
+        [_campusMapVC.mapView selectAnnotation:self.annotation animated:NO];
 	
-	// on the map, select the current annotation
-	//[_campusMapVC.mapView selectAnnotation:self.annotation animated:NO withRecenter:YES];
+        // make sure the map is showing. 
+        [_campusMapVC showListView:NO];
 	
-	// make sure the map is showing. 
-	[_campusMapVC showListView:NO];
-	
-	// pop back to the map view. 
-	[self.navigationController popToViewController:self.campusMapVC animated:YES];
-	
+        [self.navigationController popToViewController:self.campusMapVC animated:YES];
+    } else {
+        // if we're coming from federated search, the navStack won't be populated
+        MIT_MobileAppDelegate *appDelegate = (MIT_MobileAppDelegate *)[[UIApplication sharedApplication] delegate];
+        CMModule *mapModule = (CMModule *)[appDelegate moduleForTag:CampusMapTag];
+        
+        [mapModule resetNavStack];
+        mapModule.campusMapVC.view;
+        [mapModule.campusMapVC setSearchResults:[NSArray arrayWithObject:self.annotation]];
+        [mapModule.campusMapVC showListView:NO];
+        [appDelegate showModuleForTag:CampusMapTag];
+    }
 }
 
 -(IBAction) bookmarkButtonTapped

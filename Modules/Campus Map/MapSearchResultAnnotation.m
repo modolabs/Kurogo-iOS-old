@@ -52,10 +52,7 @@
     self.info = info;
     
     if (!self.name) {
-        //self.name = [infoAttributes objectForKey:@"Building Name"];
-        //if (self.name == nil) {
         self.name = [info objectForKey:@"displayName"];
-        //}
     }
     
     if ([TileServerManager isInitialized]) {
@@ -77,6 +74,11 @@
             NSLog(@"info: %@", [self.info description]);
         }
 
+        if (!self.name) {
+            self.name = [infoAttributes objectForKey:@"Building Name"];
+        }
+        
+        
         if (!self.uniqueID) {
             self.uniqueID = [infoAttributes objectForKey:@"OBJECTID"];
             if (!self.uniqueID) {
