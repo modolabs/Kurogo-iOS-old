@@ -101,6 +101,8 @@ scrollView = _scrollView, navScrollerDelegate, currentXOffset = _currentXOffset;
     
     CGFloat buttonYOffset = floor((self.frame.size.height - stretchableButtonImage.size.height) / 2);
 
+    aButton.adjustsImageWhenHighlighted = shouldHighlight;
+    
     if (shouldHighlight) {
         [aButton setBackgroundImage:nil forState:UIControlStateNormal];
         [aButton setBackgroundImage:stretchableButtonImage forState:UIControlStateHighlighted];

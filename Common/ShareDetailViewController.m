@@ -7,36 +7,12 @@
 
 @synthesize fbSession, shareDelegate;
 
-/*
-- (id)init
-{
-	if (self = [super init]) {
-		actionSheetTitle = nil;
-		emailSubject = nil;
-		emailBody = nil;
-	}
-	return self;
-}
-*/
-
 - (void)loadView {
     [super loadView];
 }
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
-    /*
-    shortURL = nil;
-    
-    self.connection = [[[ConnectionWrapper alloc] initWithDelegate:self] autorelease];
-    NSString *bitlyURLString = [NSString stringWithFormat:@"http://api.bit.ly/v3/shorten?login=%@&apiKey=%@&longURL=%@&format=json",
-                                BitlyUsername, BitlyAPIKey, [self.shareDelegate twitterUrl]];
-    NSURL *url = [NSURL URLWithString:bitlyURLString];
-    [self.connection requestDataFromURL:url];
-    MIT_MobileAppDelegate *appDelegate = (MIT_MobileAppDelegate *)[[UIApplication sharedApplication] delegate];
-    [appDelegate showNetworkActivityIndicator];
-     */
 }
 
 #pragma mark Action Sheet

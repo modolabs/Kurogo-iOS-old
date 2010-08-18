@@ -87,6 +87,7 @@ static MapBookmarkManager* s_mapBookmarksManager = nil;
     savedAnnotation.sortOrder = [NSNumber numberWithInt:[_bookmarks count]];
     [_bookmarks addObject:savedAnnotation];
     [CoreDataManager saveData];
+    [self refreshBookmarks];
 }
 
 - (void)saveAnnotationWithoutBookmarking:(ArcGISMapAnnotation *)annotation {

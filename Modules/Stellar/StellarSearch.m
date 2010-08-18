@@ -42,6 +42,7 @@
 	UITableViewCell *cell = [aTableView dequeueReusableCellWithIdentifier:@"StellarSearch"];
 	if(cell == nil) {
 		cell = [[[StellarClassTableCell alloc] initWithReusableCellIdentifier:@"StellarSearch"] autorelease];
+		cell.selectionStyle = UITableViewCellSelectionStyleGray;
 	}
 
 	StellarClass *stellarClass = [self.lastResults objectAtIndex:indexPath.row];

@@ -68,6 +68,7 @@
         cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
 		cell.textLabel.textColor = CELL_STANDARD_FONT_COLOR;
 		cell.textLabel.font = [UIFont boldSystemFontOfSize:CELL_STANDARD_FONT_SIZE];
+		cell.selectionStyle = UITableViewCellSelectionStyleGray;
     }
     
 	if ([[_itemsInTable objectAtIndex:indexPath.row] objectForKey:@"categoryName"]) {
@@ -107,7 +108,7 @@
     self.mapSelectionController.mapVC.searchBar.text = annotation.name;
     
     // on the map, select the current annotation
-    //[[self.mapVC mapView] selectAnnotation:annotation animated:NO withRecenter:YES];
+    [[self.mapSelectionController.mapVC mapView] selectAnnotation:annotation animated:NO];
     
     [self dismissModalViewControllerAnimated:YES];
 }
@@ -165,6 +166,7 @@
 	
 	// this will remove any old annotations and add the new ones. 
 	[self.mapSelectionController.mapVC setSearchResults:searchResultsArray];
+    self.mapSelectionController.mapVC.searchBar.text = [NSString stringWithFormat:@"category:%@", self.category];
 	[self dismissModalViewControllerAnimated:YES];
 }
 
@@ -209,8 +211,8 @@
 {
 	JSONAPIRequest *apiRequest = [JSONAPIRequest requestWithJSONAPIDelegate:self];
 	[apiRequest requestObjectFromModule:@"map"
-                                command:@"category"
-                             parameters:[NSDictionary dictionaryWithObjectsAndKeys:self.category, @"id", nil]];
+                                command:@"search"
+                             parameters:[NSDictionary dictionaryWithObjectsAndKeys:self.category, @"category", nil]];
 }
 
 

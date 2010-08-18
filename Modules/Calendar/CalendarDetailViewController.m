@@ -284,6 +284,7 @@ enum CalendarDetailRowTypes {
 			cell.selectionStyle = UITableViewCellSelectionStyleNone;
         } else {
             cell = [[[MultiLineTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
+			cell.selectionStyle = UITableViewCellSelectionStyleGray;
         }
     }
     

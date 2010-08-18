@@ -417,12 +417,14 @@ NSString * const NewsTagFullURL         = @"url";
         story.link = [currentContents objectForKey:NewsTagLink];
         NSString *author = [currentContents objectForKey:NewsTagAuthor];
         NSString *affiliation = [currentContents objectForKey:NewsTagAffiliation];
-        if (author) {
-            if (affiliation) {
+        if ([author length]) {
+            if ([affiliation length]) {
                 story.author = [NSString stringWithFormat:@"%@, %@", author, affiliation];
             } else {
                 story.author = author;
             }
+        } else {
+            story.author = [NSString string];
         }
         story.summary = [currentContents objectForKey:NewsTagSummary];
         story.body = [currentContents objectForKey:NewsTagBody];

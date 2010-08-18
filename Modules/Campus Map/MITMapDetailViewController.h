@@ -8,7 +8,7 @@
 @class ArcGISMapAnnotation;
 @class CampusMapViewController;
 
-@interface MITMapDetailViewController : UIViewController <ConnectionWrapperDelegate, TabViewControlDelegate, JSONAPIDelegate> {
+@interface MITMapDetailViewController : UIViewController <ConnectionWrapperDelegate, TabViewControlDelegate, JSONAPIDelegate, UIWebViewDelegate> {
 
 	// tab controller for which we are a delegate.
 	IBOutlet TabViewControl* _tabViewControl;
@@ -52,7 +52,7 @@
 	// WHAT's HERE
 	// 
 	// view for what's here info
-	IBOutlet UIView* _whatsHereView;
+	IBOutlet UIWebView* _whatsHereView;
 	
 	//
 	// LOADING IMAGE VIEW

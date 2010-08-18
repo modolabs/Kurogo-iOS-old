@@ -731,6 +731,7 @@
 					<string>15.IBEditorWindowLastContentRect</string>
 					<string>15.IBPluginDependency</string>
 					<string>16.IBPluginDependency</string>
+					<string>21.CustomClassName</string>
 					<string>21.IBEditorWindowLastContentRect</string>
 					<string>21.IBPluginDependency</string>
 					<string>31.IBEditorWindowLastContentRect</string>
@@ -766,6 +767,7 @@
 					<string>{{457, 238}, {320, 231}}</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
+					<string>UIWebView</string>
 					<string>{{329, 625}, {320, 231}}</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>{{433, 165}, {320, 323}}</string>

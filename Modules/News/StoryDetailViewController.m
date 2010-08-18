@@ -70,7 +70,7 @@
     }
     
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-    [dateFormatter setDateFormat:@"MMM dd, y"];
+    [dateFormatter setDateFormat:@"MMM d, y"];
     NSString *postDate = [dateFormatter stringFromDate:story.postDate];
 	[dateFormatter release];
     
@@ -87,26 +87,18 @@
     if (!thumbnailHeight) {
         thumbnailHeight = @"";
     }
-
-    //NSInteger galleryCount = [story.galleryImages count];
-    //if (story.inlineImage) {
-    //    galleryCount++;
-    //}
-    
-    // if not connected, pretend there are no images
-    NSString *galleryCountString = /*([ConnectionDetector isConnected]) ? [[NSNumber numberWithInteger:galleryCount] stringValue] :*/ @"0";
     
     NSArray *keys = [NSArray arrayWithObjects:
                      @"__TITLE__", @"__AUTHOR__", @"__DATE__", @"__BOOKMARKED__",
                      @"__THUMBNAIL_URL__", @"__THUMBNAIL_WIDTH__", @"__THUMBNAIL_HEIGHT__", 
-					 @"__GALLERY_COUNT__", @"__DEK__", @"__BODY__", nil];
+                     @"__DEK__", @"__BODY__", nil];
     
 	NSString *isBookmarked = ([self.story.bookmarked boolValue]) ? @"on" : @"";
 	
     NSArray *values = [NSArray arrayWithObjects:
                        story.title, story.author, postDate, isBookmarked, 
 					   thumbnailURL, thumbnailWidth, thumbnailHeight, 
-					   galleryCountString, story.summary, story.body, nil];
+					   story.summary, story.body, nil];
     
     [htmlString replaceOccurrencesOfStrings:keys withStrings:values options:NSLiteralSearch];
     
@@ -144,19 +136,14 @@
             [[UIApplication sharedApplication] openURL:url];
             result = YES;
         } else {
-			if ([[url path] rangeOfString:@"image" options:NSBackwardsSearch].location != NSNotFound) {
-				//StoryGalleryViewController *galleryVC = [[StoryGalleryViewController alloc] init];
-				//galleryVC.images = story.allImages;
-				//[self.navigationController pushViewController:galleryVC animated:YES];
-				//[galleryVC release];
-				result = NO;
-			} else if ([[url path] rangeOfString:@"bookmark" options:NSBackwardsSearch].location != NSNotFound) {
+            if ([[url path] rangeOfString:@"bookmark" options:NSBackwardsSearch].location != NSNotFound) {
 				// toggle bookmarked state
 				self.story.bookmarked = [NSNumber numberWithBool:([self.story.bookmarked boolValue]) ? NO : YES];
 				[CoreDataManager saveData];
 			} else if ([[url path] rangeOfString:@"share" options:NSBackwardsSearch].location != NSNotFound) {
 				[self share:nil];
 			}
+            result = NO;
 		}
 	}
 	return result;
