@@ -767,6 +767,7 @@
                     self.navigationItem.rightBarButtonItem.title = @"List";
             }
             
+            
         } else if ([request.userData isKindOfClass:[ArcGISMapAnnotation class]]) {
             // updating an annotation search request
             ArcGISMapAnnotation *annotation = request.userData;
@@ -787,8 +788,24 @@
                 _hasSearchResults = NO;
                 self.navigationItem.rightBarButtonItem.title = @"Browse";
             }
+            NSLog(@"%@", [annotation description]);
+            
         }
-	}
+
+	} else if (JSONObject && [JSONObject isKindOfClass:[NSArray class]]) {
+        NSString *category = [request.params objectForKey:@"category"];
+        if (category != nil) {
+            // TODO: cache results to reduce the number of network calls
+            // made for the same exact purpose as "browse by categories"
+            for (NSDictionary *thisItem in JSONObject) {
+                ArcGISMapAnnotation *annotation = [[[ArcGISMapAnnotation alloc] initWithInfo:thisItem] autorelease];
+                if (!annotation.dataPopulated) {
+                    [annotation searchAnnotationWithDelegate:self category:category];
+                }
+            }
+            [_searchController hideSearchOverlayAnimated:YES];
+        }
+    }
 }
 
 // there was an error connecting to the specified URL. 
@@ -810,13 +827,19 @@
 	} else {
         JSONAPIRequest *apiRequest = [JSONAPIRequest requestWithJSONAPIDelegate:self];
         apiRequest.userData = kAPISearch;
-
+        
         NSMutableDictionary *searchParams = [params mutableCopy];
         if (!searchParams) {
             searchParams = [NSMutableDictionary dictionaryWithCapacity:1];
         }
         
-        [searchParams setObject:searchText forKey:@"q"];
+        NSArray *searchParts = [searchText componentsSeparatedByString:@":"];
+        if ([searchParts count] == 2 && [[searchParts objectAtIndex:0] isEqualToString:@"category"]) {
+            searchText = [searchParts objectAtIndex:1];
+            [searchParams setObject:searchText forKey:@"category"];
+        } else {
+            [searchParams setObject:searchText forKey:@"q"];
+        }
         
         [apiRequest requestObjectFromModule:@"map"
                                     command:@"search"

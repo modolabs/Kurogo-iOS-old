@@ -143,6 +143,7 @@
 			} else if ([[url path] rangeOfString:@"share" options:NSBackwardsSearch].location != NSNotFound) {
 				[self share:nil];
 			}
+            result = NO;
 		}
 	}
 	return result;

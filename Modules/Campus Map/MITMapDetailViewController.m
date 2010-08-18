@@ -48,6 +48,7 @@
     [super viewDidLoad];
 	
 	_tabViews = [[NSMutableArray alloc] initWithCapacity:2];
+    _whatsHereView.delegate = self;
 	
 	// check if this item is already bookmarked
 	MapBookmarkManager* bookmarkManager = [MapBookmarkManager defaultManager];
@@ -56,7 +57,6 @@
 		[_bookmarkButton setImage:[UIImage imageNamed:@"global/bookmark_on_pressed.png"] forState:UIControlStateHighlighted];
 	}
 	
-	//_mapView.shouldNotDropPins = YES;
 	[_mapView addAnnotation:self.annotation];
     // TODO: use something else for this map span
     MKCoordinateSpan span = MKCoordinateSpanMake(0.001, 0.001);
@@ -100,9 +100,7 @@
 		_tabViewControl.hidden = YES;
 		_tabViewContainer.hidden = YES;
 		
-		[_scrollView addSubview:_loadingResultView];
-		
-		//[ArcGISMapAnnotation executeServerSearchWithQuery:self.annotation.name jsonDelegate:self object:nil];		
+		[_scrollView addSubview:_loadingResultView];	
 	} else {
 		self.annotationDetails = self.annotation;
 		[self loadAnnotationContent];
@@ -142,13 +140,42 @@
 	[[UIApplication sharedApplication] openURL:[NSURL URLWithString:url]];
 }
 
--(void) loadAnnotationContent
+- (void)loadAnnotationContent
 {
+    NSArray *fieldBlackList = [NSArray arrayWithObjects:@"Root", @"Shape", @"PHOTO_FILE", @"Photo", @"OBJECTID", @"FID", @"BL_ID", nil];
+    
 	[_loadingResultView removeFromSuperview];
 	_nameLabel.hidden = NO;
 	_locationLabel.hidden = NO;
-	
+
+	NSMutableString *bldgDetails = [NSMutableString stringWithString:@"<style type=\"text/css\" media=\"screen\">"
+                                    "li {font-family:Helvetica}"
+                                    "a {color: #8C000B;text-decoration:none}"
+                                    "</style>"
+                                    "<ul>"];
+	for (NSString *field in [self.annotation.attributes allKeys]) {
+        BOOL isBadField = NO;
+        for (NSString *badField in fieldBlackList) {
+            if ([field isEqualToString:badField]) {
+                isBadField = YES;
+                break;
+            }
+        }
+        if (isBadField) continue;
+
+        NSString *value = [self.annotation.attributes objectForKey:field];
+        // hack to prevent urls from making the webview too wide
+        if ([value length] > 40 && [[value substringToIndex:7] isEqualToString:@"http://"]) {
+            value = [NSString stringWithFormat:@"<a href=\"%@\">Visit Website</a>", value];
+        }
+        [bldgDetails appendString:[NSString stringWithFormat:@"<li><b>%@</b>: %@</li>", field, value]];
+    }
+    [bldgDetails appendString:@"</ul>"];
+    [_whatsHereView loadHTMLString:bldgDetails baseURL:nil];
+	[_tabViewControl addTab:@"Details"];
+	[_tabViews addObject:_whatsHereView];
     
+    /*
     CGFloat padding = 10.0;
     CGFloat currentHeight = padding;
     CGFloat bulletWidth = 24.0;
@@ -192,19 +219,21 @@
         [_scrollView setContentSize:contentSize];
     }
 	
-	[_tabViewControl addTab:@"What's Here"];
-	[_tabViews addObject:_whatsHereView];
+    */
+    NSString *photofile = [self.annotation.attributes objectForKey:@"PHOTO_FILE"];
+    NSLog(@"%@", [self.annotation.attributes description]);
+    if (photofile == nil) {
+        photofile = [self.annotation.attributes objectForKey:@"Photo"];
+    }
+
+    NSLog(@"%@", photofile);
     
-    NSString *photofile = nil;
-    if (photofile = [self.annotation.attributes objectForKey:@"PHOTO_FILE"]) {
+    if (photofile != nil) {
 		self.imageConnectionWrapper = [[ConnectionWrapper new] autorelease];
 		self.imageConnectionWrapper.delegate = self;
         NSString *urlString = [[NSString stringWithFormat:@"http://map.harvard.edu/mapserver/images/bldg_photos/%@", photofile]
                                stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
 		[imageConnectionWrapper requestDataFromURL:[NSURL URLWithString:urlString] allowCachedResponse:YES];
-		
-		//NSString* decriptionText = self.annotationDetails.viewAngle ? [NSString stringWithFormat:@"View from: %@", self.annotationDetails.viewAngle] : nil ;
-		//_buildingImageDescriptionLabel.text = decriptionText;
 		
 		[_tabViewControl addTab:@"Photo"];	
 		[_tabViews addObject:_buildingView];
@@ -287,6 +316,42 @@
 	[_loadingImageView release];
 	[_loadingResultView release];
 	
+}
+
+#pragma mark UIWebView delegate
+
+- (void)webViewDidFinishLoad:(UIWebView *)webView {
+	CGSize size = [webView sizeThatFits:CGSizeZero];
+    CGRect frame = _whatsHereView.frame;
+    frame.size.height = size.height;
+    _whatsHereView.frame = frame;
+
+    // prevent short webview from scrolling
+    // http://stackoverflow.com/questions/500761/stop-uiwebview-from-bouncing-vertically
+    if (size.height <= _tabViewContainer.frame.size.height) {
+        [_whatsHereView stringByEvaluatingJavaScriptFromString:@"document.ontouchmove = function(event){ event.preventDefault();}"];     
+    }
+    
+    frame = _tabViewContainer.frame;
+    if (size.height > _tabViewContainerMinHeight) {
+        frame.size.height = size.height;
+        _tabViewContainer.frame = frame;
+    }
+    
+    size = _scrollView.frame.size;
+    size.height = _tabViewContainer.frame.size.height + _tabViewContainer.frame.origin.y;
+    if (size.height > _scrollView.frame.size.height) {
+        [_scrollView setContentSize:size];
+    }
+}
+
+- (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType {
+	if (navigationType == UIWebViewNavigationTypeLinkClicked) {
+		[[UIApplication sharedApplication] openURL:[request URL]];
+		return NO;
+	}
+	
+	return YES;
 }
 
 #pragma mark User Actions
