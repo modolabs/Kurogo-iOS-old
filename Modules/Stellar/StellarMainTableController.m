@@ -280,10 +280,6 @@
 		 animated:YES];
 	}	
 	else if(groupIndex == browseGroup) {
-		/*[self.navigationController
-			pushViewController: [[[StellarCoursesTableController alloc] 
-				initWithCourseGroup: (StellarCourseGroup *)[courseGroups objectAtIndex:indexPath.row]] autorelease]
-			animated:YES];*/
 		[self.navigationController
 		 pushViewController: [[[StellarCoursesViewController alloc] 
 							   initWithCourseGroup: (StellarCourseGroup *)[courseGroups objectAtIndex:indexPath.row]] autorelease]

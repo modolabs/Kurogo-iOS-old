@@ -86,13 +86,6 @@
 #pragma mark -
 #pragma mark Table Data Source Methods
 
-/*- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
-	
-	if(section == 0)
-		return @"";
-	else
-		return @"Interhouse Restrictions";
-}*/
 
 - (UIView *) tableView: (UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
 		UILabel *textLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 0, 300, GROUPED_SECTION_HEADER_HEIGHT)];

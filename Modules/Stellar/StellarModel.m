@@ -326,7 +326,7 @@ NSString* cleanPersonName(NSString *personName);
 	stellarClassTime.stellarClass = class;
 	stellarClassTime.title = @"Lecture"; //[time objectForKey:@"title"];
 	stellarClassTime.location = [time objectForKey:@"location"];
-	stellarClassTime.time = [time objectForKey:@"time"];
+	stellarClassTime.time = [[NSString alloc] initWithFormat:@"%@ %@", [time objectForKey:@"days"],[time objectForKey:@"time"]];
 	stellarClassTime.order = [NSNumber numberWithInt:orderId];
 	return stellarClassTime;
 }
