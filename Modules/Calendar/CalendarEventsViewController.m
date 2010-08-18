@@ -364,6 +364,13 @@
 			if (someEvents != nil && [someEvents count]) {
 				self.events = someEvents;
 				((EventListTableView *)self.tableView).events = self.events;
+				if (listType == CalendarEventListTypeAcademic) {
+					((EventListTableView *)self.tableView).isAcademic = YES;
+				}
+				else {
+					((EventListTableView *)self.tableView).isAcademic = NO;
+				}
+
 				theMapView.events = self.events;
                 self.tableView.separatorColor = TABLE_SEPARATOR_COLOR;
 				[self.tableView reloadData];
@@ -1027,6 +1034,9 @@
 		
 		if (showList) {
             self.tableView.separatorColor = TABLE_SEPARATOR_COLOR;
+			if (activeEventList == CalendarEventListTypeAcademic) {
+				((EventListTableView *)self.tableView).isAcademic = YES;
+			}
 			[self.tableView reloadData];
 		}
 	}

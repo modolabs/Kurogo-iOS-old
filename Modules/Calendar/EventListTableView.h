@@ -9,6 +9,7 @@
 	CalendarEventsViewController *parentViewController;
 	NSIndexPath *previousSelectedIndexPath;
     NSString *searchSpan; // make it 7 days by default
+	BOOL isAcademic;
 	
 }
 
@@ -16,5 +17,6 @@
 @property (nonatomic, assign) BOOL isSearchResults;
 @property (nonatomic, assign) CalendarEventsViewController *parentViewController;
 @property (nonatomic, retain) NSString *searchSpan;
+@property (nonatomic, assign) BOOL isAcademic;
 
 @end

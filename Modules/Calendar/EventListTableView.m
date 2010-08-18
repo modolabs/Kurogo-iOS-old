@@ -8,7 +8,7 @@
 #define MULTILINE_ADJUSTMENT_NO_ACCESSORY 21.0
 
 @implementation EventListTableView
-@synthesize events, parentViewController, isSearchResults, searchSpan;
+@synthesize events, parentViewController, isSearchResults, searchSpan, isAcademic;
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     return 1;
@@ -85,6 +85,11 @@
     } else {
         cell.detailTextLabel.text = [event dateStringWithDateStyle:NSDateFormatterShortStyle timeStyle:NSDateFormatterShortStyle separator:@" "];
         locationTextLength = 25; //was 10
+		
+		if (isAcademic) {
+			NSArray *stringArray = [[event dateStringWithDateStyle:NSDateFormatterShortStyle timeStyle:NSDateFormatterShortStyle separator:@" "] componentsSeparatedByString: @" "];
+			cell.detailTextLabel.text = [stringArray objectAtIndex:0];
+		}
     }
         
     if (event.shortloc) {

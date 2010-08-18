@@ -34,17 +34,17 @@ NSInteger strLenSort(NSString *str1, NSString *str2, void *context)
 
 @interface PeopleSearchViewController (Private)
 
-- (void)handleErrorFromLDAP:(NSString *)errorMessage;
+- (void)handleMessageFromLDAP:(NSString *)message title:(NSString *)theTitle;
 + (NSDictionary *)staticPhoneRowPropertiesForIndexPath:(NSIndexPath *)indexPath;
 
 @end
 
 @implementation PeopleSearchViewController (Private)
 
-- (void)handleErrorFromLDAP:(NSString *)errorMessage {
+- (void)handleMessageFromLDAP:(NSString *)message title:(NSString *)theTitle {
 	
-	UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Search failed" 
-													message:errorMessage
+	UIAlertView *alert = [[UIAlertView alloc] initWithTitle:theTitle 
+													message:message
 												   delegate:self
 										  cancelButtonTitle:@"OK" 
 										  otherButtonTitles:nil]; 
@@ -480,27 +480,35 @@ NSInteger strLenSort(NSString *str1, NSString *str2, void *context)
 - (void)request:(JSONAPIRequest *)request jsonLoaded:(id)result {
     [self cleanUpConnection];
 	
-	if (result && [result isKindOfClass:[NSArray class]]) {
-		self.searchResults = result;
-	} else {
-		self.searchResults = nil;
-	}
-	
-	// Sometimes the LDAP server will return an error to the back end. This is usually because 
-	// there are too many results, although it doesn't say that. (The LDAP server returns {'desc': 'Insufficient access'}, 
-	// and PHP's ldap_search just returns false.) Check for that here.
-	id errorMessage = [[self.searchResults safeObjectAtIndex:0] objectForKey:@"error"];
-	if ([errorMessage length] > 0) {
-		self.searchResults = nil;
-		[self handleErrorFromLDAP:errorMessage];
+	// The JSON wraps the dictionary containing the results and message in an outer array.
+	id jsonContent = [result safeObjectAtIndex:0];
+	if ([jsonContent isKindOfClass:[NSDictionary class]]) {		
+		id results = [jsonContent objectForKey:@"Results"];
+		// The back end may have a message that we need to display to user about the search. Check for that here.
+		id message = [jsonContent objectForKey:@"Message"];
+		if ([message length] > 0) {
+			NSString *alertTitle = @"";
+			if ([results count] < 1) {
+				alertTitle = @"Search Failed";
+			}
+			[self handleMessageFromLDAP:message title:alertTitle];
+		}
+		// Regardless of the existence or non-existence of a message, display whatever results the back end gives us.
+		if ([results count] < 1) {
+			self.searchResults = nil;		
+		}
+		else {
+			self.searchResults = results;
+			self.searchController.searchResultsTableView.frame = self.tableView.frame;
+			[self.view addSubview:self.searchController.searchResultsTableView];
+			[self.searchBar addDropShadow];
+			
+			//self.searchController.searchResultsTableView.hidden = NO;
+			[self.searchController.searchResultsTableView reloadData];
+		}
 	}
 	else {
-        self.searchController.searchResultsTableView.frame = self.tableView.frame;
-        [self.view addSubview:self.searchController.searchResultsTableView];
-        [self.searchBar addDropShadow];
-		
-		//self.searchController.searchResultsTableView.hidden = NO;
-		[self.searchController.searchResultsTableView reloadData];
+		self.searchResults = nil;
 	}
 }
 
