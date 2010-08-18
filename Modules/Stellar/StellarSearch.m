@@ -45,7 +45,14 @@
 	}
 
 	StellarClass *stellarClass = [self.lastResults objectAtIndex:indexPath.row];
-	[StellarClassTableCell configureCell:cell withStellarClass:stellarClass];
+	StellarClass *stellarPreviousClass;
+	
+	if (indexPath.row > 0)
+		stellarPreviousClass = [self.lastResults objectAtIndex:indexPath.row - 1];
+	else {
+		stellarPreviousClass = nil;
+	}
+	[StellarClassTableCell configureCell:cell withStellarClass:stellarClass previousClassInList:stellarPreviousClass];
 	return cell;
 }
 

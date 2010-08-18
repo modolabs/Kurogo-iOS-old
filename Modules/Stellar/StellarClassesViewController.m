@@ -42,6 +42,17 @@
 		self.title = course.courseGroupShort;
 	}
 	
+	if ([aCourse.courseGroupShort isEqualToString:@"Business - Doctoral Program"]) { 
+		UIBarButtonItem *newBackButton = [[UIBarButtonItem alloc] initWithTitle: @"HBS PhD" style: UIBarButtonItemStyleBordered target: nil action: nil];	
+		[[self navigationItem] setBackBarButtonItem: newBackButton];
+		[newBackButton release];
+	}
+	else if ([aCourse.courseGroupShort isEqualToString:@"Business - MBA Program"]) { 
+		UIBarButtonItem *newBackButton = [[UIBarButtonItem alloc] initWithTitle: @"HBS MBA" style: UIBarButtonItemStyleBordered target: nil action: nil];	
+		[[self navigationItem] setBackBarButtonItem: newBackButton];
+		[newBackButton release];
+	}
+	
 	return self;
 }
 
@@ -151,7 +162,16 @@
 	}
 	
 	StellarClass *stellarClass = [classes objectAtIndex:indexPath.row];
-	return [StellarClassTableCell configureCell:cell withStellarClass:stellarClass];
+	StellarClass *stellarPreviousClass;
+	
+	if (indexPath.row > 0)
+		stellarPreviousClass = [classes objectAtIndex:indexPath.row - 1];
+	else {
+		stellarPreviousClass = nil;
+	}
+
+									
+	return [StellarClassTableCell configureCell:cell withStellarClass:stellarClass previousClassInList:stellarPreviousClass];
 }	
 
 - (NSInteger) tableView: (UITableView *)tableView numberOfRowsInSection: (NSInteger)section {

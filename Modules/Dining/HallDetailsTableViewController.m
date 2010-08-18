@@ -8,6 +8,7 @@
 
 #import "HallDetailsTableViewController.h"
 #import "MITUIConstants.h"
+#import "DiningMultiLineCell.h"
 
 
 @implementation HallDetailsTableViewController
@@ -31,7 +32,7 @@
 	[self.view addSubview:label];
     [label release];
 	
-	UIImageView *imageView = [[[UIImageView alloc] initWithFrame:CGRectMake(250.0, 15.0, 30.0, 30.0)] autorelease];
+	UIImageView *imageView = [[[UIImageView alloc] initWithFrame:CGRectMake(282.0, 15.0, 30.0, 30.0)] autorelease];
 	
 	switch (hallStatus.currentStat) {
 		case OPEN:
@@ -124,18 +125,19 @@ numberOfRowsInSection:(NSInteger)section
 	if (col == 1)
 		CellTableIdentifier = @"HallRestrictionsIdentifier";
 
-	MultiLineTableViewCell *cell = (MultiLineTableViewCell *)[tableView dequeueReusableCellWithIdentifier:CellTableIdentifier];
+	DiningMultiLineCell *cell = (DiningMultiLineCell *)[tableView dequeueReusableCellWithIdentifier:CellTableIdentifier];
 	
 	if (cell == nil)
 	{
 		if (col == 0) {
-		cell = [[[MultiLineTableViewCell alloc]
+		cell = [[[DiningMultiLineCell alloc]
 				 initWithStyle:UITableViewCellStyleValue2 reuseIdentifier:CellTableIdentifier] autorelease];
+			cell.textLabelNumberOfLines = 1;
 		}
 		
 		if (col == 1) {
-			cell = [[[MultiLineTableViewCell alloc] initWithStyle:UITableViewCellStyleValue2 reuseIdentifier:CellTableIdentifier] autorelease];
-			cell.textLabelNumberOfLines = 2;
+			cell = [[[DiningMultiLineCell alloc] initWithStyle:UITableViewCellStyleValue2 reuseIdentifier:CellTableIdentifier] autorelease];
+			cell.textLabelNumberOfLines = 1;
 			//cell.textLabelLineBreakMode = UILineBreakModeTailTruncation;
 		}
         
@@ -187,6 +189,10 @@ numberOfRowsInSection:(NSInteger)section
 		NSString *cellText1 = displayKey;
 		
 		NSString *cellText2 = [self.itemDetails objectForKey:key];
+		
+		if ([cellText1 isEqualToString:@"brunch"]) {
+			cellText2 = [[NSString alloc] initWithFormat:@"Sunday %@", cellText2];
+		}
 		
 		if ([cellText2 isEqualToString:@"NA"]) {
 			cellText2 = @"Closed";
