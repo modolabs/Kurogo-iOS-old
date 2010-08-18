@@ -26,7 +26,7 @@
     if (self != nil) {
         self.tag = CalendarTag;
         self.shortName = @"Events";
-        self.longName = @"Events Calendar";
+        self.longName = @"Events";
         self.iconName = @"events";
         self.supportsFederatedSearch = YES;
         

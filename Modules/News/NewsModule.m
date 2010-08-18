@@ -15,7 +15,7 @@
     if (self != nil) {
         self.tag = NewsOfficeTag;
         self.shortName = @"News";
-        self.longName = @"Harvard News";
+        self.longName = @"News";
         self.iconName = @"news";
         self.supportsFederatedSearch = YES;
         
