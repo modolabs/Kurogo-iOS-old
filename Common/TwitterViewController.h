@@ -1,38 +1,16 @@
 #import <UIKit/UIKit.h>
 #import "XAuthTwitterEngine.h"
+#import "ConnectionWrapper.h"
 
-@interface UsernameFieldDelegate : NSObject <UITextFieldDelegate> {
-	UITextField *passwordField;
-}
-
-- (id) initWithPasswordField: (UITextField *)passwordField;
-
-@end
-
-@class TwitterViewController;
-@interface PasswordFieldDelegate : NSObject <UITextFieldDelegate> {
-	TwitterViewController *delegate;
-}
-
-@property (nonatomic, assign) TwitterViewController *delegate;
-
-@end
-
-@interface MessageFieldDelegate : NSObject <UITextViewDelegate> {
-	UILabel *counter;
-}
-
-- (id) initWithMessage: (NSString *)message counter: (UILabel *)aCounter;
-
-@end
-
-@interface TwitterViewController : UIViewController {
+@interface TwitterViewController : UIViewController <UITextFieldDelegate, MGTwitterEngineDelegate, XAuthTwitterEngineDelegate, ConnectionWrapperDelegate> {
 	NSString *message;
-	NSString *longUrl;
+	NSString *longURL;
+    NSString *shortURL;
 	
 	UIView *loginView;
 	UIView *messageInputView;
 	UILabel *usernameLabel;
+    UILabel *counterLabel;
 	UIView *contentView;
 	UINavigationItem *navigationItem;
 	UIButton *signOutButton;
@@ -44,8 +22,12 @@
 	
 	XAuthTwitterEngine *twitterEngine;
 	BOOL authenticationRequestInProcess;
+    
+    ConnectionWrapper *connection;
 }
 
-- (id) initWithMessage: (NSString *)aMessage url:(NSString *)longUrl;
+- (id) initWithMessage:(NSString *)aMessage url:(NSString *)longURL;
+
+@property (nonatomic, retain) ConnectionWrapper *connection;
 
 @end

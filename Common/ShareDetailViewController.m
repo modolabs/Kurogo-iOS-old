@@ -5,7 +5,7 @@
 
 @implementation ShareDetailViewController
 
-@synthesize fbSession, shareDelegate, connection;
+@synthesize fbSession, shareDelegate;
 
 /*
 - (id)init
@@ -26,6 +26,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    /*
     shortURL = nil;
     
     self.connection = [[[ConnectionWrapper alloc] initWithDelegate:self] autorelease];
@@ -35,25 +36,7 @@
     [self.connection requestDataFromURL:url];
     MIT_MobileAppDelegate *appDelegate = (MIT_MobileAppDelegate *)[[UIApplication sharedApplication] delegate];
     [appDelegate showNetworkActivityIndicator];
-}
-
-- (void)connection:(ConnectionWrapper *)wrapper handleData:(NSData *)data {
-    id jsonObj = [JSONAPIRequest objectWithJSONData:data];
-    if (jsonObj && [jsonObj isKindOfClass:[NSDictionary class]]) {
-        NSDictionary *urlData = nil;
-        if (urlData = [(NSDictionary *)jsonObj objectForKey:@"data"]) {
-            shortURL = [[urlData objectForKey:@"url"] retain];
-        }
-    }
-    MIT_MobileAppDelegate *appDelegate = (MIT_MobileAppDelegate *)[[UIApplication sharedApplication] delegate];
-    [appDelegate hideNetworkActivityIndicator];
-    self.connection = nil;
-}
-
-- (void)connection:(ConnectionWrapper *)wrapper handleConnectionFailureWithError:(NSError *)error {
-    MIT_MobileAppDelegate *appDelegate = (MIT_MobileAppDelegate *)[[UIApplication sharedApplication] delegate];
-    [appDelegate hideNetworkActivityIndicator];
-    self.connection = nil;
+     */
 }
 
 #pragma mark Action Sheet
@@ -63,19 +46,11 @@
 - (void)share:(id)sender {
     UIActionSheet *shareSheet = nil;
     
-    if (shortURL) {
-        shareSheet = [[UIActionSheet alloc] initWithTitle:[self.shareDelegate actionSheetTitle]
-                                                 delegate:self
-                                        cancelButtonTitle:@"Cancel"
-                                   destructiveButtonTitle:nil
-                                        otherButtonTitles:@"Email", @"Facebook", @"Twitter", nil];
-    } else {
-        shareSheet = [[UIActionSheet alloc] initWithTitle:[self.shareDelegate actionSheetTitle]
-                                                 delegate:self
-                                        cancelButtonTitle:@"Cancel"
-                                   destructiveButtonTitle:nil
-                                        otherButtonTitles:@"Email", @"Facebook", nil];
-    }
+    shareSheet = [[UIActionSheet alloc] initWithTitle:[self.shareDelegate actionSheetTitle]
+                                             delegate:self
+                                    cancelButtonTitle:@"Cancel"
+                               destructiveButtonTitle:nil
+                                    otherButtonTitles:@"Email", @"Facebook", @"Twitter", nil];
     
     [shareSheet showInView:self.view];
     [shareSheet release];
@@ -169,7 +144,7 @@
 
 - (void)showTwitterView {
 	UIViewController *twitterVC = [[TwitterViewController alloc] initWithMessage:[self.shareDelegate twitterTitle]
-																			 url:shortURL];	
+																			 url:[self.shareDelegate twitterUrl]];	
 	MIT_MobileAppDelegate *appDelegate = (MIT_MobileAppDelegate *)[[UIApplication sharedApplication] delegate];
 	[appDelegate presentAppModalViewController:twitterVC animated:YES];
 	[twitterVC release];
@@ -187,7 +162,6 @@
 
 - (void)dealloc {
     [fbSession release];
-    [shortURL release];
     [super dealloc];
 }
 
