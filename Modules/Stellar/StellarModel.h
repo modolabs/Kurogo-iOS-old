@@ -309,6 +309,7 @@ extern NSString * const MyStellarChanged;
 #pragma mark factory JSON -> Stellar
 + (StellarClass *) StellarClassFromDictionary: (NSDictionary *)aDict index:(NSInteger)index;
 + (StellarClassTime *) stellarTimeFromDictionary: (NSDictionary *)time class:(StellarClass *)stellarClass orderId: (NSInteger)orderId;
++ (StellarClassTime *) stellarParseErrorTimeFromDictionary: (NSDictionary *)time class:(StellarClass *)stellarClass orderId: (NSInteger)orderId;
 + (StellarStaffMember *) stellarStaffFromName: (NSString *)name class:(StellarClass *)stellarClass type: (NSString *)type;
 + (StellarAnnouncement *) stellarAnnouncementFromDict: (NSDictionary *)dict;
 

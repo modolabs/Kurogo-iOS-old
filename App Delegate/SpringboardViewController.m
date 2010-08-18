@@ -29,6 +29,9 @@
     if ((self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil])) {
         activeModule = nil;
     }
+	UIBarButtonItem *newBackButton = [[UIBarButtonItem alloc] initWithTitle: @"Home" style: UIBarButtonItemStyleBordered target: nil action: nil];	
+	[[self navigationItem] setBackBarButtonItem: newBackButton];
+	[newBackButton release];
     return self;
 }
 
