@@ -25,7 +25,7 @@
 		viewController = controller;
 		self.lastResults = [NSArray array];
 		hasSearchInitiated = NO;
-		resultsTableView = [[UITableView alloc] initWithFrame:CGRectMake(0.0, 55.0, 320.0, 365.0) style: UITableViewStyleGrouped];
+		resultsTableView = [[UITableView alloc] initWithFrame:CGRectMake(0.0, NAVIGATION_BAR_HEIGHT, 320.0, 380) style: UITableViewStyleGrouped];
 		resultsTableView.delegate = self;
 		resultsTableView.dataSource = self;
 		resultsTableView.backgroundColor = [UIColor whiteColor];
