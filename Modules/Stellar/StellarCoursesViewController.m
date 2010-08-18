@@ -29,12 +29,10 @@
 
 
 - (id) initWithCourseGroup: (StellarCourseGroup *)aCourseGroup {
-	//if(self = [UIViewController initialize]){//[super initWithStyle:UITableViewStylePlain]) {
 		self.courseGroup = aCourseGroup;
 		NSString *path = [NSString stringWithFormat:@"courses/%@", [courseGroup serialize]];
 		url = [[MITModuleURL alloc] initWithTag:StellarTag path:path query:nil];
 		self.title = aCourseGroup.short_name;
-	//}
 	
 	if ([aCourseGroup.short_name isEqualToString:@"Faculty of Arts and Sciences"]) { 
 		UIBarButtonItem *newBackButton = [[UIBarButtonItem alloc] initWithTitle: @"FAS" style: UIBarButtonItemStyleBordered target: nil action: nil];	
@@ -119,6 +117,10 @@
 	//StellarCourse *stellarCourse = (StellarCourse *)[self.courseGroup.courses objectAtIndex:indexPath.row];
 	StellarCourse *stellarCourse = (StellarCourse *)[self.courseGroup.courses objectAtIndex:indexPath.section];
 
+	BOOL indexPane = NO;
+	if ([self.courseGroup.courses count] >= 10)
+		indexPane = YES;
+	
     return [MultiLineTableViewCell heightForCellWithStyle:UITableViewCellStyleSubtitle
                                                 tableView:tableView 
                                                      text:stellarCourse.title//was nil
@@ -128,7 +130,8 @@
                                                      font:nil 
                                                detailFont:nil 
                                             accessoryType:UITableViewCellAccessoryDisclosureIndicator
-                                                cellImage:NO] + 2.0; // was 2.0;
+                                                cellImage:NO
+												 hasIndex:indexPane] + 2.0; // was 2.0;
 }
 
 

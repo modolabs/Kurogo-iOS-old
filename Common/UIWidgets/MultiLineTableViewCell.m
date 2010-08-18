@@ -72,6 +72,10 @@
             break;
         }
     }
+	
+	if (hasIndex)
+		width -=15;
+	
     return width;
 }
 
@@ -109,6 +113,40 @@
     if (font == nil) font = [UIFont fontWithName:STANDARD_FONT size:CELL_STANDARD_FONT_SIZE];
     CGFloat textHeight = [MultiLineTableViewCell heightForLabelWithText:text font:font width:textWidth maxLines:maxTextLines];
 
+    CGFloat detailTextHeight = 0.0;
+    if (detailText) {
+        if (detailFont == nil) detailFont = [UIFont fontWithName:STANDARD_FONT size:CELL_DETAIL_FONT_SIZE];
+        detailTextHeight = [MultiLineTableViewCell heightForLabelWithText:detailText font:detailFont width:detailTextWidth maxLines:maxDetailLines];
+    }
+    
+    CGFloat result;
+    if (style == UITableViewCellStyleValue1 || style == UITableViewCellStyleValue2) {
+        result = (textHeight > detailTextHeight ? textHeight : detailTextHeight) + 20.0;
+    } else {
+        result = textHeight + detailTextHeight + 20.0;
+    }
+    
+    return result;
+}
+
++ (CGFloat)heightForCellWithStyle:(UITableViewCellStyle)style
+                        tableView:(UITableView *)tableView 
+                             text:(NSString *)text
+                     maxTextLines:(NSInteger)maxTextLines
+                       detailText:(NSString *)detailText
+                   maxDetailLines:(NSInteger)maxDetailLines
+                             font:(UIFont *)font 
+                       detailFont:(UIFont *)detailFont 
+                    accessoryType:(UITableViewCellAccessoryType)accessoryType
+                        cellImage:(BOOL)cellImage
+						 hasIndex:(BOOL)indexPane
+{
+    CGFloat textWidth = [MultiLineTableViewCell widthForTextLabel:YES cellStyle:style tableView:tableView accessoryType:accessoryType cellImage:cellImage];
+    CGFloat detailTextWidth = [MultiLineTableViewCell widthForTextLabel:NO cellStyle:style tableView:tableView accessoryType:accessoryType cellImage:cellImage];
+	
+    if (font == nil) font = [UIFont fontWithName:STANDARD_FONT size:CELL_STANDARD_FONT_SIZE];
+    CGFloat textHeight = [MultiLineTableViewCell heightForLabelWithText:text font:font width:textWidth maxLines:maxTextLines];
+	
     CGFloat detailTextHeight = 0.0;
     if (detailText) {
         if (detailFont == nil) detailFont = [UIFont fontWithName:STANDARD_FONT size:CELL_DETAIL_FONT_SIZE];

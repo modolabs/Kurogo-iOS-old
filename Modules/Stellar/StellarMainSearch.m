@@ -58,10 +58,8 @@
 	cell.selectionStyle = UITableViewCellSelectionStyleGray;
 	NSString *key = [[groups allKeys] objectAtIndex: indexPath.row];
 	cell.textLabel.text =  [[groups valueForKey:key] description];
-	cell.detailTextLabel.text = key;
-	
-	[cell applyStandardFonts];
-
+	cell.detailTextLabel.text = [[schoolNameToShortNames valueForKey:key] description];
+	cell.detailTextLabel.font = [UIFont fontWithName:STANDARD_FONT size:STANDARD_CONTENT_FONT_SIZE];
 
 	return cell;
 }
@@ -112,15 +110,10 @@
 	UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
 	[vc setCourseGroupString:cell.detailTextLabel.text];
 	[vc setSearchString: viewController.searchController.searchBar.text];
-	//NSString *newSearchString = [[NSString alloc] initWithFormat:@"%@ %@", viewController.searchController.searchBar.text, cell.detailTextLabel.text];
-	//vc.searchController.searchBar.text = viewController.searchController.searchBar.text;
-	[StellarModel executeStellarSearch:viewController.searchController.searchBar.text courseGroupName:cell.detailTextLabel.text courseName:@"" delegate:vc];
+
+	[StellarModel executeStellarSearch:viewController.searchController.searchBar.text courseGroupName:[[groups allKeys] objectAtIndex: indexPath.row] courseName:@"" delegate:vc];
 	
-	//[self.url setPath:@"search-complete" query:@"water"];
-	//[self.url setAsModulePath];
-	/*[StellarDetailViewController 
-	 launchClass:(StellarClass *)[self.lastResults objectAtIndex:indexPath.row]
-	 viewController:viewController];*/
+
 }
 
 #pragma mark ClassesSearchDelegate methods
@@ -233,6 +226,9 @@
 
 
 -(NSMutableDictionary *) uniqueCourseGroupsForCountDisplayOnly:(id) object {
+	if (schoolNameToShortNames == nil)
+		schoolNameToShortNames = [[NSMutableDictionary alloc] init];
+	
 	NSMutableDictionary *tempDict = [[NSMutableDictionary alloc] init];
 	
 	NSArray *results = (NSArray *) [object objectForKey:@"schools"];
@@ -242,7 +238,9 @@
 	for (int index=0; index < [results count]; index++) {
 		
 		NSString *schoolName = [[[results objectAtIndex:index] objectForKey:@"name"] description];
-		[tempDict setObject:[[[results objectAtIndex:index] objectForKey:@"count"] description] forKey: schoolName];		
+		NSString *schoolNameShort = [[[results objectAtIndex:index] objectForKey:@"name_short"] description];
+		[tempDict setObject:[[[results objectAtIndex:index] objectForKey:@"count"] description] forKey: schoolName];
+		[schoolNameToShortNames setObject:schoolNameShort forKey:schoolName];
 	}
 	
 	return tempDict;		

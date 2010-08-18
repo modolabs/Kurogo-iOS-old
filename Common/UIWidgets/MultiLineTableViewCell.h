@@ -5,6 +5,7 @@
     UITableViewCellStyle _style;
     NSInteger textLabelNumberOfLines;
     NSInteger detailTextLabelNumberOfLines;
+	BOOL hasIndex;
 }
 
 @property NSInteger textLabelNumberOfLines;
@@ -26,6 +27,18 @@
                        detailFont:(UIFont *)detailFont 
                     accessoryType:(UITableViewCellAccessoryType)accessoryType
                         cellImage:(BOOL)cellImage;
- 
+
++ (CGFloat)heightForCellWithStyle:(UITableViewCellStyle)style
+                        tableView:(UITableView *)tableView 
+                             text:(NSString *)text
+                     maxTextLines:(NSInteger)maxTextLines
+                       detailText:(NSString *)detailText
+                   maxDetailLines:(NSInteger)maxDetailLines
+                             font:(UIFont *)font 
+                       detailFont:(UIFont *)detailFont 
+                    accessoryType:(UITableViewCellAccessoryType)accessoryType
+                        cellImage:(BOOL)cellImage
+						 hasIndex:(BOOL)indexPane;
+
 @end
 

@@ -16,7 +16,7 @@ ClassesSearchDelegate> {
 	StellarMainTableController *viewController;
 	UITableView *resultsTableView;
 	NSMutableDictionary *groups;
-	
+	NSMutableDictionary *schoolNameToShortNames;
 	NSInteger actualCount;
 }
 
