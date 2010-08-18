@@ -78,7 +78,8 @@ NSString * const CalendarEventAPISearch = @"search";
 		
 	} else {
 		//[df setDateStyle:kCFDateFormatterMediumStyle];
-		[df setDateFormat:@"EEEE, MMM. dd"];
+		//[df setDateFormat:@"EEEE, MMM. dd"];
+		[df setDateFormat:@"EEEE M/dd"];
 	}
 	
 	dateString = [df stringFromDate:aDate];

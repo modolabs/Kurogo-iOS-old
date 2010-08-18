@@ -551,25 +551,35 @@ JSONAPIRequest *mitapi;
 		[datePicker addSubview:datePickerBackground];
 		[datePickerBackground release];
 		
-		UIImage *buttonImage = [UIImage imageNamed:@"global/subheadbar_button.png"];
+        UIButton *showCalendar = [UIButton buttonWithType:UIButtonTypeCustom];
+        UIImage *buttonImage = [UIImage imageNamed:@"global/subheadbar_button"];
+        showCalendar.frame = CGRectMake(0, 0, buttonImage.size.width, buttonImage.size.height);
+        showCalendar.center = CGPointMake(21.0, 21.0);
+        [showCalendar setBackgroundImage:buttonImage forState:UIControlStateNormal];
+        [showCalendar setBackgroundImage:[UIImage imageNamed:@"global/subheadbar_button_pressed"] forState:UIControlEventTouchUpInside];
+        [showCalendar setImage:[UIImage imageNamed:@"global/subheadbar_calendar"] forState:UIControlStateNormal];
+        [showCalendar addTarget:self action:@selector(pickDate) forControlEvents:UIControlEventTouchUpInside];
+        [datePicker addSubview:showCalendar];
 		
 		prevDate = [UIButton buttonWithType:UIButtonTypeCustom];
+		buttonImage = [UIImage imageNamed:@"global/subheadbar_button_previous"];
 		prevDate.frame = CGRectMake(0, 0, buttonImage.size.width, buttonImage.size.height);
-		prevDate.center = CGPointMake(21.0, 21.0);
+		prevDate.center = CGPointMake(appFrame.size.width - buttonImage.size.width - 21.0, 21.0);
 		[prevDate setBackgroundImage:buttonImage forState:UIControlStateNormal];
-		[prevDate setBackgroundImage:[UIImage imageNamed:@"global/subheadbar_button_pressed"] forState:UIControlStateHighlighted];
-		[prevDate setImage:[UIImage imageNamed:MITImageNameLeftArrow] forState:UIControlStateNormal];	
+		[prevDate setBackgroundImage:[UIImage imageNamed:@"global/subheadbar_button_previous_pressed"] forState:UIControlStateHighlighted];
+		//[prevDate setImage:[UIImage imageNamed:MITImageNameLeftArrow] forState:UIControlStateNormal];
 		[prevDate addTarget:self action:@selector(previousButtonPressed) forControlEvents:UIControlEventTouchUpInside];
 		[datePicker addSubview:prevDate];
 		
 		nextDate = [UIButton buttonWithType:UIButtonTypeCustom];
+        buttonImage = [UIImage imageNamed:@"global/subheadbar_button_next"];
 		nextDate.frame = CGRectMake(0, 0, buttonImage.size.width, buttonImage.size.height);
 		nextDate.center = CGPointMake(appFrame.size.width - 21.0, 21.0);
 		[nextDate setBackgroundImage:buttonImage forState:UIControlStateNormal];
-		[nextDate setBackgroundImage:[UIImage imageNamed:@"global/subheadbar_button_pressed"] forState:UIControlStateHighlighted];
-		[nextDate setImage:[UIImage imageNamed:MITImageNameRightArrow] forState:UIControlStateNormal];
+		[nextDate setBackgroundImage:[UIImage imageNamed:@"global/subheadbar_button_next_pressed"] forState:UIControlStateHighlighted];
+		//[nextDate setImage:[UIImage imageNamed:MITImageNameRightArrow] forState:UIControlStateNormal];
 		[nextDate addTarget:self action:@selector(nextButtonPressed) forControlEvents:UIControlEventTouchUpInside];
-		[datePicker addSubview:nextDate];		
+		[datePicker addSubview:nextDate];
 	}
 	
 	[datePicker removeFromSuperview];
@@ -584,7 +594,8 @@ JSONAPIRequest *mitapi;
     
 	NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
 	//[dateFormat setDateFormat:@"YYYY-MM-dd"];
-	[dateFormat setDateFormat:@"EEEE, MMM. d"];
+	//[dateFormat setDateFormat:@"EEEE, MMM. d"];
+	[dateFormat setDateFormat:@"EEEE M/dd"];
 	NSString *dateText = [dateFormat stringFromDate:self.todayDate];
 
 	NSString *currentDate = [dateFormat stringFromDate:[NSDate date]];
@@ -602,7 +613,7 @@ JSONAPIRequest *mitapi;
     dateButton.titleLabel.font = dateFont;
     dateButton.titleLabel.textColor = [UIColor whiteColor];
     [dateButton setTitle:dateText forState:UIControlStateNormal];
-    dateButton.center = CGPointMake(datePicker.center.x, datePicker.center.y - datePicker.frame.origin.y);
+    dateButton.center = CGPointMake(datePicker.center.x - 21.0, datePicker.center.y - datePicker.frame.origin.y);
 	[dateButton addTarget:self action:@selector(pickDate) forControlEvents:UIControlEventTouchUpInside];
     dateButton.tag = randomTag;
     [datePicker addSubview:dateButton];

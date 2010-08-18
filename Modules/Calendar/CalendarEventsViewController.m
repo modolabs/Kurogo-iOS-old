@@ -468,25 +468,35 @@
 		[datePicker addSubview:datePickerBackground];
 		[datePickerBackground release];
 		
-		UIImage *buttonImage = [UIImage imageNamed:@"global/subheadbar_button.png"];
+        UIButton *showCalendar = [UIButton buttonWithType:UIButtonTypeCustom];
+        UIImage *buttonImage = [UIImage imageNamed:@"global/subheadbar_button"];
+        showCalendar.frame = CGRectMake(0, 0, buttonImage.size.width, buttonImage.size.height);
+        showCalendar.center = CGPointMake(21.0, 21.0);
+        [showCalendar setBackgroundImage:buttonImage forState:UIControlStateNormal];
+        [showCalendar setBackgroundImage:[UIImage imageNamed:@"global/subheadbar_button_pressed"] forState:UIControlEventTouchUpInside];
+        [showCalendar setImage:[UIImage imageNamed:@"global/subheadbar_calendar"] forState:UIControlStateNormal];
+        [showCalendar addTarget:self action:@selector(pickDate) forControlEvents:UIControlEventTouchUpInside];
+        [datePicker addSubview:showCalendar];
 		
 		UIButton *prevDate = [UIButton buttonWithType:UIButtonTypeCustom];
+		buttonImage = [UIImage imageNamed:@"global/subheadbar_button_previous"];
 		prevDate.frame = CGRectMake(0, 0, buttonImage.size.width, buttonImage.size.height);
-		prevDate.center = CGPointMake(21.0, 21.0);
+		prevDate.center = CGPointMake(appFrame.size.width - buttonImage.size.width - 21.0, 21.0);
 		[prevDate setBackgroundImage:buttonImage forState:UIControlStateNormal];
-		[prevDate setBackgroundImage:[UIImage imageNamed:@"global/subheadbar_button_pressed"] forState:UIControlStateHighlighted];
-		[prevDate setImage:[UIImage imageNamed:MITImageNameLeftArrow] forState:UIControlStateNormal];	
+		[prevDate setBackgroundImage:[UIImage imageNamed:@"global/subheadbar_button_previous_pressed"] forState:UIControlStateHighlighted];
+		//[prevDate setImage:[UIImage imageNamed:MITImageNameLeftArrow] forState:UIControlStateNormal];
 		[prevDate addTarget:self action:@selector(showPreviousDate) forControlEvents:UIControlEventTouchUpInside];
 		[datePicker addSubview:prevDate];
 		
 		UIButton *nextDate = [UIButton buttonWithType:UIButtonTypeCustom];
+        buttonImage = [UIImage imageNamed:@"global/subheadbar_button_next"];
 		nextDate.frame = CGRectMake(0, 0, buttonImage.size.width, buttonImage.size.height);
 		nextDate.center = CGPointMake(appFrame.size.width - 21.0, 21.0);
 		[nextDate setBackgroundImage:buttonImage forState:UIControlStateNormal];
-		[nextDate setBackgroundImage:[UIImage imageNamed:@"global/subheadbar_button_pressed"] forState:UIControlStateHighlighted];
-		[nextDate setImage:[UIImage imageNamed:MITImageNameRightArrow] forState:UIControlStateNormal];
+		[nextDate setBackgroundImage:[UIImage imageNamed:@"global/subheadbar_button_next_pressed"] forState:UIControlStateHighlighted];
+		//[nextDate setImage:[UIImage imageNamed:MITImageNameRightArrow] forState:UIControlStateNormal];
 		[nextDate addTarget:self action:@selector(showNextDate) forControlEvents:UIControlEventTouchUpInside];
-		[datePicker addSubview:nextDate];		
+		[datePicker addSubview:nextDate];
 	}
 	
 	[datePicker removeFromSuperview];
@@ -500,7 +510,7 @@
 	}
     
 	NSString *dateText = [CalendarConstants dateStringForEventType:activeEventList forDate:startDate];
-	UIFont *dateFont = [UIFont fontWithName:BOLD_FONT size:20.0];
+	UIFont *dateFont = [UIFont fontWithName:BOLD_FONT size:18.0];
 	CGSize textSize = [dateText sizeWithFont:dateFont];
 
     UIButton *dateButton = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -509,11 +519,7 @@
     dateButton.titleLabel.font = dateFont;
     dateButton.titleLabel.textColor = [UIColor whiteColor];
     [dateButton setTitle:dateText forState:UIControlStateNormal];
-    dateButton.center = CGPointMake(datePicker.center.x, datePicker.center.y - datePicker.frame.origin.y);
-    //if (![dateText isEqualToString:@"Today"]) {
-       // [dateButton addTarget:self action:@selector(returnToTodayAndReload) forControlEvents:UIControlEventTouchUpInside];
-		[dateButton addTarget:self action:@selector(pickDate) forControlEvents:UIControlEventTouchUpInside];
-    //}
+    dateButton.center = CGPointMake(datePicker.center.x - 21, datePicker.center.y - datePicker.frame.origin.y);
     dateButton.tag = randomTag;
     [datePicker addSubview:dateButton];
 	
