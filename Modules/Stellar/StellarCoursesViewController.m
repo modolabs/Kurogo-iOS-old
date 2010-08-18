@@ -35,6 +35,13 @@
 		url = [[MITModuleURL alloc] initWithTag:StellarTag path:path query:nil];
 		self.title = aCourseGroup.short_name;
 	//}
+	
+	if ([aCourseGroup.short_name isEqualToString:@"Faculty of Arts and Sciences"]) { 
+		UIBarButtonItem *newBackButton = [[UIBarButtonItem alloc] initWithTitle: @"FAS" style: UIBarButtonItemStyleBordered target: nil action: nil];	
+		[[self navigationItem] setBackBarButtonItem: newBackButton];
+		[newBackButton release];
+	}
+	
 	return self;
 }
 
@@ -52,6 +59,7 @@
 - (void) viewDidLoad {
 	self.title = courseGroup.short_name;
 	self.navigationItem.title = courseGroup.short_name;
+
 	CGRect viewFrame = self.view.frame;
 	ModoSearchBar *searchBar = [[[ModoSearchBar alloc] initWithFrame:CGRectMake(0, 0, viewFrame.size.width, searchBarHeight)] autorelease];
     [self.view addSubview:searchBar];

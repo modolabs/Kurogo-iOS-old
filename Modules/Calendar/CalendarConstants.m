@@ -85,8 +85,10 @@ NSString * const CalendarEventAPISearch = @"search";
 	dateString = [df stringFromDate:aDate];
 	[df release];
 	
+	int nextYearDate = [dateString intValue] + 1;
+	
 	if (listType == CalendarEventListTypeAcademic) 
-		dateString = [[NSString alloc] initWithFormat:@"Academic Year: %@", dateString];
+		dateString = [[NSString alloc] initWithFormat:@"%@-%i", dateString, nextYearDate];
 	
 	return dateString;
 }

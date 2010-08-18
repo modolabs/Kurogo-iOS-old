@@ -73,7 +73,7 @@
 
 - (void) viewDidLoad {
 
-
+    [super viewDidLoad];
 	CGRect viewFrame = self.view.frame;
 	ModoSearchBar *searchBar = [[[ModoSearchBar alloc] initWithFrame:CGRectMake(0, 0, viewFrame.size.width, searchBarHeight)] autorelease];
     [self.view addSubview:searchBar];
@@ -124,6 +124,16 @@
 	[StellarModel loadClassesForCourse:course delegate:self.currentClassLoader];
 	
 	[url setPathWithViewController:self extension:course.number];
+	
+	/*if ([self.navigationItem.backBarButtonItem.title isEqualToString:@"Faculty of Arts and Sciences"]) {
+		self.navigationItem.backBarButtonItem.title = @"FAS";
+	}*/
+	
+	/*NSString *str = self.navigationItem.backBarButtonTitle;
+	
+	int r= 4;
+	int i = r*r;*/
+
 }
 
 - (void) viewDidAppear: (BOOL)animated {
