@@ -236,7 +236,6 @@ static NSInteger numTries = 0;
         UIButton *searchButton = [UIButton buttonWithType:UIButtonTypeCustom];
         UIImage *searchImage = [UIImage imageNamed:MITImageNameSearch];
         [searchButton setImage:searchImage forState:UIControlStateNormal];
-        searchButton.adjustsImageWhenHighlighted = NO;
         searchButton.tag = SEARCH_BUTTON_TAG;
         // TODO: adjust so that magnifying class lines up when searchbar is shown
         navScrollView.currentXOffset += 4.0;
@@ -249,7 +248,6 @@ static NSInteger numTries = 0;
             UIButton *bookmarkButton = [UIButton buttonWithType:UIButtonTypeCustom];
             UIImage *bookmarkImage = [UIImage imageNamed:MITImageNameBookmark];
             [bookmarkButton setImage:bookmarkImage forState:UIControlStateNormal];
-            bookmarkButton.adjustsImageWhenHighlighted = NO;
             bookmarkButton.tag = BOOKMARK_BUTTON_TAG;
             [navScrollView addButton:bookmarkButton shouldHighlight:YES];
         }

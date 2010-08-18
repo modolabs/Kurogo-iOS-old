@@ -70,8 +70,7 @@
         <div id="content">
             <div id="image"><a id="thumbnailLink" href="image"><img class="thumbnail" src="__THUMBNAIL_URL__" width="__THUMBNAIL_WIDTH__" height="__THUMBNAIL_HEIGHT__">
                 <br /></a>
-                <!--<a href="image"><div>View <span id="imageCount">image</span><img class="enlarge" src="button-zoom-in.png" width="30" height="30" alt="zoom"></div>
-            </a>--></div>
+            </div>
             <p class="dek">__DEK__</p><div id="body">__BODY__</div>
         </div>
     </body>
@@ -83,16 +82,6 @@
             var creditNode = document.getElementsByClassName("credit")[0];
             creditNode.parentElement.removeChild(creditNode);
         }
-        /*
-        var imageCount = __GALLERY_COUNT__;
-        // remove #image block there are no images at all
-        if (imageCount == 0) {
-            var imageNode = document.getElementById("image");
-            imageNode.parentElement.removeChild(imageNode);
-        } else {
-            document.getElementById("imageCount").innerHTML = imageCount + ((imageCount == 1) ? " image" : " images");
-        }
-        */
         // remove img.thumbnail if thumbnail is not set (empty src attributes == the base URL)
         if (document.getElementsByClassName("thumbnail").length > 0 && document.getElementsByClassName("thumbnail")[0].src.indexOf("file:") == 0) {
             var imageNode = document.getElementById("thumbnailLink");
