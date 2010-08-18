@@ -70,7 +70,7 @@
     }
     
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-    [dateFormatter setDateFormat:@"MMM dd, y"];
+    [dateFormatter setDateFormat:@"MMM d, y"];
     NSString *postDate = [dateFormatter stringFromDate:story.postDate];
 	[dateFormatter release];
     
@@ -144,13 +144,7 @@
             [[UIApplication sharedApplication] openURL:url];
             result = YES;
         } else {
-			if ([[url path] rangeOfString:@"image" options:NSBackwardsSearch].location != NSNotFound) {
-				//StoryGalleryViewController *galleryVC = [[StoryGalleryViewController alloc] init];
-				//galleryVC.images = story.allImages;
-				//[self.navigationController pushViewController:galleryVC animated:YES];
-				//[galleryVC release];
-				result = NO;
-			} else if ([[url path] rangeOfString:@"bookmark" options:NSBackwardsSearch].location != NSNotFound) {
+            if ([[url path] rangeOfString:@"bookmark" options:NSBackwardsSearch].location != NSNotFound) {
 				// toggle bookmarked state
 				self.story.bookmarked = [NSNumber numberWithBool:([self.story.bookmarked boolValue]) ? NO : YES];
 				[CoreDataManager saveData];
