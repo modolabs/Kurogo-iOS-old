@@ -57,6 +57,7 @@
     MultiLineTableViewCell *cell = (MultiLineTableViewCell *)[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil) {
         cell = [[[MultiLineTableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier] autorelease];
+		cell.selectionStyle = UITableViewCellSelectionStyleGray;
     } else {
 		UIView *extraView = [cell viewWithTag:randomTagNumberForLocationLabel];
 		[extraView removeFromSuperview];

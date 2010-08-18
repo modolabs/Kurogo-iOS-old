@@ -106,13 +106,13 @@
                 case 0:
                     cell.textLabel.text = @"About Harvard";
                     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-                    cell.selectionStyle = UITableViewCellSelectionStyleBlue;
+                    cell.selectionStyle = UITableViewCellSelectionStyleGray;
                     cell.textLabel.textColor = CELL_STANDARD_FONT_COLOR;
                     break;
                 case 1:
                     cell.textLabel.text = @"Send Feedback";
                     cell.accessoryView = [UIImageView accessoryViewWithMITType:MITAccessoryViewEmail];
-                    cell.selectionStyle = UITableViewCellSelectionStyleBlue;
+                    cell.selectionStyle = UITableViewCellSelectionStyleGray;
                     break;
                 break;
             }

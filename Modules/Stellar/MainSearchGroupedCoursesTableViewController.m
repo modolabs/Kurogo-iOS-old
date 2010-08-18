@@ -149,6 +149,7 @@
 	UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"StellarClasses"];
 	if(cell == nil) {
 		cell = [[[StellarClassTableCell alloc] initWithReusableCellIdentifier:@"StellarClasses"] autorelease];
+		cell.selectionStyle = UITableViewCellSelectionStyleGray;
 	}
 	
 	StellarClass *stellarClass = [classes objectAtIndex:indexPath.row];

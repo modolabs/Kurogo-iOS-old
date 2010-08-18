@@ -296,6 +296,7 @@ NSInteger strLenSort(NSString *str1, NSString *str2, void *context)
 				cell.textLabel.text = [rowProperties objectForKey:@"mainText"];
 				[(SecondaryGroupedTableViewCell *)cell secondaryTextLabel].text = [rowProperties objectForKey:@"secondaryText"];
 				cell.accessoryView = [UIImageView accessoryViewWithMITType:MITAccessoryViewPhone];
+				cell.selectionStyle = UITableViewCellSelectionStyleGray;
 			}
 		
 		} else { // recents
@@ -303,6 +304,7 @@ NSInteger strLenSort(NSString *str1, NSString *str2, void *context)
 			cell = [tableView dequeueReusableCellWithIdentifier:recentCellID];
 			if (cell == nil) {
 				cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:recentCellID] autorelease];
+				cell.selectionStyle = UITableViewCellSelectionStyleGray;
 			}
 			
 			[cell applyStandardFonts];
@@ -331,6 +333,7 @@ NSInteger strLenSort(NSString *str1, NSString *str2, void *context)
 		if (cell == nil) {
 			cell = [[[PartialHighlightTableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"ResultCell"] autorelease];
 			cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+			cell.selectionStyle = UITableViewCellSelectionStyleGray;
 		}
 			
 		NSDictionary *searchResult = [self.searchResults safeObjectAtIndex:indexPath.row];
