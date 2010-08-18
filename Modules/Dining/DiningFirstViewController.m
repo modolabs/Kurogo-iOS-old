@@ -613,7 +613,7 @@ JSONAPIRequest *mitapi;
     dateButton.titleLabel.font = dateFont;
     dateButton.titleLabel.textColor = [UIColor whiteColor];
     [dateButton setTitle:dateText forState:UIControlStateNormal];
-    dateButton.center = CGPointMake(datePicker.center.x - 21.0, datePicker.center.y - datePicker.frame.origin.y);
+    dateButton.center = CGPointMake(datePicker.center.x, datePicker.center.y - datePicker.frame.origin.y);
 	[dateButton addTarget:self action:@selector(pickDate) forControlEvents:UIControlEventTouchUpInside];
     dateButton.tag = randomTag;
     [datePicker addSubview:dateButton];

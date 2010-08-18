@@ -519,7 +519,7 @@
     dateButton.titleLabel.font = dateFont;
     dateButton.titleLabel.textColor = [UIColor whiteColor];
     [dateButton setTitle:dateText forState:UIControlStateNormal];
-    dateButton.center = CGPointMake(datePicker.center.x - 21, datePicker.center.y - datePicker.frame.origin.y);
+    dateButton.center = CGPointMake(datePicker.center.x, datePicker.center.y - datePicker.frame.origin.y);
     dateButton.tag = randomTag;
     [datePicker addSubview:dateButton];
 	
