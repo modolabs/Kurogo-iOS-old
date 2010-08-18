@@ -3,12 +3,14 @@
 #import "Constants.h"
 #import "MIT_MobileAppDelegate.h"
 #import "SFHFKeychainUtils.h"
+#import "MITLoadingActivityView.h"
+#import "JSONAPIRequest.h"
 
-#define TwitterRequestType @"TwitterRequestType"
-#define VerifyCredentials @"VerifyCredentials"
-#define SendTweet @"SendTweet"
-#define CredentialsKey @"Credentials"
-#define TwitterServiceName @"Twitter"
+static NSString * const TwitterRequestType = @"TwitterRequestType";
+static NSString * const VerifyCredentials = @"VerifyCredentials";
+static NSString * const SendTweet = @"SendTweet";
+static NSString * const CredentialsKey = @"Credentials";
+static NSString * const TwitterServiceName = @"Twitter";
 
 #define INPUT_FIELDS_MARGIN 10.0
 #define INPUT_FIELDS_HEIGHT 32.0
@@ -27,8 +29,6 @@
 
 #define USERNAME_MAX_WIDTH 150.0
 
-MIT_MobileAppDelegate *appDelegate();
-
 @interface TwitterViewController (Private)
 
 - (void) loadLoginView;
@@ -41,9 +41,15 @@ MIT_MobileAppDelegate *appDelegate();
 - (void) loginTwitter;
 - (void) sendTweet;
 
+- (void)updateCounter:(NSString *)message delta:(NSInteger)deltaChars;
+- (void)hideNetworkActivity;
+- (void)showNetworkActivity;
+
 @end
 
 @implementation TwitterViewController
+
+@synthesize connection;
 
 - (id) initWithMessage: (NSString *)aMessage url:(NSString *)aLongUrl {
 	if(self = [super init]) {
@@ -61,7 +67,7 @@ MIT_MobileAppDelegate *appDelegate();
 		navigationItem = nil;
 		
 		message = [aMessage retain];
-		longUrl = [aLongUrl retain];
+		longURL = [aLongUrl retain];
 		
 		twitterEngine = nil;
 		
@@ -71,9 +77,9 @@ MIT_MobileAppDelegate *appDelegate();
 }
 
 - (void) dealloc {
-	[usernameField.delegate release];
-	[passwordField.delegate release];
-	[messageField.delegate release];
+	usernameField.delegate = nil;
+	passwordField.delegate = nil;
+	messageField.delegate = nil;
 	
 	[messageInputView release];
 	[messageField release];
@@ -85,22 +91,26 @@ MIT_MobileAppDelegate *appDelegate();
 	[passwordField release];
 	
 	[message release];
-	[longUrl release];
+	[longURL release];
+    [shortURL release];
+    [counterLabel release];
 	
 	// close all connections to twitter (This is probably the ideal UI)
 	// additionally we really dont have a choice since the twitterEngine has no way of setting delegate = nil
 	if(authenticationRequestInProcess) {
 		[twitterEngine cancelAccessTokenExchange];
-		[appDelegate() hideNetworkActivityIndicator];
+        [self hideNetworkActivity];
 	}
 	
 	for(NSString *identifier in [twitterEngine connectionIdentifiers]) {
 		[twitterEngine closeConnection:identifier];
-		[appDelegate() hideNetworkActivityIndicator];
+        [self hideNetworkActivity];
 	}
 	[twitterEngine release];
     [super dealloc];
 }
+
+#pragma mark UI
 
 - (void) loadView {
 	[super loadView];
@@ -129,15 +139,29 @@ MIT_MobileAppDelegate *appDelegate();
 
 - (void) updateTwitterSessionUI {
 	[contentView removeFromSuperview];
+    [contentView release];
+    contentView = nil;
 	
 	if([[NSUserDefaults standardUserDefaults] objectForKey:TwitterShareUsernameKey]) {
-		// user has logged in so we show them the message input view
-		[self loadMessageInputView];
-		contentView = messageInputView;
-		[messageField becomeFirstResponder];
+		// user has logged in
 		navigationItem.title = @"Post to Twitter";
-		navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithTitle:@"Tweet" style:UIBarButtonItemStyleDone target:self action:@selector(sendTweet)] autorelease];
-		[self updateMessageInputView];
+        if (!shortURL) {
+            self.connection = [[[ConnectionWrapper alloc] initWithDelegate:self] autorelease];
+            NSString *bitlyURLString = [NSString stringWithFormat:@"http://api.bit.ly/v3/shorten?login=%@&apiKey=%@&longURL=%@&format=json",
+                                        BitlyUsername, BitlyAPIKey, longURL];
+            NSURL *url = [NSURL URLWithString:bitlyURLString];
+            [self.connection requestDataFromURL:url];
+            [self showNetworkActivity];
+            
+            contentView = [[MITLoadingActivityView alloc] initWithFrame:self.view.frame];
+            
+        } else {
+            [self loadMessageInputView];
+            contentView = messageInputView;
+            [messageField becomeFirstResponder];
+            navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithTitle:@"Tweet" style:UIBarButtonItemStyleDone target:self action:@selector(sendTweet)] autorelease];
+            [self updateMessageInputView];
+        }
 		
 	} else {
 		// user has not yet logged in, so show them the login view
@@ -162,36 +186,28 @@ MIT_MobileAppDelegate *appDelegate();
 		contentFrame.size.height = contentFrame.size.height - NAVIGATION_BAR_HEIGHT;
 		messageInputView = [[UIView alloc] initWithFrame:contentFrame];
 		
-		UILabel *counterLabel = [[[UILabel alloc] initWithFrame:CGRectMake(
-			contentFrame.size.width-MESSAGE_MARGIN-40, 
-			MESSAGE_HEIGHT+BOTTOM_SECTION_TOP, 
-			40, 
-			BOTTOM_SECTION_HEIGHT)] autorelease];
-		counterLabel.font = [UIFont fontWithName:BOLD_FONT size:CELL_STANDARD_FONT_SIZE];
-		counterLabel.backgroundColor = [UIColor clearColor];
-		counterLabel.textColor = CELL_STANDARD_FONT_COLOR;
-		counterLabel.textAlignment = UITextAlignmentRight;
+		signOutButton = [[UIButton buttonWithType:UIButtonTypeCustom] retain];
+		UIImage *signOutImage = [UIImage imageNamed:@"global/twitter_signout.png"];
+		UIImage *signOutImagePressed = [UIImage imageNamed:@"global/twitter_signout_pressed.png"];
+		[signOutButton setImage:signOutImage forState:UIControlStateNormal];
+		[signOutButton setImage:signOutImagePressed forState:(UIControlStateNormal | UIControlStateHighlighted)];
+		signOutButton.frame = CGRectMake(USERNAME_MAX_WIDTH, MESSAGE_HEIGHT+BOTTOM_SECTION_TOP, signOutImage.size.width, signOutImage.size.height);
+		[signOutButton addTarget:self action:@selector(logoutTwitter) forControlEvents:UIControlEventTouchUpInside];
+		[messageInputView addSubview:signOutButton];
 		
-		usernameLabel = [[UILabel alloc] initWithFrame:CGRectMake(
-			MESSAGE_MARGIN, 
-			MESSAGE_HEIGHT+BOTTOM_SECTION_TOP,
-			USERNAME_MAX_WIDTH, 
-			BOTTOM_SECTION_HEIGHT)];
+		usernameLabel = [[UILabel alloc] initWithFrame:CGRectMake(MESSAGE_MARGIN, 
+                                                                  MESSAGE_HEIGHT+BOTTOM_SECTION_TOP,
+                                                                  USERNAME_MAX_WIDTH, 
+                                                                  BOTTOM_SECTION_HEIGHT)];
 		usernameLabel.font = [UIFont fontWithName:STANDARD_FONT size:CELL_DETAIL_FONT_SIZE];
 		usernameLabel.backgroundColor = [UIColor clearColor];
 		usernameLabel.textColor = [UIColor blackColor];
-	
-		CGRect messageFrame = CGRectMake(
-			MESSAGE_MARGIN,
-			MESSAGE_MARGIN, 
-			contentFrame.size.width - 2 * MESSAGE_MARGIN,
-			MESSAGE_HEIGHT - 2 * MESSAGE_MARGIN);
-		
-		messageField = [[UITextView alloc] initWithFrame:CGRectInset(messageFrame, MESSAGE_MARGIN, MESSAGE_MARGIN)];
-		messageField.text = [NSString stringWithFormat:@"%@:\n%@", message, longUrl];
-		messageField.delegate = [[MessageFieldDelegate alloc] initWithMessage:messageField.text counter:counterLabel];
-		messageField.backgroundColor = [UIColor clearColor];
-		messageField.font = [UIFont systemFontOfSize:17.0];
+		[messageInputView addSubview:usernameLabel];
+        
+		CGRect messageFrame = CGRectMake(MESSAGE_MARGIN,
+                                         MESSAGE_MARGIN, 
+                                         contentFrame.size.width - 2 * MESSAGE_MARGIN,
+                                         MESSAGE_HEIGHT - 2 * MESSAGE_MARGIN);
 		
 		// we use a UITextField to give the the UITextView
 		// the same appearance as a UITextField, but
@@ -200,19 +216,24 @@ MIT_MobileAppDelegate *appDelegate();
 		UITextField *fakeMessageField = [[[UITextField alloc] initWithFrame:messageFrame] autorelease];
 		fakeMessageField.borderStyle = UITextBorderStyleRoundedRect;
 		fakeMessageField.enabled = NO;
-		
-		signOutButton = [[UIButton buttonWithType:UIButtonTypeCustom] retain];
-		UIImage *signOutImage = [UIImage imageNamed:@"global/twitter_signout.png"];
-		UIImage *signOutImagePressed = [UIImage imageNamed:@"global/twitter_signout_pressed.png"];
-		[signOutButton setImage:signOutImage forState:UIControlStateNormal];
-		[signOutButton setImage:signOutImagePressed forState:(UIControlStateNormal | UIControlStateHighlighted)];
-		signOutButton.frame = CGRectMake(USERNAME_MAX_WIDTH, MESSAGE_HEIGHT+BOTTOM_SECTION_TOP, signOutImage.size.width, signOutImage.size.height);
-		[signOutButton addTarget:self action:@selector(logoutTwitter) forControlEvents:UIControlEventTouchUpInside];
-		
-		[messageInputView addSubview:signOutButton];
-		[messageInputView addSubview:usernameLabel];
 		[messageInputView addSubview:fakeMessageField];
+		
+		messageField = [[UITextView alloc] initWithFrame:CGRectInset(messageFrame, MESSAGE_MARGIN, MESSAGE_MARGIN)];
+		messageField.text = [NSString stringWithFormat:@"%@:\n%@", message, shortURL];
+        messageField.delegate = self;
+		//messageField.delegate = [[MessageFieldDelegate alloc] initWithMessage:messageField.text counter:counterLabel];
+		messageField.backgroundColor = [UIColor clearColor];
+		messageField.font = [UIFont systemFontOfSize:17.0];
 		[messageInputView addSubview:messageField];
+		
+		counterLabel = [[UILabel alloc] initWithFrame:CGRectMake(contentFrame.size.width-MESSAGE_MARGIN-40, 
+                                                                          MESSAGE_HEIGHT+BOTTOM_SECTION_TOP, 
+                                                                          40, 
+                                                                          BOTTOM_SECTION_HEIGHT)];
+		counterLabel.font = [UIFont fontWithName:BOLD_FONT size:CELL_STANDARD_FONT_SIZE];
+		counterLabel.backgroundColor = [UIColor clearColor];
+		counterLabel.textColor = CELL_STANDARD_FONT_COLOR;
+		counterLabel.textAlignment = UITextAlignmentRight;
 		[messageInputView addSubview:counterLabel];
 	}
 }
@@ -259,9 +280,7 @@ MIT_MobileAppDelegate *appDelegate();
 		passwordField.secureTextEntry = YES;
 		passwordField.clearButtonMode = UITextFieldViewModeWhileEditing;
 		passwordField.returnKeyType = UIReturnKeyGo;
-		PasswordFieldDelegate *passwordDelegate = [[PasswordFieldDelegate alloc] init];
-		passwordDelegate.delegate = self;
-		passwordField.delegate = passwordDelegate;
+        passwordField.delegate = self;
 	
 		usernameField = [[UITextField alloc] initWithFrame:CGRectMake(INPUT_FIELDS_MARGIN, INPUT_FIELDS_TOP, fieldWidth, INPUT_FIELDS_HEIGHT)];
 		usernameField.borderStyle = UITextBorderStyleRoundedRect;
@@ -271,13 +290,23 @@ MIT_MobileAppDelegate *appDelegate();
 		usernameField.placeholder = @"Username";
 		usernameField.returnKeyType = UIReturnKeyNext;
 		usernameField.clearButtonMode = UITextFieldViewModeWhileEditing;
-		usernameField.delegate = [[UsernameFieldDelegate alloc] initWithPasswordField:passwordField];
+        usernameField.delegate = self;
 	
 		[loginView addSubview:instructionLabel];
 		[loginView addSubview:usernameField];
 		[loginView addSubview:passwordField];
 	}
 }
+
+- (void)hideNetworkActivity {
+	[(MIT_MobileAppDelegate *)[[UIApplication sharedApplication] delegate] hideNetworkActivityIndicator];
+}
+
+- (void)showNetworkActivity {
+	[(MIT_MobileAppDelegate *)[[UIApplication sharedApplication] delegate] showNetworkActivityIndicator];
+}
+
+#pragma mark communication with twitter
 
 - (void) logoutTwitter {
 	NSString *username = [[NSUserDefaults standardUserDefaults] objectForKey:TwitterShareUsernameKey];
@@ -293,7 +322,7 @@ MIT_MobileAppDelegate *appDelegate();
 	[twitterEngine exchangeAccessTokenForUsername:usernameField.text password:passwordField.text];
 	authenticationRequestInProcess = YES;
 	navigationItem.rightBarButtonItem.enabled = NO;
-	[appDelegate() showNetworkActivityIndicator];
+    [self showNetworkActivity];
 }
 
 - (void) sendTweet {
@@ -302,7 +331,7 @@ MIT_MobileAppDelegate *appDelegate();
 
 	[twitterEngine sendUpdate:messageField.text];
 	
-	[appDelegate() showNetworkActivityIndicator];
+    [self showNetworkActivity];
 }
 	
 - (NSString *) cachedTwitterXAuthAccessTokenStringForUsername: (NSString *)username {
@@ -316,6 +345,30 @@ MIT_MobileAppDelegate *appDelegate();
 	}
 }
 
+#pragma mark ConnectionWrapper
+
+- (void)connection:(ConnectionWrapper *)wrapper handleData:(NSData *)data {
+    id jsonObj = [JSONAPIRequest objectWithJSONData:data];
+    if (jsonObj && [jsonObj isKindOfClass:[NSDictionary class]]) {
+        NSDictionary *urlData = nil;
+        if (urlData = [(NSDictionary *)jsonObj objectForKey:@"data"]) {
+            shortURL = [[urlData objectForKey:@"url"] retain];
+        }
+    }
+    MIT_MobileAppDelegate *appDelegate = (MIT_MobileAppDelegate *)[[UIApplication sharedApplication] delegate];
+    [appDelegate hideNetworkActivityIndicator];
+    self.connection = nil;
+    [self updateTwitterSessionUI];
+}
+
+- (void)connection:(ConnectionWrapper *)wrapper handleConnectionFailureWithError:(NSError *)error {
+    MIT_MobileAppDelegate *appDelegate = (MIT_MobileAppDelegate *)[[UIApplication sharedApplication] delegate];
+    [appDelegate hideNetworkActivityIndicator];
+    self.connection = nil;
+}
+
+#pragma mark XAuthTwitterEngineDelegate
+
 - (void)storeCachedTwitterXAuthAccessTokenString:(NSString *)accessToken forUsername:(NSString *)username {
 	[[NSUserDefaults standardUserDefaults] setObject:username forKey:TwitterShareUsernameKey];
 	NSError *error = nil;
@@ -323,7 +376,7 @@ MIT_MobileAppDelegate *appDelegate();
 	
 	navigationItem.rightBarButtonItem.enabled = YES;
 	authenticationRequestInProcess = NO;
-	[appDelegate() hideNetworkActivityIndicator];
+	[self hideNetworkActivity];
 	
 	if (!error) {
 		[self updateTwitterSessionUI];
@@ -352,16 +405,18 @@ MIT_MobileAppDelegate *appDelegate();
 	[alertView release];
 	navigationItem.rightBarButtonItem.enabled = YES;
 	authenticationRequestInProcess = NO;
-	[appDelegate() hideNetworkActivityIndicator];
+	[self hideNetworkActivity];
 }
+
+#pragma mark MGTwitterEngineDelegate
 	
 - (void)requestSucceeded:(NSString *)connectionIdentifier {
-	[appDelegate() hideNetworkActivityIndicator];
+	[self hideNetworkActivity];
 	[self dismissTwitterViewController];
 }
 					 
 - (void)requestFailed:(NSString *)connectionIdentifier withError:(NSError *)error {
-	[appDelegate() hideNetworkActivityIndicator];
+	[self hideNetworkActivity];
 	
 	NSString *errorTitle;
 	NSString *errorMessage;
@@ -385,57 +440,16 @@ MIT_MobileAppDelegate *appDelegate();
 	[alertView release];
 }
 
-@end
+#pragma mark Text field and Text view delegation
 
-@implementation UsernameFieldDelegate
-
-- (id) initWithPasswordField: (UITextField *)aPasswordField {
-	if(self = [super init]) {
-		passwordField = [aPasswordField retain];
-	}
-	return self;
-}
-
-- (void) dealloc {
-	[passwordField release];
-	[super dealloc];
-}
-
-- (BOOL) textFieldShouldReturn: (UITextField *)textField {
-	[textField resignFirstResponder];
-	[passwordField becomeFirstResponder];
-	return YES;
-}
-
-@end
-
-@implementation PasswordFieldDelegate 
-@synthesize delegate;
-
-- (BOOL) textFieldShouldReturn: (UITextField *)textField {
-	[delegate loginTwitter];
-	return YES;
-}
-
-@end
-
-@interface MessageFieldDelegate (Private)
-- (void) updateCounter: (NSString *)message delta:(NSInteger)deltaChars;
-@end
-
-@implementation MessageFieldDelegate 
-
-- (id) initWithMessage: (NSString *)message counter: (UILabel *)aCounter {
-	if(self = [super init]) {
-		counter = [aCounter retain];
-		[self updateCounter:message delta:0];
-	}
-	return self;
-}
-
-- (void) dealloc {
-	[counter release];
-	[super dealloc];
+- (BOOL)textFieldShouldReturn:(UITextField *)textField {
+    if (textField == usernameField) {
+        [textField resignFirstResponder];
+        [passwordField becomeFirstResponder];
+    } else if (textField == passwordField) {
+        [self loginTwitter];
+    }
+    return YES;
 }
 
 - (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text {
@@ -447,13 +461,9 @@ MIT_MobileAppDelegate *appDelegate();
 	}
 }
 
-- (void) updateCounter: (NSString *)message delta:(NSInteger)deltaChars{
-	counter.text = [NSString stringWithFormat:@"%i", 140-[message length]-deltaChars];
+- (void)updateCounter:(NSString *)aMessage delta:(NSInteger)deltaChars{
+	counterLabel.text = [NSString stringWithFormat:@"%i", 140-[aMessage length]-deltaChars];
 }
+
 
 @end
-
-MIT_MobileAppDelegate *appDelegate() {
-	return (MIT_MobileAppDelegate *)[[UIApplication sharedApplication] delegate];
-}
-

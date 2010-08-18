@@ -1,7 +1,6 @@
 #import <UIKit/UIKit.h>
 #import "FBConnect.h"
 #import <MessageUI/MFMailComposeViewController.h>
-#import "ConnectionWrapper.h"
 
 @protocol ShareItemDelegate
 
@@ -26,16 +25,16 @@
 @end
 
 @interface ShareDetailViewController : UIViewController <UIActionSheetDelegate,
-MFMailComposeViewControllerDelegate, FBSessionDelegate, FBDialogDelegate, ConnectionWrapperDelegate> {
+MFMailComposeViewControllerDelegate, FBSessionDelegate, FBDialogDelegate> {
 
 	FBSession *fbSession;
 	id<ShareItemDelegate> shareDelegate;
-    ConnectionWrapper *connection;
-    NSString *shortURL;
+    //ConnectionWrapper *connection;
+    //NSString *shortURL;
 
 }
 
-@property (nonatomic, retain) ConnectionWrapper *connection;
+//@property (nonatomic, retain) ConnectionWrapper *connection;
 @property (nonatomic, retain) FBSession *fbSession;
 @property (nonatomic, retain) id<ShareItemDelegate> shareDelegate;
 
