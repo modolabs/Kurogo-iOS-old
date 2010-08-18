@@ -223,8 +223,10 @@ NSString * const RequestLookupAddress = @"address";
 		// we are mimicking the style of UIButtonTypeRoundedRect until we find something more built-in
 		UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellID];
 		
-		if (cell == nil)
+		if (cell == nil) {
 			cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellID] autorelease];
+			cell.selectionStyle = UITableViewCellSelectionStyleGray;
+		}
 
 		cell.textLabel.textAlignment = UITextAlignmentCenter;
 		cell.textLabel.font = [UIFont boldSystemFontOfSize:[UIFont systemFontSize]];
@@ -239,8 +241,10 @@ NSString * const RequestLookupAddress = @"address";
 	} else { // cells for displaying person details
 		MultiLineTableViewCell *cell = (MultiLineTableViewCell *)[tableView dequeueReusableCellWithIdentifier:cellID];
 		
-		if (cell == nil)
+		if (cell == nil) {			
 			cell = [[[MultiLineTableViewCell alloc] initWithStyle:UITableViewCellStyleValue2 reuseIdentifier:cellID] autorelease];
+			cell.selectionStyle = UITableViewCellSelectionStyleGray;
+		}
 		
 		NSArray *personInfo = [[self.sectionArray safeObjectAtIndex:section] safeObjectAtIndex:row];
 		NSString *tag = [personInfo safeObjectAtIndex:0];

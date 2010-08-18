@@ -16,7 +16,6 @@
 #pragma mark -
 #pragma mark Application lifecycle
 
-
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     
     networkActivityRefCount = 0;

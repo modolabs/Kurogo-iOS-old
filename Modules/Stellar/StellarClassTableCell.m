@@ -5,18 +5,32 @@
 
 @implementation StellarClassTableCell
 
-+ (UITableViewCell *) configureCell: (UITableViewCell *)cell withStellarClass: (StellarClass *)class {
++ (UITableViewCell *) configureCell: (UITableViewCell *)cell withStellarClass: (StellarClass *)class previousClassInList: (StellarClass *)prevClass{
 	NSString *name;
 	if([class.name length]) {
 		name = class.name;
+		
 	} else {
 		name = class.masterSubjectId;
 	}
-	if ([[name substringToIndex:1] isEqualToString:@"0"])
-		cell.detailTextLabel.text = [name substringFromIndex:1];
+	/*NSArray *instructors = [[[class.staff allObjects]
+	  filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"type like 'instructor'"]]
+	 sortedArrayUsingDescriptors:[NSArray arrayWithObject:[[[NSSortDescriptor alloc] initWithKey:@"name" ascending:YES] autorelease]]];
 	
-	else
-		cell.detailTextLabel.text = name;
+	(StellarStaffMember *)[instructors objectAtIndex:indexPath.row]
+	
+	if (prevClass != nil) {
+		if ([prevClass.name length]) {
+			if ([prevClass.name isEqualToString:[class.name]])
+				name = [name stringByAppendingFormat:@" (%@)", [[[class.staff allObjects]]   ];
+		}
+	}*/
+	
+	if ([[name substringToIndex:1] isEqualToString:@"0"])
+		name = [name substringFromIndex:1];
+	
+	
+	cell.detailTextLabel.text = name;
 
 	
 	cell.textLabel.text = class.title;

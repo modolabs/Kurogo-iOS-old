@@ -8,7 +8,7 @@
 
 - (id) initWithReusableCellIdentifier: (NSString *)identifer;
 
-+ (UITableViewCell *) configureCell: (UITableViewCell *)cell withStellarClass: (StellarClass *)class;
++ (UITableViewCell *) configureCell: (UITableViewCell *)cell withStellarClass: (StellarClass *)class previousClassInList: (StellarClass *)prevClass;
 
 + (CGFloat) cellHeightForTableView: (UITableView *)tableView class: (StellarClass *)stellarClass;
 @end

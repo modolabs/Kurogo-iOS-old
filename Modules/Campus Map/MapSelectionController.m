@@ -219,6 +219,7 @@
         cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier] autorelease];
 		cell.textLabel.textColor = CELL_STANDARD_FONT_COLOR;
 		cell.textLabel.font = [UIFont boldSystemFontOfSize:CELL_STANDARD_FONT_SIZE];
+		cell.selectionStyle = UITableViewCellSelectionStyleGray;
     }
     
 	switch (_selectedSegment) {

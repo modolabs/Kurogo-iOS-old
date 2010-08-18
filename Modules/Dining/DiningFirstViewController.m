@@ -8,7 +8,6 @@
 
 #import "DiningFirstViewController.h"
 #import "MenuDetailsController.h"
-#import "DiningTabViewControl.h"
 #import "MITUIConstants.h"
 #import "MIT_MobileAppDelegate.h"
 #import "DiningMultiLineCell.h"

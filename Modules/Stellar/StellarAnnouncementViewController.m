@@ -60,6 +60,7 @@
 			cell = [tableView dequeueReusableCellWithIdentifier:titleCellIdentifier];
 			if(cell == nil) {
 				cell = [[[MultiLineTableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:titleCellIdentifier] autorelease];
+				cell.selectionStyle = UITableViewCellSelectionStyleGray;
 			}
 			cell.textLabel.font = titleFont;
 			cell.textLabel.text = announcement.title;

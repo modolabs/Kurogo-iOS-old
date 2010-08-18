@@ -29,6 +29,9 @@
     if ((self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil])) {
         activeModule = nil;
     }
+	UIBarButtonItem *newBackButton = [[UIBarButtonItem alloc] initWithTitle: @"Home" style: UIBarButtonItemStyleBordered target: nil action: nil];	
+	[[self navigationItem] setBackBarButtonItem: newBackButton];
+	[newBackButton release];
     return self;
 }
 
@@ -290,6 +293,7 @@
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil) {
         cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier] autorelease];
+		cell.selectionStyle = UITableViewCellSelectionStyleGray;
     }
     
     if (indexPath.row == 0) {

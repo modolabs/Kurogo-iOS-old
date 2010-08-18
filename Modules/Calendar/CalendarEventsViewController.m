@@ -689,7 +689,8 @@
         
         UIActivityIndicatorViewStyle style = (showList) ? UIActivityIndicatorViewStyleGray : UIActivityIndicatorViewStyleWhite;
 		UIActivityIndicatorView *spinny = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:style];
-        spinny.center = CGPointMake(spinny.center.x + horizontalPadding, spinny.center.y + verticalPadding);
+       // spinny.center = CGPointMake(spinny.center.x + horizontalPadding, spinny.center.y + verticalPadding);
+		spinny.center = CGPointMake(spinny.center.x + horizontalPadding, spinny.center.y + verticalPadding);
 		[spinny startAnimating];
         
 		UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(spinny.frame.size.width + horizontalPadding + horizontalSpacing, verticalPadding, stringSize.width, stringSize.height + 2.0)];
@@ -712,14 +713,12 @@
 	// self.view.frame changes depending on whether it's the first time we're looking at this,
 	// so we need to figure out its position based on things that don't change
 	CGRect appFrame = [[UIScreen mainScreen] applicationFrame];
-	CGFloat yOffset = showScroller ? navScrollView.frame.size.height : 0.0;
+	/*CGFloat yOffset = showScroller ? navScrollView.frame.size.height : 0.0;
 	if (!isSearch && [self shouldShowDatePicker:activeEventList]) {
 		yOffset += datePicker.frame.size.height;
-	}
-	//MIT_MobileAppDelegate *appDelegate = (MIT_MobileAppDelegate *)[[UIApplication sharedApplication] delegate];
-	//CGFloat heightAdjustment = appDelegate.tabBarController.tabBar.frame.size.height;
-    CGFloat heightAdjustment = 0;
-	CGPoint center = CGPointMake(appFrame.size.width / 2, (appFrame.size.height + yOffset) / 2 - heightAdjustment);
+	}*/
+
+	CGPoint center = CGPointMake(appFrame.size.width / 2, (appFrame.size.height) / 2);
 	loadingIndicator.center = center;
 	
 	[self.view addSubview:loadingIndicator];

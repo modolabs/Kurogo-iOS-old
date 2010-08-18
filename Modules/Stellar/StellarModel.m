@@ -255,8 +255,8 @@ NSString* cleanPersonName(NSString *personName);
 			stellarClass.school = [aDict objectForKey:@"school"];
 		}
 		
-		//stellarClass.term = [aDict objectForKey:@"term"];
-		stellarClass.term = @"Fall 2010";
+		stellarClass.term = [aDict objectForKey:@"term"];
+		//stellarClass.term = @"Fall 2010";
 		stellarClass.url = [aDict objectForKey:@"stellarUrl"];
 		stellarClass.lastAccessedDate = [NSDate date];
 	
@@ -272,9 +272,17 @@ NSString* cleanPersonName(NSString *personName);
 		int r = cnt*cnt;*/
 		
 		NSInteger orderId = 0;
-		for(NSDictionary *time in (NSArray *)[aDict valueForKey:@"times"]) {
-			[stellarClass addTimesObject:[StellarModel stellarTimeFromDictionary:time class:stellarClass orderId:orderId]];
-			orderId++;
+		if ([[aDict valueForKey:@"parsed_meeting_times"] class] == [NSNull class]) {
+			for(NSDictionary *time in (NSArray *)[aDict valueForKey:@"times"]) {
+				[stellarClass addTimesObject:[StellarModel stellarParseErrorTimeFromDictionary:time class:stellarClass orderId:orderId]];
+				orderId++;
+			}
+		}
+		else {
+			for(NSDictionary *time in (NSArray *)[aDict valueForKey:@"parsed_meeting_times"]) {
+				[stellarClass addTimesObject:[StellarModel stellarTimeFromDictionary:time class:stellarClass orderId:orderId]];
+				orderId++;
+			}
 		}
 	
 		// add the class staff
@@ -314,6 +322,16 @@ NSString* cleanPersonName(NSString *personName);
 }
 
 + (StellarClassTime *) stellarTimeFromDictionary: (NSDictionary *)time class:(StellarClass *)class orderId: (NSInteger)orderId {
+	StellarClassTime *stellarClassTime = (StellarClassTime *)[CoreDataManager insertNewObjectForEntityForName:StellarClassTimeEntityName];
+	stellarClassTime.stellarClass = class;
+	stellarClassTime.title = @"Lecture"; //[time objectForKey:@"title"];
+	stellarClassTime.location = [time objectForKey:@"location"];
+	stellarClassTime.time = [time objectForKey:@"time"];
+	stellarClassTime.order = [NSNumber numberWithInt:orderId];
+	return stellarClassTime;
+}
+
++ (StellarClassTime *) stellarParseErrorTimeFromDictionary: (NSDictionary *)time class:(StellarClass *)class orderId: (NSInteger)orderId {
 	StellarClassTime *stellarClassTime = (StellarClassTime *)[CoreDataManager insertNewObjectForEntityForName:StellarClassTimeEntityName];
 	stellarClassTime.stellarClass = class;
 	stellarClassTime.title = [time objectForKey:@"title"];

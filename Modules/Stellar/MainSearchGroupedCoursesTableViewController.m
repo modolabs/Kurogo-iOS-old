@@ -149,10 +149,20 @@
 	UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"StellarClasses"];
 	if(cell == nil) {
 		cell = [[[StellarClassTableCell alloc] initWithReusableCellIdentifier:@"StellarClasses"] autorelease];
+		cell.selectionStyle = UITableViewCellSelectionStyleGray;
 	}
 	
 	StellarClass *stellarClass = [classes objectAtIndex:indexPath.row];
-	return [StellarClassTableCell configureCell:cell withStellarClass:stellarClass];
+	
+	StellarClass *stellarPreviousClass;
+	
+	if (indexPath.row > 0)
+		stellarPreviousClass = [classes objectAtIndex:indexPath.row - 1];
+	else {
+		stellarPreviousClass = nil;
+	}
+	
+	return [StellarClassTableCell configureCell:cell withStellarClass:stellarClass previousClassInList:stellarPreviousClass];
 }	
 
 - (NSInteger) tableView: (UITableView *)tableView numberOfRowsInSection: (NSInteger)section {

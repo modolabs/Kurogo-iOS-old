@@ -1,9 +1,9 @@
 #import "DiningTabViewControl.h"
 
 #define kTabFontSize 14 // was 15
-#define kTabCurveRadius 10 
-#define kTabTextPadding 7 // px between tab and start of text //was 22
-#define kTabSapcing 4      // px between tabs //was 4
+#define kTabCurveRadius 12 
+#define kTabTextPadding 10 // px between tab and start of text //was 22
+#define kTabSapcing 2      // px between tabs //was 4
 
 #define kUnselectedFillColorR 153.0
 #define kUnselectedFillColorG 172.0
@@ -62,89 +62,30 @@
 		_tabFont = [[UIFont boldSystemFontOfSize:kTabFontSize] retain];
 	}
 	
+	UIImage *tabBackground = nil;
+    
 	CGContextRef dc =  UIGraphicsGetCurrentContext();
 	
-	
-	
 	int tabOffset = 10;
-	CGFloat nonselectedComponents[8] = {  0.65, 0.65, 0.65, 1.0, 0.45, 0.45, 0.45, 1.0 };
-	CGFloat selectedComponents[8] = {  1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0 };
-	CGFloat pressedComponents[8] = {  0.4, 0.4, 0.4, 1.0, 0.54, 0.54, 0.54, 1.0 };
 	
-	for (int tabIdx = 0; tabIdx < self.tabs.count; tabIdx++) 
-	{
+	for (int tabIdx = 0; tabIdx < self.tabs.count; tabIdx++) {
 		
 		NSString* tabText = [self.tabs objectAtIndex:tabIdx];
 		
-		CGGradientRef myGradient;
-		CGColorSpaceRef myColorspace;
-		
-		size_t num_locations = 2;
-		CGFloat locations[2] = {0.0, 1.0};
-		
-		CGFloat* components = nil;
 		if (self.selectedTab == tabIdx) {
-			components = selectedComponents;
+            tabBackground = [[UIImage imageNamed:@"global/tab-active.png"] stretchableImageWithLeftCapWidth:15.0 topCapHeight:0];
 		}
-		else if(_pressedTab == tabIdx)
-		{
-			components = pressedComponents;
+		else if (_pressedTab == tabIdx) {
+            tabBackground = [[UIImage imageNamed:@"global/tab-inactive-pressed.png"] stretchableImageWithLeftCapWidth:15.0 topCapHeight:0];
 		}
 		else {
-			components = nonselectedComponents;
+            tabBackground = [[UIImage imageNamed:@"global/tab-inactive.png"] stretchableImageWithLeftCapWidth:15.0 topCapHeight:0];
 		}
-		
-		
-		myColorspace = CGColorSpaceCreateDeviceRGB();// CGColorSpaceCreateWithName(kCGColorSpaceGenericRGB);
-		myGradient = CGGradientCreateWithColorComponents (myColorspace, components, locations, num_locations);
-		
-		CGPoint gradientStartPoint = CGPointMake(0, 0);
-		CGPoint gradientEndPoint = CGPointMake(0, self.frame.size.height);
-		
-		
-		CGContextSaveGState(dc);
-		
-		CGContextBeginPath(dc);
-		
-		
-		//
-		// draw the first curve
-		//
-		CGRect currentRect = CGRectMake(tabOffset, 0, kTabCurveRadius * 2, kTabCurveRadius * 2);
-		CGContextAddEllipseInRect(dc, currentRect);
-		
-		// measure the string
+        
 		CGSize textSize = [tabText sizeWithFont:_tabFont];
-		
-		//
-		// fill the box
-		//
-		currentRect = CGRectMake(tabOffset + kTabCurveRadius, 0, textSize.width + kTabTextPadding * 2 - kTabCurveRadius * 2, self.frame.size.height);
-		CGContextAddRect(dc, currentRect);
-		currentRect = CGRectMake(tabOffset, kTabCurveRadius, kTabCurveRadius, self.frame.size.height - kTabCurveRadius);
-		CGContextAddRect(dc, currentRect);
-		currentRect = CGRectMake(tabOffset + textSize.width + kTabTextPadding * 2 - kTabCurveRadius, kTabCurveRadius, kTabCurveRadius, self.frame.size.height - kTabCurveRadius);
-		CGContextAddRect(dc, currentRect);
-		
-		
-		//
-		// draw the second curve
-		//
-		currentRect = CGRectMake(tabOffset + textSize.width + kTabTextPadding * 2 - kTabCurveRadius * 2,
-								 0, kTabCurveRadius * 2, kTabCurveRadius * 2);
-		
-		CGContextAddEllipseInRect(dc, currentRect);
-		
-		// Fill the path
-		//CGContextFillPath(dc);
-		
-		CGContextClip(dc);
-		CGContextDrawLinearGradient (dc, myGradient, gradientStartPoint, gradientEndPoint, 0);
-		
-		CGContextRestoreGState(dc);
-		
-		CGColorSpaceRelease(myColorspace);
-		CGGradientRelease(myGradient);
+        CGRect currentRect = CGRectMake(tabOffset, 0, textSize.width + kTabTextPadding * 2, self.frame.size.height);
+        
+        [tabBackground drawInRect:currentRect];
 		
 		// draw the text
 		UIColor* textColor  = (self.selectedTab == tabIdx) ? [UIColor blackColor] : [UIColor whiteColor];
@@ -152,10 +93,12 @@
 		CGContextSetFillColorWithColor(dc, textColor.CGColor);
 		CGRect textRect = CGRectMake(tabOffset + kTabTextPadding, (self.frame.size.height - textSize.height) / 2, textSize.width, textSize.height);
 		[tabText drawInRect:textRect withFont:_tabFont];
-				
+		
 		// set the offset for the next tab
 		tabOffset = currentRect.origin.x + currentRect.size.width + kTabSapcing;
-	}
+		
+	}	
+	
 }
 
 -(int) tabIndexAtLocation:(CGPoint)point

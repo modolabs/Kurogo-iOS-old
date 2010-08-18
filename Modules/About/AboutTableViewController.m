@@ -13,7 +13,7 @@
     
     UIView *footerView = [[UIView alloc] initWithFrame:CGRectMake(10, 0, self.view.frame.size.width - 20, 45)];
     UILabel *footerLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, footerView.frame.size.width, 30)];
-    footerLabel.text = @"Copyright © 2010 Harvard University. All rights reserved.";
+    footerLabel.text = @"Copyright © 2010 The President and Fellows of Harvard College";
     footerLabel.backgroundColor = [UIColor clearColor];
     footerLabel.textAlignment = UITextAlignmentCenter;
     footerLabel.textColor = CELL_DETAIL_FONT_COLOR;
@@ -106,13 +106,13 @@
                 case 0:
                     cell.textLabel.text = @"About Harvard";
                     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-                    cell.selectionStyle = UITableViewCellSelectionStyleBlue;
+                    cell.selectionStyle = UITableViewCellSelectionStyleGray;
                     cell.textLabel.textColor = CELL_STANDARD_FONT_COLOR;
                     break;
                 case 1:
                     cell.textLabel.text = @"Send Feedback";
                     cell.accessoryView = [UIImageView accessoryViewWithMITType:MITAccessoryViewEmail];
-                    cell.selectionStyle = UITableViewCellSelectionStyleBlue;
+                    cell.selectionStyle = UITableViewCellSelectionStyleGray;
                     break;
                 break;
             }

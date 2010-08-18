@@ -68,6 +68,7 @@
         cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
 		cell.textLabel.textColor = CELL_STANDARD_FONT_COLOR;
 		cell.textLabel.font = [UIFont boldSystemFontOfSize:CELL_STANDARD_FONT_SIZE];
+		cell.selectionStyle = UITableViewCellSelectionStyleGray;
     }
     
 	if ([[_itemsInTable objectAtIndex:indexPath.row] objectForKey:@"categoryName"]) {
