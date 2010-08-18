@@ -20,8 +20,8 @@ static NSString * const PeopleStateDetail = @"detail";
 {
     if (self = [super init]) {
         self.tag = DirectoryTag;
-        self.shortName = @"Directory";
-        self.longName = @"People Directory";
+        self.shortName = @"People";
+        self.longName = @"People";
         self.iconName = @"people";
         self.supportsFederatedSearch = YES;
 

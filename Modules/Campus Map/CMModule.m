@@ -15,7 +15,7 @@
     if (self != nil) {
         self.tag = CampusMapTag;
         self.shortName = @"Map";
-        self.longName = @"Campus Map";
+        self.longName = @"Map";
         self.iconName = @"map";
         self.supportsFederatedSearch = YES;
        
