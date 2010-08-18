@@ -62,13 +62,13 @@ function navigateToPeopleView()
 
 function navigateBack()
 {
-	mainWindow.navigationBar().elements()[0].buttons()["People Directory"].tap();
+	mainWindow.navigationBar().elements()[0].buttons()["People"].tap();
 }
 
 function enterSearchTermIntoSearchFieldAndHitGo(searchTerm)
 {
 	// Type search term into search field and run search.
-	searchBar = mainWindow.elements()["People Directory Search Bar"];
+	searchBar = mainWindow.elements()["People Search Bar"];
 	searchBar.tap();
 	searchBar.setValue(searchTerm);
 	mainWindow.tableViews()[0].waitForInvalid();
@@ -343,6 +343,17 @@ function testSuiteMultipleTitles()
 	runSearchTestSuite("Test suite: Multiple titles", termsToExpectedValues);			
 }
 
+function testSuiteMoreThan50Results()
+{		
+	var termsToExpectedValues = {
+		"deb a": {
+			"email": "dwanders@chs.harvard.edu",
+			"title": "Fellow in Standards and Information Technology"
+		}
+	};
+	runSearchTestSuite("Test suite: More than 50 results - watch for alert about more than 50.", termsToExpectedValues);			
+}
+
 // "Main" block.
 
 // Provide a default grace period in seconds for each action to complete.
@@ -355,6 +366,7 @@ testSuite4();
 testSuite5();
 
 // You might want to watch a few of these to make sure the display is not messed up.
+testSuiteMoreThan50Results();
 testSuiteMultipleTitles();
 
 // These should work without supervision.
