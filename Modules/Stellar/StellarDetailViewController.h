@@ -60,6 +60,7 @@ typedef enum {
 	
 	BOOL classDetailsLoaded;
 	UIView *loadingView;
+	UIView *nothingToDisplay;
 }
 
 @property (nonatomic, retain) ClassInfoLoader *currentClassInfoLoader;
@@ -87,6 +88,7 @@ typedef enum {
 @property (nonatomic, assign) BOOL classDetailsLoaded;
 
 @property (nonatomic, retain) UIView *loadingView;
+@property (nonatomic, retain) UIView *nothingToDisplay;
 
 + (StellarDetailViewController *) launchClass: (StellarClass *)stellarClass viewController: (UIViewController *)controller;
 
