@@ -80,9 +80,6 @@ extern NSString * const CalendarCategoryEntityName;
 extern NSString * const CampusMapSearchEntityName;
 extern NSString * const CampusMapAnnotationEntityName;
 
-// Sizes
-static const NSUInteger kPersonUIDLength = 44;
-
 
 // local path names for handleLocalPath
 extern NSString * const LocalPathMapsSelectedAnnotation;
@@ -140,4 +137,7 @@ extern NSString * const MapsErrorDomain;
 
 extern NSString * const ShuttlesErrorDomain;
 #define errShuttleRouteNotAvailable 0
+
+extern NSString * const JSONErrorDomain;
+#define errJSONParseFailed 0
 

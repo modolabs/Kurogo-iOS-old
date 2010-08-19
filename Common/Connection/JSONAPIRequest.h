@@ -11,13 +11,14 @@
 @protocol JSONAPIDelegate <NSObject>
 - (void)request:(JSONAPIRequest *)request jsonLoaded:(id)JSONObject;
 
-@optional 
-- (void)handleConnectionFailureForRequest:(JSONAPIRequest *)request;
+@optional
+- (BOOL)request:(JSONAPIRequest *)request shouldDisplayAlertForError:(NSError *)error;
+- (void)request:(JSONAPIRequest *)request handleConnectionError:(NSError *)error;
 - (void)request:(JSONAPIRequest *)request madeProgress:(CGFloat)progress;
 @end
 
 
-@interface JSONAPIRequest : NSObject <ConnectionWrapperDelegate> {
+@interface JSONAPIRequest : NSObject <ConnectionWrapperDelegate, UIAlertViewDelegate> {
 	id<JSONAPIDelegate> jsonDelegate;
     ConnectionWrapper *connectionWrapper;
 	NSDictionary *params;

@@ -809,7 +809,7 @@
 }
 
 // there was an error connecting to the specified URL. 
-- (void)handleConnectionFailureForRequest:(JSONAPIRequest *)request {
+- (void)request:(JSONAPIRequest *)request handleConnectionError:(NSError *)error {
     if ([request.userData isKindOfClass:[NSString class]]
         && [(NSString *)request.userData isEqualToString:kAPISearch]) {
 		[self errorConnectingAlert];

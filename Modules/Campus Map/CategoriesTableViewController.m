@@ -191,20 +191,17 @@
     }
 }
 
-- (void)handleConnectionFailureForRequest:(JSONAPIRequest *)request
+- (BOOL)request:(JSONAPIRequest *)request shouldDisplayAlertForError:(NSError *)error {
+    return YES;
+}
+
+- (void)request:(JSONAPIRequest *)request handleConnectionError:(NSError *)error
 {
 	if (_loadingView) {
 		[_loadingView removeFromSuperview];
 		[_loadingView release];
 		_loadingView = nil;
 	}
-	
-	UIAlertView *alert = [[[UIAlertView alloc] initWithTitle:@"Connection Failed" 
-                                                     message:@"Could not connect to server, please try again later."
-                                                    delegate:nil
-                                           cancelButtonTitle:@"OK" 
-                                           otherButtonTitles:nil] autorelease];
-	[alert show];
 }
 
 - (void)executeServerCategoryRequest 

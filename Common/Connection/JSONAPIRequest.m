@@ -39,6 +39,14 @@
 	[super dealloc];
 }
 
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if ([jsonDelegate conformsToProtocol:@protocol(UIAlertViewDelegate)]
+        && [jsonDelegate respondsToSelector:@selector(alertView:clickedButtonAtIndex:)]) {
+        [(id<UIAlertViewDelegate>)jsonDelegate alertView:alertView clickedButtonAtIndex:buttonIndex];
+    }
+}
+
 - (void)abortRequest {
 	if (connectionWrapper != nil) {
 		[((MIT_MobileAppDelegate *)[[UIApplication sharedApplication] delegate]) hideNetworkActivityIndicator];
@@ -118,7 +126,13 @@
 	id result = [JSONAPIRequest objectWithJSONData:data error:&error];
 	if (error) {
 		[self connection:wrapper handleConnectionFailureWithError:error];		
-	} else {
+	} else if (!result) {
+        error = [NSError errorWithDomain:JSONErrorDomain
+                                    code:errJSONParseFailed
+                                userInfo:[NSDictionary dictionaryWithObjectsAndKeys:
+                                          @"could not create an object from the result returned", @"message", nil]];
+		[self connection:wrapper handleConnectionFailureWithError:error];		
+    } else {
 		[((MIT_MobileAppDelegate *)[[UIApplication sharedApplication] delegate]) hideNetworkActivityIndicator];
 		[jsonDelegate request:self jsonLoaded:result];
         self.connectionWrapper = nil;
@@ -129,11 +143,11 @@
 - (void)connection:(ConnectionWrapper *)wrapper handleConnectionFailureWithError: (NSError *)error {
 	[((MIT_MobileAppDelegate *)[[UIApplication sharedApplication] delegate]) hideNetworkActivityIndicator];
 	NSLog(@"Error: %@\ncode:%d\nuserinfo: %@\n%s", [error domain], [error code], [error userInfo], __PRETTY_FUNCTION__);
-	
-    self.connectionWrapper = nil;
     
-	if([jsonDelegate respondsToSelector:@selector(handleConnectionFailureForRequest:)]) {
-		[jsonDelegate handleConnectionFailureForRequest:self];
+    self.connectionWrapper = nil;
+
+	if([jsonDelegate respondsToSelector:@selector(request:handleConnectionError:)]) {
+		[jsonDelegate request:self handleConnectionError:error];
 	}
 	[self safeReleaseSelf];
 }
@@ -142,6 +156,13 @@
     if ([jsonDelegate respondsToSelector:@selector(request:madeProgress:)]) {
         [jsonDelegate request:self madeProgress:progress];
     }
+}
+
+- (BOOL)connection:(ConnectionWrapper *)wrapper shouldDisplayAlertForError:(NSError *)error {
+    if ([jsonDelegate respondsToSelector:@selector(request:shouldDisplayAlertForError:)]) {
+        [jsonDelegate request:self shouldDisplayAlertForError:error];
+    }
+    return NO;
 }
 
 #pragma mark JSON object

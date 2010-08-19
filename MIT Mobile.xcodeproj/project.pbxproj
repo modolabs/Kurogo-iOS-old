@@ -121,11 +121,6 @@
 		A64C36CB1207066D006FE056 /* peopleSearchStaticPhoneRowsArray.plist in Resources */ = {isa = PBXBuildFile; fileRef = A64C36CA1207066D006FE056 /* peopleSearchStaticPhoneRowsArray.plist */; };
 		A6787A1611F605070034D559 /* NSArray+Convenience.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = A6787A1411F605070034D559 /* NSArray+Convenience.h */; settings = {JAVA_ARCHIVE_SUBDIR = Common; }; };
 		A6787A1711F605070034D559 /* NSArray+Convenience.m in Sources */ = {isa = PBXBuildFile; fileRef = A6787A1511F605070034D559 /* NSArray+Convenience.m */; };
-		A69A28A811F0258800B1D365 /* PersonDetails+Methods.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = A69A28A611F0258800B1D365 /* PersonDetails+Methods.h */; settings = {JAVA_ARCHIVE_SUBDIR = Modules/People/Model; }; };
-		A69A28A911F0258800B1D365 /* PersonDetails+Methods.m in Sources */ = {isa = PBXBuildFile; fileRef = A69A28A711F0258800B1D365 /* PersonDetails+Methods.m */; };
-		A69A2BD711F4C36400B1D365 /* PersonDetail.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = A69A2BD311F4C36400B1D365 /* PersonDetail.h */; settings = {JAVA_ARCHIVE_SUBDIR = Modules/People/Model/PeopleDataModel.xcdatamodeld; }; };
-		A69A2BD811F4C36400B1D365 /* PersonDetail.m in Sources */ = {isa = PBXBuildFile; fileRef = A69A2BD411F4C36400B1D365 /* PersonDetail.m */; };
-		A6D5498811F4E6D00048CEDB /* PersonDetails.m in Sources */ = {isa = PBXBuildFile; fileRef = A69A2BD211F4C36400B1D365 /* PersonDetails.m */; };
 		A6FC4C72120A2C200046FF36 /* settings in Resources */ = {isa = PBXBuildFile; fileRef = A623F2E5120A1BFC00341C5E /* settings */; };
 		B621843D121ADB3A004D1293 /* Secret.m in Sources */ = {isa = PBXBuildFile; fileRef = B621843C121ADB3A004D1293 /* Secret.m */; };
 		BD1E9309103B5D60004429AA /* NSObject+SBJSON.m in Sources */ = {isa = PBXBuildFile; fileRef = BD1E92F6103B5D60004429AA /* NSObject+SBJSON.m */; };
@@ -453,6 +448,8 @@
 		EBAE878812198B2500F370BE /* SchoolsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EBAE878412198B2500F370BE /* SchoolsViewController.m */; };
 		EBAE88051219960700F370BE /* Secret.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EBAE88031219960700F370BE /* Secret.h */; settings = {JAVA_ARCHIVE_SUBDIR = Common; }; };
 		EBAE89C4121A081900F370BE /* schools in Resources */ = {isa = PBXBuildFile; fileRef = EBAE89A4121A081900F370BE /* schools */; };
+		EBAE92B7121D733200F370BE /* PersonDetails.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EBAE92B5121D733200F370BE /* PersonDetails.h */; settings = {JAVA_ARCHIVE_SUBDIR = Modules/People/Model; }; };
+		EBAE92B8121D733200F370BE /* PersonDetails.m in Sources */ = {isa = PBXBuildFile; fileRef = EBAE92B6121D733200F370BE /* PersonDetails.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -603,12 +600,6 @@
 		A64C36CA1207066D006FE056 /* peopleSearchStaticPhoneRowsArray.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = peopleSearchStaticPhoneRowsArray.plist; path = Resources/peopleSearchStaticPhoneRowsArray.plist; sourceTree = "<group>"; };
 		A6787A1411F605070034D559 /* NSArray+Convenience.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSArray+Convenience.h"; sourceTree = "<group>"; };
 		A6787A1511F605070034D559 /* NSArray+Convenience.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSArray+Convenience.m"; sourceTree = "<group>"; };
-		A69A28A611F0258800B1D365 /* PersonDetails+Methods.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "PersonDetails+Methods.h"; sourceTree = "<group>"; };
-		A69A28A711F0258800B1D365 /* PersonDetails+Methods.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "PersonDetails+Methods.m"; sourceTree = "<group>"; };
-		A69A2BD111F4C36400B1D365 /* PersonDetails.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PersonDetails.h; sourceTree = "<group>"; };
-		A69A2BD211F4C36400B1D365 /* PersonDetails.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PersonDetails.m; sourceTree = "<group>"; };
-		A69A2BD311F4C36400B1D365 /* PersonDetail.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PersonDetail.h; sourceTree = "<group>"; };
-		A69A2BD411F4C36400B1D365 /* PersonDetail.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PersonDetail.m; sourceTree = "<group>"; };
 		B621843C121ADB3A004D1293 /* Secret.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Secret.m; sourceTree = "<group>"; };
 		BD1E92F4103B5D60004429AA /* JSON.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JSON.h; sourceTree = "<group>"; };
 		BD1E92F5103B5D60004429AA /* NSObject+SBJSON.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+SBJSON.h"; sourceTree = "<group>"; };
@@ -988,6 +979,8 @@
 		EBAE878412198B2500F370BE /* SchoolsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SchoolsViewController.m; path = Schools/SchoolsViewController.m; sourceTree = "<group>"; };
 		EBAE88031219960700F370BE /* Secret.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Secret.h; sourceTree = "<group>"; };
 		EBAE89A4121A081900F370BE /* schools */ = {isa = PBXFileReference; lastKnownFileType = folder; name = schools; path = Resources/schools; sourceTree = "<group>"; };
+		EBAE92B5121D733200F370BE /* PersonDetails.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PersonDetails.h; sourceTree = "<group>"; };
+		EBAE92B6121D733200F370BE /* PersonDetails.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PersonDetails.m; sourceTree = "<group>"; };
 		EBCA123210CEF3C400577C5D /* PeopleSearchViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PeopleSearchViewController.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -1778,9 +1771,9 @@
 		EB7F326910CD6C5B00188BCD /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				EBAE92B5121D733200F370BE /* PersonDetails.h */,
+				EBAE92B6121D733200F370BE /* PersonDetails.m */,
 				EB7F326A10CD6C5B00188BCD /* PeopleDataModel.xcdatamodeld */,
-				A69A28A611F0258800B1D365 /* PersonDetails+Methods.h */,
-				A69A28A711F0258800B1D365 /* PersonDetails+Methods.m */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -1936,8 +1929,6 @@
 				EB6D10DE11EE13F100B65CE3 /* MapZoomLevel.h in JavaArchive */,
 				EB6D111611EE143900B65CE3 /* TileServerManager.h in JavaArchive */,
 				EB6D141511EE979500B65CE3 /* NewsCategory.h in JavaArchive */,
-				A69A28A811F0258800B1D365 /* PersonDetails+Methods.h in JavaArchive */,
-				A69A2BD711F4C36400B1D365 /* PersonDetail.h in JavaArchive */,
 				C727B53A11F4E245007D53BB /* CalendarCategoriesViewController.h in JavaArchive */,
 				C7B897F211F535C8002B3619 /* HoursTableViewController.h in JavaArchive */,
 				A6787A1611F605070034D559 /* NSArray+Convenience.h in JavaArchive */,
@@ -1966,6 +1957,7 @@
 				EBAE878512198B2500F370BE /* SchoolsModule.h in JavaArchive */,
 				EBAE878712198B2500F370BE /* SchoolsViewController.h in JavaArchive */,
 				EBAE88051219960700F370BE /* Secret.h in JavaArchive */,
+				EBAE92B7121D733200F370BE /* PersonDetails.h in JavaArchive */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2343,10 +2335,7 @@
 				EB6D111711EE143900B65CE3 /* TileServerManager.m in Sources */,
 				EB6D114211EE191000B65CE3 /* PJ_geos.c in Sources */,
 				EB6D141611EE979500B65CE3 /* NewsCategory.m in Sources */,
-				A69A28A911F0258800B1D365 /* PersonDetails+Methods.m in Sources */,
-				A69A2BD811F4C36400B1D365 /* PersonDetail.m in Sources */,
 				C727B53B11F4E245007D53BB /* CalendarCategoriesViewController.m in Sources */,
-				A6D5498811F4E6D00048CEDB /* PersonDetails.m in Sources */,
 				C7B897F111F535C8002B3619 /* HoursTableViewController.m in Sources */,
 				A6787A1711F605070034D559 /* NSArray+Convenience.m in Sources */,
 				EB7BA33F11F7677F00B3DDA6 /* PolygonOverlay.m in Sources */,
@@ -2374,6 +2363,7 @@
 				EBAE878612198B2500F370BE /* SchoolsModule.m in Sources */,
 				EBAE878812198B2500F370BE /* SchoolsViewController.m in Sources */,
 				B621843D121ADB3A004D1293 /* Secret.m in Sources */,
+				EBAE92B8121D733200F370BE /* PersonDetails.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2826,10 +2816,6 @@
 			isa = XCVersionGroup;
 			children = (
 				EBAA9F6210FFAB8B003379A5 /* PeopleDataModel 5.xcdatamodel */,
-				A69A2BD111F4C36400B1D365 /* PersonDetails.h */,
-				A69A2BD211F4C36400B1D365 /* PersonDetails.m */,
-				A69A2BD311F4C36400B1D365 /* PersonDetail.h */,
-				A69A2BD411F4C36400B1D365 /* PersonDetail.m */,
 			);
 			currentVersion = EBAA9F6210FFAB8B003379A5 /* PeopleDataModel 5.xcdatamodel */;
 			path = PeopleDataModel.xcdatamodeld;

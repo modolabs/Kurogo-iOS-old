@@ -537,20 +537,10 @@ NSString * termText(NSString *termCode) {
 	}
 }
 
-- (void)handleConnectionFailureForRequest:(JSONAPIRequest *)request {
+- (void)request:(JSONAPIRequest *)request handleConnectionError:(NSError *)error {
 	if(viewController.myStellarStatusDelegate == self) {
 		viewController.myStellarButton.selected = [stellarClass.isFavorited boolValue];
 	}
-	
-	UIAlertView *alert = [[UIAlertView alloc] 
-		initWithTitle:@"Connection failed"
-		message:[NSString stringWithFormat:@"Could not update your myStellar account for %@", stellarClass.masterSubjectId]
-		delegate:nil
-		cancelButtonTitle:@"OK" 
-		otherButtonTitles:nil];
-	
-	[alert show];
-    [alert release];
 }		
 
 @end

@@ -1,5 +1,5 @@
 #import "PeopleSearchViewController.h"
-#import "PersonDetails+Methods.h"
+#import "PersonDetails.h"
 #import "PeopleDetailsViewController.h"
 #import "PeopleRecentsData.h"
 #import "PartialHighlightTableViewCell.h"
@@ -34,14 +34,19 @@ NSInteger strLenSort(NSString *str1, NSString *str2, void *context)
 
 @interface PeopleSearchViewController (Private)
 
-- (void)handleMessageFromLDAP:(NSString *)message title:(NSString *)theTitle;
+- (void)handleWarningMessage:(NSString *)message title:(NSString *)theTitle;
 + (NSDictionary *)staticPhoneRowPropertiesForIndexPath:(NSIndexPath *)indexPath;
 
 @end
 
-@implementation PeopleSearchViewController (Private)
 
-- (void)handleMessageFromLDAP:(NSString *)message title:(NSString *)theTitle {
+@implementation PeopleSearchViewController
+
+@synthesize searchTerms, searchTokens, searchResults, searchController;
+@synthesize loadingView;
+@synthesize searchBar = theSearchBar, tableView = _tableView;
+
+- (void)handleWarningMessage:(NSString *)message title:(NSString *)theTitle {
 	
 	UIAlertView *alert = [[UIAlertView alloc] initWithTitle:theTitle 
 													message:message
@@ -53,7 +58,7 @@ NSInteger strLenSort(NSString *str1, NSString *str2, void *context)
 }
 
 + (NSDictionary *)staticPhoneRowPropertiesForIndexPath:(NSIndexPath *)indexPath {
-
+    
 	NSDictionary *properties = nil;
 	if (indexPath.section == kPhoneDirectorySection) {		
 		NSArray *staticPhoneEntries = 
@@ -65,16 +70,6 @@ NSInteger strLenSort(NSString *str1, NSString *str2, void *context)
 	}
 	return properties;
 }
-
-@end
-
-
-@implementation PeopleSearchViewController
-
-@synthesize searchTerms, searchTokens, searchResults, searchController;
-@synthesize loadingView;
-@synthesize searchBar = theSearchBar, tableView = _tableView;
-//@synthesize actionAfterAppearing, viewAppeared;
 
 #pragma mark view
 
@@ -225,10 +220,14 @@ NSInteger strLenSort(NSString *str1, NSString *str2, void *context)
 	self.searchTokens = [NSArray arrayWithArray:tempTokens];
 	
 	api = [JSONAPIRequest requestWithJSONAPIDelegate:self];
-	requestWasDispatched = [api requestObject:[NSDictionary dictionaryWithObjectsAndKeys:@"people", @"module", self.searchTerms, @"q", nil]];
+	requestWasDispatched = [api requestObjectFromModule:@"people"
+                                                command:@"search"
+                                             parameters:[NSDictionary dictionaryWithObjectsAndKeys:self.searchTerms, @"q", nil]];
 	
     if (requestWasDispatched) {
 		[self showLoadingView];
+    } else {
+        [self handleWarningMessage:@"Could not dispatch search" title:@"Search Failed"];
     }
 }
 
@@ -337,8 +336,8 @@ NSInteger strLenSort(NSString *str1, NSString *str2, void *context)
 		}
 			
 		NSDictionary *searchResult = [self.searchResults safeObjectAtIndex:indexPath.row];
-		NSString *fullname = @"";
-        NSArray *namesFromJSON = [PersonDetails realValuesFromPersonDetailsJSONDict:searchResult forKey:@"cn"];
+		NSString *fullname = [NSString string];
+        NSArray *namesFromJSON = [searchResult objectForKey:@"cn"];
         if ([namesFromJSON count] > 0)
         {
             fullname = [namesFromJSON safeObjectAtIndex:0];
@@ -347,7 +346,7 @@ NSInteger strLenSort(NSString *str1, NSString *str2, void *context)
 		// figure out which field (if any) to display as subtitle
 		// display priority: title, dept
 		cell.detailTextLabel.text = @" "; // if this is empty textlabel will be bottom aligned
-		NSArray *detailAttributeArray = [PersonDetails realValuesFromPersonDetailsJSONDict:searchResult forKey:@"title"];
+		NSArray *detailAttributeArray = [searchResult objectForKey:@"title"];
 		if ([detailAttributeArray count] > 0) {
 			cell.detailTextLabel.text = [detailAttributeArray safeObjectAtIndex:0];
 		}
@@ -394,7 +393,7 @@ NSInteger strLenSort(NSString *str1, NSString *str2, void *context)
 																	  detailFont:kSecondaryGroupDetailFont];
 		}
 		else {
-			return kStandardSecondaryGroupCellHeight;
+			return [tableView rowHeight];
 		}		
 	} else {
 		return CELL_TWO_LINE_HEIGHT;
@@ -443,9 +442,10 @@ NSInteger strLenSort(NSString *str1, NSString *str2, void *context)
 	
 	if (tableView == self.searchController.searchResultsTableView || indexPath.section == 1) { // user selected search result or recently viewed
 
-		PersonDetails *personDetails;
+		PersonDetails *personDetails = nil;
 		PeopleDetailsViewController *detailView = [[PeopleDetailsViewController alloc] initWithStyle:UITableViewStyleGrouped];
 		if (tableView == self.searchController.searchResultsTableView) {
+            NSLog(@"%@", [self.searchResults description]);
 			NSDictionary *selectedResult = [self.searchResults safeObjectAtIndex:indexPath.row];
 			personDetails = [PersonDetails retrieveOrCreate:selectedResult];
 		} else {
@@ -483,50 +483,30 @@ NSInteger strLenSort(NSString *str1, NSString *str2, void *context)
 - (void)request:(JSONAPIRequest *)request jsonLoaded:(id)result {
     [self cleanUpConnection];
 	
-	// The JSON wraps the dictionary containing the results and message in an outer array.
-	id jsonContent = [result safeObjectAtIndex:0];
-	if ([jsonContent isKindOfClass:[NSDictionary class]]) {		
-		id results = [jsonContent objectForKey:@"Results"];
-		// The back end may have a message that we need to display to user about the search. Check for that here.
-		id message = [jsonContent objectForKey:@"Message"];
-		if ([message length] > 0) {
-			NSString *alertTitle = @"";
-			if ([results count] < 1) {
-				alertTitle = @"Search Failed";
-			}
-			[self handleMessageFromLDAP:message title:alertTitle];
-		}
-		// Regardless of the existence or non-existence of a message, display whatever results the back end gives us.
-		if ([results count] < 1) {
-			self.searchResults = nil;		
-		}
-		else {
-			self.searchResults = results;
+    if (result) {
+        if ([result isKindOfClass:[NSDictionary class]]) {
+            NSString *message = [result objectForKey:@"error"];
+            if (message) {
+                [self handleWarningMessage:message title:@"Search Failed"];
+            }
+        } else if ([result isKindOfClass:[NSArray class]]) {
+            self.searchResults = result;
 			self.searchController.searchResultsTableView.frame = self.tableView.frame;
 			[self.view addSubview:self.searchController.searchResultsTableView];
 			[self.searchBar addDropShadow];
 			
-			//self.searchController.searchResultsTableView.hidden = NO;
 			[self.searchController.searchResultsTableView reloadData];
-		}
-	}
+        }
+    }
 	else {
 		self.searchResults = nil;
 	}
 }
 
-- (void)handleConnectionFailureForRequest:(JSONAPIRequest *)request
+- (void)request:(JSONAPIRequest *)request handleConnectionError:(NSError *)error
 {
 	[self cleanUpConnection];
-	
-	UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Connection failed" 
-													 message:@"Either we are not connected or the connection timed out.  Please try again later."
-													delegate:self
-										   cancelButtonTitle:@"OK" 
-										   otherButtonTitles:nil];
-	[alert show];
-	//[self searchOverlayTapped];
-	[alert release];
+    [self.searchController setActive:YES animated:YES];
 }
 
 #pragma mark -
@@ -535,9 +515,6 @@ NSInteger strLenSort(NSString *str1, NSString *str2, void *context)
 - (void)showActionSheet
 {
 	UIActionSheet *sheet = [[UIActionSheet alloc] initWithTitle:@"Clear Recents?" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:@"Clear" otherButtonTitles:nil];
-    //MIT_MobileAppDelegate *appDelegate = (MIT_MobileAppDelegate *)[UIApplication sharedApplication].delegate;
-    
-    //[sheet showFromTabBar:appDelegate.tabBarController.tabBar];
     [sheet showInView:self.view];
     [sheet release];
 }
@@ -551,17 +528,14 @@ NSInteger strLenSort(NSString *str1, NSString *str2, void *context)
 		[self.tableView scrollRectToVisible:CGRectMake(0.0, 0.0, 1.0, 1.0) animated:YES];
 	}
 }
-/*
+
 #pragma mark Alert view delegate methods
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
-{
-	if (buttonIndex != [alertView cancelButtonIndex]) { // user hit "Dial"
-		NSURL *externURL = [NSURL URLWithString:@"tel://6174951000"];
-		[[UIApplication sharedApplication] openURL:externURL];
-	}
+{    
+    [self.searchController setActive:YES animated:YES];
 }
-*/
+
 - (void)phoneIconTappedAtIndexPath:(NSIndexPath *)indexPath
 {
 	if (indexPath.section == kPhoneDirectorySection)
@@ -573,15 +547,7 @@ NSInteger strLenSort(NSString *str1, NSString *str2, void *context)
 				[[UIApplication sharedApplication] openURL:externURL];
 		}
 	}
-	
-	/*
-	UIAlertView *alert = [[[UIAlertView alloc] initWithTitle:@"Dial 6174951000?" 
-													 message:@"" 
-													delegate:self
-										   cancelButtonTitle:@"Cancel" 
-										   otherButtonTitles:@"Dial", nil] autorelease];
-	[alert show];
-	*/
+
 }
 
 

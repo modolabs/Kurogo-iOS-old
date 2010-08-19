@@ -1,13 +1,15 @@
 #import <Foundation/Foundation.h>
-#import "PersonDetails+Methods.h"
+#import "PersonDetails.h"
+#import "JSONAPIRequest.h"
 
-
-@interface PeopleRecentsData : NSObject {
+@interface PeopleRecentsData : NSObject <JSONAPIDelegate> {
 	
 	NSMutableArray *recents;
+    NSDictionary *displayFields;
 }
 
 @property (nonatomic, retain) NSMutableArray *recents;
+@property (nonatomic, readonly) NSDictionary *displayFields;
 
 + (PersonDetails *)personWithUID:(NSString *)uid;
 + (PeopleRecentsData *)sharedData;

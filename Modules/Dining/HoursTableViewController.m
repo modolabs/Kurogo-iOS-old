@@ -237,18 +237,9 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 	[parentViewController removeLoadingIndicator];
 }
 
-
-- (void)handleConnectionFailureForRequest:(JSONAPIRequest *)request
-{
-	
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Connection Failed"
-                                                    message:@"Could not retrieve The Dining Halls Hours"
-                                                   delegate:nil
-                                          cancelButtonTitle:@"OK"
-                                          otherButtonTitles:nil];
-	
-    [alert show];
-    [alert release];
+- (BOOL)request:(JSONAPIRequest *)request shouldDisplayAlertForError:(NSError *)error {
+    return YES;
 }
+
 @end
 

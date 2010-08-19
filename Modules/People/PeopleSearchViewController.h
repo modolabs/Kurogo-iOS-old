@@ -18,11 +18,8 @@ NSInteger strLenSort(NSString *str1, NSString *str2, void *context);
 	BOOL requestWasDispatched;
 	JSONAPIRequest *api;
 	UIView *recentlyViewedHeader;
-	//SEL actionAfterAppearing;
-	//BOOL viewAppeared;
 }
 
-//- (void)prepSearchBar;
 - (void)beginExternalSearch:(NSString *)externalSearchTerms;
 - (void)performSearch;
 - (void)presentSearchResults:(NSArray *)theSearchResults;
@@ -32,8 +29,6 @@ NSInteger strLenSort(NSString *str1, NSString *str2, void *context);
 - (void)showActionSheet;
 
 @property (nonatomic, retain) UITableView *tableView;
-//@property (nonatomic, readonly) BOOL viewAppeared;
-//@property (nonatomic, assign) SEL actionAfterAppearing;
 @property (nonatomic, retain) MITSearchDisplayController *searchController;
 @property (nonatomic, retain) NSArray *searchResults;
 @property (nonatomic, retain) NSString *searchTerms;

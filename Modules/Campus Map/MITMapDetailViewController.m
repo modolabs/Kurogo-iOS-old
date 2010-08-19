@@ -457,4 +457,8 @@
 	_loadingImageView.hidden = YES;
 }
 
+- (BOOL)connection:(ConnectionWrapper *)wrapper shouldDisplayAlertForError:(NSError *)error {
+    return NO;
+}
+
 @end

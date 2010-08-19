@@ -156,6 +156,10 @@
     [appDelegate hideNetworkActivityIndicator];
 }
 
+- (BOOL)connection:(ConnectionWrapper *)wrapper shouldDisplayAlertForError:(NSError *)error {
+    return NO;
+}
+
 - (void)connection:(ConnectionWrapper *)wrapper handleConnectionFailureWithError:(NSError *)error {
     self.imageData = nil;
     [self displayImage]; // will fail to load the image, displays placeholder thumbnail instead
