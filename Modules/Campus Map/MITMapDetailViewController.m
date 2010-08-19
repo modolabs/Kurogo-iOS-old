@@ -255,6 +255,7 @@
 	// set the labels
 	_nameLabel.text = self.annotation.title;
 	_nameLabel.numberOfLines = 0;
+	_nameLabel.textColor = [UIColor colorWithHexString:@"1A1611"];
 	CGSize stringSize = [self.annotation.title sizeWithFont:_nameLabel.font 
 							   constrainedToSize:CGSizeMake(_nameLabel.frame.size.width, 200.0)
 								   lineBreakMode:UILineBreakModeWordWrap];

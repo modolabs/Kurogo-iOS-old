@@ -58,7 +58,7 @@ NSString * termText(NSString *termCode) {
 @synthesize url;
 @synthesize refreshClass;
 @synthesize classDetailsLoaded;
-@synthesize loadingView;
+@synthesize loadingView, nothingToDisplay;
 
 + (StellarDetailViewController *) launchClass: (StellarClass *)stellarClass viewController: (UIViewController *)controller {
 	StellarDetailViewController *detailViewController = [[StellarDetailViewController alloc] initWithClass:stellarClass];
@@ -261,7 +261,9 @@ NSString * termText(NSString *termCode) {
 	// determine which tabs need to be displayed
 	//[self addTabName:@"News" dataSource:[NewsDataSource viewController:self]];
 
-	if(([stellarClass.blurb length]) || ([times count] > 0)){
+	if(([stellarClass.blurb length]) || ([stellarClass.preReqs length]) || ([stellarClass.credits length])
+	   || ([stellarClass.cross_reg length]) || ([stellarClass.examGroup length]) || ([stellarClass.department length])
+	   || ([stellarClass.school length]) || ([times count] > 0)){
 		[self addTabName:@"Info" dataSource:[InfoDataSource viewController:self]];
 	}
 	if([instructors count]+[tas count]) {
@@ -369,6 +371,32 @@ NSString * termText(NSString *termCode) {
 		[self.view addSubview:loadingView];
 	}
 	else {
+		if (([self.instructors count] == 0) && ([self.times count] == 0) && ([class.blurb length] == 0)
+			&& ([class.preReqs length] == 0) && ([class.credits length] == 0) && ([class.cross_reg length] == 0) 
+			&& ([class.examGroup length] == 0) && ([class.department length] == 0) && ([class.school length] == 0)) {
+			[loadingView removeFromSuperview];
+			
+			if (nothingToDisplay != nil) 
+				[nothingToDisplay removeFromSuperview];
+			
+			nothingToDisplay = nil;
+			
+			nothingToDisplay = [[[UIView alloc] initWithFrame:CGRectMake(0.0,classAndTermHeight, 320.0, 420.0)]
+																									autorelease];
+			nothingToDisplay.backgroundColor = [UIColor whiteColor];
+			
+			UILabel *label = [[[UILabel alloc] initWithFrame:CGRectMake(0.0,classAndTermHeight, 320.0, 60.0)]
+								autorelease];
+			
+			label.text = @"No detailed information to display";
+			label.textAlignment = UITextAlignmentCenter;
+			[nothingToDisplay addSubview:label];
+			
+			[self.view addSubview:nothingToDisplay];
+			
+			
+		}
+		else
 		[self buildTabs:classAndTermHeight];	
 	}
 	
@@ -400,6 +428,11 @@ NSString * termText(NSString *termCode) {
 	}
 }
 
+-(void)hideLoadingView{
+}
+
+-(void)showLoadingView{
+}
 
 @end
 

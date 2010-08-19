@@ -319,6 +319,10 @@
 		[self.tableView release];
 		self.tableView = nil;
 		
+			if (nothingFound != nil) {
+				[nothingFound removeFromSuperview];
+			}
+		
 		if (activeEventList == CalendarEventListTypeCategory) {
 			if (nothingFound != nil) {
 				[nothingFound removeFromSuperview];
@@ -464,6 +468,9 @@
 
 - (void)setupDatePicker
 {
+	
+	NSInteger calendarButtonTag = 2487;
+	
 	if (datePicker == nil) {
 		
 		CGFloat yOffset = showScroller ? navScrollView.frame.size.height : 0.0;
@@ -474,16 +481,8 @@
 		datePickerBackground.image = [[UIImage imageNamed:@"global/subheadbar_background.png"] stretchableImageWithLeftCapWidth:0 topCapHeight:0];
 		[datePicker addSubview:datePickerBackground];
 		[datePickerBackground release];
-		
-        UIButton *showCalendar = [UIButton buttonWithType:UIButtonTypeCustom];
-        UIImage *buttonImage = [UIImage imageNamed:@"global/subheadbar_button"];
-        showCalendar.frame = CGRectMake(0, 0, buttonImage.size.width, buttonImage.size.height);
-        showCalendar.center = CGPointMake(21.0, 21.0);
-        [showCalendar setBackgroundImage:buttonImage forState:UIControlStateNormal];
-        [showCalendar setBackgroundImage:[UIImage imageNamed:@"global/subheadbar_button_pressed"] forState:UIControlEventTouchUpInside];
-        [showCalendar setImage:[UIImage imageNamed:@"global/subheadbar_calendar"] forState:UIControlStateNormal];
-        [showCalendar addTarget:self action:@selector(pickDate) forControlEvents:UIControlEventTouchUpInside];
-        [datePicker addSubview:showCalendar];
+
+		UIImage *buttonImage = [UIImage imageNamed:@"global/subheadbar_button"];
 		
 		UIButton *prevDate = [UIButton buttonWithType:UIButtonTypeCustom];
 		buttonImage = [UIImage imageNamed:@"global/subheadbar_button_previous"];
@@ -511,9 +510,25 @@
     NSInteger randomTag = 3289;
 	
 	for (UIView *view in [datePicker subviews]) {
+		
 		if (view.tag == randomTag) {
 			[view removeFromSuperview];
 		}
+		if (view.tag == calendarButtonTag)
+			[view removeFromSuperview];
+	}
+	
+	if (activeEventList != CalendarEventListTypeAcademic) {
+		UIImage *buttonImage1 = [UIImage imageNamed:@"global/subheadbar_button"];
+		UIButton *showCalendar = [UIButton buttonWithType:UIButtonTypeCustom];
+		showCalendar.frame = CGRectMake(0, 0, buttonImage1.size.width, buttonImage1.size.height);
+		showCalendar.center = CGPointMake(21.0, 21.0);
+		[showCalendar setBackgroundImage:buttonImage1 forState:UIControlStateNormal];
+		[showCalendar setBackgroundImage:[UIImage imageNamed:@"global/subheadbar_button_pressed"] forState:UIControlEventTouchUpInside];
+		[showCalendar setImage:[UIImage imageNamed:@"global/subheadbar_calendar"] forState:UIControlStateNormal];
+		[showCalendar addTarget:self action:@selector(pickDate) forControlEvents:UIControlEventTouchUpInside];
+		showCalendar.tag = calendarButtonTag;
+	[	datePicker addSubview:showCalendar];
 	}
     
 	NSString *dateText = [CalendarConstants dateStringForEventType:activeEventList forDate:startDate];
@@ -981,6 +996,9 @@
 				CGRect contentFrame = CGRectMake(0,self.view.bounds.origin.y + vertical_margin, 
 												 self.view.bounds.size.width, 
 												 self.view.bounds.size.height);
+				
+
+				nothingFound = nil;
 				
 				if (nothingFound == nil)
 					nothingFound = [[UIView alloc] initWithFrame:contentFrame];
