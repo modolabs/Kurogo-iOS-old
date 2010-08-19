@@ -4,6 +4,7 @@
 #import "CampusMapViewController.h"
 #import "MITUIConstants.h"
 #import "ModoSearchBar.h"
+#import "MITSearchDisplayController.h"
 
 @implementation CategoriesTableViewController
 @synthesize mapSelectionController = _mapSelectionController;

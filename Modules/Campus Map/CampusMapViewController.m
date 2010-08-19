@@ -676,6 +676,15 @@
 
 - (void)mapView:(MKMapView *)mapView didAddAnnotationViews:(NSArray *)views {
     _mapView.region = [self regionForAnnotations:_searchResults];
+    
+    if ([_mapView.annotations count] == 1 && [_mapView.selectedAnnotations count] == 0) {
+        id<MKAnnotation> annotation = [_mapView.annotations lastObject];
+        // check if annotation has lat/lon
+        if (![annotation isKindOfClass:[ArcGISMapAnnotation class]]
+            || ((ArcGISMapAnnotation *)annotation).dataPopulated) {
+            [_mapView selectAnnotation:[_mapView.annotations lastObject] animated:YES];
+        }
+    }
 }
 
 - (void)pushAnnotationDetails:(id <MKAnnotation>)annotation animated:(BOOL)animated
@@ -790,7 +799,6 @@
                 _hasSearchResults = NO;
                 self.navigationItem.rightBarButtonItem.title = @"Browse";
             }
-            NSLog(@"%@", [annotation description]);
             
         }
 
