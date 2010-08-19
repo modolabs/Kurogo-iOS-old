@@ -120,6 +120,7 @@ NSString * const MapsLocalPathList = @"list";
         self.campusMapVC.searchResults = self.searchResults;
         self.campusMapVC.searchBar.text = query;
         self.campusMapVC.lastSearchText = query;
+        [self.campusMapVC.searchController setActive:NO animated:NO];
         [self resetNavStack];
         didHandle = YES;
         
@@ -148,6 +149,7 @@ NSString * const MapsLocalPathList = @"list";
             self.campusMapVC.view; // make sure mapview is loaded
             self.campusMapVC.searchBar.text = saved.name;
             self.campusMapVC.lastSearchText = saved.name;
+            [self.campusMapVC.searchController setActive:NO animated:NO];
             NSArray *annotations = [NSArray arrayWithObject:annotation];
             self.campusMapVC.searchResults = annotations;
             [self resetNavStack];
@@ -182,6 +184,7 @@ NSString * const MapsLocalPathList = @"list";
         // populate search bar
         self.campusMapVC.searchBar.text = query;
         self.campusMapVC.lastSearchText = query;
+        [self.campusMapVC.searchController setActive:NO animated:NO];
         self.campusMapVC.hasSearchResults = YES;
             
         // perform the search from the network

@@ -45,6 +45,7 @@
 @synthesize searchBar = _searchBar;
 @synthesize campusMapModule = _campusMapModule;
 @synthesize searchResultsTableView = _searchResultsTableView;
+@synthesize searchController = _searchController;
 
 
 - (CGFloat)searchBarWidth {
@@ -191,6 +192,7 @@
 	[_mapView release];
 	[_toolBar release];
 	[_geoButton release];
+    [_searchController release];
     
 	[_searchResults release];
 	_searchResults = nil;
