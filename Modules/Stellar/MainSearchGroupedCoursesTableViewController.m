@@ -159,7 +159,11 @@
 	if (indexPath.row > 0)
 		stellarPreviousClass = [classes objectAtIndex:indexPath.row - 1];
 	else {
-		stellarPreviousClass = nil;
+		if ([classes count] > 1)
+			stellarPreviousClass = [classes objectAtIndex:indexPath.row + 1];
+		
+		else 
+			stellarPreviousClass = nil;
 	}
 	
 	return [StellarClassTableCell configureCell:cell withStellarClass:stellarClass previousClassInList:stellarPreviousClass];

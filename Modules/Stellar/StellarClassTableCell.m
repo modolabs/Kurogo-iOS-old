@@ -1,6 +1,7 @@
 #import "StellarClassTableCell.h"
 #import "UITableViewCell+MITUIAdditions.h"
 #import "MITUIConstants.h"
+#import "StellarStaffMember.h"
 
 
 @implementation StellarClassTableCell
@@ -13,18 +14,25 @@
 	} else {
 		name = class.masterSubjectId;
 	}
-	/*NSArray *instructors = [[[class.staff allObjects]
-	  filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"type like 'instructor'"]]
-	 sortedArrayUsingDescriptors:[NSArray arrayWithObject:[[[NSSortDescriptor alloc] initWithKey:@"name" ascending:YES] autorelease]]];
+	NSArray *instructors = [[[class.staff allObjects]
+						 filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"type like 'instructor'"]]
+						sortedArrayUsingDescriptors:[NSArray arrayWithObject:[[[NSSortDescriptor alloc] initWithKey:@"name" ascending:YES] autorelease]]];
 	
-	(StellarStaffMember *)[instructors objectAtIndex:indexPath.row]
+	NSString *staffName = @"";
+	
+	for (int ind = 0; ind < [instructors count]; ind++) {
+	 staffName = [staffName stringByAppendingFormat:@"%@", ((StellarStaffMember *)[instructors objectAtIndex:ind]).name];
+		
+		if (ind < [instructors count] -1)
+			staffName = [staffName stringByAppendingFormat:@", "];
+	}
 	
 	if (prevClass != nil) {
 		if ([prevClass.name length]) {
-			if ([prevClass.name isEqualToString:[class.name]])
-				name = [name stringByAppendingFormat:@" (%@)", [[[class.staff allObjects]]   ];
+			if ([prevClass.name isEqualToString:class.name])
+				name = [name stringByAppendingFormat:@" (%@)", staffName];
 		}
-	}*/
+	}
 	
 	/*if ([[name substringToIndex:1] isEqualToString:@"0"])
 		name = [name substringFromIndex:1];*/

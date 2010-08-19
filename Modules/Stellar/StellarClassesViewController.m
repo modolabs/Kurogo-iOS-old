@@ -123,28 +123,15 @@
 
 	self.currentClassLoader = [[LoadClassesInTable new] autorelease];
 	self.currentClassLoader.tableController = self;
-	
-	//[self.tableView applyStandardCellHeight];
+
 	[harvardClassesTableView applyStandardCellHeight];
-	
-	//self.loadingView = [[[MITLoadingActivityView alloc] initWithFrame:self.tableView.frame] autorelease];
-	self.loadingView = [[[MITLoadingActivityView alloc] initWithFrame:self.harvardClassesTableView.frame xDimensionScaling:2 yDimensionScaling:2.5] autorelease];
-	
+
+	self.loadingView = [[[MITLoadingActivityView alloc] initWithFrame:self.harvardClassesTableView.frame xDimensionScaling:2 yDimensionScaling:2.5] autorelease];	
 	[self showLoadingView];
 	
 	[StellarModel loadClassesForCourse:course delegate:self.currentClassLoader];
 	
 	[url setPathWithViewController:self extension:course.number];
-	
-	/*if ([self.navigationItem.backBarButtonItem.title isEqualToString:@"Faculty of Arts and Sciences"]) {
-		self.navigationItem.backBarButtonItem.title = @"FAS";
-	}*/
-	
-	/*NSString *str = self.navigationItem.backBarButtonTitle;
-	
-	int r= 4;
-	int i = r*r;*/
-
 }
 
 - (void) viewDidAppear: (BOOL)animated {
@@ -164,11 +151,29 @@
 	
 	StellarClass *stellarClass = [classes objectAtIndex:indexPath.row];
 	StellarClass *stellarPreviousClass;
+	StellarClass *stellarNextClass;
 	
-	if (indexPath.row > 0)
+	if (indexPath.row > 0) {
+		
+		// Some logic to ensure that either the pevious or the next class is passed to the configurCell function
 		stellarPreviousClass = [classes objectAtIndex:indexPath.row - 1];
+		
+		if ([classes count] > indexPath.row + 1) 
+			stellarNextClass = [classes objectAtIndex:indexPath.row + 1];
+		
+		else
+			stellarNextClass = stellarPreviousClass;
+		
+		if (![stellarPreviousClass.name isEqualToString:stellarClass.name])
+			stellarPreviousClass = stellarNextClass;
+
+	}
 	else {
-		stellarPreviousClass = nil;
+		if ([classes count] > 1)
+			stellarPreviousClass = [classes objectAtIndex:indexPath.row + 1];
+		
+		else 
+			stellarPreviousClass = nil;
 	}
 
 									

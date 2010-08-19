@@ -505,8 +505,8 @@ enum CalendarDetailRowTypes {
                 
                 CLLocationCoordinate2D coord = CLLocationCoordinate2DMake([event.latitude floatValue], [event.longitude floatValue]);
                 ArcGISMapAnnotation *annotation = [[[ArcGISMapAnnotation alloc] initWithCoordinate:coord] autorelease];
-                annotation.name = event.title;
-                annotation.uniqueID = [NSString stringWithFormat:@"%@@%.4f,%.4f", event.title, coord.latitude, coord.longitude];
+                annotation.name = event.location;
+                annotation.uniqueID = [NSString stringWithFormat:@"%@@%.4f,%.4f", event.location, coord.latitude, coord.longitude];
                 [[MapBookmarkManager defaultManager] saveAnnotationWithoutBookmarking:annotation];
                 
                 NSURL *internalURL = [NSURL internalURLWithModuleTag:CampusMapTag
