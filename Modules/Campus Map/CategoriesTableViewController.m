@@ -107,6 +107,9 @@
     [self.mapSelectionController.mapVC setSearchResults:searchResultsArray];
     self.mapSelectionController.mapVC.searchBar.text = annotation.name;
     
+    // in case they still have the overlay up from another search
+    [self.mapSelectionController.mapVC.searchController hideSearchOverlayAnimated:NO];
+    
     // on the map, select the current annotation
     [[self.mapSelectionController.mapVC mapView] selectAnnotation:annotation animated:NO];
     

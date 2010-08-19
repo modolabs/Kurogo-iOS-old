@@ -127,12 +127,9 @@
 	} else {
 		search = self.annotation.street;
         
-        NSString *city = [self.annotation.attributes objectForKey:@"city"];
-		if (city == nil) {
-			search = [search stringByAppendingString:@", Cambridge, MA"];
-		} else {
-			search = [search stringByAppendingFormat:@", %@", city];
-		}
+        NSString *city = [self.annotation.attributes objectForKey:@"City"];
+        NSString *state = [self.annotation.attributes objectForKey:@"State"];
+        search = [search stringByAppendingFormat:@",%@+%@", city, state];
 	}
 	
 	NSString *url = [NSString stringWithFormat: @"http://maps.google.com/maps?q=%@", [search stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
