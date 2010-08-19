@@ -304,15 +304,15 @@ NSString* cleanPersonName(NSString *personName);
 		
 		
 		NSArray *instructors = (NSArray *)[staff objectForKey:@"instructors"];
-		NSArray *tas = (NSArray *)[staff objectForKey:@"tas"];
+		//NSArray *tas = (NSArray *)[staff objectForKey:@"tas"];
 		for(NSString *staff in instructors) {
 			if ([staff length] > 0)
 				[stellarClass addStaffObject:[StellarModel stellarStaffFromName:staff class:stellarClass type:@"instructor"]];
 		}
-		for(NSString *staff in tas) {
+		/*for(NSString *staff in tas) {
 			if ([staff length] > 0)
 				[stellarClass addStaffObject:[StellarModel stellarStaffFromName:staff class:stellarClass type:@"ta"]];
-		}
+		}*/
 
 		// add the annoucements
 		/*NSArray *annoucements;
