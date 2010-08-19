@@ -45,6 +45,7 @@
         && [jsonDelegate respondsToSelector:@selector(alertView:clickedButtonAtIndex:)]) {
         [(id<UIAlertViewDelegate>)jsonDelegate alertView:alertView clickedButtonAtIndex:buttonIndex];
     }
+    [self autorelease];
 }
 
 - (void)abortRequest {
@@ -52,8 +53,8 @@
 		[((MIT_MobileAppDelegate *)[[UIApplication sharedApplication] delegate]) hideNetworkActivityIndicator];
 		[connectionWrapper cancel];
 		self.connectionWrapper = nil;
+        [self autorelease];
 	}
-	[self safeReleaseSelf];
 }
 
 - (BOOL)requestObjectFromModule:(NSString *)moduleName command:(NSString *)command parameters:(NSDictionary *)parameters {
@@ -76,9 +77,9 @@
 }
 
 - (BOOL)requestObject:(NSDictionary *)parameters pathExtension:(NSString *)extendedPath {
-	[self safeRetainSelf]; // retain self until connection completes;
+    [self retain];
 	
-	self.params = parameters;
+    self.params = parameters;
 	
 	NSString *path;
 	if(extendedPath) {
@@ -91,7 +92,7 @@
 	
 	self.connectionWrapper = [[[ConnectionWrapper alloc] initWithDelegate:self] autorelease];
 	BOOL requestSuccessfullyBegun = [connectionWrapper requestDataFromURL:[JSONAPIRequest buildURL:self.params queryBase:path]];
-	
+
 	[((MIT_MobileAppDelegate *)[[UIApplication sharedApplication] delegate]) showNetworkActivityIndicator];
 	
 	if(!requestSuccessfullyBegun) {
@@ -120,8 +121,7 @@
 
 #pragma mark ConnectionWrapper delegation
 
--(void)connection:(ConnectionWrapper *)wrapper handleData:(NSData *)data {
-	//DLog(@"Loaded data as string: %@", [[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding] autorelease]);
+- (void)connection:(ConnectionWrapper *)wrapper handleData:(NSData *)data {
     NSError *error = nil;
 	id result = [JSONAPIRequest objectWithJSONData:data error:&error];
 	if (error) {
@@ -136,8 +136,9 @@
 		[((MIT_MobileAppDelegate *)[[UIApplication sharedApplication] delegate]) hideNetworkActivityIndicator];
 		[jsonDelegate request:self jsonLoaded:result];
         self.connectionWrapper = nil;
-		[self safeReleaseSelf];
 	}
+    
+    [self autorelease];
 }
 
 - (void)connection:(ConnectionWrapper *)wrapper handleConnectionFailureWithError: (NSError *)error {
@@ -149,7 +150,10 @@
 	if([jsonDelegate respondsToSelector:@selector(request:handleConnectionError:)]) {
 		[jsonDelegate request:self handleConnectionError:error];
 	}
-	[self safeReleaseSelf];
+    
+    if (![self connection:wrapper shouldDisplayAlertForError:error]) {
+        [self autorelease];
+    }
 }
 
 - (void)connection:(ConnectionWrapper *)wrapper madeProgress:(CGFloat)progress {
@@ -159,10 +163,11 @@
 }
 
 - (BOOL)connection:(ConnectionWrapper *)wrapper shouldDisplayAlertForError:(NSError *)error {
+    BOOL shouldDisplay = NO;
     if ([jsonDelegate respondsToSelector:@selector(request:shouldDisplayAlertForError:)]) {
-        [jsonDelegate request:self shouldDisplayAlertForError:error];
+        shouldDisplay = [jsonDelegate request:self shouldDisplayAlertForError:error];
     }
-    return NO;
+    return shouldDisplay;
 }
 
 #pragma mark JSON object
@@ -195,24 +200,6 @@
 + (id)objectWithJSONData:(NSData *)jsonData {
     NSString *jsonString = [[[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding] autorelease];
     return [JSONAPIRequest objectWithJSONString:jsonString error:NULL];
-}
-
-// TODO: this should really not happen.
-// it is a bug we have to fix, not allow to fail silently.
-
-- (void)safeReleaseSelf {
-	// If we release self after already having released self, we may cause a crash.
-	// (This can happen if a client calls abortRequest after connection:handleData: has already been hit. Both methods
-	// try to release self.)
-	if (haveRetainedSelf) {
-		[self release];		
-		haveRetainedSelf = NO;
-	}
-}
-
-- (void)safeRetainSelf {
-	[self retain];
-	haveRetainedSelf = YES;
 }
 
 @end
