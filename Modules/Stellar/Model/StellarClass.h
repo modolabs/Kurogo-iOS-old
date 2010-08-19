@@ -29,6 +29,7 @@
 @property (nonatomic, retain) NSString *examGroup;
 @property (nonatomic, retain) NSString *department;
 @property (nonatomic, retain) NSString *school;
+@property (nonatomic, retain) NSString *school_short;
 @property (nonatomic, retain) NSNumber *order;
 
 @end

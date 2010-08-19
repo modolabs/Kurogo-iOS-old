@@ -253,6 +253,10 @@ NSString* cleanPersonName(NSString *personName);
 		}
 		if ([aDict objectForKey:@"school"]) {
 			stellarClass.school = [aDict objectForKey:@"school"];
+			stellarClass.school_short = [aDict objectForKey:@"school"];
+		} 
+		if ([aDict objectForKey:@"short_name"]) {
+			stellarClass.school_short = [aDict objectForKey:@"short_name"];
 		}
 		
 		stellarClass.term = [aDict objectForKey:@"term"];
