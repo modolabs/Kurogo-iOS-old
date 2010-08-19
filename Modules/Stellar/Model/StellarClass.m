@@ -27,6 +27,7 @@
 @dynamic examGroup;
 @dynamic department;
 @dynamic school;
+@dynamic school_short;
 @dynamic order;
 
 @end

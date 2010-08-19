@@ -22,6 +22,7 @@ ClassesSearchDelegate> {
 
 @property (nonatomic, retain) NSArray *lastResults;
 @property (nonatomic, readonly) BOOL activeMode;
+@property (nonatomic, retain) NSMutableDictionary *groups;
 
 - (id) initWithViewController: (StellarMainTableController *)controller;
 

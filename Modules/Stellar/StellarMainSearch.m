@@ -14,6 +14,7 @@
 
 @synthesize lastResults;
 @synthesize activeMode;
+@synthesize groups;
 
 - (BOOL) isSearchResultsVisible {
 	return hasSearchInitiated && activeMode;
@@ -45,7 +46,7 @@
 #pragma mark UITableViewDataSource methods
 
 - (NSInteger) tableView: (UITableView *)tableView numberOfRowsInSection: (NSInteger)section {
-	return [groups count];//[lastResults count];
+	return [self.groups count];//[lastResults count];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)aTableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -56,8 +57,9 @@
 	
 	cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 	cell.selectionStyle = UITableViewCellSelectionStyleGray;
-	NSString *key = [[groups allKeys] objectAtIndex: indexPath.row];
-	cell.textLabel.text =  [[groups valueForKey:key] description];
+
+	NSString *key =[[self.groups allKeys] objectAtIndex: indexPath.row];
+	cell.textLabel.text =  [[self.groups valueForKey:key] description];
 	cell.detailTextLabel.text = [[schoolNameToShortNames valueForKey:key] description];
 	cell.detailTextLabel.font = [UIFont fontWithName:STANDARD_FONT size:STANDARD_CONTENT_FONT_SIZE];
 
@@ -81,13 +83,9 @@
 }*/
 
 - (UIView *) tableView: (UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
-	NSString *headerTitle = nil;
 	
 	if([lastResults count]) {
-		if (actualCount > [lastResults count])
-			headerTitle =  [NSString stringWithFormat:@"Displaying %i of many", [lastResults count]];
-		
-		headerTitle = [NSString stringWithFormat:@"%i found", [lastResults count]];
+
 		return [[UIView alloc] initWithFrame: CGRectMake(0, 0, 320.0, UNGROUPED_SECTION_HEADER_HEIGHT + 15.0)];
 	}
 	return nil;
@@ -111,7 +109,7 @@
 	[vc setCourseGroupString:cell.detailTextLabel.text];
 	[vc setSearchString: viewController.searchController.searchBar.text];
 
-	[StellarModel executeStellarSearch:viewController.searchController.searchBar.text courseGroupName:[[groups allKeys] objectAtIndex: indexPath.row] courseName:@"" delegate:vc];
+	[StellarModel executeStellarSearch:viewController.searchController.searchBar.text courseGroupName:[[self.groups allKeys] objectAtIndex: indexPath.row] courseName:@"" delegate:vc];
 	
 
 }
@@ -124,7 +122,8 @@
 		actualCount = actual_count;
 		self.lastResults = classes;
 		
-		groups = [self uniqueCourseGroups];
+		self.groups = nil;
+		self.groups = [self uniqueCourseGroups];
 		
 		if ([classes count] > 0)
 			viewController.searchController.searchResultsTableView = resultsTableView;
@@ -180,8 +179,8 @@
 }
 
 - (void) handleTooManySearchResultsForMainSearch: (id)object {
-		
-	groups = [self uniqueCourseGroupsForCountDisplayOnly: (id) object];
+	self.groups = nil;
+	self.groups = [self uniqueCourseGroupsForCountDisplayOnly: (id) object];
 		
 		viewController.searchController.searchResultsTableView = resultsTableView;
 		
@@ -198,16 +197,22 @@
 
 -(NSMutableDictionary *) uniqueCourseGroups{
 	//((StellarClass *)[self.lastResults objectAtIndex:indexPath.row]).school;
+	schoolNameToShortNames = nil;
+	if (schoolNameToShortNames == nil)
+		schoolNameToShortNames = [[NSMutableDictionary alloc] init];
 	
-	NSMutableArray *tempArray = [[NSMutableArray alloc] init];
-	NSMutableDictionary *tempDict = [[NSMutableDictionary alloc] init];
+	NSMutableArray *tempArray = [[[NSMutableArray alloc] init] autorelease];
+	NSMutableDictionary *tempDict = [[[NSMutableDictionary alloc] init] autorelease];
 	
 	for (int index=0; index < [self.lastResults count]; index++) {
 		
 		if (![tempArray containsObject:((StellarClass *)[self.lastResults objectAtIndex:index]).school]) {
 			[tempArray addObject:((StellarClass *)[self.lastResults objectAtIndex:index]).school];
 			NSNumber *count = [NSNumber numberWithInt:1];
+			
 			[tempDict setObject:count forKey:((StellarClass *)[self.lastResults objectAtIndex:index]).school];
+			[schoolNameToShortNames setObject:((StellarClass *)[self.lastResults objectAtIndex:index]).school_short 
+									   forKey:((StellarClass *)[self.lastResults objectAtIndex:index]).school];
 		}
 		
 		else {
@@ -219,13 +224,13 @@
 		}
 
 		
-	}
-	
+	}	
 	return tempDict;	
 }
 
 
 -(NSMutableDictionary *) uniqueCourseGroupsForCountDisplayOnly:(id) object {
+	schoolNameToShortNames = nil;
 	if (schoolNameToShortNames == nil)
 		schoolNameToShortNames = [[NSMutableDictionary alloc] init];
 	
