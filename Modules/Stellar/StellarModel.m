@@ -227,6 +227,10 @@ NSString* cleanPersonName(NSString *personName);
 	StellarClass *stellarClass = [StellarModel classWithMasterId:[aDict objectForKey:@"masterId"]];
 	
 	NSString *name = [aDict objectForKey:@"name"];
+	
+	/*if ([[name substringToIndex:1] isEqualToString:@"0"])
+	 name = [name substringFromIndex:1];*/
+
 	// if name is not defined do not attempt to overwrite with new information
 	if([name length]) {
 		if (index >= 0)
