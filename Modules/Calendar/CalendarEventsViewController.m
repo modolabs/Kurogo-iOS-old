@@ -244,7 +244,6 @@
 
 	theMapView.events = someEvents;
 	((EventListTableView *)self.tableView).events = someEvents;
-	self.tableView.separatorColor = TABLE_SEPARATOR_COLOR;
 }
 
 - (void)returnToTodayAndReload {
@@ -274,9 +273,15 @@
 
 - (void)reloadView:(CalendarEventListType)listType {
 	
+    if (isFederatedSearch) {
+        return;
+    }
+    
 	[self abortExtraneousRequest];
-	[searchResultsMapView removeFromSuperview];
-	[searchResultsTableView removeFromSuperview];
+    
+    [searchResultsMapView removeFromSuperview];
+    [searchResultsTableView removeFromSuperview];
+    
     [self.tableView removeFromSuperview];
     
 	BOOL requestNeeded = YES;
@@ -376,11 +381,9 @@
 				}
 
 				theMapView.events = self.events;
-                self.tableView.separatorColor = TABLE_SEPARATOR_COLOR;
 				[self.tableView reloadData];
                 requestNeeded = NO;
 			} else {
-				self.tableView.separatorColor = [UIColor whiteColor];
 				requestNeeded = YES;
 			}
 			
@@ -593,6 +596,7 @@
     if (searchResultsTableView.events == nil) {
 		[self searchBarCancelButtonClicked:theSearchBar];
 	}
+    isFederatedSearch = NO;
 }
 
 - (void)presentSearchResults:(NSArray *)results searchText:(NSString *)searchText searchSpan:(NSString *)searchSpan
@@ -601,17 +605,25 @@
     [theSearchBar resignFirstResponder];
     theSearchBar.text = searchText;
     
+    isFederatedSearch = YES;
+    
+    // make sure both map and list are populated if user wants to switch
+    // but only one is shown
     if (showList) {
+        [self showSearchResultsMapView];
+        searchResultsMapView.events = results;
+        
         [self showSearchResultsTableView];
-        searchResultsTableView.events = results;
         searchResultsTableView.searchSpan = searchSpan;
+        searchResultsTableView.events = results;
     } else {
+        [self showSearchResultsTableView];
+        searchResultsTableView.searchSpan = searchSpan;
+        searchResultsTableView.events = results;
+        
         [self showSearchResultsMapView];
         searchResultsMapView.events = results;
     }
-    
-    NSLog(@"%@", [searchResultsTableView description]);
-    NSLog(@"%@", [self.view.subviews description]);
 }
 
 #pragma mark Search delegate
@@ -625,9 +637,8 @@
 {	
 	[self abortExtraneousRequest];
 	[self hideSearchBar];
+    isFederatedSearch = NO;
     
-	[searchResultsTableView removeFromSuperview];
-	[searchResultsMapView removeFromSuperview];
 	[self reloadView:activeEventList];
 }
 
@@ -655,6 +666,7 @@
 
 	if (searchResultsTableView == nil) {
 		searchResultsTableView = [[EventListTableView alloc] initWithFrame:CGRectMake(0.0, theSearchBar.frame.size.height, self.view.frame.size.width, self.view.frame.size.height - theSearchBar.frame.size.height)];
+        searchResultsTableView.isSearchResults = YES;
 		searchResultsTableView.parentViewController = self;
 		searchResultsTableView.delegate = searchResultsTableView;
 		searchResultsTableView.dataSource = searchResultsTableView;
@@ -805,7 +817,6 @@
 	if (requestDispatched) {
 		if (showList) {
 			searchResultsTableView.events = nil;
-			searchResultsTableView.separatorColor = [UIColor whiteColor];
             searchResultsTableView.isSearchResults = NO;
 			[searchResultsTableView reloadData];
 			[self showSearchResultsTableView];
@@ -933,7 +944,6 @@
 			NSArray *eventsArray = [NSArray arrayWithArray:arrayForTable];
 			searchResultsMapView.events = eventsArray;
 			searchResultsTableView.events = eventsArray;
-			searchResultsTableView.separatorColor = TABLE_SEPARATOR_COLOR;		
 			searchResultsTableView.searchSpan = resultSpan;
 			searchResultsTableView.isSearchResults = YES;
             [searchController hideSearchOverlayAnimated:YES]; // this isn't actually visible, but it releases the overlay object
@@ -1050,7 +1060,6 @@
 		}
 		
 		if (showList) {
-            self.tableView.separatorColor = TABLE_SEPARATOR_COLOR;
 			if (activeEventList == CalendarEventListTypeAcademic) {
 				((EventListTableView *)self.tableView).isAcademic = YES;
 			}

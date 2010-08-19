@@ -46,6 +46,7 @@ NSString * const NewsLocalPathBookmarks = @"bookmarks";
     if ([localPath isEqualToString:LocalPathFederatedSearch]) {
         // fedsearch?query
         self.selectedResult = nil;
+        storyListChannelController.view;
         storyListChannelController.totalAvailableResults = self.xmlParser.totalAvailableResults;
         [storyListChannelController presentSearchResults:self.searchResults searchText:query];
         [self resetNavStack];

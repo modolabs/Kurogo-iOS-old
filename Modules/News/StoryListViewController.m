@@ -780,7 +780,7 @@ static NSInteger numTries = 0;
 	UIView *titleView = nil;
 	
 	if (section == 0 && self.searchResults) {
-		titleView = [UITableView ungroupedSectionHeaderWithTitle:[NSString stringWithFormat:@"%d found", totalAvailableResults]];
+		titleView = [UITableView ungroupedSectionHeaderWithTitle:[NSString stringWithFormat:@"Showing %d of %d", [self.searchResults count], totalAvailableResults]];
 	}
 	
     return titleView;
