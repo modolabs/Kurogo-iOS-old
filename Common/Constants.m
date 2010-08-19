@@ -133,5 +133,5 @@ NSString * const MITImageNameBookmark = @"global/bookmark.png";
 // errors
 NSString * const MapsErrorDomain = @"com.modolabs.Maps.ErrorDomain";
 NSString * const ShuttlesErrorDomain = @"com.modolabs.Shuttles.ErrorDomain";
-
+NSString * const JSONErrorDomain = @"com.modolabs.JSON.ErrorDomain";
 

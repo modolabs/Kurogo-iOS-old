@@ -361,6 +361,10 @@ static NSString * const TwitterServiceName = @"Twitter";
     [self updateTwitterSessionUI];
 }
 
+- (BOOL)connection:(ConnectionWrapper *)connection shouldDisplayAlertForError:(NSError *)error {
+    return YES;
+}
+
 - (void)connection:(ConnectionWrapper *)wrapper handleConnectionFailureWithError:(NSError *)error {
     MIT_MobileAppDelegate *appDelegate = (MIT_MobileAppDelegate *)[[UIApplication sharedApplication] delegate];
     [appDelegate hideNetworkActivityIndicator];

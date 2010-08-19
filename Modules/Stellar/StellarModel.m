@@ -429,7 +429,7 @@ NSString* cleanPersonName(NSString *personName);
 	[super dealloc];
 }
 
-- (void)handleConnectionFailureForRequest:(JSONAPIRequest *)request {
+- (void)request:(JSONAPIRequest *)request handleConnectionError:(NSError *)error {
 	[self.coursesLoadedDelegate handleCouldNotReachStellar];
 }
 
@@ -458,8 +458,8 @@ NSString* cleanPersonName(NSString *personName);
 	}
 }
 
-- (void)handleConnectionFailureForRequest:(JSONAPIRequest *)request {
-	[classesRequest handleConnectionFailureForRequest:request];
+- (void)request:(JSONAPIRequest *)request handleConnectionError:(NSError *)error {
+	[classesRequest request:request handleConnectionError:error];
 }
 
 @end
@@ -502,7 +502,7 @@ NSString* cleanPersonName(NSString *personName);
 	[super dealloc];
 }
 
-- (void)handleConnectionFailureForRequest:(JSONAPIRequest *)request {
+- (void)request:(JSONAPIRequest *)request handleConnectionError:(NSError *)error {
 	[self.classesLoadedDelegate handleCouldNotReachStellar];
 }
 
@@ -558,7 +558,7 @@ NSString* cleanPersonName(NSString *personName);
 	[super dealloc];
 }
 
-- (void)handleConnectionFailureForRequest:(JSONAPIRequest *)request {
+- (void)request:(JSONAPIRequest *)request handleConnectionError:(NSError *)error {
 	[classesSearchDelegate handleCouldNotReachStellarWithSearchTerms:searchTerms];
 }
 
@@ -591,7 +591,7 @@ NSString* cleanPersonName(NSString *personName);
 	[self.classInfoLoadedDelegate finalAllClassInfoLoaded:class];
 }
 
-- (void)handleConnectionFailureForRequest:(JSONAPIRequest *)request {
+- (void)request:(JSONAPIRequest *)request handleConnectionError:(NSError *)error {
 	[self.classInfoLoadedDelegate handleCouldNotReachStellar];
 }
 
@@ -633,7 +633,7 @@ NSString* cleanPersonName(NSString *personName);
 	}
 }
 
--(void)handleConnectionFailureForRequest:(JSONAPIRequest *)request {
+- (void)request:(JSONAPIRequest *)request handleConnectionError:(NSError *)error {
 	return;
 }
 

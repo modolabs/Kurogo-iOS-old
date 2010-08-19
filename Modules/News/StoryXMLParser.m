@@ -272,6 +272,10 @@ NSString * const NewsTagFullURL         = @"url";
 	}
 }
 
+- (BOOL)connection:(ConnectionWrapper *)wrapper shouldDisplayAlertForError:(NSError *)error {
+    return NO;
+}
+
 - (void)connection:(ConnectionWrapper *)wrapper handleConnectionFailureWithError:(NSError *)error {
 	[self performSelectorOnMainThread:@selector(downloadError:) withObject:error waitUntilDone:NO];
 	done = YES;

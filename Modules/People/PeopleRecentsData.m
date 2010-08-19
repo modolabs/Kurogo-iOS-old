@@ -1,11 +1,9 @@
 #import "PeopleRecentsData.h"
 #import "CoreDataManager.h"
-#import "PersonDetail.h"
-#import "PersonDetails+Methods.h"
 
 @implementation PeopleRecentsData
 
-@synthesize recents;
+@synthesize recents, displayFields;
 
 static PeopleRecentsData *instance = nil;
 
@@ -60,12 +58,29 @@ static PeopleRecentsData *instance = nil;
 
 - (id)init
 {
+	NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+	NSString *ldapDisplayFile = [[paths objectAtIndex:0] stringByAppendingPathComponent:@"ldapDisplayFields.plist"];
+    displayFields = [[NSDictionary dictionaryWithContentsOfFile:ldapDisplayFile] retain];
+    BOOL needsUpdate = YES;
+    if (displayFields != nil) {
+        NSError *error = nil;
+        NSDictionary *fileInfo = [[NSFileManager defaultManager] attributesOfItemAtPath:ldapDisplayFile error:&error];
+        if (fileInfo && [[NSDate date] timeIntervalSinceDate:[fileInfo objectForKey:NSFileModificationDate]] <= 86400) {
+            needsUpdate = NO;
+        }
+    }
+    
+    if (needsUpdate) {
+        JSONAPIRequest *request = [JSONAPIRequest requestWithJSONAPIDelegate:self];
+        [request requestObjectFromModule:@"people" command:@"displayFields" parameters:nil];
+    }
+    
 	recents = [[NSMutableArray alloc] initWithCapacity:0];
 	NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"lastUpdate" ascending:NO];
 	for (PersonDetails *person in [CoreDataManager fetchDataForAttribute:PersonDetailsEntityName 
 														  sortDescriptor:sortDescriptor]) {
 		// if the person's result was viewed over X days ago, remove it
-		if ([[person actualValueForKey:@"lastUpdate"] timeIntervalSinceNow] < -1500000) {
+		if ([[person valueForKey:@"lastUpdate"] timeIntervalSinceNow] < -1500000) {
 			[CoreDataManager deleteObject:person]; // this invokes saveData
 		} else {
 			[recents addObject:person]; // store in memory
@@ -83,43 +98,36 @@ static PeopleRecentsData *instance = nil;
 	[[[self sharedData] recents] removeAllObjects];
 }
 
+// TODO: this should become an instance method of PersonDetails
+// rather than a method that modifies PersonDetails objects as a side effect
 + (PersonDetails *)updatePerson:(PersonDetails *)personDetails withSearchResult:(NSDictionary *)searchResult
 {    
 	[personDetails setValue:[NSDate date] forKey:@"lastUpdate"];
 	
-	NSArray *fetchTags = [NSArray arrayWithObjects:
-						  @"uid", @"givenname", @"sn", @"title", @"ou", @"mail", @"telephonenumber", // @"homephone", 
-						  @"facsimiletelephonenumber", @"postaladdress", //@"room", @"address", @"city", @"state", 
-						  nil];
-	
+    NSArray *fetchTags = [[[PeopleRecentsData sharedData] displayFields] allKeys];
+    
 	for (NSString *key in fetchTags) {
         // if someone has multiple emails/phones join them into a string
         NSString *value = [PersonDetails joinedValueFromPersonDetailsJSONDict:searchResult forKey:key];
 		if (value) {
-            PersonDetail *personDetail = (PersonDetail *)[CoreDataManager insertNewObjectForEntityForName:PersonDetailEntityName];
-            personDetail.Value = value;
-			id detailJSONObject = [searchResult objectForKey:key];
-			if ([detailJSONObject respondsToSelector:@selector(objectForKey:)])
-			{
-				personDetail.DisplayName = [detailJSONObject objectForKey:@"DisplayName"];
-			}
-			// we need to figure out which fields return multiple values
-			[personDetails setValue:personDetail forKey:key];
+			[personDetails setValue:value forKey:key];
 		}        
 	}
+    
+    NSLog(@"%@", [personDetails description]);
 
 	// the "id" field we receive from mobi is either the unix uid (more
 	// common) or something derived from another field (ldap "dn"), the
 	// former has an 8 char limit but the uids that come from some LDAP servers  
 	// will sometimes have a non-unique first eight characters. So, we used to 
 	// trim it down to 8, but now we let it go longer.
-	personDetails.uid.Value = [PersonDetails trimUID:[personDetails actualValueForKey:@"uid"]];;
+	personDetails.uid = [PersonDetails trimUID:[personDetails valueForKey:@"uid"]];;
 	
 	// put latest person on top; remove if the person is already there
 	NSMutableArray *recentsData = [[self sharedData] recents];
 	for (NSInteger i = 0; i < [recentsData count]; i++) {
 		PersonDetails *oldPerson = [recentsData objectAtIndex:i];
-		if ([[oldPerson actualValueForKey:@"uid"] isEqualToString:[personDetails actualValueForKey:@"uid"]]) {
+		if ([[oldPerson valueForKey:@"uid"] isEqualToString:[personDetails valueForKey:@"uid"]]) {
 			[recentsData removeObjectAtIndex:i];
 			break;
 		}
@@ -140,6 +148,18 @@ static PeopleRecentsData *instance = nil;
 	[self updatePerson:personDetails withSearchResult:searchResult];
 	
 	return personDetails;
+}
+
+- (void)request:(JSONAPIRequest *)request jsonLoaded:(id)result {
+    if (result && [result isKindOfClass:[NSDictionary class]]) {
+        displayFields = [result retain];
+        NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+        NSString *ldapDisplayFile = [[paths objectAtIndex:0] stringByAppendingPathComponent:@"ldapDisplayFields.plist"];
+        BOOL saved = [displayFields writeToFile:ldapDisplayFile atomically:YES];
+        if (!saved) {
+            NSLog(@"could not save file with contents %@", [displayFields description]);
+        }
+    }
 }
 
 @end

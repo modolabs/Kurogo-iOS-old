@@ -134,6 +134,10 @@
     [appDelegate hideNetworkActivityIndicator];
 }
 
+- (BOOL)connection:(ConnectionWrapper *)wrapper shouldDisplayAlertForError:(NSError *)error {
+    return NO;
+}
+
 - (void)dealloc {
 	[connection cancel];
     [connection release];

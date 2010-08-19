@@ -1041,22 +1041,18 @@
 	}
 }
 
+- (BOOL)request:(JSONAPIRequest *)request shouldDisplayAlertForError:(NSError *)error {
+    return YES;
+}
+
 - (void)alertView:(UIAlertView *)alertView willDismissWithButtonIndex:(NSInteger)buttonIndex {
     [searchController setActive:YES animated:YES];
 }
 
-- (void)handleConnectionFailureForRequest:(JSONAPIRequest *)request
+- (void)request:(JSONAPIRequest *)request handleConnectionError:(NSError *)error
 {
 	requestDispatched = NO;
     [self removeLoadingIndicator];
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Connection Failed"
-                                                    message:@"Could not retrieve events from server"
-                                                   delegate:nil
-                                          cancelButtonTitle:@"OK"
-                                          otherButtonTitles:nil];
-
-    [alert show];
-    [alert release];
 }
 
 

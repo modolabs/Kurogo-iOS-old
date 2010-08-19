@@ -962,20 +962,9 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 	
 }
 
-- (void)handleConnectionFailureForRequest:(JSONAPIRequest *)request
-{
-	
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Connection Failed"
-                                                    message:@"Could not retrieve Dining Hall Menus"
-                                                   delegate:nil
-                                          cancelButtonTitle:@"OK"
-                                          otherButtonTitles:nil];
-	
-    [alert show];
-    [alert release];
+- (BOOL)request:(JSONAPIRequest *)request shouldDisplayAlertForError:(NSError *)error {
+    return YES;
 }
-
-
 
 #pragma mark -
 #pragma mark DatePickerViewControllerDelegate functions

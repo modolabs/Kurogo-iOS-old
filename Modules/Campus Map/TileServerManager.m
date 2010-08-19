@@ -159,7 +159,6 @@ static NSString * s_tileServerFilename = @"tileServer.plist";
         
         if (_serverInfo != nil) {
             NSDate *date = [_serverInfo objectForKey:@"lastupdated"];
-            //NSLog(@"%@", _serverInfo);
             if ([[NSDate date] timeIntervalSinceDate:date] <= 86400) {
                 [self setupServerInfo:_serverInfo];
                 didSetup = YES;
@@ -465,16 +464,11 @@ static NSString * s_tileServerFilename = @"tileServer.plist";
         if (projectionArgs) {
             const char *projString = [projectionArgs cStringUsingEncoding:[NSString defaultCStringEncoding]];
             [self setupProjection:projString];
-            //projection = pj_init_plus(projString);
         } else {
             [self getProjectionArgs];
             return;
         }
     }
-    
-    //for (MKMapView *aMapView in _mapViews) {
-    //    [aMapView tileServerDidSetup];
-    //}
 }
 
 - (void)setupProjection:(const char *)projString {
@@ -572,7 +566,7 @@ static NSString * s_tileServerFilename = @"tileServer.plist";
     }
 }
 
-- (void)handleConnectionFailureForRequest:(JSONAPIRequest *)request {
+- (void)request:(JSONAPIRequest *)request handleConnectionError:(NSError *)error {
 	// TODO: handle connection failure
 }
 

@@ -352,7 +352,7 @@
     self.searchProgress = progress;
 }
 
-- (void)handleConnectionFailureForRequest:(JSONAPIRequest *)request {
+- (void)request:(JSONAPIRequest *)request handleConnectionError:(NSError *)error {
     self.request = nil;
 }
 

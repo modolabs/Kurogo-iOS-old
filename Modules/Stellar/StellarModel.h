@@ -6,6 +6,11 @@
 #import "StellarStaffMember.h"
 #import "JSONAPIRequest.h"
 
+// TODO: the JSONAPIDelegate was modified after the initial
+// implementation of this file to support multiple requests
+// for the same delegate.  These request should be consolidated
+// to greatly simplify things.
+
 extern NSString * const MyStellarChanged;
 /** @brief Callback for Courses
  * 

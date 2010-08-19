@@ -4,7 +4,6 @@
 #import "PeopleDetailsViewController.h"
 #import "PeopleRecentsData.h"
 #import "PersonDetails.h"
-#import "PersonDetail.h"
 #import "ModoSearchBar.h"
 
 static NSString * const PeopleStateSearchBegin = @"search-begin";
@@ -53,7 +52,7 @@ static NSString * const PeopleStateDetail = @"detail";
 
 	} else if ([visibleVC isMemberOfClass:[PeopleDetailsViewController class]]) {
 		PeopleDetailsViewController *detailVC = (PeopleDetailsViewController *)visibleVC;
-		[url setPath:PeopleStateDetail query:detailVC.personDetails.uid.Value];
+		[url setPath:PeopleStateDetail query:detailVC.personDetails.uid];
 	}
 	
 	[url setAsModulePath];
@@ -160,21 +159,25 @@ static NSString * const PeopleStateDetail = @"detail";
 }
 
 - (NSString *)titleForSearchResult:(id)result {
-    NSDictionary *person = (NSDictionary *)result;
     NSString *fullname = nil;
-    NSArray *namesFromJSON = [PersonDetails realValuesFromPersonDetailsJSONDict:person forKey:@"cn"];
-    if ([namesFromJSON count] > 0) {
-        fullname = [namesFromJSON objectAtIndex:0];
+    if (result && [result isKindOfClass:[NSDictionary class]]) {
+        NSDictionary *person = (NSDictionary *)result;
+        NSArray *namesFromJSON = [person objectForKey:@"cn"];
+        if ([namesFromJSON count] > 0) {
+            fullname = [namesFromJSON objectAtIndex:0];
+        }
     }
     return fullname;
 }
 
 - (NSString *)subtitleForSearchResult:(id)result {
-    NSDictionary *person = (NSDictionary *)result;
     NSString *title = nil;
-    NSArray *detailAttributeArray = [PersonDetails realValuesFromPersonDetailsJSONDict:person forKey:@"title"];
-    if ([detailAttributeArray count] > 0) {
-        title = [detailAttributeArray objectAtIndex:0];
+    if (result && [result isKindOfClass:[NSDictionary class]]) {
+        NSDictionary *person = (NSDictionary *)result;
+        NSArray *detailAttributeArray = [person objectForKey:@"title"];
+        if ([detailAttributeArray count] > 0) {
+            title = [detailAttributeArray objectAtIndex:0];
+        }
     }
     return title;
 }
@@ -184,7 +187,9 @@ static NSString * const PeopleStateDetail = @"detail";
     
     self.request = [JSONAPIRequest requestWithJSONAPIDelegate:self];
     // TODO: handle failure to make request
-	[self.request requestObject:[NSDictionary dictionaryWithObjectsAndKeys:@"people", @"module", searchText, @"q", nil]];
+    [self.request requestObjectFromModule:@"people"
+                                  command:@"search"
+                               parameters:[NSDictionary dictionaryWithObjectsAndKeys:searchText, @"q", nil]];
 }
 
 - (void)abortSearch {
@@ -198,12 +203,15 @@ static NSString * const PeopleStateDetail = @"detail";
 - (void)request:(JSONAPIRequest *)request jsonLoaded:(id)result {
     self.request = nil;
 
-	if (result && [result isKindOfClass:[NSArray class]]) {
+	if ([result isKindOfClass:[NSArray class]]) {
 		self.searchResults = result;
+    } else {
+        self.request = nil;
+        self.searchProgress = 1.0;
     }
 }
 
-- (void)handleConnectionFailureForRequest:(JSONAPIRequest *)request {
+- (void)request:(JSONAPIRequest *)request handleConnectionError:(NSError *)error {
     self.request = nil;
     self.searchProgress = 1.0;
 }

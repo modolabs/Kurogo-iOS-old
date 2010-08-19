@@ -180,7 +180,8 @@
         [self.tableView reloadData];
     }
 }
-- (void)handleConnectionFailureForRequest:(JSONAPIRequest *)request
+
+- (void)request:(JSONAPIRequest *)request handleConnectionError:(NSError *)error
 {
     [self hideLoadingView];
 	

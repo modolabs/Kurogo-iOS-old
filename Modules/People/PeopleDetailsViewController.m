@@ -66,27 +66,27 @@ NSString * const RequestLookupAddress = @"address";
 	NSArray *jobSection = [NSArray arrayWithObjects:@"title", @"ou", nil];
 	NSArray *phoneSection = [NSArray arrayWithObjects:@"telephonenumber", @"facsimiletelephonenumber", nil];
 	NSArray *emailSection = [NSArray arrayWithObject:@"mail"];
-	NSArray *officeSection = [NSArray arrayWithObject:@"postaladdress"];//, @"room", nil];
+	NSArray *officeSection = [NSArray arrayWithObject:@"postaladdress"];
 	
 	NSArray *sectionCandidates = [NSArray arrayWithObjects:jobSection, emailSection, phoneSection, officeSection, nil];
 	
-	NSMutableArray *currentSection = nil;
 	NSString *displayTag;
 	NSString *ldapValue;
 	
 	for (NSArray *section in sectionCandidates) {
 		// each element of currentSection will be a 2-array of NSString *tag and NSString *value
-		currentSection = [[NSMutableArray alloc] init];
+		NSMutableArray *currentSection = [NSMutableArray array];
 		for (NSString *ldapTag in section) {
 			ldapValue = [self.personDetails formattedValueForKey:ldapTag];
 			displayTag = [self.personDetails displayNameForKey:ldapTag];
 			
+            NSLog(@"%@", ldapValue);
+            
 			if ([ldapValue length] > 0) {
 				// create one tag/label pair for each email/phone/office label
 				if ([ldapTag isEqualToString:@"mail"] || 
 					[ldapTag isEqualToString:@"telephonenumber"] ||
 					[ldapTag isEqualToString:@"facsimiletelephonenumber"] ||
-					//[ldapTag isEqualToString:@"room"] || 
 					[ldapTag isEqualToString:@"postaladdress"]) {
 					for (NSString *value in [ldapValue componentsSeparatedByString:kPersonDetailsValueSeparatorToken])
 						[currentSection addObject:[NSArray arrayWithObjects:displayTag, value, nil]];
@@ -95,10 +95,10 @@ NSString * const RequestLookupAddress = @"address";
 				[currentSection addObject:[NSArray arrayWithObjects:displayTag, ldapValue, nil]];
 			}
 		}
+        NSLog(@"%@", [currentSection description]);
 		
 		if ([currentSection count] > 0)
 			[self.sectionArray addObject:currentSection];
-        [currentSection release];
 	}
 	
 	// create header
@@ -123,7 +123,7 @@ NSString * const RequestLookupAddress = @"address";
     CGFloat timeLimit = 86400 * 14;
 #endif
 	// if lastUpdate is sufficiently long ago, issue a background search
-	if ([[self.personDetails actualValueForKey:@"lastUpdate"] timeIntervalSinceNow] < -timeLimit) {
+	if ([[self.personDetails valueForKey:@"lastUpdate"] timeIntervalSinceNow] < -timeLimit) {
 		if ([ConnectionDetector isConnected]) {
 			// issue this query but don't care too much if it fails
 			JSONAPIRequest *api = [JSONAPIRequest requestWithJSONAPIDelegate:self];
@@ -154,10 +154,10 @@ NSString * const RequestLookupAddress = @"address";
 
 - (void)request:(JSONAPIRequest *)request jsonLoaded:(id)result {
     if ([request.userData isEqualToString:RequestUpdatePersonDetails]) {
-        
-        if (result && [result isKindOfClass:[NSArray class]]) { // fail silently
+         // fail silently
+        if ([result isKindOfClass:[NSArray class]]) {
             for (NSDictionary *entry in result) {
-                if ([[entry objectForKey:@"id"] isEqualToString:[self.personDetails actualValueForKey:@"uid"]]) {
+                if ([[entry objectForKey:@"id"] isEqualToString:[self.personDetails valueForKey:@"uid"]]) {
                     self.personDetails = [PeopleRecentsData updatePerson:self.personDetails withSearchResult:entry];
                     [self.tableView reloadData];
                 }
@@ -344,16 +344,19 @@ NSString * const RequestLookupAddress = @"address";
     
     // special case for addresses: add a disclosure button if we find something,
     // otherwise don't indicate this as an actionable cell
-    if ([tag isEqualToString:[personDetails displayNameForKey:@"postaladdress"]] && !addressSearchAnnotation) {
-        // issue a prelim search for person's address
-        
-        NSString *searchText = [AddressFormatter streetAddressFromAddressBlockText:data];
-        JSONAPIRequest *apiRequest = [JSONAPIRequest requestWithJSONAPIDelegate:self];
-        apiRequest.userData = RequestLookupAddress;
-        [apiRequest requestObjectFromModule:@"map"
-                                    command:@"search"
-                                 parameters:[NSDictionary dictionaryWithObjectsAndKeys:searchText, @"q", nil]];
-        
+    if ([tag isEqualToString:[personDetails displayNameForKey:@"postaladdress"]]) {
+        if (!addressSearchAnnotation) {
+            // issue a prelim search for person's address
+            
+            NSString *searchText = [AddressFormatter streetAddressFromAddressBlockText:data];
+            JSONAPIRequest *apiRequest = [JSONAPIRequest requestWithJSONAPIDelegate:self];
+            apiRequest.userData = RequestLookupAddress;
+            [apiRequest requestObjectFromModule:@"map"
+                                        command:@"search"
+                                     parameters:[NSDictionary dictionaryWithObjectsAndKeys:searchText, @"q", nil]];
+        } else {
+            accessoryType = UITableViewCellAccessoryDetailDisclosureButton;
+        }
     }
     
     return [MultiLineTableViewCell heightForCellWithStyle:UITableViewCellStyleValue2

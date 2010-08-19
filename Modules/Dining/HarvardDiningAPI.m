@@ -48,6 +48,10 @@
 	}
 }
 
+- (BOOL)connection:(ConnectionWrapper *)wrapper shouldDisplayAlertForError:(NSError *)error {
+    return NO;
+}
+
 - (void)connection:(ConnectionWrapper *)wrapper handleConnectionFailureWithError: (NSError *)error {
 //	[((MIT_MobileAppDelegate *)[[UIApplication sharedApplication] delegate]) hideNetworkActivityIndicator];
 	

@@ -81,11 +81,46 @@
 // internal method used by NSURLConnection
 - (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error {	// download failed for some reason, so handle it
     if (connection == self.urlConnection) {
+        isConnected = false;
+        self.urlConnection = nil; // release the connection object
+
+        id alertDelegate = nil;
+        if ([self.delegate respondsToSelector:@selector(alertView:clickedButtonAtIndex:)]) {
+            alertDelegate = self.delegate;
+        }
+        
+        switch ([error code]) {
+            case kCFURLErrorNotConnectedToInternet:
+                if ([self.delegate connection:self shouldDisplayAlertForError:error]) {
+                    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Connection Failed"
+                                                                    message:@"We are not connected to the Internet.  Please try again later."
+                                                                   delegate:alertDelegate
+                                                          cancelButtonTitle:@"OK" 
+                                                          otherButtonTitles:nil];
+                    [alert show];
+                    [alert release];
+                }
+                break;
+            case kCFURLErrorTimedOut:
+                if ([self.delegate connection:self shouldDisplayAlertForError:error]) {
+                    
+                    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Connection Timed Out"
+                                                                    message:@"Server is taking too long to respond.  Please try again later."
+                                                                   delegate:alertDelegate
+                                                          cancelButtonTitle:@"OK"
+                                                          otherButtonTitles:nil];
+                    [alert show];
+                    [alert release];
+                }
+                break;
+            default:
+                break;
+        }
+
         if ([delegate respondsToSelector:@selector(connection:handleConnectionFailureWithError:)]) {
             [delegate connection:self handleConnectionFailureWithError:error];	// have the delegate decide what to do with the error
         }
-        isConnected = false;
-        self.urlConnection = nil; // release the connection object
+        
     }
 }
 
