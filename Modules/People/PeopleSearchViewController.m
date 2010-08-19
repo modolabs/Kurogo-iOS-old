@@ -423,8 +423,8 @@ NSInteger strLenSort(NSString *str1, NSString *str2, void *context)
 		switch (numResults) {
 			case 0:
 				break;
-			case 100:
-				titleView = [UITableView ungroupedSectionHeaderWithTitle:@"Many found, showing 100"];
+			case 50:
+				titleView = [UITableView ungroupedSectionHeaderWithTitle:@"Many found, showing 50"];
 				break;
 			default:
 				titleView = [UITableView ungroupedSectionHeaderWithTitle:[NSString stringWithFormat:@"%d found", numResults]];
@@ -484,6 +484,8 @@ NSInteger strLenSort(NSString *str1, NSString *str2, void *context)
     [self cleanUpConnection];
 	
     if (result) {
+        NSLog(@"%@", [result description]);
+        
         if ([result isKindOfClass:[NSDictionary class]]) {
             NSString *message = [result objectForKey:@"error"];
             if (message) {
@@ -503,10 +505,14 @@ NSInteger strLenSort(NSString *str1, NSString *str2, void *context)
 	}
 }
 
+- (BOOL)request:(JSONAPIRequest *)request shouldDisplayAlertForError:(NSError *)error
+{
+    return YES;
+}
+
 - (void)request:(JSONAPIRequest *)request handleConnectionError:(NSError *)error
 {
 	[self cleanUpConnection];
-    [self.searchController setActive:YES animated:YES];
 }
 
 #pragma mark -

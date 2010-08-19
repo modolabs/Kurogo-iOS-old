@@ -354,6 +354,7 @@
 
 - (void)request:(JSONAPIRequest *)request handleConnectionError:(NSError *)error {
     self.request = nil;
+    self.searchProgress = 1.0;
 }
 
 #pragma mark Search and state

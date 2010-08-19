@@ -89,32 +89,54 @@
             alertDelegate = self.delegate;
         }
         
-        switch ([error code]) {
-            case kCFURLErrorNotConnectedToInternet:
-                if ([self.delegate connection:self shouldDisplayAlertForError:error]) {
-                    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Connection Failed"
-                                                                    message:@"We are not connected to the Internet.  Please try again later."
-                                                                   delegate:alertDelegate
-                                                          cancelButtonTitle:@"OK" 
-                                                          otherButtonTitles:nil];
-                    [alert show];
-                    [alert release];
-                }
-                break;
-            case kCFURLErrorTimedOut:
-                if ([self.delegate connection:self shouldDisplayAlertForError:error]) {
-                    
-                    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Connection Timed Out"
-                                                                    message:@"Server is taking too long to respond.  Please try again later."
-                                                                   delegate:alertDelegate
-                                                          cancelButtonTitle:@"OK"
-                                                          otherButtonTitles:nil];
-                    [alert show];
-                    [alert release];
-                }
-                break;
-            default:
-                break;
+        if ([self.delegate connection:self shouldDisplayAlertForError:error]) {
+            NSString *title = nil;
+            NSString *message = nil;
+            switch ([error code]) {
+                case kCFURLErrorCannotConnectToHost:
+                case kCFURLErrorCannotFindHost:
+                    title = [NSString stringWithString:@"Connection Failed"];
+                    message = [NSString stringWithString:@"Cannot connect to server.  Please try again later."];
+                    break;
+                case kCFURLErrorNotConnectedToInternet:
+                    title = [NSString stringWithString:@"Connection Failed"];
+                    message = [NSString stringWithString:@"We are not connected to the Internet.  Please try again later."];
+                    break;
+                case kCFURLErrorTimedOut:
+                    title = [NSString stringWithString:@"Connection Timed Out"];
+                    message = [NSString stringWithString:@"Server is taking too long to respond.  Please try again later."];
+                    break;
+                case kCFURLErrorBadServerResponse: case kCFURLErrorZeroByteResource:
+                case kCFURLErrorCannotDecodeRawData: case kCFURLErrorCannotDecodeContentData:
+                case kCFURLErrorCannotParseResponse:
+                    title = [NSString stringWithString:@"Connection Error"];
+                    message = [NSString stringWithString:@"Bad response from server.  Please try again later."];
+                    break;
+                case kCFURLErrorUnknown: // all other CFURLConnection and CFURLProtocol errors
+                case kCFURLErrorCancelled: case kCFURLErrorBadURL: case kCFURLErrorUnsupportedURL:
+                case kCFURLErrorNetworkConnectionLost: case kCFURLErrorDNSLookupFailed:
+                case kCFURLErrorHTTPTooManyRedirects: case kCFURLErrorResourceUnavailable:
+                case kCFURLErrorRedirectToNonExistentLocation: case kCFURLErrorUserCancelledAuthentication:
+                case kCFURLErrorUserAuthenticationRequired: case kCFURLErrorInternationalRoamingOff:
+                case kCFURLErrorCallIsActive: case kCFURLErrorDataNotAllowed:
+                case kCFURLErrorRequestBodyStreamExhausted: case kCFURLErrorFileDoesNotExist:
+                case kCFURLErrorFileIsDirectory: case kCFURLErrorNoPermissionsToReadFile:
+                case kCFURLErrorDataLengthExceedsMaximum:
+                    title = [NSString stringWithString:@"Connection Error"];
+                    message = [NSString stringWithString:@"Problem connecting to server.  Please try again later."];
+                    break;
+                default:
+                    break;
+            }
+            if (title != nil) {
+                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Connection Failed"
+                                                                message:@"We are not connected to the Internet.  Please try again later."
+                                                               delegate:alertDelegate
+                                                      cancelButtonTitle:@"OK" 
+                                                      otherButtonTitles:nil];
+                [alert show];
+                [alert release];
+            }
         }
 
         if ([delegate respondsToSelector:@selector(connection:handleConnectionFailureWithError:)]) {

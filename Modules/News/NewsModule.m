@@ -27,6 +27,7 @@
 
 - (void)dealloc {
     [storyListChannelController release];
+    self.xmlParser = nil;
     [super dealloc];
 }
 
@@ -151,7 +152,14 @@ NSString * const NewsLocalPathBookmarks = @"bookmarks";
 
 - (void)parserDidFinishParsing:(StoryXMLParser *)parser {
     [self loadSearchResultsFromCache];
+    self.xmlParser = nil;
 }
+
+- (void)parser:(StoryXMLParser *)parser didFailWithDownloadError:(NSError *)error {
+    self.searchProgress = 1.0;
+    self.xmlParser = nil;
+}
+                                                                                   
 
 #pragma mark NewsControllerDelegate
 
