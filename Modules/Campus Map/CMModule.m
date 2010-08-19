@@ -116,7 +116,9 @@ NSString * const MapsLocalPathList = @"list";
     if ([localPath isEqualToString:LocalPathFederatedSearch]) {
         // fedsearch?query
         self.selectedResult = nil;
+        self.campusMapVC.view;
         self.campusMapVC.searchResults = self.searchResults;
+        self.campusMapVC.searchBar.text = query;
         self.campusMapVC.lastSearchText = query;
         [self resetNavStack];
         didHandle = YES;
@@ -144,6 +146,8 @@ NSString * const MapsLocalPathList = @"list";
                 annotation.name = saved.name;
             }
             self.campusMapVC.view; // make sure mapview is loaded
+            self.campusMapVC.searchBar.text = saved.name;
+            self.campusMapVC.lastSearchText = saved.name;
             NSArray *annotations = [NSArray arrayWithObject:annotation];
             self.campusMapVC.searchResults = annotations;
             [self resetNavStack];

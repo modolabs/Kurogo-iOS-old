@@ -51,6 +51,7 @@
 	
 	BOOL requestDispatched;
 	BOOL categoriesRequestDispatched;
+    BOOL isFederatedSearch;
 	JSONAPIRequest *apiRequest;
 	
 }

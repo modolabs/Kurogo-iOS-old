@@ -17,8 +17,10 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
 	
 	if (self.events != nil) {
+        self.separatorColor = TABLE_SEPARATOR_COLOR;
 		return [self.events count];
 	}
+    self.separatorColor = [UIColor whiteColor];
     return 0;
 }
 
