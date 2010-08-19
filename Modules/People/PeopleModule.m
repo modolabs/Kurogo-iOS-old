@@ -72,6 +72,8 @@ static NSString * const PeopleStateDetail = @"detail";
     if ([localPath isEqualToString:LocalPathFederatedSearch]) {
         // fedsearch?query
         self.selectedResult = nil;
+        self.viewController.view;
+        [self.viewController.searchController setActive:NO animated:NO];
         [self.viewController presentSearchResults:self.searchResults];
         self.viewController.searchBar.text = query;
         [self resetNavStack];
@@ -123,11 +125,7 @@ static NSString * const PeopleStateDetail = @"detail";
 		// this path is reserved for calling from other modules
 		// do not save state with this path       
 		self.viewController.view;
-		//if (viewController.viewAppeared) {
-		//	[viewController prepSearchBar];
-		//} else {
-		//	[viewController setActionAfterAppearing:@selector(prepSearchBar)];
-		//}
+        [self.viewController.searchController setActive:NO animated:NO];
         [self.viewController beginExternalSearch:query];
         [self becomeActiveTab];
         didHandle = YES;
