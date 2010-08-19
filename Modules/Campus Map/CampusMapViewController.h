@@ -52,7 +52,7 @@
 @property (nonatomic, retain) NSArray *searchResults;
 @property (nonatomic, assign) CMModule *campusMapModule;
 @property (nonatomic, retain) MapSearchResultsTableView *searchResultsTableView;
-
+@property (nonatomic, retain) MITSearchDisplayController *searchController;
 @property (readonly) MKMapView *mapView;
 @property (nonatomic, retain) NSString *lastSearchText;
 @property BOOL hasSearchResults;
