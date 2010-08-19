@@ -181,7 +181,22 @@
 }
 
 - (CGFloat) tableView: (UITableView *)tableView heightForRowAtIndexPath: (NSIndexPath *)indexPath {
-	return [StellarClassTableCell cellHeightForTableView:tableView class:[classes objectAtIndex:indexPath.row]];
+	//return [StellarClassTableCell cellHeightForTableView:tableView class:[classes objectAtIndex:indexPath.row]];
+	
+	StellarClass *stellarClass = [classes objectAtIndex:indexPath.row];
+	StellarClass *stellarPreviousClass;
+	
+	if (indexPath.row > 0)
+		stellarPreviousClass = [classes objectAtIndex:indexPath.row - 1];
+	else {
+		if ([classes count] > 1)
+			stellarPreviousClass = [classes objectAtIndex:indexPath.row + 1];
+		
+		else 
+			stellarPreviousClass = nil;
+	}
+	NSString *detail = [StellarClassTableCell setStaffNames:stellarClass previousClassInList:stellarPreviousClass];
+	return [StellarClassTableCell cellHeightForTableView:tableView class:stellarClass detailString:detail];
 }
 
 - (void) alertView:(UIAlertView *)alertView didDismissWithButtonIndex: (NSInteger)buttonIndex {

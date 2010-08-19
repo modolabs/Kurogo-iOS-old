@@ -57,12 +57,27 @@
 		else 
 			stellarPreviousClass = nil;
 	}
+	
 	[StellarClassTableCell configureCell:cell withStellarClass:stellarClass previousClassInList:stellarPreviousClass];
 	return cell;
 }
 
 - (CGFloat) tableView: (UITableView *)tableView heightForRowAtIndexPath: (NSIndexPath *)indexPath {
-	return [StellarClassTableCell cellHeightForTableView:tableView class:[self.lastResults objectAtIndex:indexPath.row]];
+	//return [StellarClassTableCell cellHeightForTableView:tableView class:[self.lastResults objectAtIndex:indexPath.row]];
+	StellarClass *stellarClass = [self.lastResults objectAtIndex:indexPath.row];
+	StellarClass *stellarPreviousClass;
+	
+	if (indexPath.row > 0)
+		stellarPreviousClass = [self.lastResults objectAtIndex:indexPath.row - 1];
+	else {
+		if ([self.lastResults count] > 1)
+			stellarPreviousClass = [self.lastResults objectAtIndex:indexPath.row + 1];
+		
+		else 
+			stellarPreviousClass = nil;
+	}
+	NSString *detail = [StellarClassTableCell setStaffNames:stellarClass previousClassInList:stellarPreviousClass];
+	return [StellarClassTableCell cellHeightForTableView:tableView class:stellarClass detailString:detail];
 }
 			
 - (NSInteger) numberOfSectionsInTableView: (UITableView *)tableView {
