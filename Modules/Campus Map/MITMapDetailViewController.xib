@@ -12,7 +12,7 @@
 		</object>
 		<object class="NSMutableArray" key="IBDocument.EditedObjectIDs">
 			<bool key="EncodedWithXMLCoder">YES</bool>
-			<integer value="58"/>
+			<integer value="31"/>
 			<integer value="21"/>
 			<integer value="15"/>
 		</object>
@@ -64,8 +64,8 @@
 								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 								<string key="IBUIText">Label</string>
 								<object class="NSFont" key="IBUIFont">
-									<string key="NSName">Helvetica</string>
-									<double key="NSSize">20</double>
+									<string key="NSName">Georgia</string>
+									<double key="NSSize">22</double>
 									<int key="NSfFlags">16</int>
 								</object>
 								<object class="NSColor" key="IBUITextColor" id="791684172">
@@ -891,7 +891,7 @@
 							<string>UIScrollView</string>
 							<string>UIView</string>
 							<string>TabViewControl</string>
-							<string>UIView</string>
+							<string>UIWebView</string>
 						</object>
 					</object>
 					<object class="NSMutableDictionary" key="toOneOutletInfosByName">
@@ -979,7 +979,7 @@
 							</object>
 							<object class="IBToOneOutletInfo">
 								<string key="name">_whatsHereView</string>
-								<string key="candidateClassName">UIView</string>
+								<string key="candidateClassName">UIWebView</string>
 							</object>
 						</object>
 					</object>
