@@ -442,9 +442,10 @@ NSInteger strLenSort(NSString *str1, NSString *str2, void *context)
 	
 	if (tableView == self.searchController.searchResultsTableView || indexPath.section == 1) { // user selected search result or recently viewed
 
-		PersonDetails *personDetails;
+		PersonDetails *personDetails = nil;
 		PeopleDetailsViewController *detailView = [[PeopleDetailsViewController alloc] initWithStyle:UITableViewStyleGrouped];
 		if (tableView == self.searchController.searchResultsTableView) {
+            NSLog(@"%@", [self.searchResults description]);
 			NSDictionary *selectedResult = [self.searchResults safeObjectAtIndex:indexPath.row];
 			personDetails = [PersonDetails retrieveOrCreate:selectedResult];
 		} else {

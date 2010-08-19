@@ -63,12 +63,13 @@ NSString * const RequestLookupAddress = @"address";
 	// populate remaining contents to be displayed
 	self.sectionArray = [[NSMutableArray alloc] init];
 	
-	NSArray *jobSection = [NSArray arrayWithObjects:@"title", @"ou", nil];
+	NSArray *jobSection = [NSArray arrayWithObjects:@"title", nil];
 	NSArray *phoneSection = [NSArray arrayWithObjects:@"telephonenumber", @"facsimiletelephonenumber", nil];
 	NSArray *emailSection = [NSArray arrayWithObject:@"mail"];
 	NSArray *officeSection = [NSArray arrayWithObject:@"postaladdress"];
+    NSArray *unitSection = [NSArray arrayWithObject:@"ou"];
 	
-	NSArray *sectionCandidates = [NSArray arrayWithObjects:jobSection, emailSection, phoneSection, officeSection, nil];
+	NSArray *sectionCandidates = [NSArray arrayWithObjects:jobSection, emailSection, phoneSection, officeSection, unitSection, nil];
 	
 	NSString *displayTag;
 	NSString *ldapValue;

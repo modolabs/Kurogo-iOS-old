@@ -68,8 +68,8 @@ NSString * const kPersonDetailsValueSeparatorToken = @"%/%";
 // this creates an insertedObject that needs to be committed or rolled back in results view
 + (PersonDetails *)retrieveOrCreate:(NSDictionary *)selectedResult
 {
-	NSString *uidString = [PersonDetails joinedValueFromPersonDetailsJSONDict:selectedResult 
-                                                                       forKey:@"uid"];
+	NSString *uidString = [selectedResult objectForKey:@"uid"];
+        
 	uidString = [PersonDetails trimUID:uidString];
 	NSPredicate *pred = [NSPredicate predicateWithFormat:@"(uid == %@)", uidString];
 	NSArray *results = [CoreDataManager objectsForEntity:PersonDetailsEntityName matchingPredicate:pred];

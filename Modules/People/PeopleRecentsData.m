@@ -102,14 +102,21 @@ static PeopleRecentsData *instance = nil;
 // rather than a method that modifies PersonDetails objects as a side effect
 + (PersonDetails *)updatePerson:(PersonDetails *)personDetails withSearchResult:(NSDictionary *)searchResult
 {    
+    
+    // TODO: sanity test to make sure at least the uid and something else (sn probably) has a value
+    
 	[personDetails setValue:[NSDate date] forKey:@"lastUpdate"];
 	
     NSArray *fetchTags = [[[PeopleRecentsData sharedData] displayFields] allKeys];
     
 	for (NSString *key in fetchTags) {
         // if someone has multiple emails/phones join them into a string
-        NSString *value = [PersonDetails joinedValueFromPersonDetailsJSONDict:searchResult forKey:key];
-		if (value) {
+        id value = [searchResult objectForKey:key];
+        if ([value isKindOfClass:[NSArray class]]) {
+            value = [PersonDetails joinedValueFromPersonDetailsJSONDict:searchResult forKey:key];
+        }   
+        
+		if ([value isKindOfClass:[NSString class]]) {
 			[personDetails setValue:value forKey:key];
 		}        
 	}
