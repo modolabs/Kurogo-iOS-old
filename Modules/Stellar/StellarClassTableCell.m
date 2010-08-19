@@ -26,11 +26,16 @@
 		}
 	}*/
 	
+	/*if ([[name substringToIndex:1] isEqualToString:@"0"])
+		name = [name substringFromIndex:1];*/
+	
 	if ([[name substringToIndex:1] isEqualToString:@"0"])
-		name = [name substringFromIndex:1];
+		cell.detailTextLabel.text = [name substringFromIndex:1];
 	
-	
-	cell.detailTextLabel.text = name;
+	else {
+		cell.detailTextLabel.text = name;
+	}
+
 
 	
 	cell.textLabel.text = class.title;
