@@ -174,7 +174,7 @@
         
         CGRect frame = CGRectMake(0, _searchBar.frame.size.height, containingView.frame.size.width,
                                   containingView.frame.size.height - _searchBar.frame.size.height);
-        self.searchResultsTableView = [[[UITableView alloc] initWithFrame:frame style:UITableViewStyleGrouped] autorelease];
+        self.searchResultsTableView = [[[UITableView alloc] initWithFrame:frame style:UITableViewStylePlain] autorelease];
         self.searchResultsTableView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
         // we need to add searchResultsTableView as a subview for
         // autoresizing to happen properly.  we will set it to
@@ -296,26 +296,18 @@
 		cell.selectionStyle = UITableViewCellSelectionStyleGray;
     }
     
-    if (indexPath.row == 0) {
-        UIActivityIndicatorView *spinny = (UIActivityIndicatorView *)[cell.contentView viewWithTag:1234];
-        if (spinny != nil) {
-            [spinny stopAnimating];
-            [spinny removeFromSuperview];
-        }
-    }
-    
     if (aModule.searchProgress == 1.0) {
         cell.imageView.image = nil;
 
         // TODO: add result count -- either in the cell header or after "more results"
         if (indexPath.row == MAX_FEDERATED_SEARCH_RESULTS) {
             cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-            cell.textLabel.text = @"More results";
+            cell.textLabel.text = [NSString stringWithFormat:@"See all %d matches", [aModule.searchResults count]];
             cell.detailTextLabel.text = nil;
             
         } else if (![aModule.searchResults count]) {
             cell.accessoryType = UITableViewCellAccessoryNone;
-            cell.textLabel.text = @"No results";
+            cell.textLabel.text = @"No matches found.";
             cell.detailTextLabel.text = nil;
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
 
@@ -326,24 +318,47 @@
             cell.detailTextLabel.text = [aModule subtitleForSearchResult:aResult];
         }
 
-    } else if (aModule.searchProgress == 0.0) {
+    } else {
+        
+        /*
+        if (indexPath.row == 0) {
+            UIActivityIndicatorView *spinny = (UIActivityIndicatorView *)[cell.contentView viewWithTag:1234];
+            if (spinny != nil) {
+                [spinny stopAnimating];
+                [spinny removeFromSuperview];
+            }
+        }
+        */
+        
         // indeterminate loading indicator
-        cell.textLabel.text = @"Loading...";
+        cell.textLabel.text = @"Searching...";
         cell.detailTextLabel.text = nil;
         
         // copied from shuttles module
-        cell.imageView.image = [UIImage imageNamed:@"shuttles/shuttle-blank.png"];
-        UIActivityIndicatorView *spinny = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
-        spinny.center = CGPointMake(18.0, 22.0);
-        spinny.tag = 1234;
-        [spinny startAnimating];
-        [cell.contentView addSubview:spinny];
-        [spinny release];
+        cell.imageView.image = [UIImage imageNamed:@"global/loading-animation.gif"];
+        cell.imageView.animationImages = [NSArray arrayWithObjects:
+                                          [UIImage imageNamed:@"loading-animation/iPhoneBusyBox_01.png"],
+                                          [UIImage imageNamed:@"loading-animation/iPhoneBusyBox_02.png"],
+                                          [UIImage imageNamed:@"loading-animation/iPhoneBusyBox_03.png"],
+                                          [UIImage imageNamed:@"loading-animation/iPhoneBusyBox_04.png"],
+                                          [UIImage imageNamed:@"loading-animation/iPhoneBusyBox_05.png"],
+                                          [UIImage imageNamed:@"loading-animation/iPhoneBusyBox_06.png"],
+                                          [UIImage imageNamed:@"loading-animation/iPhoneBusyBox_07.png"],
+                                          [UIImage imageNamed:@"loading-animation/iPhoneBusyBox_08.png"],
+                                          [UIImage imageNamed:@"loading-animation/iPhoneBusyBox_09.png"],
+                                          [UIImage imageNamed:@"loading-animation/iPhoneBusyBox_10.png"],
+                                          [UIImage imageNamed:@"loading-animation/iPhoneBusyBox_11.png"],
+                                          [UIImage imageNamed:@"loading-animation/iPhoneBusyBox_12.png"],
+                                          nil];
         
-    } else {
-        // determinate loading indicator
-        cell.imageView.image = nil;
-        cell.textLabel.text = [NSString stringWithFormat:@"%.0f%% complete", aModule.searchProgress * 100];
+        [cell.imageView startAnimating];
+        //UIActivityIndicatorView *spinny = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+        //spinny.center = CGPointMake(18.0, 22.0);
+        //spinny.tag = 1234;
+        //[spinny startAnimating];
+        //[cell.contentView addSubview:spinny];
+        //[spinny release];
+        
     }
     
     return cell;
@@ -382,10 +397,11 @@
         MIT_MobileAppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
         [appDelegate showModuleForTag:activeModule.tag];
     }
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
-    return GROUPED_SECTION_HEADER_HEIGHT;
+    return UNGROUPED_SECTION_HEADER_HEIGHT;
 }
 
 #pragma mark UIResponder / icon drag&drop

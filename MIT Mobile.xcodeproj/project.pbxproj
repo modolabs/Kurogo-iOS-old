@@ -450,6 +450,7 @@
 		EBAE89C4121A081900F370BE /* schools in Resources */ = {isa = PBXBuildFile; fileRef = EBAE89A4121A081900F370BE /* schools */; };
 		EBAE92B7121D733200F370BE /* PersonDetails.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EBAE92B5121D733200F370BE /* PersonDetails.h */; settings = {JAVA_ARCHIVE_SUBDIR = Modules/People/Model; }; };
 		EBAE92B8121D733200F370BE /* PersonDetails.m in Sources */ = {isa = PBXBuildFile; fileRef = EBAE92B6121D733200F370BE /* PersonDetails.m */; };
+		EBAE9401121DB1C700F370BE /* loading-animation in Resources */ = {isa = PBXBuildFile; fileRef = EBAE93FF121DB1C700F370BE /* loading-animation */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -981,6 +982,7 @@
 		EBAE89A4121A081900F370BE /* schools */ = {isa = PBXFileReference; lastKnownFileType = folder; name = schools; path = Resources/schools; sourceTree = "<group>"; };
 		EBAE92B5121D733200F370BE /* PersonDetails.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PersonDetails.h; sourceTree = "<group>"; };
 		EBAE92B6121D733200F370BE /* PersonDetails.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PersonDetails.m; sourceTree = "<group>"; };
+		EBAE93FF121DB1C700F370BE /* loading-animation */ = {isa = PBXFileReference; lastKnownFileType = folder; name = "loading-animation"; path = "Resources/loading-animation"; sourceTree = "<group>"; };
 		EBCA123210CEF3C400577C5D /* PeopleSearchViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PeopleSearchViewController.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -1092,6 +1094,7 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				EBAE93FF121DB1C700F370BE /* loading-animation */,
 				EBAE89A4121A081900F370BE /* schools */,
 				EBAE86441215FB4900F370BE /* Default@2x.png */,
 				EBAE863E1215FB0D00F370BE /* Icon.png */,
@@ -2039,6 +2042,7 @@
 				EBAE86451215FB4900F370BE /* Default@2x.png in Resources */,
 				EBAE877612197EF400F370BE /* schools.plist in Resources */,
 				EBAE89C4121A081900F370BE /* schools in Resources */,
+				EBAE9401121DB1C700F370BE /* loading-animation in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
