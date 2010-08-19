@@ -423,8 +423,8 @@ NSInteger strLenSort(NSString *str1, NSString *str2, void *context)
 		switch (numResults) {
 			case 0:
 				break;
-			case 100:
-				titleView = [UITableView ungroupedSectionHeaderWithTitle:@"Many found, showing 100"];
+			case 50:
+				titleView = [UITableView ungroupedSectionHeaderWithTitle:@"Many found, showing 50"];
 				break;
 			default:
 				titleView = [UITableView ungroupedSectionHeaderWithTitle:[NSString stringWithFormat:@"%d found", numResults]];
