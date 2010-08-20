@@ -47,9 +47,23 @@
 
 	StellarClass *stellarClass = [self.lastResults objectAtIndex:indexPath.row];
 	StellarClass *stellarPreviousClass;
+	StellarClass *stellarNextClass;
 	
-	if (indexPath.row > 0)
+	if (indexPath.row > 0) {
+		
+		// Some logic to ensure that either the pevious or the next class is passed to the configurCell function
 		stellarPreviousClass = [self.lastResults objectAtIndex:indexPath.row - 1];
+		
+		if ([self.lastResults count] > indexPath.row + 1) 
+			stellarNextClass = [self.lastResults objectAtIndex:indexPath.row + 1];
+		
+		else
+			stellarNextClass = stellarPreviousClass;
+		
+		if (![stellarPreviousClass.name isEqualToString:stellarClass.name])
+			stellarPreviousClass = stellarNextClass;
+		
+	}
 	else {
 		if ([self.lastResults count] > 1)
 			stellarPreviousClass = [self.lastResults objectAtIndex:indexPath.row + 1];
@@ -57,6 +71,7 @@
 		else 
 			stellarPreviousClass = nil;
 	}
+	
 	
 	[StellarClassTableCell configureCell:cell withStellarClass:stellarClass previousClassInList:stellarPreviousClass];
 	return cell;
@@ -64,11 +79,26 @@
 
 - (CGFloat) tableView: (UITableView *)tableView heightForRowAtIndexPath: (NSIndexPath *)indexPath {
 	//return [StellarClassTableCell cellHeightForTableView:tableView class:[self.lastResults objectAtIndex:indexPath.row]];
+
 	StellarClass *stellarClass = [self.lastResults objectAtIndex:indexPath.row];
 	StellarClass *stellarPreviousClass;
+	StellarClass *stellarNextClass;
 	
-	if (indexPath.row > 0)
+	if (indexPath.row > 0) {
+		
+		// Some logic to ensure that either the pevious or the next class is passed to the configurCell function
 		stellarPreviousClass = [self.lastResults objectAtIndex:indexPath.row - 1];
+		
+		if ([self.lastResults count] > indexPath.row + 1) 
+			stellarNextClass = [self.lastResults objectAtIndex:indexPath.row + 1];
+		
+		else
+			stellarNextClass = stellarPreviousClass;
+		
+		if (![stellarPreviousClass.name isEqualToString:stellarClass.name])
+			stellarPreviousClass = stellarNextClass;
+		
+	}
 	else {
 		if ([self.lastResults count] > 1)
 			stellarPreviousClass = [self.lastResults objectAtIndex:indexPath.row + 1];
@@ -76,6 +106,7 @@
 		else 
 			stellarPreviousClass = nil;
 	}
+	
 	NSString *detail = [StellarClassTableCell setStaffNames:stellarClass previousClassInList:stellarPreviousClass];
 	return [StellarClassTableCell cellHeightForTableView:tableView class:stellarClass detailString:detail];
 }
