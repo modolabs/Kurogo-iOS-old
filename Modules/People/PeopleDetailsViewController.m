@@ -103,7 +103,8 @@ NSString * const RequestLookupAddress = @"address";
 	}
 	
 	// create header
-	CGSize labelSize = [self.fullname sizeWithFont:[UIFont boldSystemFontOfSize:20.0]
+    UIFont *font = [UIFont fontWithName:CONTENT_TITLE_FONT size:CONTENT_TITLE_FONT_SIZE];
+	CGSize labelSize = [self.fullname sizeWithFont:font
 								 constrainedToSize:CGSizeMake(self.tableView.frame.size.width - 20.0, 2000.0)
 									 lineBreakMode:UILineBreakModeWordWrap];
 	UILabel *nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(10.0, 10.0, labelSize.width, labelSize.height)];
@@ -111,7 +112,7 @@ NSString * const RequestLookupAddress = @"address";
 	nameLabel.text = self.fullname;
 	nameLabel.numberOfLines = 0;
 	nameLabel.lineBreakMode = UILineBreakModeWordWrap;
-	nameLabel.font = [UIFont boldSystemFontOfSize:20.0];
+	nameLabel.font = font;
 	nameLabel.backgroundColor = [UIColor clearColor];
 	[header addSubview:nameLabel];
 	[nameLabel release];
