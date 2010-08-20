@@ -36,6 +36,8 @@ enum CalendarDetailRowTypes {
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    self.navigationItem.title = @"Detail";
 	
 	// setup table view
 	self.tableView = [[UITableView alloc] initWithFrame:CGRectMake(0.0, 0.0, self.view.frame.size.width, self.view.frame.size.height)
