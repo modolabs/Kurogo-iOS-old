@@ -11,6 +11,6 @@
 
 + (UITableViewCell *) configureCell: (UITableViewCell *)cell withStellarClass: (StellarClass *)class previousClassInList: (StellarClass *)prevClass;
 
-+ (CGFloat) cellHeightForTableView: (UITableView *)tableView class: (StellarClass *)stellarClass;
+//+ (CGFloat) cellHeightForTableView: (UITableView *)tableView class: (StellarClass *)stellarClass;
 + (CGFloat) cellHeightForTableView: (UITableView *)tableView class: (StellarClass *)stellarClass detailString:(NSString *)detail;
 @end

@@ -258,7 +258,7 @@
 
 - (void)presentSearchResults:(NSArray *)searchResults query:(NSString *)query {
     self.searchController.searchBar.text = query;
-    [stellarSearch searchComplete:searchResults searchTerms:query];
+    [stellarSearch searchComplete:searchResults searchTerms:query actualCount:0];
 }
 
 // TODO: clean up redundant -[searchBar becomeFirstResponder]
@@ -289,6 +289,10 @@
 
 - (void) hideSearchResultsTable {
 	[searchController.searchResultsTableView removeFromSuperview];
+}
+
+/* To make the complier happy */
+-(void)reloadData {
 }
 
 

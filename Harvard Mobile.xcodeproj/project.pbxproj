@@ -137,8 +137,6 @@
 		C704F06511E3E31F00621406 /* DiningModule.m in Sources */ = {isa = PBXBuildFile; fileRef = C704F05611E3E31F00621406 /* DiningModule.m */; };
 		C704F06611E3E31F00621406 /* DiningTabViewControl.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = C704F05711E3E31F00621406 /* DiningTabViewControl.h */; settings = {JAVA_ARCHIVE_SUBDIR = Modules/Dining; }; };
 		C704F06711E3E31F00621406 /* DiningTabViewControl.m in Sources */ = {isa = PBXBuildFile; fileRef = C704F05811E3E31F00621406 /* DiningTabViewControl.m */; };
-		C704F06A11E3E31F00621406 /* HarvardDiningAPI.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = C704F05B11E3E31F00621406 /* HarvardDiningAPI.h */; settings = {JAVA_ARCHIVE_SUBDIR = Modules/Dining; }; };
-		C704F06B11E3E31F00621406 /* HarvardDiningAPI.m in Sources */ = {isa = PBXBuildFile; fileRef = C704F05C11E3E31F00621406 /* HarvardDiningAPI.m */; };
 		C704F06C11E3E31F00621406 /* MenuDetailsController.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = C704F05D11E3E31F00621406 /* MenuDetailsController.h */; settings = {JAVA_ARCHIVE_SUBDIR = Modules/Dining; }; };
 		C704F06D11E3E31F00621406 /* MenuDetailsController.m in Sources */ = {isa = PBXBuildFile; fileRef = C704F05E11E3E31F00621406 /* MenuDetailsController.m */; };
 		C704F06E11E3E31F00621406 /* MenuItems.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = C704F05F11E3E31F00621406 /* MenuItems.h */; settings = {JAVA_ARCHIVE_SUBDIR = Modules/Dining; }; };
@@ -623,8 +621,6 @@
 		C704F05611E3E31F00621406 /* DiningModule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DiningModule.m; path = Dining/DiningModule.m; sourceTree = "<group>"; };
 		C704F05711E3E31F00621406 /* DiningTabViewControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DiningTabViewControl.h; path = Dining/DiningTabViewControl.h; sourceTree = "<group>"; };
 		C704F05811E3E31F00621406 /* DiningTabViewControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DiningTabViewControl.m; path = Dining/DiningTabViewControl.m; sourceTree = "<group>"; };
-		C704F05B11E3E31F00621406 /* HarvardDiningAPI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = HarvardDiningAPI.h; path = Dining/HarvardDiningAPI.h; sourceTree = "<group>"; };
-		C704F05C11E3E31F00621406 /* HarvardDiningAPI.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = HarvardDiningAPI.m; path = Dining/HarvardDiningAPI.m; sourceTree = "<group>"; };
 		C704F05D11E3E31F00621406 /* MenuDetailsController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MenuDetailsController.h; path = Dining/MenuDetailsController.h; sourceTree = "<group>"; };
 		C704F05E11E3E31F00621406 /* MenuDetailsController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MenuDetailsController.m; path = Dining/MenuDetailsController.m; sourceTree = "<group>"; };
 		C704F05F11E3E31F00621406 /* MenuItems.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MenuItems.h; path = Dining/MenuItems.h; sourceTree = "<group>"; };
@@ -1349,8 +1345,6 @@
 				C704F05611E3E31F00621406 /* DiningModule.m */,
 				C704F05711E3E31F00621406 /* DiningTabViewControl.h */,
 				C704F05811E3E31F00621406 /* DiningTabViewControl.m */,
-				C704F05B11E3E31F00621406 /* HarvardDiningAPI.h */,
-				C704F05C11E3E31F00621406 /* HarvardDiningAPI.m */,
 				C704F05D11E3E31F00621406 /* MenuDetailsController.h */,
 				C704F05E11E3E31F00621406 /* MenuDetailsController.m */,
 				C704F05F11E3E31F00621406 /* MenuItems.h */,
@@ -1916,7 +1910,6 @@
 				C704F06211E3E31F00621406 /* DiningFirstViewController.h in JavaArchive */,
 				C704F06411E3E31F00621406 /* DiningModule.h in JavaArchive */,
 				C704F06611E3E31F00621406 /* DiningTabViewControl.h in JavaArchive */,
-				C704F06A11E3E31F00621406 /* HarvardDiningAPI.h in JavaArchive */,
 				C704F06C11E3E31F00621406 /* MenuDetailsController.h in JavaArchive */,
 				C704F06E11E3E31F00621406 /* MenuItems.h in JavaArchive */,
 				EB6D076811E50E5B00B65CE3 /* JSONAPIRequest.h in JavaArchive */,
@@ -2189,7 +2182,6 @@
 				C704F06311E3E31F00621406 /* DiningFirstViewController.m in Sources */,
 				C704F06511E3E31F00621406 /* DiningModule.m in Sources */,
 				C704F06711E3E31F00621406 /* DiningTabViewControl.m in Sources */,
-				C704F06B11E3E31F00621406 /* HarvardDiningAPI.m in Sources */,
 				C704F06D11E3E31F00621406 /* MenuDetailsController.m in Sources */,
 				C704F06F11E3E31F00621406 /* MenuItems.m in Sources */,
 				EB6D076911E50E5B00B65CE3 /* JSONAPIRequest.m in Sources */,

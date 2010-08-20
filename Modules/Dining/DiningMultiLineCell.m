@@ -130,7 +130,7 @@
     
     CGFloat heightAdded = 0.0;
     UITableView *tableView = (UITableView *)self.superview;
-    BOOL cellImage = (self.imageView.image != nil);
+    //BOOL cellImage = (self.imageView.image != nil);
     CGRect frame;
     
     UITableViewCellAccessoryType accessoryType = self.accessoryType;

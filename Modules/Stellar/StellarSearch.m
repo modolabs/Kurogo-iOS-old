@@ -177,4 +177,8 @@
 	[alert release];
 }
 
+/* Just to make the compiler happy */
+-(void)handleTooManySearchResultsForMainSearch:(id)object {
+}
+
 @end
