@@ -56,7 +56,7 @@ NSString* cleanPersonName(NSString *personName);
 	JSONAPIRequest *apiRequest = [JSONAPIRequest 
 		requestWithJSONAPIDelegate:[[[CoursesRequest alloc] 
 			initWithCoursesDelegate:delegate] autorelease]];
-	[apiRequest requestObjectFromModule:@"stellar" command:@"courses" parameters:nil];
+	[apiRequest requestObjectFromModule:@"courses" command:@"courses" parameters:nil];
 
 }
 
@@ -93,7 +93,7 @@ NSString* cleanPersonName(NSString *personName);
 										   requestWithJSONAPIDelegate:[[[ClassesChecksumRequest alloc] initWithClassesRequest:classesRequest] autorelease]];
 		
 			[apiRequest 
-				requestObjectFromModule:@"stellar" 
+				requestObjectFromModule:@"courses" 
 				command:@"subjectList" 
 				parameters:[NSDictionary dictionaryWithObjectsAndKeys: 
 					stellarCourse.title, @"id", 
@@ -111,7 +111,7 @@ NSString* cleanPersonName(NSString *personName);
 + (void) classesForCourseCompleteRequest:(ClassesRequest *)classesRequest {
 	JSONAPIRequest *apiRequest = [JSONAPIRequest requestWithJSONAPIDelegate:classesRequest];
 	[apiRequest 
-	 requestObjectFromModule:@"stellar" 
+	 requestObjectFromModule:@"courses" 
 	 command:@"subjectList" 
 	 parameters:[NSDictionary dictionaryWithObjectsAndKeys: 
 		classesRequest.stellarCourse.title, @"id",
@@ -129,7 +129,7 @@ NSString* cleanPersonName(NSString *personName);
 		requestWithJSONAPIDelegate:[[[ClassesSearchRequest alloc]
 									 initWithDelegate:delegate searchTerms:searchTerms] autorelease]];
 	[apiRequest 
-		requestObjectFromModule:@"stellar" 
+		requestObjectFromModule:@"courses" 
 		command:@"search" 
 		parameters:[NSDictionary dictionaryWithObjectsAndKeys: 
 					searchTerms, @"query",
@@ -171,7 +171,7 @@ NSString* cleanPersonName(NSString *personName);
 			initWithClassInfoDelegate:delegate] autorelease]];
 	
 	[apiRequest 
-		requestObjectFromModule:@"stellar" 
+		requestObjectFromModule:@"courses" 
 		command:@"subjectInfo" 
 		parameters:[NSDictionary dictionaryWithObject: class.masterSubjectId forKey:@"id"]];
 }
@@ -203,7 +203,7 @@ NSString* cleanPersonName(NSString *personName);
 		requestWithJSONAPIDelegate:[[[TermRequest alloc] 
 			initWithClearMyStellarDelegate:delegate stellarClasses:favorites] autorelease]];
 		
-	[apiRequest requestObjectFromModule:@"stellar" command:@"term" parameters:nil];
+	[apiRequest requestObjectFromModule:@"courses" command:@"term" parameters:nil];
 }
 
 + (StellarCourse *) courseWithId: (NSString *)courseId {

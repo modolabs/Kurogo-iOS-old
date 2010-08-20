@@ -117,7 +117,7 @@
     
 	self.request = [JSONAPIRequest requestWithJSONAPIDelegate:self];
     // TODO: check for failure
-	[self.request requestObjectFromModule:@"stellar" 
+	[self.request requestObjectFromModule:@"courses" 
                                   command:@"search" 
                                parameters:[NSDictionary dictionaryWithObjectsAndKeys:searchText, @"query", nil]];
 }
