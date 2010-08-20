@@ -219,6 +219,15 @@ NSInteger strLenSort(NSString *str1, NSString *str2, void *context)
 	[tempTokens sortUsingFunction:strLenSort context:NULL]; // match longer tokens first
 	self.searchTokens = [NSArray arrayWithArray:tempTokens];
 	
+	NSString *temp = self.searchTerms;
+	
+	temp = [temp stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+	
+	if ([temp length] == 0){
+		[self handleWarningMessage:@"Nothing Found" title:@"Search Failed"];
+		return;
+	}
+	
 	api = [JSONAPIRequest requestWithJSONAPIDelegate:self];
 	requestWasDispatched = [api requestObjectFromModule:@"people"
                                                 command:@"search"
