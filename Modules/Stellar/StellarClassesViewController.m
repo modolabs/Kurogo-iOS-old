@@ -193,12 +193,25 @@
 
 - (CGFloat) tableView: (UITableView *)tableView heightForRowAtIndexPath: (NSIndexPath *)indexPath {
 	//return [StellarClassTableCell cellHeightForTableView:tableView class:[classes objectAtIndex:indexPath.row]];
-	
 	StellarClass *stellarClass = [classes objectAtIndex:indexPath.row];
 	StellarClass *stellarPreviousClass;
+	StellarClass *stellarNextClass;
 	
-	if (indexPath.row > 0)
+	if (indexPath.row > 0) {
+		
+		// Some logic to ensure that either the pevious or the next class is passed to the configurCell function
 		stellarPreviousClass = [classes objectAtIndex:indexPath.row - 1];
+		
+		if ([classes count] > indexPath.row + 1) 
+			stellarNextClass = [classes objectAtIndex:indexPath.row + 1];
+		
+		else
+			stellarNextClass = stellarPreviousClass;
+		
+		if (![stellarPreviousClass.name isEqualToString:stellarClass.name])
+			stellarPreviousClass = stellarNextClass;
+		
+	}
 	else {
 		if ([classes count] > 1)
 			stellarPreviousClass = [classes objectAtIndex:indexPath.row + 1];
@@ -206,6 +219,7 @@
 		else 
 			stellarPreviousClass = nil;
 	}
+
 	NSString *detail = (NSString *)[StellarClassTableCell setStaffNames:stellarClass previousClassInList:stellarPreviousClass];
 	return [StellarClassTableCell cellHeightForTableView:tableView class:stellarClass detailString:detail];
 }
