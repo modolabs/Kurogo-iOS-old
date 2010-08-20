@@ -56,6 +56,9 @@
     [self switchToSegmentIndex:MapSelectionControllerSegmentBrowse];
 }
 
+- (void)viewWillAppear:(BOOL)animated {
+	[self.navigationController setToolbarHidden:NO];
+}
 
 - (void)dealloc
 {
@@ -306,10 +309,11 @@
 }
 
 - (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (_selectedSegment == MapSelectionControllerSegmentBookmarks) {
-        return YES;
-    }
-    return NO;
+    return (_selectedSegment == MapSelectionControllerSegmentBookmarks);
+}
+
+- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
+    return (_selectedSegment == MapSelectionControllerSegmentBookmarks);
 }
 
 - (void)beginEditing {
@@ -326,27 +330,6 @@
 
 #pragma mark -
 #pragma mark Table view delegate
-
-/*
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    CGFloat height = tableView.rowHeight;
-    
-	switch (_selectedSegment) {
-		case MapSelectionControllerSegmentBookmarks:
-            rows = [[[MapBookmarkManager defaultManager] bookmarks] count];
-			break;
-		case MapSelectionControllerSegmentRecents:
-            rows = _searches.count;
-			break;
-		case MapSelectionControllerSegmentBrowse:
-			break;
-		default:
-			break;
-	}
-}
-*/
-
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
