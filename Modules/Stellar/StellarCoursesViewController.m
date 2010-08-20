@@ -266,6 +266,9 @@
 	[loadingView removeFromSuperview];
 }
 
+/* To make the compiler happy */
+- (void) reloadData {
+}
 
 
 @end

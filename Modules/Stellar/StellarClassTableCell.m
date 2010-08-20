@@ -122,5 +122,4 @@
 	//[detail release];
 	return val;
 }
-	
 @end

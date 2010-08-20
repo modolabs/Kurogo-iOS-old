@@ -39,6 +39,7 @@
 - (void)showNextEvent:(id)sender;
 
 - (NSString *)htmlStringFromString:(NSString *)source;
+-(void)emailTo:(NSString*)subject body:(NSString *)emailBody email:(NSString *)emailAddress;
 
 @end
 
