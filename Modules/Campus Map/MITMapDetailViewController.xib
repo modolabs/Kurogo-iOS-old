@@ -12,8 +12,8 @@
 		</object>
 		<object class="NSMutableArray" key="IBDocument.EditedObjectIDs">
 			<bool key="EncodedWithXMLCoder">YES</bool>
-			<integer value="31"/>
 			<integer value="21"/>
+			<integer value="31"/>
 			<integer value="15"/>
 		</object>
 		<object class="NSArray" key="IBDocument.PluginDependencies">
@@ -52,7 +52,7 @@
 							<object class="IBUILabel" id="503950385">
 								<reference key="NSNextResponder" ref="416545414"/>
 								<int key="NSvFlags">301</int>
-								<string key="NSFrame">{{83, 28}, {188, 29}}</string>
+								<string key="NSFrame">{{83, 8}, {188, 29}}</string>
 								<reference key="NSSuperview" ref="416545414"/>
 								<object class="NSColor" key="IBUIBackgroundColor" id="206558307">
 									<int key="NSColorSpace">3</int>
@@ -97,6 +97,7 @@
 								<nil key="IBUIHighlightedColor"/>
 								<int key="IBUIBaselineAdjustment">1</int>
 								<float key="IBUIMinimumFontSize">10</float>
+								<int key="IBUINumberOfLines">2</int>
 							</object>
 							<object class="IBUIButton" id="454858869">
 								<reference key="NSNextResponder" ref="416545414"/>
@@ -191,27 +192,6 @@
 								<reference key="IBUIBackgroundColor" ref="512054695"/>
 								<bool key="IBUIClearsContextBeforeDrawing">NO</bool>
 								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
-							</object>
-							<object class="IBUILabel" id="997742897">
-								<reference key="NSNextResponder" ref="416545414"/>
-								<int key="NSvFlags">301</int>
-								<string key="NSFrame">{{83, 8}, {188, 21}}</string>
-								<reference key="NSSuperview" ref="416545414"/>
-								<reference key="IBUIBackgroundColor" ref="206558307"/>
-								<bool key="IBUIOpaque">NO</bool>
-								<bool key="IBUIClipsSubviews">YES</bool>
-								<bool key="IBUIUserInteractionEnabled">NO</bool>
-								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
-								<string key="IBUIText">Label</string>
-								<object class="NSFont" key="IBUIFont">
-									<string key="NSName">Helvetica</string>
-									<double key="NSSize">12</double>
-									<int key="NSfFlags">16</int>
-								</object>
-								<reference key="IBUITextColor" ref="791684172"/>
-								<nil key="IBUIHighlightedColor"/>
-								<int key="IBUIBaselineAdjustment">1</int>
-								<float key="IBUIMinimumFontSize">10</float>
 							</object>
 							<object class="IBUIButton" id="478639206">
 								<reference key="NSNextResponder" ref="416545414"/>
@@ -484,14 +464,6 @@
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchOutletConnection" key="connection">
-						<string key="label">_queryLabel</string>
-						<reference key="source" ref="372490531"/>
-						<reference key="destination" ref="997742897"/>
-					</object>
-					<int key="connectionID">53</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBCocoaTouchOutletConnection" key="connection">
 						<string key="label">_scrollView</string>
 						<reference key="source" ref="372490531"/>
 						<reference key="destination" ref="416545414"/>
@@ -652,7 +624,6 @@
 						<object class="NSMutableArray" key="children">
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<reference ref="454858869"/>
-							<reference ref="997742897"/>
 							<reference ref="69064398"/>
 							<reference ref="569997324"/>
 							<reference ref="897174418"/>
@@ -665,11 +636,6 @@
 					<object class="IBObjectRecord">
 						<int key="objectID">35</int>
 						<reference key="object" ref="569997324"/>
-						<reference key="parent" ref="416545414"/>
-					</object>
-					<object class="IBObjectRecord">
-						<int key="objectID">52</int>
-						<reference key="object" ref="997742897"/>
 						<reference key="parent" ref="416545414"/>
 					</object>
 					<object class="IBObjectRecord">
@@ -746,7 +712,6 @@
 					<string>47.IBPluginDependency</string>
 					<string>49.IBPluginDependency</string>
 					<string>5.IBPluginDependency</string>
-					<string>52.IBPluginDependency</string>
 					<string>55.IBEditorWindowLastContentRect</string>
 					<string>55.IBPluginDependency</string>
 					<string>58.CustomClassName</string>
@@ -777,7 +742,6 @@
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>{{144, 593}, {320, 67}}</string>
-					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
@@ -858,7 +822,6 @@
 						<object class="NSArray" key="dict.sortedKeys">
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<string>_bookmarkButton</string>
-							<string>_buildingImageDescriptionLabel</string>
 							<string>_buildingImageView</string>
 							<string>_buildingView</string>
 							<string>_loadingImageView</string>
@@ -867,8 +830,6 @@
 							<string>_mapView</string>
 							<string>_mapViewContainer</string>
 							<string>_nameLabel</string>
-							<string>_nameLabel2</string>
-							<string>_queryLabel</string>
 							<string>_scrollView</string>
 							<string>_tabViewContainer</string>
 							<string>_tabViewControl</string>
@@ -877,7 +838,6 @@
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<string>UIButton</string>
-							<string>UILabel</string>
 							<string>UIImageView</string>
 							<string>UIView</string>
 							<string>UIView</string>
@@ -885,8 +845,6 @@
 							<string>UILabel</string>
 							<string>MKMapView</string>
 							<string>UIButton</string>
-							<string>UILabel</string>
-							<string>UILabel</string>
 							<string>UILabel</string>
 							<string>UIScrollView</string>
 							<string>UIView</string>
@@ -899,7 +857,6 @@
 						<object class="NSArray" key="dict.sortedKeys">
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<string>_bookmarkButton</string>
-							<string>_buildingImageDescriptionLabel</string>
 							<string>_buildingImageView</string>
 							<string>_buildingView</string>
 							<string>_loadingImageView</string>
@@ -908,8 +865,6 @@
 							<string>_mapView</string>
 							<string>_mapViewContainer</string>
 							<string>_nameLabel</string>
-							<string>_nameLabel2</string>
-							<string>_queryLabel</string>
 							<string>_scrollView</string>
 							<string>_tabViewContainer</string>
 							<string>_tabViewControl</string>
@@ -920,10 +875,6 @@
 							<object class="IBToOneOutletInfo">
 								<string key="name">_bookmarkButton</string>
 								<string key="candidateClassName">UIButton</string>
-							</object>
-							<object class="IBToOneOutletInfo">
-								<string key="name">_buildingImageDescriptionLabel</string>
-								<string key="candidateClassName">UILabel</string>
 							</object>
 							<object class="IBToOneOutletInfo">
 								<string key="name">_buildingImageView</string>
@@ -955,14 +906,6 @@
 							</object>
 							<object class="IBToOneOutletInfo">
 								<string key="name">_nameLabel</string>
-								<string key="candidateClassName">UILabel</string>
-							</object>
-							<object class="IBToOneOutletInfo">
-								<string key="name">_nameLabel2</string>
-								<string key="candidateClassName">UILabel</string>
-							</object>
-							<object class="IBToOneOutletInfo">
-								<string key="name">_queryLabel</string>
 								<string key="candidateClassName">UILabel</string>
 							</object>
 							<object class="IBToOneOutletInfo">

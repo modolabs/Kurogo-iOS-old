@@ -17,7 +17,6 @@
 
 @implementation MITMapDetailViewController
 @synthesize annotation = _annotation;
-@synthesize annotationDetails = _annotationDetails;
 @synthesize campusMapVC = _campusMapVC;
 @synthesize queryText = _queryText;
 @synthesize imageConnectionWrapper;
@@ -33,9 +32,7 @@
 - (void)dealloc 
 {	
 	self.annotation = nil;
-	self.annotationDetails = nil;
 	if (networkActivity) {
-		//[(MIT_MobileAppDelegate *)[[UIApplication sharedApplication] delegate] hideNetworkActivityIndicator];
 		[self.imageConnectionWrapper cancel];
 	}
 	self.imageConnectionWrapper.delegate = nil;
@@ -83,15 +80,6 @@
 	// never resize the tab view container below this height. 
 	_tabViewContainerMinHeight = _tabViewContainer.frame.size.height;
 	
-    // TODO: if we never display "x was found in ..." then get rid of this altogether
-    _queryLabel.hidden = YES;
-
-    _nameLabel.frame = CGRectMake(_nameLabel.frame.origin.x, _nameLabel.frame.origin.y - _queryLabel.frame.size.height,
-                                  _nameLabel.frame.size.width, _nameLabel.frame.size.height);
-		
-    _locationLabel.frame = CGRectMake(_locationLabel.frame.origin.x, _locationLabel.frame.origin.y - _queryLabel.frame.size.height,
-                                      _locationLabel.frame.size.width, _locationLabel.frame.size.height);
-	
 	// if the annotation was not fully loaded, go get the rest of the data. 
 	if (!self.annotation.dataPopulated) {
 		// show the loading result view and hide the rest
@@ -102,7 +90,6 @@
 		
 		[_scrollView addSubview:_loadingResultView];	
 	} else {
-		self.annotationDetails = self.annotation;
 		[self loadAnnotationContent];
 	}
 
@@ -145,6 +132,7 @@
 	_nameLabel.hidden = NO;
 	_locationLabel.hidden = NO;
 
+    // details tab
 	NSMutableString *bldgDetails = [NSMutableString stringWithString:@"<style type=\"text/css\" media=\"screen\">"
                                     "li {font-family:Helvetica}"
                                     "a {color: #8C000B;text-decoration:none}"
@@ -172,59 +160,12 @@
 	[_tabViewControl addTab:@"Details"];
 	[_tabViews addObject:_whatsHereView];
     
-    /*
-    CGFloat padding = 10.0;
-    CGFloat currentHeight = padding;
-    CGFloat bulletWidth = 24.0;
-    UIFont *whatsHereFont = [UIFont systemFontOfSize:STANDARD_CONTENT_FONT_SIZE];
-	for (NSString *field in [self.annotation.attributes allKeys]) {
-        
-        NSString *content = [NSString stringWithFormat:@"%@: %@", field, [self.annotation.attributes objectForKey:field]];
-        CGSize textSize = [content sizeWithFont:whatsHereFont 
-                              constrainedToSize:CGSizeMake(_whatsHereView.frame.size.width - bulletWidth - 2 * padding, 400.0) 
-                                  lineBreakMode:UILineBreakModeWordWrap];
-        
-        UILabel *bullet = [[UILabel alloc] initWithFrame:CGRectMake(padding, currentHeight, bulletWidth - padding, 20.0)];
-        bullet.text = @"•";
-        [_whatsHereView addSubview:bullet];
-        [bullet release];
-        
-        UILabel *listItem = [[UILabel alloc] initWithFrame:CGRectMake(bulletWidth, currentHeight, textSize.width, textSize.height)];
-        listItem.text = content;
-        listItem.lineBreakMode = UILineBreakModeWordWrap;
-        listItem.numberOfLines = 0;
-        [_whatsHereView addSubview:listItem];
-        [listItem release];
-        
-        currentHeight += textSize.height;
-    }
-    // resize the what's here view to contain the full label
-    _whatsHereView.frame = CGRectMake(_whatsHereView.frame.origin.x,
-                                      _whatsHereView.frame.origin.y,
-                                      _whatsHereView.frame.size.width,
-                                      currentHeight + padding);
-    
-    
-    // resize the content container if the what's here view is bigger than it
-    if (_whatsHereView.frame.size.height > _tabViewContainer.frame.size.height) {
-        _tabViewContainer.frame = CGRectMake(_tabViewContainer.frame.origin.x,
-                                             _tabViewContainer.frame.origin.y,
-                                             _tabViewContainer.frame.size.width,
-                                             (_whatsHereView.frame.size.height > _tabViewContainerMinHeight ) ? _whatsHereView.frame.size.height : _tabViewContainerMinHeight);
-        
-        CGSize contentSize = CGSizeMake(_scrollView.frame.size.width, _tabViewContainer.frame.size.height + _tabViewContainer.frame.origin.y);
-        [_scrollView setContentSize:contentSize];
-    }
-	
-    */
+    // photo tab
     NSString *photofile = [self.annotation.attributes objectForKey:@"PHOTO_FILE"];
-    NSLog(@"%@", [self.annotation.attributes description]);
     if (photofile == nil) {
         photofile = [self.annotation.attributes objectForKey:@"Photo"];
     }
 
-    NSLog(@"%@", photofile);
-    
     if (photofile != nil) {
 		self.imageConnectionWrapper = [[ConnectionWrapper new] autorelease];
 		self.imageConnectionWrapper.delegate = self;
@@ -260,15 +201,15 @@
 								  _nameLabel.frame.origin.y,
 								  _nameLabel.frame.size.width, stringSize.height);
 	
-	_locationLabel.text = self.annotationDetails.street;
+	_locationLabel.text = self.annotation.street;
+    CGSize textSize = [_locationLabel.text sizeWithFont:_locationLabel.font constrainedToSize:CGSizeMake(_locationLabel.frame.size.width, 200.0)];
 	
 	_locationLabel.frame = CGRectMake(_locationLabel.frame.origin.x, 
 									  _nameLabel.frame.size.height + _nameLabel.frame.origin.y + 1,
-									  _locationLabel.frame.size.width, _locationLabel.frame.size.height);
+									  _locationLabel.frame.size.width, textSize.height);
 	
-	
-	if (_locationLabel.frame.origin.y + _locationLabel.frame.size.height + 5 > _tabViewControl.frame.origin.y) {
-		_tabViewControl.frame = CGRectMake(_tabViewControl.frame.origin.x, _locationLabel.frame.origin.y + _locationLabel.frame.size.height + 5, 
+	if (_locationLabel.frame.origin.y + _locationLabel.frame.size.height + 15 > _tabViewControl.frame.origin.y) {
+		_tabViewControl.frame = CGRectMake(_tabViewControl.frame.origin.x, _locationLabel.frame.origin.y + _locationLabel.frame.size.height + 15, 
 										   _tabViewControl.frame.size.width, 
 										   _tabViewControl.frame.size.height);
 		_tabViewContainer.frame = CGRectMake(_tabViewContainer.frame.origin.x,
@@ -308,7 +249,6 @@
 	[_tabViewContainer release];
 	[_buildingView release];
 	[_buildingImageView release];
-	[_buildingImageDescriptionLabel release];
 	[_whatsHereView release];
 	[_tabViews release];
 	[_loadingImageView release];

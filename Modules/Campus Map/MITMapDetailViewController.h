@@ -10,79 +10,36 @@
 
 @interface MITMapDetailViewController : UIViewController <ConnectionWrapperDelegate, TabViewControlDelegate, JSONAPIDelegate, UIWebViewDelegate> {
 
-	// tab controller for which we are a delegate.
-	IBOutlet TabViewControl* _tabViewControl;
-	
 	IBOutlet UIButton* _bookmarkButton;
-	
-	// label for the name
-	IBOutlet UILabel* _nameLabel;
-	
-	// label for the second line of the name;
-	IBOutlet UILabel* _nameLabel2;
-	
-	// label for the location
-	IBOutlet UILabel* _locationLabel;
 
-	// label for the query
-	IBOutlet UILabel* _queryLabel;
+	IBOutlet UILabel* _nameLabel; // building name label
+	IBOutlet UILabel* _locationLabel; 	// building address label
 	
-	// container view for the tabbed contents. 
-	IBOutlet UIView* _tabViewContainer;
-	
-	// map view
+	// map thumbnail
 	IBOutlet MKMapView* _mapView;
 	IBOutlet UIButton* _mapViewContainer;
 
-	//
-	// BUILDING IMAGE
-	//
+	IBOutlet UIScrollView* _scrollView; // main content scroll view
 	
-	// view for the building image info
-	IBOutlet UIView* _buildingView;
+	IBOutlet TabViewControl* _tabViewControl; // tab controller for which we are a delegate.
+	IBOutlet UIView* _tabViewContainer; // container view for the tabbed contents.     
+	CGFloat _tabViewContainerMinHeight;
 	
-	// image view for the building
-	IBOutlet UIImageView* _buildingImageView;
-	
-	// label describing the image
-	IBOutlet UILabel* _buildingImageDescriptionLabel;
-	
-	
-	//
-	// WHAT's HERE
-	// 
-	// view for what's here info
+    // details tab
 	IBOutlet UIWebView* _whatsHereView;
+    
+	// photo tab
+	IBOutlet UIView* _buildingView; // view for the building image info
+	IBOutlet UIImageView* _buildingImageView; // image view for the building
 	
-	//
-	// LOADING IMAGE VIEW
-	//
 	IBOutlet UIView* _loadingImageView;
-	
-	//
-	// LOADING RESULT VIEW
-	//
 	IBOutlet UIView* _loadingResultView;
-	
-	//
-	// MAIN CONTENT SCROLL VIEW
-	//
-	IBOutlet UIScrollView* _scrollView;
 	
 	// array of views that appear in our tabs, indexed by tab index. 
 	NSMutableArray* _tabViews;
 	
-	// the search result we are attempting to display
-	ArcGISMapAnnotation *_annotation;
-	
-	// updated search result details. Not the annotation we started with, but based on its ID. 
-	ArcGISMapAnnotation *_annotationDetails;
-	
-	CampusMapViewController* _campusMapVC;
-	
-	NSString* _queryText;
-	
-	CGFloat _tabViewContainerMinHeight;
+	ArcGISMapAnnotation *_annotation; // the search result we are attempting to display
+	CampusMapViewController* _campusMapVC; // the campus map view we were pushed from, if any
 	
 	// Connection Wrapper used for loading building images
 	ConnectionWrapper *imageConnectionWrapper;
@@ -95,19 +52,12 @@
 }
 
 @property (nonatomic, retain) ArcGISMapAnnotation *annotation;
-@property (nonatomic, retain) ArcGISMapAnnotation *annotationDetails;
-
 @property (nonatomic, assign) CampusMapViewController* campusMapVC;
-
 @property (nonatomic, retain) NSString* queryText;
-
 @property (nonatomic, retain) ConnectionWrapper *imageConnectionWrapper;
 @property int startingTab;
 
-// user tapped on the map thumbnail
 -(IBAction) mapThumbnailPressed:(id)sender;
-
-// user tapped the bookmark/favorite button
 -(IBAction) bookmarkButtonTapped;
 
 @end
