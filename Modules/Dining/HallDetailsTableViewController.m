@@ -88,24 +88,12 @@
 
 
 - (UIView *) tableView: (UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
-		UILabel *textLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 0, 300, GROUPED_SECTION_HEADER_HEIGHT)];
-		if(section == 0)
-			return nil;
-		else
-			textLabel.text =  @"Interhouse Restrictions";
-		
-	textLabel.font = [UIFont  fontWithName:STANDARD_FONT size:STANDARD_CONTENT_FONT_SIZE];
-	textLabel.textColor = [UIColor colorWithHexString:@"#554c41"];
-	textLabel.backgroundColor = [UIColor clearColor];
+    UIView *view = nil;    
+    
+    if(section != 0)
+        view = [UITableView groupedSectionHeaderWithTitle:@"Interhouse Restrictions"];
 
-						  
-	UIView* secondaryView = [[UIView alloc] initWithFrame: CGRectMake(0.0, 0.0, 320.0, GROUPED_SECTION_HEADER_HEIGHT)];
-	secondaryView.backgroundColor = [UIColor clearColor];
-	[secondaryView addSubview:textLabel];
-	[textLabel release];
-	
-	
-	return secondaryView;
+    return view;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
