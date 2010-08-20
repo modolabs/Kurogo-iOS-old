@@ -30,4 +30,9 @@
 @dynamic school_short;
 @dynamic order;
 
+- (NSComparisonResult)compare:(StellarClass *)otherObject {
+    return [self.name compare:otherObject.name];
+}
+
+
 @end

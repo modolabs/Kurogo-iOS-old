@@ -32,7 +32,10 @@
 @property (nonatomic, retain) NSString *school_short;
 @property (nonatomic, retain) NSNumber *order;
 
+- (NSComparisonResult)compare:(StellarClass *)otherObject;
+
 @end
+
 
 
 @interface StellarClass (CoreDataGeneratedAccessors)

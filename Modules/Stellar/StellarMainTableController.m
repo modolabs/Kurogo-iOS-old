@@ -118,6 +118,8 @@
 
 - (void) reloadMyStellarData {
 	self.myStellar = [StellarModel myStellarClasses];
+	
+	self.myStellar = [self.myStellar sortedArrayUsingSelector:@selector(compare:)];
 	if(![stellarSearch isSearchResultsVisible]) {
 		[self.tableView reloadData];
 		myStellarUIisUpToDate = YES;
