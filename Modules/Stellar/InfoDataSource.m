@@ -5,6 +5,7 @@
 #import "UIKit+MITAdditions.h"
 #import "UITableViewCell+MITUIAdditions.h"
 #import "MITUIConstants.h"
+#import "MapSearchResultAnnotation.h"
 
 #define TIMES 0
 #define DESCRIPTION 1
@@ -19,6 +20,34 @@
 
 
 @implementation InfoDataSource
+
+@synthesize mapAnnotations;
+
+- (void)searchMapForTimes:(NSArray *)times {
+    NSInteger rowIndex = 0;
+    self.mapAnnotations = [NSMutableDictionary dictionaryWithCapacity:[times count]];
+    for (StellarClassTime *time in times) {
+        NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:time.location, @"q", @"course", @"loc", nil];
+        JSONAPIRequest *aRequest = [JSONAPIRequest requestWithJSONAPIDelegate:self];
+        aRequest.userData = [NSNumber numberWithInt:rowIndex];
+        [aRequest requestObjectFromModule:@"map" command:@"search" parameters:params];
+        rowIndex++;
+    }
+}
+
+- (void)request:(JSONAPIRequest *)request jsonLoaded:(id)JSONObject {
+    NSNumber *rowNumber = request.userData;
+    if ([JSONObject isKindOfClass:[NSDictionary class]]) {
+        NSArray *results = [JSONObject objectForKey:@"results"];
+        NSDictionary *info = [results lastObject];
+        HarvardMapSearchAnnotation *annotation = [[[HarvardMapSearchAnnotation alloc] initWithInfo:info] autorelease];
+        [self.mapAnnotations setObject:annotation forKey:rowNumber];
+        // since this class is not aware of the tableview it's updating,
+        // tell our view controller to update whatever tableview is using
+        // us as a delegate.
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"foundMapAnnotation" object:rowNumber];
+    }
+}
 
 - (NSInteger) numberOfSectionsInTableView: (UITableView *)tableView {
 	return 8;
@@ -83,12 +112,8 @@
 				
 				StellarClassTime *classTime = [self.viewController.times objectAtIndex:indexPath.row];
 				if([classTime.location length]) {
-					if (![classTime.location isEqualToString:@"TBA"] && 
-						![classTime.location isEqualToString:@"tba"] &&
-						![classTime.location isEqualToString:@"TBD"] &&
-						![classTime.location isEqualToString:@"tbd"] && 
-						![classTime.location isEqualToString:@"Tbd"] && 
-						![classTime.location isEqualToString:@"Tba"]) {
+                    HarvardMapSearchAnnotation *annotation = [self.mapAnnotations objectForKey:[NSNumber numberWithInt:indexPath.row]];
+					if (annotation != nil) {
 						
 						cell.accessoryView = [UIImageView accessoryViewWithMITType:MITAccessoryViewMap];
 						cell.selectionStyle = UITableViewCellSelectionStyleGray;
@@ -326,12 +351,9 @@
 	if(indexPath.section == TIMES) {
 		StellarClassTime *classTime = [self.viewController.times objectAtIndex:indexPath.row];
 		if([classTime.location length]) {
-			if (![classTime.location isEqualToString:@"TBA"] && 
-				![classTime.location isEqualToString:@"tba"] &&
-				![classTime.location isEqualToString:@"TBD"] &&
-				![classTime.location isEqualToString:@"tbd"] && 
-				![classTime.location isEqualToString:@"Tbd"] && 
-				![classTime.location isEqualToString:@"Tba"]) {
+            // TODO: don't repeat the check for location length and the search
+            HarvardMapSearchAnnotation *annotation = [self.mapAnnotations objectForKey:[NSNumber numberWithInt:indexPath.row]];
+			if (annotation) {
 				StellarClassTime *classTime = [self.viewController.times objectAtIndex:indexPath.row];
 				if([classTime.location length]) {
                     NSString *courseQuery = [NSString stringWithFormat:@"%@&loc=course", classTime.location];

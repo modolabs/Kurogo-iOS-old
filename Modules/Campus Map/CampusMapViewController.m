@@ -805,15 +805,23 @@
 	} else if (JSONObject && [JSONObject isKindOfClass:[NSArray class]]) {
         NSString *category = [request.params objectForKey:@"category"];
         if (category != nil) {
-            // TODO: cache results to reduce the number of network calls
-            // made for the same exact purpose as "browse by categories"
-            for (NSDictionary *thisItem in JSONObject) {
-                ArcGISMapAnnotation *annotation = [[[ArcGISMapAnnotation alloc] initWithInfo:thisItem] autorelease];
-                if (!annotation.dataPopulated) {
-                    [annotation searchAnnotationWithDelegate:self category:category];
+            if ([JSONObject count]) {
+                
+                // TODO: cache results to reduce the number of network calls
+                // made for the same exact purpose as "browse by categories"
+                for (NSDictionary *thisItem in JSONObject) {
+                    ArcGISMapAnnotation *annotation = [[[ArcGISMapAnnotation alloc] initWithInfo:thisItem] autorelease];
+                    if (!annotation.dataPopulated) {
+                        [annotation searchAnnotationWithDelegate:self category:category];
+                    }
                 }
+                [_searchController hideSearchOverlayAnimated:YES];
+            } else {
+                
+                [self noSearchResultsAlert];
+                _hasSearchResults = NO;
+                self.navigationItem.rightBarButtonItem.title = _displayingList ? @"Map" : @"Browse";
             }
-            [_searchController hideSearchOverlayAnimated:YES];
         }
     }
 }

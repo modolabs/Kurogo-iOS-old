@@ -264,7 +264,10 @@ NSString * termText(NSString *termCode) {
 	if(([stellarClass.blurb length]) || ([stellarClass.preReqs length]) || ([stellarClass.credits length])
 	   || ([stellarClass.cross_reg length]) || ([stellarClass.examGroup length]) || ([stellarClass.department length])
 	   || ([stellarClass.school length]) || ([times count] > 0)){
-		[self addTabName:@"Info" dataSource:[InfoDataSource viewController:self]];
+        InfoDataSource *dataSource = (InfoDataSource *)[InfoDataSource viewController:self];
+        [dataSource searchMapForTimes:self.times];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didFindMapAnnotation:) name:@"foundMapAnnotation" object:nil];
+		[self addTabName:@"Info" dataSource:dataSource];
 	}
 	if([instructors count]+[tas count]) {
 		[self addTabName:@"Instructor(s)" dataSource:[StaffDataSource viewController:self]];
@@ -279,6 +282,16 @@ NSString * termText(NSString *termCode) {
 	[tabViewControl release];
 }	
 
+- (void)didFindMapAnnotation:(NSNotification *)notification {
+    NSNumber *rowIndex = [notification object];
+    
+    // figure out which tab we're looking at
+    id<UITableViewDataSource> dataSource = [dataSources objectAtIndex:tabViewControl.selectedTab];
+    if ([dataSource isKindOfClass:[InfoDataSource class]]) {
+        NSIndexPath *indexPath = [NSIndexPath indexPathForRow:[rowIndex integerValue] inSection:0]; // 0 is the index of TIMES in InfoDataSource.m
+        [self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
+    }
+}
 
 // this method is always called when tabs change (no matter what initiates the change)
 - (void) switchTab: (NSInteger)index {
