@@ -379,6 +379,13 @@
 	[alert release];
 }
 
+/* To make the complier happy */
+-(void) reloadData {
+}
+
+/* To make the compiler happy */
+-(void) handleTooManySearchResultsForMainSearch:(id)object {
+}
 
 
 @end
