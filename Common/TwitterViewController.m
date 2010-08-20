@@ -49,7 +49,7 @@ static NSString * const TwitterServiceName = @"Twitter";
 
 @implementation TwitterViewController
 
-@synthesize connection;
+@synthesize connection, contentView;
 
 - (id) initWithMessage: (NSString *)aMessage url:(NSString *)aLongUrl {
 	if(self = [super init]) {
@@ -60,10 +60,7 @@ static NSString * const TwitterServiceName = @"Twitter";
 		usernameLabel = nil;
 		signOutButton = nil;
 		
-		loginView = nil;
-		messageInputView = nil;
-		
-		contentView = nil;
+		self.contentView = nil;
 		navigationItem = nil;
 		
 		message = [aMessage retain];
@@ -81,12 +78,11 @@ static NSString * const TwitterServiceName = @"Twitter";
 	passwordField.delegate = nil;
 	messageField.delegate = nil;
 	
-	[messageInputView release];
 	[messageField release];
 	[usernameLabel release];
 	[signOutButton release];
-	
-	[loginView release];
+
+    self.contentView = nil;
 	[usernameField release];
 	[passwordField release];
 	
@@ -119,13 +115,7 @@ static NSString * const TwitterServiceName = @"Twitter";
 	twitterEngine.consumerKey = TwitterOAuthConsumerKey;
 	twitterEngine.consumerSecret = TwitterOAuthConsumerSecret;
 	
-	CGRect appFrame = [[UIScreen mainScreen] applicationFrame];
-	appFrame.origin.y = 0;
-	self.view = [[[UIView alloc] initWithFrame:appFrame] autorelease];
-	
-	CGRect navBarFrame = appFrame;
-	navBarFrame.size.height = NAVIGATION_BAR_HEIGHT;	
-	UINavigationBar *navBar = [[[UINavigationBar alloc] initWithFrame:navBarFrame] autorelease];
+	UINavigationBar *navBar = [[[UINavigationBar alloc] initWithFrame:CGRectMake(0.0, 0.0, self.view.frame.size.width, NAVIGATION_BAR_HEIGHT)] autorelease];
 	navBar.barStyle= UIBarStyleBlack;
 	navigationItem = [[[UINavigationItem alloc] initWithTitle:@"Twitter"] autorelease];
 	navigationItem.leftBarButtonItem = [[[UIBarButtonItem alloc] initWithTitle:@"Cancel" style:UIBarButtonItemStylePlain target:self action:@selector(dismissTwitterViewController)] autorelease];
@@ -138,9 +128,8 @@ static NSString * const TwitterServiceName = @"Twitter";
 }
 
 - (void) updateTwitterSessionUI {
-	[contentView removeFromSuperview];
-    [contentView release];
-    contentView = nil;
+	[self.contentView removeFromSuperview];
+    self.contentView = nil;
 	
 	if([[NSUserDefaults standardUserDefaults] objectForKey:TwitterShareUsernameKey]) {
 		// user has logged in
@@ -153,11 +142,10 @@ static NSString * const TwitterServiceName = @"Twitter";
             [self.connection requestDataFromURL:url];
             [self showNetworkActivity];
             
-            contentView = [[MITLoadingActivityView alloc] initWithFrame:self.view.frame];
+            self.contentView = [[[MITLoadingActivityView alloc] initWithFrame:self.view.frame] autorelease];
             
         } else {
             [self loadMessageInputView];
-            contentView = messageInputView;
             [messageField becomeFirstResponder];
             navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithTitle:@"Tweet" style:UIBarButtonItemStyleDone target:self action:@selector(sendTweet)] autorelease];
             [self updateMessageInputView];
@@ -166,13 +154,12 @@ static NSString * const TwitterServiceName = @"Twitter";
 	} else {
 		// user has not yet logged in, so show them the login view
 		[self loadLoginView];
-		contentView = loginView;
 		navigationItem.title = @"Sign in to Twitter";
 		navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithTitle:@"Sign in" style:UIBarButtonItemStyleDone target:self action:@selector(loginTwitter)] autorelease];
 		[usernameField becomeFirstResponder];
 	}
 	
-	[self.view addSubview:contentView];
+	[self.view addSubview:self.contentView];
 }
 	
 - (void) dismissTwitterViewController {
@@ -180,62 +167,63 @@ static NSString * const TwitterServiceName = @"Twitter";
 }
 
 - (void) loadMessageInputView {
-	if (!messageInputView) {
-		CGRect contentFrame = [[UIScreen mainScreen] applicationFrame];
-		contentFrame.origin.y = NAVIGATION_BAR_HEIGHT;
-		contentFrame.size.height = contentFrame.size.height - NAVIGATION_BAR_HEIGHT;
-		messageInputView = [[UIView alloc] initWithFrame:contentFrame];
-		
-		signOutButton = [[UIButton buttonWithType:UIButtonTypeCustom] retain];
-		UIImage *signOutImage = [UIImage imageNamed:@"global/twitter_signout.png"];
-		UIImage *signOutImagePressed = [UIImage imageNamed:@"global/twitter_signout_pressed.png"];
-		[signOutButton setImage:signOutImage forState:UIControlStateNormal];
-		[signOutButton setImage:signOutImagePressed forState:(UIControlStateNormal | UIControlStateHighlighted)];
-		signOutButton.frame = CGRectMake(USERNAME_MAX_WIDTH, MESSAGE_HEIGHT+BOTTOM_SECTION_TOP, signOutImage.size.width, signOutImage.size.height);
-		[signOutButton addTarget:self action:@selector(logoutTwitter) forControlEvents:UIControlEventTouchUpInside];
-		[messageInputView addSubview:signOutButton];
-		
-		usernameLabel = [[UILabel alloc] initWithFrame:CGRectMake(MESSAGE_MARGIN, 
-                                                                  MESSAGE_HEIGHT+BOTTOM_SECTION_TOP,
-                                                                  USERNAME_MAX_WIDTH, 
-                                                                  BOTTOM_SECTION_HEIGHT)];
-		usernameLabel.font = [UIFont fontWithName:STANDARD_FONT size:CELL_DETAIL_FONT_SIZE];
-		usernameLabel.backgroundColor = [UIColor clearColor];
-		usernameLabel.textColor = [UIColor blackColor];
-		[messageInputView addSubview:usernameLabel];
-        
-		CGRect messageFrame = CGRectMake(MESSAGE_MARGIN,
-                                         MESSAGE_MARGIN, 
-                                         contentFrame.size.width - 2 * MESSAGE_MARGIN,
-                                         MESSAGE_HEIGHT - 2 * MESSAGE_MARGIN);
-		
-		// we use a UITextField to give the the UITextView
-		// the same appearance as a UITextField, but
-		// we keep it behind the the UITextView, because we
-		// want the multiple line functionality of a UITextView
-		UITextField *fakeMessageField = [[[UITextField alloc] initWithFrame:messageFrame] autorelease];
-		fakeMessageField.borderStyle = UITextBorderStyleRoundedRect;
-		fakeMessageField.enabled = NO;
-		[messageInputView addSubview:fakeMessageField];
-		
-		messageField = [[UITextView alloc] initWithFrame:CGRectInset(messageFrame, MESSAGE_MARGIN, MESSAGE_MARGIN)];
-		messageField.text = [NSString stringWithFormat:@"%@:\n%@", message, shortURL];
-        messageField.delegate = self;
-		//messageField.delegate = [[MessageFieldDelegate alloc] initWithMessage:messageField.text counter:counterLabel];
-		messageField.backgroundColor = [UIColor clearColor];
-		messageField.font = [UIFont systemFontOfSize:17.0];
-		[messageInputView addSubview:messageField];
-		
-		counterLabel = [[UILabel alloc] initWithFrame:CGRectMake(contentFrame.size.width-MESSAGE_MARGIN-40, 
-                                                                          MESSAGE_HEIGHT+BOTTOM_SECTION_TOP, 
-                                                                          40, 
-                                                                          BOTTOM_SECTION_HEIGHT)];
-		counterLabel.font = [UIFont fontWithName:BOLD_FONT size:CELL_STANDARD_FONT_SIZE];
-		counterLabel.backgroundColor = [UIColor clearColor];
-		counterLabel.textColor = CELL_STANDARD_FONT_COLOR;
-		counterLabel.textAlignment = UITextAlignmentRight;
-		[messageInputView addSubview:counterLabel];
-	}
+    CGRect contentFrame = [[UIScreen mainScreen] applicationFrame];
+    contentFrame.origin.y = NAVIGATION_BAR_HEIGHT;
+    contentFrame.size.height = contentFrame.size.height - NAVIGATION_BAR_HEIGHT;
+    
+    UIView *messageInputView = [[[UIView alloc] initWithFrame:contentFrame] autorelease];
+    
+    signOutButton = [[UIButton buttonWithType:UIButtonTypeCustom] retain];
+    UIImage *signOutImage = [UIImage imageNamed:@"global/twitter_signout.png"];
+    UIImage *signOutImagePressed = [UIImage imageNamed:@"global/twitter_signout_pressed.png"];
+    [signOutButton setImage:signOutImage forState:UIControlStateNormal];
+    [signOutButton setImage:signOutImagePressed forState:(UIControlStateNormal | UIControlStateHighlighted)];
+    signOutButton.frame = CGRectMake(USERNAME_MAX_WIDTH, MESSAGE_HEIGHT+BOTTOM_SECTION_TOP, signOutImage.size.width, signOutImage.size.height);
+    [signOutButton addTarget:self action:@selector(logoutTwitter) forControlEvents:UIControlEventTouchUpInside];
+    [messageInputView addSubview:signOutButton];
+    
+    usernameLabel = [[UILabel alloc] initWithFrame:CGRectMake(MESSAGE_MARGIN, 
+                                                              MESSAGE_HEIGHT+BOTTOM_SECTION_TOP,
+                                                              USERNAME_MAX_WIDTH, 
+                                                              BOTTOM_SECTION_HEIGHT)];
+    usernameLabel.font = [UIFont fontWithName:STANDARD_FONT size:CELL_DETAIL_FONT_SIZE];
+    usernameLabel.backgroundColor = [UIColor clearColor];
+    usernameLabel.textColor = [UIColor blackColor];
+    [messageInputView addSubview:usernameLabel];
+    
+    CGRect messageFrame = CGRectMake(MESSAGE_MARGIN,
+                                     MESSAGE_MARGIN, 
+                                     contentFrame.size.width - 2 * MESSAGE_MARGIN,
+                                     MESSAGE_HEIGHT - 2 * MESSAGE_MARGIN);
+    
+    // we use a UITextField to give the the UITextView
+    // the same appearance as a UITextField, but
+    // we keep it behind the the UITextView, because we
+    // want the multiple line functionality of a UITextView
+    UITextField *fakeMessageField = [[[UITextField alloc] initWithFrame:messageFrame] autorelease];
+    fakeMessageField.borderStyle = UITextBorderStyleRoundedRect;
+    fakeMessageField.enabled = NO;
+    [messageInputView addSubview:fakeMessageField];
+    
+    messageField = [[UITextView alloc] initWithFrame:CGRectInset(messageFrame, MESSAGE_MARGIN, MESSAGE_MARGIN)];
+    messageField.text = [NSString stringWithFormat:@"%@:\n%@", message, shortURL];
+    messageField.delegate = self;
+    //messageField.delegate = [[MessageFieldDelegate alloc] initWithMessage:messageField.text counter:counterLabel];
+    messageField.backgroundColor = [UIColor clearColor];
+    messageField.font = [UIFont systemFontOfSize:17.0];
+    [messageInputView addSubview:messageField];
+    
+    counterLabel = [[UILabel alloc] initWithFrame:CGRectMake(contentFrame.size.width-MESSAGE_MARGIN-40, 
+                                                             MESSAGE_HEIGHT+BOTTOM_SECTION_TOP, 
+                                                             40, 
+                                                             BOTTOM_SECTION_HEIGHT)];
+    counterLabel.font = [UIFont fontWithName:BOLD_FONT size:CELL_STANDARD_FONT_SIZE];
+    counterLabel.backgroundColor = [UIColor clearColor];
+    counterLabel.textColor = CELL_STANDARD_FONT_COLOR;
+    counterLabel.textAlignment = UITextAlignmentRight;
+    [messageInputView addSubview:counterLabel];
+    
+    self.contentView = messageInputView;
 }
 
 - (void) updateMessageInputView {
@@ -248,54 +236,55 @@ static NSString * const TwitterServiceName = @"Twitter";
 }
 
 - (void) loadLoginView {
-	if (!loginView) {
-		CGRect contentFrame = [[UIScreen mainScreen] applicationFrame];
-		contentFrame.origin.y = NAVIGATION_BAR_HEIGHT;
-		contentFrame.size.height = contentFrame.size.height - NAVIGATION_BAR_HEIGHT;
-		loginView = [[UIView alloc] initWithFrame:contentFrame];	
-
-		UILabel *instructionLabel = [[[UILabel alloc] initWithFrame:CGRectMake(
-			INSTRUCTIONS_MARGIN, 
-			INSTRUCTIONS_TOP,
-			contentFrame.size.width - 2 * INSTRUCTIONS_MARGIN,																  
-			INSTRUCTIONS_HEIGHT
-		)] autorelease];
-		instructionLabel.numberOfLines = 0;
-		instructionLabel.textAlignment = UITextAlignmentCenter;
-		instructionLabel.text = @"Please sign into your Twitter account.";
-		instructionLabel.font = [UIFont fontWithName:STANDARD_FONT size:STANDARD_CONTENT_FONT_SIZE];
-		instructionLabel.backgroundColor = [UIColor clearColor];
-		
-	    CGFloat fieldWidth = contentFrame.size.width - 2 * INPUT_FIELDS_MARGIN;
-		
-		passwordField = [[UITextField alloc] initWithFrame:CGRectMake(
-			INPUT_FIELDS_MARGIN, 
-			INPUT_FIELDS_TOP+INPUT_FIELDS_HEIGHT+INPUT_FIELDS_MARGIN,
-			fieldWidth, 
-			INPUT_FIELDS_HEIGHT)];
-		passwordField.borderStyle = UITextBorderStyleRoundedRect;
-		passwordField.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
-		passwordField.font = INPUT_FIELDS_FONT;
-		passwordField.placeholder = @"Password";
-		passwordField.secureTextEntry = YES;
-		passwordField.clearButtonMode = UITextFieldViewModeWhileEditing;
-		passwordField.returnKeyType = UIReturnKeyGo;
-        passwordField.delegate = self;
+    CGRect contentFrame = [[UIScreen mainScreen] applicationFrame];
+    contentFrame.origin.y = NAVIGATION_BAR_HEIGHT;
+    contentFrame.size.height = contentFrame.size.height - NAVIGATION_BAR_HEIGHT;
+    
+    UIView *loginView = [[[UIView alloc] initWithFrame:contentFrame] autorelease];
+    
+    UILabel *instructionLabel = [[[UILabel alloc] initWithFrame:CGRectMake(
+                                                                           INSTRUCTIONS_MARGIN, 
+                                                                           INSTRUCTIONS_TOP,
+                                                                           contentFrame.size.width - 2 * INSTRUCTIONS_MARGIN,																  
+                                                                           INSTRUCTIONS_HEIGHT
+                                                                           )] autorelease];
+    instructionLabel.numberOfLines = 0;
+    instructionLabel.textAlignment = UITextAlignmentCenter;
+    instructionLabel.text = @"Please sign into your Twitter account.";
+    instructionLabel.font = [UIFont fontWithName:STANDARD_FONT size:STANDARD_CONTENT_FONT_SIZE];
+    instructionLabel.backgroundColor = [UIColor clearColor];
+    
+    CGFloat fieldWidth = contentFrame.size.width - 2 * INPUT_FIELDS_MARGIN;
+    
+    passwordField = [[UITextField alloc] initWithFrame:CGRectMake(
+                                                                  INPUT_FIELDS_MARGIN, 
+                                                                  INPUT_FIELDS_TOP+INPUT_FIELDS_HEIGHT+INPUT_FIELDS_MARGIN,
+                                                                  fieldWidth, 
+                                                                  INPUT_FIELDS_HEIGHT)];
+    passwordField.borderStyle = UITextBorderStyleRoundedRect;
+    passwordField.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
+    passwordField.font = INPUT_FIELDS_FONT;
+    passwordField.placeholder = @"Password";
+    passwordField.secureTextEntry = YES;
+    passwordField.clearButtonMode = UITextFieldViewModeWhileEditing;
+    passwordField.returnKeyType = UIReturnKeyGo;
+    passwordField.delegate = self;
 	
-		usernameField = [[UITextField alloc] initWithFrame:CGRectMake(INPUT_FIELDS_MARGIN, INPUT_FIELDS_TOP, fieldWidth, INPUT_FIELDS_HEIGHT)];
-		usernameField.borderStyle = UITextBorderStyleRoundedRect;
-		usernameField.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
-		usernameField.font = INPUT_FIELDS_FONT;
-        usernameField.autocapitalizationType = UITextAutocapitalizationTypeNone;
-		usernameField.placeholder = @"Username";
-		usernameField.returnKeyType = UIReturnKeyNext;
-		usernameField.clearButtonMode = UITextFieldViewModeWhileEditing;
-        usernameField.delegate = self;
+    usernameField = [[UITextField alloc] initWithFrame:CGRectMake(INPUT_FIELDS_MARGIN, INPUT_FIELDS_TOP, fieldWidth, INPUT_FIELDS_HEIGHT)];
+    usernameField.borderStyle = UITextBorderStyleRoundedRect;
+    usernameField.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
+    usernameField.font = INPUT_FIELDS_FONT;
+    usernameField.autocapitalizationType = UITextAutocapitalizationTypeNone;
+    usernameField.placeholder = @"Username";
+    usernameField.returnKeyType = UIReturnKeyNext;
+    usernameField.clearButtonMode = UITextFieldViewModeWhileEditing;
+    usernameField.delegate = self;
 	
-		[loginView addSubview:instructionLabel];
-		[loginView addSubview:usernameField];
-		[loginView addSubview:passwordField];
-	}
+    [loginView addSubview:instructionLabel];
+    [loginView addSubview:usernameField];
+    [loginView addSubview:passwordField];
+    
+    self.contentView = loginView;
 }
 
 - (void)hideNetworkActivity {

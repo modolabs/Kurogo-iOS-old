@@ -7,8 +7,6 @@
 	NSString *longURL;
     NSString *shortURL;
 	
-	UIView *loginView;
-	UIView *messageInputView;
 	UILabel *usernameLabel;
     UILabel *counterLabel;
 	UIView *contentView;
@@ -29,5 +27,6 @@
 - (id) initWithMessage:(NSString *)aMessage url:(NSString *)longURL;
 
 @property (nonatomic, retain) ConnectionWrapper *connection;
+@property (nonatomic, retain) UIView *contentView;
 
 @end
