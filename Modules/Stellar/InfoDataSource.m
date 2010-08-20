@@ -254,9 +254,9 @@
 		case TIMES:
             return [MultiLineTableViewCell heightForCellWithStyle:UITableViewCellStyleSubtitle
                                                         tableView:tableView 
-                                                             text:StellarTag
+                                                             text:[self locationAndTime:indexPath.row]//StellarTag
                                                      maxTextLines:0
-                                                       detailText:[self locationAndTime:indexPath.row]// something with one line
+                                                       detailText:StellarTag// something with one line
                                                    maxDetailLines:0
                                                              font:nil 
                                                        detailFont:nil 
