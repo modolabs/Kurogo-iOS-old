@@ -50,8 +50,8 @@
 
 - (void)abortRequest {
 	if (connectionWrapper != nil) {
-		[((MIT_MobileAppDelegate *)[[UIApplication sharedApplication] delegate]) hideNetworkActivityIndicator];
 		[connectionWrapper cancel];
+		[((MIT_MobileAppDelegate *)[[UIApplication sharedApplication] delegate]) hideNetworkActivityIndicator];
 		self.connectionWrapper = nil;
         [self autorelease];
 	}
@@ -133,18 +133,17 @@
                                           @"could not create an object from the result returned", @"message", nil]];
 		[self connection:wrapper handleConnectionFailureWithError:error];		
     } else {
-		[((MIT_MobileAppDelegate *)[[UIApplication sharedApplication] delegate]) hideNetworkActivityIndicator];
 		[jsonDelegate request:self jsonLoaded:result];
+		[((MIT_MobileAppDelegate *)[[UIApplication sharedApplication] delegate]) hideNetworkActivityIndicator];
         self.connectionWrapper = nil;
+        [self autorelease];
 	}
-    
-    [self autorelease];
 }
 
 - (void)connection:(ConnectionWrapper *)wrapper handleConnectionFailureWithError: (NSError *)error {
-	[((MIT_MobileAppDelegate *)[[UIApplication sharedApplication] delegate]) hideNetworkActivityIndicator];
 	NSLog(@"Error: %@\ncode:%d\nuserinfo: %@\n%s", [error domain], [error code], [error userInfo], __PRETTY_FUNCTION__);
     
+	[((MIT_MobileAppDelegate *)[[UIApplication sharedApplication] delegate]) hideNetworkActivityIndicator];
     self.connectionWrapper = nil;
 
 	if([jsonDelegate respondsToSelector:@selector(request:handleConnectionError:)]) {
