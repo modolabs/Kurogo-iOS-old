@@ -72,12 +72,12 @@
 		}
 	}
 	
-	if ([[name substringToIndex:1] isEqualToString:@"0"])
+	/*if ([[name substringToIndex:1] isEqualToString:@"0"])
 		cell.detailTextLabel.text = [name substringFromIndex:1];
 	
-	else {
+	else {*/
 		cell.detailTextLabel.text = name;
-	}
+	//}
 
 
 	
