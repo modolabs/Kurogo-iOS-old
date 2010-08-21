@@ -131,10 +131,27 @@
 	[_loadingResultView removeFromSuperview];
 	_nameLabel.hidden = NO;
 	_locationLabel.hidden = NO;
+    
+    // photo tab
+    NSString *photofile = [self.annotation.attributes objectForKey:@"PHOTO_FILE"];
+    if (photofile == nil) {
+        photofile = [self.annotation.attributes objectForKey:@"Photo"];
+    }
+    
+    if (photofile != nil) {
+		self.imageConnectionWrapper = [[ConnectionWrapper new] autorelease];
+		self.imageConnectionWrapper.delegate = self;
+        NSString *urlString = [[NSString stringWithFormat:@"http://map.harvard.edu/mapserver/images/bldg_photos/%@", photofile]
+                               stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+		[imageConnectionWrapper requestDataFromURL:[NSURL URLWithString:urlString] allowCachedResponse:YES];
+		
+		[_tabViewControl addTab:@"Photo"];	
+		[_tabViews addObject:_buildingView];
+    }
 
     // details tab
 	NSMutableString *bldgDetails = [NSMutableString stringWithString:@"<style type=\"text/css\" media=\"screen\">"
-                                    "li {font-family:Helvetica}"
+                                    "li {font-family:Helvetica;margin-left: -18px;}"
                                     "a {color: #8C000B;text-decoration:none}"
                                     "</style>"
                                     "<ul>"];
@@ -159,23 +176,6 @@
     [_whatsHereView loadHTMLString:bldgDetails baseURL:nil];
 	[_tabViewControl addTab:@"Details"];
 	[_tabViews addObject:_whatsHereView];
-    
-    // photo tab
-    NSString *photofile = [self.annotation.attributes objectForKey:@"PHOTO_FILE"];
-    if (photofile == nil) {
-        photofile = [self.annotation.attributes objectForKey:@"Photo"];
-    }
-
-    if (photofile != nil) {
-		self.imageConnectionWrapper = [[ConnectionWrapper new] autorelease];
-		self.imageConnectionWrapper.delegate = self;
-        NSString *urlString = [[NSString stringWithFormat:@"http://map.harvard.edu/mapserver/images/bldg_photos/%@", photofile]
-                               stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-		[imageConnectionWrapper requestDataFromURL:[NSURL URLWithString:urlString] allowCachedResponse:YES];
-		
-		[_tabViewControl addTab:@"Photo"];	
-		[_tabViews addObject:_buildingView];
-    }
 
 	// if no tabs have been added, remove the tab view control and its container view. 
 	if (_tabViewControl.tabs.count <= 0) {
