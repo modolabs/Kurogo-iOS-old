@@ -205,12 +205,14 @@ static NSString * const PeopleStateDetail = @"detail";
 		self.searchResults = result;
     } else {
         self.request = nil;
+        self.searchResults = nil;
         self.searchProgress = 1.0;
     }
 }
 
 - (void)request:(JSONAPIRequest *)request handleConnectionError:(NSError *)error {
     self.request = nil;
+    self.searchResults = nil;
     self.searchProgress = 1.0;
 }
 

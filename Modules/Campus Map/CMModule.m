@@ -57,6 +57,7 @@
 
 - (void)request:(JSONAPIRequest *)request handleConnectionError:(NSError *)error {
     self.request = nil;
+    self.searchResults = nil;
     self.searchProgress = 1.0;
 }
 

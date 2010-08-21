@@ -9,6 +9,7 @@
 @interface NewsModule : MITModule <NewsControllerDelegate, StoryXMLParserDelegate> {
 	StoryListViewController *storyListChannelController;
     StoryXMLParser *xmlParser;
+    NSInteger totalResults;
 }
 
 - (void)loadSearchResultsFromCache;

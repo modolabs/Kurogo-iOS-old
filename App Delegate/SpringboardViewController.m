@@ -28,10 +28,8 @@
     
     if ((self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil])) {
         activeModule = nil;
+        completedModules = nil;
     }
-	UIBarButtonItem *newBackButton = [[UIBarButtonItem alloc] initWithTitle: @"Home" style: UIBarButtonItemStyleBordered target: nil action: nil];	
-	[[self navigationItem] setBackBarButtonItem: newBackButton];
-	[newBackButton release];
     return self;
 }
 
@@ -150,6 +148,10 @@
 
 - (void)viewDidLoad
 {
+	UIBarButtonItem *newBackButton = [[UIBarButtonItem alloc] initWithTitle:@"Home" style:UIBarButtonItemStyleBordered target:nil action:nil];	
+	[[self navigationItem] setBackBarButtonItem: newBackButton];
+	[newBackButton release];
+    
     UIImage *masthead = [UIImage imageNamed:@"home/home-masthead.png"];
     self.navigationItem.titleView = [[[UIImageView alloc] initWithImage:masthead] autorelease];
     
@@ -213,6 +215,7 @@
     [containingView release];
     [_searchBar release];
     [_searchController release];
+    [completedModules release];
     [super dealloc];
 }
 
@@ -226,6 +229,8 @@
 
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(searchDidMakeProgress:) name:@"SearchResultsProgressNotification" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(searchDidComplete:) name:@"SearchResultsCompleteNotification" object:nil];
+    [completedModules release];
+    completedModules = [[NSMutableArray alloc] initWithCapacity:[searchableModules count]];
     [self searchAllModules];
 }
 
@@ -240,17 +245,19 @@
 
 - (void)searchDidMakeProgress:(NSNotification *)aNotification {
     MITModule *sender = [aNotification object];
-    NSInteger section = [self.searchableModules indexOfObject:sender];
-    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:section];
-    NSArray *indexPaths = [NSArray arrayWithObject:indexPath];
-    [searchResultsTableView reloadRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationNone];
+    if (![completedModules containsObject:sender]) {
+        NSInteger section = [self.searchableModules indexOfObject:sender];
+        NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:section];
+        NSArray *indexPaths = [NSArray arrayWithObject:indexPath];
+        [searchResultsTableView reloadRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationNone];
+    }
 }
 
 - (void)searchDidComplete:(NSNotification *)aNotification {
     MITModule *sender = [aNotification object];
     NSInteger section = [self.searchableModules indexOfObject:sender];
     NSIndexSet *sections = [NSIndexSet indexSetWithIndex:section];
-
+    [completedModules addObject:sender];
     [searchResultsTableView reloadSections:sections withRowAnimation:UITableViewRowAnimationNone];
 }
 
@@ -299,7 +306,6 @@
     if (aModule.searchProgress == 1.0) {
         cell.imageView.image = nil;
 
-        // TODO: add result count -- either in the cell header or after "more results"
         if (indexPath.row == MAX_FEDERATED_SEARCH_RESULTS) {
             cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
             cell.textLabel.text = [NSString stringWithFormat:@"See all %d matches", [aModule.searchResults count]];
@@ -320,22 +326,12 @@
 
     } else {
         
-        /*
-        if (indexPath.row == 0) {
-            UIActivityIndicatorView *spinny = (UIActivityIndicatorView *)[cell.contentView viewWithTag:1234];
-            if (spinny != nil) {
-                [spinny stopAnimating];
-                [spinny removeFromSuperview];
-            }
-        }
-        */
-        
         // indeterminate loading indicator
         cell.textLabel.text = @"Searching...";
         cell.detailTextLabel.text = nil;
         
         // copied from shuttles module
-        cell.imageView.image = [UIImage imageNamed:@"global/loading-animation.gif"];
+        cell.imageView.image = [UIImage imageNamed:@"loading-animation/iPhoneBusyBox_01.png"];
         cell.imageView.animationImages = [NSArray arrayWithObjects:
                                           [UIImage imageNamed:@"loading-animation/iPhoneBusyBox_01.png"],
                                           [UIImage imageNamed:@"loading-animation/iPhoneBusyBox_02.png"],

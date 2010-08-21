@@ -17,6 +17,7 @@
     ModoSearchBar *_searchBar;
     NSMutableArray *searchableModules;
     BOOL isSearch;
+    NSMutableArray *completedModules;
     
     NSMutableArray *_fixedIcons;
     NSMutableArray *_icons;

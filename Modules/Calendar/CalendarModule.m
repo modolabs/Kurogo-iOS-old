@@ -334,7 +334,10 @@
     NSArray *resultEvents = [result objectForKey:@"events"];
     NSMutableArray *arrayForTable;
     
-    if (![resultEvents isKindOfClass:[NSNull class]]) {
+    if ([resultEvents isKindOfClass:[NSNull class]]) {
+        self.searchProgress = 1.0;
+    }
+    else {
         
         self.searchSpan = [result objectForKey:@"span"];
         arrayForTable = [NSMutableArray arrayWithCapacity:[resultEvents count]];
@@ -354,6 +357,7 @@
 
 - (void)request:(JSONAPIRequest *)request handleConnectionError:(NSError *)error {
     self.request = nil;
+    self.searchResults = nil;
     self.searchProgress = 1.0;
 }
 

@@ -48,7 +48,7 @@ NSString * const NewsLocalPathBookmarks = @"bookmarks";
         // fedsearch?query
         self.selectedResult = nil;
         storyListChannelController.view;
-        storyListChannelController.totalAvailableResults = self.xmlParser.totalAvailableResults;
+        storyListChannelController.totalAvailableResults = totalResults;
         [storyListChannelController presentSearchResults:self.searchResults searchText:query];
         [self resetNavStack];
         didHandle = YES;
@@ -113,7 +113,7 @@ NSString * const NewsLocalPathBookmarks = @"bookmarks";
 
 - (NSString *)subtitleForSearchResult:(id)result {
     NewsStory *story = (NewsStory *)result;
-    return [story.postDate description];
+    return story.summary;
 }
 
 - (void)loadSearchResultsFromCache {
@@ -157,6 +157,8 @@ NSString * const NewsLocalPathBookmarks = @"bookmarks";
 
 - (void)parser:(StoryXMLParser *)parser didFailWithDownloadError:(NSError *)error {
     self.searchProgress = 1.0;
+    self.searchResults = nil;
+    totalResults = self.xmlParser.totalAvailableResults;
     self.xmlParser = nil;
 }
                                                                                    
