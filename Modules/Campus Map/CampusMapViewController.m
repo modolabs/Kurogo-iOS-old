@@ -416,7 +416,6 @@
 -(void) geoLocationTouched:(id)sender
 {
     _mapView.showsUserLocation = !_mapView.showsUserLocation;
-    NSLog(@"mapview %@ locating user", _mapView.showsUserLocation ? @"is" : @"is not");
     
     if (_mapView.showsUserLocation) {
         _geoButton.style = UIBarButtonItemStyleDone;
@@ -425,12 +424,9 @@
             && _mapView.userLocation.coordinate.latitude == _lastUserLocation.latitude
             && _mapView.userLocation.coordinate.longitude == _lastUserLocation.longitude)
 
-        {
-            // if the user's location didn't change, this doesn't get called automatically
+        { // if the user's location didn't change, this doesn't get called automatically
             [self mapView:_mapView didUpdateUserLocation:_mapView.userLocation];
         }
-        
-        NSLog(@"%.1f %.1f", _mapView.userLocation.coordinate.latitude, _mapView.userLocation.coordinate.longitude);
         
     } else {
         _geoButton.style = UIBarButtonItemStyleBordered;

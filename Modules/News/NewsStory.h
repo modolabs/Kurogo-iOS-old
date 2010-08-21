@@ -16,7 +16,7 @@
 @property (nonatomic, retain) NSString * title;
 @property (nonatomic, retain) NSNumber * topStory;
 @property (nonatomic, retain) NSString * summary;
-@property (nonatomic, retain) NSNumber * searchResult;
+@property (nonatomic, retain) NSNumber * searchResult; // == 0 for regular stories; for search results indicates sort order
 @property (nonatomic, retain) NSNumber * bookmarked;
 @property (nonatomic, retain) NSSet* categories;
 @property (nonatomic, retain) NewsImage * thumbImage;

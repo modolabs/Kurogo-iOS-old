@@ -170,13 +170,14 @@ NSString * const NewsTagFullURL         = @"url";
 - (void)loadStoriesforQuery:(NSString *)query afterStoryId:(NSInteger)storyId count:(NSInteger)count {
 	self.isSearch = YES;
 	self.loadingMore = (storyId == 0) ? NO : YES;
+    searchIndex = (storyId == 0) ? 1 : searchIndex + 1;
 	
 	// before getting new results, clear old search results if this is a new search request
 	if (self.isSearch && !self.loadingMore) {
-		NSPredicate *predicate = [NSPredicate predicateWithFormat:@"searchResult == YES"];
+		NSPredicate *predicate = [NSPredicate predicateWithFormat:@"searchResult > 0"];
 		NSArray *results = [CoreDataManager objectsForEntity:NewsStoryEntityName matchingPredicate:predicate];
 		for (NewsStory *aStory in results) {
-			aStory.searchResult = NO;
+			aStory.searchResult = [NSNumber numberWithInt:0];
 		}
 		[CoreDataManager saveDataWithTemporaryMergePolicy:NSMergeByPropertyObjectTrumpMergePolicy];
 	}
@@ -438,7 +439,10 @@ NSString * const NewsTagFullURL         = @"url";
             // because NewsStory objects are shared between categories, only set this to YES, never revert it to NO
             story.topStory = [NSNumber numberWithBool:parsingTopStories];
         }
-        story.searchResult = [NSNumber numberWithBool:isSearch]; // gets reset to NO before every search
+        if (isSearch) {
+            story.searchResult = [NSNumber numberWithInt:searchIndex]; // gets reset to 0 before every search
+            searchIndex++;
+        }
         
         story.featured = [NSNumber numberWithBool:![[currentContents objectForKey:NewsTagFeatured] isEqualToString:@"no"]];
         

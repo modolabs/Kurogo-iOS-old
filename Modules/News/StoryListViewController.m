@@ -544,6 +544,7 @@ static NSInteger numTries = 0;
     
     // start new request
     NewsStory *lastStory = [self.stories lastObject];
+    NSLog(@"%@", [lastStory title]);
     NSInteger lastStoryId = (loadMore) ? [lastStory.story_id integerValue] : 0;
     if (self.xmlParser) {
 		[self.xmlParser abort];
@@ -560,13 +561,10 @@ static NSInteger numTries = 0;
 - (void)loadSearchResultsFromCache {
 	// make a predicate for everything with the search flag
     NSPredicate *predicate = nil;
-    NSSortDescriptor *postDateSortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"postDate" ascending:NO];
-    NSSortDescriptor *storyIdSortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"story_id" ascending:NO];
-    NSArray *sortDescriptors = [NSArray arrayWithObjects:postDateSortDescriptor, storyIdSortDescriptor, nil];
-    [storyIdSortDescriptor release];
-    [postDateSortDescriptor release];
+    NSSortDescriptor *relevanceSortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"searchResult" ascending:YES];
+    NSArray *sortDescriptors = [NSArray arrayWithObject:relevanceSortDescriptor];
     
-	predicate = [NSPredicate predicateWithFormat:@"searchResult == YES"];
+	predicate = [NSPredicate predicateWithFormat:@"searchResult > 0"];
     
     // show everything that comes back
     NSArray *results = [CoreDataManager objectsForEntity:NewsStoryEntityName matchingPredicate:predicate sortDescriptors:sortDescriptors];
@@ -615,7 +613,7 @@ static NSInteger numTries = 0;
 
 - (void)parserDidStartDownloading:(StoryXMLParser *)parser {
     if (parser == self.xmlParser) {
-		[self setProgress:0.0];
+		[self setProgress:0.02];
     }
 }
 

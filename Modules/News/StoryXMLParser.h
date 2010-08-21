@@ -42,6 +42,7 @@
     BOOL shouldAbort;
 	BOOL isSearch;
 	BOOL loadingMore;
+    NSInteger searchIndex;
 	NSInteger totalAvailableResults;
     
     NSMutableArray *newStories;
