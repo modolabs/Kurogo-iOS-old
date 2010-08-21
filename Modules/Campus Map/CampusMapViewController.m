@@ -309,6 +309,12 @@
         _hasSearchResults = NO;
     } else {
         _hasSearchResults = YES;
+        
+        if (_mapView.showsUserLocation) {
+            _mapView.showsUserLocation = NO;
+            _geoButton.style = UIBarButtonItemStyleBordered;
+        }
+        
         if (_searchResults.count == 1) {
             id<MKAnnotation> annotation = [_mapView.annotations lastObject];
             [_mapView selectAnnotation:annotation animated:YES];
@@ -410,18 +416,29 @@
 -(void) geoLocationTouched:(id)sender
 {
     _mapView.showsUserLocation = !_mapView.showsUserLocation;
+    NSLog(@"mapview %@ locating user", _mapView.showsUserLocation ? @"is" : @"is not");
     
     if (_mapView.showsUserLocation) {
         _geoButton.style = UIBarButtonItemStyleDone;
+        
+        if (CLLocationCoordinate2DIsValid(_lastUserLocation)
+            && _mapView.userLocation.coordinate.latitude == _lastUserLocation.latitude
+            && _mapView.userLocation.coordinate.longitude == _lastUserLocation.longitude)
+
+        {
+            // if the user's location didn't change, this doesn't get called automatically
+            [self mapView:_mapView didUpdateUserLocation:_mapView.userLocation];
+        }
+        
+        NSLog(@"%.1f %.1f", _mapView.userLocation.coordinate.latitude, _mapView.userLocation.coordinate.longitude);
+        
     } else {
         _geoButton.style = UIBarButtonItemStyleBordered;
-
-        // recenter if they moved too far
-        CLLocationCoordinate2D centerCoord = [TileServerManager defaultRegion].center;
-        MKMapPoint centerPoint = MKMapPointForCoordinate(centerCoord);
         
-        if (!MKMapRectContainsPoint(_mapView.visibleMapRect, centerPoint)) {
-            _mapView.region = [TileServerManager defaultRegion];
+        _lastUserLocation = _mapView.userLocation.coordinate;
+        
+        if ([_mapView.annotations count]) {
+            _mapView.region = [self regionForAnnotations:_mapView.annotations];
         }
     }
 }
@@ -639,6 +656,9 @@
 
 - (void)mapView:(MKMapView *)mapView didUpdateUserLocation:(MKUserLocation *)userLocation {
     NSLog(@"located; %@", _mapView.showsUserLocation ? @"YES" : @"NO");
+    if (_mapView.showsUserLocation) {
+        _mapView.region = MKCoordinateRegionMake(userLocation.coordinate, MKCoordinateSpanMake(0.001, 0.001));
+    }
 }
 
 - (MKOverlayView *)mapView:(MKMapView *)mapView viewForOverlay:(id <MKOverlay>)overlay {
@@ -651,6 +671,7 @@
     }
     return nil;
 }
+
 
 - (void)mapView:(MKMapView *)mapView regionDidChangeAnimated:(BOOL)animated {
     //NSLog(@"%@", _mapView.showsUserLocation ? @"YES" : @"NO");
@@ -678,6 +699,10 @@
 }
 
 - (void)mapView:(MKMapView *)mapView didAddAnnotationViews:(NSArray *)views {
+    // if this is the user location, don't do anything
+    if ([views count] == 1 && ((MKAnnotationView *)[views lastObject]).annotation == _mapView.userLocation)
+        return;
+    
     _mapView.region = [self regionForAnnotations:_searchResults];
     
     if ([_mapView.annotations count] == 1 && [_mapView.selectedAnnotations count] == 0) {
@@ -732,19 +757,6 @@
 {
 	[self pushAnnotationDetails:view.annotation animated:YES];
 }
-
-
-/*
-// TODO: this doesn't seem to be used anywhere
-- (void)annotationSelected:(id<MKAnnotation>)annotation {
-	if([annotation isKindOfClass:[ArcGISMapAnnotation class]]) {
-		ArcGISMapAnnotation *searchAnnotation = (ArcGISMapAnnotation *)annotation;
-		if (!searchAnnotation.dataPopulated) {
-			[searchAnnotation searchAnnotationWithDelegate:self category:nil];	
-		}
-	}
-}
-*/
 
 //- (void)mapView:(MKMapView *)mapView didFailToLocateUserWithError:(NSError *)error {
 //}

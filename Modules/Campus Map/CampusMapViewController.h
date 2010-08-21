@@ -19,9 +19,12 @@
 	// our map view controller which renders the map display
 	MKMapView* _mapView;
 	CampusMapToolbar* _toolBar;
-	UIBarButtonItem* _geoButton;
 	UIBarButtonItem* _cancelSearchButton;
 
+    // user location
+    UIBarButtonItem* _geoButton;
+    CLLocationCoordinate2D _lastUserLocation;
+    
 	NSArray *_searchResults;
 	BOOL _hasSearchResults;
 	NSArray* _filteredSearchResults;
