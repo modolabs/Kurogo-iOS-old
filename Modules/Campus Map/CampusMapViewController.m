@@ -132,6 +132,7 @@
 {
 	if (_displayingList) {
 		self.navigationItem.rightBarButtonItem.title = @"Map";
+        [self restoreToolBar];
 	} else if (_hasSearchResults) {
         self.navigationItem.rightBarButtonItem.title = @"List";
 	} else {

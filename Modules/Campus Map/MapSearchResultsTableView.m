@@ -39,15 +39,19 @@
 	UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil) {
         cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier] autorelease];
-		cell.selectionStyle = UITableViewCellSelectionStyleGray;
     }
     
 	// get the annotation for this index
-	ArcGISMapAnnotation *annotation = [self.searchResults objectAtIndex:indexPath.row];
-	cell.textLabel.text = annotation.name;
-	cell.detailTextLabel.text = annotation.street;
-	cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-	
+    id<MKAnnotation> annotation = [self.searchResults objectAtIndex:indexPath.row];
+    cell.textLabel.text = [annotation title];
+    cell.detailTextLabel.text = [annotation subtitle];
+    if ([annotation isKindOfClass:[ArcGISMapAnnotation class]]) {
+        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+		cell.selectionStyle = UITableViewCellSelectionStyleGray;
+    } else {
+        cell.accessoryType = UITableViewCellAccessoryNone;
+		cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    }
     return cell;
 }
 
@@ -55,21 +59,23 @@
 {
 	[tableView deselectRowAtIndexPath:indexPath animated:YES];
 	
-	MITMapDetailViewController* detailsVC = [[[MITMapDetailViewController alloc] initWithNibName:@"MITMapDetailViewController"
-																						  bundle:nil] autorelease];
-	
-	ArcGISMapAnnotation *annotation = (ArcGISMapAnnotation *)[self.searchResults objectAtIndex:indexPath.row];
-	detailsVC.annotation = annotation;
-	detailsVC.title = @"Info";
-	detailsVC.campusMapVC = self.campusMapVC;
-
-	if (self.isCategory) {
-		detailsVC.queryText = detailsVC.annotation.name;
-	} else if(self.campusMapVC.lastSearchText != nil && self.campusMapVC.lastSearchText.length > 0) {
-		detailsVC.queryText = self.campusMapVC.lastSearchText;
-	}
-	
-	[self.campusMapVC.navigationController pushViewController:detailsVC animated:YES];
+    id <MKAnnotation> annotation = [self.searchResults objectAtIndex:indexPath.row];
+    if ([annotation isKindOfClass:[ArcGISMapAnnotation class]]) {
+        MITMapDetailViewController* detailsVC = [[[MITMapDetailViewController alloc] initWithNibName:@"MITMapDetailViewController"
+                                                                                              bundle:nil] autorelease];
+        
+        detailsVC.annotation = annotation;
+        detailsVC.title = @"Info";
+        detailsVC.campusMapVC = self.campusMapVC;
+        
+        if (self.isCategory) {
+            detailsVC.queryText = detailsVC.annotation.name;
+        } else if(self.campusMapVC.lastSearchText != nil && self.campusMapVC.lastSearchText.length > 0) {
+            detailsVC.queryText = self.campusMapVC.lastSearchText;
+        }
+        
+        [self.campusMapVC.navigationController pushViewController:detailsVC animated:YES];
+    }
      
 }
 
