@@ -45,7 +45,7 @@
     id<MKAnnotation> annotation = [self.searchResults objectAtIndex:indexPath.row];
     cell.textLabel.text = [annotation title];
     cell.detailTextLabel.text = [annotation subtitle];
-    if ([annotation isKindOfClass:[ArcGISMapAnnotation class]]) {
+    if ([annotation isKindOfClass:[ArcGISMapAnnotation class]] && ((ArcGISMapAnnotation *)annotation).dataPopulated) {
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 		cell.selectionStyle = UITableViewCellSelectionStyleGray;
     } else {
@@ -60,7 +60,7 @@
 	[tableView deselectRowAtIndexPath:indexPath animated:YES];
 	
     id <MKAnnotation> annotation = [self.searchResults objectAtIndex:indexPath.row];
-    if ([annotation isKindOfClass:[ArcGISMapAnnotation class]]) {
+    if ([annotation isKindOfClass:[ArcGISMapAnnotation class]] && ((ArcGISMapAnnotation *)annotation).dataPopulated) {
         MITMapDetailViewController* detailsVC = [[[MITMapDetailViewController alloc] initWithNibName:@"MITMapDetailViewController"
                                                                                               bundle:nil] autorelease];
         

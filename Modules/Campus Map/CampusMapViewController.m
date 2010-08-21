@@ -304,14 +304,19 @@
 - (void)setSearchResults:(NSArray *)searchResults
 {
 	[self setSearchResultsWithoutRecentering:searchResults];
-	
-    if (_searchResults.count == 1) {
-        id<MKAnnotation> annotation = [_mapView.annotations lastObject];
-        [_mapView selectAnnotation:annotation animated:YES];
 
-    } else if (_searchResults.count > 0) {
-        _mapView.region = [self regionForAnnotations:_searchResults];
-	}
+	if (![_searchResults count]) {
+        _hasSearchResults = NO;
+    } else {
+        _hasSearchResults = YES;
+        if (_searchResults.count == 1) {
+            id<MKAnnotation> annotation = [_mapView.annotations lastObject];
+            [_mapView selectAnnotation:annotation animated:YES];
+            
+        } else {
+            _mapView.region = [self regionForAnnotations:_searchResults];
+        }
+    }
 }
 
 - (void)setSearchResults:(NSArray *)searchResults withFilter:(SEL)filter
@@ -679,7 +684,7 @@
         id<MKAnnotation> annotation = [_mapView.annotations lastObject];
         // check if annotation has lat/lon
         if (![annotation isKindOfClass:[ArcGISMapAnnotation class]]
-            || ((ArcGISMapAnnotation *)annotation).dataPopulated) {
+            || ((ArcGISMapAnnotation *)annotation).coordinate.longitude != 0) {
             [_mapView selectAnnotation:[_mapView.annotations lastObject] animated:YES];
         }
     }
