@@ -12,12 +12,12 @@
 #define GRID_HPADDING 16.0f
 
 // vertical spacing between icons
-#define GRID_VPADDING 26.0f
+#define GRID_VPADDING 20.0f
 
 // height to allocate to icon text label
-#define ICON_LABEL_HEIGHT 28.0f
+#define ICON_LABEL_HEIGHT 26.0f
 
-// internal padding within each icon
+// internal padding within each icon (allows longer text labels)
 #define ICON_PADDING 5.0f
 
 @implementation SpringboardViewController
@@ -108,25 +108,25 @@
             
             if (aModule.canBecomeDefault) {
                 [_icons addObject:anIcon];
-                anIcon.titleLabel.font = [UIFont systemFontOfSize:13.0];
 
-                anIcon.frame = CGRectMake(0, 0, image.size.width, image.size.height + ICON_LABEL_HEIGHT);
-                anIcon.imageEdgeInsets = UIEdgeInsetsMake(0, 0, ICON_LABEL_HEIGHT, 0);
+                anIcon.frame = CGRectMake(0, 0, image.size.width + ICON_PADDING * 2, image.size.height + ICON_LABEL_HEIGHT);
+                anIcon.imageEdgeInsets = UIEdgeInsetsMake(0, ICON_PADDING, ICON_LABEL_HEIGHT, ICON_PADDING);
                 // title by default is placed to the right of the image, we want it below
                 anIcon.titleEdgeInsets = UIEdgeInsetsMake(image.size.height, -image.size.width, 0, 0);
             } else {
                 [_fixedIcons addObject:anIcon];
-                anIcon.titleLabel.font = [UIFont systemFontOfSize:10.0];
 
-                anIcon.frame = CGRectMake(0, 0, image.size.width + ICON_PADDING * 2, image.size.height + ICON_PADDING * 2 + ICON_LABEL_HEIGHT);
-                anIcon.imageEdgeInsets = UIEdgeInsetsMake(ICON_PADDING, ICON_PADDING, ICON_LABEL_HEIGHT + ICON_PADDING, ICON_PADDING);
+                anIcon.frame = CGRectMake(0, 0, image.size.width + ICON_PADDING * 2, image.size.height + ICON_LABEL_HEIGHT);
+                anIcon.imageEdgeInsets = UIEdgeInsetsMake(0, ICON_PADDING, ICON_LABEL_HEIGHT, ICON_PADDING);
                 // title by default is placed to the right of the image, we want it below
-                anIcon.titleEdgeInsets = UIEdgeInsetsMake(image.size.height + ICON_PADDING, -image.size.width, 0, 0);
+                anIcon.titleEdgeInsets = UIEdgeInsetsMake(image.size.height + ICON_PADDING, -image.size.width - 5.0, 0, -5.0);
             }
             
             [anIcon setImage:image forState:UIControlStateNormal];
 
             anIcon.titleLabel.numberOfLines = 0;
+            anIcon.titleLabel.font = [UIFont systemFontOfSize:11.0];
+            anIcon.titleLabel.textColor = [UIColor colorWithHexString:@"#302F2E"];
             anIcon.titleLabel.lineBreakMode = UILineBreakModeWordWrap;
             anIcon.titleLabel.textAlignment = UITextAlignmentCenter;
             
@@ -348,12 +348,6 @@
                                           nil];
         
         [cell.imageView startAnimating];
-        //UIActivityIndicatorView *spinny = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
-        //spinny.center = CGPointMake(18.0, 22.0);
-        //spinny.tag = 1234;
-        //[spinny startAnimating];
-        //[cell.contentView addSubview:spinny];
-        //[spinny release];
         
     }
     
