@@ -336,6 +336,7 @@
     
     if ([resultEvents isKindOfClass:[NSNull class]]) {
         self.searchProgress = 1.0;
+        self.searchResults = nil;
     }
     else {
         

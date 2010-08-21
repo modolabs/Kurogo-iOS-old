@@ -152,13 +152,13 @@ NSString * const NewsLocalPathBookmarks = @"bookmarks";
 
 - (void)parserDidFinishParsing:(StoryXMLParser *)parser {
     [self loadSearchResultsFromCache];
+    totalResults = self.xmlParser.totalAvailableResults;
     self.xmlParser = nil;
 }
 
 - (void)parser:(StoryXMLParser *)parser didFailWithDownloadError:(NSError *)error {
     self.searchProgress = 1.0;
     self.searchResults = nil;
-    totalResults = self.xmlParser.totalAvailableResults;
     self.xmlParser = nil;
 }
                                                                                    
