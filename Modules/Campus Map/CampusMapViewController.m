@@ -453,11 +453,8 @@
         _searchController.searchResultsTableView = nil;
         self.searchResultsTableView = nil;
         
-        if (!_searchResults) {
-            // show the toolbar and shrink the search bar. 
-            _toolBar.alpha = 1.0;
-            frame.size.width = [self searchBarWidth];
-        }
+        _toolBar.alpha = 1.0;
+        frame.size.width = [self searchBarWidth];
 	}
 
     _searchBar.frame = frame;
