@@ -9,13 +9,13 @@
 #import "MITSearchDisplayController.h"
 
 // horizontal spacing between icons
-#define GRID_HPADDING 16.0f
+#define GRID_HPADDING 17.0f
 
 // vertical spacing between icons
-#define GRID_VPADDING 20.0f
+#define GRID_VPADDING 24.0f
 
 // height to allocate to icon text label
-#define ICON_LABEL_HEIGHT 26.0f
+#define ICON_LABEL_HEIGHT 22.0f
 
 // internal padding within each icon (allows longer text labels)
 #define ICON_PADDING 5.0f
@@ -125,8 +125,8 @@
             [anIcon setImage:image forState:UIControlStateNormal];
 
             anIcon.titleLabel.numberOfLines = 0;
-            anIcon.titleLabel.font = [UIFont systemFontOfSize:11.0];
-            anIcon.titleLabel.textColor = [UIColor colorWithHexString:@"#302F2E"];
+            anIcon.titleLabel.font = [UIFont systemFontOfSize:12.0];
+            anIcon.titleLabel.textColor = [UIColor colorWithHexString:@"#403F3E"];
             anIcon.titleLabel.lineBreakMode = UILineBreakModeWordWrap;
             anIcon.titleLabel.textAlignment = UITextAlignmentCenter;
             
