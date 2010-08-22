@@ -84,7 +84,7 @@
 		statString = [statString stringByAppendingString:status.currentMeal];
 		statString = [statString stringByAppendingString:@" "];
 		statString = [statString stringByAppendingString:status.currentMealTime];
-		cell.detailTextLabel.text = [NSString stringWithFormat:@"%@\n  ", statString];
+		cell.detailTextLabel.text = [NSString stringWithFormat:@"%@\n", statString];
 
 		UIImage *image = [UIImage imageNamed:@"dining/dining-status-open.png"];
 		cell.imageView.image = image;
@@ -187,7 +187,7 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath
     [status release];
 
 	if (stat == 1)
-		return 65.0;//50.0;
+		return 50.0;
 	
 	else {
 		return 65.0;
