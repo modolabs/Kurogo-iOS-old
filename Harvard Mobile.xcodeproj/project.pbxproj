@@ -121,7 +121,6 @@
 		A6787A1611F605070034D559 /* NSArray+Convenience.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = A6787A1411F605070034D559 /* NSArray+Convenience.h */; settings = {JAVA_ARCHIVE_SUBDIR = Common; }; };
 		A6787A1711F605070034D559 /* NSArray+Convenience.m in Sources */ = {isa = PBXBuildFile; fileRef = A6787A1511F605070034D559 /* NSArray+Convenience.m */; };
 		A6FC4C72120A2C200046FF36 /* settings in Resources */ = {isa = PBXBuildFile; fileRef = A623F2E5120A1BFC00341C5E /* settings */; };
-		B621843D121ADB3A004D1293 /* Secret.m in Sources */ = {isa = PBXBuildFile; fileRef = B621843C121ADB3A004D1293 /* Secret.m */; };
 		BD1E9309103B5D60004429AA /* NSObject+SBJSON.m in Sources */ = {isa = PBXBuildFile; fileRef = BD1E92F6103B5D60004429AA /* NSObject+SBJSON.m */; };
 		BD1E930A103B5D60004429AA /* NSString+SBJSON.m in Sources */ = {isa = PBXBuildFile; fileRef = BD1E92F8103B5D60004429AA /* NSString+SBJSON.m */; };
 		BD1E930B103B5D60004429AA /* SBJSON.m in Sources */ = {isa = PBXBuildFile; fileRef = BD1E92FA103B5D60004429AA /* SBJSON.m */; };
@@ -162,6 +161,7 @@
 		C7B897F211F535C8002B3619 /* HoursTableViewController.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = C7B897F011F535C8002B3619 /* HoursTableViewController.h */; settings = {JAVA_ARCHIVE_SUBDIR = Modules/Dining; }; };
 		C7DA11B912138C2F00FE8756 /* MainSearchGroupedCoursesTableViewController.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = C7DA11B712138C2F00FE8756 /* MainSearchGroupedCoursesTableViewController.h */; settings = {JAVA_ARCHIVE_SUBDIR = Modules/Stellar; }; };
 		C7DA11BA12138C2F00FE8756 /* MainSearchGroupedCoursesTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C7DA11B812138C2F00FE8756 /* MainSearchGroupedCoursesTableViewController.m */; };
+		C7DA15991220943C00FE8756 /* Secret.m in Sources */ = {isa = PBXBuildFile; fileRef = C7DA15981220943C00FE8756 /* Secret.m */; };
 		DE0A62AC10CDAEA90058B2C2 /* MITBuildInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = DE0A62AB10CDAEA90058B2C2 /* MITBuildInfo.m */; };
 		DE0F6B3411109BC500F064D6 /* AboutMITVC.m in Sources */ = {isa = PBXBuildFile; fileRef = DE0F6B3311109BC500F064D6 /* AboutMITVC.m */; };
 		DE18F9EE10F19105009A69B9 /* News.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = DE18F9ED10F19105009A69B9 /* News.xcdatamodeld */; };
@@ -596,7 +596,6 @@
 		A64C36CA1207066D006FE056 /* peopleSearchStaticPhoneRowsArray.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = peopleSearchStaticPhoneRowsArray.plist; path = Resources/peopleSearchStaticPhoneRowsArray.plist; sourceTree = "<group>"; };
 		A6787A1411F605070034D559 /* NSArray+Convenience.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSArray+Convenience.h"; sourceTree = "<group>"; };
 		A6787A1511F605070034D559 /* NSArray+Convenience.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSArray+Convenience.m"; sourceTree = "<group>"; };
-		B621843C121ADB3A004D1293 /* Secret.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Secret.m; sourceTree = "<group>"; };
 		BD1E92F4103B5D60004429AA /* JSON.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JSON.h; sourceTree = "<group>"; };
 		BD1E92F5103B5D60004429AA /* NSObject+SBJSON.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+SBJSON.h"; sourceTree = "<group>"; };
 		BD1E92F6103B5D60004429AA /* NSObject+SBJSON.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+SBJSON.m"; sourceTree = "<group>"; };
@@ -644,6 +643,7 @@
 		C7B897F011F535C8002B3619 /* HoursTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = HoursTableViewController.h; path = Dining/HoursTableViewController.h; sourceTree = "<group>"; };
 		C7DA11B712138C2F00FE8756 /* MainSearchGroupedCoursesTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainSearchGroupedCoursesTableViewController.h; sourceTree = "<group>"; };
 		C7DA11B812138C2F00FE8756 /* MainSearchGroupedCoursesTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainSearchGroupedCoursesTableViewController.m; sourceTree = "<group>"; };
+		C7DA15981220943C00FE8756 /* Secret.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Secret.m; sourceTree = "<group>"; };
 		DE0A62AA10CDAEA90058B2C2 /* MITBuildInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MITBuildInfo.h; sourceTree = "<group>"; };
 		DE0A62AB10CDAEA90058B2C2 /* MITBuildInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MITBuildInfo.m; sourceTree = "<group>"; };
 		DE0F6B3211109BC500F064D6 /* AboutMITVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AboutMITVC.h; sourceTree = "<group>"; };
@@ -1008,7 +1008,6 @@
 		080E96DDFE201D6D7F000001 /* Common */ = {
 			isa = PBXGroup;
 			children = (
-				B621843C121ADB3A004D1293 /* Secret.m */,
 				EB4210E5120B82C000089FE0 /* TwitterViewController.h */,
 				EB4210E6120B82C000089FE0 /* TwitterViewController.m */,
 				EB4210C6120B81D500089FE0 /* UIWidgets */,
@@ -1045,6 +1044,7 @@
 				A6787A1411F605070034D559 /* NSArray+Convenience.h */,
 				A6787A1511F605070034D559 /* NSArray+Convenience.m */,
 				EBAE88031219960700F370BE /* Secret.h */,
+				C7DA15981220943C00FE8756 /* Secret.m */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -2352,8 +2352,8 @@
 				C7DA11BA12138C2F00FE8756 /* MainSearchGroupedCoursesTableViewController.m in Sources */,
 				EBAE878612198B2500F370BE /* SchoolsModule.m in Sources */,
 				EBAE878812198B2500F370BE /* SchoolsViewController.m in Sources */,
-				B621843D121ADB3A004D1293 /* Secret.m in Sources */,
 				EBAE92B8121D733200F370BE /* PersonDetails.m in Sources */,
+				C7DA15991220943C00FE8756 /* Secret.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
