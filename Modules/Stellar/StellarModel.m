@@ -534,13 +534,14 @@ NSString* cleanPersonName(NSString *personName);
 	NSString *actual_countString = [[object objectForKey:@"actual_count"] description];
 	int actual_count = [actual_countString intValue];
 	
-	/*if ([classesSearchDelegate class] == [StellarMainSearch class]) {
-		int r = 4;
-		int e = r*r;
-	}*/
 	if (count > 100) {
+		NSObject *detectError = [object objectForKey:@"schools"];
 		
-		if ([classesSearchDelegate class] == [StellarMainSearch class]) {
+		if ([detectError class] == [NSNull class]) {
+			[self request:request handleConnectionError:nil];
+		}
+		
+		else if ([classesSearchDelegate class] == [StellarMainSearch class]) {
 			[classesSearchDelegate handleTooManySearchResultsForMainSearch:object];
 		}
 		//else
@@ -551,6 +552,11 @@ NSString* cleanPersonName(NSString *personName);
 	
 	NSMutableArray *classes = [NSMutableArray array];
 	NSArray *searchResult = [object objectForKey:@"classes"];
+	
+	if ([searchResult class] == [NSNull class]) {
+		[self request:request handleConnectionError:nil];
+	}
+
 	int ind = 0;
 	for(NSDictionary *aDict in searchResult) {
 		[classes addObject:[StellarModel StellarClassFromDictionary:aDict index:ind]];
