@@ -269,6 +269,13 @@
             [aModule performSearchForString:_searchBar.text];
         }
     }
+
+    // an unfortunate hack because the tableview doesn't
+    // remove section headers properly after multiple searches
+    for (UIView *aView in [self.searchResultsTableView subviews]) {
+        [aView removeFromSuperview];
+    }
+    
     [self.searchResultsTableView reloadData];
 }
 
@@ -331,22 +338,22 @@
         cell.detailTextLabel.text = nil;
         
         // copied from shuttles module
-        cell.imageView.image = [UIImage imageNamed:@"loading-animation/iPhoneBusyBox_01.png"];
+        cell.imageView.image = [UIImage imageNamed:@"loading-animation/iPhoneBusybox_01.png"];
+        NSLog(@"%@", [cell.imageView.image description]);
         cell.imageView.animationImages = [NSArray arrayWithObjects:
-                                          [UIImage imageNamed:@"loading-animation/iPhoneBusyBox_01.png"],
-                                          [UIImage imageNamed:@"loading-animation/iPhoneBusyBox_02.png"],
-                                          [UIImage imageNamed:@"loading-animation/iPhoneBusyBox_03.png"],
-                                          [UIImage imageNamed:@"loading-animation/iPhoneBusyBox_04.png"],
-                                          [UIImage imageNamed:@"loading-animation/iPhoneBusyBox_05.png"],
-                                          [UIImage imageNamed:@"loading-animation/iPhoneBusyBox_06.png"],
-                                          [UIImage imageNamed:@"loading-animation/iPhoneBusyBox_07.png"],
-                                          [UIImage imageNamed:@"loading-animation/iPhoneBusyBox_08.png"],
-                                          [UIImage imageNamed:@"loading-animation/iPhoneBusyBox_09.png"],
-                                          [UIImage imageNamed:@"loading-animation/iPhoneBusyBox_10.png"],
-                                          [UIImage imageNamed:@"loading-animation/iPhoneBusyBox_11.png"],
-                                          [UIImage imageNamed:@"loading-animation/iPhoneBusyBox_12.png"],
+                                          [UIImage imageNamed:@"loading-animation/iPhoneBusybox_01.png"],
+                                          [UIImage imageNamed:@"loading-animation/iPhoneBusybox_02.png"],
+                                          [UIImage imageNamed:@"loading-animation/iPhoneBusybox_03.png"],
+                                          [UIImage imageNamed:@"loading-animation/iPhoneBusybox_04.png"],
+                                          [UIImage imageNamed:@"loading-animation/iPhoneBusybox_05.png"],
+                                          [UIImage imageNamed:@"loading-animation/iPhoneBusybox_06.png"],
+                                          [UIImage imageNamed:@"loading-animation/iPhoneBusybox_07.png"],
+                                          [UIImage imageNamed:@"loading-animation/iPhoneBusybox_08.png"],
+                                          [UIImage imageNamed:@"loading-animation/iPhoneBusybox_09.png"],
+                                          [UIImage imageNamed:@"loading-animation/iPhoneBusybox_10.png"],
+                                          [UIImage imageNamed:@"loading-animation/iPhoneBusybox_11.png"],
+                                          [UIImage imageNamed:@"loading-animation/iPhoneBusybox_12.png"],
                                           nil];
-        
         [cell.imageView startAnimating];
         
     }

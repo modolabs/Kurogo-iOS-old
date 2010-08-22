@@ -501,7 +501,12 @@
 		
         _selectionVC = [[MapSelectionController alloc] init];
         _selectionVC.mapVC = self;
-
+        
+        if ([self.searchController isActive]) {
+            [self.searchController setActive:NO animated:YES];
+            [self searchBarCancelButtonClicked:_searchBar];
+        }
+        
         UINavigationController *dummyNavC = [[UINavigationController alloc] initWithRootViewController:_selectionVC];
         
 		MIT_MobileAppDelegate *appDelegate = (MIT_MobileAppDelegate *)[[UIApplication sharedApplication] delegate];
