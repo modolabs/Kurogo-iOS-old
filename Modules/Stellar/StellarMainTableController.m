@@ -60,7 +60,7 @@
 	stellarSearch = [[StellarMainSearch alloc] initWithViewController:self];
 	self.searchController.searchResultsDelegate = stellarSearch;
 	self.searchController.searchResultsDataSource = stellarSearch;
-	searchBar.placeholder = @"Search by keyword or subject #";
+	searchBar.placeholder = @"Search by keyword, #, or instructor";
 	 
 	if (!self.tableView) {
         self.tableView = [[[UITableView alloc] initWithFrame:CGRectMake(0.0, searchBar.frame.size.height, self.view.frame.size.width, self.view.frame.size.height - searchBar.frame.size.height)
