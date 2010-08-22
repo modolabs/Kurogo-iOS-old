@@ -45,6 +45,7 @@
 @synthesize currentImage;
 @synthesize newStories;
 @synthesize downloadAndParsePool;
+@synthesize searchIndex;
 
 NSString * const NewsTagChannel         = @"channel";
 
@@ -167,10 +168,10 @@ NSString * const NewsTagFullURL         = @"url";
 	[self detachAndParseURL:fullURL];
 }
 
-- (void)loadStoriesforQuery:(NSString *)query afterStoryId:(NSInteger)storyId count:(NSInteger)count {
+- (void)loadStoriesforQuery:(NSString *)query afterStoryId:(NSInteger)storyId searchIndex:(NSInteger)index count:(NSInteger)count {
 	self.isSearch = YES;
 	self.loadingMore = (storyId == 0) ? NO : YES;
-    searchIndex = (storyId == 0) ? 1 : searchIndex + 1;
+    searchIndex = index;
 	
 	// before getting new results, clear old search results if this is a new search request
 	if (self.isSearch && !self.loadingMore) {
@@ -440,7 +441,7 @@ NSString * const NewsTagFullURL         = @"url";
             story.topStory = [NSNumber numberWithBool:parsingTopStories];
         }
         if (isSearch) {
-            story.searchResult = [NSNumber numberWithInt:searchIndex]; // gets reset to 0 before every search
+            story.searchResult = [NSNumber numberWithInt:searchIndex]; // gets reset to 1 before every search
             searchIndex++;
         }
         
@@ -464,7 +465,6 @@ NSString * const NewsTagFullURL         = @"url";
         [currentContents removeAllObjects];
 	}
     [tinyPool release];
-    
 }
 
 - (NewsImage *)imageWithDictionary:(NSDictionary *)dict {
