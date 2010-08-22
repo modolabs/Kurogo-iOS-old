@@ -291,6 +291,7 @@ static NSInteger numTries = 0;
     [searchController setActive:NO animated:NO];
     
     theSearchBar.text = searchText;
+    self.searchQuery = searchText;
     self.searchResults = results;
     self.stories = results;
     // since we're coming in from federated search, manually set this
