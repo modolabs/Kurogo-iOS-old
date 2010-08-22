@@ -293,6 +293,8 @@ static NSInteger numTries = 0;
     theSearchBar.text = searchText;
     self.searchResults = results;
     self.stories = results;
+    // since we're coming in from federated search, manually set this
+    searchIndex = 11;
     
     [storyTable reloadData];
 }
@@ -563,6 +565,7 @@ static NSInteger numTries = 0;
     NSPredicate *predicate = nil;
     NSSortDescriptor *relevanceSortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"searchResult" ascending:YES];
     NSArray *sortDescriptors = [NSArray arrayWithObject:relevanceSortDescriptor];
+    [relevanceSortDescriptor release];
     
 	predicate = [NSPredicate predicateWithFormat:@"searchResult > 0"];
     
@@ -598,6 +601,8 @@ static NSInteger numTries = 0;
 - (void)loadSearchResultsFromServer:(BOOL)loadMore forQuery:(NSString *)query {
     NewsStory *lastStory = [self.stories lastObject];
     NSInteger lastStoryId = (loadMore) ? [lastStory.story_id integerValue] : 0;
+    if (!loadMore)
+        searchIndex = 1;
     
 	if (self.xmlParser) {
 		[self.xmlParser abort];
@@ -605,7 +610,7 @@ static NSInteger numTries = 0;
 	self.xmlParser = [[[StoryXMLParser alloc] init] autorelease];
 	xmlParser.delegate = self;
 	
-	[xmlParser loadStoriesforQuery:query afterStoryId:lastStoryId count:10];
+	[xmlParser loadStoriesforQuery:query afterStoryId:lastStoryId searchIndex:searchIndex count:10];
 }
 
 #pragma mark -
@@ -693,6 +698,7 @@ static NSInteger numTries = 0;
 			if (!parser.loadingMore && [self.stories count] > 0) {
 				[storyTable scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:NO];
 			}
+            searchIndex = 1;
 			self.xmlParser = nil;
 			[self loadFromCache];
 		}
@@ -705,6 +711,7 @@ static NSInteger numTries = 0;
                 }
             }
             
+            searchIndex = self.xmlParser.searchIndex;
 			self.xmlParser = nil;
 			[self loadSearchResultsFromCache];
 		}

@@ -32,6 +32,7 @@ UISearchBarDelegate, StoryXMLParserDelegate, JSONAPIDelegate, NavScrollerDelegat
 	NSInteger totalAvailableResults;
 	ModoSearchBar *theSearchBar;
     MITSearchDisplayController *searchController;
+    NSInteger searchIndex;
 	
 	BOOL hasBookmarks;
 	BOOL showingBookmarks;
