@@ -142,7 +142,7 @@ static NSString * const TwitterServiceName = @"Twitter";
             [self.connection requestDataFromURL:url];
             [self showNetworkActivity];
             
-            self.contentView = [[[MITLoadingActivityView alloc] initWithFrame:self.view.frame] autorelease];
+            self.contentView = [[[MITLoadingActivityView alloc] initWithFrame:CGRectMake(0, 44.0, self.view.frame.size.width, self.view.frame.size.height)] autorelease];
             
         } else {
             [self loadMessageInputView];

@@ -589,13 +589,13 @@ enum CalendarDetailRowTypes {
     NSString *escapedTitle = [event.title stringByReplacingOccurrencesOfString:@"\"" withString:@"\\\""];
     
     NSString *attachment = [NSString stringWithFormat:
-                            @"\"name\":\"%@\","
+                            @"{\"name\":\"%@\","
                             "\"href\":\"%@\","
-                            "\"description\":\"%@\"",
+                            "\"description\":\"%@\"}",
                             escapedTitle,
-                            event.url,
+                            [self twitterUrl],
                             [event.summary stringByReplacingOccurrencesOfString:@"\"" withString:@"\\\""]];
-    
+    /*
     NSString *mobileUrl = [self twitterUrl];
     if (mobileUrl) {
         attachment = [NSString stringWithFormat:@"{%@,%@}",
@@ -605,12 +605,13 @@ enum CalendarDetailRowTypes {
     } else {
         attachment = [NSString stringWithFormat:@"{%@}", attachment];
     }
-    NSLog(@"%@", attachment);
-
+     */
     return attachment;
 }
 
 - (NSString *)twitterUrl {
+    if ([event.url length])
+        return event.url;
 	return [NSString stringWithFormat:@"http://%@/calendar/detail.php?id=%d", MITMobileWebDomainString, [event.eventID integerValue]];
 }
 
