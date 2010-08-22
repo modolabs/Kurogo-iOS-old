@@ -119,13 +119,11 @@ NSString * const NewsLocalPathBookmarks = @"bookmarks";
 - (void)loadSearchResultsFromCache {
 	// make a predicate for everything with the search flag
     NSPredicate *predicate = nil;
-    NSSortDescriptor *postDateSortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"postDate" ascending:NO];
-    NSSortDescriptor *storyIdSortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"story_id" ascending:NO];
-    NSArray *sortDescriptors = [NSArray arrayWithObjects:postDateSortDescriptor, storyIdSortDescriptor, nil];
-    [storyIdSortDescriptor release];
-    [postDateSortDescriptor release];
+    NSSortDescriptor *relevanceSortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"searchResult" ascending:YES];
+    NSArray *sortDescriptors = [NSArray arrayWithObject:relevanceSortDescriptor];
+    [relevanceSortDescriptor release];
     
-	predicate = [NSPredicate predicateWithFormat:@"searchResult == YES"];
+	predicate = [NSPredicate predicateWithFormat:@"searchResult > 0"];
     
     NSArray *results = [CoreDataManager objectsForEntity:NewsStoryEntityName matchingPredicate:predicate sortDescriptors:sortDescriptors];
 	

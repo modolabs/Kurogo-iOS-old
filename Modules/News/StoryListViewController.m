@@ -565,6 +565,7 @@ static NSInteger numTries = 0;
     NSPredicate *predicate = nil;
     NSSortDescriptor *relevanceSortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"searchResult" ascending:YES];
     NSArray *sortDescriptors = [NSArray arrayWithObject:relevanceSortDescriptor];
+    [relevanceSortDescriptor release];
     
 	predicate = [NSPredicate predicateWithFormat:@"searchResult > 0"];
     
