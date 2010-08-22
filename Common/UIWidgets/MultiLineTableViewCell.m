@@ -2,13 +2,14 @@
 #import "MITUIConstants.h"
 
 @implementation MultiLineTableViewCell
-@synthesize textLabelNumberOfLines, detailTextLabelNumberOfLines;
+@synthesize textLabelNumberOfLines, detailTextLabelNumberOfLines, hasIndex = _hasIndex;
 
 + (CGFloat)widthForTextLabel:(BOOL)isTextLabel
                    cellStyle:(UITableViewCellStyle)style
                    tableView:(UITableView *)tableView
                accessoryType:(UITableViewCellAccessoryType)accessoryType
                    cellImage:(BOOL)cellImage
+                    hasIndex:(BOOL)hasIndex
 {
     CGFloat width = tableView.frame.size.width;
     if (tableView.style == UITableViewStyleGrouped) width -= 20.0; // 10px margin either side of table
@@ -74,7 +75,7 @@
     }
 	
 	if (hasIndex)
-		width -=15;
+		width -= 15;
 	
     return width;
 }
@@ -96,6 +97,8 @@
     return height;
 }
 
+// TODO: consolidate the following two methods
+
 + (CGFloat)heightForCellWithStyle:(UITableViewCellStyle)style
                         tableView:(UITableView *)tableView 
                              text:(NSString *)text
@@ -107,8 +110,8 @@
                     accessoryType:(UITableViewCellAccessoryType)accessoryType
                         cellImage:(BOOL)cellImage
 {
-    CGFloat textWidth = [MultiLineTableViewCell widthForTextLabel:YES cellStyle:style tableView:tableView accessoryType:accessoryType cellImage:cellImage];
-    CGFloat detailTextWidth = [MultiLineTableViewCell widthForTextLabel:NO cellStyle:style tableView:tableView accessoryType:accessoryType cellImage:cellImage];
+    CGFloat textWidth = [MultiLineTableViewCell widthForTextLabel:YES cellStyle:style tableView:tableView accessoryType:accessoryType cellImage:cellImage hasIndex:NO];
+    CGFloat detailTextWidth = [MultiLineTableViewCell widthForTextLabel:NO cellStyle:style tableView:tableView accessoryType:accessoryType cellImage:cellImage hasIndex:NO];
 
     if (font == nil) font = [UIFont fontWithName:STANDARD_FONT size:CELL_STANDARD_FONT_SIZE];
     CGFloat textHeight = [MultiLineTableViewCell heightForLabelWithText:text font:font width:textWidth maxLines:maxTextLines];
@@ -141,8 +144,8 @@
                         cellImage:(BOOL)cellImage
 						 hasIndex:(BOOL)indexPane
 {
-    CGFloat textWidth = [MultiLineTableViewCell widthForTextLabel:YES cellStyle:style tableView:tableView accessoryType:accessoryType cellImage:cellImage];
-    CGFloat detailTextWidth = [MultiLineTableViewCell widthForTextLabel:NO cellStyle:style tableView:tableView accessoryType:accessoryType cellImage:cellImage];
+    CGFloat textWidth = [MultiLineTableViewCell widthForTextLabel:YES cellStyle:style tableView:tableView accessoryType:accessoryType cellImage:cellImage hasIndex:indexPane];
+    CGFloat detailTextWidth = [MultiLineTableViewCell widthForTextLabel:NO cellStyle:style tableView:tableView accessoryType:accessoryType cellImage:cellImage hasIndex:indexPane];
 	
     if (font == nil) font = [UIFont fontWithName:STANDARD_FONT size:CELL_STANDARD_FONT_SIZE];
     CGFloat textHeight = [MultiLineTableViewCell heightForLabelWithText:text font:font width:textWidth maxLines:maxTextLines];
@@ -185,7 +188,7 @@
             frame.origin.y = 10.0;
         }
         
-        frame.size.width = [MultiLineTableViewCell widthForTextLabel:YES cellStyle:_style tableView:tableView accessoryType:accessoryType cellImage:cellImage];
+        frame.size.width = [MultiLineTableViewCell widthForTextLabel:YES cellStyle:_style tableView:tableView accessoryType:accessoryType cellImage:cellImage hasIndex:_hasIndex];
         frame.size.height = [MultiLineTableViewCell heightForLabelWithText:self.textLabel.text
                                                                       font:self.textLabel.font
                                                                      width:frame.size.width
@@ -200,7 +203,7 @@
         frame = self.detailTextLabel.frame;
         if (_style == UITableViewCellStyleSubtitle)
             frame.origin.y += heightAdded;
-        frame.size.width = [MultiLineTableViewCell widthForTextLabel:NO cellStyle:_style tableView:tableView accessoryType:accessoryType cellImage:cellImage];
+        frame.size.width = [MultiLineTableViewCell widthForTextLabel:NO cellStyle:_style tableView:tableView accessoryType:accessoryType cellImage:cellImage hasIndex:_hasIndex];
         frame.size.height = [MultiLineTableViewCell heightForLabelWithText:self.detailTextLabel.text
                                                                       font:self.detailTextLabel.font
                                                                      width:frame.size.width

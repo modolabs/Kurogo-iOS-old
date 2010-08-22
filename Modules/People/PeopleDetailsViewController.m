@@ -265,7 +265,8 @@ NSString * const RequestLookupAddress = @"address";
                                                             cellStyle:UITableViewCellStyleValue2
                                                             tableView:self.tableView
                                                         accessoryType:UITableViewCellAccessoryNone
-                                                            cellImage:NO];
+                                                            cellImage:NO
+                                                             hasIndex:NO];
             
             // in MultiLineTableViewCell, we are assuming the detailTextLabel starts at 24% of the cell width
             // the following line is just replicates part of the calculation made in MultiLineTableViewCell

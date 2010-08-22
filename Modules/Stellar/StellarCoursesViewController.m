@@ -111,8 +111,11 @@
 
 	cell.textLabel.text = stellarCourse.title;
 	
-	if ([self.courseGroup.courses count] < 10)
+	if ([self.courseGroup.courses count] < 10) {
 		cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+    } else {
+        cell.hasIndex = YES;
+    }
 	
 	cell.selectionStyle = UITableViewCellSelectionStyleGray;
 	return cell;
@@ -128,18 +131,24 @@
 	StellarCourse *stellarCourse = (StellarCourse *)[self.courseGroup.courses objectAtIndex:indexPath.section];
 
 	BOOL indexPane = NO;
-	if ([self.courseGroup.courses count] >= 10)
+    UITableViewCellAccessoryType accessoryType;
+	if ([self.courseGroup.courses count] >= 10) {
 		indexPane = YES;
+        accessoryType = UITableViewCellAccessoryNone;
+    } else {
+        accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+    }
+    
 	
-    return [MultiLineTableViewCell heightForCellWithStyle:UITableViewCellStyleSubtitle
+    return [MultiLineTableViewCell heightForCellWithStyle:UITableViewCellStyleDefault
                                                 tableView:tableView 
                                                      text:stellarCourse.title//was nil
                                              maxTextLines:2 //was 1
                                                detailText:nil // was stellarCourse.title
                                            maxDetailLines:0
-                                                     font:nil 
+                                                     font:[UIFont fontWithName:BOLD_FONT size:CELL_STANDARD_FONT_SIZE] 
                                                detailFont:nil 
-                                            accessoryType:UITableViewCellAccessoryDisclosureIndicator
+                                            accessoryType:accessoryType
                                                 cellImage:NO
 												 hasIndex:indexPane] + 2.0; // was 2.0;
 }
