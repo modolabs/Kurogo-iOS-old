@@ -178,7 +178,7 @@
         // so we re-recenter the frame based on its actual size
         CGFloat innerHeight = self.detailTextLabel.frame.origin.y + self.detailTextLabel.frame.size.height - self.textLabel.frame.origin.y;
         frame = self.textLabel.frame;
-        frame.origin.y = (self.frame.size.height - innerHeight) / 2;
+        frame.origin.y = floor((self.frame.size.height - innerHeight) / 2);
         heightAdded = frame.origin.y - self.textLabel.frame.origin.y;
         self.textLabel.frame = frame;
         
