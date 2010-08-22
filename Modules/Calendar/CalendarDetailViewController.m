@@ -4,7 +4,6 @@
 #import "MITUIConstants.h"
 #import "MultiLineTableViewCell.h"
 #import "Foundation+MITAdditions.h"
-#import "URLShortener.h"
 #import "MapBookmarkManager.h"
 #import "MapSearchResultAnnotation.h"
 

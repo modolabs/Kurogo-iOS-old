@@ -278,7 +278,18 @@ JSONAPIRequest *mitapi;
 		tableControl = [[HoursTableViewController alloc] init];
 		hoursTableView.delegate = (HoursTableViewController *)tableControl;
 		hoursTableView.dataSource = (HoursTableViewController *)tableControl;
-		hoursTableView.tableHeaderView = glossaryForHoursView;
+					
+			UILabel *text = [[[UILabel alloc] initWithFrame:CGRectMake(10.0, 60.0, 300.0, 40.0)] autorelease];
+			text.text = @"Harvard student ID required. Schedule shown does not account for holidays and other closures.";
+			text.font = [UIFont fontWithName:STANDARD_FONT size:12.0];
+			text.textColor = [UIColor colorWithHexString:@"#666666"];
+			text.lineBreakMode = UILineBreakModeWordWrap;
+			text.numberOfLines = 2;
+			text.backgroundColor = [UIColor clearColor];
+			
+			[glossaryForHoursView addSubview:text];
+		
+		hoursTableView.tableHeaderView =glossaryForHoursView;
 		
 		tableControl.tableView = hoursTableView;
 		
@@ -613,7 +624,7 @@ JSONAPIRequest *mitapi;
     dateButton.titleLabel.textColor = [UIColor whiteColor];
     [dateButton setTitle:dateText forState:UIControlStateNormal];
     dateButton.center = CGPointMake(datePicker.center.x, datePicker.center.y - datePicker.frame.origin.y);
-	[dateButton addTarget:self action:@selector(pickDate) forControlEvents:UIControlEventTouchUpInside];
+	//[dateButton addTarget:self action:@selector(pickDate) forControlEvents:UIControlEventTouchUpInside];
     dateButton.tag = randomTag;
     [datePicker addSubview:dateButton];
 	

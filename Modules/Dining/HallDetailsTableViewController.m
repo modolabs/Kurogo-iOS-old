@@ -88,7 +88,20 @@
 
 
 - (UIView *) tableView: (UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
-    UIView *view = nil;    
+    UIView *view = nil; 
+	
+	if (section == 0) {
+		view = [[[UIView alloc] initWithFrame:CGRectMake(12.0, 0.0, 300.0, 40.0)] autorelease];
+		UILabel *text = [[UILabel alloc] initWithFrame:CGRectMake(12.0, 0.0, 300.0, 40.0)];
+		text.text = @"Harvard student ID required. Schedule shown does not account for holidays and other closures.";
+		text.font = [UIFont fontWithName:STANDARD_FONT size:12.0];
+		text.textColor = [UIColor colorWithHexString:@"#666666"];
+		text.lineBreakMode = UILineBreakModeWordWrap;
+		text.numberOfLines = 2;
+		text.backgroundColor = [UIColor clearColor];
+		[view addSubview:text];
+		[text release];
+	}
     
     if(section != 0)
         view = [UITableView groupedSectionHeaderWithTitle:@"Interhouse Restrictions"];
@@ -100,7 +113,7 @@
 {
     if (section == 0)
     {
-        return 0;
+        return 45.0;
     }
     else
     {
