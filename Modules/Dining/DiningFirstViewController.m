@@ -512,7 +512,7 @@ JSONAPIRequest *mitapi;
 				// set the requesting Tab index to the correct one
 				tabRequestingInfo = kHoursTab;	
 				requestDispatched = YES;
-				hoursTabInfoRetrieved = YES;
+				hoursTabInfoRetrieved = NO;
 			}
 			
 			else {

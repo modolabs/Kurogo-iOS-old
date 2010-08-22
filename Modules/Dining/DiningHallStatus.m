@@ -102,9 +102,6 @@ int timeToNextMeal;  //starting with ONE DAY
 				break;
 				
 		}
-	
-		if (correctDay == NO)
-			status =  CLOSED;
 		
 		NSString *timeStr = [details objectForKey:hoursKey];
 		
@@ -141,6 +138,9 @@ int timeToNextMeal;  //starting with ONE DAY
 			restriction = NO_RESTRICTION;
 		}
 		
+		if (correctDay == NO) {
+			status =  CLOSED;
+		}
 		
 		/*
 		 NSString *timeStr =  [[restrictions valueForKey:@"time"] description];
@@ -301,12 +301,13 @@ int timeToNextMeal;  //starting with ONE DAY
 		comp2 = [compArray objectAtIndex:1];
 		end = [self gettime:comp2];
 		
-		NSRange range, range1;
+		NSRange range, range1, range3;
 		
 		range = [comp2 rangeOfString:@"pm"];
 		range1 = [comp1 rangeOfString:@"Noon"];
+		range3 = [comp1 rangeOfString:@"am"];
 		
-		if ((range.location != NSNotFound) && (range1.location == NSNotFound)){
+		if ((range.location != NSNotFound) && (range1.location == NSNotFound) && (range3.location == NSNotFound)){
 			start += (12*60*60); // coverting to pm start time
 		}
 	}
