@@ -125,7 +125,7 @@
 		self.groups = nil;
 		self.groups = [self uniqueCourseGroups];
 		
-		if ([classes count] > 0)
+		if ([classes count] > 0) {
 			viewController.searchController.searchResultsTableView = resultsTableView;
 		
 			[viewController.searchController.searchResultsTableView applyStandardCellHeight];
@@ -136,11 +136,27 @@
 		
 		
 		// if exactly one result found forward user to that result
-		if([classes count] == 1) {
-			[StellarDetailViewController 
-			 launchClass:(StellarClass *)[classes lastObject]
-			 viewController: viewController];
+			if([classes count] == 1) {
+				[StellarDetailViewController 
+				 launchClass:(StellarClass *)[classes lastObject]
+				 viewController: viewController];
+			}
 		}
+		else {
+			[viewController hideLoadingView];
+			UIAlertView *alert = [[UIAlertView alloc]
+								  initWithTitle:@"No Results Found" 
+								  message:@"Your query returned no matches."
+								  delegate:nil
+								  cancelButtonTitle:@"OK" 
+								  otherButtonTitles:nil];
+			
+			[viewController.searchController.searchResultsTableView reloadData];
+			
+			[alert show];
+			[alert release];
+		}
+
 	}
 }
 
