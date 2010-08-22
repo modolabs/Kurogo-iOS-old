@@ -166,33 +166,20 @@
 
 - (NSString *)fbDialogAttachment {
     NSString *attachment = [NSString stringWithFormat:
-                            @"\"name\":\"%@\","
+                            @"{\"name\":\"%@\","
                             "\"href\":\"%@\","
                             //"\"caption\":\"%@\","
                             "\"description\":\"%@\","
                             "\"media\":["
                             "{\"type\":\"image\","
                             "\"src\":\"%@\","
-                            "\"href\":\"%@\"}]",
-                            story.title, story.link, story.summary, story.featuredImage.url, story.link, [self twitterUrl]];    
-
-    NSString *mobileUrl = [self twitterUrl];
-    if (mobileUrl) {
-        attachment = [NSString stringWithFormat:@"{%@,%@}",
-                      attachment,
-                      [NSString stringWithFormat:@"\"properties\":{\"Mobile web link\":{\"text\":\"%@\",\"href\":\"%@\"}}",
-                       mobileUrl, story.title]];
-    } else {
-        attachment = [NSString stringWithFormat:@"{%@}", attachment];
-    }
-
+                            "\"href\":\"%@\"}]}",
+                            story.title, story.link, story.summary, story.featuredImage.url, story.link];    
 	return attachment;
 }
 
 - (NSString *)twitterUrl {
-    NSLog(@"%@", MITMobileWebDomainString);
-    
-	return [NSString stringWithFormat:@"http://%@/news/story.php?story_id=%d", MITMobileWebDomainString, [story.story_id integerValue]];
+	return story.link;
 }
 
 - (NSString *)twitterTitle {
