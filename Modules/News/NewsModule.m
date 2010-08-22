@@ -103,7 +103,7 @@ NSString * const NewsLocalPathBookmarks = @"bookmarks";
     self.xmlParser = [[[StoryXMLParser alloc] init] autorelease];
     xmlParser.delegate = self;
     
-    [xmlParser loadStoriesforQuery:searchText afterStoryId:0 count:10];
+    [xmlParser loadStoriesforQuery:searchText afterStoryId:0 searchIndex:1 count:10];
 }
 
 - (NSString *)titleForSearchResult:(id)result {

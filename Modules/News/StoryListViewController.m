@@ -293,6 +293,8 @@ static NSInteger numTries = 0;
     theSearchBar.text = searchText;
     self.searchResults = results;
     self.stories = results;
+    // since we're coming in from federated search, manually set this
+    searchIndex = 11;
     
     [storyTable reloadData];
 }
