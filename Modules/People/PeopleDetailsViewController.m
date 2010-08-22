@@ -34,9 +34,10 @@ NSString * const RequestLookupAddress = @"address";
 				 withValuesFromLDAPKey:(NSString *)ldapKey {
 	
 	NSArray *existingValues = (NSArray *)ABMultiValueCopyArrayOfAllValues(multiValue);
-	NSString *ldapValue;
-	if (ldapValue = [self.personDetails formattedValueForKey:ldapKey]) {
-		for (NSString *value in [ldapValue componentsSeparatedByString:kPersonDetailsValueSeparatorToken]) {
+	NSArray *ldapValue = nil;
+	if (ldapValue = [self.personDetails separatedValuesForKey:ldapKey]) {
+        NSLog(@"%@", [ldapValue description]);
+		for (NSString *value in ldapValue) {
 			if (![existingValues containsObject:value]) {
 				ABMultiValueAddValueAndLabel(multiValue, value, label, NULL);
 			}

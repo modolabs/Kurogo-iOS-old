@@ -465,15 +465,19 @@
         frame.size.width = self.view.frame.size.width;
 
 	} else if (!showList && _displayingList) {
-        _viewTypeButton.title = @"List";
         
-        // show the map, by hiding the list. 
         [self.searchResultsTableView removeFromSuperview];
         _searchController.searchResultsTableView = nil;
         self.searchResultsTableView = nil;
         
-        _toolBar.alpha = 1.0;
-        frame.size.width = [self searchBarWidth];
+        if (_hasSearchResults) {
+            _viewTypeButton.title = @"List";
+        } else {
+            _viewTypeButton.title = @"Browse";
+            // show the map, by hiding the list.
+            _toolBar.alpha = 1.0;
+            frame.size.width = [self searchBarWidth];
+        }
 	}
 
     _searchBar.frame = frame;

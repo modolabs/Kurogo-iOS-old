@@ -25,6 +25,7 @@ extern NSString * const kPersonDetailsValueSeparatorToken;
 + (PersonDetails *)retrieveOrCreate:(NSDictionary *)selectedResult;
 + (NSString *)trimUID:(NSString *)theUID;
 + (NSString *)joinedValueFromPersonDetailsJSONDict:(NSDictionary *)jsonDict forKey:(NSString *)key;
+- (NSArray *)separatedValuesForKey:(NSString *)key;
 
 @end
 

@@ -89,9 +89,20 @@ NSString * const kPersonDetailsValueSeparatorToken = @"%/%";
 
 + (NSString *)joinedValueFromPersonDetailsJSONDict:(NSDictionary *)jsonDict forKey:(NSString *)key
 {
-    return [[jsonDict objectForKey:key]
-            componentsJoinedByString:kPersonDetailsValueSeparatorToken];
+    NSString *joinedValue = [[jsonDict objectForKey:key]
+                             componentsJoinedByString:kPersonDetailsValueSeparatorToken];
+    if ([key isEqualToString:@"telephonenumber"] || [key isEqualToString:@"facsimiletelephonenumber"] || [key isEqualToString:@"mail"])
+        joinedValue = [joinedValue stringByReplacingOccurrencesOfString:@"\n" withString:kPersonDetailsValueSeparatorToken];
+
+    return joinedValue;
 }
 
+// this is the counterpart of the above function, but grabs value for the instance.
+// TODO: make the above function an instance method so the caller doesn't have to
+// make an additional step to set the value
+- (NSArray *)separatedValuesForKey:(NSString *)key {
+    NSString *storedValue = [self valueForKey:key];
+    return [storedValue componentsSeparatedByString:kPersonDetailsValueSeparatorToken];
+}
 
 @end
