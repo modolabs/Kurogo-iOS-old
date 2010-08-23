@@ -46,7 +46,7 @@
         NSString *aboutText = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"AboutAppText"];
         UIFont *aboutFont = [UIFont systemFontOfSize:14.0];
         CGSize aboutSize = [aboutText sizeWithFont:aboutFont constrainedToSize:CGSizeMake(270, 2000) lineBreakMode:UILineBreakModeWordWrap];
-        return aboutSize.height + 20;
+        return aboutSize.height + 40;
     }
     else {
         return self.tableView.rowHeight;
