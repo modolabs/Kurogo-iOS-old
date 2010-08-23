@@ -254,11 +254,13 @@
 }
 
 - (void)searchDidComplete:(NSNotification *)aNotification {
-    MITModule *sender = [aNotification object];
-    NSInteger section = [self.searchableModules indexOfObject:sender];
-    NSIndexSet *sections = [NSIndexSet indexSetWithIndex:section];
-    [completedModules addObject:sender];
-    [searchResultsTableView reloadSections:sections withRowAnimation:UITableViewRowAnimationNone];
+    @synchronized(self) {
+        MITModule *sender = [aNotification object];
+        NSInteger section = [self.searchableModules indexOfObject:sender];
+        NSIndexSet *sections = [NSIndexSet indexSetWithIndex:section];
+        [completedModules addObject:sender];
+        [searchResultsTableView reloadSections:sections withRowAnimation:UITableViewRowAnimationNone];
+    }
 }
 
 - (void)searchAllModules {
