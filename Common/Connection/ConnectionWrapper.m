@@ -130,7 +130,7 @@
             }
             if (title != nil) {
                 UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Connection Failed"
-                                                                message:@"We are not connected to the Internet.  Please try again later."
+                                                                message:message
                                                                delegate:alertDelegate
                                                       cancelButtonTitle:@"OK" 
                                                       otherButtonTitles:nil];

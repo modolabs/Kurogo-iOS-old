@@ -606,7 +606,7 @@ NSString * const RequestLookupAddress = @"address";
 				UIAlertView *alertView = [[UIAlertView alloc] 
 											  initWithTitle:@"Call"	
 											  message:nil
-											  delegate:[PhoneCallAlertViewDelegate new]
+											  delegate:self
 											  cancelButtonTitle:@"Cancel"					
 											  otherButtonTitles:nil];
 				
@@ -653,20 +653,14 @@ NSString * const RequestLookupAddress = @"address";
 }
 
 
-@end
-
-#pragma mark Phone call action sheet
-
-@implementation PhoneCallAlertViewDelegate
-
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger) buttonIndex {
 	if(buttonIndex != alertView.cancelButtonIndex) {
 		NSString *phoneNumber = [alertView buttonTitleAtIndex:buttonIndex];
 		NSURL *externURL = [NSURL URLWithString:[NSString stringWithFormat:@"tel://%@", phoneNumber]];
 		[[UIApplication sharedApplication] openURL:externURL];
 	}
-} 
-	 
+}
+
 @end
 
 

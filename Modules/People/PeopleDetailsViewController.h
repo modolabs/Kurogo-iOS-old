@@ -6,11 +6,12 @@
 #import "JSONAPIRequest.h"
 #import "MapSearchResultAnnotation.h"
 
-@interface PeopleDetailsViewController : UITableViewController 
+@interface PeopleDetailsViewController : UITableViewController
 	<ABPeoplePickerNavigationControllerDelegate, 
 	 ABNewPersonViewControllerDelegate, 
 	 ABPersonViewControllerDelegate, 
 	 JSONAPIDelegate,
+     UIAlertViewDelegate,
 	 MFMailComposeViewControllerDelegate> 
 {
 
