@@ -825,6 +825,8 @@
 	} else if (JSONObject && [JSONObject isKindOfClass:[NSArray class]]) {
         NSString *category = [request.params objectForKey:@"category"];
         if (category != nil) {
+            self.searchResults = nil;
+            
             if ([JSONObject count]) {
                 
                 // TODO: cache results to reduce the number of network calls
