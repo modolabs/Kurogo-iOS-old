@@ -266,7 +266,7 @@
                                                              font:nil 
                                                        detailFont:nil 
                                                     accessoryType:UITableViewCellAccessoryDisclosureIndicator
-                                                        cellImage:NO];
+                                                        cellImage:YES];
 			
 		case DESCRIPTION:
             return [MultiLineTableViewCell heightForCellWithStyle:UITableViewCellStyleSubtitle
