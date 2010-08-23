@@ -39,6 +39,11 @@
 		[[self navigationItem] setBackBarButtonItem: newBackButton];
 		[newBackButton release];
 	}
+	else if ([aCourseGroup.short_name isEqualToString:@"Arts and Sciences"]) { 
+		UIBarButtonItem *newBackButton = [[UIBarButtonItem alloc] initWithTitle: @"FAS" style: UIBarButtonItemStyleBordered target: nil action: nil];	
+		[[self navigationItem] setBackBarButtonItem: newBackButton];
+		[newBackButton release];
+	}
 	else if ([aCourseGroup.short_name isEqualToString:@"Business - Doctoral Program"]) { 
 		UIBarButtonItem *newBackButton = [[UIBarButtonItem alloc] initWithTitle: @"HBS PhD" style: UIBarButtonItemStyleBordered target: nil action: nil];	
 		[[self navigationItem] setBackBarButtonItem: newBackButton];
