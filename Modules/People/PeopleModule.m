@@ -60,11 +60,13 @@ static NSString * const PeopleStateDetail = @"detail";
 }
 
 
-/*
 - (void)applicationDidFinishLaunching
 {
+    // force PeopleRecentsData to run -[init], which
+    // makes a network request for the LDAP display name mapping
+    [PeopleRecentsData sharedData];
 }
-*/
+
 
 - (BOOL)handleLocalPath:(NSString *)localPath query:(NSString *)query {
     BOOL didHandle = NO;
