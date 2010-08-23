@@ -867,7 +867,7 @@
         JSONAPIRequest *apiRequest = [JSONAPIRequest requestWithJSONAPIDelegate:self];
         apiRequest.userData = kAPISearch;
         
-        NSMutableDictionary *searchParams = [params mutableCopy];
+        NSMutableDictionary *searchParams = [[params mutableCopy] autorelease];
         if (!searchParams) {
             searchParams = [NSMutableDictionary dictionaryWithCapacity:1];
         }
@@ -883,8 +883,6 @@
         [apiRequest requestObjectFromModule:@"map"
                                     command:@"search"
                                  parameters:searchParams];
-        
-        [searchParams release];
 	}
 }
 
