@@ -40,12 +40,14 @@
     if ([JSONObject isKindOfClass:[NSDictionary class]]) {
         NSArray *results = [JSONObject objectForKey:@"results"];
         NSDictionary *info = [results lastObject];
-        HarvardMapSearchAnnotation *annotation = [[[HarvardMapSearchAnnotation alloc] initWithInfo:info] autorelease];
-        [self.mapAnnotations setObject:annotation forKey:rowNumber];
-        // since this class is not aware of the tableview it's updating,
-        // tell our view controller to update whatever tableview is using
-        // us as a delegate.
-        [[NSNotificationCenter defaultCenter] postNotificationName:@"foundMapAnnotation" object:rowNumber];
+        if (info) {
+            HarvardMapSearchAnnotation *annotation = [[[HarvardMapSearchAnnotation alloc] initWithInfo:info] autorelease];
+            [self.mapAnnotations setObject:annotation forKey:rowNumber];
+            // since this class is not aware of the tableview it's updating,
+            // tell our view controller to update whatever tableview is using
+            // us as a delegate.
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"foundMapAnnotation" object:rowNumber];
+        }
     }
 }
 
