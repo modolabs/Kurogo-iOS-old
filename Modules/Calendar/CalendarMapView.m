@@ -21,16 +21,9 @@
 {
 	// make sure these events always belong to the controller that owns us
 	_events = events;
-	
-	if (![[self selectedAnnotations] count]) {
-		[self removeAnnotations:[self annotations]];
-	} else {
-		for (CalendarEventMapAnnotation *annotation in self.annotations) {
-			if (annotation != [[self selectedAnnotations] lastObject]) {
-				[self removeAnnotation:annotation];
-			}
-		}
-	}
+
+	[self removeAnnotations:[self annotations]];
+
 	
 	double minLat = 90;
 	double maxLat = -90;
