@@ -577,7 +577,7 @@ enum CalendarDetailRowTypes {
 		summary = [summaryArray objectAtIndex:0];
 
 
-	return [NSString stringWithFormat:@"I thought you might be interested in this event...\n\n%@", summary];
+	return [NSString stringWithFormat:@"I thought you might be interested in this event...\n%@\n%@\n%@", event.title, [self twitterUrl], summary];
 }
 
 - (NSString *)fbDialogPrompt {
