@@ -106,6 +106,9 @@
 					cell.accessoryView = nil;
 					cell.selectionStyle = UITableViewCellSelectionStyleNone;
 				}
+				cell.textLabel.lineBreakMode = UILineBreakModeWordWrap;
+				cell.detailTextLabel.lineBreakMode = UILineBreakModeWordWrap;
+				//cell.textLabel.numberOfLines = 2;
 				cell.textLabel.text = [self locationAndTime:indexPath.row];
 				break;
 				
@@ -263,7 +266,7 @@
                                                      maxTextLines:0
                                                        detailText:StellarTag// something with one line
                                                    maxDetailLines:0
-                                                             font:nil 
+                                                             font:nil
                                                        detailFont:nil 
                                                     accessoryType:UITableViewCellAccessoryDisclosureIndicator
                                                         cellImage:YES];
@@ -352,7 +355,7 @@
 - (void) layoutSubviews {
 	[super layoutSubviews];
 	CGRect frame = self.accessoryView.frame;
-	frame.origin.x = 287;
+	frame.origin.x = 292;
 	self.accessoryView.frame = frame;
 }
 
