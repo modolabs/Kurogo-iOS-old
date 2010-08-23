@@ -55,28 +55,6 @@
 
  
 - (NSString *) locationAndTime: (NSUInteger)index {
-	/*NSString * loc = @"";
-	for (int ind=0; ind < [self.viewController.times count]; ind++) {
-		StellarClassTime *classTime = [self.viewController.times objectAtIndex:ind];
-		
-		if (ind == 0) {
-			if(![classTime.location length])
-				// no location set
-				loc = [loc stringByAppendingFormat:@"%@", classTime.time];
-			else
-				loc = [loc stringByAppendingFormat:@"%@ (%@)", classTime.time, classTime.location];
-		}
-		
-		else {
-			if(![classTime.location length])
-				// no location set
-				loc = [loc stringByAppendingFormat:@"\n%@", classTime.time];
-			else
-				loc = [loc stringByAppendingFormat:@"\n%@ (%@)", classTime.time, classTime.location];
-		}
-	}
-	
-	return loc;*/
 	
 	StellarClassTime *classTime = [self.viewController.times objectAtIndex:index];
 	if(![classTime.location length]) {
@@ -279,7 +257,7 @@
 		case TIMES:
             return [MultiLineTableViewCell heightForCellWithStyle:UITableViewCellStyleSubtitle
                                                         tableView:tableView 
-                                                             text:[self locationAndTime:indexPath.row]//StellarTag
+                                                             text:[self locationAndTime:indexPath.row]
                                                      maxTextLines:0
                                                        detailText:StellarTag// something with one line
                                                    maxDetailLines:0
