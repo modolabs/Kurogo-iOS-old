@@ -14,7 +14,7 @@
     #import "Constants.h" // shared constants (common URLs, NSUserDefaults keys, etc)
 #endif
 
-#ifdef USE_MOBILE_DEV
+#ifdef DEBUG
 #define DLog( s, ... ) NSLog( @"<%p %@:(%d)> %@", self, [[NSString stringWithUTF8String:__FILE__] lastPathComponent], __LINE__, [NSString stringWithFormat:(s), ##__VA_ARGS__] )
 #else
 #define DLog( s, ... ) 

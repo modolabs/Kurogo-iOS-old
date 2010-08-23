@@ -2412,7 +2412,10 @@
 					"\"Facebook Connect\"",
 				);
 				ONLY_ACTIVE_ARCH = YES;
-				OTHER_CFLAGS = "-DUSE_MOBILE_DEV";
+				OTHER_CFLAGS = (
+					"-DDEBUG",
+					"-DUSE_MOBILE_DEV",
+				);
 				OTHER_LDFLAGS = (
 					"-all_load",
 					"-ObjC",
@@ -2444,49 +2447,6 @@
 			};
 			name = "Release - Production";
 		};
-		DE30C9EE112205BA00598A1A /* Distribution - Production - App Store */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Massachusetts Institute of Technology";
-				GCC_C_LANGUAGE_STANDARD = c99;
-				GCC_WARN_ABOUT_RETURN_TYPE = YES;
-				GCC_WARN_UNUSED_VARIABLE = YES;
-				HEADER_SEARCH_PATHS = (
-					"${SDK_DIR}/usr/include/libxml2",
-					"\"Facebook Connect\"",
-				);
-				OTHER_LDFLAGS = (
-					"-all_load",
-					"-ObjC",
-				);
-				PREBINDING = NO;
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "33A1EE45-68B9-4353-BB39-822B2C1CDEA1";
-				SDKROOT = iphoneos3.0;
-				VALIDATE_PRODUCT = YES;
-			};
-			name = "Distribution - Production - App Store";
-		};
-		DE30C9EF112205BA00598A1A /* Distribution - Production - App Store */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
-				COPY_PHASE_STRIP = YES;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = MIT_Mobile_Prefix.pch;
-				INFOPLIST_FILE = "Mobile-Info.plist";
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"\"$(SRCROOT)/Common/Libraries & Headers/OAuthConsumer\"",
-					"${SDK_DIR}/usr/include/libxml2",
-				);
-				PRODUCT_NAME = "Harvard Mobile";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
-				SDKROOT = iphoneos4.0;
-			};
-			name = "Distribution - Production - App Store";
-		};
 		DE8B4CF7110F92DC00B7D991 /* Debug - Staging */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -2499,7 +2459,10 @@
 					"${SDK_DIR}/usr/include/libxml2",
 					"\"Facebook Connect\"",
 				);
-				OTHER_CFLAGS = "-DUSE_MOBILE_STAGE";
+				OTHER_CFLAGS = (
+					"-DDEBUG",
+					"-DUSE_MOBILE_STAGE",
+				);
 				OTHER_LDFLAGS = (
 					"-all_load",
 					"-ObjC",
@@ -2539,6 +2502,7 @@
 					"${SDK_DIR}/usr/include/libxml2",
 					"\"Facebook Connect\"",
 				);
+				OTHER_CFLAGS = "-DDEBUG";
 				OTHER_LDFLAGS = (
 					"-all_load",
 					"-ObjC",
@@ -2712,7 +2676,10 @@
 					"\"Facebook Connect\"",
 				);
 				ONLY_ACTIVE_ARCH = YES;
-				OTHER_CFLAGS = "-DUSE_MOBILE_TEST";
+				OTHER_CFLAGS = (
+					"-DDEBUG",
+					"-DUSE_MOBILE_TEST",
+				);
 				OTHER_LDFLAGS = (
 					"-all_load",
 					"-ObjC",
@@ -2744,6 +2711,46 @@
 			};
 			name = "Debug - Testing";
 		};
+		EBAEA0731223320800F370BE /* Release - Testing */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				GCC_C_LANGUAGE_STANDARD = c99;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = (
+					"${SDK_DIR}/usr/include/libxml2",
+					"\"Facebook Connect\"",
+				);
+				OTHER_CFLAGS = "-DUSE_MOBILE_TEST";
+				OTHER_LDFLAGS = (
+					"-all_load",
+					"-ObjC",
+				);
+				PREBINDING = NO;
+				SDKROOT = iphoneos3.0;
+			};
+			name = "Release - Testing";
+		};
+		EBAEA0741223320800F370BE /* Release - Testing */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				COPY_PHASE_STRIP = YES;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = MIT_Mobile_Prefix.pch;
+				INFOPLIST_FILE = "Mobile-Info.plist";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/Common/Libraries & Headers/OAuthConsumer\"",
+					"${SDK_DIR}/usr/include/libxml2",
+				);
+				PRODUCT_NAME = "Harvard Mobile";
+				SDKROOT = iphoneos4.0;
+			};
+			name = "Release - Testing";
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -2755,10 +2762,10 @@
 				DE8B4CF8110F92DC00B7D991 /* Debug - Staging */,
 				DE8B4DBF110FAB1100B7D991 /* Debug - Production */,
 				DEB0B3DE11122D3200021561 /* Release - Staging */,
+				EBAEA0741223320800F370BE /* Release - Testing */,
 				1D6058950D05DD3E006BFB54 /* Release - Production */,
 				EB7F340810CD97D200188BCD /* Distribution - Staging - Ad Hoc */,
 				DEF93C671110C9C4009DF154 /* Distribution - Production - Ad Hoc */,
-				DE30C9EF112205BA00598A1A /* Distribution - Production - App Store */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = "Release - Production";
@@ -2771,10 +2778,10 @@
 				DE8B4CF7110F92DC00B7D991 /* Debug - Staging */,
 				DE8B4DBE110FAB1100B7D991 /* Debug - Production */,
 				DEB0B3DD11122D3200021561 /* Release - Staging */,
+				EBAEA0731223320800F370BE /* Release - Testing */,
 				C01FCF5008A954540054247B /* Release - Production */,
 				EB7F340710CD97D200188BCD /* Distribution - Staging - Ad Hoc */,
 				DEF93C661110C9C4009DF154 /* Distribution - Production - Ad Hoc */,
-				DE30C9EE112205BA00598A1A /* Distribution - Production - App Store */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = "Release - Production";
