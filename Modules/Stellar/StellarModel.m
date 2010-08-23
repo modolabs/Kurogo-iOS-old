@@ -543,6 +543,7 @@ NSString* cleanPersonName(NSString *personName);
 		
 		else if ([classesSearchDelegate class] == [StellarMainSearch class]) {
 			[classesSearchDelegate handleTooManySearchResultsForMainSearch:object];
+			return;
 		}
 		//else
 		//[classesSearchDelegate handleTooManySearchResults];
@@ -555,6 +556,7 @@ NSString* cleanPersonName(NSString *personName);
 	
 	if ([searchResult class] == [NSNull class]) {
 		[self request:request handleConnectionError:nil];
+		return;
 	}
 
 	int ind = 0;
