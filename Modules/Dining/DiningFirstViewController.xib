@@ -12,7 +12,7 @@
 		</object>
 		<object class="NSMutableArray" key="IBDocument.EditedObjectIDs">
 			<bool key="EncodedWithXMLCoder">YES</bool>
-			<integer value="371"/>
+			<integer value="266"/>
 		</object>
 		<object class="NSArray" key="IBDocument.PluginDependencies">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -194,14 +194,14 @@
 				<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 			</object>
 			<object class="IBUIView" id="578520804">
-				<nil key="NSNextResponder"/>
+				<reference key="NSNextResponder"/>
 				<int key="NSvFlags">292</int>
 				<object class="NSMutableArray" key="NSSubviews">
 					<bool key="EncodedWithXMLCoder">YES</bool>
 					<object class="IBUITableView" id="965268484">
 						<reference key="NSNextResponder" ref="578520804"/>
 						<int key="NSvFlags">274</int>
-						<string key="NSFrameSize">{320, 327}</string>
+						<string key="NSFrameSize">{320, 335}</string>
 						<reference key="NSSuperview" ref="578520804"/>
 						<reference key="IBUIBackgroundColor" ref="373387045"/>
 						<bool key="IBUIClipsSubviews">YES</bool>
@@ -218,6 +218,7 @@
 					</object>
 				</object>
 				<string key="NSFrameSize">{320, 481}</string>
+				<reference key="NSSuperview"/>
 				<reference key="IBUIBackgroundColor" ref="373387045"/>
 				<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 			</object>
@@ -229,8 +230,9 @@
 					<object class="IBUILabel" id="911264662">
 						<reference key="NSNextResponder" ref="798837089"/>
 						<int key="NSvFlags">292</int>
-						<string key="NSFrame">{{28, 17}, {79, 21}}</string>
+						<string key="NSFrame">{{28, 11}, {79, 21}}</string>
 						<reference key="NSSuperview" ref="798837089"/>
+						<reference key="NSWindow"/>
 						<bool key="IBUIOpaque">NO</bool>
 						<bool key="IBUIClipsSubviews">YES</bool>
 						<int key="IBUIContentMode">7</int>
@@ -250,8 +252,9 @@
 					<object class="IBUILabel" id="30101282">
 						<reference key="NSNextResponder" ref="798837089"/>
 						<int key="NSvFlags">292</int>
-						<string key="NSFrame">{{180, 17}, {53, 21}}</string>
+						<string key="NSFrame">{{180, 11}, {53, 21}}</string>
 						<reference key="NSSuperview" ref="798837089"/>
+						<reference key="NSWindow"/>
 						<bool key="IBUIOpaque">NO</bool>
 						<bool key="IBUIClipsSubviews">YES</bool>
 						<int key="IBUIContentMode">7</int>
@@ -267,8 +270,9 @@
 					<object class="IBUILabel" id="52736268">
 						<reference key="NSNextResponder" ref="798837089"/>
 						<int key="NSvFlags">292</int>
-						<string key="NSFrame">{{28, 41}, {152, 21}}</string>
+						<string key="NSFrame">{{28, 35}, {152, 21}}</string>
 						<reference key="NSSuperview" ref="798837089"/>
+						<reference key="NSWindow"/>
 						<bool key="IBUIOpaque">NO</bool>
 						<bool key="IBUIClipsSubviews">YES</bool>
 						<int key="IBUIContentMode">7</int>
@@ -284,8 +288,9 @@
 					<object class="IBUILabel" id="348573186">
 						<reference key="NSNextResponder" ref="798837089"/>
 						<int key="NSvFlags">292</int>
-						<string key="NSFrame">{{180, 41}, {165, 21}}</string>
+						<string key="NSFrame">{{180, 35}, {165, 21}}</string>
 						<reference key="NSSuperview" ref="798837089"/>
+						<reference key="NSWindow"/>
 						<bool key="IBUIOpaque">NO</bool>
 						<bool key="IBUIClipsSubviews">YES</bool>
 						<int key="IBUIContentMode">7</int>
@@ -301,8 +306,9 @@
 					<object class="IBUIImageView" id="218625448">
 						<reference key="NSNextResponder" ref="798837089"/>
 						<int key="NSvFlags">292</int>
-						<string key="NSFrame">{{157, 17}, {20, 20}}</string>
+						<string key="NSFrame">{{157, 11}, {20, 20}}</string>
 						<reference key="NSSuperview" ref="798837089"/>
+						<reference key="NSWindow"/>
 						<object class="NSColor" key="IBUIBackgroundColor" id="142634963">
 							<int key="NSColorSpace">3</int>
 							<bytes key="NSWhite">MCAwAA</bytes>
@@ -317,8 +323,9 @@
 					<object class="IBUIImageView" id="691900241">
 						<reference key="NSNextResponder" ref="798837089"/>
 						<int key="NSvFlags">292</int>
-						<string key="NSFrame">{{5, 17}, {20, 20}}</string>
+						<string key="NSFrame">{{5, 11}, {20, 20}}</string>
 						<reference key="NSSuperview" ref="798837089"/>
+						<reference key="NSWindow"/>
 						<reference key="IBUIBackgroundColor" ref="142634963"/>
 						<bool key="IBUIUserInteractionEnabled">NO</bool>
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
@@ -330,8 +337,9 @@
 					<object class="IBUIImageView" id="1056535069">
 						<reference key="NSNextResponder" ref="798837089"/>
 						<int key="NSvFlags">292</int>
-						<string key="NSFrame">{{5, 41}, {20, 20}}</string>
+						<string key="NSFrame">{{5, 35}, {20, 20}}</string>
 						<reference key="NSSuperview" ref="798837089"/>
+						<reference key="NSWindow"/>
 						<reference key="IBUIBackgroundColor" ref="142634963"/>
 						<bool key="IBUIUserInteractionEnabled">NO</bool>
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
@@ -343,8 +351,9 @@
 					<object class="IBUIImageView" id="866446637">
 						<reference key="NSNextResponder" ref="798837089"/>
 						<int key="NSvFlags">292</int>
-						<string key="NSFrame">{{157, 41}, {20, 20}}</string>
+						<string key="NSFrame">{{157, 35}, {20, 20}}</string>
 						<reference key="NSSuperview" ref="798837089"/>
+						<reference key="NSWindow"/>
 						<reference key="IBUIBackgroundColor" ref="142634963"/>
 						<bool key="IBUIUserInteractionEnabled">NO</bool>
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
@@ -356,6 +365,7 @@
 				</object>
 				<string key="NSFrameSize">{320, 94}</string>
 				<reference key="NSSuperview"/>
+				<reference key="NSWindow"/>
 				<object class="NSColor" key="IBUIBackgroundColor">
 					<int key="NSColorSpace">3</int>
 					<bytes key="NSWhite">MQA</bytes>
@@ -853,13 +863,13 @@
 						<object class="NSMutableArray" key="children">
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<reference ref="52736268"/>
-							<reference ref="348573186"/>
-							<reference ref="911264662"/>
-							<reference ref="30101282"/>
 							<reference ref="218625448"/>
 							<reference ref="691900241"/>
 							<reference ref="1056535069"/>
 							<reference ref="866446637"/>
+							<reference ref="911264662"/>
+							<reference ref="30101282"/>
+							<reference ref="348573186"/>
 						</object>
 						<reference key="parent" ref="0"/>
 						<string key="objectName">Glossary_Hours_View</string>

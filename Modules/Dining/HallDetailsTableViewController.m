@@ -24,7 +24,7 @@
 -(void)viewDidLoad {
 	[super viewDidLoad];
 	
-	UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(12.0, 10.0,200.0, 40.0)];
+	UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(12.0, 4.0,200.0, 40.0)];
 	label.text = [self.itemDetails valueForKey:@"name"];
 	label.font = [UIFont fontWithName:CONTENT_TITLE_FONT size:CONTENT_TITLE_FONT_SIZE];
 	label.textColor = [UIColor colorWithHexString:@"#1a1611"];
@@ -32,7 +32,7 @@
 	[self.view addSubview:label];
     [label release];
 	
-	UIImageView *imageView = [[[UIImageView alloc] initWithFrame:CGRectMake(282.0, 15.0, 30.0, 30.0)] autorelease];
+	UIImageView *imageView = [[[UIImageView alloc] initWithFrame:CGRectMake(282.0, 9.0, 30.0, 30.0)] autorelease];
 	
 	switch (hallStatus.currentStat) {
 		case OPEN:
@@ -64,7 +64,7 @@
 	
 	detailsTableView = nil;
 	
-	detailsTableView = [[UITableView alloc] initWithFrame:CGRectMake(0.0, 55.0, 320.0, 410.0) style: UITableViewStyleGrouped];
+	detailsTableView = [[UITableView alloc] initWithFrame:CGRectMake(0.0, 36.0, 320.0, 410.0) style: UITableViewStyleGrouped];
 	[detailsTableView applyStandardColors];
 	detailsTableView.delegate= self;
 	detailsTableView.dataSource = self;
