@@ -313,7 +313,22 @@ int timeToNextMeal;  //starting with ONE DAY
 	}
 	
 	
-	NSDate *today = [NSDate date];
+	//NSDate *today = [NSDate date];
+	
+	
+	// The date in your source timezone
+	NSDate* sourceDate = [NSDate date];
+	
+	NSTimeZone* sourceTimeZone = [NSTimeZone defaultTimeZone];
+	NSTimeZone* destinationTimeZone = [NSTimeZone timeZoneWithAbbreviation:@"EST"];
+	
+	NSInteger sourceGMTOffset = [sourceTimeZone secondsFromGMTForDate:sourceDate];
+	NSInteger destinationGMTOffset = [destinationTimeZone secondsFromGMTForDate:sourceDate];
+	NSTimeInterval interval = destinationGMTOffset - sourceGMTOffset;
+	
+	NSDate* today = [[[NSDate alloc] initWithTimeInterval:interval sinceDate:sourceDate] autorelease];
+	
+	
 	
 	// Display the Date in the Expected Format: Saturday, June 25
 	NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
