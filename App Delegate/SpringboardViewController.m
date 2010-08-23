@@ -137,7 +137,7 @@
             [anIcon addTarget:self action:@selector(buttonPressed:) forControlEvents:UIControlEventTouchUpInside];
             
         } else {
-            NSLog(@"skipping module %@", aModule.tag);
+            DLog(@"skipping module %@", aModule.tag);
         }
         // Add properties for accessibility/automation visibility.
         anIcon.isAccessibilityElement = YES;
@@ -339,7 +339,7 @@
         
         // copied from shuttles module
         cell.imageView.image = [UIImage imageNamed:@"loading-animation/iPhoneBusybox_01.png"];
-        NSLog(@"%@", [cell.imageView.image description]);
+        DLog(@"%@", [cell.imageView.image description]);
         cell.imageView.animationImages = [NSArray arrayWithObjects:
                                           [UIImage imageNamed:@"loading-animation/iPhoneBusybox_01.png"],
                                           [UIImage imageNamed:@"loading-animation/iPhoneBusybox_02.png"],

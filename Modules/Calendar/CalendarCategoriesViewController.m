@@ -170,10 +170,11 @@
 	}
 }
 
+/*
 - (void)request:(JSONAPIRequest *)request handleConnectionError:(NSError *)error
 {
 	NSLog(@"request failed");
 }
-
+*/
 @end
 

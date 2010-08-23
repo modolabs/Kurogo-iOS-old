@@ -112,7 +112,7 @@ NSString * const LocalPathFederatedSearchResult = @"fedresult";
     // the rest of this is whatever you want to do for recovering state
     
     didHandle = NO;
-    NSLog(@"%@ not handling localPath: %@ query: %@", NSStringFromClass([self class]), localPath, query);
+    DLog(@"%@ not handling localPath: %@ query: %@", NSStringFromClass([self class]), localPath, query);
     return didHandle;
 }
 
@@ -141,7 +141,7 @@ NSString * const LocalPathFederatedSearchResult = @"fedresult";
 #pragma mark Notifications
 
 - (BOOL)handleNotification:(MITNotification *)notification appDelegate: (MIT_MobileAppDelegate *)appDelegate shouldOpen: (BOOL)shouldOpen {
-	//NSLog(@"%@ can not handle notification %@", NSStringFromClass([self class]), notification);
+	DLog(@"%@ can not handle notification %@", NSStringFromClass([self class]), notification);
 	return NO;
 }
 

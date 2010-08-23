@@ -421,7 +421,7 @@ enum CalendarDetailRowTypes {
 	NSError *error;
 	NSMutableString *target = [NSMutableString stringWithContentsOfURL:fileURL encoding:NSUTF8StringEncoding error:&error];
 	if (!target) {
-		NSLog(@"Failed to load template at %@. %@", fileURL, [error userInfo]);
+		DLog(@"Failed to load template at %@. %@", fileURL, [error userInfo]);
 	}
 	[target replaceOccurrencesOfStrings:[NSArray arrayWithObject:@"__BODY__"] 
 							withStrings:[NSArray arrayWithObject:source] 

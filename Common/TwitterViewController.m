@@ -327,7 +327,7 @@ static NSString * const TwitterServiceName = @"Twitter";
 	NSError *error = nil;
 	NSString *accessToken = [SFHFKeychainUtils getPasswordForUsername:username andServiceName:TwitterServiceName error:&error];
 	if (error) {
-		NSLog(@"something went wrong looking up access token, error=%@", error);
+		DLog(@"something went wrong looking up access token, error=%@", error);
 		return nil;
 	} else {
 		return accessToken;
@@ -374,7 +374,7 @@ static NSString * const TwitterServiceName = @"Twitter";
 	if (!error) {
 		[self updateTwitterSessionUI];
 	} else {
-		NSLog(@"error on saving token=%@",error);
+		DLog(@"error on saving token=%@",error);
 	}
 }
 	
@@ -386,7 +386,7 @@ static NSString * const TwitterServiceName = @"Twitter";
 		errorMsg = @"Failed to connect to the twitter server";
 	} else	{
 		errorMsg = @"Something went wrong while trying to authenicate your twitter account";
-		NSLog(@"unusual error=%@", error);
+		DLog(@"unusual error=%@", error);
 	}
 	
 	UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Twitter Failure" 

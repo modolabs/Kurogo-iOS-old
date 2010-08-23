@@ -454,7 +454,7 @@ NSInteger strLenSort(NSString *str1, NSString *str2, void *context)
 		PersonDetails *personDetails = nil;
 		PeopleDetailsViewController *detailView = [[PeopleDetailsViewController alloc] initWithStyle:UITableViewStyleGrouped];
 		if (tableView == self.searchController.searchResultsTableView) {
-            NSLog(@"%@", [self.searchResults description]);
+            DLog(@"%@", [self.searchResults description]);
 			NSDictionary *selectedResult = [self.searchResults safeObjectAtIndex:indexPath.row];
 			personDetails = [PersonDetails retrieveOrCreate:selectedResult];
 		} else {
@@ -493,7 +493,7 @@ NSInteger strLenSort(NSString *str1, NSString *str2, void *context)
     [self cleanUpConnection];
 	
     if (result) {
-        NSLog(@"%@", [result description]);
+        DLog(@"%@", [result description]);
         
         if ([result isKindOfClass:[NSDictionary class]]) {
             NSString *message = [result objectForKey:@"error"];

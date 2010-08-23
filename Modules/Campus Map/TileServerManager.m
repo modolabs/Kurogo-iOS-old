@@ -112,7 +112,7 @@ static NSString * s_tileServerFilename = @"tileServer.plist";
     NSError *error = nil;
     CGPoint result = [[TileServerManager manager] projectedPointForCoord:coord error:&error];
     if (error != nil) {
-        NSLog(@"%@ error %d: %@", error.domain, error.code, error.userInfo);
+        DLog(@"%@ error %d: %@", error.domain, error.code, error.userInfo);
     }
     return result;
 }
@@ -121,7 +121,7 @@ static NSString * s_tileServerFilename = @"tileServer.plist";
     NSError *error = nil;
     CLLocationCoordinate2D result = [[TileServerManager manager] coordForProjectedPoint:point error:&error];
     if (error != nil) {
-        NSLog(@"%@ error %d: %@", error.domain, error.code, error.userInfo);
+        DLog(@"%@ error %d: %@", error.domain, error.code, error.userInfo);
     }
     return result;
 }
@@ -224,9 +224,9 @@ static NSString * s_tileServerFilename = @"tileServer.plist";
 - (void)saveData {
 	NSString *filename = [self serverFilename];
 	BOOL saved = [_serverInfo writeToFile:filename atomically:YES];
-	NSLog(@"Saved file: %@ %@", filename, saved ? @"SUCCESS" : @"FAIL");
+	DLog(@"Saved file: %@ %@", filename, saved ? @"SUCCESS" : @"FAIL");
     if (!saved) {
-        NSLog(@"could not save file with contents %@", [_serverInfo description]);
+        DLog(@"could not save file with contents %@", [_serverInfo description]);
     }
 }
 
@@ -299,11 +299,11 @@ static NSString * s_tileServerFilename = @"tileServer.plist";
 
 // TODO: add NSError argument if conversion fails
 - (CGPoint)projectedPointForCoord:(CLLocationCoordinate2D)coord error:(NSError **)error {
-    //NSLog(@"converting from coord: %.4f, %.4f", coord.longitude, coord.latitude);
+    DLog(@"converting from coord: %.4f, %.4f", coord.longitude, coord.latitude);
     if (_isWebMercator) {
         CGFloat x = coord.longitude / 360.0 * _circumferenceInProjectedUnits;
         CGFloat y = _radiusInProjectedUnits * log(tan(M_PI / 4 + coord.latitude / 2)) * RADIANS_PER_DEGREE;
-        //NSLog(@"converted to point: %.1f, %.1f", x, y);
+        DLog(@"converted to point: %.1f, %.1f", x, y);
         return CGPointMake(x, y);
     } else {
         double x = coord.longitude * RADIANS_PER_DEGREE;
@@ -317,18 +317,18 @@ static NSString * s_tileServerFilename = @"tileServer.plist";
                                          userInfo:[NSDictionary dictionaryWithObjectsAndKeys:message, @"message", nil]];
             }
         }
-        //NSLog(@"converted to point: %.1f, %.1f", x, y);
+        DLog(@"converted to point: %.1f, %.1f", x, y);
         return CGPointMake(x, y);
     }
 }
 
 - (CLLocationCoordinate2D)coordForProjectedPoint:(CGPoint)point error:(NSError **)error {
-    //NSLog(@"converting from point: %.1f, %.1f", point.x, point.y);
+    DLog(@"converting from point: %.1f, %.1f", point.x, point.y);
     if (_isWebMercator) {
         CLLocationCoordinate2D coord;
         coord.longitude = point.x / _circumferenceInProjectedUnits * 360.0;
         coord.latitude = 2 * (atan(exp(point.y / _radiusInProjectedUnits)) - M_PI / 4) * DEGREES_PER_RADIAN;
-        //NSLog(@"converted to coord: %.3f, %.3f", coord.longitude, coord.latitude);
+        DLog(@"converted to coord: %.3f, %.3f", coord.longitude, coord.latitude);
         return coord;
     } else {
         double x = point.x;
@@ -342,7 +342,7 @@ static NSString * s_tileServerFilename = @"tileServer.plist";
                                          userInfo:[NSDictionary dictionaryWithObjectsAndKeys:message, @"message", nil]];
             }
         }
-        //NSLog(@"converted to coord: %.3f, %.3f", x * DEGREES_PER_RADIAN, y * DEGREES_PER_RADIAN);
+        DLog(@"converted to coord: %.3f, %.3f", x * DEGREES_PER_RADIAN, y * DEGREES_PER_RADIAN);
         return CLLocationCoordinate2DMake(y * DEGREES_PER_RADIAN, x * DEGREES_PER_RADIAN);
     }
 }
@@ -448,7 +448,7 @@ static NSString * s_tileServerFilename = @"tileServer.plist";
     
     // take care of projection
 
-    NSLog(@"wkid %d", _wkid);
+    DLog(@"wkid %d", _wkid);
     if (_wkid == 102100 || _wkid == 102113) {
         _isWebMercator = YES;
 
@@ -478,9 +478,9 @@ static NSString * s_tileServerFilename = @"tileServer.plist";
     
     for (MapZoomLevel *zoomLevel in _mapLevels) {
         CGFloat numTilesAcrossEquator = _circumferenceInProjectedUnits / zoomLevel.resolution;
-        //NSLog(@"level %d has %d tiles across equator", zoomLevel.level, (int)floor(numTilesAcrossEquator));
-        //NSLog(@"and %d tiles per row", zoomLevel.maxCol - zoomLevel.minCol + 1);
-        //NSLog(@"and %d tiles per column", zoomLevel.maxRow - zoomLevel.minRow + 1);
+        DLog(@"level %d has %d tiles across equator", zoomLevel.level, (int)floor(numTilesAcrossEquator));
+        DLog(@"and %d tiles per row", zoomLevel.maxCol - zoomLevel.minCol + 1);
+        DLog(@"and %d tiles per column", zoomLevel.maxRow - zoomLevel.minRow + 1);
         
         zoomLevel.zoomScale = numTilesAcrossEquator / MKMapSizeWorld.width;
     }
@@ -493,7 +493,7 @@ static NSString * s_tileServerFilename = @"tileServer.plist";
 }
 
 - (CGPoint)projectedPointForMapPoint:(MKMapPoint)mapPoint {
-    //NSLog(@"converting from point: %.4f %.4f", mapPoint.x, mapPoint.y);
+    DLog(@"converting from point: %.4f %.4f", mapPoint.x, mapPoint.y);
     if (_isWebMercator) {
         CGPoint point;
         point.x = mapPoint.x / _pixelsPerProjectedUnit;
@@ -508,7 +508,7 @@ static NSString * s_tileServerFilename = @"tileServer.plist";
 }
 
 - (MKMapPoint)mapPointForProjectedPoint:(CGPoint)point {
-    //NSLog(@"converting from point: %.4f %.4f", point.x, point.y);
+    DLog(@"converting from point: %.4f %.4f", point.x, point.y);
     if (_isWebMercator) {
         MKMapPoint mapPoint;
         mapPoint.x = point.x * _pixelsPerProjectedUnit;
@@ -528,7 +528,7 @@ static NSString * s_tileServerFilename = @"tileServer.plist";
         
         if (newMapTimestamp > _mapTimestamp) {
             // store the new timestamp and wipe out the cache.
-            NSLog(@"new map tiles found");
+            DLog(@"new map tiles found");
             [dictionary writeToFile:[TileServerManager mapTimestampFilename] atomically:YES];
             
             NSString* tileCachePath = [TileServerManager tileCachePath];
@@ -536,7 +536,7 @@ static NSString * s_tileServerFilename = @"tileServer.plist";
             if ([[NSFileManager defaultManager] fileExistsAtPath:tileCachePath]) {
                 NSError* error = nil;
                 if (![[NSFileManager defaultManager] removeItemAtPath:tileCachePath error:&error]) {
-                    NSLog(@"Error wiping out map cache: %@", error);
+                    DLog(@"Error wiping out map cache: %@", error);
                 }
             }
         }

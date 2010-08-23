@@ -11,7 +11,7 @@
         MKMapPoint mapSE = MKMapPointForCoordinate(se);
         boundingMapRect = MKMapRectMake(mapNW.x, mapSE.y, mapSE.x - mapNW.x, mapNW.y - mapSE.y);
         coordinate = CLLocationCoordinate2DMake((nw.latitude + se.latitude) / 2, (nw.longitude + se.longitude) / 2);
-        NSLog(@"initialized MapTileOverlay with bounding rect: %.1f %.1f %.1f %.1f");
+        DLog(@"initialized MapTileOverlay with bounding rect: %.1f %.1f %.1f %.1f");
     }
     return self;
 }

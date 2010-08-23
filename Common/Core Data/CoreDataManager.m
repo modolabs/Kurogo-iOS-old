@@ -141,7 +141,7 @@
 }
 
 -(id)insertNewObjectForEntityForName:(NSString *)entityName context:(NSManagedObjectContext *)aManagedObjectContext {
-    NSLog(@"inserting new %@ object", entityName);
+    DLog(@"inserting new %@ object", entityName);
     self.managedObjectContext;
 	NSEntityDescription *entityDescription = [[managedObjectModel entitiesByName] objectForKey:entityName];
 	return [[[NSManagedObject alloc] initWithEntity:entityDescription insertIntoManagedObjectContext:aManagedObjectContext] autorelease];
@@ -180,15 +180,15 @@
 -(void)saveData {
 	NSError *error;
 	if (![self.managedObjectContext save:&error]) {
-        NSLog(@"Failed to save to data store: %@", [error localizedDescription]);
+        DLog(@"Failed to save to data store: %@", [error localizedDescription]);
         NSArray* detailedErrors = [[error userInfo] objectForKey:NSDetailedErrorsKey];
         if(detailedErrors != nil && [detailedErrors count] > 0) {
             for(NSError* detailedError in detailedErrors) {
-                NSLog(@"  DetailedError: %@", [detailedError userInfo]);
+                DLog(@"  DetailedError: %@", [detailedError userInfo]);
             }
         }
         else {
-            NSLog(@"  %@", [error userInfo]);
+            DLog(@"  %@", [error userInfo]);
         }
 	}	
 }
@@ -259,20 +259,20 @@
                              [NSNumber numberWithBool:YES], NSInferMappingModelAutomaticallyOption, nil];
 	
     if (![persistentStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:storeURL options:options error:&error])  {
-		NSLog(@"CoreDataManager failed to create or access the persistent store: %@", [error userInfo]);
+		DLog(@"CoreDataManager failed to create or access the persistent store: %@", [error userInfo]);
 		
 		// see if we failed because of changes to the db
 		//if (![[self storeFileName] isEqualToString:[self currentStoreFileName]]) {
 		//	NSLog(@"This app has been upgraded since last use of Core Data. If it crashes on launch, reinstalling should fix it.");
 			if ([self migrateData]) {
-				NSLog(@"Attempting to recreate the persistent store...");
+				DLog(@"Attempting to recreate the persistent store...");
 				storeURL = [NSURL fileURLWithPath:[self storeFileName]];
 				if (![persistentStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType 
 															  configuration:nil URL:storeURL options:options error:&error]) {
-					NSLog(@"Failed to recreate the persistent store: %@", [error userInfo]);
+					DLog(@"Failed to recreate the persistent store: %@", [error userInfo]);
 				}
 			} else {
-				NSLog(@"Could not migrate data.  Wiping out data...");
+				DLog(@"Could not migrate data.  Wiping out data...");
 #ifdef USE_MOBILE_DEV
                 NSString *backupFile = [NSString stringWithFormat:@"%@.bak", [self storeFileName]];
                 NSError *error = nil;
@@ -283,7 +283,7 @@
                 }
 #else
                 if ([[NSFileManager defaultManager] removeItemAtPath:[self storeFileName] error:&error]) {
-                    NSLog(@"Could not delete old file.  App will now crash.");
+                    DLog(@"Could not delete old file.  App will now crash.");
                 }                
 #endif
 			}
@@ -324,7 +324,7 @@
 			}
 		}
 	}
-	//NSLog(@"Core Data stored at %@", currentFileName);
+	DLog(@"Core Data stored at %@", currentFileName);
 	return currentFileName;
 }
 
@@ -343,14 +343,14 @@
 	NSURL *sourceURL = [NSURL fileURLWithPath:sourcePath];
 	NSURL *destURL = [NSURL fileURLWithPath: [self currentStoreFileName]];
 	
-	NSLog(@"Attempting to migrate from %@ to %@", [[self storeFileName] lastPathComponent], [[self currentStoreFileName] lastPathComponent]);
+	DLog(@"Attempting to migrate from %@ to %@", [[self storeFileName] lastPathComponent], [[self currentStoreFileName] lastPathComponent]);
 		  
 	NSDictionary *sourceMetadata = [NSPersistentStoreCoordinator metadataForPersistentStoreOfType:NSSQLiteStoreType
 																							  URL:sourceURL
 																							error:&error];
 	
 	if (sourceMetadata == nil) {
-		NSLog(@"Failed to fetch metadata with error %d: %@", [error code], [error userInfo]);
+		DLog(@"Failed to fetch metadata with error %d: %@", [error code], [error userInfo]);
 		return NO;
 	}
 	
@@ -358,19 +358,19 @@
 																	forStoreMetadata:sourceMetadata];
 	
 	if (sourceModel == nil) {
-		NSLog(@"Failed to create source model");
+		DLog(@"Failed to create source model");
 		return NO;
 	}
 	
 	NSManagedObjectModel *destinationModel = [self managedObjectModel];
 
 	if ([destinationModel isConfiguration:nil compatibleWithStoreMetadata:sourceMetadata]) {
-		NSLog(@"No persistent store incompatilibilities detected, cancelling");
+		DLog(@"No persistent store incompatilibilities detected, cancelling");
 		return YES;
 	}
 	
-	NSLog(@"source model entities: %@", [[sourceModel entityVersionHashesByName] description]);
-	NSLog(@"destination model entities: %@", [[destinationModel entityVersionHashesByName] description]);
+	DLog(@"source model entities: %@", [[sourceModel entityVersionHashesByName] description]);
+	DLog(@"destination model entities: %@", [[destinationModel entityVersionHashesByName] description]);
 	
 	NSMappingModel *mappingModel;
 	
@@ -380,14 +380,14 @@
 																error:&error];
 
 	if (mappingModel == nil) {
-		NSLog(@"Could not create inferred mapping model: %@", [error userInfo]);
+		DLog(@"Could not create inferred mapping model: %@", [error userInfo]);
 		// try again with xcmappingmodel files we created
 		mappingModel = [NSMappingModel mappingModelFromBundles:nil
 												forSourceModel:sourceModel
 										destinationModel:destinationModel];
 		
 		if (mappingModel == nil) {
-			NSLog(@"Failed to create mapping model");
+			DLog(@"Failed to create mapping model");
 			return NO;
 		}
 	}
@@ -402,15 +402,15 @@
 	
 	if (![manager migrateStoreFromURL:sourceURL type:NSSQLiteStoreType options:nil withMappingModel:mappingModel 
 					 toDestinationURL:destURL destinationType:NSSQLiteStoreType destinationOptions:nil error:&error]) {
-		NSLog(@"Migration failed with error %d: %@", [error code], [error userInfo]);
+		DLog(@"Migration failed with error %d: %@", [error code], [error userInfo]);
 		return NO;
 	}
 	
 	if (![[NSFileManager defaultManager] removeItemAtPath:sourcePath error:&error]) {
-		NSLog(@"Failed to remove old store with error %d: %@", [error code], [error userInfo]);
+		DLog(@"Failed to remove old store with error %d: %@", [error code], [error userInfo]);
 	}
 	
-	NSLog(@"Migration complete!");
+	DLog(@"Migration complete!");
 	return YES;
 	
 }

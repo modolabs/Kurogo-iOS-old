@@ -108,7 +108,7 @@
         }
         [CoreDataManager saveData];
 	} else {
-        //NSLog(@"%@", [[category.events allObjects] description]);
+        DLog(@"%@", [[category.events allObjects] description]);
     }
 	return category;
 }

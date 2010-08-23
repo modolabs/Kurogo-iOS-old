@@ -36,7 +36,7 @@ NSString * const RequestLookupAddress = @"address";
 	NSArray *existingValues = (NSArray *)ABMultiValueCopyArrayOfAllValues(multiValue);
 	NSArray *ldapValue = nil;
 	if (ldapValue = [self.personDetails separatedValuesForKey:ldapKey]) {
-        NSLog(@"%@", [ldapValue description]);
+        DLog(@"%@", [ldapValue description]);
 		for (NSString *value in ldapValue) {
 			if (![existingValues containsObject:value]) {
 				ABMultiValueAddValueAndLabel(multiValue, value, label, NULL);
@@ -82,7 +82,7 @@ NSString * const RequestLookupAddress = @"address";
 			ldapValue = [self.personDetails formattedValueForKey:ldapTag];
 			displayTag = [self.personDetails displayNameForKey:ldapTag];
 			
-            NSLog(@"%@", ldapValue);
+            DLog(@"%@", ldapValue);
             
 			if ([ldapValue length] > 0) {
 				// create one tag/label pair for each email/phone/office label
@@ -97,7 +97,7 @@ NSString * const RequestLookupAddress = @"address";
 				[currentSection addObject:[NSArray arrayWithObjects:displayTag, ldapValue, nil]];
 			}
 		}
-        NSLog(@"%@", [currentSection description]);
+        DLog(@"%@", [currentSection description]);
 		
 		if ([currentSection count] > 0)
 			[self.sectionArray addObject:currentSection];

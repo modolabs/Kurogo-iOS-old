@@ -101,7 +101,7 @@ NSString * const CalendarEventAPISearch = @"search";
 		//	return 86400.0 * 7.0 * sign;
 		case CalendarEventListTypeAcademic:
 		{
-			//NSLog(@"%@", [aDate description]);
+			DLog(@"%@", [aDate description]);
 			NSCalendar *calendar = [NSCalendar currentCalendar];
 			NSDateComponents *comps = [[NSDateComponents alloc] init];
 			//[comps setMonth:sign];

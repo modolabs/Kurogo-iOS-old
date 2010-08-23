@@ -121,7 +121,7 @@ static PeopleRecentsData *instance = nil;
 		}        
 	}
     
-    NSLog(@"%@", [personDetails description]);
+    DLog(@"%@", [personDetails description]);
 
 	// the "id" field we receive from mobi is either the unix uid (more
 	// common) or something derived from another field (ldap "dn"), the
@@ -164,7 +164,7 @@ static PeopleRecentsData *instance = nil;
         NSString *ldapDisplayFile = [[paths objectAtIndex:0] stringByAppendingPathComponent:@"ldapDisplayFields.plist"];
         BOOL saved = [displayFields writeToFile:ldapDisplayFile atomically:YES];
         if (!saved) {
-            NSLog(@"could not save file with contents %@", [displayFields description]);
+            DLog(@"could not save file with contents %@", [displayFields description]);
         }
     }
 }

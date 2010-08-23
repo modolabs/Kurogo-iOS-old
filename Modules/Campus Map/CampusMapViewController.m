@@ -660,7 +660,7 @@
 #pragma mark MKMapView delegation
 
 - (void)mapView:(MKMapView *)mapView didUpdateUserLocation:(MKUserLocation *)userLocation {
-    NSLog(@"located; %@", _mapView.showsUserLocation ? @"YES" : @"NO");
+    DLog(@"located; %@", _mapView.showsUserLocation ? @"YES" : @"NO");
     if (_mapView.showsUserLocation) {
         _mapView.region = MKCoordinateRegionMake(userLocation.coordinate, MKCoordinateSpanMake(0.001, 0.001));
     }
@@ -679,11 +679,11 @@
 
 
 - (void)mapView:(MKMapView *)mapView regionDidChangeAnimated:(BOOL)animated {
-    //NSLog(@"%@", _mapView.showsUserLocation ? @"YES" : @"NO");
+    DLog(@"%@", _mapView.showsUserLocation ? @"YES" : @"NO");
 }
 
 - (void)mapView:(MKMapView *)mapView regionWillChangeAnimated:(BOOL)animated {
-    //NSLog(@"%@", _mapView.showsUserLocation ? @"YES" : @"NO");
+    DLog(@"%@", _mapView.showsUserLocation ? @"YES" : @"NO");
 }
 
 - (MKAnnotationView *)mapView:(MKMapView *)mapView viewForAnnotation:(id <MKAnnotation>)annotation {

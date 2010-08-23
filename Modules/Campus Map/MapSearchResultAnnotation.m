@@ -13,7 +13,7 @@
 
 - (void)searchAnnotationWithDelegate:(id<JSONAPIDelegate>)delegate category:(NSString *)category {
 	JSONAPIRequest *apiRequest = [JSONAPIRequest requestWithJSONAPIDelegate:delegate];
-    NSLog(@"%@", [delegate description]);
+    DLog(@"%@", [delegate description]);
 	apiRequest.userData = self;
     NSDictionary *params = nil;
     if (category) {
@@ -71,7 +71,7 @@
             self.coordinate = [TileServerManager coordForProjectedPoint:CGPointMake(x, y)];
             
         } else {
-            NSLog(@"info: %@", [self.info description]);
+            DLog(@"info: %@", [self.info description]);
         }
 
         if (!self.name) {
@@ -89,7 +89,7 @@
         if (!self.street)
             self.street = [infoAttributes objectForKey:@"Address"];
         
-        NSLog(@"found %@ at %.4f, %.4f", self.name, self.coordinate.longitude, self.coordinate.latitude);
+        DLog(@"found %@ at %.4f, %.4f", self.name, self.coordinate.longitude, self.coordinate.latitude);
         
         if (infoAttributes) {
             self.dataPopulated = YES;

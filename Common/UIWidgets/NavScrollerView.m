@@ -87,7 +87,7 @@ scrollView = _scrollView, navScrollerDelegate, currentXOffset = _currentXOffset;
     
     // if we get to this point that means there's still some
     // subview that isn't being assigned a non-conflicting tag
-    NSLog(@"%@", [view description]);
+    DLog(@"%@", [view description]);
     
     return nil;
 }

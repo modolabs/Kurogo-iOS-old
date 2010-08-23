@@ -77,7 +77,7 @@ static NSInteger numTries = 0;
         JSONAPIRequest *request = [JSONAPIRequest requestWithJSONAPIDelegate:self];
         BOOL success = [request requestObjectFromModule:@"news" command:@"channels" parameters:nil];
         if (!success) {
-            NSLog(@"failed to dispatch request");
+            DLog(@"failed to dispatch request");
         }
     } else {
         self.categories = categoryObjects;
@@ -506,7 +506,7 @@ static NSInteger numTries = 0;
 		NSArray *results = [CoreDataManager objectsForEntity:NewsStoryEntityName matchingPredicate:predicate sortDescriptors:sortDescriptors];
 		NewsCategory *aCategory = [[self.categories filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"category_id == %d", self.activeCategoryId]] lastObject];
 
-		NSLog(@"activecategoryid: %d", self.activeCategoryId);
+		DLog(@"activecategoryid: %d", self.activeCategoryId);
         NSDate *lastUpdatedDate = [aCategory valueForKey:@"lastUpdated"];
 
 		[self setLastUpdated:lastUpdatedDate];
@@ -547,7 +547,7 @@ static NSInteger numTries = 0;
     
     // start new request
     NewsStory *lastStory = [self.stories lastObject];
-    NSLog(@"%@", [lastStory title]);
+    DLog(@"%@", [lastStory title]);
     NSInteger lastStoryId = (loadMore) ? [lastStory.story_id integerValue] : 0;
     if (self.xmlParser) {
 		[self.xmlParser abort];
@@ -652,9 +652,9 @@ static NSInteger numTries = 0;
     if (parser == self.xmlParser) {
         // TODO: communicate download failure to user
         if ([error code] == NSURLErrorNotConnectedToInternet) {
-            NSLog(@"News download failed because there's no net connection");
+            DLog(@"News download failed because there's no net connection");
         } else {
-            NSLog(@"Download failed for parser %@ with error %@", parser, [error userInfo]);
+            DLog(@"Download failed for parser %@ with error %@", parser, [error userInfo]);
         }
 		[self setStatusText:@"Update failed"];
 		
@@ -693,8 +693,8 @@ static NSInteger numTries = 0;
             }
 			length += [self.xmlParser.newStories count];
             
-            //NSLog(@"%@", [self.xmlParser.newStories description]);
-            NSLog(@"setting expectedCount = %d", length);            
+            DLog(@"%@", [self.xmlParser.newStories description]);
+            DLog(@"setting expectedCount = %d", length);            
 			[aCategory setValue:[NSNumber numberWithInteger:length] forKey:@"expectedCount"];
 			if (!parser.loadingMore && [self.stories count] > 0) {
 				[storyTable scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:NO];
@@ -1039,7 +1039,7 @@ static NSInteger numTries = 0;
 				
                 result = cell;
             } else {
-                NSLog(@"%s attempted to show non-existent row (%d) with actual count of %d", _cmd, indexPath.row, self.stories.count);
+                DLog(@"%s attempted to show non-existent row (%d) with actual count of %d", _cmd, indexPath.row, self.stories.count);
             }
         }
             break;

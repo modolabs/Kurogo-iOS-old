@@ -157,7 +157,7 @@
 		return NO;		// notify of failure
 	}
 	
-    NSLog(@"Requesting URL %@ %@", url, ((shouldCache) ? @"allowing cached responses" : @"ignoring cache"));
+    DLog(@"Requesting URL %@ %@", url, ((shouldCache) ? @"allowing cached responses" : @"ignoring cache"));
     
 	// prep the variables for incoming data
 	[self resetObjects];

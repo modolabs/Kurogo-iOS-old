@@ -129,7 +129,7 @@ NSString * const NewsTagFullURL         = @"url";
 
 - (void)dealloc {
 	if (![thread isFinished]) {
-		NSLog(@"***** %s called before parsing finished", __PRETTY_FUNCTION__);
+		DLog(@"***** %s called before parsing finished", __PRETTY_FUNCTION__);
 	}
 	[thread release];
 	thread = nil;
@@ -201,7 +201,7 @@ NSString * const NewsTagFullURL         = @"url";
 
 - (void)detachAndParseURL:(NSURL *)url {
 	if (thread) {
-		NSLog(@"***** %s called twice on the same instance", __PRETTY_FUNCTION__);
+		DLog(@"***** %s called twice on the same instance", __PRETTY_FUNCTION__);
 	}
 	thread = [[NSThread alloc] initWithTarget:self selector:@selector(downloadAndParse:) object:url];
 	[thread start];
@@ -326,7 +326,7 @@ NSString * const NewsTagFullURL         = @"url";
     self.currentElement = elementName;
 	if ([elementName isEqualToString:NewsTagItem]) {
         if ([[currentContents allValues] count] > 0) {
-            NSLog(@"%s warning: found a nested <item> in the News XML.", __PRETTY_FUNCTION__);
+            DLog(@"%s warning: found a nested <item> in the News XML.", __PRETTY_FUNCTION__);
             [currentContents removeAllObjects];
         }
         NSArray *whitelist = [self itemWhitelist];
@@ -554,7 +554,7 @@ NSString * const NewsTagFullURL         = @"url";
 }
 
 - (void)parseError:(NSError *)error {
-    NSLog(@"parser failed with error %@", [error description]);
+    DLog(@"parser failed with error %@", [error description]);
     parseSuccessful = NO;
 	if (self.delegate != nil && [self.delegate respondsToSelector:@selector(parser:didFailWithParseError:)]) {
 		[self.delegate parser:self didFailWithParseError:error];	

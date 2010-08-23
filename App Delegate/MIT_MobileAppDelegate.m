@@ -117,7 +117,7 @@
 		module.hasLaunchedBegun = YES;
         canHandle = [module handleLocalPath:path query:query];
     } else {
-        //NSLog(@"%s couldn't handle url: %@", _cmd, url);
+        DLog(@"%s couldn't handle url: %@", _cmd, url);
     }
 
     return canHandle;

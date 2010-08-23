@@ -54,7 +54,7 @@
 	MITModule *module = [MIT_MobileAppDelegate moduleForTag:moduleTag];
 	module.currentPath = path;
 	module.currentQuery = query;
-	//NSLog(@"Just saved module state: %@, %@  for module: %@", module.currentPath, module.currentQuery, module);
+	DLog(@"Just saved module state: %@, %@  for module: %@", module.currentPath, module.currentQuery, module);
 }
 
 @end

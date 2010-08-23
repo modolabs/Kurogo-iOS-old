@@ -18,7 +18,7 @@
 
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-	//NSLog(@"viewing %@", [self description]);
+	DLog(@"viewing %@", [self description]);
 	if (categories != nil) {
 		return [categories count];
 	}

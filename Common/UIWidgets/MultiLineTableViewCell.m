@@ -93,7 +93,7 @@
         CGSize size = CGSizeMake(width, height * maxLines);
         height = [text sizeWithFont:font constrainedToSize:size lineBreakMode:UILineBreakModeWordWrap].height;
     }
-    //NSLog(@"height for label with text %@ and width %.1f is %.1f", text, width, height);
+    DLog(@"height for label with text %@ and width %.1f is %.1f", text, width, height);
     return height;
 }
 

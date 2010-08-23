@@ -103,26 +103,26 @@
 - (MapTile *)tileForRow:(int)row col:(int)col {
     CGPoint tileOrigin = CGPointMake(col * self.resolution * [TileServerManager tileWidth] + [TileServerManager originX],
                                      [TileServerManager originY] - row * self.resolution * [TileServerManager tileHeight]);
-    NSLog(@"tileorigin: %.1f %.1f", tileOrigin.x, tileOrigin.y);
+    DLog(@"tileorigin: %.1f %.1f", tileOrigin.x, tileOrigin.y);
     
     MKMapPoint origin = [TileServerManager mapPointForProjectedPoint:tileOrigin];
     tileOrigin.x += self.resolution * [TileServerManager tileWidth];
     tileOrigin.y += self.resolution * [TileServerManager tileHeight];
     MKMapPoint bottomRight = [TileServerManager mapPointForProjectedPoint:tileOrigin];
     MKMapRect rect = MKMapRectMake(origin.x, origin.y, bottomRight.x - origin.x, origin.y - bottomRight.y);
-    NSLog(@"assigned tile to rect: %.1f %.1f %.1f %.1f", rect.origin.x, rect.origin.y, rect.size.width, rect.size.height);
+    DLog(@"assigned tile to rect: %.1f %.1f %.1f %.1f", rect.origin.x, rect.origin.y, rect.size.width, rect.size.height);
     
-    //NSLog(@"tile: %d, %d", col, row);
+    DLog(@"tile: %d, %d", col, row);
     
     MapTile *tile = [[[MapTile alloc] initWithFrame:rect path:[self pathForTileAtRow:row col:col]] autorelease];
     
     if (![[NSFileManager defaultManager] fileExistsAtPath:tile.path]) {
-        NSLog(@"%@", tile.path);
+        DLog(@"%@", tile.path);
 		//MIT_MobileAppDelegate *appDelegate = (MIT_MobileAppDelegate *)[[UIApplication sharedApplication] delegate];
         //[appDelegate showNetworkActivityIndicator];
         NSString* sUrl = [NSString stringWithFormat:@"%@/maptile/%d/%d/%d", MITMobileWebAPIURLString, level, row, col];
         NSURL* url = [NSURL URLWithString:sUrl];
-        NSLog(@"requesting from %@", sUrl);
+        DLog(@"requesting from %@", sUrl);
         
 		NSURLRequest* request = [[NSURLRequest alloc] initWithURL:url];
 		
@@ -139,8 +139,8 @@
         //[appDelegate hideNetworkActivityIndicator];
 		[request release];
     } else {
-        //NSLog(@"found tile at %@", tile.path);
-        //NSLog(@"%@", [NSData dataWithContentsOfFile:tile.path]);
+        DLog(@"found tile at %@", tile.path);
+        DLog(@"%@", [NSData dataWithContentsOfFile:tile.path]);
     }
     
     //tile.row = [self tilesPerRow] * (int)floor(projPoint.y / [TileServerManager meridianLengthInProjectedUnits]);
@@ -148,7 +148,7 @@
 }
 
 - (NSArray *)tilesForMapRect:(MKMapRect)mapRect {
-    NSLog(@"tilesForMapRect: %.1f %.1f %.1f %.1f", mapRect.origin.x, mapRect.origin.y, mapRect.size.width, mapRect.size.height);
+    DLog(@"tilesForMapRect: %.1f %.1f %.1f %.1f", mapRect.origin.x, mapRect.origin.y, mapRect.size.width, mapRect.size.height);
 
     // get everything in tile server's coordinate system
     CGPoint startPoint = [TileServerManager projectedPointForMapPoint:mapRect.origin];
@@ -159,7 +159,7 @@
     NSInteger endCol = round((endPoint.x - [TileServerManager originX]) / [TileServerManager tileWidth]) / self.resolution;
     NSInteger endRow = round(([TileServerManager originY] - endPoint.y) / [TileServerManager tileHeight]) / self.resolution;
 
-    NSLog(@"startpoint: %.1f %.1f; endpoint: %.1f %.1f", startPoint.x, startPoint.y, endPoint.x, endPoint.y);
+    DLog(@"startpoint: %.1f %.1f; endpoint: %.1f %.1f", startPoint.x, startPoint.y, endPoint.x, endPoint.y);
 
     NSMutableArray *tiles = [NSMutableArray arrayWithCapacity:(endRow - startRow + 1) * (endCol - startCol + 1)];
     for (NSInteger row = startRow; row <= endRow; row++) {

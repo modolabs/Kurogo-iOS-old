@@ -7,7 +7,7 @@
 
 - (id)initWithOverlay:(id <MKOverlay>)overlay {
     if (self = [super initWithOverlay:overlay]) {
-        NSLog(@"%@", [overlay description]);
+        DLog(@"%@", [overlay description]);
     }
     return self;
 }
@@ -25,7 +25,7 @@
     NSArray *zoomLevels = [TileServerManager mapLevels];
     MapZoomLevel *theZoomLevel = nil;
     CGFloat scale = 0.0;
-    NSLog(@"looking for zoomscale %.8f", 1 / zoomScale);
+    DLog(@"looking for zoomscale %.8f", 1 / zoomScale);
     // TODO: find a more efficient way to get zoomLevel
     for (theZoomLevel in zoomLevels) {
         // keep iterating until we reach the max scale, or hit one scale larger
@@ -34,7 +34,7 @@
             break;
         }
     }
-    //NSLog(@"map level is set to %d with scale %.8f", theZoomLevel.level, 1 / scale);
+    DLog(@"map level is set to %d with scale %.8f", theZoomLevel.level, 1 / scale);
     
     NSArray *tiles = [theZoomLevel tilesForMapRect:mapRect];
 
@@ -42,10 +42,10 @@
     
     for (MapTile *tile in tiles) {
         
-        //NSLog(@"maprect: %.1f %.1f %.1f %.1f", tile.frame.origin.x, tile.frame.origin.y, tile.frame.size.width, tile.frame.size.height);
-        //NSLog(@"maprect: %.1f %.1f %.1f %.1f", mapRect.origin.x, mapRect.origin.y, mapRect.size.width, mapRect.size.height);
+        DLog(@"maprect: %.1f %.1f %.1f %.1f", tile.frame.origin.x, tile.frame.origin.y, tile.frame.size.width, tile.frame.size.height);
+        DLog(@"maprect: %.1f %.1f %.1f %.1f", mapRect.origin.x, mapRect.origin.y, mapRect.size.width, mapRect.size.height);
         CGRect rect = [self rectForMapRect:tile.frame];
-        //NSLog(@"rect: %.1f %.1f %.1f %.1f", rect.origin.x, rect.origin.y, rect.size.width, rect.size.height);
+        DLog(@"rect: %.1f %.1f %.1f %.1f", rect.origin.x, rect.origin.y, rect.size.width, rect.size.height);
         UIImage *image = [[UIImage alloc] initWithContentsOfFile:tile.path];
         if (image == nil) {
             NSLog(@"image is nil");
