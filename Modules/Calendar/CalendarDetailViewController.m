@@ -436,7 +436,7 @@ enum CalendarDetailRowTypes {
 	NSString *cellText = nil;
 	UIFont *cellFont = nil;
     UITableViewCellAccessoryType accessoryType;
-	CGFloat constraintWidth;
+	//CGFloat constraintWidth;
 	
 	switch (rowType) {
 		case CalendarDetailRowTypeCategories:
@@ -446,7 +446,7 @@ enum CalendarDetailRowTypes {
 			cellText = [event dateStringWithDateStyle:NSDateFormatterFullStyle timeStyle:NSDateFormatterShortStyle separator:@"\n"];
 			cellFont = [UIFont fontWithName:BOLD_FONT size:CELL_STANDARD_FONT_SIZE];
             accessoryType = UITableViewCellAccessoryNone;
-			constraintWidth = tableView.frame.size.width - 21.0;
+			//constraintWidth = tableView.frame.size.width - 21.0;
 			break;
 		case CalendarDetailRowTypeDescription:
 			// this is the same font defined in the html template
@@ -468,7 +468,7 @@ enum CalendarDetailRowTypes {
 			cellFont = [UIFont fontWithName:BOLD_FONT size:CELL_STANDARD_FONT_SIZE];
 			// 33 and 21 are from MultiLineTableViewCell.m
             accessoryType = UITableViewCellAccessoryDetailDisclosureButton;
-			constraintWidth = tableView.frame.size.width - 33.0 - 21.0;
+			//constraintWidth = tableView.frame.size.width - 33.0 - 21.0;
 			break;
 		default:
 			return 44.0;

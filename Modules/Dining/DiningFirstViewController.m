@@ -315,7 +315,7 @@ JSONAPIRequest *mitapi;
 	
 	double doubleHourOfDay = [dateString1 doubleValue];
 	
-	int tabToOpen;
+	int tabToOpen = kBreakfastTab;
 	
 	if (doubleHourOfDay < 9)
 	{
@@ -341,8 +341,7 @@ JSONAPIRequest *mitapi;
 		[self requestDinnerData];
 	
 	}
-	
-	
+		
 	// set Display Tab
 	[self tabControl:_tabViewControl changedToIndex:tabToOpen tabText:nil];
 	[_tabViewControl setNeedsDisplay];

@@ -363,11 +363,11 @@
 			self.tableView.delegate = (EventListTableView *)self.tableView;
 			self.tableView.dataSource = (EventListTableView *)self.tableView;
 			((EventListTableView *)self.tableView).parentViewController = self;
-			NSArray *someEvents = [CalendarDataManager eventsWithStartDate:startDate
+			/*NSArray *someEvents = [CalendarDataManager eventsWithStartDate:startDate
                                                                   listType:activeEventList
-																  category:(theCatID == kCalendarTopLevelCategoryID) ? nil : [NSNumber numberWithInt:theCatID]];
+																  category:(theCatID == kCalendarTopLevelCategoryID) ? nil : [NSNumber numberWithInt:theCatID]];*/
 			
-			someEvents = nil;
+			NSArray *someEvents = nil;
 			
 			//if (someEvents != nil && [someEvents count] && (requestNeeded == NO)) {
 			if (someEvents != nil && [someEvents count]) {
@@ -485,7 +485,7 @@
 		[datePicker addSubview:datePickerBackground];
 		[datePickerBackground release];
 
-		UIImage *buttonImage = [UIImage imageNamed:@"global/subheadbar_button"];
+		UIImage *buttonImage;  // = [UIImage imageNamed:@"global/subheadbar_button"];
 		
 		UIButton *prevDate = [UIButton buttonWithType:UIButtonTypeCustom];
 		buttonImage = [UIImage imageNamed:@"global/subheadbar_button_previous"];

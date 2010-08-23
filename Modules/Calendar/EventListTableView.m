@@ -81,13 +81,13 @@
 	// show time only if date is shown; date plus time otherwise
 	BOOL showTimeOnly = !isSearchResults && ([CalendarConstants intervalForEventType:self.parentViewController.activeEventList fromDate:self.parentViewController.startDate forward:YES] == 86400.0);
     
-    NSInteger locationTextLength;
+    //NSInteger locationTextLength;
     if (showTimeOnly) {
         cell.detailTextLabel.text = [event dateStringWithDateStyle:NSDateFormatterNoStyle timeStyle:NSDateFormatterShortStyle separator:@" "];
-        locationTextLength = 25;
+        //locationTextLength = 25;
     } else {
         cell.detailTextLabel.text = [event dateStringWithDateStyle:NSDateFormatterShortStyle timeStyle:NSDateFormatterShortStyle separator:@" "];
-        locationTextLength = 25; //was 10
+        //locationTextLength = 25; //was 10
 		
 		if (isAcademic) {
 			NSArray *stringArray = [[event dateStringWithDateStyle:NSDateFormatterShortStyle timeStyle:NSDateFormatterShortStyle separator:@" "] componentsSeparatedByString: @" "];

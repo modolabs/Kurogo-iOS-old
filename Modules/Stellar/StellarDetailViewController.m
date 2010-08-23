@@ -59,6 +59,7 @@ NSString * termText(NSString *termCode) {
 @synthesize refreshClass;
 @synthesize classDetailsLoaded;
 @synthesize loadingView, nothingToDisplay;
+@synthesize currentTabName;
 
 + (StellarDetailViewController *) launchClass: (StellarClass *)stellarClass viewController: (UIViewController *)controller {
 	StellarDetailViewController *detailViewController = [[StellarDetailViewController alloc] initWithClass:stellarClass];
@@ -228,11 +229,11 @@ NSString * termText(NSString *termCode) {
 
 - (void) resizeFooter {
 	// we resize the footer so that it fills up the rest of the screen but not much more
-	CGFloat tableHeight = [((id<StellarDetailTableViewDelegate>)self.tableView.delegate) heightOfTableView:self.tableView] + self.tableView.tableHeaderView.frame.size.height;
+	/*CGFloat tableHeight = [((id<StellarDetailTableViewDelegate>)self.tableView.delegate) heightOfTableView:self.tableView] + self.tableView.tableHeaderView.frame.size.height;
 	CGFloat footerFrameHeight = footerHeight + self.view.frame.size.height - tableHeight;
 	if(footerFrameHeight < footerHeight) {
 		footerFrameHeight = footerHeight;
-	}
+	}*/
 	
 	CGRect footerFrame = self.tableView.tableFooterView.frame;
 	//footerFrame.size.height = footerFrameHeight;

@@ -174,7 +174,9 @@
 			if ([[contactInfo valueForKey:@"phone"] class] == [NSArray class])
 				phoneNumber =  [[[contactInfo valueForKey:@"phone"] objectAtIndex:0]description];
 			
-			phoneNumber = [[contactInfo valueForKey:@"phone"] description];
+			else
+				phoneNumber = [[contactInfo valueForKey:@"phone"] description];
+
 			NSArray *phoneNumberArray = [phoneNumber componentsSeparatedByString:@"\""];
 			
 			if ([phoneNumberArray count] == 3) {
@@ -197,7 +199,9 @@
 			if ([[contactInfo valueForKey:@"url"] class] == [NSArray class])
 				urlLink =  [[[contactInfo valueForKey:@"url"] objectAtIndex:0]description];
 			
-			urlLink = [[contactInfo valueForKey:@"url"] description];
+			else
+				urlLink = [[contactInfo valueForKey:@"url"] description];
+			
 			NSArray *urlLinkArray = [urlLink componentsSeparatedByString:@"\""];
 			
 			if ([urlLinkArray count] == 3) {
@@ -213,7 +217,9 @@
 			if ([[contactInfo valueForKey:@"email"] class] == [NSArray class])
 				emailAdd =  [[[contactInfo valueForKey:@"email"] objectAtIndex:0]description];
 			
-			emailAdd = [[contactInfo valueForKey:@"email"] description];
+			else
+				emailAdd = [[contactInfo valueForKey:@"email"] description];
+			
 			NSArray *emailArray = [emailAdd componentsSeparatedByString:@"\""];
 			
 			if ([emailArray count] == 3) {
@@ -290,10 +296,6 @@
 	
 	if (customDict = [dict objectForKey:@"custom"]) 
 	{
-		NSArray *customFields = nil;
-		
-		customFields = [customDict allKeys];
-
 		NSString *gazetteClassification = @"\"Gazette Classification\"";
 		NSString *classificationString = [customDict objectForKey:gazetteClassification];
 		

@@ -101,9 +101,9 @@
 	NSString *name = @"name"; // a single line
 	NSString *detailStr = [detail stringByAppendingFormat:@"%@ (%@)", name, detail];
 	NSString *title = nil; // a single line
-	if (stellarClass.name) {
+	/*if (stellarClass.name) {
 		name = stellarClass.name;
-	}
+	}*/
 	if (stellarClass.title) {
 		title = stellarClass.title;
 	}

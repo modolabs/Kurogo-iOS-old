@@ -90,6 +90,8 @@ typedef enum {
 @property (nonatomic, retain) UIView *loadingView;
 @property (nonatomic, retain) UIView *nothingToDisplay;
 
+@property (nonatomic, retain) NSString *currentTabName;
+
 + (StellarDetailViewController *) launchClass: (StellarClass *)stellarClass viewController: (UIViewController *)controller;
 
 - (id) initWithClass: (StellarClass *)stellarClass;

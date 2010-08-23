@@ -121,12 +121,12 @@ int timeToNextMeal;  //starting with ONE DAY
 		NSArray *messageArray = [message componentsSeparatedByString:@"\""];
 		
 		if ([messageArray count] == 3) {
-			message = [messageArray objectAtIndex:1];
+			//message = [messageArray objectAtIndex:1];
 			restriction = RESTRICTED;
 		}
 		
 		else {
-			message = @"None";
+			//message = @"None";
 			restriction = NO_RESTRICTION;
 		}
 		

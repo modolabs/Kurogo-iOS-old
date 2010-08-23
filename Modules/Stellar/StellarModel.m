@@ -734,11 +734,11 @@ NSInteger classNameCompare(id class1, id class2, void *context) {
 
 // compares class name by the part of the name that corresponds to certain class
 NSInteger classNameInCourseCompare(id class1, id class2, void *context) {
-	NSString *courseId = ((StellarCourse *)context).number;
+	//NSString *courseId = ((StellarCourse *)context).number;
 	StellarClass *stellarClass1 = class1;
 	StellarClass *stellarClass2 = class2;
 	
-	NSDictionary *classId1 = nil;
+/*	NSDictionary *classId1 = nil;
 	NSArray *classIds1 = extractClassIds((StellarClass *)class1);
 	for(NSDictionary *classId in classIds1) {
 		if([[classId objectForKey:@"coursePart"] isEqualToString:courseId]) {
@@ -755,7 +755,7 @@ NSInteger classNameInCourseCompare(id class1, id class2, void *context) {
 			break;
 		}
 	}
-	
+*/	
 	/*NSInteger classIdCompareResult = classIdCompare(classId1, classId2);
 	if(classIdCompareResult) {
 		return classIdCompareResult;

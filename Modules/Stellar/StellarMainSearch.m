@@ -112,7 +112,6 @@
 	[vc setSearchString: viewController.searchController.searchBar.text];
 
 	[StellarModel executeStellarSearch:viewController.searchController.searchBar.text courseGroupName:[[self.groups allKeys] objectAtIndex: indexPath.row] courseName:@"" delegate:vc];
-	
 
 }
 

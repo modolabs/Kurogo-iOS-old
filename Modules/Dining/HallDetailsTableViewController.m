@@ -175,9 +175,6 @@ numberOfRowsInSection:(NSInteger)section
 	
 	if (col == 0) {
 		
-		int status;
-		int restriction;
-		
 		NSString *key;
 		NSString *displayKey;
 		
@@ -185,32 +182,22 @@ numberOfRowsInSection:(NSInteger)section
 			case 0:
 				key = @"breakfast_hours";
 				displayKey = @"breakfast";
-				status = hallStatus.breakfast_status;
-				restriction = hallStatus.breakfast_restriction;
 				break;
 			case 1:
 				key = @"lunch_hours";
 				displayKey = @"lunch";
-				status = hallStatus.lunch_status;
-				restriction = hallStatus.lunch_restriction;
 				break;
 			case 2:
 				key = @"dinner_hours";
 				displayKey = @"dinner";
-				status = hallStatus.dinner_status;
-				restriction = hallStatus.dinner_restriction;
 				break;
 			case 3:
 				key = @"bb_hours";
 				displayKey = @"brain break";
-				status = hallStatus.bb_status;
-				restriction = hallStatus.bb_restriction;
 				break;
 			case 4:
 				key = @"brunch_hours";
 				displayKey = @"brunch";
-				status = hallStatus.brunch_status;
-				restriction = hallStatus.brunch_restriction;
 				break;
 		}
 		NSString *cellText1 = displayKey;
@@ -310,8 +297,7 @@ numberOfRowsInSection:(NSInteger)section
 	NSString *cellText = nil;
 	UIFont *cellFont = nil;
 	CGFloat constraintWidth;
-	
-	NSString *meal;
+
 	NSString *mealkey;
 	
 	constraintWidth = tableView.frame.size.width;
@@ -327,15 +313,12 @@ numberOfRowsInSection:(NSInteger)section
 		
 		switch (row) {
 			case 0:
-				meal = @"Lunch ";
 				mealkey = @"lunch_restrictions";				
 				break;
 			case 1:
-				meal = @"Dinner ";
 				mealkey = @"dinner_restrictions";	
 				break;
 			case 2:
-				meal = @"Sunday Brunch ";
 				mealkey = @"brunch_restrictions";	
 				break;
 			default:
