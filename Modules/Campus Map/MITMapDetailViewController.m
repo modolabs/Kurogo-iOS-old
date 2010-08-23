@@ -138,7 +138,7 @@
         photofile = [self.annotation.attributes objectForKey:@"Photo"];
     }
     
-    if (photofile != nil) {
+    if (photofile != nil && ![photofile isEqualToString:@"Null"]) {
 		self.imageConnectionWrapper = [[ConnectionWrapper new] autorelease];
 		self.imageConnectionWrapper.delegate = self;
         NSString *urlString = [[NSString stringWithFormat:@"http://map.harvard.edu/mapserver/images/bldg_photos/%@", photofile]
