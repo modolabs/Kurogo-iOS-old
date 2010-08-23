@@ -164,6 +164,11 @@ NSString * const NewsLocalPathBookmarks = @"bookmarks";
     self.xmlParser = nil;
 }
                                                                                    
+- (void)parser:(StoryXMLParser *)parser didFailWithParseError:(NSError *)error {
+    self.searchProgress = 1.0;
+    self.searchResults = nil;
+    self.xmlParser = nil;
+}
 
 #pragma mark NewsControllerDelegate
 
