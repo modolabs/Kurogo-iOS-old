@@ -19,7 +19,7 @@
     switch (style) {
         case UITableViewCellStyleValue2:
         {
-            width -= 10.0; // 10px spacing between text and detailText
+            //width -= 10.0; // 10px spacing between text and detailText
             if (isTextLabel) {
                 width = floor(width * 0.24);
                 if (cellImage) width -= 33.0;
