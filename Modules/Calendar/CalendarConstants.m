@@ -88,7 +88,7 @@ NSString * const CalendarEventAPISearch = @"search";
 	int nextYearDate = [dateString intValue] + 1;
 	
 	if (listType == CalendarEventListTypeAcademic) 
-		dateString = [[NSString alloc] initWithFormat:@"%@-%i", dateString, nextYearDate];
+		dateString = [NSString stringWithFormat:@"%@-%i", dateString, nextYearDate];
 	
 	return dateString;
 }

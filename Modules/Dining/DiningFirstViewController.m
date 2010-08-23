@@ -776,10 +776,10 @@ numberOfRowsInSection:(NSInteger)section
 	
 	
 	// create the parent view that will hold header Label
-	UIView* customView = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, 300.0, GROUPED_SECTION_HEADER_HEIGHT)];
+	UIView* customView = [[[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, 300.0, GROUPED_SECTION_HEADER_HEIGHT)] autorelease];
 	
 	// create the button object
-	UILabel * headerLabel = [[UILabel alloc] initWithFrame:CGRectZero];
+	UILabel * headerLabel = [[[UILabel alloc] initWithFrame:CGRectZero] autorelease];
 	headerLabel.backgroundColor = [UIColor clearColor];
 	headerLabel.opaque = NO;
 	//headerLabel.textColor = [UIColor blackColor];
@@ -964,8 +964,6 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 			[_tabViews insertObject:_noResultsView atIndex:_tabViewControl.selectedTab];
 			[_tabViewContainer addSubview:_noResultsView];
 		}
-
-		[ListDictionary release];
 	}
 	[self removeLoadingIndicator];
 	requestDispatched = NO;

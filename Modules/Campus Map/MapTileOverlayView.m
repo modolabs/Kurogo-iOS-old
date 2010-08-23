@@ -24,7 +24,7 @@
     
     NSArray *zoomLevels = [TileServerManager mapLevels];
     MapZoomLevel *theZoomLevel = nil;
-    CGFloat scale;
+    CGFloat scale = 0.0;
     NSLog(@"looking for zoomscale %.8f", 1 / zoomScale);
     // TODO: find a more efficient way to get zoomLevel
     for (theZoomLevel in zoomLevels) {

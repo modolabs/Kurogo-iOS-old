@@ -161,7 +161,7 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 	
 	NSUInteger row = [indexPath row];
 	
-	DiningHallStatus *status = [[DiningHallStatus alloc] init];
+	DiningHallStatus *status = [[[DiningHallStatus alloc] init] autorelease];
 	status.hallName = [[self.hallProperties objectAtIndex:row] objectForKey:@"name"];
 	int stat = [status getStatusOfMeal:@"" usingDetails:[self.hallProperties objectAtIndex:row]];
 	
@@ -170,7 +170,7 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 	NSDictionary *test = [self.hallProperties objectAtIndex:row];
 	[childHallViewController setDetails:test];
 	[childHallViewController setStatus:status];
-	childHallViewController.title =  @"Dining Hall Details"; //[[self.hallProperties objectAtIndex:row] objectForKey:@"name"];
+	childHallViewController.title =  [NSString stringWithString:@"Dining Hall Details"]; //[[self.hallProperties objectAtIndex:row] objectForKey:@"name"];
 
 	[self.parentViewController.navigationController pushViewController:childHallViewController animated:YES];
 	// deselect the Row

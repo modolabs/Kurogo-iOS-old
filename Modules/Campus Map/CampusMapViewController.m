@@ -883,6 +883,8 @@
         [apiRequest requestObjectFromModule:@"map"
                                     command:@"search"
                                  parameters:searchParams];
+        
+        [searchParams release];
 	}
 }
 

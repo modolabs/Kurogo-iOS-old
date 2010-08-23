@@ -1016,6 +1016,7 @@
 				[nothingFound setBackgroundColor:[UIColor whiteColor]];
 				
 				[nothingFound addSubview:label];
+                [label release];
 				[self.view addSubview:nothingFound];
                // [nothingFound release];
 			}
@@ -1043,6 +1044,7 @@
 				[nothingFound setBackgroundColor:[UIColor whiteColor]];
 				
 				[nothingFound addSubview:label];
+                [label release];
 				[self.view addSubview:nothingFound];
                 //[nothingFound release];
 			}

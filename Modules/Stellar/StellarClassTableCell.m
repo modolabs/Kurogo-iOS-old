@@ -7,7 +7,7 @@
 @implementation StellarClassTableCell
 
 +(NSString *)setStaffNames:(StellarClass *)class previousClassInList: (StellarClass *)prevClass{
-	NSString *stringToReturn = [[NSString alloc] init];
+	NSString *stringToReturn = [NSString string];
 	NSString *name;
 	if([class.name length]) {
 		name = class.name;

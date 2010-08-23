@@ -168,7 +168,7 @@
 	if ([self.courseGroup.courses count] < 10)
 		return nil;
 	
-	NSMutableArray *tempIndexArray = [[NSMutableArray alloc] init];
+	NSMutableArray *tempIndexArray = [NSMutableArray array];
 	
 	
 	for(StellarCourse *course in self.courseGroup.courses) {

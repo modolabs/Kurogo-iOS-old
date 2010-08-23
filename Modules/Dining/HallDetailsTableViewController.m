@@ -390,6 +390,10 @@ numberOfRowsInSection:(NSInteger)section
 }
 
 -(void)setStatus:(DiningHallStatus *)statusDetails {
+    if (hallStatus != statusDetails) {
+        [hallStatus release];
+        hallStatus = [statusDetails retain];
+    }
 	hallStatus = statusDetails;
 }
 

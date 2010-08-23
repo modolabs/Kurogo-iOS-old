@@ -36,7 +36,7 @@
 	url = [[MITModuleURL alloc] initWithTag:StellarTag];
 	//}
 	
-	NSString *courseName = [[NSString alloc] initWithFormat:@"%@-other",course.courseGroup];
+	NSString *courseName = [NSString stringWithFormat:@"%@-other",course.courseGroup];
 	if ([course.title isEqualToString:courseName]) {
 		self.navigationItem.title = course.courseGroupShort;
 		self.title = course.courseGroupShort;
@@ -109,7 +109,7 @@
     
     [searchBar addDropShadow];
 	
-	NSString *courseName = [[NSString alloc] initWithFormat:@"%@-other",course.courseGroup];
+	NSString *courseName = [NSString stringWithFormat:@"%@-other",course.courseGroup];
 	if ([course.title isEqualToString:courseName]) {
 		self.navigationItem.title = course.courseGroupShort;
 		self.title = course.courseGroupShort;

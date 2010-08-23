@@ -86,7 +86,7 @@
 	
 	if([lastResults count]) {
 
-		return [[UIView alloc] initWithFrame: CGRectMake(0, 0, 320.0, UNGROUPED_SECTION_HEADER_HEIGHT + 15.0)];
+		return [[[UIView alloc] initWithFrame: CGRectMake(0, 0, 320.0, UNGROUPED_SECTION_HEADER_HEIGHT + 15.0)] autorelease];
 	}
 	return nil;
 }
@@ -97,6 +97,8 @@
 
 #pragma mark UITableViewDelegate methods
 
+// TODO: this method needs to be rethought;
+// currently it leaks an instance of MainSearchGroupdCoursesTableViewController with each execution.
 - (void) tableView: (UITableView *)tableView didSelectRowAtIndexPath: (NSIndexPath *)indexPath {
 	[tableView deselectRowAtIndexPath:indexPath animated:NO];
 	
@@ -250,7 +252,7 @@
 	if (schoolNameToShortNames == nil)
 		schoolNameToShortNames = [[NSMutableDictionary alloc] init];
 	
-	NSMutableDictionary *tempDict = [[NSMutableDictionary alloc] init];
+	NSMutableDictionary *tempDict = [NSMutableDictionary dictionary];
 	
 	NSArray *results = (NSArray *) [object objectForKey:@"schools"];
 	/*NSString *countString = [[object objectForKey:@"count"] description];
