@@ -120,7 +120,11 @@
     // TODO: check for failure
 	[self.request requestObjectFromModule:@"courses" 
                                   command:@"search" 
-                               parameters:[NSDictionary dictionaryWithObjectsAndKeys:searchText, @"query", nil]];
+                               parameters:[NSDictionary dictionaryWithObjectsAndKeys:
+                                           searchText, @"query",
+                                           @"", @"courseGroup",
+                                           @"", @"courseName",
+                                           nil]];
 }
 
 - (void)abortSearch {

@@ -299,11 +299,11 @@ static NSString * s_tileServerFilename = @"tileServer.plist";
 
 // TODO: add NSError argument if conversion fails
 - (CGPoint)projectedPointForCoord:(CLLocationCoordinate2D)coord error:(NSError **)error {
-    DLog(@"converting from coord: %.4f, %.4f", coord.longitude, coord.latitude);
+    //DLog(@"converting from coord: %.4f, %.4f", coord.longitude, coord.latitude);
     if (_isWebMercator) {
         CGFloat x = coord.longitude / 360.0 * _circumferenceInProjectedUnits;
         CGFloat y = _radiusInProjectedUnits * log(tan(M_PI / 4 + coord.latitude / 2)) * RADIANS_PER_DEGREE;
-        DLog(@"converted to point: %.1f, %.1f", x, y);
+        //DLog(@"converted to point: %.1f, %.1f", x, y);
         return CGPointMake(x, y);
     } else {
         double x = coord.longitude * RADIANS_PER_DEGREE;
@@ -317,18 +317,18 @@ static NSString * s_tileServerFilename = @"tileServer.plist";
                                          userInfo:[NSDictionary dictionaryWithObjectsAndKeys:message, @"message", nil]];
             }
         }
-        DLog(@"converted to point: %.1f, %.1f", x, y);
+        //DLog(@"converted to point: %.1f, %.1f", x, y);
         return CGPointMake(x, y);
     }
 }
 
 - (CLLocationCoordinate2D)coordForProjectedPoint:(CGPoint)point error:(NSError **)error {
-    DLog(@"converting from point: %.1f, %.1f", point.x, point.y);
+    //DLog(@"converting from point: %.1f, %.1f", point.x, point.y);
     if (_isWebMercator) {
         CLLocationCoordinate2D coord;
         coord.longitude = point.x / _circumferenceInProjectedUnits * 360.0;
         coord.latitude = 2 * (atan(exp(point.y / _radiusInProjectedUnits)) - M_PI / 4) * DEGREES_PER_RADIAN;
-        DLog(@"converted to coord: %.3f, %.3f", coord.longitude, coord.latitude);
+        //DLog(@"converted to coord: %.3f, %.3f", coord.longitude, coord.latitude);
         return coord;
     } else {
         double x = point.x;
@@ -342,7 +342,7 @@ static NSString * s_tileServerFilename = @"tileServer.plist";
                                          userInfo:[NSDictionary dictionaryWithObjectsAndKeys:message, @"message", nil]];
             }
         }
-        DLog(@"converted to coord: %.3f, %.3f", x * DEGREES_PER_RADIAN, y * DEGREES_PER_RADIAN);
+        //DLog(@"converted to coord: %.3f, %.3f", x * DEGREES_PER_RADIAN, y * DEGREES_PER_RADIAN);
         return CLLocationCoordinate2DMake(y * DEGREES_PER_RADIAN, x * DEGREES_PER_RADIAN);
     }
 }
@@ -478,9 +478,9 @@ static NSString * s_tileServerFilename = @"tileServer.plist";
     
     for (MapZoomLevel *zoomLevel in _mapLevels) {
         CGFloat numTilesAcrossEquator = _circumferenceInProjectedUnits / zoomLevel.resolution;
-        DLog(@"level %d has %d tiles across equator", zoomLevel.level, (int)floor(numTilesAcrossEquator));
-        DLog(@"and %d tiles per row", zoomLevel.maxCol - zoomLevel.minCol + 1);
-        DLog(@"and %d tiles per column", zoomLevel.maxRow - zoomLevel.minRow + 1);
+        //DLog(@"level %d has %d tiles across equator", zoomLevel.level, (int)floor(numTilesAcrossEquator));
+        //DLog(@"and %d tiles per row", zoomLevel.maxCol - zoomLevel.minCol + 1);
+        //DLog(@"and %d tiles per column", zoomLevel.maxRow - zoomLevel.minRow + 1);
         
         zoomLevel.zoomScale = numTilesAcrossEquator / MKMapSizeWorld.width;
     }
@@ -493,7 +493,7 @@ static NSString * s_tileServerFilename = @"tileServer.plist";
 }
 
 - (CGPoint)projectedPointForMapPoint:(MKMapPoint)mapPoint {
-    DLog(@"converting from point: %.4f %.4f", mapPoint.x, mapPoint.y);
+    //DLog(@"converting from point: %.4f %.4f", mapPoint.x, mapPoint.y);
     if (_isWebMercator) {
         CGPoint point;
         point.x = mapPoint.x / _pixelsPerProjectedUnit;
@@ -508,7 +508,7 @@ static NSString * s_tileServerFilename = @"tileServer.plist";
 }
 
 - (MKMapPoint)mapPointForProjectedPoint:(CGPoint)point {
-    DLog(@"converting from point: %.4f %.4f", point.x, point.y);
+    //DLog(@"converting from point: %.4f %.4f", point.x, point.y);
     if (_isWebMercator) {
         MKMapPoint mapPoint;
         mapPoint.x = point.x * _pixelsPerProjectedUnit;
