@@ -116,6 +116,10 @@ NSString * const NewsLocalPathBookmarks = @"bookmarks";
     return story.summary;
 }
 
+- (NSInteger)totalSearchResults {
+    return totalResults;
+}
+
 - (void)loadSearchResultsFromCache {
 	// make a predicate for everything with the search flag
     NSPredicate *predicate = nil;

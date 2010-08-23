@@ -177,6 +177,12 @@ NSString * const LocalPathFederatedSearchResult = @"fedresult";
     return nil;
 }
 
+- (NSInteger)totalSearchResults {
+    if (self.searchResults)
+        return [self.searchResults count];
+    return 0;
+}
+
 // do not override
 - (void)setSearchProgress:(CGFloat)progress {
     searchProgress = progress;

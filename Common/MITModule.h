@@ -61,6 +61,7 @@ extern NSString * const LocalPathFederatedSearchResult;
 - (void)abortSearch;
 - (NSString *)titleForSearchResult:(id)result;
 - (NSString *)subtitleForSearchResult:(id)result;
+- (NSInteger)totalSearchResults;
 
 - (BOOL)handleNotification: (MITNotification *)notification appDelegate: (MIT_MobileAppDelegate *)appDelegate shouldOpen: (BOOL)shouldOpen; // Called when a push notification arrives
 - (void)handleUnreadNotificationsSync: (NSArray *)unreadNotifications; // called to let the module know the unreads may have changed

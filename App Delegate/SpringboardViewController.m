@@ -315,7 +315,7 @@
 
         if (indexPath.row == MAX_FEDERATED_SEARCH_RESULTS) {
             cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-            cell.textLabel.text = [NSString stringWithFormat:@"See all %d matches", [aModule.searchResults count]];
+            cell.textLabel.text = [NSString stringWithFormat:@"See all %d matches", [aModule totalSearchResults]];
             cell.detailTextLabel.text = nil;
             
         } else if (![aModule.searchResults count]) {
