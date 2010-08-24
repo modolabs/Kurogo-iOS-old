@@ -92,5 +92,8 @@
 
 - (void) setupDatePicker;
 
+- (void)setupFirstView;
+- (void)setupTabViews;
+
 @end
 
