@@ -59,7 +59,7 @@ static NSInteger numTries = 0;
 - (void)loadView {
 	[super loadView];
 	
-    self.navigationItem.title = @"Harvard Gazette";
+    self.navigationItem.title = @"News";
     self.navigationItem.backBarButtonItem = [[[UIBarButtonItem alloc] initWithTitle:@"Headlines" style:UIBarButtonItemStylePlain target:nil action:nil] autorelease];
     self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh target:self action:@selector(refresh:)] autorelease];
 	
