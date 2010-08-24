@@ -20,6 +20,13 @@
 // internal padding within each icon (allows longer text labels)
 #define ICON_PADDING 5.0f
 
+@interface SpringboardViewController (Private)
+
+- (void)setupSearchController;
+
+@end
+
+
 @implementation SpringboardViewController
 
 @synthesize searchResultsTableView;
@@ -170,6 +177,10 @@
     [self layoutIcons:_icons];
     [self layoutIcons:_fixedIcons];
     
+    [self setupSearchController];
+}
+
+- (void)setupSearchController {
     if (!_searchController) {
         _searchController = [[MITSearchDisplayController alloc] initWithSearchBar:_searchBar contentsController:self];
         _searchController.delegate = self;
@@ -208,6 +219,11 @@
     }
 }
 
+- (void)viewDidUnload {
+    [super viewDidUnload];
+    [_searchController release];
+    _searchController = nil;
+}
 
 - (void)dealloc {
     [_icons release];
@@ -222,7 +238,9 @@
 #pragma mark Search Bar delegation
 
 - (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar {
-    // see the comment in viewDidLoad for why we do this
+    [self setupSearchController];
+    
+    // see the comment in -[setupSearchController] for why we do this
     [self.searchResultsTableView removeFromSuperview];
     self.searchResultsTableView.hidden = NO;
     [self.view addSubview:self.searchResultsTableView];

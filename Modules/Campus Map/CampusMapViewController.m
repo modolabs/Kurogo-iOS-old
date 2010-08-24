@@ -23,6 +23,7 @@
 
 @interface CampusMapViewController(Private)
 
+- (void)setupSearchController;
 - (void)noSearchResultsAlert;
 - (void)errorConnectingAlert;
 - (void)setUpAnnotationsWithNewSearchResults:(NSArray*)searchResults forQuery:(NSString *)searchQuery;
@@ -121,7 +122,10 @@
 
 - (void)viewDidLoad {
 	[super viewDidLoad];
-    
+    [self setupSearchController];
+}
+
+- (void)setupSearchController {
     if (!_searchController) {
         _searchController = [[MITSearchDisplayController alloc] initWithSearchBar:_searchBar contentsController:self];
         _searchController.delegate = self;
@@ -169,6 +173,7 @@
 	_mapView.delegate = nil;
     _searchController.searchResultsTableView = nil;
 	self.searchResultsTableView = nil;
+    _searchController = nil;
     
 	[_mapView release];
 	[_toolBar release];
@@ -542,12 +547,13 @@
 
 - (void)searchBarTextDidBeginEditing:(UISearchBar *)searchBar
 {
+    [self setupSearchController]; // in case we got rid of it from a memory warning
     [self hideToolBar];
-    //[_searchController setActive:YES animated:YES];
 }
 
 - (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
 {
+    
     [self restoreToolBar];
 
 	// delete any previous instance of this search term

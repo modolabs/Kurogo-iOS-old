@@ -20,7 +20,6 @@
         self.supportsFederatedSearch = YES;
        
 		self.campusMapVC = [[[CampusMapViewController alloc] init] autorelease];
-		self.campusMapVC.title = @"Campus Map";
 		self.campusMapVC.campusMapModule = self;
 		
         self.viewControllers = [NSArray arrayWithObject:self.campusMapVC];
