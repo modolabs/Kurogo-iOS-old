@@ -48,7 +48,7 @@
 	UIView *datePicker;
 	UIView *loadingIndicator;
 	CGFloat _tabViewContainerMinHeight;
-		
+	
 	NSMutableArray *_tabViews;
 	
 	MenuDetailsController *childController;
@@ -61,7 +61,7 @@
 	NSDictionary *_bkfstDict;
 	NSDictionary *_lunchDict;
 	NSDictionary *_dinnerDict;
-
+	
 	NSDate *todayDate;
 	
 	BOOL _firstViewDone;
@@ -81,6 +81,8 @@
 
 @property (nonatomic, retain) NSDate *todayDate;
 @property (nonatomic, retain) IBOutlet UITableView *hoursTableView;
+
+@property (nonatomic, retain) NSMutableArray *tabViews;
 
 -(IBAction)nextButtonPressed;
 -(IBAction)previousButtonPressed;
