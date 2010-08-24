@@ -25,7 +25,7 @@
 	<array>
 		<dict>
 			<key>CFBundleURLName</key>
-			<string>com.modolabs.harvardmobile</string>
+			<string>edu.harvard.harvardmobile</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
 				<string>harvardmobile</string>
