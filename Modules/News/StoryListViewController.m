@@ -69,21 +69,6 @@ static NSInteger numTries = 0;
     
     tempTableSelection = nil;
     
-    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"isMainCategory = YES"];
-    NSSortDescriptor *sort = [[NSSortDescriptor alloc] initWithKey:@"category_id" ascending:YES];
-    NSArray *categoryObjects = [CoreDataManager objectsForEntity:NewsCategoryEntityName matchingPredicate:predicate sortDescriptors:[NSArray arrayWithObject:sort]];
-    [sort release];
-    if (![categoryObjects count]) {
-        JSONAPIRequest *request = [JSONAPIRequest requestWithJSONAPIDelegate:self];
-        BOOL success = [request requestObjectFromModule:@"news" command:@"channels" parameters:nil];
-        if (!success) {
-            DLog(@"failed to dispatch request");
-        }
-    } else {
-        self.categories = categoryObjects;
-    }
-    
-	[self pruneStories];
     // reduce number of saved stories to 10 when app quits
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(pruneStories) name:@"UIApplicationWillTerminateNotification" object:nil];
     
@@ -183,7 +168,22 @@ static NSInteger numTries = 0;
 	}
 	
     // retain only the 10 most recent stories for each category plus anything bookmarked (here and when saving, because we may have crashed before having a chance to prune the story list last time)
-
+    
+    
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"isMainCategory = YES"];
+    NSSortDescriptor *sort = [[NSSortDescriptor alloc] initWithKey:@"category_id" ascending:YES];
+    NSArray *categoryObjects = [CoreDataManager objectsForEntity:NewsCategoryEntityName matchingPredicate:predicate sortDescriptors:[NSArray arrayWithObject:sort]];
+    [sort release];
+    if (![categoryObjects count]) {
+        JSONAPIRequest *request = [JSONAPIRequest requestWithJSONAPIDelegate:self];
+        BOOL success = [request requestObjectFromModule:@"news" command:@"channels" parameters:nil];
+        if (!success) {
+            DLog(@"failed to dispatch request");
+        }
+    } else {
+        self.categories = categoryObjects;
+    }
+    
     // because stories are added to Core Data in separate threads, there may be merge conflicts. this thread wins when we're pruning
     NSManagedObjectContext *context = [CoreDataManager managedObjectContext];
     id originalMergePolicy = [context mergePolicy];
@@ -202,9 +202,10 @@ static NSInteger numTries = 0;
             [allStoriesToSave addObjectsFromArray:categoryStories];
         }
         [postDateSortDescriptor release];
+        aCategory.expectedCount = [NSNumber numberWithInteger:0];
     }
 
-	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"NOT bookmarked == YES"];
+	predicate = [NSPredicate predicateWithFormat:@"NOT bookmarked == YES"];
     NSMutableArray *allStories = [CoreDataManager objectsForEntity:NewsStoryEntityName matchingPredicate:predicate];
     NSMutableSet *allStoriesToDelete = [NSMutableSet setWithArray:allStories];
     [allStoriesToDelete minusSet:allStoriesToSave];
@@ -449,11 +450,11 @@ static NSInteger numTries = 0;
 			self.xmlParser = nil;
 		}
 		self.activeCategoryId = category;
-		self.stories = nil;
+		//self.stories = nil;
 		if ([self.stories count] > 0) {
 			[storyTable scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:NO];
 		}
-		[storyTable reloadData];
+		//[storyTable reloadData];
 		showingBookmarks = (category == BOOKMARK_BUTTON_TAG) ? YES : NO;
 		[self loadFromCache]; // makes request to server if no request has been made this session
     }

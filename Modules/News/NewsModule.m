@@ -20,6 +20,7 @@
         self.supportsFederatedSearch = YES;
         
         storyListChannelController = [[StoryListViewController alloc] init];
+        [storyListChannelController pruneStories];
         self.viewControllers = [NSArray arrayWithObject:storyListChannelController];
     }
     return self;
