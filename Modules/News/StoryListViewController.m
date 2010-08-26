@@ -694,7 +694,7 @@ static NSInteger numTries = 0;
             }
 			length += [self.xmlParser.newStories count];
             
-            DLog(@"%@", [self.xmlParser.newStories description]);
+            //DLog(@"%@", [self.xmlParser.newStories description]);
             DLog(@"setting expectedCount = %d", length);            
 			[aCategory setValue:[NSNumber numberWithInteger:length] forKey:@"expectedCount"];
 			if (!parser.loadingMore && [self.stories count] > 0) {
