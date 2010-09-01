@@ -1,3 +1,10 @@
+/****************************************************************
+ *
+ *  Copyright 2010 The President and Fellows of Harvard College
+ *  Copyright 2010 Modo Labs Inc.
+ *
+ *****************************************************************/
+
 #import "ModoNavigationController.h"
 #import "MIT_MobileAppDelegate.h"
 #import "MITModule.h"
