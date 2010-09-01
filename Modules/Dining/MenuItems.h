@@ -1,10 +1,9 @@
-//
-//  MenuItems.h
-//  diningTemp
-//
-//  Created by Muhammad Amjad on 6/29/10.
-//  Copyright 2010 Modo Labs. All rights reserved.
-//
+/****************************************************************
+ *
+ *  Copyright 2010 The President and Fellows of Harvard College
+ *  Copyright 2010 Modo Labs Inc.
+ *
+ *****************************************************************/
 
 #import <Foundation/Foundation.h>
 

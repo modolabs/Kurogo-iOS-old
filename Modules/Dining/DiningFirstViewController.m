@@ -1,10 +1,9 @@
-//
-//  TabSampleViewController.m
-//  TabSample
-//
-//  Created by Muhammad Amjad on 6/22/10.
-//  Copyright Modo Labs 2010. All rights reserved.
-//
+/****************************************************************
+ *
+ *  Copyright 2010 The President and Fellows of Harvard College
+ *  Copyright 2010 Modo Labs Inc.
+ *
+ *****************************************************************/
 
 #import "DiningFirstViewController.h"
 #import "MenuDetailsController.h"
