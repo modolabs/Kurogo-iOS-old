@@ -147,47 +147,6 @@
 		C759594112074B47008474A9 /* DiningMultiLineCell.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = C759593B12074B47008474A9 /* DiningMultiLineCell.h */; settings = {JAVA_ARCHIVE_SUBDIR = Modules/Dining; }; };
 		C759594212074B47008474A9 /* DiningHallStatus.m in Sources */ = {isa = PBXBuildFile; fileRef = C759593C12074B47008474A9 /* DiningHallStatus.m */; };
 		C759594312074B47008474A9 /* DiningHallStatus.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = C759593D12074B47008474A9 /* DiningHallStatus.h */; settings = {JAVA_ARCHIVE_SUBDIR = Modules/Dining; }; };
-		C76FBB74123001A600968920 /* ShuttleSubscriptionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = C76FBB56123001A600968920 /* ShuttleSubscriptionManager.m */; };
-		C76FBB75123001A600968920 /* ShuttleSubscriptionManager.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = C76FBB57123001A600968920 /* ShuttleSubscriptionManager.h */; settings = {JAVA_ARCHIVE_SUBDIR = Modules/ShuttleTrack; }; };
-		C76FBB76123001A600968920 /* ShuttleStopViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C76FBB58123001A600968920 /* ShuttleStopViewController.m */; };
-		C76FBB77123001A600968920 /* ShuttleStopViewController.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = C76FBB59123001A600968920 /* ShuttleStopViewController.h */; settings = {JAVA_ARCHIVE_SUBDIR = Modules/ShuttleTrack; }; };
-		C76FBB78123001A600968920 /* ShuttleStopCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C76FBB5A123001A600968920 /* ShuttleStopCell.xib */; };
-		C76FBB79123001A600968920 /* ShuttleStopCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C76FBB5B123001A600968920 /* ShuttleStopCell.m */; };
-		C76FBB7A123001A600968920 /* ShuttleStopCell.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = C76FBB5C123001A600968920 /* ShuttleStopCell.h */; settings = {JAVA_ARCHIVE_SUBDIR = Modules/ShuttleTrack; }; };
-		C76FBB7B123001A600968920 /* ShuttleStop.m in Sources */ = {isa = PBXBuildFile; fileRef = C76FBB5D123001A600968920 /* ShuttleStop.m */; };
-		C76FBB7C123001A600968920 /* ShuttleStop.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = C76FBB5E123001A600968920 /* ShuttleStop.h */; settings = {JAVA_ARCHIVE_SUBDIR = Modules/ShuttleTrack; }; };
-		C76FBB7D123001A600968920 /* ShuttleRouteViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C76FBB5F123001A600968920 /* ShuttleRouteViewController.xib */; };
-		C76FBB7E123001A600968920 /* ShuttleRouteViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C76FBB60123001A600968920 /* ShuttleRouteViewController.m */; };
-		C76FBB7F123001A600968920 /* ShuttleRouteViewController.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = C76FBB61123001A600968920 /* ShuttleRouteViewController.h */; settings = {JAVA_ARCHIVE_SUBDIR = Modules/ShuttleTrack; }; };
-		C76FBB80123001A600968920 /* ShuttleRoutes.xib in Resources */ = {isa = PBXBuildFile; fileRef = C76FBB62123001A600968920 /* ShuttleRoutes.xib */; };
-		C76FBB81123001A600968920 /* ShuttleRoutes.m in Sources */ = {isa = PBXBuildFile; fileRef = C76FBB63123001A600968920 /* ShuttleRoutes.m */; };
-		C76FBB82123001A600968920 /* ShuttleRoutes.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = C76FBB64123001A600968920 /* ShuttleRoutes.h */; settings = {JAVA_ARCHIVE_SUBDIR = Modules/ShuttleTrack; }; };
-		C76FBB83123001A600968920 /* ShuttleRoute.m in Sources */ = {isa = PBXBuildFile; fileRef = C76FBB65123001A600968920 /* ShuttleRoute.m */; };
-		C76FBB84123001A600968920 /* ShuttleRoute.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = C76FBB66123001A600968920 /* ShuttleRoute.h */; settings = {JAVA_ARCHIVE_SUBDIR = Modules/ShuttleTrack; }; };
-		C76FBB85123001A600968920 /* ShuttleModule.m in Sources */ = {isa = PBXBuildFile; fileRef = C76FBB67123001A600968920 /* ShuttleModule.m */; };
-		C76FBB86123001A600968920 /* ShuttleModule.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = C76FBB68123001A600968920 /* ShuttleModule.h */; settings = {JAVA_ARCHIVE_SUBDIR = Modules/ShuttleTrack; }; };
-		C76FBB87123001A600968920 /* ShuttleLocation.m in Sources */ = {isa = PBXBuildFile; fileRef = C76FBB69123001A600968920 /* ShuttleLocation.m */; };
-		C76FBB88123001A600968920 /* ShuttleLocation.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = C76FBB6A123001A600968920 /* ShuttleLocation.h */; settings = {JAVA_ARCHIVE_SUBDIR = Modules/ShuttleTrack; }; };
-		C76FBB89123001A600968920 /* ShuttleDataManager.m in Sources */ = {isa = PBXBuildFile; fileRef = C76FBB6B123001A600968920 /* ShuttleDataManager.m */; };
-		C76FBB8A123001A600968920 /* ShuttleDataManager.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = C76FBB6C123001A600968920 /* ShuttleDataManager.h */; settings = {JAVA_ARCHIVE_SUBDIR = Modules/ShuttleTrack; }; };
-		C76FBB8B123001A600968920 /* RouteStopSchedule.m in Sources */ = {isa = PBXBuildFile; fileRef = C76FBB6D123001A600968920 /* RouteStopSchedule.m */; };
-		C76FBB8C123001A600968920 /* RouteStopSchedule.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = C76FBB6E123001A600968920 /* RouteStopSchedule.h */; settings = {JAVA_ARCHIVE_SUBDIR = Modules/ShuttleTrack; }; };
-		C76FBB8D123001A600968920 /* RouteMapViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C76FBB6F123001A600968920 /* RouteMapViewController.xib */; };
-		C76FBB8E123001A600968920 /* RouteMapViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C76FBB70123001A600968920 /* RouteMapViewController.m */; };
-		C76FBB8F123001A600968920 /* RouteMapViewController.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = C76FBB71123001A600968920 /* RouteMapViewController.h */; settings = {JAVA_ARCHIVE_SUBDIR = Modules/ShuttleTrack; }; };
-		C76FBB90123001A600968920 /* RouteInfoTitleCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C76FBB72123001A600968920 /* RouteInfoTitleCell.m */; };
-		C76FBB91123001A600968920 /* RouteInfoTitleCell.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = C76FBB73123001A600968920 /* RouteInfoTitleCell.h */; settings = {JAVA_ARCHIVE_SUBDIR = Modules/ShuttleTrack; }; };
-		C76FBB9B123001CB00968920 /* ShuttleTrack.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = C76FBB93123001CB00968920 /* ShuttleTrack.xcdatamodeld */; };
-		C76FBB9C123001CB00968920 /* ShuttleStopLocation.m in Sources */ = {isa = PBXBuildFile; fileRef = C76FBB95123001CB00968920 /* ShuttleStopLocation.m */; };
-		C76FBB9D123001CB00968920 /* ShuttleStopLocation.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = C76FBB96123001CB00968920 /* ShuttleStopLocation.h */; settings = {JAVA_ARCHIVE_SUBDIR = Modules/ShuttleTrack/Model; }; };
-		C76FBB9E123001CB00968920 /* ShuttleRouteStop.m in Sources */ = {isa = PBXBuildFile; fileRef = C76FBB97123001CB00968920 /* ShuttleRouteStop.m */; };
-		C76FBB9F123001CB00968920 /* ShuttleRouteStop.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = C76FBB98123001CB00968920 /* ShuttleRouteStop.h */; settings = {JAVA_ARCHIVE_SUBDIR = Modules/ShuttleTrack/Model; }; };
-		C76FBBA0123001CB00968920 /* ShuttleRouteCache.m in Sources */ = {isa = PBXBuildFile; fileRef = C76FBB99123001CB00968920 /* ShuttleRouteCache.m */; };
-		C76FBBA1123001CB00968920 /* ShuttleRouteCache.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = C76FBB9A123001CB00968920 /* ShuttleRouteCache.h */; settings = {JAVA_ARCHIVE_SUBDIR = Modules/ShuttleTrack/Model; }; };
-		C76FBBCA1230029800968920 /* ShuttleStopMapAnnotation.m in Sources */ = {isa = PBXBuildFile; fileRef = C76FBBC81230029800968920 /* ShuttleStopMapAnnotation.m */; };
-		C76FBBCB1230029800968920 /* ShuttleStopMapAnnotation.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = C76FBBC91230029800968920 /* ShuttleStopMapAnnotation.h */; settings = {JAVA_ARCHIVE_SUBDIR = "Modules/Campus Map"; }; };
-		C76FBBF5123006E900968920 /* home-shuttle@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C76FBBF3123006E900968920 /* home-shuttle@2x.png */; };
-		C76FBBF6123006E900968920 /* home-shuttle.png in Resources */ = {isa = PBXBuildFile; fileRef = C76FBBF4123006E900968920 /* home-shuttle.png */; };
 		C776675911F733E3005496DD /* DatePickerViewController.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = C776675711F733E3005496DD /* DatePickerViewController.h */; settings = {JAVA_ARCHIVE_SUBDIR = Modules/Calendar; }; };
 		C776675A11F733E3005496DD /* DatePickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C776675811F733E3005496DD /* DatePickerViewController.m */; };
 		C7B10CFF12130E2300CFB837 /* StellarCoursesViewController.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = C7B10CFD12130E2300CFB837 /* StellarCoursesViewController.h */; settings = {JAVA_ARCHIVE_SUBDIR = Modules/Stellar; }; };
@@ -670,47 +629,6 @@
 		C759593B12074B47008474A9 /* DiningMultiLineCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DiningMultiLineCell.h; path = Dining/DiningMultiLineCell.h; sourceTree = "<group>"; };
 		C759593C12074B47008474A9 /* DiningHallStatus.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DiningHallStatus.m; path = Dining/DiningHallStatus.m; sourceTree = "<group>"; };
 		C759593D12074B47008474A9 /* DiningHallStatus.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DiningHallStatus.h; path = Dining/DiningHallStatus.h; sourceTree = "<group>"; };
-		C76FBB56123001A600968920 /* ShuttleSubscriptionManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ShuttleSubscriptionManager.m; path = ShuttleTrack/ShuttleSubscriptionManager.m; sourceTree = "<group>"; };
-		C76FBB57123001A600968920 /* ShuttleSubscriptionManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ShuttleSubscriptionManager.h; path = ShuttleTrack/ShuttleSubscriptionManager.h; sourceTree = "<group>"; };
-		C76FBB58123001A600968920 /* ShuttleStopViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ShuttleStopViewController.m; path = ShuttleTrack/ShuttleStopViewController.m; sourceTree = "<group>"; };
-		C76FBB59123001A600968920 /* ShuttleStopViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ShuttleStopViewController.h; path = ShuttleTrack/ShuttleStopViewController.h; sourceTree = "<group>"; };
-		C76FBB5A123001A600968920 /* ShuttleStopCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = ShuttleStopCell.xib; path = ShuttleTrack/ShuttleStopCell.xib; sourceTree = "<group>"; };
-		C76FBB5B123001A600968920 /* ShuttleStopCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ShuttleStopCell.m; path = ShuttleTrack/ShuttleStopCell.m; sourceTree = "<group>"; };
-		C76FBB5C123001A600968920 /* ShuttleStopCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ShuttleStopCell.h; path = ShuttleTrack/ShuttleStopCell.h; sourceTree = "<group>"; };
-		C76FBB5D123001A600968920 /* ShuttleStop.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ShuttleStop.m; path = ShuttleTrack/ShuttleStop.m; sourceTree = "<group>"; };
-		C76FBB5E123001A600968920 /* ShuttleStop.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ShuttleStop.h; path = ShuttleTrack/ShuttleStop.h; sourceTree = "<group>"; };
-		C76FBB5F123001A600968920 /* ShuttleRouteViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = ShuttleRouteViewController.xib; path = ShuttleTrack/ShuttleRouteViewController.xib; sourceTree = "<group>"; };
-		C76FBB60123001A600968920 /* ShuttleRouteViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ShuttleRouteViewController.m; path = ShuttleTrack/ShuttleRouteViewController.m; sourceTree = "<group>"; };
-		C76FBB61123001A600968920 /* ShuttleRouteViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ShuttleRouteViewController.h; path = ShuttleTrack/ShuttleRouteViewController.h; sourceTree = "<group>"; };
-		C76FBB62123001A600968920 /* ShuttleRoutes.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = ShuttleRoutes.xib; path = ShuttleTrack/ShuttleRoutes.xib; sourceTree = "<group>"; };
-		C76FBB63123001A600968920 /* ShuttleRoutes.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ShuttleRoutes.m; path = ShuttleTrack/ShuttleRoutes.m; sourceTree = "<group>"; };
-		C76FBB64123001A600968920 /* ShuttleRoutes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ShuttleRoutes.h; path = ShuttleTrack/ShuttleRoutes.h; sourceTree = "<group>"; };
-		C76FBB65123001A600968920 /* ShuttleRoute.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ShuttleRoute.m; path = ShuttleTrack/ShuttleRoute.m; sourceTree = "<group>"; };
-		C76FBB66123001A600968920 /* ShuttleRoute.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ShuttleRoute.h; path = ShuttleTrack/ShuttleRoute.h; sourceTree = "<group>"; };
-		C76FBB67123001A600968920 /* ShuttleModule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ShuttleModule.m; path = ShuttleTrack/ShuttleModule.m; sourceTree = "<group>"; };
-		C76FBB68123001A600968920 /* ShuttleModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ShuttleModule.h; path = ShuttleTrack/ShuttleModule.h; sourceTree = "<group>"; };
-		C76FBB69123001A600968920 /* ShuttleLocation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ShuttleLocation.m; path = ShuttleTrack/ShuttleLocation.m; sourceTree = "<group>"; };
-		C76FBB6A123001A600968920 /* ShuttleLocation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ShuttleLocation.h; path = ShuttleTrack/ShuttleLocation.h; sourceTree = "<group>"; };
-		C76FBB6B123001A600968920 /* ShuttleDataManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ShuttleDataManager.m; path = ShuttleTrack/ShuttleDataManager.m; sourceTree = "<group>"; };
-		C76FBB6C123001A600968920 /* ShuttleDataManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ShuttleDataManager.h; path = ShuttleTrack/ShuttleDataManager.h; sourceTree = "<group>"; };
-		C76FBB6D123001A600968920 /* RouteStopSchedule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RouteStopSchedule.m; path = ShuttleTrack/RouteStopSchedule.m; sourceTree = "<group>"; };
-		C76FBB6E123001A600968920 /* RouteStopSchedule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RouteStopSchedule.h; path = ShuttleTrack/RouteStopSchedule.h; sourceTree = "<group>"; };
-		C76FBB6F123001A600968920 /* RouteMapViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = RouteMapViewController.xib; path = ShuttleTrack/RouteMapViewController.xib; sourceTree = "<group>"; };
-		C76FBB70123001A600968920 /* RouteMapViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RouteMapViewController.m; path = ShuttleTrack/RouteMapViewController.m; sourceTree = "<group>"; };
-		C76FBB71123001A600968920 /* RouteMapViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RouteMapViewController.h; path = ShuttleTrack/RouteMapViewController.h; sourceTree = "<group>"; };
-		C76FBB72123001A600968920 /* RouteInfoTitleCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RouteInfoTitleCell.m; path = ShuttleTrack/RouteInfoTitleCell.m; sourceTree = "<group>"; };
-		C76FBB73123001A600968920 /* RouteInfoTitleCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RouteInfoTitleCell.h; path = ShuttleTrack/RouteInfoTitleCell.h; sourceTree = "<group>"; };
-		C76FBB94123001CB00968920 /* ShuttleTrack.xcdatamodel */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = wrapper.xcdatamodel; path = ShuttleTrack.xcdatamodel; sourceTree = "<group>"; };
-		C76FBB95123001CB00968920 /* ShuttleStopLocation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ShuttleStopLocation.m; path = ShuttleTrack/Model/ShuttleStopLocation.m; sourceTree = "<group>"; };
-		C76FBB96123001CB00968920 /* ShuttleStopLocation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ShuttleStopLocation.h; path = ShuttleTrack/Model/ShuttleStopLocation.h; sourceTree = "<group>"; };
-		C76FBB97123001CB00968920 /* ShuttleRouteStop.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ShuttleRouteStop.m; path = ShuttleTrack/Model/ShuttleRouteStop.m; sourceTree = "<group>"; };
-		C76FBB98123001CB00968920 /* ShuttleRouteStop.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ShuttleRouteStop.h; path = ShuttleTrack/Model/ShuttleRouteStop.h; sourceTree = "<group>"; };
-		C76FBB99123001CB00968920 /* ShuttleRouteCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ShuttleRouteCache.m; path = ShuttleTrack/Model/ShuttleRouteCache.m; sourceTree = "<group>"; };
-		C76FBB9A123001CB00968920 /* ShuttleRouteCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ShuttleRouteCache.h; path = ShuttleTrack/Model/ShuttleRouteCache.h; sourceTree = "<group>"; };
-		C76FBBC81230029800968920 /* ShuttleStopMapAnnotation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShuttleStopMapAnnotation.m; sourceTree = "<group>"; };
-		C76FBBC91230029800968920 /* ShuttleStopMapAnnotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShuttleStopMapAnnotation.h; sourceTree = "<group>"; };
-		C76FBBF3123006E900968920 /* home-shuttle@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "home-shuttle@2x.png"; path = "Resources/home/home-shuttle@2x.png"; sourceTree = "<group>"; };
-		C76FBBF4123006E900968920 /* home-shuttle.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "home-shuttle.png"; path = "Resources/home/home-shuttle.png"; sourceTree = "<group>"; };
 		C776675711F733E3005496DD /* DatePickerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DatePickerViewController.h; sourceTree = "<group>"; };
 		C776675811F733E3005496DD /* DatePickerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DatePickerViewController.m; sourceTree = "<group>"; };
 		C7B10CFD12130E2300CFB837 /* StellarCoursesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StellarCoursesViewController.h; sourceTree = "<group>"; };
@@ -1179,8 +1097,6 @@
 				EB49AD7B11F4BFFF00854791 /* news */,
 				EB49AD6511F4BFF100854791 /* maps */,
 				EB49AD5811F4BFE200854791 /* home */,
-				C76FBBF3123006E900968920 /* home-shuttle@2x.png */,
-				C76FBBF4123006E900968920 /* home-shuttle.png */,
 				EB49AD4911F4BFCE00854791 /* courses */,
 				EB49AD5211F4BFCE00854791 /* events */,
 				EB54947210DFF7E200B708B3 /* global */,
@@ -1432,58 +1348,6 @@
 			name = Dining;
 			sourceTree = "<group>";
 		};
-		C76FBB551230019400968920 /* ShuttleTrack */ = {
-			isa = PBXGroup;
-			children = (
-				C76FBB92123001AD00968920 /* Model */,
-				C76FBB56123001A600968920 /* ShuttleSubscriptionManager.m */,
-				C76FBB57123001A600968920 /* ShuttleSubscriptionManager.h */,
-				C76FBB58123001A600968920 /* ShuttleStopViewController.m */,
-				C76FBB59123001A600968920 /* ShuttleStopViewController.h */,
-				C76FBB5A123001A600968920 /* ShuttleStopCell.xib */,
-				C76FBB5B123001A600968920 /* ShuttleStopCell.m */,
-				C76FBB5C123001A600968920 /* ShuttleStopCell.h */,
-				C76FBB5D123001A600968920 /* ShuttleStop.m */,
-				C76FBB5E123001A600968920 /* ShuttleStop.h */,
-				C76FBB5F123001A600968920 /* ShuttleRouteViewController.xib */,
-				C76FBB60123001A600968920 /* ShuttleRouteViewController.m */,
-				C76FBB61123001A600968920 /* ShuttleRouteViewController.h */,
-				C76FBB62123001A600968920 /* ShuttleRoutes.xib */,
-				C76FBB63123001A600968920 /* ShuttleRoutes.m */,
-				C76FBB64123001A600968920 /* ShuttleRoutes.h */,
-				C76FBB65123001A600968920 /* ShuttleRoute.m */,
-				C76FBB66123001A600968920 /* ShuttleRoute.h */,
-				C76FBB67123001A600968920 /* ShuttleModule.m */,
-				C76FBB68123001A600968920 /* ShuttleModule.h */,
-				C76FBB69123001A600968920 /* ShuttleLocation.m */,
-				C76FBB6A123001A600968920 /* ShuttleLocation.h */,
-				C76FBB6B123001A600968920 /* ShuttleDataManager.m */,
-				C76FBB6C123001A600968920 /* ShuttleDataManager.h */,
-				C76FBB6D123001A600968920 /* RouteStopSchedule.m */,
-				C76FBB6E123001A600968920 /* RouteStopSchedule.h */,
-				C76FBB6F123001A600968920 /* RouteMapViewController.xib */,
-				C76FBB70123001A600968920 /* RouteMapViewController.m */,
-				C76FBB71123001A600968920 /* RouteMapViewController.h */,
-				C76FBB72123001A600968920 /* RouteInfoTitleCell.m */,
-				C76FBB73123001A600968920 /* RouteInfoTitleCell.h */,
-			);
-			name = ShuttleTrack;
-			sourceTree = "<group>";
-		};
-		C76FBB92123001AD00968920 /* Model */ = {
-			isa = PBXGroup;
-			children = (
-				C76FBB93123001CB00968920 /* ShuttleTrack.xcdatamodeld */,
-				C76FBB95123001CB00968920 /* ShuttleStopLocation.m */,
-				C76FBB96123001CB00968920 /* ShuttleStopLocation.h */,
-				C76FBB97123001CB00968920 /* ShuttleRouteStop.m */,
-				C76FBB98123001CB00968920 /* ShuttleRouteStop.h */,
-				C76FBB99123001CB00968920 /* ShuttleRouteCache.m */,
-				C76FBB9A123001CB00968920 /* ShuttleRouteCache.h */,
-			);
-			name = Model;
-			sourceTree = "<group>";
-		};
 		DE4AAFAC10ED4E63007476D9 /* Model */ = {
 			isa = PBXGroup;
 			children = (
@@ -1530,7 +1394,6 @@
 		DE715445102FE468005E6111 /* Modules */ = {
 			isa = PBXGroup;
 			children = (
-				C76FBB551230019400968920 /* ShuttleTrack */,
 				C704F02311E3E13E00621406 /* Dining */,
 				EB86CA6C115D273800C8F3D1 /* Calendar */,
 				EB7F326610CD6C5B00188BCD /* People */,
@@ -1548,8 +1411,6 @@
 		DE715446102FE468005E6111 /* Campus Map */ = {
 			isa = PBXGroup;
 			children = (
-				C76FBBC81230029800968920 /* ShuttleStopMapAnnotation.m */,
-				C76FBBC91230029800968920 /* ShuttleStopMapAnnotation.h */,
 				EB6D036911E3989100B65CE3 /* ArcGISServer */,
 				44C1A3C511A3388A000FD653 /* Selection */,
 				44C1A26011A2E865000FD653 /* Model */,
@@ -2088,23 +1949,6 @@
 				EBAE878712198B2500F370BE /* SchoolsViewController.h in JavaArchive */,
 				EBAE88051219960700F370BE /* Secret.h in JavaArchive */,
 				EBAE92B7121D733200F370BE /* PersonDetails.h in JavaArchive */,
-				C76FBB75123001A600968920 /* ShuttleSubscriptionManager.h in JavaArchive */,
-				C76FBB77123001A600968920 /* ShuttleStopViewController.h in JavaArchive */,
-				C76FBB7A123001A600968920 /* ShuttleStopCell.h in JavaArchive */,
-				C76FBB7C123001A600968920 /* ShuttleStop.h in JavaArchive */,
-				C76FBB7F123001A600968920 /* ShuttleRouteViewController.h in JavaArchive */,
-				C76FBB82123001A600968920 /* ShuttleRoutes.h in JavaArchive */,
-				C76FBB84123001A600968920 /* ShuttleRoute.h in JavaArchive */,
-				C76FBB86123001A600968920 /* ShuttleModule.h in JavaArchive */,
-				C76FBB88123001A600968920 /* ShuttleLocation.h in JavaArchive */,
-				C76FBB8A123001A600968920 /* ShuttleDataManager.h in JavaArchive */,
-				C76FBB8C123001A600968920 /* RouteStopSchedule.h in JavaArchive */,
-				C76FBB8F123001A600968920 /* RouteMapViewController.h in JavaArchive */,
-				C76FBB91123001A600968920 /* RouteInfoTitleCell.h in JavaArchive */,
-				C76FBB9D123001CB00968920 /* ShuttleStopLocation.h in JavaArchive */,
-				C76FBB9F123001CB00968920 /* ShuttleRouteStop.h in JavaArchive */,
-				C76FBBA1123001CB00968920 /* ShuttleRouteCache.h in JavaArchive */,
-				C76FBBCB1230029800968920 /* ShuttleStopMapAnnotation.h in JavaArchive */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2187,12 +2031,6 @@
 				EBAE877612197EF400F370BE /* schools.plist in Resources */,
 				EBAE89C4121A081900F370BE /* schools in Resources */,
 				EBAE9401121DB1C700F370BE /* loading-animation in Resources */,
-				C76FBB78123001A600968920 /* ShuttleStopCell.xib in Resources */,
-				C76FBB7D123001A600968920 /* ShuttleRouteViewController.xib in Resources */,
-				C76FBB80123001A600968920 /* ShuttleRoutes.xib in Resources */,
-				C76FBB8D123001A600968920 /* RouteMapViewController.xib in Resources */,
-				C76FBBF5123006E900968920 /* home-shuttle@2x.png in Resources */,
-				C76FBBF6123006E900968920 /* home-shuttle.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2516,24 +2354,6 @@
 				EBAE878812198B2500F370BE /* SchoolsViewController.m in Sources */,
 				EBAE92B8121D733200F370BE /* PersonDetails.m in Sources */,
 				C7DA15991220943C00FE8756 /* Secret.m in Sources */,
-				C76FBB74123001A600968920 /* ShuttleSubscriptionManager.m in Sources */,
-				C76FBB76123001A600968920 /* ShuttleStopViewController.m in Sources */,
-				C76FBB79123001A600968920 /* ShuttleStopCell.m in Sources */,
-				C76FBB7B123001A600968920 /* ShuttleStop.m in Sources */,
-				C76FBB7E123001A600968920 /* ShuttleRouteViewController.m in Sources */,
-				C76FBB81123001A600968920 /* ShuttleRoutes.m in Sources */,
-				C76FBB83123001A600968920 /* ShuttleRoute.m in Sources */,
-				C76FBB85123001A600968920 /* ShuttleModule.m in Sources */,
-				C76FBB87123001A600968920 /* ShuttleLocation.m in Sources */,
-				C76FBB89123001A600968920 /* ShuttleDataManager.m in Sources */,
-				C76FBB8B123001A600968920 /* RouteStopSchedule.m in Sources */,
-				C76FBB8E123001A600968920 /* RouteMapViewController.m in Sources */,
-				C76FBB90123001A600968920 /* RouteInfoTitleCell.m in Sources */,
-				C76FBB9B123001CB00968920 /* ShuttleTrack.xcdatamodeld in Sources */,
-				C76FBB9C123001CB00968920 /* ShuttleStopLocation.m in Sources */,
-				C76FBB9E123001CB00968920 /* ShuttleRouteStop.m in Sources */,
-				C76FBBA0123001CB00968920 /* ShuttleRouteCache.m in Sources */,
-				C76FBBCA1230029800968920 /* ShuttleStopMapAnnotation.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2979,17 +2799,6 @@
 			);
 			currentVersion = 44C1A26E11A2EA04000FD653 /* CampusMap.xcdatamodel */;
 			path = CampusMap.xcdatamodeld;
-			sourceTree = "<group>";
-			versionGroupType = wrapper.xcdatamodel;
-		};
-		C76FBB93123001CB00968920 /* ShuttleTrack.xcdatamodeld */ = {
-			isa = XCVersionGroup;
-			children = (
-				C76FBB94123001CB00968920 /* ShuttleTrack.xcdatamodel */,
-			);
-			currentVersion = C76FBB94123001CB00968920 /* ShuttleTrack.xcdatamodel */;
-			name = ShuttleTrack.xcdatamodeld;
-			path = ShuttleTrack/Model/ShuttleTrack.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;
 		};
