@@ -79,6 +79,9 @@ extern NSString * const CalendarEventEntityName;
 extern NSString * const CalendarCategoryEntityName;
 extern NSString * const CampusMapSearchEntityName;
 extern NSString * const CampusMapAnnotationEntityName;
+extern NSString * const ShuttleRouteEntityName;
+extern NSString * const ShuttleStopEntityName;
+extern NSString * const ShuttleRouteStopEntityName;
 
 
 // local path names for handleLocalPath

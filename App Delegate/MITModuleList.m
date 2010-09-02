@@ -9,6 +9,7 @@
 #import "CalendarModule.h"
 #import "DiningModule.h"
 #import "SchoolsModule.h"
+#import "ShuttleModule.h"
 
 // #import your module's header here
 
@@ -28,6 +29,7 @@
     //[result addObject:[[[YourMITModuleSubclass alloc] init] autorelease]];
 	
 	[result addObject:[[[PeopleModule alloc] init] autorelease]];
+	[result addObject:[[[ShuttleModule alloc] init] autorelease]];
 	[result addObject:[[[CMModule alloc] init] autorelease]];
 	[result addObject:[[[CalendarModule alloc] init] autorelease]];
 	[result addObject:[[[StellarModule alloc] init] autorelease]];
