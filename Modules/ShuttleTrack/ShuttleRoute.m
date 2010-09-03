@@ -206,8 +206,7 @@
 	NSArray* vehicleLocations = [routeInfo objectForKey:@"vehicleLocations"];
 	if (nil != vehicleLocations && [NSNull null] != (id)vehicleLocations) 
 	{
-		//[_vehicleLocations release];
-		_vehicleLocations = nil;
+		self.vehicleLocations = nil;
 		
 		NSMutableArray* formattedVehicleLocations = [[NSMutableArray alloc] initWithCapacity:vehicleLocations.count];
 		for (NSDictionary* dictionary in vehicleLocations) {
@@ -215,6 +214,7 @@
 			[formattedVehicleLocations addObject:shuttleLocation];
 		}
 		self.vehicleLocations = formattedVehicleLocations;
+		[formattedVehicleLocations release];
 	}
 }
 

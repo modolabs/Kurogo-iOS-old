@@ -64,6 +64,10 @@
 	[_mapButton release];
 	[_mapThumbnail release];
 	
+	// shouldn't [super dealloc] do this?
+	self.tableView.delegate = nil;
+	self.tableView.dataSource = nil;
+	
  	[super dealloc];
 }
 
@@ -114,25 +118,25 @@
 	
 	
 	// add the map view thumbnail
-	_mapThumbnail = [[MKMapView alloc] initWithFrame:CGRectMake(2.0, 2.0, mapSize - 4.0, mapSize - 4.0)];
+	_mapThumbnail = [[MITMapView alloc] initWithFrame:CGRectMake(2.0, 2.0, mapSize - 4.0, mapSize - 4.0)];
 	_mapThumbnail.delegate = self;
-	//_mapThumbnail.shouldNotDropPins = YES;
+	_mapThumbnail.shouldNotDropPins = YES;
 	[_mapThumbnail addAnnotation:self.annotation];
 	_mapThumbnail.centerCoordinate = self.annotation.coordinate;
 	_mapThumbnail.scrollEnabled = NO;
 	_mapThumbnail.userInteractionEnabled = NO;
-	//_mapThumbnail.layer.cornerRadius = 6.0;
+	_mapThumbnail.layer.cornerRadius = 6.0;
 	
 	// add a button on top of the map
 	_mapButton = [[UIButton alloc] initWithFrame:CGRectMake(mapBuffer, mapBuffer, mapSize, mapSize)];
     
 	_mapButton.backgroundColor = [UIColor whiteColor];
-	//_mapButton.layer.cornerRadius = 8.0;
+	_mapButton.layer.cornerRadius = 8.0;
 	[_mapButton addSubview:_mapThumbnail];
     
 	[headerView addSubview:_mapButton];
 	
-	UIImageView *alertHeaderIcon = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"shuttle-alert-descriptive.png"]] autorelease];
+	UIImageView *alertHeaderIcon = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"shuttle/shuttle-alert-descriptive.png"]] autorelease];
 	CGRect alertHeaderIconFrame = alertHeaderIcon.frame;
 	alertHeaderIconFrame.origin = CGPointMake(MARGIN, mapSize + mapBuffer * 2);
 	alertHeaderIcon.frame = alertHeaderIconFrame;
@@ -195,9 +199,12 @@
 -(void) viewDidAppear:(BOOL)animated 
 {
 	[super viewDidAppear:animated];
-	ShuttleRouteViewController *parentController = (ShuttleRouteViewController *)[MITModuleURL parentViewController:self];	
-	NSString *routeID = parentController.route.routeID;
-	NSString *root = [[parentController.url.path componentsSeparatedByString:@"/"] objectAtIndex:0];
+	
+	// get the parent, and it it is the ShuttleRouteViewController, we can set the url.
+	UIViewController *parentController = (ShuttleRouteViewController *)[[MIT_MobileAppDelegate moduleForTag:ShuttleTag] parentForViewController:self];
+	ShuttleRouteViewController *shuttleVC = (ShuttleRouteViewController*) parentController;
+	NSString *routeID = shuttleVC.route.routeID;
+	NSString *root = [[shuttleVC.url.path componentsSeparatedByString:@"/"] objectAtIndex:0];
 	[url setPath:[NSString stringWithFormat:@"%@/%@/%@/stops", root, routeID, self.shuttleStop.stopID] query:nil];
 	[url setAsModulePath];
 }
@@ -213,9 +220,9 @@
 	// ensure the view and map view are loaded
 	routeMap.view;
 	
-	MKMapView* mapView = routeMap.mapView;
+	MITMapView* mapView = routeMap.mapView;
 	
-	[mapView selectAnnotation:self.annotation animated:NO];
+	[mapView selectAnnotation:self.annotation];
 	
 	[self.navigationController pushViewController:routeMap animated:YES];
 }
@@ -294,9 +301,9 @@
         if(minutes > NOTIFICATION_MINUTES) {
             
             if([self hasSubscription:indexPath]) {
-                cell.accessoryView = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"shuttle-alert-toggle-on.png"]] autorelease];
+                cell.accessoryView = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"shuttle/shuttle-alert-toggle-on.png"]] autorelease];
             } else {
-                cell.accessoryView = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"shuttle-alert-toggle-off.png"]] autorelease];
+                cell.accessoryView = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"shuttle/shuttle-alert-toggle-off.png"]] autorelease];
             }
             
             
@@ -354,7 +361,7 @@
 		[alertView release];
 		return;
 	}
-    
+	
     UIRemoteNotificationType types = [[UIApplication sharedApplication] enabledRemoteNotificationTypes];
     
     if (types == UIRemoteNotificationTypeNone) {
@@ -394,7 +401,7 @@
 		[alertView release];
 		return;
     }
-    
+	
     MIT_MobileAppDelegate *appDelegate = (MIT_MobileAppDelegate *)[[UIApplication sharedApplication] delegate];
     MITModule *shuttleModule = [appDelegate moduleForTag:ShuttleTag];
     if (!shuttleModule.pushNotificationEnabled) {
@@ -445,38 +452,37 @@
 	[self.tableView reloadData];
 }		
 
-- (void) subscriptionFailedWithObject: (id)object {
+- (void) subscriptionFailedWithObject: (id)object passkeyError:(BOOL)passkeyError {
 	[self removeFromLoadingSubscriptionRequests:((NSIndexPath *)object)];
-	[self.tableView reloadData];
-    
-	UIAlertView *alertView = [[UIAlertView alloc]
-                              initWithTitle:@"Subscription failed" 
-                              message:@"We are sorry, we failed to register your device for a shuttle notification" 
-                              delegate:nil 
-                              cancelButtonTitle:@"OK"
-                              otherButtonTitles:nil];
-    
-	[alertView show];
-	[alertView release];	
+	if(passkeyError) {
+		UIAlertView *alertView = [[UIAlertView alloc]
+							  initWithTitle:@"Subscription failed"
+							  message:@"We are sorry, we failed to register your device for a shuttle notification"
+							  delegate:nil
+							  cancelButtonTitle:@"OK"
+							  otherButtonTitles:nil];
+		[alertView show];
+		[alertView release];
+	}
+	[self.tableView reloadData];	
 }
 
-#pragma mark MKMapViewDelegate
-
-- (MKAnnotationView *)mapView:(MKMapView *)mapView viewForAnnotation:(id <MKAnnotation>)annotation
+#pragma mark MITMapViewDelegate
+- (MITMapAnnotationView *)mapView:(MITMapView *)mapView viewForAnnotation:(id <MKAnnotation>)annotation
 {
-	MKAnnotationView* annotationView = nil;
+	MITMapAnnotationView* annotationView = nil;
 	
 	if ([annotation isKindOfClass:[ShuttleStopMapAnnotation class]]) 
 	{
-		annotationView = [[[MKAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:@"annotation"] autorelease];
-		UIImage* pin = [UIImage imageNamed:@"map_pin_shuttle_stop_complete.png"];
+		annotationView = [[[MITMapAnnotationView alloc] initWithAnnotation:annotation] autorelease];
+		UIImage* pin = [UIImage imageNamed:@"shuttle/map_pin_shuttle_stop_complete.png"];
 		UIImageView* imageView = [[[UIImageView alloc] initWithImage:pin] autorelease];
 		annotationView.frame = imageView.frame;
 		annotationView.canShowCallout = YES;
 		[annotationView addSubview:imageView];
 		annotationView.backgroundColor = [UIColor clearColor];
-		//annotationView.centeredVertically = YES;
-		//annotationView.alreadyOnMap = YES;
+		annotationView.centeredVertically = YES;
+		annotationView.alreadyOnMap = YES;
 		//annotationView.layer.anchorPoint = CGPointMake(0.5, 0.5);
 	}
 	

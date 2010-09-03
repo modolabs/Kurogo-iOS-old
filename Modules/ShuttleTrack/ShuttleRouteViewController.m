@@ -10,6 +10,7 @@
 
 -(void) displayTypeChanged:(id)sender;
 
+-(void) setUrl:(MITModuleURL *)moduleURL;
 @end
 
 
@@ -25,6 +26,9 @@
 	
 	self.route = nil;
 	self.tableView = nil;
+	self.view = nil;
+	[self setUrl:nil];
+	
 	//self.routeMapViewController = nil;
 	[_routeMapViewController release];
 	
@@ -56,10 +60,10 @@
 	//_viewTypeButton.enabled = NO;										  
 	self.navigationItem.rightBarButtonItem = _viewTypeButton;
 	
-	_smallStopImage = [[UIImage imageNamed:@"shuttle-stop-dot.png"] retain];
-	_smallUpcomingStopImage = [[UIImage imageNamed:@"shuttle-stop-dot-next.png"] retain];
+	_smallStopImage = [[UIImage imageNamed:@"shuttle/shuttle-stop-dot.png"] retain];
+	_smallUpcomingStopImage = [[UIImage imageNamed:@"shuttle/shuttle-stop-dot-next.png"] retain];
 	
-	url = [[MITModuleURL alloc] initWithTag:ShuttleTag];
+	[self setUrl:[[[MITModuleURL alloc] initWithTag:ShuttleTag] autorelease]];
     [url setPath:[NSString stringWithFormat:@"route-list/%@", self.route.routeID] query:nil];
     
     [_titleCell setRouteInfo:self.route];
@@ -67,7 +71,6 @@
     [self.view addSubview:_titleCell];
     self.tableView.frame = CGRectMake(0.0, _titleCell.frame.size.height - 4.0, self.view.frame.size.width, self.view.frame.size.height - _titleCell.frame.size.height + 4.0);
 }
-
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
@@ -205,7 +208,7 @@
 	[self.navigationController popToViewController:self animated:animated];
 	[self setMapViewMode:YES animated:animated];
 
-	[_routeMapViewController.mapView selectAnnotation:annotation animated:NO];
+	[_routeMapViewController.mapView selectAnnotation:annotation];
 }
 
 // set the view to either map or list mode
@@ -220,7 +223,7 @@
 	// flip to the correct view. 
 	if (animated) {
 		[UIView beginAnimations:@"flip" context:nil];
-		[UIView setAnimationTransition:UIViewAnimationTransitionCurlDown forView:self.view cache:NO];
+		[UIView setAnimationTransition:UIViewAnimationTransitionFlipFromRight forView:self.view cache:NO];
 	}
 	
 	if (!showMap) {
@@ -278,12 +281,7 @@
 		if (!_shownError) {
 			_shownError = YES;
 			
-			UIAlertView* alert = [[[UIAlertView alloc] initWithTitle:nil
-															 message:@"Problem loading shuttle info. Please check your internet connection."
-															delegate:self
-												   cancelButtonTitle:@"OK"
-												   otherButtonTitles:nil] autorelease];
-			[alert show];
+			[MITMobileWebAPI showErrorWithHeader:@"Shuttles"];
 			
 			if([routeID isEqualToString:self.route.routeID]) {
 				self.route.liveStatusFailed = YES;
@@ -326,13 +324,11 @@
 	}
 }
 
-
-#pragma mark UIAlertViewDelegate
-- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
-{
-	//if (!_routeLoaded) {
-	//	[self.navigationController popViewControllerAnimated:YES];
-	//}
+-(void) setUrl:(MITModuleURL *)moduleURL {
+	if(url != moduleURL) {
+		[url release];
+		url = [moduleURL retain];
+	}
 }
 
 @end

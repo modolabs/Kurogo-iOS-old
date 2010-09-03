@@ -3,7 +3,7 @@
 #import "ShuttleStop.h"
 #import "ShuttleRouteStop.h"
 #import "CoreDataManager.h"
-#import "Constants.h"
+#import "MITConstants.h"
 
 static ShuttleDataManager* s_dataManager = nil;
 
@@ -68,7 +68,7 @@ NSString * const shuttlePathExtension = @"shuttles/";
                                             matchingPredicate:matchAll
                                               sortDescriptors:[NSArray arrayWithObject:sort]];
 	[sort release];
-	NSLog(@"%d routes cached", [cachedRoutes count]);
+	//NSLog(@"%d routes cached", [cachedRoutes count]);
 	
 	for (ShuttleRouteCache *cachedRoute in cachedRoutes) {
 		NSString *routeID = cachedRoute.routeID;
@@ -153,9 +153,7 @@ NSString * const shuttlePathExtension = @"shuttles/";
 	} else {
 		if (error != NULL) {
         NSString *message = [NSString stringWithFormat:@"route %@ does not exist", routeID];
-        *error = [NSError errorWithDomain:ShuttlesErrorDomain
-                                     code:errShuttleRouteNotAvailable
-                                 userInfo:[NSDictionary dictionaryWithObjectsAndKeys:message, @"message", nil]];
+        *error = [NSError errorWithDomain:@"MIT Mobile" code:4567 userInfo:[NSDictionary dictionaryWithObjectsAndKeys:message, @"message", nil]];
     }
 		return nil;
     }
@@ -200,7 +198,7 @@ NSString * const shuttlePathExtension = @"shuttles/";
 
 -(void) requestRoutes
 {
-	JSONAPIRequest *api = [JSONAPIRequest requestWithJSONAPIDelegate:self];
+	MITMobileWebAPI *api = [MITMobileWebAPI jsonLoadedDelegate:self];
 	BOOL dispatched = [api requestObject:[NSDictionary dictionaryWithObjectsAndKeys:@"routes", @"command", @"true", @"compact", nil]
 						   pathExtension:shuttlePathExtension];
 	if (!dispatched) {
@@ -210,7 +208,7 @@ NSString * const shuttlePathExtension = @"shuttles/";
 
 -(void) requestStops
 {
-	JSONAPIRequest *api = [JSONAPIRequest requestWithJSONAPIDelegate:self];
+	MITMobileWebAPI *api = [MITMobileWebAPI jsonLoadedDelegate:self];
 	BOOL dispatched = [api requestObject:[NSDictionary dictionaryWithObjectsAndKeys:@"stops", @"command", nil]
 						   pathExtension:shuttlePathExtension];
 	if (!dispatched) {
@@ -221,7 +219,7 @@ NSString * const shuttlePathExtension = @"shuttles/";
 
 -(void) requestStop:(NSString*)stopID
 {
-	JSONAPIRequest *api = [JSONAPIRequest requestWithJSONAPIDelegate:self];
+	MITMobileWebAPI *api = [MITMobileWebAPI jsonLoadedDelegate:self];
 	BOOL dispatched = [api requestObject:[NSDictionary dictionaryWithObjectsAndKeys:@"stopInfo", @"command", stopID, @"id", nil]
 						   pathExtension:shuttlePathExtension];
 	if (!dispatched) {
@@ -230,7 +228,7 @@ NSString * const shuttlePathExtension = @"shuttles/";
 }
 
 -(void) requestRoute:(NSString*)routeID
-{	JSONAPIRequest *api = [JSONAPIRequest requestWithJSONAPIDelegate:self];
+{	MITMobileWebAPI *api = [MITMobileWebAPI jsonLoadedDelegate:self];
 	BOOL dispatched = [api requestObject:[NSDictionary dictionaryWithObjectsAndKeys:@"routeInfo", @"command", routeID, @"id", @"true", @"full", nil]
 						   pathExtension:shuttlePathExtension];
 	if (!dispatched) {
@@ -304,9 +302,9 @@ NSString * const shuttlePathExtension = @"shuttles/";
 }
 
 
-#pragma mark JSONAPIDelegate
+#pragma mark JSONLoadedDelegate
 
-- (void)request:(JSONAPIRequest *)request jsonLoaded:(id)result
+- (void)request:(MITMobileWebAPI *)request jsonLoaded:(id)result
 {	
 	if ([[request.params valueForKey:@"command"] isEqualToString:@"routes"] && [result isKindOfClass:[NSArray class]]) {
 
@@ -415,7 +413,7 @@ NSString * const shuttlePathExtension = @"shuttles/";
 }
 
 
-- (void)handleConnectionFailureForRequest:(JSONAPIRequest *)request
+- (void)handleConnectionFailureForRequest:(MITMobileWebAPI *)request
 {
 	if ([[request.params valueForKey:@"command"] isEqualToString:@"routes"]) {
 		[self sendRoutesToDelegates:nil];
@@ -431,5 +429,11 @@ NSString * const shuttlePathExtension = @"shuttles/";
 	}
 }
 
+-(BOOL) request:(MITMobileWebAPI *)request shouldDisplayStandardAlertForError:(NSError *)error {
+	// since the logic for when errors are silent versus shown is a little complicated
+	// we just turn off error messages by default and leave it to the View Controllers to implement error messages
+	// this has the disadvantage of not being to able to distinguish network errors from timeout errors
+	return NO;
+}
 
 @end

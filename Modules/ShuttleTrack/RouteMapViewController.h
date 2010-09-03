@@ -1,11 +1,12 @@
+
 #import <UIKit/UIKit.h>
-#import <MapKit/MapKit.h>
+#import "MITMapView.h"
 #import "ShuttleRoute.h"
 #import "ShuttleDataManager.h"
 
-@interface RouteMapViewController : UIViewController <MKMapViewDelegate, ShuttleDataManagerDelegate>{
+@interface RouteMapViewController : UIViewController <MITMapViewDelegate, ShuttleDataManagerDelegate>{
 
-	IBOutlet MKMapView* _mapView;
+	IBOutlet MITMapView* _mapView;
 	
 	IBOutlet UILabel* _routeTitleLabel;
 	IBOutlet UILabel* _routeStatusLabel;
@@ -41,7 +42,7 @@
 @property (nonatomic, retain) ShuttleRoute* routeInfo;
 @property (nonatomic, assign) UIViewController* parentViewController;
 
-@property (readonly) MKMapView* mapView;
+@property (readonly) MITMapView* mapView;
 
 -(IBAction) gpsTouched:(id)sender;
 -(IBAction) refreshTouched:(id)sender;

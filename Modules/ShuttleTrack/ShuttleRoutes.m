@@ -57,9 +57,9 @@
 																@"16172532997", @"phoneNumber",
 					  @"(617.253.2997)", @"formattedPhoneNumber", nil, nil], nil] retain];
 	
-	_shuttleRunningImage = [[UIImage imageNamed:@"shuttle.png"] retain];
-	_shuttleNotRunningImage = [[UIImage imageNamed:@"shuttle-off.png"] retain];
-	_shuttleLoadingImage = [[UIImage imageNamed:@"shuttle-blank.png"] retain];
+	_shuttleRunningImage = [[UIImage imageNamed:@"shuttle/shuttle.png"] retain];
+	_shuttleNotRunningImage = [[UIImage imageNamed:@"shuttle/shuttle-off.png"] retain];
+	_shuttleLoadingImage = [[UIImage imageNamed:@"shuttle/shuttle-blank.png"] retain];
 	
     [self.tableView applyStandardColors];
 
@@ -359,13 +359,7 @@
 	self.shuttleRoutes = routes;
 	
 	if (nil == routes) {
-		UIAlertView* alert = [[[UIAlertView alloc] initWithTitle:@"Error Connecting"
-														message:@"There was a problem retrieving shuttle data. Please check your connection and try again"
-													   delegate:nil
-											  cancelButtonTitle:@"OK"
-											  otherButtonTitles:nil] autorelease];
-		[alert show];
-		
+		[MITMobileWebAPI showErrorWithHeader:@"Shuttles"];
 		self.shuttleRoutes = oldRoutes;
 	}
 }

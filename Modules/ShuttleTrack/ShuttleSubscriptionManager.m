@@ -16,10 +16,10 @@
 	NSString *unixtime_string = [NSString stringWithFormat:@"%i", unixtime_int];	
 	[parameters setObject:unixtime_string forKey:@"time"];	
 	
-	JSONAPIRequest *request = [JSONAPIRequest requestWithJSONAPIDelegate:
+	MITMobileWebAPI *mobileWebApi = [MITMobileWebAPI jsonLoadedDelegate:
 		[[[SubscribeRequest alloc] initWithDelegate:delegate routeID:routeID stopID:stopID object:object] autorelease]];
 
-	[request requestObject:parameters pathExtension:@"shuttles"];
+	[mobileWebApi requestObject:parameters pathExtension:@"shuttles"];
 }
 
 + (void) unsubscribeForRoute:(NSString *)routeID atStop:(NSString *)stopID delegate: (id<ShuttleSubscriptionDelegate>)delegate object: (id)object {
@@ -28,10 +28,10 @@
 	[parameters setObject:routeID forKey:@"route"];
 	[parameters setObject:stopID forKey:@"stop"];
 	
-	JSONAPIRequest *request = [JSONAPIRequest requestWithJSONAPIDelegate:
+	MITMobileWebAPI *mobileWebApi = [MITMobileWebAPI jsonLoadedDelegate:
 		[[[UnsubscribeRequest alloc] initWithDelegate:delegate routeID:routeID stopID:stopID object:object] autorelease]];
 	
-	[request requestObject:parameters pathExtension:@"shuttles"];
+	[mobileWebApi requestObject:parameters pathExtension:@"shuttles"];
 }
 	
 + (BOOL) hasSubscription: (NSString *)routeID atStop: (NSString *)stopID scheduleTime: (NSDate *)time {
@@ -134,7 +134,7 @@
 	[super dealloc];
 }
 
-- (void)request:(JSONAPIRequest *)request jsonLoaded: (id)jsonObject {
+- (void)request:(MITMobileWebAPI *)request jsonLoaded: (id)jsonObject {
 	NSDictionary *jsonDict = jsonObject;
 	
 	if([jsonDict objectForKey:@"success"]) {		
@@ -147,12 +147,20 @@
 		[ShuttleSubscriptionManager addSubscriptionForRouteID:routeID atStopID:stopID startTime:startTime endTime:endTime];
 		[delegate subscriptionSucceededWithObject:object];
 	} else {
-		[delegate subscriptionFailedWithObject:object];
+		[delegate subscriptionFailedWithObject:object passkeyError:YES];
 	}
 }
 
-- (void)handleConnectionFailureForRequest:(JSONAPIRequest *)request {
-	[delegate subscriptionFailedWithObject:object];
+- (void)handleConnectionFailureForRequest:(MITMobileWebAPI *)request {
+	[delegate subscriptionFailedWithObject:object passkeyError:NO];
+}
+
+- (BOOL)request:(MITMobileWebAPI *)request shouldDisplayStandardAlertForError:(NSError *)error {
+	return YES;
+}
+
+- (NSString *)request:(MITMobileWebAPI *)request displayHeaderForError:(NSError *)error {
+	return @"Shuttles";
 }
 
 @end
@@ -177,13 +185,21 @@
 	[super dealloc];
 }
 
-- (void)request:(JSONAPIRequest *)request jsonLoaded: (id)jsonObject {
+- (void)request:(MITMobileWebAPI *)request jsonLoaded: (id)jsonObject {
 	[ShuttleSubscriptionManager removeSubscriptionForRouteID:routeID atStopID:stopID];
 	[delegate subscriptionSucceededWithObject:object];
 }
 
-- (void)handleConnectionFailureForRequest:(JSONAPIRequest *)request {
-	[delegate subscriptionFailedWithObject:object];
+- (void)handleConnectionFailureForRequest:(MITMobileWebAPI *)request {
+	[delegate subscriptionFailedWithObject:object passkeyError:NO];
+}
+
+- (BOOL)request:(MITMobileWebAPI *)request shouldDisplayStandardAlertForError:(NSError *)error {
+	return YES;
+}
+
+- (NSString *)request:(MITMobileWebAPI *)request displayHeaderForError:(NSError *)error {
+	return @"Shuttles";
 }
 
 @end
