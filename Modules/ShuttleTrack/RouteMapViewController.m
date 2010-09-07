@@ -50,7 +50,6 @@
 	[self refreshRouteTitleInfo];
 	self.title = NSLocalizedString(@"Route", nil);	
 	
-	
 	[self.mapView setShowsUserLocation:YES];
 	
 	if ([self.route.pathLocations count]) {
@@ -248,7 +247,9 @@
 -(void) updateStopAnnotation:(ShuttleStopMapAnnotation*)annotation
 {
 	UIImage* image = nil;
-	MKAnnotationView * annotationView = [_mapView viewForAnnotation:annotation];		
+	[self.mapView addAnnotation:annotation];
+	//MKAnnotationView * annotationView = [_mapView viewForAnnotation:annotation];	
+	
 	
     /*
 	 // determine which image to use for this annotation. If our map is above 2.0, use the big one
@@ -262,10 +263,12 @@
 	 image = annotation.shuttleStop.upcoming ? _smallUpcomingStopImage : _smallStopImage;
 	 }
 	 */
-	UIImageView* imageView = [annotationView.subviews objectAtIndex:0];
+	
+	
+	/*UIImageView* imageView = [annotationView.subviews objectAtIndex:0];
 	imageView.image = image;
 	imageView.frame = CGRectMake(0, 0, image.size.width, image.size.height);
-	annotationView.frame = imageView.frame;
+	annotationView.frame = imageView.frame;*/
 	
 	//[_mapView positionAnnotationView:annotationView];
 	
