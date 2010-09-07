@@ -33,6 +33,52 @@
 
 int timeToNextMeal;  //starting with ONE DAY
 
+-(BOOL)isCorrectDay:(NSString*)day dayIndex:(int)index {
+	
+	BOOL correctDay = NO;
+	
+	switch (index) {
+		case 0:
+			if ([day isEqualToString:@"Monday"] || [day isEqualToString:@"Tuesday"] || [day isEqualToString:@"Wednesday"]
+				|| [day isEqualToString:@"Thursday"] || [day isEqualToString:@"Friday"] || [day isEqualToString:@"Saturday"])
+				correctDay = YES;
+			else {
+				correctDay = NO;
+			}
+			break;
+		case 1:
+			if ([day isEqualToString:@"Monday"] || [day isEqualToString:@"Tuesday"] || [day isEqualToString:@"Wednesday"]
+				|| [day isEqualToString:@"Thursday"] || [day isEqualToString:@"Friday"] || [day isEqualToString:@"Saturday"])
+				correctDay = YES;
+			else {
+				correctDay = NO;
+			}
+			break;
+		case 2:
+			correctDay = YES;
+			break;
+		case 3:
+			if ([day isEqualToString:@"Monday"] || [day isEqualToString:@"Tuesday"] || [day isEqualToString:@"Wednesday"]
+				|| [day isEqualToString:@"Thursday"] || [day isEqualToString:@"Sunday"])
+				correctDay = YES;
+			else {
+				correctDay = NO;
+			}
+			
+			break;
+		case 4:
+			if ([day isEqualToString:@"Sunday"])
+				correctDay = YES;
+			else {
+				correctDay = NO;
+			}
+			break;
+			
+	}
+	
+	return correctDay;
+}
+
 -(int)getStatusOfMeal:(NSString *)timeString usingDetails:(NSDictionary *)details {
 	
 	BOOL correctDay = NO;
@@ -57,22 +103,12 @@ int timeToNextMeal;  //starting with ONE DAY
 			case 0:
 				hoursKey = @"breakfast_hours";
 				restrictionKey = @"NA";
-				if ([dayOfWeek isEqualToString:@"Monday"] || [dayOfWeek isEqualToString:@"Tuesday"] || [dayOfWeek isEqualToString:@"Wednesday"]
-					|| [dayOfWeek isEqualToString:@"Thursday"] || [dayOfWeek isEqualToString:@"Friday"] || [dayOfWeek isEqualToString:@"Saturday"])
-					correctDay = YES;
-				else {
-					correctDay = NO;
-				}
+				correctDay = [self isCorrectDay:dayOfWeek dayIndex:index];
 				break;
 			case 1:
 				hoursKey = @"lunch_hours";
 				restrictionKey = @"lunch_restrictions";
-				if ([dayOfWeek isEqualToString:@"Monday"] || [dayOfWeek isEqualToString:@"Tuesday"] || [dayOfWeek isEqualToString:@"Wednesday"]
-					|| [dayOfWeek isEqualToString:@"Thursday"] || [dayOfWeek isEqualToString:@"Friday"] || [dayOfWeek isEqualToString:@"Saturday"])
-					correctDay = YES;
-				else {
-					correctDay = NO;
-				}
+				correctDay = [self isCorrectDay:dayOfWeek dayIndex:index];
 				break;
 			case 2:
 				hoursKey = @"dinner_hours";
@@ -82,22 +118,13 @@ int timeToNextMeal;  //starting with ONE DAY
 			case 3:
 				hoursKey = @"bb_hours";
 				restrictionKey = @"NA";
-				if ([dayOfWeek isEqualToString:@"Monday"] || [dayOfWeek isEqualToString:@"Tuesday"] || [dayOfWeek isEqualToString:@"Wednesday"]
-					|| [dayOfWeek isEqualToString:@"Thursday"] || [dayOfWeek isEqualToString:@"Sunday"])
-					correctDay = YES;
-				else {
-					correctDay = NO;
-				}
+				correctDay = [self isCorrectDay:dayOfWeek dayIndex:index];
 
 				break;
 			case 4:
 				hoursKey = @"brunch_hours";
 				restrictionKey = @"brunch_restrictions";
-				if ([dayOfWeek isEqualToString:@"Sunday"])
-					correctDay = YES;
-				else {
-					correctDay = NO;
-				}
+				correctDay = [self isCorrectDay:dayOfWeek dayIndex:index];
 				break;
 				
 		}
@@ -283,6 +310,8 @@ int timeToNextMeal;  //starting with ONE DAY
 	int start;
 	int end;
 	int now;
+	NSString *dayOfWeek;
+	int currentHour;
 	
 	NSRange range1 = [timeString rangeOfString:@"starting "];
 	
@@ -340,29 +369,46 @@ int timeToNextMeal;  //starting with ONE DAY
 	
 	[dateFormat release];
 	
+	NSDateFormatter *dateFormatDay = [[NSDateFormatter alloc] init];
+	[dateFormatDay setDateFormat:@"EEEE"];
+	dayOfWeek= [dateFormatDay stringFromDate:today];
+	[dateFormatDay release];
+	
+	NSDateFormatter *dateFormatHour = [[NSDateFormatter alloc] init];
+	[dateFormatHour setDateFormat:@"HH"];
+	currentHour= [[dateFormatHour stringFromDate:today] intValue];
+	[dateFormatHour release];
+	
 	
 	if ((now >= start) && (now < end))
 		return OPEN;
 	
 	else {
 		if (((start - now) >= 0) && ((start - now) < timeToNextMeal)) {
-			timeToNextMeal = (start - now);
+			
 			
 			switch (mealIndex) {
 				case 0:
 					nextMeal = @"Breakfast";
+					timeToNextMeal = (start - now);
 					break;
 				case 1:
 					nextMeal = @"Lunch";
+					timeToNextMeal = (start - now);
 					break;
 				case 2:
 					nextMeal = @"Dinner";
+					timeToNextMeal = (start - now);
 					break;
 				case 3:
 					nextMeal = @"Brain-Break";
+					timeToNextMeal = (start - now);
 					break;
 				case 4:
+					if (([dayOfWeek isEqualToString:@"Sunday"]) ||
+							(([dayOfWeek isEqualToString:@"Saturday"]) && (currentHour > 18)))
 					nextMeal = @"Brunch";
+					timeToNextMeal = (start - now);
 					break;
 			}
 			nextMealTime = [timeString stringByReplacingOccurrencesOfString:@"starting" withString:@""];
