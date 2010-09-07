@@ -359,7 +359,12 @@
 	self.shuttleRoutes = routes;
 	
 	if (nil == routes) {
-		[MITMobileWebAPI showErrorWithHeader:@"Shuttles"];
+		UIAlertView* alert = [[[UIAlertView alloc] initWithTitle:nil
+														 message:@"Problem loading shuttle info. Please check your internet connection."
+														delegate:self
+											   cancelButtonTitle:@"OK"
+											   otherButtonTitles:nil] autorelease];
+		[alert show];
 		self.shuttleRoutes = oldRoutes;
 	}
 }

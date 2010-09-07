@@ -52,7 +52,7 @@
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
     
 	self.shuttleStop = nil;
-
+	
 	self.annotation = nil;
 	self.loadingSubscriptionRequests = nil;
 	self.shuttleStopSchedules = nil;
@@ -63,10 +63,6 @@
     
 	[_mapButton release];
 	[_mapThumbnail release];
-	
-	// shouldn't [super dealloc] do this?
-	self.tableView.delegate = nil;
-	self.tableView.dataSource = nil;
 	
  	[super dealloc];
 }
@@ -79,7 +75,7 @@
 	
 	
 	[[ShuttleDataManager sharedDataManager] registerDelegate:self];
-
+	
 	_shuttleStopSchedules = [[NSMutableArray alloc] initWithCapacity:[self.shuttleStop.routeStops count]];
     // make sure selected route is sorted first
 	for (ShuttleRouteStop *routeStop in self.shuttleStop.routeStops) {
@@ -118,25 +114,25 @@
 	
 	
 	// add the map view thumbnail
-	_mapThumbnail = [[MITMapView alloc] initWithFrame:CGRectMake(2.0, 2.0, mapSize - 4.0, mapSize - 4.0)];
+	_mapThumbnail = [[MKMapView alloc] initWithFrame:CGRectMake(2.0, 2.0, mapSize - 4.0, mapSize - 4.0)];
 	_mapThumbnail.delegate = self;
-	_mapThumbnail.shouldNotDropPins = YES;
+	//_mapThumbnail.shouldNotDropPins = YES;
 	[_mapThumbnail addAnnotation:self.annotation];
 	_mapThumbnail.centerCoordinate = self.annotation.coordinate;
 	_mapThumbnail.scrollEnabled = NO;
 	_mapThumbnail.userInteractionEnabled = NO;
-	_mapThumbnail.layer.cornerRadius = 6.0;
+	//_mapThumbnail.layer.cornerRadius = 6.0;
 	
 	// add a button on top of the map
 	_mapButton = [[UIButton alloc] initWithFrame:CGRectMake(mapBuffer, mapBuffer, mapSize, mapSize)];
     
 	_mapButton.backgroundColor = [UIColor whiteColor];
-	_mapButton.layer.cornerRadius = 8.0;
+	//_mapButton.layer.cornerRadius = 8.0;
 	[_mapButton addSubview:_mapThumbnail];
     
 	[headerView addSubview:_mapButton];
 	
-	UIImageView *alertHeaderIcon = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"shuttle/shuttle-alert-descriptive.png"]] autorelease];
+	UIImageView *alertHeaderIcon = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"shuttle-alert-descriptive.png"]] autorelease];
 	CGRect alertHeaderIconFrame = alertHeaderIcon.frame;
 	alertHeaderIconFrame.origin = CGPointMake(MARGIN, mapSize + mapBuffer * 2);
 	alertHeaderIcon.frame = alertHeaderIconFrame;
@@ -199,12 +195,9 @@
 -(void) viewDidAppear:(BOOL)animated 
 {
 	[super viewDidAppear:animated];
-	
-	// get the parent, and it it is the ShuttleRouteViewController, we can set the url.
-	UIViewController *parentController = (ShuttleRouteViewController *)[[MIT_MobileAppDelegate moduleForTag:ShuttleTag] parentForViewController:self];
-	ShuttleRouteViewController *shuttleVC = (ShuttleRouteViewController*) parentController;
-	NSString *routeID = shuttleVC.route.routeID;
-	NSString *root = [[shuttleVC.url.path componentsSeparatedByString:@"/"] objectAtIndex:0];
+	ShuttleRouteViewController *parentController = (ShuttleRouteViewController *)[MITModuleURL parentViewController:self];	
+	NSString *routeID = parentController.route.routeID;
+	NSString *root = [[parentController.url.path componentsSeparatedByString:@"/"] objectAtIndex:0];
 	[url setPath:[NSString stringWithFormat:@"%@/%@/%@/stops", root, routeID, self.shuttleStop.stopID] query:nil];
 	[url setAsModulePath];
 }
@@ -220,9 +213,9 @@
 	// ensure the view and map view are loaded
 	routeMap.view;
 	
-	MITMapView* mapView = routeMap.mapView;
+	MKMapView* mapView = routeMap.mapView;
 	
-	[mapView selectAnnotation:self.annotation];
+	[mapView selectAnnotation:self.annotation animated:NO];
 	
 	[self.navigationController pushViewController:routeMap animated:YES];
 }
@@ -249,7 +242,7 @@
 
 // Customize the number of rows in the table view.
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    	
+	
 	if (section < self.shuttleStopSchedules.count) 
 	{
 		// determine the route schedule
@@ -301,9 +294,9 @@
         if(minutes > NOTIFICATION_MINUTES) {
             
             if([self hasSubscription:indexPath]) {
-                cell.accessoryView = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"shuttle/shuttle-alert-toggle-on.png"]] autorelease];
+                cell.accessoryView = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"shuttle-alert-toggle-on.png"]] autorelease];
             } else {
-                cell.accessoryView = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"shuttle/shuttle-alert-toggle-off.png"]] autorelease];
+                cell.accessoryView = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"shuttle-alert-toggle-off.png"]] autorelease];
             }
             
             
@@ -361,7 +354,7 @@
 		[alertView release];
 		return;
 	}
-	
+    
     UIRemoteNotificationType types = [[UIApplication sharedApplication] enabledRemoteNotificationTypes];
     
     if (types == UIRemoteNotificationTypeNone) {
@@ -401,7 +394,7 @@
 		[alertView release];
 		return;
     }
-	
+    
     MIT_MobileAppDelegate *appDelegate = (MIT_MobileAppDelegate *)[[UIApplication sharedApplication] delegate];
     MITModule *shuttleModule = [appDelegate moduleForTag:ShuttleTag];
     if (!shuttleModule.pushNotificationEnabled) {
@@ -452,37 +445,38 @@
 	[self.tableView reloadData];
 }		
 
-- (void) subscriptionFailedWithObject: (id)object passkeyError:(BOOL)passkeyError {
+- (void) subscriptionFailedWithObject: (id)object {
 	[self removeFromLoadingSubscriptionRequests:((NSIndexPath *)object)];
-	if(passkeyError) {
-		UIAlertView *alertView = [[UIAlertView alloc]
-							  initWithTitle:@"Subscription failed"
-							  message:@"We are sorry, we failed to register your device for a shuttle notification"
-							  delegate:nil
-							  cancelButtonTitle:@"OK"
-							  otherButtonTitles:nil];
-		[alertView show];
-		[alertView release];
-	}
-	[self.tableView reloadData];	
+	[self.tableView reloadData];
+    
+	UIAlertView *alertView = [[UIAlertView alloc]
+                              initWithTitle:@"Subscription failed" 
+                              message:@"We are sorry, we failed to register your device for a shuttle notification" 
+                              delegate:nil 
+                              cancelButtonTitle:@"OK"
+                              otherButtonTitles:nil];
+    
+	[alertView show];
+	[alertView release];	
 }
 
-#pragma mark MITMapViewDelegate
-- (MITMapAnnotationView *)mapView:(MITMapView *)mapView viewForAnnotation:(id <MKAnnotation>)annotation
+#pragma mark MKMapViewDelegate
+
+- (MKAnnotationView *)mapView:(MKMapView *)mapView viewForAnnotation:(id <MKAnnotation>)annotation
 {
-	MITMapAnnotationView* annotationView = nil;
+	MKAnnotationView* annotationView = nil;
 	
 	if ([annotation isKindOfClass:[ShuttleStopMapAnnotation class]]) 
 	{
-		annotationView = [[[MITMapAnnotationView alloc] initWithAnnotation:annotation] autorelease];
-		UIImage* pin = [UIImage imageNamed:@"shuttle/map_pin_shuttle_stop_complete.png"];
+		annotationView = [[[MKAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:@"annotation"] autorelease];
+		UIImage* pin = [UIImage imageNamed:@"map_pin_shuttle_stop_complete.png"];
 		UIImageView* imageView = [[[UIImageView alloc] initWithImage:pin] autorelease];
 		annotationView.frame = imageView.frame;
 		annotationView.canShowCallout = YES;
 		[annotationView addSubview:imageView];
 		annotationView.backgroundColor = [UIColor clearColor];
-		annotationView.centeredVertically = YES;
-		annotationView.alreadyOnMap = YES;
+		//annotationView.centeredVertically = YES;
+		//annotationView.alreadyOnMap = YES;
 		//annotationView.layer.anchorPoint = CGPointMake(0.5, 0.5);
 	}
 	
@@ -534,15 +528,15 @@
 }
 
 /*
-// do we need this here?
--(void) stopsReceived:(NSArray *)stops
-{
-	if (nil != stops) {
-		[self.tableView reloadData];
-	}
-    
-}
-*/
+ // do we need this here?
+ -(void) stopsReceived:(NSArray *)stops
+ {
+ if (nil != stops) {
+ [self.tableView reloadData];
+ }
+ 
+ }
+ */
 
 -(void) reloadSubscriptions {
 	[self findScheduledSubscriptions];

@@ -1,6 +1,6 @@
 
 #import <Foundation/Foundation.h>
-#import "MITMobileWebAPI.h"
+#import "JSONAPIRequest.h"
 
 
 @class ShuttleStop;
@@ -10,7 +10,7 @@
 @protocol ShuttleSubscriptionDelegate <NSObject>
 
 - (void) subscriptionSucceededWithObject: (id)object;
-- (void) subscriptionFailedWithObject: (id)object passkeyError: (BOOL)passkeyError;
+- (void) subscriptionFailedWithObject: (id)object;
 
 @end
 
@@ -33,7 +33,7 @@
 
 @end
 
-@interface SubscribeRequest : NSObject<JSONLoadedDelegate>
+@interface SubscribeRequest : NSObject<JSONAPIDelegate>
 {
 	id object;
 	id<ShuttleSubscriptionDelegate> delegate;
@@ -47,7 +47,7 @@
 
 @end
 
-@interface UnsubscribeRequest : NSObject<JSONLoadedDelegate>
+@interface UnsubscribeRequest : NSObject<JSONAPIDelegate>
 {
 	id object;
 	id<ShuttleSubscriptionDelegate> delegate;

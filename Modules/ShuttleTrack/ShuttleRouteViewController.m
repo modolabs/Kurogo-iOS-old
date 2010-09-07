@@ -10,7 +10,6 @@
 
 -(void) displayTypeChanged:(id)sender;
 
--(void) setUrl:(MITModuleURL *)moduleURL;
 @end
 
 
@@ -26,16 +25,13 @@
 	
 	self.route = nil;
 	self.tableView = nil;
-	self.view = nil;
-	[self setUrl:nil];
-	
 	//self.routeMapViewController = nil;
 	[_routeMapViewController release];
 	
 	[_smallStopImage release];
 	[_smallUpcomingStopImage release];
-
-
+	
+	
 	[_titleCell release];
 	[_loadingCell release];
 	[_shuttleStopCell release];
@@ -46,7 +42,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-
+	
 	if (_route.stops == nil) {
 		[_route getStopsFromCache];
 	}
@@ -60,10 +56,10 @@
 	//_viewTypeButton.enabled = NO;										  
 	self.navigationItem.rightBarButtonItem = _viewTypeButton;
 	
-	_smallStopImage = [[UIImage imageNamed:@"shuttle/shuttle-stop-dot.png"] retain];
-	_smallUpcomingStopImage = [[UIImage imageNamed:@"shuttle/shuttle-stop-dot-next.png"] retain];
+	_smallStopImage = [[UIImage imageNamed:@"shuttle-stop-dot.png"] retain];
+	_smallUpcomingStopImage = [[UIImage imageNamed:@"shuttle-stop-dot-next.png"] retain];
 	
-	[self setUrl:[[[MITModuleURL alloc] initWithTag:ShuttleTag] autorelease]];
+	url = [[MITModuleURL alloc] initWithTag:ShuttleTag];
     [url setPath:[NSString stringWithFormat:@"route-list/%@", self.route.routeID] query:nil];
     
     [_titleCell setRouteInfo:self.route];
@@ -71,6 +67,7 @@
     [self.view addSubview:_titleCell];
     self.tableView.frame = CGRectMake(0.0, _titleCell.frame.size.height - 4.0, self.view.frame.size.width, self.view.frame.size.height - _titleCell.frame.size.height + 4.0);
 }
+
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
@@ -110,18 +107,18 @@
 
 
 /*
-- (void)viewDidDisappear:(BOOL)animated {
-	[super viewDidDisappear:animated];
-}
-*/
+ - (void)viewDidDisappear:(BOOL)animated {
+ [super viewDidDisappear:animated];
+ }
+ */
 
 /*
-// Override to allow orientations other than the default portrait orientation.
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
-    // Return YES for supported orientations
-    return (interfaceOrientation == UIInterfaceOrientationPortrait);
-}
-*/
+ // Override to allow orientations other than the default portrait orientation.
+ - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
+ // Return YES for supported orientations
+ return (interfaceOrientation == UIInterfaceOrientationPortrait);
+ }
+ */
 
 - (void)didReceiveMemoryWarning {
 	// Releases the view if it doesn't have a superview.
@@ -160,7 +157,7 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     
     static NSString *StopCellIdentifier = @"StopCell";
-
+	
 	ShuttleStopCell* cell = (ShuttleStopCell*)[tableView dequeueReusableCellWithIdentifier:StopCellIdentifier];
 	if (nil == cell) {
 		[[NSBundle mainBundle] loadNibNamed:@"ShuttleStopCell" owner:self options:nil];
@@ -197,8 +194,8 @@
 	shuttleStopVC.view;
 	[shuttleStopVC.mapButton addTarget:self action:@selector(showSelectedStop:) forControlEvents:UIControlEventTouchUpInside];
 }
-	
-	
+
+
 -(void) showSelectedStop:(id)sender
 {
 	[self showStop:_selectedStopAnnotation animated:YES];
@@ -207,8 +204,8 @@
 -(void) showStop:(ShuttleStopMapAnnotation *)annotation animated:(BOOL)animated {	
 	[self.navigationController popToViewController:self animated:animated];
 	[self setMapViewMode:YES animated:animated];
-
-	[_routeMapViewController.mapView selectAnnotation:annotation];
+	
+	[_routeMapViewController.mapView selectAnnotation:annotation animated:NO];
 }
 
 // set the view to either map or list mode
@@ -223,7 +220,7 @@
 	// flip to the correct view. 
 	if (animated) {
 		[UIView beginAnimations:@"flip" context:nil];
-		[UIView setAnimationTransition:UIViewAnimationTransitionFlipFromRight forView:self.view cache:NO];
+		[UIView setAnimationTransition:UIViewAnimationTransitionCurlDown forView:self.view cache:NO];
 	}
 	
 	if (!showMap) {
@@ -271,7 +268,7 @@
 	[url setPath:[NSString stringWithFormat:@"%@/%@", basePath, self.route.routeID] query:nil];
 	[url setAsModulePath];
 }
-	
+
 #pragma mark ShuttleDataManagerDelegate
 -(void) routeInfoReceived:(ShuttleRoute*)shuttleRoute forRouteID:(NSString*)routeID
 {
@@ -281,7 +278,12 @@
 		if (!_shownError) {
 			_shownError = YES;
 			
-			[MITMobileWebAPI showErrorWithHeader:@"Shuttles"];
+			UIAlertView* alert = [[[UIAlertView alloc] initWithTitle:nil
+															 message:@"Problem loading shuttle info. Please check your internet connection."
+															delegate:self
+												   cancelButtonTitle:@"OK"
+												   otherButtonTitles:nil] autorelease];
+			[alert show];
 			
 			if([routeID isEqualToString:self.route.routeID]) {
 				self.route.liveStatusFailed = YES;
@@ -296,19 +298,19 @@
 			if (!self.route.isRunning && [_pollingTimer isValid]) {
 				[_pollingTimer invalidate];
 			}
-		
+			
 			_shownError = NO;
-		
+			
 			//self.routeInfo = shuttleRoute;
 			self.route = shuttleRoute;
-				if (self.route.annotations.count <= 0) {
-					self.route = shuttleRoute;
-				}
+			if (self.route.annotations.count <= 0) {
+				self.route = shuttleRoute;
+			}
 			[_titleCell setRouteInfo:self.route];
-        
+			
 			//_routeLoaded = YES;
 			[self.tableView reloadData];
-		
+			
 			//_viewTypeButton.enabled = YES;
 		}	 
 	}
@@ -319,16 +321,18 @@
 		} else {
 			self.routeMapViewController.route.liveStatusFailed = YES;
 		}
-
+		
 		[self.routeMapViewController refreshRouteTitleInfo];
 	}
 }
 
--(void) setUrl:(MITModuleURL *)moduleURL {
-	if(url != moduleURL) {
-		[url release];
-		url = [moduleURL retain];
-	}
+
+#pragma mark UIAlertViewDelegate
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+	//if (!_routeLoaded) {
+	//	[self.navigationController popViewControllerAnimated:YES];
+	//}
 }
 
 @end

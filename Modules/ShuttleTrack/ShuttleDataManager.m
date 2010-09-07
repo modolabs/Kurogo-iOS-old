@@ -3,7 +3,7 @@
 #import "ShuttleStop.h"
 #import "ShuttleRouteStop.h"
 #import "CoreDataManager.h"
-#import "MITConstants.h"
+#import "Constants.h"
 
 static ShuttleDataManager* s_dataManager = nil;
 
@@ -198,7 +198,7 @@ NSString * const shuttlePathExtension = @"shuttles/";
 
 -(void) requestRoutes
 {
-	MITMobileWebAPI *api = [MITMobileWebAPI jsonLoadedDelegate:self];
+	JSONAPIRequest *api = [JSONAPIRequest requestWithJSONAPIDelegate:self];
 	BOOL dispatched = [api requestObject:[NSDictionary dictionaryWithObjectsAndKeys:@"routes", @"command", @"true", @"compact", nil]
 						   pathExtension:shuttlePathExtension];
 	if (!dispatched) {
@@ -208,7 +208,7 @@ NSString * const shuttlePathExtension = @"shuttles/";
 
 -(void) requestStops
 {
-	MITMobileWebAPI *api = [MITMobileWebAPI jsonLoadedDelegate:self];
+	JSONAPIRequest *api = [JSONAPIRequest requestWithJSONAPIDelegate:self];
 	BOOL dispatched = [api requestObject:[NSDictionary dictionaryWithObjectsAndKeys:@"stops", @"command", nil]
 						   pathExtension:shuttlePathExtension];
 	if (!dispatched) {
@@ -219,7 +219,7 @@ NSString * const shuttlePathExtension = @"shuttles/";
 
 -(void) requestStop:(NSString*)stopID
 {
-	MITMobileWebAPI *api = [MITMobileWebAPI jsonLoadedDelegate:self];
+	JSONAPIRequest *api = [JSONAPIRequest requestWithJSONAPIDelegate:self];
 	BOOL dispatched = [api requestObject:[NSDictionary dictionaryWithObjectsAndKeys:@"stopInfo", @"command", stopID, @"id", nil]
 						   pathExtension:shuttlePathExtension];
 	if (!dispatched) {
@@ -228,7 +228,7 @@ NSString * const shuttlePathExtension = @"shuttles/";
 }
 
 -(void) requestRoute:(NSString*)routeID
-{	MITMobileWebAPI *api = [MITMobileWebAPI jsonLoadedDelegate:self];
+{	JSONAPIRequest *api = [JSONAPIRequest requestWithJSONAPIDelegate:self];
 	BOOL dispatched = [api requestObject:[NSDictionary dictionaryWithObjectsAndKeys:@"routeInfo", @"command", routeID, @"id", @"true", @"full", nil]
 						   pathExtension:shuttlePathExtension];
 	if (!dispatched) {
@@ -304,7 +304,7 @@ NSString * const shuttlePathExtension = @"shuttles/";
 
 #pragma mark JSONLoadedDelegate
 
-- (void)request:(MITMobileWebAPI *)request jsonLoaded:(id)result
+- (void)request:(JSONAPIRequest *)request jsonLoaded:(id)result
 {	
 	if ([[request.params valueForKey:@"command"] isEqualToString:@"routes"] && [result isKindOfClass:[NSArray class]]) {
 
@@ -413,7 +413,7 @@ NSString * const shuttlePathExtension = @"shuttles/";
 }
 
 
-- (void)handleConnectionFailureForRequest:(MITMobileWebAPI *)request
+- (void)handleConnectionFailureForRequest:(JSONAPIRequest *)request
 {
 	if ([[request.params valueForKey:@"command"] isEqualToString:@"routes"]) {
 		[self sendRoutesToDelegates:nil];
@@ -429,7 +429,7 @@ NSString * const shuttlePathExtension = @"shuttles/";
 	}
 }
 
--(BOOL) request:(MITMobileWebAPI *)request shouldDisplayStandardAlertForError:(NSError *)error {
+-(BOOL) request:(JSONAPIRequest *)request shouldDisplayStandardAlertForError:(NSError *)error {
 	// since the logic for when errors are silent versus shown is a little complicated
 	// we just turn off error messages by default and leave it to the View Controllers to implement error messages
 	// this has the disadvantage of not being to able to distinguish network errors from timeout errors
