@@ -31,6 +31,8 @@
 
 
 
+
+
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 
 - (void)viewDidLoad {
@@ -38,6 +40,13 @@
     [super viewDidLoad];
 	
 	self.mapView.delegate = self;
+	self.mapView.scrollEnabled = YES;
+	
+	//sampleView = [[SampleViewClass initWithRoute:self.route.pathLocations mapView:self.mapView] autorelease];
+	
+	sampleView = [[SampleViewClass alloc] initWithRoute:self.route.pathLocations mapView:self.mapView];
+	sampleView.userInteractionEnabled = NO;
+	[self.mapView addSubview:sampleView];
 	//self.mapView.shouldNotDropPins = YES;
 	
 	_largeStopImage = [[UIImage imageNamed:@"map_pin_shuttle_stop_complete.png"] retain];
@@ -55,6 +64,7 @@
 	if ([self.route.pathLocations count]) {
 		//[self.mapView addRoute:self.route];
 		self.mapView.region = [self regionForRoute];
+		//[self drawRect];
 	}
 	
 	// get the extended route info
@@ -246,7 +256,7 @@
 
 -(void) updateStopAnnotation:(ShuttleStopMapAnnotation*)annotation
 {
-	UIImage* image = nil;
+	//UIImage* image = nil;
 	[self.mapView addAnnotation:annotation];
 	//MKAnnotationView * annotationView = [_mapView viewForAnnotation:annotation];	
 	
@@ -266,9 +276,9 @@
 	
 	
 	/*UIImageView* imageView = [annotationView.subviews objectAtIndex:0];
-	imageView.image = image;
-	imageView.frame = CGRectMake(0, 0, image.size.width, image.size.height);
-	annotationView.frame = imageView.frame;*/
+	 imageView.image = image;
+	 imageView.frame = CGRectMake(0, 0, image.size.width, image.size.height);
+	 annotationView.frame = imageView.frame;*/
 	
 	//[_mapView positionAnnotationView:annotationView];
 	
@@ -297,15 +307,28 @@
 
 #pragma mark MKMapViewDelegate
 
-- (void)mapViewRegionWillChange:(MKMapView *)mapView
+- (void)mapViewRegionWillChangeAnimated:(MKMapView *)mapView
 {
+	[sampleView hideFromView];
 	//_gpsButton.style = _mapView.stayCenteredOnUserLocation ? UIBarButtonItemStyleDone : UIBarButtonItemStyleBordered;
 	//NSString *bgImageName = [NSString stringWithFormat:@"scrim-button-background%@.png", _mapView.stayCenteredOnUserLocation ? @"-highlighted" : @""];
 	//[_gpsButton setBackgroundImage:[UIImage imageNamed:bgImageName] forState:UIControlStateNormal];
 }
 
+- (void)mapView:(MKMapView *)mapView regionDidChangeAnimated:(BOOL)animated {
 
-- (void)mapViewRegionDidChange:(MKMapView *)mapView
+	[sampleView setNeedsDisplay];
+	[sampleView showView];
+}
+
+
+- (void)mapView:(MKMapView *)mapView regionWillChangeAnimated:(BOOL)animated
+{
+
+	[sampleView hideFromView];
+}
+
+- (void)mapViewRegionDidChangeAnimated:(MKMapView *)mapView
 {
 	//NSString *bgImageName = [NSString stringWithFormat:@"scrim-button-background%@.png", _mapView.stayCenteredOnUserLocation ? @"-highlighted" : @""];
 	//[_gpsButton setBackgroundImage:[UIImage imageNamed:bgImageName] forState:UIControlStateNormal];
@@ -328,7 +351,10 @@
 	 }
 	 _lastZoomLevel = mapView.zoomLevel;
      */
+
+	sampleView.hidden = YES;
 }
+
 
 -(void) locateUserFailed
 {
@@ -341,12 +367,14 @@
 - (MKAnnotationView *)mapView:(MKMapView *)mapView viewForAnnotation:(id <MKAnnotation>)annotation
 {
 	MKAnnotationView* annotationView = nil;
+	UIImage *image;
 	
 	if ([annotation isKindOfClass:[ShuttleStopMapAnnotation class]]) 
 	{
 		annotationView = [[[MKAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:@"gufileg"] autorelease];
 		UIImage* pin = [UIImage imageNamed:@"shuttle-stop-dot.png"];
 		UIImageView* imageView = [[[UIImageView alloc] initWithImage:pin] autorelease];
+		imageView.image = ((ShuttleStopMapAnnotation *)annotation).shuttleStop.upcoming ? _smallUpcomingStopImage : _smallStopImage;
 		annotationView.frame = imageView.frame;
 		annotationView.canShowCallout = YES;
 		[annotationView addSubview:imageView];
@@ -354,6 +382,22 @@
 		//annotationView.centeredVertically = YES;
 		//annotationView.alreadyOnMap = YES;
 		//annotationView.layer.anchorPoint = CGPointMake(0.5, 0.5);
+		
+		
+		
+		 // determine which image to use for this annotation. If our map is above 2.0, use the big one
+		 /*if (_mapView.zoomLevel >= 2.0) {
+		 image = annotation.shuttleStop.upcoming ? _largeUpcomingStopImage : _largeStopImage;
+		 annotationView.layer.anchorPoint = CGPointMake(0.5, 1.0);
+		 }
+		 else 
+		 {*/
+		// annotationView.layer.anchorPoint = CGPointMake(0.5, 0.5);
+		 
+		 
+		 
+		
+		
 	}
 	else if([annotation isKindOfClass:[ShuttleLocation class]])
 	{
@@ -382,6 +426,7 @@
 		//annotationView.layer.anchorPoint = CGPointMake(0.5, 1.0);
 	}
 	
+	[sampleView setNeedsDisplay];
 	return annotationView;
 	
 }

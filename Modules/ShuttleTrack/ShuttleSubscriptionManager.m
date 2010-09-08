@@ -5,7 +5,7 @@
 #import "MITDeviceRegistration.h"
 
 @implementation ShuttleSubscriptionManager
-
+	
 + (void) subscribeForRoute:(NSString *)routeID atStop:(NSString *)stopID scheduleTime: (NSDate *)time delegate: (id<ShuttleSubscriptionDelegate>)delegate object: (id)object {
 	NSMutableDictionary *parameters = [[MITDeviceRegistration identity] mutableDictionary];
 	[parameters setObject:@"subscribe" forKey:@"command"];
@@ -17,8 +17,8 @@
 	[parameters setObject:unixtime_string forKey:@"time"];	
 	
 	JSONAPIRequest *request = [JSONAPIRequest requestWithJSONAPIDelegate:
-							   [[[SubscribeRequest alloc] initWithDelegate:delegate routeID:routeID stopID:stopID object:object] autorelease]];
-	
+		[[[SubscribeRequest alloc] initWithDelegate:delegate routeID:routeID stopID:stopID object:object] autorelease]];
+
 	[request requestObject:parameters pathExtension:@"shuttles"];
 }
 
@@ -29,11 +29,11 @@
 	[parameters setObject:stopID forKey:@"stop"];
 	
 	JSONAPIRequest *request = [JSONAPIRequest requestWithJSONAPIDelegate:
-							   [[[UnsubscribeRequest alloc] initWithDelegate:delegate routeID:routeID stopID:stopID object:object] autorelease]];
+		[[[UnsubscribeRequest alloc] initWithDelegate:delegate routeID:routeID stopID:stopID object:object] autorelease]];
 	
 	[request requestObject:parameters pathExtension:@"shuttles"];
 }
-
+	
 + (BOOL) hasSubscription: (NSString *)routeID atStop: (NSString *)stopID scheduleTime: (NSDate *)time {
 	[self pruneSubscriptions];
 	
@@ -49,7 +49,7 @@
 	}
 	return NO;
 }
-
+			
 + (void) pruneSubscriptions {		
 	NSDictionary *subscriptions = [[NSUserDefaults standardUserDefaults] objectForKey:ShuttleSubscriptionsKey];
 	NSMutableDictionary *mutableSubscriptions = [NSMutableDictionary dictionaryWithDictionary:subscriptions];
@@ -74,7 +74,7 @@
 	
 	[[NSUserDefaults standardUserDefaults] setObject:mutableSubscriptions forKey:ShuttleSubscriptionsKey];
 }
-
+	
 
 + (void)addSubscriptionForRouteID:(NSString *)routeID atStopID:(NSString *)stopID startTime:(NSDate *)startTime endTime: (NSDate *)endTime {
 	NSDictionary *subscriptions = [[NSUserDefaults standardUserDefaults] objectForKey:ShuttleSubscriptionsKey];
@@ -96,22 +96,22 @@
 
 + (void)removeSubscriptionForRouteID:(NSString *)routeID atStopID: (NSString *)stopID {
 	NSDictionary *subscriptions = [[NSUserDefaults standardUserDefaults] objectForKey:ShuttleSubscriptionsKey];
-	
+
 	NSMutableDictionary *mutableSubscriptions = [NSMutableDictionary dictionaryWithDictionary:subscriptions];
 	NSMutableDictionary *routeSubscriptions = [mutableSubscriptions objectForKey:routeID];
-	
+
 	if(!routeSubscriptions) {
 		// no subscription found
 		return;
 	}
-	
+
 	routeSubscriptions = [NSMutableDictionary dictionaryWithDictionary:routeSubscriptions];
 	[mutableSubscriptions setObject:routeSubscriptions forKey:routeID];
 	[routeSubscriptions removeObjectForKey:stopID];
-	
+
 	[[NSUserDefaults standardUserDefaults] setObject:mutableSubscriptions forKey:ShuttleSubscriptionsKey];
 }
-
+			
 @end
 
 @implementation SubscribeRequest

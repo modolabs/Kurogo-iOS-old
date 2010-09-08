@@ -472,7 +472,7 @@
 					<bool key="EncodedWithXMLCoder">YES</bool>
 					<string>RouteMapViewController</string>
 					<string>UIResponder</string>
-					<string>{{636, 438}, {320, 367}}</string>
+					<string>{{461, 446}, {320, 367}}</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
@@ -639,7 +639,7 @@
 			<integer value="3000" key="NS.object.0"/>
 		</object>
 		<bool key="IBDocument.PluginDeclaredDependenciesTrackSystemTargetVersion">YES</bool>
-		<string key="IBDocument.LastKnownRelativeProjectPath">../../Harvard Mobile.xcodeproj</string>
+		<string key="IBDocument.LastKnownRelativeProjectPath">../../MIT Mobile.xcodeproj</string>
 		<int key="IBDocument.defaultPropertyAccessControl">3</int>
 		<object class="NSMutableDictionary" key="IBDocument.LastKnownImageSizes">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -653,11 +653,11 @@
 			</object>
 			<object class="NSMutableArray" key="dict.values">
 				<bool key="EncodedWithXMLCoder">YES</bool>
-				<string>{16, 16}</string>
-				<string>{16, 16}</string>
-				<string>{16, 16}</string>
-				<string>{16, 16}</string>
-				<string>{16, 16}</string>
+				<string>{22, 22}</string>
+				<string>{22, 22}</string>
+				<string>{32, 32}</string>
+				<string>{32, 32}</string>
+				<string>{320, 53}</string>
 			</object>
 		</object>
 		<string key="IBCocoaTouchPluginVersion">117</string>

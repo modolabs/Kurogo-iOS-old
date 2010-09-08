@@ -68,7 +68,7 @@ NSString * const shuttlePathExtension = @"shuttles/";
                                             matchingPredicate:matchAll
                                               sortDescriptors:[NSArray arrayWithObject:sort]];
 	[sort release];
-	//NSLog(@"%d routes cached", [cachedRoutes count]);
+	NSLog(@"%d routes cached", [cachedRoutes count]);
 	
 	for (ShuttleRouteCache *cachedRoute in cachedRoutes) {
 		NSString *routeID = cachedRoute.routeID;
@@ -153,7 +153,9 @@ NSString * const shuttlePathExtension = @"shuttles/";
 	} else {
 		if (error != NULL) {
         NSString *message = [NSString stringWithFormat:@"route %@ does not exist", routeID];
-        *error = [NSError errorWithDomain:@"MIT Mobile" code:4567 userInfo:[NSDictionary dictionaryWithObjectsAndKeys:message, @"message", nil]];
+        *error = [NSError errorWithDomain:ShuttlesErrorDomain
+                                     code:errShuttleRouteNotAvailable
+                                 userInfo:[NSDictionary dictionaryWithObjectsAndKeys:message, @"message", nil]];
     }
 		return nil;
     }
@@ -302,7 +304,7 @@ NSString * const shuttlePathExtension = @"shuttles/";
 }
 
 
-#pragma mark JSONLoadedDelegate
+#pragma mark JSONAPIDelegate
 
 - (void)request:(JSONAPIRequest *)request jsonLoaded:(id)result
 {	
@@ -429,11 +431,5 @@ NSString * const shuttlePathExtension = @"shuttles/";
 	}
 }
 
--(BOOL) request:(JSONAPIRequest *)request shouldDisplayStandardAlertForError:(NSError *)error {
-	// since the logic for when errors are silent versus shown is a little complicated
-	// we just turn off error messages by default and leave it to the View Controllers to implement error messages
-	// this has the disadvantage of not being to able to distinguish network errors from timeout errors
-	return NO;
-}
 
 @end

@@ -52,7 +52,7 @@
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
     
 	self.shuttleStop = nil;
-	
+
 	self.annotation = nil;
 	self.loadingSubscriptionRequests = nil;
 	self.shuttleStopSchedules = nil;
@@ -75,7 +75,7 @@
 	
 	
 	[[ShuttleDataManager sharedDataManager] registerDelegate:self];
-	
+
 	_shuttleStopSchedules = [[NSMutableArray alloc] initWithCapacity:[self.shuttleStop.routeStops count]];
     // make sure selected route is sorted first
 	for (ShuttleRouteStop *routeStop in self.shuttleStop.routeStops) {
@@ -132,7 +132,7 @@
     
 	[headerView addSubview:_mapButton];
 	
-	UIImageView *alertHeaderIcon = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"shuttle-alert-descriptive.png"]] autorelease];
+	UIImageView *alertHeaderIcon = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"shuttles/shuttle-alert-descriptive.png"]] autorelease];
 	CGRect alertHeaderIconFrame = alertHeaderIcon.frame;
 	alertHeaderIconFrame.origin = CGPointMake(MARGIN, mapSize + mapBuffer * 2);
 	alertHeaderIcon.frame = alertHeaderIconFrame;
@@ -242,7 +242,7 @@
 
 // Customize the number of rows in the table view.
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-	
+    	
 	if (section < self.shuttleStopSchedules.count) 
 	{
 		// determine the route schedule
@@ -294,9 +294,9 @@
         if(minutes > NOTIFICATION_MINUTES) {
             
             if([self hasSubscription:indexPath]) {
-                cell.accessoryView = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"shuttle-alert-toggle-on.png"]] autorelease];
+                cell.accessoryView = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"shuttles/shuttle-alert-toggle-on.png"]] autorelease];
             } else {
-                cell.accessoryView = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"shuttle-alert-toggle-off.png"]] autorelease];
+                cell.accessoryView = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"shuttles/shuttle-alert-toggle-off.png"]] autorelease];
             }
             
             
@@ -364,7 +364,7 @@
         // Shuttle alerts don't do anything with badges.
 		UIAlertView *alertView = [[UIAlertView alloc] 
                                   initWithTitle:@"Notifications Disabled"
-                                  message:@"All notifications for MIT Mobile have been disabled. Quit this application and go to Settings > Notifications to enable them."
+                                  message:@"All notifications for Harvard Mobile have been disabled. Quit this application and go to Settings > Notifications to enable them."
                                   delegate:nil 
                                   cancelButtonTitle:@"OK" 
                                   otherButtonTitles:nil];
@@ -469,7 +469,7 @@
 	if ([annotation isKindOfClass:[ShuttleStopMapAnnotation class]]) 
 	{
 		annotationView = [[[MKAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:@"annotation"] autorelease];
-		UIImage* pin = [UIImage imageNamed:@"map_pin_shuttle_stop_complete.png"];
+		UIImage* pin = [UIImage imageNamed:@"shuttles/map_pin_shuttle_stop_complete.png"];
 		UIImageView* imageView = [[[UIImageView alloc] initWithImage:pin] autorelease];
 		annotationView.frame = imageView.frame;
 		annotationView.canShowCallout = YES;
@@ -528,15 +528,15 @@
 }
 
 /*
- // do we need this here?
- -(void) stopsReceived:(NSArray *)stops
- {
- if (nil != stops) {
- [self.tableView reloadData];
- }
- 
- }
- */
+// do we need this here?
+-(void) stopsReceived:(NSArray *)stops
+{
+	if (nil != stops) {
+		[self.tableView reloadData];
+	}
+    
+}
+*/
 
 -(void) reloadSubscriptions {
 	[self findScheduledSubscriptions];

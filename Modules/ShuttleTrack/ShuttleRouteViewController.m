@@ -30,8 +30,8 @@
 	
 	[_smallStopImage release];
 	[_smallUpcomingStopImage release];
-	
-	
+
+
 	[_titleCell release];
 	[_loadingCell release];
 	[_shuttleStopCell release];
@@ -42,7 +42,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-	
+
 	if (_route.stops == nil) {
 		[_route getStopsFromCache];
 	}
@@ -56,8 +56,8 @@
 	//_viewTypeButton.enabled = NO;										  
 	self.navigationItem.rightBarButtonItem = _viewTypeButton;
 	
-	_smallStopImage = [[UIImage imageNamed:@"shuttle-stop-dot.png"] retain];
-	_smallUpcomingStopImage = [[UIImage imageNamed:@"shuttle-stop-dot-next.png"] retain];
+	_smallStopImage = [[UIImage imageNamed:@"shuttles/shuttle-stop-dot.png"] retain];
+	_smallUpcomingStopImage = [[UIImage imageNamed:@"shuttles/shuttle-stop-dot-next.png"] retain];
 	
 	url = [[MITModuleURL alloc] initWithTag:ShuttleTag];
     [url setPath:[NSString stringWithFormat:@"route-list/%@", self.route.routeID] query:nil];
@@ -107,18 +107,18 @@
 
 
 /*
- - (void)viewDidDisappear:(BOOL)animated {
- [super viewDidDisappear:animated];
- }
- */
+- (void)viewDidDisappear:(BOOL)animated {
+	[super viewDidDisappear:animated];
+}
+*/
 
 /*
- // Override to allow orientations other than the default portrait orientation.
- - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
- // Return YES for supported orientations
- return (interfaceOrientation == UIInterfaceOrientationPortrait);
- }
- */
+// Override to allow orientations other than the default portrait orientation.
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
+    // Return YES for supported orientations
+    return (interfaceOrientation == UIInterfaceOrientationPortrait);
+}
+*/
 
 - (void)didReceiveMemoryWarning {
 	// Releases the view if it doesn't have a superview.
@@ -157,7 +157,7 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     
     static NSString *StopCellIdentifier = @"StopCell";
-	
+
 	ShuttleStopCell* cell = (ShuttleStopCell*)[tableView dequeueReusableCellWithIdentifier:StopCellIdentifier];
 	if (nil == cell) {
 		[[NSBundle mainBundle] loadNibNamed:@"ShuttleStopCell" owner:self options:nil];
@@ -194,8 +194,8 @@
 	shuttleStopVC.view;
 	[shuttleStopVC.mapButton addTarget:self action:@selector(showSelectedStop:) forControlEvents:UIControlEventTouchUpInside];
 }
-
-
+	
+	
 -(void) showSelectedStop:(id)sender
 {
 	[self showStop:_selectedStopAnnotation animated:YES];
@@ -204,7 +204,7 @@
 -(void) showStop:(ShuttleStopMapAnnotation *)annotation animated:(BOOL)animated {	
 	[self.navigationController popToViewController:self animated:animated];
 	[self setMapViewMode:YES animated:animated];
-	
+
 	[_routeMapViewController.mapView selectAnnotation:annotation animated:NO];
 }
 
@@ -268,7 +268,7 @@
 	[url setPath:[NSString stringWithFormat:@"%@/%@", basePath, self.route.routeID] query:nil];
 	[url setAsModulePath];
 }
-
+	
 #pragma mark ShuttleDataManagerDelegate
 -(void) routeInfoReceived:(ShuttleRoute*)shuttleRoute forRouteID:(NSString*)routeID
 {
@@ -298,19 +298,19 @@
 			if (!self.route.isRunning && [_pollingTimer isValid]) {
 				[_pollingTimer invalidate];
 			}
-			
+		
 			_shownError = NO;
-			
+		
 			//self.routeInfo = shuttleRoute;
 			self.route = shuttleRoute;
-			if (self.route.annotations.count <= 0) {
-				self.route = shuttleRoute;
-			}
+				if (self.route.annotations.count <= 0) {
+					self.route = shuttleRoute;
+				}
 			[_titleCell setRouteInfo:self.route];
-			
+        
 			//_routeLoaded = YES;
 			[self.tableView reloadData];
-			
+		
 			//_viewTypeButton.enabled = YES;
 		}	 
 	}
@@ -321,7 +321,7 @@
 		} else {
 			self.routeMapViewController.route.liveStatusFailed = YES;
 		}
-		
+
 		[self.routeMapViewController refreshRouteTitleInfo];
 	}
 }

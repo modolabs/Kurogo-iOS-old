@@ -1,13 +1,16 @@
-
 #import <UIKit/UIKit.h>
 #import <MapKit/MapKit.h>
 #import "ShuttleRoute.h"
 #import "ShuttleDataManager.h"
+#import "SampleViewClass.h"
+
+//@class SampleViewClass;
 
 @interface RouteMapViewController : UIViewController <MKMapViewDelegate, ShuttleDataManagerDelegate>{
 
 	IBOutlet MKMapView* _mapView;
 	
+	SampleViewClass* sampleView;
 	IBOutlet UILabel* _routeTitleLabel;
 	IBOutlet UILabel* _routeStatusLabel;
 	IBOutlet UIButton* _gpsButton; 

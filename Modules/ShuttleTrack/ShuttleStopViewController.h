@@ -17,7 +17,7 @@
 	
 	// annotation 
 	ShuttleStopMapAnnotation* _shuttleStopAnnotation;
-	
+		
 	// routes that run through this shuttle stop
 	//NSDictionary* _routes;
 	
