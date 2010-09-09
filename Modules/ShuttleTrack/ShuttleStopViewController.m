@@ -112,7 +112,6 @@
 	
 	[headerView addSubview:titleLabel];
 	
-	
 	// add the map view thumbnail
 	_mapThumbnail = [[MKMapView alloc] initWithFrame:CGRectMake(2.0, 2.0, mapSize - 4.0, mapSize - 4.0)];
 	_mapThumbnail.delegate = self;
@@ -123,16 +122,35 @@
 	_mapThumbnail.userInteractionEnabled = NO;
 	//_mapThumbnail.layer.cornerRadius = 6.0;
 	
+	
+	// determine the region for the route and zoom to that region
+	CLLocationCoordinate2D coordinate = self.annotation.coordinate;
+	
+	CLLocationCoordinate2D center;
+	center.latitude = coordinate.latitude; 
+	center.longitude = coordinate.longitude; 
+	
+	double latDelta = 0.002;
+	double lonDelta = 0.002;
+	
+	MKCoordinateSpan span = MKCoordinateSpanMake(latDelta, lonDelta);
+	
+	MKCoordinateRegion region = MKCoordinateRegionMake(center, span);
+	
+	[_mapThumbnail setRegion:region];
+	
+	
 	// add a button on top of the map
 	_mapButton = [[UIButton alloc] initWithFrame:CGRectMake(mapBuffer, mapBuffer, mapSize, mapSize)];
     
 	_mapButton.backgroundColor = [UIColor whiteColor];
+	 [_mapButton addTarget:self action:@selector(mapThumbnailPressed) forControlEvents:UIControlEventTouchUpInside];
 	//_mapButton.layer.cornerRadius = 8.0;
 	[_mapButton addSubview:_mapThumbnail];
     
 	[headerView addSubview:_mapButton];
 	
-	UIImageView *alertHeaderIcon = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"shuttles/shuttle-alert-descriptive.png"]] autorelease];
+	UIImageView *alertHeaderIcon = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"shuttle-alert-descriptive.png"]] autorelease];
 	CGRect alertHeaderIconFrame = alertHeaderIcon.frame;
 	alertHeaderIconFrame.origin = CGPointMake(MARGIN, mapSize + mapBuffer * 2);
 	alertHeaderIcon.frame = alertHeaderIconFrame;
@@ -202,7 +220,7 @@
 	[url setAsModulePath];
 }
 
--(IBAction) mapThumbnailPressed:(id)sender
+-(void) mapThumbnailPressed
 {
 	
 	// push a map view onto the stack
@@ -213,9 +231,11 @@
 	// ensure the view and map view are loaded
 	routeMap.view;
 	
-	MKMapView* mapView = routeMap.mapView;
+//MKMapView* mapView = routeMap.mapView;
 	
-	[mapView selectAnnotation:self.annotation animated:NO];
+	[routeMap selectAnnon:self.annotation];
+	
+	//[mapView selectAnnotation:self.annotation animated:YES];
 	
 	[self.navigationController pushViewController:routeMap animated:YES];
 }
@@ -294,9 +314,9 @@
         if(minutes > NOTIFICATION_MINUTES) {
             
             if([self hasSubscription:indexPath]) {
-                cell.accessoryView = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"shuttles/shuttle-alert-toggle-on.png"]] autorelease];
+                cell.accessoryView = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"shuttle-alert-toggle-on.png"]] autorelease];
             } else {
-                cell.accessoryView = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"shuttles/shuttle-alert-toggle-off.png"]] autorelease];
+                cell.accessoryView = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"shuttle-alert-toggle-off.png"]] autorelease];
             }
             
             
@@ -469,7 +489,7 @@
 	if ([annotation isKindOfClass:[ShuttleStopMapAnnotation class]]) 
 	{
 		annotationView = [[[MKAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:@"annotation"] autorelease];
-		UIImage* pin = [UIImage imageNamed:@"shuttles/map_pin_shuttle_stop_complete.png"];
+		UIImage* pin = [UIImage imageNamed:@"pin_shuttle_stop_complete_next.png"];
 		UIImageView* imageView = [[[UIImageView alloc] initWithImage:pin] autorelease];
 		annotationView.frame = imageView.frame;
 		annotationView.canShowCallout = YES;

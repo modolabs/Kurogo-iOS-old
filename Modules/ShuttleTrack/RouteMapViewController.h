@@ -51,5 +51,6 @@
 -(IBAction) refreshTouched:(id)sender;
 
 -(void) refreshRouteTitleInfo;
+-(void)selectAnnon:(id <MKAnnotation>)annotation;
 
 @end

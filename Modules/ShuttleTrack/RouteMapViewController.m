@@ -31,8 +31,6 @@
 
 
 
-
-
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 
 - (void)viewDidLoad {
@@ -75,6 +73,27 @@
 																							target:self
 																							action:@selector(pollShuttleLocations)] autorelease];
 	
+}
+
+-(void)selectAnnon:(id <MKAnnotation>)annotation {
+	
+	// determine the region for the route and zoom to that region
+	CLLocationCoordinate2D coordinate = annotation.coordinate;
+	
+	CLLocationCoordinate2D center;
+	center.latitude = coordinate.latitude; 
+	center.longitude = coordinate.longitude; 
+	
+	double latDelta = 0.002;
+	double lonDelta = 0.002;
+	
+	MKCoordinateSpan span = MKCoordinateSpanMake(latDelta, lonDelta);
+	
+	MKCoordinateRegion region = MKCoordinateRegionMake(center, span);
+	
+	[self.mapView setRegion:region];
+	
+	[self.mapView selectAnnotation:annotation animated:YES];
 }
 
 -(void)refreshRouteTitleInfo {
