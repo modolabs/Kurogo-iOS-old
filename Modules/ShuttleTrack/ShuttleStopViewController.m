@@ -229,14 +229,15 @@
 	routeMap.route = [[ShuttleDataManager sharedDataManager].shuttleRoutesByID objectForKey:self.shuttleStop.routeID];
 	
 	// ensure the view and map view are loaded
-	routeMap.view;
+	//routeMap.view;
 	
 //MKMapView* mapView = routeMap.mapView;
 	
 	[routeMap selectAnnon:self.annotation];
 	
 	//[mapView selectAnnotation:self.annotation animated:YES];
-	
+	routeMap.parentViewController = self;
+	[self.navigationController popViewControllerAnimated:YES];
 	[self.navigationController pushViewController:routeMap animated:YES];
 }
 

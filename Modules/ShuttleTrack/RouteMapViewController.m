@@ -403,15 +403,16 @@
 		//annotationView.layer.anchorPoint = CGPointMake(0.5, 0.5);
 		
 		
+		UIButton *myDetailButton = [UIButton buttonWithType:UIButtonTypeDetailDisclosure];
+		myDetailButton.frame = CGRectMake(0, 0, 23, 23);
+		myDetailButton.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
+		myDetailButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentCenter;
 		
-		 // determine which image to use for this annotation. If our map is above 2.0, use the big one
-		 /*if (_mapView.zoomLevel >= 2.0) {
-		 image = annotation.shuttleStop.upcoming ? _largeUpcomingStopImage : _largeStopImage;
-		 annotationView.layer.anchorPoint = CGPointMake(0.5, 1.0);
-		 }
-		 else 
-		 {*/
-		// annotationView.layer.anchorPoint = CGPointMake(0.5, 0.5);
+		//myDetailButton addTarget:self action:@selector(showLinks:) forControlEvents:UIControlEventTouchUpInside]; 
+		
+		
+		// Set the button as the callout view
+		annotationView.rightCalloutAccessoryView = myDetailButton;
 		 
 		 
 		 
@@ -457,9 +458,10 @@
 		ShuttleStopViewController* shuttleStopVC = [[[ShuttleStopViewController alloc] initWithStyle:UITableViewStyleGrouped] autorelease];
 		shuttleStopVC.shuttleStop = [(ShuttleStopMapAnnotation*)view.annotation shuttleStop];
 		shuttleStopVC.annotation = (ShuttleStopMapAnnotation*)view.annotation;
-		[self.navigationController pushViewController:shuttleStopVC animated:YES];
-		[shuttleStopVC.mapButton addTarget:self action:@selector(showSelectedStop:) forControlEvents:UIControlEventTouchUpInside];
 		
+		[self.navigationController pushViewController:shuttleStopVC animated:YES];
+		shuttleStopVC.view;
+		//[shuttleStopVC.mapButton addTarget:self action:@selector(showSelectedStop:) forControlEvents:UIControlEventTouchUpInside];
 	}
 }
 
