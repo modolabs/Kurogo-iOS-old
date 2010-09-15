@@ -39,6 +39,7 @@
 	UIImage* _largeStopImage;
 	UIImage* _largeUpcomingStopImage;
 	UIViewController* _MITParentViewController;
+	
 }
 
 @property (nonatomic, retain) ShuttleRoute* route;

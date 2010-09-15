@@ -61,7 +61,7 @@
 	
 	if ([self.route.pathLocations count]) {
 		//[self.mapView addRoute:self.route];
-		self.mapView.region = [self regionForRoute];
+			self.mapView.region = [self regionForRoute];
 		//[self drawRect];
 	}
 	
@@ -91,9 +91,10 @@
 	
 	MKCoordinateRegion region = MKCoordinateRegionMake(center, span);
 	
-	[self.mapView setRegion:region];
-	
+	[self.mapView setRegion:region];	
 	[self.mapView selectAnnotation:annotation animated:YES];
+	
+	int r = 4*4;
 }
 
 -(void)refreshRouteTitleInfo {
@@ -407,16 +408,8 @@
 		myDetailButton.frame = CGRectMake(0, 0, 23, 23);
 		myDetailButton.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
 		myDetailButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentCenter;
-		
-		//myDetailButton addTarget:self action:@selector(showLinks:) forControlEvents:UIControlEventTouchUpInside]; 
-		
-		
 		// Set the button as the callout view
 		annotationView.rightCalloutAccessoryView = myDetailButton;
-		 
-		 
-		 
-		
 		
 	}
 	else if([annotation isKindOfClass:[ShuttleLocation class]])

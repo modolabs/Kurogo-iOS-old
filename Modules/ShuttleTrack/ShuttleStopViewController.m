@@ -231,12 +231,31 @@
 	// ensure the view and map view are loaded
 	//routeMap.view;
 	
-//MKMapView* mapView = routeMap.mapView;
+	//MKMapView* mapView = routeMap.mapView;
 	
-	[routeMap selectAnnon:self.annotation];
+	//[routeMap selectAnnon:self.annotation];
+	//routeMap.singleStopView = YES;
 	
-	//[mapView selectAnnotation:self.annotation animated:YES];
 	routeMap.parentViewController = self;
+	
+	
+	CLLocationCoordinate2D coordinate = self.annotation.coordinate;
+	
+	CLLocationCoordinate2D center;
+	center.latitude = coordinate.latitude; 
+	center.longitude = coordinate.longitude; 
+	
+	double latDelta = 0.002;
+	double lonDelta = 0.002;
+	
+	MKCoordinateSpan span = MKCoordinateSpanMake(latDelta, lonDelta);
+	
+	MKCoordinateRegion region = MKCoordinateRegionMake(center, span);
+	
+	[routeMap.mapView setRegion:region];	
+	[routeMap.mapView selectAnnotation:self.annotation animated:YES];
+	
+	
 	[self.navigationController popViewControllerAnimated:YES];
 	[self.navigationController pushViewController:routeMap animated:YES];
 }
