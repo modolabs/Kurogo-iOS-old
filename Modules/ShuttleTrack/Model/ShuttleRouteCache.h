@@ -12,6 +12,7 @@
 @property (nonatomic, retain) NSString * summary;
 @property (nonatomic, retain) NSSet* stops;
 @property (nonatomic, retain) NSNumber * sortOrder;
+@property (nonatomic, retain) NSString * agency;
  
 @end
 

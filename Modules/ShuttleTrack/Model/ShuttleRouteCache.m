@@ -12,6 +12,7 @@
 @dynamic summary;
 @dynamic stops;
 @dynamic sortOrder;
+@dynamic agency;
 
 - (NSSet *)stops {
 	return [self valueForKey:@"stops"];

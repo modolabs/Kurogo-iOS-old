@@ -28,6 +28,8 @@
 	UIImage *_shuttleLoadingImage;
 
 	NSArray* _contactInfo;
+	
+	UINavigationController *parentViewController;
 }
 
 @property (nonatomic, retain) NSArray* shuttleRoutes;
@@ -35,6 +37,7 @@
 @property (nonatomic, retain) NSArray* nonSaferideRoutes;
 @property (nonatomic, retain) NSArray* sections;
 @property BOOL isLoading;
+@property (nonatomic, retain) UINavigationController *parentViewController;
 
 
 //@property (readwrite, retain) ShuttleData *model;

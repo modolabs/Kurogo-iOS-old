@@ -8,6 +8,7 @@
     BOOL _isRunning;
 	BOOL _liveStatusFailed;
 	ShuttleRouteCache *_cache;
+	NSString * agency;
 
     NSMutableArray *_stops;
 	
@@ -35,6 +36,7 @@
 @property (assign) BOOL isRunning;
 @property (assign) BOOL liveStatusFailed;
 @property (readwrite, retain) ShuttleRouteCache *cache;
+@property (readwrite, retain) NSString * agency;
 
 @property (readwrite, retain) NSString *title;
 @property (readwrite, retain) NSString *summary;

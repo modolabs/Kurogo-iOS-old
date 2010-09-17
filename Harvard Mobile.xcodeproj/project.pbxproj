@@ -178,6 +178,11 @@
 		C71D94BF1237F2C8009369C5 /* shuttle.png in Resources */ = {isa = PBXBuildFile; fileRef = C71D94AF1237F2C8009369C5 /* shuttle.png */; };
 		C71D95801238037A009369C5 /* SampleViewClass.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = C71D957E1238037A009369C5 /* SampleViewClass.h */; settings = {JAVA_ARCHIVE_SUBDIR = Modules/ShuttleTrack; }; };
 		C71D95811238037A009369C5 /* SampleViewClass.m in Sources */ = {isa = PBXBuildFile; fileRef = C71D957F1238037A009369C5 /* SampleViewClass.m */; };
+		C71D9B4B1243E054009369C5 /* ShuttlesMainViewController.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = C71D9B481243E054009369C5 /* ShuttlesMainViewController.h */; settings = {JAVA_ARCHIVE_SUBDIR = Modules/ShuttleTrack; }; };
+		C71D9B4C1243E054009369C5 /* ShuttlesMainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C71D9B491243E054009369C5 /* ShuttlesMainViewController.m */; };
+		C71D9B4D1243E054009369C5 /* ShuttlesMainViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C71D9B4A1243E054009369C5 /* ShuttlesMainViewController.xib */; };
+		C71D9B941243EE55009369C5 /* ShuttlesTabViewControl.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = C71D9B921243EE55009369C5 /* ShuttlesTabViewControl.h */; settings = {JAVA_ARCHIVE_SUBDIR = Modules/ShuttleTrack; }; };
+		C71D9B951243EE55009369C5 /* ShuttlesTabViewControl.m in Sources */ = {isa = PBXBuildFile; fileRef = C71D9B931243EE55009369C5 /* ShuttlesTabViewControl.m */; };
 		C727B53A11F4E245007D53BB /* CalendarCategoriesViewController.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = C727B53811F4E245007D53BB /* CalendarCategoriesViewController.h */; settings = {JAVA_ARCHIVE_SUBDIR = Modules/Calendar; }; };
 		C727B53B11F4E245007D53BB /* CalendarCategoriesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C727B53911F4E245007D53BB /* CalendarCategoriesViewController.m */; };
 		C759593E12074B47008474A9 /* HallDetailsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C759593812074B47008474A9 /* HallDetailsTableViewController.m */; };
@@ -749,6 +754,11 @@
 		C71D94AF1237F2C8009369C5 /* shuttle.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = shuttle.png; path = Resources/shuttles/shuttle.png; sourceTree = "<group>"; };
 		C71D957E1238037A009369C5 /* SampleViewClass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SampleViewClass.h; path = ShuttleTrack/SampleViewClass.h; sourceTree = "<group>"; };
 		C71D957F1238037A009369C5 /* SampleViewClass.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SampleViewClass.m; path = ShuttleTrack/SampleViewClass.m; sourceTree = "<group>"; };
+		C71D9B481243E054009369C5 /* ShuttlesMainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ShuttlesMainViewController.h; path = ShuttleTrack/ShuttlesMainViewController.h; sourceTree = "<group>"; };
+		C71D9B491243E054009369C5 /* ShuttlesMainViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ShuttlesMainViewController.m; path = ShuttleTrack/ShuttlesMainViewController.m; sourceTree = "<group>"; };
+		C71D9B4A1243E054009369C5 /* ShuttlesMainViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = ShuttlesMainViewController.xib; path = ShuttleTrack/ShuttlesMainViewController.xib; sourceTree = "<group>"; };
+		C71D9B921243EE55009369C5 /* ShuttlesTabViewControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ShuttlesTabViewControl.h; path = ShuttleTrack/ShuttlesTabViewControl.h; sourceTree = "<group>"; };
+		C71D9B931243EE55009369C5 /* ShuttlesTabViewControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ShuttlesTabViewControl.m; path = ShuttleTrack/ShuttlesTabViewControl.m; sourceTree = "<group>"; };
 		C727B53811F4E245007D53BB /* CalendarCategoriesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CalendarCategoriesViewController.h; sourceTree = "<group>"; };
 		C727B53911F4E245007D53BB /* CalendarCategoriesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CalendarCategoriesViewController.m; sourceTree = "<group>"; };
 		C759593812074B47008474A9 /* HallDetailsTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = HallDetailsTableViewController.m; path = Dining/HallDetailsTableViewController.m; sourceTree = "<group>"; };
@@ -1609,6 +1619,11 @@
 				C76FBB73123001A600968920 /* RouteInfoTitleCell.h */,
 				C71D957E1238037A009369C5 /* SampleViewClass.h */,
 				C71D957F1238037A009369C5 /* SampleViewClass.m */,
+				C71D9B481243E054009369C5 /* ShuttlesMainViewController.h */,
+				C71D9B491243E054009369C5 /* ShuttlesMainViewController.m */,
+				C71D9B4A1243E054009369C5 /* ShuttlesMainViewController.xib */,
+				C71D9B921243EE55009369C5 /* ShuttlesTabViewControl.h */,
+				C71D9B931243EE55009369C5 /* ShuttlesTabViewControl.m */,
 			);
 			name = ShuttleTrack;
 			sourceTree = "<group>";
@@ -2249,6 +2264,8 @@
 				C76FBBA1123001CB00968920 /* ShuttleRouteCache.h in JavaArchive */,
 				C76FBBCB1230029800968920 /* ShuttleStopMapAnnotation.h in JavaArchive */,
 				C71D95801238037A009369C5 /* SampleViewClass.h in JavaArchive */,
+				C71D9B4B1243E054009369C5 /* ShuttlesMainViewController.h in JavaArchive */,
+				C71D9B941243EE55009369C5 /* ShuttlesTabViewControl.h in JavaArchive */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2374,6 +2391,7 @@
 				C71D94BD1237F2C8009369C5 /* shuttle-stop-dot-next.png in Resources */,
 				C71D94BE1237F2C8009369C5 /* shuttle-stop-dot.png in Resources */,
 				C71D94BF1237F2C8009369C5 /* shuttle.png in Resources */,
+				C71D9B4D1243E054009369C5 /* ShuttlesMainViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2716,6 +2734,8 @@
 				C76FBBA0123001CB00968920 /* ShuttleRouteCache.m in Sources */,
 				C76FBBCA1230029800968920 /* ShuttleStopMapAnnotation.m in Sources */,
 				C71D95811238037A009369C5 /* SampleViewClass.m in Sources */,
+				C71D9B4C1243E054009369C5 /* ShuttlesMainViewController.m in Sources */,
+				C71D9B951243EE55009369C5 /* ShuttlesTabViewControl.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

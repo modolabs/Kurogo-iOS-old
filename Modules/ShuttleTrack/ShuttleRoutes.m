@@ -14,6 +14,7 @@
 @synthesize nonSaferideRoutes = _nonSaferideRoutes;
 @synthesize sections = _sections;
 @synthesize isLoading = _isLoading;
+@synthesize parentViewController;
 
 - (void)dealloc {
 	
@@ -62,6 +63,7 @@
 	_shuttleLoadingImage = [[UIImage imageNamed:@"shuttles/shuttle-blank.png"] retain];
 	
     [self.tableView applyStandardColors];
+	self.tableView.frame = CGRectMake(self.tableView.frame.origin.x, self.tableView.frame.origin.y, self.tableView.frame.size.width, 330.0);
 
 	ShuttleDataManager* dataManager = [ShuttleDataManager sharedDataManager];
 	[dataManager registerDelegate:self];
@@ -245,7 +247,8 @@
 		routeVC.route = route;
 		*/
 		
-		[self.navigationController pushViewController:routeVC animated:YES];
+		//[self.navigationController pushViewController:routeVC animated:YES];
+		[self.parentViewController pushViewController:routeVC animated:YES];
 		
 	}
 	
@@ -310,11 +313,11 @@
 	NSMutableArray* nonSaferideRoutes = [NSMutableArray arrayWithCapacity:self.shuttleRoutes.count];
 	
 	for (ShuttleRoute* route in self.shuttleRoutes) {
-		if (route.isSafeRide) {
-			[saferideRoutes addObject:route];
-		} else {
-			[nonSaferideRoutes addObject: route];
-		}
+		if ([route.agency isEqualToString:@"harvard"]) {
+		 [saferideRoutes addObject:route];
+		 } else {
+		 [nonSaferideRoutes addObject: route];
+		 }
 		
 	}
 	
@@ -325,10 +328,10 @@
 	
 	if (self.shuttleRoutes.count > 0) {
 
-		[sections addObject:[NSDictionary dictionaryWithObjectsAndKeys:@"Daytime Shuttles:", @"title", 
-							 self.nonSaferideRoutes, @"routes", nil, nil]];
-		[sections addObject:[NSDictionary dictionaryWithObjectsAndKeys:@"Nighttime Saferide Shuttles:", @"title", 
-							  self.saferideRoutes, @"routes", nil, nil]];
+		[sections addObject:[NSDictionary dictionaryWithObjectsAndKeys:@"Harvard Shuttles", @"title", 
+							 self.saferideRoutes, @"routes", nil, nil]];
+		[sections addObject:[NSDictionary dictionaryWithObjectsAndKeys:@"MASCO Buses", @"title", 
+							  self.nonSaferideRoutes, @"routes", nil, nil]];
 		
 	}
 	else {

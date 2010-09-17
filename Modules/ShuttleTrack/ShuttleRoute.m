@@ -16,6 +16,7 @@
 @synthesize liveStatusFailed = _liveStatusFailed;
 @synthesize vehicleLocations = _vehicleLocations;
 @synthesize cache = _cache;
+@synthesize agency;
 
 // cached properties
 @dynamic title;
@@ -25,6 +26,7 @@
 @dynamic stops;
 @dynamic routeID;
 @dynamic sortOrder;
+//@dynamic agency;
 
 @dynamic fullSummary;
 
@@ -193,6 +195,7 @@
 	self.summary = [routeInfo objectForKey:@"summary"];
 	self.interval = [[routeInfo objectForKey:@"interval"] intValue];
 	self.isSafeRide = [[routeInfo objectForKey:@"isSafeRide"] boolValue];
+	self.agency = [routeInfo objectForKey:@"agency"];
 	
 	self.tag = [routeInfo objectForKey:@"tag"];
 	self.gpsActive = [[routeInfo objectForKey:@"gpsActive"] boolValue];

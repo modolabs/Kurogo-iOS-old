@@ -1,8 +1,9 @@
 #import "ShuttleModule.h"
-#import "ShuttleRoutes.h"
+//#import "ShuttleRoutes.h"
 #import "ShuttleRouteViewController.h"
 #import "ShuttleSubscriptionManager.h"
 #import "ShuttleStopMapAnnotation.h"
+#import "ShuttlesMainViewController.h"
 
 @implementation ShuttleModule
 
@@ -15,7 +16,10 @@
         self.iconName = @"shuttle";
         self.pushNotificationSupported = YES;
 
-        ShuttleRoutes *theVC = [[[ShuttleRoutes alloc] initWithStyle:UITableViewStyleGrouped] autorelease];
+        //ShuttleRoutes *theVC = [[[ShuttleRoutes alloc] initWithStyle:UITableViewStyleGrouped] autorelease];
+        //self.viewControllers = [NSArray arrayWithObject:theVC];
+		
+		ShuttlesMainViewController *theVC = [[[ShuttlesMainViewController alloc] init] autorelease];
         self.viewControllers = [NSArray arrayWithObject:theVC];
     }
     return self;
