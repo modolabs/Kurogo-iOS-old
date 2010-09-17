@@ -7,6 +7,12 @@
 #import "UITableView+MITUIAdditions.h"
 #import "MITModuleList.h"
 
+
+#define RunningTabIndex 0
+#define OfflineTabIndex 1
+#define ContactsTabIndex 2
+#define InfoTabIndex 3
+
 @implementation ShuttleRoutes
 
 @synthesize shuttleRoutes = _shuttleRoutes;
@@ -15,6 +21,7 @@
 @synthesize sections = _sections;
 @synthesize isLoading = _isLoading;
 @synthesize parentViewController;
+@synthesize currentTabMainView;
 
 - (void)dealloc {
 	
@@ -313,9 +320,9 @@
 	NSMutableArray* nonSaferideRoutes = [NSMutableArray arrayWithCapacity:self.shuttleRoutes.count];
 	
 	for (ShuttleRoute* route in self.shuttleRoutes) {
-		if ([route.agency isEqualToString:@"harvard"]) {
+		if (([route.agency isEqualToString:@"harvard"]) && (route.isRunning)){
 		 [saferideRoutes addObject:route];
-		 } else {
+		 } else if (route.isRunning){
 		 [nonSaferideRoutes addObject: route];
 		 }
 		

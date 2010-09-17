@@ -30,6 +30,8 @@
 	NSArray* _contactInfo;
 	
 	UINavigationController *parentViewController;
+	
+	int currentTabInMainView;
 }
 
 @property (nonatomic, retain) NSArray* shuttleRoutes;
@@ -38,7 +40,7 @@
 @property (nonatomic, retain) NSArray* sections;
 @property BOOL isLoading;
 @property (nonatomic, retain) UINavigationController *parentViewController;
-
+@property int currentTabMainView;
 
 //@property (readwrite, retain) ShuttleData *model;
 

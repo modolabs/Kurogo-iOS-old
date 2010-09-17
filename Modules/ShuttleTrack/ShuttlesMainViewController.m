@@ -8,6 +8,10 @@
 
 #import "ShuttlesMainViewController.h"
 
+#define RunningTabIndex 0
+#define OfflineTabIndex 1
+#define ContactsTabIndex 2
+#define InfoTabIndex 3
 
 @implementation ShuttlesMainViewController
 
@@ -29,16 +33,16 @@
 	
 	
 	[tabView addTab:@"Running"];	
-	[_tabViewsArray insertObject:shuttleRoutesTableView atIndex: 0];
+	[_tabViewsArray insertObject:shuttleRoutesTableView atIndex: RunningTabIndex];
 	
 	[tabView addTab:@"Offline"];
-	[_tabViewsArray insertObject:shuttleRoutesTableView atIndex:1];
+	[_tabViewsArray insertObject:shuttleRoutesTableView atIndex: OfflineTabIndex];
 	
 	[tabView addTab:@"Contacts"];
-	[_tabViewsArray insertObject:shuttleRoutesTableView atIndex:2];
+	[_tabViewsArray insertObject:shuttleRoutesTableView atIndex: ContactsTabIndex];
 	
 	[tabView addTab:@"Info"];
-	[_tabViewsArray insertObject:shuttleRoutesTableView atIndex:3];
+	[_tabViewsArray insertObject:shuttleRoutesTableView atIndex: InfoTabIndex];
 	
 	tabView.hidden = NO;
 	tabViewContainer.hidden = NO;
