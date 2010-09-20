@@ -6,12 +6,15 @@
 #import "MITUIConstants.h"
 #import "UITableView+MITUIAdditions.h"
 #import "MITModuleList.h"
+#import "MITUIConstants.h"
 
 
 #define RunningTabIndex 0
 #define OfflineTabIndex 1
 #define ContactsTabIndex 2
 #define InfoTabIndex 3
+
+#define GROUPED_VIEW_CELL_COLOR [UIColor colorWithHexString:@"#FDFAF6"] 
 
 @implementation ShuttleRoutes
 
@@ -212,6 +215,7 @@
 		formattedCell.textLabel.text = [phoneNumberInfo objectForKey:@"description"];
 		formattedCell.secondaryTextLabel.text = [phoneNumberInfo objectForKey:@"formattedPhoneNumber"];
 		formattedCell.accessoryView = [UIImageView accessoryViewWithMITType:MITAccessoryViewPhone];
+		formattedCell.backgroundColor = GROUPED_VIEW_CELL_COLOR;
 		
 	}
 	else
@@ -229,7 +233,7 @@
 	}
 
 	
-	
+	cell.backgroundColor = GROUPED_VIEW_CELL_COLOR;
     return cell;
 }
 
@@ -319,35 +323,53 @@
 	NSMutableArray* saferideRoutes = [NSMutableArray arrayWithCapacity:self.shuttleRoutes.count];
 	NSMutableArray* nonSaferideRoutes = [NSMutableArray arrayWithCapacity:self.shuttleRoutes.count];
 	
-	for (ShuttleRoute* route in self.shuttleRoutes) {
-		if (([route.agency isEqualToString:@"harvard"]) && (route.isRunning)){
-		 [saferideRoutes addObject:route];
-		 } else if (route.isRunning){
-		 [nonSaferideRoutes addObject: route];
-		 }
-		
+	
+	if (self.currentTabMainView == RunningTabIndex) {
+		for (ShuttleRoute* route in self.shuttleRoutes) {
+			if (([route.agency isEqualToString:@"harvard"]) && (route.isRunning)){
+				[saferideRoutes addObject:route];
+			} else if (([route.agency isEqualToString:@"masco"]) && (route.isRunning)){
+				[nonSaferideRoutes addObject: route];
+			}
+			
+		}
+	}
+
+	else if (self.currentTabMainView == OfflineTabIndex) {
+			for (ShuttleRoute* route in self.shuttleRoutes) {
+				if (([route.agency isEqualToString:@"harvard"]) && (!(route.isRunning))){
+					[saferideRoutes addObject:route];
+				} else if (([route.agency isEqualToString:@"masco"]) && (!(route.isRunning))){
+					[nonSaferideRoutes addObject: route];
+				}
+				
+			}
 	}
 	
-	self.saferideRoutes = saferideRoutes;
-	self.nonSaferideRoutes = nonSaferideRoutes;
+	self.saferideRoutes = [saferideRoutes sortedArrayUsingSelector:@selector(compare:)];//saferideRoutes;
+	self.nonSaferideRoutes = [nonSaferideRoutes sortedArrayUsingSelector:@selector(compare:)];
 	
 	NSMutableArray* sections = [NSMutableArray array];
 	
-	if (self.shuttleRoutes.count > 0) {
-
-		[sections addObject:[NSDictionary dictionaryWithObjectsAndKeys:@"Harvard Shuttles", @"title", 
-							 self.saferideRoutes, @"routes", nil, nil]];
-		[sections addObject:[NSDictionary dictionaryWithObjectsAndKeys:@"MASCO Buses", @"title", 
-							  self.nonSaferideRoutes, @"routes", nil, nil]];
-		
+	
+	if ((self.currentTabMainView == RunningTabIndex) || (self.currentTabMainView == OfflineTabIndex)) {
+		if (self.shuttleRoutes.count > 0) {
+			
+			[sections addObject:[NSDictionary dictionaryWithObjectsAndKeys:@"Harvard Shuttles", @"title", 
+								 self.saferideRoutes, @"routes", nil, nil]];
+			[sections addObject:[NSDictionary dictionaryWithObjectsAndKeys:@"MASCO Buses", @"title", 
+								 self.nonSaferideRoutes, @"routes", nil, nil]];
+			
+		}
+		else {
+			[sections addObject:[NSDictionary dictionaryWithObjectsAndKeys:@"No Shuttles Found",  @"text" , nil, nil]];
+			
+		}
 	}
-	else {
-		[sections addObject:[NSDictionary dictionaryWithObjectsAndKeys:@"No Shuttles Found",  @"text" , nil, nil]];
-		
-	}
-
-	[sections addObject:[NSDictionary dictionaryWithObjectsAndKeys:@"Contact Information", @"title", _contactInfo, @"phoneNumbers", nil, nil]];
-		 
+	
+	else if (self.currentTabMainView == ContactsTabIndex)
+		[sections addObject:[NSDictionary dictionaryWithObjectsAndKeys:@"Contact Information", @"title", _contactInfo, @"phoneNumbers", nil, nil]];
+	
 	self.sections = sections;
 	
 	

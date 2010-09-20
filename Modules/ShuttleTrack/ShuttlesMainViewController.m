@@ -33,17 +33,18 @@
 	
 	
 	[tabView addTab:@"Running"];	
-	[_tabViewsArray insertObject:shuttleRoutesTableView atIndex: RunningTabIndex];
+	[_tabViewsArray insertObject:shuttleRoutesTableView.view atIndex: RunningTabIndex];
 	
 	[tabView addTab:@"Offline"];
-	[_tabViewsArray insertObject:shuttleRoutesTableView atIndex: OfflineTabIndex];
+	[_tabViewsArray insertObject:shuttleRoutesTableView.view atIndex: OfflineTabIndex];
 	
 	[tabView addTab:@"Contacts"];
-	[_tabViewsArray insertObject:shuttleRoutesTableView atIndex: ContactsTabIndex];
+	[_tabViewsArray insertObject:shuttleRoutesTableView.view atIndex: ContactsTabIndex];
 	
 	[tabView addTab:@"Info"];
-	[_tabViewsArray insertObject:shuttleRoutesTableView atIndex: InfoTabIndex];
-	
+	[_tabViewsArray insertObject:shuttleRoutesTableView.view atIndex: InfoTabIndex];
+
+	[tabView setDelegate:self];
 	tabView.hidden = NO;
 	tabViewContainer.hidden = NO;
 	
@@ -51,6 +52,7 @@
 	[tabView setDelegate:self];
 	
 	[tabView setSelectedTab:0];
+	shuttleRoutesTableView.currentTabMainView = RunningTabIndex;
 	
 	[tabView setNeedsDisplay];
 	
@@ -87,6 +89,39 @@
 #pragma mark - TabViewControlDelegate methods
 -(void) tabControl:(ShuttlesTabViewControl*)control changedToIndex:(int)tabIndex tabText:(NSString*)tabText{
 	
+	// change the content based on the tab that was selected
+	for(UIView* subview in [tabView subviews])
+	{
+		[subview removeFromSuperview];
+	}
+	
+	if (tabIndex == RunningTabIndex) {
+		shuttleRoutesTableView.currentTabMainView = RunningTabIndex;
+		[shuttleRoutesTableView setShuttleRoutes:shuttleRoutesTableView.shuttleRoutes];
+		[shuttleRoutesTableView.tableView reloadData];
+		[tabViewContainer addSubview:[_tabViewsArray objectAtIndex:tabIndex]];
+	}
+	
+	else if (tabIndex == OfflineTabIndex) {
+		shuttleRoutesTableView.currentTabMainView = OfflineTabIndex;
+		[shuttleRoutesTableView setShuttleRoutes:shuttleRoutesTableView.shuttleRoutes];
+		[shuttleRoutesTableView.tableView reloadData];
+		[tabViewContainer addSubview:[_tabViewsArray objectAtIndex:tabIndex]];
+	}
+	
+	else if (tabIndex == ContactsTabIndex) {
+		shuttleRoutesTableView.currentTabMainView = ContactsTabIndex;
+		[shuttleRoutesTableView setShuttleRoutes:shuttleRoutesTableView.shuttleRoutes];
+		[shuttleRoutesTableView.tableView reloadData];
+		[tabViewContainer addSubview:[_tabViewsArray objectAtIndex:tabIndex]];
+	}
+	
+	else {
+		[tabViewContainer addSubview:[_tabViewsArray objectAtIndex:tabIndex]];
+	}
+	
+	
+
 }
 
 @end
