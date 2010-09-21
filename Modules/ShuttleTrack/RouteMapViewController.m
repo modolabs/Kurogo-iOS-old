@@ -75,6 +75,23 @@
 	}
 	else {
 		hasStopInfoForMap = NO;
+		
+		
+		CLLocationCoordinate2D center;
+		center.latitude = 42.37640;
+		center.longitude = -71.11660;
+		
+		double latDelta = 0.004;
+		double lonDelta = 0.004; 
+		
+		
+		MKCoordinateSpan span = {latitudeDelta: latDelta, longitudeDelta: lonDelta};
+		MKCoordinateRegion region = {center, span};
+		
+		region.span.latitudeDelta = latDelta;
+		region.span.longitudeDelta = lonDelta;
+		
+		self.mapView.region = region;
 	}
 	
 	
