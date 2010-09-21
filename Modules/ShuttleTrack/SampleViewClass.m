@@ -19,13 +19,13 @@
 -(id) initWithRoute:(NSMutableArray*)routePoints mapView:(MKMapView*)givenMapView
 {
 	self.mapView = givenMapView;
-	self = [super initWithFrame:CGRectMake(0, 0, givenMapView.frame.size.width, givenMapView.frame.size.height)];
+	self = [super initWithFrame:CGRectMake(0, 50, givenMapView.frame.size.width, givenMapView.frame.size.height)];
 	[self setBackgroundColor:[UIColor clearColor]];
 	
 	[self setMapView:self.mapView];
 	[self setPoints:routePoints];
 	
-	/*
+	
 	// determine the extents of the trip points that were passed in, and zoom in to that area.
 	CLLocationDegrees maxLat = -90;
 	CLLocationDegrees maxLon = -180;
@@ -51,8 +51,8 @@
 	region.span.latitudeDelta = maxLat - minLat;
 	region.span.longitudeDelta = maxLon - minLon;
 	
-	//[self.mapView setRegion:region];
-	[self.mapView setDelegate:self];*/
+	[self.mapView setRegion:region];
+	//[self.mapView setDelegate:self];
 	//[self.mapView addSubview:self];
 	
 	return self;
@@ -73,7 +73,7 @@
 		CGContextSetRGBFillColor(context, 0.0, 0.0, 1.0, 1.0);
 		
 		// Draw them with a 2.0 stroke width so they are a bit more visible.
-		CGContextSetLineWidth(context, 2.0);
+		CGContextSetLineWidth(context, 4.0);
 		
 		for(int idx = 0; idx < self.points.count; idx++)
 		{

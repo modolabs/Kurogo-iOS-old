@@ -10,6 +10,7 @@
 #import "ShuttleDataManager.h"
 #import "RouteMapViewController.h"
 #import "ShuttleRouteViewController.h"
+#import "ShuttleRoutes.h"
 
 #define NOTIFICATION_MINUTES 5
 #define MARGIN 10
@@ -88,38 +89,52 @@
         }
 	}
 	
-	self.title = NSLocalizedString(@"Shuttle Stop", nil);
+	self.title = NSLocalizedString(@"Bus Stop", nil);
 	
-	UIView *headerView = [[[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 135)] autorelease];
+	UIView *headerView = [[[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 235)] autorelease];
 	headerView.backgroundColor = [UIColor clearColor];
 	
 	int mapBuffer = 15;
-	int mapSize = 66;
+	int mapBufferX = 15;
+	int mapBufferY = 60;
+	int mapSizeX = self.view.frame.size.width - mapBufferX*2;
+	int mapSizeY = 175;
 	
-	UIFont* titleFont = [UIFont boldSystemFontOfSize:20];
-	int titleWidth = headerView.frame.size.width - mapSize - mapBuffer * 3;
-	CGSize titleSize = [self.shuttleStop.title sizeWithFont:titleFont
+	//UIFont* titleFont = [UIFont boldSystemFontOfSize:20];
+	int titleWidth = headerView.frame.size.width;
+	CGSize titleSize = [self.shuttleStop.title sizeWithFont:[UIFont fontWithName:CONTENT_TITLE_FONT size:CONTENT_TITLE_FONT_SIZE]
                                           constrainedToSize:CGSizeMake(titleWidth, 300)
                                               lineBreakMode:UILineBreakModeWordWrap];
     
-	UILabel* titleLabel = [[[UILabel alloc] initWithFrame:CGRectMake(mapSize + mapBuffer * 2, mapBuffer, titleWidth, titleSize.height)] autorelease];
+	UILabel* titleLabel = [[[UILabel alloc] initWithFrame:CGRectMake(mapBufferX, mapBuffer/2, titleWidth, titleSize.height)] autorelease];
 	titleLabel.text = self.shuttleStop.title;
 	titleLabel.backgroundColor = [UIColor clearColor];
 	titleLabel.textAlignment = UITextAlignmentLeft;
-	titleLabel.font = [UIFont boldSystemFontOfSize:20];
+	titleLabel.font = [UIFont fontWithName:CONTENT_TITLE_FONT size:CONTENT_TITLE_FONT_SIZE];//[UIFont boldSystemFontOfSize:20];
 	titleLabel.lineBreakMode = UILineBreakModeWordWrap;
 	titleLabel.numberOfLines = 0;
 	
 	[headerView addSubview:titleLabel];
 	
+	UILabel* titleDetailsLabel = [[[UILabel alloc] initWithFrame:CGRectMake(mapBufferX, mapBuffer + 15, titleWidth, titleSize.height)] autorelease];
+	titleDetailsLabel.text = @"Placeholder for Address of this place.......";
+	titleDetailsLabel.backgroundColor = [UIColor clearColor];
+	titleDetailsLabel.textAlignment = UITextAlignmentLeft;
+	titleDetailsLabel.font = [UIFont systemFontOfSize:15];
+	titleDetailsLabel.lineBreakMode = UILineBreakModeWordWrap;
+	titleDetailsLabel.numberOfLines = 0;
+	
+	[headerView addSubview:titleDetailsLabel];
+	
 	// add the map view thumbnail
-	_mapThumbnail = [[MKMapView alloc] initWithFrame:CGRectMake(2.0, 2.0, mapSize - 4.0, mapSize - 4.0)];
+	//_mapThumbnail = [[MKMapView alloc] initWithFrame:CGRectMake(2.0, 2.0, mapSize - 4.0, mapSize - 4.0)];
+	_mapThumbnail = [[MKMapView alloc] initWithFrame:CGRectMake(2.0, 2.0, mapSizeX - 4.0, mapSizeY - 4.0)];
 	_mapThumbnail.delegate = self;
 	//_mapThumbnail.shouldNotDropPins = YES;
 	[_mapThumbnail addAnnotation:self.annotation];
 	_mapThumbnail.centerCoordinate = self.annotation.coordinate;
-	_mapThumbnail.scrollEnabled = NO;
-	_mapThumbnail.userInteractionEnabled = NO;
+	_mapThumbnail.scrollEnabled = YES;
+	_mapThumbnail.userInteractionEnabled = YES;
 	//_mapThumbnail.layer.cornerRadius = 6.0;
 	
 	
@@ -141,18 +156,18 @@
 	
 	
 	// add a button on top of the map
-	_mapButton = [[UIButton alloc] initWithFrame:CGRectMake(mapBuffer, mapBuffer, mapSize, mapSize)];
+	_mapButton = [[UIButton alloc] initWithFrame:CGRectMake(mapBufferX, mapBufferY, mapSizeX, mapSizeY)];
     
 	_mapButton.backgroundColor = [UIColor whiteColor];
-	 [_mapButton addTarget:self action:@selector(mapThumbnailPressed) forControlEvents:UIControlEventTouchUpInside];
+	// [_mapButton addTarget:self action:@selector(mapThumbnailPressed) forControlEvents:UIControlEventTouchUpInside];
 	//_mapButton.layer.cornerRadius = 8.0;
 	[_mapButton addSubview:_mapThumbnail];
     
 	[headerView addSubview:_mapButton];
 	
-	UIImageView *alertHeaderIcon = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"shuttle-alert-descriptive.png"]] autorelease];
+	/*UIImageView *alertHeaderIcon = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"shuttle-alert-descriptive.png"]] autorelease];
 	CGRect alertHeaderIconFrame = alertHeaderIcon.frame;
-	alertHeaderIconFrame.origin = CGPointMake(MARGIN, mapSize + mapBuffer * 2);
+	alertHeaderIconFrame.origin = CGPointMake(MARGIN, mapSizeX + mapBuffer * 2);
 	alertHeaderIcon.frame = alertHeaderIconFrame;
 	[headerView addSubview:alertHeaderIcon];
 	
@@ -168,7 +183,7 @@
 	alertHeaderText.text = @"Tap the 'Alert Me' icon to be notified 5 minutes before the estimated arrival time.";
 	alertHeaderText.numberOfLines = 0;
 	alertHeaderText.textColor = CELL_DETAIL_FONT_COLOR;
-	[headerView addSubview:alertHeaderText];
+	[headerView addSubview:alertHeaderText];*/
 	
 	[self.tableView setTableHeaderView:headerView];
 	
@@ -186,7 +201,26 @@
 	
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadSubscriptions) name:ShuttleAlertRemoved object:nil];
 	
-	url = [[MITModuleURL alloc] initWithTag:ShuttleTag];	 
+	url = [[MITModuleURL alloc] initWithTag:ShuttleTag];
+	
+	ShuttleRouteViewController *parentController = (ShuttleRouteViewController *)[MITModuleURL parentViewController:self];		
+	ShuttleRoutes *shuttleRoutes = parentController.parentShuttleRoutes;
+	routes = shuttleRoutes.shuttleRoutes;
+	
+	routesRunningCurrentlyThroughThisStop = [[NSMutableArray alloc] init];
+	routesNotRunningCurrentlyThroughThisStop = [[NSMutableArray alloc] init];
+
+	/*for (ShuttleRoute* route in routes) {
+		
+			if ((route.isRunning)){
+				[routesRunningCurrentlyThroughThisStop addObject:route];
+			}
+			else if (!(route.isRunning)){
+				[routesNotRunningCurrentlyThroughThisStop addObject:route];
+			}
+
+	}*/
+	
 }
 
 -(void) viewWillDisappear:(BOOL)animated
@@ -276,14 +310,16 @@
 #pragma mark Table view methods
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return self.shuttleStopSchedules.count;
+   //return self.shuttleStopSchedules.count;
+	//return routes.count;
+	return 2;
 }
 
 
 // Customize the number of rows in the table view.
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     	
-	if (section < self.shuttleStopSchedules.count) 
+	/*if (section < self.shuttleStopSchedules.count) 
 	{
 		// determine the route schedule
 		ShuttleStop* schedule = [self.shuttleStopSchedules objectAtIndex:section];
@@ -291,7 +327,14 @@
         // if nextScheduled is not defined, the first row will be negative
 		return (schedule.nextScheduled != 0) ? schedule.predictions.count + 1 : 0;
         
-	}
+	}*/
+	
+	
+	if (section == 0)
+		return [routesRunningCurrentlyThroughThisStop count];
+	
+	else if (section == 1)
+		return [routesNotRunningCurrentlyThroughThisStop count];
 	
 	return 0;
 }
@@ -303,22 +346,52 @@
     
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil) {
-        cell = [[[ShuttlePredictionTableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CellIdentifier] autorelease];
+        //cell = [[[ShuttlePredictionTableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CellIdentifier] autorelease];
+		cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
 		[cell applyStandardFonts];		
     }
     
-    if (indexPath.section < self.shuttleStopSchedules.count) 
-	{
+	
+	if (indexPath.section == 0) {
+		cell.textLabel.text = ((ShuttleRoute *)[routesRunningCurrentlyThroughThisStop objectAtIndex:indexPath.row]).title;
+	}
+	else if (indexPath.section == 1) {
+		cell.textLabel.text = ((ShuttleRoute *)[routesNotRunningCurrentlyThroughThisStop objectAtIndex:indexPath.row]).title;
+	}
+	
+   // if (indexPath.row < self.shuttleStopSchedules.count) 
+	//{
 		// determine the route schedule
-		ShuttleStop* schedule = [self.shuttleStopSchedules objectAtIndex:indexPath.section];
+		//ShuttleStop* schedule = [self.shuttleStopSchedules objectAtIndex:(indexPath.row)];
 		
-		NSDate* date = [schedule dateForPredictionAtIndex:indexPath.row];
-		NSTimeInterval timeInterval = [date timeIntervalSinceNow];
-		int minutes = timeInterval / 60;
+		//NSDate* date = [schedule dateForPredictionAtIndex:indexPath.row];
+		//NSTimeInterval timeInterval = [date timeIntervalSinceNow];
+	//}
+		//int minutes = timeInterval / 60;
 		
-		cell.textLabel.text = [_timeFormatter stringFromDate:date];
+		//cell.textLabel.text = [NSString stringWithFormat:@"%@:", [(ShuttleRouteCache *)[schedule.routeStop route] title]];  //[_timeFormatter stringFromDate:date];
 		
-		NSString *minutesText;
+		/*NSString *routeName = [(ShuttleRouteCache *)[schedule.routeStop route] title];
+		//ShuttleRoute *currentRoute;
+		for (ShuttleRoute* route in routes) {
+			
+			if ([route.title isEqualToString:routeName]){
+				if ((indexPath.section == 0) &&(route.isRunning)) {
+					cell.textLabel.text = route.title;
+				}
+				else if ((indexPath.section == 1) && !(route.isRunning)) {
+					cell.textLabel.text = route.title;
+				}
+				else {
+					cell.textLabel.text = @"placeholder";
+				}
+
+			}
+		}*/
+			
+		
+		
+		/*NSString *minutesText;
 		if(minutes == 0) {
 			minutesText = @"(now)";
 		} else if(minutes == 1) {
@@ -344,14 +417,14 @@
                 cell.accessoryView = [[[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray] autorelease];
                 [((UIActivityIndicatorView *)cell.accessoryView) startAnimating]; 
             }
-        }
-	}
+        }*/
+	//}
 	
     return cell;
 }
 
 - (UIView *) tableView: (UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
-	ShuttleStop *stop = [self.shuttleStopSchedules objectAtIndex:section];
+	/*ShuttleStop *stop = [self.shuttleStopSchedules objectAtIndex:section];
 	NSString *headerTitle = nil;
 	
 	if (section < self.shuttleStopSchedules.count) {
@@ -362,7 +435,15 @@
 		} else {
 			return nil;
 		}
-	}
+	}*/
+	
+	NSString *headerTitle;
+	if (section == 0) 
+		headerTitle = @"Currently Serviced by:";
+	
+	else if (section == 1)
+		headerTitle = @"Serviced at other times by:";
+
 	return [UITableView groupedSectionHeaderWithTitle:headerTitle];
 }
 
@@ -543,6 +624,12 @@
 	NSMutableArray *otherSchedules = [NSMutableArray array];
 	self.shuttleStopSchedules = [NSMutableArray array];
 	
+	for(int i =0; i < [routesRunningCurrentlyThroughThisStop count]; i++)
+		[routesRunningCurrentlyThroughThisStop removeObjectAtIndex:i];
+	
+	for(int j =0; j < [routesNotRunningCurrentlyThroughThisStop count]; j++)
+		[routesNotRunningCurrentlyThroughThisStop removeObjectAtIndex:j];
+	
 	if ([self.shuttleStop.stopID isEqualToString:stopID]) 
 	{
 		// need to make sure the main route is first
@@ -552,7 +639,23 @@
 			} else {
 				[otherSchedules addObject:routeStopSchedule];
 			}
+			
+			for (ShuttleRoute* route in routes) {
+				if ([route.routeID isEqualToString:routeStopSchedule.routeID]) {
+					if (route.isRunning){
+						if (![routesRunningCurrentlyThroughThisStop containsObject:route])
+							[routesRunningCurrentlyThroughThisStop addObject:route];
+					}
+					else if (!(route.isRunning)){
+						if (![routesNotRunningCurrentlyThroughThisStop containsObject:route])
+						[routesNotRunningCurrentlyThroughThisStop addObject:route];
+					}
+				}
+			}
 		}
+		
+		[routesRunningCurrentlyThroughThisStop sortUsingSelector:@selector(compare:)];
+		[routesNotRunningCurrentlyThroughThisStop sortUsingSelector:@selector(compare:)];
         
 		self.shuttleStopSchedules = [self.shuttleStopSchedules arrayByAddingObjectsFromArray:otherSchedules];
         

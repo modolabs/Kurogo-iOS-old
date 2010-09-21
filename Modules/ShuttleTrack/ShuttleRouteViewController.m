@@ -3,6 +3,7 @@
 #import "ShuttleStopMapAnnotation.h"
 #import "ShuttleStopCell.h"
 #import "ShuttleStopViewController.h"
+#import "MITUIConstants.h"
 
 @interface ShuttleRouteViewController(Private)
 
@@ -19,6 +20,7 @@
 @synthesize route = _route;
 @synthesize tableView = _tableView;
 @synthesize routeMapViewController = _routeMapViewController;
+@synthesize parentShuttleRoutes;
 
 - (void)dealloc {
 	[_viewTypeButton release];
@@ -56,16 +58,19 @@
 	//_viewTypeButton.enabled = NO;										  
 	self.navigationItem.rightBarButtonItem = _viewTypeButton;
 	
-	_smallStopImage = [[UIImage imageNamed:@"shuttles/shuttle-stop-dot.png"] retain];
-	_smallUpcomingStopImage = [[UIImage imageNamed:@"shuttles/shuttle-stop-dot-next.png"] retain];
+	_smallStopImage = [[UIImage imageNamed:@"shuttle-stop-dot.png"] retain];
+	_smallUpcomingStopImage = [[UIImage imageNamed:@"shuttle-stop-dot-next.png"] retain];
 	
 	url = [[MITModuleURL alloc] initWithTag:ShuttleTag];
     [url setPath:[NSString stringWithFormat:@"route-list/%@", self.route.routeID] query:nil];
     
     [_titleCell setRouteInfo:self.route];
+	_titleCell.routeTitleLabel.font = [UIFont fontWithName:CONTENT_TITLE_FONT size:CONTENT_TITLE_FONT_SIZE];
+	self.view.backgroundColor = [UIColor clearColor];
 	_titleCell.frame = CGRectMake(_titleCell.frame.origin.x, _titleCell.frame.origin.y, _titleCell.frame.size.width, [_titleCell heightForCellWithRoute:self.route]);
     [self.view addSubview:_titleCell];
     self.tableView.frame = CGRectMake(0.0, _titleCell.frame.size.height - 4.0, self.view.frame.size.width, self.view.frame.size.height - _titleCell.frame.size.height + 4.0);
+	self.tableView.backgroundColor = [UIColor whiteColor];
 }
 
 
@@ -159,6 +164,7 @@
     static NSString *StopCellIdentifier = @"StopCell";
 
 	ShuttleStopCell* cell = (ShuttleStopCell*)[tableView dequeueReusableCellWithIdentifier:StopCellIdentifier];
+	
 	if (nil == cell) {
 		[[NSBundle mainBundle] loadNibNamed:@"ShuttleStopCell" owner:self options:nil];
 		cell = _shuttleStopCell;

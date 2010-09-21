@@ -38,16 +38,18 @@
 
 	if (shuttleStop.upcoming) 
 	{
-		_shuttleStopImageView.image = [UIImage imageNamed:@"shuttles/shuttle-stop-dot-next.png"] ;
+		_shuttleStopImageView.image = [UIImage imageNamed:@"shuttle-stop-dot-next.png"] ;
 		_shuttleTimeLabel.textColor = SEARCH_BAR_TINT_COLOR;
         _shuttleTimeLabel.font = [UIFont boldSystemFontOfSize:16.0];
+		_shuttleNextLabel.text = @"Arriving Next at: ";
 		
 	}
 	else 
 	{
-		_shuttleStopImageView.image = [UIImage imageNamed:@"shuttles/shuttle-stop-dot.png"];
+		//_shuttleStopImageView.image = [UIImage imageNamed:@"shuttle-stop-dot.png"];
 		_shuttleTimeLabel.textColor = [UIColor blackColor];
         _shuttleTimeLabel.font = [UIFont systemFontOfSize:16.0];
+		_shuttleNameLabel.frame = CGRectMake(_shuttleNameLabel.frame.origin.x, _shuttleNameLabel.frame.origin.y - 5, _shuttleNameLabel.frame.size.width, _shuttleNameLabel.frame.size.height);
 	}
 }
 

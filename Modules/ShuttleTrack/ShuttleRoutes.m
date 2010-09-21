@@ -251,6 +251,7 @@
 		
 		ShuttleRouteViewController *routeVC = [[[ShuttleRouteViewController alloc] initWithNibName:@"ShuttleRouteViewController" bundle:nil ] autorelease];
 		routeVC.route = route;
+		routeVC.parentShuttleRoutes = self;
 		
 		
 		/*

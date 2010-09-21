@@ -91,10 +91,9 @@
 	
 	MKCoordinateRegion region = MKCoordinateRegionMake(center, span);
 	
-	[self.mapView setRegion:region];	
+	[self.mapView setRegion:region animated:YES];	
 	[self.mapView selectAnnotation:annotation animated:YES];
-	
-	int r = 4*4;
+
 }
 
 -(void)refreshRouteTitleInfo {
@@ -233,9 +232,17 @@
 	double latDelta = maxLat - minLat;
 	double lonDelta = maxLon - minLon; 
 	
-	MKCoordinateSpan span = MKCoordinateSpanMake(latDelta + latDelta / 4, lonDelta + lonDelta / 4);
+	//MKCoordinateSpan span = MKCoordinateSpanMake(latDelta + latDelta / 4, lonDelta + lonDelta / 4);
+	//MKCoordinateSpan span = MKCoordinateSpanMake(latDelta, 1.1*lonDelta);
 	
-	MKCoordinateRegion region = MKCoordinateRegionMake(center, span);
+	//MKCoordinateRegion region = MKCoordinateRegionMake(center, span);
+	
+	MKCoordinateSpan span = {latitudeDelta: latDelta, longitudeDelta: lonDelta};
+	MKCoordinateRegion region = {center, span};
+	
+	region.span.latitudeDelta = latDelta;
+	region.span.longitudeDelta = lonDelta;
+	
 	return region;
 }
 

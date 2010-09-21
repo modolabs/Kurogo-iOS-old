@@ -47,6 +47,10 @@
 	NSTimer* _pollingTimer;
 	
 	MITModuleURL* url;
+	
+	NSArray *routes;
+	NSMutableArray *routesRunningCurrentlyThroughThisStop;
+	NSMutableArray *routesNotRunningCurrentlyThroughThisStop;
 }
 
 

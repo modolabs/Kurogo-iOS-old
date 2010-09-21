@@ -2,6 +2,7 @@
 #import "ShuttleDataManager.h"
 #import "RouteInfoTitleCell.h"
 #import "MITModuleURL.h"
+#import "ShuttleRoutes.h"
 
 @class ShuttleRoute;
 @class RouteMapViewController;
@@ -40,6 +41,8 @@
 	ShuttleStopMapAnnotation* _selectedStopAnnotation;
 	
 	MITModuleURL* url;
+	
+	ShuttleRoutes *parentShuttleRoutes;
 }
 
 // used to toggle between map and list view
@@ -57,4 +60,5 @@
 //@property (nonatomic, retain) ShuttleRoute* routeInfo;
 @property (nonatomic, retain) UITableView* tableView;
 @property (nonatomic, retain) RouteMapViewController* routeMapViewController;
+@property (nonatomic, retain) ShuttleRoutes *parentShuttleRoutes;
 @end

@@ -7,6 +7,7 @@
 	IBOutlet UIImageView* _shuttleStopImageView;
 	IBOutlet UILabel* _shuttleNameLabel;
 	IBOutlet UILabel* _shuttleTimeLabel;
+	IBOutlet UILabel* _shuttleNextLabel;
 }
 
 -(void) setShuttleInfo:(ShuttleStop*)shuttleStop;
