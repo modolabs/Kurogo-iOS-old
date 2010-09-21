@@ -6,6 +6,7 @@
 @synthesize coordinate = _coordinate;
 @synthesize secsSinceReport = _secsSinceReport;
 @synthesize heading = _heading;
+@synthesize iconURL;
 
 
 -(id) initWithDictionary:(NSDictionary*)dictionary
@@ -17,6 +18,8 @@
 		
 		self.secsSinceReport = [[dictionary objectForKey:@"secsSinceReport"] intValue];
 		self.heading = [[dictionary objectForKey:@"heading"] intValue];
+		
+		self.iconURL = [dictionary objectForKey:@"iconURL"];
 	}
 	
 	return self;

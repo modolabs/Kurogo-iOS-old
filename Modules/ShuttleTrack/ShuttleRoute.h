@@ -9,7 +9,10 @@
 	BOOL _liveStatusFailed;
 	ShuttleRouteCache *_cache;
 	NSString * agency;
-
+	NSString *urlForMarker;
+	NSString *nextStopId;
+	
+	
     NSMutableArray *_stops;
 	
 	// parsed path locations for the entire route. 
@@ -38,6 +41,8 @@
 @property (readwrite, retain) ShuttleRouteCache *cache;
 @property (readwrite, retain) NSString * agency;
 @property (readwrite, retain) NSString * color;
+@property (readwrite, retain) NSString *urlForMarker;
+@property (readwrite, retain) NSString *nextStopId;
 
 @property (readwrite, retain) NSString *title;
 @property (readwrite, retain) NSString *summary;

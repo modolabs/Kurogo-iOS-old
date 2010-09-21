@@ -284,6 +284,7 @@
 -(void) removeShuttles
 {
 	[_mapView removeAnnotations:_vehicleAnnotations];
+	[_mapView removeAnnotations:_route.annotations];
 	[_vehicleAnnotations release];
 	_vehicleAnnotations = nil;
 }
@@ -299,11 +300,13 @@
 {
 	for(ShuttleStopMapAnnotation* annotation in _route.annotations) 
 	{
-		ShuttleStop* info = [_routeStops objectForKey:annotation.shuttleStop.stopID];
+		ShuttleStop* stopInfo = [_routeStops objectForKey:annotation.shuttleStop.stopID];
 		
-		if (info.upcoming != annotation.shuttleStop.upcoming) 
+		ShuttleRoute *info = self.routeInfo;
+		//if (info.upcoming != annotation.shuttleStop.upcoming) 
+		if ([info.nextStopId isEqualToString:stopInfo.stopID])
 		{
-			annotation.shuttleStop.upcoming = info.upcoming;
+			annotation.shuttleStop.upcoming = YES; //info.upcoming;
 			[self updateStopAnnotation:annotation];
 		} 
 		
@@ -315,6 +318,7 @@
 {
 	//UIImage* image = nil;
 	[self.mapView addAnnotation:annotation];
+
 	//MKAnnotationView * annotationView = [_mapView viewForAnnotation:annotation];	
 	
 	
@@ -431,7 +435,14 @@
 		annotationView = [[[MKAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:@"gufileg"] autorelease];
 		UIImage* pin = [UIImage imageNamed:@"shuttle-stop-dot.png"];
 		UIImageView* imageView = [[[UIImageView alloc] initWithImage:pin] autorelease];
-		imageView.image = ((ShuttleStopMapAnnotation *)annotation).shuttleStop.upcoming ? _smallUpcomingStopImage : _smallStopImage;
+		
+		BOOL upComing = NO;
+		if ([((ShuttleStopMapAnnotation *)annotation).shuttleStop.stopID isEqualToString:self.routeInfo.nextStopId]) {
+			upComing = YES;
+		}
+		
+		imageView.image = upComing ? _smallUpcomingStopImage : _smallStopImage;
+		//imageView.image = ((ShuttleStopMapAnnotation *)annotation).shuttleStop.upcoming ? _smallUpcomingStopImage : _smallStopImage;
 		annotationView.frame = imageView.frame;
 		annotationView.canShowCallout = YES;
 		[annotationView addSubview:imageView];
@@ -468,10 +479,22 @@
 		
 		annotationView.frame = imageView.frame;
 		annotationView.canShowCallout = NO;
-		[annotationView addSubview:imageView];
-		[annotationView addSubview:arrowImageView];
+		//[annotationView addSubview:imageView];
+		//[annotationView addSubview:arrowImageView];
 		
-		annotationView.backgroundColor = [UIColor clearColor];
+		
+		NSString * pathForImage = @"http://ncsu.transloc.com/m/markers/marker.php?m=bus&c=3366FF&h=ne";
+		//NSURL *url = [NSURL URLWithString:@"http://ncsu.transloc.com/m/markers/marker.php?m=bus&c=3366FF&h=ne"];
+		NSString *testing = shuttleLocation.iconURL;
+		NSURL *url = [NSURL URLWithString:shuttleLocation.iconURL];
+		NSData *data = [NSData dataWithContentsOfURL:url];
+		UIImage *marker = [[UIImage alloc] initWithData:data];
+		UIImageView* markerView = [[[UIImageView alloc] initWithImage:marker] autorelease];
+		[annotationView addSubview:markerView];
+		
+		//annotationView.backgroundColor = [UIColor clearColor];
+		
+		
 		//annotationView.alreadyOnMap = YES;
 		//annotationView.layer.anchorPoint = CGPointMake(0.5, 1.0);
 	}
@@ -534,6 +557,7 @@
 		
 		[self addShuttles];
 		[self updateUpcomingStops];
+		[self.mapView setCenterCoordinate:self.mapView.region.center animated:NO];
 	}
 	
 	

@@ -18,6 +18,8 @@
 @synthesize cache = _cache;
 @synthesize agency;
 @synthesize color;
+@synthesize urlForMarker;
+@synthesize nextStopId;
 
 // cached properties
 @dynamic title;
@@ -198,6 +200,7 @@
 	self.isSafeRide = [[routeInfo objectForKey:@"isSafeRide"] boolValue];
 	self.agency = [routeInfo objectForKey:@"agency"];
 	self.color = [routeInfo objectForKey:@"color"];
+	self.urlForMarker = @"";//[routeInfo objectForKey:@"iconURL"];
 	
 	self.tag = [routeInfo objectForKey:@"tag"];
 	self.gpsActive = [[routeInfo objectForKey:@"gpsActive"] boolValue];
@@ -206,6 +209,14 @@
 	NSArray *stops = nil;
 	if (stops = [routeInfo objectForKey:@"stops"]) {
 		self.stops = (NSMutableArray *)stops;
+		
+		NSArray *tempArray = [routeInfo objectForKey:@"stops"];
+		
+		for(int i=0; i < [tempArray count]; i++){
+			NSDictionary *tempDict = [tempArray objectAtIndex:i];
+			if ([tempDict objectForKey:@"upcoming"])
+				self.nextStopId = [tempDict objectForKey:@"id"];
+		}
 	}
 	
 	NSArray* vehicleLocations = [routeInfo objectForKey:@"vehicleLocations"];
