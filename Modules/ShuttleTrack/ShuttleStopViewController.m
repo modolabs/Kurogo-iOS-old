@@ -294,6 +294,7 @@
 	[self.navigationController pushViewController:routeMap animated:YES];
 }
 
+
 - (void)didReceiveMemoryWarning {
 	// Releases the view if it doesn't have a superview.
     //[super didReceiveMemoryWarning];
@@ -358,6 +359,8 @@
 	else if (indexPath.section == 1) {
 		cell.textLabel.text = ((ShuttleRoute *)[routesNotRunningCurrentlyThroughThisStop objectAtIndex:indexPath.row]).title;
 	}
+	
+	cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 	
    // if (indexPath.row < self.shuttleStopSchedules.count) 
 	//{
@@ -453,110 +456,73 @@
 
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-	[tableView deselectRowAtIndexPath:indexPath animated:YES];
-    
-    ShuttleStop *schedule = [self.shuttleStopSchedules objectAtIndex:indexPath.section];
-    
-	NSDate *date = [schedule dateForPredictionAtIndex:indexPath.row];
-	NSTimeInterval timeInterval = [date timeIntervalSinceNow];
-	int minutes = timeInterval / 60;
-    
-	if(!(minutes > NOTIFICATION_MINUTES)) {
-		// shuttle is arriving too soon at this stop to subscribe for a notification
-		// just show an alert and exit this handler
-		UIAlertView *alertView = [[UIAlertView alloc] 
-                                  initWithTitle:@"Arriving Soon"
-                                  message:[NSString stringWithFormat:@"The shuttle is arriving at this stop in %i minutes, leave soon", minutes]
-                                  delegate:nil 
-                                  cancelButtonTitle:@"OK" 
-                                  otherButtonTitles:nil];
-		
-		[alertView show];
-		[alertView release];
-		return;
-	}
-    
-    UIRemoteNotificationType types = [[UIApplication sharedApplication] enabledRemoteNotificationTypes];
-    
-    if (types == UIRemoteNotificationTypeNone) {
-		// user opted out of notifications for the entire app
-		// just show an alert and exit this handler
-        
-        // Shuttle alerts don't do anything with badges.
-		UIAlertView *alertView = [[UIAlertView alloc] 
-                                  initWithTitle:@"Notifications Disabled"
-                                  message:@"All notifications for Harvard Mobile have been disabled. Quit this application and go to Settings > Notifications to enable them."
-                                  delegate:nil 
-                                  cancelButtonTitle:@"OK" 
-                                  otherButtonTitles:nil];
-		
-        // TODO: It would be nice if there was some URL we could open to send the user to that settings window.
-        
-		[alertView show];
-		[alertView release];
-		return;
-    }
-    
-    if (!(types & UIRemoteNotificationTypeAlert) && !(types & UIRemoteNotificationTypeSound)) {
-		// user opted out of the kinds of notifications shuttle makes
-		// just show an alert and exit this handler
-        
-        // Shuttle alerts don't do anything with badges.
-		UIAlertView *alertView = [[UIAlertView alloc] 
-                                  initWithTitle:@"Notifications Disabled"
-                                  message:@"Alerts and Sounds are required for shuttle alerts. Quit this application and go to Settings > Notifications to enable them."
-                                  delegate:nil 
-                                  cancelButtonTitle:@"OK" 
-                                  otherButtonTitles:nil];
-		
-        // TODO: It would be nice if there was some URL we could open to send the user to that settings window.
-        
-		[alertView show];
-		[alertView release];
-		return;
-    }
-    
-    MIT_MobileAppDelegate *appDelegate = (MIT_MobileAppDelegate *)[[UIApplication sharedApplication] delegate];
-    MITModule *shuttleModule = [appDelegate moduleForTag:ShuttleTag];
-    if (!shuttleModule.pushNotificationEnabled) {
-		// user opted out of notifications in Settings module
-		// just show an alert and exit this handler
-		UIAlertView *alertView = [[UIAlertView alloc] 
-                                  initWithTitle:@"Notifications Disabled"
-                                  message:@"Shuttle notifications have been disabled. Go to More > Settings to enable them."
-                                  delegate:nil 
-                                  cancelButtonTitle:@"OK" 
-                                  otherButtonTitles:nil];
-		
-        // TODO: If settings are disabled in the Settings module, we should add a button in this dialogue to switch the user to the Settings module.
-        
-		[alertView show];
-		[alertView release];
-		return;
-    }
 	
-	// do not allow two simulatenous equivalent requests
-	if(![self hasSubscriptionRequestLoading:indexPath]) {
-		[self.loadingSubscriptionRequests addObject:indexPath];
-		
-		// reload the table to see the activity indicator start animator
-		[self.tableView reloadData];
-		
-		if(![self hasSubscription:indexPath]) {
-			[ShuttleSubscriptionManager 
-             subscribeForRoute:schedule.routeID
-             atStop:schedule.stopID
-             scheduleTime:date
-             delegate:self 
-             object:indexPath];
-		} else {
-			[ShuttleSubscriptionManager 
-             unsubscribeForRoute:schedule.routeID
-             atStop:schedule.stopID
-             delegate:self 
-             object:indexPath];
-		}
-	}
+	
+	[tableView deselectRowAtIndexPath:indexPath animated:YES];
+	
+	ShuttleRoute *route;
+	if (indexPath.section == 0)
+		route = [routesRunningCurrentlyThroughThisStop objectAtIndex:indexPath.row];
+	
+	else if (indexPath.section == 1)
+		route = [routesNotRunningCurrentlyThroughThisStop objectAtIndex:indexPath.row];
+	
+	//RouteMapViewController* routeMap = [[[RouteMapViewController alloc] initWithNibName:@"RouteMapViewController" bundle:nil] autorelease];
+	//routeMap.route = route; //[[ShuttleDataManager sharedDataManager].shuttleRoutesByID objectForKey:route.routeID];
+	
+	// ensure the view and map view are loaded
+	//routeMap.view;
+	
+	//MKMapView* mapView = routeMap.mapView;
+	
+	//[routeMap selectAnnon:self.annotation];
+	//routeMap.singleStopView = YES;
+	
+	
+	ShuttleRouteViewController *parentController = (ShuttleRouteViewController *)[MITModuleURL parentViewController:self];		
+	
+	ShuttleRouteViewController *routeVC = [[[ShuttleRouteViewController alloc] initWithNibName:@"ShuttleRouteViewController" bundle:nil ] autorelease];
+	routeVC.route = route;
+	routeVC.parentShuttleRoutes = parentController.parentShuttleRoutes;
+	[routeVC setMapViewMode:YES animated:NO];
+	
+	/*
+	 RouteMapViewController* routeVC = [[[RouteMapViewController alloc] initWithNibName:@"RouteMapViewController" bundle:nil] autorelease];
+	 routeVC.route = route;
+	 */
+	
+	//[self.navigationController pushViewController:routeVC animated:YES];
+	[self.navigationController popViewControllerAnimated:NO];
+	[parentController.parentShuttleRoutes.navigationController popViewControllerAnimated:NO];
+	[parentController.parentShuttleRoutes.navigationController pushViewController:routeVC animated:YES];
+	
+	
+	
+	/*CLLocationCoordinate2D coordinate = self.annotation.coordinate;
+	
+	CLLocationCoordinate2D center;
+	center.latitude = coordinate.latitude; 
+	center.longitude = coordinate.longitude; 
+	
+	double latDelta = 0.002;
+	double lonDelta = 0.002;
+	
+	MKCoordinateSpan span = MKCoordinateSpanMake(latDelta, lonDelta);
+	
+	MKCoordinateRegion region = MKCoordinateRegionMake(center, span);
+	
+	[routeMap.mapView setRegion:region];	
+	[routeMap.mapView selectAnnotation:self.annotation animated:YES];*/
+	
+
+	//[self.navigationController popViewControllerAnimated:YES];
+	//[self.navigationController pushViewController:routeMap animated:YES];
+	
+	//[parentController.navigationController popViewControllerAnimated:NO];
+	//[parentController.navigationController pushViewController:routeMap animated:YES];
+	
+
+
 	
 }
 

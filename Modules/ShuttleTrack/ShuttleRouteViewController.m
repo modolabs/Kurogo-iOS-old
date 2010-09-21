@@ -233,6 +233,8 @@
 		[self.routeMapViewController viewWillDisappear:YES];
 		[self.routeMapViewController.view removeFromSuperview];
 		[self.view addSubview:self.tableView];	
+		self.tableView.frame = CGRectMake(0.0, _titleCell.frame.size.height - 4.0, self.view.frame.size.width, self.view.frame.size.height - _titleCell.frame.size.height + 4.0);
+		self.tableView.backgroundColor = [UIColor whiteColor];
 		self.routeMapViewController = nil;
 		_viewTypeButton.title = @"Map";
 	} else {
