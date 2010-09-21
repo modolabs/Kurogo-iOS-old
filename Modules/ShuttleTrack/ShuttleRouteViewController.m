@@ -71,6 +71,10 @@
     [self.view addSubview:_titleCell];
     self.tableView.frame = CGRectMake(0.0, _titleCell.frame.size.height - 4.0, self.view.frame.size.width, self.view.frame.size.height - _titleCell.frame.size.height + 4.0);
 	self.tableView.backgroundColor = [UIColor whiteColor];
+	
+	//if ([self.routeMapViewController.route.pathLocations count])
+		[self setMapViewMode:YES animated:YES];	
+	
 }
 
 

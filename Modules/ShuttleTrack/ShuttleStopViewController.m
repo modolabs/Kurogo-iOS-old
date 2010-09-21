@@ -484,7 +484,7 @@
 	ShuttleRouteViewController *routeVC = [[[ShuttleRouteViewController alloc] initWithNibName:@"ShuttleRouteViewController" bundle:nil ] autorelease];
 	routeVC.route = route;
 	routeVC.parentShuttleRoutes = parentController.parentShuttleRoutes;
-	[routeVC setMapViewMode:YES animated:NO];
+	//[routeVC setMapViewMode:YES animated:NO];
 	
 	/*
 	 RouteMapViewController* routeVC = [[[RouteMapViewController alloc] initWithNibName:@"RouteMapViewController" bundle:nil] autorelease];

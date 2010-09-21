@@ -17,6 +17,7 @@
 @synthesize vehicleLocations = _vehicleLocations;
 @synthesize cache = _cache;
 @synthesize agency;
+@synthesize color;
 
 // cached properties
 @dynamic title;
@@ -196,6 +197,7 @@
 	self.interval = [[routeInfo objectForKey:@"interval"] intValue];
 	self.isSafeRide = [[routeInfo objectForKey:@"isSafeRide"] boolValue];
 	self.agency = [routeInfo objectForKey:@"agency"];
+	self.color = [routeInfo objectForKey:@"color"];
 	
 	self.tag = [routeInfo objectForKey:@"tag"];
 	self.gpsActive = [[routeInfo objectForKey:@"gpsActive"] boolValue];

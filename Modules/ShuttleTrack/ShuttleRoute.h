@@ -37,6 +37,7 @@
 @property (assign) BOOL liveStatusFailed;
 @property (readwrite, retain) ShuttleRouteCache *cache;
 @property (readwrite, retain) NSString * agency;
+@property (readwrite, retain) NSString * color;
 
 @property (readwrite, retain) NSString *title;
 @property (readwrite, retain) NSString *summary;

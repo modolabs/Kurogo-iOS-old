@@ -13,6 +13,7 @@
 @dynamic stops;
 @dynamic sortOrder;
 @dynamic agency;
+@dynamic color;
 
 - (NSSet *)stops {
 	return [self valueForKey:@"stops"];

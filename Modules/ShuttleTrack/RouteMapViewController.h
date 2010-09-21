@@ -40,6 +40,8 @@
 	UIImage* _largeUpcomingStopImage;
 	UIViewController* _MITParentViewController;
 	
+	BOOL hasStopInfoForMap;
+	
 }
 
 @property (nonatomic, retain) ShuttleRoute* route;
@@ -51,6 +53,7 @@
 -(IBAction) gpsTouched:(id)sender;
 -(IBAction) refreshTouched:(id)sender;
 
+-(void)fallBackViewDidLoad;
 -(void) refreshRouteTitleInfo;
 -(void)selectAnnon:(id <MKAnnotation>)annotation;
 

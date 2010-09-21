@@ -51,7 +51,7 @@
 	region.span.latitudeDelta = maxLat - minLat;
 	region.span.longitudeDelta = maxLon - minLon;
 	
-	[self.mapView setRegion:region];
+	//[self.mapView setRegion:region];
 	//[self.mapView setDelegate:self];
 	//[self.mapView addSubview:self];
 	

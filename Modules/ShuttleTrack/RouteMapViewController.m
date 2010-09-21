@@ -36,7 +36,14 @@
 - (void)viewDidLoad {
 	
     [super viewDidLoad];
+	hasStopInfoForMap == NO;
+	[self fallBackViewDidLoad];
 	
+	
+	
+}
+
+-(void)fallBackViewDidLoad {
 	self.mapView.delegate = self;
 	self.mapView.scrollEnabled = YES;
 	
@@ -44,6 +51,7 @@
 	
 	sampleView = [[SampleViewClass alloc] initWithRoute:self.route.pathLocations mapView:self.mapView];
 	sampleView.userInteractionEnabled = NO;
+	sampleView.lineColor = [UIColor colorWithHexString:(NSString *)self.route.color];
 	[self.mapView addSubview:sampleView];
 	//self.mapView.shouldNotDropPins = YES;
 	
@@ -61,9 +69,15 @@
 	
 	if ([self.route.pathLocations count]) {
 		//[self.mapView addRoute:self.route];
-			self.mapView.region = [self regionForRoute];
+		self.mapView.region = [self regionForRoute];
+		hasStopInfoForMap = YES;
 		//[self drawRect];
 	}
+	else {
+		hasStopInfoForMap = NO;
+	}
+	
+	
 	
 	// get the extended route info
 	[[ShuttleDataManager sharedDataManager] registerDelegate:self];
@@ -72,7 +86,6 @@
 	self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh
 																							target:self
 																							action:@selector(pollShuttleLocations)] autorelease];
-	
 }
 
 -(void)selectAnnon:(id <MKAnnotation>)annotation {
@@ -504,6 +517,12 @@
 		
 		[self addShuttles];
 		[self updateUpcomingStops];
+	}
+	
+	
+	if (hasStopInfoForMap == NO) {
+		[self fallBackViewDidLoad];
+		hasStopInfoForMap = YES;
 	}
 	
 }
