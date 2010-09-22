@@ -181,7 +181,7 @@
 	}
 	
 	[cell setShuttleInfo:aStop];
-	
+	cell.selectionStyle = UITableViewCellSelectionStyleGray;
     return cell;
 }
 

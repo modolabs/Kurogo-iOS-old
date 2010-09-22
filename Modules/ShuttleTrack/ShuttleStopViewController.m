@@ -165,25 +165,6 @@
     
 	[headerView addSubview:_mapButton];
 	
-	/*UIImageView *alertHeaderIcon = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"shuttle-alert-descriptive.png"]] autorelease];
-	CGRect alertHeaderIconFrame = alertHeaderIcon.frame;
-	alertHeaderIconFrame.origin = CGPointMake(MARGIN, mapSizeX + mapBuffer * 2);
-	alertHeaderIcon.frame = alertHeaderIconFrame;
-	[headerView addSubview:alertHeaderIcon];
-	
-	UILabel *alertHeaderText = [[[UILabel alloc] 
-                                 initWithFrame:CGRectMake(
-                                                          alertHeaderIcon.frame.origin.x + alertHeaderIcon.frame.size.width + PADDING, 
-                                                          alertHeaderIcon.frame.origin.y,
-                                                          headerView.frame.size.width - alertHeaderIcon.frame.size.width - PADDING - 2 * MARGIN, 
-                                                          30)] autorelease];
-	alertHeaderText.font = [UIFont fontWithName:STANDARD_FONT size:CELL_DETAIL_FONT_SIZE];
-	alertHeaderText.lineBreakMode = UILineBreakModeWordWrap;
-	alertHeaderText.backgroundColor = [UIColor clearColor];
-	alertHeaderText.text = @"Tap the 'Alert Me' icon to be notified 5 minutes before the estimated arrival time.";
-	alertHeaderText.numberOfLines = 0;
-	alertHeaderText.textColor = CELL_DETAIL_FONT_COLOR;
-	[headerView addSubview:alertHeaderText];*/
 	
 	[self.tableView setTableHeaderView:headerView];
 	
@@ -361,6 +342,7 @@
 	}
 	
 	cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+	cell.selectionStyle = UITableViewCellSelectionStyleGray;
 	
    // if (indexPath.row < self.shuttleStopSchedules.count) 
 	//{
