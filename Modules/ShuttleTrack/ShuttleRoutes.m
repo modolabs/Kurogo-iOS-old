@@ -11,7 +11,7 @@
 
 #define RunningTabIndex 0
 #define OfflineTabIndex 1
-#define ContactsTabIndex 2
+#define NewsTabIndex 2
 #define InfoTabIndex 3
 
 #define GROUPED_VIEW_CELL_COLOR [UIColor colorWithHexString:@"#FDFAF6"] 
@@ -369,7 +369,7 @@
 		}
 	}
 	
-	else if (self.currentTabMainView == ContactsTabIndex)
+	else if (self.currentTabMainView == InfoTabIndex)
 		[sections addObject:[NSDictionary dictionaryWithObjectsAndKeys:@"Contact Information", @"title", _contactInfo, @"phoneNumbers", nil, nil]];
 	
 	self.sections = sections;

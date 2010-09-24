@@ -7,14 +7,27 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "MultiLineTableViewCell.h"
 
 @interface AnnouncementsTableViewController : UITableViewController {
 
-	NSMutableArray * announcements;
+	NSMutableArray * harvardAnnouncements;
+	NSMutableArray * mascoAnnouncements;
 	UINavigationController *parentViewController;
 }
 
 @property (nonatomic, retain) UINavigationController *parentViewController;
-@property (nonatomic, retain) NSMutableArray * announcements;
+@property (nonatomic, retain) NSMutableArray * harvardAnnouncements;
+@property (nonatomic, retain) NSMutableArray * mascoAnnouncements;
+
+@end
+
+
+@interface AnnouncementsTableViewHeaderCell : MultiLineTableViewCell
+{
+	CGFloat height;
+}
+
+@property CGFloat height;
 
 @end

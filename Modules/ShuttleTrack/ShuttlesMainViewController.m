@@ -10,8 +10,9 @@
 
 #define RunningTabIndex 0
 #define OfflineTabIndex 1
-#define ContactsTabIndex 2
+#define NewsTabIndex 2
 #define InfoTabIndex 3
+
 
 @implementation ShuttlesMainViewController
 
@@ -32,12 +33,16 @@ NSString * const shuttleExtension = @"shuttles/";
 	//tabViewContainer = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, 320.0, 420.0)];
 	tabViewContainer.backgroundColor = [UIColor whiteColor];
 	
-	announcementsTab  = [[AnnouncementsTableViewController alloc] initWithStyle:UITableViewStyleGrouped];
+	announcementsTab  = [[AnnouncementsTableViewController alloc] initWithStyle:UITableViewStylePlain];
+	//announcementsTab = [[AnnouncementsViewController alloc] initWithNibName:@"AnnouncementsViewController" bundle:nil];
 	announcementsTab.parentViewController = self.navigationController;
 	
 	JSONAPIRequest *api = [JSONAPIRequest requestWithJSONAPIDelegate:self];
 	BOOL dispatched = [api requestObject:[NSDictionary dictionaryWithObjectsAndKeys:@"announcements", @"command", nil]
 						   pathExtension:shuttleExtension];
+	
+	contactsTab = [[ContactsTableViewController alloc] initWithStyle:UITableViewStyleGrouped];
+	contactsTab.parentViewController = self.navigationController;
 	
 	if (dispatched == NO)
 		[self couldNotConnectToServer];
@@ -52,11 +57,11 @@ NSString * const shuttleExtension = @"shuttles/";
 	[tabView addTab:@"Offline"];
 	[_tabViewsArray insertObject:shuttleRoutesTableView.view atIndex: OfflineTabIndex];
 	
-	[tabView addTab:@"Contacts"];
-	[_tabViewsArray insertObject:shuttleRoutesTableView.view atIndex: ContactsTabIndex];
+	[tabView addTab:@"News"];
+	[_tabViewsArray insertObject:announcementsTab.view atIndex: NewsTabIndex];
 	
 	[tabView addTab:@"Info"];
-	[_tabViewsArray insertObject:announcementsTab.view atIndex: InfoTabIndex];
+	[_tabViewsArray insertObject:contactsTab.view atIndex: InfoTabIndex];
 
 	[tabView setDelegate:self];
 	tabView.hidden = NO;
@@ -112,6 +117,7 @@ NSString * const shuttleExtension = @"shuttles/";
 	
 	if (tabIndex == RunningTabIndex) {
 		announcementsTab.view.hidden = YES;
+		contactsTab.view.hidden = YES;
 		shuttleRoutesTableView.currentTabMainView = RunningTabIndex;
 		[shuttleRoutesTableView setShuttleRoutes:shuttleRoutesTableView.shuttleRoutes];
 		[shuttleRoutesTableView.tableView reloadData];
@@ -121,6 +127,7 @@ NSString * const shuttleExtension = @"shuttles/";
 	
 	else if (tabIndex == OfflineTabIndex) {
 		announcementsTab.view.hidden = YES;
+		contactsTab.view.hidden = YES;
 		shuttleRoutesTableView.currentTabMainView = OfflineTabIndex;
 		[shuttleRoutesTableView setShuttleRoutes:shuttleRoutesTableView.shuttleRoutes];
 		[shuttleRoutesTableView.tableView reloadData];
@@ -128,20 +135,25 @@ NSString * const shuttleExtension = @"shuttles/";
 		shuttleRoutesTableView.view.hidden = NO;
 	}
 	
-	else if (tabIndex == ContactsTabIndex) {
-		announcementsTab.view.hidden = YES;
-		shuttleRoutesTableView.currentTabMainView = ContactsTabIndex;
-		[shuttleRoutesTableView setShuttleRoutes:shuttleRoutesTableView.shuttleRoutes];
-		[shuttleRoutesTableView.tableView reloadData];
-		[tabViewContainer addSubview:[_tabViewsArray objectAtIndex:tabIndex]];
-		shuttleRoutesTableView.view.hidden = NO;
-	}
-	
-	else {
+	else if (tabIndex == NewsTabIndex) {
 		shuttleRoutesTableView.view.hidden = YES;
+		contactsTab.view.hidden = YES;
+		shuttleRoutesTableView.currentTabMainView = NewsTabIndex;
+		//[tabViewContainer addSubview:[_tabViewsArray objectAtIndex:tabIndex]];
 		[tabViewContainer addSubview:[_tabViewsArray objectAtIndex:tabIndex]];
 		[announcementsTab.tableView reloadData];
 		announcementsTab.view.hidden = NO;
+	}
+	
+	else {
+		announcementsTab.view.hidden = YES;
+		shuttleRoutesTableView.view.hidden = YES;
+		shuttleRoutesTableView.currentTabMainView = InfoTabIndex;
+		//[shuttleRoutesTableView setShuttleRoutes:shuttleRoutesTableView.shuttleRoutes];
+		//[shuttleRoutesTableView.tableView reloadData];
+		[tabViewContainer addSubview:[_tabViewsArray objectAtIndex:tabIndex]];
+		[contactsTab.tableView reloadData];
+		contactsTab.view.hidden = NO;
 	}
 	
 	
@@ -153,12 +165,16 @@ NSString * const shuttleExtension = @"shuttles/";
 	
 	NSArray * agencies =(NSArray *)[result objectForKey:@"agencies"];	
 	NSMutableArray * announcementsTemp = [[NSMutableArray alloc] init];
+	NSMutableArray * emptyTemp = [[NSMutableArray alloc] init];
+	
+	announcementsTab.harvardAnnouncements = emptyTemp;
+	announcementsTab.mascoAnnouncements = emptyTemp;
 	
 	int new = 0;
-	
 	for (int i =0; i < [agencies count]; i++) {
 		
 		NSDictionary * agency = (NSDictionary *)[agencies objectAtIndex:i];
+		NSString * agencyName = [agency objectForKey:@"name"];
 		
 		NSArray * announcements = [agency objectForKey:@"announcements"];
 		
@@ -178,10 +194,20 @@ NSString * const shuttleExtension = @"shuttles/";
 				new++;
 			}
 		}
+		
+		
+		if ([agencyName isEqualToString:@"harvard"]) {
+			announcementsTab.harvardAnnouncements = announcementsTemp;
+			//announcementsTab.mascoAnnouncements = announcementsTemp;
+		}
+		else if ([agencyName isEqualToString:@"masco"])
+			announcementsTab.mascoAnnouncements = announcementsTemp;
 	}
+
 	
-	announcementsTab.announcements = announcementsTemp;
 	[announcementsTab.tableView reloadData];
+	//[announcementsTab.harvardAnnouncementsTableView reloadData];
+	//[announcementsTab.mascoAnnouncementsTableView
 	
 	if (new > 0)
 		newAnnouncement.hidden = NO;

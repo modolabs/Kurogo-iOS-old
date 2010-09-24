@@ -251,6 +251,8 @@
 		C7DA11B912138C2F00FE8756 /* MainSearchGroupedCoursesTableViewController.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = C7DA11B712138C2F00FE8756 /* MainSearchGroupedCoursesTableViewController.h */; settings = {JAVA_ARCHIVE_SUBDIR = Modules/Stellar; }; };
 		C7DA11BA12138C2F00FE8756 /* MainSearchGroupedCoursesTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C7DA11B812138C2F00FE8756 /* MainSearchGroupedCoursesTableViewController.m */; };
 		C7DA15991220943C00FE8756 /* Secret.m in Sources */ = {isa = PBXBuildFile; fileRef = C7DA15981220943C00FE8756 /* Secret.m */; };
+		C7F74E14124D509400853674 /* ContactsTableViewController.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = C7F74E12124D509400853674 /* ContactsTableViewController.h */; settings = {JAVA_ARCHIVE_SUBDIR = Modules; }; };
+		C7F74E15124D509400853674 /* ContactsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C7F74E13124D509400853674 /* ContactsTableViewController.m */; };
 		DE0A62AC10CDAEA90058B2C2 /* MITBuildInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = DE0A62AB10CDAEA90058B2C2 /* MITBuildInfo.m */; };
 		DE0F6B3411109BC500F064D6 /* AboutMITVC.m in Sources */ = {isa = PBXBuildFile; fileRef = DE0F6B3311109BC500F064D6 /* AboutMITVC.m */; };
 		DE18F9EE10F19105009A69B9 /* News.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = DE18F9ED10F19105009A69B9 /* News.xcdatamodeld */; };
@@ -831,6 +833,8 @@
 		C7DA11B712138C2F00FE8756 /* MainSearchGroupedCoursesTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainSearchGroupedCoursesTableViewController.h; sourceTree = "<group>"; };
 		C7DA11B812138C2F00FE8756 /* MainSearchGroupedCoursesTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainSearchGroupedCoursesTableViewController.m; sourceTree = "<group>"; };
 		C7DA15981220943C00FE8756 /* Secret.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Secret.m; sourceTree = "<group>"; };
+		C7F74E12124D509400853674 /* ContactsTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContactsTableViewController.h; sourceTree = "<group>"; };
+		C7F74E13124D509400853674 /* ContactsTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContactsTableViewController.m; sourceTree = "<group>"; };
 		DE0A62AA10CDAEA90058B2C2 /* MITBuildInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MITBuildInfo.h; sourceTree = "<group>"; };
 		DE0A62AB10CDAEA90058B2C2 /* MITBuildInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MITBuildInfo.m; sourceTree = "<group>"; };
 		DE0F6B3211109BC500F064D6 /* AboutMITVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AboutMITVC.h; sourceTree = "<group>"; };
@@ -1636,6 +1640,8 @@
 				C71DA6D6124A6442009369C5 /* AnnouncementsTableViewController.m */,
 				C71DA7E2124A858C009369C5 /* AnnouncementWebViewController.h */,
 				C71DA7E3124A858C009369C5 /* AnnouncementWebViewController.m */,
+				C7F74E12124D509400853674 /* ContactsTableViewController.h */,
+				C7F74E13124D509400853674 /* ContactsTableViewController.m */,
 			);
 			name = ShuttleTrack;
 			sourceTree = "<group>";
@@ -2280,6 +2286,7 @@
 				C71D9B941243EE55009369C5 /* ShuttlesTabViewControl.h in JavaArchive */,
 				C71DA6D7124A6442009369C5 /* AnnouncementsTableViewController.h in JavaArchive */,
 				C71DA7E4124A858C009369C5 /* AnnouncementWebViewController.h in JavaArchive */,
+				C7F74E14124D509400853674 /* ContactsTableViewController.h in JavaArchive */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2753,6 +2760,7 @@
 				C71D9B951243EE55009369C5 /* ShuttlesTabViewControl.m in Sources */,
 				C71DA6D8124A6442009369C5 /* AnnouncementsTableViewController.m in Sources */,
 				C71DA7E5124A858C009369C5 /* AnnouncementWebViewController.m in Sources */,
+				C7F74E15124D509400853674 /* ContactsTableViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

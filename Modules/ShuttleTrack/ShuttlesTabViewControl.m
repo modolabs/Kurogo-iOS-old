@@ -9,8 +9,8 @@
 #import "ShuttlesTabViewControl.h"
 
 #define kTabFontSize 14 // was 15
-#define kTabCurveRadius 11 
-#define kTabTextPadding 13 // px between tab and start of text //was 22
+#define kTabCurveRadius 13 
+#define kTabTextPadding 15 // px between tab and start of text //was 22
 #define kTabSapcing 4      // px between tabs //was 4
 
 #define kUnselectedFillColorR 153.0

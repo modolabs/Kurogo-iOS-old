@@ -14,11 +14,13 @@
 	UIWebView *webView;
 	NSString *htmlStringToDisplay;
 	NSString *titleString;
+	NSString *dateString;
 
 }
 
 @property (nonatomic, retain) NSString * htmlStringToDisplay;
 @property (nonatomic, retain) NSString * titleString;
+@property (nonatomic, retain) NSString * dateString;
 
 - (NSString *)htmlStringFromString:(NSString *)source;
 

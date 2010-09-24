@@ -11,8 +11,10 @@
 #import "ShuttleRoutes.h"
 #import "JSONAPIRequest.h"
 #import "AnnouncementsTableViewController.h"
+#import "ContactsTableViewController.h"
 
 @class AnnouncementsTableViewController;
+@class ContactsTableViewController;
 
 
 @interface ShuttlesMainViewController : UIViewController<TabViewControlDelegate, JSONAPIDelegate> {
@@ -28,6 +30,8 @@
 	AnnouncementsTableViewController * announcementsTab;
 	
 	IBOutlet UIImageView *newAnnouncement;
+	
+	ContactsTableViewController * contactsTab;
 
 }
 
