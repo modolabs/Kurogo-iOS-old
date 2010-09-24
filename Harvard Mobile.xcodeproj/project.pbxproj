@@ -121,6 +121,7 @@
 		A6787A1611F605070034D559 /* NSArray+Convenience.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = A6787A1411F605070034D559 /* NSArray+Convenience.h */; settings = {JAVA_ARCHIVE_SUBDIR = Common; }; };
 		A6787A1711F605070034D559 /* NSArray+Convenience.m in Sources */ = {isa = PBXBuildFile; fileRef = A6787A1511F605070034D559 /* NSArray+Convenience.m */; };
 		A6FC4C72120A2C200046FF36 /* settings in Resources */ = {isa = PBXBuildFile; fileRef = A623F2E5120A1BFC00341C5E /* settings */; };
+		B67EB8B1124D0E9A008167A5 /* Secret.m in Sources */ = {isa = PBXBuildFile; fileRef = B67EB8B0124D0E9A008167A5 /* Secret.m */; };
 		BD1E9309103B5D60004429AA /* NSObject+SBJSON.m in Sources */ = {isa = PBXBuildFile; fileRef = BD1E92F6103B5D60004429AA /* NSObject+SBJSON.m */; };
 		BD1E930A103B5D60004429AA /* NSString+SBJSON.m in Sources */ = {isa = PBXBuildFile; fileRef = BD1E92F8103B5D60004429AA /* NSString+SBJSON.m */; };
 		BD1E930B103B5D60004429AA /* SBJSON.m in Sources */ = {isa = PBXBuildFile; fileRef = BD1E92FA103B5D60004429AA /* SBJSON.m */; };
@@ -139,7 +140,6 @@
 		C704F06D11E3E31F00621406 /* MenuDetailsController.m in Sources */ = {isa = PBXBuildFile; fileRef = C704F05E11E3E31F00621406 /* MenuDetailsController.m */; };
 		C704F06E11E3E31F00621406 /* MenuItems.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = C704F05F11E3E31F00621406 /* MenuItems.h */; settings = {JAVA_ARCHIVE_SUBDIR = Modules/Dining; }; };
 		C704F06F11E3E31F00621406 /* MenuItems.m in Sources */ = {isa = PBXBuildFile; fileRef = C704F06011E3E31F00621406 /* MenuItems.m */; };
-		C71D90D612315019009369C5 /* Secret.m in Sources */ = {isa = PBXBuildFile; fileRef = C71D90D512315019009369C5 /* Secret.m */; };
 		C727B53A11F4E245007D53BB /* CalendarCategoriesViewController.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = C727B53811F4E245007D53BB /* CalendarCategoriesViewController.h */; settings = {JAVA_ARCHIVE_SUBDIR = Modules/Calendar; }; };
 		C727B53B11F4E245007D53BB /* CalendarCategoriesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C727B53911F4E245007D53BB /* CalendarCategoriesViewController.m */; };
 		C759593E12074B47008474A9 /* HallDetailsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C759593812074B47008474A9 /* HallDetailsTableViewController.m */; };
@@ -596,6 +596,7 @@
 		A64C36CA1207066D006FE056 /* peopleSearchStaticPhoneRowsArray.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = peopleSearchStaticPhoneRowsArray.plist; path = Resources/peopleSearchStaticPhoneRowsArray.plist; sourceTree = "<group>"; };
 		A6787A1411F605070034D559 /* NSArray+Convenience.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSArray+Convenience.h"; sourceTree = "<group>"; };
 		A6787A1511F605070034D559 /* NSArray+Convenience.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSArray+Convenience.m"; sourceTree = "<group>"; };
+		B67EB8B0124D0E9A008167A5 /* Secret.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Secret.m; sourceTree = "<group>"; };
 		BD1E92F4103B5D60004429AA /* JSON.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JSON.h; sourceTree = "<group>"; };
 		BD1E92F5103B5D60004429AA /* NSObject+SBJSON.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+SBJSON.h"; sourceTree = "<group>"; };
 		BD1E92F6103B5D60004429AA /* NSObject+SBJSON.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+SBJSON.m"; sourceTree = "<group>"; };
@@ -621,7 +622,6 @@
 		C704F05E11E3E31F00621406 /* MenuDetailsController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MenuDetailsController.m; path = Dining/MenuDetailsController.m; sourceTree = "<group>"; };
 		C704F05F11E3E31F00621406 /* MenuItems.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MenuItems.h; path = Dining/MenuItems.h; sourceTree = "<group>"; };
 		C704F06011E3E31F00621406 /* MenuItems.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MenuItems.m; path = Dining/MenuItems.m; sourceTree = "<group>"; };
-		C71D90D512315019009369C5 /* Secret.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Secret.m; sourceTree = "<group>"; };
 		C727B53811F4E245007D53BB /* CalendarCategoriesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CalendarCategoriesViewController.h; sourceTree = "<group>"; };
 		C727B53911F4E245007D53BB /* CalendarCategoriesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CalendarCategoriesViewController.m; sourceTree = "<group>"; };
 		C759593812074B47008474A9 /* HallDetailsTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = HallDetailsTableViewController.m; path = Dining/HallDetailsTableViewController.m; sourceTree = "<group>"; };
@@ -1044,7 +1044,7 @@
 				A6787A1411F605070034D559 /* NSArray+Convenience.h */,
 				A6787A1511F605070034D559 /* NSArray+Convenience.m */,
 				EBAE88031219960700F370BE /* Secret.h */,
-				C71D90D512315019009369C5 /* Secret.m */,
+				B67EB8B0124D0E9A008167A5 /* Secret.m */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -1981,6 +1981,7 @@
 			isa = PBXProject;
 			buildConfigurationList = C01FCF4E08A954540054247B /* Build configuration list for PBXProject "Harvard Mobile" */;
 			compatibilityVersion = "Xcode 3.1";
+			developmentRegion = English;
 			hasScannedForEncodings = 1;
 			knownRegions = (
 				English,
@@ -2353,7 +2354,7 @@
 				EBAE878612198B2500F370BE /* SchoolsModule.m in Sources */,
 				EBAE878812198B2500F370BE /* SchoolsViewController.m in Sources */,
 				EBAE92B8121D733200F370BE /* PersonDetails.m in Sources */,
-				C71D90D612315019009369C5 /* Secret.m in Sources */,
+				B67EB8B1124D0E9A008167A5 /* Secret.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2377,7 +2378,7 @@
 					"${SDK_DIR}/usr/include/libxml2",
 				);
 				PRODUCT_NAME = "Harvard Mobile";
-				SDKROOT = iphoneos4.0;
+				SDKROOT = iphoneos4.1;
 			};
 			name = "Debug - Development";
 		};
