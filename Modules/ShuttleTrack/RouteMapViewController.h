@@ -2,7 +2,7 @@
 #import <MapKit/MapKit.h>
 #import "ShuttleRoute.h"
 #import "ShuttleDataManager.h"
-#import "SampleViewClass.h"
+//#import "SampleViewClass.h"
 
 //@class SampleViewClass;
 
@@ -10,7 +10,7 @@
 
 	IBOutlet MKMapView* _mapView;
 	
-	SampleViewClass* sampleView;
+	//SampleViewClass* sampleView;
 	IBOutlet UILabel* _routeTitleLabel;
 	IBOutlet UILabel* _routeStatusLabel;
 	IBOutlet UIButton* _gpsButton; 
@@ -42,6 +42,15 @@
 	
 	BOOL hasStopInfoForMap;
 	
+	// the data representing the route points for overlay 
+	MKPolyline * routeLine;
+	
+	// the view we create for the line on the map for overlay of route
+	MKPolylineView* routeLineView;
+	
+	// the rect that bounds the loaded points for route-overlay
+	MKMapRect routeRect;
+	
 }
 
 @property (nonatomic, retain) ShuttleRoute* route;
@@ -50,8 +59,14 @@
 
 @property (readonly) MKMapView* mapView;
 
+@property (nonatomic, retain) MKPolyline * routeLine;
+@property (nonatomic, retain) MKPolylineView* routeLineView;
+
 -(IBAction) gpsTouched:(id)sender;
 -(IBAction) refreshTouched:(id)sender;
+
+-(void)assignRoutePoints;
+-(void)setRouteOverLayBounds:(CLLocationCoordinate2D)center latDelta:(double)latDelta  lonDelta:(double) lonDelta;
 
 -(void)fallBackViewDidLoad;
 -(void) refreshRouteTitleInfo;

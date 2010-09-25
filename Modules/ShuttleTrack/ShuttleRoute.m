@@ -19,6 +19,7 @@
 @synthesize agency;
 @synthesize color;
 @synthesize urlForMarker;
+@synthesize urlForStopMarker;
 @synthesize nextStopId;
 
 // cached properties
@@ -201,6 +202,7 @@
 	self.agency = [routeInfo objectForKey:@"agency"];
 	self.color = [routeInfo objectForKey:@"color"];
 	self.urlForMarker = @"";//[routeInfo objectForKey:@"iconURL"];
+	self.urlForStopMarker = [routeInfo objectForKey:@"stopMarkerUrl"];
 	
 	self.tag = [routeInfo objectForKey:@"tag"];
 	self.gpsActive = [[routeInfo objectForKey:@"gpsActive"] boolValue];

@@ -29,6 +29,9 @@
 @synthesize routeInfo = _routeInfo;
 @synthesize parentViewController = _MITParentViewController;
 
+@synthesize routeLine;
+@synthesize routeLineView;
+
 
 
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
@@ -49,10 +52,12 @@
 	
 	//sampleView = [[SampleViewClass initWithRoute:self.route.pathLocations mapView:self.mapView] autorelease];
 	
-	sampleView = [[SampleViewClass alloc] initWithRoute:self.route.pathLocations mapView:self.mapView];
-	sampleView.userInteractionEnabled = NO;
-	sampleView.lineColor = [UIColor colorWithHexString:(NSString *)self.route.color];
-	[self.mapView addSubview:sampleView];
+	//sampleView = [[SampleViewClass alloc] initWithRoute:self.route.pathLocations mapView:self.mapView];
+	//sampleView.userInteractionEnabled = NO;
+	//sampleView.lineColor = [UIColor colorWithHexString:(NSString *)self.route.color];
+	//[self.mapView addSubview:sampleView];
+	
+	
 	//self.mapView.shouldNotDropPins = YES;
 	
 	_largeStopImage = [[UIImage imageNamed:@"map_pin_shuttle_stop_complete.png"] retain];
@@ -72,6 +77,7 @@
 		self.mapView.region = [self regionForRoute];
 		hasStopInfoForMap = YES;
 		//[self drawRect];
+		[self assignRoutePoints];
 	}
 	else {
 		hasStopInfoForMap = NO;
@@ -92,6 +98,10 @@
 		region.span.longitudeDelta = lonDelta;
 		
 		self.mapView.region = region;
+		[self setRouteOverLayBounds:center latDelta:latDelta lonDelta:lonDelta];
+		
+
+		
 	}
 	
 	
@@ -104,6 +114,48 @@
 																							target:self
 																							action:@selector(pollShuttleLocations)] autorelease];
 }
+
+
+-(void)assignRoutePoints {
+	MKMapPoint* pointArr = malloc(sizeof(CLLocationCoordinate2D) * self.route.pathLocations.count);
+	for(int idx = 0; idx < self.route.pathLocations.count; idx++)
+	{
+		CLLocation* location = [self.route.pathLocations objectAtIndex:idx];
+		CLLocationCoordinate2D coordinate = location.coordinate;
+		MKMapPoint point = MKMapPointForCoordinate(coordinate);
+		//CGPoint point = [_mapView convertCoordinate:location.coordinate toPointToView:self.mapView];
+	
+		
+		pointArr[idx] = point;
+	}
+	/*
+	int index = 0;
+	CLLocationDegrees latitude  = stop.latitude;
+	CLLocationDegrees longitude = stop.longitude;
+	
+	
+	// create our coordinate and add it to the correct spot in the array 
+	CLLocationCoordinate2D coordinate = CLLocationCoordinate2DMake(latitude, longitude);
+	
+	MKMapPoint point = MKMapPointForCoordinate(coordinate);
+	pointArr[index] = point;
+	index++;*/
+	
+	// create the polyline based on the array of points. 
+		self.routeLine = [MKPolyline polylineWithPoints:pointArr count:self.route.pathLocations.count];
+		free(pointArr);
+		
+		
+		if (nil != self.routeLine) {
+			[self.mapView addOverlay:self.routeLine];
+		}
+}
+
+-(void)setRouteOverLayBounds:(CLLocationCoordinate2D)center latDelta:(double)latDelta  lonDelta:(double) lonDelta {	
+	routeRect = MKMapRectMake(center.latitude - latDelta, center.longitude - lonDelta, 2*latDelta, 2*lonDelta);
+	return;
+}
+							  
 
 -(void)selectAnnon:(id <MKAnnotation>)annotation {
 	
@@ -189,6 +241,9 @@
 	//self.routeInfo = nil;
 	self.parentViewController = nil;
 	
+	self.routeLine = nil;
+	self.routeLineView = nil;
+	
 	
     [super dealloc];
 }
@@ -196,6 +251,24 @@
 -(void) viewDidUnload
 {
 	[super viewDidUnload];
+	
+	/*[_smallStopImage release];
+	[_smallUpcomingStopImage release];
+	[_largeStopImage release];
+	[_largeUpcomingStopImage release];
+	_mapView.delegate = nil;
+	[_mapView release];
+	[_routeStops release];
+	[_gpsButton release];
+	[_routeTitleLabel release];
+	[_routeStatusLabel release];
+	
+	self.route = nil;
+	//self.routeInfo = nil;
+	self.parentViewController = nil;
+	
+	self.routeLine = nil;
+	self.routeLineView = nil;*/
 }
 
 -(void) setRouteInfo:(ShuttleRoute *) shuttleRoute
@@ -206,8 +279,14 @@
 	[_routeStops release];
 	_routeStops = [[NSMutableDictionary dictionaryWithCapacity:shuttleRoute.stops.count] retain];
 	
+
 	for (ShuttleStop* stop in shuttleRoute.stops) {
 		[_routeStops setObject:stop forKey:stop.stopID];
+	}
+	
+	// add the overlay to the map
+	if (nil != self.routeLine) {
+		[self.mapView addOverlay:self.routeLine];
 	}
 	
 	// for each of the annotations in our route, retrieve subtitles, which in this case is the next time at stop
@@ -273,6 +352,7 @@
 	region.span.latitudeDelta = latDelta;
 	region.span.longitudeDelta = lonDelta;
 	
+	[self setRouteOverLayBounds:center latDelta:latDelta lonDelta:lonDelta];
 	return region;
 }
 
@@ -284,7 +364,7 @@
 -(void) removeShuttles
 {
 	[_mapView removeAnnotations:_vehicleAnnotations];
-	[_mapView removeAnnotations:_route.annotations];
+	//[_mapView removeAnnotations:_route.annotations];
 	[_vehicleAnnotations release];
 	_vehicleAnnotations = nil;
 }
@@ -292,6 +372,7 @@
 -(void) addShuttles
 {
 	// make a copy since ShuttleRoute's vehicleLocations will be wiped out when it receives new data
+	[self removeShuttles];
 	_vehicleAnnotations = [[NSArray arrayWithArray:self.routeInfo.vehicleLocations] retain];
 	[_mapView addAnnotations:_vehicleAnnotations];
 }
@@ -368,9 +449,36 @@
 
 #pragma mark MKMapViewDelegate
 
+
+- (MKOverlayView *)mapView:(MKMapView *)mapView viewForOverlay:(id <MKOverlay>)overlay
+{
+	MKOverlayView* overlayView = nil;
+	
+	if(overlay == self.routeLine)
+	{
+		//if we have not yet created an overlay view for this overlay, create it now. 
+		if(nil == self.routeLineView)
+		{
+			self.routeLineView = [[[MKPolylineView alloc] initWithPolyline:self.routeLine] autorelease];
+			self.routeLineView.fillColor = [UIColor colorWithHexString:(NSString *)self.route.color];
+			self.routeLineView.strokeColor = [UIColor colorWithHexString:(NSString *)self.route.color];
+			self.routeLineView.lineWidth = 3;
+		}
+		
+		overlayView = self.routeLineView;
+		
+	}
+	
+	return overlayView;
+	
+}
+
+
+
+
 - (void)mapViewRegionWillChangeAnimated:(MKMapView *)mapView
 {
-	[sampleView hideFromView];
+	//[sampleView hideFromView];
 	//_gpsButton.style = _mapView.stayCenteredOnUserLocation ? UIBarButtonItemStyleDone : UIBarButtonItemStyleBordered;
 	//NSString *bgImageName = [NSString stringWithFormat:@"scrim-button-background%@.png", _mapView.stayCenteredOnUserLocation ? @"-highlighted" : @""];
 	//[_gpsButton setBackgroundImage:[UIImage imageNamed:bgImageName] forState:UIControlStateNormal];
@@ -378,15 +486,15 @@
 
 - (void)mapView:(MKMapView *)mapView regionDidChangeAnimated:(BOOL)animated {
 
-	[sampleView setNeedsDisplay];
-	[sampleView showView];
+	//[sampleView setNeedsDisplay];
+	//[sampleView showView];
 }
 
 
 - (void)mapView:(MKMapView *)mapView regionWillChangeAnimated:(BOOL)animated
 {
 
-	[sampleView hideFromView];
+	//[sampleView hideFromView];
 }
 
 - (void)mapViewRegionDidChangeAnimated:(MKMapView *)mapView
@@ -413,7 +521,7 @@
 	 _lastZoomLevel = mapView.zoomLevel;
      */
 
-	sampleView.hidden = YES;
+	//sampleView.hidden = YES;
 }
 
 
@@ -441,15 +549,13 @@
 			upComing = YES;
 		}
 		
-		imageView.image = upComing ? _smallUpcomingStopImage : _smallStopImage;
+		/*imageView.image = upComing ? _smallUpcomingStopImage : _smallStopImage;
 		//imageView.image = ((ShuttleStopMapAnnotation *)annotation).shuttleStop.upcoming ? _smallUpcomingStopImage : _smallStopImage;
 		annotationView.frame = imageView.frame;
 		annotationView.canShowCallout = YES;
+		
 		[annotationView addSubview:imageView];
-		annotationView.backgroundColor = [UIColor clearColor];
-		//annotationView.centeredVertically = YES;
-		//annotationView.alreadyOnMap = YES;
-		//annotationView.layer.anchorPoint = CGPointMake(0.5, 0.5);
+		annotationView.backgroundColor = [UIColor clearColor];*/
 		
 		
 		UIButton *myDetailButton = [UIButton buttonWithType:UIButtonTypeDetailDisclosure];
@@ -458,6 +564,19 @@
 		myDetailButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentCenter;
 		// Set the button as the callout view
 		annotationView.rightCalloutAccessoryView = myDetailButton;
+		
+		
+		annotationView.frame = imageView.frame;
+		NSURL *url = [NSURL URLWithString:self.routeInfo.urlForStopMarker];
+		NSData *data = [NSData dataWithContentsOfURL:url];
+		UIImage *stop = [[UIImage alloc] initWithData:data];
+		UIImageView* stopView = [[[UIImageView alloc] initWithImage:stop] autorelease];
+		annotationView.canShowCallout = YES;
+		[annotationView addSubview:stopView];
+		annotationView.backgroundColor = [UIColor clearColor];
+		annotationView.rightCalloutAccessoryView = myDetailButton;
+		myDetailButton.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
+		myDetailButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentCenter;
 		
 	}
 	else if([annotation isKindOfClass:[ShuttleLocation class]])
@@ -499,7 +618,7 @@
 		//annotationView.layer.anchorPoint = CGPointMake(0.5, 1.0);
 	}
 	
-	[sampleView setNeedsDisplay];
+	//[sampleView setNeedsDisplay];
 	return annotationView;
 	
 }
@@ -546,7 +665,7 @@
 			[_pollingTimer invalidate];
 		}
 		
-		[self removeShuttles];
+		//[self removeShuttles];
 		
 		self.routeInfo = shuttleRoute;
 		

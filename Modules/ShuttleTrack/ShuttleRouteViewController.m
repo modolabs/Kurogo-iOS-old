@@ -86,7 +86,7 @@
 	[[ShuttleDataManager sharedDataManager] requestRoute:self.route.routeID];
 	
 	// poll for stop times every 20 seconds 
-	_pollingTimer = [[NSTimer scheduledTimerWithTimeInterval:20
+	_pollingTimer = [[NSTimer scheduledTimerWithTimeInterval:2
 													  target:self 
 													selector:@selector(requestRoute)
 													userInfo:nil 

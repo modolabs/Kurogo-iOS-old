@@ -11,6 +11,7 @@
 	NSString * agency;
 	NSString *urlForMarker;
 	NSString *nextStopId;
+	NSString *urlForStopMarker;
 	
 	
     NSMutableArray *_stops;
@@ -43,6 +44,7 @@
 @property (readwrite, retain) NSString * color;
 @property (readwrite, retain) NSString *urlForMarker;
 @property (readwrite, retain) NSString *nextStopId;
+@property (readwrite, retain) NSString *urlForStopMarker;
 
 @property (readwrite, retain) NSString *title;
 @property (readwrite, retain) NSString *summary;
