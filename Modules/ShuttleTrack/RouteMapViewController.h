@@ -51,6 +51,8 @@
 	// the rect that bounds the loaded points for route-overlay
 	MKMapRect routeRect;
 	
+	BOOL hasNarrowedRegion;
+	
 }
 
 @property (nonatomic, retain) ShuttleRoute* route;
@@ -65,6 +67,7 @@
 -(IBAction) gpsTouched:(id)sender;
 -(IBAction) refreshTouched:(id)sender;
 
+-(void)narrowRegion;
 -(void)assignRoutePoints;
 -(void)setRouteOverLayBounds:(CLLocationCoordinate2D)center latDelta:(double)latDelta  lonDelta:(double) lonDelta;
 

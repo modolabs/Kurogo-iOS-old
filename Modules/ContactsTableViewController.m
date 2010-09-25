@@ -54,6 +54,8 @@
     [super viewDidLoad];
 	self.tableView.frame = CGRectMake(self.tableView.frame.origin.x, self.tableView.frame.origin.y, self.tableView.frame.size.width, 330.0);
 	[self.tableView applyStandardColors];
+	
+	detailsViewController = [[ContactsSystemDetailsViewController alloc] init];
 
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
@@ -180,6 +182,7 @@
 	switch (indexPath.section) {
 		case 0:
 			phoneNumber = nil;
+			[self.parentViewController pushViewController:detailsViewController animated:YES];	
 			break;
 		case 1:
 			phoneNumber = [[self getShuttleServicePhoneNumbers] objectAtIndex:indexPath.row];

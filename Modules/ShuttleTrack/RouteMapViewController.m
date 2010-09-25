@@ -40,6 +40,7 @@
 	
     [super viewDidLoad];
 	hasStopInfoForMap == NO;
+	hasNarrowedRegion = NO;
 	[self fallBackViewDidLoad];
 	
 	
@@ -49,6 +50,8 @@
 -(void)fallBackViewDidLoad {
 	self.mapView.delegate = self;
 	self.mapView.scrollEnabled = YES;
+	
+	hasNarrowedRegion = NO;
 	
 	//sampleView = [[SampleViewClass initWithRoute:self.route.pathLocations mapView:self.mapView] autorelease];
 	
@@ -72,13 +75,12 @@
 	
 	[self.mapView setShowsUserLocation:YES];
 	
+	/*if ([self.route.pathLocations count]) {
+		[self narrowRegion];
+	}*/
 	if ([self.route.pathLocations count]) {
-		//[self.mapView addRoute:self.route];
-		self.mapView.region = [self regionForRoute];
-		hasStopInfoForMap = YES;
-		//[self drawRect];
-		[self assignRoutePoints];
-	}
+	 //[self narrowRegion];
+	 }
 	else {
 		hasStopInfoForMap = NO;
 		
@@ -99,8 +101,7 @@
 		
 		self.mapView.region = region;
 		[self setRouteOverLayBounds:center latDelta:latDelta lonDelta:lonDelta];
-		
-
+		hasNarrowedRegion = NO;
 		
 	}
 	
@@ -113,6 +114,18 @@
 	self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh
 																							target:self
 																							action:@selector(pollShuttleLocations)] autorelease];
+}
+
+-(void)narrowRegion {
+	//[self.mapView addRoute:self.route];
+	
+	if ([self.route.pathLocations count]) {
+		self.mapView.region = [self regionForRoute];
+		hasStopInfoForMap = YES;
+		//[self drawRect];
+		[self assignRoutePoints];
+		hasNarrowedRegion = YES;
+	}
 }
 
 
@@ -128,18 +141,6 @@
 		
 		pointArr[idx] = point;
 	}
-	/*
-	int index = 0;
-	CLLocationDegrees latitude  = stop.latitude;
-	CLLocationDegrees longitude = stop.longitude;
-	
-	
-	// create our coordinate and add it to the correct spot in the array 
-	CLLocationCoordinate2D coordinate = CLLocationCoordinate2DMake(latitude, longitude);
-	
-	MKMapPoint point = MKMapPointForCoordinate(coordinate);
-	pointArr[index] = point;
-	index++;*/
 	
 	// create the polyline based on the array of points. 
 		self.routeLine = [MKPolyline polylineWithPoints:pointArr count:self.route.pathLocations.count];
@@ -462,7 +463,7 @@
 			self.routeLineView = [[[MKPolylineView alloc] initWithPolyline:self.routeLine] autorelease];
 			self.routeLineView.fillColor = [UIColor colorWithHexString:(NSString *)self.route.color];
 			self.routeLineView.strokeColor = [UIColor colorWithHexString:(NSString *)self.route.color];
-			self.routeLineView.lineWidth = 3;
+			self.routeLineView.lineWidth = 5;
 		}
 		
 		overlayView = self.routeLineView;
@@ -536,7 +537,6 @@
 - (MKAnnotationView *)mapView:(MKMapView *)mapView viewForAnnotation:(id <MKAnnotation>)annotation
 {
 	MKAnnotationView* annotationView = nil;
-	UIImage *image;
 	
 	if ([annotation isKindOfClass:[ShuttleStopMapAnnotation class]]) 
 	{
@@ -680,10 +680,13 @@
 	}
 	
 	
-	if (hasStopInfoForMap == NO) {
+	/*if (hasStopInfoForMap == NO) {
 		[self fallBackViewDidLoad];
 		hasStopInfoForMap = YES;
-	}
+	}*/
+	
+	if (hasNarrowedRegion == NO)
+		[self narrowRegion];
 	
 }
 

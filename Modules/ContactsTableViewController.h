@@ -7,11 +7,14 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "ContactsSystemDetailsViewController.h"
 
+@class ContactsSystemDetailsViewController;
 
 @interface ContactsTableViewController : UITableViewController {
 
 	UINavigationController *parentViewController;
+	ContactsSystemDetailsViewController *detailsViewController;
 }
 
 @property (nonatomic, retain) UINavigationController *parentViewController;
