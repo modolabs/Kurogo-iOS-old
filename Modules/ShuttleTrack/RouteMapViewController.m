@@ -565,7 +565,6 @@
 		// Set the button as the callout view
 		annotationView.rightCalloutAccessoryView = myDetailButton;
 		
-		
 		annotationView.frame = imageView.frame;
 		NSURL *url = [NSURL URLWithString:self.routeInfo.urlForStopMarker];
 		NSData *data = [NSData dataWithContentsOfURL:url];
@@ -576,7 +575,7 @@
 		annotationView.backgroundColor = [UIColor clearColor];
 		annotationView.rightCalloutAccessoryView = myDetailButton;
 		myDetailButton.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
-		myDetailButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentCenter;
+
 		
 	}
 	else if([annotation isKindOfClass:[ShuttleLocation class]])
@@ -609,6 +608,9 @@
 		NSData *data = [NSData dataWithContentsOfURL:url];
 		UIImage *marker = [[UIImage alloc] initWithData:data];
 		UIImageView* markerView = [[[UIImageView alloc] initWithImage:marker] autorelease];
+		
+		markerView.frame = CGRectMake(markerView.frame.origin.x + 3, markerView.frame.origin.y - 3, markerView.frame.size.width, markerView.frame.size.height);
+							
 		[annotationView addSubview:markerView];
 		
 		//annotationView.backgroundColor = [UIColor clearColor];
