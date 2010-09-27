@@ -15,6 +15,7 @@
 
 @class AnnouncementsTableViewController;
 @class ContactsTableViewController;
+@class ShuttleRoutes;
 
 
 @interface ShuttlesMainViewController : UIViewController<TabViewControlDelegate, JSONAPIDelegate> {
@@ -32,9 +33,14 @@
 	IBOutlet UIImageView *newAnnouncement;
 	
 	ContactsTableViewController * contactsTab;
+	
+	UIView * loadingIndicator;
 
 }
 
--(void)couldNotConnectToServer;
+@property (nonatomic, retain) ShuttlesTabViewControl *tabView;
 
+-(void)couldNotConnectToServer;
+- (void)addLoadingIndicator;
+-(void)removeLoadingIndicator;
 @end

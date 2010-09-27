@@ -4,6 +4,7 @@
 #import "MITUIConstants.h"
 
 @implementation ShuttleStopCell
+@synthesize urlForImage;
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
     if (self = [super initWithStyle:style reuseIdentifier:reuseIdentifier]) {
@@ -26,7 +27,7 @@
 }
 
 
--(void) setShuttleInfo:(ShuttleStop*)shuttleStop
+-(void) setShuttleInfo:(ShuttleStop*)shuttleStop urlLinkForImage:(UIImage *)urlLinkForImage
 {
 	_shuttleNameLabel.text = shuttleStop.title;
 	
@@ -38,10 +39,19 @@
 
 	if (shuttleStop.upcoming) 
 	{
+		//NSURL *urlLink = [NSURL URLWithString:urlLinkForImage];
+		// NSData *data = [NSData dataWithContentsOfURL:urlLink];
+		//_shuttleStopImageView.image = [[UIImage alloc] initWithData:data];
+		
+		if (urlLinkForImage != nil)
+			_shuttleStopImageView.image = urlLinkForImage;
+		else
 		_shuttleStopImageView.image = [UIImage imageNamed:@"shuttle-stop-dot-next.png"] ;
+		
 		_shuttleTimeLabel.textColor = SEARCH_BAR_TINT_COLOR;
         _shuttleTimeLabel.font = [UIFont boldSystemFontOfSize:16.0];
 		_shuttleNextLabel.text = @"Arriving Next at: ";
+
 		
 	}
 	else 

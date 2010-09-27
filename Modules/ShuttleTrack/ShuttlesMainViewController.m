@@ -7,6 +7,7 @@
 //
 
 #import "ShuttlesMainViewController.h"
+#import "MITUIConstants.h"
 
 #define RunningTabIndex 0
 #define OfflineTabIndex 1
@@ -15,6 +16,8 @@
 
 
 @implementation ShuttlesMainViewController
+@synthesize tabView;
+
 
 NSString * const shuttleExtension = @"shuttles/";
 
@@ -29,6 +32,7 @@ NSString * const shuttleExtension = @"shuttles/";
 	
 	shuttleRoutesTableView = [[ShuttleRoutes alloc] initWithStyle: UITableViewStyleGrouped];
 	shuttleRoutesTableView.parentViewController = self.navigationController;
+	shuttleRoutesTableView.mainViewController = self;
 	
 	//tabViewContainer = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, 320.0, 420.0)];
 	tabViewContainer.backgroundColor = [UIColor whiteColor];
@@ -75,7 +79,8 @@ NSString * const shuttleExtension = @"shuttles/";
 	
 	[tabView setNeedsDisplay];
 	
-	[tabViewContainer addSubview:shuttleRoutesTableView.view];
+	[self addLoadingIndicator];
+	//[tabViewContainer addSubview:shuttleRoutesTableView.view];
 	//[tabViewContainer addSubview:webView];
 }
 
@@ -120,7 +125,8 @@ NSString * const shuttleExtension = @"shuttles/";
 		contactsTab.view.hidden = YES;
 		shuttleRoutesTableView.currentTabMainView = RunningTabIndex;
 		[shuttleRoutesTableView setShuttleRoutes:shuttleRoutesTableView.shuttleRoutes];
-		[shuttleRoutesTableView.tableView reloadData];
+		//[shuttleRoutesTableView.tableView reloadData];
+		//[self removeLoadingIndicator];
 		[tabViewContainer addSubview:[_tabViewsArray objectAtIndex:tabIndex]];
 		shuttleRoutesTableView.view.hidden = NO;
 	}
@@ -218,5 +224,61 @@ NSString * const shuttleExtension = @"shuttles/";
 
 -(void)couldNotConnectToServer {
 }
+
+
+
+
+
+- (void)addLoadingIndicator
+{
+	if (loadingIndicator == nil) {
+		static NSString *loadingString = @"Loading...";
+		UIFont *loadingFont = [UIFont fontWithName:STANDARD_FONT size:17.0];
+		CGSize stringSize = [loadingString sizeWithFont:loadingFont];
+		
+        CGFloat verticalPadding = tabViewContainer.frame.size.height/2 -10;
+        CGFloat horizontalPadding = tabViewContainer.frame.size.width/2 - 25;
+        CGFloat horizontalSpacing = 15.0;
+		// CGFloat cornerRadius = 8.0;
+        
+        UIActivityIndicatorViewStyle style = UIActivityIndicatorViewStyleGray;
+		UIActivityIndicatorView *spinny = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:style];
+		// spinny.center = CGPointMake(spinny.center.x + horizontalPadding, spinny.center.y + verticalPadding);
+		spinny.center = CGPointMake(horizontalPadding, verticalPadding);
+		[spinny startAnimating];
+        
+		UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(horizontalPadding + horizontalSpacing, verticalPadding - 10, stringSize.width, stringSize.height + 2.0)];
+		label.textColor = [UIColor colorWithWhite:0.5 alpha:1.0];
+		label.text = loadingString;
+		label.font = loadingFont;
+		label.backgroundColor = [UIColor clearColor];
+        
+		//loadingIndicator = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, stringSize.width + spinny.frame.size.width + horizontalPadding * 2, stringSize.height + verticalPadding * 2)];
+		loadingIndicator = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, tabViewContainer.frame.size.width, tabViewContainer.frame.size.height)];
+		//loadingIndicator = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, 300, 300)];
+        //loadingIndicator.layer.cornerRadius = cornerRadius;
+        //loadingIndicator.backgroundColor =[UIColor whiteColor];
+		
+		[loadingIndicator setBackgroundColor:[UIColor whiteColor]];
+		[loadingIndicator addSubview:spinny];
+		[spinny release];
+		[loadingIndicator addSubview:label];
+		[label release];
+
+	}
+
+	
+	[tabViewContainer addSubview:loadingIndicator];
+}
+
+- (void)removeLoadingIndicator
+{
+	[loadingIndicator removeFromSuperview];
+	 [loadingIndicator release];
+	 loadingIndicator = nil;
+
+}
+
+
 
 @end

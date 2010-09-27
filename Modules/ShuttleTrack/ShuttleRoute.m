@@ -18,7 +18,7 @@
 @synthesize cache = _cache;
 @synthesize agency;
 @synthesize color;
-@synthesize urlForMarker;
+@synthesize genericUrlForMarker;
 @synthesize urlForStopMarker;
 @synthesize nextStopId;
 
@@ -201,7 +201,7 @@
 	self.isSafeRide = [[routeInfo objectForKey:@"isSafeRide"] boolValue];
 	self.agency = [routeInfo objectForKey:@"agency"];
 	self.color = [routeInfo objectForKey:@"color"];
-	self.urlForMarker = @"";//[routeInfo objectForKey:@"iconURL"];
+	self.genericUrlForMarker = [routeInfo objectForKey:@"genericIconUrl"];
 	self.urlForStopMarker = [routeInfo objectForKey:@"stopMarkerUrl"];
 	
 	self.tag = [routeInfo objectForKey:@"tag"];

@@ -53,6 +53,7 @@
 	
 	BOOL hasNarrowedRegion;
 	
+	UIView *loadingIndicator;
 }
 
 @property (nonatomic, retain) ShuttleRoute* route;
@@ -74,5 +75,8 @@
 -(void)fallBackViewDidLoad;
 -(void) refreshRouteTitleInfo;
 -(void)selectAnnon:(id <MKAnnotation>)annotation;
+
+-(void)addLoadingIndicator;
+-(void)removeLoadingIndicator;
 
 @end

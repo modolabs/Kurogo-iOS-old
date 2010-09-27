@@ -116,7 +116,7 @@
 	
 	[headerView addSubview:titleLabel];
 	
-	UILabel* titleDetailsLabel = [[[UILabel alloc] initWithFrame:CGRectMake(mapBufferX, mapBuffer + 15, titleWidth, titleSize.height)] autorelease];
+	/*UILabel* titleDetailsLabel = [[[UILabel alloc] initWithFrame:CGRectMake(mapBufferX, mapBuffer + 15, titleWidth, titleSize.height)] autorelease];
 	titleDetailsLabel.text = @"Placeholder for Address of this place.......";
 	titleDetailsLabel.backgroundColor = [UIColor clearColor];
 	titleDetailsLabel.textAlignment = UITextAlignmentLeft;
@@ -124,7 +124,7 @@
 	titleDetailsLabel.lineBreakMode = UILineBreakModeWordWrap;
 	titleDetailsLabel.numberOfLines = 0;
 	
-	[headerView addSubview:titleDetailsLabel];
+	[headerView addSubview:titleDetailsLabel];*/
 	
 	// add the map view thumbnail
 	//_mapThumbnail = [[MKMapView alloc] initWithFrame:CGRectMake(2.0, 2.0, mapSize - 4.0, mapSize - 4.0)];

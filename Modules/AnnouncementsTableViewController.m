@@ -48,7 +48,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-	self.tableView.frame = CGRectMake(self.tableView.frame.origin.x, self.tableView.frame.origin.y, self.tableView.frame.size.width, 330.0);
+	self.tableView.frame = CGRectMake(0, 0, self.tableView.frame.size.width, 375.0);
 	[self.tableView applyStandardColors];
 }
 

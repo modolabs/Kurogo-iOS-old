@@ -1,8 +1,9 @@
 #import <UIKit/UIKit.h>
 #import "ShuttleDataManager.h"
+#import "ShuttlesMainViewController.h"
 
 
-//@class ShuttleData;
+@class ShuttlesMainViewController;
 
 @interface ShuttleRoutes : UITableViewController <ShuttleDataManagerDelegate>
 {
@@ -30,8 +31,11 @@
 	NSArray* _contactInfo;
 	
 	UINavigationController *parentViewController;
+	ShuttlesMainViewController *mainViewController;
 	
 	int currentTabInMainView;
+	
+	UIView *loadingIndicator;
 }
 
 @property (nonatomic, retain) NSArray* shuttleRoutes;
@@ -40,8 +44,12 @@
 @property (nonatomic, retain) NSArray* sections;
 @property BOOL isLoading;
 @property (nonatomic, retain) UINavigationController *parentViewController;
+@property (nonatomic, retain) ShuttlesMainViewController *mainViewController;
 @property int currentTabMainView;
 
 //@property (readwrite, retain) ShuttleData *model;
+
+- (void)addLoadingIndicator;
+-(void)removeLoadingIndicator;
 
 @end

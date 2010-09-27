@@ -3,6 +3,7 @@
 #import "ShuttleStopViewController.h"
 #import "ShuttleStop.h"
 #import "ShuttleLocation.h"
+#import "MITUIConstants.h"
 
 #define DEGREES_TO_RADIANS(__ANGLE__) ((__ANGLE__) / 180.0 * M_PI)
 
@@ -39,12 +40,10 @@
 - (void)viewDidLoad {
 	
     [super viewDidLoad];
+	[self addLoadingIndicator];
 	hasStopInfoForMap == NO;
 	hasNarrowedRegion = NO;
 	[self fallBackViewDidLoad];
-	
-	
-	
 }
 
 -(void)fallBackViewDidLoad {
@@ -72,8 +71,6 @@
 	
 	[self refreshRouteTitleInfo];
 	self.title = NSLocalizedString(@"Route", nil);	
-	
-	[self.mapView setShowsUserLocation:YES];
 	
 	/*if ([self.route.pathLocations count]) {
 		[self narrowRegion];
@@ -114,6 +111,9 @@
 	self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh
 																							target:self
 																							action:@selector(pollShuttleLocations)] autorelease];
+	
+	[self.mapView setShowsUserLocation:YES];
+	self.mapView.hidden = YES;
 }
 
 -(void)narrowRegion {
@@ -181,6 +181,7 @@
 
 -(void)refreshRouteTitleInfo {
 	_routeTitleLabel.text = _route.title;
+	_routeTitleLabel.font = [UIFont fontWithName:CONTENT_TITLE_FONT size:CONTENT_TITLE_FONT_SIZE];
 	_routeStatusLabel.text = [_route trackingStatus];
 }
 
@@ -198,12 +199,13 @@
 -(void) viewWillAppear:(BOOL)animated
 {
 	[super viewWillAppear:animated];
+	[self fallBackViewDidLoad];
 	
 	// make sure its registered. 
 	[[ShuttleDataManager sharedDataManager] registerDelegate:self];
 	
 	// start polling for new vehicle locations every 10 seconds. 
-	_pollingTimer = [[NSTimer scheduledTimerWithTimeInterval:10
+	_pollingTimer = [[NSTimer scheduledTimerWithTimeInterval:2
 													  target:self 
 													selector:@selector(pollShuttleLocations)
 													userInfo:nil 
@@ -296,13 +298,24 @@
 		ShuttleStop* stop = [_routeStops objectForKey:annotation.shuttleStop.stopID];
 		if(nil != stop)
 		{
-			NSDate* nextScheduled = [NSDate dateWithTimeIntervalSince1970:stop.nextScheduled];
-			NSTimeInterval intervalTillStop = [nextScheduled timeIntervalSinceDate:[NSDate date]];
+			//NSDate* nextScheduled = [NSDate dateWithTimeIntervalSince1970:stop.nextScheduled];
+			//NSTimeInterval intervalTillStop = [nextScheduled timeIntervalSinceDate:[NSDate date]];
 			
-			if (intervalTillStop > 0) {
+			/*if (intervalTillStop > 0) {
 				NSString* subtitle = [NSString stringWithFormat:@"Arriving in %d minutes", (int)(intervalTillStop / 60)];
 				[annotation setSubtitle:subtitle];
+			}*/
+			
+			if (stop.upcoming) {
+				NSString* subtitle = [NSString stringWithFormat:@"Arriving Next"];
+				[annotation setSubtitle:subtitle];
 			}
+			else {
+				NSString* subtitle = [NSString stringWithFormat:@""];
+				[annotation setSubtitle:subtitle];
+			}
+
+				
 		}
 	}
 	
@@ -430,12 +443,54 @@
 #pragma mark User actions
 -(IBAction) gpsTouched:(id)sender
 {
+	//_mapView.centerCoordinate = _mapView.userLocation.location.coordinate;
 	
 	//_mapView.stayCenteredOnUserLocation = !_mapView.stayCenteredOnUserLocation;
 	
 	//NSString *bgImageName = [NSString stringWithFormat:@"scrim-button-background%@.png", _mapView.stayCenteredOnUserLocation ? @"-highlighted" : @""];
 	//[_gpsButton setBackgroundImage:[UIImage imageNamed:bgImageName] forState:UIControlStateNormal];
 	
+	
+	double minLat = _mapView.centerCoordinate.latitude - _mapView.region.span.latitudeDelta;
+	double maxLat = _mapView.centerCoordinate.latitude + _mapView.region.span.latitudeDelta;
+	
+	double minLon = _mapView.centerCoordinate.longitude - _mapView.region.span.longitudeDelta;
+	double maxLon = _mapView.centerCoordinate.longitude + _mapView.region.span.longitudeDelta;
+	
+	
+	
+	CLLocationCoordinate2D coordinate = _mapView.userLocation.location.coordinate;
+	if (coordinate.latitude < minLat) {
+		minLat = coordinate.latitude;
+	}
+	if (coordinate.latitude > maxLat) {
+		maxLat = coordinate.latitude;
+	}
+	if(coordinate.longitude < minLon) {
+		minLon = coordinate.longitude;
+	}
+	if (coordinate.longitude > maxLon) {
+		maxLon = coordinate.longitude;
+	}
+	
+	
+	CLLocationCoordinate2D center;
+	center.latitude = minLat + (maxLat - minLat) / 2;
+	center.longitude = minLon + (maxLon - minLon) / 2;
+	
+	double latDelta = maxLat - minLat;
+	double lonDelta = maxLon - minLon; 
+	
+	
+	MKCoordinateSpan span = {latitudeDelta: latDelta, longitudeDelta: lonDelta};
+	MKCoordinateRegion region = {center, span};
+	
+	region.span.latitudeDelta = latDelta;
+	region.span.longitudeDelta = lonDelta;
+	
+	self.mapView.region = region;
+
+	return;
 }
 
 -(IBAction) refreshTouched:(id)sender
@@ -572,11 +627,7 @@
 		UIImageView* stopView = [[[UIImageView alloc] initWithImage:stop] autorelease];
 		annotationView.canShowCallout = YES;
 		[annotationView addSubview:stopView];
-		annotationView.backgroundColor = [UIColor clearColor];
-		annotationView.rightCalloutAccessoryView = myDetailButton;
-		myDetailButton.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
-
-		
+		annotationView.backgroundColor = [UIColor clearColor];		
 	}
 	else if([annotation isKindOfClass:[ShuttleLocation class]])
 	{
@@ -609,9 +660,10 @@
 		UIImage *marker = [[UIImage alloc] initWithData:data];
 		UIImageView* markerView = [[[UIImageView alloc] initWithImage:marker] autorelease];
 		
-		markerView.frame = CGRectMake(markerView.frame.origin.x + 3, markerView.frame.origin.y - 3, markerView.frame.size.width, markerView.frame.size.height);
+		markerView.frame = CGRectMake(markerView.frame.origin.x + 7, markerView.frame.origin.y - 7, markerView.frame.size.width, markerView.frame.size.height);
 							
 		[annotationView addSubview:markerView];
+		[[annotationView superview] bringSubviewToFront:annotationView];
 		
 		//annotationView.backgroundColor = [UIColor clearColor];
 		
@@ -624,6 +676,23 @@
 	return annotationView;
 	
 }
+
+
+- (void)mapView:(MKMapView *)mapView didAddAnnotationViews:(NSArray *)views {
+	for (MKAnnotationView * annView in views) {
+		//MKAnnotation *annotation = annView.annotation;
+		
+		if ([annView.annotation isKindOfClass:[ShuttleStopMapAnnotation class]]) 
+		{
+			[[annView superview] sendSubviewToBack:annView];
+		} else {
+			[[annView superview] bringSubviewToFront:annView];
+		}
+	}
+	
+}
+
+
 
 - (void)mapView:(MKMapView *)mapView annotationView:(MKAnnotationView *)view calloutAccessoryControlTapped:(UIControl *)control
 {
@@ -690,6 +759,9 @@
 	if (hasNarrowedRegion == NO)
 		[self narrowRegion];
 	
+	self.mapView.hidden = NO;
+	[self removeLoadingIndicator];
+	
 }
 
 #pragma mark Shake functionality
@@ -704,5 +776,60 @@
 		[self pollShuttleLocations];
 	}
 }
+
+
+
+- (void)addLoadingIndicator
+{
+	if (loadingIndicator == nil) {
+		static NSString *loadingString = @"Loading...";
+		UIFont *loadingFont = [UIFont fontWithName:STANDARD_FONT size:17.0];
+		CGSize stringSize = [loadingString sizeWithFont:loadingFont];
+		
+        CGFloat verticalPadding = self.view.frame.size.height/2 - 10;
+        CGFloat horizontalPadding = self.view.frame.size.width/2 - 25;
+        CGFloat horizontalSpacing = 15.0;
+		// CGFloat cornerRadius = 8.0;
+        
+        UIActivityIndicatorViewStyle style = UIActivityIndicatorViewStyleGray;
+		UIActivityIndicatorView *spinny = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:style];
+		// spinny.center = CGPointMake(spinny.center.x + horizontalPadding, spinny.center.y + verticalPadding);
+		spinny.center = CGPointMake(horizontalPadding, verticalPadding);
+		[spinny startAnimating];
+        
+		UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(horizontalPadding + horizontalSpacing, verticalPadding -10, stringSize.width, stringSize.height + 2.0)];
+		label.textColor = [UIColor colorWithWhite:0.5 alpha:1.0];
+		label.text = loadingString;
+		label.font = loadingFont;
+		label.backgroundColor = [UIColor clearColor];
+        
+		//loadingIndicator = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, stringSize.width + spinny.frame.size.width + horizontalPadding * 2, stringSize.height + verticalPadding * 2)];
+		loadingIndicator = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, self.view.frame.size.width, self.view.frame.size.height)];
+		//loadingIndicator = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, 300, 300)];
+        //loadingIndicator.layer.cornerRadius = cornerRadius;
+        //loadingIndicator.backgroundColor =[UIColor whiteColor];
+		
+		[loadingIndicator setBackgroundColor:[UIColor whiteColor]];
+		[loadingIndicator addSubview:spinny];
+		[spinny release];
+		[loadingIndicator addSubview:label];
+		[label release];
+		
+	}
+	
+	
+	[self.view addSubview:loadingIndicator];
+}
+
+- (void)removeLoadingIndicator
+{
+	[loadingIndicator removeFromSuperview];
+	[loadingIndicator release];
+	loadingIndicator = nil;
+	
+}
+
+
+
 
 @end

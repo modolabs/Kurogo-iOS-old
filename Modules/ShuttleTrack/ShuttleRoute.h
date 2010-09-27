@@ -9,7 +9,7 @@
 	BOOL _liveStatusFailed;
 	ShuttleRouteCache *_cache;
 	NSString * agency;
-	NSString *urlForMarker;
+	NSString *genericUrlForMarker;
 	NSString *nextStopId;
 	NSString *urlForStopMarker;
 	
@@ -42,7 +42,7 @@
 @property (readwrite, retain) ShuttleRouteCache *cache;
 @property (readwrite, retain) NSString * agency;
 @property (readwrite, retain) NSString * color;
-@property (readwrite, retain) NSString *urlForMarker;
+@property (readwrite, retain) NSString *genericUrlForMarker;
 @property (readwrite, retain) NSString *nextStopId;
 @property (readwrite, retain) NSString *urlForStopMarker;
 

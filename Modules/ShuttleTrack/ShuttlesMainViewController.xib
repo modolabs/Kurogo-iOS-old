@@ -12,7 +12,7 @@
 		</object>
 		<object class="NSMutableArray" key="IBDocument.EditedObjectIDs">
 			<bool key="EncodedWithXMLCoder">YES</bool>
-			<integer value="16"/>
+			<integer value="1"/>
 		</object>
 		<object class="NSArray" key="IBDocument.PluginDependencies">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -60,7 +60,7 @@
 								</object>
 							</object>
 						</object>
-						<string key="NSFrame">{{0, 15}, {320, 36}}</string>
+						<string key="NSFrame">{{0, 5}, {320, 36}}</string>
 						<reference key="NSSuperview" ref="191373211"/>
 						<object class="NSColor" key="IBUIBackgroundColor" id="993333221">
 							<int key="NSColorSpace">3</int>
@@ -72,7 +72,7 @@
 					<object class="IBUIView" id="794263662">
 						<reference key="NSNextResponder" ref="191373211"/>
 						<int key="NSvFlags">292</int>
-						<string key="NSFrame">{{0, 51}, {320, 365}}</string>
+						<string key="NSFrame">{{0, 41}, {320, 388}}</string>
 						<reference key="NSSuperview" ref="191373211"/>
 						<reference key="IBUIBackgroundColor" ref="993333221"/>
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
@@ -197,11 +197,11 @@
 					<bool key="EncodedWithXMLCoder">YES</bool>
 					<string>ShuttlesMainViewController</string>
 					<string>UIResponder</string>
-					<string>{{979, 253}, {320, 480}}</string>
+					<string>{{1217, 243}, {320, 480}}</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<object class="NSAffineTransform">
-						<bytes key="NSTransformStruct">P4AAAL+AAAAAAAAAw9EAAA</bytes>
+						<bytes key="NSTransformStruct">P4AAAL+AAAAAAAAAw9WAAA</bytes>
 					</object>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<object class="NSAffineTransform">

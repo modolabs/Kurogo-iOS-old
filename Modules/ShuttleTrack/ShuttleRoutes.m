@@ -25,6 +25,7 @@
 @synthesize isLoading = _isLoading;
 @synthesize parentViewController;
 @synthesize currentTabMainView;
+@synthesize mainViewController;
 
 - (void)dealloc {
 	
@@ -73,22 +74,23 @@
 	_shuttleLoadingImage = [[UIImage imageNamed:@"shuttles/shuttle-blank.png"] retain];
 	
     [self.tableView applyStandardColors];
-	self.tableView.frame = CGRectMake(self.tableView.frame.origin.x, self.tableView.frame.origin.y, self.tableView.frame.size.width, 330.0);
-
+	//self.tableView.frame = CGRectMake(self.tableView.frame.origin.x, self.tableView.frame.origin.y, self.tableView.frame.size.width, 355.0);
+	self.tableView.frame = CGRectMake(0, 0, self.tableView.frame.size.width, 375.0);
 	ShuttleDataManager* dataManager = [ShuttleDataManager sharedDataManager];
 	[dataManager registerDelegate:self];
     
 	[self setShuttleRoutes:[dataManager shuttleRoutes]];
 	
-	/*
+	
 	if (nil == _shuttleRoutes) {
 		// when setting isLoading, will tell the tableview to show loading cell
 		self.isLoading = YES;
 		[self.tableView reloadData];
 	}
-	 */
+	 
 	self.isLoading = YES;
 	[dataManager requestRoutes];
+	self.tableView.tableHeaderView = nil;
 
 	self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh target:self action:@selector(refreshRoutes)];
 }
@@ -153,7 +155,7 @@
 }
 
 - (CGFloat)tableView: (UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
-	return GROUPED_SECTION_HEADER_HEIGHT;
+	return GROUPED_SECTION_HEADER_HEIGHT -3.0;
 }
 
 // Customize the appearance of table view cells.
@@ -374,7 +376,7 @@
 	
 	self.sections = sections;
 	
-	
+	//[self removeLoadingIndicator];
 	[self.tableView reloadData];
 }
 
@@ -402,6 +404,10 @@
 		
 		self.shuttleRoutes = oldRoutes;
 	}
+	
+	
+	[self.mainViewController removeLoadingIndicator];
+	[self.mainViewController tabControl:self.mainViewController.tabView  changedToIndex:0 tabText:nil];
 }
 
 

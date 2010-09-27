@@ -27,6 +27,8 @@
 	
 	IBOutlet ShuttleStopCell* _shuttleStopCell;
 	
+	UIImageView * genericNextStopImageView;
+	
 	// for when the user switches to a map of the listed route. 
 	RouteMapViewController* _routeMapViewController;
 	BOOL _mapShowing;

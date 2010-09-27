@@ -37,7 +37,7 @@
 	[_titleCell release];
 	[_loadingCell release];
 	[_shuttleStopCell release];
-	
+	[genericNextStopImageView release];
     [super dealloc];
 }
 
@@ -180,7 +180,18 @@
 		aStop = [self.route.stops objectAtIndex:indexPath.row];
 	}
 	
-	[cell setShuttleInfo:aStop];
+	
+	NSURL *urlLink = [NSURL URLWithString:self.route.genericUrlForMarker];
+	NSData *data = [NSData dataWithContentsOfURL:urlLink];
+	genericNextStopImageView.image = [[UIImage alloc] initWithData:data];
+	
+	if (nil != genericNextStopImageView.image)
+		[cell setShuttleInfo:aStop urlLinkForImage:genericNextStopImageView.image];
+	
+	else {
+		[cell setShuttleInfo:aStop urlLinkForImage:nil];
+	}
+
 	cell.selectionStyle = UITableViewCellSelectionStyleGray;
     return cell;
 }
@@ -324,7 +335,9 @@
 			[self.tableView reloadData];
 		
 			//_viewTypeButton.enabled = YES;
-		}	 
+			
+		
+		}
 	}
 	
 	if ([routeID isEqualToString:self.routeMapViewController.route.routeID]) {
@@ -336,6 +349,7 @@
 
 		[self.routeMapViewController refreshRouteTitleInfo];
 	}
+
 }
 
 
