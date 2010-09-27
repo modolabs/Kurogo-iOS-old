@@ -34,11 +34,14 @@
 	
 	ContactsTableViewController * contactsTab;
 	
-	UIView * loadingIndicator;
+	UIImageView * loadingIndicator;
+	
+	BOOL haveNewAnnouncements;
 
 }
 
 @property (nonatomic, retain) ShuttlesTabViewControl *tabView;
+@property (nonatomic) BOOL haveNewAnnouncements;
 
 -(void)couldNotConnectToServer;
 - (void)addLoadingIndicator;

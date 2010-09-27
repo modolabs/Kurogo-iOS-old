@@ -17,6 +17,7 @@
 
 @implementation ShuttlesMainViewController
 @synthesize tabView;
+@synthesize haveNewAnnouncements;
 
 
 NSString * const shuttleExtension = @"shuttles/";
@@ -82,6 +83,16 @@ NSString * const shuttleExtension = @"shuttles/";
 	[self addLoadingIndicator];
 	//[tabViewContainer addSubview:shuttleRoutesTableView.view];
 	//[tabViewContainer addSubview:webView];
+	
+	if (haveNewAnnouncements == YES) {
+		newAnnouncement.hidden = NO;
+		[[newAnnouncement superview] bringSubviewToFront:newAnnouncement];
+	}
+	else {
+		newAnnouncement.hidden = YES;
+		[[newAnnouncement superview] sendSubviewToBack:newAnnouncement];
+	}
+
 }
 
 
@@ -162,7 +173,15 @@ NSString * const shuttleExtension = @"shuttles/";
 		contactsTab.view.hidden = NO;
 	}
 	
-	
+	if (haveNewAnnouncements == YES) {
+		newAnnouncement.hidden = NO;
+		[[newAnnouncement superview] bringSubviewToFront:newAnnouncement];
+	}
+	else {
+		newAnnouncement.hidden = YES;
+		[[newAnnouncement superview] sendSubviewToBack:newAnnouncement];
+	}
+
 
 }
 
@@ -215,11 +234,17 @@ NSString * const shuttleExtension = @"shuttles/";
 	//[announcementsTab.harvardAnnouncementsTableView reloadData];
 	//[announcementsTab.mascoAnnouncementsTableView
 	
-	if (new > 0)
+	if (new > 0) {
 		newAnnouncement.hidden = NO;
+		haveNewAnnouncements = YES;
+		[[newAnnouncement superview] bringSubviewToFront:newAnnouncement];
+	}
 	
-	else
+	else {
 		newAnnouncement.hidden = YES;
+		haveNewAnnouncements = NO;
+		[[newAnnouncement superview] sendSubviewToBack:newAnnouncement];
+	}
 }
 
 -(void)couldNotConnectToServer {
@@ -252,12 +277,8 @@ NSString * const shuttleExtension = @"shuttles/";
 		label.text = loadingString;
 		label.font = loadingFont;
 		label.backgroundColor = [UIColor clearColor];
-        
-		//loadingIndicator = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, stringSize.width + spinny.frame.size.width + horizontalPadding * 2, stringSize.height + verticalPadding * 2)];
+
 		loadingIndicator = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, tabViewContainer.frame.size.width, tabViewContainer.frame.size.height)];
-		//loadingIndicator = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, 300, 300)];
-        //loadingIndicator.layer.cornerRadius = cornerRadius;
-        //loadingIndicator.backgroundColor =[UIColor whiteColor];
 		
 		[loadingIndicator setBackgroundColor:[UIColor whiteColor]];
 		[loadingIndicator addSubview:spinny];

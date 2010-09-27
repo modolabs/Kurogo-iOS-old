@@ -154,10 +154,20 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+	ShuttleStop *aStop = nil;
+	if(nil != self.route && self.route.stops.count > indexPath.row) {
+		aStop = [self.route.stops objectAtIndex:indexPath.row];
+	}
+	
+	
 	CGSize constraintSize = CGSizeMake(280.0f, 2009.0f);
 	NSString* cellText = @"A"; // just something to guarantee one line
 	UIFont* cellFont = [UIFont boldSystemFontOfSize:[UIFont buttonFontSize]];
 	CGSize labelSize = [cellText sizeWithFont:cellFont constrainedToSize:constraintSize lineBreakMode:UILineBreakModeWordWrap];
+	
+	if (aStop.upcoming)
+		labelSize.height += 5.0f;
+	
 	return labelSize.height + 20.0f;
 }
 

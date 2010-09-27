@@ -50,7 +50,7 @@
 							<object class="IBUIImageView" id="338343221">
 								<reference key="NSNextResponder" ref="101724516"/>
 								<int key="NSvFlags">292</int>
-								<string key="NSFrame">{{20, 6}, {20, 29}}</string>
+								<string key="NSFrame">{{14, 6}, {20, 29}}</string>
 								<reference key="NSSuperview" ref="101724516"/>
 								<bool key="IBUIOpaque">NO</bool>
 								<bool key="IBUIClearsContextBeforeDrawing">NO</bool>
@@ -61,7 +61,7 @@
 							<object class="IBUILabel" id="560178347">
 								<reference key="NSNextResponder" ref="101724516"/>
 								<int key="NSvFlags">292</int>
-								<string key="NSFrame">{{57, 14}, {235, 21}}</string>
+								<string key="NSFrame">{{51, 14}, {235, 21}}</string>
 								<reference key="NSSuperview" ref="101724516"/>
 								<bool key="IBUIOpaque">NO</bool>
 								<bool key="IBUIClipsSubviews">YES</bool>
@@ -85,7 +85,7 @@
 							<object class="IBUILabel" id="728805623">
 								<reference key="NSNextResponder" ref="101724516"/>
 								<int key="NSvFlags">292</int>
-								<string key="NSFrame">{{57, 0}, {85, 21}}</string>
+								<string key="NSFrame">{{51, 0}, {85, 21}}</string>
 								<reference key="NSSuperview" ref="101724516"/>
 								<bool key="IBUIOpaque">NO</bool>
 								<bool key="IBUIClipsSubviews">YES</bool>
@@ -219,6 +219,7 @@
 					<string>-1.CustomClassName</string>
 					<string>-2.CustomClassName</string>
 					<string>11.IBPluginDependency</string>
+					<string>11.IBViewBoundsToFrameTransform</string>
 					<string>3.CustomClassName</string>
 					<string>3.IBEditorWindowLastContentRect</string>
 					<string>3.IBPluginDependency</string>
@@ -231,8 +232,11 @@
 					<string>ShuttleRouteViewController</string>
 					<string>UIResponder</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
+					<object class="NSAffineTransform">
+						<bytes key="NSTransformStruct">P4AAAL+AAABCUAAAwZgAAA</bytes>
+					</object>
 					<string>ShuttleStopCell</string>
-					<string>{{578, 889}, {320, 44}}</string>
+					<string>{{946, 731}, {320, 44}}</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<object class="NSAffineTransform">
 						<bytes key="NSTransformStruct">P4AAAL+AAAAAAAAAwigAAA</bytes>
@@ -334,7 +338,6 @@
 							<string>_shuttleStopCell</string>
 							<string>_tableView</string>
 							<string>_titleCell</string>
-							<string>genericNextStopImageView</string>
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
@@ -342,7 +345,6 @@
 							<string>ShuttleStopCell</string>
 							<string>UITableView</string>
 							<string>RouteInfoTitleCell</string>
-							<string>UIImageView</string>
 						</object>
 					</object>
 					<object class="NSMutableDictionary" key="toOneOutletInfosByName">
@@ -353,7 +355,6 @@
 							<string>_shuttleStopCell</string>
 							<string>_tableView</string>
 							<string>_titleCell</string>
-							<string>genericNextStopImageView</string>
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
@@ -372,10 +373,6 @@
 							<object class="IBToOneOutletInfo">
 								<string key="name">_titleCell</string>
 								<string key="candidateClassName">RouteInfoTitleCell</string>
-							</object>
-							<object class="IBToOneOutletInfo">
-								<string key="name">genericNextStopImageView</string>
-								<string key="candidateClassName">UIImageView</string>
 							</object>
 						</object>
 					</object>
