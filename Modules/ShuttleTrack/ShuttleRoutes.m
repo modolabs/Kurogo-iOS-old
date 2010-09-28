@@ -92,7 +92,7 @@
 	[dataManager requestRoutes];
 	self.tableView.tableHeaderView = nil;
 
-	self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh target:self action:@selector(refreshRoutes)];
+	//self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh target:self action:@selector(refreshRoutes)];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -407,7 +407,12 @@
 	
 	
 	[self.mainViewController removeLoadingIndicator];
+	
+	if ((self.mainViewController.tabView.selectedTab > 0) || (self.mainViewController.tabView.selectedTab < 0))
+		return;
+	
 	[self.mainViewController tabControl:self.mainViewController.tabView  changedToIndex:0 tabText:nil];
+	
 }
 
 

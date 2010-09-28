@@ -74,12 +74,7 @@ NSString * const shuttleExtension = @"shuttles/";
 	
 	[tabView setNeedsDisplay];
 	[tabView setDelegate:self];
-	
-	[tabView setSelectedTab:0];
-	shuttleRoutesTableView.currentTabMainView = RunningTabIndex;
-	
-	[tabView setNeedsDisplay];
-	
+		
 	[self addLoadingIndicator];
 	//[tabViewContainer addSubview:shuttleRoutesTableView.view];
 	//[tabViewContainer addSubview:webView];
@@ -92,13 +87,18 @@ NSString * const shuttleExtension = @"shuttles/";
 		newAnnouncement.hidden = YES;
 		[[newAnnouncement superview] sendSubviewToBack:newAnnouncement];
 	}
-
+	
+	self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh target:self action:@selector(refreshRoutes)];
+	
+	[tabView setSelectedTab:0];
+	shuttleRoutesTableView.currentTabMainView = RunningTabIndex;
+		[tabView setNeedsDisplay];
 }
 
 
 - (void)didReceiveMemoryWarning {
     // Releases the view if it doesn't have a superview.
-    [super didReceiveMemoryWarning];
+   // [super didReceiveMemoryWarning];
     
     // Release any cached data, images, etc that aren't in use.
 }
@@ -300,6 +300,13 @@ NSString * const shuttleExtension = @"shuttles/";
 
 }
 
+
+- (void)refreshRoutes {
+	int selectedTab = tabView.selectedTab;
+	[[ShuttleDataManager sharedDataManager] requestRoutes];
+	[self tabControl:tabView changedToIndex:selectedTab tabText:@""];
+	
+}
 
 
 @end

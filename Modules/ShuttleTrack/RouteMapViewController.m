@@ -651,10 +651,6 @@
 		//[annotationView addSubview:imageView];
 		//[annotationView addSubview:arrowImageView];
 		
-		
-		NSString * pathForImage = @"http://ncsu.transloc.com/m/markers/marker.php?m=bus&c=3366FF&h=ne";
-		//NSURL *url = [NSURL URLWithString:@"http://ncsu.transloc.com/m/markers/marker.php?m=bus&c=3366FF&h=ne"];
-		NSString *testing = shuttleLocation.iconURL;
 		NSURL *url = [NSURL URLWithString:shuttleLocation.iconURL];
 		NSData *data = [NSData dataWithContentsOfURL:url];
 		UIImage *marker = [[UIImage alloc] initWithData:data];
