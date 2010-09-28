@@ -21,6 +21,7 @@
 @synthesize genericUrlForMarker;
 @synthesize urlForStopMarker;
 @synthesize nextStopId;
+@synthesize genericShuttleMarker;
 
 // cached properties
 @dynamic routeDescription;
@@ -214,6 +215,16 @@
 	self.color = [routeInfo objectForKey:@"color"];
 	self.genericUrlForMarker = [routeInfo objectForKey:@"genericIconUrl"];
 	self.urlForStopMarker = [routeInfo objectForKey:@"stopMarkerUrl"];
+	
+	if (nil != self.genericUrlForMarker) {
+		if (nil == self.genericShuttleMarker) {
+			
+			NSURL *url = [NSURL URLWithString:self.genericUrlForMarker];
+			NSData *data = [NSData dataWithContentsOfURL:url];
+			self.genericShuttleMarker = [[UIImage alloc] initWithData:data];
+			//self.genericUrlForMarker = [[[UIImageView alloc] initWithImage:marker] autorelease];
+		}
+	}
 	
 	self.tag = [routeInfo objectForKey:@"tag"];
 	self.gpsActive = [[routeInfo objectForKey:@"gpsActive"] boolValue];

@@ -27,7 +27,7 @@
 }
 
 
--(void) setShuttleInfo:(ShuttleStop*)shuttleStop urlLinkForImage:(UIImage *)urlLinkForImage
+-(void) setShuttleInfo:(ShuttleStop*)shuttleStop image:(UIImage *)image
 {
 	_shuttleNameLabel.text = shuttleStop.title;
 	
@@ -45,8 +45,8 @@
 		
 		//self.frame = CGRectMake(self.frame.origin.x, self.frame.origin.y, self.frame.size.width, self.frame.size.height + 12.0);
 		
-		if (urlLinkForImage != nil)
-			_shuttleStopImageView.image = urlLinkForImage;
+		if (image != nil)
+			_shuttleStopImageView.image = image;
 		else
 		_shuttleStopImageView.image = [UIImage imageNamed:@"shuttle-stop-dot-next.png"] ;
 		

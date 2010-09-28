@@ -191,15 +191,17 @@
 	}
 	
 	
-	NSURL *urlLink = [NSURL URLWithString:self.route.genericUrlForMarker];
+	/*NSURL *urlLink = [NSURL URLWithString:self.route.genericUrlForMarker];
 	NSData *data = [NSData dataWithContentsOfURL:urlLink];
-	genericNextStopImageView.image = [[UIImage alloc] initWithData:data];
+	genericNextStopImageView.image = [[UIImage alloc] initWithData:data];*/
 	
-	if (nil != genericNextStopImageView.image)
-		[cell setShuttleInfo:aStop urlLinkForImage:genericNextStopImageView.image];
+	if (nil != self.route.genericShuttleMarker) {
+		//[cell setShuttleInfo:aStop urlLinkForImage:genericNextStopImageView.image];
+		[cell setShuttleInfo:aStop image:self.route.genericShuttleMarker];
+	}
 	
 	else {
-		[cell setShuttleInfo:aStop urlLinkForImage:nil];
+		[cell setShuttleInfo:aStop image:nil];
 	}
 
 	cell.selectionStyle = UITableViewCellSelectionStyleGray;

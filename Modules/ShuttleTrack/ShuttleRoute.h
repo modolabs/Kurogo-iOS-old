@@ -24,6 +24,8 @@
 	
 	// locations, if available of any vehicles on the route. 
 	NSArray* _vehicleLocations;
+	
+	UIImage *genericShuttleMarker;
 }
 
 - (id)initWithCache:(ShuttleRouteCache *)cachedRoute;
@@ -45,6 +47,7 @@
 @property (readwrite, retain) NSString *genericUrlForMarker;
 @property (readwrite, retain) NSString *nextStopId;
 @property (readwrite, retain) NSString *urlForStopMarker;
+@property (nonatomic, retain) UIImage *genericShuttleMarker;
 
 @property (readwrite, retain) NSString *routeDescription;
 @property (readwrite, retain) NSString *title;

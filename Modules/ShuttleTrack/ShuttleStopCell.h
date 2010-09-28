@@ -14,6 +14,6 @@
 
 @property (nonatomic, retain) NSString *urlForImage;
 
--(void) setShuttleInfo:(ShuttleStop*)shuttleStop urlLinkForImage:(UIImage *)urlLinkForImage;
+-(void) setShuttleInfo:(ShuttleStop*)shuttleStop image:(UIImage *)image;
 
 @end
