@@ -51,6 +51,9 @@
 	NSArray *routes;
 	NSMutableArray *routesRunningCurrentlyThroughThisStop;
 	NSMutableArray *routesNotRunningCurrentlyThroughThisStop;
+	
+	UIView *loadingIndicator;
+	BOOL dataLoaded;
 }
 
 
@@ -67,6 +70,10 @@
 @property (nonatomic, retain) NSMutableArray* loadingSubscriptionRequests;
 
 @property (readonly) UIButton* mapButton;
+
+
+- (void)addLoadingIndicator:(UIView *) headerView;
+-(void)removeLoadingIndicator;
 @end
 
 @interface ShuttlePredictionTableViewCell : UITableViewCell

@@ -71,6 +71,8 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 	
+	dataLoaded = NO;
+	
 	_timeFormatter = [[NSDateFormatter alloc] init];
 	[_timeFormatter setTimeStyle:NSDateFormatterShortStyle];
 	
@@ -96,11 +98,10 @@
 	
 	int mapBuffer = 15;
 	int mapBufferX = 15;
-	int mapBufferY = 60;
+	int mapBufferY = 45;
 	int mapSizeX = self.view.frame.size.width - mapBufferX*2;
-	int mapSizeY = 175;
+	int mapSizeY = 185;
 	
-	//UIFont* titleFont = [UIFont boldSystemFontOfSize:20];
 	int titleWidth = headerView.frame.size.width;
 	CGSize titleSize = [self.shuttleStop.title sizeWithFont:[UIFont fontWithName:CONTENT_TITLE_FONT size:CONTENT_TITLE_FONT_SIZE]
                                           constrainedToSize:CGSizeMake(titleWidth, 300)
@@ -191,17 +192,6 @@
 	routesRunningCurrentlyThroughThisStop = [[NSMutableArray alloc] init];
 	routesNotRunningCurrentlyThroughThisStop = [[NSMutableArray alloc] init];
 
-	/*for (ShuttleRoute* route in routes) {
-		
-			if ((route.isRunning)){
-				[routesRunningCurrentlyThroughThisStop addObject:route];
-			}
-			else if (!(route.isRunning)){
-				[routesNotRunningCurrentlyThroughThisStop addObject:route];
-			}
-
-	}*/
-	
 }
 
 -(void) viewWillDisappear:(BOOL)animated
@@ -216,7 +206,7 @@
 -(void) viewWillAppear:(BOOL)animated
 {
 	[[ShuttleDataManager sharedDataManager] registerDelegate:self];
-	
+	dataLoaded = NO;
 	// poll for stop times every 20 seconds 
 	_pollingTimer = [[NSTimer scheduledTimerWithTimeInterval:20
 													  target:self 
@@ -242,15 +232,7 @@
 	
 	RouteMapViewController* routeMap = [[[RouteMapViewController alloc] initWithNibName:@"RouteMapViewController" bundle:nil] autorelease];
 	routeMap.route = [[ShuttleDataManager sharedDataManager].shuttleRoutesByID objectForKey:self.shuttleStop.routeID];
-	
-	// ensure the view and map view are loaded
-	//routeMap.view;
-	
-	//MKMapView* mapView = routeMap.mapView;
-	
-	//[routeMap selectAnnon:self.annotation];
-	//routeMap.singleStopView = YES;
-	
+
 	routeMap.parentViewController = self;
 	
 	
@@ -294,29 +276,32 @@
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
    //return self.shuttleStopSchedules.count;
 	//return routes.count;
-	return 2;
+	
+	if (dataLoaded == YES)
+		return 2;
+	
+	else {
+		return 1;
+	}
+
 }
 
 
 // Customize the number of rows in the table view.
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    	
-	/*if (section < self.shuttleStopSchedules.count) 
-	{
-		// determine the route schedule
-		ShuttleStop* schedule = [self.shuttleStopSchedules objectAtIndex:section];
-		
-        // if nextScheduled is not defined, the first row will be negative
-		return (schedule.nextScheduled != 0) ? schedule.predictions.count + 1 : 0;
-        
-	}*/
+
 	
+	if (dataLoaded == YES) {
+		if (section == 0)
+			return [routesRunningCurrentlyThroughThisStop count];
 	
-	if (section == 0)
-		return [routesRunningCurrentlyThroughThisStop count];
-	
-	else if (section == 1)
-		return [routesNotRunningCurrentlyThroughThisStop count];
+		else if (section == 1)
+			return [routesNotRunningCurrentlyThroughThisStop count];
+	}
+	else {
+		return 0;
+	}
+
 	
 	return 0;
 }
@@ -343,97 +328,41 @@
 	
 	cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 	cell.selectionStyle = UITableViewCellSelectionStyleGray;
-	
-   // if (indexPath.row < self.shuttleStopSchedules.count) 
-	//{
-		// determine the route schedule
-		//ShuttleStop* schedule = [self.shuttleStopSchedules objectAtIndex:(indexPath.row)];
-		
-		//NSDate* date = [schedule dateForPredictionAtIndex:indexPath.row];
-		//NSTimeInterval timeInterval = [date timeIntervalSinceNow];
-	//}
-		//int minutes = timeInterval / 60;
-		
-		//cell.textLabel.text = [NSString stringWithFormat:@"%@:", [(ShuttleRouteCache *)[schedule.routeStop route] title]];  //[_timeFormatter stringFromDate:date];
-		
-		/*NSString *routeName = [(ShuttleRouteCache *)[schedule.routeStop route] title];
-		//ShuttleRoute *currentRoute;
-		for (ShuttleRoute* route in routes) {
-			
-			if ([route.title isEqualToString:routeName]){
-				if ((indexPath.section == 0) &&(route.isRunning)) {
-					cell.textLabel.text = route.title;
-				}
-				else if ((indexPath.section == 1) && !(route.isRunning)) {
-					cell.textLabel.text = route.title;
-				}
-				else {
-					cell.textLabel.text = @"placeholder";
-				}
 
-			}
-		}*/
-			
-		
-		
-		/*NSString *minutesText;
-		if(minutes == 0) {
-			minutesText = @"(now)";
-		} else if(minutes == 1) {
-			minutesText = @"(1 minute)";
-		} else {
-			minutesText = [NSString stringWithFormat:@"(%d minutes)", minutes];	
-		}
-		cell.detailTextLabel.text = minutesText;
-        cell.detailTextLabel.textColor = CELL_DETAIL_FONT_COLOR;
-		
-		cell.accessoryView = nil;
-        
-        if(minutes > NOTIFICATION_MINUTES) {
-            
-            if([self hasSubscription:indexPath]) {
-                cell.accessoryView = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"shuttle-alert-toggle-on.png"]] autorelease];
-            } else {
-                cell.accessoryView = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"shuttle-alert-toggle-off.png"]] autorelease];
-            }
-            
-            
-            if([self hasSubscriptionRequestLoading:indexPath]) {
-                cell.accessoryView = [[[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray] autorelease];
-                [((UIActivityIndicatorView *)cell.accessoryView) startAnimating]; 
-            }
-        }*/
-	//}
-	
     return cell;
 }
 
 - (UIView *) tableView: (UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
-	/*ShuttleStop *stop = [self.shuttleStopSchedules objectAtIndex:section];
-	NSString *headerTitle = nil;
-	
-	if (section < self.shuttleStopSchedules.count) {
-		headerTitle = [NSString stringWithFormat:@"%@:", [(ShuttleRouteCache *)[stop.routeStop route] title]];
-	} else {
-		if(section == 0) {
-			headerTitle = @"Loading...";
-		} else {
-			return nil;
-		}
-	}*/
 	
 	NSString *headerTitle;
-	if (section == 0) 
-		headerTitle = @"Currently Serviced by:";
 	
-	else if (section == 1)
-		headerTitle = @"Serviced at other times by:";
+	if (dataLoaded == YES) {
+		if (section == 0) 
+			headerTitle = @"Currently serviced by:";
+		
+		else if (section == 1)
+			headerTitle = @"Serviced at other times by:";
+	}
+	
+	else {
+		headerTitle = @"Loading route information…";
+		UIView *temp = [UITableView groupedSectionHeaderWithTitle:headerTitle];
+		
+		UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(temp.frame.origin.x, temp.frame.origin.y + 20, temp.frame.size.width, temp.frame.size.height*4)];
+		//[temp release];
+		
+		[self addLoadingIndicator:headerView];
+		[headerView setBackgroundColor:[UIColor clearColor]];
+		return headerView;
+		
+	}
+	
 
 	return [UITableView groupedSectionHeaderWithTitle:headerTitle];
 }
 
 - (CGFloat)tableView: (UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
-	return GROUPED_SECTION_HEADER_HEIGHT;
+	return GROUPED_SECTION_HEADER_HEIGHT - 3;
 }
 
 
@@ -449,62 +378,17 @@
 	else if (indexPath.section == 1)
 		route = [routesNotRunningCurrentlyThroughThisStop objectAtIndex:indexPath.row];
 	
-	//RouteMapViewController* routeMap = [[[RouteMapViewController alloc] initWithNibName:@"RouteMapViewController" bundle:nil] autorelease];
-	//routeMap.route = route; //[[ShuttleDataManager sharedDataManager].shuttleRoutesByID objectForKey:route.routeID];
-	
-	// ensure the view and map view are loaded
-	//routeMap.view;
-	
-	//MKMapView* mapView = routeMap.mapView;
-	
-	//[routeMap selectAnnon:self.annotation];
-	//routeMap.singleStopView = YES;
-	
-	
+
 	ShuttleRouteViewController *parentController = (ShuttleRouteViewController *)[MITModuleURL parentViewController:self];		
 	
 	ShuttleRouteViewController *routeVC = [[[ShuttleRouteViewController alloc] initWithNibName:@"ShuttleRouteViewController" bundle:nil ] autorelease];
 	routeVC.route = route;
 	routeVC.parentShuttleRoutes = parentController.parentShuttleRoutes;
-	//[routeVC setMapViewMode:YES animated:NO];
-	
-	/*
-	 RouteMapViewController* routeVC = [[[RouteMapViewController alloc] initWithNibName:@"RouteMapViewController" bundle:nil] autorelease];
-	 routeVC.route = route;
-	 */
-	
-	//[self.navigationController pushViewController:routeVC animated:YES];
+
 	[self.navigationController popViewControllerAnimated:NO];
 	[parentController.parentShuttleRoutes.navigationController popViewControllerAnimated:NO];
 	[parentController.parentShuttleRoutes.navigationController pushViewController:routeVC animated:YES];
 	
-	
-	
-	/*CLLocationCoordinate2D coordinate = self.annotation.coordinate;
-	
-	CLLocationCoordinate2D center;
-	center.latitude = coordinate.latitude; 
-	center.longitude = coordinate.longitude; 
-	
-	double latDelta = 0.002;
-	double lonDelta = 0.002;
-	
-	MKCoordinateSpan span = MKCoordinateSpanMake(latDelta, lonDelta);
-	
-	MKCoordinateRegion region = MKCoordinateRegionMake(center, span);
-	
-	[routeMap.mapView setRegion:region];	
-	[routeMap.mapView selectAnnotation:self.annotation animated:YES];*/
-	
-
-	//[self.navigationController popViewControllerAnimated:YES];
-	//[self.navigationController pushViewController:routeMap animated:YES];
-	
-	//[parentController.navigationController popViewControllerAnimated:NO];
-	//[parentController.navigationController pushViewController:routeMap animated:YES];
-	
-
-
 	
 }
 
@@ -558,6 +442,7 @@
 {
 	//[self loadRouteData];
 	[self.tableView reloadData];
+	//[self removeLoadingIndicator];
 }
 
 // message sent when a shuttle stop is received. If request fails, this is called with nil 
@@ -613,9 +498,11 @@
 		
 		[self findScheduledSubscriptions];
 		
+		dataLoaded = YES;
 		[self.tableView reloadData];	
 	}
 	
+	//dataLoaded = YES;
 }
 
 /*
@@ -690,6 +577,49 @@
 		}
 	}
 }
+
+
+
+- (void)addLoadingIndicator:(UIView *) headerView
+{
+	if (loadingIndicator == nil) {
+		static NSString *loadingString = @"Loading route information...";
+		UIFont *loadingFont = [UIFont fontWithName:STANDARD_FONT size:17.0];
+		CGSize stringSize = [loadingString sizeWithFont:loadingFont];
+        
+        UIActivityIndicatorViewStyle style = UIActivityIndicatorViewStyleGray;
+		UIActivityIndicatorView *spinny = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:style];
+		spinny.center = CGPointMake(headerView.frame.origin.x + headerView.frame.size.width/2 - 110, headerView.frame.origin.y + headerView.frame.size.height/2 -10);
+		[spinny startAnimating];
+
+		UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(headerView.frame.size.width/2 - 95, headerView.frame.size.height/2, stringSize.width, stringSize.height + 2.0)];
+		label.textColor = [UIColor blackColor];
+		label.text = loadingString;
+		label.font = loadingFont;
+		label.backgroundColor = [UIColor clearColor];
+
+		loadingIndicator = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, headerView.frame.size.width, headerView.frame.size.height)];		
+		[loadingIndicator setBackgroundColor:[UIColor clearColor]];
+		[loadingIndicator addSubview:spinny];
+		[spinny release];
+		[loadingIndicator addSubview:label];
+		[label release];
+		
+	}
+	
+	headerView.backgroundColor = [UIColor clearColor];
+	[headerView addSubview:loadingIndicator];
+}
+
+- (void)removeLoadingIndicator
+{
+	//[self.view sendSubviewToBack:loadingIndicator];
+	[loadingIndicator removeFromSuperview];
+	[loadingIndicator release];
+	loadingIndicator = nil;
+	
+}
+
 @end
 
 @implementation ShuttlePredictionTableViewCell
