@@ -14,6 +14,7 @@
 @property (nonatomic, retain) NSNumber * sortOrder;
 @property (nonatomic, retain) NSString * agency;
 @property (nonatomic, retain) NSString * color;
+@property (nonatomic, retain) NSString * routeDescription;
  
 @end
 

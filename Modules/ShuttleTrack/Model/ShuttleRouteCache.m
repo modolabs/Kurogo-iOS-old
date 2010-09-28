@@ -14,6 +14,7 @@
 @dynamic sortOrder;
 @dynamic agency;
 @dynamic color;
+@dynamic routeDescription;
 
 - (NSSet *)stops {
 	return [self valueForKey:@"stops"];

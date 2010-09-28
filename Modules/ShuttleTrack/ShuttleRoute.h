@@ -46,6 +46,7 @@
 @property (readwrite, retain) NSString *nextStopId;
 @property (readwrite, retain) NSString *urlForStopMarker;
 
+@property (readwrite, retain) NSString *routeDescription;
 @property (readwrite, retain) NSString *title;
 @property (readwrite, retain) NSString *summary;
 @property (nonatomic, retain) NSString *routeID;

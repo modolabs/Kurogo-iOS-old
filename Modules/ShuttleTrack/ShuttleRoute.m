@@ -23,6 +23,7 @@
 @synthesize nextStopId;
 
 // cached properties
+@dynamic routeDescription;
 @dynamic title;
 @dynamic summary;
 @dynamic interval;
@@ -44,6 +45,15 @@
 - (void)setTitle:(NSString *)title {
 	if (title != nil && self.cache != nil)
 		self.cache.title = title;
+}
+
+- (NSString *)routeDescription {
+	return self.cache.routeDescription;
+}
+
+- (void)setRouteDescription:(NSString *)description {
+	if (description != nil && self.cache != nil)
+		self.cache.routeDescription = description;
 }
 
 - (NSString *)summary {
@@ -196,6 +206,7 @@
 - (void)updateInfo:(NSDictionary *)routeInfo
 {
 	self.title = [routeInfo objectForKey:@"title"];
+	self.routeDescription = [routeInfo objectForKey:@"description"];
 	self.summary = [routeInfo objectForKey:@"summary"];
 	self.interval = [[routeInfo objectForKey:@"interval"] intValue];
 	self.isSafeRide = [[routeInfo objectForKey:@"isSafeRide"] boolValue];
@@ -331,9 +342,23 @@
 
 - (NSString *)fullSummary 
 {
-	NSString* summaryString = [NSString stringWithFormat:@"Route loop repeats every %d minutes.", self.interval]; //self.interval];
+	/*NSString* summaryString = [NSString stringWithFormat:@"Route loop repeats every %d minutes.", self.interval]; //self.interval];
 	if (nil != self.summary) {
 		summaryString = [NSString stringWithFormat:@"%@ %@", self.summary, summaryString];
+	}*/
+	
+	NSString* summaryString;   // = [NSString stringWithFormat:@"Route loop repeats every %d minutes.", self.interval]; //self.interval];
+	NSString* desciptionString = [NSString stringWithFormat:@""];
+	
+	if (nil != self.routeDescription) {
+		if ([self.routeDescription length] > 0)
+			desciptionString = [NSString stringWithFormat:@"%@\n", self.routeDescription]; //self.interval];
+	}
+	if (nil != self.summary) {
+		summaryString = [desciptionString stringByAppendingFormat:@"%@", [self summary]]; //[NSString stringWithFormat:@"%@", [self.summary];//, summaryString];
+	}
+	else {
+		summaryString = [desciptionString stringByAppendingFormat:@""];
 	}
 	
     return [NSString stringWithFormat:@"%@\n%@", [self trackingStatus], summaryString];
