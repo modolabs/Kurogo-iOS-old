@@ -167,7 +167,7 @@
 	[headerView addSubview:_mapButton];
 	
 	
-	UIImage *im = [[UIImage imageNamed:@"shuttle-transloc.png"] retain];
+	UIImage *im = [[UIImage imageNamed:@"shuttles/shuttle-transloc.png"] retain];
 	UIImageView * logoImView = [[[UIImageView alloc] initWithImage:im] retain];
 	
 	logoView = [[UIView alloc] initWithFrame:CGRectMake(mapSizeX - 2*mapBufferX, mapSizeY, logoImView.frame.size.width, logoImView.frame.size.height)];
@@ -432,7 +432,7 @@
 	if ([annotation isKindOfClass:[ShuttleStopMapAnnotation class]]) 
 	{
 		annotationView = [[[MKAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:@"annotation"] autorelease];
-		UIImage* pin = [UIImage imageNamed:@"pin_shuttle_stop_complete_next.png"];
+		UIImage* pin = [UIImage imageNamed:@"shuttles/pin_shuttle_stop_complete_next.png"];
 		UIImageView* imageView = [[[UIImageView alloc] initWithImage:pin] autorelease];
 		annotationView.frame = imageView.frame;
 		annotationView.canShowCallout = YES;

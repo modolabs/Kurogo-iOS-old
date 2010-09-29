@@ -58,8 +58,8 @@
 	//_viewTypeButton.enabled = NO;										  
 	self.navigationItem.rightBarButtonItem = _viewTypeButton;
 	
-	_smallStopImage = [[UIImage imageNamed:@"shuttle-stop-dot.png"] retain];
-	_smallUpcomingStopImage = [[UIImage imageNamed:@"shuttle-stop-dot-next.png"] retain];
+	_smallStopImage = [[UIImage imageNamed:@"shuttles/shuttle-stop-dot.png"] retain];
+	_smallUpcomingStopImage = [[UIImage imageNamed:@"shuttles/shuttle-stop-dot-next.png"] retain];
 	
 	url = [[MITModuleURL alloc] initWithTag:ShuttleTag];
     [url setPath:[NSString stringWithFormat:@"route-list/%@", self.route.routeID] query:nil];

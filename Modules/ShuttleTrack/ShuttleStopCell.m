@@ -48,7 +48,7 @@
 		if (image != nil)
 			_shuttleStopImageView.image = image;
 		else
-		_shuttleStopImageView.image = [UIImage imageNamed:@"shuttle-stop-dot-next.png"] ;
+		_shuttleStopImageView.image = [UIImage imageNamed:@"shuttles/shuttle-stop-dot-next.png"] ;
 		
 		_shuttleTimeLabel.textColor = SEARCH_BAR_TINT_COLOR;
         _shuttleTimeLabel.font = [UIFont boldSystemFontOfSize:16.0];

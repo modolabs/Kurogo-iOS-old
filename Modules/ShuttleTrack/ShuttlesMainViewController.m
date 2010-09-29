@@ -28,7 +28,7 @@ NSString * const shuttleExtension = @"shuttles/";
     [super viewDidLoad];
 	
 	newAnnouncement.hidden = YES;
-	newAnnouncement.image = [[UIImage imageNamed:@"shuttle-news-badge.png"] retain];
+	newAnnouncement.image = [[UIImage imageNamed:@"shuttles/shuttle-news-badge.png"] retain];
 	
 	self.view.backgroundColor = [UIColor clearColor];
 	

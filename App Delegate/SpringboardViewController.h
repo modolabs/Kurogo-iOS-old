@@ -35,7 +35,6 @@
     NSInteger dummyIconIndex;
     UIView *transparentOverlay;
     
-    CGPoint topLeft;
     CGPoint bottomRight;
     CGPoint startingPoint;
     

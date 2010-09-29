@@ -70,18 +70,14 @@
     // calculate xOrigin to keep icons centered
     CGFloat xOriginInitial = (viewSize.width - ((iconSize.width + GRID_HPADDING) * iconsPerRow - GRID_HPADDING)) / 2;
     CGFloat xOrigin = xOriginInitial;
-    //CGFloat yOrigin = _searchBar.frame.size.height + GRID_VPADDING + 16.0;
-    //bottomRight = CGPointZero;
     
     for (anIcon in icons) {
         anIcon.frame = CGRectMake(xOrigin, bottomRight.y, iconSize.width, iconSize.height);
-        //bottomRight.y = yOrigin + anIcon.frame.size.height;
         
         xOrigin += anIcon.frame.size.width + GRID_HPADDING;
         if (xOrigin + anIcon.frame.size.width + GRID_HPADDING >= viewSize.width) {
             xOrigin = xOriginInitial;
             bottomRight.y += anIcon.frame.size.height + GRID_VPADDING;
-            //yOrigin += anIcon.frame.size.height + GRID_VPADDING;
         }
         
         if (![anIcon isDescendantOfView:containingView]) {
@@ -93,12 +89,14 @@
         }        
     }
     
-    topLeft = ((SpringboardIcon *)[icons objectAtIndex:0]).frame.origin;
+    if (xOrigin > xOriginInitial) {
+        bottomRight.y += iconSize.height + GRID_VPADDING;
+    }
 
-    // uncomment later if we have so many icons that we need to scroll
-    //if (bottomRight.y > containingView.contentSize.height) {
-    //    containingView.contentSize = CGSizeMake(containingView.contentSize.width, bottomRight.y);
-    //}
+    // uncomment if we have so many icons that we need to scroll
+    if (bottomRight.y > containingView.contentSize.height) {
+        containingView.contentSize = CGSizeMake(containingView.contentSize.width, bottomRight.y);
+    }
 
 }
 
@@ -122,19 +120,16 @@
             
             if (aModule.canBecomeDefault) {
                 [_icons addObject:anIcon];
-
-                anIcon.frame = CGRectMake(0, 0, image.size.width + ICON_PADDING * 2, image.size.height + ICON_LABEL_HEIGHT);
-                anIcon.imageEdgeInsets = UIEdgeInsetsMake(0, ICON_PADDING, ICON_LABEL_HEIGHT, ICON_PADDING);
                 // title by default is placed to the right of the image, we want it below
                 anIcon.titleEdgeInsets = UIEdgeInsetsMake(image.size.height, -image.size.width, 0, 0);
             } else {
                 [_fixedIcons addObject:anIcon];
-
-                anIcon.frame = CGRectMake(0, 0, image.size.width + ICON_PADDING * 2, image.size.height + ICON_LABEL_HEIGHT);
-                anIcon.imageEdgeInsets = UIEdgeInsetsMake(0, ICON_PADDING, ICON_LABEL_HEIGHT, ICON_PADDING);
                 // title by default is placed to the right of the image, we want it below
                 anIcon.titleEdgeInsets = UIEdgeInsetsMake(image.size.height + ICON_PADDING, -image.size.width - 5.0, 0, -5.0);
             }
+            
+            anIcon.frame = CGRectMake(0, 0, image.size.width + ICON_PADDING * 2, image.size.height + ICON_LABEL_HEIGHT);
+            anIcon.imageEdgeInsets = UIEdgeInsetsMake(0, ICON_PADDING, ICON_LABEL_HEIGHT, ICON_PADDING);
             
             [anIcon setImage:image forState:UIControlStateNormal];
 
