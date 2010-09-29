@@ -238,6 +238,10 @@
 		C76FBBF6123006E900968920 /* home-shuttle.png in Resources */ = {isa = PBXBuildFile; fileRef = C76FBBF4123006E900968920 /* home-shuttle.png */; };
 		C776675911F733E3005496DD /* DatePickerViewController.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = C776675711F733E3005496DD /* DatePickerViewController.h */; settings = {JAVA_ARCHIVE_SUBDIR = Modules/Calendar; }; };
 		C776675A11F733E3005496DD /* DatePickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C776675811F733E3005496DD /* DatePickerViewController.m */; };
+		C7768587125394F900C41B0E /* shuttle-news-badge.png in Resources */ = {isa = PBXBuildFile; fileRef = C7768583125394F900C41B0E /* shuttle-news-badge.png */; };
+		C7768588125394F900C41B0E /* shuttle-news-badge@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C7768584125394F900C41B0E /* shuttle-news-badge@2x.png */; };
+		C7768589125394F900C41B0E /* shuttle-transloc.png in Resources */ = {isa = PBXBuildFile; fileRef = C7768585125394F900C41B0E /* shuttle-transloc.png */; };
+		C776858A125394F900C41B0E /* shuttle-transloc@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C7768586125394F900C41B0E /* shuttle-transloc@2x.png */; };
 		C7B10CFF12130E2300CFB837 /* StellarCoursesViewController.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = C7B10CFD12130E2300CFB837 /* StellarCoursesViewController.h */; settings = {JAVA_ARCHIVE_SUBDIR = Modules/Stellar; }; };
 		C7B10D0012130E2300CFB837 /* StellarCoursesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C7B10CFE12130E2300CFB837 /* StellarCoursesViewController.m */; };
 		C7B10E031213270200CFB837 /* StellarClassesViewController.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = C7B10E011213270200CFB837 /* StellarClassesViewController.h */; settings = {JAVA_ARCHIVE_SUBDIR = Modules/Stellar; }; };
@@ -822,6 +826,10 @@
 		C76FBBF4123006E900968920 /* home-shuttle.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "home-shuttle.png"; path = "Resources/home/home-shuttle.png"; sourceTree = "<group>"; };
 		C776675711F733E3005496DD /* DatePickerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DatePickerViewController.h; sourceTree = "<group>"; };
 		C776675811F733E3005496DD /* DatePickerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DatePickerViewController.m; sourceTree = "<group>"; };
+		C7768583125394F900C41B0E /* shuttle-news-badge.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "shuttle-news-badge.png"; sourceTree = "<group>"; };
+		C7768584125394F900C41B0E /* shuttle-news-badge@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "shuttle-news-badge@2x.png"; sourceTree = "<group>"; };
+		C7768585125394F900C41B0E /* shuttle-transloc.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "shuttle-transloc.png"; sourceTree = "<group>"; };
+		C7768586125394F900C41B0E /* shuttle-transloc@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "shuttle-transloc@2x.png"; sourceTree = "<group>"; };
 		C7B10CFD12130E2300CFB837 /* StellarCoursesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StellarCoursesViewController.h; sourceTree = "<group>"; };
 		C7B10CFE12130E2300CFB837 /* StellarCoursesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StellarCoursesViewController.m; sourceTree = "<group>"; };
 		C7B10E011213270200CFB837 /* StellarClassesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StellarClassesViewController.h; sourceTree = "<group>"; };
@@ -1280,6 +1288,10 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				C7768583125394F900C41B0E /* shuttle-news-badge.png */,
+				C7768584125394F900C41B0E /* shuttle-news-badge@2x.png */,
+				C7768585125394F900C41B0E /* shuttle-transloc.png */,
+				C7768586125394F900C41B0E /* shuttle-transloc@2x.png */,
 				C71D949F1237F2AC009369C5 /* shuttles */,
 				C71D93F51236D531009369C5 /* map_button_shuttle.png */,
 				C71D93F61236D531009369C5 /* map_button_location.png */,
@@ -2421,6 +2433,10 @@
 				C71D94BE1237F2C8009369C5 /* shuttle-stop-dot.png in Resources */,
 				C71D94BF1237F2C8009369C5 /* shuttle.png in Resources */,
 				C71D9B4D1243E054009369C5 /* ShuttlesMainViewController.xib in Resources */,
+				C7768587125394F900C41B0E /* shuttle-news-badge.png in Resources */,
+				C7768588125394F900C41B0E /* shuttle-news-badge@2x.png in Resources */,
+				C7768589125394F900C41B0E /* shuttle-transloc.png in Resources */,
+				C776858A125394F900C41B0E /* shuttle-transloc@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

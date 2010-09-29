@@ -54,6 +54,8 @@
 	BOOL hasNarrowedRegion;
 	
 	UIView *loadingIndicator;
+	
+	UIView *logoView;
 }
 
 @property (nonatomic, retain) ShuttleRoute* route;

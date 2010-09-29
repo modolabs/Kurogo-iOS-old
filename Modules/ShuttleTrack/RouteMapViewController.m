@@ -114,6 +114,19 @@
 	
 	[self.mapView setShowsUserLocation:YES];
 	self.mapView.hidden = YES;
+	
+	
+	
+	UIImage *im = [[UIImage imageNamed:@"shuttle-transloc@2x.png"] retain];
+	UIImageView * logoImView = [[[UIImageView alloc] initWithImage:im] retain];
+
+	logoView = [[UIView alloc] initWithFrame:CGRectMake(240, 335, logoImView.frame.size.width, logoImView.frame.size.height)];
+	logoView.backgroundColor = [UIColor clearColor];
+	[logoView addSubview:logoImView];
+	[self.view addSubview:logoView];
+	[self.view bringSubviewToFront:logoView];
+	
+	
 }
 
 -(void)narrowRegion {
@@ -757,6 +770,9 @@
 	
 	self.mapView.hidden = NO;
 	[self removeLoadingIndicator];
+	logoView.hidden = NO;
+	[[logoView superview] bringSubviewToFront:logoView];
+	logoView.opaque = NO;
 	
 }
 

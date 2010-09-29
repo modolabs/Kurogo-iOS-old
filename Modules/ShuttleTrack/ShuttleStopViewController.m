@@ -167,6 +167,16 @@
 	[headerView addSubview:_mapButton];
 	
 	
+	UIImage *im = [[UIImage imageNamed:@"shuttle-transloc.png"] retain];
+	UIImageView * logoImView = [[[UIImageView alloc] initWithImage:im] retain];
+	
+	logoView = [[UIView alloc] initWithFrame:CGRectMake(mapSizeX - 2*mapBufferX, mapSizeY, logoImView.frame.size.width, logoImView.frame.size.height)];
+	logoView.backgroundColor = [UIColor clearColor];
+	[logoView addSubview:logoImView];
+	[headerView addSubview:logoView];
+	[headerView bringSubviewToFront:logoView];
+	
+	
 	[self.tableView setTableHeaderView:headerView];
 	
 	

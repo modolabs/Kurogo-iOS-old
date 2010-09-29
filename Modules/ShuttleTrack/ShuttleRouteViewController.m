@@ -213,9 +213,28 @@
 	
 	[tableView deselectRowAtIndexPath:indexPath animated:YES];
 	
-	[self pushStopViewControllerWithStop:[self.route.stops objectAtIndex:indexPath.row] 
+	/*[self pushStopViewControllerWithStop:[self.route.stops objectAtIndex:indexPath.row] 
 							  annotation:[self.route.annotations objectAtIndex:indexPath.row] 
-								animated:YES];
+								animated:YES];*/
+	
+	
+	ShuttleStop *stop = (ShuttleStop *)[self.route.stops objectAtIndex:indexPath.row]; 
+	ShuttleStopMapAnnotation *annoToPass;
+	
+	for (int i=0; i < [self.route.annotations count]; i++) {
+		
+		ShuttleStopMapAnnotation *tempAnno = (ShuttleStopMapAnnotation *)[self.route.annotations objectAtIndex:i];
+		
+		if ([tempAnno.shuttleStop.stopID isEqualToString:stop.stopID])
+			annoToPass = tempAnno;
+	}
+	
+	if (nil == annoToPass)
+		annoToPass = (ShuttleStopMapAnnotation *)[self.route.annotations objectAtIndex:indexPath.row];
+	
+	[self pushStopViewControllerWithStop:stop
+	 annotation:annoToPass 
+	 animated:YES];
 }
 
 -(void) pushStopViewControllerWithStop:(ShuttleStop *)stop annotation:(ShuttleStopMapAnnotation *)annotation animated:(BOOL)animated {

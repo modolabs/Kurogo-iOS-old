@@ -54,6 +54,8 @@
 	
 	UIView *loadingIndicator;
 	BOOL dataLoaded;
+	
+	UIView *logoView;
 }
 
 
