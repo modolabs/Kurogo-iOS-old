@@ -171,12 +171,11 @@
 		}
 		
 		[cell applyStandardFonts];
-		makeCellWhite(cell);
 		
 		NSString * titleAnnouncement = [announcementDetails objectForKey:@"title"];
 		NSString * dateString = [announcementDetails objectForKey:@"date"];
-		BOOL * urgent = [[announcementDetails objectForKey:@"urgent"] boolValue];
-		NSString * htmlString = [announcementDetails objectForKey:@"html"];
+		//BOOL urgent = [[announcementDetails objectForKey:@"urgent"] boolValue];
+		//NSString * htmlString = [announcementDetails objectForKey:@"html"];
 		
 		cell.textLabel.text = titleAnnouncement;
 		cell.detailTextLabel.text = dateString;
@@ -195,7 +194,6 @@
 		}
 		
 		[cell applyStandardFonts];
-		makeCellWhite(cell);
 		
 		cell.textLabel.text = @"No announcements at this time";
 		cell.backgroundColor = GROUPED_VIEW_CELL_COLOR;

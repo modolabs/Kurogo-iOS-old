@@ -49,7 +49,7 @@
 
 //@property (readwrite, retain) ShuttleData *model;
 
-- (void)addLoadingIndicator;
--(void)removeLoadingIndicator;
+//- (void)addLoadingIndicator;
+//-(void)removeLoadingIndicator;
 
 @end

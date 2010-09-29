@@ -23,9 +23,10 @@
 	if (!target) {
 		DLog(@"Failed to load template at %@. %@", fileURL, [error userInfo]);
 	}
-	[target replaceOccurrencesOfStrings:[NSArray arrayWithObject:@"__BODY__"] 
-							withStrings:[NSArray arrayWithObject:source] 
-								options:NSLiteralSearch];
+	[target replaceOccurrencesOfString:@"__BODY__"
+                            withString:source 
+                               options:NSLiteralSearch
+                                 range:NSMakeRange(0, [target length])];
 	return target;
 }
 
