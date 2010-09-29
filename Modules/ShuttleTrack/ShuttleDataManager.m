@@ -28,8 +28,6 @@ static ShuttleDataManager* s_dataManager = nil;
 @synthesize stopLocations = _stopLocations;
 @synthesize stopLocationsByID = _stopLocationsByID;
 
-NSString * const shuttlePathExtension = @"shuttles/";
-
 + (ShuttleDataManager *)sharedDataManager {
     @synchronized(self) {
         if (s_dataManager == nil) {
@@ -201,8 +199,7 @@ NSString * const shuttlePathExtension = @"shuttles/";
 -(void) requestRoutes
 {
 	JSONAPIRequest *api = [JSONAPIRequest requestWithJSONAPIDelegate:self];
-	BOOL dispatched = [api requestObject:[NSDictionary dictionaryWithObjectsAndKeys:@"routes", @"command", @"true", @"compact", nil]
-						   pathExtension:shuttlePathExtension];
+	BOOL dispatched = [api requestObjectFromModule:@"shuttles" command:@"routes" parameters:[NSDictionary dictionaryWithObjectsAndKeys:@"true", @"compact", nil]];
 	if (!dispatched) {
 		NSLog(@"%@", @"problem making routes api request");
 	}
@@ -211,8 +208,7 @@ NSString * const shuttlePathExtension = @"shuttles/";
 -(void) requestStops
 {
 	JSONAPIRequest *api = [JSONAPIRequest requestWithJSONAPIDelegate:self];
-	BOOL dispatched = [api requestObject:[NSDictionary dictionaryWithObjectsAndKeys:@"stops", @"command", nil]
-						   pathExtension:shuttlePathExtension];
+	BOOL dispatched = [api requestObjectFromModule:@"shuttles" command:@"stops" parameters:nil];
 	if (!dispatched) {
 		NSLog(@"%@", @"problem making stops api request");
 	}
@@ -222,8 +218,7 @@ NSString * const shuttlePathExtension = @"shuttles/";
 -(void) requestStop:(NSString*)stopID
 {
 	JSONAPIRequest *api = [JSONAPIRequest requestWithJSONAPIDelegate:self];
-	BOOL dispatched = [api requestObject:[NSDictionary dictionaryWithObjectsAndKeys:@"stopInfo", @"command", stopID, @"id", nil]
-						   pathExtension:shuttlePathExtension];
+	BOOL dispatched = [api requestObjectFromModule:@"shuttles" command:@"stopInfo" parameters:[NSDictionary dictionaryWithObjectsAndKeys:stopID, @"id", nil]];
 	if (!dispatched) {
 		NSLog(@"%@", @"problem making single stop api request");
 	}
@@ -231,8 +226,7 @@ NSString * const shuttlePathExtension = @"shuttles/";
 
 -(void) requestRoute:(NSString*)routeID
 {	JSONAPIRequest *api = [JSONAPIRequest requestWithJSONAPIDelegate:self];
-	BOOL dispatched = [api requestObject:[NSDictionary dictionaryWithObjectsAndKeys:@"routeInfo", @"command", routeID, @"id", @"true", @"full", nil]
-						   pathExtension:shuttlePathExtension];
+	BOOL dispatched = [api requestObjectFromModule:@"shuttles" command:@"routeInfo" parameters:[NSDictionary dictionaryWithObjectsAndKeys:routeID, @"id", @"true", @"full", nil]];
 	if (!dispatched) {
 		NSLog(@"%@", @"problem making single route api request");
 	}

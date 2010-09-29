@@ -180,24 +180,6 @@
 		ShuttleRoute* route = [routes objectAtIndex:indexPath.row];
 		
 		cell.textLabel.text = route.title;
-		
-		if (_isLoading) {
-			cell.imageView.image = _shuttleLoadingImage;
-			UIActivityIndicatorView *spinny = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
-			// TODO: hard coded values for center
-			spinny.center = CGPointMake(18.0, 22.0);
-			[spinny startAnimating];
-			[cell.contentView addSubview:spinny];
-			[spinny release];
-		} else {
-			for (UIView *aView in cell.contentView.subviews) {
-				if ([aView isKindOfClass:[UIActivityIndicatorView class]]) {
-					[aView removeFromSuperview];
-				}
-			}
-			cell.imageView.image = route.isRunning ? _shuttleRunningImage : _shuttleNotRunningImage;
-		}
-
 		cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 	}
 	else if(nil != phoneNumbers)

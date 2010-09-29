@@ -15,9 +15,6 @@
         self.longName = @"ShuttleTrack";
         self.iconName = @"shuttle";
         self.pushNotificationSupported = YES;
-
-        //ShuttleRoutes *theVC = [[[ShuttleRoutes alloc] initWithStyle:UITableViewStyleGrouped] autorelease];
-        //self.viewControllers = [NSArray arrayWithObject:theVC];
 		
 		ShuttlesMainViewController *theVC = [[[ShuttlesMainViewController alloc] init] autorelease];
         self.viewControllers = [NSArray arrayWithObject:theVC];
@@ -27,7 +24,7 @@
 
 - (void) didAppear {
 	// for now mark all shuttle notifications as read as soon as the module appears to the user
-	[MITUnreadNotifications removeNotifications:[MITUnreadNotifications unreadNotificationsForModuleTag:self.tag]];
+	//[MITUnreadNotifications removeNotifications:[MITUnreadNotifications unreadNotificationsForModuleTag:self.tag]];
 }
 
 
@@ -42,7 +39,7 @@
 	
 - (BOOL) handleNotification:(MITNotification *)notification appDelegate: (MIT_MobileAppDelegate *)appDelegate shouldOpen: (BOOL)shouldOpen {
 	// for now just open the module in response to a notification
-	[self removeSubscriptionByNotification:notification];
+	//[self removeSubscriptionByNotification:notification];
 	
 	if(shouldOpen) {
 		NSString *routeID = [[notification.noticeId componentsSeparatedByString:@":"] objectAtIndex:0];

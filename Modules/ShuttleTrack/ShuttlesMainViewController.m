@@ -20,9 +20,6 @@
 @synthesize haveNewAnnouncements;
 
 
-NSString * const shuttleExtension = @"shuttles/";
-
-
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -44,8 +41,7 @@ NSString * const shuttleExtension = @"shuttles/";
 	announcementsTab.parentViewController = self.navigationController;
 	
 	JSONAPIRequest *api = [JSONAPIRequest requestWithJSONAPIDelegate:self];
-	BOOL dispatched = [api requestObject:[NSDictionary dictionaryWithObjectsAndKeys:@"announcements", @"command", nil]
-						   pathExtension:shuttleExtension];
+	BOOL dispatched = [api requestObjectFromModule:@"shuttles" command:@"announcements" parameters:nil];
 	
 	contactsTab = [[ContactsTableViewController alloc] initWithStyle:UITableViewStyleGrouped];
 	contactsTab.parentViewController = self.navigationController;

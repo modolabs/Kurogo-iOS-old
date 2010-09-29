@@ -8,7 +8,6 @@
 	
 + (void) subscribeForRoute:(NSString *)routeID atStop:(NSString *)stopID scheduleTime: (NSDate *)time delegate: (id<ShuttleSubscriptionDelegate>)delegate object: (id)object {
 	NSMutableDictionary *parameters = [[MITDeviceRegistration identity] mutableDictionary];
-	[parameters setObject:@"subscribe" forKey:@"command"];
 	[parameters setObject:routeID forKey:@"route"];
 	[parameters setObject:stopID forKey:@"stop"];
 	
@@ -19,19 +18,18 @@
 	JSONAPIRequest *request = [JSONAPIRequest requestWithJSONAPIDelegate:
 		[[[SubscribeRequest alloc] initWithDelegate:delegate routeID:routeID stopID:stopID object:object] autorelease]];
 
-	[request requestObject:parameters pathExtension:@"shuttles"];
+	[request requestObjectFromModule:@"shuttles" command:@"subscribe" parameters:parameters];
 }
 
 + (void) unsubscribeForRoute:(NSString *)routeID atStop:(NSString *)stopID delegate: (id<ShuttleSubscriptionDelegate>)delegate object: (id)object {
 	NSMutableDictionary *parameters = [[MITDeviceRegistration identity] mutableDictionary];
-	[parameters setObject:@"unsubscribe" forKey:@"command"];
 	[parameters setObject:routeID forKey:@"route"];
 	[parameters setObject:stopID forKey:@"stop"];
 	
 	JSONAPIRequest *request = [JSONAPIRequest requestWithJSONAPIDelegate:
 		[[[UnsubscribeRequest alloc] initWithDelegate:delegate routeID:routeID stopID:stopID object:object] autorelease]];
 	
-	[request requestObject:parameters pathExtension:@"shuttles"];
+	[request requestObjectFromModule:@"shuttles" command:@"unsubscribe" parameters:parameters];
 }
 	
 + (BOOL) hasSubscription: (NSString *)routeID atStop: (NSString *)stopID scheduleTime: (NSDate *)time {
