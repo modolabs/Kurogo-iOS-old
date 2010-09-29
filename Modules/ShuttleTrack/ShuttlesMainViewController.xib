@@ -45,14 +45,11 @@
 					<object class="IBUIImageView" id="301408985">
 						<reference key="NSNextResponder" ref="191373211"/>
 						<int key="NSvFlags">274</int>
-						<string key="NSFrame">{{206, 20}, {35, 21}}</string>
+						<string key="NSFrame">{{206, 20}, {25, 21}}</string>
 						<reference key="NSSuperview" ref="191373211"/>
+						<int key="IBUIContentMode">4</int>
 						<bool key="IBUIUserInteractionEnabled">NO</bool>
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
-						<object class="NSCustomResource" key="IBUIImage">
-							<string key="NSClassName">NSImage</string>
-							<string key="NSResourceName">pin_shuttle_stop_complete_next.png</string>
-						</object>
 					</object>
 					<object class="IBUIView" id="156610462">
 						<reference key="NSNextResponder" ref="191373211"/>
@@ -69,7 +66,7 @@
 					<object class="IBUIView" id="794263662">
 						<reference key="NSNextResponder" ref="191373211"/>
 						<int key="NSvFlags">292</int>
-						<string key="NSFrame">{{0, 41}, {320, 388}}</string>
+						<string key="NSFrame">{{0, 39}, {320, 388}}</string>
 						<reference key="NSSuperview" ref="191373211"/>
 						<reference key="IBUIBackgroundColor" ref="993333221"/>
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
@@ -195,7 +192,7 @@
 					<bool key="EncodedWithXMLCoder">YES</bool>
 					<string>ShuttlesMainViewController</string>
 					<string>UIResponder</string>
-					<string>{{1058, 248}, {320, 480}}</string>
+					<string>{{1108, 260}, {320, 480}}</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<object class="NSAffineTransform">
@@ -520,10 +517,6 @@
 		<bool key="IBDocument.PluginDeclaredDependenciesTrackSystemTargetVersion">YES</bool>
 		<string key="IBDocument.LastKnownRelativeProjectPath">../../Harvard Mobile.xcodeproj</string>
 		<int key="IBDocument.defaultPropertyAccessControl">3</int>
-		<object class="NSMutableDictionary" key="IBDocument.LastKnownImageSizes">
-			<string key="NS.key.0">pin_shuttle_stop_complete_next.png</string>
-			<string key="NS.object.0">{40, 33}</string>
-		</object>
 		<string key="IBCocoaTouchPluginVersion">123</string>
 	</data>
 </archive>
