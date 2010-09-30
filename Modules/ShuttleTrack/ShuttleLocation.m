@@ -7,7 +7,7 @@
 @synthesize secsSinceReport = _secsSinceReport;
 @synthesize heading = _heading;
 @synthesize iconURL;
-
+@synthesize speed = _speed;
 
 -(id) initWithDictionary:(NSDictionary*)dictionary
 {
@@ -18,6 +18,7 @@
 		
 		self.secsSinceReport = [[dictionary objectForKey:@"secsSinceReport"] intValue];
 		self.heading = [[dictionary objectForKey:@"heading"] intValue];
+        self.speed = [[dictionary objectForKey:@"speed"] floatValue];
 		
 		self.iconURL = [dictionary objectForKey:@"iconURL"];
 	}

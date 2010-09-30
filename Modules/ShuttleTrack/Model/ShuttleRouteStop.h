@@ -4,7 +4,6 @@
 {
 }
 
-@property (nonatomic, retain) id path;
 @property (nonatomic, retain) NSNumber * order;
 @property (nonatomic, retain) NSManagedObject * stopLocation;
 @property (nonatomic, retain) NSManagedObject * route;

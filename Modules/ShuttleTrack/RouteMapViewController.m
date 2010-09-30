@@ -7,6 +7,9 @@
 
 #define DEGREES_TO_RADIANS(__ANGLE__) ((__ANGLE__) / 180.0 * M_PI)
 
+// calculated for google maps projection in harvard square vicinity
+#define NAUTICAL_MILES_PER_DEGREE_LATLON 12.013
+
 @interface RouteMapViewController(Private)
 
 // add the shuttles based on self.route.vehicleLocations
@@ -399,9 +402,15 @@
 -(void) addShuttles
 {
 	// make a copy since ShuttleRoute's vehicleLocations will be wiped out when it receives new data
-	[self removeShuttles];
+    NSArray *oldVehicleAnnotations = [_vehicleAnnotations copy];
+        
+	//[self removeShuttles];
 	_vehicleAnnotations = [[NSArray arrayWithArray:self.routeInfo.vehicleLocations] retain];
 	[_mapView addAnnotations:_vehicleAnnotations];
+
+    [_mapView performSelector:@selector(removeAnnotations:) withObject:oldVehicleAnnotations afterDelay:0.2];
+    //[_mapView removeAnnotations:oldVehicleAnnotations];
+    [oldVehicleAnnotations release];
 }
 
 -(void) updateUpcomingStops
@@ -694,8 +703,29 @@
 		if ([annView.annotation isKindOfClass:[ShuttleStopMapAnnotation class]]) 
 		{
 			[[annView superview] sendSubviewToBack:annView];
-		} else {
+		} else if ([annView.annotation isKindOfClass:[ShuttleLocation class]]) {
 			[[annView superview] bringSubviewToFront:annView];
+            
+            ShuttleLocation *locationAnnotation = (ShuttleLocation *)annView.annotation;
+            if (locationAnnotation.speed) {
+                
+                // TODO: get distance to move marker based on speed
+                CGFloat distance = 2.0;
+                // 0 is north, 90 is east
+                NSInteger headingInXYPlane = 90 - locationAnnotation.heading;
+                CGFloat radians = DEGREES_TO_RADIANS(headingInXYPlane);
+                CGFloat dy = -distance * sin(radians);
+                CGFloat dx = distance * cos(radians);
+                
+                NSLog(@"moving %d degrees, down %.1f pixels and right %.1f pixels", locationAnnotation.heading, dy, dx);
+                
+                [UIView beginAnimations:@"vehicle" context:NULL];
+                [UIView setAnimationDuration:2.0];
+                annView.frame = CGRectMake(annView.frame.origin.x + dx,
+                                           annView.frame.origin.y + dy,
+                                           annView.frame.size.width, annView.frame.size.height);
+                [UIView commitAnimations];
+            }
 		}
 	}
 	

@@ -105,18 +105,6 @@
 	self.routeStop.order = [NSNumber numberWithInt:order];
 }
 
-- (NSArray *)path
-{
-	NSData *pathData = self.routeStop.path;
-	return [NSKeyedUnarchiver unarchiveObjectWithData:pathData];
-}
-
-- (void)setPath:(NSArray *)path
-{
-	NSData *pathData = [NSKeyedArchiver archivedDataWithRootObject:path];
-	self.routeStop.path = pathData;
-}
-
 - (NSArray *)predictions
 {
     if (self.nextScheduled == 0) {
@@ -207,8 +195,8 @@
 		self.nextScheduled = [num unsignedLongValue];
 
 	NSArray *array = nil;
-	if ((array = [stopInfo objectForKey:@"path"]) != nil)
-		self.path = array;
+	//if ((array = [stopInfo objectForKey:@"path"]) != nil)
+	//	self.path = array;
     if ((array = [stopInfo objectForKey:@"predictions"]) != nil)
         self.predictions = array;
 	

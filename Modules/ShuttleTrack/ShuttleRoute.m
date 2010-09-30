@@ -28,10 +28,10 @@
 @dynamic title;
 @dynamic summary;
 @dynamic interval;
-@dynamic isSafeRide;
 @dynamic stops;
 @dynamic routeID;
 @dynamic sortOrder;
+@dynamic path;
 //@dynamic agency;
 
 @dynamic fullSummary;
@@ -87,15 +87,6 @@
 - (void)setInterval:(NSInteger)interval {
 	if (self.cache != nil)
 		self.cache.interval = [NSNumber numberWithInt:interval];
-}
-
-- (BOOL)isSafeRide {
-	return [self.cache.isSafeRide boolValue];
-}
-
-- (void)setIsSafeRide:(BOOL)isSafeRide {
-	if (self.cache != nil)
-		self.cache.isSafeRide = [NSNumber numberWithBool:isSafeRide];
 }
 
 - (NSMutableArray *)stops {
@@ -202,6 +193,18 @@
     self.cache.sortOrder = [NSNumber numberWithInt:order];
 }
 
+- (NSArray *)path
+{
+	NSData *pathData = self.cache.path;
+	return [NSKeyedUnarchiver unarchiveObjectWithData:pathData];
+}
+
+- (void)setPath:(NSArray *)path
+{
+	NSData *pathData = [NSKeyedArchiver archivedDataWithRootObject:path];
+	self.cache.path = pathData;
+}
+
 #pragma mark -
 
 - (void)updateInfo:(NSDictionary *)routeInfo
@@ -210,7 +213,6 @@
 	self.routeDescription = [routeInfo objectForKey:@"description"];
 	self.summary = [routeInfo objectForKey:@"summary"];
 	self.interval = [[routeInfo objectForKey:@"interval"] intValue];
-	self.isSafeRide = [[routeInfo objectForKey:@"isSafeRide"] boolValue];
 	self.agency = [routeInfo objectForKey:@"agency"];
 	self.color = [routeInfo objectForKey:@"color"];
 	self.genericUrlForMarker = [routeInfo objectForKey:@"genericIconUrl"];
@@ -229,10 +231,13 @@
 	self.tag = [routeInfo objectForKey:@"tag"];
 	self.gpsActive = [[routeInfo objectForKey:@"gpsActive"] boolValue];
 	self.isRunning = [[routeInfo objectForKey:@"isRunning"] boolValue];
+    
+    NSArray *array = nil;
+	if ((array = [routeInfo objectForKey:@"path"]) != nil)
+		self.path = array;
 	
-	NSArray *stops = nil;
-	if (stops = [routeInfo objectForKey:@"stops"]) {
-		self.stops = (NSMutableArray *)stops;
+    if ((array = [routeInfo objectForKey:@"stops"]) != nil) {
+		self.stops = (NSMutableArray *)array;
 		
 		NSArray *tempArray = [routeInfo objectForKey:@"stops"];
 		
@@ -243,14 +248,10 @@
 		}
 	}
 	
-	NSArray* vehicleLocations = [routeInfo objectForKey:@"vehicleLocations"];
-	if (nil != vehicleLocations && [NSNull null] != (id)vehicleLocations) 
-	{
-		//[_vehicleLocations release];
-		_vehicleLocations = nil;
+    if ((array = [routeInfo objectForKey:@"vehicleLocations"]) != nil) {
 		
-		NSMutableArray* formattedVehicleLocations = [[NSMutableArray alloc] initWithCapacity:vehicleLocations.count];
-		for (NSDictionary* dictionary in vehicleLocations) {
+		NSMutableArray* formattedVehicleLocations = [NSMutableArray arrayWithCapacity:array.count];
+		for (NSDictionary* dictionary in array) {
 			ShuttleLocation* shuttleLocation = [[[ShuttleLocation alloc] initWithDictionary:dictionary] autorelease];
 			[formattedVehicleLocations addObject:shuttleLocation];
 		}
@@ -301,15 +302,16 @@
 	
 	_pathLocations = [[NSMutableArray alloc] init];
 
-	for (ShuttleStop *stop in _stops) {
-		for(NSDictionary* pathComponent in stop.path) {
+	//for (ShuttleStop *stop in _stops) {
+	//	for(NSDictionary* pathComponent in stop.path) {
+		for(NSDictionary* pathComponent in self.path) {
 			CLLocation* location = [[[CLLocation alloc] initWithLatitude:[[pathComponent objectForKey:@"lat"] doubleValue]
 															   longitude:[[pathComponent objectForKey:@"lon"] doubleValue]
 									 ] autorelease];
 			
 			[_pathLocations addObject:location];
 		}
-	}	
+	//}	
 }
 
 - (id)initWithDictionary:(NSDictionary *)dict
@@ -344,7 +346,8 @@
 	self.cache = nil;
 	
 	[_stops release];
-	[_vehicleLocations release];	
+    self.vehicleLocations = nil;
+	//[_vehicleLocations release];	
 	[_pathLocations release];
 	[_stopAnnotations release];
 	

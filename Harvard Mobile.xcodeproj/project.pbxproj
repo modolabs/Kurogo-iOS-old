@@ -195,8 +195,6 @@
 		C76FBB9F123001CB00968920 /* ShuttleRouteStop.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = C76FBB98123001CB00968920 /* ShuttleRouteStop.h */; settings = {JAVA_ARCHIVE_SUBDIR = Modules/ShuttleTrack/Model; }; };
 		C76FBBA0123001CB00968920 /* ShuttleRouteCache.m in Sources */ = {isa = PBXBuildFile; fileRef = C76FBB99123001CB00968920 /* ShuttleRouteCache.m */; };
 		C76FBBA1123001CB00968920 /* ShuttleRouteCache.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = C76FBB9A123001CB00968920 /* ShuttleRouteCache.h */; settings = {JAVA_ARCHIVE_SUBDIR = Modules/ShuttleTrack/Model; }; };
-		C76FBBCA1230029800968920 /* ShuttleStopMapAnnotation.m in Sources */ = {isa = PBXBuildFile; fileRef = C76FBBC81230029800968920 /* ShuttleStopMapAnnotation.m */; };
-		C76FBBCB1230029800968920 /* ShuttleStopMapAnnotation.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = C76FBBC91230029800968920 /* ShuttleStopMapAnnotation.h */; settings = {JAVA_ARCHIVE_SUBDIR = "Modules/Campus Map"; }; };
 		C76FBBF5123006E900968920 /* home-shuttle@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C76FBBF3123006E900968920 /* home-shuttle@2x.png */; };
 		C76FBBF6123006E900968920 /* home-shuttle.png in Resources */ = {isa = PBXBuildFile; fileRef = C76FBBF4123006E900968920 /* home-shuttle.png */; };
 		C776675911F733E3005496DD /* DatePickerViewController.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = C776675711F733E3005496DD /* DatePickerViewController.h */; settings = {JAVA_ARCHIVE_SUBDIR = Modules/Calendar; }; };
@@ -505,6 +503,8 @@
 		EBAE92B8121D733200F370BE /* PersonDetails.m in Sources */ = {isa = PBXBuildFile; fileRef = EBAE92B6121D733200F370BE /* PersonDetails.m */; };
 		EBAE9401121DB1C700F370BE /* loading-animation in Resources */ = {isa = PBXBuildFile; fileRef = EBAE93FF121DB1C700F370BE /* loading-animation */; };
 		EBB61F3B1253ECBC0099A883 /* shuttles in Resources */ = {isa = PBXBuildFile; fileRef = EBB61F171253ECBC0099A883 /* shuttles */; };
+		EBB61F9F12540A180099A883 /* ShuttleStopMapAnnotation.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EBB61F9D12540A180099A883 /* ShuttleStopMapAnnotation.h */; settings = {JAVA_ARCHIVE_SUBDIR = Modules/ShuttleTrack; }; };
+		EBB61FA012540A180099A883 /* ShuttleStopMapAnnotation.m in Sources */ = {isa = PBXBuildFile; fileRef = EBB61F9E12540A180099A883 /* ShuttleStopMapAnnotation.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -734,8 +734,6 @@
 		C76FBB98123001CB00968920 /* ShuttleRouteStop.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ShuttleRouteStop.h; path = ShuttleTrack/Model/ShuttleRouteStop.h; sourceTree = "<group>"; };
 		C76FBB99123001CB00968920 /* ShuttleRouteCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ShuttleRouteCache.m; path = ShuttleTrack/Model/ShuttleRouteCache.m; sourceTree = "<group>"; };
 		C76FBB9A123001CB00968920 /* ShuttleRouteCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ShuttleRouteCache.h; path = ShuttleTrack/Model/ShuttleRouteCache.h; sourceTree = "<group>"; };
-		C76FBBC81230029800968920 /* ShuttleStopMapAnnotation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShuttleStopMapAnnotation.m; sourceTree = "<group>"; };
-		C76FBBC91230029800968920 /* ShuttleStopMapAnnotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShuttleStopMapAnnotation.h; sourceTree = "<group>"; };
 		C76FBBF3123006E900968920 /* home-shuttle@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "home-shuttle@2x.png"; path = "Resources/home/home-shuttle@2x.png"; sourceTree = "<group>"; };
 		C76FBBF4123006E900968920 /* home-shuttle.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "home-shuttle.png"; path = "Resources/home/home-shuttle.png"; sourceTree = "<group>"; };
 		C776675711F733E3005496DD /* DatePickerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DatePickerViewController.h; sourceTree = "<group>"; };
@@ -1090,6 +1088,8 @@
 		EBAE92B6121D733200F370BE /* PersonDetails.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PersonDetails.m; sourceTree = "<group>"; };
 		EBAE93FF121DB1C700F370BE /* loading-animation */ = {isa = PBXFileReference; lastKnownFileType = folder; name = "loading-animation"; path = "Resources/loading-animation"; sourceTree = "<group>"; };
 		EBB61F171253ECBC0099A883 /* shuttles */ = {isa = PBXFileReference; lastKnownFileType = folder; name = shuttles; path = Resources/shuttles; sourceTree = "<group>"; };
+		EBB61F9D12540A180099A883 /* ShuttleStopMapAnnotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ShuttleStopMapAnnotation.h; path = ShuttleTrack/ShuttleStopMapAnnotation.h; sourceTree = "<group>"; };
+		EBB61F9E12540A180099A883 /* ShuttleStopMapAnnotation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ShuttleStopMapAnnotation.m; path = ShuttleTrack/ShuttleStopMapAnnotation.m; sourceTree = "<group>"; };
 		EBCA123210CEF3C400577C5D /* PeopleSearchViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PeopleSearchViewController.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -1468,6 +1468,8 @@
 		C76FBB551230019400968920 /* ShuttleTrack */ = {
 			isa = PBXGroup;
 			children = (
+				EBB61F9D12540A180099A883 /* ShuttleStopMapAnnotation.h */,
+				EBB61F9E12540A180099A883 /* ShuttleStopMapAnnotation.m */,
 				C76FBB92123001AD00968920 /* Model */,
 				C76FBB56123001A600968920 /* ShuttleSubscriptionManager.m */,
 				C76FBB57123001A600968920 /* ShuttleSubscriptionManager.h */,
@@ -1596,8 +1598,6 @@
 		DE715446102FE468005E6111 /* Campus Map */ = {
 			isa = PBXGroup;
 			children = (
-				C76FBBC81230029800968920 /* ShuttleStopMapAnnotation.m */,
-				C76FBBC91230029800968920 /* ShuttleStopMapAnnotation.h */,
 				EB6D036911E3989100B65CE3 /* ArcGISServer */,
 				44C1A3C511A3388A000FD653 /* Selection */,
 				44C1A26011A2E865000FD653 /* Model */,
@@ -2152,7 +2152,6 @@
 				C76FBB9D123001CB00968920 /* ShuttleStopLocation.h in JavaArchive */,
 				C76FBB9F123001CB00968920 /* ShuttleRouteStop.h in JavaArchive */,
 				C76FBBA1123001CB00968920 /* ShuttleRouteCache.h in JavaArchive */,
-				C76FBBCB1230029800968920 /* ShuttleStopMapAnnotation.h in JavaArchive */,
 				C71D95801238037A009369C5 /* SampleViewClass.h in JavaArchive */,
 				C71D9B4B1243E054009369C5 /* ShuttlesMainViewController.h in JavaArchive */,
 				C71D9B941243EE55009369C5 /* ShuttlesTabViewControl.h in JavaArchive */,
@@ -2160,6 +2159,7 @@
 				C71DA7E4124A858C009369C5 /* AnnouncementWebViewController.h in JavaArchive */,
 				C7F74E14124D509400853674 /* ContactsTableViewController.h in JavaArchive */,
 				C7F750EC124EA60900853674 /* ContactsSystemDetailsViewController.h in JavaArchive */,
+				EBB61F9F12540A180099A883 /* ShuttleStopMapAnnotation.h in JavaArchive */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2591,7 +2591,6 @@
 				C76FBB9C123001CB00968920 /* ShuttleStopLocation.m in Sources */,
 				C76FBB9E123001CB00968920 /* ShuttleRouteStop.m in Sources */,
 				C76FBBA0123001CB00968920 /* ShuttleRouteCache.m in Sources */,
-				C76FBBCA1230029800968920 /* ShuttleStopMapAnnotation.m in Sources */,
 				C71D95811238037A009369C5 /* SampleViewClass.m in Sources */,
 				C71D9B4C1243E054009369C5 /* ShuttlesMainViewController.m in Sources */,
 				C71D9B951243EE55009369C5 /* ShuttlesTabViewControl.m in Sources */,
@@ -2599,6 +2598,7 @@
 				C71DA7E5124A858C009369C5 /* AnnouncementWebViewController.m in Sources */,
 				C7F74E15124D509400853674 /* ContactsTableViewController.m in Sources */,
 				C7F750ED124EA60900853674 /* ContactsSystemDetailsViewController.m in Sources */,
+				EBB61FA012540A180099A883 /* ShuttleStopMapAnnotation.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

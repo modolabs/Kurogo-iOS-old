@@ -4,7 +4,6 @@
 
 @implementation ShuttleRouteStop 
 
-@dynamic path;
 @dynamic order;
 @dynamic stopLocation;
 @dynamic route;

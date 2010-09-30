@@ -5,10 +5,10 @@
 
 @implementation ShuttleRouteCache 
 
+@dynamic path;
 @dynamic routeID;
 @dynamic title;
 @dynamic interval;
-@dynamic isSafeRide;
 @dynamic summary;
 @dynamic stops;
 @dynamic sortOrder;

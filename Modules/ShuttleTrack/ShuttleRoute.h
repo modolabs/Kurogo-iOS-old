@@ -54,8 +54,8 @@
 @property (readwrite, retain) NSString *summary;
 @property (nonatomic, retain) NSString *routeID;
 @property (assign) NSInteger interval;
-@property (assign) BOOL isSafeRide;
 @property (readwrite, retain) NSMutableArray *stops;
 @property (assign) NSInteger sortOrder;
+@property (readwrite, retain) NSArray *path;
 
 @end
