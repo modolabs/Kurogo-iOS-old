@@ -72,7 +72,7 @@
 								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 								<object class="NSCustomResource" key="IBUIImage">
 									<string key="NSClassName">NSImage</string>
-									<string key="NSResourceName">shuttle-secondary-scrim.png</string>
+									<string key="NSResourceName">shuttles/shuttle-secondary-scrim.png</string>
 								</object>
 							</object>
 							<object class="IBUIView" id="627825069">
@@ -171,18 +171,21 @@
 									<int key="NSColorSpace">3</int>
 									<bytes key="NSWhite">MC41AA</bytes>
 								</object>
-								<object class="NSCustomResource" key="IBUIHighlightedImage" id="552888888">
+								<object class="NSCustomResource" key="IBUIHighlightedImage">
 									<string key="NSClassName">NSImage</string>
 									<string key="NSResourceName">button-icon-reset-zoom.png</string>
 								</object>
-								<reference key="IBUINormalImage" ref="552888888"/>
+								<object class="NSCustomResource" key="IBUINormalImage">
+									<string key="NSClassName">NSImage</string>
+									<string key="NSResourceName">shuttles/button-icon-reset-zoom.png</string>
+								</object>
 								<object class="NSCustomResource" key="IBUIHighlightedBackgroundImage" id="76897282">
 									<string key="NSClassName">NSImage</string>
 									<string key="NSResourceName">scrim-button-background-highlighted.png</string>
 								</object>
-								<object class="NSCustomResource" key="IBUINormalBackgroundImage" id="1037014503">
+								<object class="NSCustomResource" key="IBUINormalBackgroundImage" id="754458350">
 									<string key="NSClassName">NSImage</string>
-									<string key="NSResourceName">scrim-button-background.png</string>
+									<string key="NSResourceName">shuttles/scrim-button-background.png</string>
 								</object>
 							</object>
 							<object class="IBUIView" id="453723823">
@@ -214,13 +217,16 @@
 									<bytes key="NSRGB">MC4xOTYwNzg0MyAwLjMwOTgwMzkzIDAuNTIxNTY4NjYAA</bytes>
 								</object>
 								<reference key="IBUINormalTitleShadowColor" ref="702716325"/>
-								<object class="NSCustomResource" key="IBUIHighlightedImage" id="227162199">
+								<object class="NSCustomResource" key="IBUIHighlightedImage">
 									<string key="NSClassName">NSImage</string>
 									<string key="NSResourceName">map_button_icon_locate.png</string>
 								</object>
-								<reference key="IBUINormalImage" ref="227162199"/>
+								<object class="NSCustomResource" key="IBUINormalImage">
+									<string key="NSClassName">NSImage</string>
+									<string key="NSResourceName">shuttles/map_button_icon_locate.png</string>
+								</object>
 								<reference key="IBUIHighlightedBackgroundImage" ref="76897282"/>
-								<reference key="IBUINormalBackgroundImage" ref="1037014503"/>
+								<reference key="IBUINormalBackgroundImage" ref="754458350"/>
 							</object>
 							<object class="IBUIView" id="693866761">
 								<reference key="NSNextResponder" ref="337768771"/>
@@ -251,11 +257,9 @@
 				<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 			</object>
 			<object class="IBUIView" id="869386797">
-				<reference key="NSNextResponder"/>
+				<nil key="NSNextResponder"/>
 				<int key="NSvFlags">292</int>
 				<string key="NSFrame">{{116, 209}, {320, 460}}</string>
-				<reference key="NSSuperview"/>
-				<reference key="NSWindow"/>
 				<object class="NSColor" key="IBUIBackgroundColor">
 					<int key="NSColorSpace">3</int>
 					<bytes key="NSWhite">MQA</bytes>
@@ -478,7 +482,7 @@
 					<bool key="EncodedWithXMLCoder">YES</bool>
 					<string>RouteMapViewController</string>
 					<string>UIResponder</string>
-					<string>{{1185, 262}, {320, 367}}</string>
+					<string>{{994, 262}, {320, 367}}</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<object class="NSAffineTransform"/>
@@ -880,16 +884,20 @@
 				<string>button-icon-reset-zoom.png</string>
 				<string>map_button_icon_locate.png</string>
 				<string>scrim-button-background-highlighted.png</string>
-				<string>scrim-button-background.png</string>
-				<string>shuttle-secondary-scrim.png</string>
+				<string>shuttles/button-icon-reset-zoom.png</string>
+				<string>shuttles/map_button_icon_locate.png</string>
+				<string>shuttles/scrim-button-background.png</string>
+				<string>shuttles/shuttle-secondary-scrim.png</string>
 			</object>
 			<object class="NSMutableArray" key="dict.values">
 				<bool key="EncodedWithXMLCoder">YES</bool>
 				<string>{22, 22}</string>
 				<string>{22, 22}</string>
 				<string>{32, 32}</string>
-				<string>{32, 32}</string>
-				<string>{320, 53}</string>
+				<string>{16, 16}</string>
+				<string>{16, 16}</string>
+				<string>{16, 16}</string>
+				<string>{16, 16}</string>
 			</object>
 		</object>
 		<string key="IBCocoaTouchPluginVersion">123</string>

@@ -518,7 +518,7 @@
 -(IBAction) refreshTouched:(id)sender
 {
 	//_gpsButton.style = UIBarButtonItemStyleBordered;
-	[_gpsButton setBackgroundImage:[UIImage imageNamed:@"shuttles/scrim-button-background"] forState:UIControlStateNormal];
+	[_gpsButton setBackgroundImage:[UIImage imageNamed:@"shuttles/scrim-button-background.png"] forState:UIControlStateNormal];
 	//_mapView.stayCenteredOnUserLocation = NO;
 	
 	[_mapView setRegion:[self regionForRoute]];
@@ -716,8 +716,6 @@
                 CGFloat radians = DEGREES_TO_RADIANS(headingInXYPlane);
                 CGFloat dy = -distance * sin(radians);
                 CGFloat dx = distance * cos(radians);
-                
-                NSLog(@"moving %d degrees, down %.1f pixels and right %.1f pixels", locationAnnotation.heading, dy, dx);
                 
                 [UIView beginAnimations:@"vehicle" context:NULL];
                 [UIView setAnimationDuration:2.0];
