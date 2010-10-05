@@ -302,16 +302,13 @@
 	
 	_pathLocations = [[NSMutableArray alloc] init];
 
-	//for (ShuttleStop *stop in _stops) {
-	//	for(NSDictionary* pathComponent in stop.path) {
-		for(NSDictionary* pathComponent in self.path) {
-			CLLocation* location = [[[CLLocation alloc] initWithLatitude:[[pathComponent objectForKey:@"lat"] doubleValue]
-															   longitude:[[pathComponent objectForKey:@"lon"] doubleValue]
-									 ] autorelease];
+    for(NSDictionary* pathComponent in self.path) {
+        CLLocation* location = [[[CLLocation alloc] initWithLatitude:[[pathComponent objectForKey:@"lat"] doubleValue]
+                                                           longitude:[[pathComponent objectForKey:@"lon"] doubleValue]
+                                 ] autorelease];
 			
-			[_pathLocations addObject:location];
-		}
-	//}	
+        [_pathLocations addObject:location];
+    }
 }
 
 - (id)initWithDictionary:(NSDictionary *)dict

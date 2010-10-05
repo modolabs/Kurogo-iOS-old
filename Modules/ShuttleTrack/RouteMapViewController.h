@@ -23,9 +23,10 @@
 	ShuttleRoute* _route;
 	
 	// extended info for the route. 
-	ShuttleRoute* _routeInfo;
+	//ShuttleRoute* _routeInfo;
 	
 	NSArray *_vehicleAnnotations;
+    NSArray *_oldVehicleAnnotations;
 	
 	// extended route info keyed by stop ID
 	NSMutableDictionary* _routeStops;
@@ -59,7 +60,7 @@
 }
 
 @property (nonatomic, retain) ShuttleRoute* route;
-@property (nonatomic, retain) ShuttleRoute* routeInfo;
+//@property (nonatomic, retain) ShuttleRoute* routeInfo;
 @property (nonatomic, assign) UIViewController* parentViewController;
 
 @property (readonly) MKMapView* mapView;

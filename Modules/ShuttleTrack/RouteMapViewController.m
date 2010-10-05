@@ -8,7 +8,7 @@
 #define DEGREES_TO_RADIANS(__ANGLE__) ((__ANGLE__) / 180.0 * M_PI)
 
 // calculated for google maps projection in harvard square vicinity
-#define NAUTICAL_MILES_PER_DEGREE_LATLON 12.013
+#define NAUTICAL_MILES_PER_DEGREE_LATLON 46.196
 
 @interface RouteMapViewController(Private)
 
@@ -30,7 +30,7 @@
 @implementation RouteMapViewController
 @synthesize mapView = _mapView;
 @synthesize route = _route;
-@synthesize routeInfo = _routeInfo;
+//@synthesize routeInfo = _routeInfo;
 @synthesize parentViewController = _MITParentViewController;
 
 @synthesize routeLine;
@@ -54,16 +54,6 @@
 	self.mapView.scrollEnabled = YES;
 	
 	hasNarrowedRegion = NO;
-	
-	//sampleView = [[SampleViewClass initWithRoute:self.route.pathLocations mapView:self.mapView] autorelease];
-	
-	//sampleView = [[SampleViewClass alloc] initWithRoute:self.route.pathLocations mapView:self.mapView];
-	//sampleView.userInteractionEnabled = NO;
-	//sampleView.lineColor = [UIColor colorWithHexString:(NSString *)self.route.color];
-	//[self.mapView addSubview:sampleView];
-	
-	
-	//self.mapView.shouldNotDropPins = YES;
 	
 	_largeStopImage = [[UIImage imageNamed:@"shuttles/map_pin_shuttle_stop_complete.png"] retain];
 	_largeUpcomingStopImage = [[UIImage imageNamed:@"shuttles/pin_shuttle_stop_complete_next.png"] retain];
@@ -289,11 +279,14 @@
 	self.routeLine = nil;
 	self.routeLineView = nil;*/
 }
+/*
 
 -(void) setRouteInfo:(ShuttleRoute *) shuttleRoute
 {
-	[_routeInfo release];
-	_routeInfo = [shuttleRoute retain];
+    if (_routeInfo != shuttleRoute) {
+        [_routeInfo release];
+        _routeInfo = [shuttleRoute retain];
+    }
 	
 	[_routeStops release];
 	_routeStops = [[NSMutableDictionary dictionaryWithCapacity:shuttleRoute.stops.count] retain];
@@ -317,10 +310,10 @@
 			//NSDate* nextScheduled = [NSDate dateWithTimeIntervalSince1970:stop.nextScheduled];
 			//NSTimeInterval intervalTillStop = [nextScheduled timeIntervalSinceDate:[NSDate date]];
 			
-			/*if (intervalTillStop > 0) {
-				NSString* subtitle = [NSString stringWithFormat:@"Arriving in %d minutes", (int)(intervalTillStop / 60)];
-				[annotation setSubtitle:subtitle];
-			}*/
+			//if (intervalTillStop > 0) {
+			//	NSString* subtitle = [NSString stringWithFormat:@"Arriving in %d minutes", (int)(intervalTillStop / 60)];
+			//	[annotation setSubtitle:subtitle];
+			//}
 			
 			if (stop.upcoming) {
 				NSString* subtitle = [NSString stringWithFormat:@"Arriving Next"];
@@ -338,6 +331,7 @@
 	// tell the map to refresh whatever its current callout is. 
 	//[_mapView refreshCallout];
 }
+*/
 
 -(MKCoordinateRegion) regionForRoute
 {
@@ -401,16 +395,22 @@
 
 -(void) addShuttles
 {
-	// make a copy since ShuttleRoute's vehicleLocations will be wiped out when it receives new data
-    NSArray *oldVehicleAnnotations = [_vehicleAnnotations copy];
-        
-	//[self removeShuttles];
-	_vehicleAnnotations = [[NSArray arrayWithArray:self.routeInfo.vehicleLocations] retain];
+    [_oldVehicleAnnotations release];
+    _oldVehicleAnnotations = [_vehicleAnnotations copy];
+    
+	_vehicleAnnotations = [[NSArray arrayWithArray:self.route.vehicleLocations] retain];
+    
+    // replace new annotations' starting coordinates with old annotations' ending coords
+    for (ShuttleLocation *anOldLocation in _oldVehicleAnnotations) {
+        for (ShuttleLocation *aNewLocation in _vehicleAnnotations) {
+            if (anOldLocation.vehicleId == aNewLocation.vehicleId) {
+                aNewLocation.coordinate = anOldLocation.endCoordinate;
+            }
+        }
+    }
+    
 	[_mapView addAnnotations:_vehicleAnnotations];
-
-    [_mapView performSelector:@selector(removeAnnotations:) withObject:oldVehicleAnnotations afterDelay:0.2];
-    //[_mapView removeAnnotations:oldVehicleAnnotations];
-    [oldVehicleAnnotations release];
+    [_mapView performSelector:@selector(removeAnnotations:) withObject:_oldVehicleAnnotations afterDelay:0.2];
 }
 
 -(void) updateUpcomingStops
@@ -419,9 +419,10 @@
 	{
 		ShuttleStop* stopInfo = [_routeStops objectForKey:annotation.shuttleStop.stopID];
 		
-		ShuttleRoute *info = self.routeInfo;
+		//ShuttleRoute *info = self.routeInfo;
 		//if (info.upcoming != annotation.shuttleStop.upcoming) 
-		if ([info.nextStopId isEqualToString:stopInfo.stopID])
+		//if ([info.nextStopId isEqualToString:stopInfo.stopID])
+		if ([self.route.nextStopId isEqualToString:stopInfo.stopID])
 		{
 			annotation.shuttleStop.upcoming = YES; //info.upcoming;
 			[self updateStopAnnotation:annotation];
@@ -622,7 +623,7 @@
 		UIImageView* imageView = [[[UIImageView alloc] initWithImage:pin] autorelease];
 		
 		BOOL upComing = NO;
-		if ([((ShuttleStopMapAnnotation *)annotation).shuttleStop.stopID isEqualToString:self.routeInfo.nextStopId]) {
+		if ([((ShuttleStopMapAnnotation *)annotation).shuttleStop.stopID isEqualToString:self.route.nextStopId]) {
 			upComing = YES;
 		}
 		
@@ -643,7 +644,8 @@
 		annotationView.rightCalloutAccessoryView = myDetailButton;
 		
 		annotationView.frame = imageView.frame;
-		NSURL *url = [NSURL URLWithString:self.routeInfo.urlForStopMarker];
+		//NSURL *url = [NSURL URLWithString:self.routeInfo.urlForStopMarker];
+		NSURL *url = [NSURL URLWithString:self.route.urlForStopMarker];
 		NSData *data = [NSData dataWithContentsOfURL:url];
 		UIImage *stop = [[UIImage alloc] initWithData:data];
 		UIImageView* stopView = [[[UIImageView alloc] initWithImage:stop] autorelease];
@@ -707,15 +709,43 @@
 			[[annView superview] bringSubviewToFront:annView];
             
             ShuttleLocation *locationAnnotation = (ShuttleLocation *)annView.annotation;
+            
+            CGPoint startPoint = [mapView convertCoordinate:locationAnnotation.coordinate toPointToView:nil];
+            CGPoint endPoint = [mapView convertCoordinate:locationAnnotation.endCoordinate toPointToView:nil];
+            CGFloat dx = round(endPoint.x - startPoint.x);
+            CGFloat dy = round(endPoint.y - startPoint.y);
+
+            
+            if (fabs(dx) + fabs(dy) > 0) {
+                NSLog(@"vehicle %d dx: %.1f, dy: %.1f", locationAnnotation.vehicleId, dx, dy);
+                
+                [UIView beginAnimations:@"vehicle" context:NULL];
+                [UIView setAnimationDuration:2.0];
+                annView.frame = CGRectMake(annView.frame.origin.x + dx,
+                                           annView.frame.origin.y + dy,
+                                           annView.frame.size.width, annView.frame.size.height);
+                [UIView commitAnimations];
+            }       
+            
+            /*
             if (locationAnnotation.speed) {
                 
-                // TODO: get distance to move marker based on speed
-                CGFloat distance = 2.0;
+                CGFloat distanceIn2Seconds = locationAnnotation.speed / (3600 / 2); // in nautical miles
+
+                // create a coordinate x nautical miles away irrelevant of direction
+                CLLocationCoordinate2D coordSameDistanceAway = CLLocationCoordinate2DMake(locationAnnotation.coordinate.latitude,
+                                                                                          locationAnnotation.coordinate.longitude + distanceIn2Seconds / NAUTICAL_MILES_PER_DEGREE_LATLON);
+                CGPoint startPoint = [mapView convertCoordinate:locationAnnotation.coordinate toPointToView:nil];
+                CGPoint endPoint = [mapView convertCoordinate:coordSameDistanceAway toPointToView:nil];
+                CGFloat distance = fabs(startPoint.x - endPoint.x);
+                NSLog(@"distance in pixels: %.1f", distance);
+                
                 // 0 is north, 90 is east
                 NSInteger headingInXYPlane = 90 - locationAnnotation.heading;
                 CGFloat radians = DEGREES_TO_RADIANS(headingInXYPlane);
-                CGFloat dy = -distance * sin(radians);
-                CGFloat dx = distance * cos(radians);
+                CGFloat dy = round(-distance * sin(radians));
+                CGFloat dx = round(distance * cos(radians));
+                NSLog(@"dx: %.1f, dy: %.1f", dx, dy);
                 
                 [UIView beginAnimations:@"vehicle" context:NULL];
                 [UIView setAnimationDuration:2.0];
@@ -724,6 +754,8 @@
                                            annView.frame.size.width, annView.frame.size.height);
                 [UIView commitAnimations];
             }
+            */
+
 		}
 	}
 	
@@ -775,7 +807,8 @@
 		
 		//[self removeShuttles];
 		
-		self.routeInfo = shuttleRoute;
+		//self.routeInfo = shuttleRoute;
+        self.route = shuttleRoute;
 		
 		//if (![self.mapView.routes count]) {
 		//	[self.mapView addRoute:self.route];

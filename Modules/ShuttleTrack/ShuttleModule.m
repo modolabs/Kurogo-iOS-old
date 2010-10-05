@@ -12,7 +12,7 @@
     if (self != nil) {
         self.tag = ShuttleTag;
         self.shortName = @"Shuttles";
-        self.longName = @"ShuttleTrack";
+        self.longName = @"ShuttleTracker";
         self.iconName = @"shuttle";
         self.pushNotificationSupported = YES;
 		

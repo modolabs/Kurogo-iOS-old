@@ -8,13 +8,15 @@
 
 #import <UIKit/UIKit.h>
 #import "ContactsSystemDetailsViewController.h"
+#import "JSONAPIRequest.h"
 
 @class ContactsSystemDetailsViewController;
 
-@interface ContactsTableViewController : UITableViewController {
+@interface ContactsTableViewController : UITableViewController <JSONAPIDelegate> {
 
 	UINavigationController *parentViewController;
 	ContactsSystemDetailsViewController *detailsViewController;
+    NSMutableDictionary *aboutSystemText;
 }
 
 @property (nonatomic, retain) UINavigationController *parentViewController;

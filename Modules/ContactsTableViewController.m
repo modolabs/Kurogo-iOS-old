@@ -8,7 +8,7 @@
 
 #import "ContactsTableViewController.h"
 #import "MITUIConstants.h"
-
+#import "JSONAPIRequest.h"
 
 @implementation ContactsTableViewController
 @synthesize parentViewController;
@@ -17,7 +17,6 @@
 
 #pragma mark -
 #pragma mark Initialization
-
 
 -(NSArray *)getEmergencyPhoneNumbers{
 	return [NSArray arrayWithObjects:@"617-495-1212", @"617-495-5711", nil];
@@ -37,12 +36,15 @@
 }
 
 -(NSArray *)getShuttleServicePhoneNumbersText{
-	return [NSArray arrayWithObjects:@"Shuttle Bus and Van Services", @"Parking Service", @"Commute Choice", @"MAP", @"M2 Shuttle", nil];
+	return [NSArray arrayWithObjects:@"Shuttle Bus and Van Services", @"Parking Service", @"Commute Choice", @"Motorist Assistance Program", @"M2 Shuttle", nil];
 }
 
+static NSString const * kAboutHarvardShuttles = @"About Harvard Shuttles";
+static NSString const * kAboutMASCOShuttles = @"About MASCO Shuttles";
+static NSString const * kShuttlesCalendar = @"Shuttles Calendar";
+
 -(NSArray *)getSystemArrayPhoneNumbersText {
-	return [NSArray arrayWithObjects:@"About Harvard Shuttles", @"About MASCO Shuttles", @"2010-2011 Shuttles Calendar", nil];
-	
+	return [NSArray arrayWithObjects:kAboutHarvardShuttles, kAboutMASCOShuttles, kShuttlesCalendar, nil];
 }
 
 
@@ -56,6 +58,7 @@
 	[self.tableView applyStandardColors];
 	
 	detailsViewController = [[ContactsSystemDetailsViewController alloc] init];
+    aboutSystemText = [[NSMutableDictionary alloc] initWithCapacity:3];
 
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
@@ -182,6 +185,27 @@
 	switch (indexPath.section) {
 		case 0:
 			phoneNumber = nil;
+            NSString *key = [[self getSystemArrayPhoneNumbersText] objectAtIndex:indexPath.row];
+            NSString *htmlString = [aboutSystemText objectForKey:key];
+            if (htmlString == nil) {
+                JSONAPIRequest *request = [JSONAPIRequest requestWithJSONAPIDelegate:self];
+                request.userData = key;
+                if (key == kAboutHarvardShuttles) {
+                    [request requestObjectFromModule:@"shuttles" command:@"about"
+                                          parameters:[NSDictionary dictionaryWithObjectsAndKeys:@"harvard", @"agency", nil]];
+                }
+                else if (key == kAboutMASCOShuttles) {
+                    [request requestObjectFromModule:@"shuttles" command:@"about"
+                                          parameters:[NSDictionary dictionaryWithObjectsAndKeys:@"masco", @"agency", nil]];
+                }
+                else if (key == kShuttlesCalendar) {
+                    [request requestObjectFromModule:@"shuttles" command:@"calendar" parameters:nil];
+                }
+            }
+            else {
+                detailsViewController.detailsString = htmlString;
+            }
+            detailsViewController.titleString = key;
 			[self.parentViewController pushViewController:detailsViewController animated:YES];	
 			break;
 		case 1:
@@ -197,6 +221,22 @@
 		if ([[UIApplication sharedApplication] canOpenURL:externURL])
 			[[UIApplication sharedApplication] openURL:externURL];
 	}
+}
+
+#pragma mark JSONAPIRequest
+
+- (BOOL)request:(JSONAPIRequest *)request shouldDisplayAlertForError:(NSError *)error {
+    return TRUE;
+}
+
+- (void)request:(JSONAPIRequest *)request jsonLoaded: (id)JSONObject {
+    [aboutSystemText setObject:[JSONObject objectForKey:@"html"] forKey:request.userData];
+
+    if ([detailsViewController.titleString isEqualToString:request.userData]
+        && [JSONObject isKindOfClass:[NSDictionary class]])
+    {
+        detailsViewController.detailsString = [JSONObject objectForKey:@"html"];
+    }
 }
 
 
@@ -217,6 +257,9 @@
 
 
 - (void)dealloc {
+    parentViewController = nil;
+    [aboutSystemText release];
+    [detailsViewController release];
     [super dealloc];
 }
 

@@ -11,9 +11,9 @@
 
 @interface ContactsSystemDetailsViewController : UIViewController {
 
-	UIView *systemTextDetailsView;
+	UIWebView *systemTextDetailsView;
 	NSString *titleString;	
-	NSString *detailsString;
+	NSString *_detailsString;
 }
 
 @property (nonatomic, retain) NSString * titleString;
