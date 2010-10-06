@@ -80,10 +80,10 @@
 								<int key="NSvFlags">292</int>
 								<object class="NSMutableArray" key="NSSubviews">
 									<bool key="EncodedWithXMLCoder">YES</bool>
-									<object class="IBUILabel" id="839197105">
+									<object class="IBUILabel" id="997408499">
 										<reference key="NSNextResponder" ref="627825069"/>
 										<int key="NSvFlags">292</int>
-										<string key="NSFrameSize">{207, 22}</string>
+										<string key="NSFrame">{{0, 21}, {230, 21}}</string>
 										<reference key="NSSuperview" ref="627825069"/>
 										<object class="NSColor" key="IBUIBackgroundColor" id="605467040">
 											<int key="NSColorSpace">3</int>
@@ -93,10 +93,10 @@
 										<bool key="IBUIClipsSubviews">YES</bool>
 										<bool key="IBUIUserInteractionEnabled">NO</bool>
 										<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
-										<string key="IBUIText">Route Name</string>
+										<string key="IBUIText">GPS Status</string>
 										<object class="NSFont" key="IBUIFont">
-											<string key="NSName">Helvetica-Bold</string>
-											<double key="NSSize">18</double>
+											<string key="NSName">Helvetica</string>
+											<double key="NSSize">13</double>
 											<int key="NSfFlags">16</int>
 										</object>
 										<object class="NSColor" key="IBUITextColor" id="516820320">
@@ -108,20 +108,20 @@
 										<bool key="IBUIAdjustsFontSizeToFit">NO</bool>
 										<float key="IBUIMinimumFontSize">10</float>
 									</object>
-									<object class="IBUILabel" id="997408499">
+									<object class="IBUILabel" id="839197105">
 										<reference key="NSNextResponder" ref="627825069"/>
 										<int key="NSvFlags">292</int>
-										<string key="NSFrame">{{0, 19}, {230, 21}}</string>
+										<string key="NSFrameSize">{216, 22}</string>
 										<reference key="NSSuperview" ref="627825069"/>
 										<reference key="IBUIBackgroundColor" ref="605467040"/>
 										<bool key="IBUIOpaque">NO</bool>
 										<bool key="IBUIClipsSubviews">YES</bool>
 										<bool key="IBUIUserInteractionEnabled">NO</bool>
 										<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
-										<string key="IBUIText">GPS Status</string>
+										<string key="IBUIText">Route Name</string>
 										<object class="NSFont" key="IBUIFont">
-											<string key="NSName">Helvetica</string>
-											<double key="NSSize">13</double>
+											<string key="NSName">Helvetica-Bold</string>
+											<double key="NSSize">18</double>
 											<int key="NSfFlags">16</int>
 										</object>
 										<reference key="IBUITextColor" ref="516820320"/>
@@ -131,7 +131,7 @@
 										<float key="IBUIMinimumFontSize">10</float>
 									</object>
 								</object>
-								<string key="NSFrame">{{10, 5}, {217, 40}}</string>
+								<string key="NSFrame">{{10, 5}, {216, 40}}</string>
 								<reference key="NSSuperview" ref="337768771"/>
 								<object class="NSColor" key="IBUIBackgroundColor">
 									<int key="NSColorSpace">3</int>
@@ -398,8 +398,8 @@
 						<reference key="object" ref="627825069"/>
 						<object class="NSMutableArray" key="children">
 							<bool key="EncodedWithXMLCoder">YES</bool>
-							<reference ref="997408499"/>
 							<reference ref="839197105"/>
+							<reference ref="997408499"/>
 						</object>
 						<reference key="parent" ref="337768771"/>
 					</object>
@@ -464,6 +464,7 @@
 					<string>29.IBViewBoundsToFrameTransform</string>
 					<string>30.IBPluginDependency</string>
 					<string>31.IBPluginDependency</string>
+					<string>31.IBViewBoundsToFrameTransform</string>
 					<string>32.IBPluginDependency</string>
 					<string>33.IBPluginDependency</string>
 					<string>34.IBPluginDependency</string>
@@ -490,6 +491,9 @@
 					<object class="NSAffineTransform"/>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
+					<object class="NSAffineTransform">
+						<bytes key="NSTransformStruct">AQAAAABBqAAAA</bytes>
+					</object>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>

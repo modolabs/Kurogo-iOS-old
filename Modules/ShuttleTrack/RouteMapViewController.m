@@ -197,7 +197,7 @@
 
 -(void)refreshRouteTitleInfo {
 	_routeTitleLabel.text = _route.title;
-	_routeTitleLabel.font = [UIFont fontWithName:CONTENT_TITLE_FONT size:CONTENT_TITLE_FONT_SIZE];
+	_routeTitleLabel.font = [UIFont fontWithName:CONTENT_TITLE_FONT size:CONTENT_TITLE_FONT_SIZE - 1];
 	_routeStatusLabel.text = [_route trackingStatus];    
 }
 
@@ -379,8 +379,8 @@
 	center.latitude = minLat + (maxLat - minLat) / 2;
 	center.longitude = minLon + (maxLon - minLon) / 2;
 	
-	double latDelta = maxLat - minLat;
-	double lonDelta = maxLon - minLon; 
+	double latDelta = maxLat - minLat + 0.0001;
+	double lonDelta = maxLon - minLon + 0.0001;
 	
 	//MKCoordinateSpan span = MKCoordinateSpanMake(latDelta + latDelta / 4, lonDelta + lonDelta / 4);
 	//MKCoordinateSpan span = MKCoordinateSpanMake(latDelta, 1.1*lonDelta);
@@ -452,33 +452,7 @@
 
 -(void) updateStopAnnotation:(ShuttleStopMapAnnotation*)annotation
 {
-	//UIImage* image = nil;
 	[self.mapView addAnnotation:annotation];
-
-	//MKAnnotationView * annotationView = [_mapView viewForAnnotation:annotation];	
-	
-	
-    /*
-	 // determine which image to use for this annotation. If our map is above 2.0, use the big one
-	 if (_mapView.zoomLevel >= 2.0) {
-	 image = annotation.shuttleStop.upcoming ? _largeUpcomingStopImage : _largeStopImage;
-	 annotationView.layer.anchorPoint = CGPointMake(0.5, 1.0);
-	 }
-	 else 
-	 {
-	 annotationView.layer.anchorPoint = CGPointMake(0.5, 0.5);
-	 image = annotation.shuttleStop.upcoming ? _smallUpcomingStopImage : _smallStopImage;
-	 }
-	 */
-	
-	
-	/*UIImageView* imageView = [annotationView.subviews objectAtIndex:0];
-	 imageView.image = image;
-	 imageView.frame = CGRectMake(0, 0, image.size.width, image.size.height);
-	 annotationView.frame = imageView.frame;*/
-	
-	//[_mapView positionAnnotationView:annotationView];
-	
 }
 
 #pragma mark User actions
@@ -568,66 +542,6 @@
 	
 	return overlayView;
 	
-}
-
-
-
-
-- (void)mapViewRegionWillChangeAnimated:(MKMapView *)mapView
-{
-	//[sampleView hideFromView];
-	//_gpsButton.style = _mapView.stayCenteredOnUserLocation ? UIBarButtonItemStyleDone : UIBarButtonItemStyleBordered;
-	//NSString *bgImageName = [NSString stringWithFormat:@"scrim-button-background%@.png", _mapView.stayCenteredOnUserLocation ? @"-highlighted" : @""];
-	//[_gpsButton setBackgroundImage:[UIImage imageNamed:bgImageName] forState:UIControlStateNormal];
-}
-
-- (void)mapView:(MKMapView *)mapView regionDidChangeAnimated:(BOOL)animated {
-
-	//[sampleView setNeedsDisplay];
-	//[sampleView showView];
-}
-
-
-- (void)mapView:(MKMapView *)mapView regionWillChangeAnimated:(BOOL)animated
-{
-
-	//[sampleView hideFromView];
-}
-
-- (void)mapViewRegionDidChangeAnimated:(MKMapView *)mapView
-{
-	//NSString *bgImageName = [NSString stringWithFormat:@"scrim-button-background%@.png", _mapView.stayCenteredOnUserLocation ? @"-highlighted" : @""];
-	//[_gpsButton setBackgroundImage:[UIImage imageNamed:bgImageName] forState:UIControlStateNormal];
-	//_gpsButton.style = _mapView.stayCenteredOnUserLocation ? UIBarButtonItemStyleDone : UIBarButtonItemStyleBordered;
-	/*
-	 CGFloat newZoomLevel = mapView.zoomLevel;
-	 
-	 if (newZoomLevel != _lastZoomLevel)
-	 {
-	 if ((newZoomLevel >= 2.0 && _lastZoomLevel < 2.0 )||
-	 (newZoomLevel < 2.0 && _lastZoomLevel >= 2.0)) 
-	 {
-	 
-	 for (ShuttleStopMapAnnotation* stop in _route.annotations) 
-	 {
-	 [self updateStopAnnotation:stop];
-	 }
-	 
-	 }
-	 }
-	 _lastZoomLevel = mapView.zoomLevel;
-     */
-
-	//sampleView.hidden = YES;
-}
-
-
--(void) locateUserFailed
-{
-	//if (_mapView.stayCenteredOnUserLocation) 
-	//{
-	//	[_gpsButton setBackgroundImage:[UIImage imageNamed:@"scrim-button-background.png"] forState:UIControlStateNormal];
-	//}	
 }
 
 - (MKAnnotationView *)mapView:(MKMapView *)mapView viewForAnnotation:(id <MKAnnotation>)annotation

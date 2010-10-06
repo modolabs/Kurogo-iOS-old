@@ -65,7 +65,9 @@
     [url setPath:[NSString stringWithFormat:@"route-list/%@", self.route.routeID] query:nil];
     
     [_titleCell setRouteInfo:self.route];
-	_titleCell.routeTitleLabel.font = [UIFont fontWithName:CONTENT_TITLE_FONT size:CONTENT_TITLE_FONT_SIZE];
+    
+    // TODO: create a new style for this slightly smaller-than-content-title font
+	_titleCell.routeTitleLabel.font = [UIFont fontWithName:CONTENT_TITLE_FONT size:CONTENT_TITLE_FONT_SIZE - 1];
 	self.view.backgroundColor = [UIColor clearColor];
 	_titleCell.frame = CGRectMake(_titleCell.frame.origin.x, _titleCell.frame.origin.y, _titleCell.frame.size.width, [_titleCell heightForCellWithRoute:self.route]);
     [self.view addSubview:_titleCell];
