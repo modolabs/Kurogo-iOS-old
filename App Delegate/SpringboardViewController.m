@@ -15,8 +15,13 @@
 #import "ModoSearchBar.h"
 #import "MITSearchDisplayController.h"
 
-// horizontal spacing between icons
-#define GRID_HPADDING 17.0f
+// horizontal spacing between main icons
+// 17.0 for three icons per row
+#define MAIN_GRID_HPADDING 0.0f
+
+// horizontal spacing between secondary icons
+// 17.0 for four icons per row
+#define SECONDARY_GRID_HPADDING 17.0f
 
 // vertical spacing between icons
 #define GRID_VPADDING 24.0f
@@ -47,7 +52,7 @@
     return self;
 }
 
-- (void)layoutIcons:(NSArray *)icons {
+- (void)layoutIcons:(NSArray *)icons horizontalSpacing:(CGFloat)spacing {
     
     CGSize viewSize = containingView.frame.size;
     
@@ -55,27 +60,28 @@
     SpringboardIcon *anIcon = [icons objectAtIndex:0];
     CGSize iconSize = anIcon.frame.size;
 
-    NSInteger iconsPerRow = (int)floor((viewSize.width - GRID_HPADDING) / (iconSize.width + GRID_HPADDING));
+    NSInteger iconsPerRow = (int)floor((viewSize.width - spacing) / (iconSize.width + spacing));
     div_t result = div([icons count], iconsPerRow);
     NSInteger numRows = (result.rem == 0) ? result.quot : result.quot + 1;
     CGFloat rowHeight = anIcon.frame.size.height + GRID_VPADDING;
 
     if ((rowHeight + GRID_VPADDING) * numRows > viewSize.height - GRID_VPADDING) {
         iconsPerRow++;
-        CGFloat iconWidth = floor((viewSize.width - GRID_HPADDING) / iconsPerRow) - GRID_HPADDING;
+        CGFloat iconWidth = floor((viewSize.width - spacing) / iconsPerRow) - spacing;
         iconSize.height = floor(iconSize.height * (iconWidth / iconSize.width));
         iconSize.width = iconWidth;
     }
     
     // calculate xOrigin to keep icons centered
-    CGFloat xOriginInitial = (viewSize.width - ((iconSize.width + GRID_HPADDING) * iconsPerRow - GRID_HPADDING)) / 2;
+    CGFloat xOriginInitial = floor((viewSize.width - ((iconSize.width + spacing) * iconsPerRow - spacing)) / 2);
     CGFloat xOrigin = xOriginInitial;
     
     for (anIcon in icons) {
         anIcon.frame = CGRectMake(xOrigin, bottomRight.y, iconSize.width, iconSize.height);
         
-        xOrigin += anIcon.frame.size.width + GRID_HPADDING;
-        if (xOrigin + anIcon.frame.size.width + GRID_HPADDING >= viewSize.width) {
+        NSLog(@"xorigin: %.1f, modified xorigin:%.1f", xOrigin, xOrigin + anIcon.frame.size.width + spacing);
+        xOrigin += anIcon.frame.size.width + spacing;
+        if (xOrigin + anIcon.frame.size.width + spacing > viewSize.width) {
             xOrigin = xOriginInitial;
             bottomRight.y += anIcon.frame.size.height + GRID_VPADDING;
         }
@@ -129,7 +135,7 @@
             }
             
             anIcon.frame = CGRectMake(0, 0, image.size.width + ICON_PADDING * 2, image.size.height + ICON_LABEL_HEIGHT);
-            anIcon.imageEdgeInsets = UIEdgeInsetsMake(0, ICON_PADDING, ICON_LABEL_HEIGHT, ICON_PADDING);
+            anIcon.imageEdgeInsets = UIEdgeInsetsMake(ICON_PADDING, ICON_PADDING, ICON_LABEL_HEIGHT, ICON_PADDING);
             
             [anIcon setImage:image forState:UIControlStateNormal];
 
@@ -176,8 +182,8 @@
 
     bottomRight = CGPointZero;
     bottomRight.y = _searchBar.frame.size.height + GRID_VPADDING;
-    [self layoutIcons:_icons];
-    [self layoutIcons:_fixedIcons];
+    [self layoutIcons:_icons horizontalSpacing:MAIN_GRID_HPADDING];
+    [self layoutIcons:_fixedIcons horizontalSpacing:SECONDARY_GRID_HPADDING];
     
     [self setupSearchController];
 }

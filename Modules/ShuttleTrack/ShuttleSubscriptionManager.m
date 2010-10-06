@@ -149,7 +149,7 @@
 	}
 }
 
-- (void)handleConnectionFailureForRequest:(JSONAPIRequest *)request {
+- (void)request:(JSONAPIRequest *)request handleConnectionError:(NSError *)error {
 	[delegate subscriptionFailedWithObject:object];
 }
 
@@ -180,7 +180,7 @@
 	[delegate subscriptionSucceededWithObject:object];
 }
 
-- (void)handleConnectionFailureForRequest:(JSONAPIRequest *)request {
+- (void)request:(JSONAPIRequest *)request handleConnectionError:(NSError *)error {
 	[delegate subscriptionFailedWithObject:object];
 }
 

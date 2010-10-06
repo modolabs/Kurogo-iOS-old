@@ -41,7 +41,7 @@
     BOOL editing;
 }
 
-- (void)layoutIcons:(NSArray *)icons;
+- (void)layoutIcons:(NSArray *)icons horizontalSpacing:(CGFloat)spacing;
 - (void)searchAllModules;
 
 @property (nonatomic, retain) UITableView *searchResultsTableView;

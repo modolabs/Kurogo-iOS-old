@@ -25,6 +25,8 @@
 
 -(MKCoordinateRegion) regionForRoute;
 
+- (void)addTranslocLogo;
+
 @end
 
 @implementation RouteMapViewController
@@ -108,18 +110,26 @@
 	[self.mapView setShowsUserLocation:YES];
 	self.mapView.hidden = YES;
 	
-	
-	
-	UIImage *im = [[UIImage imageNamed:@"shuttles/shuttle-transloc.png"] retain];
-	UIImageView * logoImView = [[[UIImageView alloc] initWithImage:im] retain];
+    logoView = nil;
+}
 
-	logoView = [[UIView alloc] initWithFrame:CGRectMake(240, 335, logoImView.frame.size.width, logoImView.frame.size.height)];
-	logoView.backgroundColor = [UIColor clearColor];
-	[logoView addSubview:logoImView];
-	[self.view addSubview:logoView];
+- (void)addTranslocLogo
+{
+    if (logoView == nil) {
+        UIImage *im = [[UIImage imageNamed:@"shuttles/shuttle-transloc.png"] retain];
+        UIImageView * logoImView = [[[UIImageView alloc] initWithImage:im] retain];
+        logoView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, logoImView.frame.size.width, logoImView.frame.size.height)];
+        logoView.backgroundColor = [UIColor clearColor];
+        [logoView addSubview:logoImView];
+        [self.view addSubview:logoView];
+    }
+    
+    CGPoint logoOrigin = CGPointMake(self.view.frame.size.width - logoView.frame.size.width - 10,
+                                     self.view.frame.size.height - logoView.frame.size.height - 10);
+    
+    logoView.frame = CGRectMake(logoOrigin.x, logoOrigin.y, logoView.frame.size.width, logoView.frame.size.height);
+
 	[self.view bringSubviewToFront:logoView];
-	
-	
 }
 
 -(void)narrowRegion {
@@ -188,7 +198,7 @@
 -(void)refreshRouteTitleInfo {
 	_routeTitleLabel.text = _route.title;
 	_routeTitleLabel.font = [UIFont fontWithName:CONTENT_TITLE_FONT size:CONTENT_TITLE_FONT_SIZE];
-	_routeStatusLabel.text = [_route trackingStatus];
+	_routeStatusLabel.text = [_route trackingStatus];    
 }
 
 -(void)viewWillDisappear:(BOOL)animated
@@ -209,13 +219,14 @@
 	
 	// make sure its registered. 
 	[[ShuttleDataManager sharedDataManager] registerDelegate:self];
-	
+    
 	// start polling for new vehicle locations every 10 seconds. 
 	_pollingTimer = [[NSTimer scheduledTimerWithTimeInterval:2
 													  target:self 
 													selector:@selector(pollShuttleLocations)
 													userInfo:nil 
 													 repeats:YES] retain];
+    
 }
 
 -(void) viewDidAppear:(BOOL)animated
@@ -245,7 +256,10 @@
 	[_gpsButton release];
 	[_routeTitleLabel release];
 	[_routeStatusLabel release];
-	
+    [logoView release];
+    
+    [ShuttleLocation clearAllMarkerImages];
+    
 	self.route = nil;
 	//self.routeInfo = nil;
 	self.parentViewController = nil;
@@ -259,6 +273,9 @@
 
 -(void) viewDidUnload
 {
+    [logoView release];
+    logoView = nil;
+    
 	[super viewDidUnload];
 	
 	/*[_smallStopImage release];
@@ -395,6 +412,7 @@
 
 -(void) addShuttles
 {
+    
     [_oldVehicleAnnotations release];
     _oldVehicleAnnotations = [_vehicleAnnotations copy];
     
@@ -656,40 +674,21 @@
 	else if([annotation isKindOfClass:[ShuttleLocation class]])
 	{
 		ShuttleLocation* shuttleLocation = (ShuttleLocation*) annotation;
-		
-		annotationView = [[[MKAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:@"asdf"] autorelease];
-		UIImage* pin = [UIImage imageNamed:@"shuttles/shuttle-bus-location.png"];
-		UIImageView* imageView = [[[UIImageView alloc] initWithImage:pin] autorelease];
-		
-		UIImage* arrow = [UIImage imageNamed:@"shuttles/shuttle-bus-location-arrow.png"];
-		UIImageView* arrowImageView = [[[UIImageView alloc] initWithImage:arrow] autorelease];
-		
-		CGAffineTransform cgCTM = CGAffineTransformMakeRotation(DEGREES_TO_RADIANS(shuttleLocation.heading));
-		arrowImageView.frame = CGRectMake(9, 10, arrowImageView.frame.size.width, arrowImageView.frame.size.height);
-		//CGFloat verticalAnchor = (arrowImageView.frame.size.height / 2 + 1.5) / arrowImageView.frame.size.height;
-		//arrowImageView.layer.anchorPoint = CGPointMake(0.5, verticalAnchor);
-		arrowImageView.transform = cgCTM;
-		
-		annotationView.frame = imageView.frame;
-		annotationView.canShowCallout = NO;
-		//[annotationView addSubview:imageView];
-		//[annotationView addSubview:arrowImageView];
-		
-		NSURL *url = [NSURL URLWithString:shuttleLocation.iconURL];
-		NSData *data = [NSData dataWithContentsOfURL:url];
-		UIImage *marker = [[UIImage alloc] initWithData:data];
-		UIImageView* markerView = [[[UIImageView alloc] initWithImage:marker] autorelease];
-		
-		markerView.frame = CGRectMake(markerView.frame.origin.x + 7, markerView.frame.origin.y - 7, markerView.frame.size.width, markerView.frame.size.height);
-							
-		[annotationView addSubview:markerView];
-		[[annotationView superview] bringSubviewToFront:annotationView];
-		
-		//annotationView.backgroundColor = [UIColor clearColor];
-		
-		
-		//annotationView.alreadyOnMap = YES;
-		//annotationView.layer.anchorPoint = CGPointMake(0.5, 1.0);
+
+        UIImage *marker = [shuttleLocation image];
+		if (marker != nil) {
+            annotationView = [[[MKAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:@"asdf"] autorelease];
+            UIImageView* markerView = [[[UIImageView alloc] initWithImage:marker] autorelease];
+            //markerView.frame = CGRectMake(markerView.frame.origin.x + 7, markerView.frame.origin.y - 7, markerView.frame.size.width, markerView.frame.size.height);
+
+            // align the bottom of the image with where it's pointing
+            markerView.center = CGPointMake(markerView.center.x - floor(markerView.frame.size.width / 2),
+                                            markerView.center.y - markerView.frame.size.height);
+            //                                floor(markerView.frame.size.height / 2));
+            
+            [annotationView addSubview:markerView];
+            [[annotationView superview] bringSubviewToFront:annotationView];
+        }
 	}
 	
 	//[sampleView setNeedsDisplay];
@@ -831,10 +830,7 @@
 	
 	self.mapView.hidden = NO;
 	[self removeLoadingIndicator];
-	logoView.hidden = NO;
-	[[logoView superview] bringSubviewToFront:logoView];
-	logoView.opaque = NO;
-	
+    [self addTranslocLogo];
 }
 
 #pragma mark Shake functionality

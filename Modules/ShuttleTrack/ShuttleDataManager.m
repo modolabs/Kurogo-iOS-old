@@ -409,7 +409,7 @@ static ShuttleDataManager* s_dataManager = nil;
 }
 
 
-- (void)handleConnectionFailureForRequest:(JSONAPIRequest *)request
+- (void)request:(JSONAPIRequest *)request handleConnectionError:(NSError *)error
 {
 	if ([[request.params valueForKey:@"command"] isEqualToString:@"routes"]) {
 		[self sendRoutesToDelegates:nil];
