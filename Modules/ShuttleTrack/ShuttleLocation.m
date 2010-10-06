@@ -34,8 +34,6 @@ static NSMutableDictionary *s_markerImages = nil;
 		self.heading = [[dictionary objectForKey:@"heading"] intValue];
         self.speed = [[dictionary objectForKey:@"speed"] floatValue];
 		
-		//self.iconURL = [dictionary objectForKey:@"iconURL"];
-
         if (s_markerImages == nil)
             s_markerImages = [[NSMutableDictionary alloc] init];
         

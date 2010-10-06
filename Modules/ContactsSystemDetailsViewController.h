@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 
 
-@interface ContactsSystemDetailsViewController : UIViewController {
+@interface ContactsSystemDetailsViewController : UIViewController <UIWebViewDelegate> {
 
 	UIWebView *systemTextDetailsView;
 	NSString *titleString;	

@@ -645,15 +645,6 @@
 			upComing = YES;
 		}
 		
-		/*imageView.image = upComing ? _smallUpcomingStopImage : _smallStopImage;
-		//imageView.image = ((ShuttleStopMapAnnotation *)annotation).shuttleStop.upcoming ? _smallUpcomingStopImage : _smallStopImage;
-		annotationView.frame = imageView.frame;
-		annotationView.canShowCallout = YES;
-		
-		[annotationView addSubview:imageView];
-		annotationView.backgroundColor = [UIColor clearColor];*/
-		
-		
 		UIButton *myDetailButton = [UIButton buttonWithType:UIButtonTypeDetailDisclosure];
 		myDetailButton.frame = CGRectMake(0, 0, 23, 23);
 		myDetailButton.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
@@ -679,12 +670,10 @@
 		if (marker != nil) {
             annotationView = [[[MKAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:@"asdf"] autorelease];
             UIImageView* markerView = [[[UIImageView alloc] initWithImage:marker] autorelease];
-            //markerView.frame = CGRectMake(markerView.frame.origin.x + 7, markerView.frame.origin.y - 7, markerView.frame.size.width, markerView.frame.size.height);
 
             // align the bottom of the image with where it's pointing
             markerView.center = CGPointMake(markerView.center.x - floor(markerView.frame.size.width / 2),
                                             markerView.center.y - markerView.frame.size.height);
-            //                                floor(markerView.frame.size.height / 2));
             
             [annotationView addSubview:markerView];
             [[annotationView superview] bringSubviewToFront:annotationView];

@@ -38,6 +38,7 @@
 	//viewContainer.backgroundColor = [UIColor whiteColor];
 	//[self.view addSubview:viewContainer];
     [self.view addSubview:systemTextDetailsView];
+    systemTextDetailsView.delegate = self;
     systemTextDetailsView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
 	
 }
@@ -87,5 +88,18 @@
     [super dealloc];
 }
 
+#pragma mark UIWebViewDelegate
+
+- (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType
+{
+    // only allow webView to load whatever html we feed it (about:blank)
+    if ([[[request URL] scheme] isEqualToString:@"about"])
+        return YES;
+    
+    if ([[UIApplication sharedApplication] canOpenURL:[request URL]]) {
+        [[UIApplication sharedApplication] openURL:[request URL]];
+    }
+    return NO;
+}
 
 @end
