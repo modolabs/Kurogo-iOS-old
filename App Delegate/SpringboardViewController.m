@@ -79,7 +79,6 @@
     for (anIcon in icons) {
         anIcon.frame = CGRectMake(xOrigin, bottomRight.y, iconSize.width, iconSize.height);
         
-        NSLog(@"xorigin: %.1f, modified xorigin:%.1f", xOrigin, xOrigin + anIcon.frame.size.width + spacing);
         xOrigin += anIcon.frame.size.width + spacing;
         if (xOrigin + anIcon.frame.size.width + spacing > viewSize.width) {
             xOrigin = xOriginInitial;
@@ -123,29 +122,44 @@
         SpringboardIcon *anIcon = [SpringboardIcon buttonWithType:UIButtonTypeCustom];
         UIImage *image = [aModule icon];
         if (image) {
+                        
+            anIcon.frame = CGRectMake(0, 0, image.size.width + ICON_PADDING * 2, image.size.height + ICON_LABEL_HEIGHT);
+            anIcon.imageEdgeInsets = UIEdgeInsetsMake(ICON_PADDING, ICON_PADDING, ICON_LABEL_HEIGHT, ICON_PADDING);
+            
+            [anIcon setImage:image forState:UIControlStateNormal];
+
+            UIFont *font = [UIFont systemFontOfSize:12.0];
+            
+            anIcon.titleLabel.numberOfLines = 0;
+            anIcon.titleLabel.font = font;
+            anIcon.titleLabel.textColor = [UIColor colorWithHexString:@"#403F3E"];
+            anIcon.titleLabel.lineBreakMode = UILineBreakModeWordWrap;
+            anIcon.titleLabel.textAlignment = UITextAlignmentCenter;
+            
+            // special case for shuttletracker
+            NSString *iconTitle = nil;
+            if ([aModule.longName isEqualToString:@"ShuttleTracker"]) {
+                iconTitle = @"Shuttle Tracker";
+            } else {
+                iconTitle = aModule.longName;
+            }
+            [anIcon setTitle:iconTitle forState:UIControlStateNormal];
             
             if (aModule.canBecomeDefault) {
                 [_icons addObject:anIcon];
                 // title by default is placed to the right of the image, we want it below
-                anIcon.titleEdgeInsets = UIEdgeInsetsMake(image.size.height, -image.size.width, 0, 0);
+                CGSize labelSize = [iconTitle sizeWithFont:font constrainedToSize:image.size lineBreakMode:UILineBreakModeWordWrap];
+
+                //anIcon.titleEdgeInsets = UIEdgeInsetsMake(image.size.height, -image.size.width + 5.0, 0, 5.0);
+                // a bit of fudging here... 12 is the font size of the title label
+                anIcon.titleEdgeInsets = UIEdgeInsetsMake(image.size.height - 12.0 + floor(labelSize.height / 2), -image.size.width + 5.0, 0, 5.0);
+                
             } else {
                 [_fixedIcons addObject:anIcon];
                 // title by default is placed to the right of the image, we want it below
                 anIcon.titleEdgeInsets = UIEdgeInsetsMake(image.size.height + ICON_PADDING, -image.size.width - 5.0, 0, -5.0);
             }
             
-            anIcon.frame = CGRectMake(0, 0, image.size.width + ICON_PADDING * 2, image.size.height + ICON_LABEL_HEIGHT);
-            anIcon.imageEdgeInsets = UIEdgeInsetsMake(ICON_PADDING, ICON_PADDING, ICON_LABEL_HEIGHT, ICON_PADDING);
-            
-            [anIcon setImage:image forState:UIControlStateNormal];
-
-            anIcon.titleLabel.numberOfLines = 0;
-            anIcon.titleLabel.font = [UIFont systemFontOfSize:12.0];
-            anIcon.titleLabel.textColor = [UIColor colorWithHexString:@"#403F3E"];
-            anIcon.titleLabel.lineBreakMode = UILineBreakModeWordWrap;
-            anIcon.titleLabel.textAlignment = UITextAlignmentCenter;
-            
-            [anIcon setTitle:aModule.longName forState:UIControlStateNormal];
             [anIcon setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
             
             anIcon.moduleTag = aModule.tag;
