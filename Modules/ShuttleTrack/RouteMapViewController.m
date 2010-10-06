@@ -533,7 +533,12 @@
 			self.routeLineView = [[[MKPolylineView alloc] initWithPolyline:self.routeLine] autorelease];
 			self.routeLineView.fillColor = [UIColor colorWithHexString:(NSString *)self.route.color];
 			self.routeLineView.strokeColor = [UIColor colorWithHexString:(NSString *)self.route.color];
-			self.routeLineView.lineWidth = 5;
+            
+            if ([[UIScreen mainScreen] scale] > 1.0) {
+                self.routeLineView.lineWidth = 5;
+            } else {
+                self.routeLineView.lineWidth = 3;
+            }
 		}
 		
 		overlayView = self.routeLineView;

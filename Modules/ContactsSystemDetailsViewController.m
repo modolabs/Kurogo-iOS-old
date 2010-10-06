@@ -25,7 +25,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 	
-	self.title = @"Details";
+	self.title = @"Information";
 	
     [self.view addSubview:systemTextDetailsView];
     systemTextDetailsView.delegate = self;
