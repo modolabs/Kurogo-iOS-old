@@ -278,14 +278,9 @@ static ShuttleDataManager* s_dataManager = nil;
 -(void) registerDelegate:(id<ShuttleDataManagerDelegate>)delegate
 {
 	if (nil == _registeredDelegates) {
-		_registeredDelegates = [[NSMutableArray alloc] initWithCapacity:1];
+		_registeredDelegates = [[NSMutableSet alloc] initWithCapacity:1];
 	}
-	
-	// make sure it is not already in there
-	if (NSNotFound == [_registeredDelegates indexOfObject:delegate]) {
-		[_registeredDelegates addObject:delegate];
-	}
-
+    [_registeredDelegates addObject:delegate];
 }
 
 -(void) unregisterDelegate:(id<ShuttleDataManagerDelegate>)delegate

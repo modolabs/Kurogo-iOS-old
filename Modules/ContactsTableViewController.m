@@ -36,7 +36,7 @@
 }
 
 -(NSArray *)getShuttleServicePhoneNumbersText{
-	return [NSArray arrayWithObjects:@"Shuttle Bus and Van Services", @"Parking Service", @"Commute Choice", @"Motorist Assistance Program", @"M2 Shuttle", nil];
+	return [NSArray arrayWithObjects:@"Shuttle Bus and Van Services", @"Parking Service", @"CommuterChoice", @"Motorist Assistance Program", @"M2 Shuttle", nil];
 }
 
 static NSString const * kAboutHarvardShuttles = @"About Harvard Shuttles";

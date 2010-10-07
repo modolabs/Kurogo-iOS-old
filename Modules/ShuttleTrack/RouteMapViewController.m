@@ -16,7 +16,7 @@
 -(void) addShuttles;
 
 // remove shuttles that are listed in self.route.vehicleLocations
--(void) removeShuttles;
+//-(void) removeShuttles;
 
 // update the stop annotations based on the routeInfo
 -(void) updateUpcomingStops;
@@ -26,6 +26,9 @@
 -(MKCoordinateRegion) regionForRoute;
 
 - (void)addTranslocLogo;
+
+- (void)startPolling;
+- (void)pollShuttleLocations;
 
 @end
 
@@ -56,11 +59,18 @@
 	self.mapView.scrollEnabled = YES;
 	
 	hasNarrowedRegion = NO;
-	
-	_largeStopImage = [[UIImage imageNamed:@"shuttles/map_pin_shuttle_stop_complete.png"] retain];
-	_largeUpcomingStopImage = [[UIImage imageNamed:@"shuttles/pin_shuttle_stop_complete_next.png"] retain];
-	_smallStopImage = [[UIImage imageNamed:@"shuttles/shuttle-stop-dot.png"] retain];
-	_smallUpcomingStopImage = [[UIImage imageNamed:@"shuttles/shuttle-stop-dot-next.png"] retain];
+
+	if (!_largeStopImage)
+        _largeStopImage = [[UIImage imageNamed:@"shuttles/map_pin_shuttle_stop_complete.png"] retain];
+    
+    if (!_largeUpcomingStopImage)
+        _largeUpcomingStopImage = [[UIImage imageNamed:@"shuttles/pin_shuttle_stop_complete_next.png"] retain];
+    
+    if (!_smallStopImage)
+        _smallStopImage = [[UIImage imageNamed:@"shuttles/shuttle-stop-dot.png"] retain];
+    
+    if (!_smallUpcomingStopImage)
+        _smallUpcomingStopImage = [[UIImage imageNamed:@"shuttles/shuttle-stop-dot-next.png"] retain];
 	
 	//_scrim.frame = CGRectMake(_scrim.frame.origin.x, _scrim.frame.origin.y, _scrim.frame.size.width, 53.0);
 	
@@ -101,7 +111,6 @@
 	
 	// get the extended route info
 	[[ShuttleDataManager sharedDataManager] registerDelegate:self];
-	[[ShuttleDataManager sharedDataManager] requestRoute:self.route.routeID];
 	
 	self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh
 																							target:self
@@ -205,28 +214,13 @@
 {
 	[super viewWillDisappear:animated];
 	[[ShuttleDataManager sharedDataManager] unregisterDelegate:self];
-	if ([_pollingTimer isValid]) {
-		[_pollingTimer invalidate];
-	}
-	[_pollingTimer release];
-	_pollingTimer = nil;
 }
 
 -(void) viewWillAppear:(BOOL)animated
 {
 	[super viewWillAppear:animated];
-	[self fallBackViewDidLoad];
-	
-	// make sure its registered. 
 	[[ShuttleDataManager sharedDataManager] registerDelegate:self];
-    
-	// start polling for new vehicle locations every 10 seconds. 
-	_pollingTimer = [[NSTimer scheduledTimerWithTimeInterval:2
-													  target:self 
-													selector:@selector(pollShuttleLocations)
-													userInfo:nil 
-													 repeats:YES] retain];
-    
+	[self fallBackViewDidLoad];
 }
 
 -(void) viewDidAppear:(BOOL)animated
@@ -376,17 +370,15 @@
 	}
 	
 	CLLocationCoordinate2D center;
-	center.latitude = minLat + (maxLat - minLat) / 2;
-	center.longitude = minLon + (maxLon - minLon) / 2;
-	
-	double latDelta = maxLat - minLat + 0.0001;
-	double lonDelta = maxLon - minLon + 0.0001;
-	
-	//MKCoordinateSpan span = MKCoordinateSpanMake(latDelta + latDelta / 4, lonDelta + lonDelta / 4);
-	//MKCoordinateSpan span = MKCoordinateSpanMake(latDelta, 1.1*lonDelta);
-	
-	//MKCoordinateRegion region = MKCoordinateRegionMake(center, span);
-	
+    CGFloat latDelta = maxLat - minLat;
+    CGFloat lonDelta = maxLon - minLon;
+    
+	center.latitude = minLat + latDelta / 2;
+	center.longitude = minLon + lonDelta / 2;
+    
+    //latDelta *= 1.1;
+    //lonDelta *= 1.1;
+		
 	MKCoordinateSpan span = {latitudeDelta: latDelta, longitudeDelta: lonDelta};
 	MKCoordinateRegion region = {center, span};
 	
@@ -402,6 +394,7 @@
 	[[ShuttleDataManager sharedDataManager] requestRoute:self.route.routeID];
 }
 
+/*
 -(void) removeShuttles
 {
 	[_mapView removeAnnotations:_vehicleAnnotations];
@@ -409,25 +402,19 @@
 	[_vehicleAnnotations release];
 	_vehicleAnnotations = nil;
 }
+*/
 
 -(void) addShuttles
-{
-    
-    [_oldVehicleAnnotations release];
-    _oldVehicleAnnotations = [_vehicleAnnotations copy];
-    
-	_vehicleAnnotations = [[NSArray arrayWithArray:self.route.vehicleLocations] retain];
-    
-    // replace new annotations' starting coordinates with old annotations' ending coords
-    for (ShuttleLocation *anOldLocation in _oldVehicleAnnotations) {
-        for (ShuttleLocation *aNewLocation in _vehicleAnnotations) {
-            if (anOldLocation.vehicleId == aNewLocation.vehicleId) {
-                aNewLocation.coordinate = anOldLocation.endCoordinate;
-            }
-        }
-    }
-    
+{    
+    if (_oldVehicleAnnotations != _vehicleAnnotations)
+        [_oldVehicleAnnotations release];
+
+    _oldVehicleAnnotations = _vehicleAnnotations;    
+	_vehicleAnnotations = [[NSArray alloc] initWithArray:self.route.vehicleLocations];
+        
 	[_mapView addAnnotations:_vehicleAnnotations];
+
+    // this prevents blinking when annotation view are swapped too fast
     [_mapView performSelector:@selector(removeAnnotations:) withObject:_oldVehicleAnnotations afterDelay:0.2];
 }
 
@@ -604,66 +591,66 @@
 	
 }
 
+// this function sorts higher latitudes to the top
+static int compareLatitudes(id p1, id p2, void *context) {
+    int result = 0;
+    
+    if ([p1 isKindOfClass:[MKAnnotationView class]]
+        && [p2 isKindOfClass:[MKAnnotationView class]])
+    {
+        CGFloat lat1 = ((MKAnnotationView *)p1).annotation.coordinate.latitude;
+        CGFloat lat2 = ((MKAnnotationView *)p2).annotation.coordinate.latitude;
+        
+        if (lat1 > lat2) result = -1;
+        else result = (lat1 < lat2) ? 1 : 0;
+    }
+    
+    return result;
+}
 
 - (void)mapView:(MKMapView *)mapView didAddAnnotationViews:(NSArray *)views {
+    // vehicle annotations should be placed with southernmost on top,
+    // i.e. sorted such that we can process them from north to south
+    NSMutableArray *vehicleAnnotations = [NSMutableArray array];
 	for (MKAnnotationView * annView in views) {
-		//MKAnnotation *annotation = annView.annotation;
-		
-		if ([annView.annotation isKindOfClass:[ShuttleStopMapAnnotation class]]) 
-		{
+		if ([annView.annotation isKindOfClass:[ShuttleStopMapAnnotation class]])
 			[[annView superview] sendSubviewToBack:annView];
-		} else if ([annView.annotation isKindOfClass:[ShuttleLocation class]]) {
-			[[annView superview] bringSubviewToFront:annView];
-            
-            ShuttleLocation *locationAnnotation = (ShuttleLocation *)annView.annotation;
-            
-            CGPoint startPoint = [mapView convertCoordinate:locationAnnotation.coordinate toPointToView:nil];
-            CGPoint endPoint = [mapView convertCoordinate:locationAnnotation.endCoordinate toPointToView:nil];
-            CGFloat dx = round(endPoint.x - startPoint.x);
-            CGFloat dy = round(endPoint.y - startPoint.y);
+        else if ([annView.annotation isKindOfClass:[ShuttleLocation class]])
+            [vehicleAnnotations addObject:annView];
+    }
+    
+    [vehicleAnnotations sortUsingFunction:compareLatitudes context:NULL];
 
-            
-            if (fabs(dx) + fabs(dy) > 0) {
-                NSLog(@"vehicle %d dx: %.1f, dy: %.1f", locationAnnotation.vehicleId, dx, dy);
-                
-                [UIView beginAnimations:@"vehicle" context:NULL];
-                [UIView setAnimationDuration:2.0];
-                annView.frame = CGRectMake(annView.frame.origin.x + dx,
-                                           annView.frame.origin.y + dy,
-                                           annView.frame.size.width, annView.frame.size.height);
-                [UIView commitAnimations];
-            }       
-            
-            /*
-            if (locationAnnotation.speed) {
-                
-                CGFloat distanceIn2Seconds = locationAnnotation.speed / (3600 / 2); // in nautical miles
+    for (MKAnnotationView *annView in vehicleAnnotations) {
+        
+        ShuttleLocation *locationAnnotation = (ShuttleLocation *)annView.annotation;
+        
+        if ([_oldVehicleAnnotations containsObject:locationAnnotation]) continue;
 
-                // create a coordinate x nautical miles away irrelevant of direction
-                CLLocationCoordinate2D coordSameDistanceAway = CLLocationCoordinate2DMake(locationAnnotation.coordinate.latitude,
-                                                                                          locationAnnotation.coordinate.longitude + distanceIn2Seconds / NAUTICAL_MILES_PER_DEGREE_LATLON);
-                CGPoint startPoint = [mapView convertCoordinate:locationAnnotation.coordinate toPointToView:nil];
-                CGPoint endPoint = [mapView convertCoordinate:coordSameDistanceAway toPointToView:nil];
-                CGFloat distance = fabs(startPoint.x - endPoint.x);
-                NSLog(@"distance in pixels: %.1f", distance);
+        [[annView superview] bringSubviewToFront:annView];
+        
+        for (ShuttleLocation *anOldLocation in _oldVehicleAnnotations) {
+            if (anOldLocation.vehicleId == locationAnnotation.vehicleId) {
+                CGPoint startPoint = [mapView convertCoordinate:anOldLocation.coordinate toPointToView:nil];
+                CGPoint endPoint = [mapView convertCoordinate:locationAnnotation.coordinate toPointToView:nil];
+                CGFloat dx = floor(endPoint.x - startPoint.x);
+                CGFloat dy = floor(endPoint.y - startPoint.y);
+
+                //NSLog(@"vehicle %d dx: %.1f, dy: %.1f", locationAnnotation.vehicleId, dx, dy);
+
+                if (fabs(dx) + fabs(dy) > 0) {
+
+                    [UIView animateWithDuration:5.0 animations:^{
+                        annView.frame = CGRectMake(annView.frame.origin.x + dx,
+                                                   annView.frame.origin.y + dy,
+                                                   annView.frame.size.width, annView.frame.size.height);
+                    }];
+                }
                 
-                // 0 is north, 90 is east
-                NSInteger headingInXYPlane = 90 - locationAnnotation.heading;
-                CGFloat radians = DEGREES_TO_RADIANS(headingInXYPlane);
-                CGFloat dy = round(-distance * sin(radians));
-                CGFloat dx = round(distance * cos(radians));
-                NSLog(@"dx: %.1f, dy: %.1f", dx, dy);
-                
-                [UIView beginAnimations:@"vehicle" context:NULL];
-                [UIView setAnimationDuration:2.0];
-                annView.frame = CGRectMake(annView.frame.origin.x + dx,
-                                           annView.frame.origin.y + dy,
-                                           annView.frame.size.width, annView.frame.size.height);
-                [UIView commitAnimations];
+                break;
             }
-            */
-
-		}
+        }
+        
 	}
 	
 }
@@ -706,23 +693,11 @@
 // message sent when a shuttle route is received. If request fails, this is called with nil
 -(void) routeInfoReceived:(ShuttleRoute*)shuttleRoute forRouteID:(NSString*)routeID
 {
-	if ([self.route.routeID isEqualToString:routeID])
-	{
-		if (!self.route.isRunning) {
-			[_pollingTimer invalidate];
-		}
-		
-		//[self removeShuttles];
-		
-		//self.routeInfo = shuttleRoute;
+	if (shuttleRoute != nil && [self.route.routeID isEqualToString:routeID]) {
         self.route = shuttleRoute;
 		
-		//if (![self.mapView.routes count]) {
-		//	[self.mapView addRoute:self.route];
-		//	self.mapView.region = [self regionForRoute];
-		//}
-		
 		[self addShuttles];
+		
 		[self updateUpcomingStops];
 		[self.mapView setCenterCoordinate:self.mapView.region.center animated:NO];
 	}
@@ -746,14 +721,14 @@
 	return YES;
 }
 
-
+/*
 -(void) motionEnded:(UIEventSubtype)motion withEvent:(UIEvent *)event
 {
 	if (motion == UIEventSubtypeMotionShake) {
 		[self pollShuttleLocations];
 	}
 }
-
+*/
 
 
 - (void)addLoadingIndicator

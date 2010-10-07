@@ -388,9 +388,9 @@
 		if (self.vehicleLocations && self.vehicleLocations.count > 0) {
 			summaryString = [NSString stringWithString:@"Real time bus tracking online."];
 		} else if (self.isRunning) {
-			summaryString = [NSString stringWithString:@"Tracking offline. Following schedule."];
+			summaryString = [NSString stringWithString:@"Tracking offline."];
 		} else {
-			summaryString = [NSString stringWithString:@"Bus not running. Following schedule."];
+			summaryString = [NSString stringWithString:@"Bus not running."];
 		}
 	} else {
 		summaryString = [NSString stringWithString:@"Loading..."];

@@ -4,7 +4,6 @@
 
 @implementation ShuttleLocation
 @synthesize coordinate = _coordinate;
-@synthesize endCoordinate = _endCoordinate;
 @synthesize secsSinceReport = _secsSinceReport;
 @synthesize heading = _heading;
 @synthesize speed = _speed;
@@ -28,8 +27,6 @@ static NSMutableDictionary *s_markerImages = nil;
 		_coordinate.latitude = [[dictionary objectForKey:@"lat"] doubleValue];
 		_coordinate.longitude = [[dictionary objectForKey:@"lon"] doubleValue];
 
-        _endCoordinate = _coordinate;
-        
 		self.secsSinceReport = [[dictionary objectForKey:@"secsSinceReport"] intValue];
 		self.heading = [[dictionary objectForKey:@"heading"] intValue];
         self.speed = [[dictionary objectForKey:@"speed"] floatValue];

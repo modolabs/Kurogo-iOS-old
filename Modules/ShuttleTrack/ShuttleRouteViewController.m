@@ -11,6 +11,9 @@
 
 -(void) displayTypeChanged:(id)sender;
 
+- (void)requestRoute;
+- (void)startPolling;
+
 @end
 
 
@@ -74,9 +77,7 @@
     self.tableView.frame = CGRectMake(0.0, _titleCell.frame.size.height - 4.0, self.view.frame.size.width, self.view.frame.size.height - _titleCell.frame.size.height + 4.0);
 	self.tableView.backgroundColor = [UIColor whiteColor];
 	
-	//if ([self.routeMapViewController.route.pathLocations count])
-		[self setMapViewMode:YES animated:YES];	
-	
+    [self setMapViewMode:YES animated:NO];	
 }
 
 
@@ -85,14 +86,17 @@
 	
 	// request up to date route information
 	[[ShuttleDataManager sharedDataManager] registerDelegate:self];
-	[[ShuttleDataManager sharedDataManager] requestRoute:self.route.routeID];
-	
-	// poll for stop times every 20 seconds 
-	_pollingTimer = [[NSTimer scheduledTimerWithTimeInterval:2
-													  target:self 
-													selector:@selector(requestRoute)
-													userInfo:nil 
-													 repeats:YES] retain];
+    [self requestRoute];
+    [self startPolling];
+}
+
+- (void)startPolling
+{
+	_pollingTimer = [NSTimer scheduledTimerWithTimeInterval:2
+                                                     target:self 
+                                                   selector:@selector(requestRoute)
+                                                   userInfo:nil 
+                                                    repeats:YES];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -102,6 +106,9 @@
 
 - (void)viewWillDisappear:(BOOL)animated {
 	[[ShuttleDataManager sharedDataManager] unregisterDelegate:self];
+    if (self.routeMapViewController != nil) {
+        [[ShuttleDataManager sharedDataManager] unregisterDelegate:self.routeMapViewController];
+    }
 	
 	if(_mapShowing)
 	{
@@ -111,9 +118,8 @@
 	[super viewWillDisappear:animated];
 	if ([_pollingTimer isValid]) {
 		[_pollingTimer invalidate];
+        _pollingTimer = nil;
 	}
-	[_pollingTimer release];
-	_pollingTimer = nil;
 }
 
 
@@ -353,6 +359,7 @@
 		if ([routeID isEqualToString:self.route.routeID]) {
 			if (!self.route.isRunning && [_pollingTimer isValid]) {
 				[_pollingTimer invalidate];
+                _pollingTimer = nil;
 			}
 		
 			_shownError = NO;

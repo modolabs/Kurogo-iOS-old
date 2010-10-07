@@ -2,23 +2,19 @@
 #import <MapKit/MapKit.h>
 #import "ShuttleRoute.h"
 #import "ShuttleDataManager.h"
-//#import "SampleViewClass.h"
 
-//@class SampleViewClass;
+// note: this class does not create a pollingTimer because
+// the one created by its associated ShuttleRouteViewController
+// will already be polling
 
 @interface RouteMapViewController : UIViewController <MKMapViewDelegate, ShuttleDataManagerDelegate>{
 
 	IBOutlet MKMapView* _mapView;
 	
-	//SampleViewClass* sampleView;
 	IBOutlet UILabel* _routeTitleLabel;
 	IBOutlet UILabel* _routeStatusLabel;
 	IBOutlet UIButton* _gpsButton; 
 	IBOutlet UIImageView *_scrim;
-	
-	// not sure why we're using two instances of ShuttleRoute
-	// or we can get rid of one since changes to ShuttleDataManager 
-	// should make both point at the same object
 	
 	ShuttleRoute* _route;
 	
@@ -30,8 +26,6 @@
 	
 	// extended route info keyed by stop ID
 	NSMutableDictionary* _routeStops;
-	
-	NSTimer* _pollingTimer;
 	
 	CGFloat _lastZoomLevel;
 
@@ -60,7 +54,6 @@
 }
 
 @property (nonatomic, retain) ShuttleRoute* route;
-//@property (nonatomic, retain) ShuttleRoute* routeInfo;
 @property (nonatomic, assign) UIViewController* parentViewController;
 
 @property (readonly) MKMapView* mapView;

@@ -39,7 +39,7 @@
 	NSMutableDictionary *_stopLocationsByID;
 	
 	// registered delegates
-	NSMutableArray* _registeredDelegates;
+	NSMutableSet* _registeredDelegates;
 }
 
 @property (readonly) NSArray* shuttleRoutes;
