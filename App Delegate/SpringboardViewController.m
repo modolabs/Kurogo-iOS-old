@@ -124,7 +124,7 @@
         if (image) {
                         
             anIcon.frame = CGRectMake(0, 0, image.size.width + ICON_PADDING * 2, image.size.height + ICON_LABEL_HEIGHT);
-            anIcon.imageEdgeInsets = UIEdgeInsetsMake(ICON_PADDING, ICON_PADDING, ICON_LABEL_HEIGHT, ICON_PADDING);
+            anIcon.imageEdgeInsets = UIEdgeInsetsMake(0, ICON_PADDING, ICON_LABEL_HEIGHT, ICON_PADDING);
             
             [anIcon setImage:image forState:UIControlStateNormal];
 
@@ -197,6 +197,9 @@
     bottomRight = CGPointZero;
     bottomRight.y = _searchBar.frame.size.height + GRID_VPADDING;
     [self layoutIcons:_icons horizontalSpacing:MAIN_GRID_HPADDING];
+
+    // TODO: don't hard code spacing between main and secondary grid
+    bottomRight.y += 20.0;
     [self layoutIcons:_fixedIcons horizontalSpacing:SECONDARY_GRID_HPADDING];
     
     [self setupSearchController];
