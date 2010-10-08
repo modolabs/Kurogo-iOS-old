@@ -2643,7 +2643,7 @@
 				);
 				PRODUCT_NAME = "Harvard Mobile";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
-				SDKROOT = iphoneos4.0;
+				SDKROOT = iphoneos4.1;
 				VALIDATE_PRODUCT = YES;
 			};
 			name = "Release - Production";

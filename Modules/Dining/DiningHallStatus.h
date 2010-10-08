@@ -59,6 +59,7 @@
 
 @property NSInteger currentStat;
 
+-(BOOL)isCorrectDay:(NSString*)day dayIndex:(int)index;
 -(int)getStatusOfMeal:(NSString *)timeString usingDetails:(NSDictionary *)details;
 -(int)getStatus:(NSString *)timeString mealTime:(int)mealIndex;
 -(int)gettime:(NSString *)component;

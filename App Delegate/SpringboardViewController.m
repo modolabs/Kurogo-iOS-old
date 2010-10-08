@@ -230,7 +230,7 @@
 - (void)buttonPressed:(id)sender {
     SpringboardIcon *anIcon = (SpringboardIcon *)sender;
     if ([anIcon.moduleTag isEqualToString:MobileWebTag]) {
-        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"http://www.harvard.edu"]];
+        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"http://www.harvard.edu/?fullsite=yes"]];
     } else {
         MIT_MobileAppDelegate *appDelegate = (MIT_MobileAppDelegate *)[[UIApplication sharedApplication] delegate];
         activeModule = [appDelegate moduleForTag:anIcon.moduleTag];
