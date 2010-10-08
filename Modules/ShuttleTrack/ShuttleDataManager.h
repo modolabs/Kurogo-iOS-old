@@ -77,6 +77,8 @@
 -(void) requestStop:(NSString*)stopID;
 
 // request full information about a particular route
--(void) requestRoute:(NSString*)routeID;
+- (void)requestFullRoute:(NSString*)routeID;
+
+- (void)requestRoute:(NSString*)routeID;
 
 @end

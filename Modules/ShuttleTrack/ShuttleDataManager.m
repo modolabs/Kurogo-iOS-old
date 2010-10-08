@@ -66,7 +66,7 @@ static ShuttleDataManager* s_dataManager = nil;
                                             matchingPredicate:matchAll
                                               sortDescriptors:[NSArray arrayWithObject:sort]];
 	[sort release];
-	NSLog(@"%d routes cached", [cachedRoutes count]);
+	DLog(@"%d routes cached", [cachedRoutes count]);
 	
 	for (ShuttleRouteCache *cachedRoute in cachedRoutes) {
 		NSString *routeID = cachedRoute.routeID;
@@ -224,9 +224,18 @@ static ShuttleDataManager* s_dataManager = nil;
 	}
 }
 
--(void) requestRoute:(NSString*)routeID
+-(void) requestFullRoute:(NSString*)routeID
 {	JSONAPIRequest *api = [JSONAPIRequest requestWithJSONAPIDelegate:self];
 	BOOL dispatched = [api requestObjectFromModule:@"shuttles" command:@"routeInfo" parameters:[NSDictionary dictionaryWithObjectsAndKeys:routeID, @"id", @"true", @"full", nil]];
+	if (!dispatched) {
+		NSLog(@"%@", @"problem making single route api request");
+	}
+}
+
+- (void)requestRoute:(NSString*)routeID
+{
+	JSONAPIRequest *api = [JSONAPIRequest requestWithJSONAPIDelegate:self];
+	BOOL dispatched = [api requestObjectFromModule:@"shuttles" command:@"routeInfo" parameters:[NSDictionary dictionaryWithObjectsAndKeys:routeID, @"id", nil]];
 	if (!dispatched) {
 		NSLog(@"%@", @"problem making single route api request");
 	}
@@ -390,6 +399,8 @@ static ShuttleDataManager* s_dataManager = nil;
 	else if ([[request.params valueForKey:@"command"] isEqualToString:@"routeInfo"] && [result isKindOfClass:[NSDictionary class]]) {
 
 		NSString *routeID = [result objectForKey:@"route_id"];
+        if (!routeID)
+            routeID = [request.params valueForKey:@"id"];
 		
 		ShuttleRoute *route = [_shuttleRoutesByID objectForKey:routeID];
 		if (route == nil) {

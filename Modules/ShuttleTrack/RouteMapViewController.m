@@ -633,20 +633,20 @@ static int compareLatitudes(id p1, id p2, void *context) {
             if (anOldLocation.vehicleId == locationAnnotation.vehicleId) {
                 CGPoint startPoint = [mapView convertCoordinate:anOldLocation.coordinate toPointToView:nil];
                 CGPoint endPoint = [mapView convertCoordinate:locationAnnotation.coordinate toPointToView:nil];
-                CGFloat dx = floor(endPoint.x - startPoint.x);
-                CGFloat dy = floor(endPoint.y - startPoint.y);
+                CGFloat dx = floor(endPoint.x - startPoint.x) / 2.5;
+                CGFloat dy = floor(endPoint.y - startPoint.y) / 2.5;
 
                 //NSLog(@"vehicle %d dx: %.1f, dy: %.1f", locationAnnotation.vehicleId, dx, dy);
 
                 if (fabs(dx) + fabs(dy) > 0) {
 
-                    [UIView animateWithDuration:5.0 animations:^{
+                    [UIView animateWithDuration:2.0 animations:^{
                         annView.frame = CGRectMake(annView.frame.origin.x + dx,
                                                    annView.frame.origin.y + dy,
                                                    annView.frame.size.width, annView.frame.size.height);
                     }];
                 }
-                
+
                 break;
             }
         }

@@ -86,7 +86,7 @@
 	
 	// request up to date route information
 	[[ShuttleDataManager sharedDataManager] registerDelegate:self];
-    [self requestRoute];
+    [[ShuttleDataManager sharedDataManager] requestFullRoute:self.route.routeID];
     [self startPolling];
 }
 
