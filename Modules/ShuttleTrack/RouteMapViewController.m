@@ -640,11 +640,15 @@ static int compareLatitudes(id p1, id p2, void *context) {
 
                 if (fabs(dx) + fabs(dy) > 0) {
 
-                    [UIView animateWithDuration:2.0 animations:^{
-                        annView.frame = CGRectMake(annView.frame.origin.x + dx,
-                                                   annView.frame.origin.y + dy,
-                                                   annView.frame.size.width, annView.frame.size.height);
-                    }];
+					[UIView animateWithDuration:2.0 
+										  delay:0.0 
+										options: UIViewAnimationOptionAllowUserInteraction
+									 animations:^{
+										 annView.frame = CGRectMake(annView.frame.origin.x + dx,
+																	annView.frame.origin.y + dy,
+																	annView.frame.size.width, annView.frame.size.height);
+									 }
+									 completion: NULL];
                 }
 
                 break;
