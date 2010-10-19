@@ -171,7 +171,11 @@
 		self.routeLine = [MKPolyline polylineWithPoints:pointArr count:self.route.pathLocations.count];
 		free(pointArr);
 		
-		
+	/*for(int i=0; i< [[self.mapView overlays] count]; i++){
+		[self.mapView removeOverlay:[[self.mapView overlays] objectAtIndex:i]];
+	}*/
+	
+	
 		if (nil != self.routeLine) {
 			[self.mapView addOverlay:self.routeLine];
 		}
