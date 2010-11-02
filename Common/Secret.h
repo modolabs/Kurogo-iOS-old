@@ -16,3 +16,5 @@ extern NSString * const FacebookAPISecret;
 
 extern NSString * const BitlyUsername;
 extern NSString * const BitlyAPIKey;
+
+extern NSString * const AnalyticsAccountID;

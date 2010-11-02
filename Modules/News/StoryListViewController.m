@@ -10,6 +10,7 @@
 #import "MITSearchDisplayController.h"
 #import "MITUIConstants.h"
 #import "NewsCategory.h"
+#import "AnalyticsWrapper.h"
 
 #define THUMBNAIL_WIDTH 76.0
 #define ACCESSORY_WIDTH_PLUS_PADDING 18.0
@@ -119,6 +120,9 @@ static NSInteger numTries = 0;
 		[storyTable deselectRowAtIndexPath:tempTableSelection animated:YES];
         [storyTable endUpdates];
 	}
+    
+    [[AnalyticsWrapper sharedWrapper] trackEvent:@"NewsStoryListView" action:@"" label:@""];
+    [[AnalyticsWrapper sharedWrapper] trackPageview:@"NewsStoryListView"];
 }
 
 - (void)viewDidAppear:(BOOL)animated {

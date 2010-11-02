@@ -34,11 +34,13 @@
 #include "projects.h"
 PJ_CVSID("$Id: pj_transform.c 1504 2009-01-06 02:11:57Z warmerdam $");
 #else
-#include <proj_api.h>
+#include "proj_api.h"
 #endif
 
-#ifdef _WIN32
+/* on win32 we always use win32 mutexes, even if pthreads are available */
+#if defined(_WIN32) && !defined(MUTEX_stub)
 #  define MUTEX_win32
+#  undef  MUTEX_pthread
 #endif
 
 #if !defined(MUTEX_stub) && !defined(MUTEX_pthread) && !defined(MUTEX_win32)
@@ -181,8 +183,8 @@ void pj_release_lock()
 {
     if( mutex_lock == NULL )
         pj_init_lock();
-
-    ReleaseMutex( mutex_lock );
+    else
+        ReleaseMutex( mutex_lock );
 }
 
 /************************************************************************/
@@ -205,7 +207,7 @@ static void pj_init_lock()
 
 {
     if( mutex_lock == NULL )
-        mutex_lock = CreateMutex( NULL, TRUE, NULL );
+        mutex_lock = CreateMutex( NULL, FALSE, NULL );
 }
 
 #endif // def MUTEX_win32

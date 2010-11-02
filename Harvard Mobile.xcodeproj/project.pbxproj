@@ -283,6 +283,24 @@
 		EB49AD6411F4BFE200854791 /* home in Resources */ = {isa = PBXBuildFile; fileRef = EB49AD5811F4BFE200854791 /* home */; };
 		EB49AD7A11F4BFF100854791 /* maps in Resources */ = {isa = PBXBuildFile; fileRef = EB49AD6511F4BFF100854791 /* maps */; };
 		EB49AD9811F4BFFF00854791 /* news in Resources */ = {isa = PBXBuildFile; fileRef = EB49AD7B11F4BFFF00854791 /* news */; };
+		EB4C2CCA127F118400058748 /* AnalyticsWrapper.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB4C2CC8127F118400058748 /* AnalyticsWrapper.h */; settings = {JAVA_ARCHIVE_SUBDIR = Common/Analytics; }; };
+		EB4C2CCB127F118400058748 /* AnalyticsWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = EB4C2CC9127F118400058748 /* AnalyticsWrapper.m */; };
+		EB4C2CCE127F120400058748 /* GANTracker.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB4C2CCC127F120400058748 /* GANTracker.h */; settings = {JAVA_ARCHIVE_SUBDIR = Common/Analytics; }; };
+		EB4C2CCF127F120400058748 /* libGoogleAnalytics.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EB4C2CCD127F120400058748 /* libGoogleAnalytics.a */; };
+		EB4C2CDF127F138100058748 /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = EB4C2CDE127F138100058748 /* libsqlite3.dylib */; };
+		EB4C2CE1127F138900058748 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EB4C2CE0127F138900058748 /* CFNetwork.framework */; };
+		EB4C2E191280862700058748 /* pj_apply_vgridshift.c in Sources */ = {isa = PBXBuildFile; fileRef = EB4C2E181280862700058748 /* pj_apply_vgridshift.c */; };
+		EB4C2E1D1280867400058748 /* pj_ctx.c in Sources */ = {isa = PBXBuildFile; fileRef = EB4C2E1C1280867400058748 /* pj_ctx.c */; };
+		EB4C2E211280869E00058748 /* pj_log.c in Sources */ = {isa = PBXBuildFile; fileRef = EB4C2E201280869E00058748 /* pj_log.c */; };
+		EB4C2E3712808AB900058748 /* pj_utils.c in Sources */ = {isa = PBXBuildFile; fileRef = EB4C2E2E12808AB900058748 /* pj_utils.c */; };
+		EB4C2E3812808AB900058748 /* PJ_vandg.c in Sources */ = {isa = PBXBuildFile; fileRef = EB4C2E2F12808AB900058748 /* PJ_vandg.c */; };
+		EB4C2E3912808AB900058748 /* PJ_vandg2.c in Sources */ = {isa = PBXBuildFile; fileRef = EB4C2E3012808AB900058748 /* PJ_vandg2.c */; };
+		EB4C2E3A12808AB900058748 /* PJ_vandg4.c in Sources */ = {isa = PBXBuildFile; fileRef = EB4C2E3112808AB900058748 /* PJ_vandg4.c */; };
+		EB4C2E3B12808AB900058748 /* PJ_wag2.c in Sources */ = {isa = PBXBuildFile; fileRef = EB4C2E3212808AB900058748 /* PJ_wag2.c */; };
+		EB4C2E3C12808AB900058748 /* PJ_wag3.c in Sources */ = {isa = PBXBuildFile; fileRef = EB4C2E3312808AB900058748 /* PJ_wag3.c */; };
+		EB4C2E3D12808AB900058748 /* PJ_wag7.c in Sources */ = {isa = PBXBuildFile; fileRef = EB4C2E3412808AB900058748 /* PJ_wag7.c */; };
+		EB4C2E3E12808AB900058748 /* PJ_wink1.c in Sources */ = {isa = PBXBuildFile; fileRef = EB4C2E3512808AB900058748 /* PJ_wink1.c */; };
+		EB4C2E3F12808AB900058748 /* PJ_wink2.c in Sources */ = {isa = PBXBuildFile; fileRef = EB4C2E3612808AB900058748 /* PJ_wink2.c */; };
 		EB54943810DFF03600B708B3 /* icons in Resources */ = {isa = PBXBuildFile; fileRef = EB54942710DFF03600B708B3 /* icons */; };
 		EB54947310DFF7E200B708B3 /* global in Resources */ = {isa = PBXBuildFile; fileRef = EB54947210DFF7E200B708B3 /* global */; };
 		EB6D02A911E3784100B65CE3 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EB6D02A811E3784100B65CE3 /* MapKit.framework */; };
@@ -296,13 +314,11 @@
 		EB6D0FB811EE0F9100B65CE3 /* dmstor.c in Sources */ = {isa = PBXBuildFile; fileRef = EB6D0F1311EE0F9000B65CE3 /* dmstor.c */; };
 		EB6D0FBC11EE0F9100B65CE3 /* geocent.c in Sources */ = {isa = PBXBuildFile; fileRef = EB6D0F1711EE0F9000B65CE3 /* geocent.c */; };
 		EB6D0FBD11EE0F9100B65CE3 /* geocent.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB6D0F1811EE0F9000B65CE3 /* geocent.h */; settings = {JAVA_ARCHIVE_SUBDIR = proj.4; }; };
-		EB6D0FC311EE0F9100B65CE3 /* jniproj.c in Sources */ = {isa = PBXBuildFile; fileRef = EB6D0F1E11EE0F9000B65CE3 /* jniproj.c */; };
 		EB6D0FC711EE0F9100B65CE3 /* mk_cheby.c in Sources */ = {isa = PBXBuildFile; fileRef = EB6D0F2211EE0F9000B65CE3 /* mk_cheby.c */; };
 		EB6D0FCA11EE0F9100B65CE3 /* nad_cvt.c in Sources */ = {isa = PBXBuildFile; fileRef = EB6D0F2511EE0F9000B65CE3 /* nad_cvt.c */; };
 		EB6D0FCB11EE0F9100B65CE3 /* nad_init.c in Sources */ = {isa = PBXBuildFile; fileRef = EB6D0F2611EE0F9000B65CE3 /* nad_init.c */; };
 		EB6D0FCC11EE0F9100B65CE3 /* nad_intr.c in Sources */ = {isa = PBXBuildFile; fileRef = EB6D0F2711EE0F9000B65CE3 /* nad_intr.c */; };
 		EB6D0FCD11EE0F9100B65CE3 /* nad_list.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB6D0F2811EE0F9000B65CE3 /* nad_list.h */; settings = {JAVA_ARCHIVE_SUBDIR = proj.4; }; };
-		EB6D0FCE11EE0F9100B65CE3 /* org_proj4_Projections.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB6D0F2911EE0F9000B65CE3 /* org_proj4_Projections.h */; settings = {JAVA_ARCHIVE_SUBDIR = proj.4; }; };
 		EB6D0FCF11EE0F9100B65CE3 /* p_series.c in Sources */ = {isa = PBXBuildFile; fileRef = EB6D0F2A11EE0F9000B65CE3 /* p_series.c */; };
 		EB6D0FD011EE0F9100B65CE3 /* PJ_aea.c in Sources */ = {isa = PBXBuildFile; fileRef = EB6D0F2B11EE0F9000B65CE3 /* PJ_aea.c */; };
 		EB6D0FD111EE0F9100B65CE3 /* PJ_aeqd.c in Sources */ = {isa = PBXBuildFile; fileRef = EB6D0F2C11EE0F9000B65CE3 /* PJ_aeqd.c */; };
@@ -418,20 +434,9 @@
 		EB6D104011EE0F9100B65CE3 /* pj_units.c in Sources */ = {isa = PBXBuildFile; fileRef = EB6D0F9B11EE0F9100B65CE3 /* pj_units.c */; };
 		EB6D104111EE0F9100B65CE3 /* PJ_urm5.c in Sources */ = {isa = PBXBuildFile; fileRef = EB6D0F9C11EE0F9100B65CE3 /* PJ_urm5.c */; };
 		EB6D104211EE0F9100B65CE3 /* PJ_urmfps.c in Sources */ = {isa = PBXBuildFile; fileRef = EB6D0F9D11EE0F9100B65CE3 /* PJ_urmfps.c */; };
-		EB6D104311EE0F9100B65CE3 /* pj_utils.c in Sources */ = {isa = PBXBuildFile; fileRef = EB6D0F9E11EE0F9100B65CE3 /* pj_utils.c */; };
-		EB6D104411EE0F9100B65CE3 /* PJ_vandg.c in Sources */ = {isa = PBXBuildFile; fileRef = EB6D0F9F11EE0F9100B65CE3 /* PJ_vandg.c */; };
-		EB6D104511EE0F9100B65CE3 /* PJ_vandg2.c in Sources */ = {isa = PBXBuildFile; fileRef = EB6D0FA011EE0F9100B65CE3 /* PJ_vandg2.c */; };
-		EB6D104611EE0F9100B65CE3 /* PJ_vandg4.c in Sources */ = {isa = PBXBuildFile; fileRef = EB6D0FA111EE0F9100B65CE3 /* PJ_vandg4.c */; };
-		EB6D104711EE0F9100B65CE3 /* PJ_wag2.c in Sources */ = {isa = PBXBuildFile; fileRef = EB6D0FA211EE0F9100B65CE3 /* PJ_wag2.c */; };
-		EB6D104811EE0F9100B65CE3 /* PJ_wag3.c in Sources */ = {isa = PBXBuildFile; fileRef = EB6D0FA311EE0F9100B65CE3 /* PJ_wag3.c */; };
-		EB6D104911EE0F9100B65CE3 /* PJ_wag7.c in Sources */ = {isa = PBXBuildFile; fileRef = EB6D0FA411EE0F9100B65CE3 /* PJ_wag7.c */; };
-		EB6D104A11EE0F9100B65CE3 /* PJ_wink1.c in Sources */ = {isa = PBXBuildFile; fileRef = EB6D0FA511EE0F9100B65CE3 /* PJ_wink1.c */; };
-		EB6D104B11EE0F9100B65CE3 /* PJ_wink2.c in Sources */ = {isa = PBXBuildFile; fileRef = EB6D0FA611EE0F9100B65CE3 /* PJ_wink2.c */; };
 		EB6D104C11EE0F9100B65CE3 /* pj_zpoly1.c in Sources */ = {isa = PBXBuildFile; fileRef = EB6D0FA711EE0F9100B65CE3 /* pj_zpoly1.c */; };
-		EB6D104E11EE0F9100B65CE3 /* proj.def in Resources */ = {isa = PBXBuildFile; fileRef = EB6D0FA911EE0F9100B65CE3 /* proj.def */; };
 		EB6D104F11EE0F9100B65CE3 /* proj_api.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB6D0FAA11EE0F9100B65CE3 /* proj_api.h */; settings = {JAVA_ARCHIVE_SUBDIR = proj.4; }; };
 		EB6D105011EE0F9100B65CE3 /* proj_config.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB6D0FAB11EE0F9100B65CE3 /* proj_config.h */; settings = {JAVA_ARCHIVE_SUBDIR = proj.4; }; };
-		EB6D105111EE0F9100B65CE3 /* proj_config.h.in in Resources */ = {isa = PBXBuildFile; fileRef = EB6D0FAC11EE0F9100B65CE3 /* proj_config.h.in */; };
 		EB6D105211EE0F9100B65CE3 /* proj_mdist.c in Sources */ = {isa = PBXBuildFile; fileRef = EB6D0FAD11EE0F9100B65CE3 /* proj_mdist.c */; };
 		EB6D105311EE0F9100B65CE3 /* proj_rouss.c in Sources */ = {isa = PBXBuildFile; fileRef = EB6D0FAE11EE0F9100B65CE3 /* proj_rouss.c */; };
 		EB6D105411EE0F9100B65CE3 /* projects.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB6D0FAF11EE0F9100B65CE3 /* projects.h */; settings = {JAVA_ARCHIVE_SUBDIR = proj.4; }; };
@@ -506,6 +511,16 @@
 		EBB61F9F12540A180099A883 /* ShuttleStopMapAnnotation.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EBB61F9D12540A180099A883 /* ShuttleStopMapAnnotation.h */; settings = {JAVA_ARCHIVE_SUBDIR = Modules/ShuttleTrack; }; };
 		EBB61FA012540A180099A883 /* ShuttleStopMapAnnotation.m in Sources */ = {isa = PBXBuildFile; fileRef = EBB61F9E12540A180099A883 /* ShuttleStopMapAnnotation.m */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		EB4C2F8112808D5600058748 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = EB4C2F7D12808D5600058748 /* Proj.4.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = D2AAC07E0554694100DB518D /* libProj_4.a */;
+			remoteInfo = Proj.4;
+		};
+/* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		1D30AB110D05D00D00671497 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -853,6 +868,25 @@
 		EB49AD5811F4BFE200854791 /* home */ = {isa = PBXFileReference; lastKnownFileType = folder; name = home; path = Resources/home; sourceTree = "<group>"; };
 		EB49AD6511F4BFF100854791 /* maps */ = {isa = PBXFileReference; lastKnownFileType = folder; name = maps; path = Resources/maps; sourceTree = "<group>"; };
 		EB49AD7B11F4BFFF00854791 /* news */ = {isa = PBXFileReference; lastKnownFileType = folder; name = news; path = Resources/news; sourceTree = "<group>"; };
+		EB4C2CC8127F118400058748 /* AnalyticsWrapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AnalyticsWrapper.h; sourceTree = "<group>"; };
+		EB4C2CC9127F118400058748 /* AnalyticsWrapper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AnalyticsWrapper.m; sourceTree = "<group>"; };
+		EB4C2CCC127F120400058748 /* GANTracker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GANTracker.h; sourceTree = "<group>"; };
+		EB4C2CCD127F120400058748 /* libGoogleAnalytics.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libGoogleAnalytics.a; sourceTree = "<group>"; };
+		EB4C2CDE127F138100058748 /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
+		EB4C2CE0127F138900058748 /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
+		EB4C2E181280862700058748 /* pj_apply_vgridshift.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = pj_apply_vgridshift.c; sourceTree = "<group>"; };
+		EB4C2E1C1280867400058748 /* pj_ctx.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = pj_ctx.c; sourceTree = "<group>"; };
+		EB4C2E201280869E00058748 /* pj_log.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = pj_log.c; sourceTree = "<group>"; };
+		EB4C2E2E12808AB900058748 /* pj_utils.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = pj_utils.c; sourceTree = "<group>"; };
+		EB4C2E2F12808AB900058748 /* PJ_vandg.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = PJ_vandg.c; sourceTree = "<group>"; };
+		EB4C2E3012808AB900058748 /* PJ_vandg2.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = PJ_vandg2.c; sourceTree = "<group>"; };
+		EB4C2E3112808AB900058748 /* PJ_vandg4.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = PJ_vandg4.c; sourceTree = "<group>"; };
+		EB4C2E3212808AB900058748 /* PJ_wag2.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = PJ_wag2.c; sourceTree = "<group>"; };
+		EB4C2E3312808AB900058748 /* PJ_wag3.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = PJ_wag3.c; sourceTree = "<group>"; };
+		EB4C2E3412808AB900058748 /* PJ_wag7.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = PJ_wag7.c; sourceTree = "<group>"; };
+		EB4C2E3512808AB900058748 /* PJ_wink1.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = PJ_wink1.c; sourceTree = "<group>"; };
+		EB4C2E3612808AB900058748 /* PJ_wink2.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = PJ_wink2.c; sourceTree = "<group>"; };
+		EB4C2F7D12808D5600058748 /* Proj.4.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Proj.4.xcodeproj; path = "proj-svn/Proj.4/Proj.4.xcodeproj"; sourceTree = "<group>"; };
 		EB54942710DFF03600B708B3 /* icons */ = {isa = PBXFileReference; lastKnownFileType = folder; name = icons; path = Resources/icons; sourceTree = "<group>"; };
 		EB54947210DFF7E200B708B3 /* global */ = {isa = PBXFileReference; lastKnownFileType = folder; name = global; path = Resources/global; sourceTree = "<group>"; };
 		EB6D02A811E3784100B65CE3 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
@@ -866,13 +900,11 @@
 		EB6D0F1311EE0F9000B65CE3 /* dmstor.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = dmstor.c; sourceTree = "<group>"; };
 		EB6D0F1711EE0F9000B65CE3 /* geocent.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = geocent.c; sourceTree = "<group>"; };
 		EB6D0F1811EE0F9000B65CE3 /* geocent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = geocent.h; sourceTree = "<group>"; };
-		EB6D0F1E11EE0F9000B65CE3 /* jniproj.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = jniproj.c; sourceTree = "<group>"; };
 		EB6D0F2211EE0F9000B65CE3 /* mk_cheby.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = mk_cheby.c; sourceTree = "<group>"; };
 		EB6D0F2511EE0F9000B65CE3 /* nad_cvt.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = nad_cvt.c; sourceTree = "<group>"; };
 		EB6D0F2611EE0F9000B65CE3 /* nad_init.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = nad_init.c; sourceTree = "<group>"; };
 		EB6D0F2711EE0F9000B65CE3 /* nad_intr.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = nad_intr.c; sourceTree = "<group>"; };
 		EB6D0F2811EE0F9000B65CE3 /* nad_list.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = nad_list.h; sourceTree = "<group>"; };
-		EB6D0F2911EE0F9000B65CE3 /* org_proj4_Projections.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = org_proj4_Projections.h; sourceTree = "<group>"; };
 		EB6D0F2A11EE0F9000B65CE3 /* p_series.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = p_series.c; sourceTree = "<group>"; };
 		EB6D0F2B11EE0F9000B65CE3 /* PJ_aea.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = PJ_aea.c; sourceTree = "<group>"; };
 		EB6D0F2C11EE0F9000B65CE3 /* PJ_aeqd.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = PJ_aeqd.c; sourceTree = "<group>"; };
@@ -988,20 +1020,9 @@
 		EB6D0F9B11EE0F9100B65CE3 /* pj_units.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = pj_units.c; sourceTree = "<group>"; };
 		EB6D0F9C11EE0F9100B65CE3 /* PJ_urm5.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = PJ_urm5.c; sourceTree = "<group>"; };
 		EB6D0F9D11EE0F9100B65CE3 /* PJ_urmfps.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = PJ_urmfps.c; sourceTree = "<group>"; };
-		EB6D0F9E11EE0F9100B65CE3 /* pj_utils.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = pj_utils.c; sourceTree = "<group>"; };
-		EB6D0F9F11EE0F9100B65CE3 /* PJ_vandg.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = PJ_vandg.c; sourceTree = "<group>"; };
-		EB6D0FA011EE0F9100B65CE3 /* PJ_vandg2.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = PJ_vandg2.c; sourceTree = "<group>"; };
-		EB6D0FA111EE0F9100B65CE3 /* PJ_vandg4.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = PJ_vandg4.c; sourceTree = "<group>"; };
-		EB6D0FA211EE0F9100B65CE3 /* PJ_wag2.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = PJ_wag2.c; sourceTree = "<group>"; };
-		EB6D0FA311EE0F9100B65CE3 /* PJ_wag3.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = PJ_wag3.c; sourceTree = "<group>"; };
-		EB6D0FA411EE0F9100B65CE3 /* PJ_wag7.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = PJ_wag7.c; sourceTree = "<group>"; };
-		EB6D0FA511EE0F9100B65CE3 /* PJ_wink1.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = PJ_wink1.c; sourceTree = "<group>"; };
-		EB6D0FA611EE0F9100B65CE3 /* PJ_wink2.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = PJ_wink2.c; sourceTree = "<group>"; };
 		EB6D0FA711EE0F9100B65CE3 /* pj_zpoly1.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = pj_zpoly1.c; sourceTree = "<group>"; };
-		EB6D0FA911EE0F9100B65CE3 /* proj.def */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = proj.def; sourceTree = "<group>"; };
 		EB6D0FAA11EE0F9100B65CE3 /* proj_api.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = proj_api.h; sourceTree = "<group>"; };
 		EB6D0FAB11EE0F9100B65CE3 /* proj_config.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = proj_config.h; sourceTree = "<group>"; };
-		EB6D0FAC11EE0F9100B65CE3 /* proj_config.h.in */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = proj_config.h.in; sourceTree = "<group>"; };
 		EB6D0FAD11EE0F9100B65CE3 /* proj_mdist.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = proj_mdist.c; sourceTree = "<group>"; };
 		EB6D0FAE11EE0F9100B65CE3 /* proj_rouss.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = proj_rouss.c; sourceTree = "<group>"; };
 		EB6D0FAF11EE0F9100B65CE3 /* projects.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = projects.h; sourceTree = "<group>"; };
@@ -1113,6 +1134,9 @@
 				29366C1A118E401C009D6863 /* libxml2.dylib in Frameworks */,
 				29366C1E118E4151009D6863 /* Security.framework in Frameworks */,
 				EB6D02A911E3784100B65CE3 /* MapKit.framework in Frameworks */,
+				EB4C2CCF127F120400058748 /* libGoogleAnalytics.a in Frameworks */,
+				EB4C2CDF127F138100058748 /* libsqlite3.dylib in Frameworks */,
+				EB4C2CE1127F138900058748 /* CFNetwork.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1122,6 +1146,7 @@
 		080E96DDFE201D6D7F000001 /* Common */ = {
 			isa = PBXGroup;
 			children = (
+				EB4C2CC7127F118400058748 /* Analytics */,
 				EB4210E5120B82C000089FE0 /* TwitterViewController.h */,
 				EB4210E6120B82C000089FE0 /* TwitterViewController.m */,
 				EB4210C6120B81D500089FE0 /* UIWidgets */,
@@ -1188,6 +1213,7 @@
 		29B97315FDCFA39411CA2CEA /* Other Sources */ = {
 			isa = PBXGroup;
 			children = (
+				EB4C2F7D12808D5600058748 /* Proj.4.xcodeproj */,
 				EB6D0F0C11EE0F9000B65CE3 /* proj.4 */,
 				DE6F044511139CA40046684B /* FBConnect */,
 				28A0AAE50D9B0CCF005BE974 /* MIT_Mobile_Prefix.pch */,
@@ -1231,6 +1257,8 @@
 		29B97323FDCFA39411CA2CEA /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				EB4C2CDE127F138100058748 /* libsqlite3.dylib */,
+				EB4C2CE0127F138900058748 /* CFNetwork.framework */,
 				296F9EDC110A0F5400EC8FCA /* AudioToolbox.framework */,
 				4463CCB110D6F5750048CA83 /* CoreLocation.framework */,
 				EB7F32D610CD6FBB00188BCD /* AddressBookUI.framework */,
@@ -1757,6 +1785,33 @@
 			path = UIWidgets;
 			sourceTree = "<group>";
 		};
+		EB4C2CC7127F118400058748 /* Analytics */ = {
+			isa = PBXGroup;
+			children = (
+				EB4C2D03127F141800058748 /* Google Analytics */,
+				EB4C2CC8127F118400058748 /* AnalyticsWrapper.h */,
+				EB4C2CC9127F118400058748 /* AnalyticsWrapper.m */,
+			);
+			path = Analytics;
+			sourceTree = "<group>";
+		};
+		EB4C2D03127F141800058748 /* Google Analytics */ = {
+			isa = PBXGroup;
+			children = (
+				EB4C2CCC127F120400058748 /* GANTracker.h */,
+				EB4C2CCD127F120400058748 /* libGoogleAnalytics.a */,
+			);
+			name = "Google Analytics";
+			sourceTree = "<group>";
+		};
+		EB4C2F7E12808D5600058748 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				EB4C2F8212808D5600058748 /* libProj_4.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		EB6D036911E3989100B65CE3 /* ArcGISServer */ = {
 			isa = PBXGroup;
 			children = (
@@ -1775,6 +1830,9 @@
 		EB6D0F0C11EE0F9000B65CE3 /* proj.4 */ = {
 			isa = PBXGroup;
 			children = (
+				EB4C2E201280869E00058748 /* pj_log.c */,
+				EB4C2E1C1280867400058748 /* pj_ctx.c */,
+				EB4C2E181280862700058748 /* pj_apply_vgridshift.c */,
 				EB6D0F0D11EE0F9000B65CE3 /* aasincos.c */,
 				EB6D0F0E11EE0F9000B65CE3 /* adjlon.c */,
 				EB6D0F0F11EE0F9000B65CE3 /* bch2bps.c */,
@@ -1783,13 +1841,11 @@
 				EB6D0F1311EE0F9000B65CE3 /* dmstor.c */,
 				EB6D0F1711EE0F9000B65CE3 /* geocent.c */,
 				EB6D0F1811EE0F9000B65CE3 /* geocent.h */,
-				EB6D0F1E11EE0F9000B65CE3 /* jniproj.c */,
 				EB6D0F2211EE0F9000B65CE3 /* mk_cheby.c */,
 				EB6D0F2511EE0F9000B65CE3 /* nad_cvt.c */,
 				EB6D0F2611EE0F9000B65CE3 /* nad_init.c */,
 				EB6D0F2711EE0F9000B65CE3 /* nad_intr.c */,
 				EB6D0F2811EE0F9000B65CE3 /* nad_list.h */,
-				EB6D0F2911EE0F9000B65CE3 /* org_proj4_Projections.h */,
 				EB6D0F2A11EE0F9000B65CE3 /* p_series.c */,
 				EB6D0F2B11EE0F9000B65CE3 /* PJ_aea.c */,
 				EB6D0F2C11EE0F9000B65CE3 /* PJ_aeqd.c */,
@@ -1906,20 +1962,18 @@
 				EB6D0F9B11EE0F9100B65CE3 /* pj_units.c */,
 				EB6D0F9C11EE0F9100B65CE3 /* PJ_urm5.c */,
 				EB6D0F9D11EE0F9100B65CE3 /* PJ_urmfps.c */,
-				EB6D0F9E11EE0F9100B65CE3 /* pj_utils.c */,
-				EB6D0F9F11EE0F9100B65CE3 /* PJ_vandg.c */,
-				EB6D0FA011EE0F9100B65CE3 /* PJ_vandg2.c */,
-				EB6D0FA111EE0F9100B65CE3 /* PJ_vandg4.c */,
-				EB6D0FA211EE0F9100B65CE3 /* PJ_wag2.c */,
-				EB6D0FA311EE0F9100B65CE3 /* PJ_wag3.c */,
-				EB6D0FA411EE0F9100B65CE3 /* PJ_wag7.c */,
-				EB6D0FA511EE0F9100B65CE3 /* PJ_wink1.c */,
-				EB6D0FA611EE0F9100B65CE3 /* PJ_wink2.c */,
+				EB4C2E2E12808AB900058748 /* pj_utils.c */,
+				EB4C2E2F12808AB900058748 /* PJ_vandg.c */,
+				EB4C2E3012808AB900058748 /* PJ_vandg2.c */,
+				EB4C2E3112808AB900058748 /* PJ_vandg4.c */,
+				EB4C2E3212808AB900058748 /* PJ_wag2.c */,
+				EB4C2E3312808AB900058748 /* PJ_wag3.c */,
+				EB4C2E3412808AB900058748 /* PJ_wag7.c */,
+				EB4C2E3512808AB900058748 /* PJ_wink1.c */,
+				EB4C2E3612808AB900058748 /* PJ_wink2.c */,
 				EB6D0FA711EE0F9100B65CE3 /* pj_zpoly1.c */,
-				EB6D0FA911EE0F9100B65CE3 /* proj.def */,
 				EB6D0FAA11EE0F9100B65CE3 /* proj_api.h */,
 				EB6D0FAB11EE0F9100B65CE3 /* proj_config.h */,
-				EB6D0FAC11EE0F9100B65CE3 /* proj_config.h.in */,
 				EB6D0FAD11EE0F9100B65CE3 /* proj_mdist.c */,
 				EB6D0FAE11EE0F9100B65CE3 /* proj_rouss.c */,
 				EB6D0FAF11EE0F9100B65CE3 /* projects.h */,
@@ -2097,7 +2151,6 @@
 				EB6D076811E50E5B00B65CE3 /* JSONAPIRequest.h in JavaArchive */,
 				EB6D0FBD11EE0F9100B65CE3 /* geocent.h in JavaArchive */,
 				EB6D0FCD11EE0F9100B65CE3 /* nad_list.h in JavaArchive */,
-				EB6D0FCE11EE0F9100B65CE3 /* org_proj4_Projections.h in JavaArchive */,
 				EB6D100E11EE0F9100B65CE3 /* pj_list.h in JavaArchive */,
 				EB6D104F11EE0F9100B65CE3 /* proj_api.h in JavaArchive */,
 				EB6D105011EE0F9100B65CE3 /* proj_config.h in JavaArchive */,
@@ -2160,6 +2213,8 @@
 				C7F74E14124D509400853674 /* ContactsTableViewController.h in JavaArchive */,
 				C7F750EC124EA60900853674 /* ContactsSystemDetailsViewController.h in JavaArchive */,
 				EBB61F9F12540A180099A883 /* ShuttleStopMapAnnotation.h in JavaArchive */,
+				EB4C2CCA127F118400058748 /* AnalyticsWrapper.h in JavaArchive */,
+				EB4C2CCE127F120400058748 /* GANTracker.h in JavaArchive */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2203,12 +2258,28 @@
 			);
 			mainGroup = 29B97314FDCFA39411CA2CEA /* CustomTemplate */;
 			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = EB4C2F7E12808D5600058748 /* Products */;
+					ProjectRef = EB4C2F7D12808D5600058748 /* Proj.4.xcodeproj */;
+				},
+			);
 			projectRoot = "";
 			targets = (
 				1D6058900D05DD3D006BFB54 /* Harvard Mobile */,
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		EB4C2F8212808D5600058748 /* libProj_4.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libProj_4.a;
+			remoteRef = EB4C2F8112808D5600058748 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		1D60588D0D05DD3D006BFB54 /* Resources */ = {
@@ -2226,8 +2297,6 @@
 				29C4546D118B55E100A321B0 /* jQueryInject.txt in Resources */,
 				29C4546E118B55E100A321B0 /* jQueryInjectLandscape.txt in Resources */,
 				C704F06111E3E31F00621406 /* DiningFirstViewController.xib in Resources */,
-				EB6D104E11EE0F9100B65CE3 /* proj.def in Resources */,
-				EB6D105111EE0F9100B65CE3 /* proj_config.h.in in Resources */,
 				EB49AD5511F4BFCE00854791 /* courses in Resources */,
 				EB49AD5711F4BFCE00854791 /* events in Resources */,
 				EB49AD6411F4BFE200854791 /* home in Resources */,
@@ -2406,7 +2475,6 @@
 				EB6D0FB611EE0F9100B65CE3 /* biveval.c in Sources */,
 				EB6D0FB811EE0F9100B65CE3 /* dmstor.c in Sources */,
 				EB6D0FBC11EE0F9100B65CE3 /* geocent.c in Sources */,
-				EB6D0FC311EE0F9100B65CE3 /* jniproj.c in Sources */,
 				EB6D0FC711EE0F9100B65CE3 /* mk_cheby.c in Sources */,
 				EB6D0FCA11EE0F9100B65CE3 /* nad_cvt.c in Sources */,
 				EB6D0FCB11EE0F9100B65CE3 /* nad_init.c in Sources */,
@@ -2525,15 +2593,6 @@
 				EB6D104011EE0F9100B65CE3 /* pj_units.c in Sources */,
 				EB6D104111EE0F9100B65CE3 /* PJ_urm5.c in Sources */,
 				EB6D104211EE0F9100B65CE3 /* PJ_urmfps.c in Sources */,
-				EB6D104311EE0F9100B65CE3 /* pj_utils.c in Sources */,
-				EB6D104411EE0F9100B65CE3 /* PJ_vandg.c in Sources */,
-				EB6D104511EE0F9100B65CE3 /* PJ_vandg2.c in Sources */,
-				EB6D104611EE0F9100B65CE3 /* PJ_vandg4.c in Sources */,
-				EB6D104711EE0F9100B65CE3 /* PJ_wag2.c in Sources */,
-				EB6D104811EE0F9100B65CE3 /* PJ_wag3.c in Sources */,
-				EB6D104911EE0F9100B65CE3 /* PJ_wag7.c in Sources */,
-				EB6D104A11EE0F9100B65CE3 /* PJ_wink1.c in Sources */,
-				EB6D104B11EE0F9100B65CE3 /* PJ_wink2.c in Sources */,
 				EB6D104C11EE0F9100B65CE3 /* pj_zpoly1.c in Sources */,
 				EB6D105211EE0F9100B65CE3 /* proj_mdist.c in Sources */,
 				EB6D105311EE0F9100B65CE3 /* proj_rouss.c in Sources */,
@@ -2599,6 +2658,19 @@
 				C7F74E15124D509400853674 /* ContactsTableViewController.m in Sources */,
 				C7F750ED124EA60900853674 /* ContactsSystemDetailsViewController.m in Sources */,
 				EBB61FA012540A180099A883 /* ShuttleStopMapAnnotation.m in Sources */,
+				EB4C2CCB127F118400058748 /* AnalyticsWrapper.m in Sources */,
+				EB4C2E191280862700058748 /* pj_apply_vgridshift.c in Sources */,
+				EB4C2E1D1280867400058748 /* pj_ctx.c in Sources */,
+				EB4C2E211280869E00058748 /* pj_log.c in Sources */,
+				EB4C2E3712808AB900058748 /* pj_utils.c in Sources */,
+				EB4C2E3812808AB900058748 /* PJ_vandg.c in Sources */,
+				EB4C2E3912808AB900058748 /* PJ_vandg2.c in Sources */,
+				EB4C2E3A12808AB900058748 /* PJ_vandg4.c in Sources */,
+				EB4C2E3B12808AB900058748 /* PJ_wag2.c in Sources */,
+				EB4C2E3C12808AB900058748 /* PJ_wag3.c in Sources */,
+				EB4C2E3D12808AB900058748 /* PJ_wag7.c in Sources */,
+				EB4C2E3E12808AB900058748 /* PJ_wink1.c in Sources */,
+				EB4C2E3F12808AB900058748 /* PJ_wink2.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2620,6 +2692,7 @@
 					"$(inherited)",
 					"\"$(SRCROOT)/Common/Libraries & Headers/OAuthConsumer\"",
 					"${SDK_DIR}/usr/include/libxml2",
+					"\"$(SRCROOT)/Common/Analytics\"",
 				);
 				PRODUCT_NAME = "Harvard Mobile";
 				SDKROOT = iphoneos4.1;
@@ -2640,6 +2713,7 @@
 					"$(inherited)",
 					"\"$(SRCROOT)/Common/Libraries & Headers/OAuthConsumer\"",
 					"${SDK_DIR}/usr/include/libxml2",
+					"\"$(SRCROOT)/Common/Analytics\"",
 				);
 				PRODUCT_NAME = "Harvard Mobile";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
@@ -2734,6 +2808,7 @@
 					"$(inherited)",
 					"\"$(SRCROOT)/Common/Libraries & Headers/OAuthConsumer\"",
 					"${SDK_DIR}/usr/include/libxml2",
+					"\"$(SRCROOT)/Common/Analytics\"",
 				);
 				PRODUCT_NAME = "Harvard Mobile";
 				SDKROOT = iphoneos4.1;
@@ -2775,6 +2850,7 @@
 					"$(inherited)",
 					"\"$(SRCROOT)/Common/Libraries & Headers/OAuthConsumer\"",
 					"${SDK_DIR}/usr/include/libxml2",
+					"\"$(SRCROOT)/Common/Analytics\"",
 				);
 				PRODUCT_NAME = "Harvard Mobile";
 				SDKROOT = iphoneos4.1;
@@ -2816,6 +2892,7 @@
 					"$(inherited)",
 					"\"$(SRCROOT)/Common/Libraries & Headers/OAuthConsumer\"",
 					"${SDK_DIR}/usr/include/libxml2",
+					"\"$(SRCROOT)/Common/Analytics\"",
 				);
 				PRODUCT_NAME = "Harvard Mobile";
 				SDKROOT = iphoneos4.0;
@@ -2860,6 +2937,7 @@
 					"$(inherited)",
 					"\"$(SRCROOT)/Common/Libraries & Headers/OAuthConsumer\"",
 					"${SDK_DIR}/usr/include/libxml2",
+					"\"$(SRCROOT)/Common/Analytics\"",
 				);
 				PRODUCT_NAME = "Harvard Mobile";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
@@ -2910,6 +2988,7 @@
 					"$(inherited)",
 					"\"$(SRCROOT)/Common/Libraries & Headers/OAuthConsumer\"",
 					"${SDK_DIR}/usr/include/libxml2",
+					"\"$(SRCROOT)/Common/Analytics\"",
 				);
 				PRODUCT_NAME = "Harvard Mobile";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
@@ -2959,6 +3038,7 @@
 					"$(inherited)",
 					"\"$(SRCROOT)/Common/Libraries & Headers/OAuthConsumer\"",
 					"${SDK_DIR}/usr/include/libxml2",
+					"\"$(SRCROOT)/Common/Analytics\"",
 				);
 				PRODUCT_NAME = "Harvard Mobile";
 				SDKROOT = iphoneos4.1;
@@ -3000,6 +3080,7 @@
 					"$(inherited)",
 					"\"$(SRCROOT)/Common/Libraries & Headers/OAuthConsumer\"",
 					"${SDK_DIR}/usr/include/libxml2",
+					"\"$(SRCROOT)/Common/Analytics\"",
 				);
 				PRODUCT_NAME = "Harvard Mobile";
 				SDKROOT = iphoneos4.1;

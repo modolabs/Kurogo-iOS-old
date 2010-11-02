@@ -5,6 +5,7 @@
 //#import "MITUnreadNotifications.h"
 //#import "AudioToolbox/AudioToolbox.h"
 #import "SpringboardViewController.h"
+#import "AnalyticsWrapper.h"
 
 @implementation MIT_MobileAppDelegate
 
@@ -61,6 +62,9 @@
     for (MITModule *aModule in self.modules) {
         [aModule applicationDidFinishLaunching];
     }
+    
+    // set up analytics
+    [[AnalyticsWrapper sharedWrapper] setupWithProvider:ModoAnalyticsProviderGoogle];
 
     /*
     // Register for push notifications
@@ -124,6 +128,8 @@
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application {
+    [[AnalyticsWrapper sharedWrapper] shutdown];
+    
     // Let each module perform clean up as necessary
     for (MITModule *aModule in self.modules) {
         [aModule applicationWillTerminate];

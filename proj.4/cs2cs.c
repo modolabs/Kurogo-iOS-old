@@ -1,5 +1,5 @@
 /******************************************************************************
- * $Id: cs2cs.c 1504 2009-01-06 02:11:57Z warmerdam $
+ * $Id: cs2cs.c 1854 2010-06-11 01:51:24Z warmerdam $
  *
  * Project:  PROJ.4
  * Purpose:  Mainline program sort of like ``proj'' for converting between
@@ -116,6 +116,7 @@ static void process(FILE *fid)
             {
                 data.u = HUGE_VAL;
                 data.v = HUGE_VAL;
+                emess(-3,"pj_transform(): %s", pj_strerrno(pj_errno));
             }
         }
 
@@ -282,6 +283,10 @@ int main(int argc, char **argv)
                 continue;
               case 's': /* reverse output */
                 reverseout = 1;
+                continue;
+              case 'd': /* set debug level */
+                if (--argc <= 0) goto noargument;
+                pj_ctx_set_debug( pj_get_default_ctx(), atoi(*++argv));
                 continue;
               default:
                 emess(1, "invalid option: -%c",*arg);
