@@ -9,6 +9,7 @@
 #import "StaffDataSource.h"
 #import "MITUIConstants.h"
 #import "MITLoadingActivityView.h"
+#import "AnalyticsWrapper.h"
 
 #define leftMargin 10.0
 #define verticalPadding 10.0
@@ -196,6 +197,10 @@ NSString * termText(NSString *termCode) {
 	
 	classDetailsLoaded = NO;
 	[url setPath:[NSString stringWithFormat:@"class/%@/News", self.stellarClass.masterSubjectId] query:nil];
+    
+    
+    NSString *detailString = [NSString stringWithFormat:@"/courses/id=%@", self.stellarClass.masterSubjectId];
+    [[AnalyticsWrapper sharedWrapper] trackPageview:detailString];
 }
 
 - (void) viewDidAppear:(BOOL)animated {

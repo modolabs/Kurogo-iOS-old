@@ -1,4 +1,5 @@
 #import "CalendarCategoriesViewController.h"
+#import "AnalyticsWrapper.h"
 
 
 @implementation CalendarCategoriesViewController
@@ -29,6 +30,8 @@
 								command:@"categories" 
 							 parameters:nil];
 	
+    
+    [[AnalyticsWrapper sharedWrapper] trackPageview:@"/events/categories"];
 }
 
 

@@ -41,6 +41,8 @@ static AnalyticsWrapper *s_sharedWrapper = nil;
 
 - (void)trackPageview:(NSString *)pageID {
     NSError *error = nil;
+    // TODO: GA requires page views to begin with a slash
+    // may want to add that into this function
     if (![[GANTracker sharedTracker] trackPageview:pageID
                                          withError:&error])
     {
@@ -52,10 +54,10 @@ static AnalyticsWrapper *s_sharedWrapper = nil;
 
 - (void)trackEvent:(NSString *)event action:(NSString *)action label:(NSString *)label {
     NSError *error = nil;
-    if (![[GANTracker sharedTracker] trackEvent:event
-                                         action:action
-                                          label:label
-                                          value:-1
+    if (![[GANTracker sharedTracker] trackEvent:event  // required
+                                         action:action // required
+                                          label:label  // can be nil
+                                          value:-1     // -1 for no value
                                       withError:&error])
     {
         NSLog(@"Failed to track event: %@", [error description]);

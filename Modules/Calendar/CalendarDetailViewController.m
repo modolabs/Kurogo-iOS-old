@@ -6,6 +6,7 @@
 #import "Foundation+MITAdditions.h"
 #import "MapBookmarkManager.h"
 #import "MapSearchResultAnnotation.h"
+#import "AnalyticsWrapper.h"
 
 #define WEB_VIEW_PADDING 10.0
 #define BUTTON_PADDING 10.0
@@ -76,6 +77,9 @@ enum CalendarDetailRowTypes {
 	}
 	
 	descriptionHeight = 0;
+    
+    NSString *detailString = [NSString stringWithFormat:@"/events/detail?id=%@", self.event.title];
+    [[AnalyticsWrapper sharedWrapper] trackPageview:detailString];
 }
 
 - (void)showNextEvent:(id)sender

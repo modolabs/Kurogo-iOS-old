@@ -120,9 +120,6 @@ static NSInteger numTries = 0;
 		[storyTable deselectRowAtIndexPath:tempTableSelection animated:YES];
         [storyTable endUpdates];
 	}
-    
-    [[AnalyticsWrapper sharedWrapper] trackEvent:@"NewsStoryListView" action:@"" label:@""];
-    [[AnalyticsWrapper sharedWrapper] trackPageview:@"NewsStoryListView"];
 }
 
 - (void)viewDidAppear:(BOOL)animated {

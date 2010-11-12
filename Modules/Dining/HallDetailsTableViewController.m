@@ -8,6 +8,7 @@
 #import "HallDetailsTableViewController.h"
 #import "MITUIConstants.h"
 #import "DiningMultiLineCell.h"
+#import "AnalyticsWrapper.h"
 
 
 @implementation HallDetailsTableViewController
@@ -69,6 +70,9 @@
 	detailsTableView.dataSource = self;
 	detailsTableView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
 	[self.view addSubview:detailsTableView];
+    
+    NSString *detailString = [NSString stringWithFormat:@"/dining/hall?id=%@", hallStatus.hallName];
+    [[AnalyticsWrapper sharedWrapper] trackPageview:detailString];
 }
 
 -(void)viewDidUnload

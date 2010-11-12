@@ -1,6 +1,7 @@
 #import "AboutMITVC.h"
 #import "UITableView+MITUIAdditions.h"
 #import "MITUIConstants.h"
+#import "AnalyticsWrapper.h"
 
 @implementation AboutMITVC
 
@@ -8,6 +9,8 @@
     [super viewDidLoad];
     [self.tableView applyStandardColors];
     self.navigationItem.title = @"About Harvard";
+    
+    [[AnalyticsWrapper sharedWrapper] trackPageview:@"/about/harvard"];
 }
 
 #pragma mark Table view methods

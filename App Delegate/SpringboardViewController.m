@@ -14,6 +14,7 @@
 #import "ModoNavigationBar.h"
 #import "ModoSearchBar.h"
 #import "MITSearchDisplayController.h"
+#import "AnalyticsWrapper.h"
 
 // horizontal spacing between main icons
 // 17.0 for three icons per row
@@ -230,12 +231,15 @@
 - (void)buttonPressed:(id)sender {
     SpringboardIcon *anIcon = (SpringboardIcon *)sender;
     if ([anIcon.moduleTag isEqualToString:MobileWebTag]) {
+        // TODO: add this string to config
         [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"http://www.harvard.edu/?fullsite=yes"]];
     } else {
         MIT_MobileAppDelegate *appDelegate = (MIT_MobileAppDelegate *)[[UIApplication sharedApplication] delegate];
         activeModule = [appDelegate moduleForTag:anIcon.moduleTag];
         [appDelegate showModuleForTag:anIcon.moduleTag];
     }
+    NSString *detailString = [NSString stringWithFormat:@"/%@", anIcon.moduleTag];
+    [[AnalyticsWrapper sharedWrapper] trackPageview:detailString];
 }
 
 - (void)viewWillAppear:(BOOL)animated {

@@ -2,7 +2,6 @@
 #import <MapKit/MapKit.h>
 #import "ShuttleDataManager.h"
 #import "ShuttleSubscriptionManager.h"
-//#import "MITMapView.h"
 #import "MITModuleURL.h"
 
 @class ShuttleStop;

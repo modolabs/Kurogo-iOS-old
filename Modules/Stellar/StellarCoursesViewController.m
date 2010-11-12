@@ -14,6 +14,7 @@
 #import "MITSearchDisplayController.h"
 #import "StellarClassesViewController.h"
 #import "CoreDataManager.h"
+#import "AnalyticsWrapper.h"
 
 
 #define searchBarHeight NAVIGATION_BAR_HEIGHT
@@ -94,7 +95,9 @@
 	coursesTableView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
 	[self.view addSubview:coursesTableView];
     [searchBar addDropShadow];
-	
+    
+    NSString *detailString = [NSString stringWithFormat:@"/courses/group?id=%@", self.courseGroup.short_name];
+    [[AnalyticsWrapper sharedWrapper] trackPageview:detailString];
 }
 
 - (void) viewDidAppear:(BOOL)animated {

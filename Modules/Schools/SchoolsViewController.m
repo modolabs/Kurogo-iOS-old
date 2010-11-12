@@ -160,7 +160,6 @@
     
     [self.view addSubview:hintLabel];
     [self layoutIcons];
-    
 }
 
 

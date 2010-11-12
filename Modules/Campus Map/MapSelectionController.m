@@ -7,6 +7,7 @@
 #import "MapSearchResultAnnotation.h"
 #import "CampusMapViewController.h"
 #import "MapSearch.h"
+#import "AnalyticsWrapper.h"
 
 @interface MapSelectionController (Private)
 
@@ -158,6 +159,9 @@
     
     [self.view addSubview:self.tableView];
     [self.tableView reloadData];
+    
+    NSString *detailString = [NSString stringWithFormat:@"/maps/%@", self.navigationItem.title];
+    [[AnalyticsWrapper sharedWrapper] trackPageview:detailString];
 }
 
 

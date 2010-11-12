@@ -11,6 +11,7 @@
 #import "RouteMapViewController.h"
 #import "ShuttleRouteViewController.h"
 #import "ShuttleRoutes.h"
+#import "AnalyticsWrapper.h"
 
 #define NOTIFICATION_MINUTES 5
 #define MARGIN 10
@@ -202,6 +203,8 @@
 	routesRunningCurrentlyThroughThisStop = [[NSMutableArray alloc] init];
 	routesNotRunningCurrentlyThroughThisStop = [[NSMutableArray alloc] init];
 
+    NSString *detailString = [NSString stringWithFormat:@"/shuttles/stop?id=%@", self.shuttleStop.title];
+    [[AnalyticsWrapper sharedWrapper] trackPageview:detailString];
 }
 
 -(void) viewWillDisappear:(BOOL)animated

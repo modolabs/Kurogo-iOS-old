@@ -11,6 +11,7 @@
 #import "AddressFormatter.h"
 #import "MapBookmarkManager.h"
 #import "TileServerManager.h"
+#import "AnalyticsWrapper.h"
 
 @interface PeopleDetailsViewController (Private)
 
@@ -134,7 +135,9 @@ NSString * const RequestLookupAddress = @"address";
 			[api requestObject:[NSDictionary dictionaryWithObjectsAndKeys:@"people", @"module", self.fullname, @"q", nil]];
 		}
 	}
-	
+
+    NSString *detailString = [NSString stringWithFormat:@"/people/detail?id=%@", self.personDetails.uid];
+    [[AnalyticsWrapper sharedWrapper] trackPageview:detailString];
 }
 
 - (void)didReceiveMemoryWarning {

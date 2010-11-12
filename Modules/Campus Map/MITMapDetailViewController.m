@@ -6,6 +6,7 @@
 #import "MITUIConstants.h"
 #import "MIT_MobileAppDelegate.h"
 #import "MapBookmarkManager.h"
+#import "AnalyticsWrapper.h"
 
 @interface MITMapDetailViewController(Private)
 
@@ -96,6 +97,9 @@
 	if (_startingTab) {
 		_tabViewControl.selectedTab = _startingTab;
 	}
+    
+    NSString *detailString = [NSString stringWithFormat:@"/maps/detail=%@", self.annotation.name];
+    [[AnalyticsWrapper sharedWrapper] trackPageview:detailString];
 }
 
 -(void) externalMapButtonPressed:(id) sender

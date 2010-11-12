@@ -8,6 +8,7 @@
 #import "StoryGalleryViewController.h"
 #import "ConnectionDetector.h"
 #import "NewsImage.h"
+#import "AnalyticsWrapper.h"
 
 @implementation StoryDetailViewController
 
@@ -105,6 +106,10 @@
     self.story.read = [NSNumber numberWithBool:YES];
 	[CoreDataManager saveDataWithTemporaryMergePolicy:NSMergeByPropertyObjectTrumpMergePolicy];
 	[storyView loadHTMLString:htmlString baseURL:baseURL];
+
+    // analytics
+    NSString *detailString = [NSString stringWithFormat:@"/news/story?id=%d", [self.story.story_id integerValue]];
+    [[AnalyticsWrapper sharedWrapper] trackPageview:detailString];
 }
 
 - (void)didPressNavButton:(id)sender {

@@ -4,6 +4,7 @@
 #import "ShuttleStopCell.h"
 #import "ShuttleStopViewController.h"
 #import "MITUIConstants.h"
+#import "AnalyticsWrapper.h"
 
 @interface ShuttleRouteViewController(Private)
 
@@ -77,7 +78,10 @@
     self.tableView.frame = CGRectMake(0.0, _titleCell.frame.size.height - 4.0, self.view.frame.size.width, self.view.frame.size.height - _titleCell.frame.size.height + 4.0);
 	self.tableView.backgroundColor = [UIColor whiteColor];
 	
-    [self setMapViewMode:YES animated:NO];	
+    [self setMapViewMode:YES animated:NO];
+    
+    NSString *detailString = [NSString stringWithFormat:@"/shuttles/route?id=%@", _route.title];
+    [[AnalyticsWrapper sharedWrapper] trackPageview:detailString];
 }
 
 

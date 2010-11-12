@@ -4,6 +4,7 @@
 #import "ShuttleStop.h"
 #import "ShuttleLocation.h"
 #import "MITUIConstants.h"
+#import "AnalyticsWrapper.h"
 
 #define DEGREES_TO_RADIANS(__ANGLE__) ((__ANGLE__) / 180.0 * M_PI)
 
@@ -52,6 +53,9 @@
 	hasStopInfoForMap == NO;
 	hasNarrowedRegion = NO;
 	[self fallBackViewDidLoad];
+    
+    NSString *detailString = [NSString stringWithFormat:@"/shuttles/map?route_id=%@", _route.title];
+    [[AnalyticsWrapper sharedWrapper] trackPageview:detailString];
 }
 
 -(void)fallBackViewDidLoad {
