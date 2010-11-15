@@ -10,6 +10,7 @@
 #import "DiningModule.h"
 #import "SchoolsModule.h"
 #import "ShuttleModule.h"
+#import "LibrariesModule.h"
 
 // #import your module's header here
 
@@ -35,6 +36,9 @@
 	[result addObject:[[[StellarModule alloc] init] autorelease]];
 	[result addObject:[[[DiningModule alloc] init] autorelease]];
 	[result addObject:[[[ShuttleModule alloc] init] autorelease]];
+	
+	[result addObject:[[[LibrariesModule alloc] init] autorelease]];
+	
     [result addObject:[[[SchoolsModule alloc] init] autorelease]];
     [result addObject:[[[MobileWebModule alloc] init] autorelease]];
     [result addObject:[[[SettingsModule alloc] init] autorelease]];

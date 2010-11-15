@@ -113,6 +113,12 @@
 		44C1A3CF11A33905000FD653 /* MapSelectionController.m in Sources */ = {isa = PBXBuildFile; fileRef = 44C1A3CD11A33905000FD653 /* MapSelectionController.m */; };
 		44C1A4C411A412E2000FD653 /* MapSearch.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = 44C1A4C211A412E2000FD653 /* MapSearch.h */; settings = {JAVA_ARCHIVE_SUBDIR = "Modules/Campus Map/CampusMap.xcdatamodeld"; }; };
 		44C1A4C511A412E2000FD653 /* MapSearch.m in Sources */ = {isa = PBXBuildFile; fileRef = 44C1A4C311A412E2000FD653 /* MapSearch.m */; };
+		56B6DA29128EC10200818071 /* Secret.m in Sources */ = {isa = PBXBuildFile; fileRef = 56B6DA28128EC10200818071 /* Secret.m */; };
+		56B6DA30128EC24700818071 /* libGoogleAnalytics.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EB4C2CCD127F120400058748 /* libGoogleAnalytics.a */; };
+		56B6DA4212914C8000818071 /* LibrariesMainViewController.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = 56B6DA4012914C8000818071 /* LibrariesMainViewController.h */; settings = {JAVA_ARCHIVE_SUBDIR = Modules/Libraries; }; };
+		56B6DA4312914C8000818071 /* LibrariesMainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 56B6DA4112914C8000818071 /* LibrariesMainViewController.m */; };
+		56B6DA4612914C8D00818071 /* LibrariesModule.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = 56B6DA4412914C8D00818071 /* LibrariesModule.h */; settings = {JAVA_ARCHIVE_SUBDIR = Modules/Libraries; }; };
+		56B6DA4712914C8D00818071 /* LibrariesModule.m in Sources */ = {isa = PBXBuildFile; fileRef = 56B6DA4512914C8D00818071 /* LibrariesModule.m */; };
 		A623F1F1120A035A00341C5E /* ModoThreeStateSwitchControl.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = A623F1EF120A035A00341C5E /* ModoThreeStateSwitchControl.h */; settings = {JAVA_ARCHIVE_SUBDIR = Modules; }; };
 		A623F1F2120A035A00341C5E /* ModoThreeStateSwitchControl.m in Sources */ = {isa = PBXBuildFile; fileRef = A623F1F0120A035A00341C5E /* ModoThreeStateSwitchControl.m */; };
 		A64C313D11FDFAB8006FE056 /* AddressFormatter.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = A64C313B11FDFAB8006FE056 /* AddressFormatter.h */; settings = {JAVA_ARCHIVE_SUBDIR = Common; }; };
@@ -211,7 +217,6 @@
 		C7B897F211F535C8002B3619 /* HoursTableViewController.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = C7B897F011F535C8002B3619 /* HoursTableViewController.h */; settings = {JAVA_ARCHIVE_SUBDIR = Modules/Dining; }; };
 		C7DA11B912138C2F00FE8756 /* MainSearchGroupedCoursesTableViewController.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = C7DA11B712138C2F00FE8756 /* MainSearchGroupedCoursesTableViewController.h */; settings = {JAVA_ARCHIVE_SUBDIR = Modules/Stellar; }; };
 		C7DA11BA12138C2F00FE8756 /* MainSearchGroupedCoursesTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C7DA11B812138C2F00FE8756 /* MainSearchGroupedCoursesTableViewController.m */; };
-		C7DA15991220943C00FE8756 /* Secret.m in Sources */ = {isa = PBXBuildFile; fileRef = C7DA15981220943C00FE8756 /* Secret.m */; };
 		C7F74E14124D509400853674 /* ContactsTableViewController.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = C7F74E12124D509400853674 /* ContactsTableViewController.h */; settings = {JAVA_ARCHIVE_SUBDIR = Modules; }; };
 		C7F74E15124D509400853674 /* ContactsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C7F74E13124D509400853674 /* ContactsTableViewController.m */; };
 		C7F750EC124EA60900853674 /* ContactsSystemDetailsViewController.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = C7F750EA124EA60900853674 /* ContactsSystemDetailsViewController.h */; settings = {JAVA_ARCHIVE_SUBDIR = Modules; }; };
@@ -286,7 +291,6 @@
 		EB4C2CCA127F118400058748 /* AnalyticsWrapper.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB4C2CC8127F118400058748 /* AnalyticsWrapper.h */; settings = {JAVA_ARCHIVE_SUBDIR = Common/Analytics; }; };
 		EB4C2CCB127F118400058748 /* AnalyticsWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = EB4C2CC9127F118400058748 /* AnalyticsWrapper.m */; };
 		EB4C2CCE127F120400058748 /* GANTracker.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB4C2CCC127F120400058748 /* GANTracker.h */; settings = {JAVA_ARCHIVE_SUBDIR = Common/Analytics; }; };
-		EB4C2CCF127F120400058748 /* libGoogleAnalytics.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EB4C2CCD127F120400058748 /* libGoogleAnalytics.a */; };
 		EB4C2CDF127F138100058748 /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = EB4C2CDE127F138100058748 /* libsqlite3.dylib */; };
 		EB4C2CE1127F138900058748 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EB4C2CE0127F138900058748 /* CFNetwork.framework */; };
 		EB4C332C1280DB0500058748 /* libProj.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EB4C332B1280DAFC00058748 /* libProj.a */; };
@@ -369,14 +373,14 @@
 			isa = PBXContainerItemProxy;
 			containerPortal = EB4C33261280DAFC00058748 /* Proj.xcodeproj */;
 			proxyType = 2;
-			remoteGlobalIDString = D2AAC07E0554694100DB518D /* libProj.a */;
+			remoteGlobalIDString = D2AAC07E0554694100DB518D;
 			remoteInfo = Proj;
 		};
 		EB4C332D1280DB1200058748 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = EB4C33261280DAFC00058748 /* Proj.xcodeproj */;
 			proxyType = 1;
-			remoteGlobalIDString = D2AAC07D0554694100DB518D /* Proj */;
+			remoteGlobalIDString = D2AAC07D0554694100DB518D;
 			remoteInfo = Proj;
 		};
 /* End PBXContainerItemProxy section */
@@ -518,6 +522,11 @@
 		44C1A3CD11A33905000FD653 /* MapSelectionController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MapSelectionController.m; sourceTree = "<group>"; };
 		44C1A4C211A412E2000FD653 /* MapSearch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MapSearch.h; sourceTree = "<group>"; };
 		44C1A4C311A412E2000FD653 /* MapSearch.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MapSearch.m; sourceTree = "<group>"; };
+		56B6DA28128EC10200818071 /* Secret.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Secret.m; sourceTree = "<group>"; };
+		56B6DA4012914C8000818071 /* LibrariesMainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LibrariesMainViewController.h; sourceTree = "<group>"; };
+		56B6DA4112914C8000818071 /* LibrariesMainViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LibrariesMainViewController.m; sourceTree = "<group>"; };
+		56B6DA4412914C8D00818071 /* LibrariesModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LibrariesModule.h; sourceTree = "<group>"; };
+		56B6DA4512914C8D00818071 /* LibrariesModule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LibrariesModule.m; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* Mobile-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Mobile-Info.plist"; plistStructureDefinitionIdentifier = "com.apple.xcode.plist.structure-definition.iphone.info-plist"; sourceTree = "<group>"; };
 		A623F1EF120A035A00341C5E /* ModoThreeStateSwitchControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ModoThreeStateSwitchControl.h; sourceTree = "<group>"; };
 		A623F1F0120A035A00341C5E /* ModoThreeStateSwitchControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ModoThreeStateSwitchControl.m; sourceTree = "<group>"; };
@@ -624,7 +633,6 @@
 		C7B897F011F535C8002B3619 /* HoursTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = HoursTableViewController.h; path = Dining/HoursTableViewController.h; sourceTree = "<group>"; };
 		C7DA11B712138C2F00FE8756 /* MainSearchGroupedCoursesTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainSearchGroupedCoursesTableViewController.h; sourceTree = "<group>"; };
 		C7DA11B812138C2F00FE8756 /* MainSearchGroupedCoursesTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainSearchGroupedCoursesTableViewController.m; sourceTree = "<group>"; };
-		C7DA15981220943C00FE8756 /* Secret.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Secret.m; sourceTree = "<group>"; };
 		C7F74E12124D509400853674 /* ContactsTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContactsTableViewController.h; sourceTree = "<group>"; };
 		C7F74E13124D509400853674 /* ContactsTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContactsTableViewController.m; sourceTree = "<group>"; };
 		C7F750EA124EA60900853674 /* ContactsSystemDetailsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContactsSystemDetailsViewController.h; sourceTree = "<group>"; };
@@ -845,9 +853,9 @@
 				29366C1A118E401C009D6863 /* libxml2.dylib in Frameworks */,
 				29366C1E118E4151009D6863 /* Security.framework in Frameworks */,
 				EB6D02A911E3784100B65CE3 /* MapKit.framework in Frameworks */,
-				EB4C2CCF127F120400058748 /* libGoogleAnalytics.a in Frameworks */,
 				EB4C2CDF127F138100058748 /* libsqlite3.dylib in Frameworks */,
 				EB4C2CE1127F138900058748 /* CFNetwork.framework in Frameworks */,
+				56B6DA30128EC24700818071 /* libGoogleAnalytics.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -894,7 +902,7 @@
 				A6787A1411F605070034D559 /* NSArray+Convenience.h */,
 				A6787A1511F605070034D559 /* NSArray+Convenience.m */,
 				EBAE88031219960700F370BE /* Secret.h */,
-				C7DA15981220943C00FE8756 /* Secret.m */,
+				56B6DA28128EC10200818071 /* Secret.m */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -1139,6 +1147,17 @@
 			name = Selection;
 			sourceTree = "<group>";
 		};
+		56B6DA3F12914C5C00818071 /* Libraries */ = {
+			isa = PBXGroup;
+			children = (
+				56B6DA4012914C8000818071 /* LibrariesMainViewController.h */,
+				56B6DA4112914C8000818071 /* LibrariesMainViewController.m */,
+				56B6DA4412914C8D00818071 /* LibrariesModule.h */,
+				56B6DA4512914C8D00818071 /* LibrariesModule.m */,
+			);
+			path = Libraries;
+			sourceTree = "<group>";
+		};
 		A623F1EE120A033100341C5E /* Views */ = {
 			isa = PBXGroup;
 			children = (
@@ -1318,6 +1337,7 @@
 		DE715445102FE468005E6111 /* Modules */ = {
 			isa = PBXGroup;
 			children = (
+				56B6DA3F12914C5C00818071 /* Libraries */,
 				C76FBB551230019400968920 /* ShuttleTrack */,
 				C704F02311E3E13E00621406 /* Dining */,
 				EB86CA6C115D273800C8F3D1 /* Calendar */,
@@ -1763,6 +1783,8 @@
 				EBB61F9F12540A180099A883 /* ShuttleStopMapAnnotation.h in JavaArchive */,
 				EB4C2CCA127F118400058748 /* AnalyticsWrapper.h in JavaArchive */,
 				EB4C2CCE127F120400058748 /* GANTracker.h in JavaArchive */,
+				56B6DA4212914C8000818071 /* LibrariesMainViewController.h in JavaArchive */,
+				56B6DA4612914C8D00818071 /* LibrariesModule.h in JavaArchive */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2050,7 +2072,6 @@
 				EBAE878612198B2500F370BE /* SchoolsModule.m in Sources */,
 				EBAE878812198B2500F370BE /* SchoolsViewController.m in Sources */,
 				EBAE92B8121D733200F370BE /* PersonDetails.m in Sources */,
-				C7DA15991220943C00FE8756 /* Secret.m in Sources */,
 				C76FBB74123001A600968920 /* ShuttleSubscriptionManager.m in Sources */,
 				C76FBB76123001A600968920 /* ShuttleStopViewController.m in Sources */,
 				C76FBB79123001A600968920 /* ShuttleStopCell.m in Sources */,
@@ -2077,6 +2098,9 @@
 				C7F750ED124EA60900853674 /* ContactsSystemDetailsViewController.m in Sources */,
 				EBB61FA012540A180099A883 /* ShuttleStopMapAnnotation.m in Sources */,
 				EB4C2CCB127F118400058748 /* AnalyticsWrapper.m in Sources */,
+				56B6DA29128EC10200818071 /* Secret.m in Sources */,
+				56B6DA4312914C8000818071 /* LibrariesMainViewController.m in Sources */,
+				56B6DA4712914C8D00818071 /* LibrariesModule.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

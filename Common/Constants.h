@@ -42,6 +42,7 @@ extern NSString * const SettingsTag;
 extern NSString * const AboutTag;
 extern NSString * const DiningTag;
 extern NSString * const SchoolsTag;
+extern NSString * const LibrariesTag;
 
 // notification names
 extern NSString * const EmergencyInfoDidLoadNotification;
