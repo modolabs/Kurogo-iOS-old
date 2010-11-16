@@ -83,6 +83,8 @@ extern NSString * const CampusMapAnnotationEntityName;
 extern NSString * const ShuttleRouteEntityName;
 extern NSString * const ShuttleStopEntityName;
 extern NSString * const ShuttleRouteStopEntityName;
+extern NSString * const LibraryItemEntityName;
+extern NSString * const LibraryEntityName;
 
 
 // local path names for handleLocalPath

@@ -90,6 +90,8 @@ NSString * const CalendarEventEntityName = @"MITCalendarEvent";
 NSString * const CalendarCategoryEntityName = @"EventCategory";
 NSString * const CampusMapSearchEntityName = @"MapSearch";
 NSString * const CampusMapAnnotationEntityName = @"MapSavedAnnotation";
+NSString * const LibraryItemEntityName = @"LibraryItem";
+NSString * const LibraryEntityName = @"Library";
 
 // local paths for handleLocalPath
 NSString * const LocalPathMapsSelectedAnnotation = @"annotation";
