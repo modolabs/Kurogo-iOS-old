@@ -17,5 +17,6 @@
 @dynamic webpage;
 @dynamic email;
 @dynamic phone;
+@dynamic isBookmarked;
 
 @end

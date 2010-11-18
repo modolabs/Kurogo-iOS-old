@@ -16,5 +16,6 @@
 @dynamic year;
 @dynamic details;
 @dynamic itemType;
+@dynamic isBookmarked;
 
 @end

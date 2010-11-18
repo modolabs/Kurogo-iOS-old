@@ -11,6 +11,7 @@
 #import "ModoSearchBar.h"
 #import "MITSearchDisplayController.h"
 #import "MITLoadingActivityView.h"
+#import "HoursAndLocationsViewController.h"
 
 @implementation LibrariesMainViewController
 @synthesize searchTerms, searchResults, searchController;
@@ -44,7 +45,7 @@
     self.tableView.dataSource = self;
 	[self.tableView applyStandardColors];
     
-	static NSString *searchHints = @"Choose an option below: ";
+	static NSString *searchHints = @"";
 	
 	UIFont *hintsFont = [UIFont systemFontOfSize:[UIFont systemFontSize]];
 	CGSize labelSize = [searchHints sizeWithFont:hintsFont
@@ -83,10 +84,26 @@
 	// set up tableView options
 	
 	NSString * option1 = @"Locations and Hours";
-	NSString * option2 = @"Find a Place to Study";
-	NSString * option3 = @"Advanced Search";
-	mainViewTableOptions = [[NSArray alloc] initWithObjects: option1, option2, option3, nil];
+	NSString * option2 = @"Find a Place to Study";	
+	mainViewTableOptions1 = [[NSArray alloc] initWithObjects: option1, option2, nil];
 	
+	NSString * option3 = @"Advanced Search";
+	NSString * option4 = @"Mobile Research";
+	NSString * option5 = @"Questions and Feedback";
+	mainViewTableOptions2 = [[NSArray alloc] initWithObjects: option3, option4, option5, nil];
+	
+	
+	hasBookmarkedItems = NO;
+		
+	if (hasBookmarkedItems == NO) {
+		bookmarkedLibraries = [[NSArray alloc] initWithObjects: nil];
+		[self hideToolBar];
+	}
+	else {
+		NSString * option6 = @"My Bookmarked Libraries";
+		bookmarkedLibraries = [[NSArray alloc] initWithObjects:option6, nil];
+	}
+
 }	
 
 - (void)viewWillAppear:(BOOL)animated
@@ -275,18 +292,19 @@
 #pragma mark Table view methods
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-	return 1;
+	return 2;
 }
 
 
 // Customize the number of rows in the table view.
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
 	if (section == 0)
-		return 3;
+		return [mainViewTableOptions1 count] + [bookmarkedLibraries count];
 	
-	else {
-		return 0;
+	else if (section == 1){
+		return [mainViewTableOptions2 count];
 	}
+	else return 0;
 
 }
 
@@ -307,9 +325,28 @@
 		
 		//cell.detailTextLabel.text = @" "; // if this is empty textlabel will be bottom aligned
 
+	int section = indexPath.section;
+	int row = indexPath.row;
 	
+	if (section == 0) {
+		if ([bookmarkedLibraries count] > 0) {
+			if (row == 0) {
+				cell.textLabel.text = (NSString *)[bookmarkedLibraries objectAtIndex:row];
+			}
+			else {
+				cell.textLabel.text = (NSString *)[mainViewTableOptions1 objectAtIndex:row-1];
+			}
+
+		}
+		else {
+			cell.textLabel.text = (NSString *)[mainViewTableOptions1 objectAtIndex:row];
+		}
+	}
+	else if (section == 1) {
+		cell.textLabel.text = (NSString *)[mainViewTableOptions2 objectAtIndex:row];
+	}
 		
-	cell.textLabel.text = (NSString *)[mainViewTableOptions objectAtIndex:indexPath.row];
+	
 
 	return cell;	
 }
@@ -343,6 +380,14 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 	
 	[tableView deselectRowAtIndexPath:indexPath animated:YES];
+	
+	HoursAndLocationsViewController *vc = [[HoursAndLocationsViewController alloc] init];
+	//NSString *title = @"Locations & Hours";
+	//title.fontSize = [UIFont fontWithName:CONTENT_TITLE_FONT size:COURSE_NUMBER_FONT_SIZE];
+	//vc.font = [UIFont fontWithName:CONTENT_TITLE_FONT size:COURSE_NUMBER_FONT_SIZE];
+	vc.title = @"Locations & Hours";
+	[self.navigationController pushViewController:vc animated:YES];
+	[vc release];
 	
 
 }

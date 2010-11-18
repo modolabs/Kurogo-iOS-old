@@ -18,6 +18,7 @@
 @property (nonatomic, retain) NSString * year;
 @property (nonatomic, retain) NSString * details;
 @property (nonatomic, retain) NSString * itemType;
+@property (nonatomic, retain) NSNumber * isBookmarked;
 
 
 @end

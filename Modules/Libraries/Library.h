@@ -19,5 +19,6 @@
 @property (nonatomic, retain) NSString * webpage;
 @property (nonatomic, retain) NSString * email;
 @property (nonatomic, retain) NSString * phone;
+@property (nonatomic, retain) NSNumber * isBookmarked;
 
 @end

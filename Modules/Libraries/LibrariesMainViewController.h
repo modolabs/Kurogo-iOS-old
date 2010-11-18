@@ -29,7 +29,12 @@
 	// a custom button since we are not using the default bookmark button
 	UIButton* _bookmarkButton;
 	
-	NSArray * mainViewTableOptions;
+	NSArray * mainViewTableOptions1;
+	NSArray * mainViewTableOptions2;
+			  
+	NSArray * bookmarkedLibraries;
+	
+	BOOL hasBookmarkedItems;
 }
 
 @property (nonatomic, retain) UITableView *tableView;
