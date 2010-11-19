@@ -113,6 +113,8 @@
 		44C1A3CF11A33905000FD653 /* MapSelectionController.m in Sources */ = {isa = PBXBuildFile; fileRef = 44C1A3CD11A33905000FD653 /* MapSelectionController.m */; };
 		44C1A4C411A412E2000FD653 /* MapSearch.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = 44C1A4C211A412E2000FD653 /* MapSearch.h */; settings = {JAVA_ARCHIVE_SUBDIR = "Modules/Campus Map/CampusMap.xcdatamodeld"; }; };
 		44C1A4C511A412E2000FD653 /* MapSearch.m in Sources */ = {isa = PBXBuildFile; fileRef = 44C1A4C311A412E2000FD653 /* MapSearch.m */; };
+		5689D6C71297066F00A9EFA0 /* LibraryDetailViewController.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = 5689D6C51297066F00A9EFA0 /* LibraryDetailViewController.h */; settings = {JAVA_ARCHIVE_SUBDIR = Modules/Libraries; }; };
+		5689D6C81297066F00A9EFA0 /* LibraryDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5689D6C61297066F00A9EFA0 /* LibraryDetailViewController.m */; };
 		56B6DA29128EC10200818071 /* Secret.m in Sources */ = {isa = PBXBuildFile; fileRef = 56B6DA28128EC10200818071 /* Secret.m */; };
 		56B6DA30128EC24700818071 /* libGoogleAnalytics.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EB4C2CCD127F120400058748 /* libGoogleAnalytics.a */; };
 		56B6DA4212914C8000818071 /* LibrariesMainViewController.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = 56B6DA4012914C8000818071 /* LibrariesMainViewController.h */; settings = {JAVA_ARCHIVE_SUBDIR = Modules/Libraries; }; };
@@ -534,6 +536,8 @@
 		44C1A3CD11A33905000FD653 /* MapSelectionController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MapSelectionController.m; sourceTree = "<group>"; };
 		44C1A4C211A412E2000FD653 /* MapSearch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MapSearch.h; sourceTree = "<group>"; };
 		44C1A4C311A412E2000FD653 /* MapSearch.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MapSearch.m; sourceTree = "<group>"; };
+		5689D6C51297066F00A9EFA0 /* LibraryDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LibraryDetailViewController.h; sourceTree = "<group>"; };
+		5689D6C61297066F00A9EFA0 /* LibraryDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LibraryDetailViewController.m; sourceTree = "<group>"; };
 		56B6DA28128EC10200818071 /* Secret.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Secret.m; sourceTree = "<group>"; };
 		56B6DA4012914C8000818071 /* LibrariesMainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LibrariesMainViewController.h; sourceTree = "<group>"; };
 		56B6DA4112914C8000818071 /* LibrariesMainViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LibrariesMainViewController.m; sourceTree = "<group>"; };
@@ -1184,6 +1188,8 @@
 				56B6E22F12965E7C00818071 /* LibraryAnnotation.m */,
 				56B6E22812965B8A00818071 /* LibraryLocationsMapViewController.h */,
 				56B6E22912965B8A00818071 /* LibraryLocationsMapViewController.m */,
+				5689D6C51297066F00A9EFA0 /* LibraryDetailViewController.h */,
+				5689D6C61297066F00A9EFA0 /* LibraryDetailViewController.m */,
 			);
 			path = Libraries;
 			sourceTree = "<group>";
@@ -1832,6 +1838,7 @@
 				56B6DDB91295220000818071 /* HoursAndLocationsViewController.h in JavaArchive */,
 				56B6E22A12965B8A00818071 /* LibraryLocationsMapViewController.h in JavaArchive */,
 				56B6E23012965E7C00818071 /* LibraryAnnotation.h in JavaArchive */,
+				5689D6C71297066F00A9EFA0 /* LibraryDetailViewController.h in JavaArchive */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2155,6 +2162,7 @@
 				56B6DDBA1295220000818071 /* HoursAndLocationsViewController.m in Sources */,
 				56B6E22B12965B8A00818071 /* LibraryLocationsMapViewController.m in Sources */,
 				56B6E23112965E7C00818071 /* LibraryAnnotation.m in Sources */,
+				5689D6C81297066F00A9EFA0 /* LibraryDetailViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

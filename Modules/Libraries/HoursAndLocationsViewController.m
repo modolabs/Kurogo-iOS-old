@@ -275,12 +275,12 @@
  */
 
 
-- (void)didReceiveMemoryWarning {
+/*- (void)didReceiveMemoryWarning {
     // Releases the view if it doesn't have a superview.
     [super didReceiveMemoryWarning];
     
     // Release any cached data, images, etc that aren't in use.
-}
+}*/
 
 - (void)viewDidUnload {
     [super viewDidUnload];
@@ -390,6 +390,20 @@
 	
 	return ind;
 }
+
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+	
+	[tableView deselectRowAtIndexPath:indexPath animated:YES];
+	
+	LibraryDetailViewController *vc = [[[LibraryDetailViewController alloc] initWithStyle:UITableViewStyleGrouped] autorelease];
+							
+	vc.title = @"Library Detail";
+	[self.navigationController pushViewController:vc animated:YES];
+	[vc release];
+	
+}
+
 
 
 @end
