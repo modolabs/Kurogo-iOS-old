@@ -18,10 +18,11 @@
 @synthesize loadingView;
 @synthesize searchBar = theSearchBar, tableView = _tableView;
 
-- (void)viewDidLoad {
-	[super viewDidLoad];
+
+-(void) setUpLayOut {
 	
-    theSearchBar = [[ModoSearchBar alloc] initWithFrame:CGRectMake(0.0f, 0.0f, self.view.frame.size.width, NAVIGATION_BAR_HEIGHT)];
+	if (nil == theSearchBar)
+		theSearchBar = [[ModoSearchBar alloc] initWithFrame:CGRectMake(0.0f, 0.0f, self.view.frame.size.width, NAVIGATION_BAR_HEIGHT)];
 	
 	theSearchBar.tintColor = SEARCH_BAR_TINT_COLOR;
 	theSearchBar.placeholder = @"HOLLIS keyword search";
@@ -29,7 +30,9 @@
 	if ([self.searchTerms length] > 0)
 		theSearchBar.text = self.searchTerms;
 	
-    self.searchController = [[[MITSearchDisplayController alloc] initWithSearchBar:theSearchBar contentsController:self] autorelease];
+	if (nil == searchController)
+		self.searchController = [[[MITSearchDisplayController alloc] initWithSearchBar:theSearchBar contentsController:self] autorelease];
+	
 	self.searchController.delegate = self;
 	self.searchController.searchResultsDelegate = self;
 	self.searchController.searchResultsDataSource = self;
@@ -39,7 +42,10 @@
     CGRect frame = CGRectMake(0.0, theSearchBar.frame.size.height,
                               self.view.frame.size.width,
                               self.view.frame.size.height - theSearchBar.frame.size.height);
-    self.tableView = [[[UITableView alloc] initWithFrame:frame style:UITableViewStyleGrouped] autorelease];
+	
+	_tableView = nil;
+	self.tableView = [[[UITableView alloc] initWithFrame:frame style:UITableViewStyleGrouped] autorelease];
+	
     self.tableView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
@@ -75,8 +81,11 @@
 	// add our own bookmark button item since we are not using the default
 	// bookmark button of the UISearchBar
     // TODO: don't hard code this frame
-	_bookmarkButton = [[UIButton alloc] initWithFrame:CGRectMake(282, 8, 32, 28)];
-	[_bookmarkButton setImage:[UIImage imageNamed:@"global/searchfield_star.png"] forState:UIControlStateNormal];
+	
+	if (nil == _bookmarkButton) {
+		_bookmarkButton = [[UIButton alloc] initWithFrame:CGRectMake(282, 8, 32, 28)];
+		[_bookmarkButton setImage:[UIImage imageNamed:@"global/searchfield_star.png"] forState:UIControlStateNormal];
+	}
 	[self.view addSubview:_bookmarkButton];
 	//[_bookmarkButton addTarget:self action:@selector(bookmarkButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
 	
@@ -94,7 +103,7 @@
 	
 	
 	hasBookmarkedItems = NO;
-		
+	
 	if (hasBookmarkedItems == NO) {
 		bookmarkedLibraries = [[NSArray alloc] initWithObjects: nil];
 		[self hideToolBar];
@@ -103,14 +112,81 @@
 		NSString * option6 = @"My Bookmarked Libraries";
 		bookmarkedLibraries = [[NSArray alloc] initWithObjects:option6, nil];
 	}
+	
+}
 
+- (void)viewDidLoad {
+	[super viewDidLoad];
+	[self setUpLayOut];
+	
+    
 }	
 
 - (void)viewWillAppear:(BOOL)animated
 {
+	for (UIView *view in self.view.subviews) {
+		[view removeFromSuperview];
+	}
+	
+	[self setUpLayOut];
 	[super viewWillAppear:animated];
 	
-	[self.tableView reloadData];
+
+	//[self.tableView reloadData];
+}
+
+
+- (void)viewDidUnload {
+    [super viewDidUnload];
+	
+	/*searchController = nil;
+	theSearchBar = nil;
+	
+	searchResults = nil;
+	
+	_tableView = nil;
+	
+	loadingView = nil;
+	api = nil;
+	
+	// a custom button since we are not using the default bookmark button
+	_bookmarkButton = nil;
+	
+	mainViewTableOptions1 = nil;
+	mainViewTableOptions2 = nil;
+	
+	bookmarkedLibraries = nil;*/
+	
+}
+
+
+- (void)dealloc {
+    [super dealloc];
+
+	/*searchController = nil;
+	theSearchBar = nil;
+	
+	searchResults = nil;
+	
+	_tableView = nil;
+	
+	loadingView = nil;
+	api = nil;
+	
+	// a custom button since we are not using the default bookmark button
+	_bookmarkButton = nil;
+	
+	mainViewTableOptions1 = nil;
+	mainViewTableOptions2 = nil;
+	
+	bookmarkedLibraries = nil;*/
+}
+
+- (void)didReceiveMemoryWarning {
+	// Releases the view if it doesn't have a superview.
+    [super didReceiveMemoryWarning];
+	
+	// Release any cached data, images, etc that aren't in use.
 }
 
 
@@ -151,7 +227,9 @@
     [theSearchBar setShowsCancelButton:NO animated:YES];
     [UIView beginAnimations:@"searching" context:nil];
     [UIView setAnimationDuration:0.4];
-    _bookmarkButton.alpha = 1.0;
+	
+	if (hasBookmarkedItems)
+		_bookmarkButton.alpha = 1.0;
 
     [UIView commitAnimations];
 	
@@ -381,10 +459,7 @@
 	
 	[tableView deselectRowAtIndexPath:indexPath animated:YES];
 	
-	HoursAndLocationsViewController *vc = [[HoursAndLocationsViewController alloc] init];
-	//NSString *title = @"Locations & Hours";
-	//title.fontSize = [UIFont fontWithName:CONTENT_TITLE_FONT size:COURSE_NUMBER_FONT_SIZE];
-	//vc.font = [UIFont fontWithName:CONTENT_TITLE_FONT size:COURSE_NUMBER_FONT_SIZE];
+	HoursAndLocationsViewController *vc = [[[HoursAndLocationsViewController alloc] init] autorelease];
 	vc.title = @"Locations & Hours";
 	[self.navigationController pushViewController:vc animated:YES];
 	[vc release];

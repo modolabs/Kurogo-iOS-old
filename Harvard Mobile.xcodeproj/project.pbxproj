@@ -127,6 +127,10 @@
 		56B6DD281292748B00818071 /* Libraries.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 56B6DD271292748B00818071 /* Libraries.xcdatamodeld */; };
 		56B6DDB91295220000818071 /* HoursAndLocationsViewController.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = 56B6DDB61295220000818071 /* HoursAndLocationsViewController.h */; settings = {JAVA_ARCHIVE_SUBDIR = Modules/Libraries; }; };
 		56B6DDBA1295220000818071 /* HoursAndLocationsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 56B6DDB71295220000818071 /* HoursAndLocationsViewController.m */; };
+		56B6E22A12965B8A00818071 /* LibraryLocationsMapViewController.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = 56B6E22812965B8A00818071 /* LibraryLocationsMapViewController.h */; settings = {JAVA_ARCHIVE_SUBDIR = Modules/Libraries; }; };
+		56B6E22B12965B8A00818071 /* LibraryLocationsMapViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 56B6E22912965B8A00818071 /* LibraryLocationsMapViewController.m */; };
+		56B6E23012965E7C00818071 /* LibraryAnnotation.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = 56B6E22E12965E7C00818071 /* LibraryAnnotation.h */; settings = {JAVA_ARCHIVE_SUBDIR = Modules/Libraries; }; };
+		56B6E23112965E7C00818071 /* LibraryAnnotation.m in Sources */ = {isa = PBXBuildFile; fileRef = 56B6E22F12965E7C00818071 /* LibraryAnnotation.m */; };
 		A623F1F1120A035A00341C5E /* ModoThreeStateSwitchControl.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = A623F1EF120A035A00341C5E /* ModoThreeStateSwitchControl.h */; settings = {JAVA_ARCHIVE_SUBDIR = Modules; }; };
 		A623F1F2120A035A00341C5E /* ModoThreeStateSwitchControl.m in Sources */ = {isa = PBXBuildFile; fileRef = A623F1F0120A035A00341C5E /* ModoThreeStateSwitchControl.m */; };
 		A64C313D11FDFAB8006FE056 /* AddressFormatter.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = A64C313B11FDFAB8006FE056 /* AddressFormatter.h */; settings = {JAVA_ARCHIVE_SUBDIR = Common; }; };
@@ -542,6 +546,10 @@
 		56B6DD141292729300818071 /* Libraries.xcdatamodel */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = wrapper.xcdatamodel; path = Libraries.xcdatamodel; sourceTree = "<group>"; };
 		56B6DDB61295220000818071 /* HoursAndLocationsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HoursAndLocationsViewController.h; sourceTree = "<group>"; };
 		56B6DDB71295220000818071 /* HoursAndLocationsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HoursAndLocationsViewController.m; sourceTree = "<group>"; };
+		56B6E22812965B8A00818071 /* LibraryLocationsMapViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LibraryLocationsMapViewController.h; sourceTree = "<group>"; };
+		56B6E22912965B8A00818071 /* LibraryLocationsMapViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LibraryLocationsMapViewController.m; sourceTree = "<group>"; };
+		56B6E22E12965E7C00818071 /* LibraryAnnotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LibraryAnnotation.h; sourceTree = "<group>"; };
+		56B6E22F12965E7C00818071 /* LibraryAnnotation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LibraryAnnotation.m; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* Mobile-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Mobile-Info.plist"; plistStructureDefinitionIdentifier = "com.apple.xcode.plist.structure-definition.iphone.info-plist"; sourceTree = "<group>"; };
 		A623F1EF120A035A00341C5E /* ModoThreeStateSwitchControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ModoThreeStateSwitchControl.h; sourceTree = "<group>"; };
 		A623F1F0120A035A00341C5E /* ModoThreeStateSwitchControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ModoThreeStateSwitchControl.m; sourceTree = "<group>"; };
@@ -1172,6 +1180,10 @@
 				56B6DA4512914C8D00818071 /* LibrariesModule.m */,
 				56B6DDB61295220000818071 /* HoursAndLocationsViewController.h */,
 				56B6DDB71295220000818071 /* HoursAndLocationsViewController.m */,
+				56B6E22E12965E7C00818071 /* LibraryAnnotation.h */,
+				56B6E22F12965E7C00818071 /* LibraryAnnotation.m */,
+				56B6E22812965B8A00818071 /* LibraryLocationsMapViewController.h */,
+				56B6E22912965B8A00818071 /* LibraryLocationsMapViewController.m */,
 			);
 			path = Libraries;
 			sourceTree = "<group>";
@@ -1255,9 +1267,9 @@
 		C76FBB551230019400968920 /* ShuttleTrack */ = {
 			isa = PBXGroup;
 			children = (
+				C76FBB92123001AD00968920 /* Model */,
 				EBB61F9D12540A180099A883 /* ShuttleStopMapAnnotation.h */,
 				EBB61F9E12540A180099A883 /* ShuttleStopMapAnnotation.m */,
-				C76FBB92123001AD00968920 /* Model */,
 				C76FBB56123001A600968920 /* ShuttleSubscriptionManager.m */,
 				C76FBB57123001A600968920 /* ShuttleSubscriptionManager.h */,
 				C76FBB58123001A600968920 /* ShuttleStopViewController.m */,
@@ -1818,6 +1830,8 @@
 				56B6DB8C12926C0800818071 /* LibraryItem.h in JavaArchive */,
 				56B6DB9112926E2B00818071 /* Library.h in JavaArchive */,
 				56B6DDB91295220000818071 /* HoursAndLocationsViewController.h in JavaArchive */,
+				56B6E22A12965B8A00818071 /* LibraryLocationsMapViewController.h in JavaArchive */,
+				56B6E23012965E7C00818071 /* LibraryAnnotation.h in JavaArchive */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2139,6 +2153,8 @@
 				56B6DD151292729300818071 /* Libraries.xcdatamodel in Sources */,
 				56B6DD281292748B00818071 /* Libraries.xcdatamodeld in Sources */,
 				56B6DDBA1295220000818071 /* HoursAndLocationsViewController.m in Sources */,
+				56B6E22B12965B8A00818071 /* LibraryLocationsMapViewController.m in Sources */,
+				56B6E23112965E7C00818071 /* LibraryAnnotation.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

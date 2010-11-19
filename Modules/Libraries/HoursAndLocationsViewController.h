@@ -8,7 +8,9 @@
 
 #import <UIKit/UIKit.h>
 #import "NavScrollerView.h"
+#import "LibraryLocationsMapViewController.h"
 
+@class LibraryLocationsMapViewController;
 
 @interface HoursAndLocationsViewController : UIViewController <UITableViewDelegate, UITableViewDataSource> {
 	
@@ -23,14 +25,18 @@
 	NSMutableArray * allLibraries;
 	
 	BOOL showingMapView;
-
+	BOOL gpsPressed;
+	
+	LibraryLocationsMapViewController * librayLocationsMapView;
 }
 
 @property (nonatomic, retain) UIView * listOrMapView;
 @property BOOL showingMapView;
+@property (nonatomic, retain) LibraryLocationsMapViewController * librayLocationsMapView;
 
--(void)displayTypeChanged;
--(void) filterButtonPressed;
--(void) gpsButtonPressed;
+-(void)displayTypeChanged:(id)sender;
+-(void) filterButtonPressed:(id)sender;
+-(void) gpsButtonPressed:(id)sender;
+-(void) setMapViewMode:(BOOL)showMap animated:(BOOL)animated; 
 
 @end

@@ -12,6 +12,7 @@
 @implementation HoursAndLocationsViewController
 @synthesize listOrMapView;
 @synthesize showingMapView;
+@synthesize librayLocationsMapView;
 
 
 -(id)init {
@@ -39,10 +40,13 @@
 	if (self.showingMapView != YES)
 		self.showingMapView = NO;
 	
-	_viewTypeButton = [[UIBarButtonItem alloc] initWithTitle:@"Map"
+	gpsPressed = NO;
+	
+	if (nil == _viewTypeButton)
+		_viewTypeButton = [[[UIBarButtonItem alloc] initWithTitle:@"Map"
 													   style:UIBarButtonItemStylePlain 
 													  target:self
-													  action:@selector(displayTypeChanged:)];
+													   action:@selector(displayTypeChanged:)] autorelease];
 	//_viewTypeButton.enabled = NO;										  
 	self.navigationItem.rightBarButtonItem = _viewTypeButton;
 	
@@ -148,18 +152,116 @@
 
 
 -(void)displayTypeChanged:(id)sender {
+	
+	if([_viewTypeButton.title isEqualToString:@"Map"]) {
+		[self setMapViewMode:YES animated:YES];
+		showingMapView = YES;
+	}
+	else if ([_viewTypeButton.title isEqualToString:@"List"]) {
+		[self setMapViewMode:NO animated:YES];
+		showingMapView = NO;
+	}
+	
+	if (self.showingMapView == YES)
+		[self.view addSubview:gpsButtonControl];
+	
+	else {
+		
+		[gpsButtonControl removeFromSuperview];
+		[gpsButtonControl retain];
+	}
 }
 
 -(void) filterButtonPressed:(id)sender {
-	UISegmentedControl *segmentedControl = (UISegmentedControl *)sender;
-	segmentedControl.selectedSegmentIndex = -1;
+	UISegmentedControl *segmentedController = (UISegmentedControl *)sender;
+	segmentedController.selectedSegmentIndex = -1;
 
 }
 
 -(void) gpsButtonPressed:(id)sender {
-	UISegmentedControl *segmentedControl = (UISegmentedControl *)sender;
-	segmentedControl.selectedSegmentIndex = -1;
+	UISegmentedControl *segmentedController = (UISegmentedControl *)sender;
+	segmentedController.selectedSegmentIndex = -1;
+
+	if (showingMapView == YES)
+	{
+		//self.librayLocationsMapView.mapView.showsUserLocation = !self.librayLocationsMapView.mapView.showsUserLocation;
+		
+		if (!self.librayLocationsMapView.mapView.showsUserLocation) {	
+			
+
+				BOOL successful = [self.librayLocationsMapView mapView:self.librayLocationsMapView.mapView 
+									   didUpdateUserLocation:self.librayLocationsMapView.mapView.userLocation];
+			
+				if (successful == YES)
+					self.librayLocationsMapView.mapView.showsUserLocation = YES;
+			
+			}
+		
+		else {	
+			self.librayLocationsMapView.mapView.showsUserLocation = NO;
+				self.librayLocationsMapView.mapView.region = [self.librayLocationsMapView 
+															  regionForAnnotations:self.librayLocationsMapView.mapView.annotations];
+
+			
+		}
+	}		
+		
+	gpsPressed = !gpsPressed;
 }
+
+
+// set the view to either map or list mode
+-(void) setMapViewMode:(BOOL)showMap animated:(BOOL)animated {
+	//NSLog(@"map is showing=%i", _mapShowing);
+	if (showMap == YES) {
+		if (showingMapView)
+			return;
+	}
+
+
+	
+	
+	// flip to the correct view. 
+	if (animated) {
+		[UIView beginAnimations:@"flip" context:nil];
+		[UIView setAnimationTransition:UIViewAnimationTransitionCurlDown forView:self.listOrMapView cache:NO];
+	}
+	
+	if (!showMap) {
+		
+		if (nil != self.librayLocationsMapView)
+			[self.librayLocationsMapView.view removeFromSuperview];
+		
+			[self.listOrMapView addSubview:_tableView];
+			[_tableView reloadData];
+			self.librayLocationsMapView = nil;
+			_viewTypeButton.title = @"Map";
+
+
+	} else {
+		[_tableView removeFromSuperview];
+				
+		if (nil == librayLocationsMapView) {
+			librayLocationsMapView = [[LibraryLocationsMapViewController alloc] initWithMapViewFrame:self.listOrMapView.frame];
+
+		}
+		
+		//librayLocationsMapView.parentViewController = self;
+		librayLocationsMapView.view.frame = self.listOrMapView.frame;
+		[self.listOrMapView addSubview:librayLocationsMapView.view];
+		//[self.view addSubview: self.listOrMapView];
+		[librayLocationsMapView viewWillAppear:YES];
+		_viewTypeButton.title = @"List";
+
+	}
+	
+	if(animated) {
+		[UIView commitAnimations];
+	}
+	
+}
+
+
 
 /*
 - (void)buttonPressed:(id)sender {
@@ -172,6 +274,7 @@
 }
  */
 
+
 - (void)didReceiveMemoryWarning {
     // Releases the view if it doesn't have a superview.
     [super didReceiveMemoryWarning];
@@ -181,20 +284,16 @@
 
 - (void)viewDidUnload {
     [super viewDidUnload];
-	
-	_viewTypeButton = nil;
-	self.listOrMapView = nil;
-	_tableView = nil;
-    // Release any retained subviews of the main view.
+
+    
+	// Release any retained subviews of the main view.
     // e.g. self.myOutlet = nil;
 }
 
 
 - (void)dealloc {
     [super dealloc];
-	[_viewTypeButton dealloc];
-	[listOrMapView dealloc];
-	[_tableView dealloc];
+
 }
 
 

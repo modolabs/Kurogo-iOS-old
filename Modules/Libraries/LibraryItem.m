@@ -17,5 +17,6 @@
 @dynamic details;
 @dynamic itemType;
 @dynamic isBookmarked;
+@dynamic callNumber;
 
 @end
