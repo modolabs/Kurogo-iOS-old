@@ -124,22 +124,22 @@
 
 - (void)viewWillAppear:(BOOL)animated
 {
-	for (UIView *view in self.view.subviews) {
+	/*for (UIView *view in self.view.subviews) {
 		[view removeFromSuperview];
-	}
+	}*/
 	
-	[self setUpLayOut];
+	//[self setUpLayOut];
 	[super viewWillAppear:animated];
 	
 
-	//[self.tableView reloadData];
+	[self.tableView reloadData];
 }
 
 
 - (void)viewDidUnload {
     [super viewDidUnload];
 	
-	/*searchController = nil;
+	searchController = nil;
 	theSearchBar = nil;
 	
 	searchResults = nil;
@@ -155,7 +155,7 @@
 	mainViewTableOptions1 = nil;
 	mainViewTableOptions2 = nil;
 	
-	bookmarkedLibraries = nil;*/
+	bookmarkedLibraries = nil;
 	
 }
 
@@ -163,7 +163,7 @@
 - (void)dealloc {
     [super dealloc];
 
-	/*searchController = nil;
+	searchController = nil;
 	theSearchBar = nil;
 	
 	searchResults = nil;
@@ -179,7 +179,7 @@
 	mainViewTableOptions1 = nil;
 	mainViewTableOptions2 = nil;
 	
-	bookmarkedLibraries = nil;*/
+	bookmarkedLibraries = nil;
 }
 
 - (void)didReceiveMemoryWarning {
@@ -459,7 +459,7 @@
 	
 	[tableView deselectRowAtIndexPath:indexPath animated:YES];
 	
-	HoursAndLocationsViewController *vc = [[[HoursAndLocationsViewController alloc] init] autorelease];
+	HoursAndLocationsViewController *vc = [[HoursAndLocationsViewController alloc] init];
 	vc.title = @"Locations & Hours";
 	[self.navigationController pushViewController:vc animated:YES];
 	[vc release];

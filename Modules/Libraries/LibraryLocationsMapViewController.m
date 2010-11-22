@@ -73,6 +73,8 @@
 
 - (void)dealloc {
     [super dealloc];
+	self.mapView.delegate = nil;
+	self.mapView = nil;
 }
 
 

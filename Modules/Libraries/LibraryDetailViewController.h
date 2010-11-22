@@ -7,9 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "LibraryWeeklyScheduleViewController.h"
+#import <MessageUI/MFMailComposeViewController.h>;
 
 
-@interface LibraryDetailViewController : UITableViewController {
+@interface LibraryDetailViewController : UITableViewController <MFMailComposeViewControllerDelegate>{
 	
 	UIButton * bookmarkButton;
 	
@@ -19,5 +21,7 @@
 }
 
 @property (nonatomic, retain) NSDictionary * weeklySchedule;
+
+-(void)emailTo:(NSString*)subject body:(NSString *)emailBody email:(NSString *)emailAddress;
 
 @end

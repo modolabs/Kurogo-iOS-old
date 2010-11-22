@@ -396,7 +396,7 @@
 	
 	[tableView deselectRowAtIndexPath:indexPath animated:YES];
 	
-	LibraryDetailViewController *vc = [[[LibraryDetailViewController alloc] initWithStyle:UITableViewStyleGrouped] autorelease];
+	LibraryDetailViewController *vc = [[LibraryDetailViewController alloc] initWithStyle:UITableViewStyleGrouped];
 							
 	vc.title = @"Library Detail";
 	[self.navigationController pushViewController:vc animated:YES];
