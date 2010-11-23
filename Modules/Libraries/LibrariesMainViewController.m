@@ -94,7 +94,7 @@
 	// set up tableView options
 	
 	NSString * option1 = @"Locations and Hours";
-	NSString * option2 = @"Find a Place to Study";	
+	NSString * option2 = @"Archives";	
 	mainViewTableOptions1 = [[NSArray alloc] initWithObjects: option1, option2, nil];
 	
 	NSString * option3 = @"Advanced Search";

@@ -36,7 +36,6 @@
 @property (nonatomic, retain) LibraryLocationsMapViewController * librayLocationsMapView;
 
 -(void)displayTypeChanged:(id)sender;
--(void) filterButtonPressed:(id)sender;
 -(void) gpsButtonPressed:(id)sender;
 -(void) setMapViewMode:(BOOL)showMap animated:(BOOL)animated; 
 

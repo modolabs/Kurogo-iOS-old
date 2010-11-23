@@ -75,18 +75,6 @@
 	//[segmentedControl release];
 	
 	
-	NSArray *filterArray = [NSArray arrayWithObjects: @"Filter", nil];
-	filterButtonControl = [[UISegmentedControl alloc] initWithItems:filterArray];
-	filterButtonControl.tintColor = [UIColor darkGrayColor];
-	filterButtonControl.frame = CGRectMake(260,footerDisplacementFromTop + 8, 50, 30);
-	filterButtonControl.segmentedControlStyle = UISegmentedControlStyleBar;
-	[filterButtonControl addTarget:self
-	                     action:@selector(filterButtonPressed:)
-	           forControlEvents:UIControlEventValueChanged];
-	[self.view addSubview:filterButtonControl];
-	//[filterButtonControl release];
-	
-	
 	UIImage *gpsImage = [UIImage imageNamed:@"maps/map_button_icon_locate.png"];
 	NSArray *gpsArray = [NSArray arrayWithObjects: gpsImage, nil];
 	gpsButtonControl = [[UISegmentedControl alloc] initWithItems:gpsArray];
@@ -170,12 +158,6 @@
 		[gpsButtonControl removeFromSuperview];
 		[gpsButtonControl retain];
 	}
-}
-
--(void) filterButtonPressed:(id)sender {
-	UISegmentedControl *segmentedController = (UISegmentedControl *)sender;
-	segmentedController.selectedSegmentIndex = -1;
-
 }
 
 -(void) gpsButtonPressed:(id)sender {

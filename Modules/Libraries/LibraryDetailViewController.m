@@ -150,11 +150,50 @@
 }
 
 
-- (UIView *) tableView: (UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
+- (UIView *)tableView: (UITableView *)tableView viewForFooterInSection: (NSInteger)section{
 
 	UIView * view;
+	view = nil;
+	if (section == 1) {
+		
+		NSString * text =  @"Cabot Library is located on the first floor of the Science Center at the corner of Oxford and Kirkland Streets";
+		CGFloat height = [text
+						  sizeWithFont:[UIFont fontWithName:STANDARD_FONT size:13]
+						  constrainedToSize:CGSizeMake(300, 200)         
+						  lineBreakMode:UILineBreakModeWordWrap].height;
+		
+		UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(12.0, 0.0, 300.0, height)];
+		label.text = text;
+		label.font = [UIFont fontWithName:STANDARD_FONT size:13];
+		label.textColor = [UIColor colorWithHexString:@"#554C41"];
+		label.backgroundColor = [UIColor clearColor];	
+		label.lineBreakMode = UILineBreakModeWordWrap;
+		label.numberOfLines = 3;
+		
+		view = [[UIView alloc] initWithFrame:label.frame];
+		[view addSubview:label];
+		[label release];
+	}
 	
+	return view;
+}
+
+- (UIView *)tableView: (UITableView *)tableView viewForHeaderInSection: (NSInteger)section{
 	return nil;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
+	if (section == 1) {
+		NSString * text =  @"Cabot Library is located on the first floor of the Science Center at the corner of Oxford and Kirkland Streets";
+		CGFloat height = [text
+						  sizeWithFont:[UIFont fontWithName:STANDARD_FONT size:13]
+						  constrainedToSize:CGSizeMake(300, 200)         
+						  lineBreakMode:UILineBreakModeWordWrap].height;
+		
+		return height + 5;
+	}
+	
+	else return 0;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
@@ -162,35 +201,13 @@
     if (section == 0)
     {
         return 45.0;
-    }
+    }	
     else
     {
 		return GROUPED_SECTION_HEADER_HEIGHT;
     }
     
 }
-
-
-/*
- - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
- {
- ShuttleStop *aStop = nil;
- if(nil != self.route && self.route.stops.count > indexPath.row) {
- aStop = [self.route.stops objectAtIndex:indexPath.row];
- }
- 
- 
- CGSize constraintSize = CGSizeMake(280.0f, 2009.0f);
- NSString* cellText = @"A"; // just something to guarantee one line
- UIFont* cellFont = [UIFont boldSystemFontOfSize:[UIFont buttonFontSize]];
- CGSize labelSize = [cellText sizeWithFont:cellFont constrainedToSize:constraintSize lineBreakMode:UILineBreakModeWordWrap];
- 
- if (aStop.upcoming)
- labelSize.height += 5.0f;
- 
- return labelSize.height + 20.0f;
- }
- */
 
 
 // Customize the appearance of table view cells.
