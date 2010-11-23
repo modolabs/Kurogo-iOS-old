@@ -12,6 +12,7 @@
 #import "MITSearchDisplayController.h"
 #import "MITLoadingActivityView.h"
 #import "HoursAndLocationsViewController.h"
+#import "LibrariesSearchViewController.h"
 
 @implementation LibrariesMainViewController
 @synthesize searchTerms, searchResults, searchController;
@@ -264,7 +265,12 @@
 	[_bookmarkButton removeFromSuperview];
 	
 	self.searchTerms = searchBar.text;
-	[self performSearch];
+	//[self performSearch];
+	
+	LibrariesSearchViewController *vc = [[LibrariesSearchViewController alloc] initWithViewController: self];
+	vc.title = @"Search Results";
+	[self.navigationController pushViewController:vc animated:YES];
+	[vc release];
 }
 
 - (void)searchBarTextDidBeginEditing:(UISearchBar *)searchBar

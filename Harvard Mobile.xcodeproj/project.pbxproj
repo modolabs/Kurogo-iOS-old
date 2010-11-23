@@ -117,6 +117,8 @@
 		5689D6C81297066F00A9EFA0 /* LibraryDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5689D6C61297066F00A9EFA0 /* LibraryDetailViewController.m */; };
 		5689D9681297BF0C00A9EFA0 /* LibraryWeeklyScheduleViewController.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = 5689D9661297BF0C00A9EFA0 /* LibraryWeeklyScheduleViewController.h */; settings = {JAVA_ARCHIVE_SUBDIR = Modules/Libraries; }; };
 		5689D9691297BF0C00A9EFA0 /* LibraryWeeklyScheduleViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5689D9671297BF0C00A9EFA0 /* LibraryWeeklyScheduleViewController.m */; };
+		5689DAD0129BAE2A00A9EFA0 /* LibrariesSearchViewController.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = 5689DACE129BAE2A00A9EFA0 /* LibrariesSearchViewController.h */; settings = {JAVA_ARCHIVE_SUBDIR = Modules/Libraries; }; };
+		5689DAD1129BAE2A00A9EFA0 /* LibrariesSearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5689DACF129BAE2A00A9EFA0 /* LibrariesSearchViewController.m */; };
 		56B6DA29128EC10200818071 /* Secret.m in Sources */ = {isa = PBXBuildFile; fileRef = 56B6DA28128EC10200818071 /* Secret.m */; };
 		56B6DA30128EC24700818071 /* libGoogleAnalytics.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EB4C2CCD127F120400058748 /* libGoogleAnalytics.a */; };
 		56B6DA4212914C8000818071 /* LibrariesMainViewController.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = 56B6DA4012914C8000818071 /* LibrariesMainViewController.h */; settings = {JAVA_ARCHIVE_SUBDIR = Modules/Libraries; }; };
@@ -542,6 +544,8 @@
 		5689D6C61297066F00A9EFA0 /* LibraryDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LibraryDetailViewController.m; sourceTree = "<group>"; };
 		5689D9661297BF0C00A9EFA0 /* LibraryWeeklyScheduleViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LibraryWeeklyScheduleViewController.h; sourceTree = "<group>"; };
 		5689D9671297BF0C00A9EFA0 /* LibraryWeeklyScheduleViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LibraryWeeklyScheduleViewController.m; sourceTree = "<group>"; };
+		5689DACE129BAE2A00A9EFA0 /* LibrariesSearchViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LibrariesSearchViewController.h; sourceTree = "<group>"; };
+		5689DACF129BAE2A00A9EFA0 /* LibrariesSearchViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LibrariesSearchViewController.m; sourceTree = "<group>"; };
 		56B6DA28128EC10200818071 /* Secret.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Secret.m; sourceTree = "<group>"; };
 		56B6DA4012914C8000818071 /* LibrariesMainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LibrariesMainViewController.h; sourceTree = "<group>"; };
 		56B6DA4112914C8000818071 /* LibrariesMainViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LibrariesMainViewController.m; sourceTree = "<group>"; };
@@ -1196,6 +1200,8 @@
 				5689D6C61297066F00A9EFA0 /* LibraryDetailViewController.m */,
 				5689D9661297BF0C00A9EFA0 /* LibraryWeeklyScheduleViewController.h */,
 				5689D9671297BF0C00A9EFA0 /* LibraryWeeklyScheduleViewController.m */,
+				5689DACE129BAE2A00A9EFA0 /* LibrariesSearchViewController.h */,
+				5689DACF129BAE2A00A9EFA0 /* LibrariesSearchViewController.m */,
 			);
 			path = Libraries;
 			sourceTree = "<group>";
@@ -1846,6 +1852,7 @@
 				56B6E23012965E7C00818071 /* LibraryAnnotation.h in JavaArchive */,
 				5689D6C71297066F00A9EFA0 /* LibraryDetailViewController.h in JavaArchive */,
 				5689D9681297BF0C00A9EFA0 /* LibraryWeeklyScheduleViewController.h in JavaArchive */,
+				5689DAD0129BAE2A00A9EFA0 /* LibrariesSearchViewController.h in JavaArchive */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2171,6 +2178,7 @@
 				56B6E23112965E7C00818071 /* LibraryAnnotation.m in Sources */,
 				5689D6C81297066F00A9EFA0 /* LibraryDetailViewController.m in Sources */,
 				5689D9691297BF0C00A9EFA0 /* LibraryWeeklyScheduleViewController.m in Sources */,
+				5689DAD1129BAE2A00A9EFA0 /* LibrariesSearchViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
