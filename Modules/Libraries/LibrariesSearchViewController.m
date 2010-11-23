@@ -10,8 +10,10 @@
 #import "UITableView+MITUIAdditions.h"
 #import "MITUIConstants.h"
 #import "MITSearchDisplayController.h"
-#import "DiningMultiLineCell.h"
+#import "LibrariesMultiLineCell.h"
 #import "MITLoadingActivityView.h"
+
+@class LibrariesMultiLineCell;
 
 @implementation LibrariesSearchViewController
 
@@ -105,19 +107,21 @@
 }
 
 - (UITableViewCell *)tableView:(UITableView *)aTableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-	DiningMultiLineCell *cell = (DiningMultiLineCell *)[aTableView dequeueReusableCellWithIdentifier:@"HollisSearch"];
+	LibrariesMultiLineCell *cell = (LibrariesMultiLineCell *)[aTableView dequeueReusableCellWithIdentifier:@"HollisSearch"];
 	if(cell == nil) {
-		cell = [[[DiningMultiLineCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"HollisSearch"] autorelease];
+		cell = [[[LibrariesMultiLineCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"HollisSearch"] autorelease];
 		cell.selectionStyle = UITableViewCellSelectionStyleGray;
 	}
 	
 	cell.textLabelNumberOfLines = 2;
 	cell.textLabel.lineBreakMode = UILineBreakModeTailTruncation;
-	cell.detailTextLabel.font = [UIFont systemFontOfSize:13];
+	cell.textLabel.font = [UIFont fontWithName:STANDARD_FONT size:STANDARD_CONTENT_FONT_SIZE];
+	cell.detailTextLabel.font = [UIFont fontWithName:STANDARD_FONT size:13];
 	cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 	cell.selectionStyle = UITableViewCellSelectionStyleGray;
 	
-	cell.textLabel.text = [self.lastResultsTitles objectForKey:[NSString stringWithFormat:@"%d", indexPath.row]];
+	cell.textLabel.text = [NSString stringWithFormat:@"%d. %@", 
+						   indexPath.row + 1, [self.lastResultsTitles objectForKey:[NSString stringWithFormat:@"%d", indexPath.row]]];
 	cell.detailTextLabel.text = [self.lastResultsOtherDetails objectForKey:[NSString stringWithFormat:@"%d", indexPath.row]];
 	cell.detailTextLabel.textColor = [UIColor colorWithHexString:@"#554C41"];
 	
@@ -138,7 +142,7 @@
 	
 	UIFont *detailFont = [UIFont systemFontOfSize:13];
 	
-	return [DiningMultiLineCell heightForCellWithStyle:UITableViewCellStyleSubtitle
+	return [LibrariesMultiLineCell heightForCellWithStyle:UITableViewCellStyleSubtitle
 											 tableView:tableView 
 												  text:cellText
 										  maxTextLines:2
