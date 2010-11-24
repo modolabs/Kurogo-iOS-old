@@ -17,6 +17,7 @@
 
 @implementation LibraryDetailViewController
 @synthesize weeklySchedule;
+@synthesize bookmarkButtonIsOn;
 
 -(void) viewDidLoad {
 	
@@ -53,7 +54,8 @@
 	[bookmarkButton addTarget:self action:@selector(bookmarkButtonToggled:) forControlEvents:UIControlEventTouchUpInside];
 	[headerView addSubview:bookmarkButton];
 	//[self.tableView.tableHeaderView addSubview:myStellarButton];
-
+	
+	bookmarkButtonIsOn = NO;
 
 	
 	UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(12.0, 5.0, 250.0, height)];
@@ -97,7 +99,6 @@
 	daysOfWeek = [[NSArray alloc] initWithObjects:
 				  @"Monday", @"Tuesday", @"Wednesday", @"Thursday", @"Friday", @"Saturday", @"Sunday", nil];
 	
-	
 }
 
 /*- (void)didReceiveMemoryWarning {
@@ -120,6 +121,20 @@
 
 
 -(void) bookmarkButtonToggled: (id) sender {
+	
+		BOOL newBookmarkButtonStatus = !bookmarkButton.selected;
+		
+		if (newBookmarkButtonStatus) {
+			//[StellarModel saveClassToFavorites:stellarClass];
+			bookmarkButton.selected = YES;
+		}
+		
+		else {
+			//[StellarModel removeClassFromFavorites:stellarClass];
+			bookmarkButton.selected = NO;
+		}
+		
+	
 }
 
 

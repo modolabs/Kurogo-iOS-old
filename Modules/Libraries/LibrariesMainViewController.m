@@ -465,10 +465,15 @@
 	
 	[tableView deselectRowAtIndexPath:indexPath animated:YES];
 	
-	HoursAndLocationsViewController *vc = [[HoursAndLocationsViewController alloc] init];
-	vc.title = @"Locations & Hours";
-	[self.navigationController pushViewController:vc animated:YES];
-	[vc release];
+	if (indexPath.section == 0) {
+		
+		if (indexPath.row == 0) {
+			HoursAndLocationsViewController *vc = [[HoursAndLocationsViewController alloc] init];
+			vc.title = @"Locations & Hours";
+			[self.navigationController pushViewController:vc animated:YES];
+			[vc release];
+		}
+	}
 	
 
 }

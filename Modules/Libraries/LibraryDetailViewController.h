@@ -17,10 +17,13 @@
 	
 	NSDictionary * weeklySchedule;
 	NSArray * daysOfWeek;
+	
+	BOOL bookmarkButtonIsOn;
 
 }
 
 @property (nonatomic, retain) NSDictionary * weeklySchedule;
+@property BOOL bookmarkButtonIsOn;
 
 -(void)emailTo:(NSString*)subject body:(NSString *)emailBody email:(NSString *)emailAddress;
 

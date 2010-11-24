@@ -12,6 +12,7 @@
 #import "MITSearchDisplayController.h"
 #import "LibrariesMultiLineCell.h"
 #import "MITLoadingActivityView.h"
+#import "LibItemDetailViewController.h"
 
 @class LibrariesMultiLineCell;
 
@@ -107,9 +108,18 @@
 }
 
 - (UITableViewCell *)tableView:(UITableView *)aTableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+	
+/*	NSDictionary * tempDict = [[NSDictionary alloc] initWithObjectsAndKeys:
+							   @"available", @"1 of 2 available - regular loan",
+							   @"unavailable", @"2 of 2 available - in-library user",
+							   @"request", @"2 of 2 availavle - depository", nil];
+*/
+	
 	LibrariesMultiLineCell *cell = (LibrariesMultiLineCell *)[aTableView dequeueReusableCellWithIdentifier:@"HollisSearch"];
 	if(cell == nil) {
-		cell = [[[LibrariesMultiLineCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"HollisSearch"] autorelease];
+		cell = [[[LibrariesMultiLineCell alloc] initWithStyle:UITableViewCellStyleSubtitle 
+										 reuseIdentifier:@"HollisSearch"] 
+																		autorelease];
 		cell.selectionStyle = UITableViewCellSelectionStyleGray;
 	}
 	
@@ -141,6 +151,12 @@
 	NSString *detailText = [self.lastResultsOtherDetails objectForKey:[NSString stringWithFormat:@"%d", indexPath.row]];
 	
 	UIFont *detailFont = [UIFont systemFontOfSize:13];
+	
+/*NSDictionary * tempDict = [[NSDictionary alloc] initWithObjectsAndKeys:
+							   @"available", @"1 of 2 available - regular loan",
+							   @"unavailable", @"2 of 2 available - in-library user",
+							   @"request", @"2 of 2 availavle - depository", nil];
+*/	
 	
 	return [LibrariesMultiLineCell heightForCellWithStyle:UITableViewCellStyleSubtitle
 											 tableView:tableView 
@@ -190,9 +206,28 @@
 
 - (void) tableView: (UITableView *)tableView didSelectRowAtIndexPath: (NSIndexPath *)indexPath {
 	[tableView deselectRowAtIndexPath:indexPath animated:NO];
-	/*[StellarDetailViewController 
-	 launchClass:(StellarClass *)[self.lastResultsTitles objectAtIndex:indexPath.row]
-	 viewController:viewController];*/
+	
+	NSString * title = @"Freakonomics: a rogue economist explores the hideen side of everything";
+	NSString * authorName =  @"Levitt, Steven D";
+	NSString * otherDetail1 = @"1st ed.";
+	NSString * otherDetail2 = @"New York : William Morron, 2005";
+	NSString * otherDetail3 = @"Book: xii, 242p.";
+	
+	NSDictionary * libraries = [[NSDictionary alloc] initWithObjectsAndKeys:
+								@"152 yards away", @"Cabot Science Library",
+								@"0.5 miles away", @"Baker Business School", nil];
+	
+	LibItemDetailViewController *vc = [[LibItemDetailViewController alloc]  initWithStyle:UITableViewStyleGrouped
+																					title:title 
+																				   author: authorName 
+																			 otherDetail1:otherDetail1 
+																			 otherDetail2:otherDetail2 
+																			 otherDetail3:otherDetail3 
+																				libraries:libraries];
+	vc.title = @"Item Detail";
+	[self.navigationController pushViewController:vc animated:YES];
+	[vc release];
+	
 }
 
 
