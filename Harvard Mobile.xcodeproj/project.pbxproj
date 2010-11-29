@@ -143,6 +143,10 @@
 		56B6E22B12965B8A00818071 /* LibraryLocationsMapViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 56B6E22912965B8A00818071 /* LibraryLocationsMapViewController.m */; };
 		56B6E23012965E7C00818071 /* LibraryAnnotation.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = 56B6E22E12965E7C00818071 /* LibraryAnnotation.h */; settings = {JAVA_ARCHIVE_SUBDIR = Modules/Libraries; }; };
 		56B6E23112965E7C00818071 /* LibraryAnnotation.m in Sources */ = {isa = PBXBuildFile; fileRef = 56B6E22F12965E7C00818071 /* LibraryAnnotation.m */; };
+		56E84F8012A43AC10022E162 /* BookmarkedLibrariesOrArchives.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = 56E84F7E12A43AC10022E162 /* BookmarkedLibrariesOrArchives.h */; settings = {JAVA_ARCHIVE_SUBDIR = Modules/Libraries; }; };
+		56E84F8112A43AC10022E162 /* BookmarkedLibrariesOrArchives.m in Sources */ = {isa = PBXBuildFile; fileRef = 56E84F7F12A43AC10022E162 /* BookmarkedLibrariesOrArchives.m */; };
+		56E84FBE12A43D0A0022E162 /* BookmarkedHoursAndLocationsViewController.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = 56E84FBC12A43D0A0022E162 /* BookmarkedHoursAndLocationsViewController.h */; settings = {JAVA_ARCHIVE_SUBDIR = Modules/Libraries; }; };
+		56E84FBF12A43D0A0022E162 /* BookmarkedHoursAndLocationsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 56E84FBD12A43D0A0022E162 /* BookmarkedHoursAndLocationsViewController.m */; };
 		A623F1F1120A035A00341C5E /* ModoThreeStateSwitchControl.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = A623F1EF120A035A00341C5E /* ModoThreeStateSwitchControl.h */; settings = {JAVA_ARCHIVE_SUBDIR = Modules; }; };
 		A623F1F2120A035A00341C5E /* ModoThreeStateSwitchControl.m in Sources */ = {isa = PBXBuildFile; fileRef = A623F1F0120A035A00341C5E /* ModoThreeStateSwitchControl.m */; };
 		A64C313D11FDFAB8006FE056 /* AddressFormatter.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = A64C313B11FDFAB8006FE056 /* AddressFormatter.h */; settings = {JAVA_ARCHIVE_SUBDIR = Common; }; };
@@ -574,6 +578,10 @@
 		56B6E22912965B8A00818071 /* LibraryLocationsMapViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LibraryLocationsMapViewController.m; sourceTree = "<group>"; };
 		56B6E22E12965E7C00818071 /* LibraryAnnotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LibraryAnnotation.h; sourceTree = "<group>"; };
 		56B6E22F12965E7C00818071 /* LibraryAnnotation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LibraryAnnotation.m; sourceTree = "<group>"; };
+		56E84F7E12A43AC10022E162 /* BookmarkedLibrariesOrArchives.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BookmarkedLibrariesOrArchives.h; sourceTree = "<group>"; };
+		56E84F7F12A43AC10022E162 /* BookmarkedLibrariesOrArchives.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BookmarkedLibrariesOrArchives.m; sourceTree = "<group>"; };
+		56E84FBC12A43D0A0022E162 /* BookmarkedHoursAndLocationsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BookmarkedHoursAndLocationsViewController.h; sourceTree = "<group>"; };
+		56E84FBD12A43D0A0022E162 /* BookmarkedHoursAndLocationsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BookmarkedHoursAndLocationsViewController.m; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* Mobile-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Mobile-Info.plist"; plistStructureDefinitionIdentifier = "com.apple.xcode.plist.structure-definition.iphone.info-plist"; sourceTree = "<group>"; };
 		A623F1EF120A035A00341C5E /* ModoThreeStateSwitchControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ModoThreeStateSwitchControl.h; sourceTree = "<group>"; };
 		A623F1F0120A035A00341C5E /* ModoThreeStateSwitchControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ModoThreeStateSwitchControl.m; sourceTree = "<group>"; };
@@ -1220,6 +1228,10 @@
 				5689DC75129C071E00A9EFA0 /* LibItemDetailCell.m */,
 				5689DD76129D294100A9EFA0 /* LibItemDetailViewController.h */,
 				5689DD77129D294100A9EFA0 /* LibItemDetailViewController.m */,
+				56E84F7E12A43AC10022E162 /* BookmarkedLibrariesOrArchives.h */,
+				56E84F7F12A43AC10022E162 /* BookmarkedLibrariesOrArchives.m */,
+				56E84FBC12A43D0A0022E162 /* BookmarkedHoursAndLocationsViewController.h */,
+				56E84FBD12A43D0A0022E162 /* BookmarkedHoursAndLocationsViewController.m */,
 			);
 			path = Libraries;
 			sourceTree = "<group>";
@@ -1874,6 +1886,8 @@
 				5689DBA6129BD3DD00A9EFA0 /* LibrariesMultiLineCell.h in JavaArchive */,
 				5689DC76129C071E00A9EFA0 /* LibItemDetailCell.h in JavaArchive */,
 				5689DD78129D294200A9EFA0 /* LibItemDetailViewController.h in JavaArchive */,
+				56E84F8012A43AC10022E162 /* BookmarkedLibrariesOrArchives.h in JavaArchive */,
+				56E84FBE12A43D0A0022E162 /* BookmarkedHoursAndLocationsViewController.h in JavaArchive */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2203,6 +2217,8 @@
 				5689DBA7129BD3DD00A9EFA0 /* LibrariesMultiLineCell.m in Sources */,
 				5689DC77129C071E00A9EFA0 /* LibItemDetailCell.m in Sources */,
 				5689DD79129D294200A9EFA0 /* LibItemDetailViewController.m in Sources */,
+				56E84F8112A43AC10022E162 /* BookmarkedLibrariesOrArchives.m in Sources */,
+				56E84FBF12A43D0A0022E162 /* BookmarkedHoursAndLocationsViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

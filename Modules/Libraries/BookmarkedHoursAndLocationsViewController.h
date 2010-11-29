@@ -1,8 +1,8 @@
 //
-//  HoursAndLocationsViewController.h
+//  BookmarkedHoursAndLocationsViewController.h
 //  Harvard Mobile
 //
-//  Created by Muhammad J Amjad on 11/18/10.
+//  Created by Muhammad J Amjad on 11/29/10.
 //  Copyright 2010 ModoLabs Inc. All rights reserved.
 //
 
@@ -12,9 +12,7 @@
 #import "LibraryDetailViewController.h"
 #import "JSONAPIRequest.h"
 
-@class LibraryLocationsMapViewController;
-
-@interface HoursAndLocationsViewController : UIViewController <UITableViewDelegate, UITableViewDataSource, JSONAPIDelegate> {
+@interface BookmarkedHoursAndLocationsViewController : UIViewController <UITableViewDelegate, UITableViewDataSource, JSONAPIDelegate> {
 	
 	UIBarButtonItem * _viewTypeButton;
 	UIView * listOrMapView;

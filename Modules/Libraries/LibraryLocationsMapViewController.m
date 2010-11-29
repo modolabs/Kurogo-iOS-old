@@ -7,6 +7,8 @@
 //
 
 #import "LibraryLocationsMapViewController.h"
+#import "Library.h"
+#import "LibraryAnnotation.h"
 
 
 @implementation LibraryLocationsMapViewController
@@ -80,6 +82,19 @@
 
 
 -(void) setAllLibraryLocations:(NSArray *) libraries{
+	allLibraries = libraries;
+	
+	for (int i=0; i< [[self.mapView annotations] count]; i++)
+		[self.mapView removeAnnotation:[[self.mapView annotations] objectAtIndex:i]];
+	
+	
+	for (int index=0; index < [allLibraries count]; index++){
+		Library *lib = [allLibraries objectAtIndex:index];
+		
+		LibraryAnnotation *annotation = [[LibraryAnnotation alloc] initWithLibrary:lib];
+		
+		[mapView addAnnotation:annotation];
+	}
 }
 
 -(void) addLibraryLocationOnMap: (Library *) library {
@@ -99,7 +114,29 @@
 
 - (MKAnnotationView *)mapView:(MKMapView *)_mapView viewForAnnotation:(id <MKAnnotation>)annotation
 {
+	MKAnnotationView* annotationView = nil;
 	
+	if ([annotation isKindOfClass:[LibraryAnnotation class]]) 
+	{
+		annotationView = [[[MKAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:@"gufidfdleg"] autorelease];
+		UIImage* pin = [UIImage imageNamed:@"maps/map_pin_complete.png"];
+		UIImageView* imageView = [[[UIImageView alloc] initWithImage:pin] autorelease];
+		
+		
+		UIButton *myDetailButton = [UIButton buttonWithType:UIButtonTypeDetailDisclosure];
+		myDetailButton.frame = CGRectMake(0, 0, 23, 23);
+		myDetailButton.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
+		myDetailButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentCenter;
+		// Set the button as the callout view
+		annotationView.rightCalloutAccessoryView = myDetailButton;
+		
+		annotationView.frame = imageView.frame;
+		annotationView.canShowCallout = YES;
+		[annotationView addSubview:imageView];
+		annotationView.backgroundColor = [UIColor clearColor];		
+	}
+	
+	return annotationView;
 }
 
 

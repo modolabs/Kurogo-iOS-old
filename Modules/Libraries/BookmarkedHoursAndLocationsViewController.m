@@ -1,24 +1,25 @@
-//
-//  HoursAndLocationsViewController.m
+    //
+//  BookmarkedHoursAndLocationsViewController.m
 //  Harvard Mobile
 //
-//  Created by Muhammad J Amjad on 11/18/10.
+//  Created by Muhammad J Amjad on 11/29/10.
 //  Copyright 2010 ModoLabs Inc. All rights reserved.
 //
 
-#import "HoursAndLocationsViewController.h"
+#import "BookmarkedHoursAndLocationsViewController.h"
 #import "MITUIConstants.h"
 #import "Library.h"
 #import "CoreDataManager.h"
 #import "Constants.h"
 
-@implementation HoursAndLocationsViewController
+@implementation BookmarkedHoursAndLocationsViewController
 @synthesize listOrMapView;
 @synthesize showingMapView;
 @synthesize librayLocationsMapView;
 @synthesize showArchives;
 
-NSInteger libraryNameSort(id lib1, id lib2, void *context);
+
+NSInteger libraryNameSorted(id lib1, id lib2, void *context);
 
 -(id)init {
 	
@@ -49,9 +50,9 @@ NSInteger libraryNameSort(id lib1, id lib2, void *context);
 	
 	if (nil == _viewTypeButton)
 		_viewTypeButton = [[[UIBarButtonItem alloc] initWithTitle:@"Map"
-													   style:UIBarButtonItemStylePlain 
-													  target:self
-													   action:@selector(displayTypeChanged:)] autorelease];
+															style:UIBarButtonItemStylePlain 
+														   target:self
+														   action:@selector(displayTypeChanged:)] autorelease];
 	//_viewTypeButton.enabled = NO;										  
 	self.navigationItem.rightBarButtonItem = _viewTypeButton;
 	
@@ -64,7 +65,7 @@ NSInteger libraryNameSort(id lib1, id lib2, void *context);
     [self.view addSubview:imageView];
     [imageView release];
 	
-
+	
 	
 	//Create the segmented control
 	NSArray *itemArray = [NSArray arrayWithObjects: @"All Libraries", @"Open Now", nil];
@@ -87,8 +88,8 @@ NSInteger libraryNameSort(id lib1, id lib2, void *context);
 	gpsButtonControl.frame = CGRectMake(10,footerDisplacementFromTop + 8, 30, 30);
 	gpsButtonControl.segmentedControlStyle = UISegmentedControlStyleBar;
 	[gpsButtonControl addTarget:self
-							action:@selector(gpsButtonPressed:)
-				  forControlEvents:UIControlEventValueChanged];
+						 action:@selector(gpsButtonPressed:)
+			   forControlEvents:UIControlEventValueChanged];
 	
 	if (self.showingMapView == YES)
 		[self.view addSubview:gpsButtonControl];
@@ -96,7 +97,7 @@ NSInteger libraryNameSort(id lib1, id lib2, void *context);
 	//[gpsButtonControl release];
 	
 	self.listOrMapView = [[[UIView alloc] initWithFrame:CGRectMake(0, 0, 
-																	 self.view.frame.size.width,
+																   self.view.frame.size.width,
 																   footerDisplacementFromTop)] autorelease];
 	
 	[self.view addSubview:self.listOrMapView];
@@ -109,13 +110,13 @@ NSInteger libraryNameSort(id lib1, id lib2, void *context);
 	showingOnlyOpen = NO;
 	
 	[self.listOrMapView addSubview:_tableView];
-
 	
 	
-	NSPredicate *matchAll = [NSPredicate predicateWithFormat:@"TRUEPREDICATE"];
-	NSArray *tempArray = [CoreDataManager objectsForEntity:LibraryEntityName matchingPredicate:matchAll];
 	
-	tempArray = [tempArray sortedArrayUsingFunction:libraryNameSort context:self];
+	NSPredicate *bookmarkPred = [NSPredicate predicateWithFormat:@"isBookmarked == YES"];
+	NSArray *tempArray = [CoreDataManager objectsForEntity:LibraryEntityName matchingPredicate:bookmarkPred];
+	
+	tempArray = [tempArray sortedArrayUsingFunction:libraryNameSorted context:self];
 	
 	allLibraries = nil;
 	allOpenLibraries = nil;
@@ -131,7 +132,7 @@ NSInteger libraryNameSort(id lib1, id lib2, void *context);
 			if ([lib.type isEqualToString: @"Library"])
 				[allLibraries addObject:lib];
 		}
-
+		
 		
 		
 	}
@@ -191,31 +192,31 @@ NSInteger libraryNameSort(id lib1, id lib2, void *context);
 -(void) gpsButtonPressed:(id)sender {
 	UISegmentedControl *segmentedController = (UISegmentedControl *)sender;
 	segmentedController.selectedSegmentIndex = -1;
-
+	
 	if (showingMapView == YES)
 	{
 		//self.librayLocationsMapView.mapView.showsUserLocation = !self.librayLocationsMapView.mapView.showsUserLocation;
 		
 		if (!self.librayLocationsMapView.mapView.showsUserLocation) {	
 			
-
-				BOOL successful = [self.librayLocationsMapView mapView:self.librayLocationsMapView.mapView 
-									   didUpdateUserLocation:self.librayLocationsMapView.mapView.userLocation];
 			
-				if (successful == YES)
-					self.librayLocationsMapView.mapView.showsUserLocation = YES;
+			BOOL successful = [self.librayLocationsMapView mapView:self.librayLocationsMapView.mapView 
+											 didUpdateUserLocation:self.librayLocationsMapView.mapView.userLocation];
 			
-			}
+			if (successful == YES)
+				self.librayLocationsMapView.mapView.showsUserLocation = YES;
+			
+		}
 		
 		else {	
 			self.librayLocationsMapView.mapView.showsUserLocation = NO;
-				self.librayLocationsMapView.mapView.region = [self.librayLocationsMapView 
-															  regionForAnnotations:self.librayLocationsMapView.mapView.annotations];
-
+			self.librayLocationsMapView.mapView.region = [self.librayLocationsMapView 
+														  regionForAnnotations:self.librayLocationsMapView.mapView.annotations];
+			
 			
 		}
 	}		
-		
+	
 	gpsPressed = !gpsPressed;
 }
 
@@ -227,7 +228,7 @@ NSInteger libraryNameSort(id lib1, id lib2, void *context);
 		if (showingMapView)
 			return;
 	}
-
+	
 	// flip to the correct view. 
 	if (animated) {
 		[UIView beginAnimations:@"flip" context:nil];
@@ -239,18 +240,18 @@ NSInteger libraryNameSort(id lib1, id lib2, void *context);
 		if (nil != self.librayLocationsMapView)
 			[self.librayLocationsMapView.view removeFromSuperview];
 		
-			[self.listOrMapView addSubview:_tableView];
-			[_tableView reloadData];
-			self.librayLocationsMapView = nil;
-			_viewTypeButton.title = @"Map";
-
-
+		[self.listOrMapView addSubview:_tableView];
+		[_tableView reloadData];
+		self.librayLocationsMapView = nil;
+		_viewTypeButton.title = @"Map";
+		
+		
 	} else {
 		[_tableView removeFromSuperview];
-				
+		
 		if (nil == librayLocationsMapView) {
 			librayLocationsMapView = [[LibraryLocationsMapViewController alloc] initWithMapViewFrame:self.listOrMapView.frame];
-
+			
 		}
 		
 		//librayLocationsMapView.parentViewController = self;
@@ -263,10 +264,10 @@ NSInteger libraryNameSort(id lib1, id lib2, void *context);
 		else {
 			[librayLocationsMapView setAllLibraryLocations:allOpenLibraries];
 		}
-
+		
 		[librayLocationsMapView viewWillAppear:YES];
 		_viewTypeButton.title = @"List";
-
+		
 	}
 	
 	if(animated) {
@@ -278,27 +279,27 @@ NSInteger libraryNameSort(id lib1, id lib2, void *context);
 
 
 /*
-- (void)buttonPressed:(id)sender {
-    UIButton *pressedButton = (UIButton *)sender;
-    if (pressedButton.tag == SEARCH_BUTTON_TAG) {
-        [self showSearchBar];
-    } else {
-        [self reloadView:pressedButton.tag];
-    }
-}
+ - (void)buttonPressed:(id)sender {
+ UIButton *pressedButton = (UIButton *)sender;
+ if (pressedButton.tag == SEARCH_BUTTON_TAG) {
+ [self showSearchBar];
+ } else {
+ [self reloadView:pressedButton.tag];
+ }
+ }
  */
 
 
 /*- (void)didReceiveMemoryWarning {
-    // Releases the view if it doesn't have a superview.
-    [super didReceiveMemoryWarning];
-    
-    // Release any cached data, images, etc that aren't in use.
-}*/
+ // Releases the view if it doesn't have a superview.
+ [super didReceiveMemoryWarning];
+ 
+ // Release any cached data, images, etc that aren't in use.
+ }*/
 
 - (void)viewDidUnload {
     [super viewDidUnload];
-
+	
     
 	// Release any retained subviews of the main view.
     // e.g. self.myOutlet = nil;
@@ -307,7 +308,7 @@ NSInteger libraryNameSort(id lib1, id lib2, void *context);
 
 - (void)dealloc {
     [super dealloc];
-
+	
 }
 
 
@@ -326,10 +327,10 @@ NSInteger libraryNameSort(id lib1, id lib2, void *context);
 		if (nil != allOpenLibraries)
 			count = [allOpenLibraries count];
 	}
-
+	
 	
 	return count;
-
+	
 }
 
 
@@ -340,25 +341,25 @@ NSInteger libraryNameSort(id lib1, id lib2, void *context);
 }
 
 /*
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-	ShuttleStop *aStop = nil;
-	if(nil != self.route && self.route.stops.count > indexPath.row) {
-		aStop = [self.route.stops objectAtIndex:indexPath.row];
-	}
-	
-	
-	CGSize constraintSize = CGSizeMake(280.0f, 2009.0f);
-	NSString* cellText = @"A"; // just something to guarantee one line
-	UIFont* cellFont = [UIFont boldSystemFontOfSize:[UIFont buttonFontSize]];
-	CGSize labelSize = [cellText sizeWithFont:cellFont constrainedToSize:constraintSize lineBreakMode:UILineBreakModeWordWrap];
-	
-	if (aStop.upcoming)
-		labelSize.height += 5.0f;
-	
-	return labelSize.height + 20.0f;
-}
-*/
+ - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+ {
+ ShuttleStop *aStop = nil;
+ if(nil != self.route && self.route.stops.count > indexPath.row) {
+ aStop = [self.route.stops objectAtIndex:indexPath.row];
+ }
+ 
+ 
+ CGSize constraintSize = CGSizeMake(280.0f, 2009.0f);
+ NSString* cellText = @"A"; // just something to guarantee one line
+ UIFont* cellFont = [UIFont boldSystemFontOfSize:[UIFont buttonFontSize]];
+ CGSize labelSize = [cellText sizeWithFont:cellFont constrainedToSize:constraintSize lineBreakMode:UILineBreakModeWordWrap];
+ 
+ if (aStop.upcoming)
+ labelSize.height += 5.0f;
+ 
+ return labelSize.height + 20.0f;
+ }
+ */
 
 
 // Customize the appearance of table view cells.
@@ -378,20 +379,20 @@ NSInteger libraryNameSort(id lib1, id lib2, void *context);
 	
 	Library * lib; 
 	if (showingOnlyOpen == NO) {
-	 lib = [allLibraries objectAtIndex:indexPath.section];
-	
-	if (nil != allLibraries)
-		cell.textLabel.text = lib.name;
+		lib = [allLibraries objectAtIndex:indexPath.section];
+		
+		if (nil != allLibraries)
+			cell.textLabel.text = lib.name;
 	}
 	
 	else {
 		lib = [allOpenLibraries objectAtIndex:indexPath.section];
-			
-			if (nil != allOpenLibraries)
-				cell.textLabel.text = lib.name;
-		}
+		
+		if (nil != allOpenLibraries)
+			cell.textLabel.text = lib.name;
+	}
 	
-
+	
     return cell;
 }
 
@@ -408,7 +409,7 @@ NSInteger libraryNameSort(id lib1, id lib2, void *context);
 	else {
 		tempLibraries = allOpenLibraries;
 	}
-
+	
 	
 	for(Library *lib in tempLibraries) {
 		if (![tempIndexArray containsObject:[lib.name substringToIndex:1]])
@@ -446,7 +447,7 @@ NSInteger libraryNameSort(id lib1, id lib2, void *context);
 	[tableView deselectRowAtIndexPath:indexPath animated:YES];
 	
 	LibraryDetailViewController *vc = [[LibraryDetailViewController alloc] initWithStyle:UITableViewStyleGrouped];
-							
+	
 	vc.title = @"Library Detail";
 	[self.navigationController pushViewController:vc animated:YES];
 	[vc release];
@@ -458,7 +459,7 @@ NSInteger libraryNameSort(id lib1, id lib2, void *context);
 #pragma mark JSONAPIRequest Delegate function 
 
 - (void)request:(JSONAPIRequest *)request jsonLoaded:(id)result {
-
+	
 	NSArray *resultArray = (NSArray *)result;
 	
 	if ([result count]){
@@ -472,7 +473,7 @@ NSInteger libraryNameSort(id lib1, id lib2, void *context);
 		NSDictionary *libraryDictionary = [resultArray objectAtIndex:index];
 		
 		NSString * name = [libraryDictionary objectForKey:@"name"];
-		 NSNumber * latitude = [libraryDictionary objectForKey:@"latitude"];
+		NSNumber * latitude = [libraryDictionary objectForKey:@"latitude"];
 		NSNumber * longitude = [libraryDictionary objectForKey:@"longitude"];
 		
 		NSString * type = [libraryDictionary objectForKey:@"type"];
@@ -491,21 +492,13 @@ NSInteger libraryNameSort(id lib1, id lib2, void *context);
 		else {
 			typeOfLib = @"Library";
 		}
-
 		
-		NSPredicate *pred = [NSPredicate predicateWithFormat:@"name == %@ AND type == %@", name, typeOfLib];
+		
+		NSPredicate *pred = [NSPredicate predicateWithFormat:@"name == %@ AND type == %@ AND isBookmarked == YES", name, typeOfLib];
 		Library *alreadyInDB = [[CoreDataManager objectsForEntity:LibraryEntityName matchingPredicate:pred] lastObject];
 
-		NSManagedObject *managedObj;
-		if (nil == alreadyInDB){
-			managedObj = [CoreDataManager insertNewObjectForEntityForName:LibraryEntityName];
-			alreadyInDB = (Library *)managedObj;
-		}
-			
-		/*[alreadyInDB setValue:name forKey:@"name"];
-		[alreadyInDB setValue:[NSNumber numberWithDouble:[latitude doubleValue]] forKey:@"lat"];
-		[alreadyInDB setValue:[NSNumber numberWithDouble:[longitude doubleValue]] forKey:@"lon"];		
-		*/
+		if (nil != alreadyInDB){
+
 		
 		alreadyInDB.name = name;
 		alreadyInDB.lat = [NSNumber numberWithDouble:[latitude doubleValue]];
@@ -518,7 +511,7 @@ NSInteger libraryNameSort(id lib1, id lib2, void *context);
 		
 		if (isOpen)
 			[allOpenLibraries addObject:alreadyInDB];
-		
+		}
 	}
 	[CoreDataManager saveData];
 	
@@ -528,7 +521,7 @@ NSInteger libraryNameSort(id lib1, id lib2, void *context);
 }
 
 - (BOOL)request:(JSONAPIRequest *)request shouldDisplayAlertForError:(NSError *)error {
-
+	
     return YES;
 }
 
@@ -544,8 +537,8 @@ NSInteger libraryNameSort(id lib1, id lib2, void *context);
 }
 
 
-NSInteger libraryNameSort(id lib1, id lib2, void *context) {
-
+NSInteger libraryNameSorted(id lib1, id lib2, void *context) {
+	
 	Library * library1 = (Library *)lib1;
 	Library * library2 = (Library *)lib2;
 	

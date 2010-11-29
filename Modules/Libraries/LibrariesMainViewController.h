@@ -35,6 +35,8 @@
 	NSArray * bookmarkedLibraries;
 	
 	BOOL hasBookmarkedItems;
+	
+	JSONAPIRequest *apiRequest;
 }
 
 @property (nonatomic, retain) UITableView *tableView;

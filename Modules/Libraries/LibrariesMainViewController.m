@@ -13,6 +13,8 @@
 #import "MITLoadingActivityView.h"
 #import "HoursAndLocationsViewController.h"
 #import "LibrariesSearchViewController.h"
+#import "CoreDataManager.h"
+#import "BookmarkedLibrariesOrArchives.h"
 
 @implementation LibrariesMainViewController
 @synthesize searchTerms, searchResults, searchController;
@@ -44,7 +46,11 @@
                               self.view.frame.size.width,
                               self.view.frame.size.height - theSearchBar.frame.size.height);
 	
-	_tableView = nil;
+	if (nil != self.tableView)
+		[self.tableView removeFromSuperview];
+	
+	self.tableView = nil;
+	
 	self.tableView = [[[UITableView alloc] initWithFrame:frame style:UITableViewStyleGrouped] autorelease];
 	
     self.tableView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
@@ -83,17 +89,18 @@
 	// bookmark button of the UISearchBar
     // TODO: don't hard code this frame
 	
+	_bookmarkButton = nil;
 	if (nil == _bookmarkButton) {
 		_bookmarkButton = [[UIButton alloc] initWithFrame:CGRectMake(282, 8, 32, 28)];
 		[_bookmarkButton setImage:[UIImage imageNamed:@"global/searchfield_star.png"] forState:UIControlStateNormal];
 	}
 	[self.view addSubview:_bookmarkButton];
-	//[_bookmarkButton addTarget:self action:@selector(bookmarkButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
+	[_bookmarkButton addTarget:self action:@selector(bookmarkButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
 	
 	
 	// set up tableView options
 	
-	NSString * option1 = @"Locations and Hours";
+	NSString * option1 = @"Library Locations and Hours";
 	NSString * option2 = @"Archives";	
 	mainViewTableOptions1 = [[NSArray alloc] initWithObjects: option1, option2, nil];
 	
@@ -105,13 +112,16 @@
 	
 	hasBookmarkedItems = NO;
 	
+	NSPredicate *pred = [NSPredicate predicateWithFormat:@"isBookmarked == YES"];
+	bookmarkedLibraries = [[CoreDataManager objectsForEntity:LibraryEntityName matchingPredicate:pred] retain];
+	
+	if ([bookmarkedLibraries count] > 0)
+		hasBookmarkedItems = YES;
+	
+	
 	if (hasBookmarkedItems == NO) {
 		bookmarkedLibraries = [[NSArray alloc] initWithObjects: nil];
 		[self hideToolBar];
-	}
-	else {
-		NSString * option6 = @"My Bookmarked Libraries";
-		bookmarkedLibraries = [[NSArray alloc] initWithObjects:option6, nil];
 	}
 	
 }
@@ -128,8 +138,7 @@
 	/*for (UIView *view in self.view.subviews) {
 		[view removeFromSuperview];
 	}*/
-	
-	//[self setUpLayOut];
+	[self setUpLayOut];
 	[super viewWillAppear:animated];
 	
 
@@ -204,6 +213,11 @@
 
 
 - (void)bookmarkButtonClicked:(UIButton *)sender {
+	
+	BookmarkedLibrariesOrArchives *vc = [[BookmarkedLibrariesOrArchives alloc] initWithStyle:UITableViewStyleGrouped];
+	vc.title = @"Bookmarked Libraries";
+	[self.navigationController pushViewController:vc animated:YES];
+	[vc release];
 	
 	//TODO: open a list-view displaying all bookmarked items
 }
@@ -382,8 +396,13 @@
 
 // Customize the number of rows in the table view.
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+	
+	int bookmarkRowCount = 0;
+	if (hasBookmarkedItems == YES)
+		bookmarkRowCount = 1;
+	
 	if (section == 0)
-		return [mainViewTableOptions1 count] + [bookmarkedLibraries count];
+		return [mainViewTableOptions1 count] + bookmarkRowCount;
 	
 	else if (section == 1){
 		return [mainViewTableOptions2 count];
@@ -415,7 +434,7 @@
 	if (section == 0) {
 		if ([bookmarkedLibraries count] > 0) {
 			if (row == 0) {
-				cell.textLabel.text = (NSString *)[bookmarkedLibraries objectAtIndex:row];
+				cell.textLabel.text = @"My Bookmarked Libraries";
 			}
 			else {
 				cell.textLabel.text = (NSString *)[mainViewTableOptions1 objectAtIndex:row-1];
@@ -467,9 +486,66 @@
 	
 	if (indexPath.section == 0) {
 		
-		if (indexPath.row == 0) {
+		if (((indexPath.row == 0) && (hasBookmarkedItems == NO)) ||
+			((indexPath.row == 1) && (hasBookmarkedItems == YES)))
+		{
 			HoursAndLocationsViewController *vc = [[HoursAndLocationsViewController alloc] init];
 			vc.title = @"Locations & Hours";
+			
+			apiRequest = [[JSONAPIRequest alloc] initWithJSONAPIDelegate:vc];	
+			
+			
+			if ([apiRequest requestObjectFromModule:@"libraries" 
+										command:@"libraries" 
+									 parameters:nil] == YES)
+			{
+				[self.navigationController pushViewController:vc animated:YES];
+			}
+			else {
+				UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil
+																	message:@"Could not connect to the server" 
+																   delegate:self 
+														  cancelButtonTitle:@"OK" 
+														  otherButtonTitles:nil];
+				[alertView show];
+				[alertView release];
+			}
+
+			[vc release];
+		}
+		else if (((indexPath.row == 1) && (hasBookmarkedItems == NO)) ||
+						((indexPath.row == 2) && (hasBookmarkedItems == YES)))
+		{
+			HoursAndLocationsViewController *vc = [[HoursAndLocationsViewController alloc] init];
+			vc.showArchives = YES;
+			vc.title = @"Locations & Hours";
+			
+			apiRequest = [[JSONAPIRequest alloc] initWithJSONAPIDelegate:vc];	
+			
+			
+			if ([apiRequest requestObjectFromModule:@"libraries" 
+											command:@"archives" 
+										 parameters:nil] == YES)
+			{
+				[self.navigationController pushViewController:vc animated:YES];
+			}
+			else {
+				UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil
+																	message:@"Could not connect to the server" 
+																   delegate:self 
+														  cancelButtonTitle:@"OK" 
+														  otherButtonTitles:nil];
+				[alertView show];
+				[alertView release];
+			}
+			
+			[vc release];
+		}
+		
+		else if ((indexPath.row == 0) && (hasBookmarkedItems == YES)){
+			
+			BookmarkedLibrariesOrArchives *vc = [[BookmarkedLibrariesOrArchives alloc] initWithStyle:UITableViewStyleGrouped];
+			vc.title = @"Bookmarked Libraries";
 			[self.navigationController pushViewController:vc animated:YES];
 			[vc release];
 		}

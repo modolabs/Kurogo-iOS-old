@@ -14,6 +14,7 @@
 }
 
 @property (nonatomic, retain) NSString * name;
+@property (nonatomic, retain) NSString * type;
 @property (nonatomic, retain) NSNumber * lat;
 @property (nonatomic, retain) NSNumber * lon;
 @property (nonatomic, retain) NSString * webpage;
