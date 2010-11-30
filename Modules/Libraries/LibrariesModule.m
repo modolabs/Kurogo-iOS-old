@@ -18,7 +18,7 @@
         self.tag = LibrariesTag;
         self.shortName = @"Libraries";
         self.longName = @"Libraries";
-        self.iconName = @"dining"; // needs to be changed
+        self.iconName = @"libraries"; // needs to be changed
         
         LibrariesMainViewController *aboutVC = [[[LibrariesMainViewController alloc] init] autorelease];
         aboutVC.title = self.longName;
