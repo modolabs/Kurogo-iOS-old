@@ -12,12 +12,15 @@
 @implementation Library
 
 @dynamic name;
+@dynamic identityTag;
+@dynamic location;
 @dynamic lat;
 @dynamic lon;
-@dynamic webpage;
-@dynamic email;
+@dynamic websiteLib;
+@dynamic emailLib;
 @dynamic phone;
 @dynamic isBookmarked;
 @dynamic type;
+@dynamic directions;
 
 @end

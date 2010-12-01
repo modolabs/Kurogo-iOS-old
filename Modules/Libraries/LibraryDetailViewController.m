@@ -13,13 +13,30 @@
 #import "MapBookmarkManager.h"
 #import "MIT_MobileAppDelegate.h"
 #import "Foundation+MITAdditions.h"
+#import "LibraryPhone.h"
+#import "CoreDataManager.h"
 
 
 @implementation LibraryDetailViewController
 @synthesize weeklySchedule;
 @synthesize bookmarkButtonIsOn;
+@synthesize lib;
+@synthesize otherLibraries;
+@synthesize currentlyDisplayingLibraryAtIndex;
 
--(void) viewDidLoad {
+NSInteger phoneNumberSort(id num1, id num2, void *context);
+
+NSInteger phoneNumberSort(id num1, id num2, void *context){
+	
+	LibraryPhone * phone1 = (LibraryPhone *)num1;
+	LibraryPhone * phone2 = (LibraryPhone *)num2;
+	
+	return [phone1.descriptionText compare:phone2.descriptionText];
+	
+}
+
+
+-(void) setupLayout {
 	
 	UISegmentedControl *segmentControl = [[UISegmentedControl alloc] initWithItems:[NSArray arrayWithObjects:
 																					[UIImage imageNamed:MITImageNameUpArrow],
@@ -32,10 +49,10 @@
 	self.navigationItem.rightBarButtonItem = segmentBarItem;
 	[segmentControl release];
 	[segmentBarItem release];
-
 	
-	UIView *headerView = nil; 
-	NSString * libraryName = @"Cabot Science Library ";
+	
+	headerView = nil; 
+	NSString * libraryName = lib.name; //@"Cabot Science Library ";
 	CGFloat height = [libraryName
 					  sizeWithFont:[UIFont fontWithName:CONTENT_TITLE_FONT size:CONTENT_TITLE_FONT_SIZE]
 					  constrainedToSize:CGSizeMake(250, 70)         
@@ -56,7 +73,15 @@
 	//[self.tableView.tableHeaderView addSubview:myStellarButton];
 	
 	bookmarkButtonIsOn = NO;
-
+	
+	NSPredicate *pred = [NSPredicate predicateWithFormat:@"name == %@ AND type == %@", lib.name, lib.type];
+	Library *alreadyInDB = [[CoreDataManager objectsForEntity:LibraryEntityName matchingPredicate:pred] lastObject];
+	
+	if (nil != alreadyInDB) {
+		bookmarkButton.selected = [alreadyInDB.isBookmarked boolValue];
+		bookmarkButtonIsOn = [alreadyInDB.isBookmarked boolValue];
+	}
+	
 	
 	UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(12.0, 5.0, 250.0, height)];
 	label.text = libraryName;
@@ -66,7 +91,7 @@
 	label.lineBreakMode = UILineBreakModeWordWrap;
 	label.numberOfLines = 2;
 	[headerView addSubview:label];
-
+	
 	
 	UILabel *label2 = [[UILabel alloc] initWithFrame:CGRectMake(12.0, height, 250.0, 30.0)];
 	label2.text = @"Affiliation: Harvard College Library";
@@ -76,8 +101,8 @@
 	label2.backgroundColor = [UIColor clearColor];	
 	label2.lineBreakMode = UILineBreakModeWordWrap;
 	label2.numberOfLines = 2;
-	[headerView addSubview:label2];
-
+	//[headerView addSubview:label2];
+	
 	self.tableView.tableHeaderView = [[UIView alloc]
 									  initWithFrame:CGRectMake(0, 0, self.tableView.frame.size.width, headerView.frame.size.height + 10)];
 	[self.tableView.tableHeaderView addSubview:headerView];
@@ -87,17 +112,31 @@
 	[label2 release];
 	[label release];
 	
-	weeklySchedule = [[NSDictionary alloc] initWithObjectsAndKeys:
-					  @"8.30am - 12 midnight", @"Monday",
-					  @"8.30am - 12 midnight", @"Tuesday",
-					  @"8.30am - 11.30pm", @"Wednesday",
-					  @"8.30am - 12 midnight", @"Thursday",
-					  @"8.30am - 12 midnight", @"Friday",
-					  @"8.30am - 11.30pm", @"Saturday",
-					  @"Closed", @"Sunday", nil];
+	weeklySchedule = [[NSMutableDictionary alloc] initWithObjectsAndKeys:
+					  @"loading..", @"Monday",
+					  @"loading..", @"Tuesday",
+					  @"loading..", @"Wednesday",
+					  @"loading..", @"Thursday",
+					  @"loading..", @"Friday",
+					  @"loading..", @"Saturday",
+					  @"loading..", @"Sunday", nil];
+	
+	
+	//weeklySchedule = [[NSMutableDictionary alloc] init];
 	
 	daysOfWeek = [[NSArray alloc] initWithObjects:
 				  @"Monday", @"Tuesday", @"Wednesday", @"Thursday", @"Friday", @"Saturday", @"Sunday", nil];
+	
+	websiteRow = -1;
+	emailRow = -1;
+	phoneRow = -1;
+	
+	phoneNumbersArray = [[NSArray alloc] init];
+}
+
+-(void) viewDidLoad {
+	
+	[self setupLayout];
 	
 }
 
@@ -123,23 +162,91 @@
 -(void) bookmarkButtonToggled: (id) sender {
 	
 		BOOL newBookmarkButtonStatus = !bookmarkButton.selected;
+	
+		NSPredicate *pred = [NSPredicate predicateWithFormat:@"name == %@ AND type == %@", lib.name, lib.type];
+		Library *alreadyInDB = [[CoreDataManager objectsForEntity:LibraryEntityName matchingPredicate:pred] lastObject];
+		
+		if (nil == alreadyInDB){
+			return;
+		}
 		
 		if (newBookmarkButtonStatus) {
 			//[StellarModel saveClassToFavorites:stellarClass];
+			
 			bookmarkButton.selected = YES;
+			alreadyInDB.isBookmarked = [NSNumber numberWithBool:YES];
 		}
 		
 		else {
 			//[StellarModel removeClassFromFavorites:stellarClass];
 			bookmarkButton.selected = NO;
+			alreadyInDB.isBookmarked = [NSNumber numberWithBool:NO];
 		}
-		
 	
+	[CoreDataManager saveData];
 }
 
 
 -(void) showNextLibrary: (id) sender {
+	
+	if ([sender isKindOfClass:[UISegmentedControl class]]) {
+        UISegmentedControl *theControl = (UISegmentedControl *)sender;
+        NSInteger index = theControl.selectedSegmentIndex;
+		
+		if ([otherLibraries count] > 1) {
+			int tempLibIndex;
+			
+			if (index == 0) { // going up
+				
+				tempLibIndex = currentlyDisplayingLibraryAtIndex - 1;
+			}
+			else
+				tempLibIndex = currentlyDisplayingLibraryAtIndex + 1;
+			
+			
+			if ((tempLibIndex >= 0) && (tempLibIndex < [otherLibraries count])){
+				
+				Library * temp = (Library *)[otherLibraries objectAtIndex:tempLibIndex];
+				
+				NSString * libOrArchive;
+				if ([temp.type isEqualToString:@"archive"])
+					libOrArchive = @"archivedetail";
+				
+				else {
+					libOrArchive = @"libdetail";
+				}
+				
+				apiRequest = [[JSONAPIRequest alloc] initWithJSONAPIDelegate:self];
+				
+				if ([apiRequest requestObjectFromModule:@"libraries" 
+												command:libOrArchive
+											 parameters:[NSDictionary dictionaryWithObjectsAndKeys:temp.identityTag, @"id", temp.name, @"name", nil]])
+				{
+					self.lib = (Library *)[[otherLibraries objectAtIndex:tempLibIndex] retain];
+					currentlyDisplayingLibraryAtIndex = tempLibIndex;
+					if (nil != headerView)
+						[headerView removeFromSuperview];
+					
+					if (nil != footerLabel)
+						[footerLabel removeFromSuperview];
+					
+					[self setupLayout];
+				}
+				else {
+					UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil
+																		message:@"Could not connect to the server" 
+																	   delegate:self 
+															  cancelButtonTitle:@"OK" 
+															  otherButtonTitles:nil];
+					[alertView show];
+					[alertView release];
+				}
+				
+			}			
+		}
+	}	
 }
+
 
 #pragma mark Table view methods
 
@@ -156,12 +263,36 @@
 	if (section == 0)
 		return 4;
 	
-	else if (section == 2)
-		return 3;
+	else if (section == 1) {
+		if ([lib.location length] > 0)
+			return 1;
+	}
 	
-	else
+	else if (section == 2) {
+		
+		int count =0;
+		
+		if ([lib.websiteLib length] > 0){
+			websiteRow = count;
+			count++;
+		}
+		
+		if ([lib.emailLib length] > 0){
+			emailRow = count;
+			count++;
+		}
+		
+		if ([lib.phone count] > 0) {
+			phoneRow = count;
+			count = count + [lib.phone count];
+			phoneNumbersArray = [lib.phone allObjects];
+			phoneNumbersArray = [[phoneNumbersArray sortedArrayUsingFunction:phoneNumberSort context:self] retain];
+		}
+		return count;
+	}
+	
 
-    return 1;
+    return 0;
 }
 
 
@@ -169,25 +300,30 @@
 
 	UIView * view;
 	view = nil;
-	if (section == 1) {
+	NSString * text;
 		
-		NSString * text =  @"Cabot Library is located on the first floor of the Science Center at the corner of Oxford and Kirkland Streets";
+	if ((section == 1) && (lib.directions)) {
+		if (nil != footerLabel)
+			[footerLabel removeFromSuperview];
+		
+		footerLabel = nil;
+		
+		text = lib.directions;
 		CGFloat height = [text
 						  sizeWithFont:[UIFont fontWithName:STANDARD_FONT size:13]
 						  constrainedToSize:CGSizeMake(300, 200)         
 						  lineBreakMode:UILineBreakModeWordWrap].height;
 		
-		UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(12.0, 0.0, 300.0, height)];
-		label.text = text;
-		label.font = [UIFont fontWithName:STANDARD_FONT size:13];
-		label.textColor = [UIColor colorWithHexString:@"#554C41"];
-		label.backgroundColor = [UIColor clearColor];	
-		label.lineBreakMode = UILineBreakModeWordWrap;
-		label.numberOfLines = 3;
+		footerLabel = [[UILabel alloc] initWithFrame:CGRectMake(12.0, 0.0, 300.0, height)];
+		footerLabel.text = text;
+		footerLabel.font = [UIFont fontWithName:STANDARD_FONT size:13];
+		footerLabel.textColor = [UIColor colorWithHexString:@"#554C41"];
+		footerLabel.backgroundColor = [UIColor clearColor];	
+		footerLabel.lineBreakMode = UILineBreakModeWordWrap;
+		footerLabel.numberOfLines = 3;
 		
-		view = [[UIView alloc] initWithFrame:label.frame];
-		[view addSubview:label];
-		[label release];
+		view = [[UIView alloc] initWithFrame:footerLabel.frame];
+		[view addSubview:footerLabel];
 	}
 	
 	return view;
@@ -199,7 +335,11 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
 	if (section == 1) {
-		NSString * text =  @"Cabot Library is located on the first floor of the Science Center at the corner of Oxford and Kirkland Streets";
+		NSString * text;
+		if (lib.directions)
+			text = lib.directions;
+		
+		//NSString * text =  @"Cabot Library is located on the first floor of the Science Center at the corner of Oxford and Kirkland Streets";
 		CGFloat height = [text
 						  sizeWithFont:[UIFont fontWithName:STANDARD_FONT size:13]
 						  constrainedToSize:CGSizeMake(300, 200)         
@@ -249,6 +389,8 @@
 		if (indexPath.row <= 2) {
 			
 			cell.textLabel.text = [daysOfWeek objectAtIndex:indexPath.row];
+			
+			if ([weeklySchedule count] == [daysOfWeek count])
 			cell.detailTextLabel.text = [weeklySchedule objectForKey:[daysOfWeek objectAtIndex:indexPath.row]];
 			
 		}
@@ -275,7 +417,7 @@
 			cellForLocation.textLabel.textColor = [UIColor colorWithHexString:@"#554C41"];
 		}
 			cellForLocation.textLabel.text = @"Location";
-			cellForLocation.detailTextLabel.text = @"Science Center, One Oxford Street, Cambridge, MA 02140";
+			cellForLocation.detailTextLabel.text = lib.location;
 			cellForLocation.accessoryView = [UIImageView accessoryViewWithMITType:MITAccessoryViewMap];
 			cellForLocation.selectionStyle = UITableViewCellSelectionStyleGray;
 			return cellForLocation;
@@ -293,22 +435,38 @@
 			cellForContact.textLabel.textColor = [UIColor colorWithHexString:@"#554C41"];
 		}
 	
-		if (indexPath.row == 0) {
+		if (indexPath.row == websiteRow) {
 			cellForContact.textLabel.text = @"Website";
 			cellForContact.detailTextLabel.text = @"Visit Website";
 			cellForContact.accessoryView = [UIImageView accessoryViewWithMITType:MITAccessoryViewExternal];
 			
 		}
-		else if (indexPath.row == 1) {
+		else if (indexPath.row == emailRow) {
 			cellForContact.textLabel.text = @"Email";
-			cellForContact.detailTextLabel.text = @"email@harvard.edu";
+			cellForContact.detailTextLabel.text = lib.emailLib;
 			cellForContact.accessoryView = [UIImageView accessoryViewWithMITType:MITAccessoryViewEmail];
 		}
 		
-		else if (indexPath.row == 2) {
-			cellForContact.textLabel.text = @"Phone";
-			cellForContact.detailTextLabel.text = @"617-617-617";
-			cellForContact.accessoryView = [UIImageView accessoryViewWithMITType:MITAccessoryViewPhone];
+		else if (indexPath.row >= phoneRow) {
+			
+			LibraryPhone * phone = nil;
+			if ([phoneNumbersArray count] > 0){
+				
+				phone = (LibraryPhone*)[phoneNumbersArray objectAtIndex:indexPath.row - phoneRow];
+			}
+			
+			if (nil != phone){
+				
+				if ([phone.descriptionText length] > 0)
+					cellForContact.textLabel.text = phone.descriptionText;
+				else
+					cellForContact.textLabel.text = @"Phone";
+				
+				if ([phone.phoneNumber length] > 0)
+					cellForContact.detailTextLabel.text = phone.phoneNumber;
+
+				cellForContact.accessoryView = [UIImageView accessoryViewWithMITType:MITAccessoryViewPhone];
+			}
 		}
 		cellForContact.selectionStyle = UITableViewCellSelectionStyleGray;
 		return cellForContact;
@@ -348,11 +506,11 @@
 	
 	else if (indexPath.section == 1) {
 		[[MapBookmarkManager defaultManager] pruneNonBookmarks];
-
-		CLLocationCoordinate2D coord = CLLocationCoordinate2DMake(42.37640, -71.11660);
+		
+		CLLocationCoordinate2D coord = CLLocationCoordinate2DMake([lib.lat doubleValue], [lib.lon doubleValue]);
 		ArcGISMapAnnotation *annotation = [[[ArcGISMapAnnotation alloc] initWithCoordinate:coord] autorelease];
-		annotation.name = @"Library ABC";
-		annotation.uniqueID = [NSString stringWithFormat:@"%@@%.4f,%.4f", annotation.name, coord.latitude, coord.longitude];
+		annotation.name = lib.name;
+		annotation.uniqueID = [NSString stringWithFormat:@"%@@%.4f,%.4f", annotation.name,coord.latitude, coord.longitude];
 		[[MapBookmarkManager defaultManager] saveAnnotationWithoutBookmarking:annotation];
 		
 		NSURL *internalURL = [NSURL internalURLWithModuleTag:CampusMapTag
@@ -364,27 +522,42 @@
 	
 	else if (indexPath.section == 2) {
 
-		if (indexPath.row == 0) {
-			NSString *url = @"http://www.bbc.com";
+		if (indexPath.row == websiteRow) {
+			NSString *url = lib.websiteLib;
 			
-			NSURL *eventURL = [NSURL URLWithString:url];
-			if (eventURL && [[UIApplication sharedApplication] canOpenURL:eventURL]) {
-				[[UIApplication sharedApplication] openURL:eventURL];
+			NSURL *libURL = [NSURL URLWithString:url];
+			if (libURL && [[UIApplication sharedApplication] canOpenURL:libURL]) {
+				[[UIApplication sharedApplication] openURL:libURL];
 			}
 			
 		}
-		else if (indexPath.row == 1) {
-			NSString *emailAdd = @"test@test.com";
+		else if (indexPath.row == emailRow) {
+			NSString *emailAdd = lib.emailLib;
 			
-			NSString *subject = @"Test email about libraries";
+			NSString *subject = @"About your library";
 			
 			[self emailTo:subject body:@"" email:emailAdd];
 		}
 		
-		else if (indexPath.row == 2) {
+		else if (indexPath.row >= phoneRow) {
 			
-			NSString * phoneNum = @"617-617-617";
+			LibraryPhone * phone = nil;
+			if ([phoneNumbersArray count] > 0){
+				
+				phone = (LibraryPhone*)[phoneNumbersArray objectAtIndex:indexPath.row - phoneRow];
+			}
+			NSString * phoneNum = @""; 
 			NSString *phoneString = [phoneNum stringByReplacingOccurrencesOfString:@"-" withString:@""];
+			
+			if (nil != phone){
+				
+				if ([phone.phoneNumber length] > 0) {
+					phoneNum = phone.phoneNumber;
+					phoneString = [phoneNum stringByReplacingOccurrencesOfString:@"-" withString:@""];
+				}
+			}
+			
+			
 			NSURL *phoneURL = [NSURL URLWithString:[NSString stringWithFormat:@"tel://%@", phoneString]];
 			if ([[UIApplication sharedApplication] canOpenURL:phoneURL]) {
 				[[UIApplication sharedApplication] openURL:phoneURL];
@@ -411,7 +584,13 @@
 	}
 	else if (indexPath.section == 1) {
 		cellText =  @"Location";
-		detailText = @"Science Center, One Oxford Street, Cambridge, MA 02140";
+		
+		if ([lib.location length] > 0)
+			detailText = lib.location;
+		else {
+			detailText = @"Cabot Scince Library is located on the second floor of blah and blah and ahfkdnfdsf"; // placholder
+		}
+
 		accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 		
 	}
@@ -421,10 +600,13 @@
 	}
 	
 	CGFloat height = [detailText
-					  sizeWithFont:[UIFont fontWithName:COURSE_NUMBER_FONT size:COURSE_NUMBER_FONT_SIZE]
+					  sizeWithFont:[UIFont fontWithName:BOLD_FONT size:STANDARD_CONTENT_FONT_SIZE]
 					  constrainedToSize:CGSizeMake(self.tableView.frame.size.width*2/3, 500)         
 					  lineBreakMode:UILineBreakModeWordWrap].height;
-
+	
+	/*if (indexPath.section == 1)
+		return height;
+	 */
 	
 	if (indexPath.section == 0)	
 		return [DiningMultiLineCell heightForCellWithStyle:UITableViewCellStyleValue2
@@ -481,5 +663,112 @@
 	}
 	
 }
+
+
+#pragma mark -
+#pragma mark JSONAPIRequest Delegate function 
+
+- (void)request:(JSONAPIRequest *)request jsonLoaded:(id)result {
+	
+	NSDictionary *libraryDictionary = (NSDictionary *)result;
+	
+	NSString * name = [libraryDictionary objectForKey:@"name"];
+	NSString *directions = [libraryDictionary objectForKey:@"directions"];
+	NSString *website = [libraryDictionary objectForKey:@"website"];
+	NSString *email = [libraryDictionary objectForKey:@"email"];
+	
+	NSArray * phoneNumberArray = (NSArray *)[libraryDictionary objectForKey:@"phone"];
+	
+	NSArray * schedule = (NSArray *) [libraryDictionary objectForKey:@"weeklyHours"];
+	
+	directions = [directions stringByReplacingOccurrencesOfString:@"\n" withString:@""];
+	if ([lib.name isEqualToString:name]) {
+		
+		lib.websiteLib = website;
+		lib.emailLib = email;
+		lib.directions = directions;
+		
+		if ([lib.phone count])
+			[lib removePhone:lib.phone];
+		
+
+		for(NSDictionary * phNbr in phoneNumberArray) {
+			
+			LibraryPhone * phone = [CoreDataManager insertNewObjectForEntityForName:LibraryPhoneEntityName];
+			phone.descriptionText = [phNbr objectForKey:@"description"];
+			
+			NSString *phNumber = [phNbr objectForKey:@"number"];
+				
+				if (phNumber.length == 8) {
+					phNumber = [NSString stringWithFormat:@"617-%@", phNumber];
+				} 
+			
+			phone.phoneNumber = phNumber;
+			
+			if (![lib.phone containsObject:phone])
+				[lib addPhoneObject:phone];
+			
+		}
+		
+		NSMutableDictionary * sched = [[NSMutableDictionary alloc] init];
+		
+		for(NSDictionary * wkSched in schedule) {
+			
+			NSString * day = [wkSched objectForKey:@"day"];
+			NSString *hours = [wkSched objectForKey:@"hours"];
+			
+			[sched setObject:hours forKey:day];
+		}
+
+		
+		NSMutableDictionary * tempDict = [[NSMutableDictionary alloc] init];
+	
+		
+		for (NSString * dayOfWeek in daysOfWeek){
+			
+			if ([[sched allKeys] containsObject:dayOfWeek])
+				[tempDict setObject:[sched objectForKey:dayOfWeek] forKey:dayOfWeek];
+			
+			else {
+				[tempDict setObject:@"unavailable" forKey:dayOfWeek];
+			}
+
+		}
+		
+		weeklySchedule = tempDict;
+		
+		[CoreDataManager saveData];
+	}
+	
+	[self.tableView reloadData];
+	//[parentViewController removeLoadingIndicator];
+}
+
+- (BOOL)request:(JSONAPIRequest *)request shouldDisplayAlertForError:(NSError *)error {
+	
+    return YES;
+}
+
+- (void)request:(JSONAPIRequest *)request handleConnectionError:(NSError *)error {
+	
+	weeklySchedule = nil;
+	weeklySchedule = [[NSMutableDictionary alloc] initWithObjectsAndKeys:
+					  @"unavailable", @"Monday",
+					  @"unavailable", @"Tuesday",
+					  @"unavailable", @"Wednesday",
+					  @"unavailable", @"Thursday",
+					  @"unavailable", @"Friday",
+					  @"unavailable", @"Saturday",
+					  @"unavailable", @"Sunday", nil];
+	
+	UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil
+														message:@"Could not retrieve Libraries/Archives" 
+													   delegate:self 
+											  cancelButtonTitle:@"OK" 
+											  otherButtonTitles:nil];
+	[alertView show];
+	[alertView release];
+}
+
 
 @end

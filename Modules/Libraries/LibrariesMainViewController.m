@@ -14,7 +14,7 @@
 #import "HoursAndLocationsViewController.h"
 #import "LibrariesSearchViewController.h"
 #import "CoreDataManager.h"
-#import "BookmarkedLibrariesOrArchives.h"
+#import "BookmarkedHoursAndLocationsViewController.h"
 
 @implementation LibrariesMainViewController
 @synthesize searchTerms, searchResults, searchController;
@@ -104,9 +104,9 @@
 	NSString * option2 = @"Archives";	
 	mainViewTableOptions1 = [[NSArray alloc] initWithObjects: option1, option2, nil];
 	
-	NSString * option3 = @"Advanced Search";
-	NSString * option4 = @"Mobile Research";
-	NSString * option5 = @"Questions and Feedback";
+	NSString * option3 = @"Advanced HOLLIS Search";
+	NSString * option4 = @"Mobile Research Links";
+	NSString * option5 = @"Ask a Librarian";
 	mainViewTableOptions2 = [[NSArray alloc] initWithObjects: option3, option4, option5, nil];
 	
 	
@@ -214,9 +214,28 @@
 
 - (void)bookmarkButtonClicked:(UIButton *)sender {
 	
-	BookmarkedLibrariesOrArchives *vc = [[BookmarkedLibrariesOrArchives alloc] initWithStyle:UITableViewStyleGrouped];
+	BookmarkedHoursAndLocationsViewController *vc = [[BookmarkedHoursAndLocationsViewController alloc] init];
 	vc.title = @"Bookmarked Libraries";
-	[self.navigationController pushViewController:vc animated:YES];
+	
+	apiRequest = [[JSONAPIRequest alloc] initWithJSONAPIDelegate:vc];	
+	
+	
+	if ([apiRequest requestObjectFromModule:@"libraries" 
+									command:@"opennow" 
+								 parameters:nil] == YES)
+	{
+		[self.navigationController pushViewController:vc animated:YES];
+	}
+	else {
+		UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil
+															message:@"Could not connect to the server" 
+														   delegate:self 
+												  cancelButtonTitle:@"OK" 
+												  otherButtonTitles:nil];
+		[alertView show];
+		[alertView release];
+	}
+	
 	[vc release];
 	
 	//TODO: open a list-view displaying all bookmarked items
@@ -544,9 +563,28 @@
 		
 		else if ((indexPath.row == 0) && (hasBookmarkedItems == YES)){
 			
-			BookmarkedLibrariesOrArchives *vc = [[BookmarkedLibrariesOrArchives alloc] initWithStyle:UITableViewStyleGrouped];
+			BookmarkedHoursAndLocationsViewController *vc = [[BookmarkedHoursAndLocationsViewController alloc] init];
 			vc.title = @"Bookmarked Libraries";
-			[self.navigationController pushViewController:vc animated:YES];
+			
+			apiRequest = [[JSONAPIRequest alloc] initWithJSONAPIDelegate:vc];	
+			
+			
+			if ([apiRequest requestObjectFromModule:@"libraries" 
+											command:@"opennow" 
+										 parameters:nil] == YES)
+			{
+				[self.navigationController pushViewController:vc animated:YES];
+			}
+			else {
+				UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil
+																	message:@"Could not connect to the server" 
+																   delegate:self 
+														  cancelButtonTitle:@"OK" 
+														  otherButtonTitles:nil];
+				[alertView show];
+				[alertView release];
+			}
+
 			[vc release];
 		}
 	}

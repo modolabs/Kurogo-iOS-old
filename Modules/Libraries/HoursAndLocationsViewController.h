@@ -36,6 +36,8 @@
 	
 	BOOL showArchives;
 	
+	JSONAPIRequest * apiRequest;
+	
 }
 
 @property BOOL showArchives;

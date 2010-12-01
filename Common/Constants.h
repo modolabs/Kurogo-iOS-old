@@ -85,6 +85,7 @@ extern NSString * const ShuttleStopEntityName;
 extern NSString * const ShuttleRouteStopEntityName;
 extern NSString * const LibraryItemEntityName;
 extern NSString * const LibraryEntityName;
+extern NSString * const LibraryPhoneEntityName;
 
 
 // local path names for handleLocalPath

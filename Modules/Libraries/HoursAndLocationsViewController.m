@@ -448,7 +448,48 @@ NSInteger libraryNameSort(id lib1, id lib2, void *context);
 	LibraryDetailViewController *vc = [[LibraryDetailViewController alloc] initWithStyle:UITableViewStyleGrouped];
 							
 	vc.title = @"Library Detail";
-	[self.navigationController pushViewController:vc animated:YES];
+	
+	apiRequest = [[JSONAPIRequest alloc] initWithJSONAPIDelegate:vc];
+	
+	NSArray * tempArray;
+	
+	if (showingOnlyOpen == NO)
+		tempArray = allLibraries;
+	else {
+		tempArray = allOpenLibraries;
+	}
+
+	Library * lib = (Library *) [tempArray objectAtIndex:indexPath.section];
+	vc.lib = [lib retain];
+	vc.otherLibraries = [tempArray retain];
+	vc.currentlyDisplayingLibraryAtIndex = indexPath.section;
+	
+	NSString * libOrArchive;
+	
+	if ([lib.type isEqualToString:@"archive"])
+		libOrArchive = @"archivedetail";
+	
+	else {
+		libOrArchive = @"libdetail";
+	}
+	
+	
+	if ([apiRequest requestObjectFromModule:@"libraries" 
+									command:libOrArchive
+								 parameters:[NSDictionary dictionaryWithObjectsAndKeys:lib.identityTag, @"id", lib.name, @"name", nil]])
+	{
+		[self.navigationController pushViewController:vc animated:YES];
+	}
+	else {
+		UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil
+															message:@"Could not connect to the server" 
+														   delegate:self 
+												  cancelButtonTitle:@"OK" 
+												  otherButtonTitles:nil];
+		[alertView show];
+		[alertView release];
+	}
+	
 	[vc release];
 	
 }
@@ -472,8 +513,10 @@ NSInteger libraryNameSort(id lib1, id lib2, void *context);
 		NSDictionary *libraryDictionary = [resultArray objectAtIndex:index];
 		
 		NSString * name = [libraryDictionary objectForKey:@"name"];
+		NSString * identityTag = [libraryDictionary objectForKey:@"id"];
 		 NSNumber * latitude = [libraryDictionary objectForKey:@"latitude"];
 		NSNumber * longitude = [libraryDictionary objectForKey:@"longitude"];
+		NSString * location = [libraryDictionary objectForKey:@"address"];
 		
 		NSString * type = [libraryDictionary objectForKey:@"type"];
 		
@@ -496,10 +539,12 @@ NSInteger libraryNameSort(id lib1, id lib2, void *context);
 		NSPredicate *pred = [NSPredicate predicateWithFormat:@"name == %@ AND type == %@", name, typeOfLib];
 		Library *alreadyInDB = [[CoreDataManager objectsForEntity:LibraryEntityName matchingPredicate:pred] lastObject];
 
+		
 		NSManagedObject *managedObj;
 		if (nil == alreadyInDB){
 			managedObj = [CoreDataManager insertNewObjectForEntityForName:LibraryEntityName];
 			alreadyInDB = (Library *)managedObj;
+			alreadyInDB.isBookmarked = [NSNumber numberWithBool:NO];
 		}
 			
 		/*[alreadyInDB setValue:name forKey:@"name"];
@@ -508,11 +553,13 @@ NSInteger libraryNameSort(id lib1, id lib2, void *context);
 		*/
 		
 		alreadyInDB.name = name;
+		alreadyInDB.identityTag = identityTag;
+		alreadyInDB.location = location;
 		alreadyInDB.lat = [NSNumber numberWithDouble:[latitude doubleValue]];
 		alreadyInDB.lon = [NSNumber numberWithDouble:[longitude doubleValue]];
 		alreadyInDB.type = type;
 		
-		alreadyInDB.isBookmarked = [NSNumber numberWithBool:YES];
+		alreadyInDB.isBookmarked = alreadyInDB.isBookmarked;
 		
 		[allLibraries addObject:alreadyInDB];
 		
@@ -520,6 +567,26 @@ NSInteger libraryNameSort(id lib1, id lib2, void *context);
 			[allOpenLibraries addObject:alreadyInDB];
 		
 	}
+	
+	NSArray * tempArray = [allLibraries sortedArrayUsingFunction:libraryNameSort context:self];
+	
+	allLibraries = nil;
+	allLibraries = [[NSMutableArray alloc] init];
+	for(Library * lib in tempArray) {
+		[allLibraries addObject:lib];		
+	}
+	
+	tempArray = nil;
+	tempArray = [allOpenLibraries sortedArrayUsingFunction:libraryNameSort context:self];
+	allOpenLibraries = nil;
+	allOpenLibraries = [[NSMutableArray alloc] init];
+	for(Library * lib in tempArray) {
+		[allOpenLibraries addObject:lib];		
+	}
+	
+	[allLibraries retain];
+	[allOpenLibraries retain];
+	
 	[CoreDataManager saveData];
 	
 	

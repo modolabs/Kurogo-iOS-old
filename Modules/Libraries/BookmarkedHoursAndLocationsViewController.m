@@ -16,10 +16,9 @@
 @synthesize listOrMapView;
 @synthesize showingMapView;
 @synthesize librayLocationsMapView;
-@synthesize showArchives;
 
 
-NSInteger libraryNameSorted(id lib1, id lib2, void *context);
+NSInteger bookmarkedNameSorted(id lib1, id lib2, void *context);
 
 -(id)init {
 	
@@ -116,27 +115,33 @@ NSInteger libraryNameSorted(id lib1, id lib2, void *context);
 	NSPredicate *bookmarkPred = [NSPredicate predicateWithFormat:@"isBookmarked == YES"];
 	NSArray *tempArray = [CoreDataManager objectsForEntity:LibraryEntityName matchingPredicate:bookmarkPred];
 	
-	tempArray = [tempArray sortedArrayUsingFunction:libraryNameSorted context:self];
+	tempArray = [tempArray sortedArrayUsingFunction:bookmarkedNameSorted context:self];
 	
 	allLibraries = nil;
 	allOpenLibraries = nil;
 	allLibraries = [[[NSMutableArray alloc] init] retain];
 	allOpenLibraries = [[[NSMutableArray alloc] init] retain];
 	for(Library * lib in tempArray) {
-		
-		if (showArchives == YES) {
-			if ([lib.type isEqualToString:@"archive"])
-				[allLibraries addObject:lib];
-		}
-		else {
-			if ([lib.type isEqualToString: @"Library"])
-				[allLibraries addObject:lib];
-		}
-		
-		
+		[allLibraries addObject:lib];
 		
 	}
+}
+
+-(void)viewWillAppear:(BOOL)animated {
+	[super viewWillAppear:animated];
 	
+	NSPredicate *bookmarkPred = [NSPredicate predicateWithFormat:@"isBookmarked == YES"];
+	NSArray *tempArray = [CoreDataManager objectsForEntity:LibraryEntityName matchingPredicate:bookmarkPred];
+	
+	tempArray = [tempArray sortedArrayUsingFunction:bookmarkedNameSorted context:self];
+	
+	allLibraries = nil;
+	allLibraries = [[[NSMutableArray alloc] init] retain];
+	for(Library * lib in tempArray) {
+		[allLibraries addObject:lib];
+	}
+	
+	[_tableView reloadData];
 }
 
 
@@ -448,8 +453,47 @@ NSInteger libraryNameSorted(id lib1, id lib2, void *context);
 	
 	LibraryDetailViewController *vc = [[LibraryDetailViewController alloc] initWithStyle:UITableViewStyleGrouped];
 	
+	NSArray * tempArray;
+	
+	if (showingOnlyOpen == NO)
+		tempArray = allLibraries;
+	else {
+		tempArray = allOpenLibraries;
+	}
+	
+	Library * lib = (Library *) [tempArray objectAtIndex:indexPath.section];
+	vc.lib = [lib retain];
+	vc.otherLibraries = [tempArray retain];
+	vc.currentlyDisplayingLibraryAtIndex = indexPath.section;
 	vc.title = @"Library Detail";
-	[self.navigationController pushViewController:vc animated:YES];
+	
+	NSString * libOrArchive;
+	
+	if ([lib.type isEqualToString:@"archive"])
+		libOrArchive = @"archivedetail";
+	
+	else {
+		libOrArchive = @"libdetail";
+	}
+
+	apiRequest = [[JSONAPIRequest alloc] initWithJSONAPIDelegate:vc];
+	if ([apiRequest requestObjectFromModule:@"libraries" 
+									command:libOrArchive
+								 parameters:[NSDictionary dictionaryWithObjectsAndKeys:lib.identityTag, @"id", lib.name, @"name", nil]])
+	{
+		[self.navigationController pushViewController:vc animated:YES];
+	}
+	else {
+		UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil
+															message:@"Could not connect to the server" 
+														   delegate:self 
+												  cancelButtonTitle:@"OK" 
+												  otherButtonTitles:nil];
+		[alertView show];
+		[alertView release];
+	}
+	
+
 	[vc release];
 	
 }
@@ -472,10 +516,9 @@ NSInteger libraryNameSorted(id lib1, id lib2, void *context);
 	for (int index=0; index < [result count]; index++) {
 		NSDictionary *libraryDictionary = [resultArray objectAtIndex:index];
 		
-		NSString * name = [libraryDictionary objectForKey:@"name"];
-		NSNumber * latitude = [libraryDictionary objectForKey:@"latitude"];
-		NSNumber * longitude = [libraryDictionary objectForKey:@"longitude"];
 		
+		NSString * name = [libraryDictionary objectForKey:@"name"];
+		//NSString * identityTag = [libraryDictionary objectForKey:@"id"];		
 		NSString * type = [libraryDictionary objectForKey:@"type"];
 		
 		NSString *isOpenNow = [libraryDictionary objectForKey:@"isOpenNow"];
@@ -484,35 +527,36 @@ NSInteger libraryNameSorted(id lib1, id lib2, void *context);
 		if ([isOpenNow isEqualToString:@"YES"])
 			isOpen = YES;
 		
-		NSString *typeOfLib;
 		
-		if (showArchives == YES)
-			typeOfLib = @"archive";
-		
-		else {
-			typeOfLib = @"Library";
-		}
-		
-		
-		NSPredicate *pred = [NSPredicate predicateWithFormat:@"name == %@ AND type == %@ AND isBookmarked == YES", name, typeOfLib];
+		NSPredicate *pred = [NSPredicate predicateWithFormat:@"name == %@ AND type == %@ AND isBookmarked == YES", name, type];
 		Library *alreadyInDB = [[CoreDataManager objectsForEntity:LibraryEntityName matchingPredicate:pred] lastObject];
 
 		if (nil != alreadyInDB){
 
-		
-		alreadyInDB.name = name;
-		alreadyInDB.lat = [NSNumber numberWithDouble:[latitude doubleValue]];
-		alreadyInDB.lon = [NSNumber numberWithDouble:[longitude doubleValue]];
-		alreadyInDB.type = type;
-		
-		alreadyInDB.isBookmarked = [NSNumber numberWithBool:YES];
-		
-		[allLibraries addObject:alreadyInDB];
+			[allLibraries addObject:alreadyInDB];
 		
 		if (isOpen)
 			[allOpenLibraries addObject:alreadyInDB];
 		}
 	}
+	NSArray * tempArray = [allLibraries sortedArrayUsingFunction:bookmarkedNameSorted context:self];
+	
+	allLibraries = nil;
+	allLibraries = [[NSMutableArray alloc] init];
+	for(Library * lib in tempArray) {
+		[allLibraries addObject:lib];		
+	}
+	tempArray = nil;
+	tempArray = [allOpenLibraries sortedArrayUsingFunction:bookmarkedNameSorted context:self];
+	allOpenLibraries = nil;
+	allOpenLibraries = [[NSMutableArray alloc] init];
+	for(Library * lib in tempArray) {
+		[allOpenLibraries addObject:lib];		
+	}
+	
+	[allLibraries retain];
+	[allOpenLibraries retain];
+	
 	[CoreDataManager saveData];
 	
 	
@@ -537,7 +581,7 @@ NSInteger libraryNameSorted(id lib1, id lib2, void *context);
 }
 
 
-NSInteger libraryNameSorted(id lib1, id lib2, void *context) {
+NSInteger bookmarkedNameSorted(id lib1, id lib2, void *context) {
 	
 	Library * library1 = (Library *)lib1;
 	Library * library2 = (Library *)lib2;

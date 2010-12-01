@@ -31,12 +31,11 @@
 	BOOL showingOnlyOpen;
 	
 	LibraryLocationsMapViewController * librayLocationsMapView;
-	
-	BOOL showArchives;
+
+	JSONAPIRequest * apiRequest;
 	
 }
 
-@property BOOL showArchives;
 @property (nonatomic, retain) UIView * listOrMapView;
 @property BOOL showingMapView;
 @property (nonatomic, retain) LibraryLocationsMapViewController * librayLocationsMapView;
