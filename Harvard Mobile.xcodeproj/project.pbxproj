@@ -229,8 +229,6 @@
 		C76FBB9F123001CB00968920 /* ShuttleRouteStop.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = C76FBB98123001CB00968920 /* ShuttleRouteStop.h */; settings = {JAVA_ARCHIVE_SUBDIR = Modules/ShuttleTrack/Model; }; };
 		C76FBBA0123001CB00968920 /* ShuttleRouteCache.m in Sources */ = {isa = PBXBuildFile; fileRef = C76FBB99123001CB00968920 /* ShuttleRouteCache.m */; };
 		C76FBBA1123001CB00968920 /* ShuttleRouteCache.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = C76FBB9A123001CB00968920 /* ShuttleRouteCache.h */; settings = {JAVA_ARCHIVE_SUBDIR = Modules/ShuttleTrack/Model; }; };
-		C76FBBF5123006E900968920 /* home-shuttle@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C76FBBF3123006E900968920 /* home-shuttle@2x.png */; };
-		C76FBBF6123006E900968920 /* home-shuttle.png in Resources */ = {isa = PBXBuildFile; fileRef = C76FBBF4123006E900968920 /* home-shuttle.png */; };
 		C776675911F733E3005496DD /* DatePickerViewController.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = C776675711F733E3005496DD /* DatePickerViewController.h */; settings = {JAVA_ARCHIVE_SUBDIR = Modules/Calendar; }; };
 		C776675A11F733E3005496DD /* DatePickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C776675811F733E3005496DD /* DatePickerViewController.m */; };
 		C7B10CFF12130E2300CFB837 /* StellarCoursesViewController.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = C7B10CFD12130E2300CFB837 /* StellarCoursesViewController.h */; settings = {JAVA_ARCHIVE_SUBDIR = Modules/Stellar; }; };
@@ -672,8 +670,6 @@
 		C76FBB98123001CB00968920 /* ShuttleRouteStop.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ShuttleRouteStop.h; path = ShuttleTrack/Model/ShuttleRouteStop.h; sourceTree = "<group>"; };
 		C76FBB99123001CB00968920 /* ShuttleRouteCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ShuttleRouteCache.m; path = ShuttleTrack/Model/ShuttleRouteCache.m; sourceTree = "<group>"; };
 		C76FBB9A123001CB00968920 /* ShuttleRouteCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ShuttleRouteCache.h; path = ShuttleTrack/Model/ShuttleRouteCache.h; sourceTree = "<group>"; };
-		C76FBBF3123006E900968920 /* home-shuttle@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "home-shuttle@2x.png"; path = "Resources/home/home-shuttle@2x.png"; sourceTree = "<group>"; };
-		C76FBBF4123006E900968920 /* home-shuttle.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "home-shuttle.png"; path = "Resources/home/home-shuttle.png"; sourceTree = "<group>"; };
 		C776675711F733E3005496DD /* DatePickerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DatePickerViewController.h; sourceTree = "<group>"; };
 		C776675811F733E3005496DD /* DatePickerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DatePickerViewController.m; sourceTree = "<group>"; };
 		C7B10CFD12130E2300CFB837 /* StellarCoursesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StellarCoursesViewController.h; sourceTree = "<group>"; };
@@ -1011,8 +1007,6 @@
 				EB49AD7B11F4BFFF00854791 /* news */,
 				EB49AD6511F4BFF100854791 /* maps */,
 				EB49AD5811F4BFE200854791 /* home */,
-				C76FBBF3123006E900968920 /* home-shuttle@2x.png */,
-				C76FBBF4123006E900968920 /* home-shuttle.png */,
 				EB49AD4911F4BFCE00854791 /* courses */,
 				EB49AD5211F4BFCE00854791 /* events */,
 				EB54947210DFF7E200B708B3 /* global */,
@@ -1990,8 +1984,6 @@
 				C76FBB7D123001A600968920 /* ShuttleRouteViewController.xib in Resources */,
 				C76FBB80123001A600968920 /* ShuttleRoutes.xib in Resources */,
 				C76FBB8D123001A600968920 /* RouteMapViewController.xib in Resources */,
-				C76FBBF5123006E900968920 /* home-shuttle@2x.png in Resources */,
-				C76FBBF6123006E900968920 /* home-shuttle.png in Resources */,
 				C71D9B4D1243E054009369C5 /* ShuttlesMainViewController.xib in Resources */,
 				EBB61F3B1253ECBC0099A883 /* shuttles in Resources */,
 			);
