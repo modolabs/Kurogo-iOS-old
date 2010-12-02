@@ -339,6 +339,11 @@ NSInteger phoneNumberSort(id num1, id num2, void *context){
 		if (lib.directions)
 			text = lib.directions;
 		
+		else {
+			text =  @"Cabot Library is located on the first floor of the Science Center"; // placeholder
+		}
+
+		
 		//NSString * text =  @"Cabot Library is located on the first floor of the Science Center at the corner of Oxford and Kirkland Streets";
 		CGFloat height = [text
 						  sizeWithFont:[UIFont fontWithName:STANDARD_FONT size:13]
