@@ -311,7 +311,7 @@ NSInteger phoneNumberSort(id num1, id num2, void *context){
 		text = lib.directions;
 		CGFloat height = [text
 						  sizeWithFont:[UIFont fontWithName:STANDARD_FONT size:13]
-						  constrainedToSize:CGSizeMake(300, 200)         
+						  constrainedToSize:CGSizeMake(300, 2000)         
 						  lineBreakMode:UILineBreakModeWordWrap].height;
 		
 		footerLabel = [[UILabel alloc] initWithFrame:CGRectMake(12.0, 0.0, 300.0, height)];
@@ -320,7 +320,7 @@ NSInteger phoneNumberSort(id num1, id num2, void *context){
 		footerLabel.textColor = [UIColor colorWithHexString:@"#554C41"];
 		footerLabel.backgroundColor = [UIColor clearColor];	
 		footerLabel.lineBreakMode = UILineBreakModeWordWrap;
-		footerLabel.numberOfLines = 3;
+		footerLabel.numberOfLines = 20;
 		
 		view = [[UIView alloc] initWithFrame:footerLabel.frame];
 		[view addSubview:footerLabel];
@@ -347,7 +347,7 @@ NSInteger phoneNumberSort(id num1, id num2, void *context){
 		//NSString * text =  @"Cabot Library is located on the first floor of the Science Center at the corner of Oxford and Kirkland Streets";
 		CGFloat height = [text
 						  sizeWithFont:[UIFont fontWithName:STANDARD_FONT size:13]
-						  constrainedToSize:CGSizeMake(300, 200)         
+						  constrainedToSize:CGSizeMake(300, 2000)         
 						  lineBreakMode:UILineBreakModeWordWrap].height;
 		
 		return height + 5;
