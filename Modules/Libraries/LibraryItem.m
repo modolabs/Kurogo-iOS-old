@@ -11,12 +11,17 @@
 
 @implementation LibraryItem
 
+@dynamic itemId;
 @dynamic title;
 @dynamic author;
 @dynamic year;
+@dynamic edition;
 @dynamic details;
-@dynamic itemType;
 @dynamic isBookmarked;
 @dynamic callNumber;
+@dynamic typeDetail;
+@dynamic formatDetail;
+@dynamic isOnline;
+@dynamic isFigure;
 
 @end
