@@ -13,13 +13,14 @@
 #import "LibrariesMultiLineCell.h"
 #import "MITLoadingActivityView.h"
 #import "LibItemDetailViewController.h"
+#import "LibraryItem.h"
+#import "CoreDataManager.h"
 
 @class LibrariesMultiLineCell;
 
 @implementation LibrariesSearchViewController
 
-@synthesize lastResultsTitles;
-@synthesize lastResultsOtherDetails;
+@synthesize lastResults;
 @synthesize activeMode;
 
 @synthesize searchTerms, searchResults, searchController;
@@ -38,17 +39,21 @@
 		hasSearchInitiated = NO;
 		actualCount = 0;
 		
-		self.lastResultsTitles = [[NSMutableDictionary alloc] initWithObjectsAndKeys:
+		/*self.lastResults = [[NSMutableDictionary alloc] initWithObjectsAndKeys:
 								@"Freakonomics: A rogue economist explores the hidden economic bj bfdb fbdsfb", @"0",
 								@"Freakonomics: A rogue economist explores the hidden economic bj bfdb fbdsfb", @"1",
 								@"Freakonomics [sound recording]: A rogue economist explores the hidden economic bj bfdb fbdsfb", @"2",
 								  @"From economics", @"3", nil];
+		 */
 		
-		self.lastResultsOtherDetails = [[NSMutableDictionary alloc] initWithObjectsAndKeys:
+		self.lastResults = [[NSMutableDictionary alloc] init];
+		
+		/*self.lastResultsOtherDetails = [[NSMutableDictionary alloc] initWithObjectsAndKeys:
 										@"2005 | Levitt, Steven D.", @"0",
 										@"2006 | Levitt, Steven D.", @"1",
 										@"2006 | Levitt, Steven D.", @"2",
 										@"2009 | Fine, Benjamin and Bradford Elgin", @"3", nil];
+		 */
 		
 		//_tableView = [[UITableView alloc] initWithFrame:self.view.frame style:UITableViewStylePlain];
 		//_tableView.delegate = self;
@@ -60,8 +65,7 @@
 }
 
 - (void) dealloc {
-	[lastResultsTitles release];
-	[lastResultsOtherDetails release];
+	[lastResults release];
 	[super dealloc];
 }
 
@@ -99,12 +103,21 @@
     _tableView.dataSource = self;
 	
 	[self.view addSubview:_tableView];
+	
+	if (nil != self.searchTerms)
+		previousSearchTerm = self.searchTerms;
+	
+	else if (nil != theSearchBar.text)
+		previousSearchTerm = theSearchBar.text;
+	
+	else
+		previousSearchTerm = @"";
 }
 
 #pragma mark UITableViewDataSource methods
 
 - (NSInteger) tableView: (UITableView *)tableView numberOfRowsInSection: (NSInteger)section {
-	return [lastResultsTitles count];
+	return [self.lastResults count];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)aTableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -127,18 +140,53 @@
 	cell.textLabel.lineBreakMode = UILineBreakModeTailTruncation;
 	cell.textLabel.font = [UIFont fontWithName:STANDARD_FONT size:STANDARD_CONTENT_FONT_SIZE];
 	cell.detailTextLabel.font = [UIFont fontWithName:STANDARD_FONT size:13];
+	cell.detailTextLabel.lineBreakMode = UILineBreakModeTailTruncation;
 	cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 	cell.selectionStyle = UITableViewCellSelectionStyleGray;
 	
+	LibraryItem * libItem = (LibraryItem *)[self.lastResults objectForKey:[NSString stringWithFormat:@"%d", indexPath.row+1]];
+	NSString *cellText;
+	NSString *detailText;
+	
+	if (nil != libItem) {
+		cellText = libItem.title;
+		
+		if (([libItem.year length] == 0) && ([libItem.author length] ==0))
+			detailText = @"";
+		
+		else if (([libItem.year length] == 0) && ([libItem.author length] > 0))
+			detailText = [NSString stringWithFormat:@"%@", libItem.author];
+		
+		else if (([libItem.year length] > 0) && ([libItem.author length] == 0))
+			detailText = [NSString stringWithFormat:@"%@", libItem.year];
+		
+		else
+			detailText = [NSString stringWithFormat:@"%@ | %@", libItem.year, libItem.author];
+	}
+	else {
+		cellText = @"";
+		detailText = @"";
+	}
+
+	
 	cell.textLabel.text = [NSString stringWithFormat:@"%d. %@", 
-						   indexPath.row + 1, [self.lastResultsTitles objectForKey:[NSString stringWithFormat:@"%d", indexPath.row]]];
-	cell.detailTextLabel.text = [self.lastResultsOtherDetails objectForKey:[NSString stringWithFormat:@"%d", indexPath.row]];
+						   indexPath.row + 1, cellText];
+	cell.detailTextLabel.text = detailText;
 	cell.detailTextLabel.textColor = [UIColor colorWithHexString:@"#554C41"];
 	
-	UIImage *image = [UIImage imageNamed:@"dining/dining-status-open.png"];
-	cell.imageView.image = image;
+	NSString * imageString;
 	
-	
+	if (nil != libItem.formatDetail) {
+		
+		if ([libItem.formatDetail isEqualToString:@"Recording"])
+			imageString = @"dining/dining-status-closed.png";
+		
+		else {
+			imageString = @"dining/dining-status-open.png";
+		}
+		UIImage *image = [UIImage imageNamed:imageString];
+		cell.imageView.image = image;
+	}
 	return cell;
 }
 
@@ -147,9 +195,30 @@
 	
 	UITableViewCellAccessoryType accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 	
-	NSString *cellText = [self.lastResultsTitles objectForKey:[NSString stringWithFormat:@"%d", indexPath.row]];
-	NSString *detailText = [self.lastResultsOtherDetails objectForKey:[NSString stringWithFormat:@"%d", indexPath.row]];
+	LibraryItem * libItem = (LibraryItem *)[self.lastResults objectForKey:[NSString stringWithFormat:@"%d", indexPath.row+1]];
+	NSString *cellText;
+	NSString *detailText;
 	
+	if (nil != libItem) {
+		cellText = [NSString stringWithFormat:@"%d. %@", 
+					indexPath.row + 1, libItem.title];
+		
+		if (([libItem.year length] == 0) && ([libItem.author length] ==0))
+			detailText = @"";
+		
+		else if (([libItem.year length] == 0) && ([libItem.author length] > 0))
+			detailText = [NSString stringWithFormat:@"%@", libItem.author];
+		
+		else if (([libItem.year length] > 0) && ([libItem.author length] == 0))
+			detailText = [NSString stringWithFormat:@"%@", libItem.year];
+			
+		else
+			detailText = [NSString stringWithFormat:@"%@ | %@", libItem.year, libItem.author];
+	}
+	else {
+		cellText = @"";
+		detailText = @"";
+	}
 	UIFont *detailFont = [UIFont systemFontOfSize:13];
 	
 /*NSDictionary * tempDict = [[NSDictionary alloc] initWithObjectsAndKeys:
@@ -163,8 +232,8 @@
 												  text:cellText
 										  maxTextLines:2
 											detailText:detailText
-										maxDetailLines:1
-												  font:nil 
+										maxDetailLines:2
+												  font:[UIFont fontWithName:STANDARD_FONT size:STANDARD_CONTENT_FONT_SIZE]
 											detailFont:detailFont
 										 accessoryType:accessoryType
 											 cellImage:YES];
@@ -175,11 +244,11 @@
 }
 
 - (NSString *) tableView: (UITableView *)tableView titleForHeaderInSection: (NSInteger)section {
-	if([lastResultsTitles count]) {
-		if (actualCount > [lastResultsTitles count])
-			return [NSString stringWithFormat:@"Displaying %i of many", [lastResultsTitles count]];
+	if([lastResults count]) {
+		if (actualCount > [lastResults count])
+			return [NSString stringWithFormat:@"Displaying %i of many", [self.lastResults count]];
 		
-		return [NSString stringWithFormat:@"%i matches found", [lastResultsTitles count]];
+		return [NSString stringWithFormat:@"%i matches found", [self.lastResults count]];
 	}
 	return nil;
 }
@@ -187,11 +256,11 @@
 - (UIView *) tableView: (UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
 	NSString *headerTitle = nil;
 	
-	if([lastResultsTitles count]) {
-		if (actualCount > [lastResultsTitles count])
-			headerTitle =  [NSString stringWithFormat:@"Displaying %i of many", [lastResultsTitles count]];
+	if([lastResults count]) {
+		if (actualCount > [lastResults count])
+			headerTitle =  [NSString stringWithFormat:@"Displaying %i of many", [self.lastResults count]];
 		else
-			headerTitle = [NSString stringWithFormat:@"%i matches found", [lastResultsTitles count]];
+			headerTitle = [NSString stringWithFormat:@"%i matches found", [self.lastResults count]];
 		
 		return [UITableView ungroupedSectionHeaderWithTitle:headerTitle];
 	}
@@ -281,9 +350,22 @@
 {
 	//[_bookmarkButton removeFromSuperview];
 	
-	self.searchTerms = searchBar.text;
-	//[self performSearch];
+	if (nil != self.searchTerms)
+		previousSearchTerm = self.searchTerms;
 	
+	self.searchTerms = searchBar.text;
+	
+	api = [JSONAPIRequest requestWithJSONAPIDelegate:self];
+	requestWasDispatched = [api requestObjectFromModule:@"libraries"
+                                                command:@"search"
+                                             parameters:[NSDictionary dictionaryWithObjectsAndKeys:self.searchTerms, @"q", nil]];
+	
+    if (requestWasDispatched) {
+    } else {
+        [self handleWarningMessage:@"Could not dispatch search" title:@"Search Failed"];
+		[self restoreToolBar];
+		self.searchTerms = previousSearchTerm;
+    }	
 }
 
 - (void)searchBarTextDidBeginEditing:(UISearchBar *)searchBar
@@ -318,6 +400,7 @@
     } else {
         //[self handleWarningMessage:@"Could not dispatch search" title:@"Search Failed"];
     }
+	
 }
 
 - (void)presentSearchResults:(NSArray *)theSearchResults {
@@ -352,23 +435,99 @@
     if (result) {
         DLog(@"%@", [result description]);
         
-        if ([result isKindOfClass:[NSDictionary class]]) {
-            NSString *message = [result objectForKey:@"error"];
+        if ([result isKindOfClass:[NSArray class]]) {
+			[self.searchBar addDropShadow];
+		
+			if ([result count] == 0) {
+				UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil 
+																message:@"No results found"
+															   delegate:self
+													  cancelButtonTitle:@"OK" 
+													  otherButtonTitles:nil]; 
+				[alert show];
+				[alert release];
+				
+				if (nil != previousSearchTerm) {
+					self.searchTerms = previousSearchTerm;
+					theSearchBar.text = self.searchTerms;
+				}
+				
+				[self restoreToolBar];
+			}
+			
+			
+		for(NSDictionary * libraryDictionary in result) {
+			
+			NSString * title = [libraryDictionary objectForKey:@"title"];
+			NSString *author = [libraryDictionary objectForKey:@"creator"];
+			
+			if ([author length] == 0)
+				author = @"";
+			
+			NSString *year = [libraryDictionary objectForKey:@"date"];
+			if ([year length] == 0)
+				year = @"";
+			
+			NSString * index = [libraryDictionary objectForKey:@"index"];
+			NSString *itemId = [libraryDictionary objectForKey:@"itemId"];
+			NSString * edition = [libraryDictionary objectForKey:@"edition"];
+			if ([edition length] == 0)
+				edition = @"";
+			
+
+			NSDictionary * format = [libraryDictionary objectForKey:@"format"];
+			
+			NSString *typeDetail = [format objectForKey:@"typeDetail"];
+			if ([typeDetail length] == 0)
+				typeDetail = @"";
+			
+			NSString * formatDetail = [format objectForKey:@"formatDetail"];
+			if ([formatDetail length] == 0)
+				formatDetail = @"";
+			
+			
+			NSPredicate *pred = [NSPredicate predicateWithFormat:@"itemId == %@", itemId];
+			LibraryItem *alreadyInDB = [[CoreDataManager objectsForEntity:LibraryItemEntityName matchingPredicate:pred] lastObject];
+			
+			
+			NSManagedObject *managedObj;
+			if (nil == alreadyInDB){
+				managedObj = [CoreDataManager insertNewObjectForEntityForName:LibraryItemEntityName];
+				alreadyInDB = (LibraryItem *)managedObj;
+				alreadyInDB.isBookmarked = [NSNumber numberWithBool:NO];
+			}
+			
+			alreadyInDB.title = title;
+			alreadyInDB.author = author;
+			alreadyInDB.year = year;
+			alreadyInDB.edition = edition;
+			alreadyInDB.typeDetail = typeDetail;
+			alreadyInDB.formatDetail = formatDetail;
+			
+			
+			[CoreDataManager saveData];
+			[self.lastResults setObject:alreadyInDB forKey:index];
+			}
+			[_tableView reloadData];
+		}
+
+	} else if ([result isKindOfClass:[NSDictionary class]]) {
+
+			
+			NSString *message = [result objectForKey:@"error"];
             if (message) {
                 [self handleWarningMessage:message title:@"Search Failed"];
             }
-        } else if ([result isKindOfClass:[NSArray class]]) {
-            self.searchResults = result;
-			self.searchController.searchResultsTableView.frame = _tableView.frame;
-			[self.view addSubview:self.searchController.searchResultsTableView];
-			[self.searchBar addDropShadow];
-			
-			[self.searchController.searchResultsTableView reloadData];
-        }
-    }
+		if (nil != previousSearchTerm) {
+			self.searchTerms = previousSearchTerm;
+			theSearchBar.text = self.searchTerms;
+		}
+	}
 	else {
 		self.searchResults = nil;
 	}
+	
+	[searchController hideSearchOverlayAnimated:YES];
 }
 
 - (BOOL)request:(JSONAPIRequest *)request shouldDisplayAlertForError:(NSError *)error
@@ -391,6 +550,8 @@
 										  otherButtonTitles:nil]; 
 	[alert show];
 	[alert release];
+	
+	[searchController hideSearchOverlayAnimated:YES];
 }
 
 

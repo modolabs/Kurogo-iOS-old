@@ -20,8 +20,7 @@
 	
 	BOOL activeMode;
 	BOOL hasSearchInitiated;
-	NSMutableDictionary *lastResultsTitles;
-	NSMutableDictionary *lastResultsOtherDetails;
+	NSMutableDictionary *lastResults;
 	
 	LibrariesMainViewController * viewController;
 	
@@ -34,6 +33,7 @@
 	
 	NSArray *searchResults;
 	NSString *searchTerms;
+	NSString *previousSearchTerm;
 	
 	UIView *loadingView;
 	
@@ -47,8 +47,7 @@
 @property (nonatomic, retain) NSArray *searchResults;
 @property (nonatomic, retain) NSString *searchTerms;
 @property (nonatomic, retain) ModoSearchBar *searchBar;
-@property (nonatomic, retain) NSMutableDictionary *lastResultsTitles;
-@property (nonatomic, retain) NSMutableDictionary *lastResultsOtherDetails;
+@property (nonatomic, retain) NSMutableDictionary *lastResults;
 @property (nonatomic, readonly) BOOL activeMode;
 
 - (id) initWithViewController: (LibrariesMainViewController *)controller;

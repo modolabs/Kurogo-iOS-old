@@ -30,8 +30,10 @@
 	theSearchBar.tintColor = SEARCH_BAR_TINT_COLOR;
 	theSearchBar.placeholder = @"HOLLIS keyword search";
 	theSearchBar.showsBookmarkButton = NO; // use custom bookmark button
-	if ([self.searchTerms length] > 0)
-		theSearchBar.text = self.searchTerms;
+	//if ([self.searchTerms length] > 0)
+	//	theSearchBar.text = self.searchTerms;
+	
+	theSearchBar.text = @"";
 	
 	if (nil == searchController)
 		self.searchController = [[[MITSearchDisplayController alloc] initWithSearchBar:theSearchBar contentsController:self] autorelease];
@@ -138,11 +140,15 @@
 	/*for (UIView *view in self.view.subviews) {
 		[view removeFromSuperview];
 	}*/
+	[searchController unfocusSearchBarAnimated:YES];
+	[searchController hideSearchOverlayAnimated:YES];
+	//[self searchBarCancelButtonClicked:theSearchBar];
 	[self setUpLayOut];
 	[super viewWillAppear:animated];
 	
 
 	[self.tableView reloadData];
+
 }
 
 
@@ -302,7 +308,18 @@
 	
 	LibrariesSearchViewController *vc = [[LibrariesSearchViewController alloc] initWithViewController: self];
 	vc.title = @"Search Results";
-	[self.navigationController pushViewController:vc animated:YES];
+	
+	api = [JSONAPIRequest requestWithJSONAPIDelegate:vc];
+	requestWasDispatched = [api requestObjectFromModule:@"libraries"
+                                                command:@"search"
+                                             parameters:[NSDictionary dictionaryWithObjectsAndKeys:self.searchTerms, @"q", nil]];
+	
+    if (requestWasDispatched) {
+		[self.navigationController pushViewController:vc animated:YES];
+    } else {
+        //[self handleWarningMessage:@"Could not dispatch search" title:@"Search Failed"];
+    }
+	
 	[vc release];
 }
 
