@@ -25,5 +25,6 @@
 @property (nonatomic, retain) NSString * formatDetail;
 @property (nonatomic, retain) NSNumber * isOnline;
 @property (nonatomic, retain) NSNumber * isFigure;
+@property (nonatomic, retain) NSString * publisher;
 
 @end

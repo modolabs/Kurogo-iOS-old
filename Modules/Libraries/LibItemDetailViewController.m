@@ -9,6 +9,7 @@
 #import "LibItemDetailViewController.h"
 #import "MITUIConstants.h"
 #import "LibItemDetailCell.h"
+#import "CoreDataManager.h"
 
 @class LibItemDetailCell;
 
@@ -20,23 +21,21 @@
 #pragma mark Initialization
 
 -(id) initWithStyle:(UITableViewStyle)style 
-			  title:(NSString *)title 
-			 author: (NSString *) authorName 
-	   otherDetail1:(NSString *) otherDetail1 
-	   otherDetail2:(NSString *) otherDetail2 
-	   otherDetail3: (NSString *) otherDetail3 
-		  libraries:(NSDictionary *)libraries; {
+		  libraries:(NSDictionary *)libraries
+		libraryItem:(LibraryItem *) libraryItem
+		  itemArray: (NSDictionary *) results
+	currentItemIdex: (int) itemIndex	{
 	
 	self = [super initWithStyle:style];
 	
 	if (self) {
 		
-		itemTitle = title;
-		author = authorName;
-		otherDetailLine1 = otherDetail1;
-		otherDetailLine2 = otherDetail2;
-		otherDetailLine3 = otherDetail3;
 		librariesWithItem = libraries;
+		libItem = [libraryItem retain];
+		libItemDictionary = [results retain];
+		currentIndex = itemIndex;
+		
+		[self setUpdetails:libItem];
 		
 		self.tableView.delegate = self;
 		self.tableView.dataSource = self;
@@ -46,13 +45,61 @@
 }
 
 
+-(void)setUpdetails: (LibraryItem *) libraryItem {
+	
+	
+	NSString * title = libraryItem.title;
+	NSString * authorName =  libraryItem.author;
+	NSString * otherDetail1 = @"";
+	if([libraryItem.edition length] > 0)
+		otherDetail1 = libraryItem.edition;
+	
+	NSString * otherDetail2 = @"";
+	
+	if (nil != libraryItem.publisher) {
+		otherDetail2 = [NSString stringWithFormat:@"%@, %@" ,libraryItem.publisher, libraryItem.year];
+	}
+	else {
+		otherDetail2 = [NSString stringWithFormat:@"%@", libraryItem.year];
+	}
+	
+	
+	NSString * otherDetail3 = @"";
+	
+	if (([libraryItem.formatDetail length] > 0) && ([libraryItem.typeDetail length] > 0))
+		otherDetail3 = [NSString stringWithFormat:@"%@: %@", libraryItem.formatDetail, libraryItem.typeDetail];
+	
+	else if (([libraryItem.formatDetail length] == 0) && ([libraryItem.typeDetail length] > 0))
+		otherDetail3 = [NSString stringWithFormat:@"%@", libraryItem.typeDetail];
+	
+	else if (([libraryItem.formatDetail length] > 0) && ([libraryItem.typeDetail length] == 0))
+		otherDetail3 = [NSString stringWithFormat:@"%@", libraryItem.formatDetail];
+	
+	itemTitle = title;
+	author = authorName;
+	otherDetailLine1 = otherDetail1;
+	otherDetailLine2 = otherDetail2;
+	otherDetailLine3 = otherDetail3;
+}
+
+
 #pragma mark -
 #pragma mark View lifecycle
 
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+	[self setupLayout];
 	
+}
+
+- (void) viewWillAppear:(BOOL)animated {
+	[super viewWillAppear:animated];
+	[self setupLayout];
+}
+
+
+- (void) setupLayout{
 	UISegmentedControl *segmentControl = [[UISegmentedControl alloc] initWithItems:[NSArray arrayWithObjects:
 																					[UIImage imageNamed:MITImageNameUpArrow],
 																					[UIImage imageNamed:MITImageNameDownArrow], nil]];
@@ -64,11 +111,11 @@
 	self.navigationItem.rightBarButtonItem = segmentBarItem;
 	[segmentControl release];
 	[segmentBarItem release];
-
+	
 	CGFloat runningYDispacement = 0.0;
 	CGFloat titleHeight = [itemTitle
 						   sizeWithFont:[UIFont fontWithName:CONTENT_TITLE_FONT size:CONTENT_TITLE_FONT_SIZE]
-						   constrainedToSize:CGSizeMake(300, 200)         
+						   constrainedToSize:CGSizeMake(300, 2000)         
 						   lineBreakMode:UILineBreakModeWordWrap].height;
 	
 	UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(12.0, 10.0, 300.0, titleHeight)];
@@ -80,15 +127,15 @@
 	titleLabel.textColor = [UIColor colorWithHexString:@"#1a1611"];
 	titleLabel.backgroundColor = [UIColor clearColor];	
 	titleLabel.lineBreakMode = UILineBreakModeWordWrap;
-	titleLabel.numberOfLines = 3;
+	titleLabel.numberOfLines = 10;
 	
 	
 	CGFloat authorHeight = [author
-						   sizeWithFont:[UIFont fontWithName:COURSE_NUMBER_FONT size:15]
-						   constrainedToSize:CGSizeMake(200, 20)         
-						   lineBreakMode:UILineBreakModeWordWrap].height;
+							sizeWithFont:[UIFont fontWithName:COURSE_NUMBER_FONT size:15]
+							constrainedToSize:CGSizeMake(190, 20)         
+							lineBreakMode:UILineBreakModeWordWrap].height;
 	
-	UILabel *authorLabel = [[UILabel alloc] initWithFrame:CGRectMake(12.0, 20 + runningYDispacement, 200.0, authorHeight)];
+	UILabel *authorLabel = [[UILabel alloc] initWithFrame:CGRectMake(12.0, 20 + runningYDispacement, 190.0, authorHeight)];
 	
 	runningYDispacement += authorHeight;
 	
@@ -110,6 +157,14 @@
 	
 	bookmarkButtonIsOn = NO;
 	
+	NSPredicate *pred = [NSPredicate predicateWithFormat:@"itemId == %@", libItem.itemId];
+	LibraryItem *alreadyInDB = (LibraryItem *)[[CoreDataManager objectsForEntity:LibraryItemEntityName matchingPredicate:pred] lastObject];
+	
+	if (nil != alreadyInDB) {
+		bookmarkButton.selected = [alreadyInDB.isBookmarked boolValue];
+		bookmarkButtonIsOn = [alreadyInDB.isBookmarked boolValue];
+	}
+	
 	mapButton = [UIButton buttonWithType:UIButtonTypeCustom];
 	mapButton.frame = CGRectMake(self.tableView.frame.size.width - 60.0 , runningYDispacement - 15, 50.0, 50.0);
 	mapButton.enabled = YES;
@@ -119,79 +174,152 @@
 	[mapButton setImage:[UIImage imageNamed:@"maps/map_pin_complete.png"] forState:(UIControlStateSelected | UIControlStateHighlighted)];
 	[mapButton addTarget:self action:@selector(mapButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
 	
+	UILabel *detailLabel1;
+	UILabel *detailLabel2;
+	UILabel *detailLabel3;
 	
-	CGFloat detailHeight1 = [otherDetailLine1
-							sizeWithFont:[UIFont fontWithName:STANDARD_FONT size:13]
-							constrainedToSize:CGSizeMake(250, 20)         
-							lineBreakMode:UILineBreakModeWordWrap].height;
+	if ([otherDetailLine1 length] > 0) {
+		CGFloat detailHeight1 = [otherDetailLine1
+								 sizeWithFont:[UIFont fontWithName:STANDARD_FONT size:13]
+								 constrainedToSize:CGSizeMake(190, 20)         
+								 lineBreakMode:UILineBreakModeWordWrap].height;
+		
+		detailLabel1 = [[UILabel alloc] initWithFrame:CGRectMake(12.0, 20 + runningYDispacement, 190.0, detailHeight1)];
+		
+		runningYDispacement += detailHeight1;
+		
+		detailLabel1.text = otherDetailLine1;
+		detailLabel1.font = [UIFont fontWithName:STANDARD_FONT size:13];
+		detailLabel1.textColor = [UIColor colorWithHexString:@"#554C41"];
+		detailLabel1.backgroundColor = [UIColor clearColor];	
+		detailLabel1.lineBreakMode = UILineBreakModeTailTruncation;
+		detailLabel1.numberOfLines = 1;
+	}
 	
-	UILabel *detailLabel1 = [[UILabel alloc] initWithFrame:CGRectMake(12.0, 20 + runningYDispacement, 250.0, detailHeight1)];
+	if ([otherDetailLine2 length] > 0) {
+		CGFloat detailHeight2 = [otherDetailLine2
+								 sizeWithFont:[UIFont fontWithName:STANDARD_FONT size:13]
+								 constrainedToSize:CGSizeMake(190, 20)         
+								 lineBreakMode:UILineBreakModeWordWrap].height;
+		
+		detailLabel2 = [[UILabel alloc] initWithFrame:CGRectMake(12.0, 20 + runningYDispacement, 190.0, detailHeight2)];
+		
+		runningYDispacement += detailHeight2;
+		
+		detailLabel2.text = otherDetailLine2;
+		detailLabel2.font = [UIFont fontWithName:STANDARD_FONT size:13];
+		detailLabel2.textColor = [UIColor colorWithHexString:@"#554C41"];
+		detailLabel2.backgroundColor = [UIColor clearColor];	
+		detailLabel2.lineBreakMode = UILineBreakModeTailTruncation;
+		detailLabel2.numberOfLines = 1;
+	}
 	
-	runningYDispacement += detailHeight1;
-	
-	detailLabel1.text = otherDetailLine1;
-	detailLabel1.font = [UIFont fontWithName:STANDARD_FONT size:13];
-	detailLabel1.textColor = [UIColor colorWithHexString:@"#554C41"];
-	detailLabel1.backgroundColor = [UIColor clearColor];	
-	detailLabel1.lineBreakMode = UILineBreakModeTailTruncation;
-	detailLabel1.numberOfLines = 1;
-	
-	CGFloat detailHeight2 = [otherDetailLine2
-							 sizeWithFont:[UIFont fontWithName:STANDARD_FONT size:13]
-							 constrainedToSize:CGSizeMake(250, 20)         
-							 lineBreakMode:UILineBreakModeWordWrap].height;
-	
-	UILabel *detailLabel2 = [[UILabel alloc] initWithFrame:CGRectMake(12.0, 20 + runningYDispacement, 250.0, detailHeight2)];
-	
-	runningYDispacement += detailHeight2;
-	
-	detailLabel2.text = otherDetailLine2;
-	detailLabel2.font = [UIFont fontWithName:STANDARD_FONT size:13];
-	detailLabel2.textColor = [UIColor colorWithHexString:@"#554C41"];
-	detailLabel2.backgroundColor = [UIColor clearColor];	
-	detailLabel2.lineBreakMode = UILineBreakModeTailTruncation;
-	detailLabel2.numberOfLines = 1;
-	
-	CGFloat detailHeight3 = [otherDetailLine1
-							 sizeWithFont:[UIFont fontWithName:STANDARD_FONT size:13]
-							 constrainedToSize:CGSizeMake(250, 20)         
-							 lineBreakMode:UILineBreakModeWordWrap].height;
-	
-	UILabel *detailLabel3 = [[UILabel alloc] initWithFrame:CGRectMake(12.0, 20 + runningYDispacement, 250.0, detailHeight3)];
-	
-	runningYDispacement += detailHeight3;
-	
-	detailLabel3.text = otherDetailLine3;
-	detailLabel3.font = [UIFont fontWithName:STANDARD_FONT size:13];
-	detailLabel3.textColor = [UIColor colorWithHexString:@"#554C41"];
-	detailLabel3.backgroundColor = [UIColor clearColor];	
-	detailLabel3.lineBreakMode = UILineBreakModeTailTruncation;
-	detailLabel3.numberOfLines = 1;
+	if([otherDetailLine3 length] > 0) {
+		CGFloat detailHeight3 = [otherDetailLine3
+								 sizeWithFont:[UIFont fontWithName:STANDARD_FONT size:13]
+								 constrainedToSize:CGSizeMake(190, 20)         
+								 lineBreakMode:UILineBreakModeWordWrap].height;
+		
+		detailLabel3 = [[UILabel alloc] initWithFrame:CGRectMake(12.0, 20 + runningYDispacement, 190.0, detailHeight3)];
+		
+		runningYDispacement += detailHeight3;
+		
+		detailLabel3.text = otherDetailLine3;
+		detailLabel3.font = [UIFont fontWithName:STANDARD_FONT size:13];
+		detailLabel3.textColor = [UIColor colorWithHexString:@"#554C41"];
+		detailLabel3.backgroundColor = [UIColor clearColor];	
+		detailLabel3.lineBreakMode = UILineBreakModeTailTruncation;
+		detailLabel3.numberOfLines = 1;
+	}
 	
 	
 	UIView * headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 
 																   15 + runningYDispacement)];
-
+	
 	[headerView addSubview:titleLabel];
 	[headerView addSubview:authorLabel];
 	[headerView addSubview:bookmarkButton];
 	[headerView addSubview:mapButton];
-	[headerView addSubview:detailLabel1];
-	[headerView addSubview:detailLabel2];
-	[headerView addSubview:detailLabel3];
+	
+	if ([otherDetailLine1 length] > 0)
+		[headerView addSubview:detailLabel1];
+	
+	if ([otherDetailLine2 length] > 0)
+		[headerView addSubview:detailLabel2];
+	
+	if ([otherDetailLine3 length] > 0)
+		[headerView addSubview:detailLabel3];
 	
 	self.tableView.tableHeaderView = [[UIView alloc]
 									  initWithFrame:CGRectMake(0, 0, self.tableView.frame.size.width, headerView.frame.size.height + 10)];
 	[self.tableView.tableHeaderView addSubview:headerView];
 	
 	[self.tableView applyStandardColors];
-	
-	
 }
+
 
 #pragma mark User Interaction
 
 -(void) showNextLibItem: (id) sender {
+	
+	if ([sender isKindOfClass:[UISegmentedControl class]]) {
+        UISegmentedControl *theControl = (UISegmentedControl *)sender;
+        NSInteger index = theControl.selectedSegmentIndex;
+		
+		if ([[libItemDictionary allKeys] count] > 1) {
+			int tempLibIndex;
+			
+			if (index == 0) { // going up
+				
+				tempLibIndex = currentIndex - 1;
+			}
+			else
+				tempLibIndex = currentIndex + 1;
+			
+			
+			if ((tempLibIndex >= 0) && (tempLibIndex < [[libItemDictionary allKeys] count])){
+				
+				LibraryItem * temp = (LibraryItem *)[libItemDictionary objectForKey:[NSString stringWithFormat:@"%d", tempLibIndex +1]];
+				
+	
+				
+				currentIndex = tempLibIndex;
+				libItem = [temp retain];
+				[self setUpdetails:libItem];
+				[self viewWillAppear:YES];
+				[self.tableView reloadData];
+				
+				
+				/*apiRequest = [[JSONAPIRequest alloc] initWithJSONAPIDelegate:self];
+				
+				if ([apiRequest requestObjectFromModule:@"libraries" 
+												command:@"libdetail"
+											 parameters:[NSDictionary dictionaryWithObjectsAndKeys:temp.identityTag, @"id", temp.name, @"name", nil]])
+				{
+					self.lib = (Library *)[[otherLibraries objectAtIndex:tempLibIndex] retain];
+					currentlyDisplayingLibraryAtIndex = tempLibIndex;
+					if (nil != headerView)
+						[headerView removeFromSuperview];
+					
+					if (nil != footerLabel)
+						[footerLabel removeFromSuperview];
+					
+					[self setupLayout];
+				}
+				else {
+					UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil
+																		message:@"Could not connect to the server" 
+																	   delegate:self 
+															  cancelButtonTitle:@"OK" 
+															  otherButtonTitles:nil];
+					[alertView show];
+					[alertView release];
+				}*/
+				
+			}			
+		}
+	}	
+	
 }
 
 -(void) mapButtonPressed: (id) sender {
@@ -200,50 +328,32 @@
 
 -(void) bookmarkButtonToggled: (id) sender {
 	
+	
 	BOOL newBookmarkButtonStatus = !bookmarkButton.selected;
+	
+	NSPredicate *pred = [NSPredicate predicateWithFormat:@"itemId == %@",libItem.itemId];
+	LibraryItem *alreadyInDB = (LibraryItem *)[[CoreDataManager objectsForEntity:LibraryItemEntityName matchingPredicate:pred] lastObject];
+	
+	if (nil == alreadyInDB){
+		return;
+	}
 	
 	if (newBookmarkButtonStatus) {
 		//[StellarModel saveClassToFavorites:stellarClass];
+		
 		bookmarkButton.selected = YES;
+		alreadyInDB.isBookmarked = [NSNumber numberWithBool:YES];
 	}
 	
 	else {
 		//[StellarModel removeClassFromFavorites:stellarClass];
 		bookmarkButton.selected = NO;
+		alreadyInDB.isBookmarked = [NSNumber numberWithBool:NO];
 	}
 	
+	[CoreDataManager saveData];
 	
 }
-
-
-/*
-- (void)viewWillAppear:(BOOL)animated {
-    [super viewWillAppear:animated];
-}
-*/
-/*
-- (void)viewDidAppear:(BOOL)animated {
-    [super viewDidAppear:animated];
-}
-*/
-/*
-- (void)viewWillDisappear:(BOOL)animated {
-    [super viewWillDisappear:animated];
-}
-*/
-/*
-- (void)viewDidDisappear:(BOOL)animated {
-    [super viewDidDisappear:animated];
-}
-*/
-/*
-// Override to allow orientations other than the default portrait orientation.
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
-    // Return YES for supported orientations
-    return (interfaceOrientation == UIInterfaceOrientationPortrait);
-}
-*/
-
 
 #pragma mark -
 #pragma mark Table view data source

@@ -11,6 +11,7 @@
 #import "JSONAPIRequest.h"
 #import "ModoSearchBar.h"
 #import "MITSearchDisplayController.h"
+#import "Constants.h"
 
 @class LibrariesMainViewController;
 @class ModoSearchBar;

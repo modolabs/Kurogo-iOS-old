@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "LibItemDetailCell.h"
+#import "LibraryItem.h"
 
 
 @interface LibItemDetailViewController : UITableViewController {
@@ -25,16 +26,21 @@
 	UIButton *bookmarkButton;
 	UIButton *mapButton;
 	
+	LibraryItem * libItem;
+	NSDictionary * libItemDictionary;
+	
+	int currentIndex;
 }
 
 @property BOOL bookmarkButtonIsOn;
 
 -(id) initWithStyle:(UITableViewStyle)style 
-			  title:(NSString *)title 
-			 author: (NSString *) authorName 
-	   otherDetail1:(NSString *) otherDetail1 
-	   otherDetail2:(NSString *) otherDetail2 
-	   otherDetail3: (NSString *) otherDetail3 
-		  libraries:(NSDictionary *)libraries;
+		  libraries:(NSDictionary *)libraries
+		libraryItem:(LibraryItem *) libraryItem
+		  itemArray: (NSDictionary *) results
+	currentItemIdex: (int) itemIndex;	
 
+
+-(void) setupLayout;
+-(void)setUpdetails: (LibraryItem *) libraryItem;
 @end

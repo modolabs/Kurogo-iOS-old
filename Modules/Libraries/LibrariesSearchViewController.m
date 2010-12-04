@@ -276,23 +276,20 @@
 - (void) tableView: (UITableView *)tableView didSelectRowAtIndexPath: (NSIndexPath *)indexPath {
 	[tableView deselectRowAtIndexPath:indexPath animated:NO];
 	
-	NSString * title = @"Freakonomics: a rogue economist explores the hideen side of everything";
-	NSString * authorName =  @"Levitt, Steven D";
-	NSString * otherDetail1 = @"1st ed.";
-	NSString * otherDetail2 = @"New York : William Morron, 2005";
-	NSString * otherDetail3 = @"Book: xii, 242p.";
+	LibraryItem * libItem = (LibraryItem *)[self.lastResults objectForKey:[NSString stringWithFormat:@"%d", indexPath.row+1]];
+	
+
+
 	
 	NSDictionary * libraries = [[NSDictionary alloc] initWithObjectsAndKeys:
 								@"152 yards away", @"Cabot Science Library",
 								@"0.5 miles away", @"Baker Business School", nil];
 	
 	LibItemDetailViewController *vc = [[LibItemDetailViewController alloc]  initWithStyle:UITableViewStyleGrouped
-																					title:title 
-																				   author: authorName 
-																			 otherDetail1:otherDetail1 
-																			 otherDetail2:otherDetail2 
-																			 otherDetail3:otherDetail3 
-																				libraries:libraries];
+																				libraries:libraries
+																				libraryItem:libItem
+																				itemArray:self.lastResults
+																		  currentItemIdex:indexPath.row];
 	vc.title = @"Item Detail";
 	[self.navigationController pushViewController:vc animated:YES];
 	[vc release];
@@ -489,14 +486,13 @@
 			NSPredicate *pred = [NSPredicate predicateWithFormat:@"itemId == %@", itemId];
 			LibraryItem *alreadyInDB = [[CoreDataManager objectsForEntity:LibraryItemEntityName matchingPredicate:pred] lastObject];
 			
-			
 			NSManagedObject *managedObj;
 			if (nil == alreadyInDB){
 				managedObj = [CoreDataManager insertNewObjectForEntityForName:LibraryItemEntityName];
 				alreadyInDB = (LibraryItem *)managedObj;
 				alreadyInDB.isBookmarked = [NSNumber numberWithBool:NO];
 			}
-			
+			alreadyInDB.itemId = itemId;
 			alreadyInDB.title = title;
 			alreadyInDB.author = author;
 			alreadyInDB.year = year;

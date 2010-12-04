@@ -23,5 +23,6 @@
 @dynamic formatDetail;
 @dynamic isOnline;
 @dynamic isFigure;
+@dynamic publisher;
 
 @end
