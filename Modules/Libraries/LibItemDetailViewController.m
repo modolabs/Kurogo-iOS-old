@@ -500,6 +500,8 @@
 	
 	
 	if (indexPath.section == 1) {
+		
+		
 	NSDictionary * regularLoan = [[NSDictionary dictionaryWithObjectsAndKeys:
 								  @"Regular loan", @"type", 
 								  @"HB74.P8 L479 2006x", @"callNumber",
@@ -525,7 +527,10 @@
 	
 	
 	Library * tempLib = [[CoreDataManager insertNewObjectForEntityForName:LibraryEntityName] retain];
-	tempLib.name = @"Cabot Science Library";
+	tempLib.name = @"Afro-American Studies Reading Room";
+	tempLib.identityTag = @"0003";
+	tempLib.type = @"Library";
+		
 	
 	ItemAvailabilityDetailViewController * vc = [[ItemAvailabilityDetailViewController alloc]
 												 initWithStyle:UITableViewStyleGrouped
@@ -534,6 +539,37 @@
 												 categories:availArray
 												 allLibrariesWithItem:nil
 												 index:0];
+		
+		apiRequest = [[JSONAPIRequest alloc] initWithJSONAPIDelegate:vc];
+	
+		NSString * libOrArchive;
+		if ([tempLib.type isEqualToString:@"archive"])
+			libOrArchive = @"archivedetail";
+		
+		else {
+			libOrArchive = @"libdetail";
+		}
+		
+		
+		if ([apiRequest requestObjectFromModule:@"libraries" 
+										command:libOrArchive
+									 parameters:[NSDictionary dictionaryWithObjectsAndKeys:tempLib.identityTag, @"id", tempLib.name, @"name", nil]])
+		{
+			
+		}
+		else {
+			UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil
+																message:@"Could not retrieve today's hours" 
+															   delegate:self 
+													  cancelButtonTitle:@"OK" 
+													  otherButtonTitles:nil];
+			[alertView show];
+			[alertView release];
+		}
+		
+		[vc release];
+		
+		
 	
 	vc.title = @"Availability";
 	[self.navigationController pushViewController:vc animated:YES];

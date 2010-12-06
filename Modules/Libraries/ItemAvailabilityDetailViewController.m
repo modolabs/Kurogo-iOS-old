@@ -57,10 +57,10 @@ allLibrariesWithItem: (NSArray *) allLibraries
 	
 	headerView = nil; 
 	NSString * libraryName = library.name; //@"Cabot Science Library ";
-	NSString * openToday = @"Open Today at xxxxxxxxxxxxxxxxxx";
+	//NSString * openToday = @"Open Today at xxxxxxxxxxxxxxxxxx";
 	CGFloat height1 = [libraryName
 					  sizeWithFont:[UIFont fontWithName:CONTENT_TITLE_FONT size:CONTENT_TITLE_FONT_SIZE]
-					  constrainedToSize:CGSizeMake(350, 2000)         
+					  constrainedToSize:CGSizeMake(300, 2000)         
 					   lineBreakMode:UILineBreakModeWordWrap].height;
 						
 	CGFloat height2 = [openToday
@@ -70,7 +70,7 @@ allLibrariesWithItem: (NSArray *) allLibraries
 	
 	CGFloat height = height1 + height2;
 	
-	UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(12.0, 0.0, 350.0, height1)];
+	UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(12.0, 0.0, 300.0, height1)];
 	label.text = libraryName;
 	label.font = [UIFont fontWithName:CONTENT_TITLE_FONT size:CONTENT_TITLE_FONT_SIZE];
 	label.textColor = [UIColor colorWithHexString:@"#1a1611"];
@@ -78,9 +78,16 @@ allLibrariesWithItem: (NSArray *) allLibraries
 	label.lineBreakMode = UILineBreakModeWordWrap;
 	label.numberOfLines = 5;
 	
+	NSString * openTodayString;
+	if (nil == openToday)
+		openTodayString = @"";
+	else {
+		openTodayString = openToday;
+	}
 
+	
 	UILabel *label2 = [[UILabel alloc] initWithFrame:CGRectMake(12.0, height1 + 5.0, 300.0, height2)];
-	label2.text = openToday;
+	label2.text = openTodayString;
 	label2.font = [UIFont fontWithName:COURSE_NUMBER_FONT
 								  size:13];
 	label2.textColor = [UIColor colorWithHexString:@"#666666"];
@@ -179,11 +186,20 @@ allLibrariesWithItem: (NSArray *) allLibraries
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     // Return the number of rows in the section.
 	
-	//int rows = 0;
-	//NSDictionary * availDict = [availabilityCategories objectAtIndex:indexPath.section];
+	int row = 0;
+	NSDictionary * availDict = [availabilityCategories objectAtIndex:section];
+	
+	if ([[availDict objectForKey:@"available"] intValue] > 0)
+		row++;
+	
+	if ([[availDict objectForKey:@"checkedOut"] intValue] > 0)
+		row++;
+	
+	if ([[availDict objectForKey:@"unavailable"] intValue] > 0)
+		row++;
 
 	
-    return 3;
+    return row;
 }
 
 
@@ -199,21 +215,70 @@ allLibrariesWithItem: (NSArray *) allLibraries
     
     NSDictionary * availDict = [availabilityCategories objectAtIndex:indexPath.section];
 	
-	if (indexPath.row == 0) // available
-		cell.textLabel.text = [NSString stringWithFormat:@"%d available", [[availDict objectForKey:@"available"] intValue]];
+	int availCount = [[availDict objectForKey:@"available"] intValue];
+	int checkOutCount = [[availDict objectForKey:@"checkedOut"] intValue];
+	int unavailCount = [[availDict objectForKey:@"unavailable"] intValue];
 	
-	else if (indexPath.row == 1) {// checked out
-		cell.textLabel.text = [NSString stringWithFormat:@"%d checked out", [[availDict objectForKey:@"checkedOut"] intValue]];
+	UILabel *label2 = [[UILabel alloc] initWithFrame:CGRectMake(230.0, cell.frame.size.height/2 - 10, 50.0, 20.0)];
+	label2.text = @"Request";
+	label2.font = [UIFont fontWithName:COURSE_NUMBER_FONT
+								  size:13];
+	label2.textColor = [UIColor colorWithHexString:@"#666666"];
+	label2.backgroundColor = [UIColor clearColor];	
+	label2.lineBreakMode = UILineBreakModeWordWrap;
+	label2.numberOfLines = 1;
+	
+	if (indexPath.row == 0) {// available
 		
-		if ([availDict objectForKey:@"checkedOut"] > 0)
+		if (availCount > 0) {
+			cell.textLabel.text = [NSString stringWithFormat:@"%d available", availCount];
+			UIImage *image = [UIImage imageNamed:@"dining/dining-status-open.png"];
+			cell.imageView.image = image;
+		}
+		else if (checkOutCount > 0){
+			cell.textLabel.text = [NSString stringWithFormat:@"%d checked out", checkOutCount];
 			cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+			UIImage *image = [UIImage imageNamed:@"dining/dining-status-open-w-restrictions.png"];
+			cell.imageView.image = image;
+			
+			[cell addSubview:label2];
+		}
+		
+		else {
+			cell.textLabel.text = [NSString stringWithFormat:@"%d unavailable", unavailCount];
+			UIImage *image = [UIImage imageNamed:@"dining/dining-status-closed.png"];
+			cell.imageView.image = image;
+		}
+
+		
 	}
 	
-	else if (indexPath.row == 2) // unavailable
-		cell.textLabel.text = [NSString stringWithFormat:@"%d unavailable", [[availDict objectForKey:@"unavailable"] intValue]];
+	else if (indexPath.row == 1) {// checked out
+		if (checkOutCount > 0){
+			cell.textLabel.text = [NSString stringWithFormat:@"%d checked out", checkOutCount];
+			cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+			UIImage *image = [UIImage imageNamed:@"dining/dining-status-open-w-restrictions.png"];
+			cell.imageView.image = image;
+			
+			[cell addSubview:label2];
+		}
 		
-    cell.selectionStyle = UITableViewCellSelectionStyleGray;
+		else {
+			cell.textLabel.text = [NSString stringWithFormat:@"%d unavailable", unavailCount];
+			UIImage *image = [UIImage imageNamed:@"dining/dining-status-closed.png"];
+			cell.imageView.image = image;
+		}
+			
+	}
 	
+	else if (indexPath.row == 2) {// unavailable
+		cell.textLabel.text = [NSString stringWithFormat:@"%d unavailable", unavailCount];
+		UIImage *image = [UIImage imageNamed:@"dining/dining-status-closed.png"];
+		cell.imageView.image = image;
+	}
+		
+		
+	cell.selectionStyle = UITableViewCellSelectionStyleGray;
 	
     return cell;
 }
@@ -225,6 +290,9 @@ allLibrariesWithItem: (NSArray *) allLibraries
 #pragma mark Table view delegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+	
+		[tableView deselectRowAtIndexPath:indexPath animated:NO];
+	
     // Navigation logic may go here. Create and push another view controller.
 	/*
 	 <#DetailViewController#> *detailViewController = [[<#DetailViewController#> alloc] initWithNibName:@"<#Nib name#>" bundle:nil];
@@ -317,6 +385,42 @@ allLibrariesWithItem: (NSArray *) allLibraries
 
 - (void)dealloc {
     [super dealloc];
+}
+
+#pragma mark -
+#pragma mark JSONAPIRequest Delegate function 
+
+- (void)request:(JSONAPIRequest *)request jsonLoaded:(id)result {
+	
+	NSDictionary *libraryDictionary = (NSDictionary *)result;
+	
+	NSString * hrsToday = [libraryDictionary objectForKey:@"hrsOpenToday"];
+	
+	if ([hrsToday isEqualToString:@"closed"])
+		openToday = @"Closed Today";
+	
+	else {
+		openToday = [NSString stringWithFormat: @"Open today at %@", hrsToday];
+	}
+	
+	[self setupLayout];
+
+}
+
+- (BOOL)request:(JSONAPIRequest *)request shouldDisplayAlertForError:(NSError *)error {
+	
+    return YES;
+}
+
+- (void)request:(JSONAPIRequest *)request handleConnectionError:(NSError *)error {
+
+	UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil
+														message:@"Could not retrieve information about today's open hours" 
+													   delegate:self 
+											  cancelButtonTitle:@"OK" 
+											  otherButtonTitles:nil];
+	[alertView show];
+	[alertView release];
 }
 
 

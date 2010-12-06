@@ -9,9 +9,10 @@
 #import <UIKit/UIKit.h>
 #import "Library.h"
 #import "LibraryItem.h"
+#import "JSONAPIRequest.h"
 
 
-@interface ItemAvailabilityDetailViewController : UITableViewController {
+@interface ItemAvailabilityDetailViewController : UITableViewController <JSONAPIDelegate>{
 
 	Library * library;
 	LibraryItem * libItem;
@@ -30,6 +31,9 @@
 	 {library:[Library*] availabilityCategories:[Array*]}
 	 */
 	int currentIndex;
+	
+	NSString * openToday;
+	
 }
 
 - (id)initWithStyle:(UITableViewStyle)style 

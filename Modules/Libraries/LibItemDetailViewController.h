@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "LibItemDetailCell.h"
 #import "LibraryItem.h"
+#import "JSONAPIRequest.h"
 
 
 @interface LibItemDetailViewController : UITableViewController {
@@ -30,6 +31,8 @@
 	NSDictionary * libItemDictionary;
 	
 	int currentIndex;
+	
+	JSONAPIRequest * apiRequest;
 }
 
 @property BOOL bookmarkButtonIsOn;
