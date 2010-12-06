@@ -1,8 +1,8 @@
 #import "Constants.h"
 
 #ifdef USE_MOBILE_DEV
-NSString * const MITMobileWebDomainString =        @"localhost:8080";
-NSString * const MITMobileWebAPIURLString = @"http://localhost:8080/api/";
+NSString * const MITMobileWebDomainString =        @"localhost:8888";
+NSString * const MITMobileWebAPIURLString = @"http://localhost:8888/api/";
 #else
     #ifdef USE_MOBILE_TEST
     NSString * const MITMobileWebDomainString = @"mobile-dev.harvard.edu:8080";
