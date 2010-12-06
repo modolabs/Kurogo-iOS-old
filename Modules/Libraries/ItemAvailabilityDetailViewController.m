@@ -179,8 +179,8 @@ allLibrariesWithItem: (NSArray *) allLibraries
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     // Return the number of rows in the section.
 	
-	int rows = 0;
-	NSDictionary * availDict = [availabilityCategories objectAtIndex:indexPath.section];
+	//int rows = 0;
+	//NSDictionary * availDict = [availabilityCategories objectAtIndex:indexPath.section];
 
 	
     return 3;
