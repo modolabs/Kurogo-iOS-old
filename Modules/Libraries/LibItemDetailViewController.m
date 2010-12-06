@@ -10,6 +10,7 @@
 #import "MITUIConstants.h"
 #import "LibItemDetailCell.h"
 #import "CoreDataManager.h"
+#import "ItemAvailabilityDetailViewController.h"
 
 @class LibItemDetailCell;
 
@@ -486,6 +487,59 @@
 #pragma mark Table view delegate
 - (void) tableView: (UITableView *)tableView didSelectRowAtIndexPath: (NSIndexPath *)indexPath {
 	[tableView deselectRowAtIndexPath:indexPath animated:NO];
+	
+	/*
+	 availabilityCategories = array containing dictionaries
+	 {type=>[string], callNumber => [string], available=>[number], checkedOut=>[number], unavailable=>[number]}
+	 */
+	
+	/*
+	 arrayWithAllLibraries = array containing [Dictionary]:
+	 {library:[Library*] availabilityCategories:[Array*]}
+	 */
+	
+	
+	if (indexPath.section == 1) {
+	NSDictionary * regularLoan = [[NSDictionary dictionaryWithObjectsAndKeys:
+								  @"Regular loan", @"type", 
+								  @"HB74.P8 L479 2006x", @"callNumber",
+								  @"3", @"available",
+								  @"4", @"checkedOut",
+								   @"1", @"unavailable", nil] retain];
+	NSDictionary * inLibraryUse = [[NSDictionary dictionaryWithObjectsAndKeys:
+								   @"In-library use", @"type", 
+								   @"HB74.P8 L479 2006x", @"callNumber",
+								   @"0", @"available",
+								   @"0", @"checkedOut",
+								   @"5", @"unavailable", nil] retain];
+	
+	NSDictionary * depository = [[NSDictionary dictionaryWithObjectsAndKeys:
+								   @"Depository", @"type", 
+								   @"HB74.P8 L479 2006x", @"callNumber",
+								   @"2", @"available",
+								   @"0", @"checkedOut",
+								   @"0", @"unavailable", nil] retain];
+	
+	NSArray * availArray = [NSArray arrayWithObjects:
+							regularLoan, inLibraryUse, depository, nil];
+	
+	
+	Library * tempLib = [[CoreDataManager insertNewObjectForEntityForName:LibraryEntityName] retain];
+	tempLib.name = @"Cabot Science Library";
+	
+	ItemAvailabilityDetailViewController * vc = [[ItemAvailabilityDetailViewController alloc]
+												 initWithStyle:UITableViewStyleGrouped
+												 library: tempLib
+												 item:libItem
+												 categories:availArray
+												 allLibrariesWithItem:nil
+												 index:0];
+	
+	vc.title = @"Availability";
+	[self.navigationController pushViewController:vc animated:YES];
+	[vc release];
+	}
+	
 }
 
 
