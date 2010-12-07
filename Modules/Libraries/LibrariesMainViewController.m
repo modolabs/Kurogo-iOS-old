@@ -15,6 +15,7 @@
 #import "LibrariesSearchViewController.h"
 #import "CoreDataManager.h"
 #import "BookmarkedHoursAndLocationsViewController.h"
+#import "BookmarkedLibItemListView.h"
 
 @implementation LibrariesMainViewController
 @synthesize searchTerms, searchResults, searchController;
@@ -97,7 +98,7 @@
 		[_bookmarkButton setImage:[UIImage imageNamed:@"global/searchfield_star.png"] forState:UIControlStateNormal];
 	}
 	[self.view addSubview:_bookmarkButton];
-	[_bookmarkButton addTarget:self action:@selector(bookmarkButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
+	[_bookmarkButton addTarget:self action:@selector(bookmarkItemButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
 	
 	
 	// set up tableView options
@@ -112,19 +113,32 @@
 	mainViewTableOptions2 = [[NSArray alloc] initWithObjects: option3, option4, option5, nil];
 	
 	
-	hasBookmarkedItems = NO;
+	//hasBookmarkedItems = NO;
+	hasBookmarkedLibraries = NO;
 	
 	NSPredicate *pred = [NSPredicate predicateWithFormat:@"isBookmarked == YES"];
 	bookmarkedLibraries = [[CoreDataManager objectsForEntity:LibraryEntityName matchingPredicate:pred] retain];
 	
 	if ([bookmarkedLibraries count] > 0)
+		hasBookmarkedLibraries = YES;
+	
+	
+	if (hasBookmarkedLibraries == NO) {
+		bookmarkedLibraries = [[NSArray alloc] initWithObjects: nil];
+		//[self hideToolBar];
+	}
+	
+	NSPredicate *predItem = [NSPredicate predicateWithFormat:@"isBookmarked == YES"];
+	bookmarkedItems = [[CoreDataManager objectsForEntity:LibraryItemEntityName matchingPredicate:predItem] retain];
+	
+	if ([bookmarkedItems count] > 0)
 		hasBookmarkedItems = YES;
 	
-	
 	if (hasBookmarkedItems == NO) {
-		bookmarkedLibraries = [[NSArray alloc] initWithObjects: nil];
+		bookmarkedItems = [[NSArray alloc] initWithObjects: nil];
 		[self hideToolBar];
 	}
+	
 	
 }
 
@@ -245,6 +259,15 @@
 	[vc release];
 	
 	//TODO: open a list-view displaying all bookmarked items
+}
+
+- (void)bookmarkItemButtonClicked:(UIButton *)sender {
+	
+	BookmarkedLibItemListView *vc = [[BookmarkedLibItemListView alloc] initWithStyle:UITableViewStylePlain];
+	vc.title = @"Bookmarked Items";
+	
+	[self.navigationController pushViewController:vc animated:YES];
+	[vc release];	
 }
 
 - (void)setupSearchController {
@@ -434,7 +457,7 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
 	
 	int bookmarkRowCount = 0;
-	if (hasBookmarkedItems == YES)
+	if (hasBookmarkedLibraries == YES)
 		bookmarkRowCount = 1;
 	
 	if (section == 0)
@@ -522,8 +545,8 @@
 	
 	if (indexPath.section == 0) {
 		
-		if (((indexPath.row == 0) && (hasBookmarkedItems == NO)) ||
-			((indexPath.row == 1) && (hasBookmarkedItems == YES)))
+		if (((indexPath.row == 0) && (hasBookmarkedLibraries == NO)) ||
+			((indexPath.row == 1) && (hasBookmarkedLibraries == YES)))
 		{
 			HoursAndLocationsViewController *vc = [[HoursAndLocationsViewController alloc] init];
 			vc.title = @"Locations & Hours";
@@ -549,8 +572,8 @@
 
 			[vc release];
 		}
-		else if (((indexPath.row == 1) && (hasBookmarkedItems == NO)) ||
-						((indexPath.row == 2) && (hasBookmarkedItems == YES)))
+		else if (((indexPath.row == 1) && (hasBookmarkedLibraries == NO)) ||
+						((indexPath.row == 2) && (hasBookmarkedLibraries == YES)))
 		{
 			HoursAndLocationsViewController *vc = [[HoursAndLocationsViewController alloc] init];
 			vc.showArchives = YES;
@@ -578,7 +601,7 @@
 			[vc release];
 		}
 		
-		else if ((indexPath.row == 0) && (hasBookmarkedItems == YES)){
+		else if ((indexPath.row == 0) && (hasBookmarkedLibraries == YES)){
 			
 			BookmarkedHoursAndLocationsViewController *vc = [[BookmarkedHoursAndLocationsViewController alloc] init];
 			vc.title = @"Bookmarked Libraries";

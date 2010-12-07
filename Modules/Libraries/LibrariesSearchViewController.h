@@ -25,7 +25,7 @@
 	
 	LibrariesMainViewController * viewController;
 	
-	NSInteger actualCount;
+	int actualCount;
 	
 	UITableView *_tableView;
 	
@@ -40,6 +40,7 @@
 	
 	BOOL requestWasDispatched;
 	JSONAPIRequest *api;
+	
 
 }
 

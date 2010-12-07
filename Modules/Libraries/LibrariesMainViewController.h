@@ -33,7 +33,9 @@
 	NSArray * mainViewTableOptions2;
 			  
 	NSArray * bookmarkedLibraries;
+	NSArray * bookmarkedItems;
 	
+	BOOL hasBookmarkedLibraries;
 	BOOL hasBookmarkedItems;
 	
 	JSONAPIRequest *apiRequest;

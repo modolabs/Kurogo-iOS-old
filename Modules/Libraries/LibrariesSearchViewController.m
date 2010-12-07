@@ -152,7 +152,7 @@
 		cellText = libItem.title;
 		
 		if (([libItem.year length] == 0) && ([libItem.author length] ==0))
-			detailText = @"";
+			detailText = @"       ";
 		
 		else if (([libItem.year length] == 0) && ([libItem.author length] > 0))
 			detailText = [NSString stringWithFormat:@"%@", libItem.author];
@@ -160,8 +160,12 @@
 		else if (([libItem.year length] > 0) && ([libItem.author length] == 0))
 			detailText = [NSString stringWithFormat:@"%@", libItem.year];
 		
-		else
+		else if (([libItem.year length] > 0) && ([libItem.author length] > 0))
 			detailText = [NSString stringWithFormat:@"%@ | %@", libItem.year, libItem.author];
+		
+		else {
+			detailText = [NSString stringWithFormat:@"       "];
+		}
 	}
 	else {
 		cellText = @"";
@@ -204,7 +208,7 @@
 					indexPath.row + 1, libItem.title];
 		
 		if (([libItem.year length] == 0) && ([libItem.author length] ==0))
-			detailText = @"";
+			detailText = @"         ";
 		
 		else if (([libItem.year length] == 0) && ([libItem.author length] > 0))
 			detailText = [NSString stringWithFormat:@"%@", libItem.author];
@@ -212,8 +216,13 @@
 		else if (([libItem.year length] > 0) && ([libItem.author length] == 0))
 			detailText = [NSString stringWithFormat:@"%@", libItem.year];
 			
-		else
+		else if (([libItem.year length] > 0) && ([libItem.author length] > 0))
 			detailText = [NSString stringWithFormat:@"%@ | %@", libItem.year, libItem.author];
+		
+		else {
+			detailText = [NSString stringWithFormat:@"      "];
+		}
+
 	}
 	else {
 		cellText = @"";
@@ -246,7 +255,7 @@
 - (NSString *) tableView: (UITableView *)tableView titleForHeaderInSection: (NSInteger)section {
 	if([lastResults count]) {
 		if (actualCount > [lastResults count])
-			return [NSString stringWithFormat:@"Displaying %i of many", [self.lastResults count]];
+			return [NSString stringWithFormat:@"Displaying %i of %d", [self.lastResults count], actualCount];
 		
 		return [NSString stringWithFormat:@"%i matches found", [self.lastResults count]];
 	}
@@ -258,7 +267,7 @@
 	
 	if([lastResults count]) {
 		if (actualCount > [lastResults count])
-			headerTitle =  [NSString stringWithFormat:@"Displaying %i of many", [self.lastResults count]];
+			headerTitle =  [NSString stringWithFormat:@"Displaying %i of %d", [self.lastResults count], actualCount];
 		else
 			headerTitle = [NSString stringWithFormat:@"%i matches found", [self.lastResults count]];
 		
@@ -281,17 +290,37 @@
 
 
 	
-	NSDictionary * libraries = [[NSDictionary alloc] initWithObjectsAndKeys:
+	/*NSDictionary * libraries = [[NSDictionary alloc] initWithObjectsAndKeys:
 								@"152 yards away", @"Cabot Science Library",
 								@"0.5 miles away", @"Baker Business School", nil];
+	 */
 	
 	LibItemDetailViewController *vc = [[LibItemDetailViewController alloc]  initWithStyle:UITableViewStyleGrouped
-																				libraries:libraries
 																				libraryItem:libItem
 																				itemArray:self.lastResults
 																		  currentItemIdex:indexPath.row];
-	vc.title = @"Item Detail";
-	[self.navigationController pushViewController:vc animated:YES];
+	
+	api = [[JSONAPIRequest alloc] initWithJSONAPIDelegate:vc];
+	
+	if ([api requestObjectFromModule:@"libraries" 
+									command:@"fullavailability"
+								 parameters:[NSDictionary dictionaryWithObjectsAndKeys:libItem.itemId, @"itemid", nil]])
+	{
+		vc.title = @"Item Detail";
+		[self.navigationController pushViewController:vc animated:YES];
+	}
+	else {
+		UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil
+															message:@"Could not connect to the server" 
+														   delegate:self 
+												  cancelButtonTitle:@"OK" 
+												  otherButtonTitles:nil];
+		[alertView show];
+		[alertView release];
+	}
+	
+	
+
 	[vc release];
 	
 }
@@ -455,6 +484,8 @@
 			
 		for(NSDictionary * libraryDictionary in result) {
 			
+			actualCount = [[libraryDictionary objectForKey:@"totalResults"] intValue];
+			
 			NSString * title = [libraryDictionary objectForKey:@"title"];
 			NSString *author = [libraryDictionary objectForKey:@"creator"];
 			
@@ -482,6 +513,18 @@
 			if ([formatDetail length] == 0)
 				formatDetail = @"";
 			
+			NSString * isOnline = [libraryDictionary objectForKey:@"isOnline"];
+			NSString * isFigure = [libraryDictionary objectForKey:@"isFigure"];
+			
+			BOOL online = NO;
+			if ([isOnline isEqualToString:@"YES"])
+				online = YES;
+			
+			BOOL figure = NO;
+			if ([isFigure isEqualToString:@"YES"])
+				figure = YES;
+
+			
 			
 			NSPredicate *pred = [NSPredicate predicateWithFormat:@"itemId == %@", itemId];
 			LibraryItem *alreadyInDB = [[CoreDataManager objectsForEntity:LibraryItemEntityName matchingPredicate:pred] lastObject];
@@ -499,6 +542,8 @@
 			alreadyInDB.edition = edition;
 			alreadyInDB.typeDetail = typeDetail;
 			alreadyInDB.formatDetail = formatDetail;
+			alreadyInDB.isFigure = [NSNumber numberWithBool: figure];
+			alreadyInDB.isOnline = [NSNumber numberWithBool: online];
 			
 			
 			[CoreDataManager saveData];

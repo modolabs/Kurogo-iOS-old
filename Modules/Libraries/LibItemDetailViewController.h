@@ -12,7 +12,7 @@
 #import "JSONAPIRequest.h"
 
 
-@interface LibItemDetailViewController : UITableViewController {
+@interface LibItemDetailViewController : UITableViewController <JSONAPIDelegate>{
 	
 	NSString * itemTitle;
 	NSString * author;
@@ -20,7 +20,9 @@
 	NSString * otherDetailLine2;
 	NSString * otherDetailLine3;
 	
-	NSDictionary *librariesWithItem;
+	//NSDictionary *librariesWithItem;
+	
+	NSArray * locationsWithItem;
 	
 	BOOL bookmarkButtonIsOn;
 	
@@ -33,12 +35,13 @@
 	int currentIndex;
 	
 	JSONAPIRequest * apiRequest;
+	
+	UIView * loadingIndicator;
 }
 
 @property BOOL bookmarkButtonIsOn;
 
 -(id) initWithStyle:(UITableViewStyle)style 
-		  libraries:(NSDictionary *)libraries
 		libraryItem:(LibraryItem *) libraryItem
 		  itemArray: (NSDictionary *) results
 	currentItemIdex: (int) itemIndex;	
@@ -46,4 +49,6 @@
 
 -(void) setupLayout;
 -(void)setUpdetails: (LibraryItem *) libraryItem;
+
+- (void)addLoadingIndicator:(UIView *)view;
 @end

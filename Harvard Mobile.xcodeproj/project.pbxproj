@@ -149,6 +149,8 @@
 		56E8505B12A52A290022E162 /* LibraryPhone.m in Sources */ = {isa = PBXBuildFile; fileRef = 56E8505912A52A290022E162 /* LibraryPhone.m */; };
 		56E859CF12ACEC810022E162 /* ItemAvailabilityDetailViewController.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = 56E859CD12ACEC810022E162 /* ItemAvailabilityDetailViewController.h */; settings = {JAVA_ARCHIVE_SUBDIR = Modules/Libraries; }; };
 		56E859D012ACEC810022E162 /* ItemAvailabilityDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 56E859CE12ACEC810022E162 /* ItemAvailabilityDetailViewController.m */; };
+		56E85C6F12AE76070022E162 /* BookmarkedLibItemListView.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = 56E85C6D12AE76070022E162 /* BookmarkedLibItemListView.h */; settings = {JAVA_ARCHIVE_SUBDIR = Modules/Libraries; }; };
+		56E85C7012AE76070022E162 /* BookmarkedLibItemListView.m in Sources */ = {isa = PBXBuildFile; fileRef = 56E85C6E12AE76070022E162 /* BookmarkedLibItemListView.m */; };
 		A623F1F1120A035A00341C5E /* ModoThreeStateSwitchControl.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = A623F1EF120A035A00341C5E /* ModoThreeStateSwitchControl.h */; settings = {JAVA_ARCHIVE_SUBDIR = Modules; }; };
 		A623F1F2120A035A00341C5E /* ModoThreeStateSwitchControl.m in Sources */ = {isa = PBXBuildFile; fileRef = A623F1F0120A035A00341C5E /* ModoThreeStateSwitchControl.m */; };
 		A64C313D11FDFAB8006FE056 /* AddressFormatter.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = A64C313B11FDFAB8006FE056 /* AddressFormatter.h */; settings = {JAVA_ARCHIVE_SUBDIR = Common; }; };
@@ -584,6 +586,8 @@
 		56E8505912A52A290022E162 /* LibraryPhone.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LibraryPhone.m; sourceTree = "<group>"; };
 		56E859CD12ACEC810022E162 /* ItemAvailabilityDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ItemAvailabilityDetailViewController.h; sourceTree = "<group>"; };
 		56E859CE12ACEC810022E162 /* ItemAvailabilityDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ItemAvailabilityDetailViewController.m; sourceTree = "<group>"; };
+		56E85C6D12AE76070022E162 /* BookmarkedLibItemListView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BookmarkedLibItemListView.h; sourceTree = "<group>"; };
+		56E85C6E12AE76070022E162 /* BookmarkedLibItemListView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BookmarkedLibItemListView.m; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* Mobile-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Mobile-Info.plist"; plistStructureDefinitionIdentifier = "com.apple.xcode.plist.structure-definition.iphone.info-plist"; sourceTree = "<group>"; };
 		A623F1EF120A035A00341C5E /* ModoThreeStateSwitchControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ModoThreeStateSwitchControl.h; sourceTree = "<group>"; };
 		A623F1F0120A035A00341C5E /* ModoThreeStateSwitchControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ModoThreeStateSwitchControl.m; sourceTree = "<group>"; };
@@ -1230,6 +1234,8 @@
 				56E84FBD12A43D0A0022E162 /* BookmarkedHoursAndLocationsViewController.m */,
 				56E859CD12ACEC810022E162 /* ItemAvailabilityDetailViewController.h */,
 				56E859CE12ACEC810022E162 /* ItemAvailabilityDetailViewController.m */,
+				56E85C6D12AE76070022E162 /* BookmarkedLibItemListView.h */,
+				56E85C6E12AE76070022E162 /* BookmarkedLibItemListView.m */,
 			);
 			path = Libraries;
 			sourceTree = "<group>";
@@ -1889,6 +1895,7 @@
 				56E84FBE12A43D0A0022E162 /* BookmarkedHoursAndLocationsViewController.h in JavaArchive */,
 				56E8505A12A52A290022E162 /* LibraryPhone.h in JavaArchive */,
 				56E859CF12ACEC810022E162 /* ItemAvailabilityDetailViewController.h in JavaArchive */,
+				56E85C6F12AE76070022E162 /* BookmarkedLibItemListView.h in JavaArchive */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2219,6 +2226,7 @@
 				56E84FBF12A43D0A0022E162 /* BookmarkedHoursAndLocationsViewController.m in Sources */,
 				56E8505B12A52A290022E162 /* LibraryPhone.m in Sources */,
 				56E859D012ACEC810022E162 /* ItemAvailabilityDetailViewController.m in Sources */,
+				56E85C7012AE76070022E162 /* BookmarkedLibItemListView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

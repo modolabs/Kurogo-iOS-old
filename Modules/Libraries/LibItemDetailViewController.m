@@ -22,7 +22,6 @@
 #pragma mark Initialization
 
 -(id) initWithStyle:(UITableViewStyle)style 
-		  libraries:(NSDictionary *)libraries
 		libraryItem:(LibraryItem *) libraryItem
 		  itemArray: (NSDictionary *) results
 	currentItemIdex: (int) itemIndex	{
@@ -30,8 +29,7 @@
 	self = [super initWithStyle:style];
 	
 	if (self) {
-		
-		librariesWithItem = libraries;
+
 		libItem = [libraryItem retain];
 		libItemDictionary = [results retain];
 		currentIndex = itemIndex;
@@ -40,6 +38,8 @@
 		
 		self.tableView.delegate = self;
 		self.tableView.dataSource = self;
+		
+		locationsWithItem = [[NSArray alloc] init];
 	}
 	
 	return self;
@@ -281,31 +281,20 @@
 			if ((tempLibIndex >= 0) && (tempLibIndex < [[libItemDictionary allKeys] count])){
 				
 				LibraryItem * temp = (LibraryItem *)[libItemDictionary objectForKey:[NSString stringWithFormat:@"%d", tempLibIndex +1]];
-				
 	
-				
-				currentIndex = tempLibIndex;
-				libItem = [temp retain];
-				[self setUpdetails:libItem];
-				[self viewWillAppear:YES];
-				[self.tableView reloadData];
-				
-				
-				/*apiRequest = [[JSONAPIRequest alloc] initWithJSONAPIDelegate:self];
+				apiRequest = [[JSONAPIRequest alloc] initWithJSONAPIDelegate:self];
 				
 				if ([apiRequest requestObjectFromModule:@"libraries" 
-												command:@"libdetail"
-											 parameters:[NSDictionary dictionaryWithObjectsAndKeys:temp.identityTag, @"id", temp.name, @"name", nil]])
+												command:@"fullavailability"
+											 parameters:[NSDictionary dictionaryWithObjectsAndKeys:temp.itemId, @"itemid", nil]])
 				{
-					self.lib = (Library *)[[otherLibraries objectAtIndex:tempLibIndex] retain];
-					currentlyDisplayingLibraryAtIndex = tempLibIndex;
-					if (nil != headerView)
-						[headerView removeFromSuperview];
+					currentIndex = tempLibIndex;
+					libItem = [temp retain];
 					
-					if (nil != footerLabel)
-						[footerLabel removeFromSuperview];
-					
-					[self setupLayout];
+					locationsWithItem = [[NSArray alloc] init];
+					[self.tableView reloadData];
+					[self setUpdetails:libItem];
+					[self viewWillAppear:YES];
 				}
 				else {
 					UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil
@@ -315,7 +304,7 @@
 															  otherButtonTitles:nil];
 					[alertView show];
 					[alertView release];
-				}*/
+				}
 				
 			}			
 		}
@@ -371,8 +360,12 @@
 	if (section == 0)
 		return 1;
 	
-	else if (section == 1)
-		return [librariesWithItem count];
+	else if (section == 1){
+		if ([locationsWithItem count] == 0)
+			return 1;
+		
+		return [locationsWithItem count];
+	}
 	
 	return 0;
 		
@@ -393,31 +386,131 @@
 			cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
 		}
 		
-		cell.textLabel.text = @"Available Online";
-		cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+		BOOL val = [libItem.isOnline boolValue];
+		if (val == YES) {
+			cell.textLabel.text = @"Available Online";
+			cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+		}
+		else {
+			cell.textLabel.text = @"Not Available Online";
+		}
+
+		
 		cell.selectionStyle = UITableViewCellSelectionStyleGray;
 		return cell;
 	}
 	
 	else if (indexPath.section == 1) {
-		NSDictionary * tempDict = [[NSDictionary alloc] initWithObjectsAndKeys:
+	/*	NSDictionary * temp = [[NSDictionary alloc] initWithObjectsAndKeys:
 		 @"available", @"1 of 2 available - regular loan",
 		 @"unavailable", @"2 of 2 available - in-library user",
 		 @"request", @"2 of 2 availavle - depository", nil];
+	 */
 		 
+		
+		if ([locationsWithItem count] == 0){
+			static NSString *CellIdentifier = @"CellDetsfdsf";
+			
+			UITableViewCell *cell4 = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+			if (cell4 == nil) {
+				cell4 = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
+			}
+			
+			cell4.textLabel.text = @"loading...";
+			cell4.selectionStyle = UITableViewCellSelectionStyleNone;
+			
+			[self addLoadingIndicator:cell4];
+			return cell4;
+			
+		}
+		NSDictionary * tempDict = [locationsWithItem objectAtIndex:indexPath.row];		
+		NSString * libName = [tempDict objectForKey:@"name"];
+		
+		
+		NSArray * itemsByStat = (NSArray *)[tempDict objectForKey:@"itemsByStat"];
+		
+		NSMutableDictionary * dictWithStatuses = [[NSMutableDictionary alloc] init];
+		
+		if ([itemsByStat count] == 0)
+			[dictWithStatuses setObject:@"unavailable" forKey:@"none available"];
+		
+		for(NSDictionary * statDict in itemsByStat) {
+			
+			NSString * statMain = [statDict objectForKey:@"statMain"];
+			
+			int availCount = 0;
+			availCount = [[statDict objectForKey:@"availCount"] intValue];
+			
+			int unavailCount = 0;
+			unavailCount = [[statDict objectForKey:@"unavailCount"] intValue];
+			
+			int checkedOutCount = 0;
+			checkedOutCount = [[statDict objectForKey:@"checkedOutCount"] intValue];
+			
+			int requestCount = 0;
+			requestCount = [[statDict objectForKey:@"requestCount"] intValue];
+			
+			int totalItems = availCount + unavailCount + checkedOutCount;
+			
+			
+			NSArray * availableItems = (NSArray *)[statDict objectForKey:@"availableItems"];
+				
+			BOOL availableIsYellow = NO;
+			for(NSDictionary * availItemDict in availableItems){
+				
+				NSString * canRequest = [availItemDict objectForKey:@"canRequest"];
+				
+				if ([canRequest isEqualToString:@"YES"]) {
+					availableIsYellow = YES;
+					break;
+				}
+			}
+			
+			NSString * status;
+			
+			if ((availCount > 0) && (availableIsYellow == NO))
+				status = @"available";
+			
+			else if ((availCount > 0) && (availableIsYellow == YES))
+				status = @"request";
+			
+			else if (requestCount > 0)
+				status = @"request";
+			
+			else {
+				status = @"unavailable";
+			}
+			
+			NSString * statusDetailString = [NSString stringWithFormat:
+											 @"%d of %d available - %@", availCount, totalItems, statMain];
+			
+			if (totalItems == 0)
+				statusDetailString = [NSString stringWithFormat:
+									  @"None available"];
+			
+			[dictWithStatuses setObject:status forKey:statusDetailString];
+		}
+		
+		
 		
 		static NSString *CellIdentifier1 = @"CellLib";
 		
 		LibItemDetailCell *cell1 = (LibItemDetailCell *)[tableView dequeueReusableCellWithIdentifier:CellIdentifier1];
+		
+		if (nil != cell1)
+			cell1 = nil;
+		
 		if (cell1 == nil) {
 			cell1 = [[[LibItemDetailCell alloc] initWithStyle:UITableViewCellStyleSubtitle 
 											 reuseIdentifier:CellIdentifier1 
-											itemAvailability:tempDict] autorelease];
+											itemAvailability:[dictWithStatuses retain]] autorelease];
 		}
 		
-		cell1.textLabel.text = [[librariesWithItem allKeys] objectAtIndex:indexPath.row];
+
+		
+		cell1.textLabel.text = libName;
  
-		cell1.detailTextLabel.text = [librariesWithItem objectForKey:[[librariesWithItem allKeys] objectAtIndex:indexPath.row]];
+		cell1.detailTextLabel.text = @"xxx yards away";
 		cell1.detailTextLabel.textColor = [UIColor colorWithHexString:@"#554C41"];
 		
 
@@ -448,10 +541,16 @@
 		detailText = @"";
 		accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 	}
-	else if (indexPath.section == 1) {
-		cellText =  [[librariesWithItem allKeys] objectAtIndex:indexPath.row];
-		detailText = [librariesWithItem objectForKey:[[librariesWithItem allKeys] objectAtIndex:indexPath.row]];
+	else if ((indexPath.section == 1) && ([locationsWithItem count] > 0)){
+		NSDictionary * tempDict = [locationsWithItem objectAtIndex:indexPath.row];		
+		NSString * libName = [tempDict objectForKey:@"name"];
+		cellText =  libName;
+		detailText = @"xxx yards away";
 		accessoryType = UITableViewCellAccessoryDisclosureIndicator;		
+	}
+	else if ((indexPath.section == 1) && ([locationsWithItem count] == 0)){
+		cellText =  @"loading...";
+		detailText = @"";
 	}
 	
 	CGFloat height = [cellText
@@ -459,12 +558,79 @@
 					  constrainedToSize:CGSizeMake(self.tableView.frame.size.width*2/3, 500)         
 					  lineBreakMode:UILineBreakModeWordWrap].height;
 	
-	NSDictionary * tempDict = [[NSDictionary alloc] initWithObjectsAndKeys:
+	/*NSDictionary * tempDict = [[NSDictionary alloc] initWithObjectsAndKeys:
 							   @"available", @"1 of 2 available - regular loan",
 							   @"unavailable", @"2 of 2 available - in-library user",
 							   @"request", @"2 of 2 availavle - depository", nil];
+	 */
 	
-	if (indexPath.section == 1)
+	if ((indexPath.section == 1) && ([locationsWithItem count] > 0)){
+
+		
+		NSDictionary * tempDict = [locationsWithItem objectAtIndex:indexPath.row];		
+		
+		NSArray * itemsByStat = (NSArray *)[tempDict objectForKey:@"itemsByStat"];
+		
+		NSMutableDictionary * dictWithStatuses = [[NSMutableDictionary alloc] init];
+		
+		if ([itemsByStat count] == 0)
+			[dictWithStatuses setObject:@"unavailable" forKey:@"none available"];
+		
+		for(NSDictionary * statDict in itemsByStat) {
+			
+			NSString * statMain = [statDict objectForKey:@"statMain"];
+			
+			int availCount = 0;
+			availCount = [[statDict objectForKey:@"availCount"] intValue];
+			
+			int unavailCount = 0;
+			unavailCount = [[statDict objectForKey:@"unavailCount"] intValue];
+			
+			int checkedOutCount = 0;
+			checkedOutCount = [[statDict objectForKey:@"checkedOutCount"] intValue];
+			
+			int requestCount = 0;
+			requestCount = [[statDict objectForKey:@"requestCount"] intValue];
+			
+			int totalItems = availCount + unavailCount + checkedOutCount;
+			
+			
+			NSArray * availableItems = (NSArray *)[statDict objectForKey:@"availableItems"];
+			
+			BOOL availableIsYellow = NO;
+			for(NSDictionary * availItemDict in availableItems){
+				
+				NSString * canRequest = [availItemDict objectForKey:@"canRequest"];
+				
+				if ([canRequest isEqualToString:@"YES"]) {
+					availableIsYellow = YES;
+					break;
+				}
+			}
+			
+			NSString * status;
+			
+			if ((availCount > 0) && (availableIsYellow == NO))
+				status = @"available";
+			
+			else if ((availCount > 0) && (availableIsYellow == YES))
+				status = @"request";
+			
+			else if (requestCount > 0)
+				status = @"request";
+			
+			else {
+				status = @"unavailable";
+			}
+			
+			NSString * statusDetailString = [NSString stringWithFormat:
+											 @"%d of %d available - %@", availCount, totalItems, statMain];
+			
+			[dictWithStatuses setObject:status forKey:statusDetailString];
+		}
+		
+		
+		
 	return [LibItemDetailCell heightForCellWithStyle:UITableViewCellStyleSubtitle
 												tableView:tableView 
 													 text:cellText
@@ -475,7 +641,8 @@
 											   detailFont:detailFont
 											accessoryType:accessoryType
 												cellImage:YES
-						  itemAvailabilityDictionary: tempDict];
+						  itemAvailabilityDictionary: dictWithStatuses];
+	}
 	
 	return height + 20;
 
@@ -598,6 +765,96 @@
 
 - (void)dealloc {
     [super dealloc];
+}
+
+
+#pragma mark -
+#pragma mark JSONAPIRequest Delegate function 
+
+- (void)request:(JSONAPIRequest *)request jsonLoaded:(id)result {
+	
+	if ([result isKindOfClass:[NSArray class]]) {
+		
+		locationsWithItem = [result retain];
+		[self.tableView reloadData];
+	}
+	else {
+		UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil
+														message:@"Could not retrieve item availability" 
+													   delegate:self 
+											  cancelButtonTitle:@"OK" 
+											  otherButtonTitles:nil];
+		[alertView show];
+		[alertView release];
+	}
+}
+
+- (BOOL)request:(JSONAPIRequest *)request shouldDisplayAlertForError:(NSError *)error {
+	
+    return YES;
+}
+
+- (void)request:(JSONAPIRequest *)request handleConnectionError:(NSError *)error {
+	
+	UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil
+														message:@"Could not retrieve item availability" 
+													   delegate:self 
+											  cancelButtonTitle:@"OK" 
+											  otherButtonTitles:nil];
+	[alertView show];
+	[alertView release];
+}
+
+
+#pragma mark loading-indicator
+- (void)addLoadingIndicator:(UIView *)view
+{
+	if (loadingIndicator == nil) {
+		static NSString *loadingString = @"Checking availability...";
+		UIFont *loadingFont = [UIFont fontWithName:STANDARD_FONT size:17.0];
+		CGSize stringSize = [loadingString sizeWithFont:loadingFont];
+		
+        CGFloat verticalPadding = view.frame.size.height/2 - 5;
+        CGFloat horizontalPadding = 5.0; //view.frame.size.width/2 - 50;
+        CGFloat horizontalSpacing = 15.0;
+		// CGFloat cornerRadius = 8.0;
+        
+        UIActivityIndicatorViewStyle style = UIActivityIndicatorViewStyleGray;
+		UIActivityIndicatorView *spinny = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:style];
+		// spinny.center = CGPointMake(spinny.center.x + horizontalPadding, spinny.center.y + verticalPadding);
+		spinny.center = CGPointMake(horizontalPadding, verticalPadding);
+		[spinny startAnimating];
+        
+		UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(horizontalPadding + horizontalSpacing, verticalPadding -10, stringSize.width, stringSize.height + 2.0)];
+		label.textColor = [UIColor colorWithWhite:0.5 alpha:1.0];
+		label.text = loadingString;
+		label.font = loadingFont;
+		label.backgroundColor = [UIColor clearColor];
+        
+		//loadingIndicator = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, stringSize.width + spinny.frame.size.width + horizontalPadding * 2, stringSize.height + verticalPadding * 2)];
+		loadingIndicator = [[UIView alloc] initWithFrame:CGRectMake(20.0, 5.0, view.frame.size.width/2 - 20, 0.8*view.frame.size.height - 5)];
+		//loadingIndicator = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, 300, 300)];
+        //loadingIndicator.layer.cornerRadius = cornerRadius;
+        //loadingIndicator.backgroundColor =[UIColor whiteColor];
+		
+		[loadingIndicator setBackgroundColor:[UIColor whiteColor]];
+		[loadingIndicator addSubview:spinny];
+		[spinny release];
+		[loadingIndicator addSubview:label];
+		[label release];
+		
+	}
+	
+	
+	[view addSubview:loadingIndicator];
+}
+
+- (void)removeLoadingIndicator
+{
+	[loadingIndicator removeFromSuperview];
+	[loadingIndicator release];
+	loadingIndicator = nil;
+	
 }
 
 

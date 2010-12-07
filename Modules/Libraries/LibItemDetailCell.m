@@ -288,14 +288,14 @@
 		
 		UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(35.0, 
 																   placementY, 
-																   300.0, 
+																   250.0, 
 																   additionalHeight)];
 		
 		label.text = [[itemAvailabilityStringAndStatus allKeys] objectAtIndex:index];
 		label.font = [UIFont fontWithName:STANDARD_FONT size:13];
 		label.textColor = [UIColor colorWithHexString:@"#554C41"];
 		label.backgroundColor = [UIColor clearColor];	
-		label.lineBreakMode = UILineBreakModeWordWrap;
+		label.lineBreakMode = UILineBreakModeTailTruncation;
 		label.numberOfLines = 1;
 		[self.contentView addSubview:label];
 	}
