@@ -8,8 +8,9 @@
 
 #import "LibraryDetailViewController.h"
 #import "MITUIConstants.h"
-#import "DiningMultiLineCell.h"
+//#import "DiningMultiLineCell.h"
 #import "MultiLineTableViewCell.h"
+#import "LibrariesMultiLineCell.h"
 #import "MapBookmarkManager.h"
 #import "MIT_MobileAppDelegate.h"
 #import "Foundation+MITAdditions.h"
@@ -381,11 +382,11 @@ NSInteger phoneNumberSort(id num1, id num2, void *context){
 	if (indexPath.section == 0) {
 		NSString * CellTableIdentifier = @"LibDetailsHours";
 		
-		DiningMultiLineCell *cell = (DiningMultiLineCell *)[tableView dequeueReusableCellWithIdentifier:CellTableIdentifier];
+		LibrariesMultiLineCell *cell = (LibrariesMultiLineCell *)[tableView dequeueReusableCellWithIdentifier:CellTableIdentifier];
 		
 		if (cell == nil)
 		{
-				cell = [[[DiningMultiLineCell alloc] initWithStyle:UITableViewCellStyleValue2 reuseIdentifier:CellTableIdentifier] autorelease];
+				cell = [[[LibrariesMultiLineCell alloc] initWithStyle:UITableViewCellStyleValue2 reuseIdentifier:CellTableIdentifier] autorelease];
 				cell.textLabelNumberOfLines = 1;
 			
 			cell.textLabel.textColor = [UIColor colorWithHexString:@"#554C41"];
@@ -401,7 +402,7 @@ NSInteger phoneNumberSort(id num1, id num2, void *context){
 		}
 		else if (indexPath.row == 3){
 			cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-			cell.textLabel.text = @"blank";
+			cell.textLabel.text = @"    ";
 			cell.textLabel.textColor = [UIColor clearColor];
 			
 			cell.detailTextLabel.text = @"Full week's schedule";
@@ -412,17 +413,19 @@ NSInteger phoneNumberSort(id num1, id num2, void *context){
 	}
 	else if (indexPath.section == 1) {
 		NSString * CellTableIdentifierLocation = @"LibLocationcell";
-		DiningMultiLineCell *cellForLocation = (DiningMultiLineCell *)[tableView dequeueReusableCellWithIdentifier:CellTableIdentifierLocation];
+		LibrariesMultiLineCell *cellForLocation = (LibrariesMultiLineCell *)[tableView dequeueReusableCellWithIdentifier:CellTableIdentifierLocation];
 		
 		if (cellForLocation == nil)
 		{
-			cellForLocation = [[[DiningMultiLineCell alloc] initWithStyle:UITableViewCellStyleValue2 reuseIdentifier:CellTableIdentifierLocation] autorelease];
+			cellForLocation = [[[LibrariesMultiLineCell alloc] initWithStyle:UITableViewCellStyleValue2 reuseIdentifier:CellTableIdentifierLocation] autorelease];
 			cellForLocation.textLabelNumberOfLines = 1;
 			
 			cellForLocation.textLabel.textColor = [UIColor colorWithHexString:@"#554C41"];
 		}
 			cellForLocation.textLabel.text = @"Location";
 			cellForLocation.detailTextLabel.text = lib.location;
+			cellForLocation.detailTextLabel.numberOfLines = 10;
+			cellForLocation.detailTextLabelNumberOfLines = 10;
 			cellForLocation.accessoryView = [UIImageView accessoryViewWithMITType:MITAccessoryViewMap];
 			cellForLocation.selectionStyle = UITableViewCellSelectionStyleGray;
 			return cellForLocation;
@@ -430,11 +433,11 @@ NSInteger phoneNumberSort(id num1, id num2, void *context){
 	
 	else if (indexPath.section == 2) {
 		NSString * CellTableIdentifierContact = @"LibContactcell";
-		DiningMultiLineCell *cellForContact = (DiningMultiLineCell *)[tableView dequeueReusableCellWithIdentifier:CellTableIdentifierContact];
+		LibrariesMultiLineCell *cellForContact = (LibrariesMultiLineCell *)[tableView dequeueReusableCellWithIdentifier:CellTableIdentifierContact];
 		
 		if (cellForContact == nil)
 		{
-			cellForContact = [[[DiningMultiLineCell alloc] initWithStyle:UITableViewCellStyleValue2 reuseIdentifier:CellTableIdentifierContact] autorelease];
+			cellForContact = [[[LibrariesMultiLineCell alloc] initWithStyle:UITableViewCellStyleValue2 reuseIdentifier:CellTableIdentifierContact] autorelease];
 			cellForContact.textLabelNumberOfLines = 1;
 			
 			cellForContact.textLabel.textColor = [UIColor colorWithHexString:@"#554C41"];
@@ -559,6 +562,8 @@ NSInteger phoneNumberSort(id num1, id num2, void *context){
 				if ([phone.phoneNumber length] > 0) {
 					phoneNum = phone.phoneNumber;
 					phoneString = [phoneNum stringByReplacingOccurrencesOfString:@"-" withString:@""];
+					phoneString = [phoneNum stringByReplacingOccurrencesOfString:@"(" withString:@""];
+					phoneString = [phoneNum stringByReplacingOccurrencesOfString:@")" withString:@""];
 				}
 			}
 			
@@ -614,12 +619,12 @@ NSInteger phoneNumberSort(id num1, id num2, void *context){
 	 */
 	
 	if (indexPath.section == 0)	
-		return [DiningMultiLineCell heightForCellWithStyle:UITableViewCellStyleValue2
+		return [LibrariesMultiLineCell heightForCellWithStyle:UITableViewCellStyleValue2
                                                 tableView:tableView 
                                                      text:cellText
                                              maxTextLines:1
                                                detailText:detailText
-                                           maxDetailLines:4
+                                           maxDetailLines:10
                                                      font:cellFont 
                                                detailFont:cellFont
                                             accessoryType:accessoryType

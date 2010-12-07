@@ -30,7 +30,10 @@
                 width = floor(width * 0.24);
                 if (cellImage) width -= 33.0;
             } else {
-                width = floor(width * 0.76);
+				width = floor(width * 0.76);
+				if (cellImage) width -= 33.0;
+				break;
+                
                 switch (accessoryType) {
                     case UITableViewCellAccessoryCheckmark:
                     case UITableViewCellAccessoryDetailDisclosureButton:

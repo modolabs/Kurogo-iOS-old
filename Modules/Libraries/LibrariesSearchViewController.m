@@ -185,6 +185,18 @@
 		if ([libItem.formatDetail isEqualToString:@"Recording"])
 			imageString = @"soundrecording.png";
 		
+		else if ([libItem.formatDetail isEqualToString:@"Image"])
+			imageString = @"image.png";
+		
+		else if ([libItem.formatDetail isEqualToString:@"Map"])
+			imageString = @"map.png";
+		
+		else if ([libItem.formatDetail isEqualToString:@"Journal / Serial"])
+			imageString = @"journal.png";
+		
+		else if ([libItem.formatDetail isEqualToString:@"Movie"])
+			imageString = @"video.png";
+		
 		else {
 			imageString = @"book.png";
 		}
