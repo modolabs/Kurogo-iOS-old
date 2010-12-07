@@ -285,16 +285,17 @@ allLibrariesWithItem: (NSArray *) allLibraries
 			cell.textLabel.text = [NSString stringWithFormat:@"%d available", availCount];
 			UIImage *image;
 			if (availableIsYellow == YES) {
-				image = [UIImage imageNamed:@"dining/dining-status-open-w-restrictions.png"];
+				//image = [UIImage imageNamed:@"dining/dining-status-open-w-restrictions.png"];
+				//cell.imageView.image = image;
 				cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-				cell.imageView.image = image;
+				
 				[cell addSubview:label2];
 			}
 			
-			else {
+			//else {
 				image = [UIImage imageNamed:@"dining/dining-status-open.png"];
 				cell.imageView.image = image;
-			}
+			//}
 		}
 		else if (checkedOutCount > 0){
 			cell.textLabel.text = [NSString stringWithFormat:@"%d checked out", checkedOutCount];

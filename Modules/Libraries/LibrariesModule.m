@@ -16,8 +16,8 @@
     self = [super init];
     if (self != nil) {
         self.tag = LibrariesTag;
-        self.shortName = @"Libraries";
-        self.longName = @"Libraries";
+        self.shortName = @"Library";
+        self.longName = @"Library";
         self.iconName = @"libraries"; // needs to be changed
         
         LibrariesMainViewController *aboutVC = [[[LibrariesMainViewController alloc] init] autorelease];

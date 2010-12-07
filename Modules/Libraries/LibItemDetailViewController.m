@@ -472,7 +472,7 @@
 				status = @"available";
 			
 			else if ((availCount > 0) && (availableIsYellow == YES))
-				status = @"request";
+				status = @"available";
 			
 			else if (requestCount > 0)
 				status = @"request";

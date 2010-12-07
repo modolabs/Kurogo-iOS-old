@@ -53,7 +53,7 @@ NSString * const SettingsTag   = @"settings";
 NSString * const AboutTag      = @"about";
 NSString * const DiningTag	   = @"dining";
 NSString * const SchoolsTag    = @"schools";
-NSString * const LibrariesTag  = @"libraries";
+NSString * const LibrariesTag  = @"library";
 
 // notification names
 NSString * const EmergencyInfoDidLoadNotification = @"MITEmergencyInfoDidLoadNotification";
