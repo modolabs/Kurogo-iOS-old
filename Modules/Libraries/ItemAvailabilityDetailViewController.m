@@ -11,6 +11,7 @@
 
 
 @implementation ItemAvailabilityDetailViewController
+@synthesize parentViewApiRequest;
 
 
 #pragma mark -
@@ -18,15 +19,17 @@
 
 
 - (id)initWithStyle:(UITableViewStyle)style 
-			library:(Library *)lib 
+			libName:(NSString *)libName
+			  libId:(NSString *) libId
 			   item:(LibraryItem *)libraryItem 
 		 categories:(NSArray *)availCategories
 allLibrariesWithItem: (NSArray *) allLibraries
-			 index :(int) index	{
+			 index :(int) index{
     // Override initWithStyle: if you create the controller programmatically and want to perform customization that is not appropriate for viewDidLoad.
     if ((self = [super initWithStyle:style])) {
 		
-		library = [lib retain];
+		libraryName = libName;
+		libraryId = libId;
 		libItem = [libraryItem retain];
 		availabilityCategories  = [availCategories retain];
 		arrayWithAllLibraries = [allLibraries retain];
@@ -34,7 +37,6 @@ allLibrariesWithItem: (NSArray *) allLibraries
     }
     return self;
 }
-
 
 
 #pragma mark -
@@ -56,7 +58,7 @@ allLibrariesWithItem: (NSArray *) allLibraries
 	
 	
 	headerView = nil; 
-	NSString * libraryName = library.name; //@"Cabot Science Library ";
+	//NSString * libraryName = libraryName; //@"Cabot Science Library ";
 	//NSString * openToday = @"Open Today at xxxxxxxxxxxxxxxxxx";
 	CGFloat height1 = [libraryName
 					  sizeWithFont:[UIFont fontWithName:CONTENT_TITLE_FONT size:CONTENT_TITLE_FONT_SIZE]
@@ -187,15 +189,29 @@ allLibrariesWithItem: (NSArray *) allLibraries
     // Return the number of rows in the section.
 	
 	int row = 0;
-	NSDictionary * availDict = [availabilityCategories objectAtIndex:section];
+	NSDictionary * statDict = [availabilityCategories objectAtIndex:section];
 	
-	if ([[availDict objectForKey:@"available"] intValue] > 0)
+	
+	int availCount = 0;
+	availCount = [[statDict objectForKey:@"availCount"] intValue];
+	
+	int unavailCount = 0;
+	unavailCount = [[statDict objectForKey:@"unavailCount"] intValue];
+	
+	int checkedOutCount = 0;
+	checkedOutCount = [[statDict objectForKey:@"checkedOutCount"] intValue];
+	
+	int requestCount = 0;
+	requestCount = [[statDict objectForKey:@"requestCount"] intValue];
+	
+	
+	if (availCount > 0)
 		row++;
 	
-	if ([[availDict objectForKey:@"checkedOut"] intValue] > 0)
+	if (checkedOutCount > 0)
 		row++;
 	
-	if ([[availDict objectForKey:@"unavailable"] intValue] > 0)
+	if (unavailCount > 0)
 		row++;
 
 	
@@ -213,11 +229,46 @@ allLibrariesWithItem: (NSArray *) allLibraries
         cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
     }
     
-    NSDictionary * availDict = [availabilityCategories objectAtIndex:indexPath.section];
+	NSDictionary * statDict = [availabilityCategories objectAtIndex:indexPath.section];
+		
+	int availCount = 0;
+	availCount = [[statDict objectForKey:@"availCount"] intValue];
 	
-	int availCount = [[availDict objectForKey:@"available"] intValue];
-	int checkOutCount = [[availDict objectForKey:@"checkedOut"] intValue];
-	int unavailCount = [[availDict objectForKey:@"unavailable"] intValue];
+	int unavailCount = 0;
+	unavailCount = [[statDict objectForKey:@"unavailCount"] intValue];
+	
+	int checkedOutCount = 0;
+	checkedOutCount = [[statDict objectForKey:@"checkedOutCount"] intValue];
+	
+	int requestCount = 0;
+	requestCount = [[statDict objectForKey:@"requestCount"] intValue];
+	
+	NSArray * availableItems = (NSArray *)[statDict objectForKey:@"availableItems"];
+	NSArray * checkedOutItems = (NSArray * )[statDict objectForKey:@"checkedOutItems"];
+	
+	BOOL availableIsYellow = NO;
+	for(NSDictionary * availItemDict in availableItems){
+		
+		NSString * canRequest = [availItemDict objectForKey:@"canRequest"];
+		
+		if ([canRequest isEqualToString:@"YES"]) {
+			availableIsYellow = YES;
+			break;
+		}
+	}
+	
+	BOOL checkedOutCanRequest = NO;
+	for(NSDictionary * availItemDict in checkedOutItems){
+		
+		NSString * canRequest = [availItemDict objectForKey:@"canRequest"];
+		
+		if ([canRequest isEqualToString:@"YES"]) {
+			checkedOutCanRequest = YES;
+			break;
+		}
+	}
+	
+	
 	
 	UILabel *label2 = [[UILabel alloc] initWithFrame:CGRectMake(230.0, cell.frame.size.height/2 - 10, 50.0, 20.0)];
 	label2.text = @"Request";
@@ -232,19 +283,34 @@ allLibrariesWithItem: (NSArray *) allLibraries
 		
 		if (availCount > 0) {
 			cell.textLabel.text = [NSString stringWithFormat:@"%d available", availCount];
-			UIImage *image = [UIImage imageNamed:@"dining/dining-status-open.png"];
-			cell.imageView.image = image;
+			UIImage *image;
+			if (availableIsYellow == YES) {
+				image = [UIImage imageNamed:@"dining/dining-status-open-w-restrictions.png"];
+				cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+				cell.imageView.image = image;
+				[cell addSubview:label2];
+			}
+			
+			else {
+				image = [UIImage imageNamed:@"dining/dining-status-open.png"];
+				cell.imageView.image = image;
+			}
 		}
-		else if (checkOutCount > 0){
-			cell.textLabel.text = [NSString stringWithFormat:@"%d checked out", checkOutCount];
-			cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+		else if (checkedOutCount > 0){
+			cell.textLabel.text = [NSString stringWithFormat:@"%d checked out", checkedOutCount];
+			
+			if (checkedOutCanRequest == YES) {
+				cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+				[cell addSubview:label2];
+			}
+			
 			UIImage *image = [UIImage imageNamed:@"dining/dining-status-open-w-restrictions.png"];
 			cell.imageView.image = image;
 			
-			[cell addSubview:label2];
+			
 		}
 		
-		else {
+		else if (unavailCount > 0){
 			cell.textLabel.text = [NSString stringWithFormat:@"%d unavailable", unavailCount];
 			UIImage *image = [UIImage imageNamed:@"dining/dining-status-closed.png"];
 			cell.imageView.image = image;
@@ -254,16 +320,21 @@ allLibrariesWithItem: (NSArray *) allLibraries
 	}
 	
 	else if (indexPath.row == 1) {// checked out
-		if (checkOutCount > 0){
-			cell.textLabel.text = [NSString stringWithFormat:@"%d checked out", checkOutCount];
-			cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+		if (checkedOutCount > 0){
+			cell.textLabel.text = [NSString stringWithFormat:@"%d checked out", checkedOutCount];
+			
+			if (checkedOutCanRequest == YES) {
+				cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+				[cell addSubview:label2];
+			}
+			
 			UIImage *image = [UIImage imageNamed:@"dining/dining-status-open-w-restrictions.png"];
 			cell.imageView.image = image;
 			
-			[cell addSubview:label2];
+			
 		}
 		
-		else {
+		else if (unavailCount > 0){
 			cell.textLabel.text = [NSString stringWithFormat:@"%d unavailable", unavailCount];
 			UIImage *image = [UIImage imageNamed:@"dining/dining-status-closed.png"];
 			cell.imageView.image = image;
@@ -272,9 +343,12 @@ allLibrariesWithItem: (NSArray *) allLibraries
 	}
 	
 	else if (indexPath.row == 2) {// unavailable
-		cell.textLabel.text = [NSString stringWithFormat:@"%d unavailable", unavailCount];
-		UIImage *image = [UIImage imageNamed:@"dining/dining-status-closed.png"];
-		cell.imageView.image = image;
+		
+		if (unavailCount > 0) {
+			cell.textLabel.text = [NSString stringWithFormat:@"%d unavailable", unavailCount];
+			UIImage *image = [UIImage imageNamed:@"dining/dining-status-closed.png"];
+			cell.imageView.image = image;
+		}
 	}
 		
 		
@@ -310,18 +384,23 @@ allLibrariesWithItem: (NSArray *) allLibraries
 	NSString * text1 = @"";
 	NSString * text2 = @"";
 	
-	NSDictionary * tempDict = [availabilityCategories objectAtIndex:section];
+	NSDictionary * statDict = [availabilityCategories objectAtIndex:section];
 	
 	UILabel * headerLabel1;
 	UILabel * headerLabel2;
 		
-	text1 = [tempDict objectForKey:@"type"];
-	text2 = [tempDict objectForKey:@"callNumber"];
+	text1 = [statDict objectForKey:@"statMain"];
+	text1 = [text1 stringByReplacingCharactersInRange:
+							 NSMakeRange(0,1) withString:[[text1 substringToIndex:1] capitalizedString]];
+	text2 = [statDict objectForKey:@"callNumber"];
 	
 	CGFloat height = [text1
 						  sizeWithFont:[UIFont boldSystemFontOfSize:17]
-						  constrainedToSize:CGSizeMake(200, 2000)         
+						  constrainedToSize:CGSizeMake(150, 2000)         
 						  lineBreakMode:UILineBreakModeWordWrap].height;
+	
+	if (height > 21)
+		height = 21;
 		
 		headerLabel1 = [[UILabel alloc] initWithFrame:CGRectMake(12.0, 0.0, 150.0, height)];
 		headerLabel1.text = text1;
@@ -332,7 +411,7 @@ allLibrariesWithItem: (NSArray *) allLibraries
 		headerLabel1.numberOfLines = 1;
 
 	
-	headerLabel2 = [[UILabel alloc] initWithFrame:CGRectMake(170.0, 0.0, 170.0, height)];
+	headerLabel2 = [[UILabel alloc] initWithFrame:CGRectMake(180.0, 0.0, 140.0, height)];
 	headerLabel2.text = text2;
 	headerLabel2.font = [UIFont fontWithName:STANDARD_FONT size:13];
 	headerLabel2.textColor = [UIColor colorWithHexString:@"#554C41"];
@@ -352,15 +431,18 @@ allLibrariesWithItem: (NSArray *) allLibraries
 
 	NSString * text1 = @"";
 	
-	NSDictionary * tempDict = [availabilityCategories objectAtIndex:section];
-
-	text1 = [tempDict objectForKey:@"type"];
+	NSDictionary * statDict = [availabilityCategories objectAtIndex:section];
+	
+	text1 = [statDict objectForKey:@"statMain"];
 	
 	CGFloat height = [text1
 					  sizeWithFont:[UIFont fontWithName:STANDARD_FONT size:17]
-					  constrainedToSize:CGSizeMake(200, 2000)         
+					  constrainedToSize:CGSizeMake(150, 2000)         
 					  lineBreakMode:UILineBreakModeWordWrap].height;
 	
+	
+	if (height > 21) // one line
+		height = 21;
 	
 	return height + 5;
 }
@@ -384,7 +466,9 @@ allLibrariesWithItem: (NSArray *) allLibraries
 
 
 - (void)dealloc {
+	//[self.parentViewApiRequest dealloc];
     [super dealloc];
+	
 }
 
 #pragma mark -

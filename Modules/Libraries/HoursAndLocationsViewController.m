@@ -40,6 +40,7 @@ NSInteger libraryNameSort(id lib1, id lib2, void *context);
 	return self;
 }
 
+
 -(void) viewDidLoad {
 	
 	if (self.showingMapView != YES)

@@ -14,10 +14,12 @@
 
 @interface ItemAvailabilityDetailViewController : UITableViewController <JSONAPIDelegate>{
 
-	Library * library;
+	NSString * libraryName;
+	NSString * libraryId;
+	
 	LibraryItem * libItem;
 	
-	NSArray * availabilityCategories;
+	NSMutableArray * availabilityCategories;
 	/*
 	 availabilityCategories = array containing dictionaries
 							{type=>[string], callNumber => [string], available=>[number], checkedOut=>[number], unavailable=>[number]}
@@ -34,10 +36,15 @@
 	
 	NSString * openToday;
 	
+	JSONAPIRequest * parentViewApiRequest;
+	
 }
 
+@property (nonatomic, retain) JSONAPIRequest *parentViewApiRequest;
+
 - (id)initWithStyle:(UITableViewStyle)style 
-			library:(Library *)lib 
+			libName:(NSString *)libName
+			  libId:(NSString *) libId
 			   item:(LibraryItem *)libraryItem 
 		 categories:(NSArray *)availCategories
 allLibrariesWithItem: (NSArray *) allLibraries

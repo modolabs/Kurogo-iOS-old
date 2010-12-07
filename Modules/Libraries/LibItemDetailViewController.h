@@ -51,4 +51,6 @@
 -(void)setUpdetails: (LibraryItem *) libraryItem;
 
 - (void)addLoadingIndicator:(UIView *)view;
+- (void)removeLoadingIndicator;
+
 @end

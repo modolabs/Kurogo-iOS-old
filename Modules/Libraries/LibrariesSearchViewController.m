@@ -183,10 +183,10 @@
 	if (nil != libItem.formatDetail) {
 		
 		if ([libItem.formatDetail isEqualToString:@"Recording"])
-			imageString = @"dining/dining-status-closed.png";
+			imageString = @"soundrecording.png";
 		
 		else {
-			imageString = @"dining/dining-status-open.png";
+			imageString = @"book.png";
 		}
 		UIImage *image = [UIImage imageNamed:imageString];
 		cell.imageView.image = image;

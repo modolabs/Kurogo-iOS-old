@@ -416,7 +416,7 @@
 				cell4 = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
 			}
 			
-			cell4.textLabel.text = @"loading...";
+			cell4.textLabel.text = @"data unavailable";
 			cell4.selectionStyle = UITableViewCellSelectionStyleNone;
 			
 			[self addLoadingIndicator:cell4];
@@ -513,8 +513,12 @@
 		cell1.detailTextLabel.text = @"xxx yards away";
 		cell1.detailTextLabel.textColor = [UIColor colorWithHexString:@"#554C41"];
 		
-
-		cell1.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+		if ([itemsByStat count] == 0)
+			cell1.accessoryType = UITableViewCellAccessoryNone;
+		
+		else
+			cell1.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+		
 		cell1.selectionStyle = UITableViewCellSelectionStyleGray;
 		
 		return cell1;
@@ -655,18 +659,75 @@
 - (void) tableView: (UITableView *)tableView didSelectRowAtIndexPath: (NSIndexPath *)indexPath {
 	[tableView deselectRowAtIndexPath:indexPath animated:NO];
 	
-	/*
-	 availabilityCategories = array containing dictionaries
-	 {type=>[string], callNumber => [string], available=>[number], checkedOut=>[number], unavailable=>[number]}
-	 */
+	if ([locationsWithItem count] > 0) {
+		
+		NSDictionary * tempDict = [locationsWithItem objectAtIndex:indexPath.row];		
+		NSString * libName = [tempDict objectForKey:@"name"];
+		NSString * libId = [tempDict objectForKey:@"id"];
+		NSString * type = @"Library";
+		
+		NSArray * itemsByStat = (NSArray *)[tempDict objectForKey:@"itemsByStat"];
 	
-	/*
-	 arrayWithAllLibraries = array containing [Dictionary]:
-	 {library:[Library*] availabilityCategories:[Array*]}
-	 */
+	
+		if (([itemsByStat count] > 0) && (indexPath.section == 1)) {
+			ItemAvailabilityDetailViewController * vc = [[ItemAvailabilityDetailViewController alloc]
+														 initWithStyle:UITableViewStyleGrouped
+														 libName: libName
+														 libId: libId
+														 item:libItem
+														 categories:itemsByStat
+														 allLibrariesWithItem:nil
+														 index:0];
+			
+			
+			apiRequest = [[JSONAPIRequest alloc] initWithJSONAPIDelegate:vc];
+			vc.parentViewApiRequest = [apiRequest retain];
+			
+			NSString * libOrArchive;
+			if ([type isEqualToString:@"archive"])
+				libOrArchive = @"archivedetail";
+			
+			else {
+				libOrArchive = @"libdetail";
+			}
+			
+			
+			if ([apiRequest requestObjectFromModule:@"libraries" 
+											command:libOrArchive
+										 parameters:[NSDictionary dictionaryWithObjectsAndKeys:libId, @"id", libName, @"name", nil]])
+			{
+				
+			}
+			else {
+				UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil
+																	message:@"Could not retrieve today's hours" 
+																   delegate:self 
+														  cancelButtonTitle:@"OK" 
+														  otherButtonTitles:nil];
+				[alertView show];
+				[alertView release];
+			}
+			
+			[vc release];
+			
+			
+			
+			vc.title = @"Availability";
+			[self.navigationController pushViewController:vc animated:YES];
+			[vc release];
+		}
+		}
+		
+	}	
+		
+	
+			
 	
 	
-	if (indexPath.section == 1) {
+		
+		
+		
+	/*if (indexPath.section == 1) {
 		
 		
 	NSDictionary * regularLoan = [[NSDictionary dictionaryWithObjectsAndKeys:
@@ -741,9 +802,8 @@
 	vc.title = @"Availability";
 	[self.navigationController pushViewController:vc animated:YES];
 	[vc release];
-	}
-	
-}
+	}*/
+//}
 
 
 
@@ -787,6 +847,8 @@
 		[alertView show];
 		[alertView release];
 	}
+	
+	[self removeLoadingIndicator];
 }
 
 - (BOOL)request:(JSONAPIRequest *)request shouldDisplayAlertForError:(NSError *)error {
@@ -803,6 +865,7 @@
 											  otherButtonTitles:nil];
 	[alertView show];
 	[alertView release];
+	[self removeLoadingIndicator];
 }
 
 
