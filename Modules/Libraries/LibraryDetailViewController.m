@@ -56,7 +56,7 @@ NSInteger phoneNumberSort(id num1, id num2, void *context){
 	NSString * libraryName = lib.name; //@"Cabot Science Library ";
 	CGFloat height = [libraryName
 					  sizeWithFont:[UIFont fontWithName:CONTENT_TITLE_FONT size:CONTENT_TITLE_FONT_SIZE]
-					  constrainedToSize:CGSizeMake(250, 70)         
+					  constrainedToSize:CGSizeMake(250, 2000)         
 					  lineBreakMode:UILineBreakModeWordWrap].height;
 	
 	
@@ -90,7 +90,7 @@ NSInteger phoneNumberSort(id num1, id num2, void *context){
 	label.textColor = [UIColor colorWithHexString:@"#1a1611"];
 	label.backgroundColor = [UIColor clearColor];	
 	label.lineBreakMode = UILineBreakModeWordWrap;
-	label.numberOfLines = 2;
+	label.numberOfLines = 10;
 	[headerView addSubview:label];
 	
 	
