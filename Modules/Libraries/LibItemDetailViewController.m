@@ -385,6 +385,7 @@
 		if (cell == nil) {
 			cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
 		}
+		cell.selectionStyle = UITableViewCellSelectionStyleGray;
 		
 		BOOL val = [libItem.isOnline boolValue];
 		if (val == YES) {
@@ -393,10 +394,11 @@
 		}
 		else {
 			cell.textLabel.text = @"Not Available Online";
+			cell.selectionStyle = UITableViewCellSelectionStyleNone;
 		}
 
 		
-		cell.selectionStyle = UITableViewCellSelectionStyleGray;
+		
 		return cell;
 	}
 	

@@ -562,8 +562,8 @@ NSInteger phoneNumberSort(id num1, id num2, void *context){
 				if ([phone.phoneNumber length] > 0) {
 					phoneNum = phone.phoneNumber;
 					phoneString = [phoneNum stringByReplacingOccurrencesOfString:@"-" withString:@""];
-					phoneString = [phoneNum stringByReplacingOccurrencesOfString:@"(" withString:@""];
-					phoneString = [phoneNum stringByReplacingOccurrencesOfString:@")" withString:@""];
+					phoneString = [phoneString stringByReplacingOccurrencesOfString:@"(" withString:@""];
+					phoneString = [phoneString stringByReplacingOccurrencesOfString:@")" withString:@""];
 				}
 			}
 			
