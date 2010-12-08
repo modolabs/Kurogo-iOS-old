@@ -36,8 +36,6 @@
 	
 	NSString * openToday;
 	
-	JSONAPIRequest * parentViewApiRequest;
-	
 }
 
 @property (nonatomic, retain) JSONAPIRequest *parentViewApiRequest;

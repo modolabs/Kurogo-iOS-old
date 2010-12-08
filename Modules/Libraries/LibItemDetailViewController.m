@@ -664,7 +664,7 @@
 		NSDictionary * tempDict = [locationsWithItem objectAtIndex:indexPath.row];		
 		NSString * libName = [tempDict objectForKey:@"name"];
 		NSString * libId = [tempDict objectForKey:@"id"];
-		NSString * type = @"library";
+		NSString * type = [tempDict objectForKey:@"type"];
 		
 		NSArray * itemsByStat = (NSArray *)[tempDict objectForKey:@"itemsByStat"];
 	
@@ -676,7 +676,7 @@
 														 libId: libId
 														 item:libItem
 														 categories:itemsByStat
-														 allLibrariesWithItem:nil
+														 allLibrariesWithItem:locationsWithItem
 														 index:0];
 			
 			

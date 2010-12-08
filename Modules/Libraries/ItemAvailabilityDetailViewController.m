@@ -467,7 +467,6 @@ allLibrariesWithItem: (NSArray *) allLibraries
 
 
 - (void)dealloc {
-	//[self.parentViewApiRequest dealloc];
     [super dealloc];
 	
 }
