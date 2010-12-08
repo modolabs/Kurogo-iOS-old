@@ -138,8 +138,13 @@
 	
 	UILabel *authorLabel = [[UILabel alloc] initWithFrame:CGRectMake(12.0, 20 + runningYDispacement, 190.0, authorHeight)];
 	
-	runningYDispacement += authorHeight;
+	if (authorHeight >= 20)
+		runningYDispacement += authorHeight;
 	
+	else {
+		runningYDispacement += 20;
+	}
+
 	authorLabel.text = author;
 	authorLabel.font = [UIFont fontWithName:COURSE_NUMBER_FONT size:14];
 	authorLabel.textColor = [UIColor redColor];
@@ -486,7 +491,7 @@
 			NSString * statusDetailString = [NSString stringWithFormat:
 											 @"%d of %d available - %@", availCount, totalItems, statMain];
 			
-			if (totalItems == 0)
+			if ((totalItems == 0) && (requestCount == 0))
 				statusDetailString = [NSString stringWithFormat:
 									  @"None available"];
 			
@@ -679,7 +684,7 @@
 														 item:libItem
 														 categories:itemsByStat
 														 allLibrariesWithItem:locationsWithItem
-														 index:0];
+														 index:indexPath.row];
 			
 			
 			apiRequest = [[JSONAPIRequest alloc] initWithJSONAPIDelegate:vc];

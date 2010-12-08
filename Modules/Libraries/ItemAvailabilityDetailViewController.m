@@ -139,7 +139,7 @@ allLibrariesWithItem: (NSArray *) allLibraries
 
 -(void) showNextLibrary: (id) sender {
 	
-/*	if ([sender isKindOfClass:[UISegmentedControl class]]) {
+	if ([sender isKindOfClass:[UISegmentedControl class]]) {
         UISegmentedControl *theControl = (UISegmentedControl *)sender;
         NSInteger index = theControl.selectedSegmentIndex;
 		
@@ -156,21 +156,49 @@ allLibrariesWithItem: (NSArray *) allLibraries
 			
 			if ((tempLibIndex >= 0) && (tempLibIndex < [arrayWithAllLibraries count])){
 				
-				NSDictionary * tempDict = [arrayWithAllLibraries objectAtIndex:tempLibIndex];
+				NSDictionary * tempDict = [arrayWithAllLibraries objectAtIndex:tempLibIndex];		
+				NSString * libName = [tempDict objectForKey:@"name"];
+				NSString * libId = [tempDict objectForKey:@"id"];
+				NSString * type = [tempDict objectForKey:@"type"];
 				
-				Library * temp = (Library *)[tempDict objectForKey:@"library"];
-				
-				NSDictionary * tempItemAvail = (NSDictionary *)[tempDict objectForKey:@"availabilityCategories"];
-				
-				library = [temp retain];
-				availabilityCategories = [tempItemAvail retain];
-				currentIndex = tempLibIndex;
-				
-				[self viewWillAppear:YES];															
-				
+				NSArray * itemsByStat = (NSArray *)[tempDict objectForKey:@"itemsByStat"];
+
+					
+					
+					apiRequest = [[JSONAPIRequest alloc] initWithJSONAPIDelegate:self];
+					
+					NSString * libOrArchive;
+					if ([type isEqualToString:@"archive"])
+						libOrArchive = @"archivedetail";
+					
+					else {
+						libOrArchive = @"libdetail";
+					}
+					
+					
+					if ([apiRequest requestObjectFromModule:@"libraries" 
+													command:libOrArchive
+												 parameters:[NSDictionary dictionaryWithObjectsAndKeys:libId, @"id", libName, @"name", nil]])
+					{
+					
+						currentIndex = tempLibIndex;
+						libraryName = libName;
+						libraryId = libId;
+						availabilityCategories = itemsByStat;
+						[self viewWillAppear:YES];		
+					}
+					else {
+						UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil
+																			message:@"Could not retrieve item-availability" 
+																		   delegate:self 
+																  cancelButtonTitle:@"OK" 
+																  otherButtonTitles:nil];
+						[alertView show];
+						[alertView release];
+					}
 			}			
 		}
-	}	*/
+	}	
 }
 
 

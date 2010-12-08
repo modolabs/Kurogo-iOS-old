@@ -492,6 +492,10 @@
 				
 				[self restoreToolBar];
 			}
+			else {
+				self.lastResults = [[NSMutableDictionary alloc] init];
+			}
+
 			
 			
 		for(NSDictionary * libraryDictionary in result) {
@@ -562,6 +566,7 @@
 			[self.lastResults setObject:alreadyInDB forKey:index];
 			}
 			[_tableView reloadData];
+			[_tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:NO];
 		}
 
 	} else if ([result isKindOfClass:[NSDictionary class]]) {

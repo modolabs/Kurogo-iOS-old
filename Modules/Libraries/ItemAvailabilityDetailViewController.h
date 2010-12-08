@@ -19,7 +19,7 @@
 	
 	LibraryItem * libItem;
 	
-	NSMutableArray * availabilityCategories;
+	NSArray * availabilityCategories;
 	/*
 	 availabilityCategories = array containing dictionaries
 							{type=>[string], callNumber => [string], available=>[number], checkedOut=>[number], unavailable=>[number]}
@@ -35,6 +35,8 @@
 	int currentIndex;
 	
 	NSString * openToday;
+	
+	JSONAPIRequest * apiRequest;
 	
 }
 
