@@ -664,7 +664,7 @@
 		NSDictionary * tempDict = [locationsWithItem objectAtIndex:indexPath.row];		
 		NSString * libName = [tempDict objectForKey:@"name"];
 		NSString * libId = [tempDict objectForKey:@"id"];
-		NSString * type = @"Library";
+		NSString * type = @"library";
 		
 		NSArray * itemsByStat = (NSArray *)[tempDict objectForKey:@"itemsByStat"];
 	
@@ -757,7 +757,7 @@
 	Library * tempLib = [[CoreDataManager insertNewObjectForEntityForName:LibraryEntityName] retain];
 	tempLib.name = @"Afro-American Studies Reading Room";
 	tempLib.identityTag = @"0003";
-	tempLib.type = @"Library";
+	tempLib.type = @"library";
 		
 	
 	ItemAvailabilityDetailViewController * vc = [[ItemAvailabilityDetailViewController alloc]

@@ -45,6 +45,8 @@
 @property BOOL showingMapView;
 @property (nonatomic, retain) LibraryLocationsMapViewController * librayLocationsMapView;
 
+-(id)initWithType:(NSString *) type;
+
 -(void)displayTypeChanged:(id)sender;
 -(void) gpsButtonPressed:(id)sender;
 -(void) setMapViewMode:(BOOL)showMap animated:(BOOL)animated; 

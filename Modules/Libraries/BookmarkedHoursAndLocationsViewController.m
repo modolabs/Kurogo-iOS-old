@@ -29,12 +29,12 @@ NSInteger bookmarkedNameSorted(id lib1, id lib2, void *context);
 		CGRect frame = CGRectMake(0, 0, 400, 44);
         UILabel *label = [[[UILabel alloc] initWithFrame:frame] autorelease];
         label.backgroundColor = [UIColor clearColor];
-        label.font = [UIFont boldSystemFontOfSize:17.0];
+        label.font = [UIFont systemFontOfSize:15.0];
         //label.shadowColor = [UIColor colorWithWhite:0.0 alpha:0.5];
         label.textAlignment = UITextAlignmentCenter;
         label.textColor = [UIColor whiteColor];
         self.navigationItem.titleView = label;
-        label.text = NSLocalizedString(@"Locations & Hours", @"");
+        label.text = NSLocalizedString(@"Bookmarked Repositories", @"");
 	}
 	
 	return self;

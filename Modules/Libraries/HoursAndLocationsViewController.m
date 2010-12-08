@@ -20,7 +20,7 @@
 
 NSInteger libraryNameSort(id lib1, id lib2, void *context);
 
--(id)init {
+-(id)initWithType:(NSString *) type {
 	
 	self = [super init];
 	
@@ -34,7 +34,8 @@ NSInteger libraryNameSort(id lib1, id lib2, void *context);
         label.textAlignment = UITextAlignmentCenter;
         label.textColor = [UIColor whiteColor];
         self.navigationItem.titleView = label;
-        label.text = NSLocalizedString(@"Locations & Hours", @"");
+       // label.text = NSLocalizedString(@"Locations & Hours", @"");
+		label.text = type;
 	}
 	
 	return self;
@@ -129,7 +130,7 @@ NSInteger libraryNameSort(id lib1, id lib2, void *context);
 				[allLibraries addObject:lib];
 		}
 		else {
-			if ([lib.type isEqualToString: @"Library"])
+			if ([lib.type isEqualToString: @"library"])
 				[allLibraries addObject:lib];
 		}
 
@@ -533,7 +534,7 @@ NSInteger libraryNameSort(id lib1, id lib2, void *context);
 			typeOfLib = @"archive";
 		
 		else {
-			typeOfLib = @"Library";
+			typeOfLib = @"library";
 		}
 
 		

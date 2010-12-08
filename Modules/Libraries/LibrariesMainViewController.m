@@ -548,8 +548,8 @@
 		if (((indexPath.row == 0) && (hasBookmarkedLibraries == NO)) ||
 			((indexPath.row == 1) && (hasBookmarkedLibraries == YES)))
 		{
-			HoursAndLocationsViewController *vc = [[HoursAndLocationsViewController alloc] init];
-			vc.title = @"Locations & Hours";
+			HoursAndLocationsViewController *vc = [[HoursAndLocationsViewController alloc] initWithType:@"Libraries"];
+			vc.title = @"Libraries";
 			
 			apiRequest = [[JSONAPIRequest alloc] initWithJSONAPIDelegate:vc];	
 			
@@ -575,9 +575,9 @@
 		else if (((indexPath.row == 1) && (hasBookmarkedLibraries == NO)) ||
 						((indexPath.row == 2) && (hasBookmarkedLibraries == YES)))
 		{
-			HoursAndLocationsViewController *vc = [[HoursAndLocationsViewController alloc] init];
+			HoursAndLocationsViewController *vc = [[HoursAndLocationsViewController alloc] initWithType:@"Archives"];
 			vc.showArchives = YES;
-			vc.title = @"Locations & Hours";
+			vc.title = @"Archives";
 			
 			apiRequest = [[JSONAPIRequest alloc] initWithJSONAPIDelegate:vc];	
 			

@@ -445,7 +445,7 @@ NSInteger phoneNumberSort(id num1, id num2, void *context){
 	
 		if (indexPath.row == websiteRow) {
 			cellForContact.textLabel.text = @"Website";
-			cellForContact.detailTextLabel.text = @"Visit Website";
+			cellForContact.detailTextLabel.text = lib.websiteLib; //@"Visit Website";
 			cellForContact.accessoryView = [UIImageView accessoryViewWithMITType:MITAccessoryViewExternal];
 			
 		}
@@ -607,6 +607,15 @@ NSInteger phoneNumberSort(id num1, id num2, void *context){
 	else {
 		cellText = @"sjdsnd";
 		detailText = @"djfjdsnfdsnf";
+		
+		if (indexPath.row == websiteRow) {
+			NSString *url = lib.websiteLib;
+			detailText = url;
+		}
+		else if (indexPath.row == emailRow) {
+			NSString *email = lib.emailLib;
+			detailText = email;
+		}
 	}
 	
 	CGFloat height = [detailText
@@ -740,7 +749,7 @@ NSInteger phoneNumberSort(id num1, id num2, void *context){
 				[tempDict setObject:[sched objectForKey:dayOfWeek] forKey:dayOfWeek];
 			
 			else {
-				[tempDict setObject:@"unavailable" forKey:dayOfWeek];
+				[tempDict setObject:@"contact library/archive" forKey:dayOfWeek];
 			}
 
 		}
