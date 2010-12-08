@@ -9,11 +9,13 @@
 #import "LibraryLocationsMapViewController.h"
 #import "Library.h"
 #import "LibraryAnnotation.h"
+#import "LibraryDetailViewController.h"
 
 
 @implementation LibraryLocationsMapViewController
 @synthesize mapView;
 @synthesize showingOpenOnly;
+@synthesize navController;
 
 -(id) initWithMapViewFrame:(CGRect) frame {
 	
@@ -158,13 +160,6 @@
 	return NO;
 }
 
-
-
-- (void)mapView:(MKMapView *)_mapView annotationView:(MKAnnotationView *)view calloutAccessoryControlTapped:(UIControl *)control
-{
-
-}
-
 - (MKCoordinateRegion)regionForAnnotations:(NSArray *)annotations {
 	
     MKCoordinateRegion region;
@@ -243,6 +238,73 @@
 
     
     return region;
+}
+
+- (void)mapView:(MKMapView *)mapView annotationView:(MKAnnotationView *)view calloutAccessoryControlTapped:(UIControl *)control
+{
+	if ([view.annotation isKindOfClass:[LibraryAnnotation class]]) {
+		
+		LibraryDetailViewController *vc = [[LibraryDetailViewController alloc] initWithStyle:UITableViewStyleGrouped];
+		
+		apiRequest = [[JSONAPIRequest alloc] initWithJSONAPIDelegate:vc];
+		
+		NSArray * tempArray;
+		
+		if (showingOpenOnly == NO)
+			tempArray = allLibraries;
+		else {
+			tempArray = opeLibraries;
+		}
+		
+		Library * lib = (Library *)((LibraryAnnotation *)view.annotation).library;
+		vc.lib = [lib retain];
+		
+		if ([lib.type isEqualToString:@"archive"])
+			vc.title = @"Archive Detail";
+		
+		else
+			vc.title = @"Library Detail";
+		
+		int indexSelected = 0;
+		int tempIndex = 0;
+		for(Library * libTemp in tempArray){
+			if (([lib.name isEqualToString:libTemp.name]) && ([lib.identityTag isEqualToString:libTemp.identityTag]))
+				indexSelected = tempIndex;
+			
+			tempIndex++;				
+		}
+		
+		vc.otherLibraries = [tempArray retain];
+		vc.currentlyDisplayingLibraryAtIndex = indexSelected;
+		
+		NSString * libOrArchive;
+		
+		if ([lib.type isEqualToString:@"archive"])
+			libOrArchive = @"archivedetail";
+		
+		else {
+			libOrArchive = @"libdetail";
+		}
+		
+		
+		if ([apiRequest requestObjectFromModule:@"libraries" 
+										command:libOrArchive
+									 parameters:[NSDictionary dictionaryWithObjectsAndKeys:lib.identityTag, @"id", lib.name, @"name", nil]])
+		{
+			[self.navController.navigationController pushViewController:vc animated:YES];
+		}
+		else {
+			UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil
+																message:@"Could not connect to the server" 
+															   delegate:self 
+													  cancelButtonTitle:@"OK" 
+													  otherButtonTitles:nil];
+			[alertView show];
+			[alertView release];
+		}
+		
+		[vc release];
+	}
 }
 
 

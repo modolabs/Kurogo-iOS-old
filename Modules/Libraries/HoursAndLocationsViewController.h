@@ -38,6 +38,8 @@
 	
 	JSONAPIRequest * apiRequest;
 	
+	NSString * typeOfRepo;
+	
 }
 
 @property BOOL showArchives;

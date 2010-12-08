@@ -258,7 +258,7 @@ NSInteger bookmarkedNameSorted(id lib1, id lib2, void *context);
 			librayLocationsMapView = [[LibraryLocationsMapViewController alloc] initWithMapViewFrame:self.listOrMapView.frame];
 			
 		}
-		
+		librayLocationsMapView.navController = self;
 		//librayLocationsMapView.parentViewController = self;
 		librayLocationsMapView.view.frame = self.listOrMapView.frame;
 		[self.listOrMapView addSubview:librayLocationsMapView.view];
@@ -465,7 +465,12 @@ NSInteger bookmarkedNameSorted(id lib1, id lib2, void *context);
 	vc.lib = [lib retain];
 	vc.otherLibraries = [tempArray retain];
 	vc.currentlyDisplayingLibraryAtIndex = indexPath.section;
-	vc.title = @"Library Detail";
+	
+	if ([lib.type isEqualToString:@"archive"])
+		vc.title = @"Archive Detail";
+	
+	else
+		vc.title = @"Library Detail";
 	
 	NSString * libOrArchive;
 	

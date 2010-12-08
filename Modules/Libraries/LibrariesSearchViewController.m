@@ -533,12 +533,34 @@
 			NSString * isFigure = [libraryDictionary objectForKey:@"isFigure"];
 			
 			BOOL online = NO;
-			if ([isOnline isEqualToString:@"YES"])
+			NSString * onlineLink = @"";
+			NSArray * tempA = (NSArray *)[libraryDictionary objectForKey:@"otherAvailability"];
+			if ([isOnline isEqualToString:@"YES"]) {
 				online = YES;
+				
+				for(NSDictionary * tempD in tempA) {
+					
+					NSString * typeOfLink = [tempD objectForKey:@"type"];
+					
+					if ([typeOfLink isEqualToString:@"NET"])
+						onlineLink = [tempD objectForKey:@"link"];
+				}
+			}
 			
 			BOOL figure = NO;
-			if ([isFigure isEqualToString:@"YES"])
+			NSString * figureLink = @"";
+			if ([isFigure isEqualToString:@"YES"]){
 				figure = YES;
+				
+				for(NSDictionary * tempD1 in tempA) {
+					
+					NSString * typeOfLink1 = [tempD1 objectForKey:@"type"];
+					
+					if ([typeOfLink1 isEqualToString:@"FIG"])
+						figureLink = [tempD1 objectForKey:@"link"];
+				}
+				
+			}
 
 			
 			
@@ -560,6 +582,8 @@
 			alreadyInDB.formatDetail = formatDetail;
 			alreadyInDB.isFigure = [NSNumber numberWithBool: figure];
 			alreadyInDB.isOnline = [NSNumber numberWithBool: online];
+			alreadyInDB.onlineLink = onlineLink;
+			alreadyInDB.figureLink = figureLink;
 			
 			
 			[CoreDataManager saveData];

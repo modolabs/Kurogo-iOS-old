@@ -36,6 +36,7 @@ NSInteger libraryNameSort(id lib1, id lib2, void *context);
         self.navigationItem.titleView = label;
        // label.text = NSLocalizedString(@"Locations & Hours", @"");
 		label.text = type;
+		typeOfRepo = type;
 	}
 	
 	return self;
@@ -69,7 +70,13 @@ NSInteger libraryNameSort(id lib1, id lib2, void *context);
 
 	
 	//Create the segmented control
-	NSArray *itemArray = [NSArray arrayWithObjects: @"All Libraries", @"Open Now", nil];
+	
+	NSString * typeOfRepoString = @"All Libraries";
+	
+	if ((nil != typeOfRepo) && ([typeOfRepo isEqualToString:@"Archives"]))
+		typeOfRepoString = @"All Archives";
+		
+	NSArray *itemArray = [NSArray arrayWithObjects: typeOfRepoString, @"Open Now", nil];
 	segmentedControl = [[UISegmentedControl alloc] initWithItems:itemArray];
 	segmentedControl.tintColor = [UIColor darkGrayColor];
 	segmentedControl.frame = CGRectMake(80, footerDisplacementFromTop + 8, 150, 30);
@@ -254,6 +261,7 @@ NSInteger libraryNameSort(id lib1, id lib2, void *context);
 			librayLocationsMapView = [[LibraryLocationsMapViewController alloc] initWithMapViewFrame:self.listOrMapView.frame];
 
 		}
+		librayLocationsMapView.navController = self;
 		
 		//librayLocationsMapView.parentViewController = self;
 		librayLocationsMapView.view.frame = self.listOrMapView.frame;
@@ -449,7 +457,7 @@ NSInteger libraryNameSort(id lib1, id lib2, void *context);
 	
 	LibraryDetailViewController *vc = [[LibraryDetailViewController alloc] initWithStyle:UITableViewStyleGrouped];
 							
-	vc.title = @"Library Detail";
+	
 	
 	apiRequest = [[JSONAPIRequest alloc] initWithJSONAPIDelegate:vc];
 	
@@ -463,6 +471,13 @@ NSInteger libraryNameSort(id lib1, id lib2, void *context);
 
 	Library * lib = (Library *) [tempArray objectAtIndex:indexPath.section];
 	vc.lib = [lib retain];
+	
+	if ([lib.type isEqualToString:@"archive"])
+		vc.title = @"Archive Detail";
+	
+	else
+		vc.title = @"Library Detail";
+	
 	vc.otherLibraries = [tempArray retain];
 	vc.currentlyDisplayingLibraryAtIndex = indexPath.section;
 	

@@ -26,5 +26,7 @@
 @property (nonatomic, retain) NSNumber * isOnline;
 @property (nonatomic, retain) NSNumber * isFigure;
 @property (nonatomic, retain) NSString * publisher;
+@property (nonatomic, retain) NSString * onlineLink;
+@property (nonatomic, retain) NSString * figureLink;
 
 @end

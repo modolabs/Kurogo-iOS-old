@@ -666,6 +666,21 @@
 - (void) tableView: (UITableView *)tableView didSelectRowAtIndexPath: (NSIndexPath *)indexPath {
 	[tableView deselectRowAtIndexPath:indexPath animated:NO];
 	
+	if (indexPath.section == 0){
+		
+		BOOL val = [libItem.isOnline boolValue];
+		if (val == YES) {
+			
+			NSString *url = libItem.onlineLink;
+			
+			NSURL *libURL = [NSURL URLWithString:url];
+			if (libURL && [[UIApplication sharedApplication] canOpenURL:libURL]) {
+				[[UIApplication sharedApplication] openURL:libURL];
+			}
+		}
+	}
+	
+	
 	if ([locationsWithItem count] > 0) {
 		
 		NSDictionary * tempDict = [locationsWithItem objectAtIndex:indexPath.row];		

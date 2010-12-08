@@ -629,6 +629,23 @@
 		}
 	}
 	
+	else if (indexPath.section == 1){
+		
+		if (indexPath.row == 0){ // advanced hollis search
+		}
+		else if (indexPath.row == 1){ // mobile research links
+		}
+		else if (indexPath.row == 2) { // ask a librarian
+			NSString *url = @"http://asklib.hcl.harvard.edu/mobile.php";
+			
+			NSURL *askALibrarianURL = [NSURL URLWithString:url];
+			if (askALibrarianURL && [[UIApplication sharedApplication] canOpenURL:askALibrarianURL]) {
+				[[UIApplication sharedApplication] openURL:askALibrarianURL];
+			}
+			
+		}
+				 
+	}
 
 }
 

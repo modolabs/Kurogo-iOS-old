@@ -24,5 +24,7 @@
 @dynamic isOnline;
 @dynamic isFigure;
 @dynamic publisher;
+@dynamic figureLink;
+@dynamic onlineLink;
 
 @end

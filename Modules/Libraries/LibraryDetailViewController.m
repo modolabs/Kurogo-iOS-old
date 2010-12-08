@@ -232,6 +232,17 @@ NSInteger phoneNumberSort(id num1, id num2, void *context){
 						[footerLabel removeFromSuperview];
 					
 					[self setupLayout];
+					weeklySchedule = [[NSMutableDictionary alloc] init];
+					
+					if ([self.lib.type isEqualToString:@"archive"])
+						self.title = @"Archive Detail";
+					
+					else {
+						self.title = @"Library Detail";
+					}
+
+					
+					[self.tableView reloadData];
 				}
 				else {
 					UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil
@@ -384,6 +395,7 @@ NSInteger phoneNumberSort(id num1, id num2, void *context){
 		
 		LibrariesMultiLineCell *cell = (LibrariesMultiLineCell *)[tableView dequeueReusableCellWithIdentifier:CellTableIdentifier];
 		
+		cell = nil;
 		if (cell == nil)
 		{
 				cell = [[[LibrariesMultiLineCell alloc] initWithStyle:UITableViewCellStyleValue2 reuseIdentifier:CellTableIdentifier] autorelease];
@@ -415,6 +427,7 @@ NSInteger phoneNumberSort(id num1, id num2, void *context){
 		NSString * CellTableIdentifierLocation = @"LibLocationcell";
 		LibrariesMultiLineCell *cellForLocation = (LibrariesMultiLineCell *)[tableView dequeueReusableCellWithIdentifier:CellTableIdentifierLocation];
 		
+		cellForLocation = nil;
 		if (cellForLocation == nil)
 		{
 			cellForLocation = [[[LibrariesMultiLineCell alloc] initWithStyle:UITableViewCellStyleValue2 reuseIdentifier:CellTableIdentifierLocation] autorelease];
@@ -435,6 +448,7 @@ NSInteger phoneNumberSort(id num1, id num2, void *context){
 		NSString * CellTableIdentifierContact = @"LibContactcell";
 		LibrariesMultiLineCell *cellForContact = (LibrariesMultiLineCell *)[tableView dequeueReusableCellWithIdentifier:CellTableIdentifierContact];
 		
+		cellForContact = nil;
 		if (cellForContact == nil)
 		{
 			cellForContact = [[[LibrariesMultiLineCell alloc] initWithStyle:UITableViewCellStyleValue2 reuseIdentifier:CellTableIdentifierContact] autorelease];
@@ -483,7 +497,6 @@ NSInteger phoneNumberSort(id num1, id num2, void *context){
 	else {
 		static NSString *optionsForMainViewTableStringConstant = @"listViewCell";
 		UITableViewCell *cell2 = nil;
-		
 		
 		cell2 = [tableView dequeueReusableCellWithIdentifier:optionsForMainViewTableStringConstant];
 		if (cell2 == nil) {
@@ -755,7 +768,7 @@ NSInteger phoneNumberSort(id num1, id num2, void *context){
 		}
 		
 		weeklySchedule = tempDict;
-		
+	
 		[CoreDataManager saveData];
 	}
 	
