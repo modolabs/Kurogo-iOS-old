@@ -2296,7 +2296,7 @@
 					"${SDK_DIR}/usr/include/libxml2",
 				);
 				INFOPLIST_FILE = "Mobile-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 4.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/Common/Libraries & Headers/OAuthConsumer\"",
@@ -2322,7 +2322,7 @@
 					"${SDK_DIR}/usr/include/libxml2",
 				);
 				INFOPLIST_FILE = "Mobile-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 4.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/Common/Libraries & Headers/OAuthConsumer\"",
@@ -2348,6 +2348,7 @@
 					"${SDK_DIR}/usr/include/libxml2",
 					"\"Facebook Connect\"",
 				);
+				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CFLAGS = (
 					"-DDEBUG",
@@ -2375,6 +2376,8 @@
 					"${SDK_DIR}/usr/include/libxml2",
 					"\"Facebook Connect\"",
 				);
+				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
+				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = (
 					"-all_load",
 					"-ObjC",
@@ -2397,6 +2400,8 @@
 					"\"Facebook Connect\"",
 					"${PROJECT_DIR}/../libProj/build/${BUILD_STYLE}-${PLATFORM_NAME}/usr/local/include",
 				);
+				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
+				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CFLAGS = (
 					"-DDEBUG",
 					"-DUSE_MOBILE_STAGE",
@@ -2423,7 +2428,7 @@
 					"${SDK_DIR}/usr/include/libxml2",
 				);
 				INFOPLIST_FILE = "Mobile-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 4.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/Common/Libraries & Headers/OAuthConsumer\"",
@@ -2448,6 +2453,8 @@
 					"${SDK_DIR}/usr/include/libxml2",
 					"\"Facebook Connect\"",
 				);
+				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
+				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CFLAGS = "-DDEBUG";
 				OTHER_LDFLAGS = (
 					"-all_load",
@@ -2471,7 +2478,7 @@
 					"${SDK_DIR}/usr/include/libxml2",
 				);
 				INFOPLIST_FILE = "Mobile-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 4.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/Common/Libraries & Headers/OAuthConsumer\"",
@@ -2496,6 +2503,8 @@
 					"${SDK_DIR}/usr/include/libxml2",
 					"\"Facebook Connect\"",
 				);
+				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
+				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CFLAGS = "-DUSE_MOBILE_STAGE";
 				OTHER_LDFLAGS = (
 					"-all_load",
@@ -2519,7 +2528,7 @@
 					"${SDK_DIR}/usr/include/libxml2",
 				);
 				INFOPLIST_FILE = "Mobile-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 4.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/Common/Libraries & Headers/OAuthConsumer\"",
@@ -2545,6 +2554,8 @@
 					"${SDK_DIR}/usr/include/libxml2",
 					"\"Facebook Connect\"",
 				);
+				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
+				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = (
 					"-all_load",
 					"-ObjC",
@@ -2569,7 +2580,7 @@
 					"${SDK_DIR}/usr/include/libxml2",
 				);
 				INFOPLIST_FILE = "Mobile-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 4.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/Common/Libraries & Headers/OAuthConsumer\"",
@@ -2595,6 +2606,8 @@
 					"${SDK_DIR}/usr/include/libxml2",
 					"\"Facebook Connect\"",
 				);
+				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
+				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CFLAGS = "-DUSE_MOBILE_STAGE";
 				OTHER_LDFLAGS = (
 					"-all_load",
@@ -2620,7 +2633,7 @@
 					"${SDK_DIR}/usr/include/libxml2",
 				);
 				INFOPLIST_FILE = "Mobile-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 4.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/Common/Libraries & Headers/OAuthConsumer\"",
@@ -2645,6 +2658,7 @@
 					"${SDK_DIR}/usr/include/libxml2",
 					"\"Facebook Connect\"",
 				);
+				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CFLAGS = (
 					"-DDEBUG",
@@ -2675,7 +2689,7 @@
 					"${SDK_DIR}/usr/include/libxml2",
 				);
 				INFOPLIST_FILE = "Mobile-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 4.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/Common/Libraries & Headers/OAuthConsumer\"",
@@ -2700,6 +2714,8 @@
 					"${SDK_DIR}/usr/include/libxml2",
 					"\"Facebook Connect\"",
 				);
+				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
+				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CFLAGS = "-DUSE_MOBILE_TEST";
 				OTHER_LDFLAGS = (
 					"-all_load",
@@ -2723,7 +2739,7 @@
 					"${SDK_DIR}/usr/include/libxml2",
 				);
 				INFOPLIST_FILE = "Mobile-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 4.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/Common/Libraries & Headers/OAuthConsumer\"",
