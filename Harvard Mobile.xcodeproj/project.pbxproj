@@ -113,6 +113,8 @@
 		44C1A3CF11A33905000FD653 /* MapSelectionController.m in Sources */ = {isa = PBXBuildFile; fileRef = 44C1A3CD11A33905000FD653 /* MapSelectionController.m */; };
 		44C1A4C411A412E2000FD653 /* MapSearch.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = 44C1A4C211A412E2000FD653 /* MapSearch.h */; settings = {JAVA_ARCHIVE_SUBDIR = "Modules/Campus Map/CampusMap.xcdatamodeld"; }; };
 		44C1A4C511A412E2000FD653 /* MapSearch.m in Sources */ = {isa = PBXBuildFile; fileRef = 44C1A4C311A412E2000FD653 /* MapSearch.m */; };
+		5623DEC112B15AB600212D5C /* RequestWebViewModalViewController.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = 5623DEBF12B15AB600212D5C /* RequestWebViewModalViewController.h */; settings = {JAVA_ARCHIVE_SUBDIR = Modules/Libraries; }; };
+		5623DEC212B15AB600212D5C /* RequestWebViewModalViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5623DEC012B15AB600212D5C /* RequestWebViewModalViewController.m */; };
 		5689D6C71297066F00A9EFA0 /* LibraryDetailViewController.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = 5689D6C51297066F00A9EFA0 /* LibraryDetailViewController.h */; settings = {JAVA_ARCHIVE_SUBDIR = Modules/Libraries; }; };
 		5689D6C81297066F00A9EFA0 /* LibraryDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5689D6C61297066F00A9EFA0 /* LibraryDetailViewController.m */; };
 		5689D9681297BF0C00A9EFA0 /* LibraryWeeklyScheduleViewController.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = 5689D9661297BF0C00A9EFA0 /* LibraryWeeklyScheduleViewController.h */; settings = {JAVA_ARCHIVE_SUBDIR = Modules/Libraries; }; };
@@ -556,7 +558,7 @@
 			isa = PBXContainerItemProxy;
 			containerPortal = 29B97313FDCFA39411CA2CEA /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = A1EFCDDD12B163EE0092D9E1 /* Proj */;
+			remoteGlobalIDString = A1EFCDDD12B163EE0092D9E1;
 			remoteInfo = Proj;
 		};
 /* End PBXContainerItemProxy section */
@@ -698,6 +700,8 @@
 		44C1A3CD11A33905000FD653 /* MapSelectionController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MapSelectionController.m; sourceTree = "<group>"; };
 		44C1A4C211A412E2000FD653 /* MapSearch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MapSearch.h; sourceTree = "<group>"; };
 		44C1A4C311A412E2000FD653 /* MapSearch.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MapSearch.m; sourceTree = "<group>"; };
+		5623DEBF12B15AB600212D5C /* RequestWebViewModalViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RequestWebViewModalViewController.h; sourceTree = "<group>"; };
+		5623DEC012B15AB600212D5C /* RequestWebViewModalViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RequestWebViewModalViewController.m; sourceTree = "<group>"; };
 		5689D6C51297066F00A9EFA0 /* LibraryDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LibraryDetailViewController.h; sourceTree = "<group>"; };
 		5689D6C61297066F00A9EFA0 /* LibraryDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LibraryDetailViewController.m; sourceTree = "<group>"; };
 		5689D9661297BF0C00A9EFA0 /* LibraryWeeklyScheduleViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LibraryWeeklyScheduleViewController.h; sourceTree = "<group>"; };
@@ -1578,6 +1582,8 @@
 				56E859CE12ACEC810022E162 /* ItemAvailabilityDetailViewController.m */,
 				56E85C6D12AE76070022E162 /* BookmarkedLibItemListView.h */,
 				56E85C6E12AE76070022E162 /* BookmarkedLibItemListView.m */,
+				5623DEBF12B15AB600212D5C /* RequestWebViewModalViewController.h */,
+				5623DEC012B15AB600212D5C /* RequestWebViewModalViewController.m */,
 			);
 			path = Libraries;
 			sourceTree = "<group>";
@@ -2430,6 +2436,7 @@
 				56E8505A12A52A290022E162 /* LibraryPhone.h in JavaArchive */,
 				56E859CF12ACEC810022E162 /* ItemAvailabilityDetailViewController.h in JavaArchive */,
 				56E85C6F12AE76070022E162 /* BookmarkedLibItemListView.h in JavaArchive */,
+				5623DEC112B15AB600212D5C /* RequestWebViewModalViewController.h in JavaArchive */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2770,6 +2777,7 @@
 				56E8505B12A52A290022E162 /* LibraryPhone.m in Sources */,
 				56E859D012ACEC810022E162 /* ItemAvailabilityDetailViewController.m in Sources */,
 				56E85C7012AE76070022E162 /* BookmarkedLibItemListView.m in Sources */,
+				5623DEC212B15AB600212D5C /* RequestWebViewModalViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2951,7 +2959,7 @@
 					"${SDK_DIR}/usr/include/libxml2",
 				);
 				INFOPLIST_FILE = "Mobile-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 4.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/Common/Libraries & Headers/OAuthConsumer\"",
@@ -2978,7 +2986,7 @@
 					"${SDK_DIR}/usr/include/libxml2",
 				);
 				INFOPLIST_FILE = "Mobile-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 4.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/Common/Libraries & Headers/OAuthConsumer\"",
@@ -3125,6 +3133,7 @@
 					"${SDK_DIR}/usr/include/libxml2",
 					"\"Facebook Connect\"",
 				);
+				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CFLAGS = (
 					"-DDEBUG",
@@ -3152,6 +3161,8 @@
 					"${SDK_DIR}/usr/include/libxml2",
 					"\"Facebook Connect\"",
 				);
+				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
+				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = (
 					"-all_load",
 					"-ObjC",
@@ -3174,6 +3185,8 @@
 					"\"Facebook Connect\"",
 					"${PROJECT_DIR}/../libProj/build/${BUILD_STYLE}-${PLATFORM_NAME}/usr/local/include",
 				);
+				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
+				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CFLAGS = (
 					"-DDEBUG",
 					"-DUSE_MOBILE_STAGE",
@@ -3201,7 +3214,7 @@
 					"${SDK_DIR}/usr/include/libxml2",
 				);
 				INFOPLIST_FILE = "Mobile-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 4.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/Common/Libraries & Headers/OAuthConsumer\"",
@@ -3226,6 +3239,8 @@
 					"${SDK_DIR}/usr/include/libxml2",
 					"\"Facebook Connect\"",
 				);
+				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
+				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CFLAGS = "-DDEBUG";
 				OTHER_LDFLAGS = (
 					"-all_load",
@@ -3250,7 +3265,7 @@
 					"${SDK_DIR}/usr/include/libxml2",
 				);
 				INFOPLIST_FILE = "Mobile-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 4.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/Common/Libraries & Headers/OAuthConsumer\"",
@@ -3275,6 +3290,8 @@
 					"${SDK_DIR}/usr/include/libxml2",
 					"\"Facebook Connect\"",
 				);
+				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
+				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CFLAGS = "-DUSE_MOBILE_STAGE";
 				OTHER_LDFLAGS = (
 					"-all_load",
@@ -3299,7 +3316,7 @@
 					"${SDK_DIR}/usr/include/libxml2",
 				);
 				INFOPLIST_FILE = "Mobile-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 4.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/Common/Libraries & Headers/OAuthConsumer\"",
@@ -3325,6 +3342,8 @@
 					"${SDK_DIR}/usr/include/libxml2",
 					"\"Facebook Connect\"",
 				);
+				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
+				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = (
 					"-all_load",
 					"-ObjC",
@@ -3350,7 +3369,7 @@
 					"${SDK_DIR}/usr/include/libxml2",
 				);
 				INFOPLIST_FILE = "Mobile-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 4.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/Common/Libraries & Headers/OAuthConsumer\"",
@@ -3376,6 +3395,8 @@
 					"${SDK_DIR}/usr/include/libxml2",
 					"\"Facebook Connect\"",
 				);
+				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
+				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CFLAGS = "-DUSE_MOBILE_STAGE";
 				OTHER_LDFLAGS = (
 					"-all_load",
@@ -3402,7 +3423,7 @@
 					"${SDK_DIR}/usr/include/libxml2",
 				);
 				INFOPLIST_FILE = "Mobile-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 4.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/Common/Libraries & Headers/OAuthConsumer\"",
@@ -3427,6 +3448,7 @@
 					"${SDK_DIR}/usr/include/libxml2",
 					"\"Facebook Connect\"",
 				);
+				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CFLAGS = (
 					"-DDEBUG",
@@ -3458,7 +3480,7 @@
 					"${SDK_DIR}/usr/include/libxml2",
 				);
 				INFOPLIST_FILE = "Mobile-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 4.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/Common/Libraries & Headers/OAuthConsumer\"",
@@ -3483,6 +3505,8 @@
 					"${SDK_DIR}/usr/include/libxml2",
 					"\"Facebook Connect\"",
 				);
+				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
+				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CFLAGS = "-DUSE_MOBILE_TEST";
 				OTHER_LDFLAGS = (
 					"-all_load",
@@ -3507,7 +3531,7 @@
 					"${SDK_DIR}/usr/include/libxml2",
 				);
 				INFOPLIST_FILE = "Mobile-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 4.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/Common/Libraries & Headers/OAuthConsumer\"",
