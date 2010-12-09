@@ -8,6 +8,8 @@
 
 #import "ItemAvailabilityDetailViewController.h"
 #import "MITUIConstants.h"
+#import "RequestWebViewModalViewController.h"
+#import "MIT_MobileAppDelegate.h"
 
 
 @implementation ItemAvailabilityDetailViewController
@@ -401,16 +403,17 @@ allLibrariesWithItem: (NSArray *) allLibraries
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 	
-		[tableView deselectRowAtIndexPath:indexPath animated:NO];
+	[tableView deselectRowAtIndexPath:indexPath animated:NO];
 	
-    // Navigation logic may go here. Create and push another view controller.
-	/*
-	 <#DetailViewController#> *detailViewController = [[<#DetailViewController#> alloc] initWithNibName:@"<#Nib name#>" bundle:nil];
-     // ...
-     // Pass the selected object to the new view controller.
-	 [self.navigationController pushViewController:detailViewController animated:YES];
-	 [detailViewController release];
-	 */
+	MIT_MobileAppDelegate *appDelegate = (MIT_MobileAppDelegate *)[[UIApplication sharedApplication] delegate];
+	
+	RequestWebViewModalViewController *modalVC = [[RequestWebViewModalViewController alloc] initWithRequestUrl:@"http://www.bbc.com"];
+
+	//[self.navigationController pushViewController:modalVC animated:YES];
+	//[modalVC release];
+	
+	[appDelegate presentAppModalViewController:modalVC animated:YES];
+	[modalVC release];
 }
 
 - (UIView *)tableView: (UITableView *)tableView viewForHeaderInSection: (NSInteger)section{
