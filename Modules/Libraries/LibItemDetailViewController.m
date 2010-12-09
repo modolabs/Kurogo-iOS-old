@@ -110,6 +110,13 @@
 	segmentControl.frame = CGRectMake(0, 0, 80.0, segmentControl.frame.size.height);
 	UIBarButtonItem * segmentBarItem = [[UIBarButtonItem alloc] initWithCustomView: segmentControl];
 	self.navigationItem.rightBarButtonItem = segmentBarItem;
+	
+	if (currentIndex == 0)
+		[segmentControl setEnabled:NO forSegmentAtIndex:0];
+	
+	if (currentIndex == [libItemDictionary count] - 1)
+		[segmentControl setEnabled:NO forSegmentAtIndex:1];
+	
 	[segmentControl release];
 	[segmentBarItem release];
 	

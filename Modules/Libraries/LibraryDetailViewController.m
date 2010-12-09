@@ -48,6 +48,13 @@ NSInteger phoneNumberSort(id num1, id num2, void *context){
 	segmentControl.frame = CGRectMake(0, 0, 80.0, segmentControl.frame.size.height);
 	UIBarButtonItem * segmentBarItem = [[UIBarButtonItem alloc] initWithCustomView: segmentControl];
 	self.navigationItem.rightBarButtonItem = segmentBarItem;
+	
+	if (currentlyDisplayingLibraryAtIndex == 0)
+		[segmentControl setEnabled:NO forSegmentAtIndex:0];
+	
+	if (currentlyDisplayingLibraryAtIndex == [otherLibraries count] - 1)
+		[segmentControl setEnabled:NO forSegmentAtIndex:1];
+	
 	[segmentControl release];
 	[segmentBarItem release];
 	
@@ -139,6 +146,11 @@ NSInteger phoneNumberSort(id num1, id num2, void *context){
 	
 	[self setupLayout];
 	
+}
+
+-(void) viewWillAppear:(BOOL)animated {
+	[super viewWillAppear:animated];
+	[self setupLayout];
 }
 
 /*- (void)didReceiveMemoryWarning {
