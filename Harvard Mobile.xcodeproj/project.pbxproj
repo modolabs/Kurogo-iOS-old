@@ -2273,14 +2273,14 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Muhammad J Amjad (D88SPM2GP8)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = MIT_Mobile_Prefix.pch;
 				HEADER_SEARCH_PATHS = (
-					"\"$(SRCROOT)/Proj/build/Release-${PLATFORM_NAME}/usr/local/include\"",
+					"\"${SYMROOT}/Release-${PLATFORM_NAME}/usr/local/include\"",
 					"\"Facebook Connect\"",
 					"${SDK_DIR}/usr/include/libxml2",
 				);
@@ -2293,7 +2293,7 @@
 					"\"$(SRCROOT)/Common/Analytics\"",
 				);
 				PRODUCT_NAME = "Harvard Mobile";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "2FD187E5-8C67-49E6-9C92-A120FF6312AA";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				SDKROOT = iphoneos;
 			};
 			name = "Debug - Development";
@@ -2302,12 +2302,12 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Muhammad J Amjad (D88SPM2GP8)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = MIT_Mobile_Prefix.pch;
 				HEADER_SEARCH_PATHS = (
-					"\"$(SRCROOT)/Proj/build/Release-${PLATFORM_NAME}/usr/local/include\"",
+					"\"${SYMROOT}/Release-${PLATFORM_NAME}/usr/local/include\"",
 					"\"Facebook Connect\"",
 					"${SDK_DIR}/usr/include/libxml2",
 				);
@@ -2320,7 +2320,7 @@
 					"\"$(SRCROOT)/Common/Analytics\"",
 				);
 				PRODUCT_NAME = "Harvard Mobile";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "2FD187E5-8C67-49E6-9C92-A120FF6312AA";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
 			};
@@ -2404,12 +2404,12 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Muhammad J Amjad (D88SPM2GP8)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = MIT_Mobile_Prefix.pch;
 				HEADER_SEARCH_PATHS = (
-					"\"$(SRCROOT)/Proj/build/Release-${PLATFORM_NAME}/usr/local/include\"",
+					"\"${SYMROOT}/Release-${PLATFORM_NAME}/usr/local/include\"",
 					"\"Facebook Connect\"",
 					"${SDK_DIR}/usr/include/libxml2",
 				);
@@ -2422,7 +2422,7 @@
 					"\"$(SRCROOT)/Common/Analytics\"",
 				);
 				PRODUCT_NAME = "Harvard Mobile";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "2FD187E5-8C67-49E6-9C92-A120FF6312AA";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				SDKROOT = iphoneos;
 			};
 			name = "Debug - Staging";
@@ -2453,12 +2453,12 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Muhammad J Amjad (D88SPM2GP8)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = MIT_Mobile_Prefix.pch;
 				HEADER_SEARCH_PATHS = (
-					"\"$(SRCROOT)/Proj/build/Release-${PLATFORM_NAME}/usr/local/include\"",
+					"\"${SYMROOT}/Release-${PLATFORM_NAME}/usr/local/include\"",
 					"\"Facebook Connect\"",
 					"${SDK_DIR}/usr/include/libxml2",
 				);
@@ -2471,7 +2471,7 @@
 					"\"$(SRCROOT)/Common/Analytics\"",
 				);
 				PRODUCT_NAME = "Harvard Mobile";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "2FD187E5-8C67-49E6-9C92-A120FF6312AA";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				SDKROOT = iphoneos;
 			};
 			name = "Debug - Production";
@@ -2502,12 +2502,12 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Muhammad J Amjad (D88SPM2GP8)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = MIT_Mobile_Prefix.pch;
 				HEADER_SEARCH_PATHS = (
-					"\"$(SRCROOT)/Proj/build/Release-${PLATFORM_NAME}/usr/local/include\"",
+					"\"${SYMROOT}/Release-${PLATFORM_NAME}/usr/local/include\"",
 					"\"Facebook Connect\"",
 					"${SDK_DIR}/usr/include/libxml2",
 				);
@@ -2520,7 +2520,7 @@
 					"\"$(SRCROOT)/Common/Analytics\"",
 				);
 				PRODUCT_NAME = "Harvard Mobile";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "2FD187E5-8C67-49E6-9C92-A120FF6312AA";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				SDKROOT = iphoneos;
 			};
 			name = "Release - Staging";
@@ -2553,12 +2553,12 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Muhammad J Amjad (D88SPM2GP8)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = MIT_Mobile_Prefix.pch;
 				HEADER_SEARCH_PATHS = (
-					"\"$(SRCROOT)/Proj/build/Release-${PLATFORM_NAME}/usr/local/include\"",
+					"\"${SYMROOT}/Release-${PLATFORM_NAME}/usr/local/include\"",
 					"\"Facebook Connect\"",
 					"${SDK_DIR}/usr/include/libxml2",
 				);
@@ -2571,7 +2571,7 @@
 					"\"$(SRCROOT)/Common/Analytics\"",
 				);
 				PRODUCT_NAME = "Harvard Mobile";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "2FD187E5-8C67-49E6-9C92-A120FF6312AA";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				SDKROOT = iphoneos;
 			};
 			name = "Distribution - Production - Ad Hoc";
@@ -2605,12 +2605,12 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Muhammad J Amjad (D88SPM2GP8)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = MIT_Mobile_Prefix.pch;
 				HEADER_SEARCH_PATHS = (
-					"\"$(SRCROOT)/Proj/build/Release-${PLATFORM_NAME}/usr/local/include\"",
+					"\"${SYMROOT}/Release-${PLATFORM_NAME}/usr/local/include\"",
 					"\"Facebook Connect\"",
 					"${SDK_DIR}/usr/include/libxml2",
 				);
@@ -2623,7 +2623,7 @@
 					"\"$(SRCROOT)/Common/Analytics\"",
 				);
 				PRODUCT_NAME = "Harvard Mobile";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "2FD187E5-8C67-49E6-9C92-A120FF6312AA";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				SDKROOT = iphoneos;
 			};
 			name = "Distribution - Staging - Ad Hoc";
@@ -2659,14 +2659,14 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Muhammad J Amjad (D88SPM2GP8)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = MIT_Mobile_Prefix.pch;
 				HEADER_SEARCH_PATHS = (
-					"\"$(SRCROOT)/Proj/build/Release-${PLATFORM_NAME}/usr/local/include\"",
+					"\"${SYMROOT}/Release-${PLATFORM_NAME}/usr/local/include\"",
 					"\"Facebook Connect\"",
 					"${SDK_DIR}/usr/include/libxml2",
 				);
@@ -2679,7 +2679,7 @@
 					"\"$(SRCROOT)/Common/Analytics\"",
 				);
 				PRODUCT_NAME = "Harvard Mobile";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "2FD187E5-8C67-49E6-9C92-A120FF6312AA";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				SDKROOT = iphoneos;
 			};
 			name = "Debug - Testing";
@@ -2710,12 +2710,12 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Muhammad J Amjad (D88SPM2GP8)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = MIT_Mobile_Prefix.pch;
 				HEADER_SEARCH_PATHS = (
-					"\"$(SRCROOT)/Proj/build/Release-${PLATFORM_NAME}/usr/local/include\"",
+					"\"${SYMROOT}/Release-${PLATFORM_NAME}/usr/local/include\"",
 					"\"Facebook Connect\"",
 					"${SDK_DIR}/usr/include/libxml2",
 				);
@@ -2728,7 +2728,7 @@
 					"\"$(SRCROOT)/Common/Analytics\"",
 				);
 				PRODUCT_NAME = "Harvard Mobile";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "2FD187E5-8C67-49E6-9C92-A120FF6312AA";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				SDKROOT = iphoneos;
 			};
 			name = "Release - Testing";

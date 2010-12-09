@@ -753,6 +753,7 @@
 				GCC_PREFIX_HEADER = Proj_Prefix.pch;
 				INSTALL_PATH = /usr/local/lib;
 				PRODUCT_NAME = Proj;
+				SDKROOT = iphoneos;
 			};
 			name = Debug;
 		};
@@ -767,6 +768,7 @@
 				GCC_PREFIX_HEADER = Proj_Prefix.pch;
 				INSTALL_PATH = /usr/local/lib;
 				PRODUCT_NAME = Proj;
+				SDKROOT = iphoneos;
 			};
 			name = Release;
 		};
