@@ -1002,7 +1002,7 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 	
 	if ([controller class] == [DatePickerViewController class]) {
 		self.todayDate = nil;
-		self.todayDate = [[NSDate alloc] initWithTimeInterval:0 sinceDate:date];    
+		self.todayDate = [[[NSDate alloc] initWithTimeInterval:0 sinceDate:date] retain];   
 		
 		MIT_MobileAppDelegate *appDelegate = (MIT_MobileAppDelegate *)[[UIApplication sharedApplication] delegate];
 		[appDelegate dismissAppModalViewControllerAnimated:YES];
@@ -1022,7 +1022,21 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 		if ([self.todayDate timeIntervalSinceDate:minDate] >= (24*60*60))
 			prevDate.enabled = YES;
 		
-		[self viewDidLoad];
+		[self setupDatePicker];
+		// Display the Date in the Expected Format: Saturday, June 25
+		NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
+		[dateFormat setDateFormat:@"EEEE, MMMM d"];
+		//NSString *dateString = [dateFormat stringFromDate:self.todayDate];
+		[dateFormat release];
+		
+		[self setupTabViews];
+		
+		//self.label.text = dateString;
+		
+		[self setupFirstView];
+		
+		self.view.backgroundColor = [UIColor clearColor];
+		_tabViewContainer.backgroundColor = [UIColor whiteColor];
 	}
 	return;
 }
