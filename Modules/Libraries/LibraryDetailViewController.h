@@ -18,7 +18,7 @@
 	UIButton * bookmarkButton;
 	
 	NSMutableDictionary * weeklySchedule;
-	NSArray * daysOfWeek;
+	NSMutableArray * daysOfWeek;
 	
 	BOOL bookmarkButtonIsOn;
 	
@@ -49,6 +49,7 @@
 
 
 -(void) setupLayout;
+-(void) setDaysOfWeekArray;
 
 -(void)emailTo:(NSString*)subject body:(NSString *)emailBody email:(NSString *)emailAddress;
 

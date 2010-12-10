@@ -132,8 +132,7 @@ NSInteger phoneNumberSort(id num1, id num2, void *context){
 	
 	//weeklySchedule = [[NSMutableDictionary alloc] init];
 	
-	daysOfWeek = [[NSArray alloc] initWithObjects:
-				  @"Monday", @"Tuesday", @"Wednesday", @"Thursday", @"Friday", @"Saturday", @"Sunday", nil];
+	[self setDaysOfWeekArray];
 	
 	websiteRow = -1;
 	emailRow = -1;
@@ -141,6 +140,7 @@ NSInteger phoneNumberSort(id num1, id num2, void *context){
 	
 	phoneNumbersArray = [[NSArray alloc] init];
 }
+
 
 -(void) viewDidLoad {
 	
@@ -169,6 +169,41 @@ NSInteger phoneNumberSort(id num1, id num2, void *context){
 
 - (void)dealloc {
     [super dealloc];
+}
+
+
+-(void) setDaysOfWeekArray {
+	
+	daysOfWeek = [[[NSMutableArray alloc] init] retain];
+	
+	NSDate * today = [NSDate date];
+	NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
+	[dateFormat setDateFormat:@"EEEE"];
+	NSString *dayString = [dateFormat stringFromDate:today];
+	
+	[daysOfWeek insertObject:dayString atIndex:0];
+	
+	NSCalendar *gregorian = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+	
+	NSDate *nextDate = today;
+	
+	for (int day=1; day < 7; day++){
+		
+		dayString = @"";
+		
+		NSDateComponents *offsetComponents = [[NSDateComponents alloc] init];
+		[offsetComponents setDay:1];
+		nextDate = [gregorian dateByAddingComponents:offsetComponents toDate:nextDate options:0];
+		
+		dayString = [dateFormat stringFromDate:nextDate];
+		
+		[daysOfWeek insertObject:dayString atIndex:day];
+	}
+	
+	
+	/*daysOfWeek = [[NSArray alloc] initWithObjects:
+				  @"Monday", @"Tuesday", @"Wednesday", @"Thursday", @"Friday", @"Saturday", @"Sunday", nil];
+	 */
 }
 
 
@@ -589,6 +624,7 @@ NSInteger phoneNumberSort(id num1, id num2, void *context){
 					phoneString = [phoneNum stringByReplacingOccurrencesOfString:@"-" withString:@""];
 					phoneString = [phoneString stringByReplacingOccurrencesOfString:@"(" withString:@""];
 					phoneString = [phoneString stringByReplacingOccurrencesOfString:@")" withString:@""];
+					phoneString = [phoneString stringByReplacingOccurrencesOfString:@" " withString:@""];
 				}
 			}
 			
