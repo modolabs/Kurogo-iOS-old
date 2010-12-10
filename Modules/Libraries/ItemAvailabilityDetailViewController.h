@@ -38,6 +38,8 @@
 	
 	JSONAPIRequest * apiRequest;
 	
+	JSONAPIRequest * parentViewApiRequest;
+	
 }
 
 @property (nonatomic, retain) JSONAPIRequest *parentViewApiRequest;

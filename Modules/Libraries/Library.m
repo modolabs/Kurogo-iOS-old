@@ -12,6 +12,7 @@
 @implementation Library
 
 @dynamic name;
+@dynamic primaryName;
 @dynamic identityTag;
 @dynamic location;
 @dynamic lat;

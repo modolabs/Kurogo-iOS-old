@@ -16,6 +16,7 @@
 }
 
 @property (nonatomic, retain) NSString * name;
+@property (nonatomic, retain) NSString * primaryName;
 @property (nonatomic, retain) NSString * identityTag;
 @property (nonatomic, retain) NSString * type;
 @property (nonatomic, retain) NSString * location;

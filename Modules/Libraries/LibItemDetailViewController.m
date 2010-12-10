@@ -11,6 +11,7 @@
 #import "LibItemDetailCell.h"
 #import "CoreDataManager.h"
 #import "ItemAvailabilityDetailViewController.h"
+#import "LibraryLocationsMapViewController.h"
 
 @class LibItemDetailCell;
 
@@ -325,6 +326,19 @@
 }
 
 -(void) mapButtonPressed: (id) sender {
+	
+	
+	if ([[displayNameAndLibraries allKeys] count] > 0) {
+		LibraryLocationsMapViewController * vc = [[LibraryLocationsMapViewController alloc] initWithMapViewFrame:self.view.frame];
+	
+		[vc setAllAvailabilityLibraryLocations:displayNameAndLibraries];
+		
+		vc.title = @"Locations with Item";
+		
+		[self.navigationController pushViewController:vc animated:YES];
+		[vc release];
+	 }
+	
 }
 
 
@@ -866,7 +880,50 @@
 		
 		locationsWithItem = [result retain];
 		[self.tableView reloadData];
-	}
+		
+		displayNameAndLibraries = [[NSMutableDictionary alloc] init];
+		
+		for(NSDictionary * tempDict in result) {
+			
+			NSDictionary * libraryDictionary  = [tempDict objectForKey:@"details"];
+			NSString * displayName = [tempDict objectForKey:@"name"];
+			
+			NSString * name = [libraryDictionary objectForKey:@"name"];
+			//NSString * primaryName = [libraryDictionary objectForKey:@"primaryname"];
+			NSString * type = [libraryDictionary objectForKey:@"type"];
+			NSString * identityTag = [libraryDictionary objectForKey:@"id"];
+			//NSString *directions = [libraryDictionary objectForKey:@"directions"];
+			NSString * location = [libraryDictionary objectForKey:@"address"];
+			NSNumber * latitude = [libraryDictionary objectForKey:@"latitude"];
+			NSNumber * longitude = [libraryDictionary objectForKey:@"longitude"];
+
+			NSPredicate *pred = [NSPredicate predicateWithFormat:@"name == %@ AND type == %@", name, type];
+			Library *alreadyInDB = [[CoreDataManager objectsForEntity:LibraryEntityName matchingPredicate:pred] lastObject];
+			
+			
+			NSManagedObject *managedObj;
+			if (nil == alreadyInDB){
+				managedObj = [CoreDataManager insertNewObjectForEntityForName:LibraryEntityName];
+				alreadyInDB = (Library *)managedObj;
+				alreadyInDB.isBookmarked = [NSNumber numberWithBool:NO];
+			}
+			
+			alreadyInDB.name = name;
+			//alreadyInDB.primaryName = primaryName;
+			alreadyInDB.identityTag = identityTag;
+			alreadyInDB.location = location;
+			alreadyInDB.lat = [NSNumber numberWithDouble:[latitude doubleValue]];
+			alreadyInDB.lon = [NSNumber numberWithDouble:[longitude doubleValue]];
+			alreadyInDB.type = type;
+			
+			alreadyInDB.isBookmarked = alreadyInDB.isBookmarked;
+			
+			[displayNameAndLibraries setObject:alreadyInDB forKey:displayName];
+			
+			[CoreDataManager saveData];
+			}
+			
+		}
 	else {
 		UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil
 														message:@"Could not retrieve item availability" 

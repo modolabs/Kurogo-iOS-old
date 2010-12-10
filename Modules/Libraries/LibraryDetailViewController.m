@@ -753,6 +753,7 @@ NSInteger phoneNumberSort(id num1, id num2, void *context){
 	NSDictionary *libraryDictionary = (NSDictionary *)result;
 	
 	NSString * name = [libraryDictionary objectForKey:@"name"];
+	NSString * primaryName = [libraryDictionary objectForKey:@"primaryname"];
 	NSString *directions = [libraryDictionary objectForKey:@"directions"];
 	NSString *website = [libraryDictionary objectForKey:@"website"];
 	NSString *email = [libraryDictionary objectForKey:@"email"];
@@ -764,6 +765,7 @@ NSInteger phoneNumberSort(id num1, id num2, void *context){
 	directions = [directions stringByReplacingOccurrencesOfString:@"\n" withString:@""];
 	if ([lib.name isEqualToString:name]) {
 		
+		lib.primaryName = primaryName;
 		lib.websiteLib = website;
 		lib.emailLib = email;
 		lib.directions = directions;

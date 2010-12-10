@@ -37,6 +37,7 @@
 - (BOOL)mapView:(MKMapView *)_mapView didUpdateUserLocation:(MKUserLocation *)userLocation;
 
 -(void) setAllLibraryLocations:(NSArray *) libraries;
+-(void) setAllAvailabilityLibraryLocations:(NSDictionary *)displayNameAndLibraries;
 -(void) setOpenLibrariesLocations: (NSArray *) openLibraries;
 -(void) addToOpenLibraries: (Library *) library;
 -(void) removeFromOpenLibraries: (Library *) library;

@@ -505,6 +505,7 @@ allLibrariesWithItem: (NSArray *) allLibraries
 
 
 - (void)dealloc {
+	self.parentViewApiRequest.jsonDelegate = nil;
     [super dealloc];
 	
 }

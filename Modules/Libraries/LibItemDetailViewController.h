@@ -37,6 +37,8 @@
 	JSONAPIRequest * apiRequest;
 	
 	UIView * loadingIndicator;
+	
+	NSMutableDictionary * displayNameAndLibraries;
 }
 
 @property BOOL bookmarkButtonIsOn;

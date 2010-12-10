@@ -1,6 +1,6 @@
 #import "ConnectionWrapper.h"
 
-#define TIMEOUT_INTERVAL	15.0
+#define TIMEOUT_INTERVAL	30.0
 
 
 @implementation ConnectionWrapper

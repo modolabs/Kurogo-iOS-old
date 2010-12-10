@@ -10,6 +10,7 @@
 #import "Library.h"
 #import "LibraryAnnotation.h"
 #import "LibraryDetailViewController.h"
+#import "ItemAvailabilityLibraryAnnotation.h"
 
 
 @implementation LibraryLocationsMapViewController
@@ -99,6 +100,33 @@
 	}
 }
 
+
+-(void) setAllAvailabilityLibraryLocations:(NSDictionary *)displayNameAndLibraries{
+	
+	for (int i=0; i< [[self.mapView annotations] count]; i++)
+		[self.mapView removeAnnotation:[[self.mapView annotations] objectAtIndex:i]];
+	
+	
+	//NSMutableArray * tempArray = [[NSMutableArray alloc] init];
+	for(int index=0; index < [[displayNameAndLibraries allKeys] count]; index++){
+		
+		NSString * displayName = [[displayNameAndLibraries allKeys] objectAtIndex:index];
+		Library * tempLib = [displayNameAndLibraries objectForKey:displayName];
+		
+		//[tempArray insertObject:tempLib atIndex:index];
+		
+		ItemAvailabilityLibraryAnnotation * annotation = [[ItemAvailabilityLibraryAnnotation alloc]
+														  initWithRepoName:displayName 
+														  identityTag:tempLib.identityTag 
+														  type:tempLib.type 
+														  lib:tempLib];
+		
+		[mapView addAnnotation:annotation];
+		
+	}
+}
+
+
 -(void) addLibraryLocationOnMap: (Library *) library {
 }
 
@@ -124,6 +152,25 @@
 		UIImage* pin = [UIImage imageNamed:@"maps/map_pin_complete.png"];
 		UIImageView* imageView = [[[UIImageView alloc] initWithImage:pin] autorelease];
 		
+		
+		UIButton *myDetailButton = [UIButton buttonWithType:UIButtonTypeDetailDisclosure];
+		myDetailButton.frame = CGRectMake(0, 0, 23, 23);
+		myDetailButton.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
+		myDetailButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentCenter;
+		// Set the button as the callout view
+		annotationView.rightCalloutAccessoryView = myDetailButton;
+		
+		annotationView.frame = imageView.frame;
+		annotationView.canShowCallout = YES;
+		[annotationView addSubview:imageView];
+		annotationView.backgroundColor = [UIColor clearColor];		
+	}
+	
+	else if ([annotation isKindOfClass:[ItemAvailabilityLibraryAnnotation class]]) 
+	{
+		annotationView = [[[MKAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:@"gufidfdlefdfdsfg"] autorelease];
+		UIImage* pin = [UIImage imageNamed:@"maps/map_pin_complete.png"];
+		UIImageView* imageView = [[[UIImageView alloc] initWithImage:pin] autorelease];		
 		
 		UIButton *myDetailButton = [UIButton buttonWithType:UIButtonTypeDetailDisclosure];
 		myDetailButton.frame = CGRectMake(0, 0, 23, 23);
