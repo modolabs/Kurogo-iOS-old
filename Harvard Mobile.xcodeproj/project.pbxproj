@@ -117,6 +117,8 @@
 		5623DEC212B15AB600212D5C /* RequestWebViewModalViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5623DEC012B15AB600212D5C /* RequestWebViewModalViewController.m */; };
 		5623E14D12B2719400212D5C /* ItemAvailabilityLibraryAnnotation.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = 5623E14B12B2719400212D5C /* ItemAvailabilityLibraryAnnotation.h */; settings = {JAVA_ARCHIVE_SUBDIR = Modules/Libraries; }; };
 		5623E14E12B2719400212D5C /* ItemAvailabilityLibraryAnnotation.m in Sources */ = {isa = PBXBuildFile; fileRef = 5623E14C12B2719400212D5C /* ItemAvailabilityLibraryAnnotation.m */; };
+		5623E28912B2AB9500212D5C /* ItemAvailabilityLibDetailViewController.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = 5623E28712B2AB9500212D5C /* ItemAvailabilityLibDetailViewController.h */; settings = {JAVA_ARCHIVE_SUBDIR = Modules/Libraries; }; };
+		5623E28A12B2AB9500212D5C /* ItemAvailabilityLibDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5623E28812B2AB9500212D5C /* ItemAvailabilityLibDetailViewController.m */; };
 		5689D6C71297066F00A9EFA0 /* LibraryDetailViewController.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = 5689D6C51297066F00A9EFA0 /* LibraryDetailViewController.h */; settings = {JAVA_ARCHIVE_SUBDIR = Modules/Libraries; }; };
 		5689D6C81297066F00A9EFA0 /* LibraryDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5689D6C61297066F00A9EFA0 /* LibraryDetailViewController.m */; };
 		5689D9681297BF0C00A9EFA0 /* LibraryWeeklyScheduleViewController.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = 5689D9661297BF0C00A9EFA0 /* LibraryWeeklyScheduleViewController.h */; settings = {JAVA_ARCHIVE_SUBDIR = Modules/Libraries; }; };
@@ -706,6 +708,8 @@
 		5623DEC012B15AB600212D5C /* RequestWebViewModalViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RequestWebViewModalViewController.m; sourceTree = "<group>"; };
 		5623E14B12B2719400212D5C /* ItemAvailabilityLibraryAnnotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ItemAvailabilityLibraryAnnotation.h; sourceTree = "<group>"; };
 		5623E14C12B2719400212D5C /* ItemAvailabilityLibraryAnnotation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ItemAvailabilityLibraryAnnotation.m; sourceTree = "<group>"; };
+		5623E28712B2AB9500212D5C /* ItemAvailabilityLibDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ItemAvailabilityLibDetailViewController.h; sourceTree = "<group>"; };
+		5623E28812B2AB9500212D5C /* ItemAvailabilityLibDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ItemAvailabilityLibDetailViewController.m; sourceTree = "<group>"; };
 		5689D6C51297066F00A9EFA0 /* LibraryDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LibraryDetailViewController.h; sourceTree = "<group>"; };
 		5689D6C61297066F00A9EFA0 /* LibraryDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LibraryDetailViewController.m; sourceTree = "<group>"; };
 		5689D9661297BF0C00A9EFA0 /* LibraryWeeklyScheduleViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LibraryWeeklyScheduleViewController.h; sourceTree = "<group>"; };
@@ -1590,6 +1594,8 @@
 				5623DEC012B15AB600212D5C /* RequestWebViewModalViewController.m */,
 				5623E14B12B2719400212D5C /* ItemAvailabilityLibraryAnnotation.h */,
 				5623E14C12B2719400212D5C /* ItemAvailabilityLibraryAnnotation.m */,
+				5623E28712B2AB9500212D5C /* ItemAvailabilityLibDetailViewController.h */,
+				5623E28812B2AB9500212D5C /* ItemAvailabilityLibDetailViewController.m */,
 			);
 			path = Libraries;
 			sourceTree = "<group>";
@@ -2444,6 +2450,7 @@
 				56E85C6F12AE76070022E162 /* BookmarkedLibItemListView.h in JavaArchive */,
 				5623DEC112B15AB600212D5C /* RequestWebViewModalViewController.h in JavaArchive */,
 				5623E14D12B2719400212D5C /* ItemAvailabilityLibraryAnnotation.h in JavaArchive */,
+				5623E28912B2AB9500212D5C /* ItemAvailabilityLibDetailViewController.h in JavaArchive */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2786,6 +2793,7 @@
 				56E85C7012AE76070022E162 /* BookmarkedLibItemListView.m in Sources */,
 				5623DEC212B15AB600212D5C /* RequestWebViewModalViewController.m in Sources */,
 				5623E14E12B2719400212D5C /* ItemAvailabilityLibraryAnnotation.m in Sources */,
+				5623E28A12B2AB9500212D5C /* ItemAvailabilityLibDetailViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

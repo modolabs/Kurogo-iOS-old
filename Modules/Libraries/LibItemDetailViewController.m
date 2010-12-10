@@ -332,6 +332,7 @@
 		LibraryLocationsMapViewController * vc = [[LibraryLocationsMapViewController alloc] initWithMapViewFrame:self.view.frame];
 	
 		[vc setAllAvailabilityLibraryLocations:displayNameAndLibraries];
+		vc.navController = self;
 		
 		vc.title = @"Locations with Item";
 		
@@ -889,7 +890,7 @@
 			NSString * displayName = [tempDict objectForKey:@"name"];
 			
 			NSString * name = [libraryDictionary objectForKey:@"name"];
-			//NSString * primaryName = [libraryDictionary objectForKey:@"primaryname"];
+			NSString * primaryName = [libraryDictionary objectForKey:@"primaryName"];
 			NSString * type = [libraryDictionary objectForKey:@"type"];
 			NSString * identityTag = [libraryDictionary objectForKey:@"id"];
 			//NSString *directions = [libraryDictionary objectForKey:@"directions"];
@@ -909,7 +910,7 @@
 			}
 			
 			alreadyInDB.name = name;
-			//alreadyInDB.primaryName = primaryName;
+			alreadyInDB.primaryName = primaryName;
 			alreadyInDB.identityTag = identityTag;
 			alreadyInDB.location = location;
 			alreadyInDB.lat = [NSNumber numberWithDouble:[latitude doubleValue]];

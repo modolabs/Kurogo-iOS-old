@@ -11,7 +11,7 @@
 #import "LibraryAnnotation.h"
 #import "LibraryDetailViewController.h"
 #import "ItemAvailabilityLibraryAnnotation.h"
-
+#import "ItemAvailabilityLibDetailViewController.h"
 
 @implementation LibraryLocationsMapViewController
 @synthesize mapView;
@@ -106,6 +106,7 @@
 	for (int i=0; i< [[self.mapView annotations] count]; i++)
 		[self.mapView removeAnnotation:[[self.mapView annotations] objectAtIndex:i]];
 	
+	displayNameAndLibrariesDictionary = displayNameAndLibraries;
 	
 	//NSMutableArray * tempArray = [[NSMutableArray alloc] init];
 	for(int index=0; index < [[displayNameAndLibraries allKeys] count]; index++){
@@ -337,6 +338,65 @@
 		if ([apiRequest requestObjectFromModule:@"libraries" 
 										command:libOrArchive
 									 parameters:[NSDictionary dictionaryWithObjectsAndKeys:lib.identityTag, @"id", lib.name, @"name", nil]])
+		{
+			[self.navController.navigationController pushViewController:vc animated:YES];
+		}
+		else {
+			UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil
+																message:@"Could not connect to the server" 
+															   delegate:self 
+													  cancelButtonTitle:@"OK" 
+													  otherButtonTitles:nil];
+			[alertView show];
+			[alertView release];
+		}
+		
+		[vc release];
+	}
+	
+	if ([view.annotation isKindOfClass:[ItemAvailabilityLibraryAnnotation class]]) {
+		
+		
+		NSString * repoName = ((ItemAvailabilityLibraryAnnotation *) view.annotation).repoNameToDisplay;
+		Library * library = ((ItemAvailabilityLibraryAnnotation *) view.annotation).library;
+		
+		int indexSelected = 0;
+		int tempIndex = 0;
+		
+		for(NSString * dispName in [displayNameAndLibrariesDictionary allKeys]){
+			
+			if ([dispName isEqualToString:repoName]){
+				indexSelected = tempIndex;
+			}
+			tempIndex++;
+		}
+		
+		
+		ItemAvailabilityLibDetailViewController *vc = [[ItemAvailabilityLibDetailViewController alloc]
+													   initWithStyle:UITableViewStyleGrouped
+													   displayName:repoName
+													   currentInd:indexSelected
+													   library:(Library *)library
+													   otherLibDictionary:displayNameAndLibrariesDictionary];
+		
+		apiRequest = [[JSONAPIRequest alloc] initWithJSONAPIDelegate:vc];
+		
+		NSString * libOrArchive;
+		
+		if ([library.type isEqualToString:@"archive"]) {
+			vc.title = @"Archive Detail";
+			libOrArchive = @"archivedetail";
+		}
+		
+		else {
+			vc.title = @"Library Detail";
+			libOrArchive = @"libdetail";
+		}
+		
+		
+		if ([apiRequest requestObjectFromModule:@"libraries" 
+										command:libOrArchive
+									 parameters:[NSDictionary dictionaryWithObjectsAndKeys:library.identityTag, @"id", repoName, @"name", nil]])
 		{
 			[self.navController.navigationController pushViewController:vc animated:YES];
 		}

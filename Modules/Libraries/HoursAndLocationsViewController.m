@@ -530,6 +530,7 @@ NSInteger libraryNameSort(id lib1, id lib2, void *context);
 		NSDictionary *libraryDictionary = [resultArray objectAtIndex:index];
 		
 		NSString * name = [libraryDictionary objectForKey:@"name"];
+		NSString * primaryName = [libraryDictionary objectForKey:@"primaryName"];
 		NSString * identityTag = [libraryDictionary objectForKey:@"id"];
 		 NSNumber * latitude = [libraryDictionary objectForKey:@"latitude"];
 		NSNumber * longitude = [libraryDictionary objectForKey:@"longitude"];
@@ -570,6 +571,7 @@ NSInteger libraryNameSort(id lib1, id lib2, void *context);
 		*/
 		
 		alreadyInDB.name = name;
+		alreadyInDB.primaryName = primaryName;
 		alreadyInDB.identityTag = identityTag;
 		alreadyInDB.location = location;
 		alreadyInDB.lat = [NSNumber numberWithDouble:[latitude doubleValue]];

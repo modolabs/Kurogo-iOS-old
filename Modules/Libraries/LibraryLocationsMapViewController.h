@@ -23,6 +23,8 @@
 	JSONAPIRequest * apiRequest;
 	
 	UIViewController * navController;
+	
+	NSDictionary * displayNameAndLibrariesDictionary;
 
 }
 
