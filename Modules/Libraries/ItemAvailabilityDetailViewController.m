@@ -656,30 +656,35 @@ allLibrariesWithItem: (NSArray *) allLibraries
 	
 	CGFloat height = [text1
 						  sizeWithFont:[UIFont boldSystemFontOfSize:17]
-						  constrainedToSize:CGSizeMake(150, 2000)         
+						  constrainedToSize:CGSizeMake(280.0, 2000)         
 						  lineBreakMode:UILineBreakModeWordWrap].height;
+	
+	CGFloat height2 = [text2
+					  sizeWithFont:[UIFont fontWithName:STANDARD_FONT size:13]
+					  constrainedToSize:CGSizeMake(280.0, 2000)         
+					  lineBreakMode:UILineBreakModeWordWrap].height;
 	
 	if (height > 21)
 		height = 21;
 		
-		headerLabel1 = [[UILabel alloc] initWithFrame:CGRectMake(12.0, 0.0, 150.0, height)];
+		headerLabel1 = [[UILabel alloc] initWithFrame:CGRectMake(12.0, 0.0, 280.0, height)];
 		headerLabel1.text = text1;
 		headerLabel1.font = [UIFont boldSystemFontOfSize:17];
 		headerLabel1.textColor = [UIColor colorWithHexString:@"#554C41"];
 		headerLabel1.backgroundColor = [UIColor clearColor];	
 		headerLabel1.lineBreakMode = UILineBreakModeTailTruncation;
-		headerLabel1.numberOfLines = 1;
+		headerLabel1.numberOfLines = 5;
 
 	
-	headerLabel2 = [[UILabel alloc] initWithFrame:CGRectMake(180.0, 0.0, 140.0, height)];
+	headerLabel2 = [[UILabel alloc] initWithFrame:CGRectMake(12.0, height + 3, 280.0, height2)];
 	headerLabel2.text = text2;
 	headerLabel2.font = [UIFont fontWithName:STANDARD_FONT size:13];
 	headerLabel2.textColor = [UIColor colorWithHexString:@"#554C41"];
 	headerLabel2.backgroundColor = [UIColor clearColor];	
 	headerLabel2.lineBreakMode = UILineBreakModeTailTruncation;
-	headerLabel2.numberOfLines = 1;
+	headerLabel2.numberOfLines = 5;
 		
-	view = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, self.view.frame.size.width, height)];
+	view = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, self.view.frame.size.width, height + height2 +3.0)];
 	[view addSubview:headerLabel1];
 	[view addSubview:headerLabel2];
 
@@ -690,6 +695,7 @@ allLibrariesWithItem: (NSArray *) allLibraries
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
 
 	NSString * text1 = @"";
+	NSString * text2 = @"";
 	
 	NSDictionary * statDict = [availabilityCategories objectAtIndex:section];
 	
@@ -752,17 +758,23 @@ allLibrariesWithItem: (NSArray *) allLibraries
 	}
 	
 	text1 = [statDict objectForKey:@"statMain"];
+	text2 = [statDict objectForKey:@"callNumber"];
+	
+	
+	/*if (height > 21) // one line
+		height = 21;*/
 	
 	CGFloat height = [text1
-					  sizeWithFont:[UIFont fontWithName:STANDARD_FONT size:17]
-					  constrainedToSize:CGSizeMake(150, 2000)         
+					  sizeWithFont:[UIFont boldSystemFontOfSize:17]
+					  constrainedToSize:CGSizeMake(280.0, 2000)         
 					  lineBreakMode:UILineBreakModeWordWrap].height;
 	
+	CGFloat height2 = [text2
+					   sizeWithFont:[UIFont fontWithName:STANDARD_FONT size:13]
+					   constrainedToSize:CGSizeMake(280.0, 2000)         
+					   lineBreakMode:UILineBreakModeWordWrap].height;
 	
-	if (height > 21) // one line
-		height = 21;
-	
-	return height + 5;
+	return height + height2 + 5;
 }
 
 
