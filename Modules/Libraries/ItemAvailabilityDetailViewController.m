@@ -10,6 +10,8 @@
 #import "MITUIConstants.h"
 #import "RequestWebViewModalViewController.h"
 #import "MIT_MobileAppDelegate.h"
+#import "ItemAvailabilityLibDetailViewController.h"
+#import "CoreDataManager.h"
 
 
 @implementation ItemAvailabilityDetailViewController
@@ -22,7 +24,9 @@
 
 - (id)initWithStyle:(UITableViewStyle)style 
 			libName:(NSString *)libName
+		   primName:(NSString *)primName
 			  libId:(NSString *) libId
+			libType: (NSString *) libType
 			   item:(LibraryItem *)libraryItem 
 		 categories:(NSArray *)availCategories
 allLibrariesWithItem: (NSArray *) allLibraries
@@ -32,6 +36,8 @@ allLibrariesWithItem: (NSArray *) allLibraries
 		
 		libraryName = libName;
 		libraryId = libId;
+		primaryName = primName;
+		type = libType;
 		libItem = [libraryItem retain];
 		availabilityCategories  = [availCategories retain];
 		arrayWithAllLibraries = [allLibraries retain];
@@ -67,27 +73,32 @@ allLibrariesWithItem: (NSArray *) allLibraries
 	
 	
 	headerView = nil; 
-	//NSString * libraryName = libraryName; //@"Cabot Science Library ";
-	//NSString * openToday = @"Open Today at xxxxxxxxxxxxxxxxxx";
-	CGFloat height1 = [libraryName
+
+	NSString * nameToDisplay = libraryName;
+	
+	if (![libraryName isEqualToString:primaryName])
+		nameToDisplay = [NSString stringWithFormat:@"%@ (%@)", libraryName, primaryName];
+						 
+	CGFloat height1 = [nameToDisplay
 					  sizeWithFont:[UIFont fontWithName:CONTENT_TITLE_FONT size:CONTENT_TITLE_FONT_SIZE]
-					  constrainedToSize:CGSizeMake(300, 2000)         
+					  constrainedToSize:CGSizeMake(250, 2000)         
 					   lineBreakMode:UILineBreakModeWordWrap].height;
 						
 	CGFloat height2 = [openToday
 					 sizeWithFont:[UIFont fontWithName:COURSE_NUMBER_FONT size:13]
-					 constrainedToSize:CGSizeMake(300, 20)         
+					 constrainedToSize:CGSizeMake(250, 20)         
 					 lineBreakMode:UILineBreakModeWordWrap].height;
 	
 	CGFloat height = height1 + height2;
 	
-	UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(12.0, 0.0, 300.0, height1)];
-	label.text = libraryName;
+	UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(12.0, 0.0, 250, height1)];
+
+	label.text = nameToDisplay;	
 	label.font = [UIFont fontWithName:CONTENT_TITLE_FONT size:CONTENT_TITLE_FONT_SIZE];
 	label.textColor = [UIColor colorWithHexString:@"#1a1611"];
 	label.backgroundColor = [UIColor clearColor];	
 	label.lineBreakMode = UILineBreakModeWordWrap;
-	label.numberOfLines = 5;
+	label.numberOfLines = 10;
 	
 	NSString * openTodayString;
 	if (nil == openToday)
@@ -97,7 +108,7 @@ allLibrariesWithItem: (NSArray *) allLibraries
 	}
 
 	
-	UILabel *label2 = [[UILabel alloc] initWithFrame:CGRectMake(12.0, height1 + 5.0, 300.0, height2)];
+	UILabel *label2 = [[UILabel alloc] initWithFrame:CGRectMake(12.0, height1 + 5.0, 250, height2)];
 	label2.text = openTodayString;
 	label2.font = [UIFont fontWithName:COURSE_NUMBER_FONT
 								  size:13];
@@ -106,9 +117,24 @@ allLibrariesWithItem: (NSArray *) allLibraries
 	label2.lineBreakMode = UILineBreakModeWordWrap;
 	label2.numberOfLines = 1;
 	
+	
+	infoButton = [UIButton buttonWithType:UIButtonTypeCustom];
+	infoButton.frame = CGRectMake(self.tableView.frame.size.width - 60.0 , 5, 50.0, 50.0);
+	infoButton.enabled = YES;
+	[infoButton setImage:[UIImage imageNamed:@"global/action-search@2x.png"] forState:UIControlStateNormal];
+	[infoButton setImage:[UIImage imageNamed:@"global/action-search@2x.png"] forState:(UIControlStateNormal | UIControlStateHighlighted)];
+	[infoButton setImage:[UIImage imageNamed:@"global/action-search@2x.png"] forState:UIControlStateSelected];
+	[infoButton setImage:[UIImage imageNamed:@"global/action-search@2x.png"] forState:(UIControlStateSelected | UIControlStateHighlighted)];
+	[infoButton addTarget:self action:@selector(infoButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
+	
+	
+	if (height < 50)
+		height = 50;
+	
 	headerView = [[[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, self.tableView.frame.size.width, height + 5.0)] autorelease];
 	[headerView addSubview:label];
 	[headerView addSubview:label2];
+	[headerView addSubview:infoButton];
 	
 	self.tableView.tableHeaderView = [[UIView alloc]
 									  initWithFrame:CGRectMake(0, 0, self.tableView.frame.size.width, headerView.frame.size.height + 10)];
@@ -205,6 +231,63 @@ allLibrariesWithItem: (NSArray *) allLibraries
 #pragma mark User Interaction
 
 
+-(void)infoButtonPressed: (id) sender {
+	
+	NSPredicate *pred = [NSPredicate predicateWithFormat:@"name == %@ AND type == %@", primaryName, type];
+	Library *alreadyInDB = [[CoreDataManager objectsForEntity:LibraryEntityName matchingPredicate:pred] lastObject];
+	
+	
+	NSManagedObject *managedObj;
+	if (nil == alreadyInDB){
+		managedObj = [CoreDataManager insertNewObjectForEntityForName:LibraryEntityName];
+		alreadyInDB = (Library *)managedObj;
+		alreadyInDB.isBookmarked = [NSNumber numberWithBool:NO];
+		alreadyInDB.name = primaryName;
+		alreadyInDB.primaryName = primaryName;
+	}
+	
+	ItemAvailabilityLibDetailViewController *vc = [[ItemAvailabilityLibDetailViewController alloc]
+												   initWithStyle:UITableViewStyleGrouped
+												   displayName:libraryName
+												   currentInd:0
+												   library:(Library *)alreadyInDB
+												   otherLibDictionary:[[NSDictionary alloc] init]];
+	
+	apiRequest = [[JSONAPIRequest alloc] initWithJSONAPIDelegate:vc];
+	
+	NSString * libOrArchive;
+	
+	if ([type isEqualToString:@"archive"]) {
+		vc.title = @"Archive Detail";
+		libOrArchive = @"archivedetail";
+	}
+	
+	else {
+		vc.title = @"Library Detail";
+		libOrArchive = @"libdetail";
+	}
+	
+	
+	if ([apiRequest requestObjectFromModule:@"libraries" 
+									command:libOrArchive
+								 parameters:[NSDictionary dictionaryWithObjectsAndKeys:libraryId, @"id", libraryName, @"name", nil]])
+	{
+		[self.navigationController pushViewController:vc animated:YES];
+	}
+	else {
+		UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil
+															message:@"Could not connect to the server" 
+														   delegate:self 
+												  cancelButtonTitle:@"OK" 
+												  otherButtonTitles:nil];
+		[alertView show];
+		[alertView release];
+	}
+	
+	[vc release];
+}
+	
+
 -(void) showNextLibrary: (id) sender {
 	
 	if ([sender isKindOfClass:[UISegmentedControl class]]) {
@@ -227,7 +310,9 @@ allLibrariesWithItem: (NSArray *) allLibraries
 				NSDictionary * tempDict = [arrayWithAllLibraries objectAtIndex:tempLibIndex];		
 				NSString * libName = [tempDict objectForKey:@"name"];
 				NSString * libId = [tempDict objectForKey:@"id"];
-				NSString * type = [tempDict objectForKey:@"type"];
+				NSString * typeTemp = [tempDict objectForKey:@"type"];
+				
+				NSString * primaryNameTemp = [((NSDictionary *)[tempDict objectForKey:@"details"]) objectForKey:@"primaryName"];
 				
 				NSArray * itemsByStat = (NSArray *)[tempDict objectForKey:@"itemsByStat"];
 
@@ -236,7 +321,7 @@ allLibrariesWithItem: (NSArray *) allLibraries
 					apiRequest = [[JSONAPIRequest alloc] initWithJSONAPIDelegate:self];
 					
 					NSString * libOrArchive;
-					if ([type isEqualToString:@"archive"])
+					if ([typeTemp isEqualToString:@"archive"])
 						libOrArchive = @"archivedetail";
 					
 					else {
@@ -251,7 +336,9 @@ allLibrariesWithItem: (NSArray *) allLibraries
 					
 						currentIndex = tempLibIndex;
 						libraryName = libName;
+						primaryName = primaryNameTemp;
 						libraryId = libId;
+						type = typeTemp;
 						availabilityCategories = itemsByStat;
 						[self viewWillAppear:YES];		
 					}

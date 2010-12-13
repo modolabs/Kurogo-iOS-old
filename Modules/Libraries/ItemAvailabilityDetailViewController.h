@@ -20,6 +20,8 @@
 
 	NSString * libraryName;
 	NSString * libraryId;
+	NSString * primaryName;
+	NSString * type;
 	
 	LibraryItem * libItem;
 	
@@ -45,13 +47,17 @@
 	JSONAPIRequest * parentViewApiRequest;	
 	
 	NSMutableDictionary * sectionType; // this will determine which of the three types of section layouts to use
+	
+	UIButton * infoButton;
 }
 
 @property (nonatomic, retain) JSONAPIRequest *parentViewApiRequest;
 
 - (id)initWithStyle:(UITableViewStyle)style 
 			libName:(NSString *)libName
+		   primName:(NSString *)primName
 			  libId:(NSString *) libId
+			libType: (NSString *) libType
 			   item:(LibraryItem *)libraryItem 
 		 categories:(NSArray *)availCategories
 allLibrariesWithItem: (NSArray *) allLibraries

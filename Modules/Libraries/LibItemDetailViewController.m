@@ -736,6 +736,9 @@
 		NSString * libId = [tempDict objectForKey:@"id"];
 		NSString * type = [tempDict objectForKey:@"type"];
 		
+		NSString * primaryName = [((NSDictionary *)[tempDict objectForKey:@"details"]) objectForKey:@"primaryName"];
+
+		
 		NSArray * itemsByStat = (NSArray *)[tempDict objectForKey:@"itemsByStat"];
 	
 	
@@ -743,7 +746,9 @@
 			ItemAvailabilityDetailViewController * vc = [[ItemAvailabilityDetailViewController alloc]
 														 initWithStyle:UITableViewStyleGrouped
 														 libName: libName
+														primName: primaryName
 														 libId: libId
+														 libType: type
 														 item:libItem
 														 categories:itemsByStat
 														 allLibrariesWithItem:locationsWithItem
@@ -788,94 +793,7 @@
 		}
 		}
 		
-	}	
-		
-	
-			
-	
-	
-		
-		
-		
-	/*if (indexPath.section == 1) {
-		
-		
-	NSDictionary * regularLoan = [[NSDictionary dictionaryWithObjectsAndKeys:
-								  @"Regular loan", @"type", 
-								  @"HB74.P8 L479 2006x", @"callNumber",
-								  @"3", @"available",
-								  @"4", @"checkedOut",
-								   @"1", @"unavailable", nil] retain];
-	NSDictionary * inLibraryUse = [[NSDictionary dictionaryWithObjectsAndKeys:
-								   @"In-library use", @"type", 
-								   @"HB74.P8 L479 2006x", @"callNumber",
-								   @"0", @"available",
-								   @"0", @"checkedOut",
-								   @"5", @"unavailable", nil] retain];
-	
-	NSDictionary * depository = [[NSDictionary dictionaryWithObjectsAndKeys:
-								   @"Depository", @"type", 
-								   @"HB74.P8 L479 2006x", @"callNumber",
-								   @"2", @"available",
-								   @"0", @"checkedOut",
-								   @"0", @"unavailable", nil] retain];
-	
-	NSArray * availArray = [NSArray arrayWithObjects:
-							regularLoan, inLibraryUse, depository, nil];
-	
-	
-	Library * tempLib = [[CoreDataManager insertNewObjectForEntityForName:LibraryEntityName] retain];
-	tempLib.name = @"Afro-American Studies Reading Room";
-	tempLib.identityTag = @"0003";
-	tempLib.type = @"library";
-		
-	
-	ItemAvailabilityDetailViewController * vc = [[ItemAvailabilityDetailViewController alloc]
-												 initWithStyle:UITableViewStyleGrouped
-												 library: tempLib
-												 item:libItem
-												 categories:availArray
-												 allLibrariesWithItem:nil
-												 index:0];
-		
-		apiRequest = [[JSONAPIRequest alloc] initWithJSONAPIDelegate:vc];
-	
-		NSString * libOrArchive;
-		if ([tempLib.type isEqualToString:@"archive"])
-			libOrArchive = @"archivedetail";
-		
-		else {
-			libOrArchive = @"libdetail";
-		}
-		
-		
-		if ([apiRequest requestObjectFromModule:@"libraries" 
-										command:libOrArchive
-									 parameters:[NSDictionary dictionaryWithObjectsAndKeys:tempLib.identityTag, @"id", tempLib.name, @"name", nil]])
-		{
-			
-		}
-		else {
-			UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil
-																message:@"Could not retrieve today's hours" 
-															   delegate:self 
-													  cancelButtonTitle:@"OK" 
-													  otherButtonTitles:nil];
-			[alertView show];
-			[alertView release];
-		}
-		
-		[vc release];
-		
-		
-	
-	vc.title = @"Availability";
-	[self.navigationController pushViewController:vc animated:YES];
-	[vc release];
-	}*/
-//}
-
-
+}	
 
 #pragma mark -
 #pragma mark Memory management
