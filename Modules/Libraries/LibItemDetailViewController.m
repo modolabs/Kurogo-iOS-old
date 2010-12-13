@@ -82,6 +82,8 @@
 	otherDetailLine1 = otherDetail1;
 	otherDetailLine2 = otherDetail2;
 	otherDetailLine3 = otherDetail3;
+	
+	currentLocation = nil;
 }
 
 
@@ -452,7 +454,12 @@
 			return cell4;
 			
 		}
-		NSDictionary * tempDict = [locationsWithItem objectAtIndex:indexPath.row];		
+		NSDictionary * tempDict = [locationsWithItem objectAtIndex:indexPath.row];	
+		
+		NSDictionary * libraryDictionary  = [tempDict objectForKey:@"details"];;
+		NSNumber * latitude = [libraryDictionary objectForKey:@"latitude"];
+		NSNumber * longitude = [libraryDictionary objectForKey:@"longitude"];
+		
 		NSString * libName = [tempDict objectForKey:@"name"];
 		
 		
@@ -538,8 +545,20 @@
 
 		
 		cell1.textLabel.text = libName;
+		
+		
+		CLLocation * libLoc = [[CLLocation alloc] initWithLatitude:[latitude doubleValue] longitude:[longitude doubleValue]];
+		if ((nil != currentLocation) && (nil != libLoc)){
+
+			float dist = [currentLocation distanceFromLocation:libLoc];
+			cell1.detailTextLabel.text = [NSString stringWithFormat:@"%d meters away", dist];
+		}
+		else {
+			cell1.detailTextLabel.text = "Distance unavailable";
+		}
+
  
-		cell1.detailTextLabel.text = @"xxx yards away";
+		
 		cell1.detailTextLabel.textColor = [UIColor colorWithHexString:@"#554C41"];
 		
 		if ([itemsByStat count] == 0)
@@ -869,6 +888,9 @@
 
 - (void)dealloc {
     [super dealloc];
+	locationManager.delegate = nil;
+	[locationManager release];
+	
 }
 
 
@@ -923,6 +945,26 @@
 			
 			[CoreDataManager saveData];
 			}
+		
+		
+		locationManager = [[CLLocationManager alloc] init];
+		locationManager.distanceFilter = kCLDistanceFilterNone;
+		locationManager.desiredAccuracy = kCLLocationAccuracyBest;
+		locationManager.delegate = self;
+
+		[locationManager startUpdatingLocation];
+		
+		NSDate * start = [NSDate date];
+		while(1){
+			NSTimeInterval locationAge = -[start timeIntervalSinceNow];
+			if (locationAge > 5.0)
+				break;
+		
+			if (nil != currentLocation)
+				break;
+		}
+		
+		[locationManager stopUpdatingLocation];
 			
 		}
 	else {
@@ -1007,6 +1049,34 @@
 	
 }
 
+
+#pragma mark CLLocationManagerDelegate
+
+- (void)locationManager:(CLLocationManager *)manager didUpdateToLocation:(CLLocation *)newLocation fromLocation:(CLLocation *)oldLocation{
+	
+    // test the age of the location measurement to determine if the measurement is cached
+    // in most cases you will not want to rely on cached measurements
+    NSTimeInterval locationAge = -[newLocation.timestamp timeIntervalSinceNow];
+    if (locationAge > 5.0) return;
+    // test that the horizontal accuracy does not indicate an invalid measurement
+    if (newLocation.horizontalAccuracy < 0) return;
+  
+	currentLocation = [newLocation retain];
+	[locationManager stopUpdatingLocation];
+	
+
+}
+
+- (void)locationManager:(CLLocationManager *)manager monitoringDidFailForRegion:(CLRegion *)region withError:(NSError *)error{
+	
+	currentLocation = nil;
+}
+
+- (void)locationManager:(CLLocationManager *)manager didFailWithError:(NSError *)error{
+	currentLocation = nil;
+	[locationManager stopUpdatingLocation];
+	
+}
 
 @end
 

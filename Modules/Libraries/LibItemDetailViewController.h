@@ -10,9 +10,10 @@
 #import "LibItemDetailCell.h"
 #import "LibraryItem.h"
 #import "JSONAPIRequest.h"
+#import <MapKit/MapKit.h>
 
 
-@interface LibItemDetailViewController : UITableViewController <JSONAPIDelegate>{
+@interface LibItemDetailViewController : UITableViewController <JSONAPIDelegate, CLLocationManagerDelegate>{
 	
 	NSString * itemTitle;
 	NSString * author;
@@ -39,6 +40,10 @@
 	UIView * loadingIndicator;
 	
 	NSMutableDictionary * displayNameAndLibraries;
+	
+	CLLocation * currentLocation;
+	
+	CLLocationManager * locationManager;
 }
 
 @property BOOL bookmarkButtonIsOn;
