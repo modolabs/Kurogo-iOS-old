@@ -119,6 +119,65 @@ allLibrariesWithItem: (NSArray *) allLibraries
 	[label2 release];
 	[label release];
 	
+	
+	sectionType = [[NSMutableDictionary alloc] init];
+	
+	for (int section=0; section < [availabilityCategories count]; section++) {
+		
+		BOOL isTypeOne = NO;
+		BOOL isTypeTwo = NO;
+		
+		NSDictionary * statDict = [availabilityCategories objectAtIndex:section];
+		
+		int collectionOnlyCount = 0;
+		collectionOnlyCount = [[statDict objectForKey:@"collectionOnlyCount"] intValue];
+		
+		if (collectionOnlyCount > 0)
+			isTypeTwo = YES;
+		
+		
+		if (isTypeTwo == NO) {
+			
+			NSMutableArray * items = [[NSMutableArray alloc] init];
+			int indexCount =0;
+			
+			NSArray * availableItems = (NSArray *)[statDict objectForKey:@"availableItems"];
+			NSArray * checkedOutItems = (NSArray * )[statDict objectForKey:@"checkedOutItems"];
+			
+			for(NSDictionary * item in availableItems) {
+				[items insertObject:item atIndex:indexCount];
+				indexCount++;
+			}
+			
+			for(NSDictionary * item1 in checkedOutItems) {
+				[items insertObject:item1 atIndex:indexCount];
+				indexCount++;
+			}
+			
+			for(NSDictionary * availItemDict in items){
+				
+				NSString * firstCallNbr = [[items objectAtIndex:0] objectForKey:@"callNumber"];
+				NSString * callNbr = [availItemDict objectForKey:@"callNumber"];
+				
+				
+				if (![firstCallNbr isEqualToString:callNbr]){
+					[sectionType setObject:sectionType1 forKey:[NSString stringWithFormat:@"%d",section]];
+					isTypeOne = YES;
+					break;
+				}
+			}
+			
+			if ((isTypeOne == NO) && (isTypeTwo == NO))
+				[sectionType setObject:sectionType0 forKey:[NSString stringWithFormat:@"%d",section]];
+			
+		}
+		
+		else if (isTypeTwo == YES)
+			[sectionType setObject:sectionType0 forKey:[NSString stringWithFormat:@"%d",section]];
+		
+	}
+	
+	
 }
 
 
@@ -212,54 +271,9 @@ allLibrariesWithItem: (NSArray *) allLibraries
 
 
 
-
-#pragma mark -
-#pragma mark Table view data source
-
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    // Return the number of sections.
-    return [availabilityCategories count];
-}
-
-
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    // Return the number of rows in the section.
+-(UITableViewCell *) sectionTypeZero:(NSIndexPath *)indexPath tableView:(UITableView *)tableView{
 	
-	int row = 0;
-	NSDictionary * statDict = [availabilityCategories objectAtIndex:section];
-	
-	
-	int availCount = 0;
-	availCount = [[statDict objectForKey:@"availCount"] intValue];
-	
-	int unavailCount = 0;
-	unavailCount = [[statDict objectForKey:@"unavailCount"] intValue];
-	
-	int checkedOutCount = 0;
-	checkedOutCount = [[statDict objectForKey:@"checkedOutCount"] intValue];
-	
-	int requestCount = 0;
-	requestCount = [[statDict objectForKey:@"requestCount"] intValue];
-	
-	
-	if (availCount > 0)
-		row++;
-	
-	if (checkedOutCount > 0)
-		row++;
-	
-	if (unavailCount > 0)
-		row++;
-
-	
-    return row;
-}
-
-
-// Customize the appearance of table view cells.
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    
-    static NSString *CellIdentifier = @"Cell";
+	static NSString *CellIdentifier = @"CellType0";
     
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil) {
@@ -267,7 +281,7 @@ allLibrariesWithItem: (NSArray *) allLibraries
     }
     
 	NSDictionary * statDict = [availabilityCategories objectAtIndex:indexPath.section];
-		
+	
 	int availCount = 0;
 	availCount = [[statDict objectForKey:@"availCount"] intValue];
 	
@@ -330,8 +344,8 @@ allLibrariesWithItem: (NSArray *) allLibraries
 			}
 			
 			//else {
-				image = [UIImage imageNamed:@"dining/dining-status-open.png"];
-				cell.imageView.image = image;
+			image = [UIImage imageNamed:@"dining/dining-status-open.png"];
+			cell.imageView.image = image;
 			//}
 		}
 		else if (checkedOutCount > 0){
@@ -353,7 +367,7 @@ allLibrariesWithItem: (NSArray *) allLibraries
 			UIImage *image = [UIImage imageNamed:@"dining/dining-status-closed.png"];
 			cell.imageView.image = image;
 		}
-
+		
 		
 	}
 	
@@ -377,7 +391,7 @@ allLibrariesWithItem: (NSArray *) allLibraries
 			UIImage *image = [UIImage imageNamed:@"dining/dining-status-closed.png"];
 			cell.imageView.image = image;
 		}
-			
+		
 	}
 	
 	else if (indexPath.row == 2) {// unavailable
@@ -388,11 +402,154 @@ allLibrariesWithItem: (NSArray *) allLibraries
 			cell.imageView.image = image;
 		}
 	}
-		
-		
+	
+	
 	cell.selectionStyle = UITableViewCellSelectionStyleGray;
 	
     return cell;
+	
+}
+
+
+-(UITableViewCell *) sectionTypeOne:(NSIndexPath *)indexPath tableView:(UITableView *)tableView{
+	
+	static NSString *CellIdentifier = @"CellType1";
+    
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    if (cell == nil) {
+        cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier] autorelease];
+    }
+    
+	NSDictionary * statDict = [availabilityCategories objectAtIndex:indexPath.section];
+	
+	NSMutableArray * items = [[NSMutableArray alloc] init];
+	int indexCount =0;
+	
+	NSArray * availableItems = (NSArray *)[statDict objectForKey:@"availableItems"];
+	NSArray * checkedOutItems = (NSArray * )[statDict objectForKey:@"checkedOutItems"];
+	NSArray * unavailableItems = (NSArray * )[statDict objectForKey:@"unavailableItems"];
+	
+	for(NSDictionary * item in availableItems) {
+		[items insertObject:item atIndex:indexCount];
+		indexCount++;
+	}
+	
+	for(NSDictionary * item1 in checkedOutItems) {
+		[items insertObject:item1 atIndex:indexCount];
+		indexCount++;
+	}
+	
+	for(NSDictionary * item2 in unavailableItems) {
+		[items insertObject:item2 atIndex:indexCount];
+		indexCount++;
+	}
+	
+	
+	NSDictionary * itemForRow = [items objectAtIndex:indexPath.row];
+	NSString * canRequest = [itemForRow objectForKey:@"canRequest"];
+	NSString * isUnAvailable = [itemForRow objectForKey:@"unavailable"];
+	NSString * isAvailable = [itemForRow objectForKey:@"available"];
+	
+	NSString * status = @"";
+	NSString * color = @"";
+	
+	if ([isAvailable isEqualToString:@"YES"]){
+		status = @"Available";
+		color = @"green";
+	}
+	
+	else if ([canRequest isEqualToString:@"YES"]){
+		status = @"Checked Out";
+		color = @"yellow";
+	}
+	
+	else {
+		status = @"Unavailable";
+		color = @"gray";
+	}
+
+	NSString * callNumber = [itemForRow objectForKey:@"callNumber"];
+	
+	cell.textLabel.text = status;
+	cell.detailTextLabel.text = callNumber;
+	
+	if ([color isEqualToString:@"green"])
+		cell.imageView.image = [UIImage imageNamed:@"dining/dining-status-open.png"];
+	
+	else if ([color isEqualToString:@"yellow"])
+		cell.imageView.image = [UIImage imageNamed:@"dining/dining-status-open-w-restrictions.png"];
+	
+	else
+		cell.imageView.image = [UIImage imageNamed:@"dining/dining-status-closed.png"];
+	
+	if ([canRequest isEqualToString:@"YES"])
+		cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+	
+	cell.selectionStyle = UITableViewCellSelectionStyleGray;
+	
+    return cell;
+	
+}
+
+
+#pragma mark -
+#pragma mark Table view data source
+
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+    // Return the number of sections.
+    return [availabilityCategories count];
+}
+
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    // Return the number of rows in the section.
+	
+	int row = 0;
+	NSDictionary * statDict = [availabilityCategories objectAtIndex:section];
+	
+	
+	int availCount = 0;
+	availCount = [[statDict objectForKey:@"availCount"] intValue];
+	
+	int unavailCount = 0;
+	unavailCount = [[statDict objectForKey:@"unavailCount"] intValue];
+	
+	int checkedOutCount = 0;
+	checkedOutCount = [[statDict objectForKey:@"checkedOutCount"] intValue];
+	
+	int requestCount = 0;
+	requestCount = [[statDict objectForKey:@"requestCount"] intValue];
+	
+	if (availCount > 0)
+		row++;
+	
+	if (checkedOutCount > 0)
+		row++;
+	
+	if (unavailCount > 0)
+		row++;
+	
+	if ([[sectionType objectForKey:[NSString stringWithFormat:@"%d",section]] isEqualToString:sectionType0])
+		return row;
+	
+	else if ([[sectionType objectForKey:[NSString stringWithFormat:@"%d", section]] isEqualToString:sectionType1])
+		return availCount + unavailCount + checkedOutCount;
+
+	
+    return 0;
+}
+
+
+// Customize the appearance of table view cells.
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    
+	if ([[sectionType objectForKey:[NSString stringWithFormat:@"%d", indexPath.section]] isEqualToString:sectionType0])
+		return [self sectionTypeZero:indexPath tableView:tableView];
+	
+	else if ([[sectionType objectForKey:[NSString stringWithFormat:@"%d", indexPath.section]] isEqualToString:sectionType1])
+		return [self sectionTypeOne:indexPath tableView:tableView];
+	
+	return nil;
 }
 
 
@@ -424,6 +581,70 @@ allLibrariesWithItem: (NSArray *) allLibraries
 	NSString * text2 = @"";
 	
 	NSDictionary * statDict = [availabilityCategories objectAtIndex:section];
+	
+	int collectionOnlyCount = 0;
+	collectionOnlyCount = [[statDict objectForKey:@"collectionOnlyCount"] intValue];
+	
+	if (collectionOnlyCount > 0) {
+		
+		UILabel * headerCollectionName;
+		UILabel * headerCollectionCallNumber;
+		UILabel * headerCollectionAvailVal;
+		
+		NSDictionary * collectionItem = (NSDictionary *)[((NSArray *)[statDict objectForKey:@"collectionOnlyItems"]) lastObject];
+		
+		NSString * collectionName = [collectionItem objectForKey:@"collectionName"];
+		NSString * callNbr = [collectionItem objectForKey:@"collectionCallNumber"];
+		NSString * availVal = [(NSArray*)[collectionItem objectForKey:@"collectionAvailVal"] lastObject];
+		
+		CGFloat heightName = [collectionName
+						  sizeWithFont:[UIFont boldSystemFontOfSize:17]
+						  constrainedToSize:CGSizeMake(250, 2000)         
+						  lineBreakMode:UILineBreakModeWordWrap].height;
+		
+		CGFloat heightCallNbr = [callNbr
+							  sizeWithFont:[UIFont fontWithName:STANDARD_FONT size:13]
+							  constrainedToSize:CGSizeMake(200, 2000)         
+							  lineBreakMode:UILineBreakModeWordWrap].height;
+		
+		CGFloat heightAvailVal = [availVal
+								 sizeWithFont:[UIFont fontWithName:STANDARD_FONT size:13]
+								 constrainedToSize:CGSizeMake(200, 2000)         
+								 lineBreakMode:UILineBreakModeWordWrap].height;
+		
+		headerCollectionName = [[UILabel alloc] initWithFrame:CGRectMake(12.0, 0.0, 250.0, heightName)];
+		headerCollectionName.text = collectionName;
+		headerCollectionName.font = [UIFont boldSystemFontOfSize:17];
+		headerCollectionName.textColor = [UIColor colorWithHexString:@"#554C41"];
+		headerCollectionName.backgroundColor = [UIColor clearColor];	
+		headerCollectionName.lineBreakMode = UILineBreakModeTailTruncation;
+		headerCollectionName.numberOfLines = 2;
+		
+		headerCollectionCallNumber = [[UILabel alloc] initWithFrame:CGRectMake(12.0, heightName + 3, 200.0, heightCallNbr)];
+		headerCollectionCallNumber.text = callNbr;
+		headerCollectionCallNumber.font =  [UIFont fontWithName:STANDARD_FONT size:13];
+		headerCollectionCallNumber.textColor = [UIColor colorWithHexString:@"#554C41"];
+		headerCollectionCallNumber.backgroundColor = [UIColor clearColor];	
+		headerCollectionCallNumber.lineBreakMode = UILineBreakModeTailTruncation;
+		headerCollectionCallNumber.numberOfLines = 2;
+		
+		headerCollectionAvailVal = [[UILabel alloc] initWithFrame:CGRectMake(12.0, heightName + 3 + heightCallNbr + 3, 200.0, heightAvailVal)];
+		headerCollectionAvailVal.text = availVal;
+		headerCollectionAvailVal.font =  [UIFont fontWithName:STANDARD_FONT size:13];
+		headerCollectionAvailVal.textColor = [UIColor colorWithHexString:@"#554C41"];
+		headerCollectionAvailVal.backgroundColor = [UIColor clearColor];	
+		headerCollectionAvailVal.lineBreakMode = UILineBreakModeTailTruncation;
+		headerCollectionAvailVal.numberOfLines = 2;
+		
+		CGFloat height = heightName + heightCallNbr + heightAvailVal;
+		
+		view = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, self.view.frame.size.width, height)];
+		[view addSubview:headerCollectionName];
+		[view addSubview:headerCollectionCallNumber];
+		[view addSubview:headerCollectionAvailVal];
+		
+		return view;
+	}
 	
 	UILabel * headerLabel1;
 	UILabel * headerLabel2;
@@ -471,6 +692,64 @@ allLibrariesWithItem: (NSArray *) allLibraries
 	NSString * text1 = @"";
 	
 	NSDictionary * statDict = [availabilityCategories objectAtIndex:section];
+	
+	int collectionOnlyCount = 0;
+	collectionOnlyCount = [[statDict objectForKey:@"collectionOnlyCount"] intValue];
+	
+	if (collectionOnlyCount > 0) {
+		
+		UILabel * headerCollectionName;
+		UILabel * headerCollectionCallNumber;
+		UILabel * headerCollectionAvailVal;
+		
+		NSDictionary * collectionItem = (NSDictionary *)[((NSArray *)[statDict objectForKey:@"collectionOnlyItems"]) lastObject];
+		
+		NSString * collectionName = [collectionItem objectForKey:@"collectionName"];
+		NSString * callNbr = [collectionItem objectForKey:@"collectionCallNumber"];
+		NSString * availVal = [(NSArray*)[collectionItem objectForKey:@"collectionAvailVal"] lastObject];
+		
+		CGFloat heightName = [collectionName
+							  sizeWithFont:[UIFont boldSystemFontOfSize:17]
+							  constrainedToSize:CGSizeMake(250, 2000)         
+							  lineBreakMode:UILineBreakModeWordWrap].height;
+		
+		CGFloat heightCallNbr = [callNbr
+								 sizeWithFont:[UIFont fontWithName:STANDARD_FONT size:13]
+								 constrainedToSize:CGSizeMake(200, 2000)         
+								 lineBreakMode:UILineBreakModeWordWrap].height;
+		
+		CGFloat heightAvailVal = [availVal
+								  sizeWithFont:[UIFont fontWithName:STANDARD_FONT size:13]
+								  constrainedToSize:CGSizeMake(200, 2000)         
+								  lineBreakMode:UILineBreakModeWordWrap].height;
+		
+		headerCollectionName = [[UILabel alloc] initWithFrame:CGRectMake(12.0, 0.0, 250.0, heightName)];
+		headerCollectionName.text = collectionName;
+		headerCollectionName.font = [UIFont boldSystemFontOfSize:17];
+		headerCollectionName.textColor = [UIColor colorWithHexString:@"#554C41"];
+		headerCollectionName.backgroundColor = [UIColor clearColor];	
+		headerCollectionName.lineBreakMode = UILineBreakModeTailTruncation;
+		headerCollectionName.numberOfLines = 2;
+		
+		headerCollectionCallNumber = [[UILabel alloc] initWithFrame:CGRectMake(12.0, 0.0, 200.0, heightCallNbr)];
+		headerCollectionCallNumber.text = callNbr;
+		headerCollectionCallNumber.font =  [UIFont fontWithName:STANDARD_FONT size:13];
+		headerCollectionCallNumber.textColor = [UIColor colorWithHexString:@"#554C41"];
+		headerCollectionCallNumber.backgroundColor = [UIColor clearColor];	
+		headerCollectionCallNumber.lineBreakMode = UILineBreakModeTailTruncation;
+		headerCollectionCallNumber.numberOfLines = 2;
+		
+		headerCollectionAvailVal = [[UILabel alloc] initWithFrame:CGRectMake(12.0, 0.0, 200.0, heightAvailVal)];
+		headerCollectionAvailVal.text = availVal;
+		headerCollectionAvailVal.font =  [UIFont fontWithName:STANDARD_FONT size:13];
+		headerCollectionAvailVal.textColor = [UIColor colorWithHexString:@"#554C41"];
+		headerCollectionAvailVal.backgroundColor = [UIColor clearColor];	
+		headerCollectionAvailVal.lineBreakMode = UILineBreakModeTailTruncation;
+		headerCollectionAvailVal.numberOfLines = 2;
+		
+		return heightName + heightCallNbr + heightAvailVal + 3;
+
+	}
 	
 	text1 = [statDict objectForKey:@"statMain"];
 	

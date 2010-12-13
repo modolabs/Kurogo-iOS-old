@@ -486,6 +486,9 @@
 			int requestCount = 0;
 			requestCount = [[statDict objectForKey:@"requestCount"] intValue];
 			
+			int collectionOnlyCount = 0;
+			collectionOnlyCount = [[statDict objectForKey:@"collectionOnlyCount"] intValue];
+			
 			int totalItems = availCount + unavailCount + checkedOutCount;
 			
 			
@@ -524,6 +527,10 @@
 				statusDetailString = [NSString stringWithFormat:
 									  @"None available"];
 			
+			if (collectionOnlyCount > 0)
+				statusDetailString = [NSString stringWithFormat:
+									  @"0 of %d restricted-items", collectionOnlyCount];
+				
 			[dictWithStatuses setObject:status forKey:statusDetailString];
 		}
 		
@@ -554,7 +561,7 @@
 			cell1.detailTextLabel.text = [NSString stringWithFormat:@"%d meters away", dist];
 		}
 		else {
-			cell1.detailTextLabel.text = "Distance unavailable";
+			cell1.detailTextLabel.text = @"Distance unavailable";
 		}
 
  
@@ -911,40 +918,43 @@
 			NSDictionary * libraryDictionary  = [tempDict objectForKey:@"details"];
 			NSString * displayName = [tempDict objectForKey:@"name"];
 			
-			NSString * name = [libraryDictionary objectForKey:@"name"];
-			NSString * primaryName = [libraryDictionary objectForKey:@"primaryName"];
-			NSString * type = [libraryDictionary objectForKey:@"type"];
-			NSString * identityTag = [libraryDictionary objectForKey:@"id"];
-			//NSString *directions = [libraryDictionary objectForKey:@"directions"];
-			NSString * location = [libraryDictionary objectForKey:@"address"];
-			NSNumber * latitude = [libraryDictionary objectForKey:@"latitude"];
-			NSNumber * longitude = [libraryDictionary objectForKey:@"longitude"];
-
-			NSPredicate *pred = [NSPredicate predicateWithFormat:@"name == %@ AND type == %@", name, type];
-			Library *alreadyInDB = [[CoreDataManager objectsForEntity:LibraryEntityName matchingPredicate:pred] lastObject];
-			
-			
-			NSManagedObject *managedObj;
-			if (nil == alreadyInDB){
-				managedObj = [CoreDataManager insertNewObjectForEntityForName:LibraryEntityName];
-				alreadyInDB = (Library *)managedObj;
-				alreadyInDB.isBookmarked = [NSNumber numberWithBool:NO];
+			if ((nil != libraryDictionary) && (![libraryDictionary isKindOfClass:[NSArray class]]))
+		     if ([[libraryDictionary allKeys] count] > 0) {
+				NSString * name = [libraryDictionary objectForKey:@"name"];
+				NSString * primaryName = [libraryDictionary objectForKey:@"primaryName"];
+				NSString * type = [libraryDictionary objectForKey:@"type"];
+				NSString * identityTag = [libraryDictionary objectForKey:@"id"];
+				//NSString *directions = [libraryDictionary objectForKey:@"directions"];
+				NSString * location = [libraryDictionary objectForKey:@"address"];
+				NSNumber * latitude = [libraryDictionary objectForKey:@"latitude"];
+				NSNumber * longitude = [libraryDictionary objectForKey:@"longitude"];
+				
+				NSPredicate *pred = [NSPredicate predicateWithFormat:@"name == %@ AND type == %@", name, type];
+				Library *alreadyInDB = [[CoreDataManager objectsForEntity:LibraryEntityName matchingPredicate:pred] lastObject];
+				
+				
+				NSManagedObject *managedObj;
+				if (nil == alreadyInDB){
+					managedObj = [CoreDataManager insertNewObjectForEntityForName:LibraryEntityName];
+					alreadyInDB = (Library *)managedObj;
+					alreadyInDB.isBookmarked = [NSNumber numberWithBool:NO];
+				}
+				
+				alreadyInDB.name = name;
+				alreadyInDB.primaryName = primaryName;
+				alreadyInDB.identityTag = identityTag;
+				alreadyInDB.location = location;
+				alreadyInDB.lat = [NSNumber numberWithDouble:[latitude doubleValue]];
+				alreadyInDB.lon = [NSNumber numberWithDouble:[longitude doubleValue]];
+				alreadyInDB.type = type;
+				
+				alreadyInDB.isBookmarked = alreadyInDB.isBookmarked;
+				
+				[displayNameAndLibraries setObject:alreadyInDB forKey:displayName];
+				
+				[CoreDataManager saveData];
 			}
-			
-			alreadyInDB.name = name;
-			alreadyInDB.primaryName = primaryName;
-			alreadyInDB.identityTag = identityTag;
-			alreadyInDB.location = location;
-			alreadyInDB.lat = [NSNumber numberWithDouble:[latitude doubleValue]];
-			alreadyInDB.lon = [NSNumber numberWithDouble:[longitude doubleValue]];
-			alreadyInDB.type = type;
-			
-			alreadyInDB.isBookmarked = alreadyInDB.isBookmarked;
-			
-			[displayNameAndLibraries setObject:alreadyInDB forKey:displayName];
-			
-			[CoreDataManager saveData];
-			}
+		}
 		
 		
 		locationManager = [[CLLocationManager alloc] init];
@@ -957,7 +967,7 @@
 		NSDate * start = [NSDate date];
 		while(1){
 			NSTimeInterval locationAge = -[start timeIntervalSinceNow];
-			if (locationAge > 5.0)
+			if (locationAge > 1.0)
 				break;
 		
 			if (nil != currentLocation)

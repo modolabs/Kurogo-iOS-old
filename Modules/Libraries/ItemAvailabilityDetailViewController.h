@@ -12,6 +12,10 @@
 #import "JSONAPIRequest.h"
 
 
+#define sectionType0 @"type0"
+#define sectionType1 @"type1"
+#define sectionType2 @"type2"
+
 @interface ItemAvailabilityDetailViewController : UITableViewController <JSONAPIDelegate>{
 
 	NSString * libraryName;
@@ -38,8 +42,9 @@
 	
 	JSONAPIRequest * apiRequest;
 	
-	JSONAPIRequest * parentViewApiRequest;
+	JSONAPIRequest * parentViewApiRequest;	
 	
+	NSMutableDictionary * sectionType; // this will determine which of the three types of section layouts to use
 }
 
 @property (nonatomic, retain) JSONAPIRequest *parentViewApiRequest;
@@ -53,5 +58,7 @@ allLibrariesWithItem: (NSArray *) allLibraries
 			 index :(int) index;
 
 -(void) setupLayout;
+-(UITableViewCell *) sectionTypeZero:(NSIndexPath *)indexPath tableView:(UITableView *)tableView;
+-(UITableViewCell *) sectionTypeOne:(NSIndexPath *)indexPath tableView:(UITableView *)tableView;
 
 @end
