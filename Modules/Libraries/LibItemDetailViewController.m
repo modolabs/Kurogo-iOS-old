@@ -12,6 +12,7 @@
 #import "CoreDataManager.h"
 #import "ItemAvailabilityDetailViewController.h"
 #import "LibraryLocationsMapViewController.h"
+#import "LibrariesSearchViewController.h"
 
 @class LibItemDetailCell;
 
@@ -77,11 +78,11 @@
 	else if (([libraryItem.formatDetail length] > 0) && ([libraryItem.typeDetail length] == 0))
 		otherDetail3 = [NSString stringWithFormat:@"%@", libraryItem.formatDetail];
 	
-	itemTitle = title;
-	author = authorName;
-	otherDetailLine1 = otherDetail1;
-	otherDetailLine2 = otherDetail2;
-	otherDetailLine3 = otherDetail3;
+	itemTitle = [title retain];
+	author = [authorName retain];
+	otherDetailLine1 = [otherDetail1 retain];
+	otherDetailLine2 = [otherDetail2 retain];
+	otherDetailLine3 = [otherDetail3 retain];
 	
 	currentLocation = nil;
 }
@@ -146,7 +147,12 @@
 							constrainedToSize:CGSizeMake(190, 20)         
 							lineBreakMode:UILineBreakModeWordWrap].height;
 	
-	UILabel *authorLabel = [[UILabel alloc] initWithFrame:CGRectMake(12.0, 20 + runningYDispacement, 190.0, authorHeight)];
+	UnderlinedUILabel *authorLabel = [[UnderlinedUILabel alloc] initWithFrame:CGRectMake(12.0, 20 + runningYDispacement, 190.0, authorHeight)];
+	
+	UIButton * authorButton = [UIButton buttonWithType:UIButtonTypeCustom];
+	authorButton.frame = CGRectMake(12.0, 20 + runningYDispacement, 190.0, authorHeight);
+	[authorButton addTarget:self action:@selector(authorLinkTapped:) forControlEvents:UIControlEventTouchUpInside];
+	authorButton.enabled = YES;
 	
 	if (authorHeight >= 20)
 		runningYDispacement += authorHeight;
@@ -157,11 +163,12 @@
 
 	authorLabel.text = author;
 	authorLabel.font = [UIFont fontWithName:COURSE_NUMBER_FONT size:14];
-	authorLabel.textColor = [UIColor redColor];
+	authorLabel.textColor = [UIColor colorWithHexString:@"#8C000B"]; 
 	authorLabel.backgroundColor = [UIColor clearColor];	
 	authorLabel.lineBreakMode = UILineBreakModeTailTruncation;
 	authorLabel.numberOfLines = 1;
 	
+
 	bookmarkButton = [UIButton buttonWithType:UIButtonTypeCustom];
 	bookmarkButton.frame = CGRectMake(self.tableView.frame.size.width - 120.0 , runningYDispacement - 15, 50.0, 50.0);
 	bookmarkButton.enabled = YES;
@@ -254,6 +261,7 @@
 	
 	[headerView addSubview:titleLabel];
 	[headerView addSubview:authorLabel];
+	[headerView addSubview:authorButton];
 	[headerView addSubview:bookmarkButton];
 	[headerView addSubview:mapButton];
 	
@@ -275,6 +283,45 @@
 
 
 #pragma mark User Interaction
+
+-(void) authorLinkTapped:(id)sender{
+	NSArray *viewControllerArray = [self.navigationController viewControllers];
+	NSUInteger parentViewControllerIndex = [viewControllerArray count] - 2;
+	NSLog(@"Parent view controller: %@", [viewControllerArray objectAtIndex:parentViewControllerIndex]);
+	NSLog(@"Total vc: %d", [viewControllerArray count]);
+	
+	if ([sender isKindOfClass:[UIButton class]]){
+		
+		if ((nil != author) && ([author length] > 0)){
+			
+			LibrariesSearchViewController *vc = [[LibrariesSearchViewController alloc] initWithViewController: nil];
+			vc.title = @"Search Results";
+			
+			apiRequest = [JSONAPIRequest requestWithJSONAPIDelegate:vc];
+			BOOL requestWasDispatched = [apiRequest requestObjectFromModule:@"libraries"
+														command:@"search"
+													 parameters:[NSDictionary dictionaryWithObjectsAndKeys:author, @"q", nil]];
+			
+			if (requestWasDispatched) {
+				vc.searchTerms = author;
+				
+				// break the navigation stack and only have the springboard, library-home and the next vc
+				UIViewController * rootVC = [[self.navigationController viewControllers] objectAtIndex:0];
+				UIViewController * nextVC = [[self.navigationController viewControllers] objectAtIndex:1];
+				
+				NSArray *controllersArray = [NSArray arrayWithObjects: rootVC, nextVC, vc,nil];
+				
+				[self.navigationController setViewControllers:controllersArray animated:YES];
+				
+			} else {
+				//[self handleWarningMessage:@"Could not dispatch search" title:@"Search Failed"];
+			}
+			
+			[vc release];
+		}
+	}
+}
+
 
 -(void) showNextLibItem: (id) sender {
 	

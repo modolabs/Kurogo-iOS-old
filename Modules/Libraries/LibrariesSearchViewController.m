@@ -87,7 +87,8 @@
 	self.searchController.searchResultsDelegate = self;
 	self.searchController.searchResultsDataSource = self;
 	
-	theSearchBar.text = viewController.searchTerms;
+	if (nil != viewController)
+		theSearchBar.text = viewController.searchTerms;
 	
     [self.view addSubview:theSearchBar];
 	
