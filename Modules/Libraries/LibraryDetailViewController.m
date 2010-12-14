@@ -771,7 +771,7 @@ NSInteger phoneNumberSort(id num1, id num2, void *context){
 	NSArray * schedule = (NSArray *) [libraryDictionary objectForKey:@"weeklyHours"];
 	
 	directions = [directions stringByReplacingOccurrencesOfString:@"\n" withString:@""];
-	if ([lib.name isEqualToString:name]) {
+	if ([lib.primaryName isEqualToString:primaryName]) {
 		
 		lib.primaryName = primaryName;
 		lib.websiteLib = website;

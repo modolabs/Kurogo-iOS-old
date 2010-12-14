@@ -792,7 +792,7 @@ NSInteger phoneNumberSortItemAvail(id num1, id num2, void *context){
 	NSArray * schedule = (NSArray *) [libraryDictionary objectForKey:@"weeklyHours"];
 	
 	directions = [directions stringByReplacingOccurrencesOfString:@"\n" withString:@""];
-	//if ([lib.primaryName isEqualToString:primaryName]) {
+	if ([lib.primaryName isEqualToString:primaryName]) {
 		
 		lib.primaryName = primaryName;
 		lib.websiteLib = website;
@@ -849,7 +849,7 @@ NSInteger phoneNumberSortItemAvail(id num1, id num2, void *context){
 		weeklySchedule = tempDict;
 		
 		[CoreDataManager saveData];
-	//}
+	}
 	
 	[self.tableView reloadData];
 	//[parentViewController removeLoadingIndicator];
