@@ -388,8 +388,9 @@ allLibrariesWithItem: (NSArray *) allLibraries
 	for(NSDictionary * availItemDict in availableItems){
 		
 		NSString * canRequest = [availItemDict objectForKey:@"canRequest"];
+		NSString * canScanAndDeliver = [availItemDict objectForKey:@"canScanAndDeliver"];
 		
-		if ([canRequest isEqualToString:@"YES"]) {
+		if (([canRequest isEqualToString:@"YES"]) || ([canScanAndDeliver isEqualToString:@"YES"])){
 			availableIsYellow = YES;
 			break;
 		}
@@ -399,8 +400,9 @@ allLibrariesWithItem: (NSArray *) allLibraries
 	for(NSDictionary * availItemDict in checkedOutItems){
 		
 		NSString * canRequest = [availItemDict objectForKey:@"canRequest"];
+		NSString * canScanAndDeliver = [availItemDict objectForKey:@"canScanAndDeliver"];
 		
-		if ([canRequest isEqualToString:@"YES"]) {
+		if (([canRequest isEqualToString:@"YES"]) || ([canScanAndDeliver isEqualToString:@"YES"])){
 			checkedOutCanRequest = YES;
 			break;
 		}
@@ -408,7 +410,7 @@ allLibrariesWithItem: (NSArray *) allLibraries
 	
 	
 	
-	UILabel *label2 = [[UILabel alloc] initWithFrame:CGRectMake(230.0, cell.frame.size.height/2 - 10, 50.0, 20.0)];
+	/*UILabel *label2 = [[UILabel alloc] initWithFrame:CGRectMake(230.0, cell.frame.size.height/2 - 10, 50.0, 20.0)];
 	label2.text = @"Request";
 	label2.font = [UIFont fontWithName:COURSE_NUMBER_FONT
 								  size:13];
@@ -416,6 +418,7 @@ allLibrariesWithItem: (NSArray *) allLibraries
 	label2.backgroundColor = [UIColor clearColor];	
 	label2.lineBreakMode = UILineBreakModeWordWrap;
 	label2.numberOfLines = 1;
+	 */
 	
 	if (indexPath.row == 0) {// available
 		
@@ -427,7 +430,7 @@ allLibrariesWithItem: (NSArray *) allLibraries
 				//cell.imageView.image = image;
 				cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 				
-				[cell addSubview:label2];
+				//[cell addSubview:label2];
 			}
 			
 			//else {
@@ -440,7 +443,7 @@ allLibrariesWithItem: (NSArray *) allLibraries
 			
 			if (checkedOutCanRequest == YES) {
 				cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-				[cell addSubview:label2];
+				//[cell addSubview:label2];
 			}
 			
 			UIImage *image = [UIImage imageNamed:@"dining/dining-status-open-w-restrictions.png"];
@@ -464,7 +467,7 @@ allLibrariesWithItem: (NSArray *) allLibraries
 			
 			if (checkedOutCanRequest == YES) {
 				cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-				[cell addSubview:label2];
+				//[cell addSubview:label2];
 			}
 			
 			UIImage *image = [UIImage imageNamed:@"dining/dining-status-open-w-restrictions.png"];
@@ -534,6 +537,7 @@ allLibrariesWithItem: (NSArray *) allLibraries
 	
 	NSDictionary * itemForRow = [items objectAtIndex:indexPath.row];
 	NSString * canRequest = [itemForRow objectForKey:@"canRequest"];
+	NSString * canScanAndDeliver = [itemForRow objectForKey:@"canScanAndDeliver"];
 	NSString * isUnAvailable = [itemForRow objectForKey:@"unavailable"];
 	NSString * isAvailable = [itemForRow objectForKey:@"available"];
 	
@@ -545,7 +549,7 @@ allLibrariesWithItem: (NSArray *) allLibraries
 		color = @"green";
 	}
 	
-	else if ([canRequest isEqualToString:@"YES"]){
+	else if (([canRequest isEqualToString:@"YES"]) || ([canScanAndDeliver isEqualToString:@"YES"])) {
 		status = @"Checked Out";
 		color = @"yellow";
 	}
@@ -569,7 +573,7 @@ allLibrariesWithItem: (NSArray *) allLibraries
 	else
 		cell.imageView.image = [UIImage imageNamed:@"dining/dining-status-closed.png"];
 	
-	if ([canRequest isEqualToString:@"YES"])
+	if (([canRequest isEqualToString:@"YES"]) || ([canScanAndDeliver isEqualToString:@"YES"]))
 		cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 	
 	cell.selectionStyle = UITableViewCellSelectionStyleGray;
@@ -649,15 +653,137 @@ allLibrariesWithItem: (NSArray *) allLibraries
 	
 	[tableView deselectRowAtIndexPath:indexPath animated:NO];
 	
-	MIT_MobileAppDelegate *appDelegate = (MIT_MobileAppDelegate *)[[UIApplication sharedApplication] delegate];
-	
-	RequestWebViewModalViewController *modalVC = [[RequestWebViewModalViewController alloc] initWithRequestUrl:@"http://www.bbc.com"];
 
-	//[self.navigationController pushViewController:modalVC animated:YES];
-	//[modalVC release];
 	
-	[appDelegate presentAppModalViewController:modalVC animated:YES];
-	[modalVC release];
+	if ([[sectionType objectForKey:[NSString stringWithFormat:@"%d", indexPath.section]] isEqualToString:sectionType0]){
+		
+		
+		NSDictionary * statDict = [availabilityCategories objectAtIndex:indexPath.section];
+		
+		int availCount = 0;
+		availCount = [[statDict objectForKey:@"availCount"] intValue];
+		
+		int unavailCount = 0;
+		unavailCount = [[statDict objectForKey:@"unavailCount"] intValue];
+		
+		int checkedOutCount = 0;
+		checkedOutCount = [[statDict objectForKey:@"checkedOutCount"] intValue];
+		
+		int requestCount = 0;
+		requestCount = [[statDict objectForKey:@"requestCount"] intValue];
+		
+		int scanAndDeliverCount = 0;
+		scanAndDeliverCount = [[statDict objectForKey:@"scanAndDeliverCount"] intValue];
+		
+		if (((requestCount > 0) && (scanAndDeliverCount == requestCount)) || 
+			(requestCount == 1)){
+			
+			//just present the reqUrl
+			NSArray * availableItems = (NSArray *)[statDict objectForKey:@"availableItems"];
+			NSArray * checkedOutItems = (NSArray * )[statDict objectForKey:@"checkedOutItems"];
+			
+			NSString * reqUrl = @"";
+			if (indexPath.row == 0){
+				if (availCount > 0){
+					
+					for(NSDictionary * availD in availableItems){
+						if ([[availD objectForKey:@"requestUrl"] length] > 0)
+							reqUrl = [availD objectForKey:@"requestUrl"];
+					}
+				}
+				else if (checkedOutCount > 0) {
+					for(NSDictionary * availD in checkedOutItems){
+						if ([[availD objectForKey:@"requestUrl"] length] > 0)
+							reqUrl = [availD objectForKey:@"requestUrl"];
+					}
+				}
+			}
+			
+			else if (indexPath.row == 1){
+				
+				if (checkedOutCount > 0){
+					for(NSDictionary * availD in checkedOutItems){
+						if ([[availD objectForKey:@"requestUrl"] length] > 0)
+							reqUrl = [availD objectForKey:@"requestUrl"];
+					}
+				}				
+			}
+			else {
+				return;
+			}
+			
+			
+			if ([reqUrl length] > 0) {
+				MIT_MobileAppDelegate *appDelegate = (MIT_MobileAppDelegate *)[[UIApplication sharedApplication] delegate];
+			
+				RequestWebViewModalViewController *modalVC = [[RequestWebViewModalViewController alloc] initWithRequestUrl:reqUrl];
+			
+				//[self.navigationController pushViewController:modalVC animated:YES];
+				//[modalVC release];
+			
+				[appDelegate presentAppModalViewController:modalVC animated:YES];
+				[modalVC release];
+			}
+			
+
+		}
+		
+		else if (requestCount == 0)
+			return; // no action
+		
+		else
+			[self showActionSheet:indexPath.section];
+
+	}
+	
+	else if ([[sectionType objectForKey:[NSString stringWithFormat:@"%d", indexPath.section]] isEqualToString:sectionType1]) {
+		
+		NSDictionary * statDict = [availabilityCategories objectAtIndex:indexPath.section];
+		
+		NSMutableArray * items = [[NSMutableArray alloc] init];
+		int indexCount =0;
+		
+		NSArray * availableItems = (NSArray *)[statDict objectForKey:@"availableItems"];
+		NSArray * checkedOutItems = (NSArray * )[statDict objectForKey:@"checkedOutItems"];
+		NSArray * unavailableItems = (NSArray * )[statDict objectForKey:@"unavailableItems"];
+		
+		for(NSDictionary * item in availableItems) {
+			[items insertObject:item atIndex:indexCount];
+			indexCount++;
+		}
+		
+		for(NSDictionary * item1 in checkedOutItems) {
+			[items insertObject:item1 atIndex:indexCount];
+			indexCount++;
+		}
+		
+		for(NSDictionary * item2 in unavailableItems) {
+			[items insertObject:item2 atIndex:indexCount];
+			indexCount++;
+		}
+		
+		
+		NSDictionary * itemForRow = [items objectAtIndex:indexPath.row];
+		NSString * canRequest = [itemForRow objectForKey:@"canRequest"];
+		NSString * canScanAndDeliver = [itemForRow objectForKey:@"canScanAndDeliver"];
+		
+		
+		if ([canRequest isEqualToString:@"YES"] || [canScanAndDeliver isEqualToString:@"YES"]) {
+			
+			NSString * reqUrl = [itemForRow objectForKey:@"requestUrl"];
+			MIT_MobileAppDelegate *appDelegate = (MIT_MobileAppDelegate *)[[UIApplication sharedApplication] delegate];
+		
+			RequestWebViewModalViewController *modalVC = [[RequestWebViewModalViewController alloc] initWithRequestUrl:reqUrl];
+		
+			//[self.navigationController pushViewController:modalVC animated:YES];
+			//[modalVC release];
+		
+			[appDelegate presentAppModalViewController:modalVC animated:YES];
+			[modalVC release];
+		}
+	}
+	
+	
 }
 
 - (UIView *)tableView: (UITableView *)tableView viewForHeaderInSection: (NSInteger)section{
@@ -922,6 +1048,112 @@ allLibrariesWithItem: (NSArray *) allLibraries
 											  otherButtonTitles:nil];
 	[alertView show];
 	[alertView release];
+}
+
+#pragma mark UIActionSheet setup
+
+-(void) showActionSheet:(int)sectionIndex{
+	
+	showingSection = sectionIndex;
+	UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:@"Item Action Options" 
+															 delegate:self 
+													cancelButtonTitle:@"Cancel Button" 
+											   destructiveButtonTitle:nil 
+													otherButtonTitles:@"Request Item", @"Scan & Deliver", nil];
+
+	actionSheet.actionSheetStyle = UIActionSheetStyleBlackOpaque;
+
+    [actionSheet showInView:self.view];
+    [actionSheet release];
+	
+	return;
+}
+
+#pragma mark UIActionSheetDelegate methods
+
+- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex{
+	
+	if (buttonIndex == 2) {
+        NSLog(@"Cancel");
+		return;
+    }
+	
+	NSDictionary * statDict = [availabilityCategories objectAtIndex:showingSection];
+	
+	int availCount = 0;
+	availCount = [[statDict objectForKey:@"availCount"] intValue];
+	
+	int unavailCount = 0;
+	unavailCount = [[statDict objectForKey:@"unavailCount"] intValue];
+	
+	int checkedOutCount = 0;
+	checkedOutCount = [[statDict objectForKey:@"checkedOutCount"] intValue];
+	
+	int requestCount = 0;
+	requestCount = [[statDict objectForKey:@"requestCount"] intValue];
+	
+	int scanAndDeliverCount = 0;
+	scanAndDeliverCount = [[statDict objectForKey:@"scanAndDeliverCount"] intValue];
+
+	NSMutableArray * items = [[NSMutableArray alloc] init];
+	int indexCount =0;
+	
+	NSArray * availableItems = (NSArray *)[statDict objectForKey:@"availableItems"];
+	NSArray * checkedOutItems = (NSArray * )[statDict objectForKey:@"checkedOutItems"];
+	NSArray * unavailableItems = (NSArray * )[statDict objectForKey:@"unavailableItems"];
+	
+	for(NSDictionary * item in availableItems) {
+		[items insertObject:item atIndex:indexCount];
+		indexCount++;
+	}
+	
+	for(NSDictionary * item1 in checkedOutItems) {
+		[items insertObject:item1 atIndex:indexCount];
+		indexCount++;
+	}
+	
+	for(NSDictionary * item2 in unavailableItems) {
+		[items insertObject:item2 atIndex:indexCount];
+		indexCount++;
+	}
+		
+	
+	NSString * reqUrl = @"";
+	if (buttonIndex == 0) {
+		 NSLog(@"Request Item");
+		
+		for(NSDictionary * availD in items){
+			if ([[availD objectForKey:@"canRequest"] isEqualToString:@"YES"])
+				if ([[availD objectForKey:@"requestUrl"] length] > 0)
+					reqUrl = [availD objectForKey:@"requestUrl"];
+		}
+       
+    } else if (buttonIndex == 1) {
+        NSLog(@"Scan & Deliver");
+		
+		for(NSDictionary * availD in items){
+			if ([[availD objectForKey:@"canScanAndDeliver"] isEqualToString:@"YES"])
+				if ([[availD objectForKey:@"requestUrl"] length] > 0)
+					reqUrl = [availD objectForKey:@"requestUrl"];
+		}
+    }
+	
+	if ([reqUrl length] > 0) {
+		NSLog(@"%@", reqUrl);
+		
+		MIT_MobileAppDelegate *appDelegate = (MIT_MobileAppDelegate *)[[UIApplication sharedApplication] delegate];
+		
+		RequestWebViewModalViewController *modalVC = [[RequestWebViewModalViewController alloc] initWithRequestUrl:reqUrl];
+		
+		//[self.navigationController pushViewController:modalVC animated:YES];
+		//[modalVC release];
+		
+		[appDelegate presentAppModalViewController:modalVC animated:YES];
+		[modalVC release];
+	}
+	
+	return;
+	
 }
 
 

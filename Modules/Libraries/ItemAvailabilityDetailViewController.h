@@ -16,7 +16,7 @@
 #define sectionType1 @"type1"
 #define sectionType2 @"type2"
 
-@interface ItemAvailabilityDetailViewController : UITableViewController <JSONAPIDelegate>{
+@interface ItemAvailabilityDetailViewController : UITableViewController <JSONAPIDelegate, UIActionSheetDelegate>{
 
 	NSString * libraryName;
 	NSString * libraryId;
@@ -49,6 +49,8 @@
 	NSMutableDictionary * sectionType; // this will determine which of the three types of section layouts to use
 	
 	UIButton * infoButton;
+	
+	int showingSection; // for use in the ActionSheet
 }
 
 @property (nonatomic, retain) JSONAPIRequest *parentViewApiRequest;
@@ -66,5 +68,7 @@ allLibrariesWithItem: (NSArray *) allLibraries
 -(void) setupLayout;
 -(UITableViewCell *) sectionTypeZero:(NSIndexPath *)indexPath tableView:(UITableView *)tableView;
 -(UITableViewCell *) sectionTypeOne:(NSIndexPath *)indexPath tableView:(UITableView *)tableView;
+
+-(void) showActionSheet:(int)sectionIndex;
 
 @end
