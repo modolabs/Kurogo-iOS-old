@@ -686,42 +686,42 @@ allLibrariesWithItem: (NSArray *) allLibraries
 		
 		CGFloat heightName = [collectionName
 						  sizeWithFont:[UIFont boldSystemFontOfSize:17]
-						  constrainedToSize:CGSizeMake(250, 2000)         
+						  constrainedToSize:CGSizeMake(280, 2000)         
 						  lineBreakMode:UILineBreakModeWordWrap].height;
 		
 		CGFloat heightCallNbr = [callNbr
 							  sizeWithFont:[UIFont fontWithName:STANDARD_FONT size:13]
-							  constrainedToSize:CGSizeMake(200, 2000)         
+							  constrainedToSize:CGSizeMake(280, 2000)         
 							  lineBreakMode:UILineBreakModeWordWrap].height;
 		
 		CGFloat heightAvailVal = [availVal
 								 sizeWithFont:[UIFont fontWithName:STANDARD_FONT size:13]
-								 constrainedToSize:CGSizeMake(200, 2000)         
+								 constrainedToSize:CGSizeMake(280, 2000)         
 								 lineBreakMode:UILineBreakModeWordWrap].height;
 		
-		headerCollectionName = [[UILabel alloc] initWithFrame:CGRectMake(12.0, 0.0, 250.0, heightName)];
+		headerCollectionName = [[UILabel alloc] initWithFrame:CGRectMake(12.0, 0.0, 280, heightName)];
 		headerCollectionName.text = collectionName;
 		headerCollectionName.font = [UIFont boldSystemFontOfSize:17];
 		headerCollectionName.textColor = [UIColor colorWithHexString:@"#554C41"];
 		headerCollectionName.backgroundColor = [UIColor clearColor];	
 		headerCollectionName.lineBreakMode = UILineBreakModeTailTruncation;
-		headerCollectionName.numberOfLines = 2;
+		headerCollectionName.numberOfLines = 5;
 		
-		headerCollectionCallNumber = [[UILabel alloc] initWithFrame:CGRectMake(12.0, heightName + 3, 200.0, heightCallNbr)];
+		headerCollectionCallNumber = [[UILabel alloc] initWithFrame:CGRectMake(12.0, heightName + 3, 280, heightCallNbr)];
 		headerCollectionCallNumber.text = callNbr;
 		headerCollectionCallNumber.font =  [UIFont fontWithName:STANDARD_FONT size:13];
 		headerCollectionCallNumber.textColor = [UIColor colorWithHexString:@"#554C41"];
 		headerCollectionCallNumber.backgroundColor = [UIColor clearColor];	
 		headerCollectionCallNumber.lineBreakMode = UILineBreakModeTailTruncation;
-		headerCollectionCallNumber.numberOfLines = 2;
+		headerCollectionCallNumber.numberOfLines = 5;
 		
-		headerCollectionAvailVal = [[UILabel alloc] initWithFrame:CGRectMake(12.0, heightName + 3 + heightCallNbr + 3, 200.0, heightAvailVal)];
+		headerCollectionAvailVal = [[UILabel alloc] initWithFrame:CGRectMake(12.0, heightName + 3 + heightCallNbr + 3, 280, heightAvailVal)];
 		headerCollectionAvailVal.text = availVal;
 		headerCollectionAvailVal.font =  [UIFont fontWithName:STANDARD_FONT size:13];
 		headerCollectionAvailVal.textColor = [UIColor colorWithHexString:@"#554C41"];
 		headerCollectionAvailVal.backgroundColor = [UIColor clearColor];	
 		headerCollectionAvailVal.lineBreakMode = UILineBreakModeTailTruncation;
-		headerCollectionAvailVal.numberOfLines = 2;
+		headerCollectionAvailVal.numberOfLines = 5;
 		
 		CGFloat height = heightName + heightCallNbr + heightAvailVal;
 		
