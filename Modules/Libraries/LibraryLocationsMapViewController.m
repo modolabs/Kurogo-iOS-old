@@ -98,6 +98,8 @@
 		
 		[mapView addAnnotation:annotation];
 	}
+	
+	mapView.region = [self regionForAnnotations:mapView.annotations];
 }
 
 
@@ -125,6 +127,7 @@
 		[mapView addAnnotation:annotation];
 		
 	}
+	mapView.region = [self regionForAnnotations:mapView.annotations];
 }
 
 
@@ -251,8 +254,22 @@
     }
     
     if (maxLat != -90) {
+	
+		if ([annotations count] > 1) {
+			if (minLat < 42.37)
+				minLat = 42.37;
+			
+			if (maxLat > 42.38)
+				maxLat = 42.38;
+			
+			if (minLon < -71.12)
+				minLon = -71.12;
+			
+			if (maxLon > -71.11)
+				maxLon = -71.11;
+		}
         
-        CLLocationCoordinate2D center;
+		CLLocationCoordinate2D center;
         center.latitude = minLat + (maxLat - minLat) / 2;
         center.longitude = minLon + (maxLon - minLon) / 2;
         
