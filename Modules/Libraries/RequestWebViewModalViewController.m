@@ -35,39 +35,23 @@
     [super viewDidLoad];
 	
 	self.view.frame = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height);
+
 	
-	if (nil == navbarView) {
-		//global/scrolltabs-background-opaque.png
+	if (nil == customNavBar){
 		
-		navbarView = [[[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, NAV_BAR_HEIGHT_WEBVIEW)] retain];
+		customNavBar = [[[UINavigationBar alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, NAV_BAR_HEIGHT_WEBVIEW)] retain];
+		customNavBar.tintColor = [UIColor blackColor];
+		UIBarButtonItem *rightButton = [[UIBarButtonItem alloc] initWithTitle:@"Done" 
+																		style:UIBarButtonSystemItemDone target:self action:@selector(doneButtonPressed:)];
 		
-		UIImageView * imView = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"global/scrolltabs-background-opaque.png"]];
-		
-		[navbarView addSubview:imView];
-		
-		
-		UILabel * titleLabel = [[[UILabel alloc] initWithFrame:CGRectMake(80, 13.0, 200, 25.0)] retain];
-		titleLabel.text = @"File a Request";
-		titleLabel.font = [UIFont fontWithName:CONTENT_TITLE_FONT size:CONTENT_TITLE_FONT_SIZE];
-		titleLabel.backgroundColor = [UIColor clearColor];
-		titleLabel.textColor = [UIColor whiteColor];
-		titleLabel.numberOfLines = 1;
-		
-		[navbarView addSubview:titleLabel];
-		[titleLabel release];
-		
-		NSArray *itemArray = [NSArray arrayWithObjects: @"Done", nil];
-		barButtonControl = [[UISegmentedControl alloc] initWithItems:itemArray];
-		barButtonControl.tintColor = [UIColor darkGrayColor];
-		barButtonControl.frame = CGRectMake(navbarView.frame.size.width - 65, 10.0, 45, 30);
-		barButtonControl.segmentedControlStyle = UISegmentedControlStyleBar;
-		[barButtonControl addTarget:self
-							 action:@selector(doneButtonPressed:)
-				   forControlEvents:UIControlEventValueChanged];
-		
+		UINavigationItem *item = [[UINavigationItem alloc] initWithTitle:@"File a Request"];
+		item.rightBarButtonItem = rightButton;
+		item.hidesBackButton = YES;
+
+		[customNavBar pushNavigationItem:item animated:NO];
 	}
-	[self.view addSubview:navbarView];
-	[self.view addSubview:barButtonControl];
+	
+	[self.view addSubview:customNavBar];
 	
 	CGRect frame = CGRectMake(0, NAV_BAR_HEIGHT_WEBVIEW, self.view.frame.size.width, self.view.frame.size.height);
 	if (nil == urlWebView)

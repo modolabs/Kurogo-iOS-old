@@ -16,10 +16,7 @@
 	
 	UIActivityIndicatorView *av;
 	
-	UIView * navbarView;
-	
-	
-	UISegmentedControl * barButtonControl; // to get the right shape automagically
+	UINavigationBar * customNavBar;
 }
 
 @property (nonatomic, retain) UIActivityIndicatorView *av;
