@@ -121,10 +121,10 @@ allLibrariesWithItem: (NSArray *) allLibraries
 	infoButton = [UIButton buttonWithType:UIButtonTypeCustom];
 	infoButton.frame = CGRectMake(self.tableView.frame.size.width - 60.0 , 5, 50.0, 50.0);
 	infoButton.enabled = YES;
-	[infoButton setImage:[UIImage imageNamed:@"global/action-search@2x.png"] forState:UIControlStateNormal];
-	[infoButton setImage:[UIImage imageNamed:@"global/action-search@2x.png"] forState:(UIControlStateNormal | UIControlStateHighlighted)];
-	[infoButton setImage:[UIImage imageNamed:@"global/action-search@2x.png"] forState:UIControlStateSelected];
-	[infoButton setImage:[UIImage imageNamed:@"global/action-search@2x.png"] forState:(UIControlStateSelected | UIControlStateHighlighted)];
+	[infoButton setImage:[UIImage imageNamed:@"global/info_button.png"] forState:UIControlStateNormal];
+	[infoButton setImage:[UIImage imageNamed:@"global/info_button_pressed.png"] forState:(UIControlStateNormal | UIControlStateHighlighted)];
+	[infoButton setImage:[UIImage imageNamed:@"global/info_button_pressed.png"] forState:UIControlStateSelected];
+	[infoButton setImage:[UIImage imageNamed:@"global/info_button_pressed.png"] forState:(UIControlStateSelected | UIControlStateHighlighted)];
 	[infoButton addTarget:self action:@selector(infoButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
 	
 	
