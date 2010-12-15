@@ -855,6 +855,8 @@
 - (void)viewDidUnload {
     // Relinquish ownership of anything that can be recreated in viewDidLoad or on demand.
     // For example: self.myOutlet = nil;
+	locationManager.delegate = nil;
+	[locationManager release];
 }
 
 
@@ -928,18 +930,6 @@
 		locationManager.delegate = self;
 
 		[locationManager startUpdatingLocation];
-		
-		NSDate * start = [NSDate date];
-		while(1){
-			NSTimeInterval locationAge = -[start timeIntervalSinceNow];
-			if (locationAge > 1.0)
-				break;
-		
-			if (nil != currentLocation)
-				break;
-		}
-		
-		[locationManager stopUpdatingLocation];
 			
 		}
 	else {
@@ -1032,19 +1022,20 @@
     // test the age of the location measurement to determine if the measurement is cached
     // in most cases you will not want to rely on cached measurements
     NSTimeInterval locationAge = -[newLocation.timestamp timeIntervalSinceNow];
-    if (locationAge > 5.0) return;
+    if (locationAge > 60.0) return;
     // test that the horizontal accuracy does not indicate an invalid measurement
     if (newLocation.horizontalAccuracy < 0) return;
   
 	currentLocation = [newLocation retain];
 	[locationManager stopUpdatingLocation];
-	
+	[self.tableView reloadData];
 
 }
 
 - (void)locationManager:(CLLocationManager *)manager monitoringDidFailForRegion:(CLRegion *)region withError:(NSError *)error{
 	
 	currentLocation = nil;
+	[locationManager stopUpdatingLocation];
 }
 
 - (void)locationManager:(CLLocationManager *)manager didFailWithError:(NSError *)error{
