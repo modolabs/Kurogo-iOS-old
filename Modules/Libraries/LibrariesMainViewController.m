@@ -326,7 +326,7 @@
 {
 	[_bookmarkButton removeFromSuperview];
 	
-	self.searchTerms = searchBar.text;
+	self.searchTerms = [searchBar.text retain];
 	//[self performSearch];
 	
 	LibrariesSearchViewController *vc = [[LibrariesSearchViewController alloc] initWithViewController: self];
@@ -338,6 +338,7 @@
                                              parameters:[NSDictionary dictionaryWithObjectsAndKeys:self.searchTerms, @"q", nil]];
 	
     if (requestWasDispatched) {
+		vc.searchTerms = [searchBar.text retain];
 		[self.navigationController pushViewController:vc animated:YES];
     } else {
         //[self handleWarningMessage:@"Could not dispatch search" title:@"Search Failed"];

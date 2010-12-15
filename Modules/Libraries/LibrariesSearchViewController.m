@@ -591,7 +591,9 @@
 			[self.lastResults setObject:alreadyInDB forKey:index];
 			}
 			[_tableView reloadData];
-			[_tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:NO];
+			
+			if ([result count] > 0)
+				[_tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:NO];
 		}
 
 	} else if ([result isKindOfClass:[NSDictionary class]]) {
