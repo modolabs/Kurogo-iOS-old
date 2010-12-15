@@ -560,6 +560,12 @@
 			else if ((availCount > 0) && (availableIsYellow == YES))
 				status = @"available";
 			
+			else if (checkedOutCount > 0)
+				status = @"request";
+			
+			else if (unavailCount > 0)
+				status = @"unavailable";
+			
 			else if (requestCount > 0)
 				status = @"request";
 			

@@ -383,6 +383,7 @@ allLibrariesWithItem: (NSArray *) allLibraries
 	
 	NSArray * availableItems = (NSArray *)[statDict objectForKey:@"availableItems"];
 	NSArray * checkedOutItems = (NSArray * )[statDict objectForKey:@"checkedOutItems"];
+	NSArray * unavailableItems = (NSArray * )[statDict objectForKey:@"unavailableItems"];
 	
 	BOOL availableIsYellow = NO;
 	for(NSDictionary * availItemDict in availableItems){
@@ -408,6 +409,17 @@ allLibrariesWithItem: (NSArray *) allLibraries
 		}
 	}
 	
+	BOOL unavailableCanRequest = NO;
+	for(NSDictionary * unavailItemDict in unavailableItems){
+		
+		NSString * canRequest = [unavailItemDict objectForKey:@"canRequest"];
+		NSString * canScanAndDeliver = [unavailItemDict objectForKey:@"canScanAndDeliver"];
+		
+		if (([canRequest isEqualToString:@"YES"]) || ([canScanAndDeliver isEqualToString:@"YES"])){
+			unavailableCanRequest = YES;
+			break;
+		}
+	}
 	
 	
 	/*UILabel *label2 = [[UILabel alloc] initWithFrame:CGRectMake(230.0, cell.frame.size.height/2 - 10, 50.0, 20.0)];
@@ -453,6 +465,10 @@ allLibrariesWithItem: (NSArray *) allLibraries
 		}
 		
 		else if (unavailCount > 0){
+			
+			if (unavailableCanRequest == YES)
+				cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+				
 			cell.textLabel.text = [NSString stringWithFormat:@"%d unavailable", unavailCount];
 			UIImage *image = [UIImage imageNamed:@"dining/dining-status-closed.png"];
 			cell.imageView.image = image;
@@ -477,6 +493,9 @@ allLibrariesWithItem: (NSArray *) allLibraries
 		}
 		
 		else if (unavailCount > 0){
+			if (unavailableCanRequest == YES)
+				cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+			
 			cell.textLabel.text = [NSString stringWithFormat:@"%d unavailable", unavailCount];
 			UIImage *image = [UIImage imageNamed:@"dining/dining-status-closed.png"];
 			cell.imageView.image = image;
@@ -487,6 +506,9 @@ allLibrariesWithItem: (NSArray *) allLibraries
 	else if (indexPath.row == 2) {// unavailable
 		
 		if (unavailCount > 0) {
+			if (unavailableCanRequest == YES)
+				cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+			
 			cell.textLabel.text = [NSString stringWithFormat:@"%d unavailable", unavailCount];
 			UIImage *image = [UIImage imageNamed:@"dining/dining-status-closed.png"];
 			cell.imageView.image = image;
@@ -540,6 +562,7 @@ allLibrariesWithItem: (NSArray *) allLibraries
 	NSString * canScanAndDeliver = [itemForRow objectForKey:@"canScanAndDeliver"];
 	NSString * isUnAvailable = [itemForRow objectForKey:@"unavailable"];
 	NSString * isAvailable = [itemForRow objectForKey:@"available"];
+	NSString * isCheckedOut = [itemForRow objectForKey:@"checkedOutItem"];
 	
 	NSString * status = @"";
 	NSString * color = @"";
@@ -549,7 +572,12 @@ allLibrariesWithItem: (NSArray *) allLibraries
 		color = @"green";
 	}
 	
-	else if (([canRequest isEqualToString:@"YES"]) || ([canScanAndDeliver isEqualToString:@"YES"])) {
+	/*else if (([canRequest isEqualToString:@"YES"]) || ([canScanAndDeliver isEqualToString:@"YES"])) {
+		status = @"Checked Out";
+		color = @"yellow";
+	}*/
+	
+	else if ([isCheckedOut isEqualToString:@"YES"]){
 		status = @"Checked Out";
 		color = @"yellow";
 	}
