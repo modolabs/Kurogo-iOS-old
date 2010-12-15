@@ -121,6 +121,10 @@
 		5623E28A12B2AB9500212D5C /* ItemAvailabilityLibDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5623E28812B2AB9500212D5C /* ItemAvailabilityLibDetailViewController.m */; };
 		5623E7A312B7F81000212D5C /* UnderlinedUILabel.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = 5623E7A112B7F81000212D5C /* UnderlinedUILabel.h */; settings = {JAVA_ARCHIVE_SUBDIR = Modules/Libraries; }; };
 		5623E7A412B7F81100212D5C /* UnderlinedUILabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 5623E7A212B7F81000212D5C /* UnderlinedUILabel.m */; };
+		5623EA5112B908A900212D5C /* map_it_pressed@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5623EA4D12B908A900212D5C /* map_it_pressed@2x.png */; };
+		5623EA5212B908A900212D5C /* map_it@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5623EA4E12B908A900212D5C /* map_it@2x.png */; };
+		5623EA5312B908A900212D5C /* map-it-pressed.png in Resources */ = {isa = PBXBuildFile; fileRef = 5623EA4F12B908A900212D5C /* map-it-pressed.png */; };
+		5623EA5412B908A900212D5C /* map-it.png in Resources */ = {isa = PBXBuildFile; fileRef = 5623EA5012B908A900212D5C /* map-it.png */; };
 		5689D6C71297066F00A9EFA0 /* LibraryDetailViewController.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = 5689D6C51297066F00A9EFA0 /* LibraryDetailViewController.h */; settings = {JAVA_ARCHIVE_SUBDIR = Modules/Libraries; }; };
 		5689D6C81297066F00A9EFA0 /* LibraryDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5689D6C61297066F00A9EFA0 /* LibraryDetailViewController.m */; };
 		5689D9681297BF0C00A9EFA0 /* LibraryWeeklyScheduleViewController.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = 5689D9661297BF0C00A9EFA0 /* LibraryWeeklyScheduleViewController.h */; settings = {JAVA_ARCHIVE_SUBDIR = Modules/Libraries; }; };
@@ -714,6 +718,10 @@
 		5623E28812B2AB9500212D5C /* ItemAvailabilityLibDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ItemAvailabilityLibDetailViewController.m; sourceTree = "<group>"; };
 		5623E7A112B7F81000212D5C /* UnderlinedUILabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UnderlinedUILabel.h; sourceTree = "<group>"; };
 		5623E7A212B7F81000212D5C /* UnderlinedUILabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UnderlinedUILabel.m; sourceTree = "<group>"; };
+		5623EA4D12B908A900212D5C /* map_it_pressed@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "map_it_pressed@2x.png"; path = "Resources/global/map_it_pressed@2x.png"; sourceTree = "<group>"; };
+		5623EA4E12B908A900212D5C /* map_it@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "map_it@2x.png"; path = "Resources/global/map_it@2x.png"; sourceTree = "<group>"; };
+		5623EA4F12B908A900212D5C /* map-it-pressed.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "map-it-pressed.png"; path = "Resources/global/map-it-pressed.png"; sourceTree = "<group>"; };
+		5623EA5012B908A900212D5C /* map-it.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "map-it.png"; path = "Resources/global/map-it.png"; sourceTree = "<group>"; };
 		5689D6C51297066F00A9EFA0 /* LibraryDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LibraryDetailViewController.h; sourceTree = "<group>"; };
 		5689D6C61297066F00A9EFA0 /* LibraryDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LibraryDetailViewController.m; sourceTree = "<group>"; };
 		5689D9661297BF0C00A9EFA0 /* LibraryWeeklyScheduleViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LibraryWeeklyScheduleViewController.h; sourceTree = "<group>"; };
@@ -1328,6 +1336,10 @@
 		29B97314FDCFA39411CA2CEA /* CustomTemplate */ = {
 			isa = PBXGroup;
 			children = (
+				5623EA4D12B908A900212D5C /* map_it_pressed@2x.png */,
+				5623EA4E12B908A900212D5C /* map_it@2x.png */,
+				5623EA4F12B908A900212D5C /* map-it-pressed.png */,
+				5623EA5012B908A900212D5C /* map-it.png */,
 				DE715445102FE468005E6111 /* Modules */,
 				080E96DDFE201D6D7F000001 /* Common */,
 				DE783C9810C8651300931EC5 /* App Delegate */,
@@ -2571,6 +2583,10 @@
 				56D308CA12AE94A000E61B3B /* musicscore.png in Resources */,
 				56D308CB12AE94A000E61B3B /* soundrecording.png in Resources */,
 				56D308CC12AE94A000E61B3B /* video.png in Resources */,
+				5623EA5112B908A900212D5C /* map_it_pressed@2x.png in Resources */,
+				5623EA5212B908A900212D5C /* map_it@2x.png in Resources */,
+				5623EA5312B908A900212D5C /* map-it-pressed.png in Resources */,
+				5623EA5412B908A900212D5C /* map-it.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

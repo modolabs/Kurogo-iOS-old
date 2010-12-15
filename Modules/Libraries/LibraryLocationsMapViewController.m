@@ -41,7 +41,7 @@
 	
 
 	
-	CLLocationCoordinate2D center;
+	/*CLLocationCoordinate2D center;
 	center.latitude = 42.37640;
 	center.longitude = -71.11660;
 	
@@ -55,7 +55,7 @@
 	region.span.latitudeDelta = latDelta;
 	region.span.longitudeDelta = lonDelta;
 	
-	self.mapView.region = region;
+	self.mapView.region = region;*/
 	
 	[self.view addSubview:self.mapView];
 	
@@ -242,6 +242,12 @@
         
         if (coordinate.latitude == 0 && coordinate.longitude == 0)
             continue;
+		
+		if (([annotations count] > 1) && ((coordinate.latitude < 42.37) || (coordinate.latitude > 42.38)))
+			continue;
+		
+		if (([annotations count] > 1) && ((coordinate.longitude < -71.12) || (coordinate.longitude > -71.11)))
+			continue;
         
         if (coordinate.latitude < minLat)
             minLat = coordinate.latitude;
@@ -254,20 +260,6 @@
     }
     
     if (maxLat != -90) {
-	
-		if ([annotations count] > 1) {
-			if (minLat < 42.37)
-				minLat = 42.37;
-			
-			if (maxLat > 42.38)
-				maxLat = 42.38;
-			
-			if (minLon < -71.12)
-				minLon = -71.12;
-			
-			if (maxLon > -71.11)
-				maxLon = -71.11;
-		}
         
 		CLLocationCoordinate2D center;
         center.latitude = minLat + (maxLat - minLat) / 2;
@@ -277,8 +269,8 @@
         double latDelta = maxLat - minLat;
         double lonDelta = maxLon - minLon;
         
-        if (latDelta < 0.002) latDelta = 0.002;
-        if (lonDelta < 0.002) lonDelta = 0.002;
+        //if (latDelta < 0.002) latDelta = 0.002;
+        //if (lonDelta < 0.002) lonDelta = 0.002;
 		
         region = MKCoordinateRegionMake(center, MKCoordinateSpanMake(latDelta + latDelta / 4 , lonDelta + lonDelta / 4));        
     }

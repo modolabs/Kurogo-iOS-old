@@ -191,10 +191,10 @@
 	mapButton = [UIButton buttonWithType:UIButtonTypeCustom];
 	mapButton.frame = CGRectMake(self.tableView.frame.size.width - 60.0 , runningYDispacement - 15, 50.0, 50.0);
 	mapButton.enabled = YES;
-	[mapButton setImage:[UIImage imageNamed:@"maps/map_pin_complete.png"] forState:UIControlStateNormal];
-	[mapButton setImage:[UIImage imageNamed:@"maps/map_pin_complete.png"] forState:(UIControlStateNormal | UIControlStateHighlighted)];
-	[mapButton setImage:[UIImage imageNamed:@"maps/map_pin_complete.png"] forState:UIControlStateSelected];
-	[mapButton setImage:[UIImage imageNamed:@"maps/map_pin_complete.png"] forState:(UIControlStateSelected | UIControlStateHighlighted)];
+	[mapButton setImage:[UIImage imageNamed:@"global/map-it.png"] forState:UIControlStateNormal];
+	[mapButton setImage:[UIImage imageNamed:@"global/map-it-pressed.png"] forState:(UIControlStateNormal | UIControlStateHighlighted)];
+	[mapButton setImage:[UIImage imageNamed:@"global/map-it.png-pressed"] forState:UIControlStateSelected];
+	[mapButton setImage:[UIImage imageNamed:@"global/map-it.png-pressed"] forState:(UIControlStateSelected | UIControlStateHighlighted)];
 	[mapButton addTarget:self action:@selector(mapButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
 	
 	UILabel *detailLabel1;
