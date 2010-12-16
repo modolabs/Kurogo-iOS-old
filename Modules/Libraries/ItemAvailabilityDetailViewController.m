@@ -1085,7 +1085,7 @@ allLibrariesWithItem: (NSArray *) allLibraries
 	showingSection = sectionIndex;
 	UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:@"Item Action Options" 
 															 delegate:self 
-													cancelButtonTitle:@"Cancel Button" 
+													cancelButtonTitle:@"Cancel" 
 											   destructiveButtonTitle:nil 
 													otherButtonTitles:@"Request Item", @"Scan & Deliver", nil];
 
