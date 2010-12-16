@@ -16,6 +16,7 @@
 #import "CoreDataManager.h"
 #import "BookmarkedHoursAndLocationsViewController.h"
 #import "BookmarkedLibItemListView.h"
+#import "LibraryAdvancedSearch.h"
 
 @implementation LibrariesMainViewController
 @synthesize searchTerms, searchResults, searchController;
@@ -633,6 +634,14 @@
 	else if (indexPath.section == 1){
 		
 		if (indexPath.row == 0){ // advanced hollis search
+			
+			LibraryAdvancedSearch * vc = [[LibraryAdvancedSearch alloc] initWithNibName:@"LibraryAdvancedSearch" 
+																				 bundle:nil];
+			
+			vc.title = @"Advanced Search";
+			[self.navigationController pushViewController:vc animated:YES];
+			[vc release];
+			
 		}
 		else if (indexPath.row == 1){ // mobile research links
 		}
