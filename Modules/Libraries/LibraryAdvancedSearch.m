@@ -31,100 +31,109 @@ NSInteger libraryNameSortAdvancedSearch(id lib1, id lib2, void *context) {
 }
 
 
+-(void) setupLayout{
+	
+	
+	self.view.backgroundColor = [UIColor clearColor];
+	[format setUserInteractionEnabled:NO];
+	
+	[location setUserInteractionEnabled:NO];
+	
+	formatDisclosure.transform = CGAffineTransformMakeRotation(M_PI/2);
+	locationDisclosure.transform = CGAffineTransformMakeRotation(M_PI/2);
+	[keywords becomeFirstResponder];
+	
+	if (nil == formatDictionary) {
+		
+		formatDictionary = [[NSDictionary alloc] initWithObjectsAndKeys:
+							@"", @"All formats (everything)",
+							@"matBook", @"Book",
+							@"matMagazine", @"Journal/Serial",
+							@"matManuscript", @"Archives / Manuscripts",
+							@"matSheetMusic", @"Music Score",
+							@"matRecording", @"Sound Recording",
+							@"matMovie",@"Video / Film",
+							@"matMap", @"Map",
+							@"matPhoto", @"Image",
+							@"matComputerFile", @"Computer file / Data",
+							@"matObjects", @"Object", nil];
+		
+	}
+	
+	if (nil == sortedFormats)
+		sortedFormats = [[NSArray alloc] init];
+	
+	sortedFormats = [formatDictionary allKeys];
+	sortedFormats = [[sortedFormats sortedArrayUsingSelector:@selector(compare:)] retain];
+	formatPickerView.hidden = YES;
+	
+	
+	NSPredicate *bookmarkPred = [NSPredicate predicateWithFormat:@"isBookmarked == YES"];
+	NSArray *bookmarkedArray = [CoreDataManager objectsForEntity:LibraryEntityName matchingPredicate:bookmarkPred];
+	
+	bookmarkedArray = [[bookmarkedArray sortedArrayUsingFunction:libraryNameSortAdvancedSearch context:self] retain];
+	
+	NSPredicate *otherPred = [NSPredicate predicateWithFormat:@"isBookmarked == NO"];
+	NSArray *otherLibArray = [CoreDataManager objectsForEntity:LibraryEntityName matchingPredicate:otherPred];
+	
+	otherLibArray = [[otherLibArray sortedArrayUsingFunction:libraryNameSortAdvancedSearch context:self] retain];
+	
+	int index = 0;
+	libraryArray = [[NSMutableArray alloc] init];
+	
+	[libraryArray insertObject:@"All Libraries/Archives" atIndex:index];
+	index++;
+	
+	if ([bookmarkedArray count] > 0) {
+		[libraryArray insertObject:@"> Bookmarked Locations" atIndex:index];
+		index++;
+	}	
+	for(Library * lib in bookmarkedArray){
+		[libraryArray insertObject:lib atIndex:index];
+		index++;
+	}
+	
+	if ([bookmarkedArray count] > 0) {
+		[libraryArray insertObject:@"> All Other Locations" atIndex:index];
+		index++;
+	}
+	
+	for(Library * lib in otherLibArray){
+		[libraryArray insertObject:lib atIndex:index];
+		index++;
+	}
+	
+	[libraryArray retain];
+	
+	locationPickerView.hidden = YES;
+	
+	keywords.delegate = self;
+	titleKeywords.delegate = self;
+	authorKeywords.delegate = self;
+}
+
 // The designated initializer.  Override if you create the controller programmatically and want to perform customization that is not appropriate for viewDidLoad.
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         // Custom initialization.
-		
-		self.view.backgroundColor = [UIColor clearColor];
-		[format setUserInteractionEnabled:NO];
-		
-		[location setUserInteractionEnabled:NO];
-		
-		formatDisclosure.transform = CGAffineTransformMakeRotation(M_PI/2);
-		locationDisclosure.transform = CGAffineTransformMakeRotation(M_PI/2);
-		[keywords becomeFirstResponder];
 
-		if (nil == formatDictionary) {
-			
-			formatDictionary = [[NSDictionary alloc] initWithObjectsAndKeys:
-								@"", @"All formats (everything)",
-								@"matBook", @"Book",
-								@"matMagazine", @"Journal/Serial",
-								@"matManuscript", @"Archives / Manuscripts",
-								@"matSheetMusic", @"Music Score",
-								@"matRecording", @"Sound Recording",
-								@"matMovie",@"Video / Film",
-								@"matMap", @"Map",
-								@"matPhoto", @"Image",
-								@"matComputerFile", @"Computer file / Data",
-								@"matObjects", @"Object", nil];
-			
-		}
-		
-		if (nil == sortedFormats)
-			sortedFormats = [[NSArray alloc] init];
-		
-		sortedFormats = [formatDictionary allKeys];
-		sortedFormats = [[sortedFormats sortedArrayUsingSelector:@selector(compare:)] retain];
-		formatPickerView.hidden = YES;
-		
-		
-		NSPredicate *bookmarkPred = [NSPredicate predicateWithFormat:@"isBookmarked == YES"];
-		NSArray *bookmarkedArray = [CoreDataManager objectsForEntity:LibraryEntityName matchingPredicate:bookmarkPred];
-		
-		bookmarkedArray = [[bookmarkedArray sortedArrayUsingFunction:libraryNameSortAdvancedSearch context:self] retain];
-		
-		NSPredicate *otherPred = [NSPredicate predicateWithFormat:@"isBookmarked == NO"];
-		NSArray *otherLibArray = [CoreDataManager objectsForEntity:LibraryEntityName matchingPredicate:otherPred];
-		
-		otherLibArray = [[otherLibArray sortedArrayUsingFunction:libraryNameSortAdvancedSearch context:self] retain];
-		
-		int index = 0;
-		libraryArray = [[NSMutableArray alloc] init];
-		
-		[libraryArray insertObject:@"All Libraries/Archives" atIndex:index];
-		index++;
-		
-		for(Library * lib in bookmarkedArray){
-			[libraryArray insertObject:lib atIndex:index];
-			index++;
-		}
-		
-		[libraryArray insertObject:@"-------" atIndex:index];
-		index++;
-		
-		for(Library * lib in otherLibArray){
-			[libraryArray insertObject:lib atIndex:index];
-			index++;
-		}
-		
-		[libraryArray retain];
-		
-		locationPickerView.hidden = YES;
-		
-		keywords.delegate = self;
-		titleKeywords.delegate = self;
-		authorKeywords.delegate = self;
 	}
     return self;
 }
 
-/*
+
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad {
     [super viewDidLoad];
+	[self setupLayout];
 }
-*/
 
-/*
-// Override to allow orientations other than the default portrait orientation.
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
-    // Return YES for supported orientations.
-    return (interfaceOrientation == UIInterfaceOrientationPortrait);
+
+-(void) viewWillAppear:(BOOL)animated{
+	[super viewWillAppear:animated];
+	[self setupLayout];
 }
-*/
 
 - (void)didReceiveMemoryWarning {
 	
@@ -330,6 +339,76 @@ NSInteger libraryNameSortAdvancedSearch(id lib1, id lib2, void *context) {
 	
 	[self search];
 	return YES;
+}
+
+
+#pragma mark -
+#pragma mark JSONAPIRequest Delegate function 
+
+- (void)request:(JSONAPIRequest *)request jsonLoaded:(id)result {
+	
+	NSArray *resultArray = (NSArray *)result;
+
+	for (int index=0; index < [result count]; index++) {
+		NSDictionary *libraryDictionary = [resultArray objectAtIndex:index];
+		
+		NSString * name = [libraryDictionary objectForKey:@"name"];
+		NSString * primaryName = [libraryDictionary objectForKey:@"primaryName"];
+		NSString * identityTag = [libraryDictionary objectForKey:@"id"];
+		NSNumber * latitude = [libraryDictionary objectForKey:@"latitude"];
+		NSNumber * longitude = [libraryDictionary objectForKey:@"longitude"];
+		NSString * locationAdd = [libraryDictionary objectForKey:@"address"];
+		
+		NSString * type = [libraryDictionary objectForKey:@"type"];
+
+		NSPredicate *pred = [NSPredicate predicateWithFormat:@"name == %@ AND type == %@", name, type];
+		Library *alreadyInDB = [[CoreDataManager objectsForEntity:LibraryEntityName matchingPredicate:pred] lastObject];
+		
+		
+		NSManagedObject *managedObj;
+		if (nil == alreadyInDB){
+			managedObj = [CoreDataManager insertNewObjectForEntityForName:LibraryEntityName];
+			alreadyInDB = (Library *)managedObj;
+			alreadyInDB.isBookmarked = [NSNumber numberWithBool:NO];
+		}
+		
+		/*[alreadyInDB setValue:name forKey:@"name"];
+		 [alreadyInDB setValue:[NSNumber numberWithDouble:[latitude doubleValue]] forKey:@"lat"];
+		 [alreadyInDB setValue:[NSNumber numberWithDouble:[longitude doubleValue]] forKey:@"lon"];		
+		 */
+		
+		alreadyInDB.name = name;
+		alreadyInDB.primaryName = primaryName;
+		alreadyInDB.identityTag = identityTag;
+		alreadyInDB.location = locationAdd;
+		alreadyInDB.lat = [NSNumber numberWithDouble:[latitude doubleValue]];
+		alreadyInDB.lon = [NSNumber numberWithDouble:[longitude doubleValue]];
+		alreadyInDB.type = type;
+		
+		alreadyInDB.isBookmarked = alreadyInDB.isBookmarked;
+
+	}
+
+	
+	[CoreDataManager saveData];
+	[self viewWillAppear:YES];
+	
+}
+
+- (BOOL)request:(JSONAPIRequest *)request shouldDisplayAlertForError:(NSError *)error {
+	
+    return YES;
+}
+
+- (void)request:(JSONAPIRequest *)request handleConnectionError:(NSError *)error {
+	
+	UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil
+														message:@"Could not retrieve Libraries/Archives" 
+													   delegate:self 
+											  cancelButtonTitle:@"OK" 
+											  otherButtonTitles:nil];
+	[alertView show];
+	[alertView release];
 }
 
 

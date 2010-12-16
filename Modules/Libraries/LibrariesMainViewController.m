@@ -639,8 +639,37 @@
 																				 bundle:nil];
 			
 			vc.title = @"Advanced Search";
-			[self.navigationController pushViewController:vc animated:YES];
+			
+			NSPredicate *matchAll = [NSPredicate predicateWithFormat:@"TRUEPREDICATE"];
+			NSArray *tempArray = [CoreDataManager objectsForEntity:LibraryEntityName matchingPredicate:matchAll];
+			
+			if ([tempArray count] == 0){
+				apiRequest = [[JSONAPIRequest alloc] initWithJSONAPIDelegate:vc];	
+				
+				if ([apiRequest requestObjectFromModule:@"libraries" 
+												command:@"libraries" 
+											 parameters:nil] == YES)
+				{
+					[self.navigationController pushViewController:vc animated:YES];
+				}
+				else {
+					UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil
+																		message:@"Could not connect to the server" 
+																	   delegate:self 
+															  cancelButtonTitle:@"OK" 
+															  otherButtonTitles:nil];
+					[alertView show];
+					[alertView release];
+				}
+				
+			}
+			else {
+				[self.navigationController pushViewController:vc animated:YES];
+				
+			}
+			
 			[vc release];
+			
 			
 		}
 		else if (indexPath.row == 1){ // mobile research links

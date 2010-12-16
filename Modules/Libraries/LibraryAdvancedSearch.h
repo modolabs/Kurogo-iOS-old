@@ -10,7 +10,7 @@
 #import "JSONAPIRequest.h"
 
 
-@interface LibraryAdvancedSearch : UIViewController <UIPickerViewDelegate, UIPickerViewDataSource, UITextFieldDelegate>{
+@interface LibraryAdvancedSearch : UIViewController <UIPickerViewDelegate, UIPickerViewDataSource, UITextFieldDelegate, JSONAPIDelegate>{
 	
     IBOutlet UITextField *keywords;
 	
