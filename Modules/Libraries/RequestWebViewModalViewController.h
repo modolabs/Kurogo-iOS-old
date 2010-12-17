@@ -14,6 +14,8 @@
 	UIWebView * urlWebView;
 	NSString * requestUrl;
 	
+	NSString * titleStr;
+	
 	UIActivityIndicatorView *av;
 	
 	UINavigationBar * customNavBar;
@@ -21,6 +23,6 @@
 
 @property (nonatomic, retain) UIActivityIndicatorView *av;
 
--(id) initWithRequestUrl: (NSString *) url;
+-(id) initWithRequestUrl: (NSString *) url title:(NSString *)titleString;
 
 @end

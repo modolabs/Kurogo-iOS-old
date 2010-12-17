@@ -17,13 +17,14 @@
 @synthesize av;
 
 
--(id) initWithRequestUrl: (NSString *) url{
+-(id) initWithRequestUrl: (NSString *) url title:(NSString *)titleString{
 	
 	self = [super init];
 	
 	if (super) {
 	
 		requestUrl = url;
+		titleStr = titleString;
 	}
 	
 	return self;
@@ -44,7 +45,7 @@
 		UIBarButtonItem *rightButton = [[UIBarButtonItem alloc] initWithTitle:@"Done" 
 																		style:UIBarButtonSystemItemDone target:self action:@selector(doneButtonPressed:)];
 		
-		UINavigationItem *item = [[UINavigationItem alloc] initWithTitle:@"File a Request"];
+		UINavigationItem *item = [[UINavigationItem alloc] initWithTitle:titleStr];
 		item.rightBarButtonItem = rightButton;
 		item.hidesBackButton = YES;
 

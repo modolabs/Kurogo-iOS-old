@@ -703,26 +703,34 @@ allLibrariesWithItem: (NSArray *) allLibraries
 		int scanAndDeliverCount = 0;
 		scanAndDeliverCount = [[statDict objectForKey:@"scanAndDeliverCount"] intValue];
 		
-		if (((requestCount > 0) && (scanAndDeliverCount == requestCount)) || 
-			(requestCount == 1)){
+		if ((requestCount > 0) || (scanAndDeliverCount > 0)){
 			
 			//just present the reqUrl
 			NSArray * availableItems = (NSArray *)[statDict objectForKey:@"availableItems"];
 			NSArray * checkedOutItems = (NSArray * )[statDict objectForKey:@"checkedOutItems"];
 			
 			NSString * reqUrl = @"";
+			NSString * scanUrl = @"";
 			if (indexPath.row == 0){
 				if (availCount > 0){
-					
+
 					for(NSDictionary * availD in availableItems){
-						if ([[availD objectForKey:@"requestUrl"] length] > 0)
+						if ([[availD objectForKey:@"requestUrl"] length] > 0){
 							reqUrl = [availD objectForKey:@"requestUrl"];
+						}
+						if ([[availD objectForKey:@"scanAndDeliverUrl"] length] > 0){
+							scanUrl = [availD objectForKey:@"scanAndDeliverUrl"];
+						}
 					}
 				}
 				else if (checkedOutCount > 0) {
 					for(NSDictionary * availD in checkedOutItems){
 						if ([[availD objectForKey:@"requestUrl"] length] > 0)
 							reqUrl = [availD objectForKey:@"requestUrl"];
+						
+						if ([[availD objectForKey:@"scanAndDeliverUrl"] length] > 0){
+							scanUrl = [availD objectForKey:@"scanAndDeliverUrl"];
+						}
 					}
 				}
 			}
@@ -733,6 +741,10 @@ allLibrariesWithItem: (NSArray *) allLibraries
 					for(NSDictionary * availD in checkedOutItems){
 						if ([[availD objectForKey:@"requestUrl"] length] > 0)
 							reqUrl = [availD objectForKey:@"requestUrl"];
+						
+						if ([[availD objectForKey:@"scanAndDeliverUrl"] length] > 0){
+							scanUrl = [availD objectForKey:@"scanAndDeliverUrl"];
+						}
 					}
 				}				
 			}
@@ -741,10 +753,10 @@ allLibrariesWithItem: (NSArray *) allLibraries
 			}
 			
 			
-			if ([reqUrl length] > 0) {
+			if (([reqUrl length] > 0) && ([scanUrl length] == 0)){
 				MIT_MobileAppDelegate *appDelegate = (MIT_MobileAppDelegate *)[[UIApplication sharedApplication] delegate];
 			
-				RequestWebViewModalViewController *modalVC = [[RequestWebViewModalViewController alloc] initWithRequestUrl:reqUrl];
+				RequestWebViewModalViewController *modalVC = [[RequestWebViewModalViewController alloc] initWithRequestUrl:reqUrl title:@"Request Item"];
 			
 				//[self.navigationController pushViewController:modalVC animated:YES];
 				//[modalVC release];
@@ -752,11 +764,26 @@ allLibrariesWithItem: (NSArray *) allLibraries
 				[appDelegate presentAppModalViewController:modalVC animated:YES];
 				[modalVC release];
 			}
+			else if (([scanUrl length] > 0) && ([reqUrl length] == 0)){
+				MIT_MobileAppDelegate *appDelegate = (MIT_MobileAppDelegate *)[[UIApplication sharedApplication] delegate];
+				
+				RequestWebViewModalViewController *modalVC = [[RequestWebViewModalViewController alloc] initWithRequestUrl:scanUrl title:@"Scan & Deliver Item"];
+				
+				//[self.navigationController pushViewController:modalVC animated:YES];
+				//[modalVC release];
+				
+				[appDelegate presentAppModalViewController:modalVC animated:YES];
+				[modalVC release];
+			}
+			else {
+				[self showActionSheet:indexPath.section];
+			}
+
 			
 
 		}
 		
-		else if (requestCount == 0)
+		else if ((requestCount == 0) && (scanAndDeliverCount == 0))
 			return; // no action
 		
 		else
@@ -796,16 +823,30 @@ allLibrariesWithItem: (NSArray *) allLibraries
 		NSString * canScanAndDeliver = [itemForRow objectForKey:@"canScanAndDeliver"];
 		
 		
-		if ([canRequest isEqualToString:@"YES"] || [canScanAndDeliver isEqualToString:@"YES"]) {
+		if ([canRequest isEqualToString:@"YES"]) {
 			
 			NSString * reqUrl = [itemForRow objectForKey:@"requestUrl"];
 			MIT_MobileAppDelegate *appDelegate = (MIT_MobileAppDelegate *)[[UIApplication sharedApplication] delegate];
 		
-			RequestWebViewModalViewController *modalVC = [[RequestWebViewModalViewController alloc] initWithRequestUrl:reqUrl];
+			RequestWebViewModalViewController *modalVC = [[RequestWebViewModalViewController alloc] initWithRequestUrl:reqUrl title:@"Request Item"];
 		
 			//[self.navigationController pushViewController:modalVC animated:YES];
 			//[modalVC release];
 		
+			[appDelegate presentAppModalViewController:modalVC animated:YES];
+			[modalVC release];
+		}
+		
+		else if ([canScanAndDeliver isEqualToString:@"YES"]) {
+			
+			NSString * scanAndDeliverUrl = [itemForRow objectForKey:@"scanAndDeliverUrl"];
+			MIT_MobileAppDelegate *appDelegate = (MIT_MobileAppDelegate *)[[UIApplication sharedApplication] delegate];
+			
+			RequestWebViewModalViewController *modalVC = [[RequestWebViewModalViewController alloc] initWithRequestUrl:scanAndDeliverUrl title:@"Scan & Deliver Item"];
+			
+			//[self.navigationController pushViewController:modalVC animated:YES];
+			//[modalVC release];
+			
 			[appDelegate presentAppModalViewController:modalVC animated:YES];
 			[modalVC release];
 		}
@@ -1161,8 +1202,8 @@ allLibrariesWithItem: (NSArray *) allLibraries
 		
 		for(NSDictionary * availD in items){
 			if ([[availD objectForKey:@"canScanAndDeliver"] isEqualToString:@"YES"])
-				if ([[availD objectForKey:@"requestUrl"] length] > 0)
-					reqUrl = [availD objectForKey:@"requestUrl"];
+				if ([[availD objectForKey:@"scanAndDeliverUrl"] length] > 0)
+					reqUrl = [availD objectForKey:@"scanAndDeliverUrl"];
 		}
     }
 	
@@ -1171,7 +1212,15 @@ allLibrariesWithItem: (NSArray *) allLibraries
 		
 		MIT_MobileAppDelegate *appDelegate = (MIT_MobileAppDelegate *)[[UIApplication sharedApplication] delegate];
 		
-		RequestWebViewModalViewController *modalVC = [[RequestWebViewModalViewController alloc] initWithRequestUrl:reqUrl];
+		NSString * titleStr = @"";
+		
+		if (buttonIndex == 0)
+			titleStr = @"Request Item";
+		
+		else if (buttonIndex == 1)
+			titleStr = @"Scan & Deliver Item";
+		
+		RequestWebViewModalViewController *modalVC = [[RequestWebViewModalViewController alloc] initWithRequestUrl:reqUrl title:titleStr];
 		
 		//[self.navigationController pushViewController:modalVC animated:YES];
 		//[modalVC release];

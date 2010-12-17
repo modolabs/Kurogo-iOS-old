@@ -423,7 +423,10 @@ NSInteger bookmarkedNameSorted(id lib1, id lib2, void *context);
 	
 	NSArray *indexArray = (NSArray *)tempIndexArray;
 	
-	return indexArray;
+	if ([tempLibraries count] > 10)
+		return indexArray;
+	
+	return nil;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView sectionForSectionIndexTitle:(NSString *)title atIndex:(NSInteger)index {
@@ -443,7 +446,10 @@ NSInteger bookmarkedNameSorted(id lib1, id lib2, void *context);
 		ind++;
 	}
 	
-	return ind;
+	if ([tempLibraries count] > 10)
+		return ind;
+	
+	return 0;
 }
 
 

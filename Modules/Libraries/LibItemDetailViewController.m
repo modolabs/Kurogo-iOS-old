@@ -582,7 +582,7 @@
 			
 			if (collectionOnlyCount > 0)
 				statusDetailString = [NSString stringWithFormat:
-									  @"0 of %d restricted-items", collectionOnlyCount];
+									  @"0 of %d may be available", collectionOnlyCount];
 				
 			[dictWithStatuses setObject:status forKey:statusDetailString];
 		}
