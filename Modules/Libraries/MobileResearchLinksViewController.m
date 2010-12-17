@@ -8,6 +8,7 @@
 
 #import "MobileResearchLinksViewController.h"
 #import "MITUIConstants.h"
+#import "Constants.h"
 
 
 @implementation MobileResearchLinksViewController
@@ -154,7 +155,7 @@
 	}
 
 	cell.selectionStyle = UITableViewCellSelectionStyleGray;
-	cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+	cell.accessoryView =  [UIImageView accessoryViewWithMITType:MITAccessoryViewExternal];
 	
 	NSArray *chunks = [cellText componentsSeparatedByString: @"-"];
 	
@@ -171,59 +172,50 @@
     return cell;
 }
 
+- (NSString *) tableView: (UITableView *)tableView titleForHeaderInSection: (NSInteger)section {
 
-/*
-// Override to support conditional editing of the table view.
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
-    // Return NO if you do not want the specified item to be editable.
-    return YES;
+	if ([[textAndLinksDictionary objectForKey:[textsArray objectAtIndex:section]] isKindOfClass:[NSDictionary class]]){
+		
+		return [textsArray objectAtIndex:section];
+	}
+	return nil;
 }
-*/
 
-
-/*
-// Override to support editing the table view.
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
-    
-    if (editingStyle == UITableViewCellEditingStyleDelete) {
-        // Delete the row from the data source.
-        [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
-    }   
-    else if (editingStyle == UITableViewCellEditingStyleInsert) {
-        // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view.
-    }   
+- (UIView *) tableView: (UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
+	
+	if ([[textAndLinksDictionary objectForKey:[textsArray objectAtIndex:section]] isKindOfClass:[NSDictionary class]]){
+		
+		return [UITableView groupedSectionHeaderWithTitle:[textsArray objectAtIndex:section]];
+	}
+	return nil;
 }
-*/
 
-
-/*
-// Override to support rearranging the table view.
-- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath {
+- (CGFloat)tableView: (UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+	return GROUPED_SECTION_HEADER_HEIGHT;
 }
-*/
-
-
-/*
-// Override to support conditional rearranging of the table view.
-- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath {
-    // Return NO if you do not want the item to be re-orderable.
-    return YES;
-}
-*/
 
 
 #pragma mark -
 #pragma mark Table view delegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    // Navigation logic may go here. Create and push another view controller.
-    /*
-    <#DetailViewController#> *detailViewController = [[<#DetailViewController#> alloc] initWithNibName:@"<#Nib name#>" bundle:nil];
-     // ...
-     // Pass the selected object to the new view controller.
-    [self.navigationController pushViewController:detailViewController animated:YES];
-    [detailViewController release];
-    */
+	[tableView deselectRowAtIndexPath:indexPath animated:YES];
+	
+	NSString * urlString = @"";
+	
+	if ([[textAndLinksDictionary objectForKey:[textsArray objectAtIndex:indexPath.section]] isKindOfClass:[NSDictionary class]]){
+		NSDictionary * tempDict = (NSDictionary *)[textAndLinksDictionary objectForKey:[textsArray objectAtIndex:indexPath.section]];
+		
+		urlString = [tempDict objectForKey:[[tempDict allKeys] objectAtIndex:indexPath.row]];
+	}
+	else {
+		urlString = [textAndLinksDictionary objectForKey:[textsArray objectAtIndex:indexPath.section]];
+	}
+	
+	NSURL *urlToOpen = [NSURL URLWithString:urlString];
+	if (urlToOpen && [[UIApplication sharedApplication] canOpenURL:urlToOpen]) {
+		[[UIApplication sharedApplication] openURL:urlToOpen];
+	}
 }
 
 
