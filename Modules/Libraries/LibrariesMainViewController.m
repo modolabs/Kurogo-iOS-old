@@ -17,6 +17,7 @@
 #import "BookmarkedHoursAndLocationsViewController.h"
 #import "BookmarkedLibItemListView.h"
 #import "LibraryAdvancedSearch.h"
+#import "MobileResearchLinksViewController.h"
 
 @implementation LibrariesMainViewController
 @synthesize searchTerms, searchResults, searchController;
@@ -673,6 +674,13 @@
 			
 		}
 		else if (indexPath.row == 1){ // mobile research links
+			
+			MobileResearchLinksViewController * vc = [[MobileResearchLinksViewController alloc] init];
+			vc.title = @"Mobile Research Links";
+			
+			[self.navigationController pushViewController:vc animated:YES];
+			[vc release];
+			
 		}
 		else if (indexPath.row == 2) { // ask a librarian
 			NSString *url = @"http://asklib.hcl.harvard.edu/mobile.php";

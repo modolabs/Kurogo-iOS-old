@@ -124,6 +124,8 @@
 		5623EBC712B9ED6C00212D5C /* LibraryAdvancedSearch.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = 5623EBC412B9ED6C00212D5C /* LibraryAdvancedSearch.h */; settings = {JAVA_ARCHIVE_SUBDIR = Modules/Libraries; }; };
 		5623EBC812B9ED6C00212D5C /* LibraryAdvancedSearch.m in Sources */ = {isa = PBXBuildFile; fileRef = 5623EBC512B9ED6C00212D5C /* LibraryAdvancedSearch.m */; };
 		5623EBC912B9ED6C00212D5C /* LibraryAdvancedSearch.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5623EBC612B9ED6C00212D5C /* LibraryAdvancedSearch.xib */; };
+		5623EEA112BBD43C00212D5C /* MobileResearchLinksViewController.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = 5623EE9F12BBD43C00212D5C /* MobileResearchLinksViewController.h */; settings = {JAVA_ARCHIVE_SUBDIR = Modules/Libraries; }; };
+		5623EEA212BBD43C00212D5C /* MobileResearchLinksViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5623EEA012BBD43C00212D5C /* MobileResearchLinksViewController.m */; };
 		5689D6C71297066F00A9EFA0 /* LibraryDetailViewController.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = 5689D6C51297066F00A9EFA0 /* LibraryDetailViewController.h */; settings = {JAVA_ARCHIVE_SUBDIR = Modules/Libraries; }; };
 		5689D6C81297066F00A9EFA0 /* LibraryDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5689D6C61297066F00A9EFA0 /* LibraryDetailViewController.m */; };
 		5689D9681297BF0C00A9EFA0 /* LibraryWeeklyScheduleViewController.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = 5689D9661297BF0C00A9EFA0 /* LibraryWeeklyScheduleViewController.h */; settings = {JAVA_ARCHIVE_SUBDIR = Modules/Libraries; }; };
@@ -720,6 +722,8 @@
 		5623EBC412B9ED6C00212D5C /* LibraryAdvancedSearch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LibraryAdvancedSearch.h; sourceTree = "<group>"; };
 		5623EBC512B9ED6C00212D5C /* LibraryAdvancedSearch.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LibraryAdvancedSearch.m; sourceTree = "<group>"; };
 		5623EBC612B9ED6C00212D5C /* LibraryAdvancedSearch.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LibraryAdvancedSearch.xib; sourceTree = "<group>"; };
+		5623EE9F12BBD43C00212D5C /* MobileResearchLinksViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MobileResearchLinksViewController.h; sourceTree = "<group>"; };
+		5623EEA012BBD43C00212D5C /* MobileResearchLinksViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MobileResearchLinksViewController.m; sourceTree = "<group>"; };
 		5689D6C51297066F00A9EFA0 /* LibraryDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LibraryDetailViewController.h; sourceTree = "<group>"; };
 		5689D6C61297066F00A9EFA0 /* LibraryDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LibraryDetailViewController.m; sourceTree = "<group>"; };
 		5689D9661297BF0C00A9EFA0 /* LibraryWeeklyScheduleViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LibraryWeeklyScheduleViewController.h; sourceTree = "<group>"; };
@@ -1611,6 +1615,8 @@
 				5623EBC412B9ED6C00212D5C /* LibraryAdvancedSearch.h */,
 				5623EBC512B9ED6C00212D5C /* LibraryAdvancedSearch.m */,
 				5623EBC612B9ED6C00212D5C /* LibraryAdvancedSearch.xib */,
+				5623EE9F12BBD43C00212D5C /* MobileResearchLinksViewController.h */,
+				5623EEA012BBD43C00212D5C /* MobileResearchLinksViewController.m */,
 			);
 			path = Libraries;
 			sourceTree = "<group>";
@@ -2468,6 +2474,7 @@
 				5623E28912B2AB9500212D5C /* ItemAvailabilityLibDetailViewController.h in JavaArchive */,
 				5623E7A312B7F81000212D5C /* UnderlinedUILabel.h in JavaArchive */,
 				5623EBC712B9ED6C00212D5C /* LibraryAdvancedSearch.h in JavaArchive */,
+				5623EEA112BBD43C00212D5C /* MobileResearchLinksViewController.h in JavaArchive */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2814,6 +2821,7 @@
 				5623E28A12B2AB9500212D5C /* ItemAvailabilityLibDetailViewController.m in Sources */,
 				5623E7A412B7F81100212D5C /* UnderlinedUILabel.m in Sources */,
 				5623EBC812B9ED6C00212D5C /* LibraryAdvancedSearch.m in Sources */,
+				5623EEA212BBD43C00212D5C /* MobileResearchLinksViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
