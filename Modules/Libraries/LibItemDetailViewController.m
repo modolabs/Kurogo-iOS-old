@@ -18,6 +18,7 @@
 
 @implementation LibItemDetailViewController
 @synthesize bookmarkButtonIsOn;
+@synthesize displayImage;
 
 
 #pragma mark -
@@ -26,7 +27,8 @@
 -(id) initWithStyle:(UITableViewStyle)style 
 		libraryItem:(LibraryItem *) libraryItem
 		  itemArray: (NSDictionary *) results
-	currentItemIdex: (int) itemIndex	{
+	currentItemIdex: (int) itemIndex
+	   imageDisplay:(BOOL) imageDisplay{
 	
 	self = [super initWithStyle:style];
 	
@@ -35,6 +37,7 @@
 		libItem = [libraryItem retain];
 		libItemDictionary = [results retain];
 		currentIndex = itemIndex;
+		displayImage = imageDisplay;
 		
 		[self setUpdetails:libItem];
 		
@@ -85,6 +88,20 @@
 	otherDetailLine3 = [otherDetail3 retain];
 	
 	currentLocation = nil;
+	
+	thumbnail = [[UIView alloc] initWithFrame:CGRectMake(50.0, 150.0, 150.0, 150.0)];
+	thumbnail.backgroundColor = [UIColor clearColor];
+	
+	if (displayImage == YES){
+		[self addLoadingIndicator:thumbnail];
+		[self.view addSubview:thumbnail];
+	}
+	else{
+		if (nil != thumbnail){
+			[thumbnail removeFromSuperview];
+			thumbnail = nil;
+		}
+	}
 }
 
 
@@ -263,7 +280,9 @@
 	[headerView addSubview:authorLabel];
 	[headerView addSubview:authorButton];
 	[headerView addSubview:bookmarkButton];
-	[headerView addSubview:mapButton];
+	
+	if (displayImage == NO)
+		[headerView addSubview:mapButton];
 	
 	if ([otherDetailLine1 length] > 0)
 		[headerView addSubview:detailLabel1];
@@ -346,12 +365,39 @@
 	
 				apiRequest = [[JSONAPIRequest alloc] initWithJSONAPIDelegate:self];
 				
-				if ([apiRequest requestObjectFromModule:@"libraries" 
-												command:@"fullavailability"
-											 parameters:[NSDictionary dictionaryWithObjectsAndKeys:temp.itemId, @"itemid", nil]])
+				BOOL requestSent = NO;
+				BOOL displayImageTemp = NO;
+				
+				if ([temp.formatDetail isEqualToString:@"Image"])
+					displayImageTemp = YES;
+				
+				if (displayImageTemp == NO)
+					requestSent = [apiRequest requestObjectFromModule:@"libraries" 
+													   command:@"fullavailability"
+													parameters:[NSDictionary dictionaryWithObjectsAndKeys:temp.itemId, @"itemid", nil]];
+				
+				else {
+					requestSent = [apiRequest requestObjectFromModule:@"libraries" 
+													   command:@"imagethumbnail"
+													parameters:[NSDictionary dictionaryWithObjectsAndKeys:temp.itemId, @"itemid", nil]];
+				}
+				
+				if (requestSent == YES)
 				{
+					if (nil != thumbnail)
+						[thumbnail removeFromSuperview];
+					
+					thumbnail = nil;
+					
 					currentIndex = tempLibIndex;
 					libItem = [temp retain];
+					
+					if ([libItem.formatDetail isEqualToString:@"Image"])
+						displayImage = YES;
+					else {
+						displayImage = NO;
+					}
+
 					
 					locationsWithItem = [[NSArray alloc] init];
 					[self.tableView reloadData];
@@ -426,13 +472,20 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     // Return the number of sections.
+	
+	if (displayImage == YES)
+		return 0;
+	
     return 2;
 }
 
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     // Return the number of rows in the section.
-    
+    if (displayImage == YES)
+		return 0;
+	
+	
 	if (section == 0) {
 		BOOL val = [libItem.isOnline boolValue];
 		if (val == YES) {
@@ -458,6 +511,8 @@
 // Customize the appearance of table view cells.
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     
+	if (displayImage == YES)
+		return nil;
 	
 	if (indexPath.section == 0) {
 		
@@ -637,6 +692,9 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {	
+	if (displayImage == YES)
+		return 0;
+	
 	UITableViewCellAccessoryType accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 	
 	NSString *cellText; 
@@ -767,6 +825,9 @@
 - (void) tableView: (UITableView *)tableView didSelectRowAtIndexPath: (NSIndexPath *)indexPath {
 	[tableView deselectRowAtIndexPath:indexPath animated:NO];
 	
+	if (displayImage == YES) // just in case
+		return;
+	
 	if (indexPath.section == 0){
 		
 		BOOL val = [libItem.isOnline boolValue];
@@ -894,74 +955,120 @@
 #pragma mark JSONAPIRequest Delegate function 
 
 - (void)request:(JSONAPIRequest *)request jsonLoaded:(id)result {
+
 	
-	if ([result isKindOfClass:[NSArray class]]) {
-		
-		locationsWithItem = [result retain];
-		[self.tableView reloadData];
-		
-		displayNameAndLibraries = [[NSMutableDictionary alloc] init];
-		
-		for(NSDictionary * tempDict in result) {
+	if (displayImage == YES){
+		if ([result isKindOfClass:[NSDictionary class]]){
 			
-			NSDictionary * libraryDictionary  = [tempDict objectForKey:@"details"];
-			NSString * displayName = [tempDict objectForKey:@"name"];
+			NSString * imageId = [result objectForKey:@"itemId"];
 			
-			if ((nil != libraryDictionary) && (![libraryDictionary isKindOfClass:[NSArray class]]))
-		     if ([[libraryDictionary allKeys] count] > 0) {
-				NSString * name = [libraryDictionary objectForKey:@"name"];
-				NSString * primaryName = [libraryDictionary objectForKey:@"primaryName"];
-				NSString * type = [libraryDictionary objectForKey:@"type"];
-				NSString * identityTag = [libraryDictionary objectForKey:@"id"];
-				//NSString *directions = [libraryDictionary objectForKey:@"directions"];
-				NSString * location = [libraryDictionary objectForKey:@"address"];
-				NSNumber * latitude = [libraryDictionary objectForKey:@"latitude"];
-				NSNumber * longitude = [libraryDictionary objectForKey:@"longitude"];
+			if ([imageId isEqualToString:libItem.itemId]){
 				
-				NSPredicate *pred = [NSPredicate predicateWithFormat:@"name == %@ AND type == %@", name, type];
-				Library *alreadyInDB = [[CoreDataManager objectsForEntity:LibraryEntityName matchingPredicate:pred] lastObject];
+				NSString *imageUrl = [result objectForKey:@"thumbnail"];
 				
-				
-				NSManagedObject *managedObj;
-				if (nil == alreadyInDB){
-					managedObj = [CoreDataManager insertNewObjectForEntityForName:LibraryEntityName];
-					alreadyInDB = (Library *)managedObj;
-					alreadyInDB.isBookmarked = [NSNumber numberWithBool:NO];
+				if ([imageUrl length] > 0){
+
+					NSData *data = [NSData dataWithContentsOfURL:[NSURL URLWithString:imageUrl]];
+					UIImage *image = [[UIImage alloc] initWithData:data];
+					UIImageView* imageView = [[[UIImageView alloc] initWithImage:image] autorelease];
+					imageView.backgroundColor = [UIColor clearColor];
+					
+					if (nil == thumbnail){
+						thumbnail = [[UIView alloc] initWithFrame:CGRectMake(50.0, 150.0, 150.0, 150.0)];
+						thumbnail.backgroundColor = [UIColor clearColor];
+					}
+					
+					[thumbnail removeFromSuperview];
+					[thumbnail retain];
+					[self removeLoadingIndicator];
+					[thumbnail addSubview:imageView];
+					[self.view addSubview:thumbnail];
+					
 				}
-				
-				alreadyInDB.name = name;
-				alreadyInDB.primaryName = primaryName;
-				alreadyInDB.identityTag = identityTag;
-				alreadyInDB.location = location;
-				alreadyInDB.lat = [NSNumber numberWithDouble:[latitude doubleValue]];
-				alreadyInDB.lon = [NSNumber numberWithDouble:[longitude doubleValue]];
-				alreadyInDB.type = type;
-				
-				alreadyInDB.isBookmarked = alreadyInDB.isBookmarked;
-				
-				[displayNameAndLibraries setObject:alreadyInDB forKey:displayName];
-				
-				[CoreDataManager saveData];
 			}
 		}
-		
-		
-		locationManager = [[CLLocationManager alloc] init];
-		locationManager.distanceFilter = kCLDistanceFilterNone;
-		locationManager.desiredAccuracy = kCLLocationAccuracyBest;
-		locationManager.delegate = self;
-
-		[locationManager startUpdatingLocation];
+		else {
+			UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil
+																message:@"Could not retrieve image availability" 
+															   delegate:self 
+													  cancelButtonTitle:@"OK" 
+													  otherButtonTitles:nil];
+			[alertView show];
+			[alertView release];
+		}
+	}
+	
+	
+	
+	else if (displayImage == NO){
+		if ([result isKindOfClass:[NSArray class]]) {
+			
+			locationsWithItem = [result retain];
+			[self.tableView reloadData];
+			
+			displayNameAndLibraries = [[NSMutableDictionary alloc] init];
+			
+			for(NSDictionary * tempDict in result) {
+				
+				NSDictionary * libraryDictionary  = [tempDict objectForKey:@"details"];
+				NSString * displayName = [tempDict objectForKey:@"name"];
+				
+				if ((nil != libraryDictionary) && (![libraryDictionary isKindOfClass:[NSArray class]]))
+					if ([[libraryDictionary allKeys] count] > 0) {
+						NSString * name = [libraryDictionary objectForKey:@"name"];
+						NSString * primaryName = [libraryDictionary objectForKey:@"primaryName"];
+						NSString * type = [libraryDictionary objectForKey:@"type"];
+						NSString * identityTag = [libraryDictionary objectForKey:@"id"];
+						//NSString *directions = [libraryDictionary objectForKey:@"directions"];
+						NSString * location = [libraryDictionary objectForKey:@"address"];
+						NSNumber * latitude = [libraryDictionary objectForKey:@"latitude"];
+						NSNumber * longitude = [libraryDictionary objectForKey:@"longitude"];
+						
+						NSPredicate *pred = [NSPredicate predicateWithFormat:@"name == %@ AND type == %@", name, type];
+						Library *alreadyInDB = [[CoreDataManager objectsForEntity:LibraryEntityName matchingPredicate:pred] lastObject];
+						
+						
+						NSManagedObject *managedObj;
+						if (nil == alreadyInDB){
+							managedObj = [CoreDataManager insertNewObjectForEntityForName:LibraryEntityName];
+							alreadyInDB = (Library *)managedObj;
+							alreadyInDB.isBookmarked = [NSNumber numberWithBool:NO];
+						}
+						
+						alreadyInDB.name = name;
+						alreadyInDB.primaryName = primaryName;
+						alreadyInDB.identityTag = identityTag;
+						alreadyInDB.location = location;
+						alreadyInDB.lat = [NSNumber numberWithDouble:[latitude doubleValue]];
+						alreadyInDB.lon = [NSNumber numberWithDouble:[longitude doubleValue]];
+						alreadyInDB.type = type;
+						
+						alreadyInDB.isBookmarked = alreadyInDB.isBookmarked;
+						
+						[displayNameAndLibraries setObject:alreadyInDB forKey:displayName];
+						
+						[CoreDataManager saveData];
+					}
+			}
+			
+			
+			locationManager = [[CLLocationManager alloc] init];
+			locationManager.distanceFilter = kCLDistanceFilterNone;
+			locationManager.desiredAccuracy = kCLLocationAccuracyBest;
+			locationManager.delegate = self;
+			
+			[locationManager startUpdatingLocation];
 			
 		}
-	else {
-		UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil
-														message:@"Could not retrieve item availability" 
-													   delegate:self 
-											  cancelButtonTitle:@"OK" 
-											  otherButtonTitles:nil];
-		[alertView show];
-		[alertView release];
+		else {
+			UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil
+																message:@"Could not retrieve item availability" 
+															   delegate:self 
+													  cancelButtonTitle:@"OK" 
+													  otherButtonTitles:nil];
+			[alertView show];
+			[alertView release];
+		}
 	}
 	
 	[self removeLoadingIndicator];
@@ -1016,7 +1123,12 @@
         //loadingIndicator.layer.cornerRadius = cornerRadius;
         //loadingIndicator.backgroundColor =[UIColor whiteColor];
 		
-		[loadingIndicator setBackgroundColor:[UIColor whiteColor]];
+		if (displayImage == YES)
+			[loadingIndicator setBackgroundColor:[UIColor clearColor]];
+		
+		else
+			[loadingIndicator setBackgroundColor:[UIColor whiteColor]];
+		
 		[loadingIndicator addSubview:spinny];
 		[spinny release];
 		[loadingIndicator addSubview:label];

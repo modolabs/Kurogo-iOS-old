@@ -45,14 +45,19 @@
 	CLLocation * currentLocation;
 	
 	CLLocationManager * locationManager;
+	
+	BOOL displayImage;
+	UIView * thumbnail;
 }
 
 @property BOOL bookmarkButtonIsOn;
+@property BOOL displayImage;
 
 -(id) initWithStyle:(UITableViewStyle)style 
 		libraryItem:(LibraryItem *) libraryItem
 		  itemArray: (NSDictionary *) results
-	currentItemIdex: (int) itemIndex;	
+	currentItemIdex: (int) itemIndex
+	   imageDisplay:(BOOL) imageDisplay;
 
 
 -(void) setupLayout;

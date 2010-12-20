@@ -309,16 +309,33 @@
 								@"0.5 miles away", @"Baker Business School", nil];
 	 */
 	
+	BOOL displayImage = NO;
+	
+	if ([libItem.formatDetail isEqualToString:@"Image"])
+		displayImage = YES;
+	
 	LibItemDetailViewController *vc = [[LibItemDetailViewController alloc]  initWithStyle:UITableViewStyleGrouped
 																				libraryItem:libItem
 																				itemArray:self.lastResults
-																		  currentItemIdex:indexPath.row];
+																		  currentItemIdex:indexPath.row
+																			 imageDisplay:displayImage];
 	
 	api = [[JSONAPIRequest alloc] initWithJSONAPIDelegate:vc];
 	
-	if ([api requestObjectFromModule:@"libraries" 
+	BOOL requestSent = NO;
+	
+	if (displayImage == NO)
+	 requestSent = [api requestObjectFromModule:@"libraries" 
 									command:@"fullavailability"
-								 parameters:[NSDictionary dictionaryWithObjectsAndKeys:libItem.itemId, @"itemid", nil]])
+						  parameters:[NSDictionary dictionaryWithObjectsAndKeys:libItem.itemId, @"itemid", nil]];
+	
+	else {
+		requestSent = [api requestObjectFromModule:@"libraries" 
+										   command:@"imagethumbnail"
+										parameters:[NSDictionary dictionaryWithObjectsAndKeys:libItem.itemId, @"itemid", nil]];
+	}
+
+	if (requestSent == YES)
 	{
 		vc.title = @"Item Detail";
 		[self.navigationController pushViewController:vc animated:YES];

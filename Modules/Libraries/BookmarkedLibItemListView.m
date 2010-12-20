@@ -115,17 +115,32 @@ NSInteger bookmarkedItemsNameSorted(id item1, id item2, void *context) {
 	
 	LibraryItem * libItem = (LibraryItem *)[bookmarkedItems objectAtIndex:indexPath.row];
 	
+	BOOL displayImage = NO;
+	if ([libItem.formatDetail isEqualToString:@"Image"])
+		displayImage = YES;
 	
 	LibItemDetailViewController *vc = [[LibItemDetailViewController alloc]  initWithStyle:UITableViewStyleGrouped
 																			  libraryItem:libItem
 																				itemArray:bookmarkedItemsDictionaryWithIndexing
-																		  currentItemIdex:indexPath.row];
+																		  currentItemIdex:indexPath.row
+																			 imageDisplay:displayImage];
 	
 	api = [[JSONAPIRequest alloc] initWithJSONAPIDelegate:vc];
 	
-	if ([api requestObjectFromModule:@"libraries" 
-							 command:@"fullavailability"
-						  parameters:[NSDictionary dictionaryWithObjectsAndKeys:libItem.itemId, @"itemid", nil]])
+	BOOL requestSent = NO;
+	
+	if (displayImage == NO)
+		requestSent = [api requestObjectFromModule:@"libraries" 
+										   command:@"fullavailability"
+										parameters:[NSDictionary dictionaryWithObjectsAndKeys:libItem.itemId, @"itemid", nil]];
+	
+	else {
+		requestSent = [api requestObjectFromModule:@"libraries" 
+										   command:@"imagethumbnail"
+										parameters:[NSDictionary dictionaryWithObjectsAndKeys:libItem.itemId, @"itemid", nil]];
+	}
+	
+	if (requestSent == YES)
 	{
 		vc.title = @"Item Detail";
 		[self.navigationController pushViewController:vc animated:YES];

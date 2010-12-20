@@ -307,7 +307,7 @@ NSInteger libraryNameSortAdvancedSearch(id lib1, id lib2, void *context) {
 - (void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component{
 	
 	if (pickerView == formatPickerView){
-		formatPickerView.hidden = YES;
+		//formatPickerView.hidden = YES;
 		//formatPickerView = nil;
 	
 		
@@ -321,7 +321,7 @@ NSInteger libraryNameSortAdvancedSearch(id lib1, id lib2, void *context) {
 	}
 	
 	else if (pickerView == locationPickerView) {
-		locationPickerView.hidden = YES;
+		//locationPickerView.hidden = YES;
 		
 		if ([[libraryArray objectAtIndex:row] isKindOfClass:[Library class]])
 			location.text = ((Library *)[libraryArray objectAtIndex:row]).name;
