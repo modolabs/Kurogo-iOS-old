@@ -698,7 +698,10 @@
 		if ((nil != currentLocation) && (nil != libLoc)){
 
 			float dist = [currentLocation distanceFromLocation:libLoc];
-			cell1.detailTextLabel.text = [NSString stringWithFormat:@"%d meters away", dist];
+			if (dist > 0)
+				cell1.detailTextLabel.text = [NSString stringWithFormat:@"%d meters away", dist];
+			else 
+				cell1.detailTextLabel.text = @"";
 		}
 		else {
 			cell1.detailTextLabel.text = @"";
