@@ -34,7 +34,7 @@
 	
 	NSArray *searchResults;
 	NSString *searchTerms;
-	NSString *previousSearchTerm;
+	//NSString *previousSearchTerm;
 	
 	UIView *loadingView;
 	

@@ -433,8 +433,15 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     // Return the number of rows in the section.
     
-	if (section == 0)
-		return 1;
+	if (section == 0) {
+		BOOL val = [libItem.isOnline boolValue];
+		if (val == YES) {
+			return 1;
+		}
+		else {
+			return 0;
+		}
+	}
 	
 	else if (section == 1){
 		if ([locationsWithItem count] == 0)
@@ -473,8 +480,6 @@
 			cell.selectionStyle = UITableViewCellSelectionStyleNone;
 		}
 
-		
-		
 		return cell;
 	}
 	
@@ -599,7 +604,7 @@
 			cell1.detailTextLabel.text = [NSString stringWithFormat:@"%d meters away", dist];
 		}
 		else {
-			cell1.detailTextLabel.text = @"Distance unavailable";
+			cell1.detailTextLabel.text = @"";
 		}
 
  
@@ -649,7 +654,13 @@
 		NSDictionary * tempDict = [locationsWithItem objectAtIndex:indexPath.row];		
 		NSString * libName = [tempDict objectForKey:@"name"];
 		cellText =  libName;
-		detailText = @"xxx yards away";
+		if (nil != currentLocation)
+			detailText = @"xxx yards away";
+		
+		else {
+			detailText = @"";
+		}
+
 		accessoryType = UITableViewCellAccessoryDisclosureIndicator;		
 	}
 	else if ((indexPath.section == 1) && ([locationsWithItem count] == 0)){
@@ -661,12 +672,6 @@
 					  sizeWithFont:[UIFont fontWithName:COURSE_NUMBER_FONT size:COURSE_NUMBER_FONT_SIZE]
 					  constrainedToSize:CGSizeMake(self.tableView.frame.size.width*2/3, 500)         
 					  lineBreakMode:UILineBreakModeWordWrap].height;
-	
-	/*NSDictionary * tempDict = [[NSDictionary alloc] initWithObjectsAndKeys:
-							   @"available", @"1 of 2 available - regular loan",
-							   @"unavailable", @"2 of 2 available - in-library user",
-							   @"request", @"2 of 2 availavle - depository", nil];
-	 */
 	
 	if ((indexPath.section == 1) && ([locationsWithItem count] > 0)){
 		
@@ -741,7 +746,7 @@
 	return [LibItemDetailCell heightForCellWithStyle:UITableViewCellStyleSubtitle
 												tableView:tableView 
 													 text:cellText
-											 maxTextLines:2
+											 maxTextLines:1
 											   detailText:detailText
 										   maxDetailLines:1
 													 font:nil 

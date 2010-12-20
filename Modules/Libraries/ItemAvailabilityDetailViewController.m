@@ -1601,7 +1601,7 @@ allLibrariesWithItem: (NSArray *) allLibraries
 		openToday = @"Closed Today";
 	
 	else {
-		openToday = [NSString stringWithFormat: @"Open today at %@", hrsToday];
+		openToday = [NSString stringWithFormat: @"Open today from %@", hrsToday];
 	}
 	
 	[self setupLayout];

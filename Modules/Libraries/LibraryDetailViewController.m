@@ -128,7 +128,8 @@ NSInteger phoneNumberSort(id num1, id num2, void *context){
 	[label2 release];
 	[label release];
 	
-	weeklySchedule = [[NSMutableDictionary alloc] initWithObjectsAndKeys:
+	if (nil == weeklySchedule)
+		weeklySchedule = [[NSMutableDictionary alloc] initWithObjectsAndKeys:
 					  @"loading..", @"Monday",
 					  @"loading..", @"Tuesday",
 					  @"loading..", @"Wednesday",

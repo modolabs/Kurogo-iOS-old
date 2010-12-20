@@ -105,14 +105,15 @@
 	
 	[self.view addSubview:_tableView];
 	
-	if (nil != self.searchTerms)
-		previousSearchTerm = self.searchTerms;
+	//if (nil != self.searchTerms)
+	//	previousSearchTerm = self.searchTerms;
 	
-	else if (nil != theSearchBar.text)
+	/*else if (nil != theSearchBar.text)
 		previousSearchTerm = theSearchBar.text;
 	
 	else
 		previousSearchTerm = @"";
+	 */
 }
 
 #pragma mark UITableViewDataSource methods
@@ -389,8 +390,8 @@
 {
 	//[_bookmarkButton removeFromSuperview];
 	
-	if (nil != self.searchTerms)
-		previousSearchTerm = self.searchTerms;
+	//if (nil != self.searchTerms)
+	//	previousSearchTerm = self.searchTerms;
 	
 	self.searchTerms = searchBar.text;
 	
@@ -403,7 +404,7 @@
     } else {
         [self handleWarningMessage:@"Could not dispatch search" title:@"Search Failed"];
 		[self restoreToolBar];
-		self.searchTerms = previousSearchTerm;
+		//self.searchTerms = previousSearchTerm;
     }	
 }
 
@@ -415,30 +416,6 @@
 
 - (void)performSearch
 {
-	// save search tokens for drawing table cells
-	/*NSMutableArray *tempTokens = [NSMutableArray arrayWithArray:[[self.searchTerms lowercaseString] componentsSeparatedByString:@" "]];
-	 [tempTokens sortUsingFunction:strLenSort context:NULL]; // match longer tokens first
-	 self.searchTokens = [NSArray arrayWithArray:tempTokens];
-	 */
-	NSString *temp = self.searchTerms;
-	
-	temp = [temp stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
-	
-	if ([temp length] == 0){
-		//[self handleWarningMessage:@"Nothing Found" title:@"Search Failed"];
-		return;
-	}
-	
-	api = [JSONAPIRequest requestWithJSONAPIDelegate:self];
-	requestWasDispatched = [api requestObjectFromModule:@"people"
-                                                command:@"search"
-                                             parameters:[NSDictionary dictionaryWithObjectsAndKeys:self.searchTerms, @"q", nil]];
-	
-    if (requestWasDispatched) {
-		//[self showLoadingView];
-    } else {
-        //[self handleWarningMessage:@"Could not dispatch search" title:@"Search Failed"];
-    }
 	
 }
 
@@ -486,12 +463,13 @@
 				[alert show];
 				[alert release];
 				
-				if (nil != previousSearchTerm) {
-					self.searchTerms = previousSearchTerm;
-					theSearchBar.text = self.searchTerms;
-				}
+				//if (nil != previousSearchTerm) {
+				//	self.searchTerms = previousSearchTerm;
+				//	theSearchBar.text = self.searchTerms;
+				//}
 				
 				[self restoreToolBar];
+				[theSearchBar becomeFirstResponder];
 			}
 			else {
 				self.lastResults = [[NSMutableDictionary alloc] init];
@@ -603,10 +581,10 @@
             if (message) {
                 [self handleWarningMessage:message title:@"Search Failed"];
             }
-		if (nil != previousSearchTerm) {
+		/*if (nil != previousSearchTerm) {
 			self.searchTerms = previousSearchTerm;
 			theSearchBar.text = self.searchTerms;
-		}
+		}*/
 	}
 	else {
 		self.searchResults = nil;
