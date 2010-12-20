@@ -106,7 +106,7 @@
 	// set up tableView options
 	
 	NSString * option1 = @"Library Locations and Hours";
-	NSString * option2 = @"Archives";	
+	NSString * option2 = @"Archive Locations and Hours";	
 	mainViewTableOptions1 = [[NSArray alloc] initWithObjects: option1, option2, nil];
 	
 	NSString * option3 = @"Advanced HOLLIS Search";
