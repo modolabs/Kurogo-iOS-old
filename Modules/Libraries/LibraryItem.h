@@ -28,5 +28,6 @@
 @property (nonatomic, retain) NSString * publisher;
 @property (nonatomic, retain) NSString * onlineLink;
 @property (nonatomic, retain) NSString * figureLink;
+@property (nonatomic, retain) NSString * catalogLink;
 
 @end

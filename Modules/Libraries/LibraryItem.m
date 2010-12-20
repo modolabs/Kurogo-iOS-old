@@ -26,5 +26,6 @@
 @dynamic publisher;
 @dynamic figureLink;
 @dynamic onlineLink;
+@dynamic catalogLink;
 
 @end

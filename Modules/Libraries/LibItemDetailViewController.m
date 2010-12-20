@@ -89,7 +89,7 @@
 	
 	currentLocation = nil;
 	
-	thumbnail = [[UIView alloc] initWithFrame:CGRectMake(50.0, 150.0, 150.0, 150.0)];
+	thumbnail = [[UIView alloc] initWithFrame:CGRectMake(50.0, 200.0, 150.0, 150.0)];
 	thumbnail.backgroundColor = [UIColor clearColor];
 	
 	if (displayImage == YES){
@@ -102,6 +102,8 @@
 			thumbnail = nil;
 		}
 	}
+	
+	//catalogLink = nil;
 }
 
 
@@ -303,6 +305,21 @@
 
 #pragma mark User Interaction
 
+-(void) thumbNailPressed: (id) sender {
+	
+	if (nil != fullImageLink)
+		if([fullImageLink length] > 0){
+			
+			NSString *url = fullImageLink;
+			
+			NSURL *libURL = [NSURL URLWithString:url];
+			if (libURL && [[UIApplication sharedApplication] canOpenURL:libURL]) {
+				[[UIApplication sharedApplication] openURL:libURL];
+			}
+		}
+	
+}
+
 -(void) authorLinkTapped:(id)sender{
 	NSArray *viewControllerArray = [self.navigationController viewControllers];
 	NSUInteger parentViewControllerIndex = [viewControllerArray count] - 2;
@@ -473,8 +490,13 @@
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     // Return the number of sections.
 	
-	if (displayImage == YES)
+    if (displayImage == YES){
+		
+		if (nil != libItem.catalogLink )
+			return 1;
+		
 		return 0;
+	}
 	
     return 2;
 }
@@ -482,8 +504,13 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     // Return the number of rows in the section.
-    if (displayImage == YES)
+    if (displayImage == YES){
+		
+		if (nil != libItem.catalogLink )
+			return 1;
+			
 		return 0;
+	}
 	
 	
 	if (section == 0) {
@@ -511,8 +538,23 @@
 // Customize the appearance of table view cells.
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     
-	if (displayImage == YES)
+    if (displayImage == YES){
+		
+		if (nil != libItem.catalogLink ){
+			static NSString *CellIdentifier = @"CellDet";
+			
+			UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+			if (cell == nil) {
+				cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
+			}
+			cell.selectionStyle = UITableViewCellSelectionStyleGray;
+			cell.textLabel.text = @"HOLLIS Catalog Link";
+			cell.accessoryView =  [UIImageView accessoryViewWithMITType:MITAccessoryViewExternal];
+			return cell;
+		}
+		
 		return nil;
+	}
 	
 	if (indexPath.section == 0) {
 		
@@ -692,8 +734,13 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {	
-	if (displayImage == YES)
+	if (displayImage == YES){
+		
+		if (nil != libItem.catalogLink )
+			return 30;
+		
 		return 0;
+	}
 	
 	UITableViewCellAccessoryType accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 	
@@ -825,8 +872,21 @@
 - (void) tableView: (UITableView *)tableView didSelectRowAtIndexPath: (NSIndexPath *)indexPath {
 	[tableView deselectRowAtIndexPath:indexPath animated:NO];
 	
-	if (displayImage == YES) // just in case
-		return;
+    if (displayImage == YES){
+		
+		if (nil != libItem.catalogLink ){
+			NSLog(@"cat link = %@",libItem.catalogLink); 
+			NSString * url = libItem.catalogLink;
+			
+			//url = [url stringByReplacingOccurrencesOfString:@"http://" withString:@""];
+			NSURL *urlToOpen = [NSURL URLWithString:url];
+			if (urlToOpen && [[UIApplication sharedApplication] canOpenURL:urlToOpen]) {
+				[[UIApplication sharedApplication] openURL:urlToOpen];
+			}
+		}
+		
+		return ;
+	}
 	
 	if (indexPath.section == 0){
 		
@@ -961,8 +1021,17 @@
 		if ([result isKindOfClass:[NSDictionary class]]){
 			
 			NSString * imageId = [result objectForKey:@"itemId"];
-			
+			NSString * catLink = [result objectForKey:@"cataloglink"];
+			fullImageLink = [result objectForKey:@"fullimagelink"];
+
 			if ([imageId isEqualToString:libItem.itemId]){
+				if ([catLink length] > 0){
+					libItem.catalogLink = [NSString stringWithFormat:@"%@", catLink];
+					
+					[CoreDataManager saveData];
+					[self.tableView reloadData];
+				}
+				NSLog(@"cat link = %@",libItem.catalogLink); 
 				
 				NSString *imageUrl = [result objectForKey:@"thumbnail"];
 				
@@ -974,15 +1043,27 @@
 					imageView.backgroundColor = [UIColor clearColor];
 					
 					if (nil == thumbnail){
-						thumbnail = [[UIView alloc] initWithFrame:CGRectMake(50.0, 150.0, 150.0, 150.0)];
+						thumbnail = [[UIView alloc] initWithFrame:CGRectMake(50.0, 200.0, 150.0, 150.0)];
 						thumbnail.backgroundColor = [UIColor clearColor];
 					}
+					
+					UIButton * customButton = [UIButton buttonWithType:UIButtonTypeCustom];
+					customButton.frame = imageView.frame;
+					customButton.enabled = YES;
+					[customButton setImage:image forState:UIControlStateNormal];
+					[customButton setImage:image forState:(UIControlStateNormal | UIControlStateHighlighted)];
+					[customButton setImage:image forState:UIControlStateSelected];
+					[customButton setImage:image forState:(UIControlStateSelected | UIControlStateHighlighted)];
+					[customButton addTarget:self action:@selector(thumbNailPressed:) forControlEvents:UIControlEventTouchUpInside];
 					
 					[thumbnail removeFromSuperview];
 					[thumbnail retain];
 					[self removeLoadingIndicator];
-					[thumbnail addSubview:imageView];
+					//[thumbnail addSubview:imageView];
+					[thumbnail addSubview:customButton];
 					[self.view addSubview:thumbnail];
+					
+					
 					
 				}
 			}
