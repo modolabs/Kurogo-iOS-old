@@ -33,6 +33,7 @@
 - (void)hideToolBar;
 - (CGFloat)searchBarWidth;
 - (void)receivedNewSearchResults:(NSArray*)searchResults query:(NSString *)searchQuery type:(NSString *)searchType;
+- (void)didSetSearchResults; // called after -setSearchResults and -handleTileServer... have both been called at least once
 
 @end
 
@@ -320,13 +321,19 @@
             _geoButton.style = UIBarButtonItemStyleBordered;
         }
         
-        if (_searchResults.count == 1) {
-            id<MKAnnotation> annotation = [_mapView.annotations lastObject];
-            [_mapView selectAnnotation:annotation animated:YES];
-            
-        } else {
-            _mapView.region = [self regionForAnnotations:_searchResults];
+        if ([TileServerManager isInitialized]) {
+            [self didSetSearchResults];
         }
+    }
+}
+
+- (void)didSetSearchResults {
+    if (_searchResults.count == 1) {
+        id<MKAnnotation> annotation = [_mapView.annotations lastObject];
+        [_mapView selectAnnotation:annotation animated:YES];
+        
+    } else {
+        _mapView.region = [self regionForAnnotations:_searchResults];
     }
 }
 
@@ -402,6 +409,7 @@
                 [annotation updateWithInfo:annotation.info]; // updateWithInfo acts differently when tile server is up
         }
         [_mapView addAnnotations:self.searchResults];
+        [self didSetSearchResults];
     }
 	
 	[[NSNotificationCenter defaultCenter] removeObserver:self];	
