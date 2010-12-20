@@ -12,6 +12,7 @@
 #import "MIT_MobileAppDelegate.h"
 #import "ItemAvailabilityLibDetailViewController.h"
 #import "CoreDataManager.h"
+#import "LibrariesMultiLineCell.h"
 
 
 @implementation ItemAvailabilityDetailViewController
@@ -203,7 +204,7 @@ allLibrariesWithItem: (NSArray *) allLibraries
 		
 	}
 	
-	
+	limitedView = YES;
 }
 
 
@@ -314,9 +315,7 @@ allLibrariesWithItem: (NSArray *) allLibraries
 				
 				NSString * primaryNameTemp = [((NSDictionary *)[tempDict objectForKey:@"details"]) objectForKey:@"primaryName"];
 				
-				NSArray * itemsByStat = (NSArray *)[tempDict objectForKey:@"itemsByStat"];
-
-					
+				NSArray * collections = (NSArray *)[tempDict objectForKey:@"collection"];
 					
 					apiRequest = [[JSONAPIRequest alloc] initWithJSONAPIDelegate:self];
 					
@@ -339,7 +338,7 @@ allLibrariesWithItem: (NSArray *) allLibraries
 						primaryName = primaryNameTemp;
 						libraryId = libId;
 						type = typeTemp;
-						availabilityCategories = itemsByStat;
+						availabilityCategories = collections;
 						[self viewWillAppear:YES];		
 					}
 					else {
@@ -358,16 +357,19 @@ allLibrariesWithItem: (NSArray *) allLibraries
 
 
 
--(UITableViewCell *) sectionTypeZero:(NSIndexPath *)indexPath tableView:(UITableView *)tableView{
+-(UITableViewCell *) sectionTypeONE:(NSIndexPath *)indexPath tableView:(UITableView *)tableView{
 	
-	static NSString *CellIdentifier = @"CellType0";
+	static NSString *CellIdentifier = @"CellTypeONE";
     
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil) {
         cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
     }
     
-	NSDictionary * statDict = [availabilityCategories objectAtIndex:indexPath.section];
+	NSDictionary * collection = [availabilityCategories objectAtIndex:indexPath.section];
+	
+	// type I has only one holding status per collection
+	NSDictionary * statDict = (NSDictionary *)[((NSArray *)[collection objectForKey:@"itemsByStat"]) lastObject];
 	
 	int availCount = 0;
 	availCount = [[statDict objectForKey:@"availCount"] intValue];
@@ -420,17 +422,7 @@ allLibrariesWithItem: (NSArray *) allLibraries
 			break;
 		}
 	}
-	
-	
-	/*UILabel *label2 = [[UILabel alloc] initWithFrame:CGRectMake(230.0, cell.frame.size.height/2 - 10, 50.0, 20.0)];
-	label2.text = @"Request";
-	label2.font = [UIFont fontWithName:COURSE_NUMBER_FONT
-								  size:13];
-	label2.textColor = [UIColor colorWithHexString:@"#666666"];
-	label2.backgroundColor = [UIColor clearColor];	
-	label2.lineBreakMode = UILineBreakModeWordWrap;
-	label2.numberOfLines = 1;
-	 */
+
 	
 	if (indexPath.row == 0) {// available
 		
@@ -523,44 +515,160 @@ allLibrariesWithItem: (NSArray *) allLibraries
 }
 
 
--(UITableViewCell *) sectionTypeOne:(NSIndexPath *)indexPath tableView:(UITableView *)tableView{
+-(UITableViewCell *) sectionTypeTWO:(NSIndexPath *)indexPath tableView:(UITableView *)tableView{
 	
-	static NSString *CellIdentifier = @"CellType1";
+	static NSString *CellIdentifier = @"CellTypeTWO";
     
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil) {
         cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier] autorelease];
     }
     
-	NSDictionary * statDict = [availabilityCategories objectAtIndex:indexPath.section];
+	int availRowCount = 0;
+	int checkedOutRowCount = 0;
+	int unavailRowCount = 0;
+	
+	
+	int availRowMax = -1;
+	int checkedOutRowMax = -1;
+	int unavailRowMax = -1;
+	
+	NSDictionary * collection = [availabilityCategories objectAtIndex:indexPath.section];
+	NSArray * stats = (NSArray *)[collection objectForKey:@"itemsByStat"];
+
+	
+	NSMutableArray * availItems = [[NSMutableArray alloc] init];
+	NSMutableArray * checkedOutItems = [[NSMutableArray alloc] init];
+	NSMutableArray * unavailItems = [[NSMutableArray alloc] init];
+	
+	for(NSDictionary * statDict in stats){
+		
+		NSArray * availableItemsTemp = (NSArray *)[statDict objectForKey:@"availableItems"];
+		NSArray * checkedOutItemsTemp = (NSArray * )[statDict objectForKey:@"checkedOutItems"];
+		NSArray * unavailableItemsTemp = (NSArray * )[statDict objectForKey:@"unavailableItems"];
+		
+		if ([availableItemsTemp count] > 0) {
+			[availItems insertObject:availableItemsTemp atIndex:availRowCount];
+			availRowCount++;
+		}
+		
+		if ([checkedOutItemsTemp count] > 0){
+			[checkedOutItems insertObject:checkedOutItemsTemp atIndex:checkedOutRowCount];
+			checkedOutRowCount++;
+		}
+		
+		for(NSDictionary * unavailDict in unavailableItemsTemp){
+			[unavailItems insertObject:unavailDict atIndex:unavailRowCount];
+			unavailRowCount++;
+		}
+		
+	}
+	
+	availRowMax = availRowCount - 1;
+	checkedOutRowMax = availRowMax + checkedOutRowCount;
+	unavailRowMax = checkedOutRowMax++;
+	
+	NSString * status = @"";
+	NSString * imagePath = @"";
+	NSString * statMain = @"";
+	NSArray * itemsForStatus = [[NSArray alloc] init];
+	if (indexPath.row <= availRowMax){
+		
+		itemsForStatus = [availItems objectAtIndex:indexPath.row];
+		status = @"available";
+		imagePath = @"dining/dining-status-open.png";
+	}
+	
+	else if (indexPath.row <= checkedOutRowMax){
+		itemsForStatus = [checkedOutItems objectAtIndex:indexPath.row - checkedOutRowCount];
+		status = @"checked out";
+		imagePath = @"dining/dining-status-open-w-restrictions.png";
+	}
+	
+	else if (indexPath.row == unavailRowMax){
+		itemsForStatus = [unavailItems retain];
+		status = @"unavailable";
+		imagePath = @"dining/dining-status-closed.png";
+	}
+	
+	statMain = [(NSDictionary *)[itemsForStatus lastObject] objectForKey:@"statMain"];
+				
+	BOOL canRequestItem = NO;
+	for(NSDictionary * itemDict in itemsForStatus){
+		
+		NSString * canRequest = [itemDict objectForKey:@"canRequest"];
+		NSString * canScanAndDeliver = [itemDict objectForKey:@"canScanAndDeliver"];
+		
+		if (([canRequest isEqualToString:@"YES"]) || ([canScanAndDeliver isEqualToString:@"YES"])){
+			canRequestItem = YES;
+			break;
+		}
+	}
+		
+	if (canRequestItem == YES)
+		cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+	
+	UIImage * image = [UIImage imageNamed:imagePath];
+	cell.imageView.image = image;
+	
+	cell.textLabel.text = [NSString stringWithFormat:@"%d %@", [itemsForStatus count], status];	
+	cell.detailTextLabel.text = statMain;
+	cell.selectionStyle = UITableViewCellSelectionStyleGray;
+	
+	return cell;
+	
+}
+
+
+-(UITableViewCell *) sectionTypeFOUR:(NSIndexPath *)indexPath tableView:(UITableView *)tableView{
+	
+	static NSString *CellIdentifier = @"CellTypeTHREE";
+    
+    LibrariesMultiLineCell *cell = (LibrariesMultiLineCell *)[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    if (cell == nil) {
+        cell = [[[LibrariesMultiLineCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier] autorelease];
+    }
+    
+	NSDictionary * collection = [availabilityCategories objectAtIndex:indexPath.section];
+	NSArray * stats = (NSArray *)[collection objectForKey:@"itemsByStat"];
 	
 	NSMutableArray * items = [[NSMutableArray alloc] init];
 	int indexCount =0;
 	
-	NSArray * availableItems = (NSArray *)[statDict objectForKey:@"availableItems"];
-	NSArray * checkedOutItems = (NSArray * )[statDict objectForKey:@"checkedOutItems"];
-	NSArray * unavailableItems = (NSArray * )[statDict objectForKey:@"unavailableItems"];
-	
-	for(NSDictionary * item in availableItems) {
-		[items insertObject:item atIndex:indexCount];
-		indexCount++;
+	if ((limitedView == YES) && (indexPath.row >= 5)){
+		cell.textLabel.text = @"      Show all items";
+		cell.detailTextLabel.text = @"";
+		cell.accessoryType = UITableViewCellAccessoryNone;
+		cell.imageView.image = nil;
+		return cell;
 	}
 	
-	for(NSDictionary * item1 in checkedOutItems) {
-		[items insertObject:item1 atIndex:indexCount];
-		indexCount++;
-	}
-	
-	for(NSDictionary * item2 in unavailableItems) {
-		[items insertObject:item2 atIndex:indexCount];
-		indexCount++;
+	for(NSDictionary * statDict in stats) {
+		NSArray * availableItems = (NSArray *)[statDict objectForKey:@"availableItems"];
+		NSArray * checkedOutItems = (NSArray * )[statDict objectForKey:@"checkedOutItems"];
+		NSArray * unavailableItems = (NSArray * )[statDict objectForKey:@"unavailableItems"];
+		
+		for(NSDictionary * item in availableItems) {
+			[items insertObject:item atIndex:indexCount];
+			indexCount++;
+		}
+		
+		for(NSDictionary * item1 in checkedOutItems) {
+			[items insertObject:item1 atIndex:indexCount];
+			indexCount++;
+		}
+		
+		for(NSDictionary * item2 in unavailableItems) {
+			[items insertObject:item2 atIndex:indexCount];
+			indexCount++;
+		}
 	}
 	
 	
 	NSDictionary * itemForRow = [items objectAtIndex:indexPath.row];
 	NSString * canRequest = [itemForRow objectForKey:@"canRequest"];
 	NSString * canScanAndDeliver = [itemForRow objectForKey:@"canScanAndDeliver"];
-	NSString * isUnAvailable = [itemForRow objectForKey:@"unavailable"];
+	//NSString * isUnAvailable = [itemForRow objectForKey:@"unavailable"];
 	NSString * isAvailable = [itemForRow objectForKey:@"available"];
 	NSString * isCheckedOut = [itemForRow objectForKey:@"checkedOutItem"];
 	
@@ -571,11 +679,6 @@ allLibrariesWithItem: (NSArray *) allLibraries
 		status = @"Available";
 		color = @"green";
 	}
-	
-	/*else if (([canRequest isEqualToString:@"YES"]) || ([canScanAndDeliver isEqualToString:@"YES"])) {
-		status = @"Checked Out";
-		color = @"yellow";
-	}*/
 	
 	else if ([isCheckedOut isEqualToString:@"YES"]){
 		status = @"Checked Out";
@@ -588,8 +691,12 @@ allLibrariesWithItem: (NSArray *) allLibraries
 	}
 
 	NSString * callNumber = [itemForRow objectForKey:@"callNumber"];
+	NSString * desc = [itemForRow objectForKey:@"description"];
+	NSString * statMain = [itemForRow objectForKey:@"statMain"];
+	callNumber = [NSString stringWithFormat:@"%@-%@\n%@", desc, callNumber, statMain];
 	
 	cell.textLabel.text = status;
+	cell.detailTextLabel.numberOfLines = 4;
 	cell.detailTextLabel.text = callNumber;
 	
 	if ([color isEqualToString:@"green"])
@@ -610,194 +717,30 @@ allLibrariesWithItem: (NSArray *) allLibraries
 	
 }
 
-
-#pragma mark -
-#pragma mark Table view data source
-
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    // Return the number of sections.
-    return [availabilityCategories count];
-}
-
-
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    // Return the number of rows in the section.
+-(UITableViewCell *) sectionTypeTHREE:(NSIndexPath *)indexPath tableView:(UITableView *)tableView{
 	
-	int row = 0;
-	NSDictionary * statDict = [availabilityCategories objectAtIndex:section];
-	
-	
-	int availCount = 0;
-	availCount = [[statDict objectForKey:@"availCount"] intValue];
-	
-	int unavailCount = 0;
-	unavailCount = [[statDict objectForKey:@"unavailCount"] intValue];
-	
-	int checkedOutCount = 0;
-	checkedOutCount = [[statDict objectForKey:@"checkedOutCount"] intValue];
-	
-	int requestCount = 0;
-	requestCount = [[statDict objectForKey:@"requestCount"] intValue];
-	
-	if (availCount > 0)
-		row++;
-	
-	if (checkedOutCount > 0)
-		row++;
-	
-	if (unavailCount > 0)
-		row++;
-	
-	if ([[sectionType objectForKey:[NSString stringWithFormat:@"%d",section]] isEqualToString:sectionType0])
-		return row;
-	
-	else if ([[sectionType objectForKey:[NSString stringWithFormat:@"%d", section]] isEqualToString:sectionType1])
-		return availCount + unavailCount + checkedOutCount;
-
-	
-    return 0;
-}
-
-
-// Customize the appearance of table view cells.
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+	static NSString *CellIdentifier = @"CellTypeFOUR";
     
-	if ([[sectionType objectForKey:[NSString stringWithFormat:@"%d", indexPath.section]] isEqualToString:sectionType0])
-		return [self sectionTypeZero:indexPath tableView:tableView];
-	
-	else if ([[sectionType objectForKey:[NSString stringWithFormat:@"%d", indexPath.section]] isEqualToString:sectionType1])
-		return [self sectionTypeOne:indexPath tableView:tableView];
-	
-	return nil;
-}
-
-
-
-
-#pragma mark -
-#pragma mark Table view delegate
-
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-	
-	[tableView deselectRowAtIndexPath:indexPath animated:NO];
-	
-
-	
-	if ([[sectionType objectForKey:[NSString stringWithFormat:@"%d", indexPath.section]] isEqualToString:sectionType0]){
-		
-		
-		NSDictionary * statDict = [availabilityCategories objectAtIndex:indexPath.section];
-		
-		int availCount = 0;
-		availCount = [[statDict objectForKey:@"availCount"] intValue];
-		
-		int unavailCount = 0;
-		unavailCount = [[statDict objectForKey:@"unavailCount"] intValue];
-		
-		int checkedOutCount = 0;
-		checkedOutCount = [[statDict objectForKey:@"checkedOutCount"] intValue];
-		
-		int requestCount = 0;
-		requestCount = [[statDict objectForKey:@"requestCount"] intValue];
-		
-		int scanAndDeliverCount = 0;
-		scanAndDeliverCount = [[statDict objectForKey:@"scanAndDeliverCount"] intValue];
-		
-		if ((requestCount > 0) || (scanAndDeliverCount > 0)){
-			
-			//just present the reqUrl
-			NSArray * availableItems = (NSArray *)[statDict objectForKey:@"availableItems"];
-			NSArray * checkedOutItems = (NSArray * )[statDict objectForKey:@"checkedOutItems"];
-			
-			NSString * reqUrl = @"";
-			NSString * scanUrl = @"";
-			if (indexPath.row == 0){
-				if (availCount > 0){
-
-					for(NSDictionary * availD in availableItems){
-						if ([[availD objectForKey:@"requestUrl"] length] > 0){
-							reqUrl = [availD objectForKey:@"requestUrl"];
-						}
-						if ([[availD objectForKey:@"scanAndDeliverUrl"] length] > 0){
-							scanUrl = [availD objectForKey:@"scanAndDeliverUrl"];
-						}
-					}
-				}
-				else if (checkedOutCount > 0) {
-					for(NSDictionary * availD in checkedOutItems){
-						if ([[availD objectForKey:@"requestUrl"] length] > 0)
-							reqUrl = [availD objectForKey:@"requestUrl"];
-						
-						if ([[availD objectForKey:@"scanAndDeliverUrl"] length] > 0){
-							scanUrl = [availD objectForKey:@"scanAndDeliverUrl"];
-						}
-					}
-				}
-			}
-			
-			else if (indexPath.row == 1){
-				
-				if (checkedOutCount > 0){
-					for(NSDictionary * availD in checkedOutItems){
-						if ([[availD objectForKey:@"requestUrl"] length] > 0)
-							reqUrl = [availD objectForKey:@"requestUrl"];
-						
-						if ([[availD objectForKey:@"scanAndDeliverUrl"] length] > 0){
-							scanUrl = [availD objectForKey:@"scanAndDeliverUrl"];
-						}
-					}
-				}				
-			}
-			else {
-				return;
-			}
-			
-			
-			if (([reqUrl length] > 0) && ([scanUrl length] == 0)){
-				MIT_MobileAppDelegate *appDelegate = (MIT_MobileAppDelegate *)[[UIApplication sharedApplication] delegate];
-			
-				RequestWebViewModalViewController *modalVC = [[RequestWebViewModalViewController alloc] initWithRequestUrl:reqUrl title:@"Request Item"];
-			
-				//[self.navigationController pushViewController:modalVC animated:YES];
-				//[modalVC release];
-			
-				[appDelegate presentAppModalViewController:modalVC animated:YES];
-				[modalVC release];
-			}
-			else if (([scanUrl length] > 0) && ([reqUrl length] == 0)){
-				MIT_MobileAppDelegate *appDelegate = (MIT_MobileAppDelegate *)[[UIApplication sharedApplication] delegate];
-				
-				RequestWebViewModalViewController *modalVC = [[RequestWebViewModalViewController alloc] initWithRequestUrl:scanUrl title:@"Scan & Deliver Item"];
-				
-				//[self.navigationController pushViewController:modalVC animated:YES];
-				//[modalVC release];
-				
-				[appDelegate presentAppModalViewController:modalVC animated:YES];
-				[modalVC release];
-			}
-			else {
-				[self showActionSheet:indexPath.section];
-			}
-
-			
-
-		}
-		
-		else if ((requestCount == 0) && (scanAndDeliverCount == 0))
-			return; // no action
-		
-		else
-			[self showActionSheet:indexPath.section];
-
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    if (cell == nil) {
+        cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier] autorelease];
+    }
+    
+	if ((limitedView == YES) && (indexPath.row >= 5)){
+		cell.textLabel.text = @"      Show all items";
+		cell.detailTextLabel.text = @"";
+		cell.accessoryType = UITableViewCellAccessoryNone;
+		cell.imageView.image = nil;
+		return cell;
 	}
 	
-	else if ([[sectionType objectForKey:[NSString stringWithFormat:@"%d", indexPath.section]] isEqualToString:sectionType1]) {
-		
-		NSDictionary * statDict = [availabilityCategories objectAtIndex:indexPath.section];
-		
-		NSMutableArray * items = [[NSMutableArray alloc] init];
-		int indexCount =0;
-		
+	NSDictionary * collection = [availabilityCategories objectAtIndex:indexPath.section];
+	NSArray * stats = (NSArray *)[collection objectForKey:@"itemsByStat"];
+	
+	NSMutableArray * items = [[NSMutableArray alloc] init];
+	int indexCount =0;
+	
+	for(NSDictionary * statDict in stats) {
 		NSArray * availableItems = (NSArray *)[statDict objectForKey:@"availableItems"];
 		NSArray * checkedOutItems = (NSArray * )[statDict objectForKey:@"checkedOutItems"];
 		NSArray * unavailableItems = (NSArray * )[statDict objectForKey:@"unavailableItems"];
@@ -816,23 +759,557 @@ allLibrariesWithItem: (NSArray *) allLibraries
 			[items insertObject:item2 atIndex:indexCount];
 			indexCount++;
 		}
+	}
+	
+	
+	NSDictionary * itemForRow = [items objectAtIndex:indexPath.row];
+	NSString * canRequest = [itemForRow objectForKey:@"canRequest"];
+	NSString * canScanAndDeliver = [itemForRow objectForKey:@"canScanAndDeliver"];
+	NSString * isUnAvailable = [itemForRow objectForKey:@"unavailable"];
+	NSString * isAvailable = [itemForRow objectForKey:@"available"];
+	NSString * isCheckedOut = [itemForRow objectForKey:@"checkedOutItem"];
+	
+	NSString * status = @"";
+	NSString * color = @"";
+	
+	if ([isAvailable isEqualToString:@"YES"]){
+		status = @"Available";
+		color = @"green";
+	}
+	
+	/*else if (([canRequest isEqualToString:@"YES"]) || ([canScanAndDeliver isEqualToString:@"YES"])) {
+	 status = @"Checked Out";
+	 color = @"yellow";
+	 }*/
+	
+	else if ([isCheckedOut isEqualToString:@"YES"]){
+		status = @"Checked Out";
+		color = @"yellow";
+	}
+	
+	else {
+		status = @"Unavailable";
+		color = @"gray";
+	}
+	
+	NSString * callNumber = [itemForRow objectForKey:@"callNumber"];
+	NSString * desc = [itemForRow objectForKey:@"description"];
+	callNumber = [NSString stringWithFormat:@"%@-%@", desc, callNumber];
+	
+	cell.textLabel.text = status;
+	cell.detailTextLabel.numberOfLines = 1;
+	cell.detailTextLabel.text = callNumber;
+	
+	if ([color isEqualToString:@"green"])
+		cell.imageView.image = [UIImage imageNamed:@"dining/dining-status-open.png"];
+	
+	else if ([color isEqualToString:@"yellow"])
+		cell.imageView.image = [UIImage imageNamed:@"dining/dining-status-open-w-restrictions.png"];
+	
+	else
+		cell.imageView.image = [UIImage imageNamed:@"dining/dining-status-closed.png"];
+	
+	if (([canRequest isEqualToString:@"YES"]) || ([canScanAndDeliver isEqualToString:@"YES"]))
+		cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+	
+	cell.selectionStyle = UITableViewCellSelectionStyleGray;
+	
+    return cell;
+	
+}
+
+- (CGFloat)heightForRowAtIndexPathSectionONE:(NSIndexPath *)indexPath tableView:(UITableView *)tableView{
+    
+	return [LibrariesMultiLineCell heightForCellWithStyle:UITableViewCellStyleDefault
+										   tableView:tableView 
+												text:@"temporary text one liner"
+										maxTextLines:1
+										  detailText:nil
+									  maxDetailLines:0
+												font:nil 
+										  detailFont:nil
+									   accessoryType:UITableViewCellAccessoryDisclosureIndicator
+										   cellImage:YES];
+}
+
+- (CGFloat)heightForRowAtIndexPathSectionTWO:(NSIndexPath *)indexPath tableView:(UITableView *)tableView{
+	return [LibrariesMultiLineCell heightForCellWithStyle:UITableViewCellStyleSubtitle
+												tableView:tableView 
+													 text:@"temporary text one liner"
+											 maxTextLines:1
+											   detailText:@"temp place holder for cell nbr"
+										   maxDetailLines:1
+													 font:nil 
+											   detailFont:nil
+											accessoryType:UITableViewCellAccessoryDisclosureIndicator
+												cellImage:YES];
+}
+
+- (CGFloat)heightForRowAtIndexPathSectionTHREE:(NSIndexPath *)indexPath tableView:(UITableView *)tableView{
+	if ((limitedView == YES) && (indexPath.row >= 5)){
+		return 35;
+	}
+	
+	return [LibrariesMultiLineCell heightForCellWithStyle:UITableViewCellStyleSubtitle
+												tableView:tableView 
+													 text:@"temporary text one liner"
+											 maxTextLines:1
+											   detailText:@"concatenation temp text wth call nbr"
+										   maxDetailLines:1
+													 font:nil 
+											   detailFont:nil
+											accessoryType:UITableViewCellAccessoryDisclosureIndicator
+												cellImage:YES];
+}
+
+- (CGFloat)heightForRowAtIndexPathSectionFOUR:(NSIndexPath *)indexPath tableView:(UITableView *)tableView{
+	
+	if ((limitedView == YES) && (indexPath.row >= 5)){
+		return 35;
+	}
+	
+	NSDictionary * collection = [availabilityCategories objectAtIndex:indexPath.section];
+	NSArray * stats = (NSArray *)[collection objectForKey:@"itemsByStat"];
+	
+	NSMutableArray * items = [[NSMutableArray alloc] init];
+	int indexCount =0;
+	
+	for(NSDictionary * statDict in stats) {
+		NSArray * availableItems = (NSArray *)[statDict objectForKey:@"availableItems"];
+		NSArray * checkedOutItems = (NSArray * )[statDict objectForKey:@"checkedOutItems"];
+		NSArray * unavailableItems = (NSArray * )[statDict objectForKey:@"unavailableItems"];
+		
+		for(NSDictionary * item in availableItems) {
+			[items insertObject:item atIndex:indexCount];
+			indexCount++;
+		}
+		
+		for(NSDictionary * item1 in checkedOutItems) {
+			[items insertObject:item1 atIndex:indexCount];
+			indexCount++;
+		}
+		
+		for(NSDictionary * item2 in unavailableItems) {
+			[items insertObject:item2 atIndex:indexCount];
+			indexCount++;
+		}
+	}
+	
+	
+	NSDictionary * itemForRow = [items objectAtIndex:indexPath.row];
+	NSString * canRequest = [itemForRow objectForKey:@"canRequest"];
+	NSString * canScanAndDeliver = [itemForRow objectForKey:@"canScanAndDeliver"];
+	
+	NSString * callNumber = [itemForRow objectForKey:@"callNumber"];
+	NSString * desc = [itemForRow objectForKey:@"description"];
+	NSString * statMain = [itemForRow objectForKey:@"statMain"];
+	callNumber = [NSString stringWithFormat:@"%@-%@\n%@", desc, callNumber, statMain];
+	
+	NSString * cellText = @"temp place holder";
+	NSString * detailText = callNumber;
+	UITableViewCellAccessoryType accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+
+	
+	if (([canRequest isEqualToString:@"NO"]) && ([canScanAndDeliver isEqualToString:@"NO"]))
+		accessoryType = UITableViewCellAccessoryNone;
+
+	return [LibrariesMultiLineCell heightForCellWithStyle:UITableViewCellStyleSubtitle
+												tableView:tableView 
+													 text:cellText
+											 maxTextLines:1
+											   detailText:detailText
+										   maxDetailLines:4
+													 font:nil 
+											   detailFont:nil
+											accessoryType:accessoryType
+												cellImage:YES];
+}
+
+#pragma mark -
+#pragma mark Table view data source
+
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+    // Return the number of sections.
+    return [availabilityCategories count];
+}
+
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    // Return the number of rows in the section.
+
+	NSDictionary * collection = [availabilityCategories objectAtIndex:section];	
+	NSArray * stats = (NSArray *)[collection objectForKey:@"itemsByStat"];
+	NSString * displayType = [collection objectForKey:@"displayType"];
+	
+	int availRowCount = 0;
+	int checkedOutRowCount = 0;
+	int unavailRowCount = 0;
+	
+	int availCount = 0;
+	int checkedOutCount = 0;
+	int unavailCount = 0;
+	
+	int itemStats = 0;
+	
+	if ([displayType isEqualToString:@"V"])
+		return 0;
+	
+	for(NSDictionary * statDict in stats){
+		
+		NSArray * availableItemsTemp = (NSArray *)[statDict objectForKey:@"availableItems"];
+		NSArray * checkedOutItemsTemp = (NSArray * )[statDict objectForKey:@"checkedOutItems"];
+		NSArray * unavailableItemsTemp = (NSArray * )[statDict objectForKey:@"unavailableItems"];
+		
+		if ([availableItemsTemp count] > 0) {
+			availRowCount++;
+			availCount += [availableItemsTemp count];
+		}
+		
+		if ([checkedOutItemsTemp count] > 0){
+			checkedOutRowCount++;
+			checkedOutCount += [checkedOutItemsTemp count];
+		}
+		
+		if ([unavailableItemsTemp count] > 0){
+			unavailRowCount = 1;
+			unavailCount += [unavailableItemsTemp count];
+		}
+	}
+	
+	
+	if (availCount > 0)
+		itemStats++;
+	
+	if (checkedOutCount > 0)
+		itemStats++;
+	
+	if (unavailCount > 0)
+		itemStats++;
+	
+	if ([displayType isEqualToString:@"I"]){
+		return itemStats;		
+	}
+	
+	else if ([displayType isEqualToString:@"II"])
+		return availRowCount + checkedOutRowCount + unavailRowCount;
+	
+	else if ([displayType isEqualToString:@"III"]){
+		int rows = availCount + checkedOutCount + unavailCount;
+		
+		if ((limitedView == YES) && (rows >= 5))
+			return 6;
+		else {
+			return rows;
+		}
+
+	}
+	
+	else if ([displayType isEqualToString:@"IV"]) {
+		int rows = availCount + checkedOutCount + unavailCount;
+		
+		if ((limitedView == YES) && (rows >= 5))
+			return 6;
+		else {
+			return rows;
+		};
+	}
+
+
+    return 0;
+}
+
+
+// Customize the appearance of table view cells.
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+	
+	NSDictionary * collection = [availabilityCategories objectAtIndex:indexPath.section];	
+	NSString * displayType = [collection objectForKey:@"displayType"];
+
+	if ([displayType isEqualToString:@"I"])
+		return [self sectionTypeONE:indexPath tableView:tableView];
+
+	else if ([displayType isEqualToString:@"II"])
+		return [self sectionTypeTWO:indexPath tableView:tableView];
+	
+	else if ([displayType isEqualToString:@"III"])
+		return [self sectionTypeTHREE:indexPath tableView:tableView];
+	
+	else if ([displayType isEqualToString:@"IV"])
+		return [self sectionTypeFOUR:indexPath tableView:tableView];
+
+	return nil;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
+	
+	NSDictionary * collection = [availabilityCategories objectAtIndex:indexPath.section];	
+	NSString * displayType = [collection objectForKey:@"displayType"];
+	
+	if ([displayType isEqualToString:@"I"])
+		return [self heightForRowAtIndexPathSectionONE:indexPath tableView:tableView];
+	
+	else if ([displayType isEqualToString:@"II"])
+		return [self heightForRowAtIndexPathSectionTWO:indexPath tableView:tableView];
+	
+	else if ([displayType isEqualToString:@"III"])
+		return [self heightForRowAtIndexPathSectionTHREE:indexPath tableView:tableView];
+	
+	else if ([displayType isEqualToString:@"IV"])
+		return [self heightForRowAtIndexPathSectionFOUR:indexPath tableView:tableView];
+	
+	return 0;
+}
+
+
+#pragma mark -
+#pragma mark Table view delegate
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+	
+	[tableView deselectRowAtIndexPath:indexPath animated:NO];
+	
+	NSDictionary * collection = [availabilityCategories objectAtIndex:indexPath.section];	
+	NSString * displayType = [collection objectForKey:@"displayType"];
+	NSArray * stats = (NSArray *)[collection objectForKey:@"itemsByStat"];
+	
+	if ([displayType isEqualToString:@"I"]){
+		
+		NSDictionary * statDict = (NSDictionary *)[stats lastObject];
+		int availCount = 0;
+		availCount = [[statDict objectForKey:@"availCount"] intValue];
+		
+		int unavailCount = 0;
+		unavailCount = [[statDict objectForKey:@"unavailCount"] intValue];
+		
+		int checkedOutCount = 0;
+		checkedOutCount = [[statDict objectForKey:@"checkedOutCount"] intValue];
+		
+		NSArray * availableItems = (NSArray *)[statDict objectForKey:@"availableItems"];
+		NSArray * checkedOutItems = (NSArray * )[statDict objectForKey:@"checkedOutItems"];
+		NSArray * unavailableItems = (NSArray * )[statDict objectForKey:@"unavailableItems"];
+		
+		NSArray * items = [[NSArray alloc] init];
+		if (indexPath.row == 0) {// available
+			
+			if (availCount > 0) {
+				items = availableItems;
+			}
+			else if (checkedOutCount > 0){
+				items = checkedOutItems;
+			}
+			
+			else if (unavailCount > 0){
+				items = unavailableItems;
+			}			
+		}
+		
+		else if (indexPath.row == 1) {// checked out
+			if (checkedOutCount > 0){
+				items = checkedOutItems;
+			}
+			
+			else if (unavailCount > 0){
+				items = unavailableItems;
+			}	
+		}
+		
+		else if (indexPath.row == 2) {// unavailable
+			if (unavailCount > 0){
+				items = unavailableItems;
+			}	
+		}
+		
+		NSString * reqUrl = @"";
+		NSString * scanUrl = @"";
+		
+		for(NSDictionary * availD in items){
+			if ([[availD objectForKey:@"requestUrl"] length] > 0){
+				reqUrl = [availD objectForKey:@"requestUrl"];
+			}
+			if ([[availD objectForKey:@"scanAndDeliverUrl"] length] > 0){
+				scanUrl = [availD objectForKey:@"scanAndDeliverUrl"];
+			}
+		}
+		if (([reqUrl length] == 0) && ([scanUrl length] == 0))
+			return;
+			
+		else if (([reqUrl length] > 0) && ([scanUrl length] == 0)){
+			MIT_MobileAppDelegate *appDelegate = (MIT_MobileAppDelegate *)[[UIApplication sharedApplication] delegate];
+			
+			RequestWebViewModalViewController *modalVC = [[RequestWebViewModalViewController alloc] initWithRequestUrl:reqUrl title:@"Request Item"];
+			
+			//[self.navigationController pushViewController:modalVC animated:YES];
+			//[modalVC release];
+			
+			[appDelegate presentAppModalViewController:modalVC animated:YES];
+			[modalVC release];
+		}
+		else if (([scanUrl length] > 0) && ([reqUrl length] == 0)){
+			MIT_MobileAppDelegate *appDelegate = (MIT_MobileAppDelegate *)[[UIApplication sharedApplication] delegate];
+			
+			RequestWebViewModalViewController *modalVC = [[RequestWebViewModalViewController alloc] initWithRequestUrl:scanUrl title:@"Scan & Deliver Item"];
+			
+			//[self.navigationController pushViewController:modalVC animated:YES];
+			//[modalVC release];
+			
+			[appDelegate presentAppModalViewController:modalVC animated:YES];
+			[modalVC release];
+		}
+		else {
+			[self showActionSheet:items];
+		}
+	}
+	
+	else if ([displayType isEqualToString:@"II"]){
+		
+		
+		int availRowCount = 0;
+		int checkedOutRowCount = 0;
+		int unavailRowCount = 0;
+				
+		int availRowMax = -1;
+		int checkedOutRowMax = -1;
+		int unavailRowMax = -1;
+
+		
+		NSMutableArray * availItems = [[NSMutableArray alloc] init];
+		NSMutableArray * checkedOutItems = [[NSMutableArray alloc] init];
+		NSMutableArray * unavailItems = [[NSMutableArray alloc] init];
+		
+		for(NSDictionary * statDict in stats){
+			
+			NSArray * availableItemsTemp = (NSArray *)[statDict objectForKey:@"availableItems"];
+			NSArray * checkedOutItemsTemp = (NSArray * )[statDict objectForKey:@"checkedOutItems"];
+			NSArray * unavailableItemsTemp = (NSArray * )[statDict objectForKey:@"unavailableItems"];
+			
+			if ([availableItemsTemp count] > 0) {
+				[availItems insertObject:availableItemsTemp atIndex:availRowCount];
+				availRowCount++;
+			}
+			
+			if ([checkedOutItemsTemp count] > 0){
+				[checkedOutItems insertObject:checkedOutItemsTemp atIndex:checkedOutRowCount];
+				checkedOutRowCount++;
+			}
+			
+			for(NSDictionary * unavailDict in unavailableItemsTemp){
+				[unavailItems insertObject:unavailDict atIndex:unavailRowCount];
+				unavailRowCount++;
+			}
+			
+		}
+		
+		availRowMax = availRowCount - 1;
+		checkedOutRowMax = availRowMax + checkedOutRowCount;
+		unavailRowMax = checkedOutRowMax++;
+
+		NSArray * itemsForStatus = [[NSArray alloc] init];
+		if (indexPath.row <= availRowMax){
+			itemsForStatus = [availItems objectAtIndex:indexPath.row];
+		}
+		
+		else if (indexPath.row <= checkedOutRowMax){
+			itemsForStatus = [checkedOutItems objectAtIndex:indexPath.row - checkedOutRowCount];
+		}
+		
+		else if (indexPath.row == unavailRowMax){
+			itemsForStatus = [unavailItems retain];
+		}
+		
+		NSString * reqUrl = @"";
+		NSString * scanUrl = @"";
+		
+		for(NSDictionary * availD in itemsForStatus){
+			if ([[availD objectForKey:@"requestUrl"] length] > 0){
+				reqUrl = [availD objectForKey:@"requestUrl"];
+			}
+			if ([[availD objectForKey:@"scanAndDeliverUrl"] length] > 0){
+				scanUrl = [availD objectForKey:@"scanAndDeliverUrl"];
+			}
+		}
+		if (([reqUrl length] == 0) && ([scanUrl length] == 0)){
+			return;
+		}
+		
+		else if (([reqUrl length] > 0) && ([scanUrl length] == 0)){
+			MIT_MobileAppDelegate *appDelegate = (MIT_MobileAppDelegate *)[[UIApplication sharedApplication] delegate];
+			
+			RequestWebViewModalViewController *modalVC = [[RequestWebViewModalViewController alloc] initWithRequestUrl:reqUrl title:@"Request Item"];
+			
+			//[self.navigationController pushViewController:modalVC animated:YES];
+			//[modalVC release];
+			
+			[appDelegate presentAppModalViewController:modalVC animated:YES];
+			[modalVC release];
+		}
+		else if (([scanUrl length] > 0) && ([reqUrl length] == 0)){
+			MIT_MobileAppDelegate *appDelegate = (MIT_MobileAppDelegate *)[[UIApplication sharedApplication] delegate];
+			
+			RequestWebViewModalViewController *modalVC = [[RequestWebViewModalViewController alloc] initWithRequestUrl:scanUrl title:@"Scan & Deliver Item"];
+			
+			//[self.navigationController pushViewController:modalVC animated:YES];
+			//[modalVC release];
+			
+			[appDelegate presentAppModalViewController:modalVC animated:YES];
+			[modalVC release];
+		}
+		else {
+			[self showActionSheet:itemsForStatus];
+		}
+		
+		
+	}
+	
+	else if (([displayType isEqualToString:@"III"]) || ([displayType isEqualToString:@"IV"])){
+		
+		if ((limitedView == YES) && (indexPath.row >= 5)){
+			limitedView = NO;
+			[self.tableView reloadData];
+			return;
+		}
+		
+		NSMutableArray * items = [[NSMutableArray alloc] init];
+		int indexCount =0;
+		
+		for(NSDictionary * statDict in stats) {
+			NSArray * availableItems = (NSArray *)[statDict objectForKey:@"availableItems"];
+			NSArray * checkedOutItems = (NSArray * )[statDict objectForKey:@"checkedOutItems"];
+			NSArray * unavailableItems = (NSArray * )[statDict objectForKey:@"unavailableItems"];
+			
+			for(NSDictionary * item in availableItems) {
+				[items insertObject:item atIndex:indexCount];
+				indexCount++;
+			}
+			
+			for(NSDictionary * item1 in checkedOutItems) {
+				[items insertObject:item1 atIndex:indexCount];
+				indexCount++;
+			}
+			
+			for(NSDictionary * item2 in unavailableItems) {
+				[items insertObject:item2 atIndex:indexCount];
+				indexCount++;
+			}
+		}
 		
 		
 		NSDictionary * itemForRow = [items objectAtIndex:indexPath.row];
 		NSString * canRequest = [itemForRow objectForKey:@"canRequest"];
 		NSString * canScanAndDeliver = [itemForRow objectForKey:@"canScanAndDeliver"];
 		
+		if (([canRequest isEqualToString:@"YES"]) && ([canScanAndDeliver isEqualToString:@"YES"]))
+			[self showActionSheet:[[NSArray alloc] initWithObjects:itemForRow, nil]];
 		
-		if ([canRequest isEqualToString:@"YES"]) {
+		else if ([canRequest isEqualToString:@"YES"]) {
 			
 			NSString * reqUrl = [itemForRow objectForKey:@"requestUrl"];
 			MIT_MobileAppDelegate *appDelegate = (MIT_MobileAppDelegate *)[[UIApplication sharedApplication] delegate];
-		
+			
 			RequestWebViewModalViewController *modalVC = [[RequestWebViewModalViewController alloc] initWithRequestUrl:reqUrl title:@"Request Item"];
-		
+			
 			//[self.navigationController pushViewController:modalVC animated:YES];
 			//[modalVC release];
-		
+			
 			[appDelegate presentAppModalViewController:modalVC animated:YES];
 			[modalVC release];
 		}
@@ -850,8 +1327,10 @@ allLibrariesWithItem: (NSArray *) allLibraries
 			[appDelegate presentAppModalViewController:modalVC animated:YES];
 			[modalVC release];
 		}
+		
 	}
 	
+	return;	
 	
 }
 
@@ -859,20 +1338,22 @@ allLibrariesWithItem: (NSArray *) allLibraries
 	
 	UIView * view;
 	view = nil;
-	NSString * text1 = @"";
-	NSString * text2 = @"";
+
 	
-	NSDictionary * statDict = [availabilityCategories objectAtIndex:section];
+	NSDictionary * collection = [availabilityCategories objectAtIndex:section];	
+	NSArray * stats = (NSArray *)[collection objectForKey:@"itemsByStat"];
+	NSString * displayType = [collection objectForKey:@"displayType"];
+	//NSString *collectionTitle = [collection objectForKey:@"collectionName"];
+	NSString *collectionCallNbr = [collection objectForKey:@"collectionCallNumber"];
 	
-	int collectionOnlyCount = 0;
-	collectionOnlyCount = [[statDict objectForKey:@"collectionOnlyCount"] intValue];
 	
-	if (collectionOnlyCount > 0) {
+	if ([displayType isEqualToString:@"V"]) {
 		
 		UILabel * headerCollectionName;
 		UILabel * headerCollectionCallNumber;
 		UILabel * headerCollectionAvailVal;
 		
+		NSDictionary * statDict = (NSDictionary *)[stats lastObject];
 		NSDictionary * collectionItem = (NSDictionary *)[((NSArray *)[statDict objectForKey:@"collectionOnlyItems"]) lastObject];
 		
 		NSString * collectionName = [collectionItem objectForKey:@"collectionName"];
@@ -880,19 +1361,19 @@ allLibrariesWithItem: (NSArray *) allLibraries
 		NSString * availVal = [(NSArray*)[collectionItem objectForKey:@"collectionAvailVal"] lastObject];
 		
 		CGFloat heightName = [collectionName
-						  sizeWithFont:[UIFont boldSystemFontOfSize:17]
-						  constrainedToSize:CGSizeMake(280, 2000)         
-						  lineBreakMode:UILineBreakModeWordWrap].height;
-		
-		CGFloat heightCallNbr = [callNbr
-							  sizeWithFont:[UIFont fontWithName:STANDARD_FONT size:13]
+							  sizeWithFont:[UIFont boldSystemFontOfSize:17]
 							  constrainedToSize:CGSizeMake(280, 2000)         
 							  lineBreakMode:UILineBreakModeWordWrap].height;
 		
-		CGFloat heightAvailVal = [availVal
+		CGFloat heightCallNbr = [callNbr
 								 sizeWithFont:[UIFont fontWithName:STANDARD_FONT size:13]
 								 constrainedToSize:CGSizeMake(280, 2000)         
 								 lineBreakMode:UILineBreakModeWordWrap].height;
+		
+		CGFloat heightAvailVal = [availVal
+								  sizeWithFont:[UIFont fontWithName:STANDARD_FONT size:13]
+								  constrainedToSize:CGSizeMake(280, 2000)         
+								  lineBreakMode:UILineBreakModeWordWrap].height;
 		
 		headerCollectionName = [[UILabel alloc] initWithFrame:CGRectMake(12.0, 0.0, 280, heightName)];
 		headerCollectionName.text = collectionName;
@@ -927,69 +1408,95 @@ allLibrariesWithItem: (NSArray *) allLibraries
 		
 		return view;
 	}
-	
-	UILabel * headerLabel1;
-	UILabel * headerLabel2;
+
+	else {
+		NSString * text0 = @"";
+		NSString * text1 = @"";
+		NSString * text2 = @"";
 		
-	text1 = [statDict objectForKey:@"statMain"];
-	text1 = [text1 stringByReplacingCharactersInRange:
-							 NSMakeRange(0,1) withString:[[text1 substringToIndex:1] capitalizedString]];
-	text2 = [statDict objectForKey:@"callNumber"];
-	
-	CGFloat height = [text1
-						  sizeWithFont:[UIFont boldSystemFontOfSize:17]
+		UILabel * headerLabel0;
+		UILabel * headerLabel1;
+		UILabel * headerLabel2;
+		
+		NSDictionary * statDict = (NSDictionary *)[stats lastObject];
+		
+		text0 = [statDict objectForKey:@"collectionName"];
+		
+		
+		if (([displayType isEqualToString:@"I"]) || ([displayType isEqualToString:@"III"]))
+			text1 = [statDict objectForKey:@"statMain"];
+		
+		if ([text1 length] > 0)
+			text1 = [text1 stringByReplacingCharactersInRange:
+					 NSMakeRange(0,1) withString:[[text1 substringToIndex:1] capitalizedString]];
+		
+		text2 = collectionCallNbr;
+		
+		CGFloat height0 = [text0
+						   sizeWithFont:[UIFont boldSystemFontOfSize:17]
+						   constrainedToSize:CGSizeMake(280.0, 2000)         
+						   lineBreakMode:UILineBreakModeWordWrap].height;
+		
+		CGFloat height1 = [text1
+						  sizeWithFont:[UIFont fontWithName:STANDARD_FONT size:13]
 						  constrainedToSize:CGSizeMake(280.0, 2000)         
 						  lineBreakMode:UILineBreakModeWordWrap].height;
-	
-	CGFloat height2 = [text2
-					  sizeWithFont:[UIFont fontWithName:STANDARD_FONT size:13]
-					  constrainedToSize:CGSizeMake(280.0, 2000)         
-					  lineBreakMode:UILineBreakModeWordWrap].height;
-	
-	if (height > 21)
-		height = 21;
 		
-		headerLabel1 = [[UILabel alloc] initWithFrame:CGRectMake(12.0, 0.0, 280.0, height)];
+		CGFloat height2 = [text2
+						   sizeWithFont:[UIFont fontWithName:STANDARD_FONT size:13]
+						   constrainedToSize:CGSizeMake(280.0, 2000)         
+						   lineBreakMode:UILineBreakModeWordWrap].height;
+
+		headerLabel0 = [[UILabel alloc] initWithFrame:CGRectMake(12.0, 0.0, 280.0, height0)];
+		headerLabel0.text = text0;
+		headerLabel0.font = [UIFont boldSystemFontOfSize:17];
+		headerLabel0.textColor = [UIColor colorWithHexString:@"#554C41"];
+		headerLabel0.backgroundColor = [UIColor clearColor];	
+		headerLabel0.lineBreakMode = UILineBreakModeTailTruncation;
+		headerLabel0.numberOfLines = 5;
+		
+		
+		headerLabel1 = [[UILabel alloc] initWithFrame:CGRectMake(12.0, height0 + 3, 280.0, height1)];
 		headerLabel1.text = text1;
-		headerLabel1.font = [UIFont boldSystemFontOfSize:17];
+		headerLabel1.font = [UIFont fontWithName:STANDARD_FONT size:13];
 		headerLabel1.textColor = [UIColor colorWithHexString:@"#554C41"];
 		headerLabel1.backgroundColor = [UIColor clearColor];	
 		headerLabel1.lineBreakMode = UILineBreakModeTailTruncation;
 		headerLabel1.numberOfLines = 5;
-
-	
-	headerLabel2 = [[UILabel alloc] initWithFrame:CGRectMake(12.0, height + 3, 280.0, height2)];
-	headerLabel2.text = text2;
-	headerLabel2.font = [UIFont fontWithName:STANDARD_FONT size:13];
-	headerLabel2.textColor = [UIColor colorWithHexString:@"#554C41"];
-	headerLabel2.backgroundColor = [UIColor clearColor];	
-	headerLabel2.lineBreakMode = UILineBreakModeTailTruncation;
-	headerLabel2.numberOfLines = 5;
 		
-	view = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, self.view.frame.size.width, height + height2 +3.0)];
-	[view addSubview:headerLabel1];
-	[view addSubview:headerLabel2];
+		
+		headerLabel2 = [[UILabel alloc] initWithFrame:CGRectMake(12.0, height0 + height1 + 6, 280.0, height2)];
+		headerLabel2.text = text2;
+		headerLabel2.font = [UIFont fontWithName:STANDARD_FONT size:13];
+		headerLabel2.textColor = [UIColor colorWithHexString:@"#554C41"];
+		headerLabel2.backgroundColor = [UIColor clearColor];	
+		headerLabel2.lineBreakMode = UILineBreakModeTailTruncation;
+		headerLabel2.numberOfLines = 5;
+		
+		view = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, self.view.frame.size.width, height0 + height1 + height2 +9.0)];
+		[view addSubview:headerLabel0];
+		[view addSubview:headerLabel1];
+		[view addSubview:headerLabel2];
+		
+		
+		return view;
+	}
 
 	
-	return view;
+
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
-
-	NSString * text1 = @"";
-	NSString * text2 = @"";
 	
-	NSDictionary * statDict = [availabilityCategories objectAtIndex:section];
+	NSDictionary * collection = [availabilityCategories objectAtIndex:section];	
+	NSArray * stats = (NSArray *)[collection objectForKey:@"itemsByStat"];
+	NSString * displayType = [collection objectForKey:@"displayType"];
+	//NSString *collectionTitle = [collection objectForKey:@"collectionName"];
+	NSString *collectionCallNbr = [collection objectForKey:@"collectionCallNumber"];
 	
-	int collectionOnlyCount = 0;
-	collectionOnlyCount = [[statDict objectForKey:@"collectionOnlyCount"] intValue];
 	
-	if (collectionOnlyCount > 0) {
-		
-		UILabel * headerCollectionName;
-		UILabel * headerCollectionCallNumber;
-		UILabel * headerCollectionAvailVal;
-		
+	if ([displayType isEqualToString:@"V"]) {
+		NSDictionary * statDict = (NSDictionary *)[stats lastObject];
 		NSDictionary * collectionItem = (NSDictionary *)[((NSArray *)[statDict objectForKey:@"collectionOnlyItems"]) lastObject];
 		
 		NSString * collectionName = [collectionItem objectForKey:@"collectionName"];
@@ -998,65 +1505,63 @@ allLibrariesWithItem: (NSArray *) allLibraries
 		
 		CGFloat heightName = [collectionName
 							  sizeWithFont:[UIFont boldSystemFontOfSize:17]
-							  constrainedToSize:CGSizeMake(250, 2000)         
+							  constrainedToSize:CGSizeMake(280, 2000)         
 							  lineBreakMode:UILineBreakModeWordWrap].height;
 		
 		CGFloat heightCallNbr = [callNbr
 								 sizeWithFont:[UIFont fontWithName:STANDARD_FONT size:13]
-								 constrainedToSize:CGSizeMake(200, 2000)         
+								 constrainedToSize:CGSizeMake(280, 2000)         
 								 lineBreakMode:UILineBreakModeWordWrap].height;
 		
 		CGFloat heightAvailVal = [availVal
 								  sizeWithFont:[UIFont fontWithName:STANDARD_FONT size:13]
-								  constrainedToSize:CGSizeMake(200, 2000)         
+								  constrainedToSize:CGSizeMake(280, 2000)         
 								  lineBreakMode:UILineBreakModeWordWrap].height;
 		
-		headerCollectionName = [[UILabel alloc] initWithFrame:CGRectMake(12.0, 0.0, 250.0, heightName)];
-		headerCollectionName.text = collectionName;
-		headerCollectionName.font = [UIFont boldSystemFontOfSize:17];
-		headerCollectionName.textColor = [UIColor colorWithHexString:@"#554C41"];
-		headerCollectionName.backgroundColor = [UIColor clearColor];	
-		headerCollectionName.lineBreakMode = UILineBreakModeTailTruncation;
-		headerCollectionName.numberOfLines = 2;
-		
-		headerCollectionCallNumber = [[UILabel alloc] initWithFrame:CGRectMake(12.0, 0.0, 200.0, heightCallNbr)];
-		headerCollectionCallNumber.text = callNbr;
-		headerCollectionCallNumber.font =  [UIFont fontWithName:STANDARD_FONT size:13];
-		headerCollectionCallNumber.textColor = [UIColor colorWithHexString:@"#554C41"];
-		headerCollectionCallNumber.backgroundColor = [UIColor clearColor];	
-		headerCollectionCallNumber.lineBreakMode = UILineBreakModeTailTruncation;
-		headerCollectionCallNumber.numberOfLines = 2;
-		
-		headerCollectionAvailVal = [[UILabel alloc] initWithFrame:CGRectMake(12.0, 0.0, 200.0, heightAvailVal)];
-		headerCollectionAvailVal.text = availVal;
-		headerCollectionAvailVal.font =  [UIFont fontWithName:STANDARD_FONT size:13];
-		headerCollectionAvailVal.textColor = [UIColor colorWithHexString:@"#554C41"];
-		headerCollectionAvailVal.backgroundColor = [UIColor clearColor];	
-		headerCollectionAvailVal.lineBreakMode = UILineBreakModeTailTruncation;
-		headerCollectionAvailVal.numberOfLines = 2;
-		
-		return heightName + heightCallNbr + heightAvailVal + 3;
+		CGFloat height = heightName + heightCallNbr + heightAvailVal;
 
+		
+		return height + 5;
 	}
 	
-	text1 = [statDict objectForKey:@"statMain"];
-	text2 = [statDict objectForKey:@"callNumber"];
-	
-	
-	/*if (height > 21) // one line
-		height = 21;*/
-	
-	CGFloat height = [text1
-					  sizeWithFont:[UIFont boldSystemFontOfSize:17]
-					  constrainedToSize:CGSizeMake(280.0, 2000)         
-					  lineBreakMode:UILineBreakModeWordWrap].height;
-	
-	CGFloat height2 = [text2
-					   sizeWithFont:[UIFont fontWithName:STANDARD_FONT size:13]
-					   constrainedToSize:CGSizeMake(280.0, 2000)         
-					   lineBreakMode:UILineBreakModeWordWrap].height;
-	
-	return height + height2 + 5;
+	else {
+		NSString * text0 = @"";
+		NSString * text1 = @"";
+		NSString * text2 = @"";
+		
+		NSDictionary * statDict = (NSDictionary *)[stats lastObject];
+		
+		text0 = [statDict objectForKey:@"collectionName"];
+		
+		
+		if (([displayType isEqualToString:@"I"]) || ([displayType isEqualToString:@"III"]))
+			text1 = [statDict objectForKey:@"statMain"];
+		
+		if ([text1 length] > 0)
+			text1 = [text1 stringByReplacingCharactersInRange:
+					 NSMakeRange(0,1) withString:[[text1 substringToIndex:1] capitalizedString]];
+		
+		text2 = collectionCallNbr;
+		
+		CGFloat height0 = [text0
+						   sizeWithFont:[UIFont systemFontOfSize:17]
+						   constrainedToSize:CGSizeMake(280.0, 2000)         
+						   lineBreakMode:UILineBreakModeWordWrap].height;
+		
+		CGFloat height1 = [text1
+						   sizeWithFont:[UIFont fontWithName:STANDARD_FONT size:13]
+						   constrainedToSize:CGSizeMake(280.0, 2000)         
+						   lineBreakMode:UILineBreakModeWordWrap].height;
+		
+		CGFloat height2 = [text2
+						   sizeWithFont:[UIFont fontWithName:STANDARD_FONT size:13]
+						   constrainedToSize:CGSizeMake(280.0, 2000)         
+						   lineBreakMode:UILineBreakModeWordWrap].height;
+		
+		return height0 + height1 + height2 + 5;
+
+	}
+		
 }
 
 
@@ -1121,9 +1626,10 @@ allLibrariesWithItem: (NSArray *) allLibraries
 
 #pragma mark UIActionSheet setup
 
--(void) showActionSheet:(int)sectionIndex{
+-(void) showActionSheet:(NSArray *)items{
 	
-	showingSection = sectionIndex;
+	actionSheetItems = [[NSArray alloc] init];
+	actionSheetItems = [items retain];
 	UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:@"Item Action Options" 
 															 delegate:self 
 													cancelButtonTitle:@"Cancel" 
@@ -1147,51 +1653,12 @@ allLibrariesWithItem: (NSArray *) allLibraries
 		return;
     }
 	
-	NSDictionary * statDict = [availabilityCategories objectAtIndex:showingSection];
-	
-	int availCount = 0;
-	availCount = [[statDict objectForKey:@"availCount"] intValue];
-	
-	int unavailCount = 0;
-	unavailCount = [[statDict objectForKey:@"unavailCount"] intValue];
-	
-	int checkedOutCount = 0;
-	checkedOutCount = [[statDict objectForKey:@"checkedOutCount"] intValue];
-	
-	int requestCount = 0;
-	requestCount = [[statDict objectForKey:@"requestCount"] intValue];
-	
-	int scanAndDeliverCount = 0;
-	scanAndDeliverCount = [[statDict objectForKey:@"scanAndDeliverCount"] intValue];
-
-	NSMutableArray * items = [[NSMutableArray alloc] init];
-	int indexCount =0;
-	
-	NSArray * availableItems = (NSArray *)[statDict objectForKey:@"availableItems"];
-	NSArray * checkedOutItems = (NSArray * )[statDict objectForKey:@"checkedOutItems"];
-	NSArray * unavailableItems = (NSArray * )[statDict objectForKey:@"unavailableItems"];
-	
-	for(NSDictionary * item in availableItems) {
-		[items insertObject:item atIndex:indexCount];
-		indexCount++;
-	}
-	
-	for(NSDictionary * item1 in checkedOutItems) {
-		[items insertObject:item1 atIndex:indexCount];
-		indexCount++;
-	}
-	
-	for(NSDictionary * item2 in unavailableItems) {
-		[items insertObject:item2 atIndex:indexCount];
-		indexCount++;
-	}
-		
 	
 	NSString * reqUrl = @"";
 	if (buttonIndex == 0) {
 		 NSLog(@"Request Item");
 		
-		for(NSDictionary * availD in items){
+		for(NSDictionary * availD in actionSheetItems){
 			if ([[availD objectForKey:@"canRequest"] isEqualToString:@"YES"])
 				if ([[availD objectForKey:@"requestUrl"] length] > 0)
 					reqUrl = [availD objectForKey:@"requestUrl"];
@@ -1200,7 +1667,7 @@ allLibrariesWithItem: (NSArray *) allLibraries
     } else if (buttonIndex == 1) {
         NSLog(@"Scan & Deliver");
 		
-		for(NSDictionary * availD in items){
+		for(NSDictionary * availD in actionSheetItems){
 			if ([[availD objectForKey:@"canScanAndDeliver"] isEqualToString:@"YES"])
 				if ([[availD objectForKey:@"scanAndDeliverUrl"] length] > 0)
 					reqUrl = [availD objectForKey:@"scanAndDeliverUrl"];

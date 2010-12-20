@@ -26,18 +26,11 @@
 	LibraryItem * libItem;
 	
 	NSArray * availabilityCategories;
-	/*
-	 availabilityCategories = array containing dictionaries
-							{type=>[string], callNumber => [string], available=>[number], checkedOut=>[number], unavailable=>[number]}
-	 */
 	
 	UIView * headerView;
 	
 	NSArray * arrayWithAllLibraries;
-	/*
-	 arrayWithAllLibraries = array containing [Dictionary]:
-	 {library:[Library*] availabilityCategories:[Array*]}
-	 */
+
 	int currentIndex;
 	
 	NSString * openToday;
@@ -50,7 +43,9 @@
 	
 	UIButton * infoButton;
 	
-	int showingSection; // for use in the ActionSheet
+	NSArray * actionSheetItems; // for use in the ActionSheet
+	
+	BOOL limitedView;
 }
 
 @property (nonatomic, retain) JSONAPIRequest *parentViewApiRequest;
@@ -66,9 +61,17 @@ allLibrariesWithItem: (NSArray *) allLibraries
 			 index :(int) index;
 
 -(void) setupLayout;
--(UITableViewCell *) sectionTypeZero:(NSIndexPath *)indexPath tableView:(UITableView *)tableView;
--(UITableViewCell *) sectionTypeOne:(NSIndexPath *)indexPath tableView:(UITableView *)tableView;
 
--(void) showActionSheet:(int)sectionIndex;
+-(UITableViewCell *) sectionTypeONE:(NSIndexPath *)indexPath tableView:(UITableView *)tableView;
+-(UITableViewCell *) sectionTypeTWO:(NSIndexPath *)indexPath tableView:(UITableView *)tableView;
+-(UITableViewCell *) sectionTypeTHREE:(NSIndexPath *)indexPath tableView:(UITableView *)tableView;
+-(UITableViewCell *) sectionTypeFOUR:(NSIndexPath *)indexPath tableView:(UITableView *)tableView;
+
+- (CGFloat)heightForRowAtIndexPathSectionONE:(NSIndexPath *)indexPath tableView:(UITableView *)tableView;
+- (CGFloat)heightForRowAtIndexPathSectionTWO:(NSIndexPath *)indexPath tableView:(UITableView *)tableView;
+- (CGFloat)heightForRowAtIndexPathSectionTHREE:(NSIndexPath *)indexPath tableView:(UITableView *)tableView;
+- (CGFloat)heightForRowAtIndexPathSectionFOUR:(NSIndexPath *)indexPath tableView:(UITableView *)tableView;
+
+-(void) showActionSheet:(NSArray *)items;
 
 @end

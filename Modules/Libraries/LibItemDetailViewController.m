@@ -479,13 +479,6 @@
 	}
 	
 	else if (indexPath.section == 1) {
-	/*	NSDictionary * temp = [[NSDictionary alloc] initWithObjectsAndKeys:
-		 @"available", @"1 of 2 available - regular loan",
-		 @"unavailable", @"2 of 2 available - in-library user",
-		 @"request", @"2 of 2 availavle - depository", nil];
-	 */
-		 
-		
 		if ([locationsWithItem count] == 0){
 			static NSString *CellIdentifier = @"CellDetsfdsf";
 			
@@ -509,82 +502,74 @@
 		
 		NSString * libName = [tempDict objectForKey:@"name"];
 		
-		
-		NSArray * itemsByStat = (NSArray *)[tempDict objectForKey:@"itemsByStat"];
-		
 		NSMutableDictionary * dictWithStatuses = [[NSMutableDictionary alloc] init];
 		
-		if ([itemsByStat count] == 0)
-			[dictWithStatuses setObject:@"unavailable" forKey:@"none available"];
+		NSArray * collections = (NSArray *)[tempDict objectForKey:@"collection"];
+
 		
-		for(NSDictionary * statDict in itemsByStat) {
+		for(NSDictionary * collectionDict in collections){
 			
-			NSString * statMain = [statDict objectForKey:@"statMain"];
+			NSArray * itemsByStat = (NSArray *)[collectionDict objectForKey:@"itemsByStat"];
 			
-			int availCount = 0;
-			availCount = [[statDict objectForKey:@"availCount"] intValue];
+			if ([itemsByStat count] == 0) {
+				[dictWithStatuses setObject:@"unavailable" forKey:@"none available"];
+			}
 			
-			int unavailCount = 0;
-			unavailCount = [[statDict objectForKey:@"unavailCount"] intValue];
-			
-			int checkedOutCount = 0;
-			checkedOutCount = [[statDict objectForKey:@"checkedOutCount"] intValue];
-			
-			int requestCount = 0;
-			requestCount = [[statDict objectForKey:@"requestCount"] intValue];
-			
-			int collectionOnlyCount = 0;
-			collectionOnlyCount = [[statDict objectForKey:@"collectionOnlyCount"] intValue];
-			
-			int totalItems = availCount + unavailCount + checkedOutCount;
-			
-			
-			NSArray * availableItems = (NSArray *)[statDict objectForKey:@"availableItems"];
+			for(NSDictionary * statDict in itemsByStat) {
 				
-			BOOL availableIsYellow = NO;
-			for(NSDictionary * availItemDict in availableItems){
+				NSString * statMain = [statDict objectForKey:@"statMain"];
 				
-				NSString * canRequest = [availItemDict objectForKey:@"canRequest"];
 				
-				if ([canRequest isEqualToString:@"YES"]) {
-					availableIsYellow = YES;
-					break;
+				int availCount = [[statDict objectForKey:@"availCount"] intValue];
+				
+				int unavailCount = 0;
+				unavailCount = [[statDict objectForKey:@"unavailCount"] intValue];
+				
+				int checkedOutCount = 0;
+				checkedOutCount = [[statDict objectForKey:@"checkedOutCount"] intValue];
+				
+				int requestCount = 0;
+				requestCount = [[statDict objectForKey:@"requestCount"] intValue] + [[statDict objectForKey:@"scanAndDeliverCount"] intValue];
+				
+				int collectionOnlyCount = 0;
+				collectionOnlyCount = [[statDict objectForKey:@"collectionOnlyCount"] intValue];
+				
+				int totalItems = availCount + unavailCount + checkedOutCount + collectionOnlyCount;
+				
+				
+				NSString * status;
+				
+				if (availCount > 0)
+					status = @"available";
+				
+				else if (checkedOutCount > 0)
+					status = @"request";
+				
+				else if (unavailCount > 0)
+					status = @"unavailable";
+				
+				else if (requestCount > 0)
+					status = @"request";
+				
+				else {
+					status = @"unavailable";
 				}
-			}
-			
-			NSString * status;
-			
-			if ((availCount > 0) && (availableIsYellow == NO))
-				status = @"available";
-			
-			else if ((availCount > 0) && (availableIsYellow == YES))
-				status = @"available";
-			
-			else if (checkedOutCount > 0)
-				status = @"request";
-			
-			else if (unavailCount > 0)
-				status = @"unavailable";
-			
-			else if (requestCount > 0)
-				status = @"request";
-			
-			else {
-				status = @"unavailable";
-			}
-			
-			NSString * statusDetailString = [NSString stringWithFormat:
-											 @"%d of %d available - %@", availCount, totalItems, statMain];
-			
-			if ((totalItems == 0) && (requestCount == 0))
-				statusDetailString = [NSString stringWithFormat:
-									  @"None available"];
-			
-			if (collectionOnlyCount > 0)
-				statusDetailString = [NSString stringWithFormat:
-									  @"0 of %d may be available", collectionOnlyCount];
 				
-			[dictWithStatuses setObject:status forKey:statusDetailString];
+				NSString * statusDetailString = [NSString stringWithFormat:
+												 @"%d of %d available - %@", availCount, totalItems, statMain];
+				
+				/*if ((totalItems == 0) && (requestCount == 0) && (collectionOnlyCount == 0))
+					statusDetailString = [NSString stringWithFormat:
+										  @"None available"];
+				 */
+				
+				if (collectionOnlyCount > 0)
+					statusDetailString = [NSString stringWithFormat:
+										  @"0 of %d may be available", collectionOnlyCount];
+				
+				if ((totalItems > 0) || (requestCount > 0) || (collectionOnlyCount > 0))
+					[dictWithStatuses setObject:status forKey:statusDetailString];
+			}
 		}
 		
 		
@@ -621,11 +606,18 @@
 		
 		cell1.detailTextLabel.textColor = [UIColor colorWithHexString:@"#554C41"];
 		
-		if ([itemsByStat count] == 0)
-			cell1.accessoryType = UITableViewCellAccessoryNone;
-		
-		else
-			cell1.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+		for(NSDictionary * collectionDict in collections){
+			
+			NSArray * itemsByStat = (NSArray *)[collectionDict objectForKey:@"itemsByStat"];
+			
+			if ([itemsByStat count] == 0) {
+				cell1.accessoryType = UITableViewCellAccessoryNone;
+			}
+			else {
+				cell1.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+			}
+		}
+			
 		
 		cell1.selectionStyle = UITableViewCellSelectionStyleGray;
 		
@@ -677,68 +669,71 @@
 	 */
 	
 	if ((indexPath.section == 1) && ([locationsWithItem count] > 0)){
-
+		
 		
 		NSDictionary * tempDict = [locationsWithItem objectAtIndex:indexPath.row];		
 		
-		NSArray * itemsByStat = (NSArray *)[tempDict objectForKey:@"itemsByStat"];
-		
 		NSMutableDictionary * dictWithStatuses = [[NSMutableDictionary alloc] init];
 		
-		if ([itemsByStat count] == 0)
-			[dictWithStatuses setObject:@"unavailable" forKey:@"none available"];
+		NSArray * collections = (NSArray *)[tempDict objectForKey:@"collection"];
 		
-		for(NSDictionary * statDict in itemsByStat) {
+		for(NSDictionary * collectionDict in collections){
 			
-			NSString * statMain = [statDict objectForKey:@"statMain"];
+			NSArray * itemsByStat = (NSArray *)[collectionDict objectForKey:@"itemsByStat"];
 			
-			int availCount = 0;
-			availCount = [[statDict objectForKey:@"availCount"] intValue];
+			if ([itemsByStat count] == 0) {
+				[dictWithStatuses setObject:@"unavailable" forKey:@"none available"];
+			}
 			
-			int unavailCount = 0;
-			unavailCount = [[statDict objectForKey:@"unavailCount"] intValue];
-			
-			int checkedOutCount = 0;
-			checkedOutCount = [[statDict objectForKey:@"checkedOutCount"] intValue];
-			
-			int requestCount = 0;
-			requestCount = [[statDict objectForKey:@"requestCount"] intValue];
-			
-			int totalItems = availCount + unavailCount + checkedOutCount;
-			
-			
-			NSArray * availableItems = (NSArray *)[statDict objectForKey:@"availableItems"];
-			
-			BOOL availableIsYellow = NO;
-			for(NSDictionary * availItemDict in availableItems){
+			for(NSDictionary * statDict in itemsByStat) {
 				
-				NSString * canRequest = [availItemDict objectForKey:@"canRequest"];
+				NSString * statMain = [statDict objectForKey:@"statMain"];
 				
-				if ([canRequest isEqualToString:@"YES"]) {
-					availableIsYellow = YES;
-					break;
+				
+				int availCount = [[statDict objectForKey:@"availCount"] intValue];
+				
+				int unavailCount = 0;
+				unavailCount = [[statDict objectForKey:@"unavailCount"] intValue];
+				
+				int checkedOutCount = 0;
+				checkedOutCount = [[statDict objectForKey:@"checkedOutCount"] intValue];
+				
+				int requestCount = 0;
+				requestCount = [[statDict objectForKey:@"requestCount"] intValue];
+				
+				int collectionOnlyCount = 0;
+				collectionOnlyCount = [[statDict objectForKey:@"collectionOnlyCount"] intValue];
+				
+				int totalItems = availCount + unavailCount + checkedOutCount;
+				
+				
+				NSString * status;
+				
+				if (availCount > 0)
+					status = @"available";
+				
+				else if (checkedOutCount > 0)
+					status = @"request";
+				
+				else if (unavailCount > 0)
+					status = @"unavailable";
+				
+				else if (requestCount > 0)
+					status = @"request";
+				
+				else {
+					status = @"unavailable";
 				}
+				
+				
+				NSString * statusDetailString = [NSString stringWithFormat:
+												 @"%d of %d available - %@", availCount, totalItems, statMain];
+				
+				if ((totalItems > 0) || (requestCount > 0) || (collectionOnlyCount > 0))
+					[dictWithStatuses setObject:status forKey:statusDetailString];
+				
+				//[dictWithStatuses setObject:status forKey:statusDetailString];
 			}
-			
-			NSString * status;
-			
-			if ((availCount > 0) && (availableIsYellow == NO))
-				status = @"available";
-			
-			else if ((availCount > 0) && (availableIsYellow == YES))
-				status = @"request";
-			
-			else if (requestCount > 0)
-				status = @"request";
-			
-			else {
-				status = @"unavailable";
-			}
-			
-			NSString * statusDetailString = [NSString stringWithFormat:
-											 @"%d of %d available - %@", availCount, totalItems, statMain];
-			
-			[dictWithStatuses setObject:status forKey:statusDetailString];
 		}
 		
 		
@@ -791,11 +786,27 @@
 		
 		NSString * primaryName = [((NSDictionary *)[tempDict objectForKey:@"details"]) objectForKey:@"primaryName"];
 
+		NSDictionary * libDict = [locationsWithItem objectAtIndex:indexPath.row];		
 		
-		NSArray * itemsByStat = (NSArray *)[tempDict objectForKey:@"itemsByStat"];
+		NSArray * collections = (NSArray *)[libDict objectForKey:@"collection"];
+		
+		//NSArray * itemsByStat = (NSArray *)[tempDict objectForKey:@"itemsByStat"];
 	
+		BOOL notTappable = NO;
+		for(NSDictionary * collectionDict in collections){
+			
+			NSArray * itemsByStat = (NSArray *)[collectionDict objectForKey:@"itemsByStat"];
+			
+			if ([itemsByStat count] == 0) {
+				notTappable = YES;
+			}
+			else {
+				notTappable = NO;
+			}
+		}
+
 	
-		if (([itemsByStat count] > 0) && (indexPath.section == 1)) {
+		if ((notTappable == NO) && ([collections count] > 0) && (indexPath.section == 1)) {
 			ItemAvailabilityDetailViewController * vc = [[ItemAvailabilityDetailViewController alloc]
 														 initWithStyle:UITableViewStyleGrouped
 														 libName: libName
@@ -803,7 +814,7 @@
 														 libId: libId
 														 libType: type
 														 item:libItem
-														 categories:itemsByStat
+														 categories:collections
 														 allLibrariesWithItem:locationsWithItem
 														 index:indexPath.row];
 			
