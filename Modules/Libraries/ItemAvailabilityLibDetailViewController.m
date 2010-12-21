@@ -348,8 +348,16 @@ NSInteger phoneNumberSortItemAvail(id num1, id num2, void *context){
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section 
 {
 	
-	if (section == 0)
-		return 4;
+	if (section == 0){
+		
+		if ([[weeklySchedule allKeys] count] == 7)
+			return 4;
+		
+		else {
+			return 1;
+		}
+		
+	}
 	
 	else if (section == 1) {
 		if ([lib.location length] > 0)
@@ -480,22 +488,31 @@ NSInteger phoneNumberSortItemAvail(id num1, id num2, void *context){
 			cell.textLabel.textColor = [UIColor colorWithHexString:@"#554C41"];
 		}
 		
-		if (indexPath.row <= 2) {
-			
-			cell.textLabel.text = [daysOfWeek objectAtIndex:indexPath.row];
-			
-			if ([weeklySchedule count] == [daysOfWeek count])
-				cell.detailTextLabel.text = [weeklySchedule objectForKey:[daysOfWeek objectAtIndex:indexPath.row]];
-			
+		if ([[weeklySchedule allKeys] count] == 7){
+			if (indexPath.row <= 2) {
+				
+				cell.textLabel.text = [daysOfWeek objectAtIndex:indexPath.row];
+				
+				if ([weeklySchedule count] == [daysOfWeek count])
+					cell.detailTextLabel.text = [weeklySchedule objectForKey:[daysOfWeek objectAtIndex:indexPath.row]];
+				
+			}
+			else if (indexPath.row == 3){
+				cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+				cell.textLabel.text = @"    ";
+				cell.textLabel.textColor = [UIColor clearColor];
+				
+				cell.detailTextLabel.text = @"Full week's schedule";
+			}
 		}
-		else if (indexPath.row == 3){
-			cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-			cell.textLabel.text = @"    ";
-			cell.textLabel.textColor = [UIColor clearColor];
-			
-			cell.detailTextLabel.text = @"Full week's schedule";
+		else if ([[weeklySchedule allKeys] count] == 0){
+			cell.textLabel.text = @"     ";
+			cell.detailTextLabel.text = @"loading..";
 		}
-		
+		else {
+			cell.textLabel.text = [[weeklySchedule allKeys] objectAtIndex:0];
+			cell.detailTextLabel.text = [weeklySchedule objectForKey:[[weeklySchedule allKeys] objectAtIndex:0]];
+		}
 		cell.selectionStyle = UITableViewCellSelectionStyleGray;
 		return cell;
 	}
@@ -594,11 +611,13 @@ NSInteger phoneNumberSortItemAvail(id num1, id num2, void *context){
 	[tableView deselectRowAtIndexPath:indexPath animated:YES];
 	
 	if ((indexPath.section == 0) && (indexPath.row == 3)) {
-		LibraryWeeklyScheduleViewController * vc = [[LibraryWeeklyScheduleViewController alloc] initWithStyle:UITableViewStyleGrouped];
-		vc.title = @"Weekly Schedule";
-		[vc setDaysOfWeek:daysOfWeek weeklySchedule:weeklySchedule];
-		[self.navigationController pushViewController:vc animated:YES];
-		[vc release];
+		if (([[weeklySchedule allKeys] count] == 7) && (indexPath.row == 3)){
+			LibraryWeeklyScheduleViewController * vc = [[LibraryWeeklyScheduleViewController alloc] initWithStyle:UITableViewStyleGrouped];
+			vc.title = @"Weekly Schedule";
+			[vc setDaysOfWeek:daysOfWeek weeklySchedule:weeklySchedule];
+			[self.navigationController pushViewController:vc animated:YES];
+			[vc release];
+		}
 	}
 	
 	else if (indexPath.section == 1) {
@@ -678,9 +697,20 @@ NSInteger phoneNumberSortItemAvail(id num1, id num2, void *context){
 	
 	
 	if (indexPath.section == 0) {
-		cellText = [daysOfWeek objectAtIndex:indexPath.row];
-		detailText = [weeklySchedule objectForKey:[daysOfWeek objectAtIndex:indexPath.row]];
-		//accessoryType = nil;
+		if ([[weeklySchedule allKeys] count] == 7){
+			cellText = [daysOfWeek objectAtIndex:indexPath.row];
+			detailText = [weeklySchedule objectForKey:[daysOfWeek objectAtIndex:indexPath.row]];
+			//accessoryType = nil;
+		}
+		
+		else if ([[weeklySchedule allKeys] count] == 0){
+			cellText = @"     ";
+			detailText = @"loading..";
+		}
+		else {
+			cellText = [[weeklySchedule allKeys] objectAtIndex:0];
+			detailText= [weeklySchedule objectForKey:[[weeklySchedule allKeys] objectAtIndex:0]];
+		}
 	}
 	else if (indexPath.section == 1) {
 		cellText =  @"Location";
@@ -835,15 +865,21 @@ NSInteger phoneNumberSortItemAvail(id num1, id num2, void *context){
 		NSMutableDictionary * tempDict = [[NSMutableDictionary alloc] init];
 		
 		
-		for (NSString * dayOfWeek in daysOfWeek){
+		if ([[sched allKeys] count] < 7){
 			
-			if ([[sched allKeys] containsObject:dayOfWeek])
-				[tempDict setObject:[sched objectForKey:dayOfWeek] forKey:dayOfWeek];
-			
-			else {
-				[tempDict setObject:@"contact library/archive" forKey:dayOfWeek];
+			[tempDict setObject:[libraryDictionary objectForKey:@"hoursOfOperationString"]forKey:@"Hours"];
+		}
+		else{
+			for (NSString * dayOfWeek in daysOfWeek){
+				
+				if ([[sched allKeys] containsObject:dayOfWeek])
+					[tempDict setObject:[sched objectForKey:dayOfWeek] forKey:dayOfWeek];
+				
+				else {
+					[tempDict setObject:@"contact library/archive" forKey:dayOfWeek];
+				}
+				
 			}
-			
 		}
 		
 		weeklySchedule = tempDict;
@@ -864,13 +900,7 @@ NSInteger phoneNumberSortItemAvail(id num1, id num2, void *context){
 	
 	weeklySchedule = nil;
 	weeklySchedule = [[NSMutableDictionary alloc] initWithObjectsAndKeys:
-					  @"unavailable", @"Monday",
-					  @"unavailable", @"Tuesday",
-					  @"unavailable", @"Wednesday",
-					  @"unavailable", @"Thursday",
-					  @"unavailable", @"Friday",
-					  @"unavailable", @"Saturday",
-					  @"unavailable", @"Sunday", nil];
+					  @"unavailable", @"Hours", nil];
 	
 	UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil
 														message:@"Could not retrieve Libraries/Archives" 
