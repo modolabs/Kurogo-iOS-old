@@ -41,7 +41,8 @@
 	BOOL requestWasDispatched;
 	JSONAPIRequest *api;
 	
-
+	// a custom button to link to Advanced Search
+	UIButton* _advancedSearchButton;
 }
 
 @property (nonatomic, retain) UIView *loadingView;

@@ -38,6 +38,8 @@
 	NSMutableArray * libraryArray;
 	
 	JSONAPIRequest * apiRequest;
+	
+	NSString * keywordsTextAtInitialization;
 }
 
 @property (nonatomic, retain) IBOutlet UITextField *keywords;
@@ -53,5 +55,6 @@
 -(IBAction) locationPressed:(id) sender;
 -(IBAction) searchButtonPressed:(id) sender;
 
+- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil keywords:(NSString *) keywordsText;
 -(void) search;
 @end

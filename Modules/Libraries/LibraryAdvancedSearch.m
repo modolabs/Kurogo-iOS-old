@@ -110,13 +110,18 @@ NSInteger libraryNameSortAdvancedSearch(id lib1, id lib2, void *context) {
 	keywords.delegate = self;
 	titleKeywords.delegate = self;
 	authorKeywords.delegate = self;
+	
+	if (nil != keywordsTextAtInitialization)
+		self.keywords.text = keywordsTextAtInitialization;
 }
 
 // The designated initializer.  Override if you create the controller programmatically and want to perform customization that is not appropriate for viewDidLoad.
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
+- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil keywords:(NSString *) keywordsText{
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         // Custom initialization.
+		
+		keywordsTextAtInitialization = keywordsText;
 
 	}
     return self;

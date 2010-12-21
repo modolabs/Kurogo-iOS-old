@@ -15,6 +15,7 @@
 #import "LibItemDetailViewController.h"
 #import "LibraryItem.h"
 #import "CoreDataManager.h"
+#import "LibraryAdvancedSearch.h"
 
 @class LibrariesMultiLineCell;
 
@@ -38,36 +39,44 @@
 		
 		hasSearchInitiated = NO;
 		actualCount = 0;
-		
-		/*self.lastResults = [[NSMutableDictionary alloc] initWithObjectsAndKeys:
-								@"Freakonomics: A rogue economist explores the hidden economic bj bfdb fbdsfb", @"0",
-								@"Freakonomics: A rogue economist explores the hidden economic bj bfdb fbdsfb", @"1",
-								@"Freakonomics [sound recording]: A rogue economist explores the hidden economic bj bfdb fbdsfb", @"2",
-								  @"From economics", @"3", nil];
-		 */
-		
+
 		self.lastResults = [[NSMutableDictionary alloc] init];
-		
-		/*self.lastResultsOtherDetails = [[NSMutableDictionary alloc] initWithObjectsAndKeys:
-										@"2005 | Levitt, Steven D.", @"0",
-										@"2006 | Levitt, Steven D.", @"1",
-										@"2006 | Levitt, Steven D.", @"2",
-										@"2009 | Fine, Benjamin and Bradford Elgin", @"3", nil];
-		 */
-		
-		//_tableView = [[UITableView alloc] initWithFrame:self.view.frame style:UITableViewStylePlain];
-		//_tableView.delegate = self;
-		//_tableView.dataSource = self;
-		
-		//[self.view addSubview:_tableView];
 	}
 	return self;
 }
 
 - (void) dealloc {
 	[lastResults release];
+	[_advancedSearchButton release];
+
+	[searchController release];
+	[theSearchBar release];
+	
+	[searchResults release];
+	
+	_tableView = nil;
+	
+	loadingView = nil;
+	api = nil;
 	[super dealloc];
 }
+
+-(void) viewDidUnload{
+	lastResults = nil;
+	_advancedSearchButton = nil;
+	searchController = nil;
+	theSearchBar = nil;
+	
+	searchResults = nil;
+	
+	_tableView = nil;
+	
+	loadingView = nil;
+	api = nil;
+
+	[super viewDidUnload];
+}
+
 
 -(void) viewDidLoad {
 	
@@ -114,7 +123,59 @@
 	else
 		previousSearchTerm = @"";
 	 */
+	
+	_advancedSearchButton = nil;
+	if (nil == _advancedSearchButton) {
+		_advancedSearchButton = [[UIButton alloc] initWithFrame:CGRectMake(282, 8, 32, 28)];
+		[_advancedSearchButton setImage:[UIImage imageNamed:@"global/searchfield_star.png"] forState:UIControlStateNormal];
+	}
+	[self.view addSubview:_advancedSearchButton];
+	[_advancedSearchButton addTarget:self action:@selector(advancedSearchButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
 }
+
+
+#pragma mark User Interaction
+
+-(void) advancedSearchButtonClicked: (id) sender{
+	LibraryAdvancedSearch * vc = [[LibraryAdvancedSearch alloc] initWithNibName:@"LibraryAdvancedSearch" 
+																		 bundle:nil
+																	   keywords:self.searchTerms];
+	
+	vc.title = @"Advanced Search";
+	//vc.keywords.text = self.searchTerms;
+	
+	NSPredicate *matchAll = [NSPredicate predicateWithFormat:@"TRUEPREDICATE"];
+	NSArray *tempArray = [CoreDataManager objectsForEntity:LibraryEntityName matchingPredicate:matchAll];
+	
+	if ([tempArray count] == 0){
+		api = [[JSONAPIRequest alloc] initWithJSONAPIDelegate:vc];	
+		
+		if ([api requestObjectFromModule:@"libraries" 
+										command:@"libraries" 
+									 parameters:nil] == YES)
+		{
+			[self.navigationController pushViewController:vc animated:YES];
+		}
+		else {
+			UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil
+																message:@"Could not connect to the server" 
+															   delegate:self 
+													  cancelButtonTitle:@"OK" 
+													  otherButtonTitles:nil];
+			[alertView show];
+			[alertView release];
+		}
+		
+	}
+	else {
+		[self.navigationController pushViewController:vc animated:YES];
+		
+	}
+	
+	[vc release];
+}
+
+
 
 #pragma mark UITableViewDataSource methods
 
@@ -244,12 +305,6 @@
 	}
 	UIFont *detailFont = [UIFont systemFontOfSize:13];
 	
-/*NSDictionary * tempDict = [[NSDictionary alloc] initWithObjectsAndKeys:
-							   @"available", @"1 of 2 available - regular loan",
-							   @"unavailable", @"2 of 2 available - in-library user",
-							   @"request", @"2 of 2 availavle - depository", nil];
-*/	
-	
 	return [LibrariesMultiLineCell heightForCellWithStyle:UITableViewCellStyleSubtitle
 											 tableView:tableView 
 												  text:cellText
@@ -367,7 +422,7 @@
 - (void)hideToolBar {
     [UIView beginAnimations:@"searching" context:nil];
     [UIView setAnimationDuration:0.4];
-    //_bookmarkButton.alpha = 0.0;
+    _advancedSearchButton.alpha = 0.0;
 	theSearchBar.frame = CGRectMake(0, 0, self.view.frame.size.width, NAVIGATION_BAR_HEIGHT);
 	// _toolBar.alpha = 0.0;
     [UIView commitAnimations];
@@ -378,7 +433,13 @@
     [UIView beginAnimations:@"searching" context:nil];
     [UIView setAnimationDuration:0.4];
 	
+	_advancedSearchButton.alpha = 1.0;
+	
     [UIView commitAnimations];
+
+    CGRect frame = _advancedSearchButton.frame;
+    frame.origin.x = theSearchBar.frame.size.width - frame.size.width - 7;
+    _advancedSearchButton.frame = frame;
 }
 
 
@@ -397,19 +458,12 @@
 	self.searchResults = nil;
 	// if they cancelled while waiting for loading
 	if (requestWasDispatched) {
-		//[api abortRequest];
-		//[self cleanUpConnection];
 	}
 	[self restoreToolBar];
 }
 
 - (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
-{
-	//[_bookmarkButton removeFromSuperview];
-	
-	//if (nil != self.searchTerms)
-	//	previousSearchTerm = self.searchTerms;
-	
+{	
 	self.searchTerms = searchBar.text;
 	
 	api = [JSONAPIRequest requestWithJSONAPIDelegate:self];
@@ -437,11 +491,7 @@
 }
 
 - (void)presentSearchResults:(NSArray *)theSearchResults {
-  /*  self.searchResults = theSearchResults;
-    self.searchController.searchResultsTableView.frame = self.tableView.frame;
-    [self.view addSubview:self.searchController.searchResultsTableView];
-    [self.searchBar addDropShadow];
-    [self.searchController.searchResultsTableView reloadData];*/
+
 }
 
 #pragma mark -
@@ -608,6 +658,7 @@
 	}
 	
 	[searchController hideSearchOverlayAnimated:YES];
+	[self restoreToolBar];
 }
 
 - (BOOL)request:(JSONAPIRequest *)request shouldDisplayAlertForError:(NSError *)error

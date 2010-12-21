@@ -637,7 +637,8 @@
 		if (indexPath.row == 0){ // advanced hollis search
 			
 			LibraryAdvancedSearch * vc = [[LibraryAdvancedSearch alloc] initWithNibName:@"LibraryAdvancedSearch" 
-																				 bundle:nil];
+																				 bundle:nil
+																			   keywords:@""];
 			
 			vc.title = @"Advanced Search";
 			
