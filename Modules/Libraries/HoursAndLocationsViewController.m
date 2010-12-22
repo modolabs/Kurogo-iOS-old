@@ -11,6 +11,7 @@
 #import "Library.h"
 #import "CoreDataManager.h"
 #import "Constants.h"
+#import "LibrariesMultiLineCell.h"
 
 @implementation HoursAndLocationsViewController
 @synthesize listOrMapView;
@@ -26,16 +27,18 @@ NSInteger libraryNameSort(id lib1, id lib2, void *context);
 	
 	if (self) {
 		
-		CGRect frame = CGRectMake(0, 0, 400, 44);
+		/*CGRect frame = CGRectMake(0, 0, 400, 44);
         UILabel *label = [[[UILabel alloc] initWithFrame:frame] autorelease];
         label.backgroundColor = [UIColor clearColor];
-        label.font = [UIFont boldSystemFontOfSize:17.0];
+        label.font = [UIFont fontWithName:CONTENT_TITLE_FONT size:CONTENT_TITLE_FONT_SIZE];
         //label.shadowColor = [UIColor colorWithWhite:0.0 alpha:0.5];
         label.textAlignment = UITextAlignmentCenter;
         label.textColor = [UIColor whiteColor];
         self.navigationItem.titleView = label;
        // label.text = NSLocalizedString(@"Locations & Hours", @"");
 		label.text = type;
+		typeOfRepo = type;*/
+		
 		typeOfRepo = type;
 	}
 	
@@ -61,12 +64,8 @@ NSInteger libraryNameSort(id lib1, id lib2, void *context);
 	UIImage *backgroundImage = [UIImage imageNamed:MITImageNameScrollTabBackgroundOpaque];
     UIImageView *imageView = [[UIImageView alloc] initWithImage:[backgroundImage stretchableImageWithLeftCapWidth:0 topCapHeight:0]];
     imageView.tag = 1005;
-	
-	CGFloat footerDisplacementFromTop = self.view.frame.size.height -  NAVIGATION_BAR_HEIGHT -  imageView.frame.size.height;
-	imageView.frame = CGRectMake(0, footerDisplacementFromTop, imageView.frame.size.width, imageView.frame.size.height);
-    [self.view addSubview:imageView];
-    [imageView release];
-	
+
+
 
 	
 	//Create the segmented control
@@ -75,17 +74,32 @@ NSInteger libraryNameSort(id lib1, id lib2, void *context);
 	
 	if ((nil != typeOfRepo) && ([typeOfRepo isEqualToString:@"Archives"]))
 		typeOfRepoString = @"All Archives";
+	
+	CGFloat footerDisplacementFromTop = self.view.frame.size.height -  NAVIGATION_BAR_HEIGHT;
+	
+	if (![typeOfRepo isEqualToString:@"Archives"])
+		footerDisplacementFromTop -= imageView.frame.size.height;
+	
+	imageView.frame = CGRectMake(0, footerDisplacementFromTop, imageView.frame.size.width, imageView.frame.size.height);
 		
 	NSArray *itemArray = [NSArray arrayWithObjects: typeOfRepoString, @"Open Now", nil];
 	segmentedControl = [[UISegmentedControl alloc] initWithItems:itemArray];
 	segmentedControl.tintColor = [UIColor darkGrayColor];
-	segmentedControl.frame = CGRectMake(80, footerDisplacementFromTop + 8, 150, 30);
+	segmentedControl.frame = CGRectMake(80, footerDisplacementFromTop + 8, 170, 30);
 	segmentedControl.segmentedControlStyle = UISegmentedControlStyleBar;
 	segmentedControl.selectedSegmentIndex = 0;
 	[segmentedControl addTarget:self
 	                     action:@selector(pickOne:)
 	           forControlEvents:UIControlEventValueChanged];
-	[self.view addSubview:segmentedControl];
+	
+	if (![typeOfRepo isEqualToString:@"Archives"]){
+		
+		[self.view addSubview:imageView];
+		[imageView release];
+		[self.view addSubview:segmentedControl];
+		
+		
+	}
 	//[segmentedControl release];
 	
 	
@@ -349,42 +363,57 @@ NSInteger libraryNameSort(id lib1, id lib2, void *context);
     return 1;
 }
 
-/*
+
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-	ShuttleStop *aStop = nil;
-	if(nil != self.route && self.route.stops.count > indexPath.row) {
-		aStop = [self.route.stops objectAtIndex:indexPath.row];
+	Library * lib; 
+	NSString * cellText = @"";
+	
+	if (showingOnlyOpen == NO) {
+		lib = [allLibraries objectAtIndex:indexPath.section];
+		
+		if (nil != lib)
+			cellText = lib.name;
 	}
 	
+	else {
+		lib = [allOpenLibraries objectAtIndex:indexPath.section];
+		
+		if (nil != lib)
+			cellText = lib.name;
+	}
 	
-	CGSize constraintSize = CGSizeMake(280.0f, 2009.0f);
-	NSString* cellText = @"A"; // just something to guarantee one line
-	UIFont* cellFont = [UIFont boldSystemFontOfSize:[UIFont buttonFontSize]];
-	CGSize labelSize = [cellText sizeWithFont:cellFont constrainedToSize:constraintSize lineBreakMode:UILineBreakModeWordWrap];
+	UITableViewCellAccessoryType accessoryType = UITableViewCellAccessoryNone;
 	
-	if (aStop.upcoming)
-		labelSize.height += 5.0f;
-	
-	return labelSize.height + 20.0f;
+	return [LibrariesMultiLineCell heightForCellWithStyle:UITableViewCellStyleDefault
+                                                tableView:tableView 
+                                                     text:cellText
+                                             maxTextLines:2
+                                               detailText:nil
+                                           maxDetailLines:0
+                                                     font:nil 
+                                               detailFont:nil
+                                            accessoryType:accessoryType
+                                                cellImage:NO];
 }
-*/
+
 
 
 // Customize the appearance of table view cells.
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     
-	static NSString *optionsForMainViewTableStringConstant = @"listViewCell";
-	UITableViewCell *cell = nil;
+	static NSString *optionsForMainViewTableStringConstant = @"listViewCellMultiLine";
+	LibrariesMultiLineCell *cell = nil;
 	
 	
-	cell = [tableView dequeueReusableCellWithIdentifier:optionsForMainViewTableStringConstant];
+	cell = (LibrariesMultiLineCell *)[tableView dequeueReusableCellWithIdentifier:optionsForMainViewTableStringConstant];
 	if (cell == nil) {
-		cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:optionsForMainViewTableStringConstant] autorelease];
+		cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:optionsForMainViewTableStringConstant] autorelease];
 		//cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 		cell.selectionStyle = UITableViewCellSelectionStyleGray;
 	}
 	cell.selectionStyle = UITableViewCellSelectionStyleGray;
+	cell.textLabel.numberOfLines = 2;
 	
 	Library * lib; 
 	if (showingOnlyOpen == NO) {

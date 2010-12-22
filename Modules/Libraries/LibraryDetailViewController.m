@@ -62,7 +62,7 @@ NSInteger phoneNumberSort(id num1, id num2, void *context){
 	headerView = nil; 
 	NSString * libraryName;
 	
-	if ([lib.name isEqualToString:lib.primaryName])
+	if (([lib.name isEqualToString:lib.primaryName]) && ([lib.primaryName length] > 0))
 		libraryName = lib.name;
 	
 	else {
@@ -78,7 +78,7 @@ NSInteger phoneNumberSort(id num1, id num2, void *context){
 	headerView = [[[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, self.tableView.frame.size.width, height + 15)] autorelease];
 	// 
 	bookmarkButton = [UIButton buttonWithType:UIButtonTypeCustom];
-	bookmarkButton.frame = CGRectMake(self.tableView.frame.size.width - 60.0 , 5.0, 50.0, 50.0);
+	bookmarkButton.frame = CGRectMake(self.tableView.frame.size.width - 55.0 , 5.0, 50.0, 50.0);
 	bookmarkButton.enabled = YES;
 	[bookmarkButton setImage:[UIImage imageNamed:@"global/bookmark_off.png"] forState:UIControlStateNormal];
 	[bookmarkButton setImage:[UIImage imageNamed:@"global/bookmark_off_pressed.png"] forState:(UIControlStateNormal | UIControlStateHighlighted)];
@@ -99,7 +99,7 @@ NSInteger phoneNumberSort(id num1, id num2, void *context){
 	}
 	
 	
-	UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(12.0, 5.0, 250.0, height)];
+	UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(12.0, 9.0, 250.0, height)];
 	label.text = libraryName;
 	label.font = [UIFont fontWithName:CONTENT_TITLE_FONT size:CONTENT_TITLE_FONT_SIZE];
 	label.textColor = [UIColor colorWithHexString:@"#1a1611"];
@@ -120,7 +120,7 @@ NSInteger phoneNumberSort(id num1, id num2, void *context){
 	//[headerView addSubview:label2];
 	
 	self.tableView.tableHeaderView = [[UIView alloc]
-									  initWithFrame:CGRectMake(0, 0, self.tableView.frame.size.width, headerView.frame.size.height + 10)];
+									  initWithFrame:CGRectMake(0, 0, self.tableView.frame.size.width, headerView.frame.size.height)];
 	[self.tableView.tableHeaderView addSubview:headerView];
 	
 	[self.tableView applyStandardColors];
@@ -390,7 +390,7 @@ NSInteger phoneNumberSort(id num1, id num2, void *context){
 						  constrainedToSize:CGSizeMake(300, 2000)         
 						  lineBreakMode:UILineBreakModeWordWrap].height;
 		
-		footerLabel = [[UILabel alloc] initWithFrame:CGRectMake(12.0, 0.0, 300.0, height)];
+		footerLabel = [[UILabel alloc] initWithFrame:CGRectMake(12.0, 5.0, 300.0, height)];
 		footerLabel.text = text;
 		footerLabel.font = [UIFont fontWithName:STANDARD_FONT size:13];
 		footerLabel.textColor = [UIColor colorWithHexString:@"#554C41"];
@@ -426,7 +426,7 @@ NSInteger phoneNumberSort(id num1, id num2, void *context){
 						  constrainedToSize:CGSizeMake(300, 2000)         
 						  lineBreakMode:UILineBreakModeWordWrap].height;
 		
-		return height + 5;
+		return height + 10;
 	}
 	
 	else return 0;
@@ -490,8 +490,22 @@ NSInteger phoneNumberSort(id num1, id num2, void *context){
 			cell.detailTextLabel.text = @"loading..";
 		}
 		else {
-			cell.textLabel.text = [[weeklySchedule allKeys] objectAtIndex:0];
-			cell.detailTextLabel.text = [weeklySchedule objectForKey:[[weeklySchedule allKeys] objectAtIndex:0]];
+			
+			NSString * hoursString = [weeklySchedule objectForKey:[[weeklySchedule allKeys] objectAtIndex:0]];
+			
+			NSRange range = [hoursString rangeOfString:@"http"];
+			if (range.location != NSNotFound)
+			{
+				hoursString = [hoursString substringFromIndex:range.location];
+				cell.textLabel.text = @"Hours";
+				cell.detailTextLabel.text = @"See webpage";
+				cell.accessoryView = [UIImageView accessoryViewWithMITType:MITAccessoryViewExternal];
+				cell.accessoryType = UITableViewCellAccessoryNone;
+			}
+			else{
+				cell.textLabel.text = [[weeklySchedule allKeys] objectAtIndex:0];
+				cell.detailTextLabel.text = [weeklySchedule objectForKey:[[weeklySchedule allKeys] objectAtIndex:0]];
+			}
 		}
 
 		
@@ -534,7 +548,12 @@ NSInteger phoneNumberSort(id num1, id num2, void *context){
 	
 		if (indexPath.row == websiteRow) {
 			cellForContact.textLabel.text = @"Website";
-			cellForContact.detailTextLabel.text = lib.websiteLib; //@"Visit Website";
+			NSRange range = [lib.websiteLib rangeOfString:@"http://"];
+			NSString * website = lib.websiteLib;
+			if (range.location != NSNotFound)
+				website = [lib.websiteLib substringFromIndex:range.location + range.length];
+			
+			cellForContact.detailTextLabel.text = website; //[lib.websiteLib //@"Visit Website";
 			cellForContact.accessoryView = [UIImageView accessoryViewWithMITType:MITAccessoryViewExternal];
 			
 		}
@@ -553,7 +572,7 @@ NSInteger phoneNumberSort(id num1, id num2, void *context){
 			}
 			
 			if (nil != phone){
-				
+				cellForContact.textLabel.numberOfLines = 2;
 				if ([phone.descriptionText length] > 0)
 					cellForContact.textLabel.text = phone.descriptionText;
 				else
@@ -599,6 +618,26 @@ NSInteger phoneNumberSort(id num1, id num2, void *context){
 			[vc setDaysOfWeek:daysOfWeek weeklySchedule:weeklySchedule];
 			[self.navigationController pushViewController:vc animated:YES];
 			[vc release];
+		}
+		else if ([[weeklySchedule allKeys] count] == 0){
+			return;
+		}
+		else {
+			
+			NSString * hoursString = [weeklySchedule objectForKey:[[weeklySchedule allKeys] objectAtIndex:0]];
+			
+			NSRange range = [hoursString rangeOfString:@"http"];
+			if (range.location != NSNotFound)
+			{
+				hoursString = [hoursString substringFromIndex:range.location];
+				NSURL *libURL = [NSURL URLWithString:hoursString];
+				if (libURL && [[UIApplication sharedApplication] canOpenURL:libURL]) {
+					[[UIApplication sharedApplication] openURL:libURL];
+				}
+			}
+			else{
+				return;
+			}
 		}
 	}
 	
@@ -718,6 +757,38 @@ NSInteger phoneNumberSort(id num1, id num2, void *context){
 		else if (indexPath.row == emailRow) {
 			NSString *email = lib.emailLib;
 			detailText = email;
+		}
+		
+		else if (indexPath.row >= phoneRow) {
+			
+			LibraryPhone * phone = nil;
+			if ([phoneNumbersArray count] > 0){
+				
+				phone = (LibraryPhone*)[phoneNumbersArray objectAtIndex:indexPath.row - phoneRow];
+			}
+			
+			if (nil != phone){
+				if ([phone.descriptionText length] > 0)
+					cellText = phone.descriptionText;
+				else
+					cellText = @"Phone";
+				
+				if ([phone.phoneNumber length] > 0)
+					detailText = phone.phoneNumber;
+				
+				accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+			}
+			
+			return [LibrariesMultiLineCell heightForCellWithStyle:UITableViewCellStyleValue2
+														tableView:tableView 
+															 text:cellText
+													 maxTextLines:2
+													   detailText:detailText
+												   maxDetailLines:1
+															 font:cellFont 
+													   detailFont:cellFont
+													accessoryType:accessoryType
+														cellImage:NO];
 		}
 	}
 	

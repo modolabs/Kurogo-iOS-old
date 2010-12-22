@@ -9,7 +9,7 @@
 #import "MobileResearchLinksViewController.h"
 #import "MITUIConstants.h"
 #import "Constants.h"
-
+#import "LibrariesMultiLineCell.h"
 
 @implementation MobileResearchLinksViewController
 
@@ -134,7 +134,7 @@
 // Customize the appearance of table view cells.
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     
-    static NSString *CellIdentifier = @"Cell";
+    static NSString *CellIdentifier = @"Cellruewuruwer";
     
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil) {
@@ -160,8 +160,17 @@
 	NSArray *chunks = [cellText componentsSeparatedByString: @"-"];
 	
 	if ([chunks count] > 1) {
-		cell.textLabel.text = [chunks objectAtIndex:0];
-		cell.detailTextLabel.text = [chunks objectAtIndex:1];
+		static NSString *CellIdentifier1 = @"Cellkfkwfkrw";
+		
+		LibrariesMultiLineCell *cell1 = (LibrariesMultiLineCell *)[tableView dequeueReusableCellWithIdentifier:CellIdentifier1];
+		if (cell1 == nil) {
+			cell1 = [[[LibrariesMultiLineCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier1] autorelease];
+		}
+		
+		cell1.textLabel.text = [chunks objectAtIndex:0];
+		cell1.detailTextLabel.text = [chunks objectAtIndex:1];
+		
+		return cell1;
 	}
 	
 	else {
@@ -170,6 +179,46 @@
 
     
     return cell;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{	
+	NSString *cellText = nil;
+	NSString *detailText = nil;
+
+	
+	cellText = @"";
+	
+	if ([[textAndLinksDictionary objectForKey:[textsArray objectAtIndex:indexPath.section]] isKindOfClass:[NSDictionary class]]){
+		NSDictionary * tempDict = (NSDictionary *)[textAndLinksDictionary objectForKey:[textsArray objectAtIndex:indexPath.section]];
+		
+		cellText = [[tempDict allKeys] objectAtIndex:indexPath.row];
+	}
+	else {
+		cellText = [textsArray objectAtIndex:indexPath.section];
+	}
+	
+	
+	NSArray *chunks = [cellText componentsSeparatedByString: @"-"];
+	
+	if ([chunks count] > 1) {
+		cellText = [chunks objectAtIndex:0];
+		detailText = [chunks objectAtIndex:1];
+
+	}
+
+
+			
+	return [LibrariesMultiLineCell heightForCellWithStyle:UITableViewCellStyleSubtitle
+														tableView:tableView 
+															 text:cellText
+													 maxTextLines:1
+													   detailText:detailText
+												   maxDetailLines:1
+															 font:nil 
+													   detailFont:nil
+													accessoryType:UITableViewCellAccessoryDisclosureIndicator
+														cellImage:NO];
 }
 
 - (NSString *) tableView: (UITableView *)tableView titleForHeaderInSection: (NSInteger)section {
@@ -191,7 +240,7 @@
 }
 
 - (CGFloat)tableView: (UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
-	return GROUPED_SECTION_HEADER_HEIGHT;
+	return GROUPED_SECTION_HEADER_HEIGHT - 3;
 }
 
 

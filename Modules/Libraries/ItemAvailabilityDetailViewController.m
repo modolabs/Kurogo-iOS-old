@@ -77,7 +77,7 @@ allLibrariesWithItem: (NSArray *) allLibraries
 
 	NSString * nameToDisplay = libraryName;
 	
-	if (![libraryName isEqualToString:primaryName])
+	if ((![libraryName isEqualToString:primaryName]) && ([primaryName length] > 0))
 		nameToDisplay = [NSString stringWithFormat:@"%@ (%@)", libraryName, primaryName];
 						 
 	CGFloat height1 = [nameToDisplay
@@ -92,8 +92,10 @@ allLibrariesWithItem: (NSArray *) allLibraries
 	
 	CGFloat height = height1 + height2;
 	
-	UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(12.0, 0.0, 250, height1)];
+	UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(12.0, 9.0, 250, height1)];
 
+	height1 += 9.0;
+	
 	label.text = nameToDisplay;	
 	label.font = [UIFont fontWithName:CONTENT_TITLE_FONT size:CONTENT_TITLE_FONT_SIZE];
 	label.textColor = [UIColor colorWithHexString:@"#1a1611"];
@@ -109,7 +111,7 @@ allLibrariesWithItem: (NSArray *) allLibraries
 	}
 
 	
-	UILabel *label2 = [[UILabel alloc] initWithFrame:CGRectMake(12.0, height1 + 5.0, 250, height2)];
+	UILabel *label2 = [[UILabel alloc] initWithFrame:CGRectMake(12.0, height1, 250, height2)];
 	label2.text = openTodayString;
 	label2.font = [UIFont fontWithName:COURSE_NUMBER_FONT
 								  size:13];
@@ -120,7 +122,7 @@ allLibrariesWithItem: (NSArray *) allLibraries
 	
 	
 	infoButton = [UIButton buttonWithType:UIButtonTypeCustom];
-	infoButton.frame = CGRectMake(self.tableView.frame.size.width - 60.0 , 5, 50.0, 50.0);
+	infoButton.frame = CGRectMake(self.tableView.frame.size.width - 55.0 , 5, 50.0, 50.0);
 	infoButton.enabled = YES;
 	[infoButton setImage:[UIImage imageNamed:@"global/info_button.png"] forState:UIControlStateNormal];
 	[infoButton setImage:[UIImage imageNamed:@"global/info_button_pressed.png"] forState:(UIControlStateNormal | UIControlStateHighlighted)];
@@ -138,7 +140,7 @@ allLibrariesWithItem: (NSArray *) allLibraries
 	[headerView addSubview:infoButton];
 	
 	self.tableView.tableHeaderView = [[UIView alloc]
-									  initWithFrame:CGRectMake(0, 0, self.tableView.frame.size.width, headerView.frame.size.height + 10)];
+									  initWithFrame:CGRectMake(0, 0, self.tableView.frame.size.width, headerView.frame.size.height + 5)];
 	[self.tableView.tableHeaderView addSubview:headerView];
 	
 	[self.tableView applyStandardColors];
@@ -696,6 +698,8 @@ allLibrariesWithItem: (NSArray *) allLibraries
 	callNumber = [NSString stringWithFormat:@"%@-%@\n%@", desc, callNumber, statMain];
 	
 	cell.textLabel.text = status;
+	cell.detailTextLabel.textColor = [UIColor colorWithHexString:@"#554C41"];
+	cell.detailTextLabel.font = [UIFont fontWithName:STANDARD_FONT size:CELL_DETAIL_FONT_SIZE];
 	cell.detailTextLabel.numberOfLines = 4;
 	cell.detailTextLabel.text = callNumber;
 	
@@ -797,6 +801,8 @@ allLibrariesWithItem: (NSArray *) allLibraries
 	callNumber = [NSString stringWithFormat:@"%@-%@", desc, callNumber];
 	
 	cell.textLabel.text = status;
+	cell.detailTextLabel.textColor = [UIColor colorWithHexString:@"#554C41"];
+	cell.detailTextLabel.font = [UIFont fontWithName:STANDARD_FONT size:CELL_DETAIL_FONT_SIZE];
 	cell.detailTextLabel.numberOfLines = 1;
 	cell.detailTextLabel.text = callNumber;
 	
@@ -812,6 +818,23 @@ allLibrariesWithItem: (NSArray *) allLibraries
 	if (([canRequest isEqualToString:@"YES"]) || ([canScanAndDeliver isEqualToString:@"YES"]))
 		cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 	
+	cell.selectionStyle = UITableViewCellSelectionStyleGray;
+	
+    return cell;
+	
+}
+
+
+-(UITableViewCell *) sectionTypeFIVE:(NSIndexPath *)indexPath tableView:(UITableView *)tableView{
+	
+	static NSString *CellIdentifier = @"CellTypeFOUR";
+    
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    if (cell == nil) {
+        cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
+    }
+    
+	cell.textLabel.text = @"Contact library/archive";	
 	cell.selectionStyle = UITableViewCellSelectionStyleGray;
 	
     return cell;
@@ -925,6 +948,22 @@ allLibrariesWithItem: (NSArray *) allLibraries
 												cellImage:YES];
 }
 
+
+- (CGFloat)heightForRowAtIndexPathSectionFIVE:(NSIndexPath *)indexPath tableView:(UITableView *)tableView{
+    
+	return [LibrariesMultiLineCell heightForCellWithStyle:UITableViewCellStyleDefault
+												tableView:tableView 
+													 text:@"Contact library/archive"
+											 maxTextLines:1
+											   detailText:nil
+										   maxDetailLines:0
+													 font:nil 
+											   detailFont:nil
+											accessoryType:UITableViewCellAccessoryDisclosureIndicator
+												cellImage:YES];
+}
+
+
 #pragma mark -
 #pragma mark Table view data source
 
@@ -951,8 +990,9 @@ allLibrariesWithItem: (NSArray *) allLibraries
 	
 	int itemStats = 0;
 	
-	if ([displayType isEqualToString:@"V"])
-		return 0;
+	if ([displayType isEqualToString:@"V"]) {
+		return 1;
+	}
 	
 	for(NSDictionary * statDict in stats){
 		
@@ -1036,6 +1076,9 @@ allLibrariesWithItem: (NSArray *) allLibraries
 	
 	else if ([displayType isEqualToString:@"IV"])
 		return [self sectionTypeFOUR:indexPath tableView:tableView];
+	
+	else if ([displayType isEqualToString:@"V"])
+		return [self sectionTypeFIVE:indexPath tableView:tableView];
 
 	return nil;
 }
@@ -1057,6 +1100,8 @@ allLibrariesWithItem: (NSArray *) allLibraries
 	else if ([displayType isEqualToString:@"IV"])
 		return [self heightForRowAtIndexPathSectionFOUR:indexPath tableView:tableView];
 	
+	else if ([displayType isEqualToString:@"V"])
+		return [self heightForRowAtIndexPathSectionFIVE:indexPath tableView:tableView];
 	return 0;
 }
 
@@ -1383,7 +1428,7 @@ allLibrariesWithItem: (NSArray *) allLibraries
 		headerCollectionName.lineBreakMode = UILineBreakModeTailTruncation;
 		headerCollectionName.numberOfLines = 5;
 		
-		headerCollectionCallNumber = [[UILabel alloc] initWithFrame:CGRectMake(12.0, heightName + 3, 280, heightCallNbr)];
+		headerCollectionCallNumber = [[UILabel alloc] initWithFrame:CGRectMake(12.0, heightName, 280, heightCallNbr)];
 		headerCollectionCallNumber.text = callNbr;
 		headerCollectionCallNumber.font =  [UIFont fontWithName:STANDARD_FONT size:13];
 		headerCollectionCallNumber.textColor = [UIColor colorWithHexString:@"#554C41"];
@@ -1391,7 +1436,7 @@ allLibrariesWithItem: (NSArray *) allLibraries
 		headerCollectionCallNumber.lineBreakMode = UILineBreakModeTailTruncation;
 		headerCollectionCallNumber.numberOfLines = 5;
 		
-		headerCollectionAvailVal = [[UILabel alloc] initWithFrame:CGRectMake(12.0, heightName + 3 + heightCallNbr + 3, 280, heightAvailVal)];
+		headerCollectionAvailVal = [[UILabel alloc] initWithFrame:CGRectMake(12.0, heightName + heightCallNbr, 280, heightAvailVal)];
 		headerCollectionAvailVal.text = availVal;
 		headerCollectionAvailVal.font =  [UIFont fontWithName:STANDARD_FONT size:13];
 		headerCollectionAvailVal.textColor = [UIColor colorWithHexString:@"#554C41"];
@@ -1420,7 +1465,7 @@ allLibrariesWithItem: (NSArray *) allLibraries
 		
 		NSDictionary * statDict = (NSDictionary *)[stats lastObject];
 		
-		text0 = [statDict objectForKey:@"collectionName"];
+		text0 = [collection objectForKey:@"collectionName"];
 		
 		
 		if (([displayType isEqualToString:@"I"]) || ([displayType isEqualToString:@"III"]))
@@ -1456,7 +1501,7 @@ allLibrariesWithItem: (NSArray *) allLibraries
 		headerLabel0.numberOfLines = 5;
 		
 		
-		headerLabel1 = [[UILabel alloc] initWithFrame:CGRectMake(12.0, height0 + 3, 280.0, height1)];
+		headerLabel1 = [[UILabel alloc] initWithFrame:CGRectMake(12.0, height0, 280.0, height1)];
 		headerLabel1.text = text1;
 		headerLabel1.font = [UIFont fontWithName:STANDARD_FONT size:13];
 		headerLabel1.textColor = [UIColor colorWithHexString:@"#554C41"];
@@ -1465,7 +1510,7 @@ allLibrariesWithItem: (NSArray *) allLibraries
 		headerLabel1.numberOfLines = 5;
 		
 		
-		headerLabel2 = [[UILabel alloc] initWithFrame:CGRectMake(12.0, height0 + height1 + 6, 280.0, height2)];
+		headerLabel2 = [[UILabel alloc] initWithFrame:CGRectMake(12.0, height0 + height1, 280.0, height2)];
 		headerLabel2.text = text2;
 		headerLabel2.font = [UIFont fontWithName:STANDARD_FONT size:13];
 		headerLabel2.textColor = [UIColor colorWithHexString:@"#554C41"];
@@ -1473,7 +1518,7 @@ allLibrariesWithItem: (NSArray *) allLibraries
 		headerLabel2.lineBreakMode = UILineBreakModeTailTruncation;
 		headerLabel2.numberOfLines = 5;
 		
-		view = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, self.view.frame.size.width, height0 + height1 + height2 +9.0)];
+		view = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, self.view.frame.size.width, height0 + height1 + height2)];
 		[view addSubview:headerLabel0];
 		[view addSubview:headerLabel1];
 		[view addSubview:headerLabel2];
@@ -1521,7 +1566,7 @@ allLibrariesWithItem: (NSArray *) allLibraries
 		CGFloat height = heightName + heightCallNbr + heightAvailVal;
 
 		
-		return height + 5;
+		return height + 4;
 	}
 	
 	else {
@@ -1558,7 +1603,7 @@ allLibrariesWithItem: (NSArray *) allLibraries
 						   constrainedToSize:CGSizeMake(280.0, 2000)         
 						   lineBreakMode:UILineBreakModeWordWrap].height;
 		
-		return height0 + height1 + height2 + 5;
+		return height0 + height1 + height2 + 4;
 
 	}
 		

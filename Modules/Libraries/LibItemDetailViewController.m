@@ -189,7 +189,7 @@
 	
 
 	bookmarkButton = [UIButton buttonWithType:UIButtonTypeCustom];
-	bookmarkButton.frame = CGRectMake(self.tableView.frame.size.width - 120.0 , runningYDispacement - 15, 50.0, 50.0);
+	bookmarkButton.frame = CGRectMake(self.tableView.frame.size.width - 105.0 , runningYDispacement - 10, 50.0, 50.0);
 	bookmarkButton.enabled = YES;
 	[bookmarkButton setImage:[UIImage imageNamed:@"global/bookmark_off.png"] forState:UIControlStateNormal];
 	[bookmarkButton setImage:[UIImage imageNamed:@"global/bookmark_off_pressed.png"] forState:(UIControlStateNormal | UIControlStateHighlighted)];
@@ -208,7 +208,7 @@
 	}
 	
 	mapButton = [UIButton buttonWithType:UIButtonTypeCustom];
-	mapButton.frame = CGRectMake(self.tableView.frame.size.width - 60.0 , runningYDispacement - 15, 50.0, 50.0);
+	mapButton.frame = CGRectMake(self.tableView.frame.size.width - 55.0 , runningYDispacement - 10, 50.0, 50.0);
 	mapButton.enabled = YES;
 	[mapButton setImage:[UIImage imageNamed:@"global/map-it.png"] forState:UIControlStateNormal];
 	[mapButton setImage:[UIImage imageNamed:@"global/map-it-pressed.png"] forState:(UIControlStateNormal | UIControlStateHighlighted)];
@@ -276,7 +276,7 @@
 	
 	
 	UIView * headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 
-																   15 + runningYDispacement)];
+																   10 + runningYDispacement)];
 	
 	[headerView addSubview:titleLabel];
 	[headerView addSubview:authorLabel];
@@ -296,7 +296,7 @@
 		[headerView addSubview:detailLabel3];
 	
 	self.tableView.tableHeaderView = [[UIView alloc]
-									  initWithFrame:CGRectMake(0, 0, self.tableView.frame.size.width, headerView.frame.size.height + 10)];
+									  initWithFrame:CGRectMake(0, 0, self.tableView.frame.size.width, headerView.frame.size.height)];
 	[self.tableView.tableHeaderView addSubview:headerView];
 	
 	[self.tableView applyStandardColors];
@@ -690,7 +690,7 @@
 		}
 		
 
-		
+		cell1.textLabel.numberOfLines = 2;
 		cell1.textLabel.text = libName;
 		
 		
@@ -783,6 +783,7 @@
 	
 	if ((indexPath.section == 1) && ([locationsWithItem count] > 0)){
 		
+		detailFont = [UIFont fontWithName:STANDARD_FONT size:13];
 		
 		NSDictionary * tempDict = [locationsWithItem objectAtIndex:indexPath.row];		
 		
@@ -854,7 +855,7 @@
 	return [LibItemDetailCell heightForCellWithStyle:UITableViewCellStyleSubtitle
 												tableView:tableView 
 													 text:cellText
-											 maxTextLines:1
+											 maxTextLines:2
 											   detailText:detailText
 										   maxDetailLines:1
 													 font:nil 

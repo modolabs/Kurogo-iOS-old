@@ -11,6 +11,7 @@
 #import "Library.h"
 #import "CoreDataManager.h"
 #import "Constants.h"
+#import "LibrariesMultiLineCell.h"
 
 @implementation BookmarkedHoursAndLocationsViewController
 @synthesize listOrMapView;
@@ -70,7 +71,7 @@ NSInteger bookmarkedNameSorted(id lib1, id lib2, void *context);
 	NSArray *itemArray = [NSArray arrayWithObjects: @"All Libraries", @"Open Now", nil];
 	segmentedControl = [[UISegmentedControl alloc] initWithItems:itemArray];
 	segmentedControl.tintColor = [UIColor darkGrayColor];
-	segmentedControl.frame = CGRectMake(80, footerDisplacementFromTop + 8, 150, 30);
+	segmentedControl.frame = CGRectMake(80, footerDisplacementFromTop + 8, 170, 30);
 	segmentedControl.segmentedControlStyle = UISegmentedControlStyleBar;
 	segmentedControl.selectedSegmentIndex = 0;
 	[segmentedControl addTarget:self
@@ -345,42 +346,57 @@ NSInteger bookmarkedNameSorted(id lib1, id lib2, void *context);
     return 1;
 }
 
-/*
- - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
- {
- ShuttleStop *aStop = nil;
- if(nil != self.route && self.route.stops.count > indexPath.row) {
- aStop = [self.route.stops objectAtIndex:indexPath.row];
- }
- 
- 
- CGSize constraintSize = CGSizeMake(280.0f, 2009.0f);
- NSString* cellText = @"A"; // just something to guarantee one line
- UIFont* cellFont = [UIFont boldSystemFontOfSize:[UIFont buttonFontSize]];
- CGSize labelSize = [cellText sizeWithFont:cellFont constrainedToSize:constraintSize lineBreakMode:UILineBreakModeWordWrap];
- 
- if (aStop.upcoming)
- labelSize.height += 5.0f;
- 
- return labelSize.height + 20.0f;
- }
- */
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+	Library * lib; 
+	NSString * cellText = @"";
+	
+	if (showingOnlyOpen == NO) {
+		lib = [allLibraries objectAtIndex:indexPath.section];
+		
+		if (nil != lib)
+			cellText = lib.name;
+	}
+	
+	else {
+		lib = [allOpenLibraries objectAtIndex:indexPath.section];
+		
+		if (nil != lib)
+			cellText = lib.name;
+	}
+	
+	UITableViewCellAccessoryType accessoryType = UITableViewCellAccessoryNone;
+	
+	return [LibrariesMultiLineCell heightForCellWithStyle:UITableViewCellStyleDefault
+                                                tableView:tableView 
+                                                     text:cellText
+                                             maxTextLines:2
+                                               detailText:nil
+                                           maxDetailLines:0
+                                                     font:nil 
+                                               detailFont:nil
+                                            accessoryType:accessoryType
+                                                cellImage:NO];
+}
+
 
 
 // Customize the appearance of table view cells.
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     
 	static NSString *optionsForMainViewTableStringConstant = @"listViewCell";
-	UITableViewCell *cell = nil;
+	LibrariesMultiLineCell *cell = nil;
 	
 	
-	cell = [tableView dequeueReusableCellWithIdentifier:optionsForMainViewTableStringConstant];
+	cell = (LibrariesMultiLineCell *)[tableView dequeueReusableCellWithIdentifier:optionsForMainViewTableStringConstant];
 	if (cell == nil) {
-		cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:optionsForMainViewTableStringConstant] autorelease];
+		cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:optionsForMainViewTableStringConstant] autorelease];
 		//cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 		cell.selectionStyle = UITableViewCellSelectionStyleGray;
 	}
 	cell.selectionStyle = UITableViewCellSelectionStyleGray;
+	cell.textLabel.numberOfLines = 2;
 	
 	Library * lib; 
 	if (showingOnlyOpen == NO) {

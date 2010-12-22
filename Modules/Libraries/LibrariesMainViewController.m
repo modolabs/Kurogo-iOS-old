@@ -509,6 +509,12 @@
 	}
 	else if (section == 1) {
 		cell.textLabel.text = (NSString *)[mainViewTableOptions2 objectAtIndex:row];
+		
+		if (row == 2) { // ask a librarian
+			
+			cell.accessoryType = UITableViewCellAccessoryNone;
+			cell.accessoryView = [UIImageView accessoryViewWithMITType:MITAccessoryViewExternal];
+		}
 	}
 		
 	

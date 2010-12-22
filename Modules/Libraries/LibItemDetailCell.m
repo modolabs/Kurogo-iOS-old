@@ -278,7 +278,7 @@
 		else 
 			imageString = @"dining/dining-status-open-w-restrictions@2x.png";
 		
-		CGFloat placementY = self.detailTextLabel.frame.origin.y + self.detailTextLabel.frame.size.height + 5 + additionalHeight*index;
+		CGFloat placementY = self.detailTextLabel.frame.origin.y + self.detailTextLabel.frame.size.height + additionalHeight*index;
 		UIImage *image = [UIImage imageNamed:imageString];
 		UIImageView *imView = [[UIImageView alloc] initWithImage:image];
 		imView.frame = CGRectMake(10.0, placementY, 

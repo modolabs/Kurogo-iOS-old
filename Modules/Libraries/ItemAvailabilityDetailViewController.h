@@ -66,11 +66,13 @@ allLibrariesWithItem: (NSArray *) allLibraries
 -(UITableViewCell *) sectionTypeTWO:(NSIndexPath *)indexPath tableView:(UITableView *)tableView;
 -(UITableViewCell *) sectionTypeTHREE:(NSIndexPath *)indexPath tableView:(UITableView *)tableView;
 -(UITableViewCell *) sectionTypeFOUR:(NSIndexPath *)indexPath tableView:(UITableView *)tableView;
+-(UITableViewCell *) sectionTypeFIVE:(NSIndexPath *)indexPath tableView:(UITableView *)tableView;
 
 - (CGFloat)heightForRowAtIndexPathSectionONE:(NSIndexPath *)indexPath tableView:(UITableView *)tableView;
 - (CGFloat)heightForRowAtIndexPathSectionTWO:(NSIndexPath *)indexPath tableView:(UITableView *)tableView;
 - (CGFloat)heightForRowAtIndexPathSectionTHREE:(NSIndexPath *)indexPath tableView:(UITableView *)tableView;
 - (CGFloat)heightForRowAtIndexPathSectionFOUR:(NSIndexPath *)indexPath tableView:(UITableView *)tableView;
+- (CGFloat)heightForRowAtIndexPathSectionFIVE:(NSIndexPath *)indexPath tableView:(UITableView *)tableView;
 
 -(void) showActionSheet:(NSArray *)items;
 
