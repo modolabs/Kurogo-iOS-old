@@ -18,13 +18,13 @@
 	
     IBOutlet UITextField *authorKeywords;
 	
-	IBOutlet UITextField *format;	
+	IBOutlet UILabel *format;	
 	IBOutlet UIButton *formatDisclosure;
 	
-	IBOutlet UITextField *location;
+	IBOutlet UILabel *location;
 	IBOutlet UIButton *locationDisclosure;
 	
-	IBOutlet UISwitch * englishSwitch;
+	UIButton * englishSwitch;
 	
 	IBOutlet UIPickerView * formatPickerView;
 	IBOutlet UIPickerView * locationPickerView;
@@ -45,15 +45,16 @@
 @property (nonatomic, retain) IBOutlet UITextField *keywords;
 @property (nonatomic, retain) IBOutlet UITextField *titleKeywords;
 @property (nonatomic, retain) IBOutlet UITextField *authorKeywords;
-@property (nonatomic, retain) IBOutlet UITextField *format;
+@property (nonatomic, retain) IBOutlet UILabel *format;
 @property (nonatomic, retain) IBOutlet UIButton * formatDisclosure;
-@property (nonatomic, retain) IBOutlet UITextField * location;
+@property (nonatomic, retain) IBOutlet UILabel * location;
 @property (nonatomic, retain) IBOutlet UIButton * locationDisclosure;
-@property (nonatomic, retain) IBOutlet UISwitch * englishSwitch;
+@property (nonatomic, retain) UIButton * englishSwitch;
 
 -(IBAction) formatPressed:(id) sender;
 -(IBAction) locationPressed:(id) sender;
 -(IBAction) searchButtonPressed:(id) sender;
+-(IBAction) englishButtonPressed: (id) sender;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil keywords:(NSString *) keywordsText;
 -(void) search;

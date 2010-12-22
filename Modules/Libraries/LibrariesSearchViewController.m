@@ -81,7 +81,7 @@
 -(void) viewDidLoad {
 	
 	if (nil == theSearchBar)
-		theSearchBar = [[ModoSearchBar alloc] initWithFrame:CGRectMake(0.0f, 0.0f, self.view.frame.size.width, NAVIGATION_BAR_HEIGHT)];
+		theSearchBar = [[ModoSearchBar alloc] initWithFrame:CGRectMake(0.0f, 0.0f, self.view.frame.size.width - 50, NAVIGATION_BAR_HEIGHT)];
 	
 	theSearchBar.tintColor = SEARCH_BAR_TINT_COLOR;
 	theSearchBar.placeholder = @"HOLLIS keyword search";
@@ -125,11 +125,20 @@
 	 */
 	
 	_advancedSearchButton = nil;
+	UILabel * refine = nil;
 	if (nil == _advancedSearchButton) {
-		_advancedSearchButton = [[UIButton alloc] initWithFrame:CGRectMake(282, 8, 32, 28)];
-		[_advancedSearchButton setImage:[UIImage imageNamed:@"global/searchfield_star.png"] forState:UIControlStateNormal];
+		_advancedSearchButton = [[UIButton alloc] initWithFrame:CGRectMake(270, 6, 45, 30)];
+		[_advancedSearchButton setImage:[[UIImage imageNamed:@"global/subheadbar_button.png"] stretchableImageWithLeftCapWidth:10 topCapHeight:0] forState:UIControlStateNormal];
+	
+		refine = [[UILabel alloc] initWithFrame:_advancedSearchButton.frame];
+		refine.text = @"    Refine";
+		refine.textColor = [UIColor whiteColor];
+		refine.backgroundColor = [UIColor clearColor];
+		refine.font = [UIFont fontWithName:STANDARD_FONT size:10];
 	}
+	
 	[self.view addSubview:_advancedSearchButton];
+	[_advancedSearchButton addSubview:refine];
 	[_advancedSearchButton addTarget:self action:@selector(advancedSearchButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
 }
 
@@ -429,6 +438,7 @@
 }
 
 - (void)restoreToolBar {
+	theSearchBar.frame = CGRectMake(0, 0, self.view.frame.size.width - 50, NAVIGATION_BAR_HEIGHT);
     [theSearchBar setShowsCancelButton:NO animated:YES];
     [UIView beginAnimations:@"searching" context:nil];
     [UIView setAnimationDuration:0.4];
@@ -437,9 +447,9 @@
 	
     [UIView commitAnimations];
 
-    CGRect frame = _advancedSearchButton.frame;
-    frame.origin.x = theSearchBar.frame.size.width - frame.size.width - 7;
-    _advancedSearchButton.frame = frame;
+   // CGRect frame = _advancedSearchButton.frame;
+   // frame.origin.x = theSearchBar.frame.size.width - frame.size.width - 7;
+   // _advancedSearchButton.frame = frame;
 }
 
 

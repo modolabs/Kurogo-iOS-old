@@ -113,16 +113,6 @@
 		44C1A3CF11A33905000FD653 /* MapSelectionController.m in Sources */ = {isa = PBXBuildFile; fileRef = 44C1A3CD11A33905000FD653 /* MapSelectionController.m */; };
 		44C1A4C411A412E2000FD653 /* MapSearch.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = 44C1A4C211A412E2000FD653 /* MapSearch.h */; settings = {JAVA_ARCHIVE_SUBDIR = "Modules/Campus Map/CampusMap.xcdatamodeld"; }; };
 		44C1A4C511A412E2000FD653 /* MapSearch.m in Sources */ = {isa = PBXBuildFile; fileRef = 44C1A4C311A412E2000FD653 /* MapSearch.m */; };
-		5619881C12C209F4004E7AB7 /* checkbox_normal.png in Resources */ = {isa = PBXBuildFile; fileRef = 5619881212C209F4004E7AB7 /* checkbox_normal.png */; };
-		5619881D12C209F4004E7AB7 /* checkbox_normal@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5619881312C209F4004E7AB7 /* checkbox_normal@2x.png */; };
-		5619881E12C209F4004E7AB7 /* checkbox_pressed.png in Resources */ = {isa = PBXBuildFile; fileRef = 5619881412C209F4004E7AB7 /* checkbox_pressed.png */; };
-		5619881F12C209F4004E7AB7 /* checkbox_pressed@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5619881512C209F4004E7AB7 /* checkbox_pressed@2x.png */; };
-		5619882012C209F4004E7AB7 /* checkbox_selected.png in Resources */ = {isa = PBXBuildFile; fileRef = 5619881612C209F4004E7AB7 /* checkbox_selected.png */; };
-		5619882112C209F4004E7AB7 /* checkbox_selected@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5619881712C209F4004E7AB7 /* checkbox_selected@2x.png */; };
-		5619882212C209F4004E7AB7 /* dropdown_normal.png in Resources */ = {isa = PBXBuildFile; fileRef = 5619881812C209F4004E7AB7 /* dropdown_normal.png */; };
-		5619882312C209F4004E7AB7 /* dropdown_normal@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5619881912C209F4004E7AB7 /* dropdown_normal@2x.png */; };
-		5619882412C209F4004E7AB7 /* dropdown_pressed.png in Resources */ = {isa = PBXBuildFile; fileRef = 5619881A12C209F4004E7AB7 /* dropdown_pressed.png */; };
-		5619882512C209F4004E7AB7 /* dropdown_pressed@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5619881B12C209F4004E7AB7 /* dropdown_pressed@2x.png */; };
 		5623DEC112B15AB600212D5C /* RequestWebViewModalViewController.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = 5623DEBF12B15AB600212D5C /* RequestWebViewModalViewController.h */; settings = {JAVA_ARCHIVE_SUBDIR = Modules/Libraries; }; };
 		5623DEC212B15AB600212D5C /* RequestWebViewModalViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5623DEC012B15AB600212D5C /* RequestWebViewModalViewController.m */; };
 		5623E14D12B2719400212D5C /* ItemAvailabilityLibraryAnnotation.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = 5623E14B12B2719400212D5C /* ItemAvailabilityLibraryAnnotation.h */; settings = {JAVA_ARCHIVE_SUBDIR = Modules/Libraries; }; };
@@ -721,16 +711,6 @@
 		44C1A3CD11A33905000FD653 /* MapSelectionController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MapSelectionController.m; sourceTree = "<group>"; };
 		44C1A4C211A412E2000FD653 /* MapSearch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MapSearch.h; sourceTree = "<group>"; };
 		44C1A4C311A412E2000FD653 /* MapSearch.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MapSearch.m; sourceTree = "<group>"; };
-		5619881212C209F4004E7AB7 /* checkbox_normal.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = checkbox_normal.png; path = Resources/global/checkbox_normal.png; sourceTree = "<group>"; };
-		5619881312C209F4004E7AB7 /* checkbox_normal@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "checkbox_normal@2x.png"; path = "Resources/global/checkbox_normal@2x.png"; sourceTree = "<group>"; };
-		5619881412C209F4004E7AB7 /* checkbox_pressed.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = checkbox_pressed.png; path = Resources/global/checkbox_pressed.png; sourceTree = "<group>"; };
-		5619881512C209F4004E7AB7 /* checkbox_pressed@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "checkbox_pressed@2x.png"; path = "Resources/global/checkbox_pressed@2x.png"; sourceTree = "<group>"; };
-		5619881612C209F4004E7AB7 /* checkbox_selected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = checkbox_selected.png; path = Resources/global/checkbox_selected.png; sourceTree = "<group>"; };
-		5619881712C209F4004E7AB7 /* checkbox_selected@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "checkbox_selected@2x.png"; path = "Resources/global/checkbox_selected@2x.png"; sourceTree = "<group>"; };
-		5619881812C209F4004E7AB7 /* dropdown_normal.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = dropdown_normal.png; path = Resources/global/dropdown_normal.png; sourceTree = "<group>"; };
-		5619881912C209F4004E7AB7 /* dropdown_normal@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "dropdown_normal@2x.png"; path = "Resources/global/dropdown_normal@2x.png"; sourceTree = "<group>"; };
-		5619881A12C209F4004E7AB7 /* dropdown_pressed.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = dropdown_pressed.png; path = Resources/global/dropdown_pressed.png; sourceTree = "<group>"; };
-		5619881B12C209F4004E7AB7 /* dropdown_pressed@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "dropdown_pressed@2x.png"; path = "Resources/global/dropdown_pressed@2x.png"; sourceTree = "<group>"; };
 		5623DEBF12B15AB600212D5C /* RequestWebViewModalViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RequestWebViewModalViewController.h; sourceTree = "<group>"; };
 		5623DEC012B15AB600212D5C /* RequestWebViewModalViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RequestWebViewModalViewController.m; sourceTree = "<group>"; };
 		5623E14B12B2719400212D5C /* ItemAvailabilityLibraryAnnotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ItemAvailabilityLibraryAnnotation.h; sourceTree = "<group>"; };
@@ -1358,16 +1338,6 @@
 		29B97314FDCFA39411CA2CEA /* CustomTemplate */ = {
 			isa = PBXGroup;
 			children = (
-				5619881212C209F4004E7AB7 /* checkbox_normal.png */,
-				5619881312C209F4004E7AB7 /* checkbox_normal@2x.png */,
-				5619881412C209F4004E7AB7 /* checkbox_pressed.png */,
-				5619881512C209F4004E7AB7 /* checkbox_pressed@2x.png */,
-				5619881612C209F4004E7AB7 /* checkbox_selected.png */,
-				5619881712C209F4004E7AB7 /* checkbox_selected@2x.png */,
-				5619881812C209F4004E7AB7 /* dropdown_normal.png */,
-				5619881912C209F4004E7AB7 /* dropdown_normal@2x.png */,
-				5619881A12C209F4004E7AB7 /* dropdown_pressed.png */,
-				5619881B12C209F4004E7AB7 /* dropdown_pressed@2x.png */,
 				DE715445102FE468005E6111 /* Modules */,
 				080E96DDFE201D6D7F000001 /* Common */,
 				DE783C9810C8651300931EC5 /* App Delegate */,
@@ -2619,16 +2589,6 @@
 				56D308CB12AE94A000E61B3B /* soundrecording.png in Resources */,
 				56D308CC12AE94A000E61B3B /* video.png in Resources */,
 				5623EBC912B9ED6C00212D5C /* LibraryAdvancedSearch.xib in Resources */,
-				5619881C12C209F4004E7AB7 /* checkbox_normal.png in Resources */,
-				5619881D12C209F4004E7AB7 /* checkbox_normal@2x.png in Resources */,
-				5619881E12C209F4004E7AB7 /* checkbox_pressed.png in Resources */,
-				5619881F12C209F4004E7AB7 /* checkbox_pressed@2x.png in Resources */,
-				5619882012C209F4004E7AB7 /* checkbox_selected.png in Resources */,
-				5619882112C209F4004E7AB7 /* checkbox_selected@2x.png in Resources */,
-				5619882212C209F4004E7AB7 /* dropdown_normal.png in Resources */,
-				5619882312C209F4004E7AB7 /* dropdown_normal@2x.png in Resources */,
-				5619882412C209F4004E7AB7 /* dropdown_pressed.png in Resources */,
-				5619882512C209F4004E7AB7 /* dropdown_pressed@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

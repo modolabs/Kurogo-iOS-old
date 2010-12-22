@@ -39,8 +39,8 @@ NSInteger libraryNameSortAdvancedSearch(id lib1, id lib2, void *context) {
 	
 	[location setUserInteractionEnabled:NO];
 	
-	formatDisclosure.transform = CGAffineTransformMakeRotation(M_PI/2);
-	locationDisclosure.transform = CGAffineTransformMakeRotation(M_PI/2);
+	//formatDisclosure.transform = CGAffineTransformMakeRotation(M_PI/2);
+	//locationDisclosure.transform = CGAffineTransformMakeRotation(M_PI/2);
 	[keywords becomeFirstResponder];
 	
 	if (nil == formatDictionary) {
@@ -113,6 +113,17 @@ NSInteger libraryNameSortAdvancedSearch(id lib1, id lib2, void *context) {
 	
 	if (nil != keywordsTextAtInitialization)
 		self.keywords.text = keywordsTextAtInitialization;
+	
+	
+	englishSwitch = [UIButton buttonWithType:UIButtonTypeCustom];
+	englishSwitch.frame = CGRectMake(152, 182, 15, 15);
+	englishSwitch.enabled = YES;
+	[englishSwitch setImage:[UIImage imageNamed:@"global/checkbox_normal.png"] forState:UIControlStateNormal];
+	[englishSwitch setImage:[UIImage imageNamed:@"global/checkbox_pressed.png"] forState:(UIControlStateNormal | UIControlStateHighlighted)];
+	[englishSwitch setImage:[UIImage imageNamed:@"global/checkbox_selected.png"] forState:UIControlStateSelected];
+	[englishSwitch setImage:[UIImage imageNamed:@"global/checkbox_selected.png"] forState:(UIControlStateSelected | UIControlStateHighlighted)];
+	[englishSwitch addTarget:self action:@selector(englishButtonPressed:) forControlEvents:UIControlEventTouchUpInside]; 
+	[self.view addSubview:englishSwitch];
 }
 
 // The designated initializer.  Override if you create the controller programmatically and want to perform customization that is not appropriate for viewDidLoad.
@@ -193,6 +204,10 @@ NSInteger libraryNameSortAdvancedSearch(id lib1, id lib2, void *context) {
 	
 	
 	NSString * parameterQ = [NSString stringWithFormat:@"%@+title:%@+author:%@", keyword, titleStr, authorStr];
+	
+	if (englishSwitch.selected)
+		parameterQ = [parameterQ stringByAppendingFormat:@"+language-id:eng"];
+	
 	NSLog(@"q=%@", parameterQ);
 	
 	NSString * formatStr = @"";
@@ -268,6 +283,11 @@ NSInteger libraryNameSortAdvancedSearch(id lib1, id lib2, void *context) {
 	[self search];
 }
 
+-(void)englishButtonPressed: (id) sender {
+	
+	englishSwitch.selected = !englishSwitch.selected;
+}
+
 
 #pragma mark -
 #pragma mark Picker Data Source Methods
@@ -317,8 +337,8 @@ NSInteger libraryNameSortAdvancedSearch(id lib1, id lib2, void *context) {
 	
 		
 		if ([[sortedFormats objectAtIndex:row] isEqualToString:@"All formats (everything)"]){
-			format.text = @"";
-			format.placeholder = @"Any";
+			//format.text = @"";
+			format.text = @"Any";
 		}
 		
 		else
@@ -332,8 +352,8 @@ NSInteger libraryNameSortAdvancedSearch(id lib1, id lib2, void *context) {
 			location.text = ((Library *)[libraryArray objectAtIndex:row]).name;
 		
 		else {
-			location.text = @"";
-			location.placeholder = @"Any"; //@"All Libraries/Archives";
+			//location.text = @"";
+			location.text = @"Any"; //@"All Libraries/Archives";
 		}
 	}
 }
