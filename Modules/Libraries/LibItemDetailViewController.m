@@ -82,26 +82,16 @@
 		otherDetail3 = [NSString stringWithFormat:@"%@", libraryItem.formatDetail];
 	
 	itemTitle = [title retain];
+	
+	if (displayImage == YES)
+		itemTitle = [[NSString stringWithFormat:@"%@\nHOLLIS # %@", itemTitle, libraryItem.itemId] retain];
+	
 	author = [authorName retain];
 	otherDetailLine1 = [otherDetail1 retain];
 	otherDetailLine2 = [otherDetail2 retain];
 	otherDetailLine3 = [otherDetail3 retain];
 	
 	currentLocation = nil;
-	
-	thumbnail = [[UIView alloc] initWithFrame:CGRectMake(50.0, 200.0, 150.0, 150.0)];
-	thumbnail.backgroundColor = [UIColor clearColor];
-	
-	if (displayImage == YES){
-		[self addLoadingIndicator:thumbnail];
-		[self.view addSubview:thumbnail];
-	}
-	else{
-		if (nil != thumbnail){
-			[thumbnail removeFromSuperview];
-			thumbnail = nil;
-		}
-	}
 	
 	//catalogLink = nil;
 }
@@ -294,6 +284,22 @@
 	
 	if ([otherDetailLine3 length] > 0)
 		[headerView addSubview:detailLabel3];
+	
+	thumbnail = [[UIView alloc] initWithFrame:CGRectMake(80.0, 150.0, 150.0, 150.0)];
+	thumbnail.backgroundColor = [UIColor clearColor];
+	
+	if (displayImage == YES){
+		[self addLoadingIndicator:thumbnail];
+		bookmarkButton.frame = CGRectMake(self.tableView.frame.size.width - 55.0 , bookmarkButton.frame.origin.y, 50.0, 50.0);
+		headerView.frame = CGRectMake(0, 0, self.view.frame.size.width, 300);
+		[headerView addSubview:thumbnail];
+	}
+	else{
+		if (nil != thumbnail){
+			[thumbnail removeFromSuperview];
+			thumbnail = nil;
+		}
+	}
 	
 	self.tableView.tableHeaderView = [[UIView alloc]
 									  initWithFrame:CGRectMake(0, 0, self.tableView.frame.size.width, headerView.frame.size.height)];
@@ -548,7 +554,7 @@
 				cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
 			}
 			cell.selectionStyle = UITableViewCellSelectionStyleGray;
-			cell.textLabel.text = @"HOLLIS Catalog Link";
+			cell.textLabel.text = @"View more details";
 			cell.accessoryView =  [UIImageView accessoryViewWithMITType:MITAccessoryViewExternal];
 			return cell;
 		}
@@ -740,7 +746,7 @@
 	if (displayImage == YES){
 		
 		if (nil != libItem.catalogLink )
-			return 30;
+			return 42;
 		
 		return 0;
 	}
@@ -1026,14 +1032,23 @@
 			
 			NSString * imageId = [result objectForKey:@"itemId"];
 			NSString * catLink = [result objectForKey:@"cataloglink"];
-			fullImageLink = [result objectForKey:@"fullimagelink"];
+			fullImageLink = [[result objectForKey:@"fullimagelink"] retain];
+			
+			NSString * workType = [result objectForKey:@"worktype"];
+			otherDetailLine3 = [workType retain];
+			
+			NSString * numberOfImages = [result objectForKey:@"numberofimages"];
+			
+			int imageCount = [numberOfImages intValue];
+			
+			[self setupLayout];
 
 			if ([imageId isEqualToString:libItem.itemId]){
 				if ([catLink length] > 0){
 					libItem.catalogLink = [NSString stringWithFormat:@"%@", catLink];
 					
 					[CoreDataManager saveData];
-					[self.tableView reloadData];
+					
 				}
 				NSLog(@"cat link = %@",libItem.catalogLink); 
 				
@@ -1047,29 +1062,39 @@
 					imageView.backgroundColor = [UIColor clearColor];
 					
 					if (nil == thumbnail){
-						thumbnail = [[UIView alloc] initWithFrame:CGRectMake(50.0, 200.0, 150.0, 150.0)];
+						thumbnail = [[UIView alloc] initWithFrame:CGRectMake(80.0, 100.0, 150.0, 150.0)];
 						thumbnail.backgroundColor = [UIColor clearColor];
 					}
 					
 					UIButton * customButton = [UIButton buttonWithType:UIButtonTypeCustom];
-					customButton.frame = imageView.frame;
+					customButton.frame = CGRectMake(220, 240, 30, 30);
 					customButton.enabled = YES;
-					[customButton setImage:image forState:UIControlStateNormal];
-					[customButton setImage:image forState:(UIControlStateNormal | UIControlStateHighlighted)];
-					[customButton setImage:image forState:UIControlStateSelected];
-					[customButton setImage:image forState:(UIControlStateSelected | UIControlStateHighlighted)];
+					[customButton setImage:[UIImage imageNamed:@"global/searchfield_star.png"]  forState:UIControlStateNormal];
+					[customButton setImage:[UIImage imageNamed:@"global/searchfield_star.png"]  forState:(UIControlStateNormal | UIControlStateHighlighted)];
+					[customButton setImage:[UIImage imageNamed:@"global/searchfield_star.png"]  forState:UIControlStateSelected];
+					[customButton setImage:[UIImage imageNamed:@"global/searchfield_star.png"]  forState:(UIControlStateSelected | UIControlStateHighlighted)];
 					[customButton addTarget:self action:@selector(thumbNailPressed:) forControlEvents:UIControlEventTouchUpInside];
 					
 					[thumbnail removeFromSuperview];
 					[thumbnail retain];
 					[self removeLoadingIndicator];
-					//[thumbnail addSubview:imageView];
-					[thumbnail addSubview:customButton];
-					[self.view addSubview:thumbnail];
+					[thumbnail addSubview:imageView];
 					
-					
+					UILabel * count = [[UILabel alloc] initWithFrame:CGRectMake(100, 250, 150, 20)];
+					count.text = [NSString stringWithFormat:@"Total Images: %d", imageCount];
+					count.font = [UIFont fontWithName:COURSE_NUMBER_FONT size:14];
+					count.textColor = [UIColor blackColor]; 
+					count.backgroundColor = [UIColor clearColor];	
+					count.lineBreakMode = UILineBreakModeTailTruncation;
+					count.numberOfLines = 1;
+
+					self.tableView.tableHeaderView.frame = CGRectMake(0, 0, self.tableView.tableHeaderView.frame.size.width, 300);
+					[self.tableView.tableHeaderView addSubview:thumbnail];
+					[self.tableView.tableHeaderView addSubview:customButton];
+					[self.tableView.tableHeaderView addSubview:count];
 					
 				}
+				[self.tableView reloadData];
 			}
 		}
 		else {
@@ -1202,14 +1227,14 @@
 		label.font = loadingFont;
 		label.backgroundColor = [UIColor clearColor];
         
-		//loadingIndicator = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, stringSize.width + spinny.frame.size.width + horizontalPadding * 2, stringSize.height + verticalPadding * 2)];
 		loadingIndicator = [[UIView alloc] initWithFrame:CGRectMake(20.0, 5.0, view.frame.size.width/2 - 20, 0.8*view.frame.size.height - 5)];
-		//loadingIndicator = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, 300, 300)];
-        //loadingIndicator.layer.cornerRadius = cornerRadius;
-        //loadingIndicator.backgroundColor =[UIColor whiteColor];
 		
-		if (displayImage == YES)
+		if (displayImage == YES) {
+			loadingIndicator.frame = CGRectMake(20.0, 5.0, view.frame.size.width/3, 0.8*view.frame.size.height - 5);
+			label.frame = CGRectMake(horizontalPadding + horizontalSpacing - 30, verticalPadding -10, stringSize.width, stringSize.height + 2.0);
+			spinny.center = CGPointMake(horizontalPadding - 30, verticalPadding);
 			[loadingIndicator setBackgroundColor:[UIColor clearColor]];
+		}
 		
 		else
 			[loadingIndicator setBackgroundColor:[UIColor whiteColor]];
