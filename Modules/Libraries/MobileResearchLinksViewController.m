@@ -133,17 +133,7 @@
 
 // Customize the appearance of table view cells.
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    
-    static NSString *CellIdentifier = @"Cellruewuruwer";
-    
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-    if (cell == nil) {
-        cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier] autorelease];
-    }
-    
-	//NSArray * allKeys = [textAndLinksDictionary allKeys];
-	
-	NSString * cellText = @"";
+    NSString * cellText = @"";
 	
 	if ([[textAndLinksDictionary objectForKey:[textsArray objectAtIndex:indexPath.section]] isKindOfClass:[NSDictionary class]]){
 		NSDictionary * tempDict = (NSDictionary *)[textAndLinksDictionary objectForKey:[textsArray objectAtIndex:indexPath.section]];
@@ -153,32 +143,38 @@
 	else {
 		cellText = [textsArray objectAtIndex:indexPath.section];
 	}
-
-	cell.selectionStyle = UITableViewCellSelectionStyleGray;
-	cell.accessoryView =  [UIImageView accessoryViewWithMITType:MITAccessoryViewExternal];
-	
+    
 	NSArray *chunks = [cellText componentsSeparatedByString: @"-"];
 	
 	if ([chunks count] > 1) {
-		static NSString *CellIdentifier1 = @"Cellkfkwfkrw";
+		static NSString *multilineCellIdentifier = @"CellMultiline";
 		
-		LibrariesMultiLineCell *cell1 = (LibrariesMultiLineCell *)[tableView dequeueReusableCellWithIdentifier:CellIdentifier1];
-		if (cell1 == nil) {
-			cell1 = [[[LibrariesMultiLineCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier1] autorelease];
+		LibrariesMultiLineCell *multilineCell = (LibrariesMultiLineCell *)[tableView dequeueReusableCellWithIdentifier:multilineCellIdentifier];
+		if (multilineCell == nil) {
+			multilineCell = [[[LibrariesMultiLineCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:multilineCellIdentifier] autorelease];
 		}
 		
-		cell1.textLabel.text = [chunks objectAtIndex:0];
-		cell1.detailTextLabel.text = [chunks objectAtIndex:1];
+        multilineCell.selectionStyle = UITableViewCellSelectionStyleGray;
+        multilineCell.accessoryView =  [UIImageView accessoryViewWithMITType:MITAccessoryViewExternal];
+		multilineCell.textLabel.text = [chunks objectAtIndex:0];
+		multilineCell.detailTextLabel.text = [chunks objectAtIndex:1];
 		
-		return cell1;
-	}
-	
-	else {
+		return multilineCell;
+        
+	} else {
+        static NSString *cellIdentifier = @"CellSingleLine";
+        
+        UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
+        if (cell == nil) {
+            cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:cellIdentifier] autorelease];
+        }
+        
+        cell.selectionStyle = UITableViewCellSelectionStyleGray;
+        cell.accessoryView =  [UIImageView accessoryViewWithMITType:MITAccessoryViewExternal];
 		cell.textLabel.text = cellText;
+		
+		return cell;
 	}
-
-    
-    return cell;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -204,10 +200,7 @@
 	if ([chunks count] > 1) {
 		cellText = [chunks objectAtIndex:0];
 		detailText = [chunks objectAtIndex:1];
-
 	}
-
-
 			
 	return [LibrariesMultiLineCell heightForCellWithStyle:UITableViewCellStyleSubtitle
 														tableView:tableView 
