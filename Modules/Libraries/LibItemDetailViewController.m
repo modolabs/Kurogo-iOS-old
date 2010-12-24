@@ -285,13 +285,14 @@
 	if ([otherDetailLine3 length] > 0)
 		[headerView addSubview:detailLabel3];
 	
-	thumbnail = [[UIView alloc] initWithFrame:CGRectMake(80.0, 150.0, 150.0, 150.0)];
+    CGRect screenRect = [[UIScreen mainScreen] applicationFrame];    
+	thumbnail = [[UIView alloc] initWithFrame:CGRectMake((screenRect.size.width - 150.0) / 2, headerView.frame.size.height, 150.0, 150.0)];
 	thumbnail.backgroundColor = [UIColor clearColor];
-	
+    
 	if (displayImage == YES){
 		[self addLoadingIndicator:thumbnail];
 		bookmarkButton.frame = CGRectMake(self.tableView.frame.size.width - 55.0 , bookmarkButton.frame.origin.y, 50.0, 50.0);
-		headerView.frame = CGRectMake(0, 0, self.view.frame.size.width, 300);
+        headerView.frame = CGRectMake(0, 0, headerView.frame.size.width, thumbnail.frame.origin.y + thumbnail.frame.size.height);
 		[headerView addSubview:thumbnail];
 	}
 	else{
@@ -1055,19 +1056,51 @@
 				NSString *imageUrl = [result objectForKey:@"thumbnail"];
 				
 				if ([imageUrl length] > 0){
-
-					NSData *data = [NSData dataWithContentsOfURL:[NSURL URLWithString:imageUrl]];
-					UIImage *image = [[UIImage alloc] initWithData:data];
+ 					NSData *data = [NSData dataWithContentsOfURL:[NSURL URLWithString:imageUrl]];
+					UIImage *image = [UIImage imageWithData:data];
+                    
+                    CGFloat maxHeight = 160.0;
+                    CGFloat maxWidth = 160.0;
+                    
+                    if (image.size.width > maxWidth || image.size.height > maxHeight) {
+                        // Resize image to 150x150, preserving aspect ratio
+                        // We do this here so we know the real size of the image for positioning the custom button
+                        CGFloat ratio = MIN(maxWidth / image.size.width, maxHeight / image.size.height);
+                        CGRect newRect = CGRectIntegral(CGRectMake(0, 0, image.size.width * ratio, image.size.height * ratio));
+                        CGImageRef imageRef = image.CGImage;
+                        
+                        // Build a context that's the same dimensions as the new size
+                        CGContextRef bitmap = CGBitmapContextCreate(NULL,
+                                                                    newRect.size.width,
+                                                                    newRect.size.height,
+                                                                    CGImageGetBitsPerComponent(imageRef),
+                                                                    0,
+                                                                    CGImageGetColorSpace(imageRef),
+                                                                    CGImageGetBitmapInfo(imageRef));
+                        
+                        CGContextSetInterpolationQuality(bitmap, kCGInterpolationHigh); // high quality scaling
+                        CGContextDrawImage(bitmap, newRect, imageRef); // Draw into the context; this scales the image
+                        CGImageRef newImageRef = CGBitmapContextCreateImage(bitmap); // Get the resized image from the context and a UIImage
+                        
+                        image = [UIImage imageWithCGImage: newImageRef];
+                        
+                        CGContextRelease(bitmap);
+                        CGImageRelease(newImageRef);
+                    }
+                    
 					UIImageView* imageView = [[[UIImageView alloc] initWithImage:image] autorelease];
 					imageView.backgroundColor = [UIColor clearColor];
-					
-					if (nil == thumbnail){
-						thumbnail = [[UIView alloc] initWithFrame:CGRectMake(80.0, 100.0, 150.0, 150.0)];
-						thumbnail.backgroundColor = [UIColor clearColor];
-					}
-					
+                    
+                    CGRect screenRect = [[UIScreen mainScreen] applicationFrame];
+                    CGSize imageSize = imageView.image.size;
+                    
+                    CGFloat imageX = (screenRect.size.width - imageSize.width) / 2;
+                    CGFloat imageY = thumbnail.frame.origin.y;
+
+                    thumbnail.frame = CGRectMake(imageX, imageY, imageSize.width, imageSize.height);
+                    
 					UIButton * customButton = [UIButton buttonWithType:UIButtonTypeCustom];
-					customButton.frame = CGRectMake(220, 240, 30, 30);
+					customButton.frame = CGRectMake(imageX+imageSize.width-15, imageY+imageSize.height-20, 30, 30);  // a little higher so text fits
 					customButton.enabled = YES;
 					[customButton setImage:[UIImage imageNamed:@"global/searchfield_star.png"]  forState:UIControlStateNormal];
 					[customButton setImage:[UIImage imageNamed:@"global/searchfield_star.png"]  forState:(UIControlStateNormal | UIControlStateHighlighted)];
@@ -1080,19 +1113,22 @@
 					[self removeLoadingIndicator];
 					[thumbnail addSubview:imageView];
 					
-					UILabel * count = [[UILabel alloc] initWithFrame:CGRectMake(100, 250, 150, 20)];
+					UILabel * count = [[UILabel alloc] initWithFrame:CGRectMake(0.0, imageY+imageSize.height+6, screenRect.size.width, 20)];
 					count.text = [NSString stringWithFormat:@"Total Images: %d", imageCount];
 					count.font = [UIFont fontWithName:COURSE_NUMBER_FONT size:14];
+                    count.textAlignment = UITextAlignmentCenter;
 					count.textColor = [UIColor blackColor]; 
 					count.backgroundColor = [UIColor clearColor];	
 					count.lineBreakMode = UILineBreakModeTailTruncation;
 					count.numberOfLines = 1;
+                    
+                    CGFloat newHeight = self.tableView.tableHeaderView.frame.size.height - 150.0 + thumbnail.frame.size.height + count.frame.size.height + 5;
+                    self.tableView.tableHeaderView.frame = CGRectMake(0, 0, self.tableView.tableHeaderView.frame.size.width, newHeight);
 
-					self.tableView.tableHeaderView.frame = CGRectMake(0, 0, self.tableView.tableHeaderView.frame.size.width, 300);
 					[self.tableView.tableHeaderView addSubview:thumbnail];
 					[self.tableView.tableHeaderView addSubview:customButton];
 					[self.tableView.tableHeaderView addSubview:count];
-					
+                    [self.tableView setTableHeaderView:self.tableView.tableHeaderView]; // force resize of header
 				}
 				[self.tableView reloadData];
 			}
