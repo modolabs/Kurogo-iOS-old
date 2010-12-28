@@ -72,29 +72,62 @@
 	titleKeywords.delegate = self;
 	authorKeywords.delegate = self;
 	
-	if (nil != keywordsTextAtInitialization)
-		self.keywords.text = keywordsTextAtInitialization;
-	
+	if (nil != keywordTextAtInitialization && [keywordTextAtInitialization length]) {
+        NSLog(@"Got keywords %@", keywordTextAtInitialization);
+		self.keywords.text = [keywordTextAtInitialization autorelease];
+        keywordTextAtInitialization = nil;
+	}
+    
+	if (nil != titleTextAtInitialization && [titleTextAtInitialization length]) {
+        NSLog(@"Got title %@", titleTextAtInitialization);
+		self.titleKeywords.text = [titleTextAtInitialization autorelease];
+        titleTextAtInitialization = nil;
+	}
+    
+	if (nil != authorTextAtInitialization && [authorTextAtInitialization length]) {
+        NSLog(@"Got author %@", authorTextAtInitialization);
+		self.authorKeywords.text = [authorTextAtInitialization autorelease];
+        authorTextAtInitialization = nil;
+	}
+    
+    if (englishOnlySwitchAtInitialization) {
+        englishSwitch.selected = YES;
+    }
+    
     if (formatIndexAtInitialization > 0 && formatIndexAtInitialization < [formatArray count]) {
         NSLog(@"Got format %d", formatIndexAtInitialization);
-        [formatPickerView selectRow:formatIndexAtInitialization inComponent:0 animated:false];        
+        [formatPickerView selectRow:formatIndexAtInitialization inComponent:0 animated:false]; 
+        [self pickerView:formatPickerView didSelectRow:formatIndexAtInitialization inComponent:0];
+        formatIndexAtInitialization = 0;
     }
     
     if (locationIndexAtInitialization > 0 && locationIndexAtInitialization < [libraryArray count]) {
         NSLog(@"Got location %d", locationIndexAtInitialization);
         [locationPickerView selectRow:locationIndexAtInitialization inComponent:0 animated:false];
+        [self pickerView:locationPickerView didSelectRow:locationIndexAtInitialization inComponent:0];
+        locationIndexAtInitialization = 0;
     }
 }
 
 // The designated initializer.  Override if you create the controller programmatically and want to perform customization that is not appropriate for viewDidLoad.
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil keywords:(NSString *) keywordsText formatIndex:(NSInteger) formatIndex locationIndex:(NSInteger) locationIndex {
+- (id)initWithNibName:(NSString *)nibNameOrNil 
+               bundle:(NSBundle *)nibBundleOrNil 
+             keywords:(NSString *) keywordsText 
+                title:(NSString *) titleText 
+               author:(NSString *) authorText 
+    englishOnlySwitch:(BOOL) englishOnlySwitch 
+          formatIndex:(NSInteger) formatIndex 
+        locationIndex:(NSInteger) locationIndex {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         // Custom initialization.
 		
-		keywordsTextAtInitialization = keywordsText;
+		keywordTextAtInitialization = keywordsText;
+		titleTextAtInitialization = titleText;
+		authorTextAtInitialization = authorText;
 		formatIndexAtInitialization = formatIndex;
 		locationIndexAtInitialization = locationIndex;
+        englishOnlySwitchAtInitialization = englishOnlySwitch;
 
 	}
     return self;
@@ -192,7 +225,11 @@
 	
 	LibrariesSearchViewController *vc = [[LibrariesSearchViewController alloc] initWithViewController: nil];
 	vc.title = @"Search Results";
-	
+    vc.keywordText = keywords.text;
+    vc.titleText = titleKeywords.text;
+    vc.authorText = authorKeywords.text;
+	vc.englishOnlySwitch = englishSwitch.selected;
+    
 	apiRequest = [JSONAPIRequest requestWithJSONAPIDelegate:vc];
 	
 	BOOL requestWasDispatched = [apiRequest requestObjectFromModule:@"libraries"

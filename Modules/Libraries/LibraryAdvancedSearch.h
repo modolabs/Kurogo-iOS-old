@@ -37,7 +37,10 @@
 	
 	JSONAPIRequest * apiRequest;
 	
-	NSString * keywordsTextAtInitialization;
+	NSString * keywordTextAtInitialization;
+	NSString * titleTextAtInitialization;
+	NSString * authorTextAtInitialization;
+	BOOL englishOnlySwitchAtInitialization;
 	NSInteger formatIndexAtInitialization;
 	NSInteger locationIndexAtInitialization;
 }
@@ -56,6 +59,13 @@
 -(IBAction) searchButtonPressed:(id) sender;
 -(IBAction) englishButtonPressed: (id) sender;
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil keywords:(NSString *) keywordsText formatIndex:(NSInteger) formatIndex locationIndex:(NSInteger) locationIndex;
+- (id)initWithNibName:(NSString *)nibNameOrNil 
+               bundle:(NSBundle *)nibBundleOrNil 
+             keywords:(NSString *) keywordsText 
+                title:(NSString *) titleText 
+               author:(NSString *) authorText 
+    englishOnlySwitch:(BOOL) englishOnlySwitch 
+          formatIndex:(NSInteger) formatIndex 
+        locationIndex:(NSInteger) locationIndex;
 -(void) search;
 @end
