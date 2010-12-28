@@ -147,13 +147,13 @@ NSInteger phoneNumberSortItemAvail(id num1, id num2, void *context){
 	[label release];
 	
 	weeklySchedule = [[NSMutableDictionary alloc] initWithObjectsAndKeys:
-					  @"loading..", @"Monday",
-					  @"loading..", @"Tuesday",
-					  @"loading..", @"Wednesday",
-					  @"loading..", @"Thursday",
-					  @"loading..", @"Friday",
-					  @"loading..", @"Saturday",
-					  @"loading..", @"Sunday", nil];
+					  @"loading...", @"Monday",
+					  @"loading...", @"Tuesday",
+					  @"loading...", @"Wednesday",
+					  @"loading...", @"Thursday",
+					  @"loading...", @"Friday",
+					  @"loading...", @"Saturday",
+					  @"loading...", @"Sunday", nil];
 	
 	
 	//weeklySchedule = [[NSMutableDictionary alloc] init];
@@ -507,7 +507,7 @@ NSInteger phoneNumberSortItemAvail(id num1, id num2, void *context){
 		}
 		else if ([[weeklySchedule allKeys] count] == 0){
 			cell.textLabel.text = @"     ";
-			cell.detailTextLabel.text = @"loading..";
+			cell.detailTextLabel.text = @"loading...";
 		}
 		else {
 			NSString * hoursString = [weeklySchedule objectForKey:[[weeklySchedule allKeys] objectAtIndex:0]];
@@ -745,7 +745,7 @@ NSInteger phoneNumberSortItemAvail(id num1, id num2, void *context){
 		
 		else if ([[weeklySchedule allKeys] count] == 0){
 			cellText = @"     ";
-			detailText = @"loading..";
+			detailText = @"loading...";
 		}
 		else {
 			cellText = [[weeklySchedule allKeys] objectAtIndex:0];
@@ -758,15 +758,15 @@ NSInteger phoneNumberSortItemAvail(id num1, id num2, void *context){
 		if ([lib.location length] > 0)
 			detailText = lib.location;
 		else {
-			detailText = @"Cabot Scince Library is located on the second floor of blah and blah and ahfkdnfdsf"; // placholder
+			detailText = @"Location not available"; // placholder
 		}
 		
 		accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 		
 	}
 	else {
-		cellText = @"sjdsnd";
-		detailText = @"djfjdsnfdsnf";
+		cellText = @"";
+		detailText = @"";
 		
 		if (indexPath.row == websiteRow) {
 			NSString *url = lib.websiteLib;

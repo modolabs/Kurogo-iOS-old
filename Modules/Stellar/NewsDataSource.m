@@ -6,7 +6,7 @@
 #import "MITUIConstants.h"
 #import "UITableViewCell+MITUIAdditions.h"
 
-#define announcementsLoadingMessage @"Announcements loading..."
+#define announcementsLoadingMessage @"Announcements Loading..."
 #define noAnnouncementsMessage @"No announcements"
 #define failedToLoadMessage @"Failed to load announcements"
 #define DISCLAIMER_HEIGHT 80

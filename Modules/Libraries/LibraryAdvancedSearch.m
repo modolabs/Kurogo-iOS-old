@@ -8,7 +8,8 @@
 
 #import "LibraryAdvancedSearch.h"
 #import "CoreDataManager.h"
-#import "Library.h";
+#import "LibraryItemFormat.h";
+#import "LibraryLocation.h";
 #import "Constants.h"
 #import "LibrariesSearchViewController.h"
 
@@ -22,13 +23,13 @@
 @synthesize locationDisclosure;
 @synthesize englishSwitch;
 
-NSInteger libraryNameSortAdvancedSearch(id lib1, id lib2, void *context) {
+/*NSInteger libraryNameSortAdvancedSearch(id lib1, id lib2, void *context) {
 	
 	Library * library1 = (Library *)lib1;
 	Library * library2 = (Library *)lib2;
 	
 	return [library1.name compare:library2.name];
-}
+}*/
 
 
 -(void) setupLayout{
@@ -43,69 +44,29 @@ NSInteger libraryNameSortAdvancedSearch(id lib1, id lib2, void *context) {
 	//locationDisclosure.transform = CGAffineTransformMakeRotation(M_PI/2);
 	[keywords becomeFirstResponder];
 	
-	if (nil == formatDictionary) {
-		
-		formatDictionary = [[NSDictionary alloc] initWithObjectsAndKeys:
-							@"", @"All formats (everything)",
-							@"matBook", @"Book",
-							@"matMagazine", @"Journal/Serial",
-							@"matManuscript", @"Archives / Manuscripts",
-							@"matSheetMusic", @"Music Score",
-							@"matRecording", @"Sound Recording",
-							@"matMovie",@"Video / Film",
-							@"matMap", @"Map",
-							@"matPhoto", @"Image",
-							@"matComputerFile", @"Computer file / Data",
-							@"matObjects", @"Object", nil];
-		
-	}
-	
-	if (nil == sortedFormats)
-		sortedFormats = [[NSArray alloc] init];
-	
-	sortedFormats = [formatDictionary allKeys];
-	sortedFormats = [[sortedFormats sortedArrayUsingSelector:@selector(compare:)] retain];
-	formatPickerView.hidden = YES;
-	
-	
-	NSPredicate *bookmarkPred = [NSPredicate predicateWithFormat:@"isBookmarked == YES"];
-	NSArray *bookmarkedArray = [CoreDataManager objectsForEntity:LibraryEntityName matchingPredicate:bookmarkPred];
-	
-	bookmarkedArray = [[bookmarkedArray sortedArrayUsingFunction:libraryNameSortAdvancedSearch context:self] retain];
-	
-	NSPredicate *otherPred = [NSPredicate predicateWithFormat:@"isBookmarked == NO"];
-	NSArray *otherLibArray = [CoreDataManager objectsForEntity:LibraryEntityName matchingPredicate:otherPred];
-	
-	otherLibArray = [[otherLibArray sortedArrayUsingFunction:libraryNameSortAdvancedSearch context:self] retain];
-	
-	int index = 0;
-	libraryArray = [[NSMutableArray alloc] init];
-	
-	[libraryArray insertObject:@"All Libraries/Archives" atIndex:index];
-	index++;
-	
-	if ([bookmarkedArray count] > 0) {
-		[libraryArray insertObject:@"> Bookmarked Locations" atIndex:index];
-		index++;
-	}	
-	for(Library * lib in bookmarkedArray){
-		[libraryArray insertObject:lib atIndex:index];
-		index++;
-	}
-	
-	if ([bookmarkedArray count] > 0) {
-		[libraryArray insertObject:@"> All Other Locations" atIndex:index];
-		index++;
-	}
-	
-	for(Library * lib in otherLibArray){
-		[libraryArray insertObject:lib atIndex:index];
-		index++;
-	}
-	
-	[libraryArray retain];
-	
+    NSPredicate * matchAll = [NSPredicate predicateWithFormat:@"TRUEPREDICATE"];
+    NSSortDescriptor *nameSortDescriptor = [[[NSSortDescriptor alloc] initWithKey:@"name" ascending:YES] autorelease];
+    NSArray *sortDescriptors = [NSArray arrayWithObject:nameSortDescriptor];
+    
+    NSArray * libraryCodes = [CoreDataManager objectsForEntity:LibraryLocationCodeEntityName matchingPredicate:matchAll sortDescriptors:sortDescriptors];
+    if (libraryCodes != nil) {
+        libraryArray = [[NSMutableArray alloc] initWithArray:libraryCodes];
+    } else {
+        libraryArray = [[NSMutableArray alloc] init];
+    }
+    [libraryArray insertObject:@"All Libraries/Archives" atIndex:0];
+
+    NSArray * formatCodes = [CoreDataManager objectsForEntity:LibraryFormatCodeEntityName matchingPredicate:matchAll sortDescriptors:sortDescriptors];
+    if (formatCodes != nil) {
+        formatArray = [[NSMutableArray alloc] initWithArray:formatCodes];
+    } else {
+        formatArray = [[NSMutableArray alloc] init];
+    }
+    [formatArray insertObject:@"All formats (everything)" atIndex:0];
+    
 	locationPickerView.hidden = YES;
+    [locationPickerView reloadAllComponents];  // Data may have changed due to JSON response
+    [formatPickerView reloadAllComponents];  // Data may have changed due to JSON response
 	
 	keywords.delegate = self;
 	titleKeywords.delegate = self;
@@ -114,25 +75,26 @@ NSInteger libraryNameSortAdvancedSearch(id lib1, id lib2, void *context) {
 	if (nil != keywordsTextAtInitialization)
 		self.keywords.text = keywordsTextAtInitialization;
 	
-	
-	englishSwitch = [UIButton buttonWithType:UIButtonTypeCustom];
-	englishSwitch.frame = CGRectMake(152, 182, 15, 15);
-	englishSwitch.enabled = YES;
-	[englishSwitch setImage:[UIImage imageNamed:@"global/checkbox_normal.png"] forState:UIControlStateNormal];
-	[englishSwitch setImage:[UIImage imageNamed:@"global/checkbox_pressed.png"] forState:(UIControlStateNormal | UIControlStateHighlighted)];
-	[englishSwitch setImage:[UIImage imageNamed:@"global/checkbox_selected.png"] forState:UIControlStateSelected];
-	[englishSwitch setImage:[UIImage imageNamed:@"global/checkbox_selected.png"] forState:(UIControlStateSelected | UIControlStateHighlighted)];
-	[englishSwitch addTarget:self action:@selector(englishButtonPressed:) forControlEvents:UIControlEventTouchUpInside]; 
-	[self.view addSubview:englishSwitch];
+    if (formatIndexAtInitialization > 0 && formatIndexAtInitialization < [formatArray count]) {
+        NSLog(@"Got format %d", formatIndexAtInitialization);
+        [formatPickerView selectRow:formatIndexAtInitialization inComponent:0 animated:false];        
+    }
+    
+    if (locationIndexAtInitialization > 0 && locationIndexAtInitialization < [libraryArray count]) {
+        NSLog(@"Got location %d", locationIndexAtInitialization);
+        [locationPickerView selectRow:locationIndexAtInitialization inComponent:0 animated:false];
+    }
 }
 
 // The designated initializer.  Override if you create the controller programmatically and want to perform customization that is not appropriate for viewDidLoad.
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil keywords:(NSString *) keywordsText{
+- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil keywords:(NSString *) keywordsText formatIndex:(NSInteger) formatIndex locationIndex:(NSInteger) locationIndex {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         // Custom initialization.
 		
 		keywordsTextAtInitialization = keywordsText;
+		formatIndexAtInitialization = formatIndex;
+		locationIndexAtInitialization = locationIndex;
 
 	}
     return self;
@@ -210,21 +172,18 @@ NSInteger libraryNameSortAdvancedSearch(id lib1, id lib2, void *context) {
 	
 	NSLog(@"q=%@", parameterQ);
 	
-	NSString * formatStr = @"";
+	NSString * formatStr = @""; // Nothing selected or first item selected (first item is "all")
 	int formatRow = [formatPickerView selectedRowInComponent:0];
 	
-	if (formatRow != -1){
-
-		formatStr = [formatDictionary objectForKey:[sortedFormats objectAtIndex:formatRow]];		
+	if (formatRow > 0) {
+		formatStr = ((LibraryItemFormat *)[formatArray objectAtIndex:formatRow]).code;	
 	}
 	
-	NSString * locationStr = @"";
+	NSString * locationStr = @""; // Nothing selected or first item selected (first item is "all")
 	int libraryRow = [locationPickerView selectedRowInComponent:0];
 	
-	if (libraryRow != -1){
-		if ([[libraryArray objectAtIndex:libraryRow] isKindOfClass:[Library class]]){
-			//locationStr = ((Library *)[libraryArray objectAtIndex:libraryRow]).name;	
-		}
+	if (libraryRow > 0) {
+		locationStr = ((LibraryLocation *)[libraryArray objectAtIndex:libraryRow]).code;
 	}
 	
 	
@@ -246,6 +205,14 @@ NSInteger libraryNameSortAdvancedSearch(id lib1, id lib2, void *context) {
 	
     if (requestWasDispatched) {
 		vc.searchTerms = parameterQ;
+        if (formatRow != -1) {
+            vc.formatIndex = formatRow;
+            NSLog(@"Setting format row to %d", formatRow);
+        }
+        if (libraryRow != -1) {
+            vc.locationIndex = libraryRow;
+            NSLog(@"Setting location row to %d", libraryRow);
+        }
 		[self.navigationController pushViewController:vc animated:YES];
     } else {
         //[self handleWarningMessage:@"Could not dispatch search" title:@"Search Failed"];
@@ -300,7 +267,7 @@ NSInteger libraryNameSortAdvancedSearch(id lib1, id lib2, void *context) {
 - (NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component
 {
 	if (pickerView == formatPickerView)
-		return [sortedFormats count];
+		return [formatArray count];
 	
 	else if (pickerView == locationPickerView)
 		return [libraryArray count];
@@ -312,18 +279,20 @@ NSInteger libraryNameSortAdvancedSearch(id lib1, id lib2, void *context) {
 
 - (NSString *)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component
 {
-	if (pickerView == formatPickerView)
-		return [sortedFormats objectAtIndex:row];
+	if (pickerView == formatPickerView) {
+		if ([[formatArray objectAtIndex:row] isKindOfClass:[LibraryItemFormat class]]) {
+			return ((LibraryItemFormat *)[formatArray objectAtIndex:row]).name;
+		} else {
+			return [formatArray objectAtIndex:row];
+		}
 	
-	else if (pickerView == locationPickerView) {
+	} else if (pickerView == locationPickerView) {
 		
-		if ([[libraryArray objectAtIndex:row] isKindOfClass:[Library class]])
-			return ((Library *)[libraryArray objectAtIndex:row]).name;
-		
-		else {
+		if ([[libraryArray objectAtIndex:row] isKindOfClass:[LibraryLocation class]]) {
+			return ((LibraryLocation *)[libraryArray objectAtIndex:row]).name;
+        } else {
 			return [libraryArray objectAtIndex:row];
 		}
-
 	}
 	
 	return @"";
@@ -333,27 +302,21 @@ NSInteger libraryNameSortAdvancedSearch(id lib1, id lib2, void *context) {
 	
 	if (pickerView == formatPickerView){
 		//formatPickerView.hidden = YES;
-		//formatPickerView = nil;
-	
 		
-		if ([[sortedFormats objectAtIndex:row] isEqualToString:@"All formats (everything)"]){
-			//format.text = @"";
-			format.text = @"Any";
+		if ([[formatArray objectAtIndex:row] isKindOfClass:[LibraryItemFormat class]]) {
+			format.text = ((LibraryItemFormat *)[formatArray objectAtIndex:row]).name;
+		} else {
+			format.text = @"Any"; // @"All formats (everything)";
 		}
-		
-		else
-			format.text = [sortedFormats objectAtIndex:row];
 	}
 	
 	else if (pickerView == locationPickerView) {
 		//locationPickerView.hidden = YES;
 		
-		if ([[libraryArray objectAtIndex:row] isKindOfClass:[Library class]])
-			location.text = ((Library *)[libraryArray objectAtIndex:row]).name;
-		
-		else {
-			//location.text = @"";
-			location.text = @"Any"; //@"All Libraries/Archives";
+		if ([[libraryArray objectAtIndex:row] isKindOfClass:[LibraryLocation class]]) {
+			location.text = ((LibraryLocation *)[libraryArray objectAtIndex:row]).name;
+		} else {
+			location.text = @"Any"; // @"All Libraries/Archives";
 		}
 	}
 }
@@ -372,52 +335,56 @@ NSInteger libraryNameSortAdvancedSearch(id lib1, id lib2, void *context) {
 
 - (void)request:(JSONAPIRequest *)request jsonLoaded:(id)result {
 	
-	NSArray *resultArray = (NSArray *)result;
-
-	for (int index=0; index < [result count]; index++) {
-		NSDictionary *libraryDictionary = [resultArray objectAtIndex:index];
-		
-		NSString * name = [libraryDictionary objectForKey:@"name"];
-		NSString * primaryName = [libraryDictionary objectForKey:@"primaryName"];
-		NSString * identityTag = [libraryDictionary objectForKey:@"id"];
-		NSNumber * latitude = [libraryDictionary objectForKey:@"latitude"];
-		NSNumber * longitude = [libraryDictionary objectForKey:@"longitude"];
-		NSString * locationAdd = [libraryDictionary objectForKey:@"address"];
-		
-		NSString * type = [libraryDictionary objectForKey:@"type"];
-
-		NSPredicate *pred = [NSPredicate predicateWithFormat:@"name == %@ AND type == %@", name, type];
-		Library *alreadyInDB = [[CoreDataManager objectsForEntity:LibraryEntityName matchingPredicate:pred] lastObject];
-		
-		
-		NSManagedObject *managedObj;
-		if (nil == alreadyInDB){
-			managedObj = [CoreDataManager insertNewObjectForEntityForName:LibraryEntityName];
-			alreadyInDB = (Library *)managedObj;
-			alreadyInDB.isBookmarked = [NSNumber numberWithBool:NO];
-		}
-		
-		/*[alreadyInDB setValue:name forKey:@"name"];
-		 [alreadyInDB setValue:[NSNumber numberWithDouble:[latitude doubleValue]] forKey:@"lat"];
-		 [alreadyInDB setValue:[NSNumber numberWithDouble:[longitude doubleValue]] forKey:@"lon"];		
-		 */
-		
-		alreadyInDB.name = name;
-		alreadyInDB.primaryName = primaryName;
-		alreadyInDB.identityTag = identityTag;
-		alreadyInDB.location = locationAdd;
-		alreadyInDB.lat = [NSNumber numberWithDouble:[latitude doubleValue]];
-		alreadyInDB.lon = [NSNumber numberWithDouble:[longitude doubleValue]];
-		alreadyInDB.type = type;
-		
-		alreadyInDB.isBookmarked = alreadyInDB.isBookmarked;
-
-	}
-
+    if (result && [result isKindOfClass:[NSDictionary class]]) {
+        NSInteger i;
+        NSDictionary *dictionaryResults = (NSDictionary *)result;
+    
+        NSDictionary *formatCodes = [dictionaryResults objectForKey:@"formats"];
+        NSDictionary *locationCodes = [dictionaryResults objectForKey:@"locations"];
+        
+        if (formatCodes) {
+            NSInteger count = [formatCodes count];
+            NSArray *codes = [formatCodes allKeys];
+            for (i = 0; i < count; i++) {
+                NSString *code = [codes objectAtIndex:i];
+                NSString *name = [formatCodes objectForKey: code];
+                
+                NSPredicate *pred = [NSPredicate predicateWithFormat:@"code == %@", code];
+                LibraryItemFormat *alreadyInDB = [[CoreDataManager objectsForEntity:LibraryFormatCodeEntityName matchingPredicate:pred] lastObject];
+                
+                if (nil == alreadyInDB) {
+                    NSManagedObject *managedObj = [CoreDataManager insertNewObjectForEntityForName:LibraryFormatCodeEntityName];
+                    alreadyInDB = (LibraryItemFormat *)managedObj;
+                }
+                
+                alreadyInDB.code = code;
+                alreadyInDB.name = name;
+            }
+        }
+        
+        if (locationCodes) {
+            NSInteger count = [locationCodes count];
+            NSArray *codes = [locationCodes allKeys];
+            for (i = 0; i < count; i++) {
+                NSString *code = [codes objectAtIndex:i];
+                NSString *name = [locationCodes objectForKey: code];
+                
+                NSPredicate *pred = [NSPredicate predicateWithFormat:@"code == %@", code];
+                LibraryLocation *alreadyInDB = [[CoreDataManager objectsForEntity:LibraryLocationCodeEntityName matchingPredicate:pred] lastObject];
+                
+                if (nil == alreadyInDB) {
+                    NSManagedObject *managedObj = [CoreDataManager insertNewObjectForEntityForName:LibraryLocationCodeEntityName];
+                    alreadyInDB = (LibraryLocation *)managedObj;
+                }
+                
+                alreadyInDB.code = code;
+                alreadyInDB.name = name;
+            }
+        }
+    }
 	
 	[CoreDataManager saveData];
 	[self viewWillAppear:YES];
-	
 }
 
 - (BOOL)request:(JSONAPIRequest *)request shouldDisplayAlertForError:(NSError *)error {

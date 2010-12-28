@@ -171,6 +171,10 @@
 		56E859D012ACEC810022E162 /* ItemAvailabilityDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 56E859CE12ACEC810022E162 /* ItemAvailabilityDetailViewController.m */; };
 		56E85C6F12AE76070022E162 /* BookmarkedLibItemListView.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = 56E85C6D12AE76070022E162 /* BookmarkedLibItemListView.h */; settings = {JAVA_ARCHIVE_SUBDIR = Modules/Libraries; }; };
 		56E85C7012AE76070022E162 /* BookmarkedLibItemListView.m in Sources */ = {isa = PBXBuildFile; fileRef = 56E85C6E12AE76070022E162 /* BookmarkedLibItemListView.m */; };
+		A163D3F412C9523A004E423B /* LibraryItemFormat.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = A163D3F012C9523A004E423B /* LibraryItemFormat.h */; settings = {JAVA_ARCHIVE_SUBDIR = Modules/Libraries/Libraries.xcdatamodeld; }; };
+		A163D3F512C9523A004E423B /* LibraryItemFormat.m in Sources */ = {isa = PBXBuildFile; fileRef = A163D3F112C9523A004E423B /* LibraryItemFormat.m */; };
+		A163D3F612C9523A004E423B /* LibraryLocation.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = A163D3F212C9523A004E423B /* LibraryLocation.h */; settings = {JAVA_ARCHIVE_SUBDIR = Modules/Libraries/Libraries.xcdatamodeld; }; };
+		A163D3F712C9523A004E423B /* LibraryLocation.m in Sources */ = {isa = PBXBuildFile; fileRef = A163D3F312C9523A004E423B /* LibraryLocation.m */; };
 		A1EFCEA212B164710092D9E1 /* aasincos.c in Sources */ = {isa = PBXBuildFile; fileRef = A1EFCDF512B164710092D9E1 /* aasincos.c */; };
 		A1EFCEA312B164710092D9E1 /* adjlon.c in Sources */ = {isa = PBXBuildFile; fileRef = A1EFCDF612B164710092D9E1 /* adjlon.c */; };
 		A1EFCEA412B164710092D9E1 /* bch2bps.c in Sources */ = {isa = PBXBuildFile; fileRef = A1EFCDF712B164710092D9E1 /* bch2bps.c */; };
@@ -768,6 +772,10 @@
 		56E85C6D12AE76070022E162 /* BookmarkedLibItemListView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BookmarkedLibItemListView.h; sourceTree = "<group>"; };
 		56E85C6E12AE76070022E162 /* BookmarkedLibItemListView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BookmarkedLibItemListView.m; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* Mobile-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Mobile-Info.plist"; plistStructureDefinitionIdentifier = "com.apple.xcode.plist.structure-definition.iphone.info-plist"; sourceTree = "<group>"; };
+		A163D3F012C9523A004E423B /* LibraryItemFormat.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LibraryItemFormat.h; sourceTree = "<group>"; };
+		A163D3F112C9523A004E423B /* LibraryItemFormat.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LibraryItemFormat.m; sourceTree = "<group>"; };
+		A163D3F212C9523A004E423B /* LibraryLocation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LibraryLocation.h; sourceTree = "<group>"; };
+		A163D3F312C9523A004E423B /* LibraryLocation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LibraryLocation.m; sourceTree = "<group>"; };
 		A1EFCDDE12B163EE0092D9E1 /* libProj.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libProj.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		A1EFCDF312B164710092D9E1 /* Proj_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Proj_Prefix.pch; path = Proj/Proj_Prefix.pch; sourceTree = SOURCE_ROOT; };
 		A1EFCDF512B164710092D9E1 /* aasincos.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = aasincos.c; path = Proj/src/aasincos.c; sourceTree = SOURCE_ROOT; };
@@ -1628,6 +1636,10 @@
 				56B6DB8B12926C0800818071 /* LibraryItem.m */,
 				56B6DB8F12926E2B00818071 /* Library.h */,
 				56B6DB9012926E2B00818071 /* Library.m */,
+				A163D3F012C9523A004E423B /* LibraryItemFormat.h */,
+				A163D3F112C9523A004E423B /* LibraryItemFormat.m */,
+				A163D3F212C9523A004E423B /* LibraryLocation.h */,
+				A163D3F312C9523A004E423B /* LibraryLocation.m */,
 				56B6DD271292748B00818071 /* Libraries.xcdatamodeld */,
 				56E8505812A52A290022E162 /* LibraryPhone.h */,
 				56E8505912A52A290022E162 /* LibraryPhone.m */,
@@ -2475,6 +2487,8 @@
 				5623E7A312B7F81000212D5C /* UnderlinedUILabel.h in JavaArchive */,
 				5623EBC712B9ED6C00212D5C /* LibraryAdvancedSearch.h in JavaArchive */,
 				5623EEA112BBD43C00212D5C /* MobileResearchLinksViewController.h in JavaArchive */,
+				A163D3F412C9523A004E423B /* LibraryItemFormat.h in JavaArchive */,
+				A163D3F612C9523A004E423B /* LibraryLocation.h in JavaArchive */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2822,6 +2836,8 @@
 				5623E7A412B7F81100212D5C /* UnderlinedUILabel.m in Sources */,
 				5623EBC812B9ED6C00212D5C /* LibraryAdvancedSearch.m in Sources */,
 				5623EEA212BBD43C00212D5C /* MobileResearchLinksViewController.m in Sources */,
+				A163D3F512C9523A004E423B /* LibraryItemFormat.m in Sources */,
+				A163D3F712C9523A004E423B /* LibraryLocation.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

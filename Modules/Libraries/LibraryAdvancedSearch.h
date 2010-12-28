@@ -24,7 +24,7 @@
 	IBOutlet UILabel *location;
 	IBOutlet UIButton *locationDisclosure;
 	
-	UIButton * englishSwitch;
+	IBOutlet UIButton * englishSwitch;
 	
 	IBOutlet UIPickerView * formatPickerView;
 	IBOutlet UIPickerView * locationPickerView;
@@ -32,14 +32,14 @@
 	
 	IBOutlet UIButton * searchButton;
 	
-	NSDictionary * formatDictionary;
-	NSArray * sortedFormats;
-	
+	NSMutableArray * formatArray;
 	NSMutableArray * libraryArray;
 	
 	JSONAPIRequest * apiRequest;
 	
 	NSString * keywordsTextAtInitialization;
+	NSInteger formatIndexAtInitialization;
+	NSInteger locationIndexAtInitialization;
 }
 
 @property (nonatomic, retain) IBOutlet UITextField *keywords;
@@ -49,13 +49,13 @@
 @property (nonatomic, retain) IBOutlet UIButton * formatDisclosure;
 @property (nonatomic, retain) IBOutlet UILabel * location;
 @property (nonatomic, retain) IBOutlet UIButton * locationDisclosure;
-@property (nonatomic, retain) UIButton * englishSwitch;
+@property (nonatomic, retain) IBOutlet UIButton * englishSwitch;
 
 -(IBAction) formatPressed:(id) sender;
 -(IBAction) locationPressed:(id) sender;
 -(IBAction) searchButtonPressed:(id) sender;
 -(IBAction) englishButtonPressed: (id) sender;
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil keywords:(NSString *) keywordsText;
+- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil keywords:(NSString *) keywordsText formatIndex:(NSInteger) formatIndex locationIndex:(NSInteger) locationIndex;
 -(void) search;
 @end
