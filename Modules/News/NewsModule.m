@@ -21,6 +21,7 @@
         
         storyListChannelController = [[StoryListViewController alloc] init];
         [storyListChannelController pruneStories];
+        [storyListChannelController refreshCategories];
         self.viewControllers = [NSArray arrayWithObject:storyListChannelController];
     }
     return self;

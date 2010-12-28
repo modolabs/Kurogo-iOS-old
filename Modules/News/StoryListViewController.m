@@ -158,6 +158,14 @@ static NSInteger numTries = 0;
     [super dealloc];
 }
 
+- (NSArray *)fetchCategoriesFromCoreData {
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"isMainCategory = YES"];
+    NSSortDescriptor *sort = [[NSSortDescriptor alloc] initWithKey:@"category_id" ascending:YES];
+    NSArray *categoryObjects = [CoreDataManager objectsForEntity:NewsCategoryEntityName matchingPredicate:predicate sortDescriptors:[NSArray arrayWithObject:sort]];
+    [sort release];
+    return categoryObjects;
+}
+
 - (void)pruneStories {
 	// delete all cached news articles that aren't bookmarked
 	if (![[NSUserDefaults standardUserDefaults] boolForKey:MITNewsTwoFirstRunKey]) {
@@ -171,18 +179,9 @@ static NSInteger numTries = 0;
     // retain only the 10 most recent stories for each category plus anything bookmarked (here and when saving, because we may have crashed before having a chance to prune the story list last time)
     
     
-    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"isMainCategory = YES"];
-    NSSortDescriptor *sort = [[NSSortDescriptor alloc] initWithKey:@"category_id" ascending:YES];
-    NSArray *categoryObjects = [CoreDataManager objectsForEntity:NewsCategoryEntityName matchingPredicate:predicate sortDescriptors:[NSArray arrayWithObject:sort]];
-    [sort release];
-    if (![categoryObjects count]) {
-        JSONAPIRequest *request = [JSONAPIRequest requestWithJSONAPIDelegate:self];
-        BOOL success = [request requestObjectFromModule:@"news" command:@"channels" parameters:nil];
-        if (!success) {
-            DLog(@"failed to dispatch request");
-        }
-    } else {
-        self.categories = categoryObjects;
+    NSArray *categoryObjects = [self fetchCategoriesFromCoreData];
+    if ([categoryObjects count]) {
+		self.categories = categoryObjects;
     }
     
     // because stories are added to Core Data in separate threads, there may be merge conflicts. this thread wins when we're pruning
@@ -206,7 +205,7 @@ static NSInteger numTries = 0;
         aCategory.expectedCount = [NSNumber numberWithInteger:0];
     }
 
-	predicate = [NSPredicate predicateWithFormat:@"NOT bookmarked == YES"];
+	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"NOT bookmarked == YES"];
     NSMutableArray *allStories = [CoreDataManager objectsForEntity:NewsStoryEntityName matchingPredicate:predicate];
     NSMutableSet *allStoriesToDelete = [NSMutableSet setWithArray:allStories];
     [allStoriesToDelete minusSet:allStoriesToSave];
@@ -215,6 +214,14 @@ static NSInteger numTries = 0;
     
     // put merge policy back where it was before we started
     [[CoreDataManager managedObjectContext] setMergePolicy:originalMergePolicy];
+}
+
+-(void)refreshCategories {
+	JSONAPIRequest *request = [JSONAPIRequest requestWithJSONAPIDelegate:self];
+	BOOL success = [request requestObjectFromModule:@"news" command:@"channels" parameters:nil];
+	if (!success) {
+		DLog(@"failed to dispatch request");
+	}
 }
 
 #pragma mark -
@@ -1125,7 +1132,33 @@ static NSInteger numTries = 0;
 
 - (void)request:(JSONAPIRequest *)request jsonLoaded:(id)result {
     if (result && [result isKindOfClass:[NSArray class]]) {
-        NSMutableArray *newCategories = [NSMutableArray arrayWithCapacity:[result count]];
+		NSArray *newCategoryTitles = result;
+		NSArray *oldCategories = [self fetchCategoriesFromCoreData];
+		
+		// check if the new categories are the same as the old categories
+		BOOL categoriesChanged = NO;
+		if([newCategoryTitles count] == [oldCategories count]) {
+			for (NSUInteger i=0; i < [newCategoryTitles count]; i++) {
+				NSString *newCategoryTitle = [newCategoryTitles objectAtIndex:i];
+				NSString *oldCategoryTitle = ((NewsCategory *)[oldCategories objectAtIndex:i]).title;
+				if (![newCategoryTitle isEqualToString:oldCategoryTitle]) {
+					categoriesChanged = YES;
+					break;
+				}
+			}
+		} else {
+			categoriesChanged = YES;
+		}
+		
+		if(!categoriesChanged) {
+			// categories do not need to be updated
+			return;
+		}
+		
+		
+		[CoreDataManager deleteObjects:oldCategories];		
+		NSMutableArray *newCategories = [NSMutableArray arrayWithCapacity:[result count]];
+		
         for (NewsCategoryId i = 0; i < [result count]; i++) {
             NSString *categoryTitle = [result objectAtIndex:i];
             NewsCategory *aCategory = [CoreDataManager insertNewObjectForEntityForName:NewsCategoryEntityName];
