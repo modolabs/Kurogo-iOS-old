@@ -183,9 +183,9 @@ static NSInteger numTries = 0;
     
     
     NSArray *categoryObjects = [self fetchCategoriesFromCoreData];
-	if ([categoryObjects count]) {
+    if ([categoryObjects count]) {
 		self.categories = categoryObjects;
-	}
+    }
     
     // because stories are added to Core Data in separate threads, there may be merge conflicts. this thread wins when we're pruning
     NSManagedObjectContext *context = [CoreDataManager managedObjectContext];
