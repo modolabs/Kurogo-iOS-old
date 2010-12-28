@@ -9,7 +9,8 @@
 #import "CoreDataManager.h"
 #import "LibraryAdvancedSearch.h"
 
-@class LibrariesMultiLineCell;
+#define REFINE_BUTTON_WIDTH 60
+#define REFINE_BUTTON_PADDING 5
 
 @implementation LibrariesSearchViewController
 
@@ -72,11 +73,10 @@
 
 -(void) viewDidLoad {
 	
-    CGFloat buttonWidth = 50;
-    CGFloat buttonPadding = 5;
-    
 	if (nil == theSearchBar)
-		theSearchBar = [[ModoSearchBar alloc] initWithFrame:CGRectMake(0.0f, 0.0f, self.view.frame.size.width - buttonWidth - buttonPadding * 2, NAVIGATION_BAR_HEIGHT)];
+		theSearchBar = [[ModoSearchBar alloc] initWithFrame:CGRectMake(0.0f, 0.0f,
+                                                                       self.view.frame.size.width - REFINE_BUTTON_WIDTH - REFINE_BUTTON_PADDING * 2,
+                                                                       NAVIGATION_BAR_HEIGHT)];
 	
 	theSearchBar.tintColor = SEARCH_BAR_TINT_COLOR;
 	theSearchBar.placeholder = @"HOLLIS keyword search";
@@ -126,9 +126,13 @@
         
         _advancedSearchButton = [[UIButton buttonWithType:UIButtonTypeCustom] retain];
 		[_advancedSearchButton setBackgroundImage:buttonBackground forState:UIControlStateNormal];
-		_advancedSearchButton.frame = CGRectMake(self.view.frame.size.width - buttonWidth - buttonPadding, 6, buttonWidth, 30);
+		_advancedSearchButton.frame = CGRectMake(self.view.frame.size.width - REFINE_BUTTON_WIDTH - REFINE_BUTTON_PADDING,
+                                                 theSearchBar.frame.origin.y + REFINE_BUTTON_PADDING,
+                                                 REFINE_BUTTON_WIDTH,
+                                                 theSearchBar.frame.size.height - REFINE_BUTTON_PADDING * 2);
+        _advancedSearchButton.autoresizingMask = UIViewAutoresizingFlexibleBottomMargin;
         [_advancedSearchButton setTitle:@"Refine" forState:UIControlStateNormal];
-        _advancedSearchButton.titleLabel.font = [UIFont fontWithName:STANDARD_FONT size:10];
+        _advancedSearchButton.titleLabel.font = [UIFont fontWithName:BOLD_FONT size:12];
         [_advancedSearchButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
 	}
 	
@@ -432,18 +436,14 @@
 }
 
 - (void)restoreToolBar {
-	theSearchBar.frame = CGRectMake(0, 0, self.view.frame.size.width - 50, NAVIGATION_BAR_HEIGHT);
     [theSearchBar setShowsCancelButton:NO animated:YES];
     [UIView beginAnimations:@"searching" context:nil];
     [UIView setAnimationDuration:0.4];
 	
+	theSearchBar.frame = CGRectMake(0, 0, self.view.frame.size.width - REFINE_BUTTON_WIDTH - REFINE_BUTTON_PADDING * 2, NAVIGATION_BAR_HEIGHT);
 	_advancedSearchButton.alpha = 1.0;
 	
     [UIView commitAnimations];
-
-   // CGRect frame = _advancedSearchButton.frame;
-   // frame.origin.x = theSearchBar.frame.size.width - frame.size.width - 7;
-   // _advancedSearchButton.frame = frame;
 }
 
 
