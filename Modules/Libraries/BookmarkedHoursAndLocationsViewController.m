@@ -596,17 +596,6 @@ NSInteger bookmarkedNameSorted(id lib1, id lib2, void *context);
     return YES;
 }
 
-- (void)request:(JSONAPIRequest *)request handleConnectionError:(NSError *)error {
-	
-	UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Connection Failed", nil)
-														message:NSLocalizedString(@"Could not retrieve Libraries/Archives", nil)
-													   delegate:self 
-											  cancelButtonTitle:@"OK" 
-											  otherButtonTitles:nil];
-	[alertView show];
-	[alertView release];
-}
-
 
 NSInteger bookmarkedNameSorted(id lib1, id lib2, void *context) {
 	

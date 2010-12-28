@@ -76,7 +76,7 @@ JSONAPIRequest *mitapi;
 		requestDispatched = NO;
 		
 		UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Connection Failed", nil)
-														message:NSLocalizedString(@"Could not retrieve Breakfast Menu", nil)
+														message:NSLocalizedString(@"Could not connect to server", nil)
 													   delegate:nil
 											  cancelButtonTitle:@"OK"
 											  otherButtonTitles:nil];
@@ -120,7 +120,7 @@ JSONAPIRequest *mitapi;
 		requestDispatched = NO;
 		
 		UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Connection Failed", nil)
-														message:NSLocalizedString(@"Could not retrieve Lunch Menu", nil)
+														message:NSLocalizedString(@"Could not connect to server", nil)
 													   delegate:nil
 											  cancelButtonTitle:@"OK"
 											  otherButtonTitles:nil];
@@ -162,7 +162,7 @@ JSONAPIRequest *mitapi;
 		requestDispatched = NO;
 		
 		UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Connection Failed", nil)
-														message:NSLocalizedString(@"Could not retrieve Dinner Menu", nil)
+														message:NSLocalizedString(@"Could not connect to server", nil)
 													   delegate:nil
 											  cancelButtonTitle:@"OK"
 											  otherButtonTitles:nil];
@@ -524,7 +524,7 @@ JSONAPIRequest *mitapi;
 			
 			else {
 				UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Connection Failed", nil)
-																message:NSLocalizedString(@"Could not retrieve Dining Hall Hours information", nil)
+																message:NSLocalizedString(@"Could not connect to server", nil)
 															   delegate:nil
 													  cancelButtonTitle:@"OK"
 													  otherButtonTitles:nil];

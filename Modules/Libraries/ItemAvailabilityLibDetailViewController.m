@@ -973,14 +973,6 @@ NSInteger phoneNumberSortItemAvail(id num1, id num2, void *context){
 	weeklySchedule = nil;
 	weeklySchedule = [[NSMutableDictionary alloc] initWithObjectsAndKeys:
 					  @"unavailable", @"Hours", nil];
-	
-	UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Connection Failed", nil)
-														message:NSLocalizedString(@"Could not retrieve Libraries/Archives", nil)
-													   delegate:self 
-											  cancelButtonTitle:@"OK" 
-											  otherButtonTitles:nil];
-	[alertView show];
-	[alertView release];
 }
 
 

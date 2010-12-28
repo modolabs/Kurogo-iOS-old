@@ -1658,17 +1658,6 @@ allLibrariesWithItem: (NSArray *) allLibraries
     return YES;
 }
 
-- (void)request:(JSONAPIRequest *)request handleConnectionError:(NSError *)error {
-
-	UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Connection Failed", nil)
-														message:NSLocalizedString(@"Could not retrieve information about today's open hours", nil)
-													   delegate:self 
-											  cancelButtonTitle:@"OK" 
-											  otherButtonTitles:nil];
-	[alertView show];
-	[alertView release];
-}
-
 #pragma mark UIActionSheet setup
 
 -(void) showActionSheet:(NSArray *)items{

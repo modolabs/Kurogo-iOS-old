@@ -975,8 +975,8 @@
 				
 			}
 			else {
-				UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil
-																	message:@"Could not retrieve today's hours" 
+				UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Connection Failed", nil)
+																	message:NSLocalizedString(@"Could not connect to server", nil) 
 																   delegate:self 
 														  cancelButtonTitle:@"OK" 
 														  otherButtonTitles:nil];
@@ -1134,8 +1134,8 @@
 			}
 		}
 		else {
-			UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil
-																message:@"Could not retrieve image availability" 
+			UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Connection Failed", nil)
+																message:NSLocalizedString(@"Could not connect to server", nil)
 															   delegate:self 
 													  cancelButtonTitle:@"OK" 
 													  otherButtonTitles:nil];
@@ -1207,8 +1207,8 @@
 			
 		}
 		else {
-			UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil
-																message:@"Could not retrieve item availability" 
+			UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Connection Failed", nil)
+																message:NSLocalizedString(@"Could not connect to server", nil)
 															   delegate:self 
 													  cancelButtonTitle:@"OK" 
 													  otherButtonTitles:nil];
@@ -1221,19 +1221,10 @@
 }
 
 - (BOOL)request:(JSONAPIRequest *)request shouldDisplayAlertForError:(NSError *)error {
-	
     return YES;
 }
 
 - (void)request:(JSONAPIRequest *)request handleConnectionError:(NSError *)error {
-	
-	UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil
-														message:@"Could not retrieve item availability" 
-													   delegate:self 
-											  cancelButtonTitle:@"OK" 
-											  otherButtonTitles:nil];
-	[alertView show];
-	[alertView release];
 	[self removeLoadingIndicator];
 }
 
