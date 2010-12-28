@@ -13,7 +13,6 @@
 // external modules
 #import "Foundation+MITAdditions.h"
 #import "UIKit+MITAdditions.h"
-#import "NSArray+Convenience.h"
 #import "ModoSearchBar.h"
 #import "MITSearchDisplayController.h"
 
@@ -36,6 +35,7 @@ NSInteger strLenSort(NSString *str1, NSString *str2, void *context)
 
 - (void)handleWarningMessage:(NSString *)message title:(NSString *)theTitle;
 + (NSDictionary *)staticPhoneRowPropertiesForIndexPath:(NSIndexPath *)indexPath;
+- (void)showSearchResults;
 
 @end
 
@@ -318,7 +318,7 @@ NSInteger strLenSort(NSString *str1, NSString *str2, void *context)
 			[cell applyStandardFonts];
 			cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 
-			PersonDetails *recent = [[[PeopleRecentsData sharedData] recents] safeObjectAtIndex:indexPath.row];
+			PersonDetails *recent = [[[PeopleRecentsData sharedData] recents] objectAtIndex:indexPath.row];
 			cell.textLabel.text = [NSString stringWithFormat:@"%@ %@", 
                                    [recent formattedValueForKey:@"givenname"], 
                                    [recent formattedValueForKey:@"sn"]];
@@ -344,12 +344,12 @@ NSInteger strLenSort(NSString *str1, NSString *str2, void *context)
 			cell.selectionStyle = UITableViewCellSelectionStyleGray;
 		}
 			
-		NSDictionary *searchResult = [self.searchResults safeObjectAtIndex:indexPath.row];
+		NSDictionary *searchResult = [self.searchResults objectAtIndex:indexPath.row];
 		NSString *fullname = [NSString string];
         NSArray *namesFromJSON = [searchResult objectForKey:@"cn"];
         if ([namesFromJSON count] > 0)
         {
-            fullname = [namesFromJSON safeObjectAtIndex:0];
+            fullname = [namesFromJSON objectAtIndex:0];
         }
 		
 		// figure out which field (if any) to display as subtitle
@@ -357,7 +357,7 @@ NSInteger strLenSort(NSString *str1, NSString *str2, void *context)
 		cell.detailTextLabel.text = @" "; // if this is empty textlabel will be bottom aligned
 		NSArray *detailAttributeArray = [searchResult objectForKey:@"title"];
 		if ([detailAttributeArray count] > 0) {
-			cell.detailTextLabel.text = [detailAttributeArray safeObjectAtIndex:0];
+			cell.detailTextLabel.text = [detailAttributeArray objectAtIndex:0];
 		}
 		
 		// in this section we try to highlight the parts of the results that match the search terms
@@ -455,10 +455,10 @@ NSInteger strLenSort(NSString *str1, NSString *str2, void *context)
 		PeopleDetailsViewController *detailView = [[PeopleDetailsViewController alloc] initWithStyle:UITableViewStyleGrouped];
 		if (tableView == self.searchController.searchResultsTableView) {
             DLog(@"%@", [self.searchResults description]);
-			NSDictionary *selectedResult = [self.searchResults safeObjectAtIndex:indexPath.row];
+			NSDictionary *selectedResult = [self.searchResults objectAtIndex:indexPath.row];
 			personDetails = [PersonDetails retrieveOrCreate:selectedResult];
 		} else {
-			personDetails = [[[PeopleRecentsData sharedData] recents] safeObjectAtIndex:indexPath.row];
+			personDetails = [[[PeopleRecentsData sharedData] recents] objectAtIndex:indexPath.row];
 		}
 		detailView.personDetails = personDetails;
 		[self.navigationController pushViewController:detailView animated:YES];
@@ -502,16 +502,28 @@ NSInteger strLenSort(NSString *str1, NSString *str2, void *context)
             }
         } else if ([result isKindOfClass:[NSArray class]]) {
             self.searchResults = result;
-			self.searchController.searchResultsTableView.frame = self.tableView.frame;
-			[self.view addSubview:self.searchController.searchResultsTableView];
-			[self.searchBar addDropShadow];
-			
-			[self.searchController.searchResultsTableView reloadData];
+            if ([[PeopleRecentsData sharedData] displayFields] != nil) {
+                [self showSearchResults];
+            } else {
+                [[NSNotificationCenter defaultCenter] addObserver:self
+                                                         selector:@selector(showSearchResults)
+                                                             name:PeopleDisplayFieldsDidDownloadNotification
+                                                           object:[PeopleRecentsData sharedData]];
+            }
         }
     }
 	else {
 		self.searchResults = nil;
 	}
+}
+
+- (void)showSearchResults {
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:PeopleDisplayFieldsDidDownloadNotification object:[PeopleRecentsData sharedData]];
+    
+    self.searchController.searchResultsTableView.frame = self.tableView.frame;
+    [self.view addSubview:self.searchController.searchResultsTableView];
+    [self.searchBar addDropShadow];
+    [self.searchController.searchResultsTableView reloadData];
 }
 
 - (BOOL)request:(JSONAPIRequest *)request shouldDisplayAlertForError:(NSError *)error

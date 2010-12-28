@@ -7,7 +7,6 @@
 #import "UIKit+MITAdditions.h"
 #import "Foundation+MITAdditions.h"
 #import "ModoNavigationController.h"
-#import "NSArray+Convenience.h"
 #import "AddressFormatter.h"
 #import "MapBookmarkManager.h"
 #import "TileServerManager.h"
@@ -63,7 +62,7 @@ NSString * const RequestLookupAddress = @"address";
 	[multiPartAttribute release];
 	
 	// populate remaining contents to be displayed
-	self.sectionArray = [[NSMutableArray alloc] init];
+	self.sectionArray = [NSMutableArray array];
 	
 	NSArray *jobSection = [NSArray arrayWithObjects:@"title", nil];
 	NSArray *phoneSection = [NSArray arrayWithObjects:@"telephonenumber", @"facsimiletelephonenumber", nil];
@@ -149,7 +148,7 @@ NSString * const RequestLookupAddress = @"address";
 
 - (void)dealloc {
 	
-	[sectionArray release];
+	self.sectionArray = nil;
 	[personDetails release];
 	[fullname release];
     [super dealloc];
@@ -212,7 +211,7 @@ NSString * const RequestLookupAddress = @"address";
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
 	if (section == [self.sectionArray count])
 		return 2;
-	return [[self.sectionArray safeObjectAtIndex:section] count];
+	return [[self.sectionArray objectAtIndex:section] count];
 }
 
 #define TEXTVIEW_TAG 235
@@ -252,9 +251,9 @@ NSString * const RequestLookupAddress = @"address";
 			cell.selectionStyle = UITableViewCellSelectionStyleGray;
 		}
 		
-		NSArray *personInfo = [[self.sectionArray safeObjectAtIndex:section] safeObjectAtIndex:row];
-		NSString *tag = [personInfo safeObjectAtIndex:0];
-		NSString *data = [personInfo safeObjectAtIndex:1];
+		NSArray *personInfo = [[self.sectionArray objectAtIndex:section] objectAtIndex:row];
+		NSString *tag = [personInfo objectAtIndex:0];
+		NSString *data = [personInfo objectAtIndex:1];
 		
 		cell.textLabel.text = tag;
         cell.textLabel.textColor = [UIColor colorWithHexString:@"#554C41"];
@@ -337,9 +336,9 @@ NSString * const RequestLookupAddress = @"address";
 		return 44.0;
 	}
 	
-	NSArray *personInfo = [[self.sectionArray safeObjectAtIndex:section] safeObjectAtIndex:row];
-	NSString *tag = [personInfo safeObjectAtIndex:0];
-	NSString *data = [personInfo safeObjectAtIndex:1];
+	NSArray *personInfo = [[self.sectionArray objectAtIndex:section] objectAtIndex:row];
+	NSString *tag = [personInfo objectAtIndex:0];
+	NSString *data = [personInfo objectAtIndex:1];
         
 	// If the cell's 'tag' string matches the display name for any of these personDetails properties, 
 	// add a disclosure button.
@@ -447,16 +446,16 @@ NSString * const RequestLookupAddress = @"address";
 		
 	} else {
 		
-		NSArray *personInfo = [[self.sectionArray safeObjectAtIndex:indexPath.section] safeObjectAtIndex:indexPath.row];
-		NSString *tag = [personInfo safeObjectAtIndex:0];
+		NSArray *personInfo = [[self.sectionArray objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
+		NSString *tag = [personInfo objectAtIndex:0];
 		
 		// React if the cell tapped has text that that matches the display name of mail, telephonenumber, or postaladdress.
 		if ([tag isEqualToString:[personDetails displayNameForKey:@"mail"]])
-			[self emailIconTapped:[personInfo safeObjectAtIndex:1]];
+			[self emailIconTapped:[personInfo objectAtIndex:1]];
 		else if ([tag isEqualToString:[personDetails displayNameForKey:@"telephonenumber"]])
-			[self phoneIconTapped:[personInfo safeObjectAtIndex:1]];
+			[self phoneIconTapped:[personInfo objectAtIndex:1]];
 		else if ([tag isEqualToString:[personDetails displayNameForKey:@"postaladdress"]] && addressSearchAnnotation)
-			[self mapIconTapped:[personInfo safeObjectAtIndex:1]];
+			[self mapIconTapped:[personInfo objectAtIndex:1]];
 
 	}
 	

@@ -1,9 +1,11 @@
 #import "PeopleRecentsData.h"
 #import "CoreDataManager.h"
 
+NSString * const PeopleDisplayFieldsDidDownloadNotification = @"peopleDisplayFieldsDownloaded";
+
 @implementation PeopleRecentsData
 
-@synthesize recents, displayFields;
+@synthesize recents;
 
 static PeopleRecentsData *instance = nil;
 
@@ -58,37 +60,49 @@ static PeopleRecentsData *instance = nil;
 
 - (id)init
 {
-	NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-	NSString *ldapDisplayFile = [[paths objectAtIndex:0] stringByAppendingPathComponent:@"ldapDisplayFields.plist"];
-    displayFields = [[NSDictionary dictionaryWithContentsOfFile:ldapDisplayFile] retain];
-    BOOL needsUpdate = YES;
-    if (displayFields != nil) {
-        NSError *error = nil;
-        NSDictionary *fileInfo = [[NSFileManager defaultManager] attributesOfItemAtPath:ldapDisplayFile error:&error];
-        if (fileInfo && [[NSDate date] timeIntervalSinceDate:[fileInfo objectForKey:NSFileModificationDate]] <= 86400) {
-            needsUpdate = NO;
+    if (self = [super init]) {
+        [self displayFields];
+        
+        recents = [[NSMutableArray alloc] initWithCapacity:0];
+        NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"lastUpdate" ascending:NO];
+        for (PersonDetails *person in [CoreDataManager fetchDataForAttribute:PersonDetailsEntityName 
+                                                              sortDescriptor:sortDescriptor]) {
+            // if the person's result was viewed over X days ago, remove it
+            if ([[person valueForKey:@"lastUpdate"] timeIntervalSinceNow] < -1500000) {
+                [CoreDataManager deleteObject:person]; // this invokes saveData
+            } else {
+                [recents addObject:person]; // store in memory
+            }
+        }
+        [CoreDataManager saveData];
+        [sortDescriptor release];
+    }
+	return self;
+}
+
+// TODO: make sure there aren't multiple simultaneous requests
+- (NSDictionary *)displayFields
+{
+    if (!displayFields) {
+        NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+        NSString *ldapDisplayFile = [[paths objectAtIndex:0] stringByAppendingPathComponent:@"ldapDisplayFields.plist"];
+        displayFields = [[NSDictionary dictionaryWithContentsOfFile:ldapDisplayFile] retain];
+        BOOL needsUpdate = YES;
+        
+        if (displayFields != nil) {
+            NSError *error = nil;
+            NSDictionary *fileInfo = [[NSFileManager defaultManager] attributesOfItemAtPath:ldapDisplayFile error:&error];
+            if (fileInfo && [[NSDate date] timeIntervalSinceDate:[fileInfo objectForKey:NSFileModificationDate]] <= 86400) {
+                needsUpdate = NO;
+            }
+        }
+        
+        if (needsUpdate) {
+            JSONAPIRequest *request = [JSONAPIRequest requestWithJSONAPIDelegate:self];
+            [request requestObjectFromModule:@"people" command:@"displayFields" parameters:nil];
         }
     }
-    
-    if (needsUpdate) {
-        JSONAPIRequest *request = [JSONAPIRequest requestWithJSONAPIDelegate:self];
-        [request requestObjectFromModule:@"people" command:@"displayFields" parameters:nil];
-    }
-    
-	recents = [[NSMutableArray alloc] initWithCapacity:0];
-	NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"lastUpdate" ascending:NO];
-	for (PersonDetails *person in [CoreDataManager fetchDataForAttribute:PersonDetailsEntityName 
-														  sortDescriptor:sortDescriptor]) {
-		// if the person's result was viewed over X days ago, remove it
-		if ([[person valueForKey:@"lastUpdate"] timeIntervalSinceNow] < -1500000) {
-			[CoreDataManager deleteObject:person]; // this invokes saveData
-		} else {
-			[recents addObject:person]; // store in memory
-		}
-	}
-    [CoreDataManager saveData];
-	[sortDescriptor release];
-	return self;
+    return displayFields;
 }
 
 + (void)eraseAll
@@ -163,7 +177,10 @@ static PeopleRecentsData *instance = nil;
         NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
         NSString *ldapDisplayFile = [[paths objectAtIndex:0] stringByAppendingPathComponent:@"ldapDisplayFields.plist"];
         BOOL saved = [displayFields writeToFile:ldapDisplayFile atomically:YES];
-        if (!saved) {
+        if (saved) {
+            NSNotification *notification = [NSNotification notificationWithName:PeopleDisplayFieldsDidDownloadNotification object:self];
+            [[NSNotificationCenter defaultCenter] postNotification:notification];
+        } else {
             DLog(@"could not save file with contents %@", [displayFields description]);
         }
     }

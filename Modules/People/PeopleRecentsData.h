@@ -2,6 +2,8 @@
 #import "PersonDetails.h"
 #import "JSONAPIRequest.h"
 
+extern NSString * const PeopleDisplayFieldsDidDownloadNotification;
+
 @interface PeopleRecentsData : NSObject <JSONAPIDelegate> {
 	
 	NSMutableArray *recents;
