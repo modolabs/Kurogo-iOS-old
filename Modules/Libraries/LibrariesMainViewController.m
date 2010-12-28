@@ -328,7 +328,7 @@
 {
 	[_bookmarkButton removeFromSuperview];
 	
-	self.searchTerms = [searchBar.text retain];
+	self.searchTerms = searchBar.text;
 	//[self performSearch];
 	
 	LibrariesSearchViewController *vc = [[LibrariesSearchViewController alloc] initWithViewController: self];
