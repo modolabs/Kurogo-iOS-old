@@ -194,7 +194,7 @@
 	
 	UIAlertView *alert = [[[UIAlertView alloc]
                            initWithTitle:@"Connection Failed" 
-                           message:@"Could not connect to server, please try again later."
+                           message:@"Could not connect to server. Please try again later."
                            delegate:nil
                            cancelButtonTitle:@"OK" 
                            otherButtonTitles:nil] autorelease];

@@ -362,7 +362,7 @@
 		//[viewController hideLoadingView];
 		UIAlertView *alert = [[UIAlertView alloc]
 							  initWithTitle:NSLocalizedString(@"Connection Failed", nil)
-							  message:NSLocalizedString(@"Could not connect to server", nil)
+							  message:NSLocalizedString(@"Could not connect to server. Please try again later.", nil)
 							  delegate:nil
 							  cancelButtonTitle:@"OK" 
 							  otherButtonTitles:nil];
@@ -379,7 +379,7 @@
 	//[viewController hideLoadingView];
 	UIAlertView *alert = [[UIAlertView alloc]
 						  initWithTitle:NSLocalizedString(@"Too Many Results", nil) 
-						  message:NSLocalizedString(@"Retrieved more than 200 results. Please refine your query", nil)
+						  message:NSLocalizedString(@"Too many results to display. Please refine your query", nil)
 						  delegate:nil
 						  cancelButtonTitle:@"OK" 
 						  otherButtonTitles:nil];

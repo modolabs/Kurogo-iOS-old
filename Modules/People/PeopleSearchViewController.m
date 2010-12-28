@@ -224,7 +224,7 @@ NSInteger strLenSort(NSString *str1, NSString *str2, void *context)
 	temp = [temp stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
 	
 	if ([temp length] == 0){
-		[self handleWarningMessage:@"Nothing Found" title:@"Search Failed"];
+		[self handleWarningMessage:NSLocalizedString(@"Your query returned no matches.", nil) title:NSLocalizedString(@"No Results Found", nil)];
 		return;
 	}
 	
@@ -236,7 +236,7 @@ NSInteger strLenSort(NSString *str1, NSString *str2, void *context)
     if (requestWasDispatched) {
 		[self showLoadingView];
     } else {
-        [self handleWarningMessage:@"Could not dispatch search" title:@"Search Failed"];
+        [self handleWarningMessage:NSLocalizedString(@"Could not connect to server. Please try again later.", nil) title:NSLocalizedString(@"Connection Failed", nil)];
     }
 }
 
@@ -498,7 +498,7 @@ NSInteger strLenSort(NSString *str1, NSString *str2, void *context)
         if ([result isKindOfClass:[NSDictionary class]]) {
             NSString *message = [result objectForKey:@"error"];
             if (message) {
-                [self handleWarningMessage:message title:@"Search Failed"];
+                [self handleWarningMessage:message title:NSLocalizedString(@"Search Failed", nil)];
             }
         } else if ([result isKindOfClass:[NSArray class]]) {
             self.searchResults = result;

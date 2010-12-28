@@ -96,7 +96,7 @@
                 case kCFURLErrorCannotConnectToHost:
                 case kCFURLErrorCannotFindHost:
                     title = NSLocalizedString(@"Connection Failed", nil);
-                    message = NSLocalizedString(@"Cannot connect to server.  Please try again later.", nil);
+                    message = NSLocalizedString(@"Could not connect to server. Please try again later.", nil);
                     break;
                 case kCFURLErrorNotConnectedToInternet:
                     title = NSLocalizedString(@"Connection Failed", nil);
@@ -104,13 +104,13 @@
                     break;
                 case kCFURLErrorTimedOut:
                     title = NSLocalizedString(@"Connection Failed", nil);
-                    message = NSLocalizedString(@"Server is taking too long to respond.  Please try again later.", nil);
+                    message = NSLocalizedString(@"Server is taking too long to respond. Please try again later.", nil);
                     break;
                 case kCFURLErrorBadServerResponse: case kCFURLErrorZeroByteResource:
                 case kCFURLErrorCannotDecodeRawData: case kCFURLErrorCannotDecodeContentData:
                 case kCFURLErrorCannotParseResponse:
-                    title = NSLocalizedString(@"Connection Error", nil);
-                    message = NSLocalizedString(@"Bad response from server.  Please try again later.", nil);
+                    title = NSLocalizedString(@"Error Connecting", nil);
+                    message = NSLocalizedString(@"Bad response from server. Please try again later.", nil);
                     break;
                 case kCFURLErrorUnknown: // all other CFURLConnection and CFURLProtocol errors
                 case kCFURLErrorCancelled: case kCFURLErrorBadURL: case kCFURLErrorUnsupportedURL:
@@ -122,8 +122,8 @@
                 case kCFURLErrorRequestBodyStreamExhausted: case kCFURLErrorFileDoesNotExist:
                 case kCFURLErrorFileIsDirectory: case kCFURLErrorNoPermissionsToReadFile:
                 case kCFURLErrorDataLengthExceedsMaximum:
-                    title = NSLocalizedString(@"Connection Error", nil);
-                    message = NSLocalizedString(@"Problem connecting to server.  Please try again later.", nil);
+                    title = NSLocalizedString(@"Error Connecting", nil);
+                    message = NSLocalizedString(@"Problem connecting to server. Please try again later.", nil);
                     break;
                 default:
                     break;

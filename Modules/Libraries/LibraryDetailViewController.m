@@ -302,7 +302,7 @@ NSInteger phoneNumberSort(id num1, id num2, void *context){
 				}
 				else {
 					UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Connection Failed", nil)
-																		message:NSLocalizedString(@"Could not connect to server", nil)
+																		message:NSLocalizedString(@"Could not connect to server. Please try again later.", nil)
 																	   delegate:self 
 															  cancelButtonTitle:@"OK" 
 															  otherButtonTitles:nil];

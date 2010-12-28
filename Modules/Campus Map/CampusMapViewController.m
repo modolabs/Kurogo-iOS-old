@@ -376,8 +376,8 @@
 
 - (void)noSearchResultsAlert
 {
-	UIAlertView* alert = [[[UIAlertView alloc] initWithTitle:nil
-													 message:NSLocalizedString(@"Nothing found.", nil)
+	UIAlertView* alert = [[[UIAlertView alloc] initWithTitle:NSLocalizedString(@"No Results Found", nil)
+													 message:NSLocalizedString(@"Your query returned no matches.", nil)
 													delegate:self cancelButtonTitle:NSLocalizedString(@"OK", nil)
 										   otherButtonTitles:nil] autorelease];
 	alert.isAccessibilityElement = YES;
@@ -390,7 +390,7 @@
 - (void)errorConnectingAlert
 {
 	UIAlertView* alert = [[[UIAlertView alloc] initWithTitle:nil
-													 message:NSLocalizedString(@"Error connecting. Please check your internet connection.", nil)
+													 message:NSLocalizedString(@"Please check your Internet connection and try again later.", nil)
 													delegate:self cancelButtonTitle:NSLocalizedString(@"OK", nil)
 										   otherButtonTitles:nil] autorelease];
 	alert.tag = kErrorConnectingTag;
@@ -862,11 +862,11 @@
     }
 }
 
-// there was an error connecting to the specified URL. 
-- (void)request:(JSONAPIRequest *)request handleConnectionError:(NSError *)error {
+- (BOOL)request:(JSONAPIRequest *)request shouldDisplayAlertForError:(NSError *)error {
     if ([request.userData isKindOfClass:[NSString class]]
-        && [(NSString *)request.userData isEqualToString:kAPISearch]) {
-		[self errorConnectingAlert];
+        && [(NSString *)request.userData isEqualToString:kAPISearch])
+    {
+        return YES;
 	}
 }
 

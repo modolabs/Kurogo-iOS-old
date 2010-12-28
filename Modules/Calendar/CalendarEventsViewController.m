@@ -956,8 +956,8 @@
 			}
             
         } else {
-            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil
-                                                                message:NSLocalizedString(@"Nothing found", nil)
+            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"No Results Found", nil)
+                                                                message:NSLocalizedString(@"Your query returned no matches.", nil)
                                                                delegate:self
                                                       cancelButtonTitle:@"OK" otherButtonTitles:nil];
             [alertView show];

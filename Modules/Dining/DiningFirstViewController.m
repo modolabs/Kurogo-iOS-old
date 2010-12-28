@@ -76,7 +76,7 @@ JSONAPIRequest *mitapi;
 		requestDispatched = NO;
 		
 		UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Connection Failed", nil)
-														message:NSLocalizedString(@"Could not connect to server", nil)
+														message:NSLocalizedString(@"Could not connect to server. Please try again later.", nil)
 													   delegate:nil
 											  cancelButtonTitle:@"OK"
 											  otherButtonTitles:nil];
@@ -120,7 +120,7 @@ JSONAPIRequest *mitapi;
 		requestDispatched = NO;
 		
 		UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Connection Failed", nil)
-														message:NSLocalizedString(@"Could not connect to server", nil)
+														message:NSLocalizedString(@"Could not connect to server. Please try again later.", nil)
 													   delegate:nil
 											  cancelButtonTitle:@"OK"
 											  otherButtonTitles:nil];
@@ -162,7 +162,7 @@ JSONAPIRequest *mitapi;
 		requestDispatched = NO;
 		
 		UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Connection Failed", nil)
-														message:NSLocalizedString(@"Could not connect to server", nil)
+														message:NSLocalizedString(@"Could not connect to server. Please try again later.", nil)
 													   delegate:nil
 											  cancelButtonTitle:@"OK"
 											  otherButtonTitles:nil];
@@ -524,7 +524,7 @@ JSONAPIRequest *mitapi;
 			
 			else {
 				UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Connection Failed", nil)
-																message:NSLocalizedString(@"Could not connect to server", nil)
+																message:NSLocalizedString(@"Could not connect to server. Please try again later.", nil)
 															   delegate:nil
 													  cancelButtonTitle:@"OK"
 													  otherButtonTitles:nil];

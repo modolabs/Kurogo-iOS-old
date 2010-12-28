@@ -279,7 +279,7 @@ allLibrariesWithItem: (NSArray *) allLibraries
 	}
 	else {
 		UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil
-															message:NSLocalizedString(@"Could not connect to server", nil)
+															message:NSLocalizedString(@"Could not connect to server. Please try again later.", nil)
 														   delegate:self 
 												  cancelButtonTitle:@"OK" 
 												  otherButtonTitles:nil];
@@ -345,7 +345,7 @@ allLibrariesWithItem: (NSArray *) allLibraries
 					}
 					else {
 						UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Connection Failed", nil)
-																			message:NSLocalizedString(@"Could not retrieve item-availability", nil)
+																			message:NSLocalizedString(@"There was a problem retrieving data. Please check your connection and try again.", nil)
 																		   delegate:self 
 																  cancelButtonTitle:@"OK" 
 																  otherButtonTitles:nil];

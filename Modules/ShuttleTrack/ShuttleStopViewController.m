@@ -417,7 +417,7 @@
     
 	UIAlertView *alertView = [[UIAlertView alloc]
                               initWithTitle:NSLocalizedString(@"Subscription failed", nil)
-                              message:NSLocalizedString(@"We are sorry, we failed to register your device for a shuttle notification", nil)
+                              message:NSLocalizedString(@"Failed to register your device for a push notification. Please try again later.", nil)
                               delegate:nil 
                               cancelButtonTitle:@"OK"
                               otherButtonTitles:nil];

@@ -344,8 +344,8 @@
 		if (!_shownError) {
 			_shownError = YES;
 			
-			UIAlertView* alert = [[[UIAlertView alloc] initWithTitle:nil
-															 message:NSLocalizedString(@"Problem loading shuttle info. Please check your internet connection.", nil)
+			UIAlertView* alert = [[[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Connection Failed", nil)
+															 message:NSLocalizedString(@"There was a problem retrieving data. Please check your connection and try again.", nil)
 															delegate:self
 												   cancelButtonTitle:@"OK"
 												   otherButtonTitles:nil] autorelease];

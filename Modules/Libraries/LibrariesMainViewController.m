@@ -250,7 +250,7 @@
 	}
 	else {
 		UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Connection Failed", nil)
-															message:NSLocalizedString(@"Could not connect to server", nil)
+															message:NSLocalizedString(@"Could not connect to server. Please try again later.", nil)
 														   delegate:self 
 												  cancelButtonTitle:@"OK" 
 												  otherButtonTitles:nil];
@@ -367,7 +367,6 @@
 	temp = [temp stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
 	
 	if ([temp length] == 0){
-		//[self handleWarningMessage:@"Nothing Found" title:@"Search Failed"];
 		return;
 	}
 	
@@ -420,7 +419,7 @@
         if ([result isKindOfClass:[NSDictionary class]]) {
             NSString *message = [result objectForKey:@"error"];
             if (message) {
-                [self handleWarningMessage:message title:@"Search Failed"];
+                [self handleWarningMessage:message title:NSLocalizedString(@"Search Failed", nil)];
             }
         } else if ([result isKindOfClass:[NSArray class]]) {
             self.searchResults = result;
@@ -571,7 +570,7 @@
 			}
 			else {
 				UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil
-																	message:NSLocalizedString(@"Could not connect to server", nil)
+																	message:NSLocalizedString(@"Could not connect to server. Please try again later.", nil)
 																   delegate:self 
 														  cancelButtonTitle:@"OK" 
 														  otherButtonTitles:nil];
@@ -599,7 +598,7 @@
 			}
 			else {
 				UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil
-																	message:NSLocalizedString(@"Could not connect to server", nil)
+																	message:NSLocalizedString(@"Could not connect to server. Please try again later.", nil)
 																   delegate:self 
 														  cancelButtonTitle:@"OK" 
 														  otherButtonTitles:nil];
@@ -626,7 +625,7 @@
 			}
 			else {
 				UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil
-																	message:NSLocalizedString(@"Could not connect to server", nil)
+																	message:NSLocalizedString(@"Could not connect to server. Please try again later.", nil)
 																   delegate:self 
 														  cancelButtonTitle:@"OK" 
 														  otherButtonTitles:nil];
@@ -664,7 +663,7 @@
 				}
 				else {
 					UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil
-																		message:NSLocalizedString(@"Could not connect to server", nil)
+																		message:NSLocalizedString(@"Could not connect to server. Please try again later.", nil)
 																	   delegate:self 
 															  cancelButtonTitle:@"OK" 
 															  otherButtonTitles:nil];

@@ -31,7 +31,7 @@
 		NSUInteger numResults = [self.events count];
 		switch (numResults) {
 			case 0:
-                titleString = [NSString stringWithString:@"Nothing found"];
+                titleString = [NSString stringWithString:@"No events found"];
 				break;
 			case 1:
                 titleString = [NSString stringWithString:@"1 event found"];
