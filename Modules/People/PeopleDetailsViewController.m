@@ -196,7 +196,7 @@ NSString * const RequestLookupAddress = @"address";
     // TODO: make a separate function for these three lines
     [[MapBookmarkManager defaultManager] saveAnnotationWithoutBookmarking:addressSearchAnnotation];
     NSIndexSet *sections = [NSIndexSet indexSetWithIndex:addressSection];
-    [self.tableView reloadSections:sections withRowAnimation:UITableViewRowAnimationFade];
+    [self.tableView reloadSections:sections withRowAnimation:UITableViewRowAnimationNone];
 }
 
 #pragma mark -
