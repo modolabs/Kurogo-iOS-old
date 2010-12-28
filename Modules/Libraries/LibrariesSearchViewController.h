@@ -37,6 +37,11 @@
     NSInteger formatIndex;
     NSInteger locationIndex;
 	//NSString *previousSearchTerm;
+    
+    NSString *keywordText;
+    NSString *titleText;
+    NSString *authorText;
+	BOOL englishOnlySwitch;
 	
 	UIView *loadingView;
 	
@@ -53,6 +58,10 @@
 @property (nonatomic, retain) NSString *searchTerms;
 @property (nonatomic, readwrite) NSInteger formatIndex;
 @property (nonatomic, readwrite) NSInteger locationIndex;
+@property (nonatomic, retain) NSString *keywordText;
+@property (nonatomic, retain) NSString *titleText;
+@property (nonatomic, retain) NSString *authorText;
+@property (nonatomic, readwrite) BOOL englishOnlySwitch;
 @property (nonatomic, retain) ModoSearchBar *searchBar;
 @property (nonatomic, retain) NSMutableDictionary *lastResults;
 @property (nonatomic, readonly) BOOL activeMode;

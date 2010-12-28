@@ -644,6 +644,9 @@
 			LibraryAdvancedSearch * vc = [[LibraryAdvancedSearch alloc] initWithNibName:@"LibraryAdvancedSearch" 
 																				 bundle:nil
 																			   keywords:@""
+                                                                                  title:@""
+                                                                                 author:@""
+                                                                      englishOnlySwitch:false
                                                                             formatIndex:0
                                                                           locationIndex:0];
 			

@@ -25,6 +25,7 @@
 @synthesize activeMode;
 
 @synthesize searchTerms, searchResults, searchController;
+@synthesize keywordText, titleText, authorText, englishOnlySwitch;
 @synthesize formatIndex, locationIndex;
 @synthesize loadingView;
 @synthesize searchBar = theSearchBar;
@@ -42,7 +43,12 @@
 		actualCount = 0;
         formatIndex = 0;
         locationIndex = 0;
-
+        
+        keywordText = @"";
+        titleText = @"";
+        authorText = @"";
+        englishOnlySwitch = false;
+        
 		self.lastResults = [[NSMutableDictionary alloc] init];
 	}
 	return self;
@@ -56,6 +62,10 @@
 	[theSearchBar release];
 	
 	[searchResults release];
+
+	[keywordText release];
+	[titleText release];
+	[authorText release];
 	
 	_tableView = nil;
 	
@@ -159,9 +169,13 @@
 
 -(void) advancedSearchButtonClicked: (id) sender{
     NSLog(@"Passing format %d and location %d", formatIndex, locationIndex);
+    
 	LibraryAdvancedSearch * vc = [[LibraryAdvancedSearch alloc] initWithNibName:@"LibraryAdvancedSearch" 
 																		 bundle:nil
-																	   keywords:self.searchTerms
+																	   keywords:[keywordText length] ? self.keywordText : self.searchTerms
+                                                                          title:self.titleText
+                                                                         author:self.authorText
+                                                              englishOnlySwitch:self.englishOnlySwitch            
                                                                     formatIndex:formatIndex
                                                                   locationIndex:locationIndex];
 	
@@ -174,8 +188,8 @@
 		api = [[JSONAPIRequest alloc] initWithJSONAPIDelegate:vc];	
 		
 		if ([api requestObjectFromModule:@"libraries" 
-										command:@"libraries" 
-									 parameters:nil] == YES)
+                                 command:@"libraries" 
+                              parameters:nil] == YES)
 		{
 			[self.navigationController pushViewController:vc animated:YES];
 		}
