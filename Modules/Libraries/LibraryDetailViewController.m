@@ -301,8 +301,8 @@ NSInteger phoneNumberSort(id num1, id num2, void *context){
 					[self.tableView reloadData];
 				}
 				else {
-					UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil
-																		message:@"Could not connect to the server" 
+					UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Connection Failed", nil)
+																		message:NSLocalizedString(@"Could not connect to server", nil)
 																	   delegate:self 
 															  cancelButtonTitle:@"OK" 
 															  otherButtonTitles:nil];
@@ -955,8 +955,8 @@ NSInteger phoneNumberSort(id num1, id num2, void *context){
 	weeklySchedule = [[NSMutableDictionary alloc] initWithObjectsAndKeys:
 					  @"unavailable", @"Hours", nil];
 	
-	UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil
-														message:@"Could not retrieve Libraries/Archives" 
+	UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Connection Failed", nil)
+														message:NSLocalizedString(@"Could not retrieve Libraries/Archives", nil)
 													   delegate:self 
 											  cancelButtonTitle:@"OK" 
 											  otherButtonTitles:nil];

@@ -345,7 +345,7 @@
 			_shownError = YES;
 			
 			UIAlertView* alert = [[[UIAlertView alloc] initWithTitle:nil
-															 message:@"Problem loading shuttle info. Please check your internet connection."
+															 message:NSLocalizedString(@"Problem loading shuttle info. Please check your internet connection.", nil)
 															delegate:self
 												   cancelButtonTitle:@"OK"
 												   otherButtonTitles:nil] autorelease];

@@ -511,8 +511,8 @@ NSInteger bookmarkedNameSorted(id lib1, id lib2, void *context);
 		[self.navigationController pushViewController:vc animated:YES];
 	}
 	else {
-		UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil
-															message:@"Could not connect to the server" 
+		UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Connection Failed", nil)
+															message:NSLocalizedString(@"Could not connect to server", nil)
 														   delegate:self 
 												  cancelButtonTitle:@"OK" 
 												  otherButtonTitles:nil];
@@ -598,8 +598,8 @@ NSInteger bookmarkedNameSorted(id lib1, id lib2, void *context);
 
 - (void)request:(JSONAPIRequest *)request handleConnectionError:(NSError *)error {
 	
-	UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil
-														message:@"Could not retrieve Libraries/Archives" 
+	UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Connection Failed", nil)
+														message:NSLocalizedString(@"Could not retrieve Libraries/Archives", nil)
 													   delegate:self 
 											  cancelButtonTitle:@"OK" 
 											  otherButtonTitles:nil];

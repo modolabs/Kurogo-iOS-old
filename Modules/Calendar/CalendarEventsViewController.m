@@ -956,7 +956,10 @@
 			}
             
         } else {
-            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil message:@"Nothing found" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil
+                                                                message:NSLocalizedString(@"Nothing found", nil)
+                                                               delegate:self
+                                                      cancelButtonTitle:@"OK" otherButtonTitles:nil];
             [alertView show];
             [alertView release];
         }

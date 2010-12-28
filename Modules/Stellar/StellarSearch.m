@@ -177,8 +177,8 @@
 		else {
 			[viewController hideLoadingView];
 			UIAlertView *alert = [[UIAlertView alloc]
-								  initWithTitle:@"No Results Found" 
-								  message:@"Your query returned no matches."
+								  initWithTitle:NSLocalizedString(@"No Results Found", nil)
+								  message:NSLocalizedString(@"Your query returned no matches.", nil)
 								  delegate:nil
 								  cancelButtonTitle:@"OK" 
 								  otherButtonTitles:nil];
@@ -196,8 +196,8 @@
 	if([viewController.searchController.searchBar.text isEqualToString:searchTerms]) {
 		[viewController hideLoadingView];
 		UIAlertView *alert = [[UIAlertView alloc]
-			initWithTitle:@"Connection Failed" 
-			message:@"Could not retrieve results, please try again later."
+			initWithTitle:NSLocalizedString(@"Connection Failed", nil)
+			message:NSLocalizedString(@"Could not retrieve results, please try again later.", nil)
 			delegate:nil
 			cancelButtonTitle:@"OK" 
 			otherButtonTitles:nil];
@@ -213,8 +213,8 @@
 	
 	[viewController hideLoadingView];
 	UIAlertView *alert = [[UIAlertView alloc]
-						  initWithTitle:@"Narrow Search" 
-						  message:@"Retrieved more than 200 results. Please refine your query"
+						  initWithTitle:NSLocalizedString(@"Too Many Results", nil)
+						  message:NSLocalizedString(@"Retrieved more than 200 results. Please refine your query", nil)
 						  delegate:nil
 						  cancelButtonTitle:@"OK" 
 						  otherButtonTitles:nil];

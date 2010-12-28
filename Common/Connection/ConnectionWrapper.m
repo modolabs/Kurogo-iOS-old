@@ -95,22 +95,22 @@
             switch ([error code]) {
                 case kCFURLErrorCannotConnectToHost:
                 case kCFURLErrorCannotFindHost:
-                    title = [NSString stringWithString:@"Connection Failed"];
-                    message = [NSString stringWithString:@"Cannot connect to server.  Please try again later."];
+                    title = NSLocalizedString(@"Connection Failed", nil);
+                    message = NSLocalizedString(@"Cannot connect to server.  Please try again later.", nil);
                     break;
                 case kCFURLErrorNotConnectedToInternet:
-                    title = [NSString stringWithString:@"Connection Failed"];
-                    message = [NSString stringWithString:@"We are not connected to the Internet.  Please try again later."];
+                    title = NSLocalizedString(@"Connection Failed", nil);
+                    message = NSLocalizedString(@"Please check your Internet connection and try again later.", nil);
                     break;
                 case kCFURLErrorTimedOut:
-                    title = [NSString stringWithString:@"Connection Timed Out"];
-                    message = [NSString stringWithString:@"Server is taking too long to respond.  Please try again later."];
+                    title = NSLocalizedString(@"Connection Failed", nil);
+                    message = NSLocalizedString(@"Server is taking too long to respond.  Please try again later.", nil);
                     break;
                 case kCFURLErrorBadServerResponse: case kCFURLErrorZeroByteResource:
                 case kCFURLErrorCannotDecodeRawData: case kCFURLErrorCannotDecodeContentData:
                 case kCFURLErrorCannotParseResponse:
-                    title = [NSString stringWithString:@"Connection Error"];
-                    message = [NSString stringWithString:@"Bad response from server.  Please try again later."];
+                    title = NSLocalizedString(@"Connection Error", nil);
+                    message = NSLocalizedString(@"Bad response from server.  Please try again later.", nil);
                     break;
                 case kCFURLErrorUnknown: // all other CFURLConnection and CFURLProtocol errors
                 case kCFURLErrorCancelled: case kCFURLErrorBadURL: case kCFURLErrorUnsupportedURL:
@@ -122,14 +122,14 @@
                 case kCFURLErrorRequestBodyStreamExhausted: case kCFURLErrorFileDoesNotExist:
                 case kCFURLErrorFileIsDirectory: case kCFURLErrorNoPermissionsToReadFile:
                 case kCFURLErrorDataLengthExceedsMaximum:
-                    title = [NSString stringWithString:@"Connection Error"];
-                    message = [NSString stringWithString:@"Problem connecting to server.  Please try again later."];
+                    title = NSLocalizedString(@"Connection Error", nil);
+                    message = NSLocalizedString(@"Problem connecting to server.  Please try again later.", nil);
                     break;
                 default:
                     break;
             }
             if (title != nil) {
-                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Connection Failed"
+                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Connection Failed", nil)
                                                                 message:message
                                                                delegate:alertDelegate
                                                       cancelButtonTitle:@"OK" 

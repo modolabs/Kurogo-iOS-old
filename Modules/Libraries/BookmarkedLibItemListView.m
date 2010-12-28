@@ -146,8 +146,8 @@ NSInteger bookmarkedItemsNameSorted(id item1, id item2, void *context) {
 		[self.navigationController pushViewController:vc animated:YES];
 	}
 	else {
-		UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil
-															message:@"Could not connect to the server" 
+		UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Connection Failed", nil)
+															message:NSLocalizedString(@"Could not connect to server", nil)
 														   delegate:self 
 												  cancelButtonTitle:@"OK" 
 												  otherButtonTitles:nil];

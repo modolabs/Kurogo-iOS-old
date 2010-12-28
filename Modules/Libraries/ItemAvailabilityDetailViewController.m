@@ -279,7 +279,7 @@ allLibrariesWithItem: (NSArray *) allLibraries
 	}
 	else {
 		UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil
-															message:@"Could not connect to the server" 
+															message:NSLocalizedString(@"Could not connect to server", nil)
 														   delegate:self 
 												  cancelButtonTitle:@"OK" 
 												  otherButtonTitles:nil];
@@ -344,8 +344,8 @@ allLibrariesWithItem: (NSArray *) allLibraries
 						[self viewWillAppear:YES];		
 					}
 					else {
-						UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil
-																			message:@"Could not retrieve item-availability" 
+						UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Connection Failed", nil)
+																			message:NSLocalizedString(@"Could not retrieve item-availability", nil)
 																		   delegate:self 
 																  cancelButtonTitle:@"OK" 
 																  otherButtonTitles:nil];
@@ -1660,8 +1660,8 @@ allLibrariesWithItem: (NSArray *) allLibraries
 
 - (void)request:(JSONAPIRequest *)request handleConnectionError:(NSError *)error {
 
-	UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil
-														message:@"Could not retrieve information about today's open hours" 
+	UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Connection Failed", nil)
+														message:NSLocalizedString(@"Could not retrieve information about today's open hours", nil)
 													   delegate:self 
 											  cancelButtonTitle:@"OK" 
 											  otherButtonTitles:nil];

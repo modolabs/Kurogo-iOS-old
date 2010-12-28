@@ -377,8 +377,8 @@
 	self.shuttleRoutes = routes;
 	
 	if (nil == routes) {
-		UIAlertView* alert = [[[UIAlertView alloc] initWithTitle:@"Error Connecting"
-														message:@"There was a problem retrieving shuttle data. Please check your connection and try again"
+		UIAlertView* alert = [[[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error Connecting", nil)
+                                                         message:NSLocalizedString(@"There was a problem retrieving shuttle data. Please check your connection and try again", nil)
 													   delegate:nil
 											  cancelButtonTitle:@"OK"
 											  otherButtonTitles:nil] autorelease];

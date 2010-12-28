@@ -416,8 +416,8 @@
 	[self.tableView reloadData];
     
 	UIAlertView *alertView = [[UIAlertView alloc]
-                              initWithTitle:@"Subscription failed" 
-                              message:@"We are sorry, we failed to register your device for a shuttle notification" 
+                              initWithTitle:NSLocalizedString(@"Subscription failed", nil)
+                              message:NSLocalizedString(@"We are sorry, we failed to register your device for a shuttle notification", nil)
                               delegate:nil 
                               cancelButtonTitle:@"OK"
                               otherButtonTitles:nil];

@@ -98,7 +98,7 @@ NSInteger strLenSort(NSString *str1, NSString *str2, void *context)
     self.tableView.dataSource = self;
 	[self.tableView applyStandardColors];
     
-	static NSString *searchHints = @"Tip: You can search above by a person's first or last name or email address.";
+    NSString *searchHints = NSLocalizedString(@"Tip: You can search above by a person's first or last name or email address.", nil);
 
 	UIFont *hintsFont = [UIFont systemFontOfSize:[UIFont systemFontSize]];
 	CGSize labelSize = [searchHints sizeWithFont:hintsFont

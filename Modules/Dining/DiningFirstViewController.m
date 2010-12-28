@@ -75,8 +75,8 @@ JSONAPIRequest *mitapi;
 	else {
 		requestDispatched = NO;
 		
-		UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Connection Failed"
-														message:@"Could not retrieve Breakfast Menu"
+		UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Connection Failed", nil)
+														message:NSLocalizedString(@"Could not retrieve Breakfast Menu", nil)
 													   delegate:nil
 											  cancelButtonTitle:@"OK"
 											  otherButtonTitles:nil];
@@ -119,8 +119,8 @@ JSONAPIRequest *mitapi;
 	else {
 		requestDispatched = NO;
 		
-		UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Connection Failed"
-														message:@"Could not retrieve Lunch Menu"
+		UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Connection Failed", nil)
+														message:NSLocalizedString(@"Could not retrieve Lunch Menu", nil)
 													   delegate:nil
 											  cancelButtonTitle:@"OK"
 											  otherButtonTitles:nil];
@@ -161,8 +161,8 @@ JSONAPIRequest *mitapi;
 	else {
 		requestDispatched = NO;
 		
-		UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Connection Failed"
-														message:@"Could not retrieve Dinner Menu"
+		UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Connection Failed", nil)
+														message:NSLocalizedString(@"Could not retrieve Dinner Menu", nil)
 													   delegate:nil
 											  cancelButtonTitle:@"OK"
 											  otherButtonTitles:nil];
@@ -523,8 +523,8 @@ JSONAPIRequest *mitapi;
 			}
 			
 			else {
-				UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Connection Failed"
-																message:@"Could not retrieve Dining Hall Hours information"
+				UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Connection Failed", nil)
+																message:NSLocalizedString(@"Could not retrieve Dining Hall Hours information", nil)
 															   delegate:nil
 													  cancelButtonTitle:@"OK"
 													  otherButtonTitles:nil];

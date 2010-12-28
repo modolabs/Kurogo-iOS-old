@@ -159,7 +159,7 @@
 	}
 	
 	UIAlertView *alertView = [[UIAlertView alloc]
-		initWithTitle:@"Old Classes" 
+		initWithTitle:NSLocalizedString(@"Old Classes", nil)
 		message:message delegate:nil 
 		cancelButtonTitle:@"OK" 
 		otherButtonTitles:nil];
@@ -291,8 +291,8 @@
 
 - (void) handleCouldNotReachStellar {
 	UIAlertView *alert = [[UIAlertView alloc] 
-		initWithTitle:@"Connection Failed" 
-		message:@"Could not connect to the Courses-Server, please try again later"
+		initWithTitle:NSLocalizedString(@"Connection Failed", nil)
+		message:NSLocalizedString(@"Could not connect to server", nil)
 		delegate:self
 		cancelButtonTitle:@"OK" 
 		otherButtonTitles:@"Reload", nil];
