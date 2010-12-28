@@ -34,6 +34,8 @@
 	
 	NSArray *searchResults;
 	NSString *searchTerms;
+    NSInteger formatIndex;
+    NSInteger locationIndex;
 	//NSString *previousSearchTerm;
 	
 	UIView *loadingView;
@@ -49,6 +51,8 @@
 @property (nonatomic, retain) MITSearchDisplayController *searchController;
 @property (nonatomic, retain) NSArray *searchResults;
 @property (nonatomic, retain) NSString *searchTerms;
+@property (nonatomic, readwrite) NSInteger formatIndex;
+@property (nonatomic, readwrite) NSInteger locationIndex;
 @property (nonatomic, retain) ModoSearchBar *searchBar;
 @property (nonatomic, retain) NSMutableDictionary *lastResults;
 @property (nonatomic, readonly) BOOL activeMode;

@@ -644,7 +644,9 @@
 			
 			LibraryAdvancedSearch * vc = [[LibraryAdvancedSearch alloc] initWithNibName:@"LibraryAdvancedSearch" 
 																				 bundle:nil
-																			   keywords:@""];
+																			   keywords:@""
+                                                                            formatIndex:0
+                                                                          locationIndex:0];
 			
 			vc.title = @"Advanced Search";
 			
@@ -655,7 +657,7 @@
 				apiRequest = [[JSONAPIRequest alloc] initWithJSONAPIDelegate:vc];	
 				
 				if ([apiRequest requestObjectFromModule:@"libraries" 
-												command:@"libraries" 
+												command:@"searchcodes" 
 											 parameters:nil] == YES)
 				{
 					[self.navigationController pushViewController:vc animated:YES];

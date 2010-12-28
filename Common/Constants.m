@@ -92,6 +92,8 @@ NSString * const CampusMapSearchEntityName = @"MapSearch";
 NSString * const CampusMapAnnotationEntityName = @"MapSavedAnnotation";
 NSString * const LibraryItemEntityName = @"LibraryItem";
 NSString * const LibraryEntityName = @"Library";
+NSString * const LibraryFormatCodeEntityName = @"LibraryItemFormat";
+NSString * const LibraryLocationCodeEntityName = @"LibraryLocation";
 NSString * const LibraryPhoneEntityName = @"LibraryPhone";
 
 // local paths for handleLocalPath

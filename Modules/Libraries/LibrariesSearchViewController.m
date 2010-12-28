@@ -25,6 +25,7 @@
 @synthesize activeMode;
 
 @synthesize searchTerms, searchResults, searchController;
+@synthesize formatIndex, locationIndex;
 @synthesize loadingView;
 @synthesize searchBar = theSearchBar;
 
@@ -39,6 +40,8 @@
 		
 		hasSearchInitiated = NO;
 		actualCount = 0;
+        formatIndex = 0;
+        locationIndex = 0;
 
 		self.lastResults = [[NSMutableDictionary alloc] init];
 	}
@@ -127,14 +130,23 @@
 	_advancedSearchButton = nil;
 	UILabel * refine = nil;
 	if (nil == _advancedSearchButton) {
-		_advancedSearchButton = [[UIButton alloc] initWithFrame:CGRectMake(270, 6, 45, 30)];
-		[_advancedSearchButton setImage:[[UIImage imageNamed:@"global/subheadbar_button.png"] stretchableImageWithLeftCapWidth:10 topCapHeight:0] forState:UIControlStateNormal];
-	
-		refine = [[UILabel alloc] initWithFrame:_advancedSearchButton.frame];
-		refine.text = @"    Refine";
-		refine.textColor = [UIColor whiteColor];
-		refine.backgroundColor = [UIColor clearColor];
-		refine.font = [UIFont fontWithName:STANDARD_FONT size:10];
+        UIImage *buttonImage = [[UIImage imageNamed:@"global/subheadbar_button"] stretchableImageWithLeftCapWidth:10 topCapHeight:0];
+        NSString *buttonText = @"Refine";
+        UIFont *buttonFont = [UIFont fontWithName:BOLD_FONT size:10];
+        CGSize textSize = [buttonText sizeWithFont:buttonFont];
+        CGRect appFrame = [[UIScreen mainScreen] applicationFrame];
+
+		_advancedSearchButton = [[UIButton buttonWithType:UIButtonTypeCustom] retain];
+		_advancedSearchButton.frame = CGRectMake(0, 0, textSize.width + 22, buttonImage.size.height);
+		_advancedSearchButton.center = CGPointMake(appFrame.size.width - (_advancedSearchButton.frame.size.width / 2) - 2, (_advancedSearchButton.frame.size.height / 2) + 1);
+        
+		[_advancedSearchButton setBackgroundImage:buttonImage forState:UIControlStateNormal];
+		[_advancedSearchButton setBackgroundImage:[UIImage imageNamed:@"global/subheadbar_button_pressed"] forState:UIControlStateHighlighted];
+        
+        _advancedSearchButton.titleLabel.text = buttonText;
+        _advancedSearchButton.titleLabel.font = buttonFont;
+        _advancedSearchButton.titleLabel.textColor = [UIColor whiteColor];
+        [_advancedSearchButton setTitle: buttonText forState: UIControlStateNormal];
 	}
 	
 	[self.view addSubview:_advancedSearchButton];
@@ -146,12 +158,14 @@
 #pragma mark User Interaction
 
 -(void) advancedSearchButtonClicked: (id) sender{
+    NSLog(@"Passing format %d and location %d", formatIndex, locationIndex);
 	LibraryAdvancedSearch * vc = [[LibraryAdvancedSearch alloc] initWithNibName:@"LibraryAdvancedSearch" 
 																		 bundle:nil
-																	   keywords:self.searchTerms];
+																	   keywords:self.searchTerms
+                                                                    formatIndex:formatIndex
+                                                                  locationIndex:locationIndex];
 	
 	vc.title = @"Advanced Search";
-	//vc.keywords.text = self.searchTerms;
 	
 	NSPredicate *matchAll = [NSPredicate predicateWithFormat:@"TRUEPREDICATE"];
 	NSArray *tempArray = [CoreDataManager objectsForEntity:LibraryEntityName matchingPredicate:matchAll];

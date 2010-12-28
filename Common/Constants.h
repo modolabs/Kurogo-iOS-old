@@ -85,6 +85,8 @@ extern NSString * const ShuttleStopEntityName;
 extern NSString * const ShuttleRouteStopEntityName;
 extern NSString * const LibraryItemEntityName;
 extern NSString * const LibraryEntityName;
+extern NSString * const LibraryFormatCodeEntityName;
+extern NSString * const LibraryLocationCodeEntityName;
 extern NSString * const LibraryPhoneEntityName;
 
 
