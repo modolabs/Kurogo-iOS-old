@@ -25,14 +25,12 @@
     switch (style) {
         case UITableViewCellStyleValue2:
         {
-			// width -= 10.0; // 10px spacing between text and detailText
 			if (isTextLabel) {
                 width = floor(width * 0.24);
                 if (cellImage) width -= 33.0;
             } else {
 				width = floor(width * 0.76);
 				if (cellImage) width -= 33.0;
-				break;
                 
                 switch (accessoryType) {
                     case UITableViewCellAccessoryCheckmark:
@@ -77,7 +75,7 @@
                 case UITableViewCellAccessoryDisclosureIndicator:
                     width -= 33.0;
                     break;
-            }
+             }
             
             break;
         }
@@ -140,7 +138,9 @@
     
     CGFloat heightAdded = 0.0;
     UITableView *tableView = (UITableView *)self.superview;
-    //BOOL cellImage = (self.imageView.image != nil);
+    if (!tableView) return;
+    
+    BOOL cellImage = (self.imageView.image != nil);
     CGRect frame;
     
     UITableViewCellAccessoryType accessoryType = self.accessoryType;
@@ -158,12 +158,12 @@
            // frame.origin.y = 10.0;
         }
 		
-        frame.size.width = [LibrariesMultiLineCell widthForTextLabel:YES cellStyle:_style tableView:tableView accessoryType:accessoryType cellImage:YES];
+        frame.size.width = [LibrariesMultiLineCell widthForTextLabel:YES cellStyle:_style tableView:tableView accessoryType:accessoryType cellImage:cellImage];
 		frame.size.width = frame.size.width; //frame.size.width - 30;
         frame.size.height = [LibrariesMultiLineCell heightForLabelWithText:self.textLabel.text
-																   font:self.textLabel.font
-																  width:frame.size.width
-															   maxLines:self.textLabel.numberOfLines];
+                                                                      font:self.textLabel.font
+                                                                     width:frame.size.width
+                                                                  maxLines:self.textLabel.numberOfLines];
         heightAdded = frame.size.height - self.textLabel.frame.size.height;
         self.textLabel.frame = frame;
     }
@@ -174,20 +174,26 @@
         frame = self.detailTextLabel.frame;
         if (_style == UITableViewCellStyleSubtitle)
             frame.origin.y += heightAdded;
-        frame.size.width = [LibrariesMultiLineCell widthForTextLabel:NO cellStyle:_style tableView:tableView accessoryType:accessoryType cellImage:YES];
+        frame.size.width = [LibrariesMultiLineCell widthForTextLabel:NO cellStyle:_style tableView:tableView accessoryType:accessoryType cellImage:cellImage];
         frame.size.height = [LibrariesMultiLineCell heightForLabelWithText:self.detailTextLabel.text
-																   font:self.detailTextLabel.font
-																  width:frame.size.width
-															   maxLines:self.detailTextLabel.numberOfLines];
+                                                                      font:self.detailTextLabel.font
+                                                                     width:frame.size.width
+                                                                  maxLines:self.detailTextLabel.numberOfLines];
         self.detailTextLabel.frame = frame;
         
-        
+        NSString *text = self.detailTextLabel.text;
         // for cells with detail text only...
         // if the OS is more aggressive with accessory sizes,
         // it will make the text narrower and taller
         // than we make it, and recenter the labels within the cell.
         // so we re-recenter the frame based on its actual size
-        CGFloat innerHeight = self.detailTextLabel.frame.origin.y + self.detailTextLabel.frame.size.height - self.textLabel.frame.origin.y;
+        CGFloat innerHeight = self.detailTextLabel.frame.origin.y - self.textLabel.frame.origin.y;
+        if (self.detailTextLabel.frame.size.height > self.textLabel.frame.size.height) {
+            innerHeight += self.detailTextLabel.frame.size.height;
+        } else {
+            innerHeight += self.textLabel.frame.size.height;
+        }
+
         frame = self.textLabel.frame;
         frame.origin.y = floor((self.frame.size.height - innerHeight) / 2);
         heightAdded = frame.origin.y - self.textLabel.frame.origin.y;

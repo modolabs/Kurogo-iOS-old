@@ -483,7 +483,7 @@ NSInteger phoneNumberSort(id num1, id num2, void *context){
 		
 		LibrariesMultiLineCell *cell = (LibrariesMultiLineCell *)[tableView dequeueReusableCellWithIdentifier:CellTableIdentifier];
 		
-		cell = nil;
+		//cell = nil;
 		if (cell == nil)
 		{
 				cell = [[[LibrariesMultiLineCell alloc] initWithStyle:UITableViewCellStyleValue2 reuseIdentifier:CellTableIdentifier] autorelease];
@@ -740,7 +740,6 @@ NSInteger phoneNumberSort(id num1, id num2, void *context){
     UITableViewCellAccessoryType accessoryType;
 	//CGFloat constraintWidth;
 	
-	
 	if (indexPath.section == 0) {
 		
 		if ([[weeklySchedule allKeys] count] == 7){
@@ -754,21 +753,34 @@ NSInteger phoneNumberSort(id num1, id num2, void *context){
 			detailText = @"loading...";
 		}
 		else {
-            // TODO: don't use -[[x allKeys] objectAtIndex:y] unless this is supposed to be random
 			cellText = [[weeklySchedule allKeys] objectAtIndex:0];
 			detailText= [weeklySchedule objectForKey:[[weeklySchedule allKeys] objectAtIndex:0]];
+			NSString * hoursString = [weeklySchedule objectForKey:[[weeklySchedule allKeys] objectAtIndex:0]];
+			
+			NSRange range = [hoursString rangeOfString:@"http"];
+			if (range.location != NSNotFound)
+			{
+				cellText = @"Hours";
+				detailText = @"See webpage";
+				accessoryType = UITableViewCellAccessoryNone;
+			}
+			else{
+                // TODO: don't use -[[x allKeys] objectAtIndex:y] unless this is supposed to be random
+				cellText = [[weeklySchedule allKeys] objectAtIndex:0];
+				detailText = [weeklySchedule objectForKey:[[weeklySchedule allKeys] objectAtIndex:0]];
+			}
 		}
 	}
 	else if (indexPath.section == 1) {
 		cellText =  @"Location";
 		
-		if ([lib.location length] > 0)
+		if ([lib.location length] > 0) {
 			detailText = lib.location;
-		else {
+		} else {
 			detailText = @"Location not available"; // placholder
 		}
 
-		accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+		accessoryType = UITableViewCellAccessoryDetailDisclosureButton;
 		
 	}
 	else {
@@ -782,6 +794,7 @@ NSInteger phoneNumberSort(id num1, id num2, void *context){
 		else if (indexPath.row == emailRow) {
 			NSString *email = lib.emailLib;
 			detailText = email;
+            accessoryType = UITableViewCellAccessoryDetailDisclosureButton;
 		}
 		
 		else if (indexPath.row >= phoneRow) {
@@ -801,7 +814,7 @@ NSInteger phoneNumberSort(id num1, id num2, void *context){
 				if ([phone.phoneNumber length] > 0)
 					detailText = phone.phoneNumber;
 				
-				accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+				accessoryType = UITableViewCellAccessoryDetailDisclosureButton;
 			}
 			
 			return [LibrariesMultiLineCell heightForCellWithStyle:UITableViewCellStyleValue2
@@ -809,7 +822,7 @@ NSInteger phoneNumberSort(id num1, id num2, void *context){
 															 text:cellText
 													 maxTextLines:2
 													   detailText:detailText
-												   maxDetailLines:1
+												   maxDetailLines:2
 															 font:cellFont 
 													   detailFont:cellFont
 													accessoryType:accessoryType
@@ -826,20 +839,21 @@ NSInteger phoneNumberSort(id num1, id num2, void *context){
 		return height;
 	 */
 	
-	if (indexPath.section == 0)	
+	if (indexPath.section == 0)	{
 		return [LibrariesMultiLineCell heightForCellWithStyle:UITableViewCellStyleValue2
-                                                tableView:tableView 
-                                                     text:cellText
-                                             maxTextLines:1
-                                               detailText:detailText
-                                           maxDetailLines:10
-                                                     font:cellFont 
-                                               detailFont:cellFont
-                                            accessoryType:accessoryType
-                                                cellImage:NO];
+                                                    tableView:tableView 
+                                                         text:cellText
+                                                 maxTextLines:1
+                                                   detailText:detailText
+                                               maxDetailLines:10
+                                                         font:cellFont 
+                                                   detailFont:cellFont
+                                                accessoryType:accessoryType
+                                                    cellImage:NO];
 	
-	else return height + 20;
-		
+    } else { 
+        return height + 20;
+    }
 }
 
 

@@ -44,9 +44,9 @@
         formatIndex = 0;
         locationIndex = 0;
         
-        keywordText = @"";
-        titleText = @"";
-        authorText = @"";
+        keywordText = nil;
+        titleText = nil;
+        authorText = nil;
         englishOnlySwitch = false;
         
 		self.lastResults = [[NSMutableDictionary alloc] init];
@@ -172,9 +172,9 @@
     
 	LibraryAdvancedSearch * vc = [[LibraryAdvancedSearch alloc] initWithNibName:@"LibraryAdvancedSearch" 
 																		 bundle:nil
-																	   keywords:[keywordText length] ? self.keywordText : self.searchTerms
-                                                                          title:self.titleText
-                                                                         author:self.authorText
+																	   keywords:(keywordText && [keywordText length]) ? self.keywordText : self.searchTerms
+                                                                          title:titleText ? self.titleText : @""
+                                                                         author:authorText ? self.authorText : @""
                                                               englishOnlySwitch:self.englishOnlySwitch            
                                                                     formatIndex:formatIndex
                                                                   locationIndex:locationIndex];
