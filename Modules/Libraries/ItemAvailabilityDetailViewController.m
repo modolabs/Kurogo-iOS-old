@@ -256,6 +256,8 @@ allLibrariesWithItem: (NSArray *) allLibraries
 												   library:(Library *)alreadyInDB
 												   otherLibDictionary:[[NSDictionary alloc] init]];
 	
+    [self.navigationController pushViewController:vc animated:YES];
+	/*
 	apiRequest = [[JSONAPIRequest alloc] initWithJSONAPIDelegate:vc];
 	
 	NSString * libOrArchive;
@@ -269,8 +271,7 @@ allLibrariesWithItem: (NSArray *) allLibraries
 		vc.title = @"Library Detail";
 		libOrArchive = @"libdetail";
 	}
-	
-	
+    
 	if ([apiRequest requestObjectFromModule:@"libraries" 
 									command:libOrArchive
 								 parameters:[NSDictionary dictionaryWithObjectsAndKeys:libraryId, @"id", libraryName, @"name", nil]])
@@ -286,7 +287,8 @@ allLibrariesWithItem: (NSArray *) allLibraries
 		[alertView show];
 		[alertView release];
 	}
-	
+     */
+    
 	[vc release];
 }
 	
@@ -318,7 +320,17 @@ allLibrariesWithItem: (NSArray *) allLibraries
 				NSString * primaryNameTemp = [((NSDictionary *)[tempDict objectForKey:@"details"]) objectForKey:@"primaryName"];
 				
 				NSArray * collections = (NSArray *)[tempDict objectForKey:@"collection"];
+                
+                currentIndex = tempLibIndex;
+                libraryName = libName;
+                primaryName = primaryNameTemp;
+                libraryId = libId;
+                type = typeTemp;
+                availabilityCategories = collections;
+                
+                [self setupLayout];
 					
+                /*
 					apiRequest = [[JSONAPIRequest alloc] initWithJSONAPIDelegate:self];
 					
 					NSString * libOrArchive;
@@ -328,8 +340,10 @@ allLibrariesWithItem: (NSArray *) allLibraries
 					else {
 						libOrArchive = @"libdetail";
 					}
-					
-					
+                
+
+                [requestedLibID release];
+                requestedLibID = [libId retain];
 					if ([apiRequest requestObjectFromModule:@"libraries" 
 													command:libOrArchive
 												 parameters:[NSDictionary dictionaryWithObjectsAndKeys:libId, @"id", libName, @"name", nil]])
@@ -352,6 +366,7 @@ allLibrariesWithItem: (NSArray *) allLibraries
 						[alertView show];
 						[alertView release];
 					}
+                     */
 			}			
 		}
 	}	
@@ -1635,7 +1650,7 @@ allLibrariesWithItem: (NSArray *) allLibraries
 
 #pragma mark -
 #pragma mark JSONAPIRequest Delegate function 
-
+/*
 - (void)request:(JSONAPIRequest *)request jsonLoaded:(id)result {
 	
 	NSDictionary *libraryDictionary = (NSDictionary *)result;
@@ -1656,6 +1671,27 @@ allLibrariesWithItem: (NSArray *) allLibraries
 - (BOOL)request:(JSONAPIRequest *)request shouldDisplayAlertForError:(NSError *)error {
 	
     return YES;
+}
+
+*/
+
+- (void)requestDidSucceedForCommand:(NSString *)command {
+    if ([command isEqualToString:@"libdetail"] || [command isEqualToString:@"archivedetail"]) {
+        NSString *hrsToday = [[[LibraryDataManager sharedManager] scheduleForLibID:requestedLibID] objectForKey:@"hrsOpenToday"];
+        
+        if ([hrsToday isEqualToString:@"closed"])
+            openToday = @"Closed Today";
+        
+        else {
+            openToday = [NSString stringWithFormat: @"Open today from %@", hrsToday];
+        }
+        
+        [self setupLayout];
+    }
+}
+
+- (void)requestDidFailForCommand:(NSString *)command {
+    [[LibraryDataManager sharedManager] unregisterDelegate:self];
 }
 
 #pragma mark UIActionSheet setup

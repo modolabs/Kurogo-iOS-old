@@ -13,13 +13,45 @@
 #import "Constants.h"
 #import "LibrariesMultiLineCell.h"
 
+@interface BookmarkedHoursAndLocationsViewController (Private)
+
+- (NSArray *)currentLibraries;
+
+@end
+
+
 @implementation BookmarkedHoursAndLocationsViewController
 @synthesize listOrMapView;
 @synthesize showingMapView;
 @synthesize librayLocationsMapView;
 
 
-NSInteger bookmarkedNameSorted(id lib1, id lib2, void *context);
+- (NSArray *)currentLibraries {
+    
+    NSArray *currentLibraries = nil;
+    
+	NSPredicate *bookmarkPred = [NSPredicate predicateWithFormat:@"isBookmarked == YES"];
+	if (showingOnlyOpen == NO) {
+		currentLibraries = [[[LibraryDataManager sharedManager] allLibraries] filteredArrayUsingPredicate:bookmarkPred];
+	} else {
+		currentLibraries = [[[LibraryDataManager sharedManager] allOpenLibraries] filteredArrayUsingPredicate:bookmarkPred];
+	}
+    
+    return currentLibraries;
+}
+
+- (void)pingLibraries {
+    // TODO: subscribe to failure notifications if necessary
+    
+    if (![[self currentLibraries] count]) {
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:showingOnlyOpen ? @selector(openLibrariesDidLoad) : @selector(librariesDidLoad)
+                                                     name:LibraryRequestDidCompleteNotification
+                                                   object:showingOnlyOpen ? LibraryDataRequestOpenLibraries : LibraryDataRequestLibraries];
+    }
+}
+
+//NSInteger bookmarkedNameSorted(id lib1, id lib2, void *context);
 
 -(id)init {
 	
@@ -110,8 +142,10 @@ NSInteger bookmarkedNameSorted(id lib1, id lib2, void *context);
 	showingOnlyOpen = NO;
 	
 	[self.listOrMapView addSubview:_tableView];
+    
+    [self pingLibraries];
 	
-	
+	/*
 	
 	NSPredicate *bookmarkPred = [NSPredicate predicateWithFormat:@"isBookmarked == YES"];
 	NSArray *tempArray = [CoreDataManager objectsForEntity:LibraryEntityName matchingPredicate:bookmarkPred];
@@ -126,11 +160,22 @@ NSInteger bookmarkedNameSorted(id lib1, id lib2, void *context);
 		[allLibraries addObject:lib];
 		
 	}
+    */
+}
+
+- (void)librariesDidLoad {
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:LibraryRequestDidCompleteNotification object:LibraryDataRequestLibraries];
+    [_tableView reloadData];
+}
+
+- (void)openLibrariesDidLoad {
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:LibraryRequestDidCompleteNotification object:LibraryDataRequestOpenLibraries];
+    [_tableView reloadData];
 }
 
 -(void)viewWillAppear:(BOOL)animated {
 	[super viewWillAppear:animated];
-	
+	/*
 	NSPredicate *bookmarkPred = [NSPredicate predicateWithFormat:@"isBookmarked == YES"];
 	NSArray *tempArray = [CoreDataManager objectsForEntity:LibraryEntityName matchingPredicate:bookmarkPred];
 	
@@ -141,7 +186,7 @@ NSInteger bookmarkedNameSorted(id lib1, id lib2, void *context);
 	for(Library * lib in tempArray) {
 		[allLibraries addObject:lib];
 	}
-	
+	*/
 	[_tableView reloadData];
 }
 
@@ -153,19 +198,24 @@ NSInteger bookmarkedNameSorted(id lib1, id lib2, void *context);
 	[segmentedControl selectedSegmentIndex];
 	
 	showingOnlyOpen = !showingOnlyOpen;
+    [self pingLibraries];
+    
 	[_tableView reloadData];
 	
 	
 	if (showingMapView == YES) {
 		
 		if (nil != librayLocationsMapView) {
+            /*
 			if (showingOnlyOpen == NO)
 				[librayLocationsMapView setAllLibraryLocations:allLibraries];
 			
 			else {
 				[librayLocationsMapView setAllLibraryLocations:allOpenLibraries];
 			}
-			
+			*/
+            [librayLocationsMapView setAllLibraryLocations:[self currentLibraries]];
+            // TODO: move whatever is being done in -viewWillAppear to an independent function we can call
 			[librayLocationsMapView viewWillAppear:YES];
 		}
 	}
@@ -263,15 +313,17 @@ NSInteger bookmarkedNameSorted(id lib1, id lib2, void *context);
 		//librayLocationsMapView.parentViewController = self;
 		librayLocationsMapView.view.frame = self.listOrMapView.frame;
 		[self.listOrMapView addSubview:librayLocationsMapView.view];
-		
+		/*
 		if (showingOnlyOpen == NO)
 			[librayLocationsMapView setAllLibraryLocations:allLibraries];
 		
 		else {
 			[librayLocationsMapView setAllLibraryLocations:allOpenLibraries];
 		}
-		
-		[librayLocationsMapView viewWillAppear:YES];
+		*/
+        [librayLocationsMapView setAllLibraryLocations:[self currentLibraries]];
+        // TODO: move whatever is being done in -viewWillAppear to an independent function we can call
+        [librayLocationsMapView viewWillAppear:YES];
 		_viewTypeButton.title = @"List";
 		
 	}
@@ -324,7 +376,7 @@ NSInteger bookmarkedNameSorted(id lib1, id lib2, void *context);
 {
 	//return 6;
 	int count = 0;
-	
+	/*
 	if (showingOnlyOpen == NO) {
 		if (nil != allLibraries)
 			count = [allLibraries count];
@@ -333,7 +385,8 @@ NSInteger bookmarkedNameSorted(id lib1, id lib2, void *context);
 		if (nil != allOpenLibraries)
 			count = [allOpenLibraries count];
 	}
-	
+	*/
+    count = [[self currentLibraries] count];
 	
 	return count;
 	
@@ -351,7 +404,7 @@ NSInteger bookmarkedNameSorted(id lib1, id lib2, void *context);
 {
 	Library * lib; 
 	NSString * cellText = @"";
-	
+	/*
 	if (showingOnlyOpen == NO) {
 		lib = [allLibraries objectAtIndex:indexPath.section];
 		
@@ -365,6 +418,9 @@ NSInteger bookmarkedNameSorted(id lib1, id lib2, void *context);
 		if (nil != lib)
 			cellText = lib.name;
 	}
+	*/
+    
+    lib = [[self currentLibraries] objectAtIndex:indexPath.section];
 	
 	UITableViewCellAccessoryType accessoryType = UITableViewCellAccessoryNone;
 	
@@ -399,6 +455,7 @@ NSInteger bookmarkedNameSorted(id lib1, id lib2, void *context);
 	cell.textLabel.numberOfLines = 2;
 	
 	Library * lib; 
+    /*
 	if (showingOnlyOpen == NO) {
 		lib = [allLibraries objectAtIndex:indexPath.section];
 		
@@ -412,26 +469,28 @@ NSInteger bookmarkedNameSorted(id lib1, id lib2, void *context);
 		if (nil != allOpenLibraries)
 			cell.textLabel.text = lib.name;
 	}
-	
+     */
+    
+    lib = [[self currentLibraries] objectAtIndex:indexPath.section];
 	
     return cell;
 }
 
-
 - (NSArray *)sectionIndexTitlesForTableView:(UITableView *)tableView {
 	
-	NSMutableArray *tempLibraries;
+	//NSMutableArray *tempLibraries;
 	NSMutableArray *tempIndexArray = [NSMutableArray array];
+    NSArray *tempLibraries = [self currentLibraries];
 	
-	
+	/*
 	if (showingOnlyOpen == NO)
 		tempLibraries = allLibraries;
 	
 	else {
 		tempLibraries = allOpenLibraries;
 	}
-	
-	
+	*/
+    
 	for(Library *lib in tempLibraries) {
 		if (![tempIndexArray containsObject:[lib.name substringToIndex:1]])
 			[tempIndexArray addObject:[lib.name substringToIndex:1]];		
@@ -446,14 +505,17 @@ NSInteger bookmarkedNameSorted(id lib1, id lib2, void *context);
 }
 
 - (NSInteger)tableView:(UITableView *)tableView sectionForSectionIndexTitle:(NSString *)title atIndex:(NSInteger)index {
-	NSMutableArray *tempLibraries;
+	//NSMutableArray *tempLibraries;
 	
+    NSArray *tempLibraries = [self currentLibraries];
+	/*
 	if (showingOnlyOpen == NO)
 		tempLibraries = allLibraries;
 	
 	else {
 		tempLibraries = allOpenLibraries;
 	}
+     */
 	int ind = 0;
 	
 	for(Library *lib in tempLibraries) {
@@ -476,16 +538,19 @@ NSInteger bookmarkedNameSorted(id lib1, id lib2, void *context);
 	LibraryDetailViewController *vc = [[LibraryDetailViewController alloc] initWithStyle:UITableViewStyleGrouped];
 	
 	NSArray * tempArray;
-	
+	/*
 	if (showingOnlyOpen == NO)
 		tempArray = allLibraries;
 	else {
 		tempArray = allOpenLibraries;
 	}
-	
+	*/
+    tempArray = [self currentLibraries];
+    
 	Library * lib = (Library *) [tempArray objectAtIndex:indexPath.section];
 	vc.lib = [lib retain];
-	vc.otherLibraries = [tempArray retain];
+	//vc.otherLibraries = [tempArray retain];
+	vc.otherLibraries = tempArray;
 	vc.currentlyDisplayingLibraryAtIndex = indexPath.section;
 	
 	if ([lib.type isEqualToString:@"archive"])
@@ -493,7 +558,10 @@ NSInteger bookmarkedNameSorted(id lib1, id lib2, void *context);
 	
 	else
 		vc.title = @"Library Detail";
-	
+    
+    [self.navigationController pushViewController:vc animated:YES];
+    
+    /*
 	NSString * libOrArchive;
 	
 	if ([lib.type isEqualToString:@"archive"])
@@ -519,7 +587,7 @@ NSInteger bookmarkedNameSorted(id lib1, id lib2, void *context);
 		[alertView show];
 		[alertView release];
 	}
-	
+	*/
 
 	[vc release];
 	
@@ -527,6 +595,7 @@ NSInteger bookmarkedNameSorted(id lib1, id lib2, void *context);
 
 
 #pragma mark -
+/*
 #pragma mark JSONAPIRequest Delegate function 
 
 - (void)request:(JSONAPIRequest *)request jsonLoaded:(id)result {
@@ -595,8 +664,9 @@ NSInteger bookmarkedNameSorted(id lib1, id lib2, void *context);
 	
     return YES;
 }
+*/
 
-
+/*
 NSInteger bookmarkedNameSorted(id lib1, id lib2, void *context) {
 	
 	Library * library1 = (Library *)lib1;
@@ -604,6 +674,6 @@ NSInteger bookmarkedNameSorted(id lib1, id lib2, void *context) {
 	
 	return [library1.name compare:library2.name];
 }	
-
+*/
 
 @end

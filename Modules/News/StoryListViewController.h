@@ -61,6 +61,8 @@ UISearchBarDelegate, StoryXMLParserDelegate, JSONAPIDelegate, NavScrollerDelegat
 - (void)loadFromServer:(BOOL)loadMore;
 - (void)loadSearchResultsFromCache;
 - (void)loadSearchResultsFromServer:(BOOL)loadMore forQuery:(NSString *)query;
+- (void)refreshCategories;
+
 //- (BOOL)canSelectPreviousStory;
 //- (BOOL)canSelectNextStory;
 //- (NewsStory *)selectPreviousStory;

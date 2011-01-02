@@ -12,7 +12,7 @@
 #import "JSONAPIRequest.h"
 #import <MapKit/MapKit.h>
 #import "UnderlinedUILabel.h"
-
+#import "LibraryDataManager.h"
 
 @interface LibItemDetailViewController : UITableViewController <JSONAPIDelegate, CLLocationManagerDelegate>{
 	

@@ -303,7 +303,7 @@
 		
 		LibraryDetailViewController *vc = [[LibraryDetailViewController alloc] initWithStyle:UITableViewStyleGrouped];
 		
-		apiRequest = [[JSONAPIRequest alloc] initWithJSONAPIDelegate:vc];
+		//apiRequest = [[JSONAPIRequest alloc] initWithJSONAPIDelegate:vc];
 		
 		NSArray * tempArray;
 		
@@ -333,7 +333,9 @@
 		
 		vc.otherLibraries = [tempArray retain];
 		vc.currentlyDisplayingLibraryAtIndex = indexSelected;
+        [self.navController.navigationController pushViewController:vc animated:YES];
 		
+		/*
 		NSString * libOrArchive;
 		
 		if ([lib.type isEqualToString:@"archive"])
@@ -342,7 +344,6 @@
 		else {
 			libOrArchive = @"libdetail";
 		}
-		
 		
 		if ([apiRequest requestObjectFromModule:@"libraries" 
 										command:libOrArchive
@@ -359,7 +360,7 @@
 			[alertView show];
 			[alertView release];
 		}
-		
+		*/
 		[vc release];
 	}
 	
@@ -387,7 +388,10 @@
 													   currentInd:indexSelected
 													   library:(Library *)library
 													   otherLibDictionary:displayNameAndLibrariesDictionary];
+        
+        [self.navController.navigationController pushViewController:vc animated:YES];
 		
+		/*
 		apiRequest = [[JSONAPIRequest alloc] initWithJSONAPIDelegate:vc];
 		
 		NSString * libOrArchive;
@@ -401,8 +405,7 @@
 			vc.title = @"Library Detail";
 			libOrArchive = @"libdetail";
 		}
-		
-		
+
 		if ([apiRequest requestObjectFromModule:@"libraries" 
 										command:libOrArchive
 									 parameters:[NSDictionary dictionaryWithObjectsAndKeys:library.identityTag, @"id", repoName, @"name", nil]])
@@ -418,7 +421,7 @@
 			[alertView show];
 			[alertView release];
 		}
-		
+		*/
 		[vc release];
 	}
 }

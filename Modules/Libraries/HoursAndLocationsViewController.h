@@ -10,11 +10,12 @@
 #import "NavScrollerView.h"
 #import "LibraryLocationsMapViewController.h"
 #import "LibraryDetailViewController.h"
-#import "JSONAPIRequest.h"
+//#import "JSONAPIRequest.h"
+#import "LibraryDataManager.h"
 
 @class LibraryLocationsMapViewController;
 
-@interface HoursAndLocationsViewController : UIViewController <UITableViewDelegate, UITableViewDataSource, JSONAPIDelegate> {
+@interface HoursAndLocationsViewController : UIViewController <UITableViewDelegate, UITableViewDataSource, LibraryDataManagerDelegate> { //JSONAPIDelegate> {
 	
 	UIBarButtonItem * _viewTypeButton;
 	UIView * listOrMapView;
@@ -24,10 +25,10 @@
 	UISegmentedControl * filterButtonControl;
 	UISegmentedControl * gpsButtonControl;
 	
-	NSMutableArray * allLibraries;
-	NSMutableArray * allOpenLibraries;
-	NSMutableArray * allArchives;
-	
+	//NSMutableArray * allLibraries;
+	//NSMutableArray * allOpenLibraries;
+	//NSMutableArray * allArchives;
+
 	BOOL showingMapView;
 	BOOL gpsPressed;
 	BOOL showingOnlyOpen;

@@ -381,15 +381,15 @@ static NSString * const TwitterServiceName = @"Twitter";
 - (void)twitterXAuthConnectionDidFailWithError:(NSError *)error {
 	NSString *errorMsg;
 	if(error.code == -1012) {
-		errorMsg = @"Twitter was unable to authenticate your username and/or password";
+		errorMsg = NSLocalizedString(@"Twitter was unable to authenticate your username and/or password", nil);
 	} else if (error.code == -1009) {
-		errorMsg = @"Failed to connect to the twitter server";
+		errorMsg = NSLocalizedString(@"Failed to connect to the twitter server", nil);
 	} else	{
-		errorMsg = @"Something went wrong while trying to authenicate your twitter account";
+		errorMsg = NSLocalizedString(@"Something went wrong while trying to authenicate your twitter account", nil);
 		DLog(@"unusual error=%@", error);
 	}
 	
-	UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Twitter Failure" 
+	UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Twitter Failure", nil)
 		message:errorMsg 
 		delegate:nil 
 		cancelButtonTitle:@"OK" 

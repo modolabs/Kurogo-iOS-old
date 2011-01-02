@@ -495,6 +495,8 @@
 		EB54943810DFF03600B708B3 /* icons in Resources */ = {isa = PBXBuildFile; fileRef = EB54942710DFF03600B708B3 /* icons */; };
 		EB54947310DFF7E200B708B3 /* global in Resources */ = {isa = PBXBuildFile; fileRef = EB54947210DFF7E200B708B3 /* global */; };
 		EB67B0FD12CA6BC30080C0AA /* en.lproj in Resources */ = {isa = PBXBuildFile; fileRef = EB67B0FA12CA6BC30080C0AA /* en.lproj */; };
+		EB67B16412CA95630080C0AA /* LibraryDataManager.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB67B16212CA95630080C0AA /* LibraryDataManager.h */; settings = {JAVA_ARCHIVE_SUBDIR = Modules/Libraries; }; };
+		EB67B16512CA95630080C0AA /* LibraryDataManager.m in Sources */ = {isa = PBXBuildFile; fileRef = EB67B16312CA95630080C0AA /* LibraryDataManager.m */; };
 		EB6D02A911E3784100B65CE3 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EB6D02A811E3784100B65CE3 /* MapKit.framework */; };
 		EB6D076811E50E5B00B65CE3 /* JSONAPIRequest.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB6D076611E50E5B00B65CE3 /* JSONAPIRequest.h */; settings = {JAVA_ARCHIVE_SUBDIR = Common/Connection; }; };
 		EB6D076911E50E5B00B65CE3 /* JSONAPIRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = EB6D076711E50E5B00B65CE3 /* JSONAPIRequest.m */; };
@@ -1161,6 +1163,8 @@
 		EB54942710DFF03600B708B3 /* icons */ = {isa = PBXFileReference; lastKnownFileType = folder; name = icons; path = Resources/icons; sourceTree = "<group>"; };
 		EB54947210DFF7E200B708B3 /* global */ = {isa = PBXFileReference; lastKnownFileType = folder; name = global; path = Resources/global; sourceTree = "<group>"; };
 		EB67B0FA12CA6BC30080C0AA /* en.lproj */ = {isa = PBXFileReference; lastKnownFileType = folder; name = en.lproj; path = Resources/en.lproj; sourceTree = "<group>"; };
+		EB67B16212CA95630080C0AA /* LibraryDataManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LibraryDataManager.h; sourceTree = "<group>"; };
+		EB67B16312CA95630080C0AA /* LibraryDataManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LibraryDataManager.m; sourceTree = "<group>"; };
 		EB6D02A811E3784100B65CE3 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		EB6D076611E50E5B00B65CE3 /* JSONAPIRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JSONAPIRequest.h; sourceTree = "<group>"; };
 		EB6D076711E50E5B00B65CE3 /* JSONAPIRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JSONAPIRequest.m; sourceTree = "<group>"; };
@@ -1622,6 +1626,8 @@
 				5623EBC612B9ED6C00212D5C /* LibraryAdvancedSearch.xib */,
 				5623EE9F12BBD43C00212D5C /* MobileResearchLinksViewController.h */,
 				5623EEA012BBD43C00212D5C /* MobileResearchLinksViewController.m */,
+				EB67B16212CA95630080C0AA /* LibraryDataManager.h */,
+				EB67B16312CA95630080C0AA /* LibraryDataManager.m */,
 			);
 			path = Libraries;
 			sourceTree = "<group>";
@@ -2485,6 +2491,7 @@
 				5623EEA112BBD43C00212D5C /* MobileResearchLinksViewController.h in JavaArchive */,
 				A163D3F412C9523A004E423B /* LibraryItemFormat.h in JavaArchive */,
 				A163D3F612C9523A004E423B /* LibraryLocation.h in JavaArchive */,
+				EB67B16412CA95630080C0AA /* LibraryDataManager.h in JavaArchive */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2834,6 +2841,7 @@
 				5623EEA212BBD43C00212D5C /* MobileResearchLinksViewController.m in Sources */,
 				A163D3F512C9523A004E423B /* LibraryItemFormat.m in Sources */,
 				A163D3F712C9523A004E423B /* LibraryLocation.m in Sources */,
+				EB67B16512CA95630080C0AA /* LibraryDataManager.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3003,6 +3011,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				GCC_DYNAMIC_NO_PIC = NO;
@@ -3022,6 +3031,7 @@
 					"${SDK_DIR}/usr/include/libxml2",
 					"\"$(SRCROOT)/Common/Analytics\"",
 				);
+				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_NAME = "Harvard Mobile";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				SDKROOT = iphoneos;
@@ -3032,6 +3042,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -3049,6 +3060,7 @@
 					"${SDK_DIR}/usr/include/libxml2",
 					"\"$(SRCROOT)/Common/Analytics\"",
 				);
+				ONLY_ACTIVE_ARCH = NO;
 				PRODUCT_NAME = "Harvard Mobile";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				SDKROOT = iphoneos;
@@ -3260,6 +3272,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -3277,6 +3290,7 @@
 					"${SDK_DIR}/usr/include/libxml2",
 					"\"$(SRCROOT)/Common/Analytics\"",
 				);
+				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_NAME = "Harvard Mobile";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				SDKROOT = iphoneos;
@@ -3311,6 +3325,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -3328,6 +3343,7 @@
 					"${SDK_DIR}/usr/include/libxml2",
 					"\"$(SRCROOT)/Common/Analytics\"",
 				);
+				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_NAME = "Harvard Mobile";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				SDKROOT = iphoneos;
@@ -3362,6 +3378,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -3379,6 +3396,7 @@
 					"${SDK_DIR}/usr/include/libxml2",
 					"\"$(SRCROOT)/Common/Analytics\"",
 				);
+				ONLY_ACTIVE_ARCH = NO;
 				PRODUCT_NAME = "Harvard Mobile";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				SDKROOT = iphoneos;
@@ -3415,6 +3433,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -3432,6 +3451,7 @@
 					"${SDK_DIR}/usr/include/libxml2",
 					"\"$(SRCROOT)/Common/Analytics\"",
 				);
+				ONLY_ACTIVE_ARCH = NO;
 				PRODUCT_NAME = "Harvard Mobile";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				SDKROOT = iphoneos;
@@ -3469,6 +3489,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -3486,6 +3507,7 @@
 					"${SDK_DIR}/usr/include/libxml2",
 					"\"$(SRCROOT)/Common/Analytics\"",
 				);
+				ONLY_ACTIVE_ARCH = NO;
 				PRODUCT_NAME = "Harvard Mobile";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				SDKROOT = iphoneos;
@@ -3524,6 +3546,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				GCC_DYNAMIC_NO_PIC = NO;
@@ -3543,6 +3566,7 @@
 					"${SDK_DIR}/usr/include/libxml2",
 					"\"$(SRCROOT)/Common/Analytics\"",
 				);
+				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_NAME = "Harvard Mobile";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				SDKROOT = iphoneos;
@@ -3577,6 +3601,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -3594,6 +3619,7 @@
 					"${SDK_DIR}/usr/include/libxml2",
 					"\"$(SRCROOT)/Common/Analytics\"",
 				);
+				ONLY_ACTIVE_ARCH = NO;
 				PRODUCT_NAME = "Harvard Mobile";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				SDKROOT = iphoneos;

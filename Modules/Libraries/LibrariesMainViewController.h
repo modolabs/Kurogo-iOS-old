@@ -51,7 +51,6 @@
 -(void) setUpLayOut;
 -(void) hideToolBar;
 
-- (void)performSearch;
 - (void)presentSearchResults:(NSArray *)theSearchResults;
 - (void)showLoadingView;
 - (void)cleanUpConnection;

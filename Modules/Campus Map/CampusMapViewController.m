@@ -868,6 +868,7 @@
     {
         return YES;
 	}
+    return NO;
 }
 
 - (void)search:(NSString *)searchText params:(NSDictionary *)params

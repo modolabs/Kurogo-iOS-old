@@ -96,6 +96,19 @@
 	//catalogLink = nil;
 }
 
+/*
+- (void)fullAvailabilityDidLoad {
+    
+    [displayNameAndLibraries setObject:alreadyInDB forKey:displayName];
+    
+    [self.tableView reloadData];
+    
+    locationManager = [[CLLocationManager alloc] init];
+    locationManager.distanceFilter = kCLDistanceFilterNone;
+    locationManager.desiredAccuracy = kCLLocationAccuracyBest;
+    locationManager.delegate = self;
+}
+*/
 
 #pragma mark -
 #pragma mark View lifecycle
@@ -423,7 +436,6 @@
 					}
 
 					
-					locationsWithItem = [[NSArray alloc] init];
 					[self.tableView reloadData];
 					[self setUpdetails:libItem];
 					[self viewWillAppear:YES];
@@ -603,20 +615,19 @@
 			return cell4;
 			
 		}
-		NSDictionary * tempDict = [locationsWithItem objectAtIndex:indexPath.row];	
 		
-		NSDictionary * libraryDictionary  = [tempDict objectForKey:@"details"];;
-		NSNumber * latitude = [libraryDictionary objectForKey:@"latitude"];
-		NSNumber * longitude = [libraryDictionary objectForKey:@"longitude"];
+		// cell for availability listings
 		
-		NSString * libName = [tempDict objectForKey:@"name"];
+		static NSString *CellIdentifier1 = @"CellLib";
+        
+		NSDictionary * tempDict = [locationsWithItem objectAtIndex:indexPath.row];
+        
+		NSArray * collections = (NSArray *)[tempDict objectForKey:@"collection"]; // why are there multiple collections?
+        NSDictionary *collectionDict = [collections lastObject];
 		
-		NSMutableDictionary * dictWithStatuses = [[NSMutableDictionary alloc] init];
-		
-		NSArray * collections = (NSArray *)[tempDict objectForKey:@"collection"];
+		NSMutableDictionary * dictWithStatuses = [NSMutableDictionary dictionary];
 
-		
-		for(NSDictionary * collectionDict in collections){
+        if (collectionDict) {
 			
 			NSArray * itemsByStat = (NSArray *)[collectionDict objectForKey:@"itemsByStat"];
 			
@@ -628,20 +639,11 @@
 				
 				NSString * statMain = [statDict objectForKey:@"statMain"];
 				
-				
 				int availCount = [[statDict objectForKey:@"availCount"] intValue];
-				
-				int unavailCount = 0;
-				unavailCount = [[statDict objectForKey:@"unavailCount"] intValue];
-				
-				int checkedOutCount = 0;
-				checkedOutCount = [[statDict objectForKey:@"checkedOutCount"] intValue];
-				
-				int requestCount = 0;
-				requestCount = [[statDict objectForKey:@"requestCount"] intValue] + [[statDict objectForKey:@"scanAndDeliverCount"] intValue];
-				
-				int collectionOnlyCount = 0;
-				collectionOnlyCount = [[statDict objectForKey:@"collectionOnlyCount"] intValue];
+				int unavailCount = [[statDict objectForKey:@"unavailCount"] intValue];
+				int checkedOutCount = [[statDict objectForKey:@"checkedOutCount"] intValue];
+				int requestCount = [[statDict objectForKey:@"requestCount"] intValue] + [[statDict objectForKey:@"scanAndDeliverCount"] intValue];
+				int collectionOnlyCount = [[statDict objectForKey:@"collectionOnlyCount"] intValue];
 				
 				int totalItems = availCount + unavailCount + checkedOutCount + collectionOnlyCount;
 				
@@ -667,11 +669,6 @@
 				NSString * statusDetailString = [NSString stringWithFormat:
 												 @"%d of %d available - %@", availCount, totalItems, statMain];
 				
-				/*if ((totalItems == 0) && (requestCount == 0) && (collectionOnlyCount == 0))
-					statusDetailString = [NSString stringWithFormat:
-										  @"None available"];
-				 */
-				
 				if (collectionOnlyCount > 0)
 					statusDetailString = [NSString stringWithFormat:
 										  @"0 of %d may be available", collectionOnlyCount];
@@ -681,55 +678,50 @@
 			}
 		}
 		
-		
-		
-		static NSString *CellIdentifier1 = @"CellLib";
-		
 		LibItemDetailCell *cell1 = (LibItemDetailCell *)[tableView dequeueReusableCellWithIdentifier:CellIdentifier1];
 		
-		if (nil != cell1)
-			cell1 = nil;
-		
 		if (cell1 == nil) {
+            // TODO: this is leaking dictWithStatuses
 			cell1 = [[[LibItemDetailCell alloc] initWithStyle:UITableViewCellStyleSubtitle 
-											 reuseIdentifier:CellIdentifier1 
-											itemAvailability:[dictWithStatuses retain]] autorelease];
+                                              reuseIdentifier:CellIdentifier1 
+                                             itemAvailability:[dictWithStatuses retain]] autorelease];
 		}
+        
+        // cell title for availability listings
 		
-
+		NSString * libName = [tempDict objectForKey:@"name"];
 		cell1.textLabel.numberOfLines = 2;
 		cell1.textLabel.text = libName;
 		
-		
-		CLLocation * libLoc = [[CLLocation alloc] initWithLatitude:[latitude doubleValue] longitude:[longitude doubleValue]];
-		if ((nil != currentLocation) && (nil != libLoc)){
-
-			float dist = [currentLocation distanceFromLocation:libLoc];
-			if (dist > 0)
-				cell1.detailTextLabel.text = [NSString stringWithFormat:@"%d meters away", dist];
-			else 
-				cell1.detailTextLabel.text = @"";
+        // detail text label for availability listings
+        Library *theLibrary = [displayNameAndLibraries objectForKey:libName];
+        if (nil != currentLocation) {
+            CGFloat latitude = [theLibrary.lat doubleValue];
+            CGFloat longitude = [theLibrary.lon doubleValue];
+            
+            NSLog(@"latitude: %.1f longitude: %.1f", latitude, longitude);
+            
+            if (latitude != 0) {
+                CLLocation * libLoc = [[CLLocation alloc] initWithLatitude:latitude longitude:longitude];
+                CLLocationDistance dist = [currentLocation distanceFromLocation:libLoc];
+                if (dist >= 0) {
+                    cell1.detailTextLabel.text = [NSString stringWithFormat:@"%.0f meters away", dist];
+                    cell1.detailTextLabel.textColor = [UIColor colorWithHexString:@"#554C41"];
+                }
+            }
 		}
-		else {
-			cell1.detailTextLabel.text = @"";
-		}
-
- 
-		
-		cell1.detailTextLabel.textColor = [UIColor colorWithHexString:@"#554C41"];
-		
-		for(NSDictionary * collectionDict in collections){
-			
-			NSArray * itemsByStat = (NSArray *)[collectionDict objectForKey:@"itemsByStat"];
-			
-			if ([itemsByStat count] == 0) {
-				cell1.accessoryType = UITableViewCellAccessoryNone;
-			}
-			else {
-				cell1.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-			}
-		}
-			
+        
+        // accessory view
+        if (collectionDict) {
+            NSArray * itemsByStat = (NSArray *)[collectionDict objectForKey:@"itemsByStat"];
+            
+            if ([itemsByStat count] == 0) {
+                cell1.accessoryType = UITableViewCellAccessoryNone;
+            }
+            else {
+                cell1.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+            }
+        }
 		
 		cell1.selectionStyle = UITableViewCellSelectionStyleGray;
 		
@@ -956,6 +948,7 @@
 														 index:indexPath.row];
 			
 			
+			/*
 			apiRequest = [[JSONAPIRequest alloc] initWithJSONAPIDelegate:vc];
 			vc.parentViewApiRequest = [apiRequest retain];
 			
@@ -966,8 +959,7 @@
 			else {
 				libOrArchive = @"libdetail";
 			}
-			
-			
+
 			if ([apiRequest requestObjectFromModule:@"libraries" 
 											command:libOrArchive
 										 parameters:[NSDictionary dictionaryWithObjectsAndKeys:libId, @"id", libName, @"name", nil]])
@@ -983,8 +975,7 @@
 				[alertView show];
 				[alertView release];
 			}
-			
-			[vc release];
+			*/
 			
 			
 			
@@ -1133,6 +1124,7 @@
 				[self.tableView reloadData];
 			}
 		}
+        /*
 		else {
 			UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Connection Failed", nil)
 																message:NSLocalizedString(@"Could not connect to server. Please try again later.", nil)
@@ -1142,8 +1134,8 @@
 			[alertView show];
 			[alertView release];
 		}
+         */
 	}
-	
 	
 	
 	else if (displayImage == NO){
@@ -1156,47 +1148,23 @@
 			
 			for(NSDictionary * tempDict in result) {
 				
-				NSDictionary * libraryDictionary  = [tempDict objectForKey:@"details"];
 				NSString * displayName = [tempDict objectForKey:@"name"];
-				
-				if ((nil != libraryDictionary) && (![libraryDictionary isKindOfClass:[NSArray class]]))
-					if ([[libraryDictionary allKeys] count] > 0) {
-						NSString * name = [libraryDictionary objectForKey:@"name"];
-						NSString * primaryName = [libraryDictionary objectForKey:@"primaryName"];
-						NSString * type = [libraryDictionary objectForKey:@"type"];
-						NSString * identityTag = [libraryDictionary objectForKey:@"id"];
-						//NSString *directions = [libraryDictionary objectForKey:@"directions"];
-						NSString * location = [libraryDictionary objectForKey:@"address"];
-						NSNumber * latitude = [libraryDictionary objectForKey:@"latitude"];
-						NSNumber * longitude = [libraryDictionary objectForKey:@"longitude"];
-						
-						NSPredicate *pred = [NSPredicate predicateWithFormat:@"name == %@ AND type == %@", name, type];
-						Library *alreadyInDB = [[CoreDataManager objectsForEntity:LibraryEntityName matchingPredicate:pred] lastObject];
-						
-						
-						NSManagedObject *managedObj;
-						if (nil == alreadyInDB){
-							managedObj = [CoreDataManager insertNewObjectForEntityForName:LibraryEntityName];
-							alreadyInDB = (Library *)managedObj;
-							alreadyInDB.isBookmarked = [NSNumber numberWithBool:NO];
-						}
-						
-						alreadyInDB.name = name;
-						alreadyInDB.primaryName = primaryName;
-						alreadyInDB.identityTag = identityTag;
-						alreadyInDB.location = location;
-						alreadyInDB.lat = [NSNumber numberWithDouble:[latitude doubleValue]];
-						alreadyInDB.lon = [NSNumber numberWithDouble:[longitude doubleValue]];
-						alreadyInDB.type = type;
-						
-						alreadyInDB.isBookmarked = alreadyInDB.isBookmarked;
-						
-						[displayNameAndLibraries setObject:alreadyInDB forKey:displayName];
-						
-						[CoreDataManager saveData];
-					}
+                NSString * identityTag = [tempDict objectForKey:@"id"];
+                NSString * type        = [tempDict objectForKey:@"type"];
+
+                //NSDictionary * collection = [tempDict objectForKey:@"collection"];
+                
+                //NSPredicate *pred = [NSPredicate predicateWithFormat:@"name == %@ AND type == %@", displayName, type];
+                NSPredicate *pred = [NSPredicate predicateWithFormat:@"identityTag == %@", identityTag, type];
+                Library *alreadyInDB = [[CoreDataManager objectsForEntity:LibraryEntityName matchingPredicate:pred] lastObject];
+                if (!alreadyInDB) {
+                    alreadyInDB = (Library *)[CoreDataManager insertNewObjectForEntityForName:LibraryEntityName];
+                    alreadyInDB.isBookmarked = [NSNumber numberWithBool:NO];
+                    [CoreDataManager saveData];
+                }
+                
+                [displayNameAndLibraries setObject:alreadyInDB forKey:displayName];
 			}
-			
 			
 			locationManager = [[CLLocationManager alloc] init];
 			locationManager.distanceFilter = kCLDistanceFilterNone;
@@ -1206,6 +1174,7 @@
 			[locationManager startUpdatingLocation];
 			
 		}
+        /*
 		else {
 			UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Connection Failed", nil)
 																message:NSLocalizedString(@"Could not connect to server. Please try again later.", nil)
@@ -1215,6 +1184,7 @@
 			[alertView show];
 			[alertView release];
 		}
+        */
 	}
 	
 	[self removeLoadingIndicator];
@@ -1297,6 +1267,7 @@
     // test that the horizontal accuracy does not indicate an invalid measurement
     if (newLocation.horizontalAccuracy < 0) return;
   
+    [currentLocation release];
 	currentLocation = [newLocation retain];
 	[locationManager stopUpdatingLocation];
 	[self.tableView reloadData];

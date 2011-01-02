@@ -128,7 +128,9 @@ NSInteger phoneNumberSort(id num1, id num2, void *context){
 	[label2 release];
 	[label release];
 	
-	if (nil == weeklySchedule)
+    [self setupWeeklySchedule];
+    
+	if (nil == weeklySchedule) {
 		weeklySchedule = [[NSMutableDictionary alloc] initWithObjectsAndKeys:
 					  @"loading...", @"Monday",
 					  @"loading...", @"Tuesday",
@@ -137,6 +139,12 @@ NSInteger phoneNumberSort(id num1, id num2, void *context){
 					  @"loading...", @"Friday",
 					  @"loading...", @"Saturday",
 					  @"loading...", @"Sunday", nil];
+        
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(setupWeeklySchedule) name:LibraryRequestDidCompleteNotification object:LibraryDataRequestLibraryDetail];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(setupWeeklySchedule) name:LibraryRequestDidCompleteNotification object:LibraryDataRequestArchiveDetail];
+
+        [[LibraryDataManager sharedManager] requestDetailsForLibType:lib.type libID:lib.identityTag libName:lib.name];
+    }
 	
 	
 	//weeklySchedule = [[NSMutableDictionary alloc] init];
@@ -177,13 +185,15 @@ NSInteger phoneNumberSort(id num1, id num2, void *context){
 
 
 - (void)dealloc {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    
     [super dealloc];
 }
 
 
 -(void) setDaysOfWeekArray {
 	
-	daysOfWeek = [[[NSMutableArray alloc] init] retain];
+	daysOfWeek = [[NSMutableArray alloc] initWithCapacity:7];
 	
 	NSDate * today = [NSDate date];
 	NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
@@ -208,11 +218,6 @@ NSInteger phoneNumberSort(id num1, id num2, void *context){
 		
 		[daysOfWeek insertObject:dayString atIndex:day];
 	}
-	
-	
-	/*daysOfWeek = [[NSArray alloc] initWithObjects:
-				  @"Monday", @"Tuesday", @"Wednesday", @"Thursday", @"Friday", @"Saturday", @"Sunday", nil];
-	 */
 }
 
 
@@ -263,8 +268,26 @@ NSInteger phoneNumberSort(id num1, id num2, void *context){
 			
 			if ((tempLibIndex >= 0) && (tempLibIndex < [otherLibraries count])){
 				
+                self.lib = (Library *)[otherLibraries objectAtIndex:tempLibIndex];
+                
+                if (nil != headerView)
+                    [headerView removeFromSuperview];
+                
+                if (nil != footerLabel)
+                    [footerLabel removeFromSuperview];
+                
+                if ([self.lib.type isEqualToString:@"archive"])
+                    self.title = @"Archive Detail";
+                
+                else {
+                    self.title = @"Library Detail";
+                }
+                
+                [self setupLayout];
+                
+                /*
 				Library * temp = (Library *)[otherLibraries objectAtIndex:tempLibIndex];
-				
+                
 				NSString * libOrArchive;
 				if ([temp.type isEqualToString:@"archive"])
 					libOrArchive = @"archivedetail";
@@ -272,7 +295,7 @@ NSInteger phoneNumberSort(id num1, id num2, void *context){
 				else {
 					libOrArchive = @"libdetail";
 				}
-				
+                
 				apiRequest = [[JSONAPIRequest alloc] initWithJSONAPIDelegate:self];
 				
 				if ([apiRequest requestObjectFromModule:@"libraries" 
@@ -288,6 +311,7 @@ NSInteger phoneNumberSort(id num1, id num2, void *context){
 						[footerLabel removeFromSuperview];
 					
 					[self setupLayout];
+                    [weeklySchedule release];
 					weeklySchedule = [[NSMutableDictionary alloc] init];
 					
 					if ([self.lib.type isEqualToString:@"archive"])
@@ -309,7 +333,7 @@ NSInteger phoneNumberSort(id num1, id num2, void *context){
 					[alertView show];
 					[alertView release];
 				}
-				
+				*/
 			}			
 		}
 	}	
@@ -623,7 +647,7 @@ NSInteger phoneNumberSort(id num1, id num2, void *context){
 			return;
 		}
 		else {
-			
+			// TODO: don't use -[[x allKeys] objectAtIndex:y] unless this is supposed to be random
 			NSString * hoursString = [weeklySchedule objectForKey:[[weeklySchedule allKeys] objectAtIndex:0]];
 			
 			NSRange range = [hoursString rangeOfString:@"http"];
@@ -730,6 +754,7 @@ NSInteger phoneNumberSort(id num1, id num2, void *context){
 			detailText = @"loading...";
 		}
 		else {
+            // TODO: don't use -[[x allKeys] objectAtIndex:y] unless this is supposed to be random
 			cellText = [[weeklySchedule allKeys] objectAtIndex:0];
 			detailText= [weeklySchedule objectForKey:[[weeklySchedule allKeys] objectAtIndex:0]];
 		}
@@ -857,7 +882,7 @@ NSInteger phoneNumberSort(id num1, id num2, void *context){
 	
 }
 
-
+/*
 #pragma mark -
 #pragma mark JSONAPIRequest Delegate function 
 
@@ -955,6 +980,51 @@ NSInteger phoneNumberSort(id num1, id num2, void *context){
 	weeklySchedule = [[NSMutableDictionary alloc] initWithObjectsAndKeys:
 					  @"unavailable", @"Hours", nil];
 }
+*/
 
+- (void)setupWeeklySchedule {
+    
+    Library *theLibrary = [[LibraryDataManager sharedManager] libraryWithID:lib.identityTag];
+    if (!theLibrary) return;
+        
+    NSDictionary *libraryDictionary = [[LibraryDataManager sharedManager] scheduleForLibID:theLibrary.identityTag];
+    if (libraryDictionary) {
+        
+        [[LibraryDataManager sharedManager] unregisterDelegate:self];
+        
+        NSMutableDictionary *sched = [NSMutableDictionary dictionary];
+        
+        for (NSDictionary *wkSched in [libraryDictionary objectForKey:@"weeklyHours"]) {
+            NSString *day = [wkSched objectForKey:@"day"];
+            NSString *hours = [wkSched objectForKey:@"hours"];
+            [sched setObject:hours forKey:day];
+        }
+        
+        NSMutableDictionary * tempDict = [NSMutableDictionary dictionary];
+        
+        if ([sched count] < 7){
+            [tempDict setObject:[libraryDictionary objectForKey:@"hoursOfOperationString"] forKey:@"Hours"];
+            
+        } else {
+            for (NSString * dayOfWeek in daysOfWeek) {
+                NSString *scheduleString = [sched objectForKey:dayOfWeek];
+                if (!scheduleString)
+                    scheduleString = @"contact library/archive";
+                [tempDict setObject:scheduleString forKey:dayOfWeek];
+            }
+        }
+        
+        [weeklySchedule release];
+        weeklySchedule = [tempDict retain];
+        
+        [self.tableView reloadData];
+    }
+}
+
+- (void)requestDidFailForCommand:(NSString *)command {
+    [[LibraryDataManager sharedManager] unregisterDelegate:self];
+	[weeklySchedule release];
+	weeklySchedule = [[NSMutableDictionary alloc] initWithObjectsAndKeys:@"unavailable", @"Hours", nil];
+}
 
 @end

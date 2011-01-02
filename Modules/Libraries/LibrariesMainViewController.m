@@ -238,7 +238,10 @@
 	
 	BookmarkedHoursAndLocationsViewController *vc = [[BookmarkedHoursAndLocationsViewController alloc] init];
 	vc.title = @"Bookmarked Libraries";
+    
+    [self.navigationController pushViewController:vc animated:YES];
 	
+    /*
 	apiRequest = [[JSONAPIRequest alloc] initWithJSONAPIDelegate:vc];	
 	
 	
@@ -259,7 +262,7 @@
 	}
 	
 	[vc release];
-	
+	*/
 	//TODO: open a list-view displaying all bookmarked items
 }
 
@@ -306,13 +309,6 @@
 #pragma mark -
 #pragma mark Search methods
 
-- (void)beginExternalSearch:(NSString *)externalSearchTerms {
-	self.searchTerms = externalSearchTerms;
-	theSearchBar.text = self.searchTerms;
-	
-	//[self performSearch];
-}
-
 - (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar
 {
 	self.searchResults = nil;
@@ -329,7 +325,6 @@
 	[_bookmarkButton removeFromSuperview];
 	
 	self.searchTerms = [searchBar.text retain];
-	//[self performSearch];
 	
 	LibrariesSearchViewController *vc = [[LibrariesSearchViewController alloc] initWithViewController: self];
 	vc.title = @"Search Results";
@@ -353,33 +348,6 @@
 {
 	[self setupSearchController]; // in case we got rid of it from a memory warning
     [self hideToolBar];
-}
-
-- (void)performSearch
-{
-	// save search tokens for drawing table cells
-	/*NSMutableArray *tempTokens = [NSMutableArray arrayWithArray:[[self.searchTerms lowercaseString] componentsSeparatedByString:@" "]];
-	[tempTokens sortUsingFunction:strLenSort context:NULL]; // match longer tokens first
-	self.searchTokens = [NSArray arrayWithArray:tempTokens];
-	*/
-	NSString *temp = self.searchTerms;
-	
-	temp = [temp stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
-	
-	if ([temp length] == 0){
-		return;
-	}
-	
-	api = [JSONAPIRequest requestWithJSONAPIDelegate:self];
-	requestWasDispatched = [api requestObjectFromModule:@"people"
-                                                command:@"search"
-                                             parameters:[NSDictionary dictionaryWithObjectsAndKeys:self.searchTerms, @"q", nil]];
-	
-    if (requestWasDispatched) {
-		//[self showLoadingView];
-    } else {
-        //[self handleWarningMessage:@"Could not dispatch search" title:@"Search Failed"];
-    }
 }
 
 - (void)presentSearchResults:(NSArray *)theSearchResults {
@@ -558,7 +526,8 @@
 		{
 			HoursAndLocationsViewController *vc = [[HoursAndLocationsViewController alloc] initWithType:@"Libraries"];
 			vc.title = @"Libraries";
-			
+            [self.navigationController pushViewController:vc animated:YES];
+			/*
 			apiRequest = [[JSONAPIRequest alloc] initWithJSONAPIDelegate:vc];	
 			
 			
@@ -577,7 +546,7 @@
 				[alertView show];
 				[alertView release];
 			}
-
+            */
 			[vc release];
 		}
 		else if (((indexPath.row == 1) && (hasBookmarkedLibraries == NO)) ||
@@ -586,7 +555,8 @@
 			HoursAndLocationsViewController *vc = [[HoursAndLocationsViewController alloc] initWithType:@"Archives"];
 			vc.showArchives = YES;
 			vc.title = @"Archives";
-			
+            [self.navigationController pushViewController:vc animated:YES];
+			/*
 			apiRequest = [[JSONAPIRequest alloc] initWithJSONAPIDelegate:vc];	
 			
 			
@@ -605,7 +575,7 @@
 				[alertView show];
 				[alertView release];
 			}
-			
+			*/
 			[vc release];
 		}
 		
@@ -613,7 +583,8 @@
 			
 			BookmarkedHoursAndLocationsViewController *vc = [[BookmarkedHoursAndLocationsViewController alloc] init];
 			vc.title = @"Bookmarked Libraries";
-			
+            [self.navigationController pushViewController:vc animated:YES];
+			/*
 			apiRequest = [[JSONAPIRequest alloc] initWithJSONAPIDelegate:vc];	
 			
 			
@@ -632,7 +603,7 @@
 				[alertView show];
 				[alertView release];
 			}
-
+            */
 			[vc release];
 		}
 	}

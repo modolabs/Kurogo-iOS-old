@@ -466,11 +466,11 @@
 }
 
 - (void)restoreToolBar {
-	theSearchBar.frame = CGRectMake(0, 0, self.view.frame.size.width - 50, NAVIGATION_BAR_HEIGHT);
     [theSearchBar setShowsCancelButton:NO animated:YES];
     [UIView beginAnimations:@"searching" context:nil];
     [UIView setAnimationDuration:0.4];
 	
+	theSearchBar.frame = CGRectMake(0, 0, self.view.frame.size.width - 50, NAVIGATION_BAR_HEIGHT);
 	_advancedSearchButton.alpha = 1.0;
 	
     [UIView commitAnimations];
@@ -483,13 +483,6 @@
 
 #pragma mark -
 #pragma mark Search methods
-
-- (void)beginExternalSearch:(NSString *)externalSearchTerms {
-	self.searchTerms = externalSearchTerms;
-	theSearchBar.text = self.searchTerms;
-	
-	//[self performSearch];
-}
 
 - (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar
 {
@@ -521,11 +514,6 @@
 {
 	[self setupSearchController]; // in case we got rid of it from a memory warning
     [self hideToolBar];
-}
-
-- (void)performSearch
-{
-	
 }
 
 - (void)presentSearchResults:(NSArray *)theSearchResults {

@@ -11,9 +11,11 @@
 #import <MessageUI/MFMailComposeViewController.h>;
 #import "JSONAPIRequest.h"
 #import "Library.h"
+#import "LibraryDataManager.h"
 
+// TODO: this class and ItemAvailabilityLibDetailViewController are so similar that they should just be one class.
 
-@interface LibraryDetailViewController : UITableViewController <MFMailComposeViewControllerDelegate, JSONAPIDelegate>{
+@interface LibraryDetailViewController : UITableViewController <MFMailComposeViewControllerDelegate, LibraryDataManagerDelegate> { //JSONAPIDelegate>{
 	
 	UIButton * bookmarkButton;
 	
@@ -47,7 +49,7 @@
 @property (nonatomic, retain) NSMutableDictionary * weeklySchedule;
 @property BOOL bookmarkButtonIsOn;
 
-
+- (void)setupWeeklySchedule;
 -(void) setupLayout;
 -(void) setDaysOfWeekArray;
 

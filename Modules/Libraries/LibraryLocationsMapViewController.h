@@ -9,10 +9,10 @@
 #import <UIKit/UIKit.h>
 #import <MapKit/MapKit.h>
 #import "Library.h"
-#import "JSONAPIRequest.h"
+//#import "JSONAPIRequest.h"
+#import "LibraryDataManager.h"
 
-
-@interface LibraryLocationsMapViewController : UIViewController <MKMapViewDelegate>{
+@interface LibraryLocationsMapViewController : UIViewController <MKMapViewDelegate, LibraryDataManagerDelegate> {
 	
 	MKMapView * mapView;
 	NSArray * allLibraries;
@@ -20,7 +20,7 @@
 	
 	BOOL showingOpenOnly;
 	
-	JSONAPIRequest * apiRequest;
+	//JSONAPIRequest * apiRequest;
 	
 	UIViewController * navController;
 	

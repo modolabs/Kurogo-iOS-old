@@ -10,13 +10,13 @@
 #import "Library.h"
 #import "LibraryItem.h"
 #import "JSONAPIRequest.h"
-
+#import "LibraryDataManager.h"
 
 #define sectionType0 @"type0"
 #define sectionType1 @"type1"
 #define sectionType2 @"type2"
 
-@interface ItemAvailabilityDetailViewController : UITableViewController <JSONAPIDelegate, UIActionSheetDelegate>{
+@interface ItemAvailabilityDetailViewController : UITableViewController </*JSONAPIDelegate,*/ LibraryDataManagerDelegate, UIActionSheetDelegate>{
 
 	NSString * libraryName;
 	NSString * libraryId;
@@ -46,6 +46,8 @@
 	NSArray * actionSheetItems; // for use in the ActionSheet
 	
 	BOOL limitedView;
+    
+    NSString *requestedLibID;
 }
 
 @property (nonatomic, retain) JSONAPIRequest *parentViewApiRequest;
