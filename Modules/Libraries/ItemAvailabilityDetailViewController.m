@@ -329,44 +329,7 @@ allLibrariesWithItem: (NSArray *) allLibraries
                 availabilityCategories = collections;
                 
                 [self setupLayout];
-					
-                /*
-					apiRequest = [[JSONAPIRequest alloc] initWithJSONAPIDelegate:self];
-					
-					NSString * libOrArchive;
-					if ([typeTemp isEqualToString:@"archive"])
-						libOrArchive = @"archivedetail";
-					
-					else {
-						libOrArchive = @"libdetail";
-					}
-                
-
-                [requestedLibID release];
-                requestedLibID = [libId retain];
-					if ([apiRequest requestObjectFromModule:@"libraries" 
-													command:libOrArchive
-												 parameters:[NSDictionary dictionaryWithObjectsAndKeys:libId, @"id", libName, @"name", nil]])
-					{
-					
-						currentIndex = tempLibIndex;
-						libraryName = libName;
-						primaryName = primaryNameTemp;
-						libraryId = libId;
-						type = typeTemp;
-						availabilityCategories = collections;
-						[self viewWillAppear:YES];		
-					}
-					else {
-						UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Connection Failed", nil)
-																			message:NSLocalizedString(@"There was a problem retrieving data. Please check your connection and try again.", nil)
-																		   delegate:self 
-																  cancelButtonTitle:@"OK" 
-																  otherButtonTitles:nil];
-						[alertView show];
-						[alertView release];
-					}
-                     */
+                [self.tableView reloadData];
 			}			
 		}
 	}	

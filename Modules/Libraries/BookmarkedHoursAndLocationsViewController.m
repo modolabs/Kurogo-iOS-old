@@ -51,8 +51,6 @@
     }
 }
 
-//NSInteger bookmarkedNameSorted(id lib1, id lib2, void *context);
-
 -(id)init {
 	
 	self = [super init];
@@ -144,23 +142,6 @@
 	[self.listOrMapView addSubview:_tableView];
     
     [self pingLibraries];
-	
-	/*
-	
-	NSPredicate *bookmarkPred = [NSPredicate predicateWithFormat:@"isBookmarked == YES"];
-	NSArray *tempArray = [CoreDataManager objectsForEntity:LibraryEntityName matchingPredicate:bookmarkPred];
-	
-	tempArray = [tempArray sortedArrayUsingFunction:bookmarkedNameSorted context:self];
-	
-	allLibraries = nil;
-	allOpenLibraries = nil;
-	allLibraries = [[[NSMutableArray alloc] init] retain];
-	allOpenLibraries = [[[NSMutableArray alloc] init] retain];
-	for(Library * lib in tempArray) {
-		[allLibraries addObject:lib];
-		
-	}
-    */
 }
 
 - (void)librariesDidLoad {
@@ -175,18 +156,7 @@
 
 -(void)viewWillAppear:(BOOL)animated {
 	[super viewWillAppear:animated];
-	/*
-	NSPredicate *bookmarkPred = [NSPredicate predicateWithFormat:@"isBookmarked == YES"];
-	NSArray *tempArray = [CoreDataManager objectsForEntity:LibraryEntityName matchingPredicate:bookmarkPred];
-	
-	tempArray = [tempArray sortedArrayUsingFunction:bookmarkedNameSorted context:self];
-	
-	allLibraries = nil;
-	allLibraries = [[[NSMutableArray alloc] init] retain];
-	for(Library * lib in tempArray) {
-		[allLibraries addObject:lib];
-	}
-	*/
+
 	[_tableView reloadData];
 }
 
@@ -206,14 +176,7 @@
 	if (showingMapView == YES) {
 		
 		if (nil != librayLocationsMapView) {
-            /*
-			if (showingOnlyOpen == NO)
-				[librayLocationsMapView setAllLibraryLocations:allLibraries];
-			
-			else {
-				[librayLocationsMapView setAllLibraryLocations:allOpenLibraries];
-			}
-			*/
+
             [librayLocationsMapView setAllLibraryLocations:[self currentLibraries]];
             // TODO: move whatever is being done in -viewWillAppear to an independent function we can call
 			[librayLocationsMapView viewWillAppear:YES];
@@ -313,14 +276,7 @@
 		//librayLocationsMapView.parentViewController = self;
 		librayLocationsMapView.view.frame = self.listOrMapView.frame;
 		[self.listOrMapView addSubview:librayLocationsMapView.view];
-		/*
-		if (showingOnlyOpen == NO)
-			[librayLocationsMapView setAllLibraryLocations:allLibraries];
-		
-		else {
-			[librayLocationsMapView setAllLibraryLocations:allOpenLibraries];
-		}
-		*/
+
         [librayLocationsMapView setAllLibraryLocations:[self currentLibraries]];
         // TODO: move whatever is being done in -viewWillAppear to an independent function we can call
         [librayLocationsMapView viewWillAppear:YES];
@@ -333,19 +289,6 @@
 	}
 	
 }
-
-
-
-/*
- - (void)buttonPressed:(id)sender {
- UIButton *pressedButton = (UIButton *)sender;
- if (pressedButton.tag == SEARCH_BUTTON_TAG) {
- [self showSearchBar];
- } else {
- [self reloadView:pressedButton.tag];
- }
- }
- */
 
 
 /*- (void)didReceiveMemoryWarning {
@@ -374,19 +317,7 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView 
 {
-	//return 6;
-	int count = 0;
-	/*
-	if (showingOnlyOpen == NO) {
-		if (nil != allLibraries)
-			count = [allLibraries count];
-	}
-	else {
-		if (nil != allOpenLibraries)
-			count = [allOpenLibraries count];
-	}
-	*/
-    count = [[self currentLibraries] count];
+	int count = [[self currentLibraries] count];
 	
 	return count;
 	
@@ -402,25 +333,8 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-	Library * lib; 
-	NSString * cellText = @"";
-	/*
-	if (showingOnlyOpen == NO) {
-		lib = [allLibraries objectAtIndex:indexPath.section];
-		
-		if (nil != lib)
-			cellText = lib.name;
-	}
-	
-	else {
-		lib = [allOpenLibraries objectAtIndex:indexPath.section];
-		
-		if (nil != lib)
-			cellText = lib.name;
-	}
-	*/
-    
-    lib = [[self currentLibraries] objectAtIndex:indexPath.section];
+	Library * lib = [[self currentLibraries] objectAtIndex:indexPath.section];
+	NSString * cellText = lib.name;
 	
 	UITableViewCellAccessoryType accessoryType = UITableViewCellAccessoryNone;
 	
@@ -454,42 +368,14 @@
 	cell.selectionStyle = UITableViewCellSelectionStyleGray;
 	cell.textLabel.numberOfLines = 2;
 	
-	Library * lib; 
-    /*
-	if (showingOnlyOpen == NO) {
-		lib = [allLibraries objectAtIndex:indexPath.section];
-		
-		if (nil != allLibraries)
-			cell.textLabel.text = lib.name;
-	}
-	
-	else {
-		lib = [allOpenLibraries objectAtIndex:indexPath.section];
-		
-		if (nil != allOpenLibraries)
-			cell.textLabel.text = lib.name;
-	}
-     */
-    
-    lib = [[self currentLibraries] objectAtIndex:indexPath.section];
+	Library * lib = [[self currentLibraries] objectAtIndex:indexPath.section];
 	
     return cell;
 }
 
 - (NSArray *)sectionIndexTitlesForTableView:(UITableView *)tableView {
-	
-	//NSMutableArray *tempLibraries;
 	NSMutableArray *tempIndexArray = [NSMutableArray array];
     NSArray *tempLibraries = [self currentLibraries];
-	
-	/*
-	if (showingOnlyOpen == NO)
-		tempLibraries = allLibraries;
-	
-	else {
-		tempLibraries = allOpenLibraries;
-	}
-	*/
     
 	for(Library *lib in tempLibraries) {
 		if (![tempIndexArray containsObject:[lib.name substringToIndex:1]])
@@ -505,17 +391,9 @@
 }
 
 - (NSInteger)tableView:(UITableView *)tableView sectionForSectionIndexTitle:(NSString *)title atIndex:(NSInteger)index {
-	//NSMutableArray *tempLibraries;
 	
     NSArray *tempLibraries = [self currentLibraries];
-	/*
-	if (showingOnlyOpen == NO)
-		tempLibraries = allLibraries;
-	
-	else {
-		tempLibraries = allOpenLibraries;
-	}
-     */
+
 	int ind = 0;
 	
 	for(Library *lib in tempLibraries) {
@@ -537,19 +415,10 @@
 	
 	LibraryDetailViewController *vc = [[LibraryDetailViewController alloc] initWithStyle:UITableViewStyleGrouped];
 	
-	NSArray * tempArray;
-	/*
-	if (showingOnlyOpen == NO)
-		tempArray = allLibraries;
-	else {
-		tempArray = allOpenLibraries;
-	}
-	*/
-    tempArray = [self currentLibraries];
+	NSArray * tempArray = [self currentLibraries];
     
 	Library * lib = (Library *) [tempArray objectAtIndex:indexPath.section];
 	vc.lib = [lib retain];
-	//vc.otherLibraries = [tempArray retain];
 	vc.otherLibraries = tempArray;
 	vc.currentlyDisplayingLibraryAtIndex = indexPath.section;
 	
@@ -560,120 +429,9 @@
 		vc.title = @"Library Detail";
     
     [self.navigationController pushViewController:vc animated:YES];
-    
-    /*
-	NSString * libOrArchive;
-	
-	if ([lib.type isEqualToString:@"archive"])
-		libOrArchive = @"archivedetail";
-	
-	else {
-		libOrArchive = @"libdetail";
-	}
-
-	apiRequest = [[JSONAPIRequest alloc] initWithJSONAPIDelegate:vc];
-	if ([apiRequest requestObjectFromModule:@"libraries" 
-									command:libOrArchive
-								 parameters:[NSDictionary dictionaryWithObjectsAndKeys:lib.identityTag, @"id", lib.name, @"name", nil]])
-	{
-		[self.navigationController pushViewController:vc animated:YES];
-	}
-	else {
-		UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Connection Failed", nil)
-															message:NSLocalizedString(@"Could not connect to server. Please try again later.", nil)
-														   delegate:self 
-												  cancelButtonTitle:@"OK" 
-												  otherButtonTitles:nil];
-		[alertView show];
-		[alertView release];
-	}
-	*/
 
 	[vc release];
 	
 }
-
-
-#pragma mark -
-/*
-#pragma mark JSONAPIRequest Delegate function 
-
-- (void)request:(JSONAPIRequest *)request jsonLoaded:(id)result {
-	
-	NSArray *resultArray = (NSArray *)result;
-	
-	if ([result count]){
-		allLibraries = nil;
-		allOpenLibraries = nil;
-		allLibraries = [[[NSMutableArray alloc] init] retain];
-		allOpenLibraries = [[[NSMutableArray alloc] init] retain];
-	}
-	
-	for (int index=0; index < [result count]; index++) {
-		NSDictionary *libraryDictionary = [resultArray objectAtIndex:index];
-		
-		
-		NSString * name = [libraryDictionary objectForKey:@"name"];
-		//NSString * identityTag = [libraryDictionary objectForKey:@"id"];		
-		NSString * type = [libraryDictionary objectForKey:@"type"];
-		
-		NSString *isOpenNow = [libraryDictionary objectForKey:@"isOpenNow"];
-		
-		BOOL isOpen = NO;
-		if ([isOpenNow isEqualToString:@"YES"])
-			isOpen = YES;
-		
-		
-		NSPredicate *pred = [NSPredicate predicateWithFormat:@"name == %@ AND type == %@ AND isBookmarked == YES", name, type];
-		Library *alreadyInDB = [[CoreDataManager objectsForEntity:LibraryEntityName matchingPredicate:pred] lastObject];
-
-		if (nil != alreadyInDB){
-
-			[allLibraries addObject:alreadyInDB];
-		
-		if (isOpen)
-			[allOpenLibraries addObject:alreadyInDB];
-		}
-	}
-	NSArray * tempArray = [allLibraries sortedArrayUsingFunction:bookmarkedNameSorted context:self];
-	
-	allLibraries = nil;
-	allLibraries = [[NSMutableArray alloc] init];
-	for(Library * lib in tempArray) {
-		[allLibraries addObject:lib];		
-	}
-	tempArray = nil;
-	tempArray = [allOpenLibraries sortedArrayUsingFunction:bookmarkedNameSorted context:self];
-	allOpenLibraries = nil;
-	allOpenLibraries = [[NSMutableArray alloc] init];
-	for(Library * lib in tempArray) {
-		[allOpenLibraries addObject:lib];		
-	}
-	
-	[allLibraries retain];
-	[allOpenLibraries retain];
-	
-	[CoreDataManager saveData];
-	
-	
-	[_tableView reloadData];
-	//[parentViewController removeLoadingIndicator];
-}
-
-- (BOOL)request:(JSONAPIRequest *)request shouldDisplayAlertForError:(NSError *)error {
-	
-    return YES;
-}
-*/
-
-/*
-NSInteger bookmarkedNameSorted(id lib1, id lib2, void *context) {
-	
-	Library * library1 = (Library *)lib1;
-	Library * library2 = (Library *)lib2;
-	
-	return [library1.name compare:library2.name];
-}	
-*/
 
 @end

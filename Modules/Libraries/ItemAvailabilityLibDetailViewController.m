@@ -161,6 +161,8 @@ NSInteger phoneNumberSortItemAvail(id num1, id num2, void *context){
         
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(setupWeeklySchedule) name:LibraryRequestDidCompleteNotification object:LibraryDataRequestLibraryDetail];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(setupWeeklySchedule) name:LibraryRequestDidCompleteNotification object:LibraryDataRequestArchiveDetail];
+        
+        [[LibraryDataManager sharedManager] requestDetailsForLibType:lib.type libID:lib.identityTag libName:lib.name];
     }
 	
 	
@@ -235,11 +237,6 @@ NSInteger phoneNumberSortItemAvail(id num1, id num2, void *context){
 		
 		[daysOfWeek insertObject:dayString atIndex:day];
 	}
-	
-	
-	/*daysOfWeek = [[NSArray alloc] initWithObjects:
-	 @"Monday", @"Tuesday", @"Wednesday", @"Thursday", @"Friday", @"Saturday", @"Sunday", nil];
-	 */
 }
 
 
@@ -255,14 +252,11 @@ NSInteger phoneNumberSortItemAvail(id num1, id num2, void *context){
 	}
 	
 	if (newBookmarkButtonStatus) {
-		//[StellarModel saveClassToFavorites:stellarClass];
-		
 		bookmarkButton.selected = YES;
 		alreadyInDB.isBookmarked = [NSNumber numberWithBool:YES];
 	}
 	
 	else {
-		//[StellarModel removeClassFromFavorites:stellarClass];
 		bookmarkButton.selected = NO;
 		alreadyInDB.isBookmarked = [NSNumber numberWithBool:NO];
 	}
@@ -280,15 +274,16 @@ NSInteger phoneNumberSortItemAvail(id num1, id num2, void *context){
 		if ([otherLibraries count] > 1) {
 			int tempLibIndex;
 			
-			if (index == 0) { // going up
-				
+			if (index == 0 && currentlyDisplayingLibraryAtIndex > 0) { // going up
 				tempLibIndex = currentlyDisplayingLibraryAtIndex - 1;
 			}
-			else
+			else if (index == 1 && currentlyDisplayingLibraryAtIndex < [otherLibraries count]) {
 				tempLibIndex = currentlyDisplayingLibraryAtIndex + 1;
+            }
 			
 			
-			if ((tempLibIndex >= 0) && (tempLibIndex < [[otherLibraries allKeys] count])){
+			if (tempLibIndex != currentlyDisplayingLibraryAtIndex){
+                currentlyDisplayingLibraryAtIndex = tempLibIndex;
 				
 				NSString * tempDispName = [[otherLibraries allKeys] objectAtIndex:tempLibIndex];
                 self.lib = (Library *)[otherLibraries objectForKey:tempDispName];
@@ -307,56 +302,7 @@ NSInteger phoneNumberSortItemAvail(id num1, id num2, void *context){
                 }
                 
                 [self setupLayout];
-				
-				/*
-				Library * temp = (Library *)[otherLibraries objectForKey:tempDispName];
-				NSString * libOrArchive;
-				if ([temp.type isEqualToString:@"archive"])
-					libOrArchive = @"archivedetail";
-				
-				else {
-					libOrArchive = @"libdetail";
-				}
-                
-				apiRequest = [[JSONAPIRequest alloc] initWithJSONAPIDelegate:self];
-				
-				if ([apiRequest requestObjectFromModule:@"libraries" 
-												command:libOrArchive
-											 parameters:[NSDictionary dictionaryWithObjectsAndKeys:temp.identityTag, @"id", tempDispName, @"name", nil]])
-				{
-					lib = [temp retain];
-					currentlyDisplayingLibraryAtIndex = tempLibIndex;
-					displayName = tempDispName;
-					
-					if (nil != headerView)
-						[headerView removeFromSuperview];
-					
-					if (nil != footerLabel)
-						[footerLabel removeFromSuperview];
-					
-					[self setupLayout];
-					weeklySchedule = [[NSMutableDictionary alloc] init];
-					
-					if ([lib.type isEqualToString:@"archive"])
-						self.title = @"Archive Detail";
-					
-					else {
-						self.title = @"Library Detail";
-					}
-					
-					
-					[self.tableView reloadData];
-				}
-				else {
-					UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Connection Failed", nil)
-																		message:NSLocalizedString(@"Could not connect to server. Please try again later.", nil)
-																	   delegate:self 
-															  cancelButtonTitle:@"OK" 
-															  otherButtonTitles:nil];
-					[alertView show];
-					[alertView release];
-				}
-				*/
+                [self.tableView reloadData];
 			}			
 		}
 	}	
@@ -495,11 +441,6 @@ NSInteger phoneNumberSortItemAvail(id num1, id num2, void *context){
 
 // Customize the appearance of table view cells.
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    
-	
-	
-	//if (nil != allLibraries)
-	//cell.textLabel.text = @"Testing1";
 	
 	if (indexPath.section == 0) {
 		NSString * CellTableIdentifier = @"LibDetailsHours";
@@ -904,110 +845,17 @@ NSInteger phoneNumberSortItemAvail(id num1, id num2, void *context){
 
 
 #pragma mark -
-/*
-#pragma mark JSONAPIRequest Delegate function 
-- (void)request:(JSONAPIRequest *)request jsonLoaded:(id)result {
-	
-	NSDictionary *libraryDictionary = (NSDictionary *)result;
-	
-	NSString * name = [libraryDictionary objectForKey:@"name"];
-	NSString * primaryName = [libraryDictionary objectForKey:@"primaryname"];
-	NSString *directions = [libraryDictionary objectForKey:@"directions"];
-	NSString *website = [libraryDictionary objectForKey:@"website"];
-	NSString *email = [libraryDictionary objectForKey:@"email"];
-	
-	NSArray * phoneNumberArray = (NSArray *)[libraryDictionary objectForKey:@"phone"];
-	
-	NSArray * schedule = (NSArray *) [libraryDictionary objectForKey:@"weeklyHours"];
-	
-	directions = [directions stringByReplacingOccurrencesOfString:@"\n" withString:@""];
-	if ([lib.primaryName isEqualToString:primaryName]) {
-		
-		lib.primaryName = primaryName;
-		lib.websiteLib = website;
-		lib.emailLib = email;
-		lib.directions = directions;
-		
-		if ([lib.phone count])
-			[lib removePhone:lib.phone];
-		
-		
-		for(NSDictionary * phNbr in phoneNumberArray) {
-			
-			LibraryPhone * phone = [CoreDataManager insertNewObjectForEntityForName:LibraryPhoneEntityName];
-			phone.descriptionText = [phNbr objectForKey:@"description"];
-			
-			NSString *phNumber = [phNbr objectForKey:@"number"];
-			
-			if (phNumber.length == 8) {
-				phNumber = [NSString stringWithFormat:@"617-%@", phNumber];
-			} 
-			
-			phone.phoneNumber = phNumber;
-			
-			if (![lib.phone containsObject:phone])
-				[lib addPhoneObject:phone];
-			
-		}
-		
-		NSMutableDictionary * sched = [[NSMutableDictionary alloc] init];
-		
-		for(NSDictionary * wkSched in schedule) {
-			
-			NSString * day = [wkSched objectForKey:@"day"];
-			NSString *hours = [wkSched objectForKey:@"hours"];
-			
-			[sched setObject:hours forKey:day];
-		}
-		
-		
-		NSMutableDictionary * tempDict = [[NSMutableDictionary alloc] init];
-		
-		
-		if ([[sched allKeys] count] < 7){
-			
-			[tempDict setObject:[libraryDictionary objectForKey:@"hoursOfOperationString"]forKey:@"Hours"];
-		}
-		else{
-			for (NSString * dayOfWeek in daysOfWeek){
-				
-				if ([[sched allKeys] containsObject:dayOfWeek])
-					[tempDict setObject:[sched objectForKey:dayOfWeek] forKey:dayOfWeek];
-				
-				else {
-					[tempDict setObject:@"contact library/archive" forKey:dayOfWeek];
-				}
-				
-			}
-		}
-		
-		weeklySchedule = tempDict;
-		
-		[CoreDataManager saveData];
-	}
-	
-	[self.tableView reloadData];
-	//[parentViewController removeLoadingIndicator];
-}
-
-- (BOOL)request:(JSONAPIRequest *)request shouldDisplayAlertForError:(NSError *)error {
-	
-    return YES;
-}
-
-- (void)request:(JSONAPIRequest *)request handleConnectionError:(NSError *)error {
-	
-	weeklySchedule = nil;
-	weeklySchedule = [[NSMutableDictionary alloc] initWithObjectsAndKeys:
-					  @"unavailable", @"Hours", nil];
-}
- */
 
 - (void)setupWeeklySchedule {
     
+    [weeklySchedule release];
+    weeklySchedule = nil;
+    
     Library *theLibrary = [[LibraryDataManager sharedManager] libraryWithID:lib.identityTag];
-    if (theLibrary) {
-        [[LibraryDataManager sharedManager] unregisterDelegate:self];
+    if (!theLibrary) return;
+    
+    NSDictionary *libraryDictionary = [[LibraryDataManager sharedManager] scheduleForLibID:theLibrary.identityTag];
+    if (libraryDictionary) {
         
         NSDictionary *libraryDictionary = [[LibraryDataManager sharedManager] scheduleForLibID:theLibrary.identityTag];
         
@@ -1033,9 +881,9 @@ NSInteger phoneNumberSortItemAvail(id num1, id num2, void *context){
             }
         }
         
-        [weeklySchedule release];
         weeklySchedule = [tempDict retain];
         
+        // TODO: not sure if this is needed here
         [self.tableView reloadData];
     }
 }

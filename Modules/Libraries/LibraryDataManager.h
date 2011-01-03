@@ -6,6 +6,7 @@
 // api names
 
 extern NSString * const LibraryDataRequestLibraries;
+extern NSString * const LibraryDataRequestArchives;
 extern NSString * const LibraryDataRequestOpenLibraries;
 extern NSString * const LibraryDataRequestSearchCodes;
 extern NSString * const LibraryDataRequestLibraryDetail;

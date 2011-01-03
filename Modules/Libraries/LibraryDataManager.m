@@ -8,6 +8,7 @@
 // api names
 
 NSString * const LibraryDataRequestLibraries = @"libraries";
+NSString * const LibraryDataRequestArchives = @"archives";
 NSString * const LibraryDataRequestOpenLibraries = @"opennow";
 NSString * const LibraryDataRequestSearchCodes = @"searchcodes";
 NSString * const LibraryDataRequestLibraryDetail = @"libdetail";
@@ -78,6 +79,7 @@ static LibraryDataManager *s_sharedManager = nil;
             }
         } else {
             [self requestLibraries];
+            [self requestArchives];
         }
             
         [self requestOpenLibraries];
@@ -131,6 +133,10 @@ static LibraryDataManager *s_sharedManager = nil;
 
 - (void)requestLibraries {
     [self makeOneTimeRequestWithCommand:LibraryDataRequestLibraries];
+}
+
+- (void)requestArchives {
+    [self makeOneTimeRequestWithCommand:LibraryDataRequestArchives];
 }
 
 - (void)requestOpenLibraries {
@@ -200,8 +206,8 @@ static LibraryDataManager *s_sharedManager = nil;
 - (void)request:(JSONAPIRequest *)request jsonLoaded:(id)JSONObject {
     NSString *command = request.userData;
     
-#pragma mark libraries API
-    if ([command isEqualToString:LibraryDataRequestLibraries]) {
+#pragma mark libraries/archives API
+    if ([command isEqualToString:LibraryDataRequestLibraries] || [command isEqualToString:LibraryDataRequestArchives]) {
         
         // TODO: if user has libraries cached, check for obsoleted libraries and delete them
         
@@ -220,11 +226,6 @@ static LibraryDataManager *s_sharedManager = nil;
                 NSString * location = [libraryDictionary objectForKey:@"address"];
                 
                 NSString * type = [libraryDictionary objectForKey:@"type"];
-                
-                // TODO: if this list is comprehensive, populate _openLibaries and _openArchives
-                // otherwise ignore this flag
-                NSString *isOpenNow = [libraryDictionary objectForKey:@"isOpenNow"];
-                BOOL isOpen = [isOpenNow isEqualToString:@"YES"];
                 
                 //NSString *typeOfLib = [command isEqualToString:LibraryDataRequestLibraryDetail] ? @"library" : @"archive";
                 
@@ -253,9 +254,17 @@ static LibraryDataManager *s_sharedManager = nil;
                     [_archivesByID setObject:alreadyInDB forKey:identityTag];
                 }
                 
-                //if (isOpen) {
-                //    [_allOpenLibraries addObject:alreadyInDB];
-                //}
+                NSString *isOpenNow = [libraryDictionary objectForKey:@"isOpenNow"];
+                BOOL isOpen = [isOpenNow isEqualToString:@"YES"];
+                
+                if (isOpen) {
+                    if ([type isEqualToString:@"library"]) {
+                        [_allOpenLibraries addObject:alreadyInDB];
+                    } else if ([type isEqualToString:@"archive"]) {
+                        [_allOpenArchives addObject:alreadyInDB];
+                    }
+                }
+                
             }
         }
         

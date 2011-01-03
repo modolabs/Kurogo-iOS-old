@@ -77,15 +77,19 @@
 
 
 - (void)dealloc {
-    [super dealloc];
+    [allLibraries release];
+    
 	self.mapView.delegate = nil;
 	self.mapView = nil;
+
+    [super dealloc];
 }
 
 
 
 -(void) setAllLibraryLocations:(NSArray *) libraries{
-	allLibraries = libraries;
+    [allLibraries release];
+	allLibraries = [libraries retain];
 	
 	for (int i=0; i< [[self.mapView annotations] count]; i++)
 		[self.mapView removeAnnotation:[[self.mapView annotations] objectAtIndex:i]];
@@ -303,8 +307,6 @@
 		
 		LibraryDetailViewController *vc = [[LibraryDetailViewController alloc] initWithStyle:UITableViewStyleGrouped];
 		
-		//apiRequest = [[JSONAPIRequest alloc] initWithJSONAPIDelegate:vc];
-		
 		NSArray * tempArray;
 		
 		if (showingOpenOnly == NO)
@@ -335,32 +337,6 @@
 		vc.currentlyDisplayingLibraryAtIndex = indexSelected;
         [self.navController.navigationController pushViewController:vc animated:YES];
 		
-		/*
-		NSString * libOrArchive;
-		
-		if ([lib.type isEqualToString:@"archive"])
-			libOrArchive = @"archivedetail";
-		
-		else {
-			libOrArchive = @"libdetail";
-		}
-		
-		if ([apiRequest requestObjectFromModule:@"libraries" 
-										command:libOrArchive
-									 parameters:[NSDictionary dictionaryWithObjectsAndKeys:lib.identityTag, @"id", lib.name, @"name", nil]])
-		{
-			[self.navController.navigationController pushViewController:vc animated:YES];
-		}
-		else {
-			UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Connection Failed", nil)
-																message:NSLocalizedString(@"Could not connect to server. Please try again later.", nil)
-															   delegate:self 
-													  cancelButtonTitle:@"OK" 
-													  otherButtonTitles:nil];
-			[alertView show];
-			[alertView release];
-		}
-		*/
 		[vc release];
 	}
 	
@@ -391,37 +367,6 @@
         
         [self.navController.navigationController pushViewController:vc animated:YES];
 		
-		/*
-		apiRequest = [[JSONAPIRequest alloc] initWithJSONAPIDelegate:vc];
-		
-		NSString * libOrArchive;
-		
-		if ([library.type isEqualToString:@"archive"]) {
-			vc.title = @"Archive Detail";
-			libOrArchive = @"archivedetail";
-		}
-		
-		else {
-			vc.title = @"Library Detail";
-			libOrArchive = @"libdetail";
-		}
-
-		if ([apiRequest requestObjectFromModule:@"libraries" 
-										command:libOrArchive
-									 parameters:[NSDictionary dictionaryWithObjectsAndKeys:library.identityTag, @"id", repoName, @"name", nil]])
-		{
-			[self.navController.navigationController pushViewController:vc animated:YES];
-		}
-		else {
-			UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Connection Failed", nil)
-																message:NSLocalizedString(@"Could not connect to server. Please try again later.", nil)
-															   delegate:self 
-													  cancelButtonTitle:@"OK" 
-													  otherButtonTitles:nil];
-			[alertView show];
-			[alertView release];
-		}
-		*/
 		[vc release];
 	}
 }
