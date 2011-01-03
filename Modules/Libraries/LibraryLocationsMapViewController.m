@@ -72,10 +72,6 @@
     
     [self.mapView removeAnnotations:[self.mapView annotations]];
 	
-	for (int i=0; i< [[self.mapView annotations] count]; i++)
-		[self.mapView removeAnnotation:[[self.mapView annotations] objectAtIndex:i]];
-	
-	
 	for (int index=0; index < [allLibraries count]; index++){
 		LibraryAlias *lib = [allLibraries objectAtIndex:index];
 		

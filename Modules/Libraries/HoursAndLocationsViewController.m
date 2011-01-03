@@ -264,7 +264,6 @@
 	// flip to the correct view. 
 	if (animated) {
 		[UIView beginAnimations:@"flip" context:nil];
-		//[UIView setAnimationTransition:UIViewAnimationTransitionCurlDown forView:self.listOrMapView cache:NO];
 		[UIView setAnimationTransition:UIViewAnimationTransitionCurlDown forView:self.view cache:NO];
 	}
 	
@@ -274,9 +273,9 @@
 			[self.librayLocationsMapView.view removeFromSuperview];
 		
         [self.view addSubview:_tableView];
-			[_tableView reloadData];
-			self.librayLocationsMapView = nil;
-			_viewTypeButton.title = @"Map";
+        [_tableView reloadData];
+        self.librayLocationsMapView = nil;
+        _viewTypeButton.title = @"Map";
 
 
 	} else {
