@@ -25,6 +25,9 @@
 	UIViewController * navController;
 	
 	NSDictionary * displayNameAndLibrariesDictionary;
+    
+    // true if we are looking at map of an item's available locations, false if we are looking at generic map
+    BOOL isAvailabilityMap;
 
 }
 
@@ -39,13 +42,8 @@
 - (BOOL)mapView:(MKMapView *)_mapView didUpdateUserLocation:(MKUserLocation *)userLocation;
 
 -(void) setAllLibraryLocations:(NSArray *) libraries;
--(void) setAllAvailabilityLibraryLocations:(NSDictionary *)displayNameAndLibraries;
--(void) setOpenLibrariesLocations: (NSArray *) openLibraries;
--(void) addToOpenLibraries: (Library *) library;
--(void) removeFromOpenLibraries: (Library *) library;
+//-(void) setAllAvailabilityLibraryLocations:(NSDictionary *)displayNameAndLibraries;
 
--(void) addLibraryLocationOnMap: (Library *) library;
-
-
+- (NSArray *)currentLibraries;
 
 @end

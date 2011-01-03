@@ -14,34 +14,44 @@
 @synthesize repoId;
 @synthesize repoType;
 @synthesize library = _library;
+@synthesize subtitle = _subtitle;
 
+/*
 -(id) initWithRepoName:(NSString *)name 
 		   identityTag:(NSString *) idTag 
 				  type:(NSString *)type
 				   lib: (Library *) lib
 {
 	if (self = [super init]) {
-		repoNameToDisplay = name;
-		repoId = idTag;
-		repoType = type;
+		repoNameToDisplay = [name retain];
+		repoId = [idTag retain];
+		repoType = [type retain];
 		
 		_library = [lib retain];
 	}
 	
 	return self;
 }
+*/
+
+- (id)initWithLibAlias:(LibraryAlias *)libAlias {
+    if (self = [super init]) {
+        _libAlias = libAlias;
+    }
+    return self;
+}
 
 -(void) dealloc
 {
-	[_library dealloc];
+	[_libAlias release];
 	[super dealloc];
 }
 
 -(CLLocationCoordinate2D) coordinate
 {
 	CLLocationCoordinate2D coordinate;
-	coordinate.latitude = [_library.lat doubleValue];
-	coordinate.longitude = [_library.lon doubleValue];
+	coordinate.latitude = [_libAlias.library.lat doubleValue];
+	coordinate.longitude = [_libAlias.library.lon doubleValue];
 	
 	return coordinate;
 }
@@ -49,17 +59,6 @@
 -(NSString*) title
 {
 	return repoNameToDisplay;
-}
-
--(NSString*) subtitle
-{
-	return _subtitle;
-}
-
--(void) setSubtitle:(NSString*)subtitle
-{
-	[_subtitle release];
-	_subtitle = [subtitle retain];
 }
 
 @end

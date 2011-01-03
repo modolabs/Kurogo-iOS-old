@@ -23,15 +23,6 @@
 @synthesize locationDisclosure;
 @synthesize englishSwitch;
 
-/*NSInteger libraryNameSortAdvancedSearch(id lib1, id lib2, void *context) {
-	
-	Library * library1 = (Library *)lib1;
-	Library * library2 = (Library *)lib2;
-	
-	return [library1.name compare:library2.name];
-}*/
-
-
 -(void) setupLayout{
 	
 	

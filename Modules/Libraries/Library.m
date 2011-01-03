@@ -11,7 +11,7 @@
 
 @implementation Library
 
-@dynamic name;
+@dynamic aliases;
 @dynamic primaryName;
 @dynamic identityTag;
 @dynamic location;

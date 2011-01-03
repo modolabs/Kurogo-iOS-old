@@ -11,30 +11,26 @@
 #import "Library.h"
 #import <CoreLocation/CoreLocation.h>
 
+@class LibraryAlias;
 
 @interface ItemAvailabilityLibraryAnnotation : NSObject <MKAnnotation> {
 	
-	NSString * repoNameToDisplay;
-	NSString * repoId;
-	NSString * repoType;
+	//NSString * repoNameToDisplay;
+	//NSString * repoId;
+	//NSString * repoType;
 	
-	Library* _library;
+	LibraryAlias* _libAlias;
 	
 	
 	NSString* _subtitle;
 }
 
--(id) initWithRepoName:(NSString *)name 
-		   identityTag:(NSString *) idTag 
-				  type:(NSString *)type
-				   lib: (Library *) lib;
+-(id) initWithLibAlias: (LibraryAlias *) lib;
 
-@property (readonly) NSString * repoNameToDisplay;
-@property (readonly) NSString * repoId;
-@property (readonly) NSString * repoType;
-@property (readonly) Library* library;
-
-
--(void) setSubtitle:(NSString*) subtitle;
+//@property (nonatomic, readonly) NSString * repoNameToDisplay;
+//@property (nonatomic, readonly) NSString * repoId;
+//@property (nonatomic, readonly) NSString * repoType;
+@property (nonatomic, readonly) LibraryAlias * libAlias;
+@property (nonatomic, retain) NSString * subtitle;
 
 @end

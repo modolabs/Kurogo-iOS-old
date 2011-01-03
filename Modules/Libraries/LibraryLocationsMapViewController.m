@@ -10,18 +10,22 @@
 #import "Library.h"
 #import "LibraryAnnotation.h"
 #import "LibraryDetailViewController.h"
-#import "ItemAvailabilityLibraryAnnotation.h"
-#import "ItemAvailabilityLibDetailViewController.h"
+#import "LibraryAlias.h"
+//#import "ItemAvailabilityLibraryAnnotation.h"
+//#import "ItemAvailabilityLibDetailViewController.h"
 
 @implementation LibraryLocationsMapViewController
 @synthesize mapView;
 @synthesize showingOpenOnly;
 @synthesize navController;
 
+- (NSArray *)currentLibraries {
+    
+}
+
 -(id) initWithMapViewFrame:(CGRect) frame {
 	
 	self = [super init];
-	
 	
 	if (self) {
 		self.mapView = [[MKMapView alloc] initWithFrame:frame];
@@ -39,26 +43,7 @@
 		self.showingOpenOnly = NO;
 	}
 	
-
-	
-	/*CLLocationCoordinate2D center;
-	center.latitude = 42.37640;
-	center.longitude = -71.11660;
-	
-	double latDelta = 0.004;
-	double lonDelta = 0.004; 
-	
-	
-	MKCoordinateSpan span = {latitudeDelta: latDelta, longitudeDelta: lonDelta};
-	MKCoordinateRegion region = {center, span};
-	
-	region.span.latitudeDelta = latDelta;
-	region.span.longitudeDelta = lonDelta;
-	
-	self.mapView.region = region;*/
-	
 	[self.view addSubview:self.mapView];
-	
 }
 
 
@@ -90,13 +75,15 @@
 -(void) setAllLibraryLocations:(NSArray *) libraries{
     [allLibraries release];
 	allLibraries = [libraries retain];
+    
+    [self.mapView removeAnnotations:[self.mapView annotations]];
 	
 	for (int i=0; i< [[self.mapView annotations] count]; i++)
 		[self.mapView removeAnnotation:[[self.mapView annotations] objectAtIndex:i]];
 	
 	
 	for (int index=0; index < [allLibraries count]; index++){
-		Library *lib = [allLibraries objectAtIndex:index];
+		LibraryAlias *lib = [allLibraries objectAtIndex:index];
 		
 		LibraryAnnotation *annotation = [[LibraryAnnotation alloc] initWithLibrary:lib];
 		
@@ -106,46 +93,28 @@
 	mapView.region = [self regionForAnnotations:mapView.annotations];
 }
 
-
+/*
 -(void) setAllAvailabilityLibraryLocations:(NSDictionary *)displayNameAndLibraries{
-	
-	for (int i=0; i< [[self.mapView annotations] count]; i++)
-		[self.mapView removeAnnotation:[[self.mapView annotations] objectAtIndex:i]];
+    
+    [self.mapView removeAnnotations:[self.mapView annotations]];
 	
 	displayNameAndLibrariesDictionary = displayNameAndLibraries;
 	
-	//NSMutableArray * tempArray = [[NSMutableArray alloc] init];
 	for(int index=0; index < [[displayNameAndLibraries allKeys] count]; index++){
 		
 		NSString * displayName = [[displayNameAndLibraries allKeys] objectAtIndex:index];
 		Library * tempLib = [displayNameAndLibraries objectForKey:displayName];
-		
-		//[tempArray insertObject:tempLib atIndex:index];
-		
 		ItemAvailabilityLibraryAnnotation * annotation = [[ItemAvailabilityLibraryAnnotation alloc]
 														  initWithRepoName:displayName 
 														  identityTag:tempLib.identityTag 
 														  type:tempLib.type 
 														  lib:tempLib];
-		
 		[mapView addAnnotation:annotation];
 		
 	}
 	mapView.region = [self regionForAnnotations:mapView.annotations];
 }
-
-
--(void) addLibraryLocationOnMap: (Library *) library {
-}
-
--(void) setOpenLibrariesLocations: (NSArray *) openLibraries{
-}
-
--(void) addToOpenLibraries: (Library *) library {
-}
-
--(void) removeFromOpenLibraries: (Library *) library {
-}
+*/
 
 #pragma mark MKMapViewDelegate
 
@@ -173,7 +142,7 @@
 		[annotationView addSubview:imageView];
 		annotationView.backgroundColor = [UIColor clearColor];		
 	}
-	
+	/*
 	else if ([annotation isKindOfClass:[ItemAvailabilityLibraryAnnotation class]]) 
 	{
 		annotationView = [[[MKAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:@"gufidfdlefdfdsfg"] autorelease];
@@ -192,7 +161,7 @@
 		[annotationView addSubview:imageView];
 		annotationView.backgroundColor = [UIColor clearColor];		
 	}
-	
+	*/
 	return annotationView;
 }
 
@@ -303,10 +272,23 @@
 
 - (void)mapView:(MKMapView *)mapView annotationView:(MKAnnotationView *)view calloutAccessoryControlTapped:(UIControl *)control
 {
-	if ([view.annotation isKindOfClass:[LibraryAnnotation class]]) {
-		
-		LibraryDetailViewController *vc = [[LibraryDetailViewController alloc] initWithStyle:UITableViewStyleGrouped];
-		
+    
+	//if ([view.annotation isKindOfClass:[LibraryAnnotation class]]) {
+    
+    LibraryDetailViewController *vc = [[LibraryDetailViewController alloc] initWithStyle:UITableViewStyleGrouped];
+    
+    
+    //Library * lib = (Library *)((LibraryAnnotation *)view.annotation).library;
+    LibraryAlias * lib = (LibraryAlias *)((LibraryAnnotation *)view.annotation).libAlias;
+    vc.lib = lib;
+    
+    if ([lib.library.type isEqualToString:@"archive"])
+        vc.title = @"Archive Detail";
+    
+    else
+        vc.title = @"Library Detail";
+    
+    if (isAvailabilityMap) {
 		NSArray * tempArray;
 		
 		if (showingOpenOnly == NO)
@@ -315,31 +297,29 @@
 			tempArray = opeLibraries;
 		}
 		
-		Library * lib = (Library *)((LibraryAnnotation *)view.annotation).library;
-		vc.lib = [lib retain];
-		
-		if ([lib.type isEqualToString:@"archive"])
-			vc.title = @"Archive Detail";
-		
-		else
-			vc.title = @"Library Detail";
-		
 		int indexSelected = 0;
 		int tempIndex = 0;
-		for(Library * libTemp in tempArray){
-			if (([lib.name isEqualToString:libTemp.name]) && ([lib.identityTag isEqualToString:libTemp.identityTag]))
+		for(LibraryAlias * libTemp in tempArray){
+			if ([lib.library.identityTag isEqualToString:libTemp.library.identityTag])
 				indexSelected = tempIndex;
 			
-			tempIndex++;				
+			tempIndex++;
 		}
-		
-		vc.otherLibraries = [tempArray retain];
+        
+		vc.otherLibraries = tempArray;
 		vc.currentlyDisplayingLibraryAtIndex = indexSelected;
-        [self.navController.navigationController pushViewController:vc animated:YES];
-		
-		[vc release];
+        
+    } else {
+        vc.otherLibraries = allLibraries;
+        //vc.otherLibraries = displayNameAndLibrariesDictionary;
+    }
+    
+    [self.navController.navigationController pushViewController:vc animated:YES];
+    
+    [vc release];
+    
+	/*
 	}
-	
 	if ([view.annotation isKindOfClass:[ItemAvailabilityLibraryAnnotation class]]) {
 		
 		
@@ -369,6 +349,7 @@
 		
 		[vc release];
 	}
+    */
 }
 
 

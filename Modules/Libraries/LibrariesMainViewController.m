@@ -14,7 +14,7 @@
 #import "HoursAndLocationsViewController.h"
 #import "LibrariesSearchViewController.h"
 #import "CoreDataManager.h"
-#import "BookmarkedHoursAndLocationsViewController.h"
+//#import "BookmarkedHoursAndLocationsViewController.h"
 #import "BookmarkedLibItemListView.h"
 #import "LibraryAdvancedSearch.h"
 #import "MobileResearchLinksViewController.h"
@@ -236,34 +236,12 @@
 
 - (void)bookmarkButtonClicked:(UIButton *)sender {
 	
-	BookmarkedHoursAndLocationsViewController *vc = [[BookmarkedHoursAndLocationsViewController alloc] init];
+	//BookmarkedHoursAndLocationsViewController *vc = [[BookmarkedHoursAndLocationsViewController alloc] init];
+    HoursAndLocationsViewController *vc = [[[HoursAndLocationsViewController alloc] init] autorelease];
+    vc.showBookmarks = YES;
 	vc.title = @"Bookmarked Libraries";
     
     [self.navigationController pushViewController:vc animated:YES];
-	
-    /*
-	apiRequest = [[JSONAPIRequest alloc] initWithJSONAPIDelegate:vc];	
-	
-	
-	if ([apiRequest requestObjectFromModule:@"libraries" 
-									command:@"opennow" 
-								 parameters:nil] == YES)
-	{
-		[self.navigationController pushViewController:vc animated:YES];
-	}
-	else {
-		UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Connection Failed", nil)
-															message:NSLocalizedString(@"Could not connect to server. Please try again later.", nil)
-														   delegate:self 
-												  cancelButtonTitle:@"OK" 
-												  otherButtonTitles:nil];
-		[alertView show];
-		[alertView release];
-	}
-	
-	[vc release];
-	*/
-	//TODO: open a list-view displaying all bookmarked items
 }
 
 - (void)bookmarkItemButtonClicked:(UIButton *)sender {
@@ -527,26 +505,6 @@
 			HoursAndLocationsViewController *vc = [[HoursAndLocationsViewController alloc] initWithType:@"Libraries"];
 			vc.title = @"Libraries";
             [self.navigationController pushViewController:vc animated:YES];
-			/*
-			apiRequest = [[JSONAPIRequest alloc] initWithJSONAPIDelegate:vc];	
-			
-			
-			if ([apiRequest requestObjectFromModule:@"libraries" 
-										command:@"libraries" 
-									 parameters:nil] == YES)
-			{
-				[self.navigationController pushViewController:vc animated:YES];
-			}
-			else {
-				UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil
-																	message:NSLocalizedString(@"Could not connect to server. Please try again later.", nil)
-																   delegate:self 
-														  cancelButtonTitle:@"OK" 
-														  otherButtonTitles:nil];
-				[alertView show];
-				[alertView release];
-			}
-            */
 			[vc release];
 		}
 		else if (((indexPath.row == 1) && (hasBookmarkedLibraries == NO)) ||
@@ -556,55 +514,17 @@
 			vc.showArchives = YES;
 			vc.title = @"Archives";
             [self.navigationController pushViewController:vc animated:YES];
-			/*
-			apiRequest = [[JSONAPIRequest alloc] initWithJSONAPIDelegate:vc];	
-			
-			
-			if ([apiRequest requestObjectFromModule:@"libraries" 
-											command:@"archives" 
-										 parameters:nil] == YES)
-			{
-				[self.navigationController pushViewController:vc animated:YES];
-			}
-			else {
-				UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil
-																	message:NSLocalizedString(@"Could not connect to server. Please try again later.", nil)
-																   delegate:self 
-														  cancelButtonTitle:@"OK" 
-														  otherButtonTitles:nil];
-				[alertView show];
-				[alertView release];
-			}
-			*/
 			[vc release];
 		}
 		
 		else if ((indexPath.row == 0) && (hasBookmarkedLibraries == YES)){
 			
-			BookmarkedHoursAndLocationsViewController *vc = [[BookmarkedHoursAndLocationsViewController alloc] init];
+			//BookmarkedHoursAndLocationsViewController *vc = [[BookmarkedHoursAndLocationsViewController alloc] init];
+            HoursAndLocationsViewController *vc = [[[HoursAndLocationsViewController alloc] init] autorelease];
+            vc.showBookmarks = YES;
+            // TODO: let VC use its own showBookmarks property to choose display title
 			vc.title = @"Bookmarked Libraries";
             [self.navigationController pushViewController:vc animated:YES];
-			/*
-			apiRequest = [[JSONAPIRequest alloc] initWithJSONAPIDelegate:vc];	
-			
-			
-			if ([apiRequest requestObjectFromModule:@"libraries" 
-											command:@"opennow" 
-										 parameters:nil] == YES)
-			{
-				[self.navigationController pushViewController:vc animated:YES];
-			}
-			else {
-				UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil
-																	message:NSLocalizedString(@"Could not connect to server. Please try again later.", nil)
-																   delegate:self 
-														  cancelButtonTitle:@"OK" 
-														  otherButtonTitles:nil];
-				[alertView show];
-				[alertView release];
-			}
-            */
-			[vc release];
 		}
 	}
 	

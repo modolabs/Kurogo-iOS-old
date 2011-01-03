@@ -1,21 +1,15 @@
-//
-//  LibraryAnnotation.m
-//  Harvard Mobile
-//
-//  Created by Muhammad J Amjad on 11/19/10.
-//  Copyright 2010 ModoLabs Inc. All rights reserved.
-//
-
 #import "LibraryAnnotation.h"
-
+#import "LibraryAlias.h"
 
 @implementation LibraryAnnotation
-@synthesize library = _library;
+//@synthesize library = _library;
+@synthesize subtitle = _subtitle;
+@synthesize libAlias = _libAlias;
 
--(id) initWithLibrary:(Library*)library
+-(id) initWithLibrary:(LibraryAlias *)library
 {
 	if (self = [super init]) {
-		_library = [library retain];
+		_libAlias = [library retain];
 	}
 	
 	return self;
@@ -23,7 +17,7 @@
 
 -(void) dealloc
 {
-	[_library release];
+	[_libAlias release];
 	
 	[super dealloc];
 }
@@ -31,26 +25,15 @@
 -(CLLocationCoordinate2D) coordinate
 {
 	CLLocationCoordinate2D coordinate;
-	coordinate.latitude = [_library.lat doubleValue];
-	coordinate.longitude = [_library.lon doubleValue];
+	coordinate.latitude = [_libAlias.library.lat doubleValue];
+	coordinate.longitude = [_libAlias.library.lon doubleValue];
 	
 	return coordinate;
 }
 
 -(NSString*) title
 {
-	return _library.name;
-}
-
--(NSString*) subtitle
-{
-	return _subtitle;
-}
-
--(void) setSubtitle:(NSString*)subtitle
-{
-	[_subtitle release];
-	_subtitle = [subtitle retain];
+	return _libAlias.name;
 }
 
 @end

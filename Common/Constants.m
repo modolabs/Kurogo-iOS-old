@@ -95,6 +95,7 @@ NSString * const LibraryEntityName = @"Library";
 NSString * const LibraryFormatCodeEntityName = @"LibraryItemFormat";
 NSString * const LibraryLocationCodeEntityName = @"LibraryLocation";
 NSString * const LibraryPhoneEntityName = @"LibraryPhone";
+NSString * const LibraryAliasEntityName = @"LibraryAlias";
 
 // local paths for handleLocalPath
 NSString * const LocalPathMapsSelectedAnnotation = @"annotation";

@@ -10,10 +10,11 @@
 #import "MITUIConstants.h"
 #import "RequestWebViewModalViewController.h"
 #import "MIT_MobileAppDelegate.h"
-#import "ItemAvailabilityLibDetailViewController.h"
+//#import "ItemAvailabilityLibDetailViewController.h"
 #import "CoreDataManager.h"
 #import "LibrariesMultiLineCell.h"
-
+#import "LibraryAlias.h"
+#import "LibraryDetailViewController.h"
 
 @implementation ItemAvailabilityDetailViewController
 @synthesize parentViewApiRequest;
@@ -236,60 +237,42 @@ allLibrariesWithItem: (NSArray *) allLibraries
 
 -(void)infoButtonPressed: (id) sender {
 	
-	NSPredicate *pred = [NSPredicate predicateWithFormat:@"name == %@ AND type == %@", primaryName, type];
+	//NSPredicate *pred = [NSPredicate predicateWithFormat:@"name == %@ AND type == %@", primaryName, type];
+	NSPredicate *pred = [NSPredicate predicateWithFormat:@"primaryName like %@", primaryName];
 	Library *alreadyInDB = [[CoreDataManager objectsForEntity:LibraryEntityName matchingPredicate:pred] lastObject];
-	
-	
-	NSManagedObject *managedObj;
-	if (nil == alreadyInDB){
-		managedObj = [CoreDataManager insertNewObjectForEntityForName:LibraryEntityName];
-		alreadyInDB = (Library *)managedObj;
+    LibraryAlias *alias = nil;
+    
+    if (alreadyInDB) {
+        pred = [NSPredicate predicateWithFormat:@"name like %@", primaryName];
+        alias = [[alreadyInDB.aliases filteredSetUsingPredicate:pred] anyObject];
+    }
+	else {
+		alreadyInDB = (Library *)[CoreDataManager insertNewObjectForEntityForName:LibraryEntityName];
 		alreadyInDB.isBookmarked = [NSNumber numberWithBool:NO];
-		alreadyInDB.name = primaryName;
 		alreadyInDB.primaryName = primaryName;
+    }
+    
+    if (!alias) {
+
+        alias = (LibraryAlias *)[CoreDataManager insertNewObjectForEntityForName:LibraryAliasEntityName];
+        alias.library = alreadyInDB;
+        alias.name = primaryName;
+        
+        [CoreDataManager saveData];
 	}
-	
+    
+	/*
 	ItemAvailabilityLibDetailViewController *vc = [[ItemAvailabilityLibDetailViewController alloc]
 												   initWithStyle:UITableViewStyleGrouped
 												   displayName:libraryName
 												   currentInd:0
 												   library:(Library *)alreadyInDB
 												   otherLibDictionary:[[NSDictionary alloc] init]];
+     */
+    LibraryDetailViewController *vc = [[[LibraryDetailViewController alloc] init] autorelease];
+    vc.lib = alias;
 	
     [self.navigationController pushViewController:vc animated:YES];
-	/*
-	apiRequest = [[JSONAPIRequest alloc] initWithJSONAPIDelegate:vc];
-	
-	NSString * libOrArchive;
-	
-	if ([type isEqualToString:@"archive"]) {
-		vc.title = @"Archive Detail";
-		libOrArchive = @"archivedetail";
-	}
-	
-	else {
-		vc.title = @"Library Detail";
-		libOrArchive = @"libdetail";
-	}
-    
-	if ([apiRequest requestObjectFromModule:@"libraries" 
-									command:libOrArchive
-								 parameters:[NSDictionary dictionaryWithObjectsAndKeys:libraryId, @"id", libraryName, @"name", nil]])
-	{
-		[self.navigationController pushViewController:vc animated:YES];
-	}
-	else {
-		UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil
-															message:NSLocalizedString(@"Could not connect to server. Please try again later.", nil)
-														   delegate:self 
-												  cancelButtonTitle:@"OK" 
-												  otherButtonTitles:nil];
-		[alertView show];
-		[alertView release];
-	}
-     */
-    
-	[vc release];
 }
 	
 

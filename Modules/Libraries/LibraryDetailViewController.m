@@ -15,12 +15,14 @@
 #import "Foundation+MITAdditions.h"
 #import "LibraryPhone.h"
 #import "CoreDataManager.h"
-
+#import "Library.h"
+#import "LibraryAlias.h"
 
 @implementation LibraryDetailViewController
 @synthesize weeklySchedule;
 @synthesize bookmarkButtonIsOn;
 @synthesize lib;
+// from LibraryDetailViewController
 @synthesize otherLibraries;
 @synthesize currentlyDisplayingLibraryAtIndex;
 
@@ -34,6 +36,29 @@ NSInteger phoneNumberSort(id num1, id num2, void *context){
 	return [phone1.descriptionText compare:phone2.descriptionText];
 	
 }
+
+/*
+// from LibraryDetailViewController
+-(id) initWithStyle:(UITableViewStyle)style 
+		displayName: (NSString *) dispName
+		 currentInd:(int) index
+			library:(Library *)library
+ otherLibDictionary:(NSDictionary *) otherLibDictionary
+{
+	
+	self = [super initWithStyle:style];
+	
+	if (self) {
+		
+		displayName = dispName;
+		currentlyDisplayingLibraryAtIndex = index;
+		otherLibraries = [otherLibDictionary retain];
+		lib = [library retain];
+	}
+	
+	return self;
+}
+*/
 
 
 -(void) setupLayout {
@@ -61,11 +86,11 @@ NSInteger phoneNumberSort(id num1, id num2, void *context){
 	headerView = nil; 
 	NSString * libraryName;
 	
-	if (([lib.name isEqualToString:lib.primaryName]) && ([lib.primaryName length] > 0))
+	if (([lib.name isEqualToString:lib.library.primaryName]) && ([lib.library.primaryName length] > 0))
 		libraryName = lib.name;
 	
 	else {
-		libraryName = [NSString stringWithFormat:@"%@ (%@)", lib.name, lib.primaryName];
+		libraryName = [NSString stringWithFormat:@"%@ (%@)", lib.name, lib.library.primaryName];
 	}
 	
 	CGFloat height = [libraryName
@@ -89,6 +114,7 @@ NSInteger phoneNumberSort(id num1, id num2, void *context){
 	
 	bookmarkButtonIsOn = NO;
 	
+    /*
 	NSPredicate *pred = [NSPredicate predicateWithFormat:@"name == %@ AND type == %@", lib.name, lib.type];
 	Library *alreadyInDB = [[CoreDataManager objectsForEntity:LibraryEntityName matchingPredicate:pred] lastObject];
 	
@@ -96,7 +122,10 @@ NSInteger phoneNumberSort(id num1, id num2, void *context){
 		bookmarkButton.selected = [alreadyInDB.isBookmarked boolValue];
 		bookmarkButtonIsOn = [alreadyInDB.isBookmarked boolValue];
 	}
-	
+	*/
+    
+    bookmarkButton.selected = [lib.library.isBookmarked boolValue];
+    bookmarkButtonIsOn = [lib.library.isBookmarked boolValue];
 	
 	UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(12.0, 9.0, 250.0, height)];
 	label.text = libraryName;
@@ -107,7 +136,7 @@ NSInteger phoneNumberSort(id num1, id num2, void *context){
 	label.numberOfLines = 10;
 	[headerView addSubview:label];
 	
-	
+	/*
 	UILabel *label2 = [[UILabel alloc] initWithFrame:CGRectMake(12.0, height, 250.0, 30.0)];
 	label2.text = @"Affiliation: Harvard College Library";
 	label2.font = [UIFont fontWithName:COURSE_NUMBER_FONT
@@ -117,15 +146,15 @@ NSInteger phoneNumberSort(id num1, id num2, void *context){
 	label2.lineBreakMode = UILineBreakModeWordWrap;
 	label2.numberOfLines = 2;
 	//[headerView addSubview:label2];
-	
+	*/
 	self.tableView.tableHeaderView = [[UIView alloc]
 									  initWithFrame:CGRectMake(0, 0, self.tableView.frame.size.width, headerView.frame.size.height)];
 	[self.tableView.tableHeaderView addSubview:headerView];
 	
 	[self.tableView applyStandardColors];
 	
-	[label2 release];
-	[label release];
+	//[label2 release];
+	//[label release];
 	
     [self setupWeeklySchedule];
     
@@ -142,7 +171,7 @@ NSInteger phoneNumberSort(id num1, id num2, void *context){
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(setupWeeklySchedule) name:LibraryRequestDidCompleteNotification object:LibraryDataRequestLibraryDetail];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(setupWeeklySchedule) name:LibraryRequestDidCompleteNotification object:LibraryDataRequestArchiveDetail];
 
-        [[LibraryDataManager sharedManager] requestDetailsForLibType:lib.type libID:lib.identityTag libName:lib.name];
+        [[LibraryDataManager sharedManager] requestDetailsForLibType:lib.library.type libID:lib.library.identityTag libName:lib.name];
     }
 	
 	
@@ -222,27 +251,28 @@ NSInteger phoneNumberSort(id num1, id num2, void *context){
 
 -(void) bookmarkButtonToggled: (id) sender {
 	
-		BOOL newBookmarkButtonStatus = !bookmarkButton.selected;
+    BOOL newBookmarkButtonStatus = !bookmarkButton.selected;
 	
-		NSPredicate *pred = [NSPredicate predicateWithFormat:@"name == %@ AND type == %@", lib.name, lib.type];
-		Library *alreadyInDB = [[CoreDataManager objectsForEntity:LibraryEntityName matchingPredicate:pred] lastObject];
-		
-		if (nil == alreadyInDB){
-			return;
-		}
-		
-		if (newBookmarkButtonStatus) {
-			//[StellarModel saveClassToFavorites:stellarClass];
-			
-			bookmarkButton.selected = YES;
-			alreadyInDB.isBookmarked = [NSNumber numberWithBool:YES];
-		}
-		
-		else {
-			//[StellarModel removeClassFromFavorites:stellarClass];
-			bookmarkButton.selected = NO;
-			alreadyInDB.isBookmarked = [NSNumber numberWithBool:NO];
-		}
+    //NSPredicate *pred = [NSPredicate predicateWithFormat:@"name == %@ AND type == %@", lib.name, lib.type];
+    NSPredicate *pred = [NSPredicate predicateWithFormat:@"identityTag like %@", lib.library.identityTag];
+    Library *alreadyInDB = [[CoreDataManager objectsForEntity:LibraryEntityName matchingPredicate:pred] lastObject];
+    
+    if (nil == alreadyInDB){
+        return;
+    }
+    
+    if (newBookmarkButtonStatus) {
+        //[StellarModel saveClassToFavorites:stellarClass];
+        
+        bookmarkButton.selected = YES;
+        alreadyInDB.isBookmarked = [NSNumber numberWithBool:YES];
+    }
+    
+    else {
+        //[StellarModel removeClassFromFavorites:stellarClass];
+        bookmarkButton.selected = NO;
+        alreadyInDB.isBookmarked = [NSNumber numberWithBool:NO];
+    }
 	
 	[CoreDataManager saveData];
 }
@@ -268,7 +298,7 @@ NSInteger phoneNumberSort(id num1, id num2, void *context){
 			if (tempLibIndex != currentlyDisplayingLibraryAtIndex){
                 currentlyDisplayingLibraryAtIndex = tempLibIndex;
 				
-                self.lib = (Library *)[otherLibraries objectAtIndex:tempLibIndex];
+                self.lib = (LibraryAlias *)[otherLibraries objectAtIndex:tempLibIndex];
                 
                 if (nil != headerView)
                     [headerView removeFromSuperview];
@@ -276,7 +306,7 @@ NSInteger phoneNumberSort(id num1, id num2, void *context){
                 if (nil != footerLabel)
                     [footerLabel removeFromSuperview];
                 
-                if ([self.lib.type isEqualToString:@"archive"])
+                if ([self.lib.library.type isEqualToString:@"archive"])
                     self.title = @"Archive Detail";
                 
                 else {
@@ -315,7 +345,7 @@ NSInteger phoneNumberSort(id num1, id num2, void *context){
 	}
 	
 	else if (section == 1) {
-		if ([lib.location length] > 0)
+		if ([lib.library.location length] > 0)
 			return 1;
 	}
 	
@@ -323,20 +353,20 @@ NSInteger phoneNumberSort(id num1, id num2, void *context){
 		
 		int count =0;
 		
-		if ([lib.websiteLib length] > 0){
+		if ([lib.library.websiteLib length] > 0){
 			websiteRow = count;
 			count++;
 		}
 		
-		if ([lib.emailLib length] > 0){
+		if ([lib.library.emailLib length] > 0){
 			emailRow = count;
 			count++;
 		}
 		
-		if ([lib.phone count] > 0) {
+		if ([lib.library.phone count] > 0) {
 			phoneRow = count;
-			count = count + [lib.phone count];
-			phoneNumbersArray = [lib.phone allObjects];
+			count = count + [lib.library.phone count];
+			phoneNumbersArray = [lib.library.phone allObjects];
 			phoneNumbersArray = [[phoneNumbersArray sortedArrayUsingFunction:phoneNumberSort context:self] retain];
 		}
 		return count;
@@ -353,13 +383,13 @@ NSInteger phoneNumberSort(id num1, id num2, void *context){
 	view = nil;
 	NSString * text;
 		
-	if ((section == 1) && (lib.directions)) {
+	if ((section == 1) && (lib.library.directions)) {
 		if (nil != footerLabel)
 			[footerLabel removeFromSuperview];
 		
 		footerLabel = nil;
 		
-		text = lib.directions;
+		text = lib.library.directions;
 		CGFloat height = [text
 						  sizeWithFont:[UIFont fontWithName:STANDARD_FONT size:13]
 						  constrainedToSize:CGSizeMake(300, 2000)         
@@ -387,15 +417,13 @@ NSInteger phoneNumberSort(id num1, id num2, void *context){
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
 	if (section == 1) {
 		NSString * text;
-		if (lib.directions)
-			text = lib.directions;
+		if (lib.library.directions)
+			text = lib.library.directions;
 		
 		else {
-			text =  @"Cabot Library is located on the first floor of the Science Center"; // placeholder
+			text =  @"Directions placeholder";
 		}
 
-		
-		//NSString * text =  @"Cabot Library is located on the first floor of the Science Center at the corner of Oxford and Kirkland Streets";
 		CGFloat height = [text
 						  sizeWithFont:[UIFont fontWithName:STANDARD_FONT size:13]
 						  constrainedToSize:CGSizeMake(300, 2000)         
@@ -495,7 +523,7 @@ NSInteger phoneNumberSort(id num1, id num2, void *context){
 			cellForLocation.textLabel.textColor = [UIColor colorWithHexString:@"#554C41"];
 		}
 			cellForLocation.textLabel.text = @"Location";
-			cellForLocation.detailTextLabel.text = lib.location;
+			cellForLocation.detailTextLabel.text = lib.library.location;
 			cellForLocation.detailTextLabel.numberOfLines = 10;
 			cellForLocation.detailTextLabelNumberOfLines = 10;
 			cellForLocation.accessoryView = [UIImageView accessoryViewWithMITType:MITAccessoryViewMap];
@@ -518,10 +546,10 @@ NSInteger phoneNumberSort(id num1, id num2, void *context){
 	
 		if (indexPath.row == websiteRow) {
 			cellForContact.textLabel.text = @"Website";
-			NSRange range = [lib.websiteLib rangeOfString:@"http://"];
-			NSString * website = lib.websiteLib;
+			NSRange range = [lib.library.websiteLib rangeOfString:@"http://"];
+			NSString * website = lib.library.websiteLib;
 			if (range.location != NSNotFound)
-				website = [lib.websiteLib substringFromIndex:range.location + range.length];
+				website = [lib.library.websiteLib substringFromIndex:range.location + range.length];
 			
 			cellForContact.detailTextLabel.text = website; //[lib.websiteLib //@"Visit Website";
 			cellForContact.accessoryView = [UIImageView accessoryViewWithMITType:MITAccessoryViewExternal];
@@ -529,7 +557,7 @@ NSInteger phoneNumberSort(id num1, id num2, void *context){
 		}
 		else if (indexPath.row == emailRow) {
 			cellForContact.textLabel.text = @"Email";
-			cellForContact.detailTextLabel.text = lib.emailLib;
+			cellForContact.detailTextLabel.text = lib.library.emailLib;
 			cellForContact.accessoryView = [UIImageView accessoryViewWithMITType:MITAccessoryViewEmail];
 		}
 		
@@ -557,23 +585,6 @@ NSInteger phoneNumberSort(id num1, id num2, void *context){
 		cellForContact.selectionStyle = UITableViewCellSelectionStyleGray;
 		return cellForContact;
 	}
-	
-	else {
-		static NSString *optionsForMainViewTableStringConstant = @"listViewCell";
-		UITableViewCell *cell2 = nil;
-		
-		cell2 = [tableView dequeueReusableCellWithIdentifier:optionsForMainViewTableStringConstant];
-		if (cell2 == nil) {
-			cell2 = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:optionsForMainViewTableStringConstant] autorelease];
-			//cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-			cell2.selectionStyle = UITableViewCellSelectionStyleGray;
-		}
-		cell2.textLabel.text = @"Testing1";
-		cell2.selectionStyle = UITableViewCellSelectionStyleGray;
-		return cell2;
-	}
-
-	
 	
     return nil;
 }
@@ -615,7 +626,7 @@ NSInteger phoneNumberSort(id num1, id num2, void *context){
 	else if (indexPath.section == 1) {
 		[[MapBookmarkManager defaultManager] pruneNonBookmarks];
 		
-		CLLocationCoordinate2D coord = CLLocationCoordinate2DMake([lib.lat doubleValue], [lib.lon doubleValue]);
+		CLLocationCoordinate2D coord = CLLocationCoordinate2DMake([lib.library.lat doubleValue], [lib.library.lon doubleValue]);
 		ArcGISMapAnnotation *annotation = [[[ArcGISMapAnnotation alloc] initWithCoordinate:coord] autorelease];
 		annotation.name = lib.name;
 		annotation.uniqueID = [NSString stringWithFormat:@"%@@%.4f,%.4f", annotation.name,coord.latitude, coord.longitude];
@@ -631,7 +642,7 @@ NSInteger phoneNumberSort(id num1, id num2, void *context){
 	else if (indexPath.section == 2) {
 
 		if (indexPath.row == websiteRow) {
-			NSString *url = lib.websiteLib;
+			NSString *url = lib.library.websiteLib;
 			
 			NSURL *libURL = [NSURL URLWithString:url];
 			if (libURL && [[UIApplication sharedApplication] canOpenURL:libURL]) {
@@ -640,11 +651,11 @@ NSInteger phoneNumberSort(id num1, id num2, void *context){
 			
 		}
 		else if (indexPath.row == emailRow) {
-			NSString *emailAdd = lib.emailLib;
+			NSString *emailAdd = lib.library.emailLib;
 			
-			NSString *subject = @"About your library";
+			NSString *subject = NSLocalizedString(@"Library email subject", nil);
 			
-			[self emailTo:subject body:@"" email:emailAdd];
+			[self emailTo:subject body:NSLocalizedString(@"Library email body", nil) email:emailAdd];
 		}
 		
 		else if (indexPath.row >= phoneRow) {
@@ -689,7 +700,7 @@ NSInteger phoneNumberSort(id num1, id num2, void *context){
 	
 	if (indexPath.section == 0) {
 		
-		if ([[weeklySchedule allKeys] count] == 7){
+		if ([weeklySchedule count] == 7){
 			cellText = [daysOfWeek objectAtIndex:indexPath.row];
 			detailText = [weeklySchedule objectForKey:[daysOfWeek objectAtIndex:indexPath.row]];
 			//accessoryType = nil;
@@ -702,6 +713,9 @@ NSInteger phoneNumberSort(id num1, id num2, void *context){
 		else {
 			cellText = [[weeklySchedule allKeys] objectAtIndex:0];
 			detailText= [weeklySchedule objectForKey:[[weeklySchedule allKeys] objectAtIndex:0]];
+            
+            // commenting out the code below to expose data we're getting
+            /*
 			NSString * hoursString = [weeklySchedule objectForKey:[[weeklySchedule allKeys] objectAtIndex:0]];
 			
 			NSRange range = [hoursString rangeOfString:@"http"];
@@ -716,13 +730,14 @@ NSInteger phoneNumberSort(id num1, id num2, void *context){
 				cellText = [[weeklySchedule allKeys] objectAtIndex:0];
 				detailText = [weeklySchedule objectForKey:[[weeklySchedule allKeys] objectAtIndex:0]];
 			}
+             */
 		}
 	}
 	else if (indexPath.section == 1) {
 		cellText =  @"Location";
 		
-		if ([lib.location length] > 0) {
-			detailText = lib.location;
+		if ([lib.library.location length] > 0) {
+			detailText = lib.library.location;
 		} else {
 			detailText = @"Location not available"; // placholder
 		}
@@ -735,11 +750,11 @@ NSInteger phoneNumberSort(id num1, id num2, void *context){
 		detailText = @"";
 		
 		if (indexPath.row == websiteRow) {
-			NSString *url = lib.websiteLib;
+			NSString *url = lib.library.websiteLib;
 			detailText = url;
 		}
 		else if (indexPath.row == emailRow) {
-			NSString *email = lib.emailLib;
+			NSString *email = lib.library.emailLib;
 			detailText = email;
             accessoryType = UITableViewCellAccessoryDetailDisclosureButton;
 		}
@@ -848,10 +863,10 @@ NSInteger phoneNumberSort(id num1, id num2, void *context){
     [weeklySchedule release];
     weeklySchedule = nil;
     
-    Library *theLibrary = [[LibraryDataManager sharedManager] libraryWithID:lib.identityTag];
-    if (!theLibrary) return;
+    //Library *theLibrary = [[LibraryDataManager sharedManager] libraryWithID:lib.identityTag];
+    //if (!theLibrary) return;
         
-    NSDictionary *libraryDictionary = [[LibraryDataManager sharedManager] scheduleForLibID:theLibrary.identityTag];
+    NSDictionary *libraryDictionary = [[LibraryDataManager sharedManager] scheduleForLibID:lib.library.identityTag];
     if (libraryDictionary) {
         
         [[LibraryDataManager sharedManager] unregisterDelegate:self];

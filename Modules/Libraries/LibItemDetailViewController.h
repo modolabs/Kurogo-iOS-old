@@ -40,7 +40,8 @@
 	
 	UIView * loadingIndicator;
 	
-	NSMutableDictionary * displayNameAndLibraries;
+	//NSMutableDictionary * displayNameAndLibraries;
+    NSMutableArray *displayLibraries;
 	
 	CLLocation * currentLocation;
 	

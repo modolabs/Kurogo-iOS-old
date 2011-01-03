@@ -12,6 +12,7 @@
 #import "CoreDataManager.h"
 #import "Constants.h"
 #import "LibrariesMultiLineCell.h"
+#import "LibraryAlias.h"
 
 @interface HoursAndLocationsViewController (Private)
 
@@ -24,7 +25,7 @@
 @synthesize showingMapView;
 @synthesize librayLocationsMapView;
 @synthesize showArchives;
-
+@synthesize showBookmarks;
 
 - (NSArray *)currentLibraries {
     
@@ -44,6 +45,11 @@
         }
     }
     
+    if (showBookmarks) {
+        NSPredicate *bookmarkPred = [NSPredicate predicateWithFormat:@"name like library.primaryName AND library.isBookmarked == YES"];
+        currentLibraries = [currentLibraries filteredArrayUsingPredicate:bookmarkPred];
+    }
+    
     return currentLibraries;
 }
 
@@ -59,25 +65,29 @@
 }
 
 
+// HoursAndLocationsViewController
 -(id)initWithType:(NSString *) type {
 	
-	self = [super init];
-	
-	if (self) {
+	if (self = [super init]) {
 		
-		/*CGRect frame = CGRectMake(0, 0, 400, 44);
+		typeOfRepo = [type retain];
+	}
+	
+	return self;
+}
+
+// BookmarkedHoursAndLocationsViewController
+-(id)init {
+	if (self = [super init]) {
+		
+		CGRect frame = CGRectMake(0, 0, 400, 44);
         UILabel *label = [[[UILabel alloc] initWithFrame:frame] autorelease];
         label.backgroundColor = [UIColor clearColor];
-        label.font = [UIFont fontWithName:CONTENT_TITLE_FONT size:CONTENT_TITLE_FONT_SIZE];
-        //label.shadowColor = [UIColor colorWithWhite:0.0 alpha:0.5];
+        label.font = [UIFont systemFontOfSize:15.0];
         label.textAlignment = UITextAlignmentCenter;
         label.textColor = [UIColor whiteColor];
         self.navigationItem.titleView = label;
-       // label.text = NSLocalizedString(@"Locations & Hours", @"");
-		label.text = type;
-		typeOfRepo = type;*/
-		
-		typeOfRepo = [type retain];
+        label.text = NSLocalizedString(@"Bookmarked Repositories", @"");
 	}
 	
 	return self;
@@ -90,12 +100,13 @@
 		self.showingMapView = NO;
 	
 	gpsPressed = NO;
+	showingOnlyOpen = NO;
 	
 	if (nil == _viewTypeButton)
 		_viewTypeButton = [[[UIBarButtonItem alloc] initWithTitle:@"Map"
-													   style:UIBarButtonItemStylePlain 
-													  target:self
-													   action:@selector(displayTypeChanged:)] autorelease];
+                                                            style:UIBarButtonItemStylePlain 
+                                                           target:self
+                                                           action:@selector(displayTypeChanged:)] autorelease];
 	//_viewTypeButton.enabled = NO;										  
 	self.navigationItem.rightBarButtonItem = _viewTypeButton;
 	
@@ -103,14 +114,16 @@
     UIImageView *imageView = [[UIImageView alloc] initWithImage:[backgroundImage stretchableImageWithLeftCapWidth:0 topCapHeight:0]];
     imageView.tag = 1005;
 
+    if (showBookmarks) {
+        CGFloat footerDisplacementFromTop = self.view.frame.size.height -  NAVIGATION_BAR_HEIGHT -  imageView.frame.size.height;
+        imageView.frame = CGRectMake(0, footerDisplacementFromTop, imageView.frame.size.width, imageView.frame.size.height);
+        [self.view addSubview:imageView];
+        [imageView release];
+    }
 
-
-	
-	//Create the segmented control
-	
 	NSString * typeOfRepoString = @"All Libraries";
 	
-	if ((nil != typeOfRepo) && ([typeOfRepo isEqualToString:@"Archives"]))
+	if (!showBookmarks && (nil != typeOfRepo) && ([typeOfRepo isEqualToString:@"Archives"]))
 		typeOfRepoString = @"All Archives";
 	
 	CGFloat footerDisplacementFromTop = self.view.frame.size.height -  NAVIGATION_BAR_HEIGHT;
@@ -119,7 +132,8 @@
 		footerDisplacementFromTop -= imageView.frame.size.height;
 	
 	imageView.frame = CGRectMake(0, footerDisplacementFromTop, imageView.frame.size.width, imageView.frame.size.height);
-		
+
+	//Create the segmented control
 	NSArray *itemArray = [NSArray arrayWithObjects: typeOfRepoString, @"Open Now", nil];
 	segmentedControl = [[UISegmentedControl alloc] initWithItems:itemArray];
 	segmentedControl.tintColor = [UIColor darkGrayColor];
@@ -134,11 +148,9 @@
 		
 		[self.view addSubview:imageView];
 		[imageView release];
+        // TODO: does archives not have an open/closed state?
 		[self.view addSubview:segmentedControl];
-		
-		
 	}
-	//[segmentedControl release];
 	
 	
 	UIImage *gpsImage = [UIImage imageNamed:@"maps/map_button_icon_locate.png"];
@@ -154,8 +166,6 @@
 	if (self.showingMapView == YES)
 		[self.view addSubview:gpsButtonControl];
 	
-	//[gpsButtonControl release];
-	
 	self.listOrMapView = [[[UIView alloc] initWithFrame:CGRectMake(0, 0, 
 																	 self.view.frame.size.width,
 																   footerDisplacementFromTop)] autorelease];
@@ -166,8 +176,6 @@
 	_tableView = [[UITableView alloc] initWithFrame:self.listOrMapView.frame style:UITableViewStylePlain];
 	_tableView.delegate = self;
 	_tableView.dataSource = self;
-	
-	showingOnlyOpen = NO;
 	
 	[self.listOrMapView addSubview:_tableView];
     
@@ -200,7 +208,8 @@
 	if (showingMapView == YES) {
         
         [librayLocationsMapView setAllLibraryLocations:[self currentLibraries]];
-
+        
+        // TODO: move whatever is being done in -viewWillAppear to an independent function we can call
         [librayLocationsMapView viewWillAppear:YES];
 	}
 	
@@ -356,7 +365,7 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-	Library * lib = [[self currentLibraries] objectAtIndex:indexPath.section];
+	LibraryAlias * lib = [[self currentLibraries] objectAtIndex:indexPath.section];
     NSString * cellText = lib.name;
     
 	UITableViewCellAccessoryType accessoryType = UITableViewCellAccessoryNone;
@@ -391,7 +400,7 @@
 	cell.selectionStyle = UITableViewCellSelectionStyleGray;
 	cell.textLabel.numberOfLines = 2;
 	
-	Library * lib;
+	LibraryAlias * lib;
     
     lib = [[self currentLibraries] objectAtIndex:indexPath.section];
     cell.textLabel.text = lib.name;
@@ -406,7 +415,7 @@
 	
     NSArray *tempLibraries = [self currentLibraries];
 	
-	for(Library *lib in tempLibraries) {
+	for(LibraryAlias *lib in tempLibraries) {
 		if (![tempIndexArray containsObject:[lib.name substringToIndex:1]])
 			[tempIndexArray addObject:[lib.name substringToIndex:1]];		
 	}
@@ -421,7 +430,7 @@
     NSArray *tempLibraries = [self currentLibraries];
 	int ind = 0;
 	
-	for(Library *lib in tempLibraries) {
+	for(LibraryAlias *lib in tempLibraries) {
 		if ([[lib.name substringToIndex:1] isEqualToString:title])
 			break;
 		ind++;
@@ -441,17 +450,17 @@
 
     tempArray = [self currentLibraries];
     
-	Library * lib = (Library *) [tempArray objectAtIndex:indexPath.section];
+	LibraryAlias * lib = (LibraryAlias *) [tempArray objectAtIndex:indexPath.section];
 	vc.lib = lib;
+	vc.otherLibraries = tempArray;
+	vc.currentlyDisplayingLibraryAtIndex = indexPath.section;
 	
-	if ([lib.type isEqualToString:@"archive"])
+	if ([lib.library.type isEqualToString:@"archive"])
 		vc.title = @"Archive Detail";
 	
 	else
 		vc.title = @"Library Detail";
 	
-	vc.otherLibraries = tempArray;
-	vc.currentlyDisplayingLibraryAtIndex = indexPath.section;
     [self.navigationController pushViewController:vc animated:YES];
 
 	[vc release];

@@ -36,6 +36,7 @@
 	LibraryLocationsMapViewController * librayLocationsMapView;
 	
 	BOOL showArchives;
+    BOOL showBookmarks;
 	
 	JSONAPIRequest * apiRequest;
 	
@@ -47,6 +48,7 @@
 @property (nonatomic, retain) UIView * listOrMapView;
 @property BOOL showingMapView;
 @property (nonatomic, retain) LibraryLocationsMapViewController * librayLocationsMapView;
+@property (nonatomic) BOOL showBookmarks;
 
 -(id)initWithType:(NSString *) type;
 

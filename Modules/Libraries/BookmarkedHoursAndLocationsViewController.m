@@ -178,7 +178,6 @@
 		if (nil != librayLocationsMapView) {
 
             [librayLocationsMapView setAllLibraryLocations:[self currentLibraries]];
-            // TODO: move whatever is being done in -viewWillAppear to an independent function we can call
 			[librayLocationsMapView viewWillAppear:YES];
 		}
 	}
@@ -333,7 +332,7 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-	Library * lib = [[self currentLibraries] objectAtIndex:indexPath.section];
+	LibraryAlias * lib = [[self currentLibraries] objectAtIndex:indexPath.section];
 	NSString * cellText = lib.name;
 	
 	UITableViewCellAccessoryType accessoryType = UITableViewCellAccessoryNone;
@@ -368,7 +367,7 @@
 	cell.selectionStyle = UITableViewCellSelectionStyleGray;
 	cell.textLabel.numberOfLines = 2;
 	
-	Library * lib = [[self currentLibraries] objectAtIndex:indexPath.section];
+	LibraryAlias * lib = [[self currentLibraries] objectAtIndex:indexPath.section];
 	
     return cell;
 }

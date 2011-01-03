@@ -13,15 +13,15 @@
 
 @interface LibraryAnnotation : NSObject <MKAnnotation> {
 
-	Library* _library;
+	LibraryAlias* _libAlias;
 	
 	NSString* _subtitle;
 }
 
--(id) initWithLibrary:(Library*) library;
+-(id) initWithLibrary:(LibraryAlias*) _libAlias;
 
-@property (readonly) Library* library;
+@property (readonly) LibraryAlias* libAlias;
 
--(void) setSubtitle:(NSString*) subtitle;
+@property (nonatomic, retain) NSString * subtitle;
 
 @end

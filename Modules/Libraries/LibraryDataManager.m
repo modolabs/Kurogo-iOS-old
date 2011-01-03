@@ -4,6 +4,7 @@
 #import "LibraryPhone.h"
 #import "LibraryItemFormat.h"
 #import "LibraryLocation.h"
+#import "LibraryAlias.h"
 
 // api names
 
@@ -26,8 +27,8 @@ NSString * const LibraryRequestDidFailNotification = @"libRequestFailed";
 
 NSInteger libraryNameSort(id lib1, id lib2, void *context) {
     
-	Library * library1 = (Library *)lib1;
-	Library * library2 = (Library *)lib2;
+	LibraryAlias * library1 = (LibraryAlias *)lib1;
+	LibraryAlias * library2 = (LibraryAlias *)lib2;
 	
 	return [library1.name compare:library2.name];
 }
@@ -57,9 +58,6 @@ static LibraryDataManager *s_sharedManager = nil;
         oneTimeRequests = [[NSMutableDictionary alloc] init];
         anytimeRequests = [[NSMutableArray alloc] init];
         
-        _librariesByID = [[NSMutableDictionary alloc] init];
-        _archivesByID = [[NSMutableDictionary alloc] init];
-        
         _allLibraries = [[NSMutableArray alloc] init];
         _allArchives = [[NSMutableArray alloc] init];
         
@@ -74,27 +72,25 @@ static LibraryDataManager *s_sharedManager = nil;
         // TODO: return all library names instead of unique libraries by id
         // TODO: update periodically from server instead of always trusting cache
         NSPredicate *matchAll = [NSPredicate predicateWithFormat:@"TRUEPREDICATE"];
-        NSArray *tempArray = [CoreDataManager objectsForEntity:LibraryEntityName matchingPredicate:matchAll];
+        NSArray *tempArray = [CoreDataManager objectsForEntity:LibraryAliasEntityName matchingPredicate:matchAll];
         if ([tempArray count]) {
-            for(Library *aLibrary in tempArray) {
-                if ([aLibrary.type isEqualToString:@"archive"]) {
-                    [_archivesByID setObject:aLibrary forKey:aLibrary.identityTag];
-                    [_allArchives addObject:aLibrary];
+            for(LibraryAlias *alias in tempArray) {
+                if ([alias.library.type isEqualToString:@"archive"]) {
+                    [_allArchives addObject:alias];
                 }
-                else if ([aLibrary.type isEqualToString: @"library"]) {
-                    [_librariesByID setObject:aLibrary forKey:aLibrary.identityTag];
-                    [_allLibraries addObject:aLibrary];
+                else if ([alias.library.type isEqualToString: @"library"]) {
+                    [_allLibraries addObject:alias];
                 }
             }
             
             [_allArchives sortUsingFunction:libraryNameSort context:nil];
             [_allLibraries sortUsingFunction:libraryNameSort context:nil];
+            
+            [self requestOpenLibraries];
         } else {
             [self requestLibraries];
             [self requestArchives];
         }
-            
-        [self requestOpenLibraries];
     }
     return self;
 }
@@ -118,14 +114,8 @@ static LibraryDataManager *s_sharedManager = nil;
 }
 
 - (Library *)libraryWithID:(NSString *)libID {
-    Library *library = [_librariesByID objectForKey:libID];
-    if (!library) {
-        NSPredicate *pred = [NSPredicate predicateWithFormat:@"identityTag like %@", libID];
-        library = [[CoreDataManager objectsForEntity:LibraryEntityName matchingPredicate:pred] lastObject];
-        if (library) {
-            [_librariesByID setObject:library forKey:libID];
-        }
-    }
+    NSPredicate *pred = [NSPredicate predicateWithFormat:@"identityTag like %@", libID];
+    Library *library = [[CoreDataManager objectsForEntity:LibraryEntityName matchingPredicate:pred] lastObject];
     return library;
 }
 
@@ -249,33 +239,37 @@ static LibraryDataManager *s_sharedManager = nil;
                 
                 NSString * type = [libraryDictionary objectForKey:@"type"];
                 
-                //NSString *typeOfLib = [command isEqualToString:LibraryDataRequestLibraryDetail] ? @"library" : @"archive";
-                
-                //NSPredicate *pred = [NSPredicate predicateWithFormat:@"name == %@ AND type == %@", name, typeOfLib];
                 NSPredicate *pred = [NSPredicate predicateWithFormat:@"identityTag like %@", identityTag];
                 
                 Library *alreadyInDB = [[CoreDataManager objectsForEntity:LibraryEntityName matchingPredicate:pred] lastObject];
+                
                 if (!alreadyInDB) {
                     alreadyInDB = [CoreDataManager insertNewObjectForEntityForName:LibraryEntityName];
                     alreadyInDB.identityTag = identityTag;
                     alreadyInDB.isBookmarked = [NSNumber numberWithBool:NO];
+
+                    alreadyInDB.primaryName = primaryName;
+                    alreadyInDB.location = location;
+                    alreadyInDB.lat = [NSNumber numberWithDouble:[latitude doubleValue]];
+                    alreadyInDB.lon = [NSNumber numberWithDouble:[longitude doubleValue]];
+                    alreadyInDB.type = type;
+                    
+                    [CoreDataManager saveData];
                 }
                 
-                alreadyInDB.name = name;
-                alreadyInDB.primaryName = primaryName;
-                alreadyInDB.location = location;
-                alreadyInDB.lat = [NSNumber numberWithDouble:[latitude doubleValue]];
-                alreadyInDB.lon = [NSNumber numberWithDouble:[longitude doubleValue]];
-                alreadyInDB.type = type;
-                
-                [CoreDataManager saveData];
+                pred = [NSPredicate predicateWithFormat:@"name like %@", name];
+                LibraryAlias *alias = [[alreadyInDB.aliases filteredSetUsingPredicate:pred] anyObject];
+                if (!alias) {
+                    alias = [CoreDataManager insertNewObjectForEntityForName:LibraryAliasEntityName];
+                    alias.library = alreadyInDB;
+                    alias.name = name;
+                    [CoreDataManager saveData];
+                }
                 
                 if ([command isEqualToString:LibraryDataRequestLibraries]) {
-                    [_allLibraries addObject:alreadyInDB];
-                    [_librariesByID setObject:alreadyInDB forKey:identityTag];
+                    [_allLibraries addObject:alias];
                 } else {
-                    [_allArchives addObject:alreadyInDB];
-                    [_archivesByID setObject:alreadyInDB forKey:identityTag];
+                    [_allArchives addObject:alias];
                 }
                 
                 NSString *isOpenNow = [libraryDictionary objectForKey:@"isOpenNow"];
@@ -283,9 +277,9 @@ static LibraryDataManager *s_sharedManager = nil;
                 
                 if (isOpen) {
                     if ([command isEqualToString:LibraryDataRequestLibraries]) {
-                        [_allOpenLibraries addObject:alreadyInDB];
+                        [_allOpenLibraries addObject:alias];
                     } else {
-                        [_allOpenArchives addObject:alreadyInDB];
+                        [_allOpenArchives addObject:alias];
                     }
                 }
                 
@@ -293,8 +287,10 @@ static LibraryDataManager *s_sharedManager = nil;
             
             if ([command isEqualToString:LibraryDataRequestLibraries]) {
                 [_allLibraries sortUsingFunction:libraryNameSort context:nil];
+                [_allOpenLibraries sortUsingFunction:libraryNameSort context:nil];
             } else {
                 [_allArchives sortUsingFunction:libraryNameSort context:nil];
+                [_allOpenArchives sortUsingFunction:libraryNameSort context:nil];
             }
         }
         
@@ -315,28 +311,30 @@ static LibraryDataManager *s_sharedManager = nil;
                 NSString * identityTag = [libraryDictionary objectForKey:@"id"];		
                 NSString * type = [libraryDictionary objectForKey:@"type"];
                 
-                NSString *isOpenNow = [libraryDictionary objectForKey:@"isOpenNow"];
-                
-                BOOL isOpen = [isOpenNow isEqualToString:@"YES"];
-                
-                //NSPredicate *pred = [NSPredicate predicateWithFormat:@"name == %@ AND type == %@", name, type];
                 NSPredicate *pred = [NSPredicate predicateWithFormat:@"identityTag like %@", identityTag];
                 Library *alreadyInDB = [[CoreDataManager objectsForEntity:LibraryEntityName matchingPredicate:pred] lastObject];
                 if (!alreadyInDB) {
                     alreadyInDB = [CoreDataManager insertNewObjectForEntityForName:LibraryEntityName];
                     alreadyInDB.identityTag = identityTag;
                     alreadyInDB.isBookmarked = [NSNumber numberWithBool:NO];
-                    alreadyInDB.name = name;
                     alreadyInDB.type = type;
 
                     [CoreDataManager saveData];
                 }
                 
-                [_librariesByID setObject:alreadyInDB forKey:identityTag];
+                pred = [NSPredicate predicateWithFormat:@"name like %@", name];
+                LibraryAlias *alias = [[alreadyInDB.aliases filteredSetUsingPredicate:pred] anyObject];
+                if (!alias) {
+                    alias = [CoreDataManager insertNewObjectForEntityForName:LibraryAliasEntityName];
+                    alias.library = alreadyInDB;
+                    alias.name = name;
+                    [CoreDataManager saveData];
+                }
+                
                 if ([type isEqualToString:@"library"]) {
-                    [_allOpenLibraries addObject:alreadyInDB];
+                    [_allOpenLibraries addObject:alias];
                 } else if ([type isEqualToString:@"archive"]) {
-                    [_allOpenArchives addObject:alreadyInDB];
+                    [_allOpenArchives addObject:alias];
                 }
             }
             
@@ -398,8 +396,6 @@ static LibraryDataManager *s_sharedManager = nil;
         
         [CoreDataManager saveData];
         
-        
-        
         [oneTimeRequests removeObjectForKey:command];
 
     }
@@ -423,6 +419,15 @@ static LibraryDataManager *s_sharedManager = nil;
             }
 
             NSString *name = [libraryDictionary objectForKey:@"name"];
+            
+            pred = [NSPredicate predicateWithFormat:@"name like %@", name];
+            LibraryAlias *alias = [[lib.aliases filteredSetUsingPredicate:pred] anyObject];
+            if (!alias) {
+                alias = [CoreDataManager insertNewObjectForEntityForName:LibraryAliasEntityName];
+                alias.library = lib;
+                alias.name = name;
+            }
+            
             NSString *primaryName = [libraryDictionary objectForKey:@"primaryname"];
             NSString *directions = [libraryDictionary objectForKey:@"directions"];
             NSString *website = [libraryDictionary objectForKey:@"website"];
@@ -432,7 +437,6 @@ static LibraryDataManager *s_sharedManager = nil;
             
             directions = [directions stringByReplacingOccurrencesOfString:@"\n" withString:@""];
             
-            lib.name = name;
             lib.primaryName = primaryName;
             lib.websiteLib = website;
             lib.emailLib = email;
@@ -462,8 +466,6 @@ static LibraryDataManager *s_sharedManager = nil;
             
             [CoreDataManager saveData];
             
-            [_librariesByID setObject:lib forKey:identityTag];
-            
             // library schedule
             
             NSMutableDictionary *schedule = [NSMutableDictionary dictionary];
@@ -474,32 +476,6 @@ static LibraryDataManager *s_sharedManager = nil;
                 [schedule setObject:value forKey:@"hoursOfOperationString"];
 
             [_schedulesByLibID setObject:schedule forKey:identityTag];
-
-            /*
-            NSMutableDictionary *sched = [NSMutableDictionary dictionary];
-            
-            for (NSDictionary *wkSched in schedule) {
-                NSString *day = [wkSched objectForKey:@"day"];
-                NSString *hours = [wkSched objectForKey:@"hours"];
-                [sched setObject:hours forKey:day];
-            }
-            
-            NSMutableDictionary * tempDict = [NSMutableDictionary dictionary];
-            
-            if ([sched count] < 7){
-                [tempDict setObject:[libraryDictionary objectForKey:@"hoursOfOperationString"] forKey:@"Hours"];
-                
-            } else {
-                for (NSString * dayOfWeek in daysOfWeek) {
-                    NSString *scheduleString = [sched objectForKey:dayOfWeek];
-                    if (!scheduleString)
-                        scheduleString = @"contact library/archive";
-                    [tempDict setObject:scheduleString forKey:dayOfWeek];
-                }
-            }
-            
-            [_schedulesByLibID setObject:tempDict forKey:identityTag];
-             */
         }
         
         [anytimeRequests removeObject:request];
@@ -617,8 +593,6 @@ static LibraryDataManager *s_sharedManager = nil;
     [oneTimeRequests release];
 
     [_schedulesByLibID release];
-    [_librariesByID release];
-    [_archivesByID release];
     [_allOpenArchives release];
     [_allOpenLibraries release];
     [super dealloc];

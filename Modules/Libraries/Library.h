@@ -9,13 +9,13 @@
 #import <CoreData/CoreData.h>
 
 @class LibraryPhone;
-
+@class LibraryAlias;
 
 @interface Library : NSManagedObject {
 
 }
 
-@property (nonatomic, retain) NSString * name;
+@property (nonatomic, retain) NSSet * aliases;
 @property (nonatomic, retain) NSString * primaryName;
 @property (nonatomic, retain) NSString * identityTag;
 @property (nonatomic, retain) NSString * type;
@@ -35,5 +35,10 @@
 - (void)removePhoneObject:(LibraryPhone *)value;
 - (void)addPhone:(NSSet *)value;
 - (void)removePhone:(NSSet *)value;
+
+- (void)addAliasesObject:(LibraryAlias *)value;
+- (void)removeAliasesObject:(LibraryAlias *)value;
+- (void)addAliases:(NSSet *)value;
+- (void)removeAliases:(NSSet *)value;
 
 @end

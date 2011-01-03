@@ -109,14 +109,16 @@ NSInteger phoneNumberSortItemAvail(id num1, id num2, void *context){
 	
 	bookmarkButtonIsOn = NO;
 	
-	NSPredicate *pred = [NSPredicate predicateWithFormat:@"name == %@ AND type == %@", lib.name, lib.type];
-	Library *alreadyInDB = [[CoreDataManager objectsForEntity:LibraryEntityName matchingPredicate:pred] lastObject];
+	//NSPredicate *pred = [NSPredicate predicateWithFormat:@"name == %@ AND type == %@", lib.name, lib.type];
+	//Library *alreadyInDB = [[CoreDataManager objectsForEntity:LibraryEntityName matchingPredicate:pred] lastObject];
 	
-	if (nil != alreadyInDB) {
-		bookmarkButton.selected = [alreadyInDB.isBookmarked boolValue];
-		bookmarkButtonIsOn = [alreadyInDB.isBookmarked boolValue];
-	}
+	//if (nil != alreadyInDB) {
+	//	bookmarkButton.selected = [alreadyInDB.isBookmarked boolValue];
+	//	bookmarkButtonIsOn = [alreadyInDB.isBookmarked boolValue];
+	//}
 	
+    bookmarkButton.selected = [lib.isBookmarked boolValue];
+    bookmarkButtonIsOn = [lib.isBookmarked boolValue];
 	
 	UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(12.0, 9.0, 250.0, height)];
 	label.text = libraryName;
@@ -162,7 +164,8 @@ NSInteger phoneNumberSortItemAvail(id num1, id num2, void *context){
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(setupWeeklySchedule) name:LibraryRequestDidCompleteNotification object:LibraryDataRequestLibraryDetail];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(setupWeeklySchedule) name:LibraryRequestDidCompleteNotification object:LibraryDataRequestArchiveDetail];
         
-        [[LibraryDataManager sharedManager] requestDetailsForLibType:lib.type libID:lib.identityTag libName:lib.name];
+        //[[LibraryDataManager sharedManager] requestDetailsForLibType:lib.type libID:lib.identityTag libName:lib.name];
+        [[LibraryDataManager sharedManager] requestDetailsForLibType:lib.type libID:lib.identityTag libName:displayName];
     }
 	
 	
@@ -244,7 +247,8 @@ NSInteger phoneNumberSortItemAvail(id num1, id num2, void *context){
 	
 	BOOL newBookmarkButtonStatus = !bookmarkButton.selected;
 	
-	NSPredicate *pred = [NSPredicate predicateWithFormat:@"name == %@ AND type == %@", lib.name, lib.type];
+	//NSPredicate *pred = [NSPredicate predicateWithFormat:@"name == %@ AND type == %@", lib.name, lib.type];
+    NSPredicate *pred = [NSPredicate predicateWithFormat:@"identityTag like %@", lib.identityTag];
 	Library *alreadyInDB = [[CoreDataManager objectsForEntity:LibraryEntityName matchingPredicate:pred] lastObject];
 	
 	if (nil == alreadyInDB){
@@ -633,7 +637,8 @@ NSInteger phoneNumberSortItemAvail(id num1, id num2, void *context){
 		
 		CLLocationCoordinate2D coord = CLLocationCoordinate2DMake([lib.lat doubleValue], [lib.lon doubleValue]);
 		ArcGISMapAnnotation *annotation = [[[ArcGISMapAnnotation alloc] initWithCoordinate:coord] autorelease];
-		annotation.name = lib.name;
+		//annotation.name = lib.name;
+        annotation.name = displayName;
 		annotation.uniqueID = [NSString stringWithFormat:@"%@@%.4f,%.4f", annotation.name,coord.latitude, coord.longitude];
 		[[MapBookmarkManager defaultManager] saveAnnotationWithoutBookmarking:annotation];
 		

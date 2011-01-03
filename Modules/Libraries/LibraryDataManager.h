@@ -43,9 +43,6 @@ NSInteger libraryNameSort(id lib1, id lib2, void *context);
     NSMutableArray *anytimeRequests;
     
     NSMutableSet *delegates;
-	
-	NSMutableDictionary *_librariesByID;
-	NSMutableDictionary *_archivesByID;
 
     NSMutableArray *_allLibraries;
     NSMutableArray *_allArchives;
@@ -61,6 +58,13 @@ NSInteger libraryNameSort(id lib1, id lib2, void *context);
 - (void)registerDelegate:(id<LibraryDataManagerDelegate>)aDelegate;
 - (void)unregisterDelegate:(id<LibraryDataManagerDelegate>)aDelegate;
 
+#pragma mark Data retrieval methods
+
+- (NSDictionary *)scheduleForLibID:(NSString *)libID;
+- (Library *)libraryWithID:(NSString *)libID;
+
+#pragma mark API requests
+
 - (void)requestLibraries;
 - (void)requestArchives;
 - (void)requestOpenLibraries;
@@ -69,9 +73,6 @@ NSInteger libraryNameSort(id lib1, id lib2, void *context);
 - (void)requestFullAvailabilityForItem:(NSString *)itemID;
 - (void)requestThumbnailForItem:(NSString *)itemID;
 - (void)searchLibraries:(NSString *)searchTerms;
-
-- (NSDictionary *)scheduleForLibID:(NSString *)libID;
-- (Library *)libraryWithID:(NSString *)libID;
 
 @property (nonatomic, readonly) NSArray *allLibraries;
 @property (nonatomic, readonly) NSArray *allOpenLibraries;

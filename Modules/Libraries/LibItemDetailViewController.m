@@ -13,6 +13,7 @@
 #import "ItemAvailabilityDetailViewController.h"
 #import "LibraryLocationsMapViewController.h"
 #import "LibrariesSearchViewController.h"
+#import "LibraryAlias.h"
 
 @class LibItemDetailCell;
 
@@ -45,6 +46,7 @@
 		self.tableView.dataSource = self;
 		
 		locationsWithItem = [[NSArray alloc] init];
+        displayLibraries = [[NSMutableArray alloc] init];
 	}
 	
 	return self;
@@ -459,10 +461,11 @@
 -(void) mapButtonPressed: (id) sender {
 	
 	
-	if ([[displayNameAndLibraries allKeys] count] > 0) {
+	//if ([[displayNameAndLibraries allKeys] count] > 0) {
+	if ([displayLibraries count] > 0) {
 		LibraryLocationsMapViewController * vc = [[LibraryLocationsMapViewController alloc] initWithMapViewFrame:self.view.frame];
 	
-		[vc setAllAvailabilityLibraryLocations:displayNameAndLibraries];
+        [vc setAllLibraryLocations:displayLibraries];
 		vc.navController = self;
 		
 		vc.title = @"Locations with Item";
@@ -694,8 +697,16 @@
 		cell1.textLabel.text = libName;
 		
         // detail text label for availability listings
-        Library *theLibrary = [displayNameAndLibraries objectForKey:libName];
-        if (nil != currentLocation) {
+        //Library *theLibrary = [displayNameAndLibraries objectForKey:libName];
+        Library *theLibrary = nil;
+        for (LibraryAlias *alias in displayLibraries) {
+            if ([alias.name isEqualToString:libName]) {
+                theLibrary = alias.library;
+                break;
+            }
+        }
+        
+        if (theLibrary && nil != currentLocation) {
             CGFloat latitude = [theLibrary.lat doubleValue];
             CGFloat longitude = [theLibrary.lon doubleValue];
             
@@ -1124,17 +1135,6 @@
 				[self.tableView reloadData];
 			}
 		}
-        /*
-		else {
-			UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Connection Failed", nil)
-																message:NSLocalizedString(@"Could not connect to server. Please try again later.", nil)
-															   delegate:self 
-													  cancelButtonTitle:@"OK" 
-													  otherButtonTitles:nil];
-			[alertView show];
-			[alertView release];
-		}
-         */
 	}
 	
 	
@@ -1142,9 +1142,11 @@
 		if ([result isKindOfClass:[NSArray class]]) {
 			
 			locationsWithItem = [result retain];
-			[self.tableView reloadData];
+			//[self.tableView reloadData];
 			
-			displayNameAndLibraries = [[NSMutableDictionary alloc] init];
+			//displayNameAndLibraries = [[NSMutableDictionary alloc] init];
+            
+            [displayLibraries removeAllObjects];
 			
 			for(NSDictionary * tempDict in result) {
 				
@@ -1163,8 +1165,21 @@
                     [CoreDataManager saveData];
                 }
                 
-                [displayNameAndLibraries setObject:alreadyInDB forKey:displayName];
+                pred = [NSPredicate predicateWithFormat:@"name like %@", displayName];
+                LibraryAlias *alias = [[alreadyInDB.aliases filteredSetUsingPredicate:pred] anyObject];
+                if (!alias) {
+                    alias = (LibraryAlias *)[CoreDataManager insertNewObjectForEntityForName:LibraryAliasEntityName];
+                    alias.library = alreadyInDB;
+                    alias.name = displayName;
+                    [CoreDataManager saveData];
+                }
+                
+                [displayLibraries addObject:alias];
+                
+                //[displayNameAndLibraries setObject:alreadyInDB forKey:displayName];
 			}
+            
+            [self.tableView reloadData];
 			
 			locationManager = [[CLLocationManager alloc] init];
 			locationManager.distanceFilter = kCLDistanceFilterNone;
@@ -1174,17 +1189,6 @@
 			[locationManager startUpdatingLocation];
 			
 		}
-        /*
-		else {
-			UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Connection Failed", nil)
-																message:NSLocalizedString(@"Could not connect to server. Please try again later.", nil)
-															   delegate:self 
-													  cancelButtonTitle:@"OK" 
-													  otherButtonTitles:nil];
-			[alertView show];
-			[alertView release];
-		}
-        */
 	}
 	
 	[self removeLoadingIndicator];
