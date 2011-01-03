@@ -69,4 +69,10 @@
 - (void)addLoadingIndicator:(UIView *)view;
 - (void)removeLoadingIndicator;
 
+// function and constants for getting meters in units of user's locale.
+// TODO: put these somewhere in Common
+#define METERS_PER_FOOT 0.3048
+#define FEET_PER_MILE 5280
+- (NSString *)textForDistance:(CLLocationDistance)meters;
+
 @end

@@ -333,10 +333,15 @@ static LibraryDataManager *s_sharedManager = nil;
                     [CoreDataManager saveData];
                 }
                 
-                if ([type isEqualToString:@"library"]) {
-                    [_allOpenLibraries addObject:alias];
-                } else if ([type isEqualToString:@"archive"]) {
-                    [_allOpenArchives addObject:alias];
+                NSString *isOpenNow = [libraryDictionary objectForKey:@"isOpenNow"];
+                BOOL isOpen = [isOpenNow isEqualToString:@"YES"];
+                
+                if (isOpen) {
+                    if ([type isEqualToString:@"library"]) {
+                        [_allOpenLibraries addObject:alias];
+                    } else if ([type isEqualToString:@"archive"]) {
+                        [_allOpenArchives addObject:alias];
+                    }
                 }
             }
             

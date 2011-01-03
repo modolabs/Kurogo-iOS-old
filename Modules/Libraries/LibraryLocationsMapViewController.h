@@ -24,7 +24,6 @@
 	NSDictionary * displayNameAndLibrariesDictionary;
     
     // true if we are looking at map of an item's available locations, false if we are looking at generic map
-#warning make sure map is implemented for two cases
     BOOL isAvailabilityMap;
 
 }

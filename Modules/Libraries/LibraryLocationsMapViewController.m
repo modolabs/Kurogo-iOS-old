@@ -230,30 +230,25 @@
     else
         vc.title = @"Library Detail";
     
-    if (isAvailabilityMap) {
-		NSArray * tempArray;
-		
-		if (showingOpenOnly == NO)
-			tempArray = allLibraries;
-		else {
-			tempArray = opeLibraries;
-		}
-		
-		int indexSelected = 0;
-		int tempIndex = 0;
-		for(LibraryAlias * libTemp in tempArray){
-			if ([lib.library.identityTag isEqualToString:libTemp.library.identityTag])
-				indexSelected = tempIndex;
-			
-			tempIndex++;
-		}
-        
-		vc.otherLibraries = tempArray;
-		vc.currentlyDisplayingLibraryAtIndex = indexSelected;
-        
-    } else {
-        vc.otherLibraries = allLibraries;
+    NSArray * tempArray;
+    
+    if (showingOpenOnly == NO)
+        tempArray = allLibraries;
+    else {
+        tempArray = opeLibraries;
     }
+    
+    int indexSelected = 0;
+    int tempIndex = 0;
+    for(LibraryAlias * libTemp in tempArray){
+        if ([lib.library.identityTag isEqualToString:libTemp.library.identityTag])
+            indexSelected = tempIndex;
+        
+        tempIndex++;
+    }
+    
+    vc.otherLibraries = tempArray;
+    vc.currentlyDisplayingLibraryAtIndex = indexSelected;
     
     [self.navController.navigationController pushViewController:vc animated:YES];
     

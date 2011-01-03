@@ -730,7 +730,7 @@ allLibrariesWithItem: (NSArray *) allLibraries
 	NSDictionary * itemForRow = [items objectAtIndex:indexPath.row];
 	NSString * canRequest = [itemForRow objectForKey:@"canRequest"];
 	NSString * canScanAndDeliver = [itemForRow objectForKey:@"canScanAndDeliver"];
-	NSString * isUnAvailable = [itemForRow objectForKey:@"unavailable"];
+	//NSString * isUnAvailable = [itemForRow objectForKey:@"unavailable"];
 	NSString * isAvailable = [itemForRow objectForKey:@"available"];
 	NSString * isCheckedOut = [itemForRow objectForKey:@"checkedOutItem"];
 	

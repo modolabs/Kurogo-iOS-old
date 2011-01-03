@@ -15,6 +15,7 @@
 #import "LibrariesSearchViewController.h"
 #import "LibraryAlias.h"
 
+
 @class LibItemDetailCell;
 
 @implementation LibItemDetailViewController
@@ -371,8 +372,6 @@
 				
 				[self.navigationController setViewControllers:controllersArray animated:YES];
 				
-			} else {
-				//[self handleWarningMessage:@"Could not dispatch search" title:@"Search Failed"];
 			}
 			
 			[vc release];
@@ -490,14 +489,11 @@
 	}
 	
 	if (newBookmarkButtonStatus) {
-		//[StellarModel saveClassToFavorites:stellarClass];
-		
 		bookmarkButton.selected = YES;
 		alreadyInDB.isBookmarked = [NSNumber numberWithBool:YES];
 	}
 	
 	else {
-		//[StellarModel removeClassFromFavorites:stellarClass];
 		bookmarkButton.selected = NO;
 		alreadyInDB.isBookmarked = [NSNumber numberWithBool:NO];
 	}
@@ -710,13 +706,16 @@
             CGFloat latitude = [theLibrary.lat doubleValue];
             CGFloat longitude = [theLibrary.lon doubleValue];
             
-            NSLog(@"latitude: %.1f longitude: %.1f", latitude, longitude);
+            NSLog(@"latitude: %.3f longitude: %.3f", latitude, longitude);
             
             if (latitude != 0) {
-                CLLocation * libLoc = [[CLLocation alloc] initWithLatitude:latitude longitude:longitude];
+                CLLocation * libLoc = [[[CLLocation alloc] initWithLatitude:latitude longitude:longitude] autorelease];
+                NSLog(@"%@", [libLoc description]);
+                NSLog(@"%@", [currentLocation description]);
+                
                 CLLocationDistance dist = [currentLocation distanceFromLocation:libLoc];
                 if (dist >= 0) {
-                    cell1.detailTextLabel.text = [NSString stringWithFormat:@"%.0f meters away", dist];
+                    cell1.detailTextLabel.text = [NSString stringWithFormat:@"%@ away", [self textForDistance:dist]];
                     cell1.detailTextLabel.textColor = [UIColor colorWithHexString:@"#554C41"];
                 }
             }
@@ -958,38 +957,6 @@
 														 allLibrariesWithItem:locationsWithItem
 														 index:indexPath.row];
 			
-			
-			/*
-			apiRequest = [[JSONAPIRequest alloc] initWithJSONAPIDelegate:vc];
-			vc.parentViewApiRequest = [apiRequest retain];
-			
-			NSString * libOrArchive;
-			if ([type isEqualToString:@"archive"])
-				libOrArchive = @"archivedetail";
-			
-			else {
-				libOrArchive = @"libdetail";
-			}
-
-			if ([apiRequest requestObjectFromModule:@"libraries" 
-											command:libOrArchive
-										 parameters:[NSDictionary dictionaryWithObjectsAndKeys:libId, @"id", libName, @"name", nil]])
-			{
-				
-			}
-			else {
-				UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Connection Failed", nil)
-																	message:NSLocalizedString(@"Could not connect to server. Please try again later.", nil) 
-																   delegate:self 
-														  cancelButtonTitle:@"OK" 
-														  otherButtonTitles:nil];
-				[alertView show];
-				[alertView release];
-			}
-			*/
-			
-			
-			
 			vc.title = @"Availability";
 			[self.navigationController pushViewController:vc animated:YES];
 			[vc release];
@@ -1017,10 +984,12 @@
 
 
 - (void)dealloc {
-    [super dealloc];
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+
 	locationManager.delegate = nil;
 	[locationManager release];
 	
+    [super dealloc];
 }
 
 
@@ -1115,7 +1084,7 @@
 					[self removeLoadingIndicator];
 					[thumbnail addSubview:imageView];
 					
-					UILabel * count = [[UILabel alloc] initWithFrame:CGRectMake(0.0, imageY+imageSize.height+6, screenRect.size.width, 20)];
+					UILabel * count = [[[UILabel alloc] initWithFrame:CGRectMake(0.0, imageY+imageSize.height+6, screenRect.size.width, 20)] autorelease];
 					count.text = [NSString stringWithFormat:@"Total Images: %d", imageCount];
 					count.font = [UIFont fontWithName:COURSE_NUMBER_FONT size:14];
                     count.textAlignment = UITextAlignmentCenter;
@@ -1147,6 +1116,7 @@
 			//displayNameAndLibraries = [[NSMutableDictionary alloc] init];
             
             [displayLibraries removeAllObjects];
+            BOOL fetchingDetails = NO;
 			
 			for(NSDictionary * tempDict in result) {
 				
@@ -1165,6 +1135,11 @@
                     [CoreDataManager saveData];
                 }
                 
+                if ([alreadyInDB.lat doubleValue] == 0) {
+                    fetchingDetails = YES;
+                    [[LibraryDataManager sharedManager] requestDetailsForLibType:type libID:identityTag libName:displayName];
+                }
+                
                 pred = [NSPredicate predicateWithFormat:@"name like %@", displayName];
                 LibraryAlias *alias = [[alreadyInDB.aliases filteredSetUsingPredicate:pred] anyObject];
                 if (!alias) {
@@ -1178,6 +1153,11 @@
                 
                 //[displayNameAndLibraries setObject:alreadyInDB forKey:displayName];
 			}
+            
+            if (fetchingDetails) {
+                [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(libraryDetailsDidLoad:) name:LibraryRequestDidCompleteNotification object:LibraryDataRequestLibraryDetail];
+                [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(libraryDetailsDidLoad:) name:LibraryRequestDidCompleteNotification object:LibraryDataRequestArchiveDetail];
+            }
             
             [self.tableView reloadData];
 			
@@ -1200,6 +1180,10 @@
 
 - (void)request:(JSONAPIRequest *)request handleConnectionError:(NSError *)error {
 	[self removeLoadingIndicator];
+}
+
+- (void)libraryDetailsDidLoad:(NSNotification *)aNotification {
+    [self.tableView reloadData];
 }
 
 
@@ -1273,21 +1257,71 @@
   
     [currentLocation release];
 	currentLocation = [newLocation retain];
+    
+    NSLog(@"current location is %@", [currentLocation description]);
+    
 	[locationManager stopUpdatingLocation];
 	[self.tableView reloadData];
 
 }
 
 - (void)locationManager:(CLLocationManager *)manager monitoringDidFailForRegion:(CLRegion *)region withError:(NSError *)error{
-	
 	currentLocation = nil;
 	[locationManager stopUpdatingLocation];
 }
 
 - (void)locationManager:(CLLocationManager *)manager didFailWithError:(NSError *)error{
+    NSLog(@"could not update location");
+    
 	currentLocation = nil;
 	[locationManager stopUpdatingLocation];
-	
+
+#if TARGET_IPHONE_SIMULATOR
+    CLLocationCoordinate2D coord;
+    switch (arc4random() % 3) {
+        case 0:
+            NSLog(@"we are in kendall square");
+            coord.latitude = 42.3629;
+            coord.longitude = -71.0862;
+            break;
+        case 1:
+            NSLog(@"we are in alewife");
+            coord.latitude = 42.3948;
+            coord.longitude = -71.1446;
+            break;
+        default:
+            break;
+    }
+    
+    if (coord.latitude) {
+        currentLocation = [[CLLocation alloc] initWithLatitude:coord.latitude longitude:coord.longitude];
+        [self.tableView reloadData];
+    }
+#endif
+}
+
+- (NSString *)textForDistance:(CLLocationDistance)meters {
+    NSString *measureSystem = [[NSLocale currentLocale] objectForKey:NSLocaleMeasurementSystem];
+    BOOL isMetric = ![measureSystem isEqualToString:@"U.S."];
+    
+    NSString *distanceString;
+
+    if (!isMetric) {
+        CGFloat feet = meters / METERS_PER_FOOT;
+        if (feet * 2 > FEET_PER_MILE) {
+            distanceString = [NSString stringWithFormat:@"%.1f miles", (feet / FEET_PER_MILE)];
+        } else {
+            distanceString = [NSString stringWithFormat:@"%.0f feet",feet];
+        }
+    } else {
+        if (meters > 1000) {
+            distanceString = [NSString stringWithFormat:@"%.1f km", (meters / 1000)];
+        } else {
+            distanceString = [NSString stringWithFormat:@"%.0f meters", meters];
+        }
+    }
+    
+    return distanceString;
 }
 
 @end
