@@ -59,6 +59,10 @@ static LibraryDataManager *s_sharedManager = nil;
         
         _librariesByID = [[NSMutableDictionary alloc] init];
         _archivesByID = [[NSMutableDictionary alloc] init];
+        
+        _allLibraries = [[NSMutableArray alloc] init];
+        _allArchives = [[NSMutableArray alloc] init];
+        
         _allOpenLibraries = [[NSMutableArray alloc] init];
         _allOpenArchives = [[NSMutableArray alloc] init];
         
@@ -67,16 +71,24 @@ static LibraryDataManager *s_sharedManager = nil;
         //delegates = [[NSMutableSet alloc] init];
         
         // fetch objects from core data
+        // TODO: return all library names instead of unique libraries by id
         // TODO: update periodically from server instead of always trusting cache
         NSPredicate *matchAll = [NSPredicate predicateWithFormat:@"TRUEPREDICATE"];
         NSArray *tempArray = [CoreDataManager objectsForEntity:LibraryEntityName matchingPredicate:matchAll];
         if ([tempArray count]) {
             for(Library *aLibrary in tempArray) {
-                if ([aLibrary.type isEqualToString:@"archive"])
+                if ([aLibrary.type isEqualToString:@"archive"]) {
                     [_archivesByID setObject:aLibrary forKey:aLibrary.identityTag];
-                else if ([aLibrary.type isEqualToString: @"library"])
+                    [_allArchives addObject:aLibrary];
+                }
+                else if ([aLibrary.type isEqualToString: @"library"]) {
                     [_librariesByID setObject:aLibrary forKey:aLibrary.identityTag];
+                    [_allLibraries addObject:aLibrary];
+                }
             }
+            
+            [_allArchives sortUsingFunction:libraryNameSort context:nil];
+            [_allLibraries sortUsingFunction:libraryNameSort context:nil];
         } else {
             [self requestLibraries];
             [self requestArchives];
@@ -88,7 +100,8 @@ static LibraryDataManager *s_sharedManager = nil;
 }
 
 - (NSArray *)allLibraries {
-    return [[_librariesByID allValues] sortedArrayUsingFunction:libraryNameSort context:self];
+    //return [[_librariesByID allValues] sortedArrayUsingFunction:libraryNameSort context:self];
+    return _allLibraries;
 }
 
 - (NSArray *)allOpenLibraries {
@@ -96,7 +109,8 @@ static LibraryDataManager *s_sharedManager = nil;
 }
 
 - (NSArray *)allArchives {
-    return [[_archivesByID allValues] sortedArrayUsingFunction:libraryNameSort context:self];
+    //return [[_archivesByID allValues] sortedArrayUsingFunction:libraryNameSort context:self];
+    return _allArchives;
 }
 
 - (NSArray *)allOpenArchives {
@@ -214,6 +228,14 @@ static LibraryDataManager *s_sharedManager = nil;
         if ([JSONObject isKindOfClass:[NSArray class]] && [(NSArray *)JSONObject count]) {
             NSArray *resultArray = (NSArray *)JSONObject;
             
+            if ([command isEqualToString:LibraryDataRequestLibraries]) {
+                [_allLibraries release];
+                _allLibraries = [[NSMutableArray alloc] init];
+            } else {
+                [_allArchives release];
+                _allArchives = [[NSMutableArray alloc] init];
+            }
+            
             for (NSInteger index=0; index < [resultArray count]; index++) {
                 
                 NSDictionary *libraryDictionary = [resultArray objectAtIndex:index];
@@ -248,9 +270,11 @@ static LibraryDataManager *s_sharedManager = nil;
                 
                 [CoreDataManager saveData];
                 
-                if ([type isEqualToString:@"library"]) {
+                if ([command isEqualToString:LibraryDataRequestLibraries]) {
+                    [_allLibraries addObject:alreadyInDB];
                     [_librariesByID setObject:alreadyInDB forKey:identityTag];
-                } else if ([type isEqualToString:@"archive"]) {
+                } else {
+                    [_allArchives addObject:alreadyInDB];
                     [_archivesByID setObject:alreadyInDB forKey:identityTag];
                 }
                 
@@ -258,13 +282,19 @@ static LibraryDataManager *s_sharedManager = nil;
                 BOOL isOpen = [isOpenNow isEqualToString:@"YES"];
                 
                 if (isOpen) {
-                    if ([type isEqualToString:@"library"]) {
+                    if ([command isEqualToString:LibraryDataRequestLibraries]) {
                         [_allOpenLibraries addObject:alreadyInDB];
-                    } else if ([type isEqualToString:@"archive"]) {
+                    } else {
                         [_allOpenArchives addObject:alreadyInDB];
                     }
                 }
                 
+            }
+            
+            if ([command isEqualToString:LibraryDataRequestLibraries]) {
+                [_allLibraries sortUsingFunction:libraryNameSort context:nil];
+            } else {
+                [_allArchives sortUsingFunction:libraryNameSort context:nil];
             }
         }
         

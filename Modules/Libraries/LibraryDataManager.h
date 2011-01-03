@@ -45,9 +45,14 @@ NSInteger libraryNameSort(id lib1, id lib2, void *context);
     NSMutableSet *delegates;
 	
 	NSMutableDictionary *_librariesByID;
-	NSMutableArray *_allOpenLibraries;
 	NSMutableDictionary *_archivesByID;
+
+    NSMutableArray *_allLibraries;
+    NSMutableArray *_allArchives;
+    
+	NSMutableArray *_allOpenLibraries;
     NSMutableArray *_allOpenArchives;
+    
     NSMutableDictionary *_schedulesByLibID;
 }
 
@@ -57,6 +62,7 @@ NSInteger libraryNameSort(id lib1, id lib2, void *context);
 - (void)unregisterDelegate:(id<LibraryDataManagerDelegate>)aDelegate;
 
 - (void)requestLibraries;
+- (void)requestArchives;
 - (void)requestOpenLibraries;
 - (void)requestSearchCodes;
 - (void)requestDetailsForLibType:(NSString *)libOrArchive libID:(NSString *)libID libName:(NSString *)libName;
