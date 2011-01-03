@@ -14,7 +14,6 @@
 #import "HoursAndLocationsViewController.h"
 #import "LibrariesSearchViewController.h"
 #import "CoreDataManager.h"
-//#import "BookmarkedHoursAndLocationsViewController.h"
 #import "BookmarkedLibItemListView.h"
 #import "LibraryAdvancedSearch.h"
 #import "MobileResearchLinksViewController.h"
@@ -113,12 +112,15 @@
 	NSString * option4 = @"Mobile Research Links";
 	NSString * option5 = @"Ask a Librarian";
 	mainViewTableOptions2 = [[NSArray alloc] initWithObjects: option3, option4, option5, nil];
-	
+}
+
+- (void)setupBookmarks {
 	
 	//hasBookmarkedItems = NO;
 	hasBookmarkedLibraries = NO;
 	
 	NSPredicate *pred = [NSPredicate predicateWithFormat:@"isBookmarked == YES"];
+    [bookmarkedItems release];
 	bookmarkedLibraries = [[CoreDataManager objectsForEntity:LibraryEntityName matchingPredicate:pred] retain];
 	
 	if ([bookmarkedLibraries count] > 0)
@@ -131,6 +133,7 @@
 	}
 	
 	NSPredicate *predItem = [NSPredicate predicateWithFormat:@"isBookmarked == YES"];
+    [bookmarkedItems release];
 	bookmarkedItems = [[CoreDataManager objectsForEntity:LibraryItemEntityName matchingPredicate:predItem] retain];
 	
 	if ([bookmarkedItems count] > 0)
@@ -140,28 +143,22 @@
 		bookmarkedItems = [[NSArray alloc] initWithObjects: nil];
 		[self hideToolBar];
 	}
-	
-	
 }
 
 - (void)viewDidLoad {
 	[super viewDidLoad];
 	[self setUpLayOut];
-	
+	[self setupBookmarks];
     
 }	
 
 - (void)viewWillAppear:(BOOL)animated
 {
-	/*for (UIView *view in self.view.subviews) {
-		[view removeFromSuperview];
-	}*/
+	[super viewWillAppear:animated];
+
 	[searchController unfocusSearchBarAnimated:YES];
 	[searchController hideSearchOverlayAnimated:YES];
-	//[self searchBarCancelButtonClicked:theSearchBar];
-	[self setUpLayOut];
-	[super viewWillAppear:animated];
-	
+    [self setupBookmarks];
 
 	[self.tableView reloadData];
 
@@ -236,12 +233,12 @@
 
 - (void)bookmarkButtonClicked:(UIButton *)sender {
 	
-	//BookmarkedHoursAndLocationsViewController *vc = [[BookmarkedHoursAndLocationsViewController alloc] init];
-    HoursAndLocationsViewController *vc = [[[HoursAndLocationsViewController alloc] init] autorelease];
+    HoursAndLocationsViewController *vc = [[HoursAndLocationsViewController alloc] init];
     vc.showBookmarks = YES;
 	vc.title = @"Bookmarked Libraries";
     
     [self.navigationController pushViewController:vc animated:YES];
+    [vc release];
 }
 
 - (void)bookmarkItemButtonClicked:(UIButton *)sender {
@@ -302,7 +299,7 @@
 {
 	[_bookmarkButton removeFromSuperview];
 	
-	self.searchTerms = [searchBar.text retain];
+	self.searchTerms = searchBar.text;
 	
 	LibrariesSearchViewController *vc = [[LibrariesSearchViewController alloc] initWithViewController: self];
 	vc.title = @"Search Results";
@@ -313,7 +310,7 @@
                                              parameters:[NSDictionary dictionaryWithObjectsAndKeys:self.searchTerms, @"q", nil]];
 	
     if (requestWasDispatched) {
-		vc.searchTerms = [searchBar.text retain];
+		vc.searchTerms = searchBar.text;
 		[self.navigationController pushViewController:vc animated:YES];
     } else {
         //[self handleWarningMessage:@"Could not dispatch search" title:@"Search Failed"];
@@ -467,30 +464,10 @@
 	return cell;	
 }
 
-/*
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-
-}
-*/
-
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
-
-	//return UNGROUPED_SECTION_HEADER_HEIGHT;
 
 	return GROUPED_SECTION_HEADER_HEIGHT;
 }
-
-/*
-
-- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
-	UIView *titleView = nil;
-	
-
-    return titleView;
-	
-}
- */
 
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -502,7 +479,8 @@
 		if (((indexPath.row == 0) && (hasBookmarkedLibraries == NO)) ||
 			((indexPath.row == 1) && (hasBookmarkedLibraries == YES)))
 		{
-			HoursAndLocationsViewController *vc = [[HoursAndLocationsViewController alloc] initWithType:@"Libraries"];
+			HoursAndLocationsViewController *vc = [[HoursAndLocationsViewController alloc] init];
+            vc.typeOfRepo = @"Libraries";
 			vc.title = @"Libraries";
             [self.navigationController pushViewController:vc animated:YES];
 			[vc release];
@@ -510,8 +488,9 @@
 		else if (((indexPath.row == 1) && (hasBookmarkedLibraries == NO)) ||
 						((indexPath.row == 2) && (hasBookmarkedLibraries == YES)))
 		{
-			HoursAndLocationsViewController *vc = [[HoursAndLocationsViewController alloc] initWithType:@"Archives"];
+			HoursAndLocationsViewController *vc = [[HoursAndLocationsViewController alloc] init];
 			vc.showArchives = YES;
+            vc.typeOfRepo = @"Archives";
 			vc.title = @"Archives";
             [self.navigationController pushViewController:vc animated:YES];
 			[vc release];
@@ -519,12 +498,12 @@
 		
 		else if ((indexPath.row == 0) && (hasBookmarkedLibraries == YES)){
 			
-			//BookmarkedHoursAndLocationsViewController *vc = [[BookmarkedHoursAndLocationsViewController alloc] init];
-            HoursAndLocationsViewController *vc = [[[HoursAndLocationsViewController alloc] init] autorelease];
+            HoursAndLocationsViewController *vc = [[HoursAndLocationsViewController alloc] init];
             vc.showBookmarks = YES;
             // TODO: let VC use its own showBookmarks property to choose display title
 			vc.title = @"Bookmarked Libraries";
             [self.navigationController pushViewController:vc animated:YES];
+            [vc release];
 		}
 	}
 	

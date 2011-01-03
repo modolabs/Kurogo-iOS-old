@@ -18,21 +18,17 @@
 @interface HoursAndLocationsViewController : UIViewController <UITableViewDelegate, UITableViewDataSource, LibraryDataManagerDelegate> { //JSONAPIDelegate> {
 	
 	UIBarButtonItem * _viewTypeButton;
-	UIView * listOrMapView;
 	UITableView * _tableView;
 	
 	UISegmentedControl *segmentedControl;
 	UISegmentedControl * filterButtonControl;
 	UISegmentedControl * gpsButtonControl;
-	
-	//NSMutableArray * allLibraries;
-	//NSMutableArray * allOpenLibraries;
-	//NSMutableArray * allArchives;
 
 	BOOL showingMapView;
 	BOOL gpsPressed;
 	BOOL showingOnlyOpen;
 	
+    // TODO: implement this as just a mapView instead of an entire UIViewController
 	LibraryLocationsMapViewController * librayLocationsMapView;
 	
 	BOOL showArchives;
@@ -41,16 +37,15 @@
 	JSONAPIRequest * apiRequest;
 	
 	NSString * typeOfRepo;
-	
+	NSArray *_currentLibraries;
 }
 
 @property BOOL showArchives;
-@property (nonatomic, retain) UIView * listOrMapView;
+//@property (nonatomic, retain) UIView * listOrMapView;
 @property BOOL showingMapView;
 @property (nonatomic, retain) LibraryLocationsMapViewController * librayLocationsMapView;
 @property (nonatomic) BOOL showBookmarks;
-
--(id)initWithType:(NSString *) type;
+@property (nonatomic, retain) NSString *typeOfRepo;
 
 -(void)displayTypeChanged:(id)sender;
 -(void) gpsButtonPressed:(id)sender;

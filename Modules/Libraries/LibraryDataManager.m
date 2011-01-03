@@ -69,7 +69,6 @@ static LibraryDataManager *s_sharedManager = nil;
         //delegates = [[NSMutableSet alloc] init];
         
         // fetch objects from core data
-        // TODO: return all library names instead of unique libraries by id
         // TODO: update periodically from server instead of always trusting cache
         NSPredicate *matchAll = [NSPredicate predicateWithFormat:@"TRUEPREDICATE"];
         NSArray *tempArray = [CoreDataManager objectsForEntity:LibraryAliasEntityName matchingPredicate:matchAll];
@@ -96,7 +95,6 @@ static LibraryDataManager *s_sharedManager = nil;
 }
 
 - (NSArray *)allLibraries {
-    //return [[_librariesByID allValues] sortedArrayUsingFunction:libraryNameSort context:self];
     return _allLibraries;
 }
 
@@ -105,7 +103,6 @@ static LibraryDataManager *s_sharedManager = nil;
 }
 
 - (NSArray *)allArchives {
-    //return [[_archivesByID allValues] sortedArrayUsingFunction:libraryNameSort context:self];
     return _allArchives;
 }
 
@@ -253,6 +250,11 @@ static LibraryDataManager *s_sharedManager = nil;
                     alreadyInDB.lat = [NSNumber numberWithDouble:[latitude doubleValue]];
                     alreadyInDB.lon = [NSNumber numberWithDouble:[longitude doubleValue]];
                     alreadyInDB.type = type;
+                    
+                    // make sure there is an alias whose display name is the primary name
+                    LibraryAlias *primaryAlias = [CoreDataManager insertNewObjectForEntityForName:LibraryAliasEntityName];
+                    primaryAlias.library = alreadyInDB;
+                    primaryAlias.name = primaryName;
                     
                     [CoreDataManager saveData];
                 }

@@ -11,17 +11,11 @@
 #import "LibraryAnnotation.h"
 #import "LibraryDetailViewController.h"
 #import "LibraryAlias.h"
-//#import "ItemAvailabilityLibraryAnnotation.h"
-//#import "ItemAvailabilityLibDetailViewController.h"
 
 @implementation LibraryLocationsMapViewController
 @synthesize mapView;
 @synthesize showingOpenOnly;
 @synthesize navController;
-
-- (NSArray *)currentLibraries {
-    
-}
 
 -(id) initWithMapViewFrame:(CGRect) frame {
 	
@@ -93,29 +87,6 @@
 	mapView.region = [self regionForAnnotations:mapView.annotations];
 }
 
-/*
--(void) setAllAvailabilityLibraryLocations:(NSDictionary *)displayNameAndLibraries{
-    
-    [self.mapView removeAnnotations:[self.mapView annotations]];
-	
-	displayNameAndLibrariesDictionary = displayNameAndLibraries;
-	
-	for(int index=0; index < [[displayNameAndLibraries allKeys] count]; index++){
-		
-		NSString * displayName = [[displayNameAndLibraries allKeys] objectAtIndex:index];
-		Library * tempLib = [displayNameAndLibraries objectForKey:displayName];
-		ItemAvailabilityLibraryAnnotation * annotation = [[ItemAvailabilityLibraryAnnotation alloc]
-														  initWithRepoName:displayName 
-														  identityTag:tempLib.identityTag 
-														  type:tempLib.type 
-														  lib:tempLib];
-		[mapView addAnnotation:annotation];
-		
-	}
-	mapView.region = [self regionForAnnotations:mapView.annotations];
-}
-*/
-
 #pragma mark MKMapViewDelegate
 
 
@@ -142,26 +113,6 @@
 		[annotationView addSubview:imageView];
 		annotationView.backgroundColor = [UIColor clearColor];		
 	}
-	/*
-	else if ([annotation isKindOfClass:[ItemAvailabilityLibraryAnnotation class]]) 
-	{
-		annotationView = [[[MKAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:@"gufidfdlefdfdsfg"] autorelease];
-		UIImage* pin = [UIImage imageNamed:@"maps/map_pin_complete.png"];
-		UIImageView* imageView = [[[UIImageView alloc] initWithImage:pin] autorelease];		
-		
-		UIButton *myDetailButton = [UIButton buttonWithType:UIButtonTypeDetailDisclosure];
-		myDetailButton.frame = CGRectMake(0, 0, 23, 23);
-		myDetailButton.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
-		myDetailButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentCenter;
-		// Set the button as the callout view
-		annotationView.rightCalloutAccessoryView = myDetailButton;
-		
-		annotationView.frame = imageView.frame;
-		annotationView.canShowCallout = YES;
-		[annotationView addSubview:imageView];
-		annotationView.backgroundColor = [UIColor clearColor];		
-	}
-	*/
 	return annotationView;
 }
 
@@ -272,13 +223,8 @@
 
 - (void)mapView:(MKMapView *)mapView annotationView:(MKAnnotationView *)view calloutAccessoryControlTapped:(UIControl *)control
 {
-    
-	//if ([view.annotation isKindOfClass:[LibraryAnnotation class]]) {
-    
     LibraryDetailViewController *vc = [[LibraryDetailViewController alloc] initWithStyle:UITableViewStyleGrouped];
     
-    
-    //Library * lib = (Library *)((LibraryAnnotation *)view.annotation).library;
     LibraryAlias * lib = (LibraryAlias *)((LibraryAnnotation *)view.annotation).libAlias;
     vc.lib = lib;
     
@@ -311,45 +257,11 @@
         
     } else {
         vc.otherLibraries = allLibraries;
-        //vc.otherLibraries = displayNameAndLibrariesDictionary;
     }
     
     [self.navController.navigationController pushViewController:vc animated:YES];
     
     [vc release];
-    
-	/*
-	}
-	if ([view.annotation isKindOfClass:[ItemAvailabilityLibraryAnnotation class]]) {
-		
-		
-		NSString * repoName = ((ItemAvailabilityLibraryAnnotation *) view.annotation).repoNameToDisplay;
-		Library * library = ((ItemAvailabilityLibraryAnnotation *) view.annotation).library;
-		
-		int indexSelected = 0;
-		int tempIndex = 0;
-		
-		for(NSString * dispName in [displayNameAndLibrariesDictionary allKeys]){
-			
-			if ([dispName isEqualToString:repoName]){
-				indexSelected = tempIndex;
-			}
-			tempIndex++;
-		}
-		
-		
-		ItemAvailabilityLibDetailViewController *vc = [[ItemAvailabilityLibDetailViewController alloc]
-													   initWithStyle:UITableViewStyleGrouped
-													   displayName:repoName
-													   currentInd:indexSelected
-													   library:(Library *)library
-													   otherLibDictionary:displayNameAndLibrariesDictionary];
-        
-        [self.navController.navigationController pushViewController:vc animated:YES];
-		
-		[vc release];
-	}
-    */
 }
 
 

@@ -21,33 +21,47 @@
 @end
 
 @implementation HoursAndLocationsViewController
-@synthesize listOrMapView;
 @synthesize showingMapView;
 @synthesize librayLocationsMapView;
 @synthesize showArchives;
 @synthesize showBookmarks;
+@synthesize typeOfRepo;
 
 - (NSArray *)currentLibraries {
     
     NSArray *currentLibraries = nil;
     
-    if (showArchives) {
-        if (showingOnlyOpen == NO) {
-            currentLibraries = [[LibraryDataManager sharedManager] allArchives];
-        } else {
-            currentLibraries = [[LibraryDataManager sharedManager] allOpenArchives];
-        }
-    } else {
-        if (showingOnlyOpen == NO) {
-            currentLibraries = [[LibraryDataManager sharedManager] allLibraries];
-        } else {
-            currentLibraries = [[LibraryDataManager sharedManager] allOpenLibraries];
-        }
-    }
-    
     if (showBookmarks) {
         NSPredicate *bookmarkPred = [NSPredicate predicateWithFormat:@"name like library.primaryName AND library.isBookmarked == YES"];
-        currentLibraries = [currentLibraries filteredArrayUsingPredicate:bookmarkPred];
+        NSArray *libraries;
+        NSArray *archives;
+        
+        if (showingOnlyOpen == NO) {
+            libraries = [[LibraryDataManager sharedManager] allLibraries];
+            archives = [[LibraryDataManager sharedManager] allArchives];
+        } else {
+            libraries = [[LibraryDataManager sharedManager] allOpenLibraries];
+            archives = [[LibraryDataManager sharedManager] allOpenArchives];
+        }
+        
+        NSArray *everything = [libraries arrayByAddingObjectsFromArray:archives];
+        NSArray *bookmarkedLibraries = [everything filteredArrayUsingPredicate:bookmarkPred];
+        currentLibraries = [bookmarkedLibraries sortedArrayUsingFunction:libraryNameSort context:nil];
+        
+    } else {    
+        if (showArchives) {
+            if (showingOnlyOpen == NO) {
+                currentLibraries = [[LibraryDataManager sharedManager] allArchives];
+            } else {
+                currentLibraries = [[LibraryDataManager sharedManager] allOpenArchives];
+            }
+        } else {
+            if (showingOnlyOpen == NO) {
+                currentLibraries = [[LibraryDataManager sharedManager] allLibraries];
+            } else {
+                currentLibraries = [[LibraryDataManager sharedManager] allOpenLibraries];
+            }
+        }
     }
     
     return currentLibraries;
@@ -65,22 +79,10 @@
 }
 
 
-// HoursAndLocationsViewController
--(id)initWithType:(NSString *) type {
-	
-	if (self = [super init]) {
-		
-		typeOfRepo = [type retain];
-	}
-	
-	return self;
-}
-
-// BookmarkedHoursAndLocationsViewController
--(id)init {
-	if (self = [super init]) {
-		
-		CGRect frame = CGRectMake(0, 0, 400, 44);
+-(void) viewDidLoad {
+    
+    if (showBookmarks) {
+        CGRect frame = CGRectMake(0, 0, 400, 44);
         UILabel *label = [[[UILabel alloc] initWithFrame:frame] autorelease];
         label.backgroundColor = [UIColor clearColor];
         label.font = [UIFont systemFontOfSize:15.0];
@@ -88,16 +90,7 @@
         label.textColor = [UIColor whiteColor];
         self.navigationItem.titleView = label;
         label.text = NSLocalizedString(@"Bookmarked Repositories", @"");
-	}
-	
-	return self;
-}
-
-
--(void) viewDidLoad {
-	
-	if (self.showingMapView != YES)
-		self.showingMapView = NO;
+    }
 	
 	gpsPressed = NO;
 	showingOnlyOpen = NO;
@@ -107,18 +100,17 @@
                                                             style:UIBarButtonItemStylePlain 
                                                            target:self
                                                            action:@selector(displayTypeChanged:)] autorelease];
-	//_viewTypeButton.enabled = NO;										  
+
 	self.navigationItem.rightBarButtonItem = _viewTypeButton;
 	
 	UIImage *backgroundImage = [UIImage imageNamed:MITImageNameScrollTabBackgroundOpaque];
-    UIImageView *imageView = [[UIImageView alloc] initWithImage:[backgroundImage stretchableImageWithLeftCapWidth:0 topCapHeight:0]];
+    UIImageView *imageView = [[[UIImageView alloc] initWithImage:[backgroundImage stretchableImageWithLeftCapWidth:0 topCapHeight:0]] autorelease];
     imageView.tag = 1005;
 
     if (showBookmarks) {
         CGFloat footerDisplacementFromTop = self.view.frame.size.height -  NAVIGATION_BAR_HEIGHT -  imageView.frame.size.height;
         imageView.frame = CGRectMake(0, footerDisplacementFromTop, imageView.frame.size.width, imageView.frame.size.height);
         [self.view addSubview:imageView];
-        [imageView release];
     }
 
 	NSString * typeOfRepoString = @"All Libraries";
@@ -147,7 +139,6 @@
 	if (![typeOfRepo isEqualToString:@"Archives"]){
 		
 		[self.view addSubview:imageView];
-		[imageView release];
         // TODO: does archives not have an open/closed state?
 		[self.view addSubview:segmentedControl];
 	}
@@ -165,19 +156,13 @@
 	
 	if (self.showingMapView == YES)
 		[self.view addSubview:gpsButtonControl];
-	
-	self.listOrMapView = [[[UIView alloc] initWithFrame:CGRectMake(0, 0, 
-																	 self.view.frame.size.width,
-																   footerDisplacementFromTop)] autorelease];
-	
-	[self.view addSubview:self.listOrMapView];
-	
-	
-	_tableView = [[UITableView alloc] initWithFrame:self.listOrMapView.frame style:UITableViewStylePlain];
+
+    CGRect frame = CGRectMake(0, 0, self.view.frame.size.width, footerDisplacementFromTop);
+    _tableView = [[UITableView alloc] initWithFrame:frame style:UITableViewStylePlain];
 	_tableView.delegate = self;
 	_tableView.dataSource = self;
-	
-	[self.listOrMapView addSubview:_tableView];
+
+    [self.view addSubview:_tableView];
     
     [self pingLibraries];
 }
@@ -194,10 +179,10 @@
 
 
 
-//Action method executes when user touches the button
+// called when user toggles "all" vs "open now" segment at the bottom
 - (void) pickOne:(id)sender{
 	//UISegmentedControl *segmentedControl = (UISegmentedControl *)sender;
-	[segmentedControl selectedSegmentIndex];
+	//[segmentedControl selectedSegmentIndex];
 	
 	showingOnlyOpen = !showingOnlyOpen;
     [self pingLibraries];
@@ -209,7 +194,6 @@
         
         [librayLocationsMapView setAllLibraryLocations:[self currentLibraries]];
         
-        // TODO: move whatever is being done in -viewWillAppear to an independent function we can call
         [librayLocationsMapView viewWillAppear:YES];
 	}
 	
@@ -273,15 +257,15 @@
 // set the view to either map or list mode
 -(void) setMapViewMode:(BOOL)showMap animated:(BOOL)animated {
 	//NSLog(@"map is showing=%i", _mapShowing);
-	if (showMap == YES) {
-		if (showingMapView)
-			return;
+	if (showMap == showingMapView) {
+        return;
 	}
 
 	// flip to the correct view. 
 	if (animated) {
 		[UIView beginAnimations:@"flip" context:nil];
-		[UIView setAnimationTransition:UIViewAnimationTransitionCurlDown forView:self.listOrMapView cache:NO];
+		//[UIView setAnimationTransition:UIViewAnimationTransitionCurlDown forView:self.listOrMapView cache:NO];
+		[UIView setAnimationTransition:UIViewAnimationTransitionCurlDown forView:self.view cache:NO];
 	}
 	
 	if (!showMap) {
@@ -289,7 +273,7 @@
 		if (nil != self.librayLocationsMapView)
 			[self.librayLocationsMapView.view removeFromSuperview];
 		
-			[self.listOrMapView addSubview:_tableView];
+        [self.view addSubview:_tableView];
 			[_tableView reloadData];
 			self.librayLocationsMapView = nil;
 			_viewTypeButton.title = @"Map";
@@ -299,14 +283,12 @@
 		[_tableView removeFromSuperview];
 				
 		if (nil == librayLocationsMapView) {
-			librayLocationsMapView = [[LibraryLocationsMapViewController alloc] initWithMapViewFrame:self.listOrMapView.frame];
-
+            librayLocationsMapView = [[LibraryLocationsMapViewController alloc] initWithMapViewFrame:self.view.frame];
 		}
 		librayLocationsMapView.navController = self;
 		
-		//librayLocationsMapView.parentViewController = self;
-		librayLocationsMapView.view.frame = self.listOrMapView.frame;
-		[self.listOrMapView addSubview:librayLocationsMapView.view];
+        librayLocationsMapView.view.frame = self.view.frame;
+        [self.view addSubview:librayLocationsMapView.view];
         
         [librayLocationsMapView setAllLibraryLocations:[self currentLibraries]];
          
@@ -339,7 +321,15 @@
 
 
 - (void)dealloc {
-    [typeOfRepo release];
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    
+    [_tableView release];
+    [librayLocationsMapView release];
+    [segmentedControl release];
+    [filterButtonControl release];
+    [gpsButtonControl release];
+    
+    self.typeOfRepo = nil;
     
     [super dealloc];
 }

@@ -9,7 +9,6 @@
 #import <UIKit/UIKit.h>
 #import <MapKit/MapKit.h>
 #import "Library.h"
-//#import "JSONAPIRequest.h"
 #import "LibraryDataManager.h"
 
 @interface LibraryLocationsMapViewController : UIViewController <MKMapViewDelegate, LibraryDataManagerDelegate> {
@@ -20,13 +19,12 @@
 	
 	BOOL showingOpenOnly;
 	
-	//JSONAPIRequest * apiRequest;
-	
 	UIViewController * navController;
 	
 	NSDictionary * displayNameAndLibrariesDictionary;
     
     // true if we are looking at map of an item's available locations, false if we are looking at generic map
+#warning make sure map is implemented for two cases
     BOOL isAvailabilityMap;
 
 }
@@ -42,8 +40,5 @@
 - (BOOL)mapView:(MKMapView *)_mapView didUpdateUserLocation:(MKUserLocation *)userLocation;
 
 -(void) setAllLibraryLocations:(NSArray *) libraries;
-//-(void) setAllAvailabilityLibraryLocations:(NSDictionary *)displayNameAndLibraries;
-
-- (NSArray *)currentLibraries;
 
 @end
