@@ -16,6 +16,9 @@
 #import "MITSearchDisplayController.h"
 #import "AnalyticsWrapper.h"
 
+// extra vertical padding above top row of main icons
+#define GRID_TOP_MARGIN 5.5f
+
 // horizontal spacing between main icons
 // 0.0 for four icons per row
 // 20.0 for three icons per row
@@ -26,16 +29,16 @@
 #define SECONDARY_GRID_HPADDING 20.0f
 
 // vertical spacing between icons
-#define GRID_VPADDING 22.0f
+#define GRID_VPADDING 26.0f
 
 // height to allocate to icon text label
-#define ICON_LABEL_HEIGHT 22.0f
+#define ICON_LABEL_HEIGHT 23.0f
 
 // internal padding within each icon (allows longer text labels)
 #define ICON_PADDING 5.0f
 
 // vertical padding above secondary (utility) icons
-#define SECONDARY_GRID_TOP_PADDING 36.0f
+#define SECONDARY_GRID_TOP_PADDING 8.0f
 
 @interface SpringboardViewController (Private)
 
@@ -200,7 +203,7 @@
     [_searchBar addDropShadow];
 
     bottomRight = CGPointZero;
-    bottomRight.y = _searchBar.frame.size.height + GRID_VPADDING;
+    bottomRight.y = _searchBar.frame.size.height + GRID_VPADDING + GRID_TOP_MARGIN;
     [self layoutIcons:_icons horizontalSpacing:MAIN_GRID_HPADDING];
 
     bottomRight.y += SECONDARY_GRID_TOP_PADDING;
