@@ -37,6 +37,13 @@ NSInteger phoneNumberSort(id num1, id num2, void *context){
 }
 
 -(void) setupLayout {
+    
+    if ([self.lib.library.type isEqualToString:@"archive"])
+        self.title = @"Archive Detail";
+    
+    else {
+        self.title = @"Library Detail";
+    }
 	
 	UISegmentedControl *segmentControl = [[UISegmentedControl alloc] initWithItems:[NSArray arrayWithObjects:
 																					[UIImage imageNamed:MITImageNameUpArrow],
@@ -258,13 +265,6 @@ NSInteger phoneNumberSort(id num1, id num2, void *context){
                 currentlyDisplayingLibraryAtIndex = tempLibIndex;
 				
                 self.lib = (LibraryAlias *)[otherLibraries objectAtIndex:tempLibIndex];
-                
-                if ([self.lib.library.type isEqualToString:@"archive"])
-                    self.title = @"Archive Detail";
-                
-                else {
-                    self.title = @"Library Detail";
-                }
                 
                 [self setupLayout];
                 [self.tableView reloadData];

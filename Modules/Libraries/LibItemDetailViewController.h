@@ -8,18 +8,18 @@
 
 #import <UIKit/UIKit.h>
 #import "LibraryItem.h"
-#import "JSONAPIRequest.h"
+//#import "JSONAPIRequest.h"
 #import <MapKit/MapKit.h>
 #import "UnderlinedUILabel.h"
 #import "LibraryDataManager.h"
 
-@interface LibItemDetailViewController : UITableViewController <JSONAPIDelegate, CLLocationManagerDelegate>{
+@interface LibItemDetailViewController : UITableViewController </*JSONAPIDelegate, */CLLocationManagerDelegate, LibraryItemDetailDelegate> {
 	
-	NSString * itemTitle;
-	NSString * author;
-	NSString * otherDetailLine1;
-	NSString * otherDetailLine2;
-	NSString * otherDetailLine3;
+	//NSString * itemTitle;
+	//NSString * author;
+	//NSString * otherDetailLine1;
+	//NSString * otherDetailLine2;
+	//NSString * otherDetailLine3;
 	
 	//NSDictionary *librariesWithItem;
 	
@@ -63,7 +63,7 @@
 
 
 -(void) setupLayout;
--(void)setUpdetails: (LibraryItem *) libraryItem;
+//-(void)setUpdetails: (LibraryItem *) libraryItem;
 
 - (void)addLoadingIndicator:(UIView *)view;
 - (void)removeLoadingIndicator;

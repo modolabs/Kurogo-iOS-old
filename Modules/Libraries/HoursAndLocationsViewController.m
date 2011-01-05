@@ -443,13 +443,13 @@
 	vc.lib = lib;
 	vc.otherLibraries = tempArray;
 	vc.currentlyDisplayingLibraryAtIndex = indexPath.section;
-	
+	/*
 	if ([lib.library.type isEqualToString:@"archive"])
 		vc.title = @"Archive Detail";
 	
 	else
 		vc.title = @"Library Detail";
-	
+	*/
     [self.navigationController pushViewController:vc animated:YES];
 
 	[vc release];

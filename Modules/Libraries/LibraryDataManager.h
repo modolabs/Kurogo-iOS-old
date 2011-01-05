@@ -14,14 +14,20 @@ extern NSString * const LibraryDataRequestArchiveDetail;
 extern NSString * const LibraryDataRequestAvailability;
 extern NSString * const LibraryDataRequestThumbnail;
 extern NSString * const LibraryDataRequestSearch;
+extern NSString * const LibraryDataRequestItemDetail;
 
 // notification names
 
 extern NSString * const LibraryRequestDidCompleteNotification;
 extern NSString * const LibraryRequestDidFailNotification;
 
-// singleton protocol. TODO: redesign this
+@class Library;
+@class LibraryAlias;
+@class LibraryItem;
 
+// singleton protocols
+
+// TODO: redesign this
 @protocol LibraryDataManagerDelegate
 
 @optional
@@ -31,12 +37,24 @@ extern NSString * const LibraryRequestDidFailNotification;
 
 @end
 
+
+@protocol LibraryItemDetailDelegate
+
+- (void)availabilityDidLoadForItemID:(NSString *)itemID result:(NSArray *)availabilityData;
+- (void)availabilityFailedToLoadForItemID:(NSString *)itemID;
+
+//- (void)thumbnailDidLoadForItem:(LibraryItem *)libItem;
+//- (void)thumbnailFailedToLoadForItemID:(NSString *)itemID;
+
+- (void)detailsDidLoadForItem:(LibraryItem *)libItem;
+- (void)detailsFailedToLoadForItemID:(NSString *)itemID;
+
+@end
+
+
 // sorting function for library lists
 
 NSInteger libraryNameSort(id lib1, id lib2, void *context);
-
-@class Library;
-@class LibraryAlias;
 
 @interface LibraryDataManager : NSObject <JSONAPIDelegate> {
     
@@ -44,6 +62,7 @@ NSInteger libraryNameSort(id lib1, id lib2, void *context);
     NSMutableArray *anytimeRequests;
     
     NSMutableSet *delegates;
+    NSMutableSet *itemDelegates;
 
     NSMutableArray *_allLibraries;
     NSMutableArray *_allArchives;
@@ -59,13 +78,17 @@ NSInteger libraryNameSort(id lib1, id lib2, void *context);
 - (void)registerDelegate:(id<LibraryDataManagerDelegate>)aDelegate;
 - (void)unregisterDelegate:(id<LibraryDataManagerDelegate>)aDelegate;
 
+- (void)registerItemDelegate:(id<LibraryItemDetailDelegate>)aDelegate;
+- (void)unregisterItemDelegate:(id<LibraryItemDetailDelegate>)aDelegate;
+
 #pragma mark Data retrieval methods
 
 - (NSDictionary *)scheduleForLibID:(NSString *)libID;
 
-// these two methods create core data objects as a side effect
+// these methods create core data objects as a side effect
 - (Library *)libraryWithID:(NSString *)libID primaryName:(NSString *)primaryName;
 - (LibraryAlias *)libraryAliasWithID:(NSString *)libID name:(NSString *)name;
+- (LibraryItem *)libraryItemWithID:(NSString *)itemID;
 
 #pragma mark API requests
 
@@ -74,6 +97,7 @@ NSInteger libraryNameSort(id lib1, id lib2, void *context);
 - (void)requestOpenLibraries;
 - (void)requestSearchCodes;
 - (void)requestDetailsForLibType:(NSString *)libOrArchive libID:(NSString *)libID libName:(NSString *)libName;
+- (void)requestDetailsForItem:(LibraryItem *)item;
 - (void)requestFullAvailabilityForItem:(NSString *)itemID;
 - (void)requestThumbnailForItem:(NSString *)itemID;
 - (void)searchLibraries:(NSString *)searchTerms;

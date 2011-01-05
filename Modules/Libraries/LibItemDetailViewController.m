@@ -37,63 +37,16 @@
 		currentIndex = itemIndex;
 		displayImage = imageDisplay;
 		
-		[self setUpdetails:libItem];
-		
-		self.tableView.delegate = self;
-		self.tableView.dataSource = self;
-		
-		locationsWithItem = [[NSArray alloc] init];
+		//locationsWithItem = [[NSArray alloc] init];
+        locationsWithItem = nil;
         displayLibraries = [[NSMutableArray alloc] init];
+        
+        [[LibraryDataManager sharedManager] registerItemDelegate:self];
 	}
 	
 	return self;
 }
 
-
--(void)setUpdetails: (LibraryItem *) libraryItem {
-	
-	
-	NSString * title = libraryItem.title;
-	NSString * authorName =  libraryItem.author;
-	NSString * otherDetail1 = @"";
-	if([libraryItem.edition length] > 0)
-		otherDetail1 = libraryItem.edition;
-	
-	NSString * otherDetail2 = @"";
-	
-	if (nil != libraryItem.publisher) {
-		otherDetail2 = [NSString stringWithFormat:@"%@, %@" ,libraryItem.publisher, libraryItem.year];
-	}
-	else {
-		otherDetail2 = [NSString stringWithFormat:@"%@", libraryItem.year];
-	}
-	
-	
-	NSString * otherDetail3 = @"";
-	
-	if (([libraryItem.formatDetail length] > 0) && ([libraryItem.typeDetail length] > 0))
-		otherDetail3 = [NSString stringWithFormat:@"%@: %@", libraryItem.formatDetail, libraryItem.typeDetail];
-	
-	else if (([libraryItem.formatDetail length] == 0) && ([libraryItem.typeDetail length] > 0))
-		otherDetail3 = [NSString stringWithFormat:@"%@", libraryItem.typeDetail];
-	
-	else if (([libraryItem.formatDetail length] > 0) && ([libraryItem.typeDetail length] == 0))
-		otherDetail3 = [NSString stringWithFormat:@"%@", libraryItem.formatDetail];
-	
-	itemTitle = [title retain];
-	
-	if (displayImage == YES)
-		itemTitle = [[NSString stringWithFormat:@"%@\nHOLLIS # %@", itemTitle, libraryItem.itemId] retain];
-	
-	author = [authorName retain];
-	otherDetailLine1 = [otherDetail1 retain];
-	otherDetailLine2 = [otherDetail2 retain];
-	otherDetailLine3 = [otherDetail3 retain];
-	
-	currentLocation = nil;
-	
-	//catalogLink = nil;
-}
 
 /*
 - (void)fullAvailabilityDidLoad {
@@ -115,17 +68,34 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-	[self setupLayout];
 	
+	[self.tableView applyStandardColors];
+	
+    [self setupLayout];
+    
+    if (!libItem.catalogLink) { // cataloglink is something itemdetail returns but search does not
+        [[LibraryDataManager sharedManager] requestDetailsForItem:libItem];
+    }
+    if (![[libItem.formatDetail lowercaseString] isEqualToString:@"image"]) {
+        [[LibraryDataManager sharedManager] requestFullAvailabilityForItem:libItem.itemId];
+    }
+
+    // subscribe to libdetail notifications in case LibraryDataManager gets more info
+    // while loading full availability
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(libraryDetailsDidLoad:) name:LibraryRequestDidCompleteNotification object:LibraryDataRequestLibraryDetail];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(libraryDetailsDidLoad:) name:LibraryRequestDidCompleteNotification object:LibraryDataRequestArchiveDetail];
 }
 
 - (void) viewWillAppear:(BOOL)animated {
 	[super viewWillAppear:animated];
-	[self setupLayout];
+	//[self setupLayout];
 }
 
 
 - (void) setupLayout{
+    
+    // segment control
+    
 	UISegmentedControl *segmentControl = [[UISegmentedControl alloc] initWithItems:[NSArray arrayWithObjects:
 																					[UIImage imageNamed:MITImageNameUpArrow],
 																					[UIImage imageNamed:MITImageNameDownArrow], nil]];
@@ -144,12 +114,27 @@
 	
 	[segmentControl release];
 	[segmentBarItem release];
+    
+    // strings
+    
+    NSString *edition = libItem.edition;
+    NSString *pubYear = [libItem.publisher length] ? [NSString stringWithFormat:@"%@, %@", libItem.publisher, libItem.year] : libItem.year;
+	NSString *formatDetails = [NSString string];
+	if (([libItem.formatDetail length] > 0) && ([libItem.typeDetail length] > 0))
+		formatDetails = [NSString stringWithFormat:@"%@: %@", libItem.formatDetail, libItem.typeDetail];
+	else if (([libItem.formatDetail length] == 0) && ([libItem.typeDetail length] > 0))
+		formatDetails = [NSString stringWithFormat:@"%@", libItem.typeDetail];
+	else if (([libItem.formatDetail length] > 0) && ([libItem.typeDetail length] == 0))
+		formatDetails = [NSString stringWithFormat:@"%@", libItem.formatDetail];
+	
+    NSString *itemTitle = displayImage ? [NSString stringWithFormat:@"%@\nHOLLIS # %@", libItem.title, libItem.itemId] : libItem.title;
+    
+    // title label
 	
 	CGFloat runningYDispacement = 0.0;
-	CGFloat titleHeight = [itemTitle
-						   sizeWithFont:[UIFont fontWithName:CONTENT_TITLE_FONT size:CONTENT_TITLE_FONT_SIZE]
-						   constrainedToSize:CGSizeMake(300, 2000)         
-						   lineBreakMode:UILineBreakModeWordWrap].height;
+	CGFloat titleHeight = [itemTitle sizeWithFont:[UIFont fontWithName:CONTENT_TITLE_FONT size:CONTENT_TITLE_FONT_SIZE]
+                                constrainedToSize:CGSizeMake(300, 2000)         
+                                    lineBreakMode:UILineBreakModeWordWrap].height;
 	
 	UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(12.0, 10.0, 300.0, titleHeight)];
 	
@@ -163,10 +148,9 @@
 	titleLabel.numberOfLines = 10;
 	
 	
-	CGFloat authorHeight = [author
-							sizeWithFont:[UIFont fontWithName:COURSE_NUMBER_FONT size:15]
-							constrainedToSize:CGSizeMake(190, 20)         
-							lineBreakMode:UILineBreakModeWordWrap].height;
+	CGFloat authorHeight = [libItem.author sizeWithFont:[UIFont fontWithName:COURSE_NUMBER_FONT size:15]
+                                      constrainedToSize:CGSizeMake(190, 20)         
+                                          lineBreakMode:UILineBreakModeWordWrap].height;
 	
 	UnderlinedUILabel *authorLabel = [[UnderlinedUILabel alloc] initWithFrame:CGRectMake(12.0, 20 + runningYDispacement, 190.0, authorHeight)];
 	
@@ -182,7 +166,7 @@
 		runningYDispacement += 20;
 	}
 
-	authorLabel.text = author;
+	authorLabel.text = libItem.author;
 	authorLabel.font = [UIFont fontWithName:COURSE_NUMBER_FONT size:14];
 	authorLabel.textColor = [UIColor colorWithHexString:@"#8C000B"]; 
 	authorLabel.backgroundColor = [UIColor clearColor];	
@@ -198,16 +182,8 @@
 	[bookmarkButton setImage:[UIImage imageNamed:@"global/bookmark_on.png"] forState:UIControlStateSelected];
 	[bookmarkButton setImage:[UIImage imageNamed:@"global/bookmark_on_pressed.png"] forState:(UIControlStateSelected | UIControlStateHighlighted)];
 	[bookmarkButton addTarget:self action:@selector(bookmarkButtonToggled:) forControlEvents:UIControlEventTouchUpInside];
-	
-	bookmarkButtonIsOn = NO;
-	
-	NSPredicate *pred = [NSPredicate predicateWithFormat:@"itemId == %@", libItem.itemId];
-	LibraryItem *alreadyInDB = (LibraryItem *)[[CoreDataManager objectsForEntity:LibraryItemEntityName matchingPredicate:pred] lastObject];
-	
-	if (nil != alreadyInDB) {
-		bookmarkButton.selected = [alreadyInDB.isBookmarked boolValue];
-		bookmarkButtonIsOn = [alreadyInDB.isBookmarked boolValue];
-	}
+    
+    bookmarkButtonIsOn = bookmarkButton.selected = [libItem.isBookmarked boolValue];
 	
 	mapButton = [UIButton buttonWithType:UIButtonTypeCustom];
 	mapButton.frame = CGRectMake(self.tableView.frame.size.width - 55.0 , runningYDispacement - 10, 50.0, 50.0);
@@ -218,84 +194,27 @@
 	[mapButton setImage:[UIImage imageNamed:@"global/map-it.png-pressed"] forState:(UIControlStateSelected | UIControlStateHighlighted)];
 	[mapButton addTarget:self action:@selector(mapButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
 	
-	UILabel *detailLabel1;
-	UILabel *detailLabel2;
-	UILabel *detailLabel3;
-	
-	if ([otherDetailLine1 length] > 0) {
-		CGFloat detailHeight1 = [otherDetailLine1
-								 sizeWithFont:[UIFont fontWithName:STANDARD_FONT size:13]
-								 constrainedToSize:CGSizeMake(190, 20)         
-								 lineBreakMode:UILineBreakModeWordWrap].height;
-		
-		detailLabel1 = [[UILabel alloc] initWithFrame:CGRectMake(12.0, 20 + runningYDispacement, 190.0, detailHeight1)];
-		
-		runningYDispacement += detailHeight1;
-		
-		detailLabel1.text = otherDetailLine1;
-		detailLabel1.font = [UIFont fontWithName:STANDARD_FONT size:13];
-		detailLabel1.textColor = [UIColor colorWithHexString:@"#554C41"];
-		detailLabel1.backgroundColor = [UIColor clearColor];	
-		detailLabel1.lineBreakMode = UILineBreakModeTailTruncation;
-		detailLabel1.numberOfLines = 1;
-	}
-	
-	if ([otherDetailLine2 length] > 0) {
-		CGFloat detailHeight2 = [otherDetailLine2
-								 sizeWithFont:[UIFont fontWithName:STANDARD_FONT size:13]
-								 constrainedToSize:CGSizeMake(190, 20)         
-								 lineBreakMode:UILineBreakModeWordWrap].height;
-		
-		detailLabel2 = [[UILabel alloc] initWithFrame:CGRectMake(12.0, 20 + runningYDispacement, 190.0, detailHeight2)];
-		
-		runningYDispacement += detailHeight2;
-		
-		detailLabel2.text = otherDetailLine2;
-		detailLabel2.font = [UIFont fontWithName:STANDARD_FONT size:13];
-		detailLabel2.textColor = [UIColor colorWithHexString:@"#554C41"];
-		detailLabel2.backgroundColor = [UIColor clearColor];	
-		detailLabel2.lineBreakMode = UILineBreakModeTailTruncation;
-		detailLabel2.numberOfLines = 1;
-	}
-	
-	if([otherDetailLine3 length] > 0) {
-		CGFloat detailHeight3 = [otherDetailLine3
-								 sizeWithFont:[UIFont fontWithName:STANDARD_FONT size:13]
-								 constrainedToSize:CGSizeMake(190, 20)         
-								 lineBreakMode:UILineBreakModeWordWrap].height;
-		
-		detailLabel3 = [[UILabel alloc] initWithFrame:CGRectMake(12.0, 20 + runningYDispacement, 190.0, detailHeight3)];
-		
-		runningYDispacement += detailHeight3;
-		
-		detailLabel3.text = otherDetailLine3;
-		detailLabel3.font = [UIFont fontWithName:STANDARD_FONT size:13];
-		detailLabel3.textColor = [UIColor colorWithHexString:@"#554C41"];
-		detailLabel3.backgroundColor = [UIColor clearColor];	
-		detailLabel3.lineBreakMode = UILineBreakModeTailTruncation;
-		detailLabel3.numberOfLines = 1;
-	}
-	
-	
-	UIView * headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 
-																   10 + runningYDispacement)];
+	UIView * headerView = [[[UIView alloc] initWithFrame:CGRectZero] autorelease];
 	
 	[headerView addSubview:titleLabel];
 	[headerView addSubview:authorLabel];
 	[headerView addSubview:authorButton];
 	[headerView addSubview:bookmarkButton];
-	
-	if (displayImage == NO)
-		[headerView addSubview:mapButton];
-	
-	if ([otherDetailLine1 length] > 0)
-		[headerView addSubview:detailLabel1];
-	
-	if ([otherDetailLine2 length] > 0)
-		[headerView addSubview:detailLabel2];
-	
-	if ([otherDetailLine3 length] > 0)
-		[headerView addSubview:detailLabel3];
+    
+    UIFont *labelFont = [UIFont fontWithName:STANDARD_FONT size:13];
+    for (NSString *labelText in [NSArray arrayWithObjects:edition, pubYear, formatDetails, nil]) {
+        if ([labelText length]) {
+            CGFloat detailHeight = [labelText sizeWithFont:labelFont].height;
+            UILabel *detailLabel = [[UILabel alloc] initWithFrame:CGRectMake(12, 20 + runningYDispacement, 190, detailHeight)];
+            runningYDispacement += detailHeight;
+            detailLabel.text = labelText;
+            detailLabel.font = labelFont;
+            detailLabel.backgroundColor = [UIColor clearColor];
+            detailLabel.lineBreakMode = UILineBreakModeTailTruncation;
+            [headerView addSubview:detailLabel];
+        }
+    }
+    headerView.frame = CGRectMake(0, 0, self.view.frame.size.width, 10 + runningYDispacement);
 	
     CGRect screenRect = [[UIScreen mainScreen] applicationFrame];    
 	thumbnail = [[UIView alloc] initWithFrame:CGRectMake((screenRect.size.width - 150.0) / 2, headerView.frame.size.height, 150.0, 150.0)];
@@ -314,11 +233,9 @@
 		}
 	}
 	
-	self.tableView.tableHeaderView = [[UIView alloc]
-									  initWithFrame:CGRectMake(0, 0, self.tableView.frame.size.width, headerView.frame.size.height)];
-	[self.tableView.tableHeaderView addSubview:headerView];
-	
-	[self.tableView applyStandardColors];
+	//self.tableView.tableHeaderView = [[[UIView alloc] initWithFrame:CGRectMake(0, 0, self.tableView.frame.size.width, headerView.frame.size.height)] autorelease];
+	//[self.tableView.tableHeaderView addSubview:headerView];
+    self.tableView.tableHeaderView = headerView;
 }
 
 
@@ -347,7 +264,7 @@
 	
 	if ([sender isKindOfClass:[UIButton class]]){
 		
-		if ((nil != author) && ([author length] > 0)){
+		if ([libItem.author length]) {
 			
 			LibrariesSearchViewController *vc = [[LibrariesSearchViewController alloc] initWithViewController: nil];
 			vc.title = @"Search Results";
@@ -355,10 +272,10 @@
 			apiRequest = [JSONAPIRequest requestWithJSONAPIDelegate:vc];
 			BOOL requestWasDispatched = [apiRequest requestObjectFromModule:@"libraries"
 														command:@"search"
-													 parameters:[NSDictionary dictionaryWithObjectsAndKeys:author, @"q", nil]];
+													 parameters:[NSDictionary dictionaryWithObjectsAndKeys:libItem.author, @"q", nil]];
 			
 			if (requestWasDispatched) {
-				vc.searchTerms = author;
+				vc.searchTerms = libItem.author;
 				
 				// break the navigation stack and only have the springboard, library-home and the next vc
 				UIViewController * rootVC = [[self.navigationController viewControllers] objectAtIndex:0];
@@ -395,7 +312,20 @@
 			
 			if ((tempLibIndex >= 0) && (tempLibIndex < [[libItemDictionary allKeys] count])){
 				
-				LibraryItem * temp = (LibraryItem *)[libItemDictionary objectForKey:[NSString stringWithFormat:@"%d", tempLibIndex +1]];
+				LibraryItem *nextLibItem = (LibraryItem *)[libItemDictionary objectForKey:[NSString stringWithFormat:@"%d", tempLibIndex +1]];
+                if (nextLibItem) {
+                    if (!nextLibItem.catalogLink) { // cataloglink is something itemdetail returns but search does not
+                        [[LibraryDataManager sharedManager] requestDetailsForItem:nextLibItem];
+                    }
+                    currentIndex = tempLibIndex;
+                    [libItem release];
+                    libItem = [nextLibItem retain];
+                    displayImage = [libItem.formatDetail isEqualToString:@"Image"];
+                    [self setupLayout];
+                    [self.tableView reloadData];
+                }
+                
+                /*
 	
 				apiRequest = [[JSONAPIRequest alloc] initWithJSONAPIDelegate:self];
 				
@@ -446,6 +376,8 @@
 					[alertView show];
 					[alertView release];
 				}
+                
+                */
 				
 			}			
 		}
@@ -455,8 +387,6 @@
 
 -(void) mapButtonPressed: (id) sender {
 	
-	
-	//if ([[displayNameAndLibraries allKeys] count] > 0) {
 	if ([displayLibraries count] > 0) {
 		LibraryLocationsMapViewController * vc = [[LibraryLocationsMapViewController alloc] initWithMapViewFrame:self.view.frame];
 	
@@ -526,7 +456,7 @@
 		return 0;
 	}
 	
-	
+	/*
 	if (section == 0) {
 		BOOL val = [libItem.isOnline boolValue];
 		if (val == YES) {
@@ -537,7 +467,7 @@
 		}
 	}
 	
-	else if (section == 1){
+	else */ if (section == 1){
 		if ([locationsWithItem count] == 0)
 			return 1;
 		
@@ -552,11 +482,11 @@
 // Customize the appearance of table view cells.
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     
+    static NSString *CellIdentifier = @"Cell"; // for single-row cells
+    
     if (displayImage == YES){
 		
 		if (nil != libItem.catalogLink ){
-			static NSString *CellIdentifier = @"CellDet";
-			
 			UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
 			if (cell == nil) {
 				cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
@@ -571,10 +501,7 @@
 	}
 	
 	if (indexPath.section == 0) {
-		
-		
-		static NSString *CellIdentifier = @"CellDet";
-		
+		/*
 		UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
 		if (cell == nil) {
 			cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
@@ -592,27 +519,28 @@
 		}
 
 		return cell;
+        */
+        return nil;
 	}
 	
 	else if (indexPath.section == 1) {
-		if ([locationsWithItem count] == 0){
-			static NSString *CellIdentifier = @"CellDetsfdsf";
-			
+        
+        if (![locationsWithItem count]) {
 			UITableViewCell *cell4 = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
 			if (cell4 == nil) {
 				cell4 = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
 			}
-			
-			cell4.textLabel.text = @"data unavailable";
-			cell4.selectionStyle = UITableViewCellSelectionStyleNone;
-			
-            // TODO: this is not aligned well.
-            // also we should probably make this into a reusable cell type instead of an instance method.
-			[self addLoadingIndicator:cell4];
+            if (locationsWithItem == nil) {
+                // TODO: this is not aligned well.
+                // also we should probably make this into a reusable cell type instead of an instance method.
+                [self addLoadingIndicator:cell4];
+            } else {
+                cell4.textLabel.text = @"data unavailable";
+                cell4.selectionStyle = UITableViewCellSelectionStyleNone;
+            }
 			return cell4;
-			
-		}
-		
+        }
+        
 		// cell for availability listings
 		
 		static NSString *CellIdentifier1 = @"CellLib";
@@ -674,6 +602,8 @@
         DLog(@"%@", [[dictWithStatuses allKeys] description]);
 
         Library *theLibrary = nil;
+        // TODO: we can already get the library from locationsWithItem
+        // displayLibraries is mostly redundant and each use of it can be replaced
         for (LibraryAlias *alias in displayLibraries) {
             if ([alias.name isEqualToString:libName]) {
                 theLibrary = alias.library;
@@ -889,7 +819,7 @@
 	}
 	
 	if (indexPath.section == 0){
-		
+		/*
 		BOOL val = [libItem.isOnline boolValue];
 		if (val == YES) {
 			
@@ -900,10 +830,11 @@
 				[[UIApplication sharedApplication] openURL:libURL];
 			}
 		}
+        */
 	}
 	
 	
-	if ([locationsWithItem count] > 0) {
+	if ([locationsWithItem count]) {
 
 		NSDictionary * libDict = [locationsWithItem objectAtIndex:indexPath.row];		
 		NSArray * collections = (NSArray *)[libDict objectForKey:@"collection"];
@@ -964,6 +895,8 @@
 
 - (void)dealloc {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
+    
+    [[LibraryDataManager sharedManager] unregisterItemDelegate:self];
 
 	locationManager.delegate = nil;
 	[locationManager release];
@@ -975,6 +908,110 @@
 #pragma mark -
 #pragma mark JSONAPIRequest Delegate function 
 
+
+
+- (void)availabilityDidLoadForItemID:(NSString *)itemID result:(NSArray *)availabilityData {
+    [locationsWithItem release];
+    locationsWithItem = [availabilityData retain];
+    
+    [displayLibraries removeAllObjects];
+    
+    for (NSDictionary * tempDict in availabilityData) {
+        NSString * displayName = [tempDict objectForKey:@"name"];
+        NSString * identityTag = [tempDict objectForKey:@"id"];
+    
+        LibraryAlias *alias = [[LibraryDataManager sharedManager] libraryAliasWithID:identityTag name:displayName];
+        [displayLibraries addObject:alias];
+    }
+    
+    [self.tableView reloadData];
+    
+    locationManager = [[CLLocationManager alloc] init];
+    locationManager.distanceFilter = kCLDistanceFilterNone;
+    locationManager.desiredAccuracy = kCLLocationAccuracyBest;
+    locationManager.delegate = self;
+    
+    [locationManager startUpdatingLocation];
+    
+    [self removeLoadingIndicator];
+}
+
+- (void)availabilityFailedToLoadForItemID:(NSString *)itemID {
+    [locationsWithItem release];
+    locationsWithItem = [[NSArray alloc] init];
+    
+    [self removeLoadingIndicator];
+}
+
+- (void)detailsDidLoadForItem:(LibraryItem *)aLibItem {
+
+    if (libItem != aLibItem) {
+        NSLog(@"aLibItem %@ is not libItem %@", [aLibItem description], [libItem description]);
+    }
+    
+    if (![libItem.itemId isEqualToString:aLibItem.itemId]) {
+        return;
+    }
+    
+    if (aLibItem.formatDetail && [[libItem.formatDetail lowercaseString] isEqualToString:@"image"]) {
+        UIImage *image = [aLibItem thumbnailImage];
+        if (image) {
+            
+            UIImageView *imageView = [[[UIImageView alloc] initWithImage:nil] autorelease];
+            if (image.size.width > 160 || image.size.height > 160) {
+                imageView.contentMode = UIViewContentModeScaleAspectFit;
+            } else {
+                imageView.contentMode = UIViewContentModeCenter;
+            }
+            imageView.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
+            imageView.frame = CGRectMake(0, 0, 160, 160);
+            imageView.backgroundColor = [UIColor clearColor];
+            imageView.image = image;
+            
+            CGRect screenRect = [[UIScreen mainScreen] applicationFrame];
+            CGSize imageSize = imageView.frame.size;
+            
+            CGFloat imageX = (screenRect.size.width - imageSize.width) / 2;
+            CGFloat imageY = thumbnail.frame.origin.y;
+            
+            thumbnail.frame = CGRectMake(imageX, imageY, imageSize.width, imageSize.height);
+            
+            UIButton * customButton = [UIButton buttonWithType:UIButtonTypeCustom];
+            customButton.frame = CGRectMake(imageX+imageSize.width-15, imageY+imageSize.height-20, 30, 30);  // a little higher so text fits
+            customButton.enabled = YES;
+            [customButton setImage:[UIImage imageNamed:@"global/searchfield_star.png"] forState:UIControlStateNormal];
+            [customButton addTarget:self action:@selector(thumbNailPressed:) forControlEvents:UIControlEventTouchUpInside];
+            
+            [self removeLoadingIndicator];
+            [thumbnail addSubview:imageView];
+            
+            UILabel * count = [[[UILabel alloc] initWithFrame:CGRectMake(0.0, imageY+imageSize.height+6, screenRect.size.width, 20)] autorelease];
+            count.text = [NSString stringWithFormat:@"Total Images: %d", [aLibItem.numberOfImages integerValue]];
+            count.font = [UIFont fontWithName:COURSE_NUMBER_FONT size:14];
+            count.textAlignment = UITextAlignmentCenter;
+            count.textColor = [UIColor blackColor]; 
+            count.backgroundColor = [UIColor clearColor];	
+            count.lineBreakMode = UILineBreakModeTailTruncation;
+            count.numberOfLines = 1;
+            
+            CGFloat newHeight = self.tableView.tableHeaderView.frame.size.height - 150.0 + thumbnail.frame.size.height + count.frame.size.height + 5;
+            self.tableView.tableHeaderView.frame = CGRectMake(0, 0, self.tableView.tableHeaderView.frame.size.width, newHeight);
+            
+            if (![thumbnail isDescendantOfView:self.tableView.tableHeaderView]) {
+                [self.tableView.tableHeaderView addSubview:thumbnail];
+            }
+            [self.tableView.tableHeaderView addSubview:customButton];
+            [self.tableView.tableHeaderView addSubview:count];
+            [self.tableView setTableHeaderView:self.tableView.tableHeaderView]; // force resize of header
+        }
+        [self.tableView reloadData];
+    }
+}
+
+- (void)detailsFailedToLoadForItemID:(NSString *)itemID {
+}
+
+/*
 - (void)request:(JSONAPIRequest *)request jsonLoaded:(id)result {
 
 	
@@ -1085,7 +1122,6 @@
 		}
 	}
 	
-	
 	else if (displayImage == NO){
 		if ([result isKindOfClass:[NSArray class]]) {
 			
@@ -1137,7 +1173,6 @@
 			
 		}
 	}
-	
 	[self removeLoadingIndicator];
 }
 
@@ -1148,6 +1183,7 @@
 - (void)request:(JSONAPIRequest *)request handleConnectionError:(NSError *)error {
 	[self removeLoadingIndicator];
 }
+*/
 
 - (void)libraryDetailsDidLoad:(NSNotification *)aNotification {
     [self.tableView reloadData];

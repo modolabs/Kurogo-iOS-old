@@ -16,7 +16,6 @@
 #import "LibraryDetailViewController.h"
 
 @implementation ItemAvailabilityDetailViewController
-@synthesize parentViewApiRequest;
 @synthesize libraryItem;
 @synthesize libraryAlias;
 @synthesize availabilityCategories;
@@ -29,27 +28,29 @@
 #pragma mark View lifecycle
 
 -(void) setupLayout {
-	UISegmentedControl *segmentControl = [[UISegmentedControl alloc] initWithItems:[NSArray arrayWithObjects:
-																					[UIImage imageNamed:MITImageNameUpArrow],
-																					[UIImage imageNamed:MITImageNameDownArrow], nil]];
-	[segmentControl setMomentary:YES];
-	[segmentControl addTarget:self action:@selector(showNextLibrary:) forControlEvents:UIControlEventValueChanged];
-	segmentControl.segmentedControlStyle = UISegmentedControlStyleBar;
-	segmentControl.frame = CGRectMake(0, 0, 80.0, segmentControl.frame.size.height);
-	UIBarButtonItem * segmentBarItem = [[UIBarButtonItem alloc] initWithCustomView: segmentControl];
-	self.navigationItem.rightBarButtonItem = segmentBarItem;
+    if ([arrayWithAllLibraries count] && [arrayWithAllLibraries count] > 1) {
+        
+        UISegmentedControl *segmentControl = [[UISegmentedControl alloc] initWithItems:[NSArray arrayWithObjects:
+                                                                                        [UIImage imageNamed:MITImageNameUpArrow],
+                                                                                        [UIImage imageNamed:MITImageNameDownArrow], nil]];
+        [segmentControl setMomentary:YES];
+        [segmentControl addTarget:self action:@selector(showNextLibrary:) forControlEvents:UIControlEventValueChanged];
+        segmentControl.segmentedControlStyle = UISegmentedControlStyleBar;
+        segmentControl.frame = CGRectMake(0, 0, 80.0, segmentControl.frame.size.height);
+        UIBarButtonItem * segmentBarItem = [[UIBarButtonItem alloc] initWithCustomView: segmentControl];
+        self.navigationItem.rightBarButtonItem = segmentBarItem;
+        
+        if (currentIndex == 0)
+            [segmentControl setEnabled:NO forSegmentAtIndex:0];
+        
+        if (currentIndex == [arrayWithAllLibraries count] - 1)
+            [segmentControl setEnabled:NO forSegmentAtIndex:1];
+        
+        [segmentControl release];
+        [segmentBarItem release];
+    }	
 	
-	if (currentIndex == 0)
-		[segmentControl setEnabled:NO forSegmentAtIndex:0];
-	
-	if (currentIndex == [arrayWithAllLibraries count] - 1)
-		[segmentControl setEnabled:NO forSegmentAtIndex:1];
-	
-	[segmentControl release];
-	[segmentBarItem release];
-	
-	
-	headerView = nil; 
+	//headerView = nil; 
 
     NSString *nameToDisplay;
     if (![libraryAlias.name isEqualToString:libraryAlias.library.primaryName] && [libraryAlias.library.primaryName length]) {
@@ -60,73 +61,71 @@
 	
     UIFont *libNameFont = [UIFont fontWithName:CONTENT_TITLE_FONT size:CONTENT_TITLE_FONT_SIZE];
     UIFont *openTodayFont = [UIFont fontWithName:COURSE_NUMBER_FONT size:13];
+	
+    UIButton *infoButton = (UIButton *)[self.tableView.tableHeaderView viewWithTag:235];
+    if (!infoButton) {
+        infoButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        infoButton.enabled = YES;
+        [infoButton setImage:[UIImage imageNamed:@"global/info_button.png"] forState:UIControlStateNormal];
+        [infoButton setImage:[UIImage imageNamed:@"global/info_button_pressed.png"] forState:(UIControlStateNormal | UIControlStateHighlighted)];
+        [infoButton setImage:[UIImage imageNamed:@"global/info_button_pressed.png"] forState:UIControlStateSelected];
+        [infoButton setImage:[UIImage imageNamed:@"global/info_button_pressed.png"] forState:(UIControlStateSelected | UIControlStateHighlighted)];
+        [infoButton addTarget:self action:@selector(infoButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
+    }
+    NSLog(@"%@", [UIImage imageNamed:@"global/info_button.png"]);
+    CGFloat infoButtonWidth = 50; // TODO: get these from image size
+    CGFloat infoButtonHeight = 50;
+    CGFloat infoButtonPadding = 5;
+    CGFloat labelLeftMargin = 12;
+    CGFloat labelWidth = self.tableView.frame.size.width - infoButtonWidth - infoButtonPadding;
+    infoButton.frame = CGRectMake(labelWidth, infoButtonPadding, infoButtonWidth, infoButtonHeight);
     
-    // TODO: this width should be calculated from the view frame width minus
-    // the size of the info button and associated padding/margins.
-	CGFloat height1 = [nameToDisplay sizeWithFont:libNameFont constrainedToSize:CGSizeMake(250, 2000)         
-                                    lineBreakMode:UILineBreakModeWordWrap].height;
-						
-	CGFloat height2 = [openToday sizeWithFont:openTodayFont constrainedToSize:CGSizeMake(250, 20)         
-                                lineBreakMode:UILineBreakModeWordWrap].height;
-	
-	CGFloat height = height1 + height2;
+	CGFloat displayNameHeight = [nameToDisplay sizeWithFont:libNameFont
+                                          constrainedToSize:CGSizeMake(labelWidth, 2000)         
+                                              lineBreakMode:UILineBreakModeWordWrap].height;
+	CGFloat openTodayHeight = [openToday sizeWithFont:openTodayFont
+                                    constrainedToSize:CGSizeMake(labelWidth, 20)         
+                                        lineBreakMode:UILineBreakModeWordWrap].height;
     
-    // TODO: rename these label variables so the code is easier to read
-	
-	UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(12.0, 9.0, 250, height1)];
+    UILabel *libraryDisplayLabel = (UILabel *)[self.tableView.tableHeaderView viewWithTag:233];
+    if (!libraryDisplayLabel) {
+        libraryDisplayLabel = [[[UILabel alloc] initWithFrame:CGRectMake(labelLeftMargin, 9.0, labelWidth, displayNameHeight)] autorelease];
+        libraryDisplayLabel.font = libNameFont;
+        libraryDisplayLabel.textColor = [UIColor colorWithHexString:@"#1a1611"];
+        libraryDisplayLabel.backgroundColor = [UIColor clearColor];	
+        libraryDisplayLabel.lineBreakMode = UILineBreakModeWordWrap;
+        libraryDisplayLabel.numberOfLines = 10;
+    } else {
+        libraryDisplayLabel.frame = CGRectMake(labelLeftMargin, 9.0, labelWidth, displayNameHeight);
+    }
+    libraryDisplayLabel.text = nameToDisplay;
 
-	height1 += 9.0;
+	displayNameHeight += 9.0;
 	
-	label.text = nameToDisplay;
-	label.font = libNameFont;
-	label.textColor = [UIColor colorWithHexString:@"#1a1611"];
-	label.backgroundColor = [UIColor clearColor];	
-	label.lineBreakMode = UILineBreakModeWordWrap;
-	label.numberOfLines = 10;
 	
-	NSString * openTodayString;
-	if (nil == openToday)
-		openTodayString = @"";
-	else {
-		openTodayString = openToday;
-	}
-
+    UILabel *openTodayLabel = (UILabel *)[self.tableView.tableHeaderView viewWithTag:234];
+    if (!openTodayLabel) {
+        openTodayLabel = [[[UILabel alloc] initWithFrame:CGRectMake(labelLeftMargin, displayNameHeight, labelWidth, openTodayHeight)] autorelease];
+        openTodayLabel.font = openTodayFont;
+        openTodayLabel.textColor = [UIColor colorWithHexString:@"#666666"];
+        openTodayLabel.backgroundColor = [UIColor clearColor];
+        openTodayLabel.tag = 234;
+    } else {
+        openTodayLabel.frame = CGRectMake(labelLeftMargin, displayNameHeight, labelWidth, openTodayHeight);
+    }
+    openTodayLabel.text = openToday;
 	
-	UILabel *label2 = [[UILabel alloc] initWithFrame:CGRectMake(12.0, height1, 250, height2)];
-	label2.text = openTodayString;
-	label2.font = openTodayFont;
-	label2.textColor = [UIColor colorWithHexString:@"#666666"];
-	label2.backgroundColor = [UIColor clearColor];	
-	//label2.lineBreakMode = UILineBreakModeWordWrap;
-	//label2.numberOfLines = 1;
-	
-	infoButton = [UIButton buttonWithType:UIButtonTypeCustom];
-	infoButton.frame = CGRectMake(self.tableView.frame.size.width - 55.0 , 5, 50.0, 50.0);
-	infoButton.enabled = YES;
-	[infoButton setImage:[UIImage imageNamed:@"global/info_button.png"] forState:UIControlStateNormal];
-	[infoButton setImage:[UIImage imageNamed:@"global/info_button_pressed.png"] forState:(UIControlStateNormal | UIControlStateHighlighted)];
-	[infoButton setImage:[UIImage imageNamed:@"global/info_button_pressed.png"] forState:UIControlStateSelected];
-	[infoButton setImage:[UIImage imageNamed:@"global/info_button_pressed.png"] forState:(UIControlStateSelected | UIControlStateHighlighted)];
-	[infoButton addTarget:self action:@selector(infoButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
-	
+	CGFloat height = displayNameHeight + openTodayHeight;
 	
 	if (height < 50)
 		height = 50;
 	
-	headerView = [[[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, self.tableView.frame.size.width, height + 5.0)] autorelease];
-	[headerView addSubview:label];
-	[headerView addSubview:label2];
-	[headerView addSubview:infoButton];
+    UIView *headerView = [[[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, self.tableView.frame.size.width, height + 5.0)] autorelease];
+    [headerView addSubview:libraryDisplayLabel];
+    [headerView addSubview:openTodayLabel];
+    [headerView addSubview:infoButton];
+    self.tableView.tableHeaderView = headerView;
 	
-	self.tableView.tableHeaderView = [[UIView alloc]
-									  initWithFrame:CGRectMake(0, 0, self.tableView.frame.size.width, headerView.frame.size.height + 5)];
-	[self.tableView.tableHeaderView addSubview:headerView];
-	
-	[self.tableView applyStandardColors];
-	
-	[label2 release];
-	[label release];
-    
 	limitedView = YES;
 }
 
@@ -137,6 +136,9 @@
 
     NSMutableArray *mutableTableCells = [NSMutableArray array];
     
+    collectionOnly = NO;
+    uniformHoldingStatus = YES;
+
     for (NSDictionary *aCollection in availabilityCategories) {
 
         NSString * displayType = [aCollection objectForKey:@"displayType"];
@@ -152,7 +154,6 @@
                                  @"dining/dining-status-open-w-restrictions.png",
                                  @"dining/dining-status-closed.png", nil];
         
-        BOOL uniformHoldingStatus = YES;
         //BOOL uniformHoldingStatus = NO;
         BOOL uniformCallNumber = YES;
         
@@ -166,7 +167,8 @@
             if ([[availabilityDict objectForKey:@"collectionOnlyCount"] integerValue]) {
                 NSDictionary *cellInfo = [NSDictionary dictionaryWithObjectsAndKeys:@"Contact library/archive", @"text", nil];
                 [cellsForGroups addObject:cellInfo];
-                continue;
+                collectionOnly = YES;
+                break;
             }
             
             for (NSInteger i = 0; i < 3; i++) {
@@ -199,6 +201,7 @@
                         //NSLog(@" this item: '%@'", callNumber);
                         uniformCallNumber = NO;
                     }
+                    NSLog(@"%@", holdingStatus);
                     
                     // keep populating cells by holding status until we find out call numbers are different
                     NSMutableDictionary *cellForHoldingStatus = nil;
@@ -227,8 +230,10 @@
                                                      nil];
                     
                     
-                    BOOL canRequest = [[availItemDict objectForKey:@"canRequest"] isEqualToString:@"YES"];
-                    BOOL canScanAndDeliver = [[availItemDict objectForKey:@"canScanAndDeliver"] isEqualToString:@"YES"];
+                    //BOOL canRequest = [[availItemDict objectForKey:@"canRequest"] isEqualToString:@"YES"];
+                    //BOOL canScanAndDeliver = [[availItemDict objectForKey:@"canScanAndDeliver"] isEqualToString:@"YES"];
+                    BOOL canRequest = [[availItemDict objectForKey:@"canRequest"] boolValue];
+                    BOOL canScanAndDeliver = [[availItemDict objectForKey:@"canScanAndDeliver"] boolValue];
 
                     // tappable might not be necessary
                     BOOL tappable = canRequest || canScanAndDeliver;
@@ -314,6 +319,8 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+	
+	[self.tableView applyStandardColors];
     
     NSString *hrsToday = [[[LibraryDataManager sharedManager] scheduleForLibID:requestedLibID] objectForKey:@"hrsOpenToday"];
     
@@ -398,6 +405,7 @@
                 availabilityCategories = [collections retain];
                 
                 [self setupLayout];
+                [self processAvailabilityData];
                 [self.tableView reloadData];
 			}			
 		}
@@ -561,233 +569,89 @@
     }
 }
 
-- (UIView *)tableView: (UITableView *)tableView viewForHeaderInSection: (NSInteger)section{
-	
-	UIView * view;
-	view = nil;
-
-	
+- (UIView *)tableView: (UITableView *)tableView viewForHeaderInSection: (NSInteger)section {
+    
+    UIView *view = [[[UIView alloc] initWithFrame:CGRectZero] autorelease];
+    
 	NSDictionary * collection = [availabilityCategories objectAtIndex:section];	
 	NSArray * stats = (NSArray *)[collection objectForKey:@"itemsByStat"];
-	NSString * displayType = [collection objectForKey:@"displayType"];
-	//NSString *collectionTitle = [collection objectForKey:@"collectionName"];
-	NSString *collectionCallNbr = [collection objectForKey:@"collectionCallNumber"];
-	
-	if ([displayType isEqualToString:@"V"]) {
-		
-		UILabel * headerCollectionName;
-		UILabel * headerCollectionCallNumber;
-		UILabel * headerCollectionAvailVal;
-		
-		NSDictionary * statDict = (NSDictionary *)[stats lastObject];
-		NSDictionary * collectionItem = (NSDictionary *)[((NSArray *)[statDict objectForKey:@"collectionOnlyItems"]) lastObject];
-		
-		NSString * collectionName = [collectionItem objectForKey:@"collectionName"];
-		NSString * callNbr = [collectionItem objectForKey:@"collectionCallNumber"];
-		NSString * availVal = [(NSArray*)[collectionItem objectForKey:@"collectionAvailVal"] lastObject];
-		
-		CGFloat heightName = [collectionName
-							  sizeWithFont:[UIFont boldSystemFontOfSize:17]
-							  constrainedToSize:CGSizeMake(280, 2000)         
-							  lineBreakMode:UILineBreakModeWordWrap].height;
-		
-		CGFloat heightCallNbr = [callNbr
-								 sizeWithFont:[UIFont fontWithName:STANDARD_FONT size:13]
-								 constrainedToSize:CGSizeMake(280, 2000)         
-								 lineBreakMode:UILineBreakModeWordWrap].height;
-		
-		CGFloat heightAvailVal = [availVal
-								  sizeWithFont:[UIFont fontWithName:STANDARD_FONT size:13]
-								  constrainedToSize:CGSizeMake(280, 2000)         
-								  lineBreakMode:UILineBreakModeWordWrap].height;
-		
-		headerCollectionName = [[UILabel alloc] initWithFrame:CGRectMake(12.0, 0.0, 280, heightName)];
-		headerCollectionName.text = collectionName;
-		headerCollectionName.font = [UIFont boldSystemFontOfSize:17];
-		headerCollectionName.textColor = [UIColor colorWithHexString:@"#554C41"];
-		headerCollectionName.backgroundColor = [UIColor clearColor];	
-		headerCollectionName.lineBreakMode = UILineBreakModeTailTruncation;
-		headerCollectionName.numberOfLines = 5;
-		
-		headerCollectionCallNumber = [[UILabel alloc] initWithFrame:CGRectMake(12.0, heightName, 280, heightCallNbr)];
-		headerCollectionCallNumber.text = callNbr;
-		headerCollectionCallNumber.font =  [UIFont fontWithName:STANDARD_FONT size:13];
-		headerCollectionCallNumber.textColor = [UIColor colorWithHexString:@"#554C41"];
-		headerCollectionCallNumber.backgroundColor = [UIColor clearColor];	
-		headerCollectionCallNumber.lineBreakMode = UILineBreakModeTailTruncation;
-		headerCollectionCallNumber.numberOfLines = 5;
-		
-		headerCollectionAvailVal = [[UILabel alloc] initWithFrame:CGRectMake(12.0, heightName + heightCallNbr, 280, heightAvailVal)];
-		headerCollectionAvailVal.text = availVal;
-		headerCollectionAvailVal.font =  [UIFont fontWithName:STANDARD_FONT size:13];
-		headerCollectionAvailVal.textColor = [UIColor colorWithHexString:@"#554C41"];
-		headerCollectionAvailVal.backgroundColor = [UIColor clearColor];	
-		headerCollectionAvailVal.lineBreakMode = UILineBreakModeTailTruncation;
-		headerCollectionAvailVal.numberOfLines = 5;
-		
-		CGFloat height = heightName + heightCallNbr + heightAvailVal;
-		
-		view = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, self.view.frame.size.width, height)];
-		[view addSubview:headerCollectionName];
-		[view addSubview:headerCollectionCallNumber];
-		[view addSubview:headerCollectionAvailVal];
-		
-		return view;
-	}
-
-	else {
-		NSString * text0 = @"";
-		NSString * text1 = @"";
-		NSString * text2 = @"";
-		
-		UILabel * headerLabel0;
-		UILabel * headerLabel1;
-		UILabel * headerLabel2;
-		
-		NSDictionary * statDict = (NSDictionary *)[stats lastObject];
-		
-		text0 = [collection objectForKey:@"collectionName"];
-		
-		
-		if (([displayType isEqualToString:@"I"]) || ([displayType isEqualToString:@"III"]))
-			text1 = [statDict objectForKey:@"statMain"];
-		
-		if ([text1 length] > 0)
-			text1 = [text1 stringByReplacingCharactersInRange:
-					 NSMakeRange(0,1) withString:[[text1 substringToIndex:1] capitalizedString]];
-		
-		text2 = collectionCallNbr;
-		
-		CGFloat height0 = [text0
-						   sizeWithFont:[UIFont boldSystemFontOfSize:17]
-						   constrainedToSize:CGSizeMake(280.0, 2000)         
-						   lineBreakMode:UILineBreakModeWordWrap].height;
-		
-		CGFloat height1 = [text1
-						  sizeWithFont:[UIFont fontWithName:STANDARD_FONT size:13]
-						  constrainedToSize:CGSizeMake(280.0, 2000)         
-						  lineBreakMode:UILineBreakModeWordWrap].height;
-		
-		CGFloat height2 = [text2
-						   sizeWithFont:[UIFont fontWithName:STANDARD_FONT size:13]
-						   constrainedToSize:CGSizeMake(280.0, 2000)         
-						   lineBreakMode:UILineBreakModeWordWrap].height;
-
-		headerLabel0 = [[UILabel alloc] initWithFrame:CGRectMake(12.0, 0.0, 280.0, height0)];
-		headerLabel0.text = text0;
-		headerLabel0.font = [UIFont boldSystemFontOfSize:17];
-		headerLabel0.textColor = [UIColor colorWithHexString:@"#554C41"];
-		headerLabel0.backgroundColor = [UIColor clearColor];	
-		headerLabel0.lineBreakMode = UILineBreakModeTailTruncation;
-		headerLabel0.numberOfLines = 5;
-		
-		
-		headerLabel1 = [[UILabel alloc] initWithFrame:CGRectMake(12.0, height0, 280.0, height1)];
-		headerLabel1.text = text1;
-		headerLabel1.font = [UIFont fontWithName:STANDARD_FONT size:13];
-		headerLabel1.textColor = [UIColor colorWithHexString:@"#554C41"];
-		headerLabel1.backgroundColor = [UIColor clearColor];	
-		headerLabel1.lineBreakMode = UILineBreakModeTailTruncation;
-		headerLabel1.numberOfLines = 5;
-		
-		
-		headerLabel2 = [[UILabel alloc] initWithFrame:CGRectMake(12.0, height0 + height1, 280.0, height2)];
-		headerLabel2.text = text2;
-		headerLabel2.font = [UIFont fontWithName:STANDARD_FONT size:13];
-		headerLabel2.textColor = [UIColor colorWithHexString:@"#554C41"];
-		headerLabel2.backgroundColor = [UIColor clearColor];	
-		headerLabel2.lineBreakMode = UILineBreakModeTailTruncation;
-		headerLabel2.numberOfLines = 5;
-		
-		view = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, self.view.frame.size.width, height0 + height1 + height2)];
-		[view addSubview:headerLabel0];
-		[view addSubview:headerLabel1];
-		[view addSubview:headerLabel2];
-		
-		
-		return view;
-	}
-
-	
-
+    NSDictionary * statDict = (NSDictionary *)[stats lastObject];
+    
+    NSString * collectionName;
+    NSString * subtitle1 = nil;
+    NSString * subtitle2 = nil;
+    if (collectionOnly) {
+        NSDictionary * collectionItem = (NSDictionary *)[((NSArray *)[statDict objectForKey:@"collectionOnlyItems"]) lastObject];
+        collectionName = [collectionItem objectForKey:@"collectionName"];
+        subtitle1 = [collectionItem objectForKey:@"collectionCallNumber"];
+        subtitle2 = [(NSArray*)[collectionItem objectForKey:@"collectionAvailVal"] lastObject];
+    } else {
+        collectionName = [collection objectForKey:@"collectionName"];
+        subtitle1 = [statDict objectForKey:@"statMain"];
+        subtitle2 = [collection objectForKey:@"collectionCallNumber"];
+    }
+    
+    CGFloat currentY = 0;
+    for (NSString *labelText in [NSArray arrayWithObjects:collectionName, subtitle1, subtitle2, nil]) {
+        UIFont *font;
+        if (labelText == collectionName) {
+            font = [UIFont boldSystemFontOfSize:17];
+        } else {
+            font = [UIFont fontWithName:STANDARD_FONT size:13];
+        }
+        CGFloat height = [labelText sizeWithFont:font constrainedToSize:CGSizeMake(200, 2000) lineBreakMode:UILineBreakModeWordWrap].height;
+        UILabel *aLabel = [[[UILabel alloc] initWithFrame:CGRectMake(12, currentY, 280, height)] autorelease];
+        aLabel.text = labelText;
+        aLabel.font = font;
+        
+        aLabel.textColor = [UIColor colorWithHexString:@"#554C41"];
+        aLabel.backgroundColor = [UIColor clearColor];	
+        aLabel.lineBreakMode = UILineBreakModeTailTruncation;
+        aLabel.numberOfLines = 5;
+        
+        [view addSubview:aLabel];
+        
+        currentY += height;
+    }
+    
+    view.frame = CGRectMake(0, 0, self.view.frame.size.width, currentY);
+    NSLog(@"%@", [view description]);
+    
+    return view;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
-	
+    
 	NSDictionary * collection = [availabilityCategories objectAtIndex:section];	
 	NSArray * stats = (NSArray *)[collection objectForKey:@"itemsByStat"];
-	NSString * displayType = [collection objectForKey:@"displayType"];
-	//NSString *collectionTitle = [collection objectForKey:@"collectionName"];
-	NSString *collectionCallNbr = [collection objectForKey:@"collectionCallNumber"];
-	
-	
-	if ([displayType isEqualToString:@"V"]) {
-		NSDictionary * statDict = (NSDictionary *)[stats lastObject];
-		NSDictionary * collectionItem = (NSDictionary *)[((NSArray *)[statDict objectForKey:@"collectionOnlyItems"]) lastObject];
-		
-		NSString * collectionName = [collectionItem objectForKey:@"collectionName"];
-		NSString * callNbr = [collectionItem objectForKey:@"collectionCallNumber"];
-		NSString * availVal = [(NSArray*)[collectionItem objectForKey:@"collectionAvailVal"] lastObject];
-		
-		CGFloat heightName = [collectionName
-							  sizeWithFont:[UIFont boldSystemFontOfSize:17]
-							  constrainedToSize:CGSizeMake(280, 2000)         
-							  lineBreakMode:UILineBreakModeWordWrap].height;
-		
-		CGFloat heightCallNbr = [callNbr
-								 sizeWithFont:[UIFont fontWithName:STANDARD_FONT size:13]
-								 constrainedToSize:CGSizeMake(280, 2000)         
-								 lineBreakMode:UILineBreakModeWordWrap].height;
-		
-		CGFloat heightAvailVal = [availVal
-								  sizeWithFont:[UIFont fontWithName:STANDARD_FONT size:13]
-								  constrainedToSize:CGSizeMake(280, 2000)         
-								  lineBreakMode:UILineBreakModeWordWrap].height;
-		
-		CGFloat height = heightName + heightCallNbr + heightAvailVal;
+    NSDictionary * statDict = (NSDictionary *)[stats lastObject];
+    
+    NSString * collectionName;
+    NSString * subtitle1 = nil;
+    NSString * subtitle2 = nil;
+    if (collectionOnly) {
+        NSDictionary * collectionItem = (NSDictionary *)[((NSArray *)[statDict objectForKey:@"collectionOnlyItems"]) lastObject];
+        collectionName = [collectionItem objectForKey:@"collectionName"];
+        subtitle1 = [collectionItem objectForKey:@"collectionCallNumber"];
+        subtitle2 = [(NSArray*)[collectionItem objectForKey:@"collectionAvailVal"] lastObject];
+    } else {
+        collectionName = [collection objectForKey:@"collectionName"];
+        subtitle1 = [statDict objectForKey:@"statMain"];
+        subtitle2 = [collection objectForKey:@"collectionCallNumber"];
+    }
 
-		
-		return height + 4;
-	}
-	
-	else {
-		NSString * text0 = @"";
-		NSString * text1 = @"";
-		NSString * text2 = @"";
-		
-		NSDictionary * statDict = (NSDictionary *)[stats lastObject];
-		
-		text0 = [statDict objectForKey:@"collectionName"];
-		
-		
-		if (([displayType isEqualToString:@"I"]) || ([displayType isEqualToString:@"III"]))
-			text1 = [statDict objectForKey:@"statMain"];
-		
-		if ([text1 length] > 0)
-			text1 = [text1 stringByReplacingCharactersInRange:
-					 NSMakeRange(0,1) withString:[[text1 substringToIndex:1] capitalizedString]];
-		
-		text2 = collectionCallNbr;
-		
-		CGFloat height0 = [text0
-						   sizeWithFont:[UIFont systemFontOfSize:17]
-						   constrainedToSize:CGSizeMake(280.0, 2000)         
-						   lineBreakMode:UILineBreakModeWordWrap].height;
-		
-		CGFloat height1 = [text1
-						   sizeWithFont:[UIFont fontWithName:STANDARD_FONT size:13]
-						   constrainedToSize:CGSizeMake(280.0, 2000)         
-						   lineBreakMode:UILineBreakModeWordWrap].height;
-		
-		CGFloat height2 = [text2
-						   sizeWithFont:[UIFont fontWithName:STANDARD_FONT size:13]
-						   constrainedToSize:CGSizeMake(280.0, 2000)         
-						   lineBreakMode:UILineBreakModeWordWrap].height;
-		
-		return height0 + height1 + height2 + 4;
-
-	}
-		
+    CGFloat height = 5;
+    for (NSString *labelText in [NSArray arrayWithObjects:collectionName, subtitle1, subtitle2, nil]) {
+        UIFont *font;
+        if (labelText == collectionName) {
+            font = [UIFont boldSystemFontOfSize:17];
+        } else {
+            font = [UIFont fontWithName:STANDARD_FONT size:13];
+        }
+        height += [labelText sizeWithFont:font constrainedToSize:CGSizeMake(200, 2000) lineBreakMode:UILineBreakModeWordWrap].height;
+    }
+    
+    return height;
 }
 
 
@@ -810,9 +674,6 @@
 
 - (void)dealloc {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
-    
-	self.parentViewApiRequest.jsonDelegate = nil;
-    self.parentViewApiRequest = nil;
     
     self.libraryItem = nil;
     self.libraryAlias = nil;

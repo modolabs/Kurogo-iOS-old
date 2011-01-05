@@ -5,6 +5,7 @@
 #import "LibraryItemFormat.h"
 #import "LibraryLocation.h"
 #import "LibraryAlias.h"
+#import "LibraryItem.h"
 
 // api names
 
@@ -14,8 +15,9 @@ NSString * const LibraryDataRequestOpenLibraries = @"opennow";
 NSString * const LibraryDataRequestSearchCodes = @"searchcodes";
 NSString * const LibraryDataRequestLibraryDetail = @"libdetail";
 NSString * const LibraryDataRequestArchiveDetail = @"archivedetail";
-NSString * const LibraryDataRequestAvailability = @"fullAvailability";
+NSString * const LibraryDataRequestAvailability = @"fullavailability";
 NSString * const LibraryDataRequestThumbnail = @"imagethumbnail";
+NSString * const LibraryDataRequestItemDetail = @"itemdetail";
 NSString * const LibraryDataRequestSearch = @"search";
 
 // notification names
@@ -70,7 +72,8 @@ static LibraryDataManager *s_sharedManager = nil;
         
         _schedulesByLibID = [[NSMutableDictionary alloc] init];
         
-        //delegates = [[NSMutableSet alloc] init];
+        delegates = [[NSMutableSet alloc] init];
+        itemDelegates = [[NSMutableSet alloc] init];
         
         // fetch objects from core data
         NSDate *librariesDate = [[NSUserDefaults standardUserDefaults] objectForKey:LibrariesLastUpdatedKey];
@@ -130,6 +133,12 @@ static LibraryDataManager *s_sharedManager = nil;
     return _allOpenArchives;
 }
 
+- (NSDictionary *)scheduleForLibID:(NSString *)libID {
+    return [_schedulesByLibID objectForKey:libID];
+}
+
+#pragma mark Database methods
+
 - (Library *)libraryWithID:(NSString *)libID primaryName:(NSString *)primaryName {
     NSPredicate *pred = [NSPredicate predicateWithFormat:@"identityTag like %@", libID];
     Library *library = [[CoreDataManager objectsForEntity:LibraryEntityName matchingPredicate:pred] lastObject];
@@ -152,10 +161,6 @@ static LibraryDataManager *s_sharedManager = nil;
     return library;
 }
 
-- (NSDictionary *)scheduleForLibID:(NSString *)libID {
-    return [_schedulesByLibID objectForKey:libID];
-}
-
 - (LibraryAlias *)libraryAliasWithID:(NSString *)libID name:(NSString *)name {
     Library *theLibrary = [self libraryWithID:libID primaryName:nil];
     LibraryAlias *alias = nil;
@@ -170,6 +175,19 @@ static LibraryDataManager *s_sharedManager = nil;
         }
     }
     return alias;
+}
+
+
+- (LibraryItem *)libraryItemWithID:(NSString *)itemID {
+	NSPredicate *pred = [NSPredicate predicateWithFormat:@"itemId == %@", itemID];
+	LibraryItem *libItem = (LibraryItem *)[[CoreDataManager objectsForEntity:LibraryItemEntityName matchingPredicate:pred] lastObject];
+    if (!libItem) {
+        libItem = (LibraryItem *)[CoreDataManager insertNewObjectForEntityForName:LibraryItemEntityName];
+        libItem.itemId = itemID;
+        libItem.isBookmarked = [NSNumber numberWithBool:NO];
+        [CoreDataManager saveData];
+    }
+    return libItem;
 }
 
 #pragma mark -
@@ -211,6 +229,14 @@ static LibraryDataManager *s_sharedManager = nil;
     [delegates removeObject:aDelegate];
 }
 
+- (void)registerItemDelegate:(id<LibraryItemDetailDelegate>)aDelegate {
+    [itemDelegates addObject:aDelegate];
+}
+
+- (void)unregisterItemDelegate:(id<LibraryItemDetailDelegate>)aDelegate {
+    [itemDelegates removeObject:aDelegate];
+}
+
 - (void)requestDetailsForLibType:(NSString *)libOrArchive libID:(NSString *)libID libName:(NSString *)libName {
     if ([libOrArchive isEqualToString:@"library"])
         libOrArchive = LibraryDataRequestLibraryDetail;
@@ -222,6 +248,16 @@ static LibraryDataManager *s_sharedManager = nil;
 
     NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:libID, @"id", libName, @"name", nil];
     if ([api requestObjectFromModule:@"libraries" command:libOrArchive parameters:params]) {
+        [anytimeRequests addObject:api];
+    }
+}
+
+- (void)requestDetailsForItem:(LibraryItem *)item {
+    JSONAPIRequest *api = [JSONAPIRequest requestWithJSONAPIDelegate:self];
+    api.userData = LibraryDataRequestItemDetail;
+    
+    NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:item.itemId, @"itemid", nil];
+    if ([api requestObjectFromModule:@"libraries" command:LibraryDataRequestItemDetail parameters:params]) {
         [anytimeRequests addObject:api];
     }
 }
@@ -257,12 +293,13 @@ static LibraryDataManager *s_sharedManager = nil;
 }
 
 #pragma mark -
-#pragma mark JSONAPIDelegate
+
+// TODO: skip to failed state if any isKindOfClass sanity check fails
 
 - (void)request:(JSONAPIRequest *)request jsonLoaded:(id)JSONObject {
     NSString *command = request.userData;
     
-#pragma mark libraries/archives API
+#pragma mark Success - Libraries/Archives
     if ([command isEqualToString:LibraryDataRequestLibraries] || [command isEqualToString:LibraryDataRequestArchives]) {
         
         // TODO: if user has libraries cached, check for obsoleted libraries and delete them
@@ -291,8 +328,6 @@ static LibraryDataManager *s_sharedManager = nil;
                 
                 NSString * type = [libraryDictionary objectForKey:@"type"];
                 
-                //NSPredicate *pred = [NSPredicate predicateWithFormat:@"identityTag like %@", identityTag];
-                
                 Library *library = [self libraryWithID:identityTag primaryName:primaryName];
                 // if library was just created in core data, the following properties will be saved when alias is created
                 library.location = location;
@@ -301,32 +336,6 @@ static LibraryDataManager *s_sharedManager = nil;
                 library.type = type;
                 
                 LibraryAlias *alias = [self libraryAliasWithID:identityTag name:name];
-                /*
-                Library *alreadyInDB = [[CoreDataManager objectsForEntity:LibraryEntityName matchingPredicate:pred] lastObject];
-                
-                if (!alreadyInDB) {
-                    alreadyInDB = [CoreDataManager insertNewObjectForEntityForName:LibraryEntityName];
-                    alreadyInDB.identityTag = identityTag;
-                    alreadyInDB.isBookmarked = [NSNumber numberWithBool:NO];
-
-                    alreadyInDB.primaryName = primaryName;
-                    alreadyInDB.location = location;
-                    alreadyInDB.lat = [NSNumber numberWithDouble:[latitude doubleValue]];
-                    alreadyInDB.lon = [NSNumber numberWithDouble:[longitude doubleValue]];
-                    alreadyInDB.type = type;
-                    
-                    [CoreDataManager saveData];
-                }
-                
-                pred = [NSPredicate predicateWithFormat:@"name like %@", name];
-                LibraryAlias *alias = [[alreadyInDB.aliases filteredSetUsingPredicate:pred] anyObject];
-                if (!alias) {
-                    alias = [CoreDataManager insertNewObjectForEntityForName:LibraryAliasEntityName];
-                    alias.library = alreadyInDB;
-                    alias.name = name;
-                    [CoreDataManager saveData];
-                }
-                */
                 if ([command isEqualToString:LibraryDataRequestLibraries]) {
                     [_allLibraries addObject:alias];
                 } else {
@@ -334,7 +343,8 @@ static LibraryDataManager *s_sharedManager = nil;
                 }
                 
                 NSString *isOpenNow = [libraryDictionary objectForKey:@"isOpenNow"];
-                BOOL isOpen = [isOpenNow isEqualToString:@"YES"];
+                //BOOL isOpen = [isOpenNow isEqualToString:@"YES"];
+                BOOL isOpen = [isOpenNow boolValue];
                 
                 if (isOpen) {
                     if ([command isEqualToString:LibraryDataRequestLibraries]) {
@@ -365,7 +375,7 @@ static LibraryDataManager *s_sharedManager = nil;
         [oneTimeRequests removeObjectForKey:command];
         
     }
-#pragma mark opennow API
+#pragma mark Success - Open Now
     else if ([command isEqualToString:LibraryDataRequestOpenLibraries]) {
         
         if ([JSONObject isKindOfClass:[NSArray class]]) {
@@ -379,34 +389,13 @@ static LibraryDataManager *s_sharedManager = nil;
                 NSString * identityTag = [libraryDictionary objectForKey:@"id"];		
                 NSString * type = [libraryDictionary objectForKey:@"type"];
                 
-                //NSPredicate *pred = [NSPredicate predicateWithFormat:@"identityTag like %@", identityTag];
                 Library *library = [self libraryWithID:identityTag primaryName:nil];
                 library.type = type; // saveData will be called if the alias we create below is new
                 LibraryAlias *alias = [self libraryAliasWithID:identityTag name:name];
                 
-                /*
-                Library *alreadyInDB = [[CoreDataManager objectsForEntity:LibraryEntityName matchingPredicate:pred] lastObject];
-                if (!alreadyInDB) {
-                    alreadyInDB = [CoreDataManager insertNewObjectForEntityForName:LibraryEntityName];
-                    alreadyInDB.identityTag = identityTag;
-                    alreadyInDB.isBookmarked = [NSNumber numberWithBool:NO];
-                    alreadyInDB.type = type;
-
-                    [CoreDataManager saveData];
-                }
-                
-                pred = [NSPredicate predicateWithFormat:@"name like %@", name];
-                LibraryAlias *alias = [[alreadyInDB.aliases filteredSetUsingPredicate:pred] anyObject];
-                if (!alias) {
-                    alias = [CoreDataManager insertNewObjectForEntityForName:LibraryAliasEntityName];
-                    alias.library = alreadyInDB;
-                    alias.name = name;
-                    [CoreDataManager saveData];
-                }
-                */
-                
                 NSString *isOpenNow = [libraryDictionary objectForKey:@"isOpenNow"];
-                BOOL isOpen = [isOpenNow isEqualToString:@"YES"];
+                //BOOL isOpen = [isOpenNow isEqualToString:@"YES"];
+                BOOL isOpen = [isOpenNow boolValue];
                 
                 if (isOpen) {
                     if ([type isEqualToString:@"library"]) {
@@ -424,7 +413,7 @@ static LibraryDataManager *s_sharedManager = nil;
             
         }
     }
-#pragma mark searchcodes API
+#pragma mark Success - Search Codes
     else if ([command isEqualToString:LibraryDataRequestSearchCodes]) {
         
         if ([JSONObject isKindOfClass:[NSDictionary class]]) {
@@ -478,7 +467,7 @@ static LibraryDataManager *s_sharedManager = nil;
         [oneTimeRequests removeObjectForKey:command];
 
     }
-#pragma mark libdetail/archivedetail API
+#pragma mark Success - Library/Archive Detail
     else if ([command isEqualToString:LibraryDataRequestLibraryDetail] || [command isEqualToString:LibraryDataRequestArchiveDetail]) {
         
         if ([JSONObject isKindOfClass:[NSDictionary class]]) {
@@ -496,31 +485,6 @@ static LibraryDataManager *s_sharedManager = nil;
             NSArray * phoneNumberArray = (NSArray *)[libraryDictionary objectForKey:@"phone"];
 
             Library *lib = [self libraryWithID:identityTag primaryName:primaryName];
-            
-            /*
-            NSPredicate *pred = [NSPredicate predicateWithFormat:@"identityTag like %@", identityTag];
-            
-            Library *lib = [[CoreDataManager objectsForEntity:LibraryEntityName matchingPredicate:pred] lastObject];
-            if (!lib) {
-                lib = [CoreDataManager insertNewObjectForEntityForName:LibraryEntityName];
-                lib.identityTag = identityTag;
-                lib.isBookmarked = [NSNumber numberWithBool:NO];
-            }
-
-            
-            pred = [NSPredicate predicateWithFormat:@"name like %@", name];
-            LibraryAlias *alias = [[lib.aliases filteredSetUsingPredicate:pred] anyObject];
-            if (!alias) {
-                alias = [CoreDataManager insertNewObjectForEntityForName:LibraryAliasEntityName];
-                alias.library = lib;
-                alias.name = name;
-            }
-            
-            
-            directions = [directions stringByReplacingOccurrencesOfString:@"\n" withString:@""];
-            
-            lib.primaryName = primaryName;
-            */
             
             [self libraryAliasWithID:identityTag name:name];
             
@@ -570,40 +534,125 @@ static LibraryDataManager *s_sharedManager = nil;
         [anytimeRequests removeObject:request];
         
     }
-#pragma mark fullAvailability API
+#pragma mark Success - Item Detail
+    else if ([command isEqualToString:LibraryDataRequestItemDetail]) {
+        
+		if ([JSONObject isKindOfClass:[NSDictionary class]]) {
+            NSDictionary *result = (NSDictionary *)JSONObject;
+            
+            NSString *itemID = [result objectForKey:@"itemid"];
+            LibraryItem *libItem = [self libraryItemWithID:itemID];
+            libItem.title = [result objectForKey:@"title"];
+            libItem.author = [result objectForKey:@"creator"];
+            libItem.year = [result objectForKey:@"date"];
+            libItem.publisher = [result objectForKey:@"publisher"];
+            libItem.edition = [result objectForKey:@"edition"];
+
+            NSNumber *numberOfImages = [result objectForKey:@"numberofimages"];
+            if ([numberOfImages integerValue]) {
+                libItem.numberOfImages = [NSNumber numberWithInt:[numberOfImages integerValue]];
+            }
+            
+            NSString *workType = [result objectForKey:@"worktype"];
+            if ([workType length]) {
+                libItem.workType = workType;
+            }
+            
+            NSString *thumbnail = [result objectForKey:@"thumbnail"];
+            if ([thumbnail length]) {
+                libItem.thumbnailURL = thumbnail;
+            }
+            
+            NSString *fullImageLink = [result objectForKey:@"fullimagelink"];
+            if ([fullImageLink length]) {
+                libItem.fullImageLink = fullImageLink;
+            }
+            
+            NSString *catalogLink = [result objectForKey:@"cataloglink"];
+            if ([catalogLink length]) {
+                libItem.catalogLink = catalogLink;
+            }
+            
+            NSDictionary *formatDict = [result objectForKey:@"format"];
+            if ([formatDict isKindOfClass:[NSDictionary class]]) {
+                libItem.formatDetail = [formatDict objectForKey:@"formatDetail"];
+                libItem.typeDetail = [formatDict objectForKey:@"typeDetail"];
+            }
+                        
+            for (id<LibraryItemDetailDelegate> aDelegate in itemDelegates) {
+                [aDelegate detailsDidLoadForItem:libItem];
+            }
+		}
+        
+        [anytimeRequests removeObject:request];
+        
+    }
+#pragma mark Success - Item Availability
     else if ([command isEqualToString:LibraryDataRequestAvailability]) {
-        /*
+
 		if ([JSONObject isKindOfClass:[NSArray class]]) {
 			
 			for (NSDictionary * tempDict in (NSArray *)JSONObject) {
+                //NSArray * collections = (NSArray *)[tempDict objectForKey:@"collection"];
 				
 				NSString * displayName = [tempDict objectForKey:@"name"];
                 NSString * identityTag = [tempDict objectForKey:@"id"];
                 NSString * type        = [tempDict objectForKey:@"type"];
                 
-                //NSDictionary * collection = [tempDict objectForKey:@"collection"];
+                Library *lib = [self libraryWithID:identityTag primaryName:nil];
+                [self libraryAliasWithID:identityTag name:displayName];
                 
-                NSPredicate *pred = [NSPredicate predicateWithFormat:@"id == %@", identityTag, type];
-                Library *alreadyInDB = [[CoreDataManager objectsForEntity:LibraryEntityName matchingPredicate:pred] lastObject];
-                if (!alreadyInDB) {
-                    alreadyInDB = (Library *)[CoreDataManager insertNewObjectForEntityForName:LibraryEntityName];
-                    alreadyInDB.isBookmarked = [NSNumber numberWithBool:NO];
-                    [CoreDataManager saveData];
+                if ([lib.lat doubleValue] == 0) {
+                    [self requestDetailsForLibType:type libID:identityTag libName:displayName];
                 }
 			}
+            
+            NSString *itemID = [request.params objectForKey:@"itemid"];
+            
+            for (id<LibraryItemDetailDelegate> aDelegate in itemDelegates) {
+                [aDelegate availabilityDidLoadForItemID:itemID result:(NSArray *)JSONObject];
+            }
         }
-        */
         
         [anytimeRequests removeObject:request];
 
     }
-#pragma mark imagethumbnail API
+#pragma mark Success - Image Thumbnail
     else if ([command isEqualToString:LibraryDataRequestThumbnail]) {
         
+		if ([JSONObject isKindOfClass:[NSDictionary class]]){
+            
+            NSDictionary *result = (NSDictionary *)JSONObject;
+			
+            NSString *itemID = [result objectForKey:@"itemId"];
+            
+            LibraryItem *libItem = [self libraryItemWithID:itemID];
+			NSString * catLink = [result objectForKey:@"cataloglink"];
+
+            if ([catLink length]) {
+                libItem.catalogLink = catLink;
+            }
+            
+			libItem.fullImageLink = [[result objectForKey:@"fullimagelink"] retain];
+            libItem.workType = [result objectForKey:@"worktype"];
+            libItem.numberOfImages = [NSNumber numberWithInt:[[result objectForKey:@"numberofimages"] integerValue]];
+			libItem.thumbnailURL = [result objectForKey:@"thumbnail"];
+            
+            if ([libItem.thumbnailURL length]) {
+                if (![libItem thumbnailImage]) {
+                    [libItem requestImage];
+                }
+            }
+            
+            //for (id<LibraryItemDetailDelegate> aDelegate in itemDelegates) {
+            //    [aDelegate thumbnailDidLoadForItem:itemID result:libItem];
+            //}
+		}
+        
         [anytimeRequests removeObject:request];
 
     }
-#pragma mark search API
+#pragma mark Success - Search
     else if ([command isEqualToString:LibraryDataRequestSearch]) {
         
         [anytimeRequests removeObject:request];
@@ -629,10 +678,33 @@ static LibraryDataManager *s_sharedManager = nil;
     return YES;
 }
 
+#pragma mark -
+
 - (void)request:(JSONAPIRequest *)request handleConnectionError:(NSError *)error {
     NSString *command = request.userData;
-    
-    if ([command isEqualToString:LibraryDataRequestLibraries]
+#pragma mark Failure - Item Availability
+    if ([command isEqualToString:LibraryDataRequestAvailability]) {
+        NSString *itemID = [request.params objectForKey:@"itemid"];
+        
+        for (id<LibraryItemDetailDelegate> aDelegate in itemDelegates) {
+            [aDelegate availabilityFailedToLoadForItemID:itemID];
+        }
+#pragma mark Failure - Image Thumbnail
+    } else if ([command isEqualToString:LibraryDataRequestThumbnail]) {
+        //NSString *itemID = [request.params objectForKey:@"itemid"];
+        
+        //for (id<LibraryItemDetailDelegate> aDelegate in itemDelegates) {
+        //    [aDelegate thumbnailFailedToLoadForItemID:itemID];
+        //}
+#pragma mark Failure - Item Detail
+    } else if ([command isEqualToString:LibraryDataRequestItemDetail]) {
+        NSString *itemID = [request.params objectForKey:@"itemid"];
+        
+        for (id<LibraryItemDetailDelegate> aDelegate in itemDelegates) {
+            [aDelegate detailsFailedToLoadForItemID:itemID];
+        }
+        
+    } else if ([command isEqualToString:LibraryDataRequestLibraries]
         || [command isEqualToString:LibraryDataRequestOpenLibraries]
         || [command isEqualToString:LibraryDataRequestSearchCodes])
     {
@@ -640,8 +712,6 @@ static LibraryDataManager *s_sharedManager = nil;
         
     } else if ([command isEqualToString:LibraryDataRequestLibraryDetail]
                || [command isEqualToString:LibraryDataRequestArchiveDetail]
-               || [command isEqualToString:LibraryDataRequestAvailability]
-               || [command isEqualToString:LibraryDataRequestThumbnail]
                || [command isEqualToString:LibraryDataRequestSearch])
     {
         [anytimeRequests removeObject:request];
@@ -659,18 +729,6 @@ static LibraryDataManager *s_sharedManager = nil;
     //}
 }
 
-/*
-- (void)showAlertForFailedDispatch {
-    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Connection Failed", nil)
-                                                        message:NSLocalizedString(@"Could not connect to server. Please try again later.", nil)
-                                                       delegate:nil 
-                                              cancelButtonTitle:@"OK" 
-                                              otherButtonTitles:nil];
-    [alertView show];
-    [alertView release];
-}
-*/
-
 - (void)dealloc {
     for (JSONAPIRequest *api in anytimeRequests) {
         api.jsonDelegate = nil;
@@ -680,6 +738,9 @@ static LibraryDataManager *s_sharedManager = nil;
     }
     [anytimeRequests release];
     [oneTimeRequests release];
+
+    [delegates release];
+    [itemDelegates release];
 
     [_schedulesByLibID release];
     [_allOpenArchives release];

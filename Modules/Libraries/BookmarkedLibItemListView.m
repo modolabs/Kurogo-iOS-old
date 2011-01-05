@@ -124,7 +124,9 @@ NSInteger bookmarkedItemsNameSorted(id item1, id item2, void *context) {
 																				itemArray:bookmarkedItemsDictionaryWithIndexing
 																		  currentItemIdex:indexPath.row
 																			 imageDisplay:displayImage];
-	
+    
+    [self.navigationController pushViewController:vc animated:YES];
+	/*
 	api = [[JSONAPIRequest alloc] initWithJSONAPIDelegate:vc];
 	
 	BOOL requestSent = NO;
@@ -154,7 +156,7 @@ NSInteger bookmarkedItemsNameSorted(id item1, id item2, void *context) {
 		[alertView show];
 		[alertView release];
 	}
-	
+	*/
 	
 	
 	[vc release];

@@ -223,13 +223,13 @@
     
     LibraryAlias * lib = (LibraryAlias *)((LibraryAnnotation *)view.annotation).libAlias;
     vc.lib = lib;
-    
+    /*
     if ([lib.library.type isEqualToString:@"archive"])
         vc.title = @"Archive Detail";
     
     else
         vc.title = @"Library Detail";
-    
+    */
     int indexSelected = 0;
     int tempIndex = 0;
     for(LibraryAlias * libTemp in allLibraries){
