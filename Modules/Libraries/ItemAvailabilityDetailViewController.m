@@ -126,65 +126,7 @@
 	
 	[label2 release];
 	[label release];
-	
-	
-	sectionType = [[NSMutableDictionary alloc] init];
-	
-	for (int section=0; section < [availabilityCategories count]; section++) {
-		
-		BOOL isTypeOne = NO;
-		BOOL isTypeTwo = NO;
-		
-		NSDictionary * statDict = [availabilityCategories objectAtIndex:section];
-		
-		int collectionOnlyCount = 0;
-		collectionOnlyCount = [[statDict objectForKey:@"collectionOnlyCount"] intValue];
-		
-		if (collectionOnlyCount > 0)
-			isTypeTwo = YES;
-		
-		
-		if (isTypeTwo == NO) {
-			
-			NSMutableArray * items = [[NSMutableArray alloc] init];
-			int indexCount =0;
-			
-			NSArray * availableItems = (NSArray *)[statDict objectForKey:@"availableItems"];
-			NSArray * checkedOutItems = (NSArray * )[statDict objectForKey:@"checkedOutItems"];
-			
-			for(NSDictionary * item in availableItems) {
-				[items insertObject:item atIndex:indexCount];
-				indexCount++;
-			}
-			
-			for(NSDictionary * item1 in checkedOutItems) {
-				[items insertObject:item1 atIndex:indexCount];
-				indexCount++;
-			}
-			
-			for(NSDictionary * availItemDict in items){
-				
-				NSString * firstCallNbr = [[items objectAtIndex:0] objectForKey:@"callNumber"];
-				NSString * callNbr = [availItemDict objectForKey:@"callNumber"];
-				
-				
-				if (![firstCallNbr isEqualToString:callNbr]){
-					[sectionType setObject:sectionType1 forKey:[NSString stringWithFormat:@"%d",section]];
-					isTypeOne = YES;
-					break;
-				}
-			}
-			
-			if ((isTypeOne == NO) && (isTypeTwo == NO))
-				[sectionType setObject:sectionType0 forKey:[NSString stringWithFormat:@"%d",section]];
-			
-		}
-		
-		else if (isTypeTwo == YES)
-			[sectionType setObject:sectionType0 forKey:[NSString stringWithFormat:@"%d",section]];
-		
-	}
-	
+    
 	limitedView = YES;
 }
 
