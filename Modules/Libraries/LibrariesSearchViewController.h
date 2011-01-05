@@ -32,7 +32,6 @@
 	MITSearchDisplayController *searchController;
 	ModoSearchBar *theSearchBar;
 	
-	NSArray *searchResults;
 	NSString *searchTerms;
     NSInteger formatIndex;
     NSInteger locationIndex;
@@ -43,18 +42,14 @@
     NSString *authorText;
 	BOOL englishOnlySwitch;
 	
-	UIView *loadingView;
-	
 	BOOL requestWasDispatched;
-	JSONAPIRequest *api;
 	
 	// a custom button to link to Advanced Search
 	UIButton* _advancedSearchButton;
 }
 
-@property (nonatomic, retain) UIView *loadingView;
+@property (nonatomic, retain) UITableView *tableView;
 @property (nonatomic, retain) MITSearchDisplayController *searchController;
-@property (nonatomic, retain) NSArray *searchResults;
 @property (nonatomic, retain) NSString *searchTerms;
 @property (nonatomic, readwrite) NSInteger formatIndex;
 @property (nonatomic, readwrite) NSInteger locationIndex;
@@ -75,7 +70,6 @@
 -(void) hideToolBar;
 
 //- (void)presentSearchResults:(NSArray *)theSearchResults;
-- (void)showLoadingView;
 - (void)cleanUpConnection;
 
 - (void)handleWarningMessage:(NSString *)message title:(NSString *)theTitle;

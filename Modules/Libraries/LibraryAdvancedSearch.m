@@ -12,6 +12,8 @@
 #import "LibraryLocation.h";
 #import "Constants.h"
 #import "LibrariesSearchViewController.h"
+#import "LibraryDataManager.h"
+#import "JSONAPIRequest.h"
 
 @implementation LibraryAdvancedSearch
 @synthesize keywords;
@@ -25,35 +27,46 @@
 
 -(void) setupLayout{
 	
-	
-	self.view.backgroundColor = [UIColor clearColor];
-	[format setUserInteractionEnabled:NO];
-	
-	[location setUserInteractionEnabled:NO];
-	
 	//formatDisclosure.transform = CGAffineTransformMakeRotation(M_PI/2);
 	//locationDisclosure.transform = CGAffineTransformMakeRotation(M_PI/2);
-	[keywords becomeFirstResponder];
+	//[keywords becomeFirstResponder];
 	
     NSPredicate * matchAll = [NSPredicate predicateWithFormat:@"TRUEPREDICATE"];
     NSSortDescriptor *nameSortDescriptor = [[[NSSortDescriptor alloc] initWithKey:@"name" ascending:YES] autorelease];
     NSArray *sortDescriptors = [NSArray arrayWithObject:nameSortDescriptor];
-    
-    NSArray * libraryCodes = [CoreDataManager objectsForEntity:LibraryLocationCodeEntityName matchingPredicate:matchAll sortDescriptors:sortDescriptors];
-    if (libraryCodes != nil) {
-        libraryArray = [[NSMutableArray alloc] initWithArray:libraryCodes];
-    } else {
-        libraryArray = [[NSMutableArray alloc] init];
-    }
-    [libraryArray insertObject:@"All Libraries/Archives" atIndex:0];
 
-    NSArray * formatCodes = [CoreDataManager objectsForEntity:LibraryFormatCodeEntityName matchingPredicate:matchAll sortDescriptors:sortDescriptors];
-    if (formatCodes != nil) {
-        formatArray = [[NSMutableArray alloc] initWithArray:formatCodes];
-    } else {
-        formatArray = [[NSMutableArray alloc] init];
+    BOOL needCodesUpdate = NO;
+    
+    if (![libraryArray count] || [libraryArray count] <= 1) {
+        NSArray * libraryCodes = [CoreDataManager objectsForEntity:LibraryLocationCodeEntityName matchingPredicate:matchAll sortDescriptors:sortDescriptors];
+        if (libraryCodes != nil) {
+            libraryArray = [[NSMutableArray alloc] initWithArray:libraryCodes];
+        } else {
+            needCodesUpdate = YES;
+            libraryArray = [[NSMutableArray alloc] init];
+        }
+        [libraryArray insertObject:@"All Libraries/Archives" atIndex:0];
     }
-    [formatArray insertObject:@"All formats (everything)" atIndex:0];
+
+    if (![formatArray count] || [formatArray count] <= 1) {
+        NSArray * formatCodes = [CoreDataManager objectsForEntity:LibraryFormatCodeEntityName matchingPredicate:matchAll sortDescriptors:sortDescriptors];
+        if (formatCodes != nil) {
+            formatArray = [[NSMutableArray alloc] initWithArray:formatCodes];
+        } else {
+            needCodesUpdate = YES;
+            formatArray = [[NSMutableArray alloc] init];
+        }
+        [formatArray insertObject:@"All formats (everything)" atIndex:0];
+    }
+    
+    if (needCodesUpdate) {
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(searchCodesDidLoad:)
+                                                     name:LibraryRequestDidCompleteNotification
+                                                   object:LibraryDataRequestSearchCodes];
+        
+        [[LibraryDataManager sharedManager] requestSearchCodes];
+    }
     
 	locationPickerView.hidden = YES;
     [locationPickerView reloadAllComponents];  // Data may have changed due to JSON response
@@ -65,19 +78,22 @@
 	
 	if (nil != keywordTextAtInitialization && [keywordTextAtInitialization length]) {
         DLog(@"Got keywords %@", keywordTextAtInitialization);
-		self.keywords.text = [keywordTextAtInitialization autorelease];
+		self.keywords.text = keywordTextAtInitialization;
+        [keywordTextAtInitialization release];
         keywordTextAtInitialization = nil;
 	}
     
 	if (nil != titleTextAtInitialization && [titleTextAtInitialization length]) {
         DLog(@"Got title %@", titleTextAtInitialization);
-		self.titleKeywords.text = [titleTextAtInitialization autorelease];
+		self.titleKeywords.text = titleTextAtInitialization;
+        [titleTextAtInitialization release];
         titleTextAtInitialization = nil;
 	}
     
 	if (nil != authorTextAtInitialization && [authorTextAtInitialization length]) {
         DLog(@"Got author %@", authorTextAtInitialization);
-		self.authorKeywords.text = [authorTextAtInitialization autorelease];
+		self.authorKeywords.text = authorTextAtInitialization;
+        [authorTextAtInitialization release];
         authorTextAtInitialization = nil;
 	}
     
@@ -113,9 +129,9 @@
     if (self) {
         // Custom initialization.
 		
-		keywordTextAtInitialization = keywordsText;
-		titleTextAtInitialization = titleText;
-		authorTextAtInitialization = authorText;
+		keywordTextAtInitialization = [keywordsText retain];
+		titleTextAtInitialization = [titleText retain];
+		authorTextAtInitialization = [authorText retain];
 		formatIndexAtInitialization = formatIndex;
 		locationIndexAtInitialization = locationIndex;
         englishOnlySwitchAtInitialization = englishOnlySwitch;
@@ -128,6 +144,15 @@
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad {
     [super viewDidLoad];
+	self.view.backgroundColor = [UIColor clearColor];
+
+    // TODO: why isn't this being done in the nib file?
+	[format setUserInteractionEnabled:NO];
+	[location setUserInteractionEnabled:NO];
+    
+    formatPickerView.hidden = YES;
+    locationPickerView.hidden = YES;
+
 	[self setupLayout];
 }
 
@@ -163,15 +188,32 @@
 }
 
 - (void)viewDidUnload {
-	
-    // Release any retained subviews of the main view.
-	
-    // e.g. self.myOutlet = nil;
+    
+    self.keywords = nil;
+    self.titleKeywords = nil;
+    self.authorKeywords = nil;
+    self.format = nil;
+    self.formatDisclosure = nil;
+    self.location = nil;
+    self.locationDisclosure = nil;
+    self.englishSwitch = nil;
 	
 }
 
 - (void)dealloc {
+    
+    self.keywords = nil;
+    self.titleKeywords = nil;
+    self.authorKeywords = nil;
+    self.format = nil;
+    self.formatDisclosure = nil;
+    self.location = nil;
+    self.locationDisclosure = nil;
+    self.englishSwitch = nil;
 	
+    [formatArray release];
+    [libraryArray release];
+    
     [super dealloc];
 	
 }
@@ -221,7 +263,7 @@
     vc.authorText = authorKeywords.text;
 	vc.englishOnlySwitch = englishSwitch.selected;
     
-	apiRequest = [JSONAPIRequest requestWithJSONAPIDelegate:vc];
+	JSONAPIRequest * apiRequest = [JSONAPIRequest requestWithJSONAPIDelegate:vc];
 	
 	BOOL requestWasDispatched = [apiRequest requestObjectFromModule:@"libraries"
                                                 command:@"search"
@@ -359,6 +401,12 @@
 
 
 #pragma mark -
+
+- (void)searchCodesDidLoad:(NSNotification *)aNotification {
+    [self setupLayout];
+}
+
+/*
 #pragma mark JSONAPIRequest Delegate function 
 
 - (void)request:(JSONAPIRequest *)request jsonLoaded:(id)result {
@@ -419,6 +467,6 @@
 	
     return YES;
 }
-
+*/
 @end
 

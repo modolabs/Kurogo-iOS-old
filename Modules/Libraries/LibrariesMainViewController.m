@@ -514,7 +514,9 @@
                                                                           locationIndex:0];
 			
 			vc.title = @"Advanced Search";
+            [self.navigationController pushViewController:vc animated:YES];
 			
+            /*
 			NSPredicate *matchAll = [NSPredicate predicateWithFormat:@"TRUEPREDICATE"];
 			NSArray *tempArray = [CoreDataManager objectsForEntity:LibraryEntityName matchingPredicate:matchAll];
 			
@@ -543,7 +545,7 @@
 				[self.navigationController pushViewController:vc animated:YES];
 				
 			}
-			
+			*/
 			[vc release];
 			
 			

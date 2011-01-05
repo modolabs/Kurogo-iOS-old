@@ -24,11 +24,11 @@
 @synthesize lastResults;
 @synthesize activeMode;
 
-@synthesize searchTerms, searchResults, searchController;
+@synthesize searchTerms, searchController;
 @synthesize keywordText, titleText, authorText, englishOnlySwitch;
 @synthesize formatIndex, locationIndex;
-@synthesize loadingView;
 @synthesize searchBar = theSearchBar;
+@synthesize tableView = _tableView;
 
 - (BOOL) isSearchResultsVisible {
 	return hasSearchInitiated && activeMode;
@@ -59,12 +59,8 @@
 
 	[searchController release];
 
-	_tableView = nil;
-	
-	self.loadingView = nil;
-	api = nil;
+	self.tableView = nil;
     
-    self.searchResults = nil;
     self.searchTerms = nil;
     self.keywordText = nil;
     self.titleText = nil;
@@ -78,17 +74,14 @@
 }
 
 -(void) viewDidUnload{
-	lastResults = nil;
-	_advancedSearchButton = nil;
-	searchController = nil;
-	theSearchBar = nil;
+	self.lastResults = nil;
+	[_advancedSearchButton release];
+    _advancedSearchButton = nil;
+	[searchController release];
+    searchController = nil;
+    self.searchBar = nil;
 	
-	searchResults = nil;
-	
-	_tableView = nil;
-	
-	loadingView = nil;
-	api = nil;
+	self.tableView = nil;
 
 	[super viewDidUnload];
 }
@@ -121,8 +114,7 @@
                               self.view.frame.size.width,
                               self.view.frame.size.height - theSearchBar.frame.size.height);
 	
-	_tableView = nil;
-	_tableView = [[UITableView alloc] initWithFrame:frame style:UITableViewStylePlain];
+	self.tableView = [[[UITableView alloc] initWithFrame:frame style:UITableViewStylePlain] autorelease];
 	
     _tableView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
     _tableView.delegate = self;
@@ -130,22 +122,12 @@
 	
 	[self.view addSubview:_tableView];
 	
-	//if (nil != self.searchTerms)
-	//	previousSearchTerm = self.searchTerms;
-	
-	/*else if (nil != theSearchBar.text)
-		previousSearchTerm = theSearchBar.text;
-	
-	else
-		previousSearchTerm = @"";
-	 */
-	
 	_advancedSearchButton = nil;
 	UILabel * refine = nil;
 	if (nil == _advancedSearchButton) {
         UIImage *buttonImage = [[UIImage imageNamed:@"global/subheadbar_button"] stretchableImageWithLeftCapWidth:10 topCapHeight:0];
         NSString *buttonText = @"Refine";
-        UIFont *buttonFont = [UIFont fontWithName:BOLD_FONT size:10];
+        UIFont *buttonFont = [UIFont fontWithName:BOLD_FONT size:12];
         CGSize textSize = [buttonText sizeWithFont:buttonFont];
         CGRect appFrame = [[UIScreen mainScreen] applicationFrame];
 
@@ -183,7 +165,8 @@
                                                                   locationIndex:locationIndex];
 	
 	vc.title = @"Advanced Search";
-	
+    [self.navigationController pushViewController:vc animated:YES];
+	/*
 	NSPredicate *matchAll = [NSPredicate predicateWithFormat:@"TRUEPREDICATE"];
 	NSArray *tempArray = [CoreDataManager objectsForEntity:LibraryEntityName matchingPredicate:matchAll];
 	
@@ -211,7 +194,7 @@
 		[self.navigationController pushViewController:vc animated:YES];
 		
 	}
-	
+	*/
 	[vc release];
 }
 
@@ -407,7 +390,7 @@
 																		  currentItemIdex:indexPath.row
 																			 imageDisplay:displayImage];
 	
-	api = [[JSONAPIRequest alloc] initWithJSONAPIDelegate:vc];
+	JSONAPIRequest *api = [JSONAPIRequest requestWithJSONAPIDelegate:vc];
 	
 	BOOL requestSent = NO;
 	
@@ -481,7 +464,6 @@
 
 - (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar
 {
-	self.searchResults = nil;
 	// if they cancelled while waiting for loading
 	if (requestWasDispatched) {
 	}
@@ -492,7 +474,7 @@
 {	
 	self.searchTerms = searchBar.text;
 	
-	api = [JSONAPIRequest requestWithJSONAPIDelegate:self];
+	JSONAPIRequest *api = [JSONAPIRequest requestWithJSONAPIDelegate:self];
 	requestWasDispatched = [api requestObjectFromModule:@"libraries"
                                                 command:@"search"
                                              parameters:[NSDictionary dictionaryWithObjectsAndKeys:self.searchTerms, @"q", nil]];
@@ -514,19 +496,8 @@
 #pragma mark -
 #pragma mark Connection methods
 
-- (void)showLoadingView {
-	// manually add loading view because we're not using the built-in data source table
-	if (self.loadingView == nil) {
-        self.loadingView = [[MITLoadingActivityView alloc] initWithFrame:_tableView.frame];
-	}
-	
-	[_tableView addSubview:self.loadingView];
-    [self.searchBar addDropShadow];
-}
-
 - (void)cleanUpConnection {
 	requestWasDispatched = NO;
-	[self.loadingView removeFromSuperview];	
 }
 
 - (void)request:(JSONAPIRequest *)request jsonLoaded:(id)result {
@@ -624,8 +595,6 @@
             [searchController hideSearchOverlayAnimated:YES];
         }
         
-	} else {
-		self.searchResults = nil;
 	}
 	
 	[searchController hideSearchOverlayAnimated:YES];

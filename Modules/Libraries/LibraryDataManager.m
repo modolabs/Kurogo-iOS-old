@@ -138,7 +138,9 @@ static LibraryDataManager *s_sharedManager = nil;
         library.identityTag = libID;
         library.isBookmarked = [NSNumber numberWithBool:NO];
         
-        if (primaryName) {        
+        if (primaryName) {
+            library.primaryName = primaryName;
+            
             // make sure there is an alias whose display name is the primary name
             LibraryAlias *primaryAlias = [CoreDataManager insertNewObjectForEntityForName:LibraryAliasEntityName];
             primaryAlias.library = library;
@@ -174,10 +176,11 @@ static LibraryDataManager *s_sharedManager = nil;
 
 - (void)makeOneTimeRequestWithCommand:(NSString *)command {
     JSONAPIRequest *api = [oneTimeRequests objectForKey:command];
-    if (!api) {
-        api = [JSONAPIRequest requestWithJSONAPIDelegate:self];
-        api.userData = command;
+    if (api) {
+        [api abortRequest];
     }
+    api = [JSONAPIRequest requestWithJSONAPIDelegate:self];
+    api.userData = command;
     
     if ([api requestObjectFromModule:@"libraries" command:command parameters:nil]) {
         [oneTimeRequests setObject:api forKey:command];
