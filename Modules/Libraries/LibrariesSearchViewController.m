@@ -89,8 +89,33 @@
 
 -(void) viewDidLoad {
 	
-	if (nil == theSearchBar)
-		theSearchBar = [[ModoSearchBar alloc] initWithFrame:CGRectMake(0.0f, 0.0f, self.view.frame.size.width - 50, NAVIGATION_BAR_HEIGHT)];
+	if (nil == _advancedSearchButton) {
+        UIImage *buttonImage = [[UIImage imageNamed:@"global/subheadbar_button"] stretchableImageWithLeftCapWidth:10 topCapHeight:0];
+        NSString *buttonText = @"Refine";
+        UIFont *buttonFont = [UIFont fontWithName:BOLD_FONT size:12];
+        CGSize textSize = [buttonText sizeWithFont:buttonFont];
+        CGRect appFrame = [[UIScreen mainScreen] applicationFrame];
+        
+		_advancedSearchButton = [[UIButton buttonWithType:UIButtonTypeCustom] retain];
+		_advancedSearchButton.frame = CGRectMake(0, 0, textSize.width + 22, buttonImage.size.height);
+		_advancedSearchButton.center = CGPointMake(appFrame.size.width - (_advancedSearchButton.frame.size.width / 2) - 2, (_advancedSearchButton.frame.size.height / 2) + 1);
+        
+		[_advancedSearchButton setBackgroundImage:buttonImage forState:UIControlStateNormal];
+		[_advancedSearchButton setBackgroundImage:[UIImage imageNamed:@"global/subheadbar_button_pressed"] forState:UIControlStateHighlighted];
+        
+        _advancedSearchButton.titleLabel.text = buttonText;
+        _advancedSearchButton.titleLabel.font = buttonFont;
+        _advancedSearchButton.titleLabel.textColor = [UIColor whiteColor];
+        [_advancedSearchButton setTitle: buttonText forState: UIControlStateNormal];
+        
+        [_advancedSearchButton addTarget:self action:@selector(advancedSearchButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
+	}
+	
+	if (nil == theSearchBar) {
+        CGRect frame = CGRectMake(0.0f, 0.0f, self.view.frame.size.width - _advancedSearchButton.frame.size.width, NAVIGATION_BAR_HEIGHT);
+        NSLog(@"%@", [_advancedSearchButton description]);
+		theSearchBar = [[ModoSearchBar alloc] initWithFrame:frame];
+    }
 	
 	theSearchBar.tintColor = SEARCH_BAR_TINT_COLOR;
 	theSearchBar.placeholder = @"HOLLIS keyword search";
@@ -109,6 +134,7 @@
 		theSearchBar.text = viewController.searchTerms;
 	
     [self.view addSubview:theSearchBar];
+	[self.view addSubview:_advancedSearchButton];
 	
     CGRect frame = CGRectMake(0.0, theSearchBar.frame.size.height,
                               self.view.frame.size.width,
@@ -121,32 +147,6 @@
     _tableView.dataSource = self;
 	
 	[self.view addSubview:_tableView];
-	
-	_advancedSearchButton = nil;
-	UILabel * refine = nil;
-	if (nil == _advancedSearchButton) {
-        UIImage *buttonImage = [[UIImage imageNamed:@"global/subheadbar_button"] stretchableImageWithLeftCapWidth:10 topCapHeight:0];
-        NSString *buttonText = @"Refine";
-        UIFont *buttonFont = [UIFont fontWithName:BOLD_FONT size:12];
-        CGSize textSize = [buttonText sizeWithFont:buttonFont];
-        CGRect appFrame = [[UIScreen mainScreen] applicationFrame];
-
-		_advancedSearchButton = [[UIButton buttonWithType:UIButtonTypeCustom] retain];
-		_advancedSearchButton.frame = CGRectMake(0, 0, textSize.width + 22, buttonImage.size.height);
-		_advancedSearchButton.center = CGPointMake(appFrame.size.width - (_advancedSearchButton.frame.size.width / 2) - 2, (_advancedSearchButton.frame.size.height / 2) + 1);
-        
-		[_advancedSearchButton setBackgroundImage:buttonImage forState:UIControlStateNormal];
-		[_advancedSearchButton setBackgroundImage:[UIImage imageNamed:@"global/subheadbar_button_pressed"] forState:UIControlStateHighlighted];
-        
-        _advancedSearchButton.titleLabel.text = buttonText;
-        _advancedSearchButton.titleLabel.font = buttonFont;
-        _advancedSearchButton.titleLabel.textColor = [UIColor whiteColor];
-        [_advancedSearchButton setTitle: buttonText forState: UIControlStateNormal];
-	}
-	
-	[self.view addSubview:_advancedSearchButton];
-	[_advancedSearchButton addSubview:refine];
-	[_advancedSearchButton addTarget:self action:@selector(advancedSearchButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
 }
 
 
@@ -166,35 +166,6 @@
 	
 	vc.title = @"Advanced Search";
     [self.navigationController pushViewController:vc animated:YES];
-	/*
-	NSPredicate *matchAll = [NSPredicate predicateWithFormat:@"TRUEPREDICATE"];
-	NSArray *tempArray = [CoreDataManager objectsForEntity:LibraryEntityName matchingPredicate:matchAll];
-	
-	if ([tempArray count] == 0){
-		api = [[JSONAPIRequest alloc] initWithJSONAPIDelegate:vc];	
-		
-		if ([api requestObjectFromModule:@"libraries" 
-                                 command:@"libraries" 
-                              parameters:nil] == YES)
-		{
-			[self.navigationController pushViewController:vc animated:YES];
-		}
-		else {
-			UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil
-																message:NSLocalizedString(@"Could not connect to server. Please try again later.", nil)
-															   delegate:self 
-													  cancelButtonTitle:@"OK" 
-													  otherButtonTitles:nil];
-			[alertView show];
-			[alertView release];
-		}
-		
-	}
-	else {
-		[self.navigationController pushViewController:vc animated:YES];
-		
-	}
-	*/
 	[vc release];
 }
 
@@ -448,14 +419,10 @@
     [UIView beginAnimations:@"searching" context:nil];
     [UIView setAnimationDuration:0.4];
 	
-	theSearchBar.frame = CGRectMake(0, 0, self.view.frame.size.width - 50, NAVIGATION_BAR_HEIGHT);
+	theSearchBar.frame = CGRectMake(0.0f, 0.0f, self.view.frame.size.width - _advancedSearchButton.frame.size.width, NAVIGATION_BAR_HEIGHT);
 	_advancedSearchButton.alpha = 1.0;
 	
     [UIView commitAnimations];
-
-   // CGRect frame = _advancedSearchButton.frame;
-   // frame.origin.x = theSearchBar.frame.size.width - frame.size.width - 7;
-   // _advancedSearchButton.frame = frame;
 }
 
 
