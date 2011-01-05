@@ -17,21 +17,25 @@
 #import "AnalyticsWrapper.h"
 
 // horizontal spacing between main icons
-// 17.0 for three icons per row
+// 0.0 for four icons per row
+// 20.0 for three icons per row
 #define MAIN_GRID_HPADDING 0.0f
 
 // horizontal spacing between secondary icons
-// 17.0 for four icons per row
-#define SECONDARY_GRID_HPADDING 17.0f
+// 20.0 for four icons per row
+#define SECONDARY_GRID_HPADDING 20.0f
 
 // vertical spacing between icons
-#define GRID_VPADDING 24.0f
+#define GRID_VPADDING 22.0f
 
 // height to allocate to icon text label
 #define ICON_LABEL_HEIGHT 22.0f
 
 // internal padding within each icon (allows longer text labels)
 #define ICON_PADDING 5.0f
+
+// vertical padding above secondary (utility) icons
+#define SECONDARY_GRID_TOP_PADDING 36.0f
 
 @interface SpringboardViewController (Private)
 
@@ -121,7 +125,7 @@
     
     for (MITModule *aModule in modules) {
         SpringboardIcon *anIcon = [SpringboardIcon buttonWithType:UIButtonTypeCustom];
-        UIImage *image = [aModule icon];
+		UIImage *image = [[aModule icon] stretchableImageWithLeftCapWidth:0.0 topCapHeight:0.0];
         if (image) {
                         
             anIcon.frame = CGRectMake(0, 0, image.size.width + ICON_PADDING * 2, image.size.height + ICON_LABEL_HEIGHT);
@@ -199,8 +203,7 @@
     bottomRight.y = _searchBar.frame.size.height + GRID_VPADDING;
     [self layoutIcons:_icons horizontalSpacing:MAIN_GRID_HPADDING];
 
-    // TODO: don't hard code spacing between main and secondary grid
-    bottomRight.y += 20.0;
+    bottomRight.y += SECONDARY_GRID_TOP_PADDING;
     [self layoutIcons:_fixedIcons horizontalSpacing:SECONDARY_GRID_HPADDING];
     
     [self setupSearchController];
