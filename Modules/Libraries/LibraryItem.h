@@ -1,11 +1,3 @@
-//
-//  LibraryItem.h
-//  Harvard Mobile
-//
-//  Created by sonya huang on 2011/1/5.
-//  Copyright 2011 mit. All rights reserved.
-//
-
 #import <CoreData/CoreData.h>
 
 
@@ -34,6 +26,7 @@
 
 - (UIImage *)thumbnailImage;
 - (NSString *)thumbnailImagePath;
+// TODO: clear out stale image files
 - (void)requestImage;
 
 @end

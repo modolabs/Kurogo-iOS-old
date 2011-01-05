@@ -14,15 +14,7 @@
 #import "LibraryDataManager.h"
 
 @interface LibItemDetailViewController : UITableViewController </*JSONAPIDelegate, */CLLocationManagerDelegate, LibraryItemDetailDelegate> {
-	
-	//NSString * itemTitle;
-	//NSString * author;
-	//NSString * otherDetailLine1;
-	//NSString * otherDetailLine2;
-	//NSString * otherDetailLine3;
-	
-	//NSDictionary *librariesWithItem;
-	
+
 	NSArray * locationsWithItem;
 	
 	BOOL bookmarkButtonIsOn;

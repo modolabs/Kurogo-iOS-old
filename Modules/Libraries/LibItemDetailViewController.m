@@ -75,6 +75,8 @@
     
     if (!libItem.catalogLink) { // cataloglink is something itemdetail returns but search does not
         [[LibraryDataManager sharedManager] requestDetailsForItem:libItem];
+    } else {
+        [self detailsDidLoadForItem:libItem];
     }
     if (![[libItem.formatDetail lowercaseString] isEqualToString:@"image"]) {
         [[LibraryDataManager sharedManager] requestFullAvailabilityForItem:libItem.itemId];
@@ -229,6 +231,7 @@
 	else{
 		if (nil != thumbnail){
 			[thumbnail removeFromSuperview];
+            [thumbnail release];
 			thumbnail = nil;
 		}
 	}
@@ -324,60 +327,6 @@
                     [self setupLayout];
                     [self.tableView reloadData];
                 }
-                
-                /*
-	
-				apiRequest = [[JSONAPIRequest alloc] initWithJSONAPIDelegate:self];
-				
-				BOOL requestSent = NO;
-				BOOL displayImageTemp = NO;
-				
-				if ([temp.formatDetail isEqualToString:@"Image"])
-					displayImageTemp = YES;
-				
-				if (displayImageTemp == NO)
-					requestSent = [apiRequest requestObjectFromModule:@"libraries" 
-													   command:@"fullavailability"
-													parameters:[NSDictionary dictionaryWithObjectsAndKeys:temp.itemId, @"itemid", nil]];
-				
-				else {
-					requestSent = [apiRequest requestObjectFromModule:@"libraries" 
-													   command:@"imagethumbnail"
-													parameters:[NSDictionary dictionaryWithObjectsAndKeys:temp.itemId, @"itemid", nil]];
-				}
-				
-				if (requestSent == YES)
-				{
-					if (nil != thumbnail)
-						[thumbnail removeFromSuperview];
-					
-					thumbnail = nil;
-					
-					currentIndex = tempLibIndex;
-					libItem = [temp retain];
-					
-					if ([libItem.formatDetail isEqualToString:@"Image"])
-						displayImage = YES;
-					else {
-						displayImage = NO;
-					}
-
-					
-					[self.tableView reloadData];
-					[self setUpdetails:libItem];
-					[self viewWillAppear:YES];
-				}
-				else {
-					UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil
-																		message:NSLocalizedString(@"Could not connect to server. Please try again later.", nil)
-																	   delegate:self 
-															  cancelButtonTitle:@"OK" 
-															  otherButtonTitles:nil];
-					[alertView show];
-					[alertView release];
-				}
-                
-                */
 				
 			}			
 		}
@@ -945,12 +894,15 @@
 
 - (void)detailsDidLoadForItem:(LibraryItem *)aLibItem {
 
-    if (libItem != aLibItem) {
-        NSLog(@"aLibItem %@ is not libItem %@", [aLibItem description], [libItem description]);
-    }
-    
     if (![libItem.itemId isEqualToString:aLibItem.itemId]) {
         return;
+    }
+    
+    [self removeLoadingIndicator];
+
+    if (libItem != aLibItem) {
+        [libItem release];
+        libItem = [aLibItem retain];
     }
     
     if (aLibItem.formatDetail && [[libItem.formatDetail lowercaseString] isEqualToString:@"image"]) {
@@ -969,23 +921,22 @@
             imageView.image = image;
             
             CGRect screenRect = [[UIScreen mainScreen] applicationFrame];
-            CGSize imageSize = imageView.frame.size;
             
-            CGFloat imageX = (screenRect.size.width - imageSize.width) / 2;
+            CGFloat imageX = (screenRect.size.width - imageView.frame.size.width) / 2;
             CGFloat imageY = thumbnail.frame.origin.y;
+            CGFloat bottomY = imageY + (imageView.frame.size.height - image.size.height) / 2 + image.size.height;
             
-            thumbnail.frame = CGRectMake(imageX, imageY, imageSize.width, imageSize.height);
+            thumbnail.frame = CGRectMake(imageX, imageY, imageView.frame.size.width, imageView.frame.size.height);
             
             UIButton * customButton = [UIButton buttonWithType:UIButtonTypeCustom];
-            customButton.frame = CGRectMake(imageX+imageSize.width-15, imageY+imageSize.height-20, 30, 30);  // a little higher so text fits
+            customButton.frame = CGRectMake(imageX+image.size.width-15, bottomY - 20, 30, 30);  // a little higher so text fits
             customButton.enabled = YES;
             [customButton setImage:[UIImage imageNamed:@"global/searchfield_star.png"] forState:UIControlStateNormal];
             [customButton addTarget:self action:@selector(thumbNailPressed:) forControlEvents:UIControlEventTouchUpInside];
             
-            [self removeLoadingIndicator];
             [thumbnail addSubview:imageView];
             
-            UILabel * count = [[[UILabel alloc] initWithFrame:CGRectMake(0.0, imageY+imageSize.height+6, screenRect.size.width, 20)] autorelease];
+            UILabel * count = [[[UILabel alloc] initWithFrame:CGRectMake(0.0, bottomY + 10, screenRect.size.width, 20)] autorelease];
             count.text = [NSString stringWithFormat:@"Total Images: %d", [aLibItem.numberOfImages integerValue]];
             count.font = [UIFont fontWithName:COURSE_NUMBER_FONT size:14];
             count.textAlignment = UITextAlignmentCenter;

@@ -361,40 +361,7 @@
 																		  currentItemIdex:indexPath.row
 																			 imageDisplay:displayImage];
     
-    [self.navigationController pushViewController:vc animated:YES];
-
-	/*
-	JSONAPIRequest *api = [JSONAPIRequest requestWithJSONAPIDelegate:vc];
-	
-	BOOL requestSent = NO;
-	
-	if (displayImage == NO)
-	 requestSent = [api requestObjectFromModule:@"libraries" 
-									command:@"fullavailability"
-						  parameters:[NSDictionary dictionaryWithObjectsAndKeys:libItem.itemId, @"itemid", nil]];
-	
-	else {
-		requestSent = [api requestObjectFromModule:@"libraries" 
-										   command:@"imagethumbnail"
-										parameters:[NSDictionary dictionaryWithObjectsAndKeys:libItem.itemId, @"itemid", nil]];
-	}
-
-	if (requestSent == YES)
-	{
-		vc.title = @"Item Detail";
-		[self.navigationController pushViewController:vc animated:YES];
-	}
-	else {
-		UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil
-															message:NSLocalizedString(@"Could not connect to server. Please try again later.", nil)
-														   delegate:self 
-												  cancelButtonTitle:@"OK" 
-												  otherButtonTitles:nil];
-		[alertView show];
-		[alertView release];
-	}
-	*/
-	
+    [self.navigationController pushViewController:vc animated:YES];	
 
 	[vc release];
 	

@@ -540,7 +540,7 @@ static LibraryDataManager *s_sharedManager = nil;
 		if ([JSONObject isKindOfClass:[NSDictionary class]]) {
             NSDictionary *result = (NSDictionary *)JSONObject;
             
-            NSString *itemID = [result objectForKey:@"itemid"];
+            NSString *itemID = [result objectForKey:@"itemId"];
             LibraryItem *libItem = [self libraryItemWithID:itemID];
             libItem.title = [result objectForKey:@"title"];
             libItem.author = [result objectForKey:@"creator"];
@@ -561,6 +561,10 @@ static LibraryDataManager *s_sharedManager = nil;
             NSString *thumbnail = [result objectForKey:@"thumbnail"];
             if ([thumbnail length]) {
                 libItem.thumbnailURL = thumbnail;
+                
+                if (![libItem thumbnailImage]) {
+                    [libItem requestImage];
+                }
             }
             
             NSString *fullImageLink = [result objectForKey:@"fullimagelink"];

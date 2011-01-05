@@ -1,11 +1,3 @@
-// 
-//  LibraryItem.m
-//  Harvard Mobile
-//
-//  Created by sonya huang on 2011/1/5.
-//  Copyright 2011 mit. All rights reserved.
-//
-
 #import "LibraryItem.h"
 
 
