@@ -346,8 +346,8 @@
 -(void) authorLinkTapped:(id)sender{
 	NSArray *viewControllerArray = [self.navigationController viewControllers];
 	NSUInteger parentViewControllerIndex = [viewControllerArray count] - 2;
-	NSLog(@"Parent view controller: %@", [viewControllerArray objectAtIndex:parentViewControllerIndex]);
-	NSLog(@"Total vc: %d", [viewControllerArray count]);
+	DLog(@"Parent view controller: %@", [viewControllerArray objectAtIndex:parentViewControllerIndex]);
+	DLog(@"Total vc: %d", [viewControllerArray count]);
 	
 	if ([sender isKindOfClass:[UIButton class]]){
 		
@@ -682,8 +682,8 @@
 		if (cell1 == nil) {
             // TODO: this is leaking dictWithStatuses
 			cell1 = [[[LibItemDetailCell alloc] initWithStyle:UITableViewCellStyleSubtitle 
-                                              reuseIdentifier:CellIdentifier1 
-                                             itemAvailability:[dictWithStatuses retain]] autorelease];
+                                              reuseIdentifier:CellIdentifier1] autorelease];
+            cell1.itemAvailabilityStringAndStatus = dictWithStatuses;
 		}
         
         // cell title for availability listings
@@ -706,12 +706,12 @@
             CGFloat latitude = [theLibrary.lat doubleValue];
             CGFloat longitude = [theLibrary.lon doubleValue];
             
-            NSLog(@"latitude: %.3f longitude: %.3f", latitude, longitude);
+            DLog(@"latitude: %.3f longitude: %.3f", latitude, longitude);
             
             if (latitude != 0) {
                 CLLocation * libLoc = [[[CLLocation alloc] initWithLatitude:latitude longitude:longitude] autorelease];
-                NSLog(@"%@", [libLoc description]);
-                NSLog(@"%@", [currentLocation description]);
+                DLog(@"%@", [libLoc description]);
+                DLog(@"%@", [currentLocation description]);
                 
                 CLLocationDistance dist = [currentLocation distanceFromLocation:libLoc];
                 if (dist >= 0) {
@@ -888,7 +888,7 @@
     if (displayImage == YES){
 		
 		if (nil != libItem.catalogLink ){
-			NSLog(@"cat link = %@",libItem.catalogLink); 
+			DLog(@"cat link = %@",libItem.catalogLink); 
 			NSString * url = libItem.catalogLink;
 			
 			//url = [url stringByReplacingOccurrencesOfString:@"http://" withString:@""];
@@ -917,47 +917,39 @@
 	
 	
 	if ([locationsWithItem count] > 0) {
-		
-		NSDictionary * tempDict = [locationsWithItem objectAtIndex:indexPath.row];		
-		NSString * libName = [tempDict objectForKey:@"name"];
-		NSString * libId = [tempDict objectForKey:@"id"];
-		NSString * type = [tempDict objectForKey:@"type"];
-		
-		NSString * primaryName = [((NSDictionary *)[tempDict objectForKey:@"details"]) objectForKey:@"primaryName"];
 
 		NSDictionary * libDict = [locationsWithItem objectAtIndex:indexPath.row];		
-		
 		NSArray * collections = (NSArray *)[libDict objectForKey:@"collection"];
-		
-		//NSArray * itemsByStat = (NSArray *)[tempDict objectForKey:@"itemsByStat"];
 	
-		BOOL notTappable = NO;
-		for(NSDictionary * collectionDict in collections){
-			
+		BOOL tappable = NO;
+		for (NSDictionary * collectionDict in collections){
 			NSArray * itemsByStat = (NSArray *)[collectionDict objectForKey:@"itemsByStat"];
-			
-			if ([itemsByStat count] == 0) {
-				notTappable = YES;
-			}
-			else {
-				notTappable = NO;
-			}
+            if ([itemsByStat count]) {
+                tappable = YES;
+                break;
+            }
 		}
-
 	
-		if ((notTappable == NO) && ([collections count] > 0) && (indexPath.section == 1)) {
-			ItemAvailabilityDetailViewController * vc = [[ItemAvailabilityDetailViewController alloc]
-														 initWithStyle:UITableViewStyleGrouped
-														 libName: libName
-														primName: primaryName
-														 libId: libId
-														 libType: type
-														 item:libItem
-														 categories:collections
-														 allLibrariesWithItem:locationsWithItem
-														 index:indexPath.row];
-			
+		if (tappable && ([collections count] > 0) && (indexPath.section == 1)) {
+            
+            NSString * libName = [libDict objectForKey:@"name"];
+            NSString * libId = [libDict objectForKey:@"id"];
+            NSString * type = [libDict objectForKey:@"type"];
+            NSString * primaryName = [((NSDictionary *)[libDict objectForKey:@"details"]) objectForKey:@"primaryName"];
+            
+            // create library if it doesn't exist already
+            Library *library = [[LibraryDataManager sharedManager] libraryWithID:libId primaryName:primaryName];
+            library.type = type;
+            
+            LibraryAlias *alias = [[LibraryDataManager sharedManager] libraryAliasWithID:libId name:libName];
+            ItemAvailabilityDetailViewController *vc = [[ItemAvailabilityDetailViewController alloc] initWithStyle:UITableViewStyleGrouped];
 			vc.title = @"Availability";
+            vc.libraryItem = libItem;
+            vc.libraryAlias = alias;
+            vc.availabilityCategories = collections;
+            vc.arrayWithAllLibraries = locationsWithItem;
+            vc.currentIndex = indexPath.row;
+            
 			[self.navigationController pushViewController:vc animated:YES];
 			[vc release];
 		}
@@ -1022,7 +1014,7 @@
 					[CoreDataManager saveData];
 					
 				}
-				NSLog(@"cat link = %@",libItem.catalogLink); 
+				DLog(@"cat link = %@",libItem.catalogLink); 
 				
 				NSString *imageUrl = [result objectForKey:@"thumbnail"];
 				
@@ -1112,8 +1104,6 @@
 			
 			locationsWithItem = [result retain];
 			//[self.tableView reloadData];
-			
-			//displayNameAndLibraries = [[NSMutableDictionary alloc] init];
             
             [displayLibraries removeAllObjects];
             BOOL fetchingDetails = NO;
@@ -1140,18 +1130,8 @@
                     [[LibraryDataManager sharedManager] requestDetailsForLibType:type libID:identityTag libName:displayName];
                 }
                 
-                pred = [NSPredicate predicateWithFormat:@"name like %@", displayName];
-                LibraryAlias *alias = [[alreadyInDB.aliases filteredSetUsingPredicate:pred] anyObject];
-                if (!alias) {
-                    alias = (LibraryAlias *)[CoreDataManager insertNewObjectForEntityForName:LibraryAliasEntityName];
-                    alias.library = alreadyInDB;
-                    alias.name = displayName;
-                    [CoreDataManager saveData];
-                }
-                
+                LibraryAlias *alias = [[LibraryDataManager sharedManager] libraryAliasWithID:alreadyInDB.identityTag name:displayName];
                 [displayLibraries addObject:alias];
-                
-                //[displayNameAndLibraries setObject:alreadyInDB forKey:displayName];
 			}
             
             if (fetchingDetails) {
@@ -1258,7 +1238,7 @@
     [currentLocation release];
 	currentLocation = [newLocation retain];
     
-    NSLog(@"current location is %@", [currentLocation description]);
+    DLog(@"current location is %@", [currentLocation description]);
     
 	[locationManager stopUpdatingLocation];
 	[self.tableView reloadData];

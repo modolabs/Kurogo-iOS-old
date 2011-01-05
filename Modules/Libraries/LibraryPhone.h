@@ -16,6 +16,7 @@
 @property (nonatomic, retain) NSString * descriptionText;
 @property (nonatomic, retain) NSString * phoneNumber;
 @property (nonatomic, retain) Library * library;
+@property (nonatomic, retain) NSNumber * sortOrder;
 
 - (NSComparisonResult)compare:(LibraryPhone *)otherObject;
 

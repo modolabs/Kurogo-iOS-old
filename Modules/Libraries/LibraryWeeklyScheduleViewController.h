@@ -16,6 +16,7 @@
 	NSDictionary * weeklySchedule;
 }
 
--(void)setDaysOfWeek:(NSArray *) days weeklySchedule:(NSDictionary *)schedule;
+@property (nonatomic, retain) NSArray *daysOfTheWeek;
+@property (nonatomic, retain) NSDictionary *weeklySchedule;
 
 @end

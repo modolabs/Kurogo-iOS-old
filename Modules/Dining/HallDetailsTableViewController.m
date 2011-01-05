@@ -82,7 +82,7 @@
 
 - (void) dealloc
 {
-	[itemDetails dealloc];
+	[itemDetails release];
 	[super dealloc];
 }
 

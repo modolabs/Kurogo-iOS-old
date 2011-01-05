@@ -23,6 +23,10 @@ NSString * const LibraryDataRequestSearch = @"search";
 NSString * const LibraryRequestDidCompleteNotification = @"libRequestComplete";
 NSString * const LibraryRequestDidFailNotification = @"libRequestFailed";
 
+// user defaults
+
+NSString * const LibrariesLastUpdatedKey = @"librariesLastUpdated";
+NSString * const ArchivesLastUpdatedKey = @"archivesLastUpdated";
 
 
 NSInteger libraryNameSort(id lib1, id lib2, void *context) {
@@ -69,26 +73,42 @@ static LibraryDataManager *s_sharedManager = nil;
         //delegates = [[NSMutableSet alloc] init];
         
         // fetch objects from core data
-        // TODO: update periodically from server instead of always trusting cache
-        NSPredicate *matchAll = [NSPredicate predicateWithFormat:@"TRUEPREDICATE"];
-        NSArray *tempArray = [CoreDataManager objectsForEntity:LibraryAliasEntityName matchingPredicate:matchAll];
-        if ([tempArray count]) {
-            for(LibraryAlias *alias in tempArray) {
-                if ([alias.library.type isEqualToString:@"archive"]) {
-                    [_allArchives addObject:alias];
-                }
-                else if ([alias.library.type isEqualToString: @"library"]) {
-                    [_allLibraries addObject:alias];
-                }
-            }
-            
-            [_allArchives sortUsingFunction:libraryNameSort context:nil];
-            [_allLibraries sortUsingFunction:libraryNameSort context:nil];
-            
-            [self requestOpenLibraries];
-        } else {
+        NSDate *librariesDate = [[NSUserDefaults standardUserDefaults] objectForKey:LibrariesLastUpdatedKey];
+        NSDate *archivesDate = [[NSUserDefaults standardUserDefaults] objectForKey:ArchivesLastUpdatedKey];
+        
+        BOOL isUpdated = YES;
+        
+        if (-[librariesDate timeIntervalSinceNow] < 24 * 60 * 60) {
+            isUpdated = NO;
             [self requestLibraries];
+        }
+
+        if (-[archivesDate timeIntervalSinceNow] < 24 * 60 * 60) {
+            isUpdated = NO;
             [self requestArchives];
+        }
+        
+        if (isUpdated) {
+            NSPredicate *matchAll = [NSPredicate predicateWithFormat:@"TRUEPREDICATE"];
+            NSArray *tempArray = [CoreDataManager objectsForEntity:LibraryAliasEntityName matchingPredicate:matchAll];
+            if (![tempArray count]) { // just in case they have nothing even with an updated date
+                [self requestLibraries];
+                [self requestArchives];
+            } else {
+                for(LibraryAlias *alias in tempArray) {
+                    if ([alias.library.type isEqualToString:@"archive"]) {
+                        [_allArchives addObject:alias];
+                    }
+                    else if ([alias.library.type isEqualToString: @"library"]) {
+                        [_allLibraries addObject:alias];
+                    }
+                }
+                
+                [_allArchives sortUsingFunction:libraryNameSort context:nil];
+                [_allLibraries sortUsingFunction:libraryNameSort context:nil];
+                
+                [self requestOpenLibraries];
+            }
         }
     }
     return self;
@@ -110,15 +130,47 @@ static LibraryDataManager *s_sharedManager = nil;
     return _allOpenArchives;
 }
 
-- (Library *)libraryWithID:(NSString *)libID {
+- (Library *)libraryWithID:(NSString *)libID primaryName:(NSString *)primaryName {
     NSPredicate *pred = [NSPredicate predicateWithFormat:@"identityTag like %@", libID];
     Library *library = [[CoreDataManager objectsForEntity:LibraryEntityName matchingPredicate:pred] lastObject];
+    if (!library) {
+        library = [CoreDataManager insertNewObjectForEntityForName:LibraryEntityName];
+        library.identityTag = libID;
+        library.isBookmarked = [NSNumber numberWithBool:NO];
+        
+        if (primaryName) {        
+            // make sure there is an alias whose display name is the primary name
+            LibraryAlias *primaryAlias = [CoreDataManager insertNewObjectForEntityForName:LibraryAliasEntityName];
+            primaryAlias.library = library;
+            primaryAlias.name = library.primaryName;
+            
+            [CoreDataManager saveData];
+        }
+    }
     return library;
 }
 
 - (NSDictionary *)scheduleForLibID:(NSString *)libID {
     return [_schedulesByLibID objectForKey:libID];
 }
+
+- (LibraryAlias *)libraryAliasWithID:(NSString *)libID name:(NSString *)name {
+    Library *theLibrary = [self libraryWithID:libID primaryName:nil];
+    LibraryAlias *alias = nil;
+    if (theLibrary) {
+        NSPredicate *pred = [NSPredicate predicateWithFormat:@"name like %@", name];
+        alias = [[theLibrary.aliases filteredSetUsingPredicate:pred] anyObject];
+        if (!alias) {
+            alias = [CoreDataManager insertNewObjectForEntityForName:LibraryAliasEntityName];
+            alias.library = theLibrary;
+            alias.name = name;
+            [CoreDataManager saveData];
+        }
+    }
+    return alias;
+}
+
+#pragma mark -
 
 - (void)makeOneTimeRequestWithCommand:(NSString *)command {
     JSONAPIRequest *api = [oneTimeRequests objectForKey:command];
@@ -236,8 +288,17 @@ static LibraryDataManager *s_sharedManager = nil;
                 
                 NSString * type = [libraryDictionary objectForKey:@"type"];
                 
-                NSPredicate *pred = [NSPredicate predicateWithFormat:@"identityTag like %@", identityTag];
+                //NSPredicate *pred = [NSPredicate predicateWithFormat:@"identityTag like %@", identityTag];
                 
+                Library *library = [self libraryWithID:identityTag primaryName:primaryName];
+                // if library was just created in core data, the following properties will be saved when alias is created
+                library.location = location;
+                library.lat = [NSNumber numberWithDouble:[latitude doubleValue]];
+                library.lon = [NSNumber numberWithDouble:[longitude doubleValue]];
+                library.type = type;
+                
+                LibraryAlias *alias = [self libraryAliasWithID:identityTag name:name];
+                /*
                 Library *alreadyInDB = [[CoreDataManager objectsForEntity:LibraryEntityName matchingPredicate:pred] lastObject];
                 
                 if (!alreadyInDB) {
@@ -251,11 +312,6 @@ static LibraryDataManager *s_sharedManager = nil;
                     alreadyInDB.lon = [NSNumber numberWithDouble:[longitude doubleValue]];
                     alreadyInDB.type = type;
                     
-                    // make sure there is an alias whose display name is the primary name
-                    LibraryAlias *primaryAlias = [CoreDataManager insertNewObjectForEntityForName:LibraryAliasEntityName];
-                    primaryAlias.library = alreadyInDB;
-                    primaryAlias.name = primaryName;
-                    
                     [CoreDataManager saveData];
                 }
                 
@@ -267,7 +323,7 @@ static LibraryDataManager *s_sharedManager = nil;
                     alias.name = name;
                     [CoreDataManager saveData];
                 }
-                
+                */
                 if ([command isEqualToString:LibraryDataRequestLibraries]) {
                     [_allLibraries addObject:alias];
                 } else {
@@ -296,6 +352,13 @@ static LibraryDataManager *s_sharedManager = nil;
             }
         }
         
+        if ([command isEqualToString:LibraryDataRequestLibraries]) {
+            [[NSUserDefaults standardUserDefaults] setObject:[NSDate date] forKey:LibrariesLastUpdatedKey];
+        } else {
+            [[NSUserDefaults standardUserDefaults] setObject:[NSDate date] forKey:ArchivesLastUpdatedKey];
+        }
+        [[NSUserDefaults standardUserDefaults] synchronize];
+        
         [oneTimeRequests removeObjectForKey:command];
         
     }
@@ -313,7 +376,12 @@ static LibraryDataManager *s_sharedManager = nil;
                 NSString * identityTag = [libraryDictionary objectForKey:@"id"];		
                 NSString * type = [libraryDictionary objectForKey:@"type"];
                 
-                NSPredicate *pred = [NSPredicate predicateWithFormat:@"identityTag like %@", identityTag];
+                //NSPredicate *pred = [NSPredicate predicateWithFormat:@"identityTag like %@", identityTag];
+                Library *library = [self libraryWithID:identityTag primaryName:nil];
+                library.type = type; // saveData will be called if the alias we create below is new
+                LibraryAlias *alias = [self libraryAliasWithID:identityTag name:name];
+                
+                /*
                 Library *alreadyInDB = [[CoreDataManager objectsForEntity:LibraryEntityName matchingPredicate:pred] lastObject];
                 if (!alreadyInDB) {
                     alreadyInDB = [CoreDataManager insertNewObjectForEntityForName:LibraryEntityName];
@@ -332,6 +400,7 @@ static LibraryDataManager *s_sharedManager = nil;
                     alias.name = name;
                     [CoreDataManager saveData];
                 }
+                */
                 
                 NSString *isOpenNow = [libraryDictionary objectForKey:@"isOpenNow"];
                 BOOL isOpen = [isOpenNow isEqualToString:@"YES"];
@@ -416,6 +485,16 @@ static LibraryDataManager *s_sharedManager = nil;
             NSDictionary *libraryDictionary = (NSDictionary *)JSONObject;
             
             NSString *identityTag = [libraryDictionary objectForKey:@"id"];
+            NSString *name = [libraryDictionary objectForKey:@"name"];
+            NSString *primaryName = [libraryDictionary objectForKey:@"primaryname"];
+            NSString *directions = [libraryDictionary objectForKey:@"directions"];
+            NSString *website = [libraryDictionary objectForKey:@"website"];
+            NSString *email = [libraryDictionary objectForKey:@"email"];            
+            NSArray * phoneNumberArray = (NSArray *)[libraryDictionary objectForKey:@"phone"];
+
+            Library *lib = [self libraryWithID:identityTag primaryName:primaryName];
+            
+            /*
             NSPredicate *pred = [NSPredicate predicateWithFormat:@"identityTag like %@", identityTag];
             
             Library *lib = [[CoreDataManager objectsForEntity:LibraryEntityName matchingPredicate:pred] lastObject];
@@ -425,7 +504,6 @@ static LibraryDataManager *s_sharedManager = nil;
                 lib.isBookmarked = [NSNumber numberWithBool:NO];
             }
 
-            NSString *name = [libraryDictionary objectForKey:@"name"];
             
             pred = [NSPredicate predicateWithFormat:@"name like %@", name];
             LibraryAlias *alias = [[lib.aliases filteredSetUsingPredicate:pred] anyObject];
@@ -435,16 +513,14 @@ static LibraryDataManager *s_sharedManager = nil;
                 alias.name = name;
             }
             
-            NSString *primaryName = [libraryDictionary objectForKey:@"primaryname"];
-            NSString *directions = [libraryDictionary objectForKey:@"directions"];
-            NSString *website = [libraryDictionary objectForKey:@"website"];
-            NSString *email = [libraryDictionary objectForKey:@"email"];
-            
-            NSArray * phoneNumberArray = (NSArray *)[libraryDictionary objectForKey:@"phone"];
             
             directions = [directions stringByReplacingOccurrencesOfString:@"\n" withString:@""];
             
             lib.primaryName = primaryName;
+            */
+            
+            [self libraryAliasWithID:identityTag name:name];
+            
             lib.websiteLib = website;
             lib.emailLib = email;
             lib.directions = directions;
@@ -453,6 +529,7 @@ static LibraryDataManager *s_sharedManager = nil;
                 [lib removePhone:lib.phone];
             
             
+            NSInteger phoneCount = 0;
             for(NSDictionary * phNbr in phoneNumberArray) {
                 
                 LibraryPhone * phone = [CoreDataManager insertNewObjectForEntityForName:LibraryPhoneEntityName];
@@ -465,6 +542,8 @@ static LibraryDataManager *s_sharedManager = nil;
 				} 
                 
                 phone.phoneNumber = phNumber;
+                phone.sortOrder = [NSNumber numberWithInt:phoneCount];
+                phoneCount++;
                 
                 if (![lib.phone containsObject:phone])
                     [lib addPhoneObject:phone];

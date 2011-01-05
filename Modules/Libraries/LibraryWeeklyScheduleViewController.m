@@ -12,7 +12,7 @@
 
 @implementation LibraryWeeklyScheduleViewController
 
-
+@synthesize daysOfTheWeek, weeklySchedule;
 
 #pragma mark -
 #pragma mark Initialization
@@ -25,12 +25,6 @@
     return self;
 }
 */
-
--(void)setDaysOfWeek:(NSArray *) days weeklySchedule:(NSDictionary *)schedule {
-	
-	daysOfTheWeek = days;
-	weeklySchedule = schedule;
-}
 
 
 #pragma mark -
@@ -195,6 +189,9 @@
 
 
 - (void)dealloc {
+    self.daysOfTheWeek = nil;
+    self.weeklySchedule = nil;
+    
     [super dealloc];
 }
 

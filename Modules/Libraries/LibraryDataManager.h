@@ -36,6 +36,7 @@ extern NSString * const LibraryRequestDidFailNotification;
 NSInteger libraryNameSort(id lib1, id lib2, void *context);
 
 @class Library;
+@class LibraryAlias;
 
 @interface LibraryDataManager : NSObject <JSONAPIDelegate> {
     
@@ -61,7 +62,10 @@ NSInteger libraryNameSort(id lib1, id lib2, void *context);
 #pragma mark Data retrieval methods
 
 - (NSDictionary *)scheduleForLibID:(NSString *)libID;
-- (Library *)libraryWithID:(NSString *)libID;
+
+// these two methods create core data objects as a side effect
+- (Library *)libraryWithID:(NSString *)libID primaryName:(NSString *)primaryName;
+- (LibraryAlias *)libraryAliasWithID:(NSString *)libID name:(NSString *)name;
 
 #pragma mark API requests
 

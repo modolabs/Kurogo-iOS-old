@@ -74,7 +74,7 @@
 
 -(void) hideToolBar;
 
-- (void)presentSearchResults:(NSArray *)theSearchResults;
+//- (void)presentSearchResults:(NSArray *)theSearchResults;
 - (void)showLoadingView;
 - (void)cleanUpConnection;
 

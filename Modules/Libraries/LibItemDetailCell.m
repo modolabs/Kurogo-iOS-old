@@ -11,22 +11,7 @@
 @implementation LibItemDetailCell
 
 @synthesize textLabelNumberOfLines, detailTextLabelNumberOfLines;
-
-
-
--(id) initWithStyle:(UITableViewCellStyle)cellStyle 
-	reuseIdentifier:(NSString *)reuseIdentifier 
-   itemAvailability: (NSDictionary *) availabilityStringAndStatus {
-	
-	self = [super initWithStyle:cellStyle reuseIdentifier:reuseIdentifier];
-	
-	if (self) {
-		
-		itemAvailabilityStringAndStatus = availabilityStringAndStatus;
-	}
-	return self;
-}
-
+@synthesize itemAvailabilityStringAndStatus;
 
 + (CGFloat)widthForTextLabel:(BOOL)isTextLabel
                    cellStyle:(UITableViewCellStyle)style
@@ -112,7 +97,7 @@
         CGSize size = CGSizeMake(width, height * maxLines);
         height = [text sizeWithFont:font constrainedToSize:size lineBreakMode:UILineBreakModeWordWrap].height;
     }
-    DLog(@"height for label with text %@ and width %.1f is %.1f", text, width, height);
+    //DLog(@"height for label with text %@ and width %.1f is %.1f", text, width, height);
     return height;
 }
 
@@ -152,7 +137,7 @@
 										constrainedToSize:CGSizeMake(300, 70)         
 										lineBreakMode:UILineBreakModeWordWrap].height;
 	
-	additionalHeight = (additionalHeight + 6.0)* [[itemAvailabilityDictionary allKeys] count];
+	additionalHeight = (additionalHeight + 6.0)* [itemAvailabilityDictionary count];
 	
     return result + additionalHeight;
 }
@@ -228,8 +213,6 @@
 	frame.origin.y = self.textLabel.frame.origin.y + self.textLabel.frame.size.height;
 	frame.origin.x = self.textLabel.frame.origin.x;
 	self.detailTextLabel.frame = frame;
-
-	
     
 	// make sure any extra views are drawn on top of standard testLabel and detailTextLabel
 	NSMutableArray *extraSubviews = [NSMutableArray arrayWithCapacity:[self.contentView.subviews count]];
@@ -251,13 +234,10 @@
 			frame.origin.x = self.textLabel.frame.origin.x - 30;
 		
         aView.frame = frame;
-		
-		//if ([aView isKindOfClass:[UIImageView class]])
-		//	[self.contentView addSubview:aView];
 	}
 	
 	
-	for (int index = 0; index < [[itemAvailabilityStringAndStatus allKeys] count]; index ++) {
+	for (int index = 0; index < [itemAvailabilityStringAndStatus count]; index ++) {
 		
 		double additionalHeight = 	[@"just need a one liner string"
 									 sizeWithFont:[UIFont fontWithName:STANDARD_FONT	size:13]
@@ -313,6 +293,8 @@
 }
 
 - (void)dealloc {
+    self.itemAvailabilityStringAndStatus = nil;
+    
     [super dealloc];
 }
 

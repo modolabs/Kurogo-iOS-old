@@ -425,37 +425,37 @@ JSONAPIRequest *mitapi;
 
 
 - (void)dealloc {
-	[_tabViews dealloc];
-	[_tabViewControl dealloc];
-	[_tabViewContainer dealloc];
-	[lunchViewLink dealloc];
-	[_scrollView dealloc];
-	[dinnerViewLink dealloc];
-	[_loadingResultView dealloc];
-	[breakfastViewLink dealloc];
+	[_tabViews release];
+	[_tabViewControl release];
+	[_tabViewContainer release];
+	[lunchViewLink release];
+	[_scrollView release];
+	[dinnerViewLink release];
+	[_loadingResultView release];
+	[breakfastViewLink release];
 	
-	[loadingIndicator dealloc];
-	[_noResultsView dealloc];
+	[loadingIndicator release];
+	[_noResultsView release];
 	
-	[list dealloc];
-	[_bkfstList dealloc];
-	[_lunchList dealloc];
-	[_dinnerList dealloc];
-	[menuDict dealloc];
-	[_bkfstDict dealloc];
-	[_lunchDict dealloc];
-	[_dinnerDict dealloc];
+	[list release];
+	[_bkfstList release];
+	[_lunchList release];
+	[_dinnerList release];
+	[menuDict release];
+	[_bkfstDict release];
+	[_lunchDict release];
+	[_dinnerDict release];
 	
-	[datePicker dealloc];
-	[breakfastTable dealloc];
-	[lunchTable dealloc];
-	[dinnerTable dealloc];
+	[datePicker release];
+	[breakfastTable release];
+	[lunchTable release];
+	[dinnerTable release];
 	
-	[childController dealloc];
-	[todayDate dealloc];
+	[childController release];
+	[todayDate release];
 	
-	[hoursTableView dealloc];
-	[tableControl dealloc];
+	[hoursTableView release];
+	[tableControl release];
 	
     [super dealloc];
 }

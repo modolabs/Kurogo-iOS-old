@@ -230,24 +230,16 @@
     else
         vc.title = @"Library Detail";
     
-    NSArray * tempArray;
-    
-    if (showingOpenOnly == NO)
-        tempArray = allLibraries;
-    else {
-        tempArray = opeLibraries;
-    }
-    
     int indexSelected = 0;
     int tempIndex = 0;
-    for(LibraryAlias * libTemp in tempArray){
+    for(LibraryAlias * libTemp in allLibraries){
         if ([lib.library.identityTag isEqualToString:libTemp.library.identityTag])
             indexSelected = tempIndex;
         
         tempIndex++;
     }
     
-    vc.otherLibraries = tempArray;
+    vc.otherLibraries = allLibraries;
     vc.currentlyDisplayingLibraryAtIndex = indexSelected;
     
     [self.navController.navigationController pushViewController:vc animated:YES];

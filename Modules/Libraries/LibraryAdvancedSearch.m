@@ -64,19 +64,19 @@
 	authorKeywords.delegate = self;
 	
 	if (nil != keywordTextAtInitialization && [keywordTextAtInitialization length]) {
-        NSLog(@"Got keywords %@", keywordTextAtInitialization);
+        DLog(@"Got keywords %@", keywordTextAtInitialization);
 		self.keywords.text = [keywordTextAtInitialization autorelease];
         keywordTextAtInitialization = nil;
 	}
     
 	if (nil != titleTextAtInitialization && [titleTextAtInitialization length]) {
-        NSLog(@"Got title %@", titleTextAtInitialization);
+        DLog(@"Got title %@", titleTextAtInitialization);
 		self.titleKeywords.text = [titleTextAtInitialization autorelease];
         titleTextAtInitialization = nil;
 	}
     
 	if (nil != authorTextAtInitialization && [authorTextAtInitialization length]) {
-        NSLog(@"Got author %@", authorTextAtInitialization);
+        DLog(@"Got author %@", authorTextAtInitialization);
 		self.authorKeywords.text = [authorTextAtInitialization autorelease];
         authorTextAtInitialization = nil;
 	}
@@ -86,14 +86,14 @@
     }
     
     if (formatIndexAtInitialization > 0 && formatIndexAtInitialization < [formatArray count]) {
-        NSLog(@"Got format %d", formatIndexAtInitialization);
+        DLog(@"Got format %d", formatIndexAtInitialization);
         [formatPickerView selectRow:formatIndexAtInitialization inComponent:0 animated:false]; 
         [self pickerView:formatPickerView didSelectRow:formatIndexAtInitialization inComponent:0];
         formatIndexAtInitialization = 0;
     }
     
     if (locationIndexAtInitialization > 0 && locationIndexAtInitialization < [libraryArray count]) {
-        NSLog(@"Got location %d", locationIndexAtInitialization);
+        DLog(@"Got location %d", locationIndexAtInitialization);
         [locationPickerView selectRow:locationIndexAtInitialization inComponent:0 animated:false];
         [self pickerView:locationPickerView didSelectRow:locationIndexAtInitialization inComponent:0];
         locationIndexAtInitialization = 0;
@@ -194,7 +194,7 @@
 	if (englishSwitch.selected)
 		parameterQ = [parameterQ stringByAppendingFormat:@"+language-id:eng"];
 	
-	NSLog(@"q=%@", parameterQ);
+	DLog(@"q=%@", parameterQ);
 	
 	NSString * formatStr = @""; // Nothing selected or first item selected (first item is "all")
 	int formatRow = [formatPickerView selectedRowInComponent:0];
@@ -211,8 +211,8 @@
 	}
 	
 	
-	NSLog(@"fmt=%@", formatStr);
-	NSLog(@"lib=%@", locationStr);
+	DLog(@"fmt=%@", formatStr);
+	DLog(@"lib=%@", locationStr);
 	
 	LibrariesSearchViewController *vc = [[LibrariesSearchViewController alloc] initWithViewController: nil];
 	vc.title = @"Search Results";
@@ -235,11 +235,11 @@
 		vc.searchTerms = parameterQ;
         if (formatRow != -1) {
             vc.formatIndex = formatRow;
-            NSLog(@"Setting format row to %d", formatRow);
+            DLog(@"Setting format row to %d", formatRow);
         }
         if (libraryRow != -1) {
             vc.locationIndex = libraryRow;
-            NSLog(@"Setting location row to %d", libraryRow);
+            DLog(@"Setting location row to %d", libraryRow);
         }
 		[self.navigationController pushViewController:vc animated:YES];
     } else {

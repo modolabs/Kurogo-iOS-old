@@ -10,17 +10,18 @@
 #import "MITUIConstants.h"
 #import "ModoSearchBar.h"
 #import "MITSearchDisplayController.h"
-#import "MITLoadingActivityView.h"
+//#import "MITLoadingActivityView.h"
 #import "HoursAndLocationsViewController.h"
 #import "LibrariesSearchViewController.h"
 #import "CoreDataManager.h"
 #import "BookmarkedLibItemListView.h"
 #import "LibraryAdvancedSearch.h"
 #import "MobileResearchLinksViewController.h"
+#import "JSONAPIRequest.h"
 
 @implementation LibrariesMainViewController
-@synthesize searchTerms, searchResults, searchController;
-@synthesize loadingView;
+@synthesize searchTerms, /*searchResults,*/ searchController;
+//@synthesize loadingView;
 @synthesize searchBar = theSearchBar, tableView = _tableView;
 
 
@@ -168,47 +169,51 @@
 - (void)viewDidUnload {
     [super viewDidUnload];
 	
-	searchController = nil;
+	self.searchController = nil;
+
+    [theSearchBar release];
 	theSearchBar = nil;
 	
-	searchResults = nil;
+	//self.searchResults = nil;
+
+	self.tableView = nil;
 	
-	_tableView = nil;
+	//self.loadingView = nil;
+	//api = nil;
 	
-	loadingView = nil;
-	api = nil;
-	
-	// a custom button since we are not using the default bookmark button
+    [_bookmarkButton release];
 	_bookmarkButton = nil;
 	
+    [mainViewTableOptions1 release];
 	mainViewTableOptions1 = nil;
+
+    [mainViewTableOptions2 release];
 	mainViewTableOptions2 = nil;
 	
+    [bookmarkedLibraries release];
 	bookmarkedLibraries = nil;
 	
 }
 
 
 - (void)dealloc {
-    [super dealloc];
+	self.searchController = nil;
+	
+	//self.searchResults = nil;
+    //self.loadingView = nil;
+    
+    //[api release];
+	
+    self.tableView = nil;
 
-	searchController = nil;
-	theSearchBar = nil;
-	
-	searchResults = nil;
-	
-	_tableView = nil;
-	
-	loadingView = nil;
-	api = nil;
-	
-	// a custom button since we are not using the default bookmark button
-	_bookmarkButton = nil;
-	
-	mainViewTableOptions1 = nil;
-	mainViewTableOptions2 = nil;
-	
-	bookmarkedLibraries = nil;
+    [theSearchBar release];
+    [_bookmarkButton release];
+    [mainViewTableOptions1 release];
+    [mainViewTableOptions2 release];
+    [bookmarkedLibraries release];
+    [bookmarkedItems release];
+
+    [super dealloc];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -217,19 +222,6 @@
 	
 	// Release any cached data, images, etc that aren't in use.
 }
-
-
-- (void)handleWarningMessage:(NSString *)message title:(NSString *)theTitle {
-	
-	UIAlertView *alert = [[UIAlertView alloc] initWithTitle:theTitle 
-													message:message
-												   delegate:self
-										  cancelButtonTitle:@"OK" 
-										  otherButtonTitles:nil]; 
-	[alert show];
-	[alert release];
-}
-
 
 - (void)bookmarkButtonClicked:(UIButton *)sender {
 	
@@ -286,12 +278,14 @@
 
 - (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar
 {
+    /*
 	self.searchResults = nil;
 	// if they cancelled while waiting for loading
 	if (requestWasDispatched) {
 		//[api abortRequest];
 		//[self cleanUpConnection];
 	}
+    */
 	[self restoreToolBar];
 }
 
@@ -304,16 +298,14 @@
 	LibrariesSearchViewController *vc = [[LibrariesSearchViewController alloc] initWithViewController: self];
 	vc.title = @"Search Results";
 	
-	api = [JSONAPIRequest requestWithJSONAPIDelegate:vc];
-	requestWasDispatched = [api requestObjectFromModule:@"libraries"
-                                                command:@"search"
-                                             parameters:[NSDictionary dictionaryWithObjectsAndKeys:self.searchTerms, @"q", nil]];
+	JSONAPIRequest *api = [JSONAPIRequest requestWithJSONAPIDelegate:vc];
+	BOOL requestWasDispatched = [api requestObjectFromModule:@"libraries"
+                                                     command:@"search"
+                                                  parameters:[NSDictionary dictionaryWithObjectsAndKeys:self.searchTerms, @"q", nil]];
 	
     if (requestWasDispatched) {
 		vc.searchTerms = searchBar.text;
 		[self.navigationController pushViewController:vc animated:YES];
-    } else {
-        //[self handleWarningMessage:@"Could not dispatch search" title:@"Search Failed"];
     }
 	
 	[vc release];
@@ -325,6 +317,7 @@
     [self hideToolBar];
 }
 
+/*
 - (void)presentSearchResults:(NSArray *)theSearchResults {
     self.searchResults = theSearchResults;
     self.searchController.searchResultsTableView.frame = self.tableView.frame;
@@ -332,9 +325,9 @@
     [self.searchBar addDropShadow];
     [self.searchController.searchResultsTableView reloadData];
 }
+*/
 
-
-
+/*
 #pragma mark -
 #pragma mark Connection methods
 
@@ -387,7 +380,7 @@
 {
 	[self cleanUpConnection];
 }
-
+*/
 
 
 #pragma mark -
@@ -526,7 +519,8 @@
 			NSArray *tempArray = [CoreDataManager objectsForEntity:LibraryEntityName matchingPredicate:matchAll];
 			
 			if ([tempArray count] == 0){
-				apiRequest = [[JSONAPIRequest alloc] initWithJSONAPIDelegate:vc];	
+                JSONAPIRequest *apiRequest = [JSONAPIRequest requestWithJSONAPIDelegate:vc];
+				//apiRequest = [[JSONAPIRequest alloc] initWithJSONAPIDelegate:vc];	
 				
 				if ([apiRequest requestObjectFromModule:@"libraries" 
 												command:@"searchcodes" 

@@ -22,7 +22,6 @@
 @synthesize weeklySchedule;
 @synthesize bookmarkButtonIsOn;
 @synthesize lib;
-// from LibraryDetailViewController
 @synthesize otherLibraries;
 @synthesize currentlyDisplayingLibraryAtIndex;
 
@@ -36,30 +35,6 @@ NSInteger phoneNumberSort(id num1, id num2, void *context){
 	return [phone1.descriptionText compare:phone2.descriptionText];
 	
 }
-
-/*
-// from LibraryDetailViewController
--(id) initWithStyle:(UITableViewStyle)style 
-		displayName: (NSString *) dispName
-		 currentInd:(int) index
-			library:(Library *)library
- otherLibDictionary:(NSDictionary *) otherLibDictionary
-{
-	
-	self = [super initWithStyle:style];
-	
-	if (self) {
-		
-		displayName = dispName;
-		currentlyDisplayingLibraryAtIndex = index;
-		otherLibraries = [otherLibDictionary retain];
-		lib = [library retain];
-	}
-	
-	return self;
-}
-*/
-
 
 -(void) setupLayout {
 	
@@ -83,7 +58,7 @@ NSInteger phoneNumberSort(id num1, id num2, void *context){
 	[segmentBarItem release];
 	
 	
-	headerView = nil; 
+	//headerView = nil; 
 	NSString * libraryName;
 	
 	if (([lib.name isEqualToString:lib.library.primaryName]) && ([lib.library.primaryName length] > 0))
@@ -99,8 +74,7 @@ NSInteger phoneNumberSort(id num1, id num2, void *context){
 					  lineBreakMode:UILineBreakModeWordWrap].height;
 	
 	
-	headerView = [[[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, self.tableView.frame.size.width, height + 15)] autorelease];
-	// 
+	UIView *headerView = [[[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, self.tableView.frame.size.width, height + 15)] autorelease];
 	bookmarkButton = [UIButton buttonWithType:UIButtonTypeCustom];
 	bookmarkButton.frame = CGRectMake(self.tableView.frame.size.width - 55.0 , 5.0, 50.0, 50.0);
 	bookmarkButton.enabled = YES;
@@ -110,19 +84,8 @@ NSInteger phoneNumberSort(id num1, id num2, void *context){
 	[bookmarkButton setImage:[UIImage imageNamed:@"global/bookmark_on_pressed.png"] forState:(UIControlStateSelected | UIControlStateHighlighted)];
 	[bookmarkButton addTarget:self action:@selector(bookmarkButtonToggled:) forControlEvents:UIControlEventTouchUpInside];
 	[headerView addSubview:bookmarkButton];
-	//[self.tableView.tableHeaderView addSubview:myStellarButton];
 	
 	bookmarkButtonIsOn = NO;
-	
-    /*
-	NSPredicate *pred = [NSPredicate predicateWithFormat:@"name == %@ AND type == %@", lib.name, lib.type];
-	Library *alreadyInDB = [[CoreDataManager objectsForEntity:LibraryEntityName matchingPredicate:pred] lastObject];
-	
-	if (nil != alreadyInDB) {
-		bookmarkButton.selected = [alreadyInDB.isBookmarked boolValue];
-		bookmarkButtonIsOn = [alreadyInDB.isBookmarked boolValue];
-	}
-	*/
     
     bookmarkButton.selected = [lib.library.isBookmarked boolValue];
     bookmarkButtonIsOn = [lib.library.isBookmarked boolValue];
@@ -135,26 +98,16 @@ NSInteger phoneNumberSort(id num1, id num2, void *context){
 	label.lineBreakMode = UILineBreakModeWordWrap;
 	label.numberOfLines = 10;
 	[headerView addSubview:label];
-	
+    
+    self.tableView.tableHeaderView = headerView;
+
 	/*
-	UILabel *label2 = [[UILabel alloc] initWithFrame:CGRectMake(12.0, height, 250.0, 30.0)];
-	label2.text = @"Affiliation: Harvard College Library";
-	label2.font = [UIFont fontWithName:COURSE_NUMBER_FONT
-								  size:14];
-	label2.textColor = [UIColor colorWithHexString:@"#666666"];
-	label2.backgroundColor = [UIColor clearColor];	
-	label2.lineBreakMode = UILineBreakModeWordWrap;
-	label2.numberOfLines = 2;
-	//[headerView addSubview:label2];
-	*/
 	self.tableView.tableHeaderView = [[UIView alloc]
 									  initWithFrame:CGRectMake(0, 0, self.tableView.frame.size.width, headerView.frame.size.height)];
 	[self.tableView.tableHeaderView addSubview:headerView];
+     */
 	
 	[self.tableView applyStandardColors];
-	
-	//[label2 release];
-	//[label release];
 	
     [self setupWeeklySchedule];
     
@@ -173,10 +126,7 @@ NSInteger phoneNumberSort(id num1, id num2, void *context){
 
         [[LibraryDataManager sharedManager] requestDetailsForLibType:lib.library.type libID:lib.library.identityTag libName:lib.name];
     }
-	
-	
-	//weeklySchedule = [[NSMutableDictionary alloc] init];
-	
+		
 	[self setDaysOfWeekArray];
 	
 	websiteRow = -1;
@@ -214,6 +164,15 @@ NSInteger phoneNumberSort(id num1, id num2, void *context){
 
 - (void)dealloc {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
+    
+	[weeklySchedule release];
+    [daysOfWeek release];
+    
+    self.lib = nil;
+    [phoneNumbersArray release];
+    [footerView release];
+    
+    self.otherLibraries = nil;
     
     [super dealloc];
 }
@@ -300,12 +259,6 @@ NSInteger phoneNumberSort(id num1, id num2, void *context){
 				
                 self.lib = (LibraryAlias *)[otherLibraries objectAtIndex:tempLibIndex];
                 
-                if (nil != headerView)
-                    [headerView removeFromSuperview];
-                
-                if (nil != footerLabel)
-                    [footerLabel removeFromSuperview];
-                
                 if ([self.lib.library.type isEqualToString:@"archive"])
                     self.title = @"Archive Detail";
                 
@@ -335,7 +288,7 @@ NSInteger phoneNumberSort(id num1, id num2, void *context){
 	
 	if (section == 0){
 		
-		if ([[weeklySchedule allKeys] count] == 7)
+		if ([weeklySchedule count] == 7)
 			return 4;
 		
 		else {
@@ -366,7 +319,10 @@ NSInteger phoneNumberSort(id num1, id num2, void *context){
 		if ([lib.library.phone count] > 0) {
 			phoneRow = count;
 			count = count + [lib.library.phone count];
-			phoneNumbersArray = [lib.library.phone allObjects];
+
+            NSSortDescriptor *sorter = [NSSortDescriptor sortDescriptorWithKey:@"sortOrder" ascending:YES];
+            [phoneNumbersArray release];
+			phoneNumbersArray = [[lib.library.phone sortedArrayUsingDescriptors:[NSArray arrayWithObject:sorter]] retain];
 			phoneNumbersArray = [[phoneNumbersArray sortedArrayUsingFunction:phoneNumberSort context:self] retain];
 		}
 		return count;
@@ -379,32 +335,31 @@ NSInteger phoneNumberSort(id num1, id num2, void *context){
 
 - (UIView *)tableView: (UITableView *)tableView viewForFooterInSection: (NSInteger)section{
 
-	UIView * view;
-	view = nil;
-	NSString * text;
+	UIView * view = nil;
 		
 	if ((section == 1) && (lib.library.directions)) {
-		if (nil != footerLabel)
-			[footerLabel removeFromSuperview];
-		
-		footerLabel = nil;
-		
-		text = lib.library.directions;
-		CGFloat height = [text
-						  sizeWithFont:[UIFont fontWithName:STANDARD_FONT size:13]
-						  constrainedToSize:CGSizeMake(300, 2000)         
-						  lineBreakMode:UILineBreakModeWordWrap].height;
-		
-		footerLabel = [[UILabel alloc] initWithFrame:CGRectMake(12.0, 5.0, 300.0, height)];
-		footerLabel.text = text;
-		footerLabel.font = [UIFont fontWithName:STANDARD_FONT size:13];
-		footerLabel.textColor = [UIColor colorWithHexString:@"#554C41"];
-		footerLabel.backgroundColor = [UIColor clearColor];	
-		footerLabel.lineBreakMode = UILineBreakModeWordWrap;
-		footerLabel.numberOfLines = 20;
-		
-		view = [[UIView alloc] initWithFrame:footerLabel.frame];
-		[view addSubview:footerLabel];
+        if (!footerView) {
+            NSString *text = lib.library.directions;
+            UIFont *font = [UIFont fontWithName:STANDARD_FONT size:13];
+            
+            CGFloat width = self.view.frame.size.width - 20;
+            CGFloat height = [text sizeWithFont:font
+                              constrainedToSize:CGSizeMake(width, 2000)         
+                                  lineBreakMode:UILineBreakModeWordWrap].height;
+            
+            CGRect frame = CGRectMake(12.0, 5.0, self.view.frame.size.width - 20, height);
+            UILabel *footerLabel = [[[UILabel alloc] initWithFrame:frame] autorelease];
+            footerLabel.text = text;
+            footerLabel.font = font;
+            footerLabel.textColor = [UIColor colorWithHexString:@"#554C41"];
+            footerLabel.backgroundColor = [UIColor clearColor];	
+            footerLabel.lineBreakMode = UILineBreakModeWordWrap;
+            footerLabel.numberOfLines = 0;
+            
+            footerView = [[UIView alloc] initWithFrame:frame];
+            [footerView addSubview:footerLabel];
+        }
+        view = footerView;
 	}
 	
 	return view;
@@ -466,7 +421,7 @@ NSInteger phoneNumberSort(id num1, id num2, void *context){
 			cell.textLabel.textColor = [UIColor colorWithHexString:@"#554C41"];
 		}
 		
-		if ([[weeklySchedule allKeys] count] == 7){
+		if ([weeklySchedule count] == 7){
 			if (indexPath.row <= 2) {
 				
 				cell.textLabel.text = [daysOfWeek objectAtIndex:indexPath.row];
@@ -483,12 +438,12 @@ NSInteger phoneNumberSort(id num1, id num2, void *context){
 				cell.detailTextLabel.text = @"Full week's schedule";
 			}
 		}
-		else if ([[weeklySchedule allKeys] count] == 0){
+		else if ([weeklySchedule count] == 0){
 			cell.textLabel.text = @"     ";
 			cell.detailTextLabel.text = @"loading...";
 		}
 		else {
-			
+
 			NSString * hoursString = [weeklySchedule objectForKey:[[weeklySchedule allKeys] objectAtIndex:0]];
 			
 			NSRange range = [hoursString rangeOfString:@"http"];
@@ -594,14 +549,15 @@ NSInteger phoneNumberSort(id num1, id num2, void *context){
 	[tableView deselectRowAtIndexPath:indexPath animated:YES];
 	
 	if ((indexPath.section == 0)) {
-		if (([[weeklySchedule allKeys] count] == 7) && (indexPath.row == 3)){
+		if (([weeklySchedule count] == 7) && (indexPath.row == 3)){
 			LibraryWeeklyScheduleViewController * vc = [[LibraryWeeklyScheduleViewController alloc] initWithStyle:UITableViewStyleGrouped];
 			vc.title = @"Weekly Schedule";
-			[vc setDaysOfWeek:daysOfWeek weeklySchedule:weeklySchedule];
+            vc.daysOfTheWeek = daysOfWeek;
+            vc.weeklySchedule = weeklySchedule;
 			[self.navigationController pushViewController:vc animated:YES];
 			[vc release];
 		}
-		else if ([[weeklySchedule allKeys] count] == 0){
+		else if ([weeklySchedule count] == 0){
 			return;
 		}
 		else {
@@ -862,9 +818,6 @@ NSInteger phoneNumberSort(id num1, id num2, void *context){
     
     [weeklySchedule release];
     weeklySchedule = nil;
-    
-    //Library *theLibrary = [[LibraryDataManager sharedManager] libraryWithID:lib.identityTag];
-    //if (!theLibrary) return;
         
     NSDictionary *libraryDictionary = [[LibraryDataManager sharedManager] scheduleForLibID:lib.library.identityTag];
     if (libraryDictionary) {

@@ -55,22 +55,25 @@
 }
 
 - (void) dealloc {
-	[lastResults release];
 	[_advancedSearchButton release];
 
 	[searchController release];
-	[theSearchBar release];
-	
-	[searchResults release];
 
-	[keywordText release];
-	[titleText release];
-	[authorText release];
-	
 	_tableView = nil;
 	
-	loadingView = nil;
+	self.loadingView = nil;
 	api = nil;
+    
+    self.searchResults = nil;
+    self.searchTerms = nil;
+    self.keywordText = nil;
+    self.titleText = nil;
+    self.authorText = nil;
+    self.searchBar = nil;
+    self.lastResults = nil;
+    
+    viewController = nil; // this is set during -init and is never retained.  better to get rid of this ivar when we find another way to set the search terms.
+    
 	[super dealloc];
 }
 
@@ -393,14 +396,6 @@
 	
 	LibraryItem * libItem = (LibraryItem *)[self.lastResults objectForKey:[NSString stringWithFormat:@"%d", indexPath.row+1]];
 	
-
-
-	
-	/*NSDictionary * libraries = [[NSDictionary alloc] initWithObjectsAndKeys:
-								@"152 yards away", @"Cabot Science Library",
-								@"0.5 miles away", @"Baker Business School", nil];
-	 */
-	
 	BOOL displayImage = NO;
 	
 	if ([libItem.formatDetail isEqualToString:@"Image"])
@@ -502,12 +497,6 @@
                                                 command:@"search"
                                              parameters:[NSDictionary dictionaryWithObjectsAndKeys:self.searchTerms, @"q", nil]];
 	
-    if (requestWasDispatched) {
-    } else {
-        [self handleWarningMessage:NSLocalizedString(@"Could not connect to server. Please try again later.", nil) title:NSLocalizedString(@"Search Failed", nil)];
-		[self restoreToolBar];
-		//self.searchTerms = previousSearchTerm;
-    }	
 }
 
 - (void)searchBarTextDidBeginEditing:(UISearchBar *)searchBar
@@ -516,9 +505,11 @@
     [self hideToolBar];
 }
 
+/*
 - (void)presentSearchResults:(NSArray *)theSearchResults {
 
 }
+*/
 
 #pragma mark -
 #pragma mark Connection methods
@@ -546,140 +537,94 @@
         
         if ([result isKindOfClass:[NSArray class]]) {
 			[self.searchBar addDropShadow];
-		
+            
 			if ([result count] == 0) {
-				UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil 
-																message:@"No results found"
-															   delegate:self
-													  cancelButtonTitle:@"OK" 
-													  otherButtonTitles:nil]; 
-				[alert show];
-				[alert release];
-				
-				//if (nil != previousSearchTerm) {
-				//	self.searchTerms = previousSearchTerm;
-				//	theSearchBar.text = self.searchTerms;
-				//}
-				
+                [self handleWarningMessage:NSLocalizedString(@"No results found", nil) title:nil];
 				[self restoreToolBar];
 				[theSearchBar becomeFirstResponder];
+                return;
 			}
 			else {
 				self.lastResults = [[NSMutableDictionary alloc] init];
 			}
-
 			
-			
-		for(NSDictionary * libraryDictionary in result) {
-			
-			actualCount = [[libraryDictionary objectForKey:@"totalResults"] intValue];
-			
-			NSString * title = [libraryDictionary objectForKey:@"title"];
-			NSString *author = [libraryDictionary objectForKey:@"creator"];
-			
-			if ([author length] == 0)
-				author = @"";
-			
-			NSString *year = [libraryDictionary objectForKey:@"date"];
-			if ([year length] == 0)
-				year = @"";
-			
-			NSString * index = [libraryDictionary objectForKey:@"index"];
-			NSString *itemId = [libraryDictionary objectForKey:@"itemId"];
-			NSString * edition = [libraryDictionary objectForKey:@"edition"];
-			if ([edition length] == 0)
-				edition = @"";
-			
-
-			NSDictionary * format = [libraryDictionary objectForKey:@"format"];
-			
-			NSString *typeDetail = [format objectForKey:@"typeDetail"];
-			if ([typeDetail length] == 0)
-				typeDetail = @"";
-			
-			NSString * formatDetail = [format objectForKey:@"formatDetail"];
-			if ([formatDetail length] == 0)
-				formatDetail = @"";
-			
-			NSString * isOnline = [libraryDictionary objectForKey:@"isOnline"];
-			NSString * isFigure = [libraryDictionary objectForKey:@"isFigure"];
-			
-			BOOL online = NO;
-			NSString * onlineLink = @"";
-			NSArray * tempA = (NSArray *)[libraryDictionary objectForKey:@"otherAvailability"];
-			if ([isOnline isEqualToString:@"YES"]) {
-				online = YES;
-				
-				for(NSDictionary * tempD in tempA) {
-					
-					NSString * typeOfLink = [tempD objectForKey:@"type"];
-					
-					if ([typeOfLink isEqualToString:@"NET"])
-						onlineLink = [tempD objectForKey:@"link"];
-				}
-			}
-			
-			BOOL figure = NO;
-			NSString * figureLink = @"";
-			if ([isFigure isEqualToString:@"YES"]){
-				figure = YES;
-				
-				for(NSDictionary * tempD1 in tempA) {
-					
-					NSString * typeOfLink1 = [tempD1 objectForKey:@"type"];
-					
-					if ([typeOfLink1 isEqualToString:@"FIG"])
-						figureLink = [tempD1 objectForKey:@"link"];
-				}
-				
-			}
-
-			
-			
-			NSPredicate *pred = [NSPredicate predicateWithFormat:@"itemId == %@", itemId];
-			LibraryItem *alreadyInDB = [[CoreDataManager objectsForEntity:LibraryItemEntityName matchingPredicate:pred] lastObject];
-			
-			NSManagedObject *managedObj;
-			if (nil == alreadyInDB){
-				managedObj = [CoreDataManager insertNewObjectForEntityForName:LibraryItemEntityName];
-				alreadyInDB = (LibraryItem *)managedObj;
-				alreadyInDB.isBookmarked = [NSNumber numberWithBool:NO];
-			}
-			alreadyInDB.itemId = itemId;
-			alreadyInDB.title = title;
-			alreadyInDB.author = author;
-			alreadyInDB.year = year;
-			alreadyInDB.edition = edition;
-			alreadyInDB.typeDetail = typeDetail;
-			alreadyInDB.formatDetail = formatDetail;
-			alreadyInDB.isFigure = [NSNumber numberWithBool: figure];
-			alreadyInDB.isOnline = [NSNumber numberWithBool: online];
-			alreadyInDB.onlineLink = onlineLink;
-			alreadyInDB.figureLink = figureLink;
-			
-			
-			[CoreDataManager saveData];
-			[self.lastResults setObject:alreadyInDB forKey:index];
+            for(NSDictionary * libraryDictionary in result) {
+                
+                actualCount = [[libraryDictionary objectForKey:@"totalResults"] intValue];
+                
+                NSString * title = [libraryDictionary objectForKey:@"title"];
+                NSString *author = [libraryDictionary objectForKey:@"creator"];
+                
+                NSString *year = [libraryDictionary objectForKey:@"date"];
+                
+                NSString * index = [libraryDictionary objectForKey:@"index"];
+                NSString *itemId = [libraryDictionary objectForKey:@"itemId"];
+                NSString * edition = [libraryDictionary objectForKey:@"edition"];
+                
+                NSDictionary * format = [libraryDictionary objectForKey:@"format"];
+                
+                NSString *typeDetail = [format objectForKey:@"typeDetail"];
+                NSString * formatDetail = [format objectForKey:@"formatDetail"];
+                
+                NSString * isOnline = [libraryDictionary objectForKey:@"isOnline"];
+                NSString * isFigure = [libraryDictionary objectForKey:@"isFigure"];
+                
+                NSString *onlineLink = nil;
+                NSString *figureLink = nil;
+                
+                NSArray * otherAvailability = (NSArray *)[libraryDictionary objectForKey:@"otherAvailability"];
+                BOOL online = [isOnline isEqualToString:@"YES"];
+                BOOL figure = [isFigure isEqualToString:@"YES"];
+                
+                for (NSDictionary * availabilityDict in otherAvailability) {
+                    NSString * typeOfLink = [availabilityDict objectForKey:@"type"];
+                    
+                    if (online && [typeOfLink isEqualToString:@"NET"]) {
+                        onlineLink = [availabilityDict objectForKey:@"link"];
+                    } else if (figure && [typeOfLink isEqualToString:@"FIG"]) {
+                        figureLink = [availabilityDict objectForKey:@"link"];
+                    }
+                }
+                
+                NSPredicate *pred = [NSPredicate predicateWithFormat:@"itemId == %@", itemId];
+                LibraryItem *alreadyInDB = [[CoreDataManager objectsForEntity:LibraryItemEntityName matchingPredicate:pred] lastObject];
+                
+                if (nil == alreadyInDB){
+                    alreadyInDB = (LibraryItem *)[CoreDataManager insertNewObjectForEntityForName:LibraryItemEntityName];
+                    alreadyInDB.isBookmarked = [NSNumber numberWithBool:NO];
+                }
+                alreadyInDB.itemId = itemId;
+                alreadyInDB.title = title;
+                alreadyInDB.author = author;
+                alreadyInDB.year = year;
+                alreadyInDB.edition = edition;
+                alreadyInDB.typeDetail = typeDetail;
+                alreadyInDB.formatDetail = formatDetail;
+                alreadyInDB.isFigure = [NSNumber numberWithBool: figure];
+                alreadyInDB.isOnline = [NSNumber numberWithBool: online];
+                alreadyInDB.onlineLink = onlineLink;
+                alreadyInDB.figureLink = figureLink;
+                
+                [CoreDataManager saveData];
+                
+                [self.lastResults setObject:alreadyInDB forKey:index];
 			}
 			[_tableView reloadData];
 			
 			if ([result count] > 0)
 				[_tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:NO];
 		}
-
+        
 	} else if ([result isKindOfClass:[NSDictionary class]]) {
+        
+        NSString *message = [result objectForKey:@"error"];
+        if (message) {
+            [self handleWarningMessage:message title:NSLocalizedString(@"Search Failed", nil)];
 
-			
-			NSString *message = [result objectForKey:@"error"];
-            if (message) {
-                [self handleWarningMessage:message title:NSLocalizedString(@"Search Failed", nil)];
-            }
-		/*if (nil != previousSearchTerm) {
-			self.searchTerms = previousSearchTerm;
-			theSearchBar.text = self.searchTerms;
-		}*/
-	}
-	else {
+            [searchController hideSearchOverlayAnimated:YES];
+        }
+        
+	} else {
 		self.searchResults = nil;
 	}
 	
@@ -707,8 +652,6 @@
 										  otherButtonTitles:nil]; 
 	[alert show];
 	[alert release];
-	
-	[searchController hideSearchOverlayAnimated:YES];
 }
 
 

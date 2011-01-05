@@ -14,7 +14,7 @@
 @dynamic phoneNumber;
 @dynamic descriptionText;
 @dynamic library;
-
+@dynamic sortOrder;
 
 - (NSComparisonResult)compare:(LibraryPhone *)otherObject {
     return [self.phoneNumber compare:otherObject.phoneNumber];

@@ -18,10 +18,10 @@
 
 @interface ItemAvailabilityDetailViewController : UITableViewController </*JSONAPIDelegate,*/ LibraryDataManagerDelegate, UIActionSheetDelegate>{
 
-	NSString * libraryName;
-	NSString * libraryId;
-	NSString * primaryName;
-	NSString * type;
+	//NSString * libraryName;
+	//NSString * libraryId;
+	//NSString * primaryName;
+	//NSString * type;
 	
 	LibraryItem * libItem;
 	
@@ -48,34 +48,29 @@
 	BOOL limitedView;
     
     NSString *requestedLibID;
+    
+    LibraryItem *libraryItem;
+    LibraryAlias *libraryAlias;
+    
+    NSArray *tableCells;
 }
 
 @property (nonatomic, retain) JSONAPIRequest *parentViewApiRequest;
 
-- (id)initWithStyle:(UITableViewStyle)style 
-			libName:(NSString *)libName
-		   primName:(NSString *)primName
-			  libId:(NSString *) libId
-			libType: (NSString *) libType
-			   item:(LibraryItem *)libraryItem 
-		 categories:(NSArray *)availCategories
-allLibrariesWithItem: (NSArray *) allLibraries
-			 index :(int) index;
+@property (nonatomic, retain) NSString *openToday;
 
--(void) setupLayout;
+@property (nonatomic, retain) LibraryItem *libraryItem;
+@property (nonatomic, retain) LibraryAlias *libraryAlias;
+@property (nonatomic, retain) NSArray *availabilityCategories;
+@property (nonatomic, retain) NSArray *arrayWithAllLibraries;
+@property (nonatomic) NSInteger currentIndex;
 
--(UITableViewCell *) sectionTypeONE:(NSIndexPath *)indexPath tableView:(UITableView *)tableView;
--(UITableViewCell *) sectionTypeTWO:(NSIndexPath *)indexPath tableView:(UITableView *)tableView;
--(UITableViewCell *) sectionTypeTHREE:(NSIndexPath *)indexPath tableView:(UITableView *)tableView;
--(UITableViewCell *) sectionTypeFOUR:(NSIndexPath *)indexPath tableView:(UITableView *)tableView;
--(UITableViewCell *) sectionTypeFIVE:(NSIndexPath *)indexPath tableView:(UITableView *)tableView;
+@property (nonatomic, retain) NSArray *tableCells;
 
-- (CGFloat)heightForRowAtIndexPathSectionONE:(NSIndexPath *)indexPath tableView:(UITableView *)tableView;
-- (CGFloat)heightForRowAtIndexPathSectionTWO:(NSIndexPath *)indexPath tableView:(UITableView *)tableView;
-- (CGFloat)heightForRowAtIndexPathSectionTHREE:(NSIndexPath *)indexPath tableView:(UITableView *)tableView;
-- (CGFloat)heightForRowAtIndexPathSectionFOUR:(NSIndexPath *)indexPath tableView:(UITableView *)tableView;
-- (CGFloat)heightForRowAtIndexPathSectionFIVE:(NSIndexPath *)indexPath tableView:(UITableView *)tableView;
-
--(void) showActionSheet:(NSArray *)items;
+- (void)libraryDetailsDidLoad:(NSNotification *)aNotification;
+- (void)setupLayout;
+- (void)showActionSheet;
+- (void)showModalViewForRequest:(NSString *)title url:(NSString *)urlString;
+- (void)processAvailabilityData;
 
 @end

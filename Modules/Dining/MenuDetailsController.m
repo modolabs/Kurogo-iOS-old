@@ -27,8 +27,8 @@
 
 - (void) dealloc
 {
-	[itemCategory dealloc];
-	[itemDetails dealloc];
+	[itemCategory release];
+	[itemDetails release];
 	[super dealloc];
 }
 

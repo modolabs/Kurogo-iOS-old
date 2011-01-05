@@ -15,17 +15,11 @@
 	
 	MKMapView * mapView;
 	NSArray * allLibraries;
-	NSMutableArray * opeLibraries;
 	
-	BOOL showingOpenOnly;
-	
+    // TODO: this whole view controller class does not need to exist
+    // since whoever the following navController points to could just
+    // create and refer to their own mapView
 	UIViewController * navController;
-	
-	NSDictionary * displayNameAndLibrariesDictionary;
-    
-    // true if we are looking at map of an item's available locations, false if we are looking at generic map
-    BOOL isAvailabilityMap;
-
 }
 
 @property (nonatomic, retain) UIViewController * navController;

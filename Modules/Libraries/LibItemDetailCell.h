@@ -21,11 +21,7 @@
 
 @property NSInteger textLabelNumberOfLines;
 @property NSInteger detailTextLabelNumberOfLines;
-
--(id) initWithStyle:(UITableViewCellStyle)cellStyle 
-	reuseIdentifier:(NSString *)reuseIdentifier 
-	itemAvailability: (NSDictionary *) availabilityStringAndStatus;
-
+@property (nonatomic, retain) NSDictionary *itemAvailabilityStringAndStatus;
 
 + (CGFloat)widthForTextLabel:(BOOL)isPrimary
                    cellStyle:(UITableViewCellStyle)style
