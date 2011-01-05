@@ -8,15 +8,11 @@
 
 #import "LibItemDetailViewController.h"
 #import "MITUIConstants.h"
-#import "LibItemDetailCell.h"
 #import "CoreDataManager.h"
 #import "ItemAvailabilityDetailViewController.h"
 #import "LibraryLocationsMapViewController.h"
 #import "LibrariesSearchViewController.h"
 #import "LibraryAlias.h"
-
-
-@class LibItemDetailCell;
 
 @implementation LibItemDetailViewController
 @synthesize bookmarkButtonIsOn;
@@ -610,6 +606,8 @@
 			cell4.textLabel.text = @"data unavailable";
 			cell4.selectionStyle = UITableViewCellSelectionStyleNone;
 			
+            // TODO: this is not aligned well.
+            // also we should probably make this into a reusable cell type instead of an instance method.
 			[self addLoadingIndicator:cell4];
 			return cell4;
 			
@@ -621,7 +619,8 @@
         
 		NSDictionary * tempDict = [locationsWithItem objectAtIndex:indexPath.row];
         
-		NSArray * collections = (NSArray *)[tempDict objectForKey:@"collection"]; // why are there multiple collections?
+		NSArray * collections = (NSArray *)[tempDict objectForKey:@"collection"];
+        // TODO: is there a good reason for using just the last collection?
         NSDictionary *collectionDict = [collections lastObject];
 		
 		NSMutableDictionary * dictWithStatuses = [NSMutableDictionary dictionary];
@@ -630,12 +629,7 @@
 			
 			NSArray * itemsByStat = (NSArray *)[collectionDict objectForKey:@"itemsByStat"];
 			
-			if ([itemsByStat count] == 0) {
-				[dictWithStatuses setObject:@"unavailable" forKey:@"none available"];
-			}
-			
-			for(NSDictionary * statDict in itemsByStat) {
-				
+			for (NSDictionary * statDict in itemsByStat) {
 				NSString * statMain = [statDict objectForKey:@"statMain"];
 				
 				int availCount = [[statDict objectForKey:@"availCount"] intValue];
@@ -646,24 +640,14 @@
 				
 				int totalItems = availCount + unavailCount + checkedOutCount + collectionOnlyCount;
 				
-				
 				NSString * status;
 				
 				if (availCount > 0)
 					status = @"available";
-				
-				else if (checkedOutCount > 0)
+				else if (checkedOutCount > 0 || requestCount > 0)
 					status = @"request";
-				
-				else if (unavailCount > 0)
+				else
 					status = @"unavailable";
-				
-				else if (requestCount > 0)
-					status = @"request";
-				
-				else {
-					status = @"unavailable";
-				}
 				
 				NSString * statusDetailString = [NSString stringWithFormat:
 												 @"%d of %d available - %@", availCount, totalItems, statMain];
@@ -672,28 +656,23 @@
 					statusDetailString = [NSString stringWithFormat:
 										  @"0 of %d may be available", collectionOnlyCount];
 				
-				if ((totalItems > 0) || (requestCount > 0) || (collectionOnlyCount > 0))
+				if ((totalItems > 0) || (requestCount > 0))
 					[dictWithStatuses setObject:status forKey:statusDetailString];
 			}
-		}
-		
-		LibItemDetailCell *cell1 = (LibItemDetailCell *)[tableView dequeueReusableCellWithIdentifier:CellIdentifier1];
-		
-		if (cell1 == nil) {
-            // TODO: this is leaking dictWithStatuses
-			cell1 = [[[LibItemDetailCell alloc] initWithStyle:UITableViewCellStyleSubtitle 
-                                              reuseIdentifier:CellIdentifier1] autorelease];
-            cell1.itemAvailabilityStringAndStatus = dictWithStatuses;
+            
+            if (![dictWithStatuses count]) {
+				[dictWithStatuses setObject:@"unavailable" forKey:@"none available"];
+            }
+            
 		}
         
-        // cell title for availability listings
+
 		
 		NSString * libName = [tempDict objectForKey:@"name"];
-		cell1.textLabel.numberOfLines = 2;
-		cell1.textLabel.text = libName;
-		
-        // detail text label for availability listings
-        //Library *theLibrary = [displayNameAndLibraries objectForKey:libName];
+        
+        DLog(@"%@", libName);
+        DLog(@"%@", [[dictWithStatuses allKeys] description]);
+
         Library *theLibrary = nil;
         for (LibraryAlias *alias in displayLibraries) {
             if ([alias.name isEqualToString:libName]) {
@@ -702,44 +681,117 @@
             }
         }
         
+        UITableViewCell *cell1 = [tableView dequeueReusableCellWithIdentifier:CellIdentifier1];
+        if (cell1 == nil) {
+            cell1 = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier1] autorelease];
+        }
+        cell1.textLabel.text = nil;
+        
+        CGFloat accessoryAdjustment;
+        CGFloat cellWidth = tableView.frame.size.width - 20; // assume 10px padding left and right
+        
+        // accessory view
+        NSArray * itemsByStat = (NSArray *)[collectionDict objectForKey:@"itemsByStat"];
+        if (![itemsByStat count]) {
+            cell1.accessoryType = UITableViewCellAccessoryNone;
+            cell1.selectionStyle = UITableViewCellSelectionStyleNone;
+            accessoryAdjustment = 0;
+        } else {
+            cell1.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+            cell1.selectionStyle = UITableViewCellSelectionStyleGray;
+            accessoryAdjustment = 30;
+        }
+        
+        // "text label"
+
+        UIFont *textFont = [UIFont fontWithName:BOLD_FONT size:CELL_STANDARD_FONT_SIZE];
+        CGSize size = [libName sizeWithFont:textFont];
+        CGRect frame = CGRectMake(10, 10, cellWidth, size.height);
+        UILabel *textLabel = (UILabel *)[cell1.contentView viewWithTag:21];
+        if (!textLabel) {
+            textLabel = [[[UILabel alloc] initWithFrame:frame] autorelease];
+            textLabel.backgroundColor = [UIColor clearColor];
+            textLabel.font = textFont;
+            textLabel.tag = 21;
+            [cell1.contentView addSubview:textLabel];
+        } else {
+            textLabel.frame = frame;
+        }
+        textLabel.text = libName;
+        
+        // "detail text label"
+        
+        UIColor *detailTextColor = [UIColor colorWithHexString:@"#554C41"];
+        UIFont *detailTextFont = [UIFont fontWithName:STANDARD_FONT size:CELL_DETAIL_FONT_SIZE];
+        
+        frame.origin.y += frame.size.height + 2;
+        size = [libName sizeWithFont:detailTextFont]; // just want height of one line
+        frame.size.width = cellWidth - accessoryAdjustment;
+        frame.size.height = (size.height + 2) * ([dictWithStatuses count] + (theLibrary && nil != currentLocation && [theLibrary.lat doubleValue]) ? 1 : 0);
+        
+        UIView *otherLabels = [cell1.contentView viewWithTag:22];
+        [otherLabels removeFromSuperview];
+        
+        otherLabels = [[[UIView alloc] initWithFrame:frame] autorelease];
+        otherLabels.tag = 22;
+        [cell1.contentView addSubview:otherLabels];
+        
+        frame = CGRectMake(0, 0, otherLabels.frame.size.width, size.height + 3);
+        
         if (theLibrary && nil != currentLocation) {
             CGFloat latitude = [theLibrary.lat doubleValue];
             CGFloat longitude = [theLibrary.lon doubleValue];
             
-            DLog(@"latitude: %.3f longitude: %.3f", latitude, longitude);
-            
             if (latitude != 0) {
                 CLLocation * libLoc = [[[CLLocation alloc] initWithLatitude:latitude longitude:longitude] autorelease];
-                DLog(@"%@", [libLoc description]);
-                DLog(@"%@", [currentLocation description]);
-                
                 CLLocationDistance dist = [currentLocation distanceFromLocation:libLoc];
                 if (dist >= 0) {
-                    cell1.detailTextLabel.text = [NSString stringWithFormat:@"%@ away", [self textForDistance:dist]];
-                    cell1.detailTextLabel.textColor = [UIColor colorWithHexString:@"#554C41"];
+                    UILabel *label = [[[UILabel alloc] initWithFrame:frame] autorelease];
+                    label.backgroundColor = [UIColor clearColor];
+                    label.font = detailTextFont;
+                    label.textColor = detailTextColor;
+                    label.text = [NSString stringWithFormat:@"%@ away", [self textForDistance:dist]];
+                    [otherLabels addSubview:label];
+                    
+                    frame.origin.y += frame.size.height;
                 }
             }
 		}
         
-        // accessory view
-        if (collectionDict) {
-            NSArray * itemsByStat = (NSArray *)[collectionDict objectForKey:@"itemsByStat"];
+        for (NSString *statusString in [dictWithStatuses allKeys]) {
+            NSString *itemStatus = [dictWithStatuses objectForKey:statusString];
+            NSString * imageString;
             
-            if ([itemsByStat count] == 0) {
-                cell1.accessoryType = UITableViewCellAccessoryNone;
+            if ([itemStatus isEqualToString:@"available"]) {
+                imageString = @"dining/dining-status-open@2x.png";
             }
-            else {
-                cell1.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+            else if ([itemStatus isEqualToString:@"unavailable"]) {
+                imageString = @"dining/dining-status-closed@2x.png";
             }
+            else 
+                imageString = @"dining/dining-status-open-w-restrictions@2x.png";
+            
+            UIImage *image = [UIImage imageNamed:imageString];
+            UIImageView *imView = [[[UIImageView alloc] initWithImage:image] autorelease];
+            imView.frame = CGRectMake(0, frame.origin.y, 20, frame.size.height);
+            
+            [otherLabels addSubview:imView];
+            
+            frame.origin.x = imView.frame.size.width + 5;
+            frame.size.width = cellWidth - frame.origin.x - accessoryAdjustment;
+            
+            UILabel *label = [[[UILabel alloc] initWithFrame:frame] autorelease];
+            label.text = statusString;
+            label.font = detailTextFont;
+            label.textColor = detailTextColor;
+            label.backgroundColor = [UIColor clearColor];
+            [otherLabels addSubview:label];
+            
+            frame.origin.y += frame.size.height;
         }
 		
-		cell1.selectionStyle = UITableViewCellSelectionStyleGray;
-		
 		return cell1;
-		
 	}
-    
-    // Configure the cell...
     
     return nil;
 }
@@ -753,129 +805,64 @@
 		
 		return 0;
 	}
-	
-	UITableViewCellAccessoryType accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-	
-	NSString *cellText; 
-	NSString *detailText;
-	
-	UIFont *detailFont = [UIFont systemFontOfSize:13];
-	
-	
-	if (indexPath.section == 0) {
-		cellText = @"Available Online";
-		detailText = @"";
-		accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-	}
-	else if ((indexPath.section == 1) && ([locationsWithItem count] > 0)){
-		NSDictionary * tempDict = [locationsWithItem objectAtIndex:indexPath.row];		
-		NSString * libName = [tempDict objectForKey:@"name"];
-		cellText =  libName;
-		if (nil != currentLocation)
-			detailText = @"xxx yards away";
-		
-		else {
-			detailText = @"";
-		}
+    
+    static NSString *oneLine = @"oneLine";
 
-		accessoryType = UITableViewCellAccessoryDisclosureIndicator;		
-	}
-	else if ((indexPath.section == 1) && ([locationsWithItem count] == 0)){
-		cellText =  @"loading...";
-		detailText = @"";
-	}
-	
-	CGFloat height = [cellText
-					  sizeWithFont:[UIFont fontWithName:COURSE_NUMBER_FONT size:COURSE_NUMBER_FONT_SIZE]
-					  constrainedToSize:CGSizeMake(self.tableView.frame.size.width*2/3, 500)         
-					  lineBreakMode:UILineBreakModeWordWrap].height;
-	
-	if ((indexPath.section == 1) && ([locationsWithItem count] > 0)){
-		
-		detailFont = [UIFont fontWithName:STANDARD_FONT size:13];
-		
-		NSDictionary * tempDict = [locationsWithItem objectAtIndex:indexPath.row];		
-		
-		NSMutableDictionary * dictWithStatuses = [[NSMutableDictionary alloc] init];
-		
-		NSArray * collections = (NSArray *)[tempDict objectForKey:@"collection"];
-		
-		for(NSDictionary * collectionDict in collections){
-			
-			NSArray * itemsByStat = (NSArray *)[collectionDict objectForKey:@"itemsByStat"];
-			
-			if ([itemsByStat count] == 0) {
-				[dictWithStatuses setObject:@"unavailable" forKey:@"none available"];
-			}
-			
-			for(NSDictionary * statDict in itemsByStat) {
-				
-				NSString * statMain = [statDict objectForKey:@"statMain"];
-				
-				
-				int availCount = [[statDict objectForKey:@"availCount"] intValue];
-				
-				int unavailCount = 0;
-				unavailCount = [[statDict objectForKey:@"unavailCount"] intValue];
-				
-				int checkedOutCount = 0;
-				checkedOutCount = [[statDict objectForKey:@"checkedOutCount"] intValue];
-				
-				int requestCount = 0;
-				requestCount = [[statDict objectForKey:@"requestCount"] intValue];
-				
-				int collectionOnlyCount = 0;
-				collectionOnlyCount = [[statDict objectForKey:@"collectionOnlyCount"] intValue];
-				
-				int totalItems = availCount + unavailCount + checkedOutCount;
-				
-				
-				NSString * status;
-				
-				if (availCount > 0)
-					status = @"available";
-				
-				else if (checkedOutCount > 0)
-					status = @"request";
-				
-				else if (unavailCount > 0)
-					status = @"unavailable";
-				
-				else if (requestCount > 0)
-					status = @"request";
-				
-				else {
-					status = @"unavailable";
-				}
-				
-				
-				NSString * statusDetailString = [NSString stringWithFormat:
-												 @"%d of %d available - %@", availCount, totalItems, statMain];
-				
-				if ((totalItems > 0) || (requestCount > 0) || (collectionOnlyCount > 0))
-					[dictWithStatuses setObject:status forKey:statusDetailString];
-				
-				//[dictWithStatuses setObject:status forKey:statusDetailString];
-			}
-		}
-		
-		
-		
-	return [LibItemDetailCell heightForCellWithStyle:UITableViewCellStyleSubtitle
-												tableView:tableView 
-													 text:cellText
-											 maxTextLines:2
-											   detailText:detailText
-										   maxDetailLines:1
-													 font:nil 
-											   detailFont:detailFont
-											accessoryType:accessoryType
-												cellImage:YES
-						  itemAvailabilityDictionary: dictWithStatuses];
-	}
-	
-	return height + 20;
+    NSInteger height = 0;
 
+    // one line for library name label
+    UIFont *textFont = [UIFont fontWithName:BOLD_FONT size:CELL_STANDARD_FONT_SIZE];
+    CGSize size = [oneLine sizeWithFont:textFont];
+    height += size.height;
+    
+    // detail labels...
+    UIFont *detailTextFont = [UIFont fontWithName:STANDARD_FONT size:CELL_DETAIL_FONT_SIZE];
+    size = [oneLine sizeWithFont:detailTextFont];
+    
+    if (indexPath.section == 0 || ![locationsWithItem count]) {
+        return tableView.rowHeight;
+        
+    } else { // section 1
+        
+        NSDictionary * tempDict = [locationsWithItem objectAtIndex:indexPath.row];    
+        NSArray * collections = (NSArray *)[tempDict objectForKey:@"collection"];
+        // TODO: see comment in -tableView:cellForRow...
+        NSDictionary *collectionDict = [collections lastObject]; // may be nil
+        NSArray * itemsByStat = (NSArray *)[collectionDict objectForKey:@"itemsByStat"]; // may be nil
+        NSInteger numberOfStatusLines = 0;
+        if (![itemsByStat count]) {
+            numberOfStatusLines = 1;
+        } else {
+            for (NSDictionary * statDict in itemsByStat) {
+                if ([[statDict objectForKey:@"availCount"] intValue]
+                 || [[statDict objectForKey:@"unavailCount"] intValue]
+                 || [[statDict objectForKey:@"checkedOutCount"] intValue]
+                 || [[statDict objectForKey:@"requestCount"] intValue]
+                 || [[statDict objectForKey:@"scanAndDeliverCount"] intValue]
+                 || [[statDict objectForKey:@"collectionOnlyCount"] intValue])
+                {
+                    numberOfStatusLines++;
+                }
+            }
+            if (numberOfStatusLines == 0) numberOfStatusLines = 1;
+        }
+        
+        NSString * libName = [tempDict objectForKey:@"name"];
+        Library *theLibrary = nil;
+        for (LibraryAlias *alias in displayLibraries) {
+            if ([alias.name isEqualToString:libName]) {
+                theLibrary = alias.library;
+                break;
+            }
+        }
+        NSInteger numberOfDistanceLines = (theLibrary && nil != currentLocation && [theLibrary.lat doubleValue]) ? 1 : 0;
+        
+        NSLog(@"%@ %d %d", libName, numberOfStatusLines, numberOfDistanceLines);
+        
+        height += (size.height + 2) * (numberOfStatusLines + numberOfDistanceLines);
+        
+        return height + 22; // for top and bottom padding
+    }
 }
 
 
@@ -1270,6 +1257,7 @@
             coord.longitude = -71.1446;
             break;
         default:
+            NSLog(@"we are nowhere");
             break;
     }
     

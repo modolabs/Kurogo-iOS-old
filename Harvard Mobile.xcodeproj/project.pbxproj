@@ -130,8 +130,6 @@
 		5689DAD1129BAE2A00A9EFA0 /* LibrariesSearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5689DACF129BAE2A00A9EFA0 /* LibrariesSearchViewController.m */; };
 		5689DBA6129BD3DD00A9EFA0 /* LibrariesMultiLineCell.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = 5689DBA4129BD3DD00A9EFA0 /* LibrariesMultiLineCell.h */; settings = {JAVA_ARCHIVE_SUBDIR = Modules/Libraries; }; };
 		5689DBA7129BD3DD00A9EFA0 /* LibrariesMultiLineCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 5689DBA5129BD3DD00A9EFA0 /* LibrariesMultiLineCell.m */; };
-		5689DC76129C071E00A9EFA0 /* LibItemDetailCell.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = 5689DC74129C071E00A9EFA0 /* LibItemDetailCell.h */; settings = {JAVA_ARCHIVE_SUBDIR = Modules/Libraries; }; };
-		5689DC77129C071E00A9EFA0 /* LibItemDetailCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 5689DC75129C071E00A9EFA0 /* LibItemDetailCell.m */; };
 		5689DD78129D294200A9EFA0 /* LibItemDetailViewController.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = 5689DD76129D294100A9EFA0 /* LibItemDetailViewController.h */; settings = {JAVA_ARCHIVE_SUBDIR = Modules/Libraries; }; };
 		5689DD79129D294200A9EFA0 /* LibItemDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5689DD77129D294100A9EFA0 /* LibItemDetailViewController.m */; };
 		56B6DA29128EC10200818071 /* Secret.m in Sources */ = {isa = PBXBuildFile; fileRef = 56B6DA28128EC10200818071 /* Secret.m */; };
@@ -729,8 +727,6 @@
 		5689DACF129BAE2A00A9EFA0 /* LibrariesSearchViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LibrariesSearchViewController.m; sourceTree = "<group>"; };
 		5689DBA4129BD3DD00A9EFA0 /* LibrariesMultiLineCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LibrariesMultiLineCell.h; sourceTree = "<group>"; };
 		5689DBA5129BD3DD00A9EFA0 /* LibrariesMultiLineCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LibrariesMultiLineCell.m; sourceTree = "<group>"; };
-		5689DC74129C071E00A9EFA0 /* LibItemDetailCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LibItemDetailCell.h; sourceTree = "<group>"; };
-		5689DC75129C071E00A9EFA0 /* LibItemDetailCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LibItemDetailCell.m; sourceTree = "<group>"; };
 		5689DD76129D294100A9EFA0 /* LibItemDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LibItemDetailViewController.h; sourceTree = "<group>"; };
 		5689DD77129D294100A9EFA0 /* LibItemDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LibItemDetailViewController.m; sourceTree = "<group>"; };
 		56B6DA28128EC10200818071 /* Secret.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Secret.m; sourceTree = "<group>"; };
@@ -1595,8 +1591,6 @@
 				5689DACF129BAE2A00A9EFA0 /* LibrariesSearchViewController.m */,
 				5689DBA4129BD3DD00A9EFA0 /* LibrariesMultiLineCell.h */,
 				5689DBA5129BD3DD00A9EFA0 /* LibrariesMultiLineCell.m */,
-				5689DC74129C071E00A9EFA0 /* LibItemDetailCell.h */,
-				5689DC75129C071E00A9EFA0 /* LibItemDetailCell.m */,
 				5689DD76129D294100A9EFA0 /* LibItemDetailViewController.h */,
 				5689DD77129D294100A9EFA0 /* LibItemDetailViewController.m */,
 				56E859CD12ACEC810022E162 /* ItemAvailabilityDetailViewController.h */,
@@ -2465,7 +2459,6 @@
 				5689D9681297BF0C00A9EFA0 /* LibraryWeeklyScheduleViewController.h in JavaArchive */,
 				5689DAD0129BAE2A00A9EFA0 /* LibrariesSearchViewController.h in JavaArchive */,
 				5689DBA6129BD3DD00A9EFA0 /* LibrariesMultiLineCell.h in JavaArchive */,
-				5689DC76129C071E00A9EFA0 /* LibItemDetailCell.h in JavaArchive */,
 				5689DD78129D294200A9EFA0 /* LibItemDetailViewController.h in JavaArchive */,
 				56E8505A12A52A290022E162 /* LibraryPhone.h in JavaArchive */,
 				56E859CF12ACEC810022E162 /* ItemAvailabilityDetailViewController.h in JavaArchive */,
@@ -2813,7 +2806,6 @@
 				5689D9691297BF0C00A9EFA0 /* LibraryWeeklyScheduleViewController.m in Sources */,
 				5689DAD1129BAE2A00A9EFA0 /* LibrariesSearchViewController.m in Sources */,
 				5689DBA7129BD3DD00A9EFA0 /* LibrariesMultiLineCell.m in Sources */,
-				5689DC77129C071E00A9EFA0 /* LibItemDetailCell.m in Sources */,
 				5689DD79129D294200A9EFA0 /* LibItemDetailViewController.m in Sources */,
 				56E8505B12A52A290022E162 /* LibraryPhone.m in Sources */,
 				56E859D012ACEC810022E162 /* ItemAvailabilityDetailViewController.m in Sources */,

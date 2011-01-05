@@ -7,7 +7,6 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "LibItemDetailCell.h"
 #import "LibraryItem.h"
 #import "JSONAPIRequest.h"
 #import <MapKit/MapKit.h>
