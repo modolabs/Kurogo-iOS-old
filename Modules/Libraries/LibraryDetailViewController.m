@@ -38,6 +38,8 @@ NSInteger phoneNumberSort(id num1, id num2, void *context){
 
 -(void) setupLayout {
     
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:LibraryRequestDidCompleteNotification object:nil];
+    
     if ([self.lib.library.type isEqualToString:@"archive"])
         self.title = @"Archive Detail";
     
@@ -118,7 +120,7 @@ NSInteger phoneNumberSort(id num1, id num2, void *context){
 	
     [self setupWeeklySchedule];
     
-	if (nil == weeklySchedule) {
+	if (!didSetupWeeklySchedule) {
 		weeklySchedule = [[NSMutableDictionary alloc] initWithObjectsAndKeys:
 					  @"loading...", @"Monday",
 					  @"loading...", @"Tuesday",
@@ -146,6 +148,7 @@ NSInteger phoneNumberSort(id num1, id num2, void *context){
 -(void) viewDidLoad {
 	
 	[self.tableView applyStandardColors];
+    didSetupWeeklySchedule = NO;
 	
 	[self setupLayout];
 	
@@ -249,7 +252,7 @@ NSInteger phoneNumberSort(id num1, id num2, void *context){
                 currentlyDisplayingLibraryAtIndex = tempLibIndex;
 				
                 self.lib = (LibraryAlias *)[otherLibraries objectAtIndex:tempLibIndex];
-                
+                didSetupWeeklySchedule = NO;
                 [self setupLayout];
                 [self.tableView reloadData];
 			}			
@@ -262,31 +265,33 @@ NSInteger phoneNumberSort(id num1, id num2, void *context){
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView 
 {
-	return 3;
+    return 2 + ((weeklySchedule == nil) ? 0 : 1);
 }
 
 
 // Customize the number of rows in the table view.
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section 
 {
-	
-	if (section == 0){
-		
-		if ([weeklySchedule count] == 7)
-			return 4;
-		
-		else {
-			return 1;
-		}
+    NSInteger proxyIndex = section;
 
-	}
-	
-	else if (section == 1) {
-		if ([lib.library.location length] > 0)
+    if (weeklySchedule != nil) {
+        if (section == 0) {
+            if ([weeklySchedule count] == 7) {
+                return 4;
+            }
+            return 1;
+
+        } else {
+            proxyIndex--;
+        }
+    }
+
+    if (proxyIndex == 0) {
+		if ([lib.library.location length])
 			return 1;
-	}
+    }
 	
-	else if (section == 2) {
+	else if (proxyIndex == 1) {
         
         NSInteger count = [lib.library.websiteLib length] ? 1 : 0;
         count += [lib.library.emailLib length] ? 1 : 0;
@@ -362,7 +367,7 @@ NSInteger phoneNumberSort(id num1, id num2, void *context){
     if (indexPath.section == 0 && [weeklySchedule count] == 7 && indexPath.row == 3) {
         UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"seeFullSchedule"];
         if (cell == nil) {
-            cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier] autorelease];
+            cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"seeFullSchedule"] autorelease];
         }
         cell.textLabel.font = [UIFont fontWithName:STANDARD_FONT size:17];
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
@@ -384,39 +389,48 @@ NSInteger phoneNumberSort(id num1, id num2, void *context){
     }
     
     cell.accessoryType = UITableViewCellAccessoryNone;
+    cell.accessoryView = nil;
     
-	if (indexPath.section == 0) {
-		if ([weeklySchedule count] == 7){
-			if (indexPath.row <= 2) {
-				cell.textLabel.text = [daysOfWeek objectAtIndex:indexPath.row];
-				if ([weeklySchedule count] == [daysOfWeek count])
-					cell.detailTextLabel.text = [weeklySchedule objectForKey:[daysOfWeek objectAtIndex:indexPath.row]];
-			}
-		}
-		else if ([weeklySchedule count] == 0){
-			cell.textLabel.text = nil;
-			cell.detailTextLabel.text = @"loading...";
-		}
-		else {
-			NSString * hoursString = [weeklySchedule objectForKey:[[weeklySchedule allKeys] objectAtIndex:0]];
-			
-			NSRange range = [hoursString rangeOfString:@"http"];
-			if (range.location != NSNotFound) {
-				hoursString = [hoursString substringFromIndex:range.location];
-				cell.textLabel.text = @"Hours";
-				cell.detailTextLabel.text = @"See webpage";
-				cell.accessoryView = [UIImageView accessoryViewWithMITType:MITAccessoryViewExternal];
-			}
-			else{
-				cell.textLabel.text = [[weeklySchedule allKeys] objectAtIndex:0];
-				cell.detailTextLabel.text = [weeklySchedule objectForKey:[[weeklySchedule allKeys] objectAtIndex:0]];
-			}
-		}
-		
-		cell.selectionStyle = UITableViewCellSelectionStyleGray;
-		return cell;
-	}
-	else if (indexPath.section == 1) {
+    // TODO: set up sections beforehand so we don't have to keep doing this proxy thing
+    NSInteger proxySectionIndex = indexPath.section; // decrement once for each existing section we don't lay out this time
+
+    if (weeklySchedule != nil) {
+        if (proxySectionIndex == 0) {
+            if ([weeklySchedule count] == 7){
+                if (indexPath.row <= 2) {
+                    cell.textLabel.text = [daysOfWeek objectAtIndex:indexPath.row];
+                    if ([weeklySchedule count] == [daysOfWeek count])
+                        cell.detailTextLabel.text = [weeklySchedule objectForKey:[daysOfWeek objectAtIndex:indexPath.row]];
+                }
+            }
+            else if ([weeklySchedule count] == 0){
+                cell.textLabel.text = nil;
+                cell.detailTextLabel.text = @"loading...";
+            }
+            else {
+                NSString * hoursString = [weeklySchedule objectForKey:[[weeklySchedule allKeys] objectAtIndex:0]];
+                
+                NSRange range = [hoursString rangeOfString:@"http"];
+                if (range.location != NSNotFound) {
+                    hoursString = [hoursString substringFromIndex:range.location];
+                    cell.textLabel.text = @"Hours";
+                    cell.detailTextLabel.text = @"See webpage";
+                    cell.accessoryView = [UIImageView accessoryViewWithMITType:MITAccessoryViewExternal];
+                }
+                else {
+                    cell.textLabel.text = [[weeklySchedule allKeys] objectAtIndex:0];
+                    cell.detailTextLabel.text = [weeklySchedule objectForKey:[[weeklySchedule allKeys] objectAtIndex:0]];
+                }
+            }
+            
+            cell.selectionStyle = UITableViewCellSelectionStyleGray;
+            return cell;
+        } else {
+            proxySectionIndex--;
+        }
+    }
+    
+    if (proxySectionIndex == 0) {
         cell.textLabel.text = @"Location";
         cell.detailTextLabel.text = lib.library.location;
         cell.detailTextLabel.numberOfLines = 10;
@@ -426,7 +440,7 @@ NSInteger phoneNumberSort(id num1, id num2, void *context){
         return cell;
     }
 	
-	else if (indexPath.section == 2) {
+	else if (proxySectionIndex == 1) {
 
         NSInteger proxyIndex = indexPath.row; // decrement this for each thing we don't lay out
         BOOL complete = NO;
@@ -491,38 +505,41 @@ NSInteger phoneNumberSort(id num1, id num2, void *context){
 	
 	[tableView deselectRowAtIndexPath:indexPath animated:YES];
 	
-	if ((indexPath.section == 0)) {
-		if (([weeklySchedule count] == 7) && (indexPath.row == 3)){
-			LibraryWeeklyScheduleViewController * vc = [[LibraryWeeklyScheduleViewController alloc] initWithStyle:UITableViewStyleGrouped];
-			vc.title = @"Weekly Schedule";
-            vc.daysOfTheWeek = daysOfWeek;
-            vc.weeklySchedule = weeklySchedule;
-			[self.navigationController pushViewController:vc animated:YES];
-			[vc release];
-		}
-		else if ([weeklySchedule count] == 0){
-			return;
-		}
-		else {
-			// TODO: don't use -[[x allKeys] objectAtIndex:y] unless this is supposed to be random
-			NSString * hoursString = [weeklySchedule objectForKey:[[weeklySchedule allKeys] objectAtIndex:0]];
-			
-			NSRange range = [hoursString rangeOfString:@"http"];
-			if (range.location != NSNotFound)
-			{
-				hoursString = [hoursString substringFromIndex:range.location];
-				NSURL *libURL = [NSURL URLWithString:hoursString];
-				if (libURL && [[UIApplication sharedApplication] canOpenURL:libURL]) {
-					[[UIApplication sharedApplication] openURL:libURL];
-				}
-			}
-			else{
-				return;
-			}
-		}
-	}
+    NSInteger proxySectionIndex = indexPath.section; // decrement once for each existing section we don't lay out this time
+    BOOL sectionComplete = NO;
+    
+    if (weeklySchedule != nil) {
+        if (proxySectionIndex == 0) {
+            
+            if (([weeklySchedule count] == 7) && (indexPath.row == 3)){
+                LibraryWeeklyScheduleViewController * vc = [[LibraryWeeklyScheduleViewController alloc] initWithStyle:UITableViewStyleGrouped];
+                vc.title = @"Weekly Schedule";
+                vc.daysOfTheWeek = daysOfWeek;
+                vc.weeklySchedule = weeklySchedule;
+                [self.navigationController pushViewController:vc animated:YES];
+                [vc release];
+            }
+            else if ([weeklySchedule count]) {
+                NSString * hoursString = [weeklySchedule objectForKey:[[weeklySchedule allKeys] objectAtIndex:0]];
+                
+                NSRange range = [hoursString rangeOfString:@"http"];
+                if (range.location != NSNotFound)
+                {
+                    hoursString = [hoursString substringFromIndex:range.location];
+                    NSURL *libURL = [NSURL URLWithString:hoursString];
+                    if (libURL && [[UIApplication sharedApplication] canOpenURL:libURL]) {
+                        [[UIApplication sharedApplication] openURL:libURL];
+                    }
+                }
+            }
+            sectionComplete = YES;
+            
+        } else {
+            proxySectionIndex--;
+        }
+    }
 	
-	else if (indexPath.section == 1) {
+    if (!sectionComplete && proxySectionIndex == 0) {
 		[[MapBookmarkManager defaultManager] pruneNonBookmarks];
 		
 		CLLocationCoordinate2D coord = CLLocationCoordinate2DMake([lib.library.lat doubleValue], [lib.library.lon doubleValue]);
@@ -538,7 +555,7 @@ NSInteger phoneNumberSort(id num1, id num2, void *context){
 		[[UIApplication sharedApplication] openURL:internalURL];
 	}
 	
-	else if (indexPath.section == 2) {
+	else if (!sectionComplete && proxySectionIndex == 1) {
         
         NSInteger proxyIndex = indexPath.row; // decrement this for each thing we don't lay out
         BOOL complete = NO;
@@ -602,39 +619,53 @@ NSInteger phoneNumberSort(id num1, id num2, void *context){
 {
     NSString *detailText = nil;
     UITableViewCellAccessoryType accessoryType = UITableViewCellAccessoryNone;
+    NSInteger maxLines = 2;
     
-	if (indexPath.section == 0) {
-		if ([weeklySchedule count] == 7){
-			if (indexPath.row <= 2) {
-				if ([weeklySchedule count] == [daysOfWeek count])
-					detailText = [weeklySchedule objectForKey:[daysOfWeek objectAtIndex:indexPath.row]];
+    NSInteger proxySectionIndex = indexPath.section; // decrement once for each existing section we don't lay out this time
+    BOOL sectionComplete = NO;
+    
+    if (weeklySchedule != nil) {
+        if (proxySectionIndex == 0) {
+            
+            if ([weeklySchedule count] == 7){
+                if (indexPath.row <= 2) {
+                    if ([weeklySchedule count] == [daysOfWeek count])
+                        detailText = [weeklySchedule objectForKey:[daysOfWeek objectAtIndex:indexPath.row]];
+                    
+                } else if (indexPath.row == 3){
+                    
+                    return tableView.rowHeight;
+                }
+            } else if ([weeklySchedule count] == 0){
+                detailText = @"loading...";
+            }
+            else {
+                DLog(@"number of weekly schedule items: %d", [weeklySchedule count]);
+                NSString * hoursString = [weeklySchedule objectForKey:[[weeklySchedule allKeys] objectAtIndex:0]];
                 
-			} else if (indexPath.row == 3){
+                NSRange range = [hoursString rangeOfString:@"http"];
+                if (range.location != NSNotFound) {
+                    detailText = @"See webpage";
+                    accessoryType = UITableViewCellAccessoryDetailDisclosureButton;
+                }
+                else {
+                    detailText = [weeklySchedule objectForKey:[[weeklySchedule allKeys] objectAtIndex:0]];
+                }
+            }
+            sectionComplete = YES;
 
-                return tableView.rowHeight;
-			}
-		} else if ([weeklySchedule count] == 0){
-			detailText = @"loading...";
-		}
-		else {
-            DLog(@"number of weekly schedule items: %d", [weeklySchedule count]);
-			NSString * hoursString = [weeklySchedule objectForKey:[[weeklySchedule allKeys] objectAtIndex:0]];
-			
-			NSRange range = [hoursString rangeOfString:@"http"];
-			if (range.location != NSNotFound) {
-                detailText = @"See webpage";
-                accessoryType = UITableViewCellAccessoryDetailDisclosureButton;
-			}
-			else {
-				detailText = [weeklySchedule objectForKey:[[weeklySchedule allKeys] objectAtIndex:0]];
-			}
-		}
+        } else {
+            proxySectionIndex--;
+        }
         
-	} else if (indexPath.section == 1) {
+	}
+    
+    if (!sectionComplete && proxySectionIndex == 0) {
         accessoryType = UITableViewCellAccessoryDetailDisclosureButton;
         detailText = lib.library.location;
+        maxLines = 10;
         
-    } else if (indexPath.section == 2) {
+    } else if (!sectionComplete && proxySectionIndex == 1) {
         accessoryType = UITableViewCellAccessoryDetailDisclosureButton;
         
         NSInteger proxyIndex = indexPath.row; // decrement this for each thing we don't lay out
@@ -664,8 +695,8 @@ NSInteger phoneNumberSort(id num1, id num2, void *context){
         if (!complete && [lib.library.phone count]) {
             
 			LibraryPhone * phone = nil;
-			if ([phoneNumbersArray count]){
-				phone = (LibraryPhone*)[phoneNumbersArray objectAtIndex:proxyIndex];
+			if ([phoneNumbersArray count] && [phoneNumbersArray count] > proxyIndex){
+				phone = (LibraryPhone *)[phoneNumbersArray objectAtIndex:proxyIndex];
                 detailText = phone.phoneNumber;
 			}
         }
@@ -679,7 +710,7 @@ NSInteger phoneNumberSort(id num1, id num2, void *context){
                                                      text:@"title"
                                              maxTextLines:1
                                                detailText:detailText
-                                           maxDetailLines:2
+                                           maxDetailLines:maxLines
                                                      font:cellFont 
                                                detailFont:detailFont
                                             accessoryType:accessoryType
@@ -746,9 +777,13 @@ NSInteger phoneNumberSort(id num1, id num2, void *context){
         
         NSMutableDictionary * tempDict = [NSMutableDictionary dictionary];
         
-        if ([sched count] < 7){
-            [tempDict setObject:[libraryDictionary objectForKey:@"hoursOfOperationString"] forKey:@"Hours"];
-            
+        if ([sched count] < 7) {
+            NSString *hours = [libraryDictionary objectForKey:@"hoursOfOperationString"];
+            if ([hours length]) {
+                [tempDict setObject:hours forKey:@"Hours"];
+            } else {
+                tempDict = nil;
+            }
         } else {
             for (NSString * dayOfWeek in daysOfWeek) {
                 NSString *scheduleString = [sched objectForKey:dayOfWeek];
@@ -757,8 +792,11 @@ NSInteger phoneNumberSort(id num1, id num2, void *context){
                 [tempDict setObject:scheduleString forKey:dayOfWeek];
             }
         }
+
+        if (tempDict)
+            weeklySchedule = [tempDict retain];
         
-        weeklySchedule = [tempDict retain];
+        didSetupWeeklySchedule = YES;
         
         [self.tableView reloadData];
     }

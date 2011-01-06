@@ -103,7 +103,6 @@ static LibraryDataManager *s_sharedManager = nil;
                         [_allArchives addObject:alias];
                     }
                     else if ([alias.library.type isEqualToString: @"library"]) {
-                        NSLog(@"%@ %@ %@", alias.name, alias.library.identityTag, alias.library.primaryName);
                         [_allLibraries addObject:alias];
                     }
                 }
@@ -254,52 +253,82 @@ static LibraryDataManager *s_sharedManager = nil;
     else if ([libOrArchive isEqualToString:@"archive"])
         libOrArchive = LibraryDataRequestArchiveDetail;
     
-    JSONAPIRequest *api = [JSONAPIRequest requestWithJSONAPIDelegate:self];
+    JSONAPIRequest *api = [oneTimeRequests objectForKey:libOrArchive];
+    if (api) {
+        [api abortRequest];
+    }
+    
+    api = [JSONAPIRequest requestWithJSONAPIDelegate:self];
     api.userData = libOrArchive;
 
     NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:libID, @"id", libName, @"name", nil];
     if ([api requestObjectFromModule:@"libraries" command:libOrArchive parameters:params]) {
-        [anytimeRequests addObject:api];
+        [oneTimeRequests setObject:api forKey:libOrArchive];
+        //[anytimeRequests addObject:api];
     }
 }
 
 - (void)requestDetailsForItem:(LibraryItem *)item {
-    JSONAPIRequest *api = [JSONAPIRequest requestWithJSONAPIDelegate:self];
+    JSONAPIRequest *api = [oneTimeRequests objectForKey:LibraryDataRequestItemDetail];
+    if (api) {
+        [api abortRequest];
+    }
+    
+    api = [JSONAPIRequest requestWithJSONAPIDelegate:self];
     api.userData = LibraryDataRequestItemDetail;
     
     NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:item.itemId, @"itemId", nil];
     if ([api requestObjectFromModule:@"libraries" command:LibraryDataRequestItemDetail parameters:params]) {
-        [anytimeRequests addObject:api];
+        [oneTimeRequests setObject:api forKey:LibraryDataRequestItemDetail];
+        //[anytimeRequests addObject:api];
     }
 }
 
 - (void)requestFullAvailabilityForItem:(NSString *)itemID {
-    JSONAPIRequest *api = [JSONAPIRequest requestWithJSONAPIDelegate:self];
+    JSONAPIRequest *api = [oneTimeRequests objectForKey:LibraryDataRequestAvailability];
+    if (api) {
+        [api abortRequest];
+    }
+    
+    api = [JSONAPIRequest requestWithJSONAPIDelegate:self];
     api.userData = LibraryDataRequestAvailability;
     
     NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:itemID, @"itemId", nil];
     if ([api requestObjectFromModule:@"libraries" command:LibraryDataRequestAvailability parameters:params]) {
-        [anytimeRequests addObject:api];
+        [oneTimeRequests setObject:api forKey:LibraryDataRequestAvailability];
+        //[anytimeRequests addObject:api];
     }
 }
 
 - (void)requestThumbnailForItem:(NSString *)itemID {
-    JSONAPIRequest *api = [JSONAPIRequest requestWithJSONAPIDelegate:self];
+    JSONAPIRequest *api = [oneTimeRequests objectForKey:LibraryDataRequestThumbnail];
+    if (api) {
+        [api abortRequest];
+    }
+    
+    api = [JSONAPIRequest requestWithJSONAPIDelegate:self];
     api.userData = LibraryDataRequestThumbnail;
     
     NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:itemID, @"itemId", nil];
     if ([api requestObjectFromModule:@"libraries" command:LibraryDataRequestThumbnail parameters:params]) {
-        [anytimeRequests addObject:api];
+        [oneTimeRequests setObject:api forKey:LibraryDataRequestThumbnail];
+        //[anytimeRequests addObject:api];
     }
 }
 
 - (void)searchLibraries:(NSString *)searchTerms {
-    JSONAPIRequest *api = [JSONAPIRequest requestWithJSONAPIDelegate:self];
+    JSONAPIRequest *api = [oneTimeRequests objectForKey:LibraryDataRequestSearch];
+    if (api) {
+        [api abortRequest];
+    }
+    
+    api = [JSONAPIRequest requestWithJSONAPIDelegate:self];
     api.userData = LibraryDataRequestSearch;
     
     NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:searchTerms, @"q", nil];
     if ([api requestObjectFromModule:@"libraries" command:LibraryDataRequestSearch parameters:params]) {
-        [anytimeRequests addObject:api];
+        [oneTimeRequests setObject:api forKey:LibraryDataRequestSearch];
+        //[anytimeRequests addObject:api];
     }
 }
 
@@ -543,7 +572,8 @@ static LibraryDataManager *s_sharedManager = nil;
             [_schedulesByLibID setObject:schedule forKey:identityTag];
         }
         
-        [anytimeRequests removeObject:request];
+        //[anytimeRequests removeObject:request];
+        [oneTimeRequests removeObjectForKey:command];
         
     }
 #pragma mark Success - Item Detail
@@ -602,7 +632,8 @@ static LibraryDataManager *s_sharedManager = nil;
             }
 		}
         
-        [anytimeRequests removeObject:request];
+        //[anytimeRequests removeObject:request];
+        [oneTimeRequests removeObjectForKey:command];
         
     }
 #pragma mark Success - Item Availability
@@ -630,7 +661,8 @@ static LibraryDataManager *s_sharedManager = nil;
             }
         }
         
-        [anytimeRequests removeObject:request];
+        //[anytimeRequests removeObject:request];
+        [oneTimeRequests removeObjectForKey:command];
 
     }
 #pragma mark Success - Image Thumbnail
@@ -665,13 +697,15 @@ static LibraryDataManager *s_sharedManager = nil;
             //}
 		}
         
-        [anytimeRequests removeObject:request];
+        //[anytimeRequests removeObject:request];
+        [oneTimeRequests removeObjectForKey:command];
 
     }
 #pragma mark Success - Search
     else if ([command isEqualToString:LibraryDataRequestSearch]) {
         
-        [anytimeRequests removeObject:request];
+        //[anytimeRequests removeObject:request];
+        [oneTimeRequests removeObjectForKey:command];
     } else {
         
         return;
@@ -730,7 +764,8 @@ static LibraryDataManager *s_sharedManager = nil;
                || [command isEqualToString:LibraryDataRequestArchiveDetail]
                || [command isEqualToString:LibraryDataRequestSearch])
     {
-        [anytimeRequests removeObject:request];
+        //[anytimeRequests removeObject:request];
+        [oneTimeRequests removeObjectForKey:command];
         
     } else {
         

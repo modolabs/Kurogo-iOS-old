@@ -18,8 +18,11 @@
 	
 	UIButton * bookmarkButton;
 	
+    // this is a size-1 dictionary of display title and subtitle.
+    // TODO: make this into two strings so the code isn't confusing
 	NSMutableDictionary * weeklySchedule;
 	NSMutableArray * daysOfWeek;
+    BOOL didSetupWeeklySchedule;
 	
 	BOOL bookmarkButtonIsOn;
 	
