@@ -25,72 +25,29 @@
 
 -(void) setUpLayOut {
 	
-	if (nil == theSearchBar)
+	if (nil == theSearchBar) {
 		theSearchBar = [[ModoSearchBar alloc] initWithFrame:CGRectMake(0.0f, 0.0f, self.view.frame.size.width, NAVIGATION_BAR_HEIGHT)];
+        theSearchBar.tintColor = SEARCH_BAR_TINT_COLOR;
+        theSearchBar.placeholder = @"HOLLIS keyword search";
+        theSearchBar.showsBookmarkButton = NO; // use custom bookmark button
+        theSearchBar.text = @"";
+    }
 	
-	theSearchBar.tintColor = SEARCH_BAR_TINT_COLOR;
-	theSearchBar.placeholder = @"HOLLIS keyword search";
-	theSearchBar.showsBookmarkButton = NO; // use custom bookmark button
-	
-	theSearchBar.text = @"";
-	
-	if (nil == searchController)
+	if (nil == searchController) {
 		self.searchController = [[[MITSearchDisplayController alloc] initWithSearchBar:theSearchBar contentsController:self] autorelease];
-	
-	self.searchController.delegate = self;
-	self.searchController.searchResultsDelegate = self;
-	self.searchController.searchResultsDataSource = self;
+        self.searchController.delegate = self;
+        self.searchController.searchResultsDelegate = self;
+        self.searchController.searchResultsDataSource = self;
+    }
 	
     [self.view addSubview:theSearchBar];
-	
-    CGRect frame = CGRectMake(0.0, theSearchBar.frame.size.height,
-                              self.view.frame.size.width,
-                              self.view.frame.size.height - theSearchBar.frame.size.height);
-	
-	if (nil != self.tableView)
-		[self.tableView removeFromSuperview];
-	
-	self.tableView = nil;
-	
-	self.tableView = [[[UITableView alloc] initWithFrame:frame style:UITableViewStyleGrouped] autorelease];
-	
-    self.tableView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
-    self.tableView.delegate = self;
-    self.tableView.dataSource = self;
-	[self.tableView applyStandardColors];
     
-	static NSString *searchHints = @"";
-	
-	UIFont *hintsFont = [UIFont systemFontOfSize:[UIFont systemFontSize]];
-	CGSize labelSize = [searchHints sizeWithFont:hintsFont
-							   constrainedToSize:self.tableView.frame.size
-								   lineBreakMode:UILineBreakModeWordWrap];
-	
-	UILabel *hintsLabel = [[UILabel alloc] initWithFrame:CGRectMake(15.0, 10.0, labelSize.width, labelSize.height + 5.0)];
-	hintsLabel.numberOfLines = 0;
-	hintsLabel.backgroundColor = [UIColor clearColor];
-	hintsLabel.lineBreakMode = UILineBreakModeWordWrap;
-	hintsLabel.font = hintsFont;
-	hintsLabel.text = searchHints;	
-    hintsLabel.textColor = [UIColor colorWithHexString:@"#404040"];
-    UIView *hintsContainer = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, labelSize.width, labelSize.height + 10.0)];
-	[hintsContainer addSubview:hintsLabel];
-	[hintsLabel release];
-	
-    self.tableView.tableHeaderView = [[[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, 
-																			   self.tableView.frame.size.width, 
-																			   hintsContainer.frame.size.height)] autorelease];
-	[self.tableView.tableHeaderView addSubview:hintsContainer];
-	[hintsContainer release];
-	
-	[self.view addSubview:self.tableView];
     [self.searchBar addDropShadow];
 	
 	// add our own bookmark button item since we are not using the default
 	// bookmark button of the UISearchBar
     // TODO: don't hard code this frame
 	
-	_bookmarkButton = nil;
 	if (nil == _bookmarkButton) {
 		_bookmarkButton = [[UIButton alloc] initWithFrame:CGRectMake(282, 8, 32, 28)];
 		[_bookmarkButton setImage:[UIImage imageNamed:@"global/searchfield_star.png"] forState:UIControlStateNormal];
@@ -98,17 +55,33 @@
 	[self.view addSubview:_bookmarkButton];
 	[_bookmarkButton addTarget:self action:@selector(bookmarkItemButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
 	
+    // table view
+    CGRect frame = CGRectMake(0.0, theSearchBar.frame.size.height,
+                              self.view.frame.size.width,
+                              self.view.frame.size.height - theSearchBar.frame.size.height);
+
+	if (!self.tableView) {
+        self.tableView = [[[UITableView alloc] initWithFrame:frame style:UITableViewStyleGrouped] autorelease];
+	
+        self.tableView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
+        self.tableView.delegate = self;
+        self.tableView.dataSource = self;
+        [self.tableView applyStandardColors];
+    }
+	
+    if (![self.tableView isDescendantOfView:self.view]) {
+        [self.view addSubview:self.tableView];
+    }
 	
 	// set up tableView options
+	mainViewTableOptions1 = [[NSArray alloc] initWithObjects:
+                             @"Library Locations and Hours",
+                             @"Archive Locations and Hours", nil];
 	
-	NSString * option1 = @"Library Locations and Hours";
-	NSString * option2 = @"Archive Locations and Hours";	
-	mainViewTableOptions1 = [[NSArray alloc] initWithObjects: option1, option2, nil];
-	
-	NSString * option3 = @"Advanced HOLLIS Search";
-	NSString * option4 = @"Mobile Research Links";
-	NSString * option5 = @"Ask a Librarian";
-	mainViewTableOptions2 = [[NSArray alloc] initWithObjects: option3, option4, option5, nil];
+	mainViewTableOptions2 = [[NSArray alloc] initWithObjects:
+                             @"Advanced HOLLIS Search",
+                             @"Mobile Research Links",
+                             @"Ask a Librarian", nil];
 }
 
 - (void)setupBookmarks {
@@ -122,12 +95,6 @@
 	if ([bookmarkedLibraries count] > 0)
 		hasBookmarkedLibraries = YES;
 	
-	
-	if (hasBookmarkedLibraries == NO) {
-		bookmarkedLibraries = [[NSArray alloc] initWithObjects: nil];
-		//[self hideToolBar];
-	}
-	
 	NSPredicate *predItem = [NSPredicate predicateWithFormat:@"isBookmarked == YES"];
     [bookmarkedItems release];
 	bookmarkedItems = [[CoreDataManager objectsForEntity:LibraryItemEntityName matchingPredicate:predItem] retain];
@@ -136,7 +103,6 @@
 		hasBookmarkedItems = YES;
 	
 	if (hasBookmarkedItems == NO) {
-		bookmarkedItems = [[NSArray alloc] initWithObjects: nil];
 		[self hideToolBar];
 	}
 }
@@ -153,6 +119,7 @@
 
 	[searchController unfocusSearchBarAnimated:YES];
 	[searchController hideSearchOverlayAnimated:YES];
+    [self setUpLayOut];
     [self setupBookmarks];
 
 	[self.tableView reloadData];

@@ -11,7 +11,6 @@
 #import "Library.h"
 #import "CoreDataManager.h"
 #import "Constants.h"
-#import "LibrariesMultiLineCell.h"
 #import "LibraryAlias.h"
 
 @interface HoursAndLocationsViewController (Private)
@@ -367,24 +366,6 @@
     height = [lib.name sizeWithFont:cellFont constrainedToSize:CGSizeMake(width, height * 2.2) lineBreakMode:UILineBreakModeTailTruncation].height;
 
     return height + 20; // top and bottom padding
-    
-    /*
-	LibraryAlias * lib = [[self currentLibraries] objectAtIndex:indexPath.section];
-    NSString * cellText = lib.name;
-    
-	UITableViewCellAccessoryType accessoryType = UITableViewCellAccessoryDetailDisclosureButton;
-	
-	return [LibrariesMultiLineCell heightForCellWithStyle:UITableViewCellStyleDefault
-                                                tableView:tableView 
-                                                     text:cellText
-                                             maxTextLines:2
-                                               detailText:nil
-                                           maxDetailLines:0
-                                                     font:[UIFont fontWithName:BOLD_FONT size:17] 
-                                               detailFont:nil
-                                            accessoryType:accessoryType
-                                                cellImage:NO];
-     */
 }
 
 
@@ -393,9 +374,8 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     
 	static NSString *optionsForMainViewTableStringConstant = @"listViewCellMultiLine";
-	LibrariesMultiLineCell *cell = nil;
 	
-	cell = (LibrariesMultiLineCell *)[tableView dequeueReusableCellWithIdentifier:optionsForMainViewTableStringConstant];
+	UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:optionsForMainViewTableStringConstant];
 	if (cell == nil) {
 		cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:optionsForMainViewTableStringConstant] autorelease];
 	}
@@ -403,6 +383,7 @@
     cell.textLabel.text = nil;
 
 	LibraryAlias * lib = [[self currentLibraries] objectAtIndex:indexPath.section];
+    NSLog(@"%d %@", indexPath.section, lib.name);
     
     UIFont *cellFont = [UIFont fontWithName:BOLD_FONT size:17];
     CGFloat width = tableView.frame.size.width - 40; // interior padding plus grouped table view padding
@@ -423,30 +404,13 @@
     } else {
         textLabel.frame = CGRectMake(10, 10, width, height);
     }
+    textLabel.text = lib.name;
     
     return cell;
 }
 
 
 - (NSArray *)sectionIndexTitlesForTableView:(UITableView *)tableView {
-	/*
-	NSMutableArray *tempIndexArray = [NSMutableArray array];
-	
-    NSArray *tempLibraries = [self currentLibraries];
-	
-	for(LibraryAlias *lib in tempLibraries) {
-		if (![tempIndexArray containsObject:[lib.name substringToIndex:1]])
-			[tempIndexArray addObject:[lib.name substringToIndex:1]];		
-	}
-    
-    if ([tempIndexArray count] < 8) {
-        return nil;
-    }
-	
-	NSArray *indexArray = (NSArray *)tempIndexArray;
-	
-	return indexArray;
-     */
     return sectionIndexTitles;
 }
 
