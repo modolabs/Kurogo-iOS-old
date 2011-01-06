@@ -97,30 +97,34 @@
 - (void) setupLayout{
     
     // segment control
-    
-	UISegmentedControl *segmentControl = [[UISegmentedControl alloc] initWithItems:[NSArray arrayWithObjects:
-																					[UIImage imageNamed:MITImageNameUpArrow],
-																					[UIImage imageNamed:MITImageNameDownArrow], nil]];
-	[segmentControl setMomentary:YES];
-	[segmentControl addTarget:self action:@selector(showNextLibItem:) forControlEvents:UIControlEventValueChanged];
-	segmentControl.segmentedControlStyle = UISegmentedControlStyleBar;
-	segmentControl.frame = CGRectMake(0, 0, 80.0, segmentControl.frame.size.height);
-	UIBarButtonItem * segmentBarItem = [[UIBarButtonItem alloc] initWithCustomView: segmentControl];
-	self.navigationItem.rightBarButtonItem = segmentBarItem;
-	
-	if (currentIndex == 0)
-		[segmentControl setEnabled:NO forSegmentAtIndex:0];
-	
-	if (currentIndex == [libItemDictionary count] - 1)
-		[segmentControl setEnabled:NO forSegmentAtIndex:1];
-	
-	[segmentControl release];
-	[segmentBarItem release];
+    if ([libItemDictionary count] && [libItemDictionary count] > 1) {
+        UISegmentedControl *segmentControl = [[UISegmentedControl alloc] initWithItems:[NSArray arrayWithObjects:
+                                                                                        [UIImage imageNamed:MITImageNameUpArrow],
+                                                                                        [UIImage imageNamed:MITImageNameDownArrow], nil]];
+        [segmentControl setMomentary:YES];
+        [segmentControl addTarget:self action:@selector(showNextLibItem:) forControlEvents:UIControlEventValueChanged];
+        segmentControl.segmentedControlStyle = UISegmentedControlStyleBar;
+        segmentControl.frame = CGRectMake(0, 0, 80.0, segmentControl.frame.size.height);
+        UIBarButtonItem * segmentBarItem = [[UIBarButtonItem alloc] initWithCustomView: segmentControl];
+        self.navigationItem.rightBarButtonItem = segmentBarItem;
+        
+        if (currentIndex == 0)
+            [segmentControl setEnabled:NO forSegmentAtIndex:0];
+        
+        if (currentIndex == [libItemDictionary count] - 1)
+            [segmentControl setEnabled:NO forSegmentAtIndex:1];
+        
+        [segmentControl release];
+        [segmentBarItem release];
+
+    } else {
+        self.navigationItem.rightBarButtonItem = nil;
+    }
     
     // strings
     
     NSString *edition = libItem.edition;
-    NSString *pubYear = [libItem.publisher length] ? [NSString stringWithFormat:@"%@, %@", libItem.publisher, libItem.year] : libItem.year;
+    NSString *pubYear = [libItem.publisher length] ? [NSString stringWithFormat:@"%@ %@", libItem.publisher, libItem.year] : libItem.year;
 	NSString *formatDetails = [NSString string];
 	if (([libItem.formatDetail length] > 0) && ([libItem.typeDetail length] > 0))
 		formatDetails = [NSString stringWithFormat:@"%@: %@", libItem.formatDetail, libItem.typeDetail];
@@ -201,6 +205,7 @@
 	[headerView addSubview:titleLabel];
 	[headerView addSubview:authorLabel];
 	[headerView addSubview:authorButton];
+    [headerView addSubview:mapButton];
 	[headerView addSubview:bookmarkButton];
     
     UIFont *labelFont = [UIFont fontWithName:STANDARD_FONT size:13];
@@ -956,185 +961,13 @@
             [self.tableView setTableHeaderView:self.tableView.tableHeaderView]; // force resize of header
         }
         [self.tableView reloadData];
+    } else {
+        [self setupLayout];
     }
 }
 
 - (void)detailsFailedToLoadForItemID:(NSString *)itemID {
 }
-
-/*
-- (void)request:(JSONAPIRequest *)request jsonLoaded:(id)result {
-
-	
-	if (displayImage == YES){
-		if ([result isKindOfClass:[NSDictionary class]]){
-			
-			NSString * imageId = [result objectForKey:@"itemId"];
-			NSString * catLink = [result objectForKey:@"cataloglink"];
-			fullImageLink = [[result objectForKey:@"fullimagelink"] retain];
-			
-			NSString * workType = [result objectForKey:@"worktype"];
-			otherDetailLine3 = [workType retain];
-			
-			NSString * numberOfImages = [result objectForKey:@"numberofimages"];
-			
-			int imageCount = [numberOfImages intValue];
-			
-			[self setupLayout];
-
-			if ([imageId isEqualToString:libItem.itemId]){
-				if ([catLink length] > 0){
-					libItem.catalogLink = [NSString stringWithFormat:@"%@", catLink];
-					
-					[CoreDataManager saveData];
-					
-				}
-				DLog(@"cat link = %@",libItem.catalogLink); 
-				
-				NSString *imageUrl = [result objectForKey:@"thumbnail"];
-				
-				if ([imageUrl length] > 0){
- 					NSData *data = [NSData dataWithContentsOfURL:[NSURL URLWithString:imageUrl]];
-					UIImage *image = [UIImage imageWithData:data];
-                    
-                    CGFloat maxHeight = 160.0;
-                    CGFloat maxWidth = 160.0;
-                    
-                    if (image.size.width > maxWidth || image.size.height > maxHeight) {
-                        // Resize image to 150x150, preserving aspect ratio
-                        // We do this here so we know the real size of the image for positioning the custom button
-                        CGFloat ratio = MIN(maxWidth / image.size.width, maxHeight / image.size.height);
-                        CGRect newRect = CGRectIntegral(CGRectMake(0, 0, image.size.width * ratio, image.size.height * ratio));
-                        CGImageRef imageRef = image.CGImage;
-                        
-                        // Build a context that's the same dimensions as the new size
-                        CGContextRef bitmap = CGBitmapContextCreate(NULL,
-                                                                    newRect.size.width,
-                                                                    newRect.size.height,
-                                                                    CGImageGetBitsPerComponent(imageRef),
-                                                                    0,
-                                                                    CGImageGetColorSpace(imageRef),
-                                                                    CGImageGetBitmapInfo(imageRef));
-                        
-                        CGContextSetInterpolationQuality(bitmap, kCGInterpolationHigh); // high quality scaling
-                        CGContextDrawImage(bitmap, newRect, imageRef); // Draw into the context; this scales the image
-                        CGImageRef newImageRef = CGBitmapContextCreateImage(bitmap); // Get the resized image from the context and a UIImage
-                        
-                        image = [UIImage imageWithCGImage: newImageRef];
-                        
-                        CGContextRelease(bitmap);
-                        CGImageRelease(newImageRef);
-                    }
-                    
-					UIImageView* imageView = [[[UIImageView alloc] initWithImage:image] autorelease];
-					imageView.backgroundColor = [UIColor clearColor];
-                    
-                    CGRect screenRect = [[UIScreen mainScreen] applicationFrame];
-                    CGSize imageSize = imageView.image.size;
-                    
-                    CGFloat imageX = (screenRect.size.width - imageSize.width) / 2;
-                    CGFloat imageY = thumbnail.frame.origin.y;
-
-                    thumbnail.frame = CGRectMake(imageX, imageY, imageSize.width, imageSize.height);
-                    
-					UIButton * customButton = [UIButton buttonWithType:UIButtonTypeCustom];
-					customButton.frame = CGRectMake(imageX+imageSize.width-15, imageY+imageSize.height-20, 30, 30);  // a little higher so text fits
-					customButton.enabled = YES;
-					[customButton setImage:[UIImage imageNamed:@"global/searchfield_star.png"]  forState:UIControlStateNormal];
-					[customButton setImage:[UIImage imageNamed:@"global/searchfield_star.png"]  forState:(UIControlStateNormal | UIControlStateHighlighted)];
-					[customButton setImage:[UIImage imageNamed:@"global/searchfield_star.png"]  forState:UIControlStateSelected];
-					[customButton setImage:[UIImage imageNamed:@"global/searchfield_star.png"]  forState:(UIControlStateSelected | UIControlStateHighlighted)];
-					[customButton addTarget:self action:@selector(thumbNailPressed:) forControlEvents:UIControlEventTouchUpInside];
-					
-					[thumbnail removeFromSuperview];
-					[thumbnail retain];
-					[self removeLoadingIndicator];
-					[thumbnail addSubview:imageView];
-					
-					UILabel * count = [[[UILabel alloc] initWithFrame:CGRectMake(0.0, imageY+imageSize.height+6, screenRect.size.width, 20)] autorelease];
-					count.text = [NSString stringWithFormat:@"Total Images: %d", imageCount];
-					count.font = [UIFont fontWithName:COURSE_NUMBER_FONT size:14];
-                    count.textAlignment = UITextAlignmentCenter;
-					count.textColor = [UIColor blackColor]; 
-					count.backgroundColor = [UIColor clearColor];	
-					count.lineBreakMode = UILineBreakModeTailTruncation;
-					count.numberOfLines = 1;
-                    
-                    CGFloat newHeight = self.tableView.tableHeaderView.frame.size.height - 150.0 + thumbnail.frame.size.height + count.frame.size.height + 5;
-                    self.tableView.tableHeaderView.frame = CGRectMake(0, 0, self.tableView.tableHeaderView.frame.size.width, newHeight);
-
-					[self.tableView.tableHeaderView addSubview:thumbnail];
-					[self.tableView.tableHeaderView addSubview:customButton];
-					[self.tableView.tableHeaderView addSubview:count];
-                    [self.tableView setTableHeaderView:self.tableView.tableHeaderView]; // force resize of header
-				}
-				[self.tableView reloadData];
-			}
-		}
-	}
-	
-	else if (displayImage == NO){
-		if ([result isKindOfClass:[NSArray class]]) {
-			
-			locationsWithItem = [result retain];
-			//[self.tableView reloadData];
-            
-            [displayLibraries removeAllObjects];
-            BOOL fetchingDetails = NO;
-			
-			for(NSDictionary * tempDict in result) {
-				
-				NSString * displayName = [tempDict objectForKey:@"name"];
-                NSString * identityTag = [tempDict objectForKey:@"id"];
-                NSString * type        = [tempDict objectForKey:@"type"];
-
-                //NSDictionary * collection = [tempDict objectForKey:@"collection"];
-                
-                //NSPredicate *pred = [NSPredicate predicateWithFormat:@"name == %@ AND type == %@", displayName, type];
-                NSPredicate *pred = [NSPredicate predicateWithFormat:@"identityTag == %@", identityTag, type];
-                Library *alreadyInDB = [[CoreDataManager objectsForEntity:LibraryEntityName matchingPredicate:pred] lastObject];
-                if (!alreadyInDB) {
-                    alreadyInDB = (Library *)[CoreDataManager insertNewObjectForEntityForName:LibraryEntityName];
-                    alreadyInDB.isBookmarked = [NSNumber numberWithBool:NO];
-                    [CoreDataManager saveData];
-                }
-                
-                if ([alreadyInDB.lat doubleValue] == 0) {
-                    fetchingDetails = YES;
-                    [[LibraryDataManager sharedManager] requestDetailsForLibType:type libID:identityTag libName:displayName];
-                }
-                
-                LibraryAlias *alias = [[LibraryDataManager sharedManager] libraryAliasWithID:alreadyInDB.identityTag name:displayName];
-                [displayLibraries addObject:alias];
-			}
-            
-            if (fetchingDetails) {
-                [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(libraryDetailsDidLoad:) name:LibraryRequestDidCompleteNotification object:LibraryDataRequestLibraryDetail];
-                [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(libraryDetailsDidLoad:) name:LibraryRequestDidCompleteNotification object:LibraryDataRequestArchiveDetail];
-            }
-            
-            [self.tableView reloadData];
-			
-			locationManager = [[CLLocationManager alloc] init];
-			locationManager.distanceFilter = kCLDistanceFilterNone;
-			locationManager.desiredAccuracy = kCLLocationAccuracyBest;
-			locationManager.delegate = self;
-			
-			[locationManager startUpdatingLocation];
-			
-		}
-	}
-	[self removeLoadingIndicator];
-}
-
-- (BOOL)request:(JSONAPIRequest *)request shouldDisplayAlertForError:(NSError *)error {
-    return YES;
-}
-
-- (void)request:(JSONAPIRequest *)request handleConnectionError:(NSError *)error {
-	[self removeLoadingIndicator];
-}
-*/
 
 - (void)libraryDetailsDidLoad:(NSNotification *)aNotification {
     [self.tableView reloadData];

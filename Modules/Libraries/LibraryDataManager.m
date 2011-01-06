@@ -582,6 +582,8 @@ static LibraryDataManager *s_sharedManager = nil;
                 libItem.formatDetail = [formatDict objectForKey:@"formatDetail"];
                 libItem.typeDetail = [formatDict objectForKey:@"typeDetail"];
             }
+            
+            [CoreDataManager saveData];
                         
             for (id<LibraryItemDetailDelegate> aDelegate in itemDelegates) {
                 [aDelegate detailsDidLoadForItem:libItem];
