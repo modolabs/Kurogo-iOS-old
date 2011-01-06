@@ -153,13 +153,12 @@
         self.textLabel.lineBreakMode = textLabelNumberOfLines == 0 ? UILineBreakModeWordWrap : UILineBreakModeTailTruncation;
         frame = self.textLabel.frame;
 		frame.origin.x = 10.0;
-        if (frame.origin.y == 0.0) {
+        if (frame.origin.y <= 0.0) {
             // TODO: find out why this happens with rows in event detail screen
-           // frame.origin.y = 10.0;
+            frame.origin.y = 10.0;
         }
 		
         frame.size.width = [LibrariesMultiLineCell widthForTextLabel:YES cellStyle:_style tableView:tableView accessoryType:accessoryType cellImage:cellImage];
-		frame.size.width = frame.size.width; //frame.size.width - 30;
         frame.size.height = [LibrariesMultiLineCell heightForLabelWithText:self.textLabel.text
                                                                       font:self.textLabel.font
                                                                      width:frame.size.width
@@ -186,12 +185,7 @@
         // it will make the text narrower and taller
         // than we make it, and recenter the labels within the cell.
         // so we re-recenter the frame based on its actual size
-        CGFloat innerHeight = self.detailTextLabel.frame.origin.y - self.textLabel.frame.origin.y;
-        if (self.detailTextLabel.frame.size.height > self.textLabel.frame.size.height) {
-            innerHeight += self.detailTextLabel.frame.size.height;
-        } else {
-            innerHeight += self.textLabel.frame.size.height;
-        }
+        CGFloat innerHeight = self.detailTextLabel.frame.origin.y - self.textLabel.frame.origin.y + self.detailTextLabel.frame.size.height;
 
         frame = self.textLabel.frame;
         frame.origin.y = floor((self.frame.size.height - innerHeight) / 2);
@@ -225,6 +219,10 @@
         aView.frame = frame;
 		[self.contentView addSubview:aView];
 	}
+    
+    NSLog(@"%@", [self description]);
+    NSLog(@"%@", [self.textLabel description]);
+    NSLog(@"%@", [self.detailTextLabel description]);
 	
 }
 

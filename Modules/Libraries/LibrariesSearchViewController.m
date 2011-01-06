@@ -179,34 +179,19 @@
 
 - (UITableViewCell *)tableView:(UITableView *)aTableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
 	
-/*	NSDictionary * tempDict = [[NSDictionary alloc] initWithObjectsAndKeys:
-							   @"available", @"1 of 2 available - regular loan",
-							   @"unavailable", @"2 of 2 available - in-library user",
-							   @"request", @"2 of 2 availavle - depository", nil];
-*/
-	
 	LibrariesMultiLineCell *cell = (LibrariesMultiLineCell *)[aTableView dequeueReusableCellWithIdentifier:@"HollisSearch"];
 	if(cell == nil) {
 		cell = [[[LibrariesMultiLineCell alloc] initWithStyle:UITableViewCellStyleSubtitle 
-										 reuseIdentifier:@"HollisSearch"] 
-																		autorelease];
+										 reuseIdentifier:@"HollisSearch"] autorelease];
 		cell.selectionStyle = UITableViewCellSelectionStyleGray;
 	}
 	
-	cell.textLabelNumberOfLines = 2;
-	cell.textLabel.lineBreakMode = UILineBreakModeTailTruncation;
-	cell.textLabel.font = [UIFont fontWithName:STANDARD_FONT size:STANDARD_CONTENT_FONT_SIZE];
-	cell.detailTextLabel.font = [UIFont fontWithName:STANDARD_FONT size:13];
-	cell.detailTextLabel.lineBreakMode = UILineBreakModeTailTruncation;
-	cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-	cell.selectionStyle = UITableViewCellSelectionStyleGray;
-	
 	LibraryItem * libItem = (LibraryItem *)[self.lastResults objectForKey:[NSString stringWithFormat:@"%d", indexPath.row+1]];
-	NSString *cellText;
-	NSString *detailText;
+	NSString *cellText = nil;
+	NSString *detailText = nil;
 	
 	if (nil != libItem) {
-		cellText = libItem.title;
+		cellText = [NSString stringWithFormat:@"%d. %@", indexPath.row + 1, libItem.title];
 		
 		if (([libItem.year length] == 0) && ([libItem.author length] ==0))
 			detailText = @"       ";
@@ -224,16 +209,19 @@
 			detailText = [NSString stringWithFormat:@"       "];
 		}
 	}
-	else {
-		cellText = @"";
-		detailText = @"";
-	}
-
 	
-	cell.textLabel.text = [NSString stringWithFormat:@"%d. %@", 
-						   indexPath.row + 1, cellText];
+	cell.textLabelNumberOfLines = 2;
+	cell.textLabel.text = cellText;
+	cell.textLabel.lineBreakMode = UILineBreakModeTailTruncation;
+	cell.textLabel.font = [UIFont fontWithName:STANDARD_FONT size:STANDARD_CONTENT_FONT_SIZE];
+
 	cell.detailTextLabel.text = detailText;
 	cell.detailTextLabel.textColor = [UIColor colorWithHexString:@"#554C41"];
+	cell.detailTextLabel.font = [UIFont fontWithName:STANDARD_FONT size:13];
+	cell.detailTextLabel.lineBreakMode = UILineBreakModeTailTruncation;
+
+	cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+	cell.selectionStyle = UITableViewCellSelectionStyleGray;
 	
 	NSString * imageString;
 	
@@ -269,12 +257,11 @@
 	UITableViewCellAccessoryType accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 	
 	LibraryItem * libItem = (LibraryItem *)[self.lastResults objectForKey:[NSString stringWithFormat:@"%d", indexPath.row+1]];
-	NSString *cellText;
-	NSString *detailText;
+	NSString *cellText = nil;
+	NSString *detailText = nil;
 	
 	if (nil != libItem) {
-		cellText = [NSString stringWithFormat:@"%d. %@", 
-					indexPath.row + 1, libItem.title];
+		cellText = [NSString stringWithFormat:@"%d. %@", indexPath.row + 1, libItem.title];
 		
 		if (([libItem.year length] == 0) && ([libItem.author length] ==0))
 			detailText = @"         ";
@@ -293,18 +280,15 @@
 		}
 
 	}
-	else {
-		cellText = @"";
-		detailText = @"";
-	}
-	UIFont *detailFont = [UIFont systemFontOfSize:13];
+
+	UIFont *detailFont = [UIFont fontWithName:STANDARD_FONT size:13];
 	
 	return [LibrariesMultiLineCell heightForCellWithStyle:UITableViewCellStyleSubtitle
 											 tableView:tableView 
 												  text:cellText
 										  maxTextLines:2
 											detailText:detailText
-										maxDetailLines:2
+										maxDetailLines:10
 												  font:[UIFont fontWithName:STANDARD_FONT size:STANDARD_CONTENT_FONT_SIZE]
 											detailFont:detailFont
 										 accessoryType:accessoryType

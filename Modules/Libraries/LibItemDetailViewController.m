@@ -915,8 +915,6 @@
     if (![libItem.itemId isEqualToString:aLibItem.itemId]) {
         return;
     }
-    
-    [self removeLoadingIndicator];
 
     if (libItem != aLibItem) {
         [libItem release];
@@ -977,6 +975,8 @@
     } else {
         [self setupLayout];
     }
+    
+    [self removeLoadingIndicator];
 }
 
 - (void)detailsFailedToLoadForItemID:(NSString *)itemID {

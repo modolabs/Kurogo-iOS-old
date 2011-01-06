@@ -34,7 +34,6 @@
     
     NSArray *tableCells;
     BOOL collectionOnly;
-    BOOL uniformHoldingStatus;
 }
 
 @property (nonatomic, retain) NSString *openToday;

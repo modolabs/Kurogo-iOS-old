@@ -207,8 +207,6 @@ NSInteger phoneNumberSort(id num1, id num2, void *context){
 	
 	for (int day=1; day < 7; day++){
 		
-		dayString = @"";
-		
 		NSDateComponents *offsetComponents = [[NSDateComponents alloc] init];
 		[offsetComponents setDay:1];
 		nextDate = [gregorian dateByAddingComponents:offsetComponents toDate:nextDate options:0];

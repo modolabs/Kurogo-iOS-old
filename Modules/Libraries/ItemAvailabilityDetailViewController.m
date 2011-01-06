@@ -137,7 +137,8 @@
     NSMutableArray *mutableTableCells = [NSMutableArray array];
     
     collectionOnly = NO;
-    uniformHoldingStatus = YES;
+    BOOL uniformHoldingStatus = YES;
+    NSString *referenceHoldingStatus = nil;
 
     for (NSDictionary *aCollection in availabilityCategories) {
 
@@ -154,7 +155,6 @@
                                  @"dining/dining-status-open-w-restrictions.png",
                                  @"dining/dining-status-closed.png", nil];
         
-        //BOOL uniformHoldingStatus = NO;
         BOOL uniformCallNumber = YES;
         
         // we will end up throwing away two out of three of these arrays
@@ -197,11 +197,14 @@
                     }
                     
                     if (![callNumber isEqualToString:collectionCallNumber]) {
-                        //NSLog(@"collection: '%@'", collectionCallNumber);
-                        //NSLog(@" this item: '%@'", callNumber);
                         uniformCallNumber = NO;
                     }
-                    NSLog(@"%@", holdingStatus);
+
+                    if (!referenceHoldingStatus) {
+                        referenceHoldingStatus = holdingStatus;
+                    } else if (![holdingStatus isEqualToString:referenceHoldingStatus]) {
+                        uniformHoldingStatus = NO;
+                    }
                     
                     // keep populating cells by holding status until we find out call numbers are different
                     NSMutableDictionary *cellForHoldingStatus = nil;
@@ -229,9 +232,6 @@
                                                      statusImage, @"image",
                                                      nil];
                     
-                    
-                    //BOOL canRequest = [[availItemDict objectForKey:@"canRequest"] isEqualToString:@"YES"];
-                    //BOOL canScanAndDeliver = [[availItemDict objectForKey:@"canScanAndDeliver"] isEqualToString:@"YES"];
                     BOOL canRequest = [[availItemDict objectForKey:@"canRequest"] boolValue];
                     BOOL canScanAndDeliver = [[availItemDict objectForKey:@"canScanAndDeliver"] boolValue];
 
@@ -262,10 +262,6 @@
                     [cellsForIndividualItems addObject:cellInfo];
                 }
                 
-                if ([cellsByHoldingStatus count] > 1) {
-                    uniformHoldingStatus = NO;
-                }
-                
                 for (NSString *holdingStatus in [cellsByHoldingStatus allKeys]) {
                     [cellsForHoldings addObject:[cellsByHoldingStatus objectForKey:holdingStatus]];
                 }
@@ -289,24 +285,24 @@
         
         if (uniformCallNumber) {
             if (uniformHoldingStatus) {
-                NSLog(@"type 1, %d cells", [cellsForGroups count]);
+                DLog(@"type 1, %d cells", [cellsForGroups count]);
                 
                 [mutableTableCells addObject:cellsForGroups];
             }
             else {
-                NSLog(@"type 2, %d cells", [cellsForHoldings count]);
+                DLog(@"type 2, %d cells", [cellsForHoldings count]);
                 
                 [mutableTableCells addObject:cellsForHoldings];
             }
         } else {
             if (uniformHoldingStatus) {
-                NSLog(@"type 3, %d cells", [cellsForIndividualItems count]);
+                DLog(@"type 3, %d cells", [cellsForIndividualItems count]);
                 for (NSMutableDictionary *cellInfo in cellsForIndividualItems) {
                     [cellInfo removeObjectForKey:@"holdingStatus"];
                 }
             }
             else {
-                NSLog(@"type 4, %d cells", [cellsForIndividualItems count]);
+                DLog(@"type 4, %d cells", [cellsForIndividualItems count]);
             }
 
             [mutableTableCells addObject:cellsForIndividualItems];
