@@ -82,39 +82,39 @@ NSInteger phoneNumberSort(id num1, id num2, void *context){
 	
 	
 	UIView *headerView = [[[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, self.tableView.frame.size.width, height + 15)] autorelease];
-	bookmarkButton = [UIButton buttonWithType:UIButtonTypeCustom];
-	bookmarkButton.frame = CGRectMake(self.tableView.frame.size.width - 55.0 , 5.0, 50.0, 50.0);
-	bookmarkButton.enabled = YES;
-	[bookmarkButton setImage:[UIImage imageNamed:@"global/bookmark_off.png"] forState:UIControlStateNormal];
-	[bookmarkButton setImage:[UIImage imageNamed:@"global/bookmark_off_pressed.png"] forState:(UIControlStateNormal | UIControlStateHighlighted)];
-	[bookmarkButton setImage:[UIImage imageNamed:@"global/bookmark_on.png"] forState:UIControlStateSelected];
-	[bookmarkButton setImage:[UIImage imageNamed:@"global/bookmark_on_pressed.png"] forState:(UIControlStateSelected | UIControlStateHighlighted)];
-	[bookmarkButton addTarget:self action:@selector(bookmarkButtonToggled:) forControlEvents:UIControlEventTouchUpInside];
+    if (!bookmarkButton) {
+        bookmarkButton = [[UIButton buttonWithType:UIButtonTypeCustom] retain];
+        bookmarkButton.frame = CGRectMake(self.tableView.frame.size.width - 55.0 , 5.0, 50.0, 50.0);
+        bookmarkButton.enabled = YES;
+        [bookmarkButton setImage:[UIImage imageNamed:@"global/bookmark_off.png"] forState:UIControlStateNormal];
+        [bookmarkButton setImage:[UIImage imageNamed:@"global/bookmark_off_pressed.png"] forState:(UIControlStateNormal | UIControlStateHighlighted)];
+        [bookmarkButton setImage:[UIImage imageNamed:@"global/bookmark_on.png"] forState:UIControlStateSelected];
+        [bookmarkButton setImage:[UIImage imageNamed:@"global/bookmark_on_pressed.png"] forState:(UIControlStateSelected | UIControlStateHighlighted)];
+        [bookmarkButton addTarget:self action:@selector(bookmarkButtonToggled:) forControlEvents:UIControlEventTouchUpInside];
+    }
 	[headerView addSubview:bookmarkButton];
 	
 	bookmarkButtonIsOn = NO;
     
     bookmarkButton.selected = [lib.library.isBookmarked boolValue];
     bookmarkButtonIsOn = [lib.library.isBookmarked boolValue];
-	
-	UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(12.0, 9.0, 250.0, height)];
-	label.text = libraryName;
-	label.font = [UIFont fontWithName:CONTENT_TITLE_FONT size:CONTENT_TITLE_FONT_SIZE];
-	label.textColor = [UIColor colorWithHexString:@"#1a1611"];
-	label.backgroundColor = [UIColor clearColor];	
-	label.lineBreakMode = UILineBreakModeWordWrap;
-	label.numberOfLines = 10;
+
+    UILabel *label = (UILabel *)[self.tableView.tableHeaderView viewWithTag:1234];
+    if (!label) {
+        label = [[[UILabel alloc] initWithFrame:CGRectMake(12.0, 9.0, 250.0, height)] autorelease];
+        label.font = [UIFont fontWithName:CONTENT_TITLE_FONT size:CONTENT_TITLE_FONT_SIZE];
+        label.textColor = [UIColor colorWithHexString:@"#1a1611"];
+        label.backgroundColor = [UIColor clearColor];	
+        label.lineBreakMode = UILineBreakModeWordWrap;
+        label.numberOfLines = 10;
+        label.tag = 1234;
+    } else {
+        label.frame = CGRectMake(12.0, 9.0, 250.0, height);
+    }
+    label.text = libraryName;
 	[headerView addSubview:label];
     
     self.tableView.tableHeaderView = headerView;
-
-	/*
-	self.tableView.tableHeaderView = [[UIView alloc]
-									  initWithFrame:CGRectMake(0, 0, self.tableView.frame.size.width, headerView.frame.size.height)];
-	[self.tableView.tableHeaderView addSubview:headerView];
-     */
-	
-	[self.tableView applyStandardColors];
 	
     [self setupWeeklySchedule];
     
@@ -128,8 +128,8 @@ NSInteger phoneNumberSort(id num1, id num2, void *context){
 					  @"loading...", @"Saturday",
 					  @"loading...", @"Sunday", nil];
         
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(setupWeeklySchedule) name:LibraryRequestDidCompleteNotification object:LibraryDataRequestLibraryDetail];
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(setupWeeklySchedule) name:LibraryRequestDidCompleteNotification object:LibraryDataRequestArchiveDetail];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(setupLayout) name:LibraryRequestDidCompleteNotification object:LibraryDataRequestLibraryDetail];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(setupLayout) name:LibraryRequestDidCompleteNotification object:LibraryDataRequestArchiveDetail];
 
         [[LibraryDataManager sharedManager] requestDetailsForLibType:lib.library.type libID:lib.library.identityTag libName:lib.name];
     }
@@ -145,6 +145,8 @@ NSInteger phoneNumberSort(id num1, id num2, void *context){
 
 
 -(void) viewDidLoad {
+	
+	[self.tableView applyStandardColors];
 	
 	[self setupLayout];
 	
@@ -172,6 +174,7 @@ NSInteger phoneNumberSort(id num1, id num2, void *context){
 - (void)dealloc {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     
+    [bookmarkButton release];
 	[weeklySchedule release];
     [daysOfWeek release];
     

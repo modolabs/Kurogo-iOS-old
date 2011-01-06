@@ -330,9 +330,21 @@
                     libItem = [nextLibItem retain];
                     displayImage = [libItem.formatDetail isEqualToString:@"Image"];
                     [self setupLayout];
-                    [self.tableView reloadData];
                 }
-				
+                
+                [locationsWithItem release];
+                locationsWithItem = nil;
+                
+                if (!libItem.catalogLink) { // cataloglink is something itemdetail returns but search does not
+                    [[LibraryDataManager sharedManager] requestDetailsForItem:libItem];
+                } else {
+                    [self detailsDidLoadForItem:libItem];
+                }
+                if (![[libItem.formatDetail lowercaseString] isEqualToString:@"image"]) {
+                    [[LibraryDataManager sharedManager] requestFullAvailabilityForItem:libItem.itemId];
+                }
+                
+                [self.tableView reloadData];
 			}			
 		}
 	}	

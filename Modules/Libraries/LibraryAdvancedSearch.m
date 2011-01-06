@@ -145,6 +145,11 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 	self.view.backgroundColor = [UIColor clearColor];
+    UIImage *normalImage = [[UIImage imageNamed:@"global/subheadbar_button.png"] stretchableImageWithLeftCapWidth:10 topCapHeight:0];
+    UIImage *pressedImage = [[UIImage imageNamed:@"global/subheadbar_button_pressed.png"] stretchableImageWithLeftCapWidth:10 topCapHeight:0];
+    [searchButton setBackgroundImage:normalImage forState:UIControlStateNormal];
+    [searchButton setBackgroundImage:pressedImage forState:UIControlStateHighlighted];
+    NSLog(@"%@", [searchButton description]);
 
     // TODO: why isn't this being done in the nib file?
 	[format setUserInteractionEnabled:NO];

@@ -33,17 +33,8 @@
     
     if (showBookmarks) {
         NSPredicate *bookmarkPred = [NSPredicate predicateWithFormat:@"name like library.primaryName AND library.isBookmarked == YES"];
-        NSArray *libraries;
-        NSArray *archives;
-        
-        if (showingOnlyOpen == NO) {
-            libraries = [[LibraryDataManager sharedManager] allLibraries];
-            archives = [[LibraryDataManager sharedManager] allArchives];
-        } else {
-            libraries = [[LibraryDataManager sharedManager] allOpenLibraries];
-            archives = [[LibraryDataManager sharedManager] allOpenArchives];
-        }
-        
+        NSArray *libraries = [[LibraryDataManager sharedManager] allLibraries];
+        NSArray *archives = [[LibraryDataManager sharedManager] allArchives];
         NSArray *everything = [libraries arrayByAddingObjectsFromArray:archives];
         NSArray *bookmarkedLibraries = [everything filteredArrayUsingPredicate:bookmarkPred];
         currentLibraries = [bookmarkedLibraries sortedArrayUsingFunction:libraryNameSort context:nil];
@@ -102,44 +93,37 @@
                                                            action:@selector(displayTypeChanged:)] autorelease];
 
 	self.navigationItem.rightBarButtonItem = _viewTypeButton;
-	
-	UIImage *backgroundImage = [UIImage imageNamed:MITImageNameScrollTabBackgroundOpaque];
-    UIImageView *imageView = [[[UIImageView alloc] initWithImage:[backgroundImage stretchableImageWithLeftCapWidth:0 topCapHeight:0]] autorelease];
-    imageView.tag = 1005;
-
-    if (showBookmarks) {
-        CGFloat footerDisplacementFromTop = self.view.frame.size.height -  NAVIGATION_BAR_HEIGHT -  imageView.frame.size.height;
-        imageView.frame = CGRectMake(0, footerDisplacementFromTop, imageView.frame.size.width, imageView.frame.size.height);
-        [self.view addSubview:imageView];
-    }
 
 	NSString * typeOfRepoString = @"All Libraries";
 	
 	if (!showBookmarks && (nil != typeOfRepo) && ([typeOfRepo isEqualToString:@"Archives"]))
 		typeOfRepoString = @"All Archives";
 	
-	CGFloat footerDisplacementFromTop = self.view.frame.size.height -  NAVIGATION_BAR_HEIGHT;
+	CGFloat footerDisplacementFromTop = self.view.frame.size.height;
 	
-	if (![typeOfRepo isEqualToString:@"Archives"])
-		footerDisplacementFromTop -= imageView.frame.size.height;
-	
-	imageView.frame = CGRectMake(0, footerDisplacementFromTop, imageView.frame.size.width, imageView.frame.size.height);
+	if (!showBookmarks && ![typeOfRepo isEqualToString:@"Archives"])
+		footerDisplacementFromTop -= NAVIGATION_BAR_HEIGHT;
 
-	//Create the segmented control
-	NSArray *itemArray = [NSArray arrayWithObjects: typeOfRepoString, @"Open Now", nil];
-	segmentedControl = [[UISegmentedControl alloc] initWithItems:itemArray];
-	segmentedControl.tintColor = [UIColor darkGrayColor];
-	segmentedControl.frame = CGRectMake(80, footerDisplacementFromTop + 8, 170, 30);
-	segmentedControl.segmentedControlStyle = UISegmentedControlStyleBar;
-	segmentedControl.selectedSegmentIndex = 0;
-	[segmentedControl addTarget:self
-	                     action:@selector(pickOne:)
-	           forControlEvents:UIControlEventValueChanged];
-	
-	if (![typeOfRepo isEqualToString:@"Archives"]){
-		
+	// segmented control
+	if (!showBookmarks && ![typeOfRepo isEqualToString:@"Archives"]){
+        NSArray *itemArray = [NSArray arrayWithObjects: typeOfRepoString, @"Open Now", nil];
+        segmentedControl = [[UISegmentedControl alloc] initWithItems:itemArray];
+        segmentedControl.tintColor = [UIColor darkGrayColor];
+        segmentedControl.frame = CGRectMake(80, footerDisplacementFromTop + 8, 170, 30);
+        segmentedControl.segmentedControlStyle = UISegmentedControlStyleBar;
+        segmentedControl.selectedSegmentIndex = 0;
+        segmentedControl.autoresizingMask = UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleWidth;
+        [segmentedControl addTarget:self
+                             action:@selector(pickOne:)
+                   forControlEvents:UIControlEventValueChanged];
+        
+        UIImage *backgroundImage = [UIImage imageNamed:MITImageNameScrollTabBackgroundOpaque];
+        UIImageView *imageView = [[[UIImageView alloc] initWithImage:[backgroundImage stretchableImageWithLeftCapWidth:0 topCapHeight:0]] autorelease];
+        imageView.autoresizingMask = UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleWidth;
+        imageView.frame = CGRectMake(0, footerDisplacementFromTop, imageView.frame.size.width, imageView.frame.size.height);
+        imageView.tag = 1005;
+        
 		[self.view addSubview:imageView];
-        // TODO: does archives not have an open/closed state?
 		[self.view addSubview:segmentedControl];
 	}
 	
@@ -159,6 +143,7 @@
 
     CGRect frame = CGRectMake(0, 0, self.view.frame.size.width, footerDisplacementFromTop);
     _tableView = [[UITableView alloc] initWithFrame:frame style:UITableViewStylePlain];
+    _tableView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
 	_tableView.delegate = self;
 	_tableView.dataSource = self;
 
@@ -408,6 +393,10 @@
 		if (![tempIndexArray containsObject:[lib.name substringToIndex:1]])
 			[tempIndexArray addObject:[lib.name substringToIndex:1]];		
 	}
+    
+    if ([tempIndexArray count] < 8) {
+        return nil;
+    }
 	
 	NSArray *indexArray = (NSArray *)tempIndexArray;
 	
@@ -443,13 +432,7 @@
 	vc.lib = lib;
 	vc.otherLibraries = tempArray;
 	vc.currentlyDisplayingLibraryAtIndex = indexPath.section;
-	/*
-	if ([lib.library.type isEqualToString:@"archive"])
-		vc.title = @"Archive Detail";
-	
-	else
-		vc.title = @"Library Detail";
-	*/
+
     [self.navigationController pushViewController:vc animated:YES];
 
 	[vc release];

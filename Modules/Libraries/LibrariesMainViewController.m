@@ -475,6 +475,7 @@
 			HoursAndLocationsViewController *vc = [[HoursAndLocationsViewController alloc] init];
             vc.typeOfRepo = @"Libraries";
 			vc.title = @"Libraries";
+            vc.showBookmarks = NO;
             [self.navigationController pushViewController:vc animated:YES];
 			[vc release];
 		}
@@ -483,6 +484,7 @@
 		{
 			HoursAndLocationsViewController *vc = [[HoursAndLocationsViewController alloc] init];
 			vc.showArchives = YES;
+            vc.showBookmarks = NO;
             vc.typeOfRepo = @"Archives";
 			vc.title = @"Archives";
             [self.navigationController pushViewController:vc animated:YES];

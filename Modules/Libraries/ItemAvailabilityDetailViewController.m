@@ -322,7 +322,7 @@
 	
 	[self.tableView applyStandardColors];
     
-    NSString *hrsToday = [[[LibraryDataManager sharedManager] scheduleForLibID:requestedLibID] objectForKey:@"hrsOpenToday"];
+    NSString *hrsToday = [[[LibraryDataManager sharedManager] scheduleForLibID:libraryAlias.library.identityTag] objectForKey:@"hrsOpenToday"];
     
     if (hrsToday) {
         [self libraryDetailsDidLoad:nil];
@@ -341,7 +341,7 @@
 }
 
 - (void)libraryDetailsDidLoad:(NSNotification *)aNotification {
-    NSString *hrsToday = [[[LibraryDataManager sharedManager] scheduleForLibID:requestedLibID] objectForKey:@"hrsOpenToday"];
+    NSString *hrsToday = [[[LibraryDataManager sharedManager] scheduleForLibID:libraryAlias.library.identityTag] objectForKey:@"hrsOpenToday"];
     
     if ([hrsToday isEqualToString:@"closed"]) {
         self.openToday = [NSString stringWithString:@"Closed Today"];

@@ -146,18 +146,20 @@ static LibraryDataManager *s_sharedManager = nil;
         library = [CoreDataManager insertNewObjectForEntityForName:LibraryEntityName];
         library.identityTag = libID;
         library.isBookmarked = [NSNumber numberWithBool:NO];
-        
-        if (primaryName) {
-            library.primaryName = primaryName;
-            
-            // make sure there is an alias whose display name is the primary name
-            LibraryAlias *primaryAlias = [CoreDataManager insertNewObjectForEntityForName:LibraryAliasEntityName];
-            primaryAlias.library = library;
-            primaryAlias.name = library.primaryName;
-            
-            [CoreDataManager saveData];
-        }
     }
+    
+    if (primaryName) {
+        if (!library.primaryName)
+            library.primaryName = primaryName;
+        
+        // make sure there is an alias whose display name is the primary name
+        LibraryAlias *primaryAlias = [CoreDataManager insertNewObjectForEntityForName:LibraryAliasEntityName];
+        primaryAlias.library = library;
+        primaryAlias.name = library.primaryName;
+        
+        [CoreDataManager saveData];
+    }
+    
     return library;
 }
 
@@ -343,7 +345,6 @@ static LibraryDataManager *s_sharedManager = nil;
                 }
                 
                 NSString *isOpenNow = [libraryDictionary objectForKey:@"isOpenNow"];
-                //BOOL isOpen = [isOpenNow isEqualToString:@"YES"];
                 BOOL isOpen = [isOpenNow boolValue];
                 
                 if (isOpen) {
@@ -386,7 +387,7 @@ static LibraryDataManager *s_sharedManager = nil;
                 NSDictionary *libraryDictionary = [resultArray objectAtIndex:index];
                 
                 NSString * name = [libraryDictionary objectForKey:@"name"];
-                NSString * identityTag = [libraryDictionary objectForKey:@"id"];		
+                NSString * identityTag = [libraryDictionary objectForKey:@"id"];
                 NSString * type = [libraryDictionary objectForKey:@"type"];
                 
                 Library *library = [self libraryWithID:identityTag primaryName:nil];
@@ -394,7 +395,6 @@ static LibraryDataManager *s_sharedManager = nil;
                 LibraryAlias *alias = [self libraryAliasWithID:identityTag name:name];
                 
                 NSString *isOpenNow = [libraryDictionary objectForKey:@"isOpenNow"];
-                //BOOL isOpen = [isOpenNow isEqualToString:@"YES"];
                 BOOL isOpen = [isOpenNow boolValue];
                 
                 if (isOpen) {
@@ -527,6 +527,8 @@ static LibraryDataManager *s_sharedManager = nil;
                 [schedule setObject:value forKey:@"weeklyHours"];
             if (value = [libraryDictionary objectForKey:@"hoursOfOperationString"])
                 [schedule setObject:value forKey:@"hoursOfOperationString"];
+            if (value = [libraryDictionary objectForKey:@"hrsOpenToday"])
+                [schedule setObject:value forKey:@"hrsOpenToday"];
 
             [_schedulesByLibID setObject:schedule forKey:identityTag];
         }

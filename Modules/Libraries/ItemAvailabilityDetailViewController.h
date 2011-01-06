@@ -13,8 +13,6 @@
 
 @interface ItemAvailabilityDetailViewController : UITableViewController <LibraryDataManagerDelegate, UIActionSheetDelegate> {
 
-	LibraryItem * libItem;
-	
 	NSArray * availabilityCategories;
 	
 	NSArray * arrayWithAllLibraries;

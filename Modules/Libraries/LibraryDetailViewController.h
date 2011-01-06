@@ -14,7 +14,7 @@
 
 @class LibraryAlias;
 
-@interface LibraryDetailViewController : UITableViewController <MFMailComposeViewControllerDelegate, LibraryDataManagerDelegate> { //JSONAPIDelegate>{
+@interface LibraryDetailViewController : UITableViewController <MFMailComposeViewControllerDelegate, LibraryDataManagerDelegate> {
 	
 	UIButton * bookmarkButton;
 	
