@@ -19,6 +19,7 @@
 	
 	UIBarButtonItem * _viewTypeButton;
 	UITableView * _tableView;
+    NSArray *sectionIndexTitles;
 	
 	UISegmentedControl *segmentedControl;
 	UISegmentedControl * filterButtonControl;
@@ -50,5 +51,6 @@
 -(void)displayTypeChanged:(id)sender;
 -(void) gpsButtonPressed:(id)sender;
 -(void) setMapViewMode:(BOOL)showMap animated:(BOOL)animated; 
+- (void)setupSectionIndex;
 
 @end

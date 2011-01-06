@@ -127,7 +127,7 @@
 		[self.view addSubview:segmentedControl];
 	}
 	
-	
+	// map button
 	UIImage *gpsImage = [UIImage imageNamed:@"maps/map_button_icon_locate.png"];
 	NSArray *gpsArray = [NSArray arrayWithObjects: gpsImage, nil];
 	gpsButtonControl = [[UISegmentedControl alloc] initWithItems:gpsArray];
@@ -141,6 +141,7 @@
 	if (self.showingMapView == YES)
 		[self.view addSubview:gpsButtonControl];
 
+    // table view
     CGRect frame = CGRectMake(0, 0, self.view.frame.size.width, footerDisplacementFromTop);
     _tableView = [[UITableView alloc] initWithFrame:frame style:UITableViewStylePlain];
     _tableView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
@@ -154,6 +155,7 @@
 
 - (void)librariesDidLoad {
     [[NSNotificationCenter defaultCenter] removeObserver:self name:LibraryRequestDidCompleteNotification object:LibraryDataRequestLibraries];
+    [self setupSectionIndex];
     [_tableView reloadData];
 }
 
@@ -162,7 +164,21 @@
     [_tableView reloadData];
 }
 
-
+- (void)setupSectionIndex {
+	
+    // table section index
+    sectionIndexTitles = nil;
+    
+	NSMutableArray *tempIndexArray = [NSMutableArray array];
+	for(LibraryAlias *lib in [self currentLibraries]) {
+		if (![tempIndexArray containsObject:[lib.name substringToIndex:1]])
+			[tempIndexArray addObject:[lib.name substringToIndex:1]];		
+	}
+    
+    if ([tempIndexArray count] >= 8) {
+        sectionIndexTitles = [[NSArray alloc] initWithArray:tempIndexArray];
+    }
+}
 
 // called when user toggles "all" vs "open now" segment at the bottom
 - (void) pickOne:(id)sender{
@@ -312,6 +328,7 @@
     [segmentedControl release];
     [filterButtonControl release];
     [gpsButtonControl release];
+    [sectionIndexTitles release];
     
     self.typeOfRepo = nil;
     
@@ -339,10 +356,23 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    LibraryAlias * lib = [[self currentLibraries] objectAtIndex:indexPath.section];
+    
+    UIFont *cellFont = [UIFont fontWithName:BOLD_FONT size:17];
+    CGFloat width = tableView.frame.size.width - 20; // interior padding
+    if (sectionIndexTitles != nil) {
+        width -= 30;  // extra space for section index
+    }
+    CGFloat height = [lib.name sizeWithFont:cellFont].height; // first get one line
+    height = [lib.name sizeWithFont:cellFont constrainedToSize:CGSizeMake(width, height * 2.2) lineBreakMode:UILineBreakModeTailTruncation].height;
+
+    return height + 20; // top and bottom padding
+    
+    /*
 	LibraryAlias * lib = [[self currentLibraries] objectAtIndex:indexPath.section];
     NSString * cellText = lib.name;
     
-	UITableViewCellAccessoryType accessoryType = UITableViewCellAccessoryNone;
+	UITableViewCellAccessoryType accessoryType = UITableViewCellAccessoryDetailDisclosureButton;
 	
 	return [LibrariesMultiLineCell heightForCellWithStyle:UITableViewCellStyleDefault
                                                 tableView:tableView 
@@ -350,10 +380,11 @@
                                              maxTextLines:2
                                                detailText:nil
                                            maxDetailLines:0
-                                                     font:nil 
+                                                     font:[UIFont fontWithName:BOLD_FONT size:17] 
                                                detailFont:nil
                                             accessoryType:accessoryType
                                                 cellImage:NO];
+     */
 }
 
 
@@ -364,29 +395,41 @@
 	static NSString *optionsForMainViewTableStringConstant = @"listViewCellMultiLine";
 	LibrariesMultiLineCell *cell = nil;
 	
-	
 	cell = (LibrariesMultiLineCell *)[tableView dequeueReusableCellWithIdentifier:optionsForMainViewTableStringConstant];
 	if (cell == nil) {
 		cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:optionsForMainViewTableStringConstant] autorelease];
-		//cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-		cell.selectionStyle = UITableViewCellSelectionStyleGray;
 	}
 	cell.selectionStyle = UITableViewCellSelectionStyleGray;
-	cell.textLabel.numberOfLines = 2;
-    cell.textLabel.font = [UIFont fontWithName:BOLD_FONT size:17];
-    cell.textLabel.textColor = [UIColor colorWithHexString:@"#1A1611"];
-	
-	LibraryAlias * lib;
+    cell.textLabel.text = nil;
+
+	LibraryAlias * lib = [[self currentLibraries] objectAtIndex:indexPath.section];
     
-    lib = [[self currentLibraries] objectAtIndex:indexPath.section];
-    cell.textLabel.text = lib.name;
+    UIFont *cellFont = [UIFont fontWithName:BOLD_FONT size:17];
+    CGFloat width = tableView.frame.size.width - 40; // interior padding plus grouped table view padding
+    if (sectionIndexTitles != nil) {
+        width -= 30;  // extra space for section index
+    }
+    CGFloat height = [lib.name sizeWithFont:cellFont].height; // first get one line
+    height = [lib.name sizeWithFont:cellFont constrainedToSize:CGSizeMake(width, height * 2.2) lineBreakMode:UILineBreakModeWordWrap].height;
+    UILabel *textLabel = (UILabel *)[cell.contentView viewWithTag:325];
+    if (!textLabel) {
+        textLabel = [[[UILabel alloc] initWithFrame:CGRectMake(10, 10, width, height)] autorelease];
+        textLabel.font = cellFont;
+        textLabel.textColor = [UIColor colorWithHexString:@"#1A1611"];
+        textLabel.tag = 325;
+        textLabel.text = lib.name;
+        textLabel.numberOfLines = 2;
+        [cell.contentView addSubview:textLabel];
+    } else {
+        textLabel.frame = CGRectMake(10, 10, width, height);
+    }
     
     return cell;
 }
 
 
 - (NSArray *)sectionIndexTitlesForTableView:(UITableView *)tableView {
-	
+	/*
 	NSMutableArray *tempIndexArray = [NSMutableArray array];
 	
     NSArray *tempLibraries = [self currentLibraries];
@@ -403,6 +446,8 @@
 	NSArray *indexArray = (NSArray *)tempIndexArray;
 	
 	return indexArray;
+     */
+    return sectionIndexTitles;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView sectionForSectionIndexTitle:(NSString *)title atIndex:(NSInteger)index {
