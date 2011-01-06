@@ -52,5 +52,7 @@
 -(void) gpsButtonPressed:(id)sender;
 -(void) setMapViewMode:(BOOL)showMap animated:(BOOL)animated; 
 - (void)setupSectionIndex;
+- (void)librariesDidLoad;
+- (void)openLibrariesDidLoad;
 
 @end

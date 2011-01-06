@@ -65,6 +65,12 @@
                                                  selector:showingOnlyOpen ? @selector(openLibrariesDidLoad) : @selector(librariesDidLoad)
                                                      name:LibraryRequestDidCompleteNotification
                                                    object:showingOnlyOpen ? LibraryDataRequestOpenLibraries : LibraryDataRequestLibraries];
+    } else {
+        if (showingOnlyOpen) {
+            [self openLibrariesDidLoad];
+        } else {
+            [self librariesDidLoad];
+        }
     }
 }
 
@@ -160,6 +166,7 @@
 
 - (void)openLibrariesDidLoad {
     [[NSNotificationCenter defaultCenter] removeObserver:self name:LibraryRequestDidCompleteNotification object:LibraryDataRequestOpenLibraries];
+    [self setupSectionIndex];
     [_tableView reloadData];
 }
 
@@ -383,7 +390,6 @@
     cell.textLabel.text = nil;
 
 	LibraryAlias * lib = [[self currentLibraries] objectAtIndex:indexPath.section];
-    NSLog(@"%d %@", indexPath.section, lib.name);
     
     UIFont *cellFont = [UIFont fontWithName:BOLD_FONT size:17];
     CGFloat width = tableView.frame.size.width - 40; // interior padding plus grouped table view padding

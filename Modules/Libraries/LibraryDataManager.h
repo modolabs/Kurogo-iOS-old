@@ -86,8 +86,8 @@ NSInteger libraryNameSort(id lib1, id lib2, void *context);
 - (NSDictionary *)scheduleForLibID:(NSString *)libID;
 
 // these methods create core data objects as a side effect
-- (Library *)libraryWithID:(NSString *)libID primaryName:(NSString *)primaryName;
-- (LibraryAlias *)libraryAliasWithID:(NSString *)libID name:(NSString *)name;
+- (Library *)libraryWithID:(NSString *)libID type:(NSString *)type primaryName:(NSString *)primaryName;
+- (LibraryAlias *)libraryAliasWithID:(NSString *)libID type:(NSString *)type name:(NSString *)name;
 - (LibraryItem *)libraryItemWithID:(NSString *)itemID;
 
 #pragma mark API requests

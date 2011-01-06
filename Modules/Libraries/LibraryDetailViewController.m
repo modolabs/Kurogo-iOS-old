@@ -136,11 +136,10 @@ NSInteger phoneNumberSort(id num1, id num2, void *context){
 		
 	[self setDaysOfWeekArray];
 	
-	websiteRow = -1;
-	emailRow = -1;
-	phoneRow = -1;
-	
-	phoneNumbersArray = [[NSArray alloc] init];
+    NSSortDescriptor *sorter = [NSSortDescriptor sortDescriptorWithKey:@"sortOrder" ascending:YES];
+    [phoneNumbersArray release];
+    phoneNumbersArray = [[lib.library.phone sortedArrayUsingDescriptors:[NSArray arrayWithObject:sorter]] retain];
+    phoneNumbersArray = [[phoneNumbersArray sortedArrayUsingFunction:phoneNumberSort context:self] retain];
 }
 
 
@@ -221,27 +220,9 @@ NSInteger phoneNumberSort(id num1, id num2, void *context){
 -(void) bookmarkButtonToggled: (id) sender {
 	
     BOOL newBookmarkButtonStatus = !bookmarkButton.selected;
-	
-    //NSPredicate *pred = [NSPredicate predicateWithFormat:@"name == %@ AND type == %@", lib.name, lib.type];
-    NSPredicate *pred = [NSPredicate predicateWithFormat:@"identityTag like %@", lib.library.identityTag];
-    Library *alreadyInDB = [[CoreDataManager objectsForEntity:LibraryEntityName matchingPredicate:pred] lastObject];
     
-    if (nil == alreadyInDB){
-        return;
-    }
-    
-    if (newBookmarkButtonStatus) {
-        //[StellarModel saveClassToFavorites:stellarClass];
-        
-        bookmarkButton.selected = YES;
-        alreadyInDB.isBookmarked = [NSNumber numberWithBool:YES];
-    }
-    
-    else {
-        //[StellarModel removeClassFromFavorites:stellarClass];
-        bookmarkButton.selected = NO;
-        alreadyInDB.isBookmarked = [NSNumber numberWithBool:NO];
-    }
+    lib.library.isBookmarked = [NSNumber numberWithBool:newBookmarkButtonStatus];
+    bookmarkButton.selected = newBookmarkButtonStatus;
 	
 	[CoreDataManager saveData];
 }
@@ -306,29 +287,12 @@ NSInteger phoneNumberSort(id num1, id num2, void *context){
 	}
 	
 	else if (section == 2) {
+        
+        NSInteger count = [lib.library.websiteLib length] ? 1 : 0;
+        count += [lib.library.emailLib length] ? 1 : 0;
+        count += [lib.library.phone count];
 		
-		int count =0;
-		
-		if ([lib.library.websiteLib length] > 0){
-			websiteRow = count;
-			count++;
-		}
-		
-		if ([lib.library.emailLib length] > 0){
-			emailRow = count;
-			count++;
-		}
-		
-		if ([lib.library.phone count] > 0) {
-			phoneRow = count;
-			count = count + [lib.library.phone count];
-
-            NSSortDescriptor *sorter = [NSSortDescriptor sortDescriptorWithKey:@"sortOrder" ascending:YES];
-            [phoneNumbersArray release];
-			phoneNumbersArray = [[lib.library.phone sortedArrayUsingDescriptors:[NSArray arrayWithObject:sorter]] retain];
-			phoneNumbersArray = [[phoneNumbersArray sortedArrayUsingFunction:phoneNumberSort context:self] retain];
-		}
-		return count;
+        return count;
 	}
 	
 
@@ -341,51 +305,48 @@ NSInteger phoneNumberSort(id num1, id num2, void *context){
 	UIView * view = nil;
 		
 	if ((section == 1) && (lib.library.directions)) {
+        NSString *text = lib.library.directions;
+        UIFont *font = [UIFont fontWithName:STANDARD_FONT size:13];
+        CGFloat width = self.view.frame.size.width - 20;
+        CGFloat height = [text sizeWithFont:font
+                          constrainedToSize:CGSizeMake(width, 2000)         
+                              lineBreakMode:UILineBreakModeWordWrap].height;
+        
+        CGRect frame = CGRectMake(12.0, 5.0, width, height);
+
         if (!footerView) {
-            NSString *text = lib.library.directions;
-            UIFont *font = [UIFont fontWithName:STANDARD_FONT size:13];
-            
-            CGFloat width = self.view.frame.size.width - 20;
-            CGFloat height = [text sizeWithFont:font
-                              constrainedToSize:CGSizeMake(width, 2000)         
-                                  lineBreakMode:UILineBreakModeWordWrap].height;
-            
-            CGRect frame = CGRectMake(12.0, 5.0, self.view.frame.size.width - 20, height);
-            UILabel *footerLabel = [[[UILabel alloc] initWithFrame:frame] autorelease];
+            footerView = [[UIView alloc] initWithFrame:frame];
+        } else {
+            footerView.frame = frame;
+        }
+
+        UILabel *footerLabel = (UILabel *)[footerView viewWithTag:7687];
+        if (!footerLabel) {
+            footerLabel = [[[UILabel alloc] initWithFrame:frame] autorelease];
+            footerLabel.tag = 7687;
             footerLabel.text = text;
             footerLabel.font = font;
             footerLabel.textColor = [UIColor colorWithHexString:@"#554C41"];
             footerLabel.backgroundColor = [UIColor clearColor];	
             footerLabel.lineBreakMode = UILineBreakModeWordWrap;
             footerLabel.numberOfLines = 0;
-            
-            footerView = [[UIView alloc] initWithFrame:frame];
             [footerView addSubview:footerLabel];
+        } else {
+            footerLabel.frame = frame;
         }
+        
         view = footerView;
 	}
 	
 	return view;
 }
 
-- (UIView *)tableView: (UITableView *)tableView viewForHeaderInSection: (NSInteger)section{
-	return nil;
-}
-
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
-	if (section == 1) {
-		NSString * text;
-		if (lib.library.directions)
-			text = lib.library.directions;
-		
-		else {
-			text =  @"Directions placeholder";
-		}
-
-		CGFloat height = [text
-						  sizeWithFont:[UIFont fontWithName:STANDARD_FONT size:13]
-						  constrainedToSize:CGSizeMake(300, 2000)         
-						  lineBreakMode:UILineBreakModeWordWrap].height;
+	
+    if (section == 1 && lib.library.directions) {
+		CGFloat height = [lib.library.directions sizeWithFont:[UIFont fontWithName:STANDARD_FONT size:13]
+                                            constrainedToSize:CGSizeMake(300, 2000)
+                                                lineBreakMode:UILineBreakModeWordWrap].height;
 		
 		return height + 10;
 	}
@@ -393,155 +354,134 @@ NSInteger phoneNumberSort(id num1, id num2, void *context){
 	else return 0;
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
-{
-    if (section == 0)
-    {
-        return 45.0;
-    }	
-    else
-    {
-		return GROUPED_SECTION_HEADER_HEIGHT;
-    }
-    
-}
-
-
 // Customize the appearance of table view cells.
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
 	
+    NSString * cellIdentifier = [NSString stringWithFormat:@"%d", indexPath.section];
+    
+    if (indexPath.section == 0 && [weeklySchedule count] == 7 && indexPath.row == 3) {
+        UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"seeFullSchedule"];
+        if (cell == nil) {
+            cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier] autorelease];
+        }
+        cell.textLabel.font = [UIFont fontWithName:STANDARD_FONT size:17];
+        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+        cell.textLabel.text = @"Full week's schedule";
+        return cell;
+    }
+    
+    LibrariesMultiLineCell *cell = (LibrariesMultiLineCell *)[tableView dequeueReusableCellWithIdentifier:cellIdentifier];
+    if (cell == nil) {
+        cell = [[[LibrariesMultiLineCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:cellIdentifier] autorelease];
+        
+        cell.textLabel.font = [UIFont fontWithName:BOLD_FONT size:13];
+        cell.textLabel.textColor = [UIColor colorWithHexString:@"#554C41"];
+        
+        cell.detailTextLabel.font = [UIFont fontWithName:STANDARD_FONT size:17];
+        cell.detailTextLabel.textColor = [UIColor colorWithHexString:@"#1A1611"];
+
+		cell.selectionStyle = UITableViewCellSelectionStyleGray;
+    }
+    
+    cell.accessoryType = UITableViewCellAccessoryNone;
+    
 	if (indexPath.section == 0) {
-		NSString * CellTableIdentifier = @"LibDetailsHours";
-		
-		LibrariesMultiLineCell *cell = (LibrariesMultiLineCell *)[tableView dequeueReusableCellWithIdentifier:CellTableIdentifier];
-		
-		//cell = nil;
-		if (cell == nil)
-		{
-				cell = [[[LibrariesMultiLineCell alloc] initWithStyle:UITableViewCellStyleValue2 reuseIdentifier:CellTableIdentifier] autorelease];
-				cell.textLabelNumberOfLines = 1;
-			
-			cell.textLabel.textColor = [UIColor colorWithHexString:@"#554C41"];
-		}
-		
 		if ([weeklySchedule count] == 7){
 			if (indexPath.row <= 2) {
-				
 				cell.textLabel.text = [daysOfWeek objectAtIndex:indexPath.row];
-				
 				if ([weeklySchedule count] == [daysOfWeek count])
 					cell.detailTextLabel.text = [weeklySchedule objectForKey:[daysOfWeek objectAtIndex:indexPath.row]];
-				
-			}
-			else if (indexPath.row == 3){
-				cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-				cell.textLabel.text = @"    ";
-				cell.textLabel.textColor = [UIColor clearColor];
-				
-				cell.detailTextLabel.text = @"Full week's schedule";
 			}
 		}
 		else if ([weeklySchedule count] == 0){
-			cell.textLabel.text = @"     ";
+			cell.textLabel.text = nil;
 			cell.detailTextLabel.text = @"loading...";
 		}
 		else {
-
 			NSString * hoursString = [weeklySchedule objectForKey:[[weeklySchedule allKeys] objectAtIndex:0]];
 			
 			NSRange range = [hoursString rangeOfString:@"http"];
-			if (range.location != NSNotFound)
-			{
+			if (range.location != NSNotFound) {
 				hoursString = [hoursString substringFromIndex:range.location];
 				cell.textLabel.text = @"Hours";
 				cell.detailTextLabel.text = @"See webpage";
 				cell.accessoryView = [UIImageView accessoryViewWithMITType:MITAccessoryViewExternal];
-				cell.accessoryType = UITableViewCellAccessoryNone;
 			}
 			else{
 				cell.textLabel.text = [[weeklySchedule allKeys] objectAtIndex:0];
 				cell.detailTextLabel.text = [weeklySchedule objectForKey:[[weeklySchedule allKeys] objectAtIndex:0]];
 			}
 		}
-
 		
 		cell.selectionStyle = UITableViewCellSelectionStyleGray;
 		return cell;
 	}
 	else if (indexPath.section == 1) {
-		NSString * CellTableIdentifierLocation = @"LibLocationcell";
-		LibrariesMultiLineCell *cellForLocation = (LibrariesMultiLineCell *)[tableView dequeueReusableCellWithIdentifier:CellTableIdentifierLocation];
-		
-		cellForLocation = nil;
-		if (cellForLocation == nil)
-		{
-			cellForLocation = [[[LibrariesMultiLineCell alloc] initWithStyle:UITableViewCellStyleValue2 reuseIdentifier:CellTableIdentifierLocation] autorelease];
-			cellForLocation.textLabelNumberOfLines = 1;
-			
-			cellForLocation.textLabel.textColor = [UIColor colorWithHexString:@"#554C41"];
-		}
-			cellForLocation.textLabel.text = @"Location";
-			cellForLocation.detailTextLabel.text = lib.library.location;
-			cellForLocation.detailTextLabel.numberOfLines = 10;
-			cellForLocation.detailTextLabelNumberOfLines = 10;
-			cellForLocation.accessoryView = [UIImageView accessoryViewWithMITType:MITAccessoryViewMap];
-			cellForLocation.selectionStyle = UITableViewCellSelectionStyleGray;
-			return cellForLocation;
-		}
+        cell.textLabel.text = @"Location";
+        cell.detailTextLabel.text = lib.library.location;
+        cell.detailTextLabel.numberOfLines = 10;
+        cell.detailTextLabelNumberOfLines = 10;
+        cell.accessoryView = [UIImageView accessoryViewWithMITType:MITAccessoryViewMap];
+        cell.selectionStyle = UITableViewCellSelectionStyleGray;
+        return cell;
+    }
 	
 	else if (indexPath.section == 2) {
-		NSString * CellTableIdentifierContact = @"LibContactcell";
-		LibrariesMultiLineCell *cellForContact = (LibrariesMultiLineCell *)[tableView dequeueReusableCellWithIdentifier:CellTableIdentifierContact];
-		
-		cellForContact = nil;
-		if (cellForContact == nil)
-		{
-			cellForContact = [[[LibrariesMultiLineCell alloc] initWithStyle:UITableViewCellStyleValue2 reuseIdentifier:CellTableIdentifierContact] autorelease];
-			cellForContact.textLabelNumberOfLines = 1;
-			
-			cellForContact.textLabel.textColor = [UIColor colorWithHexString:@"#554C41"];
-		}
-	
-		if (indexPath.row == websiteRow) {
-			cellForContact.textLabel.text = @"Website";
-			NSRange range = [lib.library.websiteLib rangeOfString:@"http://"];
-			NSString * website = lib.library.websiteLib;
-			if (range.location != NSNotFound)
-				website = [lib.library.websiteLib substringFromIndex:range.location + range.length];
-			
-			cellForContact.detailTextLabel.text = website; //[lib.websiteLib //@"Visit Website";
-			cellForContact.accessoryView = [UIImageView accessoryViewWithMITType:MITAccessoryViewExternal];
-			
-		}
-		else if (indexPath.row == emailRow) {
-			cellForContact.textLabel.text = @"Email";
-			cellForContact.detailTextLabel.text = lib.library.emailLib;
-			cellForContact.accessoryView = [UIImageView accessoryViewWithMITType:MITAccessoryViewEmail];
-		}
-		
-		else if (indexPath.row >= phoneRow) {
-			
+
+        NSInteger proxyIndex = indexPath.row; // decrement this for each thing we don't lay out
+        BOOL complete = NO;
+        
+        if ([lib.library.websiteLib length]) {
+            if (proxyIndex == 0) {
+                cell.textLabel.text = @"Website";
+                NSRange range = [lib.library.websiteLib rangeOfString:@"http://"];
+                NSString * website = lib.library.websiteLib;
+                if (range.location != NSNotFound)
+                    website = [lib.library.websiteLib substringFromIndex:range.location + range.length];
+                
+                cell.detailTextLabel.text = website;
+                cell.accessoryView = [UIImageView accessoryViewWithMITType:MITAccessoryViewExternal];
+                
+                complete = YES;
+            } else {
+                proxyIndex--;
+            }
+        }
+        
+        if (!complete && [lib.library.emailLib length]) {
+            if (proxyIndex == 0) {
+                cell.textLabel.text = @"Email";
+                cell.detailTextLabel.text = lib.library.emailLib;
+                cell.accessoryView = [UIImageView accessoryViewWithMITType:MITAccessoryViewEmail];
+                
+                complete = YES;
+            } else {
+                proxyIndex--;
+            }
+        }
+        
+        if (!complete && [lib.library.phone count]) {
+
 			LibraryPhone * phone = nil;
-			if ([phoneNumbersArray count] > 0){
-				
-				phone = (LibraryPhone*)[phoneNumbersArray objectAtIndex:indexPath.row - phoneRow];
+			if ([phoneNumbersArray count]){
+				phone = (LibraryPhone*)[phoneNumbersArray objectAtIndex:proxyIndex];
 			}
 			
-			if (nil != phone){
-				cellForContact.textLabel.numberOfLines = 2;
+			if (nil != phone) {
+				cell.textLabel.numberOfLines = 2;
 				if ([phone.descriptionText length] > 0)
-					cellForContact.textLabel.text = phone.descriptionText;
+					cell.textLabel.text = phone.descriptionText;
 				else
-					cellForContact.textLabel.text = @"Phone";
+					cell.textLabel.text = @"Phone";
 				
 				if ([phone.phoneNumber length] > 0)
-					cellForContact.detailTextLabel.text = phone.phoneNumber;
-
-				cellForContact.accessoryView = [UIImageView accessoryViewWithMITType:MITAccessoryViewPhone];
+					cell.detailTextLabel.text = phone.phoneNumber;
+                
+				cell.accessoryView = [UIImageView accessoryViewWithMITType:MITAccessoryViewPhone];
 			}
-		}
-		cellForContact.selectionStyle = UITableViewCellSelectionStyleGray;
-		return cellForContact;
+        }
+        
+		return cell;
 	}
 	
     return nil;
@@ -599,30 +539,40 @@ NSInteger phoneNumberSort(id num1, id num2, void *context){
 	}
 	
 	else if (indexPath.section == 2) {
-
-		if (indexPath.row == websiteRow) {
-			NSString *url = lib.library.websiteLib;
-			
-			NSURL *libURL = [NSURL URLWithString:url];
-			if (libURL && [[UIApplication sharedApplication] canOpenURL:libURL]) {
-				[[UIApplication sharedApplication] openURL:libURL];
-			}
-			
-		}
-		else if (indexPath.row == emailRow) {
-			NSString *emailAdd = lib.library.emailLib;
-			
-			NSString *subject = NSLocalizedString(@"Library email subject", nil);
-			
-			[self emailTo:subject body:NSLocalizedString(@"Library email body", nil) email:emailAdd];
-		}
-		
-		else if (indexPath.row >= phoneRow) {
+        
+        NSInteger proxyIndex = indexPath.row; // decrement this for each thing we don't lay out
+        BOOL complete = NO;
+        
+        if ([lib.library.websiteLib length]) {
+            if (proxyIndex == 0) {
+                NSString *url = lib.library.websiteLib;
+                NSURL *libURL = [NSURL URLWithString:url];
+                if (libURL && [[UIApplication sharedApplication] canOpenURL:libURL]) {
+                    [[UIApplication sharedApplication] openURL:libURL];
+                }
+                complete = YES;
+            } else {
+                proxyIndex--;
+            }
+        }
+        
+        if (!complete && [lib.library.emailLib length]) {
+            if (proxyIndex == 0) {
+                NSString *emailAdd = lib.library.emailLib;
+                NSString *subject = NSLocalizedString(@"About your library", nil);
+                [self emailTo:subject body:@"" email:emailAdd];
+                
+                complete = YES;
+            } else {
+                proxyIndex--;
+            }
+        }
+        
+        if (!complete && [lib.library.phone count]) {
 			
 			LibraryPhone * phone = nil;
-			if ([phoneNumbersArray count] > 0){
-				
-				phone = (LibraryPhone*)[phoneNumbersArray objectAtIndex:indexPath.row - phoneRow];
+			if ([phoneNumbersArray count] > 0) {
+				phone = (LibraryPhone*)[phoneNumbersArray objectAtIndex:proxyIndex];
 			}
 			NSString * phoneNum = @""; 
 			NSString *phoneString = [phoneNum stringByReplacingOccurrencesOfString:@"-" withString:@""];
@@ -638,143 +588,102 @@ NSInteger phoneNumberSort(id num1, id num2, void *context){
 				}
 			}
 			
-			
 			NSURL *phoneURL = [NSURL URLWithString:[NSString stringWithFormat:@"tel://%@", phoneString]];
 			if ([[UIApplication sharedApplication] canOpenURL:phoneURL]) {
 				[[UIApplication sharedApplication] openURL:phoneURL];
 			}
-		}
+        }
 
 	}
 	
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
-{	
-	NSString *cellText = nil;
-	UIFont *cellFont = nil;
-	NSString *detailText = nil;
-    UITableViewCellAccessoryType accessoryType;
-	//CGFloat constraintWidth;
-	
+{
+    NSString *detailText = nil;
+    UITableViewCellAccessoryType accessoryType = UITableViewCellAccessoryNone;
+    
 	if (indexPath.section == 0) {
-		
 		if ([weeklySchedule count] == 7){
-			cellText = [daysOfWeek objectAtIndex:indexPath.row];
-			detailText = [weeklySchedule objectForKey:[daysOfWeek objectAtIndex:indexPath.row]];
-			//accessoryType = nil;
-		}
-		
-		else if ([[weeklySchedule allKeys] count] == 0){
-			cellText = @"     ";
+			if (indexPath.row <= 2) {
+				if ([weeklySchedule count] == [daysOfWeek count])
+					detailText = [weeklySchedule objectForKey:[daysOfWeek objectAtIndex:indexPath.row]];
+                
+			} else if (indexPath.row == 3){
+
+                return tableView.rowHeight;
+			}
+		} else if ([weeklySchedule count] == 0){
 			detailText = @"loading...";
 		}
 		else {
-			cellText = [[weeklySchedule allKeys] objectAtIndex:0];
-			detailText= [weeklySchedule objectForKey:[[weeklySchedule allKeys] objectAtIndex:0]];
-            
-            // commenting out the code below to expose data we're getting
-            /*
+            DLog(@"number of weekly schedule items: %d", [weeklySchedule count]);
 			NSString * hoursString = [weeklySchedule objectForKey:[[weeklySchedule allKeys] objectAtIndex:0]];
 			
 			NSRange range = [hoursString rangeOfString:@"http"];
-			if (range.location != NSNotFound)
-			{
-				cellText = @"Hours";
-				detailText = @"See webpage";
-				accessoryType = UITableViewCellAccessoryNone;
+			if (range.location != NSNotFound) {
+                detailText = @"See webpage";
+                accessoryType = UITableViewCellAccessoryDetailDisclosureButton;
 			}
-			else{
-                // TODO: don't use -[[x allKeys] objectAtIndex:y] unless this is supposed to be random
-				cellText = [[weeklySchedule allKeys] objectAtIndex:0];
+			else {
 				detailText = [weeklySchedule objectForKey:[[weeklySchedule allKeys] objectAtIndex:0]];
 			}
-             */
 		}
-	}
-	else if (indexPath.section == 1) {
-		cellText =  @"Location";
-		
-		if ([lib.library.location length] > 0) {
-			detailText = lib.library.location;
-		} else {
-			detailText = @"Location not available"; // placholder
-		}
-
-		accessoryType = UITableViewCellAccessoryDetailDisclosureButton;
-		
-	}
-	else {
-		cellText = @"";
-		detailText = @"";
-		
-		if (indexPath.row == websiteRow) {
-			NSString *url = lib.library.websiteLib;
-			detailText = url;
-		}
-		else if (indexPath.row == emailRow) {
-			NSString *email = lib.library.emailLib;
-			detailText = email;
-            accessoryType = UITableViewCellAccessoryDetailDisclosureButton;
-		}
-		
-		else if (indexPath.row >= phoneRow) {
-			
+        
+	} else if (indexPath.section == 1) {
+        accessoryType = UITableViewCellAccessoryDetailDisclosureButton;
+        detailText = lib.library.location;
+        
+    } else if (indexPath.section == 2) {
+        accessoryType = UITableViewCellAccessoryDetailDisclosureButton;
+        
+        NSInteger proxyIndex = indexPath.row; // decrement this for each thing we don't lay out
+        BOOL complete = NO;
+        
+        if ([lib.library.websiteLib length]) {
+            if (proxyIndex == 0) {
+                NSRange range = [lib.library.websiteLib rangeOfString:@"http://"];
+                detailText = lib.library.websiteLib;
+                if (range.location != NSNotFound)
+                    detailText = [lib.library.websiteLib substringFromIndex:range.location + range.length];
+                complete = YES;
+            } else {
+                proxyIndex--;
+            }
+        }
+        
+        if (!complete && [lib.library.emailLib length]) {
+            if (proxyIndex == 0) {
+                detailText = lib.library.emailLib;
+                complete = YES;
+            } else {
+                proxyIndex--;
+            }
+        }
+        
+        if (!complete && [lib.library.phone count]) {
+            
 			LibraryPhone * phone = nil;
-			if ([phoneNumbersArray count] > 0){
-				
-				phone = (LibraryPhone*)[phoneNumbersArray objectAtIndex:indexPath.row - phoneRow];
+			if ([phoneNumbersArray count]){
+				phone = (LibraryPhone*)[phoneNumbersArray objectAtIndex:proxyIndex];
+                detailText = phone.phoneNumber;
 			}
-			
-			if (nil != phone){
-				if ([phone.descriptionText length] > 0)
-					cellText = phone.descriptionText;
-				else
-					cellText = @"Phone";
-				
-				if ([phone.phoneNumber length] > 0)
-					detailText = phone.phoneNumber;
-				
-				accessoryType = UITableViewCellAccessoryDetailDisclosureButton;
-			}
-			
-			return [LibrariesMultiLineCell heightForCellWithStyle:UITableViewCellStyleValue2
-														tableView:tableView 
-															 text:cellText
-													 maxTextLines:2
-													   detailText:detailText
-												   maxDetailLines:2
-															 font:cellFont 
-													   detailFont:cellFont
-													accessoryType:accessoryType
-														cellImage:NO];
-		}
+        }
 	}
-	
-	CGFloat height = [detailText
-					  sizeWithFont:[UIFont fontWithName:BOLD_FONT size:STANDARD_CONTENT_FONT_SIZE]
-					  constrainedToSize:CGSizeMake(self.tableView.frame.size.width*2/3, 500)         
-					  lineBreakMode:UILineBreakModeWordWrap].height;
-	
-	/*if (indexPath.section == 1)
-		return height;
-	 */
-	
-	if (indexPath.section == 0)	{
-		return [LibrariesMultiLineCell heightForCellWithStyle:UITableViewCellStyleValue2
-                                                    tableView:tableView 
-                                                         text:cellText
-                                                 maxTextLines:1
-                                                   detailText:detailText
-                                               maxDetailLines:10
-                                                         font:cellFont 
-                                                   detailFont:cellFont
-                                                accessoryType:accessoryType
-                                                    cellImage:NO];
-	
-    } else { 
-        return height + 20;
-    }
+    
+    UIFont *cellFont = [UIFont fontWithName:BOLD_FONT size:13];
+    UIFont *detailFont = [UIFont fontWithName:STANDARD_FONT size:17];
+    
+    return [LibrariesMultiLineCell heightForCellWithStyle:UITableViewCellStyleSubtitle
+                                                tableView:tableView 
+                                                     text:@"title"
+                                             maxTextLines:1
+                                               detailText:detailText
+                                           maxDetailLines:2
+                                                     font:cellFont 
+                                               detailFont:detailFont
+                                            accessoryType:accessoryType
+                                                cellImage:NO];
 }
 
 

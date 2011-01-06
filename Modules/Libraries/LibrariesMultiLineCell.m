@@ -93,7 +93,7 @@
         height = [text sizeWithFont:font].height;
     } else {
         height = [text sizeWithFont:font].height;
-        CGSize size = CGSizeMake(width, height * maxLines);
+        CGSize size = CGSizeMake(width, height * maxLines * 1.1);
         height = [text sizeWithFont:font constrainedToSize:size lineBreakMode:UILineBreakModeWordWrap].height;
     }
     //DLog(@"height for label with text %@ and width %.1f is %.1f", text, width, height);
@@ -181,7 +181,6 @@
                                                                   maxLines:self.detailTextLabel.numberOfLines];
         self.detailTextLabel.frame = frame;
         
-        NSString *text = self.detailTextLabel.text;
         // for cells with detail text only...
         // if the OS is more aggressive with accessory sizes,
         // it will make the text narrower and taller

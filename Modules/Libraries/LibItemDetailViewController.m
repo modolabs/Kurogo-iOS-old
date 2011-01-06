@@ -822,10 +822,10 @@
             NSString * primaryName = [((NSDictionary *)[libDict objectForKey:@"details"]) objectForKey:@"primaryName"];
             
             // create library if it doesn't exist already
-            Library *library = [[LibraryDataManager sharedManager] libraryWithID:libId primaryName:primaryName];
+            Library *library = [[LibraryDataManager sharedManager] libraryWithID:libId type:type primaryName:primaryName];
             library.type = type;
             
-            LibraryAlias *alias = [[LibraryDataManager sharedManager] libraryAliasWithID:libId name:libName];
+            LibraryAlias *alias = [[LibraryDataManager sharedManager] libraryAliasWithID:libId type:type name:libName];
             ItemAvailabilityDetailViewController *vc = [[ItemAvailabilityDetailViewController alloc] initWithStyle:UITableViewStyleGrouped];
 			vc.title = @"Availability";
             vc.libraryItem = libItem;
@@ -837,7 +837,7 @@
 			[self.navigationController pushViewController:vc animated:YES];
 			[vc release];
 		}
-		}
+    }
 		
 }	
 
@@ -885,8 +885,9 @@
     for (NSDictionary * tempDict in availabilityData) {
         NSString * displayName = [tempDict objectForKey:@"name"];
         NSString * identityTag = [tempDict objectForKey:@"id"];
+        NSString * type = [tempDict objectForKey:@"type"];
     
-        LibraryAlias *alias = [[LibraryDataManager sharedManager] libraryAliasWithID:identityTag name:displayName];
+        LibraryAlias *alias = [[LibraryDataManager sharedManager] libraryAliasWithID:identityTag type:type name:displayName];
         [displayLibraries addObject:alias];
     }
     

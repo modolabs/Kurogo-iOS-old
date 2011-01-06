@@ -81,12 +81,12 @@ static LibraryDataManager *s_sharedManager = nil;
         
         BOOL isUpdated = YES;
         
-        if (-[librariesDate timeIntervalSinceNow] < 24 * 60 * 60) {
+        if (-[librariesDate timeIntervalSinceNow] > 24 * 60 * 60) {
             isUpdated = NO;
             [self requestLibraries];
         }
 
-        if (-[archivesDate timeIntervalSinceNow] < 24 * 60 * 60) {
+        if (-[archivesDate timeIntervalSinceNow] > 24 * 60 * 60) {
             isUpdated = NO;
             [self requestArchives];
         }
@@ -103,6 +103,7 @@ static LibraryDataManager *s_sharedManager = nil;
                         [_allArchives addObject:alias];
                     }
                     else if ([alias.library.type isEqualToString: @"library"]) {
+                        NSLog(@"%@ %@ %@", alias.name, alias.library.identityTag, alias.library.primaryName);
                         [_allLibraries addObject:alias];
                     }
                 }
@@ -139,23 +140,31 @@ static LibraryDataManager *s_sharedManager = nil;
 
 #pragma mark Database methods
 
-- (Library *)libraryWithID:(NSString *)libID primaryName:(NSString *)primaryName {
-    NSPredicate *pred = [NSPredicate predicateWithFormat:@"identityTag like %@", libID];
+- (Library *)libraryWithID:(NSString *)libID type:(NSString *)type primaryName:(NSString *)primaryName {
+    NSPredicate *pred = [NSPredicate predicateWithFormat:@"identityTag like %@ AND type like %@", libID, type];
     Library *library = [[CoreDataManager objectsForEntity:LibraryEntityName matchingPredicate:pred] lastObject];
     if (!library) {
         library = [CoreDataManager insertNewObjectForEntityForName:LibraryEntityName];
         library.identityTag = libID;
+        library.type = type;
         library.isBookmarked = [NSNumber numberWithBool:NO];
     }
     
     if (primaryName) {
-        if (!library.primaryName)
+        BOOL needTOSave = NO;
+        if (!library.primaryName) {
+            needTOSave = YES;
             library.primaryName = primaryName;
+        }
         
-        // make sure there is an alias whose display name is the primary name
-        LibraryAlias *primaryAlias = [CoreDataManager insertNewObjectForEntityForName:LibraryAliasEntityName];
-        primaryAlias.library = library;
-        primaryAlias.name = library.primaryName;
+        NSPredicate *pred = [NSPredicate predicateWithFormat:@"name like %@", primaryName];
+        LibraryAlias *primaryAlias = [[library.aliases filteredSetUsingPredicate:pred] anyObject];
+        if (!primaryAlias) {
+            // make sure there is an alias whose display name is the primary name
+            primaryAlias = [CoreDataManager insertNewObjectForEntityForName:LibraryAliasEntityName];
+            primaryAlias.library = library;
+            primaryAlias.name = library.primaryName;
+        }
         
         [CoreDataManager saveData];
     }
@@ -163,8 +172,8 @@ static LibraryDataManager *s_sharedManager = nil;
     return library;
 }
 
-- (LibraryAlias *)libraryAliasWithID:(NSString *)libID name:(NSString *)name {
-    Library *theLibrary = [self libraryWithID:libID primaryName:nil];
+- (LibraryAlias *)libraryAliasWithID:(NSString *)libID type:(NSString *)type name:(NSString *)name {
+    Library *theLibrary = [self libraryWithID:libID type:type primaryName:nil];
     LibraryAlias *alias = nil;
     if (theLibrary) {
         NSPredicate *pred = [NSPredicate predicateWithFormat:@"name like %@", name];
@@ -330,14 +339,14 @@ static LibraryDataManager *s_sharedManager = nil;
                 
                 NSString * type = [libraryDictionary objectForKey:@"type"];
                 
-                Library *library = [self libraryWithID:identityTag primaryName:primaryName];
+                Library *library = [self libraryWithID:identityTag type:type primaryName:primaryName];
                 // if library was just created in core data, the following properties will be saved when alias is created
                 library.location = location;
                 library.lat = [NSNumber numberWithDouble:[latitude doubleValue]];
                 library.lon = [NSNumber numberWithDouble:[longitude doubleValue]];
                 library.type = type;
                 
-                LibraryAlias *alias = [self libraryAliasWithID:identityTag name:name];
+                LibraryAlias *alias = [self libraryAliasWithID:identityTag type:type name:name];
                 if ([command isEqualToString:LibraryDataRequestLibraries]) {
                     [_allLibraries addObject:alias];
                 } else {
@@ -390,9 +399,9 @@ static LibraryDataManager *s_sharedManager = nil;
                 NSString * identityTag = [libraryDictionary objectForKey:@"id"];
                 NSString * type = [libraryDictionary objectForKey:@"type"];
                 
-                Library *library = [self libraryWithID:identityTag primaryName:nil];
+                Library *library = [self libraryWithID:identityTag type:type primaryName:nil];
                 library.type = type; // saveData will be called if the alias we create below is new
-                LibraryAlias *alias = [self libraryAliasWithID:identityTag name:name];
+                LibraryAlias *alias = [self libraryAliasWithID:identityTag type:type name:name];
                 
                 NSString *isOpenNow = [libraryDictionary objectForKey:@"isOpenNow"];
                 BOOL isOpen = [isOpenNow boolValue];
@@ -483,10 +492,11 @@ static LibraryDataManager *s_sharedManager = nil;
             NSString *website = [libraryDictionary objectForKey:@"website"];
             NSString *email = [libraryDictionary objectForKey:@"email"];            
             NSArray * phoneNumberArray = (NSArray *)[libraryDictionary objectForKey:@"phone"];
+            NSString *type = [libraryDictionary objectForKey:@"type"];
 
-            Library *lib = [self libraryWithID:identityTag primaryName:primaryName];
+            Library *lib = [self libraryWithID:identityTag type:type primaryName:primaryName];
             
-            [self libraryAliasWithID:identityTag name:name];
+            [self libraryAliasWithID:identityTag type:type name:name];
             
             lib.websiteLib = website;
             lib.emailLib = email;
@@ -601,14 +611,12 @@ static LibraryDataManager *s_sharedManager = nil;
 		if ([JSONObject isKindOfClass:[NSArray class]]) {
 			
 			for (NSDictionary * tempDict in (NSArray *)JSONObject) {
-                //NSArray * collections = (NSArray *)[tempDict objectForKey:@"collection"];
-				
 				NSString * displayName = [tempDict objectForKey:@"name"];
                 NSString * identityTag = [tempDict objectForKey:@"id"];
                 NSString * type        = [tempDict objectForKey:@"type"];
                 
-                Library *lib = [self libraryWithID:identityTag primaryName:nil];
-                [self libraryAliasWithID:identityTag name:displayName];
+                Library *lib = [self libraryWithID:identityTag type:type primaryName:nil];
+                [self libraryAliasWithID:identityTag type:type name:displayName];
                 
                 if ([lib.lat doubleValue] == 0) {
                     [self requestDetailsForLibType:type libID:identityTag libName:displayName];

@@ -394,12 +394,12 @@
 				NSDictionary * tempDict = [arrayWithAllLibraries objectAtIndex:tempLibIndex];		
 				NSString * libName = [tempDict objectForKey:@"name"];
 				NSString * libId = [tempDict objectForKey:@"id"];
-				NSString * typeTemp = [tempDict objectForKey:@"type"];
+				NSString * type = [tempDict objectForKey:@"type"];
 				
 				NSArray * collections = (NSArray *)[tempDict objectForKey:@"collection"];
                 
                 currentIndex = tempLibIndex;
-                self.libraryAlias = [[LibraryDataManager sharedManager] libraryAliasWithID:libId name:libName];
+                self.libraryAlias = [[LibraryDataManager sharedManager] libraryAliasWithID:libId type:type name:libName];
 
                 [availabilityCategories release];
                 availabilityCategories = [collections retain];
