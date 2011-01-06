@@ -256,7 +256,7 @@ static LibraryDataManager *s_sharedManager = nil;
     JSONAPIRequest *api = [JSONAPIRequest requestWithJSONAPIDelegate:self];
     api.userData = LibraryDataRequestItemDetail;
     
-    NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:item.itemId, @"itemid", nil];
+    NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:item.itemId, @"itemId", nil];
     if ([api requestObjectFromModule:@"libraries" command:LibraryDataRequestItemDetail parameters:params]) {
         [anytimeRequests addObject:api];
     }
@@ -266,7 +266,7 @@ static LibraryDataManager *s_sharedManager = nil;
     JSONAPIRequest *api = [JSONAPIRequest requestWithJSONAPIDelegate:self];
     api.userData = LibraryDataRequestAvailability;
     
-    NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:itemID, @"itemid", nil];
+    NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:itemID, @"itemId", nil];
     if ([api requestObjectFromModule:@"libraries" command:LibraryDataRequestAvailability parameters:params]) {
         [anytimeRequests addObject:api];
     }
@@ -276,7 +276,7 @@ static LibraryDataManager *s_sharedManager = nil;
     JSONAPIRequest *api = [JSONAPIRequest requestWithJSONAPIDelegate:self];
     api.userData = LibraryDataRequestThumbnail;
     
-    NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:itemID, @"itemid", nil];
+    NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:itemID, @"itemId", nil];
     if ([api requestObjectFromModule:@"libraries" command:LibraryDataRequestThumbnail parameters:params]) {
         [anytimeRequests addObject:api];
     }
@@ -611,7 +611,7 @@ static LibraryDataManager *s_sharedManager = nil;
                 }
 			}
             
-            NSString *itemID = [request.params objectForKey:@"itemid"];
+            NSString *itemID = [request.params objectForKey:@"itemId"];
             
             for (id<LibraryItemDetailDelegate> aDelegate in itemDelegates) {
                 [aDelegate availabilityDidLoadForItemID:itemID result:(NSArray *)JSONObject];
@@ -688,7 +688,7 @@ static LibraryDataManager *s_sharedManager = nil;
     NSString *command = request.userData;
 #pragma mark Failure - Item Availability
     if ([command isEqualToString:LibraryDataRequestAvailability]) {
-        NSString *itemID = [request.params objectForKey:@"itemid"];
+        NSString *itemID = [request.params objectForKey:@"itemId"];
         
         for (id<LibraryItemDetailDelegate> aDelegate in itemDelegates) {
             [aDelegate availabilityFailedToLoadForItemID:itemID];
@@ -702,7 +702,7 @@ static LibraryDataManager *s_sharedManager = nil;
         //}
 #pragma mark Failure - Item Detail
     } else if ([command isEqualToString:LibraryDataRequestItemDetail]) {
-        NSString *itemID = [request.params objectForKey:@"itemid"];
+        NSString *itemID = [request.params objectForKey:@"itemId"];
         
         for (id<LibraryItemDetailDelegate> aDelegate in itemDelegates) {
             [aDelegate detailsFailedToLoadForItemID:itemID];

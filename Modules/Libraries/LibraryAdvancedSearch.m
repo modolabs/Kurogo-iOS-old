@@ -218,43 +218,34 @@
 	
 }
 
--(void) search{
+-(void) search {
+    
+    NSMutableDictionary *searchParams = [NSMutableDictionary dictionary];
+    if ([keywords.text length]) {
+        [searchParams setObject:keywords.text forKey:@"keywords"];
+    }
+    if ([titleKeywords.text length]) {
+        [searchParams setObject:titleKeywords.text forKey:@"title"];
+    }
+    if ([authorKeywords.text length]) {
+        [searchParams setObject:authorKeywords.text forKey:@"author"];
+    }
 	
-	NSString * keyword = keywords.text;
-	if ([keyword length] == 0)
-		keyword = @"\"\"";
-	NSString * titleStr = titleKeywords.text;
-	if ([titleStr length] == 0)
-		titleStr =  @"\"\"";
-	NSString * authorStr = authorKeywords.text;
-	if ([authorStr length] == 0)
-		authorStr =  @"\"\"";
-	
-	
-	NSString * parameterQ = [NSString stringWithFormat:@"%@+title:%@+author:%@", keyword, titleStr, authorStr];
-	
-	if (englishSwitch.selected)
-		parameterQ = [parameterQ stringByAppendingFormat:@"+language-id:eng"];
-	
-	DLog(@"q=%@", parameterQ);
-	
-	NSString * formatStr = @""; // Nothing selected or first item selected (first item is "all")
+	if (englishSwitch.selected) {
+        [searchParams setObject:@"eng" forKey:@"language"];
+    }
+    
 	int formatRow = [formatPickerView selectedRowInComponent:0];
 	
 	if (formatRow > 0) {
-		formatStr = ((LibraryItemFormat *)[formatArray objectAtIndex:formatRow]).code;	
+        [searchParams setObject:((LibraryItemFormat *)[formatArray objectAtIndex:formatRow]).code forKey:@"format"];
 	}
 	
-	NSString * locationStr = @""; // Nothing selected or first item selected (first item is "all")
 	int libraryRow = [locationPickerView selectedRowInComponent:0];
 	
 	if (libraryRow > 0) {
-		locationStr = ((LibraryLocation *)[libraryArray objectAtIndex:libraryRow]).code;
+        [searchParams setObject:((LibraryLocation *)[libraryArray objectAtIndex:libraryRow]).code forKey:@"location"];
 	}
-	
-	
-	DLog(@"fmt=%@", formatStr);
-	DLog(@"lib=%@", locationStr);
 	
 	LibrariesSearchViewController *vc = [[LibrariesSearchViewController alloc] initWithViewController: nil];
 	vc.title = @"Search Results";
@@ -265,32 +256,12 @@
     
 	JSONAPIRequest * apiRequest = [JSONAPIRequest requestWithJSONAPIDelegate:vc];
 	
-	BOOL requestWasDispatched = [apiRequest requestObjectFromModule:@"libraries"
+	[apiRequest requestObjectFromModule:@"libraries"
                                                 command:@"search"
-                                             parameters:[NSDictionary dictionaryWithObjectsAndKeys:
-														 parameterQ, @"q", 
-														 formatStr, @"fmt",
-														 locationStr, @"lib",
-														 nil]];
-	
-    if (requestWasDispatched) {
-		vc.searchTerms = parameterQ;
-        if (formatRow != -1) {
-            vc.formatIndex = formatRow;
-            DLog(@"Setting format row to %d", formatRow);
-        }
-        if (libraryRow != -1) {
-            vc.locationIndex = libraryRow;
-            DLog(@"Setting location row to %d", libraryRow);
-        }
-		[self.navigationController pushViewController:vc animated:YES];
-    } else {
-        //[self handleWarningMessage:@"Could not dispatch search" title:@"Search Failed"];
-    }
-	
+                                             parameters:searchParams];
+    [self.navigationController pushViewController:vc animated:YES];
+    
 	[vc release];
-	
-	
 }
 
 #pragma mark User Actions 

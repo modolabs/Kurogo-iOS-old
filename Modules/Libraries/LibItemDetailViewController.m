@@ -275,7 +275,7 @@
 			apiRequest = [JSONAPIRequest requestWithJSONAPIDelegate:vc];
 			BOOL requestWasDispatched = [apiRequest requestObjectFromModule:@"libraries"
 														command:@"search"
-													 parameters:[NSDictionary dictionaryWithObjectsAndKeys:libItem.author, @"q", nil]];
+													 parameters:[NSDictionary dictionaryWithObjectsAndKeys:libItem.author, @"author", nil]];
 			
 			if (requestWasDispatched) {
 				vc.searchTerms = libItem.author;

@@ -414,7 +414,7 @@
 	JSONAPIRequest *api = [JSONAPIRequest requestWithJSONAPIDelegate:self];
 	requestWasDispatched = [api requestObjectFromModule:@"libraries"
                                                 command:@"search"
-                                             parameters:[NSDictionary dictionaryWithObjectsAndKeys:self.searchTerms, @"q", nil]];
+                                             parameters:[NSDictionary dictionaryWithObjectsAndKeys:self.searchTerms, @"keywords", nil]];
 	
 }
 
@@ -447,6 +447,11 @@
         if (total) {
             actualCount = [total integerValue];
         }
+        NSString *query = [(NSDictionary *)result objectForKey:@"q"];
+
+        self.searchTerms = query;
+        self.searchBar.text = query;
+        
         NSArray *items = [(NSDictionary *)result objectForKey:@"items"];
         
         [self.searchBar addDropShadow];

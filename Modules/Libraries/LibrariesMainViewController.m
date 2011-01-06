@@ -301,7 +301,7 @@
 	JSONAPIRequest *api = [JSONAPIRequest requestWithJSONAPIDelegate:vc];
 	BOOL requestWasDispatched = [api requestObjectFromModule:@"libraries"
                                                      command:@"search"
-                                                  parameters:[NSDictionary dictionaryWithObjectsAndKeys:self.searchTerms, @"q", nil]];
+                                                  parameters:[NSDictionary dictionaryWithObjectsAndKeys:self.searchTerms, @"keywords", nil]];
 	
     if (requestWasDispatched) {
 		vc.searchTerms = searchBar.text;
