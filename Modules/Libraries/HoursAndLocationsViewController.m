@@ -373,6 +373,8 @@
 	}
 	cell.selectionStyle = UITableViewCellSelectionStyleGray;
 	cell.textLabel.numberOfLines = 2;
+    cell.textLabel.font = [UIFont fontWithName:BOLD_FONT size:17];
+    cell.textLabel.textColor = [UIColor colorWithHexString:@"#1A1611"];
 	
 	LibraryAlias * lib;
     
