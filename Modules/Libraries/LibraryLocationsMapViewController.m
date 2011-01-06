@@ -189,8 +189,8 @@
         double latDelta = maxLat - minLat;
         double lonDelta = maxLon - minLon;
         
-        //if (latDelta < 0.002) latDelta = 0.002;
-        //if (lonDelta < 0.002) lonDelta = 0.002;
+        if (latDelta < 0.002) latDelta = 0.002;
+        if (lonDelta < 0.002) lonDelta = 0.002;
 		
         region = MKCoordinateRegionMake(center, MKCoordinateSpanMake(latDelta + latDelta / 4 , lonDelta + lonDelta / 4));        
     }
@@ -223,13 +223,7 @@
     
     LibraryAlias * lib = (LibraryAlias *)((LibraryAnnotation *)view.annotation).libAlias;
     vc.lib = lib;
-    /*
-    if ([lib.library.type isEqualToString:@"archive"])
-        vc.title = @"Archive Detail";
-    
-    else
-        vc.title = @"Library Detail";
-    */
+
     int indexSelected = 0;
     int tempIndex = 0;
     for(LibraryAlias * libTemp in allLibraries){
