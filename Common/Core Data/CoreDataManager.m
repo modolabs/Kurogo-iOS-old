@@ -160,7 +160,7 @@
         [request setSortDescriptors:sortDescriptors];
     }
 	
-	NSError *error;
+	NSError *error = nil;
 	NSArray *objects = [self.managedObjectContext executeFetchRequest:request error:&error];
 
     return ([objects count] > 0) ? objects : nil;

@@ -10,7 +10,6 @@
 #import "MITUIConstants.h"
 #import "ModoSearchBar.h"
 #import "MITSearchDisplayController.h"
-//#import "MITLoadingActivityView.h"
 #import "HoursAndLocationsViewController.h"
 #import "LibrariesSearchViewController.h"
 #import "CoreDataManager.h"
@@ -20,8 +19,7 @@
 #import "JSONAPIRequest.h"
 
 @implementation LibrariesMainViewController
-@synthesize searchTerms, /*searchResults,*/ searchController;
-//@synthesize loadingView;
+@synthesize searchTerms, searchController;
 @synthesize searchBar = theSearchBar, tableView = _tableView;
 
 
@@ -33,8 +31,6 @@
 	theSearchBar.tintColor = SEARCH_BAR_TINT_COLOR;
 	theSearchBar.placeholder = @"HOLLIS keyword search";
 	theSearchBar.showsBookmarkButton = NO; // use custom bookmark button
-	//if ([self.searchTerms length] > 0)
-	//	theSearchBar.text = self.searchTerms;
 	
 	theSearchBar.text = @"";
 	
@@ -117,11 +113,10 @@
 
 - (void)setupBookmarks {
 	
-	//hasBookmarkedItems = NO;
 	hasBookmarkedLibraries = NO;
 	
 	NSPredicate *pred = [NSPredicate predicateWithFormat:@"isBookmarked == YES"];
-    [bookmarkedItems release];
+    [bookmarkedLibraries release];
 	bookmarkedLibraries = [[CoreDataManager objectsForEntity:LibraryEntityName matchingPredicate:pred] retain];
 	
 	if ([bookmarkedLibraries count] > 0)
@@ -150,7 +145,6 @@
 	[super viewDidLoad];
 	[self setUpLayOut];
 	[self setupBookmarks];
-    
 }	
 
 - (void)viewWillAppear:(BOOL)animated
@@ -162,7 +156,6 @@
     [self setupBookmarks];
 
 	[self.tableView reloadData];
-
 }
 
 
@@ -170,16 +163,9 @@
     [super viewDidUnload];
 	
 	self.searchController = nil;
-
-    [theSearchBar release];
-	theSearchBar = nil;
+    self.searchBar = nil;
 	
-	//self.searchResults = nil;
-
 	self.tableView = nil;
-	
-	//self.loadingView = nil;
-	//api = nil;
 	
     [_bookmarkButton release];
 	_bookmarkButton = nil;
@@ -192,6 +178,9 @@
 	
     [bookmarkedLibraries release];
 	bookmarkedLibraries = nil;
+    
+    [bookmarkedItems release];
+    bookmarkedItems = nil;
 	
 }
 
@@ -199,17 +188,14 @@
 - (void)dealloc {
 	self.searchController = nil;
 	
-	//self.searchResults = nil;
-    //self.loadingView = nil;
-    
-    //[api release];
-	
     self.tableView = nil;
+    self.searchTerms = nil;
+    self.searchBar = nil;
 
-    [theSearchBar release];
     [_bookmarkButton release];
     [mainViewTableOptions1 release];
     [mainViewTableOptions2 release];
+    
     [bookmarkedLibraries release];
     [bookmarkedItems release];
 
@@ -223,16 +209,6 @@
 	// Release any cached data, images, etc that aren't in use.
 }
 
-- (void)bookmarkButtonClicked:(UIButton *)sender {
-	
-    HoursAndLocationsViewController *vc = [[HoursAndLocationsViewController alloc] init];
-    vc.showBookmarks = YES;
-	vc.title = @"Bookmarked Libraries";
-    
-    [self.navigationController pushViewController:vc animated:YES];
-    [vc release];
-}
-
 - (void)bookmarkItemButtonClicked:(UIButton *)sender {
 	
 	BookmarkedLibItemListView *vc = [[BookmarkedLibItemListView alloc] initWithStyle:UITableViewStylePlain];
@@ -244,7 +220,7 @@
 
 - (void)setupSearchController {
     if (!self.searchController) {
-        self.searchController = [[MITSearchDisplayController alloc] initWithSearchBar:theSearchBar contentsController:self];
+        self.searchController = [[[MITSearchDisplayController alloc] initWithSearchBar:theSearchBar contentsController:self] autorelease];
         self.searchController.delegate = self;
     }
 }
@@ -278,14 +254,6 @@
 
 - (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar
 {
-    /*
-	self.searchResults = nil;
-	// if they cancelled while waiting for loading
-	if (requestWasDispatched) {
-		//[api abortRequest];
-		//[self cleanUpConnection];
-	}
-    */
 	[self restoreToolBar];
 }
 
@@ -324,61 +292,6 @@
     [self.view addSubview:self.searchController.searchResultsTableView];
     [self.searchBar addDropShadow];
     [self.searchController.searchResultsTableView reloadData];
-}
-*/
-
-/*
-#pragma mark -
-#pragma mark Connection methods
-
-- (void)showLoadingView {
-	// manually add loading view because we're not using the built-in data source table
-	if (self.loadingView == nil) {
-        self.loadingView = [[MITLoadingActivityView alloc] initWithFrame:self.tableView.frame];
-	}
-	
-	[self.tableView addSubview:self.loadingView];
-    [self.searchBar addDropShadow];
-}
-
-- (void)cleanUpConnection {
-	requestWasDispatched = NO;
-	[self.loadingView removeFromSuperview];	
-}
-
-- (void)request:(JSONAPIRequest *)request jsonLoaded:(id)result {
-    [self cleanUpConnection];
-	
-    if (result) {
-        DLog(@"%@", [result description]);
-        
-        if ([result isKindOfClass:[NSDictionary class]]) {
-            NSString *message = [result objectForKey:@"error"];
-            if (message) {
-                [self handleWarningMessage:message title:NSLocalizedString(@"Search Failed", nil)];
-            }
-        } else if ([result isKindOfClass:[NSArray class]]) {
-            self.searchResults = result;
-			self.searchController.searchResultsTableView.frame = self.tableView.frame;
-			[self.view addSubview:self.searchController.searchResultsTableView];
-			[self.searchBar addDropShadow];
-			
-			[self.searchController.searchResultsTableView reloadData];
-        }
-    }
-	else {
-		self.searchResults = nil;
-	}
-}
-
-- (BOOL)request:(JSONAPIRequest *)request shouldDisplayAlertForError:(NSError *)error
-{
-    return YES;
-}
-
-- (void)request:(JSONAPIRequest *)request handleConnectionError:(NSError *)error
-{
-	[self cleanUpConnection];
 }
 */
 
@@ -517,40 +430,7 @@
 			
 			vc.title = @"Advanced Search";
             [self.navigationController pushViewController:vc animated:YES];
-			
-            /*
-			NSPredicate *matchAll = [NSPredicate predicateWithFormat:@"TRUEPREDICATE"];
-			NSArray *tempArray = [CoreDataManager objectsForEntity:LibraryEntityName matchingPredicate:matchAll];
-			
-			if ([tempArray count] == 0){
-                JSONAPIRequest *apiRequest = [JSONAPIRequest requestWithJSONAPIDelegate:vc];
-				//apiRequest = [[JSONAPIRequest alloc] initWithJSONAPIDelegate:vc];	
-				
-				if ([apiRequest requestObjectFromModule:@"libraries" 
-												command:@"searchcodes" 
-											 parameters:nil] == YES)
-				{
-					[self.navigationController pushViewController:vc animated:YES];
-				}
-				else {
-					UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil
-																		message:NSLocalizedString(@"Could not connect to server. Please try again later.", nil)
-																	   delegate:self 
-															  cancelButtonTitle:@"OK" 
-															  otherButtonTitles:nil];
-					[alertView show];
-					[alertView release];
-				}
-				
-			}
-			else {
-				[self.navigationController pushViewController:vc animated:YES];
-				
-			}
-			*/
 			[vc release];
-			
-			
 		}
 		else if (indexPath.row == 1){ // mobile research links
 			

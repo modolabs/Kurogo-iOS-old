@@ -17,14 +17,9 @@
 	MITSearchDisplayController *searchController;
 	ModoSearchBar *theSearchBar;
 	
-	//NSArray *searchResults;
 	NSString *searchTerms;
 	
 	UITableView *_tableView;
-	
-	//UIView *loadingView;
-	//BOOL requestWasDispatched;
-	//JSONAPIRequest *api;
 	
 	// a custom button since we are not using the default bookmark button
 	UIButton* _bookmarkButton;
@@ -37,22 +32,14 @@
 	
 	BOOL hasBookmarkedLibraries;
 	BOOL hasBookmarkedItems;
-	
-	//JSONAPIRequest *apiRequest;
 }
 
 @property (nonatomic, retain) UITableView *tableView;
 @property (nonatomic, retain) MITSearchDisplayController *searchController;
-//@property (nonatomic, retain) NSArray *searchResults;
 @property (nonatomic, retain) NSString *searchTerms;
 @property (nonatomic, retain) ModoSearchBar *searchBar;
-//@property (nonatomic, retain) UIView *loadingView;
 
 -(void) setUpLayOut;
 -(void) hideToolBar;
-
-//- (void)presentSearchResults:(NSArray *)theSearchResults;
-//- (void)showLoadingView;
-//- (void)cleanUpConnection;
 
 @end
