@@ -47,25 +47,29 @@ NSInteger phoneNumberSort(id num1, id num2, void *context){
         self.title = @"Library Detail";
     }
 	
-	UISegmentedControl *segmentControl = [[UISegmentedControl alloc] initWithItems:[NSArray arrayWithObjects:
-																					[UIImage imageNamed:MITImageNameUpArrow],
-																					[UIImage imageNamed:MITImageNameDownArrow], nil]];
-	[segmentControl setMomentary:YES];
-	[segmentControl addTarget:self action:@selector(showNextLibrary:) forControlEvents:UIControlEventValueChanged];
-	segmentControl.segmentedControlStyle = UISegmentedControlStyleBar;
-	segmentControl.frame = CGRectMake(0, 0, 80.0, segmentControl.frame.size.height);
-	UIBarButtonItem * segmentBarItem = [[UIBarButtonItem alloc] initWithCustomView: segmentControl];
-	self.navigationItem.rightBarButtonItem = segmentBarItem;
-	
-	if (currentlyDisplayingLibraryAtIndex == 0)
-		[segmentControl setEnabled:NO forSegmentAtIndex:0];
-	
-	if (currentlyDisplayingLibraryAtIndex == [otherLibraries count] - 1)
-		[segmentControl setEnabled:NO forSegmentAtIndex:1];
-	
-	[segmentControl release];
-	[segmentBarItem release];
-	
+    if ([otherLibraries count] > 1) {
+        UISegmentedControl *segmentControl = [[UISegmentedControl alloc] initWithItems:[NSArray arrayWithObjects:
+                                                                                        [UIImage imageNamed:MITImageNameUpArrow],
+                                                                                        [UIImage imageNamed:MITImageNameDownArrow], nil]];
+        [segmentControl setMomentary:YES];
+        [segmentControl addTarget:self action:@selector(showNextLibrary:) forControlEvents:UIControlEventValueChanged];
+        segmentControl.segmentedControlStyle = UISegmentedControlStyleBar;
+        segmentControl.frame = CGRectMake(0, 0, 80.0, segmentControl.frame.size.height);
+        UIBarButtonItem * segmentBarItem = [[UIBarButtonItem alloc] initWithCustomView: segmentControl];
+        self.navigationItem.rightBarButtonItem = segmentBarItem;
+        
+        if (currentlyDisplayingLibraryAtIndex == 0)
+            [segmentControl setEnabled:NO forSegmentAtIndex:0];
+        
+        if (currentlyDisplayingLibraryAtIndex == [otherLibraries count] - 1)
+            [segmentControl setEnabled:NO forSegmentAtIndex:1];
+        
+        [segmentControl release];
+        [segmentBarItem release];
+
+    } else {
+        self.navigationItem.rightBarButtonItem = nil;
+    }
 	
 	//headerView = nil; 
 	NSString * libraryName;
