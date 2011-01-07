@@ -92,7 +92,7 @@
 	if (nil == _advancedSearchButton) {
         UIImage *buttonImage = [[UIImage imageNamed:@"global/subheadbar_button"] stretchableImageWithLeftCapWidth:10 topCapHeight:0];
         NSString *buttonText = @"Refine";
-        UIFont *buttonFont = [UIFont fontWithName:BOLD_FONT size:12];
+        UIFont *buttonFont = [UIFont fontWithName:BOLD_FONT size:13];
         CGSize textSize = [buttonText sizeWithFont:buttonFont];
         CGRect appFrame = [[UIScreen mainScreen] applicationFrame];
         
