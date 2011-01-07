@@ -17,7 +17,7 @@
 #import "AnalyticsWrapper.h"
 
 // extra vertical padding above top row of main icons
-#define GRID_TOP_MARGIN 5.5f
+#define GRID_TOP_MARGIN 5.0f
 
 // horizontal spacing between main icons
 // 0.0 for four icons per row
@@ -29,7 +29,7 @@
 #define SECONDARY_GRID_HPADDING 20.0f
 
 // vertical spacing between icons
-#define GRID_VPADDING 26.0f
+#define GRID_VPADDING 18.0f
 
 // height to allocate to icon text label
 #define ICON_LABEL_HEIGHT 23.0f
@@ -38,7 +38,7 @@
 #define ICON_PADDING 5.0f
 
 // vertical padding above secondary (utility) icons
-#define SECONDARY_GRID_TOP_PADDING 8.0f
+#define SECONDARY_GRID_TOP_PADDING 42.0f
 
 @interface SpringboardViewController (Private)
 
