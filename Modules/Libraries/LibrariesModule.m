@@ -8,7 +8,7 @@
 
 #import "LibrariesModule.h"
 #import "LibrariesMainViewController.h"
-
+#import "CoreDataManager.h"
 
 @implementation LibrariesModule
 
@@ -27,6 +27,13 @@
 		
     }
     return self;
+}
+
+- (void)applicationWillTerminate {
+    // get rid of library items that aren't bookmarked
+    NSPredicate *notBookmarked = [NSPredicate predicateWithFormat:@"isBookmarked != YES"];
+    NSArray *discardLibItems = [CoreDataManager objectsForEntity:LibraryItemEntityName matchingPredicate:notBookmarked];
+    [CoreDataManager deleteObjects:discardLibItems];
 }
 
 @end

@@ -74,13 +74,9 @@
     [self setupLayout];
     
     if (!libItem.catalogLink) { // cataloglink is something itemdetail returns but search does not
-        [[LibraryDataManager sharedManager] requestDetailsForItem:libItem];
-    } else {
         [self detailsDidLoadForItem:libItem];
     }
-    if (![[libItem.formatDetail lowercaseString] isEqualToString:@"image"]) {
-        [[LibraryDataManager sharedManager] requestFullAvailabilityForItem:libItem.itemId];
-    }
+    [[LibraryDataManager sharedManager] requestDetailsForItem:libItem];
 
     // subscribe to libdetail notifications in case LibraryDataManager gets more info
     // while loading full availability
@@ -431,18 +427,14 @@
 		return 0;
 	}
 	
-	/*
 	if (section == 0) {
-		BOOL val = [libItem.isOnline boolValue];
-		if (val == YES) {
+        if ([libItem.onlineLink length]) {
 			return 1;
 		}
-		else {
-			return 0;
-		}
+        return 0;
 	}
 	
-	else */ if (section == 1){
+	else if (section == 1){
 		if ([locationsWithItem count] == 0)
 			return 1;
 		
@@ -476,26 +468,21 @@
 	}
 	
 	if (indexPath.section == 0) {
-		/*
-		UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-		if (cell == nil) {
-			cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
-		}
-		cell.selectionStyle = UITableViewCellSelectionStyleGray;
 		
-		BOOL val = [libItem.isOnline boolValue];
-		if (val == YES) {
+		if ([libItem.onlineLink length]) {
+            UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+            if (cell == nil) {
+                cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
+            }
+            cell.selectionStyle = UITableViewCellSelectionStyleGray;
 			cell.textLabel.text = @"Available Online";
 			cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+            
+            return cell;
 		}
 		else {
-			cell.textLabel.text = @"Not Available Online";
-			cell.selectionStyle = UITableViewCellSelectionStyleNone;
+            return nil;
 		}
-
-		return cell;
-        */
-        return nil;
 	}
 	
 	else if (indexPath.section == 1) {
@@ -789,27 +776,19 @@
 				[[UIApplication sharedApplication] openURL:urlToOpen];
 			}
 		}
-		
-		return ;
 	}
 	
-	if (indexPath.section == 0){
-		/*
-		BOOL val = [libItem.isOnline boolValue];
-		if (val == YES) {
-			
-			NSString *url = libItem.onlineLink;
-			
-			NSURL *libURL = [NSURL URLWithString:url];
+	else if (indexPath.section == 0){
+        if ([libItem.onlineLink length]) {
+			NSURL *libURL = [NSURL URLWithString:libItem.onlineLink];
 			if (libURL && [[UIApplication sharedApplication] canOpenURL:libURL]) {
 				[[UIApplication sharedApplication] openURL:libURL];
 			}
 		}
-        */
 	}
 	
 	
-	if ([locationsWithItem count]) {
+	else if ([locationsWithItem count]) {
 
 		NSDictionary * libDict = [locationsWithItem objectAtIndex:indexPath.row];		
 		NSArray * collections = (NSArray *)[libDict objectForKey:@"collection"];
@@ -902,10 +881,12 @@
     
     [self.tableView reloadData];
     
-    locationManager = [[CLLocationManager alloc] init];
-    locationManager.distanceFilter = kCLDistanceFilterNone;
-    locationManager.desiredAccuracy = kCLLocationAccuracyBest;
-    locationManager.delegate = self;
+    if (!locationManager) {
+        locationManager = [[CLLocationManager alloc] init];
+        locationManager.distanceFilter = kCLDistanceFilterNone;
+        locationManager.desiredAccuracy = kCLLocationAccuracyBest;
+        locationManager.delegate = self;
+    }
     
     [locationManager startUpdatingLocation];
     
@@ -930,7 +911,7 @@
         libItem = [aLibItem retain];
     }
     
-    if (aLibItem.formatDetail && [[libItem.formatDetail lowercaseString] isEqualToString:@"image"]) {
+    if (libItem.formatDetail && [[libItem.formatDetail lowercaseString] isEqualToString:@"image"]) {
         UIImage *image = [aLibItem thumbnailImage];
         if (image) {
             
@@ -980,17 +961,26 @@
             [self.tableView.tableHeaderView addSubview:count];
             [self.tableView setTableHeaderView:self.tableView.tableHeaderView]; // force resize of header
         }
+    
+        [self removeLoadingIndicator];
         [self.tableView reloadData];
+
     } else {
         [self setupLayout];
+        [[LibraryDataManager sharedManager] requestFullAvailabilityForItem:libItem.itemId];
     }
-    
-    [self removeLoadingIndicator];
 }
 
 - (void)detailsFailedToLoadForItemID:(NSString *)itemID {
+    if (![libItem.itemId isEqualToString:itemID]) {
+        return;
+    }
+    if (libItem.formatDetail && [[libItem.formatDetail lowercaseString] isEqualToString:@"image"]) {
+        [self removeLoadingIndicator];
+    }
 }
 
+// only called for non-image types
 - (void)libraryDetailsDidLoad:(NSNotification *)aNotification {
     [self.tableView reloadData];
 }
@@ -1070,8 +1060,10 @@
     DLog(@"current location is %@", [currentLocation description]);
     
 	[locationManager stopUpdatingLocation];
-	[self.tableView reloadData];
-
+    
+    if ([locationsWithItem count]) {
+        [self.tableView reloadData];
+    }
 }
 
 - (void)locationManager:(CLLocationManager *)manager monitoringDidFailForRegion:(CLRegion *)region withError:(NSError *)error{
@@ -1105,7 +1097,9 @@
     
     if (coord.latitude) {
         currentLocation = [[CLLocation alloc] initWithLatitude:coord.latitude longitude:coord.longitude];
-        [self.tableView reloadData];
+        if ([locationsWithItem count]) {
+            [self.tableView reloadData];
+        }
     }
 #endif
 }

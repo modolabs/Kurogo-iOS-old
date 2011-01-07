@@ -452,8 +452,6 @@
         
         for (NSDictionary * libraryDictionary in items) {
             
-            //actualCount = [[libraryDictionary objectForKey:@"totalResults"] intValue];
-            
             NSString * title = [libraryDictionary objectForKey:@"title"];
             NSString *author = [libraryDictionary objectForKey:@"creator"];
             

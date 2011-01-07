@@ -58,8 +58,7 @@ NSInteger libraryNameSort(id lib1, id lib2, void *context);
 
 @interface LibraryDataManager : NSObject <JSONAPIDelegate> {
     
-    NSMutableDictionary *oneTimeRequests;
-    NSMutableArray *anytimeRequests;
+    NSMutableDictionary *activeRequests;
     
     NSMutableSet *delegates;
     NSMutableSet *itemDelegates;

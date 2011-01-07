@@ -61,8 +61,7 @@ static LibraryDataManager *s_sharedManager = nil;
 
 - (id)init {
     if (self = [super init]) {
-        oneTimeRequests = [[NSMutableDictionary alloc] init];
-        anytimeRequests = [[NSMutableArray alloc] init];
+        activeRequests = [[NSMutableDictionary alloc] init];
         
         _allLibraries = [[NSMutableArray alloc] init];
         _allArchives = [[NSMutableArray alloc] init];
@@ -203,7 +202,7 @@ static LibraryDataManager *s_sharedManager = nil;
 #pragma mark -
 
 - (void)makeOneTimeRequestWithCommand:(NSString *)command {
-    JSONAPIRequest *api = [oneTimeRequests objectForKey:command];
+    JSONAPIRequest *api = [activeRequests objectForKey:command];
     if (api) {
         [api abortRequest];
     }
@@ -211,7 +210,7 @@ static LibraryDataManager *s_sharedManager = nil;
     api.userData = command;
     
     if ([api requestObjectFromModule:@"libraries" command:command parameters:nil]) {
-        [oneTimeRequests setObject:api forKey:command];
+        [activeRequests setObject:api forKey:command];
     }
 }
 
@@ -253,7 +252,7 @@ static LibraryDataManager *s_sharedManager = nil;
     else if ([libOrArchive isEqualToString:@"archive"])
         libOrArchive = LibraryDataRequestArchiveDetail;
     
-    JSONAPIRequest *api = [oneTimeRequests objectForKey:libOrArchive];
+    JSONAPIRequest *api = [activeRequests objectForKey:libOrArchive];
     if (api) {
         [api abortRequest];
     }
@@ -263,13 +262,12 @@ static LibraryDataManager *s_sharedManager = nil;
 
     NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:libID, @"id", libName, @"name", nil];
     if ([api requestObjectFromModule:@"libraries" command:libOrArchive parameters:params]) {
-        [oneTimeRequests setObject:api forKey:libOrArchive];
-        //[anytimeRequests addObject:api];
+        [activeRequests setObject:api forKey:libOrArchive];
     }
 }
 
 - (void)requestDetailsForItem:(LibraryItem *)item {
-    JSONAPIRequest *api = [oneTimeRequests objectForKey:LibraryDataRequestItemDetail];
+    JSONAPIRequest *api = [activeRequests objectForKey:LibraryDataRequestItemDetail];
     if (api) {
         [api abortRequest];
     }
@@ -279,13 +277,12 @@ static LibraryDataManager *s_sharedManager = nil;
     
     NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:item.itemId, @"itemId", nil];
     if ([api requestObjectFromModule:@"libraries" command:LibraryDataRequestItemDetail parameters:params]) {
-        [oneTimeRequests setObject:api forKey:LibraryDataRequestItemDetail];
-        //[anytimeRequests addObject:api];
+        [activeRequests setObject:api forKey:LibraryDataRequestItemDetail];
     }
 }
 
 - (void)requestFullAvailabilityForItem:(NSString *)itemID {
-    JSONAPIRequest *api = [oneTimeRequests objectForKey:LibraryDataRequestAvailability];
+    JSONAPIRequest *api = [activeRequests objectForKey:LibraryDataRequestAvailability];
     if (api) {
         [api abortRequest];
     }
@@ -295,13 +292,12 @@ static LibraryDataManager *s_sharedManager = nil;
     
     NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:itemID, @"itemId", nil];
     if ([api requestObjectFromModule:@"libraries" command:LibraryDataRequestAvailability parameters:params]) {
-        [oneTimeRequests setObject:api forKey:LibraryDataRequestAvailability];
-        //[anytimeRequests addObject:api];
+        [activeRequests setObject:api forKey:LibraryDataRequestAvailability];
     }
 }
 
 - (void)requestThumbnailForItem:(NSString *)itemID {
-    JSONAPIRequest *api = [oneTimeRequests objectForKey:LibraryDataRequestThumbnail];
+    JSONAPIRequest *api = [activeRequests objectForKey:LibraryDataRequestThumbnail];
     if (api) {
         [api abortRequest];
     }
@@ -311,13 +307,12 @@ static LibraryDataManager *s_sharedManager = nil;
     
     NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:itemID, @"itemId", nil];
     if ([api requestObjectFromModule:@"libraries" command:LibraryDataRequestThumbnail parameters:params]) {
-        [oneTimeRequests setObject:api forKey:LibraryDataRequestThumbnail];
-        //[anytimeRequests addObject:api];
+        [activeRequests setObject:api forKey:LibraryDataRequestThumbnail];
     }
 }
 
 - (void)searchLibraries:(NSString *)searchTerms {
-    JSONAPIRequest *api = [oneTimeRequests objectForKey:LibraryDataRequestSearch];
+    JSONAPIRequest *api = [activeRequests objectForKey:LibraryDataRequestSearch];
     if (api) {
         [api abortRequest];
     }
@@ -327,8 +322,7 @@ static LibraryDataManager *s_sharedManager = nil;
     
     NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:searchTerms, @"q", nil];
     if ([api requestObjectFromModule:@"libraries" command:LibraryDataRequestSearch parameters:params]) {
-        [oneTimeRequests setObject:api forKey:LibraryDataRequestSearch];
-        //[anytimeRequests addObject:api];
+        [activeRequests setObject:api forKey:LibraryDataRequestSearch];
     }
 }
 
@@ -411,7 +405,7 @@ static LibraryDataManager *s_sharedManager = nil;
         }
         [[NSUserDefaults standardUserDefaults] synchronize];
         
-        [oneTimeRequests removeObjectForKey:command];
+        [activeRequests removeObjectForKey:command];
         
     }
 #pragma mark Success - Open Now
@@ -447,7 +441,7 @@ static LibraryDataManager *s_sharedManager = nil;
             [_allOpenLibraries sortUsingFunction:libraryNameSort context:self];
             [_allOpenArchives sortUsingFunction:libraryNameSort context:self];
             
-            [oneTimeRequests removeObjectForKey:command];
+            [activeRequests removeObjectForKey:command];
             
         }
     }
@@ -502,7 +496,7 @@ static LibraryDataManager *s_sharedManager = nil;
         
         [CoreDataManager saveData];
         
-        [oneTimeRequests removeObjectForKey:command];
+        [activeRequests removeObjectForKey:command];
 
     }
 #pragma mark Success - Library/Archive Detail
@@ -572,8 +566,7 @@ static LibraryDataManager *s_sharedManager = nil;
             [_schedulesByLibID setObject:schedule forKey:identityTag];
         }
         
-        //[anytimeRequests removeObject:request];
-        [oneTimeRequests removeObjectForKey:command];
+        [activeRequests removeObjectForKey:command];
         
     }
 #pragma mark Success - Item Detail
@@ -626,6 +619,13 @@ static LibraryDataManager *s_sharedManager = nil;
                 libItem.typeDetail = [formatDict objectForKey:@"typeDetail"];
             }
             
+            NSArray *identifier = [result objectForKey:@"identifier"];
+            for (NSDictionary *aDict in identifier) {
+                if ([[aDict objectForKey:@"type"] isEqualToString:@"NET"]) {
+                    libItem.onlineLink = [aDict objectForKey:@"typeDetail"];
+                }
+            }
+            
             [CoreDataManager saveData];
                         
             for (id<LibraryItemDetailDelegate> aDelegate in itemDelegates) {
@@ -633,8 +633,7 @@ static LibraryDataManager *s_sharedManager = nil;
             }
 		}
         
-        //[anytimeRequests removeObject:request];
-        [oneTimeRequests removeObjectForKey:command];
+        [activeRequests removeObjectForKey:command];
         
     }
 #pragma mark Success - Item Availability
@@ -662,8 +661,7 @@ static LibraryDataManager *s_sharedManager = nil;
             }
         }
         
-        //[anytimeRequests removeObject:request];
-        [oneTimeRequests removeObjectForKey:command];
+        [activeRequests removeObjectForKey:command];
 
     }
 #pragma mark Success - Image Thumbnail
@@ -698,15 +696,13 @@ static LibraryDataManager *s_sharedManager = nil;
             //}
 		}
         
-        //[anytimeRequests removeObject:request];
-        [oneTimeRequests removeObjectForKey:command];
+        [activeRequests removeObjectForKey:command];
 
     }
 #pragma mark Success - Search
     else if ([command isEqualToString:LibraryDataRequestSearch]) {
         
-        //[anytimeRequests removeObject:request];
-        [oneTimeRequests removeObjectForKey:command];
+        [activeRequests removeObjectForKey:command];
     } else {
         
         return;
@@ -759,14 +755,13 @@ static LibraryDataManager *s_sharedManager = nil;
         || [command isEqualToString:LibraryDataRequestOpenLibraries]
         || [command isEqualToString:LibraryDataRequestSearchCodes])
     {
-        [oneTimeRequests removeObjectForKey:command];
+        [activeRequests removeObjectForKey:command];
         
     } else if ([command isEqualToString:LibraryDataRequestLibraryDetail]
                || [command isEqualToString:LibraryDataRequestArchiveDetail]
                || [command isEqualToString:LibraryDataRequestSearch])
     {
-        //[anytimeRequests removeObject:request];
-        [oneTimeRequests removeObjectForKey:command];
+        [activeRequests removeObjectForKey:command];
         
     } else {
         
@@ -782,14 +777,10 @@ static LibraryDataManager *s_sharedManager = nil;
 }
 
 - (void)dealloc {
-    for (JSONAPIRequest *api in anytimeRequests) {
+    for (JSONAPIRequest *api in [activeRequests allValues]) {
         api.jsonDelegate = nil;
     }
-    for (JSONAPIRequest *api in [oneTimeRequests allValues]) {
-        api.jsonDelegate = nil;
-    }
-    [anytimeRequests release];
-    [oneTimeRequests release];
+    [activeRequests release];
 
     [delegates release];
     [itemDelegates release];
