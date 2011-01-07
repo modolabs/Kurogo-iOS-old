@@ -40,8 +40,6 @@
 	
 	BOOL displayImage;
 	UIView * thumbnail;
-	
-	NSString * fullImageLink;
 }
 
 @property BOOL bookmarkButtonIsOn;

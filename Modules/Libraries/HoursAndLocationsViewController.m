@@ -12,10 +12,13 @@
 #import "CoreDataManager.h"
 #import "Constants.h"
 #import "LibraryAlias.h"
+#import "MITLoadingActivityView.h"
 
 @interface HoursAndLocationsViewController (Private)
 
 - (NSArray *)currentLibraries;
+- (void)showLoadingIndicator;
+- (void)hideLoadingIndicator;
 
 @end
 
@@ -65,7 +68,12 @@
                                                  selector:showingOnlyOpen ? @selector(openLibrariesDidLoad) : @selector(librariesDidLoad)
                                                      name:LibraryRequestDidCompleteNotification
                                                    object:showingOnlyOpen ? LibraryDataRequestOpenLibraries : LibraryDataRequestLibraries];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(hideLoadingIndicator)
+                                                     name:LibraryRequestDidFailNotification
+                                                   object:showingOnlyOpen ? LibraryDataRequestOpenLibraries : LibraryDataRequestLibraries];
+        [self showLoadingIndicator];
         [[LibraryDataManager sharedManager] updateLibraryList];
+
     } else {
         if (showingOnlyOpen) {
             [self openLibrariesDidLoad];
@@ -75,6 +83,16 @@
     }
 }
 
+- (void)showLoadingIndicator {
+    MITLoadingActivityView *view = [[[MITLoadingActivityView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)] autorelease];
+    view.tag = 4484;
+    [self.view addSubview:view];
+}
+
+- (void)hideLoadingIndicator {
+    UIView *view = [self.view viewWithTag:4484];
+    [view removeFromSuperview];
+}
 
 -(void) viewDidLoad {
     
@@ -161,12 +179,14 @@
 
 - (void)librariesDidLoad {
     [[NSNotificationCenter defaultCenter] removeObserver:self name:LibraryRequestDidCompleteNotification object:LibraryDataRequestLibraries];
+    [self hideLoadingIndicator];
     [self setupSectionIndex];
     [_tableView reloadData];
 }
 
 - (void)openLibrariesDidLoad {
     [[NSNotificationCenter defaultCenter] removeObserver:self name:LibraryRequestDidCompleteNotification object:LibraryDataRequestOpenLibraries];
+    [self hideLoadingIndicator];
     [self setupSectionIndex];
     [_tableView reloadData];
 }
