@@ -13,6 +13,8 @@
 #import "LibraryLocationsMapViewController.h"
 #import "LibrariesSearchViewController.h"
 #import "LibraryAlias.h"
+#import "MIT_MobileAppDelegate.h"
+#import "RequestWebViewModalViewController.h"
 
 @implementation LibItemDetailViewController
 @synthesize bookmarkButtonIsOn;
@@ -247,17 +249,6 @@
 
 -(void) thumbNailPressed: (id) sender {
 	
-	if (nil != fullImageLink)
-		if([fullImageLink length] > 0){
-			
-			NSString *url = fullImageLink;
-			
-			NSURL *libURL = [NSURL URLWithString:url];
-			if (libURL && [[UIApplication sharedApplication] canOpenURL:libURL]) {
-				[[UIApplication sharedApplication] openURL:libURL];
-			}
-		}
-	
 }
 
 -(void) authorLinkTapped:(id)sender{
@@ -422,7 +413,7 @@
     if (displayImage == YES){
 		
 		if (nil != libItem.catalogLink )
-			return 1;
+			return 2;
 			
 		return 0;
 	}
@@ -452,19 +443,19 @@
     static NSString *CellIdentifier = @"Cell"; // for single-row cells
     
     if (displayImage == YES){
-		
-		if (nil != libItem.catalogLink ){
-			UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-			if (cell == nil) {
-				cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
-			}
-			cell.selectionStyle = UITableViewCellSelectionStyleGray;
+        UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+        if (cell == nil) {
+            cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
+        }
+        cell.selectionStyle = UITableViewCellSelectionStyleGray;
+        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+        
+        if (indexPath.row == 0) {
+            cell.textLabel.text = [NSString stringWithFormat:@"View all %d images", [libItem.numberOfImages integerValue]];
+        } else if (indexPath.row == 1) {
 			cell.textLabel.text = @"View more details";
-			cell.accessoryView =  [UIImageView accessoryViewWithMITType:MITAccessoryViewExternal];
-			return cell;
-		}
-		
-		return nil;
+        }
+        return cell;
 	}
 	
 	if (indexPath.section == 0) {
@@ -766,17 +757,21 @@
 	[tableView deselectRowAtIndexPath:indexPath animated:NO];
 	
     if (displayImage == YES){
-		
-		if (nil != libItem.catalogLink ){
-			DLog(@"cat link = %@",libItem.catalogLink); 
-			NSString * url = libItem.catalogLink;
-			
-			//url = [url stringByReplacingOccurrencesOfString:@"http://" withString:@""];
-			NSURL *urlToOpen = [NSURL URLWithString:url];
-			if (urlToOpen && [[UIApplication sharedApplication] canOpenURL:urlToOpen]) {
-				[[UIApplication sharedApplication] openURL:urlToOpen];
-			}
-		}
+        NSString *libURL = nil;
+        NSString *title = nil;
+		if (indexPath.row == 0) {
+            libURL = libItem.fullImageLink;
+            title = @"All Images";
+        } else if (indexPath.row == 1) {
+            libURL = libItem.catalogLink;
+            title = @"More Details";
+        }
+        
+        if ([libURL length]) {
+            MIT_MobileAppDelegate *appDelegate = (MIT_MobileAppDelegate *)[[UIApplication sharedApplication] delegate];
+            RequestWebViewModalViewController *modalVC = [[[RequestWebViewModalViewController alloc] initWithRequestUrl:libURL title:title] autorelease];
+            [appDelegate presentAppModalViewController:modalVC animated:YES];
+        }
 	}
 	
 	else if (indexPath.section == 0){
@@ -931,35 +926,12 @@
             
             CGFloat imageX = (screenRect.size.width - imageView.frame.size.width) / 2;
             CGFloat imageY = thumbnail.frame.origin.y;
-            CGFloat bottomY = imageY + (imageView.frame.size.height - image.size.height) / 2 + image.size.height;
-            
             thumbnail.frame = CGRectMake(imageX, imageY, imageView.frame.size.width, imageView.frame.size.height);
-            
-            UIButton * customButton = [UIButton buttonWithType:UIButtonTypeCustom];
-            customButton.frame = CGRectMake(imageX+image.size.width-15, bottomY - 20, 30, 30);  // a little higher so text fits
-            customButton.enabled = YES;
-            [customButton setImage:[UIImage imageNamed:@"global/searchfield_star.png"] forState:UIControlStateNormal];
-            [customButton addTarget:self action:@selector(thumbNailPressed:) forControlEvents:UIControlEventTouchUpInside];
-            
             [thumbnail addSubview:imageView];
-            
-            UILabel * count = [[[UILabel alloc] initWithFrame:CGRectMake(0.0, bottomY + 10, screenRect.size.width, 20)] autorelease];
-            count.text = [NSString stringWithFormat:@"Total Images: %d", [aLibItem.numberOfImages integerValue]];
-            count.font = [UIFont fontWithName:COURSE_NUMBER_FONT size:14];
-            count.textAlignment = UITextAlignmentCenter;
-            count.textColor = [UIColor blackColor]; 
-            count.backgroundColor = [UIColor clearColor];	
-            count.lineBreakMode = UILineBreakModeTailTruncation;
-            count.numberOfLines = 1;
-            
-            CGFloat newHeight = self.tableView.tableHeaderView.frame.size.height - 150.0 + thumbnail.frame.size.height + count.frame.size.height + 5;
-            self.tableView.tableHeaderView.frame = CGRectMake(0, 0, self.tableView.tableHeaderView.frame.size.width, newHeight);
             
             if (![thumbnail isDescendantOfView:self.tableView.tableHeaderView]) {
                 [self.tableView.tableHeaderView addSubview:thumbnail];
             }
-            [self.tableView.tableHeaderView addSubview:customButton];
-            [self.tableView.tableHeaderView addSubview:count];
             [self.tableView setTableHeaderView:self.tableView.tableHeaderView]; // force resize of header
         }
     
