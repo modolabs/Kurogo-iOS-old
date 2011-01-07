@@ -370,7 +370,7 @@
         width -= 30;  // extra space for section index
     }
     CGFloat height = [lib.name sizeWithFont:cellFont].height; // first get one line
-    height = [lib.name sizeWithFont:cellFont constrainedToSize:CGSizeMake(width, height * 2.2) lineBreakMode:UILineBreakModeTailTruncation].height;
+    height = [lib.name sizeWithFont:cellFont constrainedToSize:CGSizeMake(width, height * 2.2) lineBreakMode:UILineBreakModeWordWrap].height;
 
     return height + 20; // top and bottom padding
 }
@@ -392,7 +392,7 @@
 	LibraryAlias * lib = [[self currentLibraries] objectAtIndex:indexPath.section];
     
     UIFont *cellFont = [UIFont fontWithName:BOLD_FONT size:17];
-    CGFloat width = tableView.frame.size.width - 40; // interior padding plus grouped table view padding
+    CGFloat width = tableView.frame.size.width - 20; // interior padding
     if (sectionIndexTitles != nil) {
         width -= 30;  // extra space for section index
     }
