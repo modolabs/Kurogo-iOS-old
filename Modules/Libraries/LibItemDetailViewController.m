@@ -141,7 +141,7 @@
                                     lineBreakMode:UILineBreakModeWordWrap].height;
 	
 	UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(12.0, 10.0, 300.0, titleHeight)];
-	
+
 	headerTextHeight += titleHeight;
 	
 	titleLabel.text = itemTitle;
@@ -149,7 +149,7 @@
 	titleLabel.textColor = [UIColor colorWithHexString:@"#1a1611"];
 	titleLabel.backgroundColor = [UIColor clearColor];	
 	titleLabel.lineBreakMode = UILineBreakModeWordWrap;
-	titleLabel.numberOfLines = 10;
+	titleLabel.numberOfLines = 0;
 	
 	
 	CGFloat authorHeight = [libItem.author sizeWithFont:[UIFont fontWithName:COURSE_NUMBER_FONT size:15]
