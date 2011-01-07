@@ -924,6 +924,7 @@ static NSInteger numTries = 0;
                                             STORY_TEXT_WIDTH + THUMBNAIL_WIDTH, 
                                             dekDimensions.height);
                 
+                thumbnailView.placeholderImageName = @"news/news-placeholder-a1.png";
                 thumbnailView.image = story.featuredImage;
                 [thumbnailView loadImage];
                 

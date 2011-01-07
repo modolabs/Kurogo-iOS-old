@@ -10,13 +10,14 @@
 	NSData *imageData;
     UIActivityIndicatorView *loadingView;
     UIImageView *imageView;
+    NSString *placeholderImageName;
 }
 
 - (void)loadImage;
 - (void)requestImage;
 - (BOOL)displayImage;
 
-//@property (nonatomic, retain) NewsImageRep *imageRep;
+@property (nonatomic, retain) NSString *placeholderImageName;
 @property (nonatomic, retain) NewsImage *image;
 @property (nonatomic, retain) ConnectionWrapper *connection;
 @property (nonatomic, retain) NSData *imageData;

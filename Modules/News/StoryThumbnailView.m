@@ -5,22 +5,21 @@
 
 @interface StoryThumbnailView (Private)
 
-+ (UIImage *)placeholderImage;
+- (UIImage *)placeholderImage;
 
 @end
 
 
 @implementation StoryThumbnailView
 
-@synthesize image, connection, imageData, loadingView, imageView;
+@synthesize image, connection, imageData, loadingView, imageView, placeholderImageName;
 
-+ (UIImage *)placeholderImage {
-    static NSString * const placeholderImageName = @"news/news-placeholder.png";
-    static UIImage *placeholderImage = nil;
-    if (!placeholderImage) {
-        placeholderImage = [[UIImage imageNamed:placeholderImageName] retain];
+- (UIImage *)placeholderImage {
+    if (!self.placeholderImageName) {
+        return [UIImage imageNamed:@"news/news-placeholder.png"];
+    } else {
+        return [UIImage imageNamed:self.placeholderImageName];
     }
-    return placeholderImage;
 }
 
 - (id) initWithFrame:(CGRect)frame {
@@ -31,9 +30,10 @@
         imageData = nil;
         loadingView = nil;
         imageView = nil;
+        self.placeholderImageName = nil;
         self.opaque = YES;
         self.clipsToBounds = YES;
-        self.backgroundColor = [UIColor colorWithPatternImage:[StoryThumbnailView placeholderImage]];
+        self.backgroundColor = [UIColor colorWithPatternImage:[self placeholderImage]];
     }
     return self;
 }
@@ -56,7 +56,7 @@
         if (image) {
             self.backgroundColor = [UIColor colorWithWhite:0.60 alpha:1.0];
         } else {
-            self.backgroundColor = [UIColor colorWithPatternImage:[StoryThumbnailView placeholderImage]];
+            self.backgroundColor = [UIColor colorWithPatternImage:[self placeholderImage]];
         }
 
     }
@@ -96,7 +96,7 @@
         wasSuccessful = YES;
         [imageView setNeedsLayout];
     } else {
-        self.backgroundColor = [UIColor colorWithPatternImage:[StoryThumbnailView placeholderImage]];
+        self.backgroundColor = [UIColor colorWithPatternImage:[self placeholderImage]];
     }
     [self setNeedsLayout];
     
@@ -112,7 +112,7 @@
     // 
     // in the future, should spin off thumbnail as its own Core Data entity with an "not a valid image" flag
     if ([[image.url pathExtension] length] == 0) {
-        self.backgroundColor = [UIColor colorWithPatternImage:[StoryThumbnailView placeholderImage]];
+        self.backgroundColor = [UIColor colorWithPatternImage:[self placeholderImage]];
         return;
     }
     
@@ -174,6 +174,7 @@
     imageData = nil;
     [loadingView release];
     [imageView release];
+    self.placeholderImageName = nil;
     [super dealloc];
 }
 
