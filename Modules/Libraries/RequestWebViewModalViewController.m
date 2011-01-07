@@ -67,6 +67,7 @@
 	//Load the request in the UIWebView.
 	[urlWebView loadRequest:requestObj];
 	urlWebView.delegate = self;
+    urlWebView.scalesPageToFit = YES;
 	
 	self.view.backgroundColor =  [UIColor colorWithWhite:0.0 alpha:1];
 	urlWebView.backgroundColor = [UIColor colorWithWhite:0.0 alpha:0.8];
