@@ -129,7 +129,7 @@
         _headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, headerWidth, 60)];
 
 		UILabel *headerLabel = [[[UILabel alloc] initWithFrame:CGRectMake(16, 10, 200, 40)] autorelease];
-		headerLabel.text = self.headerText;
+		headerLabel.text = [NSString stringWithFormat:@"%@:", self.headerText];
 		headerLabel.font = [UIFont boldSystemFontOfSize:16];
 		headerLabel.textColor = [UIColor darkGrayColor];
 		headerLabel.numberOfLines = 0;
@@ -167,10 +167,10 @@
         }
 		[searchResultsArray addObject:annotation];
 	}
-	
+
 	// this will remove any old annotations and add the new ones. 
 	[self.mapSelectionController.mapVC setSearchResults:searchResultsArray];
-    self.mapSelectionController.mapVC.searchBar.text = [NSString stringWithFormat:@"category:%@", self.category];
+    self.mapSelectionController.mapVC.searchBar.text = self.headerText;
 	[self dismissModalViewControllerAnimated:YES];
 }
 

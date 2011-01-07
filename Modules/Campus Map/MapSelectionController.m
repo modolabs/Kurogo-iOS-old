@@ -383,7 +383,7 @@
 
             CategoriesTableViewController *newCategoriesTVC = [[[CategoriesTableViewController alloc] init] autorelease];
             newCategoriesTVC.mapSelectionController = self;
-            newCategoriesTVC.headerText = [NSString stringWithFormat:@"%@:", [thisItem objectForKey:@"categoryName"]];
+            newCategoriesTVC.headerText = [thisItem objectForKey:@"categoryName"];
             newCategoriesTVC.category = [thisItem objectForKey:@"categoryId"];
             [newCategoriesTVC executeServerCategoryRequest];
             
