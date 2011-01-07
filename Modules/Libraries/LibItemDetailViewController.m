@@ -435,9 +435,9 @@
 	}
 	
 	else if (section == 1){
-		if ([locationsWithItem count] == 0)
-			return 1;
-		
+        if (locationsWithItem == nil)
+            return 1;
+        
 		return [locationsWithItem count];
 	}
 	
@@ -487,20 +487,21 @@
 	
 	else if (indexPath.section == 1) {
         
-        if (![locationsWithItem count]) {
-			UITableViewCell *cell4 = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-			if (cell4 == nil) {
-				cell4 = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
-			}
-            if (locationsWithItem == nil) {
-                // TODO: this is not aligned well.
-                // also we should probably make this into a reusable cell type instead of an instance method.
-                [self addLoadingIndicator:cell4];
-            } else {
-                cell4.textLabel.text = @"data unavailable";
-                cell4.selectionStyle = UITableViewCellSelectionStyleNone;
+        if (locationsWithItem == nil) {
+            UITableViewCell *cell4 = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+            if (cell4 == nil) {
+                cell4 = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
             }
-			return cell4;
+            
+            // TODO: this is not aligned well.
+            // also we should probably make this into a reusable cell type instead of an instance method.
+            [self addLoadingIndicator:cell4];
+            
+            cell4.selectionStyle = UITableViewCellSelectionStyleNone;
+            cell4.accessoryType = UITableViewCellAccessoryNone;
+            
+            return cell4;
+            
         }
         
 		// cell for availability listings
@@ -560,8 +561,8 @@
 		
 		NSString * libName = [tempDict objectForKey:@"name"];
         
-        DLog(@"%@", libName);
-        DLog(@"%@", [[dictWithStatuses allKeys] description]);
+        //DLog(@"%@", libName);
+        //DLog(@"%@", [[dictWithStatuses allKeys] description]);
 
         Library *theLibrary = nil;
         // TODO: we can already get the library from locationsWithItem

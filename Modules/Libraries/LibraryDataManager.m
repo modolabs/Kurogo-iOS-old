@@ -638,6 +638,8 @@ static LibraryDataManager *s_sharedManager = nil;
     }
 #pragma mark Success - Item Availability
     else if ([command isEqualToString:LibraryDataRequestAvailability]) {
+        
+        NSMutableArray *filteredResults = [NSMutableArray array];
 
 		if ([JSONObject isKindOfClass:[NSArray class]]) {
 			
@@ -652,12 +654,16 @@ static LibraryDataManager *s_sharedManager = nil;
                 if ([lib.lat doubleValue] == 0) {
                     [self requestDetailsForLibType:type libID:identityTag libName:displayName];
                 }
+                
+                if (![displayName isEqualToString:@"Networked Resource"]) {
+                    [filteredResults addObject:tempDict];
+                }
 			}
             
             NSString *itemID = [request.params objectForKey:@"itemId"];
             
             for (id<LibraryItemDetailDelegate> aDelegate in itemDelegates) {
-                [aDelegate availabilityDidLoadForItemID:itemID result:(NSArray *)JSONObject];
+                [aDelegate availabilityDidLoadForItemID:itemID result:filteredResults];
             }
         }
         
