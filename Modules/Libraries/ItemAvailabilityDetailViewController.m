@@ -175,7 +175,6 @@
 
                 NSString *groupScanURL = nil;
                 NSString *groupRequestURL = nil;
-                BOOL groupTappable = NO;
                 
                 NSString *availabilityStatus = [statusNames objectAtIndex:i];
                 NSString *statusLabel = [statusDisplays objectAtIndex:i];
@@ -232,27 +231,16 @@
                                                      statusImage, @"image",
                                                      nil];
                     
-                    BOOL canRequest = [[availItemDict objectForKey:@"canRequest"] boolValue];
-                    BOOL canScanAndDeliver = [[availItemDict objectForKey:@"canScanAndDeliver"] boolValue];
-
-                    // tappable might not be necessary
-                    BOOL tappable = canRequest || canScanAndDeliver;
-                    if (tappable) {
-                        groupTappable = YES;
-                        [cellInfo setObject:[NSNumber numberWithBool:tappable] forKey:@"tappable"];
-                        [cellForHoldingStatus setObject:[NSNumber numberWithBool:YES] forKey:@"tappable"];
-                    }
-                    
-                    if (canRequest) {
-                        requestURL = [availItemDict objectForKey:@"requestUrl"];
+                    requestURL = [availItemDict objectForKey:@"requestUrl"];
+                    if ([requestURL length]) {
                         [cellInfo setObject:requestURL forKey:@"requestURL"];
                         if (uniformCallNumber)
                             [cellForHoldingStatus setObject:requestURL forKey:@"requestURL"];
                         groupRequestURL = requestURL;
                     }
                     
-                    if (canScanAndDeliver) {
-                        scanURL = [availItemDict objectForKey:@"scanAndDeliverUrl"];
+                    scanURL = [availItemDict objectForKey:@"scanAndDeliverUrl"];
+                    if ([scanURL length]) {
                         [cellInfo setObject:scanURL forKey:@"scanURL"];
                         if (uniformCallNumber)
                             [cellForHoldingStatus setObject:scanURL forKey:@"scanURL"];
@@ -272,7 +260,6 @@
                     NSMutableDictionary *cellInfo = [NSMutableDictionary dictionaryWithObjectsAndKeys:
                                                      text, @"text",
                                                      statusImage, @"image",
-                                                     [NSNumber numberWithBool:groupTappable], @"tappable",
                                                      nil];
                     
                     if (groupScanURL)    [cellInfo setObject:groupScanURL forKey:@"scanURL"];
