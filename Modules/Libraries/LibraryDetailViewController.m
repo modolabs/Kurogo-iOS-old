@@ -436,8 +436,13 @@ NSInteger phoneNumberSort(id num1, id num2, void *context){
         cell.textLabel.text = @"Location";
         cell.detailTextLabel.text = lib.library.location;
         cell.detailTextLabel.numberOfLines = 0;
-        cell.accessoryView = [UIImageView accessoryViewWithMITType:MITAccessoryViewMap];
-        cell.selectionStyle = UITableViewCellSelectionStyleGray;
+        if ([lib.library.lat doubleValue]) {
+            cell.accessoryView = [UIImageView accessoryViewWithMITType:MITAccessoryViewMap];
+            cell.selectionStyle = UITableViewCellSelectionStyleGray;
+        } else {
+            cell.accessoryView = nil;
+            cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        }
         return cell;
     }
 	
@@ -541,6 +546,9 @@ NSInteger phoneNumberSort(id num1, id num2, void *context){
     }
 	
     if (!sectionComplete && proxySectionIndex == 0) {
+        if (![lib.library.lat doubleValue])
+            return;
+        
 		[[MapBookmarkManager defaultManager] pruneNonBookmarks];
 		
 		CLLocationCoordinate2D coord = CLLocationCoordinate2DMake([lib.library.lat doubleValue], [lib.library.lon doubleValue]);
@@ -662,9 +670,12 @@ NSInteger phoneNumberSort(id num1, id num2, void *context){
 	}
     
     if (!sectionComplete && proxySectionIndex == 0) {
-        accessoryType = UITableViewCellAccessoryDetailDisclosureButton;
+        if ([lib.library.lat doubleValue]) {
+            accessoryType = UITableViewCellAccessoryDetailDisclosureButton;
+        } else {
+            accessoryType = UITableViewCellAccessoryNone;
+        }
         detailText = lib.library.location;
-        //maxLines = 10;
         
     } else if (!sectionComplete && proxySectionIndex == 1) {
         accessoryType = UITableViewCellAccessoryDetailDisclosureButton;
