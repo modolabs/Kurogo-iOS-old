@@ -122,6 +122,11 @@ NSInteger phoneNumberSort(id num1, id num2, void *context){
     
     self.tableView.tableHeaderView = headerView;
 	
+    NSSortDescriptor *sorter = [NSSortDescriptor sortDescriptorWithKey:@"sortOrder" ascending:YES];
+    [phoneNumbersArray release];
+    phoneNumbersArray = [[lib.library.phone sortedArrayUsingDescriptors:[NSArray arrayWithObject:sorter]] retain];
+    phoneNumbersArray = [[phoneNumbersArray sortedArrayUsingFunction:phoneNumberSort context:self] retain];
+	
     [self setupWeeklySchedule];
     
 	if (!didSetupWeeklySchedule) {
@@ -140,12 +145,7 @@ NSInteger phoneNumberSort(id num1, id num2, void *context){
         [[LibraryDataManager sharedManager] requestDetailsForLibType:lib.library.type libID:lib.library.identityTag libName:lib.name];
     }
 		
-	[self setDaysOfWeekArray];
-	
-    NSSortDescriptor *sorter = [NSSortDescriptor sortDescriptorWithKey:@"sortOrder" ascending:YES];
-    [phoneNumbersArray release];
-    phoneNumbersArray = [[lib.library.phone sortedArrayUsingDescriptors:[NSArray arrayWithObject:sorter]] retain];
-    phoneNumbersArray = [[phoneNumbersArray sortedArrayUsingFunction:phoneNumberSort context:self] retain];
+	[self setDaysOfWeekArray]; // calls [tableView reloadData] as a side effect
 }
 
 
