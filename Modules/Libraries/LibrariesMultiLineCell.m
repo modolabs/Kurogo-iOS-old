@@ -192,7 +192,7 @@
         CGFloat innerHeight = self.detailTextLabel.frame.origin.y - self.textLabel.frame.origin.y + self.detailTextLabel.frame.size.height;
 
         frame = self.textLabel.frame;
-        frame.origin.y = floor((self.frame.size.height - innerHeight) / 2);
+        frame.origin.y = floor((self.frame.size.height - innerHeight) / 2) - 2;	// -2 to bump things up a tiny bit within the cell
         heightAdded = frame.origin.y - self.textLabel.frame.origin.y;
         self.textLabel.frame = frame;
         //if (heightAdded > 0) {
