@@ -468,7 +468,7 @@ static NSString * s_tileServerFilename = @"tileServer.plist";
         geo = pj_init_plus("+proj=latlong +ellps=clrk66");
         
         NSString *projectionArgs = [serverInfo objectForKey:@"projectionArgs"];
-        if ([projectionArgs length]) {
+        if ([projectionArgs isKindOfClass:[NSString class]] && [projectionArgs length]) {
             const char *projString = [projectionArgs cStringUsingEncoding:[NSString defaultCStringEncoding]];
             [self setupProjection:projString];
         } else {
