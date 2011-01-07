@@ -226,10 +226,10 @@
 	thumbnail.backgroundColor = [UIColor clearColor];
     
 	if (displayImage == YES){
-		[self addLoadingIndicator:thumbnail];
 		bookmarkButton.frame = CGRectMake(self.tableView.frame.size.width - 55.0 , bookmarkButton.frame.origin.y, 50.0, 50.0);
         headerView.frame = CGRectMake(0, 0, headerView.frame.size.width, thumbnail.frame.origin.y + thumbnail.frame.size.height);
 		[headerView addSubview:thumbnail];
+        [self addLoadingIndicator:thumbnail];
 	}
 	else{
 		if (nil != thumbnail){
@@ -451,7 +451,14 @@
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         
         if (indexPath.row == 0) {
-            cell.textLabel.text = [NSString stringWithFormat:@"View all %d images", [libItem.numberOfImages integerValue]];
+            NSInteger numberOfImages = [libItem.numberOfImages integerValue];
+            if (!numberOfImages) {
+                cell.textLabel.text = @"No images available";
+                cell.accessoryType = UITableViewCellAccessoryNone;
+                cell.selectionStyle = UITableViewCellSelectionStyleNone;
+            } else {
+                cell.textLabel.text = [NSString stringWithFormat:@"View all %d images", [libItem.numberOfImages integerValue]];
+            }
         } else if (indexPath.row == 1) {
 			cell.textLabel.text = @"View more details";
         }
@@ -912,13 +919,13 @@
         if (image) {
             
             UIImageView *imageView = [[[UIImageView alloc] initWithImage:nil] autorelease];
-            if (image.size.width > 160 || image.size.height > 160) {
+            if (image.size.width > 150 || image.size.height > 150) {
                 imageView.contentMode = UIViewContentModeScaleAspectFit;
             } else {
                 imageView.contentMode = UIViewContentModeCenter;
             }
             imageView.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
-            imageView.frame = CGRectMake(0, 0, 160, 160);
+            imageView.frame = CGRectMake(0, 0, 150, 150);
             imageView.backgroundColor = [UIColor clearColor];
             imageView.image = image;
             
@@ -932,8 +939,13 @@
             if (![thumbnail isDescendantOfView:self.tableView.tableHeaderView]) {
                 [self.tableView.tableHeaderView addSubview:thumbnail];
             }
-            [self.tableView setTableHeaderView:self.tableView.tableHeaderView]; // force resize of header
+            
+        } else {
+            [thumbnail removeFromSuperview];
+            self.tableView.tableHeaderView.frame = CGRectMake(0, 0, self.view.frame.size.width, self.tableView.tableHeaderView.frame.size.height - 150 + 10);
         }
+
+        [self.tableView setTableHeaderView:self.tableView.tableHeaderView]; // force resize of header
     
         [self removeLoadingIndicator];
         [self.tableView reloadData];
