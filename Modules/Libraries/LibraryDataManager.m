@@ -43,7 +43,6 @@ NSInteger libraryNameSort(id lib1, id lib2, void *context) {
 @interface LibraryDataManager (Private)
 
 - (void)makeOneTimeRequestWithCommand:(NSString *)command;
-//- (void)showAlertForFailedDispatch;
 
 @end
 
@@ -74,46 +73,51 @@ static LibraryDataManager *s_sharedManager = nil;
         delegates = [[NSMutableSet alloc] init];
         itemDelegates = [[NSMutableSet alloc] init];
         
-        // fetch objects from core data
-        NSDate *librariesDate = [[NSUserDefaults standardUserDefaults] objectForKey:LibrariesLastUpdatedKey];
-        NSDate *archivesDate = [[NSUserDefaults standardUserDefaults] objectForKey:ArchivesLastUpdatedKey];
-        
-        BOOL isUpdated = YES;
-        
-        if (-[librariesDate timeIntervalSinceNow] > 24 * 60 * 60) {
-            isUpdated = NO;
-            [self requestLibraries];
-        }
-
-        if (-[archivesDate timeIntervalSinceNow] > 24 * 60 * 60) {
-            isUpdated = NO;
-            [self requestArchives];
-        }
-        
-        if (isUpdated) {
-            NSPredicate *matchAll = [NSPredicate predicateWithFormat:@"TRUEPREDICATE"];
-            NSArray *tempArray = [CoreDataManager objectsForEntity:LibraryAliasEntityName matchingPredicate:matchAll];
-            if (![tempArray count]) { // just in case they have nothing even with an updated date
-                [self requestLibraries];
-                [self requestArchives];
-            } else {
-                for(LibraryAlias *alias in tempArray) {
-                    if ([alias.library.type isEqualToString:@"archive"]) {
-                        [_allArchives addObject:alias];
-                    }
-                    else if ([alias.library.type isEqualToString: @"library"]) {
-                        [_allLibraries addObject:alias];
-                    }
-                }
-                
-                [_allArchives sortUsingFunction:libraryNameSort context:nil];
-                [_allLibraries sortUsingFunction:libraryNameSort context:nil];
-                
-                [self requestOpenLibraries];
-            }
-        }
+        [self updateLibraryList];
     }
     return self;
+}
+
+- (void)updateLibraryList {
+    
+    // fetch objects from core data
+    NSDate *librariesDate = [[NSUserDefaults standardUserDefaults] objectForKey:LibrariesLastUpdatedKey];
+    NSDate *archivesDate = [[NSUserDefaults standardUserDefaults] objectForKey:ArchivesLastUpdatedKey];
+    
+    BOOL isUpdated = YES;
+    
+    if (-[librariesDate timeIntervalSinceNow] > 24 * 60 * 60) {
+        isUpdated = NO;
+        [self requestLibraries];
+    }
+    
+    if (-[archivesDate timeIntervalSinceNow] > 24 * 60 * 60) {
+        isUpdated = NO;
+        [self requestArchives];
+    }
+    
+    if (isUpdated) {
+        NSPredicate *matchAll = [NSPredicate predicateWithFormat:@"TRUEPREDICATE"];
+        NSArray *tempArray = [CoreDataManager objectsForEntity:LibraryAliasEntityName matchingPredicate:matchAll];
+        if (![tempArray count]) { // just in case they have nothing even with an updated date
+            [self requestLibraries];
+            [self requestArchives];
+        } else {
+            for(LibraryAlias *alias in tempArray) {
+                if ([alias.library.type isEqualToString:@"archive"]) {
+                    [_allArchives addObject:alias];
+                }
+                else if ([alias.library.type isEqualToString: @"library"]) {
+                    [_allLibraries addObject:alias];
+                }
+            }
+            
+            [_allArchives sortUsingFunction:libraryNameSort context:nil];
+            [_allLibraries sortUsingFunction:libraryNameSort context:nil];
+            
+            [self requestOpenLibraries];
+        }
+    }
 }
 
 - (NSArray *)allLibraries {

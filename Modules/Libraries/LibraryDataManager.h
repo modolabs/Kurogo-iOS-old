@@ -80,6 +80,8 @@ NSInteger libraryNameSort(id lib1, id lib2, void *context);
 - (void)registerItemDelegate:(id<LibraryItemDetailDelegate>)aDelegate;
 - (void)unregisterItemDelegate:(id<LibraryItemDetailDelegate>)aDelegate;
 
+- (void)updateLibraryList;
+
 #pragma mark Data retrieval methods
 
 - (NSDictionary *)scheduleForLibID:(NSString *)libID;

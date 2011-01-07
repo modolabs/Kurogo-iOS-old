@@ -65,6 +65,7 @@
                                                  selector:showingOnlyOpen ? @selector(openLibrariesDidLoad) : @selector(librariesDidLoad)
                                                      name:LibraryRequestDidCompleteNotification
                                                    object:showingOnlyOpen ? LibraryDataRequestOpenLibraries : LibraryDataRequestLibraries];
+        [[LibraryDataManager sharedManager] updateLibraryList];
     } else {
         if (showingOnlyOpen) {
             [self openLibrariesDidLoad];
