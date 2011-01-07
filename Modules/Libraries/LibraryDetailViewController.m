@@ -112,7 +112,7 @@ NSInteger phoneNumberSort(id num1, id num2, void *context){
         label.textColor = [UIColor colorWithHexString:@"#1a1611"];
         label.backgroundColor = [UIColor clearColor];	
         label.lineBreakMode = UILineBreakModeWordWrap;
-        label.numberOfLines = 10;
+        label.numberOfLines = 0;
         label.tag = 1234;
     } else {
         label.frame = CGRectMake(12.0, 9.0, 250.0, height);
@@ -435,8 +435,7 @@ NSInteger phoneNumberSort(id num1, id num2, void *context){
     if (proxySectionIndex == 0) {
         cell.textLabel.text = @"Location";
         cell.detailTextLabel.text = lib.library.location;
-        cell.detailTextLabel.numberOfLines = 10;
-        cell.detailTextLabelNumberOfLines = 10;
+        cell.detailTextLabel.numberOfLines = 0;
         cell.accessoryView = [UIImageView accessoryViewWithMITType:MITAccessoryViewMap];
         cell.selectionStyle = UITableViewCellSelectionStyleGray;
         return cell;

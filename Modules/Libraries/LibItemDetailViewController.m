@@ -219,7 +219,7 @@
             [headerView addSubview:detailLabel];
         }
     }
-    headerView.frame = CGRectMake(0, 0, self.view.frame.size.width, 10 + headerTextHeight);
+    headerView.frame = CGRectMake(0, 0, self.view.frame.size.width, 15 + headerTextHeight);
 	
     CGRect screenRect = [[UIScreen mainScreen] applicationFrame];    
 	thumbnail = [[UIView alloc] initWithFrame:CGRectMake((screenRect.size.width - 150.0) / 2, headerView.frame.size.height, 150.0, 150.0)];

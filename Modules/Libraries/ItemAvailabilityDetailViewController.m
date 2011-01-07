@@ -94,7 +94,7 @@
         libraryDisplayLabel.textColor = [UIColor colorWithHexString:@"#1a1611"];
         libraryDisplayLabel.backgroundColor = [UIColor clearColor];	
         libraryDisplayLabel.lineBreakMode = UILineBreakModeWordWrap;
-        libraryDisplayLabel.numberOfLines = 10;
+        libraryDisplayLabel.numberOfLines = 0;
     } else {
         libraryDisplayLabel.frame = CGRectMake(labelLeftMargin, 9.0, labelWidth, displayNameHeight);
     }
@@ -591,8 +591,8 @@
         
         aLabel.textColor = [UIColor colorWithHexString:@"#554C41"];
         aLabel.backgroundColor = [UIColor clearColor];	
-        aLabel.lineBreakMode = UILineBreakModeTailTruncation;
-        aLabel.numberOfLines = 5;
+        aLabel.lineBreakMode = UILineBreakModeWordWrap;
+        aLabel.numberOfLines = 0;
         
         [view addSubview:aLabel];
         
