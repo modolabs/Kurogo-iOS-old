@@ -135,14 +135,14 @@
     
     // title label
 	
-	CGFloat runningYDispacement = 0.0;
+	headerTextHeight = 0.0;
 	CGFloat titleHeight = [itemTitle sizeWithFont:[UIFont fontWithName:CONTENT_TITLE_FONT size:CONTENT_TITLE_FONT_SIZE]
                                 constrainedToSize:CGSizeMake(300, 2000)         
                                     lineBreakMode:UILineBreakModeWordWrap].height;
 	
 	UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(12.0, 10.0, 300.0, titleHeight)];
 	
-	runningYDispacement += titleHeight;
+	headerTextHeight += titleHeight;
 	
 	titleLabel.text = itemTitle;
 	titleLabel.font = [UIFont fontWithName:CONTENT_TITLE_FONT size:CONTENT_TITLE_FONT_SIZE];
@@ -156,18 +156,18 @@
                                       constrainedToSize:CGSizeMake(190, 20)         
                                           lineBreakMode:UILineBreakModeWordWrap].height;
 	
-	UnderlinedUILabel *authorLabel = [[UnderlinedUILabel alloc] initWithFrame:CGRectMake(12.0, 20 + runningYDispacement, 190.0, authorHeight)];
+	UnderlinedUILabel *authorLabel = [[UnderlinedUILabel alloc] initWithFrame:CGRectMake(12.0, 20 + headerTextHeight, 190.0, authorHeight)];
 	
 	UIButton * authorButton = [UIButton buttonWithType:UIButtonTypeCustom];
-	authorButton.frame = CGRectMake(12.0, 20 + runningYDispacement, 190.0, authorHeight);
+	authorButton.frame = CGRectMake(12.0, 20 + headerTextHeight, 190.0, authorHeight);
 	[authorButton addTarget:self action:@selector(authorLinkTapped:) forControlEvents:UIControlEventTouchUpInside];
 	authorButton.enabled = YES;
 	
 	if (authorHeight >= 20)
-		runningYDispacement += authorHeight;
+		headerTextHeight += authorHeight;
 	
 	else {
-		runningYDispacement += 20;
+		headerTextHeight += 20;
 	}
 
 	authorLabel.text = libItem.author;
@@ -179,7 +179,7 @@
 	
 
 	bookmarkButton = [UIButton buttonWithType:UIButtonTypeCustom];
-	bookmarkButton.frame = CGRectMake(self.tableView.frame.size.width - 105.0 , runningYDispacement - 10, 50.0, 50.0);
+	bookmarkButton.frame = CGRectMake(self.tableView.frame.size.width - 105.0 , headerTextHeight - 10, 50.0, 50.0);
 	bookmarkButton.enabled = YES;
 	[bookmarkButton setImage:[UIImage imageNamed:@"global/bookmark_off.png"] forState:UIControlStateNormal];
 	[bookmarkButton setImage:[UIImage imageNamed:@"global/bookmark_off_pressed.png"] forState:(UIControlStateNormal | UIControlStateHighlighted)];
@@ -190,7 +190,7 @@
     bookmarkButtonIsOn = bookmarkButton.selected = [libItem.isBookmarked boolValue];
 	
 	mapButton = [UIButton buttonWithType:UIButtonTypeCustom];
-	mapButton.frame = CGRectMake(self.tableView.frame.size.width - 55.0 , runningYDispacement - 10, 50.0, 50.0);
+	mapButton.frame = CGRectMake(self.tableView.frame.size.width - 55.0 , headerTextHeight - 10, 50.0, 50.0);
 	mapButton.enabled = YES;
 	[mapButton setImage:[UIImage imageNamed:@"global/map-it.png"] forState:UIControlStateNormal];
 	[mapButton setImage:[UIImage imageNamed:@"global/map-it-pressed.png"] forState:(UIControlStateNormal | UIControlStateHighlighted)];
@@ -210,8 +210,8 @@
     for (NSString *labelText in [NSArray arrayWithObjects:edition, pubYear, formatDetails, nil]) {
         if ([labelText length]) {
             CGFloat detailHeight = [labelText sizeWithFont:labelFont].height;
-            UILabel *detailLabel = [[UILabel alloc] initWithFrame:CGRectMake(12, 20 + runningYDispacement, 190, detailHeight)];
-            runningYDispacement += detailHeight;
+            UILabel *detailLabel = [[UILabel alloc] initWithFrame:CGRectMake(12, 20 + headerTextHeight, 190, detailHeight)];
+            headerTextHeight += detailHeight;
             detailLabel.text = labelText;
             detailLabel.font = labelFont;
             detailLabel.backgroundColor = [UIColor clearColor];
@@ -219,7 +219,7 @@
             [headerView addSubview:detailLabel];
         }
     }
-    headerView.frame = CGRectMake(0, 0, self.view.frame.size.width, 10 + runningYDispacement);
+    headerView.frame = CGRectMake(0, 0, self.view.frame.size.width, 10 + headerTextHeight);
 	
     CGRect screenRect = [[UIScreen mainScreen] applicationFrame];    
 	thumbnail = [[UIView alloc] initWithFrame:CGRectMake((screenRect.size.width - 150.0) / 2, headerView.frame.size.height, 150.0, 150.0)];
@@ -246,10 +246,6 @@
 
 
 #pragma mark User Interaction
-
--(void) thumbNailPressed: (id) sender {
-	
-}
 
 -(void) authorLinkTapped:(id)sender{
 	NSArray *viewControllerArray = [self.navigationController viewControllers];
@@ -495,6 +491,7 @@
             // also we should probably make this into a reusable cell type instead of an instance method.
             [self addLoadingIndicator:cell4];
             
+            cell4.textLabel.text = nil;
             cell4.selectionStyle = UITableViewCellSelectionStyleNone;
             cell4.accessoryType = UITableViewCellAccessoryNone;
             
@@ -939,10 +936,11 @@
             if (![thumbnail isDescendantOfView:self.tableView.tableHeaderView]) {
                 [self.tableView.tableHeaderView addSubview:thumbnail];
             }
+            self.tableView.tableHeaderView.frame = CGRectMake(0, 0, self.view.frame.size.width, 10 + headerTextHeight + thumbnail.frame.size.height);
             
         } else {
             [thumbnail removeFromSuperview];
-            self.tableView.tableHeaderView.frame = CGRectMake(0, 0, self.view.frame.size.width, self.tableView.tableHeaderView.frame.size.height - 150 + 10);
+            self.tableView.tableHeaderView.frame = CGRectMake(0, 0, self.view.frame.size.width, 15 + headerTextHeight);
         }
 
         [self.tableView setTableHeaderView:self.tableView.tableHeaderView]; // force resize of header

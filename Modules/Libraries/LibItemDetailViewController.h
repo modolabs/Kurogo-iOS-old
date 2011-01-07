@@ -13,7 +13,7 @@
 #import "UnderlinedUILabel.h"
 #import "LibraryDataManager.h"
 
-@interface LibItemDetailViewController : UITableViewController </*JSONAPIDelegate, */CLLocationManagerDelegate, LibraryItemDetailDelegate> {
+@interface LibItemDetailViewController : UITableViewController <CLLocationManagerDelegate, LibraryItemDetailDelegate> {
 
 	NSArray * locationsWithItem;
 	
@@ -31,7 +31,6 @@
 	
 	UIView * loadingIndicator;
 	
-	//NSMutableDictionary * displayNameAndLibraries;
     NSMutableArray *displayLibraries;
 	
 	CLLocation * currentLocation;
@@ -40,6 +39,7 @@
 	
 	BOOL displayImage;
 	UIView * thumbnail;
+    CGFloat headerTextHeight;
 }
 
 @property BOOL bookmarkButtonIsOn;
