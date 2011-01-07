@@ -331,7 +331,6 @@ NSInteger phoneNumberSort(id num1, id num2, void *context){
         if (!footerLabel) {
             footerLabel = [[[UILabel alloc] initWithFrame:frame] autorelease];
             footerLabel.tag = 7687;
-            footerLabel.text = text;
             footerLabel.font = font;
             footerLabel.textColor = [UIColor colorWithHexString:@"#554C41"];
             footerLabel.backgroundColor = [UIColor clearColor];	
@@ -341,6 +340,7 @@ NSInteger phoneNumberSort(id num1, id num2, void *context){
         } else {
             footerLabel.frame = frame;
         }
+        footerLabel.text = text;
         
         view = footerView;
 	}
@@ -621,7 +621,7 @@ NSInteger phoneNumberSort(id num1, id num2, void *context){
 {
     NSString *detailText = nil;
     UITableViewCellAccessoryType accessoryType = UITableViewCellAccessoryNone;
-    NSInteger maxLines = 2;
+    NSInteger maxLines = 10;
     
     NSInteger proxySectionIndex = indexPath.section; // decrement once for each existing section we don't lay out this time
     BOOL sectionComplete = NO;
@@ -665,7 +665,7 @@ NSInteger phoneNumberSort(id num1, id num2, void *context){
     if (!sectionComplete && proxySectionIndex == 0) {
         accessoryType = UITableViewCellAccessoryDetailDisclosureButton;
         detailText = lib.library.location;
-        maxLines = 10;
+        //maxLines = 10;
         
     } else if (!sectionComplete && proxySectionIndex == 1) {
         accessoryType = UITableViewCellAccessoryDetailDisclosureButton;
@@ -710,7 +710,7 @@ NSInteger phoneNumberSort(id num1, id num2, void *context){
     return [LibrariesMultiLineCell heightForCellWithStyle:UITableViewCellStyleSubtitle
                                                 tableView:tableView 
                                                      text:@"title"
-                                             maxTextLines:1
+                                             maxTextLines:10
                                                detailText:detailText
                                            maxDetailLines:maxLines
                                                      font:cellFont 

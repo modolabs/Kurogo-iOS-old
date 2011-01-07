@@ -8,6 +8,8 @@
 #import "LibrariesMultiLineCell.h"
 #import "MITUIConstants.h"
 
+#define CELL_IMAGE_WIDTH 33.0
+
 @implementation LibrariesMultiLineCell
 @synthesize textLabelNumberOfLines, detailTextLabelNumberOfLines;
 
@@ -27,15 +29,15 @@
         {
 			if (isTextLabel) {
                 width = floor(width * 0.24);
-                if (cellImage) width -= 33.0;
+                if (cellImage) width -= CELL_IMAGE_WIDTH;
             } else {
 				width = floor(width * 0.76);
-				if (cellImage) width -= 33.0;
+				if (cellImage) width -= CELL_IMAGE_WIDTH;
                 
                 switch (accessoryType) {
                     case UITableViewCellAccessoryCheckmark:
                     case UITableViewCellAccessoryDetailDisclosureButton:
-                        width -= 20.0;
+                        width -= 21.0;
                         break;
                     case UITableViewCellAccessoryDisclosureIndicator:
                         width -= 15.0;
@@ -52,20 +54,20 @@
                 switch (accessoryType) {
                     case UITableViewCellAccessoryCheckmark:
                     case UITableViewCellAccessoryDetailDisclosureButton:
-                        width -= 10.0;
+                        width -= 21.0;
                         break;
                     case UITableViewCellAccessoryDisclosureIndicator:
                         width -= 15.0;
                         break;
                 }
             } else {
-                if (cellImage) width -= 33.0;
+                if (cellImage) width -= CELL_IMAGE_WIDTH;
             }
             break;
         }
         default:
         {
-            if (cellImage) width -= 33.0;
+            if (cellImage) width -= CELL_IMAGE_WIDTH;
             
             switch (accessoryType) {
                 case UITableViewCellAccessoryCheckmark:
@@ -73,7 +75,7 @@
                     width -= 21.0;
                     break;
                 case UITableViewCellAccessoryDisclosureIndicator:
-                    width -= 33.0;
+                    width -= 15.0;
                     break;
              }
             
@@ -154,7 +156,8 @@
         frame = self.textLabel.frame;
 		frame.origin.x = 10.0;
         if (frame.origin.y <= 0.0) {
-            // TODO: find out why this happens with rows in event detail screen
+            // TODO: find out why this happens
+            heightAdded += 10.0 - frame.origin.y;
             frame.origin.y = 10.0;
         }
 		
@@ -163,11 +166,12 @@
                                                                       font:self.textLabel.font
                                                                      width:frame.size.width
                                                                   maxLines:self.textLabel.numberOfLines];
-        heightAdded = frame.size.height - self.textLabel.frame.size.height;
+        heightAdded += frame.size.height - self.textLabel.frame.size.height;
         self.textLabel.frame = frame;
     }
     
     if (self.detailTextLabel.text && detailTextLabelNumberOfLines != 1) {
+        
         self.detailTextLabel.numberOfLines = detailTextLabelNumberOfLines;
         self.detailTextLabel.lineBreakMode = detailTextLabelNumberOfLines == 0 ? UILineBreakModeWordWrap : UILineBreakModeTailTruncation;
         frame = self.detailTextLabel.frame;
@@ -191,10 +195,11 @@
         frame.origin.y = floor((self.frame.size.height - innerHeight) / 2);
         heightAdded = frame.origin.y - self.textLabel.frame.origin.y;
         self.textLabel.frame = frame;
-        
-        frame = self.detailTextLabel.frame;
-        frame.origin.y += heightAdded;
-        self.detailTextLabel.frame = frame;
+        //if (heightAdded > 0) {
+            frame = self.detailTextLabel.frame;
+            frame.origin.y += heightAdded;
+            self.detailTextLabel.frame = frame;
+        //}
     }
     
 	// make sure any extra views are drawn on top of standard testLabel and detailTextLabel
@@ -219,10 +224,6 @@
         aView.frame = frame;
 		[self.contentView addSubview:aView];
 	}
-    
-    NSLog(@"%@", [self description]);
-    NSLog(@"%@", [self.textLabel description]);
-    NSLog(@"%@", [self.detailTextLabel description]);
 	
 }
 

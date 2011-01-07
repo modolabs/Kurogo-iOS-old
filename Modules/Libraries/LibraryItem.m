@@ -21,6 +21,7 @@
 @dynamic thumbnailURL;
 @dynamic figureLink;
 @dynamic author;
+@dynamic authorLink;
 
 - (UIImage *)thumbnailImage {
     NSString *path = [self thumbnailImagePath];

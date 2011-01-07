@@ -23,6 +23,7 @@
 @property (nonatomic, retain) NSString * thumbnailURL;
 @property (nonatomic, retain) NSString * figureLink;
 @property (nonatomic, retain) NSString * author;
+@property (nonatomic, retain) NSString * authorLink;
 
 - (UIImage *)thumbnailImage;
 - (NSString *)thumbnailImagePath;

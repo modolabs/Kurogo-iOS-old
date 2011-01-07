@@ -475,7 +475,7 @@
         if (multiCell == nil) {
             multiCell = [[[LibrariesMultiLineCell alloc] initWithStyle:cellStyle reuseIdentifier:CellIdentifier] autorelease];
         }
-        multiCell.detailTextLabel.numberOfLines = [detailTextLines count];
+        multiCell.detailTextLabelNumberOfLines = [detailTextLines count];
         cell = multiCell;
     }
     
@@ -521,7 +521,9 @@
     } else if (numberOfExtraLines > 1) {
 
         NSString *detailText = [NSString stringWithFormat:@"%@\n%@", [cellInfo objectForKey:@"callNumber"], [cellInfo objectForKey:@"holdingStatus"]];
-        UITableViewCellAccessoryType accessoryType = [cellInfo objectForKey:@"scanURL"] != nil || [cellInfo objectForKey:@"requestURL"] != nil;
+        BOOL hasAccessory = [cellInfo objectForKey:@"scanURL"] != nil || [cellInfo objectForKey:@"requestURL"] != nil;
+        UITableViewCellAccessoryType accessoryType = hasAccessory ? UITableViewCellAccessoryDisclosureIndicator : UITableViewCellAccessoryNone;
+        
         rowHeight = [LibrariesMultiLineCell heightForCellWithStyle:UITableViewCellStyleSubtitle
                                                          tableView:tableView 
                                                               text:oneLine

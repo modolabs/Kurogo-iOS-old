@@ -360,7 +360,7 @@ static LibraryDataManager *s_sharedManager = nil;
                 NSDictionary *libraryDictionary = [resultArray objectAtIndex:index];
                 
                 NSString * name = [libraryDictionary objectForKey:@"name"];
-                NSString * primaryName = [libraryDictionary objectForKey:@"primaryName"];
+                NSString * primaryName = [libraryDictionary objectForKey:@"primaryname"];
                 NSString * identityTag = [libraryDictionary objectForKey:@"id"];
                 NSNumber * latitude = [libraryDictionary objectForKey:@"latitude"];
                 NSNumber * longitude = [libraryDictionary objectForKey:@"longitude"];
@@ -586,6 +586,7 @@ static LibraryDataManager *s_sharedManager = nil;
             LibraryItem *libItem = [self libraryItemWithID:itemID];
             libItem.title = [result objectForKey:@"title"];
             libItem.author = [result objectForKey:@"creator"];
+            libItem.authorLink = [result objectForKey:@"creatorLink"];
             libItem.year = [result objectForKey:@"date"];
             libItem.publisher = [result objectForKey:@"publisher"];
             libItem.edition = [result objectForKey:@"edition"];

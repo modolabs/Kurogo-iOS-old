@@ -271,16 +271,25 @@
 	DLog(@"Total vc: %d", [viewControllerArray count]);
 	
 	if ([sender isKindOfClass:[UIButton class]]){
-		
-		if ([libItem.author length]) {
+        
+        NSDictionary *params = nil;
+        if ([libItem.authorLink length]) {
+            params = [NSDictionary dictionaryWithObjectsAndKeys:libItem.authorLink, @"q", nil];
+        } else if ([libItem.author length]) {
+            params = [NSDictionary dictionaryWithObjectsAndKeys:libItem.author, @"author", nil];
+        }
+        
+        if (params) {
 			
 			LibrariesSearchViewController *vc = [[LibrariesSearchViewController alloc] initWithViewController: nil];
 			vc.title = @"Search Results";
+            if ([libItem.authorLink length])
+                vc.searchTerms = libItem.authorLink;
 			
 			apiRequest = [JSONAPIRequest requestWithJSONAPIDelegate:vc];
 			BOOL requestWasDispatched = [apiRequest requestObjectFromModule:@"libraries"
 														command:@"search"
-													 parameters:[NSDictionary dictionaryWithObjectsAndKeys:libItem.author, @"author", nil]];
+													 parameters:params];
 			
 			if (requestWasDispatched) {
 				vc.searchTerms = libItem.author;
@@ -819,7 +828,7 @@
             NSString * libName = [libDict objectForKey:@"name"];
             NSString * libId = [libDict objectForKey:@"id"];
             NSString * type = [libDict objectForKey:@"type"];
-            NSString * primaryName = [((NSDictionary *)[libDict objectForKey:@"details"]) objectForKey:@"primaryName"];
+            NSString * primaryName = [((NSDictionary *)[libDict objectForKey:@"details"]) objectForKey:@"primaryname"];
             
             // create library if it doesn't exist already
             Library *library = [[LibraryDataManager sharedManager] libraryWithID:libId type:type primaryName:primaryName];
