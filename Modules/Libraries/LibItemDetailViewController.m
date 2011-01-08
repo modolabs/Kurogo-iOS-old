@@ -265,7 +265,6 @@
         if (params) {
 			
 			LibrariesSearchViewController *vc = [[LibrariesSearchViewController alloc] initWithViewController: nil];
-			vc.title = @"Search Results";
             if ([libItem.authorLink length])
                 vc.searchTerms = libItem.authorLink;
 			

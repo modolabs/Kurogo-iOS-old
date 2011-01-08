@@ -11,9 +11,11 @@
 @interface ModoNavigationController : UINavigationController {
 
     ModoNavigationBar *_modoNavBar;
+    NSArray *oldSubviews;
 }
 
 - (void)updateNavBar;
+- (void)navigationBar:(ModoNavigationBar *)navigationBar willHideSubviews:(NSArray *)subviews;
 
 @property (nonatomic, readonly) ModoNavigationBar *modoNavBar;
 

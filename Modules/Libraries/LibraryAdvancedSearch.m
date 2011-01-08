@@ -253,7 +253,6 @@
 	}
 	
 	LibrariesSearchViewController *vc = [[LibrariesSearchViewController alloc] initWithViewController: nil];
-	vc.title = @"Search Results";
     vc.keywordText = keywords.text;
     vc.titleText = titleKeywords.text;
     vc.authorText = authorKeywords.text;

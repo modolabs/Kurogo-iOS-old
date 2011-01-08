@@ -7,6 +7,7 @@
 
 #import "ModoNavigationBar.h"
 #import "UIKit+MITAdditions.h"
+#import "ModoNavigationController.h"
 
 @implementation ModoNavigationBar
 
@@ -57,10 +58,20 @@
 
 
 - (UINavigationItem *)popNavigationItemAnimated:(BOOL)animated {
+    // part of a workaround to make sure old back buttons disappear; see ModoNavigationController.m
+    if ([self.delegate isKindOfClass:[ModoNavigationController class]]) {
+        [(ModoNavigationController *)self.delegate navigationBar:self willHideSubviews:self.subviews];
+    }
+
     UINavigationItem *item = [super popNavigationItemAnimated:animated];
     if (item == nil) {
-        [self popNavigationItemAnimated:animated];
+        item = [self popNavigationItemAnimated:animated];
+        DLog(@"popped nil item off navigation bar");
     }
+    if (self.items.count > 1) {
+        //NSLog(@"after popping %@", [self.subviews description]);
+    }
+    DLog(@"popped %@ off nav bar", item.title);
     return item;
 }
 

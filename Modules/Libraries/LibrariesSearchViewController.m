@@ -88,6 +88,8 @@
 
 
 -(void) viewDidLoad {
+    
+    self.navigationItem.title = @"Search Results";
 	
 	if (nil == _advancedSearchButton) {
         UIImage *buttonImage = [[UIImage imageNamed:@"global/subheadbar_button"] stretchableImageWithLeftCapWidth:10 topCapHeight:0];

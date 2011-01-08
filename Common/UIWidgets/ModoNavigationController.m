@@ -79,9 +79,31 @@
 }
 
 /*
-- (void)dealloc {
-    [super dealloc];
+- (void)navigationBar:(UINavigationBar *)navigationBar didPushItem:(UINavigationItem *)item {
 }
 */
+
+// called by ModoNavigationBar prior to popping a navigation item.
+// occasionally the back button from the previous item doesn't get hidden as expected
+// so we force it to be removed in the navigationBar didPopItem
+- (void)navigationBar:(ModoNavigationBar *)navigationBar willHideSubviews:(NSArray *)subviews {
+    oldSubviews = [subviews retain];
+}
+
+- (void)navigationBar:(UINavigationBar *)navigationBar didPopItem:(UINavigationItem *)item {
+    for (UIView *aView in oldSubviews) {
+        [aView removeFromSuperview];
+    }
+    [oldSubviews release];
+    oldSubviews = nil;
+}
+
+
+- (void)dealloc {
+    [_modoNavBar release];
+    [oldSubviews release];
+    [super dealloc];
+}
+
 
 @end

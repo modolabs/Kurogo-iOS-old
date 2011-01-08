@@ -231,7 +231,6 @@
 	self.searchTerms = searchBar.text;
 	
 	LibrariesSearchViewController *vc = [[LibrariesSearchViewController alloc] initWithViewController: self];
-	vc.title = @"Search Results";
 	
 	JSONAPIRequest *api = [JSONAPIRequest requestWithJSONAPIDelegate:vc];
 	BOOL requestWasDispatched = [api requestObjectFromModule:@"libraries"
