@@ -383,6 +383,15 @@
     
 	center.latitude = minLat + latDelta / 2;
 	center.longitude = minLon + lonDelta / 2;
+
+    // 53 is the height of the scrim, currently defined in the nib file
+    CGFloat scrimAdjustment = 53.0 / _mapView.frame.size.height;
+    
+    // increase latDelta so extra vertical land is can be tucked under scrim
+    latDelta /= (1.0 - scrimAdjustment);
+    
+    // adjust center higher so space above the route is covered by scrim
+    center.latitude += latDelta * scrimAdjustment / 2;
     
     //latDelta *= 1.1;
     //lonDelta *= 1.1;
