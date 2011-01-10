@@ -19,15 +19,10 @@
 	
 	BOOL bookmarkButtonIsOn;
 	
-	UIButton *bookmarkButton;
-	UIButton *mapButton;
-	
 	LibraryItem * libItem;
 	NSDictionary * libItemDictionary;
 	
 	int currentIndex;
-	
-	//JSONAPIRequest * apiRequest;
 	
 	UIView * loadingIndicator;
 	
@@ -38,6 +33,8 @@
 	CLLocationManager * locationManager;
 	
 	BOOL displayImage;
+    BOOL canShowMap;
+    
 	UIView * thumbnail;
     CGFloat headerTextHeight;
 }
@@ -53,7 +50,6 @@
 
 
 -(void) setupLayout;
-//-(void)setUpdetails: (LibraryItem *) libraryItem;
 
 - (void)addLoadingIndicator:(UIView *)view;
 - (void)removeLoadingIndicator;
