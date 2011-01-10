@@ -4,6 +4,7 @@
 #import "AboutMITVC.h"
 #import "UITableView+MITUIAdditions.h"
 #import "MITUIConstants.h"
+#import "MailSender.h"
 
 @implementation AboutTableViewController
 
@@ -137,27 +138,9 @@
                 break;
             }
             case 1: {
-                Class mailClass = (NSClassFromString(@"MFMailComposeViewController"));
                 NSString *subject = [NSString stringWithFormat:@"Feedback for Harvard Mobile %@ (%@)", [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"], MITBuildNumber];
-                if ((mailClass != nil) && [mailClass canSendMail]) {
-                    
-                    MFMailComposeViewController *aController = [[MFMailComposeViewController alloc] init];
-                    aController.mailComposeDelegate = self;
-                    
-                    [aController setSubject:subject];
-                    [aController setToRecipients:[NSArray arrayWithObject:[[[NSBundle mainBundle] infoDictionary] objectForKey:@"AppFeedbackAddress"]]];
-                    
-                    MIT_MobileAppDelegate *appDelegate = (MIT_MobileAppDelegate *)[[UIApplication sharedApplication] delegate];
-                    [appDelegate presentAppModalViewController:aController animated:YES];
-                    [aController release];
-                    
-                } else {
-                    NSString *mailtoString = [NSString stringWithFormat:@"mailto://?subject=%@", subject];
-                    
-                    NSURL *externURL = [NSURL URLWithString:mailtoString];
-                    if ([[UIApplication sharedApplication] canOpenURL:externURL])
-                        [[UIApplication sharedApplication] openURL:externURL];
-                }
+				[MailSender sendEmailWithSubject:subject body:@"" delegate:self];
+				break;
             }            
             default:
                 break;
