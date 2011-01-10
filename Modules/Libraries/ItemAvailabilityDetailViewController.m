@@ -532,7 +532,7 @@
     
     // chevron
     //if ([cellInfo objectForKey:@"scanURL"] != nil || [cellInfo objectForKey:@"requestURL"] != nil) {
-    if ([cellInfo objectForKey:@"requestURL"] != nil || [cellInfo objectForKey:@"scanAndDeliverURL"] != nil) {
+    if ([[cellInfo objectForKey:@"requestURL"] length] || [[cellInfo objectForKey:@"scanAndDeliverURL"] length]) {
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         cell.selectionStyle = UITableViewCellSelectionStyleGray;
     } else {
@@ -658,13 +658,13 @@
         NSString *requestURL = [cellInfo objectForKey:@"requestURL"];
         NSString *scanURL = [cellInfo objectForKey:@"scanURL"];
         */
-        if (requestURL && scanURL) {
+        if ([requestURL length] && [scanURL length]) {
             [actionSheetItems release];
             actionSheetItems = [[NSArray alloc] initWithObjects:requestURL, scanURL, nil];
             [self showActionSheet];
-        } else if (requestURL) {
+        } else if ([requestURL length]) {
             [self showModalViewForRequest:@"Request Item" url:requestURL];
-        } else if (scanURL) {
+        } else if ([scanURL length]) {
             [self showModalViewForRequest:@"Scan & Deliver" url:scanURL];
         }
     }
