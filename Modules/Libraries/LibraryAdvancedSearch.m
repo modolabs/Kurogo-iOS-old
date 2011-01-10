@@ -299,7 +299,7 @@
 	formatPickerView.hidden = NO;
     
     CGSize size = CGSizeMake(self.view.bounds.size.width, searchButton.frame.origin.y + searchButton.frame.size.height);
-    size.height += locationPickerView.frame.size.height;
+    size.height += formatPickerView.frame.size.height + 20;
     CGRect visibleRect = CGRectMake(0, size.height - self.view.bounds.size.height, self.view.bounds.size.width, self.view.bounds.size.height);
     
     [self.scrollView setContentSize:size];
@@ -317,7 +317,7 @@
 	locationPickerView.hidden = NO;
     
     CGSize size = CGSizeMake(self.view.bounds.size.width, searchButton.frame.origin.y + searchButton.frame.size.height);
-    size.height += locationPickerView.frame.size.height;
+    size.height += locationPickerView.frame.size.height + 20;
     CGRect visibleRect = CGRectMake(0, size.height - self.view.bounds.size.height, self.view.bounds.size.width, self.view.bounds.size.height);
     
     [self.scrollView setContentSize:size];
