@@ -2,6 +2,7 @@
 #import "MIT_MobileAppDelegate.h"
 #import "TwitterViewController.h"
 #import "JSONAPIRequest.h"
+#import "MailSender.h"
 
 @implementation ShareDetailViewController
 
@@ -32,40 +33,14 @@
     [shareSheet release];
 }
 
-- (void)sendEmailWithSubject:(NSString *)emailSubject body:(NSString *)emailBody
-{
-	Class mailClass = (NSClassFromString(@"MFMailComposeViewController"));
-	if ((mailClass != nil) && [mailClass canSendMail]) {
-		
-		MFMailComposeViewController *aController = [[MFMailComposeViewController alloc] init];
-		aController.mailComposeDelegate = self;
-		
-		[aController setSubject:emailSubject];
-		
-		[aController setMessageBody:emailBody isHTML:NO];
-		
-		MIT_MobileAppDelegate *appDelegate = (MIT_MobileAppDelegate *)[[UIApplication sharedApplication] delegate];
-		[appDelegate presentAppModalViewController:aController animated:YES];
-		[aController release];
-		
-	} else {
-		NSString *mailtoString = [NSString stringWithFormat:@"mailto://?subject=%@&body=%@", 
-								  [emailSubject stringByAddingPercentEscapesUsingEncoding:NSASCIIStringEncoding],
-								  [emailBody stringByAddingPercentEscapesUsingEncoding:NSASCIIStringEncoding]];
-		
-		NSURL *externURL = [NSURL URLWithString:mailtoString];
-		if ([[UIApplication sharedApplication] canOpenURL:externURL])
-			[[UIApplication sharedApplication] openURL:externURL];
-	}
-}
-
 // subclasses should make sure emailBody and emailSubject are set up before this gets called
 // or call [super actionSheet:actionSheet clickedButtonAtIndex:buttonIndex] at the end of this
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
 	if (buttonIndex == 0) {
 		// Email
-        [self sendEmailWithSubject:[self.shareDelegate emailSubject]
-							  body:[self.shareDelegate emailBody]];
+        [MailSender sendEmailWithSubject:[self.shareDelegate emailSubject]
+									body:[self.shareDelegate emailBody]
+								delegate:self];
 	}
     else if (buttonIndex == 1) {
 		// Facebook session

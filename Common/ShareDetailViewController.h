@@ -38,7 +38,6 @@ MFMailComposeViewControllerDelegate, FBSessionDelegate, FBDialogDelegate> {
 @property (nonatomic, retain) FBSession *fbSession;
 @property (nonatomic, retain) id<ShareItemDelegate> shareDelegate;
 
-- (void)sendEmailWithSubject:(NSString *)emailSubject body:(NSString *)emailBody;
 - (void)share:(id)sender;
 - (void)showTwitterView;
 - (void)showFacebookDialog;
