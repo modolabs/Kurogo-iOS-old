@@ -783,6 +783,10 @@ static LibraryDataManager *s_sharedManager = nil;
 }
 
 - (BOOL)request:(JSONAPIRequest *)request shouldDisplayAlertForError:(NSError *)error {
+    if ([request.userData isEqualToString:LibraryDataRequestArchives]) {
+        // since we request libraries and archives at the same time, only display one error message
+        return NO;
+    }
     return YES;
 }
 
