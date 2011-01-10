@@ -24,10 +24,8 @@
 @property (nonatomic, retain) NSString * figureLink;
 @property (nonatomic, retain) NSString * author;
 @property (nonatomic, retain) NSString * authorLink;
+@property (nonatomic, retain) NSData * thumbnailImage;
 
-- (UIImage *)thumbnailImage;
-- (NSString *)thumbnailImagePath;
-// TODO: clear out stale image files
 - (void)requestImage;
 
 @end

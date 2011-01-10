@@ -39,8 +39,8 @@
 		currentIndex = itemIndex;
 		displayImage = imageDisplay;
 		
-		//locationsWithItem = [[NSArray alloc] init];
         locationsWithItem = nil;
+        canShowMap = NO;
         displayLibraries = [[NSMutableArray alloc] init];
 	}
 	
@@ -178,27 +178,39 @@
 	authorLabel.backgroundColor = [UIColor clearColor];	
 	authorLabel.lineBreakMode = UILineBreakModeTailTruncation;
 	authorLabel.numberOfLines = 1;
-	
-
-	bookmarkButton = [UIButton buttonWithType:UIButtonTypeCustom];
-	bookmarkButton.frame = CGRectMake(self.tableView.frame.size.width - 105.0 , headerTextHeight - 10, 50.0, 50.0);
-	bookmarkButton.enabled = YES;
-	[bookmarkButton setImage:[UIImage imageNamed:@"global/bookmark_off.png"] forState:UIControlStateNormal];
-	[bookmarkButton setImage:[UIImage imageNamed:@"global/bookmark_off_pressed.png"] forState:(UIControlStateNormal | UIControlStateHighlighted)];
-	[bookmarkButton setImage:[UIImage imageNamed:@"global/bookmark_on.png"] forState:UIControlStateSelected];
-	[bookmarkButton setImage:[UIImage imageNamed:@"global/bookmark_on_pressed.png"] forState:(UIControlStateSelected | UIControlStateHighlighted)];
-	[bookmarkButton addTarget:self action:@selector(bookmarkButtonToggled:) forControlEvents:UIControlEventTouchUpInside];
     
+    // header buttons
+    
+    UIButton *bookmarkButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    bookmarkButton.frame = CGRectMake(self.tableView.frame.size.width - 105.0 , headerTextHeight - 10, 50.0, 50.0);
+    bookmarkButton.enabled = YES;
+    [bookmarkButton setImage:[UIImage imageNamed:@"global/bookmark_off.png"] forState:UIControlStateNormal];
+    [bookmarkButton setImage:[UIImage imageNamed:@"global/bookmark_off_pressed.png"] forState:(UIControlStateNormal | UIControlStateHighlighted)];
+    [bookmarkButton setImage:[UIImage imageNamed:@"global/bookmark_on.png"] forState:UIControlStateSelected];
+    [bookmarkButton setImage:[UIImage imageNamed:@"global/bookmark_on_pressed.png"] forState:(UIControlStateSelected | UIControlStateHighlighted)];
+    [bookmarkButton addTarget:self action:@selector(bookmarkButtonToggled:) forControlEvents:UIControlEventTouchUpInside];
     bookmarkButtonIsOn = bookmarkButton.selected = [libItem.isBookmarked boolValue];
-	
-	mapButton = [UIButton buttonWithType:UIButtonTypeCustom];
-	mapButton.frame = CGRectMake(self.tableView.frame.size.width - 55.0 , headerTextHeight - 10, 50.0, 50.0);
-	mapButton.enabled = YES;
-	[mapButton setImage:[UIImage imageNamed:@"global/map-it.png"] forState:UIControlStateNormal];
-	[mapButton setImage:[UIImage imageNamed:@"global/map-it-pressed.png"] forState:(UIControlStateNormal | UIControlStateHighlighted)];
-	[mapButton setImage:[UIImage imageNamed:@"global/map-it.png-pressed"] forState:UIControlStateSelected];
-	[mapButton setImage:[UIImage imageNamed:@"global/map-it.png-pressed"] forState:(UIControlStateSelected | UIControlStateHighlighted)];
-	[mapButton addTarget:self action:@selector(mapButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
+    
+    UIButton *mapButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    mapButton.frame = CGRectMake(self.tableView.frame.size.width - 55.0 , headerTextHeight - 10, 50.0, 50.0);
+    mapButton.enabled = YES;
+    [mapButton setImage:[UIImage imageNamed:@"global/map-it.png"] forState:UIControlStateNormal];
+    [mapButton setImage:[UIImage imageNamed:@"global/map-it-pressed.png"] forState:(UIControlStateNormal | UIControlStateHighlighted)];
+    [mapButton setImage:[UIImage imageNamed:@"global/map-it.png-pressed"] forState:UIControlStateSelected];
+    [mapButton setImage:[UIImage imageNamed:@"global/map-it.png-pressed"] forState:(UIControlStateSelected | UIControlStateHighlighted)];
+    [mapButton addTarget:self action:@selector(mapButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
+    
+    CGFloat subtitleWidth;
+    
+    if (displayImage || !canShowMap) {
+        mapButton.hidden = YES;
+        bookmarkButton.frame = CGRectMake(self.tableView.frame.size.width - 55.0 , bookmarkButton.frame.origin.y, 50.0, 50.0);
+        subtitleWidth = self.view.frame.size.width - 70;
+    } else {
+        mapButton.hidden = NO;
+        bookmarkButton.frame = CGRectMake(self.tableView.frame.size.width - 105.0 , bookmarkButton.frame.origin.y, 50.0, 50.0);
+        subtitleWidth = self.view.frame.size.width - 130;
+    }
 	
 	UIView * headerView = [[[UIView alloc] initWithFrame:CGRectZero] autorelease];
 	
@@ -212,7 +224,7 @@
     for (NSString *labelText in [NSArray arrayWithObjects:edition, pubYear, formatDetails, nil]) {
         if ([labelText length]) {
             CGFloat detailHeight = [labelText sizeWithFont:labelFont].height;
-            UILabel *detailLabel = [[UILabel alloc] initWithFrame:CGRectMake(12, 20 + headerTextHeight, 190, detailHeight)];
+            UILabel *detailLabel = [[UILabel alloc] initWithFrame:CGRectMake(12, 20 + headerTextHeight, subtitleWidth, detailHeight)];
             headerTextHeight += detailHeight;
             detailLabel.text = labelText;
             detailLabel.font = labelFont;
@@ -227,25 +239,19 @@
 	thumbnail = [[UIView alloc] initWithFrame:CGRectMake((screenRect.size.width - 150.0) / 2, headerView.frame.size.height, 150.0, 150.0)];
 	thumbnail.backgroundColor = [UIColor clearColor];
     
-	if (displayImage == YES){
-		bookmarkButton.frame = CGRectMake(self.tableView.frame.size.width - 55.0 , bookmarkButton.frame.origin.y, 50.0, 50.0);
+	if (displayImage) {
         headerView.frame = CGRectMake(0, 0, headerView.frame.size.width, thumbnail.frame.origin.y + thumbnail.frame.size.height);
 		[headerView addSubview:thumbnail];
         [self addLoadingIndicator:thumbnail];
-	}
-	else{
-		if (nil != thumbnail){
-			[thumbnail removeFromSuperview];
-            [thumbnail release];
-			thumbnail = nil;
-		}
+
+	} else if (nil != thumbnail) {
+        [thumbnail removeFromSuperview];
+        [thumbnail release];
+        thumbnail = nil;
 	}
 	
-	//self.tableView.tableHeaderView = [[[UIView alloc] initWithFrame:CGRectMake(0, 0, self.tableView.frame.size.width, headerView.frame.size.height)] autorelease];
-	//[self.tableView.tableHeaderView addSubview:headerView];
     self.tableView.tableHeaderView = headerView;
 }
-
 
 #pragma mark User Interaction
 
@@ -322,6 +328,7 @@
                     [libItem release];
                     libItem = [nextLibItem retain];
                     displayImage = [libItem.formatDetail isEqualToString:@"Image"];
+                    canShowMap = NO;
                     [self setupLayout];
                 }
                 
@@ -334,7 +341,6 @@
                     [self detailsDidLoadForItem:libItem];
                 }
                 if (![[libItem.formatDetail lowercaseString] isEqualToString:@"image"]) {
-                    //[[LibraryDataManager sharedManager] requestOldAvailabilityForItem:libItem.itemId];
                     [[LibraryDataManager sharedManager] requestAvailabilityForItem:libItem.itemId];
                 }
                 
@@ -363,29 +369,24 @@
 
 
 -(void) bookmarkButtonToggled: (id) sender {
-	
-	
-	BOOL newBookmarkButtonStatus = !bookmarkButton.selected;
-	
-	NSPredicate *pred = [NSPredicate predicateWithFormat:@"itemId == %@",libItem.itemId];
-	LibraryItem *alreadyInDB = (LibraryItem *)[[CoreDataManager objectsForEntity:LibraryItemEntityName matchingPredicate:pred] lastObject];
-	
-	if (nil == alreadyInDB){
-		return;
-	}
-	
-	if (newBookmarkButtonStatus) {
-		bookmarkButton.selected = YES;
-		alreadyInDB.isBookmarked = [NSNumber numberWithBool:YES];
-	}
-	
-	else {
-		bookmarkButton.selected = NO;
-		alreadyInDB.isBookmarked = [NSNumber numberWithBool:NO];
-	}
-	
-	[CoreDataManager saveData];
-	
+    
+    if ([sender isKindOfClass:[UIButton class]]) {
+        UIButton *bookmarkButton = (UIButton *)sender;
+
+        BOOL newBookmarkButtonStatus = !bookmarkButton.selected;
+        
+        NSPredicate *pred = [NSPredicate predicateWithFormat:@"itemId == %@",libItem.itemId];
+        LibraryItem *alreadyInDB = (LibraryItem *)[[CoreDataManager objectsForEntity:LibraryItemEntityName matchingPredicate:pred] lastObject];
+        
+        if (nil == alreadyInDB){
+            return;
+        }
+        
+        bookmarkButton.selected = newBookmarkButtonStatus;
+        alreadyInDB.isBookmarked = [NSNumber numberWithBool:newBookmarkButtonStatus];
+        
+        [CoreDataManager saveData];
+    }
 }
 
 #pragma mark -
@@ -545,56 +546,6 @@
         if (![dictWithStatuses count]) {
             [dictWithStatuses setObject:@"unavailable" forKey:@"none available"];
         }
-        /*
-        {"holdingStatus":"collection","available":0,"requestable":0,"unavailable":0,"collection":1,"total":1},
-        {"holdingStatus":"in-library use","available":17,"requestable":0,"unavailable":0,"collection":0,"total":17}
-        
-        
-        
-		NSArray * collections = (NSArray *)[tempDict objectForKey:@"collection"];
-        // TODO: is there a good reason for using just the last collection?
-        NSDictionary *collectionDict = [collections lastObject];
-		
-		NSMutableDictionary * dictWithStatuses = [NSMutableDictionary dictionary];
-
-        if (collectionDict) {
-			
-			NSArray * itemsByStat = (NSArray *)[collectionDict objectForKey:@"itemsByStat"];
-			
-			for (NSDictionary * statDict in itemsByStat) {
-				NSString * statMain = [statDict objectForKey:@"statMain"];
-				
-				int availCount = [[statDict objectForKey:@"availCount"] intValue];
-				int unavailCount = [[statDict objectForKey:@"unavailCount"] intValue];
-				int checkedOutCount = [[statDict objectForKey:@"checkedOutCount"] intValue];
-				int requestCount = [[statDict objectForKey:@"requestCount"] intValue] + [[statDict objectForKey:@"scanAndDeliverCount"] intValue];
-				int collectionOnlyCount = [[statDict objectForKey:@"collectionOnlyCount"] intValue];
-				
-				int totalItems = availCount + unavailCount + checkedOutCount + collectionOnlyCount;
-				
-				NSString * status;
-				
-				if (availCount > 0)
-					status = @"available";
-				else if (checkedOutCount > 0 || requestCount > 0)
-					status = @"request";
-				else
-					status = @"unavailable";
-				
-				NSString * statusDetailString = [NSString stringWithFormat:
-												 @"%d of %d available - %@", availCount, totalItems, statMain];
-				
-				if (collectionOnlyCount > 0)
-					statusDetailString = [NSString stringWithFormat:
-										  @"0 of %d may be available", collectionOnlyCount];
-				
-				if ((totalItems > 0) || (requestCount > 0))
-					[dictWithStatuses setObject:status forKey:statusDetailString];
-			}
-            
-		}
-        */
-
 		
 		NSString * libName = [tempDict objectForKey:@"name"];
         
@@ -621,8 +572,6 @@
         CGFloat cellWidth = tableView.frame.size.width - 20; // assume 10px padding left and right
         
         // accessory view
-        //NSArray * itemsByStat = (NSArray *)[collectionDict objectForKey:@"itemsByStat"];
-        //if (![itemsByStat count]) {
         if (![categories count]) {
             cell1.accessoryType = UITableViewCellAccessoryNone;
             cell1.selectionStyle = UITableViewCellSelectionStyleNone;
@@ -758,30 +707,7 @@
         NSDictionary * tempDict = [locationsWithItem objectAtIndex:indexPath.row];
         NSArray *categories = [tempDict objectForKey:@"categories"];
         NSInteger numberOfStatusLines = [categories count] ? [categories count] : 1;
-        /*
-        NSArray * collections = (NSArray *)[tempDict objectForKey:@"collection"];
-        // TODO: see comment in -tableView:cellForRow...
-        NSDictionary *collectionDict = [collections lastObject]; // may be nil
-        NSArray * itemsByStat = (NSArray *)[collectionDict objectForKey:@"itemsByStat"]; // may be nil
-        
-        NSInteger numberOfStatusLines = 0;
-        if (![itemsByStat count]) {
-            numberOfStatusLines = 1;
-        } else {
-            for (NSDictionary * statDict in itemsByStat) {
-                if ([[statDict objectForKey:@"availCount"] intValue]
-                 || [[statDict objectForKey:@"unavailCount"] intValue]
-                 || [[statDict objectForKey:@"checkedOutCount"] intValue]
-                 || [[statDict objectForKey:@"requestCount"] intValue]
-                 || [[statDict objectForKey:@"scanAndDeliverCount"] intValue]
-                 || [[statDict objectForKey:@"collectionOnlyCount"] intValue])
-                {
-                    numberOfStatusLines++;
-                }
-            }
-            if (numberOfStatusLines == 0) numberOfStatusLines = 1;
-        }
-        */
+
         NSString * libName = [tempDict objectForKey:@"name"];
         Library *theLibrary = nil;
         for (LibraryAlias *alias in displayLibraries) {
@@ -792,7 +718,7 @@
         }
         NSInteger numberOfDistanceLines = (theLibrary && nil != currentLocation && [theLibrary.lat doubleValue]) ? 1 : 0;
         
-        NSLog(@"%@ %d %d", libName, numberOfStatusLines, numberOfDistanceLines);
+        DLog(@"%@ %d %d", libName, numberOfStatusLines, numberOfDistanceLines);
         
         height += (size.height + 2) * (numberOfStatusLines + numberOfDistanceLines);
         
@@ -836,22 +762,10 @@
 	
 	
 	else if ([locationsWithItem count]) {
-		NSDictionary * libDict = [locationsWithItem objectAtIndex:indexPath.row];		
-        /*
-		NSArray * collections = (NSArray *)[libDict objectForKey:@"collection"];
-	
-		BOOL tappable = NO;
-		for (NSDictionary * collectionDict in collections){
-			NSArray * itemsByStat = (NSArray *)[collectionDict objectForKey:@"itemsByStat"];
-            if ([itemsByStat count]) {
-                tappable = YES;
-                break;
-            }
-		}
-         */
+		NSDictionary * libDict = [locationsWithItem objectAtIndex:indexPath.row];
 
         NSArray *collections = (NSArray *)[libDict objectForKey:@"categories"];
-		if (/*tappable && */([collections count] > 0) && (indexPath.section == 1)) {
+		if (([collections count] > 0) && (indexPath.section == 1)) {
 
             NSString * libName = [libDict objectForKey:@"name"];
             NSString * libId = [libDict objectForKey:@"id"];
@@ -862,7 +776,6 @@
 			vc.title = @"Availability";
             vc.libraryItem = libItem;
             vc.libraryAlias = alias;
-            //vc.availabilityCategories = collections;
             vc.arrayWithAllLibraries = locationsWithItem;
             vc.currentIndex = indexPath.row;
             
@@ -921,7 +834,6 @@
     locationsWithItem = [availabilityData retain];
     
     [displayLibraries removeAllObjects];
-    
     for (NSDictionary * tempDict in availabilityData) {
         NSString * displayName = [tempDict objectForKey:@"name"];
         NSString * identityTag = [tempDict objectForKey:@"id"];
@@ -929,11 +841,16 @@
     
         LibraryAlias *alias = [[LibraryDataManager sharedManager] libraryAliasWithID:identityTag type:type name:displayName];
         [displayLibraries addObject:alias];
+        
+        if ([alias.library.lat doubleValue] && !canShowMap) {
+            canShowMap = YES;
+            [self setupLayout];
+        }
     }
     
     [self.tableView reloadData];
     
-    if (!locationManager) {
+    if (canShowMap && !locationManager) {
         locationManager = [[CLLocationManager alloc] init];
         locationManager.distanceFilter = kCLDistanceFilterNone;
         locationManager.desiredAccuracy = kCLLocationAccuracyBest;
@@ -964,7 +881,7 @@
     }
     
     if (libItem.formatDetail && [[libItem.formatDetail lowercaseString] isEqualToString:@"image"]) {
-        UIImage *image = [aLibItem thumbnailImage];
+        UIImage *image = [UIImage imageWithData:[aLibItem thumbnailImage]];
         if (image) {
             
             UIImageView *imageView = [[[UIImageView alloc] initWithImage:nil] autorelease];
@@ -1002,7 +919,6 @@
 
     } else {
         [self setupLayout];
-        //[[LibraryDataManager sharedManager] requestOldAvailabilityForItem:libItem.itemId];
         [[LibraryDataManager sharedManager] requestAvailabilityForItem:libItem.itemId];
     }
 }
@@ -1021,9 +937,16 @@
 
 
 - (void)detailsDidLoadForLibrary:(NSString *)libID type:(NSString *)libType {
-    // each item can be held at many libraries, and we could
-    // check each library to see whether we want to load just those cells instead of everything
-    [self.tableView reloadData];
+    BOOL couldShowMap = canShowMap;
+    for (LibraryAlias *anAlias in displayLibraries) {
+        if ([anAlias.library.lat doubleValue]) {
+            canShowMap = YES;
+        }
+    }
+    
+    if (couldShowMap != canShowMap) {
+        [self.tableView reloadData];
+    }
 }
 
 - (void)detailsDidFailToLoadForLibrary:(NSString *)libID type:(NSString *)libType {

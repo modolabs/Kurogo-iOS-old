@@ -628,11 +628,14 @@ JSONAPIRequest *mitapi;
 	
 	UIFont *dateFont = [UIFont fontWithName:BOLD_FONT size:20.0];
 	CGSize textSize = [dateText sizeWithFont:dateFont];
-	
+    
     UIButton *dateButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    dateButton.frame = CGRectMake(0.0, 0.0, textSize.width, textSize.height);
+    //dateButton.frame = CGRectMake(0.0, 0.0, textSize.width, textSize.height);
+    CGFloat dateButtonWidth = 2 * (prevDate.frame.origin.x - (datePicker.frame.size.width / 2));
+    dateButton.frame = CGRectMake(0.0, (datePicker.frame.size.width - dateButtonWidth) / 2, dateButtonWidth, textSize.height);
     dateButton.titleLabel.text = dateText;
     dateButton.titleLabel.font = dateFont;
+    dateButton.titleLabel.adjustsFontSizeToFitWidth = YES;
     dateButton.titleLabel.textColor = [UIColor whiteColor];
     [dateButton setTitle:dateText forState:UIControlStateNormal];
     dateButton.center = CGPointMake(datePicker.center.x, datePicker.center.y - datePicker.frame.origin.y);

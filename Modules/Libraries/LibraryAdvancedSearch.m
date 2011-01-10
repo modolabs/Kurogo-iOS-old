@@ -24,6 +24,7 @@
 @synthesize location;
 @synthesize locationDisclosure;
 @synthesize englishSwitch;
+@synthesize scrollView;
 
 -(void) setupLayout{
 	
@@ -149,7 +150,6 @@
     UIImage *pressedImage = [[UIImage imageNamed:@"global/subheadbar_button_pressed.png"] stretchableImageWithLeftCapWidth:10 topCapHeight:0];
     [searchButton setBackgroundImage:normalImage forState:UIControlStateNormal];
     [searchButton setBackgroundImage:pressedImage forState:UIControlStateHighlighted];
-    NSLog(@"%@", [searchButton description]);
 
     // TODO: why isn't this being done in the nib file?
 	[format setUserInteractionEnabled:NO];
@@ -177,6 +177,7 @@
 	
 }
 
+/*
 -(void) touchesBegan :(NSSet *) touches withEvent:(UIEvent *)event
 
 {
@@ -189,7 +190,23 @@
 	locationPickerView.hidden = YES;
 	
     [super touchesBegan:touches withEvent:event];
+    
+    [self.scrollView scrollRectToVisible:self.view.frame animated:YES];
+    [self.scrollView setContentSize:self.view.bounds.size];
 	
+}
+*/
+
+- (IBAction)resignAllResponders:(id)sender {
+    [keywords resignFirstResponder];
+    [titleKeywords resignFirstResponder];
+    [authorKeywords resignFirstResponder];
+	
+	formatPickerView.hidden = YES;
+	locationPickerView.hidden = YES;
+    
+    [self.scrollView setContentSize:self.view.bounds.size];
+    [self.scrollView scrollRectToVisible:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height) animated:YES];
 }
 
 - (void)viewDidUnload {
@@ -272,14 +289,24 @@
 
 -(IBAction) formatPressed:(id) sender{
 	
+    NSLog(@"self.view is %@", [self.view description]);
+    
 	[keywords resignFirstResponder];
     [titleKeywords resignFirstResponder];	
     [authorKeywords resignFirstResponder];
 	
 	locationPickerView.hidden = YES;
 	formatPickerView.hidden = NO;
+    
+    CGSize size = CGSizeMake(self.view.bounds.size.width, searchButton.frame.origin.y + searchButton.frame.size.height);
+    size.height += formatPickerView.frame.size.height + 20;
+    CGRect visibleRect = CGRectMake(0, size.height - self.view.bounds.size.height, self.view.bounds.size.width, self.view.bounds.size.height);
+    
+    [self.scrollView setContentSize:size];
+    [self.scrollView scrollRectToVisible:visibleRect animated:YES];
 	
 }
+
 -(IBAction) locationPressed:(id) sender{
 	
 	[keywords resignFirstResponder];
@@ -288,8 +315,16 @@
 	
 	formatPickerView.hidden = YES;
 	locationPickerView.hidden = NO;
+    
+    CGSize size = CGSizeMake(self.view.bounds.size.width, searchButton.frame.origin.y + searchButton.frame.size.height);
+    size.height += locationPickerView.frame.size.height + 20;
+    CGRect visibleRect = CGRectMake(0, size.height - self.view.bounds.size.height, self.view.bounds.size.width, self.view.bounds.size.height);
+    
+    [self.scrollView setContentSize:size];
+    [self.scrollView scrollRectToVisible:visibleRect animated:YES];
 	
 }
+
 -(IBAction) searchButtonPressed:(id) sender{
 	
 	[self search];
@@ -381,67 +416,17 @@
     [self setupLayout];
 }
 
-/*
-#pragma mark JSONAPIRequest Delegate function 
+@end
 
-- (void)request:(JSONAPIRequest *)request jsonLoaded:(id)result {
-	
-    if (result && [result isKindOfClass:[NSDictionary class]]) {
-        NSInteger i;
-        NSDictionary *dictionaryResults = (NSDictionary *)result;
-    
-        NSDictionary *formatCodes = [dictionaryResults objectForKey:@"formats"];
-        NSDictionary *locationCodes = [dictionaryResults objectForKey:@"locations"];
-        
-        if (formatCodes) {
-            NSInteger count = [formatCodes count];
-            NSArray *codes = [formatCodes allKeys];
-            for (i = 0; i < count; i++) {
-                NSString *code = [codes objectAtIndex:i];
-                NSString *name = [formatCodes objectForKey: code];
-                
-                NSPredicate *pred = [NSPredicate predicateWithFormat:@"code == %@", code];
-                LibraryItemFormat *alreadyInDB = [[CoreDataManager objectsForEntity:LibraryFormatCodeEntityName matchingPredicate:pred] lastObject];
-                
-                if (nil == alreadyInDB) {
-                    NSManagedObject *managedObj = [CoreDataManager insertNewObjectForEntityForName:LibraryFormatCodeEntityName];
-                    alreadyInDB = (LibraryItemFormat *)managedObj;
-                }
-                
-                alreadyInDB.code = code;
-                alreadyInDB.name = name;
-            }
-        }
-        
-        if (locationCodes) {
-            NSInteger count = [locationCodes count];
-            NSArray *codes = [locationCodes allKeys];
-            for (i = 0; i < count; i++) {
-                NSString *code = [codes objectAtIndex:i];
-                NSString *name = [locationCodes objectForKey: code];
-                
-                NSPredicate *pred = [NSPredicate predicateWithFormat:@"code == %@", code];
-                LibraryLocation *alreadyInDB = [[CoreDataManager objectsForEntity:LibraryLocationCodeEntityName matchingPredicate:pred] lastObject];
-                
-                if (nil == alreadyInDB) {
-                    NSManagedObject *managedObj = [CoreDataManager insertNewObjectForEntityForName:LibraryLocationCodeEntityName];
-                    alreadyInDB = (LibraryLocation *)managedObj;
-                }
-                
-                alreadyInDB.code = code;
-                alreadyInDB.name = name;
-            }
-        }
-    }
-	
-	[CoreDataManager saveData];
-	[self viewWillAppear:YES];
-}
 
-- (BOOL)request:(JSONAPIRequest *)request shouldDisplayAlertForError:(NSError *)error {
-	
+
+@implementation CancellableScrollView
+
+- (BOOL)touchesShouldBegin:(NSSet *)touches withEvent:(UIEvent *)event inContentView:(UIView *)view {
+    NSLog(@"%@", [view description]);
     return YES;
 }
-*/
+
 @end
+
 

@@ -8,7 +8,11 @@
 
 #import <UIKit/UIKit.h>
 
+@class CancellableScrollView;
+
 @interface LibraryAdvancedSearch : UIViewController <UIPickerViewDelegate, UIPickerViewDataSource, UITextFieldDelegate> {
+    
+    IBOutlet CancellableScrollView *scrollView;
 	
     IBOutlet UITextField *keywords;
 	
@@ -41,6 +45,7 @@
 	NSInteger locationIndexAtInitialization;
 }
 
+@property (nonatomic, retain) IBOutlet UIScrollView *scrollView;
 @property (nonatomic, retain) IBOutlet UITextField *keywords;
 @property (nonatomic, retain) IBOutlet UITextField *titleKeywords;
 @property (nonatomic, retain) IBOutlet UITextField *authorKeywords;
@@ -55,6 +60,8 @@
 -(IBAction) searchButtonPressed:(id) sender;
 -(IBAction) englishButtonPressed: (id) sender;
 
+- (IBAction)resignAllResponders:(id)sender;
+
 - (id)initWithNibName:(NSString *)nibNameOrNil 
                bundle:(NSBundle *)nibBundleOrNil 
              keywords:(NSString *) keywordsText 
@@ -64,4 +71,9 @@
           formatIndex:(NSInteger) formatIndex 
         locationIndex:(NSInteger) locationIndex;
 -(void) search;
+@end
+
+@interface CancellableScrollView : UIScrollView {
+}
+
 @end

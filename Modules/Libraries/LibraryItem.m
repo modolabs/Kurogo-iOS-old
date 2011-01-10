@@ -1,5 +1,5 @@
 #import "LibraryItem.h"
-
+#import "CoreDataManager.h"
 
 @implementation LibraryItem 
 
@@ -22,37 +22,7 @@
 @dynamic figureLink;
 @dynamic author;
 @dynamic authorLink;
-
-- (UIImage *)thumbnailImage {
-    NSString *path = [self thumbnailImagePath];
-    UIImage *image = nil;
-    if (path && [[NSFileManager defaultManager] fileExistsAtPath:path]) {
-        image = [UIImage imageWithContentsOfFile:path];
-    }
-    return image;
-}
-
-- (NSString *)thumbnailImagePath {
-    NSString *result = nil;
-
-    if ([self.thumbnailURL length]) {
-        NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-        NSString *documentPath = [paths objectAtIndex:0];
-        NSString *libraryDir = [documentPath stringByAppendingPathComponent:@"library"];
-        
-        if (![[NSFileManager defaultManager] fileExistsAtPath:libraryDir]) {
-            NSError* error = nil;
-            [[NSFileManager defaultManager] createDirectoryAtPath:libraryDir
-                                      withIntermediateDirectories:YES
-                                                       attributes:nil
-                                                            error:&error];
-        }
-        
-        NSString *imageFileName = [NSString stringWithFormat:@"%d", [self.thumbnailURL hash]];
-        result = [libraryDir stringByAppendingPathComponent:imageFileName];
-    }
-    return result;
-}
+@dynamic thumbnailImage;
 
 - (void)requestImage {
     if ([self.thumbnailURL length]) {
@@ -61,7 +31,8 @@
         if (!data) {
             NSLog(@"could not read data: %@", [error description]);
         } else {
-            [data writeToFile:[self thumbnailImagePath] atomically:YES];
+            self.thumbnailImage = data;
+            [CoreDataManager saveData];
         }
     }
 }

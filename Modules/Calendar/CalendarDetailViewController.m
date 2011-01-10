@@ -214,7 +214,7 @@ enum CalendarDetailRowTypes {
         titleWidth = tableFrame.size.width - titlePadding * 2;
         self.tableView.separatorColor = [UIColor whiteColor];
     }
-	UIFont *titleFont = [UIFont fontWithName:BOLD_FONT size:20.0];
+	UIFont *titleFont = [UIFont fontWithName:CONTENT_TITLE_FONT size:22.0];
 	CGSize titleSize = [self.event.title sizeWithFont:titleFont
 									constrainedToSize:CGSizeMake(titleWidth, 2010.0)];
 	UILabel *titleView = [[UILabel alloc] initWithFrame:CGRectMake(titlePadding, titlePadding, titleSize.width, titleSize.height)];
@@ -222,6 +222,7 @@ enum CalendarDetailRowTypes {
 	titleView.numberOfLines = 0;
 	titleView.font = titleFont;
 	titleView.text = self.event.title;
+    titleView.textColor = CELL_STANDARD_FONT_COLOR;
 	
 	// if title is very short, add extra padding so button won't be too close to first cell
 	if (titleSize.height < shareButton.frame.size.height) {

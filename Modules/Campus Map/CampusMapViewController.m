@@ -25,7 +25,7 @@
 
 - (void)setupSearchController;
 - (void)noSearchResultsAlert;
-- (void)errorConnectingAlert;
+//- (void)errorConnectingAlert;
 - (void)setUpAnnotationsWithNewSearchResults:(NSArray*)searchResults forQuery:(NSString *)searchQuery;
 - (void)handleTileServerManagerProjectionIsReady:(NSNotification *)notification;
 - (void)recenterMapView;
@@ -386,7 +386,7 @@
 	alert.delegate = self;
 	[alert show];
 }
-
+/*
 - (void)errorConnectingAlert
 {
 	UIAlertView* alert = [[[UIAlertView alloc] initWithTitle:nil
@@ -397,7 +397,7 @@
 	alert.delegate = self;
 	[alert show];
 }
-
+*/
 - (void)handleTileServerManagerProjectionIsReady:(NSNotification *)notification {
     
     // TODO: don't do this if the user has intentially scrolled somewhere else
