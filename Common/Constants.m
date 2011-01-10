@@ -137,6 +137,8 @@ NSString * const MITImageNameSubheadBarBackground = @"global/subheadbar_backgrou
 NSString * const MITImageNameSearch = @"global/search.png";
 NSString * const MITImageNameBookmark = @"global/bookmark.png";
 
+NSString * const MITImageNameBlank = @"global/action-blank.png";
+
 // errors
 NSString * const MapsErrorDomain = @"com.modolabs.Maps.ErrorDomain";
 NSString * const ShuttlesErrorDomain = @"com.modolabs.Shuttles.ErrorDomain";

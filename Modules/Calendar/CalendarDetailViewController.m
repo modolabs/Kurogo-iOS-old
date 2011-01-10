@@ -305,6 +305,7 @@ enum CalendarDetailRowTypes {
 			if ([event hasCoords]) {
 				cell.accessoryView = [UIImageView accessoryViewWithMITType:MITAccessoryViewMap];
 			} else {
+                cell.accessoryView = [UIImageView accessoryViewWithMITType:MITAccessoryViewBlank];
                 cell.selectionStyle = UITableViewCellSelectionStyleNone;
             }
 			break;

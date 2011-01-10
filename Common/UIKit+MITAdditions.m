@@ -79,6 +79,10 @@
             imageName = MITImageNameSecure;
             highlightedImageName = MITImageNameSecureHighlight;
             break;
+        case MITAccessoryViewBlank:
+            imageName = MITImageNameBlank;
+            highlightedImageName = MITImageNameBlank;
+            break;
     }
     
     UIImage *image = [UIImage imageNamed:imageName];

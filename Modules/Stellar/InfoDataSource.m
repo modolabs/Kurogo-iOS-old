@@ -99,7 +99,7 @@
 						cell.selectionStyle = UITableViewCellSelectionStyleGray;
 					}
 					else {
-						cell.accessoryView = nil;
+						cell.accessoryView = [UIImageView accessoryViewWithMITType:MITAccessoryViewBlank];
 						cell.selectionStyle = UITableViewCellSelectionStyleNone;
 					}					
 				} else {

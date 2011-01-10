@@ -128,6 +128,7 @@ extern NSString * const MITImageNameSubheadBarBackground;
 
 extern NSString * const MITImageNameSearch;
 extern NSString * const MITImageNameBookmark;
+extern NSString * const MITImageNameBlank;
 
 // action accessory types
 
@@ -138,7 +139,8 @@ typedef enum {
     MITAccessoryViewPhone,
     MITAccessoryViewExternal,
 	MITAccessoryViewEmergency,
-    MITAccessoryViewSecure
+    MITAccessoryViewSecure,
+    MITAccessoryViewBlank
 } MITAccessoryViewType;
 
 // errors

@@ -266,7 +266,7 @@ NSString * const RequestLookupAddress = @"address";
             CGFloat width = [MultiLineTableViewCell widthForTextLabel:NO
                                                             cellStyle:UITableViewCellStyleValue2
                                                             tableView:self.tableView
-                                                        accessoryType:UITableViewCellAccessoryNone
+                                                        accessoryType:UITableViewCellAccessoryDetailDisclosureButton
                                                             cellImage:NO
                                                              hasIndex:NO];
             
@@ -315,9 +315,13 @@ NSString * const RequestLookupAddress = @"address";
 		} else if ([tag isEqualToString:[personDetails displayNameForKey:@"telephonenumber"]]) {
             cell.accessoryType = UITableViewCellAccessoryDetailDisclosureButton;
             cell.accessoryView = [UIImageView accessoryViewWithMITType:MITAccessoryViewPhone];
-		} else if ([tag isEqualToString:[personDetails displayNameForKey:@"postaladdress"]] && addressSearchAnnotation) {
+		} else if ([tag isEqualToString:[personDetails displayNameForKey:@"postaladdress"]]) {
             cell.accessoryType = UITableViewCellAccessoryDetailDisclosureButton;
-            cell.accessoryView = [UIImageView accessoryViewWithMITType:MITAccessoryViewMap];
+            if (addressSearchAnnotation) {
+                cell.accessoryView = [UIImageView accessoryViewWithMITType:MITAccessoryViewMap];
+            } else {
+                cell.accessoryView = [UIImageView accessoryViewWithMITType:MITAccessoryViewBlank];
+            }
 		} else {
 			cell.selectionStyle = UITableViewCellSelectionStyleNone;
             cell.accessoryType = UITableViewCellAccessoryNone;
@@ -360,9 +364,8 @@ NSString * const RequestLookupAddress = @"address";
             [apiRequest requestObjectFromModule:@"map"
                                         command:@"search"
                                      parameters:[NSDictionary dictionaryWithObjectsAndKeys:searchText, @"q", nil]];
-        } else {
-            accessoryType = UITableViewCellAccessoryDetailDisclosureButton;
         }
+        accessoryType = UITableViewCellAccessoryDetailDisclosureButton;
     }
     
     return [MultiLineTableViewCell heightForCellWithStyle:UITableViewCellStyleValue2
