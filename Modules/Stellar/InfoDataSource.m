@@ -268,7 +268,7 @@
                                                    maxDetailLines:0
                                                              font:nil
                                                        detailFont:nil 
-                                                    accessoryType:UITableViewCellAccessoryDisclosureIndicator
+                                                    accessoryType:UITableViewCellAccessoryDetailDisclosureButton
                                                         cellImage:YES];
 			
 		case DESCRIPTION:
