@@ -738,8 +738,17 @@ static NSInteger numTries = 0;
 	UILabel *updatedLabel = (UILabel *)[activityView viewWithTag:12];
 	loadingLabel.hidden = YES;
 	progressBar.hidden = YES;
+    activityView.alpha = 1.0;
 	updatedLabel.hidden = NO;
 	updatedLabel.text = text;
+    
+    storyTable.frame = CGRectMake(0, navScrollView.frame.size.height, self.view.frame.size.width, self.view.frame.size.height - navScrollView.frame.size.height);
+    
+    [UIView beginAnimations:@"hideLastUpdated" context:nil];
+    [UIView setAnimationDelay:2.0];
+    [UIView setAnimationDuration:1.0];
+    activityView.alpha = 0.0;
+    [UIView commitAnimations];
 }
 
 - (void)setLastUpdated:(NSDate *)date {
@@ -758,6 +767,9 @@ static NSInteger numTries = 0;
 	progressBar.hidden = NO;
 	updatedLabel.hidden = YES;
 	progressBar.progress = value;
+
+    activityView.alpha = 1.0;
+    storyTable.frame = CGRectMake(0, navScrollView.frame.size.height, self.view.frame.size.width, self.view.frame.size.height - navScrollView.frame.size.height - activityView.frame.size.height);
 }
 
 #pragma mark -
