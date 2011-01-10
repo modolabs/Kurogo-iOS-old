@@ -295,7 +295,7 @@ NSString * termText(NSString *termCode) {
     id<UITableViewDataSource> dataSource = [dataSources objectAtIndex:tabViewControl.selectedTab];
     if ([dataSource isKindOfClass:[InfoDataSource class]]) {
         NSIndexPath *indexPath = [NSIndexPath indexPathForRow:[rowIndex integerValue] inSection:0]; // 0 is the index of TIMES in InfoDataSource.m
-        [self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
+        [self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationNone];
     }
 }
 
