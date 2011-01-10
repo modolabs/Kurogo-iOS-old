@@ -341,7 +341,6 @@
                     [self detailsDidLoadForItem:libItem];
                 }
                 if (![[libItem.formatDetail lowercaseString] isEqualToString:@"image"]) {
-                    //[[LibraryDataManager sharedManager] requestOldAvailabilityForItem:libItem.itemId];
                     [[LibraryDataManager sharedManager] requestAvailabilityForItem:libItem.itemId];
                 }
                 
