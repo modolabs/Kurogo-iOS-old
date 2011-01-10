@@ -38,7 +38,7 @@ NSInteger phoneNumberSort(id num1, id num2, void *context){
 
 -(void) setupLayout {
     
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:LibraryRequestDidCompleteNotification object:nil];
+    //[[NSNotificationCenter defaultCenter] removeObserver:self name:LibraryRequestDidCompleteNotification object:nil];
     
     if ([self.lib.library.type isEqualToString:@"archive"])
         self.title = @"Archive Detail";
@@ -138,10 +138,6 @@ NSInteger phoneNumberSort(id num1, id num2, void *context){
 					  @"loading...", @"Friday",
 					  @"loading...", @"Saturday",
 					  @"loading...", @"Sunday", nil];
-        
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(setupLayout) name:LibraryRequestDidCompleteNotification object:LibraryDataRequestLibraryDetail];
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(setupLayout) name:LibraryRequestDidCompleteNotification object:LibraryDataRequestArchiveDetail];
-
         [[LibraryDataManager sharedManager] requestDetailsForLibType:lib.library.type libID:lib.library.identityTag libName:lib.name];
     }
 		
@@ -153,6 +149,7 @@ NSInteger phoneNumberSort(id num1, id num2, void *context){
 	
 	[self.tableView applyStandardColors];
     didSetupWeeklySchedule = NO;
+    [[LibraryDataManager sharedManager] setLibDelegate:self];
 	
 	[self setupLayout];
 	
@@ -178,7 +175,9 @@ NSInteger phoneNumberSort(id num1, id num2, void *context){
 
 
 - (void)dealloc {
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    if ([[LibraryDataManager sharedManager] libDelegate] == self) {
+        [[LibraryDataManager sharedManager] setLibDelegate:nil];
+    }
     
     [bookmarkButton release];
 	[weeklySchedule release];
@@ -729,6 +728,13 @@ NSInteger phoneNumberSort(id num1, id num2, void *context){
                                                 cellImage:NO];
 }
 
+- (void)detailsDidLoadForLibrary:(NSString *)libID type:(NSString *)libType {
+    [self setupLayout];
+}
+
+- (void)detailsDidFailToLoadForLibrary:(NSString *)libID type:(NSString *)libType {
+    ;
+}
 
 #pragma mark -
 #pragma mark MFMailComposeViewController delegation
@@ -777,8 +783,6 @@ NSInteger phoneNumberSort(id num1, id num2, void *context){
     NSDictionary *libraryDictionary = [[LibraryDataManager sharedManager] scheduleForLibID:lib.library.identityTag];
     if (libraryDictionary) {
         
-        [[LibraryDataManager sharedManager] unregisterDelegate:self];
-        
         NSMutableDictionary *sched = [NSMutableDictionary dictionary];
         
         for (NSDictionary *wkSched in [libraryDictionary objectForKey:@"weeklyHours"]) {
@@ -815,7 +819,6 @@ NSInteger phoneNumberSort(id num1, id num2, void *context){
 }
 
 - (void)requestDidFailForCommand:(NSString *)command {
-    [[LibraryDataManager sharedManager] unregisterDelegate:self];
 	[weeklySchedule release];
 	weeklySchedule = [[NSMutableDictionary alloc] initWithObjectsAndKeys:@"unavailable", @"Hours", nil];
 }

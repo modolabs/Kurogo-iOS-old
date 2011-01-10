@@ -18,7 +18,7 @@
 @implementation ItemAvailabilityDetailViewController
 @synthesize libraryItem;
 @synthesize libraryAlias;
-@synthesize availabilityCategories;
+//@synthesize availabilityCategories;
 @synthesize arrayWithAllLibraries;
 @synthesize currentIndex;
 @synthesize openToday;
@@ -129,6 +129,7 @@
 	limitedView = YES;
 }
 
+/*
 - (void)processAvailabilityData {
 
     NSLog(@"%d collections", [availabilityCategories count]);
@@ -298,6 +299,7 @@
     
     self.tableCells = [NSArray arrayWithArray:mutableTableCells];
 }
+ */
 
 
 - (void)viewDidLoad {
@@ -305,36 +307,45 @@
 	
 	[self.tableView applyStandardColors];
     
+    [[LibraryDataManager sharedManager] setAvailabilityDelegate:self];
+    [[LibraryDataManager sharedManager] setLibDelegate:self];
+    [[LibraryDataManager sharedManager] requestFullAvailabilityForItem:libraryItem.itemId];
+    
     NSString *hrsToday = [[[LibraryDataManager sharedManager] scheduleForLibID:libraryAlias.library.identityTag] objectForKey:@"hrsOpenToday"];
     
     if (hrsToday) {
-        [self libraryDetailsDidLoad:nil];
+        [self detailsDidLoadForLibrary:libraryAlias.library.identityTag type:libraryAlias.library.type];
         
     } else {
-        if ([self.libraryAlias.library.type isEqualToString:@"library"]) {
-            [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(libraryDetailsDidLoad:) name:LibraryRequestDidCompleteNotification object:LibraryDataRequestLibraryDetail];
-        } else {
-            [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(libraryDetailsDidLoad:) name:LibraryRequestDidCompleteNotification object:LibraryDataRequestArchiveDetail];
-        }
         [[LibraryDataManager sharedManager] requestDetailsForLibType:self.libraryAlias.library.type libID:self.libraryAlias.library.identityTag libName:self.libraryAlias.name];
     }
     
 	[self setupLayout];
-    [self processAvailabilityData];
+    //[self processAvailabilityData];
 }
 
-- (void)libraryDetailsDidLoad:(NSNotification *)aNotification {
-    NSString *hrsToday = [[[LibraryDataManager sharedManager] scheduleForLibID:libraryAlias.library.identityTag] objectForKey:@"hrsOpenToday"];
-    
-    if ([hrsToday isEqualToString:@"closed"]) {
-        self.openToday = [NSString stringWithString:@"Closed Today"];
-    } else {
-        self.openToday = [NSString stringWithFormat: @"Open today from %@", hrsToday];
+- (NSString *)description {
+    return [NSString stringWithFormat:@"%@ %d", [super description], self.currentIndex];
+}
+
+- (void)detailsDidLoadForLibrary:(NSString *)libID type:(NSString *)libType {
+    NSLog(@"335 index is now %d", currentIndex);
+    if ([libID isEqualToString:libraryAlias.library.identityTag] && [libType isEqualToString:libraryAlias.library.type]) {
+        NSString *hrsToday = [[[LibraryDataManager sharedManager] scheduleForLibID:libraryAlias.library.identityTag] objectForKey:@"hrsOpenToday"];
+        
+        if ([hrsToday isEqualToString:@"closed"]) {
+            self.openToday = [NSString stringWithString:@"Closed Today"];
+        } else {
+            self.openToday = [NSString stringWithFormat: @"Open today from %@", hrsToday];
+        }
+        
+        [self setupLayout];
     }
-    
-    [self setupLayout];
 }
 
+- (void)detailsDidFailToLoadForLibrary:(NSString *)libID type:(NSString *)libType{
+    ;
+}
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
@@ -379,16 +390,20 @@
 				NSString * libId = [tempDict objectForKey:@"id"];
 				NSString * type = [tempDict objectForKey:@"type"];
 				
-				NSArray * collections = (NSArray *)[tempDict objectForKey:@"collection"];
+				//NSArray * collections = (NSArray *)[tempDict objectForKey:@"collection"];
                 
                 currentIndex = tempLibIndex;
                 self.libraryAlias = [[LibraryDataManager sharedManager] libraryAliasWithID:libId type:type name:libName];
+                
+                NSDictionary *collection = [self.arrayWithAllLibraries objectAtIndex:self.currentIndex];
+                self.tableCells = [collection objectForKey:@"collections"]; // may be nil
 
+                /*
                 [availabilityCategories release];
                 availabilityCategories = [collections retain];
-                
+                */
                 [self setupLayout];
-                [self processAvailabilityData];
+                //[self processAvailabilityData];
                 [self.tableView reloadData];
 			}			
 		}
@@ -404,11 +419,15 @@
 
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    
-    NSArray *cellsForSection = [self.tableCells objectAtIndex:section];
-    NSInteger cellCount = [cellsForSection count];
+    //NSArray *cellsForSection = [self.tableCells objectAtIndex:section];
+    NSDictionary *collection = [self.tableCells objectAtIndex:section];
+    NSInteger cellCount = 0;
+    for (NSDictionary *category in [collection objectForKey:@"categories"]) {
+        cellCount += [[category objectForKey:@"items"] count];
+    }
+    //NSInteger cellCount = [cellsForSection count];
     if (cellCount <= 5 || !limitedView) {
-        return [cellsForSection count];
+        return cellCount;
     }
     return 6;
 }
@@ -428,8 +447,39 @@
 		return cell;
     }
     
+    NSDictionary *collection = [self.tableCells objectAtIndex:indexPath.section];
+    NSArray *categories = [collection objectForKey:@"categories"];
+    NSDictionary *category = nil;
+    NSArray *itemsForStatus = [NSArray array];
+    NSInteger currentCollection = 0;
+    NSInteger rowsTraversed = 0;
+    category = [categories objectAtIndex:currentCollection];
+    itemsForStatus = [category objectForKey:@"items"];
+    while (indexPath.row >= rowsTraversed + [itemsForStatus count]) {
+        currentCollection++;
+        rowsTraversed += [itemsForStatus count];
+        category = [categories objectAtIndex:currentCollection];
+        itemsForStatus = [category objectForKey:@"items"];
+    }
+    NSDictionary *cellInfo = [itemsForStatus objectAtIndex:indexPath.row - rowsTraversed];
+    UITableViewCellStyle cellStyle = UITableViewCellStyleDefault;
+    NSString *detailTextString = nil;
+
+    NSMutableArray *detailTextLines = [NSMutableArray array];
+    //NSString *aLine = nil;
+    if ([itemsForStatus count] > 1) { // multiple call numbers
+        [detailTextLines addObject:[NSString stringWithFormat:@"%@ - %@", [cellInfo objectForKey:@"description"], [cellInfo objectForKey:@"callNumber"]]];
+    }
+    if ([categories count] > 1) { // multiple holding statuses
+        [detailTextLines addObject:[category objectForKey:@"holdingStatus"]];
+    }
     
-    NSArray *cellsForSection = [self.tableCells objectAtIndex:indexPath.section];
+    if ([detailTextLines count]) {
+        detailTextString = [detailTextLines componentsJoinedByString:@"\n"];
+        cellStyle = UITableViewCellStyleSubtitle;
+    }
+    
+    /*
     NSDictionary *cellInfo = [cellsForSection objectAtIndex:indexPath.row];
     UITableViewCellStyle cellStyle = UITableViewCellStyleDefault;
     NSString *detailTextString = nil;
@@ -447,11 +497,12 @@
         detailTextString = [detailTextLines componentsJoinedByString:@"\n"];
         cellStyle = UITableViewCellStyleSubtitle;
     }
-    
+    */
     UITableViewCell *cell = nil;
+    BOOL isMultiCell = [detailTextLines count] > 1;
     
-    NSString *CellIdentifier = [NSString stringWithFormat:@"%d", indexPath.section];
-    if ([detailTextLines count] < 2) {
+    NSString *CellIdentifier = [NSString stringWithFormat:@"%d%@", indexPath.section, isMultiCell ? @"m" : @""];
+    if (!isMultiCell) {
         cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
         if (cell == nil) {
             cell = [[[UITableViewCell alloc] initWithStyle:cellStyle reuseIdentifier:CellIdentifier] autorelease];
@@ -466,12 +517,22 @@
         cell = multiCell;
     }
     
-    cell.textLabel.text = [cellInfo objectForKey:@"text"];
+    //cell.textLabel.text = [cellInfo objectForKey:@"text"];
     cell.detailTextLabel.text = detailTextString;
-    cell.imageView.image = [UIImage imageNamed:[cellInfo objectForKey:@"image"]];
+    //cell.imageView.image = [UIImage imageNamed:[cellInfo objectForKey:@"image"]];
+    cell.textLabel.text = [NSString stringWithFormat:@"%@ %@", [cellInfo objectForKey:@"count"], [cellInfo objectForKey:@"state"]];
+    NSString *state = [cellInfo objectForKey:@"state"];
+    if ([state isEqualToString:@"available"]) {
+        cell.imageView.image = [UIImage imageNamed:@"dining/dining-status-open.png"];
+    } else if ([state isEqualToString:@"unavailable"]) {
+        cell.imageView.image = [UIImage imageNamed:@"dining//dining-status-closed.png"];
+    } else {
+        cell.imageView.image = [UIImage imageNamed:@"dining/dining-status-open-w-restrictions.png"];
+    }
     
     // chevron
-    if ([cellInfo objectForKey:@"scanURL"] != nil || [cellInfo objectForKey:@"requestURL"] != nil) {
+    //if ([cellInfo objectForKey:@"scanURL"] != nil || [cellInfo objectForKey:@"requestURL"] != nil) {
+    if ([cellInfo objectForKey:@"requestURL"] != nil || [cellInfo objectForKey:@"scanAndDeliverURL"] != nil) {
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         cell.selectionStyle = UITableViewCellSelectionStyleGray;
     } else {
@@ -488,27 +549,62 @@
         return tableView.rowHeight;
     }
     
-    NSArray *cellsForSection = [self.tableCells objectAtIndex:indexPath.section];
-    NSDictionary *cellInfo = [cellsForSection objectAtIndex:indexPath.row];
+    
+    NSDictionary *collection = [self.tableCells objectAtIndex:indexPath.section];
+    NSArray *categories = [collection objectForKey:@"categories"];
+    NSDictionary *category = nil;
+    NSArray *itemsForStatus = [NSArray array];
+    NSInteger currentCollection = 0;
+    NSInteger rowsTraversed = 0;
+    category = [categories objectAtIndex:currentCollection];
+    itemsForStatus = [category objectForKey:@"items"];
+    
+    while (indexPath.row >= rowsTraversed + [itemsForStatus count]) {
+        currentCollection++;
+        rowsTraversed += [itemsForStatus count];
+        category = [categories objectAtIndex:currentCollection];
+        itemsForStatus = [category objectForKey:@"items"];
+    }
+    NSDictionary *cellInfo = [itemsForStatus objectAtIndex:indexPath.row - rowsTraversed];
+    
+    NSMutableArray *detailTextLines = [NSMutableArray array];
+    //NSString *aLine = nil;
+    if ([itemsForStatus count] > 1) { // multiple call numbers
+        [detailTextLines addObject:[NSString stringWithFormat:@"%@ - %@", [cellInfo objectForKey:@"description"], [cellInfo objectForKey:@"callNumber"]]];
+    }
+    if ([categories count] > 1) { // multiple holding statuses
+        [detailTextLines addObject:[category objectForKey:@"holdingStatus"]];
+    }
+    
+    if ([detailTextLines count]) {
+    }
+    
+    //NSArray *cellsForSection = [self.tableCells objectAtIndex:indexPath.section];
+    //NSDictionary *cellInfo = [cellsForSection objectAtIndex:indexPath.row];
     
     CGFloat rowHeight = tableView.rowHeight;
 
+    /*
     NSInteger numberOfExtraLines = 0;
     if ([cellInfo objectForKey:@"callNumber"] != nil)
         numberOfExtraLines++;
     if ([cellInfo objectForKey:@"holdingStatus"] != nil)
         numberOfExtraLines++;
-    
+     */
     static NSString *oneLine = @"oneLine";
-    if (numberOfExtraLines == 1) {
+    //if (numberOfExtraLines == 1) {
+    if ([detailTextLines count] == 1) {
         UIFont *detailTextFont = [UIFont fontWithName:STANDARD_FONT size:CELL_DETAIL_FONT_SIZE];
         CGSize sizeOfOneLine = [oneLine sizeWithFont:detailTextFont];
         rowHeight += sizeOfOneLine.height;
 
-    } else if (numberOfExtraLines > 1) {
+    //} else if (numberOfExtraLines > 1) {
+    } else if ([detailTextLines count] > 1) {
 
-        NSString *detailText = [NSString stringWithFormat:@"%@\n%@", [cellInfo objectForKey:@"callNumber"], [cellInfo objectForKey:@"holdingStatus"]];
-        BOOL hasAccessory = [cellInfo objectForKey:@"scanURL"] != nil || [cellInfo objectForKey:@"requestURL"] != nil;
+        NSString *detailText = [detailTextLines componentsJoinedByString:@"\n"];
+        BOOL hasAccessory = [[cellInfo objectForKey:@"scanAndDeliverURL"] length] != 0 || [[cellInfo objectForKey:@"requestURL"] length] != 0;
+        //NSString *detailText = [NSString stringWithFormat:@"%@\n%@", [cellInfo objectForKey:@"callNumber"], [cellInfo objectForKey:@"holdingStatus"]];
+        //BOOL hasAccessory = [cellInfo objectForKey:@"scanURL"] != nil || [cellInfo objectForKey:@"requestURL"] != nil;
         UITableViewCellAccessoryType accessoryType = hasAccessory ? UITableViewCellAccessoryDisclosureIndicator : UITableViewCellAccessoryNone;
         
         rowHeight = [LibrariesMultiLineCell heightForCellWithStyle:UITableViewCellStyleSubtitle
@@ -538,10 +634,30 @@
         limitedView = NO;
         [self.tableView reloadData];
     } else {
+        NSDictionary *collection = [self.tableCells objectAtIndex:indexPath.section];
+        NSArray *categories = [collection objectForKey:@"categories"];
+        NSDictionary *category = nil;
+        NSArray *itemsForStatus = [NSArray array];
+        NSInteger currentCollection = 0;
+        NSInteger rowsTraversed = 0;
+        category = [categories objectAtIndex:currentCollection];
+        itemsForStatus = [category objectForKey:@"items"];
+        while (indexPath.row >= rowsTraversed + [itemsForStatus count]) {
+            currentCollection++;
+            rowsTraversed += [itemsForStatus count];
+            category = [categories objectAtIndex:currentCollection];
+            itemsForStatus = [category objectForKey:@"items"];
+        }
+        NSDictionary *itemInfo = [itemsForStatus objectAtIndex:indexPath.row - rowsTraversed];
+        NSString *requestURL = [itemInfo objectForKey:@"requestURL"];
+        NSString *scanURL = [itemInfo objectForKey:@"scanAndDeliverURL"];
+        
+        /*
         NSArray *cellsForSection = [self.tableCells objectAtIndex:indexPath.section];
         NSDictionary *cellInfo = [cellsForSection objectAtIndex:indexPath.row];
         NSString *requestURL = [cellInfo objectForKey:@"requestURL"];
         NSString *scanURL = [cellInfo objectForKey:@"scanURL"];
+        */
         if (requestURL && scanURL) {
             [actionSheetItems release];
             actionSheetItems = [[NSArray alloc] initWithObjects:requestURL, scanURL, nil];
@@ -558,6 +674,21 @@
     
     UIView *view = [[[UIView alloc] initWithFrame:CGRectZero] autorelease];
     
+    NSDictionary *collection = [self.tableCells objectAtIndex:section];
+    NSString *collectionName = [collection objectForKey:@"name"];
+    NSString *callNumber = [collection objectForKey:@"callNumber"];
+    NSString *holdingStatus = nil;
+    
+    NSArray *categories = [collection objectForKey:@"categories"];
+    if ([categories count]) {
+        NSDictionary *firstCategory = [categories objectAtIndex:0];
+        NSString *holdingStatus = [firstCategory objectForKey:@"holdingStatus"];
+        NSArray *items = [firstCategory objectForKey:@"items"];
+        if ([holdingStatus isEqualToString:@"collection"] && [items count] == 1) {
+            holdingStatus = [[items objectAtIndex:0] objectForKey:@"description"];
+        }
+    }
+    /*
 	NSDictionary * collection = [availabilityCategories objectAtIndex:section];	
 	NSArray * stats = (NSArray *)[collection objectForKey:@"itemsByStat"];
     NSDictionary * statDict = (NSDictionary *)[stats lastObject];
@@ -575,9 +706,16 @@
         subtitle1 = [statDict objectForKey:@"statMain"];
         subtitle2 = [collection objectForKey:@"collectionCallNumber"];
     }
-    
+    */
     CGFloat currentY = 0;
-    for (NSString *labelText in [NSArray arrayWithObjects:collectionName, subtitle1, subtitle2, nil]) {
+    //for (NSString *labelText in [NSArray arrayWithObjects:collectionName, subtitle1, subtitle2, nil]) {
+    NSArray *labelStrings = nil;
+    if (holdingStatus) {
+        labelStrings = [NSArray arrayWithObjects:collectionName, callNumber, holdingStatus, nil];
+    } else {
+        labelStrings = [NSArray arrayWithObjects:collectionName, callNumber, nil];
+    }
+    for (NSString *labelText in labelStrings) {
         UIFont *font;
         if (labelText == collectionName) {
             font = [UIFont boldSystemFontOfSize:17];
@@ -600,13 +738,28 @@
     }
     
     view.frame = CGRectMake(0, 0, self.view.frame.size.width, currentY);
-    NSLog(@"%@", [view description]);
     
     return view;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
     
+    NSDictionary *collection = [self.tableCells objectAtIndex:section];
+    NSString *collectionName = [collection objectForKey:@"name"];
+    NSString *callNumber = [collection objectForKey:@"callNumber"];
+    NSString *holdingStatus = nil;
+    
+    NSArray *categories = [collection objectForKey:@"categories"];
+    if ([categories count]) {
+        NSDictionary *firstCategory = [categories objectAtIndex:0];
+        NSString *holdingStatus = [firstCategory objectForKey:@"holdingStatus"];
+        NSArray *items = [firstCategory objectForKey:@"items"];
+        if ([holdingStatus isEqualToString:@"collection"] && [items count] == 1) {
+            holdingStatus = [[items objectAtIndex:0] objectForKey:@"description"];
+        }
+    }
+    
+    /*
 	NSDictionary * collection = [availabilityCategories objectAtIndex:section];	
 	NSArray * stats = (NSArray *)[collection objectForKey:@"itemsByStat"];
     NSDictionary * statDict = (NSDictionary *)[stats lastObject];
@@ -624,9 +777,16 @@
         subtitle1 = [statDict objectForKey:@"statMain"];
         subtitle2 = [collection objectForKey:@"collectionCallNumber"];
     }
-
+     */
     CGFloat height = 5;
-    for (NSString *labelText in [NSArray arrayWithObjects:collectionName, subtitle1, subtitle2, nil]) {
+    // for (NSString *labelText in [NSArray arrayWithObjects:collectionName, subtitle1, subtitle2, nil]) {
+    NSArray *labelStrings = nil;
+    if (holdingStatus) {
+        labelStrings = [NSArray arrayWithObjects:collectionName, callNumber, holdingStatus, nil];
+    } else {
+        labelStrings = [NSArray arrayWithObjects:collectionName, callNumber, nil];
+    }
+    for (NSString *labelText in labelStrings) {
         UIFont *font;
         if (labelText == collectionName) {
             font = [UIFont boldSystemFontOfSize:17];
@@ -658,42 +818,41 @@
 
 
 - (void)dealloc {
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    
+    
+    if ([[LibraryDataManager sharedManager] availabilityDelegate] == self) {
+        [[LibraryDataManager sharedManager] setAvailabilityDelegate:nil];
+    }
+    
+    if ([[LibraryDataManager sharedManager] libDelegate] == self) {
+        [[LibraryDataManager sharedManager] setLibDelegate:nil];
+    }
     
     self.libraryItem = nil;
     self.libraryAlias = nil;
-    self.availabilityCategories = nil;
+    //self.availabilityCategories = nil;
     self.arrayWithAllLibraries = nil;
     self.openToday = nil;
+    self.tableCells = nil;
     
-    [availabilityCategories release];
+    //[availabilityCategories release];
     
     [super dealloc];
 }
 
 #pragma mark -
-/*
 
-
-- (void)requestDidSucceedForCommand:(NSString *)command {
-    if ([command isEqualToString:@"libdetail"] || [command isEqualToString:@"archivedetail"]) {
-        NSString *hrsToday = [[[LibraryDataManager sharedManager] scheduleForLibID:requestedLibID] objectForKey:@"hrsOpenToday"];
-        
-        if ([hrsToday isEqualToString:@"closed"])
-            self.openToday = [NSString stringWithString:@"Closed Today"];
-        
-        else {
-            self.openToday = [NSString stringWithFormat: @"Open today from %@", hrsToday];
-        }
-        
-        [self setupLayout];
-    }
+- (void)fullAvailabilityDidLoadForItemID:(NSString *)itemID result:(NSArray *)institutions {
+    NSLog(@"index is now %d", currentIndex);
+    self.arrayWithAllLibraries = institutions;
+    NSDictionary *collection = [self.arrayWithAllLibraries objectAtIndex:self.currentIndex];
+    self.tableCells = [collection objectForKey:@"collections"]; // may be nil
+    [self.tableView reloadData];
 }
 
-- (void)requestDidFailForCommand:(NSString *)command {
-    [[LibraryDataManager sharedManager] unregisterDelegate:self];
+- (void)fullAvailabilityFailedToLoadForItemID:(NSString *)itemID {
+    ;
 }
-*/
 
 #pragma mark UIActionSheet setup
 

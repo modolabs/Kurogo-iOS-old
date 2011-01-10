@@ -11,9 +11,9 @@
 #import "LibraryItem.h"
 #import "LibraryDataManager.h"
 
-@interface ItemAvailabilityDetailViewController : UITableViewController <LibraryDataManagerDelegate, UIActionSheetDelegate> {
+@interface ItemAvailabilityDetailViewController : UITableViewController <LibraryAvailabilityDelegate, LibraryDetailDelegate, UIActionSheetDelegate> {
 
-	NSArray * availabilityCategories;
+	//NSArray * availabilityCategories;
 	
 	NSArray * arrayWithAllLibraries;
 
@@ -21,13 +21,13 @@
 	
 	NSString * openToday;
 	
-	NSMutableDictionary * sectionType; // this will determine which of the three types of section layouts to use
+	//NSMutableDictionary * sectionType; // this will determine which of the three types of section layouts to use
 	
 	NSArray * actionSheetItems; // for use in the ActionSheet
 	
 	BOOL limitedView;
     
-    NSString *requestedLibID;
+    //NSString *requestedLibID;
     
     LibraryItem *libraryItem;
     LibraryAlias *libraryAlias;
@@ -40,16 +40,16 @@
 
 @property (nonatomic, retain) LibraryItem *libraryItem;
 @property (nonatomic, retain) LibraryAlias *libraryAlias;
-@property (nonatomic, retain) NSArray *availabilityCategories;
+//@property (nonatomic, retain) NSArray *availabilityCategories;
 @property (nonatomic, retain) NSArray *arrayWithAllLibraries;
 @property (nonatomic) NSInteger currentIndex;
 
 @property (nonatomic, retain) NSArray *tableCells;
 
-- (void)libraryDetailsDidLoad:(NSNotification *)aNotification;
+//- (void)libraryDetailsDidLoad:(NSNotification *)aNotification;
 - (void)setupLayout;
 - (void)showActionSheet;
 - (void)showModalViewForRequest:(NSString *)title url:(NSString *)urlString;
-- (void)processAvailabilityData;
+//- (void)processAvailabilityData;
 
 @end

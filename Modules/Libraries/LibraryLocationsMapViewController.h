@@ -11,7 +11,7 @@
 #import "Library.h"
 #import "LibraryDataManager.h"
 
-@interface LibraryLocationsMapViewController : UIViewController <MKMapViewDelegate, LibraryDataManagerDelegate> {
+@interface LibraryLocationsMapViewController : UIViewController <MKMapViewDelegate> {
 	
 	MKMapView * mapView;
 	NSArray * allLibraries;

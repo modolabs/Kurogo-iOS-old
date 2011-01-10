@@ -42,8 +42,6 @@
 		//locationsWithItem = [[NSArray alloc] init];
         locationsWithItem = nil;
         displayLibraries = [[NSMutableArray alloc] init];
-        
-        [[LibraryDataManager sharedManager] registerItemDelegate:self];
 	}
 	
 	return self;
@@ -78,12 +76,16 @@
     if (!libItem.catalogLink) { // cataloglink is something itemdetail returns but search does not
         [self detailsDidLoadForItem:libItem];
     }
+    
+    [[LibraryDataManager sharedManager] setItemDelegate:self];
+    [[LibraryDataManager sharedManager] setLibDelegate:self];
+    
     [[LibraryDataManager sharedManager] requestDetailsForItem:libItem];
 
     // subscribe to libdetail notifications in case LibraryDataManager gets more info
     // while loading full availability
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(libraryDetailsDidLoad:) name:LibraryRequestDidCompleteNotification object:LibraryDataRequestLibraryDetail];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(libraryDetailsDidLoad:) name:LibraryRequestDidCompleteNotification object:LibraryDataRequestArchiveDetail];
+    //[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(libraryDetailsDidLoad:) name:LibraryRequestDidCompleteNotification object:LibraryDataRequestLibraryDetail];
+    //[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(libraryDetailsDidLoad:) name:LibraryRequestDidCompleteNotification object:LibraryDataRequestArchiveDetail];
 }
 
 - (void) viewWillAppear:(BOOL)animated {
@@ -268,7 +270,7 @@
             if ([libItem.authorLink length])
                 vc.searchTerms = libItem.authorLink;
 			
-			apiRequest = [JSONAPIRequest requestWithJSONAPIDelegate:vc];
+			JSONAPIRequest *apiRequest = [JSONAPIRequest requestWithJSONAPIDelegate:vc];
 			BOOL requestWasDispatched = [apiRequest requestObjectFromModule:@"libraries"
 														command:@"search"
 													 parameters:params];
@@ -298,7 +300,7 @@
         UISegmentedControl *theControl = (UISegmentedControl *)sender;
         NSInteger index = theControl.selectedSegmentIndex;
 		
-		if ([[libItemDictionary allKeys] count] > 1) {
+		if ([libItemDictionary count] > 1) {
 			int tempLibIndex;
 			
 			if (index == 0) { // going up
@@ -309,7 +311,7 @@
 				tempLibIndex = currentIndex + 1;
 			
 			
-			if ((tempLibIndex >= 0) && (tempLibIndex < [[libItemDictionary allKeys] count])){
+			if ((tempLibIndex >= 0) && (tempLibIndex < [libItemDictionary count])){
 				
 				LibraryItem *nextLibItem = (LibraryItem *)[libItemDictionary objectForKey:[NSString stringWithFormat:@"%d", tempLibIndex +1]];
                 if (nextLibItem) {
@@ -332,7 +334,8 @@
                     [self detailsDidLoadForItem:libItem];
                 }
                 if (![[libItem.formatDetail lowercaseString] isEqualToString:@"image"]) {
-                    [[LibraryDataManager sharedManager] requestFullAvailabilityForItem:libItem.itemId];
+                    //[[LibraryDataManager sharedManager] requestOldAvailabilityForItem:libItem.itemId];
+                    [[LibraryDataManager sharedManager] requestAvailabilityForItem:libItem.itemId];
                 }
                 
                 [self.tableView reloadData];
@@ -469,7 +472,8 @@
             }
             cell.selectionStyle = UITableViewCellSelectionStyleGray;
 			cell.textLabel.text = @"Available Online";
-			cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+            cell.accessoryView = [UIImageView accessoryViewWithMITType:MITAccessoryViewExternal];
+			//cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
             
             return cell;
 		}
@@ -503,6 +507,49 @@
 		static NSString *CellIdentifier1 = @"CellLib";
         
 		NSDictionary * tempDict = [locationsWithItem objectAtIndex:indexPath.row];
+        
+        NSArray *categories = (NSArray *)[tempDict objectForKey:@"categories"];
+		
+		NSMutableDictionary * dictWithStatuses = [NSMutableDictionary dictionary];
+        
+        for (NSDictionary *statusDict in categories) {
+            NSString *holdingStatus = [statusDict objectForKey:@"holdingStatus"];
+            
+            NSInteger availCount = [[statusDict objectForKey:@"available"] integerValue];
+            NSInteger requestCount = [[statusDict objectForKey:@"requestable"] integerValue];
+            //NSInteger unavailCount = [[statusDict objectForKey:@"unavailable"] integerValue];
+            NSInteger collectCount = [[statusDict objectForKey:@"collection"] integerValue];
+            NSInteger total = [[statusDict objectForKey:@"total"] integerValue];
+
+            NSString *statusString = nil;
+            NSString *status = nil;
+            
+            if (total == 0 && collectCount > 0) {
+                statusString = [NSString stringWithFormat:@"%d may be available", collectCount];
+            } else {
+                statusString = [NSString stringWithFormat:@"%d of %d available - %@", availCount, total, holdingStatus];
+            }
+            
+            if (availCount > 0) {
+                status = @"available";
+            } else if (requestCount > 0) {
+                status = @"request";
+            } else {
+                status = @"unavailable";
+            }
+            
+            [dictWithStatuses setObject:status forKey:statusString];
+        }
+        
+        // TODO: this might not be needed anymore
+        if (![dictWithStatuses count]) {
+            [dictWithStatuses setObject:@"unavailable" forKey:@"none available"];
+        }
+        /*
+        {"holdingStatus":"collection","available":0,"requestable":0,"unavailable":0,"collection":1,"total":1},
+        {"holdingStatus":"in-library use","available":17,"requestable":0,"unavailable":0,"collection":0,"total":17}
+        
+        
         
 		NSArray * collections = (NSArray *)[tempDict objectForKey:@"collection"];
         // TODO: is there a good reason for using just the last collection?
@@ -545,12 +592,8 @@
 					[dictWithStatuses setObject:status forKey:statusDetailString];
 			}
             
-            if (![dictWithStatuses count]) {
-				[dictWithStatuses setObject:@"unavailable" forKey:@"none available"];
-            }
-            
 		}
-        
+        */
 
 		
 		NSString * libName = [tempDict objectForKey:@"name"];
@@ -578,8 +621,9 @@
         CGFloat cellWidth = tableView.frame.size.width - 20; // assume 10px padding left and right
         
         // accessory view
-        NSArray * itemsByStat = (NSArray *)[collectionDict objectForKey:@"itemsByStat"];
-        if (![itemsByStat count]) {
+        //NSArray * itemsByStat = (NSArray *)[collectionDict objectForKey:@"itemsByStat"];
+        //if (![itemsByStat count]) {
+        if (![categories count]) {
             cell1.accessoryType = UITableViewCellAccessoryNone;
             cell1.selectionStyle = UITableViewCellSelectionStyleNone;
             accessoryAdjustment = 0;
@@ -711,11 +755,15 @@
         
     } else { // section 1
         
-        NSDictionary * tempDict = [locationsWithItem objectAtIndex:indexPath.row];    
+        NSDictionary * tempDict = [locationsWithItem objectAtIndex:indexPath.row];
+        NSArray *categories = [tempDict objectForKey:@"categories"];
+        NSInteger numberOfStatusLines = [categories count] ? [categories count] : 1;
+        /*
         NSArray * collections = (NSArray *)[tempDict objectForKey:@"collection"];
         // TODO: see comment in -tableView:cellForRow...
         NSDictionary *collectionDict = [collections lastObject]; // may be nil
         NSArray * itemsByStat = (NSArray *)[collectionDict objectForKey:@"itemsByStat"]; // may be nil
+        
         NSInteger numberOfStatusLines = 0;
         if (![itemsByStat count]) {
             numberOfStatusLines = 1;
@@ -733,7 +781,7 @@
             }
             if (numberOfStatusLines == 0) numberOfStatusLines = 1;
         }
-        
+        */
         NSString * libName = [tempDict objectForKey:@"name"];
         Library *theLibrary = nil;
         for (LibraryAlias *alias in displayLibraries) {
@@ -788,8 +836,8 @@
 	
 	
 	else if ([locationsWithItem count]) {
-
 		NSDictionary * libDict = [locationsWithItem objectAtIndex:indexPath.row];		
+        /*
 		NSArray * collections = (NSArray *)[libDict objectForKey:@"collection"];
 	
 		BOOL tappable = NO;
@@ -800,24 +848,21 @@
                 break;
             }
 		}
-	
-		if (tappable && ([collections count] > 0) && (indexPath.section == 1)) {
-            
+         */
+
+        NSArray *collections = (NSArray *)[libDict objectForKey:@"categories"];
+		if (/*tappable && */([collections count] > 0) && (indexPath.section == 1)) {
+
             NSString * libName = [libDict objectForKey:@"name"];
             NSString * libId = [libDict objectForKey:@"id"];
             NSString * type = [libDict objectForKey:@"type"];
-            NSString * primaryName = [((NSDictionary *)[libDict objectForKey:@"details"]) objectForKey:@"primaryname"];
-            
-            // create library if it doesn't exist already
-            Library *library = [[LibraryDataManager sharedManager] libraryWithID:libId type:type primaryName:primaryName];
-            library.type = type;
             
             LibraryAlias *alias = [[LibraryDataManager sharedManager] libraryAliasWithID:libId type:type name:libName];
             ItemAvailabilityDetailViewController *vc = [[ItemAvailabilityDetailViewController alloc] initWithStyle:UITableViewStyleGrouped];
 			vc.title = @"Availability";
             vc.libraryItem = libItem;
             vc.libraryAlias = alias;
-            vc.availabilityCategories = collections;
+            //vc.availabilityCategories = collections;
             vc.arrayWithAllLibraries = locationsWithItem;
             vc.currentIndex = indexPath.row;
             
@@ -847,21 +892,29 @@
 
 
 - (void)dealloc {
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
     
-    [[LibraryDataManager sharedManager] unregisterItemDelegate:self];
+    if ([[LibraryDataManager sharedManager] libDelegate] == self) {
+        [[LibraryDataManager sharedManager] setLibDelegate:nil];
+    }
+    
+    if ([[LibraryDataManager sharedManager] itemDelegate] == self) {
+        [[LibraryDataManager sharedManager] setItemDelegate:nil];
+    }
 
 	locationManager.delegate = nil;
 	[locationManager release];
+    [currentLocation release];
+    
+    [locationsWithItem release];
+    [libItemDictionary release];
+    [thumbnail release];
+    [displayLibraries release];
 	
     [super dealloc];
 }
 
 
 #pragma mark -
-#pragma mark JSONAPIRequest Delegate function 
-
-
 
 - (void)availabilityDidLoadForItemID:(NSString *)itemID result:(NSArray *)availabilityData {
     [locationsWithItem release];
@@ -949,7 +1002,8 @@
 
     } else {
         [self setupLayout];
-        [[LibraryDataManager sharedManager] requestFullAvailabilityForItem:libItem.itemId];
+        //[[LibraryDataManager sharedManager] requestOldAvailabilityForItem:libItem.itemId];
+        [[LibraryDataManager sharedManager] requestAvailabilityForItem:libItem.itemId];
     }
 }
 
@@ -963,8 +1017,17 @@
 }
 
 // only called for non-image types
-- (void)libraryDetailsDidLoad:(NSNotification *)aNotification {
+//- (void)libraryDetailsDidLoad:(NSNotification *)aNotification {
+
+
+- (void)detailsDidLoadForLibrary:(NSString *)libID type:(NSString *)libType {
+    // each item can be held at many libraries, and we could
+    // check each library to see whether we want to load just those cells instead of everything
     [self.tableView reloadData];
+}
+
+- (void)detailsDidFailToLoadForLibrary:(NSString *)libID type:(NSString *)libType {
+    ;
 }
 
 
@@ -1049,6 +1112,7 @@
 }
 
 - (void)locationManager:(CLLocationManager *)manager monitoringDidFailForRegion:(CLRegion *)region withError:(NSError *)error{
+    [currentLocation release];
 	currentLocation = nil;
 	[locationManager stopUpdatingLocation];
 }
@@ -1056,6 +1120,7 @@
 - (void)locationManager:(CLLocationManager *)manager didFailWithError:(NSError *)error{
     NSLog(@"could not update location");
     
+    [currentLocation release];
 	currentLocation = nil;
 	[locationManager stopUpdatingLocation];
 

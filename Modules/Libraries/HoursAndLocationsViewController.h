@@ -15,7 +15,7 @@
 
 @class LibraryLocationsMapViewController;
 
-@interface HoursAndLocationsViewController : UIViewController <UITableViewDelegate, UITableViewDataSource, LibraryDataManagerDelegate> { //JSONAPIDelegate> {
+@interface HoursAndLocationsViewController : UIViewController <UITableViewDelegate, UITableViewDataSource> { //JSONAPIDelegate> {
 	
 	UIBarButtonItem * _viewTypeButton;
 	UITableView * _tableView;

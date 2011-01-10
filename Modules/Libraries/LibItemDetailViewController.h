@@ -13,7 +13,7 @@
 #import "UnderlinedUILabel.h"
 #import "LibraryDataManager.h"
 
-@interface LibItemDetailViewController : UITableViewController <CLLocationManagerDelegate, LibraryItemDetailDelegate> {
+@interface LibItemDetailViewController : UITableViewController <CLLocationManagerDelegate, LibraryItemDetailDelegate, LibraryDetailDelegate> {
 
 	NSArray * locationsWithItem;
 	
@@ -27,7 +27,7 @@
 	
 	int currentIndex;
 	
-	JSONAPIRequest * apiRequest;
+	//JSONAPIRequest * apiRequest;
 	
 	UIView * loadingIndicator;
 	

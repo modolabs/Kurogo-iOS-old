@@ -1,8 +1,6 @@
 #import <Foundation/Foundation.h>
 #import "JSONAPIRequest.h"
 
-// TODO: change these to delegate methods later since each class is doing the same subscriptions
-
 // api names
 
 extern NSString * const LibraryDataRequestLibraries;
@@ -11,10 +9,12 @@ extern NSString * const LibraryDataRequestOpenLibraries;
 extern NSString * const LibraryDataRequestSearchCodes;
 extern NSString * const LibraryDataRequestLibraryDetail;
 extern NSString * const LibraryDataRequestArchiveDetail;
-extern NSString * const LibraryDataRequestAvailability;
+//extern NSString * const LibraryDataRequestOldAvailability;
 extern NSString * const LibraryDataRequestThumbnail;
 extern NSString * const LibraryDataRequestSearch;
 extern NSString * const LibraryDataRequestItemDetail;
+extern NSString * const LibraryDataRequestFullAvailability;
+extern NSString * const LibraryDataRequestAvailability;
 
 // notification names
 
@@ -27,29 +27,31 @@ extern NSString * const LibraryRequestDidFailNotification;
 
 // singleton protocols
 
-// TODO: redesign this
-@protocol LibraryDataManagerDelegate
+@protocol LibraryDetailDelegate <NSObject>
 
-@optional
-
-- (void)requestDidSucceedForCommand:(NSString *)command;
-- (void)requestDidFailForCommand:(NSString *)command;
+- (void)detailsDidLoadForLibrary:(NSString *)libID type:(NSString *)libType;
+- (void)detailsDidFailToLoadForLibrary:(NSString *)libID type:(NSString *)libType;
 
 @end
 
-
-@protocol LibraryItemDetailDelegate
+@protocol LibraryItemDetailDelegate <NSObject>
 
 - (void)availabilityDidLoadForItemID:(NSString *)itemID result:(NSArray *)availabilityData;
 - (void)availabilityFailedToLoadForItemID:(NSString *)itemID;
-
-//- (void)thumbnailDidLoadForItem:(LibraryItem *)libItem;
-//- (void)thumbnailFailedToLoadForItemID:(NSString *)itemID;
 
 - (void)detailsDidLoadForItem:(LibraryItem *)libItem;
 - (void)detailsFailedToLoadForItemID:(NSString *)itemID;
 
 @end
+
+@protocol LibraryAvailabilityDelegate <NSObject>
+
+- (void)fullAvailabilityDidLoadForItemID:(NSString *)itemID result:(NSArray *)availabilityData;
+- (void)fullAvailabilityFailedToLoadForItemID:(NSString *)itemID;
+
+@end
+
+
 
 
 // sorting function for library lists
@@ -60,8 +62,9 @@ NSInteger libraryNameSort(id lib1, id lib2, void *context);
     
     NSMutableDictionary *activeRequests;
     
-    NSMutableSet *delegates;
-    NSMutableSet *itemDelegates;
+    id<LibraryItemDetailDelegate> itemDelegate;
+    id<LibraryAvailabilityDelegate> availabilityDelegate;
+    id<LibraryDetailDelegate> libDelegate;
 
     NSMutableArray *_allLibraries;
     NSMutableArray *_allArchives;
@@ -72,13 +75,11 @@ NSInteger libraryNameSort(id lib1, id lib2, void *context);
     NSMutableDictionary *_schedulesByLibID;
 }
 
+@property (nonatomic, assign) id<LibraryItemDetailDelegate> itemDelegate;
+@property (nonatomic, assign) id<LibraryAvailabilityDelegate> availabilityDelegate;
+@property (nonatomic, assign) id<LibraryDetailDelegate> libDelegate;
+
 + (LibraryDataManager *)sharedManager;
-
-- (void)registerDelegate:(id<LibraryDataManagerDelegate>)aDelegate;
-- (void)unregisterDelegate:(id<LibraryDataManagerDelegate>)aDelegate;
-
-- (void)registerItemDelegate:(id<LibraryItemDetailDelegate>)aDelegate;
-- (void)unregisterItemDelegate:(id<LibraryItemDetailDelegate>)aDelegate;
 
 - (void)updateLibraryList;
 
@@ -99,6 +100,8 @@ NSInteger libraryNameSort(id lib1, id lib2, void *context);
 - (void)requestSearchCodes;
 - (void)requestDetailsForLibType:(NSString *)libOrArchive libID:(NSString *)libID libName:(NSString *)libName;
 - (void)requestDetailsForItem:(LibraryItem *)item;
+//- (void)requestOldAvailabilityForItem:(NSString *)itemID;
+- (void)requestAvailabilityForItem:(NSString *)itemID;
 - (void)requestFullAvailabilityForItem:(NSString *)itemID;
 - (void)requestThumbnailForItem:(NSString *)itemID;
 - (void)searchLibraries:(NSString *)searchTerms;
