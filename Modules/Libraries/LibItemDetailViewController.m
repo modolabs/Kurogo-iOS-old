@@ -964,7 +964,7 @@
     }
     
     if (libItem.formatDetail && [[libItem.formatDetail lowercaseString] isEqualToString:@"image"]) {
-        UIImage *image = [aLibItem thumbnailImage];
+        UIImage *image = [UIImage imageWithData:[aLibItem thumbnailImage]];
         if (image) {
             
             UIImageView *imageView = [[[UIImageView alloc] initWithImage:nil] autorelease];
