@@ -3027,7 +3027,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				COPY_PHASE_STRIP = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = MIT_Mobile_Prefix.pch;
@@ -3147,32 +3147,6 @@
 			};
 			name = "Release - Production";
 		};
-		A1EFCDE612B163EE0092D9E1 /* Distribution - Staging - Ad Hoc */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				GCC_ENABLE_BUILTIN_FUNCTIONS = NO;
-				GCC_PREFIX_HEADER = "${SRCROOT}/Proj/Proj_Prefix.pch";
-				HEADER_SEARCH_PATHS = "${SRCROOT}/Proj/src";
-				PREBINDING = NO;
-				PRODUCT_NAME = Proj;
-				SDKROOT = iphoneos;
-			};
-			name = "Distribution - Staging - Ad Hoc";
-		};
-		A1EFCDE712B163EE0092D9E1 /* Distribution - Production - Ad Hoc */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				GCC_ENABLE_BUILTIN_FUNCTIONS = NO;
-				GCC_PREFIX_HEADER = "${SRCROOT}/Proj/Proj_Prefix.pch";
-				HEADER_SEARCH_PATHS = "${SRCROOT}/Proj/src";
-				PREBINDING = NO;
-				PRODUCT_NAME = Proj;
-				SDKROOT = iphoneos;
-			};
-			name = "Distribution - Production - Ad Hoc";
-		};
 		C01FCF4F08A954540054247B /* Debug - Development */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -3205,7 +3179,9 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_ENTITLEMENTS = "";
+				CODE_SIGN_IDENTITY = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
@@ -3220,6 +3196,7 @@
 					"-ObjC",
 				);
 				PREBINDING = NO;
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				SDKROOT = iphoneos;
 			};
 			name = "Release - Production";
@@ -3387,117 +3364,6 @@
 			};
 			name = "Release - Staging";
 		};
-		DEF93C661110C9C4009DF154 /* Distribution - Production - Ad Hoc */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
-				CODE_SIGN_ENTITLEMENTS = Entitlements.plist;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Massachusetts Institute of Technology";
-				GCC_C_LANGUAGE_STANDARD = c99;
-				GCC_WARN_ABOUT_RETURN_TYPE = YES;
-				GCC_WARN_UNUSED_VARIABLE = YES;
-				HEADER_SEARCH_PATHS = (
-					"${SDK_DIR}/usr/include/libxml2",
-					"\"Facebook Connect\"",
-				);
-				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
-				ONLY_ACTIVE_ARCH = YES;
-				OTHER_LDFLAGS = (
-					"-all_load",
-					"-ObjC",
-				);
-				PREBINDING = NO;
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "2301A1E0-88F6-49BD-8CFE-564AA6B7DD02";
-				SDKROOT = iphoneos;
-				VALIDATE_PRODUCT = YES;
-			};
-			name = "Distribution - Production - Ad Hoc";
-		};
-		DEF93C671110C9C4009DF154 /* Distribution - Production - Ad Hoc */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				COPY_PHASE_STRIP = YES;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = MIT_Mobile_Prefix.pch;
-				HEADER_SEARCH_PATHS = (
-					"${SYMROOT}/${CONFIGURATION}-${PLATFORM_NAME}/usr/local/include",
-					"\"Facebook Connect\"",
-					"${SDK_DIR}/usr/include/libxml2",
-				);
-				INFOPLIST_FILE = "Mobile-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"\"$(SRCROOT)/Common/Libraries & Headers/OAuthConsumer\"",
-					"${SDK_DIR}/usr/include/libxml2",
-					"\"$(SRCROOT)/Common/Analytics\"",
-				);
-				ONLY_ACTIVE_ARCH = NO;
-				PRODUCT_NAME = "Harvard Mobile";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
-				SDKROOT = iphoneos;
-			};
-			name = "Distribution - Production - Ad Hoc";
-		};
-		EB7F340710CD97D200188BCD /* Distribution - Staging - Ad Hoc */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
-				CODE_SIGN_ENTITLEMENTS = Entitlements.plist;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Massachusetts Institute of Technology";
-				GCC_C_LANGUAGE_STANDARD = c99;
-				GCC_WARN_ABOUT_RETURN_TYPE = YES;
-				GCC_WARN_UNUSED_VARIABLE = YES;
-				HEADER_SEARCH_PATHS = (
-					"${SDK_DIR}/usr/include/libxml2",
-					"\"Facebook Connect\"",
-				);
-				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
-				ONLY_ACTIVE_ARCH = YES;
-				OTHER_CFLAGS = "-DUSE_MOBILE_STAGE";
-				OTHER_LDFLAGS = (
-					"-all_load",
-					"-ObjC",
-				);
-				PREBINDING = NO;
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "2301A1E0-88F6-49BD-8CFE-564AA6B7DD02";
-				SDKROOT = iphoneos;
-				VALIDATE_PRODUCT = YES;
-			};
-			name = "Distribution - Staging - Ad Hoc";
-		};
-		EB7F340810CD97D200188BCD /* Distribution - Staging - Ad Hoc */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				COPY_PHASE_STRIP = YES;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = MIT_Mobile_Prefix.pch;
-				HEADER_SEARCH_PATHS = (
-					"${SYMROOT}/${CONFIGURATION}-${PLATFORM_NAME}/usr/local/include",
-					"\"Facebook Connect\"",
-					"${SDK_DIR}/usr/include/libxml2",
-				);
-				INFOPLIST_FILE = "Mobile-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"\"$(SRCROOT)/Common/Libraries & Headers/OAuthConsumer\"",
-					"${SDK_DIR}/usr/include/libxml2",
-					"\"$(SRCROOT)/Common/Analytics\"",
-				);
-				ONLY_ACTIVE_ARCH = NO;
-				PRODUCT_NAME = "Harvard Mobile";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
-				SDKROOT = iphoneos;
-			};
-			name = "Distribution - Staging - Ad Hoc";
-		};
 		EBAE87911219905300F370BE /* Debug - Testing */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -3623,8 +3489,6 @@
 				DEB0B3DE11122D3200021561 /* Release - Staging */,
 				EBAEA0741223320800F370BE /* Release - Testing */,
 				1D6058950D05DD3E006BFB54 /* Release - Production */,
-				EB7F340810CD97D200188BCD /* Distribution - Staging - Ad Hoc */,
-				DEF93C671110C9C4009DF154 /* Distribution - Production - Ad Hoc */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = "Release - Production";
@@ -3639,8 +3503,6 @@
 				A1EFCDE312B163EE0092D9E1 /* Release - Staging */,
 				A1EFCDE412B163EE0092D9E1 /* Release - Testing */,
 				A1EFCDE512B163EE0092D9E1 /* Release - Production */,
-				A1EFCDE612B163EE0092D9E1 /* Distribution - Staging - Ad Hoc */,
-				A1EFCDE712B163EE0092D9E1 /* Distribution - Production - Ad Hoc */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = "Release - Production";
@@ -3655,8 +3517,6 @@
 				DEB0B3DD11122D3200021561 /* Release - Staging */,
 				EBAEA0731223320800F370BE /* Release - Testing */,
 				C01FCF5008A954540054247B /* Release - Production */,
-				EB7F340710CD97D200188BCD /* Distribution - Staging - Ad Hoc */,
-				DEF93C661110C9C4009DF154 /* Distribution - Production - Ad Hoc */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = "Release - Production";
