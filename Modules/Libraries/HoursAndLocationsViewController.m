@@ -61,18 +61,27 @@
 }
 
 - (void)pingLibraries {
-    // TODO: subscribe to failure notifications if necessary
-    
     if (![[self currentLibraries] count]) {
-        [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:showingOnlyOpen ? @selector(openLibrariesDidLoad) : @selector(librariesDidLoad)
-                                                     name:LibraryRequestDidCompleteNotification
-                                                   object:showingOnlyOpen ? LibraryDataRequestOpenLibraries : LibraryDataRequestLibraries];
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(hideLoadingIndicator)
-                                                     name:LibraryRequestDidFailNotification
-                                                   object:showingOnlyOpen ? LibraryDataRequestOpenLibraries : LibraryDataRequestLibraries];
         [self showLoadingIndicator];
-        [[LibraryDataManager sharedManager] updateLibraryList];
+        if (showArchives) {
+            [[NSNotificationCenter defaultCenter] addObserver:self
+                                                     selector:showingOnlyOpen ? @selector(openLibrariesDidLoad) : @selector(librariesDidLoad)
+                                                         name:LibraryRequestDidCompleteNotification
+                                                       object:showingOnlyOpen ? LibraryDataRequestOpenLibraries : LibraryDataRequestArchives];
+            [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(hideLoadingIndicator)
+                                                         name:LibraryRequestDidFailNotification
+                                                       object:showingOnlyOpen ? LibraryDataRequestOpenLibraries : LibraryDataRequestArchives];
+            [[LibraryDataManager sharedManager] requestArchives];
+        } else {
+            [[NSNotificationCenter defaultCenter] addObserver:self
+                                                     selector:showingOnlyOpen ? @selector(openLibrariesDidLoad) : @selector(librariesDidLoad)
+                                                         name:LibraryRequestDidCompleteNotification
+                                                       object:showingOnlyOpen ? LibraryDataRequestOpenLibraries : LibraryDataRequestLibraries];
+            [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(hideLoadingIndicator)
+                                                         name:LibraryRequestDidFailNotification
+                                                       object:showingOnlyOpen ? LibraryDataRequestOpenLibraries : LibraryDataRequestLibraries];
+            [[LibraryDataManager sharedManager] requestLibraries];
+        }
 
     } else {
         if (showingOnlyOpen) {

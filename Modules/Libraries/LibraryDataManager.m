@@ -85,39 +85,31 @@ static LibraryDataManager *s_sharedManager = nil;
     NSDate *librariesDate = [[NSUserDefaults standardUserDefaults] objectForKey:LibrariesLastUpdatedKey];
     NSDate *archivesDate = [[NSUserDefaults standardUserDefaults] objectForKey:ArchivesLastUpdatedKey];
     
-    BOOL isUpdated = YES;
-    
-    if (-[librariesDate timeIntervalSinceNow] > 24 * 60 * 60) {
-        isUpdated = NO;
-        [self requestLibraries];
-    }
-    
-    if (-[archivesDate timeIntervalSinceNow] > 24 * 60 * 60) {
-        isUpdated = NO;
-        [self requestArchives];
-    }
-    
-    if (isUpdated) {
-        NSPredicate *matchAll = [NSPredicate predicateWithFormat:@"TRUEPREDICATE"];
-        NSArray *tempArray = [CoreDataManager objectsForEntity:LibraryAliasEntityName matchingPredicate:matchAll];
-        if (![tempArray count]) { // just in case they have nothing even with an updated date
-            [self requestLibraries];
-            [self requestArchives];
-        } else {
-            for(LibraryAlias *alias in tempArray) {
-                if ([alias.library.type isEqualToString:@"archive"]) {
-                    [_allArchives addObject:alias];
-                }
-                else if ([alias.library.type isEqualToString: @"library"]) {
-                    [_allLibraries addObject:alias];
-                }
-            }
-            
-            [_allArchives sortUsingFunction:libraryNameSort context:nil];
-            [_allLibraries sortUsingFunction:libraryNameSort context:nil];
-            
-            [self requestOpenLibraries];
+    if (librariesDate && -[librariesDate timeIntervalSinceNow] <= 24 * 60 * 60) {
+        NSPredicate *pred = [NSPredicate predicateWithFormat:@"library.type like 'library'"];
+        NSArray *tempArray = [CoreDataManager objectsForEntity:LibraryAliasEntityName matchingPredicate:pred];
+        for (LibraryAlias *alias in tempArray) {
+            [_allLibraries addObject:alias];
         }
+        [_allLibraries sortUsingFunction:libraryNameSort context:nil];
+    } else {
+        // get rid of library items that aren't bookmarked
+        NSPredicate *notBookmarked = [NSPredicate predicateWithFormat:@"type like 'library' AND isBookmarked != YES"];
+        NSArray *discardLibItems = [CoreDataManager objectsForEntity:LibraryEntityName matchingPredicate:notBookmarked];
+        [CoreDataManager deleteObjects:discardLibItems];
+    }
+    
+    if (archivesDate && -[archivesDate timeIntervalSinceNow] <= 24 * 60 * 60) {
+        NSPredicate *pred = [NSPredicate predicateWithFormat:@"library.type like 'archive'"];
+        NSArray *tempArray = [CoreDataManager objectsForEntity:LibraryAliasEntityName matchingPredicate:pred];
+        for (LibraryAlias *alias in tempArray) {
+            [_allArchives addObject:alias];
+        }
+        [_allArchives sortUsingFunction:libraryNameSort context:nil];
+    } else {
+        NSPredicate *notBookmarked = [NSPredicate predicateWithFormat:@"type like 'archive' AND isBookmarked != YES"];
+        NSArray *discardLibItems = [CoreDataManager objectsForEntity:LibraryEntityName matchingPredicate:notBookmarked];
+        [CoreDataManager deleteObjects:discardLibItems];
     }
 }
 
@@ -146,29 +138,33 @@ static LibraryDataManager *s_sharedManager = nil;
 - (Library *)libraryWithID:(NSString *)libID type:(NSString *)type primaryName:(NSString *)primaryName {
     NSPredicate *pred = [NSPredicate predicateWithFormat:@"identityTag like %@ AND type like %@", libID, type];
     Library *library = [[CoreDataManager objectsForEntity:LibraryEntityName matchingPredicate:pred] lastObject];
+    BOOL needToSave = NO;
     if (!library) {
         library = [CoreDataManager insertNewObjectForEntityForName:LibraryEntityName];
         library.identityTag = libID;
         library.type = type;
         library.isBookmarked = [NSNumber numberWithBool:NO];
+        needToSave = YES;
     }
     
     if (primaryName) {
-        BOOL needTOSave = NO;
         if (!library.primaryName) {
-            needTOSave = YES;
+            needToSave = YES;
             library.primaryName = primaryName;
         }
         
         NSPredicate *pred = [NSPredicate predicateWithFormat:@"name like %@", primaryName];
         LibraryAlias *primaryAlias = [[library.aliases filteredSetUsingPredicate:pred] anyObject];
         if (!primaryAlias) {
+            needToSave = YES;
             // make sure there is an alias whose display name is the primary name
             primaryAlias = [CoreDataManager insertNewObjectForEntityForName:LibraryAliasEntityName];
             primaryAlias.library = library;
             primaryAlias.name = library.primaryName;
         }
-        
+    }
+    
+    if (needToSave) {
         [CoreDataManager saveData];
     }
     
