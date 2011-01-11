@@ -278,7 +278,7 @@ NSInteger phoneNumberSort(id num1, id num2, void *context){
     if (weeklySchedule != nil) {
         if (section == 0) {
             if ([weeklySchedule count] == 7) {
-                return 4;
+                return 2;
             }
             return 1;
 
@@ -311,7 +311,7 @@ NSInteger phoneNumberSort(id num1, id num2, void *context){
 	
     NSString * cellIdentifier = [NSString stringWithFormat:@"%d", indexPath.section];
     
-    if (indexPath.section == 0 && [weeklySchedule count] == 7 && indexPath.row == 3) {
+    if (indexPath.section == 0 && [weeklySchedule count] == 7 && indexPath.row == 1) {
         UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"seeFullSchedule"];
         if (cell == nil) {
             cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"seeFullSchedule"] autorelease];
@@ -351,11 +351,15 @@ NSInteger phoneNumberSort(id num1, id num2, void *context){
     if (weeklySchedule != nil) {
         if (proxySectionIndex == 0) {
             if ([weeklySchedule count] == 7){
-                if (indexPath.row <= 2) {
-                    cell.textLabel.text = [daysOfWeek objectAtIndex:indexPath.row];
-                    if ([weeklySchedule count] == [daysOfWeek count])
-                        cell.detailTextLabel.text = [weeklySchedule objectForKey:[daysOfWeek objectAtIndex:indexPath.row]];
+                cell.textLabel.text = @"Hours";
+                NSMutableString *detailText = [NSMutableString string];
+                for (int i = 0; i < 3; i++) {
+                    NSString *day = [daysOfWeek objectAtIndex:i];
+                    [detailText appendString:[NSString stringWithFormat:@"%@: %@", day, [weeklySchedule objectForKey:day]]];
+                    if (i < 2)
+                        [detailText appendString:@"\n"];
                 }
+                cell.detailTextLabel.text = detailText;
             }
             else if ([weeklySchedule count] == 0){
                 cell.textLabel.text = nil;
@@ -523,7 +527,7 @@ NSInteger phoneNumberSort(id num1, id num2, void *context){
     if (weeklySchedule != nil) {
         if (proxySectionIndex == 0) {
             
-            if (([weeklySchedule count] == 7) && (indexPath.row == 3)){
+            if (([weeklySchedule count] == 7) && (indexPath.row == 1)){
                 LibraryWeeklyScheduleViewController * vc = [[LibraryWeeklyScheduleViewController alloc] initWithStyle:UITableViewStyleGrouped];
                 vc.title = @"Weekly Schedule";
                 vc.daysOfTheWeek = daysOfWeek;
@@ -644,12 +648,10 @@ NSInteger phoneNumberSort(id num1, id num2, void *context){
         if (proxySectionIndex == 0) {
             
             if ([weeklySchedule count] == 7){
-                if (indexPath.row <= 2) {
-                    if ([weeklySchedule count] == [daysOfWeek count])
-                        detailText = [weeklySchedule objectForKey:[daysOfWeek objectAtIndex:indexPath.row]];
+                if (indexPath.row == 0) {
+                    detailText = @"three\nlines\nof text";
                     
-                } else if (indexPath.row == 3){
-                    
+                } else if (indexPath.row == 1){
                     return tableView.rowHeight;
                 }
             } else if ([weeklySchedule count] == 0){
