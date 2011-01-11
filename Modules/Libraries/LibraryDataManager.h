@@ -70,7 +70,7 @@ NSInteger libraryNameSort(id lib1, id lib2, void *context);
     NSMutableArray *_allArchives;
     
 	NSMutableArray *_allOpenLibraries;
-    NSMutableArray *_allOpenArchives;
+    //NSMutableArray *_allOpenArchives;
     
     NSMutableDictionary *_schedulesByLibID;
 }
@@ -109,6 +109,6 @@ NSInteger libraryNameSort(id lib1, id lib2, void *context);
 @property (nonatomic, readonly) NSArray *allLibraries;
 @property (nonatomic, readonly) NSArray *allOpenLibraries;
 @property (nonatomic, readonly) NSArray *allArchives;
-@property (nonatomic, readonly) NSArray *allOpenArchives;
+//@property (nonatomic, readonly) NSArray *allOpenArchives;
 
 @end

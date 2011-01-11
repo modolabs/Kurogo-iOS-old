@@ -43,11 +43,11 @@
         
     } else {    
         if (showArchives) {
-            if (showingOnlyOpen == NO) {
+            //if (showingOnlyOpen == NO) {
                 currentLibraries = [[LibraryDataManager sharedManager] allArchives];
-            } else {
-                currentLibraries = [[LibraryDataManager sharedManager] allOpenArchives];
-            }
+            //} else {
+            //    currentLibraries = [[LibraryDataManager sharedManager] allOpenArchives];
+            //}
         } else {
             if (showingOnlyOpen == NO) {
                 currentLibraries = [[LibraryDataManager sharedManager] allLibraries];

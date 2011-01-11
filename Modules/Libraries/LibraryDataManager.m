@@ -70,7 +70,7 @@ static LibraryDataManager *s_sharedManager = nil;
         _allArchives = [[NSMutableArray alloc] init];
         
         _allOpenLibraries = [[NSMutableArray alloc] init];
-        _allOpenArchives = [[NSMutableArray alloc] init];
+        //_allOpenArchives = [[NSMutableArray alloc] init];
         
         _schedulesByLibID = [[NSMutableDictionary alloc] init];
         
@@ -133,9 +133,9 @@ static LibraryDataManager *s_sharedManager = nil;
     return _allArchives;
 }
 
-- (NSArray *)allOpenArchives {
-    return _allOpenArchives;
-}
+//- (NSArray *)allOpenArchives {
+//    return _allOpenArchives;
+//}
 
 - (NSDictionary *)scheduleForLibID:(NSString *)libID {
     return [_schedulesByLibID objectForKey:libID];
@@ -354,7 +354,6 @@ static LibraryDataManager *s_sharedManager = nil;
     
 #pragma mark Success - Libraries/Archives
     if ([command isEqualToString:LibraryDataRequestLibraries] || [command isEqualToString:LibraryDataRequestArchives]) {
-        
         // TODO: if user has libraries cached, check for obsoleted libraries and delete them
         
         if ([JSONObject isKindOfClass:[NSArray class]] && [(NSArray *)JSONObject count]) {
@@ -394,16 +393,16 @@ static LibraryDataManager *s_sharedManager = nil;
                 } else {
                     [_allArchives addObject:alias];
                 }
-                
+
                 NSString *isOpenNow = [libraryDictionary objectForKey:@"isOpenNow"];
                 BOOL isOpen = [isOpenNow boolValue];
                 
                 if (isOpen) {
                     if ([command isEqualToString:LibraryDataRequestLibraries]) {
                         [_allOpenLibraries addObject:alias];
-                    } else {
-                        [_allOpenArchives addObject:alias];
-                    }
+                    }// else {
+                    //    [_allOpenArchives addObject:alias];
+                    //}
                 }
                 
             }
@@ -413,7 +412,7 @@ static LibraryDataManager *s_sharedManager = nil;
                 [_allOpenLibraries sortUsingFunction:libraryNameSort context:nil];
             } else {
                 [_allArchives sortUsingFunction:libraryNameSort context:nil];
-                [_allOpenArchives sortUsingFunction:libraryNameSort context:nil];
+                //[_allOpenArchives sortUsingFunction:libraryNameSort context:nil];
             }
         }
         
@@ -451,14 +450,14 @@ static LibraryDataManager *s_sharedManager = nil;
                 if (isOpen) {
                     if ([type isEqualToString:@"library"]) {
                         [_allOpenLibraries addObject:alias];
-                    } else if ([type isEqualToString:@"archive"]) {
-                        [_allOpenArchives addObject:alias];
-                    }
+                    }// else if ([type isEqualToString:@"archive"]) {
+                    //    [_allOpenArchives addObject:alias];
+                    //}
                 }
             }
             
             [_allOpenLibraries sortUsingFunction:libraryNameSort context:self];
-            [_allOpenArchives sortUsingFunction:libraryNameSort context:self];
+            //[_allOpenArchives sortUsingFunction:libraryNameSort context:self];
             
             [activeRequests removeObjectForKey:command];
             
@@ -865,7 +864,7 @@ static LibraryDataManager *s_sharedManager = nil;
     self.availabilityDelegate = nil;
 
     [_schedulesByLibID release];
-    [_allOpenArchives release];
+    //[_allOpenArchives release];
     [_allOpenLibraries release];
     [super dealloc];
 }
