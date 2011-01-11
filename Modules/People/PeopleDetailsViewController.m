@@ -259,7 +259,7 @@ NSString * const RequestLookupAddress = @"address";
         cell.textLabel.textColor = [UIColor colorWithHexString:@"#554C41"];
         
         // use a textView for the address so people can copy/paste.
-        if ([tag isEqualToString:[personDetails displayNameForKey:@"postaladdress"]] && !addressSearchAnnotation) {
+        if ([tag isEqualToString:[personDetails displayNameForKey:@"postaladdress"]]) {
             addressSection = section;
             
             UIFont *font = [UIFont boldSystemFontOfSize:15.0];
@@ -300,6 +300,14 @@ NSString * const RequestLookupAddress = @"address";
             }
             
             cell.detailTextLabel.text = placeholder;
+            
+            if (addressSearchAnnotation) {
+                cell.accessoryView = [UIImageView accessoryViewWithMITType:MITAccessoryViewMap];
+                textView.userInteractionEnabled = NO;
+            } else {
+                cell.accessoryView = [UIImageView accessoryViewWithMITType:MITAccessoryViewBlank];
+                textView.userInteractionEnabled = YES;
+            }
 
         } else {
             UIView *textView = [cell.contentView viewWithTag:TEXTVIEW_TAG];
@@ -315,14 +323,14 @@ NSString * const RequestLookupAddress = @"address";
 		} else if ([tag isEqualToString:[personDetails displayNameForKey:@"telephonenumber"]]) {
             cell.accessoryType = UITableViewCellAccessoryDetailDisclosureButton;
             cell.accessoryView = [UIImageView accessoryViewWithMITType:MITAccessoryViewPhone];
-		} else if ([tag isEqualToString:[personDetails displayNameForKey:@"postaladdress"]]) {
+		}/* else if ([tag isEqualToString:[personDetails displayNameForKey:@"postaladdress"]]) {
             cell.accessoryType = UITableViewCellAccessoryDetailDisclosureButton;
             if (addressSearchAnnotation) {
                 cell.accessoryView = [UIImageView accessoryViewWithMITType:MITAccessoryViewMap];
             } else {
                 cell.accessoryView = [UIImageView accessoryViewWithMITType:MITAccessoryViewBlank];
             }
-		} else {
+		}*/ else {
 			cell.selectionStyle = UITableViewCellSelectionStyleNone;
             cell.accessoryType = UITableViewCellAccessoryNone;
 			return cell;
