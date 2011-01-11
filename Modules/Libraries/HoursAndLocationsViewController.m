@@ -35,10 +35,7 @@
     
     if (showBookmarks) {
         NSPredicate *bookmarkPred = [NSPredicate predicateWithFormat:@"name like library.primaryName AND library.isBookmarked == YES"];
-        NSArray *libraries = [[LibraryDataManager sharedManager] allLibraries];
-        NSArray *archives = [[LibraryDataManager sharedManager] allArchives];
-        NSArray *everything = [libraries arrayByAddingObjectsFromArray:archives];
-        NSArray *bookmarkedLibraries = [everything filteredArrayUsingPredicate:bookmarkPred];
+        NSArray *bookmarkedLibraries = [CoreDataManager objectsForEntity:LibraryAliasEntityName matchingPredicate:bookmarkPred];
         currentLibraries = [bookmarkedLibraries sortedArrayUsingFunction:libraryNameSort context:nil];
         
     } else {    

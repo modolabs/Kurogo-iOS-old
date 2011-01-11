@@ -152,16 +152,6 @@ static LibraryDataManager *s_sharedManager = nil;
             needToSave = YES;
             library.primaryName = primaryName;
         }
-        
-        NSPredicate *pred = [NSPredicate predicateWithFormat:@"name like %@", primaryName];
-        LibraryAlias *primaryAlias = [[library.aliases filteredSetUsingPredicate:pred] anyObject];
-        if (!primaryAlias) {
-            needToSave = YES;
-            // make sure there is an alias whose display name is the primary name
-            primaryAlias = [CoreDataManager insertNewObjectForEntityForName:LibraryAliasEntityName];
-            primaryAlias.library = library;
-            primaryAlias.name = library.primaryName;
-        }
     }
     
     if (needToSave) {
@@ -351,6 +341,7 @@ static LibraryDataManager *s_sharedManager = nil;
 #pragma mark Success - Libraries/Archives
     if ([command isEqualToString:LibraryDataRequestLibraries] || [command isEqualToString:LibraryDataRequestArchives]) {
         // TODO: if user has libraries cached, check for obsoleted libraries and delete them
+        DLog(@"received data for %@", command);
         
         if ([JSONObject isKindOfClass:[NSArray class]] && [(NSArray *)JSONObject count]) {
             NSArray *resultArray = (NSArray *)JSONObject;
@@ -420,6 +411,8 @@ static LibraryDataManager *s_sharedManager = nil;
         [[NSUserDefaults standardUserDefaults] synchronize];
         
         [activeRequests removeObjectForKey:command];
+        
+        DLog(@"finished processing data from %@", command);
         
     }
 #pragma mark Success - Open Now
