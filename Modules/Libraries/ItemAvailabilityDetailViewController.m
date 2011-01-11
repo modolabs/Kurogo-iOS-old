@@ -18,7 +18,6 @@
 @implementation ItemAvailabilityDetailViewController
 @synthesize libraryItem;
 @synthesize libraryAlias;
-//@synthesize availabilityCategories;
 @synthesize arrayWithAllLibraries;
 @synthesize currentIndex;
 @synthesize openToday;
@@ -48,9 +47,7 @@
         
         [segmentControl release];
         [segmentBarItem release];
-    }	
-	
-	//headerView = nil; 
+    } 
 
     NSString *nameToDisplay;
     if (![libraryAlias.name isEqualToString:libraryAlias.library.primaryName] && [libraryAlias.library.primaryName length]) {
@@ -72,10 +69,9 @@
         [infoButton setImage:[UIImage imageNamed:@"global/info_button_pressed.png"] forState:(UIControlStateSelected | UIControlStateHighlighted)];
         [infoButton addTarget:self action:@selector(infoButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
     }
-    NSLog(@"%@", [UIImage imageNamed:@"global/info_button.png"]);
     CGFloat infoButtonWidth = 50; // TODO: get these from image size
     CGFloat infoButtonHeight = 50;
-    CGFloat infoButtonPadding = 5;
+    CGFloat infoButtonPadding = 10;
     CGFloat labelLeftMargin = 12;
     CGFloat labelWidth = self.tableView.frame.size.width - infoButtonWidth - infoButtonPadding;
     infoButton.frame = CGRectMake(labelWidth, infoButtonPadding, infoButtonWidth, infoButtonHeight);
@@ -129,179 +125,6 @@
 	limitedView = YES;
 }
 
-/*
-- (void)processAvailabilityData {
-
-    NSLog(@"%d collections", [availabilityCategories count]);
-    //DLog(@"%@", [availabilityCategories description]);
-
-    NSMutableArray *mutableTableCells = [NSMutableArray array];
-    
-    collectionOnly = NO;
-    BOOL uniformHoldingStatus = YES;
-    NSString *referenceHoldingStatus = nil;
-
-    for (NSDictionary *aCollection in availabilityCategories) {
-
-        NSString * displayType = [aCollection objectForKey:@"displayType"];
-        NSLog(@"section type %@", displayType);
-        
-        NSString *collectionCallNumber = [aCollection objectForKey:@"collectionCallNumber"];
-        NSArray *itemListsByAvailability = [aCollection objectForKey:@"itemsByStat"];
-
-        NSArray *statusNames = [NSArray arrayWithObjects:@"availableItems", @"checkedOutItems", @"unavailableItems", nil];
-        NSArray *statusDisplays = [NSArray arrayWithObjects:@"Available", @"Checked out", @"Unavailable", nil];
-        NSArray *statusImages = [NSArray arrayWithObjects:
-                                 @"dining/dining-status-open.png",
-                                 @"dining/dining-status-open-w-restrictions.png",
-                                 @"dining/dining-status-closed.png", nil];
-        
-        BOOL uniformCallNumber = YES;
-        
-        // we will end up throwing away two out of three of these arrays
-        NSMutableArray *cellsForGroups = [NSMutableArray array];
-        NSMutableArray *cellsForHoldings = [NSMutableArray array];
-        NSMutableArray *cellsForIndividualItems = [NSMutableArray array];
-        
-        for (NSDictionary *availabilityDict in itemListsByAvailability) {
-            // special case for collection-only items
-            if ([[availabilityDict objectForKey:@"collectionOnlyCount"] integerValue]) {
-                NSDictionary *cellInfo = [NSDictionary dictionaryWithObjectsAndKeys:@"Contact library/archive", @"text", nil];
-                [cellsForGroups addObject:cellInfo];
-                collectionOnly = YES;
-                break;
-            }
-            
-            for (NSInteger i = 0; i < 3; i++) {
-
-                NSString *groupScanURL = nil;
-                NSString *groupRequestURL = nil;
-                
-                NSString *availabilityStatus = [statusNames objectAtIndex:i];
-                NSString *statusLabel = [statusDisplays objectAtIndex:i];
-                NSString *statusImage = [statusImages objectAtIndex:i];
-                NSArray *itemsForAvailability = [availabilityDict objectForKey:availabilityStatus];
-                if (![itemsForAvailability count]) continue;
-                
-                NSMutableDictionary *cellsByHoldingStatus = [NSMutableDictionary dictionary];
-                
-                for (NSDictionary *availItemDict in itemsForAvailability) {
-                    
-                    NSString *callNumber = [availItemDict objectForKey:@"callNumber"];
-                    NSString *holdingStatus = [availItemDict objectForKey:@"statMain"];
-                    NSString *requestURL = nil;
-                    NSString *scanURL = nil;
-                    NSString *description = [availItemDict objectForKey:@"description"];
-                    if ([description length]) {
-                        callNumber = [NSString stringWithFormat:@"%@ - %@", description, callNumber];
-                    }
-                    
-                    if (![callNumber isEqualToString:collectionCallNumber]) {
-                        uniformCallNumber = NO;
-                    }
-
-                    if (!referenceHoldingStatus) {
-                        referenceHoldingStatus = holdingStatus;
-                    } else if (![holdingStatus isEqualToString:referenceHoldingStatus]) {
-                        uniformHoldingStatus = NO;
-                    }
-                    
-                    // keep populating cells by holding status until we find out call numbers are different
-                    NSMutableDictionary *cellForHoldingStatus = nil;
-                    if (uniformCallNumber) {
-                        cellForHoldingStatus = [cellsByHoldingStatus objectForKey:holdingStatus];
-                        if (!cellForHoldingStatus) {
-                            cellForHoldingStatus = [NSMutableDictionary dictionaryWithObjectsAndKeys:
-                                                    [statusLabel lowercaseString], @"text",
-                                                    holdingStatus, @"holdingStatus",
-                                                    statusImage, @"image",
-                                                    [NSNumber numberWithInt:1], @"statusCount",
-                                                    nil];
-                            [cellsByHoldingStatus setObject:cellForHoldingStatus forKey:holdingStatus];
-                        } else {
-                            NSInteger numberOfCells = [[cellForHoldingStatus objectForKey:@"statusCount"] integerValue];
-                            numberOfCells++;
-                            [cellForHoldingStatus setObject:[NSNumber numberWithInt:numberOfCells] forKey:@"statusCount"];
-                        }
-                    }
-                    
-                    NSMutableDictionary *cellInfo = [NSMutableDictionary dictionaryWithObjectsAndKeys:
-                                                     statusLabel, @"text",
-                                                     callNumber, @"callNumber",
-                                                     holdingStatus, @"holdingStatus",
-                                                     statusImage, @"image",
-                                                     nil];
-                    
-                    requestURL = [availItemDict objectForKey:@"requestUrl"];
-                    if ([requestURL length]) {
-                        [cellInfo setObject:requestURL forKey:@"requestURL"];
-                        if (uniformCallNumber)
-                            [cellForHoldingStatus setObject:requestURL forKey:@"requestURL"];
-                        groupRequestURL = requestURL;
-                    }
-                    
-                    scanURL = [availItemDict objectForKey:@"scanAndDeliverUrl"];
-                    if ([scanURL length]) {
-                        [cellInfo setObject:scanURL forKey:@"scanURL"];
-                        if (uniformCallNumber)
-                            [cellForHoldingStatus setObject:scanURL forKey:@"scanURL"];
-                        groupScanURL = scanURL;
-                    }
-                    
-                    [cellsForIndividualItems addObject:cellInfo];
-                }
-                
-                for (NSString *holdingStatus in [cellsByHoldingStatus allKeys]) {
-                    [cellsForHoldings addObject:[cellsByHoldingStatus objectForKey:holdingStatus]];
-                }
-                
-                // keep populating cells by availability until either holding status or call numbers are different
-                if (uniformCallNumber && uniformHoldingStatus) {
-                    NSString *text = [NSString stringWithFormat:@"%d %@", [itemsForAvailability count], [statusLabel lowercaseString]];
-                    NSMutableDictionary *cellInfo = [NSMutableDictionary dictionaryWithObjectsAndKeys:
-                                                     text, @"text",
-                                                     statusImage, @"image",
-                                                     nil];
-                    
-                    if (groupScanURL)    [cellInfo setObject:groupScanURL forKey:@"scanURL"];
-                    if (groupRequestURL) [cellInfo setObject:groupRequestURL forKey:@"requestURL"];
-                    
-                    [cellsForGroups addObject:cellInfo];
-                }
-            }
-        }
-        
-        if (uniformCallNumber) {
-            if (uniformHoldingStatus) {
-                DLog(@"type 1, %d cells", [cellsForGroups count]);
-                
-                [mutableTableCells addObject:cellsForGroups];
-            }
-            else {
-                DLog(@"type 2, %d cells", [cellsForHoldings count]);
-                
-                [mutableTableCells addObject:cellsForHoldings];
-            }
-        } else {
-            if (uniformHoldingStatus) {
-                DLog(@"type 3, %d cells", [cellsForIndividualItems count]);
-                for (NSMutableDictionary *cellInfo in cellsForIndividualItems) {
-                    [cellInfo removeObjectForKey:@"holdingStatus"];
-                }
-            }
-            else {
-                DLog(@"type 4, %d cells", [cellsForIndividualItems count]);
-            }
-
-            [mutableTableCells addObject:cellsForIndividualItems];
-        }
-    } // end for (NSDictionary *aCollection in availabilityCategories)
-    
-    self.tableCells = [NSArray arrayWithArray:mutableTableCells];
-}
- */
-
-
 - (void)viewDidLoad {
     [super viewDidLoad];
 	
@@ -321,7 +144,6 @@
     }
     
 	[self setupLayout];
-    //[self processAvailabilityData];
 }
 
 - (NSString *)description {
@@ -389,8 +211,6 @@
 				NSString * libName = [tempDict objectForKey:@"name"];
 				NSString * libId = [tempDict objectForKey:@"id"];
 				NSString * type = [tempDict objectForKey:@"type"];
-				
-				//NSArray * collections = (NSArray *)[tempDict objectForKey:@"collection"];
                 
                 currentIndex = tempLibIndex;
                 self.libraryAlias = [[LibraryDataManager sharedManager] libraryAliasWithID:libId type:type name:libName];
@@ -398,12 +218,7 @@
                 NSDictionary *collection = [self.arrayWithAllLibraries objectAtIndex:self.currentIndex];
                 self.tableCells = [collection objectForKey:@"collections"]; // may be nil
 
-                /*
-                [availabilityCategories release];
-                availabilityCategories = [collections retain];
-                */
                 [self setupLayout];
-                //[self processAvailabilityData];
                 [self.tableView reloadData];
 			}			
 		}
@@ -419,13 +234,11 @@
 
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    //NSArray *cellsForSection = [self.tableCells objectAtIndex:section];
     NSDictionary *collection = [self.tableCells objectAtIndex:section];
     NSInteger cellCount = 0;
     for (NSDictionary *category in [collection objectForKey:@"categories"]) {
         cellCount += [[category objectForKey:@"items"] count];
     }
-    //NSInteger cellCount = [cellsForSection count];
     if (cellCount <= 5 || !limitedView) {
         return cellCount;
     }
@@ -551,7 +364,6 @@
     NSDictionary *cellInfo = [itemsForStatus objectAtIndex:indexPath.row - rowsTraversed];
     
     NSMutableArray *detailTextLines = [NSMutableArray array];
-    //NSString *aLine = nil;
     if ([itemsForStatus count] > 1) { // multiple call numbers
         NSString *theDescription = [cellInfo objectForKey:@"description"];
         if ([theDescription length]) {
@@ -564,35 +376,18 @@
         [detailTextLines addObject:[category objectForKey:@"holdingStatus"]];
     }
     
-    if ([detailTextLines count]) {
-    }
-    
-    //NSArray *cellsForSection = [self.tableCells objectAtIndex:indexPath.section];
-    //NSDictionary *cellInfo = [cellsForSection objectAtIndex:indexPath.row];
-    
     CGFloat rowHeight = tableView.rowHeight;
 
-    /*
-    NSInteger numberOfExtraLines = 0;
-    if ([cellInfo objectForKey:@"callNumber"] != nil)
-        numberOfExtraLines++;
-    if ([cellInfo objectForKey:@"holdingStatus"] != nil)
-        numberOfExtraLines++;
-     */
     static NSString *oneLine = @"oneLine";
-    //if (numberOfExtraLines == 1) {
     if ([detailTextLines count] == 1) {
         UIFont *detailTextFont = [UIFont fontWithName:STANDARD_FONT size:CELL_DETAIL_FONT_SIZE];
         CGSize sizeOfOneLine = [oneLine sizeWithFont:detailTextFont];
         rowHeight += sizeOfOneLine.height;
 
-    //} else if (numberOfExtraLines > 1) {
     } else if ([detailTextLines count] > 1) {
 
         NSString *detailText = [detailTextLines componentsJoinedByString:@"\n"];
         BOOL hasAccessory = [[cellInfo objectForKey:@"scanAndDeliverURL"] length] != 0 || [[cellInfo objectForKey:@"requestURL"] length] != 0;
-        //NSString *detailText = [NSString stringWithFormat:@"%@\n%@", [cellInfo objectForKey:@"callNumber"], [cellInfo objectForKey:@"holdingStatus"]];
-        //BOOL hasAccessory = [cellInfo objectForKey:@"scanURL"] != nil || [cellInfo objectForKey:@"requestURL"] != nil;
         UITableViewCellAccessoryType accessoryType = hasAccessory ? UITableViewCellAccessoryDisclosureIndicator : UITableViewCellAccessoryNone;
         
         rowHeight = [LibrariesMultiLineCell heightForCellWithStyle:UITableViewCellStyleSubtitle
@@ -640,12 +435,6 @@
         NSString *requestURL = [itemInfo objectForKey:@"requestURL"];
         NSString *scanURL = [itemInfo objectForKey:@"scanAndDeliverURL"];
         
-        /*
-        NSArray *cellsForSection = [self.tableCells objectAtIndex:indexPath.section];
-        NSDictionary *cellInfo = [cellsForSection objectAtIndex:indexPath.row];
-        NSString *requestURL = [cellInfo objectForKey:@"requestURL"];
-        NSString *scanURL = [cellInfo objectForKey:@"scanURL"];
-        */
         if ([requestURL length] && [scanURL length]) {
             [actionSheetItems release];
             actionSheetItems = [[NSArray alloc] initWithObjects:requestURL, scanURL, nil];
@@ -676,27 +465,8 @@
             holdingStatus = [[items objectAtIndex:0] objectForKey:@"description"];
         }
     }
-    /*
-	NSDictionary * collection = [availabilityCategories objectAtIndex:section];	
-	NSArray * stats = (NSArray *)[collection objectForKey:@"itemsByStat"];
-    NSDictionary * statDict = (NSDictionary *)[stats lastObject];
-    
-    NSString * collectionName;
-    NSString * subtitle1 = nil;
-    NSString * subtitle2 = nil;
-    if (collectionOnly) {
-        NSDictionary * collectionItem = (NSDictionary *)[((NSArray *)[statDict objectForKey:@"collectionOnlyItems"]) lastObject];
-        collectionName = [collectionItem objectForKey:@"collectionName"];
-        subtitle1 = [collectionItem objectForKey:@"collectionCallNumber"];
-        subtitle2 = [(NSArray*)[collectionItem objectForKey:@"collectionAvailVal"] lastObject];
-    } else {
-        collectionName = [collection objectForKey:@"collectionName"];
-        subtitle1 = [statDict objectForKey:@"statMain"];
-        subtitle2 = [collection objectForKey:@"collectionCallNumber"];
-    }
-    */
+
     CGFloat currentY = 0;
-    //for (NSString *labelText in [NSArray arrayWithObjects:collectionName, subtitle1, subtitle2, nil]) {
     NSArray *labelStrings = nil;
     if (holdingStatus) {
         labelStrings = [NSArray arrayWithObjects:collectionName, callNumber, holdingStatus, nil];
@@ -747,27 +517,7 @@
         }
     }
     
-    /*
-	NSDictionary * collection = [availabilityCategories objectAtIndex:section];	
-	NSArray * stats = (NSArray *)[collection objectForKey:@"itemsByStat"];
-    NSDictionary * statDict = (NSDictionary *)[stats lastObject];
-    
-    NSString * collectionName;
-    NSString * subtitle1 = nil;
-    NSString * subtitle2 = nil;
-    if (collectionOnly) {
-        NSDictionary * collectionItem = (NSDictionary *)[((NSArray *)[statDict objectForKey:@"collectionOnlyItems"]) lastObject];
-        collectionName = [collectionItem objectForKey:@"collectionName"];
-        subtitle1 = [collectionItem objectForKey:@"collectionCallNumber"];
-        subtitle2 = [(NSArray*)[collectionItem objectForKey:@"collectionAvailVal"] lastObject];
-    } else {
-        collectionName = [collection objectForKey:@"collectionName"];
-        subtitle1 = [statDict objectForKey:@"statMain"];
-        subtitle2 = [collection objectForKey:@"collectionCallNumber"];
-    }
-     */
     CGFloat height = 5;
-    // for (NSString *labelText in [NSArray arrayWithObjects:collectionName, subtitle1, subtitle2, nil]) {
     NSArray *labelStrings = nil;
     if (holdingStatus) {
         labelStrings = [NSArray arrayWithObjects:collectionName, callNumber, holdingStatus, nil];
@@ -818,12 +568,9 @@
     
     self.libraryItem = nil;
     self.libraryAlias = nil;
-    //self.availabilityCategories = nil;
     self.arrayWithAllLibraries = nil;
     self.openToday = nil;
     self.tableCells = nil;
-    
-    //[availabilityCategories release];
     
     [super dealloc];
 }
