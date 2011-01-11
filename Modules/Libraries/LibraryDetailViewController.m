@@ -350,6 +350,8 @@ NSInteger phoneNumberSort(id num1, id num2, void *context){
 
     if (weeklySchedule != nil) {
         if (proxySectionIndex == 0) {
+            cell.selectionStyle = UITableViewCellSelectionStyleGray;
+            
             if ([weeklySchedule count] == 7){
                 cell.textLabel.text = @"Hours";
                 NSMutableString *detailText = [NSMutableString string];
@@ -376,12 +378,12 @@ NSInteger phoneNumberSort(id num1, id num2, void *context){
                     cell.accessoryView = [UIImageView accessoryViewWithMITType:MITAccessoryViewExternal];
                 }
                 else {
+                    cell.selectionStyle = UITableViewCellSelectionStyleNone;
                     cell.textLabel.text = [[weeklySchedule allKeys] objectAtIndex:0];
                     cell.detailTextLabel.text = [weeklySchedule objectForKey:[[weeklySchedule allKeys] objectAtIndex:0]];
                 }
             }
             
-            cell.selectionStyle = UITableViewCellSelectionStyleGray;
             return cell;
         } else {
             proxySectionIndex--;
