@@ -151,7 +151,6 @@
 }
 
 - (void)detailsDidLoadForLibrary:(NSString *)libID type:(NSString *)libType {
-    NSLog(@"335 index is now %d", currentIndex);
     if ([libID isEqualToString:libraryAlias.library.identityTag] && [libType isEqualToString:libraryAlias.library.type]) {
         NSString *hrsToday = [[[LibraryDataManager sharedManager] scheduleForLibID:libraryAlias.library.identityTag] objectForKey:@"hrsOpenToday"];
         
@@ -578,7 +577,6 @@
 #pragma mark -
 
 - (void)fullAvailabilityDidLoadForItemID:(NSString *)itemID result:(NSArray *)institutions {
-    NSLog(@"index is now %d", currentIndex);
     self.arrayWithAllLibraries = institutions;
     NSDictionary *collection = [self.arrayWithAllLibraries objectAtIndex:self.currentIndex];
     self.tableCells = [collection objectForKey:@"collections"]; // may be nil

@@ -288,8 +288,6 @@
 #pragma mark User Actions 
 
 -(IBAction) formatPressed:(id) sender{
-	
-    NSLog(@"self.view is %@", [self.view description]);
     
 	[keywords resignFirstResponder];
     [titleKeywords resignFirstResponder];	
@@ -418,15 +416,5 @@
 
 @end
 
-
-
-@implementation CancellableScrollView
-
-- (BOOL)touchesShouldBegin:(NSSet *)touches withEvent:(UIEvent *)event inContentView:(UIView *)view {
-    NSLog(@"%@", [view description]);
-    return YES;
-}
-
-@end
 
 

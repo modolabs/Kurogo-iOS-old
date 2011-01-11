@@ -12,7 +12,7 @@
 
 @interface LibraryAdvancedSearch : UIViewController <UIPickerViewDelegate, UIPickerViewDataSource, UITextFieldDelegate> {
     
-    IBOutlet CancellableScrollView *scrollView;
+    IBOutlet UIScrollView *scrollView;
 	
     IBOutlet UITextField *keywords;
 	
@@ -71,9 +71,4 @@
           formatIndex:(NSInteger) formatIndex 
         locationIndex:(NSInteger) locationIndex;
 -(void) search;
-@end
-
-@interface CancellableScrollView : UIScrollView {
-}
-
 @end

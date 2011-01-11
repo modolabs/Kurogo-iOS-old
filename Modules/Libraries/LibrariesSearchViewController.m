@@ -115,7 +115,6 @@
 	
 	if (nil == theSearchBar) {
         CGRect frame = CGRectMake(0.0f, 0.0f, self.view.frame.size.width - _advancedSearchButton.frame.size.width, NAVIGATION_BAR_HEIGHT);
-        NSLog(@"%@", [_advancedSearchButton description]);
 		theSearchBar = [[ModoSearchBar alloc] initWithFrame:frame];
     }
 	
@@ -155,7 +154,7 @@
 #pragma mark User Interaction
 
 -(void) advancedSearchButtonClicked: (id) sender{
-    NSLog(@"Passing format %d and location %d", formatIndex, locationIndex);
+    DLog(@"Passing format %d and location %d", formatIndex, locationIndex);
     
 	LibraryAdvancedSearch * vc = [[LibraryAdvancedSearch alloc] initWithNibName:@"LibraryAdvancedSearch" 
 																		 bundle:nil

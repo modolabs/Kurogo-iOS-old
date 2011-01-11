@@ -786,7 +786,6 @@
 					<string>6.IBViewBoundsToFrameTransform</string>
 					<string>60.IBPluginDependency</string>
 					<string>60.IBViewBoundsToFrameTransform</string>
-					<string>67.CustomClassName</string>
 					<string>67.IBPluginDependency</string>
 					<string>67.IBViewBoundsToFrameTransform</string>
 					<string>7.IBPluginDependency</string>
@@ -856,7 +855,6 @@
 					<object class="NSAffineTransform">
 						<bytes key="NSTransformStruct">AULMAABDbAAAA</bytes>
 					</object>
-					<string>CancellableScrollView</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<object class="NSAffineTransform"/>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
@@ -896,14 +894,6 @@
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
 				<bool key="EncodedWithXMLCoder">YES</bool>
-				<object class="IBPartialClassDescription">
-					<string key="className">CancellableScrollView</string>
-					<string key="superclassName">UIScrollView</string>
-					<object class="IBClassDescriptionSource" key="sourceIdentifier" id="363348879">
-						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">Modules/Libraries/LibraryAdvancedSearch.h</string>
-					</object>
-				</object>
 				<object class="IBPartialClassDescription">
 					<string key="className">LibraryAdvancedSearch</string>
 					<string key="superclassName">UIViewController</string>
@@ -1062,7 +1052,10 @@
 							</object>
 						</object>
 					</object>
-					<reference key="sourceIdentifier" ref="363348879"/>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">Modules/Libraries/LibraryAdvancedSearch.h</string>
+					</object>
 				</object>
 				<object class="IBPartialClassDescription">
 					<string key="className">NSObject</string>
