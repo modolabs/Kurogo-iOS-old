@@ -14,6 +14,37 @@
 #define NewsTabIndex 2
 #define InfoTabIndex 3
 
+static const NSInteger kAnnouncementBadgeLabel = 0x41;
+
+
+#pragma mark Private methods
+
+@interface ShuttlesMainViewController (Private)
+
+- (void)addBadgeLabelToAnnouncement;
+
+@end
+
+@implementation ShuttlesMainViewController (Private)
+
+// Add a label that sits over the newAnnouncement UIImageView.
+- (void)addBadgeLabelToAnnouncement {
+	UILabel *badgeLabel = [[UILabel alloc] initWithFrame:
+						   CGRectMake(0, 
+									  0, 
+									  newAnnouncement.frame.size.width, 
+									  newAnnouncement.frame.size.height)];
+	badgeLabel.backgroundColor = [UIColor clearColor];
+	badgeLabel.textColor = [UIColor whiteColor];
+	badgeLabel.font = [UIFont boldSystemFontOfSize:17.0f];
+	badgeLabel.textAlignment = UITextAlignmentCenter;
+	badgeLabel.tag = kAnnouncementBadgeLabel;
+	[newAnnouncement addSubview:badgeLabel];
+	[badgeLabel release];
+}
+
+@end
+
 
 @implementation ShuttlesMainViewController
 @synthesize tabView;
@@ -26,6 +57,7 @@
 	
 	newAnnouncement.hidden = YES;
 	newAnnouncement.image = [[UIImage imageNamed:@"shuttles/shuttle-news-badge.png"] retain];
+	[self addBadgeLabelToAnnouncement];
 	
 	self.view.backgroundColor = [UIColor clearColor];
 	
@@ -230,13 +262,18 @@
 	[announcementsTab.tableView reloadData];
 	//[announcementsTab.harvardAnnouncementsTableView reloadData];
 	//[announcementsTab.mascoAnnouncementsTableView
-	
+
 	if (new > 0) {
 		newAnnouncement.hidden = NO;
 		haveNewAnnouncements = YES;
-		[[newAnnouncement superview] bringSubviewToFront:newAnnouncement];
-	}
-	
+		UILabel *badgeLabel = (UILabel *)[newAnnouncement viewWithTag:
+										  kAnnouncementBadgeLabel];
+		if ([badgeLabel isKindOfClass:[UILabel class]])
+		{
+			badgeLabel.text = [NSString stringWithFormat:@"%d", new];
+			[[newAnnouncement superview] bringSubviewToFront:newAnnouncement];			
+		}
+	}	
 	else {
 		newAnnouncement.hidden = YES;
 		haveNewAnnouncements = NO;
