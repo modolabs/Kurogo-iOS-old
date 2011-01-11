@@ -289,7 +289,8 @@ NSInteger phoneNumberSort(id num1, id num2, void *context){
 
     if (proxyIndex == 0) {
 		if ([lib.library.location length])
-			return 1;
+            return 1;
+        return 0;
     }
 	
 	else if (proxyIndex == 1) {
@@ -305,61 +306,6 @@ NSInteger phoneNumberSort(id num1, id num2, void *context){
     return 0;
 }
 
-
-- (UIView *)tableView: (UITableView *)tableView viewForFooterInSection: (NSInteger)section{
-
-	UIView * view = nil;
-		
-	if ((section == 1) && (lib.library.directions)) {
-        NSString *text = lib.library.directions;
-        UIFont *font = [UIFont fontWithName:STANDARD_FONT size:13];
-        CGFloat width = self.view.frame.size.width - 20;
-        CGFloat height = [text sizeWithFont:font
-                          constrainedToSize:CGSizeMake(width, 2000)         
-                              lineBreakMode:UILineBreakModeWordWrap].height;
-        
-        CGRect frame = CGRectMake(12.0, 5.0, width, height);
-
-        if (!footerView) {
-            footerView = [[UIView alloc] initWithFrame:frame];
-        } else {
-            footerView.frame = frame;
-        }
-
-        UILabel *footerLabel = (UILabel *)[footerView viewWithTag:7687];
-        if (!footerLabel) {
-            footerLabel = [[[UILabel alloc] initWithFrame:frame] autorelease];
-            footerLabel.tag = 7687;
-            footerLabel.font = font;
-            footerLabel.textColor = [UIColor colorWithHexString:@"#554C41"];
-            footerLabel.backgroundColor = [UIColor clearColor];	
-            footerLabel.lineBreakMode = UILineBreakModeWordWrap;
-            footerLabel.numberOfLines = 0;
-            [footerView addSubview:footerLabel];
-        } else {
-            footerLabel.frame = frame;
-        }
-        footerLabel.text = text;
-        
-        view = footerView;
-	}
-	
-	return view;
-}
-
-- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
-	
-    if (section == 1 && lib.library.directions) {
-		CGFloat height = [lib.library.directions sizeWithFont:[UIFont fontWithName:STANDARD_FONT size:13]
-                                            constrainedToSize:CGSizeMake(300, 2000)
-                                                lineBreakMode:UILineBreakModeWordWrap].height;
-		
-		return height + 10;
-	}
-	
-	else return 0;
-}
-
 // Customize the appearance of table view cells.
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
 	
@@ -370,7 +316,7 @@ NSInteger phoneNumberSort(id num1, id num2, void *context){
         if (cell == nil) {
             cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"seeFullSchedule"] autorelease];
         }
-        cell.textLabel.font = [UIFont fontWithName:STANDARD_FONT size:17];
+        cell.textLabel.font = [UIFont fontWithName:BOLD_FONT size:16];
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         cell.textLabel.text = @"Full week's schedule";
         return cell;
@@ -383,10 +329,17 @@ NSInteger phoneNumberSort(id num1, id num2, void *context){
         cell.textLabel.font = [UIFont fontWithName:BOLD_FONT size:13];
         cell.textLabel.textColor = [UIColor colorWithHexString:@"#554C41"];
         
-        cell.detailTextLabel.font = [UIFont fontWithName:STANDARD_FONT size:17];
+        cell.detailTextLabel.font = [UIFont fontWithName:BOLD_FONT size:16];
         cell.detailTextLabel.textColor = [UIColor colorWithHexString:@"#1A1611"];
 
 		cell.selectionStyle = UITableViewCellSelectionStyleGray;
+    } else {
+        UIView *aView = [cell.contentView viewWithTag:7685];
+        if (aView) [aView removeFromSuperview];
+        aView = [cell.contentView viewWithTag:7686];
+        if (aView) [aView removeFromSuperview];
+        aView = [cell.contentView viewWithTag:7687];
+        if (aView) [aView removeFromSuperview];
     }
     
     cell.accessoryType = UITableViewCellAccessoryNone;
@@ -432,16 +385,70 @@ NSInteger phoneNumberSort(id num1, id num2, void *context){
     }
     
     if (proxySectionIndex == 0) {
-        cell.textLabel.text = @"Location";
-        cell.detailTextLabel.text = lib.library.location;
-        cell.detailTextLabel.numberOfLines = 0;
+        cell.textLabel.text = nil;
+        cell.detailTextLabel.text = nil;
+        UITableViewCellAccessoryType accessoryType;
         if ([lib.library.lat doubleValue]) {
             cell.accessoryView = [UIImageView accessoryViewWithMITType:MITAccessoryViewMap];
             cell.selectionStyle = UITableViewCellSelectionStyleGray;
+            accessoryType = UITableViewCellAccessoryDetailDisclosureButton;
         } else {
             cell.accessoryView = nil;
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
+            accessoryType = UITableViewCellAccessoryNone;
         }
+        
+        UIFont *cellFont = [UIFont fontWithName:BOLD_FONT size:13];
+        UIFont *detailFont = [UIFont fontWithName:BOLD_FONT size:16];
+        
+        CGFloat labelWidth = [LibrariesMultiLineCell widthForTextLabel:YES
+                                                             cellStyle:UITableViewCellStyleSubtitle
+                                                             tableView:tableView
+                                                         accessoryType:accessoryType
+                                                             cellImage:NO];
+        
+        CGSize constraintSize = CGSizeMake(labelWidth, 1000);
+        
+        CGFloat currentHeight = 0;
+        CGFloat labelHeight = [LibrariesTag sizeWithFont:cellFont constrainedToSize:constraintSize lineBreakMode:UILineBreakModeWordWrap].height;
+        UILabel *textLabel = [[[UILabel alloc] initWithFrame:CGRectMake(10, 8, labelWidth, labelHeight)] autorelease];
+        textLabel.text = @"Location";
+        textLabel.font = cellFont;
+        textLabel.textColor = cell.textLabel.textColor;
+        textLabel.tag = 7685;
+        [cell.contentView addSubview:textLabel];
+        currentHeight += labelHeight;
+        
+        labelHeight = [lib.library.location sizeWithFont:detailFont constrainedToSize:constraintSize lineBreakMode:UILineBreakModeWordWrap].height;
+        UILabel *detailTextLabel = [[[UILabel alloc] initWithFrame:CGRectMake(10, 8 + currentHeight, labelWidth, labelHeight)] autorelease];
+        detailTextLabel.text = lib.library.location;
+        detailTextLabel.font = detailFont;
+        detailTextLabel.lineBreakMode = UILineBreakModeWordWrap;
+        detailTextLabel.numberOfLines = 0;
+        detailTextLabel.textColor = cell.detailTextLabel.textColor;
+        detailTextLabel.tag = 7686;
+        [cell.contentView addSubview:detailTextLabel];
+        currentHeight += labelHeight;
+        
+        if ([lib.library.directions length]) {
+            UILabel *directionsLabel = (UILabel *)[cell.contentView viewWithTag:7687];
+            labelHeight = [lib.library.directions sizeWithFont:[UIFont fontWithName:STANDARD_FONT size:13] constrainedToSize:constraintSize].height;
+            CGRect frame = CGRectMake(10, currentHeight + 10, labelWidth, labelHeight);
+            if (!directionsLabel) {
+                directionsLabel = [[[UILabel alloc] initWithFrame:frame] autorelease];
+                directionsLabel.tag = 7687;
+                directionsLabel.font = [UIFont fontWithName:STANDARD_FONT size:13];
+                directionsLabel.textColor = [UIColor colorWithHexString:@"#554C41"];
+                directionsLabel.backgroundColor = [UIColor clearColor];	
+                directionsLabel.lineBreakMode = UILineBreakModeWordWrap;
+                directionsLabel.numberOfLines = 0;
+                [cell.contentView addSubview:directionsLabel];
+            } else {
+                directionsLabel.frame = frame;
+            }
+            directionsLabel.text = lib.library.directions;
+        }
+        
         return cell;
     }
 	
@@ -626,6 +633,7 @@ NSInteger phoneNumberSort(id num1, id num2, void *context){
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     NSString *detailText = nil;
+    NSString *cellText = LibrariesTag; // something with one line
     UITableViewCellAccessoryType accessoryType = UITableViewCellAccessoryNone;
     NSInteger maxLines = 10;
     
@@ -676,6 +684,25 @@ NSInteger phoneNumberSort(id num1, id num2, void *context){
         }
         detailText = lib.library.location;
         
+        UIFont *cellFont = [UIFont fontWithName:BOLD_FONT size:13];
+        UIFont *detailFont = [UIFont fontWithName:BOLD_FONT size:16];
+
+        CGFloat labelWidth = [LibrariesMultiLineCell widthForTextLabel:YES
+                                                             cellStyle:UITableViewCellStyleSubtitle
+                                                             tableView:tableView
+                                                         accessoryType:accessoryType
+                                                             cellImage:NO];
+
+        CGSize constraintSize = CGSizeMake(labelWidth, 1000);
+        CGFloat currentHeight = [LibrariesTag sizeWithFont:cellFont constrainedToSize:constraintSize lineBreakMode:UILineBreakModeWordWrap].height;
+        currentHeight += [lib.library.location sizeWithFont:detailFont constrainedToSize:constraintSize lineBreakMode:UILineBreakModeWordWrap].height;
+        
+        if ([lib.library.directions length]) {
+            currentHeight += [lib.library.directions sizeWithFont:[UIFont fontWithName:STANDARD_FONT size:13] constrainedToSize:constraintSize].height;
+        }
+        
+        return currentHeight + 20;
+        
     } else if (!sectionComplete && proxySectionIndex == 1) {
         accessoryType = UITableViewCellAccessoryDetailDisclosureButton;
         
@@ -710,7 +737,12 @@ NSInteger phoneNumberSort(id num1, id num2, void *context){
 				phone = (LibraryPhone *)[phoneNumbersArray objectAtIndex:proxyIndex];
                 detailText = phone.phoneNumber;
 			}
+			
+			if (nil != phone && [phone.descriptionText length]) {
+                cellText = phone.descriptionText;
+			}
         }
+        
 	}
     
     UIFont *cellFont = [UIFont fontWithName:BOLD_FONT size:13];
@@ -718,7 +750,7 @@ NSInteger phoneNumberSort(id num1, id num2, void *context){
     
     return [LibrariesMultiLineCell heightForCellWithStyle:UITableViewCellStyleSubtitle
                                                 tableView:tableView 
-                                                     text:@"title"
+                                                     text:cellText
                                              maxTextLines:10
                                                detailText:detailText
                                            maxDetailLines:maxLines

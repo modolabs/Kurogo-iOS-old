@@ -8,7 +8,6 @@
 
 #import "LibraryWeeklyScheduleViewController.h"
 #import "MITUIConstants.h"
-#import "DiningMultiLineCell.h"
 
 @implementation LibraryWeeklyScheduleViewController
 
@@ -35,6 +34,7 @@
     [super viewDidLoad];
 
 	[self.tableView applyStandardColors];
+    self.tableView.rowHeight = 56;
 }
 
 
@@ -85,33 +85,28 @@
 // Customize the appearance of table view cells.
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     
-	
-	
-	//if (nil != allLibraries)
-	//cell.textLabel.text = @"Testing1";
-	
 	if (indexPath.section == 0) {
 		NSString * CellTableIdentifier = @"LibDetailsHoursTableViewControllerCell";
 		
-		DiningMultiLineCell *cell = (DiningMultiLineCell *)[tableView dequeueReusableCellWithIdentifier:CellTableIdentifier];
+		UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellTableIdentifier];
 		
 		if (cell == nil)
 		{
-			cell = [[[DiningMultiLineCell alloc] initWithStyle:UITableViewCellStyleValue2 reuseIdentifier:CellTableIdentifier] autorelease];
-			cell.textLabelNumberOfLines = 1;
-			
-			cell.textLabel.textColor = [UIColor colorWithHexString:@"#554C41"];
+			cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellTableIdentifier] autorelease];
+
+            cell.textLabel.font = [UIFont fontWithName:BOLD_FONT size:13];
+            cell.textLabel.textColor = [UIColor colorWithHexString:@"#554C41"];
+            
+            cell.detailTextLabel.font = [UIFont fontWithName:BOLD_FONT size:16];
+            cell.detailTextLabel.textColor = [UIColor colorWithHexString:@"#1A1611"];
 		}
 		
-			
-			cell.textLabel.text = [daysOfTheWeek objectAtIndex:indexPath.row];
-			cell.detailTextLabel.text = [weeklySchedule objectForKey:[daysOfTheWeek objectAtIndex:indexPath.row]];
+        cell.textLabel.text = [daysOfTheWeek objectAtIndex:indexPath.row];
+        cell.detailTextLabel.text = [weeklySchedule objectForKey:[daysOfTheWeek objectAtIndex:indexPath.row]];
 
 		cell.selectionStyle = UITableViewCellSelectionStyleGray;
 		return cell;
 	}
-
-	
 	
 	return nil;
 }

@@ -466,9 +466,13 @@
     NSString *detailTextString = nil;
 
     NSMutableArray *detailTextLines = [NSMutableArray array];
-    //NSString *aLine = nil;
     if ([itemsForStatus count] > 1) { // multiple call numbers
-        [detailTextLines addObject:[NSString stringWithFormat:@"%@ - %@", [cellInfo objectForKey:@"description"], [cellInfo objectForKey:@"callNumber"]]];
+        NSString *theDescription = [cellInfo objectForKey:@"description"];
+        if ([theDescription length]) {
+            [detailTextLines addObject:[NSString stringWithFormat:@"%@ - %@", theDescription, [cellInfo objectForKey:@"callNumber"]]];
+        } else {
+            [detailTextLines addObject:[cellInfo objectForKey:@"callNumber"]];
+        }
     }
     if ([categories count] > 1) { // multiple holding statuses
         [detailTextLines addObject:[category objectForKey:@"holdingStatus"]];
@@ -479,25 +483,6 @@
         cellStyle = UITableViewCellStyleSubtitle;
     }
     
-    /*
-    NSDictionary *cellInfo = [cellsForSection objectAtIndex:indexPath.row];
-    UITableViewCellStyle cellStyle = UITableViewCellStyleDefault;
-    NSString *detailTextString = nil;
-    
-    NSMutableArray *detailTextLines = [NSMutableArray array];
-    NSString *aLine = nil;
-    if (aLine = [cellInfo objectForKey:@"callNumber"]) {
-        [detailTextLines addObject:aLine];
-    }
-    if (aLine = [cellInfo objectForKey:@"holdingStatus"]) {
-        [detailTextLines addObject:aLine];
-    }
-    
-    if ([detailTextLines count]) {
-        detailTextString = [detailTextLines componentsJoinedByString:@"\n"];
-        cellStyle = UITableViewCellStyleSubtitle;
-    }
-    */
     UITableViewCell *cell = nil;
     BOOL isMultiCell = [detailTextLines count] > 1;
     
@@ -517,10 +502,9 @@
         cell = multiCell;
     }
     
-    //cell.textLabel.text = [cellInfo objectForKey:@"text"];
     cell.detailTextLabel.text = detailTextString;
-    //cell.imageView.image = [UIImage imageNamed:[cellInfo objectForKey:@"image"]];
     cell.textLabel.text = [NSString stringWithFormat:@"%@ %@", [cellInfo objectForKey:@"count"], [cellInfo objectForKey:@"state"]];
+    cell.textLabel.font = [UIFont fontWithName:BOLD_FONT size:16];
     NSString *state = [cellInfo objectForKey:@"state"];
     if ([state isEqualToString:@"available"]) {
         cell.imageView.image = [UIImage imageNamed:@"dining/dining-status-open.png"];
@@ -531,7 +515,6 @@
     }
     
     // chevron
-    //if ([cellInfo objectForKey:@"scanURL"] != nil || [cellInfo objectForKey:@"requestURL"] != nil) {
     if ([[cellInfo objectForKey:@"requestURL"] length] || [[cellInfo objectForKey:@"scanAndDeliverURL"] length]) {
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         cell.selectionStyle = UITableViewCellSelectionStyleGray;
@@ -570,7 +553,12 @@
     NSMutableArray *detailTextLines = [NSMutableArray array];
     //NSString *aLine = nil;
     if ([itemsForStatus count] > 1) { // multiple call numbers
-        [detailTextLines addObject:[NSString stringWithFormat:@"%@ - %@", [cellInfo objectForKey:@"description"], [cellInfo objectForKey:@"callNumber"]]];
+        NSString *theDescription = [cellInfo objectForKey:@"description"];
+        if ([theDescription length]) {
+            [detailTextLines addObject:[NSString stringWithFormat:@"%@ - %@", theDescription, [cellInfo objectForKey:@"callNumber"]]];
+        } else {
+            [detailTextLines addObject:[cellInfo objectForKey:@"callNumber"]];
+        }
     }
     if ([categories count] > 1) { // multiple holding statuses
         [detailTextLines addObject:[category objectForKey:@"holdingStatus"]];

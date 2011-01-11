@@ -205,15 +205,12 @@
 	// make sure any extra views are drawn on top of standard testLabel and detailTextLabel
 	NSMutableArray *extraSubviews = [NSMutableArray arrayWithCapacity:[self.contentView.subviews count]];
 	for (UIView *aView in self.contentView.subviews) {
-		if (aView != self.textLabel && aView != self.detailTextLabel) {
+		if (aView != self.textLabel && aView != self.detailTextLabel && aView.tag == 0) {
 			[extraSubviews addObject:aView];
 			[aView removeFromSuperview];
 		}
 	}
 	for (UIView *aView in extraSubviews) {
-        // TODO: generalize this more if the following assumption no longer holds
-        // right now we assume extra views are on the same line as the textLabel
-        // (true for stellar announcements and events calendar)
         CGRect frame = aView.frame;
         frame.origin.y = self.detailTextLabel.frame.origin.y;
 		

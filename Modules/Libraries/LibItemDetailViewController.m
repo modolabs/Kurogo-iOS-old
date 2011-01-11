@@ -221,6 +221,7 @@
 	[headerView addSubview:bookmarkButton];
     
     UIFont *labelFont = [UIFont fontWithName:STANDARD_FONT size:13];
+    UIColor *labelColor = [UIColor colorWithHexString:@"#404040"];
     for (NSString *labelText in [NSArray arrayWithObjects:edition, pubYear, formatDetails, nil]) {
         if ([labelText length]) {
             CGFloat detailHeight = [labelText sizeWithFont:labelFont].height;
@@ -228,12 +229,13 @@
             headerTextHeight += detailHeight;
             detailLabel.text = labelText;
             detailLabel.font = labelFont;
+            detailLabel.textColor = labelColor;
             detailLabel.backgroundColor = [UIColor clearColor];
             detailLabel.lineBreakMode = UILineBreakModeTailTruncation;
             [headerView addSubview:detailLabel];
         }
     }
-    headerView.frame = CGRectMake(0, 0, self.view.frame.size.width, 15 + headerTextHeight);
+    headerView.frame = CGRectMake(0, 0, self.view.frame.size.width, 20 + headerTextHeight);
 	
     CGRect screenRect = [[UIScreen mainScreen] applicationFrame];    
 	thumbnail = [[UIView alloc] initWithFrame:CGRectMake((screenRect.size.width - 150.0) / 2, headerView.frame.size.height, 150.0, 150.0)];
@@ -586,7 +588,7 @@
 
         UIFont *textFont = [UIFont fontWithName:BOLD_FONT size:CELL_STANDARD_FONT_SIZE];
         CGSize size = [libName sizeWithFont:textFont];
-        CGRect frame = CGRectMake(10, 10, cellWidth, size.height);
+        CGRect frame = CGRectMake(8, 10, cellWidth, size.height);
         UILabel *textLabel = (UILabel *)[cell1.contentView viewWithTag:21];
         if (!textLabel) {
             textLabel = [[[UILabel alloc] initWithFrame:frame] autorelease];
@@ -909,7 +911,7 @@
             
         } else {
             [thumbnail removeFromSuperview];
-            self.tableView.tableHeaderView.frame = CGRectMake(0, 0, self.view.frame.size.width, 15 + headerTextHeight);
+            self.tableView.tableHeaderView.frame = CGRectMake(0, 0, self.view.frame.size.width, 20 + headerTextHeight);
         }
 
         [self.tableView setTableHeaderView:self.tableView.tableHeaderView]; // force resize of header
