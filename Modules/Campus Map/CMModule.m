@@ -34,6 +34,12 @@
 	[super dealloc];
 }
 
+- (void)applicationDidFinishLaunching
+{
+    // force TileServerManager to load so we can get projection info asap
+    [TileServerManager isInitialized];
+}
+
 #pragma mark JSONAPIDelegate
 
 - (void)request:(JSONAPIRequest *)request jsonLoaded:(id)JSONObject
