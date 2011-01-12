@@ -85,7 +85,7 @@ static LibraryDataManager *s_sharedManager = nil;
     NSDate *librariesDate = [[NSUserDefaults standardUserDefaults] objectForKey:LibrariesLastUpdatedKey];
     NSDate *archivesDate = [[NSUserDefaults standardUserDefaults] objectForKey:ArchivesLastUpdatedKey];
     
-    if (librariesDate && -[librariesDate timeIntervalSinceNow] <= 24 * 60 * 60) {
+    if (librariesDate && -[librariesDate timeIntervalSinceNow] <= 24 * 60 * 60 * 7) {
         NSPredicate *pred = [NSPredicate predicateWithFormat:@"library.type like 'library'"];
         NSArray *tempArray = [CoreDataManager objectsForEntity:LibraryAliasEntityName matchingPredicate:pred];
         for (LibraryAlias *alias in tempArray) {
@@ -99,7 +99,7 @@ static LibraryDataManager *s_sharedManager = nil;
         [CoreDataManager deleteObjects:discardLibItems];
     }
     
-    if (archivesDate && -[archivesDate timeIntervalSinceNow] <= 24 * 60 * 60) {
+    if (archivesDate && -[archivesDate timeIntervalSinceNow] <= 24 * 60 * 60 * 7) {
         NSPredicate *pred = [NSPredicate predicateWithFormat:@"library.type like 'archive'"];
         NSArray *tempArray = [CoreDataManager objectsForEntity:LibraryAliasEntityName matchingPredicate:pred];
         for (LibraryAlias *alias in tempArray) {
