@@ -429,8 +429,6 @@ static LibraryDataManager *s_sharedManager = nil;
                 NSString * identityTag = [libraryDictionary objectForKey:@"id"];
                 NSString * type = [libraryDictionary objectForKey:@"type"];
                 
-                Library *library = [self libraryWithID:identityTag type:type primaryName:nil];
-                library.type = type; // saveData will be called if the alias we create below is new
                 LibraryAlias *alias = [self libraryAliasWithID:identityTag type:type name:name];
                 
                 NSString *isOpenNow = [libraryDictionary objectForKey:@"isOpenNow"];
