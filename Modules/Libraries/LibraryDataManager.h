@@ -65,7 +65,7 @@ NSInteger libraryNameSort(id lib1, id lib2, void *context);
     id<LibraryItemDetailDelegate> itemDelegate;
     id<LibraryAvailabilityDelegate> availabilityDelegate;
     id<LibraryDetailDelegate> libDelegate;
-
+    
     NSMutableArray *_allLibraries;
     NSMutableArray *_allArchives;
     

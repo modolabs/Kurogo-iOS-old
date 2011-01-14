@@ -774,6 +774,8 @@
             NSString * type = [libDict objectForKey:@"type"];
             
             LibraryAlias *alias = [[LibraryDataManager sharedManager] libraryAliasWithID:libId type:type name:libName];
+            [CoreDataManager saveData];
+            
             ItemAvailabilityDetailViewController *vc = [[ItemAvailabilityDetailViewController alloc] initWithStyle:UITableViewStyleGrouped];
 			vc.title = @"Availability";
             vc.libraryItem = libItem;
@@ -842,6 +844,8 @@
         NSString * type = [tempDict objectForKey:@"type"];
     
         LibraryAlias *alias = [[LibraryDataManager sharedManager] libraryAliasWithID:identityTag type:type name:displayName];
+        [CoreDataManager saveData];
+        
         [displayLibraries addObject:alias];
         
         if ([alias.library.lat doubleValue] && !canShowMap) {

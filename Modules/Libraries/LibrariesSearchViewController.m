@@ -476,10 +476,9 @@
             alreadyInDB.typeDetail = typeDetail;
             alreadyInDB.formatDetail = formatDetail;
             
-            [CoreDataManager saveData];
-            
             [self.lastResults setObject:alreadyInDB forKey:index];
         }
+        [CoreDataManager saveData];
         [_tableView reloadData];
         
         if ([items count] > 0)
