@@ -189,7 +189,7 @@
 	if (displayImage) {
         CGRect screenRect = [[UIScreen mainScreen] applicationFrame];
         [thumbnail release];
-        thumbnail = [[UIView alloc] initWithFrame:CGRectMake((screenRect.size.width - 160.0) / 2, headerView.frame.size.height, 160.0, 160.0)];
+        thumbnail = [[UIView alloc] initWithFrame:CGRectMake((screenRect.size.width - 150.0) / 2, headerView.frame.size.height, 150.0, 150.0)];
         thumbnail.backgroundColor = [UIColor clearColor];
         
         CGRect frame = headerView.frame;
@@ -907,8 +907,10 @@
             } else {
                 imageView.contentMode = UIViewContentModeCenter;
             }
+            CGFloat scaledImageHeight = (image.size.width > image.size.height) ? floor(150.0 * image.size.height / image.size.width) : 150.0;
+
             imageView.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
-            imageView.frame = CGRectMake(0, 0, 150, 150);
+            imageView.frame = CGRectMake(0, 0, 150, scaledImageHeight);
             imageView.backgroundColor = [UIColor clearColor];
             imageView.image = image;
             
@@ -916,7 +918,7 @@
             
             CGFloat imageX = (screenRect.size.width - imageView.frame.size.width) / 2;
             CGFloat imageY = thumbnail.frame.origin.y;
-            thumbnail.frame = CGRectMake(imageX, imageY, imageView.frame.size.width, image.size.height + 10);
+            thumbnail.frame = CGRectMake(imageX, imageY, imageView.frame.size.width, imageView.frame.size.height + 10);
             [thumbnail addSubview:imageView];
             
             if (![thumbnail isDescendantOfView:self.tableView.tableHeaderView]) {
