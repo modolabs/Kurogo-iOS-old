@@ -340,7 +340,7 @@ static LibraryDataManager *s_sharedManager = nil;
                 NSString * type = [libraryDictionary objectForKey:@"type"];
 
                 Library *library = [self libraryWithID:identityTag type:type primaryName:primaryName];
-                if (!library.location) {
+                if (![library.location length]) {
                     // if library was just created in core data, the following properties will be saved when alias is created
                     library.location = [libraryDictionary objectForKey:@"address"];
                     library.lat = [NSNumber numberWithDouble:[[libraryDictionary objectForKey:@"latitude"] doubleValue]];
@@ -492,24 +492,22 @@ static LibraryDataManager *s_sharedManager = nil;
             NSString *identityTag = [libraryDictionary objectForKey:@"id"];
             NSString *name = [libraryDictionary objectForKey:@"name"];
             NSString *primaryName = [libraryDictionary objectForKey:@"primaryname"];
-            NSString *directions = [libraryDictionary objectForKey:@"directions"];
-            NSString *website = [libraryDictionary objectForKey:@"website"];
-            NSString *email = [libraryDictionary objectForKey:@"email"];            
-            NSArray * phoneNumberArray = (NSArray *)[libraryDictionary objectForKey:@"phone"];
             NSString *type = [libraryDictionary objectForKey:@"type"];
 
             Library *lib = [self libraryWithID:identityTag type:type primaryName:primaryName];
             
             [self libraryAliasWithID:identityTag type:type name:name];
             
-            lib.websiteLib = website;
-            lib.emailLib = email;
-            lib.directions = directions;
+            lib.websiteLib = [libraryDictionary objectForKey:@"website"];
+            lib.emailLib = [libraryDictionary objectForKey:@"email"];
+            lib.directions = [libraryDictionary objectForKey:@"directions"];
+            lib.lat = [NSNumber numberWithDouble:[[libraryDictionary objectForKey:@"latitude"] doubleValue]];
+            lib.lon = [NSNumber numberWithDouble:[[libraryDictionary objectForKey:@"longitude"] doubleValue]];
             
             if ([lib.phone count])
                 [lib removePhone:lib.phone];
             
-            
+            NSArray * phoneNumberArray = (NSArray *)[libraryDictionary objectForKey:@"phone"];
             NSInteger phoneCount = 0;
             for(NSDictionary * phNbr in phoneNumberArray) {
                 
@@ -617,8 +615,8 @@ static LibraryDataManager *s_sharedManager = nil;
         [activeRequests removeObjectForKey:command];
         
     }
-#pragma mark Success - Full Availability
-    else if ([command isEqualToString:LibraryDataRequestFullAvailability]) {
+#pragma mark Success - Availability
+    else if ([command isEqualToString:LibraryDataRequestFullAvailability] || [command isEqualToString:LibraryDataRequestAvailability]) {
         
         NSMutableArray *filteredResults = [NSMutableArray array];
         
@@ -643,21 +641,13 @@ static LibraryDataManager *s_sharedManager = nil;
                 }
 			}
             
-            [self.availabilityDelegate fullAvailabilityDidLoadForItemID:itemID result:filteredResults];
+            if ([command isEqualToString:LibraryDataRequestFullAvailability]) {
+                [self.availabilityDelegate fullAvailabilityDidLoadForItemID:itemID result:filteredResults];
+            } else {
+                [self.itemDelegate availabilityDidLoadForItemID:itemID result:institutions];
+            }
         }    
         
-    }
-#pragma mark Success - Availability Summary
-    else if ([command isEqualToString:LibraryDataRequestAvailability]) {
-        
-        // TODO: check whether "Networked Resource" comes in here as something we need to suppress
-        
-		if ([JSONObject isKindOfClass:[NSDictionary class]]) {
-            NSString *itemID = [(NSDictionary *)JSONObject objectForKey:@"id"];
-            NSArray *institutions = [(NSDictionary *)JSONObject objectForKey:@"institutions"];
-            
-            [self.itemDelegate availabilityDidLoadForItemID:itemID result:institutions];
-        }
     }
 #pragma mark Success - Search
     else if ([command isEqualToString:LibraryDataRequestSearch]) {

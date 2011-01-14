@@ -1,0 +1,90 @@
+<html>
+<head>
+<style type="text/css" media="screen">
+    body { margin: 0; padding: 10px; overflow: hidden; font-family: Helvetica; font-size: 17px; background-color: transparent; }
+    a { color: #8C000B; }
+    .title { font-family: Georgia; font-size: 22; font-weight: normal; color: #1a1611; }
+    .author { font-family: Helvetica; font-size: 14; color: #1a1611; margin: 0px; }
+    .metadata { font-family: Helvetica; font-size: 13; color: #404040; margin: 0px; }
+    .inlineControls { float: right; -webkit-user-select: none; position: relative; top: 6px; }
+    .inlineControls a { -webkit-tap-highlight-color: rgba(0,0,0,0); }
+    .inlineControls span { display: inline-block; width: 44px; height: 38px; -webkit-user-select: none; }
+    #bookmarkButton { background: url('global/bookmark_button@2x.png') no-repeat 0 -38px; -webkit-background-size: 88px 76px; }
+    #bookmarkButton.on { background-position: -44px -38px; }
+    #bookmarkButton.pressed { background-position: 0 1px; }
+    #bookmarkButton.pressed.on { background-position: -44px 1px; }
+    #mapButton { background: url('global/map-it@2x.png') no-repeat; -webkit-background-size: 44px 38px; }
+    #mapButton.pressed { background: url('global/map-it-pressed@2x.png') no-repeat; -webkit-background-size: 44px 38px; }
+</style>
+</head>
+<body>
+    <div id="main">
+        <h2 class="title">__TITLE__</h2>
+        <span class="inlineControls">
+            <a href="bookmark"><span width="44" height="38" alt="Bookmark" id="bookmarkButton" class="__BOOKMARKED__"></span></a>
+            <a href="map"><span width="44" height="38" alt="View on Map" id="mapButton" style="__HIDEMAP__"></span></a>
+        </span>
+        <p class="author">__AUTHOR__</p>
+        <p class="metadata" id="edition">__EDITION__</p>
+        <p class="metadata" id="pubyear">__PUBYEAR__</p>
+        <p class="metadata" id="format">__FORMAT__</p>
+    </div>
+</body>
+
+<!-- JS at the bottom instead of onload in order to do work before UIWebView slides into view -->
+<script type="text/javascript" charset="utf-8">
+    if (document.getElementById("edition").childNodes.length == 0) {
+        var node = document.getElementById("edition");
+        node.parentElement.removeChild(node);
+    }
+    if (document.getElementById("pubyear").childNodes.length == 0) {
+        var node = document.getElementById("pubyear");
+        node.parentElement.removeChild(node);
+    }
+    if (document.getElementById("format").childNodes.length == 0) {
+        var node = document.getElementById("format");
+        node.parentElement.removeChild(node);
+    }
+    
+    // TODO: factor out common javascript between here and news
+    function hasClass(ele,cls) {
+        return ele.className.match(new RegExp('(\\s|^)'+cls+'(\\s|$)'));
+    }
+        
+    function addClass(ele,cls) {
+        if (!this.hasClass(ele,cls)) ele.className += " "+cls;
+    }
+
+    function removeClass(ele,cls) {
+        if (hasClass(ele,cls)) {
+            var reg = new RegExp('(\\s|^)'+cls+'(\\s|$)');
+            ele.className=ele.className.replace(reg,' ');
+        }
+    }
+        
+    function toggleClass (ele, cls) {
+        if (hasClass(ele, cls)) {
+            removeClass(ele, cls);
+        } else {
+            addClass(ele, cls);
+        }
+    }
+        
+    var bookmarkButton = document.getElementById("bookmarkButton");
+    bookmarkButton.addEventListener("touchstart", function() {
+        addClass(bookmarkButton, "pressed");
+    });
+    bookmarkButton.addEventListener("touchend", function() {
+        removeClass(bookmarkButton, "pressed");
+        toggleClass(bookmarkButton, "on");
+    });
+    var mapButton = document.getElementById("mapButton");
+    mapButton.style.display = "__MAPDISPLAY__";
+    mapButton.addEventListener("touchstart", function() {
+        addClass(mapButton, "pressed");
+    });        
+    mapButton.addEventListener("touchend", function() {
+        removeClass(mapButton, "pressed");
+    });
+</script>
+</html>

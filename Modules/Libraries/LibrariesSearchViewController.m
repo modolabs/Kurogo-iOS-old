@@ -246,7 +246,7 @@
 		else {
 			imageString = @"book.png";
 		}
-		UIImage *image = [UIImage imageNamed:imageString];
+		UIImage *image = [UIImage imageNamed:[NSString stringWithFormat:@"libraries/%@", imageString]];
 		cell.imageView.image = image;
 	}
 	return cell;
@@ -454,7 +454,9 @@
         for (NSDictionary * libraryDictionary in items) {
             
             NSString * title = [libraryDictionary objectForKey:@"title"];
+            NSString *nonLatinTitle = [libraryDictionary objectForKey:@"nonLatinTitle"];
             NSString *author = [libraryDictionary objectForKey:@"creator"];
+            NSString *nonLatinAuthor = [libraryDictionary objectForKey:@"nonLatinCreator"];
             
             NSString *year = [libraryDictionary objectForKey:@"date"];
             
@@ -470,7 +472,9 @@
             LibraryItem *alreadyInDB = [[LibraryDataManager sharedManager] libraryItemWithID:itemId];
             
             alreadyInDB.title = title;
+            alreadyInDB.nonLatinTitle = nonLatinTitle;
             alreadyInDB.author = author;
+            alreadyInDB.nonLatinAuthor = nonLatinAuthor;
             alreadyInDB.year = year;
             alreadyInDB.edition = edition;
             alreadyInDB.typeDetail = typeDetail;

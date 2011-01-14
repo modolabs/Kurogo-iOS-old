@@ -222,7 +222,7 @@ NSInteger bookmarkedItemsNameSorted(id item1, id item2, void *context) {
 		else {
 			imageString = @"book.png";
 		}
-		UIImage *image = [UIImage imageNamed:imageString];
+		UIImage *image = [UIImage imageNamed:[NSString stringWithFormat:@"libraries/%@", imageString]];
 		cell.imageView.image = image;
 	}
 	return cell;

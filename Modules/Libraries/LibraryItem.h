@@ -8,6 +8,7 @@
 @property (nonatomic, retain) NSString * publisher;
 @property (nonatomic, retain) NSString * itemId;
 @property (nonatomic, retain) NSString * title;
+@property (nonatomic, retain) NSString * nonLatinTitle;
 @property (nonatomic, retain) NSString * workType;
 @property (nonatomic, retain) NSString * fullImageLink;
 @property (nonatomic, retain) NSString * formatDetail;
@@ -23,6 +24,7 @@
 @property (nonatomic, retain) NSString * thumbnailURL;
 @property (nonatomic, retain) NSString * figureLink;
 @property (nonatomic, retain) NSString * author;
+@property (nonatomic, retain) NSString * nonLatinAuthor;
 @property (nonatomic, retain) NSString * authorLink;
 @property (nonatomic, retain) NSData * thumbnailImage;
 

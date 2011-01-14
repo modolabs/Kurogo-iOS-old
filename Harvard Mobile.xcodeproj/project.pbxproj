@@ -150,13 +150,6 @@
 		56B6E22B12965B8A00818071 /* LibraryLocationsMapViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 56B6E22912965B8A00818071 /* LibraryLocationsMapViewController.m */; };
 		56B6E23012965E7C00818071 /* LibraryAnnotation.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = 56B6E22E12965E7C00818071 /* LibraryAnnotation.h */; settings = {JAVA_ARCHIVE_SUBDIR = Modules/Libraries; }; };
 		56B6E23112965E7C00818071 /* LibraryAnnotation.m in Sources */ = {isa = PBXBuildFile; fileRef = 56B6E22F12965E7C00818071 /* LibraryAnnotation.m */; };
-		56D308C612AE94A000E61B3B /* book.png in Resources */ = {isa = PBXBuildFile; fileRef = 56D308BF12AE94A000E61B3B /* book.png */; };
-		56D308C712AE94A000E61B3B /* image.png in Resources */ = {isa = PBXBuildFile; fileRef = 56D308C012AE94A000E61B3B /* image.png */; };
-		56D308C812AE94A000E61B3B /* journal.png in Resources */ = {isa = PBXBuildFile; fileRef = 56D308C112AE94A000E61B3B /* journal.png */; };
-		56D308C912AE94A000E61B3B /* map.png in Resources */ = {isa = PBXBuildFile; fileRef = 56D308C212AE94A000E61B3B /* map.png */; };
-		56D308CA12AE94A000E61B3B /* musicscore.png in Resources */ = {isa = PBXBuildFile; fileRef = 56D308C312AE94A000E61B3B /* musicscore.png */; };
-		56D308CB12AE94A000E61B3B /* soundrecording.png in Resources */ = {isa = PBXBuildFile; fileRef = 56D308C412AE94A000E61B3B /* soundrecording.png */; };
-		56D308CC12AE94A000E61B3B /* video.png in Resources */ = {isa = PBXBuildFile; fileRef = 56D308C512AE94A000E61B3B /* video.png */; };
 		56E8505A12A52A290022E162 /* LibraryPhone.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = 56E8505812A52A290022E162 /* LibraryPhone.h */; settings = {JAVA_ARCHIVE_SUBDIR = Modules/Libraries; }; };
 		56E8505B12A52A290022E162 /* LibraryPhone.m in Sources */ = {isa = PBXBuildFile; fileRef = 56E8505912A52A290022E162 /* LibraryPhone.m */; };
 		56E859CF12ACEC810022E162 /* ItemAvailabilityDetailViewController.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = 56E859CD12ACEC810022E162 /* ItemAvailabilityDetailViewController.h */; settings = {JAVA_ARCHIVE_SUBDIR = Modules/Libraries; }; };
@@ -451,6 +444,7 @@
 		DECBF6B610F8F91B009FAE35 /* NewsImageRep.m in Sources */ = {isa = PBXBuildFile; fileRef = DECBF6B510F8F91B009FAE35 /* NewsImageRep.m */; };
 		DED3CCE910418F5F003D3B74 /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = DED3CCE810418F5F003D3B74 /* Default.png */; };
 		DEE6B1CD111774300037F03C /* Entitlements.plist in Resources */ = {isa = PBXBuildFile; fileRef = DEE6B1CC111774300037F03C /* Entitlements.plist */; };
+		EB137B5412DFE4EE004DBB7C /* libraries in Resources */ = {isa = PBXBuildFile; fileRef = EB137B4B12DFE4EE004DBB7C /* libraries */; };
 		EB1DC7A612D213330080C2A1 /* LibraryAlias.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB1DC7A412D213330080C2A1 /* LibraryAlias.h */; settings = {JAVA_ARCHIVE_SUBDIR = Modules/Libraries; }; };
 		EB1DC7A712D213330080C2A1 /* LibraryAlias.m in Sources */ = {isa = PBXBuildFile; fileRef = EB1DC7A512D213330080C2A1 /* LibraryAlias.m */; };
 		EB32946F1166777500DEDC8A /* CalendarEventMapAnnotation.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB32946D1166777500DEDC8A /* CalendarEventMapAnnotation.h */; settings = {JAVA_ARCHIVE_SUBDIR = Modules/Calendar; }; };
@@ -747,13 +741,6 @@
 		56B6E22912965B8A00818071 /* LibraryLocationsMapViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LibraryLocationsMapViewController.m; sourceTree = "<group>"; };
 		56B6E22E12965E7C00818071 /* LibraryAnnotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LibraryAnnotation.h; sourceTree = "<group>"; };
 		56B6E22F12965E7C00818071 /* LibraryAnnotation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LibraryAnnotation.m; sourceTree = "<group>"; };
-		56D308BF12AE94A000E61B3B /* book.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = book.png; path = Resources/libraries/book.png; sourceTree = "<group>"; };
-		56D308C012AE94A000E61B3B /* image.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = image.png; path = Resources/libraries/image.png; sourceTree = "<group>"; };
-		56D308C112AE94A000E61B3B /* journal.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = journal.png; path = Resources/libraries/journal.png; sourceTree = "<group>"; };
-		56D308C212AE94A000E61B3B /* map.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = map.png; path = Resources/libraries/map.png; sourceTree = "<group>"; };
-		56D308C312AE94A000E61B3B /* musicscore.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = musicscore.png; path = Resources/libraries/musicscore.png; sourceTree = "<group>"; };
-		56D308C412AE94A000E61B3B /* soundrecording.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = soundrecording.png; path = Resources/libraries/soundrecording.png; sourceTree = "<group>"; };
-		56D308C512AE94A000E61B3B /* video.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = video.png; path = Resources/libraries/video.png; sourceTree = "<group>"; };
 		56E8505812A52A290022E162 /* LibraryPhone.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LibraryPhone.h; sourceTree = "<group>"; };
 		56E8505912A52A290022E162 /* LibraryPhone.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LibraryPhone.m; sourceTree = "<group>"; };
 		56E859CD12ACEC810022E162 /* ItemAvailabilityDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ItemAvailabilityDetailViewController.h; sourceTree = "<group>"; };
@@ -1114,6 +1101,8 @@
 		DECBF6B510F8F91B009FAE35 /* NewsImageRep.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NewsImageRep.m; sourceTree = "<group>"; };
 		DED3CCE810418F5F003D3B74 /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Default.png; path = Resources/Default.png; sourceTree = "<group>"; };
 		DEE6B1CC111774300037F03C /* Entitlements.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Entitlements.plist; sourceTree = "<group>"; };
+		EB137B4812DFDDF8004DBB7C /* Libraries 2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Libraries 2.xcdatamodel"; sourceTree = "<group>"; };
+		EB137B4B12DFE4EE004DBB7C /* libraries */ = {isa = PBXFileReference; lastKnownFileType = folder; name = libraries; path = Resources/libraries; sourceTree = "<group>"; };
 		EB1DC7A412D213330080C2A1 /* LibraryAlias.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LibraryAlias.h; sourceTree = "<group>"; };
 		EB1DC7A512D213330080C2A1 /* LibraryAlias.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LibraryAlias.m; sourceTree = "<group>"; };
 		EB32946D1166777500DEDC8A /* CalendarEventMapAnnotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CalendarEventMapAnnotation.h; sourceTree = "<group>"; };
@@ -1363,14 +1352,8 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				EB137B4B12DFE4EE004DBB7C /* libraries */,
 				EB67B0FA12CA6BC30080C0AA /* en.lproj */,
-				56D308BF12AE94A000E61B3B /* book.png */,
-				56D308C012AE94A000E61B3B /* image.png */,
-				56D308C112AE94A000E61B3B /* journal.png */,
-				56D308C212AE94A000E61B3B /* map.png */,
-				56D308C312AE94A000E61B3B /* musicscore.png */,
-				56D308C412AE94A000E61B3B /* soundrecording.png */,
-				56D308C512AE94A000E61B3B /* video.png */,
 				EBB61F171253ECBC0099A883 /* shuttles */,
 				EBAE93FF121DB1C700F370BE /* loading-animation */,
 				EBAE89A4121A081900F370BE /* schools */,
@@ -2584,15 +2567,9 @@
 				C76FBB8D123001A600968920 /* RouteMapViewController.xib in Resources */,
 				C71D9B4D1243E054009369C5 /* ShuttlesMainViewController.xib in Resources */,
 				EBB61F3B1253ECBC0099A883 /* shuttles in Resources */,
-				56D308C612AE94A000E61B3B /* book.png in Resources */,
-				56D308C712AE94A000E61B3B /* image.png in Resources */,
-				56D308C812AE94A000E61B3B /* journal.png in Resources */,
-				56D308C912AE94A000E61B3B /* map.png in Resources */,
-				56D308CA12AE94A000E61B3B /* musicscore.png in Resources */,
-				56D308CB12AE94A000E61B3B /* soundrecording.png in Resources */,
-				56D308CC12AE94A000E61B3B /* video.png in Resources */,
 				5623EBC912B9ED6C00212D5C /* LibraryAdvancedSearch.xib in Resources */,
 				EB67B0FD12CA6BC30080C0AA /* en.lproj in Resources */,
+				EB137B5412DFE4EE004DBB7C /* libraries in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3538,8 +3515,9 @@
 			isa = XCVersionGroup;
 			children = (
 				56B6DD141292729300818071 /* Libraries.xcdatamodel */,
+				EB137B4812DFDDF8004DBB7C /* Libraries 2.xcdatamodel */,
 			);
-			currentVersion = 56B6DD141292729300818071 /* Libraries.xcdatamodel */;
+			currentVersion = EB137B4812DFDDF8004DBB7C /* Libraries 2.xcdatamodel */;
 			path = Libraries.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;

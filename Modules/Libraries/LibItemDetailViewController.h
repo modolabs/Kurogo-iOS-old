@@ -13,8 +13,12 @@
 #import "UnderlinedUILabel.h"
 #import "LibraryDataManager.h"
 
-@interface LibItemDetailViewController : UITableViewController <CLLocationManagerDelegate, LibraryItemDetailDelegate, LibraryDetailDelegate> {
 
+@interface LibItemDetailViewController : UITableViewController <CLLocationManagerDelegate, LibraryItemDetailDelegate, LibraryDetailDelegate, UIWebViewDelegate> {
+
+    UIView *headerView;
+    UIWebView *headerWebView;
+    
 	NSArray * locationsWithItem;
 	
 	BOOL bookmarkButtonIsOn;
@@ -47,9 +51,6 @@
 		  itemArray: (NSDictionary *) results
 	currentItemIdex: (int) itemIndex
 	   imageDisplay:(BOOL) imageDisplay;
-
-
--(void) setupLayout;
 
 - (void)addLoadingIndicator:(UIView *)view;
 - (void)removeLoadingIndicator;

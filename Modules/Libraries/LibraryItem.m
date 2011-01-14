@@ -6,6 +6,7 @@
 @dynamic publisher;
 @dynamic itemId;
 @dynamic title;
+@dynamic nonLatinTitle;
 @dynamic workType;
 @dynamic fullImageLink;
 @dynamic formatDetail;
@@ -21,6 +22,7 @@
 @dynamic thumbnailURL;
 @dynamic figureLink;
 @dynamic author;
+@dynamic nonLatinAuthor;
 @dynamic authorLink;
 @dynamic thumbnailImage;
 

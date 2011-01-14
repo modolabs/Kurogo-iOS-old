@@ -15,6 +15,19 @@
 #import "LibraryAlias.h"
 #import "MIT_MobileAppDelegate.h"
 #import "RequestWebViewModalViewController.h"
+#import "Foundation+MITAdditions.h"
+
+@interface LibItemDetailViewController (Private)
+
+- (void)bookmarkButtonToggled:(id)sender;
+- (void)mapButtonPressed:(id)sender;
+- (void)authorLinkTapped:(id)sender;
+
+- (void)setupTableHeader;
+- (void)setupNavBar;
+
+@end
+
 
 @implementation LibItemDetailViewController
 @synthesize bookmarkButtonIsOn;
@@ -47,21 +60,6 @@
 	return self;
 }
 
-
-/*
-- (void)fullAvailabilityDidLoad {
-    
-    [displayNameAndLibraries setObject:alreadyInDB forKey:displayName];
-    
-    [self.tableView reloadData];
-    
-    locationManager = [[CLLocationManager alloc] init];
-    locationManager.distanceFilter = kCLDistanceFilterNone;
-    locationManager.desiredAccuracy = kCLLocationAccuracyBest;
-    locationManager.delegate = self;
-}
-*/
-
 #pragma mark -
 #pragma mark View lifecycle
 
@@ -71,7 +69,8 @@
 	
 	[self.tableView applyStandardColors];
 	
-    [self setupLayout];
+    [self setupNavBar];
+    [self setupTableHeader];
     
     if (!libItem.catalogLink) { // cataloglink is something itemdetail returns but search does not
         [self detailsDidLoadForItem:libItem];
@@ -93,10 +92,7 @@
 	//[self setupLayout];
 }
 
-
-- (void) setupLayout{
-    
-    // segment control
+- (void)setupNavBar {
     if ([libItemDictionary count] && [libItemDictionary count] > 1) {
         UISegmentedControl *segmentControl = [[UISegmentedControl alloc] initWithItems:[NSArray arrayWithObjects:
                                                                                         [UIImage imageNamed:MITImageNameUpArrow],
@@ -116,142 +112,99 @@
         
         [segmentControl release];
         [segmentBarItem release];
-
+        
     } else {
         self.navigationItem.rightBarButtonItem = nil;
+    }
+}
+
+- (void) setupTableHeader {
+    
+    if (headerView == nil) {
+        headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 1)]; // setting this to 1px tall makes sizeThatFits work in webViewDidFinishLoad
+    }
+    
+    if (headerWebView == nil) {
+        headerWebView = [[[UIWebView alloc] initWithFrame:headerView.frame] autorelease];
+        headerWebView.backgroundColor = [UIColor clearColor];
+        headerWebView.opaque = NO;
+        headerWebView.delegate = self;
+        
+        for (id subview in headerWebView.subviews)
+            if ([[subview class] isSubclassOfClass: [UIScrollView class]])
+                ((UIScrollView *)subview).bounces = NO;
+        
+        
+        [headerView addSubview:headerWebView];
     }
     
     // strings
     
     NSString *edition = libItem.edition;
     NSString *pubYear = [libItem.publisher length] ? [NSString stringWithFormat:@"%@ %@", libItem.publisher, libItem.year] : libItem.year;
-	NSString *formatDetails = [NSString string];
-	if (([libItem.formatDetail length] > 0) && ([libItem.typeDetail length] > 0))
-		formatDetails = [NSString stringWithFormat:@"%@: %@", libItem.formatDetail, libItem.typeDetail];
-	else if (([libItem.formatDetail length] == 0) && ([libItem.typeDetail length] > 0))
-		formatDetails = [NSString stringWithFormat:@"%@", libItem.typeDetail];
-	else if (([libItem.formatDetail length] > 0) && ([libItem.typeDetail length] == 0))
-		formatDetails = [NSString stringWithFormat:@"%@", libItem.formatDetail];
-	
-    NSString *itemTitle = displayImage ? [NSString stringWithFormat:@"%@\nHOLLIS # %@", libItem.title, libItem.itemId] : libItem.title;
+    NSString *formatDetails = [NSString string];
+    if (([libItem.formatDetail length] > 0) && ([libItem.typeDetail length] > 0))
+        formatDetails = [NSString stringWithFormat:@"%@: %@", libItem.formatDetail, libItem.typeDetail];
+    else if (([libItem.formatDetail length] == 0) && ([libItem.typeDetail length] > 0))
+        formatDetails = [NSString stringWithFormat:@"%@", libItem.typeDetail];
+    else if (([libItem.formatDetail length] > 0) && ([libItem.typeDetail length] == 0))
+        formatDetails = [NSString stringWithFormat:@"%@", libItem.formatDetail];
     
-    // title label
-	
-	headerTextHeight = 0.0;
-	CGFloat titleHeight = [itemTitle sizeWithFont:[UIFont fontWithName:CONTENT_TITLE_FONT size:CONTENT_TITLE_FONT_SIZE]
-                                constrainedToSize:CGSizeMake(300, 2000)         
-                                    lineBreakMode:UILineBreakModeWordWrap].height;
-	
-	UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(12.0, 10.0, 300.0, titleHeight)];
-
-	headerTextHeight += titleHeight;
-	
-	titleLabel.text = itemTitle;
-	titleLabel.font = [UIFont fontWithName:CONTENT_TITLE_FONT size:CONTENT_TITLE_FONT_SIZE];
-	titleLabel.textColor = [UIColor colorWithHexString:@"#1a1611"];
-	titleLabel.backgroundColor = [UIColor clearColor];	
-	titleLabel.lineBreakMode = UILineBreakModeWordWrap;
-	titleLabel.numberOfLines = 0;
-	
-	
-	CGFloat authorHeight = [libItem.author sizeWithFont:[UIFont fontWithName:COURSE_NUMBER_FONT size:15]
-                                      constrainedToSize:CGSizeMake(190, 20)         
-                                          lineBreakMode:UILineBreakModeWordWrap].height;
-	
-	UnderlinedUILabel *authorLabel = [[UnderlinedUILabel alloc] initWithFrame:CGRectMake(12.0, 20 + headerTextHeight, 190.0, authorHeight)];
-	
-	UIButton * authorButton = [UIButton buttonWithType:UIButtonTypeCustom];
-	authorButton.frame = CGRectMake(12.0, 20 + headerTextHeight, 190.0, authorHeight);
-	[authorButton addTarget:self action:@selector(authorLinkTapped:) forControlEvents:UIControlEventTouchUpInside];
-	authorButton.enabled = YES;
-	
-	if (authorHeight >= 20)
-		headerTextHeight += authorHeight;
-	
-	else {
-		headerTextHeight += 20;
-	}
-
-	authorLabel.text = libItem.author;
-	authorLabel.font = [UIFont fontWithName:COURSE_NUMBER_FONT size:14];
-	authorLabel.textColor = [UIColor colorWithHexString:@"#8C000B"]; 
-	authorLabel.backgroundColor = [UIColor clearColor];	
-	authorLabel.lineBreakMode = UILineBreakModeTailTruncation;
-	authorLabel.numberOfLines = 1;
-    
-    // header buttons
-    
-    UIButton *bookmarkButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    bookmarkButton.frame = CGRectMake(self.tableView.frame.size.width - 105.0 , headerTextHeight - 10, 50.0, 50.0);
-    bookmarkButton.enabled = YES;
-    [bookmarkButton setImage:[UIImage imageNamed:@"global/bookmark_off.png"] forState:UIControlStateNormal];
-    [bookmarkButton setImage:[UIImage imageNamed:@"global/bookmark_off_pressed.png"] forState:(UIControlStateNormal | UIControlStateHighlighted)];
-    [bookmarkButton setImage:[UIImage imageNamed:@"global/bookmark_on.png"] forState:UIControlStateSelected];
-    [bookmarkButton setImage:[UIImage imageNamed:@"global/bookmark_on_pressed.png"] forState:(UIControlStateSelected | UIControlStateHighlighted)];
-    [bookmarkButton addTarget:self action:@selector(bookmarkButtonToggled:) forControlEvents:UIControlEventTouchUpInside];
-    bookmarkButtonIsOn = bookmarkButton.selected = [libItem.isBookmarked boolValue];
-    
-    UIButton *mapButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    mapButton.frame = CGRectMake(self.tableView.frame.size.width - 55.0 , headerTextHeight - 10, 50.0, 50.0);
-    mapButton.enabled = YES;
-    [mapButton setImage:[UIImage imageNamed:@"global/map-it.png"] forState:UIControlStateNormal];
-    [mapButton setImage:[UIImage imageNamed:@"global/map-it-pressed.png"] forState:(UIControlStateNormal | UIControlStateHighlighted)];
-    [mapButton setImage:[UIImage imageNamed:@"global/map-it.png-pressed"] forState:UIControlStateSelected];
-    [mapButton setImage:[UIImage imageNamed:@"global/map-it.png-pressed"] forState:(UIControlStateSelected | UIControlStateHighlighted)];
-    [mapButton addTarget:self action:@selector(mapButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
-    
-    CGFloat subtitleWidth;
-    
-    if (displayImage || !canShowMap) {
-        mapButton.hidden = YES;
-        bookmarkButton.frame = CGRectMake(self.tableView.frame.size.width - 55.0 , bookmarkButton.frame.origin.y, 50.0, 50.0);
-        subtitleWidth = self.view.frame.size.width - 70;
+    NSString *itemTitle = nil;
+    if (displayImage) {
+        itemTitle = [NSString stringWithFormat:@"%@\nHOLLIS # %@", libItem.title, libItem.itemId];
+    } else if ([libItem.nonLatinTitle length]) {
+        itemTitle = [NSString stringWithFormat:@"%@ (%@)", libItem.title, libItem.nonLatinTitle];
     } else {
-        mapButton.hidden = NO;
-        bookmarkButton.frame = CGRectMake(self.tableView.frame.size.width - 105.0 , bookmarkButton.frame.origin.y, 50.0, 50.0);
-        subtitleWidth = self.view.frame.size.width - 130;
+        itemTitle = libItem.title;
     }
-	
-	UIView * headerView = [[[UIView alloc] initWithFrame:CGRectZero] autorelease];
-	
-	[headerView addSubview:titleLabel];
-	[headerView addSubview:authorLabel];
-	[headerView addSubview:authorButton];
-    [headerView addSubview:mapButton];
-	[headerView addSubview:bookmarkButton];
     
-    UIFont *labelFont = [UIFont fontWithName:STANDARD_FONT size:13];
-    UIColor *labelColor = [UIColor colorWithHexString:@"#404040"];
-    for (NSString *labelText in [NSArray arrayWithObjects:edition, pubYear, formatDetails, nil]) {
-        if ([labelText length]) {
-            CGFloat detailHeight = [labelText sizeWithFont:labelFont].height;
-            UILabel *detailLabel = [[UILabel alloc] initWithFrame:CGRectMake(12, 20 + headerTextHeight, subtitleWidth, detailHeight)];
-            headerTextHeight += detailHeight;
-            detailLabel.text = labelText;
-            detailLabel.font = labelFont;
-            detailLabel.textColor = labelColor;
-            detailLabel.backgroundColor = [UIColor clearColor];
-            detailLabel.lineBreakMode = UILineBreakModeTailTruncation;
-            [headerView addSubview:detailLabel];
-        }
+    NSString *authorString = nil;
+    if (![libItem.author length] && [libItem.nonLatinAuthor length]) {
+        authorString = [NSString stringWithFormat:@"<a href=\"searchAuthor\">%@</a>", libItem.nonLatinAuthor];
+    } else if ([libItem.author length] && [libItem.nonLatinAuthor length]) {
+        authorString = [NSString stringWithFormat:@"<a href=\"searchAuthor\">%@</a> (%@)", libItem.author, libItem.nonLatinAuthor];
+    } else {
+        authorString = [NSString stringWithFormat:@"<a href=\"searchAuthor\">%@</a>", libItem.author];
     }
-    headerView.frame = CGRectMake(0, 0, self.view.frame.size.width, 20 + headerTextHeight);
-	
-    CGRect screenRect = [[UIScreen mainScreen] applicationFrame];    
-	thumbnail = [[UIView alloc] initWithFrame:CGRectMake((screenRect.size.width - 150.0) / 2, headerView.frame.size.height, 150.0, 150.0)];
-	thumbnail.backgroundColor = [UIColor clearColor];
+    
+    NSString *isBookmarked = ([libItem.isBookmarked boolValue]) ? @"on" : @"";
+    NSString *mapDisplay = canShowMap ? @"inline-block" : @"none";
+    
+    NSURL *baseURL = [NSURL fileURLWithPath:[[NSBundle mainBundle] resourcePath] isDirectory:YES];
+    NSURL *fileURL = [NSURL URLWithString:@"libraries/item_detail_header.html" relativeToURL:baseURL];
+    
+    NSError *error = nil;
+    NSMutableString *htmlString = [NSMutableString stringWithContentsOfURL:fileURL encoding:NSUTF8StringEncoding error:&error];
+    if (!htmlString) {
+        return;
+    }
+    
+    NSArray *keys = [NSArray arrayWithObjects: @"__TITLE__", @"__AUTHOR__", @"__EDITION__", @"__PUBYEAR__", @"__FORMAT__", @"__MAPDISPLAY__", @"__BOOKMARKED__", nil];
+    NSArray *values = [NSArray arrayWithObjects:itemTitle, authorString, edition, pubYear, formatDetails, mapDisplay, isBookmarked, nil];
+    
+    [htmlString replaceOccurrencesOfStrings:keys withStrings:values options:NSLiteralSearch];
+    [headerWebView loadHTMLString:htmlString baseURL:baseURL];
     
 	if (displayImage) {
-        headerView.frame = CGRectMake(0, 0, headerView.frame.size.width, thumbnail.frame.origin.y + thumbnail.frame.size.height);
-		[headerView addSubview:thumbnail];
+        CGRect screenRect = [[UIScreen mainScreen] applicationFrame];    
+        thumbnail = [[UIView alloc] initWithFrame:CGRectMake((screenRect.size.width - 150.0) / 2, headerView.frame.size.height, 150.0, 150.0)];
+        thumbnail.backgroundColor = [UIColor clearColor];
+        
+        CGRect frame = headerView.frame;
+        if (frame.size.height == headerWebView.frame.size.height) {
+            frame.size.height += thumbnail.frame.size.height;
+            headerView.frame = frame;
+        }
+        
+        if (![thumbnail isDescendantOfView:headerView]) {
+            [headerView addSubview:thumbnail];
+        }
+        
         [self addLoadingIndicator:thumbnail];
 
-	} else if (nil != thumbnail) {
-        [thumbnail removeFromSuperview];
-        [thumbnail release];
-        thumbnail = nil;
 	}
-	
+    
     self.tableView.tableHeaderView = headerView;
 }
 
@@ -263,7 +216,7 @@
 	DLog(@"Parent view controller: %@", [viewControllerArray objectAtIndex:parentViewControllerIndex]);
 	DLog(@"Total vc: %d", [viewControllerArray count]);
 	
-	if ([sender isKindOfClass:[UIButton class]]){
+	//if ([sender isKindOfClass:[UIButton class]]){
         
         NSDictionary *params = nil;
         if ([libItem.authorLink length]) {
@@ -298,9 +251,45 @@
 			
 			[vc release];
 		}
-	}
+	//}
 }
 
+#pragma mark UIWebViewDelegate
+
+- (void)webViewDidFinishLoad:(UIWebView *)webView {
+    CGRect frame = webView.frame;
+    frame.size.height = 1;
+    webView.frame = frame;
+	
+    CGSize size = [webView sizeThatFits:CGSizeZero];
+    frame.size.height = size.height + 5; // the fact that the webview scrolls without extra height drives me insane
+    webView.frame = frame;
+    
+    self.tableView.tableHeaderView.frame = webView.frame;
+    self.tableView.tableHeaderView = self.tableView.tableHeaderView;
+}
+
+- (BOOL)webView:(UIWebView*)webView shouldStartLoadWithRequest:(NSURLRequest*)request navigationType:(UIWebViewNavigationType)navigationType {
+	BOOL result = YES;
+    
+	if (navigationType == UIWebViewNavigationTypeLinkClicked) {
+		NSURL *url = [request URL];
+
+        if ([[url path] rangeOfString:@"bookmark" options:NSBackwardsSearch].location != NSNotFound) {
+            [self bookmarkButtonToggled:nil];
+        } else if ([[url path] rangeOfString:@"map" options:NSBackwardsSearch].location != NSNotFound) {
+            [self mapButtonPressed:nil];
+        } else if ([[url path] rangeOfString:@"searchAuthor" options:NSBackwardsSearch].location != NSNotFound) {
+            [self authorLinkTapped:nil];
+        }
+        result = NO;
+	}
+	return result;
+}
+
+
+
+#pragma mark -
 
 -(void) showNextLibItem: (id) sender {
 	
@@ -331,7 +320,8 @@
                     libItem = [nextLibItem retain];
                     displayImage = [libItem.formatDetail isEqualToString:@"Image"];
                     canShowMap = NO;
-                    [self setupLayout];
+                    [self setupNavBar]; // reset segmented control for paging
+                    [self setupTableHeader];
                 }
                 
                 [locationsWithItem release];
@@ -371,7 +361,7 @@
 
 
 -(void) bookmarkButtonToggled: (id) sender {
-    
+    /*
     if ([sender isKindOfClass:[UIButton class]]) {
         UIButton *bookmarkButton = (UIButton *)sender;
 
@@ -389,6 +379,9 @@
         
         [CoreDataManager saveData];
     }
+    */
+    libItem.isBookmarked = [NSNumber numberWithBool:![libItem.isBookmarked boolValue]];
+    [CoreDataManager saveData];
 }
 
 #pragma mark -
@@ -850,7 +843,7 @@
         
         if ([alias.library.lat doubleValue] && !canShowMap) {
             canShowMap = YES;
-            [self setupLayout];
+            [headerWebView stringByEvaluatingJavaScriptFromString:@"document.getElementById(\"mapButton\").style.display = \"inline-block\";"];
         }
     }
     
@@ -924,7 +917,7 @@
         [self.tableView reloadData];
 
     } else {
-        [self setupLayout];
+        [self setupTableHeader];
         [[LibraryDataManager sharedManager] requestAvailabilityForItem:libItem.itemId];
     }
 }
@@ -951,7 +944,9 @@
     }
     
     if (couldShowMap != canShowMap) {
-        [self.tableView reloadData];
+        // make sure map pin shows up in header
+        [headerWebView stringByEvaluatingJavaScriptFromString:@"document.getElementById(\"mapButton\").style.display = \"inline-block\";"]; // canShowMap will only be YES at this point
+        [self.tableView reloadData]; // make sure distances show up if location is present
     }
 }
 
