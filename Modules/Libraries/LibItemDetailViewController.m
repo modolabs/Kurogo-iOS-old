@@ -466,7 +466,7 @@
                 cell.accessoryType = UITableViewCellAccessoryNone;
                 cell.selectionStyle = UITableViewCellSelectionStyleNone;
             } else {
-                cell.textLabel.text = [NSString stringWithFormat:@"View all %d images", [libItem.numberOfImages integerValue]];
+                cell.textLabel.text = [NSString stringWithString:@"View larger image"];
             }
         } else if (indexPath.row == 1) {
 			cell.textLabel.text = @"View more details";
