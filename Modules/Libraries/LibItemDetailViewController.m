@@ -125,7 +125,7 @@
     }
     
     if (headerWebView == nil) {
-        headerWebView = [[[UIWebView alloc] initWithFrame:headerView.frame] autorelease];
+        headerWebView = [[UIWebView alloc] initWithFrame:headerView.frame];
         headerWebView.backgroundColor = [UIColor clearColor];
         headerWebView.opaque = NO;
         headerWebView.delegate = self;
@@ -187,8 +187,9 @@
     [headerWebView loadHTMLString:htmlString baseURL:baseURL];
     
 	if (displayImage) {
-        CGRect screenRect = [[UIScreen mainScreen] applicationFrame];    
-        thumbnail = [[UIView alloc] initWithFrame:CGRectMake((screenRect.size.width - 150.0) / 2, headerView.frame.size.height, 150.0, 150.0)];
+        CGRect screenRect = [[UIScreen mainScreen] applicationFrame];
+        [thumbnail release];
+        thumbnail = [[UIView alloc] initWithFrame:CGRectMake((screenRect.size.width - 160.0) / 2, headerView.frame.size.height, 160.0, 160.0)];
         thumbnail.backgroundColor = [UIColor clearColor];
         
         CGRect frame = headerView.frame;
@@ -202,8 +203,12 @@
         }
         
         [self addLoadingIndicator:thumbnail];
-
-	}
+        
+	} else {
+        [thumbnail removeFromSuperview];
+        [thumbnail release];
+        thumbnail = nil;
+    }
     
     self.tableView.tableHeaderView = headerView;
 }
@@ -265,8 +270,17 @@
     frame.size.height = size.height + 5; // the fact that the webview scrolls without extra height drives me insane
     webView.frame = frame;
     
-    self.tableView.tableHeaderView.frame = webView.frame;
-    self.tableView.tableHeaderView = self.tableView.tableHeaderView;
+    if (displayImage) {
+        frame = thumbnail.frame;
+        frame.origin.y = webView.frame.origin.y + webView.frame.size.height;
+        thumbnail.frame = frame;
+        
+        frame = webView.frame;
+        frame.size.height += thumbnail.frame.size.height;
+    }
+    
+    headerView.frame = frame;
+    self.tableView.tableHeaderView = headerView;
 }
 
 - (BOOL)webView:(UIWebView*)webView shouldStartLoadWithRequest:(NSURLRequest*)request navigationType:(UIWebViewNavigationType)navigationType {
@@ -320,6 +334,7 @@
                     libItem = [nextLibItem retain];
                     displayImage = [libItem.formatDetail isEqualToString:@"Image"];
                     canShowMap = NO;
+                    [thumbnail removeFromSuperview];
                     [self setupNavBar]; // reset segmented control for paging
                     [self setupTableHeader];
                 }
@@ -819,6 +834,9 @@
     [libItemDictionary release];
     [thumbnail release];
     [displayLibraries release];
+    
+    [headerWebView release];
+    [headerView release];
 	
     [super dealloc];
 }
@@ -898,20 +916,22 @@
             
             CGFloat imageX = (screenRect.size.width - imageView.frame.size.width) / 2;
             CGFloat imageY = thumbnail.frame.origin.y;
-            thumbnail.frame = CGRectMake(imageX, imageY, imageView.frame.size.width, imageView.frame.size.height);
+            thumbnail.frame = CGRectMake(imageX, imageY, imageView.frame.size.width, image.size.height + 10);
             [thumbnail addSubview:imageView];
             
             if (![thumbnail isDescendantOfView:self.tableView.tableHeaderView]) {
-                [self.tableView.tableHeaderView addSubview:thumbnail];
+                [headerView addSubview:thumbnail];
             }
-            self.tableView.tableHeaderView.frame = CGRectMake(0, 0, self.view.frame.size.width, 10 + headerTextHeight + thumbnail.frame.size.height);
+            headerView.frame = CGRectMake(0, 0, headerWebView.frame.size.width, thumbnail.frame.size.height + headerWebView.frame.size.height);
             
         } else {
             [thumbnail removeFromSuperview];
-            self.tableView.tableHeaderView.frame = CGRectMake(0, 0, self.view.frame.size.width, 20 + headerTextHeight);
+            headerView.frame = headerWebView.frame;
         }
+        
+        self.tableView.tableHeaderView = headerView;
 
-        [self.tableView setTableHeaderView:self.tableView.tableHeaderView]; // force resize of header
+        //[self.tableView setTableHeaderView:self.tableView.tableHeaderView]; // force resize of header
     
         [self removeLoadingIndicator];
         [self.tableView reloadData];
