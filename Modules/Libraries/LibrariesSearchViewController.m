@@ -24,7 +24,7 @@
 @synthesize lastResults;
 @synthesize activeMode;
 
-@synthesize searchTerms, searchController;
+@synthesize searchTerms, searchController, searchParams;
 @synthesize keywordText, titleText, authorText, englishOnlySwitch;
 @synthesize formatIndex, locationIndex;
 @synthesize searchBar = theSearchBar;
@@ -67,6 +67,7 @@
     self.authorText = nil;
     self.searchBar = nil;
     self.lastResults = nil;
+    self.searchParams = nil;
     
     viewController = nil; // this is set during -init and is never retained.  better to get rid of this ivar when we find another way to set the search terms.
     
@@ -175,10 +176,25 @@
 #pragma mark UITableViewDataSource methods
 
 - (NSInteger) tableView: (UITableView *)tableView numberOfRowsInSection: (NSInteger)section {
-	return [self.lastResults count];
+    NSInteger count = [self.lastResults count];
+    if (endIndex < actualCount)
+        count++;
+	return count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)aTableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    
+    if (indexPath.row == [self.lastResults count]) {
+        UITableViewCell *cell = [aTableView dequeueReusableCellWithIdentifier:@"loadMore"];
+        if (!cell) {
+            cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"loadMore"] autorelease];
+        }
+        NSInteger moreCount = actualCount - endIndex;
+        if (moreCount > pageSize) moreCount = pageSize;
+        
+        cell.textLabel.text = [NSString stringWithFormat:@"Next %d results", moreCount];
+        return cell;
+    }
 	
 	LibrariesMultiLineCell *cell = (LibrariesMultiLineCell *)[aTableView dequeueReusableCellWithIdentifier:@"HollisSearch"];
 	if(cell == nil) {
@@ -254,6 +270,9 @@
 
 - (CGFloat) tableView: (UITableView *)tableView heightForRowAtIndexPath: (NSIndexPath *)indexPath {
 	//return [StellarClassTableCell cellHeightForTableView:tableView class:[self.lastResults objectAtIndex:indexPath.row]];
+    if (indexPath.row == [self.lastResults count]) {
+        return tableView.rowHeight;
+    }
 	
 	UITableViewCellAccessoryType accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 	
@@ -332,6 +351,23 @@
 
 - (void) tableView: (UITableView *)tableView didSelectRowAtIndexPath: (NSIndexPath *)indexPath {
 	[tableView deselectRowAtIndexPath:indexPath animated:NO];
+    
+    if (indexPath.row == [self.lastResults count]) {
+        NSString *lastPage = [self.searchParams objectForKey:@"page"];
+        NSInteger currentPage = 0;
+        if (lastPage) {
+            currentPage = [lastPage integerValue] + 1;
+        } else {
+            currentPage = 2;
+        }
+        if (currentPage) {
+            [self.searchParams setObject:[NSString stringWithFormat:@"%d", currentPage] forKey:@"page"];
+        }
+        
+        JSONAPIRequest *api = [JSONAPIRequest requestWithJSONAPIDelegate:self];
+        [api requestObject:self.searchParams];
+        return;
+    }
 	
 	LibraryItem * libItem = (LibraryItem *)[self.lastResults objectForKey:[NSString stringWithFormat:@"%d", indexPath.row+1]];
 	
@@ -395,6 +431,7 @@
 - (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
 {	
 	self.searchTerms = searchBar.text;
+    self.searchParams = nil;
 	
 	JSONAPIRequest *api = [JSONAPIRequest requestWithJSONAPIDelegate:self];
 	requestWasDispatched = [api requestObjectFromModule:@"libraries"
@@ -428,10 +465,22 @@
     if (result && [result isKindOfClass:[NSDictionary class]]) {
         DLog(@"%@", [result description]);
         
-        NSNumber *total = [(NSDictionary *)result objectForKey:@"total"];
-        if (total) {
-            actualCount = [total integerValue];
+        self.searchParams = [NSMutableDictionary dictionaryWithDictionary:request.params];
+        
+        NSNumber *number = nil;
+        if (number = [(NSDictionary *)result objectForKey:@"total"]) {
+            actualCount = [number integerValue];
         }
+        if (number = [(NSDictionary *)result objectForKey:@"start"]) {
+            startIndex = [number integerValue];
+        }
+        if (number = [(NSDictionary *)result objectForKey:@"end"]) {
+            endIndex = [number integerValue];
+        }
+        if (number = [(NSDictionary *)result objectForKey:@"pagesize"]) {
+            pageSize = [number integerValue];
+        }
+        
         NSString *query = [(NSDictionary *)result objectForKey:@"q"];
 
         self.searchTerms = query;
@@ -447,7 +496,7 @@
             [theSearchBar becomeFirstResponder];
             return;
         }
-        else {
+        else if (!self.lastResults) { // if we already have results, just append them
             self.lastResults = [[NSMutableDictionary alloc] init];
         }
         
@@ -485,8 +534,13 @@
         [CoreDataManager saveData];
         [_tableView reloadData];
         
-        if ([items count] > 0)
-            [_tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:NO];
+        if ([items count] > 0) {
+            NSInteger zeroBasedStartIndex = startIndex - 1; // startIndex starts from 1
+            if (zeroBasedStartIndex < 0) zeroBasedStartIndex = 0; // this shouldn't happen
+            
+            NSIndexPath *startIndexPath = [NSIndexPath indexPathForRow:zeroBasedStartIndex inSection:0];
+            [_tableView scrollToRowAtIndexPath:startIndexPath atScrollPosition:UITableViewScrollPositionBottom animated:NO];
+        }
         
 	}
 	

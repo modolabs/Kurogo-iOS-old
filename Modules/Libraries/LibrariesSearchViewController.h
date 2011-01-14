@@ -25,7 +25,11 @@
 	
 	LibrariesMainViewController * viewController;
 	
-	int actualCount;
+	NSInteger actualCount; // total results
+    NSInteger startIndex;
+    NSInteger endIndex;
+    NSInteger pageSize;
+    NSMutableDictionary *searchParams;
 	
 	UITableView *_tableView;
 	
@@ -46,6 +50,7 @@
 	
 	// a custom button to link to Advanced Search
 	UIButton* _advancedSearchButton;
+    
 }
 
 @property (nonatomic, retain) UITableView *tableView;
@@ -60,6 +65,7 @@
 @property (nonatomic, retain) ModoSearchBar *searchBar;
 @property (nonatomic, retain) NSMutableDictionary *lastResults;
 @property (nonatomic, readonly) BOOL activeMode;
+@property (nonatomic, retain) NSMutableDictionary *searchParams;
 
 - (id) initWithViewController: (LibrariesMainViewController *)controller;
 
