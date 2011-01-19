@@ -1030,9 +1030,9 @@ static NSInteger numTries = 0;
                     cell.selectionStyle = UITableViewCellSelectionStyleGray;
                     
 					UILabel *moreArticlesLabel = [[UILabel alloc] initWithFrame:cell.frame];
-					moreArticlesLabel.font = [UIFont boldSystemFontOfSize:16];
+					moreArticlesLabel.font = [UIFont boldSystemFontOfSize:15];
 					moreArticlesLabel.numberOfLines = 1;
-					moreArticlesLabel.textColor = [UIColor colorWithHexString:@"#990000"];
+					moreArticlesLabel.textColor = [UIColor colorWithHexString:@"#1A1611"];
 					moreArticlesLabel.text = @"Load 10 more articles..."; // just something to make it place correctly
 					[moreArticlesLabel sizeToFit];
 					moreArticlesLabel.tag = 1234;
@@ -1050,7 +1050,7 @@ static NSInteger numTries = 0;
 					NSInteger remainingArticlesToLoad = (!searchResults) ? (200 - [self.stories count]) : (totalAvailableResults - [self.stories count]);
 					moreArticlesLabel.text = [NSString stringWithFormat:@"Load %d more articles...", (remainingArticlesToLoad > 10) ? 10 : remainingArticlesToLoad];
 					if (!self.xmlParser) { // disable when a load is already in progress
-						moreArticlesLabel.textColor = [UIColor colorWithHexString:@"#990000"]; // enable
+						moreArticlesLabel.textColor = [UIColor colorWithHexString:@"#1A1611"]; // enable
 					} else {
 						moreArticlesLabel.textColor = [UIColor colorWithHexString:@"#999999"]; // disable
 					}

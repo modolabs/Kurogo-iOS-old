@@ -193,6 +193,8 @@
         if (moreCount > pageSize) moreCount = pageSize;
         
         cell.textLabel.text = [NSString stringWithFormat:@"Next %d results", moreCount];
+        cell.textLabel.font = [UIFont boldSystemFontOfSize:15];
+        cell.textLabel.textColor = [UIColor colorWithHexString:@"#1A1611"];
         return cell;
     }
 	
