@@ -21,6 +21,7 @@
        
 		self.campusMapVC = [[[CampusMapViewController alloc] init] autorelease];
 		self.campusMapVC.campusMapModule = self;
+        self.campusMapVC.title = self.shortName;
 		
         self.viewControllers = [NSArray arrayWithObject:self.campusMapVC];
     }
