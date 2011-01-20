@@ -9,7 +9,6 @@ extern NSString * const LibraryDataRequestOpenLibraries;
 extern NSString * const LibraryDataRequestSearchCodes;
 extern NSString * const LibraryDataRequestLibraryDetail;
 extern NSString * const LibraryDataRequestArchiveDetail;
-//extern NSString * const LibraryDataRequestOldAvailability;
 extern NSString * const LibraryDataRequestThumbnail;
 extern NSString * const LibraryDataRequestSearch;
 extern NSString * const LibraryDataRequestItemDetail;
@@ -82,6 +81,7 @@ NSInteger libraryNameSort(id lib1, id lib2, void *context);
 + (LibraryDataManager *)sharedManager;
 
 - (void)updateLibraryList;
+- (void)updateSearchCodes;
 
 #pragma mark Data retrieval methods
 
@@ -100,7 +100,6 @@ NSInteger libraryNameSort(id lib1, id lib2, void *context);
 - (void)requestSearchCodes;
 - (void)requestDetailsForLibType:(NSString *)libOrArchive libID:(NSString *)libID libName:(NSString *)libName;
 - (void)requestDetailsForItem:(LibraryItem *)item;
-//- (void)requestOldAvailabilityForItem:(NSString *)itemID;
 - (void)requestAvailabilityForItem:(NSString *)itemID;
 - (void)requestFullAvailabilityForItem:(NSString *)itemID;
 - (void)requestThumbnailForItem:(NSString *)itemID;

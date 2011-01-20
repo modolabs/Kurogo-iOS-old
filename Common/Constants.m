@@ -94,6 +94,7 @@ NSString * const LibraryItemEntityName = @"LibraryItem";
 NSString * const LibraryEntityName = @"Library";
 NSString * const LibraryFormatCodeEntityName = @"LibraryItemFormat";
 NSString * const LibraryLocationCodeEntityName = @"LibraryLocation";
+NSString * const LibraryPubDateCodeEntityName = @"LibraryPubDate";
 NSString * const LibraryPhoneEntityName = @"LibraryPhone";
 NSString * const LibraryAliasEntityName = @"LibraryAlias";
 

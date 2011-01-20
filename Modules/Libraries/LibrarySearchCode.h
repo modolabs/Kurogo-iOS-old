@@ -1,5 +1,5 @@
 //
-//  LibraryItemFormat.h
+//  LibraryLocation.h
 //  Harvard Mobile
 //
 //  Created by Alexandra Ellwood on 12/27/10.
@@ -9,12 +9,13 @@
 #import <CoreData/CoreData.h>
 
 
-@interface LibraryItemFormat :  NSManagedObject  
+@interface LibrarySearchCode :  NSManagedObject  
 {
 }
 
 @property (nonatomic, retain) NSString * name;
 @property (nonatomic, retain) NSString * code;
+@property (nonatomic, retain) NSNumber * sortOrder;
 
 @end
 

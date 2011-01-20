@@ -25,17 +25,21 @@
 	
 	IBOutlet UILabel *location;
 	IBOutlet UIButton *locationDisclosure;
+    
+    IBOutlet UILabel *pubdate;
+    IBOutlet UIButton *pubdateDisclosure;
 	
 	IBOutlet UIButton * englishSwitch;
 	
 	IBOutlet UIPickerView * formatPickerView;
 	IBOutlet UIPickerView * locationPickerView;
-	
+	IBOutlet UIPickerView * pubdatePickerView;
 	
 	IBOutlet UIButton * searchButton;
 	
 	NSMutableArray * formatArray;
 	NSMutableArray * libraryArray;
+    NSMutableArray * pubdateArray;
 	
 	NSString * keywordTextAtInitialization;
 	NSString * titleTextAtInitialization;
@@ -43,6 +47,7 @@
 	BOOL englishOnlySwitchAtInitialization;
 	NSInteger formatIndexAtInitialization;
 	NSInteger locationIndexAtInitialization;
+    NSInteger pubdateIndexAtInitialization;
 }
 
 @property (nonatomic, retain) IBOutlet UIScrollView *scrollView;
@@ -55,8 +60,7 @@
 @property (nonatomic, retain) IBOutlet UIButton * locationDisclosure;
 @property (nonatomic, retain) IBOutlet UIButton * englishSwitch;
 
--(IBAction) formatPressed:(id) sender;
--(IBAction) locationPressed:(id) sender;
+- (IBAction)pickerSelected:(id)sender;
 -(IBAction) searchButtonPressed:(id) sender;
 -(IBAction) englishButtonPressed: (id) sender;
 
@@ -69,6 +73,7 @@
                author:(NSString *) authorText 
     englishOnlySwitch:(BOOL) englishOnlySwitch 
           formatIndex:(NSInteger) formatIndex 
-        locationIndex:(NSInteger) locationIndex;
+        locationIndex:(NSInteger) locationIndex
+         pubdateIndex:(NSInteger) pubdateIndex;
 -(void) search;
 @end

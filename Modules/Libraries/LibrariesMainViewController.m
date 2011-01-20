@@ -392,7 +392,8 @@
                                                                                  author:@""
                                                                       englishOnlySwitch:false
                                                                             formatIndex:0
-                                                                          locationIndex:0];
+                                                                          locationIndex:0
+                                                                           pubdateIndex:0];
 			
 			vc.title = @"Advanced Search";
             [self.navigationController pushViewController:vc animated:YES];

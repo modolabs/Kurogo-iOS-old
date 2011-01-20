@@ -87,6 +87,7 @@ extern NSString * const LibraryItemEntityName;
 extern NSString * const LibraryEntityName;
 extern NSString * const LibraryFormatCodeEntityName;
 extern NSString * const LibraryLocationCodeEntityName;
+extern NSString * const LibraryPubDateCodeEntityName;
 extern NSString * const LibraryPhoneEntityName;
 extern NSString * const LibraryAliasEntityName;
 

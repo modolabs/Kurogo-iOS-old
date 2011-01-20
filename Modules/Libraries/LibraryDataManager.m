@@ -2,8 +2,7 @@
 #import "CoreDataManager.h"
 #import "Library.h"
 #import "LibraryPhone.h"
-#import "LibraryItemFormat.h"
-#import "LibraryLocation.h"
+#import "LibrarySearchCode.h"
 #import "LibraryAlias.h"
 #import "LibraryItem.h"
 
@@ -15,7 +14,6 @@ NSString * const LibraryDataRequestOpenLibraries = @"opennow";
 NSString * const LibraryDataRequestSearchCodes = @"searchcodes";
 NSString * const LibraryDataRequestLibraryDetail = @"libdetail";
 NSString * const LibraryDataRequestArchiveDetail = @"archivedetail";
-//NSString * const LibraryDataRequestOldAvailability = @"fullavailability";
 NSString * const LibraryDataRequestThumbnail = @"imagethumbnail";
 NSString * const LibraryDataRequestItemDetail = @"itemdetail";
 NSString * const LibraryDataRequestSearch = @"search";
@@ -31,6 +29,7 @@ NSString * const LibraryRequestDidFailNotification = @"libRequestFailed";
 
 NSString * const LibrariesLastUpdatedKey = @"librariesLastUpdated";
 NSString * const ArchivesLastUpdatedKey = @"archivesLastUpdated";
+NSString * const SearchCodesLastUpdateKey = @"searchCodesLastUpdated";
 
 
 NSInteger libraryNameSort(id lib1, id lib2, void *context) {
@@ -85,7 +84,7 @@ static LibraryDataManager *s_sharedManager = nil;
     NSDate *librariesDate = [[NSUserDefaults standardUserDefaults] objectForKey:LibrariesLastUpdatedKey];
     NSDate *archivesDate = [[NSUserDefaults standardUserDefaults] objectForKey:ArchivesLastUpdatedKey];
     
-    if (librariesDate && -[librariesDate timeIntervalSinceNow] <= 6) { // 24 * 60 * 60 * 7) {
+    if (librariesDate && -[librariesDate timeIntervalSinceNow] <= 24 * 60 * 60 * 7) {
         NSPredicate *pred = [NSPredicate predicateWithFormat:@"library.type like 'library'"];
         NSArray *tempArray = [CoreDataManager objectsForEntity:LibraryAliasEntityName matchingPredicate:pred];
         for (LibraryAlias *alias in tempArray) {
@@ -112,6 +111,33 @@ static LibraryDataManager *s_sharedManager = nil;
         NSArray *discardLibItems = [CoreDataManager objectsForEntity:LibraryEntityName matchingPredicate:notBookmarked];
         [CoreDataManager deleteObjects:discardLibItems];
         [CoreDataManager saveData];
+    }
+}
+
+- (void)updateSearchCodes {
+    NSDate *lastUpdate = [[NSUserDefaults standardUserDefaults] objectForKey:SearchCodesLastUpdateKey];
+    BOOL needRequest = NO;
+    if (!lastUpdate || -[lastUpdate timeIntervalSinceNow] > 24 * 60 * 60 * 30) {
+        NSArray *entityNames = [NSArray arrayWithObjects:LibraryFormatCodeEntityName, LibraryLocationCodeEntityName, LibraryPubDateCodeEntityName, nil];
+        for (NSString *entityName in entityNames) {
+            NSArray *objects = [CoreDataManager objectsForEntity:entityName matchingPredicate:nil];
+            [CoreDataManager deleteObjects:objects];
+            [CoreDataManager saveData];
+        }
+        needRequest = YES;
+    } else {
+        NSArray *entityNames = [NSArray arrayWithObjects:LibraryFormatCodeEntityName, LibraryLocationCodeEntityName, LibraryPubDateCodeEntityName, nil];
+        for (NSString *entityName in entityNames) {
+            NSArray *objects = [CoreDataManager objectsForEntity:entityName matchingPredicate:nil];
+            if (![objects count]) {
+                needRequest = YES;
+                break;
+            }
+        }
+    }
+    
+    if (needRequest) {
+        [self requestSearchCodes];
     }
 }
 
@@ -209,7 +235,16 @@ static LibraryDataManager *s_sharedManager = nil;
 }
 
 - (void)requestSearchCodes {
-    [self makeOneTimeRequestWithCommand:LibraryDataRequestSearchCodes];
+    JSONAPIRequest *api = [activeRequests objectForKey:LibraryDataRequestSearchCodes];
+    if (api) {
+        [api abortRequest];
+    }
+    api = [JSONAPIRequest requestWithJSONAPIDelegate:self];
+    api.userData = LibraryDataRequestSearchCodes;
+    
+    if ([api requestObjectFromModule:@"libraries" command:LibraryDataRequestSearchCodes parameters:[NSDictionary dictionaryWithObject:@"2" forKey:@"version"]]) {
+        [activeRequests setObject:api forKey:LibraryDataRequestSearchCodes];
+    }
 }
 
 - (void)requestDetailsForLibType:(NSString *)libOrArchive libID:(NSString *)libID libName:(NSString *)libName {
@@ -430,52 +465,28 @@ static LibraryDataManager *s_sharedManager = nil;
     else if ([command isEqualToString:LibraryDataRequestSearchCodes]) {
         
         if ([JSONObject isKindOfClass:[NSDictionary class]]) {
-            NSInteger i;
             NSDictionary *dictionaryResults = (NSDictionary *)JSONObject;
             
-            NSDictionary *formatCodes = [dictionaryResults objectForKey:@"formats"];
-            NSDictionary *locationCodes = [dictionaryResults objectForKey:@"locations"];
+            NSDictionary *codeClasses = [NSDictionary dictionaryWithObjectsAndKeys:
+                                         LibraryFormatCodeEntityName, @"formats",
+                                         LibraryLocationCodeEntityName, @"locations",
+                                         LibraryPubDateCodeEntityName, @"pubDates", nil];
             
-            if (formatCodes) {
-                NSInteger count = [formatCodes count];
-                NSArray *codes = [formatCodes allKeys];
-                for (i = 0; i < count; i++) {
-                    NSString *code = [codes objectAtIndex:i];
-                    NSString *name = [formatCodes objectForKey: code];
-                    
-                    NSPredicate *pred = [NSPredicate predicateWithFormat:@"code == %@", code];
-                    LibraryItemFormat *alreadyInDB = [[CoreDataManager objectsForEntity:LibraryFormatCodeEntityName matchingPredicate:pred] lastObject];
-                    
-                    if (nil == alreadyInDB) {
-                        alreadyInDB = [CoreDataManager insertNewObjectForEntityForName:LibraryFormatCodeEntityName];
-                    }
-                    
-                    alreadyInDB.code = code;
-                    alreadyInDB.name = name;
+            for (NSString *codeTag in [codeClasses allKeys]) {
+                NSArray *searchCodes = [dictionaryResults objectForKey:codeTag];
+                NSString *entityName = [codeClasses objectForKey:codeTag];
+                for (NSInteger i = 0; i < [searchCodes count]; i++) {
+                    NSDictionary *aSearchCode = [searchCodes objectAtIndex:i];
+                    LibrarySearchCode *codeObject = [CoreDataManager insertNewObjectForEntityForName:entityName];
+                    codeObject.name = [aSearchCode objectForKey:@"name"];
+                    codeObject.code = [aSearchCode objectForKey:@"code"];
+                    codeObject.sortOrder = [NSNumber numberWithInt:i];
                 }
             }
             
-            if (locationCodes) {
-                NSInteger count = [locationCodes count];
-                NSArray *codes = [locationCodes allKeys];
-                for (i = 0; i < count; i++) {
-                    NSString *code = [codes objectAtIndex:i];
-                    NSString *name = [locationCodes objectForKey: code];
-                    
-                    NSPredicate *pred = [NSPredicate predicateWithFormat:@"code == %@", code];
-                    LibraryLocation *alreadyInDB = [[CoreDataManager objectsForEntity:LibraryLocationCodeEntityName matchingPredicate:pred] lastObject];
-                    
-                    if (nil == alreadyInDB) {
-                        alreadyInDB = [CoreDataManager insertNewObjectForEntityForName:LibraryLocationCodeEntityName];
-                    }
-                    
-                    alreadyInDB.code = code;
-                    alreadyInDB.name = name;
-                }
-            }
+            [CoreDataManager saveData];
+            [[NSUserDefaults standardUserDefaults] setObject:[NSDate date] forKey:SearchCodesLastUpdateKey];
         }
-        
-        [CoreDataManager saveData];
         
         [activeRequests removeObjectForKey:command];
 

@@ -26,7 +26,7 @@
 
 @synthesize searchTerms, searchController, searchParams;
 @synthesize keywordText, titleText, authorText, englishOnlySwitch;
-@synthesize formatIndex, locationIndex;
+@synthesize formatIndex, locationIndex, pubdateIndex;
 @synthesize searchBar = theSearchBar;
 @synthesize tableView = _tableView;
 
@@ -43,6 +43,7 @@
 		actualCount = 0;
         formatIndex = 0;
         locationIndex = 0;
+        pubdateIndex = pubdateIndex;
         
         keywordText = nil;
         titleText = nil;
@@ -155,7 +156,7 @@
 #pragma mark User Interaction
 
 -(void) advancedSearchButtonClicked: (id) sender{
-    DLog(@"Passing format %d and location %d", formatIndex, locationIndex);
+    DLog(@"Passing format %d, location %d, pubdate %d", formatIndex, locationIndex, pubdateIndex);
     
 	LibraryAdvancedSearch * vc = [[LibraryAdvancedSearch alloc] initWithNibName:@"LibraryAdvancedSearch" 
 																		 bundle:nil
@@ -164,7 +165,8 @@
                                                                          author:authorText ? self.authorText : @""
                                                               englishOnlySwitch:self.englishOnlySwitch            
                                                                     formatIndex:formatIndex
-                                                                  locationIndex:locationIndex];
+                                                                  locationIndex:locationIndex
+                                                                   pubdateIndex:pubdateIndex];
 	
 	vc.title = @"Advanced Search";
     [self.navigationController pushViewController:vc animated:YES];

@@ -39,6 +39,7 @@
 	NSString *searchTerms;
     NSInteger formatIndex;
     NSInteger locationIndex;
+    NSInteger pubdateIndex;
 	//NSString *previousSearchTerm;
     
     NSString *keywordText;
@@ -58,6 +59,7 @@
 @property (nonatomic, retain) NSString *searchTerms;
 @property (nonatomic, readwrite) NSInteger formatIndex;
 @property (nonatomic, readwrite) NSInteger locationIndex;
+@property (nonatomic, readwrite) NSInteger pubdateIndex;
 @property (nonatomic, retain) NSString *keywordText;
 @property (nonatomic, retain) NSString *titleText;
 @property (nonatomic, retain) NSString *authorText;

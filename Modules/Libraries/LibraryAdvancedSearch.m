@@ -8,8 +8,7 @@
 
 #import "LibraryAdvancedSearch.h"
 #import "CoreDataManager.h"
-#import "LibraryItemFormat.h";
-#import "LibraryLocation.h";
+#import "LibrarySearchCode.h"
 #import "Constants.h"
 #import "LibrariesSearchViewController.h"
 #import "LibraryDataManager.h"
@@ -28,50 +27,38 @@
 
 -(void) setupLayout{
 	
-	//formatDisclosure.transform = CGAffineTransformMakeRotation(M_PI/2);
-	//locationDisclosure.transform = CGAffineTransformMakeRotation(M_PI/2);
-	//[keywords becomeFirstResponder];
-	
     NSPredicate * matchAll = [NSPredicate predicateWithFormat:@"TRUEPREDICATE"];
-    NSSortDescriptor *nameSortDescriptor = [[[NSSortDescriptor alloc] initWithKey:@"name" ascending:YES] autorelease];
+    NSSortDescriptor *nameSortDescriptor = [[[NSSortDescriptor alloc] initWithKey:@"sortOrder" ascending:YES] autorelease];
     NSArray *sortDescriptors = [NSArray arrayWithObject:nameSortDescriptor];
 
-    BOOL needCodesUpdate = NO;
-    
     if (![libraryArray count] || [libraryArray count] <= 1) {
         NSArray * libraryCodes = [CoreDataManager objectsForEntity:LibraryLocationCodeEntityName matchingPredicate:matchAll sortDescriptors:sortDescriptors];
         if (libraryCodes != nil) {
             libraryArray = [[NSMutableArray alloc] initWithArray:libraryCodes];
-        } else {
-            needCodesUpdate = YES;
-            libraryArray = [[NSMutableArray alloc] init];
         }
-        [libraryArray insertObject:@"All Libraries/Archives" atIndex:0];
+        [libraryArray insertObject:@"Any" atIndex:0];
     }
 
     if (![formatArray count] || [formatArray count] <= 1) {
         NSArray * formatCodes = [CoreDataManager objectsForEntity:LibraryFormatCodeEntityName matchingPredicate:matchAll sortDescriptors:sortDescriptors];
         if (formatCodes != nil) {
             formatArray = [[NSMutableArray alloc] initWithArray:formatCodes];
-        } else {
-            needCodesUpdate = YES;
-            formatArray = [[NSMutableArray alloc] init];
         }
-        [formatArray insertObject:@"All formats (everything)" atIndex:0];
+        [formatArray insertObject:@"Any" atIndex:0];
     }
     
-    if (needCodesUpdate) {
-        [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(searchCodesDidLoad:)
-                                                     name:LibraryRequestDidCompleteNotification
-                                                   object:LibraryDataRequestSearchCodes];
-        
-        [[LibraryDataManager sharedManager] requestSearchCodes];
+    if (![pubdateArray count] || [pubdateArray count] <= 1) {
+        NSArray * pubdateCodes = [CoreDataManager objectsForEntity:LibraryPubDateCodeEntityName matchingPredicate:matchAll sortDescriptors:sortDescriptors];
+        if (pubdateCodes != nil) {
+            pubdateArray = [[NSMutableArray alloc] initWithArray:pubdateCodes];
+        }
+        [pubdateArray insertObject:@"Any" atIndex:0];
     }
     
-	locationPickerView.hidden = YES;
-    [locationPickerView reloadAllComponents];  // Data may have changed due to JSON response
-    [formatPickerView reloadAllComponents];  // Data may have changed due to JSON response
+    // Data may have changed due to JSON response
+    [locationPickerView reloadAllComponents];
+    [formatPickerView reloadAllComponents];
+    [pubdatePickerView reloadAllComponents];
 	
 	keywords.delegate = self;
 	titleKeywords.delegate = self;
@@ -115,6 +102,13 @@
         [self pickerView:locationPickerView didSelectRow:locationIndexAtInitialization inComponent:0];
         locationIndexAtInitialization = 0;
     }
+    
+    if (pubdateIndexAtInitialization > 0 && pubdateIndexAtInitialization < [pubdateArray count]) {
+        DLog(@"Got location %d", pubdateIndexAtInitialization);
+        [pubdatePickerView selectRow:pubdateIndexAtInitialization inComponent:0 animated:false];
+        [self pickerView:pubdatePickerView didSelectRow:pubdateIndexAtInitialization inComponent:0];
+        pubdateIndexAtInitialization = 0;
+    }
 }
 
 // The designated initializer.  Override if you create the controller programmatically and want to perform customization that is not appropriate for viewDidLoad.
@@ -125,7 +119,8 @@
                author:(NSString *) authorText 
     englishOnlySwitch:(BOOL) englishOnlySwitch 
           formatIndex:(NSInteger) formatIndex 
-        locationIndex:(NSInteger) locationIndex {
+        locationIndex:(NSInteger) locationIndex
+         pubdateIndex:(NSInteger) pubdateIndex {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         // Custom initialization.
@@ -136,6 +131,7 @@
 		formatIndexAtInitialization = formatIndex;
 		locationIndexAtInitialization = locationIndex;
         englishOnlySwitchAtInitialization = englishOnlySwitch;
+        pubdateIndexAtInitialization = pubdateIndex;
 
 	}
     return self;
@@ -150,14 +146,14 @@
     UIImage *pressedImage = [[UIImage imageNamed:@"global/subheadbar_button_pressed.png"] stretchableImageWithLeftCapWidth:10 topCapHeight:0];
     [searchButton setBackgroundImage:normalImage forState:UIControlStateNormal];
     [searchButton setBackgroundImage:pressedImage forState:UIControlStateHighlighted];
-
-    // TODO: why isn't this being done in the nib file?
-	[format setUserInteractionEnabled:NO];
-	[location setUserInteractionEnabled:NO];
     
-    formatPickerView.hidden = YES;
-    locationPickerView.hidden = YES;
-
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(searchCodesDidLoad:)
+                                                 name:LibraryRequestDidCompleteNotification
+                                               object:LibraryDataRequestSearchCodes];
+    
+    [[LibraryDataManager sharedManager] updateSearchCodes];
+    
 	[self setupLayout];
 }
 
@@ -177,26 +173,6 @@
 	
 }
 
-/*
--(void) touchesBegan :(NSSet *) touches withEvent:(UIEvent *)event
-
-{
-	
-    [keywords resignFirstResponder];	
-    [titleKeywords resignFirstResponder];
-    [authorKeywords resignFirstResponder];
-	
-	formatPickerView.hidden = YES;
-	locationPickerView.hidden = YES;
-	
-    [super touchesBegan:touches withEvent:event];
-    
-    [self.scrollView scrollRectToVisible:self.view.frame animated:YES];
-    [self.scrollView setContentSize:self.view.bounds.size];
-	
-}
-*/
-
 - (IBAction)resignAllResponders:(id)sender {
     [keywords resignFirstResponder];
     [titleKeywords resignFirstResponder];
@@ -204,6 +180,7 @@
 	
 	formatPickerView.hidden = YES;
 	locationPickerView.hidden = YES;
+    pubdatePickerView.hidden = YES;
     
     [self.scrollView setContentSize:self.view.bounds.size];
     [self.scrollView scrollRectToVisible:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height) animated:YES];
@@ -235,6 +212,7 @@
 	
     [formatArray release];
     [libraryArray release];
+    [pubdateArray release];
     
     [super dealloc];
 	
@@ -260,13 +238,19 @@
 	int formatRow = [formatPickerView selectedRowInComponent:0];
 	
 	if (formatRow > 0) {
-        [searchParams setObject:((LibraryItemFormat *)[formatArray objectAtIndex:formatRow]).code forKey:@"format"];
+        [searchParams setObject:((LibrarySearchCode *)[formatArray objectAtIndex:formatRow]).code forKey:@"format"];
 	}
 	
 	int libraryRow = [locationPickerView selectedRowInComponent:0];
 	
 	if (libraryRow > 0) {
-        [searchParams setObject:((LibraryLocation *)[libraryArray objectAtIndex:libraryRow]).code forKey:@"location"];
+        [searchParams setObject:((LibrarySearchCode *)[libraryArray objectAtIndex:libraryRow]).code forKey:@"location"];
+	}
+	
+	int pubdateRow = [pubdatePickerView selectedRowInComponent:0];
+	
+	if (pubdateRow > 0) {
+        [searchParams setObject:((LibrarySearchCode *)[pubdateArray objectAtIndex:pubdateRow]).code forKey:@"pubDate"];
 	}
 	
 	LibrariesSearchViewController *vc = [[LibrariesSearchViewController alloc] initWithViewController: nil];
@@ -285,42 +269,36 @@
 	[vc release];
 }
 
-#pragma mark User Actions 
+#pragma mark User Actions
 
--(IBAction) formatPressed:(id) sender{
-    
-	[keywords resignFirstResponder];
-    [titleKeywords resignFirstResponder];	
-    [authorKeywords resignFirstResponder];
-	
-	locationPickerView.hidden = YES;
-	formatPickerView.hidden = NO;
-    
-    CGSize size = CGSizeMake(self.view.bounds.size.width, searchButton.frame.origin.y + searchButton.frame.size.height);
-    size.height += formatPickerView.frame.size.height + 20;
-    CGRect visibleRect = CGRectMake(0, size.height - self.view.bounds.size.height, self.view.bounds.size.width, self.view.bounds.size.height);
-    
-    [self.scrollView setContentSize:size];
-    [self.scrollView scrollRectToVisible:visibleRect animated:YES];
-	
-}
-
--(IBAction) locationPressed:(id) sender{
-	
+- (IBAction)pickerSelected:(id)sender {
 	[keywords resignFirstResponder];
     [titleKeywords resignFirstResponder];	
     [authorKeywords resignFirstResponder];
 	
 	formatPickerView.hidden = YES;
-	locationPickerView.hidden = NO;
+	locationPickerView.hidden = YES;
+    pubdatePickerView.hidden = YES;
     
     CGSize size = CGSizeMake(self.view.bounds.size.width, searchButton.frame.origin.y + searchButton.frame.size.height);
-    size.height += locationPickerView.frame.size.height + 20;
-    CGRect visibleRect = CGRectMake(0, size.height - self.view.bounds.size.height, self.view.bounds.size.width, self.view.bounds.size.height);
     
+    if (sender == formatDisclosure) {
+        formatPickerView.hidden = NO;
+        size.height += formatPickerView.frame.size.height + 20;
+        
+    } else if (sender == locationDisclosure) {
+        locationPickerView.hidden = NO;
+        size.height += locationPickerView.frame.size.height + 20;
+
+    } else if (sender == pubdateDisclosure) {
+        pubdatePickerView.hidden = NO;
+        size.height += pubdatePickerView.frame.size.height + 20;
+        
+    }
+    
+    CGRect visibleRect = CGRectMake(0, size.height - self.view.bounds.size.height, self.view.bounds.size.width, self.view.bounds.size.height);
     [self.scrollView setContentSize:size];
     [self.scrollView scrollRectToVisible:visibleRect animated:YES];
-	
 }
 
 -(IBAction) searchButtonPressed:(id) sender{
@@ -350,6 +328,9 @@
 	else if (pickerView == locationPickerView)
 		return [libraryArray count];
 	
+    else if (pickerView == pubdatePickerView)
+        return [pubdateArray count];
+    
 	return 0;
 }
 
@@ -357,46 +338,46 @@
 
 - (NSString *)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component
 {
+    NSArray *theArray;
+    
 	if (pickerView == formatPickerView) {
-		if ([[formatArray objectAtIndex:row] isKindOfClass:[LibraryItemFormat class]]) {
-			return ((LibraryItemFormat *)[formatArray objectAtIndex:row]).name;
-		} else {
-			return [formatArray objectAtIndex:row];
-		}
-	
+        theArray = formatArray;
 	} else if (pickerView == locationPickerView) {
-		
-		if ([[libraryArray objectAtIndex:row] isKindOfClass:[LibraryLocation class]]) {
-			return ((LibraryLocation *)[libraryArray objectAtIndex:row]).name;
-        } else {
-			return [libraryArray objectAtIndex:row];
-		}
+        theArray = libraryArray;
+	} else if (pickerView == pubdatePickerView) {
+		theArray = pubdateArray;
 	}
-	
+    
+    if ([[theArray objectAtIndex:row] isKindOfClass:[LibrarySearchCode class]]) {
+        return ((LibrarySearchCode *)[theArray objectAtIndex:row]).name;
+    } else {
+        return [theArray objectAtIndex:row];
+    }
+    
 	return @"";
 }
 
-- (void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component{
-	
-	if (pickerView == formatPickerView){
-		//formatPickerView.hidden = YES;
-		
-		if ([[formatArray objectAtIndex:row] isKindOfClass:[LibraryItemFormat class]]) {
-			format.text = ((LibraryItemFormat *)[formatArray objectAtIndex:row]).name;
-		} else {
-			format.text = @"Any"; // @"All formats (everything)";
-		}
+- (void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component
+{
+    NSArray *theArray;
+    UILabel *theLabel;
+    
+	if (pickerView == formatPickerView) {
+        theArray = formatArray;
+        theLabel = format;
+	} else if (pickerView == locationPickerView) {
+        theArray = libraryArray;
+        theLabel = location;
+	} else if (pickerView == pubdatePickerView) {
+		theArray = pubdateArray;
+        theLabel = pubdate;
 	}
-	
-	else if (pickerView == locationPickerView) {
-		//locationPickerView.hidden = YES;
-		
-		if ([[libraryArray objectAtIndex:row] isKindOfClass:[LibraryLocation class]]) {
-			location.text = ((LibraryLocation *)[libraryArray objectAtIndex:row]).name;
-		} else {
-			location.text = @"Any"; // @"All Libraries/Archives";
-		}
-	}
+    
+    if ([[theArray objectAtIndex:row] isKindOfClass:[LibrarySearchCode class]]) {
+        theLabel.text = ((LibrarySearchCode *)[theArray objectAtIndex:row]).name;
+    } else {
+        theLabel.text = @"Any";
+    }
 }
 
 #pragma mark UITextField delegate
