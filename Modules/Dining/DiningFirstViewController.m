@@ -714,73 +714,24 @@ numberOfRowsInSection:(NSInteger)section
 -(UITableViewCell *)tableView:(UITableView *)tableView
 		cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-	[self correctTableForTabSelected];	
+	[self correctTableForTabSelected];
+	
+	static NSString *CellIdentifier = @"Cell";
+		
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    if (cell == nil) {
+        cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
+    }
 	
 	NSUInteger section = [indexPath section];
 	NSUInteger row = [indexPath row];
 	
 	NSString *key = [self.list objectAtIndex:section];
 	NSArray *keySection = [self.menuDict objectForKey:key];
-	
-	static NSString *DisclosureButtonCellIdentifier = @"DisclosureButtonCellIdentifier";
-	
-	DiningMultiLineCell *cell1 = (DiningMultiLineCell *)[tableView dequeueReusableCellWithIdentifier:DisclosureButtonCellIdentifier];
-	DiningMultiLineCell *cell;
-	
-	// Due to multiple-imageViews being displayed, do not use a re-usable cell. Instead, release the re-usable one.
-	if (cell1 != nil)
-		cell1 = nil;
-	
-	cell = [[[DiningMultiLineCell alloc]
-			 initWithStyle:UITableViewCellStyleDefault
-			 reuseIdentifier:DisclosureButtonCellIdentifier] autorelease];
-	
-	cell.textLabelNumberOfLines = 1;	
+    
 	cell.textLabel.text = (NSString *) [[keySection objectAtIndex:row] objectForKey:@"item"];
 	cell.selectionStyle = UITableViewCellSelectionStyleNone;
 	cell.backgroundColor = GROUPED_VIEW_CELL_COLOR;
-	
-	
-	
-	// If details of the Menu-Item are available, uncomment the following line.
-	//cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-	
-	/******* The following lines deal with displaying the meal "type" icons ****************/
-	
-	/*NSString *type = (NSString *) [[[keySection objectAtIndex:row] objectForKey:@"type"] description];
-	 */
-	
-	/*cell.textLabel.lineBreakMode = UILineBreakModeWordWrap;
-	 UIImage *image = [UIImage imageNamed:@"dining/dining-local-crop.png"];
-	 UIImageView *imView = [[UIImageView alloc] initWithFrame:CGRectMake(273, 12, 17, 17)];
-	 imView.image = image;*/
-	
-	/*if ([type isEqualToString:@"VGT"]) {
-	 UIImage *image2 = [UIImage imageNamed:@"dining/dining-vegan.png"];
-	 UIImageView *imView2 = [[UIImageView alloc] initWithFrame:CGRectMake(253, 12, 17, 17)];
-	 imView2.image = image2;
-	 [cell.contentView addSubview:imView2];
-	 [imView2 release];
-	 }
-	 
-	 else if ([type isEqualToString:@"VGN"]) {
-	 UIImage *image2 = [UIImage imageNamed:@"dining/dining-vegetarian.png"];
-	 UIImageView *imView2 = [[UIImageView alloc] initWithFrame:CGRectMake(253, 12, 17, 17)];
-	 imView2.image = image2;
-	 [cell.contentView addSubview:imView2];
-	 [imView2 release];
-	 }*/
-	
-	/*UIImage *image3 = [UIImage imageNamed:@"dining/dining-organic-crop.png"];
-	 UIImageView *imView3 = [[UIImageView alloc] initWithFrame:CGRectMake(233, 12, 17, 17)];
-	 imView3.image = image3;*/
-	
-	
-	/*[cell.contentView addSubview:imView];
-	 [imView release];*/
-	
-	/*[cell.contentView addSubview:imView3];
-	 [imView3 release];*/
 	
 	return cell;
 }
@@ -814,34 +765,6 @@ numberOfRowsInSection:(NSInteger)section
 - (CGFloat) tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
 	return GROUPED_SECTION_HEADER_HEIGHT;
-}
-
-
--(CGFloat)tableView:(UITableView *)tableView
-heightForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-	NSUInteger section = [indexPath section];
-	NSUInteger row = [indexPath row];
-	
-	NSString *key = [self.list objectAtIndex:section];
-	NSArray *keySection = [self.menuDict objectForKey:key];
-	
-	NSString *textL = (NSString *) [[keySection objectAtIndex:row] objectForKey:@"item"];
-	
-	int textLines = 1;
-	if ([textL length] > 27)
-		textLines = 2;
-	
-	return [DiningMultiLineCell heightForCellWithStyle:UITableViewStyleGrouped
-											 tableView:tableView 
-												  text:textL 
-										  maxTextLines:textLines 
-											detailText:nil
-										maxDetailLines:0
-												  font:nil
-											detailFont:nil
-										 accessoryType:UITableViewCellAccessoryDetailDisclosureButton
-											 cellImage:NO];
 }
 
 #pragma mark -
