@@ -4,7 +4,7 @@
 #import "AboutMITVC.h"
 #import "UITableView+MITUIAdditions.h"
 #import "MITUIConstants.h"
-#import "MailSender.h"
+#import "MITMailComposeController.h"
 
 @implementation AboutTableViewController
 
@@ -139,9 +139,10 @@
             }
             case 1: {
                 NSString *subject = [NSString stringWithFormat:@"Feedback for Harvard Mobile %@ (%@)", [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"], MITBuildNumber];
-				[MailSender sendEmailWithSubject:subject body:@"" delegate:self];
+                NSString *email = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"AppFeedbackAddress"];
+                [MITMailComposeController presentMailControllerWithEmail:email subject:subject body:[NSString string]];
 				break;
-            }            
+            }
             default:
                 break;
         }

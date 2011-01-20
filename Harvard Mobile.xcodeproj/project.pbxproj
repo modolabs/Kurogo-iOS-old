@@ -309,8 +309,6 @@
 		A1EFCFBF12B166440092D9E1 /* libProj.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A1EFCDDE12B163EE0092D9E1 /* libProj.a */; };
 		A623F1F1120A035A00341C5E /* ModoThreeStateSwitchControl.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = A623F1EF120A035A00341C5E /* ModoThreeStateSwitchControl.h */; settings = {JAVA_ARCHIVE_SUBDIR = Modules; }; };
 		A623F1F2120A035A00341C5E /* ModoThreeStateSwitchControl.m in Sources */ = {isa = PBXBuildFile; fileRef = A623F1F0120A035A00341C5E /* ModoThreeStateSwitchControl.m */; };
-		A647D94F12DBBB43001943CD /* MailSender.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = A647D94D12DBBB43001943CD /* MailSender.h */; settings = {JAVA_ARCHIVE_SUBDIR = Common; }; };
-		A647D95012DBBB43001943CD /* MailSender.m in Sources */ = {isa = PBXBuildFile; fileRef = A647D94E12DBBB43001943CD /* MailSender.m */; };
 		A64C313D11FDFAB8006FE056 /* AddressFormatter.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = A64C313B11FDFAB8006FE056 /* AddressFormatter.h */; settings = {JAVA_ARCHIVE_SUBDIR = Common; }; };
 		A64C313E11FDFAB8006FE056 /* AddressFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = A64C313C11FDFAB8006FE056 /* AddressFormatter.m */; };
 		A64C36CB1207066D006FE056 /* peopleSearchStaticPhoneRowsArray.plist in Resources */ = {isa = PBXBuildFile; fileRef = A64C36CA1207066D006FE056 /* peopleSearchStaticPhoneRowsArray.plist */; };
@@ -445,6 +443,8 @@
 		DED3CCE910418F5F003D3B74 /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = DED3CCE810418F5F003D3B74 /* Default.png */; };
 		DEE6B1CD111774300037F03C /* Entitlements.plist in Resources */ = {isa = PBXBuildFile; fileRef = DEE6B1CC111774300037F03C /* Entitlements.plist */; };
 		EB137B5412DFE4EE004DBB7C /* libraries in Resources */ = {isa = PBXBuildFile; fileRef = EB137B4B12DFE4EE004DBB7C /* libraries */; };
+		EB1383A612E89D82004DBB7C /* MITMailComposeController.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB1383A412E89D82004DBB7C /* MITMailComposeController.h */; settings = {JAVA_ARCHIVE_SUBDIR = Common; }; };
+		EB1383A712E89D82004DBB7C /* MITMailComposeController.m in Sources */ = {isa = PBXBuildFile; fileRef = EB1383A512E89D82004DBB7C /* MITMailComposeController.m */; };
 		EB1DC7A612D213330080C2A1 /* LibraryAlias.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB1DC7A412D213330080C2A1 /* LibraryAlias.h */; settings = {JAVA_ARCHIVE_SUBDIR = Modules/Libraries; }; };
 		EB1DC7A712D213330080C2A1 /* LibraryAlias.m in Sources */ = {isa = PBXBuildFile; fileRef = EB1DC7A512D213330080C2A1 /* LibraryAlias.m */; };
 		EB32946F1166777500DEDC8A /* CalendarEventMapAnnotation.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB32946D1166777500DEDC8A /* CalendarEventMapAnnotation.h */; settings = {JAVA_ARCHIVE_SUBDIR = Modules/Calendar; }; };
@@ -929,8 +929,6 @@
 		A623F1EF120A035A00341C5E /* ModoThreeStateSwitchControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ModoThreeStateSwitchControl.h; sourceTree = "<group>"; };
 		A623F1F0120A035A00341C5E /* ModoThreeStateSwitchControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ModoThreeStateSwitchControl.m; sourceTree = "<group>"; };
 		A623F2E5120A1BFC00341C5E /* settings */ = {isa = PBXFileReference; lastKnownFileType = folder; name = settings; path = Resources/settings; sourceTree = "<group>"; };
-		A647D94D12DBBB43001943CD /* MailSender.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MailSender.h; sourceTree = "<group>"; };
-		A647D94E12DBBB43001943CD /* MailSender.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MailSender.m; sourceTree = "<group>"; };
 		A64C313B11FDFAB8006FE056 /* AddressFormatter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddressFormatter.h; sourceTree = "<group>"; };
 		A64C313C11FDFAB8006FE056 /* AddressFormatter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddressFormatter.m; sourceTree = "<group>"; };
 		A64C36CA1207066D006FE056 /* peopleSearchStaticPhoneRowsArray.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = peopleSearchStaticPhoneRowsArray.plist; path = Resources/peopleSearchStaticPhoneRowsArray.plist; sourceTree = "<group>"; };
@@ -1103,6 +1101,8 @@
 		DEE6B1CC111774300037F03C /* Entitlements.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Entitlements.plist; sourceTree = "<group>"; };
 		EB137B4812DFDDF8004DBB7C /* Libraries 2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Libraries 2.xcdatamodel"; sourceTree = "<group>"; };
 		EB137B4B12DFE4EE004DBB7C /* libraries */ = {isa = PBXFileReference; lastKnownFileType = folder; name = libraries; path = Resources/libraries; sourceTree = "<group>"; };
+		EB1383A412E89D82004DBB7C /* MITMailComposeController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MITMailComposeController.h; sourceTree = "<group>"; };
+		EB1383A512E89D82004DBB7C /* MITMailComposeController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MITMailComposeController.m; sourceTree = "<group>"; };
 		EB1DC7A412D213330080C2A1 /* LibraryAlias.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LibraryAlias.h; sourceTree = "<group>"; };
 		EB1DC7A512D213330080C2A1 /* LibraryAlias.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LibraryAlias.m; sourceTree = "<group>"; };
 		EB32946D1166777500DEDC8A /* CalendarEventMapAnnotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CalendarEventMapAnnotation.h; sourceTree = "<group>"; };
@@ -1275,6 +1275,8 @@
 		080E96DDFE201D6D7F000001 /* Common */ = {
 			isa = PBXGroup;
 			children = (
+				EB1383A412E89D82004DBB7C /* MITMailComposeController.h */,
+				EB1383A512E89D82004DBB7C /* MITMailComposeController.m */,
 				EB4C2CC7127F118400058748 /* Analytics */,
 				EB4210E5120B82C000089FE0 /* TwitterViewController.h */,
 				EB4210E6120B82C000089FE0 /* TwitterViewController.m */,
@@ -1822,8 +1824,6 @@
 			children = (
 				A64C313B11FDFAB8006FE056 /* AddressFormatter.h */,
 				A64C313C11FDFAB8006FE056 /* AddressFormatter.m */,
-				A647D94D12DBBB43001943CD /* MailSender.h */,
-				A647D94E12DBBB43001943CD /* MailSender.m */,
 			);
 			name = Utilities;
 			sourceTree = "<group>";
@@ -2460,7 +2460,7 @@
 				A163D3F612C9523A004E423B /* LibraryLocation.h in JavaArchive */,
 				EB67B16412CA95630080C0AA /* LibraryDataManager.h in JavaArchive */,
 				EB1DC7A612D213330080C2A1 /* LibraryAlias.h in JavaArchive */,
-				A647D94F12DBBB43001943CD /* MailSender.h in JavaArchive */,
+				EB1383A612E89D82004DBB7C /* MITMailComposeController.h in JavaArchive */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2802,7 +2802,7 @@
 				A163D3F712C9523A004E423B /* LibraryLocation.m in Sources */,
 				EB67B16512CA95630080C0AA /* LibraryDataManager.m in Sources */,
 				EB1DC7A712D213330080C2A1 /* LibraryAlias.m in Sources */,
-				A647D95012DBBB43001943CD /* MailSender.m in Sources */,
+				EB1383A712E89D82004DBB7C /* MITMailComposeController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

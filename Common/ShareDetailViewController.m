@@ -2,7 +2,7 @@
 #import "MIT_MobileAppDelegate.h"
 #import "TwitterViewController.h"
 #import "JSONAPIRequest.h"
-#import "MailSender.h"
+#import "MITMailComposeController.h"
 
 @implementation ShareDetailViewController
 
@@ -20,6 +20,7 @@
 
 // subclasses should make sure actionSheetTitle is set up before this gets called
 // or call [super share:sender] at the end of this
+// TODO: conditionally show facebook and twitter
 - (void)share:(id)sender {
     UIActionSheet *shareSheet = nil;
     
@@ -38,9 +39,7 @@
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
 	if (buttonIndex == 0) {
 		// Email
-        [MailSender sendEmailWithSubject:[self.shareDelegate emailSubject]
-									body:[self.shareDelegate emailBody]
-								delegate:self];
+        [MITMailComposeController presentMailControllerWithEmail:nil subject:[self.shareDelegate emailSubject] body:[self.shareDelegate emailBody]];
 	}
     else if (buttonIndex == 1) {
 		// Facebook session
