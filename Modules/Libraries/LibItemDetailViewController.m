@@ -748,7 +748,7 @@
         NSString *title = nil;
 		if (indexPath.row == 0) {
             libURL = libItem.fullImageLink;
-            title = @"All Images";
+            title = @"Larger Image";
         } else if (indexPath.row == 1) {
             libURL = libItem.catalogLink;
             title = @"More Details";
