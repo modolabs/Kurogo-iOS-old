@@ -913,6 +913,10 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath
     return YES;
 }
 
+- (void)request:(JSONAPIRequest *)request handleConnectionError:(NSError *)error {
+    [self removeLoadingIndicator];
+}
+
 #pragma mark -
 #pragma mark DatePickerViewControllerDelegate functions
 

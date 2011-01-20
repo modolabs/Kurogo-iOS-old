@@ -535,7 +535,7 @@
             NSString *statusString = nil;
             NSString *status = nil;
             
-            if (total == 0 && collectCount > 0) {
+            if (collectCount > 0) {
                 statusString = [NSString stringWithFormat:@"%d may be available", collectCount];
             } else {
                 statusString = [NSString stringWithFormat:@"%d of %d available - %@", availCount, total, holdingStatus];
