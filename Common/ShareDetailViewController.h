@@ -25,7 +25,7 @@
 @end
 
 @interface ShareDetailViewController : UIViewController <UIActionSheetDelegate,
-MFMailComposeViewControllerDelegate, FBSessionDelegate, FBDialogDelegate> {
+FBSessionDelegate, FBDialogDelegate> {
 
 	FBSession *fbSession;
 	id<ShareItemDelegate> shareDelegate;

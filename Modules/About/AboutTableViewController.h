@@ -1,7 +1,6 @@
 #import <UIKit/UIKit.h>
-#import <MessageUI/MFMailComposeViewController.h>
 
-@interface AboutTableViewController : UITableViewController <MFMailComposeViewControllerDelegate> {
+@interface AboutTableViewController : UITableViewController {
     BOOL showBuildNumber;
 }
 

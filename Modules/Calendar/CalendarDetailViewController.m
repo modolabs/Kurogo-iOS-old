@@ -7,6 +7,7 @@
 #import "MapBookmarkManager.h"
 #import "MapSearchResultAnnotation.h"
 #import "AnalyticsWrapper.h"
+#import "MITMailComposeController.h"
 
 #define WEB_VIEW_PADDING 10.0
 #define BUTTON_PADDING 10.0
@@ -553,8 +554,7 @@ enum CalendarDetailRowTypes {
 		case CalendarDetailRowTypeEmail:
 		{
 			NSString *subject = [self emailSubject];
-			
-			[self emailTo:subject body:@"" email:event.email];
+			[MITMailComposeController presentMailControllerWithEmail:event.email subject:subject body:nil];
 			break;
 		}
 		default:
@@ -680,47 +680,6 @@ enum CalendarDetailRowTypes {
 	}
 	
 	return YES;
-}
-
--(void)emailTo:(NSString*)subject body:(NSString *)emailBody email:(NSString *)emailAddress {
-	Class mailClass = (NSClassFromString(@"MFMailComposeViewController"));
-	if ((mailClass != nil) && [mailClass canSendMail]) {
-		
-		MFMailComposeViewController *aController = [[MFMailComposeViewController alloc] init];
-		aController.mailComposeDelegate = self;
-		
-		
-		NSMutableArray *emailAddressArray = [NSMutableArray array];
-		[emailAddressArray addObject:emailAddress];
-		[aController setSubject:subject];
-		[aController setToRecipients:emailAddressArray];		
-		[aController setMessageBody:emailBody isHTML:NO];
-		
-		MIT_MobileAppDelegate *appDelegate = (MIT_MobileAppDelegate *)[[UIApplication sharedApplication] delegate];
-		[appDelegate presentAppModalViewController:aController animated:YES];
-		[aController release];
-		
-	} else {
-		NSString *mailtoString = [NSString stringWithFormat:@"mailto://?subject=%@&body=%@", 
-								  [subject stringByAddingPercentEscapesUsingEncoding:NSASCIIStringEncoding],
-								  [emailBody stringByAddingPercentEscapesUsingEncoding:NSASCIIStringEncoding]];
-		
-		NSURL *externURL = [NSURL URLWithString:mailtoString];
-		if ([[UIApplication sharedApplication] canOpenURL:externURL])
-			[[UIApplication sharedApplication] openURL:externURL];
-	}
-	
-}
-
-
-
-#pragma mark -
-#pragma mark MFMailComposeViewController delegation
-
-- (void)mailComposeController:(MFMailComposeViewController*)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError*)error 
-{	
-	MIT_MobileAppDelegate *appDelegate = (MIT_MobileAppDelegate *)[[UIApplication sharedApplication] delegate];
-	[appDelegate dismissAppModalViewControllerAnimated:YES];
 }
 
 

@@ -51,15 +51,6 @@
 }
 
 #pragma mark -
-#pragma mark MFMailComposeViewController delegation
-
-- (void)mailComposeController:(MFMailComposeViewController*)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError*)error 
-{	
-	MIT_MobileAppDelegate *appDelegate = (MIT_MobileAppDelegate *)[[UIApplication sharedApplication] delegate];
-	[appDelegate dismissAppModalViewControllerAnimated:YES];
-}
-
-#pragma mark -
 #pragma mark Facebook delegation
 
 - (void)showFacebookDialog {

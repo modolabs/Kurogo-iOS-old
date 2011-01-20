@@ -3,11 +3,10 @@
 #import "CalendarConstants.h"
 #import "ShareDetailViewController.h"
 #import "MIT_MobileAppDelegate.h"
-#import <MessageUI/MFMailComposeViewController.h>;
 
 @class MITCalendarEvent;
 
-@interface CalendarDetailViewController : ShareDetailViewController <UITableViewDelegate, UITableViewDataSource, JSONAPIDelegate, ShareItemDelegate, UIWebViewDelegate, MFMailComposeViewControllerDelegate> {
+@interface CalendarDetailViewController : ShareDetailViewController <UITableViewDelegate, UITableViewDataSource, JSONAPIDelegate, ShareItemDelegate, UIWebViewDelegate> {
 	
     BOOL isRegularEvent;
     
@@ -39,7 +38,6 @@
 - (void)showNextEvent:(id)sender;
 
 - (NSString *)htmlStringFromString:(NSString *)source;
--(void)emailTo:(NSString*)subject body:(NSString *)emailBody email:(NSString *)emailAddress;
 
 @end
 

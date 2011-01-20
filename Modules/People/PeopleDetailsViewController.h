@@ -1,7 +1,6 @@
 #import <UIKit/UIKit.h>
 #import <AddressBook/AddressBook.h>
 #import <AddressBookUI/AddressBookUI.h>
-#import <MessageUI/MFMailComposeViewController.h>
 #import "PersonDetails.h"
 #import "JSONAPIRequest.h"
 #import "MapSearchResultAnnotation.h"
@@ -11,8 +10,7 @@
 	 ABNewPersonViewControllerDelegate, 
 	 ABPersonViewControllerDelegate, 
 	 JSONAPIDelegate,
-     UIAlertViewDelegate,
-	 MFMailComposeViewControllerDelegate> 
+     UIAlertViewDelegate> 
 {
 
 	PersonDetails *personDetails;

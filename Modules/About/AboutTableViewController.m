@@ -150,14 +150,6 @@
 }
 
 #pragma mark -
-#pragma mark MFMailComposeViewController delegation
-
-- (void)mailComposeController:(MFMailComposeViewController*)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError*)error 
-{	
-	MIT_MobileAppDelegate *appDelegate = (MIT_MobileAppDelegate *)[[UIApplication sharedApplication] delegate];
-    [appDelegate dismissAppModalViewControllerAnimated:YES];
-    [self viewWillAppear:NO];
-}
 
 - (void)dealloc {
     [super dealloc];

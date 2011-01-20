@@ -11,6 +11,7 @@
 #import "MapBookmarkManager.h"
 #import "TileServerManager.h"
 #import "AnalyticsWrapper.h"
+#import "MITMailComposeController.h"
 
 @interface PeopleDetailsViewController (Private)
 
@@ -637,41 +638,7 @@ NSString * const RequestLookupAddress = @"address";
 
 - (void)emailIconTapped:(NSString *)email
 {
-	Class mailClass = (NSClassFromString(@"MFMailComposeViewController"));
-	if ((mailClass != nil) && [mailClass canSendMail]) {
-		
-		MFMailComposeViewController *aController = [[MFMailComposeViewController alloc] init];
-		aController.mailComposeDelegate = self;
-		
-		NSArray *toRecipient = [NSArray arrayWithObject:email]; 
-		[aController setToRecipients:toRecipient];
-		
-		MIT_MobileAppDelegate *appDelegate = (MIT_MobileAppDelegate *)[[UIApplication sharedApplication] delegate];
-		[appDelegate presentAppModalViewController:aController animated:YES];
-		[aController release];
-		
-	} else {
-		NSURL *externURL = [NSURL URLWithString:[NSString stringWithFormat:@"mailto://%@", email]];
-		if ([[UIApplication sharedApplication] canOpenURL:externURL])
-			[[UIApplication sharedApplication] openURL:externURL];
-	}
-}
-
-
-// Dismisses the email composition interface when users tap Cancel or Send. Proceeds to update the message field with the result of the operation.
-- (void)mailComposeController:(MFMailComposeViewController*)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError*)error 
-{	
-	MIT_MobileAppDelegate *appDelegate = (MIT_MobileAppDelegate *)[[UIApplication sharedApplication] delegate];
-	[appDelegate dismissAppModalViewControllerAnimated:YES];
-}
-
-
-- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger) buttonIndex {
-	if(buttonIndex != alertView.cancelButtonIndex) {
-		NSString *phoneNumber = [alertView buttonTitleAtIndex:buttonIndex];
-		NSURL *externURL = [NSURL URLWithString:[NSString stringWithFormat:@"tel://%@", phoneNumber]];
-		[[UIApplication sharedApplication] openURL:externURL];
-	}
+    [MITMailComposeController presentMailControllerWithEmail:email subject:nil body:nil];
 }
 
 @end

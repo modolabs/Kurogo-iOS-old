@@ -8,13 +8,12 @@
 
 #import <UIKit/UIKit.h>
 #import "LibraryWeeklyScheduleViewController.h"
-#import <MessageUI/MFMailComposeViewController.h>;
 #import "JSONAPIRequest.h"
 #import "LibraryDataManager.h"
 
 @class LibraryAlias;
 
-@interface LibraryDetailViewController : UITableViewController <MFMailComposeViewControllerDelegate, LibraryDetailDelegate> {
+@interface LibraryDetailViewController : UITableViewController <LibraryDetailDelegate> {
 	
 	UIButton * bookmarkButton;
 	
@@ -49,8 +48,6 @@
 - (void)setupWeeklySchedule;
 -(void) setupLayout;
 -(void) setDaysOfWeekArray;
-
--(void)emailTo:(NSString*)subject body:(NSString *)emailBody email:(NSString *)emailAddress;
 
 
 @end
