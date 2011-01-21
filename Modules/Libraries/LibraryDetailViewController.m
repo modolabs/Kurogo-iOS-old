@@ -751,7 +751,7 @@ NSInteger phoneNumberSort(id num1, id num2, void *context){
 	}
     
     UIFont *cellFont = [UIFont fontWithName:BOLD_FONT size:13];
-    UIFont *detailFont = [UIFont fontWithName:STANDARD_FONT size:17];
+    UIFont *detailFont = [UIFont fontWithName:BOLD_FONT size:16];
     
     return [LibrariesMultiLineCell heightForCellWithStyle:UITableViewCellStyleSubtitle
                                                 tableView:tableView 
