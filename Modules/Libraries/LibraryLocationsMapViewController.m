@@ -113,8 +113,11 @@
 }
 
 
-- (void)mapView:(MKMapView *)mapView didAddAnnotationViews:(NSArray *)views {
-   	
+- (void)mapView:(MKMapView *)theMapView didAddAnnotationViews:(NSArray *)views {
+   	if ([views count] == 1) {
+        id<MKAnnotation> anAnnotation = ((MKAnnotationView *)[views lastObject]).annotation;
+        [theMapView selectAnnotation:anAnnotation animated:YES];
+    }
 }
 
 - (BOOL)mapView:(MKMapView *)_mapView didUpdateUserLocation:(MKUserLocation *)userLocation {
