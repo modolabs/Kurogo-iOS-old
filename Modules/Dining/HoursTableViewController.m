@@ -240,5 +240,9 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath
     return YES;
 }
 
+- (void)request:(JSONAPIRequest *)request handleConnectionError:(NSError *)error {
+	[parentViewController removeLoadingIndicator];
+}
+
 @end
 
