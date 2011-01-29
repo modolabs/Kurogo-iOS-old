@@ -175,7 +175,7 @@
 		return nil;
 	}
 	
-	SBJSON *jsonParser = [[SBJSON alloc] init];
+	SBJsonParser *jsonParser = [[SBJsonParser alloc] init];
     id result = [jsonParser objectWithString:jsonString error:error];
     
     // if this is just a quoted string, wrap it in [] to make it an array and then parse to clean out escaped characters

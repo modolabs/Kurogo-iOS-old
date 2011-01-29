@@ -13,6 +13,7 @@ extern NSString * const TwitterOAuthConsumerSecret;
 
 extern NSString * const FacebookAPIKey;
 extern NSString * const FacebookAPISecret;
+extern NSString * const FacebookAppID;
 
 extern NSString * const BitlyUsername;
 extern NSString * const BitlyAPIKey;
