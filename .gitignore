@@ -1,6 +1,5 @@
 build/
-Common/Secret.m
-*.xcodeproj/*.mode1v3
-*.xcodeproj/*.pbxuser
-*/*.xcodeproj/*.mode1v3
-*/*.xcodeproj/*.pbxuser
+Secret.m
+*.mode1v3
+*.pbxuser
+MITBuildInfo.m

@@ -187,6 +187,7 @@
 		EB99B28412F377560065EE93 /* libTwitter.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EB99B08E12F36F3D0065EE93 /* libTwitter.a */; };
 		EB99B67212F3A8D80065EE93 /* libjson.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EB99B39312F37FDC0065EE93 /* libjson.a */; };
 		EB99B67912F3A8EE0065EE93 /* libOAuth.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EB99B67812F3A8E40065EE93 /* libOAuth.a */; };
+		EB99B88C12F3AEC10065EE93 /* usr in Resources */ = {isa = PBXBuildFile; fileRef = EB99B85E12F3AEC10065EE93 /* usr */; };
 		EBA273E911760BAE0033DD27 /* CalendarConstants.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EBA273E711760BAE0033DD27 /* CalendarConstants.h */; settings = {JAVA_ARCHIVE_SUBDIR = Modules/Calendar; }; };
 		EBA273EA11760BAE0033DD27 /* CalendarConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = EBA273E811760BAE0033DD27 /* CalendarConstants.m */; };
 		EBA2865610E07E140003BA01 /* PeopleSearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EBA2865510E07E140003BA01 /* PeopleSearchViewController.m */; };
@@ -445,6 +446,7 @@
 		EB99B08912F36F3D0065EE93 /* Twitter.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Twitter.xcodeproj; path = Twitter/Twitter.xcodeproj; sourceTree = "<group>"; };
 		EB99B38C12F37FDC0065EE93 /* JSON.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = JSON.xcodeproj; path = JSON/JSON.xcodeproj; sourceTree = "<group>"; };
 		EB99B67312F3A8E40065EE93 /* OAuthConsumer.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = OAuthConsumer.xcodeproj; path = OAuth/OAuthConsumer.xcodeproj; sourceTree = "<group>"; };
+		EB99B85E12F3AEC10065EE93 /* usr */ = {isa = PBXFileReference; lastKnownFileType = folder; path = usr; sourceTree = "<group>"; };
 		EBA273E711760BAE0033DD27 /* CalendarConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CalendarConstants.h; sourceTree = "<group>"; };
 		EBA273E811760BAE0033DD27 /* CalendarConstants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CalendarConstants.m; sourceTree = "<group>"; };
 		EBA2865510E07E140003BA01 /* PeopleSearchViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PeopleSearchViewController.m; sourceTree = "<group>"; };
@@ -849,6 +851,7 @@
 				EB99B08912F36F3D0065EE93 /* Twitter.xcodeproj */,
 				EB138EE812F251EB004DBB7C /* Facebook.xcodeproj */,
 				EB138E8E12F24EB2004DBB7C /* Proj.xcodeproj */,
+				EB99B85E12F3AEC10065EE93 /* usr */,
 			);
 			name = Contrib;
 			path = ../../Contrib;
@@ -1187,6 +1190,7 @@
 				EB138C0512F23250004DBB7C /* news in Resources */,
 				EB138C0612F23250004DBB7C /* people in Resources */,
 				EB138C0712F23250004DBB7C /* settings in Resources */,
+				EB99B88C12F3AEC10065EE93 /* usr in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
