@@ -3,3 +3,5 @@ Secret.m
 *.mode1v3
 *.pbxuser
 MITBuildInfo.m
+
+Contrib/usr/local/include/*
