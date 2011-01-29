@@ -1,11 +1,11 @@
 [submodule "Contrib/MGTwitterEngine"]
 	path = Contrib/MGTwitterEngine
 	url = https://github.com/mattgemmell/MGTwitterEngine.git
-[submodule "Contrib/SFHF"]
-	path = Contrib/SFHF
+[submodule "Contrib/scifihifi-iphone"]
+	path = Contrib/scifihifi-iphone
 	url = https://github.com/ldandersen/scifihifi-iphone.git
-[submodule "Contrib/Facebook"]
-	path = Contrib/Facebook
+[submodule "Contrib/facebook-ios-sdk"]
+	path = Contrib/facebook-ios-sdk
 	url = https://github.com/facebook/facebook-ios-sdk.git
 [submodule "Contrib/json-framework"]
 	path = Contrib/json-framework
