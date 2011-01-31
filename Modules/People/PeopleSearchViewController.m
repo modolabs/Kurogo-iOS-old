@@ -63,7 +63,7 @@ NSInteger strLenSort(NSString *str1, NSString *str2, void *context)
 	if (indexPath.section == kPhoneDirectorySection) {		
 		NSArray *staticPhoneEntries = 
 		[NSArray arrayWithContentsOfFile:[[[NSBundle mainBundle] bundlePath] stringByAppendingPathComponent:
-										  @"peopleSearchStaticPhoneRowsArray.plist"]];
+										  @"people/peopleSearchStaticPhoneRowsArray.plist"]];
 		if (indexPath.row < staticPhoneEntries.count) {
 			properties = [staticPhoneEntries objectAtIndex:indexPath.row];
 		}
@@ -269,7 +269,7 @@ NSInteger strLenSort(NSString *str1, NSString *str2, void *context)
 			{
 				NSArray *staticPhoneEntries = 
 				[NSArray arrayWithContentsOfFile:[[[NSBundle mainBundle] bundlePath] stringByAppendingPathComponent:
-												  @"peopleSearchStaticPhoneRowsArray.plist"]];				
+												  @"people/peopleSearchStaticPhoneRowsArray.plist"]];				
 				return staticPhoneEntries.count;
 			}
 				break;

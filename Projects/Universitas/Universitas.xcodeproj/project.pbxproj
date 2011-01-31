@@ -191,6 +191,7 @@
 		EBA273E911760BAE0033DD27 /* CalendarConstants.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EBA273E711760BAE0033DD27 /* CalendarConstants.h */; settings = {JAVA_ARCHIVE_SUBDIR = Modules/Calendar; }; };
 		EBA273EA11760BAE0033DD27 /* CalendarConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = EBA273E811760BAE0033DD27 /* CalendarConstants.m */; };
 		EBA2865610E07E140003BA01 /* PeopleSearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EBA2865510E07E140003BA01 /* PeopleSearchViewController.m */; };
+		EBAA866B12F72A4600B743C3 /* libSFHFKeychainUtils.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EBAA860D12F728CE00B743C3 /* libSFHFKeychainUtils.a */; };
 		EBAE86401215FB0D00F370BE /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = EBAE863E1215FB0D00F370BE /* Icon.png */; };
 		EBAE86411215FB0D00F370BE /* Icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = EBAE863F1215FB0D00F370BE /* Icon@2x.png */; };
 		EBAE86451215FB4900F370BE /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = EBAE86441215FB4900F370BE /* Default@2x.png */; };
@@ -217,22 +218,29 @@
 			isa = PBXContainerItemProxy;
 			containerPortal = EB99B08912F36F3D0065EE93 /* Twitter.xcodeproj */;
 			proxyType = 2;
-			remoteGlobalIDString = D2AAC07E0554694100DB518D /* libTwitter.a */;
+			remoteGlobalIDString = D2AAC07E0554694100DB518D;
 			remoteInfo = Twitter;
 		};
 		EB99B39212F37FDC0065EE93 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = EB99B38C12F37FDC0065EE93 /* JSON.xcodeproj */;
 			proxyType = 2;
-			remoteGlobalIDString = FE2BBD800D8B0D3900184787 /* libjson.a */;
+			remoteGlobalIDString = FE2BBD800D8B0D3900184787;
 			remoteInfo = libjson;
 		};
 		EB99B67712F3A8E40065EE93 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = EB99B67312F3A8E40065EE93 /* OAuthConsumer.xcodeproj */;
 			proxyType = 2;
-			remoteGlobalIDString = EB1391B212F26F48004DBB7C /* libOAuth.a */;
+			remoteGlobalIDString = EB1391B212F26F48004DBB7C;
 			remoteInfo = OAuthConsumer;
+		};
+		EBAA860C12F728CE00B743C3 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = EBAA860812F728CE00B743C3 /* SFHFKeychainUtils.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = D2AAC07E0554694100DB518D /* libSFHFKeychainUtils.a */;
+			remoteInfo = SFHFKeychainUtils;
 		};
 /* End PBXContainerItemProxy section */
 
@@ -450,6 +458,7 @@
 		EBA273E711760BAE0033DD27 /* CalendarConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CalendarConstants.h; sourceTree = "<group>"; };
 		EBA273E811760BAE0033DD27 /* CalendarConstants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CalendarConstants.m; sourceTree = "<group>"; };
 		EBA2865510E07E140003BA01 /* PeopleSearchViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PeopleSearchViewController.m; sourceTree = "<group>"; };
+		EBAA860812F728CE00B743C3 /* SFHFKeychainUtils.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = SFHFKeychainUtils.xcodeproj; path = SFHFKeychainUtils/SFHFKeychainUtils.xcodeproj; sourceTree = "<group>"; };
 		EBAA9F6210FFAB8B003379A5 /* PeopleDataModel 5.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "PeopleDataModel 5.xcdatamodel"; sourceTree = "<group>"; };
 		EBAE863E1215FB0D00F370BE /* Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Icon.png; path = Resources/Icon.png; sourceTree = "<group>"; };
 		EBAE863F1215FB0D00F370BE /* Icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Icon@2x.png"; path = "Resources/Icon@2x.png"; sourceTree = "<group>"; };
@@ -481,6 +490,7 @@
 				EB4C2CDF127F138100058748 /* libsqlite3.dylib in Frameworks */,
 				EB4C2CE1127F138900058748 /* CFNetwork.framework in Frameworks */,
 				EB138F0512F253A1004DBB7C /* libGoogleAnalytics.a in Frameworks */,
+				EBAA866B12F72A4600B743C3 /* libSFHFKeychainUtils.a in Frameworks */,
 				EB99B67912F3A8EE0065EE93 /* libOAuth.a in Frameworks */,
 				EB99B67212F3A8D80065EE93 /* libjson.a in Frameworks */,
 				EB99B28412F377560065EE93 /* libTwitter.a in Frameworks */,
@@ -851,6 +861,7 @@
 				EB99B08912F36F3D0065EE93 /* Twitter.xcodeproj */,
 				EB138EE812F251EB004DBB7C /* Facebook.xcodeproj */,
 				EB138E8E12F24EB2004DBB7C /* Proj.xcodeproj */,
+				EBAA860812F728CE00B743C3 /* SFHFKeychainUtils.xcodeproj */,
 				EB99B85E12F3AEC10065EE93 /* usr */,
 			);
 			name = Contrib;
@@ -993,6 +1004,14 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		EBAA860912F728CE00B743C3 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				EBAA860D12F728CE00B743C3 /* libSFHFKeychainUtils.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXJavaArchiveBuildPhase section */
@@ -1121,6 +1140,10 @@
 					ProjectRef = EB138E8E12F24EB2004DBB7C /* Proj.xcodeproj */;
 				},
 				{
+					ProductGroup = EBAA860912F728CE00B743C3 /* Products */;
+					ProjectRef = EBAA860812F728CE00B743C3 /* SFHFKeychainUtils.xcodeproj */;
+				},
+				{
 					ProductGroup = EB99B08A12F36F3D0065EE93 /* Products */;
 					ProjectRef = EB99B08912F36F3D0065EE93 /* Twitter.xcodeproj */;
 				},
@@ -1166,6 +1189,13 @@
 			fileType = archive.ar;
 			path = libOAuth.a;
 			remoteRef = EB99B67712F3A8E40065EE93 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		EBAA860D12F728CE00B743C3 /* libSFHFKeychainUtils.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libSFHFKeychainUtils.a;
+			remoteRef = EBAA860C12F728CE00B743C3 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 /* End PBXReferenceProxy section */

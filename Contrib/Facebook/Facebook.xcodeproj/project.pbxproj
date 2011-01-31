@@ -25,7 +25,7 @@
 			isa = PBXContainerItemProxy;
 			containerPortal = EB99B32D12F37DF90065EE93 /* JSON.xcodeproj */;
 			proxyType = 2;
-			remoteGlobalIDString = FE2BBD800D8B0D3900184787 /* libjson.a */;
+			remoteGlobalIDString = FE2BBD800D8B0D3900184787;
 			remoteInfo = libjson;
 		};
 /* End PBXContainerItemProxy section */

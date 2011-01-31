@@ -41,9 +41,17 @@
 		EB1391E412F270F7004DBB7C /* NSMutableURLRequest+Parameters.m in Sources */ = {isa = PBXBuildFile; fileRef = FCAAF3CB0CCA69D600C52F82 /* NSMutableURLRequest+Parameters.m */; };
 		EB1391E512F270F7004DBB7C /* NSURL+Base.m in Sources */ = {isa = PBXBuildFile; fileRef = FC98DF560CD19A7C00453F6C /* NSURL+Base.m */; };
 		EB1391E612F27105004DBB7C /* Base64Transcoder.c in Sources */ = {isa = PBXBuildFile; fileRef = 4571A8840DAC519C00E2A30E /* Base64Transcoder.c */; };
-		EB99AE8412F355EF0065EE93 /* SFHFKeychainUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = EB99AE8212F355EF0065EE93 /* SFHFKeychainUtils.h */; };
-		EB99AE8512F355EF0065EE93 /* SFHFKeychainUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = EB99AE8312F355EF0065EE93 /* SFHFKeychainUtils.m */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		EBAA85FA12F7288900B743C3 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = EBAA85F612F7288900B743C3 /* SFHFKeychainUtils.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = D2AAC07E0554694100DB518D /* libSFHFKeychainUtils.a */;
+			remoteInfo = SFHFKeychainUtils;
+		};
+/* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		089C1667FE841158C02AAC07 /* English */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/InfoPlist.strings; sourceTree = "<group>"; };
@@ -58,8 +66,7 @@
 		EB1391B212F26F48004DBB7C /* libOAuth.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libOAuth.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		EB1391B512F26F6A004DBB7C /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = ../../../../../../System/Library/Frameworks/Foundation.framework; sourceTree = "<group>"; };
 		EB1391B812F26F75004DBB7C /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
-		EB99AE8212F355EF0065EE93 /* SFHFKeychainUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFHFKeychainUtils.h; sourceTree = "<group>"; };
-		EB99AE8312F355EF0065EE93 /* SFHFKeychainUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFHFKeychainUtils.m; sourceTree = "<group>"; };
+		EBAA85F612F7288900B743C3 /* SFHFKeychainUtils.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = SFHFKeychainUtils.xcodeproj; path = ../SFHFKeychainUtils/SFHFKeychainUtils.xcodeproj; sourceTree = SOURCE_ROOT; };
 		FC53ABB20CD99348001B1B99 /* OAuthConsumer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OAuthConsumer.h; sourceTree = "<group>"; };
 		FC6C126A0CD9AF6600A85842 /* OATestServer.rb */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.ruby; path = OATestServer.rb; sourceTree = "<group>"; };
 		FC95DF320CCDBFE700B870E6 /* OAMutableURLRequestTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OAMutableURLRequestTest.h; sourceTree = "<group>"; };
@@ -132,7 +139,6 @@
 		0867D691FE84028FC02AAC07 /* OAuthConsumer */ = {
 			isa = PBXGroup;
 			children = (
-				EB99AE8112F355EF0065EE93 /* scifihifi-iphone */,
 				08FB77AEFE84172EC02AAC07 /* OAuthConsumer */,
 				FC6C10EA0CD99C5700A85842 /* Protocols */,
 				FCAAF0680CC95B3D00C52F82 /* Cocoa Categories */,
@@ -196,6 +202,7 @@
 		32C88DFF0371C24200C91783 /* Other Sources */ = {
 			isa = PBXGroup;
 			children = (
+				EBAA85F612F7288900B743C3 /* SFHFKeychainUtils.xcodeproj */,
 				32DBCF5E0370ADEE00C91783 /* OAuthConsumer_Prefix.pch */,
 				4571A8830DAC519C00E2A30E /* Crypto */,
 			);
@@ -212,15 +219,13 @@
 			path = Crypto;
 			sourceTree = "<group>";
 		};
-		EB99AE8112F355EF0065EE93 /* scifihifi-iphone */ = {
+		EBAA85F712F7288900B743C3 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				EB99AE8212F355EF0065EE93 /* SFHFKeychainUtils.h */,
-				EB99AE8312F355EF0065EE93 /* SFHFKeychainUtils.m */,
+				EBAA85FB12F7288900B743C3 /* libSFHFKeychainUtils.a */,
 			);
-			name = "scifihifi-iphone";
-			path = "../scifihifi-iphone/security";
-			sourceTree = SOURCE_ROOT;
+			name = Products;
+			sourceTree = "<group>";
 		};
 		FC6C10EA0CD99C5700A85842 /* Protocols */ = {
 			isa = PBXGroup;
@@ -298,7 +303,6 @@
 				EB1391D312F2703E004DBB7C /* OAAsynchronousDataFetcher.h in Headers */,
 				EB1391D412F2703E004DBB7C /* OAToken_KeychainExtensions.h in Headers */,
 				EB1391D512F27093004DBB7C /* Base64Transcoder.h in Headers */,
-				EB99AE8412F355EF0065EE93 /* SFHFKeychainUtils.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -342,12 +346,28 @@
 			mainGroup = 0867D691FE84028FC02AAC07 /* OAuthConsumer */;
 			productRefGroup = 034768DFFF38A50411DB9C8B /* Products */;
 			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = EBAA85F712F7288900B743C3 /* Products */;
+					ProjectRef = EBAA85F612F7288900B743C3 /* SFHFKeychainUtils.xcodeproj */;
+				},
+			);
 			projectRoot = "";
 			targets = (
 				EB1391B112F26F48004DBB7C /* OAuthConsumer */,
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		EBAA85FB12F7288900B743C3 /* libSFHFKeychainUtils.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libSFHFKeychainUtils.a;
+			remoteRef = EBAA85FA12F7288900B743C3 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		EB1391D812F270DD004DBB7C /* Resources */ = {
@@ -395,7 +415,6 @@
 				EB1391E412F270F7004DBB7C /* NSMutableURLRequest+Parameters.m in Sources */,
 				EB1391E512F270F7004DBB7C /* NSURL+Base.m in Sources */,
 				EB1391E612F27105004DBB7C /* Base64Transcoder.c in Sources */,
-				EB99AE8512F355EF0065EE93 /* SFHFKeychainUtils.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -446,6 +465,7 @@
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_ENABLE_OBJC_GC = unsupported;
 				GCC_OPTIMIZATION_LEVEL = 0;
+				HEADER_SEARCH_PATHS = "\"$(SRCROOT)/../usr/local/include\"";
 				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
 				PREBINDING = NO;
 				PRODUCT_NAME = OAuth;
@@ -463,6 +483,7 @@
 				FRAMEWORK_VERSION = A;
 				GCC_ENABLE_FIX_AND_CONTINUE = NO;
 				GCC_ENABLE_OBJC_GC = unsupported;
+				HEADER_SEARCH_PATHS = "\"$(SRCROOT)/../usr/local/include\"";
 				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
 				PREBINDING = NO;
 				PRODUCT_NAME = OAuth;

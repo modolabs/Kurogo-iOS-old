@@ -27,6 +27,10 @@
 
 - (id) initWithMessage:(NSString *)aMessage url:(NSString *)longURL;
 
+// previously a delegate message of XAuthTwitterEngine, keeping here for our
+// own use but should rename later
+- (NSString *) cachedTwitterXAuthAccessTokenStringForUsername: (NSString *)username;
+
 @property (nonatomic, retain) ConnectionWrapper *connection;
 @property (nonatomic, retain) UIView *contentView;
 

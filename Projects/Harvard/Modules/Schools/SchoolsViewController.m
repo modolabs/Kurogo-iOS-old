@@ -36,7 +36,7 @@
     NSInteger tag = aButton.tag;
 
     NSArray *schools = [NSArray arrayWithContentsOfFile:[[[NSBundle mainBundle] bundlePath] stringByAppendingPathComponent:
-                                                         @"schools.plist"]];
+                                                         @"schools/schools.plist"]];
     
     NSDictionary *schoolData = [schools objectAtIndex:tag - 1];
     NSURL *url = [NSURL URLWithString:[schoolData objectForKey:@"url"]];
@@ -51,7 +51,7 @@
 - (void)layoutIcons {
     
     NSArray *schools = [NSArray arrayWithContentsOfFile:[[[NSBundle mainBundle] bundlePath] stringByAppendingPathComponent:
-                                                         @"schools.plist"]];
+                                                         @"schools/schools.plist"]];
     
     NSMutableArray *icons = [NSMutableArray arrayWithCapacity:[schools count]];
     

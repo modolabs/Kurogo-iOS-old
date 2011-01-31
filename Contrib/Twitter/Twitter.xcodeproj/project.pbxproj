@@ -55,7 +55,7 @@
 			isa = PBXContainerItemProxy;
 			containerPortal = EB99AFD112F367340065EE93 /* OAuthConsumer.xcodeproj */;
 			proxyType = 2;
-			remoteGlobalIDString = EB1391B212F26F48004DBB7C /* libOAuth.a */;
+			remoteGlobalIDString = EB1391B212F26F48004DBB7C;
 			remoteInfo = OAuthConsumer;
 		};
 /* End PBXContainerItemProxy section */
