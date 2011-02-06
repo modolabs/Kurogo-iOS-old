@@ -11,6 +11,14 @@
 #define MAX_CELL_BUFFER_IPAD 25
 
 
+@interface KGOTableController (Private)
+
+- (NSMutableDictionary *)contentBufferForTableView:(UITableView *)tableView;
+
+@end
+
+
+
 @implementation KGOTableViewController
 
 @synthesize tableView = _tableView;
@@ -28,9 +36,26 @@
 		_tableController = [[KGOTableController alloc] initWithViewController:self];
 		_tableController.dataSource = self;
 		
-        self.tableView = [_tableController addTableViewWithStyle:style];
+		_didInitWithStyle = YES;
+		_initStyle = style;
 	}
 	return self;
+}
+
+- (void)loadView {
+	[super loadView];
+	
+	if (_didInitWithStyle) {
+        self.tableView = [_tableController addTableViewWithStyle:_initStyle];
+	}
+}
+
+- (void)viewDidUnload {
+	[super viewDidUnload];
+	
+	if (_didInitWithStyle) {
+        self.tableView = nil;
+	}
 }
 
 - (void)removeTableView:(UITableView *)tableView {
@@ -95,16 +120,6 @@
 
 
 
-
-//@interface KGOTableViewController (Private)
-@interface KGOTableController (Private)
-
-- (NSMutableDictionary *)contentBufferForTableView:(UITableView *)tableView;
-
-@end
-
-
-//@implementation KGOTableViewController
 @implementation KGOTableController
 
 @synthesize dataSource = _dataSource;
@@ -150,36 +165,9 @@
 - (UIViewController *)viewController {
 	return _viewController;
 }
+
 #pragma mark Table view queue
-/*
-- (id)initWithStyle:(UITableViewStyle)style {
-    if (self = [super init]) {
-        self.dataSource = self;
-		
-        _tableViews = [[NSMutableArray alloc] init];
-        _tableViewDataSources = [[NSMutableArray alloc] init];
-		_cellContentBuffers = [[NSMutableArray alloc] init];
-		_currentContentBuffer = nil;
-		_currentTableView = nil;
-		
-        [self addTableViewWithStyle:style];
-    }
-    return self;
-}
 
-- (id)initWithDataSource:(id<KGOTableViewDataSource>)dataSource {
-    if (self = [super init]) {
-        self.dataSource = dataSource;
-
-        _tableViews = [[NSMutableArray alloc] init];
-        _tableViewDataSources = [[NSMutableArray alloc] init];
-		_cellContentBuffers = [[NSMutableArray alloc] init];
-		_currentContentBuffer = nil;
-		_currentTableView = nil;
-    }
-    return self;
-}
-*/
 - (void)removeTableView:(UITableView *)tableView {
 	if (tableView == _currentTableView) {
 		_currentTableView = nil;

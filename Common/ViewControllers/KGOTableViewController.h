@@ -48,6 +48,9 @@ typedef void (^CellManipulator)(UITableViewCell *);
 @interface KGOTableViewController : UIViewController <UITableViewDelegate, KGOTableViewDataSource> {
 	KGOTableController *_tableController;
 	UITableView *_tableView;
+	
+	BOOL _didInitWithStyle;
+	UITableViewStyle _initStyle;
 }
 
 @property (nonatomic, retain) UITableView *tableView;
@@ -65,7 +68,6 @@ typedef void (^CellManipulator)(UITableViewCell *);
 
 @end
 
-//@interface KGOTableViewController : UIViewController <UITableViewDelegate, UITableViewDataSource, KGOTableViewDataSource> {
 @interface KGOTableController : NSObject <UITableViewDelegate, UITableViewDataSource> {
 	KGOTableViewController *_viewController;
 	id<UITableViewDelegate, UITableViewDataSource> _searchController;

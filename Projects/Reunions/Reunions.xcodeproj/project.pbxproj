@@ -57,8 +57,6 @@
 		DEC02F9D110578240054BE32 /* AboutTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DEC02F9C110578240054BE32 /* AboutTableViewController.m */; };
 		DECBF6B610F8F91B009FAE35 /* NewsImageRep.m in Sources */ = {isa = PBXBuildFile; fileRef = DECBF6B510F8F91B009FAE35 /* NewsImageRep.m */; };
 		DED3CCE910418F5F003D3B74 /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = DED3CCE810418F5F003D3B74 /* Default.png */; };
-		EB13872F12F22DBC004DBB7C /* AddressFormatter.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB1386B112F22DBC004DBB7C /* AddressFormatter.h */; settings = {JAVA_ARCHIVE_SUBDIR = ../../Common; }; };
-		EB13873012F22DBC004DBB7C /* AddressFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = EB1386B212F22DBC004DBB7C /* AddressFormatter.m */; };
 		EB13873112F22DBC004DBB7C /* AnalyticsWrapper.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB1386B412F22DBC004DBB7C /* AnalyticsWrapper.h */; settings = {JAVA_ARCHIVE_SUBDIR = ../../Common/Analytics; }; };
 		EB13873212F22DBC004DBB7C /* AnalyticsWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = EB1386B512F22DBC004DBB7C /* AnalyticsWrapper.m */; };
 		EB13873712F22DBC004DBB7C /* ConnectionWrapper.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB1386BB12F22DBC004DBB7C /* ConnectionWrapper.h */; settings = {JAVA_ARCHIVE_SUBDIR = ../../Common/Connection; }; };
@@ -180,7 +178,6 @@
 		EB99B28412F377560065EE93 /* libTwitter.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EB99B08E12F36F3D0065EE93 /* libTwitter.a */; };
 		EB99B67212F3A8D80065EE93 /* libjson.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EB99B39312F37FDC0065EE93 /* libjson.a */; };
 		EB99B67912F3A8EE0065EE93 /* libOAuth.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EB99B67812F3A8E40065EE93 /* libOAuth.a */; };
-		EB99B88C12F3AEC10065EE93 /* usr in Resources */ = {isa = PBXBuildFile; fileRef = EB99B85E12F3AEC10065EE93 /* usr */; };
 		EBA273E911760BAE0033DD27 /* CalendarConstants.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EBA273E711760BAE0033DD27 /* CalendarConstants.h */; settings = {JAVA_ARCHIVE_SUBDIR = Modules/Calendar; }; };
 		EBA273EA11760BAE0033DD27 /* CalendarConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = EBA273E811760BAE0033DD27 /* CalendarConstants.m */; };
 		EBA2865610E07E140003BA01 /* PeopleSearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EBA2865510E07E140003BA01 /* PeopleSearchViewController.m */; };
@@ -321,8 +318,6 @@
 		DECBF6B410F8F91B009FAE35 /* NewsImageRep.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NewsImageRep.h; sourceTree = "<group>"; };
 		DECBF6B510F8F91B009FAE35 /* NewsImageRep.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NewsImageRep.m; sourceTree = "<group>"; };
 		DED3CCE810418F5F003D3B74 /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Default.png; path = Resources/Default.png; sourceTree = "<group>"; };
-		EB1386B112F22DBC004DBB7C /* AddressFormatter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddressFormatter.h; sourceTree = "<group>"; };
-		EB1386B212F22DBC004DBB7C /* AddressFormatter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddressFormatter.m; sourceTree = "<group>"; };
 		EB1386B412F22DBC004DBB7C /* AnalyticsWrapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AnalyticsWrapper.h; sourceTree = "<group>"; };
 		EB1386B512F22DBC004DBB7C /* AnalyticsWrapper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AnalyticsWrapper.m; sourceTree = "<group>"; };
 		EB1386BB12F22DBC004DBB7C /* ConnectionWrapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConnectionWrapper.h; sourceTree = "<group>"; };
@@ -732,8 +727,6 @@
 			isa = PBXGroup;
 			children = (
 				EB5773F912FE111500BAF5F5 /* DataControllers */,
-				EB1386B112F22DBC004DBB7C /* AddressFormatter.h */,
-				EB1386B212F22DBC004DBB7C /* AddressFormatter.m */,
 				EB1386B312F22DBC004DBB7C /* Analytics */,
 				EB1386B812F22DBC004DBB7C /* Connection */,
 				EB1386C112F22DBC004DBB7C /* Constants.h */,
@@ -1076,7 +1069,6 @@
 				A623F1F1120A035A00341C5E /* ModoThreeStateSwitchControl.h in JavaArchive */,
 				EB4211B8120C92C600089FE0 /* MapSavedAnnotation.h in JavaArchive */,
 				EBAE92B7121D733200F370BE /* PersonDetails.h in JavaArchive */,
-				EB13872F12F22DBC004DBB7C /* AddressFormatter.h in JavaArchive */,
 				EB13873112F22DBC004DBB7C /* AnalyticsWrapper.h in JavaArchive */,
 				EB13873712F22DBC004DBB7C /* ConnectionWrapper.h in JavaArchive */,
 				EB13873912F22DBC004DBB7C /* JSONAPIRequest.h in JavaArchive */,
@@ -1252,7 +1244,6 @@
 				EB138C0512F23250004DBB7C /* news in Resources */,
 				EB138C0612F23250004DBB7C /* people in Resources */,
 				EB138C0712F23250004DBB7C /* settings in Resources */,
-				EB99B88C12F3AEC10065EE93 /* usr in Resources */,
 				EBAA899812FB3AB200B743C3 /* Entitlements.plist in Resources */,
 				EBAA89A512FB411F00B743C3 /* DefaultTheme.plist in Resources */,
 				EB5773C212FDF91200BAF5F5 /* Config.plist in Resources */,
@@ -1338,7 +1329,6 @@
 				A623F1F2120A035A00341C5E /* ModoThreeStateSwitchControl.m in Sources */,
 				EB4211B9120C92C600089FE0 /* MapSavedAnnotation.m in Sources */,
 				EBAE92B8121D733200F370BE /* PersonDetails.m in Sources */,
-				EB13873012F22DBC004DBB7C /* AddressFormatter.m in Sources */,
 				EB13873212F22DBC004DBB7C /* AnalyticsWrapper.m in Sources */,
 				EB13873812F22DBC004DBB7C /* ConnectionWrapper.m in Sources */,
 				EB13873A12F22DBC004DBB7C /* JSONAPIRequest.m in Sources */,

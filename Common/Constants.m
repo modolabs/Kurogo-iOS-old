@@ -36,8 +36,6 @@ NSString * const MITModulesSavedStateKey = @"MITModulesSavedState";
 NSString * const ShakeToReturnPrefKey = @"ShakeToReturnHomePref";
 NSString * const MapTypePrefKey = @"MapTypePref";
 
-NSString * const MITInternalURLScheme = @"harvardmobile";
-
 
 // module tags
 NSString * const CalendarTag   = @"calendar";

@@ -24,8 +24,6 @@ extern NSString * const MITModulesSavedStateKey;
 extern NSString * const ShakeToReturnPrefKey;
 extern NSString * const MapTypePrefKey;
 
-extern NSString * const MITInternalURLScheme;
-
 
 // module tags
 extern NSString * const CalendarTag;

@@ -7,14 +7,23 @@
 }
 
 + (NSURL *)internalURLWithModuleTag:(NSString *)tag path:(NSString *)path query:(NSString *)query {
+	NSURL *url = nil;
+	
     if ([path rangeOfString:@"/"].location != 0) {
         path = [NSString stringWithFormat:@"/%@", path];
     }
     if ([query length] > 0) {
         path = [path stringByAppendingFormat:@"?%@", query];
     }
-    NSURL *url = [[NSURL alloc] initWithScheme:MITInternalURLScheme host:tag path:path];
-    return [url autorelease];
+	
+	NSArray *urlTypes = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleURLTypes"];
+	if ([urlTypes count]) {
+		NSArray *urlSchemes = [[urlTypes objectAtIndex:0] objectForKey:@"CFBundleURLSchemes"];
+		NSString *defaultScheme = [urlSchemes objectAtIndex:0];
+		url = [[[NSURL alloc] initWithScheme:defaultScheme host:tag path:path] autorelease];
+	}
+	
+    return url;
 }
 
 @end

@@ -401,12 +401,13 @@ NSInteger strLenSort(NSString *str1, NSString *str2, void *context)
 		PersonDetails *personDetails = nil;
 		PeopleDetailsViewController *detailView = [[PeopleDetailsViewController alloc] initWithStyle:UITableViewStyleGrouped];
 		if (tableView == self.searchController.searchResultsTableView) {
-            DLog(@"%@", [self.searchResults description]);
+            //DLog(@"%@", [self.searchResults description]);
 			NSDictionary *selectedResult = [self.searchResults objectAtIndex:indexPath.row];
 			personDetails = [PersonDetails retrieveOrCreate:selectedResult];
 		} else {
 			personDetails = [[[PeopleRecentsData sharedData] recents] objectAtIndex:indexPath.row];
 		}
+		DLog(@"%@", [personDetails description]);
 		detailView.personDetails = personDetails;
 		[self.navigationController pushViewController:detailView animated:YES];
 		[detailView release];

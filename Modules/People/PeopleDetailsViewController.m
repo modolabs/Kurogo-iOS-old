@@ -5,7 +5,6 @@
 #import "UIKit+MITAdditions.h"
 #import "Foundation+MITAdditions.h"
 #import "ModoNavigationController.h"
-#import "AddressFormatter.h"
 #import "MapBookmarkManager.h"
 #import "TileServerManager.h"
 #import "AnalyticsWrapper.h"
@@ -82,7 +81,7 @@ NSString * const RequestLookupAddress = @"address";
 			ldapValue = [self.personDetails formattedValueForKey:ldapTag];
 			displayTag = [self.personDetails displayNameForKey:ldapTag];
 			
-            DLog(@"%@", ldapValue);
+            DLog(@"ldapValue: %@", ldapValue);
             
 			if ([ldapValue length] > 0) {
 				// create one tag/label pair for each email/phone/office label
@@ -97,7 +96,7 @@ NSString * const RequestLookupAddress = @"address";
 				[currentSection addObject:[NSArray arrayWithObjects:displayTag, ldapValue, nil]];
 			}
 		}
-        DLog(@"%@", [currentSection description]);
+        DLog(@"current section: %@", [currentSection description]);
 		
 		if ([currentSection count] > 0)
 			[self.sectionArray addObject:currentSection];
@@ -162,7 +161,8 @@ NSString * const RequestLookupAddress = @"address";
             for (NSDictionary *entry in result) {
                 if ([[entry objectForKey:@"id"] isEqualToString:[self.personDetails valueForKey:@"uid"]]) {
                     self.personDetails = [PeopleRecentsData updatePerson:self.personDetails withSearchResult:entry];
-                    [self.tableView reloadData];
+					[self reloadDataForTableView:self.tableView];
+                    //[self.tableView reloadData];
                 }
             }
         }
