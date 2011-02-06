@@ -169,6 +169,10 @@
 		EB8392A01163FD6E0067C0A3 /* Calendar.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = EB83929F1163FD6E0067C0A3 /* Calendar.xcdatamodeld */; };
 		EB86CA6F115D276700C8F3D1 /* CalendarModule.m in Sources */ = {isa = PBXBuildFile; fileRef = EB86CA6E115D276700C8F3D1 /* CalendarModule.m */; };
 		EB86CAC6115D4ED500C8F3D1 /* CalendarEventsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EB86CAC5115D4ED500C8F3D1 /* CalendarEventsViewController.m */; };
+		EB8B34FD12FF1E9A005DBB8F /* KGOSearchResult.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB8B34FC12FF1E9A005DBB8F /* KGOSearchResult.h */; settings = {JAVA_ARCHIVE_SUBDIR = ../../Modules/Home; }; };
+		EB8B352C12FF33A7005DBB8F /* RecentSearches.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = EB8B352B12FF33A7005DBB8F /* RecentSearches.xcdatamodeld */; };
+		EB8B353212FF342B005DBB8F /* RecentSearch.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB8B353012FF342B005DBB8F /* RecentSearch.h */; settings = {JAVA_ARCHIVE_SUBDIR = ../../Modules/Home; }; };
+		EB8B353312FF342B005DBB8F /* RecentSearch.m in Sources */ = {isa = PBXBuildFile; fileRef = EB8B353112FF342B005DBB8F /* RecentSearch.m */; };
 		EB976D17116CF6630036A18E /* EventListTableView.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB976D15116CF6630036A18E /* EventListTableView.h */; settings = {JAVA_ARCHIVE_SUBDIR = Modules/Calendar; }; };
 		EB976D18116CF6630036A18E /* EventListTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = EB976D16116CF6630036A18E /* EventListTableView.m */; };
 		EB976D1B116CF6A10036A18E /* EventCategoriesTableView.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB976D19116CF6A10036A18E /* EventCategoriesTableView.h */; settings = {JAVA_ARCHIVE_SUBDIR = Modules/Calendar; }; };
@@ -438,6 +442,10 @@
 		EB86CA6E115D276700C8F3D1 /* CalendarModule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CalendarModule.m; sourceTree = "<group>"; };
 		EB86CAC4115D4ED500C8F3D1 /* CalendarEventsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CalendarEventsViewController.h; sourceTree = "<group>"; };
 		EB86CAC5115D4ED500C8F3D1 /* CalendarEventsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CalendarEventsViewController.m; sourceTree = "<group>"; };
+		EB8B34FC12FF1E9A005DBB8F /* KGOSearchResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGOSearchResult.h; sourceTree = "<group>"; };
+		EB8B352712FF3391005DBB8F /* RecentSearches.xcdatamodel */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = wrapper.xcdatamodel; path = RecentSearches.xcdatamodel; sourceTree = "<group>"; };
+		EB8B353012FF342B005DBB8F /* RecentSearch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RecentSearch.h; sourceTree = "<group>"; };
+		EB8B353112FF342B005DBB8F /* RecentSearch.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RecentSearch.m; sourceTree = "<group>"; };
 		EB976D15116CF6630036A18E /* EventListTableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EventListTableView.h; sourceTree = "<group>"; };
 		EB976D16116CF6630036A18E /* EventListTableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EventListTableView.m; sourceTree = "<group>"; };
 		EB976D19116CF6A10036A18E /* EventCategoriesTableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EventCategoriesTableView.h; sourceTree = "<group>"; };
@@ -882,10 +890,12 @@
 		EB5773F812FE0FAF00BAF5F5 /* Home */ = {
 			isa = PBXGroup;
 			children = (
+				EB8B352612FF335F005DBB8F /* SearchModel */,
 				EB57740212FE113400BAF5F5 /* SpringboardViewController.h */,
 				EB57740312FE113400BAF5F5 /* SpringboardViewController.m */,
 				EB57740612FE141900BAF5F5 /* FederatedSearchTableView.h */,
 				EB57740712FE141900BAF5F5 /* FederatedSearchTableView.m */,
+				EB8B34FC12FF1E9A005DBB8F /* KGOSearchResult.h */,
 			);
 			name = Home;
 			path = ../../Modules/Home;
@@ -985,6 +995,16 @@
 			);
 			name = Calendar;
 			path = ../../../Modules/Calendar;
+			sourceTree = "<group>";
+		};
+		EB8B352612FF335F005DBB8F /* SearchModel */ = {
+			isa = PBXGroup;
+			children = (
+				EB8B352B12FF33A7005DBB8F /* RecentSearches.xcdatamodeld */,
+				EB8B353012FF342B005DBB8F /* RecentSearch.h */,
+				EB8B353112FF342B005DBB8F /* RecentSearch.m */,
+			);
+			name = SearchModel;
 			sourceTree = "<group>";
 		};
 		EB99B08A12F36F3D0065EE93 /* Products */ = {
@@ -1097,6 +1117,8 @@
 				EB57740012FE111500BAF5F5 /* KGOSocialMediaController.h in JavaArchive */,
 				EB57740412FE113400BAF5F5 /* SpringboardViewController.h in JavaArchive */,
 				EB57740812FE141900BAF5F5 /* FederatedSearchTableView.h in JavaArchive */,
+				EB8B34FD12FF1E9A005DBB8F /* KGOSearchResult.h in JavaArchive */,
+				EB8B353212FF342B005DBB8F /* RecentSearch.h in JavaArchive */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1357,6 +1379,8 @@
 				EB57740112FE111500BAF5F5 /* KGOSocialMediaController.m in Sources */,
 				EB57740512FE113400BAF5F5 /* SpringboardViewController.m in Sources */,
 				EB57740912FE141900BAF5F5 /* FederatedSearchTableView.m in Sources */,
+				EB8B352C12FF33A7005DBB8F /* RecentSearches.xcdatamodeld in Sources */,
+				EB8B353312FF342B005DBB8F /* RecentSearch.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1810,6 +1834,16 @@
 			);
 			currentVersion = EB8392401163ED440067C0A3 /* Calendar.xcdatamodel */;
 			path = Calendar.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+		EB8B352B12FF33A7005DBB8F /* RecentSearches.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				EB8B352712FF3391005DBB8F /* RecentSearches.xcdatamodel */,
+			);
+			currentVersion = EB8B352712FF3391005DBB8F /* RecentSearches.xcdatamodel */;
+			path = RecentSearches.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;
 		};

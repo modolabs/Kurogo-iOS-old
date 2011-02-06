@@ -10,45 +10,123 @@ static NSString * DownArrowImage = @"common/arrow-white-down.png";
 
 - (void)didSelectSegment:(id)sender;
 - (void)updateSegmentStates;
+- (void)selectPageAtSection:(NSInteger)section row:(NSInteger)row;
+- (void)pageUp;
+- (void)pageDown;
 
 @end
 
 
 @implementation KGODetailPager
 
-@synthesize controller, delegate;
+@synthesize currentIndexPath = _currentIndexPath, delegate = _pagerDelegate, controller = _pagerController;
 
-- (id)init {
+
+- (id)initWithPagerController:(id<KGODetailPagerController>)controller delegate:(id<KGODetailPagerDelegate>)delegate {
     if (self = [super initWithItems:[NSArray arrayWithObjects:[UIImage imageNamed:UpArrowImage], [UIImage imageNamed:DownArrowImage], nil]]) {
-        [self updateSegmentStates];
+		_pagerController = controller;
+		_pagerDelegate = delegate;
+		
+		NSIndexPath *indexPathBuilder = nil;
+		NSUInteger numberOfSections = [controller numberOfSections:self];
+		
+		if (numberOfSections) {
+			_sections = [[NSIndexSet alloc] initWithIndexesInRange:NSMakeRange(0, numberOfSections)];
+			
+			NSUInteger numberOfPages = [controller pager:self numberOfPagesInSection:0];
+			indexPathBuilder = [NSIndexPath indexPathWithIndex:numberOfPages];
+			
+			for (NSUInteger i = 1; i < numberOfSections; i++) {
+				numberOfPages = [controller pager:self numberOfPagesInSection:0];
+				indexPathBuilder = [indexPathBuilder indexPathByAddingIndex:numberOfPages];
+			}
+		}
+		
+		if (numberOfSections) {
+			_pagesBySection = [indexPathBuilder retain];
+		}
+		
         [self setMomentary:YES];
         [self addTarget:self action:@selector(didSelectSegment:) forControlEvents:UIControlEventValueChanged];
+        [self updateSegmentStates];
     }
     return self;
 }
 
 - (void)updateSegmentStates {
-    [self setEnabled:[self.controller pagerCanShowPreviousPage:self] forSegmentAtIndex:PAGE_UP_SEGMENT];
-    [self setEnabled:[self.controller pagerCanShowNextPage:self] forSegmentAtIndex:PAGE_DOWN_SEGMENT];
+	BOOL canPageUp = YES;
+	BOOL canPageDown = YES;
+
+	NSUInteger section = _currentIndexPath.section;
+	
+	if (section == [_sections firstIndex]) {
+		if (self.currentIndexPath.row <= 0) {
+			canPageUp = NO;
+		}
+	}
+	
+	if (section == [_sections lastIndex]) {
+		NSUInteger maxPages = [_pagesBySection indexAtPosition:section];
+		if (self.currentIndexPath.row >= maxPages - 1) {
+			canPageDown = NO;
+		}
+	}
+	
+    [self setEnabled:canPageUp forSegmentAtIndex:PAGE_UP_SEGMENT];
+    [self setEnabled:canPageDown forSegmentAtIndex:PAGE_DOWN_SEGMENT];
+}
+
+- (void)pageUp {
+	NSInteger section = _currentIndexPath.section;
+	NSInteger row = _currentIndexPath.row - 1;
+
+	while (section >= 0 && row < 0) { // in case there are empty sections
+		section--;
+		row = [_pagesBySection indexAtPosition:section] - 1;
+	}
+	
+	[self selectPageAtSection:section row:row];
+}
+
+- (void)pageDown {
+	NSInteger section = _currentIndexPath.section;
+	NSInteger row = _currentIndexPath.row + 1;
+	NSUInteger maxSection = [_sections lastIndex];
+	
+	while (section <= maxSection && row > [_pagesBySection indexAtPosition:section] - 1) { // in case there are empty sections
+		section++;
+		row = 0;
+	}
+	
+	[self selectPageAtSection:section row:row];
+}
+
+- (void)selectPageAtSection:(NSInteger)section row:(NSInteger)row {
+	if (section >= 0 && row >= 0) {
+		self.currentIndexPath = [NSIndexPath indexPathForRow:row inSection:section];
+		id<KGOSearchResult> content = [self.controller pager:self contentForPageAtIndexPath:self.currentIndexPath];
+		[self.delegate pager:self showContentForPage:content];
+        [self updateSegmentStates];
+	}
 }
 
 - (void)didSelectSegment:(id)sender {
     if (sender == self) {
         if (self.selectedSegmentIndex == PAGE_UP_SEGMENT) {
-            id content = [self.controller contentForPreviousPage:self];
-			[self.delegate pager:self showContentForPage:content];
+			[self pageUp];
         } else {
-            id content = [self.controller contentForNextPage:self];
-			[self.delegate pager:self showContentForPage:content];
+			[self pageDown];
         }
-        [self updateSegmentStates];
     }
 }
 
 - (void)dealloc {
-    self.delegate = nil;
-	self.controller = nil;
-    [super dealloc];
+	_pagerDelegate = nil;
+	_pagerController = nil;
+	self.currentIndexPath = nil;
+	[_sections release];
+	[_pagesBySection release];
+	[super dealloc];
 }
 
 
