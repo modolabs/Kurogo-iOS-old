@@ -3,7 +3,6 @@
 #import "CalendarConstants.h"
 #import "CalendarDetailViewController.h"
 #import "CalendarDataManager.h"
-#import "MITModuleURL.h"
 #import "JSONAPIRequest.h"
 #import "CalendarEventMapAnnotation.h"
 #import "MITCalendarEvent.h"
@@ -37,79 +36,6 @@
         self.viewControllers = [NSArray arrayWithObject:calendarVC];
     }
     return self;
-}
-
-
-- (void)applicationWillTerminate
-{	
-	MITModuleURL *url = [[MITModuleURL alloc] initWithTag:CalendarTag];
-	
-	UIViewController *visibleVC = [calendarVC.navigationController visibleViewController];
-	CalendarEventsViewController *eventsVC;
-	NSString *path = nil;
-	NSString *parentPath = nil;
-	NSMutableDictionary *queryDict = [NSMutableDictionary dictionaryWithCapacity:2];
-	
-	// take care of CalendarDetailViewController, if any
-	if ([visibleVC isMemberOfClass:[CalendarDetailViewController class]]) {
-		path = CalendarStateEventDetail;
-		NSInteger eventID = [((CalendarDetailViewController *)visibleVC).event.eventID intValue];
-
-		// if there is an event detail screen, it will overwrite this with the same eventID
-		[queryDict setObject:[NSString stringWithFormat:@"%d", eventID] forKey:@"eventID"];
-		[calendarVC.navigationController popViewControllerAnimated:NO];
-		eventsVC = (CalendarEventsViewController *)[calendarVC.navigationController visibleViewController];
-
-	} else {
-		eventsVC = (CalendarEventsViewController *)visibleVC;
-	}
-
-	// take care of last CalendarEventsViewController
-	if ([eventsVC.tableView isMemberOfClass:[EventCategoriesTableView class]]) {
-		parentPath = CalendarStateCategoryList;
-		
-	} else {
-		if (!eventsVC.showList) {
-			[queryDict setObject:@"yes" forKey:@"map"];
-			
-			CalendarEventMapAnnotation *annotation = (CalendarEventMapAnnotation *)[[eventsVC.mapView selectedAnnotations] lastObject];
-			if (annotation != nil) {
-				NSInteger eventID = annotation.eventID;
-				[queryDict setObject:[NSString stringWithFormat:@"%d", eventID] forKey:@"eventID"];
-			}
-			
-			//[queryDict setObject:[eventsVC.mapView serializeCurrentRegion] forKey:@"region"];
-		}
-		
-		if (eventsVC.catID != kCalendarTopLevelCategoryID) {
-			parentPath = CalendarStateCategoryEventList;
-			[queryDict setObject:[NSString stringWithFormat:@"%d", eventsVC.catID]
-						  forKey:@"catID"];
-			
-		} else {
-			parentPath = CalendarStateEventList;
-			[queryDict setObject:[NSString stringWithFormat:@"%d", eventsVC.activeEventList]
-						  forKey:@"activeEventList"];
-		}
-	}
-
-	if (path == nil) {
-		path = parentPath;
-	} else {
-		[queryDict setObject:parentPath forKey:@"parentPath"];
-	}
-	
-	NSTimeInterval interval = [eventsVC.startDate timeIntervalSinceNow];
-	if (interval <= -86400.0 || interval >= 86400.0) {
-		NSDateFormatter *df = [[NSDateFormatter alloc] init];
-		[df setDateStyle:NSDateFormatterShortStyle];
-		[queryDict setObject:[df stringFromDate:eventsVC.startDate] forKey:@"startDate"];
-		[df release];
-	}
-
-	[url setPath:path query:[JSONAPIRequest buildQuery:queryDict]];
-	[url setAsModulePath];
-	[url release];
 }
 
 - (BOOL)handleLocalPath:(NSString *)localPath query:(NSString *)query

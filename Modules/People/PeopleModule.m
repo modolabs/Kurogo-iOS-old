@@ -1,5 +1,4 @@
 #import "PeopleModule.h"
-#import "MITModuleURL.h"
 #import "PeopleSearchViewController.h"
 #import "PeopleDetailsViewController.h"
 #import "PeopleRecentsData.h"
@@ -31,34 +30,6 @@ static NSString * const PeopleStateDetail = @"detail";
     }
     return self;
 }
-
-- (void)applicationWillTerminate
-{
-	MITModuleURL *url = [[MITModuleURL alloc] initWithTag:DirectoryTag];
-	
-	UIViewController *visibleVC = self.viewController.navigationController.visibleViewController;
-	if ([visibleVC isMemberOfClass:[PeopleSearchViewController class]]) {
-		PeopleSearchViewController *searchVC = (PeopleSearchViewController *)visibleVC;
-		//if (searchVC.searchController.active) {
-        if ([searchVC.searchController isActive]) {
-			if (searchVC.searchResults != nil) {
-				[url setPath:PeopleStateSearchComplete query:searchVC.searchTerms];
-			} else {
-				[url setPath:PeopleStateSearchBegin query:searchVC.searchTerms];
-			}
-		} else {
-			[url setPath:nil query:nil];
-		}
-
-	} else if ([visibleVC isMemberOfClass:[PeopleDetailsViewController class]]) {
-		PeopleDetailsViewController *detailVC = (PeopleDetailsViewController *)visibleVC;
-		[url setPath:PeopleStateDetail query:detailVC.personDetails.uid];
-	}
-	
-	[url setAsModulePath];
-	[url release];
-}
-
 
 - (void)applicationDidFinishLaunching
 {
