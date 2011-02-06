@@ -10,20 +10,108 @@
 #define MAX_CELL_BUFFER_IPHONE 12
 #define MAX_CELL_BUFFER_IPAD 25
 
-@interface KGOTableViewController (Private)
+
+@implementation KGOTableViewController
+
+@synthesize tableView = _tableView;
+
+- (id)init {
+	if (self = [super init]) {
+		_tableController = [[KGOTableController alloc] initWithViewController:self];
+		_tableController.dataSource = self;
+	}
+	return self;
+}
+
+- (id)initWithStyle:(UITableViewStyle)style {
+	if (self = [super init]) {
+		_tableController = [[KGOTableController alloc] initWithViewController:self];
+		_tableController.dataSource = self;
+		
+        self.tableView = [_tableController addTableViewWithStyle:style];
+	}
+	return self;
+}
+
+- (void)removeTableView:(UITableView *)tableView {
+	[_tableController removeTableView:tableView];
+}
+
+- (void)addTableView:(UITableView *)tableView {
+	[_tableController addTableView:tableView];
+}
+
+- (void)addTableView:(UITableView *)tableView withDataSource:(id<KGOTableViewDataSource>)dataSource {
+	[_tableController addTableView:tableView withDataSource:dataSource];
+}
+
+- (UITableView *)addTableViewWithFrame:(CGRect)frame style:(UITableViewStyle)style {
+	return [_tableController addTableViewWithFrame:frame style:style];
+}
+
+- (void)reloadDataForTableView:(UITableView *)tableView {
+	[_tableController reloadDataForTableView:tableView];
+}
+
+- (void)decacheTableView:(UITableView *)tableView {
+	[_tableController decacheTableView:tableView];
+}
+
+- (void)dealloc {
+	self.tableView = nil;
+	[_tableController release];
+	[super dealloc];
+}
+
+#pragma mark forwarding of UITableViewDataSource
+
+// we need to implement here the exact same methods as KGOTableController
+// and make sure none of KGOTableController's implementations make
+// references back to us
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+	return [_tableController tableView:tableView cellForRowAtIndexPath:indexPath];
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+	return 0;
+}
+
+#pragma mark forwarding of UITableViewDelegate
+
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+	return [_tableController tableView:tableView heightForHeaderInSection:section];
+}
+
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
+	return [_tableController tableView:tableView viewForHeaderInSection:section];
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+	return [_tableController tableView:tableView heightForRowAtIndexPath:indexPath];
+}
+
+@end
+
+
+
+
+//@interface KGOTableViewController (Private)
+@interface KGOTableController (Private)
 
 - (NSMutableDictionary *)contentBufferForTableView:(UITableView *)tableView;
 
 @end
 
 
-@implementation KGOTableViewController
+//@implementation KGOTableViewController
+@implementation KGOTableController
 
-@synthesize dataSource = _dataSource, tableView = _tableView;
+@synthesize dataSource = _dataSource;
 
-- (id)init {
+- (id)initWithSearchController:(id<UITableViewDelegate, UITableViewDataSource>)searchController {
 	if (self = [super init]) {
-        self.dataSource = self;
+		_searchController = searchController;
 		
         _tableViews = [[NSMutableArray alloc] init];
         _tableViewDataSources = [[NSMutableArray alloc] init];
@@ -34,6 +122,36 @@
 	return self;
 }
 
+- (id)initWithViewController:(KGOTableViewController *)viewController {
+    if (self = [super init]) {
+        _viewController = viewController;
+		
+        _tableViews = [[NSMutableArray alloc] init];
+        _tableViewDataSources = [[NSMutableArray alloc] init];
+		_cellContentBuffers = [[NSMutableArray alloc] init];
+		_currentContentBuffer = nil;
+		_currentTableView = nil;
+    }
+    return self;
+}
+
+- (void)dealloc {
+    self.dataSource = nil;
+    _viewController = nil;
+	_searchController = nil;
+	
+    [_tableViews release];
+    [_tableViewDataSources release];
+    [_cellContentBuffers release];
+	
+    [super dealloc];
+}
+
+- (UIViewController *)viewController {
+	return _viewController;
+}
+#pragma mark Table view queue
+/*
 - (id)initWithStyle:(UITableViewStyle)style {
     if (self = [super init]) {
         self.dataSource = self;
@@ -61,9 +179,13 @@
     }
     return self;
 }
-
+*/
 - (void)removeTableView:(UITableView *)tableView {
-    NSInteger tableViewIndex = [_tableViews indexOfObject:tableView];
+	if (tableView == _currentTableView) {
+		_currentTableView = nil;
+	}
+
+	NSInteger tableViewIndex = [_tableViews indexOfObject:tableView];
     if (tableViewIndex != NSNotFound) {
         [tableView removeFromSuperview];
 
@@ -82,7 +204,8 @@
 	[_tableViewDataSources addObject:dataSource];
 	[_cellContentBuffers addObject:[NSMutableDictionary dictionary]];
 	
-	[self.view addSubview:tableView];
+	//[self.view addSubview:tableView];
+	[_viewController.view addSubview:tableView];
 }
 
 - (UITableView *)addTableViewWithStyle:(UITableViewStyle)style {
@@ -90,7 +213,15 @@
 }
 
 - (UITableView *)addTableViewWithStyle:(UITableViewStyle)style dataSource:(id<KGOTableViewDataSource>)dataSource {
-    CGRect frame = CGRectMake(0, 0, self.view.bounds.size.width, self.view.bounds.size.height);
+	CGRect frame;
+	if (_viewController) {
+		frame = CGRectMake(0, 0, _viewController.view.bounds.size.width, _viewController.view.bounds.size.height);
+	} else if (_searchController) {
+		// TODO: get frame from search controller
+		frame = CGRectZero;
+	} else {
+		return nil;
+	}
     return [self addTableViewWithFrame:frame style:style dataSource:dataSource];
 }
 
@@ -106,22 +237,19 @@
         tableView.backgroundColor = [UIColor clearColor];
     }
     
-    tableView.delegate = self;
-    tableView.dataSource = self;
+	if (_viewController) {
+		tableView.delegate = _viewController;
+		tableView.dataSource = _viewController;
+	} else if (_searchController) {
+		tableView.delegate = _searchController;
+		tableView.dataSource = _searchController;
+	} else {
+		return nil;
+	}
 	
 	[self addTableView:tableView withDataSource:dataSource];
 	
     return tableView;
-}
-
-- (void)dealloc {
-    self.dataSource = nil;
-    
-    [_tableViews release];
-    [_tableViewDataSources release];
-    [_cellContentBuffers release];
-
-    [super dealloc];
 }
 
 - (void)reloadDataForTableView:(UITableView *)tableView {
@@ -270,9 +398,6 @@
 
 #pragma mark UITableViewDelegate methods
 
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-}
-
 /*
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
 }
@@ -369,6 +494,7 @@
 }
 
 /*
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
 - (void)tableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath
 - (void)tableView:(UITableView *)tableView didDeselectRowAtIndexPath:(NSIndexPath *)indexPath
