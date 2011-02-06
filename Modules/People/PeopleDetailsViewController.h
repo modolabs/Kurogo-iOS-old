@@ -4,8 +4,9 @@
 #import "PersonDetails.h"
 #import "JSONAPIRequest.h"
 #import "MapSearchResultAnnotation.h"
+#import "KGOTableViewController.h"
 
-@interface PeopleDetailsViewController : UITableViewController
+@interface PeopleDetailsViewController : KGOTableViewController
 	<ABPeoplePickerNavigationControllerDelegate, 
 	 ABNewPersonViewControllerDelegate, 
 	 ABPersonViewControllerDelegate, 

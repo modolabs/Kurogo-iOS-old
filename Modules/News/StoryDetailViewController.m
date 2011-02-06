@@ -6,7 +6,6 @@
 #import "Foundation+MITAdditions.h"
 #import "StoryListViewController.h"
 #import "StoryGalleryViewController.h"
-#import "ConnectionDetector.h"
 #import "NewsImage.h"
 #import "AnalyticsWrapper.h"
 
@@ -17,7 +16,7 @@
 - (void)loadView {
     [super loadView]; // surprisingly necessary empty call to super due to the way memory warnings work
 	
-	self.shareDelegate = self;
+	shareController = [(KGOShareButtonController *)[KGOShareButtonController alloc] initWithDelegate:self];
 }
 
 - (void)viewDidLoad {
@@ -153,6 +152,10 @@
 	return result;
 }
 
+- (void)share:(id)sender {
+	[shareController shareInView:self.view];
+}
+
 - (NSString *)actionSheetTitle {
 	return [NSString stringWithString:@"Share article with a friend"];
 }
@@ -192,10 +195,13 @@
 }
 
 - (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning]; 
+    [super didReceiveMemoryWarning];
+	[shareController release];
+	shareController = nil;
 }
 
 - (void)dealloc {
+	[shareController release];
 	[storyView release];
     [story release];
     [super dealloc];

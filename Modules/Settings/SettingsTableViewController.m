@@ -1,10 +1,10 @@
 #import "SettingsTableViewController.h"
 #import "MIT_MobileAppDelegate.h"
 #import "MITModule.h"
-#import "UITableView+MITUIAdditions.h"
 #import "MITUIConstants.h"
 #import "ModoThreeStateSwitchControl.h"
 #import <MapKit/MapKit.h>
+#import "KGOTheme.h"
 
 #define TITLE_HEIGHT 20.0
 #define SUBTITLE_HEIGHT NAVIGATION_BAR_HEIGHT
@@ -37,7 +37,7 @@ typedef enum {
 	
 	UILabel *titleView = [[UILabel alloc] initWithFrame:CGRectMake(PADDING, PADDING, 200, TITLE_HEIGHT)];
 	titleView.font = [UIFont boldSystemFontOfSize:STANDARD_CONTENT_FONT_SIZE];
-	titleView.textColor = GROUPED_SECTION_FONT_COLOR;
+	titleView.textColor = [[KGOTheme sharedTheme] textColorForGroupedSectionHeader];
 	titleView.backgroundColor = [UIColor clearColor];
 	titleView.text = aTitle;
 	
@@ -134,12 +134,11 @@ typedef enum {
 @end
 
 @implementation SettingsTableViewController
-
+/*
 - (void)viewDidLoad {
     [super viewDidLoad];
-    [self.tableView applyStandardColors];
 }
-
+*/
 - (void)didReceiveMemoryWarning {
 	// Releases the view if it doesn't have a superview.
     [super didReceiveMemoryWarning];

@@ -166,7 +166,7 @@
 
 			// restore detail screen
 			NSInteger eventID = [[queryDict objectForKey:@"eventID"] intValue];		
-			CalendarDetailViewController *detailVC = [[CalendarDetailViewController alloc] init];
+			CalendarDetailViewController *detailVC = [[CalendarDetailViewController alloc] initWithStyle:UITableViewStylePlain];
             
 			detailVC.event = [[CalendarDataManager eventWithID:eventID] retain];
 			[calendarVC.navigationController pushViewController:detailVC animated:NO];

@@ -1,10 +1,15 @@
 #import "UIKit+MITAdditions.h"
 
 
-@implementation UIColor (MITAdditions)
+@implementation UIColor (KGOAdditions)
 
-// snagged from http://arstechnica.com/apple/guides/2009/02/iphone-development-accessing-uicolor-components.ars
-// color must be either of the format @"0099FF" or @"#0099FF" or @"0x0099FF"
+/* this function was borrowed for use at MIT from Ars Technica.
+ * full source at https://github.com/ars/uicolor-utilities
+ * modified in KGO to handle alpha channel using Android RRGGBBAA syntax
+ *
+ * acceptable formats are
+ * @"0099FF" @"#0099FF" @"0x0099FF" @"0099FFAA" @"#0099FFAA" @"0x0099FFAA"
+ */
 + (UIColor *)colorWithHexString:(NSString *)hexString  
 {  
     NSString *cString = [[hexString stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] uppercaseString];
@@ -16,7 +21,8 @@
     if ([cString hasPrefix:@"0X"]) cString = [cString substringFromIndex:2];
     if ([cString hasPrefix:@"#"]) cString = [cString substringFromIndex:1];
     
-    if ([cString length] != 6) return nil;
+    NSUInteger length = [cString length];
+    if (length != 6 && length != 8) return nil;
     
     // Separate into r, g, b substrings
     NSRange range;
@@ -35,60 +41,50 @@
     [[NSScanner scannerWithString:rString] scanHexInt:&r];
     [[NSScanner scannerWithString:gString] scanHexInt:&g];
     [[NSScanner scannerWithString:bString] scanHexInt:&b];
+
+    CGFloat alpha = 1.0f;
+    if (length == 8) {
+        range.location = 6;
+        unsigned int a;
+        [[NSScanner scannerWithString:[cString substringWithRange:range]] scanHexInt:&a];
+        alpha = (float) a / 255.0f;
+    }
     
     return [UIColor colorWithRed:((float) r / 255.0f)
                            green:((float) g / 255.0f)
                             blue:((float) b / 255.0f)
-                           alpha:1.0f];
-}  
-
-@end
-
-@implementation UIImageView (MITAdditions)
-
-+ (UIImageView *)accessoryViewWithMITType:(MITAccessoryViewType)type {
-    NSString *imageName = nil;
-    NSString *highlightedImageName = nil;
-
-    switch (type) {
-        case MITAccessoryViewEmail:
-            imageName = MITImageNameEmail;
-            highlightedImageName = MITImageNameEmailHighlight;
-            break;
-        case MITAccessoryViewMap:
-            imageName = MITImageNameMap;
-            highlightedImageName = MITImageNameMapHighlight;
-            break;
-        case MITAccessoryViewPeople:
-            imageName = MITImageNamePeople;
-            highlightedImageName = MITImageNamePeopleHighlight;
-            break;
-        case MITAccessoryViewPhone:
-            imageName = MITImageNamePhone;
-            highlightedImageName = MITImageNamePhoneHighlight;
-            break;
-        case MITAccessoryViewExternal:
-            imageName = MITImageNameExternal;
-            highlightedImageName = MITImageNameExternalHighlight;
-            break;
-		case MITAccessoryViewEmergency:
-			imageName = MITImageNameEmergency;
-			highlightedImageName = MITImageNameEmergencyHighlight;
-			break;
-        case MITAccessoryViewSecure:
-            imageName = MITImageNameSecure;
-            highlightedImageName = MITImageNameSecureHighlight;
-            break;
-        case MITAccessoryViewBlank:
-            imageName = MITImageNameBlank;
-            highlightedImageName = MITImageNameBlank;
-            break;
-    }
-    
-    UIImage *image = [UIImage imageNamed:imageName];
-    UIImage *highlightedImage = [UIImage imageNamed:highlightedImageName];
-    UIImageView *accessoryView = [[UIImageView alloc] initWithImage:image highlightedImage:highlightedImage];
-    return [accessoryView autorelease];
+                           alpha:alpha];
 }
 
 @end
+
+@implementation UIImageView (KGOAdditions)
+
+- (void)showLoadingIndicator {
+	self.animationImages = [NSArray arrayWithObjects:
+							[UIImage imageNamed:@"loading-animation/iPhoneBusybox_01.png"],
+							[UIImage imageNamed:@"loading-animation/iPhoneBusybox_02.png"],
+							[UIImage imageNamed:@"loading-animation/iPhoneBusybox_03.png"],
+							[UIImage imageNamed:@"loading-animation/iPhoneBusybox_04.png"],
+							[UIImage imageNamed:@"loading-animation/iPhoneBusybox_05.png"],
+							[UIImage imageNamed:@"loading-animation/iPhoneBusybox_06.png"],
+							[UIImage imageNamed:@"loading-animation/iPhoneBusybox_07.png"],
+							[UIImage imageNamed:@"loading-animation/iPhoneBusybox_08.png"],
+							[UIImage imageNamed:@"loading-animation/iPhoneBusybox_09.png"],
+							[UIImage imageNamed:@"loading-animation/iPhoneBusybox_10.png"],
+							[UIImage imageNamed:@"loading-animation/iPhoneBusybox_11.png"],
+							[UIImage imageNamed:@"loading-animation/iPhoneBusybox_12.png"],
+							nil];
+	
+	[self startAnimating];
+}
+
+- (void)hideLoadingIndicator {
+	[self stopAnimating];
+	self.animationImages = nil;
+}
+
+@end
+
+
+

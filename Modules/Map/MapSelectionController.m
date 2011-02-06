@@ -152,7 +152,6 @@
 			break;
 	}
 
-    [self.tableView applyStandardColors];
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
     self.tableView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
@@ -160,7 +159,7 @@
     [self.view addSubview:self.tableView];
     [self.tableView reloadData];
     
-    NSString *detailString = [NSString stringWithFormat:@"/maps/%@", self.navigationItem.title];
+    NSString *detailString = [NSString stringWithFormat:@"/map/%@", self.navigationItem.title];
     [[AnalyticsWrapper sharedWrapper] trackPageview:detailString];
 }
 
@@ -225,8 +224,8 @@
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil) {
         cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier] autorelease];
-		cell.textLabel.textColor = CELL_STANDARD_FONT_COLOR;
-		cell.textLabel.font = [UIFont boldSystemFontOfSize:CELL_STANDARD_FONT_SIZE];
+		cell.textLabel.textColor = [[KGOTheme sharedTheme] textColorForTableCellTitleWithStyle:KGOTableCellStyleSubtitle];
+		cell.textLabel.font = [[KGOTheme sharedTheme] fontForTableCellTitleWithStyle:KGOTableCellStyleSubtitle];
 		cell.selectionStyle = UITableViewCellSelectionStyleGray;
     }
     
@@ -236,8 +235,8 @@
             MapSavedAnnotation *savedAnnotation = [self.tableItems objectAtIndex:indexPath.row];
             cell.textLabel.text = savedAnnotation.name;
             cell.detailTextLabel.text = savedAnnotation.street;
-            cell.detailTextLabel.textColor = CELL_DETAIL_FONT_COLOR;
-            cell.detailTextLabel.font = [UIFont systemFontOfSize:CELL_DETAIL_FONT_SIZE];
+            cell.detailTextLabel.textColor = [[KGOTheme sharedTheme] textColorForTableCellSubtitleWithStyle:KGOTableCellStyleSubtitle];
+            cell.detailTextLabel.font = [[KGOTheme sharedTheme] fontForTableCellSubtitleWithStyle:KGOTableCellStyleSubtitle];
 			break;
         }
 		case MapSelectionControllerSegmentRecents:

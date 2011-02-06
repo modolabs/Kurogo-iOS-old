@@ -2,14 +2,14 @@
 #import "MIT_MobileAppDelegate.h"
 #import "UIKit+MITAdditions.h"
 #import "AboutMITVC.h"
-#import "UITableView+MITUIAdditions.h"
 #import "MITUIConstants.h"
 #import "MITMailComposeController.h"
+#import "KGOTheme.h"
+#import "ThemeConstants.h"
 
 @implementation AboutTableViewController
 
 - (void)viewDidLoad {
-    [self.tableView applyStandardColors];
     showBuildNumber = NO;
     
     UIView *footerView = [[UIView alloc] initWithFrame:CGRectMake(10, 0, self.view.frame.size.width - 20, 45)];
@@ -17,8 +17,8 @@
     footerLabel.text = @"Copyright © 2011 The President and Fellows of Harvard College";
     footerLabel.backgroundColor = [UIColor clearColor];
     footerLabel.textAlignment = UITextAlignmentCenter;
-    footerLabel.textColor = CELL_DETAIL_FONT_COLOR;
-    footerLabel.font = [UIFont systemFontOfSize:12.0];
+    footerLabel.textColor = [[KGOTheme sharedTheme] textColorForTableFooter];
+    footerLabel.font = [[KGOTheme sharedTheme] fontForTableFooter];
     footerLabel.lineBreakMode = UILineBreakModeWordWrap;
     footerLabel.numberOfLines = 0;
     [footerView addSubview:footerLabel];
@@ -44,9 +44,11 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     if (indexPath.section == 0 && indexPath.row == 1) {
-        NSString *aboutText = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"AboutAppText"];
+		NSString * file = [[NSBundle mainBundle] pathForResource:@"Config" ofType:@"plist"];
+        NSDictionary *infoDict = [NSDictionary dictionaryWithContentsOfFile:file];
+        NSString *aboutText = [infoDict objectForKey:@"AboutAppText"];
         UIFont *aboutFont = [UIFont systemFontOfSize:14.0];
-        CGSize aboutSize = [aboutText sizeWithFont:aboutFont constrainedToSize:CGSizeMake(270, 2000) lineBreakMode:UILineBreakModeWordWrap];
+        CGSize aboutSize = [aboutText sizeWithFont:aboutFont constrainedToSize:CGSizeMake(tableView.frame.size.width, 2000) lineBreakMode:UILineBreakModeWordWrap];
         return aboutSize.height + 40;
     }
     else {
@@ -78,8 +80,8 @@
                         cell.textLabel.text = [NSString stringWithFormat:@"%@ %@ (%@)", [infoDict objectForKey:@"CFBundleName"], [infoDict objectForKey:@"CFBundleVersion"], MITBuildNumber];
                     }
                     cell.textLabel.textAlignment = UITextAlignmentCenter;
-                    cell.textLabel.font = [UIFont boldSystemFontOfSize:17.0];
-        			cell.textLabel.textColor = CELL_STANDARD_FONT_COLOR;
+                    cell.textLabel.font = [[KGOTheme sharedTheme] fontForTableCellTitleWithStyle:UITableViewCellStyleDefault];
+        			cell.textLabel.textColor = [[KGOTheme sharedTheme] textColorForTableCellTitleWithStyle:UITableViewCellStyleDefault];
                     cell.accessoryType = UITableViewCellAccessoryNone;
                     cell.selectionStyle = UITableViewCellSelectionStyleNone;
                     cell.backgroundColor = [UIColor whiteColor];
@@ -87,12 +89,13 @@
                     break;
                 case 1:
                 {
-                    NSDictionary *infoDict = [[NSBundle mainBundle] infoDictionary];
+					NSString * file = [[NSBundle mainBundle] pathForResource:@"Config" ofType:@"plist"];
+					NSDictionary *infoDict = [NSDictionary dictionaryWithContentsOfFile:file];
                     cell.textLabel.text = [infoDict objectForKey:@"AboutAppText"];
                     cell.textLabel.lineBreakMode = UILineBreakModeWordWrap;
                     cell.textLabel.numberOfLines = 0;
-                    cell.textLabel.font = [UIFont systemFontOfSize:15.0];
-        			cell.textLabel.textColor = CELL_STANDARD_FONT_COLOR;
+                    cell.textLabel.font = [[KGOTheme sharedTheme] fontForBodyText];
+        			cell.textLabel.textColor = [[KGOTheme sharedTheme] textColorForTableCellTitleWithStyle:UITableViewCellStyleDefault];
                     cell.accessoryType = UITableViewCellAccessoryNone;
                     cell.selectionStyle = UITableViewCellSelectionStyleNone;
                     cell.backgroundColor = [UIColor whiteColor];
@@ -108,11 +111,11 @@
                     cell.textLabel.text = @"About Harvard";
                     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
                     cell.selectionStyle = UITableViewCellSelectionStyleGray;
-                    cell.textLabel.textColor = CELL_STANDARD_FONT_COLOR;
+                    cell.textLabel.textColor = [[KGOTheme sharedTheme] textColorForTableCellTitleWithStyle:UITableViewCellStyleDefault];
                     break;
                 case 1:
                     cell.textLabel.text = @"Send Feedback";
-                    cell.accessoryView = [UIImageView accessoryViewWithMITType:MITAccessoryViewEmail];
+                    cell.accessoryView = [[KGOTheme sharedTheme] accessoryViewForType:TableViewCellAccessoryEmail];
                     cell.selectionStyle = UITableViewCellSelectionStyleGray;
                     break;
                 break;
@@ -139,7 +142,9 @@
             }
             case 1: {
                 NSString *subject = [NSString stringWithFormat:@"Feedback for Harvard Mobile %@ (%@)", [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"], MITBuildNumber];
-                NSString *email = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"AppFeedbackAddress"];
+				NSString * file = [[NSBundle mainBundle] pathForResource:@"Config" ofType:@"plist"];
+				NSDictionary *infoDict = [NSDictionary dictionaryWithContentsOfFile:file];
+                NSString *email = [infoDict objectForKey:@"AppFeedbackAddress"];
                 [MITMailComposeController presentMailControllerWithEmail:email subject:subject body:[NSString string]];
 				break;
             }

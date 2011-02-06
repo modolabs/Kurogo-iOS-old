@@ -27,7 +27,6 @@ NSString * const MITEventsModuleInSortOrderKey = @"MITEventsModuleInSortOrder";
 NSString * const EmergencyUnreadCountKey = @"UnreadEmergencyCount";
 NSString * const ShuttleSubscriptionsKey = @"ActiveShuttleSubscriptions";
 NSString * const StellarTermKey = @"StellarTerm";
-NSString * const TwitterShareUsernameKey = @"TwitterShareUsername";
 NSString * const MITDeviceIdKey = @"device_id";
 NSString * const MITPassCodeKey = @"pass_key";
 NSString * const DeviceTokenKey = @"DeviceToken";
@@ -107,21 +106,6 @@ NSString * const LocalPathMapsSelectedAnnotation = @"annotation";
 NSString * const ImageNameHomeScreenBackground = @"home/home-background.png";
 NSString * const MITImageNameBackground      = @"global/body-background.png";
 
-NSString * const MITImageNameEmail           = @"global/action-email.png";
-NSString * const MITImageNameEmailHighlight  = @"global/action-email-highlight.png";
-NSString * const MITImageNameMap             = @"global/action-map.png";
-NSString * const MITImageNameMapHighlight    = @"global/action-map-highlight.png";
-NSString * const MITImageNamePeople          = @"global/action-people.png";
-NSString * const MITImageNamePeopleHighlight = @"global/action-people-highlight.png";
-NSString * const MITImageNamePhone           = @"global/action-phone.png";
-NSString * const MITImageNamePhoneHighlight  = @"global/action-phone-highlight.png";
-NSString * const MITImageNameExternal           = @"global/action-external.png";
-NSString * const MITImageNameExternalHighlight  = @"global/action-external-highlight.png";
-NSString * const MITImageNameEmergency          = @"global/action-emergency.png";
-NSString * const MITImageNameEmergencyHighlight = @"global/action-emergency-highlight.png";
-NSString * const MITImageNameSecure           = @"global/action-secure.png";
-NSString * const MITImageNameSecureHighlight  = @"global/action-secure-highlight.png";
-
 NSString * const MITImageNameScrollTabBackgroundOpaque = @"global/scrolltabs-background-opaque.png";
 NSString * const MITImageNameScrollTabBackgroundTranslucent = @"global/scrolltabs-background-transparent.png";
 NSString * const MITImageNameScrollTabLeftEndCap = @"global/scrolltabs-leftarrow.png";
@@ -137,8 +121,6 @@ NSString * const MITImageNameSubheadBarBackground = @"global/subheadbar_backgrou
 
 NSString * const MITImageNameSearch = @"global/search.png";
 NSString * const MITImageNameBookmark = @"global/bookmark.png";
-
-NSString * const MITImageNameBlank = @"global/action-blank.png";
 
 // errors
 NSString * const MapsErrorDomain = @"com.modolabs.Maps.ErrorDomain";

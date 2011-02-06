@@ -1,6 +1,5 @@
 #import <Foundation/Foundation.h>
 #import "MITBuildInfo.h"
-#import "Secret.h"
 
 // common URLs
 extern NSString * const MITMobileWebDomainString;
@@ -16,7 +15,6 @@ extern NSString * const EmergencyLastUpdatedKey;
 extern NSString * const EmergencyUnreadCountKey;
 extern NSString * const ShuttleSubscriptionsKey;
 extern NSString * const StellarTermKey;
-extern NSString * const TwitterShareUsernameKey;
 extern NSString * const MITDeviceIdKey;
 extern NSString * const MITPassCodeKey;
 extern NSString * const DeviceTokenKey;
@@ -99,21 +97,6 @@ extern NSString * const LocalPathMapsSelectedAnnotation;
 extern NSString * const ImageNameHomeScreenBackground;
 extern NSString * const MITImageNameBackground;
 
-extern NSString * const MITImageNameEmail;
-extern NSString * const MITImageNameEmailHighlight;
-extern NSString * const MITImageNameMap;
-extern NSString * const MITImageNameMapHighlight;
-extern NSString * const MITImageNamePeople;
-extern NSString * const MITImageNamePeopleHighlight;
-extern NSString * const MITImageNamePhone;
-extern NSString * const MITImageNamePhoneHighlight;
-extern NSString * const MITImageNameExternal;
-extern NSString * const MITImageNameExternalHighlight;
-extern NSString * const MITImageNameEmergency;
-extern NSString * const MITImageNameEmergencyHighlight;
-extern NSString * const MITImageNameSecure;
-extern NSString * const MITImageNameSecureHighlight;
-
 extern NSString * const MITImageNameScrollTabBackgroundOpaque;
 extern NSString * const MITImageNameScrollTabBackgroundTranslucent;
 extern NSString * const MITImageNameScrollTabLeftEndCap;
@@ -129,20 +112,6 @@ extern NSString * const MITImageNameSubheadBarBackground;
 
 extern NSString * const MITImageNameSearch;
 extern NSString * const MITImageNameBookmark;
-extern NSString * const MITImageNameBlank;
-
-// action accessory types
-
-typedef enum {
-    MITAccessoryViewEmail,
-    MITAccessoryViewMap,
-    MITAccessoryViewPeople,
-    MITAccessoryViewPhone,
-    MITAccessoryViewExternal,
-	MITAccessoryViewEmergency,
-    MITAccessoryViewSecure,
-    MITAccessoryViewBlank
-} MITAccessoryViewType;
 
 // errors
 extern NSString * const MapsErrorDomain;

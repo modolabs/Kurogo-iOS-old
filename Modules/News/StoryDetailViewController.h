@@ -1,5 +1,5 @@
 #import <UIKit/UIKit.h>
-#import "ShareDetailViewController.h"
+#import "KGOShareButtonController.h"
 
 @class NewsStory;
 //@class StoryListViewController;
@@ -13,7 +13,7 @@
 
 @end
 
-@interface StoryDetailViewController : ShareDetailViewController <UIWebViewDelegate, ShareItemDelegate> {
+@interface StoryDetailViewController : UIViewController <UIWebViewDelegate, KGOShareButtonDelegate> {
 	//StoryListViewController *newsController;
     id<NewsControllerDelegate> newsController;
     NewsStory *story;
@@ -21,6 +21,8 @@
 	UISegmentedControl *storyPager;
     
     UIWebView *storyView;
+	
+	KGOShareButtonController *shareController;
 }
 
 @property (nonatomic, retain) id<NewsControllerDelegate> newsController;

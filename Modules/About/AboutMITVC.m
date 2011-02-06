@@ -1,13 +1,12 @@
 #import "AboutMITVC.h"
-#import "UITableView+MITUIAdditions.h"
 #import "MITUIConstants.h"
 #import "AnalyticsWrapper.h"
+#import "KGOTheme.h"
 
 @implementation AboutMITVC
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    [self.tableView applyStandardColors];
     self.navigationItem.title = @"About Harvard";
     
     [[AnalyticsWrapper sharedWrapper] trackPageview:@"/about/harvard"];
@@ -26,7 +25,9 @@
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    NSString *aboutText = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"AboutHarvardText"];
+	NSString * file = [[NSBundle mainBundle] pathForResource:@"Config" ofType:@"plist"];
+	NSDictionary *infoDict = [NSDictionary dictionaryWithContentsOfFile:file];
+    NSString *aboutText = [infoDict objectForKey:@"AboutOrgText"];
     UIFont *aboutFont = [UIFont systemFontOfSize:15.0];
     CGSize aboutSize = [aboutText sizeWithFont:aboutFont constrainedToSize:CGSizeMake(270, 2000) lineBreakMode:UILineBreakModeWordWrap];
     return aboutSize.height;
@@ -45,9 +46,11 @@
         cell.detailTextLabel.backgroundColor = [UIColor clearColor];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
     }
-    cell.textLabel.text = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"AboutHarvardText"];
-    cell.textLabel.font = [UIFont systemFontOfSize:15.0];
-    cell.textLabel.textColor = CELL_STANDARD_FONT_COLOR;
+	NSString * file = [[NSBundle mainBundle] pathForResource:@"Config" ofType:@"plist"];
+	NSDictionary *infoDict = [NSDictionary dictionaryWithContentsOfFile:file];
+    cell.textLabel.text = [infoDict objectForKey:@"AboutOrgText"];
+    cell.textLabel.font = [[KGOTheme sharedTheme] fontForBodyText];
+    cell.textLabel.textColor = [[KGOTheme sharedTheme] textColorForTableCellTitleWithStyle:UITableViewCellStyleDefault];
     cell.textLabel.lineBreakMode = UILineBreakModeWordWrap;
     cell.textLabel.numberOfLines = 0;
 	

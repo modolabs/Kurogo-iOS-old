@@ -3,13 +3,14 @@
 #import "JSONAPIRequest.h"
 #import "CMModule.h"
 #import "ModoSearchBar.h"
+#import "KGOTableViewController.h"
 
 @class MapSearchResultsTableView;
 @class MapSelectionController;
 @class MITSearchDisplayController;
 @class CampusMapToolbar;
 
-@interface CampusMapViewController : UIViewController <UISearchBarDelegate, MKMapViewDelegate,
+@interface CampusMapViewController : KGOTableViewController <UISearchBarDelegate, MKMapViewDelegate,
 														JSONAPIDelegate, UIAlertViewDelegate>
 {
 

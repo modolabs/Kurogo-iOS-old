@@ -64,7 +64,7 @@
     }
     
     // set up analytics
-    [[AnalyticsWrapper sharedWrapper] setupWithProvider:ModoAnalyticsProviderGoogle];
+    [[AnalyticsWrapper sharedWrapper] setup];
 
     /*
     // Register for push notifications

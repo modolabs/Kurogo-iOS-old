@@ -1,12 +1,14 @@
 #import <UIKit/UIKit.h>
 #import "JSONAPIRequest.h"
 #import "CalendarConstants.h"
-#import "ShareDetailViewController.h"
+#import "KGOShareButtonController.h"
 #import "MIT_MobileAppDelegate.h"
+#import "KGOShareButtonController.h"
+#import "KGOTableViewController.h"
 
 @class MITCalendarEvent;
 
-@interface CalendarDetailViewController : ShareDetailViewController <UITableViewDelegate, UITableViewDataSource, JSONAPIDelegate, ShareItemDelegate, UIWebViewDelegate> {
+@interface CalendarDetailViewController : KGOTableViewController <KGOShareButtonDelegate, JSONAPIDelegate, UIWebViewDelegate> {
 	
     BOOL isRegularEvent;
     
@@ -14,7 +16,6 @@
 	CalendarEventListType* rowTypes;
 	NSInteger numRows;
 	
-	UITableView *_tableView;
 	UIButton *shareButton;
 	
     NSInteger descriptionHeight;
@@ -25,10 +26,11 @@
 
 	// list of events to scroll through for previous/next buttons
 	NSArray *events;
+	
+	KGOShareButtonController *shareController;
 }
 
 @property (nonatomic, assign) MITCalendarEvent *event;
-@property (nonatomic, retain) UITableView *tableView;
 @property (nonatomic, assign) NSArray *events;
 
 - (void)reloadEvent;
@@ -36,8 +38,6 @@
 - (void)setupShareButton;
 - (void)requestEventDetails;
 - (void)showNextEvent:(id)sender;
-
-- (NSString *)htmlStringFromString:(NSString *)source;
 
 @end
 

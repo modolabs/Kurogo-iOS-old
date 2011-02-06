@@ -86,6 +86,11 @@
 }
 */
 
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
+	return [NSString stringWithFormat:@"%d found", self.searchResults.count];
+}
+
+/*
 - (UIView *) tableView: (UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
 	return [UITableView ungroupedSectionHeaderWithTitle:
 			[NSString stringWithFormat:@"%d found", self.searchResults.count]];
@@ -94,6 +99,6 @@
 - (CGFloat)tableView: (UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
 	return UNGROUPED_SECTION_HEADER_HEIGHT;
 }
-
+*/
 @end
 

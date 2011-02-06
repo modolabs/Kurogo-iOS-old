@@ -4,14 +4,15 @@
 #import "NavScrollerView.h"
 #import "ModoSearchBar.h"
 #import "StoryDetailViewController.h"
+#import "KGOTableViewController.h"
 
 typedef int NewsCategoryId;
 
 @class MITSearchDisplayController;
 @class NewsStory;
 
-@interface StoryListViewController : UIViewController <UITableViewDataSource, UITableViewDelegate,
-UISearchBarDelegate, StoryXMLParserDelegate, JSONAPIDelegate, NavScrollerDelegate, NewsControllerDelegate> {
+@interface StoryListViewController : KGOTableViewController <UISearchBarDelegate,
+StoryXMLParserDelegate, JSONAPIDelegate, NavScrollerDelegate, NewsControllerDelegate> {
 	UITableView *storyTable;
     NewsStory *featuredStory;
     NSArray *stories;

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>Analytics</key>
+	<dict>
+		<key>Provider</key>
+		<string>Google</string>
+		<key>AccountID</key>
+		<string></string>
+	</dict>
+	<key>SocialMedia</key>
+	<dict>
+		<key>bit.ly</key>
+		<dict>
+			<key>Username</key>
+			<string></string>
+			<key>APIKey</key>
+			<string></string>
+		</dict>
+		<key>Facebook</key>
+		<dict>
+			<key>AppID</key>
+			<string></string>
+			<key>APIKey</key>
+			<string></string>
+			<key>APISecret</key>
+			<string></string>
+		</dict>
+		<key>Twitter</key>
+		<dict>
+			<key>OAuthConsumerKey</key>
+			<string></string>
+			<key>OAuthConsumerSecret</key>
+			<string></string>
+		</dict>
+	</dict>
+	<key>OrganizationName</key>
+	<string>Harvard</string>
+	<key>AppFeedbackAddress</key>
+	<string>digitalcomms@harvard.edu</string>
+	<key>AboutOrgText</key>
+	<string>Harvard University is devoted to excellence in teaching, learning, and research, and to developing leaders in many disciplines who make a difference globally. The University has twelve degree-granting Schools in addition to the Radcliffe Institute for Advanced Study.
+
+Established in 1636, Harvard is the oldest institution of higher education in the United States. The University, which is based in Cambridge and Boston, Massachusetts, has an enrollment of over 20,000 degree candidates, including undergraduate, graduate, and professional students. Harvard has more than 360,000 alumni around the world.</string>
+	<key>AboutAppText</key>
+	<string>The Harvard iPhone/iPod Touch application is part of a broader initiative to improve the mobile experience of students, faculty, staff, visitors, and neighbors who interact with Harvard&apos;s campus and community. We will continue to develop, expand and improve this application. We welcome your ideas and feedback.</string>
+</dict>
+</plist>

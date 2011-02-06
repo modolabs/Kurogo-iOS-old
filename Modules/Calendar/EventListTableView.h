@@ -1,8 +1,9 @@
 #import <UIKit/UIKit.h>
 #import "CalendarEventsViewController.h"
 #import "CalendarConstants.h"
+#import "KGOTableViewController.h"
 
-@interface EventListTableView : UITableView <UITableViewDelegate, UITableViewDataSource> {
+@interface EventListTableView : UITableView <UITableViewDelegate, KGOTableViewDataSource> {
 
 	NSArray *events;
 	BOOL isSearchResults;

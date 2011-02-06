@@ -16,54 +16,80 @@ static AnalyticsWrapper *s_sharedWrapper = nil;
 
 - (id)init {
     if (self = [super init]) {
-        _provider = ModoAnalyticsProviderGoogle;
+		NSString * file = [[NSBundle mainBundle] pathForResource:@"Config" ofType:@"plist"];
+        NSDictionary *infoDict = [NSDictionary dictionaryWithContentsOfFile:file];
+		
+		_preferences = [[infoDict objectForKey:@"Analytics"] retain];
     }
     return self;
 }
 
 
-- (void)setupWithProvider:(ModoAnalyticsProvider)provider {
-    self.provider = provider;
-    switch (provider) {
-        case ModoAnalyticsProviderGoogle:
-        default:
-            // TODO: figure out reasonable dispatch time interval
-            [[GANTracker sharedTracker] startTrackerWithAccountID:AnalyticsAccountID
-                                                   dispatchPeriod:30
-                                                         delegate:self];
-            break;
-    }
+- (void)setup {
+	NSString *provider = [_preferences objectForKey:@"Provider"];
+	NSString *accountID = [_preferences objectForKey:@"AccountID"];
+	
+	if ([provider isEqualToString:@"Google"]) {
+		_provider = ModoAnalyticsProviderGoogle;
+		
+		// TODO: figure out reasonable dispatch time interval
+		[[GANTracker sharedTracker] startTrackerWithAccountID:accountID
+											   dispatchPeriod:30
+													 delegate:self];
+	}
 }
 
 - (void)shutdown {
-    [[GANTracker sharedTracker] stopTracker];
+	switch (_provider) {
+		case ModoAnalyticsProviderGoogle:
+			[[GANTracker sharedTracker] stopTracker];
+			break;
+		default:
+			break;
+	}
 }
 
 - (void)trackPageview:(NSString *)pageID {
-    NSError *error = nil;
-    // TODO: GA requires page views to begin with a slash
-    // may want to add that into this function
-    if (![[GANTracker sharedTracker] trackPageview:pageID
-                                         withError:&error])
-    {
-        NSLog(@"Failed to track pageview: %@", [error description]);
-
-        // TODO: handle error
-    }
+	switch (_provider) {
+		case ModoAnalyticsProviderGoogle:
+		{
+			NSError *error = nil;
+			// TODO: GA requires page views to begin with a slash
+			// may want to add that into this function
+			if (![[GANTracker sharedTracker] trackPageview:pageID
+												 withError:&error])
+			{
+				NSLog(@"Failed to track pageview: %@", [error description]);
+				
+				// TODO: handle error
+			}
+			break;
+		}
+		default:
+			break;
+	}
 }
 
 - (void)trackEvent:(NSString *)event action:(NSString *)action label:(NSString *)label {
-    NSError *error = nil;
-    if (![[GANTracker sharedTracker] trackEvent:event  // required
-                                         action:action // required
-                                          label:label  // can be nil
-                                          value:-1     // -1 for no value
-                                      withError:&error])
-    {
-        NSLog(@"Failed to track event: %@", [error description]);
-        
-        // TODO: handle error
-    }
+	switch (_provider) {
+		case ModoAnalyticsProviderGoogle:
+		{
+			NSError *error = nil;
+			if (![[GANTracker sharedTracker] trackEvent:event  // required
+												 action:action // required
+												  label:label  // can be nil
+												  value:-1     // -1 for no value
+											  withError:&error])
+			{
+				NSLog(@"Failed to track event: %@", [error description]);
+				
+				// TODO: handle error
+			}
+			break;
+		}
+		default:
+			break;
+	}
 }
 
 
@@ -73,7 +99,7 @@ static AnalyticsWrapper *s_sharedWrapper = nil;
                   eventsDispatched:(NSUInteger)eventsDispatched
               eventsFailedDispatch:(NSUInteger)eventsFailedDispatch
 {
-    NSLog(@"%d events dispatched, %d events failed to dispatch", eventsDispatched, eventsFailedDispatch);
+    NSLog(@"Google Analytics: %d events dispatched, %d events failed to dispatch", eventsDispatched, eventsFailedDispatch);
     
     
     // TODO: figure out what to do about successful and failed event dispatches

@@ -1,8 +1,9 @@
 #import <UIKit/UIKit.h>
+#import "KGOTableViewController.h"
 
 @class CampusMapViewController;
 
-@interface MapSearchResultsTableView : UITableView <UITableViewDelegate, UITableViewDataSource> {
+@interface MapSearchResultsTableView : UITableView <UITableViewDelegate, KGOTableViewDataSource> {
 
 	NSArray *_searchResults;
 	CampusMapViewController* _campusMapVC; // this is our parent VC

@@ -2,12 +2,12 @@
 #import "MITCalendarEvent.h"
 #import "EventCategory.h"
 #import "MITUIConstants.h"
-#import "MultiLineTableViewCell.h"
 #import "Foundation+MITAdditions.h"
 #import "MapBookmarkManager.h"
 #import "MapSearchResultAnnotation.h"
 #import "AnalyticsWrapper.h"
 #import "MITMailComposeController.h"
+#import "ThemeConstants.h"
 
 #define WEB_VIEW_PADDING 10.0
 #define BUTTON_PADDING 10.0
@@ -27,27 +27,18 @@ enum CalendarDetailRowTypes {
 
 @implementation CalendarDetailViewController
 
-@synthesize event, events, tableView = _tableView;
+@synthesize event, events;
 
 - (void)loadView {
     [super loadView];
 	
-	self.shareDelegate = self;
+	shareController = [(KGOShareButtonController *)[KGOShareButtonController alloc] initWithDelegate:self];
 }
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     
     self.navigationItem.title = @"Detail";
-	
-	// setup table view
-	self.tableView = [[UITableView alloc] initWithFrame:CGRectMake(0.0, 0.0, self.view.frame.size.width, self.view.frame.size.height)
-												  style:UITableViewStylePlain];
-	self.tableView.delegate = self;
-	self.tableView.dataSource = self;
-	self.tableView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
-	
-	[self.view addSubview:_tableView];
     
     if (isRegularEvent) {
         [self setupShareButton];
@@ -124,8 +115,10 @@ enum CalendarDetailRowTypes {
 // helper function that maintains consistency of descriptionString and descriptionHeight
 -(void)setDescriptionString:(NSString *)description
 {
-	descriptionString = [[self htmlStringFromString:description] retain];
-	
+	[descriptionString release];
+	descriptionString = [[NSMutableString stringWithContentsOfTemplate:@"calendar/events_template.html"
+														 searchStrings:[NSArray arrayWithObject:@"__BODY__"]
+														  replacements:[NSArray arrayWithObject:description]] retain];
 	return;
 }
 
@@ -177,7 +170,7 @@ enum CalendarDetailRowTypes {
         
         [categoriesString release];
         
-        UIFont *cellFont = [UIFont fontWithName:STANDARD_FONT size:CELL_STANDARD_FONT_SIZE];
+        UIFont *cellFont = [[KGOTheme sharedTheme] fontForTableCellTitleWithStyle:UITableViewCellStyleDefault];
         CGSize textSize = [CalendarTag sizeWithFont:cellFont];
         // one line height per category, +1 each for "Categorized as" and <ul> spacing, 5px between lines
         categoriesHeight = (textSize.height + 5.0) * ([event.categories count] + 2);
@@ -186,6 +179,10 @@ enum CalendarDetailRowTypes {
 	}
 	
 	[self.tableView reloadData];
+}
+
+- (void)share:(id)sender {
+	[shareController shareInView:self.view];
 }
 
 - (void)setupShareButton {
@@ -215,7 +212,7 @@ enum CalendarDetailRowTypes {
         titleWidth = tableFrame.size.width - titlePadding * 2;
         self.tableView.separatorColor = [UIColor whiteColor];
     }
-	UIFont *titleFont = [UIFont fontWithName:CONTENT_TITLE_FONT size:22.0];
+	UIFont *titleFont = [[KGOTheme sharedTheme] fontForContentTitle];
 	CGSize titleSize = [self.event.title sizeWithFont:titleFont
 									constrainedToSize:CGSizeMake(titleWidth, 2010.0)];
 	UILabel *titleView = [[UILabel alloc] initWithFrame:CGRectMake(titlePadding, titlePadding, titleSize.width, titleSize.height)];
@@ -223,7 +220,7 @@ enum CalendarDetailRowTypes {
 	titleView.numberOfLines = 0;
 	titleView.font = titleFont;
 	titleView.text = self.event.title;
-    titleView.textColor = CELL_STANDARD_FONT_COLOR;
+    titleView.textColor = [[KGOTheme sharedTheme] textColorForContentTitle];
 	
 	// if title is very short, add extra padding so button won't be too close to first cell
 	if (titleSize.height < shareButton.frame.size.height) {
@@ -245,6 +242,9 @@ enum CalendarDetailRowTypes {
     [super didReceiveMemoryWarning];
 	
 	// Release any cached data, images, etc that aren't in use.
+	
+	[shareController release];
+	shareController = nil;
 }
 
 - (void)viewDidUnload {
@@ -277,229 +277,130 @@ enum CalendarDetailRowTypes {
 	return numRows;
 }
 
-
-// Customize the appearance of table view cells.
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    
+- (NSArray *)tableView:(UITableView *)tableView viewsForCellAtIndexPath:(NSIndexPath *)indexPath {
 	NSInteger rowType = rowTypes[indexPath.row];
-	NSString *CellIdentifier = [NSString stringWithFormat:@"%d", rowType];
 	
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-    if (cell == nil) {
-        if (rowType == CalendarDetailRowTypeCategories || rowType == CalendarDetailRowTypeDescription) {
-            cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
-			cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        } else {
-            cell = [[[MultiLineTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
-			cell.selectionStyle = UITableViewCellSelectionStyleGray;
-        }
-    }
-    
-	[cell applyStandardFonts];
+	if (rowType == CalendarDetailRowTypeDescription) {		
+		//sets the description string and height of the views
+		[self setDescriptionString:self.event.summary];
+		
+		CGFloat webViewHeight;
+		
+		if (descriptionHeight > 0) {
+			webViewHeight = descriptionHeight;
+		} else {
+			webViewHeight =50; //was 2000
+		}
+
+		CGRect frame = CGRectMake(WEB_VIEW_PADDING, WEB_VIEW_PADDING, self.tableView.frame.size.width - 2 * WEB_VIEW_PADDING, webViewHeight);
+		UIWebView *webView = [[[UIWebView alloc] initWithFrame:frame] autorelease];
+		webView.delegate = self;
+		[webView loadHTMLString:descriptionString baseURL:nil];
+		webView.tag = kDescriptionWebViewTag;
+		
+		[(UIScrollView*)[webView.subviews objectAtIndex:0] setAlwaysBounceVertical:NO];
+		[(UIScrollView*)[webView.subviews objectAtIndex:0] setAlwaysBounceHorizontal:NO];
+		
+		return [NSArray arrayWithObject:webView];
+		
+	} else if (rowType == CalendarDetailRowTypeCategories) {
+		NSMutableString *categoriesBody = [NSMutableString stringWithString:@"Gazette Classification: <ul>"];
+		
+		NSMutableArray *tempCats = [NSMutableArray array];
+		
+		for (EventCategory *category in event.categories) {
+			[tempCats addObject:category];
+		}
+		
+		NSArray *tempA = [tempCats sortedArrayUsingSelector:@selector(compare:)];
+		
+		for (EventCategory *category in tempA) {
+			NSString *catIDString = [NSString stringWithFormat:@"catID=%d", [category.catID intValue]];
+			NSURL *categoryURL = [NSURL internalURLWithModuleTag:CalendarTag path:CalendarStateCategoryEventList query:catIDString];
+			[categoriesBody appendString:[NSString stringWithFormat:
+										  @"<li><a href=\"%@\">%@</a></li>", [categoryURL absoluteString], category.title]];
+		}
+		
+		[categoriesBody appendString:@"</ul>"];
+		[categoriesString release];
+		categoriesString = [[NSMutableString stringWithContentsOfTemplate:@"calendar/events_template.html"
+															searchStrings:[NSArray arrayWithObject:@"__BODY__"]
+															 replacements:[NSArray arrayWithObject:categoriesBody]] retain];
+		
+		UIFont *cellFont = [[KGOTheme sharedTheme] fontForTableCellTitleWithStyle:KGOTableCellStyleDefault];
+		CGSize textSize = [CalendarTag sizeWithFont:cellFont];
+		// one line height per category, +1 each for "Categorized as" and <ul> spacing, 5px between lines
+		categoriesHeight = (textSize.height + 5.0) * ([event.categories count] + 2);
+		
+		CGRect frame = CGRectMake(WEB_VIEW_PADDING, WEB_VIEW_PADDING, self.tableView.frame.size.width - 2 * WEB_VIEW_PADDING, categoriesHeight);
+		UIWebView *webView = [[[UIWebView alloc] initWithFrame:frame] autorelease];
+		[webView loadHTMLString:categoriesString baseURL:nil];
+		webView.tag = kCategoriesWebViewTag;
+		
+		return [NSArray arrayWithObject:webView];
+	}
+	
+	return nil;
+}
+
+- (CellManipulator)tableView:(UITableView *)tableView manipulatorForCellAtIndexPath:(NSIndexPath *)indexPath {
+
+	UITableViewCellSelectionStyle selectionStyle = UITableViewCellSelectionStyleGray;
+	UIImageView *accessoryView = nil;
+	NSString *title = nil;
+	
+	NSInteger rowType = rowTypes[indexPath.row];
 	
 	switch (rowType) {
 		case CalendarDetailRowTypeTime:
-			cell.textLabel.text = [event dateStringWithDateStyle:NSDateFormatterFullStyle timeStyle:NSDateFormatterShortStyle separator:@"\n"];
+			title = [event dateStringWithDateStyle:NSDateFormatterFullStyle timeStyle:NSDateFormatterShortStyle separator:@"\n"];
 			break;
 		case CalendarDetailRowTypeLocation:
-			cell.textLabel.text = (event.location != nil) ? event.location : event.shortloc;
+			title = (event.location != nil) ? event.location : event.shortloc;
 			if ([event hasCoords]) {
-				cell.accessoryView = [UIImageView accessoryViewWithMITType:MITAccessoryViewMap];
+				accessoryView = [[KGOTheme sharedTheme] accessoryViewForType:TableViewCellAccessoryMap];
 			} else {
-                cell.accessoryView = [UIImageView accessoryViewWithMITType:MITAccessoryViewBlank];
-                cell.selectionStyle = UITableViewCellSelectionStyleNone;
+                accessoryView = [[KGOTheme sharedTheme] accessoryViewForType:KGOAccessoryTypeBlank];
+                selectionStyle = UITableViewCellSelectionStyleNone;
             }
 			break;
 		case CalendarDetailRowTypePhone:
-			cell.textLabel.text = event.phone;
-			cell.accessoryView = [UIImageView accessoryViewWithMITType:MITAccessoryViewPhone];			
+			title = event.phone;
+			accessoryView = [[KGOTheme sharedTheme] accessoryViewForType:TableViewCellAccessoryPhone];			
 			break;
 		case CalendarDetailRowTypeURL:
-			cell.textLabel.text = @"Visit Website";
-			cell.textLabel.font = [UIFont fontWithName:STANDARD_FONT size:CELL_STANDARD_FONT_SIZE];
-			cell.textLabel.textColor = EMBEDDED_LINK_FONT_COLOR;
-			cell.accessoryView = [UIImageView accessoryViewWithMITType:MITAccessoryViewExternal];
+			title = @"Visit Website";
+			//cell.textLabel.font = [[KGOTheme sharedTheme] fontForTableCellTitleWithStyle:KGOTableCellStyleURL];
+			//cell.textLabel.textColor = [[KGOTheme sharedTheme] linkColor];
+			accessoryView = [[KGOTheme sharedTheme] accessoryViewForType:TableViewCellAccessoryExternal];
 			break;
 			
 		case CalendarDetailRowTypeTicketURL:
-			cell.textLabel.text = @"Link to Tickets";
-			cell.textLabel.font = [UIFont fontWithName:STANDARD_FONT size:CELL_STANDARD_FONT_SIZE];
-			cell.textLabel.textColor = EMBEDDED_LINK_FONT_COLOR;
-			cell.accessoryView = [UIImageView accessoryViewWithMITType:MITAccessoryViewExternal];
+			title = @"Link to Tickets";
+			//cell.textLabel.font = [[KGOTheme sharedTheme] fontForTableCellTitleWithStyle:KGOTableCellStyleURL];
+			//cell.textLabel.textColor = [[KGOTheme sharedTheme] linkColor];
+			accessoryView = [[KGOTheme sharedTheme] accessoryViewForType:TableViewCellAccessoryExternal];
 			break;
 			
 		case CalendarDetailRowTypeEmail:
-			cell.textLabel.text = event.email;
-			cell.textLabel.font = [UIFont fontWithName:STANDARD_FONT size:CELL_STANDARD_FONT_SIZE];
-			cell.textLabel.textColor = EMBEDDED_LINK_FONT_COLOR;
-			cell.accessoryView = [UIImageView accessoryViewWithMITType:MITAccessoryViewEmail];
+			title = event.email;
+			//cell.textLabel.font = [[KGOTheme sharedTheme] fontForTableCellTitleWithStyle:KGOTableCellStyleURL];
+			//cell.textLabel.textColor = [[KGOTheme sharedTheme] linkColor];
+			accessoryView = [[KGOTheme sharedTheme] accessoryViewForType:TableViewCellAccessoryEmail];
 			break;
-			
-		case CalendarDetailRowTypeDescription:
-        {		
-			//sets the description string and height of the views
-			[self setDescriptionString:self.event.summary];
-			
-            UIWebView *webView = (UIWebView *)[cell viewWithTag:kDescriptionWebViewTag];
-			webView.delegate = self;
-			CGFloat webViewHeight;
-			
-			if (descriptionHeight > 0) {
-				webViewHeight = descriptionHeight;
-			} else {
-				webViewHeight =50; //was 2000
-			}
-			
-			
-            //CGRect frame = CGRectMake(WEB_VIEW_PADDING, WEB_VIEW_PADDING, self.tableView.frame.size.width - 2 * WEB_VIEW_PADDING, webViewHeight);
-			CGRect frame = CGRectMake(WEB_VIEW_PADDING, WEB_VIEW_PADDING, self.tableView.frame.size.width - 2 * WEB_VIEW_PADDING, webViewHeight);
-            if (!webView) {
-                webView = [[UIWebView alloc] initWithFrame:frame];
-				//webview.frame.size.width
-				[webView loadHTMLString:descriptionString baseURL:nil];
-                webView.tag = kDescriptionWebViewTag;
-                [cell.contentView addSubview:webView];
-				[self webViewDidStartLoad:webView];
-				[(UIScrollView*)[webView.subviews objectAtIndex:0] setAlwaysBounceVertical:NO];
-				[(UIScrollView*)[webView.subviews objectAtIndex:0] setAlwaysBounceHorizontal:NO];
-                [webView release];
-            } else {
-              webView.frame = frame;
-			  [webView loadHTMLString:descriptionString baseURL:nil];
-				[self webViewDidStartLoad:webView];
-				[(UIScrollView*)[webView.subviews objectAtIndex:0] setAlwaysBounceVertical:NO];
-				[(UIScrollView*)[webView.subviews objectAtIndex:0] setAlwaysBounceHorizontal:NO];
-			}
-			
-			break;
-        }
 		case CalendarDetailRowTypeCategories:
-        {
-			NSMutableString *categoriesBody = [NSMutableString stringWithString:@"Gazette Classification: <ul>"];
-			
-			NSMutableArray *tempCats = [NSMutableArray array];
-			
-			for (EventCategory *category in event.categories) {
-				[tempCats addObject:category];
-			}
-			
-			NSArray *tempA = [tempCats sortedArrayUsingSelector:@selector(compare:)];
-			
-			for (EventCategory *category in tempA) {
-				NSString *catIDString = [NSString stringWithFormat:@"catID=%d", [category.catID intValue]];
-				NSURL *categoryURL = [NSURL internalURLWithModuleTag:CalendarTag path:CalendarStateCategoryEventList query:catIDString];
-				//NSURL *categoryURL = [NSURL internalURLWithModuleTag:CalendarTag path:CalendarStateCategoryEventList query:nil];
-				[categoriesBody appendString:[NSString stringWithFormat:
-											  @"<li><a href=\"%@\">%@</a></li>", [categoryURL absoluteString], category.title]];
-			}
-			
-			[categoriesBody appendString:@"</ul>"];
-			categoriesString = [[self htmlStringFromString:categoriesBody] retain];
-		
-			UIFont *cellFont = [UIFont fontWithName:STANDARD_FONT size:CELL_STANDARD_FONT_SIZE];
-			cell.textLabel.textColor = EMBEDDED_LINK_FONT_COLOR;
-			CGSize textSize = [CalendarTag sizeWithFont:cellFont];
-			// one line height per category, +1 each for "Categorized as" and <ul> spacing, 5px between lines
-			categoriesHeight = (textSize.height + 5.0) * ([event.categories count] + 2);
-			
-            UIWebView *webView = (UIWebView *)[cell viewWithTag:kCategoriesWebViewTag];
-            CGRect frame = CGRectMake(WEB_VIEW_PADDING, WEB_VIEW_PADDING, self.tableView.frame.size.width - 2 * WEB_VIEW_PADDING, categoriesHeight);
-            if (!webView) {
-                webView = [[UIWebView alloc] initWithFrame:frame];
-                [webView loadHTMLString:categoriesString baseURL:nil];
-                webView.tag = kCategoriesWebViewTag;
-                [cell.contentView addSubview:webView];
-                [webView release];
-            } else {
-                webView.frame = frame;
-                [webView loadHTMLString:categoriesString baseURL:nil];
-            }
-			
-			break;
-        }
-	}
-	
-    return cell;
-}
-
-- (NSString *)htmlStringFromString:(NSString *)source {
-	NSURL *baseURL = [NSURL fileURLWithPath:[[NSBundle mainBundle] resourcePath] isDirectory:YES];
-	NSURL *fileURL = [NSURL URLWithString:@"calendar/events_template.html" relativeToURL:baseURL];
-	NSError *error;
-	NSMutableString *target = [NSMutableString stringWithContentsOfURL:fileURL encoding:NSUTF8StringEncoding error:&error];
-	if (!target) {
-		DLog(@"Failed to load template at %@. %@", fileURL, [error userInfo]);
-	}
-	[target replaceOccurrencesOfStrings:[NSArray arrayWithObject:@"__BODY__"] 
-							withStrings:[NSArray arrayWithObject:source] 
-								options:NSLiteralSearch];
-	return target;
-}
-
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-	NSInteger rowType = rowTypes[indexPath.row];
-	
-	NSString *cellText = nil;
-	UIFont *cellFont = nil;
-    UITableViewCellAccessoryType accessoryType;
-	//CGFloat constraintWidth;
-	
-	switch (rowType) {
-		case CalendarDetailRowTypeCategories:
-			return categoriesHeight;
-			
-		case CalendarDetailRowTypeTime:
-			cellText = [event dateStringWithDateStyle:NSDateFormatterFullStyle timeStyle:NSDateFormatterShortStyle separator:@"\n"];
-			cellFont = [UIFont fontWithName:BOLD_FONT size:CELL_STANDARD_FONT_SIZE];
-            accessoryType = UITableViewCellAccessoryNone;
-			//constraintWidth = tableView.frame.size.width - 21.0;
-			break;
 		case CalendarDetailRowTypeDescription:
-			// this is the same font defined in the html template
-			if(descriptionHeight > 0) {
-				return (CGFloat) descriptionHeight;// + CELL_VERTICAL_PADDING * 2;
-			} else {
-				return 50; //was 400.0;
-			}			
-			break;
-		/*case CalendarDetailRowTypeURL:
-			cellText = event.url;
-			cellFont = [UIFont fontWithName:STANDARD_FONT size:CELL_STANDARD_FONT_SIZE];
-			// 33 and 21 are from MultiLineTableViewCell.m
-			constraintWidth = tableView.frame.size.width - 33.0 - 21.0;
-			break;
-		*/	
-		case CalendarDetailRowTypeLocation:
-			cellText = (event.location != nil) ? event.location : event.shortloc;
-			cellFont = [UIFont fontWithName:BOLD_FONT size:CELL_STANDARD_FONT_SIZE];
-			// 33 and 21 are from MultiLineTableViewCell.m
-            accessoryType = UITableViewCellAccessoryDetailDisclosureButton;
-			//constraintWidth = tableView.frame.size.width - 33.0 - 21.0;
-			break;
+			selectionStyle = UITableViewCellSelectionStyleNone;
 		default:
-			return 44.0;
+			break;
 	}
     
-    return [MultiLineTableViewCell heightForCellWithStyle:UITableViewCellStyleDefault
-                                                tableView:tableView 
-                                                     text:cellText
-                                             maxTextLines:0
-                                               detailText:nil
-                                           maxDetailLines:0
-                                                     font:cellFont 
-                                               detailFont:nil 
-                                            accessoryType:accessoryType
-                                                cellImage:NO];
-    /*
+    return [[^(UITableViewCell *cell) {
+        cell.selectionStyle = selectionStyle;
+        cell.textLabel.text = title;
+        cell.accessoryView = accessoryView;
+    } copy] autorelease];
 	
-	CGSize textSize = [cellText sizeWithFont:cellFont
-						   constrainedToSize:CGSizeMake(constraintWidth, 2010.0)
-							   lineBreakMode:UILineBreakModeWordWrap];
-	
-	// constant defined in MultiLineTableViewcell.h
-	return textSize.height + CELL_VERTICAL_PADDING * 2;
-    */
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -640,6 +541,7 @@ enum CalendarDetailRowTypes {
 	free(rowTypes);
 	
 	[shareButton release];
+	[shareController release];
     [categoriesString release];
     [descriptionString release];
     [super dealloc];

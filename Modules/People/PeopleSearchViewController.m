@@ -4,17 +4,18 @@
 #import "PeopleRecentsData.h"
 #import "PartialHighlightTableViewCell.h"
 #import "MIT_MobileAppDelegate.h"
-#import "ConnectionDetector.h"
 #import "ModoNavigationController.h"
 // common UI elements
 #import "MITLoadingActivityView.h"
-#import "SecondaryGroupedTableViewCell.h"
 #import "MITUIConstants.h"
 // external modules
 #import "Foundation+MITAdditions.h"
 #import "UIKit+MITAdditions.h"
 #import "ModoSearchBar.h"
 #import "MITSearchDisplayController.h"
+#import "KGOTheme.h"
+#import "HighlightedResultLabel.h"
+#import "ThemeConstants.h"
 
 static const NSUInteger kPhoneDirectorySection = 0;
 
@@ -44,7 +45,7 @@ NSInteger strLenSort(NSString *str1, NSString *str2, void *context)
 
 @synthesize searchTerms, searchTokens, searchResults, searchController;
 @synthesize loadingView;
-@synthesize searchBar = theSearchBar, tableView = _tableView;
+@synthesize searchBar = theSearchBar;//, tableView = _tableView;
 
 - (void)handleWarningMessage:(NSString *)message title:(NSString *)theTitle {
 	
@@ -96,7 +97,7 @@ NSInteger strLenSort(NSString *str1, NSString *str2, void *context)
     self.tableView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
-	[self.tableView applyStandardColors];
+	//[self.tableView applyStandardColors];
     
     NSString *searchHints = NSLocalizedString(@"Tip: You can search above by a person's first or last name or email address.", nil);
 
@@ -243,6 +244,7 @@ NSInteger strLenSort(NSString *str1, NSString *str2, void *context)
 - (void)presentSearchResults:(NSArray *)theSearchResults {
     self.searchResults = theSearchResults;
     self.searchController.searchResultsTableView.frame = self.tableView.frame;
+    self.searchController.searchResultsTableView.rowHeight = 56;
     [self.view addSubview:self.searchController.searchResultsTableView];
     [self.searchBar addDropShadow];
     [self.searchController.searchResultsTableView reloadData];
@@ -285,7 +287,77 @@ NSInteger strLenSort(NSString *str1, NSString *str2, void *context)
 	}
 }
 
+- (NSArray *)tableView:(UITableView *)tableView viewsForCellAtIndexPath:(NSIndexPath *)indexPath {
+    if (tableView == self.tableView) {
+        return nil;
+    } else {
+        NSInteger padding = 10;
+        NSInteger chevronSize = 20;
+        UIFont *font = [[KGOTheme sharedTheme] fontForTableCellTitleWithStyle:UITableViewCellStyleSubtitle];
+        CGRect frame = CGRectMake(padding, padding, tableView.frame.size.width - 2 * padding - chevronSize, font.lineHeight);
+        HighlightedResultLabel *textLabel = [[[HighlightedResultLabel alloc] initWithFrame:frame] autorelease];
 
+        frame.origin.y += font.lineHeight + 3; // padding between labels
+        UIFont *detailFont = [[KGOTheme sharedTheme] fontForTableCellSubtitleWithStyle:UITableViewCellStyleSubtitle];
+        frame.size.height = detailFont.lineHeight;
+        HighlightedResultLabel *detailTextLabel = [[[HighlightedResultLabel alloc] initWithFrame:frame] autorelease];
+
+        return [NSArray arrayWithObjects:textLabel, detailTextLabel, nil];
+    }
+}
+
+- (CellManipulator)tableView:(UITableView *)tableView manipulatorForCellAtIndexPath:(NSIndexPath *)indexPath {
+    
+    NSString *title = nil;
+    NSString *detailText = nil;
+    NSString *accessoryTag = nil;
+    
+	if (tableView == self.tableView) {
+        
+		if (indexPath.section == kPhoneDirectorySection) { // phone directory tel #
+            NSDictionary *rowProperties = [PeopleSearchViewController staticPhoneRowPropertiesForIndexPath:indexPath];
+            title = [rowProperties objectForKey:@"mainText"];
+            detailText = [rowProperties objectForKey:@"secondaryText"];
+            accessoryTag = TableViewCellAccessoryPhone;
+
+        } else { // recents
+
+			PersonDetails *recent = [[[PeopleRecentsData sharedData] recents] objectAtIndex:indexPath.row];
+			title = [NSString stringWithFormat:@"%@ %@", 
+                     [recent formattedValueForKey:@"givenname"], 
+                     [recent formattedValueForKey:@"sn"]];
+            
+            accessoryTag = KGOAccessoryTypeChevron;
+
+			NSArray *displayPriority = [NSArray arrayWithObjects:@"title", @"ou", nil];
+			NSString *displayText;
+			for (NSString *tag in displayPriority) {
+				if (displayText = [recent formattedValueForKey:tag]) {
+					detailText = displayText;
+					break;
+				}
+			}
+        }
+        
+    } else { // search results
+        
+        accessoryTag = KGOAccessoryTypeChevron;
+    }
+    
+    return [[^(UITableViewCell *cell) {
+        cell.selectionStyle = UITableViewCellSelectionStyleGray;
+        cell.textLabel.text = title;
+        cell.detailTextLabel.text = detailText;
+        cell.accessoryView = [[KGOTheme sharedTheme] accessoryViewForType:accessoryTag];
+    } copy] autorelease];
+}
+
+
+- (KGOTableCellStyle)tableView:(UITableView *)tableView styleForCellAtIndexPath:(NSIndexPath *)indexPath {
+    return KGOTableCellStyleSubtitle;
+}
+
+/*
 // Customize the appearance of table view cells.
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     
@@ -443,6 +515,23 @@ NSInteger strLenSort(NSString *str1, NSString *str2, void *context)
 	
     return titleView;
 
+}
+*/
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
+    if (section == 1) {
+        return @"Recently Viewed";
+    } else if (tableView == self.searchController.searchResultsTableView) {
+		NSUInteger numResults = [self.searchResults count];
+		switch (numResults) {
+			case 0:
+				return nil;
+			case 50:
+                return @"Many found, showing 50"; // TODO: make max results configurable
+			default:
+                return [NSString stringWithFormat:@"%d found", numResults];
+		}
+    }
+    return nil;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {

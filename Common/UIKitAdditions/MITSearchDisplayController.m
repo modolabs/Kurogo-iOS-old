@@ -166,6 +166,7 @@ searchResultsTableView = _searchResultsTableView;
     // have the delegate decide whether it is appropriate
     if ([self.delegate respondsToSelector:@selector(searchOverlayTapped)]) {
         // this is just a dumb way to dodge a compiler warning
+		// TODO: create a protocol that inherits from UISearchBarDelegate
         [self.delegate performSelector:@selector(searchOverlayTapped)];
     }
 }

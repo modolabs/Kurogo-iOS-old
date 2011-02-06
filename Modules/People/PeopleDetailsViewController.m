@@ -1,6 +1,4 @@
 #import "PeopleDetailsViewController.h"
-#import "MultiLineTableViewCell.h"
-#import "ConnectionDetector.h"
 #import "PeopleRecentsData.h"
 #import "MIT_MobileAppDelegate.h"
 #import "MITUIConstants.h"
@@ -12,6 +10,8 @@
 #import "TileServerManager.h"
 #import "AnalyticsWrapper.h"
 #import "MITMailComposeController.h"
+#import "ThemeConstants.h"
+#import "KGOTheme.h"
 
 @interface PeopleDetailsViewController (Private)
 
@@ -50,7 +50,6 @@ NSString * const RequestLookupAddress = @"address";
 - (void)viewDidLoad
 {
 	self.title = @"Info";
-	[self.tableView applyStandardColors];
 	
 	// get fullname for header
 	NSMutableArray *multiPartAttribute = [[NSMutableArray alloc] initWithCapacity:2];	
@@ -105,7 +104,7 @@ NSString * const RequestLookupAddress = @"address";
 	}
 	
 	// create header
-    UIFont *font = [UIFont fontWithName:CONTENT_TITLE_FONT size:CONTENT_TITLE_FONT_SIZE];
+    UIFont *font = [[KGOTheme sharedTheme] fontForContentTitle];
 	CGSize labelSize = [self.fullname sizeWithFont:font
 								 constrainedToSize:CGSizeMake(self.tableView.frame.size.width - 20.0, 2000.0)
 									 lineBreakMode:UILineBreakModeWordWrap];
@@ -121,19 +120,17 @@ NSString * const RequestLookupAddress = @"address";
 
 	self.tableView.tableHeaderView = header;
 
-#ifdef USE_MOBILE_DEV
+#ifdef DEBUG
 	CGFloat timeLimit = 300;
 #else
     CGFloat timeLimit = 86400 * 14;
 #endif
 	// if lastUpdate is sufficiently long ago, issue a background search
 	if ([[self.personDetails valueForKey:@"lastUpdate"] timeIntervalSinceNow] < -timeLimit) {
-		if ([ConnectionDetector isConnected]) {
-			// issue this query but don't care too much if it fails
-			JSONAPIRequest *api = [JSONAPIRequest requestWithJSONAPIDelegate:self];
-            api.userData = RequestUpdatePersonDetails;
-			[api requestObject:[NSDictionary dictionaryWithObjectsAndKeys:@"people", @"module", self.fullname, @"q", nil]];
-		}
+		// issue this query but don't care too much if it fails
+		JSONAPIRequest *api = [JSONAPIRequest requestWithJSONAPIDelegate:self];
+		api.userData = RequestUpdatePersonDetails;
+		[api requestObject:[NSDictionary dictionaryWithObjectsAndKeys:@"people", @"module", self.fullname, @"q", nil]];
 	}
 
     NSString *detailString = [NSString stringWithFormat:@"/people/detail?id=%@", self.personDetails.uid];
@@ -201,7 +198,7 @@ NSString * const RequestLookupAddress = @"address";
 }
 
 #pragma mark -
-#pragma mark Table view meth
+#pragma mark Table view methods
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
 	
@@ -215,178 +212,103 @@ NSString * const RequestLookupAddress = @"address";
 	return [[self.sectionArray objectAtIndex:section] count];
 }
 
-#define TEXTVIEW_TAG 235
-
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    
-	NSInteger section = indexPath.section;
-	NSInteger row = indexPath.row;
-
-	NSString *cellID = [NSString stringWithFormat:@"%d",section];
-	
-	if (section == [self.sectionArray count]) { 
-		// cells for Create New / Add Existing rows at the end
-		// we are mimicking the style of UIButtonTypeRoundedRect until we find something more built-in
-		UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellID];
-		
-		if (cell == nil) {
-			cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellID] autorelease];
-			cell.selectionStyle = UITableViewCellSelectionStyleGray;
-		}
-
-		cell.textLabel.textAlignment = UITextAlignmentCenter;
-		cell.textLabel.font = [UIFont boldSystemFontOfSize:[UIFont systemFontSize]];
-		cell.textLabel.textColor = STANDARD_CONTENT_FONT_COLOR;
-		if (row == 0)
-			cell.textLabel.text = @"Create New Contact";
-		else
-			cell.textLabel.text = @"Add to Existing Contact";
-		
-		return cell;
-		
-	} else { // cells for displaying person details
-		MultiLineTableViewCell *cell = (MultiLineTableViewCell *)[tableView dequeueReusableCellWithIdentifier:cellID];
-		
-		if (cell == nil) {			
-			cell = [[[MultiLineTableViewCell alloc] initWithStyle:UITableViewCellStyleValue2 reuseIdentifier:cellID] autorelease];
-			cell.selectionStyle = UITableViewCellSelectionStyleGray;
-		}
-		
-		NSArray *personInfo = [[self.sectionArray objectAtIndex:section] objectAtIndex:row];
-		NSString *tag = [personInfo objectAtIndex:0];
-		NSString *data = [personInfo objectAtIndex:1];
-		
-		cell.textLabel.text = tag;
-        cell.textLabel.textColor = [UIColor colorWithHexString:@"#554C41"];
-        
-        // use a textView for the address so people can copy/paste.
-        if ([tag isEqualToString:[personDetails displayNameForKey:@"postaladdress"]]) {
-            addressSection = section;
-            
-            UIFont *font = [UIFont boldSystemFontOfSize:15.0];
-            CGFloat width = [MultiLineTableViewCell widthForTextLabel:NO
-                                                            cellStyle:UITableViewCellStyleValue2
-                                                            tableView:self.tableView
-                                                        accessoryType:UITableViewCellAccessoryDetailDisclosureButton
-                                                            cellImage:NO
-                                                             hasIndex:NO];
-            
-            // in MultiLineTableViewCell, we are assuming the detailTextLabel starts at 24% of the cell width
-            // the following line is just replicates part of the calculation made in MultiLineTableViewCell
-            CGFloat originX = 20.0 + floor((self.view.frame.size.width - 50.0) * 0.24);
-            CGSize size = [data sizeWithFont:font
-                           constrainedToSize:CGSizeMake(width, 2000.0f)
-                               lineBreakMode:UILineBreakModeWordWrap];
-            
-            // -[MultiLineTableViewCell layoutSubviews] will adjust the originY to where the detailTextLabel is
-            UITextView *textView = [[[UITextView alloc] initWithFrame:CGRectMake(originX, 0, width + 10, size.height)] autorelease];
-            textView.text = data;
-            textView.tag = TEXTVIEW_TAG;
-            textView.backgroundColor = [UIColor clearColor];
-            textView.font = font;
-            textView.textColor = cell.detailTextLabel.textColor;
-            textView.editable = NO;
-            textView.scrollEnabled = NO;
-            textView.contentInset = UIEdgeInsetsMake(-8, -9, -8, -9); // imitate the margins of UILabel (which detailTextLabel is)
-            
-            [cell.contentView addSubview:textView];
-            
-            // put a placeholder in the detailText so the textLabel will be top-aligned
-            CGSize oneLineSize = [DirectoryTag sizeWithFont:font];
-            NSInteger numLines = floor(size.height / oneLineSize.height);
-            NSMutableString *placeholder = [NSMutableString stringWithString:@" "];
-            while (numLines > 1) {
-                [placeholder appendString:@"\n "];
-                numLines--;
-            }
-            
-            cell.detailTextLabel.text = placeholder;
-            
-            if (addressSearchAnnotation) {
-                cell.accessoryView = [UIImageView accessoryViewWithMITType:MITAccessoryViewMap];
-                textView.userInteractionEnabled = NO;
-            } else {
-                cell.accessoryView = [UIImageView accessoryViewWithMITType:MITAccessoryViewBlank];
-                textView.userInteractionEnabled = YES;
-            }
-
-        } else {
-            UIView *textView = [cell.contentView viewWithTag:TEXTVIEW_TAG];
-            if (textView)
-                [textView removeFromSuperview];
-            cell.detailTextLabel.text = data;
-        }
-        
-		
-		if ([tag isEqualToString:[personDetails displayNameForKey:@"mail"]]) {
-            cell.accessoryType = UITableViewCellAccessoryDetailDisclosureButton;
-            cell.accessoryView = [UIImageView accessoryViewWithMITType:MITAccessoryViewEmail];
-		} else if ([tag isEqualToString:[personDetails displayNameForKey:@"telephonenumber"]]) {
-            cell.accessoryType = UITableViewCellAccessoryDetailDisclosureButton;
-            cell.accessoryView = [UIImageView accessoryViewWithMITType:MITAccessoryViewPhone];
-		}/* else if ([tag isEqualToString:[personDetails displayNameForKey:@"postaladdress"]]) {
-            cell.accessoryType = UITableViewCellAccessoryDetailDisclosureButton;
-            if (addressSearchAnnotation) {
-                cell.accessoryView = [UIImageView accessoryViewWithMITType:MITAccessoryViewMap];
-            } else {
-                cell.accessoryView = [UIImageView accessoryViewWithMITType:MITAccessoryViewBlank];
-            }
-		}*/ else {
-			cell.selectionStyle = UITableViewCellSelectionStyleNone;
-            cell.accessoryType = UITableViewCellAccessoryNone;
-			return cell;
-		}
-		
-		return cell;
-	}	
+- (KGOTableCellStyle)tableView:(UITableView *)tableView styleForCellAtIndexPath:(NSIndexPath *)indexPath {
+	return (indexPath.section < [self.sectionArray count]) ? KGOTableCellStyleValue2 : KGOTableCellStyleDefault;
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-	
-	NSInteger row = indexPath.row;
-	NSInteger section = indexPath.section;
-	if (section == [self.sectionArray count]) {
-		return 44.0;
-	}
-	
-	NSArray *personInfo = [[self.sectionArray objectAtIndex:section] objectAtIndex:row];
-	NSString *tag = [personInfo objectAtIndex:0];
-	NSString *data = [personInfo objectAtIndex:1];
-        
-	// If the cell's 'tag' string matches the display name for any of these personDetails properties, 
-	// add a disclosure button.
-    UITableViewCellAccessoryType accessoryType = 
-	([tag isEqualToString:[personDetails displayNameForKey:@"telephonenumber"]] || 
-	 [tag isEqualToString:[personDetails displayNameForKey:@"mail"]])
-    ? UITableViewCellAccessoryDetailDisclosureButton
-    : UITableViewCellAccessoryNone;
+- (CellManipulator)tableView:(UITableView *)tableView manipulatorForCellAtIndexPath:(NSIndexPath *)indexPath {
+    NSString *title;
+    NSString *accessoryTag = nil;
+    UITableViewCellSelectionStyle selectionStyle = UITableViewCellSelectionStyleGray;
+    BOOL centerText = NO;
     
-    // special case for addresses: add a disclosure button if we find something,
-    // otherwise don't indicate this as an actionable cell
-    if ([tag isEqualToString:[personDetails displayNameForKey:@"postaladdress"]]) {
-        if (!addressSearchAnnotation) {
-            // issue a prelim search for person's address
-            
-            NSString *searchText = [AddressFormatter streetAddressFromAddressBlockText:data];
-            JSONAPIRequest *apiRequest = [JSONAPIRequest requestWithJSONAPIDelegate:self];
-            apiRequest.userData = RequestLookupAddress;
-            [apiRequest requestObjectFromModule:@"map"
-                                        command:@"search"
-                                     parameters:[NSDictionary dictionaryWithObjectsAndKeys:searchText, @"q", nil]];
+    if (indexPath.section == [self.sectionArray count]) {
+        
+        centerText = YES;
+        if (indexPath.row == 0) {
+            title = NSLocalizedString(@"Create New Contact", nil);
+        } else {
+            title = NSLocalizedString(@"Add to Existing Contact", nil);
         }
-        accessoryType = UITableViewCellAccessoryDetailDisclosureButton;
+
+    } else {
+        NSArray *personInfo = [[self.sectionArray objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
+        title = [personInfo objectAtIndex:0];
+
+        if ([title isEqualToString:[personDetails displayNameForKey:@"postaladdress"]]) {
+            if (addressSearchAnnotation)
+                accessoryTag = TableViewCellAccessoryMap;
+            else {
+                accessoryTag = KGOAccessoryTypeBlank;
+                selectionStyle = UITableViewCellSelectionStyleNone;
+            }
+            
+        } else if ([title isEqualToString:[personDetails displayNameForKey:@"mail"]]) {
+            accessoryTag = TableViewCellAccessoryEmail;
+            
+        } else if ([title isEqualToString:[personDetails displayNameForKey:@"telephonenumber"]]) {
+            accessoryTag = TableViewCellAccessoryPhone;
+        }
     }
     
-    return [MultiLineTableViewCell heightForCellWithStyle:UITableViewCellStyleValue2
-                                                tableView:tableView 
-                                                     text:tag
-                                             maxTextLines:1
-                                               detailText:data
-                                           maxDetailLines:0
-                                                     font:nil
-                                               detailFont:[UIFont boldSystemFontOfSize:15.0]  
-                                            accessoryType:accessoryType
-                                                cellImage:NO];
+    return [[^(UITableViewCell *cell) {
+        cell.selectionStyle = selectionStyle;
+        cell.textLabel.text = title;
+        cell.accessoryView = [[KGOTheme sharedTheme] accessoryViewForType:accessoryTag];
+        if (centerText) cell.textLabel.textAlignment = UITextAlignmentCenter;
+    } copy] autorelease];
+}
+
+- (NSArray *)tableView:(UITableView *)tableView viewsForCellAtIndexPath:(NSIndexPath *)indexPath {
+    
+	if (indexPath.section < [self.sectionArray count]) { 
+
+		NSArray *personInfo = [[self.sectionArray objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
+		NSString *tag = [personInfo objectAtIndex:0];
+		NSString *data = [personInfo objectAtIndex:1];
+        UIFont *font = [[KGOTheme sharedTheme] fontForTableCellSubtitleWithStyle:UITableViewCellStyleValue2];
+        
+        // inner 20 for padding; 0.75 is approx ratio allocated to detail text label, 20 for accessory
+        CGFloat width = floor((tableView.frame.size.width - 20) * 0.75) - 20;
+        CGFloat originX = self.tableView.frame.size.width - 20 - width;
+        
+        CGSize size = [data sizeWithFont:font
+                       constrainedToSize:CGSizeMake(width, 1989.0f) // 2009 minus vertical padding
+                           lineBreakMode:UILineBreakModeWordWrap];
+
+        CGRect frame = CGRectMake(originX, 10, width, size.height);
+        UIColor *textColor = [[KGOTheme sharedTheme] textColorForTableCellSubtitleWithStyle:UITableViewCellStyleValue2];
+
+        // use a textView for the address so people can copy/paste.
+        if ([tag isEqualToString:[personDetails displayNameForKey:@"postaladdress"]]) {
+            addressSection = indexPath.section;
+            
+            UITextView *textView = [[[UITextView alloc] initWithFrame:frame] autorelease];
+            textView.text = data;
+            textView.backgroundColor = [UIColor clearColor];
+            textView.font = font;
+            textView.textColor = textColor;
+            textView.editable = NO;
+            textView.scrollEnabled = NO;
+            textView.contentInset = UIEdgeInsetsMake(-8, -9, -8, -9);
+            
+            textView.userInteractionEnabled = addressSearchAnnotation == nil;
+            
+            return [NSArray arrayWithObject:textView];
+
+        } else {
+            
+            UILabel *label = [[[UILabel alloc] initWithFrame:frame] autorelease];
+            label.text = data;
+            label.font = font;
+            label.textColor = textColor;
+            label.backgroundColor = [UIColor clearColor];
+            
+            return [NSArray arrayWithObject:label];
+        }
+    }
+    
+    return nil;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath

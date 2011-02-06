@@ -4,7 +4,7 @@
 #define REPLACED_TEXTLABEL_TAG 999
 
 @implementation PartialHighlightTableViewCell
-
+/*
 - (void)prepareForReuse {
 	// clean up extra views we added before
 	UIView *view;
@@ -140,6 +140,6 @@
 - (void)dealloc {
     [super dealloc];
 }
-
+*/
 
 @end

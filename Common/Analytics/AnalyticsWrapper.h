@@ -12,6 +12,7 @@ typedef enum {
 
 @interface AnalyticsWrapper : NSObject <GANTrackerDelegate> {
     
+	NSDictionary *_preferences;
     ModoAnalyticsProvider _provider;
 
 }
@@ -20,7 +21,7 @@ typedef enum {
 - (void)shutdown;
 
 // this will change
-- (void)setupWithProvider:(ModoAnalyticsProvider)provider;
+- (void)setup;
 
 // these will probably change
 - (void)trackPageview:(NSString *)pageID;

@@ -79,6 +79,7 @@ static NSInteger numTries = 0;
 	storyTable.delegate = self;
 	storyTable.dataSource = self;
     storyTable.separatorColor = [UIColor colorWithWhite:0.5 alpha:1.0];
+    storyTable.rowHeight = 50;
 	[self.view addSubview:storyTable];
 	[storyTable release];
 }
@@ -795,6 +796,14 @@ static NSInteger numTries = 0;
 	return n;
 }
 
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
+	if (section == 0 && self.searchResults) {
+		return [NSString stringWithFormat:@"Showing %d of %d", [self.searchResults count], totalAvailableResults];
+	}
+    return nil;
+}
+
+/*
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
 	if (section == 0 && self.searchResults) {
 		return UNGROUPED_SECTION_HEADER_HEIGHT;
@@ -813,10 +822,131 @@ static NSInteger numTries = 0;
     return titleView;
 	
 }
+*/
+
+- (CellManipulator)tableView:(UITableView *)tableView manipulatorForCellAtIndexPath:(NSIndexPath *)indexPath {
+    if (indexPath.row == self.stories.count) {
+
+        NSInteger remainingArticlesToLoad = (!searchResults) ? (200 - [self.stories count]) : (totalAvailableResults - [self.stories count]);
+
+        NSString *title = [NSString stringWithFormat:@"Load %d more articles...", (remainingArticlesToLoad > 10) ? 10 : remainingArticlesToLoad];
+        UIColor *textColor;
+        
+        if (!self.xmlParser) { // disable when a load is already in progress
+            textColor = [UIColor colorWithHexString:@"#1A1611"]; // enable
+        } else {
+            textColor = [UIColor colorWithHexString:@"#999999"]; // disable
+        }
+        
+        return [[^(UITableViewCell *cell) {
+            cell.selectionStyle = UITableViewCellSelectionStyleGray;
+            cell.textLabel.text = title;
+            cell.textLabel.textColor = textColor;
+        } copy] autorelease];
+        
+    } else {
+        return [[^(UITableViewCell *cell) {
+            cell.selectionStyle = UITableViewCellSelectionStyleGray;
+        } copy] autorelease];
+    }
+}
 
 #define FEATURE_IMAGE_HEIGHT 180.0
 #define FEATURE_TEXT_HEIGHT 60.0
 
+- (NSArray *)tableView:(UITableView *)tableView viewsForCellAtIndexPath:(NSIndexPath *)indexPath {
+
+    if (indexPath.row == self.stories.count) {
+        return nil;
+        
+    } else {
+        NSMutableArray *views = [NSMutableArray array];
+        
+        CGFloat yOffset;
+        NSString *placeholderImageName;
+        NewsImage *image;
+        NewsStory *story;
+        CGRect thumbnailFrame;
+        
+        if (self.searchResults == nil     // this is not a search
+            && self.featuredStory != nil  // we have a featured story
+            && !showingBookmarks          // we are not looking at bookmarks
+            && indexPath.row == 0)
+        {
+            yOffset = FEATURE_IMAGE_HEIGHT - FEATURE_TEXT_HEIGHT;
+            story = self.featuredStory;
+            image = story.featuredImage;
+            placeholderImageName = @"news/news-placeholder-a1.png";
+            thumbnailFrame = CGRectMake(0, 0, tableView.frame.size.width, FEATURE_IMAGE_HEIGHT);
+        } else {
+            yOffset = 0;
+            story = [self.stories objectAtIndex:indexPath.row];
+        }
+        
+        UIFont *titleFont = [UIFont boldSystemFontOfSize:STORY_TITLE_FONT_SIZE];
+        UIColor *titleColor = [story.read boolValue] ? [UIColor colorWithHexString:@"#666666"] : [UIColor blackColor];
+        UIFont *dekFont = [UIFont systemFontOfSize:STORY_DEK_FONT_SIZE];
+        UIColor *dekColor = [UIColor colorWithHexString:@"#0D0D0D"];
+
+        StoryThumbnailView *thumbnailView = [[[StoryThumbnailView alloc] initWithFrame:CGRectMake(0, 0, 320.0, FEATURE_IMAGE_HEIGHT)] autorelease];
+        thumbnailView.placeholderImageName = placeholderImageName;
+        thumbnailView.image = image;
+        [thumbnailView loadImage];
+
+        [views addObject:thumbnailView];
+        
+        // Calculate height
+        CGFloat availableHeight = FEATURE_TEXT_HEIGHT;
+        CGSize titleDimensions = [story.title sizeWithFont:titleFont constrainedToSize:CGSizeMake(STORY_TEXT_WIDTH, availableHeight) lineBreakMode:UILineBreakModeTailTruncation];
+        availableHeight -= titleDimensions.height;
+        
+        CGSize dekDimensions = CGSizeZero;
+        // if not even one line will fit, don't show the deck at all
+        if (availableHeight > dekFont.lineHeight) {
+            dekDimensions = [story.summary sizeWithFont:dekFont constrainedToSize:CGSizeMake(STORY_TEXT_WIDTH, availableHeight) lineBreakMode:UILineBreakModeTailTruncation];
+        }
+        
+        CGRect titleFrame = CGRectMake(STORY_TEXT_PADDING_LEFT,
+                                       STORY_TEXT_PADDING_TOP + yOffset, 
+                                       STORY_TEXT_WIDTH + THUMBNAIL_WIDTH, 
+                                       titleDimensions.height);
+        
+        CGRect dekFrame = CGRectMake(STORY_TEXT_PADDING_LEFT,
+                                     ceil(CGRectGetMaxY(titleFrame)), 
+                                     STORY_TEXT_WIDTH + THUMBNAIL_WIDTH, 
+                                     dekDimensions.height);
+        
+        
+        // Title View
+        UILabel *titleLabel = [[[UILabel alloc] initWithFrame:titleFrame] autorelease];
+        titleLabel.backgroundColor = [UIColor clearColor];
+        titleLabel.font = titleFont;
+        titleLabel.numberOfLines = 0;
+        titleLabel.lineBreakMode = UILineBreakModeTailTruncation;
+        titleLabel.text = story.title;
+        titleLabel.textColor = titleColor;
+        titleLabel.highlightedTextColor = [UIColor whiteColor];
+
+        [views addObject:titleLabel];
+        
+        // Summary View
+        UILabel *dekLabel = [[[UILabel alloc] initWithFrame:dekFrame] autorelease];
+        dekLabel.text = story.summary;
+        dekLabel.font = dekFont;
+        dekLabel.textColor = dekColor;
+        dekLabel.numberOfLines = 0;
+        dekLabel.lineBreakMode = UILineBreakModeTailTruncation;
+        dekLabel.highlightedTextColor = [UIColor whiteColor];
+        dekLabel.backgroundColor = [UIColor clearColor];
+        
+        [views addObject:dekLabel];
+        
+        return views;
+    }
+}
+
+
+/*
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     CGFloat rowHeight = THUMBNAIL_WIDTH;
 
@@ -1068,7 +1198,7 @@ static NSInteger numTries = 0;
     }
     return result;
 }
-
+*/
 - (void)tableView:(UITableView *)tv didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 	if(indexPath.row == self.stories.count) {
 		if (!self.xmlParser) { // only "load x more..." if no other load is going on

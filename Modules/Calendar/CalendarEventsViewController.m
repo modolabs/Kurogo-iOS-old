@@ -333,7 +333,6 @@
 				[nothingFound removeFromSuperview];
 			}
 			self.tableView = [[EventCategoriesTableView alloc] initWithFrame:contentFrame style:UITableViewStyleGrouped];			
-			[self.tableView applyStandardColors];
 			EventCategoriesTableView *categoriesTV = (EventCategoriesTableView *)self.tableView;
 			categoriesTV.delegate = categoriesTV;
 			categoriesTV.dataSource = categoriesTV;
@@ -772,7 +771,7 @@
 	}
 
 	if (event != nil) {
-		CalendarDetailViewController *detailVC = [[CalendarDetailViewController alloc] init];
+		CalendarDetailViewController *detailVC = [[CalendarDetailViewController alloc] initWithStyle:UITableViewStylePlain];
 		detailVC.event = event;
 		[self.navigationController pushViewController:detailVC animated:YES];
 		[detailVC release];

@@ -1,15 +1,15 @@
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 
-
-@interface UIColor (MITAdditions)
+@interface UIColor (KGOAdditions)
 
 + (UIColor *)colorWithHexString:(NSString *)hexString;
 
 @end
 
-@interface UIImageView (MITAdditions)
+@interface UIImageView (KGOAdditions)
 
-+ (UIImageView *)accessoryViewWithMITType:(MITAccessoryViewType)type;
+- (void)showLoadingIndicator;
+- (void)hideLoadingIndicator;
 
 @end

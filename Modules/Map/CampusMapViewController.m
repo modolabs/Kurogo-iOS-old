@@ -463,6 +463,7 @@
         if (nil == self.searchResultsTableView) {
             self.searchResultsTableView = [[[MapSearchResultsTableView alloc] initWithFrame:_mapView.frame] autorelease];
             self.searchResultsTableView.campusMapVC = self;
+			
             _searchController.searchResultsTableView = self.searchResultsTableView;
             _searchController.searchResultsDelegate = self.searchResultsTableView;
             _searchController.searchResultsDataSource = self.searchResultsTableView;
@@ -470,7 +471,8 @@
         
         self.searchResultsTableView.searchResults = _searchResults;
         
-        [self.view addSubview:self.searchResultsTableView];
+		[self addTableView:self.searchResultsTableView withDataSource:self.searchResultsTableView];
+
         [_searchBar addDropShadow];
         
         // hide the toolbar and stretch the search bar
@@ -479,7 +481,8 @@
 
 	} else if (!showList && _displayingList) {
         
-        [self.searchResultsTableView removeFromSuperview];
+		[self removeTableView:self.searchResultsTableView];
+		
         _searchController.searchResultsTableView = nil;
         self.searchResultsTableView = nil;
         
