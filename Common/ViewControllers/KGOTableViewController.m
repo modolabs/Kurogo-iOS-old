@@ -10,6 +10,13 @@
 #define MAX_CELL_BUFFER_IPHONE 12
 #define MAX_CELL_BUFFER_IPAD 25
 
+@interface KGOTableViewController (Private)
+
+- (NSMutableDictionary *)contentBufferForTableView:(UITableView *)tableView;
+
+@end
+
+
 @implementation KGOTableViewController
 
 @synthesize dataSource = _dataSource, tableView = _tableView;
@@ -20,7 +27,9 @@
 		
         _tableViews = [[NSMutableArray alloc] init];
         _tableViewDataSources = [[NSMutableArray alloc] init];
-        _cellContentBuffer = [[NSMutableDictionary alloc] init];
+		_cellContentBuffers = [[NSMutableArray alloc] init];
+		_currentContentBuffer = nil;
+		_currentTableView = nil;
 	}
 	return self;
 }
@@ -31,7 +40,9 @@
 		
         _tableViews = [[NSMutableArray alloc] init];
         _tableViewDataSources = [[NSMutableArray alloc] init];
-        _cellContentBuffer = [[NSMutableDictionary alloc] init];
+		_cellContentBuffers = [[NSMutableArray alloc] init];
+		_currentContentBuffer = nil;
+		_currentTableView = nil;
 		
         [self addTableViewWithStyle:style];
     }
@@ -44,7 +55,9 @@
 
         _tableViews = [[NSMutableArray alloc] init];
         _tableViewDataSources = [[NSMutableArray alloc] init];
-        _cellContentBuffer = [[NSMutableDictionary alloc] init];
+		_cellContentBuffers = [[NSMutableArray alloc] init];
+		_currentContentBuffer = nil;
+		_currentTableView = nil;
     }
     return self;
 }
@@ -56,12 +69,18 @@
 
         [_tableViews removeObjectAtIndex:tableViewIndex];
         [_tableViewDataSources removeObjectAtIndex:tableViewIndex];
+		[_cellContentBuffers removeObjectAtIndex:tableViewIndex];
     }
+}
+
+- (void)addTableView:(UITableView *)tableView {
+	[self addTableView:tableView withDataSource:self.dataSource];
 }
 
 - (void)addTableView:(UITableView *)tableView withDataSource:(id<KGOTableViewDataSource>)dataSource {
 	[_tableViews addObject:tableView];
 	[_tableViewDataSources addObject:dataSource];
+	[_cellContentBuffers addObject:[NSMutableDictionary dictionary]];
 	
 	[self.view addSubview:tableView];
 }
@@ -75,6 +94,10 @@
     return [self addTableViewWithFrame:frame style:style dataSource:dataSource];
 }
 
+- (UITableView *)addTableViewWithFrame:(CGRect)frame style:(UITableViewStyle)style {
+	return [self addTableViewWithFrame:frame style:style dataSource:self.dataSource];
+}
+
 - (UITableView *)addTableViewWithFrame:(CGRect)frame style:(UITableViewStyle)style dataSource:(id<KGOTableViewDataSource>)dataSource {
     UITableView *tableView = [[[UITableView alloc] initWithFrame:frame style:style] autorelease];
     tableView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
@@ -85,11 +108,9 @@
     
     tableView.delegate = self;
     tableView.dataSource = self;
-
-    [_tableViews addObject:tableView];
-    [_tableViewDataSources addObject:dataSource];
-    
-    [self.view addSubview:tableView];
+	
+	[self addTableView:tableView withDataSource:dataSource];
+	
     return tableView;
 }
 
@@ -98,9 +119,19 @@
     
     [_tableViews release];
     [_tableViewDataSources release];
-    [_cellContentBuffer release];
+    [_cellContentBuffers release];
 
     [super dealloc];
+}
+
+- (void)reloadDataForTableView:(UITableView *)tableView {
+	[self decacheTableView:tableView];
+	[tableView reloadData];
+}
+
+- (void)decacheTableView:(UITableView *)tableView {
+	NSMutableDictionary *dict = [self contentBufferForTableView:tableView];
+	[dict removeAllObjects];
 }
 
 - (id<KGOTableViewDataSource>)dataSourceForTableView:(UITableView *)tableView {
@@ -111,9 +142,22 @@
     return nil;
 }
 
+- (NSMutableDictionary *)contentBufferForTableView:(UITableView *)tableView {
+    NSInteger tableViewIndex = [_tableViews indexOfObject:tableView];
+    if (tableViewIndex != NSNotFound) {
+		return [_cellContentBuffers objectAtIndex:tableViewIndex];
+    }
+    return nil;
+}
+
 - (NSArray *)tableView:tableView cachedViewsForCellAtIndexPath:(NSIndexPath *)indexPath {
+	if (tableView != _currentTableView) {
+		_currentContentBuffer = [self contentBufferForTableView:tableView];
+		_currentTableView = tableView;
+	}
+	
     NSString *key = [NSString stringWithFormat:@"%d.%d", indexPath.section, indexPath.row];
-    NSArray *views = [_cellContentBuffer objectForKey:key];
+    NSArray *views = [_currentContentBuffer objectForKey:key];
     if (!views) {
         id<KGOTableViewDataSource> dataSource = [self dataSourceForTableView:tableView];
 		if ([dataSource respondsToSelector:@selector(tableView:viewsForCellAtIndexPath:)]) {
@@ -123,16 +167,16 @@
             views = [NSArray array]; // don't skip values so the cache stays continuous
         }
         
-        [_cellContentBuffer setObject:views forKey:key];
+        [_currentContentBuffer setObject:views forKey:key];
         
         // clear the buffer if we've added too many things to it
         NSInteger maxCells = ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone) ? MAX_CELL_BUFFER_IPHONE : MAX_CELL_BUFFER_IPAD;
-        while (_cellContentBuffer.count > maxCells * 2 + 1) {
+        while (_currentContentBuffer.count > maxCells * 2 + 1) {
             
             BOOL (^removeFromCellBuffer)(NSInteger, NSInteger) = ^(NSInteger section, NSInteger row) {
                 NSString *key = [NSString stringWithFormat:@"%d.%d", section, row];
-                if ([_cellContentBuffer objectForKey:key] != nil) {
-                    [_cellContentBuffer removeObjectForKey:key];
+                if ([_currentContentBuffer objectForKey:key] != nil) {
+                    [_currentContentBuffer removeObjectForKey:key];
                     return YES;
                 }
                 return NO;
@@ -181,107 +225,47 @@
 // we do not implement titleForHeaderInSection and titleForFooterInSection
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-	// subclasses that implement this take priority
 	id<KGOTableViewDataSource> dataSource = [self dataSourceForTableView:tableView];
 	
-    static NSString *CellIdentifier = @"Cell";
-
     NSArray *cachedViews = [self tableView:tableView cachedViewsForCellAtIndexPath:indexPath];
     UITableViewCell *cell = nil;
     UITableViewCellStyle style;
-    
-    if (cachedViews.count) {
-        style = UITableViewCellStyleDefault;
-        cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-        if (cell == nil) {
-            cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
-        } else {
-            for (UIView *aView in cell.contentView.subviews) {
-                if (aView != cell.textLabel && aView != cell.detailTextLabel && aView != cell.imageView && aView != cell.accessoryView) {
-                    [aView removeFromSuperview];
-                }
-            }
-        }
-
-    } else {
-        if ([dataSource respondsToSelector:@selector(tableView:styleForCellAtIndexPath:)]) {
-            style = [dataSource tableView:tableView styleForCellAtIndexPath:indexPath];
-        } else {
-            style = UITableViewCellStyleDefault;
-        }
-        
-        NSString *cellID = [NSString stringWithFormat:@"%d", style];
-        cell = [tableView dequeueReusableCellWithIdentifier:cellID];
-        if (cell == nil) {
-            cell = [[[UITableViewCell alloc] initWithStyle:style reuseIdentifier:cellID] autorelease];
-        }
-    }
-
+	
+	if ([dataSource respondsToSelector:@selector(tableView:styleForCellAtIndexPath:)]) {
+		style = [dataSource tableView:tableView styleForCellAtIndexPath:indexPath];
+	} else {
+		style = UITableViewCellStyleDefault;
+	}
+	NSString *cellID = [NSString stringWithFormat:@"%d", style];
+	cell = [tableView dequeueReusableCellWithIdentifier:cellID];
+	
+	if (cell == nil) {
+		cell = [[[UITableViewCell alloc] initWithStyle:style reuseIdentifier:cellID] autorelease];
+		
+	} else {
+		for (UIView *aView in cell.contentView.subviews) {
+			if (aView != cell.textLabel && aView != cell.detailTextLabel && aView != cell.imageView && aView != cell.accessoryView) {
+				[aView removeFromSuperview];
+			}
+		}
+	}
+	
     if ([dataSource respondsToSelector:@selector(tableView:manipulatorForCellAtIndexPath:)]) {
         CellManipulator manipulateCell = [dataSource tableView:tableView manipulatorForCellAtIndexPath:indexPath];
         manipulateCell(cell);
     }
     
+	if (cachedViews.count) {
+		for (UIView *aView in cachedViews) {
+			[cell.contentView addSubview:aView];
+		}
+	}
+    
     return cell;
 }
 
-- (NSInteger)tableView:(UITableView *)tableView sectionForSectionIndexTitle:(NSString *)title atIndex:(NSInteger)index {
-    id<KGOTableViewDataSource> dataSource = [self dataSourceForTableView:tableView];
-    if ([dataSource respondsToSelector:@selector(tableView:sectionForSectionIndexTitle:atIndex:)]) {
-        return [dataSource tableView:tableView sectionForSectionIndexTitle:title atIndex:index];
-    }
-    return 0;
-}
-
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    id<KGOTableViewDataSource> dataSource = [self dataSourceForTableView:tableView];
-    return [dataSource tableView:tableView numberOfRowsInSection:section];
-}
-
-- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath {
-    id<KGOTableViewDataSource> dataSource = [self dataSourceForTableView:tableView];
-    if ([dataSource respondsToSelector:@selector(tableView:moveRowAtIndexPath:toIndexPath:)]) {
-        [dataSource tableView:tableView moveRowAtIndexPath:fromIndexPath toIndexPath:toIndexPath];
-    }
-}
-
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
-    id<KGOTableViewDataSource> dataSource = [self dataSourceForTableView:tableView];
-    if ([dataSource respondsToSelector:@selector(tableView:commitEditingStyle:forRowAtIndexPath:)]) {
-        [dataSource tableView:tableView commitEditingStyle:editingStyle forRowAtIndexPath:indexPath];
-    }
-}
-
-- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath {
-    id<KGOTableViewDataSource> dataSource = [self dataSourceForTableView:tableView];
-    if ([dataSource respondsToSelector:@selector(tableView:canMoveRowAtIndexPath:)]) {
-        return [dataSource tableView:tableView canMoveRowAtIndexPath:indexPath];
-    }
-    return NO;
-}
-
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
-    id<KGOTableViewDataSource> dataSource = [self dataSourceForTableView:tableView];
-    if ([dataSource respondsToSelector:@selector(tableView:canEditRowAtIndexPath:)]) {
-        return [dataSource tableView:tableView canEditRowAtIndexPath:indexPath];
-    }
-    return NO;
-}
-
-- (NSArray *)sectionIndexTitlesForTableView:(UITableView *)tableView {
-    id<KGOTableViewDataSource> dataSource = [self dataSourceForTableView:tableView];
-    if ([dataSource respondsToSelector:@selector(sectionIndexTitlesForTableView:)]) {
-        return [dataSource sectionIndexTitlesForTableView:tableView];
-    }
-    return nil;
-}
-
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    id<KGOTableViewDataSource> dataSource = [self dataSourceForTableView:tableView];
-    if ([dataSource respondsToSelector:@selector(numberOfSectionsInTableView:)]) {
-        return [dataSource numberOfSectionsInTableView:tableView];
-    }
-    return 1;
+	return 0;
 }
 
 #pragma mark UITableViewDelegate methods

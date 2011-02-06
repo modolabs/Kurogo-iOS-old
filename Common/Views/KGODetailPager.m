@@ -16,11 +16,10 @@ static NSString * DownArrowImage = @"common/arrow-white-down.png";
 
 @implementation KGODetailPager
 
-@synthesize delegate = _pagerDelegate;
+@synthesize controller, delegate;
 
-- (id)initWithDelegate:(id<KGODetailPagerDelegate>)delegate {
+- (id)init {
     if (self = [super initWithItems:[NSArray arrayWithObjects:[UIImage imageNamed:UpArrowImage], [UIImage imageNamed:DownArrowImage], nil]]) {
-        self.delegate = delegate;
         [self updateSegmentStates];
         [self setMomentary:YES];
         [self addTarget:self action:@selector(didSelectSegment:) forControlEvents:UIControlEventValueChanged];
@@ -29,17 +28,18 @@ static NSString * DownArrowImage = @"common/arrow-white-down.png";
 }
 
 - (void)updateSegmentStates {
-    [self setEnabled:[self.delegate pagerCanPageUp:self] forSegmentAtIndex:PAGE_UP_SEGMENT];
-    [self setEnabled:[self.delegate pagerCanPageDown:self] forSegmentAtIndex:PAGE_DOWN_SEGMENT];
+    [self setEnabled:[self.controller pagerCanShowPreviousPage:self] forSegmentAtIndex:PAGE_UP_SEGMENT];
+    [self setEnabled:[self.controller pagerCanShowNextPage:self] forSegmentAtIndex:PAGE_DOWN_SEGMENT];
 }
 
 - (void)didSelectSegment:(id)sender {
     if (sender == self) {
-        NSInteger i = self.selectedSegmentIndex;
-        if (i == PAGE_UP_SEGMENT) {
-            [self.delegate pageUp:self];
+        if (self.selectedSegmentIndex == PAGE_UP_SEGMENT) {
+            id content = [self.controller contentForPreviousPage:self];
+			[self.delegate pager:self showContentForPage:content];
         } else {
-            [self.delegate pageDown:self];
+            id content = [self.controller contentForNextPage:self];
+			[self.delegate pager:self showContentForPage:content];
         }
         [self updateSegmentStates];
     }
@@ -47,6 +47,7 @@ static NSString * DownArrowImage = @"common/arrow-white-down.png";
 
 - (void)dealloc {
     self.delegate = nil;
+	self.controller = nil;
     [super dealloc];
 }
 

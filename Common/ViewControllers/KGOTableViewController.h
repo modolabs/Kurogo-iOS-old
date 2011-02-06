@@ -34,7 +34,11 @@ typedef void (^CellManipulator)(UITableViewCell *);
     NSMutableArray *_tableViews;
     NSMutableArray *_tableViewDataSources;
     
-    NSMutableDictionary *_cellContentBuffer;
+	NSMutableArray *_cellContentBuffers;
+	
+	UITableView *_currentTableView;
+    NSMutableDictionary *_currentContentBuffer;
+
     id<KGOTableViewDataSource> _dataSource;
 	UITableView *_tableView;
 }
@@ -47,9 +51,14 @@ typedef void (^CellManipulator)(UITableViewCell *);
 
 - (void)removeTableView:(UITableView *)tableView;
 
+- (void)addTableView:(UITableView *)tableView;
 - (void)addTableView:(UITableView *)tableView withDataSource:(id<KGOTableViewDataSource>)dataSource;
 - (UITableView *)addTableViewWithStyle:(UITableViewStyle)style;
 - (UITableView *)addTableViewWithStyle:(UITableViewStyle)style dataSource:(id<KGOTableViewDataSource>)dataSource;
+- (UITableView *)addTableViewWithFrame:(CGRect)frame style:(UITableViewStyle)style;
 - (UITableView *)addTableViewWithFrame:(CGRect)frame style:(UITableViewStyle)style dataSource:(id<KGOTableViewDataSource>)dataSource;
+
+- (void)reloadDataForTableView:(UITableView *)tableView;
+- (void)decacheTableView:(UITableView *)tableView;
 
 @end

@@ -113,9 +113,6 @@ static NSString * const CredentialsKey = @"Credentials";
 - (void) loadView {
 	[super loadView];
 	
-	//twitterEngine = [[MGTwitterEngine alloc] initWithDelegate:self];
-	//[twitterEngine setConsumerKey:TwitterOAuthConsumerKey secret:TwitterOAuthConsumerSecret];
-	
 	UINavigationBar *navBar = [[[UINavigationBar alloc] initWithFrame:CGRectMake(0.0, 0.0, self.view.frame.size.width, NAVIGATION_BAR_HEIGHT)] autorelease];
 	navBar.barStyle= UIBarStyleBlack;
 	navigationItem = [[[UINavigationItem alloc] initWithTitle:@"Twitter"] autorelease];
@@ -125,7 +122,6 @@ static NSString * const CredentialsKey = @"Credentials";
 	self.view.opaque = YES;
 	self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:MITImageNameBackground]];
 	[self.view addSubview:navBar];
-	//[self updateTwitterSessionUI];
 	[[KGOSocialMediaController sharedController] loginTwitterWithDelegate:self];
 }
 
@@ -182,41 +178,7 @@ static NSString * const CredentialsKey = @"Credentials";
 - (void)twitterRequestSucceeded:(NSString *)connectionIdentifier {
 	;
 }
-/*
-- (void) updateTwitterSessionUI {
-	[self.contentView removeFromSuperview];
-    self.contentView = nil;
-    NSString *username = [[NSUserDefaults standardUserDefaults] objectForKey:TwitterShareUsernameKey];
-	
-	if(username != nil) {
-		// user has logged in
-        
-        NSString *password = [self cachedTwitterXAuthAccessTokenStringForUsername:username];
-        [twitterEngine getXAuthAccessTokenForUsername:username password:password];
-        
-		navigationItem.title = @"Post to Twitter";
-        if (!shortURL) {            
-            self.contentView = [[[MITLoadingActivityView alloc] initWithFrame:CGRectMake(0, 44.0, self.view.frame.size.width, self.view.frame.size.height)] autorelease];
-			[[KGOSocialMediaController sharedController] getBitlyURLForLongURL:longURL delegate:self];
-            
-        } else {
-            [self loadMessageInputView];
-            [messageField becomeFirstResponder];
-            navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithTitle:@"Tweet" style:UIBarButtonItemStyleDone target:self action:@selector(sendTweet)] autorelease];
-            [self updateMessageInputView];
-        }
-		
-	} else {
-		// user has not yet logged in, so show them the login view
-		[self loadLoginView];
-		navigationItem.title = @"Sign in to Twitter";
-		navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithTitle:@"Sign in" style:UIBarButtonItemStyleDone target:self action:@selector(loginTwitter)] autorelease];
-		[usernameField becomeFirstResponder];
-	}
-	
-	[self.view addSubview:self.contentView];
-}
-*/
+
 - (void) dismissTwitterViewController {
 	[self dismissModalViewControllerAnimated:YES];
 }
@@ -263,7 +225,6 @@ static NSString * const CredentialsKey = @"Credentials";
     messageField = [[UITextView alloc] initWithFrame:CGRectInset(messageFrame, MESSAGE_MARGIN, MESSAGE_MARGIN)];
     messageField.text = [NSString stringWithFormat:@"%@:\n%@", message, shortURL];
     messageField.delegate = self;
-    //messageField.delegate = [[MessageFieldDelegate alloc] initWithMessage:messageField.text counter:counterLabel];
     messageField.backgroundColor = [UIColor clearColor];
     messageField.font = [UIFont systemFontOfSize:17.0];
     [messageInputView addSubview:messageField];
@@ -283,7 +244,6 @@ static NSString * const CredentialsKey = @"Credentials";
 }
 
 - (void) updateMessageInputView {
-	//NSString *username = [[NSUserDefaults standardUserDefaults] objectForKey:TwitterUsernameKey];
 	NSString *username = [[KGOSocialMediaController sharedController] twitterUsername];
 	usernameLabel.text = username;	
 	// make sure sign out button is aligned directly left of username
@@ -356,77 +316,24 @@ static NSString * const CredentialsKey = @"Credentials";
 
 - (void) logoutTwitter {
 	[[KGOSocialMediaController sharedController] logoutTwitter];
-	/*
-	NSString *username = [[NSUserDefaults standardUserDefaults] objectForKey:TwitterShareUsernameKey];
-	[[NSUserDefaults standardUserDefaults] removeObjectForKey:TwitterShareUsernameKey];
-	
-	NSError *error = nil;
-	[SFHFKeychainUtils deleteItemForUsername:username andServiceName:TwitterServiceName error:&error];
-
-	[self updateTwitterSessionUI];
-	 */
 }
 	
 - (void) loginTwitter {
 	[[KGOSocialMediaController sharedController] loginTwitterWithUsername:usernameField.text password:passwordField.text];
 	authenticationRequestInProcess = YES;
 	navigationItem.rightBarButtonItem.enabled = NO;
-	/*
-    [self showNetworkActivity];
-	[twitterEngine setUsername:usernameField.text];
-	[twitterEngine getXAuthAccessTokenForUsername:usernameField.text password:passwordField.text];
-	 */
 }
 
 - (void) sendTweet {
 	[[KGOSocialMediaController sharedController] postToTwitter:messageField.text];
-	/*
-    [self showNetworkActivity];
-	NSString *username = [[NSUserDefaults standardUserDefaults] objectForKey:TwitterShareUsernameKey];
-	[twitterEngine setUsername:username];
-	[twitterEngine sendUpdate:messageField.text];
-	 */
 }
-/*
-// this is a deprecated delegate method from XAuthTwitterEngine, but we continue to use it for our own purposes
-- (NSString *) cachedTwitterXAuthAccessTokenStringForUsername: (NSString *)username {
-	NSError *error = nil;
-	NSString *accessToken = [SFHFKeychainUtils getPasswordForUsername:username andServiceName:TwitterServiceName error:&error];
-	if (error) {
-		DLog(@"something went wrong looking up access token, error=%@", error);
-		return nil;
-	} else {
-		return accessToken;
-	}
-}
-*/
+
 - (void)didGetBitlyURL:(NSString *)url {
 	[shortURL release];
 	shortURL = [url retain];
 	[self showMessageScreen];
-    //[self updateTwitterSessionUI];
 }
-/*
-#pragma mark MGTwitterEngineDelegate
 
-- (void)accessTokenReceived:(OAToken *)aToken forRequest:(NSString *)connectionIdentifier {
-	NSError *error = nil;
-    token = [aToken retain];
-    [twitterEngine setAccessToken:token];
-    
-	[[NSUserDefaults standardUserDefaults] setObject:usernameField.text forKey:TwitterShareUsernameKey];
-    
-	navigationItem.rightBarButtonItem.enabled = YES;
-	authenticationRequestInProcess = NO;
-	[self hideNetworkActivity];
-	
-	if (!error) {
-		[self updateTwitterSessionUI];
-	} else {
-		DLog(@"error on saving token=%@",error);
-	}
-}
-*/
 #pragma mark Text field and Text view delegation
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {

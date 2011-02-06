@@ -12,6 +12,10 @@ text = _text;
     self = [super initWithFrame:frame];
     if (self) {
         // Initialization code.
+		self.textColor = [UIColor blackColor];
+		self.highlightedTextColor = [UIColor whiteColor];
+		self.font = [UIFont systemFontOfSize:17];
+		self.boldFont = [UIFont boldSystemFontOfSize:17];
     }
     return self;
 }
@@ -54,6 +58,8 @@ static int rangeCompare(const void * a, const void * b) {
     return rangeA->location - rangeB->location;
 }
 
+
+// TODO: add subviews when when searchtokens are set
 - (void)layoutSubviews {
     if (!_labels) {
         
@@ -102,28 +108,28 @@ static int rangeCompare(const void * a, const void * b) {
         free(foundRanges);
         qsort(filteredRanges, numFoundRanges, sizeof(NSRange), rangeCompare);
         
-        for (NSInteger i = 0; i < numFoundRanges; i++) {
-            NSLog(@"(%d, %d)", filteredRanges[i].location, filteredRanges[i].length);
-        }
-        
         NSRange currentRange = NSMakeRange(0, 0);
         CGSize size;
         CGFloat currentX = 0;
         NSMutableArray *labels = [NSMutableArray array];
         
         for (NSInteger i = 0; i < numFoundRanges; i++) {
-            currentRange.length = filteredRanges[i].location - (currentRange.location + currentRange.length);
-            
-            NSString *string = [self.text substringWithRange:currentRange];
-            size = [string sizeWithFont:self.font];
-            UILabel *normalLabel = [[[UILabel alloc] initWithFrame:CGRectMake(currentX, 0.0f, size.width, size.height)] autorelease];
-            normalLabel.text = string;
-            normalLabel.font = self.font;
-            normalLabel.textColor = self.textColor;
-            normalLabel.highlightedTextColor = self.highlightedTextColor;
-            normalLabel.backgroundColor = [UIColor clearColor];
-            [labels addObject:normalLabel];
-            currentX += size.width;
+            currentRange.length = filteredRanges[i].location - currentRange.location;
+
+			NSString *string;
+			
+            if (currentRange.length) {
+				string = [self.text substringWithRange:currentRange];
+				size = [string sizeWithFont:self.font];
+				UILabel *normalLabel = [[[UILabel alloc] initWithFrame:CGRectMake(currentX, 0.0f, size.width, size.height)] autorelease];
+				normalLabel.text = string;
+				normalLabel.font = self.font;
+				normalLabel.textColor = self.textColor;
+				normalLabel.highlightedTextColor = self.highlightedTextColor;
+				normalLabel.backgroundColor = [UIColor clearColor];
+				[labels addObject:normalLabel];
+				currentX += size.width;
+			}
             
             currentRange = filteredRanges[i];
             
@@ -142,51 +148,6 @@ static int rangeCompare(const void * a, const void * b) {
         }
         
         free(filteredRanges);
-        
-        /*
-        NSRange currentRange = NSMakeRange(0, 0);
-        CGSize size;
-        CGFloat currentX = 0;
-        NSMutableArray *labels = [NSMutableArray array];
-        
-        for (NSInteger i = 0; i < numLetters; i++) {
-            if (currentX >= self.frame.size.width) break;
-            
-            for (NSInteger j = 0; j < numFoundRanges; j++) {
-                if (currentX >= self.frame.size.width) break;
-                
-                if (foundRanges[j].location == i) {
-                    currentRange.length = i - currentRange.location;
-                    
-                    NSString *string = [self.text substringWithRange:currentRange];
-                    size = [string sizeWithFont:self.font];
-                    UILabel *normalLabel = [[[UILabel alloc] initWithFrame:CGRectMake(currentX, 0.0f, size.width, size.height)] autorelease];
-                    normalLabel.text = string;
-                    normalLabel.font = self.font;
-                    normalLabel.textColor = self.textColor;
-                    normalLabel.highlightedTextColor = self.highlightedTextColor;
-                    normalLabel.backgroundColor = [UIColor clearColor];
-                    [labels addObject:normalLabel];
-                    currentX += size.width;
-                    
-                    string = [self.text substringWithRange:foundRanges[j]];
-                    size = [string sizeWithFont:self.boldFont];
-                    UILabel *boldLabel = [[[UILabel alloc] initWithFrame:CGRectMake(currentX, 0.0f, size.width, size.height)] autorelease];
-                    boldLabel.font = self.boldFont;
-                    boldLabel.textColor = self.textColor;
-                    boldLabel.highlightedTextColor = self.highlightedTextColor;
-                    boldLabel.backgroundColor = [UIColor clearColor];
-                    boldLabel.text = string;
-                    [labels addObject:boldLabel];
-                    currentX += size.width;
-                    
-                    currentRange.location = foundRanges[j].location + foundRanges[j].length;
-                }
-            }
-        }
-        
-        free(foundRanges);
-        */
         
         if (currentX < self.frame.size.width && currentRange.location < numLetters) {
             currentRange.length = numLetters - currentRange.location;
@@ -221,7 +182,7 @@ static int rangeCompare(const void * a, const void * b) {
             lastLabel.frame = frame;
         }
         
-        _labels = [NSArray arrayWithArray:labels];
+        _labels = [[NSArray alloc] initWithArray:labels];
     }
     
     for (UILabel *aLabel in _labels) {

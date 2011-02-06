@@ -153,7 +153,6 @@
 		EB7BA33E11F7677F00B3DDA6 /* PolygonOverlay.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB7BA33C11F7677F00B3DDA6 /* PolygonOverlay.h */; settings = {JAVA_ARCHIVE_SUBDIR = "Modules/Campus Map"; }; };
 		EB7BA33F11F7677F00B3DDA6 /* PolygonOverlay.m in Sources */ = {isa = PBXBuildFile; fileRef = EB7BA33D11F7677F00B3DDA6 /* PolygonOverlay.m */; };
 		EB7F327F10CD6C5B00188BCD /* PeopleDataModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = EB7F326A10CD6C5B00188BCD /* PeopleDataModel.xcdatamodeld */; };
-		EB7F328210CD6C5B00188BCD /* PartialHighlightTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = EB7F327110CD6C5B00188BCD /* PartialHighlightTableViewCell.m */; };
 		EB7F328310CD6C5B00188BCD /* PeopleDetailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EB7F327310CD6C5B00188BCD /* PeopleDetailsViewController.m */; };
 		EB7F328410CD6C5B00188BCD /* PeopleModule.m in Sources */ = {isa = PBXBuildFile; fileRef = EB7F327510CD6C5B00188BCD /* PeopleModule.m */; };
 		EB7F328510CD6C5B00188BCD /* PeopleRecentsData.m in Sources */ = {isa = PBXBuildFile; fileRef = EB7F327710CD6C5B00188BCD /* PeopleRecentsData.m */; };
@@ -418,8 +417,6 @@
 		EB6D141411EE979500B65CE3 /* NewsCategory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NewsCategory.m; sourceTree = "<group>"; };
 		EB7BA33C11F7677F00B3DDA6 /* PolygonOverlay.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PolygonOverlay.h; sourceTree = "<group>"; };
 		EB7BA33D11F7677F00B3DDA6 /* PolygonOverlay.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PolygonOverlay.m; sourceTree = "<group>"; };
-		EB7F327010CD6C5B00188BCD /* PartialHighlightTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PartialHighlightTableViewCell.h; sourceTree = "<group>"; };
-		EB7F327110CD6C5B00188BCD /* PartialHighlightTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PartialHighlightTableViewCell.m; sourceTree = "<group>"; };
 		EB7F327210CD6C5B00188BCD /* PeopleDetailsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PeopleDetailsViewController.h; sourceTree = "<group>"; };
 		EB7F327310CD6C5B00188BCD /* PeopleDetailsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PeopleDetailsViewController.m; sourceTree = "<group>"; };
 		EB7F327410CD6C5B00188BCD /* PeopleModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PeopleModule.h; sourceTree = "<group>"; };
@@ -932,8 +929,6 @@
 				EBA2865510E07E140003BA01 /* PeopleSearchViewController.m */,
 				EB7F327210CD6C5B00188BCD /* PeopleDetailsViewController.h */,
 				EB7F327310CD6C5B00188BCD /* PeopleDetailsViewController.m */,
-				EB7F327010CD6C5B00188BCD /* PartialHighlightTableViewCell.h */,
-				EB7F327110CD6C5B00188BCD /* PartialHighlightTableViewCell.m */,
 			);
 			name = People;
 			path = ../../../Modules/People;
@@ -1276,7 +1271,6 @@
 				DE81CF6610C6BC630085573D /* MobileWebModule.m in Sources */,
 				DEA3B48D10C9BB7300BDA774 /* AboutModule.m in Sources */,
 				EB7F327F10CD6C5B00188BCD /* PeopleDataModel.xcdatamodeld in Sources */,
-				EB7F328210CD6C5B00188BCD /* PartialHighlightTableViewCell.m in Sources */,
 				EB7F328310CD6C5B00188BCD /* PeopleDetailsViewController.m in Sources */,
 				EB7F328410CD6C5B00188BCD /* PeopleModule.m in Sources */,
 				EB7F328510CD6C5B00188BCD /* PeopleRecentsData.m in Sources */,

@@ -587,7 +587,11 @@ static NSInteger numTries = 0;
 	
 	[self setStatusText:@""];
 	if (resultsCount == 0) {
-		UIAlertView *alertView = [[[UIAlertView alloc] initWithTitle:nil message:@"No matching articles found." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil] autorelease];
+		UIAlertView *alertView = [[[UIAlertView alloc] initWithTitle:nil
+															 message:@"No matching articles found."
+															delegate:self
+												   cancelButtonTitle:NSLocalizedString(@"OK", nil)
+												   otherButtonTitles:nil] autorelease];
 		[alertView show];
 		self.searchResults = nil;
 		self.stories = nil;
@@ -660,7 +664,7 @@ static NSInteger numTries = 0;
 
 - (void)parser:(StoryXMLParser *)parser didFailWithDownloadError:(NSError *)error {
     if (parser == self.xmlParser) {
-        // TODO: communicate download failure to user
+		// TODO: make sure we aren't showing redundant alert views in addition to ConnectionWrapper
         if ([error code] == NSURLErrorNotConnectedToInternet) {
             DLog(@"News download failed because there's no net connection");
         } else {
@@ -668,7 +672,11 @@ static NSInteger numTries = 0;
         }
 		[self setStatusText:@"Update failed"];
 		
-		UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Update failed" message:@"Please check your connection and try again." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+		UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Update failed"
+														message:@"Please check your connection and try again."
+													   delegate:nil
+											  cancelButtonTitle:NSLocalizedString(@"OK", nil) 
+											  otherButtonTitles:nil];
 		[alert show];
 		[alert release];
         if ([self.stories count] > 0) {
@@ -679,9 +687,13 @@ static NSInteger numTries = 0;
 
 - (void)parser:(StoryXMLParser *)parser didFailWithParseError:(NSError *)error {
     if (parser == self.xmlParser) {
-        // TODO: communicate parse failure to user
+		// TODO: make sure we aren't showing redundant alert views in addition to ConnectionWrapper
 		[self setStatusText:@"Update failed"];
-		UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Update failed" message:@"Please check your connection and try again." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+		UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Update failed"
+														message:@"Please check your connection and try again."
+													   delegate:nil
+											  cancelButtonTitle:NSLocalizedString(@"OK", nil) 
+											  otherButtonTitles:nil];
 		[alert show];
 		[alert release];
         if ([self.stories count] > 0) {
@@ -703,7 +715,6 @@ static NSInteger numTries = 0;
             }
 			length += [self.xmlParser.newStories count];
             
-            //DLog(@"%@", [self.xmlParser.newStories description]);
             DLog(@"setting expectedCount = %d", length);            
 			[aCategory setValue:[NSNumber numberWithInteger:length] forKey:@"expectedCount"];
 			if (!parser.loadingMore && [self.stories count] > 0) {
@@ -756,7 +767,7 @@ static NSInteger numTries = 0;
 	NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
     [formatter setDateStyle:NSDateFormatterMediumStyle];
     [formatter setTimeStyle:NSDateFormatterShortStyle];
-	[self setStatusText:(date) ? [NSString stringWithFormat:@"Last updated %@", [formatter stringFromDate:date]] : nil];
+	[self setStatusText:(date) ? [NSString stringWithFormat:@"%@ %@", NSLocalizedString(@"Last Updated", nil), [formatter stringFromDate:date]] : nil];
     [formatter release];
 }
 
@@ -774,7 +785,7 @@ static NSInteger numTries = 0;
 }
 
 #pragma mark -
-#pragma mark UITableViewDataSource and UITableViewDelegate
+#pragma mark KGOTableViewDataSource
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     return (self.stories.count > 0) ? 1 : 0;
@@ -945,260 +956,6 @@ static NSInteger numTries = 0;
     }
 }
 
-
-/*
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    CGFloat rowHeight = THUMBNAIL_WIDTH;
-
-    switch (indexPath.section) {
-        case 0: {
-            // only show A1 image in first row if
-            if (self.searchResults == nil     // this is not a search
-                && self.featuredStory != nil  // we have a featured story
-                && !showingBookmarks          // we are not looking at bookmarks
-                && indexPath.row == 0) {
-                rowHeight = FEATURE_IMAGE_HEIGHT;
-            } else if (indexPath.row < self.stories.count) {
-                rowHeight = THUMBNAIL_WIDTH;
-            } else {
-                rowHeight = 50; // "Load more articles..."
-            }
-
-            break;
-        }
-    }
-    return rowHeight;
-}
-
-
-// Customize the appearance of table view cells.
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    UITableViewCell *result = nil;
-    
-    switch (indexPath.section) {
-        case 0: {
-            if (self.searchResults == nil     // this is not a search
-                && self.featuredStory != nil  // we have a featured story
-                && !showingBookmarks          // we are not looking at bookmarks
-                && indexPath.row == 0)
-            {                
-                NewsStory *story = self.featuredStory;
-                
-                static NSString *StoryCellIdentifier = @"FeaturedCell";
-                UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:StoryCellIdentifier];
-                
-                UILabel *titleLabel = nil;
-                UILabel *dekLabel = nil;
-                UIView *textHolder = nil;
-                StoryThumbnailView *thumbnailView = nil;
-                
-                if (cell == nil) {
-                    // Set up the cell
-                    cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:StoryCellIdentifier] autorelease];
-                    
-                    // image goes first
-                    thumbnailView = [[StoryThumbnailView alloc] initWithFrame:CGRectMake(0, 0, 320.0, FEATURE_IMAGE_HEIGHT)];
-                    thumbnailView.tag = 3;
-                    [cell.contentView addSubview:thumbnailView];
-                    [thumbnailView release];
-                    
-                    textHolder = [[UIView alloc] initWithFrame:CGRectMake(0, FEATURE_IMAGE_HEIGHT - FEATURE_TEXT_HEIGHT, 320.0, FEATURE_TEXT_HEIGHT)];
-                    textHolder.backgroundColor = [UIColor colorWithWhite:1.0 alpha:0.8];
-                    
-                    // Title View
-                    titleLabel = [[UILabel alloc] initWithFrame:CGRectZero];
-                    titleLabel.tag = 1;
-                    titleLabel.backgroundColor = [UIColor clearColor];
-                    titleLabel.font = [UIFont boldSystemFontOfSize:STORY_TITLE_FONT_SIZE];
-                    titleLabel.numberOfLines = 0;
-                    titleLabel.lineBreakMode = UILineBreakModeTailTruncation;
-                    [textHolder addSubview:titleLabel];
-                    [titleLabel release];
-                    
-                    // Summary View
-                    dekLabel = [[UILabel alloc] initWithFrame:CGRectZero];
-                    dekLabel.tag = 2;
-                    dekLabel.backgroundColor = [UIColor clearColor];
-                    dekLabel.font = [UIFont systemFontOfSize:STORY_DEK_FONT_SIZE];
-                    dekLabel.textColor = [UIColor colorWithHexString:@"#0D0D0D"];
-                    dekLabel.highlightedTextColor = [UIColor whiteColor];
-                    dekLabel.numberOfLines = 0;
-                    dekLabel.lineBreakMode = UILineBreakModeTailTruncation;
-                    [textHolder addSubview:dekLabel];
-                    [dekLabel release];
-                    
-                    textHolder.tag = 4;
-                    [cell.contentView addSubview:textHolder];
-                    [textHolder release];
-                    
-                    //[cell setAccessoryType:UITableViewCellAccessoryDisclosureIndicator];
-                    cell.selectionStyle = UITableViewCellSelectionStyleGray;
-                }
-                
-                textHolder = (UIView *)[cell viewWithTag:4];
-                titleLabel = (UILabel *)[textHolder viewWithTag:1];
-                dekLabel = (UILabel *)[textHolder viewWithTag:2];
-                thumbnailView = (StoryThumbnailView *)[cell viewWithTag:3];
-                
-                titleLabel.text = story.title;
-                dekLabel.text = story.summary;
-                
-                titleLabel.textColor = ([story.read boolValue]) ? [UIColor colorWithHexString:@"#666666"] : [UIColor blackColor];
-                titleLabel.highlightedTextColor = [UIColor whiteColor];
-                
-                // Calculate height
-                CGFloat availableHeight = FEATURE_TEXT_HEIGHT;
-                CGSize titleDimensions = [titleLabel.text sizeWithFont:titleLabel.font constrainedToSize:CGSizeMake(STORY_TEXT_WIDTH, availableHeight) lineBreakMode:UILineBreakModeTailTruncation];
-                availableHeight -= titleDimensions.height;
-                
-                CGSize dekDimensions = CGSizeZero;
-                // if not even one line will fit, don't show the deck at all
-                if (availableHeight > dekLabel.font.leading) {
-                    dekDimensions = [dekLabel.text sizeWithFont:dekLabel.font constrainedToSize:CGSizeMake(STORY_TEXT_WIDTH, availableHeight) lineBreakMode:UILineBreakModeTailTruncation];
-                }
-                
-                titleLabel.frame = CGRectMake(STORY_TEXT_PADDING_LEFT,
-                                              STORY_TEXT_PADDING_TOP, 
-                                              STORY_TEXT_WIDTH + THUMBNAIL_WIDTH, 
-                                              titleDimensions.height);
-                dekLabel.frame = CGRectMake(STORY_TEXT_PADDING_LEFT, 
-                                            ceil(CGRectGetMaxY(titleLabel.frame)), 
-                                            STORY_TEXT_WIDTH + THUMBNAIL_WIDTH, 
-                                            dekDimensions.height);
-                
-                thumbnailView.placeholderImageName = @"news/news-placeholder-a1.png";
-                thumbnailView.image = story.featuredImage;
-                [thumbnailView loadImage];
-                
-                result = cell;
-                
-            } else if (indexPath.row < self.stories.count) {
-                NewsStory *story = [self.stories objectAtIndex:indexPath.row];
-                
-                static NSString *StoryCellIdentifier = @"StoryCell";
-                UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:StoryCellIdentifier];
-                
-                UILabel *titleLabel = nil;
-                UILabel *dekLabel = nil;
-                StoryThumbnailView *thumbnailView = nil;
-                
-                if (cell == nil) {
-                    // Set up the cell
-                    cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:StoryCellIdentifier] autorelease];
-                    
-                    // Title View
-                    titleLabel = [[UILabel alloc] initWithFrame:CGRectZero];
-                    titleLabel.tag = 1;
-                    titleLabel.font = [UIFont boldSystemFontOfSize:STORY_TITLE_FONT_SIZE];
-                    titleLabel.numberOfLines = 0;
-                    titleLabel.lineBreakMode = UILineBreakModeTailTruncation;
-                    [cell.contentView addSubview:titleLabel];
-                    [titleLabel release];
-                    
-                    // Summary View
-                    dekLabel = [[UILabel alloc] initWithFrame:CGRectZero];
-                    dekLabel.tag = 2;
-                    dekLabel.font = [UIFont systemFontOfSize:STORY_DEK_FONT_SIZE];
-                    dekLabel.textColor = [UIColor colorWithHexString:@"#0D0D0D"];
-                    dekLabel.highlightedTextColor = [UIColor whiteColor];
-                    dekLabel.numberOfLines = 0;
-                    dekLabel.lineBreakMode = UILineBreakModeTailTruncation;
-                    [cell.contentView addSubview:dekLabel];
-                    [dekLabel release];
-                    
-                    thumbnailView = [[StoryThumbnailView alloc] initWithFrame:CGRectMake(0, 0, THUMBNAIL_WIDTH, THUMBNAIL_WIDTH)];
-                    thumbnailView.tag = 3;
-                    [cell.contentView addSubview:thumbnailView];
-                    [thumbnailView release];
-                    
-                    [cell setAccessoryType:UITableViewCellAccessoryDisclosureIndicator];
-                    cell.selectionStyle = UITableViewCellSelectionStyleGray;
-                }
-                
-                titleLabel = (UILabel *)[cell viewWithTag:1];
-                dekLabel = (UILabel *)[cell viewWithTag:2];
-                thumbnailView = (StoryThumbnailView *)[cell viewWithTag:3];
-                
-                titleLabel.text = story.title;
-                dekLabel.text = story.summary;
-                
-                titleLabel.textColor = ([story.read boolValue]) ? [UIColor colorWithHexString:@"#666666"] : [UIColor blackColor];
-                titleLabel.highlightedTextColor = [UIColor whiteColor];
-                
-                // Calculate height
-                CGFloat availableHeight = STORY_TEXT_HEIGHT;
-                CGSize titleDimensions = [titleLabel.text sizeWithFont:titleLabel.font constrainedToSize:CGSizeMake(STORY_TEXT_WIDTH, availableHeight) lineBreakMode:UILineBreakModeTailTruncation];
-                availableHeight -= titleDimensions.height;
-                
-                CGSize dekDimensions = CGSizeZero;
-                // if not even one line will fit, don't show the deck at all
-                if (availableHeight > dekLabel.font.leading) {
-                    dekDimensions = [dekLabel.text sizeWithFont:dekLabel.font constrainedToSize:CGSizeMake(STORY_TEXT_WIDTH, availableHeight) lineBreakMode:UILineBreakModeTailTruncation];
-                }
-                
-                
-                titleLabel.frame = CGRectMake(THUMBNAIL_WIDTH + STORY_TEXT_PADDING_LEFT, 
-                                              STORY_TEXT_PADDING_TOP, 
-                                              STORY_TEXT_WIDTH, 
-                                              titleDimensions.height);
-                dekLabel.frame = CGRectMake(THUMBNAIL_WIDTH + STORY_TEXT_PADDING_LEFT, 
-                                            ceil(CGRectGetMaxY(titleLabel.frame)), 
-                                            STORY_TEXT_WIDTH, 
-                                            dekDimensions.height);
-                
-                thumbnailView.image = story.thumbImage;
-                [thumbnailView loadImage];
-                
-                result = cell;
-            }
-            else if (indexPath.row == self.stories.count) {
-                NSString *MyIdentifier = @"moreArticles";
-                UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:MyIdentifier];
-                if (cell == nil) {
-                    // Set up the cell
-                    cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:MyIdentifier] autorelease];
-                    cell.selectionStyle = UITableViewCellSelectionStyleGray;
-                    
-					UILabel *moreArticlesLabel = [[UILabel alloc] initWithFrame:cell.frame];
-					moreArticlesLabel.font = [UIFont boldSystemFontOfSize:15];
-					moreArticlesLabel.numberOfLines = 1;
-					moreArticlesLabel.textColor = [UIColor colorWithHexString:@"#1A1611"];
-					moreArticlesLabel.text = @"Load 10 more articles..."; // just something to make it place correctly
-					[moreArticlesLabel sizeToFit];
-					moreArticlesLabel.tag = 1234;
-					CGRect frame = moreArticlesLabel.frame;
-					frame.origin.x = 10;
-					frame.origin.y = ((NSInteger)(50.0 - moreArticlesLabel.frame.size.height)) / 2;
-					moreArticlesLabel.frame = frame;
-					
-                    [cell.contentView addSubview:moreArticlesLabel];
-                    [moreArticlesLabel release];
-                }
-				
-				UILabel *moreArticlesLabel = (UILabel *)[cell viewWithTag:1234];
-				if (moreArticlesLabel) {
-					NSInteger remainingArticlesToLoad = (!searchResults) ? (200 - [self.stories count]) : (totalAvailableResults - [self.stories count]);
-					moreArticlesLabel.text = [NSString stringWithFormat:@"Load %d more articles...", (remainingArticlesToLoad > 10) ? 10 : remainingArticlesToLoad];
-					if (!self.xmlParser) { // disable when a load is already in progress
-						moreArticlesLabel.textColor = [UIColor colorWithHexString:@"#1A1611"]; // enable
-					} else {
-						moreArticlesLabel.textColor = [UIColor colorWithHexString:@"#999999"]; // disable
-					}
-
-					
-					[moreArticlesLabel sizeToFit];
-				}
-				
-                result = cell;
-            } else {
-                DLog(@"%s attempted to show non-existent row (%d) with actual count of %d", _cmd, indexPath.row, self.stories.count);
-            }
-        }
-            break;
-    }
-    return result;
-}
-*/
 - (void)tableView:(UITableView *)tv didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 	if(indexPath.row == self.stories.count) {
 		if (!self.xmlParser) { // only "load x more..." if no other load is going on

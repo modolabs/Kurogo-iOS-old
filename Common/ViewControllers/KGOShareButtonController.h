@@ -28,13 +28,11 @@
 @interface KGOShareButtonController : NSObject <UIActionSheetDelegate,
 FacebookWrapperDelegate> {
 
-    //Facebook *facebook;
     BOOL loggedIntoFacebook;
 	id<KGOShareButtonDelegate> _delegate;
 
 }
 
-//@property (nonatomic, retain) Facebook *facebook;
 @property (nonatomic, assign) id<KGOShareButtonDelegate> delegate;
 
 - (id)initWithDelegate:(id<KGOShareButtonDelegate>)delegate;
@@ -42,7 +40,5 @@ FacebookWrapperDelegate> {
 - (void)shareInView:(UIView *)view;
 
 - (void)showFacebookDialog;
-//- (void)loginToFacebook;
-//- (void)logoutFromFacebook;
 
 @end

@@ -2,7 +2,6 @@
 #import "PersonDetails.h"
 #import "PeopleDetailsViewController.h"
 #import "PeopleRecentsData.h"
-#import "PartialHighlightTableViewCell.h"
 #import "MIT_MobileAppDelegate.h"
 #import "ModoNavigationController.h"
 // common UI elements
@@ -52,7 +51,7 @@ NSInteger strLenSort(NSString *str1, NSString *str2, void *context)
 	UIAlertView *alert = [[UIAlertView alloc] initWithTitle:theTitle 
 													message:message
 												   delegate:self
-										  cancelButtonTitle:@"OK" 
+										  cancelButtonTitle:NSLocalizedString(@"OK", nil)
 										  otherButtonTitles:nil]; 
 	[alert show];
 	[alert release];
@@ -80,7 +79,7 @@ NSInteger strLenSort(NSString *str1, NSString *str2, void *context)
     theSearchBar = [[ModoSearchBar alloc] initWithFrame:CGRectMake(0.0f, 0.0f, self.view.frame.size.width, NAVIGATION_BAR_HEIGHT)];
 
 	theSearchBar.tintColor = SEARCH_BAR_TINT_COLOR;
-	theSearchBar.placeholder = @"Search";
+	theSearchBar.placeholder = NSLocalizedString(@"Search", nil);
 	if ([self.searchTerms length] > 0)
 		theSearchBar.text = self.searchTerms;
 
@@ -93,11 +92,12 @@ NSInteger strLenSort(NSString *str1, NSString *str2, void *context)
     CGRect frame = CGRectMake(0.0, theSearchBar.frame.size.height,
                               self.view.frame.size.width,
                               self.view.frame.size.height - theSearchBar.frame.size.height);
-    self.tableView = [[[UITableView alloc] initWithFrame:frame style:UITableViewStyleGrouped] autorelease];
-    self.tableView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
-    self.tableView.delegate = self;
-    self.tableView.dataSource = self;
-	//[self.tableView applyStandardColors];
+	self.tableView = [self addTableViewWithFrame:frame style:UITableViewStyleGrouped];
+	
+    //self.tableView = [[[UITableView alloc] initWithFrame:frame style:UITableViewStyleGrouped] autorelease];
+    //self.tableView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
+    //self.tableView.delegate = self;
+    //self.tableView.dataSource = self;
     
     NSString *searchHints = NSLocalizedString(@"Tip: You can search above by a person's first or last name or email address.", nil);
 
@@ -113,15 +113,15 @@ NSInteger strLenSort(NSString *str1, NSString *str2, void *context)
 	hintsLabel.font = hintsFont;
 	hintsLabel.text = searchHints;	
     hintsLabel.textColor = [UIColor colorWithHexString:@"#404040"];
-    UIView *hintsContainer = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, labelSize.width, labelSize.height + 10.0)];
+    UIView *hintsContainer = [[[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, self.tableView.frame.size.width, labelSize.height + 10.0)] autorelease];
 	[hintsContainer addSubview:hintsLabel];
 	[hintsLabel release];
 
-    self.tableView.tableHeaderView = [[[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, 
-																			   self.tableView.frame.size.width, 
-																			   hintsContainer.frame.size.height)] autorelease];
-	[self.tableView.tableHeaderView addSubview:hintsContainer];
-	[hintsContainer release];
+    //self.tableView.tableHeaderView = [[[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, 
+	//																		   self.tableView.frame.size.width, 
+	//																		   hintsContainer.frame.size.height)] autorelease];
+	//[self.tableView.tableHeaderView addSubview:hintsContainer];
+	self.tableView.tableHeaderView = hintsContainer;
 
 	// set up screen for when there are no results
 	recentlyViewedHeader = nil;
@@ -151,7 +151,7 @@ NSInteger strLenSort(NSString *str1, NSString *str2, void *context)
 		self.tableView.tableFooterView.hidden = YES;
 	}
     
-    [self.view addSubview:self.tableView];
+    //[self.view addSubview:self.tableView];
     [self.searchBar addDropShadow];
 }
 
@@ -161,7 +161,8 @@ NSInteger strLenSort(NSString *str1, NSString *str2, void *context)
 	
     self.tableView.tableFooterView.hidden = ([[[PeopleRecentsData sharedData] recents] count] == 0);
 
-	[self.tableView reloadData];
+	//[self.tableView reloadData];
+	[self reloadDataForTableView:self.tableView];
 }
 
 #pragma mark memory
@@ -183,13 +184,6 @@ NSInteger strLenSort(NSString *str1, NSString *str2, void *context)
 #pragma mark -
 #pragma mark Search methods
 
-/*
-- (void)prepSearchBar {
-	if (!self.searchController.active) {
-		[self.searchController setActive:YES];
-	}
-}
-*/
 - (void)beginExternalSearch:(NSString *)externalSearchTerms {
 	self.searchTerms = externalSearchTerms;
 	theSearchBar.text = self.searchTerms;
@@ -205,6 +199,7 @@ NSInteger strLenSort(NSString *str1, NSString *str2, void *context)
 		[api abortRequest];
 		[self cleanUpConnection];
 	}
+	[self removeTableView:self.searchController.searchResultsTableView];
 }
 
 - (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
@@ -245,9 +240,11 @@ NSInteger strLenSort(NSString *str1, NSString *str2, void *context)
     self.searchResults = theSearchResults;
     self.searchController.searchResultsTableView.frame = self.tableView.frame;
     self.searchController.searchResultsTableView.rowHeight = 56;
-    [self.view addSubview:self.searchController.searchResultsTableView];
+	[self addTableView:self.searchController.searchResultsTableView];
+    //[self.view addSubview:self.searchController.searchResultsTableView];
     [self.searchBar addDropShadow];
     [self.searchController.searchResultsTableView reloadData];
+	//[self reloadDataForTableView:self.searchController.searchResultsTableView];
 }
 
 #pragma mark -
@@ -283,6 +280,7 @@ NSInteger strLenSort(NSString *str1, NSString *str2, void *context)
 				break;
 		}
 	} else {
+		NSLog(@"%d", self.searchResults.count);
 		return [self.searchResults count];
 	}
 }
@@ -291,18 +289,38 @@ NSInteger strLenSort(NSString *str1, NSString *str2, void *context)
     if (tableView == self.tableView) {
         return nil;
     } else {
+		NSDictionary *searchResult = [self.searchResults objectAtIndex:indexPath.row];
+		NSString *fullname = [NSString string];
+        NSArray *namesFromJSON = [searchResult objectForKey:@"cn"];
+        if ([namesFromJSON count] > 0) {
+            fullname = [namesFromJSON objectAtIndex:0];
+        }
+				
         NSInteger padding = 10;
         NSInteger chevronSize = 20;
         UIFont *font = [[KGOTheme sharedTheme] fontForTableCellTitleWithStyle:UITableViewCellStyleSubtitle];
         CGRect frame = CGRectMake(padding, padding, tableView.frame.size.width - 2 * padding - chevronSize, font.lineHeight);
         HighlightedResultLabel *textLabel = [[[HighlightedResultLabel alloc] initWithFrame:frame] autorelease];
-
-        frame.origin.y += font.lineHeight + 3; // padding between labels
-        UIFont *detailFont = [[KGOTheme sharedTheme] fontForTableCellSubtitleWithStyle:UITableViewCellStyleSubtitle];
-        frame.size.height = detailFont.lineHeight;
-        HighlightedResultLabel *detailTextLabel = [[[HighlightedResultLabel alloc] initWithFrame:frame] autorelease];
-
-        return [NSArray arrayWithObjects:textLabel, detailTextLabel, nil];
+		textLabel.font = font;
+		textLabel.text = fullname;
+		textLabel.searchTokens = self.searchTokens;
+		
+		// figure out which field (if any) to display as subtitle
+		// display priority: title, dept
+		NSArray *detailAttributeArray = [searchResult objectForKey:@"title"];
+		if ([detailAttributeArray count] > 0) {
+			frame.origin.y += font.lineHeight + 3; // padding between labels
+			UIFont *detailFont = [[KGOTheme sharedTheme] fontForTableCellSubtitleWithStyle:UITableViewCellStyleSubtitle];
+			frame.size.height = detailFont.lineHeight;
+			HighlightedResultLabel *detailTextLabel = [[[HighlightedResultLabel alloc] initWithFrame:frame] autorelease];
+			detailTextLabel.font = detailFont;
+			detailTextLabel.text = [detailAttributeArray objectAtIndex:0];
+			detailTextLabel.searchTokens = self.searchTokens;
+			
+			return [NSArray arrayWithObjects:textLabel, detailTextLabel, nil];
+		}
+		
+        return [NSArray arrayWithObjects:textLabel, nil];
     }
 }
 
@@ -357,166 +375,6 @@ NSInteger strLenSort(NSString *str1, NSString *str2, void *context)
     return KGOTableCellStyleSubtitle;
 }
 
-/*
-// Customize the appearance of table view cells.
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    
-	static NSString *secondaryCellID = @"InfoCell";
-	static NSString *recentCellID = @"RecentCell";
-	UITableViewCell *cell = nil;
-
-	if (tableView == self.tableView) { // show phone directory tel #, recents	
-	
-		if (indexPath.section == kPhoneDirectorySection) {
-			
-			cell = [tableView dequeueReusableCellWithIdentifier:secondaryCellID];
-			if (cell == nil) {
-				NSDictionary *rowProperties = [PeopleSearchViewController staticPhoneRowPropertiesForIndexPath:indexPath];
-				cell = [[[SecondaryGroupedTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:secondaryCellID] autorelease];
-				cell.textLabel.text = [rowProperties objectForKey:@"mainText"];
-				[(SecondaryGroupedTableViewCell *)cell secondaryTextLabel].text = [rowProperties objectForKey:@"secondaryText"];
-				cell.accessoryView = [UIImageView accessoryViewWithMITType:MITAccessoryViewPhone];
-				cell.selectionStyle = UITableViewCellSelectionStyleGray;
-			}
-		
-		} else { // recents
-			
-			cell = [tableView dequeueReusableCellWithIdentifier:recentCellID];
-			if (cell == nil) {
-				cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:recentCellID] autorelease];
-				cell.selectionStyle = UITableViewCellSelectionStyleGray;
-			}
-			
-			[cell applyStandardFonts];
-			cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-
-			PersonDetails *recent = [[[PeopleRecentsData sharedData] recents] objectAtIndex:indexPath.row];
-			cell.textLabel.text = [NSString stringWithFormat:@"%@ %@", 
-                                   [recent formattedValueForKey:@"givenname"], 
-                                   [recent formattedValueForKey:@"sn"]];
-			
-			// show person's title, dept, or email as cell's subtitle text
-			cell.detailTextLabel.text = @" "; // put something there so other cells' contents won't get drawn here
-			NSArray *displayPriority = [NSArray arrayWithObjects:@"title", @"ou", nil];
-			NSString *displayText;
-			for (NSString *tag in displayPriority) {
-				if (displayText = [recent formattedValueForKey:tag]) {
-					cell.detailTextLabel.text = displayText;
-					break;
-				}
-			}
-		}
-		
-	} else { // search results
-		
-		cell = [tableView dequeueReusableCellWithIdentifier:@"ResultCell"];
-		if (cell == nil) {
-			cell = [[[PartialHighlightTableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"ResultCell"] autorelease];
-			cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-			cell.selectionStyle = UITableViewCellSelectionStyleGray;
-		}
-			
-		NSDictionary *searchResult = [self.searchResults objectAtIndex:indexPath.row];
-		NSString *fullname = [NSString string];
-        NSArray *namesFromJSON = [searchResult objectForKey:@"cn"];
-        if ([namesFromJSON count] > 0)
-        {
-            fullname = [namesFromJSON objectAtIndex:0];
-        }
-		
-		// figure out which field (if any) to display as subtitle
-		// display priority: title, dept
-		cell.detailTextLabel.text = @" "; // if this is empty textlabel will be bottom aligned
-		NSArray *detailAttributeArray = [searchResult objectForKey:@"title"];
-		if ([detailAttributeArray count] > 0) {
-			cell.detailTextLabel.text = [detailAttributeArray objectAtIndex:0];
-		}
-		
-		// in this section we try to highlight the parts of the results that match the search terms
-		// temporarily place "normal[bold] [bold]normal" as textlabel
-		// PartialHightlightTableViewCell will change bracketed text to bold text		
-		NSString *preformatString = [NSString stringWithString:fullname];
-		NSRange boldRange;
-		NSInteger tokenIndex = 0; // if this is the first token we don't need to do the [ vs ] comparison
-		for (NSString *token in self.searchTokens) {
-			boldRange = [[preformatString lowercaseString] rangeOfString:token];
-			if (boldRange.location != NSNotFound) {
-				// if range is already bracketed don't create another pair inside
-				NSString *leftString = [preformatString substringWithRange:NSMakeRange(0, boldRange.location)];
-				if ((tokenIndex > 0) && [[leftString componentsSeparatedByString:@"["] count] > [[leftString componentsSeparatedByString:@"]"] count])
-						continue;
-				
-				preformatString = [NSString stringWithFormat:@"%@[%@]%@",
-								   leftString,
-								   [preformatString substringWithRange:boldRange],
-								   [preformatString substringFromIndex:(boldRange.location + boldRange.length)]];
-			}
-			tokenIndex++;
-		}
-		
-		cell.textLabel.text = preformatString;
-	}
-	
-	cell.isAccessibilityElement = YES;
-	cell.accessibilityLabel = cell.textLabel.text;
-
-	return cell;	
-}
-
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-	if (tableView == self.tableView && indexPath.section == kPhoneDirectorySection) {
-		NSDictionary *rowProperties = [PeopleSearchViewController staticPhoneRowPropertiesForIndexPath:indexPath];
-		if (rowProperties) {
-			return [SecondaryGroupedTableViewCell suggestedHeightForCellWithText:[rowProperties objectForKey:@"mainText"] 
-																		mainFont:kSecondaryGroupMainFont
-																	  detailText:[rowProperties objectForKey:@"secondaryText"] 
-																	  detailFont:kSecondaryGroupDetailFont];
-		}
-		else {
-			return [tableView rowHeight];
-		}		
-	} else {
-		return CELL_TWO_LINE_HEIGHT;
-	}
-}
-
-- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
-	if (section == 1) {
-		return GROUPED_SECTION_HEADER_HEIGHT;
-	} else if (tableView == self.searchController.searchResultsTableView && [self.searchResults count] > 0) {
-		return UNGROUPED_SECTION_HEADER_HEIGHT;
-	} else {
-		return 0.0;
-	}
-}
-
-- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
-	UIView *titleView = nil;
-	
-	if (section == 1) {
-		if (recentlyViewedHeader == nil) {
-			recentlyViewedHeader = [[UITableView groupedSectionHeaderWithTitle:@"Recently Viewed"] retain];
-		}
-		titleView = recentlyViewedHeader;
-	} else if (tableView == self.searchController.searchResultsTableView) {
-		NSUInteger numResults = [self.searchResults count];
-		switch (numResults) {
-			case 0:
-				break;
-			case 50:
-				titleView = [UITableView ungroupedSectionHeaderWithTitle:@"Many found, showing 50"];
-				break;
-			default:
-				titleView = [UITableView ungroupedSectionHeaderWithTitle:[NSString stringWithFormat:@"%d found", numResults]];
-				break;
-		}
-	}
-	
-    return titleView;
-
-}
-*/
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
     if (section == 1) {
         return @"Recently Viewed";
@@ -608,11 +466,11 @@ NSInteger strLenSort(NSString *str1, NSString *str2, void *context)
 
 - (void)showSearchResults {
     [[NSNotificationCenter defaultCenter] removeObserver:self name:PeopleDisplayFieldsDidDownloadNotification object:[PeopleRecentsData sharedData]];
-    
     self.searchController.searchResultsTableView.frame = self.tableView.frame;
-    [self.view addSubview:self.searchController.searchResultsTableView];
+    [self addTableView:self.searchController.searchResultsTableView];
     [self.searchBar addDropShadow];
-    [self.searchController.searchResultsTableView reloadData];
+	[self reloadDataForTableView:self.searchController.searchResultsTableView];
+    //[self.searchController.searchResultsTableView reloadData];
 }
 
 - (BOOL)request:(JSONAPIRequest *)request shouldDisplayAlertForError:(NSError *)error
@@ -640,7 +498,7 @@ NSInteger strLenSort(NSString *str1, NSString *str2, void *context)
 	if ([[actionSheet buttonTitleAtIndex:buttonIndex] isEqualToString:@"Clear"]) {
 		[PeopleRecentsData eraseAll];
 		self.tableView.tableFooterView.hidden = YES;
-		[self.tableView reloadData];
+		[self reloadDataForTableView:self.tableView];
 		[self.tableView scrollRectToVisible:CGRectMake(0.0, 0.0, 1.0, 1.0) animated:YES];
 	}
 }

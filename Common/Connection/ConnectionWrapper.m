@@ -132,7 +132,7 @@
                 UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Connection Failed", nil)
                                                                 message:message
                                                                delegate:alertDelegate
-                                                      cancelButtonTitle:@"OK" 
+                                                      cancelButtonTitle:NSLocalizedString(@"OK", nil) 
                                                       otherButtonTitles:nil];
                 [alert show];
                 [alert release];

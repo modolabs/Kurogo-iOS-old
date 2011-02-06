@@ -7,7 +7,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.navigationItem.title = @"About Harvard";
+    self.navigationItem.title = NSLocalizedString(@"AboutOrgTitle", nil);
     
     [[AnalyticsWrapper sharedWrapper] trackPageview:@"/about/harvard"];
 }
@@ -25,9 +25,7 @@
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-	NSString * file = [[NSBundle mainBundle] pathForResource:@"Config" ofType:@"plist"];
-	NSDictionary *infoDict = [NSDictionary dictionaryWithContentsOfFile:file];
-    NSString *aboutText = [infoDict objectForKey:@"AboutOrgText"];
+    NSString *aboutText = NSLocalizedString(@"AboutOrgText", nil);
     UIFont *aboutFont = [UIFont systemFontOfSize:15.0];
     CGSize aboutSize = [aboutText sizeWithFont:aboutFont constrainedToSize:CGSizeMake(270, 2000) lineBreakMode:UILineBreakModeWordWrap];
     return aboutSize.height;
@@ -46,9 +44,7 @@
         cell.detailTextLabel.backgroundColor = [UIColor clearColor];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
     }
-	NSString * file = [[NSBundle mainBundle] pathForResource:@"Config" ofType:@"plist"];
-	NSDictionary *infoDict = [NSDictionary dictionaryWithContentsOfFile:file];
-    cell.textLabel.text = [infoDict objectForKey:@"AboutOrgText"];
+    cell.textLabel.text = NSLocalizedString(@"AboutOrgText", nil);
     cell.textLabel.font = [[KGOTheme sharedTheme] fontForBodyText];
     cell.textLabel.textColor = [[KGOTheme sharedTheme] textColorForTableCellTitleWithStyle:UITableViewCellStyleDefault];
     cell.textLabel.lineBreakMode = UILineBreakModeWordWrap;

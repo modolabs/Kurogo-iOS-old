@@ -44,9 +44,7 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     if (indexPath.section == 0 && indexPath.row == 1) {
-		NSString * file = [[NSBundle mainBundle] pathForResource:@"Config" ofType:@"plist"];
-        NSDictionary *infoDict = [NSDictionary dictionaryWithContentsOfFile:file];
-        NSString *aboutText = [infoDict objectForKey:@"AboutAppText"];
+        NSString *aboutText = NSLocalizedString(@"AboutAppText", nil);
         UIFont *aboutFont = [UIFont systemFontOfSize:14.0];
         CGSize aboutSize = [aboutText sizeWithFont:aboutFont constrainedToSize:CGSizeMake(tableView.frame.size.width, 2000) lineBreakMode:UILineBreakModeWordWrap];
         return aboutSize.height + 40;
@@ -89,9 +87,7 @@
                     break;
                 case 1:
                 {
-					NSString * file = [[NSBundle mainBundle] pathForResource:@"Config" ofType:@"plist"];
-					NSDictionary *infoDict = [NSDictionary dictionaryWithContentsOfFile:file];
-                    cell.textLabel.text = [infoDict objectForKey:@"AboutAppText"];
+                    cell.textLabel.text = NSLocalizedString(@"AboutAppText", nil);
                     cell.textLabel.lineBreakMode = UILineBreakModeWordWrap;
                     cell.textLabel.numberOfLines = 0;
                     cell.textLabel.font = [[KGOTheme sharedTheme] fontForBodyText];
@@ -108,13 +104,13 @@
         case 1:
             switch (indexPath.row) {
                 case 0:
-                    cell.textLabel.text = @"About Harvard";
+                    cell.textLabel.text = NSLocalizedString(@"AboutOrgTitle", nil);
                     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
                     cell.selectionStyle = UITableViewCellSelectionStyleGray;
                     cell.textLabel.textColor = [[KGOTheme sharedTheme] textColorForTableCellTitleWithStyle:UITableViewCellStyleDefault];
                     break;
                 case 1:
-                    cell.textLabel.text = @"Send Feedback";
+                    cell.textLabel.text = NSLocalizedString(@"Send Feedback", nil);
                     cell.accessoryView = [[KGOTheme sharedTheme] accessoryViewForType:TableViewCellAccessoryEmail];
                     cell.selectionStyle = UITableViewCellSelectionStyleGray;
                     break;

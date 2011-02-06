@@ -10,7 +10,6 @@ NSInteger strLenSort(NSString *str1, NSString *str2, void *context);
 @interface PeopleSearchViewController : KGOTableViewController <UISearchBarDelegate, JSONAPIDelegate, UIAlertViewDelegate, UIActionSheetDelegate> {
 	
     MITSearchDisplayController *searchController;
-    //UITableView *_tableView;
 	NSArray *searchResults;
 	NSString *searchTerms;
 	NSArray *searchTokens;
@@ -29,7 +28,6 @@ NSInteger strLenSort(NSString *str1, NSString *str2, void *context);
 - (void)phoneIconTappedAtIndexPath:(NSIndexPath *)indexPath;
 - (void)showActionSheet;
 
-//@property (nonatomic, retain) UITableView *tableView;
 @property (nonatomic, retain) MITSearchDisplayController *searchController;
 @property (nonatomic, retain) NSArray *searchResults;
 @property (nonatomic, retain) NSString *searchTerms;
