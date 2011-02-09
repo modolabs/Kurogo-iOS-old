@@ -1,5 +1,5 @@
 #import "MITMailComposeController.h"
-#import "MIT_MobileAppDelegate.h"
+#import "KGOAppDelegate.h"
 
 @implementation MITMailComposeController
 
@@ -22,7 +22,7 @@
             [aController setMessageBody:body isHTML:NO];
         }
 		
-		MIT_MobileAppDelegate *appDelegate = (MIT_MobileAppDelegate *)[[UIApplication sharedApplication] delegate];
+		KGOAppDelegate *appDelegate = (KGOAppDelegate *)[[UIApplication sharedApplication] delegate];
 		[appDelegate presentAppModalViewController:aController animated:YES];
 		[aController release];
 		
@@ -47,7 +47,7 @@
 // Dismisses the email composition interface when users tap Cancel or Send. Proceeds to update the message field with the result of the operation.
 - (void)mailComposeController:(MFMailComposeViewController*)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError*)error 
 {	
-	MIT_MobileAppDelegate *appDelegate = (MIT_MobileAppDelegate *)[[UIApplication sharedApplication] delegate];
+	KGOAppDelegate *appDelegate = (KGOAppDelegate *)[[UIApplication sharedApplication] delegate];
 	[appDelegate dismissAppModalViewControllerAnimated:YES];
     
     [self release];

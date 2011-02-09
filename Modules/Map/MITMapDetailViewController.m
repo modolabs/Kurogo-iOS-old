@@ -3,7 +3,7 @@
 #import "MapSearchResultAnnotation.h"
 #import "CampusMapViewController.h"
 #import "MITUIConstants.h"
-#import "MIT_MobileAppDelegate.h"
+#import "KGOAppDelegate.h"
 #import "MapBookmarkManager.h"
 #import "AnalyticsWrapper.h"
 
@@ -308,14 +308,14 @@
         [self.navigationController popToViewController:self.campusMapVC animated:YES];
     } else {
         // if we're coming from federated search, the navStack won't be populated
-        MIT_MobileAppDelegate *appDelegate = (MIT_MobileAppDelegate *)[[UIApplication sharedApplication] delegate];
-        CMModule *mapModule = (CMModule *)[appDelegate moduleForTag:CampusMapTag];
+        KGOAppDelegate *appDelegate = (KGOAppDelegate *)[[UIApplication sharedApplication] delegate];
+        MapModule *mapModule = (MapModule *)[appDelegate moduleForTag:MapTag];
         
         [mapModule resetNavStack];
         mapModule.campusMapVC.view;
         [mapModule.campusMapVC setSearchResults:[NSArray arrayWithObject:self.annotation]];
         [mapModule.campusMapVC showListView:NO];
-        [appDelegate showModuleForTag:CampusMapTag];
+        [appDelegate showModuleForTag:MapTag];
     }
 }
 
@@ -373,12 +373,12 @@
 }
 	
 -(void) connectionDidReceiveResponse: (ConnectionWrapper *)connectionWrapper {
-	[(MIT_MobileAppDelegate *)[[UIApplication sharedApplication] delegate] showNetworkActivityIndicator];
+	[(KGOAppDelegate *)[[UIApplication sharedApplication] delegate] showNetworkActivityIndicator];
 	networkActivity = YES;
 }
 
 -(void) connection:(ConnectionWrapper *)wrapper handleData:(NSData *)data {
-	[(MIT_MobileAppDelegate *)[[UIApplication sharedApplication] delegate] hideNetworkActivityIndicator];
+	[(KGOAppDelegate *)[[UIApplication sharedApplication] delegate] hideNetworkActivityIndicator];
 	networkActivity = NO;
 	
 	_loadingImageView.hidden = YES;
@@ -390,7 +390,7 @@
 }
 	
 -(void) connection:(ConnectionWrapper *)wrapper handleConnectionFailureWithError:(NSError *)error {
-	[(MIT_MobileAppDelegate *)[[UIApplication sharedApplication] delegate] hideNetworkActivityIndicator];
+	[(KGOAppDelegate *)[[UIApplication sharedApplication] delegate] hideNetworkActivityIndicator];
 	networkActivity = NO;
 	
 	self.imageConnectionWrapper = nil;

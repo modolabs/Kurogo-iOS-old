@@ -5,15 +5,16 @@
 #import "CalendarMapView.h"
 #import "DatePickerViewController.h"
 #import "NavScrollerView.h"
+#import "KGOSearchDisplayController.h"
 
-@class MITSearchDisplayController;
 @class EventListTableView;
 @class CalendarEventMapAnnotation;
 @class DatePickerViewController;
 @class NavScrollerView;
 @class ModoSearchBar;
 
-@interface CalendarEventsViewController : UIViewController <NavScrollerDelegate, UISearchBarDelegate, UISearchDisplayDelegate, MKMapViewDelegate, JSONAPIDelegate, DatePickerViewControllerDelegate> {
+@interface CalendarEventsViewController : UIViewController <NavScrollerDelegate, //UISearchBarDelegate, UISearchDisplayDelegate,
+MKMapViewDelegate, JSONAPIDelegate, DatePickerViewControllerDelegate, KGOSearchDisplayDelegate> {
 
 	CalendarEventListType activeEventList; // today, browse, acad, holidays...
 	NSDate *startDate;
@@ -34,7 +35,7 @@
 	
 	// search
     ModoSearchBar *theSearchBar;
-    MITSearchDisplayController *searchController;
+    KGOSearchDisplayController *searchController;
 	UIView *loadingIndicator;
 	// this is a tableview subclass but we're only using it for
 	// its delegate methods

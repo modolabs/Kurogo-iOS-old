@@ -35,7 +35,7 @@
 		// categories without subcategories
 		self.parentCategory = self;
 	}
-	[CoreDataManager saveData];
+	[[CoreDataManager sharedManager] saveData];
 }
 
 - (NSComparisonResult)compare:(EventCategory *)otherCat {

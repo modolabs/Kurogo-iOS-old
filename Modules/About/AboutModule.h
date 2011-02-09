@@ -1,6 +1,6 @@
-#import "MITModule.h"
+#import "KGOModule.h"
 
-@interface AboutModule : MITModule {
+@interface AboutModule : KGOModule {
 
 }
 

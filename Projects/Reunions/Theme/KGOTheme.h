@@ -21,11 +21,26 @@ typedef enum {
 }
 
 + (KGOTheme *)sharedTheme;
+
+#pragma mark custom properties
+
+- (NSString *)fontNameForLabel:(NSString *)label size:(CGFloat *)fontSize;
+- (UIColor *)matchTextColorWithLabel:(NSString *)label;
+- (UIFont *)matchFontWithLabel:(NSString *)label defaultSize:(CGFloat)defaultSize;
+- (UIFont *)matchBoldFontWithLabel:(NSString *)label defaultSize:(CGFloat)defaultSize;
+- (UIColor *)matchBackgroundColorWithLabel:(NSString *)label;
+
+#pragma mark generic
+
 - (UIFont *)fontForContentTitle;
 - (UIColor *)textColorForContentTitle;
 - (UIFont *)fontForBodyText;
 - (UIColor *)textColorForBodyText;
+
 - (UIColor *)linkColor;
+- (UIColor *)backgroundColorForApplication;
+
+#pragma mark tableview
 
 - (UIFont *)fontForTableCellTitleWithStyle:(KGOTableCellStyle)style;
 - (UIColor *)textColorForTableCellTitleWithStyle:(KGOTableCellStyle)style;
@@ -35,10 +50,13 @@ typedef enum {
 - (UIColor *)textColorForGroupedSectionHeader;
 - (UIFont *)fontForPlainSectionHeader;
 - (UIColor *)textColorForPlainSectionHeader;
-- (UIColor *)plainSectionHeaderBackgroundColor;
+- (UIColor *)backgroundColorForPlainSectionHeader;
 - (UIFont *)fontForTableFooter;
 - (UIColor *)textColorForTableFooter;
 
+#pragma mark tableviewcell
+
 - (UIImageView *)accessoryViewForType:(NSString *)accessoryType;
+- (UIColor *)backgroundColorForSecondaryCell;
 
 @end

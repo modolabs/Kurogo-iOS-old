@@ -1,8 +1,9 @@
-#import "MITModule.h"
+#import "KGOModule.h"
+#import "JSONAPIRequest.h"
 
 @class CampusMapViewController;
 
-@interface CMModule : MITModule <JSONAPIDelegate> {
+@interface MapModule : KGOModule <JSONAPIDelegate> {
 
 	CampusMapViewController* _campusMapVC;
     JSONAPIRequest *_request;

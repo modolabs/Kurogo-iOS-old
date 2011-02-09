@@ -1,10 +1,10 @@
 #import <Foundation/Foundation.h>
-#import "MITModule.h"
+#import "KGOModule.h"
 #import "JSONAPIRequest.h"
 
 @class CalendarEventsViewController;
 
-@interface CalendarModule : MITModule <JSONAPIDelegate> {
+@interface CalendarModule : KGOModule <JSONAPIDelegate> {
 
 	CalendarEventsViewController *calendarVC;
     NSString *searchSpan;

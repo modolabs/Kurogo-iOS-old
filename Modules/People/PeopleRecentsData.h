@@ -13,10 +13,12 @@ extern NSString * const PeopleDisplayFieldsDidDownloadNotification;
 @property (nonatomic, retain) NSMutableArray *recents;
 @property (nonatomic, readonly) NSDictionary *displayFields;
 
+- (void)clearOldResults;
+- (void)loadRecentsFromCache;
+
 + (PersonDetails *)personWithUID:(NSString *)uid;
 + (PeopleRecentsData *)sharedData;
 + (void)eraseAll;
-+ (PersonDetails *)updatePerson:(PersonDetails *)personDetails withSearchResult:(NSDictionary *)searchResult;
 + (PersonDetails *)createFromSearchResult:(NSDictionary *)searchResult;
 
 @end

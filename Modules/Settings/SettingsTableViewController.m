@@ -1,6 +1,6 @@
 #import "SettingsTableViewController.h"
-#import "MIT_MobileAppDelegate.h"
-#import "MITModule.h"
+#import "KGOAppDelegate.h"
+#import "KGOModule.h"
 #import "MITUIConstants.h"
 #import "ModoThreeStateSwitchControl.h"
 #import <MapKit/MapKit.h>

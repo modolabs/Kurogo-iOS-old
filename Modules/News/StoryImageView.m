@@ -1,5 +1,5 @@
 #import "StoryImageView.h"
-#import "MIT_MobileAppDelegate.h"
+#import "KGOAppDelegate.h"
 #import "CoreDataManager.h"
 #import "NewsImageRep.h"
 #import "NewsImage.h"
@@ -30,7 +30,7 @@
         imageView.hidden = YES;
         if ([connection isConnected]) {
             [connection cancel];
-            MIT_MobileAppDelegate *appDelegate = (MIT_MobileAppDelegate *)[[UIApplication sharedApplication] delegate];
+            KGOAppDelegate *appDelegate = (KGOAppDelegate *)[[UIApplication sharedApplication] delegate];
             [appDelegate hideNetworkActivityIndicator];
         }
         if (self.loadingView) {
@@ -105,7 +105,7 @@
     }
     [connection requestDataFromURL:[NSURL URLWithString:image.url] allowCachedResponse:YES];
     
-    MIT_MobileAppDelegate *appDelegate = (MIT_MobileAppDelegate *)[[UIApplication sharedApplication] delegate];
+    KGOAppDelegate *appDelegate = (KGOAppDelegate *)[[UIApplication sharedApplication] delegate];
     [appDelegate showNetworkActivityIndicator];
     
     self.imageData = nil;
@@ -127,10 +127,10 @@
     BOOL validImage = [self displayImage];
     if (validImage) {
         image.data = data;
-        [CoreDataManager saveData];
+        [[CoreDataManager sharedManager] saveData];
     }
     
-    MIT_MobileAppDelegate *appDelegate = (MIT_MobileAppDelegate *)[[UIApplication sharedApplication] delegate];
+    KGOAppDelegate *appDelegate = (KGOAppDelegate *)[[UIApplication sharedApplication] delegate];
     [appDelegate hideNetworkActivityIndicator];
 }
 

@@ -1,7 +1,7 @@
 #import "TwitterViewController.h"
 #import "MITUIConstants.h"
 #import "Constants.h"
-#import "MIT_MobileAppDelegate.h"
+#import "KGOAppDelegate.h"
 #import "SFHFKeychainUtils.h"
 #import "MITLoadingActivityView.h"
 #import "JSONAPIRequest.h"
@@ -305,11 +305,11 @@ static NSString * const CredentialsKey = @"Credentials";
 }
 
 - (void)hideNetworkActivity {
-	[(MIT_MobileAppDelegate *)[[UIApplication sharedApplication] delegate] hideNetworkActivityIndicator];
+	[(KGOAppDelegate *)[[UIApplication sharedApplication] delegate] hideNetworkActivityIndicator];
 }
 
 - (void)showNetworkActivity {
-	[(MIT_MobileAppDelegate *)[[UIApplication sharedApplication] delegate] showNetworkActivityIndicator];
+	[(KGOAppDelegate *)[[UIApplication sharedApplication] delegate] showNetworkActivityIndicator];
 }
 
 #pragma mark communication with twitter

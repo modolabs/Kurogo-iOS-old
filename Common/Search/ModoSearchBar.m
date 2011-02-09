@@ -10,6 +10,8 @@
 
 @implementation ModoSearchBar
 
+@synthesize toolbarButtons;
+
 - (id)initWithFrame:(CGRect)frame {
     if ((self = [super initWithFrame:frame])) {
         self.tintColor = SEARCH_BAR_TINT_COLOR;

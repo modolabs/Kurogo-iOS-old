@@ -1,5 +1,5 @@
 #import "AnalyticsWrapper.h"
-
+#import "KGOAppDelegate.h"
 
 @implementation AnalyticsWrapper
 
@@ -16,8 +16,9 @@ static AnalyticsWrapper *s_sharedWrapper = nil;
 
 - (id)init {
     if (self = [super init]) {
-		NSString * file = [[NSBundle mainBundle] pathForResource:@"Config" ofType:@"plist"];
-        NSDictionary *infoDict = [NSDictionary dictionaryWithContentsOfFile:file];
+        NSDictionary *infoDict = [(KGOAppDelegate *)[[UIApplication sharedApplication] delegate] appConfig];
+		//NSString * file = [[NSBundle mainBundle] pathForResource:@"Config" ofType:@"plist"];
+        //NSDictionary *infoDict = [NSDictionary dictionaryWithContentsOfFile:file];
 		
 		_preferences = [[infoDict objectForKey:@"Analytics"] retain];
     }

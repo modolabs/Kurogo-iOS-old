@@ -6,8 +6,8 @@
  *****************************************************************/
 
 #import "ModoNavigationController.h"
-#import "MIT_MobileAppDelegate.h"
-#import "MITModule.h"
+#import "KGOAppDelegate.h"
+#import "KGOModule.h"
 
 #define NAV_BAR_HEIGHT 44.0f
 
@@ -29,12 +29,12 @@
 
     // save module's view controllers
     if ([self.viewControllers count] > 1) {
-        MIT_MobileAppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
-        for (MITModule *aModule in appDelegate.modules) {
-            if ([aModule rootViewController] == [self.viewControllers objectAtIndex:1]) {
-                aModule.viewControllers = [self.viewControllers subarrayWithRange:NSMakeRange(1, [self.viewControllers count] - 1)];
-                break;
-            }
+        KGOAppDelegate *appDelegate = (KGOAppDelegate *)[[UIApplication sharedApplication] delegate];
+        for (KGOModule *aModule in appDelegate.modules) {
+            //if ([aModule rootViewController] == [self.viewControllers objectAtIndex:1]) {
+            //    aModule.viewControllers = [self.viewControllers subarrayWithRange:NSMakeRange(1, [self.viewControllers count] - 1)];
+            //    break;
+            //}
         }
     }
 }

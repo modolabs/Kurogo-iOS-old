@@ -1,6 +1,6 @@
-#import "MITModule.h"
+#import "KGOModule.h"
 
-@interface SettingsModule : MITModule {
+@interface SettingsModule : KGOModule {
     
 }
 

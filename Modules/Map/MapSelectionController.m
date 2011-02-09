@@ -123,7 +123,7 @@
             self.tableView = [[[UITableView alloc] initWithFrame:frame style:UITableViewStylePlain] autorelease];
 
             NSSortDescriptor* sortDescriptor = [[[NSSortDescriptor alloc] initWithKey:@"date" ascending:NO] autorelease];
-            self.tableItems = [[CoreDataManager fetchDataForAttribute:CampusMapSearchEntityName sortDescriptor:sortDescriptor] retain];
+            self.tableItems = [[[CoreDataManager sharedManager] fetchDataForAttribute:CampusMapSearchEntityName sortDescriptor:sortDescriptor] retain];
             
 			break;
         }

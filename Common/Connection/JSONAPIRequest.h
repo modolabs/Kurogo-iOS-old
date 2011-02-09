@@ -57,14 +57,6 @@
  */
 - (BOOL)requestObject:(NSDictionary *)parameters pathExtension: (NSString *)extendedPath;
 
-/* constructs a query string according to rfc 1738, e.g. a=1&b=2
- */
-+ (NSString *)buildQuery:(NSDictionary *)dict;
-
-/* constructs a URL using dict as query parameters and base as the rest of the URL
- */
-+ (NSURL *)buildURL:(NSDictionary *)dict queryBase:(NSString *)base;
-
 /* wrapper method that gets a plist-compatible object from JSON data
  */
 + (id)objectWithJSONData:(NSData *)jsonData error:(NSError **)error;

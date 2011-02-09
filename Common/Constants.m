@@ -17,10 +17,45 @@ NSString * const MITMobileWebAPIURLString = @"http://localhost:8888/api/";
         #endif
     #endif
 #endif
- 
+
+
+// local path names for handleLocalPath
+NSString * const LocalPathPageNameHome = @"index";
+NSString * const LocalPathPageNameDetail = @"detail";
+NSString * const LocalPathPageNameSearch = @"search";
+NSString * const LocalPathPageNameCategoryList = @"categories";
+NSString * const LocalPathPageNameItemList = @"items";
+NSString * const LocalPathPageNameMapList = @"map";
+NSString * const LocalPathPageNameBookmarks = @"bookmarks";
 
 // keys for NSUserDefaults dictionary go here (app preferences)
-NSString * const MITModuleTabOrderKey = @"MITModuleTabOrder";
+NSString * const DeviceTokenKey = @"DeviceToken";
+NSString * const UnreadNotificationsKey = @"UnreadNotifications";
+
+
+// module tags
+NSString * const AboutTag      = @"about";
+NSString * const CalendarTag   = @"calendar";
+NSString * const CoursesTag    = @"courses";
+NSString * const DiningTag	   = @"dining";
+NSString * const EmergencyTag  = @"emergency";
+NSString * const FullWebTag    = @"fullweb";
+NSString * const HomeTag       = @"home";
+NSString * const LibrariesTag  = @"libraries";
+NSString * const MapTag        = @"map";
+NSString * const NewsTag       = @"news";
+NSString * const PeopleTag     = @"people";
+NSString * const SchoolsTag    = @"schools";
+NSString * const SettingsTag   = @"settings";
+NSString * const TransitTag    = @"transit";
+
+
+
+
+
+
+
+NSString * const KGOModuleTabOrderKey = @"KGOModuleTabOrder";
 NSString * const MITActiveModuleKey = @"ActiveModule";
 NSString * const MITNewsTwoFirstRunKey = @"MITNews2ClearedCachedArticles";
 NSString * const MITEventsModuleInSortOrderKey = @"MITEventsModuleInSortOrder";
@@ -29,28 +64,11 @@ NSString * const ShuttleSubscriptionsKey = @"ActiveShuttleSubscriptions";
 NSString * const StellarTermKey = @"StellarTerm";
 NSString * const MITDeviceIdKey = @"device_id";
 NSString * const MITPassCodeKey = @"pass_key";
-NSString * const DeviceTokenKey = @"DeviceToken";
-NSString * const MITUnreadNotificationsKey = @"UnreadNotifications";
 NSString * const PushNotificationSettingsKey = @"ModulesDisabledForPush";
-NSString * const MITModulesSavedStateKey = @"MITModulesSavedState";
+NSString * const KGOModulesSavedStateKey = @"KGOModulesSavedState";
 NSString * const ShakeToReturnPrefKey = @"ShakeToReturnHomePref";
 NSString * const MapTypePrefKey = @"MapTypePref";
 
-
-// module tags
-NSString * const CalendarTag   = @"calendar";
-NSString * const EmergencyTag  = @"emergencyinfo";
-NSString * const CampusMapTag  = @"campusmap";
-NSString * const NewsOfficeTag = @"newsoffice";
-NSString * const DirectoryTag  = @"people";
-NSString * const StellarTag    = @"courses";
-NSString * const ShuttleTag    = @"shuttletrack";
-NSString * const MobileWebTag  = @"mobileweb";
-NSString * const SettingsTag   = @"settings";
-NSString * const AboutTag      = @"about";
-NSString * const DiningTag	   = @"dining";
-NSString * const SchoolsTag    = @"schools";
-NSString * const LibrariesTag  = @"library";
 
 // notification names
 NSString * const EmergencyInfoDidLoadNotification = @"MITEmergencyInfoDidLoadNotification";

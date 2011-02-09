@@ -23,21 +23,21 @@
 - (id) init {
     self = [super init];
     if (self != nil) {
-        self.tag = CalendarTag;
+        //self.tag = CalendarTag;
         self.shortName = @"Events";
         self.longName = @"Events";
-        self.iconName = @"events";
-        self.supportsFederatedSearch = YES;
+        //self.iconName = @"events";
+        //self.supportsFederatedSearch = YES;
         
-        calendarVC = [[CalendarEventsViewController alloc] init];
-		calendarVC.activeEventList = CalendarEventListTypeEvents;
-		calendarVC.showList = YES;
-		calendarVC.showScroller = YES;
-        self.viewControllers = [NSArray arrayWithObject:calendarVC];
+        //calendarVC = [[CalendarEventsViewController alloc] init];
+		//calendarVC.activeEventList = CalendarEventListTypeEvents;
+		//calendarVC.showList = YES;
+		//calendarVC.showScroller = YES;
+        //self.viewControllers = [NSArray arrayWithObject:calendarVC];
     }
     return self;
 }
-
+/*
 - (BOOL)handleLocalPath:(NSString *)localPath query:(NSString *)query
 {
 	BOOL didHandle = NO;
@@ -244,14 +244,14 @@
 		}
 	}
 }
-
+*/
 - (void)dealloc {
     [calendarVC release];
     [super dealloc];
 }
 
 #pragma mark JSONAPIDelegate
-
+/*
 - (void)request:(JSONAPIRequest *)request jsonLoaded:(id)result
 {	
     self.request = nil;
@@ -287,9 +287,9 @@
     self.searchResults = nil;
     self.searchProgress = 1.0;
 }
-
+*/
 #pragma mark Search and state
-
+/*
 - (void)resetNavStack {
     self.viewControllers = [NSArray arrayWithObject:calendarVC];
 }
@@ -321,9 +321,9 @@
     MITCalendarEvent *event = (MITCalendarEvent *)result;
     return [event dateStringWithDateStyle:NSDateFormatterShortStyle timeStyle:NSDateFormatterShortStyle separator:@" "];
 }
-
+*/
 #pragma mark Pager delegation
-
+/*
 // TODO: spin off NewsControllerDelegate into something shared between News and Events
 // then implement this protocol in EventListTableView as well as here
 
@@ -354,6 +354,6 @@
 - (id)selectNext {
     return nil;
 }
-
+*/
 @end
 

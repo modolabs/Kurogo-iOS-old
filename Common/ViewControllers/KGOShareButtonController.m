@@ -1,5 +1,5 @@
 #import "KGOShareButtonController.h"
-#import "MIT_MobileAppDelegate.h"
+#import "KGOAppDelegate.h"
 #import "TwitterViewController.h"
 #import "JSONAPIRequest.h"
 #import "MITMailComposeController.h"
@@ -51,7 +51,7 @@
 	} else if ([buttonTitle isEqualToString:KGOSocialMediaTypeTwitter]) {
 		UIViewController *twitterVC = [[[TwitterViewController alloc] initWithMessage:[self.delegate twitterTitle]
 																				  url:[self.delegate twitterUrl]] autorelease];
-		MIT_MobileAppDelegate *appDelegate = (MIT_MobileAppDelegate *)[[UIApplication sharedApplication] delegate];
+		KGOAppDelegate *appDelegate = (KGOAppDelegate *)[[UIApplication sharedApplication] delegate];
 		[appDelegate presentAppModalViewController:twitterVC animated:YES];
 	}
 }

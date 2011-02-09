@@ -1,4 +1,4 @@
-#import "UIKit+MITAdditions.h"
+#import "UIKit+KGOAdditions.h"
 
 /*** universal font constants ***/
 
@@ -10,8 +10,6 @@
 #define SEARCH_BAR_TINT_COLOR [UIColor colorWithWhite:0.4 alpha:1.0]
 
 /*** table view constants ***/
-
-#define TABLE_HEADER_FONT_SIZE 20.0
 
 #define TABLE_SEPARATOR_COLOR [UIColor colorWithHexString:@"#C0C0BF"] /* #c0c0bf */
 

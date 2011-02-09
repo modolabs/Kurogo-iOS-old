@@ -4,7 +4,7 @@
 #import "CalendarDetailViewController.h"
 #import "CalendarDataManager.h"
 #import "CalendarEventMapAnnotation.h"
-#import "MITSearchDisplayController.h"
+#import "KGOSearchDisplayController.h"
 #import <QuartzCore/QuartzCore.h>
 #import "TileServerManager.h"
 #import "EventListTableView.h"
@@ -264,7 +264,7 @@
 	DatePickerViewController *dateSelector = [[DatePickerViewController alloc] init];
 	dateSelector.delegate = self;
 	
-	MIT_MobileAppDelegate *appDelegate = (MIT_MobileAppDelegate *)[[UIApplication sharedApplication] delegate];
+	KGOAppDelegate *appDelegate = (KGOAppDelegate *)[[UIApplication sharedApplication] delegate];
     [appDelegate presentAppModalViewController:dateSelector animated:YES];
     [dateSelector release];
 	}
@@ -561,8 +561,11 @@
         theSearchBar.tintColor = SEARCH_BAR_TINT_COLOR;
         theSearchBar.delegate = self;
         theSearchBar.alpha = 0.0;
-        searchController = [[MITSearchDisplayController alloc] initWithSearchBar:theSearchBar contentsController:self];
-        searchController.delegate = self;
+        if (!searchController) {
+            searchController = [[KGOSearchDisplayController alloc] initWithSearchBar:theSearchBar delegate:self contentsController:self];
+        }
+        //searchController = [[KGOSearchDisplayController alloc] initWithSearchBar:theSearchBar contentsController:self];
+        //searchController.delegate = self;
         [self.view addSubview:theSearchBar];
     }
     [self.view bringSubviewToFront:theSearchBar];
@@ -1092,7 +1095,7 @@
 
 - (void)datePickerViewControllerDidCancel:(DatePickerViewController *)controller {
 	
-	MIT_MobileAppDelegate *appDelegate = (MIT_MobileAppDelegate *)[[UIApplication sharedApplication] delegate];
+	KGOAppDelegate *appDelegate = (KGOAppDelegate *)[[UIApplication sharedApplication] delegate];
     [appDelegate dismissAppModalViewControllerAnimated:YES];
 	
 	return;
@@ -1105,7 +1108,7 @@
 		startDate = [[NSDate alloc] initWithTimeInterval:0 sinceDate:date];    
 		dateRangeDidChange = YES;
 
-		MIT_MobileAppDelegate *appDelegate = (MIT_MobileAppDelegate *)[[UIApplication sharedApplication] delegate];
+		KGOAppDelegate *appDelegate = (KGOAppDelegate *)[[UIApplication sharedApplication] delegate];
 		[appDelegate dismissAppModalViewControllerAnimated:YES];
 		
 		[self reloadView:activeEventList];

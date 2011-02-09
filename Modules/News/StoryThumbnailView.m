@@ -1,5 +1,5 @@
 #import "StoryThumbnailView.h"
-#import "MIT_MobileAppDelegate.h"
+#import "KGOAppDelegate.h"
 #import "CoreDataManager.h"
 #import "NewsImage.h"
 
@@ -46,7 +46,7 @@
         imageView.hidden = YES;
         if ([self.connection isConnected]) {
             [self.connection cancel];
-            MIT_MobileAppDelegate *appDelegate = (MIT_MobileAppDelegate *)[[UIApplication sharedApplication] delegate];
+            KGOAppDelegate *appDelegate = (KGOAppDelegate *)[[UIApplication sharedApplication] delegate];
             [appDelegate hideNetworkActivityIndicator];
         }
         if (self.loadingView) {
@@ -125,7 +125,7 @@
     }
     [self.connection requestDataFromURL:[NSURL URLWithString:image.url] allowCachedResponse:YES];
 
-    MIT_MobileAppDelegate *appDelegate = (MIT_MobileAppDelegate *)[[UIApplication sharedApplication] delegate];
+    KGOAppDelegate *appDelegate = (KGOAppDelegate *)[[UIApplication sharedApplication] delegate];
     [appDelegate showNetworkActivityIndicator];
 
     self.imageData = nil;
@@ -147,12 +147,12 @@
     BOOL validImage = [self displayImage];
     if (validImage) {
         image.data = data;
-        [CoreDataManager saveDataWithTemporaryMergePolicy:NSMergeByPropertyObjectTrumpMergePolicy];
+        [[CoreDataManager sharedManager] saveDataWithTemporaryMergePolicy:NSMergeByPropertyObjectTrumpMergePolicy];
     }
 
     self.connection = nil;
     
-    MIT_MobileAppDelegate *appDelegate = (MIT_MobileAppDelegate *)[[UIApplication sharedApplication] delegate];
+    KGOAppDelegate *appDelegate = (KGOAppDelegate *)[[UIApplication sharedApplication] delegate];
     [appDelegate hideNetworkActivityIndicator];
 }
 

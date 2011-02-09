@@ -6,7 +6,7 @@
  *****************************************************************/
 
 #import "NavScrollerView.h"
-#import "UIKit+MITAdditions.h"
+#import "UIKit+KGOAdditions.h"
 
 @implementation NavScrollerView
 

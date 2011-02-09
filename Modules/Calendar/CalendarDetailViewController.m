@@ -2,7 +2,7 @@
 #import "MITCalendarEvent.h"
 #import "EventCategory.h"
 #import "MITUIConstants.h"
-#import "Foundation+MITAdditions.h"
+#import "Foundation+KGOAdditions.h"
 #import "MapBookmarkManager.h"
 #import "MapSearchResultAnnotation.h"
 #import "AnalyticsWrapper.h"
@@ -418,7 +418,7 @@ enum CalendarDetailRowTypes {
                 annotation.uniqueID = [NSString stringWithFormat:@"%@@%.4f,%.4f", event.location, coord.latitude, coord.longitude];
                 [[MapBookmarkManager defaultManager] saveAnnotationWithoutBookmarking:annotation];
                 
-                NSURL *internalURL = [NSURL internalURLWithModuleTag:CampusMapTag
+                NSURL *internalURL = [NSURL internalURLWithModuleTag:MapTag
                                                                 path:LocalPathMapsSelectedAnnotation
                                                                query:annotation.uniqueID];
                 

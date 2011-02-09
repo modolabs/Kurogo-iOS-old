@@ -6,17 +6,18 @@
  *****************************************************************/
 
 #import "SpringboardViewController.h"
-#import "MIT_MobileAppDelegate.h"
-#import "MITModuleList.h"
+#import "KGOAppDelegate.h"
+#import "KGOAppDelegate+ModuleAdditions.h"
 #import "MITUIConstants.h"
-#import "MITModule.h"
+#import "KGOModule.h"
 #import "ModoNavigationController.h"
 #import "ModoNavigationBar.h"
 #import "ModoSearchBar.h"
-#import "MITSearchDisplayController.h"
+#import "KGOSearchDisplayController.h"
 #import "AnalyticsWrapper.h"
-#import "FederatedSearchTableView.h"
-#import "UIKit+MITAdditions.h"
+#import "UIKit+KGOAdditions.h"
+
+#import "PersonDetails.h"
 
 // extra vertical padding above top row of main icons
 #define GRID_TOP_MARGIN 4.0f
@@ -124,13 +125,13 @@
     //self.navigationItem.rightBarButtonItem = editButton;
     
     
-    NSArray *modules = ((MIT_MobileAppDelegate *)[[UIApplication sharedApplication] delegate]).modules;
+    NSArray *modules = ((KGOAppDelegate *)[[UIApplication sharedApplication] delegate]).modules;
     _icons = [[NSMutableArray alloc] initWithCapacity:[modules count]];
     _fixedIcons = [[NSMutableArray alloc] init];
     
-    for (MITModule *aModule in modules) {
+    for (KGOModule *aModule in modules) {
         SpringboardIcon *anIcon = [SpringboardIcon buttonWithType:UIButtonTypeCustom];
-		UIImage *image = [[aModule icon] stretchableImageWithLeftCapWidth:0.0 topCapHeight:0.0];
+		UIImage *image = [[aModule iconImage] stretchableImageWithLeftCapWidth:0.0 topCapHeight:0.0];
         if (image) {
                         
             anIcon.frame = CGRectMake(0, 0, image.size.width + ICON_PADDING * 2, image.size.height + ICON_LABEL_HEIGHT);
@@ -145,20 +146,14 @@
             anIcon.titleLabel.textColor = [UIColor colorWithHexString:@"#403F3E"];
             anIcon.titleLabel.lineBreakMode = UILineBreakModeWordWrap;
             anIcon.titleLabel.textAlignment = UITextAlignmentCenter;
+
+            // TODO: add config setting for icon titles to be displayed on springboardewi
+            [anIcon setTitle:aModule.longName forState:UIControlStateNormal];
             
-            // special case for shuttletracker
-            NSString *iconTitle = nil;
-            if ([aModule.longName isEqualToString:@"ShuttleTracker"]) {
-                iconTitle = @"Shuttle Tracker";
-            } else {
-                iconTitle = aModule.longName;
-            }
-            [anIcon setTitle:iconTitle forState:UIControlStateNormal];
-            
-            if (aModule.canBecomeDefault) {
+            if (!aModule.secondary) {
                 [_icons addObject:anIcon];
                 // title by default is placed to the right of the image, we want it below
-                CGSize labelSize = [iconTitle sizeWithFont:font constrainedToSize:image.size lineBreakMode:UILineBreakModeWordWrap];
+                CGSize labelSize = [aModule.longName sizeWithFont:font constrainedToSize:image.size lineBreakMode:UILineBreakModeWordWrap];
 
                 //anIcon.titleEdgeInsets = UIEdgeInsetsMake(image.size.height, -image.size.width + 5.0, 0, 5.0);
                 // a bit of fudging here... 12 is the font size of the title label
@@ -169,7 +164,7 @@
                 // title by default is placed to the right of the image, we want it below
                 anIcon.titleEdgeInsets = UIEdgeInsetsMake(image.size.height + ICON_PADDING, -image.size.width - 5.0, 0, -5.0);
             }
-            
+
             [anIcon setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
             
             anIcon.moduleTag = aModule.tag;
@@ -180,7 +175,7 @@
         }
         // Add properties for accessibility/automation visibility.
         anIcon.isAccessibilityElement = YES;
-        anIcon.accessibilityLabel = aModule.iconName;
+        anIcon.accessibilityLabel = aModule.longName;
     }
     
 }
@@ -216,41 +211,25 @@
 
 - (void)setupSearchController {
     if (!_searchController) {
-        _searchController = [[MITSearchDisplayController alloc] initWithSearchBar:_searchBar contentsController:self];
-        _searchController.delegate = self;
-        
-        CGRect frame = CGRectMake(0, _searchBar.frame.size.height, containingView.frame.size.width,
-                                  containingView.frame.size.height - _searchBar.frame.size.height);
-        self.searchResultsTableView = [[[FederatedSearchTableView alloc] initWithFrame:frame style:UITableViewStylePlain] autorelease];
-		self.searchResultsTableView.searchableModules = self.searchableModules;
-        self.searchResultsTableView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-        self.searchResultsTableView.hidden = YES;
-        //[self.view addSubview:self.searchResultsTableView];
-		[self addTableView:self.searchResultsTableView withDataSource:self.searchResultsTableView];
-        
-        _searchController.searchResultsTableView = self.searchResultsTableView;
-        _searchController.searchResultsDelegate = self;
-        _searchController.searchResultsDataSource = self;
+        _searchController = [[KGOSearchDisplayController alloc] initWithSearchBar:_searchBar delegate:self contentsController:self];
     }
 }
 
 - (void)buttonPressed:(id)sender {
     SpringboardIcon *anIcon = (SpringboardIcon *)sender;
-    if ([anIcon.moduleTag isEqualToString:MobileWebTag]) {
-        // TODO: add this string to config
-        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"http://www.harvard.edu/?fullsite=yes"]];
-    } else {
-        MIT_MobileAppDelegate *appDelegate = (MIT_MobileAppDelegate *)[[UIApplication sharedApplication] delegate];
-        activeModule = [appDelegate moduleForTag:anIcon.moduleTag];
-        [appDelegate showModuleForTag:anIcon.moduleTag];
-    }
+    KGOAppDelegate *appDelegate = (KGOAppDelegate *)[[UIApplication sharedApplication] delegate];
+    activeModule = [appDelegate moduleForTag:anIcon.moduleTag];
+    UIViewController *viewController = [activeModule moduleHomeScreenWithParams:nil];
+    [self.navigationController pushViewController:viewController animated:YES];
+
+    // tracking
     NSString *detailString = [NSString stringWithFormat:@"/%@", anIcon.moduleTag];
     [[AnalyticsWrapper sharedWrapper] trackPageview:detailString];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
     if (isSearch) {
-        [activeModule restoreNavStack];
+        //[activeModule restoreNavStack];
     }
 }
 
@@ -270,83 +249,38 @@
     [super dealloc];
 }
 
-#pragma mark Search Bar delegation
+#pragma mark KGOSearchDisplayDelegate
 
-- (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar {
-    [self setupSearchController];
-    
-    // see the comment in -[setupSearchController] for why we do this
-    //[self.searchResultsTableView removeFromSuperview];
-    self.searchResultsTableView.hidden = NO;
-	self.searchResultsTableView.query = searchBar.text;
-    //[self.view addSubview:self.searchResultsTableView];
-
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(searchDidMakeProgress:) name:@"SearchResultsProgressNotification" object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(searchDidComplete:) name:@"SearchResultsCompleteNotification" object:nil];
-    [completedModules release];
-    completedModules = [[NSMutableArray alloc] initWithCapacity:[searchableModules count]];
-    [self searchAllModules];
+- (BOOL)searchControllerShouldShowSuggestions:(KGOSearchDisplayController *)controller {
+    return YES;
 }
 
-- (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar {
-    isSearch = NO;
-    for (MITModule *aModule in self.searchableModules) {
-        [aModule abortSearch];
-    }
-}
-
-#pragma mark Federated search
-
-- (void)searchDidMakeProgress:(NSNotification *)aNotification {
-    MITModule *sender = [aNotification object];
-    if (![completedModules containsObject:sender]) {
-        NSInteger section = [self.searchableModules indexOfObject:sender];
-        NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:section];
-        NSArray *indexPaths = [NSArray arrayWithObject:indexPath];
-        [searchResultsTableView reloadRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationNone];
-    }
-}
-
-- (void)searchDidComplete:(NSNotification *)aNotification {
-    @synchronized(self) {
-        MITModule *sender = [aNotification object];
-        NSInteger section = [self.searchableModules indexOfObject:sender];
-        NSIndexSet *sections = [NSIndexSet indexSetWithIndex:section];
-        [completedModules addObject:sender];
-        [searchResultsTableView reloadSections:sections withRowAnimation:UITableViewRowAnimationNone];
-    }
-}
-
-- (void)searchAllModules {
-    isSearch = YES;
-    
-    for (MITModule *aModule in self.searchableModules) {
-        if (!aModule.isSearching) {
-            [aModule performSearchForString:_searchBar.text];
-        }
-    }
-
-	/*
-    // an unfortunate hack because the tableview doesn't
-    // remove section headers properly after multiple searches
-    for (UIView *aView in [self.searchResultsTableView subviews]) {
-        [aView removeFromSuperview];
-    }
-    */
-    [self.searchResultsTableView reloadData];
-}
-
-- (NSArray *)searchableModules {
-    if (!searchableModules) {
-        searchableModules = [[NSMutableArray alloc] initWithCapacity:4];
-        NSArray *modules = ((MIT_MobileAppDelegate *)[[UIApplication sharedApplication] delegate]).modules;
-        for (MITModule *aModule in modules) {
-            if (aModule.supportsFederatedSearch) {
-                [searchableModules addObject:aModule];
-            }
+- (NSArray *)searchControllerValidModules:(KGOSearchDisplayController *)controller {
+    NSMutableArray *searchableModules = [NSMutableArray arrayWithCapacity:4];
+    NSArray *modules = ((KGOAppDelegate *)[[UIApplication sharedApplication] delegate]).modules;
+    for (KGOModule *aModule in modules) {
+        if (aModule.supportsFederatedSearch) {
+            [searchableModules addObject:aModule.tag];
         }
     }
     return searchableModules;
+}
+
+- (NSString *)searchControllerModuleTag:(KGOSearchDisplayController *)controller {
+    return HomeTag;
+}
+
+- (void)searchController:(KGOSearchDisplayController *)controller didSelectResult:(id<KGOSearchResult>)aResult {
+    // TODO: come up with a better way to figure out which module the search result belongs to
+    BOOL didShow = NO;
+    if ([aResult isKindOfClass:[PersonDetails class]]) {
+        NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:aResult, @"personDetails", nil];
+        didShow = [(KGOAppDelegate *)[[UIApplication sharedApplication] delegate] showPage:LocalPathPageNameDetail forModuleTag:PeopleTag params:params];
+    }
+    
+    if (!didShow) {
+        NSLog(@"springboard failed to respond to search result %@", [aResult description]);
+    }
 }
 
 #pragma mark UIResponder / icon drag&drop
@@ -382,109 +316,6 @@
     editing = NO;
 }
 
-/*
-- (BOOL)canBecomeFirstResponder {
-    return editing;
-}
-
-- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
-    if ([touches count] == 1) {
-        selectedIcon = nil;
-        UITouch *aTouch = [touches anyObject];
-        for (SpringboardIcon *anIcon in editedIcons) {
-            CGPoint point = [aTouch locationInView:containingView];
-            CGFloat xOffset = point.x - anIcon.frame.origin.x;
-            CGFloat yOffset = point.y - anIcon.frame.origin.y;
-            if (xOffset > 0 && yOffset > 0
-                && xOffset < anIcon.frame.size.width
-                && yOffset < anIcon.frame.size.height)
-            {
-                selectedIcon = anIcon;
-                startingPoint = anIcon.center;
-                break;
-            }
-        }
-    }
-}
-
-- (void)touchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event {
-}
-
-- (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event {
-    if (selectedIcon) {
-        
-        NSArray *array = _icons;
-        if (editedIcons) {
-            [editedIcons removeObjectAtIndex:dummyIconIndex];
-            [editedIcons insertObject:selectedIcon atIndex:dummyIconIndex];
-            //editedIcons = tempIcons;
-            array = editedIcons;
-        }
-        
-        [UIView beginAnimations:nil context:nil];
-        [UIView setAnimationDuration:0.2];
-        [self layoutIcons:array];
-        [UIView commitAnimations];
-
-        //tempIcons = nil;
-    }
-    selectedIcon = nil;
-}
-
-- (void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event {
-    if (selectedIcon) {
-        UITouch *aTouch = [touches anyObject];
-        
-        CGPoint before = [aTouch previousLocationInView:containingView];
-        CGPoint after = [aTouch locationInView:containingView];
-        
-        CGFloat xTransition = after.x - before.x;
-        CGFloat yTransition = after.y - before.y;
-
-        selectedIcon.frame = CGRectMake(selectedIcon.frame.origin.x + xTransition,
-                                        selectedIcon.frame.origin.y + yTransition,
-                                        selectedIcon.frame.size.width, selectedIcon.frame.size.height);
-
-        xTransition = selectedIcon.center.x - startingPoint.x;
-        yTransition = selectedIcon.center.y - startingPoint.y;
-        
-        if (fabs(xTransition) > selectedIcon.frame.size.width
-            || fabs(yTransition) > selectedIcon.frame.size.height)
-        { // don't do anything if they didn't move far
-            tempIcons = [editedIcons mutableCopy];
-            [tempIcons removeObject:selectedIcon];
-            [tempIcons removeObject:dummyIcon];
-            
-            dummyIcon = [SpringboardIcon buttonWithType:UIButtonTypeCustom];
-            dummyIcon.frame = selectedIcon.frame;
-
-            // just figure out where in the array to stick selectedIcon
-            dummyIconIndex = 0;
-            for (SpringboardIcon *anIcon in tempIcons) {
-                CGFloat xDistance = anIcon.center.x - selectedIcon.center.x; // > 0 if aButton is to the right
-                CGFloat yDistance = selectedIcon.center.y - anIcon.center.y;
-                NSLog(@"%d %.1f %.1f %.1f %.1f", dummyIconIndex, xDistance, GRID_HPADDING + anIcon.frame.size.width, yDistance, anIcon.frame.size.height / 2);// , aButton.center.x, selectedIcon.center.x);
-                if (xDistance > 0 && xDistance < GRID_HPADDING + anIcon.frame.size.width
-                    && fabs(yDistance) < anIcon.frame.size.height / 2) {
-                    break;
-                }
-                dummyIconIndex++;
-            }
-            
-            [tempIcons insertObject:dummyIcon atIndex:dummyIconIndex];
-            NSLog(@"moving: to %d", dummyIconIndex);
-
-            editedIcons = tempIcons;
-            tempIcons = nil;
-            
-            [UIView beginAnimations:nil context:nil];
-            [UIView setAnimationDuration:0.2];
-            [self layoutIcons:editedIcons];
-            [UIView commitAnimations];
-        }
-    }
-}
-*/
 @end
 
 

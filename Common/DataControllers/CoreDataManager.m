@@ -15,15 +15,16 @@
 #pragma mark -
 #pragma mark Class methods
 
-+(id)coreDataManager {
-	static CoreDataManager *sharedInstance;
++ (CoreDataManager *)sharedManager {
+	static CoreDataManager *sharedInstance = nil;
 	if (!sharedInstance) {
 		sharedInstance = [CoreDataManager new];
 	}
 	return sharedInstance;
 }
-
+/*
 #pragma mark -
+
 #pragma mark *** Public accessors ***
 
 +(NSArray *)fetchDataForAttribute:(NSString *)attributeName {
@@ -70,30 +71,22 @@
 	[[CoreDataManager coreDataManager] saveData];
 }
 
-+(void)saveDataWithTemporaryMergePolicy:(id)temporaryMergePolicy {
-    NSManagedObjectContext *context = [CoreDataManager managedObjectContext];
-    id originalMergePolicy = [context mergePolicy];
-    [context setMergePolicy:NSOverwriteMergePolicy];
-	[self saveData];
-	[context setMergePolicy:originalMergePolicy];
-}
-
-+(NSManagedObjectModel *)managedObjectModel {
++ (NSManagedObjectModel *)managedObjectModel {
 	return [[CoreDataManager coreDataManager] managedObjectModel];
 }
 
-+(NSManagedObjectContext *)managedObjectContext {
++ (NSManagedObjectContext *)managedObjectContext {
 	return [[CoreDataManager coreDataManager] managedObjectContext];
 }
 
-+(NSPersistentStoreCoordinator *)persistentStoreCoordinator {
++ (NSPersistentStoreCoordinator *)persistentStoreCoordinator {
 	return [[CoreDataManager coreDataManager] persistentStoreCoordinator];
 }
-
+*/
 #pragma mark -
 #pragma mark CoreData object methods
 
--(NSArray *)fetchDataForAttribute:(NSString *)attributeName {
+- (NSArray *)fetchDataForAttribute:(NSString *)attributeName {
 	NSFetchRequest *request = [[NSFetchRequest alloc] init];	// make a request object
 	NSEntityDescription *entity = [NSEntityDescription entityForName:attributeName inManagedObjectContext:self.managedObjectContext];	// tell the request what to look for
 	[request setEntity:entity];
@@ -106,7 +99,7 @@
 	return result;
 }
 
--(NSArray *)fetchDataForAttribute:(NSString *)attributeName sortDescriptor:(NSSortDescriptor *)sortDescriptor {
+- (NSArray *)fetchDataForAttribute:(NSString *)attributeName sortDescriptor:(NSSortDescriptor *)sortDescriptor {
 	NSFetchRequest *request = [[NSFetchRequest alloc] init];	// make a request object
 	[request setSortDescriptors:[NSArray arrayWithObject:sortDescriptor]];
 	NSEntityDescription *entity = [NSEntityDescription entityForName:attributeName inManagedObjectContext:self.managedObjectContext];	// tell the request what to look for
@@ -119,39 +112,40 @@
 	return result;
 }
 
--(void)clearDataForAttribute:(NSString *)attributeName {
+- (void)clearDataForAttribute:(NSString *)attributeName {
 	for (id object in [self fetchDataForAttribute:attributeName]) {
 		[self deleteObject:(NSManagedObject *)object];
 	}
 	[self saveData];
 }
 
--(void)deleteObjects:(NSArray *)objects {
+- (void)deleteObjects:(NSArray *)objects {
     for (NSManagedObject *object in objects) {
         [self.managedObjectContext deleteObject:object];
     }
 }
 
--(void)deleteObject:(NSManagedObject *)object {
+- (void)deleteObject:(NSManagedObject *)object {
 	[self.managedObjectContext deleteObject:object];
 }
 
--(id)insertNewObjectForEntityForName:(NSString *)entityName {
+// TODO: consider using initWithEntity:insertIntoManagedObjectContext instead
+- (id)insertNewObjectForEntityForName:(NSString *)entityName {
 	return [NSEntityDescription insertNewObjectForEntityForName:entityName inManagedObjectContext:self.managedObjectContext];
 }
 
--(id)insertNewObjectForEntityForName:(NSString *)entityName context:(NSManagedObjectContext *)aManagedObjectContext {
+- (id)insertNewObjectForEntityForName:(NSString *)entityName context:(NSManagedObjectContext *)aManagedObjectContext {
     DLog(@"inserting new %@ object", entityName);
     self.managedObjectContext;
 	NSEntityDescription *entityDescription = [[managedObjectModel entitiesByName] objectForKey:entityName];
 	return [[[NSManagedObject alloc] initWithEntity:entityDescription insertIntoManagedObjectContext:aManagedObjectContext] autorelease];
 }
 
--(id)insertNewObjectWithNoContextForEntity:(NSString *)entityName {
+- (id)insertNewObjectWithNoContextForEntity:(NSString *)entityName {
 	return [self insertNewObjectForEntityForName:entityName context:nil];
 }
 
--(id)objectsForEntity:(NSString *)entityName matchingPredicate:(NSPredicate *)predicate sortDescriptors:(NSArray *)sortDescriptors {
+- (id)objectsForEntity:(NSString *)entityName matchingPredicate:(NSPredicate *)predicate sortDescriptors:(NSArray *)sortDescriptors {
 	NSEntityDescription *entity = [NSEntityDescription entityForName:entityName inManagedObjectContext:self.managedObjectContext];
 	NSFetchRequest *request = [[[NSFetchRequest alloc] init] autorelease];
 	[request setEntity:entity];
@@ -166,18 +160,18 @@
     return ([objects count] > 0) ? objects : nil;
 }
 
--(id)objectsForEntity:(NSString *)entityName matchingPredicate:(NSPredicate *)predicate {
+- (id)objectsForEntity:(NSString *)entityName matchingPredicate:(NSPredicate *)predicate {
     return [self objectsForEntity:entityName matchingPredicate:predicate sortDescriptors:nil];
 }
 
--(id)getObjectForEntity:(NSString *)entityName attribute:(NSString *)attributeName value:(id)value {	
+- (id)getObjectForEntity:(NSString *)entityName attribute:(NSString *)attributeName value:(id)value {	
 	NSString *predicateFormat = [attributeName stringByAppendingString:@" like %@"];
 	NSPredicate *predicate = [NSPredicate predicateWithFormat:predicateFormat, value];
     NSArray *objects = [self objectsForEntity:entityName matchingPredicate:predicate];
     return ([objects count] > 0) ? [objects lastObject] : nil;
 }
 
--(void)saveData {
+- (void)saveData {
 	NSError *error;
 	if (![self.managedObjectContext save:&error]) {
         DLog(@"Failed to save to data store: %@", [error localizedDescription]);
@@ -191,6 +185,14 @@
             DLog(@"  %@", [error userInfo]);
         }
 	}	
+}
+
+- (void)saveDataWithTemporaryMergePolicy:(id)temporaryMergePolicy {
+    NSManagedObjectContext *context = [self managedObjectContext];
+    id originalMergePolicy = [context mergePolicy];
+    [context setMergePolicy:NSOverwriteMergePolicy];
+	[self saveData];
+	[context setMergePolicy:originalMergePolicy];
 }
 
 #pragma mark -
@@ -224,7 +226,7 @@
 	// override the autogenerated method -- see http://iphonedevelopment.blogspot.com/2009/09/core-data-migration-problems.html
 	NSMutableArray *models = [[NSMutableArray alloc] initWithCapacity:2];
 	// list all xcdatamodeld's here
-	NSArray *allModels = [NSArray arrayWithObjects:@"PeopleDataModel", @"News", @"Calendar", @"CampusMap",nil];
+	NSArray *allModels = [NSArray arrayWithObjects:@"PeopleDataModel", @"News", @"Calendar", @"CampusMap", @"RecentSearches", nil];
 	for (NSString *modelName in allModels) {
 		NSString *path = [[NSBundle mainBundle] pathForResource:modelName ofType:@"momd"];
         NSManagedObjectModel *aModel = [[NSManagedObjectModel alloc] initWithContentsOfURL:[NSURL fileURLWithPath:path]];

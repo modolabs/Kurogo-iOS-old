@@ -1,12 +1,12 @@
 #import <Foundation/Foundation.h>
-#import "MITModule.h"
+#import "KGOModule.h"
 #import "StoryDetailViewController.h"
 #import "StoryXMLParser.h"
 
 @class StoryListViewController;
 @class StoryXMLParser;
 
-@interface NewsModule : MITModule <NewsControllerDelegate, StoryXMLParserDelegate> {
+@interface NewsModule : KGOModule <NewsControllerDelegate, StoryXMLParserDelegate> {
 	StoryListViewController *storyListChannelController;
     StoryXMLParser *xmlParser;
     NSInteger totalResults;

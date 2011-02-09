@@ -8,7 +8,7 @@
 
 typedef int NewsCategoryId;
 
-@class MITSearchDisplayController;
+@class KGOSearchDisplayController;
 @class NewsStory;
 
 @interface StoryListViewController : KGOTableViewController <UISearchBarDelegate,
@@ -32,7 +32,7 @@ StoryXMLParserDelegate, JSONAPIDelegate, NavScrollerDelegate, NewsControllerDele
 	NSArray *searchResults;
 	NSInteger totalAvailableResults;
 	ModoSearchBar *theSearchBar;
-    MITSearchDisplayController *searchController;
+    KGOSearchDisplayController *searchController;
     NSInteger searchIndex;
 	
 	BOOL hasBookmarks;

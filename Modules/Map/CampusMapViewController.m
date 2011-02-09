@@ -10,7 +10,8 @@
 #import "CoreDataManager.h"
 #import "TileServerManager.h"
 #import "CampusMapToolbar.h"
-#import "MITSearchDisplayController.h"
+#import "KGOAppDelegate.h"
+#import "KGOSearchDisplayController.h"
 
 #import "MapSelectionController.h"
 
@@ -128,8 +129,7 @@
 
 - (void)setupSearchController {
     if (!_searchController) {
-        _searchController = [[MITSearchDisplayController alloc] initWithSearchBar:_searchBar contentsController:self];
-        _searchController.delegate = self;
+        _searchController = [[KGOSearchDisplayController alloc] initWithSearchBar:self.searchBar delegate:self contentsController:self];
     }
 }
 
@@ -172,7 +172,7 @@
 
 - (void)viewDidUnload {
 	_mapView.delegate = nil;
-    _searchController.searchResultsTableView = nil;
+    //_searchController.searchResultsTableView = nil;
 	self.searchResultsTableView = nil;
     _searchController = nil;
     
@@ -459,6 +459,10 @@
 	if (showList && !_displayingList) {
         _viewTypeButton.title = @"Map";
         
+        if (!_searchController) {
+            _searchController = [[KGOSearchDisplayController alloc] initWithSearchBar:self.searchBar delegate:self contentsController:self];
+        }
+        /*
         // show the list.
         if (nil == self.searchResultsTableView) {
             self.searchResultsTableView = [[[MapSearchResultsTableView alloc] initWithFrame:_mapView.frame] autorelease];
@@ -468,7 +472,7 @@
             _searchController.searchResultsDelegate = self.searchResultsTableView;
             _searchController.searchResultsDataSource = self.searchResultsTableView;
         }
-        
+        */
         self.searchResultsTableView.searchResults = _searchResults;
         
 		[self addTableView:self.searchResultsTableView withDataSource:self.searchResultsTableView];
@@ -480,10 +484,14 @@
         frame.size.width = self.view.frame.size.width;
 
 	} else if (!showList && _displayingList) {
+
+        if (_searchController) {
+            [_searchController hideSearchResultsTableView];
+        }
         
-		[self removeTableView:self.searchResultsTableView];
+		//[self removeTableView:self.searchResultsTableView];
 		
-        _searchController.searchResultsTableView = nil;
+        //_searchController.searchResultsTableView = nil;
         self.searchResultsTableView = nil;
         
         if (_hasSearchResults) {
@@ -525,7 +533,7 @@
         
         UINavigationController *dummyNavC = [[UINavigationController alloc] initWithRootViewController:_selectionVC];
         
-		MIT_MobileAppDelegate *appDelegate = (MIT_MobileAppDelegate *)[[UIApplication sharedApplication] delegate];
+		KGOAppDelegate *appDelegate = (KGOAppDelegate *)[[UIApplication sharedApplication] delegate];
 		[appDelegate presentAppModalViewController:dummyNavC animated:YES];
         [dummyNavC release];
         
@@ -565,26 +573,28 @@
 - (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
 {
     
+    // TODO: campus map search should be obsoleted by app-wide recent search entity
+    
     [self restoreToolBar];
 
 	// delete any previous instance of this search term
-	MapSearch* mapSearch = [CoreDataManager getObjectForEntity:CampusMapSearchEntityName attribute:@"searchTerm" value:searchBar.text];
+	MapSearch* mapSearch = [[CoreDataManager sharedManager] getObjectForEntity:CampusMapSearchEntityName attribute:@"searchTerm" value:searchBar.text];
 	if (nil != mapSearch) {
-		[CoreDataManager deleteObject:mapSearch];
+		[[CoreDataManager sharedManager] deleteObject:mapSearch];
 	}
 	
 	// insert the new instance of this search term
-	mapSearch = [CoreDataManager insertNewObjectForEntityForName:CampusMapSearchEntityName];
+	mapSearch = [[CoreDataManager sharedManager] insertNewObjectForEntityForName:CampusMapSearchEntityName];
 	mapSearch.searchTerm = searchBar.text;
 	mapSearch.date = [NSDate date];
-	[CoreDataManager saveData];
+	[[CoreDataManager sharedManager] saveData];
 	
 	// determine if we are past our max search limit. If so, trim an item
 	NSError* error = nil;
 	
 	NSFetchRequest* countFetchRequest = [[[NSFetchRequest alloc] init] autorelease];
-	[countFetchRequest setEntity:[NSEntityDescription entityForName:CampusMapSearchEntityName inManagedObjectContext:[CoreDataManager managedObjectContext]]];
-	NSUInteger count = 	[[CoreDataManager managedObjectContext] countForFetchRequest:countFetchRequest error:&error];
+	[countFetchRequest setEntity:[NSEntityDescription entityForName:CampusMapSearchEntityName inManagedObjectContext:[[CoreDataManager sharedManager] managedObjectContext]]];
+	NSUInteger count = 	[[[CoreDataManager sharedManager] managedObjectContext] countForFetchRequest:countFetchRequest error:&error];
 	
 	// cap the number of previous searches maintained in the DB. If we go over the limit, delete one. 
 	if(nil == error && count > kPreviousSearchLimit)
@@ -593,15 +603,15 @@
 		NSSortDescriptor* sortDescriptor = [[[NSSortDescriptor alloc] initWithKey:@"date" ascending:YES] autorelease];
 		NSFetchRequest* limitFetchRequest = [[[NSFetchRequest alloc] init] autorelease];		
 		[limitFetchRequest setSortDescriptors:[NSArray arrayWithObject:sortDescriptor]];
-		[limitFetchRequest setEntity:[NSEntityDescription entityForName:CampusMapSearchEntityName inManagedObjectContext:[CoreDataManager managedObjectContext]]];
+		[limitFetchRequest setEntity:[NSEntityDescription entityForName:CampusMapSearchEntityName inManagedObjectContext:[[CoreDataManager sharedManager] managedObjectContext]]];
 		[limitFetchRequest setFetchLimit:1];
-		NSArray* overLimit = [[CoreDataManager managedObjectContext] executeFetchRequest: limitFetchRequest error:nil];
+		NSArray* overLimit = [[[CoreDataManager sharedManager] managedObjectContext] executeFetchRequest: limitFetchRequest error:nil];
 		 
 		if (overLimit && overLimit.count == 1) {
-			[[CoreDataManager managedObjectContext] deleteObject:[overLimit objectAtIndex:0]];
+			[[[CoreDataManager sharedManager] managedObjectContext] deleteObject:[overLimit objectAtIndex:0]];
 		}
 
-		[CoreDataManager saveData];
+		[[CoreDataManager sharedManager] saveData];
 	}
 	
 	// ask the campus map view controller to perform the search
@@ -669,7 +679,7 @@
     _selectionVC.view;
     [_selectionVC switchToSegmentIndex:MapSelectionControllerSegmentBookmarks];
 
-	MIT_MobileAppDelegate *appDelegate = (MIT_MobileAppDelegate *)[[UIApplication sharedApplication] delegate];
+	KGOAppDelegate *appDelegate = (KGOAppDelegate *)[[UIApplication sharedApplication] delegate];
 	[appDelegate presentAppModalViewController:dummyNavC animated:YES];
     [dummyNavC release];
 }

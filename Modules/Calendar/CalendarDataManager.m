@@ -25,7 +25,7 @@
     NSArray *events = nil;
     if (listType == CalendarEventListTypeEvents && catID == nil) {
         pred = [NSPredicate predicateWithFormat:@"(start >= %@) and (start < %@) and (isRegular == YES)", startDate, endDate];
-        events = [CoreDataManager objectsForEntity:CalendarEventEntityName matchingPredicate:pred sortDescriptors:[NSArray arrayWithObject:sort]];
+        events = [[CoreDataManager sharedManager] objectsForEntity:CalendarEventEntityName matchingPredicate:pred sortDescriptors:[NSArray arrayWithObject:sort]];
     } else {
         pred = [NSPredicate predicateWithFormat:@"(start >= %@) and (start < %@)", startDate, endDate];
         EventCategory *category = nil;
@@ -63,8 +63,8 @@
 + (NSNumber *)idForCategory:(NSString *)categoryName
 {
 	NSPredicate *pred = [NSPredicate predicateWithFormat:@"title contains %@", categoryName];
-	EventCategory *category = [[CoreDataManager objectsForEntity:CalendarCategoryEntityName
-											   matchingPredicate:pred] lastObject];
+	EventCategory *category = [[[CoreDataManager sharedManager] objectsForEntity:CalendarCategoryEntityName
+                                                               matchingPredicate:pred] lastObject];
 	return category.catID;
 }
 
@@ -72,9 +72,9 @@
 {
 	NSPredicate *pred = [NSPredicate predicateWithFormat:@"TRUEPREDICATE"];
 	NSSortDescriptor *sort = [[NSSortDescriptor alloc] initWithKey:@"title" ascending:YES];
-	NSSet *categories = [CoreDataManager objectsForEntity:CalendarCategoryEntityName
-										matchingPredicate:pred
-										  sortDescriptors:[NSArray arrayWithObject:sort]];
+	NSSet *categories = [[CoreDataManager sharedManager] objectsForEntity:CalendarCategoryEntityName
+                                                        matchingPredicate:pred
+                                                          sortDescriptors:[NSArray arrayWithObject:sort]];
 	[sort release];
 
 	NSMutableArray *result = [NSMutableArray arrayWithCapacity:10];
@@ -94,10 +94,10 @@
 + (EventCategory *)categoryWithID:(NSInteger)catID
 {	
 	NSPredicate *pred = [NSPredicate predicateWithFormat:@"catID == %d", catID];
-	EventCategory *category = [[CoreDataManager objectsForEntity:CalendarCategoryEntityName
-											   matchingPredicate:pred] lastObject];
+	EventCategory *category = [[[CoreDataManager sharedManager] objectsForEntity:CalendarCategoryEntityName
+                                                               matchingPredicate:pred] lastObject];
 	if (!category) {
-        category = (EventCategory *)[CoreDataManager insertNewObjectForEntityForName:CalendarCategoryEntityName];
+        category = (EventCategory *)[[CoreDataManager sharedManager] insertNewObjectForEntityForName:CalendarCategoryEntityName];
 		category.catID = [NSNumber numberWithInt:catID];
         if (catID == kCalendarAcademicCategoryID) {
             category.title = [CalendarConstants titleForEventType:CalendarEventListTypeAcademic];
@@ -106,7 +106,7 @@
         } else if (catID == kCalendarExhibitCategoryID) {
             category.title = [CalendarConstants titleForEventType:CalendarEventListTypeExhibits];
         }
-        [CoreDataManager saveData];
+        [[CoreDataManager sharedManager] saveData];
 	} else {
         DLog(@"%@", [[category.events allObjects] description]);
     }
@@ -127,10 +127,10 @@
 + (MITCalendarEvent *)eventWithID:(NSInteger)eventID
 {
 	NSPredicate *pred = [NSPredicate predicateWithFormat:@"eventID == %d", eventID];
-	MITCalendarEvent *event = [[CoreDataManager objectsForEntity:CalendarEventEntityName
-											matchingPredicate:pred] lastObject];
+	MITCalendarEvent *event = [[[CoreDataManager sharedManager] objectsForEntity:CalendarEventEntityName
+                                                               matchingPredicate:pred] lastObject];
 	if (!event) {
-		event = [CoreDataManager insertNewObjectForEntityForName:CalendarEventEntityName];
+		event = [[CoreDataManager sharedManager] insertNewObjectForEntityForName:CalendarEventEntityName];
 		event.eventID = [NSNumber numberWithInt:eventID];
 	}
 	return event;
@@ -138,11 +138,12 @@
 
 + (MITCalendarEvent *)eventWithDict:(NSDictionary *)dict
 {
+    // TODO: clean up things that are not related to the "soap server"
 	// purge rogue categories that the soap server doesn't return
 	// from the "categories" api call but show up in events
-	if ([[CoreDataManager managedObjectContext] hasChanges]) {
-		[[CoreDataManager managedObjectContext] undo];
-		[[CoreDataManager managedObjectContext] rollback];
+	if ([[[CoreDataManager sharedManager] managedObjectContext] hasChanges]) {
+		[[[CoreDataManager sharedManager] managedObjectContext] undo];
+		[[[CoreDataManager sharedManager] managedObjectContext] rollback];
 	}
 
 	NSInteger eventID = [[dict objectForKey:@"id"] intValue];
@@ -157,10 +158,10 @@
                                                    sinceDate:[NSDate date]];
     
     NSPredicate *pred = [NSPredicate predicateWithFormat:@"(lastUpdated < %@)", freshDate];
-    NSArray *events = [CoreDataManager objectsForEntity:CalendarEventEntityName matchingPredicate:pred];
+    NSArray *events = [[CoreDataManager sharedManager] objectsForEntity:CalendarEventEntityName matchingPredicate:pred];
     if ([events count]) {
-        [CoreDataManager deleteObjects:events];
-        [CoreDataManager saveData];
+        [[CoreDataManager sharedManager] deleteObjects:events];
+        [[CoreDataManager sharedManager] saveData];
     }
     [freshDate release];
 }

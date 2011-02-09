@@ -1,16 +1,13 @@
-#import "MITModule.h"
+#import "KGOModule.h"
 #import "JSONAPIRequest.h"
 
 @class PeopleSearchViewController;
 
-@interface PeopleModule : MITModule <JSONAPIDelegate> {
+@interface PeopleModule : KGOModule <JSONAPIDelegate> {
 	
-	PeopleSearchViewController *viewController;
     JSONAPIRequest *request;
-
 }
 
-@property (nonatomic, retain) PeopleSearchViewController *viewController;
 @property (nonatomic, retain) JSONAPIRequest *request;
 
 @end

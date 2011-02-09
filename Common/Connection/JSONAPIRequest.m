@@ -1,6 +1,7 @@
 #import "JSONAPIRequest.h"
-#import "MIT_MobileAppDelegate.h"
+#import "KGOAppDelegate.h"
 #import "JSON.h"
+#import "Foundation+KGOAdditions.h"
 
 @interface JSONAPIRequest (Private)
 
@@ -50,7 +51,7 @@
 - (void)abortRequest {
 	if (connectionWrapper != nil) {
 		[connectionWrapper cancel];
-		[((MIT_MobileAppDelegate *)[[UIApplication sharedApplication] delegate]) hideNetworkActivityIndicator];
+		[((KGOAppDelegate *)[[UIApplication sharedApplication] delegate]) hideNetworkActivityIndicator];
 		self.connectionWrapper = nil;
         [self autorelease];
 	}
@@ -90,32 +91,14 @@
 	NSAssert(!self.connectionWrapper, @"The connection wrapper is already in use");
 	
 	self.connectionWrapper = [[[ConnectionWrapper alloc] initWithDelegate:self] autorelease];
-	BOOL requestSuccessfullyBegun = [connectionWrapper requestDataFromURL:[JSONAPIRequest buildURL:self.params queryBase:path]];
+	BOOL requestSuccessfullyBegun = [connectionWrapper requestDataFromURL:[NSURL URLWithQueryParameters:self.params baseURL:[NSURL URLWithString:path]]];
 
-	[((MIT_MobileAppDelegate *)[[UIApplication sharedApplication] delegate]) showNetworkActivityIndicator];
+	[((KGOAppDelegate *)[[UIApplication sharedApplication] delegate]) showNetworkActivityIndicator];
 	
 	if(!requestSuccessfullyBegun) {
 		[self connection:self.connectionWrapper handleConnectionFailureWithError:nil];
 	}
 	return requestSuccessfullyBegun;
-}
-
-// TODO: general URL methods should go in a more general class
-+ (NSString *)buildQuery:(NSDictionary *)dict {
-	NSArray *keys = [dict allKeys];
-	NSMutableArray *components = [NSMutableArray arrayWithCapacity:[keys count]];
-	for (NSString *key in keys) {
-		NSString *value = [[dict objectForKey:key] stringByReplacingOccurrencesOfString:@" " withString:@"+"];
-		[components addObject:[NSString stringWithFormat:@"%@=%@", key, value]];
-	}
-	return [components componentsJoinedByString:@"&"];
-}
-
-// internal method used to construct URL
-+ (NSURL *)buildURL:(NSDictionary *)dict queryBase:(NSString *)base {
-	NSString *urlString = [NSString stringWithFormat:@"%@?%@", base, [JSONAPIRequest buildQuery:dict]];	
-	NSURL *url = [NSURL URLWithString:[urlString stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
-	return url;
 }
 
 #pragma mark ConnectionWrapper delegation
@@ -133,7 +116,7 @@
 		[self connection:wrapper handleConnectionFailureWithError:error];		
     } else {
 		[jsonDelegate request:self jsonLoaded:result];
-		[((MIT_MobileAppDelegate *)[[UIApplication sharedApplication] delegate]) hideNetworkActivityIndicator];
+		[((KGOAppDelegate *)[[UIApplication sharedApplication] delegate]) hideNetworkActivityIndicator];
         self.connectionWrapper = nil;
         [self autorelease];
 	}
@@ -142,7 +125,7 @@
 - (void)connection:(ConnectionWrapper *)wrapper handleConnectionFailureWithError: (NSError *)error {
 	NSLog(@"Error: %@\ncode:%d\nuserinfo: %@\n%s", [error domain], [error code], [error userInfo], __PRETTY_FUNCTION__);
     
-	[((MIT_MobileAppDelegate *)[[UIApplication sharedApplication] delegate]) hideNetworkActivityIndicator];
+	[((KGOAppDelegate *)[[UIApplication sharedApplication] delegate]) hideNetworkActivityIndicator];
     self.connectionWrapper = nil;
 
 	if([jsonDelegate respondsToSelector:@selector(request:handleConnectionError:)]) {

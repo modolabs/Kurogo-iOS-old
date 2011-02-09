@@ -1,9 +1,9 @@
 #import "PeopleDetailsViewController.h"
 #import "PeopleRecentsData.h"
-#import "MIT_MobileAppDelegate.h"
+#import "KGOAppDelegate.h"
 #import "MITUIConstants.h"
-#import "UIKit+MITAdditions.h"
-#import "Foundation+MITAdditions.h"
+#import "UIKit+KGOAdditions.h"
+#import "Foundation+KGOAdditions.h"
 #import "ModoNavigationController.h"
 #import "MapBookmarkManager.h"
 #import "TileServerManager.h"
@@ -11,6 +11,7 @@
 #import "MITMailComposeController.h"
 #import "ThemeConstants.h"
 #import "KGOTheme.h"
+#import "CoreDataManager.h"
 
 @interface PeopleDetailsViewController (Private)
 
@@ -48,6 +49,9 @@ NSString * const RequestLookupAddress = @"address";
 
 - (void)viewDidLoad
 {
+    self.personDetails.viewed = [NSNumber numberWithBool:YES];
+    [[CoreDataManager sharedManager] saveData];
+    
 	self.title = @"Info";
 	
 	// get fullname for header
@@ -160,9 +164,8 @@ NSString * const RequestLookupAddress = @"address";
         if ([result isKindOfClass:[NSArray class]]) {
             for (NSDictionary *entry in result) {
                 if ([[entry objectForKey:@"id"] isEqualToString:[self.personDetails valueForKey:@"uid"]]) {
-                    self.personDetails = [PeopleRecentsData updatePerson:self.personDetails withSearchResult:entry];
+                    self.personDetails = [PersonDetails personDetailsWithDictionary:entry];
 					[self reloadDataForTableView:self.tableView];
-                    //[self.tableView reloadData];
                 }
             }
         }
@@ -362,7 +365,7 @@ NSString * const RequestLookupAddress = @"address";
 			// since it doesn't have its own nav bar
 			UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:creator];
 			
-			MIT_MobileAppDelegate *appDelegate = (MIT_MobileAppDelegate *)[[UIApplication sharedApplication] delegate];
+			KGOAppDelegate *appDelegate = (KGOAppDelegate *)[[UIApplication sharedApplication] delegate];
 			[appDelegate presentAppModalViewController:navController animated:YES];
 
 			[creator release];
@@ -372,7 +375,7 @@ NSString * const RequestLookupAddress = @"address";
 			ABPeoplePickerNavigationController *picker = [[ABPeoplePickerNavigationController alloc] init];
 			[picker setPeoplePickerDelegate:self];
 			
-			MIT_MobileAppDelegate *appDelegate = (MIT_MobileAppDelegate *)[[UIApplication sharedApplication] delegate];
+			KGOAppDelegate *appDelegate = (KGOAppDelegate *)[[UIApplication sharedApplication] delegate];
 			[appDelegate presentAppModalViewController:picker animated:YES];
 			
 			[picker release];
@@ -401,7 +404,7 @@ NSString * const RequestLookupAddress = @"address";
 
 - (void)newPersonViewController:(ABNewPersonViewController *)newPersonViewController didCompleteWithNewPerson:(ABRecordRef)person
 {	
-	MIT_MobileAppDelegate *appDelegate = (MIT_MobileAppDelegate *)[[UIApplication sharedApplication] delegate];
+	KGOAppDelegate *appDelegate = (KGOAppDelegate *)[[UIApplication sharedApplication] delegate];
 	[appDelegate dismissAppModalViewControllerAnimated:YES];
 }
 
@@ -493,7 +496,7 @@ NSString * const RequestLookupAddress = @"address";
 	CFRelease(newPerson);
     CFRelease(ab);
 	
-	MIT_MobileAppDelegate *appDelegate = (MIT_MobileAppDelegate *)[[UIApplication sharedApplication] delegate];
+	KGOAppDelegate *appDelegate = (KGOAppDelegate *)[[UIApplication sharedApplication] delegate];
 	[appDelegate dismissAppModalViewControllerAnimated:YES];
 	
 	return NO; // don't navigate to built-in view
@@ -509,7 +512,7 @@ NSString * const RequestLookupAddress = @"address";
 	
 - (void)peoplePickerNavigationControllerDidCancel:(ABPeoplePickerNavigationController *)peoplePicker
 {
-	MIT_MobileAppDelegate *appDelegate = (MIT_MobileAppDelegate *)[[UIApplication sharedApplication] delegate];
+	KGOAppDelegate *appDelegate = (KGOAppDelegate *)[[UIApplication sharedApplication] delegate];
 	[appDelegate dismissAppModalViewControllerAnimated:YES];
 }
 
@@ -519,7 +522,7 @@ NSString * const RequestLookupAddress = @"address";
 
 - (void)mapIconTapped:(NSString *)address
 {
-    NSURL *internalURL = [NSURL internalURLWithModuleTag:CampusMapTag
+    NSURL *internalURL = [NSURL internalURLWithModuleTag:MapTag
                                                     path:LocalPathMapsSelectedAnnotation
                                                    query:addressSearchAnnotation.uniqueID];
 

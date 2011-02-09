@@ -1,12 +1,52 @@
 #import <Foundation/Foundation.h>
 #import "MITBuildInfo.h"
 
+// local path names for handleLocalPath
+extern NSString * const LocalPathPageNameHome;
+extern NSString * const LocalPathPageNameDetail;
+extern NSString * const LocalPathPageNameSearch;
+extern NSString * const LocalPathPageNameCategoryList;
+extern NSString * const LocalPathPageNameItemList;
+extern NSString * const LocalPathPageNameMapList;
+extern NSString * const LocalPathPageNameBookmarks;
+
+// keys for NSUserDefaults dictionary go here (app preferences)
+extern NSString * const DeviceTokenKey;
+extern NSString * const UnreadNotificationsKey;
+
+
+// module tags
+extern NSString * const AboutTag;
+extern NSString * const CalendarTag;
+extern NSString * const CoursesTag;
+extern NSString * const DiningTag;
+extern NSString * const EmergencyTag;
+extern NSString * const FullWebTag;
+extern NSString * const HomeTag;
+extern NSString * const LibrariesTag;
+extern NSString * const MapTag;
+extern NSString * const NewsTag;
+extern NSString * const PeopleTag;
+extern NSString * const SettingsTag;
+extern NSString * const SchoolsTag;
+extern NSString * const TransitTag;
+
+
+
+
+
+
+
+
+
+extern NSString * const LocalPathMapsSelectedAnnotation;
+
 // common URLs
 extern NSString * const MITMobileWebDomainString;
 extern NSString * const MITMobileWebAPIURLString;
 
-// keys for NSUserDefaults dictionary go here (app preferences)
-extern NSString * const MITModuleTabOrderKey;
+
+extern NSString * const KGOModuleTabOrderKey;
 extern NSString * const MITActiveModuleKey;
 extern NSString * const MITNewsTwoFirstRunKey;
 extern NSString * const MITEventsModuleInSortOrderKey;
@@ -17,28 +57,12 @@ extern NSString * const ShuttleSubscriptionsKey;
 extern NSString * const StellarTermKey;
 extern NSString * const MITDeviceIdKey;
 extern NSString * const MITPassCodeKey;
-extern NSString * const DeviceTokenKey;
-extern NSString * const MITUnreadNotificationsKey;
 extern NSString * const PushNotificationSettingsKey;
-extern NSString * const MITModulesSavedStateKey;
+extern NSString * const KGOModulesSavedStateKey;
 extern NSString * const ShakeToReturnPrefKey;
 extern NSString * const MapTypePrefKey;
 
 
-// module tags
-extern NSString * const CalendarTag;
-extern NSString * const EmergencyTag;
-extern NSString * const CampusMapTag;
-extern NSString * const NewsOfficeTag;
-extern NSString * const DirectoryTag;
-extern NSString * const StellarTag;
-extern NSString * const ShuttleTag;
-extern NSString * const MobileWebTag;
-extern NSString * const SettingsTag;
-extern NSString * const AboutTag;
-extern NSString * const DiningTag;
-extern NSString * const SchoolsTag;
-extern NSString * const LibrariesTag;
 
 // notification names
 extern NSString * const EmergencyInfoDidLoadNotification;
@@ -87,9 +111,6 @@ extern NSString * const LibraryPubDateCodeEntityName;
 extern NSString * const LibraryPhoneEntityName;
 extern NSString * const LibraryAliasEntityName;
 
-
-// local path names for handleLocalPath
-extern NSString * const LocalPathMapsSelectedAnnotation;
 
 // resource names
 extern NSString * const ImageNameHomeScreenBackground;

@@ -1,9 +1,9 @@
 #import "StoryDetailViewController.h"
-#import "MIT_MobileAppDelegate.h"
+#import "KGOAppDelegate.h"
 #import <QuartzCore/QuartzCore.h>
 #import "NewsStory.h"
 #import "CoreDataManager.h"
-#import "Foundation+MITAdditions.h"
+#import "Foundation+KGOAdditions.h"
 #import "StoryListViewController.h"
 #import "StoryGalleryViewController.h"
 #import "NewsImage.h"
@@ -103,7 +103,7 @@
     
     // mark story as read
     self.story.read = [NSNumber numberWithBool:YES];
-	[CoreDataManager saveDataWithTemporaryMergePolicy:NSMergeByPropertyObjectTrumpMergePolicy];
+	[[CoreDataManager sharedManager] saveDataWithTemporaryMergePolicy:NSMergeByPropertyObjectTrumpMergePolicy];
 	[storyView loadHTMLString:htmlString baseURL:baseURL];
 
     // analytics
@@ -142,7 +142,7 @@
             if ([[url path] rangeOfString:@"bookmark" options:NSBackwardsSearch].location != NSNotFound) {
 				// toggle bookmarked state
 				self.story.bookmarked = [NSNumber numberWithBool:([self.story.bookmarked boolValue]) ? NO : YES];
-				[CoreDataManager saveData];
+				[[CoreDataManager sharedManager] saveData];
 			} else if ([[url path] rangeOfString:@"share" options:NSBackwardsSearch].location != NSNotFound) {
 				[self share:nil];
 			}

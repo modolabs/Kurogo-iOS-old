@@ -6,7 +6,7 @@
  *****************************************************************/
 
 #import "ModoNavigationBar.h"
-#import "UIKit+MITAdditions.h"
+#import "UIKit+KGOAdditions.h"
 #import "ModoNavigationController.h"
 
 @implementation ModoNavigationBar

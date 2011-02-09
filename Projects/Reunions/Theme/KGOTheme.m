@@ -1,18 +1,9 @@
 #import "KGOTheme.h"
-#import "UIKit+MITAdditions.h"
+#import "UIKit+KGOAdditions.h"
 
 NSString * const KGOAccessoryTypeNone = @"None";
 NSString * const KGOAccessoryTypeBlank = @"Blank";
 NSString * const KGOAccessoryTypeChevron = @"Chevron";
-
-@interface KGOTheme (Private)
-
-- (NSString *)fontNameForLabel:(NSString *)label size:(CGFloat *)fontSize;
-- (UIColor *)matchTextColorWithLabel:(NSString *)label;
-- (UIFont *)matchFontWithLabel:(NSString *)label defaultSize:(CGFloat)defaultSize;
-- (UIFont *)matchBoldFontWithLabel:(NSString *)label defaultSize:(CGFloat)defaultSize;
-
-@end
 
 
 @implementation KGOTheme
@@ -51,17 +42,17 @@ static KGOTheme *s_sharedTheme = nil;
 #pragma mark Colors
 
 - (UIColor *)linkColor {
-    NSString *hexString = [[themeDict objectForKey:@"Colors"] objectForKey:@"Link"];
-    if (hexString)
-        return [UIColor colorWithHexString:hexString];
-    return [UIColor blueColor];
+    UIColor *color = [self matchBackgroundColorWithLabel:@"Link"];
+    if (!color)
+        color = [UIColor blueColor];
+    return color;
 }
 
-- (UIColor *)plainSectionHeaderBackgroundColor {
-    NSString *hexString = [[themeDict objectForKey:@"Colors"] objectForKey:@"PlainSectionHeaderBackground"];
-    if (hexString)
-        return [UIColor colorWithHexString:hexString];
-    return [UIColor blackColor];
+- (UIColor *)backgroundColorForApplication {
+    UIColor *color = [self matchBackgroundColorWithLabel:@"AppBackground"];
+    if (!color)
+        color = [UIColor whiteColor];
+    return color;
 }
 
 #pragma mark UITableView
@@ -69,7 +60,7 @@ static KGOTheme *s_sharedTheme = nil;
 - (UIFont *)fontForTableCellTitleWithStyle:(KGOTableCellStyle)style {
     switch (style) {
         case KGOTableCellStyleValue2:
-            return [self matchBoldFontWithLabel:@"TableCellValue2Title" defaultSize:15];
+            return [self matchBoldFontWithLabel:@"TableCellValue2Title" defaultSize:14];
         case KGOTableCellStyleBodyText:
             return [self matchFontWithLabel:@"TableCellTitle" defaultSize:15];
         case KGOTableCellStyleURL:
@@ -150,6 +141,13 @@ static KGOTheme *s_sharedTheme = nil;
     return color;
 }
 
+- (UIColor *)backgroundColorForPlainSectionHeader {
+    UIColor *color = [self matchBackgroundColorWithLabel:@"PlainSectionHeaderBackground"];
+    if (!color)
+        color = [UIColor blackColor];
+    return color;
+}
+
 - (UIFont *)fontForTableFooter {
     return [self matchBoldFontWithLabel:@"TableFooter" defaultSize:12];
 }
@@ -198,6 +196,13 @@ static NSString * KGOAccessoryImageChevronHighlighted = @"common/action-arrow-hi
     }    
 }
 
+- (UIColor *)backgroundColorForSecondaryCell {
+    UIColor *color = [self matchTextColorWithLabel:@"SecondaryCellBackground"];
+    if (!color)
+        color = [UIColor whiteColor];
+    return color;
+}
+
 #pragma mark -
 #pragma mark Private
 
@@ -239,6 +244,17 @@ static NSString * KGOAccessoryImageChevronHighlighted = @"common/action-arrow-hi
         return [UIColor colorWithHexString:hexString];
     return nil;
 }
+
+- (UIColor *)matchBackgroundColorWithLabel:(NSString *)label {
+    UIColor *color = nil;
+    NSString *colorString = [[themeDict objectForKey:@"Colors"] objectForKey:label];
+    if (colorString)
+        color = [UIColor colorWithHexString:colorString];
+    if (!color)
+        color = [UIColor colorWithPatternImage:[UIImage imageNamed:colorString]];
+    return color;
+}
+
 
 #pragma mark -
 

@@ -1,4 +1,4 @@
-#import "UIKit+MITAdditions.h"
+#import "UIKit+KGOAdditions.h"
 
 
 @implementation UIColor (KGOAdditions)

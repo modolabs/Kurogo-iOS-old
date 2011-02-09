@@ -1,5 +1,5 @@
 #import <UIKit/UIKit.h>
-#import "MITModule.h"
+#import "KGOModule.h"
 
 @interface SettingsTableViewController : UITableViewController {
 

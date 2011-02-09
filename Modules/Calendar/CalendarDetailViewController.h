@@ -2,7 +2,7 @@
 #import "JSONAPIRequest.h"
 #import "CalendarConstants.h"
 #import "KGOShareButtonController.h"
-#import "MIT_MobileAppDelegate.h"
+#import "KGOAppDelegate.h"
 #import "KGOShareButtonController.h"
 #import "KGOTableViewController.h"
 

@@ -43,31 +43,31 @@ static MapBookmarkManager* s_mapBookmarksManager = nil;
 - (void)refreshBookmarks {
     NSPredicate *pred = [NSPredicate predicateWithFormat:@"isBookmark == YES"];
     NSSortDescriptor *sort = [NSSortDescriptor sortDescriptorWithKey:@"sortOrder" ascending:YES];
-    self.bookmarks = [[CoreDataManager objectsForEntity:CampusMapAnnotationEntityName
-                                      matchingPredicate:pred
-                                        sortDescriptors:[NSArray arrayWithObject:sort]] mutableCopy];
+    self.bookmarks = [[[CoreDataManager sharedManager] objectsForEntity:CampusMapAnnotationEntityName
+                                                      matchingPredicate:pred
+                                                        sortDescriptors:[NSArray arrayWithObject:sort]] mutableCopy];
 }
 
 - (void)pruneNonBookmarks {
     NSPredicate *pred = [NSPredicate predicateWithFormat:@"isBookmark == NO"];
-    NSArray *nonBookmarks = [CoreDataManager objectsForEntity:CampusMapAnnotationEntityName
-                                            matchingPredicate:pred];
+    NSArray *nonBookmarks = [[CoreDataManager sharedManager] objectsForEntity:CampusMapAnnotationEntityName
+                                                            matchingPredicate:pred];
     for (MapSavedAnnotation *nonBookmark in nonBookmarks) {
-        [CoreDataManager deleteObject:nonBookmark];
+        [[CoreDataManager sharedManager] deleteObject:nonBookmark];
     }
 }
 
 #pragma mark Bookmark Management
 
 - (MapSavedAnnotation *)savedAnnotationForID:(NSString *)uniqueID {
-    MapSavedAnnotation *saved = (MapSavedAnnotation *)[CoreDataManager getObjectForEntity:CampusMapAnnotationEntityName
-                                                                                attribute:@"id"
-                                                                                    value:uniqueID];
+    MapSavedAnnotation *saved = (MapSavedAnnotation *)[[CoreDataManager sharedManager] getObjectForEntity:CampusMapAnnotationEntityName
+                                                                                                attribute:@"id"
+                                                                                                    value:uniqueID];
     return saved;
 }
 
 - (MapSavedAnnotation *)savedAnnotationWithAnnotation:(ArcGISMapAnnotation *)annotation {
-    MapSavedAnnotation *savedAnnotation = [CoreDataManager insertNewObjectForEntityForName:CampusMapAnnotationEntityName];
+    MapSavedAnnotation *savedAnnotation = [[CoreDataManager sharedManager] insertNewObjectForEntityForName:CampusMapAnnotationEntityName];
     
     savedAnnotation.id = annotation.uniqueID;
     savedAnnotation.latitude = [NSNumber numberWithFloat:annotation.coordinate.latitude];
@@ -86,14 +86,14 @@ static MapBookmarkManager* s_mapBookmarksManager = nil;
     savedAnnotation.isBookmark = [NSNumber numberWithBool:YES];
     savedAnnotation.sortOrder = [NSNumber numberWithInt:[_bookmarks count]];
     [_bookmarks addObject:savedAnnotation];
-    [CoreDataManager saveData];
+    [[CoreDataManager sharedManager] saveData];
     [self refreshBookmarks];
 }
 
 - (void)saveAnnotationWithoutBookmarking:(ArcGISMapAnnotation *)annotation {
     MapSavedAnnotation *savedAnnotation = [self savedAnnotationWithAnnotation:annotation];
     savedAnnotation.isBookmark = [NSNumber numberWithBool:NO];
-    [CoreDataManager saveData];
+    [[CoreDataManager sharedManager] saveData];
 }
 
 - (void)removeBookmark:(MapSavedAnnotation *)savedAnnotation {
@@ -104,8 +104,8 @@ static MapBookmarkManager* s_mapBookmarksManager = nil;
         savedAnnotation.sortOrder = [NSNumber numberWithInt:i - 1];
     }
     [_bookmarks removeObject:savedAnnotation];
-    [CoreDataManager deleteObject:savedAnnotation];
-    [CoreDataManager saveData];
+    [[CoreDataManager sharedManager] deleteObject:savedAnnotation];
+    [[CoreDataManager sharedManager] saveData];
 }
 
 - (BOOL)isBookmarked:(NSString *)uniqueID {
@@ -132,7 +132,7 @@ static MapBookmarkManager* s_mapBookmarksManager = nil;
         savedAnnotation = [self.bookmarks objectAtIndex:from];
         savedAnnotation.sortOrder = [NSNumber numberWithInt:to];
         
-        [CoreDataManager saveData];
+        [[CoreDataManager sharedManager] saveData];
     }
 }
 

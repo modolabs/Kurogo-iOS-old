@@ -13,16 +13,15 @@
 - (id) init {
     self = [super init];
     if (self != nil) {
-        self.tag = NewsOfficeTag;
         self.shortName = @"News";
         self.longName = @"News";
-        self.iconName = @"news";
-        self.supportsFederatedSearch = YES;
+        //self.iconName = @"news";
+        //self.supportsFederatedSearch = YES;
         
-        storyListChannelController = [[StoryListViewController alloc] init];
-        [storyListChannelController pruneStories];
-        [storyListChannelController refreshCategories];
-        self.viewControllers = [NSArray arrayWithObject:storyListChannelController];
+        //storyListChannelController = [[StoryListViewController alloc] init];
+        //[storyListChannelController pruneStories];
+        //[storyListChannelController refreshCategories];
+        //self.viewControllers = [NSArray arrayWithObject:storyListChannelController];
     }
     return self;
 }
@@ -34,7 +33,7 @@
 }
 
 #pragma mark State and url
-
+/*
 - (void)resetNavStack {
     self.viewControllers = [NSArray arrayWithObject:storyListChannelController];
 }
@@ -131,7 +130,7 @@ NSString * const NewsLocalPathBookmarks = @"bookmarks";
     
 	predicate = [NSPredicate predicateWithFormat:@"searchResult > 0"];
     
-    NSArray *results = [CoreDataManager objectsForEntity:NewsStoryEntityName matchingPredicate:predicate sortDescriptors:sortDescriptors];
+    NSArray *results = [[CoreDataManager sharedManager] objectsForEntity:NewsStoryEntityName matchingPredicate:predicate sortDescriptors:sortDescriptors];
 	
     self.searchResults = results;
 }
@@ -202,7 +201,7 @@ NSString * const NewsLocalPathBookmarks = @"bookmarks";
         self.selectedResult = [self.searchResults objectAtIndex:prevIndex];
         prevStory = (NewsStory *)self.selectedResult;
         
-        MIT_MobileAppDelegate *appDelegate = (MIT_MobileAppDelegate *)[[UIApplication sharedApplication] delegate];
+        KGOAppDelegate *appDelegate = (KGOAppDelegate *)[[UIApplication sharedApplication] delegate];
         NSIndexPath *currentIndexPath = [appDelegate.springboard.searchResultsTableView indexPathForSelectedRow];
         NSInteger selectedRow = prevIndex >= MAX_FEDERATED_SEARCH_RESULTS ? MAX_FEDERATED_SEARCH_RESULTS : prevIndex;
         NSIndexPath *prevIndexPath = [NSIndexPath indexPathForRow:selectedRow inSection:currentIndexPath.section];
@@ -219,7 +218,7 @@ NSString * const NewsLocalPathBookmarks = @"bookmarks";
         self.selectedResult = [self.searchResults objectAtIndex:nextIndex];
         nextStory = (NewsStory *)self.selectedResult;
         
-        MIT_MobileAppDelegate *appDelegate = (MIT_MobileAppDelegate *)[[UIApplication sharedApplication] delegate];
+        KGOAppDelegate *appDelegate = (KGOAppDelegate *)[[UIApplication sharedApplication] delegate];
         NSIndexPath *currentIndexPath = [appDelegate.springboard.searchResultsTableView indexPathForSelectedRow];
         NSInteger selectedRow = nextIndex >= MAX_FEDERATED_SEARCH_RESULTS ? MAX_FEDERATED_SEARCH_RESULTS : nextIndex;
         NSIndexPath *nextIndexPath = [NSIndexPath indexPathForRow:selectedRow inSection:currentIndexPath.section];
@@ -227,6 +226,6 @@ NSString * const NewsLocalPathBookmarks = @"bookmarks";
 	}
 	return nextStory;
 }
-
+*/
 
 @end

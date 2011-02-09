@@ -7,24 +7,23 @@
 
 #import <UIKit/UIKit.h>
 #import "KGOTableViewController.h"
+#import "KGOSearchDisplayController.h"
 
-@class MITModule;
+@class KGOModule;
 @class ModoSearchBar;
 @class ModoNavigationBar;
-@class MITSearchDisplayController;
 @class ModoNavigationController;
 @class FederatedSearchTableView;
 
-@interface SpringboardViewController : KGOTableViewController <UISearchBarDelegate> {
+@interface SpringboardViewController : KGOTableViewController <UISearchBarDelegate, KGOSearchDisplayDelegate> {
 
     UIScrollView *containingView;
-    MITModule *activeModule;
+    KGOModule *activeModule;
     ModoNavigationController *navigationController;
     ModoNavigationBar *navigationBar;
-    MITSearchDisplayController *_searchController;
+    KGOSearchDisplayController *_searchController;
 
     ModoSearchBar *_searchBar;
-    NSMutableArray *searchableModules;
     BOOL isSearch;
     NSMutableArray *completedModules;
     
@@ -46,9 +45,8 @@
 - (void)layoutIcons:(NSArray *)icons horizontalSpacing:(CGFloat)spacing;
 - (void)searchAllModules;
 
-@property (nonatomic, assign) MITModule *activeModule;
+@property (nonatomic, assign) KGOModule *activeModule;
 @property (nonatomic, retain) FederatedSearchTableView *searchResultsTableView;
-@property (nonatomic, readonly) NSArray *searchableModules;
 
 @end
 

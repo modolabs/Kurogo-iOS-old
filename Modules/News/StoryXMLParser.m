@@ -1,10 +1,11 @@
 #import "StoryXMLParser.h"
 #import "NewsStory.h"
 #import "CoreDataManager.h"
-#import "MIT_MobileAppDelegate.h"
+#import "KGOAppDelegate.h"
 #import "JSONAPIRequest.h"
 #import "NewsCategory.h"
 #import "NewsImage.h"
+#import "Foundation+KGOAdditions.h"
 
 @interface StoryXMLParser (Private)
 
@@ -74,7 +75,7 @@ NSString * const NewsTagFullURL         = @"url";
 
 - (NewsCategory *)categoryForString:(NSString *)aString {
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"title like %@", aString];
-    return [[CoreDataManager objectsForEntity:NewsCategoryEntityName matchingPredicate:predicate] lastObject];
+    return [[[CoreDataManager sharedManager] objectsForEntity:NewsCategoryEntityName matchingPredicate:predicate] lastObject];
 }
 
 - (NSInteger)idForCategoryString:(NSString *)aString {
@@ -88,7 +89,7 @@ NSString * const NewsTagFullURL         = @"url";
 
 - (NewsCategory *)categoryForID:(NSInteger)anID {
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"category_id == %d", anID];
-    return [[CoreDataManager objectsForEntity:NewsCategoryEntityName matchingPredicate:predicate] lastObject];
+    return [[[CoreDataManager sharedManager] objectsForEntity:NewsCategoryEntityName matchingPredicate:predicate] lastObject];
 }
 
 - (NSString *)stringForCategoryID:(NSInteger)anID {
@@ -161,7 +162,7 @@ NSString * const NewsTagFullURL         = @"url";
         [params setObject:[NSString stringWithFormat:@"%d", storyId] forKey:@"storyId"];
     }
 
-    NSURL *fullURL = [JSONAPIRequest buildURL:params queryBase:MITMobileWebAPIURLString];
+    NSURL *fullURL = [NSURL URLWithQueryParameters:params baseURL:[NSURL URLWithString:MITMobileWebAPIURLString]];
     
     expectedStoryCount = 10; // if the server is ever made to support a range param, set this to count instead
     
@@ -176,11 +177,11 @@ NSString * const NewsTagFullURL         = @"url";
 	// before getting new results, clear old search results if this is a new search request
 	if (self.isSearch && !self.loadingMore) {
 		NSPredicate *predicate = [NSPredicate predicateWithFormat:@"searchResult > 0"];
-		NSArray *results = [CoreDataManager objectsForEntity:NewsStoryEntityName matchingPredicate:predicate];
+		NSArray *results = [[CoreDataManager sharedManager] objectsForEntity:NewsStoryEntityName matchingPredicate:predicate];
 		for (NewsStory *aStory in results) {
 			aStory.searchResult = [NSNumber numberWithInt:0];
 		}
-		[CoreDataManager saveDataWithTemporaryMergePolicy:NSMergeByPropertyObjectTrumpMergePolicy];
+		[[CoreDataManager sharedManager] saveDataWithTemporaryMergePolicy:NSMergeByPropertyObjectTrumpMergePolicy];
 	}
     
 	NSMutableDictionary *params = [NSMutableDictionary dictionaryWithObjectsAndKeys:
@@ -192,7 +193,7 @@ NSString * const NewsTagFullURL         = @"url";
         [params setObject:[NSString stringWithFormat:@"%d", storyId] forKey:@"storyId"];
     }
     
-    NSURL *fullURL = [JSONAPIRequest buildURL:params queryBase:MITMobileWebAPIURLString];
+    NSURL *fullURL = [NSURL URLWithQueryParameters:params baseURL:[NSURL URLWithString:MITMobileWebAPIURLString]];
     
     expectedStoryCount = count;
     
@@ -375,12 +376,12 @@ NSString * const NewsTagFullURL         = @"url";
             NewsCategory *category = [self categoryForString:string];
             if (!category) {
                 NSPredicate *truePredicate = [NSPredicate predicateWithFormat:@"TRUEPREDICATE"];
-                NSInteger numCategories = [[CoreDataManager objectsForEntity:NewsCategoryEntityName matchingPredicate:truePredicate] count];
+                NSInteger numCategories = [[[CoreDataManager sharedManager] objectsForEntity:NewsCategoryEntityName matchingPredicate:truePredicate] count];
                 
-                category = [CoreDataManager insertNewObjectForEntityForName:NewsCategoryEntityName];
+                category = [[CoreDataManager sharedManager] insertNewObjectForEntityForName:NewsCategoryEntityName];
                 category.title = string;
                 category.category_id = [NSNumber numberWithInt:numCategories];
-                [CoreDataManager saveData];
+                [[CoreDataManager sharedManager] saveData];
             }
             
             [currentCategories addObject:category];
@@ -404,10 +405,10 @@ NSString * const NewsTagFullURL         = @"url";
 	if ([elementName isEqualToString:NewsTagItem]) {
         // use existing story if it's already in the db
         NSPredicate *predicate = [NSPredicate predicateWithFormat:@"story_id == %d", [[currentContents objectForKey:NewsTagStoryId] integerValue]];
-        NewsStory *story = [[CoreDataManager objectsForEntity:NewsStoryEntityName matchingPredicate:predicate] lastObject];
+        NewsStory *story = [[[CoreDataManager sharedManager] objectsForEntity:NewsStoryEntityName matchingPredicate:predicate] lastObject];
         // otherwise create new
         if (!story) {
-            story = (NewsStory *)[CoreDataManager insertNewObjectForEntityForName:NewsStoryEntityName];
+            story = (NewsStory *)[[CoreDataManager sharedManager] insertNewObjectForEntityForName:NewsStoryEntityName];
         }
         
         NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
@@ -476,9 +477,9 @@ NSString * const NewsTagFullURL         = @"url";
     NSString *url = [dict objectForKey:NewsTagFullURL];
     
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"url == %@", url];
-    newsImage = [[CoreDataManager objectsForEntity:NewsImageEntityName matchingPredicate:predicate] lastObject];
+    newsImage = [[[CoreDataManager sharedManager] objectsForEntity:NewsImageEntityName matchingPredicate:predicate] lastObject];
     if (!newsImage) {
-        newsImage = [CoreDataManager insertNewObjectForEntityForName:NewsImageEntityName];
+        newsImage = [[CoreDataManager sharedManager] insertNewObjectForEntityForName:NewsImageEntityName];
     }
     
     newsImage.width = width;
@@ -540,7 +541,7 @@ NSString * const NewsTagFullURL         = @"url";
     
     parseSuccessful = YES;
     
-	[CoreDataManager saveDataWithTemporaryMergePolicy:NSMergeByPropertyObjectTrumpMergePolicy];
+	[[CoreDataManager sharedManager] saveDataWithTemporaryMergePolicy:NSMergeByPropertyObjectTrumpMergePolicy];
     if (parseSuccessful) {
         [self performSelectorOnMainThread:@selector(parseEnded) withObject:nil waitUntilDone:NO];
     }

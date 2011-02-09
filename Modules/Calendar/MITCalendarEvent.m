@@ -318,7 +318,7 @@
 	}
     
     self.lastUpdated = [NSDate date];
-	[CoreDataManager saveData];
+	[[CoreDataManager sharedManager] saveData];
 }
 
 - (void)addCategory:(EventCategory *)category
@@ -334,7 +334,7 @@
             self.isRegular = [NSNumber numberWithBool:NO];
         }
         
-        [CoreDataManager saveData];
+        [[CoreDataManager sharedManager] saveData];
     }
 }
 

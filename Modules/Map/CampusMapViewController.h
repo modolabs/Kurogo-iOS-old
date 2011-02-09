@@ -1,21 +1,20 @@
 #import <UIKit/UIKit.h>
 #import <MapKit/MapKit.h>
 #import "JSONAPIRequest.h"
-#import "CMModule.h"
+#import "MapModule.h"
 #import "ModoSearchBar.h"
 #import "KGOTableViewController.h"
+#import "KGOSearchDisplayController.h"
 
 @class MapSearchResultsTableView;
 @class MapSelectionController;
-@class MITSearchDisplayController;
 @class CampusMapToolbar;
 
-@interface CampusMapViewController : KGOTableViewController <UISearchBarDelegate, MKMapViewDelegate,
-														JSONAPIDelegate, UIAlertViewDelegate>
+@interface CampusMapViewController : KGOTableViewController <UISearchBarDelegate, MKMapViewDelegate, JSONAPIDelegate, UIAlertViewDelegate, KGOSearchDisplayDelegate>
 {
 
 	// the MIT map module in which this view controller is created. 
-	CMModule* _campusMapModule;
+	MapModule* _campusMapModule;
 	
 	// our map view controller which renders the map display
 	MKMapView* _mapView;
@@ -43,7 +42,7 @@
 	
     // search UI
 	ModoSearchBar *_searchBar;
-    MITSearchDisplayController *_searchController;
+    KGOSearchDisplayController *_searchController;
 	MapSearchResultsTableView *_searchResultsTableView;	
 	
 	// a custom button since we are not using the default bookmark button
@@ -54,9 +53,9 @@
 
 @property (nonatomic, retain) UIBarButtonItem *geoButton;
 @property (nonatomic, retain) NSArray *searchResults;
-@property (nonatomic, assign) CMModule *campusMapModule;
+@property (nonatomic, assign) MapModule *campusMapModule;
 @property (nonatomic, retain) MapSearchResultsTableView *searchResultsTableView;
-@property (nonatomic, retain) MITSearchDisplayController *searchController;
+@property (nonatomic, retain) KGOSearchDisplayController *searchController;
 @property (readonly) MKMapView *mapView;
 @property (nonatomic, retain) NSString *lastSearchText;
 @property BOOL hasSearchResults;

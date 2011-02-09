@@ -1,4 +1,4 @@
-#import "CMModule.h"
+#import "MapModule.h"
 #import "CampusMapViewController.h"
 #import "MITMapDetailViewController.h"
 #import "MapSearchResultAnnotation.h"
@@ -6,24 +6,24 @@
 #import "MapBookmarkManager.h"
 #import "TileServerManager.h"
 
-@implementation CMModule
+@implementation MapModule
 @synthesize campusMapVC = _campusMapVC;
 @synthesize request = _request;
 
 - (id)init {
     self = [super init];
     if (self != nil) {
-        self.tag = CampusMapTag;
+        //self.tag = CampusMapTag;
         self.shortName = @"Map";
         self.longName = @"Map";
-        self.iconName = @"map";
-        self.supportsFederatedSearch = YES;
+        //self.iconName = @"map";
+        //self.supportsFederatedSearch = YES;
        
-		self.campusMapVC = [[[CampusMapViewController alloc] init] autorelease];
-		self.campusMapVC.campusMapModule = self;
-        self.campusMapVC.title = self.shortName;
+		//self.campusMapVC = [[[CampusMapViewController alloc] init] autorelease];
+		//self.campusMapVC.campusMapModule = self;
+        //self.campusMapVC.title = self.shortName;
 		
-        self.viewControllers = [NSArray arrayWithObject:self.campusMapVC];
+        //self.viewControllers = [NSArray arrayWithObject:self.campusMapVC];
     }
     return self;
 }
@@ -40,7 +40,7 @@
     // force TileServerManager to load so we can get projection info asap
     [TileServerManager isInitialized];
 }
-
+/*
 #pragma mark JSONAPIDelegate
 
 - (void)request:(JSONAPIRequest *)request jsonLoaded:(id)JSONObject
@@ -206,5 +206,5 @@ NSString * const MapsLocalPathList = @"list";
         
 	return didHandle;
 }
-
+*/
 @end

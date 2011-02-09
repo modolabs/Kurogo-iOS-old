@@ -7,6 +7,9 @@ typedef void (^CellManipulator)(UITableViewCell *);
 
 @optional
 
+// forwarded UITableViewDelegate methods
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath;
+
 /*
  * if you implement -tableView:viewsForCellAtIndexPath:
  * then you must clear the view cache before you reload anything
@@ -68,9 +71,12 @@ typedef void (^CellManipulator)(UITableViewCell *);
 
 @end
 
+@class KGOSearchDisplayController;
+
+
 @interface KGOTableController : NSObject <UITableViewDelegate, UITableViewDataSource> {
 	KGOTableViewController *_viewController;
-	id<UITableViewDelegate, UITableViewDataSource> _searchController;
+	KGOSearchDisplayController *_searchController;
 	
     NSMutableArray *_tableViews;
     NSMutableArray *_tableViewDataSources;
@@ -83,15 +89,19 @@ typedef void (^CellManipulator)(UITableViewCell *);
     id<KGOTableViewDataSource> _dataSource;
 }
 
-@property (nonatomic, readonly) KGOTableViewController *viewController;
+@property (nonatomic, readonly) NSArray *tableViews;
+@property (nonatomic, readonly) KGOTableViewController *viewController; // either _viewController or _searchController.searchContentsController
 @property (nonatomic, assign) id<KGOTableViewDataSource> dataSource;
+@property BOOL caching;
 
-//- (id)initWithStyle:(UITableViewStyle)style;
-//- (id)initWithDataSource:(id<KGOTableViewDataSource>)dataSource;
 - (id)initWithViewController:(KGOTableViewController *)viewController;
-- (id)initWithSearchController:(id<UITableViewDelegate, UITableViewDataSource>)searchController;
+- (id)initWithSearchController:(KGOSearchDisplayController *)searchController;
+
+- (UITableView *)topTableView;
 
 - (void)removeTableView:(UITableView *)tableView;
+- (void)removeTableViewAtIndex:(NSInteger)index;
+- (void)removeAllTableViews;
 
 - (void)addTableView:(UITableView *)tableView;
 - (void)addTableView:(UITableView *)tableView withDataSource:(id<KGOTableViewDataSource>)dataSource;

@@ -1,5 +1,6 @@
 #import "KGOTableViewController.h"
 #import "KGOTheme.h"
+#import "KGOSearchDisplayController.h"
 
 #define GROUPED_SECTION_HEADER_VPADDING 22.0f
 #define PLAIN_SECTION_HEADER_VPADDING 5.0f
@@ -20,6 +21,8 @@
 
 
 @implementation KGOTableViewController
+
+// in this implementation file watch out for the distinction between _viewController, _searchController, and self.viewController
 
 @synthesize tableView = _tableView;
 
@@ -118,13 +121,13 @@
 
 @end
 
-
+#pragma mark -
 
 @implementation KGOTableController
 
-@synthesize dataSource = _dataSource;
+@synthesize dataSource = _dataSource, caching;
 
-- (id)initWithSearchController:(id<UITableViewDelegate, UITableViewDataSource>)searchController {
+- (id)initWithSearchController:(KGOSearchDisplayController *)searchController {
 	if (self = [super init]) {
 		_searchController = searchController;
 		
@@ -163,10 +166,23 @@
 }
 
 - (UIViewController *)viewController {
-	return _viewController;
+    if (_viewController) {
+        return _viewController;
+    } else if (_searchController) {
+        return _searchController.searchContentsController;
+    }
+    return nil;
 }
 
 #pragma mark Table view queue
+
+- (UITableView *)topTableView {
+    return [_tableViews lastObject];
+}
+
+- (NSArray *)tableViews {
+    return [NSArray arrayWithArray:_tableViews];
+}
 
 - (void)removeTableView:(UITableView *)tableView {
 	if (tableView == _currentTableView) {
@@ -183,6 +199,24 @@
     }
 }
 
+- (void)removeTableViewAtIndex:(NSInteger)tableViewIndex {
+    UITableView *tableView = [_tableViews objectAtIndex:tableViewIndex];
+    [tableView removeFromSuperview];
+
+    [_tableViews removeObjectAtIndex:tableViewIndex];
+    [_tableViewDataSources removeObjectAtIndex:tableViewIndex];
+    [_cellContentBuffers removeObjectAtIndex:tableViewIndex];
+}
+
+- (void)removeAllTableViews {
+    for (UITableView *tableView in _tableViews) {
+        [tableView removeFromSuperview];
+    }
+    [_tableViews removeAllObjects];
+    [_tableViewDataSources removeAllObjects];
+    [_cellContentBuffers removeAllObjects];
+}
+
 - (void)addTableView:(UITableView *)tableView {
 	[self addTableView:tableView withDataSource:self.dataSource];
 }
@@ -192,8 +226,7 @@
 	[_tableViewDataSources addObject:dataSource];
 	[_cellContentBuffers addObject:[NSMutableDictionary dictionary]];
 	
-	//[self.view addSubview:tableView];
-	[_viewController.view addSubview:tableView];
+	[self.viewController.view addSubview:tableView];
 }
 
 - (UITableView *)addTableViewWithStyle:(UITableViewStyle)style {
@@ -205,9 +238,9 @@
 	if (_viewController) {
 		frame = CGRectMake(0, 0, _viewController.view.bounds.size.width, _viewController.view.bounds.size.height);
 	} else if (_searchController) {
-		// TODO: get frame from search controller
-		frame = CGRectZero;
-	} else {
+        UIViewController *vc = _searchController.searchContentsController;
+		frame = CGRectMake(0, 0, vc.view.bounds.size.width, vc.view.bounds.size.height);
+    } else {
 		return nil;
 	}
     return [self addTableViewWithFrame:frame style:style dataSource:dataSource];
@@ -229,7 +262,7 @@
 		tableView.delegate = _viewController;
 		tableView.dataSource = _viewController;
 	} else if (_searchController) {
-		tableView.delegate = _searchController;
+		tableView.delegate = self;
 		tableView.dataSource = _searchController;
 	} else {
 		return nil;
@@ -267,6 +300,15 @@
 }
 
 - (NSArray *)tableView:tableView cachedViewsForCellAtIndexPath:(NSIndexPath *)indexPath {
+    
+    if (!self.caching) {
+        id<KGOTableViewDataSource> dataSource = [self dataSourceForTableView:tableView];
+		if ([dataSource respondsToSelector:@selector(tableView:viewsForCellAtIndexPath:)]) {
+			return [dataSource tableView:tableView viewsForCellAtIndexPath:indexPath];
+		}
+        return nil;
+    }
+    
 	if (tableView != _currentTableView) {
 		_currentContentBuffer = [self contentBufferForTableView:tableView];
 		_currentTableView = tableView;
@@ -454,7 +496,7 @@
     if (tableView.style == UITableViewStylePlain) {
         font = [[KGOTheme sharedTheme] fontForPlainSectionHeader];
         textColor = [[KGOTheme sharedTheme] textColorForPlainSectionHeader];
-        bgColor = [[KGOTheme sharedTheme] plainSectionHeaderBackgroundColor];
+        bgColor = [[KGOTheme sharedTheme] backgroundColorForPlainSectionHeader];
         hPadding = 10.0f;
         viewHeight = font.pointSize + PLAIN_SECTION_HEADER_VPADDING;
     } else {
@@ -481,8 +523,14 @@
 	return labelContainer;
 }
 
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    id<KGOTableViewDataSource> dataSource = [self dataSourceForTableView:tableView];
+    if ([dataSource respondsToSelector:@selector(tableView:didSelectRowAtIndexPath:)]) {
+        [dataSource tableView:tableView didSelectRowAtIndexPath:indexPath];
+    }
+}
+
 /*
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
 - (void)tableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath
 - (void)tableView:(UITableView *)tableView didDeselectRowAtIndexPath:(NSIndexPath *)indexPath

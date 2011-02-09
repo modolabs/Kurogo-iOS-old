@@ -1,5 +1,5 @@
 #import "HighlightedResultLabel.h"
-#import "Foundation+MITAdditions.h"
+#import "Foundation+KGOAdditions.h"
 
 @implementation HighlightedResultLabel
 

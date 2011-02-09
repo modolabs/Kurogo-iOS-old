@@ -1,6 +1,6 @@
 #import "StoryGalleryViewController.h"
 #import "NewsImage.h"
-#import "UIKit+MITAdditions.h"
+#import "UIKit+KGOAdditions.h"
 
 #define STORY_GALLERY_PADDING 10.0
 

@@ -1,6 +1,6 @@
 #import "KGOSocialMediaController.h"
 #import "SFHFKeychainUtils.h"
-#import "MIT_MobileAppDelegate.h"
+#import "KGOAppDelegate.h"
 #import "JSONAPIRequest.h"
 
 NSString * const KGOSocialMediaTypeFacebook = @"Facebook";
@@ -73,7 +73,7 @@ static KGOSocialMediaController *s_controller = nil;
 	NSString *username = [[_preferences objectForKey:KGOSocialMediaTypeBitly] objectForKey:@"Username"];
 	NSString *key = [[_preferences objectForKey:KGOSocialMediaTypeBitly] objectForKey:@"APIKey"];
 
-	[(MIT_MobileAppDelegate *)[[UIApplication sharedApplication] delegate] showNetworkActivityIndicator];
+	[(KGOAppDelegate *)[[UIApplication sharedApplication] delegate] showNetworkActivityIndicator];
 	_bitlyConnection = [(ConnectionWrapper *)[ConnectionWrapper alloc] initWithDelegate:self]; // cast because multiple classes implement -initWithDelegate
 	NSString *bitlyURLString = [NSString stringWithFormat:@"http://api.bit.ly/v3/shorten"
 								"?login=%@"
@@ -91,7 +91,7 @@ static KGOSocialMediaController *s_controller = nil;
 		[_bitlyConnection cancel];
 		[_bitlyConnection release];
 		_bitlyConnection = nil;
-		[(MIT_MobileAppDelegate *)[[UIApplication sharedApplication] delegate] hideNetworkActivityIndicator];
+		[(KGOAppDelegate *)[[UIApplication sharedApplication] delegate] hideNetworkActivityIndicator];
 	}
 }
 
@@ -108,7 +108,7 @@ static KGOSocialMediaController *s_controller = nil;
     }
     [_bitlyConnection release];
 	_bitlyConnection = nil;
-	[(MIT_MobileAppDelegate *)[[UIApplication sharedApplication] delegate] hideNetworkActivityIndicator];
+	[(KGOAppDelegate *)[[UIApplication sharedApplication] delegate] hideNetworkActivityIndicator];
 }
 
 - (BOOL)connection:(ConnectionWrapper *)connection shouldDisplayAlertForError:(NSError *)error {
@@ -123,7 +123,7 @@ static KGOSocialMediaController *s_controller = nil;
 			[self.bitlyDelegate failedToGetBitlyURL];
 		}
 	}
-	[(MIT_MobileAppDelegate *)[[UIApplication sharedApplication] delegate] hideNetworkActivityIndicator];
+	[(KGOAppDelegate *)[[UIApplication sharedApplication] delegate] hideNetworkActivityIndicator];
 }
 
 #pragma mark -
@@ -148,7 +148,7 @@ static KGOSocialMediaController *s_controller = nil;
 	if (_twitterEngine) {
 		for (NSString *identifier in [_twitterEngine connectionIdentifiers]) {
 			[_twitterEngine closeConnection:identifier];
-			[(MIT_MobileAppDelegate *)[[UIApplication sharedApplication] delegate] hideNetworkActivityIndicator];
+			[(KGOAppDelegate *)[[UIApplication sharedApplication] delegate] hideNetworkActivityIndicator];
 		}
 		[_twitterEngine release];
 		_twitterEngine = nil;
@@ -177,7 +177,7 @@ static KGOSocialMediaController *s_controller = nil;
 }
 
 - (void)loginTwitterWithUsername:(NSString *)username password:(NSString *)password {
-	[(MIT_MobileAppDelegate *)[[UIApplication sharedApplication] delegate] showNetworkActivityIndicator];
+	[(KGOAppDelegate *)[[UIApplication sharedApplication] delegate] showNetworkActivityIndicator];
 	self.twitterUsername = username;
 	[_twitterEngine getXAuthAccessTokenForUsername:username password:password];
 }
@@ -219,7 +219,7 @@ static KGOSocialMediaController *s_controller = nil;
 	NSError *error = nil;
     [_twitterEngine setAccessToken:aToken];
     
-	[(MIT_MobileAppDelegate *)[[UIApplication sharedApplication] delegate] hideNetworkActivityIndicator];
+	[(KGOAppDelegate *)[[UIApplication sharedApplication] delegate] hideNetworkActivityIndicator];
 	
 	if (!error) {
 		[[NSUserDefaults standardUserDefaults] setObject:_twitterUsername forKey:TwitterUsernameKey];
@@ -230,12 +230,12 @@ static KGOSocialMediaController *s_controller = nil;
 }
 
 - (void)requestSucceeded:(NSString *)connectionIdentifier {
-	[(MIT_MobileAppDelegate *)[[UIApplication sharedApplication] delegate] hideNetworkActivityIndicator];
+	[(KGOAppDelegate *)[[UIApplication sharedApplication] delegate] hideNetworkActivityIndicator];
 	[self.twitterDelegate twitterRequestSucceeded:connectionIdentifier];
 }
 
 - (void)requestFailed:(NSString *)connectionIdentifier withError:(NSError *)error {
-	[(MIT_MobileAppDelegate *)[[UIApplication sharedApplication] delegate] hideNetworkActivityIndicator];
+	[(KGOAppDelegate *)[[UIApplication sharedApplication] delegate] hideNetworkActivityIndicator];
 	
 	NSString *errorTitle;
 	NSString *errorMessage;
@@ -261,11 +261,11 @@ static KGOSocialMediaController *s_controller = nil;
 
 
 - (void)connectionStarted:(NSString *)connectionIdentifier {
-	[(MIT_MobileAppDelegate *)[[UIApplication sharedApplication] delegate] showNetworkActivityIndicator];
+	[(KGOAppDelegate *)[[UIApplication sharedApplication] delegate] showNetworkActivityIndicator];
 }
 
 - (void)connectionFinished:(NSString *)connectionIdentifier {
-	[(MIT_MobileAppDelegate *)[[UIApplication sharedApplication] delegate] hideNetworkActivityIndicator];
+	[(KGOAppDelegate *)[[UIApplication sharedApplication] delegate] hideNetworkActivityIndicator];
 }
 
 #pragma mark -

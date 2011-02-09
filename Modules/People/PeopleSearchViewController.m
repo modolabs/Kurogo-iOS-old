@@ -1,103 +1,57 @@
 #import "PeopleSearchViewController.h"
 #import "PersonDetails.h"
-#import "PeopleDetailsViewController.h"
 #import "PeopleRecentsData.h"
-#import "MIT_MobileAppDelegate.h"
+#import "KGOAppDelegate.h"
+#import "KGOAppDelegate+ModuleAdditions.h"
 #import "ModoNavigationController.h"
 // common UI elements
-#import "MITLoadingActivityView.h"
 #import "MITUIConstants.h"
 // external modules
-#import "Foundation+MITAdditions.h"
-#import "UIKit+MITAdditions.h"
+#import "Foundation+KGOAdditions.h"
+#import "UIKit+KGOAdditions.h"
 #import "ModoSearchBar.h"
-#import "MITSearchDisplayController.h"
+#import "KGOSearchDisplayController.h"
 #import "KGOTheme.h"
-#import "HighlightedResultLabel.h"
 #import "ThemeConstants.h"
+#import "CoreDataManager.h"
 
 static const NSUInteger kPhoneDirectorySection = 0;
 
-// this function puts longer strings first
-NSInteger strLenSort(NSString *str1, NSString *str2, void *context)
-{
-    if ([str1 length] > [str2 length])
-        return NSOrderedAscending;
-    else if ([str1 length] < [str2 length])
-        return NSOrderedDescending;
-    else
-        return NSOrderedSame;
-}
-
-#pragma mark Private methods
-
-@interface PeopleSearchViewController (Private)
-
-- (void)handleWarningMessage:(NSString *)message title:(NSString *)theTitle;
-+ (NSDictionary *)staticPhoneRowPropertiesForIndexPath:(NSIndexPath *)indexPath;
-- (void)showSearchResults;
-
-@end
-
-
 @implementation PeopleSearchViewController
 
-@synthesize searchTerms, searchTokens, searchResults, searchController;
-@synthesize loadingView;
-@synthesize searchBar = theSearchBar;//, tableView = _tableView;
-
-- (void)handleWarningMessage:(NSString *)message title:(NSString *)theTitle {
-	
-	UIAlertView *alert = [[UIAlertView alloc] initWithTitle:theTitle 
-													message:message
-												   delegate:self
-										  cancelButtonTitle:NSLocalizedString(@"OK", nil)
-										  otherButtonTitles:nil]; 
-	[alert show];
-	[alert release];
-}
-
-+ (NSDictionary *)staticPhoneRowPropertiesForIndexPath:(NSIndexPath *)indexPath {
-    
-	NSDictionary *properties = nil;
-	if (indexPath.section == kPhoneDirectorySection) {		
-		NSArray *staticPhoneEntries = 
-		[NSArray arrayWithContentsOfFile:[[[NSBundle mainBundle] bundlePath] stringByAppendingPathComponent:
-										  @"people/peopleSearchStaticPhoneRowsArray.plist"]];
-		if (indexPath.row < staticPhoneEntries.count) {
-			properties = [staticPhoneEntries objectAtIndex:indexPath.row];
-		}
-	}
-	return properties;
-}
+@synthesize searchTerms, searchTokens, searchController;
+@synthesize searchBar = theSearchBar;
 
 #pragma mark view
 
 - (void)viewDidLoad {
 	[super viewDidLoad];
 	
+    // TODO: make this come from API
+    if (!phoneDirectoryEntries) {
+        NSString *filename = [[[NSBundle mainBundle] bundlePath] stringByAppendingPathComponent:@"people/peopleSearchStaticPhoneRowsArray.plist"];
+        phoneDirectoryEntries = [[NSArray alloc] initWithContentsOfFile:filename];
+    }
+    
     theSearchBar = [[ModoSearchBar alloc] initWithFrame:CGRectMake(0.0f, 0.0f, self.view.frame.size.width, NAVIGATION_BAR_HEIGHT)];
 
 	theSearchBar.tintColor = SEARCH_BAR_TINT_COLOR;
 	theSearchBar.placeholder = NSLocalizedString(@"Search", nil);
-	if ([self.searchTerms length] > 0)
-		theSearchBar.text = self.searchTerms;
 
-    self.searchController = [[[MITSearchDisplayController alloc] initWithSearchBar:theSearchBar contentsController:self] autorelease];
-	self.searchController.delegate = self;
-	self.searchController.searchResultsDelegate = self;
-	self.searchController.searchResultsDataSource = self;
+    if (!searchController) {
+        searchController = [[KGOSearchDisplayController alloc] initWithSearchBar:self.searchBar delegate:self contentsController:self];
+    }
+    
+	if ([self.searchTerms length] > 0) {
+		theSearchBar.text = self.searchTerms;
+        [searchController executeSearch:self.searchTerms params:nil];
+    }
 
     [self.view addSubview:theSearchBar];
     CGRect frame = CGRectMake(0.0, theSearchBar.frame.size.height,
                               self.view.frame.size.width,
                               self.view.frame.size.height - theSearchBar.frame.size.height);
 	self.tableView = [self addTableViewWithFrame:frame style:UITableViewStyleGrouped];
-	
-    //self.tableView = [[[UITableView alloc] initWithFrame:frame style:UITableViewStyleGrouped] autorelease];
-    //self.tableView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
-    //self.tableView.delegate = self;
-    //self.tableView.dataSource = self;
     
     NSString *searchHints = NSLocalizedString(@"Tip: You can search above by a person's first or last name or email address.", nil);
 
@@ -117,10 +71,6 @@ NSInteger strLenSort(NSString *str1, NSString *str2, void *context)
 	[hintsContainer addSubview:hintsLabel];
 	[hintsLabel release];
 
-    //self.tableView.tableHeaderView = [[[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, 
-	//																		   self.tableView.frame.size.width, 
-	//																		   hintsContainer.frame.size.height)] autorelease];
-	//[self.tableView.tableHeaderView addSubview:hintsContainer];
 	self.tableView.tableHeaderView = hintsContainer;
 
 	// set up screen for when there are no results
@@ -132,7 +82,7 @@ NSInteger strLenSort(NSString *str1, NSString *str2, void *context)
 	button.titleLabel.font = [UIFont boldSystemFontOfSize:20.0];
 	button.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
 	button.titleLabel.shadowColor = [UIColor colorWithWhite:0.0 alpha:0.3];
-	[button setTitle:@"Clear Recents" forState:UIControlStateNormal];
+	[button setTitle:NSLocalizedString(@"Clear Recents", nil) forState:UIControlStateNormal];
 	
 	// based on code from stackoverflow.com/questions/1427818/iphone-sdk-creating-a-big-red-uibutton
 	[button setBackgroundImage:[[UIImage imageNamed:@"people/redbutton2.png"] stretchableImageWithLeftCapWidth:10.0 topCapHeight:0.0] 
@@ -140,7 +90,7 @@ NSInteger strLenSort(NSString *str1, NSString *str2, void *context)
 	[button setBackgroundImage:[[UIImage imageNamed:@"people/redbutton2highlighted.png"] stretchableImageWithLeftCapWidth:10.0 topCapHeight:0.0] 
 					  forState:UIControlStateHighlighted];
 	
-	[button addTarget:self action:@selector(showActionSheet) forControlEvents:UIControlEventTouchUpInside];	
+	[button addTarget:self action:@selector(showActionSheet:) forControlEvents:UIControlEventTouchUpInside];	
 	
 	UIView *buttonContainer = [[[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, self.tableView.frame.size.width, 44.0)] autorelease];
 	[buttonContainer addSubview:button];
@@ -151,7 +101,6 @@ NSInteger strLenSort(NSString *str1, NSString *str2, void *context)
 		self.tableView.tableFooterView.hidden = YES;
 	}
     
-    //[self.view addSubview:self.tableView];
     [self.searchBar addDropShadow];
 }
 
@@ -161,7 +110,7 @@ NSInteger strLenSort(NSString *str1, NSString *str2, void *context)
 	
     self.tableView.tableFooterView.hidden = ([[[PeopleRecentsData sharedData] recents] count] == 0);
 
-	//[self.tableView reloadData];
+    [[PeopleRecentsData sharedData] loadRecentsFromCache];
 	[self reloadDataForTableView:self.tableView];
 }
 
@@ -173,154 +122,56 @@ NSInteger strLenSort(NSString *str1, NSString *str2, void *context)
 
 - (void)dealloc {
 	[recentlyViewedHeader release];
-	[searchResults release];
 	[searchTerms release];
 	[searchTokens release];
 	[searchController release];
-	[loadingView release];
+    [phoneDirectoryEntries release];
     [super dealloc];
 }
 
 #pragma mark -
 #pragma mark Search methods
 
-- (void)beginExternalSearch:(NSString *)externalSearchTerms {
-	self.searchTerms = externalSearchTerms;
-	theSearchBar.text = self.searchTerms;
-	
-	[self performSearch];
+- (BOOL)searchControllerShouldShowSuggestions:(KGOSearchDisplayController *)controller {
+    return YES;
 }
 
-- (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar
-{
-	self.searchResults = nil;
-	// if they cancelled while waiting for loading
-	if (requestWasDispatched) {
-		[api abortRequest];
-		[self cleanUpConnection];
-	}
-	[self removeTableView:self.searchController.searchResultsTableView];
+- (NSArray *)searchControllerValidModules:(KGOSearchDisplayController *)controller {
+    return [NSArray arrayWithObject:PeopleTag];
 }
 
-- (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
-{
-	self.searchTerms = searchBar.text;
-	[self performSearch];
+- (NSString *)searchControllerModuleTag:(KGOSearchDisplayController *)controller {
+    return PeopleTag;
 }
 
-- (void)performSearch
-{
-	// save search tokens for drawing table cells
-	NSMutableArray *tempTokens = [NSMutableArray arrayWithArray:[[self.searchTerms lowercaseString] componentsSeparatedByString:@" "]];
-	[tempTokens sortUsingFunction:strLenSort context:NULL]; // match longer tokens first
-	self.searchTokens = [NSArray arrayWithArray:tempTokens];
-	
-	NSString *temp = self.searchTerms;
-	
-	temp = [temp stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
-	
-	if ([temp length] == 0){
-		[self handleWarningMessage:NSLocalizedString(@"Your query returned no matches.", nil) title:NSLocalizedString(@"No Results Found", nil)];
-		return;
-	}
-	
-	api = [JSONAPIRequest requestWithJSONAPIDelegate:self];
-	requestWasDispatched = [api requestObjectFromModule:@"people"
-                                                command:@"search"
-                                             parameters:[NSDictionary dictionaryWithObjectsAndKeys:self.searchTerms, @"q", nil]];
-	
-    if (requestWasDispatched) {
-		[self showLoadingView];
-    } else {
-        [self handleWarningMessage:NSLocalizedString(@"Could not connect to server. Please try again later.", nil) title:NSLocalizedString(@"Connection Failed", nil)];
-    }
+- (void)searchController:(KGOSearchDisplayController *)controller didSelectResult:(id<KGOSearchResult>)aResult {
+    NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:aResult, @"personDetails", nil];
+    [(KGOAppDelegate *)[[UIApplication sharedApplication] delegate] showPage:LocalPathPageNameDetail forModuleTag:PeopleTag params:params];
 }
 
-- (void)presentSearchResults:(NSArray *)theSearchResults {
-    self.searchResults = theSearchResults;
-    self.searchController.searchResultsTableView.frame = self.tableView.frame;
-    self.searchController.searchResultsTableView.rowHeight = 56;
-	[self addTableView:self.searchController.searchResultsTableView];
-    //[self.view addSubview:self.searchController.searchResultsTableView];
-    [self.searchBar addDropShadow];
-    [self.searchController.searchResultsTableView reloadData];
-	//[self reloadDataForTableView:self.searchController.searchResultsTableView];
+- (void)searchController:(KGOSearchDisplayController *)controller willHideSearchResultsTableView:(UITableView *)tableView {
+    [[CoreDataManager sharedManager] saveData];
+    [[PeopleRecentsData sharedData] clearOldResults];
 }
 
 #pragma mark -
 #pragma mark Table view methods
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-	if (tableView == self.searchController.searchResultsTableView)
-		return 1;
-	else if ([[[PeopleRecentsData sharedData] recents] count] > 0)
-		return 2;
-	else
-		return 1;
+    NSInteger numRows = 1;
+    if ([[[PeopleRecentsData sharedData] recents] count])
+        numRows++;
+    return numRows;
 }
 
-
-// Customize the number of rows in the table view.
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-	if (tableView == self.tableView) {
-		switch (section) {
-			case 0: // phone directory
-			{
-				NSArray *staticPhoneEntries = 
-				[NSArray arrayWithContentsOfFile:[[[NSBundle mainBundle] bundlePath] stringByAppendingPathComponent:
-												  @"people/peopleSearchStaticPhoneRowsArray.plist"]];				
-				return staticPhoneEntries.count;
-			}
-				break;
-			case 1: // recently viewed
-				return [[[PeopleRecentsData sharedData] recents] count];
-				break;
-			default:
-				return 0;
-				break;
-		}
-	} else {
-		NSLog(@"%d", self.searchResults.count);
-		return [self.searchResults count];
-	}
-}
-
-- (NSArray *)tableView:(UITableView *)tableView viewsForCellAtIndexPath:(NSIndexPath *)indexPath {
-    if (tableView == self.tableView) {
-        return nil;
-    } else {
-		NSDictionary *searchResult = [self.searchResults objectAtIndex:indexPath.row];
-		NSString *fullname = [NSString string];
-        NSArray *namesFromJSON = [searchResult objectForKey:@"cn"];
-        if ([namesFromJSON count] > 0) {
-            fullname = [namesFromJSON objectAtIndex:0];
-        }
-				
-        NSInteger padding = 10;
-        NSInteger chevronSize = 20;
-        UIFont *font = [[KGOTheme sharedTheme] fontForTableCellTitleWithStyle:UITableViewCellStyleSubtitle];
-        CGRect frame = CGRectMake(padding, padding, tableView.frame.size.width - 2 * padding - chevronSize, font.lineHeight);
-        HighlightedResultLabel *textLabel = [[[HighlightedResultLabel alloc] initWithFrame:frame] autorelease];
-		textLabel.font = font;
-		textLabel.text = fullname;
-		textLabel.searchTokens = self.searchTokens;
-		
-		// figure out which field (if any) to display as subtitle
-		// display priority: title, dept
-		NSArray *detailAttributeArray = [searchResult objectForKey:@"title"];
-		if ([detailAttributeArray count] > 0) {
-			frame.origin.y += font.lineHeight + 3; // padding between labels
-			UIFont *detailFont = [[KGOTheme sharedTheme] fontForTableCellSubtitleWithStyle:UITableViewCellStyleSubtitle];
-			frame.size.height = detailFont.lineHeight;
-			HighlightedResultLabel *detailTextLabel = [[[HighlightedResultLabel alloc] initWithFrame:frame] autorelease];
-			detailTextLabel.font = detailFont;
-			detailTextLabel.text = [detailAttributeArray objectAtIndex:0];
-			detailTextLabel.searchTokens = self.searchTokens;
-			
-			return [NSArray arrayWithObjects:textLabel, detailTextLabel, nil];
-		}
-		
-        return [NSArray arrayWithObjects:textLabel, nil];
+    switch (section) {
+        case 0: // phone directory
+            return phoneDirectoryEntries.count;
+        case 1: // recently viewed
+            return [[[PeopleRecentsData sharedData] recents] count];
+        default:
+            return 0;
     }
 }
 
@@ -329,37 +180,32 @@ NSInteger strLenSort(NSString *str1, NSString *str2, void *context)
     NSString *title = nil;
     NSString *detailText = nil;
     NSString *accessoryTag = nil;
+    UIColor *backgroundColor = nil;
     
-	if (tableView == self.tableView) {
+    if (indexPath.section == kPhoneDirectorySection) { // phone directory tel #
+        NSDictionary *rowProperties = [phoneDirectoryEntries objectAtIndex:indexPath.row];
+        title = [rowProperties objectForKey:@"mainText"];
+        detailText = [rowProperties objectForKey:@"secondaryText"];
+        accessoryTag = TableViewCellAccessoryPhone;
+        backgroundColor = [[KGOTheme sharedTheme] backgroundColorForSecondaryCell];
         
-		if (indexPath.section == kPhoneDirectorySection) { // phone directory tel #
-            NSDictionary *rowProperties = [PeopleSearchViewController staticPhoneRowPropertiesForIndexPath:indexPath];
-            title = [rowProperties objectForKey:@"mainText"];
-            detailText = [rowProperties objectForKey:@"secondaryText"];
-            accessoryTag = TableViewCellAccessoryPhone;
-
-        } else { // recents
-
-			PersonDetails *recent = [[[PeopleRecentsData sharedData] recents] objectAtIndex:indexPath.row];
-			title = [NSString stringWithFormat:@"%@ %@", 
-                     [recent formattedValueForKey:@"givenname"], 
-                     [recent formattedValueForKey:@"sn"]];
-            
-            accessoryTag = KGOAccessoryTypeChevron;
-
-			NSArray *displayPriority = [NSArray arrayWithObjects:@"title", @"ou", nil];
-			NSString *displayText;
-			for (NSString *tag in displayPriority) {
-				if (displayText = [recent formattedValueForKey:tag]) {
-					detailText = displayText;
-					break;
-				}
-			}
-        }
+    } else { // recents
         
-    } else { // search results
+        PersonDetails *recent = [[[PeopleRecentsData sharedData] recents] objectAtIndex:indexPath.row];
+        title = [NSString stringWithFormat:@"%@ %@", 
+                 [recent formattedValueForKey:@"givenname"], 
+                 [recent formattedValueForKey:@"sn"]];
         
         accessoryTag = KGOAccessoryTypeChevron;
+        
+        NSArray *displayPriority = [NSArray arrayWithObjects:@"title", @"ou", nil];
+        NSString *displayText;
+        for (NSString *tag in displayPriority) {
+            if (displayText = [recent formattedValueForKey:tag]) {
+                detailText = displayText;
+                break;
+            }
+        }
     }
     
     return [[^(UITableViewCell *cell) {
@@ -367,6 +213,9 @@ NSInteger strLenSort(NSString *str1, NSString *str2, void *context)
         cell.textLabel.text = title;
         cell.detailTextLabel.text = detailText;
         cell.accessoryView = [[KGOTheme sharedTheme] accessoryViewForType:accessoryTag];
+        if (backgroundColor) {
+            cell.backgroundColor = backgroundColor;
+        }
     } copy] autorelease];
 }
 
@@ -377,17 +226,7 @@ NSInteger strLenSort(NSString *str1, NSString *str2, void *context)
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
     if (section == 1) {
-        return @"Recently Viewed";
-    } else if (tableView == self.searchController.searchResultsTableView) {
-		NSUInteger numResults = [self.searchResults count];
-		switch (numResults) {
-			case 0:
-				return nil;
-			case 50:
-                return @"Many found, showing 50"; // TODO: make max results configurable
-			default:
-                return [NSString stringWithFormat:@"%d found", numResults];
-		}
+        return NSLocalizedString(@"Recently Viewed", nil);
     }
     return nil;
 }
@@ -396,135 +235,44 @@ NSInteger strLenSort(NSString *str1, NSString *str2, void *context)
 	
 	[tableView deselectRowAtIndexPath:indexPath animated:YES];
 	
-	if (tableView == self.searchController.searchResultsTableView || indexPath.section == 1) { // user selected search result or recently viewed
-
-		PersonDetails *personDetails = nil;
-		PeopleDetailsViewController *detailView = [[PeopleDetailsViewController alloc] initWithStyle:UITableViewStyleGrouped];
-		if (tableView == self.searchController.searchResultsTableView) {
-            //DLog(@"%@", [self.searchResults description]);
-			NSDictionary *selectedResult = [self.searchResults objectAtIndex:indexPath.row];
-			personDetails = [PersonDetails retrieveOrCreate:selectedResult];
-		} else {
-			personDetails = [[[PeopleRecentsData sharedData] recents] objectAtIndex:indexPath.row];
-		}
-		DLog(@"%@", [personDetails description]);
-		detailView.personDetails = personDetails;
-		[self.navigationController pushViewController:detailView animated:YES];
-		[detailView release];
+	if (indexPath.section == kPhoneDirectorySection) { 
+		NSDictionary *rowProperties = [phoneDirectoryEntries objectAtIndex:indexPath.row];
+        NSURL *externURL = [NSURL URLWithString:[rowProperties objectForKey:@"URL"]];
+        if ([[UIApplication sharedApplication] canOpenURL:externURL])
+            [[UIApplication sharedApplication] openURL:externURL];
 		
-	} else if (indexPath.section == kPhoneDirectorySection) { 
-		// we are on home screen and user selected phone		
-		[self phoneIconTappedAtIndexPath:indexPath];				
-		[self.tableView deselectRowAtIndexPath:indexPath animated:YES];
+        [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
+
+	} else if (indexPath.section == 1) { // recently viewed
+
+		PersonDetails *personDetails = [[[PeopleRecentsData sharedData] recents] objectAtIndex:indexPath.row];
+        NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:personDetails, @"personDetails", nil];
+        [(KGOAppDelegate *)[[UIApplication sharedApplication] delegate] showPage:LocalPathPageNameDetail forModuleTag:PeopleTag params:params];
 	}
-}
-
-#pragma mark -
-#pragma mark Connection methods
-
-- (void)showLoadingView {
-	// manually add loading view because we're not using the built-in data source table
-	if (self.loadingView == nil) {
-        self.loadingView = [[MITLoadingActivityView alloc] initWithFrame:self.tableView.frame];
-	}
-	
-	[self.tableView addSubview:self.loadingView];
-    [self.searchBar addDropShadow];
-}
-
-- (void)cleanUpConnection {
-	requestWasDispatched = NO;
-	[self.loadingView removeFromSuperview];	
-}
-
-- (void)request:(JSONAPIRequest *)request jsonLoaded:(id)result {
-    [self cleanUpConnection];
-	
-    if (result) {
-        DLog(@"%@", [result description]);
-        
-        if ([result isKindOfClass:[NSDictionary class]]) {
-            NSString *message = [result objectForKey:@"error"];
-            if (message) {
-                [self handleWarningMessage:message title:NSLocalizedString(@"Search Failed", nil)];
-            }
-        } else if ([result isKindOfClass:[NSArray class]]) {
-            self.searchResults = result;
-            if ([[PeopleRecentsData sharedData] displayFields] != nil) {
-                [self showSearchResults];
-            } else {
-                [[NSNotificationCenter defaultCenter] addObserver:self
-                                                         selector:@selector(showSearchResults)
-                                                             name:PeopleDisplayFieldsDidDownloadNotification
-                                                           object:[PeopleRecentsData sharedData]];
-            }
-        }
-    }
-	else {
-		self.searchResults = nil;
-	}
-}
-
-- (void)showSearchResults {
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:PeopleDisplayFieldsDidDownloadNotification object:[PeopleRecentsData sharedData]];
-    self.searchController.searchResultsTableView.frame = self.tableView.frame;
-    [self addTableView:self.searchController.searchResultsTableView];
-    [self.searchBar addDropShadow];
-	[self reloadDataForTableView:self.searchController.searchResultsTableView];
-    //[self.searchController.searchResultsTableView reloadData];
-}
-
-- (BOOL)request:(JSONAPIRequest *)request shouldDisplayAlertForError:(NSError *)error
-{
-    return YES;
-}
-
-- (void)request:(JSONAPIRequest *)request handleConnectionError:(NSError *)error
-{
-	[self cleanUpConnection];
 }
 
 #pragma mark -
 #pragma mark Action sheet methods
 
-- (void)showActionSheet
+- (void)showActionSheet:(id)sender
 {
-	UIActionSheet *sheet = [[UIActionSheet alloc] initWithTitle:@"Clear Recents?" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:@"Clear" otherButtonTitles:nil];
+	UIActionSheet *sheet = [[[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"Clear Recents?", nil)
+                                                        delegate:self
+                                               cancelButtonTitle:NSLocalizedString(@"Cancel", nil)
+                                          destructiveButtonTitle:NSLocalizedString(@"Clear", nil)
+                                               otherButtonTitles:nil] autorelease];
     [sheet showInView:self.view];
-    [sheet release];
 }
 
 - (void)actionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex
 {
-	if ([[actionSheet buttonTitleAtIndex:buttonIndex] isEqualToString:@"Clear"]) {
+	if ([[actionSheet buttonTitleAtIndex:buttonIndex] isEqualToString:NSLocalizedString(@"Clear", nil)]) {
 		[PeopleRecentsData eraseAll];
 		self.tableView.tableFooterView.hidden = YES;
 		[self reloadDataForTableView:self.tableView];
 		[self.tableView scrollRectToVisible:CGRectMake(0.0, 0.0, 1.0, 1.0) animated:YES];
 	}
 }
-
-#pragma mark Alert view delegate methods
-
-- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
-{    
-    [self.searchController setActive:YES animated:YES];
-}
-
-- (void)phoneIconTappedAtIndexPath:(NSIndexPath *)indexPath
-{
-	if (indexPath.section == kPhoneDirectorySection)
-	{
-		NSDictionary *rowProperties = [PeopleSearchViewController staticPhoneRowPropertiesForIndexPath:indexPath];
-		if (rowProperties) {			
-			NSURL *externURL = [NSURL URLWithString:[rowProperties objectForKey:@"URL"]];
-			if ([[UIApplication sharedApplication] canOpenURL:externURL])
-				[[UIApplication sharedApplication] openURL:externURL];
-		}
-	}
-
-}
-
 
 @end
 

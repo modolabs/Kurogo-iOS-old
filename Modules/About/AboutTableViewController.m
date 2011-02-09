@@ -1,6 +1,6 @@
 #import "AboutTableViewController.h"
-#import "MIT_MobileAppDelegate.h"
-#import "UIKit+MITAdditions.h"
+#import "KGOAppDelegate.h"
+#import "UIKit+KGOAdditions.h"
 #import "AboutMITVC.h"
 #import "MITUIConstants.h"
 #import "MITMailComposeController.h"

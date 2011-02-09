@@ -1,6 +1,8 @@
 #import "PeopleRecentsData.h"
 #import "CoreDataManager.h"
 
+#define MAX_PEOPLE_RESULTS 25
+
 NSString * const PeopleDisplayFieldsDidDownloadNotification = @"peopleDisplayFieldsDownloaded";
 
 @implementation PeopleRecentsData
@@ -54,30 +56,42 @@ static PeopleRecentsData *instance = nil;
 
 + (PersonDetails *)personWithUID:(NSString *)uid
 {
-	PersonDetails *person = [CoreDataManager getObjectForEntity:PersonDetailsEntityName attribute:@"uid" value:uid];
+	PersonDetails *person = [[CoreDataManager sharedManager] getObjectForEntity:PersonDetailsEntityName attribute:@"uid" value:uid];
 	return person;
+}
+
+- (void)loadRecentsFromCache {
+    recents = [[NSMutableArray alloc] initWithCapacity:0];
+    NSPredicate *pred = [NSPredicate predicateWithFormat:@"viewed = YES"];
+    NSArray *sort = [NSArray arrayWithObject:[[[NSSortDescriptor alloc] initWithKey:@"lastUpdate" ascending:NO] autorelease]];
+    for (PersonDetails *person in [[CoreDataManager sharedManager] objectsForEntity:PersonDetailsEntityName matchingPredicate:pred sortDescriptors:sort]) {
+        [recents addObject:person];
+    }
 }
 
 - (id)init
 {
     if (self = [super init]) {
         [self displayFields];
-        
-        recents = [[NSMutableArray alloc] initWithCapacity:0];
-        NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"lastUpdate" ascending:NO];
-        for (PersonDetails *person in [CoreDataManager fetchDataForAttribute:PersonDetailsEntityName 
-                                                              sortDescriptor:sortDescriptor]) {
-            // if the person's result was viewed over X days ago, remove it
-            if ([[person valueForKey:@"lastUpdate"] timeIntervalSinceNow] < -1500000) {
-                [CoreDataManager deleteObject:person]; // this invokes saveData
-            } else {
-                [recents addObject:person]; // store in memory
-            }
-        }
-        [CoreDataManager saveData];
-        [sortDescriptor release];
+        [self loadRecentsFromCache];
     }
 	return self;
+}
+
+- (void)clearOldResults {
+    // if the person's result was viewed over X days ago, remove it
+    // TODO: configure these timeouts
+    NSDate *timeout = [NSDate dateWithTimeIntervalSinceNow:-1500000];
+    NSPredicate *pred = [NSPredicate predicateWithFormat:@"viewed = NO OR lastUpdate < %@", timeout];
+    NSArray *sort = [NSArray arrayWithObject:[[[NSSortDescriptor alloc] initWithKey:@"lastUpdate" ascending:NO] autorelease]];
+    
+    NSArray *results = [[CoreDataManager sharedManager] objectsForEntity:PersonDetailsEntityName matchingPredicate:pred sortDescriptors:sort];
+    if (results.count > MAX_PEOPLE_RESULTS) {
+        for (PersonDetails *person in [results subarrayWithRange:NSMakeRange(MAX_PEOPLE_RESULTS, results.count - MAX_PEOPLE_RESULTS)]) {
+            [[CoreDataManager sharedManager] deleteObject:person];
+        }
+        [[CoreDataManager sharedManager] saveData];
+    }
 }
 
 // TODO: make sure there aren't multiple simultaneous requests
@@ -107,68 +121,9 @@ static PeopleRecentsData *instance = nil;
 
 + (void)eraseAll
 {
-    [CoreDataManager deleteObjects:[[self sharedData] recents]];
-    [CoreDataManager saveData];
+    [[CoreDataManager sharedManager] deleteObjects:[[self sharedData] recents]];
+    [[CoreDataManager sharedManager] saveData];
 	[[[self sharedData] recents] removeAllObjects];
-}
-
-// TODO: this should become an instance method of PersonDetails
-// rather than a method that modifies PersonDetails objects as a side effect
-+ (PersonDetails *)updatePerson:(PersonDetails *)personDetails withSearchResult:(NSDictionary *)searchResult
-{    
-    
-    // TODO: sanity test to make sure at least the uid and something else (sn probably) has a value
-    
-	[personDetails setValue:[NSDate date] forKey:@"lastUpdate"];
-	
-    NSArray *fetchTags = [[[PeopleRecentsData sharedData] displayFields] allKeys];
-    
-	for (NSString *key in fetchTags) {
-        // if someone has multiple emails/phones join them into a string
-        id value = [searchResult objectForKey:key];
-        if ([value isKindOfClass:[NSArray class]]) {
-            value = [PersonDetails joinedValueFromPersonDetailsJSONDict:searchResult forKey:key];
-        }   
-        
-		if ([value isKindOfClass:[NSString class]]) {
-			[personDetails setValue:value forKey:key];
-		}        
-	}
-    
-    DLog(@"%@", [personDetails description]);
-
-	// the "id" field we receive from mobi is either the unix uid (more
-	// common) or something derived from another field (ldap "dn"), the
-	// former has an 8 char limit but the uids that come from some LDAP servers  
-	// will sometimes have a non-unique first eight characters. So, we used to 
-	// trim it down to 8, but now we let it go longer.
-	personDetails.uid = [PersonDetails trimUID:[personDetails valueForKey:@"uid"]];;
-	
-	// put latest person on top; remove if the person is already there
-	NSMutableArray *recentsData = [[self sharedData] recents];
-	for (NSInteger i = 0; i < [recentsData count]; i++) {
-		PersonDetails *oldPerson = [recentsData objectAtIndex:i];
-		if ([[oldPerson valueForKey:@"uid"] isEqualToString:[personDetails valueForKey:@"uid"]]) {
-			[recentsData removeObjectAtIndex:i];
-			break;
-		}
-	}
-	[recentsData insertObject:personDetails atIndex:0];
-	
-	[CoreDataManager saveData];
-	
-	return personDetails;
-}
-
-
-+ (PersonDetails *)createFromSearchResult:(NSDictionary *)searchResult 
-{
-	
-	PersonDetails *personDetails = (PersonDetails *)[CoreDataManager insertNewObjectForEntityForName:PersonDetailsEntityName];
-	
-	[self updatePerson:personDetails withSearchResult:searchResult];
-	
-	return personDetails;
 }
 
 - (void)request:(JSONAPIRequest *)request jsonLoaded:(id)result {

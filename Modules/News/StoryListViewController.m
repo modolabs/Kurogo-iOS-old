@@ -1,13 +1,13 @@
-#import "MIT_MobileAppDelegate.h"
+#import "KGOAppDelegate.h"
 #import "StoryListViewController.h"
 #import "StoryDetailViewController.h"
 #import "StoryThumbnailView.h"
 #import "StoryXMLParser.h"
 #import "NewsStory.h"
 #import "CoreDataManager.h"
-#import "UIKit+MITAdditions.h"
+#import "UIKit+KGOAdditions.h"
 #import "NavScrollerView.h"
-#import "MITSearchDisplayController.h"
+#import "KGOSearchDisplayController.h"
 #import "MITUIConstants.h"
 #import "NewsCategory.h"
 #import "AnalyticsWrapper.h"
@@ -104,7 +104,7 @@ static NSInteger numTries = 0;
     [super viewWillAppear:animated];
 	// show / hide the bookmarks category
 	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"bookmarked == YES"];
-    NSMutableArray *allBookmarkedStories = [CoreDataManager objectsForEntity:NewsStoryEntityName matchingPredicate:predicate];
+    NSMutableArray *allBookmarkedStories = [[CoreDataManager sharedManager] objectsForEntity:NewsStoryEntityName matchingPredicate:predicate];
 	hasBookmarks = ([allBookmarkedStories count] > 0) ? YES : NO;
 	[self setupNavScrollButtons];
 	if (showingBookmarks) {
@@ -162,7 +162,7 @@ static NSInteger numTries = 0;
 - (NSArray *)fetchCategoriesFromCoreData {
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"isMainCategory = YES"];
     NSSortDescriptor *sort = [[NSSortDescriptor alloc] initWithKey:@"category_id" ascending:YES];
-    NSArray *categoryObjects = [CoreDataManager objectsForEntity:NewsCategoryEntityName matchingPredicate:predicate sortDescriptors:[NSArray arrayWithObject:sort]];
+    NSArray *categoryObjects = [[CoreDataManager sharedManager] objectsForEntity:NewsCategoryEntityName matchingPredicate:predicate sortDescriptors:[NSArray arrayWithObject:sort]];
     [sort release];
     return categoryObjects;
 }
@@ -171,8 +171,8 @@ static NSInteger numTries = 0;
 	// delete all cached news articles that aren't bookmarked
 	if (![[NSUserDefaults standardUserDefaults] boolForKey:MITNewsTwoFirstRunKey]) {
 		NSPredicate *predicate = [NSPredicate predicateWithFormat:@"NOT bookmarked == YES"];
-		NSArray *nonBookmarkedStories = [CoreDataManager objectsForEntity:NewsStoryEntityName matchingPredicate:predicate];
-		[CoreDataManager deleteObjects:nonBookmarkedStories];
+		NSArray *nonBookmarkedStories = [[CoreDataManager sharedManager] objectsForEntity:NewsStoryEntityName matchingPredicate:predicate];
+		[[CoreDataManager sharedManager] deleteObjects:nonBookmarkedStories];
 		[[NSUserDefaults standardUserDefaults] setBool:YES forKey:MITNewsTwoFirstRunKey];
 		[[NSUserDefaults standardUserDefaults] synchronize];
 	}
@@ -186,7 +186,8 @@ static NSInteger numTries = 0;
     }
     
     // because stories are added to Core Data in separate threads, there may be merge conflicts. this thread wins when we're pruning
-    NSManagedObjectContext *context = [CoreDataManager managedObjectContext];
+    // TODO: check whether -saveWithTemporaryMergePolicy accomplishes this
+    NSManagedObjectContext *context = [[CoreDataManager sharedManager] managedObjectContext];
     id originalMergePolicy = [context mergePolicy];
     [context setMergePolicy:NSOverwriteMergePolicy];
 
@@ -207,14 +208,14 @@ static NSInteger numTries = 0;
     }
 
 	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"NOT bookmarked == YES"];
-    NSMutableArray *allStories = [CoreDataManager objectsForEntity:NewsStoryEntityName matchingPredicate:predicate];
+    NSMutableArray *allStories = [[CoreDataManager sharedManager] objectsForEntity:NewsStoryEntityName matchingPredicate:predicate];
     NSMutableSet *allStoriesToDelete = [NSMutableSet setWithArray:allStories];
     [allStoriesToDelete minusSet:allStoriesToSave];
-    [CoreDataManager deleteObjects:[allStoriesToDelete allObjects]];
-    [CoreDataManager saveData];
+    [[CoreDataManager sharedManager] deleteObjects:[allStoriesToDelete allObjects]];
+    [[CoreDataManager sharedManager] saveData];
     
     // put merge policy back where it was before we started
-    [[CoreDataManager managedObjectContext] setMergePolicy:originalMergePolicy];
+    [[[CoreDataManager sharedManager] managedObjectContext] setMergePolicy:originalMergePolicy];
 }
 
 -(void)refreshCategories {
@@ -317,8 +318,11 @@ static NSInteger numTries = 0;
 		theSearchBar.alpha = 0.0;
         CGRect frame = CGRectMake(0.0, theSearchBar.frame.size.height, self.view.frame.size.width,
                                   self.view.frame.size.height - (theSearchBar.frame.size.height + activityView.frame.size.height));
-        searchController = [[MITSearchDisplayController alloc] initWithFrame:frame searchBar:theSearchBar contentsController:self];
-        searchController.delegate = self;
+        if (!searchController) {
+            searchController = [[KGOSearchDisplayController alloc] initWithSearchBar:theSearchBar delegate:self contentsController:self];
+        }
+        //searchController = [[KGOSearchDisplayController alloc] initWithFrame:frame searchBar:theSearchBar contentsController:self];
+        //searchController.delegate = self;
 		[self.view addSubview:theSearchBar];
 	}
 	[self.view bringSubviewToFront:theSearchBar];
@@ -493,7 +497,7 @@ static NSInteger numTries = 0;
 	if (showingBookmarks) {
 		[self setStatusText:@""];
 		NSPredicate *predicate = [NSPredicate predicateWithFormat:@"bookmarked == YES"];
-		NSMutableArray *allBookmarkedStories = [CoreDataManager objectsForEntity:NewsStoryEntityName matchingPredicate:predicate];
+		NSMutableArray *allBookmarkedStories = [[CoreDataManager sharedManager] objectsForEntity:NewsStoryEntityName matchingPredicate:predicate];
 		self.stories = allBookmarkedStories;
 		
 	} else {
@@ -513,7 +517,7 @@ static NSInteger numTries = 0;
 		
 		// if maxLength == 0, nothing's been loaded from the server this session -- show up to 10 results from core data
 		// else show up to maxLength
-		NSArray *results = [CoreDataManager objectsForEntity:NewsStoryEntityName matchingPredicate:predicate sortDescriptors:sortDescriptors];
+		NSArray *results = [[CoreDataManager sharedManager] objectsForEntity:NewsStoryEntityName matchingPredicate:predicate sortDescriptors:sortDescriptors];
 		NewsCategory *aCategory = [[self.categories filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"category_id == %d", self.activeCategoryId]] lastObject];
 
 		DLog(@"activecategoryid: %d", self.activeCategoryId);
@@ -581,7 +585,7 @@ static NSInteger numTries = 0;
 	predicate = [NSPredicate predicateWithFormat:@"searchResult > 0"];
     
     // show everything that comes back
-    NSArray *results = [CoreDataManager objectsForEntity:NewsStoryEntityName matchingPredicate:predicate sortDescriptors:sortDescriptors];
+    NSArray *results = [[CoreDataManager sharedManager] objectsForEntity:NewsStoryEntityName matchingPredicate:predicate sortDescriptors:sortDescriptors];
 	
     NSInteger resultsCount = [results count];
 	
@@ -1056,19 +1060,19 @@ static NSInteger numTries = 0;
 		}
 		
 		
-		[CoreDataManager deleteObjects:oldCategories];		
+		[[CoreDataManager sharedManager] deleteObjects:oldCategories];		
 		NSMutableArray *newCategories = [NSMutableArray arrayWithCapacity:[result count]];
 		
         for (NewsCategoryId i = 0; i < [result count]; i++) {
             NSString *categoryTitle = [result objectAtIndex:i];
-            NewsCategory *aCategory = [CoreDataManager insertNewObjectForEntityForName:NewsCategoryEntityName];
+            NewsCategory *aCategory = [[CoreDataManager sharedManager] insertNewObjectForEntityForName:NewsCategoryEntityName];
             aCategory.title = categoryTitle;
             aCategory.category_id = [NSNumber numberWithInt:i];
             aCategory.isMainCategory = [NSNumber numberWithBool:YES];
             [newCategories addObject:aCategory];
         }
         self.categories = newCategories;
-        [CoreDataManager saveData];
+        [[CoreDataManager sharedManager] saveData];
         
         [self setupNavScroller];
     }
