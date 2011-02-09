@@ -55,6 +55,27 @@ static KGOTheme *s_sharedTheme = nil;
     return color;
 }
 
+// this one can be nil
+// TODO: make nil/non-nil distinction more transparent
+- (UIColor *)backgroundColorForSearchBar {
+    UIColor *color = [self matchBackgroundColorWithLabel:@"SearchBarBackground"];
+    return color;
+}
+
+- (UIImage *)backgroundImageForSearchBar {
+    NSString *imageName = [[themeDict objectForKey:@"Images"] objectForKey:@"SearchBarBackground"];
+    if (imageName)
+        return [UIImage imageNamed:imageName];
+    return nil;
+}
+
+- (UIImage *)backgroundImageForSearchBarDropShadow {
+    NSString *imageName = [[themeDict objectForKey:@"Images"] objectForKey:@"SearchBarDropShadow"];
+    if (imageName)
+        return [UIImage imageNamed:imageName];
+    return nil;
+}
+
 #pragma mark UITableView
 
 - (UIFont *)fontForTableCellTitleWithStyle:(KGOTableCellStyle)style {

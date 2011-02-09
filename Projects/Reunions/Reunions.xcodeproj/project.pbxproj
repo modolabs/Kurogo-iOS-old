@@ -117,11 +117,11 @@
 		EB1430701301A87900396753 /* KGOSearchDisplayController.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB1430661301A87900396753 /* KGOSearchDisplayController.h */; settings = {JAVA_ARCHIVE_SUBDIR = ../../Common/Search; }; };
 		EB1430711301A87900396753 /* KGOSearchDisplayController.m in Sources */ = {isa = PBXBuildFile; fileRef = EB1430671301A87900396753 /* KGOSearchDisplayController.m */; };
 		EB1430721301A87900396753 /* KGOSearchResult.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB1430681301A87900396753 /* KGOSearchResult.h */; settings = {JAVA_ARCHIVE_SUBDIR = ../../Common/Search; }; };
-		EB1430731301A87900396753 /* ModoSearchBar.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB1430691301A87900396753 /* ModoSearchBar.h */; settings = {JAVA_ARCHIVE_SUBDIR = ../../Common/Search; }; };
-		EB1430741301A87900396753 /* ModoSearchBar.m in Sources */ = {isa = PBXBuildFile; fileRef = EB14306A1301A87900396753 /* ModoSearchBar.m */; };
 		EB1430751301A87900396753 /* RecentSearch.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB14306B1301A87900396753 /* RecentSearch.h */; settings = {JAVA_ARCHIVE_SUBDIR = ../../Common/Search; }; };
 		EB1430761301A87900396753 /* RecentSearch.m in Sources */ = {isa = PBXBuildFile; fileRef = EB14306C1301A87900396753 /* RecentSearch.m */; };
 		EB1430771301A87900396753 /* RecentSearches.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = EB14306D1301A87900396753 /* RecentSearches.xcdatamodeld */; };
+		EB1433AF1303509D00396753 /* KGOSearchBar.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB1433AD1303509D00396753 /* KGOSearchBar.h */; settings = {JAVA_ARCHIVE_SUBDIR = ../../Common/Search; }; };
+		EB1433B01303509D00396753 /* KGOSearchBar.m in Sources */ = {isa = PBXBuildFile; fileRef = EB1433AE1303509D00396753 /* KGOSearchBar.m */; };
 		EB32946F1166777500DEDC8A /* CalendarEventMapAnnotation.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB32946D1166777500DEDC8A /* CalendarEventMapAnnotation.h */; settings = {JAVA_ARCHIVE_SUBDIR = Modules/Calendar; }; };
 		EB3294701166777500DEDC8A /* CalendarEventMapAnnotation.m in Sources */ = {isa = PBXBuildFile; fileRef = EB32946E1166777500DEDC8A /* CalendarEventMapAnnotation.m */; };
 		EB3721AA11FA2F5200705180 /* NewsImage.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB3721A811FA2F5200705180 /* NewsImage.h */; settings = {JAVA_ARCHIVE_SUBDIR = Modules/News; }; };
@@ -383,11 +383,11 @@
 		EB1430661301A87900396753 /* KGOSearchDisplayController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGOSearchDisplayController.h; sourceTree = "<group>"; };
 		EB1430671301A87900396753 /* KGOSearchDisplayController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGOSearchDisplayController.m; sourceTree = "<group>"; };
 		EB1430681301A87900396753 /* KGOSearchResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGOSearchResult.h; sourceTree = "<group>"; };
-		EB1430691301A87900396753 /* ModoSearchBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ModoSearchBar.h; sourceTree = "<group>"; };
-		EB14306A1301A87900396753 /* ModoSearchBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ModoSearchBar.m; sourceTree = "<group>"; };
 		EB14306B1301A87900396753 /* RecentSearch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RecentSearch.h; sourceTree = "<group>"; };
 		EB14306C1301A87900396753 /* RecentSearch.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RecentSearch.m; sourceTree = "<group>"; };
 		EB14306E1301A87900396753 /* RecentSearches.xcdatamodel */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = wrapper.xcdatamodel; path = RecentSearches.xcdatamodel; sourceTree = "<group>"; };
+		EB1433AD1303509D00396753 /* KGOSearchBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGOSearchBar.h; sourceTree = "<group>"; };
+		EB1433AE1303509D00396753 /* KGOSearchBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGOSearchBar.m; sourceTree = "<group>"; };
 		EB32946D1166777500DEDC8A /* CalendarEventMapAnnotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CalendarEventMapAnnotation.h; sourceTree = "<group>"; };
 		EB32946E1166777500DEDC8A /* CalendarEventMapAnnotation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CalendarEventMapAnnotation.m; sourceTree = "<group>"; };
 		EB3721A811FA2F5200705180 /* NewsImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NewsImage.h; sourceTree = "<group>"; };
@@ -891,11 +891,11 @@
 				EB1430661301A87900396753 /* KGOSearchDisplayController.h */,
 				EB1430671301A87900396753 /* KGOSearchDisplayController.m */,
 				EB1430681301A87900396753 /* KGOSearchResult.h */,
-				EB1430691301A87900396753 /* ModoSearchBar.h */,
-				EB14306A1301A87900396753 /* ModoSearchBar.m */,
 				EB14306B1301A87900396753 /* RecentSearch.h */,
 				EB14306C1301A87900396753 /* RecentSearch.m */,
 				EB14306D1301A87900396753 /* RecentSearches.xcdatamodeld */,
+				EB1433AD1303509D00396753 /* KGOSearchBar.h */,
+				EB1433AE1303509D00396753 /* KGOSearchBar.m */,
 			);
 			path = Search;
 			sourceTree = "<group>";
@@ -981,10 +981,10 @@
 			isa = PBXGroup;
 			children = (
 				EB83923F1163ED140067C0A3 /* Model */,
-				C727B53811F4E245007D53BB /* CalendarCategoriesViewController.h */,
-				C727B53911F4E245007D53BB /* CalendarCategoriesViewController.m */,
 				EB86CA6E115D276700C8F3D1 /* CalendarModule.m */,
 				EB86CA6D115D276700C8F3D1 /* CalendarModule.h */,
+				C727B53811F4E245007D53BB /* CalendarCategoriesViewController.h */,
+				C727B53911F4E245007D53BB /* CalendarCategoriesViewController.m */,
 				EB86CAC4115D4ED500C8F3D1 /* CalendarEventsViewController.h */,
 				EB86CAC5115D4ED500C8F3D1 /* CalendarEventsViewController.m */,
 				EB83923A1163ECC20067C0A3 /* CalendarDetailViewController.h */,
@@ -1117,8 +1117,8 @@
 				EB14306F1301A87900396753 /* KGOSearchDelegate.h in JavaArchive */,
 				EB1430701301A87900396753 /* KGOSearchDisplayController.h in JavaArchive */,
 				EB1430721301A87900396753 /* KGOSearchResult.h in JavaArchive */,
-				EB1430731301A87900396753 /* ModoSearchBar.h in JavaArchive */,
 				EB1430751301A87900396753 /* RecentSearch.h in JavaArchive */,
+				EB1433AF1303509D00396753 /* KGOSearchBar.h in JavaArchive */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1376,9 +1376,9 @@
 				EB142C9B1300A83E00396753 /* KGOAppDelegate+ModuleAdditions.m in Sources */,
 				EB142E6F1300D94E00396753 /* HomeModule.m in Sources */,
 				EB1430711301A87900396753 /* KGOSearchDisplayController.m in Sources */,
-				EB1430741301A87900396753 /* ModoSearchBar.m in Sources */,
 				EB1430761301A87900396753 /* RecentSearch.m in Sources */,
 				EB1430771301A87900396753 /* RecentSearches.xcdatamodeld in Sources */,
+				EB1433B01303509D00396753 /* KGOSearchBar.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

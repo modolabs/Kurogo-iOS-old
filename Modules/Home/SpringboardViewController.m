@@ -12,7 +12,7 @@
 #import "KGOModule.h"
 #import "ModoNavigationController.h"
 #import "ModoNavigationBar.h"
-#import "ModoSearchBar.h"
+#import "KGOSearchBar.h"
 #import "KGOSearchDisplayController.h"
 #import "AnalyticsWrapper.h"
 #import "UIKit+KGOAdditions.h"
@@ -194,10 +194,9 @@
     containingView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     [self.view addSubview:containingView];
 
-    _searchBar = [[ModoSearchBar alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 44)];
+    _searchBar = [[KGOSearchBar alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 44)];
     _searchBar.placeholder = [NSString stringWithString:@"Search Harvard Mobile"];
     [self.view addSubview:_searchBar];
-    [_searchBar addDropShadow];
 
     bottomRight = CGPointZero;
     bottomRight.y = _searchBar.frame.size.height + GRID_VPADDING + GRID_TOP_MARGIN;

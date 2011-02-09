@@ -6,6 +6,8 @@
 
 @implementation KGOAppDelegate (ModuleListAdditions)
 
+#pragma mark Setup
+
 - (void)loadModules {
     NSArray *moduleData = [[self appConfig] objectForKey:@"Modules"];
     
@@ -27,6 +29,22 @@
     theNavController.view.backgroundColor = [[KGOTheme sharedTheme] backgroundColorForApplication];
     [self.window addSubview:theNavController.view];
 }
+
+- (NSArray *)coreDataModelsNames {
+    if (!_modules) {
+        [self loadModules];
+    }
+    NSMutableArray *modelNames = [NSMutableArray array];
+    for (KGOModule *aModule in _modules) {
+        NSArray *modelNamesForModule = [aModule objectModelNames];
+        if (modelNamesForModule) {
+            [modelNames addObjectsFromArray:modelNamesForModule];
+        }
+    }
+    return modelNames;
+}
+
+#pragma mark Navigation
 
 - (KGOModule *)moduleForTag:(NSString *)aTag {
     for (KGOModule *aModule in self.modules) {

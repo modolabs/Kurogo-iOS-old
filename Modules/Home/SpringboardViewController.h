@@ -10,7 +10,7 @@
 #import "KGOSearchDisplayController.h"
 
 @class KGOModule;
-@class ModoSearchBar;
+@class KGOSearchBar;
 @class ModoNavigationBar;
 @class ModoNavigationController;
 @class FederatedSearchTableView;
@@ -23,7 +23,7 @@
     ModoNavigationBar *navigationBar;
     KGOSearchDisplayController *_searchController;
 
-    ModoSearchBar *_searchBar;
+    KGOSearchBar *_searchBar;
     BOOL isSearch;
     NSMutableArray *completedModules;
     

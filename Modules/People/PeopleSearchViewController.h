@@ -3,15 +3,15 @@
 #import "KGOTableViewController.h"
 #import "KGOSearchDisplayController.h"
 
-@class ModoSearchBar;
+@class KGOSearchBar;
 
-@interface PeopleSearchViewController : KGOTableViewController <UISearchBarDelegate, //JSONAPIDelegate,
+@interface PeopleSearchViewController : KGOTableViewController <//JSONAPIDelegate,
 UIActionSheetDelegate, KGOSearchDisplayDelegate> {
 	
     KGOSearchDisplayController *searchController;
 	NSString *searchTerms;
 	NSArray *searchTokens;
-    ModoSearchBar *theSearchBar;
+    KGOSearchBar *theSearchBar;
 
     NSArray *phoneDirectoryEntries;
     // uncomment this after we have API for directory numbers
@@ -25,6 +25,6 @@ UIActionSheetDelegate, KGOSearchDisplayDelegate> {
 @property (nonatomic, retain) KGOSearchDisplayController *searchController;
 @property (nonatomic, retain) NSString *searchTerms;
 @property (nonatomic, retain) NSArray *searchTokens;
-@property (nonatomic, retain) ModoSearchBar *searchBar;
+@property (nonatomic, retain) KGOSearchBar *searchBar;
 
 @end

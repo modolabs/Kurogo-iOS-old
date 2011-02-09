@@ -313,7 +313,7 @@ static NSInteger numTries = 0;
 
 - (void)showSearchBar {
 	if (!theSearchBar) {
-		theSearchBar = [[ModoSearchBar alloc] initWithFrame:CGRectMake(0.0, 0.0, self.view.frame.size.width, 44.0)];
+		theSearchBar = [[KGOSearchBar alloc] initWithFrame:CGRectMake(0.0, 0.0, self.view.frame.size.width, 44.0)];
 		theSearchBar.delegate = self;
 		theSearchBar.alpha = 0.0;
         CGRect frame = CGRectMake(0.0, theSearchBar.frame.size.height, self.view.frame.size.width,

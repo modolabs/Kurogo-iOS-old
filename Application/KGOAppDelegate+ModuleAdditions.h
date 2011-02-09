@@ -13,6 +13,7 @@ typedef enum {
 
 - (void)loadModules;
 - (void)loadNavigationContainer;
+- (NSArray *)coreDataModelsNames;
 
 #pragma mark Navigation
 

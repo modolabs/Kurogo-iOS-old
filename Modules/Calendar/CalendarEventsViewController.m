@@ -8,7 +8,7 @@
 #import <QuartzCore/QuartzCore.h>
 #import "TileServerManager.h"
 #import "EventListTableView.h"
-#import "ModoSearchBar.h"
+#import "KGOSearchBar.h"
 
 #define SCROLL_TAB_HORIZONTAL_PADDING 5.0
 #define SCROLL_TAB_HORIZONTAL_MARGIN  5.0
@@ -557,15 +557,12 @@
 - (void)showSearchBar
 {
     if (!theSearchBar) {
-        theSearchBar = [[ModoSearchBar alloc] initWithFrame:navScrollView.frame];
+        theSearchBar = [[KGOSearchBar alloc] initWithFrame:navScrollView.frame];
         theSearchBar.tintColor = SEARCH_BAR_TINT_COLOR;
-        theSearchBar.delegate = self;
         theSearchBar.alpha = 0.0;
         if (!searchController) {
             searchController = [[KGOSearchDisplayController alloc] initWithSearchBar:theSearchBar delegate:self contentsController:self];
         }
-        //searchController = [[KGOSearchDisplayController alloc] initWithSearchBar:theSearchBar contentsController:self];
-        //searchController.delegate = self;
         [self.view addSubview:theSearchBar];
     }
     [self.view bringSubviewToFront:theSearchBar];
@@ -591,14 +588,6 @@
     [theSearchBar release];
     theSearchBar = nil;
     [searchController release];
-}
-
-- (void)searchOverlayTapped
-{
-    if (searchResultsTableView.events == nil) {
-		[self searchBarCancelButtonClicked:theSearchBar];
-	}
-    isFederatedSearch = NO;
 }
 
 - (void)presentSearchResults:(NSArray *)results searchText:(NSString *)searchText searchSpan:(NSString *)searchSpan
@@ -628,20 +617,26 @@
     }
 }
 
-#pragma mark Search delegate
+#pragma mark Search methods
 
-- (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
-{
-	[self makeSearchRequest:searchBar.text];
+- (BOOL)searchControllerShouldShowSuggestions:(KGOSearchDisplayController *)controller {
+    return YES;
 }
 
-- (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar
-{	
-	[self abortExtraneousRequest];
-	[self hideSearchBar];
-    isFederatedSearch = NO;
-    
-	[self reloadView:activeEventList];
+- (NSArray *)searchControllerValidModules:(KGOSearchDisplayController *)controller {
+    return [NSArray arrayWithObject:CalendarTag];
+}
+
+- (NSString *)searchControllerModuleTag:(KGOSearchDisplayController *)controller {
+    return CalendarTag;
+}
+
+- (void)searchController:(KGOSearchDisplayController *)controller didSelectResult:(id<KGOSearchResult>)aResult {
+
+}
+
+- (void)searchController:(KGOSearchDisplayController *)controller willHideSearchResultsTableView:(UITableView *)tableView {
+
 }
 
 #pragma mark -

@@ -9,7 +9,7 @@
 // external modules
 #import "Foundation+KGOAdditions.h"
 #import "UIKit+KGOAdditions.h"
-#import "ModoSearchBar.h"
+#import "KGOSearchBar.h"
 #import "KGOSearchDisplayController.h"
 #import "KGOTheme.h"
 #import "ThemeConstants.h"
@@ -33,7 +33,7 @@ static const NSUInteger kPhoneDirectorySection = 0;
         phoneDirectoryEntries = [[NSArray alloc] initWithContentsOfFile:filename];
     }
     
-    theSearchBar = [[ModoSearchBar alloc] initWithFrame:CGRectMake(0.0f, 0.0f, self.view.frame.size.width, NAVIGATION_BAR_HEIGHT)];
+    theSearchBar = [[KGOSearchBar alloc] initWithFrame:CGRectMake(0.0f, 0.0f, self.view.frame.size.width, NAVIGATION_BAR_HEIGHT)];
 
 	theSearchBar.tintColor = SEARCH_BAR_TINT_COLOR;
 	theSearchBar.placeholder = NSLocalizedString(@"Search", nil);
@@ -100,8 +100,6 @@ static const NSUInteger kPhoneDirectorySection = 0;
 	if ([[[PeopleRecentsData sharedData] recents] count] == 0) {
 		self.tableView.tableFooterView.hidden = YES;
 	}
-    
-    [self.searchBar addDropShadow];
 }
 
 - (void)viewWillAppear:(BOOL)animated

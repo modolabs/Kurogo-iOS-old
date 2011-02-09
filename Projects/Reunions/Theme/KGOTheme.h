@@ -39,6 +39,10 @@ typedef enum {
 
 - (UIColor *)linkColor;
 - (UIColor *)backgroundColorForApplication;
+- (UIColor *)backgroundColorForSearchBar;
+
+- (UIImage *)backgroundImageForSearchBar;
+- (UIImage *)backgroundImageForSearchBarDropShadow;
 
 #pragma mark tableview
 

@@ -3,7 +3,7 @@
 #import "MapSearchResultAnnotation.h"
 #import "CampusMapViewController.h"
 #import "MITUIConstants.h"
-#import "ModoSearchBar.h"
+#import "KGOSearchBar.h"
 #import "KGOSearchDisplayController.h"
 
 @implementation CategoriesTableViewController

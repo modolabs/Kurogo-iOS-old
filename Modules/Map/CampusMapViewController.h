@@ -2,7 +2,7 @@
 #import <MapKit/MapKit.h>
 #import "JSONAPIRequest.h"
 #import "MapModule.h"
-#import "ModoSearchBar.h"
+#import "KGOSearchBar.h"
 #import "KGOTableViewController.h"
 #import "KGOSearchDisplayController.h"
 
@@ -41,7 +41,7 @@
 	UIBarButtonItem* _viewTypeButton;
 	
     // search UI
-	ModoSearchBar *_searchBar;
+	KGOSearchBar *_searchBar;
     KGOSearchDisplayController *_searchController;
 	MapSearchResultsTableView *_searchResultsTableView;	
 	
@@ -60,7 +60,7 @@
 @property (nonatomic, retain) NSString *lastSearchText;
 @property BOOL hasSearchResults;
 @property (readonly) BOOL displayingList;
-@property (readonly) ModoSearchBar *searchBar;
+@property (readonly) KGOSearchBar *searchBar;
 
 // execute a search
 - (void)search:(NSString *)searchText params:(NSDictionary *)params;

@@ -2,7 +2,7 @@
 #import "StoryXMLParser.h"
 #import "JSONAPIRequest.h"
 #import "NavScrollerView.h"
-#import "ModoSearchBar.h"
+#import "KGOSearchBar.h"
 #import "StoryDetailViewController.h"
 #import "KGOTableViewController.h"
 
@@ -31,7 +31,7 @@ StoryXMLParserDelegate, JSONAPIDelegate, NavScrollerDelegate, NewsControllerDele
 	NSString *searchQuery;
 	NSArray *searchResults;
 	NSInteger totalAvailableResults;
-	ModoSearchBar *theSearchBar;
+	KGOSearchBar *theSearchBar;
     KGOSearchDisplayController *searchController;
     NSInteger searchIndex;
 	

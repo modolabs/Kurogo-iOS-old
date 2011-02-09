@@ -2,6 +2,13 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>Images</key>
+	<dict>
+		<key>SearchBarBackground</key>
+		<string>common/searchbar-background.png</string>
+		<key>SearchBarDropShadow</key>
+		<string>common/bar-drop-shadow.png</string>
+	</dict>
 	<key>Colors</key>
 	<dict>
 		<key>TableSeparator</key>

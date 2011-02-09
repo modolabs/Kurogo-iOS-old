@@ -64,7 +64,7 @@
 	self.navigationItem.rightBarButtonItem = _viewTypeButton;
 	
 	// add a search bar to our view
-	_searchBar = [[ModoSearchBar alloc] initWithFrame:CGRectMake(0, 0, searchBarWidth, NAVIGATION_BAR_HEIGHT)];
+	_searchBar = [[KGOSearchBar alloc] initWithFrame:CGRectMake(0, 0, searchBarWidth, NAVIGATION_BAR_HEIGHT)];
 	_searchBar.delegate = self;
 	_searchBar.placeholder = NSLocalizedString(@"Search Campus Map", nil);
 	_searchBar.showsBookmarkButton = NO; // we'll be adding a custom bookmark button
@@ -94,7 +94,6 @@
 	_mapView.isAccessibilityElement = YES;
 	_mapView.accessibilityLabel = @"Map View";
 	[self.view addSubview:_mapView];
-    [_searchBar addDropShadow];
 	
 	// add the rest of the toolbar to which we can add buttons.
 	_toolBar = [[CampusMapToolbar alloc] initWithFrame:CGRectMake(searchBarWidth, 0, self.view.frame.size.width - searchBarWidth, NAVIGATION_BAR_HEIGHT)];
@@ -476,8 +475,6 @@
         self.searchResultsTableView.searchResults = _searchResults;
         
 		[self addTableView:self.searchResultsTableView withDataSource:self.searchResultsTableView];
-
-        [_searchBar addDropShadow];
         
         // hide the toolbar and stretch the search bar
         _toolBar.alpha = 0.0;

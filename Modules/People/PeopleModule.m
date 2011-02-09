@@ -55,7 +55,7 @@
 #pragma mark Data
 
 - (NSArray *)objectModelNames {
-    return [NSArray arrayWithObject:PersonDetailsEntityName];
+    return [NSArray arrayWithObject:@"PeopleDataModel"];
 }
 
 #pragma mark Navigation

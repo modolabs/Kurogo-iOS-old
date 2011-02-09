@@ -11,9 +11,9 @@
 @class CalendarEventMapAnnotation;
 @class DatePickerViewController;
 @class NavScrollerView;
-@class ModoSearchBar;
+@class KGOSearchBar;
 
-@interface CalendarEventsViewController : UIViewController <NavScrollerDelegate, //UISearchBarDelegate, UISearchDisplayDelegate,
+@interface CalendarEventsViewController : UIViewController <NavScrollerDelegate,
 MKMapViewDelegate, JSONAPIDelegate, DatePickerViewControllerDelegate, KGOSearchDisplayDelegate> {
 
 	CalendarEventListType activeEventList; // today, browse, acad, holidays...
@@ -34,7 +34,7 @@ MKMapViewDelegate, JSONAPIDelegate, DatePickerViewControllerDelegate, KGOSearchD
 	//DatePickerViewController *dateSelector;
 	
 	// search
-    ModoSearchBar *theSearchBar;
+    KGOSearchBar *theSearchBar;
     KGOSearchDisplayController *searchController;
 	UIView *loadingIndicator;
 	// this is a tableview subclass but we're only using it for
