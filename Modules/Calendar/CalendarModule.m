@@ -38,6 +38,46 @@
     return [NSArray arrayWithObject:@"Calendar"];
 }
 
+#pragma mark Navigation
+
+- (NSArray *)registeredPageNames {
+    return [NSArray arrayWithObjects:
+            LocalPathPageNameHome, LocalPathPageNameSearch, LocalPathPageNameDetail,
+            LocalPathPageNameCategoryList, LocalPathPageNameItemList, nil];
+}
+
+- (UIViewController *)moduleHomeScreenWithParams:(NSDictionary *)args {
+    CalendarEventsViewController *eventsVC = [[[CalendarEventsViewController alloc] init] autorelease];
+    return eventsVC;
+}
+
+- (UIViewController *)modulePage:(NSString *)pageName params:(NSDictionary *)params {
+    UIViewController *vc = nil;
+    if ([pageName isEqualToString:LocalPathPageNameHome]) {
+        vc = [self moduleHomeScreenWithParams:params];
+        
+    } else if ([pageName isEqualToString:LocalPathPageNameSearch]) {
+        vc = [self moduleHomeScreenWithParams:params];
+        
+        NSString *searchText = [params objectForKey:@"q"];
+        if (searchText) {
+            [(CalendarEventsViewController *)vc setSearchTerms:searchText];
+        }
+        
+    } else if ([pageName isEqualToString:LocalPathPageNameDetail]) {
+        MITCalendarEvent *event = [params objectForKey:@"event"];
+        if (event) {
+            vc = [[[CalendarDetailViewController alloc] init] autorelease];
+        }
+        
+    } else if ([pageName isEqualToString:LocalPathPageNameCategoryList]) {
+        
+    } else if ([pageName isEqualToString:LocalPathPageNameItemList]) {
+        
+    }
+    return vc;
+}
+
 #pragma mark JSONAPIDelegate
 
 - (void)request:(JSONAPIRequest *)request jsonLoaded:(id)result
@@ -47,17 +87,16 @@
     NSArray *resultEvents = [result objectForKey:@"events"];
     NSMutableArray *arrayForTable;
     
-    if ([resultEvents isKindOfClass:[NSDictionary class]]) {
-        //self.searchSpan = [result objectForKey:@"span"];
+    if ([resultEvents isKindOfClass:[NSArray class]]) {
         arrayForTable = [NSMutableArray arrayWithCapacity:[resultEvents count]];
         
         for (NSDictionary *eventDict in resultEvents) {
             MITCalendarEvent *event = [CalendarDataManager eventWithDict:eventDict];
             [arrayForTable addObject:event];
         }
-        
-        //self.searchResults = arrayForTable;
     }
+    
+    [_searchDelegate searcher:self didReceiveResults:arrayForTable];
 }
 
 - (void)request:(JSONAPIRequest *)request madeProgress:(CGFloat)progress {

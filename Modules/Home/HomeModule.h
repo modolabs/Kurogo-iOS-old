@@ -1,7 +1,7 @@
 #import <Foundation/Foundation.h>
+#import "KGOModule.h"
 
-
-@interface HomeModule : NSObject {
+@interface HomeModule : KGOModule {
 
 }
 

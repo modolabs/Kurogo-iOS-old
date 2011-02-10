@@ -3,15 +3,14 @@
 
 @protocol KGOSearchResult <NSObject>
 
-- (NSString *)resultTitle;
+- (NSString *)title;
 
 @optional
 
-- (NSString *)resultSubtitle;
+- (NSString *)subtitle;
 
 - (NSArray *)viewsForTableCell; // how to be displayed in a search results or bookmarks table view
 
 - (UIImage *)annotationImage;   // image to use in map view (and maybe table view)
-- (CLLocation *)coordinate;     // location of item if any
 
 @end

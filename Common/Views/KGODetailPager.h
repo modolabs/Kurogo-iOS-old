@@ -12,13 +12,6 @@
 
 @protocol KGODetailPagerController <NSObject>
 
-- (BOOL)pagerCanShowNextPage:(KGODetailPager *)pager;
-- (BOOL)pagerCanShowPreviousPage:(KGODetailPager *)pager;
-- (id)contentForNextPage:(KGODetailPager *)pager;
-- (id)contentForPreviousPage:(KGODetailPager *)pager;
-
-@optional
-
 - (NSInteger)numberOfSections:(KGODetailPager *)pager;
 - (NSInteger)pager:(KGODetailPager *)pager numberOfPagesInSection:(NSInteger)section;
 - (id<KGOSearchResult>)pager:(KGODetailPager *)pager contentForPageAtIndexPath:(NSIndexPath *)indexPath;

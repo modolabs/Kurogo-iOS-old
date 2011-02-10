@@ -40,7 +40,7 @@ scrollView = _scrollView, navScrollerDelegate, currentXOffset = _currentXOffset;
     [super layoutSubviews];
     
     // create background image for scrolling view
-    UIImage *backgroundImage = [UIImage imageNamed:MITImageNameScrollTabBackgroundOpaque];
+    UIImage *backgroundImage = [UIImage imageNamed:@"common/scrolltabs-background-opaque.png"];
     UIImageView *imageView = [[UIImageView alloc] initWithImage:[backgroundImage stretchableImageWithLeftCapWidth:0 topCapHeight:0]];
     imageView.tag = 1005;
     [self addSubview:imageView];
@@ -54,7 +54,7 @@ scrollView = _scrollView, navScrollerDelegate, currentXOffset = _currentXOffset;
     // TODO: stop cheating
     if (self.contentView.frame.size.width > self.frame.size.width + 10) {
         if (!self.leftScrollButton) {
-            UIImage *leftScrollImage = [UIImage imageNamed:MITImageNameScrollTabLeftEndCap];
+            UIImage *leftScrollImage = [UIImage imageNamed:@"common/scrolltabs-leftarrow.png"];
             self.leftScrollButton = [UIButton buttonWithType:UIButtonTypeCustom];
             [self.leftScrollButton setImage:leftScrollImage forState:UIControlStateNormal];
             CGRect imageFrame = CGRectMake(0,0,leftScrollImage.size.width,leftScrollImage.size.height);
@@ -66,7 +66,7 @@ scrollView = _scrollView, navScrollerDelegate, currentXOffset = _currentXOffset;
         [self addSubview:self.leftScrollButton];
         
         if (!self.rightScrollButton) {
-            UIImage *rightScrollImage = [UIImage imageNamed:MITImageNameScrollTabRightEndCap];
+            UIImage *rightScrollImage = [UIImage imageNamed:@"common/scrolltabs-rightarrow.png"];
             self.rightScrollButton = [UIButton buttonWithType:UIButtonTypeCustom];
             [self.rightScrollButton setImage:rightScrollImage forState:UIControlStateNormal];
             CGRect imageFrame = CGRectMake(self.frame.size.width - rightScrollImage.size.width,0,rightScrollImage.size.width,rightScrollImage.size.height);
@@ -104,7 +104,7 @@ scrollView = _scrollView, navScrollerDelegate, currentXOffset = _currentXOffset;
 
 - (void)addButton:(UIButton *)aButton shouldHighlight:(BOOL)shouldHighlight {
     // set standard display properties
-	UIImage *stretchableButtonImage = [[UIImage imageNamed:MITImageNameScrollTabSelectedTab] stretchableImageWithLeftCapWidth:15 topCapHeight:0];
+	UIImage *stretchableButtonImage = [[UIImage imageNamed:@"common/scrolltabs-selected.png"] stretchableImageWithLeftCapWidth:15 topCapHeight:0];
     
     CGFloat buttonYOffset = floor((self.frame.size.height - stretchableButtonImage.size.height) / 2);
 

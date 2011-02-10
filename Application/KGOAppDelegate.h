@@ -58,7 +58,7 @@
 - (void)updateNotificationUI;
 - (void)saveUnreadNotifications;
 
-@property (nonatomic, readonly) NSArray *unreadNotifications;
+@property (nonatomic, readonly) NSMutableArray *unreadNotifications;
 
 @end
 

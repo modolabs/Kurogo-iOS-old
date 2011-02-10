@@ -7,7 +7,7 @@
 @dynamic text;
 @dynamic date;
 
-- (NSString *)resultTitle {
+- (NSString *)title {
 	return self.text;
 }
 

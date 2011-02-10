@@ -3,6 +3,7 @@
 #import "ModoNavigationController.h"
 #import "KGOTheme.h"
 #import "KGOModule.h"
+#import "HomeModule.h"
 
 @implementation KGOAppDelegate (ModuleListAdditions)
 
@@ -24,8 +25,11 @@
 }
 
 - (void)loadNavigationContainer {
-    self.springboard = [[SpringboardViewController alloc] initWithNibName:nil bundle:nil];
-    theNavController = [[ModoNavigationController alloc] initWithRootViewController:self.springboard];
+    HomeModule *homeModule = (HomeModule *)[self moduleForTag:HomeTag];
+    UIViewController *homeVC = [homeModule moduleHomeScreenWithParams:nil];
+    //self.springboard = [[SpringboardViewController alloc] initWithNibName:nil bundle:nil];
+    //theNavController = [[ModoNavigationController alloc] initWithRootViewController:self.springboard];
+    theNavController = [[ModoNavigationController alloc] initWithRootViewController:homeVC];
     theNavController.view.backgroundColor = [[KGOTheme sharedTheme] backgroundColorForApplication];
     [self.window addSubview:theNavController.view];
 }

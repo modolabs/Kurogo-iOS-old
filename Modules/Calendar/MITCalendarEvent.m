@@ -22,16 +22,23 @@
 @dynamic lastUpdated;
 @dynamic isRegular;
 
-- (NSString *)subtitle
-{
+#pragma mark KGOSearchResult / MKAnnotation
+
+- (NSString *)subtitle {
 	NSString *dateString = [self dateStringWithDateStyle:NSDateFormatterShortStyle timeStyle:NSDateFormatterShortStyle separator:@" "];
 	
 	if (self.shortloc) {
 		return [NSString stringWithFormat:@"%@ | %@", dateString, self.shortloc];
 	} else {
 		return dateString;
-	}	
+	}
 }
+
+- (CLLocationCoordinate2D)coordinate {
+    return CLLocationCoordinate2DMake([self.latitude floatValue], [self.longitude floatValue]);
+}
+
+#pragma mark -
 
 - (NSString *)dateStringWithDateStyle:(NSDateFormatterStyle)dateStyle timeStyle:(NSDateFormatterStyle)timeStyle separator:(NSString *)separator {
 	NSDateFormatter *formatter = [[NSDateFormatter alloc] init];

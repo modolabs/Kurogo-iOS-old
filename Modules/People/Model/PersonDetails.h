@@ -17,7 +17,7 @@ extern NSString * const kPersonDetailsValueSeparatorToken;
 @property (nonatomic, retain) NSString * cn;
 @property (nonatomic, retain) NSString * uid;
 @property (nonatomic, retain) NSString * facsimiletelephonenumber;
-@property (nonatomic, retain) NSString * title;
+@property (nonatomic, retain) NSString * jobTitle;
 @property (nonatomic, retain) NSString * telephonenumber;
 @property (nonatomic, retain) NSString * sn;
 @property (nonatomic, retain) NSString * postaladdress;

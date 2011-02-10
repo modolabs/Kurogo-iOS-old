@@ -6,6 +6,12 @@
 	<array>
 		<dict>
 			<key>id</key>
+			<string>home</string>
+			<key>shortName</key>
+			<string>Home</string>
+		</dict>
+		<dict>
+			<key>id</key>
 			<string>people</string>
 			<key>shortName</key>
 			<string>People</string>
@@ -50,7 +56,7 @@
 			<key>listViewImage</key>
 			<string>common/icons/module-calendar.png</string>
 			<key>iconImage</key>
-			<string>home/home-calendar.png</string>
+			<string>home/home-events.png</string>
 		</dict>
 		<dict>
 			<key>id</key>

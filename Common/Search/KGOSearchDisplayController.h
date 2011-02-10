@@ -1,6 +1,8 @@
 #import <UIKit/UIKit.h>
+#import <MapKit/MapKit.h>
 #import "KGOSearchDelegate.h"
 #import "KGOTableViewController.h"
+#import "KGODetailPager.h"
 
 @class KGOSearchDisplayController;
 @protocol KGOSearchResult;
@@ -16,14 +18,17 @@
 
 @optional
 
+- (void)searchController:(KGOSearchDisplayController *)controller didShowSearchResultsTableView:(UITableView *)tableView;
 - (void)searchController:(KGOSearchDisplayController *)controller willHideSearchResultsTableView:(UITableView *)tableView;
+- (void)searchControllerDidShowSearchResultsMapView:(KGOSearchDisplayController *)controller;
+- (void)searchControllerWillHideSearchResultsMapView:(KGOSearchDisplayController *)controller;
 
 @end
 
 
 @class KGOTableController;
 
-@interface KGOSearchDisplayController : NSObject <UISearchBarDelegate, KGOTableViewDataSource, KGOSearchDelegate> {
+@interface KGOSearchDisplayController : NSObject <UISearchBarDelegate, KGOTableViewDataSource, KGOSearchDelegate, MKMapViewDelegate, KGODetailPagerController> {
     
     id<KGOSearchDisplayDelegate> _delegate;
     NSArray *_searchResults;
@@ -34,6 +39,8 @@
     UIViewController *_searchContentsController;
     KGOTableController *_searchTableController;
     UIControl *_searchOverlay;
+    MKMapView *_searchResultsMapView;
+    BOOL _showingMapView;
 }
 
 @property (nonatomic, readonly) id<KGOSearchDisplayDelegate> delegate;
@@ -43,6 +50,8 @@
 @property (nonatomic, getter=isActive) BOOL active;
 @property (nonatomic, readonly) UIViewController *searchContentsController;
 @property (nonatomic, readonly) KGOTableController *searchTableController;
+
+@property (nonatomic, readonly) MKMapView *searchResultsMapView;
 
 - (id)initWithSearchBar:(UISearchBar *)searchBar delegate:(id<KGOSearchDisplayDelegate>)delegate contentsController:(UIViewController *)viewController;
 - (void)setActive:(BOOL)visible animated:(BOOL)animated;
@@ -58,5 +67,10 @@
 - (void)hideSearchResultsTableView;
 
 - (void)reloadSearchResultsTableView;
+
+- (void)showSearchResultsMapView;
+- (void)hideSearchResultsMapView;
+
+- (BOOL)canShowMapView;
 
 @end

@@ -36,11 +36,12 @@ MKMapViewDelegate, JSONAPIDelegate, DatePickerViewControllerDelegate, KGOSearchD
 	// search
     KGOSearchBar *theSearchBar;
     KGOSearchDisplayController *searchController;
+    
 	UIView *loadingIndicator;
 	// this is a tableview subclass but we're only using it for
 	// its delegate methods
-	EventListTableView *searchResultsTableView;
-	CalendarMapView *searchResultsMapView;
+	//EventListTableView *searchResultsTableView;
+	//CalendarMapView *searchResultsMapView;
 	
 	// category parameter for list of events in a category
 	NSInteger theCatID;
@@ -51,7 +52,7 @@ MKMapViewDelegate, JSONAPIDelegate, DatePickerViewControllerDelegate, KGOSearchD
 	
 	BOOL requestDispatched;
 	BOOL categoriesRequestDispatched;
-    BOOL isFederatedSearch;
+    //BOOL isFederatedSearch;
 	JSONAPIRequest *apiRequest;
 	
 }
@@ -69,12 +70,14 @@ MKMapViewDelegate, JSONAPIDelegate, DatePickerViewControllerDelegate, KGOSearchD
 @property (nonatomic, retain) NSDate *endDate;
 @property (nonatomic, retain) NSArray *events;
 
+@property (nonatomic, retain) NSString *searchTerms;
+
 //@property (nonatomic, retain) DatePickerViewController *dateSelector;
 
 - (void)abortExtraneousRequest;
 - (void)makeRequest;
-- (void)makeSearchRequest:(NSString *)searchTerms;
-- (void)presentSearchResults:(NSArray *)results searchText:(NSString *)searchText searchSpan:(NSString *)searchSpan;
+//- (void)makeSearchRequest:(NSString *)searchTerms;
+//- (void)presentSearchResults:(NSArray *)results searchText:(NSString *)searchText searchSpan:(NSString *)searchSpan;
 
 - (void)mapButtonToggled;
 - (void)listButtonToggled;

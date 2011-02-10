@@ -15,7 +15,7 @@ NSString * const kPersonDetailsValueSeparatorToken = @"%/%";
 @dynamic cn;
 @dynamic uid;
 @dynamic facsimiletelephonenumber;
-@dynamic title;
+@dynamic jobTitle;
 @dynamic telephonenumber;
 @dynamic sn;
 @dynamic postaladdress;
@@ -24,13 +24,13 @@ NSString * const kPersonDetailsValueSeparatorToken = @"%/%";
 
 #pragma mark KGOSearchResult
 
-- (NSString *)resultTitle {
+- (NSString *)title {
     return self.cn;
 }
 
-- (NSString *)resultSubtitle {
-    if (self.title.length)
-        return self.title;
+- (NSString *)subtitle {
+    if (self.jobTitle.length)
+        return self.jobTitle;
     else if (self.ou.length)
         return self.ou;
     return nil;
@@ -54,8 +54,8 @@ NSString * const kPersonDetailsValueSeparatorToken = @"%/%";
     if (![(value = [[dictionary objectForKey:@"ou"] lastObject]) isEqualToString:person.ou]) {
         person.ou = value;
     }
-    if (![(value = [[dictionary objectForKey:@"title"] lastObject]) isEqualToString:person.title]) {
-        person.title = value;
+    if (![(value = [[dictionary objectForKey:@"title"] lastObject]) isEqualToString:person.jobTitle]) {
+        person.jobTitle = value;
     }
     if (![(value = [[dictionary objectForKey:@"telephonenumber"] lastObject]) isEqualToString:person.telephonenumber]) {
         person.telephonenumber = value;

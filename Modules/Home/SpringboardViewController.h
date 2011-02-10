@@ -43,7 +43,6 @@
 }
 
 - (void)layoutIcons:(NSArray *)icons horizontalSpacing:(CGFloat)spacing;
-- (void)searchAllModules;
 
 @property (nonatomic, assign) KGOModule *activeModule;
 @property (nonatomic, retain) FederatedSearchTableView *searchResultsTableView;

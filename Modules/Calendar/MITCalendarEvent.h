@@ -1,8 +1,10 @@
 #import <CoreData/CoreData.h>
+#import "KGOSearchResult.h"
+#import <MapKit/MapKit.h>
 
 @class EventCategory;
 
-@interface MITCalendarEvent :  NSManagedObject  
+@interface MITCalendarEvent :  NSManagedObject <KGOSearchResult, MKAnnotation>
 {
 }
 
@@ -23,7 +25,6 @@
 @property (nonatomic, retain) NSDate * lastUpdated;
 @property (nonatomic, retain) NSNumber * isRegular;
 
-- (NSString *)subtitle;
 - (NSString *)dateStringWithDateStyle:(NSDateFormatterStyle)dateStyle timeStyle:(NSDateFormatterStyle)timeStyle separator:(NSString *)separator ;
 - (BOOL)hasCoords;
 - (void)updateWithDict:(NSDictionary *)dict;

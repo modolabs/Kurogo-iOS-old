@@ -34,8 +34,6 @@ static const NSUInteger kPhoneDirectorySection = 0;
     }
     
     theSearchBar = [[KGOSearchBar alloc] initWithFrame:CGRectMake(0.0f, 0.0f, self.view.frame.size.width, NAVIGATION_BAR_HEIGHT)];
-
-	theSearchBar.tintColor = SEARCH_BAR_TINT_COLOR;
 	theSearchBar.placeholder = NSLocalizedString(@"Search", nil);
 
     if (!searchController) {
