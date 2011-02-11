@@ -6,7 +6,7 @@
 
 - (void)datePickerViewControllerDidCancel:(DatePickerViewController *)controller;
 - (void)datePickerViewController:(DatePickerViewController *)controller didSelectDate:(NSDate *)date;
-- (void)datePickerValueChanged:(id)sender;
+- (void)datePickerViewController:(DatePickerViewController *)controller valueChanged:(NSDate *)date;
 
 @end
 

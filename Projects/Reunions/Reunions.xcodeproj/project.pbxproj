@@ -122,6 +122,8 @@
 		EB1430771301A87900396753 /* RecentSearches.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = EB14306D1301A87900396753 /* RecentSearches.xcdatamodeld */; };
 		EB1433AF1303509D00396753 /* KGOSearchBar.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB1433AD1303509D00396753 /* KGOSearchBar.h */; settings = {JAVA_ARCHIVE_SUBDIR = ../../Common/Search; }; };
 		EB1433B01303509D00396753 /* KGOSearchBar.m in Sources */ = {isa = PBXBuildFile; fileRef = EB1433AE1303509D00396753 /* KGOSearchBar.m */; };
+		EB14351D13038CE500396753 /* KGODatePager.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB14351B13038CE500396753 /* KGODatePager.h */; settings = {JAVA_ARCHIVE_SUBDIR = ../../Common/Views; }; };
+		EB14351E13038CE500396753 /* KGODatePager.m in Sources */ = {isa = PBXBuildFile; fileRef = EB14351C13038CE500396753 /* KGODatePager.m */; };
 		EB32946F1166777500DEDC8A /* CalendarEventMapAnnotation.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB32946D1166777500DEDC8A /* CalendarEventMapAnnotation.h */; settings = {JAVA_ARCHIVE_SUBDIR = Modules/Calendar; }; };
 		EB3294701166777500DEDC8A /* CalendarEventMapAnnotation.m in Sources */ = {isa = PBXBuildFile; fileRef = EB32946E1166777500DEDC8A /* CalendarEventMapAnnotation.m */; };
 		EB3721AA11FA2F5200705180 /* NewsImage.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB3721A811FA2F5200705180 /* NewsImage.h */; settings = {JAVA_ARCHIVE_SUBDIR = Modules/News; }; };
@@ -388,6 +390,8 @@
 		EB14306E1301A87900396753 /* RecentSearches.xcdatamodel */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = wrapper.xcdatamodel; path = RecentSearches.xcdatamodel; sourceTree = "<group>"; };
 		EB1433AD1303509D00396753 /* KGOSearchBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGOSearchBar.h; sourceTree = "<group>"; };
 		EB1433AE1303509D00396753 /* KGOSearchBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGOSearchBar.m; sourceTree = "<group>"; };
+		EB14351B13038CE500396753 /* KGODatePager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGODatePager.h; sourceTree = "<group>"; };
+		EB14351C13038CE500396753 /* KGODatePager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGODatePager.m; sourceTree = "<group>"; };
 		EB32946D1166777500DEDC8A /* CalendarEventMapAnnotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CalendarEventMapAnnotation.h; sourceTree = "<group>"; };
 		EB32946E1166777500DEDC8A /* CalendarEventMapAnnotation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CalendarEventMapAnnotation.m; sourceTree = "<group>"; };
 		EB3721A811FA2F5200705180 /* NewsImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NewsImage.h; sourceTree = "<group>"; };
@@ -801,6 +805,8 @@
 				EBAA8C9A12FC56B000B743C3 /* HighlightedResultLabel.m */,
 				EB14292712FCBD1D00396753 /* KGODetailPager.h */,
 				EB14292812FCBD1D00396753 /* KGODetailPager.m */,
+				EB14351B13038CE500396753 /* KGODatePager.h */,
+				EB14351C13038CE500396753 /* KGODatePager.m */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -1119,6 +1125,7 @@
 				EB1430721301A87900396753 /* KGOSearchResult.h in JavaArchive */,
 				EB1430751301A87900396753 /* RecentSearch.h in JavaArchive */,
 				EB1433AF1303509D00396753 /* KGOSearchBar.h in JavaArchive */,
+				EB14351D13038CE500396753 /* KGODatePager.h in JavaArchive */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1379,6 +1386,7 @@
 				EB1430761301A87900396753 /* RecentSearch.m in Sources */,
 				EB1430771301A87900396753 /* RecentSearches.xcdatamodeld in Sources */,
 				EB1433B01303509D00396753 /* KGOSearchBar.m in Sources */,
+				EB14351E13038CE500396753 /* KGODatePager.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

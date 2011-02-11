@@ -3,18 +3,20 @@
 #import "CalendarConstants.h"
 #import "EventCategoriesTableView.h"
 #import "CalendarMapView.h"
-#import "DatePickerViewController.h"
+//#import "DatePickerViewController.h"
 #import "NavScrollerView.h"
 #import "KGOSearchDisplayController.h"
+#import "KGODatePager.h"
 
 @class EventListTableView;
 @class CalendarEventMapAnnotation;
 @class DatePickerViewController;
 @class NavScrollerView;
 @class KGOSearchBar;
+@class KGODatePager;
 
 @interface CalendarEventsViewController : UIViewController <NavScrollerDelegate,
-MKMapViewDelegate, JSONAPIDelegate, DatePickerViewControllerDelegate, KGOSearchDisplayDelegate> {
+MKMapViewDelegate, JSONAPIDelegate, KGODatePagerDelegate, KGOSearchDisplayDelegate> {
 
 	CalendarEventListType activeEventList; // today, browse, acad, holidays...
 	NSDate *startDate;
@@ -27,11 +29,10 @@ MKMapViewDelegate, JSONAPIDelegate, DatePickerViewControllerDelegate, KGOSearchD
 	
 	// views in the header
     NavScrollerView *navScrollView;
+    
+    KGODatePager *datePicker;
 	
-	UIView *datePicker;
 	UIView *nothingFound;
-	
-	//DatePickerViewController *dateSelector;
 	
 	// search
     KGOSearchBar *theSearchBar;

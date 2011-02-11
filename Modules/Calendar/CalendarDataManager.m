@@ -108,7 +108,8 @@
         }
         [[CoreDataManager sharedManager] saveData];
 	} else {
-        DLog(@"%@", [[category.events allObjects] description]);
+        DLog(@"category found with id: %d", catID);
+        //DLog(@"%@", [[category.events allObjects] description]);
     }
 	return category;
 }

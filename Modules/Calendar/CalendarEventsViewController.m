@@ -230,20 +230,10 @@
 - (void)returnToToday {
     [startDate release];
     startDate = [[NSDate date] retain];
+    
+    datePicker.date = startDate;
+    
     dateRangeDidChange = YES;
-}
-
-
-- (void)pickDate {
-	
-	if (activeEventList != CalendarEventListTypeAcademic) {
-	DatePickerViewController *dateSelector = [[DatePickerViewController alloc] init];
-	dateSelector.delegate = self;
-	
-	KGOAppDelegate *appDelegate = (KGOAppDelegate *)[[UIApplication sharedApplication] delegate];
-    [appDelegate presentAppModalViewController:dateSelector animated:YES];
-    [dateSelector release];
-	}
 }
 
 #pragma mark Redrawing logic and helper functions
@@ -402,30 +392,6 @@
 	}
 }
 
-- (void)incrementStartDate:(BOOL)forward
-{
-	NSTimeInterval interval = [CalendarConstants intervalForEventType:activeEventList
-															 fromDate:startDate
-															  forward:forward];
-	@synchronized(self) {
-		NSDate *otherDate = startDate;
-		startDate = nil;
-		startDate = [[NSDate alloc] initWithTimeInterval:interval sinceDate:otherDate];
-		[otherDate release];
-	}
-    
-	dateRangeDidChange = YES;
-	[self reloadView:activeEventList];
-}
-
-- (void)showPreviousDate {
-	[self incrementStartDate:NO];
-}
-
-- (void)showNextDate {
-	[self incrementStartDate:YES];
-}
-
 - (BOOL)canShowMap:(CalendarEventListType)listType {
 	return (listType == CalendarEventListTypeEvents || listType == CalendarEventListTypeExhibits);
 }
@@ -439,81 +405,16 @@
 
 - (void)setupDatePicker
 {
-	
-	NSInteger calendarButtonTag = 2487;
-	
-	if (datePicker == nil) {
-		
+    if (!datePicker) {
 		CGFloat yOffset = showScroller ? navScrollView.frame.size.height : 0.0;
 		CGRect appFrame = [[UIScreen mainScreen] applicationFrame];
-		
-		datePicker = [[UIView alloc] initWithFrame:CGRectMake(0.0, yOffset, appFrame.size.width, 44.0)];
-		UIImageView *datePickerBackground = [[UIImageView alloc] initWithFrame:CGRectMake(0.0, 0.0, datePicker.frame.size.width, datePicker.frame.size.height)];
-		datePickerBackground.image = [[UIImage imageNamed:@"common/subheadbar_background.png"] stretchableImageWithLeftCapWidth:0 topCapHeight:0];
-		[datePicker addSubview:datePickerBackground];
-		[datePickerBackground release];
-
-		UIImage *buttonImage;
-		
-		UIButton *prevDate = [UIButton buttonWithType:UIButtonTypeCustom];
-		buttonImage = [UIImage imageNamed:@"common/subheadbar_button_previous"];
-		prevDate.frame = CGRectMake(0, 0, buttonImage.size.width, buttonImage.size.height);
-		prevDate.center = CGPointMake(appFrame.size.width - buttonImage.size.width - 21.0, 21.0);
-		[prevDate setBackgroundImage:buttonImage forState:UIControlStateNormal];
-		[prevDate setBackgroundImage:[UIImage imageNamed:@"common/subheadbar_button_previous_pressed"] forState:UIControlStateHighlighted];
-		[prevDate addTarget:self action:@selector(showPreviousDate) forControlEvents:UIControlEventTouchUpInside];
-		[datePicker addSubview:prevDate];
-		
-		UIButton *nextDate = [UIButton buttonWithType:UIButtonTypeCustom];
-        buttonImage = [UIImage imageNamed:@"common/subheadbar_button_next"];
-		nextDate.frame = CGRectMake(0, 0, buttonImage.size.width, buttonImage.size.height);
-		nextDate.center = CGPointMake(appFrame.size.width - 21.0, 21.0);
-		[nextDate setBackgroundImage:buttonImage forState:UIControlStateNormal];
-		[nextDate setBackgroundImage:[UIImage imageNamed:@"common/subheadbar_button_next_pressed"] forState:UIControlStateHighlighted];
-		[nextDate addTarget:self action:@selector(showNextDate) forControlEvents:UIControlEventTouchUpInside];
-		[datePicker addSubview:nextDate];
-	}
-	
-	[datePicker removeFromSuperview];
+        CGRect frame = CGRectMake(0.0, yOffset, appFrame.size.width, 44.0);
+        datePicker = [[KGODatePager alloc] initWithFrame:frame];
+        datePicker.delegate = self;
+        datePicker.date = startDate;
+        datePicker.incrementUnit = NSDayCalendarUnit;
+    }
     
-    NSInteger randomTag = 3289;
-	
-	for (UIView *view in [datePicker subviews]) {
-		
-		if (view.tag == randomTag) {
-			[view removeFromSuperview];
-		}
-		if (view.tag == calendarButtonTag)
-			[view removeFromSuperview];
-	}
-	
-	if (activeEventList != CalendarEventListTypeAcademic) {
-		UIImage *buttonImage1 = [UIImage imageNamed:@"common/subheadbar_button"];
-		UIButton *showCalendar = [UIButton buttonWithType:UIButtonTypeCustom];
-		showCalendar.frame = CGRectMake(0, 0, buttonImage1.size.width, buttonImage1.size.height);
-		showCalendar.center = CGPointMake(21.0, 21.0);
-		[showCalendar setBackgroundImage:buttonImage1 forState:UIControlStateNormal];
-		[showCalendar setBackgroundImage:[UIImage imageNamed:@"common/subheadbar_button_pressed"] forState:UIControlEventTouchUpInside];
-		[showCalendar setImage:[UIImage imageNamed:@"common/subheadbar_calendar"] forState:UIControlStateNormal];
-		[showCalendar addTarget:self action:@selector(pickDate) forControlEvents:UIControlEventTouchUpInside];
-		showCalendar.tag = calendarButtonTag;
-	[	datePicker addSubview:showCalendar];
-	}
-    
-	NSString *dateText = [CalendarConstants dateStringForEventType:activeEventList forDate:startDate];
-	UIFont *dateFont = [UIFont fontWithName:BOLD_FONT size:18.0];
-	CGSize textSize = [dateText sizeWithFont:dateFont];
-
-    UIButton *dateButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    dateButton.frame = CGRectMake(0.0, 0.0, textSize.width, textSize.height);
-    dateButton.titleLabel.text = dateText;
-    dateButton.titleLabel.font = dateFont;
-    dateButton.titleLabel.textColor = [UIColor whiteColor];
-    [dateButton setTitle:dateText forState:UIControlStateNormal];
-    dateButton.center = CGPointMake(datePicker.center.x, datePicker.center.y - datePicker.frame.origin.y);
-    dateButton.tag = randomTag;
-    [datePicker addSubview:dateButton];
-	
 	[self.view addSubview:datePicker];
 }
 
@@ -573,6 +474,10 @@
 
 - (void)searchController:(KGOSearchDisplayController *)controller didSelectResult:(id<KGOSearchResult>)aResult {
 
+}
+
+- (void)searchController:(KGOSearchDisplayController *)controller willHideSearchResultsTableView:(UITableView *)tableView {
+    [self hideSearchBar];
 }
 
 - (void)searchController:(KGOSearchDisplayController *)controller didShowSearchResultsTableView:(UITableView *)tableView {
@@ -932,6 +837,15 @@
 #pragma mark -
 #pragma mark DatePickerViewControllerDelegate functions
 
+- (void)pager:(KGODatePager *)pager didSelectDate:(NSDate *)date {
+    [startDate release];
+    startDate = [date retain];    
+    dateRangeDidChange = YES;
+
+    [self reloadView:activeEventList];
+    
+}
+/*
 - (void)datePickerViewControllerDidCancel:(DatePickerViewController *)controller {
 	
 	KGOAppDelegate *appDelegate = (KGOAppDelegate *)[[UIApplication sharedApplication] delegate];
@@ -954,9 +868,10 @@
 	}
 	return;
 }
+
 - (void)datePickerValueChanged:(id)sender {
 	return;
 }
-
+*/
 @end
 

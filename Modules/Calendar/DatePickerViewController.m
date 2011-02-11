@@ -41,7 +41,7 @@
     datePicker.date = self.date;
 	datePicker.maximumDate = [NSDate dateWithTimeIntervalSinceNow:2 * 366 * 24 * 3600];
 	datePicker.minimumDate = [NSDate dateWithTimeIntervalSinceNow:-10 * 366 * 24 * 3600];
-    [datePicker addTarget:self.delegate action:@selector(datePickerValueChanged:) forControlEvents:UIControlEventValueChanged];
+    [datePicker addTarget:self action:@selector(datePickerValueChanged:) forControlEvents:UIControlEventValueChanged];
     [self.view addSubview:datePicker];
     
     [navItem release];
@@ -55,6 +55,10 @@
     } else if (sender == cancelButton) {
         [self.delegate datePickerViewControllerDidCancel:self];
     }
+}
+
+- (void)datePickerValueChanged:(id)sender {
+    [self.delegate datePickerViewController:self valueChanged:datePicker.date];
 }
 
 /*
