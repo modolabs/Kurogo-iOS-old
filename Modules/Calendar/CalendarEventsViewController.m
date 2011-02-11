@@ -43,7 +43,6 @@
 @synthesize activeEventList, showList, showScroller, categoriesRequestDispatched;
 @synthesize tableView = theTableView, mapView = theMapView, catID = theCatID;
 @synthesize searchTerms;
-//@synthesize dateSelector;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
     if (self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil]) {
@@ -142,57 +141,41 @@
 	requestDispatched = NO;
 	loadingIndicator = nil;
 	
-	// TODO: clean up the code to remvoe the types: Exhibits, Academic and Holiday
-	//CalendarEventListType buttonTypes[NumberOfCalendarEventListTypes] = {
+	// TODO: get this from server
 	CalendarEventListType buttonTypes[3] = {
 		CalendarEventListTypeEvents,
-		//CalendarEventListTypeExhibits,
 		CalendarEventListTypeCategory,
 		CalendarEventListTypeAcademic,
-		//CalendarEventListTypeHoliday
 	};
 	
 	CGRect appFrame = [[UIScreen mainScreen] applicationFrame];
 	
 	if (showScroller) {
         if (!navScrollView) {
-            navScrollView = [[NavScrollerView alloc] initWithFrame:CGRectMake(0, 0, appFrame.size.width, 44.0)];
-            navScrollView.navScrollerDelegate = self;
+            navScrollView = [[KGOScrollingTabstrip alloc] initWithFrame:CGRectMake(0, 0, appFrame.size.width, 44.0)];
+            navScrollView.delegate = self;
+            navScrollView.showsSearchButton = YES;
         }
-        
-		UIButton *searchButton = [UIButton buttonWithType:UIButtonTypeCustom];
-		UIImage *searchImage = [UIImage imageNamed:@"common/search.png"];
-		[searchButton setImage:searchImage forState:UIControlStateNormal];
-        searchButton.adjustsImageWhenHighlighted = NO;
-		searchButton.tag = SEARCH_BUTTON_TAG; // random number that won't conflict with event list types
-        navScrollView.currentXOffset += 4.0;
-        [navScrollView addButton:searchButton shouldHighlight:NO];
 
-        // increase tappable area for search button
-        UIControl *searchTapRegion = [[UIControl alloc] initWithFrame:CGRectMake(0.0, 0.0, 44.0, 44.0)];
-        searchTapRegion.backgroundColor = [UIColor clearColor];
-        searchTapRegion.center = searchButton.center;
-        [searchTapRegion addTarget:self action:@selector(showSearchBar) forControlEvents:UIControlEventTouchUpInside];
-        
 		// create buttons for nav scroller view		
 		for (int i = 0; i < NumberOfCalendarEventListTypes; i++) {
 
 			CalendarEventListType listType = buttonTypes[i];
 			NSString *buttonTitle = [CalendarConstants titleForEventType:listType];
-			UIButton *aButton = [UIButton buttonWithType:UIButtonTypeCustom];
-			aButton.tag = listType;           
-			[aButton setTitle:buttonTitle forState:UIControlStateNormal];
-            [navScrollView addButton:aButton shouldHighlight:YES];
+            [navScrollView addButtonWithTitle:buttonTitle];
 		}
         
         [navScrollView setNeedsLayout];
-
+        
+        // highlight active category
         // TODO: use active category instead of always start at first tab
-		UIButton *homeButton = [navScrollView buttonWithTag:0];
-
-        [navScrollView buttonPressed:homeButton];
-        searchTapRegion.tag = 8768; // all subviews of navscrollview need tag numbers that don't compete with buttons
-        [navScrollView addSubview:searchTapRegion];
+        NSString *buttonTitle = [CalendarConstants titleForEventType:0];
+        for (NSInteger i = 0; i < navScrollView.numberOfButtons; i++) {
+            if ([[navScrollView buttonTitleAtIndex:i] isEqualToString:buttonTitle]) {
+                [navScrollView selectButtonAtIndex:i];
+                break;
+            }
+        }
 	}
 	
 }
@@ -382,16 +365,6 @@
 	dateRangeDidChange = NO;
 }
 
-- (void)selectScrollerButton:(NSString *)buttonTitle
-{
-    for (UIButton *aButton in navScrollView.buttons) {
-		if ([aButton.titleLabel.text isEqualToString:buttonTitle]) {			
-			[self buttonPressed:aButton];
-			break;
-		}
-	}
-}
-
 - (BOOL)canShowMap:(CalendarEventListType)listType {
 	return (listType == CalendarEventListTypeEvents || listType == CalendarEventListTypeExhibits);
 }
@@ -422,6 +395,27 @@
 #pragma mark -
 #pragma mark Search bar activation
 
+- (void)tabstrip:(KGOScrollingTabstrip *)tabstrip clickedButtonAtIndex:(NSUInteger)index {
+    if (index == [tabstrip searchButtonIndex]) {
+        [self showSearchBar];
+    } else {
+        CalendarEventListType buttonTypes[3] = {
+            CalendarEventListTypeEvents,
+            CalendarEventListTypeCategory,
+            CalendarEventListTypeAcademic,
+        };
+
+        NSString *title = [tabstrip buttonTitleAtIndex:index];
+		for (int i = 0; i < NumberOfCalendarEventListTypes; i++) {
+			CalendarEventListType listType = buttonTypes[i];
+			NSString *buttonTitle = [CalendarConstants titleForEventType:listType];
+            if ([buttonTitle isEqualToString:title]) {
+                [self reloadView:i];
+            }
+		}
+    }
+}
+
 - (void)showSearchBar
 {
     if (!theSearchBar) {
@@ -438,6 +432,8 @@
 	theSearchBar.alpha = 1.0;
 	[UIView commitAnimations];
     [searchController setActive:YES animated:YES];
+    
+    self.navigationItem.rightBarButtonItem = nil;
 }
 
 - (void)hideSearchBar {
@@ -507,15 +503,6 @@
 - (void)listButtonToggled {
 	showList = YES;
 	[self reloadView:activeEventList];
-}
-
-- (void)buttonPressed:(id)sender {
-    UIButton *pressedButton = (UIButton *)sender;
-    if (pressedButton.tag == SEARCH_BUTTON_TAG) {
-        [self showSearchBar];
-    } else {
-        [self reloadView:pressedButton.tag];
-    }
 }
 
 - (void)addLoadingIndicatorForSearch:(BOOL)isSearch
@@ -834,8 +821,7 @@
 }
 
 
-#pragma mark -
-#pragma mark DatePickerViewControllerDelegate functions
+#pragma mark KGODatePagerDelegate
 
 - (void)pager:(KGODatePager *)pager didSelectDate:(NSDate *)date {
     [startDate release];
@@ -845,33 +831,6 @@
     [self reloadView:activeEventList];
     
 }
-/*
-- (void)datePickerViewControllerDidCancel:(DatePickerViewController *)controller {
-	
-	KGOAppDelegate *appDelegate = (KGOAppDelegate *)[[UIApplication sharedApplication] delegate];
-    [appDelegate dismissAppModalViewControllerAnimated:YES];
-	
-	return;
-}
 
-- (void)datePickerViewController:(DatePickerViewController *)controller didSelectDate:(NSDate *)date {
-	
-	if ([controller class] == [DatePickerViewController class]) {
-		startDate = nil;
-		startDate = [[NSDate alloc] initWithTimeInterval:0 sinceDate:date];    
-		dateRangeDidChange = YES;
-
-		KGOAppDelegate *appDelegate = (KGOAppDelegate *)[[UIApplication sharedApplication] delegate];
-		[appDelegate dismissAppModalViewControllerAnimated:YES];
-		
-		[self reloadView:activeEventList];
-	}
-	return;
-}
-
-- (void)datePickerValueChanged:(id)sender {
-	return;
-}
-*/
 @end
 

@@ -4,18 +4,18 @@
 #import "EventCategoriesTableView.h"
 #import "CalendarMapView.h"
 //#import "DatePickerViewController.h"
-#import "NavScrollerView.h"
+#import "KGOScrollingTabstrip.h"
 #import "KGOSearchDisplayController.h"
 #import "KGODatePager.h"
 
 @class EventListTableView;
 @class CalendarEventMapAnnotation;
 @class DatePickerViewController;
-@class NavScrollerView;
+@class KGOScrollingTabstrip;
 @class KGOSearchBar;
 @class KGODatePager;
 
-@interface CalendarEventsViewController : UIViewController <NavScrollerDelegate,
+@interface CalendarEventsViewController : UIViewController <KGOScrollingTabstripDelegate,
 MKMapViewDelegate, JSONAPIDelegate, KGODatePagerDelegate, KGOSearchDisplayDelegate> {
 
 	CalendarEventListType activeEventList; // today, browse, acad, holidays...
@@ -28,7 +28,7 @@ MKMapViewDelegate, JSONAPIDelegate, KGODatePagerDelegate, KGOSearchDisplayDelega
 	CalendarMapView *theMapView;
 	
 	// views in the header
-    NavScrollerView *navScrollView;
+    KGOScrollingTabstrip *navScrollView;
     
     KGODatePager *datePicker;
 	
@@ -39,10 +39,6 @@ MKMapViewDelegate, JSONAPIDelegate, KGODatePagerDelegate, KGOSearchDisplayDelega
     KGOSearchDisplayController *searchController;
     
 	UIView *loadingIndicator;
-	// this is a tableview subclass but we're only using it for
-	// its delegate methods
-	//EventListTableView *searchResultsTableView;
-	//CalendarMapView *searchResultsMapView;
 	
 	// category parameter for list of events in a category
 	NSInteger theCatID;
@@ -53,7 +49,6 @@ MKMapViewDelegate, JSONAPIDelegate, KGODatePagerDelegate, KGOSearchDisplayDelega
 	
 	BOOL requestDispatched;
 	BOOL categoriesRequestDispatched;
-    //BOOL isFederatedSearch;
 	JSONAPIRequest *apiRequest;
 	
 }
@@ -73,20 +68,13 @@ MKMapViewDelegate, JSONAPIDelegate, KGODatePagerDelegate, KGOSearchDisplayDelega
 
 @property (nonatomic, retain) NSString *searchTerms;
 
-//@property (nonatomic, retain) DatePickerViewController *dateSelector;
-
 - (void)abortExtraneousRequest;
 - (void)makeRequest;
-//- (void)makeSearchRequest:(NSString *)searchTerms;
-//- (void)presentSearchResults:(NSArray *)results searchText:(NSString *)searchText searchSpan:(NSString *)searchSpan;
 
 - (void)mapButtonToggled;
 - (void)listButtonToggled;
-//- (void)sideButtonPressed:(id)sender;
-- (void)buttonPressed:(id)sender;
 
 - (void)reloadView:(CalendarEventListType)listType;
-- (void)selectScrollerButton:(NSString *)buttonTitle;
 
 
 @end

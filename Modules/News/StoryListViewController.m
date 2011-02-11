@@ -6,7 +6,7 @@
 #import "NewsStory.h"
 #import "CoreDataManager.h"
 #import "UIKit+KGOAdditions.h"
-#import "NavScrollerView.h"
+#import "KGOScrollingTabstrip.h"
 #import "KGOSearchDisplayController.h"
 #import "MITUIConstants.h"
 #import "NewsCategory.h"
@@ -106,7 +106,7 @@ static NSInteger numTries = 0;
 	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"bookmarked == YES"];
     NSMutableArray *allBookmarkedStories = [[CoreDataManager sharedManager] objectsForEntity:NewsStoryEntityName matchingPredicate:predicate];
 	hasBookmarks = ([allBookmarkedStories count] > 0) ? YES : NO;
-	[self setupNavScrollButtons];
+	//[self setupNavScrollButtons];
 	if (showingBookmarks) {
 		[self loadFromCache];
 		if (!hasBookmarks) {
@@ -231,66 +231,49 @@ static NSInteger numTries = 0;
 
 - (void)setupNavScroller {
     if (!navScrollView) {
-        navScrollView = [[NavScrollerView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 44.0)];
-        navScrollView.navScrollerDelegate = self;
+        navScrollView = [[KGOScrollingTabstrip alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 44.0) delegate:self buttonTitles:nil];
+        navScrollView.delegate = self;
         [self.view addSubview:navScrollView];
+        [self setupNavScrollButtons];
     }
-    [self setupNavScrollButtons];
 }
 
 - (void)setupNavScrollButtons {
-    
-    [navScrollView removeAllButtons];
-
-    UIButton *searchButton = [navScrollView buttonWithTag:SEARCH_BUTTON_TAG];
-    if (!searchButton) {
-        UIButton *searchButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        UIImage *searchImage = [UIImage imageNamed:MITImageNameSearch];
-        [searchButton setImage:searchImage forState:UIControlStateNormal];
-        searchButton.tag = SEARCH_BUTTON_TAG;
-        // TODO: adjust so that magnifying class lines up when searchbar is shown
-        navScrollView.currentXOffset += 4.0;
-        [navScrollView addButton:searchButton shouldHighlight:NO];
-    }
-	
-	if (hasBookmarks) {
-        UIButton *bookmarkButton = [navScrollView buttonWithTag:BOOKMARK_BUTTON_TAG];
-        if (!bookmarkButton) {
-            UIButton *bookmarkButton = [UIButton buttonWithType:UIButtonTypeCustom];
-            UIImage *bookmarkImage = [UIImage imageNamed:MITImageNameBookmark];
-            [bookmarkButton setImage:bookmarkImage forState:UIControlStateNormal];
-            bookmarkButton.tag = BOOKMARK_BUTTON_TAG;
-            [navScrollView addButton:bookmarkButton shouldHighlight:YES];
-        }
-	}
-    
     for (NewsCategory *aCategory in self.categories) {
-        NewsCategoryId tagValue = (NewsCategoryId)[aCategory.category_id intValue];
-        UIButton *aButton = [navScrollView buttonWithTag:tagValue];
-        if (!aButton) {
-            aButton = [UIButton buttonWithType:UIButtonTypeCustom];
-            aButton.tag = tagValue;
-            NSString *buttonTitle = aCategory.title;
-            [aButton setTitle:buttonTitle forState:UIControlStateNormal];
-            [navScrollView addButton:aButton shouldHighlight:YES];
-        }
+        [navScrollView addButtonWithTitle:aCategory.title];
     }
+    
+    navScrollView.showsSearchButton = YES;
+    navScrollView.showsBookmarkButton = hasBookmarks;
     
     [navScrollView setNeedsLayout];
 
 	// highlight active category
-    UIButton *homeButton = [navScrollView buttonWithTag:self.activeCategoryId];
-    [navScrollView buttonPressed:homeButton];
+    if (self.categories.count) {
+        NewsCategory *firstCategory = [self.categories objectAtIndex:0];
+        for (NSInteger i = 0; i < navScrollView.numberOfButtons; i++) {
+            if ([[navScrollView buttonTitleAtIndex:i] isEqualToString:firstCategory.title]) {
+                [navScrollView selectButtonAtIndex:i];
+                break;
+            }
+        }
+    }
 }
 
-- (void)buttonPressed:(id)sender {
-    
-    UIButton *pressedButton = (UIButton *)sender;
-    
-    if (pressedButton.tag == SEARCH_BUTTON_TAG) {
+- (void)tabstrip:(KGOScrollingTabstrip *)tabstrip clickedButtonAtIndex:(NSUInteger)index {
+    if (index == [tabstrip searchButtonIndex]) {
         [self showSearchBar];
+    } else if (index == [tabstrip bookmarkButtonIndex]) {
+        [self switchToCategory:BOOKMARK_BUTTON_TAG];
     } else {
-        [self switchToCategory:pressedButton.tag];
+        NSString *title = [tabstrip buttonTitleAtIndex:index];
+        for (NewsCategory *aCategory in self.categories) {
+            if ([aCategory.title isEqualToString:title]) {
+                NewsCategoryId tagValue = (NewsCategoryId)[aCategory.category_id intValue];
+                [self switchToCategory:tagValue];
+                break;
+            }
+        }
     }
 }
 

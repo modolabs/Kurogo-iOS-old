@@ -72,8 +72,8 @@
 		EB13879712F22DBC004DBB7C /* TwitterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EB13872012F22DBC004DBB7C /* TwitterViewController.m */; };
 		EB13879812F22DBC004DBB7C /* MITLoadingActivityView.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB13872212F22DBC004DBB7C /* MITLoadingActivityView.h */; settings = {JAVA_ARCHIVE_SUBDIR = ../../Common/Views; }; };
 		EB13879912F22DBC004DBB7C /* MITLoadingActivityView.m in Sources */ = {isa = PBXBuildFile; fileRef = EB13872312F22DBC004DBB7C /* MITLoadingActivityView.m */; };
-		EB13879E12F22DBC004DBB7C /* NavScrollerView.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB13872812F22DBC004DBB7C /* NavScrollerView.h */; settings = {JAVA_ARCHIVE_SUBDIR = ../../Common/Views; }; };
-		EB13879F12F22DBC004DBB7C /* NavScrollerView.m in Sources */ = {isa = PBXBuildFile; fileRef = EB13872912F22DBC004DBB7C /* NavScrollerView.m */; };
+		EB13879E12F22DBC004DBB7C /* KGOScrollingTabstrip.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB13872812F22DBC004DBB7C /* KGOScrollingTabstrip.h */; settings = {JAVA_ARCHIVE_SUBDIR = ../../Common/Views; }; };
+		EB13879F12F22DBC004DBB7C /* KGOScrollingTabstrip.m in Sources */ = {isa = PBXBuildFile; fileRef = EB13872912F22DBC004DBB7C /* KGOScrollingTabstrip.m */; };
 		EB1387A212F22DBC004DBB7C /* TabViewControl.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB13872C12F22DBC004DBB7C /* TabViewControl.h */; settings = {JAVA_ARCHIVE_SUBDIR = ../../Common/Views; }; };
 		EB1387A312F22DBC004DBB7C /* TabViewControl.m in Sources */ = {isa = PBXBuildFile; fileRef = EB13872D12F22DBC004DBB7C /* TabViewControl.m */; };
 		EB1387AF12F22DD2004DBB7C /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = EB1387A512F22DD2004DBB7C /* main.m */; };
@@ -337,8 +337,8 @@
 		EB13872012F22DBC004DBB7C /* TwitterViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TwitterViewController.m; sourceTree = "<group>"; };
 		EB13872212F22DBC004DBB7C /* MITLoadingActivityView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MITLoadingActivityView.h; sourceTree = "<group>"; };
 		EB13872312F22DBC004DBB7C /* MITLoadingActivityView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MITLoadingActivityView.m; sourceTree = "<group>"; };
-		EB13872812F22DBC004DBB7C /* NavScrollerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NavScrollerView.h; sourceTree = "<group>"; };
-		EB13872912F22DBC004DBB7C /* NavScrollerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NavScrollerView.m; sourceTree = "<group>"; };
+		EB13872812F22DBC004DBB7C /* KGOScrollingTabstrip.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGOScrollingTabstrip.h; sourceTree = "<group>"; };
+		EB13872912F22DBC004DBB7C /* KGOScrollingTabstrip.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGOScrollingTabstrip.m; sourceTree = "<group>"; };
 		EB13872C12F22DBC004DBB7C /* TabViewControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TabViewControl.h; sourceTree = "<group>"; };
 		EB13872D12F22DBC004DBB7C /* TabViewControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TabViewControl.m; sourceTree = "<group>"; };
 		EB1387A512F22DD2004DBB7C /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -797,8 +797,8 @@
 				EB142C141300950300396753 /* ModoNavigationController.m */,
 				EB13872212F22DBC004DBB7C /* MITLoadingActivityView.h */,
 				EB13872312F22DBC004DBB7C /* MITLoadingActivityView.m */,
-				EB13872812F22DBC004DBB7C /* NavScrollerView.h */,
-				EB13872912F22DBC004DBB7C /* NavScrollerView.m */,
+				EB13872812F22DBC004DBB7C /* KGOScrollingTabstrip.h */,
+				EB13872912F22DBC004DBB7C /* KGOScrollingTabstrip.m */,
 				EB13872C12F22DBC004DBB7C /* TabViewControl.h */,
 				EB13872D12F22DBC004DBB7C /* TabViewControl.m */,
 				EBAA8C9912FC56B000B743C3 /* HighlightedResultLabel.h */,
@@ -1097,7 +1097,7 @@
 				EB13879212F22DBC004DBB7C /* KGOShareButtonController.h in JavaArchive */,
 				EB13879612F22DBC004DBB7C /* TwitterViewController.h in JavaArchive */,
 				EB13879812F22DBC004DBB7C /* MITLoadingActivityView.h in JavaArchive */,
-				EB13879E12F22DBC004DBB7C /* NavScrollerView.h in JavaArchive */,
+				EB13879E12F22DBC004DBB7C /* KGOScrollingTabstrip.h in JavaArchive */,
 				EB1387A212F22DBC004DBB7C /* TabViewControl.h in JavaArchive */,
 				EB1387B212F22DD2004DBB7C /* MITDeviceRegistration.h in JavaArchive */,
 				EB138C2912F234A8004DBB7C /* MITBuildInfo.h in JavaArchive */,
@@ -1359,7 +1359,7 @@
 				EB13879312F22DBC004DBB7C /* KGOShareButtonController.m in Sources */,
 				EB13879712F22DBC004DBB7C /* TwitterViewController.m in Sources */,
 				EB13879912F22DBC004DBB7C /* MITLoadingActivityView.m in Sources */,
-				EB13879F12F22DBC004DBB7C /* NavScrollerView.m in Sources */,
+				EB13879F12F22DBC004DBB7C /* KGOScrollingTabstrip.m in Sources */,
 				EB1387A312F22DBC004DBB7C /* TabViewControl.m in Sources */,
 				EB1387AF12F22DD2004DBB7C /* main.m in Sources */,
 				EB1387B312F22DD2004DBB7C /* MITDeviceRegistration.m in Sources */,

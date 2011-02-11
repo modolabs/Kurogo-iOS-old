@@ -22,6 +22,7 @@
     [super dealloc];
 }
 
+// TODO: get config values for assets
 - (void)layoutSubviews {
 
     if (!nextButton) {
@@ -31,10 +32,6 @@
             dropShadow.frame = CGRectMake(0, self.frame.size.height, dropShadow.frame.size.width, dropShadow.frame.size.height);
             [self addSubview:dropShadow];
         }
-        
-        //UIImageView *backgroundImage = [[[UIImageView alloc] initWithFrame:CGRectMake(0.0, 0.0, self.frame.size.width, self.frame.size.height)] autorelease];
-        //backgroundImage.image = [[UIImage imageNamed:@"common/subheadbar_background.png"] stretchableImageWithLeftCapWidth:0 topCapHeight:0];
-        //[self addSubview:backgroundImage];
         
         // arrow buttons
         nextButton = [UIButton buttonWithType:UIButtonTypeCustom];

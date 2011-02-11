@@ -1,7 +1,7 @@
 #import <UIKit/UIKit.h>
 #import "StoryXMLParser.h"
 #import "JSONAPIRequest.h"
-#import "NavScrollerView.h"
+#import "KGOScrollingTabstrip.h"
 #import "KGOSearchBar.h"
 #import "StoryDetailViewController.h"
 #import "KGOTableViewController.h"
@@ -12,7 +12,7 @@ typedef int NewsCategoryId;
 @class NewsStory;
 
 @interface StoryListViewController : KGOTableViewController <UISearchBarDelegate,
-StoryXMLParserDelegate, JSONAPIDelegate, NavScrollerDelegate, NewsControllerDelegate> {
+StoryXMLParserDelegate, JSONAPIDelegate, KGOScrollingTabstripDelegate, NewsControllerDelegate> {
 	UITableView *storyTable;
     NewsStory *featuredStory;
     NSArray *stories;
@@ -23,7 +23,7 @@ StoryXMLParserDelegate, JSONAPIDelegate, NavScrollerDelegate, NewsControllerDele
     NSArray *navButtons;
     
 	// Nav Scroll View
-	NavScrollerView *navScrollView;
+	KGOScrollingTabstrip *navScrollView;
 	UIButton *leftScrollButton;
 	UIButton *rightScrollButton;  
 
