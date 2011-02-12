@@ -66,6 +66,8 @@ typedef void (^CellManipulator)(UITableViewCell *);
 - (void)addTableView:(UITableView *)tableView withDataSource:(id<KGOTableViewDataSource>)dataSource;
 - (UITableView *)addTableViewWithFrame:(CGRect)frame style:(UITableViewStyle)style;
 
+- (void)bringTableViewToFront:(UITableView *)tableView;
+
 - (void)reloadDataForTableView:(UITableView *)tableView;
 - (void)decacheTableView:(UITableView *)tableView;
 

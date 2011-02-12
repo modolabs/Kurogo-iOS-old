@@ -32,8 +32,6 @@ JSONAPIDelegate, KGODatePagerDelegate, KGOSearchDisplayDelegate> {
     
     KGODatePager *datePicker;
 	
-	UIView *nothingFound;
-	
 	// search
     KGOSearchBar *theSearchBar;
     KGOSearchDisplayController *searchController;
@@ -46,7 +44,6 @@ JSONAPIDelegate, KGODatePagerDelegate, KGOSearchDisplayDelegate> {
 	BOOL showScroller;
 	BOOL dateRangeDidChange;
 	
-	BOOL requestDispatched;
 	BOOL categoriesRequestDispatched;
 	JSONAPIRequest *apiRequest;
 	
@@ -63,10 +60,9 @@ JSONAPIDelegate, KGODatePagerDelegate, KGOSearchDisplayDelegate> {
 
 @property (nonatomic, retain) NSString *searchTerms;
 
-- (void)abortExtraneousRequest;
 - (void)makeRequest;
 
-- (void)reloadView:(CalendarEventListType)listType;
+- (void)switchToCategory:(CalendarEventListType)listType;
 
 
 @end

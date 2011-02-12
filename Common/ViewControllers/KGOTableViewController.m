@@ -81,6 +81,15 @@
     self.tableView = [_tableController topTableView];
 }
 
+- (void)bringTableViewToFront:(UITableView *)tableView {
+    if (tableView != [_tableController topTableView]) {
+        [tableView retain];
+        [_tableController removeTableView:tableView];
+        [_tableController addTableView:tableView];
+        [tableView release];
+    }
+}
+
 - (void)reloadDataForTableView:(UITableView *)tableView {
 	[_tableController reloadDataForTableView:tableView];
 }
@@ -230,6 +239,8 @@
 	[_tableViewDataSources addObject:dataSource];
 	[_cellContentBuffers addObject:[NSMutableDictionary dictionary]];
     
+    tableView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
+    
 	if (_viewController) {
 		tableView.delegate = _viewController;
 		tableView.dataSource = _viewController;
@@ -264,7 +275,6 @@
 
 - (UITableView *)addTableViewWithFrame:(CGRect)frame style:(UITableViewStyle)style dataSource:(id<KGOTableViewDataSource>)dataSource {
     UITableView *tableView = [[[UITableView alloc] initWithFrame:frame style:style] autorelease];
-    tableView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
 
     if (style == UITableViewStyleGrouped) {
         tableView.backgroundColor = [UIColor clearColor];
