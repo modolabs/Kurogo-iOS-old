@@ -7,6 +7,7 @@
 #import <QuartzCore/QuartzCore.h>
 #import "TileServerManager.h"
 #import "KGOSearchBar.h"
+#import "KGOAppDelegate+ModuleAdditions.h"
 
 #define SCROLL_TAB_HORIZONTAL_PADDING 5.0
 #define SCROLL_TAB_HORIZONTAL_MARGIN  5.0
@@ -641,16 +642,12 @@
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (tableView == _eventListTableView) {	
+    if (tableView == _eventListTableView) {
         MITCalendarEvent *event = [self.events objectAtIndex:indexPath.row];
         
-        CalendarDetailViewController *detailVC = [[CalendarDetailViewController alloc] initWithStyle:UITableViewStylePlain];
-        detailVC.event = event;
-        detailVC.events = self.events;
-        
-        [self.parentViewController.navigationController pushViewController:detailVC animated:YES];
-        [detailVC release];
-        
+        NSDictionary *params = [NSDictionary dictionaryWithObject:event forKey:@"event"];
+        [(KGOAppDelegate *)[[UIApplication sharedApplication] delegate] showPage:LocalPathPageNameDetail forModuleTag:CalendarTag params:params];
+
     } else {
         
         

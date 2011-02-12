@@ -122,6 +122,8 @@
 		EB14351E13038CE500396753 /* KGODatePager.m in Sources */ = {isa = PBXBuildFile; fileRef = EB14351C13038CE500396753 /* KGODatePager.m */; };
 		EB143DD1130636BA00396753 /* DatePickerViewController.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB143DCF130636BA00396753 /* DatePickerViewController.h */; settings = {JAVA_ARCHIVE_SUBDIR = ../../Common/ViewControllers; }; };
 		EB143DD2130636BA00396753 /* DatePickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EB143DD0130636BA00396753 /* DatePickerViewController.m */; };
+		EB143E5313063A5E00396753 /* KGOCategoryListViewController.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB143E5113063A5E00396753 /* KGOCategoryListViewController.h */; settings = {JAVA_ARCHIVE_SUBDIR = ../../Common/ViewControllers; }; };
+		EB143E5413063A5E00396753 /* KGOCategoryListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EB143E5213063A5E00396753 /* KGOCategoryListViewController.m */; };
 		EB3721AA11FA2F5200705180 /* NewsImage.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB3721A811FA2F5200705180 /* NewsImage.h */; settings = {JAVA_ARCHIVE_SUBDIR = Modules/News; }; };
 		EB3721AB11FA2F5200705180 /* NewsImage.m in Sources */ = {isa = PBXBuildFile; fileRef = EB3721A911FA2F5200705180 /* NewsImage.m */; };
 		EB4211B8120C92C600089FE0 /* MapSavedAnnotation.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB4211B6120C92C600089FE0 /* MapSavedAnnotation.h */; settings = {JAVA_ARCHIVE_SUBDIR = "Modules/Campus Map"; }; };
@@ -380,6 +382,8 @@
 		EB14351C13038CE500396753 /* KGODatePager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGODatePager.m; sourceTree = "<group>"; };
 		EB143DCF130636BA00396753 /* DatePickerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DatePickerViewController.h; sourceTree = "<group>"; };
 		EB143DD0130636BA00396753 /* DatePickerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DatePickerViewController.m; sourceTree = "<group>"; };
+		EB143E5113063A5E00396753 /* KGOCategoryListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGOCategoryListViewController.h; sourceTree = "<group>"; };
+		EB143E5213063A5E00396753 /* KGOCategoryListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGOCategoryListViewController.m; sourceTree = "<group>"; };
 		EB3721A811FA2F5200705180 /* NewsImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NewsImage.h; sourceTree = "<group>"; };
 		EB3721A911FA2F5200705180 /* NewsImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NewsImage.m; sourceTree = "<group>"; };
 		EB4211B6120C92C600089FE0 /* MapSavedAnnotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MapSavedAnnotation.h; sourceTree = "<group>"; };
@@ -756,6 +760,8 @@
 		EB13871A12F22DBC004DBB7C /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
+				EB143E5113063A5E00396753 /* KGOCategoryListViewController.h */,
+				EB143E5213063A5E00396753 /* KGOCategoryListViewController.m */,
 				EB143DCF130636BA00396753 /* DatePickerViewController.h */,
 				EB143DD0130636BA00396753 /* DatePickerViewController.m */,
 				EB142B4A130058D500396753 /* MITMailComposeController.h */,
@@ -1091,6 +1097,7 @@
 				EB1433AF1303509D00396753 /* KGOSearchBar.h in JavaArchive */,
 				EB14351D13038CE500396753 /* KGODatePager.h in JavaArchive */,
 				EB143DD1130636BA00396753 /* DatePickerViewController.h in JavaArchive */,
+				EB143E5313063A5E00396753 /* KGOCategoryListViewController.h in JavaArchive */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1347,6 +1354,7 @@
 				EB1433B01303509D00396753 /* KGOSearchBar.m in Sources */,
 				EB14351E13038CE500396753 /* KGODatePager.m in Sources */,
 				EB143DD2130636BA00396753 /* DatePickerViewController.m in Sources */,
+				EB143E5413063A5E00396753 /* KGOCategoryListViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
