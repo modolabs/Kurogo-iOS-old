@@ -11,7 +11,7 @@ typedef int NewsCategoryId;
 @class KGOSearchDisplayController;
 @class NewsStory;
 
-@interface StoryListViewController : KGOTableViewController <UISearchBarDelegate,
+@interface StoryListViewController : KGOTableViewController <KGOSearchBarDelegate,
 StoryXMLParserDelegate, JSONAPIDelegate, KGOScrollingTabstripDelegate, NewsControllerDelegate> {
 	UITableView *storyTable;
     NewsStory *featuredStory;

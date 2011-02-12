@@ -1,6 +1,6 @@
 #import <UIKit/UIKit.h>
-#import <MapKit/MapKit.h>
 #import "KGOSearchDelegate.h"
+#import "KGOSearchBar.h"
 #import "KGOTableViewController.h"
 #import "KGODetailPager.h"
 
@@ -28,32 +28,29 @@
 
 @class KGOTableController;
 
-@interface KGOSearchDisplayController : NSObject <UISearchBarDelegate, KGOTableViewDataSource, KGOSearchDelegate, MKMapViewDelegate, KGODetailPagerController> {
+@interface KGOSearchDisplayController : NSObject <KGOSearchBarDelegate, KGOTableViewDataSource, KGOSearchDelegate, KGODetailPagerController> {
     
     id<KGOSearchDisplayDelegate> _delegate;
     NSArray *_searchResults;
     BOOL _didExecuteSearch;
 
-    UISearchBar *_searchBar;
+    KGOSearchBar *_searchBar;
     BOOL _active;
     UIViewController *_searchContentsController;
     KGOTableController *_searchTableController;
     UIControl *_searchOverlay;
-    MKMapView *_searchResultsMapView;
     BOOL _showingMapView;
 }
 
 @property (nonatomic, readonly) id<KGOSearchDisplayDelegate> delegate;
 @property (nonatomic, retain) NSArray *searchResults;
 
-@property (nonatomic, readonly) UISearchBar *searchBar;
+@property (nonatomic, readonly) KGOSearchBar *searchBar;
 @property (nonatomic, getter=isActive) BOOL active;
 @property (nonatomic, readonly) UIViewController *searchContentsController;
 @property (nonatomic, readonly) KGOTableController *searchTableController;
 
-@property (nonatomic, readonly) MKMapView *searchResultsMapView;
-
-- (id)initWithSearchBar:(UISearchBar *)searchBar delegate:(id<KGOSearchDisplayDelegate>)delegate contentsController:(UIViewController *)viewController;
+- (id)initWithSearchBar:(KGOSearchBar *)searchBar delegate:(id<KGOSearchDisplayDelegate>)delegate contentsController:(UIViewController *)viewController;
 - (void)setActive:(BOOL)visible animated:(BOOL)animated;
 - (void)executeSearch:(NSString *)text params:(NSDictionary *)params;
 
@@ -68,9 +65,6 @@
 
 - (void)reloadSearchResultsTableView;
 
-- (void)showSearchResultsMapView;
-- (void)hideSearchResultsMapView;
-
-- (BOOL)canShowMapView;
+- (BOOL)canShowMapView; // whether the search bar should present a button to link to map module
 
 @end

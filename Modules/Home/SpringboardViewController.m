@@ -194,7 +194,8 @@
     containingView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     [self.view addSubview:containingView];
 
-    _searchBar = [[KGOSearchBar alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 44)];
+    //_searchBar = [[KGOSearchBar alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 44)];
+    _searchBar = [[KGOSearchBar defaultSearchBarWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 44)] retain];
     _searchBar.placeholder = [NSString stringWithString:@"Search Harvard Mobile"];
     [self.view addSubview:_searchBar];
 

@@ -296,7 +296,8 @@ static NSInteger numTries = 0;
 
 - (void)showSearchBar {
 	if (!theSearchBar) {
-		theSearchBar = [[KGOSearchBar alloc] initWithFrame:CGRectMake(0.0, 0.0, self.view.frame.size.width, 44.0)];
+		//theSearchBar = [[KGOSearchBar alloc] initWithFrame:CGRectMake(0.0, 0.0, self.view.frame.size.width, 44.0)];
+        theSearchBar = [[KGOSearchBar defaultSearchBarWithFrame:CGRectMake(0.0, 0.0, self.view.frame.size.width, 44.0)] retain];
 		theSearchBar.delegate = self;
 		theSearchBar.alpha = 0.0;
         CGRect frame = CGRectMake(0.0, theSearchBar.frame.size.height, self.view.frame.size.width,
@@ -344,7 +345,7 @@ static NSInteger numTries = 0;
 
 #pragma mark UISearchBar delegation
 
-- (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar {	
+- (void)searchBarCancelButtonClicked:(KGOSearchBar *)searchBar {	
 	// cancel any outstanding search
 	if (self.xmlParser) {
 		[self.xmlParser abort]; // cancel previous category's request if it's still going
@@ -357,12 +358,12 @@ static NSInteger numTries = 0;
     [self loadFromCache];
 }
 
-- (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar {
+- (void)searchBarSearchButtonClicked:(KGOSearchBar *)searchBar {
 	self.searchQuery = searchBar.text;
 	[self loadSearchResultsFromServer:NO forQuery:self.searchQuery];
 }
 
-- (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText {
+- (void)searchBar:(KGOSearchBar *)searchBar textDidChange:(NSString *)searchText {
 	// when query is cleared, clear search result and show category instead
 	if ([searchText length] == 0) {
 		if ([self.searchResults count] > 0) {

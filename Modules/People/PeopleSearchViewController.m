@@ -33,7 +33,8 @@ static const NSUInteger kPhoneDirectorySection = 0;
         phoneDirectoryEntries = [[NSArray alloc] initWithContentsOfFile:filename];
     }
     
-    theSearchBar = [[KGOSearchBar alloc] initWithFrame:CGRectMake(0.0f, 0.0f, self.view.frame.size.width, NAVIGATION_BAR_HEIGHT)];
+    //theSearchBar = [[KGOSearchBar alloc] initWithFrame:CGRectMake(0.0f, 0.0f, self.view.frame.size.width, NAVIGATION_BAR_HEIGHT)];
+    theSearchBar = [[KGOSearchBar defaultSearchBarWithFrame:CGRectMake(0.0f, 0.0f, self.view.frame.size.width, NAVIGATION_BAR_HEIGHT)] retain];
 	theSearchBar.placeholder = NSLocalizedString(@"Search", nil);
 
     if (!searchController) {

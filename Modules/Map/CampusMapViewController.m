@@ -64,7 +64,8 @@
 	self.navigationItem.rightBarButtonItem = _viewTypeButton;
 	
 	// add a search bar to our view
-	_searchBar = [[KGOSearchBar alloc] initWithFrame:CGRectMake(0, 0, searchBarWidth, NAVIGATION_BAR_HEIGHT)];
+	//_searchBar = [[KGOSearchBar alloc] initWithFrame:CGRectMake(0, 0, searchBarWidth, NAVIGATION_BAR_HEIGHT)];
+	_searchBar = [[KGOSearchBar defaultSearchBarWithFrame:CGRectMake(0, 0, searchBarWidth, NAVIGATION_BAR_HEIGHT)] retain];
 	_searchBar.delegate = self;
 	_searchBar.placeholder = NSLocalizedString(@"Search Campus Map", nil);
 	_searchBar.showsBookmarkButton = NO; // we'll be adding a custom bookmark button
@@ -561,13 +562,13 @@
 
 #pragma mark UISearchBarDelegate
 
-- (void)searchBarTextDidBeginEditing:(UISearchBar *)searchBar
+- (void)searchBarTextDidBeginEditing:(KGOSearchBar *)searchBar
 {
     [self setupSearchController]; // in case we got rid of it from a memory warning
     [self hideToolBar];
 }
 
-- (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
+- (void)searchBarSearchButtonClicked:(KGOSearchBar *)searchBar
 {
     
     // TODO: campus map search should be obsoleted by app-wide recent search entity
@@ -616,7 +617,7 @@
 	
 }
 
-- (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar
+- (void)searchBarCancelButtonClicked:(KGOSearchBar *)searchBar
 {
 	self.navigationItem.rightBarButtonItem.title = _displayingList ? @"Map" : @"Browse";
 	_hasSearchResults = NO;

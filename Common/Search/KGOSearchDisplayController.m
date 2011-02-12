@@ -7,6 +7,7 @@
 #import "CoreDataManager.h"
 #import "KGOAppDelegate+ModuleAdditions.h"
 #import "RecentSearch.h"
+#import <MapKit/MKAnnotation.h>
 
 #define MAX_SEARCH_RESULTS 25
 
@@ -28,11 +29,10 @@ static NSString * RecentSearchesEntityName = @"RecentSearch";
 @synthesize searchBar = _searchBar, active = _active, delegate = _delegate,
 searchContentsController = _searchContentsController,
 searchTableController = _searchTableController,
-searchResultsMapView = _searchResultsMapView,
 searchResults = _searchResults;
 
 
-- (id)initWithSearchBar:(UISearchBar *)searchBar delegate:(id<KGOSearchDisplayDelegate>)delegate contentsController:(UIViewController *)viewController {
+- (id)initWithSearchBar:(KGOSearchBar *)searchBar delegate:(id<KGOSearchDisplayDelegate>)delegate contentsController:(UIViewController *)viewController {
     if (self = [super init]) {
         _searchBar = [searchBar retain];
         _searchBar.delegate = self;
@@ -89,7 +89,6 @@ searchResults = _searchResults;
         _searchTableController.caching = ![self.delegate searchControllerShouldShowSuggestions:self];
     }
     
-    _showingMapView = NO;
     UITableView *tableView = [_searchTableController topTableView];
     [_searchContentsController.view bringSubviewToFront:tableView];
     
@@ -111,62 +110,6 @@ searchResults = _searchResults;
 - (void)reloadSearchResultsTableView {
     [[_searchTableController topTableView] reloadData];
 }
-
-- (void)showSearchResultsMapView {
-    if (!_searchResultsMapView) {
-        CGRect frame = CGRectMake(0.0, _searchBar.frame.size.height, _searchContentsController.view.frame.size.width,
-                                  _searchContentsController.view.frame.size.height - _searchBar.frame.size.height);
-        _searchResultsMapView = [[MKMapView alloc] initWithFrame:frame];
-        _searchResultsMapView.delegate = self;
-        if (self.searchResults.count) {
-            for (id<KGOSearchResult> aResult in self.searchResults) {
-                if ([aResult conformsToProtocol:@protocol(MKAnnotation)]) {
-                    id<MKAnnotation>annotation = (id<MKAnnotation>)aResult;
-                    if (annotation.coordinate.latitude && annotation.coordinate.longitude) {
-                        [_searchResultsMapView addAnnotation:(id<MKAnnotation>)aResult];
-                    }
-                }
-            }
-        }
-        [_searchContentsController.view addSubview:_searchResultsMapView];
-    }
-
-    _showingMapView = YES;
-    [_searchContentsController.view bringSubviewToFront:_searchResultsMapView];
-    
-    if ([self.delegate respondsToSelector:@selector(searchControllerDidShowSearchResultsMapView:)]) {
-        [self.delegate searchControllerDidShowSearchResultsMapView:self];
-    }
-}
-
-- (void)hideSearchResultsMapView {
-    if ([self.delegate respondsToSelector:@selector(searchControllerWillHideSearchResultsMapView:)]) {
-        [self.delegate searchControllerWillHideSearchResultsMapView:self];
-    }
-    
-    _showingMapView = NO;
-    if (_searchResultsMapView) {
-        [_searchResultsMapView removeFromSuperview];
-        [_searchResultsMapView release];
-        _searchResultsMapView = nil;
-    }
-}
-
-- (BOOL)canShowMapView {
-    if (self.searchResults.count) {
-        for (id<KGOSearchResult> aResult in self.searchResults) {
-            if ([aResult conformsToProtocol:@protocol(MKAnnotation)]) {
-                id<MKAnnotation>annotation = (id<MKAnnotation>)aResult;
-                if (annotation.coordinate.latitude && annotation.coordinate.longitude) {
-                    return YES;
-                }
-            }
-        }
-    }
-    return NO;
-}
-
-#pragma mark Search UI
 
 - (void)focusSearchBarAnimated:(BOOL)animated {
     [_searchBar setShowsCancelButton:YES animated:animated];
@@ -241,19 +184,42 @@ searchResults = _searchResults;
 }
 
 
-#pragma mark UISearchBarDelegate
+- (BOOL)canShowMapView {
+    if (self.searchResults.count) {
+        for (id<KGOSearchResult> aResult in self.searchResults) {
+            if ([aResult conformsToProtocol:@protocol(MKAnnotation)]) {
+                id<MKAnnotation>annotation = (id<MKAnnotation>)aResult;
+                if (annotation.coordinate.latitude && annotation.coordinate.longitude) {
+                    return YES;
+                }
+            }
+        }
+    }
+    return NO;
+}
 
-- (void)searchBarTextDidBeginEditing:(UISearchBar *)searchBar {
+#pragma mark KGOSearchBarDelegate
+
+- (void)toolbarItemTapped:(UIBarButtonItem *)item {
+    if ([item.title isEqualToString:NSLocalizedString(@"Map", nil)]) {
+        NSDictionary *params = [NSDictionary dictionaryWithObject:self.searchResults forKey:@"searchResults"];
+        [(KGOAppDelegate *)[[UIApplication sharedApplication] delegate] showPage:LocalPathPageNameSearch forModuleTag:MapTag params:params];
+    }
+}
+
+#pragma mark KGOSearchBarDelegate
+
+- (void)searchBarTextDidBeginEditing:(KGOSearchBar *)searchBar {
     [self setActive:YES animated:YES];
 }
 
-- (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar {
+- (void)searchBarSearchButtonClicked:(KGOSearchBar *)searchBar {
     [self unfocusSearchBarAnimated:YES];
     [self executeSearch:searchBar.text params:nil];
 
     // save search term to recent searches
     NSString *moduleTag = [self.delegate searchControllerModuleTag:self];
-    NSPredicate *pred = [NSPredicate predicateWithFormat:@"text = '%@' AND module = '%@'", searchBar.text, moduleTag];
+    NSPredicate *pred = [NSPredicate predicateWithFormat:@"text = %@ AND module = %@", searchBar.text, moduleTag];
     RecentSearch *recentSearch = [[[CoreDataManager sharedManager] objectsForEntity:RecentSearchesEntityName matchingPredicate:pred] lastObject];
     if (!recentSearch) {
         recentSearch = [[CoreDataManager sharedManager] insertNewObjectForEntityForName:RecentSearchesEntityName];
@@ -264,18 +230,17 @@ searchResults = _searchResults;
     [[CoreDataManager sharedManager] saveData];
 }
 
-- (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar {
-    [self hideSearchResultsMapView];
+- (void)searchBarCancelButtonClicked:(KGOSearchBar *)searchBar {
     [self hideSearchResultsTableView];
     [self setActive:NO animated:YES];
     _searchBar.text = nil;
 }
 
-- (void)searchBarBookmarkButtonClicked:(UISearchBar *)searchBar {
+- (void)searchBarBookmarkButtonClicked:(KGOSearchBar *)searchBar {
 
 }
 
-- (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText {
+- (void)searchBar:(KGOSearchBar *)searchBar textDidChange:(NSString *)searchText {
     if ([searchText length] && [self.delegate searchControllerShouldShowSuggestions:self]) {
         
         NSMutableArray *searchResults = [NSMutableArray array];
@@ -313,7 +278,7 @@ searchResults = _searchResults;
     }
 }
 
-- (void)searchBar:(UISearchBar *)searchBar selectedScopeButtonIndexDidChange:(NSInteger)selectedScope {
+- (void)searchBar:(KGOSearchBar *)searchBar selectedScopeButtonIndexDidChange:(NSInteger)selectedScope {
 
 }
 
@@ -328,6 +293,12 @@ searchResults = _searchResults;
     }
     [self showSearchResultsTableView];
     [self reloadSearchResultsTableView];
+    if ([self canShowMapView]) {
+        if (!_searchBar.toolbarItems.count) {
+            [_searchBar addToolbarButtonWithTitle:NSLocalizedString(@"Map", nil)];
+        }
+        [_searchBar showToolbarAnimated:YES];
+    }
 }
 
 #pragma mark KGOTableDataSource
@@ -389,31 +360,6 @@ searchResults = _searchResults;
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
 	return [_searchTableController tableView:tableView cellForRowAtIndexPath:indexPath];
-}
-
-#pragma mark MKMapViewDelegate
-
-- (MKAnnotationView *)mapView:(MKMapView *)mapView viewForAnnotation:(id<MKAnnotation>)annotation {
-    MKAnnotationView *aView = nil;
-    if ([annotation conformsToProtocol:@protocol(KGOSearchResult)]) {
-        id<KGOSearchResult> searchResult = (id<KGOSearchResult>)annotation;
-        if ([searchResult respondsToSelector:@selector(annotationImage)]) {
-            aView = [[[MKAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:@"afgwgwg"] autorelease];
-            aView.image = [searchResult annotationImage];
-        } else {
-            aView = [[[MKPinAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:@"jawiogno"] autorelease];
-        }
-        aView.canShowCallout = YES;
-        aView.rightCalloutAccessoryView = [UIButton buttonWithType:UIButtonTypeDetailDisclosure];
-    }
-    return aView;
-}
-
-- (void)mapView:(MKMapView *)mapView annotationView:(MKAnnotationView *)view calloutAccessoryControlTapped:(UIControl *)control {
-    if ([view.annotation conformsToProtocol:@protocol(KGOSearchResult)]) {
-        id<KGOSearchResult> searchResult = (id<KGOSearchResult>)view.annotation;
-        [self.delegate searchController:self didSelectResult:searchResult];
-    }
 }
 
 #pragma mark KGOPagerDelegate

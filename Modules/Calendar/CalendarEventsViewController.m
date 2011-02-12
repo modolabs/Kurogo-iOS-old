@@ -419,7 +419,7 @@
 - (void)showSearchBar
 {
     if (!theSearchBar) {
-        theSearchBar = [[KGOSearchBar alloc] initWithFrame:navScrollView.frame];
+        theSearchBar = [[KGOSearchBar defaultSearchBarWithFrame:navScrollView.frame] retain]; //[[KGOSearchBar alloc] initWithFrame:navScrollView.frame];
         theSearchBar.alpha = 0.0;
         if (!searchController) {
             searchController = [[KGOSearchDisplayController alloc] initWithSearchBar:theSearchBar delegate:self contentsController:self];
@@ -476,6 +476,7 @@
     [self hideSearchBar];
 }
 
+/*
 - (void)searchController:(KGOSearchDisplayController *)controller didShowSearchResultsTableView:(UITableView *)tableView {
     if ([controller canShowMapView]) {
         self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Map", nil)
@@ -484,13 +485,7 @@
                                                                                   action:@selector(showSearchResultsMapView)] autorelease];
     }
 }
-
-- (void)searchControllerDidShowSearchResultsMapView:(KGOSearchDisplayController *)controller {
-    self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"List", nil)
-                                                                               style:UIBarButtonItemStylePlain
-                                                                              target:controller
-                                                                              action:@selector(showSearchResultsTableView)] autorelease];
-}
+*/
 
 #pragma mark -
 #pragma mark UI Event observing
