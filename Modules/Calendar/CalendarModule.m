@@ -4,7 +4,6 @@
 #import "CalendarDetailViewController.h"
 #import "CalendarDataManager.h"
 #import "JSONAPIRequest.h"
-#import "CalendarEventMapAnnotation.h"
 #import "MITCalendarEvent.h"
 #import <MapKit/MapKit.h>
 

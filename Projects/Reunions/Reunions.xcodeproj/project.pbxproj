@@ -122,12 +122,8 @@
 		EB14351E13038CE500396753 /* KGODatePager.m in Sources */ = {isa = PBXBuildFile; fileRef = EB14351C13038CE500396753 /* KGODatePager.m */; };
 		EB143DD1130636BA00396753 /* DatePickerViewController.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB143DCF130636BA00396753 /* DatePickerViewController.h */; settings = {JAVA_ARCHIVE_SUBDIR = ../../Common/ViewControllers; }; };
 		EB143DD2130636BA00396753 /* DatePickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EB143DD0130636BA00396753 /* DatePickerViewController.m */; };
-		EB32946F1166777500DEDC8A /* CalendarEventMapAnnotation.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB32946D1166777500DEDC8A /* CalendarEventMapAnnotation.h */; settings = {JAVA_ARCHIVE_SUBDIR = Modules/Calendar; }; };
-		EB3294701166777500DEDC8A /* CalendarEventMapAnnotation.m in Sources */ = {isa = PBXBuildFile; fileRef = EB32946E1166777500DEDC8A /* CalendarEventMapAnnotation.m */; };
 		EB3721AA11FA2F5200705180 /* NewsImage.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB3721A811FA2F5200705180 /* NewsImage.h */; settings = {JAVA_ARCHIVE_SUBDIR = Modules/News; }; };
 		EB3721AB11FA2F5200705180 /* NewsImage.m in Sources */ = {isa = PBXBuildFile; fileRef = EB3721A911FA2F5200705180 /* NewsImage.m */; };
-		EB3F0951118F0FFE00540B8A /* CalendarMapView.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB3F094F118F0FFE00540B8A /* CalendarMapView.h */; settings = {JAVA_ARCHIVE_SUBDIR = Modules/Calendar; }; };
-		EB3F0952118F0FFE00540B8A /* CalendarMapView.m in Sources */ = {isa = PBXBuildFile; fileRef = EB3F0950118F0FFE00540B8A /* CalendarMapView.m */; };
 		EB4211B8120C92C600089FE0 /* MapSavedAnnotation.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB4211B6120C92C600089FE0 /* MapSavedAnnotation.h */; settings = {JAVA_ARCHIVE_SUBDIR = "Modules/Campus Map"; }; };
 		EB4211B9120C92C600089FE0 /* MapSavedAnnotation.m in Sources */ = {isa = PBXBuildFile; fileRef = EB4211B7120C92C600089FE0 /* MapSavedAnnotation.m */; };
 		EB4C2CDF127F138100058748 /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = EB4C2CDE127F138100058748 /* libsqlite3.dylib */; };
@@ -384,12 +380,8 @@
 		EB14351C13038CE500396753 /* KGODatePager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGODatePager.m; sourceTree = "<group>"; };
 		EB143DCF130636BA00396753 /* DatePickerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DatePickerViewController.h; sourceTree = "<group>"; };
 		EB143DD0130636BA00396753 /* DatePickerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DatePickerViewController.m; sourceTree = "<group>"; };
-		EB32946D1166777500DEDC8A /* CalendarEventMapAnnotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CalendarEventMapAnnotation.h; sourceTree = "<group>"; };
-		EB32946E1166777500DEDC8A /* CalendarEventMapAnnotation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CalendarEventMapAnnotation.m; sourceTree = "<group>"; };
 		EB3721A811FA2F5200705180 /* NewsImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NewsImage.h; sourceTree = "<group>"; };
 		EB3721A911FA2F5200705180 /* NewsImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NewsImage.m; sourceTree = "<group>"; };
-		EB3F094F118F0FFE00540B8A /* CalendarMapView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CalendarMapView.h; sourceTree = "<group>"; };
-		EB3F0950118F0FFE00540B8A /* CalendarMapView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CalendarMapView.m; sourceTree = "<group>"; };
 		EB4211B6120C92C600089FE0 /* MapSavedAnnotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MapSavedAnnotation.h; sourceTree = "<group>"; };
 		EB4211B7120C92C600089FE0 /* MapSavedAnnotation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MapSavedAnnotation.m; sourceTree = "<group>"; };
 		EB4C2CDE127F138100058748 /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
@@ -985,12 +977,8 @@
 				EB83923B1163ECC20067C0A3 /* CalendarDetailViewController.m */,
 				EB8392691163F7B00067C0A3 /* CalendarDataManager.h */,
 				EB83926A1163F7B00067C0A3 /* CalendarDataManager.m */,
-				EB32946D1166777500DEDC8A /* CalendarEventMapAnnotation.h */,
 				EBA273E711760BAE0033DD27 /* CalendarConstants.h */,
 				EBA273E811760BAE0033DD27 /* CalendarConstants.m */,
-				EB32946E1166777500DEDC8A /* CalendarEventMapAnnotation.m */,
-				EB3F094F118F0FFE00540B8A /* CalendarMapView.h */,
-				EB3F0950118F0FFE00540B8A /* CalendarMapView.m */,
 			);
 			name = Calendar;
 			path = ../../../Modules/Calendar;
@@ -1050,10 +1038,8 @@
 				EB8392461163EF340067C0A3 /* MITCalendarEvent.h in JavaArchive */,
 				EB8392481163EF340067C0A3 /* EventCategory.h in JavaArchive */,
 				EB83926B1163F7B00067C0A3 /* CalendarDataManager.h in JavaArchive */,
-				EB32946F1166777500DEDC8A /* CalendarEventMapAnnotation.h in JavaArchive */,
 				EBA273E911760BAE0033DD27 /* CalendarConstants.h in JavaArchive */,
 				44ACF76F1187884300F1F4B2 /* MapBookmarkManager.h in JavaArchive */,
-				EB3F0951118F0FFE00540B8A /* CalendarMapView.h in JavaArchive */,
 				44C1A3CE11A33905000FD653 /* MapSelectionController.h in JavaArchive */,
 				44C1A4C411A412E2000FD653 /* MapSearch.h in JavaArchive */,
 				4499341E11A5E53D00A7041B /* CategoriesTableViewController.h in JavaArchive */,
@@ -1309,10 +1295,8 @@
 				EB8392471163EF340067C0A3 /* MITCalendarEvent.m in Sources */,
 				EB8392491163EF340067C0A3 /* EventCategory.m in Sources */,
 				EB83926C1163F7B00067C0A3 /* CalendarDataManager.m in Sources */,
-				EB3294701166777500DEDC8A /* CalendarEventMapAnnotation.m in Sources */,
 				EBA273EA11760BAE0033DD27 /* CalendarConstants.m in Sources */,
 				44ACF76E1187884300F1F4B2 /* MapBookmarkManager.m in Sources */,
-				EB3F0952118F0FFE00540B8A /* CalendarMapView.m in Sources */,
 				44C1A2A811A2F49B000FD653 /* CampusMap.xcdatamodeld in Sources */,
 				44C1A3CF11A33905000FD653 /* MapSelectionController.m in Sources */,
 				44C1A4C511A412E2000FD653 /* MapSearch.m in Sources */,

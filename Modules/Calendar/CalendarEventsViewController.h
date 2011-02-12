@@ -1,7 +1,6 @@
 #import <UIKit/UIKit.h>
 #import "JSONAPIRequest.h"
 #import "CalendarConstants.h"
-#import "EventCategoriesTableView.h"
 #import "KGOScrollingTabstrip.h"
 #import "KGOSearchDisplayController.h"
 #import "KGODatePager.h"
