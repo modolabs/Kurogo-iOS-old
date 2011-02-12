@@ -50,13 +50,13 @@ typedef void (^CellManipulator)(UITableViewCell *);
  */
 @interface KGOTableViewController : UIViewController <UITableViewDelegate, KGOTableViewDataSource> {
 	KGOTableController *_tableController;
-	UITableView *_tableView;
-	
+    UITableView *_tableView;
+
 	BOOL _didInitWithStyle;
 	UITableViewStyle _initStyle;
 }
 
-@property (nonatomic, retain) UITableView *tableView;
+@property (nonatomic, retain) UITableView *tableView; // refers to the currently visible table view
 
 - (id)initWithStyle:(UITableViewStyle)style;
 

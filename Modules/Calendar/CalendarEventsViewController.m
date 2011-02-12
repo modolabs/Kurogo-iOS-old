@@ -3,11 +3,9 @@
 #import "CalendarModule.h"
 #import "CalendarDetailViewController.h"
 #import "CalendarDataManager.h"
-#import "CalendarEventMapAnnotation.h"
 #import "KGOSearchDisplayController.h"
 #import <QuartzCore/QuartzCore.h>
 #import "TileServerManager.h"
-#import "EventListTableView.h"
 #import "KGOSearchBar.h"
 
 #define SCROLL_TAB_HORIZONTAL_PADDING 5.0
@@ -19,7 +17,6 @@
 - (void)returnToToday;
 
 // helper methods used in reloadView
-- (BOOL)canShowMap:(CalendarEventListType)listType;
 - (void)incrementStartDate:(BOOL)forward;
 - (void)showPreviousDate;
 - (void)showNextDate;
@@ -40,29 +37,18 @@
 @implementation CalendarEventsViewController
 
 @synthesize startDate, endDate, events;
-@synthesize activeEventList, showList, showScroller, categoriesRequestDispatched;
-@synthesize tableView = theTableView, mapView = theMapView, catID = theCatID;
+@synthesize activeEventList, showScroller, categoriesRequestDispatched;
+@synthesize catID = theCatID;
 @synthesize searchTerms;
-
+/*
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
     if (self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil]) {
-		startDate = [[NSDate date] retain];
-		endDate = [[NSDate date] retain];
-		
-		// these two properties should be set by the creator
-		// defaults are here for safety
-		activeEventList = CalendarEventListTypeEvents;
-		showScroller = YES;
-		theCatID = kCalendarTopLevelCategoryID;
     }
     return self;
 }
-
+*/
 - (void)dealloc {
 	
-	[theTableView release];
-    theMapView.delegate = nil;
-	[theMapView release];
 	[navScrollView release];
 	[datePicker release];
 	[events release];
@@ -79,14 +65,6 @@
     [super didReceiveMemoryWarning];
 	
 	// Release any cached data, images, etc that aren't in use.
-	if (showList) {
-        theMapView.delegate = nil;
-		[theMapView release];
-		theMapView = nil;
-	} else {
-		[theTableView release];
-		theTableView = nil;
-	}
 }
 
 - (void)viewDidLoad {
@@ -119,9 +97,6 @@
 
 - (void)viewDidUnload {
 	
-	[theTableView release];
-    theMapView.delegate = nil;
-	[theMapView release];
 	[navScrollView release];
 	[datePicker release];
 	[loadingIndicator release];
@@ -133,9 +108,15 @@
 - (void)loadView
 {
 	[super loadView];
+    startDate = [[NSDate date] retain];
+    endDate = [[NSDate date] retain];
+    
+    // these two properties should be set by the creator
+    // defaults are here for safety
+    activeEventList = CalendarEventListTypeEvents;
+    showScroller = YES;
+    theCatID = kCalendarTopLevelCategoryID;
 	
-	theTableView = nil;
-	theMapView = nil;
 	datePicker = nil;
 	dateRangeDidChange = YES;
 	requestDispatched = NO;
@@ -187,22 +168,6 @@
 	
 	// since we add our tableviews manually we also need to do this manually
 	[self.tableView deselectRowAtIndexPath:[self.tableView indexPathForSelectedRow] animated:YES];
-	//[searchResultsTableView deselectRowAtIndexPath:[searchResultsTableView indexPathForSelectedRow] animated:YES];
-}
-
-- (NSArray *)events
-{
-	return events;
-}
-
-- (void)setEvents:(NSArray *)someEvents
-{
-	[events release];
-	
-	events = [someEvents retain];
-
-	theMapView.events = someEvents;
-	((EventListTableView *)self.tableView).events = someEvents;
 }
 
 - (void)returnToTodayAndReload {
@@ -225,8 +190,6 @@
     
 	[self abortExtraneousRequest];
     
-    [self.tableView removeFromSuperview];
-    
 	BOOL requestNeeded = YES;
 	
 	if (listType != activeEventList) {
@@ -246,14 +209,6 @@
 									 self.view.bounds.size.width, 
 									 self.view.bounds.size.height - yOffset);
 	
-	// see if we need a mapview
-	if (![self canShowMap:activeEventList]) {
-		showList = YES;
-	} else if (self.mapView == nil) {
-		self.mapView = [[CalendarMapView alloc] initWithFrame:contentFrame];
-		self.mapView.delegate = self;
-	}
-
 	if (dateRangeDidChange && activeEventList != CalendarEventListTypeCategory) {
 		requestNeeded = YES;
 	}
@@ -261,11 +216,6 @@
 	if (showScroller) {
 		self.navigationItem.title = @"Events";
 	}
-	
-	if (showList) {
-		
-		[self.tableView release];
-		self.tableView = nil;
 		
 			if (nothingFound != nil) {
 				[nothingFound removeFromSuperview];
@@ -275,15 +225,10 @@
 			if (nothingFound != nil) {
 				[nothingFound removeFromSuperview];
 			}
-			self.tableView = [[EventCategoriesTableView alloc] initWithFrame:contentFrame style:UITableViewStyleGrouped];			
-			EventCategoriesTableView *categoriesTV = (EventCategoriesTableView *)self.tableView;
-			categoriesTV.delegate = categoriesTV;
-			categoriesTV.dataSource = categoriesTV;
-			categoriesTV.parentViewController = self;
 
 			// populate (sub)categories from core data
 			// if we receive nil from core data, then make a trip to the server
-			NSArray *categories = nil;
+            [categories release];
 			if (theCatID != kCalendarTopLevelCategoryID) {
 				EventCategory *category = [CalendarDataManager categoryWithID:theCatID];
 				NSMutableArray *subCategories = [[[category.subCategories allObjects] mutableCopy] autorelease];
@@ -294,65 +239,34 @@
 				categories = [CalendarDataManager topLevelCategories];
 			}
 			
+            [categories retain];
 			if (categories == nil) {
 				requestNeeded = YES;
-			} else if (requestNeeded == NO){
-				categoriesTV.categories = categories;
 			}
 			
+            if (!_eventCategoriesTableView) {
+                _eventCategoriesTableView = [[UITableView alloc] initWithFrame:contentFrame style:UITableViewStyleGrouped];
+                [self addTableView:_eventCategoriesTableView];
+            }
 		} else {
-			self.tableView = [[EventListTableView alloc] initWithFrame:contentFrame];
-			self.tableView.delegate = (EventListTableView *)self.tableView;
-			self.tableView.dataSource = (EventListTableView *)self.tableView;
-			((EventListTableView *)self.tableView).parentViewController = self;
-			/*NSArray *someEvents = [CalendarDataManager eventsWithStartDate:startDate
+			NSArray *someEvents = [CalendarDataManager eventsWithStartDate:startDate
                                                                   listType:activeEventList
-																  category:(theCatID == kCalendarTopLevelCategoryID) ? nil : [NSNumber numberWithInt:theCatID]];*/
+																  category:(theCatID == kCalendarTopLevelCategoryID) ? nil : [NSNumber numberWithInt:theCatID]];
 			
-			NSArray *someEvents = nil;
 			
-			//if (someEvents != nil && [someEvents count] && (requestNeeded == NO)) {
-			if (someEvents != nil && [someEvents count]) {
+            if (!_eventListTableView) {
+                _eventListTableView = [[UITableView alloc] initWithFrame:contentFrame style:UITableViewStylePlain];
+                [self addTableView:_eventListTableView];
+            }
+            
+			if ([someEvents count]) {
 				self.events = someEvents;
-				((EventListTableView *)self.tableView).events = self.events;
-				if (listType == CalendarEventListTypeAcademic) {
-					((EventListTableView *)self.tableView).isAcademic = YES;
-				}
-				else {
-					((EventListTableView *)self.tableView).isAcademic = NO;
-				}
-
-				theMapView.events = self.events;
-				[self.tableView reloadData];
+                [self reloadDataForTableView:_eventListTableView];
                 requestNeeded = NO;
 			} else {
 				requestNeeded = YES;
 			}
-			
 		}
-		
-		self.tableView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-				
-		[self.view addSubview:self.tableView];
-		
-		self.navigationItem.rightBarButtonItem = [self canShowMap:activeEventList]
-		? [[[UIBarButtonItem alloc] initWithTitle:@"Map"
-											style:UIBarButtonItemStylePlain
-										   target:self
-										   action:@selector(mapButtonToggled)] autorelease]
-		: nil;
-		
-		[self.mapView removeFromSuperview];
-		
-	} else {
-		
-		self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithTitle:@"List"
-																				   style:UIBarButtonItemStylePlain
-																				  target:self
-																				  action:@selector(listButtonToggled)] autorelease];
-		
-        [self.view addSubview:self.mapView];
-	}
 	
 	if ([self shouldShowDatePicker:activeEventList]) {
 		[self setupDatePicker];
@@ -362,11 +276,11 @@
 		[self makeRequest];
 	}
 	
+    NSLog(@"reloadview: %@", [_eventListTableView description]);
+    NSLog(@"reloadview: %@", [_eventListTableView.dataSource description]);
+    NSLog(@"reloadview: %@", [_eventListTableView.delegate description]);
+    
 	dateRangeDidChange = NO;
-}
-
-- (BOOL)canShowMap:(CalendarEventListType)listType {
-	return (listType == CalendarEventListTypeEvents || listType == CalendarEventListTypeExhibits);
 }
 
 - (BOOL)shouldShowDatePicker:(CalendarEventListType)listType {
@@ -476,29 +390,8 @@
     [self hideSearchBar];
 }
 
-/*
-- (void)searchController:(KGOSearchDisplayController *)controller didShowSearchResultsTableView:(UITableView *)tableView {
-    if ([controller canShowMapView]) {
-        self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Map", nil)
-                                                                                   style:UIBarButtonItemStylePlain
-                                                                                  target:controller
-                                                                                  action:@selector(showSearchResultsMapView)] autorelease];
-    }
-}
-*/
-
 #pragma mark -
 #pragma mark UI Event observing
-
-- (void)mapButtonToggled {
-	showList = NO;
-	[self reloadView:activeEventList];
-}
-
-- (void)listButtonToggled {
-	showList = YES;
-	[self reloadView:activeEventList];
-}
 
 - (void)addLoadingIndicatorForSearch:(BOOL)isSearch
 {
@@ -512,37 +405,26 @@
         CGFloat horizontalSpacing = 3.0;
         CGFloat cornerRadius = 8.0;
         
-        UIActivityIndicatorViewStyle style = (showList) ? UIActivityIndicatorViewStyleGray : UIActivityIndicatorViewStyleWhite;
-		UIActivityIndicatorView *spinny = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:style];
-       // spinny.center = CGPointMake(spinny.center.x + horizontalPadding, spinny.center.y + verticalPadding);
+		UIActivityIndicatorView *spinny = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
 		spinny.center = CGPointMake(spinny.center.x + horizontalPadding, spinny.center.y + verticalPadding);
 		[spinny startAnimating];
         
 		UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(spinny.frame.size.width + horizontalPadding + horizontalSpacing, verticalPadding, stringSize.width, stringSize.height + 2.0)];
-		label.textColor = (showList) ? [UIColor colorWithWhite:0.5 alpha:1.0] : [UIColor whiteColor];
+		label.textColor = [UIColor colorWithWhite:0.5 alpha:1.0];
 		label.text = loadingString;
 		label.font = loadingFont;
 		label.backgroundColor = [UIColor clearColor];
         
 		loadingIndicator = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, stringSize.width + spinny.frame.size.width + horizontalPadding * 2, stringSize.height + verticalPadding * 2)];
         loadingIndicator.layer.cornerRadius = cornerRadius;
-        loadingIndicator.backgroundColor = (showList) ? [UIColor clearColor] : [UIColor colorWithWhite:0.0 alpha:0.8];
+        loadingIndicator.backgroundColor = [UIColor clearColor];
 		[loadingIndicator addSubview:spinny];
 		[spinny release];
 		[loadingIndicator addSubview:label];
 		[label release];
-
-		//loadingIndicator.backgroundColor = label.backgroundColor;
 	}
 
-	// self.view.frame changes depending on whether it's the first time we're looking at this,
-	// so we need to figure out its position based on things that don't change
 	CGRect appFrame = [[UIScreen mainScreen] applicationFrame];
-	/*CGFloat yOffset = showScroller ? navScrollView.frame.size.height : 0.0;
-	if (!isSearch && [self shouldShowDatePicker:activeEventList]) {
-		yOffset += datePicker.frame.size.height;
-	}*/
-
 	CGPoint center = CGPointMake(appFrame.size.width / 2, (appFrame.size.height) / 2);
 	loadingIndicator.center = center;
 	
@@ -554,41 +436,6 @@
 	[loadingIndicator removeFromSuperview];
     [loadingIndicator release];
     loadingIndicator = nil;
-}
-
-#pragma mark Map View Delegate
- 
-- (void)mapView:(MKMapView *)mapView annotationView:(MKAnnotationView *)view calloutAccessoryControlTapped:(UIControl *)control
-{
-	CalendarEventMapAnnotation *annotation = view.annotation;
-	MITCalendarEvent *event = nil;
-	CalendarMapView *calMapView = (CalendarMapView *)mapView;
-	for (event in calMapView.events) {
-		if (event.eventID == annotation.event.eventID) {
-			break;
-		}
-	}
-
-	if (event != nil) {
-		CalendarDetailViewController *detailVC = [[CalendarDetailViewController alloc] initWithStyle:UITableViewStylePlain];
-		detailVC.event = event;
-		[self.navigationController pushViewController:detailVC animated:YES];
-		[detailVC release];
-	}
-}
-
-
-- (MKAnnotationView *)mapView:(MKMapView *)mapView viewForAnnotation:(id <MKAnnotation>)annotation
-{
-	MKPinAnnotationView *annotationView = [[[MKPinAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:@"adsf"] autorelease];
-    annotationView.animatesDrop = YES;
-    annotationView.canShowCallout = YES;
-    UIButton *disclosureButton = [UIButton buttonWithType:UIButtonTypeDetailDisclosure];
-    annotationView.rightCalloutAccessoryView = disclosureButton;
-	
-	//MKAnnotationView *annotationView = [mapView viewForAnnotation:annotation];
-    
-	return annotationView;
 }
 
 #pragma mark Server connection methods
@@ -674,9 +521,6 @@
 				 EventCategory *category = [CalendarDataManager categoryWithDict:catDict];
 				 [arrayForTable addObject:category];
 			 }
-        if ([self.tableView isKindOfClass:[EventCategoriesTableView class]]) {
-			 ((EventCategoriesTableView *)self.tableView).categories = [NSArray arrayWithArray:arrayForTable];
-        }
 		 
 		 self.view.backgroundColor = [UIColor clearColor];	 
 		 [self reloadView:activeEventList];
@@ -702,7 +546,8 @@
 				EventCategory *category = [CalendarDataManager categoryWithDict:catDict];
 				[arrayForTable addObject:category];
 			}
-			((EventCategoriesTableView *)self.tableView).categories = [NSArray arrayWithArray:arrayForTable];
+            [categories release];
+            categories = [arrayForTable retain];
 		
 		} else {
             // academic & holiday events have no category so we assign something to differentiate them
@@ -724,7 +569,7 @@
                     break;
             }
             
-			if (([result count] == 0) && ([self.navigationItem.rightBarButtonItem.title isEqualToString:@"Map"])){
+			if ([result count] == 0){
 				UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(100, 125, 300, 20)];
 				label.font = [UIFont systemFontOfSize:17];
 																		   
@@ -792,12 +637,10 @@
 			self.events = [NSArray arrayWithArray:arrayForTable];			
 		}
 		
-		if (showList) {
-			if (activeEventList == CalendarEventListTypeAcademic) {
-				((EventListTableView *)self.tableView).isAcademic = YES;
-			}
-			[self.tableView reloadData];
-		}
+        [self reloadDataForTableView:_eventListTableView];
+        NSLog(@"jsonloaded: %@", [_eventListTableView description]);
+        NSLog(@"jsonloaded: %@", [_eventListTableView.dataSource description]);
+        NSLog(@"jsonloaded: %@", [_eventListTableView.delegate description]);
 	}
 }
 
@@ -825,6 +668,90 @@
 
     [self reloadView:activeEventList];
     
+}
+
+#pragma mark Table view methods
+
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+    return 1;
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+	if (self.events != nil) {
+		return [self.events count];
+	}
+    return 0;
+}
+
+- (NSArray *)tableView:(UITableView *)tableView viewsForCellAtIndexPath:(NSIndexPath *)indexPath {
+	MITCalendarEvent *event = [self.events objectAtIndex:indexPath.row];
+	
+    if (event.shortloc) {
+        // right align event location
+		CGFloat maxWidth = tableView.frame.size.width - 20;
+		UIFont *font = [[KGOTheme sharedTheme] fontForTableCellTitleWithStyle:KGOTableCellStyleSubtitle];
+		CGSize textSize = [event.title sizeWithFont:font];
+		CGFloat textHeight = 10.0 + (textSize.width > maxWidth ? textSize.height * 1 : textSize.height);
+		
+		font = [[KGOTheme sharedTheme] fontForTableCellSubtitleWithStyle:KGOTableCellStyleSubtitle];
+        CGSize locationTextSize = [event.shortloc sizeWithFont:font
+													  forWidth:100.0
+												 lineBreakMode:UILineBreakModeTailTruncation];
+        CGRect locationFrame = CGRectMake(maxWidth - locationTextSize.width,
+                                          textHeight,
+                                          locationTextSize.width,
+                                          locationTextSize.height);
+        
+        UILabel *locationLabel = [[[UILabel alloc] initWithFrame:locationFrame] autorelease];
+        locationLabel.lineBreakMode = UILineBreakModeTailTruncation;
+        locationLabel.text = event.shortloc;
+        locationLabel.textColor = [[KGOTheme sharedTheme] textColorForTableCellSubtitleWithStyle:KGOTableCellStyleSubtitle];
+        locationLabel.font = font;
+        locationLabel.highlightedTextColor = [UIColor whiteColor];
+        
+		return [NSArray arrayWithObject:locationLabel];
+    }
+	
+	return nil;
+}
+
+- (CellManipulator)tableView:(UITableView *)tableView manipulatorForCellAtIndexPath:(NSIndexPath *)indexPath {
+    
+	MITCalendarEvent *event = [self.events objectAtIndex:indexPath.row];
+	NSString *title = event.title;
+    NSString *subtitle = nil;
+	
+	BOOL showTimeOnly = [CalendarConstants intervalForEventType:self.activeEventList fromDate:self.startDate forward:YES] == 86400.0;
+    
+    if (showTimeOnly) {
+        subtitle = [event dateStringWithDateStyle:NSDateFormatterNoStyle timeStyle:NSDateFormatterShortStyle separator:@" "];
+    } else {
+		if (activeEventList == CalendarEventListTypeAcademic) {
+			NSArray *stringArray = [[event dateStringWithDateStyle:NSDateFormatterShortStyle timeStyle:NSDateFormatterShortStyle separator:@" "] componentsSeparatedByString: @" "];
+			subtitle = [stringArray objectAtIndex:0];
+		} else {
+			subtitle = [event dateStringWithDateStyle:NSDateFormatterShortStyle timeStyle:NSDateFormatterShortStyle separator:@" "];
+		}
+    }
+	
+    return [[^(UITableViewCell *cell) {
+        cell.selectionStyle = UITableViewCellSelectionStyleGray;
+        cell.textLabel.text = title;
+		cell.detailTextLabel.text = subtitle;
+        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+    } copy] autorelease];
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+	
+	MITCalendarEvent *event = [self.events objectAtIndex:indexPath.row];
+    
+	CalendarDetailViewController *detailVC = [[CalendarDetailViewController alloc] initWithStyle:UITableViewStylePlain];
+	detailVC.event = event;
+	detailVC.events = self.events;
+    
+	[self.parentViewController.navigationController pushViewController:detailVC animated:YES];
+	[detailVC release];
 }
 
 @end

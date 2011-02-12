@@ -78,65 +78,6 @@
 }
 */
 
-- (NSArray *)tableView:(UITableView *)tableView viewsForCellAtIndexPath:(NSIndexPath *)indexPath {
-	MITCalendarEvent *event = [self.events objectAtIndex:indexPath.row];
-	
-    if (event.shortloc) {
-        // right align event location
-		CGFloat maxWidth = self.frame.size.width - 20;
-		UIFont *font = [[KGOTheme sharedTheme] fontForTableCellTitleWithStyle:KGOTableCellStyleSubtitle];
-		CGSize textSize = [event.title sizeWithFont:font];
-		CGFloat textHeight = 10.0 + (textSize.width > maxWidth ? textSize.height * 1 : textSize.height);
-		
-		font = [[KGOTheme sharedTheme] fontForTableCellSubtitleWithStyle:KGOTableCellStyleSubtitle];
-        CGSize locationTextSize = [event.shortloc sizeWithFont:font
-													  forWidth:100.0
-												 lineBreakMode:UILineBreakModeTailTruncation];
-        CGRect locationFrame = CGRectMake(maxWidth - locationTextSize.width,
-                                          textHeight,
-                                          locationTextSize.width,
-                                          locationTextSize.height);
-        
-        UILabel *locationLabel = [[[UILabel alloc] initWithFrame:locationFrame] autorelease];
-        locationLabel.lineBreakMode = UILineBreakModeTailTruncation;
-        locationLabel.text = event.shortloc;
-        locationLabel.textColor = [[KGOTheme sharedTheme] textColorForTableCellSubtitleWithStyle:KGOTableCellStyleSubtitle];
-        locationLabel.font = font;
-        locationLabel.highlightedTextColor = [UIColor whiteColor];
-        
-		return [NSArray arrayWithObject:locationLabel];
-    }
-	
-	return nil;
-}
-
-- (CellManipulator)tableView:(UITableView *)tableView manipulatorForCellAtIndexPath:(NSIndexPath *)indexPath {
-
-	MITCalendarEvent *event = [self.events objectAtIndex:indexPath.row];
-	NSString *title = event.title;
-    NSString *subtitle = nil;
-	
-	BOOL showTimeOnly = !isSearchResults && ([CalendarConstants intervalForEventType:self.parentViewController.activeEventList fromDate:self.parentViewController.startDate forward:YES] == 86400.0);
-    
-    if (showTimeOnly) {
-        subtitle = [event dateStringWithDateStyle:NSDateFormatterNoStyle timeStyle:NSDateFormatterShortStyle separator:@" "];
-    } else {
-		if (isAcademic) {
-			NSArray *stringArray = [[event dateStringWithDateStyle:NSDateFormatterShortStyle timeStyle:NSDateFormatterShortStyle separator:@" "] componentsSeparatedByString: @" "];
-			subtitle = [stringArray objectAtIndex:0];
-		} else {
-			subtitle = [event dateStringWithDateStyle:NSDateFormatterShortStyle timeStyle:NSDateFormatterShortStyle separator:@" "];
-		}
-    }
-	
-    return [[^(UITableViewCell *cell) {
-        cell.selectionStyle = UITableViewCellSelectionStyleGray;
-        cell.textLabel.text = title;
-		cell.detailTextLabel.text = subtitle;
-        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-    } copy] autorelease];
-}
-
 // required method in UITableViewDataSource
 // still thinking of a cleaner way to do this
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -241,17 +182,6 @@
 	//return height;
 }
 */
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-	
-	MITCalendarEvent *event = [self.events objectAtIndex:indexPath.row];
-		
-	CalendarDetailViewController *detailVC = [[CalendarDetailViewController alloc] initWithStyle:UITableViewStylePlain];
-	detailVC.event = event;
-	detailVC.events = self.events;
-
-	[self.parentViewController.navigationController pushViewController:detailVC animated:YES];
-	[detailVC release];
-}
 
 
 - (void)dealloc {

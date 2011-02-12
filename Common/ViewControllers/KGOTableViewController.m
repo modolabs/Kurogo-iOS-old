@@ -63,18 +63,22 @@
 
 - (void)removeTableView:(UITableView *)tableView {
 	[_tableController removeTableView:tableView];
+    self.tableView = [_tableController topTableView];
 }
 
 - (void)addTableView:(UITableView *)tableView {
 	[_tableController addTableView:tableView];
+    self.tableView = [_tableController topTableView];
 }
 
 - (void)addTableView:(UITableView *)tableView withDataSource:(id<KGOTableViewDataSource>)dataSource {
 	[_tableController addTableView:tableView withDataSource:dataSource];
+    self.tableView = [_tableController topTableView];
 }
 
 - (UITableView *)addTableViewWithFrame:(CGRect)frame style:(UITableViewStyle)style {
 	return [_tableController addTableViewWithFrame:frame style:style];
+    self.tableView = [_tableController topTableView];
 }
 
 - (void)reloadDataForTableView:(UITableView *)tableView {
@@ -225,6 +229,14 @@
 	[_tableViews addObject:tableView];
 	[_tableViewDataSources addObject:dataSource];
 	[_cellContentBuffers addObject:[NSMutableDictionary dictionary]];
+    
+	if (_viewController) {
+		tableView.delegate = _viewController;
+		tableView.dataSource = _viewController;
+	} else if (_searchController) {
+		tableView.delegate = self;
+		tableView.dataSource = _searchController;
+	}
 	
 	[self.viewController.view addSubview:tableView];
 }
@@ -257,16 +269,6 @@
     if (style == UITableViewStyleGrouped) {
         tableView.backgroundColor = [UIColor clearColor];
     }
-    
-	if (_viewController) {
-		tableView.delegate = _viewController;
-		tableView.dataSource = _viewController;
-	} else if (_searchController) {
-		tableView.delegate = self;
-		tableView.dataSource = _searchController;
-	} else {
-		return nil;
-	}
 	
 	[self addTableView:tableView withDataSource:dataSource];
 	

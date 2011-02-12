@@ -64,7 +64,6 @@
 		NSArray *events = [category.events allObjects];	
 		vc.events = events;
 		vc.activeEventList = CalendarEventListTypeEvents;
-		vc.showList = YES;
 		vc.categoriesRequestDispatched = YES;
 	}
 
