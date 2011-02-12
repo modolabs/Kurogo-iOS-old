@@ -34,8 +34,6 @@
 		A623F1F1120A035A00341C5E /* ModoThreeStateSwitchControl.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = A623F1EF120A035A00341C5E /* ModoThreeStateSwitchControl.h */; settings = {JAVA_ARCHIVE_SUBDIR = Modules; }; };
 		A623F1F2120A035A00341C5E /* ModoThreeStateSwitchControl.m in Sources */ = {isa = PBXBuildFile; fileRef = A623F1F0120A035A00341C5E /* ModoThreeStateSwitchControl.m */; };
 		BD9FA7EE1047A05E00BC3C0A /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BD9FA7ED1047A05E00BC3C0A /* MessageUI.framework */; };
-		C727B53A11F4E245007D53BB /* CalendarCategoriesViewController.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = C727B53811F4E245007D53BB /* CalendarCategoriesViewController.h */; settings = {JAVA_ARCHIVE_SUBDIR = Modules/Calendar; }; };
-		C727B53B11F4E245007D53BB /* CalendarCategoriesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C727B53911F4E245007D53BB /* CalendarCategoriesViewController.m */; };
 		DE0F6B3411109BC500F064D6 /* AboutMITVC.m in Sources */ = {isa = PBXBuildFile; fileRef = DE0F6B3311109BC500F064D6 /* AboutMITVC.m */; };
 		DE18F9EE10F19105009A69B9 /* News.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = DE18F9ED10F19105009A69B9 /* News.xcdatamodeld */; };
 		DE4AB0B410ED5148007476D9 /* NewsStory.m in Sources */ = {isa = PBXBuildFile; fileRef = DE4AB0B310ED5148007476D9 /* NewsStory.m */; };
@@ -173,8 +171,6 @@
 		EB86CAC6115D4ED500C8F3D1 /* CalendarEventsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EB86CAC5115D4ED500C8F3D1 /* CalendarEventsViewController.m */; };
 		EB8B35BE12FF8E4B005DBB8F /* KGOModule.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB8B35BC12FF8E4B005DBB8F /* KGOModule.h */; settings = {JAVA_ARCHIVE_SUBDIR = ../../Common; }; };
 		EB8B35BF12FF8E4B005DBB8F /* KGOModule.m in Sources */ = {isa = PBXBuildFile; fileRef = EB8B35BD12FF8E4B005DBB8F /* KGOModule.m */; };
-		EB976D1B116CF6A10036A18E /* EventCategoriesTableView.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB976D19116CF6A10036A18E /* EventCategoriesTableView.h */; settings = {JAVA_ARCHIVE_SUBDIR = Modules/Calendar; }; };
-		EB976D1C116CF6A10036A18E /* EventCategoriesTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = EB976D1A116CF6A10036A18E /* EventCategoriesTableView.m */; };
 		EB99B28212F377480065EE93 /* libProj.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EB138E9312F24EB2004DBB7C /* libProj.a */; };
 		EB99B28312F377520065EE93 /* libfacebook_ios_sdk.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EB138EED12F251EB004DBB7C /* libfacebook_ios_sdk.a */; };
 		EB99B28412F377560065EE93 /* libTwitter.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EB99B08E12F36F3D0065EE93 /* libTwitter.a */; };
@@ -282,8 +278,6 @@
 		A623F1EF120A035A00341C5E /* ModoThreeStateSwitchControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ModoThreeStateSwitchControl.h; sourceTree = "<group>"; };
 		A623F1F0120A035A00341C5E /* ModoThreeStateSwitchControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ModoThreeStateSwitchControl.m; sourceTree = "<group>"; };
 		BD9FA7ED1047A05E00BC3C0A /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
-		C727B53811F4E245007D53BB /* CalendarCategoriesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CalendarCategoriesViewController.h; sourceTree = "<group>"; };
-		C727B53911F4E245007D53BB /* CalendarCategoriesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CalendarCategoriesViewController.m; sourceTree = "<group>"; };
 		DE0F6B3211109BC500F064D6 /* AboutMITVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AboutMITVC.h; sourceTree = "<group>"; };
 		DE0F6B3311109BC500F064D6 /* AboutMITVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AboutMITVC.m; sourceTree = "<group>"; };
 		DE10571411985D4B0090A505 /* News 2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "News 2.xcdatamodel"; sourceTree = "<group>"; };
@@ -443,8 +437,6 @@
 		EB86CAC5115D4ED500C8F3D1 /* CalendarEventsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CalendarEventsViewController.m; sourceTree = "<group>"; };
 		EB8B35BC12FF8E4B005DBB8F /* KGOModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGOModule.h; sourceTree = "<group>"; };
 		EB8B35BD12FF8E4B005DBB8F /* KGOModule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGOModule.m; sourceTree = "<group>"; };
-		EB976D19116CF6A10036A18E /* EventCategoriesTableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EventCategoriesTableView.h; sourceTree = "<group>"; };
-		EB976D1A116CF6A10036A18E /* EventCategoriesTableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EventCategoriesTableView.m; sourceTree = "<group>"; };
 		EB99B08912F36F3D0065EE93 /* Twitter.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Twitter.xcodeproj; path = Twitter/Twitter.xcodeproj; sourceTree = "<group>"; };
 		EB99B38C12F37FDC0065EE93 /* JSON.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = JSON.xcodeproj; path = JSON/JSON.xcodeproj; sourceTree = "<group>"; };
 		EB99B67312F3A8E40065EE93 /* OAuthConsumer.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = OAuthConsumer.xcodeproj; path = OAuth/OAuthConsumer.xcodeproj; sourceTree = "<group>"; };
@@ -987,8 +979,6 @@
 				EB83923F1163ED140067C0A3 /* Model */,
 				EB86CA6E115D276700C8F3D1 /* CalendarModule.m */,
 				EB86CA6D115D276700C8F3D1 /* CalendarModule.h */,
-				C727B53811F4E245007D53BB /* CalendarCategoriesViewController.h */,
-				C727B53911F4E245007D53BB /* CalendarCategoriesViewController.m */,
 				EB86CAC4115D4ED500C8F3D1 /* CalendarEventsViewController.h */,
 				EB86CAC5115D4ED500C8F3D1 /* CalendarEventsViewController.m */,
 				EB83923A1163ECC20067C0A3 /* CalendarDetailViewController.h */,
@@ -999,8 +989,6 @@
 				EBA273E711760BAE0033DD27 /* CalendarConstants.h */,
 				EBA273E811760BAE0033DD27 /* CalendarConstants.m */,
 				EB32946E1166777500DEDC8A /* CalendarEventMapAnnotation.m */,
-				EB976D19116CF6A10036A18E /* EventCategoriesTableView.h */,
-				EB976D1A116CF6A10036A18E /* EventCategoriesTableView.m */,
 				EB3F094F118F0FFE00540B8A /* CalendarMapView.h */,
 				EB3F0950118F0FFE00540B8A /* CalendarMapView.m */,
 			);
@@ -1063,7 +1051,6 @@
 				EB8392481163EF340067C0A3 /* EventCategory.h in JavaArchive */,
 				EB83926B1163F7B00067C0A3 /* CalendarDataManager.h in JavaArchive */,
 				EB32946F1166777500DEDC8A /* CalendarEventMapAnnotation.h in JavaArchive */,
-				EB976D1B116CF6A10036A18E /* EventCategoriesTableView.h in JavaArchive */,
 				EBA273E911760BAE0033DD27 /* CalendarConstants.h in JavaArchive */,
 				44ACF76F1187884300F1F4B2 /* MapBookmarkManager.h in JavaArchive */,
 				EB3F0951118F0FFE00540B8A /* CalendarMapView.h in JavaArchive */,
@@ -1075,7 +1062,6 @@
 				EB6D10DE11EE13F100B65CE3 /* MapZoomLevel.h in JavaArchive */,
 				EB6D111611EE143900B65CE3 /* TileServerManager.h in JavaArchive */,
 				EB6D141511EE979500B65CE3 /* NewsCategory.h in JavaArchive */,
-				C727B53A11F4E245007D53BB /* CalendarCategoriesViewController.h in JavaArchive */,
 				EB7BA33E11F7677F00B3DDA6 /* PolygonOverlay.h in JavaArchive */,
 				EB3721AA11FA2F5200705180 /* NewsImage.h in JavaArchive */,
 				A623F1F1120A035A00341C5E /* ModoThreeStateSwitchControl.h in JavaArchive */,
@@ -1324,7 +1310,6 @@
 				EB8392491163EF340067C0A3 /* EventCategory.m in Sources */,
 				EB83926C1163F7B00067C0A3 /* CalendarDataManager.m in Sources */,
 				EB3294701166777500DEDC8A /* CalendarEventMapAnnotation.m in Sources */,
-				EB976D1C116CF6A10036A18E /* EventCategoriesTableView.m in Sources */,
 				EBA273EA11760BAE0033DD27 /* CalendarConstants.m in Sources */,
 				44ACF76E1187884300F1F4B2 /* MapBookmarkManager.m in Sources */,
 				EB3F0952118F0FFE00540B8A /* CalendarMapView.m in Sources */,
@@ -1337,7 +1322,6 @@
 				EB6D10DF11EE13F100B65CE3 /* MapZoomLevel.m in Sources */,
 				EB6D111711EE143900B65CE3 /* TileServerManager.m in Sources */,
 				EB6D141611EE979500B65CE3 /* NewsCategory.m in Sources */,
-				C727B53B11F4E245007D53BB /* CalendarCategoriesViewController.m in Sources */,
 				EB7BA33F11F7677F00B3DDA6 /* PolygonOverlay.m in Sources */,
 				EB3721AB11FA2F5200705180 /* NewsImage.m in Sources */,
 				A623F1F2120A035A00341C5E /* ModoThreeStateSwitchControl.m in Sources */,
