@@ -66,6 +66,7 @@ showingOnlySearchResults = _showingOnlySearchResults;
 }
 
 - (void)executeSearch:(NSString *)text params:(NSDictionary *)params {
+	_searchBar.text = text;
     NSArray *moduleTags = [self.delegate searchControllerValidModules:self];
     for (NSString *moduleTag in moduleTags) {
         KGOModule *module = [(KGOAppDelegate *)[[UIApplication sharedApplication] delegate] moduleForTag:moduleTag];
@@ -247,45 +248,51 @@ showingOnlySearchResults = _showingOnlySearchResults;
 }
 
 - (void)searchBar:(KGOSearchBar *)searchBar textDidChange:(NSString *)searchText {
-    if ([searchText length] && [self.delegate searchControllerShouldShowSuggestions:self]) {
-        
-        NSMutableArray *searchResults = [NSMutableArray array];
-        
-        // fetch recent searches
-        NSMutableArray *recentsParams = [NSMutableArray arrayWithObject:searchText];
-		NSMutableString *recentsQuery = [NSMutableString stringWithString:@"text BEGINSWITH %@"];
-		NSMutableString *orClause = [NSMutableString string];
-
-        // passing nil as the result to this delegate method will invoke search on all modules
-        NSArray *moduleTags = [self.delegate searchControllerValidModules:self];
-        for (NSString *moduleTag in moduleTags) {
-			if ([orClause length]) {
-				[orClause appendString:@" OR module = %@"];
-			} else {
-				[orClause appendString:@"module = %@"];
+    if (!_showingOnlySearchResults && [self.delegate searchControllerShouldShowSuggestions:self]) {
+		if ([searchText length]) {
+			NSMutableArray *searchResults = [NSMutableArray array];
+			
+			// fetch recent searches
+			NSMutableArray *recentsParams = [NSMutableArray arrayWithObject:searchText];
+			NSMutableString *recentsQuery = [NSMutableString stringWithString:@"text BEGINSWITH %@"];
+			NSMutableString *orClause = [NSMutableString string];
+			
+			// passing nil as the result to this delegate method will invoke search on all modules
+			NSArray *moduleTags = [self.delegate searchControllerValidModules:self];
+			for (NSString *moduleTag in moduleTags) {
+				if ([orClause length]) {
+					[orClause appendString:@" OR module = %@"];
+				} else {
+					[orClause appendString:@"module = %@"];
+				}
+				[recentsParams addObject:moduleTag];
+				
+				KGOModule *module = [(KGOAppDelegate *)[[UIApplication sharedApplication] delegate] moduleForTag:moduleTag];
+				if ([module supportsFederatedSearch]) { // TODO: use a less strict check
+					[searchResults addObjectsFromArray:[module cachedResultsForSearchText:searchText params:nil]];
+				}
 			}
-			[recentsParams addObject:moduleTag];
-
-            KGOModule *module = [(KGOAppDelegate *)[[UIApplication sharedApplication] delegate] moduleForTag:moduleTag];
-            if ([module supportsFederatedSearch]) { // TODO: use a less strict check
-                [searchResults addObjectsFromArray:[module cachedResultsForSearchText:searchText params:nil]];
-            }
-        }
-		
-		if ([orClause length]) {
-			[recentsQuery appendString:[NSString stringWithFormat:@" AND (%@)", orClause]];
+			
+			if ([orClause length]) {
+				[recentsQuery appendString:[NSString stringWithFormat:@" AND (%@)", orClause]];
+			}
+			
+			NSPredicate *pred = [NSPredicate predicateWithFormat:recentsQuery argumentArray:recentsParams];
+			DLog(@"%@", [pred description]);
+			
+			NSArray *recents = [[CoreDataManager sharedManager] objectsForEntity:RecentSearchesEntityName matchingPredicate:pred];
+			self.searchResults = [recents arrayByAddingObjectsFromArray:searchResults];
+			
+		} else {
+			self.searchResults = nil;
 		}
-		
-        NSPredicate *pred = [NSPredicate predicateWithFormat:recentsQuery argumentArray:recentsParams];
-        DLog(@"%@", [pred description]);
-        
-        NSArray *recents = [[CoreDataManager sharedManager] objectsForEntity:RecentSearchesEntityName matchingPredicate:pred];
-        self.searchResults = [recents arrayByAddingObjectsFromArray:searchResults];
         
         if (self.searchResults.count) {
             [self showSearchResultsTableView];
             [self reloadSearchResultsTableView];
-        }
+        } else {
+			[self hideSearchResultsTableView];
+		}
     }
 }
 
