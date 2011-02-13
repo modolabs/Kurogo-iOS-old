@@ -86,7 +86,67 @@
 	
 }
 
-#pragma mark Search 
+#pragma mark Map/List
+
+- (void)showMapListToggle {
+	if (!_mapListToggle) {
+		_mapListToggle = [[UISegmentedControl alloc] initWithItems:[NSArray arrayWithObjects:@"Map", @"List", nil]];
+		_mapListToggle.tintColor = _searchBar.tintColor;
+		_mapListToggle.segmentedControlStyle = UISegmentedControlStyleBar;
+		[_mapListToggle setEnabled:NO forSegmentAtIndex:0];
+		[_mapListToggle addTarget:self action:@selector(mapListSelectionChanged:) forControlEvents:UIControlEventValueChanged];
+	}
+	
+	if (!_searchBar.toolbarItems.count) {
+		UIBarButtonItem *item = [[[UIBarButtonItem alloc] initWithCustomView:_mapListToggle] autorelease];
+		UIFont *smallFont = [UIFont boldSystemFontOfSize:[UIFont smallSystemFontSize]];
+		item.width = [@"Map" sizeWithFont:smallFont].width + [@"List" sizeWithFont:smallFont].width + 4 * 4.0; // 4.0 is spacing defined in KGOSearchBar.m
+		[_searchBar addToolbarButton:item animated:NO];
+	}
+}
+
+- (void)hideMapListToggle {
+	if (_searchBar.toolbarItems.count) {
+		[_searchBar setToolbarItems:nil];
+	}
+	
+	[_mapListToggle release];
+	_mapListToggle = nil;
+}
+
+- (void)mapListSelectionChanged:(id)sender {
+	if (sender == _mapListToggle) {
+		switch (_mapListToggle.selectedSegmentIndex) {
+			case 0:
+				[self switchToMapView];
+				break;
+			case 1:
+				[self switchToListView];
+				break;
+			default:
+				break;
+		}
+	}
+}
+
+- (void)switchToMapView {
+	[self.view bringSubviewToFront:_mapView];
+	[self.view bringSubviewToFront:_bottomBar];
+	
+	[_mapListToggle setEnabled:NO forSegmentAtIndex:0];
+	[_mapListToggle setEnabled:YES forSegmentAtIndex:1];
+}
+
+- (void)switchToListView {
+	if (_searchResultsTableView) {
+		[self.view bringSubviewToFront:_searchResultsTableView];
+	}
+	
+	[_mapListToggle setEnabled:YES forSegmentAtIndex:0];
+	[_mapListToggle setEnabled:NO forSegmentAtIndex:1];
+}
+
+#pragma mark SearchDisplayDelegate
 
 - (BOOL)searchControllerShouldShowSuggestions:(KGOSearchDisplayController *)controller {
 	return YES;
@@ -105,19 +165,41 @@
 }
 
 - (BOOL)searchControllerCanShowMap:(KGOSearchDisplayController *)controller {
-	
+	[self showMapListToggle]; // override default behavior
+	return NO; // notify the controller that it's been overridden
+}
+
+- (void)searchController:(KGOSearchDisplayController *)controller didShowSearchResultsTableView:(UITableView *)tableView {
+
 	// show our map view above the list view
-	
-	if (!_searchBar.toolbarItems.count) {
-		UISegmentedControl *segment = [[[UISegmentedControl alloc] init] autorelease];
-		[segment insertSegmentWithTitle:@"Map" atIndex:0 animated:NO];
-		[segment insertSegmentWithTitle:@"List" atIndex:1 animated:NO];
-		[segment setEnabled:NO forSegmentAtIndex:0];
-		UIBarButtonItem *item = [[[UIBarButtonItem alloc] initWithCustomView:segment] autorelease];
-		[_searchBar addToolbarButton:item animated:NO];
+	if (controller.showingOnlySearchResults) {
+		[self switchToMapView];
 	}
 	
-	return NO;
+	for (id<KGOSearchResult> aResult in controller.searchResults) {
+		if ([aResult conformsToProtocol:@protocol(MKAnnotation)]) {
+			id<MKAnnotation> annotation = (id<MKAnnotation>)aResult;
+			[_mapView addAnnotation:annotation];
+		}
+	}
+	
+	_searchResultsTableView = tableView;
+}
+
+
+- (void)searchController:(KGOSearchDisplayController *)controller willHideSearchResultsTableView:(UITableView *)tableView {
+	for (id<KGOSearchResult> aResult in controller.searchResults) {
+		if ([aResult conformsToProtocol:@protocol(MKAnnotation)]) {
+			id<MKAnnotation> annotation = (id<MKAnnotation>)aResult;
+			[_mapView removeAnnotation:annotation];
+		}
+	}
+	
+	if (!_mapView.annotations.count) {
+		[self hideMapListToggle];
+	}
+
+	_searchResultsTableView = nil;
 }
 
 @end

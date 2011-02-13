@@ -19,6 +19,7 @@
 @optional
 
 - (void)searchController:(KGOSearchDisplayController *)controller didShowSearchResultsTableView:(UITableView *)tableView;
+- (void)searchController:(KGOSearchDisplayController *)controller willReloadSearchResultsTableView:(UITableView *)tableView;
 - (void)searchController:(KGOSearchDisplayController *)controller willHideSearchResultsTableView:(UITableView *)tableView;
 - (BOOL)searchControllerCanShowMap:(KGOSearchDisplayController *)controller;
 
@@ -31,7 +32,7 @@
     
     id<KGOSearchDisplayDelegate> _delegate;
     NSArray *_searchResults;
-    BOOL _didExecuteSearch;
+    BOOL _showingOnlySearchResults;
 
     KGOSearchBar *_searchBar;
     BOOL _active;
@@ -41,6 +42,7 @@
     BOOL _showingMapView;
 }
 
+@property (nonatomic, readonly) BOOL showingOnlySearchResults; // NO if tableview includes search suggestions
 @property (nonatomic, readonly) id<KGOSearchDisplayDelegate> delegate;
 @property (nonatomic, retain) NSArray *searchResults;
 

@@ -29,7 +29,8 @@ static NSString * RecentSearchesEntityName = @"RecentSearch";
 @synthesize searchBar = _searchBar, active = _active, delegate = _delegate,
 searchContentsController = _searchContentsController,
 searchTableController = _searchTableController,
-searchResults = _searchResults;
+searchResults = _searchResults,
+showingOnlySearchResults = _showingOnlySearchResults;
 
 
 - (id)initWithSearchBar:(KGOSearchBar *)searchBar delegate:(id<KGOSearchDisplayDelegate>)delegate contentsController:(UIViewController *)viewController {
@@ -108,7 +109,11 @@ searchResults = _searchResults;
 }
 
 - (void)reloadSearchResultsTableView {
-    [[_searchTableController topTableView] reloadData];
+    UITableView *tableView = [_searchTableController topTableView];
+	if ([self.delegate respondsToSelector:@selector(searchController:willReloadSearchResultsTableView:)]) {
+		[self.delegate searchController:self willReloadSearchResultsTableView:tableView];
+	}
+	[_searchTableController reloadDataForTableView:tableView];
 }
 
 - (void)focusSearchBarAnimated:(BOOL)animated {
@@ -231,7 +236,7 @@ searchResults = _searchResults;
 }
 
 - (void)searchBarCancelButtonClicked:(KGOSearchBar *)searchBar {
-	_didExecuteSearch = NO;
+	_showingOnlySearchResults = NO;
     [self hideSearchResultsTableView];
     [self setActive:NO animated:YES];
     _searchBar.text = nil;
@@ -255,7 +260,7 @@ searchResults = _searchResults;
         NSArray *moduleTags = [self.delegate searchControllerValidModules:self];
         for (NSString *moduleTag in moduleTags) {
 			if ([orClause length]) {
-				[orClause appendString:@" AND module = %@"];
+				[orClause appendString:@" OR module = %@"];
 			} else {
 				[orClause appendString:@"module = %@"];
 			}
@@ -268,7 +273,7 @@ searchResults = _searchResults;
         }
 		
 		if ([orClause length]) {
-			[recentsQuery appendString:[NSString stringWithFormat:@" OR (%@)", orClause]];
+			[recentsQuery appendString:[NSString stringWithFormat:@" AND (%@)", orClause]];
 		}
 		
         NSPredicate *pred = [NSPredicate predicateWithFormat:recentsQuery argumentArray:recentsParams];
@@ -291,8 +296,8 @@ searchResults = _searchResults;
 #pragma mark KGOSearchDelegate
 
 - (void)searcher:(id)searcher didReceiveResults:(NSArray *)results {
-    if (!_didExecuteSearch) {
-        _didExecuteSearch = YES;
+    if (!_showingOnlySearchResults) {
+        _showingOnlySearchResults = YES;
         self.searchResults = results;
     } else {
         self.searchResults = [self.searchResults arrayByAddingObjectsFromArray:results];
@@ -357,7 +362,7 @@ searchResults = _searchResults;
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
-    if (_didExecuteSearch) {
+    if (_showingOnlySearchResults) {
         return [NSString stringWithFormat:@"%d results", self.searchResults.count];
     }
     return nil;

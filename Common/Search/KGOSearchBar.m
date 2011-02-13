@@ -69,7 +69,6 @@
     return searchBar;
 }
 
-//- (void)drawRect:(CGRect)rect {
 - (void)layoutSubviews {
     // sad way to use a background image for a search bar:
     // insert the image right below the text field
@@ -101,13 +100,6 @@
     }
 }
 
-/*
-- (void)drawRect:(CGRect)rect {
-    [super drawRect:rect];
-}
-*/
-//- (void)setNeedsDisplay {
-//    [super setNeedsDisplay];
 - (void)setNeedsLayout {
     [super setNeedsLayout];
     

@@ -22,6 +22,8 @@
 	BOOL indoorMode;
 	
 	KGOSearchDisplayController *_searchController;
+	UITableView *_searchResultsTableView; // only used as temporary reference
+	UISegmentedControl *_mapListToggle;
 
 }
 
@@ -32,5 +34,11 @@
 - (IBAction)browseButtonPressed;
 - (IBAction)bookmarksButtonPressed;
 - (IBAction)settingsButtonPressed;
+
+- (void)showMapListToggle;
+- (void)hideMapListToggle;
+- (void)switchToMapView;
+- (void)switchToListView;
+- (void)mapListSelectionChanged:(id)sender;
 
 @end
