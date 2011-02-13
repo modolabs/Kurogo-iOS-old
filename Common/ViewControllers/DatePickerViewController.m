@@ -8,32 +8,37 @@
 
 - (void)loadView {
     [super loadView];
+	self.title = NSLocalizedString(@"Jump to a Date", nil);
+	
     self.view.backgroundColor = [UIColor clearColor];
     if (!self.date) {
         self.date = [NSDate date];
     }
     
-    UIControl *scrim = [[UIControl alloc] initWithFrame:self.view.frame];
+    UIControl *scrim = [[UIControl alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
+	scrim.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     scrim.backgroundColor = [UIColor colorWithWhite:0.0 alpha:0.7];
     [scrim addTarget:self.delegate action:@selector(datePickerViewControllerDidCancel:) forControlEvents:UIControlEventTouchDown];
     [self.view addSubview:scrim];
     [scrim release];
     
-   // UINavigationBar *navBar = [[UINavigationBar alloc] initWithFrame:CGRectMake(0.0, 0.0, self.view.frame.size.width, 44.0)];
-	UINavigationBar *navBar = [[UINavigationBar alloc] initWithFrame:CGRectMake(0.0, 0.0, self.view.frame.size.width, 44.0)];
-    navBar.barStyle = UIBarStyleBlack;
-    
-    UINavigationItem *navItem = [[UINavigationItem alloc] initWithTitle:@"Jump to a Date"];
-    
     doneButton = [[UIBarButtonItem alloc] initWithTitle:@"Go" style:UIBarButtonItemStylePlain target:self action:@selector(navBarButtonPressed:)];
-    navItem.rightBarButtonItem = doneButton;
-    
     cancelButton = [[UIBarButtonItem alloc] initWithTitle:@"Cancel" style:UIBarButtonItemStylePlain target:self action:@selector(navBarButtonPressed:)];
-    navItem.leftBarButtonItem = cancelButton;
     
-    [navBar pushNavigationItem:navItem animated:NO];
-    
-    [self.view addSubview:navBar];
+	if (!self.navigationController) {
+		UINavigationItem *navItem = [[[UINavigationItem alloc] initWithTitle:self.title] autorelease];
+		navItem.rightBarButtonItem = doneButton;
+		navItem.leftBarButtonItem = cancelButton;
+
+		UINavigationBar *navBar = [[[UINavigationBar alloc] initWithFrame:CGRectMake(0.0, 0.0, self.view.frame.size.width, 44.0)] autorelease];
+		navBar.barStyle = UIBarStyleBlack;
+		[navBar pushNavigationItem:navItem animated:NO];
+		[self.view addSubview:navBar];
+
+	} else {
+		self.navigationItem.leftBarButtonItem = cancelButton;
+		self.navigationItem.rightBarButtonItem = doneButton;
+	}
     
     datePicker = [[UIDatePicker alloc] init];
     datePicker.frame = CGRectMake(0.0, self.view.frame.size.height - datePicker.frame.size.height, datePicker.frame.size.width, datePicker.frame.size.height);
@@ -43,9 +48,6 @@
 	datePicker.minimumDate = [NSDate dateWithTimeIntervalSinceNow:-10 * 366 * 24 * 3600];
     [datePicker addTarget:self action:@selector(datePickerValueChanged:) forControlEvents:UIControlEventValueChanged];
     [self.view addSubview:datePicker];
-    
-    [navItem release];
-    [navBar release];
 }
 
 - (void)navBarButtonPressed:(id)sender

@@ -24,7 +24,7 @@
 	NSSortDescriptor *sort = [[NSSortDescriptor alloc] initWithKey:@"start" ascending:YES];
     NSArray *events = nil;
     if (listType == CalendarEventListTypeEvents && catID == nil) {
-        pred = [NSPredicate predicateWithFormat:@"(start >= %@) and (start < %@) and (isRegular == YES)", startDate, endDate];
+        pred = [NSPredicate predicateWithFormat:@"(start >= %@) and (start < %@)", startDate, endDate];
         events = [[CoreDataManager sharedManager] objectsForEntity:CalendarEventEntityName matchingPredicate:pred sortDescriptors:[NSArray arrayWithObject:sort]];
     } else {
         pred = [NSPredicate predicateWithFormat:@"(start >= %@) and (start < %@)", startDate, endDate];
@@ -93,11 +93,11 @@
 
 + (KGOEventCategory *)categoryWithID:(NSInteger)catID
 {	
-	NSPredicate *pred = [NSPredicate predicateWithFormat:@"catID == %d", catID];
-	KGOEventCategory *category = [[[CoreDataManager sharedManager] objectsForEntity:CalendarCategoryEntityName
+	NSPredicate *pred = [NSPredicate predicateWithFormat:@"identifier == %d", catID];
+	KGOEventCategory *category = [[[CoreDataManager sharedManager] objectsForEntity:@"KGOEventCategory"
                                                                matchingPredicate:pred] lastObject];
 	if (!category) {
-        category = (KGOEventCategory *)[[CoreDataManager sharedManager] insertNewObjectForEntityForName:CalendarCategoryEntityName];
+        category = (KGOEventCategory *)[[CoreDataManager sharedManager] insertNewObjectForEntityForName:@"KGOEventCategory"];
 		category.identifier = [NSNumber numberWithInt:catID];
         if (catID == kCalendarAcademicCategoryID) {
             category.title = [CalendarConstants titleForEventType:CalendarEventListTypeAcademic];
@@ -119,20 +119,20 @@
     // whatever real ID is assigned to exhibits, override it with our own
 	NSInteger catID = [[dict objectForKey:@"name"] isEqualToString:@"exhibits"]
         ? kCalendarExhibitCategoryID
-        : [[dict objectForKey:@"catid"] intValue];
+        : [[dict objectForKey:@"identifier"] intValue];
 	KGOEventCategory *category = [CalendarDataManager categoryWithID:catID];
-	[category updateWithDict:dict];
+	//[category updateWithDict:dict];
 	return category;
 }
 
 + (KGOEvent *)eventWithID:(NSInteger)eventID
 {
-	NSPredicate *pred = [NSPredicate predicateWithFormat:@"eventID == %d", eventID];
-	KGOEvent *event = [[[CoreDataManager sharedManager] objectsForEntity:CalendarEventEntityName
+	NSPredicate *pred = [NSPredicate predicateWithFormat:@"identifier == %d", eventID];
+	KGOEvent *event = [[[CoreDataManager sharedManager] objectsForEntity:@"KGOEvent"
                                                                matchingPredicate:pred] lastObject];
 	if (!event) {
-		event = [[CoreDataManager sharedManager] insertNewObjectForEntityForName:CalendarEventEntityName];
-		event.identifier = [NSNumber numberWithInt:eventID];
+		event = [[CoreDataManager sharedManager] insertNewObjectForEntityForName:@"KGOEvent"];
+		event.identifier = [NSString stringWithFormat:@"%d", eventID];
 	}
 	return event;
 }
@@ -149,7 +149,7 @@
 
 	NSInteger eventID = [[dict objectForKey:@"id"] intValue];
 	KGOEvent *event = [CalendarDataManager eventWithID:eventID];	
-	[event updateWithDict:dict];
+	//[event updateWithDict:dict];
 	return event;
 }
 

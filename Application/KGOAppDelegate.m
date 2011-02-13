@@ -235,8 +235,27 @@
 // Call these instead of [theNavigationController presentModal...]
 // because the default behavior hides the view controller behind, in case we want transparent modal views.
 - (void)presentAppModalViewController:(UIViewController *)viewController animated:(BOOL)animated {
+	NSLog(@"%@", [viewController description]);
+	if (!viewController) return;
+	
     appModalHolder.view.hidden = NO;
-    [appModalHolder presentModalViewController:viewController animated:animated];
+
+	if (viewController.navigationController || [viewController isKindOfClass:[UINavigationController class]]) {
+		[appModalHolder presentModalViewController:viewController animated:animated];
+	} else {
+		// since any VC can be presented modally, some will not have nav bars built in
+		UINavigationController *navC = [[[UINavigationController alloc] initWithRootViewController:viewController] autorelease];
+		viewController.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithTitle:@"Done"
+																							 style:UIBarButtonItemStyleDone
+																							target:self
+																							action:@selector(dismissAppModalViewController:)] autorelease];
+		[appModalHolder presentModalViewController:navC animated:animated];
+	}
+	
+}
+
+- (void)dismissAppModalViewController:(id)sender {
+	[self dismissAppModalViewControllerAnimated:YES];
 }
 
 - (void)dismissAppModalViewControllerAnimated:(BOOL)animated {

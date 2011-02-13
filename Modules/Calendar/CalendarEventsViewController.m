@@ -612,13 +612,13 @@
         BOOL showTimeOnly = [CalendarConstants intervalForEventType:self.activeEventList fromDate:self.startDate forward:YES] == 86400.0;
         
         if (showTimeOnly) {
-            subtitle = [event dateStringWithDateStyle:NSDateFormatterNoStyle timeStyle:NSDateFormatterShortStyle separator:@" "];
+            //subtitle = [event dateStringWithDateStyle:NSDateFormatterNoStyle timeStyle:NSDateFormatterShortStyle separator:@" "];
         } else {
             if (activeEventList == CalendarEventListTypeAcademic) {
-                NSArray *stringArray = [[event dateStringWithDateStyle:NSDateFormatterShortStyle timeStyle:NSDateFormatterShortStyle separator:@" "] componentsSeparatedByString: @" "];
-                subtitle = [stringArray objectAtIndex:0];
+                //NSArray *stringArray = [[event dateStringWithDateStyle:NSDateFormatterShortStyle timeStyle:NSDateFormatterShortStyle separator:@" "] componentsSeparatedByString: @" "];
+                //subtitle = [stringArray objectAtIndex:0];
             } else {
-                subtitle = [event dateStringWithDateStyle:NSDateFormatterShortStyle timeStyle:NSDateFormatterShortStyle separator:@" "];
+                //subtitle = [event dateStringWithDateStyle:NSDateFormatterShortStyle timeStyle:NSDateFormatterShortStyle separator:@" "];
             }
         }
         
