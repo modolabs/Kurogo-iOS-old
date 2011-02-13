@@ -217,8 +217,16 @@
 
 - (void)buttonPressed:(id)sender {
     SpringboardIcon *anIcon = (SpringboardIcon *)sender;
+	// special case for full web link
+	if ([anIcon.moduleTag isEqualToString:FullWebTag]) {
+		// TODO: add this string to config
+		[[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"http://www.harvard.edu/?fullsite=yes"]];
+		return;
+	}
+
     KGOAppDelegate *appDelegate = (KGOAppDelegate *)[[UIApplication sharedApplication] delegate];
     activeModule = [appDelegate moduleForTag:anIcon.moduleTag];
+	
     UIViewController *viewController = [activeModule moduleHomeScreenWithParams:nil];
     [self.navigationController pushViewController:viewController animated:YES];
 

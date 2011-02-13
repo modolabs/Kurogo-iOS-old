@@ -27,8 +27,6 @@
 - (void)loadNavigationContainer {
     HomeModule *homeModule = (HomeModule *)[self moduleForTag:HomeTag];
     UIViewController *homeVC = [homeModule moduleHomeScreenWithParams:nil];
-    //self.springboard = [[SpringboardViewController alloc] initWithNibName:nil bundle:nil];
-    //theNavController = [[ModoNavigationController alloc] initWithRootViewController:self.springboard];
     theNavController = [[ModoNavigationController alloc] initWithRootViewController:homeVC];
     theNavController.view.backgroundColor = [[KGOTheme sharedTheme] backgroundColorForApplication];
     [self.window addSubview:theNavController.view];
@@ -66,7 +64,13 @@
     if (module) {
         UIViewController *vc = [module modulePage:pageName params:params];
         if (vc) {
-            [theNavController pushViewController:vc animated:YES];
+			// if the visible view controller is modal, push new view controllers on the modal nav controller.
+			// there should be no reason to push a view controller behind what's visible.
+			if (!appModalHolder.view.hidden && appModalHolder.modalViewController.navigationController) {
+				[appModalHolder.modalViewController.navigationController pushViewController:vc animated:YES];
+			} else {
+				[theNavController pushViewController:vc animated:YES];
+			}
             didShow = YES;
         }
     }
