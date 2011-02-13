@@ -10,131 +10,21 @@
 @synthesize storyListChannelController;
 @synthesize xmlParser;
 
-- (id) init {
-    self = [super init];
-    if (self != nil) {
-        self.shortName = @"News";
-        self.longName = @"News";
-        //self.iconName = @"news";
-        //self.supportsFederatedSearch = YES;
-        
-        //storyListChannelController = [[StoryListViewController alloc] init];
-        //[storyListChannelController pruneStories];
-        //[storyListChannelController refreshCategories];
-        //self.viewControllers = [NSArray arrayWithObject:storyListChannelController];
-    }
-    return self;
+- (UIViewController *)moduleHomeScreenWithParams:(NSDictionary *)args {
+    StoryListViewController *vc = [[[StoryListViewController alloc] init] autorelease];
+    return vc;
+}
+
+- (NSArray *)objectModelNames {
+    return [NSArray arrayWithObject:@"News"];
 }
 
 - (void)dealloc {
-    [storyListChannelController release];
     self.xmlParser = nil;
     [super dealloc];
 }
 
-#pragma mark State and url
 /*
-- (void)resetNavStack {
-    self.viewControllers = [NSArray arrayWithObject:storyListChannelController];
-}
-
-NSString * const NewsLocalPathSearch = @"search";
-NSString * const NewsLocalPathBookmarks = @"bookmarks";
-
-- (BOOL)handleLocalPath:(NSString *)localPath query:(NSString *)query {
-    BOOL didHandle = NO;
-    //NSMutableArray *mutableVCs = [self.viewControllers mutableCopy];
-    
-    if ([localPath isEqualToString:LocalPathFederatedSearch]) {
-        // fedsearch?query
-        self.selectedResult = nil;
-        storyListChannelController.view;
-        storyListChannelController.totalAvailableResults = totalResults;
-        [storyListChannelController presentSearchResults:self.searchResults searchText:query];
-        [self resetNavStack];
-        didHandle = YES;
-        
-    } else if ([localPath isEqualToString:LocalPathFederatedSearchResult]) {
-        // fedresult?rownum
-        NSInteger row = [query integerValue];
-        
-        StoryDetailViewController *detailVC = [[[StoryDetailViewController alloc] init] autorelease];
-        self.selectedResult = [self.searchResults objectAtIndex:row];
-        detailVC.story = self.selectedResult;
-        detailVC.newsController = self;
-        self.viewControllers = [NSArray arrayWithObject:detailVC];
-        
-        didHandle = YES;
-        
-    } else if ([localPath isEqualToString:NewsLocalPathSearch]) {
-        
-        
-        
-    } else if ([localPath isEqualToString:NewsLocalPathBookmarks]) {
-        // bookmarks?article
-    
-    } else {
-        // <category>?article
-
-    }
-    
-    return didHandle;
-}
-
-#pragma mark Federated search
-
-- (void)abortSearch {
-    if (self.xmlParser) {
-        [self.xmlParser abort];
-    }
-    [super abortSearch];
-}
-
-- (void)performSearchForString:(NSString *)searchText {
-    // force main news viewController to load here
-    // because it fetches things from core data which
-    // affects search results we pass to it later on
-    storyListChannelController.view;
-    
-    [super performSearchForString:searchText];
-    
-    if (self.xmlParser) {
-        [self.xmlParser abort];
-    }
-    self.xmlParser = [[[StoryXMLParser alloc] init] autorelease];
-    xmlParser.delegate = self;
-    
-    [xmlParser loadStoriesforQuery:searchText afterStoryId:0 searchIndex:1 count:10];
-}
-
-- (NSString *)titleForSearchResult:(id)result {
-    NewsStory *story = (NewsStory *)result;
-    return story.title;
-}
-
-- (NSString *)subtitleForSearchResult:(id)result {
-    NewsStory *story = (NewsStory *)result;
-    return story.summary;
-}
-
-- (NSInteger)totalSearchResults {
-    return totalResults;
-}
-
-- (void)loadSearchResultsFromCache {
-	// make a predicate for everything with the search flag
-    NSPredicate *predicate = nil;
-    NSSortDescriptor *relevanceSortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"searchResult" ascending:YES];
-    NSArray *sortDescriptors = [NSArray arrayWithObject:relevanceSortDescriptor];
-    [relevanceSortDescriptor release];
-    
-	predicate = [NSPredicate predicateWithFormat:@"searchResult > 0"];
-    
-    NSArray *results = [[CoreDataManager sharedManager] objectsForEntity:NewsStoryEntityName matchingPredicate:predicate sortDescriptors:sortDescriptors];
-	
-    self.searchResults = results;
-}
-
 #pragma mark StoryXMLParser delegation
 
 - (void)parserDidMakeConnection:(StoryXMLParser *)parser {
