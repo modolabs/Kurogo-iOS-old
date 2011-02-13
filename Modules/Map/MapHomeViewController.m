@@ -9,9 +9,18 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 	
+	// TODO: so maybe having a separate factory function in KGOSearchBar
+	// for default search bar isn't the best idea
+	CGRect frame = _searchBar.frame;
+	[_searchBar removeFromSuperview];
+    _searchBar = [[KGOSearchBar defaultSearchBarWithFrame:frame] retain];
+	[self.view addSubview:_searchBar];
+
+	_searchController = [[KGOSearchDisplayController alloc] initWithSearchBar:_searchBar delegate:self contentsController:self];
+	
 	indoorMode = NO;
 	NSArray *items = nil;
-	UIBarButtonItem *spacer = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil] autorelease];
+	UIBarButtonItem *spacer = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil] autorelease];
 	if (indoorMode) {
 		items = [NSArray arrayWithObjects:_infoButton, spacer, _browseButton, spacer, _bookmarksButton, spacer, _settingsButton, nil];
 		_infoButton.image = nil;
@@ -50,6 +59,7 @@
 
 
 - (void)dealloc {
+	[_searchController release];
     [super dealloc];
 }
 
