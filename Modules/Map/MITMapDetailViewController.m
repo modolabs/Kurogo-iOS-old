@@ -1,7 +1,6 @@
 #import "MITMapDetailViewController.h"
 #import "TabViewControl.h"
 #import "MapSearchResultAnnotation.h"
-#import "CampusMapViewController.h"
 #import "MITUIConstants.h"
 #import "KGOAppDelegate.h"
 #import "MapBookmarkManager.h"
@@ -296,8 +295,10 @@
 }
 
 #pragma mark User Actions
+
 -(IBAction) mapThumbnailPressed:(id)sender
 {
+	/*
     if (self.campusMapVC) {
         // on the map, select the current annotation
         [_campusMapVC.mapView selectAnnotation:self.annotation animated:NO];
@@ -317,6 +318,7 @@
         [mapModule.campusMapVC showListView:NO];
         [appDelegate showModuleForTag:MapTag];
     }
+	*/
 }
 
 -(IBAction) bookmarkButtonTapped
@@ -324,7 +326,7 @@
 	MapBookmarkManager *bookmarkManager = [MapBookmarkManager defaultManager];
 	if ([bookmarkManager isBookmarked:self.annotation.uniqueID]) {
 		// remove the bookmark and set the images
-        MapSavedAnnotation *saved = [bookmarkManager savedAnnotationForID:self.annotation.uniqueID];
+        KGOPlacemark *saved = [bookmarkManager savedAnnotationForID:self.annotation.uniqueID];
 		[bookmarkManager removeBookmark:saved];
 		
 		[_bookmarkButton setImage:[UIImage imageNamed:@"global/bookmark_off.png"] forState:UIControlStateNormal];

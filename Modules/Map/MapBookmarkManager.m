@@ -3,7 +3,7 @@
 
 @interface MapBookmarkManager (Private)
 
-- (MapSavedAnnotation *)savedAnnotationWithAnnotation:(ArcGISMapAnnotation *)annotation;
+- (KGOPlacemark *)savedAnnotationWithAnnotation:(ArcGISMapAnnotation *)annotation;
 - (void)refreshBookmarks;
 
 @end
@@ -52,27 +52,27 @@ static MapBookmarkManager* s_mapBookmarksManager = nil;
     NSPredicate *pred = [NSPredicate predicateWithFormat:@"isBookmark == NO"];
     NSArray *nonBookmarks = [[CoreDataManager sharedManager] objectsForEntity:CampusMapAnnotationEntityName
                                                             matchingPredicate:pred];
-    for (MapSavedAnnotation *nonBookmark in nonBookmarks) {
+    for (KGOPlacemark *nonBookmark in nonBookmarks) {
         [[CoreDataManager sharedManager] deleteObject:nonBookmark];
     }
 }
 
 #pragma mark Bookmark Management
 
-- (MapSavedAnnotation *)savedAnnotationForID:(NSString *)uniqueID {
-    MapSavedAnnotation *saved = (MapSavedAnnotation *)[[CoreDataManager sharedManager] getObjectForEntity:CampusMapAnnotationEntityName
+- (KGOPlacemark *)savedAnnotationForID:(NSString *)uniqueID {
+    KGOPlacemark *saved = (KGOPlacemark *)[[CoreDataManager sharedManager] getObjectForEntity:CampusMapAnnotationEntityName
                                                                                                 attribute:@"id"
                                                                                                     value:uniqueID];
     return saved;
 }
 
-- (MapSavedAnnotation *)savedAnnotationWithAnnotation:(ArcGISMapAnnotation *)annotation {
-    MapSavedAnnotation *savedAnnotation = [[CoreDataManager sharedManager] insertNewObjectForEntityForName:CampusMapAnnotationEntityName];
+- (KGOPlacemark *)savedAnnotationWithAnnotation:(ArcGISMapAnnotation *)annotation {
+    KGOPlacemark *savedAnnotation = [[CoreDataManager sharedManager] insertNewObjectForEntityForName:CampusMapAnnotationEntityName];
     
-    savedAnnotation.id = annotation.uniqueID;
+    savedAnnotation.identifier = annotation.uniqueID;
     savedAnnotation.latitude = [NSNumber numberWithFloat:annotation.coordinate.latitude];
     savedAnnotation.longitude = [NSNumber numberWithFloat:annotation.coordinate.longitude];
-    if (annotation.name) savedAnnotation.name = annotation.name;
+    if (annotation.name) savedAnnotation.title = annotation.name;
     if (annotation.street) savedAnnotation.street = annotation.street;
     if (annotation.dataPopulated) {
         savedAnnotation.info = [NSKeyedArchiver archivedDataWithRootObject:annotation.info];
@@ -82,8 +82,8 @@ static MapBookmarkManager* s_mapBookmarksManager = nil;
 }
 
 - (void)bookmarkAnnotation:(ArcGISMapAnnotation *)annotation {
-    MapSavedAnnotation *savedAnnotation = [self savedAnnotationWithAnnotation:annotation];
-    savedAnnotation.isBookmark = [NSNumber numberWithBool:YES];
+    KGOPlacemark *savedAnnotation = [self savedAnnotationWithAnnotation:annotation];
+    savedAnnotation.bookmarked = [NSNumber numberWithBool:YES];
     savedAnnotation.sortOrder = [NSNumber numberWithInt:[_bookmarks count]];
     [_bookmarks addObject:savedAnnotation];
     [[CoreDataManager sharedManager] saveData];
@@ -91,16 +91,16 @@ static MapBookmarkManager* s_mapBookmarksManager = nil;
 }
 
 - (void)saveAnnotationWithoutBookmarking:(ArcGISMapAnnotation *)annotation {
-    MapSavedAnnotation *savedAnnotation = [self savedAnnotationWithAnnotation:annotation];
-    savedAnnotation.isBookmark = [NSNumber numberWithBool:NO];
+    KGOPlacemark *savedAnnotation = [self savedAnnotationWithAnnotation:annotation];
+    savedAnnotation.bookmarked = [NSNumber numberWithBool:NO];
     [[CoreDataManager sharedManager] saveData];
 }
 
-- (void)removeBookmark:(MapSavedAnnotation *)savedAnnotation {
+- (void)removeBookmark:(KGOPlacemark *)savedAnnotation {
     NSInteger sortOrder = [savedAnnotation.sortOrder integerValue];
     // decrement sortOrder of all bookmarks after this
     for (NSInteger i = sortOrder + 1; i < [_bookmarks count]; i++) {
-        MapSavedAnnotation *savedAnnotation = [_bookmarks objectAtIndex:i];
+        KGOPlacemark *savedAnnotation = [_bookmarks objectAtIndex:i];
         savedAnnotation.sortOrder = [NSNumber numberWithInt:i - 1];
     }
     [_bookmarks removeObject:savedAnnotation];
@@ -109,14 +109,14 @@ static MapBookmarkManager* s_mapBookmarksManager = nil;
 }
 
 - (BOOL)isBookmarked:(NSString *)uniqueID {
-    MapSavedAnnotation *saved = [self savedAnnotationForID:uniqueID];
-    return (saved != nil && [saved.isBookmark boolValue]);
+    KGOPlacemark *saved = [self savedAnnotationForID:uniqueID];
+    return (saved != nil && [saved.bookmarked boolValue]);
 }
 
 - (void)moveBookmarkFromRow:(int) from toRow:(int)to
 {
     if (to != from) {
-		MapSavedAnnotation *savedAnnotation = nil;
+		KGOPlacemark *savedAnnotation = nil;
 
         // if the row is moving down (from < to), the sortOrder of the
         // moved item increases and everything between decreases by 1

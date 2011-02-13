@@ -1,5 +1,5 @@
 #import <UIKit/UIKit.h>
-#import "KGOSearchDelegate.h"
+#import "KGOSearchModel.h"
 #import "KGOSearchBar.h"
 #import "KGOTableViewController.h"
 #import "KGODetailPager.h"
@@ -20,8 +20,7 @@
 
 - (void)searchController:(KGOSearchDisplayController *)controller didShowSearchResultsTableView:(UITableView *)tableView;
 - (void)searchController:(KGOSearchDisplayController *)controller willHideSearchResultsTableView:(UITableView *)tableView;
-- (void)searchControllerDidShowSearchResultsMapView:(KGOSearchDisplayController *)controller;
-- (void)searchControllerWillHideSearchResultsMapView:(KGOSearchDisplayController *)controller;
+- (BOOL)searchControllerCanShowMap:(KGOSearchDisplayController *)controller;
 
 @end
 

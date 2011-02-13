@@ -1,6 +1,5 @@
 #import <Foundation/Foundation.h>
-#import "MITCalendarEvent.h"
-#import "EventCategory.h"
+#import "CalendarModel.h"
 #import "CalendarConstants.h"
 
 @interface CalendarDataManager : NSObject {
@@ -11,10 +10,10 @@
 + (NSNumber *)idForCategory:(NSString *)categoryName;
 
 + (NSArray *)topLevelCategories;
-+ (EventCategory *)categoryWithID:(NSInteger)catID;
-+ (MITCalendarEvent *)eventWithID:(NSInteger)eventID;
-+ (MITCalendarEvent *)eventWithDict:(NSDictionary *)dict;
-+ (EventCategory *)categoryWithDict:(NSDictionary *)dict;
++ (KGOEventCategory *)categoryWithID:(NSInteger)catID;
++ (KGOEvent *)eventWithID:(NSInteger)eventID;
++ (KGOEvent *)eventWithDict:(NSDictionary *)dict;
++ (KGOEventCategory *)categoryWithDict:(NSDictionary *)dict;
 + (void)pruneOldEvents;
 
 @end

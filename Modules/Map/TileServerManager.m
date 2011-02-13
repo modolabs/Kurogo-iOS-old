@@ -7,6 +7,7 @@
 
 #import "TileServerManager.h"
 #import "CoreDataManager.h"
+#import "MapZoomLevel.h"
 #import <MapKit/MapKit.h>
 
 @interface TileServerManager (Private)

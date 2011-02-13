@@ -1,5 +1,4 @@
 #import <UIKit/UIKit.h>
-#import <CoreLocation/CoreLocation.h>
 #import "KGOTableViewController.h"
 
 @protocol KGOSearchResult <NSObject>
@@ -18,13 +17,14 @@
 
 @end
 
+#pragma mark -
 
 @protocol KGOCategory <NSObject>
 
 - (NSString *)title;
-- (id<KGOCategory>)parent;
-- (NSArray *)children; // an array of id<KGOCategory> objects. may be nil.
-- (NSArray *)items;    // an array of id<KGOSearchResult> objects. may be nil.
+- (id<KGOCategory>)parent; // nil if this is top level category.
+- (NSArray *)children;     // an array of id<KGOCategory> objects. may be nil.
+- (NSArray *)items;        // an array of id<KGOSearchResult> objects. may be nil.
 
 @optional
 
@@ -32,3 +32,13 @@
 - (CellManipulator)manipulatorForContext:(id)context;
 
 @end
+
+#pragma mark -
+
+// currently only used by KGOSearchDisplayController
+@protocol KGOSearchDelegate
+
+- (void)searcher:(id)searcher didReceiveResults:(NSArray *)results;
+
+@end
+

@@ -1,37 +1,18 @@
 #import "MapModule.h"
-#import "CampusMapViewController.h"
 #import "MITMapDetailViewController.h"
 #import "MapSearchResultAnnotation.h"
-#import "MapSavedAnnotation.h"
+#import "KGOPlacemark.h"
 #import "MapBookmarkManager.h"
 #import "TileServerManager.h"
+#import "CalendarModel.h"
+#import "MapHomeViewController.h"
+#import "KGOCategoryListViewController.h"
 
 @implementation MapModule
-@synthesize campusMapVC = _campusMapVC;
 @synthesize request = _request;
 
-- (id)init {
-    self = [super init];
-    if (self != nil) {
-        //self.tag = CampusMapTag;
-        self.shortName = @"Map";
-        self.longName = @"Map";
-        //self.iconName = @"map";
-        //self.supportsFederatedSearch = YES;
-       
-		//self.campusMapVC = [[[CampusMapViewController alloc] init] autorelease];
-		//self.campusMapVC.campusMapModule = self;
-        //self.campusMapVC.title = self.shortName;
-		
-        //self.viewControllers = [NSArray arrayWithObject:self.campusMapVC];
-    }
-    return self;
-}
-
 - (void)dealloc
-{
-	self.campusMapVC = nil;
-	
+{	
 	[super dealloc];
 }
 
@@ -40,7 +21,77 @@
     // force TileServerManager to load so we can get projection info asap
     [TileServerManager isInitialized];
 }
-/*
+
+#pragma mark Search
+
+- (BOOL)supportsFederatedSearch {
+    return YES;
+}
+
+- (void)performSearchWithText:(NSString *)searchText params:(NSDictionary *)params delegate:(id<KGOSearchDelegate>)delegate {
+    _searchDelegate = delegate;
+    
+    self.request = [JSONAPIRequest requestWithJSONAPIDelegate:self];
+    [self.request requestObjectFromModule:@"map"
+                                  command:@"search"
+                               parameters:[NSDictionary dictionaryWithObjectsAndKeys:searchText, @"q", nil]];
+}
+
+
+#pragma mark Data
+
+- (NSArray *)objectModelNames {
+    return [NSArray arrayWithObject:@"MapModel"];
+}
+
+
+#pragma mark Navigation
+
+- (NSArray *)registeredPageNames {
+    return [NSArray arrayWithObjects:
+            LocalPathPageNameHome, LocalPathPageNameSearch, LocalPathPageNameDetail,
+            LocalPathPageNameCategoryList, LocalPathPageNameItemList, nil];
+}
+
+- (UIViewController *)moduleHomeScreenWithParams:(NSDictionary *)args {
+    MapHomeViewController *vc = [[[MapHomeViewController alloc] init] autorelease];
+    return vc;
+}
+
+- (UIViewController *)modulePage:(NSString *)pageName params:(NSDictionary *)params {
+    UIViewController *vc = nil;
+    if ([pageName isEqualToString:LocalPathPageNameHome]) {
+        vc = [self moduleHomeScreenWithParams:params];
+        
+    } else if ([pageName isEqualToString:LocalPathPageNameSearch]) {
+        vc = [self moduleHomeScreenWithParams:params];
+        
+        NSString *searchText = [params objectForKey:@"q"];
+        if (searchText) {
+            [(MapHomeViewController *)vc setSearchTerms:searchText];
+        }
+        
+    } else if ([pageName isEqualToString:LocalPathPageNameDetail]) {
+        KGOEvent *event = [params objectForKey:@"event"];
+        if (event) {
+            vc = [[[MITMapDetailViewController alloc] init] autorelease];
+        }
+        
+    } else if ([pageName isEqualToString:LocalPathPageNameCategoryList]) {
+		NSArray *categories = [params objectForKey:@"categories"];
+		if (categories) {
+			vc = [[[KGOCategoryListViewController alloc] init] autorelease];
+			[(KGOCategoryListViewController *)vc setCategories:categories];
+		}
+        
+    } else if ([pageName isEqualToString:LocalPathPageNameItemList]) {
+        
+    }
+    return vc;
+}
+
+
+
 #pragma mark JSONAPIDelegate
 
 - (void)request:(JSONAPIRequest *)request jsonLoaded:(id)JSONObject
@@ -53,20 +104,19 @@
             ArcGISMapAnnotation *annotation = [[[ArcGISMapAnnotation alloc] initWithInfo:info] autorelease];
             [annotations addObject:annotation];
         }
-        self.searchResults = annotations;
+        [_searchDelegate searcher:self didReceiveResults:annotations];
 	}
 }
 
 - (void)request:(JSONAPIRequest *)request madeProgress:(CGFloat)progress {
-    self.searchProgress = progress;
+
 }
 
 - (void)request:(JSONAPIRequest *)request handleConnectionError:(NSError *)error {
     self.request = nil;
-    self.searchResults = nil;
-    self.searchProgress = 1.0;
 }
 
+/*
 #pragma mark Search and state
 
 NSString * const MapsLocalPathDetail = @"detail";

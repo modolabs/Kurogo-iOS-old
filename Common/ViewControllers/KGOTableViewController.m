@@ -78,7 +78,6 @@
 
 - (UITableView *)addTableViewWithFrame:(CGRect)frame style:(UITableViewStyle)style {
 	return [_tableController addTableViewWithFrame:frame style:style];
-    self.tableView = [_tableController topTableView];
 }
 
 - (void)bringTableViewToFront:(UITableView *)tableView {

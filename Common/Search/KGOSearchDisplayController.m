@@ -3,7 +3,7 @@
 #import "KGOAppDelegate.h"
 #import "KGOModule.h"
 #import "KGOTableViewController.h"
-#import "KGOSearchResult.h"
+#import "KGOSearchModel.h"
 #import "CoreDataManager.h"
 #import "KGOAppDelegate+ModuleAdditions.h"
 #import "RecentSearch.h"
@@ -231,6 +231,7 @@ searchResults = _searchResults;
 }
 
 - (void)searchBarCancelButtonClicked:(KGOSearchBar *)searchBar {
+	_didExecuteSearch = NO;
     [self hideSearchResultsTableView];
     [self setActive:NO animated:YES];
     _searchBar.text = nil;
@@ -246,26 +247,31 @@ searchResults = _searchResults;
         NSMutableArray *searchResults = [NSMutableArray array];
         
         // fetch recent searches
-        NSMutableString *recentsQueryBuilder = [NSMutableString stringWithFormat:@"text BEGINSWITH '%@'", searchText];
-        NSMutableArray *recentsParamBuilder = [NSMutableArray array];
+        NSMutableArray *recentsParams = [NSMutableArray arrayWithObject:searchText];
+		NSMutableString *recentsQuery = [NSMutableString stringWithString:@"text BEGINSWITH %@"];
+		NSMutableString *orClause = [NSMutableString string];
 
         // passing nil as the result to this delegate method will invoke search on all modules
         NSArray *moduleTags = [self.delegate searchControllerValidModules:self];
         for (NSString *moduleTag in moduleTags) {
-            [recentsParamBuilder addObject:[NSString stringWithFormat:@"module = '%@'", moduleTag]];
+			if ([orClause length]) {
+				[orClause appendString:@" AND module = %@"];
+			} else {
+				[orClause appendString:@"module = %@"];
+			}
+			[recentsParams addObject:moduleTag];
 
             KGOModule *module = [(KGOAppDelegate *)[[UIApplication sharedApplication] delegate] moduleForTag:moduleTag];
             if ([module supportsFederatedSearch]) { // TODO: use a less strict check
                 [searchResults addObjectsFromArray:[module cachedResultsForSearchText:searchText params:nil]];
             }
         }
-
-        if ([recentsParamBuilder count]) {
-            NSString *modulePredString = [NSString stringWithFormat:@"(%@)", [recentsParamBuilder componentsJoinedByString:@" OR "]];
-            [recentsQueryBuilder appendString:[NSString stringWithFormat:@" AND %@", modulePredString]];
-        }
-
-        NSPredicate *pred = [NSPredicate predicateWithFormat:recentsQueryBuilder];
+		
+		if ([orClause length]) {
+			[recentsQuery appendString:[NSString stringWithFormat:@" OR (%@)", orClause]];
+		}
+		
+        NSPredicate *pred = [NSPredicate predicateWithFormat:recentsQuery argumentArray:recentsParams];
         DLog(@"%@", [pred description]);
         
         NSArray *recents = [[CoreDataManager sharedManager] objectsForEntity:RecentSearchesEntityName matchingPredicate:pred];
@@ -293,7 +299,10 @@ searchResults = _searchResults;
     }
     [self showSearchResultsTableView];
     [self reloadSearchResultsTableView];
-    if ([self canShowMapView]) {
+    if ((![self.delegate respondsToSelector:@selector(searchControllerCanShowMap:)] // turn on map by default if available
+		 || [self.delegate searchControllerCanShowMap:self])
+		&& [self canShowMapView])
+	{
         if (!_searchBar.toolbarItems.count) {
             [_searchBar addToolbarButtonWithTitle:NSLocalizedString(@"Map", nil)];
         }

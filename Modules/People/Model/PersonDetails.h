@@ -1,5 +1,5 @@
 #import <CoreData/CoreData.h>
-#import "KGOSearchResult.h"
+#import "KGOSearchModel.h"
 
 extern NSString * const kPersonDetailsValueSeparatorToken;
 

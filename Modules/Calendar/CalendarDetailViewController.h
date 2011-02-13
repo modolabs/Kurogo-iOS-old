@@ -6,13 +6,13 @@
 #import "KGOShareButtonController.h"
 #import "KGOTableViewController.h"
 
-@class MITCalendarEvent;
+@class KGOEvent;
 
 @interface CalendarDetailViewController : KGOTableViewController <KGOShareButtonDelegate, JSONAPIDelegate, UIWebViewDelegate> {
 	
     BOOL isRegularEvent;
     
-	MITCalendarEvent *event;
+	KGOEvent *event;
 	CalendarEventListType* rowTypes;
 	NSInteger numRows;
 	
@@ -30,7 +30,7 @@
 	KGOShareButtonController *shareController;
 }
 
-@property (nonatomic, assign) MITCalendarEvent *event;
+@property (nonatomic, assign) KGOEvent *event;
 @property (nonatomic, assign) NSArray *events;
 
 - (void)reloadEvent;

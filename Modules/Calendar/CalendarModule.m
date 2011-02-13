@@ -4,15 +4,15 @@
 #import "CalendarDetailViewController.h"
 #import "CalendarDataManager.h"
 #import "JSONAPIRequest.h"
-#import "MITCalendarEvent.h"
-#import <MapKit/MapKit.h>
+#import "CalendarModel.h"
 
 
 @implementation CalendarModule
 
-@synthesize request, searchSpan;
+@synthesize request;
 
 - (void)dealloc {
+	self.request = nil;
     [super dealloc];
 }
 
@@ -64,7 +64,7 @@
         }
         
     } else if ([pageName isEqualToString:LocalPathPageNameDetail]) {
-        MITCalendarEvent *event = [params objectForKey:@"event"];
+        KGOEvent *event = [params objectForKey:@"event"];
         if (event) {
             vc = [[[CalendarDetailViewController alloc] init] autorelease];
         }
@@ -90,7 +90,7 @@
         arrayForTable = [NSMutableArray arrayWithCapacity:[resultEvents count]];
         
         for (NSDictionary *eventDict in resultEvents) {
-            MITCalendarEvent *event = [CalendarDataManager eventWithDict:eventDict];
+            KGOEvent *event = [CalendarDataManager eventWithDict:eventDict];
             [arrayForTable addObject:event];
         }
     }

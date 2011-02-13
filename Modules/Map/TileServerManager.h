@@ -6,8 +6,9 @@
  *****************************************************************/
 
 #import <Foundation/Foundation.h>
+#import <CoreLocation/CLLocation.h>
+#import <MapKit/MKGeometry.h>
 #import "JSONAPIRequest.h"
-#import "MapZoomLevel.h"
 #import "proj_api.h"
 
 #define DEGREES_PER_RADIAN 180.0 / M_PI

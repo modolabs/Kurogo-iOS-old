@@ -3,7 +3,7 @@
 #import "PeopleDetailsViewController.h"
 #import "PeopleRecentsData.h"
 #import "PersonDetails.h"
-#import "KGOSearchDelegate.h"
+#import "KGOSearchModel.h"
 
 @implementation PeopleModule
 

@@ -14,23 +14,14 @@
 		296F9EDD110A0F5400EC8FCA /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 296F9EDC110A0F5400EC8FCA /* AudioToolbox.framework */; };
 		3A82708D103DAA2400BB4109 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3A82708C103DAA2400BB4109 /* SystemConfiguration.framework */; };
 		3AA219501039D74700DB7637 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3AA2194F1039D74700DB7637 /* CoreData.framework */; };
-		441009DE110A6DAF00451B23 /* CampusMapToolbar.m in Sources */ = {isa = PBXBuildFile; fileRef = 441009DD110A6DAF00451B23 /* CampusMapToolbar.m */; };
-		44293C3510DAE88500273119 /* MapSearchResultsTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 44293C3310DAE88500273119 /* MapSearchResultsTableView.m */; };
-		4463CC9110D6F4A50048CA83 /* CampusMapViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4463CC7A10D6F4A50048CA83 /* CampusMapViewController.m */; };
 		4463CC9810D6F4A50048CA83 /* MapModule.m in Sources */ = {isa = PBXBuildFile; fileRef = 4463CC8810D6F4A50048CA83 /* MapModule.m */; };
 		4463CC9B10D6F4A50048CA83 /* MapSearchResultAnnotation.m in Sources */ = {isa = PBXBuildFile; fileRef = 4463CC8E10D6F4A50048CA83 /* MapSearchResultAnnotation.m */; };
 		4463CCB210D6F5750048CA83 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4463CCB110D6F5750048CA83 /* CoreLocation.framework */; };
 		4463D09410D92CB00048CA83 /* MITMapDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4463D09210D92CB00048CA83 /* MITMapDetailViewController.m */; };
 		4463D09510D92CB00048CA83 /* MITMapDetailViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4463D09310D92CB00048CA83 /* MITMapDetailViewController.xib */; };
-		4499341E11A5E53D00A7041B /* CategoriesTableViewController.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = 4499341C11A5E53D00A7041B /* CategoriesTableViewController.h */; settings = {JAVA_ARCHIVE_SUBDIR = "Modules/Campus Map"; }; };
-		4499341F11A5E53D00A7041B /* CategoriesTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4499341D11A5E53D00A7041B /* CategoriesTableViewController.m */; };
 		44ACF76E1187884300F1F4B2 /* MapBookmarkManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 44ACF76A1187884300F1F4B2 /* MapBookmarkManager.m */; };
 		44ACF76F1187884300F1F4B2 /* MapBookmarkManager.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = 44ACF76B1187884300F1F4B2 /* MapBookmarkManager.h */; settings = {JAVA_ARCHIVE_SUBDIR = "Modules/Campus Map"; }; };
-		44C1A2A811A2F49B000FD653 /* CampusMap.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 44C1A2A711A2F49B000FD653 /* CampusMap.xcdatamodeld */; };
-		44C1A3CE11A33905000FD653 /* MapSelectionController.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = 44C1A3CC11A33905000FD653 /* MapSelectionController.h */; settings = {JAVA_ARCHIVE_SUBDIR = "Modules/Campus Map"; }; };
-		44C1A3CF11A33905000FD653 /* MapSelectionController.m in Sources */ = {isa = PBXBuildFile; fileRef = 44C1A3CD11A33905000FD653 /* MapSelectionController.m */; };
-		44C1A4C411A412E2000FD653 /* MapSearch.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = 44C1A4C211A412E2000FD653 /* MapSearch.h */; settings = {JAVA_ARCHIVE_SUBDIR = "Modules/Campus Map/CampusMap.xcdatamodeld"; }; };
-		44C1A4C511A412E2000FD653 /* MapSearch.m in Sources */ = {isa = PBXBuildFile; fileRef = 44C1A4C311A412E2000FD653 /* MapSearch.m */; };
+		44C1A2A811A2F49B000FD653 /* MapModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 44C1A2A711A2F49B000FD653 /* MapModel.xcdatamodeld */; };
 		A623F1F1120A035A00341C5E /* ModoThreeStateSwitchControl.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = A623F1EF120A035A00341C5E /* ModoThreeStateSwitchControl.h */; settings = {JAVA_ARCHIVE_SUBDIR = Modules; }; };
 		A623F1F2120A035A00341C5E /* ModoThreeStateSwitchControl.m in Sources */ = {isa = PBXBuildFile; fileRef = A623F1F0120A035A00341C5E /* ModoThreeStateSwitchControl.m */; };
 		BD9FA7EE1047A05E00BC3C0A /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BD9FA7ED1047A05E00BC3C0A /* MessageUI.framework */; };
@@ -109,10 +100,9 @@
 		EB142C9B1300A83E00396753 /* KGOAppDelegate+ModuleAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = EB142C991300A83E00396753 /* KGOAppDelegate+ModuleAdditions.m */; };
 		EB142E6E1300D94E00396753 /* HomeModule.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB142E6C1300D94E00396753 /* HomeModule.h */; settings = {JAVA_ARCHIVE_SUBDIR = ../../Modules/Home; }; };
 		EB142E6F1300D94E00396753 /* HomeModule.m in Sources */ = {isa = PBXBuildFile; fileRef = EB142E6D1300D94E00396753 /* HomeModule.m */; };
-		EB14306F1301A87900396753 /* KGOSearchDelegate.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB1430651301A87900396753 /* KGOSearchDelegate.h */; settings = {JAVA_ARCHIVE_SUBDIR = ../../Common/Search; }; };
 		EB1430701301A87900396753 /* KGOSearchDisplayController.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB1430661301A87900396753 /* KGOSearchDisplayController.h */; settings = {JAVA_ARCHIVE_SUBDIR = ../../Common/Search; }; };
 		EB1430711301A87900396753 /* KGOSearchDisplayController.m in Sources */ = {isa = PBXBuildFile; fileRef = EB1430671301A87900396753 /* KGOSearchDisplayController.m */; };
-		EB1430721301A87900396753 /* KGOSearchResult.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB1430681301A87900396753 /* KGOSearchResult.h */; settings = {JAVA_ARCHIVE_SUBDIR = ../../Common/Search; }; };
+		EB1430721301A87900396753 /* KGOSearchModel.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB1430681301A87900396753 /* KGOSearchModel.h */; settings = {JAVA_ARCHIVE_SUBDIR = ../../Common/Search; }; };
 		EB1430751301A87900396753 /* RecentSearch.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB14306B1301A87900396753 /* RecentSearch.h */; settings = {JAVA_ARCHIVE_SUBDIR = ../../Common/Search; }; };
 		EB1430761301A87900396753 /* RecentSearch.m in Sources */ = {isa = PBXBuildFile; fileRef = EB14306C1301A87900396753 /* RecentSearch.m */; };
 		EB1430771301A87900396753 /* RecentSearches.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = EB14306D1301A87900396753 /* RecentSearches.xcdatamodeld */; };
@@ -126,8 +116,6 @@
 		EB143E5413063A5E00396753 /* KGOCategoryListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EB143E5213063A5E00396753 /* KGOCategoryListViewController.m */; };
 		EB3721AA11FA2F5200705180 /* NewsImage.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB3721A811FA2F5200705180 /* NewsImage.h */; settings = {JAVA_ARCHIVE_SUBDIR = Modules/News; }; };
 		EB3721AB11FA2F5200705180 /* NewsImage.m in Sources */ = {isa = PBXBuildFile; fileRef = EB3721A911FA2F5200705180 /* NewsImage.m */; };
-		EB4211B8120C92C600089FE0 /* MapSavedAnnotation.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB4211B6120C92C600089FE0 /* MapSavedAnnotation.h */; settings = {JAVA_ARCHIVE_SUBDIR = "Modules/Campus Map"; }; };
-		EB4211B9120C92C600089FE0 /* MapSavedAnnotation.m in Sources */ = {isa = PBXBuildFile; fileRef = EB4211B7120C92C600089FE0 /* MapSavedAnnotation.m */; };
 		EB4C2CDF127F138100058748 /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = EB4C2CDE127F138100058748 /* libsqlite3.dylib */; };
 		EB4C2CE1127F138900058748 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EB4C2CE0127F138900058748 /* CFNetwork.framework */; };
 		EB5773C212FDF91200BAF5F5 /* Config.plist in Resources */ = {isa = PBXBuildFile; fileRef = EB5773C112FDF91200BAF5F5 /* Config.plist */; };
@@ -138,12 +126,6 @@
 		EB57740412FE113400BAF5F5 /* SpringboardViewController.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB57740212FE113400BAF5F5 /* SpringboardViewController.h */; settings = {JAVA_ARCHIVE_SUBDIR = ../../Modules/Home; }; };
 		EB57740512FE113400BAF5F5 /* SpringboardViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EB57740312FE113400BAF5F5 /* SpringboardViewController.m */; };
 		EB6D02A911E3784100B65CE3 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EB6D02A811E3784100B65CE3 /* MapKit.framework */; };
-		EB6D10DA11EE13F100B65CE3 /* MapTileOverlay.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB6D10D411EE13F100B65CE3 /* MapTileOverlay.h */; settings = {JAVA_ARCHIVE_SUBDIR = "Modules/Campus Map"; }; };
-		EB6D10DB11EE13F100B65CE3 /* MapTileOverlay.m in Sources */ = {isa = PBXBuildFile; fileRef = EB6D10D511EE13F100B65CE3 /* MapTileOverlay.m */; };
-		EB6D10DC11EE13F100B65CE3 /* MapTileOverlayView.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB6D10D611EE13F100B65CE3 /* MapTileOverlayView.h */; settings = {JAVA_ARCHIVE_SUBDIR = "Modules/Campus Map"; }; };
-		EB6D10DD11EE13F100B65CE3 /* MapTileOverlayView.m in Sources */ = {isa = PBXBuildFile; fileRef = EB6D10D711EE13F100B65CE3 /* MapTileOverlayView.m */; };
-		EB6D10DE11EE13F100B65CE3 /* MapZoomLevel.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB6D10D811EE13F100B65CE3 /* MapZoomLevel.h */; settings = {JAVA_ARCHIVE_SUBDIR = "Modules/Campus Map"; }; };
-		EB6D10DF11EE13F100B65CE3 /* MapZoomLevel.m in Sources */ = {isa = PBXBuildFile; fileRef = EB6D10D911EE13F100B65CE3 /* MapZoomLevel.m */; };
 		EB6D111611EE143900B65CE3 /* TileServerManager.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB6D111411EE143900B65CE3 /* TileServerManager.h */; settings = {JAVA_ARCHIVE_SUBDIR = "Modules/Campus Map"; }; };
 		EB6D111711EE143900B65CE3 /* TileServerManager.m in Sources */ = {isa = PBXBuildFile; fileRef = EB6D111511EE143900B65CE3 /* TileServerManager.m */; };
 		EB6D141511EE979500B65CE3 /* NewsCategory.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB6D141311EE979500B65CE3 /* NewsCategory.h */; settings = {JAVA_ARCHIVE_SUBDIR = Modules/News; }; };
@@ -158,10 +140,6 @@
 		EB7F32D710CD6FBB00188BCD /* AddressBookUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EB7F32D610CD6FBB00188BCD /* AddressBookUI.framework */; };
 		EB83923C1163ECC20067C0A3 /* CalendarDetailViewController.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB83923A1163ECC20067C0A3 /* CalendarDetailViewController.h */; settings = {JAVA_ARCHIVE_SUBDIR = Modules/Calendar; }; };
 		EB83923D1163ECC20067C0A3 /* CalendarDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EB83923B1163ECC20067C0A3 /* CalendarDetailViewController.m */; };
-		EB8392461163EF340067C0A3 /* MITCalendarEvent.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB8392421163EF340067C0A3 /* MITCalendarEvent.h */; settings = {JAVA_ARCHIVE_SUBDIR = Modules/Calendar; }; };
-		EB8392471163EF340067C0A3 /* MITCalendarEvent.m in Sources */ = {isa = PBXBuildFile; fileRef = EB8392431163EF340067C0A3 /* MITCalendarEvent.m */; };
-		EB8392481163EF340067C0A3 /* EventCategory.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB8392441163EF340067C0A3 /* EventCategory.h */; settings = {JAVA_ARCHIVE_SUBDIR = Modules/Calendar; }; };
-		EB8392491163EF340067C0A3 /* EventCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = EB8392451163EF340067C0A3 /* EventCategory.m */; };
 		EB83926B1163F7B00067C0A3 /* CalendarDataManager.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB8392691163F7B00067C0A3 /* CalendarDataManager.h */; settings = {JAVA_ARCHIVE_SUBDIR = Modules/Calendar; }; };
 		EB83926C1163F7B00067C0A3 /* CalendarDataManager.m in Sources */ = {isa = PBXBuildFile; fileRef = EB83926A1163F7B00067C0A3 /* CalendarDataManager.m */; };
 		EB8392A01163FD6E0067C0A3 /* Calendar.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = EB83929F1163FD6E0067C0A3 /* Calendar.xcdatamodeld */; };
@@ -169,6 +147,26 @@
 		EB86CAC6115D4ED500C8F3D1 /* CalendarEventsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EB86CAC5115D4ED500C8F3D1 /* CalendarEventsViewController.m */; };
 		EB8B35BE12FF8E4B005DBB8F /* KGOModule.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB8B35BC12FF8E4B005DBB8F /* KGOModule.h */; settings = {JAVA_ARCHIVE_SUBDIR = ../../Common; }; };
 		EB8B35BF12FF8E4B005DBB8F /* KGOModule.m in Sources */ = {isa = PBXBuildFile; fileRef = EB8B35BD12FF8E4B005DBB8F /* KGOModule.m */; };
+		EB8B36361306FBD7005DBB8F /* KGORequestManager.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB8B36341306FBD7005DBB8F /* KGORequestManager.h */; settings = {JAVA_ARCHIVE_SUBDIR = ../../Common/DataControllers; }; };
+		EB8B36371306FBD7005DBB8F /* KGORequestManager.m in Sources */ = {isa = PBXBuildFile; fileRef = EB8B36351306FBD7005DBB8F /* KGORequestManager.m */; };
+		EB8B364713078CDB005DBB8F /* MapHomeViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = EB8B364613078CDB005DBB8F /* MapHomeViewController.xib */; };
+		EB8B364B13078E68005DBB8F /* MapHomeViewController.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB8B364913078E68005DBB8F /* MapHomeViewController.h */; settings = {JAVA_ARCHIVE_SUBDIR = ../../Modules/Map; }; };
+		EB8B364C13078E68005DBB8F /* MapHomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EB8B364A13078E68005DBB8F /* MapHomeViewController.m */; };
+		EB8B365213079999005DBB8F /* KGOMapCategory.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB8B364E13079999005DBB8F /* KGOMapCategory.h */; settings = {JAVA_ARCHIVE_SUBDIR = ../../Modules/Map; }; };
+		EB8B365313079999005DBB8F /* KGOMapCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = EB8B364F13079999005DBB8F /* KGOMapCategory.m */; };
+		EB8B365413079999005DBB8F /* KGOPlacemark.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB8B365013079999005DBB8F /* KGOPlacemark.h */; settings = {JAVA_ARCHIVE_SUBDIR = ../../Modules/Map; }; };
+		EB8B365513079999005DBB8F /* KGOPlacemark.m in Sources */ = {isa = PBXBuildFile; fileRef = EB8B365113079999005DBB8F /* KGOPlacemark.m */; };
+		EB8B365E13079D2D005DBB8F /* KGOEventAttendee.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB8B365613079D2D005DBB8F /* KGOEventAttendee.h */; settings = {JAVA_ARCHIVE_SUBDIR = ../../Modules/Calendar; }; };
+		EB8B365F13079D2D005DBB8F /* KGOEventAttendee.m in Sources */ = {isa = PBXBuildFile; fileRef = EB8B365713079D2D005DBB8F /* KGOEventAttendee.m */; };
+		EB8B366013079D2D005DBB8F /* KGOEvent.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB8B365813079D2D005DBB8F /* KGOEvent.h */; settings = {JAVA_ARCHIVE_SUBDIR = ../../Modules/Calendar; }; };
+		EB8B366113079D2D005DBB8F /* KGOEvent.m in Sources */ = {isa = PBXBuildFile; fileRef = EB8B365913079D2D005DBB8F /* KGOEvent.m */; };
+		EB8B366213079D2D005DBB8F /* KGOEventContactInfo.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB8B365A13079D2D005DBB8F /* KGOEventContactInfo.h */; settings = {JAVA_ARCHIVE_SUBDIR = ../../Modules/Calendar; }; };
+		EB8B366313079D2D005DBB8F /* KGOEventContactInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = EB8B365B13079D2D005DBB8F /* KGOEventContactInfo.m */; };
+		EB8B366413079D2D005DBB8F /* KGOEventCategory.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB8B365C13079D2D005DBB8F /* KGOEventCategory.h */; settings = {JAVA_ARCHIVE_SUBDIR = ../../Modules/Calendar; }; };
+		EB8B366513079D2D005DBB8F /* KGOEventCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = EB8B365D13079D2D005DBB8F /* KGOEventCategory.m */; };
+		EB8B366713079D87005DBB8F /* CalendarModel.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB8B366613079D87005DBB8F /* CalendarModel.h */; settings = {JAVA_ARCHIVE_SUBDIR = ../../Modules/Calendar; }; };
+		EB8B36861307BB28005DBB8F /* MapZoomLevel.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB8B36841307BB28005DBB8F /* MapZoomLevel.h */; settings = {JAVA_ARCHIVE_SUBDIR = ../../Modules/Map; }; };
+		EB8B36871307BB28005DBB8F /* MapZoomLevel.m in Sources */ = {isa = PBXBuildFile; fileRef = EB8B36851307BB28005DBB8F /* MapZoomLevel.m */; };
 		EB99B28212F377480065EE93 /* libProj.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EB138E9312F24EB2004DBB7C /* libProj.a */; };
 		EB99B28312F377520065EE93 /* libfacebook_ios_sdk.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EB138EED12F251EB004DBB7C /* libfacebook_ios_sdk.a */; };
 		EB99B28412F377560065EE93 /* libTwitter.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EB99B08E12F36F3D0065EE93 /* libTwitter.a */; };
@@ -249,13 +247,7 @@
 		296F9EDC110A0F5400EC8FCA /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = /System/Library/Frameworks/AudioToolbox.framework; sourceTree = "<absolute>"; };
 		3A82708C103DAA2400BB4109 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = ../../../../../System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SOURCE_ROOT; };
 		3AA2194F1039D74700DB7637 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = /System/Library/Frameworks/CoreData.framework; sourceTree = "<absolute>"; };
-		441009DC110A6DAF00451B23 /* CampusMapToolbar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CampusMapToolbar.h; sourceTree = "<group>"; };
-		441009DD110A6DAF00451B23 /* CampusMapToolbar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CampusMapToolbar.m; sourceTree = "<group>"; };
-		44293C3210DAE88500273119 /* MapSearchResultsTableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MapSearchResultsTableView.h; sourceTree = "<group>"; };
-		44293C3310DAE88500273119 /* MapSearchResultsTableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MapSearchResultsTableView.m; sourceTree = "<group>"; };
 		442C195410F3B21400CB44EC /* MITMapRoute.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MITMapRoute.h; sourceTree = "<group>"; };
-		4463CC7910D6F4A50048CA83 /* CampusMapViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CampusMapViewController.h; sourceTree = "<group>"; };
-		4463CC7A10D6F4A50048CA83 /* CampusMapViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CampusMapViewController.m; sourceTree = "<group>"; };
 		4463CC8710D6F4A50048CA83 /* MapModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MapModule.h; sourceTree = "<group>"; };
 		4463CC8810D6F4A50048CA83 /* MapModule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MapModule.m; sourceTree = "<group>"; };
 		4463CC8D10D6F4A50048CA83 /* MapSearchResultAnnotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MapSearchResultAnnotation.h; sourceTree = "<group>"; };
@@ -264,15 +256,9 @@
 		4463D09110D92CB00048CA83 /* MITMapDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MITMapDetailViewController.h; sourceTree = "<group>"; };
 		4463D09210D92CB00048CA83 /* MITMapDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MITMapDetailViewController.m; sourceTree = "<group>"; };
 		4463D09310D92CB00048CA83 /* MITMapDetailViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MITMapDetailViewController.xib; sourceTree = "<group>"; };
-		4499341C11A5E53D00A7041B /* CategoriesTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CategoriesTableViewController.h; sourceTree = "<group>"; };
-		4499341D11A5E53D00A7041B /* CategoriesTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CategoriesTableViewController.m; sourceTree = "<group>"; };
 		44ACF76A1187884300F1F4B2 /* MapBookmarkManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MapBookmarkManager.m; sourceTree = "<group>"; };
 		44ACF76B1187884300F1F4B2 /* MapBookmarkManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MapBookmarkManager.h; sourceTree = "<group>"; };
-		44C1A26E11A2EA04000FD653 /* CampusMap.xcdatamodel */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = wrapper.xcdatamodel; path = CampusMap.xcdatamodel; sourceTree = "<group>"; };
-		44C1A3CC11A33905000FD653 /* MapSelectionController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MapSelectionController.h; sourceTree = "<group>"; };
-		44C1A3CD11A33905000FD653 /* MapSelectionController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MapSelectionController.m; sourceTree = "<group>"; };
-		44C1A4C211A412E2000FD653 /* MapSearch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MapSearch.h; sourceTree = "<group>"; };
-		44C1A4C311A412E2000FD653 /* MapSearch.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MapSearch.m; sourceTree = "<group>"; };
+		44C1A26E11A2EA04000FD653 /* MapModel.xcdatamodel */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = wrapper.xcdatamodel; path = MapModel.xcdatamodel; sourceTree = "<group>"; };
 		A623F1EF120A035A00341C5E /* ModoThreeStateSwitchControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ModoThreeStateSwitchControl.h; sourceTree = "<group>"; };
 		A623F1F0120A035A00341C5E /* ModoThreeStateSwitchControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ModoThreeStateSwitchControl.m; sourceTree = "<group>"; };
 		BD9FA7ED1047A05E00BC3C0A /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
@@ -369,10 +355,9 @@
 		EB142C991300A83E00396753 /* KGOAppDelegate+ModuleAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "KGOAppDelegate+ModuleAdditions.m"; sourceTree = "<group>"; };
 		EB142E6C1300D94E00396753 /* HomeModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HomeModule.h; sourceTree = "<group>"; };
 		EB142E6D1300D94E00396753 /* HomeModule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HomeModule.m; sourceTree = "<group>"; };
-		EB1430651301A87900396753 /* KGOSearchDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGOSearchDelegate.h; sourceTree = "<group>"; };
 		EB1430661301A87900396753 /* KGOSearchDisplayController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGOSearchDisplayController.h; sourceTree = "<group>"; };
 		EB1430671301A87900396753 /* KGOSearchDisplayController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGOSearchDisplayController.m; sourceTree = "<group>"; };
-		EB1430681301A87900396753 /* KGOSearchResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGOSearchResult.h; sourceTree = "<group>"; };
+		EB1430681301A87900396753 /* KGOSearchModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGOSearchModel.h; sourceTree = "<group>"; };
 		EB14306B1301A87900396753 /* RecentSearch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RecentSearch.h; sourceTree = "<group>"; };
 		EB14306C1301A87900396753 /* RecentSearch.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RecentSearch.m; sourceTree = "<group>"; };
 		EB14306E1301A87900396753 /* RecentSearches.xcdatamodel */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = wrapper.xcdatamodel; path = RecentSearches.xcdatamodel; sourceTree = "<group>"; };
@@ -386,8 +371,6 @@
 		EB143E5213063A5E00396753 /* KGOCategoryListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGOCategoryListViewController.m; sourceTree = "<group>"; };
 		EB3721A811FA2F5200705180 /* NewsImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NewsImage.h; sourceTree = "<group>"; };
 		EB3721A911FA2F5200705180 /* NewsImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NewsImage.m; sourceTree = "<group>"; };
-		EB4211B6120C92C600089FE0 /* MapSavedAnnotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MapSavedAnnotation.h; sourceTree = "<group>"; };
-		EB4211B7120C92C600089FE0 /* MapSavedAnnotation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MapSavedAnnotation.m; sourceTree = "<group>"; };
 		EB4C2CDE127F138100058748 /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
 		EB4C2CE0127F138900058748 /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
 		EB5773C112FDF91200BAF5F5 /* Config.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Config.plist; sourceTree = "<group>"; };
@@ -398,12 +381,6 @@
 		EB57740212FE113400BAF5F5 /* SpringboardViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SpringboardViewController.h; sourceTree = "<group>"; };
 		EB57740312FE113400BAF5F5 /* SpringboardViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SpringboardViewController.m; sourceTree = "<group>"; };
 		EB6D02A811E3784100B65CE3 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
-		EB6D10D411EE13F100B65CE3 /* MapTileOverlay.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MapTileOverlay.h; sourceTree = "<group>"; };
-		EB6D10D511EE13F100B65CE3 /* MapTileOverlay.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MapTileOverlay.m; sourceTree = "<group>"; };
-		EB6D10D611EE13F100B65CE3 /* MapTileOverlayView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MapTileOverlayView.h; sourceTree = "<group>"; };
-		EB6D10D711EE13F100B65CE3 /* MapTileOverlayView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MapTileOverlayView.m; sourceTree = "<group>"; };
-		EB6D10D811EE13F100B65CE3 /* MapZoomLevel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MapZoomLevel.h; sourceTree = "<group>"; };
-		EB6D10D911EE13F100B65CE3 /* MapZoomLevel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MapZoomLevel.m; sourceTree = "<group>"; };
 		EB6D111411EE143900B65CE3 /* TileServerManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TileServerManager.h; sourceTree = "<group>"; };
 		EB6D111511EE143900B65CE3 /* TileServerManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TileServerManager.m; sourceTree = "<group>"; };
 		EB6D141311EE979500B65CE3 /* NewsCategory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NewsCategory.h; sourceTree = "<group>"; };
@@ -421,10 +398,6 @@
 		EB83923A1163ECC20067C0A3 /* CalendarDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CalendarDetailViewController.h; sourceTree = "<group>"; };
 		EB83923B1163ECC20067C0A3 /* CalendarDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CalendarDetailViewController.m; sourceTree = "<group>"; };
 		EB8392401163ED440067C0A3 /* Calendar.xcdatamodel */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = wrapper.xcdatamodel; path = Calendar.xcdatamodel; sourceTree = "<group>"; };
-		EB8392421163EF340067C0A3 /* MITCalendarEvent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MITCalendarEvent.h; sourceTree = "<group>"; };
-		EB8392431163EF340067C0A3 /* MITCalendarEvent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MITCalendarEvent.m; sourceTree = "<group>"; };
-		EB8392441163EF340067C0A3 /* EventCategory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EventCategory.h; sourceTree = "<group>"; };
-		EB8392451163EF340067C0A3 /* EventCategory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EventCategory.m; sourceTree = "<group>"; };
 		EB8392691163F7B00067C0A3 /* CalendarDataManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CalendarDataManager.h; sourceTree = "<group>"; };
 		EB83926A1163F7B00067C0A3 /* CalendarDataManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CalendarDataManager.m; sourceTree = "<group>"; };
 		EB86CA6D115D276700C8F3D1 /* CalendarModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CalendarModule.h; sourceTree = "<group>"; };
@@ -433,6 +406,26 @@
 		EB86CAC5115D4ED500C8F3D1 /* CalendarEventsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CalendarEventsViewController.m; sourceTree = "<group>"; };
 		EB8B35BC12FF8E4B005DBB8F /* KGOModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGOModule.h; sourceTree = "<group>"; };
 		EB8B35BD12FF8E4B005DBB8F /* KGOModule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGOModule.m; sourceTree = "<group>"; };
+		EB8B36341306FBD7005DBB8F /* KGORequestManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGORequestManager.h; sourceTree = "<group>"; };
+		EB8B36351306FBD7005DBB8F /* KGORequestManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGORequestManager.m; sourceTree = "<group>"; };
+		EB8B364613078CDB005DBB8F /* MapHomeViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MapHomeViewController.xib; sourceTree = "<group>"; };
+		EB8B364913078E68005DBB8F /* MapHomeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MapHomeViewController.h; sourceTree = "<group>"; };
+		EB8B364A13078E68005DBB8F /* MapHomeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MapHomeViewController.m; sourceTree = "<group>"; };
+		EB8B364E13079999005DBB8F /* KGOMapCategory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGOMapCategory.h; sourceTree = "<group>"; };
+		EB8B364F13079999005DBB8F /* KGOMapCategory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGOMapCategory.m; sourceTree = "<group>"; };
+		EB8B365013079999005DBB8F /* KGOPlacemark.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGOPlacemark.h; sourceTree = "<group>"; };
+		EB8B365113079999005DBB8F /* KGOPlacemark.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGOPlacemark.m; sourceTree = "<group>"; };
+		EB8B365613079D2D005DBB8F /* KGOEventAttendee.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGOEventAttendee.h; sourceTree = "<group>"; };
+		EB8B365713079D2D005DBB8F /* KGOEventAttendee.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGOEventAttendee.m; sourceTree = "<group>"; };
+		EB8B365813079D2D005DBB8F /* KGOEvent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGOEvent.h; sourceTree = "<group>"; };
+		EB8B365913079D2D005DBB8F /* KGOEvent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGOEvent.m; sourceTree = "<group>"; };
+		EB8B365A13079D2D005DBB8F /* KGOEventContactInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGOEventContactInfo.h; sourceTree = "<group>"; };
+		EB8B365B13079D2D005DBB8F /* KGOEventContactInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGOEventContactInfo.m; sourceTree = "<group>"; };
+		EB8B365C13079D2D005DBB8F /* KGOEventCategory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGOEventCategory.h; sourceTree = "<group>"; };
+		EB8B365D13079D2D005DBB8F /* KGOEventCategory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGOEventCategory.m; sourceTree = "<group>"; };
+		EB8B366613079D87005DBB8F /* CalendarModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CalendarModel.h; sourceTree = "<group>"; };
+		EB8B36841307BB28005DBB8F /* MapZoomLevel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MapZoomLevel.h; sourceTree = "<group>"; };
+		EB8B36851307BB28005DBB8F /* MapZoomLevel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MapZoomLevel.m; sourceTree = "<group>"; };
 		EB99B08912F36F3D0065EE93 /* Twitter.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Twitter.xcodeproj; path = Twitter/Twitter.xcodeproj; sourceTree = "<group>"; };
 		EB99B38C12F37FDC0065EE93 /* JSON.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = JSON.xcodeproj; path = JSON/JSON.xcodeproj; sourceTree = "<group>"; };
 		EB99B67312F3A8E40065EE93 /* OAuthConsumer.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = OAuthConsumer.xcodeproj; path = OAuth/OAuthConsumer.xcodeproj; sourceTree = "<group>"; };
@@ -568,26 +561,13 @@
 		44C1A26011A2E865000FD653 /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				44C1A4C211A412E2000FD653 /* MapSearch.h */,
-				44C1A4C311A412E2000FD653 /* MapSearch.m */,
-				44C1A2A711A2F49B000FD653 /* CampusMap.xcdatamodeld */,
-				EB4211B6120C92C600089FE0 /* MapSavedAnnotation.h */,
-				EB4211B7120C92C600089FE0 /* MapSavedAnnotation.m */,
+				44C1A2A711A2F49B000FD653 /* MapModel.xcdatamodeld */,
+				EB8B364E13079999005DBB8F /* KGOMapCategory.h */,
+				EB8B364F13079999005DBB8F /* KGOMapCategory.m */,
+				EB8B365013079999005DBB8F /* KGOPlacemark.h */,
+				EB8B365113079999005DBB8F /* KGOPlacemark.m */,
 			);
 			name = Model;
-			sourceTree = "<group>";
-		};
-		44C1A3C511A3388A000FD653 /* Selection */ = {
-			isa = PBXGroup;
-			children = (
-				44ACF76B1187884300F1F4B2 /* MapBookmarkManager.h */,
-				44ACF76A1187884300F1F4B2 /* MapBookmarkManager.m */,
-				44C1A3CC11A33905000FD653 /* MapSelectionController.h */,
-				44C1A3CD11A33905000FD653 /* MapSelectionController.m */,
-				4499341C11A5E53D00A7041B /* CategoriesTableViewController.h */,
-				4499341D11A5E53D00A7041B /* CategoriesTableViewController.m */,
-			);
-			name = Selection;
 			sourceTree = "<group>";
 		};
 		A623F1EE120A033100341C5E /* Views */ = {
@@ -633,13 +613,7 @@
 		DE715446102FE468005E6111 /* Map */ = {
 			isa = PBXGroup;
 			children = (
-				EB6D036911E3989100B65CE3 /* ArcGISServer */,
-				44C1A3C511A3388A000FD653 /* Selection */,
 				44C1A26011A2E865000FD653 /* Model */,
-				441009DC110A6DAF00451B23 /* CampusMapToolbar.h */,
-				441009DD110A6DAF00451B23 /* CampusMapToolbar.m */,
-				4463CC7910D6F4A50048CA83 /* CampusMapViewController.h */,
-				4463CC7A10D6F4A50048CA83 /* CampusMapViewController.m */,
 				4463CC8710D6F4A50048CA83 /* MapModule.h */,
 				4463CC8810D6F4A50048CA83 /* MapModule.m */,
 				4463CC8D10D6F4A50048CA83 /* MapSearchResultAnnotation.h */,
@@ -647,11 +621,18 @@
 				4463D09110D92CB00048CA83 /* MITMapDetailViewController.h */,
 				4463D09210D92CB00048CA83 /* MITMapDetailViewController.m */,
 				4463D09310D92CB00048CA83 /* MITMapDetailViewController.xib */,
-				44293C3210DAE88500273119 /* MapSearchResultsTableView.h */,
-				44293C3310DAE88500273119 /* MapSearchResultsTableView.m */,
 				442C195410F3B21400CB44EC /* MITMapRoute.h */,
 				EB7BA33C11F7677F00B3DDA6 /* PolygonOverlay.h */,
 				EB7BA33D11F7677F00B3DDA6 /* PolygonOverlay.m */,
+				EB8B364613078CDB005DBB8F /* MapHomeViewController.xib */,
+				EB8B364913078E68005DBB8F /* MapHomeViewController.h */,
+				EB8B364A13078E68005DBB8F /* MapHomeViewController.m */,
+				44ACF76B1187884300F1F4B2 /* MapBookmarkManager.h */,
+				44ACF76A1187884300F1F4B2 /* MapBookmarkManager.m */,
+				EB6D111411EE143900B65CE3 /* TileServerManager.h */,
+				EB6D111511EE143900B65CE3 /* TileServerManager.m */,
+				EB8B36841307BB28005DBB8F /* MapZoomLevel.h */,
+				EB8B36851307BB28005DBB8F /* MapZoomLevel.m */,
 			);
 			name = Map;
 			path = ../../../Modules/Map;
@@ -881,10 +862,9 @@
 		EB1430641301A87900396753 /* Search */ = {
 			isa = PBXGroup;
 			children = (
-				EB1430651301A87900396753 /* KGOSearchDelegate.h */,
+				EB1430681301A87900396753 /* KGOSearchModel.h */,
 				EB1430661301A87900396753 /* KGOSearchDisplayController.h */,
 				EB1430671301A87900396753 /* KGOSearchDisplayController.m */,
-				EB1430681301A87900396753 /* KGOSearchResult.h */,
 				EB14306B1301A87900396753 /* RecentSearch.h */,
 				EB14306C1301A87900396753 /* RecentSearch.m */,
 				EB14306D1301A87900396753 /* RecentSearches.xcdatamodeld */,
@@ -913,23 +893,10 @@
 				EB5773FB12FE111500BAF5F5 /* CoreDataManager.m */,
 				EB5773FC12FE111500BAF5F5 /* KGOSocialMediaController.h */,
 				EB5773FD12FE111500BAF5F5 /* KGOSocialMediaController.m */,
+				EB8B36341306FBD7005DBB8F /* KGORequestManager.h */,
+				EB8B36351306FBD7005DBB8F /* KGORequestManager.m */,
 			);
 			path = DataControllers;
-			sourceTree = "<group>";
-		};
-		EB6D036911E3989100B65CE3 /* ArcGISServer */ = {
-			isa = PBXGroup;
-			children = (
-				EB6D111411EE143900B65CE3 /* TileServerManager.h */,
-				EB6D111511EE143900B65CE3 /* TileServerManager.m */,
-				EB6D10D411EE13F100B65CE3 /* MapTileOverlay.h */,
-				EB6D10D511EE13F100B65CE3 /* MapTileOverlay.m */,
-				EB6D10D611EE13F100B65CE3 /* MapTileOverlayView.h */,
-				EB6D10D711EE13F100B65CE3 /* MapTileOverlayView.m */,
-				EB6D10D811EE13F100B65CE3 /* MapZoomLevel.h */,
-				EB6D10D911EE13F100B65CE3 /* MapZoomLevel.m */,
-			);
-			name = ArcGISServer;
 			sourceTree = "<group>";
 		};
 		EB7F326610CD6C5B00188BCD /* People */ = {
@@ -963,10 +930,15 @@
 			isa = PBXGroup;
 			children = (
 				EB83929F1163FD6E0067C0A3 /* Calendar.xcdatamodeld */,
-				EB8392421163EF340067C0A3 /* MITCalendarEvent.h */,
-				EB8392431163EF340067C0A3 /* MITCalendarEvent.m */,
-				EB8392441163EF340067C0A3 /* EventCategory.h */,
-				EB8392451163EF340067C0A3 /* EventCategory.m */,
+				EB8B365613079D2D005DBB8F /* KGOEventAttendee.h */,
+				EB8B365713079D2D005DBB8F /* KGOEventAttendee.m */,
+				EB8B365813079D2D005DBB8F /* KGOEvent.h */,
+				EB8B365913079D2D005DBB8F /* KGOEvent.m */,
+				EB8B365A13079D2D005DBB8F /* KGOEventContactInfo.h */,
+				EB8B365B13079D2D005DBB8F /* KGOEventContactInfo.m */,
+				EB8B365C13079D2D005DBB8F /* KGOEventCategory.h */,
+				EB8B365D13079D2D005DBB8F /* KGOEventCategory.m */,
+				EB8B366613079D87005DBB8F /* CalendarModel.h */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -1041,23 +1013,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				EB83923C1163ECC20067C0A3 /* CalendarDetailViewController.h in JavaArchive */,
-				EB8392461163EF340067C0A3 /* MITCalendarEvent.h in JavaArchive */,
-				EB8392481163EF340067C0A3 /* EventCategory.h in JavaArchive */,
 				EB83926B1163F7B00067C0A3 /* CalendarDataManager.h in JavaArchive */,
 				EBA273E911760BAE0033DD27 /* CalendarConstants.h in JavaArchive */,
 				44ACF76F1187884300F1F4B2 /* MapBookmarkManager.h in JavaArchive */,
-				44C1A3CE11A33905000FD653 /* MapSelectionController.h in JavaArchive */,
-				44C1A4C411A412E2000FD653 /* MapSearch.h in JavaArchive */,
-				4499341E11A5E53D00A7041B /* CategoriesTableViewController.h in JavaArchive */,
-				EB6D10DA11EE13F100B65CE3 /* MapTileOverlay.h in JavaArchive */,
-				EB6D10DC11EE13F100B65CE3 /* MapTileOverlayView.h in JavaArchive */,
-				EB6D10DE11EE13F100B65CE3 /* MapZoomLevel.h in JavaArchive */,
 				EB6D111611EE143900B65CE3 /* TileServerManager.h in JavaArchive */,
 				EB6D141511EE979500B65CE3 /* NewsCategory.h in JavaArchive */,
 				EB7BA33E11F7677F00B3DDA6 /* PolygonOverlay.h in JavaArchive */,
 				EB3721AA11FA2F5200705180 /* NewsImage.h in JavaArchive */,
 				A623F1F1120A035A00341C5E /* ModoThreeStateSwitchControl.h in JavaArchive */,
-				EB4211B8120C92C600089FE0 /* MapSavedAnnotation.h in JavaArchive */,
 				EBAE92B7121D733200F370BE /* PersonDetails.h in JavaArchive */,
 				EB13873112F22DBC004DBB7C /* AnalyticsWrapper.h in JavaArchive */,
 				EB13873712F22DBC004DBB7C /* ConnectionWrapper.h in JavaArchive */,
@@ -1090,14 +1053,23 @@
 				EB142C2313009FF100396753 /* KGOAppDelegate.h in JavaArchive */,
 				EB142C9A1300A83E00396753 /* KGOAppDelegate+ModuleAdditions.h in JavaArchive */,
 				EB142E6E1300D94E00396753 /* HomeModule.h in JavaArchive */,
-				EB14306F1301A87900396753 /* KGOSearchDelegate.h in JavaArchive */,
 				EB1430701301A87900396753 /* KGOSearchDisplayController.h in JavaArchive */,
-				EB1430721301A87900396753 /* KGOSearchResult.h in JavaArchive */,
+				EB1430721301A87900396753 /* KGOSearchModel.h in JavaArchive */,
 				EB1430751301A87900396753 /* RecentSearch.h in JavaArchive */,
 				EB1433AF1303509D00396753 /* KGOSearchBar.h in JavaArchive */,
 				EB14351D13038CE500396753 /* KGODatePager.h in JavaArchive */,
 				EB143DD1130636BA00396753 /* DatePickerViewController.h in JavaArchive */,
 				EB143E5313063A5E00396753 /* KGOCategoryListViewController.h in JavaArchive */,
+				EB8B36361306FBD7005DBB8F /* KGORequestManager.h in JavaArchive */,
+				EB8B364B13078E68005DBB8F /* MapHomeViewController.h in JavaArchive */,
+				EB8B365213079999005DBB8F /* KGOMapCategory.h in JavaArchive */,
+				EB8B365413079999005DBB8F /* KGOPlacemark.h in JavaArchive */,
+				EB8B365E13079D2D005DBB8F /* KGOEventAttendee.h in JavaArchive */,
+				EB8B366013079D2D005DBB8F /* KGOEvent.h in JavaArchive */,
+				EB8B366213079D2D005DBB8F /* KGOEventContactInfo.h in JavaArchive */,
+				EB8B366413079D2D005DBB8F /* KGOEventCategory.h in JavaArchive */,
+				EB8B366713079D87005DBB8F /* CalendarModel.h in JavaArchive */,
+				EB8B36861307BB28005DBB8F /* MapZoomLevel.h in JavaArchive */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1242,6 +1214,7 @@
 				EB5773C212FDF91200BAF5F5 /* Config.plist in Resources */,
 				EB142C951300A40000396753 /* MainWindow-iPad.xib in Resources */,
 				EB142C971300A4A900396753 /* MainWindow.xib in Resources */,
+				EB8B364713078CDB005DBB8F /* MapHomeViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1275,7 +1248,6 @@
 				EB7F328310CD6C5B00188BCD /* PeopleDetailsViewController.m in Sources */,
 				EB7F328410CD6C5B00188BCD /* PeopleModule.m in Sources */,
 				EB7F328510CD6C5B00188BCD /* PeopleRecentsData.m in Sources */,
-				4463CC9110D6F4A50048CA83 /* CampusMapViewController.m in Sources */,
 				4463CC9810D6F4A50048CA83 /* MapModule.m in Sources */,
 				4463CC9B10D6F4A50048CA83 /* MapSearchResultAnnotation.m in Sources */,
 				DE728E6C10D6FF4700BFED37 /* StoryThumbnailView.m in Sources */,
@@ -1283,7 +1255,6 @@
 				DE728E7C10D6FF4700BFED37 /* StoryListViewController.m in Sources */,
 				DE728E7E10D6FF4700BFED37 /* StoryXMLParser.m in Sources */,
 				4463D09410D92CB00048CA83 /* MITMapDetailViewController.m in Sources */,
-				44293C3510DAE88500273119 /* MapSearchResultsTableView.m in Sources */,
 				EBA2865610E07E140003BA01 /* PeopleSearchViewController.m in Sources */,
 				DE4AB0B410ED5148007476D9 /* NewsStory.m in Sources */,
 				DE18F9EE10F19105009A69B9 /* News.xcdatamodeld in Sources */,
@@ -1292,31 +1263,21 @@
 				DEAFEFA910FFE35B00F0573E /* StoryGalleryViewController.m in Sources */,
 				DEC02D2D11053A850054BE32 /* StoryImageView.m in Sources */,
 				DEC02F9D110578240054BE32 /* AboutTableViewController.m in Sources */,
-				441009DE110A6DAF00451B23 /* CampusMapToolbar.m in Sources */,
 				DE6D9401110AD1ED00DAF213 /* SettingsTableViewController.m in Sources */,
 				DE0F6B3411109BC500F064D6 /* AboutMITVC.m in Sources */,
 				EB86CA6F115D276700C8F3D1 /* CalendarModule.m in Sources */,
 				EB86CAC6115D4ED500C8F3D1 /* CalendarEventsViewController.m in Sources */,
 				EB83923D1163ECC20067C0A3 /* CalendarDetailViewController.m in Sources */,
 				EB8392A01163FD6E0067C0A3 /* Calendar.xcdatamodeld in Sources */,
-				EB8392471163EF340067C0A3 /* MITCalendarEvent.m in Sources */,
-				EB8392491163EF340067C0A3 /* EventCategory.m in Sources */,
 				EB83926C1163F7B00067C0A3 /* CalendarDataManager.m in Sources */,
 				EBA273EA11760BAE0033DD27 /* CalendarConstants.m in Sources */,
 				44ACF76E1187884300F1F4B2 /* MapBookmarkManager.m in Sources */,
-				44C1A2A811A2F49B000FD653 /* CampusMap.xcdatamodeld in Sources */,
-				44C1A3CF11A33905000FD653 /* MapSelectionController.m in Sources */,
-				44C1A4C511A412E2000FD653 /* MapSearch.m in Sources */,
-				4499341F11A5E53D00A7041B /* CategoriesTableViewController.m in Sources */,
-				EB6D10DB11EE13F100B65CE3 /* MapTileOverlay.m in Sources */,
-				EB6D10DD11EE13F100B65CE3 /* MapTileOverlayView.m in Sources */,
-				EB6D10DF11EE13F100B65CE3 /* MapZoomLevel.m in Sources */,
+				44C1A2A811A2F49B000FD653 /* MapModel.xcdatamodeld in Sources */,
 				EB6D111711EE143900B65CE3 /* TileServerManager.m in Sources */,
 				EB6D141611EE979500B65CE3 /* NewsCategory.m in Sources */,
 				EB7BA33F11F7677F00B3DDA6 /* PolygonOverlay.m in Sources */,
 				EB3721AB11FA2F5200705180 /* NewsImage.m in Sources */,
 				A623F1F2120A035A00341C5E /* ModoThreeStateSwitchControl.m in Sources */,
-				EB4211B9120C92C600089FE0 /* MapSavedAnnotation.m in Sources */,
 				EBAE92B8121D733200F370BE /* PersonDetails.m in Sources */,
 				EB13873212F22DBC004DBB7C /* AnalyticsWrapper.m in Sources */,
 				EB13873812F22DBC004DBB7C /* ConnectionWrapper.m in Sources */,
@@ -1355,6 +1316,15 @@
 				EB14351E13038CE500396753 /* KGODatePager.m in Sources */,
 				EB143DD2130636BA00396753 /* DatePickerViewController.m in Sources */,
 				EB143E5413063A5E00396753 /* KGOCategoryListViewController.m in Sources */,
+				EB8B36371306FBD7005DBB8F /* KGORequestManager.m in Sources */,
+				EB8B364C13078E68005DBB8F /* MapHomeViewController.m in Sources */,
+				EB8B365313079999005DBB8F /* KGOMapCategory.m in Sources */,
+				EB8B365513079999005DBB8F /* KGOPlacemark.m in Sources */,
+				EB8B365F13079D2D005DBB8F /* KGOEventAttendee.m in Sources */,
+				EB8B366113079D2D005DBB8F /* KGOEvent.m in Sources */,
+				EB8B366313079D2D005DBB8F /* KGOEventContactInfo.m in Sources */,
+				EB8B366513079D2D005DBB8F /* KGOEventCategory.m in Sources */,
+				EB8B36871307BB28005DBB8F /* MapZoomLevel.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1778,13 +1748,13 @@
 /* End XCConfigurationList section */
 
 /* Begin XCVersionGroup section */
-		44C1A2A711A2F49B000FD653 /* CampusMap.xcdatamodeld */ = {
+		44C1A2A711A2F49B000FD653 /* MapModel.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
-				44C1A26E11A2EA04000FD653 /* CampusMap.xcdatamodel */,
+				44C1A26E11A2EA04000FD653 /* MapModel.xcdatamodel */,
 			);
-			currentVersion = 44C1A26E11A2EA04000FD653 /* CampusMap.xcdatamodel */;
-			path = CampusMap.xcdatamodeld;
+			currentVersion = 44C1A26E11A2EA04000FD653 /* MapModel.xcdatamodel */;
+			path = MapModel.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;
 		};

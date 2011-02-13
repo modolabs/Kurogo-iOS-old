@@ -6,7 +6,6 @@
 #import "KGODatePager.h"
 #import "KGOTableViewController.h"
 
-@class EventListTableView;
 @class DatePickerViewController;
 @class KGOScrollingTabstrip;
 @class KGOSearchBar;

@@ -1,6 +1,5 @@
 #import "CalendarDetailViewController.h"
-#import "MITCalendarEvent.h"
-#import "EventCategory.h"
+#import "CalendarModel.h"
 #import "MITUIConstants.h"
 #import "Foundation+KGOAdditions.h"
 #import "MapBookmarkManager.h"
@@ -140,6 +139,7 @@ enum CalendarDetailRowTypes {
 		rowTypes[numRows] = CalendarDetailRowTypeLocation;
 		numRows++;
 	}
+	/*
 	if (self.event.phone) {
 		rowTypes[numRows] = CalendarDetailRowTypePhone;
 		numRows++;
@@ -156,6 +156,7 @@ enum CalendarDetailRowTypes {
 		rowTypes[numRows] = CalendarDetailRowTypeEmail;
 		numRows++;
 	}
+	*/
 	if (self.event.summary) {
 		rowTypes[numRows] = CalendarDetailRowTypeDescription;
         [descriptionString release];
@@ -252,7 +253,7 @@ enum CalendarDetailRowTypes {
 	// e.g. self.myOutlet = nil;
 }
 
-- (void)setEvent:(MITCalendarEvent *)anEvent {
+- (void)setEvent:(KGOEvent *)anEvent {
     event = anEvent;
     
     [descriptionString release];
@@ -261,7 +262,7 @@ enum CalendarDetailRowTypes {
     descriptionString = nil;
     categoriesString = nil;
 	
-    NSInteger catID = [[[self.event.categories anyObject] catID] intValue];
+    NSInteger catID = [[[self.event.categories anyObject] identifier] intValue];
     isRegularEvent = (catID != kCalendarAcademicCategoryID && catID != kCalendarHolidayCategoryID);
 }
 
@@ -308,14 +309,14 @@ enum CalendarDetailRowTypes {
 		
 		NSMutableArray *tempCats = [NSMutableArray array];
 		
-		for (EventCategory *category in event.categories) {
+		for (KGOEventCategory *category in event.categories) {
 			[tempCats addObject:category];
 		}
 		
 		NSArray *tempA = [tempCats sortedArrayUsingSelector:@selector(compare:)];
 		
-		for (EventCategory *category in tempA) {
-			NSString *catIDString = [NSString stringWithFormat:@"catID=%d", [category.catID intValue]];
+		for (KGOEventCategory *category in tempA) {
+			NSString *catIDString = [NSString stringWithFormat:@"catID=%d", [category.identifier intValue]];
 			NSURL *categoryURL = [NSURL internalURLWithModuleTag:CalendarTag path:CalendarStateCategoryEventList query:catIDString];
 			[categoriesBody appendString:[NSString stringWithFormat:
 										  @"<li><a href=\"%@\">%@</a></li>", [categoryURL absoluteString], category.title]];
@@ -364,30 +365,22 @@ enum CalendarDetailRowTypes {
                 selectionStyle = UITableViewCellSelectionStyleNone;
             }
 			break;
-		case CalendarDetailRowTypePhone:
-			title = event.phone;
-			accessoryView = [[KGOTheme sharedTheme] accessoryViewForType:TableViewCellAccessoryPhone];			
-			break;
+		//case CalendarDetailRowTypePhone:
+		//	title = event.phone;
+		//	accessoryView = [[KGOTheme sharedTheme] accessoryViewForType:TableViewCellAccessoryPhone];			
+		//	break;
 		case CalendarDetailRowTypeURL:
 			title = @"Visit Website";
-			//cell.textLabel.font = [[KGOTheme sharedTheme] fontForTableCellTitleWithStyle:KGOTableCellStyleURL];
-			//cell.textLabel.textColor = [[KGOTheme sharedTheme] linkColor];
 			accessoryView = [[KGOTheme sharedTheme] accessoryViewForType:TableViewCellAccessoryExternal];
 			break;
-			
 		case CalendarDetailRowTypeTicketURL:
 			title = @"Link to Tickets";
-			//cell.textLabel.font = [[KGOTheme sharedTheme] fontForTableCellTitleWithStyle:KGOTableCellStyleURL];
-			//cell.textLabel.textColor = [[KGOTheme sharedTheme] linkColor];
 			accessoryView = [[KGOTheme sharedTheme] accessoryViewForType:TableViewCellAccessoryExternal];
 			break;
-			
-		case CalendarDetailRowTypeEmail:
-			title = event.email;
-			//cell.textLabel.font = [[KGOTheme sharedTheme] fontForTableCellTitleWithStyle:KGOTableCellStyleURL];
-			//cell.textLabel.textColor = [[KGOTheme sharedTheme] linkColor];
-			accessoryView = [[KGOTheme sharedTheme] accessoryViewForType:TableViewCellAccessoryEmail];
-			break;
+		//case CalendarDetailRowTypeEmail:
+		//	title = event.email;
+		//	accessoryView = [[KGOTheme sharedTheme] accessoryViewForType:TableViewCellAccessoryEmail];
+		//	break;
 		case CalendarDetailRowTypeCategories:
 		case CalendarDetailRowTypeDescription:
 			selectionStyle = UITableViewCellSelectionStyleNone;
@@ -425,6 +418,7 @@ enum CalendarDetailRowTypes {
                 [[UIApplication sharedApplication] openURL:internalURL];
             }
 			break;
+		/*	
 		case CalendarDetailRowTypePhone:
 		{
 			NSString *phoneString = [event.phone stringByReplacingOccurrencesOfString:@"-" withString:@""];
@@ -458,6 +452,7 @@ enum CalendarDetailRowTypes {
 			[MITMailComposeController presentMailControllerWithEmail:event.email subject:subject body:nil];
 			break;
 		}
+		*/
 		default:
 			break;
 	}
@@ -515,13 +510,13 @@ enum CalendarDetailRowTypes {
      */
     return attachment;
 }
-
+/*
 - (NSString *)twitterUrl {
     if ([event.url length])
         return event.url;
 	return [NSString stringWithFormat:@"http://%@/calendar/detail.php?id=%d", MITMobileWebDomainString, [event.eventID integerValue]];
 }
-
+*/
 - (NSString *)twitterTitle {
 	return event.title;
 }

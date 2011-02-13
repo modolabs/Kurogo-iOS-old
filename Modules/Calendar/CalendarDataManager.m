@@ -28,7 +28,7 @@
         events = [[CoreDataManager sharedManager] objectsForEntity:CalendarEventEntityName matchingPredicate:pred sortDescriptors:[NSArray arrayWithObject:sort]];
     } else {
         pred = [NSPredicate predicateWithFormat:@"(start >= %@) and (start < %@)", startDate, endDate];
-        EventCategory *category = nil;
+        KGOEventCategory *category = nil;
         switch (listType) {
             case CalendarEventListTypeEvents:
                 category = [CalendarDataManager categoryWithID:[catID intValue]];
@@ -63,9 +63,9 @@
 + (NSNumber *)idForCategory:(NSString *)categoryName
 {
 	NSPredicate *pred = [NSPredicate predicateWithFormat:@"title contains %@", categoryName];
-	EventCategory *category = [[[CoreDataManager sharedManager] objectsForEntity:CalendarCategoryEntityName
+	KGOEventCategory *category = [[[CoreDataManager sharedManager] objectsForEntity:CalendarCategoryEntityName
                                                                matchingPredicate:pred] lastObject];
-	return category.catID;
+	return category.identifier;
 }
 
 + (NSArray *)topLevelCategories
@@ -78,7 +78,7 @@
 	[sort release];
 
 	NSMutableArray *result = [NSMutableArray arrayWithCapacity:10];
-	for (EventCategory *category in categories) {
+	for (KGOEventCategory *category in categories) {
 		if (category.parentCategory == category) {
 			[result addObject:category];
 		}
@@ -91,14 +91,14 @@
 	return nil;
 }
 
-+ (EventCategory *)categoryWithID:(NSInteger)catID
++ (KGOEventCategory *)categoryWithID:(NSInteger)catID
 {	
 	NSPredicate *pred = [NSPredicate predicateWithFormat:@"catID == %d", catID];
-	EventCategory *category = [[[CoreDataManager sharedManager] objectsForEntity:CalendarCategoryEntityName
+	KGOEventCategory *category = [[[CoreDataManager sharedManager] objectsForEntity:CalendarCategoryEntityName
                                                                matchingPredicate:pred] lastObject];
 	if (!category) {
-        category = (EventCategory *)[[CoreDataManager sharedManager] insertNewObjectForEntityForName:CalendarCategoryEntityName];
-		category.catID = [NSNumber numberWithInt:catID];
+        category = (KGOEventCategory *)[[CoreDataManager sharedManager] insertNewObjectForEntityForName:CalendarCategoryEntityName];
+		category.identifier = [NSNumber numberWithInt:catID];
         if (catID == kCalendarAcademicCategoryID) {
             category.title = [CalendarConstants titleForEventType:CalendarEventListTypeAcademic];
         } else if (catID == kCalendarHolidayCategoryID) {
@@ -114,30 +114,30 @@
 	return category;
 }
 
-+ (EventCategory *)categoryWithDict:(NSDictionary *)dict
++ (KGOEventCategory *)categoryWithDict:(NSDictionary *)dict
 {
     // whatever real ID is assigned to exhibits, override it with our own
 	NSInteger catID = [[dict objectForKey:@"name"] isEqualToString:@"exhibits"]
         ? kCalendarExhibitCategoryID
         : [[dict objectForKey:@"catid"] intValue];
-	EventCategory *category = [CalendarDataManager categoryWithID:catID];
+	KGOEventCategory *category = [CalendarDataManager categoryWithID:catID];
 	[category updateWithDict:dict];
 	return category;
 }
 
-+ (MITCalendarEvent *)eventWithID:(NSInteger)eventID
++ (KGOEvent *)eventWithID:(NSInteger)eventID
 {
 	NSPredicate *pred = [NSPredicate predicateWithFormat:@"eventID == %d", eventID];
-	MITCalendarEvent *event = [[[CoreDataManager sharedManager] objectsForEntity:CalendarEventEntityName
+	KGOEvent *event = [[[CoreDataManager sharedManager] objectsForEntity:CalendarEventEntityName
                                                                matchingPredicate:pred] lastObject];
 	if (!event) {
 		event = [[CoreDataManager sharedManager] insertNewObjectForEntityForName:CalendarEventEntityName];
-		event.eventID = [NSNumber numberWithInt:eventID];
+		event.identifier = [NSNumber numberWithInt:eventID];
 	}
 	return event;
 }
 
-+ (MITCalendarEvent *)eventWithDict:(NSDictionary *)dict
++ (KGOEvent *)eventWithDict:(NSDictionary *)dict
 {
     // TODO: clean up things that are not related to the "soap server"
 	// purge rogue categories that the soap server doesn't return
@@ -148,7 +148,7 @@
 	}
 
 	NSInteger eventID = [[dict objectForKey:@"id"] intValue];
-	MITCalendarEvent *event = [CalendarDataManager eventWithID:eventID];	
+	KGOEvent *event = [CalendarDataManager eventWithID:eventID];	
 	[event updateWithDict:dict];
 	return event;
 }
