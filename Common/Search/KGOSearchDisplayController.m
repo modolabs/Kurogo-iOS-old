@@ -311,8 +311,8 @@ showingOnlySearchResults = _showingOnlySearchResults;
     }
     [self showSearchResultsTableView];
     [self reloadSearchResultsTableView];
-    if ((![self.delegate respondsToSelector:@selector(searchControllerCanShowMap:)] // turn on map by default if available
-		 || [self.delegate searchControllerCanShowMap:self])
+    if ((![self.delegate respondsToSelector:@selector(searchControllerShouldLinkToMap:)] // turn on map by default if available
+		 || [self.delegate searchControllerShouldLinkToMap:self])
 		&& [self canShowMapView])
 	{
         if (!_searchBar.toolbarItems.count) {

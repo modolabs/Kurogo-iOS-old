@@ -21,7 +21,7 @@
 - (void)searchController:(KGOSearchDisplayController *)controller didShowSearchResultsTableView:(UITableView *)tableView;
 - (void)searchController:(KGOSearchDisplayController *)controller willReloadSearchResultsTableView:(UITableView *)tableView;
 - (void)searchController:(KGOSearchDisplayController *)controller willHideSearchResultsTableView:(UITableView *)tableView;
-- (BOOL)searchControllerCanShowMap:(KGOSearchDisplayController *)controller;
+- (BOOL)searchControllerShouldLinkToMap:(KGOSearchDisplayController *)controller;
 
 @end
 
@@ -66,6 +66,6 @@
 
 - (void)reloadSearchResultsTableView;
 
-- (BOOL)canShowMapView; // whether the search bar should present a button to link to map module
+- (BOOL)canShowMapView; // whether there are mappable results to link to map module
 
 @end

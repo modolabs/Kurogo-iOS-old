@@ -164,7 +164,7 @@
 	
 }
 
-- (BOOL)searchControllerCanShowMap:(KGOSearchDisplayController *)controller {
+- (BOOL)searchControllerShouldLinkToMap:(KGOSearchDisplayController *)controller {
 	[self showMapListToggle]; // override default behavior
 	return NO; // notify the controller that it's been overridden
 }
