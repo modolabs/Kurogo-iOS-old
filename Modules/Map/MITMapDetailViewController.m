@@ -1,7 +1,6 @@
 #import "MITMapDetailViewController.h"
 #import "TabViewControl.h"
 #import "MapSearchResultAnnotation.h"
-#import "MITUIConstants.h"
 #import "KGOAppDelegate.h"
 #import "MapBookmarkManager.h"
 #import "AnalyticsWrapper.h"

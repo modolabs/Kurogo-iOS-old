@@ -8,7 +8,6 @@
 #import "SpringboardViewController.h"
 #import "KGOAppDelegate.h"
 #import "KGOAppDelegate+ModuleAdditions.h"
-#import "MITUIConstants.h"
 #import "KGOModule.h"
 #import "ModoNavigationController.h"
 #import "ModoNavigationBar.h"

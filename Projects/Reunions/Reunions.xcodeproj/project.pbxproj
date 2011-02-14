@@ -52,7 +52,6 @@
 		EB13873A12F22DBC004DBB7C /* JSONAPIRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = EB1386BE12F22DBC004DBB7C /* JSONAPIRequest.m */; };
 		EB13873D12F22DBC004DBB7C /* Constants.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB1386C112F22DBC004DBB7C /* Constants.h */; settings = {JAVA_ARCHIVE_SUBDIR = ../../Common; }; };
 		EB13873E12F22DBC004DBB7C /* Constants.m in Sources */ = {isa = PBXBuildFile; fileRef = EB1386C212F22DBC004DBB7C /* Constants.m */; };
-		EB13878112F22DBC004DBB7C /* MITUIConstants.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB13870812F22DBC004DBB7C /* MITUIConstants.h */; settings = {JAVA_ARCHIVE_SUBDIR = ../../Common; }; };
 		EB13879212F22DBC004DBB7C /* KGOShareButtonController.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB13871B12F22DBC004DBB7C /* KGOShareButtonController.h */; settings = {JAVA_ARCHIVE_SUBDIR = "../../Common/View Controllers"; }; };
 		EB13879312F22DBC004DBB7C /* KGOShareButtonController.m in Sources */ = {isa = PBXBuildFile; fileRef = EB13871C12F22DBC004DBB7C /* KGOShareButtonController.m */; };
 		EB13879612F22DBC004DBB7C /* TwitterViewController.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB13871F12F22DBC004DBB7C /* TwitterViewController.h */; settings = {JAVA_ARCHIVE_SUBDIR = "../../Common/View Controllers"; }; };
@@ -64,8 +63,6 @@
 		EB1387A212F22DBC004DBB7C /* TabViewControl.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB13872C12F22DBC004DBB7C /* TabViewControl.h */; settings = {JAVA_ARCHIVE_SUBDIR = ../../Common/Views; }; };
 		EB1387A312F22DBC004DBB7C /* TabViewControl.m in Sources */ = {isa = PBXBuildFile; fileRef = EB13872D12F22DBC004DBB7C /* TabViewControl.m */; };
 		EB1387AF12F22DD2004DBB7C /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = EB1387A512F22DD2004DBB7C /* main.m */; };
-		EB1387B212F22DD2004DBB7C /* MITDeviceRegistration.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB1387A812F22DD2004DBB7C /* MITDeviceRegistration.h */; settings = {JAVA_ARCHIVE_SUBDIR = ../../Application; }; };
-		EB1387B312F22DD2004DBB7C /* MITDeviceRegistration.m in Sources */ = {isa = PBXBuildFile; fileRef = EB1387A912F22DD2004DBB7C /* MITDeviceRegistration.m */; };
 		EB138BAD12F231B7004DBB7C /* common in Resources */ = {isa = PBXBuildFile; fileRef = EB138AFE12F231B7004DBB7C /* common */; };
 		EB138BB112F231E3004DBB7C /* en.lproj in Resources */ = {isa = PBXBuildFile; fileRef = EB138BAE12F231E3004DBB7C /* en.lproj */; };
 		EB138C0212F23250004DBB7C /* calendar in Resources */ = {isa = PBXBuildFile; fileRef = EB138BB212F23250004DBB7C /* calendar */; };
@@ -74,10 +71,8 @@
 		EB138C0512F23250004DBB7C /* news in Resources */ = {isa = PBXBuildFile; fileRef = EB138BEC12F23250004DBB7C /* news */; };
 		EB138C0612F23250004DBB7C /* people in Resources */ = {isa = PBXBuildFile; fileRef = EB138BF512F23250004DBB7C /* people */; };
 		EB138C0712F23250004DBB7C /* settings in Resources */ = {isa = PBXBuildFile; fileRef = EB138BFA12F23250004DBB7C /* settings */; };
-		EB138C2912F234A8004DBB7C /* MITBuildInfo.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB138C2812F234A8004DBB7C /* MITBuildInfo.h */; settings = {JAVA_ARCHIVE_SUBDIR = ../../Application; }; };
 		EB138F0412F253A1004DBB7C /* GANTracker.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB138F0212F253A1004DBB7C /* GANTracker.h */; settings = {JAVA_ARCHIVE_SUBDIR = ../../Contrib/GoogleAnalytics; }; };
 		EB138F0512F253A1004DBB7C /* libGoogleAnalytics.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EB138F0312F253A1004DBB7C /* libGoogleAnalytics.a */; };
-		EB138F4E12F26836004DBB7C /* MITBuildInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = EB138F4D12F26836004DBB7C /* MITBuildInfo.m */; };
 		EB14292912FCBD1D00396753 /* KGODetailPager.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB14292712FCBD1D00396753 /* KGODetailPager.h */; settings = {JAVA_ARCHIVE_SUBDIR = ../../Common/Views; }; };
 		EB14292A12FCBD1D00396753 /* KGODetailPager.m in Sources */ = {isa = PBXBuildFile; fileRef = EB14292812FCBD1D00396753 /* KGODetailPager.m */; };
 		EB142B4C130058D500396753 /* MITMailComposeController.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB142B4A130058D500396753 /* MITMailComposeController.h */; settings = {JAVA_ARCHIVE_SUBDIR = ../../Common/ViewControllers; }; };
@@ -114,6 +109,15 @@
 		EB143DD2130636BA00396753 /* DatePickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EB143DD0130636BA00396753 /* DatePickerViewController.m */; };
 		EB143E5313063A5E00396753 /* KGOCategoryListViewController.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB143E5113063A5E00396753 /* KGOCategoryListViewController.h */; settings = {JAVA_ARCHIVE_SUBDIR = ../../Common/ViewControllers; }; };
 		EB143E5413063A5E00396753 /* KGOCategoryListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EB143E5213063A5E00396753 /* KGOCategoryListViewController.m */; };
+		EB14417A1309F0C300396753 /* DefaultTheme.plist in Resources */ = {isa = PBXBuildFile; fileRef = EB1441771309F0C300396753 /* DefaultTheme.plist */; };
+		EB14417B1309F0C300396753 /* ThemeConstants.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB1441781309F0C300396753 /* ThemeConstants.h */; settings = {JAVA_ARCHIVE_SUBDIR = Theme; }; };
+		EB14417C1309F0C300396753 /* ThemeConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = EB1441791309F0C300396753 /* ThemeConstants.m */; };
+		EB14417F1309F0E400396753 /* KGOTheme.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB14417D1309F0E400396753 /* KGOTheme.h */; settings = {JAVA_ARCHIVE_SUBDIR = ../../Common; }; };
+		EB1441801309F0E400396753 /* KGOTheme.m in Sources */ = {isa = PBXBuildFile; fileRef = EB14417E1309F0E400396753 /* KGOTheme.m */; };
+		EB1441A81309F56700396753 /* MITBuildInfo.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB1441A71309F56700396753 /* MITBuildInfo.h */; settings = {JAVA_ARCHIVE_SUBDIR = ../../Modules/About; }; };
+		EB1441AA1309F57400396753 /* MITBuildInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = EB1441A91309F57400396753 /* MITBuildInfo.m */; };
+		EB1441AF1309F59700396753 /* KGOModule.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB1441AD1309F59700396753 /* KGOModule.h */; settings = {JAVA_ARCHIVE_SUBDIR = ../../Application; }; };
+		EB1441B01309F59700396753 /* KGOModule.m in Sources */ = {isa = PBXBuildFile; fileRef = EB1441AE1309F59700396753 /* KGOModule.m */; };
 		EB3721AA11FA2F5200705180 /* NewsImage.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB3721A811FA2F5200705180 /* NewsImage.h */; settings = {JAVA_ARCHIVE_SUBDIR = Modules/News; }; };
 		EB3721AB11FA2F5200705180 /* NewsImage.m in Sources */ = {isa = PBXBuildFile; fileRef = EB3721A911FA2F5200705180 /* NewsImage.m */; };
 		EB4C2CDF127F138100058748 /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = EB4C2CDE127F138100058748 /* libsqlite3.dylib */; };
@@ -145,8 +149,6 @@
 		EB8392A01163FD6E0067C0A3 /* Calendar.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = EB83929F1163FD6E0067C0A3 /* Calendar.xcdatamodeld */; };
 		EB86CA6F115D276700C8F3D1 /* CalendarModule.m in Sources */ = {isa = PBXBuildFile; fileRef = EB86CA6E115D276700C8F3D1 /* CalendarModule.m */; };
 		EB86CAC6115D4ED500C8F3D1 /* CalendarEventsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EB86CAC5115D4ED500C8F3D1 /* CalendarEventsViewController.m */; };
-		EB8B35BE12FF8E4B005DBB8F /* KGOModule.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB8B35BC12FF8E4B005DBB8F /* KGOModule.h */; settings = {JAVA_ARCHIVE_SUBDIR = ../../Common; }; };
-		EB8B35BF12FF8E4B005DBB8F /* KGOModule.m in Sources */ = {isa = PBXBuildFile; fileRef = EB8B35BD12FF8E4B005DBB8F /* KGOModule.m */; };
 		EB8B36361306FBD7005DBB8F /* KGORequestManager.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB8B36341306FBD7005DBB8F /* KGORequestManager.h */; settings = {JAVA_ARCHIVE_SUBDIR = ../../Common/DataControllers; }; };
 		EB8B36371306FBD7005DBB8F /* KGORequestManager.m in Sources */ = {isa = PBXBuildFile; fileRef = EB8B36351306FBD7005DBB8F /* KGORequestManager.m */; };
 		EB8B364713078CDB005DBB8F /* MapHomeViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = EB8B364613078CDB005DBB8F /* MapHomeViewController.xib */; };
@@ -177,13 +179,8 @@
 		EBA2865610E07E140003BA01 /* PeopleSearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EBA2865510E07E140003BA01 /* PeopleSearchViewController.m */; };
 		EBAA866B12F72A4600B743C3 /* libSFHFKeychainUtils.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EBAA860D12F728CE00B743C3 /* libSFHFKeychainUtils.a */; };
 		EBAA899812FB3AB200B743C3 /* Entitlements.plist in Resources */ = {isa = PBXBuildFile; fileRef = EBAA899712FB3AB200B743C3 /* Entitlements.plist */; };
-		EBAA899D12FB3B1A00B743C3 /* ThemeConstants.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EBAA899C12FB3B1A00B743C3 /* ThemeConstants.h */; settings = {JAVA_ARCHIVE_SUBDIR = Theme; }; };
-		EBAA89A012FB3E6500B743C3 /* KGOTheme.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EBAA899E12FB3E6500B743C3 /* KGOTheme.h */; settings = {JAVA_ARCHIVE_SUBDIR = Theme; }; };
-		EBAA89A112FB3E6500B743C3 /* KGOTheme.m in Sources */ = {isa = PBXBuildFile; fileRef = EBAA899F12FB3E6500B743C3 /* KGOTheme.m */; };
-		EBAA89A512FB411F00B743C3 /* DefaultTheme.plist in Resources */ = {isa = PBXBuildFile; fileRef = EBAA89A412FB411F00B743C3 /* DefaultTheme.plist */; };
 		EBAA89BE12FB510E00B743C3 /* KGOTableViewController.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EBAA89BC12FB510E00B743C3 /* KGOTableViewController.h */; settings = {JAVA_ARCHIVE_SUBDIR = "../../Common/View Controllers"; }; };
 		EBAA89BF12FB510E00B743C3 /* KGOTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EBAA89BD12FB510E00B743C3 /* KGOTableViewController.m */; };
-		EBAA8C1612FBA8AD00B743C3 /* ThemeConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = EBAA8C1512FBA8AD00B743C3 /* ThemeConstants.m */; };
 		EBAA8C9B12FC56B000B743C3 /* HighlightedResultLabel.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EBAA8C9912FC56B000B743C3 /* HighlightedResultLabel.h */; settings = {JAVA_ARCHIVE_SUBDIR = ../../Common/Views; }; };
 		EBAA8C9C12FC56B000B743C3 /* HighlightedResultLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = EBAA8C9A12FC56B000B743C3 /* HighlightedResultLabel.m */; };
 		EBAE86401215FB0D00F370BE /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = EBAE863E1215FB0D00F370BE /* Icon.png */; };
@@ -304,7 +301,6 @@
 		EB1386BE12F22DBC004DBB7C /* JSONAPIRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JSONAPIRequest.m; sourceTree = "<group>"; };
 		EB1386C112F22DBC004DBB7C /* Constants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Constants.h; sourceTree = "<group>"; };
 		EB1386C212F22DBC004DBB7C /* Constants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Constants.m; sourceTree = "<group>"; };
-		EB13870812F22DBC004DBB7C /* MITUIConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MITUIConstants.h; sourceTree = "<group>"; };
 		EB13871B12F22DBC004DBB7C /* KGOShareButtonController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGOShareButtonController.h; sourceTree = "<group>"; };
 		EB13871C12F22DBC004DBB7C /* KGOShareButtonController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGOShareButtonController.m; sourceTree = "<group>"; };
 		EB13871F12F22DBC004DBB7C /* TwitterViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TwitterViewController.h; sourceTree = "<group>"; };
@@ -316,8 +312,6 @@
 		EB13872C12F22DBC004DBB7C /* TabViewControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TabViewControl.h; sourceTree = "<group>"; };
 		EB13872D12F22DBC004DBB7C /* TabViewControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TabViewControl.m; sourceTree = "<group>"; };
 		EB1387A512F22DD2004DBB7C /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		EB1387A812F22DD2004DBB7C /* MITDeviceRegistration.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MITDeviceRegistration.h; sourceTree = "<group>"; };
-		EB1387A912F22DD2004DBB7C /* MITDeviceRegistration.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MITDeviceRegistration.m; sourceTree = "<group>"; };
 		EB138AFC12F22F31004DBB7C /* KGOInfo.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = KGOInfo.plist; sourceTree = "<group>"; };
 		EB138AFE12F231B7004DBB7C /* common */ = {isa = PBXFileReference; lastKnownFileType = folder; name = common; path = ../../Resources/common; sourceTree = SOURCE_ROOT; };
 		EB138BAE12F231E3004DBB7C /* en.lproj */ = {isa = PBXFileReference; lastKnownFileType = folder; name = en.lproj; path = Localization/en.lproj; sourceTree = "<group>"; };
@@ -327,12 +321,10 @@
 		EB138BEC12F23250004DBB7C /* news */ = {isa = PBXFileReference; lastKnownFileType = folder; name = news; path = ../../Resources/modules/news; sourceTree = SOURCE_ROOT; };
 		EB138BF512F23250004DBB7C /* people */ = {isa = PBXFileReference; lastKnownFileType = folder; name = people; path = ../../Resources/modules/people; sourceTree = SOURCE_ROOT; };
 		EB138BFA12F23250004DBB7C /* settings */ = {isa = PBXFileReference; lastKnownFileType = folder; name = settings; path = ../../Resources/modules/settings; sourceTree = SOURCE_ROOT; };
-		EB138C2812F234A8004DBB7C /* MITBuildInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MITBuildInfo.h; sourceTree = "<group>"; };
 		EB138E8E12F24EB2004DBB7C /* Proj.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Proj.xcodeproj; path = Proj/Proj.xcodeproj; sourceTree = "<group>"; };
 		EB138EE812F251EB004DBB7C /* Facebook.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Facebook.xcodeproj; path = Facebook/Facebook.xcodeproj; sourceTree = "<group>"; };
 		EB138F0212F253A1004DBB7C /* GANTracker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GANTracker.h; sourceTree = "<group>"; };
 		EB138F0312F253A1004DBB7C /* libGoogleAnalytics.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libGoogleAnalytics.a; sourceTree = "<group>"; };
-		EB138F4D12F26836004DBB7C /* MITBuildInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MITBuildInfo.m; path = Application/MITBuildInfo.m; sourceTree = SOURCE_ROOT; };
 		EB14292712FCBD1D00396753 /* KGODetailPager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGODetailPager.h; sourceTree = "<group>"; };
 		EB14292812FCBD1D00396753 /* KGODetailPager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGODetailPager.m; sourceTree = "<group>"; };
 		EB142B4A130058D500396753 /* MITMailComposeController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MITMailComposeController.h; sourceTree = "<group>"; };
@@ -369,6 +361,15 @@
 		EB143DD0130636BA00396753 /* DatePickerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DatePickerViewController.m; sourceTree = "<group>"; };
 		EB143E5113063A5E00396753 /* KGOCategoryListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGOCategoryListViewController.h; sourceTree = "<group>"; };
 		EB143E5213063A5E00396753 /* KGOCategoryListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGOCategoryListViewController.m; sourceTree = "<group>"; };
+		EB1441771309F0C300396753 /* DefaultTheme.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = DefaultTheme.plist; sourceTree = "<group>"; };
+		EB1441781309F0C300396753 /* ThemeConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ThemeConstants.h; sourceTree = "<group>"; };
+		EB1441791309F0C300396753 /* ThemeConstants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ThemeConstants.m; sourceTree = "<group>"; };
+		EB14417D1309F0E400396753 /* KGOTheme.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGOTheme.h; sourceTree = "<group>"; };
+		EB14417E1309F0E400396753 /* KGOTheme.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGOTheme.m; sourceTree = "<group>"; };
+		EB1441A71309F56700396753 /* MITBuildInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MITBuildInfo.h; sourceTree = "<group>"; };
+		EB1441A91309F57400396753 /* MITBuildInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MITBuildInfo.m; path = Modules/About/MITBuildInfo.m; sourceTree = SOURCE_ROOT; };
+		EB1441AD1309F59700396753 /* KGOModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGOModule.h; sourceTree = "<group>"; };
+		EB1441AE1309F59700396753 /* KGOModule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGOModule.m; sourceTree = "<group>"; };
 		EB3721A811FA2F5200705180 /* NewsImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NewsImage.h; sourceTree = "<group>"; };
 		EB3721A911FA2F5200705180 /* NewsImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NewsImage.m; sourceTree = "<group>"; };
 		EB4C2CDE127F138100058748 /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
@@ -404,8 +405,6 @@
 		EB86CA6E115D276700C8F3D1 /* CalendarModule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CalendarModule.m; sourceTree = "<group>"; };
 		EB86CAC4115D4ED500C8F3D1 /* CalendarEventsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CalendarEventsViewController.h; sourceTree = "<group>"; };
 		EB86CAC5115D4ED500C8F3D1 /* CalendarEventsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CalendarEventsViewController.m; sourceTree = "<group>"; };
-		EB8B35BC12FF8E4B005DBB8F /* KGOModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGOModule.h; sourceTree = "<group>"; };
-		EB8B35BD12FF8E4B005DBB8F /* KGOModule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGOModule.m; sourceTree = "<group>"; };
 		EB8B36341306FBD7005DBB8F /* KGORequestManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGORequestManager.h; sourceTree = "<group>"; };
 		EB8B36351306FBD7005DBB8F /* KGORequestManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGORequestManager.m; sourceTree = "<group>"; };
 		EB8B364613078CDB005DBB8F /* MapHomeViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MapHomeViewController.xib; sourceTree = "<group>"; };
@@ -435,13 +434,8 @@
 		EBA2865510E07E140003BA01 /* PeopleSearchViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PeopleSearchViewController.m; sourceTree = "<group>"; };
 		EBAA860812F728CE00B743C3 /* SFHFKeychainUtils.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = SFHFKeychainUtils.xcodeproj; path = SFHFKeychainUtils/SFHFKeychainUtils.xcodeproj; sourceTree = "<group>"; };
 		EBAA899712FB3AB200B743C3 /* Entitlements.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Entitlements.plist; path = ../../Resources/Entitlements.plist; sourceTree = SOURCE_ROOT; };
-		EBAA899C12FB3B1A00B743C3 /* ThemeConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ThemeConstants.h; sourceTree = "<group>"; };
-		EBAA899E12FB3E6500B743C3 /* KGOTheme.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGOTheme.h; sourceTree = "<group>"; };
-		EBAA899F12FB3E6500B743C3 /* KGOTheme.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGOTheme.m; sourceTree = "<group>"; };
-		EBAA89A412FB411F00B743C3 /* DefaultTheme.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = DefaultTheme.plist; path = ../../Resources/common/DefaultTheme.plist; sourceTree = SOURCE_ROOT; };
 		EBAA89BC12FB510E00B743C3 /* KGOTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGOTableViewController.h; sourceTree = "<group>"; };
 		EBAA89BD12FB510E00B743C3 /* KGOTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGOTableViewController.m; sourceTree = "<group>"; };
-		EBAA8C1512FBA8AD00B743C3 /* ThemeConstants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ThemeConstants.m; sourceTree = "<group>"; };
 		EBAA8C9912FC56B000B743C3 /* HighlightedResultLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HighlightedResultLabel.h; sourceTree = "<group>"; };
 		EBAA8C9A12FC56B000B743C3 /* HighlightedResultLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HighlightedResultLabel.m; sourceTree = "<group>"; };
 		EBAA9F6210FFAB8B003379A5 /* PeopleDataModel 5.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "PeopleDataModel 5.xcdatamodel"; sourceTree = "<group>"; };
@@ -504,7 +498,7 @@
 				EB1387B912F22DF7004DBB7C /* Contrib */,
 				29B97317FDCFA39411CA2CEA /* Resources */,
 				EB142C931300A3FF00396753 /* Resources-iPad */,
-				EBAA899912FB3AD500B743C3 /* Theme */,
+				EB1441761309F0C300396753 /* Theme */,
 				29B97323FDCFA39411CA2CEA /* Frameworks */,
 				19C28FACFE9D520D11CA2CBB /* Products */,
 			);
@@ -529,7 +523,6 @@
 				EBAE863F1215FB0D00F370BE /* Icon@2x.png */,
 				DED3CCE810418F5F003D3B74 /* Default.png */,
 				EBAA899712FB3AB200B743C3 /* Entitlements.plist */,
-				EBAA89A412FB411F00B743C3 /* DefaultTheme.plist */,
 				EB5773C112FDF91200BAF5F5 /* Config.plist */,
 			);
 			name = Resources;
@@ -641,6 +634,8 @@
 		DE81CF5E10C6BC390085573D /* About */ = {
 			isa = PBXGroup;
 			children = (
+				EB1441A71309F56700396753 /* MITBuildInfo.h */,
+				EB1441A91309F57400396753 /* MITBuildInfo.m */,
 				DEA3B48B10C9BB7300BDA774 /* AboutModule.h */,
 				DEA3B48C10C9BB7300BDA774 /* AboutModule.m */,
 				DEC02F9B110578240054BE32 /* AboutTableViewController.h */,
@@ -701,8 +696,8 @@
 		EB1386AF12F22DBC004DBB7C /* Common */ = {
 			isa = PBXGroup;
 			children = (
-				EB8B35BC12FF8E4B005DBB8F /* KGOModule.h */,
-				EB8B35BD12FF8E4B005DBB8F /* KGOModule.m */,
+				EB14417D1309F0E400396753 /* KGOTheme.h */,
+				EB14417E1309F0E400396753 /* KGOTheme.m */,
 				EB1386C112F22DBC004DBB7C /* Constants.h */,
 				EB1386C212F22DBC004DBB7C /* Constants.m */,
 				EB1430641301A87900396753 /* Search */,
@@ -712,7 +707,6 @@
 				EB142B4E130058F100396753 /* Cocoa */,
 				EB1386B312F22DBC004DBB7C /* Analytics */,
 				EB1386B812F22DBC004DBB7C /* Connection */,
-				EB13870812F22DBC004DBB7C /* MITUIConstants.h */,
 			);
 			name = Common;
 			path = ../../Common;
@@ -783,15 +777,13 @@
 		EB1387A412F22DD2004DBB7C /* Application */ = {
 			isa = PBXGroup;
 			children = (
+				EB1441AD1309F59700396753 /* KGOModule.h */,
+				EB1441AE1309F59700396753 /* KGOModule.m */,
 				EB142C2113009FF100396753 /* KGOAppDelegate.h */,
 				EB142C2213009FF100396753 /* KGOAppDelegate.m */,
 				EB142C981300A83E00396753 /* KGOAppDelegate+ModuleAdditions.h */,
 				EB142C991300A83E00396753 /* KGOAppDelegate+ModuleAdditions.m */,
-				EB138F4D12F26836004DBB7C /* MITBuildInfo.m */,
-				EB138C2812F234A8004DBB7C /* MITBuildInfo.h */,
 				EB1387A512F22DD2004DBB7C /* main.m */,
-				EB1387A812F22DD2004DBB7C /* MITDeviceRegistration.h */,
-				EB1387A912F22DD2004DBB7C /* MITDeviceRegistration.m */,
 				EB142B741300868600396753 /* KGONotification.h */,
 				EB142B751300868600396753 /* KGONotification.m */,
 			);
@@ -872,6 +864,16 @@
 				EB1433AE1303509D00396753 /* KGOSearchBar.m */,
 			);
 			path = Search;
+			sourceTree = "<group>";
+		};
+		EB1441761309F0C300396753 /* Theme */ = {
+			isa = PBXGroup;
+			children = (
+				EB1441771309F0C300396753 /* DefaultTheme.plist */,
+				EB1441781309F0C300396753 /* ThemeConstants.h */,
+				EB1441791309F0C300396753 /* ThemeConstants.m */,
+			);
+			path = Theme;
 			sourceTree = "<group>";
 		};
 		EB5773F812FE0FAF00BAF5F5 /* Home */ = {
@@ -994,17 +996,6 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		EBAA899912FB3AD500B743C3 /* Theme */ = {
-			isa = PBXGroup;
-			children = (
-				EBAA8C1512FBA8AD00B743C3 /* ThemeConstants.m */,
-				EBAA899C12FB3B1A00B743C3 /* ThemeConstants.h */,
-				EBAA899E12FB3E6500B743C3 /* KGOTheme.h */,
-				EBAA899F12FB3E6500B743C3 /* KGOTheme.m */,
-			);
-			path = Theme;
-			sourceTree = "<group>";
-		};
 /* End PBXGroup section */
 
 /* Begin PBXJavaArchiveBuildPhase section */
@@ -1026,24 +1017,18 @@
 				EB13873712F22DBC004DBB7C /* ConnectionWrapper.h in JavaArchive */,
 				EB13873912F22DBC004DBB7C /* JSONAPIRequest.h in JavaArchive */,
 				EB13873D12F22DBC004DBB7C /* Constants.h in JavaArchive */,
-				EB13878112F22DBC004DBB7C /* MITUIConstants.h in JavaArchive */,
 				EB13879212F22DBC004DBB7C /* KGOShareButtonController.h in JavaArchive */,
 				EB13879612F22DBC004DBB7C /* TwitterViewController.h in JavaArchive */,
 				EB13879812F22DBC004DBB7C /* MITLoadingActivityView.h in JavaArchive */,
 				EB13879E12F22DBC004DBB7C /* KGOScrollingTabstrip.h in JavaArchive */,
 				EB1387A212F22DBC004DBB7C /* TabViewControl.h in JavaArchive */,
-				EB1387B212F22DD2004DBB7C /* MITDeviceRegistration.h in JavaArchive */,
-				EB138C2912F234A8004DBB7C /* MITBuildInfo.h in JavaArchive */,
 				EB138F0412F253A1004DBB7C /* GANTracker.h in JavaArchive */,
-				EBAA899D12FB3B1A00B743C3 /* ThemeConstants.h in JavaArchive */,
-				EBAA89A012FB3E6500B743C3 /* KGOTheme.h in JavaArchive */,
 				EBAA89BE12FB510E00B743C3 /* KGOTableViewController.h in JavaArchive */,
 				EBAA8C9B12FC56B000B743C3 /* HighlightedResultLabel.h in JavaArchive */,
 				EB14292912FCBD1D00396753 /* KGODetailPager.h in JavaArchive */,
 				EB5773FE12FE111500BAF5F5 /* CoreDataManager.h in JavaArchive */,
 				EB57740012FE111500BAF5F5 /* KGOSocialMediaController.h in JavaArchive */,
 				EB57740412FE113400BAF5F5 /* SpringboardViewController.h in JavaArchive */,
-				EB8B35BE12FF8E4B005DBB8F /* KGOModule.h in JavaArchive */,
 				EB142B4C130058D500396753 /* MITMailComposeController.h in JavaArchive */,
 				EB142B511300593A00396753 /* UIKit+KGOAdditions.h in JavaArchive */,
 				EB142B551300597200396753 /* Foundation+KGOAdditions.h in JavaArchive */,
@@ -1070,6 +1055,10 @@
 				EB8B366413079D2D005DBB8F /* KGOEventCategory.h in JavaArchive */,
 				EB8B366713079D87005DBB8F /* CalendarModel.h in JavaArchive */,
 				EB8B36861307BB28005DBB8F /* MapZoomLevel.h in JavaArchive */,
+				EB14417B1309F0C300396753 /* ThemeConstants.h in JavaArchive */,
+				EB14417F1309F0E400396753 /* KGOTheme.h in JavaArchive */,
+				EB1441A81309F56700396753 /* MITBuildInfo.h in JavaArchive */,
+				EB1441AF1309F59700396753 /* KGOModule.h in JavaArchive */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1091,7 +1080,7 @@
 			dependencies = (
 			);
 			name = Reunions;
-			productName = "MIT Mobile";
+			productName = Reunions;
 			productReference = 1D6058910D05DD3D006BFB54 /* Reunions.app */;
 			productType = "com.apple.product-type.application";
 		};
@@ -1210,11 +1199,11 @@
 				EB138C0612F23250004DBB7C /* people in Resources */,
 				EB138C0712F23250004DBB7C /* settings in Resources */,
 				EBAA899812FB3AB200B743C3 /* Entitlements.plist in Resources */,
-				EBAA89A512FB411F00B743C3 /* DefaultTheme.plist in Resources */,
 				EB5773C212FDF91200BAF5F5 /* Config.plist in Resources */,
 				EB142C951300A40000396753 /* MainWindow-iPad.xib in Resources */,
 				EB142C971300A4A900396753 /* MainWindow.xib in Resources */,
 				EB8B364713078CDB005DBB8F /* MapHomeViewController.xib in Resources */,
+				EB14417A1309F0C300396753 /* DefaultTheme.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1232,7 +1221,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "PATH=$PATH:/usr/local/git/bin\nREV=`git rev-parse HEAD | cut -c 1-8`\nBUILD_INFO_FILE=${PROJECT_DIR}/Application/MITBuildInfo.m\n\necho \"#import \\\"MITBuildInfo.h\\\";\" > ${BUILD_INFO_FILE}\necho \"\" >> ${BUILD_INFO_FILE}\necho \"NSString * const MITBuildNumber = @\\\"$REV\\\";\" >> ${BUILD_INFO_FILE}";
+			shellScript = "PATH=$PATH:/usr/local/git/bin\nREV=`git rev-parse HEAD | cut -c 1-8`\nBUILD_INFO_FILE=${PROJECT_DIR}/Modules/About/MITBuildInfo.m\n\necho \"#import \\\"MITBuildInfo.h\\\";\" > ${BUILD_INFO_FILE}\necho \"\" >> ${BUILD_INFO_FILE}\necho \"NSString * const MITBuildNumber = @\\\"$REV\\\";\" >> ${BUILD_INFO_FILE}";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -1289,17 +1278,12 @@
 				EB13879F12F22DBC004DBB7C /* KGOScrollingTabstrip.m in Sources */,
 				EB1387A312F22DBC004DBB7C /* TabViewControl.m in Sources */,
 				EB1387AF12F22DD2004DBB7C /* main.m in Sources */,
-				EB1387B312F22DD2004DBB7C /* MITDeviceRegistration.m in Sources */,
-				EB138F4E12F26836004DBB7C /* MITBuildInfo.m in Sources */,
-				EBAA89A112FB3E6500B743C3 /* KGOTheme.m in Sources */,
 				EBAA89BF12FB510E00B743C3 /* KGOTableViewController.m in Sources */,
-				EBAA8C1612FBA8AD00B743C3 /* ThemeConstants.m in Sources */,
 				EBAA8C9C12FC56B000B743C3 /* HighlightedResultLabel.m in Sources */,
 				EB14292A12FCBD1D00396753 /* KGODetailPager.m in Sources */,
 				EB5773FF12FE111500BAF5F5 /* CoreDataManager.m in Sources */,
 				EB57740112FE111500BAF5F5 /* KGOSocialMediaController.m in Sources */,
 				EB57740512FE113400BAF5F5 /* SpringboardViewController.m in Sources */,
-				EB8B35BF12FF8E4B005DBB8F /* KGOModule.m in Sources */,
 				EB142B4D130058D500396753 /* MITMailComposeController.m in Sources */,
 				EB142B521300593A00396753 /* UIKit+KGOAdditions.m in Sources */,
 				EB142B561300597200396753 /* Foundation+KGOAdditions.m in Sources */,
@@ -1325,6 +1309,10 @@
 				EB8B366313079D2D005DBB8F /* KGOEventContactInfo.m in Sources */,
 				EB8B366513079D2D005DBB8F /* KGOEventCategory.m in Sources */,
 				EB8B36871307BB28005DBB8F /* MapZoomLevel.m in Sources */,
+				EB14417C1309F0C300396753 /* ThemeConstants.m in Sources */,
+				EB1441801309F0E400396753 /* KGOTheme.m in Sources */,
+				EB1441AA1309F57400396753 /* MITBuildInfo.m in Sources */,
+				EB1441B01309F59700396753 /* KGOModule.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

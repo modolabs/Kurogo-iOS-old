@@ -1,5 +1,4 @@
 #import "CalendarEventsViewController.h"
-#import "MITUIConstants.h"
 #import "CalendarModule.h"
 #import "CalendarDetailViewController.h"
 #import "CalendarDataManager.h"
@@ -356,7 +355,7 @@
 {
 	if (loadingIndicator == nil) {
 		static NSString *loadingString = @"Loading...";
-		UIFont *loadingFont = [UIFont fontWithName:STANDARD_FONT size:17.0];
+		UIFont *loadingFont = [UIFont systemFontOfSize:17.0];
 		CGSize stringSize = [loadingString sizeWithFont:loadingFont];
         
         CGFloat verticalPadding = 10.0;

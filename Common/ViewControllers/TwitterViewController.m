@@ -1,5 +1,4 @@
 #import "TwitterViewController.h"
-#import "MITUIConstants.h"
 #import "Constants.h"
 #import "KGOAppDelegate.h"
 #import "SFHFKeychainUtils.h"
@@ -112,16 +111,19 @@ static NSString * const CredentialsKey = @"Credentials";
 
 - (void) loadView {
 	[super loadView];
+    
+    self.title = @"Twitter";
 	
+    /*
 	UINavigationBar *navBar = [[[UINavigationBar alloc] initWithFrame:CGRectMake(0.0, 0.0, self.view.frame.size.width, NAVIGATION_BAR_HEIGHT)] autorelease];
 	navBar.barStyle= UIBarStyleBlack;
 	navigationItem = [[[UINavigationItem alloc] initWithTitle:@"Twitter"] autorelease];
 	navigationItem.leftBarButtonItem = [[[UIBarButtonItem alloc] initWithTitle:@"Done" style:UIBarButtonItemStylePlain target:self action:@selector(dismissTwitterViewController)] autorelease];
 	navBar.items = [NSArray arrayWithObject:navigationItem];
-	
+	*/
 	self.view.opaque = YES;
 	self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:MITImageNameBackground]];
-	[self.view addSubview:navBar];
+	//[self.view addSubview:navBar];
 	[[KGOSocialMediaController sharedController] loginTwitterWithDelegate:self];
 }
 
@@ -184,10 +186,11 @@ static NSString * const CredentialsKey = @"Credentials";
 }
 
 - (void) loadMessageInputView {
-    CGRect contentFrame = [[UIScreen mainScreen] applicationFrame];
-    contentFrame.origin.y = NAVIGATION_BAR_HEIGHT;
-    contentFrame.size.height = contentFrame.size.height - NAVIGATION_BAR_HEIGHT;
-    
+    //CGRect contentFrame = [[UIScreen mainScreen] applicationFrame];
+    //contentFrame.origin.y = NAVIGATION_BAR_HEIGHT;
+    //contentFrame.size.height = contentFrame.size.height - NAVIGATION_BAR_HEIGHT;
+
+    CGRect contentFrame = CGRectMake(0, 0, self.view.bounds.size.width, self.view.bounds.size.height);
     UIView *messageInputView = [[[UIView alloc] initWithFrame:contentFrame] autorelease];
     
     signOutButton = [[UIButton buttonWithType:UIButtonTypeCustom] retain];
@@ -253,10 +256,12 @@ static NSString * const CredentialsKey = @"Credentials";
 }
 
 - (void) loadLoginView {
-    CGRect contentFrame = [[UIScreen mainScreen] applicationFrame];
-    contentFrame.origin.y = NAVIGATION_BAR_HEIGHT;
-    contentFrame.size.height = contentFrame.size.height - NAVIGATION_BAR_HEIGHT;
+    //CGRect contentFrame = [[UIScreen mainScreen] applicationFrame];
+    //contentFrame.origin.y = NAVIGATION_BAR_HEIGHT;
+    //contentFrame.size.height = contentFrame.size.height - NAVIGATION_BAR_HEIGHT;
     
+    CGRect contentFrame = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height);
+
     UIView *loginView = [[[UIView alloc] initWithFrame:contentFrame] autorelease];
     
     UILabel *instructionLabel = [[[UILabel alloc] initWithFrame:CGRectMake(
@@ -268,7 +273,7 @@ static NSString * const CredentialsKey = @"Credentials";
     instructionLabel.numberOfLines = 0;
     instructionLabel.textAlignment = UITextAlignmentCenter;
     instructionLabel.text = @"Please sign into your Twitter account.";
-    instructionLabel.font = [UIFont fontWithName:STANDARD_FONT size:STANDARD_CONTENT_FONT_SIZE];
+    instructionLabel.font = [UIFont systemFontOfSize:17.0];
     instructionLabel.backgroundColor = [UIColor clearColor];
     
     CGFloat fieldWidth = contentFrame.size.width - 2 * INPUT_FIELDS_MARGIN;

@@ -142,11 +142,11 @@
 		<key>Facebook</key>
 		<dict>
 			<key>AppID</key>
-			<string></string>
+			<string>140621452667226</string>
 			<key>APIKey</key>
-			<string></string>
+			<string>aa41ebe2c7ee67478d6628dbc5965ae6</string>
 			<key>APISecret</key>
-			<string></string>
+			<string>09433e5ea4ac451151c476844fa9626c</string>
 		</dict>
 		<key>Twitter</key>
 		<dict>
@@ -166,5 +166,7 @@
 Established in 1636, Harvard is the oldest institution of higher education in the United States. The University, which is based in Cambridge and Boston, Massachusetts, has an enrollment of over 20,000 degree candidates, including undergraduate, graduate, and professional students. Harvard has more than 360,000 alumni around the world.</string>
 	<key>AboutAppText</key>
 	<string>The Harvard iPhone/iPod Touch application is part of a broader initiative to improve the mobile experience of students, faculty, staff, visitors, and neighbors who interact with Harvard&apos;s campus and community. We will continue to develop, expand and improve this application. We welcome your ideas and feedback.</string>
+	<key>NavigationControllerClass</key>
+	<string>UINavigationController</string>
 </dict>
 </plist>

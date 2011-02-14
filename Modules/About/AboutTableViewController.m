@@ -2,7 +2,6 @@
 #import "KGOAppDelegate.h"
 #import "UIKit+KGOAdditions.h"
 #import "AboutMITVC.h"
-#import "MITUIConstants.h"
 #import "MITMailComposeController.h"
 #import "KGOTheme.h"
 #import "ThemeConstants.h"

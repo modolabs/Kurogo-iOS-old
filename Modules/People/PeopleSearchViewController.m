@@ -4,8 +4,6 @@
 #import "KGOAppDelegate.h"
 #import "KGOAppDelegate+ModuleAdditions.h"
 #import "ModoNavigationController.h"
-// common UI elements
-#import "MITUIConstants.h"
 // external modules
 #import "Foundation+KGOAdditions.h"
 #import "UIKit+KGOAdditions.h"
@@ -34,7 +32,7 @@ static const NSUInteger kPhoneDirectorySection = 0;
     }
     
     //theSearchBar = [[KGOSearchBar alloc] initWithFrame:CGRectMake(0.0f, 0.0f, self.view.frame.size.width, NAVIGATION_BAR_HEIGHT)];
-    theSearchBar = [[KGOSearchBar defaultSearchBarWithFrame:CGRectMake(0.0f, 0.0f, self.view.frame.size.width, NAVIGATION_BAR_HEIGHT)] retain];
+    theSearchBar = [[KGOSearchBar defaultSearchBarWithFrame:CGRectMake(0.0f, 0.0f, self.view.frame.size.width, 44.0)] retain];
 	theSearchBar.placeholder = NSLocalizedString(@"Search", nil);
 
     if (!searchController) {

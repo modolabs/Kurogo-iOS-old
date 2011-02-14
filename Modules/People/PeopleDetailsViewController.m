@@ -1,7 +1,6 @@
 #import "PeopleDetailsViewController.h"
 #import "PeopleRecentsData.h"
 #import "KGOAppDelegate.h"
-#import "MITUIConstants.h"
 #import "UIKit+KGOAdditions.h"
 #import "Foundation+KGOAdditions.h"
 #import "ModoNavigationController.h"

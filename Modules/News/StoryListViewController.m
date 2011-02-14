@@ -8,7 +8,6 @@
 #import "UIKit+KGOAdditions.h"
 #import "KGOScrollingTabstrip.h"
 #import "KGOSearchDisplayController.h"
-#import "MITUIConstants.h"
 #import "NewsCategory.h"
 #import "AnalyticsWrapper.h"
 

@@ -1,13 +1,12 @@
 #import "SettingsTableViewController.h"
 #import "KGOAppDelegate.h"
 #import "KGOModule.h"
-#import "MITUIConstants.h"
 #import "ModoThreeStateSwitchControl.h"
 #import <MapKit/MapKit.h>
 #import "KGOTheme.h"
 
 #define TITLE_HEIGHT 20.0
-#define SUBTITLE_HEIGHT NAVIGATION_BAR_HEIGHT
+#define SUBTITLE_HEIGHT 44.0
 #define PADDING 10.0
 const CGFloat kMapTypeSwitchWidth = 180.0f;
 const CGFloat kMapTypeSwitchHeight = 29.0f;
@@ -36,7 +35,7 @@ typedef enum {
 	UIView *result = [[[UIView alloc] initWithFrame:CGRectMake(0, 0, tableView.frame.size.width, SUBTITLE_HEIGHT + TITLE_HEIGHT)] autorelease];
 	
 	UILabel *titleView = [[UILabel alloc] initWithFrame:CGRectMake(PADDING, PADDING, 200, TITLE_HEIGHT)];
-	titleView.font = [UIFont boldSystemFontOfSize:STANDARD_CONTENT_FONT_SIZE];
+	titleView.font = [[KGOTheme sharedTheme] fontForGroupedSectionHeader];
 	titleView.textColor = [[KGOTheme sharedTheme] textColorForGroupedSectionHeader];
 	titleView.backgroundColor = [UIColor clearColor];
 	titleView.text = aTitle;

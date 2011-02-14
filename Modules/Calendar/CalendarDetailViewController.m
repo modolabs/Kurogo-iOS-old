@@ -1,6 +1,5 @@
 #import "CalendarDetailViewController.h"
 #import "CalendarModel.h"
-#import "MITUIConstants.h"
 #import "Foundation+KGOAdditions.h"
 #import "MapBookmarkManager.h"
 #import "MapSearchResultAnnotation.h"
