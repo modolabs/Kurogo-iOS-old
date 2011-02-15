@@ -53,18 +53,13 @@
             LocalPathPageNameCategoryList, LocalPathPageNameItemList, nil];
 }
 
-- (UIViewController *)moduleHomeScreenWithParams:(NSDictionary *)args {
-    MapHomeViewController *vc = [[[MapHomeViewController alloc] init] autorelease];
-    return vc;
-}
-
 - (UIViewController *)modulePage:(NSString *)pageName params:(NSDictionary *)params {
     UIViewController *vc = nil;
     if ([pageName isEqualToString:LocalPathPageNameHome]) {
-        vc = [self moduleHomeScreenWithParams:params];
+        vc = [[[MapHomeViewController alloc] init] autorelease];
         
     } else if ([pageName isEqualToString:LocalPathPageNameSearch]) {
-        vc = [self moduleHomeScreenWithParams:params];
+        vc = [[[MapHomeViewController alloc] init] autorelease];
         
         NSString *searchText = [params objectForKey:@"q"];
         if (searchText) {

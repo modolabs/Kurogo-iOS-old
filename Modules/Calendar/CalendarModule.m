@@ -45,18 +45,13 @@
             LocalPathPageNameCategoryList, LocalPathPageNameItemList, nil];
 }
 
-- (UIViewController *)moduleHomeScreenWithParams:(NSDictionary *)args {
-    CalendarEventsViewController *eventsVC = [[[CalendarEventsViewController alloc] init] autorelease];
-    return eventsVC;
-}
-
 - (UIViewController *)modulePage:(NSString *)pageName params:(NSDictionary *)params {
     UIViewController *vc = nil;
     if ([pageName isEqualToString:LocalPathPageNameHome]) {
-        vc = [self moduleHomeScreenWithParams:params];
+        vc = [[[CalendarEventsViewController alloc] init] autorelease];
         
     } else if ([pageName isEqualToString:LocalPathPageNameSearch]) {
-        vc = [self moduleHomeScreenWithParams:params];
+        vc = [[[CalendarEventsViewController alloc] init] autorelease];
         
         NSString *searchText = [params objectForKey:@"q"];
         if (searchText) {

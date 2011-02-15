@@ -64,17 +64,13 @@
     return [NSArray arrayWithObjects:LocalPathPageNameHome, LocalPathPageNameSearch, LocalPathPageNameDetail, nil];
 }
 
-- (UIViewController *)moduleHomeScreenWithParams:(NSDictionary *)args {
-    PeopleSearchViewController *peopleVC = [[[PeopleSearchViewController alloc] init] autorelease];
-    return peopleVC;
-}
-
 - (UIViewController *)modulePage:(NSString *)pageName params:(NSDictionary *)params {
     UIViewController *vc = nil;
     if ([pageName isEqualToString:LocalPathPageNameHome]) {
-        vc = [self moduleHomeScreenWithParams:params];
+        vc = [[[PeopleSearchViewController alloc] init] autorelease];
+        
     } else if ([pageName isEqualToString:LocalPathPageNameSearch]) {
-        vc = [self moduleHomeScreenWithParams:params];
+        vc = [[[PeopleSearchViewController alloc] init] autorelease];
 
         NSString *searchText = [params objectForKey:@"q"];
         if (searchText) {

@@ -16,7 +16,6 @@
 
 /*
  * you must override methods
- * - (UIViewController *)moduleHomeScreenWithParams:(NSDictionary *)args;
  * - (UIViewController *)modulePage:(NSString *)pageID params:(NSDictionary *)params;
  */
 
@@ -40,7 +39,6 @@
 #pragma mark Navigation
 
 - (NSArray *)registeredPageNames;
-- (UIViewController *)moduleHomeScreenWithParams:(NSDictionary *)args;
 - (UIViewController *)modulePage:(NSString *)pageName params:(NSDictionary *)params;
 - (BOOL)handleLocalPath:(NSString *)localPath query:(NSString *)query;
 
@@ -95,5 +93,10 @@
 #pragma mark Notifications
 
 - (void)handleNotification:(KGONotification *)aNotification;
+
+#pragma mark Social media
+
+- (NSSet *)socialMediaTypes;
+- (NSDictionary *)userInfoForSocialMediaType:(NSString *)mediaType;
 
 @end

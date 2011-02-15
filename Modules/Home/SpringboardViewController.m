@@ -13,7 +13,6 @@
 #import "ModoNavigationBar.h"
 #import "KGOSearchBar.h"
 #import "KGOSearchDisplayController.h"
-#import "AnalyticsWrapper.h"
 #import "UIKit+KGOAdditions.h"
 
 #import "PersonDetails.h"
@@ -56,7 +55,6 @@
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
     
     if ((self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil])) {
-        activeModule = nil;
         completedModules = nil;
     }
     return self;
@@ -222,16 +220,8 @@
 		[[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"http://www.harvard.edu/?fullsite=yes"]];
 		return;
 	}
-
-    KGOAppDelegate *appDelegate = (KGOAppDelegate *)[[UIApplication sharedApplication] delegate];
-    activeModule = [appDelegate moduleForTag:anIcon.moduleTag];
-	
-    UIViewController *viewController = [activeModule moduleHomeScreenWithParams:nil];
-    [self.navigationController pushViewController:viewController animated:YES];
-
-    // tracking
-    NSString *detailString = [NSString stringWithFormat:@"/%@", anIcon.moduleTag];
-    [[AnalyticsWrapper sharedWrapper] trackPageview:detailString];
+    
+	[(KGOAppDelegate *)[[UIApplication sharedApplication] delegate] showPage:LocalPathPageNameHome forModuleTag:anIcon.moduleTag params:nil];
 }
 
 - (void)viewWillAppear:(BOOL)animated {

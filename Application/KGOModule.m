@@ -91,10 +91,6 @@
     return nil;
 }
 
-- (UIViewController *)moduleHomeScreenWithParams:(NSDictionary *)args {
-    return nil;
-}
-
 - (UIViewController *)modulePage:(NSString *)pageName params:(NSDictionary *)params {
     return nil;
 }
@@ -211,6 +207,19 @@
 #pragma mark Notifications
 
 - (void)handleNotification:(KGONotification *)aNotification {
+}
+
+#pragma mark Social media
+
+- (NSSet *)socialMediaTypes {
+    // register the tags of social media types used
+    return nil;
+}
+
+- (NSDictionary *)userInfoForSocialMediaType:(NSString *)mediaType {
+    // specify if your app uses extra setup arguments
+    // for Facebook, enter a list of permissions requested
+    return nil;
 }
 
 @end

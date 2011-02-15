@@ -10,8 +10,11 @@
 @synthesize storyListChannelController;
 @synthesize xmlParser;
 
-- (UIViewController *)moduleHomeScreenWithParams:(NSDictionary *)args {
-    StoryListViewController *vc = [[[StoryListViewController alloc] init] autorelease];
+- (UIViewController *)modulePage:(NSString *)pageName params:(NSDictionary *)params {
+    UIViewController *vc = nil;
+    if ([pageName isEqualToString:LocalPathPageNameHome]) {
+        vc = [[[StoryListViewController alloc] init] autorelease];
+    }
     return vc;
 }
 

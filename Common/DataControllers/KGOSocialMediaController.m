@@ -27,6 +27,24 @@ static KGOSocialMediaController *s_controller = nil;
 	return s_controller;
 }
 
+- (void)addOptions:(NSArray *)options forSetting:(NSString *)setting forMediaType:(NSString *)mediaType {
+    if (!_apiSettings) {
+        _apiSettings = [[NSMutableDictionary alloc] init];
+    }
+    
+    NSMutableDictionary *mediaDictionary = [_apiSettings objectForKey:mediaType];
+    if (!mediaDictionary) {
+        [_apiSettings setObject:[NSDictionary dictionaryWithObject:options forKey:setting] forKey:mediaType];
+    } else {
+        NSMutableArray *existingValues = [mediaDictionary objectForKey:setting];
+        if (existingValues) {
+            [existingValues addObjectsFromArray:options];
+        } else {
+            [_apiSettings setObject:options forKey:setting];
+        }
+    }
+}
+
 - (NSArray *)allSupportedSharingTypes {
 	return nil;
 }
@@ -36,15 +54,15 @@ static KGOSocialMediaController *s_controller = nil;
 }
 
 - (BOOL)supportsFacebookSharing {
-	return [_preferences objectForKey:KGOSocialMediaTypeFacebook] != nil;
+	return [_appConfig objectForKey:KGOSocialMediaTypeFacebook] != nil;
 }
 
 - (BOOL)supportsTwitterSharing {
-	return [_preferences objectForKey:KGOSocialMediaTypeTwitter] != nil;
+	return [_appConfig objectForKey:KGOSocialMediaTypeTwitter] != nil;
 }
 
 - (BOOL)supportsEmailSharing {
-	return [_preferences objectForKey:KGOSocialMediaTypeEmail] != nil;
+	return [_appConfig objectForKey:KGOSocialMediaTypeEmail] != nil;
 }
 
 - (id)init {
@@ -52,7 +70,7 @@ static KGOSocialMediaController *s_controller = nil;
 		NSString * file = [[NSBundle mainBundle] pathForResource:@"Config" ofType:@"plist"];
         NSDictionary *infoDict = [NSDictionary dictionaryWithContentsOfFile:file];
 		
-		_preferences = [[infoDict objectForKey:@"SocialMedia"] retain];
+		_appConfig = [[infoDict objectForKey:@"SocialMedia"] retain];
 	}
 	return self;
 }
@@ -62,7 +80,8 @@ static KGOSocialMediaController *s_controller = nil;
 	[self shutdownFacebook];
 	[self shutdownBitly];
 	
-	[_preferences release];
+	[_apiSettings release];
+	[_appConfig release];
 	
 	[super dealloc];
 }
@@ -73,8 +92,8 @@ static KGOSocialMediaController *s_controller = nil;
 - (void)getBitlyURLForLongURL:(NSString *)longURL delegate:(id<BitlyWrapperDelegate>)delegate {
 	self.bitlyDelegate = delegate;
 
-	NSString *username = [[_preferences objectForKey:KGOSocialMediaTypeBitly] objectForKey:@"Username"];
-	NSString *key = [[_preferences objectForKey:KGOSocialMediaTypeBitly] objectForKey:@"APIKey"];
+	NSString *username = [[_appConfig objectForKey:KGOSocialMediaTypeBitly] objectForKey:@"Username"];
+	NSString *key = [[_appConfig objectForKey:KGOSocialMediaTypeBitly] objectForKey:@"APIKey"];
 
 	[(KGOAppDelegate *)[[UIApplication sharedApplication] delegate] showNetworkActivityIndicator];
 	_bitlyConnection = [(ConnectionWrapper *)[ConnectionWrapper alloc] initWithDelegate:self]; // cast because multiple classes implement -initWithDelegate
@@ -140,8 +159,8 @@ static KGOSocialMediaController *s_controller = nil;
 - (void)startupTwitter {
 	if (!_twitterEngine) {
 		_twitterEngine = [[MGTwitterEngine alloc] initWithDelegate:self];
-		NSString *key = [[_preferences objectForKey:KGOSocialMediaTypeTwitter] objectForKey:@"OAuthConsumerKey"];
-		NSString *secret = [[_preferences objectForKey:KGOSocialMediaTypeTwitter] objectForKey:@"OAuthConsumerSecret"];
+		NSString *key = [[_appConfig objectForKey:KGOSocialMediaTypeTwitter] objectForKey:@"OAuthConsumerKey"];
+		NSString *secret = [[_appConfig objectForKey:KGOSocialMediaTypeTwitter] objectForKey:@"OAuthConsumerSecret"];
 		[_twitterEngine setConsumerKey:key secret:secret];
 	}
 }
@@ -310,9 +329,11 @@ static KGOSocialMediaController *s_controller = nil;
 }
 
 - (void)startupFacebook {
+    _facebookStartupCount++;
+    
     if (!_facebook) {
         NSLog(@"starting up facebook");
-		NSString *facebookAppID = [[_preferences objectForKey:KGOSocialMediaTypeFacebook] objectForKey:@"AppID"];
+		NSString *facebookAppID = [[_appConfig objectForKey:KGOSocialMediaTypeFacebook] objectForKey:@"AppID"];
         _facebook = [[Facebook alloc] initWithAppId:facebookAppID];
         
         NSDate *validDate = [[NSUserDefaults standardUserDefaults] objectForKey:FacebookTokenExpirationSetting];
@@ -322,15 +343,21 @@ static KGOSocialMediaController *s_controller = nil;
             _facebook.accessToken = [[NSUserDefaults standardUserDefaults] objectForKey:FacebookTokenKey];
             _facebook.expirationDate = validDate;
         }
-        
     }
+    else { NSLog(@"facebook already started"); }
 }
 
 - (void)shutdownFacebook {
-	if (_facebook) {
-		[_facebook release];
-		_facebook = nil;
-	}
+    if (_facebookStartupCount > 0)
+        _facebookStartupCount--;
+    
+    if (_facebookStartupCount <= 0) {
+        NSLog(@"shutting down facebook");
+        if (_facebook) {
+            [_facebook release];
+            _facebook = nil;
+        }
+    }
 }
 
 - (void)shareOnFacebook:(NSString *)attachment prompt:(NSString *)prompt {
@@ -353,7 +380,6 @@ static KGOSocialMediaController *s_controller = nil;
 }
 
 - (void)loginFacebookWithDelegate:(id<FacebookWrapperDelegate>)delegate {
-    [self startupFacebook];
 	self.facebookDelegate = delegate;
     
 	if ([_facebook isSessionValid]) {
@@ -361,9 +387,8 @@ static KGOSocialMediaController *s_controller = nil;
 		[self.facebookDelegate facebookDidLogin];
 		
 	} else {
-        NSLog(@"asking for permission");
-		// from sample code in facebook-for-ios DemoApp
-		NSArray *permissions = [NSArray arrayWithObjects:@"read_stream", @"offline_access", nil];
+        NSArray *permissions = [[_apiSettings objectForKey:KGOSocialMediaTypeFacebook] objectForKey:@"permissions"];
+        NSLog(@"asking for permission: %@", [permissions description]);
 		[_facebook authorize:permissions delegate:self];
 	}
 }

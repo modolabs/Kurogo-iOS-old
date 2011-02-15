@@ -153,6 +153,7 @@ static NSInteger numTries = 0;
     stories = nil;
     [categories release];
     categories = nil;
+    xmlParser.delegate = nil;
     [xmlParser release];
     xmlParser = nil;
     [super dealloc];

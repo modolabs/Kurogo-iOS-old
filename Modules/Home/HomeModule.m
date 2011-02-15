@@ -10,8 +10,11 @@
     return [NSArray arrayWithObject:LocalPathPageNameHome];
 }
 
-- (UIViewController *)moduleHomeScreenWithParams:(NSDictionary *)args {
-    SpringboardViewController *vc = [[[SpringboardViewController alloc] init] autorelease];
+- (UIViewController *)modulePage:(NSString *)pageName params:(NSDictionary *)params {
+    UIViewController *vc = nil;
+    if ([pageName isEqualToString:LocalPathPageNameHome]) {
+        vc = [[[SpringboardViewController alloc] init] autorelease];
+    }
     return vc;
 }
 

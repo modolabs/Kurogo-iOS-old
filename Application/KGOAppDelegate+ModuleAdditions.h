@@ -22,4 +22,8 @@ typedef enum {
 
 @property (nonatomic, readonly) KGONavigationStyle navigationStyle;
 
+#pragma mark Social Media
+
+- (void)loadSocialMediaController;
+
 @end

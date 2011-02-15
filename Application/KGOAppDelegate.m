@@ -29,6 +29,7 @@
     }
     
     [self loadNavigationContainer]; // adds theNavController.view to self.window
+    [self loadSocialMediaController]; // initializes social media settings
     
     [self setupAppModalHolder];  // adds appModalHolder.view to self.window
 
@@ -87,8 +88,8 @@
     
     // Let each module perform clean up as necessary
     for (KGOModule *aModule in self.modules) {
-        [aModule applicationWillTerminate];
         [aModule terminate];
+        [aModule applicationWillTerminate];
     }
     
     // Save preferences
@@ -97,6 +98,7 @@
 
 - (void)applicationDidEnterBackground:(UIApplication *)application {
     for (KGOModule *aModule in self.modules) {
+        [aModule willBecomeDormant];
         [aModule applicationDidEnterBackground];
     }
 }
@@ -225,6 +227,8 @@
 @implementation KGOAppDelegate (URLHandlers)
 
 - (BOOL)handleFacebookURL:(NSURL *)url {
+    // TODO: make sure this balances out
+    NSLog(@"is facebook started?");
     [[KGOSocialMediaController sharedController] startupFacebook];
     [[KGOSocialMediaController sharedController] parseCallbackURL:url];
     

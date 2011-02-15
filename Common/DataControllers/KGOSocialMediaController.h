@@ -49,7 +49,7 @@ extern NSString * const KGOSocialMediaTypeBitly;
 MGTwitterEngineDelegate, ConnectionWrapperDelegate,
 FBSessionDelegate, FBDialogDelegate, FBRequestDelegate> {
 	
-	NSDictionary *_preferences;
+	NSDictionary *_appConfig; // from config plist
 	
 	MGTwitterEngine *_twitterEngine;
 	NSString *_twitterUsername;
@@ -57,6 +57,13 @@ FBSessionDelegate, FBDialogDelegate, FBRequestDelegate> {
 	ConnectionWrapper *_bitlyConnection;
 
 	Facebook *_facebook;
+    NSInteger *_facebookStartupCount;
+    
+    // settings for each social media object
+    // internally we store this with the social media label (facebook, twitter, etc) as keys
+    // and a dictionary as values
+    // this dictionary has setting names as keys and an mutable array of strings as values
+    NSMutableDictionary *_apiSettings;
 }
 
 @property (nonatomic, assign) id<TwitterWrapperDelegate> twitterDelegate;
@@ -64,9 +71,9 @@ FBSessionDelegate, FBDialogDelegate, FBRequestDelegate> {
 @property (nonatomic, assign) id<FacebookWrapperDelegate> facebookDelegate;
 @property (nonatomic, retain) NSString *twitterUsername;
 
-@property (nonatomic, readonly) Facebook *facebook;
-
 + (KGOSocialMediaController *)sharedController;
+
+- (void)addOptions:(NSArray *)options forSetting:(NSString *)setting forMediaType:(NSString *)mediaType;
 
 #pragma mark Capabilities
 
@@ -105,5 +112,7 @@ FBSessionDelegate, FBDialogDelegate, FBRequestDelegate> {
 
 - (void)loginFacebookWithDelegate:(id<FacebookWrapperDelegate>)delegate;
 - (void)logoutFacebook;
+
+@property (nonatomic, readonly) Facebook *facebook;
 
 @end

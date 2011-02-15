@@ -3,8 +3,11 @@
 
 @implementation AboutModule
 
-- (UIViewController *)moduleHomeScreenWithParams:(NSDictionary *)args {
-    AboutTableViewController *vc = [[[AboutTableViewController alloc] initWithStyle:UITableViewStyleGrouped] autorelease];
+- (UIViewController *)modulePage:(NSString *)pageName params:(NSDictionary *)params {
+    UIViewController *vc = nil;
+    if ([pageName isEqualToString:LocalPathPageNameHome]) {
+        vc = [[[AboutTableViewController alloc] initWithStyle:UITableViewStyleGrouped] autorelease];
+    }
     return vc;
 }
 

@@ -4,6 +4,8 @@
 #import "KGOTheme.h"
 #import "KGOModule.h"
 #import "HomeModule.h"
+#import "KGOSocialMediaController.h"
+#import "AnalyticsWrapper.h"
 
 @implementation KGOAppDelegate (ModuleListAdditions)
 
@@ -26,7 +28,7 @@
 
 - (void)loadNavigationContainer {
     HomeModule *homeModule = (HomeModule *)[self moduleForTag:HomeTag];
-    UIViewController *homeVC = [homeModule moduleHomeScreenWithParams:nil];
+    UIViewController *homeVC = [homeModule modulePage:LocalPathPageNameHome params:nil];
     theNavController = [[ModoNavigationController alloc] initWithRootViewController:homeVC];
     theNavController.view.backgroundColor = [[KGOTheme sharedTheme] backgroundColorForApplication];
     [self.window addSubview:theNavController.view];
@@ -64,6 +66,13 @@
     if (module) {
         UIViewController *vc = [module modulePage:pageName params:params];
         if (vc) {
+            // TODO: generalize this check for ipad
+            if (_visibleModule != module) {
+                [_visibleModule willBecomeHidden];
+                [module willBecomeVisible];
+                _visibleModule = module;
+            }
+            
 			// if the visible view controller is modal, push new view controllers on the modal nav controller.
 			// there should be no reason to push a view controller behind what's visible.
 			if (!appModalHolder.view.hidden && appModalHolder.modalViewController.navigationController) {
@@ -71,6 +80,11 @@
 			} else {
 				[theNavController pushViewController:vc animated:YES];
 			}
+            
+            // tracking
+            NSString *pagePath = [NSString stringWithFormat:@"/%@/%@", moduleTag, pageName];
+            [[AnalyticsWrapper sharedWrapper] trackPageview:pagePath];
+            
             didShow = YES;
         }
     }
@@ -79,6 +93,30 @@
 
 - (KGONavigationStyle)navigationStyle {
     return KGONavigationStyleIconGrid;
+}
+
+#pragma mark social media
+
+- (void)loadSocialMediaController {
+    if (!_modules) {
+        [self loadModules];
+    }
+    NSMutableSet *mediaTypes = [NSMutableSet set];
+    for (KGOModule *aModule in _modules) {
+        NSSet *moreTypes = [aModule socialMediaTypes];
+        if (moreTypes) {
+            [mediaTypes unionSet:moreTypes];
+            
+            // TODO: make sure inputs are acceptable
+            for (NSString *mediaType in moreTypes) {
+                NSDictionary *settings = [aModule userInfoForSocialMediaType:mediaType];
+                for (NSString *setting in [settings allKeys]) {
+                    NSArray *options = [settings objectForKey:setting];
+                    [[KGOSocialMediaController sharedController] addOptions:options forSetting:setting forMediaType:mediaType];
+                }
+            }
+        }
+    }
 }
 
 @end
