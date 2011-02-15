@@ -33,8 +33,8 @@
                                                    @"offline_access",
                                                    @"user_groups",
                                                    @"user_photos",
-                                                   @"read_friendlists",
-                                                   @"friends_photos", nil]
+                                                   @"friends_photos",
+                                                   nil]
                                            forKey:@"permissions"];
     }
     return nil;

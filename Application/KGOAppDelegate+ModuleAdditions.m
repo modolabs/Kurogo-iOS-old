@@ -29,7 +29,15 @@
 - (void)loadNavigationContainer {
     HomeModule *homeModule = (HomeModule *)[self moduleForTag:HomeTag];
     UIViewController *homeVC = [homeModule modulePage:LocalPathPageNameHome params:nil];
-    theNavController = [[ModoNavigationController alloc] initWithRootViewController:homeVC];
+    UIImage *navBarImage = [[KGOTheme sharedTheme] backgroundImageForNavBar];
+    if (navBarImage) {
+        // for people who insist on using a background image for their nav bar, they 
+        // get this unfortunate navigation controller subclass
+        theNavController = [[ModoNavigationController alloc] initWithRootViewController:homeVC];
+    } else {
+        // normal people get the normal navigation controller
+        theNavController = [[UINavigationController alloc] initWithRootViewController:homeVC];
+    }
     theNavController.view.backgroundColor = [[KGOTheme sharedTheme] backgroundColorForApplication];
     [self.window addSubview:theNavController.view];
 }

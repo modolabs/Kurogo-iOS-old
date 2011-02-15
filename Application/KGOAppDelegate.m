@@ -12,7 +12,7 @@
 @synthesize window, modules = _modules;
 @synthesize deviceToken = devicePushToken;
 @synthesize theNavController;
-@synthesize springboard = theSpringboard;
+//@synthesize springboard = theSpringboard;
 
 #pragma mark -
 #pragma mark Application lifecycle
@@ -138,7 +138,7 @@
 - (void)dealloc {
     [self.deviceToken release];
     [self.modules release];
-    [self.springboard release];
+    //[self.springboard release];
 	[window release];
 	[super dealloc];
 }

@@ -48,6 +48,13 @@ static KGOTheme *s_sharedTheme = nil;
     return color;
 }
 
+- (UIColor *)backgroundColorForHomeScreen {
+    UIColor *color = [self matchBackgroundColorWithLabel:@"HomeScreenBackground"];
+    if (!color)
+        color = [UIColor whiteColor];
+    return color;
+}
+
 - (UIColor *)backgroundColorForApplication {
     UIColor *color = [self matchBackgroundColorWithLabel:@"AppBackground"];
     if (!color)
@@ -57,9 +64,28 @@ static KGOTheme *s_sharedTheme = nil;
 
 // this one can be nil
 // TODO: make nil/non-nil distinction more transparent
-- (UIColor *)backgroundColorForSearchBar {
-    UIColor *color = [self matchBackgroundColorWithLabel:@"SearchBarBackground"];
+- (UIColor *)tintColorForSearchBar {
+    UIColor *color = [self matchBackgroundColorWithLabel:@"SearchBarTintColor"];
     return color;
+}
+
+- (UIColor *)tintColorForNavBar {
+    UIColor *color = [self matchBackgroundColorWithLabel:@"NavBarTintColor"];
+    return color;
+}
+
+- (UIImage *)titleImageForNavBar {
+    NSString *imageName = [[themeDict objectForKey:@"Images"] objectForKey:@"NavBarTitle"];
+    if (imageName)
+        return [UIImage imageNamed:imageName];
+    return nil;
+}
+
+- (UIImage *)backgroundImageForNavBar {
+    NSString *imageName = [[themeDict objectForKey:@"Images"] objectForKey:@"NavBarBackground"];
+    if (imageName)
+        return [UIImage imageNamed:imageName];
+    return nil;
 }
 
 - (UIImage *)backgroundImageForSearchBar {
@@ -269,10 +295,16 @@ static NSString * KGOAccessoryImageChevronHighlighted = @"common/action-arrow-hi
 - (UIColor *)matchBackgroundColorWithLabel:(NSString *)label {
     UIColor *color = nil;
     NSString *colorString = [[themeDict objectForKey:@"Colors"] objectForKey:label];
-    if (colorString)
-        color = [UIColor colorWithHexString:colorString];
-    if (!color)
-        color = [UIColor colorWithPatternImage:[UIImage imageNamed:colorString]];
+    if (colorString) {
+        // check if there is a valid image first
+        UIImage *image = [UIImage imageNamed:colorString];
+        if (image) {
+            // TODO: if we get to this point we need to make sure iphone/ipad resources are distinguished
+            color = [UIColor colorWithPatternImage:image];
+        } else {
+            color = [UIColor colorWithHexString:colorString];
+        }
+    }
     return color;
 }
 

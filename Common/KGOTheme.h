@@ -37,10 +37,16 @@ typedef enum {
 - (UIFont *)fontForBodyText;
 - (UIColor *)textColorForBodyText;
 
-- (UIColor *)linkColor;
+- (UIColor *)backgroundColorForHomeScreen;
 - (UIColor *)backgroundColorForApplication;
-- (UIColor *)backgroundColorForSearchBar;
+- (UIColor *)linkColor;
+- (UIColor *)tintColorForSearchBar;
+- (UIColor *)tintColorForNavBar;
+- (UIImage *)titleImageForNavBar;
 
+// ridiculous overrides
+
+- (UIImage *)backgroundImageForNavBar;
 - (UIImage *)backgroundImageForSearchBar;
 - (UIImage *)backgroundImageForSearchBarDropShadow;
 

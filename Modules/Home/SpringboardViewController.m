@@ -116,15 +116,19 @@
 - (void)loadView {
     [super loadView];
     
-    //UIBarButtonItem *editButton = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemEdit
-    //                                                                             target:self
-    //                                                                             action:@selector(customizeIcons:)] autorelease];
-    //self.navigationItem.rightBarButtonItem = editButton;
+    containingView = [[UIScrollView alloc] initWithFrame:self.view.bounds];
+    containingView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:ImageNameHomeScreenBackground]];
+    containingView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+    [self.view addSubview:containingView];
     
-    
+    //_searchBar = [[KGOSearchBar alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 44)];
+    _searchBar = [[KGOSearchBar defaultSearchBarWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 44)] retain];
+    _searchBar.placeholder = [NSString stringWithString:@"Search Harvard Mobile"];
+    [self.view addSubview:_searchBar];
+
     NSArray *modules = ((KGOAppDelegate *)[[UIApplication sharedApplication] delegate]).modules;
-    _icons = [[NSMutableArray alloc] initWithCapacity:[modules count]];
-    _fixedIcons = [[NSMutableArray alloc] init];
+    NSMutableArray *primaryIcons = [NSMutableArray arrayWithCapacity:[modules count]];
+    NSMutableArray *secondIcons = [NSMutableArray array];
     
     for (KGOModule *aModule in modules) {
         SpringboardIcon *anIcon = [SpringboardIcon buttonWithType:UIButtonTypeCustom];
@@ -148,16 +152,15 @@
             [anIcon setTitle:aModule.longName forState:UIControlStateNormal];
             
             if (!aModule.secondary) {
-                [_icons addObject:anIcon];
+                [primaryIcons addObject:anIcon];
                 // title by default is placed to the right of the image, we want it below
                 CGSize labelSize = [aModule.longName sizeWithFont:font constrainedToSize:image.size lineBreakMode:UILineBreakModeWordWrap];
 
-                //anIcon.titleEdgeInsets = UIEdgeInsetsMake(image.size.height, -image.size.width + 5.0, 0, 5.0);
                 // a bit of fudging here... 12 is the font size of the title label
                 anIcon.titleEdgeInsets = UIEdgeInsetsMake(image.size.height - 12.0 + floor(labelSize.height / 2), -image.size.width + 5.0, 0, 5.0);
                 
             } else {
-                [_fixedIcons addObject:anIcon];
+                [secondIcons addObject:anIcon];
                 // title by default is placed to the right of the image, we want it below
                 anIcon.titleEdgeInsets = UIEdgeInsetsMake(image.size.height + ICON_PADDING, -image.size.width - 5.0, 0, -5.0);
             }
@@ -175,6 +178,33 @@
         anIcon.accessibilityLabel = aModule.longName;
     }
     
+    
+    if (!primaryGrid) {
+        primaryGrid = [[[IconGrid alloc] initWithFrame:CGRectMake(0, _searchBar.frame.size.height, self.view.bounds.size.width, 1)] autorelease];
+        primaryGrid.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleBottomMargin;
+        primaryGrid.padding = GridPaddingMake(GRID_VPADDING, 0, GRID_VPADDING, 0);
+        primaryGrid.spacing = GridSpacingMake(MAIN_GRID_HPADDING, GRID_VPADDING);
+        primaryGrid.icons = primaryIcons;
+        primaryGrid.delegate = self;
+    }
+    
+    if (!secondGrid) {
+        secondGrid = [[[IconGrid alloc] initWithFrame:CGRectMake(0, primaryGrid.frame.origin.y + primaryGrid.frame.size.height,
+                                                                 self.view.bounds.size.width, 1)] autorelease];
+        secondGrid.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleBottomMargin;
+        secondGrid.padding = GridPaddingMake(SECONDARY_GRID_TOP_PADDING, 0, GRID_VPADDING, 0);
+        secondGrid.spacing = GridSpacingMake(SECONDARY_GRID_HPADDING, GRID_VPADDING);
+        secondGrid.icons = secondIcons;
+    }
+    
+    [self.view addSubview:primaryGrid];
+    [self.view addSubview:secondGrid];
+}
+
+- (void)iconGridFrameDidChange:(IconGrid *)iconGrid {
+    CGRect frame = secondGrid.frame;
+    frame.origin.y = iconGrid.frame.origin.y + iconGrid.frame.size.height;
+    secondGrid.frame = frame;
 }
 
 - (void)viewDidLoad
@@ -183,25 +213,12 @@
 	[[self navigationItem] setBackBarButtonItem: newBackButton];
 	[newBackButton release];
     
-    UIImage *masthead = [UIImage imageNamed:@"home/home-masthead.png"];
-    self.navigationItem.titleView = [[[UIImageView alloc] initWithImage:masthead] autorelease];
-    
-    containingView = [[UIScrollView alloc] initWithFrame:self.view.bounds];
-    containingView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:ImageNameHomeScreenBackground]];
-    containingView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-    [self.view addSubview:containingView];
-
-    //_searchBar = [[KGOSearchBar alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 44)];
-    _searchBar = [[KGOSearchBar defaultSearchBarWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 44)] retain];
-    _searchBar.placeholder = [NSString stringWithString:@"Search Harvard Mobile"];
-    [self.view addSubview:_searchBar];
-
-    bottomRight = CGPointZero;
-    bottomRight.y = _searchBar.frame.size.height + GRID_VPADDING + GRID_TOP_MARGIN;
-    [self layoutIcons:_icons horizontalSpacing:MAIN_GRID_HPADDING];
-
-    bottomRight.y += SECONDARY_GRID_TOP_PADDING;
-    [self layoutIcons:_fixedIcons horizontalSpacing:SECONDARY_GRID_HPADDING];
+    UIImage *masthead = [[KGOTheme sharedTheme] titleImageForNavBar];
+    if (masthead) {
+        self.navigationItem.titleView = [[[UIImageView alloc] initWithImage:masthead] autorelease];
+    } else {
+        self.navigationItem.title = NSLocalizedString(@"Harvard", nil);
+    }
     
     [self setupSearchController];
 }
@@ -237,8 +254,6 @@
 }
 
 - (void)dealloc {
-    [_icons release];
-    [_fixedIcons release];
     [containingView release];
     [_searchBar release];
     [_searchController release];
@@ -278,39 +293,6 @@
     if (!didShow) {
         NSLog(@"springboard failed to respond to search result %@", [aResult description]);
     }
-}
-
-#pragma mark UIResponder / icon drag&drop
-
-- (void)customizeIcons:(id)sender {
-    CGRect frame = CGRectMake(0, 0, containingView.frame.size.width, containingView.frame.size.height);
-    transparentOverlay = [[UIView alloc] initWithFrame:frame];
-    transparentOverlay.backgroundColor = [UIColor clearColor];
-    [containingView addSubview:transparentOverlay];
-    
-    UIBarButtonItem *doneButton = [[[UIBarButtonItem alloc] initWithTitle:@"Done"
-                                                                    style:UIBarButtonItemStyleDone
-                                                                   target:self
-                                                                   action:@selector(endCustomize)] autorelease];
-    navigationBar.topItem.rightBarButtonItem = doneButton;
-    
-    editing = YES;
-    editedIcons = [_icons copy];
-    [self becomeFirstResponder];
-}
-
-- (void)endCustomize {
-    _icons = editedIcons;
-    [transparentOverlay removeFromSuperview];
-    [transparentOverlay release];
-    
-    UIBarButtonItem *editButton = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemEdit
-                                                                                 target:self
-                                                                                 action:@selector(customizeIcons:)] autorelease];
-    navigationBar.topItem.rightBarButtonItem = editButton;
-    
-    [self resignFirstResponder];
-    editing = NO;
 }
 
 @end

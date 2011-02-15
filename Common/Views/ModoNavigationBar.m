@@ -8,17 +8,15 @@
 #import "ModoNavigationBar.h"
 #import "UIKit+KGOAdditions.h"
 #import "ModoNavigationController.h"
+#import "KGOTheme.h"
 
 @implementation ModoNavigationBar
 
 @synthesize navigationBar = _navigationBar;
 
 - (id)initWithNavigationBar:(UINavigationBar *)navigationBar {
-    //navigationBar.frame = CGRectMake(0, 0, 320, 44);
     if (self = [super initWithFrame:navigationBar.frame]) {
         self.navigationBar = navigationBar;
-        //[self.navigationBar addSubview:self];
-        //self.delegate = self.navigationBar.delegate;
     }
     return self;
 }
@@ -43,9 +41,9 @@
 - (void)drawRect:(CGRect)rect {
     [super drawRect:rect];
     
-    self.tintColor = [UIColor colorWithHexString:@"#870E16"]; // this is for color of buttons  
-    self.navigationBar.tintColor = [UIColor colorWithHexString:@"#870E16"]; // since the background shows through when we click the buttons
-    UIImage *image = [[UIImage imageNamed:@"global/navbar-background.png"] stretchableImageWithLeftCapWidth:0.0 topCapHeight:0.0];
+    self.tintColor = [[KGOTheme sharedTheme] tintColorForNavBar]; // this is for color of buttons  
+    self.navigationBar.tintColor = [[KGOTheme sharedTheme] tintColorForNavBar]; // since the background shows through when we click the buttons
+    UIImage *image = [[[KGOTheme sharedTheme] backgroundImageForNavBar] stretchableImageWithLeftCapWidth:0.0 topCapHeight:0.0];
     [image drawInRect:rect];
     
     [self update];

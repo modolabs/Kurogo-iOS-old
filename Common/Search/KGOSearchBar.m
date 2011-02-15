@@ -54,7 +54,7 @@
 
 + (KGOSearchBar *)defaultSearchBarWithFrame:(CGRect)frame {
     KGOSearchBar *searchBar = [[[KGOSearchBar alloc] initWithFrame:frame] autorelease];
-    UIColor *color = [[KGOTheme sharedTheme] backgroundColorForSearchBar];
+    UIColor *color = [[KGOTheme sharedTheme] tintColorForSearchBar];
     if (color) {
         searchBar.tintColor = color;
     }

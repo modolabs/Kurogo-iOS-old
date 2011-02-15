@@ -8,6 +8,7 @@
 #import <UIKit/UIKit.h>
 #import "KGOTableViewController.h"
 #import "KGOSearchDisplayController.h"
+#import "IconGrid.h"
 
 @class KGOModule;
 @class KGOSearchBar;
@@ -15,7 +16,7 @@
 @class ModoNavigationController;
 @class FederatedSearchTableView;
 
-@interface SpringboardViewController : KGOTableViewController <UISearchBarDelegate, KGOSearchDisplayDelegate> {
+@interface SpringboardViewController : KGOTableViewController <UISearchBarDelegate, KGOSearchDisplayDelegate, IconGridDelegate> {
 
     UIScrollView *containingView;
     KGOModule *activeModule;
@@ -38,6 +39,9 @@
     
     CGPoint bottomRight;
     CGPoint startingPoint;
+    
+    IconGrid *primaryGrid;
+    IconGrid *secondGrid;
     
     BOOL editing;
 }

@@ -4,6 +4,10 @@
 <dict>
 	<key>Images</key>
 	<dict>
+		<key>NavBarBackground</key>
+		<string>common/navbar-background.png</string>
+		<key>NavBarTitle</key>
+		<string>home/home-masthead.png</string>
 		<key>SearchBarBackground</key>
 		<string>common/searchbar-background.png</string>
 		<key>SearchBarDropShadow</key>
@@ -11,8 +15,10 @@
 	</dict>
 	<key>Colors</key>
 	<dict>
-		<key>SearchBarBackground</key>
+		<key>SearchBarTintColor</key>
 		<string>#666666</string>
+		<key>NavBarTintColor</key>
+		<string>#870E16</string>
 		<key>TableSeparator</key>
 		<string>#C0C0BF</string>
 		<key>PrimaryCellBackground</key>
@@ -21,6 +27,10 @@
 		<string>#FFFFFFAA</string>
 		<key>PlainSectionHeaderBackground</key>
 		<string>#333333</string>
+		<key>HomeScreenBackground</key>
+		<string>home/home-background.png</string>
+		<key>AppBackground</key>
+		<string>common/body-background.png</string>
 	</dict>
 	<key>Servers</key>
 	<dict>
