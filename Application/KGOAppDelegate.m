@@ -5,6 +5,7 @@
 #import "AudioToolbox/AudioToolbox.h"
 #import "SpringboardViewController.h"
 #import "AnalyticsWrapper.h"
+#import "KGOSocialMediaController.h"
 
 @implementation KGOAppDelegate
 
@@ -44,12 +45,16 @@
 - (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation {
     // TODO: handle incoming URL from facebook SSO
     
-    BOOL canHandle = NO;
+    NSLog(@"attempting to handle URL %@\nsource application: %@\nannotation: %@", [url description], [sourceApplication description], [annotation description]);
     
+    BOOL canHandle = NO;
+
+    NSString *urlKey = nil;
     NSString *scheme = [url scheme];
     NSDictionary *infoDict = [[NSBundle mainBundle] infoDictionary];
     NSArray *urlTypes = [infoDict objectForKey:@"CFBundleURLTypes"];
     for (NSDictionary *type in urlTypes) {
+        urlKey = [type objectForKey:@"CFBundleURLName"];
         NSArray *schemes = [type objectForKey:@"CFBundleURLSchemes"];
         for (NSString *supportedScheme in schemes) {
             if ([supportedScheme isEqualToString:scheme]) {
@@ -63,18 +68,13 @@
     }
     
     if (canHandle) {
-        NSString *path = [url path];
-        NSString *moduleTag = [url host];
-        KGOModule *module = [self moduleForTag:moduleTag];
-        if ([path rangeOfString:@"/"].location == 0) {
-            path = [path substringFromIndex:1];
+        if ([urlKey isEqualToString:@"Facebook"]) {
+            canHandle = [self handleFacebookURL:url];
+
+        } else {
+            canHandle = [self handleInternalURL:url];
         }
         
-        // right now expecting URLs like mitmobile://people/search?Some%20Guy
-        NSString *query = [[url query] stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-        
-		//module.hasLaunchedBegun = YES;
-        canHandle = [module handleLocalPath:path query:query];
     } else {
         DLog(@"%s couldn't handle url: %@", _cmd, url);
     }
@@ -216,6 +216,33 @@
     }
     
     showingAlertView = NO;
+}
+
+@end
+
+#pragma mark -
+
+@implementation KGOAppDelegate (URLHandlers)
+
+- (BOOL)handleFacebookURL:(NSURL *)url {
+    [[KGOSocialMediaController sharedController] startupFacebook];
+    [[KGOSocialMediaController sharedController] parseCallbackURL:url];
+    
+    return [[KGOSocialMediaController sharedController] isFacebookLoggedIn];
+}
+
+- (BOOL)handleInternalURL:(NSURL *)url {
+    NSString *path = [url path];
+    NSString *moduleTag = [url host];
+    KGOModule *module = [self moduleForTag:moduleTag];
+    if ([path rangeOfString:@"/"].location == 0) {
+        path = [path substringFromIndex:1];
+    }
+    
+    // right now expecting URLs like mitmobile://people/search?Some%20Guy
+    NSString *query = [[url query] stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+    
+    return [module handleLocalPath:path query:query];
 }
 
 @end

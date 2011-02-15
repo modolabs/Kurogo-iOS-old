@@ -22,13 +22,4 @@ typedef enum {
 
 @property (nonatomic, readonly) KGONavigationStyle navigationStyle;
 
-/*
-#pragma mark Preferences
-- (NSArray *)defaultModuleOrder;
-- (void)registerDefaultModuleOrder;
-- (void)loadSavedModuleOrder;
-- (void)loadActiveModule;
-- (void)saveModuleOrder;
-- (void)saveModulesState;
-*/
 @end

@@ -39,10 +39,16 @@
 
 @end
 
+@interface KGOAppDelegate (URLHandlers)
 
-// this was done originally for the tab bar controller
-// it may be less relevant for other navigation styles
-// but we will find out
+- (BOOL)handleInternalURL:(NSURL *)url;
+- (BOOL)handleFacebookURL:(NSURL *)url;
+
+@end
+
+
+
+// TODO: add arguments for different modal styles for ipad
 @interface KGOAppDelegate (AppModalViewController)
 
 - (void)setupAppModalHolder;
@@ -61,4 +67,5 @@
 @property (nonatomic, readonly) NSMutableArray *unreadNotifications;
 
 @end
+
 

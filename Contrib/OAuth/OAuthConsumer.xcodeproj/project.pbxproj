@@ -48,7 +48,7 @@
 			isa = PBXContainerItemProxy;
 			containerPortal = EBAA85F612F7288900B743C3 /* SFHFKeychainUtils.xcodeproj */;
 			proxyType = 2;
-			remoteGlobalIDString = D2AAC07E0554694100DB518D /* libSFHFKeychainUtils.a */;
+			remoteGlobalIDString = D2AAC07E0554694100DB518D;
 			remoteInfo = SFHFKeychainUtils;
 		};
 /* End PBXContainerItemProxy section */

@@ -48,7 +48,7 @@ NSString * const PeopleTag     = @"people";
 NSString * const SchoolsTag    = @"schools";
 NSString * const SettingsTag   = @"settings";
 NSString * const TransitTag    = @"transit";
-
+NSString * const FBPhotosTag   = @"fbphotos";
 
 
 

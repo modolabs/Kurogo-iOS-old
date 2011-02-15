@@ -64,6 +64,8 @@ FBSessionDelegate, FBDialogDelegate, FBRequestDelegate> {
 @property (nonatomic, assign) id<FacebookWrapperDelegate> facebookDelegate;
 @property (nonatomic, retain) NSString *twitterUsername;
 
+@property (nonatomic, readonly) Facebook *facebook;
+
 + (KGOSocialMediaController *)sharedController;
 
 #pragma mark Capabilities
@@ -92,6 +94,9 @@ FBSessionDelegate, FBDialogDelegate, FBRequestDelegate> {
 - (void)shutdownBitly;
 
 #pragma mark Facebook
+
+- (BOOL)isFacebookLoggedIn;
+- (void)parseCallbackURL:(NSURL *)url;
 
 - (void)startupFacebook;
 - (void)shutdownFacebook;

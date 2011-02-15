@@ -7,7 +7,7 @@
 #import "SettingsModule.h"
 #import "AboutModule.h"
 #import "CalendarModule.h"
-
+#import "FacebookModule.h"
 
 @implementation KGOModule
 
@@ -66,6 +66,9 @@
     
     else if ([tag isEqualToString:SettingsTag])
         module = [[[SettingsModule alloc] initWithDictionary:args] autorelease];
+    
+    else if ([tag isEqualToString:FBPhotosTag])
+        module = [[[FacebookModule alloc] initWithDictionary:args] autorelease];
     
     //else if ([tag isEqualToString:SchoolsTag])
     

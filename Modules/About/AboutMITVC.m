@@ -1,5 +1,4 @@
 #import "AboutMITVC.h"
-#import "MITUIConstants.h"
 #import "AnalyticsWrapper.h"
 #import "KGOTheme.h"
 

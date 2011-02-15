@@ -11,6 +11,9 @@ NSString * const KGOSocialMediaTypeBitly = @"bit.ly";
 static NSString * const TwitterUsernameKey = @"TwitterUsername";
 static NSString * const TwitterServiceName = @"Twitter";
 
+static NSString * const FacebookTokenKey = @"FBToken";
+static NSString * const FacebookTokenExpirationSetting = @"FBTokenExpiration";
+
 static KGOSocialMediaController *s_controller = nil;
 
 @implementation KGOSocialMediaController
@@ -271,10 +274,55 @@ static KGOSocialMediaController *s_controller = nil;
 #pragma mark -
 #pragma mark Facebook
 
+- (BOOL)isFacebookLoggedIn {
+    return [_facebook isSessionValid];
+}
+
+- (void)parseCallbackURL:(NSURL *)url {
+    NSString *fragment = [url fragment];
+    NSArray *parts = [fragment componentsSeparatedByString:@"&"];
+    for (NSString *aPart in parts) {
+        NSArray *param = [aPart componentsSeparatedByString:@"="];
+        NSString *key = [param objectAtIndex:0];
+        NSString *value = [param objectAtIndex:1];
+        if ([key isEqualToString:@"access_token"]) {
+            _facebook.accessToken = value;
+            [[NSUserDefaults standardUserDefaults] setObject:value forKey:FacebookTokenKey];
+            
+        } else if ([key isEqualToString:@"expires_in"]) {
+            CGFloat interval = [value floatValue];
+            NSDate *expiryDate = nil;
+            if (!interval) {
+                expiryDate = [NSDate distantFuture];
+            } else {
+                expiryDate = [NSDate dateWithTimeIntervalSinceNow:interval];
+            }
+            _facebook.expirationDate = expiryDate;
+            [[NSUserDefaults standardUserDefaults] setObject:expiryDate forKey:FacebookTokenExpirationSetting];
+        }
+    }
+    [[NSUserDefaults standardUserDefaults] synchronize];
+    
+    // delegate will have been established before the app switch
+    if ([_facebook isSessionValid]) {
+        [self.facebookDelegate facebookDidLogin];
+    }
+}
+
 - (void)startupFacebook {
     if (!_facebook) {
+        NSLog(@"starting up facebook");
 		NSString *facebookAppID = [[_preferences objectForKey:KGOSocialMediaTypeFacebook] objectForKey:@"AppID"];
         _facebook = [[Facebook alloc] initWithAppId:facebookAppID];
+        
+        NSDate *validDate = [[NSUserDefaults standardUserDefaults] objectForKey:FacebookTokenExpirationSetting];
+        if ([validDate timeIntervalSinceNow] < 0) {
+            [[NSUserDefaults standardUserDefaults] removeObjectForKey:FacebookTokenKey];
+        } else {
+            _facebook.accessToken = [[NSUserDefaults standardUserDefaults] objectForKey:FacebookTokenKey];
+            _facebook.expirationDate = validDate;
+        }
+        
     }
 }
 
@@ -304,16 +352,18 @@ static KGOSocialMediaController *s_controller = nil;
     [_facebook dialog:@"feed" andParams:params andDelegate:self];
 }
 
-
 - (void)loginFacebookWithDelegate:(id<FacebookWrapperDelegate>)delegate {
+    [self startupFacebook];
 	self.facebookDelegate = delegate;
-	
+    
 	if ([_facebook isSessionValid]) {
+        NSLog(@"already have session");
 		[self.facebookDelegate facebookDidLogin];
 		
-	} else {	
+	} else {
+        NSLog(@"asking for permission");
 		// from sample code in facebook-for-ios DemoApp
-		NSArray *permissions = [NSArray arrayWithObjects:@"read_stream", @"offline_access",nil];
+		NSArray *permissions = [NSArray arrayWithObjects:@"read_stream", @"offline_access", nil];
 		[_facebook authorize:permissions delegate:self];
 	}
 }
@@ -324,12 +374,25 @@ static KGOSocialMediaController *s_controller = nil;
     }
 }
 
+- (NSString *)fbToken {
+    return _facebook.accessToken;
+}
+
+- (void)setFbToken:(NSString *)aToken {
+    _facebook.accessToken = aToken;
+}
+
+- (Facebook *)facebook {
+    return _facebook;
+}
+
 #pragma mark Facebook - FBSessionDelegate
 
 /**
  * Called when the user has logged in successfully.
  */
 - (void)fbDidLogin {
+    NSLog(@"facebook logged in!");
 	[self.facebookDelegate facebookDidLogin];
 }
 
@@ -357,7 +420,7 @@ static KGOSocialMediaController *s_controller = nil;
  */
 - (void)request:(FBRequest *)request didReceiveResponse:(NSURLResponse *)response {
     NSLog(@"received response");
-};
+}
 
 /**
  * Called when a request returns and its response has been parsed into an object.
@@ -371,14 +434,14 @@ static KGOSocialMediaController *s_controller = nil;
     if ([result isKindOfClass:[NSArray class]]) {
         result = [result objectAtIndex:0];
     }
-};
+}
 
 /**
  * Called when an error prevents the Facebook API request from completing successfully.
  */
 - (void)request:(FBRequest *)request didFailWithError:(NSError *)error {
     DLog(@"%@", [error description]);
-};
+}
 
 #pragma mark Facebook - FBDialogDelegate
 

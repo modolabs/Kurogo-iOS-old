@@ -60,6 +60,22 @@
 		</dict>
 		<dict>
 			<key>id</key>
+			<string>fbphotos</string>
+			<key>shortName</key>
+			<string>Photos</string>
+			<key>longName</key>
+			<string>Photos</string>
+			<key>secondary</key>
+			<false/>
+			<key>tabBarImage</key>
+			<string>common/icons/tab-fbphotos.png</string>
+			<key>listViewImage</key>
+			<string>common/icons/module-fbphotos.png</string>
+			<key>iconImage</key>
+			<string>home/home-fbphotos.png</string>
+		</dict>
+		<dict>
+			<key>id</key>
 			<string>map</string>
 			<key>shortName</key>
 			<string>Map</string>

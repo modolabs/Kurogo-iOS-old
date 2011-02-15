@@ -30,6 +30,7 @@ extern NSString * const PeopleTag;
 extern NSString * const SettingsTag;
 extern NSString * const SchoolsTag;
 extern NSString * const TransitTag;
+extern NSString * const FBPhotosTag;
 
 
 

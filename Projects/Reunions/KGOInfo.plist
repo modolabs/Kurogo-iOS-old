@@ -31,10 +31,18 @@
 	<array>
 		<dict>
 			<key>CFBundleURLName</key>
-			<string>edu.harvard.harvardmobile</string>
+			<string>edu.harvard.reunions</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
 				<string>harvardmobile</string>
+			</array>
+		</dict>
+		<dict>
+			<key>CFBundleURLName</key>
+			<string>Facebook</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>fb140621452667226</string>
 			</array>
 		</dict>
 	</array>

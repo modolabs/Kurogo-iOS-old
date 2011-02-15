@@ -118,6 +118,10 @@
 		EB1441AA1309F57400396753 /* MITBuildInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = EB1441A91309F57400396753 /* MITBuildInfo.m */; };
 		EB1441AF1309F59700396753 /* KGOModule.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB1441AD1309F59700396753 /* KGOModule.h */; settings = {JAVA_ARCHIVE_SUBDIR = ../../Application; }; };
 		EB1441B01309F59700396753 /* KGOModule.m in Sources */ = {isa = PBXBuildFile; fileRef = EB1441AE1309F59700396753 /* KGOModule.m */; };
+		EB358ACF1309F9CE000250AD /* FacebookModule.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB358ACD1309F9CE000250AD /* FacebookModule.h */; settings = {JAVA_ARCHIVE_SUBDIR = Modules/Facebook; }; };
+		EB358AD01309F9CE000250AD /* FacebookModule.m in Sources */ = {isa = PBXBuildFile; fileRef = EB358ACE1309F9CE000250AD /* FacebookModule.m */; };
+		EB358AD41309FA4E000250AD /* FacebookPhotosViewController.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB358AD11309FA4E000250AD /* FacebookPhotosViewController.h */; settings = {JAVA_ARCHIVE_SUBDIR = Modules/Facebook; }; };
+		EB358AD51309FA4E000250AD /* FacebookPhotosViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EB358AD21309FA4E000250AD /* FacebookPhotosViewController.m */; };
 		EB3721AA11FA2F5200705180 /* NewsImage.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB3721A811FA2F5200705180 /* NewsImage.h */; settings = {JAVA_ARCHIVE_SUBDIR = Modules/News; }; };
 		EB3721AB11FA2F5200705180 /* NewsImage.m in Sources */ = {isa = PBXBuildFile; fileRef = EB3721A911FA2F5200705180 /* NewsImage.m */; };
 		EB4C2CDF127F138100058748 /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = EB4C2CDE127F138100058748 /* libsqlite3.dylib */; };
@@ -370,6 +374,10 @@
 		EB1441A91309F57400396753 /* MITBuildInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MITBuildInfo.m; path = Modules/About/MITBuildInfo.m; sourceTree = SOURCE_ROOT; };
 		EB1441AD1309F59700396753 /* KGOModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGOModule.h; sourceTree = "<group>"; };
 		EB1441AE1309F59700396753 /* KGOModule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGOModule.m; sourceTree = "<group>"; };
+		EB358ACD1309F9CE000250AD /* FacebookModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FacebookModule.h; sourceTree = "<group>"; };
+		EB358ACE1309F9CE000250AD /* FacebookModule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FacebookModule.m; sourceTree = "<group>"; };
+		EB358AD11309FA4E000250AD /* FacebookPhotosViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FacebookPhotosViewController.h; sourceTree = "<group>"; };
+		EB358AD21309FA4E000250AD /* FacebookPhotosViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FacebookPhotosViewController.m; sourceTree = "<group>"; };
 		EB3721A811FA2F5200705180 /* NewsImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NewsImage.h; sourceTree = "<group>"; };
 		EB3721A911FA2F5200705180 /* NewsImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NewsImage.m; sourceTree = "<group>"; };
 		EB4C2CDE127F138100058748 /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
@@ -591,6 +599,7 @@
 		DE715445102FE468005E6111 /* Modules */ = {
 			isa = PBXGroup;
 			children = (
+				EB358ACC1309F9AB000250AD /* Facebook */,
 				EB5773F812FE0FAF00BAF5F5 /* Home */,
 				DE81CF5E10C6BC390085573D /* About */,
 				EB86CA6C115D273800C8F3D1 /* Calendar */,
@@ -634,14 +643,14 @@
 		DE81CF5E10C6BC390085573D /* About */ = {
 			isa = PBXGroup;
 			children = (
-				EB1441A71309F56700396753 /* MITBuildInfo.h */,
-				EB1441A91309F57400396753 /* MITBuildInfo.m */,
 				DEA3B48B10C9BB7300BDA774 /* AboutModule.h */,
 				DEA3B48C10C9BB7300BDA774 /* AboutModule.m */,
 				DEC02F9B110578240054BE32 /* AboutTableViewController.h */,
 				DEC02F9C110578240054BE32 /* AboutTableViewController.m */,
 				DE0F6B3211109BC500F064D6 /* AboutMITVC.h */,
 				DE0F6B3311109BC500F064D6 /* AboutMITVC.m */,
+				EB1441A71309F56700396753 /* MITBuildInfo.h */,
+				EB1441A91309F57400396753 /* MITBuildInfo.m */,
 			);
 			name = About;
 			path = ../../../Modules/About;
@@ -876,6 +885,17 @@
 			path = Theme;
 			sourceTree = "<group>";
 		};
+		EB358ACC1309F9AB000250AD /* Facebook */ = {
+			isa = PBXGroup;
+			children = (
+				EB358ACD1309F9CE000250AD /* FacebookModule.h */,
+				EB358ACE1309F9CE000250AD /* FacebookModule.m */,
+				EB358AD11309FA4E000250AD /* FacebookPhotosViewController.h */,
+				EB358AD21309FA4E000250AD /* FacebookPhotosViewController.m */,
+			);
+			path = Facebook;
+			sourceTree = "<group>";
+		};
 		EB5773F812FE0FAF00BAF5F5 /* Home */ = {
 			isa = PBXGroup;
 			children = (
@@ -1059,6 +1079,8 @@
 				EB14417F1309F0E400396753 /* KGOTheme.h in JavaArchive */,
 				EB1441A81309F56700396753 /* MITBuildInfo.h in JavaArchive */,
 				EB1441AF1309F59700396753 /* KGOModule.h in JavaArchive */,
+				EB358ACF1309F9CE000250AD /* FacebookModule.h in JavaArchive */,
+				EB358AD41309FA4E000250AD /* FacebookPhotosViewController.h in JavaArchive */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1313,6 +1335,8 @@
 				EB1441801309F0E400396753 /* KGOTheme.m in Sources */,
 				EB1441AA1309F57400396753 /* MITBuildInfo.m in Sources */,
 				EB1441B01309F59700396753 /* KGOModule.m in Sources */,
+				EB358AD01309F9CE000250AD /* FacebookModule.m in Sources */,
+				EB358AD51309FA4E000250AD /* FacebookPhotosViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

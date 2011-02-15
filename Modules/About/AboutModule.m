@@ -1,5 +1,4 @@
 #import "AboutModule.h"
-#import "KGOModule.h"
 #import "AboutTableViewController.h"
 
 @implementation AboutModule
