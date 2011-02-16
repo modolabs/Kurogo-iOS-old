@@ -99,6 +99,7 @@
     return didShow;
 }
 
+// TODO: coordinate with the home screen to get this value
 - (KGONavigationStyle)navigationStyle {
     return KGONavigationStyleIconGrid;
 }

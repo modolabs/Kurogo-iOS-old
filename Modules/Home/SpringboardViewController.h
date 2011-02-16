@@ -7,58 +7,19 @@
 
 #import <UIKit/UIKit.h>
 #import "KGOTableViewController.h"
-#import "KGOSearchDisplayController.h"
 #import "IconGrid.h"
+#import "KGOHomeScreenViewController.h"
 
 @class KGOModule;
 @class KGOSearchBar;
-@class ModoNavigationBar;
-@class ModoNavigationController;
-@class FederatedSearchTableView;
 
-@interface SpringboardViewController : KGOTableViewController <UISearchBarDelegate, KGOSearchDisplayDelegate, IconGridDelegate> {
+@interface SpringboardViewController : KGOHomeScreenViewController <IconGridDelegate> {
 
-    UIScrollView *containingView;
-    KGOModule *activeModule;
-    ModoNavigationController *navigationController;
-    ModoNavigationBar *navigationBar;
-    KGOSearchDisplayController *_searchController;
-
-    KGOSearchBar *_searchBar;
-    BOOL isSearch;
-    NSMutableArray *completedModules;
-    
-    NSMutableArray *_fixedIcons;
-    NSMutableArray *_icons;
-    NSMutableArray *editedIcons;
-    NSMutableArray *tempIcons;
-    UIButton *selectedIcon;
-    UIButton *dummyIcon;
-    NSInteger dummyIconIndex;
-    UIView *transparentOverlay;
-    
-    CGPoint bottomRight;
-    CGPoint startingPoint;
+    UIScrollView *_scrollView;
     
     IconGrid *primaryGrid;
     IconGrid *secondGrid;
-    
-    BOOL editing;
 }
-
-- (void)layoutIcons:(NSArray *)icons horizontalSpacing:(CGFloat)spacing;
-
-@property (nonatomic, assign) KGOModule *activeModule;
-@property (nonatomic, retain) FederatedSearchTableView *searchResultsTableView;
 
 @end
 
-
-
-@interface SpringboardIcon : UIButton {
-    NSString *moduleTag;
-}
-
-@property (nonatomic, retain) NSString *moduleTag;
-
-@end

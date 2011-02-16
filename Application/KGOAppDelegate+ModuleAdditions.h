@@ -1,7 +1,7 @@
 #import "KGOAppDelegate.h"
 
 typedef enum {
-    KGONavigationStyleUndefined = -1,
+    KGONavigationStyleTableView,
     KGONavigationStyleIconGrid,
     KGONavigationStylePortlet,
     KGONavigationStyleTabletSidebar

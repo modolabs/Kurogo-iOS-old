@@ -114,7 +114,7 @@ const GridSpacing GridSpacingZero = {0, 0};
             xOrigin = self.frame.size.width - self.rightPadding - rowWidth;
             break;
         case GridIconAlignmentCenter:
-            xOrigin = floor(self.frame.size.width - rowWidth / 2);
+            xOrigin = floor((self.frame.size.width - rowWidth) / 2);
             break;
         case GridIconAlignmentLeft:
         default:
