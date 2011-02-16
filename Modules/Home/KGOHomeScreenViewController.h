@@ -23,7 +23,6 @@
 - (CGSize)secondaryModuleLabelMaxDimensions;
 
 // properties defined in Theme.plist
-- (KGONavigationStyle)navigationStyle;      // see KGOAppDelegate+ModuleListAdditions
 - (BOOL)showsSearchBar;                     // true to show search bar on home screen
 - (UIImage *)backgroundImage;               // home screen background image
 - (UIFont *)moduleLabelFont;

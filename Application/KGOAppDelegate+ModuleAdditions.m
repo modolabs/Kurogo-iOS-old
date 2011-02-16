@@ -99,9 +99,25 @@
     return didShow;
 }
 
-// TODO: coordinate with the home screen to get this value
 - (KGONavigationStyle)navigationStyle {
-    return KGONavigationStyleIconGrid;
+    NSString * file = [[NSBundle mainBundle] pathForResource:@"DefaultTheme" ofType:@"plist"];
+    NSDictionary *themeDict = [[NSDictionary alloc] initWithContentsOfFile:file];
+    NSDictionary *homescreenDict = [[themeDict objectForKey:@"HomeScreen"] retain];
+    NSString *style = [homescreenDict objectForKey:@"NavigationStyle"];
+    
+    if ([style isEqualToString:@"Grid"]) {
+        return KGONavigationStyleIconGrid;
+        
+    } else if ([style isEqualToString:@"List"]) {
+        return KGONavigationStyleTableView;
+        
+    } else if ([style isEqualToString:@"Portlet"]) {
+        return KGONavigationStylePortlet;
+        
+    } else {
+        return KGONavigationStyleIconGrid;
+        
+    }
 }
 
 #pragma mark social media

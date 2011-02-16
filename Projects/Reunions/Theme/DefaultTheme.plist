@@ -107,7 +107,7 @@
 	<key>HomeScreen</key>
 	<dict>
 		<key>NavigationStyle</key>
-		<string>IconGrid</string>
+		<string>List</string>
 		<key>BackgroundImage</key>
 		<string>home/home-background.png</string>
 		<key>ShowsSearchBar</key>

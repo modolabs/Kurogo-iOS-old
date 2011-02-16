@@ -1,7 +1,9 @@
 #import "KGOHomeScreenViewController.h"
 #import "KGOModule.h"
-#import "PersonDetails.h"
+#import "HomeModule.h"
 #import "UIKit+KGOAdditions.h"
+
+#import "PersonDetails.h"
 
 @interface KGOHomeScreenViewController (Private)
 
@@ -144,23 +146,6 @@
     return [KGOHomeScreenViewController maxLabelDimensionsForModules:_secondaryModules font:[self secondaryModuleLabelFont]];
 }
 
-- (KGONavigationStyle)navigationStyle {
-    NSString *style = [_preferences objectForKey:@"NavigationStyle"];
-    if ([style isEqualToString:@"Grid"]) {
-        return KGONavigationStyleIconGrid;
-
-    } else if ([style isEqualToString:@"List"]) {
-        return KGONavigationStyleTableView;
-        
-    } else if ([style isEqualToString:@"Portlet"]) {
-        return KGONavigationStylePortlet;
-        
-    } else {
-        return KGONavigationStyleIconGrid;
-        
-    }
-}
-
 - (BOOL)showsSearchBar {
     NSNumber *number = [_preferences objectForKey:@"ShowsSearchBar"];
     return [number boolValue];
@@ -239,6 +224,10 @@
     NSMutableArray *secondary = [NSMutableArray array];
     
     for (KGOModule *aModule in modules) {
+        // special case for home module
+        if ([aModule isKindOfClass:[HomeModule class]])
+            continue;
+        
         if (aModule.secondary) {
             [secondary addObject:aModule];
         } else {

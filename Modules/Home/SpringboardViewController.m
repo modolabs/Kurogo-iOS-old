@@ -84,10 +84,6 @@
     secondaryFrame.size.height += labelSize.height + [self secondaryModuleLabelTitleMargin];
     
     for (aModule in modules) {
-        //SpringboardIcon *anIcon = [SpringboardIcon buttonWithType:UIButtonTypeCustom];
-        if (![aModule iconImage])
-            continue;
-        
         SpringboardIcon *anIcon;
         if (aModule.secondary) {
             anIcon = [[[SpringboardIcon alloc] initWithFrame:secondaryFrame] autorelease];
@@ -98,6 +94,7 @@
         }
         anIcon.springboard = self;
         anIcon.module = aModule;
+        [anIcon addTarget:self action:@selector(buttonPressed:) forControlEvents:UIControlEventTouchUpInside];
         
         // Add properties for accessibility/automation visibility.
         anIcon.isAccessibilityElement = YES;
@@ -137,8 +134,10 @@
     SpringboardIcon *anIcon = (SpringboardIcon *)sender;
 	// special case for full web link
 	if ([anIcon.moduleTag isEqualToString:FullWebTag]) {
-		// TODO: add this string to config
-		[[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"http://www.harvard.edu/?fullsite=yes"]];
+        NSString * file = [[NSBundle mainBundle] pathForResource:@"Config" ofType:@"plist"];
+        NSDictionary *infoDict = [NSDictionary dictionaryWithContentsOfFile:file];
+        NSString *urlString = [infoDict objectForKey:@"FullWebURL"];
+		[[UIApplication sharedApplication] openURL:[NSURL URLWithString:urlString]];
 		return;
 	}
     

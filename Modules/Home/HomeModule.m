@@ -1,6 +1,7 @@
 #import "HomeModule.h"
-#import "KGOAppDelegate.h"
+#import "KGOAppDelegate+ModuleAdditions.h"
 #import "SpringboardViewController.h"
+#import "KGOHomeScreenTableViewController.h"
 
 @implementation HomeModule
 
@@ -13,7 +14,16 @@
 - (UIViewController *)modulePage:(NSString *)pageName params:(NSDictionary *)params {
     UIViewController *vc = nil;
     if ([pageName isEqualToString:LocalPathPageNameHome]) {
-        vc = [[[SpringboardViewController alloc] init] autorelease];
+        KGONavigationStyle style = [(KGOAppDelegate *)[[UIApplication sharedApplication] delegate] navigationStyle];
+        switch (style) {
+            case KGONavigationStyleTableView:
+                vc = [[[KGOHomeScreenTableViewController alloc] init] autorelease];
+                break;
+            case KGONavigationStyleIconGrid:
+            default:
+                vc = [[[SpringboardViewController alloc] init] autorelease];
+                break;
+        }
     }
     return vc;
 }
