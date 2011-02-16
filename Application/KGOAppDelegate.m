@@ -3,7 +3,6 @@
 #import "KGOModule.h"
 #import "KGONotification.h"
 #import "AudioToolbox/AudioToolbox.h"
-#import "SpringboardViewController.h"
 #import "AnalyticsWrapper.h"
 #import "KGOSocialMediaController.h"
 
@@ -12,7 +11,6 @@
 @synthesize window, modules = _modules;
 @synthesize deviceToken = devicePushToken;
 @synthesize theNavController;
-//@synthesize springboard = theSpringboard;
 
 #pragma mark -
 #pragma mark Application lifecycle
@@ -44,8 +42,7 @@
 }
 
 - (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation {
-    // TODO: handle incoming URL from facebook SSO
-    
+
     NSLog(@"attempting to handle URL %@\nsource application: %@\nannotation: %@", [url description], [sourceApplication description], [annotation description]);
     
     BOOL canHandle = NO;
@@ -136,9 +133,8 @@
 }
 
 - (void)dealloc {
-    [self.deviceToken release];
-    [self.modules release];
-    //[self.springboard release];
+    self.deviceToken = nil;
+    [_modules release];
 	[window release];
 	[super dealloc];
 }

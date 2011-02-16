@@ -1,8 +1,6 @@
 #import <UIKit/UIKit.h>
 
 @class KGOModule;
-@class SpringboardViewController;
-//@class ModoNavigationController;
 
 /*
  * this is a substantially rewritten version of KGOAppDelegate
@@ -11,9 +9,7 @@
 @interface KGOAppDelegate : NSObject <UIApplicationDelegate, UIAlertViewDelegate> {
     
     UIWindow *window;
-    //ModoNavigationController *theNavController;
     UINavigationController *theNavController;
-    //SpringboardViewController *theSpringboard;
     UIViewController *appModalHolder;
     
     NSDictionary *_appConfig;
@@ -32,9 +28,7 @@
 - (void)hideNetworkActivityIndicator;
 
 @property (nonatomic, retain) IBOutlet UIWindow *window;
-//@property (nonatomic, retain) ModoNavigationController *theNavController;
 @property (nonatomic, retain) UINavigationController *theNavController;
-//@property (nonatomic, retain) SpringboardViewController *springboard;
 @property (nonatomic, retain) NSData *deviceToken;
 
 @property (nonatomic, readonly) NSArray *modules;
