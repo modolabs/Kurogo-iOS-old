@@ -1,7 +1,8 @@
 #import "HomeModule.h"
 #import "KGOAppDelegate+ModuleAdditions.h"
-#import "SpringboardViewController.h"
+#import "KGOSpringboardViewController.h"
 #import "KGOHomeScreenTableViewController.h"
+#import "KGOPortletHomeViewController.h"
 
 @implementation HomeModule
 
@@ -19,9 +20,12 @@
             case KGONavigationStyleTableView:
                 vc = [[[KGOHomeScreenTableViewController alloc] init] autorelease];
                 break;
+            case KGONavigationStylePortlet:
+                vc = [[[KGOPortletHomeViewController alloc] init] autorelease];
+                break;
             case KGONavigationStyleIconGrid:
             default:
-                vc = [[[SpringboardViewController alloc] init] autorelease];
+                vc = [[[KGOSpringboardViewController alloc] init] autorelease];
                 break;
         }
     }

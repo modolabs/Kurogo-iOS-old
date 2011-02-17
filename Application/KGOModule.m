@@ -8,6 +8,7 @@
 #import "AboutModule.h"
 #import "CalendarModule.h"
 #import "FacebookModule.h"
+#import "LoginModule.h"
 
 @implementation KGOModule
 
@@ -70,6 +71,9 @@
     else if ([tag isEqualToString:FBPhotosTag])
         module = [[[FacebookModule alloc] initWithDictionary:args] autorelease];
     
+    else if ([tag isEqualToString:LoginTag])
+        module = [[[LoginModule alloc] initWithDictionary:args] autorelease];
+    
     //else if ([tag isEqualToString:SchoolsTag])
     
     //else if ([tag isEqualToString:TransitTag])
@@ -81,8 +85,8 @@
     return module;
 }
 
-- (UIView *)widgetView {
-    return [[[UIImageView alloc] initWithImage:self.iconImage] autorelease];
+- (NSArray *)widgetViews {
+    return nil;
 }
 
 #pragma mark Navigation

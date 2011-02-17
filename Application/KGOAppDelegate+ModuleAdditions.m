@@ -1,5 +1,5 @@
 #import "KGOAppDelegate+ModuleAdditions.h"
-#import "SpringboardViewController.h"
+#import "KGOSpringboardViewController.h"
 #import "ModoNavigationController.h"
 #import "KGOTheme.h"
 #import "KGOModule.h"

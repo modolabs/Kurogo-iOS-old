@@ -2,6 +2,7 @@
 #import "KGOModule.h"
 #import "HomeModule.h"
 #import "UIKit+KGOAdditions.h"
+#import "SpringboardIcon.h"
 
 #import "PersonDetails.h"
 
@@ -75,13 +76,7 @@
     }
 }
 
-/*
-- (void)setupSearchController {
-    if (!_searchController) {
-        _searchController = [[KGOSearchDisplayController alloc] initWithSearchBar:_searchBar delegate:self contentsController:self];
-    }
-}
-*/
+
 - (void)didReceiveMemoryWarning {
     // Releases the view if it doesn't have a superview.
     [super didReceiveMemoryWarning];
@@ -100,6 +95,35 @@
     [_searchBar release];
     [_searchController release];
     [super dealloc];
+}
+
+#pragma mark Springboard helper methods
+
+- (NSArray *)iconsForPrimaryModules:(BOOL)isPrimary {
+    NSMutableArray *icons = [NSMutableArray array];
+    NSArray *modules = (isPrimary) ? self.primaryModules : self.secondaryModules;
+    
+    KGOModule *aModule = [modules lastObject];
+    CGSize labelSize = (isPrimary) ? [self moduleLabelMaxDimensions] : [self secondaryModuleLabelMaxDimensions];
+    CGRect frame = CGRectZero;
+    
+    frame.size = [aModule iconImage].size;
+    frame.size.width = fmax(frame.size.width, labelSize.width);
+    frame.size.height += labelSize.height + (isPrimary) ? [self moduleLabelTitleMargin] : [self secondaryModuleLabelTitleMargin];
+    
+    for (aModule in modules) {
+        SpringboardIcon *anIcon = [[[SpringboardIcon alloc] initWithFrame:frame] autorelease];
+        [icons addObject:anIcon];
+        
+        anIcon.springboard = self;
+        anIcon.module = aModule;
+        
+        // Add properties for accessibility/automation visibility.
+        anIcon.isAccessibilityElement = YES;
+        anIcon.accessibilityLabel = aModule.longName;
+    }
+    
+    return icons;
 }
 
 #pragma mark KGOSearchDisplayDelegate

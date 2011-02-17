@@ -23,7 +23,9 @@
     _tableView.dataSource = self;
     _tableView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     _tableView.backgroundColor = [UIColor clearColor];
+
     [self.view addSubview:_tableView];
+    [self.view bringSubviewToFront:_searchBar];
 }
 
 

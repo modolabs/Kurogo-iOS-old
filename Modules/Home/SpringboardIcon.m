@@ -1,5 +1,5 @@
 #import "SpringboardIcon.h"
-#import "SpringboardViewController.h"
+#import "KGOHomeScreenViewController.h"
 #import "KGOModule.h"
 
 @implementation SpringboardIcon
@@ -66,6 +66,8 @@
             self.titleEdgeInsets = UIEdgeInsetsMake(image.size.height + titleImageGap + extraLineHeight, // we want title below the image
                                                     -self.frame.size.width,                              // and not to the right
                                                     0, 0);
+            
+            [self addTarget:self.springboard action:@selector(buttonPressed:) forControlEvents:UIControlEventTouchUpInside];
         }
     }
 }

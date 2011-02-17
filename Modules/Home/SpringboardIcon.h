@@ -1,6 +1,6 @@
 #import <UIKit/UIKit.h>
 
-@class SpringboardViewController;
+@class KGOHomeScreenViewController;
 @class KGOModule;
 
 @interface SpringboardIcon : UIButton {
@@ -12,6 +12,6 @@
 - (NSString *)moduleTag;
 
 @property (nonatomic, retain) KGOModule *module;
-@property (nonatomic, assign) SpringboardViewController *springboard;
+@property (nonatomic, assign) KGOHomeScreenViewController *springboard;
 
 @end

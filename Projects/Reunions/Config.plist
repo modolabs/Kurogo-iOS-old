@@ -12,6 +12,22 @@
 		</dict>
 		<dict>
 			<key>id</key>
+			<string>login</string>
+			<key>shortName</key>
+			<string>Login</string>
+			<key>longName</key>
+			<string>Login</string>
+			<key>secondary</key>
+			<true/>
+			<key>tabBarImage</key>
+			<string>common/icons/tab-people.png</string>
+			<key>listViewImage</key>
+			<string>common/icons/module-people.png</string>
+			<key>iconImage</key>
+			<string>home/home-people.png</string>
+		</dict>
+		<dict>
+			<key>id</key>
 			<string>people</string>
 			<key>shortName</key>
 			<string>People</string>

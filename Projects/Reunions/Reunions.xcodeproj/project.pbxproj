@@ -118,12 +118,18 @@
 		EB1441AA1309F57400396753 /* MITBuildInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = EB1441A91309F57400396753 /* MITBuildInfo.m */; };
 		EB1441AF1309F59700396753 /* KGOModule.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB1441AD1309F59700396753 /* KGOModule.h */; settings = {JAVA_ARCHIVE_SUBDIR = ../../Application; }; };
 		EB1441B01309F59700396753 /* KGOModule.m in Sources */ = {isa = PBXBuildFile; fileRef = EB1441AE1309F59700396753 /* KGOModule.m */; };
-		EB18145F130C3727003728FF /* SpringboardIcon.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB18145D130C3727003728FF /* SpringboardIcon.h */; settings = {JAVA_ARCHIVE_SUBDIR = ../../Common/Views; }; };
-		EB181460130C3727003728FF /* SpringboardIcon.m in Sources */ = {isa = PBXBuildFile; fileRef = EB18145E130C3727003728FF /* SpringboardIcon.m */; };
 		EB1815DF130C524A003728FF /* KGOHomeScreenViewController.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB1815DD130C524A003728FF /* KGOHomeScreenViewController.h */; settings = {JAVA_ARCHIVE_SUBDIR = ../../Modules/Home; }; };
 		EB1815E0130C524A003728FF /* KGOHomeScreenViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EB1815DE130C524A003728FF /* KGOHomeScreenViewController.m */; };
 		EB18168C130C8EED003728FF /* KGOHomeScreenTableViewController.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB18168A130C8EED003728FF /* KGOHomeScreenTableViewController.h */; settings = {JAVA_ARCHIVE_SUBDIR = ../../Modules/Home; }; };
 		EB18168D130C8EED003728FF /* KGOHomeScreenTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EB18168B130C8EED003728FF /* KGOHomeScreenTableViewController.m */; };
+		EB1816DB130C9680003728FF /* SpringboardIcon.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB1816D9130C9680003728FF /* SpringboardIcon.h */; settings = {JAVA_ARCHIVE_SUBDIR = ../../Modules/Home; }; };
+		EB1816DC130C9680003728FF /* SpringboardIcon.m in Sources */ = {isa = PBXBuildFile; fileRef = EB1816DA130C9680003728FF /* SpringboardIcon.m */; };
+		EB18170F130C99AA003728FF /* KGOPortletHomeViewController.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB18170D130C99AA003728FF /* KGOPortletHomeViewController.h */; settings = {JAVA_ARCHIVE_SUBDIR = ../../Modules/Home; }; };
+		EB181710130C99AA003728FF /* KGOPortletHomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EB18170E130C99AA003728FF /* KGOPortletHomeViewController.m */; };
+		EB181713130C9C43003728FF /* KGOHomeScreenWidget.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB181711130C9C43003728FF /* KGOHomeScreenWidget.h */; settings = {JAVA_ARCHIVE_SUBDIR = ../../Modules/Home; }; };
+		EB181714130C9C43003728FF /* KGOHomeScreenWidget.m in Sources */ = {isa = PBXBuildFile; fileRef = EB181712130C9C43003728FF /* KGOHomeScreenWidget.m */; };
+		EB181718130CC074003728FF /* LoginModule.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB181716130CC074003728FF /* LoginModule.h */; settings = {JAVA_ARCHIVE_SUBDIR = ../../Modules/Login; }; };
+		EB181719130CC074003728FF /* LoginModule.m in Sources */ = {isa = PBXBuildFile; fileRef = EB181717130CC074003728FF /* LoginModule.m */; };
 		EB358ACF1309F9CE000250AD /* FacebookModule.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB358ACD1309F9CE000250AD /* FacebookModule.h */; settings = {JAVA_ARCHIVE_SUBDIR = Modules/Facebook; }; };
 		EB358AD01309F9CE000250AD /* FacebookModule.m in Sources */ = {isa = PBXBuildFile; fileRef = EB358ACE1309F9CE000250AD /* FacebookModule.m */; };
 		EB358AD41309FA4E000250AD /* FacebookPhotosViewController.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB358AD11309FA4E000250AD /* FacebookPhotosViewController.h */; settings = {JAVA_ARCHIVE_SUBDIR = Modules/Facebook; }; };
@@ -141,8 +147,8 @@
 		EB5773FF12FE111500BAF5F5 /* CoreDataManager.m in Sources */ = {isa = PBXBuildFile; fileRef = EB5773FB12FE111500BAF5F5 /* CoreDataManager.m */; };
 		EB57740012FE111500BAF5F5 /* KGOSocialMediaController.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB5773FC12FE111500BAF5F5 /* KGOSocialMediaController.h */; settings = {JAVA_ARCHIVE_SUBDIR = ../../Common/DataControllers; }; };
 		EB57740112FE111500BAF5F5 /* KGOSocialMediaController.m in Sources */ = {isa = PBXBuildFile; fileRef = EB5773FD12FE111500BAF5F5 /* KGOSocialMediaController.m */; };
-		EB57740412FE113400BAF5F5 /* SpringboardViewController.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB57740212FE113400BAF5F5 /* SpringboardViewController.h */; settings = {JAVA_ARCHIVE_SUBDIR = ../../Modules/Home; }; };
-		EB57740512FE113400BAF5F5 /* SpringboardViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EB57740312FE113400BAF5F5 /* SpringboardViewController.m */; };
+		EB57740412FE113400BAF5F5 /* KGOSpringboardViewController.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB57740212FE113400BAF5F5 /* KGOSpringboardViewController.h */; settings = {JAVA_ARCHIVE_SUBDIR = ../../Modules/Home; }; };
+		EB57740512FE113400BAF5F5 /* KGOSpringboardViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EB57740312FE113400BAF5F5 /* KGOSpringboardViewController.m */; };
 		EB6D02A911E3784100B65CE3 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EB6D02A811E3784100B65CE3 /* MapKit.framework */; };
 		EB6D111611EE143900B65CE3 /* TileServerManager.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB6D111411EE143900B65CE3 /* TileServerManager.h */; settings = {JAVA_ARCHIVE_SUBDIR = "Modules/Campus Map"; }; };
 		EB6D111711EE143900B65CE3 /* TileServerManager.m in Sources */ = {isa = PBXBuildFile; fileRef = EB6D111511EE143900B65CE3 /* TileServerManager.m */; };
@@ -384,12 +390,18 @@
 		EB1441A91309F57400396753 /* MITBuildInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MITBuildInfo.m; path = Modules/About/MITBuildInfo.m; sourceTree = SOURCE_ROOT; };
 		EB1441AD1309F59700396753 /* KGOModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGOModule.h; sourceTree = "<group>"; };
 		EB1441AE1309F59700396753 /* KGOModule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGOModule.m; sourceTree = "<group>"; };
-		EB18145D130C3727003728FF /* SpringboardIcon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SpringboardIcon.h; sourceTree = "<group>"; };
-		EB18145E130C3727003728FF /* SpringboardIcon.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SpringboardIcon.m; sourceTree = "<group>"; };
 		EB1815DD130C524A003728FF /* KGOHomeScreenViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGOHomeScreenViewController.h; sourceTree = "<group>"; };
 		EB1815DE130C524A003728FF /* KGOHomeScreenViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGOHomeScreenViewController.m; sourceTree = "<group>"; };
 		EB18168A130C8EED003728FF /* KGOHomeScreenTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGOHomeScreenTableViewController.h; sourceTree = "<group>"; };
 		EB18168B130C8EED003728FF /* KGOHomeScreenTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGOHomeScreenTableViewController.m; sourceTree = "<group>"; };
+		EB1816D9130C9680003728FF /* SpringboardIcon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SpringboardIcon.h; sourceTree = "<group>"; };
+		EB1816DA130C9680003728FF /* SpringboardIcon.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SpringboardIcon.m; sourceTree = "<group>"; };
+		EB18170D130C99AA003728FF /* KGOPortletHomeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGOPortletHomeViewController.h; sourceTree = "<group>"; };
+		EB18170E130C99AA003728FF /* KGOPortletHomeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGOPortletHomeViewController.m; sourceTree = "<group>"; };
+		EB181711130C9C43003728FF /* KGOHomeScreenWidget.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGOHomeScreenWidget.h; sourceTree = "<group>"; };
+		EB181712130C9C43003728FF /* KGOHomeScreenWidget.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGOHomeScreenWidget.m; sourceTree = "<group>"; };
+		EB181716130CC074003728FF /* LoginModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginModule.h; sourceTree = "<group>"; };
+		EB181717130CC074003728FF /* LoginModule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginModule.m; sourceTree = "<group>"; };
 		EB358ACD1309F9CE000250AD /* FacebookModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FacebookModule.h; sourceTree = "<group>"; };
 		EB358ACE1309F9CE000250AD /* FacebookModule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FacebookModule.m; sourceTree = "<group>"; };
 		EB358AD11309FA4E000250AD /* FacebookPhotosViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FacebookPhotosViewController.h; sourceTree = "<group>"; };
@@ -407,8 +419,8 @@
 		EB5773FB12FE111500BAF5F5 /* CoreDataManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CoreDataManager.m; sourceTree = "<group>"; };
 		EB5773FC12FE111500BAF5F5 /* KGOSocialMediaController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGOSocialMediaController.h; sourceTree = "<group>"; };
 		EB5773FD12FE111500BAF5F5 /* KGOSocialMediaController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGOSocialMediaController.m; sourceTree = "<group>"; };
-		EB57740212FE113400BAF5F5 /* SpringboardViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SpringboardViewController.h; sourceTree = "<group>"; };
-		EB57740312FE113400BAF5F5 /* SpringboardViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SpringboardViewController.m; sourceTree = "<group>"; };
+		EB57740212FE113400BAF5F5 /* KGOSpringboardViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGOSpringboardViewController.h; sourceTree = "<group>"; };
+		EB57740312FE113400BAF5F5 /* KGOSpringboardViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGOSpringboardViewController.m; sourceTree = "<group>"; };
 		EB6D02A811E3784100B65CE3 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		EB6D111411EE143900B65CE3 /* TileServerManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TileServerManager.h; sourceTree = "<group>"; };
 		EB6D111511EE143900B65CE3 /* TileServerManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TileServerManager.m; sourceTree = "<group>"; };
@@ -619,6 +631,7 @@
 		DE715445102FE468005E6111 /* Modules */ = {
 			isa = PBXGroup;
 			children = (
+				EB181715130CC048003728FF /* Login */,
 				EB358ACC1309F9AB000250AD /* Facebook */,
 				EB5773F812FE0FAF00BAF5F5 /* Home */,
 				DE81CF5E10C6BC390085573D /* About */,
@@ -803,8 +816,6 @@
 				EB14292812FCBD1D00396753 /* KGODetailPager.m */,
 				EB14351B13038CE500396753 /* KGODatePager.h */,
 				EB14351C13038CE500396753 /* KGODatePager.m */,
-				EB18145D130C3727003728FF /* SpringboardIcon.h */,
-				EB18145E130C3727003728FF /* SpringboardIcon.m */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -911,6 +922,16 @@
 			path = Theme;
 			sourceTree = "<group>";
 		};
+		EB181715130CC048003728FF /* Login */ = {
+			isa = PBXGroup;
+			children = (
+				EB181716130CC074003728FF /* LoginModule.h */,
+				EB181717130CC074003728FF /* LoginModule.m */,
+			);
+			name = Login;
+			path = ../../Modules/Login;
+			sourceTree = SOURCE_ROOT;
+		};
 		EB358ACC1309F9AB000250AD /* Facebook */ = {
 			isa = PBXGroup;
 			children = (
@@ -925,14 +946,20 @@
 		EB5773F812FE0FAF00BAF5F5 /* Home */ = {
 			isa = PBXGroup;
 			children = (
-				EB57740212FE113400BAF5F5 /* SpringboardViewController.h */,
-				EB57740312FE113400BAF5F5 /* SpringboardViewController.m */,
 				EB142E6C1300D94E00396753 /* HomeModule.h */,
 				EB142E6D1300D94E00396753 /* HomeModule.m */,
+				EB57740212FE113400BAF5F5 /* KGOSpringboardViewController.h */,
+				EB57740312FE113400BAF5F5 /* KGOSpringboardViewController.m */,
 				EB1815DD130C524A003728FF /* KGOHomeScreenViewController.h */,
 				EB1815DE130C524A003728FF /* KGOHomeScreenViewController.m */,
 				EB18168A130C8EED003728FF /* KGOHomeScreenTableViewController.h */,
 				EB18168B130C8EED003728FF /* KGOHomeScreenTableViewController.m */,
+				EB18170D130C99AA003728FF /* KGOPortletHomeViewController.h */,
+				EB18170E130C99AA003728FF /* KGOPortletHomeViewController.m */,
+				EB1816D9130C9680003728FF /* SpringboardIcon.h */,
+				EB1816DA130C9680003728FF /* SpringboardIcon.m */,
+				EB181711130C9C43003728FF /* KGOHomeScreenWidget.h */,
+				EB181712130C9C43003728FF /* KGOHomeScreenWidget.m */,
 			);
 			name = Home;
 			path = ../../Modules/Home;
@@ -1078,7 +1105,7 @@
 				EB14292912FCBD1D00396753 /* KGODetailPager.h in JavaArchive */,
 				EB5773FE12FE111500BAF5F5 /* CoreDataManager.h in JavaArchive */,
 				EB57740012FE111500BAF5F5 /* KGOSocialMediaController.h in JavaArchive */,
-				EB57740412FE113400BAF5F5 /* SpringboardViewController.h in JavaArchive */,
+				EB57740412FE113400BAF5F5 /* KGOSpringboardViewController.h in JavaArchive */,
 				EB142B4C130058D500396753 /* MITMailComposeController.h in JavaArchive */,
 				EB142B511300593A00396753 /* UIKit+KGOAdditions.h in JavaArchive */,
 				EB142B551300597200396753 /* Foundation+KGOAdditions.h in JavaArchive */,
@@ -1113,9 +1140,12 @@
 				EB358AD41309FA4E000250AD /* FacebookPhotosViewController.h in JavaArchive */,
 				EB358FAC130B3778000250AD /* IconGrid.h in JavaArchive */,
 				EB358FB0130B395D000250AD /* MITThumbnailView.h in JavaArchive */,
-				EB18145F130C3727003728FF /* SpringboardIcon.h in JavaArchive */,
 				EB1815DF130C524A003728FF /* KGOHomeScreenViewController.h in JavaArchive */,
 				EB18168C130C8EED003728FF /* KGOHomeScreenTableViewController.h in JavaArchive */,
+				EB1816DB130C9680003728FF /* SpringboardIcon.h in JavaArchive */,
+				EB18170F130C99AA003728FF /* KGOPortletHomeViewController.h in JavaArchive */,
+				EB181713130C9C43003728FF /* KGOHomeScreenWidget.h in JavaArchive */,
+				EB181718130CC074003728FF /* LoginModule.h in JavaArchive */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1340,7 +1370,7 @@
 				EB14292A12FCBD1D00396753 /* KGODetailPager.m in Sources */,
 				EB5773FF12FE111500BAF5F5 /* CoreDataManager.m in Sources */,
 				EB57740112FE111500BAF5F5 /* KGOSocialMediaController.m in Sources */,
-				EB57740512FE113400BAF5F5 /* SpringboardViewController.m in Sources */,
+				EB57740512FE113400BAF5F5 /* KGOSpringboardViewController.m in Sources */,
 				EB142B4D130058D500396753 /* MITMailComposeController.m in Sources */,
 				EB142B521300593A00396753 /* UIKit+KGOAdditions.m in Sources */,
 				EB142B561300597200396753 /* Foundation+KGOAdditions.m in Sources */,
@@ -1374,9 +1404,12 @@
 				EB358AD51309FA4E000250AD /* FacebookPhotosViewController.m in Sources */,
 				EB358FAD130B3778000250AD /* IconGrid.m in Sources */,
 				EB358FB1130B395D000250AD /* MITThumbnailView.m in Sources */,
-				EB181460130C3727003728FF /* SpringboardIcon.m in Sources */,
 				EB1815E0130C524A003728FF /* KGOHomeScreenViewController.m in Sources */,
 				EB18168D130C8EED003728FF /* KGOHomeScreenTableViewController.m in Sources */,
+				EB1816DC130C9680003728FF /* SpringboardIcon.m in Sources */,
+				EB181710130C99AA003728FF /* KGOPortletHomeViewController.m in Sources */,
+				EB181714130C9C43003728FF /* KGOHomeScreenWidget.m in Sources */,
+				EB181719130CC074003728FF /* LoginModule.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -19,6 +19,8 @@
 @property (nonatomic, readonly) NSArray *primaryModules;
 @property (nonatomic, readonly) NSArray *secondaryModules;
 
+- (NSArray *)iconsForPrimaryModules:(BOOL)isPrimary;
+
 - (CGSize)moduleLabelMaxDimensions;
 - (CGSize)secondaryModuleLabelMaxDimensions;
 

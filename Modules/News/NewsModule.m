@@ -2,7 +2,6 @@
 #import "StoryListViewController.h"
 #import "StoryXMLParser.h"
 #import "NewsStory.h"
-#import "SpringboardViewController.h"
 #import "CoreDataManager.h"
 
 @implementation NewsModule

@@ -21,7 +21,7 @@
 
 #pragma mark Appearance on home screen
 
-- (UIView *)widgetView;
+- (NSArray *)widgetViews; // array of KGOHomeScreenWidget objects, ordered by z-index
 
 @property (nonatomic, copy) NSString *tag;       // module ID
 @property (nonatomic, copy) NSString *shortName; // what label shows up on home screen

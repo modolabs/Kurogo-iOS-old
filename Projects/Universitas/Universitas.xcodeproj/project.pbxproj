@@ -166,8 +166,8 @@
 		EB14414A1309EF7B00396753 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = EB14413D1309EF7B00396753 /* main.m */; };
 		EB14415C1309EFB100396753 /* HomeModule.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB1441581309EFB100396753 /* HomeModule.h */; settings = {JAVA_ARCHIVE_SUBDIR = ../../Modules/Home; }; };
 		EB14415D1309EFB100396753 /* HomeModule.m in Sources */ = {isa = PBXBuildFile; fileRef = EB1441591309EFB100396753 /* HomeModule.m */; };
-		EB14415E1309EFB100396753 /* SpringboardViewController.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB14415A1309EFB100396753 /* SpringboardViewController.h */; settings = {JAVA_ARCHIVE_SUBDIR = ../../Modules/Home; }; };
-		EB14415F1309EFB100396753 /* SpringboardViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EB14415B1309EFB100396753 /* SpringboardViewController.m */; };
+		EB14415E1309EFB100396753 /* KGOSpringboardViewController.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB14415A1309EFB100396753 /* KGOSpringboardViewController.h */; settings = {JAVA_ARCHIVE_SUBDIR = ../../Modules/Home; }; };
+		EB14415F1309EFB100396753 /* KGOSpringboardViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EB14415B1309EFB100396753 /* KGOSpringboardViewController.m */; };
 		EB1441691309F05100396753 /* DefaultTheme.plist in Resources */ = {isa = PBXBuildFile; fileRef = EB1441661309F05100396753 /* DefaultTheme.plist */; };
 		EB14416A1309F05100396753 /* ThemeConstants.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB1441671309F05100396753 /* ThemeConstants.h */; settings = {JAVA_ARCHIVE_SUBDIR = ../../Themes/Default; }; };
 		EB14416B1309F05100396753 /* ThemeConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = EB1441681309F05100396753 /* ThemeConstants.m */; };
@@ -432,8 +432,8 @@
 		EB14413D1309EF7B00396753 /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		EB1441581309EFB100396753 /* HomeModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HomeModule.h; sourceTree = "<group>"; };
 		EB1441591309EFB100396753 /* HomeModule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HomeModule.m; sourceTree = "<group>"; };
-		EB14415A1309EFB100396753 /* SpringboardViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SpringboardViewController.h; sourceTree = "<group>"; };
-		EB14415B1309EFB100396753 /* SpringboardViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SpringboardViewController.m; sourceTree = "<group>"; };
+		EB14415A1309EFB100396753 /* KGOSpringboardViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGOSpringboardViewController.h; sourceTree = "<group>"; };
+		EB14415B1309EFB100396753 /* KGOSpringboardViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGOSpringboardViewController.m; sourceTree = "<group>"; };
 		EB1441661309F05100396753 /* DefaultTheme.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = DefaultTheme.plist; sourceTree = "<group>"; };
 		EB1441671309F05100396753 /* ThemeConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ThemeConstants.h; sourceTree = "<group>"; };
 		EB1441681309F05100396753 /* ThemeConstants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ThemeConstants.m; sourceTree = "<group>"; };
@@ -952,8 +952,8 @@
 			children = (
 				EB1441581309EFB100396753 /* HomeModule.h */,
 				EB1441591309EFB100396753 /* HomeModule.m */,
-				EB14415A1309EFB100396753 /* SpringboardViewController.h */,
-				EB14415B1309EFB100396753 /* SpringboardViewController.m */,
+				EB14415A1309EFB100396753 /* KGOSpringboardViewController.h */,
+				EB14415B1309EFB100396753 /* KGOSpringboardViewController.m */,
 			);
 			name = Home;
 			path = ../../Modules/Home;
@@ -1083,7 +1083,7 @@
 				EB1441461309EF7B00396753 /* KGOAppDelegate.h in JavaArchive */,
 				EB1441481309EF7B00396753 /* KGONotification.h in JavaArchive */,
 				EB14415C1309EFB100396753 /* HomeModule.h in JavaArchive */,
-				EB14415E1309EFB100396753 /* SpringboardViewController.h in JavaArchive */,
+				EB14415E1309EFB100396753 /* KGOSpringboardViewController.h in JavaArchive */,
 				EB14416A1309F05100396753 /* ThemeConstants.h in JavaArchive */,
 				EB14416E1309F07B00396753 /* KGOTheme.h in JavaArchive */,
 				EB1441721309F09600396753 /* KGOModule.h in JavaArchive */,
@@ -1315,7 +1315,7 @@
 				EB1440901309EE3400396753 /* KGODetailPager.m in Sources */,
 				EB14404E1309EE3400396753 /* CoreDataManager.m in Sources */,
 				EB1440521309EE3400396753 /* KGOSocialMediaController.m in Sources */,
-				EB14415F1309EFB100396753 /* SpringboardViewController.m in Sources */,
+				EB14415F1309EFB100396753 /* KGOSpringboardViewController.m in Sources */,
 				EB1440881309EE3400396753 /* MITMailComposeController.m in Sources */,
 				EB1440461309EE3400396753 /* UIKit+KGOAdditions.m in Sources */,
 				EB1440441309EE3400396753 /* Foundation+KGOAdditions.m in Sources */,
