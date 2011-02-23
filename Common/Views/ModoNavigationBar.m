@@ -15,7 +15,8 @@
 @synthesize navigationBar = _navigationBar;
 
 - (id)initWithNavigationBar:(UINavigationBar *)navigationBar {
-    if (self = [super initWithFrame:navigationBar.frame]) {
+    self = [super initWithFrame:navigationBar.frame];
+    if (self) {
         self.navigationBar = navigationBar;
     }
     return self;

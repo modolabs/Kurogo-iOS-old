@@ -14,7 +14,8 @@
 
 - (id)initWithActiveSegmentImages:(NSArray *)activeImages andInactiveSegmentImages:(NSArray *)inactiveImages 
 {
-	if (self = [super initWithItems:inactiveImages]) 
+    self = [super initWithItems:inactiveImages];
+	if (self) 
 	{
 		self.activeSegmentImages = activeImages;
 		self.inactiveSegmentImages = inactiveImages;

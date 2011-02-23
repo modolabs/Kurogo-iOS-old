@@ -17,7 +17,8 @@
 @synthesize jsonDelegate, connectionWrapper, params, userData;
 
 - (id)initWithJSONAPIDelegate:(id<JSONAPIDelegate>)delegate {
-	if (self = [super init]) {
+    self = [super init];
+	if (self) {
 		jsonDelegate = [delegate retain];
         connectionWrapper = nil;
 		userData = nil;

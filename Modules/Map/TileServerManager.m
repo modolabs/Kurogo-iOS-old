@@ -159,7 +159,8 @@ static NSString * s_tileServerFilename = @"tileServer.plist";
 #define kLastUpdatedKey @"last_updated"
 
 - (id)init {
-    if (self = [super init]) {
+    self = [super init];
+    if (self) {
         BOOL didSetup = NO;
         
         NSString *filename = [self serverFilename];

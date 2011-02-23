@@ -18,7 +18,8 @@
 @synthesize delegate;
 
 - (id)initWithFrame:(CGRect)frame delegate:(id<KGOScrollingTabstripDelegate>)delegate buttonTitles:(NSString *)title, ... {
-    if (self = [super initWithFrame:frame]) {
+    self = [super initWithFrame:frame];
+    if (self) {
         _buttons = [[NSMutableArray alloc] init];
         
         va_list args;
@@ -33,7 +34,8 @@
 
 - (id)initWithFrame:(CGRect)frame
 {
-    if (self = [super initWithFrame:frame]) {
+    self = [super initWithFrame:frame];
+    if (self) {
         _buttons = [[NSMutableArray alloc] init];
     }
     return self;

@@ -48,7 +48,8 @@
 
 - (id)initWithInfo:(NSDictionary*)info
 {
-	if (self = [super init]) {
+    self = [super init];
+    if (self) {
 		[self updateWithInfo:info];
 	}
 	return self;
@@ -122,7 +123,8 @@
 }
 
 - (id)initWithCoordinate:(CLLocationCoordinate2D)coordinate {
-	if (self = [super init]) {
+    self = [super init];
+    if (self) {
 		_coordinate = coordinate;
 	}
 	
@@ -161,7 +163,8 @@
 @synthesize featureType = _featureType, matchString = _matchString, searchString = _searchString, coordinate = _coordinate;
 
 - (id)initWithInfo:(NSDictionary*)info {
-	if (self = [super init]) {
+    self = [super init];
+    if (self) {
         self.matchString = [info objectForKey:@"match_string"];
         self.searchString = [info objectForKey:@"feature_type"];
         self.featureType = [info objectForKey:@"feature_type"];

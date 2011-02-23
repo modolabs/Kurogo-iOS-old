@@ -16,7 +16,8 @@
 @synthesize modoNavBar = _modoNavBar;
 
 - (id)init {
-    if (self = [super init]) {
+    self = [super init];
+    if (self) {
         _modoNavBar = [[ModoNavigationBar alloc] initWithNavigationBar:self.navigationBar];
         _modoNavBar.delegate = self;
     }

@@ -17,7 +17,8 @@
 @synthesize searchDelegate;
 
 - (id)initWithDictionary:(NSDictionary *)moduleDict {
-    if (self = [super init]) {
+    self = [super init];
+    if (self) {
         
         self.shortName = [moduleDict objectForKey:@"shortName"];
         self.longName = [moduleDict objectForKey:@"longName"];

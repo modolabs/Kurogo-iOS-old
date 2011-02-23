@@ -23,7 +23,8 @@ static NSString * DownArrowImage = @"common/arrow-white-down.png";
 
 
 - (id)initWithPagerController:(id<KGODetailPagerController>)controller delegate:(id<KGODetailPagerDelegate>)delegate {
-    if (self = [super initWithItems:[NSArray arrayWithObjects:[UIImage imageNamed:UpArrowImage], [UIImage imageNamed:DownArrowImage], nil]]) {
+    self = [super initWithItems:[NSArray arrayWithObjects:[UIImage imageNamed:UpArrowImage], [UIImage imageNamed:DownArrowImage], nil]];
+    if (self) {
 		_pagerController = controller;
 		_pagerDelegate = delegate;
 		

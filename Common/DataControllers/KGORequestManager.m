@@ -19,7 +19,8 @@ NSString * const KGORequestErrorDomain = @"com.modolabs.KGORequest.ErrorDomain";
 @synthesize expectedResponseType, handler;
 
 - (id)init {
-	if (self = [super init]) {
+    self = [super init];
+    if (self) {
 		self.cachePolicy = NSURLRequestReloadIgnoringLocalAndRemoteCacheData;
 		self.timeout = 30;
 		self.expectedResponseType = KGORequestResponseDictionary;
@@ -342,7 +343,8 @@ NSString * const KGORequestErrorDomain = @"com.modolabs.KGORequest.ErrorDomain";
 #pragma mark initialization
 
 - (id)init {
-	if (self = [super init]) {
+    self = [super init];
+    if (self) {
 		// read config vars here
 		_baseURL = [[NSURL alloc] initWithScheme:_uriScheme host:_host path:@"native-api"];
 	}

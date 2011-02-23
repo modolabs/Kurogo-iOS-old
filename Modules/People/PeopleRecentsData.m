@@ -71,7 +71,8 @@ static PeopleRecentsData *instance = nil;
 
 - (id)init
 {
-    if (self = [super init]) {
+    self = [super init];
+    if (self) {
         [self displayFields];
         [self loadRecentsFromCache];
     }

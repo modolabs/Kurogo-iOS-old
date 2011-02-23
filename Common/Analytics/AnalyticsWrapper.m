@@ -15,11 +15,9 @@ static AnalyticsWrapper *s_sharedWrapper = nil;
 }
 
 - (id)init {
-    if (self = [super init]) {
+    self = [super init];
+    if (self) {
         NSDictionary *infoDict = [(KGOAppDelegate *)[[UIApplication sharedApplication] delegate] appConfig];
-		//NSString * file = [[NSBundle mainBundle] pathForResource:@"Config" ofType:@"plist"];
-        //NSDictionary *infoDict = [NSDictionary dictionaryWithContentsOfFile:file];
-		
 		_preferences = [[infoDict objectForKey:@"Analytics"] retain];
     }
     return self;

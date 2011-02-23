@@ -9,7 +9,8 @@
 @synthesize delegate = _delegate;
 
 - (id)initWithDelegate:(id<KGOShareButtonDelegate>)delegate {
-	if (self = [super init]) {
+    self = [super init];
+    if (self) {
 		_delegate = delegate;
 	}
 	return self;

@@ -77,7 +77,8 @@
  */
 - (id)initWithRings:(NSArray *)rings {
     
-    if (self = [super init]) {
+    self = [super init];
+    if (self) {
         NSMutableArray *convertedRings = [NSMutableArray arrayWithCapacity:[rings count]];
         
         for (NSArray *ringPoints in rings) {
@@ -156,7 +157,8 @@
  *
  */
 - (id)initWithPoints:(NSArray *)ringPoints {
-    if (self = [super init]) {
+    self = [super init];
+    if (self) {
         _size = [ringPoints count];
         _coordinates = malloc(sizeof(CLLocationCoordinate2D) * _size);
         for (NSInteger i = 0; i < _size; i++) {

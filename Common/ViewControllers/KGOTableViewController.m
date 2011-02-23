@@ -27,7 +27,8 @@
 @synthesize tableView = _tableView;
 
 - (id)init {
-	if (self = [super init]) {
+    self = [super init];
+    if (self) {
 		_tableController = [[KGOTableController alloc] initWithViewController:self];
 		_tableController.dataSource = self;
 	}
@@ -35,7 +36,8 @@
 }
 
 - (id)initWithStyle:(UITableViewStyle)style {
-	if (self = [super init]) {
+    self = [super init];
+    if (self) {
 		_tableController = [[KGOTableController alloc] initWithViewController:self];
 		_tableController.dataSource = self;
 		
@@ -140,7 +142,8 @@
 @synthesize dataSource = _dataSource, caching;
 
 - (id)initWithSearchController:(KGOSearchDisplayController *)searchController {
-	if (self = [super init]) {
+    self = [super init];
+    if (self) {
 		_searchController = searchController;
 		
         _tableViews = [[NSMutableArray alloc] init];
@@ -153,7 +156,8 @@
 }
 
 - (id)initWithViewController:(KGOTableViewController *)viewController {
-    if (self = [super init]) {
+    self = [super init];
+    if (self) {
         _viewController = viewController;
 		
         _tableViews = [[NSMutableArray alloc] init];

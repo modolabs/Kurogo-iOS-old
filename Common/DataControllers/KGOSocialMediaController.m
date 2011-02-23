@@ -66,7 +66,8 @@ static KGOSocialMediaController *s_controller = nil;
 }
 
 - (id)init {
-	if (self = [super init]) {
+    self = [super init];
+    if (self) {
 		NSString * file = [[NSBundle mainBundle] pathForResource:@"Config" ofType:@"plist"];
         NSDictionary *infoDict = [NSDictionary dictionaryWithContentsOfFile:file];
 		

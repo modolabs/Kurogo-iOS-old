@@ -312,7 +312,8 @@ static NSString * KGOAccessoryImageChevronHighlighted = @"common/action-arrow-hi
 #pragma mark -
 
 - (id)init {
-    if (self = [super init]) {
+    self = [super init];
+    if (self) {
 		NSString * file = [[NSBundle mainBundle] pathForResource:@"DefaultTheme" ofType:@"plist"];
         themeDict = [[NSDictionary alloc] initWithContentsOfFile:file];
 		fontDict = [themeDict objectForKey:@"Fonts"];

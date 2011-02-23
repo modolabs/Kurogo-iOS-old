@@ -11,7 +11,8 @@
 @implementation MapTile
 
 - (id)initWithFrame:(MKMapRect)frame path:(NSString *)path {
-    if (self = [super init]) {
+    self = [super init];
+    if (self) {
         _frame = frame;
         _path = path;
     }
