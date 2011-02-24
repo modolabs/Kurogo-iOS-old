@@ -1,13 +1,26 @@
 #import "MapHomeViewController.h"
 #import "KGOCategoryListViewController.h"
 #import "KGOAppDelegate.h"
+#import "MapModule.h"
+#import "MapSettingsViewController.h"
+#import "KGOTheme.h"
 
 @implementation MapHomeViewController
 
 @synthesize searchTerms;
 
+- (void)mapTypeDidChange:(NSNotification *)aNotification {
+    _mapView.mapType = [[aNotification object] integerValue];
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    MapModule *mapModule = [(KGOAppDelegate *)[[UIApplication sharedApplication] delegate] moduleForTag:MapTag];
+    self.title = mapModule.shortName;
+
+    _mapView.mapType = [[NSUserDefaults standardUserDefaults] integerForKey:MapTypePreference];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mapTypeDidChange:) name:MapTypePreferenceChanged object:nil];
 	
 	// TODO: so maybe having a separate factory function in KGOSearchBar
 	// for default search bar isn't the best idea
@@ -83,7 +96,10 @@
 }
 
 - (IBAction)settingsButtonPressed {
-	
+	MapSettingsViewController *vc = [[[MapSettingsViewController alloc] initWithStyle:UITableViewStyleGrouped] autorelease];
+    vc.title = @"Settings";
+    vc.view.backgroundColor = [[KGOTheme sharedTheme] backgroundColorForApplication];
+	[(KGOAppDelegate *)[[UIApplication sharedApplication] delegate] presentAppModalViewController:vc animated:YES];
 }
 
 #pragma mark Map/List
@@ -133,6 +149,9 @@
 	[self.view bringSubviewToFront:_mapView];
 	[self.view bringSubviewToFront:_bottomBar];
 	
+    // TODO: fine-tune when to enable this, e.g under proximity and gps enabled conditions
+    [_locateUserButton setEnabled:YES];
+
 	[_mapListToggle setEnabled:NO forSegmentAtIndex:0];
 	[_mapListToggle setEnabled:YES forSegmentAtIndex:1];
 }
@@ -141,6 +160,8 @@
 	if (_searchResultsTableView) {
 		[self.view bringSubviewToFront:_searchResultsTableView];
 	}
+    
+    [_locateUserButton setEnabled:NO];
 	
 	[_mapListToggle setEnabled:YES forSegmentAtIndex:0];
 	[_mapListToggle setEnabled:NO forSegmentAtIndex:1];

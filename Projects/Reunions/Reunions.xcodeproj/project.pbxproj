@@ -130,6 +130,8 @@
 		EB181714130C9C43003728FF /* KGOHomeScreenWidget.m in Sources */ = {isa = PBXBuildFile; fileRef = EB181712130C9C43003728FF /* KGOHomeScreenWidget.m */; };
 		EB181718130CC074003728FF /* LoginModule.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB181716130CC074003728FF /* LoginModule.h */; settings = {JAVA_ARCHIVE_SUBDIR = ../../Modules/Login; }; };
 		EB181719130CC074003728FF /* LoginModule.m in Sources */ = {isa = PBXBuildFile; fileRef = EB181717130CC074003728FF /* LoginModule.m */; };
+		EB1819231315D0E9003728FF /* MapSettingsViewController.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB1819211315D0E9003728FF /* MapSettingsViewController.h */; settings = {JAVA_ARCHIVE_SUBDIR = ../../Modules/Map; }; };
+		EB1819241315D0E9003728FF /* MapSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EB1819221315D0E9003728FF /* MapSettingsViewController.m */; };
 		EB358ACF1309F9CE000250AD /* FacebookModule.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB358ACD1309F9CE000250AD /* FacebookModule.h */; settings = {JAVA_ARCHIVE_SUBDIR = Modules/Facebook; }; };
 		EB358AD01309F9CE000250AD /* FacebookModule.m in Sources */ = {isa = PBXBuildFile; fileRef = EB358ACE1309F9CE000250AD /* FacebookModule.m */; };
 		EB358AD41309FA4E000250AD /* FacebookPhotosViewController.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB358AD11309FA4E000250AD /* FacebookPhotosViewController.h */; settings = {JAVA_ARCHIVE_SUBDIR = Modules/Facebook; }; };
@@ -402,6 +404,8 @@
 		EB181712130C9C43003728FF /* KGOHomeScreenWidget.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGOHomeScreenWidget.m; sourceTree = "<group>"; };
 		EB181716130CC074003728FF /* LoginModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginModule.h; sourceTree = "<group>"; };
 		EB181717130CC074003728FF /* LoginModule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginModule.m; sourceTree = "<group>"; };
+		EB1819211315D0E9003728FF /* MapSettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MapSettingsViewController.h; sourceTree = "<group>"; };
+		EB1819221315D0E9003728FF /* MapSettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MapSettingsViewController.m; sourceTree = "<group>"; };
 		EB358ACD1309F9CE000250AD /* FacebookModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FacebookModule.h; sourceTree = "<group>"; };
 		EB358ACE1309F9CE000250AD /* FacebookModule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FacebookModule.m; sourceTree = "<group>"; };
 		EB358AD11309FA4E000250AD /* FacebookPhotosViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FacebookPhotosViewController.h; sourceTree = "<group>"; };
@@ -668,6 +672,8 @@
 				EB6D111511EE143900B65CE3 /* TileServerManager.m */,
 				EB8B36841307BB28005DBB8F /* MapZoomLevel.h */,
 				EB8B36851307BB28005DBB8F /* MapZoomLevel.m */,
+				EB1819211315D0E9003728FF /* MapSettingsViewController.h */,
+				EB1819221315D0E9003728FF /* MapSettingsViewController.m */,
 			);
 			name = Map;
 			path = ../../../Modules/Map;
@@ -1146,6 +1152,7 @@
 				EB18170F130C99AA003728FF /* KGOPortletHomeViewController.h in JavaArchive */,
 				EB181713130C9C43003728FF /* KGOHomeScreenWidget.h in JavaArchive */,
 				EB181718130CC074003728FF /* LoginModule.h in JavaArchive */,
+				EB1819231315D0E9003728FF /* MapSettingsViewController.h in JavaArchive */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1410,6 +1417,7 @@
 				EB181710130C99AA003728FF /* KGOPortletHomeViewController.m in Sources */,
 				EB181714130C9C43003728FF /* KGOHomeScreenWidget.m in Sources */,
 				EB181719130CC074003728FF /* LoginModule.m in Sources */,
+				EB1819241315D0E9003728FF /* MapSettingsViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

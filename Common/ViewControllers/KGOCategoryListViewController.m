@@ -8,6 +8,8 @@
 
 - (void)loadView {
 	[super loadView];
+    
+    self.title = NSLocalizedString(@"Browse", nil);
 	
 	if (!self.tableView) {
 		CGRect frame = CGRectMake(0, 0, self.view.bounds.size.width, self.view.bounds.size.height);

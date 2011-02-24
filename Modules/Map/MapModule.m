@@ -8,6 +8,9 @@
 #import "MapHomeViewController.h"
 #import "KGOCategoryListViewController.h"
 
+NSString * const MapTypePreference = @"MapType";
+NSString * const MapTypePreferenceChanged = @"MapTypeChanged";
+
 @implementation MapModule
 @synthesize request = _request;
 

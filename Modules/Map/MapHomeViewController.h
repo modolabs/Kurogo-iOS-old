@@ -41,4 +41,6 @@
 - (void)switchToListView;
 - (void)mapListSelectionChanged:(id)sender;
 
+- (void)mapTypeDidChange:(NSNotification *)aNotification;
+
 @end

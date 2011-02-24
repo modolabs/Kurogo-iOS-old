@@ -2,6 +2,7 @@
 
 extern NSString * const KGOAccessoryTypeNone;
 extern NSString * const KGOAccessoryTypeBlank;
+extern NSString * const KGOAccessoryTypeCheckmark;
 extern NSString * const KGOAccessoryTypeChevron;
 
 typedef enum {

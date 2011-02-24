@@ -4,6 +4,7 @@
 NSString * const KGOAccessoryTypeNone = @"None";
 NSString * const KGOAccessoryTypeBlank = @"Blank";
 NSString * const KGOAccessoryTypeChevron = @"Chevron";
+NSString * const KGOAccessoryTypeCheckmark = @"Check";
 
 
 @implementation KGOTheme
@@ -211,6 +212,8 @@ static KGOTheme *s_sharedTheme = nil;
 static NSString * KGOAccessoryImageBlank = @"common/action-blank.png";
 static NSString * KGOAccessoryImageChevron = @"common/action-arrow.png";
 static NSString * KGOAccessoryImageChevronHighlighted = @"common/action-arrow-highlighted.png";
+static NSString * KGOAccessoryImageCheckmark = @"common/action-checkmark.png";
+static NSString * KGOAccessoryImageCheckmarkHighlighted = @"common/action-checkmark-highlighted.png";
 
 // provide None, Blank, and Chevron by default.
 // other styles can be defined in theme plist
@@ -230,6 +233,12 @@ static NSString * KGOAccessoryImageChevronHighlighted = @"common/action-arrow-hi
         UIImage *highlightedImage = [UIImage imageNamed:KGOAccessoryImageChevronHighlighted];
         return [[[UIImageView alloc] initWithImage:image highlightedImage:highlightedImage] autorelease];
     
+    } else if ([accessoryType isEqualToString:KGOAccessoryTypeCheckmark]) {
+        
+        UIImage *image = [UIImage imageNamed:KGOAccessoryImageCheckmark];
+        UIImage *highlightedImage = [UIImage imageNamed:KGOAccessoryImageCheckmarkHighlighted];
+        return [[[UIImageView alloc] initWithImage:image highlightedImage:highlightedImage] autorelease];
+        
     } else {
 
         NSDictionary *actionDict = [[themeDict objectForKey:@"TableViewCellActions"] objectForKey:accessoryType];
