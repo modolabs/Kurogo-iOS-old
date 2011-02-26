@@ -21,20 +21,13 @@ typedef NSInteger (^JSONObjectHandler)(id);
 
 // generally delegates implement exactly one of the following per request
 - (void)request:(KGORequest *)request didHandleResult:(NSInteger)returnValue; // retValue could be number of records updated
-- (void)request:(KGORequest *)request didReceiveResult:(id)result;
+- (void)request:(KGORequest *)request didReceiveResult:(id)result; // no need to check result type since this is checked via expectedResponseType
 
 // for showing determinate loading indicators. progress is between 0 and 1
 - (void)request:(KGORequest *)request didMakeProgress:(CGFloat)progress;
 - (void)requestDidReceiveResponse:(KGORequest *)request;
 
 @end
-
-typedef enum {
-	KGORequestResponseDictionary,
-	KGORequestResponseArray,
-	KGORequestResponseData
-} KGORequestResponseType;
-
 
 @interface KGORequest : NSObject {
 	
@@ -54,7 +47,7 @@ typedef enum {
 @property(nonatomic) NSURLRequestCachePolicy cachePolicy; // default is NSURLRequestReloadIgnoringLocalAndRemoteCacheData
 @property(nonatomic) NSTimeInterval timeout; // default is 30 seconds
 
-@property(nonatomic) KGORequestResponseType expectedResponseType; // default is dictionary
+@property(nonatomic) Class expectedResponseType; // default is NSDictionary
 @property(nonatomic, copy) JSONObjectHandler handler;
 
 // urls are of the form

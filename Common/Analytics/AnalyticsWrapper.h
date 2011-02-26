@@ -6,14 +6,15 @@
 #import "GANTracker.h"
 
 typedef enum {
-    ModoAnalyticsProviderGoogle,
-} ModoAnalyticsProvider;
+    KGOAnalyticsProviderNone,
+    KGOAnalyticsProviderGoogle,
+} KGOAnalyticsProvider;
 
 
 @interface AnalyticsWrapper : NSObject <GANTrackerDelegate> {
     
 	NSDictionary *_preferences;
-    ModoAnalyticsProvider _provider;
+    KGOAnalyticsProvider _provider;
 
 }
 
@@ -27,6 +28,6 @@ typedef enum {
 - (void)trackPageview:(NSString *)pageID;
 - (void)trackEvent:(NSString *)event action:(NSString *)action label:(NSString *)label;
 
-@property ModoAnalyticsProvider provider;
+@property KGOAnalyticsProvider provider;
 
 @end

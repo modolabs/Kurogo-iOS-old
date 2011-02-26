@@ -13,3 +13,10 @@
 - (void)hideLoadingIndicator;
 
 @end
+
+@interface UILabel (KGOAdditions)
+
++ (UILabel *)multilineLabelWithText:(NSString *)text font:(UIFont *)font width:(CGFloat)width;
+
+@end
+

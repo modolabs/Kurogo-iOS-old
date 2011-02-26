@@ -2,25 +2,21 @@
 #import "JSONAPIRequest.h"
 #import "KGOTableViewController.h"
 #import "KGOSearchDisplayController.h"
+#import "KGODetailPager.h"
 
 @class KGOSearchBar;
 
-@interface PeopleSearchViewController : KGOTableViewController <//JSONAPIDelegate,
-UIActionSheetDelegate, KGOSearchDisplayDelegate> {
+@interface PeopleSearchViewController : KGOTableViewController <
+UIActionSheetDelegate, KGOSearchDisplayDelegate, KGODetailPagerController> {
 	
-    KGOSearchDisplayController *searchController;
-	NSString *searchTerms;
-	NSArray *searchTokens;
-    KGOSearchBar *theSearchBar;
+    KGOSearchDisplayController *_searchController;
+	NSString *_searchTerms;
+	NSArray *_searchTokens;
+    KGOSearchBar *_searchBar;
+    NSArray *_recentlyViewed;
 
-    NSArray *phoneDirectoryEntries;
-    // uncomment this after we have API for directory numbers
-	//JSONAPIRequest *api;
-    
-	UIView *recentlyViewedHeader;
+    NSArray *_phoneDirectoryEntries;
 }
-
-- (void)showActionSheet:(id)sender;
 
 @property (nonatomic, retain) KGOSearchDisplayController *searchController;
 @property (nonatomic, retain) NSString *searchTerms;

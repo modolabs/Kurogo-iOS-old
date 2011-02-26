@@ -91,6 +91,10 @@ NSString * const NewsStoryEntityName = @"NewsStory";
 NSString * const NewsCategoryEntityName = @"NewsCategory";
 NSString * const NewsImageEntityName = @"NewsImage";
 NSString * const NewsImageRepEntityName = @"NewsImageRep";
+
+NSString * const KGOPersonEntityName = @"KGOPerson";
+NSString * const PersonContactEntityName = @"PersonContact";
+
 NSString * const PersonDetailsEntityName = @"PersonDetails";
 NSString * const PersonDetailEntityName = @"PersonDetail";
 NSString * const StellarCourseEntityName = @"StellarCourse";

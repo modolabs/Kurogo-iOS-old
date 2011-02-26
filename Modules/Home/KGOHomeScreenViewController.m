@@ -3,8 +3,7 @@
 #import "HomeModule.h"
 #import "UIKit+KGOAdditions.h"
 #import "SpringboardIcon.h"
-
-#import "PersonDetails.h"
+#import "KGOPersonWrapper.h"
 
 @interface KGOHomeScreenViewController (Private)
 
@@ -164,7 +163,7 @@
 - (void)searchController:(KGOSearchDisplayController *)controller didSelectResult:(id<KGOSearchResult>)aResult {
     // TODO: come up with a better way to figure out which module the search result belongs to
     BOOL didShow = NO;
-    if ([aResult isKindOfClass:[PersonDetails class]]) {
+    if ([aResult isKindOfClass:[KGOPersonWrapper class]]) {
         NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:aResult, @"personDetails", nil];
         didShow = [(KGOAppDelegate *)[[UIApplication sharedApplication] delegate] showPage:LocalPathPageNameDetail forModuleTag:PeopleTag params:params];
     }

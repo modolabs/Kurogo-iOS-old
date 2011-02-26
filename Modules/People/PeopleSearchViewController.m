@@ -1,6 +1,5 @@
 #import "PeopleSearchViewController.h"
-#import "PersonDetails.h"
-#import "PeopleRecentsData.h"
+#import "KGOPersonWrapper.h"
 #import "KGOAppDelegate.h"
 #import "KGOAppDelegate+ModuleAdditions.h"
 #import "ModoNavigationController.h"
@@ -13,12 +12,20 @@
 #import "ThemeConstants.h"
 #import "CoreDataManager.h"
 
-static const NSUInteger kPhoneDirectorySection = 0;
+
+@interface PeopleSearchViewController (Private)
+
+- (void)promptToClearRecents;
+
+@end
+
 
 @implementation PeopleSearchViewController
 
-@synthesize searchTerms, searchTokens, searchController;
-@synthesize searchBar = theSearchBar;
+@synthesize searchTerms = _searchTerms,
+searchTokens = _searchTokens,
+searchController = _searchController,
+searchBar = _searchBar;
 
 #pragma mark view
 
@@ -26,86 +33,48 @@ static const NSUInteger kPhoneDirectorySection = 0;
 	[super viewDidLoad];
 	
     // TODO: make this come from API
-    if (!phoneDirectoryEntries) {
+    if (!_phoneDirectoryEntries) {
         NSString *filename = [[[NSBundle mainBundle] bundlePath] stringByAppendingPathComponent:@"people/peopleSearchStaticPhoneRowsArray.plist"];
-        phoneDirectoryEntries = [[NSArray alloc] initWithContentsOfFile:filename];
+        _phoneDirectoryEntries = [[NSArray alloc] initWithContentsOfFile:filename];
     }
     
-    //theSearchBar = [[KGOSearchBar alloc] initWithFrame:CGRectMake(0.0f, 0.0f, self.view.frame.size.width, NAVIGATION_BAR_HEIGHT)];
-    theSearchBar = [[KGOSearchBar defaultSearchBarWithFrame:CGRectMake(0.0f, 0.0f, self.view.frame.size.width, 44.0)] retain];
-	theSearchBar.placeholder = NSLocalizedString(@"Search", nil);
+    _searchBar = [[KGOSearchBar alloc] initWithFrame:CGRectMake(0.0f, 0.0f, self.view.frame.size.width, 44)];
+	_searchBar.placeholder = NSLocalizedString(@"Search", nil);
 
-    if (!searchController) {
-        searchController = [[KGOSearchDisplayController alloc] initWithSearchBar:self.searchBar delegate:self contentsController:self];
+    if (!_searchController) {
+        _searchController = [[KGOSearchDisplayController alloc] initWithSearchBar:self.searchBar delegate:self contentsController:self];
     }
     
 	if ([self.searchTerms length] > 0) {
-		theSearchBar.text = self.searchTerms;
-        [searchController executeSearch:self.searchTerms params:nil];
+		_searchBar.text = self.searchTerms;
+        [_searchController executeSearch:self.searchTerms params:nil];
     }
 
-    [self.view addSubview:theSearchBar];
-    CGRect frame = CGRectMake(0.0, theSearchBar.frame.size.height,
+    [self.view addSubview:_searchBar];
+    CGRect frame = CGRectMake(0.0, _searchBar.frame.size.height,
                               self.view.frame.size.width,
-                              self.view.frame.size.height - theSearchBar.frame.size.height);
+                              self.view.frame.size.height - _searchBar.frame.size.height);
 	self.tableView = [self addTableViewWithFrame:frame style:UITableViewStyleGrouped];
     
+    // search hint
     NSString *searchHints = NSLocalizedString(@"Tip: You can search above by a person's first or last name or email address.", nil);
-
 	UIFont *hintsFont = [UIFont systemFontOfSize:[UIFont systemFontSize]];
-	CGSize labelSize = [searchHints sizeWithFont:hintsFont
-									constrainedToSize:self.tableView.frame.size
-										lineBreakMode:UILineBreakModeWordWrap];
-	
-	UILabel *hintsLabel = [[UILabel alloc] initWithFrame:CGRectMake(15.0, 5.0, labelSize.width, labelSize.height + 5.0)];
-	hintsLabel.numberOfLines = 0;
-	hintsLabel.backgroundColor = [UIColor clearColor];
-	hintsLabel.lineBreakMode = UILineBreakModeWordWrap;
-	hintsLabel.font = hintsFont;
-	hintsLabel.text = searchHints;	
+    UILabel *hintsLabel = [UILabel multilineLabelWithText:searchHints font:hintsFont width:self.tableView.frame.size.width - 30];
+    hintsLabel.frame = CGRectMake(15, 5, hintsLabel.frame.size.width, hintsLabel.frame.size.height);
     hintsLabel.textColor = [UIColor colorWithHexString:@"#404040"];
-    UIView *hintsContainer = [[[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, self.tableView.frame.size.width, labelSize.height + 10.0)] autorelease];
+    UIView *hintsContainer = [[[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, self.tableView.frame.size.width,
+                                                                       hintsLabel.frame.size.height + 10.0)] autorelease];
+    
 	[hintsContainer addSubview:hintsLabel];
-	[hintsLabel release];
 
 	self.tableView.tableHeaderView = hintsContainer;
-
-	// set up screen for when there are no results
-	recentlyViewedHeader = nil;
-	
-	// set up table footer
-	UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
-	[button setFrame:CGRectMake(10.0, 0.0, self.tableView.frame.size.width - 20.0, 44.0)];
-	button.titleLabel.font = [UIFont boldSystemFontOfSize:20.0];
-	button.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
-	button.titleLabel.shadowColor = [UIColor colorWithWhite:0.0 alpha:0.3];
-	[button setTitle:NSLocalizedString(@"Clear Recents", nil) forState:UIControlStateNormal];
-	
-	// based on code from stackoverflow.com/questions/1427818/iphone-sdk-creating-a-big-red-uibutton
-	[button setBackgroundImage:[[UIImage imageNamed:@"people/redbutton2.png"] stretchableImageWithLeftCapWidth:10.0 topCapHeight:0.0] 
-					  forState:UIControlStateNormal];
-	[button setBackgroundImage:[[UIImage imageNamed:@"people/redbutton2highlighted.png"] stretchableImageWithLeftCapWidth:10.0 topCapHeight:0.0] 
-					  forState:UIControlStateHighlighted];
-	
-	[button addTarget:self action:@selector(showActionSheet:) forControlEvents:UIControlEventTouchUpInside];	
-	
-	UIView *buttonContainer = [[[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, self.tableView.frame.size.width, 44.0)] autorelease];
-	[buttonContainer addSubview:button];
-	
-	self.tableView.tableFooterView = buttonContainer;
-	
-	if ([[[PeopleRecentsData sharedData] recents] count] == 0) {
-		self.tableView.tableFooterView.hidden = YES;
-	}
 }
 
 - (void)viewWillAppear:(BOOL)animated
 {
 	[super viewWillAppear:animated];
-	
-    self.tableView.tableFooterView.hidden = ([[[PeopleRecentsData sharedData] recents] count] == 0);
 
-    [[PeopleRecentsData sharedData] loadRecentsFromCache];
+    _recentlyViewed = [[KGOPersonWrapper fetchRecentlyViewed] retain];
 	[self reloadDataForTableView:self.tableView];
 }
 
@@ -116,11 +85,10 @@ static const NSUInteger kPhoneDirectorySection = 0;
 }
 
 - (void)dealloc {
-	[recentlyViewedHeader release];
-	[searchTerms release];
-	[searchTokens release];
-	[searchController release];
-    [phoneDirectoryEntries release];
+	[_searchTerms release];
+	[_searchTokens release];
+	[_searchController release];
+    [_phoneDirectoryEntries release];
     [super dealloc];
 }
 
@@ -140,13 +108,28 @@ static const NSUInteger kPhoneDirectorySection = 0;
 }
 
 - (void)searchController:(KGOSearchDisplayController *)controller didSelectResult:(id<KGOSearchResult>)aResult {
-    NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:aResult, @"personDetails", nil];
+    NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:aResult, @"person", nil];
     [(KGOAppDelegate *)[[UIApplication sharedApplication] delegate] showPage:LocalPathPageNameDetail forModuleTag:PeopleTag params:params];
 }
 
 - (void)searchController:(KGOSearchDisplayController *)controller willHideSearchResultsTableView:(UITableView *)tableView {
     [[CoreDataManager sharedManager] saveData];
-    [[PeopleRecentsData sharedData] clearOldResults];
+    [KGOPersonWrapper clearOldResults];
+}
+
+#pragma mark -
+#pragma mark KGODetailPagerController
+
+- (NSInteger)numberOfSections:(KGODetailPager *)pager {
+    return 1;
+}
+
+- (NSInteger)pager:(KGODetailPager *)pager numberOfPagesInSection:(NSInteger)section {
+    return _recentlyViewed.count;
+}
+
+- (id<KGOSearchResult>)pager:(KGODetailPager *)pager contentForPageAtIndexPath:(NSIndexPath *)indexPath {
+    return [_recentlyViewed objectAtIndex:indexPath.row];
 }
 
 #pragma mark -
@@ -154,17 +137,19 @@ static const NSUInteger kPhoneDirectorySection = 0;
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     NSInteger numRows = 1;
-    if ([[[PeopleRecentsData sharedData] recents] count])
-        numRows++;
+    if (_recentlyViewed.count)
+        numRows += 2;
     return numRows;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     switch (section) {
         case 0: // phone directory
-            return phoneDirectoryEntries.count;
+            return _phoneDirectoryEntries.count;
         case 1: // recently viewed
-            return [[[PeopleRecentsData sharedData] recents] count];
+            return _recentlyViewed.count;
+        case 2: // clear recents
+            return 1;
         default:
             return 0;
     }
@@ -176,31 +161,46 @@ static const NSUInteger kPhoneDirectorySection = 0;
     NSString *detailText = nil;
     NSString *accessoryTag = nil;
     UIColor *backgroundColor = nil;
+    UIView *backgroundView = nil;
+    UIView *selectedBackgroundView = nil;
     
-    if (indexPath.section == kPhoneDirectorySection) { // phone directory tel #
-        NSDictionary *rowProperties = [phoneDirectoryEntries objectAtIndex:indexPath.row];
-        title = [rowProperties objectForKey:@"mainText"];
-        detailText = [rowProperties objectForKey:@"secondaryText"];
-        accessoryTag = TableViewCellAccessoryPhone;
-        backgroundColor = [[KGOTheme sharedTheme] backgroundColorForSecondaryCell];
-        
-    } else { // recents
-        
-        PersonDetails *recent = [[[PeopleRecentsData sharedData] recents] objectAtIndex:indexPath.row];
-        title = [NSString stringWithFormat:@"%@ %@", 
-                 [recent formattedValueForKey:@"givenname"], 
-                 [recent formattedValueForKey:@"sn"]];
-        
-        accessoryTag = KGOAccessoryTypeChevron;
-        
-        NSArray *displayPriority = [NSArray arrayWithObjects:@"title", @"ou", nil];
-        NSString *displayText;
-        for (NSString *tag in displayPriority) {
-            if (displayText = [recent formattedValueForKey:tag]) {
-                detailText = displayText;
-                break;
-            }
+    switch (indexPath.section) {
+        case 0:
+        {
+            NSDictionary *rowProperties = [_phoneDirectoryEntries objectAtIndex:indexPath.row];
+            title = [rowProperties objectForKey:@"mainText"];
+            detailText = [rowProperties objectForKey:@"secondaryText"];
+            accessoryTag = TableViewCellAccessoryPhone;
+            backgroundColor = [[KGOTheme sharedTheme] backgroundColorForSecondaryCell];
+            break;
         }
+        case 1:
+        {
+            KGOPersonWrapper *person = [_recentlyViewed objectAtIndex:indexPath.row];
+            title = person.name;
+            accessoryTag = KGOAccessoryTypeChevron;
+            if (person.organizations.count) {
+                NSDictionary *orgDict = [person.organizations objectAtIndex:0];
+                detailText = [orgDict stringForKey:@"jobTitle"];
+                if (!detailText)
+                    detailText = [orgDict stringForKey:@"organization"];
+            }
+            break;
+        }
+        case 2:
+        {
+            UIImage *backgroundImage = [[UIImage imageNamed:@"people/redbutton2.png"] stretchableImageWithLeftCapWidth:10.0 topCapHeight:0.0];
+            UIImage *selectedBackgroundImage = [[UIImage imageNamed:@"people/redbutton2highlighted.png"] stretchableImageWithLeftCapWidth:10.0 topCapHeight:0.0];
+            
+            backgroundView = [[[UIImageView alloc] initWithFrame:CGRectMake(0, 0, self.tableView.frame.size.width, tableView.rowHeight)] autorelease];
+            [(UIImageView *)backgroundView setImage:backgroundImage];
+
+            selectedBackgroundView = [[[UIImageView alloc] initWithFrame:CGRectMake(0, 0, self.tableView.frame.size.width, tableView.rowHeight)] autorelease];
+            [(UIImageView *)selectedBackgroundView setImage:selectedBackgroundImage];
+            break;
+        }
+        default:
+            break;
     }
     
     return [[^(UITableViewCell *cell) {
@@ -210,6 +210,12 @@ static const NSUInteger kPhoneDirectorySection = 0;
         cell.accessoryView = [[KGOTheme sharedTheme] accessoryViewForType:accessoryTag];
         if (backgroundColor) {
             cell.backgroundColor = backgroundColor;
+        }
+        if (backgroundView) {
+            cell.backgroundView = backgroundView;
+        }
+        if (selectedBackgroundView) {
+            cell.selectedBackgroundView = selectedBackgroundView;
         }
     } copy] autorelease];
 }
@@ -230,26 +236,36 @@ static const NSUInteger kPhoneDirectorySection = 0;
 	
 	[tableView deselectRowAtIndexPath:indexPath animated:YES];
 	
-	if (indexPath.section == kPhoneDirectorySection) { 
-		NSDictionary *rowProperties = [phoneDirectoryEntries objectAtIndex:indexPath.row];
-        NSURL *externURL = [NSURL URLWithString:[rowProperties objectForKey:@"URL"]];
-        if ([[UIApplication sharedApplication] canOpenURL:externURL])
-            [[UIApplication sharedApplication] openURL:externURL];
-		
-        [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
-
-	} else if (indexPath.section == 1) { // recently viewed
-
-		PersonDetails *personDetails = [[[PeopleRecentsData sharedData] recents] objectAtIndex:indexPath.row];
-        NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:personDetails, @"personDetails", nil];
-        [(KGOAppDelegate *)[[UIApplication sharedApplication] delegate] showPage:LocalPathPageNameDetail forModuleTag:PeopleTag params:params];
-	}
+    switch (indexPath.section) {
+        case 0:
+        { 
+            NSDictionary *rowProperties = [_phoneDirectoryEntries objectAtIndex:indexPath.row];
+            NSURL *externURL = [NSURL URLWithString:[rowProperties objectForKey:@"URL"]];
+            if ([[UIApplication sharedApplication] canOpenURL:externURL])
+                [[UIApplication sharedApplication] openURL:externURL];
+            
+            break;
+        }
+        case 1: // recently viewed
+        {
+            KGOPersonWrapper *person = [_recentlyViewed objectAtIndex:indexPath.row];
+            NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:person, @"person", self, @"pager", nil];
+            [(KGOAppDelegate *)[[UIApplication sharedApplication] delegate] showPage:LocalPathPageNameDetail forModuleTag:PeopleTag params:params];
+            break;
+        }
+        case 2: // clear recents
+            [self promptToClearRecents];
+            break;
+        default:
+            break;
+    }
+    
 }
 
 #pragma mark -
 #pragma mark Action sheet methods
 
-- (void)showActionSheet:(id)sender
+- (void)promptToClearRecents
 {
 	UIActionSheet *sheet = [[[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"Clear Recents?", nil)
                                                         delegate:self
@@ -262,7 +278,9 @@ static const NSUInteger kPhoneDirectorySection = 0;
 - (void)actionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex
 {
 	if ([[actionSheet buttonTitleAtIndex:buttonIndex] isEqualToString:NSLocalizedString(@"Clear", nil)]) {
-		[PeopleRecentsData eraseAll];
+        [_recentlyViewed release];
+        _recentlyViewed = nil;
+		[KGOPersonWrapper clearRecentlyViewed];
 		self.tableView.tableFooterView.hidden = YES;
 		[self reloadDataForTableView:self.tableView];
 		[self.tableView scrollRectToVisible:CGRectMake(0.0, 0.0, 1.0, 1.0) animated:YES];

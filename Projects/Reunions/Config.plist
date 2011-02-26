@@ -2,6 +2,16 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>Security</key>
+	<dict>
+		<key>UseHTTPS</key>
+		<false/>
+	</dict>
+	<key>Servers</key>
+	<dict>
+		<key>development</key>
+		<string>localhost:8040</string>
+	</dict>
 	<key>Modules</key>
 	<array>
 		<dict>

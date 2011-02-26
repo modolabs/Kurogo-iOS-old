@@ -49,23 +49,23 @@
         _searchBar = [[UISearchBar alloc] initWithFrame:frame]; // do this first so _searchBar can receive setter methods right away
         _searchBar.delegate = self;
     }
+    UIColor *color = [[KGOTheme sharedTheme] tintColorForSearchBar];
+    if (color) {
+        _searchBar.tintColor = color;
+    }
+    UIImage *image = [[KGOTheme sharedTheme] backgroundImageForSearchBar];
+    if (image) {
+        self.backgroundImage = image;
+    }
+    image = [[KGOTheme sharedTheme] backgroundImageForSearchBarDropShadow];
+    if (image) {
+        self.dropShadowImage = image;
+    }
     return self;
 }
 
 + (KGOSearchBar *)defaultSearchBarWithFrame:(CGRect)frame {
     KGOSearchBar *searchBar = [[[KGOSearchBar alloc] initWithFrame:frame] autorelease];
-    UIColor *color = [[KGOTheme sharedTheme] tintColorForSearchBar];
-    if (color) {
-        searchBar.tintColor = color;
-    }
-    UIImage *image = [[KGOTheme sharedTheme] backgroundImageForSearchBar];
-    if (image) {
-        searchBar.backgroundImage = image;
-    }
-    image = [[KGOTheme sharedTheme] backgroundImageForSearchBarDropShadow];
-    if (image) {
-        searchBar.dropShadowImage = image;
-    }
     return searchBar;
 }
 

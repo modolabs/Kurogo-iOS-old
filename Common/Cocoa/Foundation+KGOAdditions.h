@@ -45,6 +45,58 @@ typedef NSComparisonResult (^ComparatorBlock)(id, id, void *);
 
 @interface NSArray (KGOAdditions)
 
-- (NSArray *)sortedArrayUsingBlock:(ComparatorBlock)comparator context:(void *)context ;
+- (NSArray *)sortedArrayUsingBlock:(ComparatorBlock)comparator context:(void *)context;
 
 @end
+
+
+@interface NSArray (JSONParser)
+
+// returns nil on failure
+- (NSString *)stringAtIndex:(NSInteger)index;
+- (NSNumber *)numberAtIndex:(NSInteger)index;
+- (NSArray *)arrayAtIndex:(NSInteger)index;
+- (NSDate *)dateAtIndex:(NSInteger)index;
+- (NSDate *)dateAtIndex:(NSInteger)index format:(NSString *)format;
+- (NSDictionary *)dictionaryAtIndex:(NSInteger)index;
+
+// returns false on failure
+- (BOOL)boolAtIndex:(NSInteger)index;
+
+// returns NSNotFound on failure
+- (NSInteger)integerAtIndex:(NSInteger)index;
+
+// returns 0.0 on failure
+- (CGFloat)floatAtIndex:(NSInteger)index;
+
+// returns defaultValue on failure
+- (CGFloat)floatAtIndex:(NSInteger)index defaultValue:(CGFloat)defaultValue;
+
+@end
+
+
+@interface NSDictionary (JSONParser)
+
+// returns nil on failure
+- (NSString *)stringForKey:(NSString *)key;
+- (NSNumber *)numberForKey:(NSString *)key;
+- (NSArray *)arrayForKey:(NSString *)key;
+- (NSDate *)dateForKey:(NSString *)key;
+- (NSDate *)dateForKey:(NSString *)key format:(NSString *)format;
+- (NSDictionary *)dictionaryForKey:(NSString *)key;
+
+// returns false on failure
+- (BOOL)boolForKey:(NSString *)key;
+
+// returns NSNotFound on failure
+- (NSInteger)integerForKey:(NSString *)key;
+
+// returns 0.0 on failure
+- (CGFloat)floatForKey:(NSString *)key;
+
+// returns defaultValue on failure
+- (CGFloat)floatForKey:(NSString *)key defaultValue:(CGFloat)defaultValue;
+
+
+@end
+

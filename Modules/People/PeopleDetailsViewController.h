@@ -1,31 +1,29 @@
 #import <UIKit/UIKit.h>
 #import <AddressBook/AddressBook.h>
 #import <AddressBookUI/AddressBookUI.h>
-#import "PersonDetails.h"
 #import "JSONAPIRequest.h"
 #import "MapSearchResultAnnotation.h"
 #import "KGOTableViewController.h"
+#import "KGODetailPager.h"
+#import "KGOPersonWrapper.h"
 
 @interface PeopleDetailsViewController : KGOTableViewController
 	<ABPeoplePickerNavigationControllerDelegate, 
 	 ABNewPersonViewControllerDelegate, 
 	 ABPersonViewControllerDelegate, 
-	 JSONAPIDelegate,
-     UIAlertViewDelegate> 
+     KGODetailPagerDelegate> 
 {
 
-	PersonDetails *personDetails;
-	NSMutableArray *sectionArray;
-	NSString *fullname;
-    
-    // issue a background search for address, which if found enables an action icon to view the map
-    ArcGISMapAnnotation *addressSearchAnnotation;
-    NSInteger addressSection; // tell the tableView which section to reload if address is found
+    KGOPersonWrapper *_person;
+	NSMutableArray *_sectionArray;
+    NSInteger _phoneSection;
+    NSInteger _emailSection;
+    NSInteger _addressSection;
 }
 
-@property (nonatomic, retain) PersonDetails *personDetails;
+@property (nonatomic, retain) KGOPersonWrapper *person;
 @property (nonatomic, retain) NSMutableArray *sectionArray;
-@property (nonatomic, retain) NSString *fullname;
+@property (nonatomic, retain) KGODetailPager *pager;
 
 - (void)mapIconTapped:(NSString *)address;
 - (void)phoneIconTapped:(NSString *)phone;
@@ -33,5 +31,3 @@
 
 @end
 
-@interface PhoneCallAlertViewDelegate : NSObject<UIAlertViewDelegate> {}
-@end

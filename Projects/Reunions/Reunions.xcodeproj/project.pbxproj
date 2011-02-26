@@ -132,6 +132,20 @@
 		EB181719130CC074003728FF /* LoginModule.m in Sources */ = {isa = PBXBuildFile; fileRef = EB181717130CC074003728FF /* LoginModule.m */; };
 		EB1819231315D0E9003728FF /* MapSettingsViewController.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB1819211315D0E9003728FF /* MapSettingsViewController.h */; settings = {JAVA_ARCHIVE_SUBDIR = ../../Modules/Map; }; };
 		EB1819241315D0E9003728FF /* MapSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EB1819221315D0E9003728FF /* MapSettingsViewController.m */; };
+		EB18193F1315E295003728FF /* KGOPersonWrapper.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB18193D1315E295003728FF /* KGOPersonWrapper.h */; settings = {JAVA_ARCHIVE_SUBDIR = ../../Modules/People/Model; }; };
+		EB1819401315E295003728FF /* KGOPersonWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = EB18193E1315E295003728FF /* KGOPersonWrapper.m */; };
+		EB181B0513174E09003728FF /* KGOPostalAddress.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB181B0313174E09003728FF /* KGOPostalAddress.h */; settings = {JAVA_ARCHIVE_SUBDIR = ../../Common/DataModels; }; };
+		EB181B0613174E09003728FF /* KGOPostalAddress.m in Sources */ = {isa = PBXBuildFile; fileRef = EB181B0413174E09003728FF /* KGOPostalAddress.m */; };
+		EB181B0913174ED3003728FF /* KGOContact.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB181B0713174ED3003728FF /* KGOContact.h */; settings = {JAVA_ARCHIVE_SUBDIR = ../../Common/DataModels; }; };
+		EB181B0A13174ED3003728FF /* KGOContact.m in Sources */ = {isa = PBXBuildFile; fileRef = EB181B0813174ED3003728FF /* KGOContact.m */; };
+		EB181B1513174F41003728FF /* PersonContact.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB181B0D13174F41003728FF /* PersonContact.h */; settings = {JAVA_ARCHIVE_SUBDIR = ../../Modules/People/Model; }; };
+		EB181B1613174F41003728FF /* PersonContact.m in Sources */ = {isa = PBXBuildFile; fileRef = EB181B0E13174F41003728FF /* PersonContact.m */; };
+		EB181B1713174F41003728FF /* PersonAddress.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB181B0F13174F41003728FF /* PersonAddress.h */; settings = {JAVA_ARCHIVE_SUBDIR = ../../Modules/People/Model; }; };
+		EB181B1813174F41003728FF /* PersonAddress.m in Sources */ = {isa = PBXBuildFile; fileRef = EB181B1013174F41003728FF /* PersonAddress.m */; };
+		EB181B1913174F41003728FF /* PersonOrganization.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB181B1113174F41003728FF /* PersonOrganization.h */; settings = {JAVA_ARCHIVE_SUBDIR = ../../Modules/People/Model; }; };
+		EB181B1A13174F41003728FF /* PersonOrganization.m in Sources */ = {isa = PBXBuildFile; fileRef = EB181B1213174F41003728FF /* PersonOrganization.m */; };
+		EB181B231317577D003728FF /* KGOPerson.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB181B211317577D003728FF /* KGOPerson.h */; settings = {JAVA_ARCHIVE_SUBDIR = ../../Modules/People/Model; }; };
+		EB181B241317577D003728FF /* KGOPerson.m in Sources */ = {isa = PBXBuildFile; fileRef = EB181B221317577D003728FF /* KGOPerson.m */; };
 		EB358ACF1309F9CE000250AD /* FacebookModule.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB358ACD1309F9CE000250AD /* FacebookModule.h */; settings = {JAVA_ARCHIVE_SUBDIR = Modules/Facebook; }; };
 		EB358AD01309F9CE000250AD /* FacebookModule.m in Sources */ = {isa = PBXBuildFile; fileRef = EB358ACE1309F9CE000250AD /* FacebookModule.m */; };
 		EB358AD41309FA4E000250AD /* FacebookPhotosViewController.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB358AD11309FA4E000250AD /* FacebookPhotosViewController.h */; settings = {JAVA_ARCHIVE_SUBDIR = Modules/Facebook; }; };
@@ -161,7 +175,6 @@
 		EB7F327F10CD6C5B00188BCD /* PeopleDataModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = EB7F326A10CD6C5B00188BCD /* PeopleDataModel.xcdatamodeld */; };
 		EB7F328310CD6C5B00188BCD /* PeopleDetailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EB7F327310CD6C5B00188BCD /* PeopleDetailsViewController.m */; };
 		EB7F328410CD6C5B00188BCD /* PeopleModule.m in Sources */ = {isa = PBXBuildFile; fileRef = EB7F327510CD6C5B00188BCD /* PeopleModule.m */; };
-		EB7F328510CD6C5B00188BCD /* PeopleRecentsData.m in Sources */ = {isa = PBXBuildFile; fileRef = EB7F327710CD6C5B00188BCD /* PeopleRecentsData.m */; };
 		EB7F32D310CD6FB300188BCD /* AddressBook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EB7F32D210CD6FB300188BCD /* AddressBook.framework */; };
 		EB7F32D710CD6FBB00188BCD /* AddressBookUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EB7F32D610CD6FBB00188BCD /* AddressBookUI.framework */; };
 		EB83923C1163ECC20067C0A3 /* CalendarDetailViewController.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB83923A1163ECC20067C0A3 /* CalendarDetailViewController.h */; settings = {JAVA_ARCHIVE_SUBDIR = Modules/Calendar; }; };
@@ -208,8 +221,6 @@
 		EBAE86401215FB0D00F370BE /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = EBAE863E1215FB0D00F370BE /* Icon.png */; };
 		EBAE86411215FB0D00F370BE /* Icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = EBAE863F1215FB0D00F370BE /* Icon@2x.png */; };
 		EBAE86451215FB4900F370BE /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = EBAE86441215FB4900F370BE /* Default@2x.png */; };
-		EBAE92B7121D733200F370BE /* PersonDetails.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EBAE92B5121D733200F370BE /* PersonDetails.h */; settings = {JAVA_ARCHIVE_SUBDIR = Modules/People/Model; }; };
-		EBAE92B8121D733200F370BE /* PersonDetails.m in Sources */ = {isa = PBXBuildFile; fileRef = EBAE92B6121D733200F370BE /* PersonDetails.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -406,6 +417,20 @@
 		EB181717130CC074003728FF /* LoginModule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginModule.m; sourceTree = "<group>"; };
 		EB1819211315D0E9003728FF /* MapSettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MapSettingsViewController.h; sourceTree = "<group>"; };
 		EB1819221315D0E9003728FF /* MapSettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MapSettingsViewController.m; sourceTree = "<group>"; };
+		EB18193D1315E295003728FF /* KGOPersonWrapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGOPersonWrapper.h; sourceTree = "<group>"; };
+		EB18193E1315E295003728FF /* KGOPersonWrapper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGOPersonWrapper.m; sourceTree = "<group>"; };
+		EB181B0313174E09003728FF /* KGOPostalAddress.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGOPostalAddress.h; sourceTree = "<group>"; };
+		EB181B0413174E09003728FF /* KGOPostalAddress.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGOPostalAddress.m; sourceTree = "<group>"; };
+		EB181B0713174ED3003728FF /* KGOContact.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGOContact.h; sourceTree = "<group>"; };
+		EB181B0813174ED3003728FF /* KGOContact.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGOContact.m; sourceTree = "<group>"; };
+		EB181B0D13174F41003728FF /* PersonContact.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PersonContact.h; sourceTree = "<group>"; };
+		EB181B0E13174F41003728FF /* PersonContact.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PersonContact.m; sourceTree = "<group>"; };
+		EB181B0F13174F41003728FF /* PersonAddress.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PersonAddress.h; sourceTree = "<group>"; };
+		EB181B1013174F41003728FF /* PersonAddress.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PersonAddress.m; sourceTree = "<group>"; };
+		EB181B1113174F41003728FF /* PersonOrganization.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PersonOrganization.h; sourceTree = "<group>"; };
+		EB181B1213174F41003728FF /* PersonOrganization.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PersonOrganization.m; sourceTree = "<group>"; };
+		EB181B211317577D003728FF /* KGOPerson.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGOPerson.h; sourceTree = "<group>"; };
+		EB181B221317577D003728FF /* KGOPerson.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGOPerson.m; sourceTree = "<group>"; };
 		EB358ACD1309F9CE000250AD /* FacebookModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FacebookModule.h; sourceTree = "<group>"; };
 		EB358ACE1309F9CE000250AD /* FacebookModule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FacebookModule.m; sourceTree = "<group>"; };
 		EB358AD11309FA4E000250AD /* FacebookPhotosViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FacebookPhotosViewController.h; sourceTree = "<group>"; };
@@ -436,8 +461,6 @@
 		EB7F327310CD6C5B00188BCD /* PeopleDetailsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PeopleDetailsViewController.m; sourceTree = "<group>"; };
 		EB7F327410CD6C5B00188BCD /* PeopleModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PeopleModule.h; sourceTree = "<group>"; };
 		EB7F327510CD6C5B00188BCD /* PeopleModule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PeopleModule.m; sourceTree = "<group>"; };
-		EB7F327610CD6C5B00188BCD /* PeopleRecentsData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PeopleRecentsData.h; sourceTree = "<group>"; };
-		EB7F327710CD6C5B00188BCD /* PeopleRecentsData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PeopleRecentsData.m; sourceTree = "<group>"; };
 		EB7F32D210CD6FB300188BCD /* AddressBook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBook.framework; path = System/Library/Frameworks/AddressBook.framework; sourceTree = SDKROOT; };
 		EB7F32D610CD6FBB00188BCD /* AddressBookUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBookUI.framework; path = System/Library/Frameworks/AddressBookUI.framework; sourceTree = SDKROOT; };
 		EB83923A1163ECC20067C0A3 /* CalendarDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CalendarDetailViewController.h; sourceTree = "<group>"; };
@@ -486,8 +509,6 @@
 		EBAE863E1215FB0D00F370BE /* Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Icon.png; path = Resources/Icon.png; sourceTree = "<group>"; };
 		EBAE863F1215FB0D00F370BE /* Icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Icon@2x.png"; path = "Resources/Icon@2x.png"; sourceTree = "<group>"; };
 		EBAE86441215FB4900F370BE /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Default@2x.png"; path = "Resources/Default@2x.png"; sourceTree = "<group>"; };
-		EBAE92B5121D733200F370BE /* PersonDetails.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PersonDetails.h; sourceTree = "<group>"; };
-		EBAE92B6121D733200F370BE /* PersonDetails.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PersonDetails.m; sourceTree = "<group>"; };
 		EBCA123210CEF3C400577C5D /* PeopleSearchViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PeopleSearchViewController.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -749,6 +770,7 @@
 				EB1386C112F22DBC004DBB7C /* Constants.h */,
 				EB1386C212F22DBC004DBB7C /* Constants.m */,
 				EB1430641301A87900396753 /* Search */,
+				EB181B0213174DF8003728FF /* DataModels */,
 				EB5773F912FE111500BAF5F5 /* DataControllers */,
 				EB13871A12F22DBC004DBB7C /* ViewControllers */,
 				EB13872112F22DBC004DBB7C /* Views */,
@@ -938,6 +960,17 @@
 			path = ../../Modules/Login;
 			sourceTree = SOURCE_ROOT;
 		};
+		EB181B0213174DF8003728FF /* DataModels */ = {
+			isa = PBXGroup;
+			children = (
+				EB181B0313174E09003728FF /* KGOPostalAddress.h */,
+				EB181B0413174E09003728FF /* KGOPostalAddress.m */,
+				EB181B0713174ED3003728FF /* KGOContact.h */,
+				EB181B0813174ED3003728FF /* KGOContact.m */,
+			);
+			path = DataModels;
+			sourceTree = "<group>";
+		};
 		EB358ACC1309F9AB000250AD /* Facebook */ = {
 			isa = PBXGroup;
 			children = (
@@ -990,8 +1023,6 @@
 				EB7F326910CD6C5B00188BCD /* Model */,
 				EB7F327410CD6C5B00188BCD /* PeopleModule.h */,
 				EB7F327510CD6C5B00188BCD /* PeopleModule.m */,
-				EB7F327610CD6C5B00188BCD /* PeopleRecentsData.h */,
-				EB7F327710CD6C5B00188BCD /* PeopleRecentsData.m */,
 				EBCA123210CEF3C400577C5D /* PeopleSearchViewController.h */,
 				EBA2865510E07E140003BA01 /* PeopleSearchViewController.m */,
 				EB7F327210CD6C5B00188BCD /* PeopleDetailsViewController.h */,
@@ -1004,9 +1035,17 @@
 		EB7F326910CD6C5B00188BCD /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				EBAE92B5121D733200F370BE /* PersonDetails.h */,
-				EBAE92B6121D733200F370BE /* PersonDetails.m */,
 				EB7F326A10CD6C5B00188BCD /* PeopleDataModel.xcdatamodeld */,
+				EB18193D1315E295003728FF /* KGOPersonWrapper.h */,
+				EB18193E1315E295003728FF /* KGOPersonWrapper.m */,
+				EB181B0D13174F41003728FF /* PersonContact.h */,
+				EB181B0E13174F41003728FF /* PersonContact.m */,
+				EB181B0F13174F41003728FF /* PersonAddress.h */,
+				EB181B1013174F41003728FF /* PersonAddress.m */,
+				EB181B1113174F41003728FF /* PersonOrganization.h */,
+				EB181B1213174F41003728FF /* PersonOrganization.m */,
+				EB181B211317577D003728FF /* KGOPerson.h */,
+				EB181B221317577D003728FF /* KGOPerson.m */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -1095,7 +1134,6 @@
 				EB7BA33E11F7677F00B3DDA6 /* PolygonOverlay.h in JavaArchive */,
 				EB3721AA11FA2F5200705180 /* NewsImage.h in JavaArchive */,
 				A623F1F1120A035A00341C5E /* ModoThreeStateSwitchControl.h in JavaArchive */,
-				EBAE92B7121D733200F370BE /* PersonDetails.h in JavaArchive */,
 				EB13873112F22DBC004DBB7C /* AnalyticsWrapper.h in JavaArchive */,
 				EB13873712F22DBC004DBB7C /* ConnectionWrapper.h in JavaArchive */,
 				EB13873912F22DBC004DBB7C /* JSONAPIRequest.h in JavaArchive */,
@@ -1153,6 +1191,13 @@
 				EB181713130C9C43003728FF /* KGOHomeScreenWidget.h in JavaArchive */,
 				EB181718130CC074003728FF /* LoginModule.h in JavaArchive */,
 				EB1819231315D0E9003728FF /* MapSettingsViewController.h in JavaArchive */,
+				EB18193F1315E295003728FF /* KGOPersonWrapper.h in JavaArchive */,
+				EB181B0513174E09003728FF /* KGOPostalAddress.h in JavaArchive */,
+				EB181B0913174ED3003728FF /* KGOContact.h in JavaArchive */,
+				EB181B1513174F41003728FF /* PersonContact.h in JavaArchive */,
+				EB181B1713174F41003728FF /* PersonAddress.h in JavaArchive */,
+				EB181B1913174F41003728FF /* PersonOrganization.h in JavaArchive */,
+				EB181B231317577D003728FF /* KGOPerson.h in JavaArchive */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1330,7 +1375,6 @@
 				EB7F327F10CD6C5B00188BCD /* PeopleDataModel.xcdatamodeld in Sources */,
 				EB7F328310CD6C5B00188BCD /* PeopleDetailsViewController.m in Sources */,
 				EB7F328410CD6C5B00188BCD /* PeopleModule.m in Sources */,
-				EB7F328510CD6C5B00188BCD /* PeopleRecentsData.m in Sources */,
 				4463CC9810D6F4A50048CA83 /* MapModule.m in Sources */,
 				4463CC9B10D6F4A50048CA83 /* MapSearchResultAnnotation.m in Sources */,
 				DE728E6C10D6FF4700BFED37 /* StoryThumbnailView.m in Sources */,
@@ -1361,7 +1405,6 @@
 				EB7BA33F11F7677F00B3DDA6 /* PolygonOverlay.m in Sources */,
 				EB3721AB11FA2F5200705180 /* NewsImage.m in Sources */,
 				A623F1F2120A035A00341C5E /* ModoThreeStateSwitchControl.m in Sources */,
-				EBAE92B8121D733200F370BE /* PersonDetails.m in Sources */,
 				EB13873212F22DBC004DBB7C /* AnalyticsWrapper.m in Sources */,
 				EB13873812F22DBC004DBB7C /* ConnectionWrapper.m in Sources */,
 				EB13873A12F22DBC004DBB7C /* JSONAPIRequest.m in Sources */,
@@ -1418,6 +1461,13 @@
 				EB181714130C9C43003728FF /* KGOHomeScreenWidget.m in Sources */,
 				EB181719130CC074003728FF /* LoginModule.m in Sources */,
 				EB1819241315D0E9003728FF /* MapSettingsViewController.m in Sources */,
+				EB1819401315E295003728FF /* KGOPersonWrapper.m in Sources */,
+				EB181B0613174E09003728FF /* KGOPostalAddress.m in Sources */,
+				EB181B0A13174ED3003728FF /* KGOContact.m in Sources */,
+				EB181B1613174F41003728FF /* PersonContact.m in Sources */,
+				EB181B1813174F41003728FF /* PersonAddress.m in Sources */,
+				EB181B1A13174F41003728FF /* PersonOrganization.m in Sources */,
+				EB181B241317577D003728FF /* KGOPerson.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

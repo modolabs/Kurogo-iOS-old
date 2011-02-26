@@ -1,6 +1,7 @@
 #import "KGORequestManager.h"
 #import "Foundation+KGOAdditions.h"
 #import "JSON.h"
+#import "KGOAppDelegate.h"
 
 NSString * const KGORequestErrorDomain = @"com.modolabs.KGORequest.ErrorDomain";
 
@@ -23,30 +24,43 @@ NSString * const KGORequestErrorDomain = @"com.modolabs.KGORequest.ErrorDomain";
     if (self) {
 		self.cachePolicy = NSURLRequestReloadIgnoringLocalAndRemoteCacheData;
 		self.timeout = 30;
-		self.expectedResponseType = KGORequestResponseDictionary;
+		self.expectedResponseType = [NSDictionary class];
 	}
 	return self;
 }
 
 - (BOOL)connect {
+    NSError *error = nil;
+    NSDictionary *userInfo = nil;
+    BOOL success = NO;
+    
 	if (_connection) {
-		NSLog(@"could not connect because the connection is already in use");
-		return NO;
-	}
-	NSURLRequest *request = [NSURLRequest requestWithURL:self.url cachePolicy:self.cachePolicy timeoutInterval:self.timeout];
-	if (![NSURLConnection canHandleRequest:request]) {
-		NSLog(@"cannot handle request: %@", [self.url absoluteString]);
-		return NO;
-	}
-	_connection = [[NSURLConnection alloc] initWithRequest:request delegate:self];
-	if (_connection) {
-		[_data release];
-		_data = [[NSMutableData alloc] init];
-		[self retain];
-		return YES;
-	}
-	NSLog(@"failed to form a connection to url: %@", [self.url absoluteString]);
-	return NO;
+        userInfo = [NSDictionary dictionaryWithObjectsAndKeys:@"could not connect because the connection is already in use", @"message", nil];
+        error = [NSError errorWithDomain:KGORequestErrorDomain code:KGORequestErrorBadRequest userInfo:userInfo];
+	} else {
+        NSURLRequest *request = [NSURLRequest requestWithURL:self.url cachePolicy:self.cachePolicy timeoutInterval:self.timeout];
+        if (![NSURLConnection canHandleRequest:request]) {
+            userInfo = [NSDictionary dictionaryWithObjectsAndKeys:[NSString stringWithFormat:@"cannot handle request: %@", [self.url absoluteString]], @"message", nil];
+            error = [NSError errorWithDomain:KGORequestErrorDomain code:KGORequestErrorBadRequest userInfo:userInfo];
+        } else {
+            _connection = [[NSURLConnection alloc] initWithRequest:request delegate:self];
+            if (_connection) {
+                [_data release];
+                _data = [[NSMutableData alloc] init];
+                [self retain];
+                success = YES;
+            }
+        }
+    }
+
+    if (!success) {
+        if (!error) {
+            userInfo = [NSDictionary dictionaryWithObjectsAndKeys:[NSString stringWithFormat:@"could not connect to url: %@", [self.url absoluteString]], @"message", nil];
+            error = [NSError errorWithDomain:KGORequestErrorDomain code:KGORequestErrorBadRequest userInfo:userInfo];
+        }
+        [[KGORequestManager sharedManager] showAlertForError:error];
+    }
+	return success;
 }
 
 - (void)cancel {
@@ -149,19 +163,7 @@ NSString * const KGORequestErrorDomain = @"com.modolabs.KGORequest.ErrorDomain";
 		_data = nil;
 	}
 	
-	BOOL canProceed = YES;
-	switch (self.expectedResponseType) {
-		case KGORequestResponseDictionary:
-			canProceed = [result isKindOfClass:[NSDictionary class]];
-			break;
-		case KGORequestResponseArray:
-			canProceed = [result isKindOfClass:[NSArray class]];
-			break;
-		case KGORequestResponseData:
-			canProceed = [result isKindOfClass:[NSData class]];
-			break;
-	}
-	
+	BOOL canProceed = [result isKindOfClass:self.expectedResponseType];
 	if (!canProceed) {
 		NSDictionary *errorInfo = [NSDictionary dictionaryWithObjectsAndKeys:@"result type does not match expected response type", @"message", nil];
 		[self terminateWithErrorCode:KGORequestErrorBadResponse userInfo:errorInfo];
@@ -294,6 +296,8 @@ NSString * const KGORequestErrorDomain = @"com.modolabs.KGORequest.ErrorDomain";
 }
 
 - (void)showAlertForError:(NSError *)error {
+    NSLog(@"%@", [error userInfo]);
+    
 	NSString *title = nil;
 	NSString *message = nil;
 	
@@ -345,8 +349,15 @@ NSString * const KGORequestErrorDomain = @"com.modolabs.KGORequest.ErrorDomain";
 - (id)init {
     self = [super init];
     if (self) {
-		// read config vars here
-		_baseURL = [[NSURL alloc] initWithScheme:_uriScheme host:_host path:@"native-api"];
+        NSDictionary *configDict = [(KGOAppDelegate *)[[UIApplication sharedApplication] delegate] appConfig];
+        NSDictionary *servers = [configDict objectForKey:@"Servers"];
+        NSDictionary *security = [configDict objectForKey:@"Security"];
+        BOOL useHTTPS = [security boolForKey:@"UseHTTPS"];
+        
+        _uriScheme = useHTTPS ? @"https" : @"http";
+        // TODO: allow this mode to be changed
+        _host = [[servers objectForKey:@"development"] retain];
+		_baseURL = [[NSURL alloc] initWithScheme:_uriScheme host:_host path:@"/api"];
 	}
 	return self;
 }

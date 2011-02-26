@@ -1,14 +1,12 @@
 #import "KGOModule.h"
 #import "JSONAPIRequest.h"
+#import "KGORequestManager.h"
 
-@class PeopleSearchViewController;
-
-@interface PeopleModule : KGOModule <JSONAPIDelegate> {
+@interface PeopleModule : KGOModule <KGORequestDelegate> {
 	
-    JSONAPIRequest *request;
 }
 
-@property (nonatomic, retain) JSONAPIRequest *request;
+@property (nonatomic, retain) KGORequest *request;
 
 @end
 

@@ -384,7 +384,7 @@ showingOnlySearchResults = _showingOnlySearchResults;
 	return [_searchTableController tableView:tableView cellForRowAtIndexPath:indexPath];
 }
 
-#pragma mark KGOPagerDelegate
+#pragma mark KGODetailPagerController
 
 - (NSInteger)numberOfSections:(KGODetailPager *)pager {
     return 1;

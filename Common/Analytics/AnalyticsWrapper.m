@@ -19,6 +19,7 @@ static AnalyticsWrapper *s_sharedWrapper = nil;
     if (self) {
         NSDictionary *infoDict = [(KGOAppDelegate *)[[UIApplication sharedApplication] delegate] appConfig];
 		_preferences = [[infoDict objectForKey:@"Analytics"] retain];
+        _provider = KGOAnalyticsProviderNone;
     }
     return self;
 }
@@ -28,8 +29,8 @@ static AnalyticsWrapper *s_sharedWrapper = nil;
 	NSString *provider = [_preferences objectForKey:@"Provider"];
 	NSString *accountID = [_preferences objectForKey:@"AccountID"];
 	
-	if ([provider isEqualToString:@"Google"]) {
-		_provider = ModoAnalyticsProviderGoogle;
+	if ([provider isEqualToString:@"Google"] && [accountID length]) {
+		_provider = KGOAnalyticsProviderGoogle;
 		
 		// TODO: figure out reasonable dispatch time interval
 		[[GANTracker sharedTracker] startTrackerWithAccountID:accountID
@@ -40,7 +41,7 @@ static AnalyticsWrapper *s_sharedWrapper = nil;
 
 - (void)shutdown {
 	switch (_provider) {
-		case ModoAnalyticsProviderGoogle:
+		case KGOAnalyticsProviderGoogle:
 			[[GANTracker sharedTracker] stopTracker];
 			break;
 		default:
@@ -50,7 +51,7 @@ static AnalyticsWrapper *s_sharedWrapper = nil;
 
 - (void)trackPageview:(NSString *)pageID {
 	switch (_provider) {
-		case ModoAnalyticsProviderGoogle:
+		case KGOAnalyticsProviderGoogle:
 		{
 			NSError *error = nil;
 			// TODO: GA requires page views to begin with a slash
@@ -71,7 +72,7 @@ static AnalyticsWrapper *s_sharedWrapper = nil;
 
 - (void)trackEvent:(NSString *)event action:(NSString *)action label:(NSString *)label {
 	switch (_provider) {
-		case ModoAnalyticsProviderGoogle:
+		case KGOAnalyticsProviderGoogle:
 		{
 			NSError *error = nil;
 			if (![[GANTracker sharedTracker] trackEvent:event  // required

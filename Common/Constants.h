@@ -86,6 +86,10 @@ extern NSString * const NewsStoryEntityName;
 extern NSString * const NewsCategoryEntityName;
 extern NSString * const NewsImageEntityName;
 extern NSString * const NewsImageRepEntityName;
+
+extern NSString * const KGOPersonEntityName;
+extern NSString * const PersonContactEntityName;
+
 extern NSString * const PersonDetailsEntityName;
 extern NSString * const PersonDetailEntityName;
 extern NSString * const StellarCourseEntityName;

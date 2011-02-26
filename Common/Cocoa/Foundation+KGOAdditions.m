@@ -159,3 +159,203 @@ static NSComparisonResult sortWithBlock(id a, id b, void *context) {
 }
 
 @end
+
+
+@implementation NSArray (JSONParser)
+
+- (NSString *)stringAtIndex:(NSInteger)index {
+    id object = [self objectAtIndex:index];
+    if ([object isKindOfClass:[NSString class]])
+        return (NSString *)object;
+    
+    return nil;
+}
+
+- (NSNumber *)numberAtIndex:(NSInteger)index {
+    id object = [self objectAtIndex:index];
+    if ([object isKindOfClass:[NSNumber class]])
+        return (NSNumber *)object;
+    
+    return nil;
+}
+
+- (NSArray *)arrayAtIndex:(NSInteger)index {
+    id object = [self objectAtIndex:index];
+    if ([object isKindOfClass:[NSArray class]])
+        return (NSArray *)object;
+
+    return nil;
+}
+
+- (NSDate *)dateAtIndex:(NSInteger)index {
+    id object = [self objectAtIndex:index];
+    if ([object isKindOfClass:[NSDate class]])
+        return (NSDate *)object;
+
+    return nil;
+}
+
+- (NSDate *)dateAtIndex:(NSInteger)index format:(NSString *)format {
+    NSString *string = [self stringAtIndex:index];
+    NSDateFormatter *df = [[[NSDateFormatter alloc] init] autorelease];
+    [df setDateFormat:format];
+    return [df dateFromString:string];
+}
+
+- (NSDictionary *)dictionaryAtIndex:(NSInteger)index {
+    id object = [self objectAtIndex:index];
+    if ([object isKindOfClass:[NSDictionary class]])
+        return (NSDictionary *)object;
+    
+    return nil;
+}
+
+- (BOOL)boolAtIndex:(NSInteger)index {
+    id object = [self objectAtIndex:index];
+    
+    if ([object isKindOfClass:[NSNumber class]])
+        return [(NSNumber *)object boolValue];
+    
+    if ([object isKindOfClass:[NSString class]])
+        return [(NSString *)object boolValue];
+    
+    return NO;
+}
+
+- (NSInteger)integerAtIndex:(NSInteger)index {
+    id object = [self objectAtIndex:index];
+    
+    if ([object isKindOfClass:[NSNumber class]])
+        return [(NSNumber *)object integerValue];
+    
+    if ([object isKindOfClass:[NSString class]])
+        return [(NSString *)object integerValue];
+    
+    return NSNotFound;
+}
+
+- (CGFloat)floatAtIndex:(NSInteger)index {
+    id object = [self objectAtIndex:index];
+    
+    if ([object isKindOfClass:[NSNumber class]])
+        return [(NSNumber *)object floatValue];
+    
+    if ([object isKindOfClass:[NSString class]])
+        return [(NSString *)object floatValue];
+    
+    return NO;
+}
+
+- (CGFloat)floatAtIndex:(NSInteger)index defaultValue:(CGFloat)defaultValue {
+    id object = [self objectAtIndex:index];
+    
+    if ([object isKindOfClass:[NSNumber class]])
+        return [(NSNumber *)object floatValue];
+    
+    if ([object isKindOfClass:[NSString class]])
+        return [(NSString *)object floatValue];
+    
+    return defaultValue;
+}
+
+@end
+
+
+@implementation NSDictionary (JSONParser)
+
+- (NSString *)stringForKey:(NSString *)key {
+    id object = [self objectForKey:key];
+    if ([object isKindOfClass:[NSString class]])
+        return (NSString *)object;
+    
+    return nil;
+}
+
+- (NSNumber *)numberForKey:(NSString *)key {
+    id object = [self objectForKey:key];
+    if ([object isKindOfClass:[NSNumber class]])
+        return (NSNumber *)object;
+    
+    return nil;
+}
+
+- (NSArray *)arrayForKey:(NSString *)key {
+    id object = [self objectForKey:key];
+    if ([object isKindOfClass:[NSArray class]])
+        return (NSArray *)object;
+    
+    return nil;
+}
+
+- (NSDate *)dateForKey:(NSString *)key {
+    id object = [self objectForKey:key];
+    if ([object isKindOfClass:[NSDate class]])
+        return (NSDate *)object;
+    
+    return nil;
+}
+
+- (NSDate *)dateForKey:(NSString *)key format:(NSString *)format {
+    NSString *string = [self stringForKey:key];
+    NSDateFormatter *df = [[[NSDateFormatter alloc] init] autorelease];
+    [df setDateFormat:format];
+    return [df dateFromString:string];
+}
+
+- (NSDictionary *)dictionaryForKey:(NSString *)key {
+    id object = [self objectForKey:key];
+    if ([object isKindOfClass:[NSDictionary class]])
+        return (NSDictionary *)object;
+    
+    return nil;
+}
+
+- (BOOL)boolForKey:(NSString *)key {
+    id object = [self objectForKey:key];
+    
+    if ([object isKindOfClass:[NSNumber class]])
+        return [(NSNumber *)object boolValue];
+    
+    if ([object isKindOfClass:[NSString class]])
+        return [(NSString *)object boolValue];
+    
+    return NO;
+}
+
+- (NSInteger)integerForKey:(NSString *)key {
+    id object = [self objectForKey:key];
+    
+    if ([object isKindOfClass:[NSNumber class]])
+        return [(NSNumber *)object integerValue];
+    
+    if ([object isKindOfClass:[NSString class]])
+        return [(NSString *)object integerValue];
+    
+    return NSNotFound;
+}
+
+- (CGFloat)floatForKey:(NSString *)key {
+    id object = [self objectForKey:key];
+    
+    if ([object isKindOfClass:[NSNumber class]])
+        return [(NSNumber *)object floatValue];
+    
+    if ([object isKindOfClass:[NSString class]])
+        return [(NSString *)object floatValue];
+    
+    return NO;
+}
+
+- (CGFloat)floatForKey:(NSString *)key defaultValue:(CGFloat)defaultValue {
+    id object = [self objectForKey:key];
+    
+    if ([object isKindOfClass:[NSNumber class]])
+        return [(NSNumber *)object floatValue];
+    
+    if ([object isKindOfClass:[NSString class]])
+        return [(NSString *)object floatValue];
+    
+    return defaultValue;
+}
+
+@end
