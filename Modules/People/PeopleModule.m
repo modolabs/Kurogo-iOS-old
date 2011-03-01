@@ -29,7 +29,7 @@
                                                                    module:PeopleTag
                                                                      path:@"search"
                                                                    params:[NSDictionary dictionaryWithObjectsAndKeys:searchText, @"q", nil]];
-    self.request.expectedResponseType = [NSArray class];
+    self.request.expectedResponseType = [NSDictionary class];
     if (self.request)
         [self.request connect];
 }
@@ -91,8 +91,11 @@
 
 - (void)request:(KGORequest *)request didReceiveResult:(id)result {
     self.request = nil;
-    NSMutableArray *searchResults = [NSMutableArray arrayWithCapacity:[(NSArray *)result count]];
-    for (id aResult in result) {
+
+    NSArray *resultArray = [result arrayForKey:@"results"];
+    NSMutableArray *searchResults = [NSMutableArray arrayWithCapacity:[(NSArray *)resultArray count]];
+    for (id aResult in resultArray) {
+        NSLog(@"%@", [aResult description]);
         KGOPersonWrapper *person = [[[KGOPersonWrapper alloc] initWithDictionary:aResult] autorelease];
         if (person)
             [searchResults addObject:person];

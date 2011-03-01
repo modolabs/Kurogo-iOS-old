@@ -77,8 +77,8 @@ typedef NSComparisonResult (^ComparatorBlock)(id, id, void *);
 
 @interface NSDictionary (JSONParser)
 
-// returns nil on failure
-- (NSString *)stringForKey:(NSString *)key;
+// returns nil on type failure
+- (NSString *)stringForKey:(NSString *)key nilIfEmpty:(BOOL)nilIfEmpty;
 - (NSNumber *)numberForKey:(NSString *)key;
 - (NSArray *)arrayForKey:(NSString *)key;
 - (NSDate *)dateForKey:(NSString *)key;

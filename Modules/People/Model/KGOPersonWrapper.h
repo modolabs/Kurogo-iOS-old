@@ -55,6 +55,7 @@
 @property (nonatomic, retain) NSArray *webpages;
 
 - (id)initWithDictionary:(NSDictionary *)dictionary;
++ (NSString *)displayAddressForDict:(NSDictionary *)addressDict;
 
 // address book
 

@@ -8,6 +8,8 @@
 
 @property (nonatomic, retain) KGOPerson * person;
 
+- (NSDictionary *)dictionary;
+
 @end
 
 

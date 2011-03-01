@@ -70,7 +70,7 @@
     for (NSDictionary *orgDict in self.person.organizations) {
         currentSection = [NSMutableArray array];
         for (NSString *label in [NSArray arrayWithObjects:@"jobTitle", @"organization", @"department", nil]) {
-            NSString *value = [orgDict stringForKey:label];
+            NSString *value = [orgDict stringForKey:label nilIfEmpty:YES];
             if (value) {
                 [currentSection addObject:[NSDictionary dictionaryWithObjectsAndKeys:label, @"label", value, @"value", nil]];
             }
@@ -104,41 +104,19 @@
     if (self.person.addresses.count) {
         _addressSection = self.sectionArray.count;
         
+        currentSection = [NSMutableArray array];
         for (NSDictionary *aDict in self.person.addresses) {
-            NSString *label = [aDict stringForKey:@"label"];
+            NSString *label = [aDict stringForKey:@"label" nilIfEmpty:NO];
             if (!label)
                 label = [NSString string];
-
-            NSString *displayAddress = [aDict stringForKey:@"displayAddress"];
-            if (!displayAddress) {
-                NSMutableArray *addressArray = [NSMutableArray array];
-                
-                NSMutableArray *lineArray = [NSMutableArray array];
-                for (NSString *key in [NSArray arrayWithObjects:@"street", @"street2", nil]) {
-                    NSString *tempVal = [aDict stringForKey:key];
-                    if (tempVal)
-                        [lineArray addObject:tempVal];
-                }
-                if (lineArray.count)
-                    [addressArray addObject:[lineArray componentsJoinedByString:@"\n"]];
-                
-                lineArray = [NSMutableArray array];
-                for (NSString *key in [NSArray arrayWithObjects:@"city", @"state", @"country", nil]) {
-                    NSString *tempVal = [aDict stringForKey:key];
-                    if (tempVal)
-                        [lineArray addObject:tempVal];
-                }
-                if (lineArray.count)
-                    [addressArray addObject:[lineArray componentsJoinedByString:@","]];
-
-                NSString *zip = [aDict stringForKey:@"zip"];
-                if (zip)
-                    [addressArray addObject:zip];
-                
-                displayAddress = [addressArray componentsJoinedByString:@"\n"];
-            }
+            
+            NSString *displayAddress = [KGOPersonWrapper displayAddressForDict:aDict];
+            if (!displayAddress)
+                displayAddress = [NSString string];
+            
             [currentSection addObject:[NSDictionary dictionaryWithObjectsAndKeys:displayAddress, @"value", label, @"label", nil]];
         }
+        [self.sectionArray addObject:currentSection];
     }
     
     // - IM
@@ -313,15 +291,15 @@
 		// React if the cell tapped has text that that matches the display name of mail, telephonenumber, or postaladdress.
 		if (indexPath.section == _emailSection) {
             NSDictionary *personAttribute = [[self.sectionArray objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
-            [self emailIconTapped:[personAttribute stringForKey:@"value"]];
+            [self emailIconTapped:[personAttribute stringForKey:@"value" nilIfEmpty:YES]];
         }
 		else if (indexPath.section == _phoneSection) {
             NSDictionary *personAttribute = [[self.sectionArray objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
-            [self phoneIconTapped:[personAttribute stringForKey:@"value"]];
+            [self phoneIconTapped:[personAttribute stringForKey:@"value" nilIfEmpty:YES]];
         }
 		else if (indexPath.section == _addressSection) {
             NSDictionary *personAttribute = [[self.sectionArray objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
-            [self mapIconTapped:[personAttribute stringForKey:@"value"]];
+            [self mapIconTapped:[personAttribute stringForKey:@"value" nilIfEmpty:YES]];
         }
 	}
 	

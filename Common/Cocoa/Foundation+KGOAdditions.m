@@ -263,11 +263,13 @@ static NSComparisonResult sortWithBlock(id a, id b, void *context) {
 
 @implementation NSDictionary (JSONParser)
 
-- (NSString *)stringForKey:(NSString *)key {
+- (NSString *)stringForKey:(NSString *)key nilIfEmpty:(BOOL)nilIfEmpty {
     id object = [self objectForKey:key];
-    if ([object isKindOfClass:[NSString class]])
-        return (NSString *)object;
-    
+    if ([object isKindOfClass:[NSString class]]) {
+        NSString *string = (NSString *)object;
+        if (string.length || !nilIfEmpty)
+            return string;
+    }
     return nil;
 }
 
@@ -296,10 +298,13 @@ static NSComparisonResult sortWithBlock(id a, id b, void *context) {
 }
 
 - (NSDate *)dateForKey:(NSString *)key format:(NSString *)format {
-    NSString *string = [self stringForKey:key];
-    NSDateFormatter *df = [[[NSDateFormatter alloc] init] autorelease];
-    [df setDateFormat:format];
-    return [df dateFromString:string];
+    NSString *string = [self stringForKey:key nilIfEmpty:YES];
+    if (string) {
+        NSDateFormatter *df = [[[NSDateFormatter alloc] init] autorelease];
+        [df setDateFormat:format];
+        return [df dateFromString:string];
+    }
+    return nil;
 }
 
 - (NSDictionary *)dictionaryForKey:(NSString *)key {

@@ -9,6 +9,8 @@
 	</dict>
 	<key>Servers</key>
 	<dict>
+		<key>APIPath</key>
+		<string>rest</string>
 		<key>development</key>
 		<string>localhost:8040</string>
 	</dict>

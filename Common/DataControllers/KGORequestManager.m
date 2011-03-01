@@ -38,6 +38,8 @@ NSString * const KGORequestErrorDomain = @"com.modolabs.KGORequest.ErrorDomain";
         userInfo = [NSDictionary dictionaryWithObjectsAndKeys:@"could not connect because the connection is already in use", @"message", nil];
         error = [NSError errorWithDomain:KGORequestErrorDomain code:KGORequestErrorBadRequest userInfo:userInfo];
 	} else {
+        DLog(@"requesting %@", [self.url absoluteString]);
+        
         NSURLRequest *request = [NSURLRequest requestWithURL:self.url cachePolicy:self.cachePolicy timeoutInterval:self.timeout];
         if (![NSURLConnection canHandleRequest:request]) {
             userInfo = [NSDictionary dictionaryWithObjectsAndKeys:[NSString stringWithFormat:@"cannot handle request: %@", [self.url absoluteString]], @"message", nil];
@@ -148,15 +150,20 @@ NSString * const KGORequestErrorDomain = @"com.modolabs.KGORequest.ErrorDomain";
 		}
 
 		NSDictionary *resultDict = (NSDictionary *)parsedResult;
-		NSDictionary *errorDict = [resultDict objectForKey:@"error"];
-		if (errorDict) {
-			[self terminateWithErrorCode:KGORequestErrorServerMessage userInfo:errorDict];
+		id responseError = [resultDict objectForKey:@"error"];
+		if (![responseError isKindOfClass:[NSNull class]]) {
+            // TODO: handle this more thoroughly
+			[self terminateWithErrorCode:KGORequestErrorServerMessage userInfo:responseError];
 			return;
 		}
 		
-		// get version number somewhere here
-		
-		result = [resultDict objectForKey:@"result"];
+        // TODO: do something with this
+        NSInteger version = [resultDict integerForKey:@"version"];
+        if (version) {
+            ;
+        }
+        
+		result = [resultDict objectForKey:@"response"];
 		
 	} else {
 		result = [_data autorelease];
@@ -277,12 +284,13 @@ NSString * const KGORequestErrorDomain = @"com.modolabs.KGORequest.ErrorDomain";
 	KGORequest *request = nil;
 	if (authorized) {
 		request = [[[KGORequest alloc] init] autorelease];
+		request.delegate = delegate;
 		NSURL *requestBaseURL = [[_baseURL URLByAppendingPathComponent:module] URLByAppendingPathComponent:path];
 		NSMutableDictionary *mutableParams = [[params mutableCopy] autorelease];
 		if (_accessToken) {
 			[mutableParams setObject:_accessToken forKey:@"token"];
 		}
-		
+
 		request.url = [NSURL URLWithQueryParameters:params baseURL:requestBaseURL];
 		request.module = module;
 		request.path = path;
@@ -296,7 +304,7 @@ NSString * const KGORequestErrorDomain = @"com.modolabs.KGORequest.ErrorDomain";
 }
 
 - (void)showAlertForError:(NSError *)error {
-    NSLog(@"%@", [error userInfo]);
+    DLog(@"%@", [error userInfo]);
     
 	NSString *title = nil;
 	NSString *message = nil;
@@ -357,7 +365,8 @@ NSString * const KGORequestErrorDomain = @"com.modolabs.KGORequest.ErrorDomain";
         _uriScheme = useHTTPS ? @"https" : @"http";
         // TODO: allow this mode to be changed
         _host = [[servers objectForKey:@"development"] retain];
-		_baseURL = [[NSURL alloc] initWithScheme:_uriScheme host:_host path:@"/api"];
+        NSString *apiPath = [NSString stringWithFormat:@"/%@", [servers objectForKey:@"APIPath"]];
+		_baseURL = [[NSURL alloc] initWithScheme:_uriScheme host:_host path:apiPath];
 	}
 	return self;
 }

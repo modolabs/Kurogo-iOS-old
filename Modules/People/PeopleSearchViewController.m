@@ -177,14 +177,9 @@ searchBar = _searchBar;
         case 1:
         {
             KGOPersonWrapper *person = [_recentlyViewed objectAtIndex:indexPath.row];
-            title = person.name;
+            title = [person title];
+            detailText = [person subtitle];
             accessoryTag = KGOAccessoryTypeChevron;
-            if (person.organizations.count) {
-                NSDictionary *orgDict = [person.organizations objectAtIndex:0];
-                detailText = [orgDict stringForKey:@"jobTitle"];
-                if (!detailText)
-                    detailText = [orgDict stringForKey:@"organization"];
-            }
             break;
         }
         case 2:
