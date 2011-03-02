@@ -9,6 +9,10 @@
 // since this is a facebook module it would be fine to put as much fb stuff in here as we want
 @interface FacebookPhotosViewController : UIViewController <FacebookWrapperDelegate,
 FBRequestDelegate> {
+    
+    NSMutableArray *_fbRequestQueue;
+    FBRequest *_groupsRequest;
+    FBRequest *_photosRequest;
 
     IconGrid *_iconGrid;
     NSMutableArray *_icons;

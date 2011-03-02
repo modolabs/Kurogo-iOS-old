@@ -58,6 +58,18 @@
 
 
 - (void)dealloc {
+    if (_groupsRequest) {
+        _groupsRequest.delegate = nil;
+    }
+    if (_photosRequest) {
+        _photosRequest.delegate = nil;
+    }
+    if (_fbRequestQueue) {
+        for (FBRequest *aRequest in _fbRequestQueue) {
+            aRequest.delegate = nil;
+        }
+    }
+    [_fbRequestQueue release];
     [_gid release];
     [super dealloc];
 }
@@ -65,7 +77,10 @@
 #pragma mark FacebookWrapperDelegate
 
 - (void)facebookDidLogin {
-    [[[KGOSocialMediaController sharedController] facebook] requestWithGraphPath:@"me/groups" andDelegate:self];
+    _fbRequestQueue = [[NSMutableArray alloc] init];
+    
+    _groupsRequest = [[[KGOSocialMediaController sharedController] facebook] requestWithGraphPath:@"me/groups" andDelegate:self];
+    //[_fbRequestQueue addObject:request];
 }
 
 
@@ -82,9 +97,8 @@
 
 - (void)request:(FBRequest *)request didLoad:(id)result {
     NSLog(@"%@", [request.url description]);
-    // facebook request methods annoyingly return void
-    // so we have to check for unique properties
-    if ([request.url rangeOfString:@"me/groups"].location != NSNotFound && [result isKindOfClass:[NSDictionary class]]) {
+    if (request == _groupsRequest) {
+        
         NSArray *data = [result objectForKey:@"data"];
         for (id aGroup in data) {
             if ([[aGroup objectForKey:@"name"] isEqualToString:@"Modo Labs UX"]) {
@@ -92,26 +106,36 @@
                 
                 NSString *query = [NSString stringWithFormat:@"SELECT pid FROM photo_tag WHERE subject=%@", _gid];
                 NSMutableDictionary *params = [NSMutableDictionary dictionaryWithObject:query forKey:@"query"];
-                [[[KGOSocialMediaController sharedController] facebook] requestWithMethodName:@"fql.query"
-                                                                                    andParams:params
-                                                                                andHttpMethod:@"GET"
-                                                                                  andDelegate:self];
+                _photosRequest = [[[KGOSocialMediaController sharedController] facebook] requestWithMethodName:@"fql.query"
+                                                                                                     andParams:params
+                                                                                                 andHttpMethod:@"GET"
+                                                                                                   andDelegate:self];
             }
         }
-
-    } else if ([[request.params objectForKey:@"query"] rangeOfString:@"photo_tag"].location != NSNotFound
-               && [result isKindOfClass:[NSArray class]]) {
-        for (NSDictionary *info in result) {
-            NSString *pid = [info objectForKey:@"pid"];
-            NSString *query = [NSString stringWithFormat:@"SELECT src_small, src_small_height, src_small_width, caption FROM photo WHERE pid=%@", pid];
-            NSMutableDictionary *params = [NSMutableDictionary dictionaryWithObject:query forKey:@"query"];
-            [[[KGOSocialMediaController sharedController] facebook] requestWithMethodName:@"fql.query"
-                                                                                andParams:params
-                                                                            andHttpMethod:@"GET"
-                                                                              andDelegate:self];
+        
+        _groupsRequest = nil;
+        
+    } else if (request == _photosRequest) {
+        _photosRequest = nil;
+        
+        if ([result isKindOfClass:[NSArray class]]) {
+            
+            for (NSDictionary *info in result) {
+                NSString *pid = [info objectForKey:@"pid"];
+                DLog(@"received photo id %@", pid);
+                NSString *query = [NSString stringWithFormat:@"SELECT src_small, src_small_height, src_small_width, caption FROM photo WHERE pid=%@", pid];
+                NSMutableDictionary *params = [NSMutableDictionary dictionaryWithObject:query forKey:@"query"];
+                FBRequest *aRequest = [[[KGOSocialMediaController sharedController] facebook] requestWithMethodName:@"fql.query"
+                                                                                                          andParams:params
+                                                                                                      andHttpMethod:@"GET"
+                                                                                                        andDelegate:self];
+                [_fbRequestQueue addObject:aRequest];
+            }
         }
-    
+        
     } else { // individual photos
+        [_fbRequestQueue removeObject:request];
+        
         DLog(@"info for photo: %@", [result description]);
         if ([result isKindOfClass:[NSArray class]]) {
             NSDictionary *photoInfo = [result lastObject];
