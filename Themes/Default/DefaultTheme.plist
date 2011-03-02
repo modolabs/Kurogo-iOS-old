@@ -2,26 +2,6 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>Images</key>
-	<dict>
-		<key>SearchBarBackground</key>
-		<string>common/searchbar-background.png</string>
-		<key>SearchBarDropShadow</key>
-		<string>common/bar-drop-shadow.png</string>
-	</dict>
-	<key>Colors</key>
-	<dict>
-		<key>SearchBarBackground</key>
-		<string>#666666</string>
-		<key>TableSeparator</key>
-		<string>#C0C0BF</string>
-		<key>PrimaryCellBackground</key>
-		<string>#FFFFFF</string>
-		<key>SecondaryCellBackground</key>
-		<string>#FFFFFFAA</string>
-		<key>PlainSectionHeaderBackground</key>
-		<string>#333333</string>
-	</dict>
 	<key>Servers</key>
 	<dict>
 		<key>Development</key>
@@ -32,6 +12,36 @@
 		<string>http://mobile-staging.harvard.edu</string>
 		<key>Production</key>
 		<string>http://m.harvard.edu</string>
+	</dict>
+	<key>Images</key>
+	<dict>
+		<key>NavBarBackground</key>
+		<string>common/navbar-background.png</string>
+		<key>NavBarTitle</key>
+		<string>home/home-masthead.png</string>
+		<key>SearchBarBackground</key>
+		<string>common/searchbar-background.png</string>
+		<key>SearchBarDropShadow</key>
+		<string>common/bar-drop-shadow.png</string>
+	</dict>
+	<key>Colors</key>
+	<dict>
+		<key>SearchBarTintColor</key>
+		<string>#666666</string>
+		<key>NavBarTintColor</key>
+		<string>#870E16</string>
+		<key>TableSeparator</key>
+		<string>#C0C0BF</string>
+		<key>PrimaryCellBackground</key>
+		<string>#FFFFFF</string>
+		<key>SecondaryCellBackground</key>
+		<string>#FFFFFFAA</string>
+		<key>PlainSectionHeaderBackground</key>
+		<string>#333333</string>
+		<key>HomeScreenBackground</key>
+		<string>home/home-background.png</string>
+		<key>AppBackground</key>
+		<string>common/body-background.png</string>
 	</dict>
 	<key>Fonts</key>
 	<dict>
@@ -93,6 +103,45 @@
 			<key>font</key>
 			<string>Helvetica-Bold</string>
 		</dict>
+	</dict>
+	<key>HomeScreen</key>
+	<dict>
+		<key>NavigationStyle</key>
+		<string>Springboard</string>
+		<key>BackgroundImage</key>
+		<string>home/home-background.png</string>
+		<key>ShowsSearchBar</key>
+		<true/>
+		<key>ModuleLabelFont</key>
+		<dict>
+			<key>size</key>
+			<integer>12</integer>
+			<key>color</key>
+			<string>#000000</string>
+			<key>font</key>
+			<string>Helvetica</string>
+		</dict>
+		<key>ModuleLabelTitleMargin</key>
+		<integer>8</integer>
+		<key>ModuleListSpacing</key>
+		<string>10 20</string>
+		<key>ModuleListMargins</key>
+		<string>24 12 0 12</string>
+		<key>SecondaryModuleLabelFont</key>
+		<dict>
+			<key>size</key>
+			<integer>12</integer>
+			<key>color</key>
+			<string>#000000</string>
+			<key>font</key>
+			<string>Helvetica</string>
+		</dict>
+		<key>SecondaryModuleLabelTitleMargin</key>
+		<integer>8</integer>
+		<key>SecondaryModuleListSpacing</key>
+		<string>30 20</string>
+		<key>SecondaryModuleListMargins</key>
+		<string>80 16 0 16</string>
 	</dict>
 	<key>TableViewCellActions</key>
 	<dict>

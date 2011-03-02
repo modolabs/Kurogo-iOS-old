@@ -2,6 +2,18 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>Servers</key>
+	<dict>
+		<key>APIPath</key>
+		<string>rest</string>
+		<key>development</key>
+		<string>localhost:8040</string>
+	</dict>
+	<key>Security</key>
+	<dict>
+		<key>UseHTTPS</key>
+		<false/>
+	</dict>
 	<key>Modules</key>
 	<array>
 		<dict>
@@ -126,7 +138,7 @@
 	<key>Analytics</key>
 	<dict>
 		<key>Provider</key>
-		<string>Google</string>
+		<string></string>
 		<key>AccountID</key>
 		<string></string>
 	</dict>

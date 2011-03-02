@@ -67,7 +67,9 @@
     if (masthead) {
         self.navigationItem.titleView = [[[UIImageView alloc] initWithImage:masthead] autorelease];
     } else {
-        self.navigationItem.title = NSLocalizedString(@"Harvard", nil);
+        NSDictionary *infoDict = [[NSBundle mainBundle] infoDictionary];
+        self.navigationItem.title = [infoDict objectForKey:@"CFBundleName"];
+        //self.navigationItem.title = NSLocalizedString(@"AppName", nil);
     }
     
     if (!_searchController) {
