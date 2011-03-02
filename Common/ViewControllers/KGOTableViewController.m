@@ -410,7 +410,7 @@
 	} else {
 		style = UITableViewCellStyleDefault;
 	}
-	NSString *cellID = [NSString stringWithFormat:@"%d", style];
+	NSString *cellID = [NSString stringWithFormat:@"%d.%d", indexPath.section, style];
 	cell = [tableView dequeueReusableCellWithIdentifier:cellID];
 	
 	if (cell == nil) {

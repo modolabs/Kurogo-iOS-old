@@ -6,8 +6,6 @@
 #import "PersonOrganization.h"
 #import "PersonAddress.h"
 
-#define MAX_PEOPLE_RESULTS 25
-
 NSString * const KGOPersonContactTypeEmail = @"email";
 NSString * const KGOPersonContactTypePhone = @"phone";
 NSString * const KGOPersonContactTypeIM = @"im";
@@ -19,6 +17,8 @@ NSString * const KGOPersonContactTypeAddress = @"address";
 + (BOOL)isValidAddressDict:(id)aDict;
 + (BOOL)isValidOrganizationDict:(id)aDict;
 + (BOOL)isValidContactDict:(id)aDict;
+
++ (NSDate *)recentlyViewedThreshold;
 
 - (NSArray *)getMultiValueRecordProperty:(ABPropertyID)property;
 - (id)getRecordProperty:(ABPropertyID)property expectedClass:(Class)expectedClass;
@@ -209,6 +209,12 @@ webpages = _webpages;
     return self;
 }
 
+- (void)markAsRecentlyViewed {
+    [self convertToKGOPerson];
+    _kgoPerson.viewed = [NSDate date];
+    [self saveToCoreData];
+}
+
 - (void)saveToCoreData {
     [self convertToKGOPerson]; // make sure we have a reference to the NSManagedObject
     
@@ -272,11 +278,15 @@ webpages = _webpages;
     
     _kgoPerson.organizations = nil;
     for (NSDictionary *aDict in _organizations) {
-        PersonOrganization *anOrganization = [[CoreDataManager sharedManager] insertNewObjectForEntityForName:PersonOrganizationEntityName];
-        anOrganization.person = _kgoPerson;
-        anOrganization.organization = [aDict stringForKey:@"organization" nilIfEmpty:YES];
-        anOrganization.jobTitle = [aDict stringForKey:@"jobTitle" nilIfEmpty:YES];
-        anOrganization.department = [aDict stringForKey:@"department" nilIfEmpty:YES];
+        //NSString *label = [aDict stringForKey:@"label" nilIfEmpty:YES]; // we are currently ignoring this in core data
+        NSDictionary *orgDict = [aDict dictionaryForKey:@"value"];
+        if ([KGOPersonWrapper isValidOrganizationDict:orgDict]) {
+            PersonOrganization *anOrganization = [[CoreDataManager sharedManager] insertNewObjectForEntityForName:PersonOrganizationEntityName];
+            anOrganization.person = _kgoPerson;
+            anOrganization.organization = [orgDict stringForKey:@"organization" nilIfEmpty:YES];
+            anOrganization.jobTitle = [orgDict stringForKey:@"jobTitle" nilIfEmpty:YES];
+            anOrganization.department = [orgDict stringForKey:@"department" nilIfEmpty:YES];
+        }
     }
 
     _kgoPerson.addresses = nil;
@@ -325,8 +335,14 @@ webpages = _webpages;
 	return person;
 }
 
++ (NSDate *)recentlyViewedThreshold {
+    // TODO: configure this timeout
+    return [NSDate dateWithTimeIntervalSinceNow:-1500000];
+}
+
 + (void)clearRecentlyViewed {
-    NSPredicate *pred = [NSPredicate predicateWithFormat:@"viewed = YES"];
+    NSDate *timeout = [KGOPersonWrapper recentlyViewedThreshold];
+    NSPredicate *pred = [NSPredicate predicateWithFormat:@"viewed > %@", timeout];
     NSArray *results = [[CoreDataManager sharedManager] objectsForEntity:KGOPersonEntityName matchingPredicate:pred];
     for (KGOPerson *person in results) {
         [[CoreDataManager sharedManager] deleteObject:person];
@@ -336,14 +352,13 @@ webpages = _webpages;
 
 + (void)clearOldResults {
     // if the person's result was viewed over X days ago, remove it
-    // TODO: configure these timeouts and MAX_PEOPLE_RESULTS
-    NSDate *timeout = [NSDate dateWithTimeIntervalSinceNow:-1500000];
-    NSPredicate *pred = [NSPredicate predicateWithFormat:@"viewed = NO OR lastUpdate < %@", timeout];
-    NSArray *sort = [NSArray arrayWithObject:[[[NSSortDescriptor alloc] initWithKey:@"lastUpdate" ascending:NO] autorelease]];
+    // TODO: configure these timeouts
+    NSDate *timeout = [KGOPersonWrapper recentlyViewedThreshold];
+    NSPredicate *pred = [NSPredicate predicateWithFormat:@"viewed < %@", timeout];
     
-    NSArray *results = [[CoreDataManager sharedManager] objectsForEntity:KGOPersonEntityName matchingPredicate:pred sortDescriptors:sort];
-    if (results.count > MAX_PEOPLE_RESULTS) {
-        for (KGOPerson *person in [results subarrayWithRange:NSMakeRange(MAX_PEOPLE_RESULTS, results.count - MAX_PEOPLE_RESULTS)]) {
+    NSArray *results = [[CoreDataManager sharedManager] objectsForEntity:KGOPersonEntityName matchingPredicate:pred];
+    if (results.count) {
+        for (KGOPerson *person in results) {
             [[CoreDataManager sharedManager] deleteObject:person];
         }
         [[CoreDataManager sharedManager] saveData];
@@ -352,8 +367,9 @@ webpages = _webpages;
 
 + (NSArray *)fetchRecentlyViewed {
     NSMutableArray *recents = [NSMutableArray array];
-    NSPredicate *pred = [NSPredicate predicateWithFormat:@"viewed = YES"];
-    NSArray *sort = [NSArray arrayWithObject:[[[NSSortDescriptor alloc] initWithKey:@"lastUpdate" ascending:NO] autorelease]];
+    NSDate *timeout = [KGOPersonWrapper recentlyViewedThreshold];
+    NSPredicate *pred = [NSPredicate predicateWithFormat:@"viewed > %@", timeout];
+    NSArray *sort = [NSArray arrayWithObject:[[[NSSortDescriptor alloc] initWithKey:@"viewed" ascending:NO] autorelease]];
     NSArray *storedPeople = [[CoreDataManager sharedManager] objectsForEntity:KGOPersonEntityName matchingPredicate:pred sortDescriptors:sort];
     for (KGOPerson *person in storedPeople) {
         KGOPersonWrapper *personWrapper = [[[KGOPersonWrapper alloc] initWithKGOPerson:person] autorelease];

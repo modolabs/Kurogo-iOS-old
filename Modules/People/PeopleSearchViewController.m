@@ -155,6 +155,25 @@ searchBar = _searchBar;
     }
 }
 
+- (NSArray *)tableView:(UITableView *)tableView viewsForCellAtIndexPath:(NSIndexPath *)indexPath {
+    // making this button into a cell assumes that this table is being created as a grouped table view
+    if (indexPath.section == 2) {
+        UIFont *font = [[KGOTheme sharedTheme] fontForTableCellTitleWithStyle:UITableViewCellStyleDefault];
+        NSString *title = NSLocalizedString(@"Clear Recents", nil);
+        CGSize size = [title sizeWithFont:font];
+        
+        // 20 is internal padding of grouped table view
+        UILabel *label = [[[UILabel alloc] initWithFrame:CGRectMake(floor((tableView.frame.size.width - 20 - size.width) / 2),
+                                                                    0, size.width, tableView.rowHeight)] autorelease];
+        label.textColor = [UIColor whiteColor];
+        label.backgroundColor = [UIColor clearColor];
+        label.font = font;
+        label.text = title;
+        return [NSArray arrayWithObject:label];
+    }
+    return nil;
+}
+
 - (CellManipulator)tableView:(UITableView *)tableView manipulatorForCellAtIndexPath:(NSIndexPath *)indexPath {
     
     NSString *title = nil;

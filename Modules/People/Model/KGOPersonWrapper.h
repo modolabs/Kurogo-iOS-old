@@ -70,6 +70,7 @@
 // core data
 
 - (id)initWithKGOPerson:(KGOPerson *)person;
+- (void)markAsRecentlyViewed;
 - (KGOPerson *)convertToKGOPerson;
 - (void)saveToCoreData;
 

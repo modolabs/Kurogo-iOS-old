@@ -49,6 +49,8 @@
 }
 
 - (void)displayPerson {
+    [self.person markAsRecentlyViewed];
+    
     // information in header: photo, name
     
     UIFont *font = [[KGOTheme sharedTheme] fontForContentTitle];

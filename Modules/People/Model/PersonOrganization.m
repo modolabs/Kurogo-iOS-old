@@ -10,7 +10,9 @@
 @dynamic person;
 
 - (NSDictionary *)dictionary {
-    return [self dictionaryWithValuesForKeys:[NSArray arrayWithObjects:@"department", @"jobTitle", @"organization", nil]];
+    return [NSDictionary dictionaryWithObjectsAndKeys:
+            [self dictionaryWithValuesForKeys:[NSArray arrayWithObjects:@"department", @"jobTitle", @"organization", nil]],
+            @"value", nil];
 }
 
 @end
