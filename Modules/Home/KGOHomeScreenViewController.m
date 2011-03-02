@@ -23,7 +23,7 @@
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
 		NSString * file = [[NSBundle mainBundle] pathForResource:@"DefaultTheme" ofType:@"plist"];
-        NSDictionary *themeDict = [[NSDictionary alloc] initWithContentsOfFile:file];
+        NSDictionary *themeDict = [NSDictionary dictionaryWithContentsOfFile:file];
         _preferences = [[themeDict objectForKey:@"HomeScreen"] retain];
     }
     return self;
@@ -33,7 +33,7 @@
     self = [super init];
     if (self) {
 		NSString * file = [[NSBundle mainBundle] pathForResource:@"DefaultTheme" ofType:@"plist"];
-        NSDictionary *themeDict = [[NSDictionary alloc] initWithContentsOfFile:file];
+        NSDictionary *themeDict = [NSDictionary dictionaryWithContentsOfFile:file];
         _preferences = [[themeDict objectForKey:@"HomeScreen"] retain];
     }
     return self;
@@ -332,7 +332,7 @@
         }
         CGFloat height = [font lineHeight] * [words count];
         if (height > maxHeight) {
-            height = maxHeight;
+            maxHeight = height;
         }
     }
     return CGSizeMake(maxWidth, maxHeight);

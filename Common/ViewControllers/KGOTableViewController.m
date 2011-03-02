@@ -377,7 +377,8 @@
                 for (section = indexPath.section; section < numSections; section++) {
                     NSInteger numRowsInCurrentSection = [self tableView:tableView numberOfRowsInSection:indexPath.section];
                     if (startRow <= numRowsInCurrentSection) {
-                        if (didRemove = removeFromCellBuffer(section, startRow)) {
+                        didRemove = removeFromCellBuffer(section, startRow);
+                        if (didRemove) {
                             break;
                         }
                     } else {

@@ -67,15 +67,18 @@
     NSMutableArray *currentSection = nil;
 
     // - organization/department/title TODO: make more flexible we can do stuff like split title/org at harvard
-    for (NSDictionary *orgDict in self.person.organizations) {
+    for (NSDictionary *aDict in self.person.organizations) {
         currentSection = [NSMutableArray array];
-        for (NSString *label in [NSArray arrayWithObjects:@"jobTitle", @"organization", @"department", nil]) {
-            NSString *value = [orgDict stringForKey:label nilIfEmpty:YES];
-            if (value) {
-                [currentSection addObject:[NSDictionary dictionaryWithObjectsAndKeys:label, @"label", value, @"value", nil]];
+        NSDictionary *orgDict = [aDict dictionaryForKey:@"value"];
+        if (orgDict) {
+            for (NSString *label in [NSArray arrayWithObjects:@"jobTitle", @"organization", @"department", nil]) {
+                NSString *value = [orgDict stringForKey:label nilIfEmpty:YES];
+                if (value) {
+                    [currentSection addObject:[NSDictionary dictionaryWithObjectsAndKeys:label, @"label", value, @"value", nil]];
+                }
             }
+            [self.sectionArray addObject:currentSection];
         }
-        [self.sectionArray addObject:currentSection];
     }
     
     // - emails
@@ -110,9 +113,11 @@
             if (!label)
                 label = [NSString string];
             
-            NSString *displayAddress = [KGOPersonWrapper displayAddressForDict:aDict];
-            if (!displayAddress)
-                displayAddress = [NSString string];
+            NSString *displayAddress = [NSString string];
+            NSDictionary *valueDict = [aDict objectForKey:@"value"];
+            if (valueDict) {
+                displayAddress = [KGOPersonWrapper displayAddressForDict:valueDict];
+            }
             
             [currentSection addObject:[NSDictionary dictionaryWithObjectsAndKeys:displayAddress, @"value", label, @"label", nil]];
         }
@@ -162,7 +167,9 @@
                          nil];
     }
     NSString *title = [displayLabels objectForKey:label];
-    return title;
+    if (title)
+        return title;
+    return label;
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {

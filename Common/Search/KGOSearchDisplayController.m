@@ -223,6 +223,9 @@ showingOnlySearchResults = _showingOnlySearchResults;
 - (void)searchBarSearchButtonClicked:(KGOSearchBar *)searchBar {
     [self unfocusSearchBarAnimated:YES];
     [self executeSearch:searchBar.text params:nil];
+    
+    self.searchResults = [NSArray array];
+    [self reloadSearchResultsTableView];
 
     // save search term to recent searches
     NSString *moduleTag = [self.delegate searchControllerModuleTag:self];

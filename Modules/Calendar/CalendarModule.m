@@ -79,7 +79,7 @@
     self.request = nil;
     
     NSArray *resultEvents = [result objectForKey:@"events"];
-    NSMutableArray *arrayForTable;
+    NSMutableArray *arrayForTable = nil;
     
     if ([resultEvents isKindOfClass:[NSArray class]]) {
         arrayForTable = [NSMutableArray arrayWithCapacity:[resultEvents count]];

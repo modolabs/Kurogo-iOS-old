@@ -12,6 +12,7 @@ NSString * const KGOPersonContactTypeEmail = @"email";
 NSString * const KGOPersonContactTypePhone = @"phone";
 NSString * const KGOPersonContactTypeIM = @"im";
 NSString * const KGOPersonContactTypeURL = @"url";
+NSString * const KGOPersonContactTypeAddress = @"address";
 
 @interface KGOPersonWrapper (Private)
 
@@ -25,6 +26,7 @@ NSString * const KGOPersonContactTypeURL = @"url";
 - (ABPropertyType)abPropertyTypeForClass:(Class)class;
 - (Class)classForABPropertyType:(ABPropertyType)type;
 - (BOOL)setMultiValue:(NSArray *)values forProperty:(ABPropertyID)property expectedClass:(Class)expectedClass;
+- (BOOL)setABAddresses:(NSArray *)addressDict;
 
 @end
 
@@ -64,8 +66,12 @@ webpages = _webpages;
     
     [_kgoPerson release];
     
-    CFRelease(_ab);
-    CFRelease(_abRecord);
+    if (_ab != NULL) {
+        CFRelease(_ab);
+    }
+    if (_abRecord != NULL) {
+        CFRelease(_abRecord);
+    }
     
     [super dealloc];
 }
@@ -79,10 +85,13 @@ webpages = _webpages;
 - (NSString *)subtitle {
     NSString *subtitle = nil;
     if (self.organizations.count) {
-        NSDictionary *orgDict = [self.organizations objectAtIndex:0];
-        subtitle = [orgDict stringForKey:@"jobTitle" nilIfEmpty:YES];
-        if (!subtitle)
-            subtitle = [orgDict stringForKey:@"organization" nilIfEmpty:YES];
+        NSDictionary *labelValue = [self.organizations objectAtIndex:0];
+        NSDictionary *orgDict = [labelValue dictionaryForKey:@"value"];
+        if (orgDict) {
+            subtitle = [orgDict stringForKey:@"jobTitle" nilIfEmpty:YES];
+            if (!subtitle)
+                subtitle = [orgDict stringForKey:@"organization" nilIfEmpty:YES];
+        }
     }
     return subtitle;
 }
@@ -106,24 +115,18 @@ webpages = _webpages;
 
         NSMutableArray *array = [NSMutableArray array];
         for (id aDict in [dictionary arrayForKey:@"organizations"]) {
-            if ([KGOPersonWrapper isValidOrganizationDict:aDict])
+            NSDictionary *orgDict = [aDict dictionaryForKey:@"value"];
+            if ([KGOPersonWrapper isValidOrganizationDict:orgDict])
                 [array addObject:aDict];
         }
         if (array.count)
             self.organizations = array;
-        
-        array = [NSMutableArray array];
-        for (id aDict in [dictionary arrayForKey:@"addresses"]) {
-            if ([KGOPersonWrapper isValidAddressDict:aDict])
-                [array addObject:aDict];
-        }
-        if (array.count)
-            self.addresses = array;
-        
+
         _phones = [[NSMutableArray alloc] init];
         _emails = [[NSMutableArray alloc] init];
         _webpages = [[NSMutableArray alloc] init];
         _screennames = [[NSMutableArray alloc] init];
+        _addresses = [[NSMutableArray alloc] init];
         
         for (NSDictionary *aDict in [dictionary arrayForKey:@"contacts"]) {
             if ([KGOPersonWrapper isValidContactDict:aDict]) {
@@ -136,6 +139,8 @@ webpages = _webpages;
                     [_webpages addObject:aDict];
                 } else if ([type isEqualToString:KGOPersonContactTypeIM]) {
                     [_screennames addObject:aDict];
+                } else if ([type isEqualToString:KGOPersonContactTypeAddress]) {
+                    [_addresses addObject:aDict];
                 }
             }
         }
@@ -144,7 +149,7 @@ webpages = _webpages;
 }
 
 + (NSString *)displayAddressForDict:(NSDictionary *)addressDict {
-    NSString *address = [addressDict stringForKey:@"displayAddress" nilIfEmpty:YES];
+    NSString *address = [addressDict stringForKey:@"display" nilIfEmpty:YES];
     if (!address) {
         NSMutableArray *addressArray = [NSMutableArray array];
         
@@ -164,7 +169,7 @@ webpages = _webpages;
                 [lineArray addObject:tempVal];
         }
         if (lineArray.count)
-            [addressArray addObject:[lineArray componentsJoinedByString:@","]];
+            [addressArray addObject:[lineArray componentsJoinedByString:@", "]];
         
         NSString *zip = [addressDict stringForKey:@"zip" nilIfEmpty:YES];
         if (zip)
@@ -178,7 +183,7 @@ webpages = _webpages;
 
 + (BOOL)isValidAddressDict:(id)aDict {
     return [aDict isKindOfClass:[NSDictionary class]]
-        && ([aDict stringForKey:@"displayAddress" nilIfEmpty:NO] || [aDict stringForKey:@"street" nilIfEmpty:NO]
+        && ([aDict stringForKey:@"display" nilIfEmpty:NO] || [aDict stringForKey:@"street" nilIfEmpty:NO]
             || [aDict stringForKey:@"city" nilIfEmpty:NO] || [aDict stringForKey:@"state" nilIfEmpty:NO]
             || [aDict stringForKey:@"zip" nilIfEmpty:NO] || [aDict stringForKey:@"country" nilIfEmpty:NO]);
 }
@@ -190,7 +195,7 @@ webpages = _webpages;
 }
 
 + (BOOL)isValidContactDict:(id)aDict {
-    return [aDict isKindOfClass:[NSDictionary class]] && [aDict stringForKey:@"label" nilIfEmpty:NO] && [aDict stringForKey:@"value" nilIfEmpty:NO];
+    return [aDict isKindOfClass:[NSDictionary class]] && [aDict stringForKey:@"label" nilIfEmpty:NO] && [aDict objectForKey:@"value"];
 }
 
 #pragma mark -
@@ -276,16 +281,20 @@ webpages = _webpages;
 
     _kgoPerson.addresses = nil;
     for (NSDictionary *aDict in _addresses) {
-        PersonAddress *anAddress = [[CoreDataManager sharedManager] insertNewObjectForEntityForName:PersonAddressEntityName];
-        anAddress.person = _kgoPerson;
-        anAddress.city = [aDict stringForKey:@"city" nilIfEmpty:YES];
-        anAddress.country = [aDict stringForKey:@"country" nilIfEmpty:YES];
-        anAddress.displayAddress = [aDict stringForKey:@"display" nilIfEmpty:YES];
-        anAddress.state = [aDict stringForKey:@"state" nilIfEmpty:YES];
-        anAddress.street = [aDict stringForKey:@"street" nilIfEmpty:YES];
-        anAddress.street2 = [aDict stringForKey:@"street2" nilIfEmpty:YES];
-        anAddress.zip = [aDict stringForKey:@"zip" nilIfEmpty:YES];
-        anAddress.label = [aDict stringForKey:@"label" nilIfEmpty:YES];
+        NSString *label = [aDict stringForKey:@"label" nilIfEmpty:YES];
+        NSDictionary *addressDict = [aDict dictionaryForKey:@"value"];
+        if ([KGOPersonWrapper isValidAddressDict:addressDict]) {
+            PersonAddress *anAddress = [[CoreDataManager sharedManager] insertNewObjectForEntityForName:PersonAddressEntityName];
+            anAddress.person = _kgoPerson;
+            anAddress.label = label;
+            anAddress.city = [addressDict stringForKey:@"city" nilIfEmpty:YES];
+            anAddress.country = [addressDict stringForKey:@"country" nilIfEmpty:YES];
+            anAddress.display = [addressDict stringForKey:@"display" nilIfEmpty:YES];
+            anAddress.state = [addressDict stringForKey:@"state" nilIfEmpty:YES];
+            anAddress.street = [addressDict stringForKey:@"street" nilIfEmpty:YES];
+            anAddress.street2 = [addressDict stringForKey:@"street2" nilIfEmpty:YES];
+            anAddress.zip = [addressDict stringForKey:@"zip" nilIfEmpty:YES];
+        }
     }
     
     NSMutableSet *allContacts = [NSMutableSet set];
@@ -406,22 +415,41 @@ webpages = _webpages;
     if (_firstName)    [self setRecordValue:_firstName forProperty:kABPersonFirstNameProperty expectedClass:[NSString class]];
     if (_lastName)     [self setRecordValue:_lastName forProperty:kABPersonLastNameProperty expectedClass:[NSString class]];
     if (_birthday)     [self setRecordValue:_birthday forProperty:kABPersonOrganizationProperty expectedClass:[NSDate class]];
-    
+
     if (_photo) {
         CFErrorRef error = NULL;
         if (!ABPersonSetImageData(_abRecord, (CFDataRef)_photo, &error)) {
             NSLog(@"could not set image data");
         }
     }
-    
-    if (_addresses);
-    if (_organizations);
+
+
+    if (self.organizations.count) {
+        NSDictionary *labelValue = [self.organizations objectAtIndex:0];
+        NSDictionary *orgDict = [labelValue objectForKey:@"value"];
+        if (orgDict) {
+            NSString *jobTitle = [orgDict stringForKey:@"jobTitle" nilIfEmpty:YES];
+            if (jobTitle) {
+                [self setRecordValue:jobTitle forProperty:kABPersonJobTitleProperty expectedClass:[NSString class]];
+            }
+            NSString *organization = [orgDict stringForKey:@"organization" nilIfEmpty:YES];
+            if (organization) {
+                [self setRecordValue:organization forProperty:kABPersonOrganizationProperty expectedClass:[NSString class]];
+            }
+            NSString *department = [orgDict stringForKey:@"department" nilIfEmpty:YES];
+            if (department) {
+                [self setRecordValue:department forProperty:kABPersonDepartmentProperty expectedClass:[NSString class]];
+            }
+        }
+    }
     
     if (_phones)       [self setMultiValue:_phones forProperty:kABPersonPhoneProperty expectedClass:[NSString class]];
     if (_emails)       [self setMultiValue:_emails forProperty:kABPersonEmailProperty expectedClass:[NSString class]];
     if (_screennames)  [self setMultiValue:_screennames forProperty:kABPersonInstantMessageProperty expectedClass:[NSString class]];
     if (_webpages)     [self setMultiValue:_webpages forProperty:kABPersonURLProperty expectedClass:[NSString class]];
-    
+
+    if (_addresses)    [self setABAddresses:_addresses];
+
     return _abRecord;
 }
 
@@ -436,7 +464,8 @@ webpages = _webpages;
 }
 
 - (void)addMultiValue:(NSDictionary *)valueDict forProperty:(ABPropertyID)property expectedClass:(Class)expectedClass {
-    [self convertToABPerson]; // make sure we have a reference to the address book
+    if (!_abRecord)
+        return;
 
     NSString *label = [valueDict objectForKey:@"label"];
     NSString *value = [valueDict objectForKey:@"value"];
@@ -452,11 +481,12 @@ webpages = _webpages;
         return;
     
     ABMutableMultiValueRef multi = ABMultiValueCreateMutable(property);
-    NSArray *allValues = (NSArray *)ABMultiValueCopyArrayOfAllValues(multi);
-    if (![allValues containsObject:value]) {
+    CFArrayRef allValues = ABMultiValueCopyArrayOfAllValues(multi);
+    if (![(NSArray *)allValues containsObject:value]) {
         ABMultiValueAddValueAndLabel(multi, value, (CFStringRef)label, NULL);
     }
-    [allValues release];
+    CFRelease(multi);
+    CFRelease(allValues);
 }
 
 - (ABPropertyType)abPropertyTypeForClass:(Class)class {
@@ -478,12 +508,51 @@ webpages = _webpages;
     return [NSNull class]; // something that will fail every check
 }
 
+- (BOOL)setABAddresses:(NSArray *)addresses {
+    ABMutableMultiValueRef multi = ABMultiValueCreateMutable(kABMultiDictionaryPropertyType);
+
+    static NSDictionary *valueMap = nil;
+    if (valueMap == nil) {
+        valueMap = [[NSDictionary alloc] initWithObjectsAndKeys:
+                    (NSString *)kABPersonAddressStreetKey, @"street",
+                    (NSString *)kABPersonAddressCityKey, @"city",
+                    (NSString *)kABPersonAddressStateKey, @"state",
+                    (NSString *)kABPersonAddressZIPKey, @"zip",
+                    (NSString *)kABPersonAddressCountryKey, @"country",
+                    nil];
+    }
+    
+    for (NSDictionary *aDict in addresses) {
+        NSString *label = [aDict stringForKey:@"label" nilIfEmpty:YES];
+        NSDictionary *addressDict = [aDict dictionaryForKey:@"value"];
+        if (addressDict) {
+            NSMutableDictionary *convertedAddressDict = [NSMutableDictionary dictionary];
+            for (NSString *label in [valueMap allKeys]) {
+                NSString *value = [addressDict stringForKey:label nilIfEmpty:YES];
+                if (value) {
+                    [convertedAddressDict setObject:value forKey:[valueMap objectForKey:label]];
+                }
+            }
+            if (convertedAddressDict.count) {
+                ABMultiValueAddValueAndLabel(multi, (CFDictionaryRef)convertedAddressDict, (CFStringRef)label, NULL);
+            }
+        }
+    }
+            
+    CFErrorRef error = NULL;
+    BOOL success = ABRecordSetValue(_abRecord, kABPersonAddressProperty, multi, &error);
+    CFRelease(multi);
+    return success;
+}
+
 - (BOOL)setRecordValue:(id)value forProperty:(ABPropertyID)property expectedClass:(Class)expectedClass {
     if (![value isKindOfClass:expectedClass])
         return NO;
     
+    if (!_abRecord)
+        return NO;
+    
     BOOL success = NO;
-    [self convertToABPerson]; // make sure we have a reference to the address book
     CFErrorRef error = NULL;
 
     ABPropertyType internalType = ABPersonGetTypeOfProperty(property);
@@ -508,14 +577,16 @@ webpages = _webpages;
     if ((usableType | kABMultiValueMask) != (internalType | kABMultiValueMask))
         return NO;
     
-    [self ABPerson]; // make sure we have a reference to the address book
+    if (!_abRecord)
+        return NO;
+
     BOOL success = NO;
     CFErrorRef error = NULL;
 
-    ABMutableMultiValueRef multi = ABMultiValueCreateMutable(property);
+    ABMutableMultiValueRef multi = ABMultiValueCreateMutable(kABMultiStringPropertyType);
     for (NSDictionary *aDict in values) {
-        // TODO: use only valid label strings -- home, work, etc.
         NSString *label = [aDict objectForKey:@"label"];
+        label = (NSString *)kABOtherLabel;
         id value = [aDict objectForKey:@"value"];
         if ([value isKindOfClass:expectedClass]) {
             ABMultiValueAddValueAndLabel(multi, (CFTypeRef)value, (CFStringRef)label, NULL);
@@ -572,11 +643,15 @@ webpages = _webpages;
                 [result addObject:valueSet];
             }
             
-            CFRelease(label);
-            CFRelease(value);
+            if (label) {
+                CFRelease(label);
+            }
+            if (value) {
+                CFRelease(value);
+            }
         }
+        CFRelease(multi);
     }
-    CFRelease(multi);
     
     return result;
 }

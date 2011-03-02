@@ -109,7 +109,7 @@ static int rangeCompare(const void * a, const void * b) {
         qsort(filteredRanges, numFoundRanges, sizeof(NSRange), rangeCompare);
         
         NSRange currentRange = NSMakeRange(0, 0);
-        CGSize size;
+        CGSize size = CGSizeZero;
         CGFloat currentX = 0;
         NSMutableArray *labels = [NSMutableArray array];
         

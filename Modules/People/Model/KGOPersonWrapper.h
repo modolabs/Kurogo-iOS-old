@@ -22,15 +22,17 @@
     NSDate *_birthday;
     NSData *_photo;
 
-    // multivalue objects with only one instance in address book
+    // multivalue object with only one instance in address book
     NSArray *_organizations;
-    NSArray *_addresses;
 
-    // disaggregated PersonContact objects
+    // disaggregated PersonContact objects (multiple strings in address book)
     NSMutableArray *_phones;
     NSMutableArray *_emails;
     NSMutableArray *_screennames; // for instant messenger clients
     NSMutableArray *_webpages;
+
+    // multiple dicitonaries in address book
+    NSMutableArray *_addresses;
 }
 
 // core data only properties

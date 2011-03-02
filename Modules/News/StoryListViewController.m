@@ -862,7 +862,7 @@ static NSInteger numTries = 0;
         NSMutableArray *views = [NSMutableArray array];
         
         CGFloat yOffset;
-        NSString *placeholderImageName;
+        NSString *placeholderImageName = nil;
         NewsImage *image;
         NewsStory *story;
         CGRect thumbnailFrame;

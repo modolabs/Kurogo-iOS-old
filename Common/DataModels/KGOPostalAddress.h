@@ -4,7 +4,7 @@
 
 }
 
-@property (nonatomic, retain) NSString *displayAddress; // if it is not possible to parse out individual address fields
+@property (nonatomic, retain) NSString *display; // if it is not possible to parse out individual address fields
 @property (nonatomic, retain) NSString *label; // what kind of address this is, e.g. home, work
 
 @property (nonatomic, retain) NSString *street;

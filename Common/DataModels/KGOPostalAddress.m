@@ -3,7 +3,7 @@
 
 @implementation KGOPostalAddress
 
-@dynamic displayAddress;
+@dynamic display;
 @dynamic label;
 @dynamic street;
 @dynamic street2;
