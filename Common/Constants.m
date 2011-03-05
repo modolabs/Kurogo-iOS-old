@@ -87,18 +87,19 @@ NSString * const MyStellarAlertNotification = @"MyStellarAlertNotification";
 NSString * const kTileServerManagerProjectionIsReady = @"TileServerManagerProjectionIsReadyNotification";
 
 // core data entity names
-NSString * const NewsStoryEntityName = @"NewsStory";
-NSString * const NewsCategoryEntityName = @"NewsCategory";
-NSString * const NewsImageEntityName = @"NewsImage";
-NSString * const NewsImageRepEntityName = @"NewsImageRep";
-
 NSString * const KGOPersonEntityName = @"KGOPerson";
 NSString * const PersonContactEntityName = @"PersonContact";
 NSString * const PersonOrganizationEntityName = @"PersonOrganization";
 NSString * const PersonAddressEntityName = @"PersonAddress";
 
-NSString * const PersonDetailsEntityName = @"PersonDetails";
-NSString * const PersonDetailEntityName = @"PersonDetail";
+NSString * const KGOPlacemarkEntityName = @"KGOPlacemark";
+NSString * const MapCategoryEntityName = @"KGOMapCategory";
+
+NSString * const NewsStoryEntityName = @"NewsStory";
+NSString * const NewsCategoryEntityName = @"NewsCategory";
+NSString * const NewsImageEntityName = @"NewsImage";
+NSString * const NewsImageRepEntityName = @"NewsImageRep";
+
 NSString * const StellarCourseEntityName = @"StellarCourse";
 NSString * const StellarClassEntityName = @"StellarClass";
 NSString * const StellarClassTimeEntityName = @"StellarClassTime";
@@ -111,15 +112,6 @@ NSString * const ShuttleStopEntityName = @"ShuttleStopLocation";
 NSString * const ShuttleRouteStopEntityName = @"ShuttleRouteStop";
 NSString * const CalendarEventEntityName = @"KGOEvent";
 NSString * const CalendarCategoryEntityName = @"EventCategory";
-NSString * const CampusMapSearchEntityName = @"MapSearch";
-NSString * const CampusMapAnnotationEntityName = @"MapSavedAnnotation";
-NSString * const LibraryItemEntityName = @"LibraryItem";
-NSString * const LibraryEntityName = @"Library";
-NSString * const LibraryFormatCodeEntityName = @"LibraryItemFormat";
-NSString * const LibraryLocationCodeEntityName = @"LibraryLocation";
-NSString * const LibraryPubDateCodeEntityName = @"LibraryPubDate";
-NSString * const LibraryPhoneEntityName = @"LibraryPhone";
-NSString * const LibraryAliasEntityName = @"LibraryAlias";
 
 // local paths for handleLocalPath
 NSString * const LocalPathMapsSelectedAnnotation = @"annotation";

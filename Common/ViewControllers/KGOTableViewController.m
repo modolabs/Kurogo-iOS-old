@@ -280,7 +280,7 @@
     UITableView *tableView = [[[UITableView alloc] initWithFrame:frame style:style] autorelease];
 
     if (style == UITableViewStyleGrouped) {
-        tableView.backgroundColor = [UIColor clearColor];
+        tableView.backgroundColor = [[KGOTheme sharedTheme] backgroundColorForApplication]; // [UIColor clearColor];
     }
 	
 	[self addTableView:tableView withDataSource:dataSource];

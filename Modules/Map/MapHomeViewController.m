@@ -1,6 +1,6 @@
 #import "MapHomeViewController.h"
 #import "KGOCategoryListViewController.h"
-#import "KGOAppDelegate.h"
+#import "KGOAppDelegate+ModuleAdditions.h"
 #import "MapModule.h"
 #import "MapSettingsViewController.h"
 #import "KGOTheme.h"

@@ -18,13 +18,13 @@ NSString * const MapTypePreferenceChanged = @"MapTypeChanged";
 {	
 	[super dealloc];
 }
-
+/*
 - (void)applicationDidFinishLaunching
 {
     // force TileServerManager to load so we can get projection info asap
     [TileServerManager isInitialized];
 }
-
+*/
 #pragma mark Search
 
 - (BOOL)supportsFederatedSearch {
@@ -32,12 +32,15 @@ NSString * const MapTypePreferenceChanged = @"MapTypeChanged";
 }
 
 - (void)performSearchWithText:(NSString *)searchText params:(NSDictionary *)params delegate:(id<KGOSearchDelegate>)delegate {
-    _searchDelegate = delegate;
+    self.searchDelegate = delegate;
     
-    self.request = [JSONAPIRequest requestWithJSONAPIDelegate:self];
-    [self.request requestObjectFromModule:@"map"
-                                  command:@"search"
-                               parameters:[NSDictionary dictionaryWithObjectsAndKeys:searchText, @"q", nil]];
+    self.request = [[KGORequestManager sharedManager] requestWithDelegate:self
+                                                                   module:MapTag
+                                                                     path:@"search"
+                                                                   params:[NSDictionary dictionaryWithObjectsAndKeys:searchText, @"q", nil]];
+    self.request.expectedResponseType = [NSDictionary class];
+    if (self.request)
+        [self.request connect];
 }
 
 
@@ -88,8 +91,27 @@ NSString * const MapTypePreferenceChanged = @"MapTypeChanged";
     return vc;
 }
 
+#pragma mark KGORequestDelegate
 
+- (void)requestWillTerminate:(KGORequest *)request {
+    self.request = nil;
+}
 
+- (void)request:(KGORequest *)request didReceiveResult:(id)result {
+    self.request = nil;
+    
+    NSArray *resultArray = [result arrayForKey:@"results"];
+    NSMutableArray *searchResults = [NSMutableArray arrayWithCapacity:[(NSArray *)resultArray count]];
+    for (id aResult in resultArray) {
+        KGOPlacemark *placemark = [[KGOPlacemark placemarkWithDictionary:aResult] autorelease];
+        if (placemark)
+            [searchResults addObject:placemark];
+    }
+    NSLog(@"%@", searchResults);
+    [self.searchDelegate searcher:self didReceiveResults:searchResults];
+}
+
+/*
 #pragma mark JSONAPIDelegate
 
 - (void)request:(JSONAPIRequest *)request jsonLoaded:(id)JSONObject
@@ -114,7 +136,7 @@ NSString * const MapTypePreferenceChanged = @"MapTypeChanged";
     self.request = nil;
 }
 
-/*
+
 #pragma mark Search and state
 
 NSString * const MapsLocalPathDetail = @"detail";

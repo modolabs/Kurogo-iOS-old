@@ -1,15 +1,14 @@
 #import "KGOModule.h"
-#import "JSONAPIRequest.h"
+#import "KGORequestManager.h"
 #import "KGOSearchDisplayController.h"
 
 extern NSString * const MapTypePreference;
 extern NSString * const MapTypePreferenceChanged;
 
-@interface MapModule : KGOModule <JSONAPIDelegate> {
+@interface MapModule : KGOModule <KGORequestDelegate> {
 
-    JSONAPIRequest *_request;
 }
 
-@property (nonatomic, retain) JSONAPIRequest *request;
+@property (nonatomic, retain) KGORequest *request;
 
 @end

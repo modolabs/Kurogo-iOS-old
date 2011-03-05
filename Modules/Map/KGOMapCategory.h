@@ -14,6 +14,8 @@
 @property (nonatomic, retain) NSSet* subcategories;
 @property (nonatomic, retain) KGOMapCategory * parentCategory;
 
++ (KGOMapCategory *)categoryWithPath:(NSArray *)categoryPath;
+
 @end
 
 

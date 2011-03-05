@@ -56,19 +56,19 @@
 		</dict>
 		<dict>
 			<key>id</key>
-			<string>news</string>
+			<string>map</string>
 			<key>shortName</key>
-			<string>News</string>
+			<string>Map</string>
 			<key>longName</key>
-			<string>News</string>
+			<string>Map</string>
 			<key>secondary</key>
 			<false/>
 			<key>tabBarImage</key>
-			<string>common/icons/tab-news.png</string>
+			<string>common/icons/tab-map.png</string>
 			<key>listViewImage</key>
-			<string>common/icons/module-news.png</string>
+			<string>common/icons/module-map.png</string>
 			<key>iconImage</key>
-			<string>home/home-news.png</string>
+			<string>home/home-map.png</string>
 		</dict>
 		<dict>
 			<key>id</key>
@@ -104,19 +104,19 @@
 		</dict>
 		<dict>
 			<key>id</key>
-			<string>map</string>
+			<string>news</string>
 			<key>shortName</key>
-			<string>Map</string>
+			<string>News</string>
 			<key>longName</key>
-			<string>Map</string>
+			<string>News</string>
 			<key>secondary</key>
 			<false/>
 			<key>tabBarImage</key>
-			<string>common/icons/tab-map.png</string>
+			<string>common/icons/tab-news.png</string>
 			<key>listViewImage</key>
-			<string>common/icons/module-map.png</string>
+			<string>common/icons/module-news.png</string>
 			<key>iconImage</key>
-			<string>home/home-map.png</string>
+			<string>home/home-news.png</string>
 		</dict>
 		<dict>
 			<key>id</key>

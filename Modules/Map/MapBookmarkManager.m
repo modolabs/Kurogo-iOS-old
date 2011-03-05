@@ -44,14 +44,14 @@ static MapBookmarkManager* s_mapBookmarksManager = nil;
 - (void)refreshBookmarks {
     NSPredicate *pred = [NSPredicate predicateWithFormat:@"isBookmark == YES"];
     NSSortDescriptor *sort = [NSSortDescriptor sortDescriptorWithKey:@"sortOrder" ascending:YES];
-    self.bookmarks = [[[CoreDataManager sharedManager] objectsForEntity:CampusMapAnnotationEntityName
+    self.bookmarks = [[[CoreDataManager sharedManager] objectsForEntity:KGOPlacemarkEntityName
                                                       matchingPredicate:pred
                                                         sortDescriptors:[NSArray arrayWithObject:sort]] mutableCopy];
 }
 
 - (void)pruneNonBookmarks {
     NSPredicate *pred = [NSPredicate predicateWithFormat:@"isBookmark == NO"];
-    NSArray *nonBookmarks = [[CoreDataManager sharedManager] objectsForEntity:CampusMapAnnotationEntityName
+    NSArray *nonBookmarks = [[CoreDataManager sharedManager] objectsForEntity:KGOPlacemarkEntityName
                                                             matchingPredicate:pred];
     for (KGOPlacemark *nonBookmark in nonBookmarks) {
         [[CoreDataManager sharedManager] deleteObject:nonBookmark];
@@ -61,14 +61,14 @@ static MapBookmarkManager* s_mapBookmarksManager = nil;
 #pragma mark Bookmark Management
 
 - (KGOPlacemark *)savedAnnotationForID:(NSString *)uniqueID {
-    KGOPlacemark *saved = (KGOPlacemark *)[[CoreDataManager sharedManager] getObjectForEntity:CampusMapAnnotationEntityName
+    KGOPlacemark *saved = (KGOPlacemark *)[[CoreDataManager sharedManager] getObjectForEntity:KGOPlacemarkEntityName
                                                                                                 attribute:@"id"
                                                                                                     value:uniqueID];
     return saved;
 }
 
 - (KGOPlacemark *)savedAnnotationWithAnnotation:(ArcGISMapAnnotation *)annotation {
-    KGOPlacemark *savedAnnotation = [[CoreDataManager sharedManager] insertNewObjectForEntityForName:CampusMapAnnotationEntityName];
+    KGOPlacemark *savedAnnotation = [[CoreDataManager sharedManager] insertNewObjectForEntityForName:KGOPlacemarkEntityName];
     
     savedAnnotation.identifier = annotation.uniqueID;
     savedAnnotation.latitude = [NSNumber numberWithFloat:annotation.coordinate.latitude];

@@ -82,18 +82,19 @@ extern NSString * const kTileServerManagerProjectionIsReady;
 
 // core data entity names
 
-extern NSString * const NewsStoryEntityName;
-extern NSString * const NewsCategoryEntityName;
-extern NSString * const NewsImageEntityName;
-extern NSString * const NewsImageRepEntityName;
-
 extern NSString * const KGOPersonEntityName;
 extern NSString * const PersonContactEntityName;
 extern NSString * const PersonOrganizationEntityName;
 extern NSString * const PersonAddressEntityName;
 
-extern NSString * const PersonDetailsEntityName;
-extern NSString * const PersonDetailEntityName;
+extern NSString * const KGOPlacemarkEntityName;
+extern NSString * const MapCategoryEntityName;
+
+extern NSString * const NewsStoryEntityName;
+extern NSString * const NewsCategoryEntityName;
+extern NSString * const NewsImageEntityName;
+extern NSString * const NewsImageRepEntityName;
+
 extern NSString * const StellarCourseEntityName;
 extern NSString * const StellarClassEntityName;
 extern NSString * const StellarClassTimeEntityName;
@@ -107,17 +108,9 @@ extern NSString * const ShuttleRouteStopEntityName;
 extern NSString * const CalendarEventEntityName;
 extern NSString * const CalendarCategoryEntityName;
 extern NSString * const CampusMapSearchEntityName;
-extern NSString * const CampusMapAnnotationEntityName;
 extern NSString * const ShuttleRouteEntityName;
 extern NSString * const ShuttleStopEntityName;
 extern NSString * const ShuttleRouteStopEntityName;
-extern NSString * const LibraryItemEntityName;
-extern NSString * const LibraryEntityName;
-extern NSString * const LibraryFormatCodeEntityName;
-extern NSString * const LibraryLocationCodeEntityName;
-extern NSString * const LibraryPubDateCodeEntityName;
-extern NSString * const LibraryPhoneEntityName;
-extern NSString * const LibraryAliasEntityName;
 
 
 // resource names

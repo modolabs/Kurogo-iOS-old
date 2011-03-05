@@ -1,9 +1,10 @@
 #import <CoreData/CoreData.h>
 #import "KGOSearchModel.h"
+#import <MapKit/MapKit.h>
 
 @class KGOMapCategory;
 
-@interface KGOPlacemark : NSManagedObject <KGOSearchResult>
+@interface KGOPlacemark : NSManagedObject <KGOSearchResult, MKAnnotation>
 {
 }
 
@@ -18,23 +19,10 @@
 @property (nonatomic, retain) NSNumber * sortOrder;
 @property (nonatomic, retain) NSData * photo;
 @property (nonatomic, retain) NSNumber * bookmarked;
-@property (nonatomic, retain) NSSet* categories;
-@property (nonatomic, retain) KGOPlacemark * parent;
-@property (nonatomic, retain) NSSet* children;
+@property (nonatomic, retain) KGOMapCategory *category;
+
++ (KGOPlacemark *)placemarkWithDictionary:(NSDictionary *)dictionary;
 
 @end
 
-
-@interface KGOPlacemark (CoreDataGeneratedAccessors)
-- (void)addCategoriesObject:(KGOMapCategory *)value;
-- (void)removeCategoriesObject:(KGOMapCategory *)value;
-- (void)addCategories:(NSSet *)value;
-- (void)removeCategories:(NSSet *)value;
-
-- (void)addChildrenObject:(KGOPlacemark *)value;
-- (void)removeChildrenObject:(KGOPlacemark *)value;
-- (void)addChildren:(NSSet *)value;
-- (void)removeChildren:(NSSet *)value;
-
-@end
 
