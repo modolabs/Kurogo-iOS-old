@@ -15,7 +15,6 @@
 		3A82708D103DAA2400BB4109 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3A82708C103DAA2400BB4109 /* SystemConfiguration.framework */; };
 		3AA219501039D74700DB7637 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3AA2194F1039D74700DB7637 /* CoreData.framework */; };
 		4463CCB210D6F5750048CA83 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4463CCB110D6F5750048CA83 /* CoreLocation.framework */; };
-		A623F1F1120A035A00341C5E /* ModoThreeStateSwitchControl.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = A623F1EF120A035A00341C5E /* ModoThreeStateSwitchControl.h */; settings = {JAVA_ARCHIVE_SUBDIR = Modules; }; };
 		A623F1F2120A035A00341C5E /* ModoThreeStateSwitchControl.m in Sources */ = {isa = PBXBuildFile; fileRef = A623F1F0120A035A00341C5E /* ModoThreeStateSwitchControl.m */; };
 		BD9FA7EE1047A05E00BC3C0A /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BD9FA7ED1047A05E00BC3C0A /* MessageUI.framework */; };
 		DE0F6B3411109BC500F064D6 /* AboutMITVC.m in Sources */ = {isa = PBXBuildFile; fileRef = DE0F6B3311109BC500F064D6 /* AboutMITVC.m */; };
@@ -45,177 +44,95 @@
 		EB138C0512F23250004DBB7C /* news in Resources */ = {isa = PBXBuildFile; fileRef = EB138BEC12F23250004DBB7C /* news */; };
 		EB138C0612F23250004DBB7C /* people in Resources */ = {isa = PBXBuildFile; fileRef = EB138BF512F23250004DBB7C /* people */; };
 		EB138C0712F23250004DBB7C /* settings in Resources */ = {isa = PBXBuildFile; fileRef = EB138BFA12F23250004DBB7C /* settings */; };
-		EB138F0412F253A1004DBB7C /* GANTracker.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB138F0212F253A1004DBB7C /* GANTracker.h */; settings = {JAVA_ARCHIVE_SUBDIR = ../../Contrib/GoogleAnalytics; }; };
 		EB138F0512F253A1004DBB7C /* libGoogleAnalytics.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EB138F0312F253A1004DBB7C /* libGoogleAnalytics.a */; };
-		EB1440411309EE3400396753 /* AnalyticsWrapper.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB143FDC1309EE3400396753 /* AnalyticsWrapper.h */; settings = {JAVA_ARCHIVE_SUBDIR = ../../Common/Analytics; }; };
 		EB1440421309EE3400396753 /* AnalyticsWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = EB143FDD1309EE3400396753 /* AnalyticsWrapper.m */; };
-		EB1440431309EE3400396753 /* Foundation+KGOAdditions.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB143FDF1309EE3400396753 /* Foundation+KGOAdditions.h */; settings = {JAVA_ARCHIVE_SUBDIR = ../../Common/Cocoa; }; };
 		EB1440441309EE3400396753 /* Foundation+KGOAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = EB143FE01309EE3400396753 /* Foundation+KGOAdditions.m */; };
-		EB1440451309EE3400396753 /* UIKit+KGOAdditions.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB143FE11309EE3400396753 /* UIKit+KGOAdditions.h */; settings = {JAVA_ARCHIVE_SUBDIR = ../../Common/Cocoa; }; };
 		EB1440461309EE3400396753 /* UIKit+KGOAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = EB143FE21309EE3400396753 /* UIKit+KGOAdditions.m */; };
-		EB1440471309EE3400396753 /* ConnectionWrapper.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB143FE41309EE3400396753 /* ConnectionWrapper.h */; settings = {JAVA_ARCHIVE_SUBDIR = ../../Common/Connection; }; };
 		EB1440481309EE3400396753 /* ConnectionWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = EB143FE51309EE3400396753 /* ConnectionWrapper.m */; };
-		EB1440491309EE3400396753 /* JSONAPIRequest.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB143FE61309EE3400396753 /* JSONAPIRequest.h */; settings = {JAVA_ARCHIVE_SUBDIR = ../../Common/Connection; }; };
 		EB14404A1309EE3400396753 /* JSONAPIRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = EB143FE71309EE3400396753 /* JSONAPIRequest.m */; };
-		EB14404B1309EE3400396753 /* Constants.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB143FE81309EE3400396753 /* Constants.h */; settings = {JAVA_ARCHIVE_SUBDIR = ../../Common; }; };
 		EB14404C1309EE3400396753 /* Constants.m in Sources */ = {isa = PBXBuildFile; fileRef = EB143FE91309EE3400396753 /* Constants.m */; };
-		EB14404D1309EE3400396753 /* CoreDataManager.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB143FEB1309EE3400396753 /* CoreDataManager.h */; settings = {JAVA_ARCHIVE_SUBDIR = ../../Common/DataControllers; }; };
 		EB14404E1309EE3400396753 /* CoreDataManager.m in Sources */ = {isa = PBXBuildFile; fileRef = EB143FEC1309EE3400396753 /* CoreDataManager.m */; };
-		EB14404F1309EE3400396753 /* KGORequestManager.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB143FED1309EE3400396753 /* KGORequestManager.h */; settings = {JAVA_ARCHIVE_SUBDIR = ../../Common/DataControllers; }; };
 		EB1440501309EE3400396753 /* KGORequestManager.m in Sources */ = {isa = PBXBuildFile; fileRef = EB143FEE1309EE3400396753 /* KGORequestManager.m */; };
-		EB1440511309EE3400396753 /* KGOSocialMediaController.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB143FEF1309EE3400396753 /* KGOSocialMediaController.h */; settings = {JAVA_ARCHIVE_SUBDIR = ../../Common/DataControllers; }; };
 		EB1440521309EE3400396753 /* KGOSocialMediaController.m in Sources */ = {isa = PBXBuildFile; fileRef = EB143FF01309EE3400396753 /* KGOSocialMediaController.m */; };
-		EB1440741309EE3400396753 /* KGOSearchBar.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB1440151309EE3400396753 /* KGOSearchBar.h */; settings = {JAVA_ARCHIVE_SUBDIR = ../../Common/Search; }; };
 		EB1440751309EE3400396753 /* KGOSearchBar.m in Sources */ = {isa = PBXBuildFile; fileRef = EB1440161309EE3400396753 /* KGOSearchBar.m */; };
-		EB1440761309EE3400396753 /* KGOSearchDisplayController.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB1440171309EE3400396753 /* KGOSearchDisplayController.h */; settings = {JAVA_ARCHIVE_SUBDIR = ../../Common/Search; }; };
 		EB1440771309EE3400396753 /* KGOSearchDisplayController.m in Sources */ = {isa = PBXBuildFile; fileRef = EB1440181309EE3400396753 /* KGOSearchDisplayController.m */; };
-		EB1440781309EE3400396753 /* KGOSearchModel.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB1440191309EE3400396753 /* KGOSearchModel.h */; settings = {JAVA_ARCHIVE_SUBDIR = ../../Common/Search; }; };
-		EB1440791309EE3400396753 /* RecentSearch.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB14401A1309EE3400396753 /* RecentSearch.h */; settings = {JAVA_ARCHIVE_SUBDIR = ../../Common/Search; }; };
 		EB14407A1309EE3400396753 /* RecentSearch.m in Sources */ = {isa = PBXBuildFile; fileRef = EB14401B1309EE3400396753 /* RecentSearch.m */; };
 		EB14407B1309EE3400396753 /* RecentSearches.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = EB14401C1309EE3400396753 /* RecentSearches.xcdatamodeld */; };
-		EB14407F1309EE3400396753 /* DatePickerViewController.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB1440231309EE3400396753 /* DatePickerViewController.h */; settings = {JAVA_ARCHIVE_SUBDIR = ../../Common/ViewControllers; }; };
 		EB1440801309EE3400396753 /* DatePickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EB1440241309EE3400396753 /* DatePickerViewController.m */; };
-		EB1440811309EE3400396753 /* KGOCategoryListViewController.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB1440251309EE3400396753 /* KGOCategoryListViewController.h */; settings = {JAVA_ARCHIVE_SUBDIR = ../../Common/ViewControllers; }; };
 		EB1440821309EE3400396753 /* KGOCategoryListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EB1440261309EE3400396753 /* KGOCategoryListViewController.m */; };
-		EB1440831309EE3400396753 /* KGOShareButtonController.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB1440271309EE3400396753 /* KGOShareButtonController.h */; settings = {JAVA_ARCHIVE_SUBDIR = ../../Common/ViewControllers; }; };
 		EB1440841309EE3400396753 /* KGOShareButtonController.m in Sources */ = {isa = PBXBuildFile; fileRef = EB1440281309EE3400396753 /* KGOShareButtonController.m */; };
-		EB1440851309EE3400396753 /* KGOTableViewController.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB1440291309EE3400396753 /* KGOTableViewController.h */; settings = {JAVA_ARCHIVE_SUBDIR = ../../Common/ViewControllers; }; };
 		EB1440861309EE3400396753 /* KGOTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EB14402A1309EE3400396753 /* KGOTableViewController.m */; };
-		EB1440871309EE3400396753 /* MITMailComposeController.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB14402B1309EE3400396753 /* MITMailComposeController.h */; settings = {JAVA_ARCHIVE_SUBDIR = ../../Common/ViewControllers; }; };
 		EB1440881309EE3400396753 /* MITMailComposeController.m in Sources */ = {isa = PBXBuildFile; fileRef = EB14402C1309EE3400396753 /* MITMailComposeController.m */; };
-		EB1440891309EE3400396753 /* TwitterViewController.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB14402D1309EE3400396753 /* TwitterViewController.h */; settings = {JAVA_ARCHIVE_SUBDIR = ../../Common/ViewControllers; }; };
 		EB14408A1309EE3400396753 /* TwitterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EB14402E1309EE3400396753 /* TwitterViewController.m */; };
-		EB14408B1309EE3400396753 /* HighlightedResultLabel.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB1440301309EE3400396753 /* HighlightedResultLabel.h */; settings = {JAVA_ARCHIVE_SUBDIR = ../../Common/Views; }; };
 		EB14408C1309EE3400396753 /* HighlightedResultLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = EB1440311309EE3400396753 /* HighlightedResultLabel.m */; };
-		EB14408D1309EE3400396753 /* KGODatePager.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB1440321309EE3400396753 /* KGODatePager.h */; settings = {JAVA_ARCHIVE_SUBDIR = ../../Common/Views; }; };
 		EB14408E1309EE3400396753 /* KGODatePager.m in Sources */ = {isa = PBXBuildFile; fileRef = EB1440331309EE3400396753 /* KGODatePager.m */; };
-		EB14408F1309EE3400396753 /* KGODetailPager.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB1440341309EE3400396753 /* KGODetailPager.h */; settings = {JAVA_ARCHIVE_SUBDIR = ../../Common/Views; }; };
 		EB1440901309EE3400396753 /* KGODetailPager.m in Sources */ = {isa = PBXBuildFile; fileRef = EB1440351309EE3400396753 /* KGODetailPager.m */; };
-		EB1440911309EE3400396753 /* KGOScrollingTabstrip.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB1440361309EE3400396753 /* KGOScrollingTabstrip.h */; settings = {JAVA_ARCHIVE_SUBDIR = ../../Common/Views; }; };
 		EB1440921309EE3400396753 /* KGOScrollingTabstrip.m in Sources */ = {isa = PBXBuildFile; fileRef = EB1440371309EE3400396753 /* KGOScrollingTabstrip.m */; };
-		EB1440931309EE3400396753 /* MITLoadingActivityView.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB1440381309EE3400396753 /* MITLoadingActivityView.h */; settings = {JAVA_ARCHIVE_SUBDIR = ../../Common/Views; }; };
 		EB1440941309EE3400396753 /* MITLoadingActivityView.m in Sources */ = {isa = PBXBuildFile; fileRef = EB1440391309EE3400396753 /* MITLoadingActivityView.m */; };
-		EB1440951309EE3400396753 /* ModoNavigationBar.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB14403A1309EE3400396753 /* ModoNavigationBar.h */; settings = {JAVA_ARCHIVE_SUBDIR = ../../Common/Views; }; };
 		EB1440961309EE3400396753 /* ModoNavigationBar.m in Sources */ = {isa = PBXBuildFile; fileRef = EB14403B1309EE3400396753 /* ModoNavigationBar.m */; };
-		EB1440971309EE3400396753 /* ModoNavigationController.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB14403C1309EE3400396753 /* ModoNavigationController.h */; settings = {JAVA_ARCHIVE_SUBDIR = ../../Common/Views; }; };
 		EB1440981309EE3400396753 /* ModoNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = EB14403D1309EE3400396753 /* ModoNavigationController.m */; };
-		EB1440991309EE3400396753 /* TabViewControl.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB14403E1309EE3400396753 /* TabViewControl.h */; settings = {JAVA_ARCHIVE_SUBDIR = ../../Common/Views; }; };
 		EB14409A1309EE3400396753 /* TabViewControl.m in Sources */ = {isa = PBXBuildFile; fileRef = EB14403F1309EE3400396753 /* TabViewControl.m */; };
 		EB1440D21309EEA000396753 /* Calendar.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = EB1440BD1309EEA000396753 /* Calendar.xcdatamodeld */; };
-		EB1440D31309EEA000396753 /* CalendarConstants.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB1440BF1309EEA000396753 /* CalendarConstants.h */; settings = {JAVA_ARCHIVE_SUBDIR = ../../Modules/Calendar; }; };
 		EB1440D41309EEA000396753 /* CalendarConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = EB1440C01309EEA000396753 /* CalendarConstants.m */; };
-		EB1440D51309EEA000396753 /* CalendarDataManager.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB1440C11309EEA000396753 /* CalendarDataManager.h */; settings = {JAVA_ARCHIVE_SUBDIR = ../../Modules/Calendar; }; };
 		EB1440D61309EEA000396753 /* CalendarDataManager.m in Sources */ = {isa = PBXBuildFile; fileRef = EB1440C21309EEA000396753 /* CalendarDataManager.m */; };
-		EB1440D71309EEA000396753 /* CalendarDetailViewController.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB1440C31309EEA000396753 /* CalendarDetailViewController.h */; settings = {JAVA_ARCHIVE_SUBDIR = ../../Modules/Calendar; }; };
 		EB1440D81309EEA000396753 /* CalendarDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EB1440C41309EEA000396753 /* CalendarDetailViewController.m */; };
-		EB1440D91309EEA000396753 /* CalendarEventsViewController.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB1440C51309EEA000396753 /* CalendarEventsViewController.h */; settings = {JAVA_ARCHIVE_SUBDIR = ../../Modules/Calendar; }; };
 		EB1440DA1309EEA000396753 /* CalendarEventsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EB1440C61309EEA000396753 /* CalendarEventsViewController.m */; };
-		EB1440DB1309EEA000396753 /* CalendarModel.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB1440C71309EEA000396753 /* CalendarModel.h */; settings = {JAVA_ARCHIVE_SUBDIR = ../../Modules/Calendar; }; };
-		EB1440DC1309EEA000396753 /* CalendarModule.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB1440C81309EEA000396753 /* CalendarModule.h */; settings = {JAVA_ARCHIVE_SUBDIR = ../../Modules/Calendar; }; };
 		EB1440DD1309EEA000396753 /* CalendarModule.m in Sources */ = {isa = PBXBuildFile; fileRef = EB1440C91309EEA000396753 /* CalendarModule.m */; };
-		EB1440DE1309EEA000396753 /* KGOEvent.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB1440CA1309EEA000396753 /* KGOEvent.h */; settings = {JAVA_ARCHIVE_SUBDIR = ../../Modules/Calendar; }; };
 		EB1440DF1309EEA000396753 /* KGOEvent.m in Sources */ = {isa = PBXBuildFile; fileRef = EB1440CB1309EEA000396753 /* KGOEvent.m */; };
-		EB1440E01309EEA000396753 /* KGOEventAttendee.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB1440CC1309EEA000396753 /* KGOEventAttendee.h */; settings = {JAVA_ARCHIVE_SUBDIR = ../../Modules/Calendar; }; };
 		EB1440E11309EEA000396753 /* KGOEventAttendee.m in Sources */ = {isa = PBXBuildFile; fileRef = EB1440CD1309EEA000396753 /* KGOEventAttendee.m */; };
-		EB1440E21309EEA000396753 /* KGOEventCategory.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB1440CE1309EEA000396753 /* KGOEventCategory.h */; settings = {JAVA_ARCHIVE_SUBDIR = ../../Modules/Calendar; }; };
 		EB1440E31309EEA000396753 /* KGOEventCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = EB1440CF1309EEA000396753 /* KGOEventCategory.m */; };
-		EB1440E41309EEA000396753 /* KGOEventContactInfo.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB1440D01309EEA000396753 /* KGOEventContactInfo.h */; settings = {JAVA_ARCHIVE_SUBDIR = ../../Modules/Calendar; }; };
 		EB1440E51309EEA000396753 /* KGOEventContactInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = EB1440D11309EEA000396753 /* KGOEventContactInfo.m */; };
-		EB1441061309EEB800396753 /* KGOMapCategory.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB1440EA1309EEB800396753 /* KGOMapCategory.h */; settings = {JAVA_ARCHIVE_SUBDIR = ../../Modules/Map; }; };
 		EB1441071309EEB800396753 /* KGOMapCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = EB1440EB1309EEB800396753 /* KGOMapCategory.m */; };
-		EB1441081309EEB800396753 /* KGOPlacemark.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB1440EC1309EEB800396753 /* KGOPlacemark.h */; settings = {JAVA_ARCHIVE_SUBDIR = ../../Modules/Map; }; };
 		EB1441091309EEB800396753 /* KGOPlacemark.m in Sources */ = {isa = PBXBuildFile; fileRef = EB1440ED1309EEB800396753 /* KGOPlacemark.m */; };
-		EB14410A1309EEB800396753 /* MapBookmarkManager.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB1440EE1309EEB800396753 /* MapBookmarkManager.h */; settings = {JAVA_ARCHIVE_SUBDIR = ../../Modules/Map; }; };
 		EB14410B1309EEB800396753 /* MapBookmarkManager.m in Sources */ = {isa = PBXBuildFile; fileRef = EB1440EF1309EEB800396753 /* MapBookmarkManager.m */; };
-		EB14410C1309EEB800396753 /* MapHomeViewController.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB1440F01309EEB800396753 /* MapHomeViewController.h */; settings = {JAVA_ARCHIVE_SUBDIR = ../../Modules/Map; }; };
 		EB14410D1309EEB800396753 /* MapHomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EB1440F11309EEB800396753 /* MapHomeViewController.m */; };
 		EB14410E1309EEB800396753 /* MapHomeViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = EB1440F21309EEB800396753 /* MapHomeViewController.xib */; };
 		EB14410F1309EEB800396753 /* MapModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = EB1440F31309EEB800396753 /* MapModel.xcdatamodeld */; };
-		EB1441101309EEB800396753 /* MapModule.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB1440F51309EEB800396753 /* MapModule.h */; settings = {JAVA_ARCHIVE_SUBDIR = ../../Modules/Map; }; };
 		EB1441111309EEB800396753 /* MapModule.m in Sources */ = {isa = PBXBuildFile; fileRef = EB1440F61309EEB800396753 /* MapModule.m */; };
-		EB1441121309EEB800396753 /* MapSearchResultAnnotation.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB1440F71309EEB800396753 /* MapSearchResultAnnotation.h */; settings = {JAVA_ARCHIVE_SUBDIR = ../../Modules/Map; }; };
 		EB1441131309EEB800396753 /* MapSearchResultAnnotation.m in Sources */ = {isa = PBXBuildFile; fileRef = EB1440F81309EEB800396753 /* MapSearchResultAnnotation.m */; };
-		EB1441141309EEB800396753 /* MapZoomLevel.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB1440F91309EEB800396753 /* MapZoomLevel.h */; settings = {JAVA_ARCHIVE_SUBDIR = ../../Modules/Map; }; };
 		EB1441151309EEB800396753 /* MapZoomLevel.m in Sources */ = {isa = PBXBuildFile; fileRef = EB1440FA1309EEB800396753 /* MapZoomLevel.m */; };
-		EB1441161309EEB800396753 /* MITMapDetailViewController.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB1440FB1309EEB800396753 /* MITMapDetailViewController.h */; settings = {JAVA_ARCHIVE_SUBDIR = ../../Modules/Map; }; };
 		EB1441171309EEB800396753 /* MITMapDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EB1440FC1309EEB800396753 /* MITMapDetailViewController.m */; };
 		EB1441181309EEB800396753 /* MITMapDetailViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = EB1440FD1309EEB800396753 /* MITMapDetailViewController.xib */; };
-		EB1441191309EEB800396753 /* MITMapRoute.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB1440FE1309EEB800396753 /* MITMapRoute.h */; settings = {JAVA_ARCHIVE_SUBDIR = ../../Modules/Map; }; };
-		EB14411A1309EEB800396753 /* PolygonOverlay.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB1440FF1309EEB800396753 /* PolygonOverlay.h */; settings = {JAVA_ARCHIVE_SUBDIR = ../../Modules/Map; }; };
 		EB14411B1309EEB800396753 /* PolygonOverlay.m in Sources */ = {isa = PBXBuildFile; fileRef = EB1441001309EEB800396753 /* PolygonOverlay.m */; };
-		EB14411C1309EEB800396753 /* TileServerManager.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB1441011309EEB800396753 /* TileServerManager.h */; settings = {JAVA_ARCHIVE_SUBDIR = ../../Modules/Map; }; };
 		EB14411D1309EEB800396753 /* TileServerManager.m in Sources */ = {isa = PBXBuildFile; fileRef = EB1441021309EEB800396753 /* TileServerManager.m */; };
-		EB1441211309EECE00396753 /* FullWebModule.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB14411F1309EECE00396753 /* FullWebModule.h */; settings = {JAVA_ARCHIVE_SUBDIR = "../../Modules/Mobile Web"; }; };
 		EB1441221309EECE00396753 /* FullWebModule.m in Sources */ = {isa = PBXBuildFile; fileRef = EB1441201309EECE00396753 /* FullWebModule.m */; };
-		EB1441441309EF7B00396753 /* KGOAppDelegate+ModuleAdditions.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB1441371309EF7B00396753 /* KGOAppDelegate+ModuleAdditions.h */; settings = {JAVA_ARCHIVE_SUBDIR = ../../Application; }; };
 		EB1441451309EF7B00396753 /* KGOAppDelegate+ModuleAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = EB1441381309EF7B00396753 /* KGOAppDelegate+ModuleAdditions.m */; };
-		EB1441461309EF7B00396753 /* KGOAppDelegate.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB1441391309EF7B00396753 /* KGOAppDelegate.h */; settings = {JAVA_ARCHIVE_SUBDIR = ../../Application; }; };
 		EB1441471309EF7B00396753 /* KGOAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = EB14413A1309EF7B00396753 /* KGOAppDelegate.m */; };
-		EB1441481309EF7B00396753 /* KGONotification.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB14413B1309EF7B00396753 /* KGONotification.h */; settings = {JAVA_ARCHIVE_SUBDIR = ../../Application; }; };
 		EB1441491309EF7B00396753 /* KGONotification.m in Sources */ = {isa = PBXBuildFile; fileRef = EB14413C1309EF7B00396753 /* KGONotification.m */; };
 		EB14414A1309EF7B00396753 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = EB14413D1309EF7B00396753 /* main.m */; };
-		EB14415C1309EFB100396753 /* HomeModule.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB1441581309EFB100396753 /* HomeModule.h */; settings = {JAVA_ARCHIVE_SUBDIR = ../../Modules/Home; }; };
 		EB14415D1309EFB100396753 /* HomeModule.m in Sources */ = {isa = PBXBuildFile; fileRef = EB1441591309EFB100396753 /* HomeModule.m */; };
-		EB14415E1309EFB100396753 /* KGOSpringboardViewController.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB14415A1309EFB100396753 /* KGOSpringboardViewController.h */; settings = {JAVA_ARCHIVE_SUBDIR = ../../Modules/Home; }; };
 		EB14415F1309EFB100396753 /* KGOSpringboardViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EB14415B1309EFB100396753 /* KGOSpringboardViewController.m */; };
 		EB1441691309F05100396753 /* DefaultTheme.plist in Resources */ = {isa = PBXBuildFile; fileRef = EB1441661309F05100396753 /* DefaultTheme.plist */; };
-		EB14416A1309F05100396753 /* ThemeConstants.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB1441671309F05100396753 /* ThemeConstants.h */; settings = {JAVA_ARCHIVE_SUBDIR = ../../Themes/Default; }; };
 		EB14416B1309F05100396753 /* ThemeConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = EB1441681309F05100396753 /* ThemeConstants.m */; };
-		EB14416E1309F07B00396753 /* KGOTheme.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB14416C1309F07B00396753 /* KGOTheme.h */; settings = {JAVA_ARCHIVE_SUBDIR = ../../Common; }; };
 		EB14416F1309F07B00396753 /* KGOTheme.m in Sources */ = {isa = PBXBuildFile; fileRef = EB14416D1309F07B00396753 /* KGOTheme.m */; };
-		EB1441721309F09600396753 /* KGOModule.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB1441701309F09600396753 /* KGOModule.h */; settings = {JAVA_ARCHIVE_SUBDIR = ../../Application; }; };
 		EB1441731309F09600396753 /* KGOModule.m in Sources */ = {isa = PBXBuildFile; fileRef = EB1441711309F09600396753 /* KGOModule.m */; };
-		EB1441A01309F51100396753 /* MITBuildInfo.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB14419F1309F51100396753 /* MITBuildInfo.h */; settings = {JAVA_ARCHIVE_SUBDIR = ../../Modules/About; }; };
 		EB1441A41309F54D00396753 /* MITBuildInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = EB1441A31309F54D00396753 /* MITBuildInfo.m */; };
-		EB181F87131EDECA003728FF /* KGOPerson.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB181F75131EDECA003728FF /* KGOPerson.h */; settings = {JAVA_ARCHIVE_SUBDIR = ../../Modules/People/Model; }; };
 		EB181F88131EDECA003728FF /* KGOPerson.m in Sources */ = {isa = PBXBuildFile; fileRef = EB181F76131EDECA003728FF /* KGOPerson.m */; };
-		EB181F89131EDECA003728FF /* KGOPersonWrapper.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB181F77131EDECA003728FF /* KGOPersonWrapper.h */; settings = {JAVA_ARCHIVE_SUBDIR = ../../Modules/People/Model; }; };
 		EB181F8A131EDECA003728FF /* KGOPersonWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = EB181F78131EDECA003728FF /* KGOPersonWrapper.m */; };
 		EB181F8B131EDECA003728FF /* PeopleDataModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = EB181F79131EDECA003728FF /* PeopleDataModel.xcdatamodeld */; };
-		EB181F8C131EDECA003728FF /* PersonAddress.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB181F7B131EDECA003728FF /* PersonAddress.h */; settings = {JAVA_ARCHIVE_SUBDIR = ../../Modules/People/Model; }; };
 		EB181F8D131EDECA003728FF /* PersonAddress.m in Sources */ = {isa = PBXBuildFile; fileRef = EB181F7C131EDECA003728FF /* PersonAddress.m */; };
-		EB181F8E131EDECA003728FF /* PersonContact.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB181F7D131EDECA003728FF /* PersonContact.h */; settings = {JAVA_ARCHIVE_SUBDIR = ../../Modules/People/Model; }; };
 		EB181F8F131EDECA003728FF /* PersonContact.m in Sources */ = {isa = PBXBuildFile; fileRef = EB181F7E131EDECA003728FF /* PersonContact.m */; };
-		EB181F90131EDECA003728FF /* PersonOrganization.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB181F7F131EDECA003728FF /* PersonOrganization.h */; settings = {JAVA_ARCHIVE_SUBDIR = ../../Modules/People/Model; }; };
 		EB181F91131EDECA003728FF /* PersonOrganization.m in Sources */ = {isa = PBXBuildFile; fileRef = EB181F80131EDECA003728FF /* PersonOrganization.m */; };
-		EB181F92131EDECA003728FF /* PeopleDetailsViewController.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB181F81131EDECA003728FF /* PeopleDetailsViewController.h */; settings = {JAVA_ARCHIVE_SUBDIR = ../../Modules/People; }; };
 		EB181F93131EDECA003728FF /* PeopleDetailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EB181F82131EDECA003728FF /* PeopleDetailsViewController.m */; };
-		EB181F94131EDECA003728FF /* PeopleModule.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB181F83131EDECA003728FF /* PeopleModule.h */; settings = {JAVA_ARCHIVE_SUBDIR = ../../Modules/People; }; };
 		EB181F95131EDECA003728FF /* PeopleModule.m in Sources */ = {isa = PBXBuildFile; fileRef = EB181F84131EDECA003728FF /* PeopleModule.m */; };
-		EB181F96131EDECA003728FF /* PeopleSearchViewController.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB181F85131EDECA003728FF /* PeopleSearchViewController.h */; settings = {JAVA_ARCHIVE_SUBDIR = ../../Modules/People; }; };
 		EB181F97131EDECA003728FF /* PeopleSearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EB181F86131EDECA003728FF /* PeopleSearchViewController.m */; };
-		EB181F9F131EDEFF003728FF /* KGOContact.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB181F9B131EDEFF003728FF /* KGOContact.h */; settings = {JAVA_ARCHIVE_SUBDIR = ../../Common/DataModels; }; };
 		EB181FA0131EDEFF003728FF /* KGOContact.m in Sources */ = {isa = PBXBuildFile; fileRef = EB181F9C131EDEFF003728FF /* KGOContact.m */; };
-		EB181FA1131EDEFF003728FF /* KGOPostalAddress.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB181F9D131EDEFF003728FF /* KGOPostalAddress.h */; settings = {JAVA_ARCHIVE_SUBDIR = ../../Common/DataModels; }; };
 		EB181FA2131EDEFF003728FF /* KGOPostalAddress.m in Sources */ = {isa = PBXBuildFile; fileRef = EB181F9E131EDEFF003728FF /* KGOPostalAddress.m */; };
-		EB181FA8131EDF1B003728FF /* LoginModule.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB181FA6131EDF1B003728FF /* LoginModule.h */; settings = {JAVA_ARCHIVE_SUBDIR = ../../Modules/Login; }; };
 		EB181FA9131EDF1B003728FF /* LoginModule.m in Sources */ = {isa = PBXBuildFile; fileRef = EB181FA7131EDF1B003728FF /* LoginModule.m */; };
-		EB181FB6131EDF30003728FF /* KGOHomeScreenTableViewController.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB181FAC131EDF30003728FF /* KGOHomeScreenTableViewController.h */; settings = {JAVA_ARCHIVE_SUBDIR = ../../Modules/Home; }; };
 		EB181FB7131EDF30003728FF /* KGOHomeScreenTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EB181FAD131EDF30003728FF /* KGOHomeScreenTableViewController.m */; };
-		EB181FB8131EDF30003728FF /* KGOHomeScreenViewController.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB181FAE131EDF30003728FF /* KGOHomeScreenViewController.h */; settings = {JAVA_ARCHIVE_SUBDIR = ../../Modules/Home; }; };
 		EB181FB9131EDF30003728FF /* KGOHomeScreenViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EB181FAF131EDF30003728FF /* KGOHomeScreenViewController.m */; };
-		EB181FBA131EDF30003728FF /* KGOHomeScreenWidget.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB181FB0131EDF30003728FF /* KGOHomeScreenWidget.h */; settings = {JAVA_ARCHIVE_SUBDIR = ../../Modules/Home; }; };
 		EB181FBB131EDF30003728FF /* KGOHomeScreenWidget.m in Sources */ = {isa = PBXBuildFile; fileRef = EB181FB1131EDF30003728FF /* KGOHomeScreenWidget.m */; };
-		EB181FBC131EDF30003728FF /* KGOPortletHomeViewController.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB181FB2131EDF30003728FF /* KGOPortletHomeViewController.h */; settings = {JAVA_ARCHIVE_SUBDIR = ../../Modules/Home; }; };
 		EB181FBD131EDF30003728FF /* KGOPortletHomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EB181FB3131EDF30003728FF /* KGOPortletHomeViewController.m */; };
-		EB181FBE131EDF30003728FF /* SpringboardIcon.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB181FB4131EDF30003728FF /* SpringboardIcon.h */; settings = {JAVA_ARCHIVE_SUBDIR = ../../Modules/Home; }; };
 		EB181FBF131EDF30003728FF /* SpringboardIcon.m in Sources */ = {isa = PBXBuildFile; fileRef = EB181FB5131EDF30003728FF /* SpringboardIcon.m */; };
-		EB181FC4131EDF43003728FF /* MapSettingsViewController.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB181FC2131EDF43003728FF /* MapSettingsViewController.h */; settings = {JAVA_ARCHIVE_SUBDIR = ../../Modules/Map; }; };
 		EB181FC5131EDF43003728FF /* MapSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EB181FC3131EDF43003728FF /* MapSettingsViewController.m */; };
-		EB35903A130B4945000250AD /* IconGrid.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB359036130B4945000250AD /* IconGrid.h */; settings = {JAVA_ARCHIVE_SUBDIR = ../../Common/Views; }; };
 		EB35903B130B4945000250AD /* IconGrid.m in Sources */ = {isa = PBXBuildFile; fileRef = EB359037130B4945000250AD /* IconGrid.m */; };
-		EB35903C130B4945000250AD /* MITThumbnailView.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB359038130B4945000250AD /* MITThumbnailView.h */; settings = {JAVA_ARCHIVE_SUBDIR = ../../Common/Views; }; };
 		EB35903D130B4945000250AD /* MITThumbnailView.m in Sources */ = {isa = PBXBuildFile; fileRef = EB359039130B4945000250AD /* MITThumbnailView.m */; };
-		EB359047130B49E4000250AD /* FacebookModule.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB359043130B49E4000250AD /* FacebookModule.h */; settings = {JAVA_ARCHIVE_SUBDIR = ../../Modules/Facebook; }; };
 		EB359048130B49E4000250AD /* FacebookModule.m in Sources */ = {isa = PBXBuildFile; fileRef = EB359044130B49E4000250AD /* FacebookModule.m */; };
-		EB359049130B49E4000250AD /* FacebookPhotosViewController.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB359045130B49E4000250AD /* FacebookPhotosViewController.h */; settings = {JAVA_ARCHIVE_SUBDIR = ../../Modules/Facebook; }; };
 		EB35904A130B49E4000250AD /* FacebookPhotosViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EB359046130B49E4000250AD /* FacebookPhotosViewController.m */; };
-		EB3721AA11FA2F5200705180 /* NewsImage.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB3721A811FA2F5200705180 /* NewsImage.h */; settings = {JAVA_ARCHIVE_SUBDIR = Modules/News; }; };
 		EB3721AB11FA2F5200705180 /* NewsImage.m in Sources */ = {isa = PBXBuildFile; fileRef = EB3721A911FA2F5200705180 /* NewsImage.m */; };
 		EB4C2CDF127F138100058748 /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = EB4C2CDE127F138100058748 /* libsqlite3.dylib */; };
 		EB4C2CE1127F138900058748 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EB4C2CE0127F138900058748 /* CFNetwork.framework */; };
 		EB6D02A911E3784100B65CE3 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EB6D02A811E3784100B65CE3 /* MapKit.framework */; };
-		EB6D141511EE979500B65CE3 /* NewsCategory.h in JavaArchive */ = {isa = PBXBuildFile; fileRef = EB6D141311EE979500B65CE3 /* NewsCategory.h */; settings = {JAVA_ARCHIVE_SUBDIR = Modules/News; }; };
 		EB6D141611EE979500B65CE3 /* NewsCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = EB6D141411EE979500B65CE3 /* NewsCategory.m */; };
 		EB7F32D310CD6FB300188BCD /* AddressBook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EB7F32D210CD6FB300188BCD /* AddressBook.framework */; };
 		EB7F32D710CD6FBB00188BCD /* AddressBookUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EB7F32D610CD6FBB00188BCD /* AddressBookUI.framework */; };
@@ -1105,99 +1022,6 @@
 		};
 /* End PBXGroup section */
 
-/* Begin PBXJavaArchiveBuildPhase section */
-		EB83923E1163ECC30067C0A3 /* JavaArchive */ = {
-			isa = PBXJavaArchiveBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				EB6D141511EE979500B65CE3 /* NewsCategory.h in JavaArchive */,
-				EB3721AA11FA2F5200705180 /* NewsImage.h in JavaArchive */,
-				A623F1F1120A035A00341C5E /* ModoThreeStateSwitchControl.h in JavaArchive */,
-				EB138F0412F253A1004DBB7C /* GANTracker.h in JavaArchive */,
-				EB1440411309EE3400396753 /* AnalyticsWrapper.h in JavaArchive */,
-				EB1440431309EE3400396753 /* Foundation+KGOAdditions.h in JavaArchive */,
-				EB1440451309EE3400396753 /* UIKit+KGOAdditions.h in JavaArchive */,
-				EB1440471309EE3400396753 /* ConnectionWrapper.h in JavaArchive */,
-				EB1440491309EE3400396753 /* JSONAPIRequest.h in JavaArchive */,
-				EB14404B1309EE3400396753 /* Constants.h in JavaArchive */,
-				EB14404D1309EE3400396753 /* CoreDataManager.h in JavaArchive */,
-				EB14404F1309EE3400396753 /* KGORequestManager.h in JavaArchive */,
-				EB1440511309EE3400396753 /* KGOSocialMediaController.h in JavaArchive */,
-				EB1440741309EE3400396753 /* KGOSearchBar.h in JavaArchive */,
-				EB1440761309EE3400396753 /* KGOSearchDisplayController.h in JavaArchive */,
-				EB1440781309EE3400396753 /* KGOSearchModel.h in JavaArchive */,
-				EB1440791309EE3400396753 /* RecentSearch.h in JavaArchive */,
-				EB14407F1309EE3400396753 /* DatePickerViewController.h in JavaArchive */,
-				EB1440811309EE3400396753 /* KGOCategoryListViewController.h in JavaArchive */,
-				EB1440831309EE3400396753 /* KGOShareButtonController.h in JavaArchive */,
-				EB1440851309EE3400396753 /* KGOTableViewController.h in JavaArchive */,
-				EB1440871309EE3400396753 /* MITMailComposeController.h in JavaArchive */,
-				EB1440891309EE3400396753 /* TwitterViewController.h in JavaArchive */,
-				EB14408B1309EE3400396753 /* HighlightedResultLabel.h in JavaArchive */,
-				EB14408D1309EE3400396753 /* KGODatePager.h in JavaArchive */,
-				EB14408F1309EE3400396753 /* KGODetailPager.h in JavaArchive */,
-				EB1440911309EE3400396753 /* KGOScrollingTabstrip.h in JavaArchive */,
-				EB1440931309EE3400396753 /* MITLoadingActivityView.h in JavaArchive */,
-				EB1440951309EE3400396753 /* ModoNavigationBar.h in JavaArchive */,
-				EB1440971309EE3400396753 /* ModoNavigationController.h in JavaArchive */,
-				EB1440991309EE3400396753 /* TabViewControl.h in JavaArchive */,
-				EB1440D31309EEA000396753 /* CalendarConstants.h in JavaArchive */,
-				EB1440D51309EEA000396753 /* CalendarDataManager.h in JavaArchive */,
-				EB1440D71309EEA000396753 /* CalendarDetailViewController.h in JavaArchive */,
-				EB1440D91309EEA000396753 /* CalendarEventsViewController.h in JavaArchive */,
-				EB1440DB1309EEA000396753 /* CalendarModel.h in JavaArchive */,
-				EB1440DC1309EEA000396753 /* CalendarModule.h in JavaArchive */,
-				EB1440DE1309EEA000396753 /* KGOEvent.h in JavaArchive */,
-				EB1440E01309EEA000396753 /* KGOEventAttendee.h in JavaArchive */,
-				EB1440E21309EEA000396753 /* KGOEventCategory.h in JavaArchive */,
-				EB1440E41309EEA000396753 /* KGOEventContactInfo.h in JavaArchive */,
-				EB1441061309EEB800396753 /* KGOMapCategory.h in JavaArchive */,
-				EB1441081309EEB800396753 /* KGOPlacemark.h in JavaArchive */,
-				EB14410A1309EEB800396753 /* MapBookmarkManager.h in JavaArchive */,
-				EB14410C1309EEB800396753 /* MapHomeViewController.h in JavaArchive */,
-				EB1441101309EEB800396753 /* MapModule.h in JavaArchive */,
-				EB1441121309EEB800396753 /* MapSearchResultAnnotation.h in JavaArchive */,
-				EB1441141309EEB800396753 /* MapZoomLevel.h in JavaArchive */,
-				EB1441161309EEB800396753 /* MITMapDetailViewController.h in JavaArchive */,
-				EB1441191309EEB800396753 /* MITMapRoute.h in JavaArchive */,
-				EB14411A1309EEB800396753 /* PolygonOverlay.h in JavaArchive */,
-				EB14411C1309EEB800396753 /* TileServerManager.h in JavaArchive */,
-				EB1441211309EECE00396753 /* FullWebModule.h in JavaArchive */,
-				EB1441441309EF7B00396753 /* KGOAppDelegate+ModuleAdditions.h in JavaArchive */,
-				EB1441461309EF7B00396753 /* KGOAppDelegate.h in JavaArchive */,
-				EB1441481309EF7B00396753 /* KGONotification.h in JavaArchive */,
-				EB14415C1309EFB100396753 /* HomeModule.h in JavaArchive */,
-				EB14415E1309EFB100396753 /* KGOSpringboardViewController.h in JavaArchive */,
-				EB14416A1309F05100396753 /* ThemeConstants.h in JavaArchive */,
-				EB14416E1309F07B00396753 /* KGOTheme.h in JavaArchive */,
-				EB1441721309F09600396753 /* KGOModule.h in JavaArchive */,
-				EB1441A01309F51100396753 /* MITBuildInfo.h in JavaArchive */,
-				EB35903A130B4945000250AD /* IconGrid.h in JavaArchive */,
-				EB35903C130B4945000250AD /* MITThumbnailView.h in JavaArchive */,
-				EB359047130B49E4000250AD /* FacebookModule.h in JavaArchive */,
-				EB359049130B49E4000250AD /* FacebookPhotosViewController.h in JavaArchive */,
-				EB181F87131EDECA003728FF /* KGOPerson.h in JavaArchive */,
-				EB181F89131EDECA003728FF /* KGOPersonWrapper.h in JavaArchive */,
-				EB181F8C131EDECA003728FF /* PersonAddress.h in JavaArchive */,
-				EB181F8E131EDECA003728FF /* PersonContact.h in JavaArchive */,
-				EB181F90131EDECA003728FF /* PersonOrganization.h in JavaArchive */,
-				EB181F92131EDECA003728FF /* PeopleDetailsViewController.h in JavaArchive */,
-				EB181F94131EDECA003728FF /* PeopleModule.h in JavaArchive */,
-				EB181F96131EDECA003728FF /* PeopleSearchViewController.h in JavaArchive */,
-				EB181F9F131EDEFF003728FF /* KGOContact.h in JavaArchive */,
-				EB181FA1131EDEFF003728FF /* KGOPostalAddress.h in JavaArchive */,
-				EB181FA8131EDF1B003728FF /* LoginModule.h in JavaArchive */,
-				EB181FB6131EDF30003728FF /* KGOHomeScreenTableViewController.h in JavaArchive */,
-				EB181FB8131EDF30003728FF /* KGOHomeScreenViewController.h in JavaArchive */,
-				EB181FBA131EDF30003728FF /* KGOHomeScreenWidget.h in JavaArchive */,
-				EB181FBC131EDF30003728FF /* KGOPortletHomeViewController.h in JavaArchive */,
-				EB181FBE131EDF30003728FF /* SpringboardIcon.h in JavaArchive */,
-				EB181FC4131EDF43003728FF /* MapSettingsViewController.h in JavaArchive */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXJavaArchiveBuildPhase section */
-
 /* Begin PBXNativeTarget section */
 		1D6058900D05DD3D006BFB54 /* Universitas */ = {
 			isa = PBXNativeTarget;
@@ -1207,7 +1031,6 @@
 				1D60588D0D05DD3D006BFB54 /* Resources */,
 				1D60588E0D05DD3D006BFB54 /* Sources */,
 				1D60588F0D05DD3D006BFB54 /* Frameworks */,
-				EB83923E1163ECC30067C0A3 /* JavaArchive */,
 			);
 			buildRules = (
 			);
@@ -1354,7 +1177,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "PATH=$PATH:/usr/local/git/bin\nREV=`git rev-parse HEAD | cut -c 1-8`\nBUILD_INFO_FILE=${PROJECT_DIR}/Modules/About/MITBuildInfo.m\n\necho \"#import \\\"MITBuildInfo.h\\\";\" > ${BUILD_INFO_FILE}\necho \"\" >> ${BUILD_INFO_FILE}\necho \"NSString * const MITBuildNumber = @\\\"$REV\\\";\" >> ${BUILD_INFO_FILE}";
+			shellScript = "PATH=$PATH:/usr/local/git/bin\nREV=`git rev-parse HEAD | cut -c 1-8`\nABOUT_DIR=\"${PROJECT_DIR}/Modules/About\"\n[ -d \"${ABOUT_DIR}\" ] || mkdir \"${ABOUT_DIR}\"\nBUILD_INFO_FILE=\"${ABOUT_DIR}/MITBuildInfo.m\"\n\necho \"#import \\\"MITBuildInfo.h\\\";\" > ${BUILD_INFO_FILE}\necho \"\" >> ${BUILD_INFO_FILE}\necho \"NSString * const MITBuildNumber = @\\\"$REV\\\";\" >> ${BUILD_INFO_FILE}";
 		};
 /* End PBXShellScriptBuildPhase section */
 
