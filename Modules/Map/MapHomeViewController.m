@@ -4,6 +4,7 @@
 #import "MapModule.h"
 #import "MapSettingsViewController.h"
 #import "KGOTheme.h"
+#import "MITMapDetailViewController.h"
 
 @implementation MapHomeViewController
 
@@ -16,7 +17,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    MapModule *mapModule = [(KGOAppDelegate *)[[UIApplication sharedApplication] delegate] moduleForTag:MapTag];
+    KGOModule *mapModule = [(KGOAppDelegate *)[[UIApplication sharedApplication] delegate] moduleForTag:MapTag];
     self.title = mapModule.shortName;
 
     _mapView.mapType = [[NSUserDefaults standardUserDefaults] integerForKey:MapTypePreference];
@@ -92,7 +93,14 @@
 }
 
 - (IBAction)bookmarksButtonPressed {
-	
+}
+
+- (UIView *)tabbedControl:(KGOTabbedControl *)control containerViewAtIndex:(NSInteger)index {
+    return nil;
+}
+
+- (NSArray *)itemsForTabbedControl:(KGOTabbedControl *)control {
+    return [NSArray arrayWithObjects:@"hello", @"test1", @"Test2", nil];
 }
 
 - (IBAction)settingsButtonPressed {
@@ -182,7 +190,10 @@
 }
 
 - (void)searchController:(KGOSearchDisplayController *)controller didSelectResult:(id<KGOSearchResult>)aResult {
-	
+    NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:aResult, @"place", nil];
+    MITMapDetailViewController *vc = [[[MITMapDetailViewController alloc] init] autorelease];
+    KGOAppDelegate *appDelegate = (KGOAppDelegate *)[[UIApplication sharedApplication] delegate];
+    [appDelegate showPage:LocalPathPageNameDetail forModuleTag:MapTag params:params];
 }
 
 - (BOOL)searchControllerShouldLinkToMap:(KGOSearchDisplayController *)controller {

@@ -73,7 +73,7 @@ NSString * const MapTypePreferenceChanged = @"MapTypeChanged";
         }
         
     } else if ([pageName isEqualToString:LocalPathPageNameDetail]) {
-        KGOEvent *event = [params objectForKey:@"event"];
+        KGOEvent *event = [params objectForKey:@"place"];
         if (event) {
             vc = [[[MITMapDetailViewController alloc] init] autorelease];
         }

@@ -28,13 +28,21 @@
     }
 }
 
+- (UIView *)tabbedControl:(KGOTabbedControl *)control containerViewAtIndex:(NSInteger)index {
+    return nil;
+}
+
+- (NSArray *)itemsForTabbedControl:(KGOTabbedControl *)control {
+    return nil;
+}
+
 #pragma mark -
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
-
+        self.delegate = self;
     }
     return self;
 }

@@ -20,6 +20,7 @@
 @synthesize imageConnectionWrapper;
 @synthesize startingTab = _startingTab;
 
+/*
 - (id) initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
 	if (self) {
@@ -27,13 +28,14 @@
 	}
 	return self;
 }
+*/
 
 - (void)dealloc 
 {	
 	self.annotation = nil;
-	if (networkActivity) {
-		[self.imageConnectionWrapper cancel];
-	}
+	//if (networkActivity) {
+	//	[self.imageConnectionWrapper cancel];
+	//}
 	self.imageConnectionWrapper.delegate = nil;
 	self.imageConnectionWrapper = nil;
 	
@@ -42,8 +44,11 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
 	
+    /*
 	_tabViews = [[NSMutableArray alloc] initWithCapacity:2];
+    
     _whatsHereView.delegate = self;
 	
 	// check if this item is already bookmarked
@@ -98,6 +103,26 @@
     
     NSString *detailString = [NSString stringWithFormat:@"/maps/detail=%@", self.annotation.name];
     [[AnalyticsWrapper sharedWrapper] trackPageview:detailString];
+     */
+}
+
+- (UIView *)tabbedControl:(KGOTabbedControl *)control containerViewAtIndex:(NSInteger)index {
+    UIView *view = nil;
+    switch (index) {
+        case 0: {
+            break;
+        }
+        case 1: {
+            break;
+        }
+        default:
+            break;
+    }
+    return view;
+}
+
+- (NSArray *)itemsForTabbedControl:(KGOTabbedControl *)control {
+    return [NSArray arrayWithObjects:@"Photo", @"Details", nil];
 }
 
 -(void) externalMapButtonPressed:(id) sender
@@ -128,6 +153,7 @@
 
 - (void)loadAnnotationContent
 {
+    /*
     NSArray *fieldBlackList = [NSArray arrayWithObjects:@"Root", @"Shape", @"PHOTO_FILE", @"Photo", @"OBJECTID", @"FID", @"BL_ID", nil];
     
 	[_loadingResultView removeFromSuperview];
@@ -226,7 +252,7 @@
         _tabViewControl.selectedTab = 0;
         [self tabControl:_tabViewControl changedToIndex:0 tabText:nil];
 	}
-	
+	*/
 }
 /*
 // Override to allow orientations other than the default portrait orientation.
@@ -243,6 +269,7 @@
 	// Release any cached data, images, etc that aren't in use.
 }
 
+/*
 - (void)viewDidUnload {
 	
 	[_tabViewControl release];
@@ -257,10 +284,11 @@
 	[_loadingResultView release];
 	
 }
-
+*/
 #pragma mark UIWebView delegate
 
 - (void)webViewDidFinishLoad:(UIWebView *)webView {
+    /*
 	CGSize size = [webView sizeThatFits:CGSizeZero];
     CGRect frame = _whatsHereView.frame;
     frame.size.height = size.height;
@@ -283,6 +311,7 @@
     if (size.height > _scrollView.frame.size.height) {
         [_scrollView setContentSize:size];
     }
+     */
 }
 
 - (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType {
@@ -320,7 +349,7 @@
     }
 	*/
 }
-
+/*
 -(IBAction) bookmarkButtonTapped
 {
 	MapBookmarkManager *bookmarkManager = [MapBookmarkManager defaultManager];
@@ -357,8 +386,9 @@
 	
 	[_tabViewContainer addSubview:viewToAdd];
 }
+*/
 
-
+/*
 // data was received from the MITMobileWeb request. 
 - (void)request:request jsonLoaded:(id)results {
     if (results && [results isKindOfClass:[NSDictionary class]]) {
@@ -402,5 +432,5 @@
 - (BOOL)connection:(ConnectionWrapper *)wrapper shouldDisplayAlertForError:(NSError *)error {
     return NO;
 }
-
+*/
 @end

@@ -8,7 +8,7 @@
 
 @end
 
-@interface KGOTabbedViewController : UIViewController <KGOTabbedControlDelegate> {
+@interface KGOTabbedViewController : UIViewController <KGOTabbedControlDelegate, KGOTabbedViewDelegate> {
     
     IBOutlet KGOTabbedControl *_tabs;
     IBOutlet UIView *_tabViewHeader;

@@ -75,9 +75,9 @@ static MapBookmarkManager* s_mapBookmarksManager = nil;
     savedAnnotation.longitude = [NSNumber numberWithFloat:annotation.coordinate.longitude];
     if (annotation.name) savedAnnotation.title = annotation.name;
     if (annotation.street) savedAnnotation.street = annotation.street;
-    if (annotation.dataPopulated) {
-        savedAnnotation.info = [NSKeyedArchiver archivedDataWithRootObject:annotation.info];
-    }
+    //if (annotation.dataPopulated) {
+    //    savedAnnotation.info = [NSKeyedArchiver archivedDataWithRootObject:annotation.info];
+    //}
     
     return savedAnnotation;
 }

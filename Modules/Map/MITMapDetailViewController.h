@@ -3,13 +3,14 @@
 #import "TabViewControl.h"
 #import "JSONAPIRequest.h"
 #import "ConnectionWrapper.h"
-
+#import "KGOTabbedViewController.h"
 
 @class ArcGISMapAnnotation;
 @class CampusMapViewController;
 
-@interface MITMapDetailViewController : UIViewController <ConnectionWrapperDelegate, TabViewControlDelegate, JSONAPIDelegate, UIWebViewDelegate> {
+@interface MITMapDetailViewController : KGOTabbedViewController <ConnectionWrapperDelegate, KGOTabbedViewDelegate, JSONAPIDelegate, UIWebViewDelegate> {
 
+    /*
 	IBOutlet UIButton* _bookmarkButton;
 
 	IBOutlet UILabel* _nameLabel; // building name label
@@ -49,6 +50,7 @@
 	
 	// to persist saved state
 	int _startingTab;
+     */
 }
 
 @property (nonatomic, retain) ArcGISMapAnnotation *annotation;
