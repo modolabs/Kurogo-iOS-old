@@ -12,8 +12,6 @@
     id<KGOSearchDelegate> _searchDelegate;
 }
 
-+ (KGOModule *)moduleWithDictionary:(NSDictionary *)args;
-
 /*
  * you must override methods
  * - (UIViewController *)modulePage:(NSString *)pageID params:(NSDictionary *)params;

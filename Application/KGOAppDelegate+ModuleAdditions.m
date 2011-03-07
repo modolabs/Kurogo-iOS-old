@@ -2,7 +2,7 @@
 #import "KGOSpringboardViewController.h"
 #import "ModoNavigationController.h"
 #import "KGOTheme.h"
-#import "KGOModule.h"
+#import "KGOModule+Factory.h"
 #import "HomeModule.h"
 #import "KGOSocialMediaController.h"
 #import "AnalyticsWrapper.h"

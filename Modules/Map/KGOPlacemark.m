@@ -34,7 +34,7 @@
 + (KGOPlacemark *)placemarkWithDictionary:(NSDictionary *)dictionary {
     NSArray *categoryPath = [dictionary arrayForKey:@"category"];
     NSString *theIdentifier = nil;
-    id idObject = [dictionary objectForKey:@"featureindex"];
+    id idObject = [dictionary objectForKey:@"id"];
     if ([idObject isKindOfClass:[NSString class]] || [idObject isKindOfClass:[NSNumber class]]) {
         theIdentifier = [idObject description];
     }

@@ -22,16 +22,14 @@ Established in 1636, Harvard is the oldest institution of higher education in th
 	<key>Modules</key>
 	<array>
 		<dict>
-			<key>tag</key>
-			<string>home</string>
 			<key>class</key>
 			<string>HomeModule</string>
 			<key>shortName</key>
 			<string>Home</string>
+			<key>tag</key>
+			<string>home</string>
 		</dict>
 		<dict>
-			<key>tag</key>
-			<string>login</string>
 			<key>class</key>
 			<string>LoginModule</string>
 			<key>longName</key>
@@ -40,34 +38,10 @@ Established in 1636, Harvard is the oldest institution of higher education in th
 			<true/>
 			<key>shortName</key>
 			<string>Login</string>
+			<key>tag</key>
+			<string>login</string>
 		</dict>
 		<dict>
-			<key>tag</key>
-			<string>attendees</string>
-			<key>class</key>
-			<string>PeopleModule</string>
-			<key>longName</key>
-			<string>Attendees</string>
-			<key>secondary</key>
-			<false/>
-			<key>shortName</key>
-			<string>Attendees</string>
-		</dict>
-		<dict>
-			<key>tag</key>
-			<string>map</string>
-			<key>class</key>
-			<string>MapModule</string>
-			<key>longName</key>
-			<string>Map</string>
-			<key>secondary</key>
-			<false/>
-			<key>shortName</key>
-			<string>Map</string>
-		</dict>
-		<dict>
-			<key>tag</key>
-			<string>schedule</string>
 			<key>class</key>
 			<string>CalendarModule</string>
 			<key>longName</key>
@@ -76,22 +50,58 @@ Established in 1636, Harvard is the oldest institution of higher education in th
 			<false/>
 			<key>shortName</key>
 			<string>Schedule</string>
+			<key>tag</key>
+			<string>schedule</string>
 		</dict>
 		<dict>
-			<key>tag</key>
-			<string>photos</string>
 			<key>class</key>
-			<string>FacebookModule</string>
+			<string>MapModule</string>
+			<key>longName</key>
+			<string>Map</string>
+			<key>secondary</key>
+			<false/>
+			<key>shortName</key>
+			<string>Map</string>
+			<key>tag</key>
+			<string>map</string>
+		</dict>
+		<dict>
+			<key>class</key>
+			<string>PhotosModule</string>
 			<key>longName</key>
 			<string>Photos</string>
 			<key>secondary</key>
 			<false/>
 			<key>shortName</key>
 			<string>Photos</string>
+			<key>tag</key>
+			<string>photos</string>
 		</dict>
 		<dict>
+			<key>class</key>
+			<string>VideosModule</string>
+			<key>longName</key>
+			<string>Videos</string>
+			<key>secondary</key>
+			<false/>
+			<key>shortName</key>
+			<string>Videos</string>
 			<key>tag</key>
-			<string>news</string>
+			<string>video</string>
+		</dict>
+		<dict>
+			<key>class</key>
+			<string>AboutModule</string>
+			<key>longName</key>
+			<string>About</string>
+			<key>secondary</key>
+			<false/>
+			<key>shortName</key>
+			<string>About</string>
+			<key>tag</key>
+			<string>content</string>
+		</dict>
+		<dict>
 			<key>class</key>
 			<string>NewsModule</string>
 			<key>longName</key>
@@ -100,48 +110,56 @@ Established in 1636, Harvard is the oldest institution of higher education in th
 			<false/>
 			<key>shortName</key>
 			<string>News</string>
+			<key>tag</key>
+			<string>news</string>
 		</dict>
 		<dict>
-			<key>tag</key>
-			<string>about</string>
 			<key>class</key>
-			<string>AboutModule</string>
+			<string>PeopleModule</string>
 			<key>longName</key>
-			<string>About</string>
+			<string>Connect</string>
+			<key>secondary</key>
+			<false/>
+			<key>shortName</key>
+			<string>Connect</string>
+			<key>tag</key>
+			<string>connect</string>
+		</dict>
+		<dict>
+			<key>class</key>
+			<string>PeopleModule</string>
+			<key>longName</key>
+			<string>Attendees</string>
+			<key>secondary</key>
+			<false/>
+			<key>shortName</key>
+			<string>Attendees</string>
+			<key>tag</key>
+			<string>attendees</string>
+		</dict>
+		<dict>
+			<key>class</key>
+			<string>FacebookModule</string>
+			<key>longName</key>
+			<string>Facebook</string>
 			<key>secondary</key>
 			<true/>
 			<key>shortName</key>
-			<string>About</string>
-		</dict>
-		<dict>
-			<key>iconImage</key>
-			<string>home/home-settings.png</string>
+			<string>Twitter</string>
 			<key>tag</key>
 			<string>settings</string>
-			<key>class</key>
-			<string>HomeModule</string>
-			<key>listViewImage</key>
-			<string>common/icons/module-settings.png</string>
-			<key>longName</key>
-			<string>Settings</string>
-			<key>secondary</key>
-			<true/>
-			<key>shortName</key>
-			<string>Settings</string>
-			<key>tabBarImage</key>
-			<string>common/icons/tab-settings.png</string>
 		</dict>
 		<dict>
-			<key>tag</key>
-			<string>fullweb</string>
 			<key>class</key>
-			<string>FullWebModule</string>
+			<string>TwitterModule</string>
 			<key>longName</key>
-			<string>Full Website</string>
+			<string>Twitter</string>
 			<key>secondary</key>
 			<true/>
 			<key>shortName</key>
-			<string>Full Website</string>
+			<string>Twitter</string>
+			<key>tag</key>
+			<string>fullweb</string>
 		</dict>
 	</array>
 	<key>OrganizationName</key>

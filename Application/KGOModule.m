@@ -1,15 +1,5 @@
 #import "UIKit+KGOAdditions.h"
 #import "KGOModule.h"
-#import "HomeModule.h"
-#import "NewsModule.h"
-#import "PeopleModule.h"
-#import	"MapModule.h"
-#import "FullWebModule.h"
-#import "SettingsModule.h"
-#import "AboutModule.h"
-#import "CalendarModule.h"
-#import "FacebookModule.h"
-#import "LoginModule.h"
 
 @implementation KGOModule
 
@@ -47,55 +37,6 @@
         self.enabled = YES;
     }
     return self;
-}
-
-+ (KGOModule *)moduleWithDictionary:(NSDictionary *)args {
-    KGOModule *module = nil;
-    NSString *className = [args objectForKey:@"class"];
-    
-    if ([className isEqualToString:@"AboutModule"])
-        module = [[[AboutModule alloc] initWithDictionary:args] autorelease];
-    
-    else if ([className isEqualToString:@"CalendarModule"])
-        module = [[[CalendarModule alloc] initWithDictionary:args] autorelease];
-    
-    else if ([className isEqualToString:@"FullWebModule"])
-        module = [[[FullWebModule alloc] initWithDictionary:args] autorelease];
-    
-    else if ([className isEqualToString:@"MapModule"])
-        module = [[[MapModule alloc] initWithDictionary:args] autorelease];
-    
-    else if ([className isEqualToString:@"NewsModule"])
-        module = [[[NewsModule alloc] initWithDictionary:args] autorelease];
-    
-    else if ([className isEqualToString:@"PeopleModule"])
-        module = [[[PeopleModule alloc] initWithDictionary:args] autorelease];
-    
-    else if ([className isEqualToString:@"SettingsModule"])
-        module = [[[SettingsModule alloc] initWithDictionary:args] autorelease];
-    
-    else if ([className isEqualToString:@"FacebookModule"])
-        module = [[[FacebookModule alloc] initWithDictionary:args] autorelease];
-    
-    else if ([className isEqualToString:@"LoginModule"])
-        module = [[[LoginModule alloc] initWithDictionary:args] autorelease];
-    
-    else if ([className isEqualToString:@"HomeModule"])
-        module = [[[HomeModule alloc] initWithDictionary:args] autorelease];
-
-    //else if ([className isEqualToString:@"CoursesModule"])
-    
-    //else if ([className isEqualToString:@"SchoolsModule"])
-    
-    //else if ([className isEqualToString:@"DiningModule"])
-    
-    //else if ([className isEqualToString:@"LibrariesModule"])
-    
-    //else if ([className isEqualToString:@"TransitModule"])
-    
-    //else if ([className isEqualToString:@"EmergencyModule"])
-    
-    return module;
 }
 
 - (NSArray *)widgetViews {

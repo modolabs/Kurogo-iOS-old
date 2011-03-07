@@ -2,16 +2,124 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>Servers</key>
+	<key>Colors</key>
 	<dict>
-		<key>Development</key>
-		<string>http://localhost:8888</string>
-		<key>Testing</key>
-		<string>http://mobile-dev.harvard.edu</string>
-		<key>Staging</key>
-		<string>http://mobile-staging.harvard.edu</string>
-		<key>Production</key>
-		<string>http://m.harvard.edu</string>
+		<key>AppBackground</key>
+		<string>common/body-background.png</string>
+		<key>HomeScreenBackground</key>
+		<string>home/home-background.png</string>
+		<key>NavBarTintColor</key>
+		<string>#870E16</string>
+		<key>PlainSectionHeaderBackground</key>
+		<string>#333333</string>
+		<key>PrimaryCellBackground</key>
+		<string>#FFFFFF</string>
+		<key>SearchBarTintColor</key>
+		<string>#666666</string>
+		<key>SecondaryCellBackground</key>
+		<string>#FFFFFFAA</string>
+		<key>TableSeparator</key>
+		<string>#C0C0BF</string>
+	</dict>
+	<key>Fonts</key>
+	<dict>
+		<key>ContentTitle</key>
+		<dict>
+			<key>color</key>
+			<string>#1A1611</string>
+			<key>font</key>
+			<string>Georgia</string>
+			<key>size</key>
+			<integer>22</integer>
+		</dict>
+		<key>DefaultBoldFont</key>
+		<string>Helvetica-Bold</string>
+		<key>DefaultFont</key>
+		<string>Helvetica</string>
+		<key>GroupedSectionHeader</key>
+		<dict>
+			<key>color</key>
+			<string>#554C41</string>
+			<key>font</key>
+			<string>Helvetica-Bold</string>
+			<key>size</key>
+			<integer>17</integer>
+		</dict>
+		<key>PlainSectionHeader</key>
+		<dict>
+			<key>color</key>
+			<string>#EBE7E3</string>
+			<key>font</key>
+			<string>Helvetica-Bold</string>
+			<key>size</key>
+			<integer>15</integer>
+		</dict>
+		<key>TableCellSubtitle</key>
+		<dict>
+			<key>color</key>
+			<string>#505050</string>
+			<key>font</key>
+			<string>Helvetica</string>
+			<key>size</key>
+			<integer>13</integer>
+		</dict>
+		<key>TableCellTitle</key>
+		<dict>
+			<key>color</key>
+			<string>#1A1611</string>
+			<key>font</key>
+			<string>Helvetica-Bold</string>
+			<key>size</key>
+			<integer>17</integer>
+		</dict>
+		<key>TableFooter</key>
+		<dict>
+			<key>color</key>
+			<string>#505050</string>
+			<key>font</key>
+			<string>Helvetica</string>
+			<key>size</key>
+			<integer>12</integer>
+		</dict>
+	</dict>
+	<key>HomeScreen</key>
+	<dict>
+		<key>BackgroundImage</key>
+		<string>home/home-background.png</string>
+		<key>ModuleLabelFont</key>
+		<dict>
+			<key>color</key>
+			<string>#000000</string>
+			<key>font</key>
+			<string>Helvetica</string>
+			<key>size</key>
+			<integer>12</integer>
+		</dict>
+		<key>ModuleLabelTitleMargin</key>
+		<integer>8</integer>
+		<key>ModuleListMargins</key>
+		<string>24 18 0 18</string>
+		<key>ModuleListSpacing</key>
+		<string>14 24</string>
+		<key>NavigationStyle</key>
+		<string>Portlet</string>
+		<key>SecondaryModuleLabelFont</key>
+		<dict>
+			<key>color</key>
+			<string>#000000</string>
+			<key>font</key>
+			<string>Helvetica</string>
+			<key>size</key>
+			<integer>12</integer>
+		</dict>
+		<key>SecondaryModuleLabelTitleMargin</key>
+		<integer>8</integer>
+		<key>SecondaryModuleListMargins</key>
+		<string>80 16 0 16</string>
+		<key>SecondaryModuleListSpacing</key>
+		<string>30 20</string>
+		<key>ShowsSearchBar</key>
+		<false/>
 	</dict>
 	<key>Images</key>
 	<dict>
@@ -24,154 +132,46 @@
 		<key>SearchBarDropShadow</key>
 		<string>common/bar-drop-shadow.png</string>
 	</dict>
-	<key>Colors</key>
+	<key>Servers</key>
 	<dict>
-		<key>SearchBarTintColor</key>
-		<string>#666666</string>
-		<key>NavBarTintColor</key>
-		<string>#870E16</string>
-		<key>TableSeparator</key>
-		<string>#C0C0BF</string>
-		<key>PrimaryCellBackground</key>
-		<string>#FFFFFF</string>
-		<key>SecondaryCellBackground</key>
-		<string>#FFFFFFAA</string>
-		<key>PlainSectionHeaderBackground</key>
-		<string>#333333</string>
-		<key>HomeScreenBackground</key>
-		<string>home/home-background.png</string>
-		<key>AppBackground</key>
-		<string>common/body-background.png</string>
-	</dict>
-	<key>Fonts</key>
-	<dict>
-		<key>DefaultBoldFont</key>
-		<string>Helvetica-Bold</string>
-		<key>DefaultFont</key>
-		<string>Helvetica</string>
-		<key>TableCellTitle</key>
-		<dict>
-			<key>size</key>
-			<integer>17</integer>
-			<key>color</key>
-			<string>#1A1611</string>
-			<key>font</key>
-			<string>Helvetica-Bold</string>
-		</dict>
-		<key>TableCellSubtitle</key>
-		<dict>
-			<key>size</key>
-			<integer>13</integer>
-			<key>color</key>
-			<string>#505050</string>
-			<key>font</key>
-			<string>Helvetica</string>
-		</dict>
-		<key>TableFooter</key>
-		<dict>
-			<key>size</key>
-			<integer>12</integer>
-			<key>color</key>
-			<string>#505050</string>
-			<key>font</key>
-			<string>Helvetica</string>
-		</dict>
-		<key>ContentTitle</key>
-		<dict>
-			<key>size</key>
-			<integer>22</integer>
-			<key>color</key>
-			<string>#1A1611</string>
-			<key>font</key>
-			<string>Georgia</string>
-		</dict>
-		<key>PlainSectionHeader</key>
-		<dict>
-			<key>size</key>
-			<integer>15</integer>
-			<key>color</key>
-			<string>#EBE7E3</string>
-			<key>font</key>
-			<string>Helvetica-Bold</string>
-		</dict>
-		<key>GroupedSectionHeader</key>
-		<dict>
-			<key>size</key>
-			<integer>17</integer>
-			<key>color</key>
-			<string>#554C41</string>
-			<key>font</key>
-			<string>Helvetica-Bold</string>
-		</dict>
-	</dict>
-	<key>HomeScreen</key>
-	<dict>
-		<key>NavigationStyle</key>
-		<string>Portlet</string>
-		<key>BackgroundImage</key>
-		<string>home/home-background.png</string>
-		<key>ShowsSearchBar</key>
-		<true/>
-		<key>ModuleLabelFont</key>
-		<dict>
-			<key>size</key>
-			<integer>12</integer>
-			<key>color</key>
-			<string>#000000</string>
-			<key>font</key>
-			<string>Helvetica</string>
-		</dict>
-		<key>ModuleLabelTitleMargin</key>
-		<integer>8</integer>
-		<key>ModuleListSpacing</key>
-		<string>10 20</string>
-		<key>ModuleListMargins</key>
-		<string>24 12 0 12</string>
-		<key>SecondaryModuleLabelFont</key>
-		<dict>
-			<key>size</key>
-			<integer>12</integer>
-			<key>color</key>
-			<string>#000000</string>
-			<key>font</key>
-			<string>Helvetica</string>
-		</dict>
-		<key>SecondaryModuleLabelTitleMargin</key>
-		<integer>8</integer>
-		<key>SecondaryModuleListSpacing</key>
-		<string>30 20</string>
-		<key>SecondaryModuleListMargins</key>
-		<string>80 16 0 16</string>
+		<key>Development</key>
+		<string>http://localhost:8888</string>
+		<key>Production</key>
+		<string>http://m.harvard.edu</string>
+		<key>Staging</key>
+		<string>http://mobile-staging.harvard.edu</string>
+		<key>Testing</key>
+		<string>http://mobile-dev.harvard.edu</string>
 	</dict>
 	<key>TableViewCellActions</key>
 	<dict>
-		<key>Map</key>
+		<key>Email</key>
 		<dict>
-			<key>image</key>
-			<string>action-map</string>
 			<key>highlightedImage</key>
-			<string>action-map-highlighted</string>
+			<string>action-email-highlighted</string>
+			<key>image</key>
+			<string>action-email</string>
 		</dict>
 		<key>External</key>
 		<dict>
-			<key>image</key>
-			<string>action-external</string>
 			<key>highlightedImage</key>
 			<string>action-external-highlighted</string>
+			<key>image</key>
+			<string>action-external</string>
+		</dict>
+		<key>Map</key>
+		<dict>
+			<key>highlightedImage</key>
+			<string>action-map-highlighted</string>
+			<key>image</key>
+			<string>action-map</string>
 		</dict>
 		<key>Phone</key>
 		<dict>
-			<key>image</key>
-			<string>action-phone</string>
 			<key>highlightedImage</key>
 			<string>action-phone-highlighted</string>
-		</dict>
-		<key>Email</key>
-		<dict>
 			<key>image</key>
-			<string>action-email</string>
-			<key>highlightedImage</key>
-			<string>action-email-highlighted</string>
+			<string>action-phone</string>
 		</dict>
 	</dict>
 </dict>

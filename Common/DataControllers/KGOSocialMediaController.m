@@ -36,7 +36,7 @@ static KGOSocialMediaController *s_controller = nil;
     if (!mediaDictionary) {
         [_apiSettings setObject:[NSDictionary dictionaryWithObject:options forKey:setting] forKey:mediaType];
     } else {
-        NSMutableArray *existingValues = [mediaDictionary objectForKey:setting];
+        NSMutableArray *existingValues = [[[mediaDictionary objectForKey:setting] mutableCopy] autorelease];
         if (existingValues) {
             [existingValues addObjectsFromArray:options];
         } else {
