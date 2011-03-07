@@ -36,14 +36,7 @@
 		DECBF6B610F8F91B009FAE35 /* NewsImageRep.m in Sources */ = {isa = PBXBuildFile; fileRef = DECBF6B510F8F91B009FAE35 /* NewsImageRep.m */; };
 		DED3CCE910418F5F003D3B74 /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = DED3CCE810418F5F003D3B74 /* Default.png */; };
 		DEE6B1CD111774300037F03C /* Entitlements.plist in Resources */ = {isa = PBXBuildFile; fileRef = DEE6B1CC111774300037F03C /* Entitlements.plist */; };
-		EB138BAD12F231B7004DBB7C /* common in Resources */ = {isa = PBXBuildFile; fileRef = EB138AFE12F231B7004DBB7C /* common */; };
 		EB138BB112F231E3004DBB7C /* en.lproj in Resources */ = {isa = PBXBuildFile; fileRef = EB138BAE12F231E3004DBB7C /* en.lproj */; };
-		EB138C0212F23250004DBB7C /* calendar in Resources */ = {isa = PBXBuildFile; fileRef = EB138BB212F23250004DBB7C /* calendar */; };
-		EB138C0312F23250004DBB7C /* home in Resources */ = {isa = PBXBuildFile; fileRef = EB138BB512F23250004DBB7C /* home */; };
-		EB138C0412F23250004DBB7C /* map in Resources */ = {isa = PBXBuildFile; fileRef = EB138BD312F23250004DBB7C /* map */; };
-		EB138C0512F23250004DBB7C /* news in Resources */ = {isa = PBXBuildFile; fileRef = EB138BEC12F23250004DBB7C /* news */; };
-		EB138C0612F23250004DBB7C /* people in Resources */ = {isa = PBXBuildFile; fileRef = EB138BF512F23250004DBB7C /* people */; };
-		EB138C0712F23250004DBB7C /* settings in Resources */ = {isa = PBXBuildFile; fileRef = EB138BFA12F23250004DBB7C /* settings */; };
 		EB138F0512F253A1004DBB7C /* libGoogleAnalytics.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EB138F0312F253A1004DBB7C /* libGoogleAnalytics.a */; };
 		EB1440421309EE3400396753 /* AnalyticsWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = EB143FDD1309EE3400396753 /* AnalyticsWrapper.m */; };
 		EB1440441309EE3400396753 /* Foundation+KGOAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = EB143FE01309EE3400396753 /* Foundation+KGOAdditions.m */; };
@@ -125,6 +118,9 @@
 		EB181FBD131EDF30003728FF /* KGOPortletHomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EB181FB3131EDF30003728FF /* KGOPortletHomeViewController.m */; };
 		EB181FBF131EDF30003728FF /* SpringboardIcon.m in Sources */ = {isa = PBXBuildFile; fileRef = EB181FB5131EDF30003728FF /* SpringboardIcon.m */; };
 		EB181FC5131EDF43003728FF /* MapSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EB181FC3131EDF43003728FF /* MapSettingsViewController.m */; };
+		EB1B88C91324A6AC00108A8F /* common in Resources */ = {isa = PBXBuildFile; fileRef = EB1B88C71324A6AC00108A8F /* common */; };
+		EB1B88CA1324A6AC00108A8F /* modules in Resources */ = {isa = PBXBuildFile; fileRef = EB1B88C81324A6AC00108A8F /* modules */; };
+		EB1B88CC1324A6BB00108A8F /* default-assets in Resources */ = {isa = PBXBuildFile; fileRef = EB1B88CB1324A6BB00108A8F /* default-assets */; };
 		EB35903B130B4945000250AD /* IconGrid.m in Sources */ = {isa = PBXBuildFile; fileRef = EB359037130B4945000250AD /* IconGrid.m */; };
 		EB35903D130B4945000250AD /* MITThumbnailView.m in Sources */ = {isa = PBXBuildFile; fileRef = EB359039130B4945000250AD /* MITThumbnailView.m */; };
 		EB359048130B49E4000250AD /* FacebookModule.m in Sources */ = {isa = PBXBuildFile; fileRef = EB359044130B49E4000250AD /* FacebookModule.m */; };
@@ -243,14 +239,7 @@
 		DED3CCE810418F5F003D3B74 /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Default.png; path = Resources/Default.png; sourceTree = "<group>"; };
 		DEE6B1CC111774300037F03C /* Entitlements.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Entitlements.plist; sourceTree = "<group>"; };
 		EB138AFC12F22F31004DBB7C /* Config.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Config.plist; sourceTree = "<group>"; };
-		EB138AFE12F231B7004DBB7C /* common */ = {isa = PBXFileReference; lastKnownFileType = folder; name = common; path = ../../Resources/common; sourceTree = SOURCE_ROOT; };
 		EB138BAE12F231E3004DBB7C /* en.lproj */ = {isa = PBXFileReference; lastKnownFileType = folder; name = en.lproj; path = Localization/en.lproj; sourceTree = "<group>"; };
-		EB138BB212F23250004DBB7C /* calendar */ = {isa = PBXFileReference; lastKnownFileType = folder; name = calendar; path = ../../Resources/modules/calendar; sourceTree = SOURCE_ROOT; };
-		EB138BB512F23250004DBB7C /* home */ = {isa = PBXFileReference; lastKnownFileType = folder; name = home; path = ../../Resources/modules/home; sourceTree = SOURCE_ROOT; };
-		EB138BD312F23250004DBB7C /* map */ = {isa = PBXFileReference; lastKnownFileType = folder; name = map; path = ../../Resources/modules/map; sourceTree = SOURCE_ROOT; };
-		EB138BEC12F23250004DBB7C /* news */ = {isa = PBXFileReference; lastKnownFileType = folder; name = news; path = ../../Resources/modules/news; sourceTree = SOURCE_ROOT; };
-		EB138BF512F23250004DBB7C /* people */ = {isa = PBXFileReference; lastKnownFileType = folder; name = people; path = ../../Resources/modules/people; sourceTree = SOURCE_ROOT; };
-		EB138BFA12F23250004DBB7C /* settings */ = {isa = PBXFileReference; lastKnownFileType = folder; name = settings; path = ../../Resources/modules/settings; sourceTree = SOURCE_ROOT; };
 		EB138E8E12F24EB2004DBB7C /* Proj.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Proj.xcodeproj; path = Proj/Proj.xcodeproj; sourceTree = "<group>"; };
 		EB138EE812F251EB004DBB7C /* Facebook.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Facebook.xcodeproj; path = Facebook/Facebook.xcodeproj; sourceTree = "<group>"; };
 		EB138F0212F253A1004DBB7C /* GANTracker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GANTracker.h; sourceTree = "<group>"; };
@@ -411,6 +400,9 @@
 		EB181FB5131EDF30003728FF /* SpringboardIcon.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SpringboardIcon.m; sourceTree = "<group>"; };
 		EB181FC2131EDF43003728FF /* MapSettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MapSettingsViewController.h; sourceTree = "<group>"; };
 		EB181FC3131EDF43003728FF /* MapSettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MapSettingsViewController.m; sourceTree = "<group>"; };
+		EB1B88C71324A6AC00108A8F /* common */ = {isa = PBXFileReference; lastKnownFileType = folder; name = common; path = Resources/common; sourceTree = "<group>"; };
+		EB1B88C81324A6AC00108A8F /* modules */ = {isa = PBXFileReference; lastKnownFileType = folder; name = modules; path = Resources/modules; sourceTree = "<group>"; };
+		EB1B88CB1324A6BB00108A8F /* default-assets */ = {isa = PBXFileReference; lastKnownFileType = folder; name = "default-assets"; path = "../../Themes/default-assets"; sourceTree = "<group>"; };
 		EB359036130B4945000250AD /* IconGrid.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IconGrid.h; sourceTree = "<group>"; };
 		EB359037130B4945000250AD /* IconGrid.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IconGrid.m; sourceTree = "<group>"; };
 		EB359038130B4945000250AD /* MITThumbnailView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MITThumbnailView.h; sourceTree = "<group>"; };
@@ -502,15 +494,11 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				EB1B88CB1324A6BB00108A8F /* default-assets */,
+				EB1B88C71324A6AC00108A8F /* common */,
+				EB1B88C81324A6AC00108A8F /* modules */,
 				EB9AF298130B56AD003B9769 /* MainWindow.xib */,
 				EB138BAE12F231E3004DBB7C /* en.lproj */,
-				EB138AFE12F231B7004DBB7C /* common */,
-				EB138BB212F23250004DBB7C /* calendar */,
-				EB138BB512F23250004DBB7C /* home */,
-				EB138BD312F23250004DBB7C /* map */,
-				EB138BEC12F23250004DBB7C /* news */,
-				EB138BF512F23250004DBB7C /* people */,
-				EB138BFA12F23250004DBB7C /* settings */,
 				EB1441321309EF5800396753 /* KGOInfo.plist */,
 				EB138AFC12F22F31004DBB7C /* Config.plist */,
 				EBAE86441215FB4900F370BE /* Default@2x.png */,
@@ -1156,19 +1144,15 @@
 				EBAE86401215FB0D00F370BE /* Icon.png in Resources */,
 				EBAE86411215FB0D00F370BE /* Icon@2x.png in Resources */,
 				EBAE86451215FB4900F370BE /* Default@2x.png in Resources */,
-				EB138BAD12F231B7004DBB7C /* common in Resources */,
 				EB138BB112F231E3004DBB7C /* en.lproj in Resources */,
-				EB138C0212F23250004DBB7C /* calendar in Resources */,
-				EB138C0312F23250004DBB7C /* home in Resources */,
-				EB138C0412F23250004DBB7C /* map in Resources */,
-				EB138C0512F23250004DBB7C /* news in Resources */,
-				EB138C0612F23250004DBB7C /* people in Resources */,
-				EB138C0712F23250004DBB7C /* settings in Resources */,
 				EB14410E1309EEB800396753 /* MapHomeViewController.xib in Resources */,
 				EB1441181309EEB800396753 /* MITMapDetailViewController.xib in Resources */,
 				EB1441691309F05100396753 /* DefaultTheme.plist in Resources */,
 				EB9AF2A7130B59C3003B9769 /* MainWindow.xib in Resources */,
 				EB5F310A1323E8BC0066413F /* KGOTabbedViewController.xib in Resources */,
+				EB1B88C91324A6AC00108A8F /* common in Resources */,
+				EB1B88CA1324A6AC00108A8F /* modules in Resources */,
+				EB1B88CC1324A6BB00108A8F /* default-assets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

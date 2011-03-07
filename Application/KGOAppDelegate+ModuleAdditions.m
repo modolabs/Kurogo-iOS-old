@@ -16,7 +16,7 @@
     
     NSMutableArray *modules = [NSMutableArray arrayWithCapacity:[moduleData count]];
     for (NSDictionary *moduleDict in moduleData) {
-        KGOModule *aModule = [KGOModule moduleWithDictionary:moduleDict];
+        KGOModule *aModule = [KGOModule moduleWithDictionary:moduleDict]; // home will return nil
         if (aModule) {
             [modules addObject:aModule];
         }

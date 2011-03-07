@@ -41,7 +41,6 @@
 		DEC02D2D11053A850054BE32 /* StoryImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = DEAFF07C110001E300F0573E /* StoryImageView.m */; };
 		DEC02F9D110578240054BE32 /* AboutTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DEC02F9C110578240054BE32 /* AboutTableViewController.m */; };
 		DECBF6B610F8F91B009FAE35 /* NewsImageRep.m in Sources */ = {isa = PBXBuildFile; fileRef = DECBF6B510F8F91B009FAE35 /* NewsImageRep.m */; };
-		DED3CCE910418F5F003D3B74 /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = DED3CCE810418F5F003D3B74 /* Default.png */; };
 		EB13873212F22DBC004DBB7C /* AnalyticsWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = EB1386B512F22DBC004DBB7C /* AnalyticsWrapper.m */; };
 		EB13873812F22DBC004DBB7C /* ConnectionWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = EB1386BC12F22DBC004DBB7C /* ConnectionWrapper.m */; };
 		EB13873A12F22DBC004DBB7C /* JSONAPIRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = EB1386BE12F22DBC004DBB7C /* JSONAPIRequest.m */; };
@@ -52,14 +51,6 @@
 		EB13879F12F22DBC004DBB7C /* KGOScrollingTabstrip.m in Sources */ = {isa = PBXBuildFile; fileRef = EB13872912F22DBC004DBB7C /* KGOScrollingTabstrip.m */; };
 		EB1387A312F22DBC004DBB7C /* TabViewControl.m in Sources */ = {isa = PBXBuildFile; fileRef = EB13872D12F22DBC004DBB7C /* TabViewControl.m */; };
 		EB1387AF12F22DD2004DBB7C /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = EB1387A512F22DD2004DBB7C /* main.m */; };
-		EB138BAD12F231B7004DBB7C /* common in Resources */ = {isa = PBXBuildFile; fileRef = EB138AFE12F231B7004DBB7C /* common */; };
-		EB138BB112F231E3004DBB7C /* en.lproj in Resources */ = {isa = PBXBuildFile; fileRef = EB138BAE12F231E3004DBB7C /* en.lproj */; };
-		EB138C0212F23250004DBB7C /* calendar in Resources */ = {isa = PBXBuildFile; fileRef = EB138BB212F23250004DBB7C /* calendar */; };
-		EB138C0312F23250004DBB7C /* home in Resources */ = {isa = PBXBuildFile; fileRef = EB138BB512F23250004DBB7C /* home */; };
-		EB138C0412F23250004DBB7C /* map in Resources */ = {isa = PBXBuildFile; fileRef = EB138BD312F23250004DBB7C /* map */; };
-		EB138C0512F23250004DBB7C /* news in Resources */ = {isa = PBXBuildFile; fileRef = EB138BEC12F23250004DBB7C /* news */; };
-		EB138C0612F23250004DBB7C /* people in Resources */ = {isa = PBXBuildFile; fileRef = EB138BF512F23250004DBB7C /* people */; };
-		EB138C0712F23250004DBB7C /* settings in Resources */ = {isa = PBXBuildFile; fileRef = EB138BFA12F23250004DBB7C /* settings */; };
 		EB138F0512F253A1004DBB7C /* libGoogleAnalytics.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EB138F0312F253A1004DBB7C /* libGoogleAnalytics.a */; };
 		EB14292A12FCBD1D00396753 /* KGODetailPager.m in Sources */ = {isa = PBXBuildFile; fileRef = EB14292812FCBD1D00396753 /* KGODetailPager.m */; };
 		EB142B4D130058D500396753 /* MITMailComposeController.m in Sources */ = {isa = PBXBuildFile; fileRef = EB142B4B130058D500396753 /* MITMailComposeController.m */; };
@@ -69,8 +60,6 @@
 		EB142C161300950300396753 /* ModoNavigationBar.m in Sources */ = {isa = PBXBuildFile; fileRef = EB142C121300950300396753 /* ModoNavigationBar.m */; };
 		EB142C181300950300396753 /* ModoNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = EB142C141300950300396753 /* ModoNavigationController.m */; };
 		EB142C2413009FF100396753 /* KGOAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = EB142C2213009FF100396753 /* KGOAppDelegate.m */; };
-		EB142C951300A40000396753 /* MainWindow-iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = EB142C941300A40000396753 /* MainWindow-iPad.xib */; };
-		EB142C971300A4A900396753 /* MainWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = EB142C961300A4A900396753 /* MainWindow.xib */; };
 		EB142C9B1300A83E00396753 /* KGOAppDelegate+ModuleAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = EB142C991300A83E00396753 /* KGOAppDelegate+ModuleAdditions.m */; };
 		EB142E6F1300D94E00396753 /* HomeModule.m in Sources */ = {isa = PBXBuildFile; fileRef = EB142E6D1300D94E00396753 /* HomeModule.m */; };
 		EB1430711301A87900396753 /* KGOSearchDisplayController.m in Sources */ = {isa = PBXBuildFile; fileRef = EB1430671301A87900396753 /* KGOSearchDisplayController.m */; };
@@ -99,6 +88,9 @@
 		EB181B1813174F41003728FF /* PersonAddress.m in Sources */ = {isa = PBXBuildFile; fileRef = EB181B1013174F41003728FF /* PersonAddress.m */; };
 		EB181B1A13174F41003728FF /* PersonOrganization.m in Sources */ = {isa = PBXBuildFile; fileRef = EB181B1213174F41003728FF /* PersonOrganization.m */; };
 		EB181B241317577D003728FF /* KGOPerson.m in Sources */ = {isa = PBXBuildFile; fileRef = EB181B221317577D003728FF /* KGOPerson.m */; };
+		EB1B88711324A4B800108A8F /* MainWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = EB1B88701324A4B800108A8F /* MainWindow.xib */; };
+		EB1B88761324A60600108A8F /* MainWindow-iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = EB1B88751324A60600108A8F /* MainWindow-iPad.xib */; };
+		EB1B88781324A62100108A8F /* common in Resources */ = {isa = PBXBuildFile; fileRef = EB1B88771324A62100108A8F /* common */; };
 		EB358AD01309F9CE000250AD /* FacebookModule.m in Sources */ = {isa = PBXBuildFile; fileRef = EB358ACE1309F9CE000250AD /* FacebookModule.m */; };
 		EB358AD51309FA4E000250AD /* FacebookPhotosViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EB358AD21309FA4E000250AD /* FacebookPhotosViewController.m */; };
 		EB358FAD130B3778000250AD /* IconGrid.m in Sources */ = {isa = PBXBuildFile; fileRef = EB358FAB130B3778000250AD /* IconGrid.m */; };
@@ -110,6 +102,15 @@
 		EB5773FF12FE111500BAF5F5 /* CoreDataManager.m in Sources */ = {isa = PBXBuildFile; fileRef = EB5773FB12FE111500BAF5F5 /* CoreDataManager.m */; };
 		EB57740112FE111500BAF5F5 /* KGOSocialMediaController.m in Sources */ = {isa = PBXBuildFile; fileRef = EB5773FD12FE111500BAF5F5 /* KGOSocialMediaController.m */; };
 		EB57740512FE113400BAF5F5 /* KGOSpringboardViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EB57740312FE113400BAF5F5 /* KGOSpringboardViewController.m */; };
+		EB5F315E132491ED0066413F /* KGOTabbedViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EB5F315C132491ED0066413F /* KGOTabbedViewController.m */; };
+		EB5F315F132491ED0066413F /* KGOTabbedViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = EB5F315D132491ED0066413F /* KGOTabbedViewController.xib */; };
+		EB5F33B2132497D00066413F /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = EB5F33A0132497D00066413F /* Default.png */; };
+		EB5F33B3132497D00066413F /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = EB5F33A1132497D00066413F /* Default@2x.png */; };
+		EB5F33B4132497D00066413F /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = EB5F33A2132497D00066413F /* Icon.png */; };
+		EB5F33B5132497D00066413F /* Icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = EB5F33A3132497D00066413F /* Icon@2x.png */; };
+		EB5F33C2132498050066413F /* modules in Resources */ = {isa = PBXBuildFile; fileRef = EB5F33C1132498050066413F /* modules */; };
+		EB5F33C8132498640066413F /* en.lproj in Resources */ = {isa = PBXBuildFile; fileRef = EB5F33C7132498640066413F /* en.lproj */; };
+		EB5F33CC132499720066413F /* default-assets in Resources */ = {isa = PBXBuildFile; fileRef = EB5F33CB132499720066413F /* default-assets */; };
 		EB6D02A911E3784100B65CE3 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EB6D02A811E3784100B65CE3 /* MapKit.framework */; };
 		EB6D111711EE143900B65CE3 /* TileServerManager.m in Sources */ = {isa = PBXBuildFile; fileRef = EB6D111511EE143900B65CE3 /* TileServerManager.m */; };
 		EB6D141611EE979500B65CE3 /* NewsCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = EB6D141411EE979500B65CE3 /* NewsCategory.m */; };
@@ -142,12 +143,8 @@
 		EBA273EA11760BAE0033DD27 /* CalendarConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = EBA273E811760BAE0033DD27 /* CalendarConstants.m */; };
 		EBA2865610E07E140003BA01 /* PeopleSearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EBA2865510E07E140003BA01 /* PeopleSearchViewController.m */; };
 		EBAA866B12F72A4600B743C3 /* libSFHFKeychainUtils.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EBAA860D12F728CE00B743C3 /* libSFHFKeychainUtils.a */; };
-		EBAA899812FB3AB200B743C3 /* Entitlements.plist in Resources */ = {isa = PBXBuildFile; fileRef = EBAA899712FB3AB200B743C3 /* Entitlements.plist */; };
 		EBAA89BF12FB510E00B743C3 /* KGOTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EBAA89BD12FB510E00B743C3 /* KGOTableViewController.m */; };
 		EBAA8C9C12FC56B000B743C3 /* HighlightedResultLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = EBAA8C9A12FC56B000B743C3 /* HighlightedResultLabel.m */; };
-		EBAE86401215FB0D00F370BE /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = EBAE863E1215FB0D00F370BE /* Icon.png */; };
-		EBAE86411215FB0D00F370BE /* Icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = EBAE863F1215FB0D00F370BE /* Icon@2x.png */; };
-		EBAE86451215FB4900F370BE /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = EBAE86441215FB4900F370BE /* Default@2x.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -252,7 +249,6 @@
 		DEC02F9C110578240054BE32 /* AboutTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AboutTableViewController.m; sourceTree = "<group>"; };
 		DECBF6B410F8F91B009FAE35 /* NewsImageRep.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NewsImageRep.h; sourceTree = "<group>"; };
 		DECBF6B510F8F91B009FAE35 /* NewsImageRep.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NewsImageRep.m; sourceTree = "<group>"; };
-		DED3CCE810418F5F003D3B74 /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Default.png; path = Resources/Default.png; sourceTree = "<group>"; };
 		EB1386B412F22DBC004DBB7C /* AnalyticsWrapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AnalyticsWrapper.h; sourceTree = "<group>"; };
 		EB1386B512F22DBC004DBB7C /* AnalyticsWrapper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AnalyticsWrapper.m; sourceTree = "<group>"; };
 		EB1386BB12F22DBC004DBB7C /* ConnectionWrapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConnectionWrapper.h; sourceTree = "<group>"; };
@@ -272,15 +268,7 @@
 		EB13872C12F22DBC004DBB7C /* TabViewControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TabViewControl.h; sourceTree = "<group>"; };
 		EB13872D12F22DBC004DBB7C /* TabViewControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TabViewControl.m; sourceTree = "<group>"; };
 		EB1387A512F22DD2004DBB7C /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		EB138AFC12F22F31004DBB7C /* KGOInfo.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = KGOInfo.plist; sourceTree = "<group>"; };
-		EB138AFE12F231B7004DBB7C /* common */ = {isa = PBXFileReference; lastKnownFileType = folder; name = common; path = ../../Resources/common; sourceTree = SOURCE_ROOT; };
-		EB138BAE12F231E3004DBB7C /* en.lproj */ = {isa = PBXFileReference; lastKnownFileType = folder; name = en.lproj; path = Localization/en.lproj; sourceTree = "<group>"; };
-		EB138BB212F23250004DBB7C /* calendar */ = {isa = PBXFileReference; lastKnownFileType = folder; name = calendar; path = ../../Resources/modules/calendar; sourceTree = SOURCE_ROOT; };
-		EB138BB512F23250004DBB7C /* home */ = {isa = PBXFileReference; lastKnownFileType = folder; name = home; path = ../../Resources/modules/home; sourceTree = SOURCE_ROOT; };
-		EB138BD312F23250004DBB7C /* map */ = {isa = PBXFileReference; lastKnownFileType = folder; name = map; path = ../../Resources/modules/map; sourceTree = SOURCE_ROOT; };
-		EB138BEC12F23250004DBB7C /* news */ = {isa = PBXFileReference; lastKnownFileType = folder; name = news; path = ../../Resources/modules/news; sourceTree = SOURCE_ROOT; };
-		EB138BF512F23250004DBB7C /* people */ = {isa = PBXFileReference; lastKnownFileType = folder; name = people; path = ../../Resources/modules/people; sourceTree = SOURCE_ROOT; };
-		EB138BFA12F23250004DBB7C /* settings */ = {isa = PBXFileReference; lastKnownFileType = folder; name = settings; path = ../../Resources/modules/settings; sourceTree = SOURCE_ROOT; };
+		EB138AFC12F22F31004DBB7C /* KGOInfo.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = KGOInfo.plist; path = ../KGOInfo.plist; sourceTree = "<group>"; };
 		EB138E8E12F24EB2004DBB7C /* Proj.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Proj.xcodeproj; path = Proj/Proj.xcodeproj; sourceTree = "<group>"; };
 		EB138EE812F251EB004DBB7C /* Facebook.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Facebook.xcodeproj; path = Facebook/Facebook.xcodeproj; sourceTree = "<group>"; };
 		EB138F0212F253A1004DBB7C /* GANTracker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GANTracker.h; sourceTree = "<group>"; };
@@ -301,8 +289,6 @@
 		EB142C141300950300396753 /* ModoNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ModoNavigationController.m; sourceTree = "<group>"; };
 		EB142C2113009FF100396753 /* KGOAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGOAppDelegate.h; sourceTree = "<group>"; };
 		EB142C2213009FF100396753 /* KGOAppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGOAppDelegate.m; sourceTree = "<group>"; };
-		EB142C941300A40000396753 /* MainWindow-iPad.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = "MainWindow-iPad.xib"; path = "../../Resources-iPad/MainWindow-iPad.xib"; sourceTree = "<group>"; };
-		EB142C961300A4A900396753 /* MainWindow.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = MainWindow.xib; path = ../../Resources/MainWindow.xib; sourceTree = SOURCE_ROOT; };
 		EB142C981300A83E00396753 /* KGOAppDelegate+ModuleAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "KGOAppDelegate+ModuleAdditions.h"; sourceTree = "<group>"; };
 		EB142C991300A83E00396753 /* KGOAppDelegate+ModuleAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "KGOAppDelegate+ModuleAdditions.m"; sourceTree = "<group>"; };
 		EB142E6C1300D94E00396753 /* HomeModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HomeModule.h; sourceTree = "<group>"; };
@@ -358,6 +344,9 @@
 		EB181B1213174F41003728FF /* PersonOrganization.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PersonOrganization.m; sourceTree = "<group>"; };
 		EB181B211317577D003728FF /* KGOPerson.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGOPerson.h; sourceTree = "<group>"; };
 		EB181B221317577D003728FF /* KGOPerson.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGOPerson.m; sourceTree = "<group>"; };
+		EB1B88701324A4B800108A8F /* MainWindow.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = MainWindow.xib; path = ../../../Resources/MainWindow.xib; sourceTree = "<group>"; };
+		EB1B88751324A60600108A8F /* MainWindow-iPad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "MainWindow-iPad.xib"; sourceTree = "<group>"; };
+		EB1B88771324A62100108A8F /* common */ = {isa = PBXFileReference; lastKnownFileType = folder; path = common; sourceTree = "<group>"; };
 		EB358ACD1309F9CE000250AD /* FacebookModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FacebookModule.h; sourceTree = "<group>"; };
 		EB358ACE1309F9CE000250AD /* FacebookModule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FacebookModule.m; sourceTree = "<group>"; };
 		EB358AD11309FA4E000250AD /* FacebookPhotosViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FacebookPhotosViewController.h; sourceTree = "<group>"; };
@@ -370,13 +359,23 @@
 		EB3721A911FA2F5200705180 /* NewsImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NewsImage.m; sourceTree = "<group>"; };
 		EB4C2CDE127F138100058748 /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
 		EB4C2CE0127F138900058748 /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
-		EB5773C112FDF91200BAF5F5 /* Config.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Config.plist; sourceTree = "<group>"; };
+		EB5773C112FDF91200BAF5F5 /* Config.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Config.plist; path = ../Config.plist; sourceTree = "<group>"; };
 		EB5773FA12FE111500BAF5F5 /* CoreDataManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoreDataManager.h; sourceTree = "<group>"; };
 		EB5773FB12FE111500BAF5F5 /* CoreDataManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CoreDataManager.m; sourceTree = "<group>"; };
 		EB5773FC12FE111500BAF5F5 /* KGOSocialMediaController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGOSocialMediaController.h; sourceTree = "<group>"; };
 		EB5773FD12FE111500BAF5F5 /* KGOSocialMediaController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGOSocialMediaController.m; sourceTree = "<group>"; };
 		EB57740212FE113400BAF5F5 /* KGOSpringboardViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGOSpringboardViewController.h; sourceTree = "<group>"; };
 		EB57740312FE113400BAF5F5 /* KGOSpringboardViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGOSpringboardViewController.m; sourceTree = "<group>"; };
+		EB5F315B132491ED0066413F /* KGOTabbedViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGOTabbedViewController.h; sourceTree = "<group>"; };
+		EB5F315C132491ED0066413F /* KGOTabbedViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGOTabbedViewController.m; sourceTree = "<group>"; };
+		EB5F315D132491ED0066413F /* KGOTabbedViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = KGOTabbedViewController.xib; sourceTree = "<group>"; };
+		EB5F33A0132497D00066413F /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
+		EB5F33A1132497D00066413F /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default@2x.png"; sourceTree = "<group>"; };
+		EB5F33A2132497D00066413F /* Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Icon.png; sourceTree = "<group>"; };
+		EB5F33A3132497D00066413F /* Icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon@2x.png"; sourceTree = "<group>"; };
+		EB5F33C1132498050066413F /* modules */ = {isa = PBXFileReference; lastKnownFileType = folder; path = modules; sourceTree = "<group>"; };
+		EB5F33C7132498640066413F /* en.lproj */ = {isa = PBXFileReference; lastKnownFileType = folder; path = en.lproj; sourceTree = "<group>"; };
+		EB5F33CB132499720066413F /* default-assets */ = {isa = PBXFileReference; lastKnownFileType = folder; name = "default-assets"; path = "../../../Themes/default-assets"; sourceTree = "<group>"; };
 		EB6D02A811E3784100B65CE3 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		EB6D111411EE143900B65CE3 /* TileServerManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TileServerManager.h; sourceTree = "<group>"; };
 		EB6D111511EE143900B65CE3 /* TileServerManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TileServerManager.m; sourceTree = "<group>"; };
@@ -427,15 +426,11 @@
 		EBA273E811760BAE0033DD27 /* CalendarConstants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CalendarConstants.m; sourceTree = "<group>"; };
 		EBA2865510E07E140003BA01 /* PeopleSearchViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PeopleSearchViewController.m; sourceTree = "<group>"; };
 		EBAA860812F728CE00B743C3 /* SFHFKeychainUtils.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = SFHFKeychainUtils.xcodeproj; path = SFHFKeychainUtils/SFHFKeychainUtils.xcodeproj; sourceTree = "<group>"; };
-		EBAA899712FB3AB200B743C3 /* Entitlements.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Entitlements.plist; path = ../../Resources/Entitlements.plist; sourceTree = SOURCE_ROOT; };
 		EBAA89BC12FB510E00B743C3 /* KGOTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGOTableViewController.h; sourceTree = "<group>"; };
 		EBAA89BD12FB510E00B743C3 /* KGOTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGOTableViewController.m; sourceTree = "<group>"; };
 		EBAA8C9912FC56B000B743C3 /* HighlightedResultLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HighlightedResultLabel.h; sourceTree = "<group>"; };
 		EBAA8C9A12FC56B000B743C3 /* HighlightedResultLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HighlightedResultLabel.m; sourceTree = "<group>"; };
 		EBAA9F6210FFAB8B003379A5 /* PeopleDataModel 5.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "PeopleDataModel 5.xcdatamodel"; sourceTree = "<group>"; };
-		EBAE863E1215FB0D00F370BE /* Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Icon.png; path = Resources/Icon.png; sourceTree = "<group>"; };
-		EBAE863F1215FB0D00F370BE /* Icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Icon@2x.png"; path = "Resources/Icon@2x.png"; sourceTree = "<group>"; };
-		EBAE86441215FB4900F370BE /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Default@2x.png"; path = "Resources/Default@2x.png"; sourceTree = "<group>"; };
 		EBCA123210CEF3C400577C5D /* PeopleSearchViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PeopleSearchViewController.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -488,36 +483,14 @@
 				DE715445102FE468005E6111 /* Modules */,
 				EB1386AF12F22DBC004DBB7C /* Common */,
 				EB1387B912F22DF7004DBB7C /* Contrib */,
-				29B97317FDCFA39411CA2CEA /* Resources */,
-				EB142C931300A3FF00396753 /* Resources-iPad */,
+				EB5F33C3132498380066413F /* Localization */,
+				EB5F339F132497D00066413F /* Resources */,
+				EB1B88721324A4E500108A8F /* Resources-iPad */,
 				EB1441761309F0C300396753 /* Theme */,
 				29B97323FDCFA39411CA2CEA /* Frameworks */,
 				19C28FACFE9D520D11CA2CBB /* Products */,
 			);
 			name = CustomTemplate;
-			sourceTree = "<group>";
-		};
-		29B97317FDCFA39411CA2CEA /* Resources */ = {
-			isa = PBXGroup;
-			children = (
-				EB142C961300A4A900396753 /* MainWindow.xib */,
-				EB138BAE12F231E3004DBB7C /* en.lproj */,
-				EB138AFE12F231B7004DBB7C /* common */,
-				EB138BB212F23250004DBB7C /* calendar */,
-				EB138BB512F23250004DBB7C /* home */,
-				EB138BD312F23250004DBB7C /* map */,
-				EB138BEC12F23250004DBB7C /* news */,
-				EB138BF512F23250004DBB7C /* people */,
-				EB138BFA12F23250004DBB7C /* settings */,
-				EB138AFC12F22F31004DBB7C /* KGOInfo.plist */,
-				EBAE86441215FB4900F370BE /* Default@2x.png */,
-				EBAE863E1215FB0D00F370BE /* Icon.png */,
-				EBAE863F1215FB0D00F370BE /* Icon@2x.png */,
-				DED3CCE810418F5F003D3B74 /* Default.png */,
-				EBAA899712FB3AB200B743C3 /* Entitlements.plist */,
-				EB5773C112FDF91200BAF5F5 /* Config.plist */,
-			);
-			name = Resources;
 			sourceTree = "<group>";
 		};
 		29B97323FDCFA39411CA2CEA /* Frameworks */ = {
@@ -732,6 +705,9 @@
 		EB13871A12F22DBC004DBB7C /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
+				EB5F315B132491ED0066413F /* KGOTabbedViewController.h */,
+				EB5F315C132491ED0066413F /* KGOTabbedViewController.m */,
+				EB5F315D132491ED0066413F /* KGOTabbedViewController.xib */,
 				EB143E5113063A5E00396753 /* KGOCategoryListViewController.h */,
 				EB143E5213063A5E00396753 /* KGOCategoryListViewController.m */,
 				EB143DCF130636BA00396753 /* DatePickerViewController.h */,
@@ -844,14 +820,6 @@
 			path = Cocoa;
 			sourceTree = "<group>";
 		};
-		EB142C931300A3FF00396753 /* Resources-iPad */ = {
-			isa = PBXGroup;
-			children = (
-				EB142C941300A40000396753 /* MainWindow-iPad.xib */,
-			);
-			name = "Resources-iPad";
-			sourceTree = "<group>";
-		};
 		EB1430641301A87900396753 /* Search */ = {
 			isa = PBXGroup;
 			children = (
@@ -898,6 +866,15 @@
 			path = DataModels;
 			sourceTree = "<group>";
 		};
+		EB1B88721324A4E500108A8F /* Resources-iPad */ = {
+			isa = PBXGroup;
+			children = (
+				EB1B88751324A60600108A8F /* MainWindow-iPad.xib */,
+			);
+			name = "Resources-iPad";
+			path = "../../Resources-iPad";
+			sourceTree = "<group>";
+		};
 		EB358ACC1309F9AB000250AD /* Facebook */ = {
 			isa = PBXGroup;
 			children = (
@@ -942,6 +919,31 @@
 				EB8B36351306FBD7005DBB8F /* KGORequestManager.m */,
 			);
 			path = DataControllers;
+			sourceTree = "<group>";
+		};
+		EB5F339F132497D00066413F /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				EB1B88701324A4B800108A8F /* MainWindow.xib */,
+				EB1B88771324A62100108A8F /* common */,
+				EB5F33C1132498050066413F /* modules */,
+				EB5F33CB132499720066413F /* default-assets */,
+				EB138AFC12F22F31004DBB7C /* KGOInfo.plist */,
+				EB5773C112FDF91200BAF5F5 /* Config.plist */,
+				EB5F33A0132497D00066413F /* Default.png */,
+				EB5F33A1132497D00066413F /* Default@2x.png */,
+				EB5F33A2132497D00066413F /* Icon.png */,
+				EB5F33A3132497D00066413F /* Icon@2x.png */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		EB5F33C3132498380066413F /* Localization */ = {
+			isa = PBXGroup;
+			children = (
+				EB5F33C7132498640066413F /* en.lproj */,
+			);
+			path = Localization;
 			sourceTree = "<group>";
 		};
 		EB7F326610CD6C5B00188BCD /* People */ = {
@@ -1167,25 +1169,21 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				DED3CCE910418F5F003D3B74 /* Default.png in Resources */,
 				4463D09510D92CB00048CA83 /* MITMapDetailViewController.xib in Resources */,
-				EBAE86401215FB0D00F370BE /* Icon.png in Resources */,
-				EBAE86411215FB0D00F370BE /* Icon@2x.png in Resources */,
-				EBAE86451215FB4900F370BE /* Default@2x.png in Resources */,
-				EB138BAD12F231B7004DBB7C /* common in Resources */,
-				EB138BB112F231E3004DBB7C /* en.lproj in Resources */,
-				EB138C0212F23250004DBB7C /* calendar in Resources */,
-				EB138C0312F23250004DBB7C /* home in Resources */,
-				EB138C0412F23250004DBB7C /* map in Resources */,
-				EB138C0512F23250004DBB7C /* news in Resources */,
-				EB138C0612F23250004DBB7C /* people in Resources */,
-				EB138C0712F23250004DBB7C /* settings in Resources */,
-				EBAA899812FB3AB200B743C3 /* Entitlements.plist in Resources */,
 				EB5773C212FDF91200BAF5F5 /* Config.plist in Resources */,
-				EB142C951300A40000396753 /* MainWindow-iPad.xib in Resources */,
-				EB142C971300A4A900396753 /* MainWindow.xib in Resources */,
 				EB8B364713078CDB005DBB8F /* MapHomeViewController.xib in Resources */,
 				EB14417A1309F0C300396753 /* DefaultTheme.plist in Resources */,
+				EB5F315F132491ED0066413F /* KGOTabbedViewController.xib in Resources */,
+				EB5F33B2132497D00066413F /* Default.png in Resources */,
+				EB5F33B3132497D00066413F /* Default@2x.png in Resources */,
+				EB5F33B4132497D00066413F /* Icon.png in Resources */,
+				EB5F33B5132497D00066413F /* Icon@2x.png in Resources */,
+				EB5F33C2132498050066413F /* modules in Resources */,
+				EB5F33C8132498640066413F /* en.lproj in Resources */,
+				EB5F33CC132499720066413F /* default-assets in Resources */,
+				EB1B88711324A4B800108A8F /* MainWindow.xib in Resources */,
+				EB1B88761324A60600108A8F /* MainWindow-iPad.xib in Resources */,
+				EB1B88781324A62100108A8F /* common in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1311,6 +1309,7 @@
 				EB181B1813174F41003728FF /* PersonAddress.m in Sources */,
 				EB181B1A13174F41003728FF /* PersonOrganization.m in Sources */,
 				EB181B241317577D003728FF /* KGOPerson.m in Sources */,
+				EB5F315E132491ED0066413F /* KGOTabbedViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -45,7 +45,7 @@
     if (shows != (_searchButton != nil)) {
         if (shows) {
             _searchButton = [UIButton buttonWithType:UIButtonTypeCustom];
-            UIImage *image = [UIImage imageNamed:@"common/search.png"];
+            UIImage *image = [UIImage imageWithPathName:@"common/search.png"];
             [_searchButton setImage:image forState:UIControlStateNormal];
             _searchButton.adjustsImageWhenHighlighted = NO;
             // ensure that button is wide enough to tap
@@ -80,7 +80,7 @@
         
         if (shows) {
             _bookmarkButton = [UIButton buttonWithType:UIButtonTypeCustom];
-            UIImage *image = [UIImage imageNamed:@"common/bookmark.png"];
+            UIImage *image = [UIImage imageWithPathName:@"common/bookmark.png"];
             [_bookmarkButton setImage:image forState:UIControlStateNormal];
             _bookmarkButton.adjustsImageWhenHighlighted = NO;
             // ensure that button is wide enough to tap
@@ -127,7 +127,7 @@
     aButton.titleEdgeInsets = UIEdgeInsetsMake(0, 0, 1.0, 0); // needed to center text vertically within button
     CGSize size = [aButton.titleLabel.text sizeWithFont:aButton.titleLabel.font];
 
-	UIImage *stretchableButtonImage = [[UIImage imageNamed:@"common/scrolltabs-selected.png"] stretchableImageWithLeftCapWidth:15 topCapHeight:0];
+	UIImage *stretchableButtonImage = [[UIImage imageWithPathName:@"common/scrolltabs-selected.png"] stretchableImageWithLeftCapWidth:15 topCapHeight:0];
     [aButton setBackgroundImage:nil forState:UIControlStateNormal];
     [aButton setBackgroundImage:stretchableButtonImage forState:UIControlStateHighlighted];
     
@@ -169,7 +169,7 @@
     [super layoutSubviews];
     
     if (!_backgroundImageView) {
-        UIImage *backgroundImage = [UIImage imageNamed:@"common/scrolltabs-background-opaque.png"];
+        UIImage *backgroundImage = [UIImage imageWithPathName:@"common/scrolltabs-background-opaque.png"];
         _backgroundImageView = [[[UIImageView alloc] initWithImage:[backgroundImage stretchableImageWithLeftCapWidth:0 topCapHeight:0]] autorelease];
         [self addSubview:_backgroundImageView];
     }
@@ -205,7 +205,7 @@
     // TODO: stop cheating
     if (_contentView.frame.size.width > self.frame.size.width + 10) {
         if (!_leftScrollButton) {
-            UIImage *leftScrollImage = [UIImage imageNamed:@"common/scrolltabs-leftarrow.png"];
+            UIImage *leftScrollImage = [UIImage imageWithPathName:@"common/scrolltabs-leftarrow.png"];
             CGRect imageFrame = CGRectMake(0, 0, leftScrollImage.size.width, leftScrollImage.size.height);
             _leftScrollButton = [UIButton buttonWithType:UIButtonTypeCustom];
             _leftScrollButton.frame = imageFrame;
@@ -216,7 +216,7 @@
         [self addSubview:_leftScrollButton];
         
         if (!_rightScrollButton) {
-            UIImage *rightScrollImage = [UIImage imageNamed:@"common/scrolltabs-rightarrow.png"];
+            UIImage *rightScrollImage = [UIImage imageWithPathName:@"common/scrolltabs-rightarrow.png"];
             CGRect imageFrame = CGRectMake(self.frame.size.width - rightScrollImage.size.width,0,rightScrollImage.size.width,rightScrollImage.size.height);
             _rightScrollButton = [UIButton buttonWithType:UIButtonTypeCustom];
             _rightScrollButton.frame = imageFrame;
@@ -244,7 +244,7 @@
         }
 
         if (pressedButton.adjustsImageWhenHighlighted) {
-            UIImage *buttonImage = [UIImage imageNamed:@"common/scrolltabs-selected.png"];
+            UIImage *buttonImage = [UIImage imageWithPathName:@"common/scrolltabs-selected.png"];
             UIImage *stretchableButtonImage = [buttonImage stretchableImageWithLeftCapWidth:15 topCapHeight:0];
             
             [pressedButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];

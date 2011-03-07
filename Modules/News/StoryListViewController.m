@@ -90,7 +90,7 @@ static NSInteger numTries = 0;
     storyTable.frame = CGRectMake(0, navScrollView.frame.size.height, self.view.frame.size.width, self.view.frame.size.height - navScrollView.frame.size.height);
 
     // add drop shadow below nav scroller view
-    UIImageView *dropShadow = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"global/bar-drop-shadow.png"]];
+    UIImageView *dropShadow = [[UIImageView alloc] initWithImage:[UIImage imageWithPathName:@"common/bar-drop-shadow.png"]];
     dropShadow.frame = CGRectMake(0, navScrollView.frame.size.height, dropShadow.frame.size.width, dropShadow.frame.size.height);
     [self.view addSubview:dropShadow];
     [dropShadow release];

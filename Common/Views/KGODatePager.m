@@ -1,6 +1,7 @@
 #import "KGODatePager.h"
 #import "KGOTheme.h"
 #import "KGOAppDelegate.h"
+#import "UIKit+KGOAdditions.h"
 
 @implementation KGODatePager
 
@@ -36,7 +37,7 @@
         
         // arrow buttons
         nextButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        UIImage *buttonImage = [UIImage imageNamed:@"common/subheadbar_button_next"];
+        UIImage *buttonImage = [UIImage imageWithPathName:@"common/subheadbar_button_next"];
         
         CGFloat halfHeight = floor(self.frame.size.height / 2);
         CGFloat originX = self.frame.size.width - halfHeight;
@@ -44,28 +45,28 @@
         nextButton.frame = CGRectMake(0, 0, buttonImage.size.width, buttonImage.size.height);
         nextButton.center = CGPointMake(originX, halfHeight);
         [nextButton setBackgroundImage:buttonImage forState:UIControlStateNormal];
-        [nextButton setBackgroundImage:[UIImage imageNamed:@"common/subheadbar_button_next_pressed"] forState:UIControlStateHighlighted];
+        [nextButton setBackgroundImage:[UIImage imageWithPathName:@"common/subheadbar_button_next_pressed"] forState:UIControlStateHighlighted];
         [nextButton addTarget:self action:@selector(buttonPressed:) forControlEvents:UIControlEventTouchUpInside];
         [self addSubview:nextButton];
         originX -= buttonImage.size.width;
         
         prevButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        buttonImage = [UIImage imageNamed:@"common/subheadbar_button_previous"];
+        buttonImage = [UIImage imageWithPathName:@"common/subheadbar_button_previous"];
         prevButton.frame = CGRectMake(0, 0, buttonImage.size.width, buttonImage.size.height);
         prevButton.center = CGPointMake(originX, halfHeight);
         [prevButton setBackgroundImage:buttonImage forState:UIControlStateNormal];
-        [prevButton setBackgroundImage:[UIImage imageNamed:@"common/subheadbar_button_previous_pressed"] forState:UIControlStateHighlighted];
+        [prevButton setBackgroundImage:[UIImage imageWithPathName:@"common/subheadbar_button_previous_pressed"] forState:UIControlStateHighlighted];
         [prevButton addTarget:self action:@selector(buttonPressed:) forControlEvents:UIControlEventTouchUpInside];
         [self addSubview:prevButton];
         
         // calendar button
-        buttonImage = [UIImage imageNamed:@"common/subheadbar_button"];
+        buttonImage = [UIImage imageWithPathName:@"common/subheadbar_button"];
         calendarButton = [UIButton buttonWithType:UIButtonTypeCustom];
         calendarButton.frame = CGRectMake(0, 0, buttonImage.size.width, buttonImage.size.height);
         calendarButton.center = CGPointMake(halfHeight, halfHeight);
         [calendarButton setBackgroundImage:buttonImage forState:UIControlStateNormal];
-        [calendarButton setBackgroundImage:[UIImage imageNamed:@"common/subheadbar_button_pressed"] forState:UIControlEventTouchUpInside];
-        [calendarButton setImage:[UIImage imageNamed:@"common/subheadbar_calendar"] forState:UIControlStateNormal];
+        [calendarButton setBackgroundImage:[UIImage imageWithPathName:@"common/subheadbar_button_pressed"] forState:UIControlEventTouchUpInside];
+        [calendarButton setImage:[UIImage imageWithPathName:@"common/subheadbar_calendar"] forState:UIControlStateNormal];
         [calendarButton addTarget:self action:@selector(buttonPressed:) forControlEvents:UIControlEventTouchUpInside];
         [self addSubview:calendarButton];
         

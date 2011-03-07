@@ -1,6 +1,7 @@
 #import "MITThumbnailView.h"
 #import "CoreDataManager.h"
 #import "KGOAppDelegate.h"
+#import "UIKit+KGOAdditions.h"
 
 @implementation MITThumbnailView
 
@@ -8,10 +9,10 @@
 
 + (UIImage *)placeholderImage {
     // TODO: allow placeholders image to be set
-    static NSString * const placeholderImageName = @"news/news-placeholder.png";
+    static NSString * const placeholderImageName = @"modules/news/news-placeholder.png";
     static UIImage *placeholderImage = nil;
     if (!placeholderImage) {
-        placeholderImage = [[UIImage imageNamed:placeholderImageName] retain];
+        placeholderImage = [[UIImage imageWithPathName:placeholderImageName] retain];
     }
     return placeholderImage;
 }

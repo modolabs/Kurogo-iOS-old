@@ -1,6 +1,18 @@
 #import "UIKit+KGOAdditions.h"
 
 
+@implementation UIImage (KGOAdditions)
+
++ (UIImage *)imageWithPathName:(NSString *)pathName {
+    UIImage *image = [UIImage imageNamed:pathName];
+    if (!image) {
+        image = [UIImage imageNamed:[NSString stringWithFormat:@"default-assets/%@", pathName]];
+    }
+    return image;
+}
+
+@end
+
 @implementation UIColor (KGOAdditions)
 
 /* this function was borrowed for use at MIT from Ars Technica.
@@ -8,7 +20,7 @@
  * modified in KGO to handle alpha channel using Android RRGGBBAA syntax
  *
  * acceptable formats are
- * @"0099FF" @"#0099FF" @"0x0099FF" @"0099FFAA" @"#0099FFAA" @"0x0099FFAA"
+ * @"0099FF" @"#0099FF" @"0x0099FF" @"AA0099FF" @"#AA0099FF" @"0xAA0099FF"
  */
 + (UIColor *)colorWithHexString:(NSString *)hexString  
 {  
@@ -24,16 +36,24 @@
     NSUInteger length = [cString length];
     if (length != 6 && length != 8) return nil;
     
+    NSRange range = NSMakeRange(0, 2);
+    
+    // get alpha if exists
+    CGFloat alpha = 1.0f;
+    if (length == 8) {
+        unsigned int a;
+        [[NSScanner scannerWithString:[cString substringWithRange:range]] scanHexInt:&a];
+        alpha = (float) a / 255.0f;
+        range.location += 2;
+    }
+    
     // Separate into r, g, b substrings
-    NSRange range;
-    range.location = 0;
-    range.length = 2;
     NSString *rString = [cString substringWithRange:range];
     
-    range.location = 2;
+    range.location += 2;
     NSString *gString = [cString substringWithRange:range];
     
-    range.location = 4;
+    range.location += 2;
     NSString *bString = [cString substringWithRange:range];
     
     // Scan values
@@ -41,14 +61,6 @@
     [[NSScanner scannerWithString:rString] scanHexInt:&r];
     [[NSScanner scannerWithString:gString] scanHexInt:&g];
     [[NSScanner scannerWithString:bString] scanHexInt:&b];
-
-    CGFloat alpha = 1.0f;
-    if (length == 8) {
-        range.location = 6;
-        unsigned int a;
-        [[NSScanner scannerWithString:[cString substringWithRange:range]] scanHexInt:&a];
-        alpha = (float) a / 255.0f;
-    }
     
     return [UIColor colorWithRed:((float) r / 255.0f)
                            green:((float) g / 255.0f)
@@ -62,18 +74,18 @@
 
 - (void)showLoadingIndicator {
 	self.animationImages = [NSArray arrayWithObjects:
-							[UIImage imageNamed:@"loading-animation/iPhoneBusybox_01.png"],
-							[UIImage imageNamed:@"loading-animation/iPhoneBusybox_02.png"],
-							[UIImage imageNamed:@"loading-animation/iPhoneBusybox_03.png"],
-							[UIImage imageNamed:@"loading-animation/iPhoneBusybox_04.png"],
-							[UIImage imageNamed:@"loading-animation/iPhoneBusybox_05.png"],
-							[UIImage imageNamed:@"loading-animation/iPhoneBusybox_06.png"],
-							[UIImage imageNamed:@"loading-animation/iPhoneBusybox_07.png"],
-							[UIImage imageNamed:@"loading-animation/iPhoneBusybox_08.png"],
-							[UIImage imageNamed:@"loading-animation/iPhoneBusybox_09.png"],
-							[UIImage imageNamed:@"loading-animation/iPhoneBusybox_10.png"],
-							[UIImage imageNamed:@"loading-animation/iPhoneBusybox_11.png"],
-							[UIImage imageNamed:@"loading-animation/iPhoneBusybox_12.png"],
+							[UIImage imageWithPathName:@"common/loading-animation/iPhoneBusybox_01.png"],
+							[UIImage imageWithPathName:@"common/loading-animation/iPhoneBusybox_02.png"],
+							[UIImage imageWithPathName:@"common/loading-animation/iPhoneBusybox_03.png"],
+							[UIImage imageWithPathName:@"common/loading-animation/iPhoneBusybox_04.png"],
+							[UIImage imageWithPathName:@"common/loading-animation/iPhoneBusybox_05.png"],
+							[UIImage imageWithPathName:@"common/loading-animation/iPhoneBusybox_06.png"],
+							[UIImage imageWithPathName:@"common/loading-animation/iPhoneBusybox_07.png"],
+							[UIImage imageWithPathName:@"common/loading-animation/iPhoneBusybox_08.png"],
+							[UIImage imageWithPathName:@"common/loading-animation/iPhoneBusybox_09.png"],
+							[UIImage imageWithPathName:@"common/loading-animation/iPhoneBusybox_10.png"],
+							[UIImage imageWithPathName:@"common/loading-animation/iPhoneBusybox_11.png"],
+							[UIImage imageWithPathName:@"common/loading-animation/iPhoneBusybox_12.png"],
 							nil];
 	
 	[self startAnimating];

@@ -78,28 +78,28 @@ static KGOTheme *s_sharedTheme = nil;
 - (UIImage *)titleImageForNavBar {
     NSString *imageName = [[themeDict objectForKey:@"Images"] objectForKey:@"NavBarTitle"];
     if (imageName)
-        return [UIImage imageNamed:imageName];
+        return [UIImage imageWithPathName:imageName];
     return nil;
 }
 
 - (UIImage *)backgroundImageForNavBar {
     NSString *imageName = [[themeDict objectForKey:@"Images"] objectForKey:@"NavBarBackground"];
     if (imageName)
-        return [UIImage imageNamed:imageName];
+        return [UIImage imageWithPathName:imageName];
     return nil;
 }
 
 - (UIImage *)backgroundImageForSearchBar {
     NSString *imageName = [[themeDict objectForKey:@"Images"] objectForKey:@"SearchBarBackground"];
     if (imageName)
-        return [UIImage imageNamed:imageName];
+        return [UIImage imageWithPathName:imageName];
     return nil;
 }
 
 - (UIImage *)backgroundImageForSearchBarDropShadow {
     NSString *imageName = [[themeDict objectForKey:@"Images"] objectForKey:@"SearchBarDropShadow"];
     if (imageName)
-        return [UIImage imageNamed:imageName];
+        return [UIImage imageWithPathName:imageName];
     return nil;
 }
 
@@ -224,19 +224,19 @@ static NSString * KGOAccessoryImageCheckmarkHighlighted = @"common/action-checkm
 
     } else if ([accessoryType isEqualToString:KGOAccessoryTypeBlank]) {
     
-        UIImage *image = [UIImage imageNamed:KGOAccessoryImageBlank];
+        UIImage *image = [UIImage imageWithPathName:KGOAccessoryImageBlank];
         return [[[UIImageView alloc] initWithImage:image] autorelease];
         
     } else if ([accessoryType isEqualToString:KGOAccessoryTypeChevron]) {
 
-        UIImage *image = [UIImage imageNamed:KGOAccessoryImageChevron];
-        UIImage *highlightedImage = [UIImage imageNamed:KGOAccessoryImageChevronHighlighted];
+        UIImage *image = [UIImage imageWithPathName:KGOAccessoryImageChevron];
+        UIImage *highlightedImage = [UIImage imageWithPathName:KGOAccessoryImageChevronHighlighted];
         return [[[UIImageView alloc] initWithImage:image highlightedImage:highlightedImage] autorelease];
     
     } else if ([accessoryType isEqualToString:KGOAccessoryTypeCheckmark]) {
         
-        UIImage *image = [UIImage imageNamed:KGOAccessoryImageCheckmark];
-        UIImage *highlightedImage = [UIImage imageNamed:KGOAccessoryImageCheckmarkHighlighted];
+        UIImage *image = [UIImage imageWithPathName:KGOAccessoryImageCheckmark];
+        UIImage *highlightedImage = [UIImage imageWithPathName:KGOAccessoryImageCheckmarkHighlighted];
         return [[[UIImageView alloc] initWithImage:image highlightedImage:highlightedImage] autorelease];
         
     } else {
@@ -245,8 +245,8 @@ static NSString * KGOAccessoryImageCheckmarkHighlighted = @"common/action-checkm
         NSString *imageName = [NSString stringWithFormat:@"common/%@.png", [actionDict objectForKey:@"image"]];
         NSString *highlightedName = [NSString stringWithFormat:@"common/%@.png", [actionDict objectForKey:@"highlightedImage"]];
 
-        UIImage *image = [UIImage imageNamed:imageName];
-        UIImage *highlightedImage = [UIImage imageNamed:highlightedName];
+        UIImage *image = [UIImage imageWithPathName:imageName];
+        UIImage *highlightedImage = [UIImage imageWithPathName:highlightedName];
         
         return [[[UIImageView alloc] initWithImage:image highlightedImage:highlightedImage] autorelease];
     }    
@@ -306,7 +306,7 @@ static NSString * KGOAccessoryImageCheckmarkHighlighted = @"common/action-checkm
     NSString *colorString = [[themeDict objectForKey:@"Colors"] objectForKey:label];
     if (colorString) {
         // check if there is a valid image first
-        UIImage *image = [UIImage imageNamed:colorString];
+        UIImage *image = [UIImage imageWithPathName:colorString];
         if (image) {
             // TODO: if we get to this point we need to make sure iphone/ipad resources are distinguished
             color = [UIColor colorWithPatternImage:image];

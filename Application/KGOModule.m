@@ -1,3 +1,4 @@
+#import "UIKit+KGOAdditions.h"
 #import "KGOModule.h"
 #import "HomeModule.h"
 #import "NewsModule.h"
@@ -23,10 +24,25 @@
         self.shortName = [moduleDict objectForKey:@"shortName"];
         self.longName = [moduleDict objectForKey:@"longName"];
         self.secondary = [[moduleDict objectForKey:@"secondary"] boolValue];
+        self.tag = [moduleDict objectForKey:@"tag"];
 
-        self.tabBarImage = [UIImage imageNamed:[moduleDict objectForKey:@"tabBarImage"]];
-        self.iconImage = [UIImage imageNamed:[moduleDict objectForKey:@"iconImage"]];
-        self.listViewImage = [UIImage imageNamed:[moduleDict objectForKey:@"listViewImage"]];
+        NSString *imageName = [moduleDict objectForKey:@"tabBarImage"];
+        if (!imageName) {
+            imageName = [NSString stringWithFormat:@"modules/home/tab-%@", self.tag];
+        }
+        self.tabBarImage = [UIImage imageWithPathName:imageName];
+        
+        imageName = [moduleDict objectForKey:@"iconImage"];
+        if (!imageName) {
+            imageName = [NSString stringWithFormat:@"modules/home/%@", self.tag];
+        }
+        self.iconImage = [UIImage imageWithPathName:imageName];
+        
+        imageName = [moduleDict objectForKey:@"listViewImage"];
+        if (!imageName) {
+            imageName = [NSString stringWithFormat:@"modules/home/%@-tiny", self.tag];
+        }
+        self.listViewImage = [UIImage imageWithPathName:imageName];
         
         self.enabled = YES;
     }
@@ -35,53 +51,49 @@
 
 + (KGOModule *)moduleWithDictionary:(NSDictionary *)args {
     KGOModule *module = nil;
-    NSString *tag = [args objectForKey:@"id"];
+    NSString *className = [args objectForKey:@"class"];
     
-    if ([tag isEqualToString:AboutTag])
+    if ([className isEqualToString:@"AboutModule"])
         module = [[[AboutModule alloc] initWithDictionary:args] autorelease];
     
-    else if ([tag isEqualToString:CalendarTag])
+    else if ([className isEqualToString:@"CalendarModule"])
         module = [[[CalendarModule alloc] initWithDictionary:args] autorelease];
     
-    //else if ([tag isEqualToString:CoursesTag])
-    
-    //else if ([tag isEqualToString:DiningTag])
-    
-    //else if ([tag isEqualToString:EmergencyTag])
-    
-    else if ([tag isEqualToString:FullWebTag])
+    else if ([className isEqualToString:@"FullWebModule"])
         module = [[[FullWebModule alloc] initWithDictionary:args] autorelease];
     
-    else if ([tag isEqualToString:HomeTag])
-        module = [[[HomeModule alloc] initWithDictionary:args] autorelease];
-    
-    //else if ([tag isEqualToString:LibrariesTag])
-    
-    else if ([tag isEqualToString:MapTag])
+    else if ([className isEqualToString:@"MapModule"])
         module = [[[MapModule alloc] initWithDictionary:args] autorelease];
     
-    else if ([tag isEqualToString:NewsTag])
+    else if ([className isEqualToString:@"NewsModule"])
         module = [[[NewsModule alloc] initWithDictionary:args] autorelease];
     
-    else if ([tag isEqualToString:PeopleTag])
+    else if ([className isEqualToString:@"PeopleModule"])
         module = [[[PeopleModule alloc] initWithDictionary:args] autorelease];
     
-    else if ([tag isEqualToString:SettingsTag])
+    else if ([className isEqualToString:@"SettingsModule"])
         module = [[[SettingsModule alloc] initWithDictionary:args] autorelease];
     
-    else if ([tag isEqualToString:FBPhotosTag])
+    else if ([className isEqualToString:@"FacebookModule"])
         module = [[[FacebookModule alloc] initWithDictionary:args] autorelease];
     
-    else if ([tag isEqualToString:LoginTag])
+    else if ([className isEqualToString:@"LoginModule"])
         module = [[[LoginModule alloc] initWithDictionary:args] autorelease];
     
-    //else if ([tag isEqualToString:SchoolsTag])
+    else if ([className isEqualToString:@"HomeModule"])
+        module = [[[HomeModule alloc] initWithDictionary:args] autorelease];
+
+    //else if ([className isEqualToString:@"CoursesModule"])
     
-    //else if ([tag isEqualToString:TransitTag])
+    //else if ([className isEqualToString:@"SchoolsModule"])
     
-    if (module) {
-        module.tag = tag;
-    }
+    //else if ([className isEqualToString:@"DiningModule"])
+    
+    //else if ([className isEqualToString:@"LibrariesModule"])
+    
+    //else if ([className isEqualToString:@"TransitModule"])
+    
+    //else if ([className isEqualToString:@"EmergencyModule"])
     
     return module;
 }

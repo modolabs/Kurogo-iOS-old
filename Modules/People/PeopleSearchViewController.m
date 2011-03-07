@@ -203,8 +203,8 @@ searchBar = _searchBar;
         }
         case 2:
         {
-            UIImage *backgroundImage = [[UIImage imageNamed:@"people/redbutton2.png"] stretchableImageWithLeftCapWidth:10.0 topCapHeight:0.0];
-            UIImage *selectedBackgroundImage = [[UIImage imageNamed:@"people/redbutton2highlighted.png"] stretchableImageWithLeftCapWidth:10.0 topCapHeight:0.0];
+            UIImage *backgroundImage = [[UIImage imageWithPathName:@"modules/people/redbutton2.png"] stretchableImageWithLeftCapWidth:10.0 topCapHeight:0.0];
+            UIImage *selectedBackgroundImage = [[UIImage imageWithPathName:@"modules/people/redbutton2highlighted.png"] stretchableImageWithLeftCapWidth:10.0 topCapHeight:0.0];
             
             backgroundView = [[[UIImageView alloc] initWithFrame:CGRectMake(0, 0, self.tableView.frame.size.width, tableView.rowHeight)] autorelease];
             [(UIImageView *)backgroundView setImage:backgroundImage];

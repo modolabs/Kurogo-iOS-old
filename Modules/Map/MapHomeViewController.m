@@ -95,14 +95,6 @@
 - (IBAction)bookmarksButtonPressed {
 }
 
-- (UIView *)tabbedControl:(KGOTabbedControl *)control containerViewAtIndex:(NSInteger)index {
-    return nil;
-}
-
-- (NSArray *)itemsForTabbedControl:(KGOTabbedControl *)control {
-    return [NSArray arrayWithObjects:@"hello", @"test1", @"Test2", nil];
-}
-
 - (IBAction)settingsButtonPressed {
 	MapSettingsViewController *vc = [[[MapSettingsViewController alloc] initWithStyle:UITableViewStyleGrouped] autorelease];
     vc.title = @"Settings";
@@ -191,7 +183,6 @@
 
 - (void)searchController:(KGOSearchDisplayController *)controller didSelectResult:(id<KGOSearchResult>)aResult {
     NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:aResult, @"place", nil];
-    MITMapDetailViewController *vc = [[[MITMapDetailViewController alloc] init] autorelease];
     KGOAppDelegate *appDelegate = (KGOAppDelegate *)[[UIApplication sharedApplication] delegate];
     [appDelegate showPage:LocalPathPageNameDetail forModuleTag:MapTag params:params];
 }

@@ -2,6 +2,7 @@
 #import "KGOAppDelegate.h"
 #import "CoreDataManager.h"
 #import "NewsImage.h"
+#import "UIKit+KGOAdditions.h"
 
 @interface StoryThumbnailView (Private)
 
@@ -16,9 +17,9 @@
 
 - (UIImage *)placeholderImage {
     if (!self.placeholderImageName) {
-        return [UIImage imageNamed:@"news/news-placeholder.png"];
+        return [UIImage imageWithPathName:@"modules/news/news-placeholder.png"];
     } else {
-        return [UIImage imageNamed:self.placeholderImageName];
+        return [UIImage imageWithPathName:self.placeholderImageName];
     }
 }
 

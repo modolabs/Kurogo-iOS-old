@@ -2,6 +2,150 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>AboutAppText</key>
+	<string>The Harvard iPhone/iPod Touch application is part of a broader initiative to improve the mobile experience of students, faculty, staff, visitors, and neighbors who interact with Harvard&apos;s campus and community. We will continue to develop, expand and improve this application. We welcome your ideas and feedback.</string>
+	<key>AboutOrgText</key>
+	<string>Harvard University is devoted to excellence in teaching, learning, and research, and to developing leaders in many disciplines who make a difference globally. The University has twelve degree-granting Schools in addition to the Radcliffe Institute for Advanced Study.
+
+Established in 1636, Harvard is the oldest institution of higher education in the United States. The University, which is based in Cambridge and Boston, Massachusetts, has an enrollment of over 20,000 degree candidates, including undergraduate, graduate, and professional students. Harvard has more than 360,000 alumni around the world.</string>
+	<key>Analytics</key>
+	<dict>
+		<key>AccountID</key>
+		<string></string>
+		<key>Provider</key>
+		<string>Google</string>
+	</dict>
+	<key>AppFeedbackAddress</key>
+	<string>digitalcomms@harvard.edu</string>
+	<key>FullWebURL</key>
+	<string>http://www.harvard.edu/?fullsite=yes</string>
+	<key>Modules</key>
+	<array>
+		<dict>
+			<key>tag</key>
+			<string>home</string>
+			<key>class</key>
+			<string>HomeModule</string>
+			<key>shortName</key>
+			<string>Home</string>
+		</dict>
+		<dict>
+			<key>tag</key>
+			<string>login</string>
+			<key>class</key>
+			<string>LoginModule</string>
+			<key>longName</key>
+			<string>Login</string>
+			<key>secondary</key>
+			<true/>
+			<key>shortName</key>
+			<string>Login</string>
+		</dict>
+		<dict>
+			<key>tag</key>
+			<string>attendees</string>
+			<key>class</key>
+			<string>PeopleModule</string>
+			<key>longName</key>
+			<string>Attendees</string>
+			<key>secondary</key>
+			<false/>
+			<key>shortName</key>
+			<string>Attendees</string>
+		</dict>
+		<dict>
+			<key>tag</key>
+			<string>map</string>
+			<key>class</key>
+			<string>MapModule</string>
+			<key>longName</key>
+			<string>Map</string>
+			<key>secondary</key>
+			<false/>
+			<key>shortName</key>
+			<string>Map</string>
+		</dict>
+		<dict>
+			<key>tag</key>
+			<string>schedule</string>
+			<key>class</key>
+			<string>CalendarModule</string>
+			<key>longName</key>
+			<string>Schedule</string>
+			<key>secondary</key>
+			<false/>
+			<key>shortName</key>
+			<string>Schedule</string>
+		</dict>
+		<dict>
+			<key>tag</key>
+			<string>photos</string>
+			<key>class</key>
+			<string>FacebookModule</string>
+			<key>longName</key>
+			<string>Photos</string>
+			<key>secondary</key>
+			<false/>
+			<key>shortName</key>
+			<string>Photos</string>
+		</dict>
+		<dict>
+			<key>tag</key>
+			<string>news</string>
+			<key>class</key>
+			<string>NewsModule</string>
+			<key>longName</key>
+			<string>News</string>
+			<key>secondary</key>
+			<false/>
+			<key>shortName</key>
+			<string>News</string>
+		</dict>
+		<dict>
+			<key>tag</key>
+			<string>about</string>
+			<key>class</key>
+			<string>AboutModule</string>
+			<key>longName</key>
+			<string>About</string>
+			<key>secondary</key>
+			<true/>
+			<key>shortName</key>
+			<string>About</string>
+		</dict>
+		<dict>
+			<key>iconImage</key>
+			<string>home/home-settings.png</string>
+			<key>tag</key>
+			<string>settings</string>
+			<key>class</key>
+			<string>HomeModule</string>
+			<key>listViewImage</key>
+			<string>common/icons/module-settings.png</string>
+			<key>longName</key>
+			<string>Settings</string>
+			<key>secondary</key>
+			<true/>
+			<key>shortName</key>
+			<string>Settings</string>
+			<key>tabBarImage</key>
+			<string>common/icons/tab-settings.png</string>
+		</dict>
+		<dict>
+			<key>tag</key>
+			<string>fullweb</string>
+			<key>class</key>
+			<string>FullWebModule</string>
+			<key>longName</key>
+			<string>Full Website</string>
+			<key>secondary</key>
+			<true/>
+			<key>shortName</key>
+			<string>Full Website</string>
+		</dict>
+	</array>
+	<key>OrganizationName</key>
+	<string>Harvard</string>
 	<key>Security</key>
 	<dict>
 		<key>UseHTTPS</key>
@@ -14,183 +158,23 @@
 		<key>development</key>
 		<string>localhost:8040</string>
 	</dict>
-	<key>Modules</key>
-	<array>
-		<dict>
-			<key>id</key>
-			<string>home</string>
-			<key>shortName</key>
-			<string>Home</string>
-		</dict>
-		<dict>
-			<key>id</key>
-			<string>login</string>
-			<key>shortName</key>
-			<string>Login</string>
-			<key>longName</key>
-			<string>Login</string>
-			<key>secondary</key>
-			<true/>
-			<key>tabBarImage</key>
-			<string>common/icons/tab-people.png</string>
-			<key>listViewImage</key>
-			<string>common/icons/module-people.png</string>
-			<key>iconImage</key>
-			<string>home/home-people.png</string>
-		</dict>
-		<dict>
-			<key>id</key>
-			<string>people</string>
-			<key>shortName</key>
-			<string>People</string>
-			<key>longName</key>
-			<string>People</string>
-			<key>secondary</key>
-			<false/>
-			<key>tabBarImage</key>
-			<string>common/icons/tab-people.png</string>
-			<key>listViewImage</key>
-			<string>common/icons/module-people.png</string>
-			<key>iconImage</key>
-			<string>home/home-people.png</string>
-		</dict>
-		<dict>
-			<key>id</key>
-			<string>map</string>
-			<key>shortName</key>
-			<string>Map</string>
-			<key>longName</key>
-			<string>Map</string>
-			<key>secondary</key>
-			<false/>
-			<key>tabBarImage</key>
-			<string>common/icons/tab-map.png</string>
-			<key>listViewImage</key>
-			<string>common/icons/module-map.png</string>
-			<key>iconImage</key>
-			<string>home/home-map.png</string>
-		</dict>
-		<dict>
-			<key>id</key>
-			<string>calendar</string>
-			<key>shortName</key>
-			<string>Calendar</string>
-			<key>longName</key>
-			<string>Events Calendar</string>
-			<key>secondary</key>
-			<false/>
-			<key>tabBarImage</key>
-			<string>common/icons/tab-calendar.png</string>
-			<key>listViewImage</key>
-			<string>common/icons/module-calendar.png</string>
-			<key>iconImage</key>
-			<string>home/home-events.png</string>
-		</dict>
-		<dict>
-			<key>id</key>
-			<string>fbphotos</string>
-			<key>shortName</key>
-			<string>Photos</string>
-			<key>longName</key>
-			<string>Photos</string>
-			<key>secondary</key>
-			<false/>
-			<key>tabBarImage</key>
-			<string>common/icons/tab-fbphotos.png</string>
-			<key>listViewImage</key>
-			<string>common/icons/module-fbphotos.png</string>
-			<key>iconImage</key>
-			<string>home/home-fbphotos.png</string>
-		</dict>
-		<dict>
-			<key>id</key>
-			<string>news</string>
-			<key>shortName</key>
-			<string>News</string>
-			<key>longName</key>
-			<string>News</string>
-			<key>secondary</key>
-			<false/>
-			<key>tabBarImage</key>
-			<string>common/icons/tab-news.png</string>
-			<key>listViewImage</key>
-			<string>common/icons/module-news.png</string>
-			<key>iconImage</key>
-			<string>home/home-news.png</string>
-		</dict>
-		<dict>
-			<key>id</key>
-			<string>about</string>
-			<key>shortName</key>
-			<string>About</string>
-			<key>longName</key>
-			<string>About</string>
-			<key>secondary</key>
-			<true/>
-			<key>tabBarImage</key>
-			<string>common/icons/tab-about.png</string>
-			<key>listViewImage</key>
-			<string>common/icons/module-about.png</string>
-			<key>iconImage</key>
-			<string>home/home-about.png</string>
-		</dict>
-		<dict>
-			<key>id</key>
-			<string>settings</string>
-			<key>shortName</key>
-			<string>Settings</string>
-			<key>longName</key>
-			<string>Settings</string>
-			<key>secondary</key>
-			<true/>
-			<key>tabBarImage</key>
-			<string>common/icons/tab-settings.png</string>
-			<key>listViewImage</key>
-			<string>common/icons/module-settings.png</string>
-			<key>iconImage</key>
-			<string>home/home-settings.png</string>
-		</dict>
-		<dict>
-			<key>id</key>
-			<string>fullweb</string>
-			<key>shortName</key>
-			<string>Full Website</string>
-			<key>longName</key>
-			<string>Full Website</string>
-			<key>secondary</key>
-			<true/>
-			<key>tabBarImage</key>
-			<string>common/icons/tab-fullweb.png</string>
-			<key>listViewImage</key>
-			<string>common/icons/module-fullweb.png</string>
-			<key>iconImage</key>
-			<string>home/home-fullweb.png</string>
-		</dict>
-	</array>
-	<key>Analytics</key>
-	<dict>
-		<key>Provider</key>
-		<string>Google</string>
-		<key>AccountID</key>
-		<string></string>
-	</dict>
 	<key>SocialMedia</key>
 	<dict>
 		<key>bit.ly</key>
 		<dict>
-			<key>Username</key>
-			<string></string>
 			<key>APIKey</key>
+			<string></string>
+			<key>Username</key>
 			<string></string>
 		</dict>
 		<key>Facebook</key>
 		<dict>
-			<key>AppID</key>
-			<string>140621452667226</string>
 			<key>APIKey</key>
 			<string>aa41ebe2c7ee67478d6628dbc5965ae6</string>
 			<key>APISecret</key>
 			<string>09433e5ea4ac451151c476844fa9626c</string>
+			<key>AppID</key>
+			<string>140621452667226</string>
 		</dict>
 		<key>Twitter</key>
 		<dict>
@@ -200,17 +184,5 @@
 			<string></string>
 		</dict>
 	</dict>
-	<key>OrganizationName</key>
-	<string>Harvard</string>
-	<key>AppFeedbackAddress</key>
-	<string>digitalcomms@harvard.edu</string>
-	<key>AboutOrgText</key>
-	<string>Harvard University is devoted to excellence in teaching, learning, and research, and to developing leaders in many disciplines who make a difference globally. The University has twelve degree-granting Schools in addition to the Radcliffe Institute for Advanced Study.
-
-Established in 1636, Harvard is the oldest institution of higher education in the United States. The University, which is based in Cambridge and Boston, Massachusetts, has an enrollment of over 20,000 degree candidates, including undergraduate, graduate, and professional students. Harvard has more than 360,000 alumni around the world.</string>
-	<key>AboutAppText</key>
-	<string>The Harvard iPhone/iPod Touch application is part of a broader initiative to improve the mobile experience of students, faculty, staff, visitors, and neighbors who interact with Harvard&apos;s campus and community. We will continue to develop, expand and improve this application. We welcome your ideas and feedback.</string>
-	<key>FullWebURL</key>
-	<string>http://www.harvard.edu/?fullsite=yes</string>
 </dict>
 </plist>

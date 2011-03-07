@@ -1,5 +1,6 @@
 #import "TabViewControl.h"
 #import "Foundation+KGOAdditions.h"
+#import "UIKit+KGOAdditions.h"
 
 @interface KGOTabbedControl (Private)
 
@@ -266,13 +267,13 @@
     
     switch (state) {
         case KGOTabStateInactive:
-            return [[UIImage imageNamed:@"common/tab-inactive.png"] stretchableImageWithLeftCapWidth:15.0 topCapHeight:0];
+            return [[UIImage imageWithPathName:@"common/tab-inactive.png"] stretchableImageWithLeftCapWidth:15.0 topCapHeight:0];
         case KGOTabStateActive:
-            return [[UIImage imageNamed:@"common/tab-active.png"] stretchableImageWithLeftCapWidth:15.0 topCapHeight:0];
+            return [[UIImage imageWithPathName:@"common/tab-active.png"] stretchableImageWithLeftCapWidth:15.0 topCapHeight:0];
         case KGOTabStatePressed:
-            return [[UIImage imageNamed:@"common/tab-inactive-pressed.png"] stretchableImageWithLeftCapWidth:15.0 topCapHeight:0];
+            return [[UIImage imageWithPathName:@"common/tab-inactive-pressed.png"] stretchableImageWithLeftCapWidth:15.0 topCapHeight:0];
         case KGOTabStateDisabled:
-            return [[UIImage imageNamed:@"common/tab-inactive.png"] stretchableImageWithLeftCapWidth:15.0 topCapHeight:0];
+            return [[UIImage imageWithPathName:@"common/tab-inactive.png"] stretchableImageWithLeftCapWidth:15.0 topCapHeight:0];
         default:
             return nil;
     }

@@ -1,6 +1,12 @@
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 
+@interface UIImage (KGOAdditions)
+
++ (UIImage *)imageWithPathName:(NSString *)pathName;
+
+@end
+
 @interface UIColor (KGOAdditions)
 
 + (UIColor *)colorWithHexString:(NSString *)hexString;

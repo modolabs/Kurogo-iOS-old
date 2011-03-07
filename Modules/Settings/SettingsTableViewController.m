@@ -4,6 +4,7 @@
 #import "ModoThreeStateSwitchControl.h"
 #import <MapKit/MapKit.h>
 #import "KGOTheme.h"
+#import "UIKit+KGOAdditions.h"
 
 #define TITLE_HEIGHT 20.0
 #define SUBTITLE_HEIGHT 44.0
@@ -240,14 +241,14 @@ typedef enum {
 			case kMapsSettingsSection:
 			{
 				NSArray *activeSegmentImages = [NSArray arrayWithObjects:
-												[UIImage imageNamed:@"settings/map_switch_active1.png"],
-												[UIImage imageNamed:@"settings/map_switch_active2.png"],
-												[UIImage imageNamed:@"settings/map_switch_active3.png"],
+												[UIImage imageWithPathName:@"modules/settings/map_switch_active1.png"],
+												[UIImage imageWithPathName:@"modules/settings/map_switch_active2.png"],
+												[UIImage imageWithPathName:@"modules/settings/map_switch_active3.png"],
 												nil];
 				NSArray *inactiveSegmentImages = [NSArray arrayWithObjects:
-												  [UIImage imageNamed:@"settings/map_switch_inactive1.png"],
-												  [UIImage imageNamed:@"settings/map_switch_inactive2.png"],
-												  [UIImage imageNamed:@"settings/map_switch_inactive3.png"],
+												  [UIImage imageWithPathName:@"modules/settings/map_switch_inactive1.png"],
+												  [UIImage imageWithPathName:@"modules/settings/map_switch_inactive2.png"],
+												  [UIImage imageWithPathName:@"modules/settings/map_switch_inactive3.png"],
 												  nil];
 				[self addSegmentedControlToCell:cell 
 							  withToggleHandler:switchToggleHandler 

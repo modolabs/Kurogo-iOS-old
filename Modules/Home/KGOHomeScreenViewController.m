@@ -192,7 +192,7 @@
 
 - (UIImage *)backgroundImage {
     NSString *filename = [_preferences objectForKey:@"BackgroundImage"];
-    return [UIImage imageNamed:filename];
+    return [UIImage imageWithPathName:filename];
 }
 
 // primary modules
@@ -273,7 +273,7 @@
             [primary addObject:aModule];
         }
     }
-    
+
     [_secondaryModules release];
     _secondaryModules = [secondary copy];
     
