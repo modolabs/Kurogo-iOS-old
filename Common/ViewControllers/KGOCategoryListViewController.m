@@ -3,8 +3,12 @@
 #import "KGOMapCategory.h"
 #import "KGOEventCategory.h"
 #import "KGOAppDelegate+ModuleAdditions.h"
+#import "KGOTheme.h"
+#import "CoreDataManager.h"
 
 @implementation KGOCategoryListViewController
+
+@synthesize parentCategory, request, entityName;
 
 - (void)loadView {
 	[super loadView];
@@ -15,6 +19,10 @@
 		CGRect frame = CGRectMake(0, 0, self.view.bounds.size.width, self.view.bounds.size.height);
 		self.tableView = [self addTableViewWithFrame:frame style:UITableViewStyleGrouped];
 	}
+    
+    if (!self.categories && self.request) {
+        [self.request connect];
+    }
 }
 
 - (NSArray *)categories {
@@ -40,6 +48,27 @@
 	self.tableView.tableHeaderView = _headerView;
 }
 
+#pragma KGORequestDelegate
+
+- (void)request:(KGORequest *)request didHandleResult:(NSInteger)returnValue {
+    self.request = nil;
+    
+    NSArray *categories = nil;
+    if (self.parentCategory == nil) {
+        NSPredicate *pred = [NSPredicate predicateWithFormat:@"parentCategory = NULL"];
+        categories = [[CoreDataManager sharedManager] objectsForEntity:self.entityName matchingPredicate:pred];
+    } else {
+        categories = [self.parentCategory children];
+    }
+
+    self.categories = categories;
+    [self reloadDataForTableView:self.tableView];
+}
+
+- (void)requestWillTerminate:(KGORequest *)request {
+    self.request = nil;
+}
+
 #pragma mark Table view methods
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
@@ -57,6 +86,10 @@
 - (CellManipulator)tableView:(UITableView *)tableView manipulatorForCellAtIndexPath:(NSIndexPath *)indexPath {
 	id<KGOCategory> category = [self.categories objectAtIndex:indexPath.row];
 	NSString *title = category.title;
+    NSString *accessory = KGOAccessoryTypeNone;
+    if ([category children].count) {
+        accessory = KGOAccessoryTypeChevron;
+    }
     
     return [[^(UITableViewCell *cell) {
         cell.selectionStyle = UITableViewCellSelectionStyleGray;

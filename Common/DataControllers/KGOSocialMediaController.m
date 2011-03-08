@@ -12,6 +12,7 @@ static NSString * const TwitterUsernameKey = @"TwitterUsername";
 static NSString * const TwitterServiceName = @"Twitter";
 
 static NSString * const FacebookTokenKey = @"FBToken";
+static NSString * const FacebookTokenPermissions = @"FBTokenPermissions";
 static NSString * const FacebookTokenExpirationSetting = @"FBTokenExpiration";
 
 static KGOSocialMediaController *s_controller = nil;
@@ -32,17 +33,21 @@ static KGOSocialMediaController *s_controller = nil;
         _apiSettings = [[NSMutableDictionary alloc] init];
     }
     
-    NSMutableDictionary *mediaDictionary = [_apiSettings objectForKey:mediaType];
+    NSMutableDictionary *mediaDictionary = [[_apiSettings objectForKey:mediaType] mutableCopy];
     if (!mediaDictionary) {
-        [_apiSettings setObject:[NSDictionary dictionaryWithObject:options forKey:setting] forKey:mediaType];
+        mediaDictionary = [[NSMutableDictionary alloc] initWithObjectsAndKeys:options, setting, nil];
     } else {
         NSMutableArray *existingValues = [[[mediaDictionary objectForKey:setting] mutableCopy] autorelease];
         if (existingValues) {
             [existingValues addObjectsFromArray:options];
+            NSSet *uniqueValues = [NSSet setWithArray:existingValues];
+            [mediaDictionary setObject:[uniqueValues allObjects] forKey:setting];
         } else {
-            [_apiSettings setObject:options forKey:setting];
+            [mediaDictionary setObject:options forKey:setting];
         }
     }
+    [_apiSettings setObject:mediaDictionary forKey:mediaType];
+    [mediaDictionary release];
 }
 
 - (NSArray *)allSupportedSharingTypes {
@@ -123,8 +128,8 @@ static KGOSocialMediaController *s_controller = nil;
 - (void)connection:(ConnectionWrapper *)wrapper handleData:(NSData *)data {
     id jsonObj = [JSONAPIRequest objectWithJSONData:data];
     if (jsonObj && [jsonObj isKindOfClass:[NSDictionary class]]) {
-        NSDictionary *urlData = nil;
-        if (urlData = [(NSDictionary *)jsonObj objectForKey:@"data"]) {
+        NSDictionary *urlData = [(NSDictionary *)jsonObj objectForKey:@"data"];
+        if (urlData) {
             NSString *shortURL = [urlData objectForKey:@"url"];
 			[self.bitlyDelegate didGetBitlyURL:shortURL];
         }
@@ -308,6 +313,10 @@ static KGOSocialMediaController *s_controller = nil;
         if ([key isEqualToString:@"access_token"]) {
             _facebook.accessToken = value;
             [[NSUserDefaults standardUserDefaults] setObject:value forKey:FacebookTokenKey];
+
+            // record the set of permissions we authorized with, in case we change them later
+            NSArray *permissions = [[_apiSettings objectForKey:KGOSocialMediaTypeFacebook] objectForKey:@"permissions"];
+            [[NSUserDefaults standardUserDefaults] setObject:permissions forKey:FacebookTokenPermissions];
             
         } else if ([key isEqualToString:@"expires_in"]) {
             CGFloat interval = [value floatValue];
@@ -341,8 +350,14 @@ static KGOSocialMediaController *s_controller = nil;
         if ([validDate timeIntervalSinceNow] < 0) {
             [[NSUserDefaults standardUserDefaults] removeObjectForKey:FacebookTokenKey];
         } else {
-            _facebook.accessToken = [[NSUserDefaults standardUserDefaults] objectForKey:FacebookTokenKey];
-            _facebook.expirationDate = validDate;
+            NSArray *storedPermissions = [[NSUserDefaults standardUserDefaults] objectForKey:FacebookTokenPermissions];
+            NSArray *neededPermissions = [[_apiSettings objectForKey:KGOSocialMediaTypeFacebook] objectForKey:@"permissions"];
+            NSSet *storedSet = [NSSet setWithArray:storedPermissions];
+            NSSet *neededSet = [NSSet setWithArray:neededPermissions];
+            if ([storedSet isEqualToSet:neededSet]) {
+                _facebook.accessToken = [[NSUserDefaults standardUserDefaults] objectForKey:FacebookTokenKey];
+                _facebook.expirationDate = validDate;
+            }
         }
     }
     else { NSLog(@"facebook already started"); }

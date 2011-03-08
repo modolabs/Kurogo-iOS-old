@@ -1,5 +1,5 @@
 #import "MapModule.h"
-#import "MITMapDetailViewController.h"
+#import "MapDetailViewController.h"
 #import "MapSearchResultAnnotation.h"
 #import "KGOPlacemark.h"
 #import "MapBookmarkManager.h"
@@ -73,9 +73,17 @@ NSString * const MapTypePreferenceChanged = @"MapTypeChanged";
         }
         
     } else if ([pageName isEqualToString:LocalPathPageNameDetail]) {
-        KGOEvent *event = [params objectForKey:@"place"];
-        if (event) {
-            vc = [[[MITMapDetailViewController alloc] init] autorelease];
+        vc = [[[MapDetailViewController alloc] init] autorelease];
+        MapDetailViewController *detailVC = (MapDetailViewController *)vc;
+
+        KGOPlacemark *place = [params objectForKey:@"place"];
+        if (place) {
+            detailVC.placemark = place;
+        }
+        KGOSearchDisplayController *controller = [params objectForKey:@"searchController"];
+        if (controller) {
+            KGODetailPager *pager = [[[KGODetailPager alloc] initWithPagerController:controller delegate:detailVC] autorelease];
+            detailVC.pager = pager;
         }
         
     } else if ([pageName isEqualToString:LocalPathPageNameCategoryList]) {

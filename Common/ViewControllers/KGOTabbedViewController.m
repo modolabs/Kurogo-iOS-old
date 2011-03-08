@@ -2,7 +2,7 @@
 
 @implementation KGOTabbedViewController
 
-//@synthesize tabs = _tabs;
+@synthesize tabs = _tabs, tabViewHeader = _tabViewHeader;
 @synthesize delegate;
 
 - (void)setTabViewHeader:(UIView *)tabViewHeader {
@@ -16,6 +16,10 @@
 
 - (UIView *)tabViewHeader {
     return _tabViewHeader;
+}
+
+- (void)reloadTabContent {
+    [self tabbedControl:_tabs didSwitchToTabAtIndex:[_tabs selectedTabIndex]];
 }
 
 - (void)tabbedControl:(KGOTabbedControl *)control didSwitchToTabAtIndex:(NSInteger)index {
@@ -37,6 +41,15 @@
 }
 
 #pragma mark -
+
+- (id)init
+{
+    self = [super initWithNibName:@"KGOTabbedViewController" bundle:nil];
+    if (self) {
+        self.delegate = self;
+    }
+    return self;
+}
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {

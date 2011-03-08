@@ -101,6 +101,7 @@
 		EB46C94D132590F900AF7B5C /* FacebookVideosViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EB46C949132590F900AF7B5C /* FacebookVideosViewController.m */; };
 		EB46C950132591E200AF7B5C /* KGOModule+Factory.m in Sources */ = {isa = PBXBuildFile; fileRef = EB46C94F132591E200AF7B5C /* KGOModule+Factory.m */; };
 		EB46C953132596C500AF7B5C /* TwitterModule.m in Sources */ = {isa = PBXBuildFile; fileRef = EB46C952132596C500AF7B5C /* TwitterModule.m */; };
+		EB46CA061325B57900AF7B5C /* MapDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EB46CA051325B57800AF7B5C /* MapDetailViewController.m */; };
 		EB4C2CDF127F138100058748 /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = EB4C2CDE127F138100058748 /* libsqlite3.dylib */; };
 		EB4C2CE1127F138900058748 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EB4C2CE0127F138900058748 /* CFNetwork.framework */; };
 		EB5773C212FDF91200BAF5F5 /* Config.plist in Resources */ = {isa = PBXBuildFile; fileRef = EB5773C112FDF91200BAF5F5 /* Config.plist */; };
@@ -199,7 +200,7 @@
 
 /* Begin PBXFileReference section */
 		1D30AB110D05D00D00671497 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
-		1D6058910D05DD3D006BFB54 /* Reunions.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Reunions.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		1D6058910D05DD3D006BFB54 /* Harvard Reunion.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Harvard Reunion.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		1DF5F4DF0D08C38300B7A737 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		29366C19118E401C009D6863 /* libxml2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libxml2.dylib; path = usr/lib/libxml2.dylib; sourceTree = SDKROOT; };
 		29366C1D118E4151009D6863 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
@@ -372,6 +373,8 @@
 		EB46C94F132591E200AF7B5C /* KGOModule+Factory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "KGOModule+Factory.m"; path = "Application/KGOModule+Factory.m"; sourceTree = SOURCE_ROOT; };
 		EB46C951132596C500AF7B5C /* TwitterModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TwitterModule.h; sourceTree = "<group>"; };
 		EB46C952132596C500AF7B5C /* TwitterModule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TwitterModule.m; sourceTree = "<group>"; };
+		EB46CA041325B57700AF7B5C /* MapDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MapDetailViewController.h; sourceTree = "<group>"; };
+		EB46CA051325B57800AF7B5C /* MapDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MapDetailViewController.m; sourceTree = "<group>"; };
 		EB4C2CDE127F138100058748 /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
 		EB4C2CE0127F138900058748 /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
 		EB5773C112FDF91200BAF5F5 /* Config.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Config.plist; path = ../Config.plist; sourceTree = "<group>"; };
@@ -486,7 +489,7 @@
 		19C28FACFE9D520D11CA2CBB /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				1D6058910D05DD3D006BFB54 /* Reunions.app */,
+				1D6058910D05DD3D006BFB54 /* Harvard Reunion.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -614,6 +617,8 @@
 				EB8B36851307BB28005DBB8F /* MapZoomLevel.m */,
 				EB1819211315D0E9003728FF /* MapSettingsViewController.h */,
 				EB1819221315D0E9003728FF /* MapSettingsViewController.m */,
+				EB46CA041325B57700AF7B5C /* MapDetailViewController.h */,
+				EB46CA051325B57800AF7B5C /* MapDetailViewController.m */,
 			);
 			name = Map;
 			path = ../../../Modules/Map;
@@ -1122,7 +1127,7 @@
 			);
 			name = Reunions;
 			productName = Reunions;
-			productReference = 1D6058910D05DD3D006BFB54 /* Reunions.app */;
+			productReference = 1D6058910D05DD3D006BFB54 /* Harvard Reunion.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -1372,6 +1377,7 @@
 				EB46C94D132590F900AF7B5C /* FacebookVideosViewController.m in Sources */,
 				EB46C950132591E200AF7B5C /* KGOModule+Factory.m in Sources */,
 				EB46C953132596C500AF7B5C /* TwitterModule.m in Sources */,
+				EB46CA061325B57900AF7B5C /* MapDetailViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1401,7 +1407,7 @@
 					"\"$(SRCROOT)/../../Contrib/GoogleAnalytics\"",
 				);
 				ONLY_ACTIVE_ARCH = YES;
-				PRODUCT_NAME = Reunions;
+				PRODUCT_NAME = "Harvard Reunion";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -1429,7 +1435,7 @@
 					"\"$(SRCROOT)/../../Contrib/GoogleAnalytics\"",
 				);
 				ONLY_ACTIVE_ARCH = NO;
-				PRODUCT_NAME = Reunions;
+				PRODUCT_NAME = "Harvard Reunion";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -1540,7 +1546,7 @@
 					"\"$(SRCROOT)/../../Contrib/GoogleAnalytics\"",
 				);
 				ONLY_ACTIVE_ARCH = YES;
-				PRODUCT_NAME = Reunions;
+				PRODUCT_NAME = "Harvard Reunion";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -1592,7 +1598,7 @@
 					"\"$(SRCROOT)/../../Contrib/GoogleAnalytics\"",
 				);
 				ONLY_ACTIVE_ARCH = YES;
-				PRODUCT_NAME = Reunions;
+				PRODUCT_NAME = "Harvard Reunion";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -1644,7 +1650,7 @@
 					"\"$(SRCROOT)/../../Contrib/GoogleAnalytics\"",
 				);
 				ONLY_ACTIVE_ARCH = NO;
-				PRODUCT_NAME = Reunions;
+				PRODUCT_NAME = "Harvard Reunion";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -1702,7 +1708,7 @@
 					"\"$(SRCROOT)/../../Contrib/GoogleAnalytics\"",
 				);
 				ONLY_ACTIVE_ARCH = YES;
-				PRODUCT_NAME = Reunions;
+				PRODUCT_NAME = "Harvard Reunion";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -1754,7 +1760,7 @@
 					"\"$(SRCROOT)/../../Contrib/GoogleAnalytics\"",
 				);
 				ONLY_ACTIVE_ARCH = NO;
-				PRODUCT_NAME = Reunions;
+				PRODUCT_NAME = "Harvard Reunion";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";

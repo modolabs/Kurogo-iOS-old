@@ -6,7 +6,7 @@
 @implementation TwitterModule
 
 - (UIViewController *)modulePage:(NSString *)pageName params:(NSDictionary *)params {
-    
+    return nil;
 }
 
 - (void)launch {

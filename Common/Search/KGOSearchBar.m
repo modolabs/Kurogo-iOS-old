@@ -42,24 +42,48 @@
 
 @synthesize delegate;
 
+- (id)initWithCoder:(NSCoder *)aDecoder {
+    
+    self = [super initWithCoder:aDecoder];
+    if (self) {
+        _searchBar = [[UISearchBar alloc] initWithCoder:aDecoder]; // do this first so _searchBar can receive setter methods right away
+        _searchBar.delegate = self;
+
+        UIColor *color = [[KGOTheme sharedTheme] tintColorForSearchBar];
+        if (color) {
+            _searchBar.tintColor = color;
+        }
+        UIImage *image = [[KGOTheme sharedTheme] backgroundImageForSearchBar];
+        if (image) {
+            self.backgroundImage = image;
+        }
+        image = [[KGOTheme sharedTheme] backgroundImageForSearchBarDropShadow];
+        if (image) {
+            self.dropShadowImage = image;
+        }
+    }
+    return self;
+}
+
 - (id)initWithFrame:(CGRect)frame {
     
     self = [super initWithFrame:frame];
     if (self) {
         _searchBar = [[UISearchBar alloc] initWithFrame:frame]; // do this first so _searchBar can receive setter methods right away
         _searchBar.delegate = self;
-    }
-    UIColor *color = [[KGOTheme sharedTheme] tintColorForSearchBar];
-    if (color) {
-        _searchBar.tintColor = color;
-    }
-    UIImage *image = [[KGOTheme sharedTheme] backgroundImageForSearchBar];
-    if (image) {
-        self.backgroundImage = image;
-    }
-    image = [[KGOTheme sharedTheme] backgroundImageForSearchBarDropShadow];
-    if (image) {
-        self.dropShadowImage = image;
+
+        UIColor *color = [[KGOTheme sharedTheme] tintColorForSearchBar];
+        if (color) {
+            _searchBar.tintColor = color;
+        }
+        UIImage *image = [[KGOTheme sharedTheme] backgroundImageForSearchBar];
+        if (image) {
+            self.backgroundImage = image;
+        }
+        image = [[KGOTheme sharedTheme] backgroundImageForSearchBarDropShadow];
+        if (image) {
+            self.dropShadowImage = image;
+        }
     }
     return self;
 }

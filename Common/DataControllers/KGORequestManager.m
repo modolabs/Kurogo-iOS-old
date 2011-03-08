@@ -2,6 +2,7 @@
 #import "Foundation+KGOAdditions.h"
 #import "JSON.h"
 #import "KGOAppDelegate.h"
+#import "CoreDataManager.h"
 
 NSString * const KGORequestErrorDomain = @"com.modolabs.KGORequest.ErrorDomain";
 
@@ -178,13 +179,10 @@ NSString * const KGORequestErrorDomain = @"com.modolabs.KGORequest.ErrorDomain";
 	}
 
 	if (self.handler != nil) {
-		_thread = [[NSThread alloc] initWithTarget:self selector:@selector(runHandlerOnResult:) object:result];
+        NSLog(@"%@", self.delegate);
+        _thread = [[NSThread alloc] initWithTarget:self selector:@selector(runHandlerOnResult:) object:result];
 		[self performSelector:@selector(setHandler:) onThread:_thread withObject:self.handler waitUntilDone:NO];
 		[_thread start];
-		//NSInteger num = self.handler(result);
-		//if ([self.delegate respondsToSelector:@selector(request:didHandleResult:)]) {
-		//	[self.delegate request:self didHandleResult:num];
-		//}
 	} else {
 		if ([self.delegate respondsToSelector:@selector(request:didReceiveResult:)]) {
 			[self.delegate request:self didReceiveResult:result];
@@ -198,11 +196,14 @@ NSString * const KGORequestErrorDomain = @"com.modolabs.KGORequest.ErrorDomain";
 - (void)runHandlerOnResult:(id)result {
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 	NSInteger num = self.handler(result);
+    // TODO: not all delegates necessarily want to save to core data as a result of completing parse
+    [[CoreDataManager sharedManager] saveData];
 	[self performSelectorOnMainThread:@selector(handlerDidFinish:) withObject:[NSNumber numberWithInt:num] waitUntilDone:YES];
 	[pool release];
 }
 
 - (void)handlerDidFinish:(NSNumber *)result {
+    NSLog(@"%@", self.delegate);
 	if ([self.delegate respondsToSelector:@selector(request:didHandleResult:)]) {
 		[self.delegate request:self didHandleResult:[result integerValue]];
 	}

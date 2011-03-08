@@ -5,6 +5,8 @@
 #import "MapSettingsViewController.h"
 #import "KGOTheme.h"
 #import "MITMapDetailViewController.h"
+#import "Foundation+KGOAdditions.h"
+#import "KGOMapCategory.h"
 
 @implementation MapHomeViewController
 
@@ -89,6 +91,41 @@
 
 - (IBAction)browseButtonPressed {
 	KGOCategoryListViewController *categoryVC = [[[KGOCategoryListViewController alloc] init] autorelease];
+    categoryVC.entityName = MapCategoryEntityName;
+    categoryVC.request = [[KGORequestManager sharedManager] requestWithDelegate:categoryVC module:MapTag path:@"categories" params:nil];
+    categoryVC.request.expectedResponseType = [NSArray class];
+    
+    __block JSONObjectHandler createMapCategories;
+    __block NSInteger categoriesCreated = 0;
+    __block NSArray *subcategories = nil;
+    createMapCategories = [[^(id jsonObj) {
+        NSArray *jsonArray = (NSArray *)jsonObj;
+        for (id categoryObj in jsonArray) {
+            if ([categoryObj isKindOfClass:[NSDictionary class]]) {
+                NSDictionary *categoryDict = (NSDictionary *)categoryObj;
+                NSArray *identifier = [categoryDict arrayForKey:@"id"];
+                if (identifier) {
+                    KGOMapCategory *category = [KGOMapCategory categoryWithPath:identifier];
+                    NSString *title = [categoryDict stringForKey:@"title" nilIfEmpty:YES];
+                    if (title && ![category.title isEqualToString:title]) {
+                        category.title = title;
+                    }
+                    categoriesCreated++;
+                }
+
+                subcategories = [categoryDict arrayForKey:@"subcategories"];
+                if (subcategories.count) {
+                    createMapCategories(subcategories);
+                }
+            }
+        }
+        
+        return categoriesCreated;
+    } copy] autorelease];
+    
+    
+    //categoryVC.request.handler = [[createMapCategories copy] autorelease];
+    categoryVC.request.handler = createMapCategories;
 	[(KGOAppDelegate *)[[UIApplication sharedApplication] delegate] presentAppModalViewController:categoryVC animated:YES];
 }
 
@@ -182,7 +219,7 @@
 }
 
 - (void)searchController:(KGOSearchDisplayController *)controller didSelectResult:(id<KGOSearchResult>)aResult {
-    NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:aResult, @"place", nil];
+    NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:aResult, @"place", controller, @"searchController", nil];
     KGOAppDelegate *appDelegate = (KGOAppDelegate *)[[UIApplication sharedApplication] delegate];
     [appDelegate showPage:LocalPathPageNameDetail forModuleTag:MapTag params:params];
 }

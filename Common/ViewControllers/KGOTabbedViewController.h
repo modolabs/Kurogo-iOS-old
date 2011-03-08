@@ -18,6 +18,8 @@
 
 @property (nonatomic, assign) id<KGOTabbedViewDelegate> delegate;
 @property (nonatomic, retain) UIView *tabViewHeader;
-//@property (nonatomic, retain) KGOTabbedControl *tabs;
+@property (nonatomic, retain) KGOTabbedControl *tabs;
+
+- (void)reloadTabContent;
 
 @end

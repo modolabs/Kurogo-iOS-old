@@ -12,7 +12,7 @@ FBRequestDelegate> {
     
     NSMutableArray *_fbRequestQueue;
     FBRequest *_groupsRequest;
-    FBRequest *_photosRequest;
+    FBRequest *_videosRequest;
 
     IconGrid *_iconGrid;
     NSMutableArray *_icons;
