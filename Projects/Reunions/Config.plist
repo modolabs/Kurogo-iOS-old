@@ -19,6 +19,13 @@ Established in 1636, Harvard is the oldest institution of higher education in th
 	<string>digitalcomms@harvard.edu</string>
 	<key>FullWebURL</key>
 	<string>http://www.harvard.edu/?fullsite=yes</string>
+	<key>Location</key>
+	<dict>
+		<key>DefaultCenter</key>
+		<string>42.3944,-71.1453</string>
+		<key>DefaultZoom</key>
+		<integer>16</integer>
+	</dict>
 	<key>Modules</key>
 	<array>
 		<dict>

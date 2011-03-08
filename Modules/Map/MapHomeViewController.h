@@ -18,16 +18,17 @@
 	// TODO: indoor map initially won't be MKMapView
 	IBOutlet MKMapView *_mapView;
 
-	// TODO: toggle between data sources instead
 	BOOL indoorMode;
 	
 	KGOSearchDisplayController *_searchController;
 	UITableView *_searchResultsTableView; // only used as temporary reference
 	UISegmentedControl *_mapListToggle;
 
+    NSArray *_annotations;
 }
 
 @property (nonatomic, retain) NSString *searchTerms;
+@property (nonatomic, retain) NSArray *annotations;
 
 - (IBAction)infoButtonPressed;
 - (IBAction)locateUserButtonPressed;

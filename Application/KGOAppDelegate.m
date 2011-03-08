@@ -286,8 +286,10 @@
 }
 
 - (void)dismissAppModalViewControllerAnimated:(BOOL)animated {
-    [appModalHolder dismissModalViewControllerAnimated:animated];
-    [self performSelector:@selector(checkIfOkToHideAppModalViewController) withObject:nil afterDelay:0.100];
+    if (appModalHolder.modalViewController) {
+        [appModalHolder dismissModalViewControllerAnimated:animated];
+        [self performSelector:@selector(checkIfOkToHideAppModalViewController) withObject:nil afterDelay:0.100];
+    }
 }
 
 // This is a sad hack for telling when the dismissAppModalViewController animation has completed. It depends on appModalHolder.modalViewController being defined as long as the modal vc is still animating. If Apple ever changes this behavior, the slide-away transition will become a jarring pop.

@@ -91,14 +91,18 @@
     return [NSURL URLWithString:queryString relativeToURL:baseURL];
 }
 
-- (NSDictionary *)queryParameters {
-    NSArray *components = [[self query] componentsSeparatedByString:@"&"];
++ (NSDictionary *)parametersFromQueryString:(NSString *)queryString {
+    NSArray *components = [queryString componentsSeparatedByString:@"&"];
     NSMutableDictionary *dictionary = [NSMutableDictionary dictionary];
     for (NSString *aComponent in components) {
         NSArray *parts = [aComponent componentsSeparatedByString:@"="];
         [dictionary setObject:[parts objectAtIndex:1] forKey:[parts objectAtIndex:0]];
     }
     return [NSDictionary dictionaryWithDictionary:dictionary];
+}
+
+- (NSDictionary *)queryParameters {
+    return [NSURL queryParametersFromString:[self query]];
 }
 
 @end

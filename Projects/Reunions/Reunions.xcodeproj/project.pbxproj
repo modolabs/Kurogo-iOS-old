@@ -102,6 +102,7 @@
 		EB46C950132591E200AF7B5C /* KGOModule+Factory.m in Sources */ = {isa = PBXBuildFile; fileRef = EB46C94F132591E200AF7B5C /* KGOModule+Factory.m */; };
 		EB46C953132596C500AF7B5C /* TwitterModule.m in Sources */ = {isa = PBXBuildFile; fileRef = EB46C952132596C500AF7B5C /* TwitterModule.m */; };
 		EB46CA061325B57900AF7B5C /* MapDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EB46CA051325B57800AF7B5C /* MapDetailViewController.m */; };
+		EB46CA0C1326C4C500AF7B5C /* MapKit+KGOAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = EB46CA0B1326C4C500AF7B5C /* MapKit+KGOAdditions.m */; };
 		EB4C2CDF127F138100058748 /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = EB4C2CDE127F138100058748 /* libsqlite3.dylib */; };
 		EB4C2CE1127F138900058748 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EB4C2CE0127F138900058748 /* CFNetwork.framework */; };
 		EB5773C212FDF91200BAF5F5 /* Config.plist in Resources */ = {isa = PBXBuildFile; fileRef = EB5773C112FDF91200BAF5F5 /* Config.plist */; };
@@ -375,6 +376,8 @@
 		EB46C952132596C500AF7B5C /* TwitterModule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TwitterModule.m; sourceTree = "<group>"; };
 		EB46CA041325B57700AF7B5C /* MapDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MapDetailViewController.h; sourceTree = "<group>"; };
 		EB46CA051325B57800AF7B5C /* MapDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MapDetailViewController.m; sourceTree = "<group>"; };
+		EB46CA0A1326C4C500AF7B5C /* MapKit+KGOAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "MapKit+KGOAdditions.h"; sourceTree = "<group>"; };
+		EB46CA0B1326C4C500AF7B5C /* MapKit+KGOAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "MapKit+KGOAdditions.m"; sourceTree = "<group>"; };
 		EB4C2CDE127F138100058748 /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
 		EB4C2CE0127F138900058748 /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
 		EB5773C112FDF91200BAF5F5 /* Config.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Config.plist; path = ../Config.plist; sourceTree = "<group>"; };
@@ -842,6 +845,8 @@
 				EB142B541300597200396753 /* Foundation+KGOAdditions.m */,
 				EB142B4F1300593A00396753 /* UIKit+KGOAdditions.h */,
 				EB142B501300593A00396753 /* UIKit+KGOAdditions.m */,
+				EB46CA0A1326C4C500AF7B5C /* MapKit+KGOAdditions.h */,
+				EB46CA0B1326C4C500AF7B5C /* MapKit+KGOAdditions.m */,
 			);
 			path = Cocoa;
 			sourceTree = "<group>";
@@ -1378,6 +1383,7 @@
 				EB46C950132591E200AF7B5C /* KGOModule+Factory.m in Sources */,
 				EB46C953132596C500AF7B5C /* TwitterModule.m in Sources */,
 				EB46CA061325B57900AF7B5C /* MapDetailViewController.m in Sources */,
+				EB46CA0C1326C4C500AF7B5C /* MapKit+KGOAdditions.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

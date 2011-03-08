@@ -8,6 +8,7 @@
 #import "Foundation+KGOAdditions.h"
 #import "KGOMapCategory.h"
 #import "CoreDataManager.h"
+#import "MapKit+KGOAdditions.h"
 
 @implementation MapHomeViewController
 
@@ -24,6 +25,7 @@
     self.title = mapModule.shortName;
 
     _mapView.mapType = [[NSUserDefaults standardUserDefaults] integerForKey:MapTypePreference];
+    [_mapView centerAndZoomToDefaultRegion];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mapTypeDidChange:) name:MapTypePreferenceChanged object:nil];
 	
 	// TODO: so maybe having a separate factory function in KGOSearchBar
@@ -80,6 +82,15 @@
     [super dealloc];
 }
 
+- (NSArray *)annotations {
+    return _mapView.annotations;
+}
+
+- (void)setAnnotations:(NSArray *)annotations {
+    [_mapView removeAnnotations:_mapView.annotations];
+    [_mapView addAnnotations:annotations];
+}
+
 #pragma mark -
 
 - (IBAction)infoButtonPressed {
@@ -92,9 +103,9 @@
 
 - (IBAction)browseButtonPressed {
 	KGOCategoryListViewController *categoryVC = [[[KGOCategoryListViewController alloc] init] autorelease];
-    categoryVC.entityName = MapCategoryEntityName;
-    categoryVC.request = [[KGORequestManager sharedManager] requestWithDelegate:categoryVC module:MapTag path:@"categories" params:nil];
-    categoryVC.request.expectedResponseType = [NSArray class];
+    categoryVC.categoryEntityName = MapCategoryEntityName;
+    categoryVC.categoriesRequest = [[KGORequestManager sharedManager] requestWithDelegate:categoryVC module:MapTag path:@"categories" params:nil];
+    categoryVC.categoriesRequest.expectedResponseType = [NSArray class];
     
     __block JSONObjectHandler createMapCategories;
     __block NSUInteger sortOrder = 0;
@@ -132,7 +143,7 @@
         return categoriesCreated;
     } copy] autorelease];
     
-    categoryVC.request.handler = createMapCategories;
+    categoryVC.categoriesRequest.handler = createMapCategories;
 	[(KGOAppDelegate *)[[UIApplication sharedApplication] delegate] presentAppModalViewController:categoryVC animated:YES];
 }
 

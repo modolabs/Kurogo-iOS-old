@@ -3,6 +3,7 @@
 
 @protocol KGOSearchResult <NSObject>
 
+- (NSString *)identifier;
 - (NSString *)title;
 
 @optional

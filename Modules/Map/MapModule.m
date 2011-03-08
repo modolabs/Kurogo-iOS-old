@@ -9,6 +9,8 @@
 #import "KGOCategoryListViewController.h"
 #import "CoreDataManager.h"
 #import "KGOMapCategory.h"
+#import "KGOAppDelegate+ModuleAdditions.h"
+#import "Foundation+KGOAdditions.h"
 
 NSString * const MapTypePreference = @"MapType";
 NSString * const MapTypePreferenceChanged = @"MapTypeChanged";
@@ -106,7 +108,7 @@ NSString * const MapTypePreferenceChanged = @"MapTypeChanged";
 		if (categories) {
 			vc = [[[KGOCategoryListViewController alloc] init] autorelease];
             KGOCategoryListViewController *categoryVC = (KGOCategoryListViewController *)vc;
-            categoryVC.entityName = MapCategoryEntityName;
+            categoryVC.categoryEntityName = MapCategoryEntityName;
             categoryVC.categories = categories;
             
             KGOMapCategory *parentCategory = [params objectForKey:@"parentCategory"];
@@ -115,10 +117,42 @@ NSString * const MapTypePreferenceChanged = @"MapTypeChanged";
             }
 		}
         
-    } else if ([pageName isEqualToString:LocalPathPageNameItemList]) {
-        
     }
     return vc;
+}
+
+- (BOOL)handleLocalPath:(NSString *)localPath query:(NSString *)query {
+    if ([localPath isEqualToString:LocalPathPageNameSearch]) {
+        KGOAppDelegate *appDelegate = (KGOAppDelegate *)[[UIApplication sharedApplication] delegate];
+
+        NSDictionary *params = [NSURL parametersFromQueryString:query];
+        NSString *searchText = [params objectForKey:@"q"];
+        if (searchText) {
+            return [appDelegate showPage:LocalPathPageNameSearch forModuleTag:MapTag params:params];
+        }
+        
+        NSString *placemarkID = [params objectForKey:@"identifier"];
+        NSPredicate *pred = [NSPredicate predicateWithFormat:@"identifier like %@", placemarkID];
+        KGOPlacemark *placemark = [[[CoreDataManager sharedManager] objectsForEntity:KGOPlacemarkEntityName matchingPredicate:pred] lastObject];
+        if (placemark) {
+            KGOAppDelegate *appDelegate = (KGOAppDelegate *)[[UIApplication sharedApplication] delegate];
+            UIViewController *visibleVC = [[appDelegate theNavController] visibleViewController];
+            // this will be true if we invoked browse categories from the map module
+            if (![visibleVC isKindOfClass:[MapHomeViewController class]]) {
+                [appDelegate showPage:LocalPathPageNameHome forModuleTag:MapTag params:nil];
+            }
+            // otherwise we picked an annotation from another module
+            visibleVC = [[appDelegate theNavController] visibleViewController];
+            if (![visibleVC isKindOfClass:[MapHomeViewController class]]) {
+                return NO;
+            }
+            // this will dismiss browse categories list, otherwise it does nothing
+            [appDelegate dismissAppModalViewControllerAnimated:YES];
+            [(MapHomeViewController *)visibleVC setAnnotations:[NSArray arrayWithObject:placemark]];
+            return YES;
+        }
+    }
+    return NO;
 }
 
 #pragma mark KGORequestDelegate

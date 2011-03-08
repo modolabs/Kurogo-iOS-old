@@ -20,6 +20,7 @@
 
 + (NSString *)queryStringWithParameters:(NSDictionary *)parameters;
 + (NSURL *)URLWithQueryParameters:(NSDictionary *)parameters baseURL:(NSURL *)baseURL;
++ (NSDictionary *)parametersFromQueryString:(NSString *)queryString;
 - (NSDictionary *)queryParameters;
 
 @end

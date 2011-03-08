@@ -84,7 +84,7 @@
 			// if the visible view controller is modal, push new view controllers on the modal nav controller.
 			// there should be no reason to push a view controller behind what's visible.
 			if (!appModalHolder.view.hidden && [appModalHolder.modalViewController isKindOfClass:[UINavigationController class]]) {
-				[appModalHolder.modalViewController pushViewController:vc animated:YES];
+				[(UINavigationController *)appModalHolder.modalViewController pushViewController:vc animated:YES];
 			} else {
 				[theNavController pushViewController:vc animated:YES];
 			}

@@ -5,23 +5,36 @@
 #import "KGOAppDelegate+ModuleAdditions.h"
 #import "KGOTheme.h"
 #import "CoreDataManager.h"
+#import "Foundation+KGOAdditions.h"
+#import "KGOPlacemark.h"
+#import "KGOEvent.h"
 
 @implementation KGOCategoryListViewController
 
-@synthesize parentCategory, request, entityName;
+@synthesize parentCategory, categoriesRequest, categoryEntityName, leafItemsRequest, leafItemEntityName;
 
 - (void)loadView {
 	[super loadView];
     
     self.title = NSLocalizedString(@"Browse", nil);
+
+    UITableViewStyle style;
+    if (self.categories || self.categoriesRequest) {
+        style = UITableViewStyleGrouped;
+    } else {
+        style = UITableViewStylePlain;
+    }
 	
 	if (!self.tableView) {
 		CGRect frame = CGRectMake(0, 0, self.view.bounds.size.width, self.view.bounds.size.height);
-		self.tableView = [self addTableViewWithFrame:frame style:UITableViewStyleGrouped];
+		self.tableView = [self addTableViewWithFrame:frame style:style];
 	}
     
-    if (!self.categories && self.request) {
-        [self.request connect];
+    if (!self.categories && self.categoriesRequest) {
+        [self.categoriesRequest connect];
+        
+    } else if (!self.leafItems && self.leafItemsRequest) {
+        [self.leafItemsRequest connect];
     }
 }
 
@@ -32,6 +45,19 @@
 - (void)setCategories:(NSArray *)categories {
 	[_categories release];
 	_categories = [categories retain];
+	
+	if ([self isViewLoaded]) {
+		[self reloadDataForTableView:self.tableView];
+	}
+}
+
+- (NSArray *)leafItems {
+	return _leafItems;
+}
+
+- (void)setLeafItems:(NSArray *)leafItems {
+	[_leafItems release];
+	_leafItems = [leafItems retain];
 	
 	if ([self isViewLoaded]) {
 		[self reloadDataForTableView:self.tableView];
@@ -51,29 +77,44 @@
 #pragma KGORequestDelegate
 
 - (void)request:(KGORequest *)request didHandleResult:(NSInteger)returnValue {
-    self.request = nil;
-    
-    NSArray *categories = nil;
-    if (self.parentCategory == nil) {
-        NSPredicate *pred = [NSPredicate predicateWithFormat:@"parentCategory = NULL"];
-        categories = [[CoreDataManager sharedManager] objectsForEntity:self.entityName matchingPredicate:pred];
-    } else {
-        categories = [self.parentCategory children];
+    if (request == self.categoriesRequest) {    
+        self.categoriesRequest = nil;
+        
+        NSArray *categories = nil;
+        if (self.parentCategory == nil) {
+            NSPredicate *pred = [NSPredicate predicateWithFormat:@"parentCategory = NULL"];
+            categories = [[CoreDataManager sharedManager] objectsForEntity:self.categoryEntityName matchingPredicate:pred];
+        } else {
+            categories = [self.parentCategory children];
+        }
+        
+        self.categories = categories;
+
+    } else if (request == self.leafItemsRequest) {
+        self.leafItems = self.parentCategory.items;
     }
 
-    self.categories = categories;
     [self reloadDataForTableView:self.tableView];
 }
 
 - (void)requestWillTerminate:(KGORequest *)request {
-    self.request = nil;
+    if (request == self.categoriesRequest) {
+        self.categoriesRequest = nil;
+    } else if (request == self.leafItemsRequest) {
+        self.leafItemsRequest = nil;
+    }
 }
 
 #pragma mark Table view methods
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    // TODO: allow individual items at the same drilldown level to be shown
-    return [self.categories count];
+    NSInteger count = 0;
+    if (self.categories) {
+        count = self.categories.count;
+    } else if (self.leafItems) {
+        count = self.leafItems.count;
+    }
+    return count;
 }
 
 - (KGOTableCellStyle)tableView:(UITableView *)tableView styleForCellAtIndexPath:(NSIndexPath *)indexPath {
@@ -81,12 +122,18 @@
 }
 
 - (CellManipulator)tableView:(UITableView *)tableView manipulatorForCellAtIndexPath:(NSIndexPath *)indexPath {
-	id<KGOCategory> category = [self.categories objectAtIndex:indexPath.row];
-    NSLog(@"%@", [category description]);
-	NSString *title = category.title;
-    NSString *accessory = KGOAccessoryTypeNone;
-    if (category.children.count) {
+    NSString *title = nil;
+    NSString *accessory = nil;
+    
+    if (self.categories) {        
+        id<KGOCategory> category = [self.categories objectAtIndex:indexPath.row];
+        title = category.title;
         accessory = KGOAccessoryTypeChevron;
+
+    } else if (self.leafItems) {
+        id<KGOSearchResult> leafItem = [self.leafItems objectAtIndex:indexPath.row];
+        title = leafItem.title;
+        //accessory = KGOAccessoryTypeChevron;
     }
     
     return [[^(UITableViewCell *cell) {
@@ -97,29 +144,43 @@
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-	id<KGOCategory> category = [self.categories objectAtIndex:indexPath.row];
-	NSString *moduleTag = nil;
-	if ([category isKindOfClass:[KGOMapCategory class]]) {
-		moduleTag = MapTag;
-	} else if ([category isKindOfClass:[KGOEventCategory class]]) {
-		moduleTag = CalendarTag;
-	}
-	
-	NSArray *subcategories = category.children;
-	if (subcategories) {
-        NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:
-                                subcategories, @"categories",
-                                category, @"parentCategory",
-                                nil];
-		[(KGOAppDelegate *)[[UIApplication sharedApplication] delegate] showPage:LocalPathPageNameCategoryList forModuleTag:moduleTag params:params];
-		
-	} else {
-		NSArray *items = category.items;
-		if (items) {
-			NSDictionary *params = [NSDictionary dictionaryWithObject:items forKey:@"items"];
-			[(KGOAppDelegate *)[[UIApplication sharedApplication] delegate] showPage:LocalPathPageNameItemList forModuleTag:moduleTag params:params];
-		}
-	}
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    
+    NSString *moduleTag = nil;
+    if (self.categories) {
+        id<KGOCategory> category = [self.categories objectAtIndex:indexPath.row];
+        // TODO: need better way to get module tag
+        if ([category isKindOfClass:[KGOMapCategory class]]) {
+            moduleTag = MapTag;
+        } else if ([category isKindOfClass:[KGOEventCategory class]]) {
+            moduleTag = CalendarTag;
+        }
+        
+        NSMutableDictionary *params = [NSMutableDictionary dictionaryWithObjectsAndKeys:category, @"parentCategory", nil];
+        if (category.children) {
+            [params setObject:category.children forKey:@"categories"];
+            
+        } else if (category.items) {
+            [params setObject:category.items forKey:@"items"];
+        }
+        [(KGOAppDelegate *)[[UIApplication sharedApplication] delegate] showPage:LocalPathPageNameCategoryList forModuleTag:moduleTag params:params];
+        
+    } else if (self.leafItems) {
+        id<KGOSearchResult> leafItem = [self.leafItems objectAtIndex:indexPath.row];
+        // TODO: need better way to get module tag
+        if ([leafItem isKindOfClass:[KGOPlacemark class]]) {
+            moduleTag = MapTag;
+        } else if ([leafItem isKindOfClass:[KGOEvent class]]) {
+            moduleTag = CalendarTag;
+        }
+        
+        NSString *identifier = leafItem.identifier;
+        NSString *query = [NSString stringWithFormat:@"identifier = %@", identifier];
+        NSURL *url = [NSURL internalURLWithModuleTag:moduleTag path:LocalPathPageNameSearch query:query];
+        if ([[UIApplication sharedApplication] canOpenURL:url]) {
+            [[UIApplication sharedApplication] openURL:url];
+        }
+    }
 }
 
 #pragma mark -
@@ -139,8 +200,19 @@
 
 
 - (void)dealloc {
+    self.categoriesRequest.delegate = nil;
+    self.categoriesRequest = nil;
+    
+    self.leafItemsRequest.delegate = nil;
+    self.leafItemsRequest = nil;
+    
 	self.headerView = nil;
 	self.categories = nil;
+    self.leafItems = nil;
+    
+    self.categoryEntityName = nil;
+    self.leafItemEntityName = nil;
+    
     [super dealloc];
 }
 
