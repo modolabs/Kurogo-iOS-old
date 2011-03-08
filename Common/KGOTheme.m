@@ -49,13 +49,6 @@ static KGOTheme *s_sharedTheme = nil;
     return color;
 }
 
-- (UIColor *)backgroundColorForHomeScreen {
-    UIColor *color = [self matchBackgroundColorWithLabel:@"HomeScreenBackground"];
-    if (!color)
-        color = [UIColor whiteColor];
-    return color;
-}
-
 - (UIColor *)backgroundColorForApplication {
     UIColor *color = [self matchBackgroundColorWithLabel:@"AppBackground"];
     if (!color)

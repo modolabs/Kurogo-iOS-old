@@ -3,6 +3,7 @@
 #import "KGOSocialMediaController.h"
 #import "KGOHomeScreenWidget.h"
 #import "KGOTheme.h"
+#import "UIKit+KGOAdditions.h"
 
 @implementation FacebookModule
 
@@ -29,24 +30,31 @@
 
 
 - (NSArray *)widgetViews {
-    NSString *title = @"This is a fake Facebook widget";
     
     UIFont *font = [[KGOTheme sharedTheme] fontForBodyText];
-    CGSize size = [title sizeWithFont:font constrainedToSize:CGSizeMake(140, 200) lineBreakMode:UILineBreakModeWordWrap];
     
     NSMutableArray *widgets = [NSMutableArray array];
     
-    UILabel *label = [[[UILabel alloc] initWithFrame:CGRectMake(5, 5, size.width, size.height)] autorelease];
+    UIImageView *imageView = [[[UIImageView alloc] initWithImage:[UIImage imageWithPathName:@"modules/facebook/button-facebook.png"]] autorelease];
+    CGRect frame = imageView.frame;
+    frame.origin.x = 5;
+    frame.origin.y = 5;
+    imageView.frame = frame;
+    
+    CGFloat x = frame.origin.x + frame.size.width + 5;
+    UILabel *label = [[[UILabel alloc] initWithFrame:CGRectMake(x, 5, 120 - x - 5, 44)] autorelease];
+    label.font = font;
+    label.text = @"Harvard-Radclife '96";
     label.numberOfLines = 0;
     label.lineBreakMode = UILineBreakModeWordWrap;
-    label.font = font;
-    label.text = title;
     label.backgroundColor = [UIColor clearColor];
-    label.textColor = [UIColor blackColor];
+    label.textColor = [UIColor whiteColor];
     
-    KGOHomeScreenWidget *widget = [[[KGOHomeScreenWidget alloc] initWithFrame:CGRectMake(0, 0, size.width + 10, size.height + 10)] autorelease];
+    KGOHomeScreenWidget *widget = [[[KGOHomeScreenWidget alloc] initWithFrame:CGRectMake(0, 0, 120, 44)] autorelease];
+    [widget addSubview:imageView];
     [widget addSubview:label];
     widget.gravity = KGOLayoutGravityBottomLeft;
+    widget.behavesAsIcon = YES;
     
     [widgets addObject:widget];
 

@@ -38,7 +38,6 @@ typedef enum {
 - (UIFont *)fontForBodyText;
 - (UIColor *)textColorForBodyText;
 
-- (UIColor *)backgroundColorForHomeScreen;
 - (UIColor *)backgroundColorForApplication;
 - (UIColor *)linkColor;
 - (UIColor *)tintColorForSearchBar;

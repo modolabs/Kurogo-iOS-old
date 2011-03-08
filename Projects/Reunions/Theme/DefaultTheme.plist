@@ -5,9 +5,7 @@
 	<key>Colors</key>
 	<dict>
 		<key>AppBackground</key>
-		<string>common/body-background.png</string>
-		<key>HomeScreenBackground</key>
-		<string>home/home-background.png</string>
+		<string>common/body-background.jpg</string>
 		<key>NavBarTintColor</key>
 		<string>#870E16</string>
 		<key>PlainSectionHeaderBackground</key>
@@ -85,7 +83,7 @@
 	<key>HomeScreen</key>
 	<dict>
 		<key>BackgroundImage</key>
-		<string>home/home-background.png</string>
+		<string>common/body-background.jpg</string>
 		<key>ModuleLabelFont</key>
 		<dict>
 			<key>color</key>

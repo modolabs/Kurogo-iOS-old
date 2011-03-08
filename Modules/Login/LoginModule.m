@@ -15,7 +15,7 @@
 */
 
 - (NSArray *)widgetViews {
-    NSString *title = @"This widget is just a label";
+    NSString *title = @"Carl Fredricksen";
     
     UIFont *font = [[KGOTheme sharedTheme] fontForContentTitle];
     CGSize size = [title sizeWithFont:font];
@@ -24,10 +24,24 @@
     titleLabel.font = font;
     titleLabel.text = title;
     titleLabel.backgroundColor = [UIColor clearColor];
-    titleLabel.textColor = [UIColor grayColor];
+    titleLabel.textColor = [UIColor whiteColor];
+    
+    NSString *class = @"Class of 1996";
+    font = [[KGOTheme sharedTheme] fontForBodyText];
+    size = [class sizeWithFont:font];
+    UILabel *classLabel = [[[UILabel alloc] initWithFrame:CGRectMake(10, titleLabel.frame.size.height + 20, size.width, size.height)] autorelease];
+    classLabel.font = font;
+    classLabel.backgroundColor = [UIColor clearColor];
+    classLabel.textColor = [UIColor whiteColor];
+    classLabel.text = class;
+    
+    CGRect frame = CGRectMake(0, 0,
+                              fmaxf(titleLabel.frame.size.width, classLabel.frame.size.width),
+                              classLabel.frame.origin.y + classLabel.frame.size.height);
 
-    KGOHomeScreenWidget *widget = [[[KGOHomeScreenWidget alloc] initWithFrame:CGRectMake(0, 0, size.width + 20, size.height + 20)] autorelease];
+    KGOHomeScreenWidget *widget = [[[KGOHomeScreenWidget alloc] initWithFrame:frame] autorelease];
     [widget addSubview:titleLabel];
+    [widget addSubview:classLabel];
     
     return [NSArray arrayWithObject:widget];
 }
