@@ -7,6 +7,7 @@
 #import "MITMapDetailViewController.h"
 #import "Foundation+KGOAdditions.h"
 #import "KGOMapCategory.h"
+#import "CoreDataManager.h"
 
 @implementation MapHomeViewController
 
@@ -96,26 +97,34 @@
     categoryVC.request.expectedResponseType = [NSArray class];
     
     __block JSONObjectHandler createMapCategories;
-    __block NSInteger categoriesCreated = 0;
-    __block NSArray *subcategories = nil;
+    __block NSUInteger sortOrder = 0;
     createMapCategories = [[^(id jsonObj) {
+        NSInteger categoriesCreated = 0;
         NSArray *jsonArray = (NSArray *)jsonObj;
         for (id categoryObj in jsonArray) {
             if ([categoryObj isKindOfClass:[NSDictionary class]]) {
                 NSDictionary *categoryDict = (NSDictionary *)categoryObj;
-                NSArray *identifier = [categoryDict arrayForKey:@"id"];
-                if (identifier) {
-                    KGOMapCategory *category = [KGOMapCategory categoryWithPath:identifier];
+                NSArray *categoryPath = nil;
+                id identifier = [categoryDict objectForKey:@"id"];
+                if ([identifier isKindOfClass:[NSArray class]]) {
+                    categoryPath = identifier;
+                } else if ([identifier isKindOfClass:[NSNumber class]] || [identifier isKindOfClass:[NSString class]]) {
+                    categoryPath = [NSArray arrayWithObject:identifier];
+                }
+                if (categoryPath) {
+                    KGOMapCategory *category = [KGOMapCategory categoryWithPath:categoryPath];
                     NSString *title = [categoryDict stringForKey:@"title" nilIfEmpty:YES];
                     if (title && ![category.title isEqualToString:title]) {
                         category.title = title;
+                        category.sortOrder = [NSNumber numberWithInt:sortOrder];
+                        sortOrder++; // this can be anything so long as it's ascending within the parent category
                     }
                     categoriesCreated++;
                 }
 
-                subcategories = [categoryDict arrayForKey:@"subcategories"];
+                NSArray *subcategories = [categoryDict arrayForKey:@"subcategories"];
                 if (subcategories.count) {
-                    createMapCategories(subcategories);
+                    categoriesCreated += createMapCategories(subcategories);
                 }
             }
         }
@@ -123,8 +132,6 @@
         return categoriesCreated;
     } copy] autorelease];
     
-    
-    //categoryVC.request.handler = [[createMapCategories copy] autorelease];
     categoryVC.request.handler = createMapCategories;
 	[(KGOAppDelegate *)[[UIApplication sharedApplication] delegate] presentAppModalViewController:categoryVC animated:YES];
 }

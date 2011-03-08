@@ -72,6 +72,7 @@
 #pragma mark Table view methods
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    // TODO: allow individual items at the same drilldown level to be shown
     return [self.categories count];
 }
 
@@ -79,21 +80,19 @@
     return UITableViewCellStyleDefault;
 }
 
-- (NSArray *)tableView:(UITableView *)tableView viewsForCellAtIndexPath:(NSIndexPath *)indexPath {
-    return nil;
-}
-
 - (CellManipulator)tableView:(UITableView *)tableView manipulatorForCellAtIndexPath:(NSIndexPath *)indexPath {
 	id<KGOCategory> category = [self.categories objectAtIndex:indexPath.row];
+    NSLog(@"%@", [category description]);
 	NSString *title = category.title;
     NSString *accessory = KGOAccessoryTypeNone;
-    if ([category children].count) {
+    if (category.children.count) {
         accessory = KGOAccessoryTypeChevron;
     }
     
     return [[^(UITableViewCell *cell) {
         cell.selectionStyle = UITableViewCellSelectionStyleGray;
         cell.textLabel.text = title;
+        cell.accessoryView = [[KGOTheme sharedTheme] accessoryViewForType:accessory];
     } copy] autorelease];
 }
 
@@ -108,7 +107,10 @@
 	
 	NSArray *subcategories = category.children;
 	if (subcategories) {
-		NSDictionary *params = [NSDictionary dictionaryWithObject:subcategories forKey:@"categories"];
+        NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:
+                                subcategories, @"categories",
+                                category, @"parentCategory",
+                                nil];
 		[(KGOAppDelegate *)[[UIApplication sharedApplication] delegate] showPage:LocalPathPageNameCategoryList forModuleTag:moduleTag params:params];
 		
 	} else {

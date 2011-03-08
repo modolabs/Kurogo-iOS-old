@@ -7,6 +7,8 @@
 #import "CalendarModel.h"
 #import "MapHomeViewController.h"
 #import "KGOCategoryListViewController.h"
+#import "CoreDataManager.h"
+#import "KGOMapCategory.h"
 
 NSString * const MapTypePreference = @"MapType";
 NSString * const MapTypePreferenceChanged = @"MapTypeChanged";
@@ -25,6 +27,19 @@ NSString * const MapTypePreferenceChanged = @"MapTypeChanged";
     [TileServerManager isInitialized];
 }
 */
+
+
+- (void)launch {
+#ifdef USE_MOBILE_DEV
+    NSLog(@"deleting map categories");
+    for (NSManagedObject *aCategory in [[CoreDataManager sharedManager] objectsForEntity:MapCategoryEntityName matchingPredicate:nil]) {
+        [[CoreDataManager sharedManager] deleteObject:aCategory];
+        [[CoreDataManager sharedManager] saveData];
+    }
+#endif
+}
+
+
 #pragma mark Search
 
 - (BOOL)supportsFederatedSearch {
@@ -90,7 +105,14 @@ NSString * const MapTypePreferenceChanged = @"MapTypeChanged";
 		NSArray *categories = [params objectForKey:@"categories"];
 		if (categories) {
 			vc = [[[KGOCategoryListViewController alloc] init] autorelease];
-			[(KGOCategoryListViewController *)vc setCategories:categories];
+            KGOCategoryListViewController *categoryVC = (KGOCategoryListViewController *)vc;
+            categoryVC.entityName = MapCategoryEntityName;
+            categoryVC.categories = categories;
+            
+            KGOMapCategory *parentCategory = [params objectForKey:@"parentCategory"];
+            if ([parentCategory isKindOfClass:[KGOMapCategory class]]) {
+                categoryVC.parentCategory = parentCategory;
+            }
 		}
         
     } else if ([pageName isEqualToString:LocalPathPageNameItemList]) {
@@ -119,170 +141,4 @@ NSString * const MapTypePreferenceChanged = @"MapTypeChanged";
     [self.searchDelegate searcher:self didReceiveResults:searchResults];
 }
 
-/*
-#pragma mark JSONAPIDelegate
-
-- (void)request:(JSONAPIRequest *)request jsonLoaded:(id)JSONObject
-{	
-    self.request = nil;
-    if (JSONObject && [JSONObject isKindOfClass:[NSDictionary class]]) {
-        NSArray *results = [JSONObject objectForKey:@"results"];
-        NSMutableArray *annotations = [NSMutableArray arrayWithCapacity:[results count]];
-        for (NSDictionary *info in results) {
-            ArcGISMapAnnotation *annotation = [[[ArcGISMapAnnotation alloc] initWithInfo:info] autorelease];
-            [annotations addObject:annotation];
-        }
-        [_searchDelegate searcher:self didReceiveResults:annotations];
-	}
-}
-
-- (void)request:(JSONAPIRequest *)request madeProgress:(CGFloat)progress {
-
-}
-
-- (void)request:(JSONAPIRequest *)request handleConnectionError:(NSError *)error {
-    self.request = nil;
-}
-
-
-#pragma mark Search and state
-
-NSString * const MapsLocalPathDetail = @"detail";
-NSString * const MapsLocalPathList = @"list";
-
-- (void)resetNavStack {
-    self.viewControllers = [NSArray arrayWithObject:self.campusMapVC];
-}
-
-- (void)performSearchForString:(NSString *)searchText {
-    if (![TileServerManager isInitialized]) {
-        [[NSNotificationCenter defaultCenter] addObserver:self 
-                                                 selector:@selector(tileServerDidSetup) 
-                                                     name:kTileServerManagerProjectionIsReady
-                                                   object:nil];
-    }
-    
-    [super performSearchForString:searchText];
-    
-    self.request = [JSONAPIRequest requestWithJSONAPIDelegate:self];
-    [self.request requestObjectFromModule:@"map"
-                                  command:@"search"
-                               parameters:[NSDictionary dictionaryWithObjectsAndKeys:searchText, @"q", nil]];
-}
-
-- (void)tileServerDidSetup {
-    for (ArcGISMapAnnotation *annotation in self.searchResults) {
-        [annotation updateWithInfo:annotation.info];
-    }
-}
-
-- (void)abortSearch {
-    if (self.request) {
-        [self.request abortRequest];
-        self.request = nil;
-    }
-    [super abortSearch];
-}
-
-- (NSString *)titleForSearchResult:(id)result {
-    ArcGISMapAnnotation *annotation = (ArcGISMapAnnotation *)result;
-    return annotation.name;
-}
-
-- (NSString *)subtitleForSearchResult:(id)result {
-    ArcGISMapAnnotation *annotation = (ArcGISMapAnnotation *)result;
-    return annotation.street;
-}
-
-- (BOOL)handleLocalPath:(NSString *)localPath query:(NSString *)query
-{
-    BOOL didHandle = NO;
-    
-    if ([localPath isEqualToString:LocalPathFederatedSearch]) {
-        // fedsearch?query
-        self.selectedResult = nil;
-        self.campusMapVC.view;
-        self.campusMapVC.searchResults = self.searchResults;
-        self.campusMapVC.searchBar.text = query;
-        self.campusMapVC.lastSearchText = query;
-        [self.campusMapVC.searchController setActive:NO animated:NO];
-        [self resetNavStack];
-        didHandle = YES;
-        
-    } else if ([localPath isEqualToString:LocalPathFederatedSearchResult]) {
-        // fedresult?rownum
-        NSInteger row = [query integerValue];
-        
-        MITMapDetailViewController *detailVC = [[[MITMapDetailViewController alloc] init] autorelease];
-        self.selectedResult = [self.searchResults objectAtIndex:row];
-        detailVC.annotation = self.selectedResult;
-        self.viewControllers = [NSArray arrayWithObject:detailVC];
-        
-        didHandle = YES;
-        
-    } else if ([localPath isEqualToString:LocalPathMapsSelectedAnnotation]) {
-        // annotation?uniqueID
-        MapSavedAnnotation *saved = [[MapBookmarkManager defaultManager] savedAnnotationForID:query];
-        if (saved) {
-            NSDictionary *info = [NSKeyedUnarchiver unarchiveObjectWithData:saved.info];
-            ArcGISMapAnnotation *annotation = [[[ArcGISMapAnnotation alloc] initWithInfo:info] autorelease];
-            if (!annotation.dataPopulated) {
-                // TODO: issue an identify API request instead of showing a useless annotation
-                annotation.coordinate = CLLocationCoordinate2DMake([saved.latitude floatValue], [saved.longitude floatValue]);
-                annotation.name = saved.name;
-            }
-            self.campusMapVC.view; // make sure mapview is loaded
-            self.campusMapVC.searchBar.text = saved.name;
-            self.campusMapVC.lastSearchText = saved.name;
-            [self.campusMapVC.searchController setActive:NO animated:NO];
-            NSArray *annotations = [NSArray arrayWithObject:annotation];
-            self.campusMapVC.searchResults = annotations;
-            [self resetNavStack];
-
-            didHandle = YES;
-        }
-    } else if ([localPath isEqualToString:@"search"]) {
-
-        NSArray *queryParts = [query componentsSeparatedByString:@"&"];
-        NSDictionary *params = nil;
-        if ([queryParts count] > 1) {
-            NSMutableDictionary *mutableParams = [NSMutableDictionary dictionaryWithCapacity:[queryParts count] - 1];
-            for (NSString *queryPart in queryParts) {
-                NSArray *args = [queryPart componentsSeparatedByString:@"="];
-                switch ([args count]) {
-                    case 1:
-                        query = queryPart;
-                        break;
-                    case 2:
-                        [mutableParams setObject:[args objectAtIndex:1] forKey:[args objectAtIndex:0]];
-                        break;
-                    default:
-                        break;
-                }
-            }
-            params = [NSDictionary dictionaryWithDictionary:mutableParams];
-        }
-        
-        [self resetNavStack];
-        self.campusMapVC.view;
-	            
-        // populate search bar
-        self.campusMapVC.searchBar.text = query;
-        self.campusMapVC.lastSearchText = query;
-        [self.campusMapVC.searchController setActive:NO animated:NO];
-        self.campusMapVC.hasSearchResults = YES;
-            
-        // perform the search from the network
-        [self.campusMapVC search:query params:params];
-        didHandle = YES;
-
-    }
-
-    if (didHandle) {
-        [self becomeActiveTab];
-    }
-        
-	return didHandle;
-}
-*/
 @end

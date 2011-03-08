@@ -196,8 +196,6 @@ NSString * const KGORequestErrorDomain = @"com.modolabs.KGORequest.ErrorDomain";
 - (void)runHandlerOnResult:(id)result {
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 	NSInteger num = self.handler(result);
-    // TODO: not all delegates necessarily want to save to core data as a result of completing parse
-    [[CoreDataManager sharedManager] saveData];
 	[self performSelectorOnMainThread:@selector(handlerDidFinish:) withObject:[NSNumber numberWithInt:num] waitUntilDone:YES];
 	[pool release];
 }

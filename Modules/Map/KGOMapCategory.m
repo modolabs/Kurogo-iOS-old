@@ -30,6 +30,7 @@
     }
     
     NSMutableString *pathRep = [NSMutableString string];
+    KGOMapCategory *parentCategory = nil;
     KGOMapCategory *category = nil;
 
     for (id component in categoryPath) {
@@ -39,20 +40,23 @@
             } else {
                 [pathRep appendString:[component description]];
             }
+            
+            NSPredicate *pred = [NSPredicate predicateWithFormat:@"identifier like %@", pathRep];
+            category = [[[CoreDataManager sharedManager] objectsForEntity:MapCategoryEntityName matchingPredicate:pred] lastObject];
+            if (!category) {
+                DLog(@"creating new map category %@", pathRep);
+                category = [[CoreDataManager sharedManager] insertNewObjectForEntityForName:MapCategoryEntityName];
+                category.identifier = pathRep;
+                category.parentCategory = parentCategory;
+                [[CoreDataManager sharedManager] saveData];
+            }
+            
+            parentCategory = category;
         } else {
             // TODO handle parse error
-            return nil;
         }
     }
     
-    NSPredicate *pred = [NSPredicate predicateWithFormat:@"identifier like %@", pathRep];
-    category = [[[CoreDataManager sharedManager] objectsForEntity:MapCategoryEntityName matchingPredicate:pred] lastObject];
-    if (!category) {
-        NSLog(@"creating new map category %@", pathRep);
-        category = [[CoreDataManager sharedManager] insertNewObjectForEntityForName:MapCategoryEntityName];
-        category.identifier = pathRep;
-    }
-
     return category;
 }
 
