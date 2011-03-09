@@ -4,7 +4,6 @@
 #import "KGOPlacemark.h"
 #import "MapBookmarkManager.h"
 #import "TileServerManager.h"
-#import "CalendarModel.h"
 #import "MapHomeViewController.h"
 #import "KGOCategoryListViewController.h"
 #import "CoreDataManager.h"

@@ -1,7 +1,6 @@
 #import "KGOModule+Factory.h"
 #import "KGOModule.h"
 #import "AboutModule.h"
-#import "CalendarModule.h"
 #import "FacebookModule.h"
 #import "FullWebModule.h"
 #import "HomeModule.h"
@@ -10,6 +9,7 @@
 #import "NewsModule.h"
 #import "PeopleModule.h"
 #import "PhotosModule.h"
+#import "ScheduleModule.h"
 #import "SettingsModule.h"
 #import "TwitterModule.h"
 #import "VideosModule.h"
@@ -22,9 +22,6 @@
     
     if ([className isEqualToString:@"AboutModule"])
         module = [[[AboutModule alloc] initWithDictionary:args] autorelease];
-    
-    else if ([className isEqualToString:@"CalendarModule"])
-        module = [[[CalendarModule alloc] initWithDictionary:args] autorelease];
     
     else if ([className isEqualToString:@"FacebookModule"])
         module = [[[FacebookModule alloc] initWithDictionary:args] autorelease];
@@ -49,6 +46,9 @@
     
     else if ([className isEqualToString:@"PhotosModule"])
         module = [[[PhotosModule alloc] initWithDictionary:args] autorelease];
+    
+    else if ([className isEqualToString:@"ScheduleModule"])
+        module = [[[ScheduleModule alloc] initWithDictionary:args] autorelease];
     
     else if ([className isEqualToString:@"SettingsModule"])
         module = [[[SettingsModule alloc] initWithDictionary:args] autorelease];
