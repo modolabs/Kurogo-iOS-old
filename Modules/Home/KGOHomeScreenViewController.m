@@ -22,7 +22,7 @@
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
-		NSString * file = [[NSBundle mainBundle] pathForResource:@"DefaultTheme" ofType:@"plist"];
+		NSString * file = [[NSBundle mainBundle] pathForResource:@"ThemeConfig" ofType:@"plist"];
         NSDictionary *themeDict = [NSDictionary dictionaryWithContentsOfFile:file];
         _preferences = [[themeDict objectForKey:@"HomeScreen"] retain];
     }
@@ -32,7 +32,7 @@
 - (id)init {
     self = [super init];
     if (self) {
-		NSString * file = [[NSBundle mainBundle] pathForResource:@"DefaultTheme" ofType:@"plist"];
+		NSString * file = [[NSBundle mainBundle] pathForResource:@"ThemeConfig" ofType:@"plist"];
         NSDictionary *themeDict = [NSDictionary dictionaryWithContentsOfFile:file];
         _preferences = [[themeDict objectForKey:@"HomeScreen"] retain];
     }
@@ -102,6 +102,8 @@
 #pragma mark Springboard helper methods
 
 - (NSArray *)iconsForPrimaryModules:(BOOL)isPrimary {
+    BOOL useCompactIcons = [(KGOAppDelegate *)[[UIApplication sharedApplication] delegate] navigationStyle] != KGONavigationStyleTabletSidebar;
+    
     NSMutableArray *icons = [NSMutableArray array];
     NSArray *modules = (isPrimary) ? self.primaryModules : self.secondaryModules;
     
@@ -110,12 +112,18 @@
     CGRect frame = CGRectZero;
     
     frame.size = [aModule iconImage].size;
-    frame.size.width = fmax(frame.size.width, labelSize.width);
-    frame.size.height += labelSize.height + (isPrimary) ? [self moduleLabelTitleMargin] : [self secondaryModuleLabelTitleMargin];
+    if (useCompactIcons) {
+        frame.size.width = fmax(frame.size.width, labelSize.width);
+        frame.size.height += labelSize.height + (isPrimary) ? [self moduleLabelTitleMargin] : [self secondaryModuleLabelTitleMargin];
+    } else {
+        // TODO: don't hard code numbers
+        frame.size.width = 180;
+    }
     
     for (aModule in modules) {
         SpringboardIcon *anIcon = [[[SpringboardIcon alloc] initWithFrame:frame] autorelease];
         [icons addObject:anIcon];
+        anIcon.compact = useCompactIcons;
         
         anIcon.springboard = self;
         anIcon.module = aModule;

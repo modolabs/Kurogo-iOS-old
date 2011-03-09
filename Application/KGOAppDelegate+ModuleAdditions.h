@@ -4,7 +4,7 @@ typedef enum {
     KGONavigationStyleTableView,
     KGONavigationStyleIconGrid,
     KGONavigationStylePortlet,
-    KGONavigationStyleTabletSidebar
+    KGONavigationStyleTabletSidebar // not enabled for iPhone
 } KGONavigationStyle;
 
 @interface KGOAppDelegate (ModuleListAdditions)

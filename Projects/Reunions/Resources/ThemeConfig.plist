@@ -101,6 +101,8 @@
 		<string>14 24</string>
 		<key>NavigationStyle</key>
 		<string>Portlet</string>
+		<key>TabletNavigationStyle</key>
+		<string>Sidebar</string>
 		<key>SecondaryModuleLabelFont</key>
 		<dict>
 			<key>color</key>

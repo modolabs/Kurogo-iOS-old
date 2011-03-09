@@ -53,7 +53,7 @@
         if (color) {
             _searchBar.tintColor = color;
         }
-        UIImage *image = [[KGOTheme sharedTheme] backgroundImageForSearchBar];
+        UIImage *image = [[[KGOTheme sharedTheme] backgroundImageForSearchBar] stretchableImageWithLeftCapWidth:15 topCapHeight:0];
         if (image) {
             self.backgroundImage = image;
         }

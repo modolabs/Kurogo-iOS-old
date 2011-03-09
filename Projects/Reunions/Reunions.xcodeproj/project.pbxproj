@@ -69,8 +69,6 @@
 		EB14351E13038CE500396753 /* KGODatePager.m in Sources */ = {isa = PBXBuildFile; fileRef = EB14351C13038CE500396753 /* KGODatePager.m */; };
 		EB143DD2130636BA00396753 /* DatePickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EB143DD0130636BA00396753 /* DatePickerViewController.m */; };
 		EB143E5413063A5E00396753 /* KGOCategoryListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EB143E5213063A5E00396753 /* KGOCategoryListViewController.m */; };
-		EB14417A1309F0C300396753 /* DefaultTheme.plist in Resources */ = {isa = PBXBuildFile; fileRef = EB1441771309F0C300396753 /* DefaultTheme.plist */; };
-		EB14417C1309F0C300396753 /* ThemeConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = EB1441791309F0C300396753 /* ThemeConstants.m */; };
 		EB1441801309F0E400396753 /* KGOTheme.m in Sources */ = {isa = PBXBuildFile; fileRef = EB14417E1309F0E400396753 /* KGOTheme.m */; };
 		EB1441AA1309F57400396753 /* MITBuildInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = EB1441A91309F57400396753 /* MITBuildInfo.m */; };
 		EB1441B01309F59700396753 /* KGOModule.m in Sources */ = {isa = PBXBuildFile; fileRef = EB1441AE1309F59700396753 /* KGOModule.m */; };
@@ -89,7 +87,6 @@
 		EB181B1A13174F41003728FF /* PersonOrganization.m in Sources */ = {isa = PBXBuildFile; fileRef = EB181B1213174F41003728FF /* PersonOrganization.m */; };
 		EB181B241317577D003728FF /* KGOPerson.m in Sources */ = {isa = PBXBuildFile; fileRef = EB181B221317577D003728FF /* KGOPerson.m */; };
 		EB1B88711324A4B800108A8F /* MainWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = EB1B88701324A4B800108A8F /* MainWindow.xib */; };
-		EB1B88761324A60600108A8F /* MainWindow-iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = EB1B88751324A60600108A8F /* MainWindow-iPad.xib */; };
 		EB1B88781324A62100108A8F /* common in Resources */ = {isa = PBXBuildFile; fileRef = EB1B88771324A62100108A8F /* common */; };
 		EB358AD01309F9CE000250AD /* FacebookModule.m in Sources */ = {isa = PBXBuildFile; fileRef = EB358ACE1309F9CE000250AD /* FacebookModule.m */; };
 		EB358FAD130B3778000250AD /* IconGrid.m in Sources */ = {isa = PBXBuildFile; fileRef = EB358FAB130B3778000250AD /* IconGrid.m */; };
@@ -114,6 +111,12 @@
 		EB46CA2E1326FB8200AF7B5C /* KGOEventAttendee.m in Sources */ = {isa = PBXBuildFile; fileRef = EB46CA221326FB8200AF7B5C /* KGOEventAttendee.m */; };
 		EB46CA2F1326FB8200AF7B5C /* KGOEventCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = EB46CA241326FB8200AF7B5C /* KGOEventCategory.m */; };
 		EB46CA301326FB8200AF7B5C /* KGOEventContactInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = EB46CA261326FB8200AF7B5C /* KGOEventContactInfo.m */; };
+		EB46CA331327011200AF7B5C /* KGOSidebarFrameViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EB46CA321327011100AF7B5C /* KGOSidebarFrameViewController.m */; };
+		EB46CA351327E43600AF7B5C /* kurogo in Resources */ = {isa = PBXBuildFile; fileRef = EB46CA341327E43600AF7B5C /* kurogo */; };
+		EB46CA371327E4D400AF7B5C /* ipad in Resources */ = {isa = PBXBuildFile; fileRef = EB46CA361327E4D300AF7B5C /* ipad */; };
+		EB46CA3B1327E53600AF7B5C /* ThemeConfig.plist in Resources */ = {isa = PBXBuildFile; fileRef = EB46CA381327E53600AF7B5C /* ThemeConfig.plist */; };
+		EB46CA3C1327E53600AF7B5C /* ThemeConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = EB46CA3A1327E53600AF7B5C /* ThemeConstants.m */; };
+		EB46CA3E1327E7B700AF7B5C /* MainWindow-iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = EB46CA3D1327E7B700AF7B5C /* MainWindow-iPad.xib */; };
 		EB4C2CDF127F138100058748 /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = EB4C2CDE127F138100058748 /* libsqlite3.dylib */; };
 		EB4C2CE1127F138900058748 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EB4C2CE0127F138900058748 /* CFNetwork.framework */; };
 		EB5773C212FDF91200BAF5F5 /* Config.plist in Resources */ = {isa = PBXBuildFile; fileRef = EB5773C112FDF91200BAF5F5 /* Config.plist */; };
@@ -128,7 +131,6 @@
 		EB5F33B5132497D00066413F /* Icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = EB5F33A3132497D00066413F /* Icon@2x.png */; };
 		EB5F33C2132498050066413F /* modules in Resources */ = {isa = PBXBuildFile; fileRef = EB5F33C1132498050066413F /* modules */; };
 		EB5F33C8132498640066413F /* en.lproj in Resources */ = {isa = PBXBuildFile; fileRef = EB5F33C7132498640066413F /* en.lproj */; };
-		EB5F33CC132499720066413F /* default-assets in Resources */ = {isa = PBXBuildFile; fileRef = EB5F33CB132499720066413F /* default-assets */; };
 		EB6D02A911E3784100B65CE3 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EB6D02A811E3784100B65CE3 /* MapKit.framework */; };
 		EB6D111711EE143900B65CE3 /* TileServerManager.m in Sources */ = {isa = PBXBuildFile; fileRef = EB6D111511EE143900B65CE3 /* TileServerManager.m */; };
 		EB6D141611EE979500B65CE3 /* NewsCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = EB6D141411EE979500B65CE3 /* NewsCategory.m */; };
@@ -315,9 +317,6 @@
 		EB143DD0130636BA00396753 /* DatePickerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DatePickerViewController.m; sourceTree = "<group>"; };
 		EB143E5113063A5E00396753 /* KGOCategoryListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGOCategoryListViewController.h; sourceTree = "<group>"; };
 		EB143E5213063A5E00396753 /* KGOCategoryListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGOCategoryListViewController.m; sourceTree = "<group>"; };
-		EB1441771309F0C300396753 /* DefaultTheme.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = DefaultTheme.plist; sourceTree = "<group>"; };
-		EB1441781309F0C300396753 /* ThemeConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ThemeConstants.h; sourceTree = "<group>"; };
-		EB1441791309F0C300396753 /* ThemeConstants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ThemeConstants.m; sourceTree = "<group>"; };
 		EB14417D1309F0E400396753 /* KGOTheme.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGOTheme.h; sourceTree = "<group>"; };
 		EB14417E1309F0E400396753 /* KGOTheme.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGOTheme.m; sourceTree = "<group>"; };
 		EB1441A71309F56700396753 /* MITBuildInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MITBuildInfo.h; sourceTree = "<group>"; };
@@ -353,7 +352,6 @@
 		EB181B211317577D003728FF /* KGOPerson.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGOPerson.h; sourceTree = "<group>"; };
 		EB181B221317577D003728FF /* KGOPerson.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGOPerson.m; sourceTree = "<group>"; };
 		EB1B88701324A4B800108A8F /* MainWindow.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = MainWindow.xib; path = ../../../Resources/MainWindow.xib; sourceTree = "<group>"; };
-		EB1B88751324A60600108A8F /* MainWindow-iPad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "MainWindow-iPad.xib"; sourceTree = "<group>"; };
 		EB1B88771324A62100108A8F /* common */ = {isa = PBXFileReference; lastKnownFileType = folder; path = common; sourceTree = "<group>"; };
 		EB358ACD1309F9CE000250AD /* FacebookModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FacebookModule.h; sourceTree = "<group>"; };
 		EB358ACE1309F9CE000250AD /* FacebookModule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FacebookModule.m; sourceTree = "<group>"; };
@@ -401,6 +399,14 @@
 		EB46CA241326FB8200AF7B5C /* KGOEventCategory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGOEventCategory.m; sourceTree = "<group>"; };
 		EB46CA251326FB8200AF7B5C /* KGOEventContactInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGOEventContactInfo.h; sourceTree = "<group>"; };
 		EB46CA261326FB8200AF7B5C /* KGOEventContactInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGOEventContactInfo.m; sourceTree = "<group>"; };
+		EB46CA311327011100AF7B5C /* KGOSidebarFrameViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGOSidebarFrameViewController.h; sourceTree = "<group>"; };
+		EB46CA321327011100AF7B5C /* KGOSidebarFrameViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGOSidebarFrameViewController.m; sourceTree = "<group>"; };
+		EB46CA341327E43600AF7B5C /* kurogo */ = {isa = PBXFileReference; lastKnownFileType = folder; name = kurogo; path = ../../../Resources/default/kurogo; sourceTree = "<group>"; };
+		EB46CA361327E4D300AF7B5C /* ipad */ = {isa = PBXFileReference; lastKnownFileType = folder; path = ipad; sourceTree = "<group>"; };
+		EB46CA381327E53600AF7B5C /* ThemeConfig.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = ThemeConfig.plist; sourceTree = "<group>"; };
+		EB46CA391327E53600AF7B5C /* ThemeConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ThemeConstants.h; sourceTree = "<group>"; };
+		EB46CA3A1327E53600AF7B5C /* ThemeConstants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ThemeConstants.m; sourceTree = "<group>"; };
+		EB46CA3D1327E7B700AF7B5C /* MainWindow-iPad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = "MainWindow-iPad.xib"; path = "../../../Resources/MainWindow-iPad.xib"; sourceTree = "<group>"; };
 		EB4C2CDE127F138100058748 /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
 		EB4C2CE0127F138900058748 /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
 		EB5773C112FDF91200BAF5F5 /* Config.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Config.plist; path = ../Config.plist; sourceTree = "<group>"; };
@@ -419,7 +425,6 @@
 		EB5F33A3132497D00066413F /* Icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon@2x.png"; sourceTree = "<group>"; };
 		EB5F33C1132498050066413F /* modules */ = {isa = PBXFileReference; lastKnownFileType = folder; path = modules; sourceTree = "<group>"; };
 		EB5F33C7132498640066413F /* en.lproj */ = {isa = PBXFileReference; lastKnownFileType = folder; path = en.lproj; sourceTree = "<group>"; };
-		EB5F33CB132499720066413F /* default-assets */ = {isa = PBXFileReference; lastKnownFileType = folder; name = "default-assets"; path = "../../../Themes/default-assets"; sourceTree = "<group>"; };
 		EB6D02A811E3784100B65CE3 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		EB6D111411EE143900B65CE3 /* TileServerManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TileServerManager.h; sourceTree = "<group>"; };
 		EB6D111511EE143900B65CE3 /* TileServerManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TileServerManager.m; sourceTree = "<group>"; };
@@ -509,8 +514,6 @@
 				EB1387B912F22DF7004DBB7C /* Contrib */,
 				EB5F33C3132498380066413F /* Localization */,
 				EB5F339F132497D00066413F /* Resources */,
-				EB1B88721324A4E500108A8F /* Resources-iPad */,
-				EB1441761309F0C300396753 /* Theme */,
 				29B97323FDCFA39411CA2CEA /* Frameworks */,
 				19C28FACFE9D520D11CA2CBB /* Products */,
 			);
@@ -870,16 +873,6 @@
 			path = Search;
 			sourceTree = "<group>";
 		};
-		EB1441761309F0C300396753 /* Theme */ = {
-			isa = PBXGroup;
-			children = (
-				EB1441771309F0C300396753 /* DefaultTheme.plist */,
-				EB1441781309F0C300396753 /* ThemeConstants.h */,
-				EB1441791309F0C300396753 /* ThemeConstants.m */,
-			);
-			path = Theme;
-			sourceTree = "<group>";
-		};
 		EB181715130CC048003728FF /* Login */ = {
 			isa = PBXGroup;
 			children = (
@@ -899,15 +892,6 @@
 				EB181B0813174ED3003728FF /* KGOContact.m */,
 			);
 			path = DataModels;
-			sourceTree = "<group>";
-		};
-		EB1B88721324A4E500108A8F /* Resources-iPad */ = {
-			isa = PBXGroup;
-			children = (
-				EB1B88751324A60600108A8F /* MainWindow-iPad.xib */,
-			);
-			name = "Resources-iPad";
-			path = "../../Resources-iPad";
 			sourceTree = "<group>";
 		};
 		EB358ACC1309F9AB000250AD /* Facebook */ = {
@@ -1011,6 +995,8 @@
 				EB1816DA130C9680003728FF /* SpringboardIcon.m */,
 				EB181711130C9C43003728FF /* KGOHomeScreenWidget.h */,
 				EB181712130C9C43003728FF /* KGOHomeScreenWidget.m */,
+				EB46CA311327011100AF7B5C /* KGOSidebarFrameViewController.h */,
+				EB46CA321327011100AF7B5C /* KGOSidebarFrameViewController.m */,
 			);
 			name = Home;
 			path = ../../Modules/Home;
@@ -1033,11 +1019,16 @@
 			isa = PBXGroup;
 			children = (
 				EB1B88701324A4B800108A8F /* MainWindow.xib */,
+				EB46CA3D1327E7B700AF7B5C /* MainWindow-iPad.xib */,
 				EB1B88771324A62100108A8F /* common */,
 				EB5F33C1132498050066413F /* modules */,
-				EB5F33CB132499720066413F /* default-assets */,
+				EB46CA361327E4D300AF7B5C /* ipad */,
+				EB46CA341327E43600AF7B5C /* kurogo */,
 				EB138AFC12F22F31004DBB7C /* KGOInfo.plist */,
 				EB5773C112FDF91200BAF5F5 /* Config.plist */,
+				EB46CA381327E53600AF7B5C /* ThemeConfig.plist */,
+				EB46CA391327E53600AF7B5C /* ThemeConstants.h */,
+				EB46CA3A1327E53600AF7B5C /* ThemeConstants.m */,
 				EB5F33A0132497D00066413F /* Default.png */,
 				EB5F33A1132497D00066413F /* Default@2x.png */,
 				EB5F33A2132497D00066413F /* Icon.png */,
@@ -1244,7 +1235,6 @@
 				4463D09510D92CB00048CA83 /* MITMapDetailViewController.xib in Resources */,
 				EB5773C212FDF91200BAF5F5 /* Config.plist in Resources */,
 				EB8B364713078CDB005DBB8F /* MapHomeViewController.xib in Resources */,
-				EB14417A1309F0C300396753 /* DefaultTheme.plist in Resources */,
 				EB5F315F132491ED0066413F /* KGOTabbedViewController.xib in Resources */,
 				EB5F33B2132497D00066413F /* Default.png in Resources */,
 				EB5F33B3132497D00066413F /* Default@2x.png in Resources */,
@@ -1252,10 +1242,12 @@
 				EB5F33B5132497D00066413F /* Icon@2x.png in Resources */,
 				EB5F33C2132498050066413F /* modules in Resources */,
 				EB5F33C8132498640066413F /* en.lproj in Resources */,
-				EB5F33CC132499720066413F /* default-assets in Resources */,
 				EB1B88711324A4B800108A8F /* MainWindow.xib in Resources */,
-				EB1B88761324A60600108A8F /* MainWindow-iPad.xib in Resources */,
 				EB1B88781324A62100108A8F /* common in Resources */,
+				EB46CA351327E43600AF7B5C /* kurogo in Resources */,
+				EB46CA371327E4D400AF7B5C /* ipad in Resources */,
+				EB46CA3B1327E53600AF7B5C /* ThemeConfig.plist in Resources */,
+				EB46CA3E1327E7B700AF7B5C /* MainWindow-iPad.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1349,7 +1341,6 @@
 				EB8B365313079999005DBB8F /* KGOMapCategory.m in Sources */,
 				EB8B365513079999005DBB8F /* KGOPlacemark.m in Sources */,
 				EB8B36871307BB28005DBB8F /* MapZoomLevel.m in Sources */,
-				EB14417C1309F0C300396753 /* ThemeConstants.m in Sources */,
 				EB1441801309F0E400396753 /* KGOTheme.m in Sources */,
 				EB1441AA1309F57400396753 /* MITBuildInfo.m in Sources */,
 				EB1441B01309F59700396753 /* KGOModule.m in Sources */,
@@ -1390,6 +1381,8 @@
 				EB46CA2E1326FB8200AF7B5C /* KGOEventAttendee.m in Sources */,
 				EB46CA2F1326FB8200AF7B5C /* KGOEventCategory.m in Sources */,
 				EB46CA301326FB8200AF7B5C /* KGOEventContactInfo.m in Sources */,
+				EB46CA331327011200AF7B5C /* KGOSidebarFrameViewController.m in Sources */,
+				EB46CA3C1327E53600AF7B5C /* ThemeConstants.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

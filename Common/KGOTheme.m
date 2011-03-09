@@ -316,7 +316,7 @@ static NSString * KGOAccessoryImageCheckmarkHighlighted = @"common/action-checkm
 - (id)init {
     self = [super init];
     if (self) {
-		NSString * file = [[NSBundle mainBundle] pathForResource:@"DefaultTheme" ofType:@"plist"];
+		NSString * file = [[NSBundle mainBundle] pathForResource:@"ThemeConfig" ofType:@"plist"];
         themeDict = [[NSDictionary alloc] initWithContentsOfFile:file];
 		fontDict = [themeDict objectForKey:@"Fonts"];
     }

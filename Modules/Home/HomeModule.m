@@ -3,6 +3,7 @@
 #import "KGOSpringboardViewController.h"
 #import "KGOHomeScreenTableViewController.h"
 #import "KGOPortletHomeViewController.h"
+#import "KGOSidebarFrameViewController.h"
 
 @implementation HomeModule
 
@@ -22,6 +23,9 @@
                 break;
             case KGONavigationStylePortlet:
                 vc = [[[KGOPortletHomeViewController alloc] init] autorelease];
+                break;
+            case KGONavigationStyleTabletSidebar:
+                vc = [[[KGOSidebarFrameViewController alloc] init] autorelease];
                 break;
             case KGONavigationStyleIconGrid:
             default:

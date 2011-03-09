@@ -3,10 +3,18 @@
 
 @implementation UIImage (KGOAdditions)
 
+// fetch first matching image by override priority:
+// local ipad assets (ipad/%@), local assets (%@), kurogo assets (kurogo/%@)
 + (UIImage *)imageWithPathName:(NSString *)pathName {
-    UIImage *image = [UIImage imageNamed:pathName];
+    UIImage *image = nil;
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        image = [UIImage imageNamed:[NSString stringWithFormat:@"ipad/%@", pathName]];
+    }
+    if (!image) {    
+        image = [UIImage imageNamed:pathName];
+    }
     if (!image) {
-        image = [UIImage imageNamed:[NSString stringWithFormat:@"default-assets/%@", pathName]];
+        image = [UIImage imageNamed:[NSString stringWithFormat:@"kurogo/%@", pathName]];
     }
     return image;
 }

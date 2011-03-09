@@ -100,10 +100,17 @@
 }
 
 - (KGONavigationStyle)navigationStyle {
-    NSString * file = [[NSBundle mainBundle] pathForResource:@"DefaultTheme" ofType:@"plist"];
+    // TODO: use config to select theme package
+    NSString * file = [[NSBundle mainBundle] pathForResource:@"ThemeConfig" ofType:@"plist"];
     NSDictionary *themeDict = [[NSDictionary alloc] initWithContentsOfFile:file];
     NSDictionary *homescreenDict = [[themeDict objectForKey:@"HomeScreen"] retain];
-    NSString *style = [homescreenDict objectForKey:@"NavigationStyle"];
+    NSString *style;
+    
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+        style = [homescreenDict objectForKey:@"NavigationStyle"];
+    } else {
+        style = [homescreenDict objectForKey:@"TabletNavigationStyle"];
+    }
     
     if ([style isEqualToString:@"Grid"]) {
         return KGONavigationStyleIconGrid;
@@ -113,6 +120,9 @@
         
     } else if ([style isEqualToString:@"Portlet"]) {
         return KGONavigationStylePortlet;
+        
+    } else if ([style isEqualToString:@"Sidebar"] && UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        return KGONavigationStyleTabletSidebar;
         
     } else {
         return KGONavigationStyleIconGrid;

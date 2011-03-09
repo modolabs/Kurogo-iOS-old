@@ -4,13 +4,13 @@
 
 @implementation SpringboardIcon
 
-@synthesize springboard;
+@synthesize springboard, compact;
 
 - (id)initWithFrame:(CGRect)frame {
     
     self = [super initWithFrame:frame];
     if (self) {
-        // Initialization code.
+        self.compact;
     }
     return self;
 }
@@ -28,7 +28,6 @@
         if (image) {
             
             [self setImage:image forState:UIControlStateNormal];
-            self.imageEdgeInsets = UIEdgeInsetsMake(0, 0, self.frame.size.height - image.size.height, 0);
             
             self.titleLabel.numberOfLines = 0;
             self.titleLabel.lineBreakMode = UILineBreakModeWordWrap;
@@ -63,9 +62,12 @@
                 extraLineHeight = (words.count - 1) * [titleFont lineHeight];
             }
             
-            self.titleEdgeInsets = UIEdgeInsetsMake(image.size.height + titleImageGap + extraLineHeight, // we want title below the image
-                                                    -self.frame.size.width,                              // and not to the right
-                                                    0, 0);
+            if (self.compact) {
+                self.imageEdgeInsets = UIEdgeInsetsMake(0, 0, self.frame.size.height - image.size.height, 0);
+                self.titleEdgeInsets = UIEdgeInsetsMake(image.size.height + titleImageGap + extraLineHeight, // we want title below the image
+                                                        -self.frame.size.width,                              // and not to the right
+                                                        0, 0);
+            }
             
             [self addTarget:self.springboard action:@selector(buttonPressed:) forControlEvents:UIControlEventTouchUpInside];
         }

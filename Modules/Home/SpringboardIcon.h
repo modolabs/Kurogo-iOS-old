@@ -13,5 +13,6 @@
 
 @property (nonatomic, retain) KGOModule *module;
 @property (nonatomic, assign) KGOHomeScreenViewController *springboard;
+@property (nonatomic) BOOL compact; // true if labels show up below the image
 
 @end
