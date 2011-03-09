@@ -4,7 +4,6 @@
 #import "MapModule.h"
 #import "MapSettingsViewController.h"
 #import "KGOTheme.h"
-#import "MITMapDetailViewController.h"
 #import "Foundation+KGOAdditions.h"
 #import "KGOMapCategory.h"
 #import "CoreDataManager.h"

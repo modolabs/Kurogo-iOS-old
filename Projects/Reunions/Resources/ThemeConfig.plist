@@ -87,11 +87,20 @@
 		<key>ModuleLabelFont</key>
 		<dict>
 			<key>color</key>
-			<string>#000000</string>
+			<string>#FFFFFF</string>
 			<key>font</key>
 			<string>Helvetica</string>
 			<key>size</key>
 			<integer>12</integer>
+		</dict>
+		<key>ModuleLabelFontLarge</key>
+		<dict>
+			<key>color</key>
+			<string>#FFFFFF</string>
+			<key>font</key>
+			<string>Helvetica</string>
+			<key>size</key>
+			<integer>18</integer>
 		</dict>
 		<key>ModuleLabelTitleMargin</key>
 		<integer>8</integer>
@@ -101,8 +110,6 @@
 		<string>14 24</string>
 		<key>NavigationStyle</key>
 		<string>Portlet</string>
-		<key>TabletNavigationStyle</key>
-		<string>Sidebar</string>
 		<key>SecondaryModuleLabelFont</key>
 		<dict>
 			<key>color</key>
@@ -120,6 +127,8 @@
 		<string>30 20</string>
 		<key>ShowsSearchBar</key>
 		<false/>
+		<key>TabletNavigationStyle</key>
+		<string>Sidebar</string>
 	</dict>
 	<key>Images</key>
 	<dict>

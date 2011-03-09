@@ -1,5 +1,13 @@
 #import <UIKit/UIKit.h>
 
+typedef enum {
+    KGONavigationStyleUnknown,
+    KGONavigationStyleTableView,
+    KGONavigationStyleIconGrid,
+    KGONavigationStylePortlet,
+    KGONavigationStyleTabletSidebar // not enabled for iPhone
+} KGONavigationStyle;
+
 @class KGOModule;
 
 /*
@@ -9,8 +17,10 @@
 @interface KGOAppDelegate : NSObject <UIApplicationDelegate, UIAlertViewDelegate> {
     
     UIWindow *window;
-    UINavigationController *theNavController;
-    UIViewController *appModalHolder;
+    UINavigationController *_appNavController;
+    UIViewController *_appHomeScreen;
+    UIViewController *_appModalHolder;
+    KGONavigationStyle _navigationStyle;
     
     NSDictionary *_appConfig;
     
@@ -28,7 +38,7 @@
 - (void)hideNetworkActivityIndicator;
 
 @property (nonatomic, retain) IBOutlet UIWindow *window;
-@property (nonatomic, retain) UINavigationController *theNavController;
+//@property (nonatomic, retain) UINavigationController *appNavController;
 @property (nonatomic, retain) NSData *deviceToken;
 
 @property (nonatomic, readonly) NSArray *modules;

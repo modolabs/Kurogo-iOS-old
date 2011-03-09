@@ -78,7 +78,11 @@ NSString * const MapTypePreferenceChanged = @"MapTypeChanged";
 - (UIViewController *)modulePage:(NSString *)pageName params:(NSDictionary *)params {
     UIViewController *vc = nil;
     if ([pageName isEqualToString:LocalPathPageNameHome]) {
-        vc = [[[MapHomeViewController alloc] init] autorelease];
+        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+            vc = [[[MapHomeViewController alloc] initWithNibName:@"MapHomeViewController" bundle:nil] autorelease];
+        } else {
+            vc = [[[MapHomeViewController alloc] initWithNibName:@"MapHomeViewController-iPad" bundle:nil] autorelease];
+        }
         
     } else if ([pageName isEqualToString:LocalPathPageNameSearch]) {
         vc = [[[MapHomeViewController alloc] init] autorelease];

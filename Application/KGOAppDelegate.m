@@ -10,12 +10,14 @@
 
 @synthesize window, modules = _modules;
 @synthesize deviceToken = devicePushToken;
-@synthesize theNavController;
+//@synthesize theNavController;
 
 #pragma mark -
 #pragma mark Application lifecycle
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+    
+    _navigationStyle = KGONavigationStyleUnknown;
     
     networkActivityRefCount = 0;
     showingAlertView = NO;
@@ -134,6 +136,9 @@
 
 - (void)dealloc {
     self.deviceToken = nil;
+    [_appModalHolder release];
+    [_appConfig release];
+    [_unreadNotifications release];
     [_modules release];
 	[window release];
 	[super dealloc];
@@ -252,11 +257,11 @@
 @implementation KGOAppDelegate (AppModalViewController)
 
 - (void)setupAppModalHolder {
-    appModalHolder = [[UIViewController alloc] initWithNibName:nil bundle:nil];
-    appModalHolder.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-    appModalHolder.view.userInteractionEnabled = NO;
-    appModalHolder.view.hidden = YES;
-    [self.window addSubview:appModalHolder.view];
+    _appModalHolder = [[UIViewController alloc] initWithNibName:nil bundle:nil];
+    _appModalHolder.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+    _appModalHolder.view.userInteractionEnabled = NO;
+    _appModalHolder.view.hidden = YES;
+    [self.window addSubview:_appModalHolder.view];
 }
 
 // Call these instead of [theNavigationController presentModal...]
@@ -265,10 +270,10 @@
 	NSLog(@"%@", [viewController description]);
 	if (!viewController) return;
 	
-    appModalHolder.view.hidden = NO;
+    _appModalHolder.view.hidden = NO;
 
 	if (viewController.navigationController || [viewController isKindOfClass:[UINavigationController class]]) {
-		[appModalHolder presentModalViewController:viewController animated:animated];
+		[_appModalHolder presentModalViewController:viewController animated:animated];
 	} else {
 		// since any VC can be presented modally, some will not have nav bars built in
 		UINavigationController *navC = [[[UINavigationController alloc] initWithRootViewController:viewController] autorelease];
@@ -276,7 +281,7 @@
 																							 style:UIBarButtonItemStyleDone
 																							target:self
 																							action:@selector(dismissAppModalViewController:)] autorelease];
-		[appModalHolder presentModalViewController:navC animated:animated];
+		[_appModalHolder presentModalViewController:navC animated:animated];
 	}
 	
 }
@@ -286,17 +291,17 @@
 }
 
 - (void)dismissAppModalViewControllerAnimated:(BOOL)animated {
-    if (appModalHolder.modalViewController) {
-        [appModalHolder dismissModalViewControllerAnimated:animated];
+    if (_appModalHolder.modalViewController) {
+        [_appModalHolder dismissModalViewControllerAnimated:animated];
         [self performSelector:@selector(checkIfOkToHideAppModalViewController) withObject:nil afterDelay:0.100];
     }
 }
 
 // This is a sad hack for telling when the dismissAppModalViewController animation has completed. It depends on appModalHolder.modalViewController being defined as long as the modal vc is still animating. If Apple ever changes this behavior, the slide-away transition will become a jarring pop.
 - (void)checkIfOkToHideAppModalViewController {
-    if (!appModalHolder.modalViewController) {
+    if (!_appModalHolder.modalViewController) {
         // allow taps to reach subviews of the tabbar again
-        appModalHolder.view.hidden = YES;
+        _appModalHolder.view.hidden = YES;
     } else {
         [self performSelector:@selector(checkIfOkToHideAppModalViewController) withObject:nil afterDelay:0.100];
     }

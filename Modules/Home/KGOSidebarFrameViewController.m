@@ -1,10 +1,35 @@
 #import "KGOSidebarFrameViewController.h"
 #import "SpringboardIcon.h"
 
+@interface KGOSidebarFrameViewController (Private)
+
+- (void)setupSidebarIcons;
+
+@end
+
 @implementation KGOSidebarFrameViewController
+
+
+- (void)showViewController:(UIViewController *)viewController {
+    if (viewController != _visibleViewController) {
+        [_visibleViewController.view removeFromSuperview];
+        
+        [_visibleViewController release];
+        _visibleViewController = [viewController retain];
+
+        _visibleViewController.view.frame = CGRectMake(0, 0, _container.frame.size.width, _container.frame.size.height);
+        [_container addSubview:viewController.view];
+    }
+}
+
+#pragma mark -
 
 - (void)dealloc
 {
+    [_visibleViewController release];
+    [_topbar release];
+    [_sidebar release];
+    [_container release];
     [super dealloc];
 }
 
@@ -23,9 +48,19 @@
 {
     [super loadView];
     
-    _sidebar = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 180, self.view.bounds.size.height)];
+    _topbar = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, 50)];
+    _topbar.backgroundColor = [UIColor blackColor];
+    [self.view addSubview:_topbar];
+    
+    _sidebar = [[UIView alloc] initWithFrame:CGRectMake(0, _topbar.frame.size.height, 180, self.view.bounds.size.height)];
     [self.view addSubview:_sidebar];
     [self setupSidebarIcons];
+    
+    _container = [[UIView alloc] initWithFrame:CGRectMake(_sidebar.frame.size.width,
+                                                          _topbar.frame.size.height,
+                                                          self.view.bounds.size.width - _sidebar.frame.size.width,
+                                                          self.view.bounds.size.height - _topbar.frame.size.height)];
+    [self.view addSubview:_container];
 }
 
 - (void)viewDidUnload

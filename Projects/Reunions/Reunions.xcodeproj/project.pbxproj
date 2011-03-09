@@ -17,8 +17,6 @@
 		4463CC9810D6F4A50048CA83 /* MapModule.m in Sources */ = {isa = PBXBuildFile; fileRef = 4463CC8810D6F4A50048CA83 /* MapModule.m */; };
 		4463CC9B10D6F4A50048CA83 /* MapSearchResultAnnotation.m in Sources */ = {isa = PBXBuildFile; fileRef = 4463CC8E10D6F4A50048CA83 /* MapSearchResultAnnotation.m */; };
 		4463CCB210D6F5750048CA83 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4463CCB110D6F5750048CA83 /* CoreLocation.framework */; };
-		4463D09410D92CB00048CA83 /* MITMapDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4463D09210D92CB00048CA83 /* MITMapDetailViewController.m */; };
-		4463D09510D92CB00048CA83 /* MITMapDetailViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4463D09310D92CB00048CA83 /* MITMapDetailViewController.xib */; };
 		44ACF76E1187884300F1F4B2 /* MapBookmarkManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 44ACF76A1187884300F1F4B2 /* MapBookmarkManager.m */; };
 		44C1A2A811A2F49B000FD653 /* MapModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 44C1A2A711A2F49B000FD653 /* MapModel.xcdatamodeld */; };
 		A623F1F2120A035A00341C5E /* ModoThreeStateSwitchControl.m in Sources */ = {isa = PBXBuildFile; fileRef = A623F1F0120A035A00341C5E /* ModoThreeStateSwitchControl.m */; };
@@ -117,6 +115,7 @@
 		EB46CA3B1327E53600AF7B5C /* ThemeConfig.plist in Resources */ = {isa = PBXBuildFile; fileRef = EB46CA381327E53600AF7B5C /* ThemeConfig.plist */; };
 		EB46CA3C1327E53600AF7B5C /* ThemeConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = EB46CA3A1327E53600AF7B5C /* ThemeConstants.m */; };
 		EB46CA3E1327E7B700AF7B5C /* MainWindow-iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = EB46CA3D1327E7B700AF7B5C /* MainWindow-iPad.xib */; };
+		EB46CAE41328352200AF7B5C /* MapHomeViewController-iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = EB46CAE31328352100AF7B5C /* MapHomeViewController-iPad.xib */; };
 		EB4C2CDF127F138100058748 /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = EB4C2CDE127F138100058748 /* libsqlite3.dylib */; };
 		EB4C2CE1127F138900058748 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EB4C2CE0127F138900058748 /* CFNetwork.framework */; };
 		EB5773C212FDF91200BAF5F5 /* Config.plist in Resources */ = {isa = PBXBuildFile; fileRef = EB5773C112FDF91200BAF5F5 /* Config.plist */; };
@@ -217,9 +216,6 @@
 		4463CC8D10D6F4A50048CA83 /* MapSearchResultAnnotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MapSearchResultAnnotation.h; sourceTree = "<group>"; };
 		4463CC8E10D6F4A50048CA83 /* MapSearchResultAnnotation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MapSearchResultAnnotation.m; sourceTree = "<group>"; };
 		4463CCB110D6F5750048CA83 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
-		4463D09110D92CB00048CA83 /* MITMapDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MITMapDetailViewController.h; sourceTree = "<group>"; };
-		4463D09210D92CB00048CA83 /* MITMapDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MITMapDetailViewController.m; sourceTree = "<group>"; };
-		4463D09310D92CB00048CA83 /* MITMapDetailViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MITMapDetailViewController.xib; sourceTree = "<group>"; };
 		44ACF76A1187884300F1F4B2 /* MapBookmarkManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MapBookmarkManager.m; sourceTree = "<group>"; };
 		44ACF76B1187884300F1F4B2 /* MapBookmarkManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MapBookmarkManager.h; sourceTree = "<group>"; };
 		44C1A26E11A2EA04000FD653 /* MapModel.xcdatamodel */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = wrapper.xcdatamodel; path = MapModel.xcdatamodel; sourceTree = "<group>"; };
@@ -407,6 +403,7 @@
 		EB46CA391327E53600AF7B5C /* ThemeConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ThemeConstants.h; sourceTree = "<group>"; };
 		EB46CA3A1327E53600AF7B5C /* ThemeConstants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ThemeConstants.m; sourceTree = "<group>"; };
 		EB46CA3D1327E7B700AF7B5C /* MainWindow-iPad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = "MainWindow-iPad.xib"; path = "../../../Resources/MainWindow-iPad.xib"; sourceTree = "<group>"; };
+		EB46CAE31328352100AF7B5C /* MapHomeViewController-iPad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "MapHomeViewController-iPad.xib"; sourceTree = "<group>"; };
 		EB4C2CDE127F138100058748 /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
 		EB4C2CE0127F138900058748 /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
 		EB5773C112FDF91200BAF5F5 /* Config.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Config.plist; path = ../Config.plist; sourceTree = "<group>"; };
@@ -610,13 +607,11 @@
 				4463CC8810D6F4A50048CA83 /* MapModule.m */,
 				4463CC8D10D6F4A50048CA83 /* MapSearchResultAnnotation.h */,
 				4463CC8E10D6F4A50048CA83 /* MapSearchResultAnnotation.m */,
-				4463D09110D92CB00048CA83 /* MITMapDetailViewController.h */,
-				4463D09210D92CB00048CA83 /* MITMapDetailViewController.m */,
-				4463D09310D92CB00048CA83 /* MITMapDetailViewController.xib */,
 				442C195410F3B21400CB44EC /* MITMapRoute.h */,
 				EB7BA33C11F7677F00B3DDA6 /* PolygonOverlay.h */,
 				EB7BA33D11F7677F00B3DDA6 /* PolygonOverlay.m */,
 				EB8B364613078CDB005DBB8F /* MapHomeViewController.xib */,
+				EB46CAE31328352100AF7B5C /* MapHomeViewController-iPad.xib */,
 				EB8B364913078E68005DBB8F /* MapHomeViewController.h */,
 				EB8B364A13078E68005DBB8F /* MapHomeViewController.m */,
 				44ACF76B1187884300F1F4B2 /* MapBookmarkManager.h */,
@@ -1232,7 +1227,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4463D09510D92CB00048CA83 /* MITMapDetailViewController.xib in Resources */,
 				EB5773C212FDF91200BAF5F5 /* Config.plist in Resources */,
 				EB8B364713078CDB005DBB8F /* MapHomeViewController.xib in Resources */,
 				EB5F315F132491ED0066413F /* KGOTabbedViewController.xib in Resources */,
@@ -1248,6 +1242,7 @@
 				EB46CA371327E4D400AF7B5C /* ipad in Resources */,
 				EB46CA3B1327E53600AF7B5C /* ThemeConfig.plist in Resources */,
 				EB46CA3E1327E7B700AF7B5C /* MainWindow-iPad.xib in Resources */,
+				EB46CAE41328352200AF7B5C /* MapHomeViewController-iPad.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1286,7 +1281,6 @@
 				DE728E7B10D6FF4700BFED37 /* StoryDetailViewController.m in Sources */,
 				DE728E7C10D6FF4700BFED37 /* StoryListViewController.m in Sources */,
 				DE728E7E10D6FF4700BFED37 /* StoryXMLParser.m in Sources */,
-				4463D09410D92CB00048CA83 /* MITMapDetailViewController.m in Sources */,
 				EBA2865610E07E140003BA01 /* PeopleSearchViewController.m in Sources */,
 				DE4AB0B410ED5148007476D9 /* NewsStory.m in Sources */,
 				DE18F9EE10F19105009A69B9 /* News.xcdatamodeld in Sources */,

@@ -1,6 +1,7 @@
 #import "KGOAppDelegate+ModuleAdditions.h"
 #import "KGOSpringboardViewController.h"
 #import "ModoNavigationController.h"
+#import "KGOSidebarFrameViewController.h"
 #import "KGOTheme.h"
 #import "KGOModule+Factory.h"
 #import "HomeModule.h"
@@ -27,19 +28,26 @@
 }
 
 - (void)loadNavigationContainer {
-    HomeModule *homeModule = (HomeModule *)[self moduleForTag:HomeTag];
-    UIViewController *homeVC = [homeModule modulePage:LocalPathPageNameHome params:nil];
-    UIImage *navBarImage = [[KGOTheme sharedTheme] backgroundImageForNavBar];
-    if (navBarImage) {
-        // for people who insist on using a background image for their nav bar, they 
-        // get this unfortunate navigation controller subclass
-        theNavController = [[ModoNavigationController alloc] initWithRootViewController:homeVC];
-    } else {
-        // normal people get the normal navigation controller
-        theNavController = [[UINavigationController alloc] initWithRootViewController:homeVC];
+    if (!_appHomeScreen && !_appNavController) {    
+        HomeModule *homeModule = (HomeModule *)[self moduleForTag:HomeTag];
+        UIViewController *homeVC = [homeModule modulePage:LocalPathPageNameHome params:nil];
+        if ([self navigationStyle] == KGONavigationStyleTabletSidebar) {
+            _appHomeScreen = [homeVC retain];
+            [self.window addSubview:homeVC.view];
+        } else {
+            UIImage *navBarImage = [[KGOTheme sharedTheme] backgroundImageForNavBar];
+            if (navBarImage) {
+                // for people who insist on using a background image for their nav bar, they 
+                // get this unfortunate navigation controller subclass
+                _appNavController = [[ModoNavigationController alloc] initWithRootViewController:homeVC];
+            } else {
+                // normal people get the normal navigation controller
+                _appNavController = [[UINavigationController alloc] initWithRootViewController:homeVC];
+            }
+            _appNavController.view.backgroundColor = [[KGOTheme sharedTheme] backgroundColorForApplication];
+            [self.window addSubview:_appNavController.view];
+        }
     }
-    theNavController.view.backgroundColor = [[KGOTheme sharedTheme] backgroundColorForApplication];
-    [self.window addSubview:theNavController.view];
 }
 
 - (NSArray *)coreDataModelsNames {
@@ -69,25 +77,31 @@
 
 - (BOOL)showPage:(NSString *)pageName forModuleTag:(NSString *)moduleTag params:(NSDictionary *)params {
     BOOL didShow = NO;
-    
+NSLog(@"fagwrgnaewinfwngles");
+
     KGOModule *module = [self moduleForTag:moduleTag];
     if (module) {
         UIViewController *vc = [module modulePage:pageName params:params];
         if (vc) {
-            // TODO: generalize this check for ipad
             if (_visibleModule != module) {
                 [_visibleModule willBecomeHidden];
                 [module willBecomeVisible];
                 _visibleModule = module;
             }
             
-			// if the visible view controller is modal, push new view controllers on the modal nav controller.
-			// there should be no reason to push a view controller behind what's visible.
-			if (!appModalHolder.view.hidden && [appModalHolder.modalViewController isKindOfClass:[UINavigationController class]]) {
-				[(UINavigationController *)appModalHolder.modalViewController pushViewController:vc animated:YES];
-			} else {
-				[theNavController pushViewController:vc animated:YES];
-			}
+            if ([self navigationStyle] == KGONavigationStyleTabletSidebar) {
+                KGOSidebarFrameViewController *sidebarVC = (KGOSidebarFrameViewController *)_appHomeScreen;
+                [sidebarVC showViewController:vc];
+                
+            } else {            
+                // if the visible view controller is modal, push new view controllers on the modal nav controller.
+                // there should be no reason to push a view controller behind what's visible.
+                if (!_appModalHolder.view.hidden && [_appModalHolder.modalViewController isKindOfClass:[UINavigationController class]]) {
+                    [(UINavigationController *)_appModalHolder.modalViewController pushViewController:vc animated:YES];
+                } else {
+                    [_appNavController pushViewController:vc animated:YES];
+                }
+            }
             
             // tracking
             NSString *pagePath = [NSString stringWithFormat:@"/%@/%@", moduleTag, pageName];
@@ -100,34 +114,37 @@
 }
 
 - (KGONavigationStyle)navigationStyle {
-    // TODO: use config to select theme package
-    NSString * file = [[NSBundle mainBundle] pathForResource:@"ThemeConfig" ofType:@"plist"];
-    NSDictionary *themeDict = [[NSDictionary alloc] initWithContentsOfFile:file];
-    NSDictionary *homescreenDict = [[themeDict objectForKey:@"HomeScreen"] retain];
-    NSString *style;
-    
-    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
-        style = [homescreenDict objectForKey:@"NavigationStyle"];
-    } else {
-        style = [homescreenDict objectForKey:@"TabletNavigationStyle"];
+    if (_navigationStyle == KGONavigationStyleUnknown) {
+        
+        NSString * file = [[NSBundle mainBundle] pathForResource:@"ThemeConfig" ofType:@"plist"];
+        NSDictionary *themeDict = [[NSDictionary alloc] initWithContentsOfFile:file];
+        NSDictionary *homescreenDict = [[themeDict objectForKey:@"HomeScreen"] retain];
+        NSString *style;
+        
+        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+            style = [homescreenDict objectForKey:@"NavigationStyle"];
+        } else {
+            style = [homescreenDict objectForKey:@"TabletNavigationStyle"];
+        }
+        
+        if ([style isEqualToString:@"Grid"]) {
+            _navigationStyle = KGONavigationStyleIconGrid;
+            
+        } else if ([style isEqualToString:@"List"]) {
+            _navigationStyle = KGONavigationStyleTableView;
+            
+        } else if ([style isEqualToString:@"Portlet"]) {
+            _navigationStyle = KGONavigationStylePortlet;
+            
+        } else if ([style isEqualToString:@"Sidebar"] && UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+            _navigationStyle = KGONavigationStyleTabletSidebar;
+            
+        } else {
+            _navigationStyle = KGONavigationStyleIconGrid;
+            
+        }
     }
-    
-    if ([style isEqualToString:@"Grid"]) {
-        return KGONavigationStyleIconGrid;
-        
-    } else if ([style isEqualToString:@"List"]) {
-        return KGONavigationStyleTableView;
-        
-    } else if ([style isEqualToString:@"Portlet"]) {
-        return KGONavigationStylePortlet;
-        
-    } else if ([style isEqualToString:@"Sidebar"] && UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-        return KGONavigationStyleTabletSidebar;
-        
-    } else {
-        return KGONavigationStyleIconGrid;
-        
-    }
+    return _navigationStyle;
 }
 
 #pragma mark social media

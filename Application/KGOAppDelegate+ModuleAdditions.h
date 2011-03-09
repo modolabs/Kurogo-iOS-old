@@ -1,12 +1,5 @@
 #import "KGOAppDelegate.h"
 
-typedef enum {
-    KGONavigationStyleTableView,
-    KGONavigationStyleIconGrid,
-    KGONavigationStylePortlet,
-    KGONavigationStyleTabletSidebar // not enabled for iPhone
-} KGONavigationStyle;
-
 @interface KGOAppDelegate (ModuleListAdditions)
 
 #pragma mark Setup

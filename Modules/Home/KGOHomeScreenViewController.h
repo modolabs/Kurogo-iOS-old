@@ -28,6 +28,7 @@
 - (BOOL)showsSearchBar;                     // true to show search bar on home screen
 - (UIImage *)backgroundImage;               // home screen background image
 - (UIFont *)moduleLabelFont;
+- (UIFont *)moduleLabelFontLarge;
 - (UIColor *)moduleLabelTextColor;
 - (CGFloat)moduleLabelTitleMargin;          // spacing between image and title
 - (GridSpacing)moduleListSpacing;           // spacing between icons or list elements

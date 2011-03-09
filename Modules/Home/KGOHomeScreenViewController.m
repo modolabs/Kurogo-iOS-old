@@ -137,6 +137,8 @@
 }
 
 - (void)buttonPressed:(id)sender {
+NSLog(@"fagwrgnaewinfwngles");
+    
     SpringboardIcon *anIcon = (SpringboardIcon *)sender;
 	// special case for full web link
 	if ([anIcon.moduleTag isEqualToString:FullWebTag]) {
@@ -208,6 +210,11 @@
 
 - (UIFont *)moduleLabelFont {
     NSDictionary *fontArgs = [_preferences objectForKey:@"ModuleLabelFont"];
+    return [UIFont fontWithName:[fontArgs objectForKey:@"font"] size:[[fontArgs objectForKey:@"size"] floatValue]];
+}
+
+- (UIFont *)moduleLabelFontLarge {
+    NSDictionary *fontArgs = [_preferences objectForKey:@"ModuleLabelFontLarge"];
     return [UIFont fontWithName:[fontArgs objectForKey:@"font"] size:[[fontArgs objectForKey:@"size"] floatValue]];
 }
 

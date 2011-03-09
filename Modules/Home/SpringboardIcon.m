@@ -39,7 +39,7 @@
 
             UIFont *titleFont;
             CGFloat titleImageGap;
-            
+
             if (self.module.secondary) {
                 self.titleLabel.textColor = [self.springboard secondaryModuleLabelTextColor];
                 [self setTitleColor:[self.springboard secondaryModuleLabelTextColor] forState:UIControlStateNormal];
@@ -48,25 +48,36 @@
             } else {
                 self.titleLabel.textColor = [self.springboard moduleLabelTextColor];
                 [self setTitleColor:[self.springboard moduleLabelTextColor] forState:UIControlStateNormal];
-                titleFont = [self.springboard moduleLabelFont];
+                titleFont = self.compact ? [self.springboard moduleLabelFont] : [self.springboard moduleLabelFontLarge];
                 titleImageGap = [self.springboard moduleLabelTitleMargin];
             }
             self.titleLabel.font = titleFont;
 
             // calculate title edge insets.
             
-            // we want to top-align the label
-            CGFloat extraLineHeight = 0;
-            NSArray *words = [title componentsSeparatedByString:@" "];
-            if (words.count > 1) {
-                extraLineHeight = (words.count - 1) * [titleFont lineHeight];
-            }
-            
             if (self.compact) {
+                // we want to top-align the label
+                CGFloat extraLineHeight = 0;
+                NSArray *words = [title componentsSeparatedByString:@" "];
+                if (words.count > 1) {
+                    extraLineHeight = (words.count - 1) * [titleFont lineHeight];
+                }
                 self.imageEdgeInsets = UIEdgeInsetsMake(0, 0, self.frame.size.height - image.size.height, 0);
                 self.titleEdgeInsets = UIEdgeInsetsMake(image.size.height + titleImageGap + extraLineHeight, // we want title below the image
                                                         -self.frame.size.width,                              // and not to the right
                                                         0, 0);
+            } else {
+                // we want to left-align the label and image
+                CGSize titleSize = [title sizeWithFont:titleFont];
+                CGFloat rightPadding = self.frame.size.width - image.size.width - titleSize.width;
+
+                UIEdgeInsets insets = self.titleEdgeInsets;
+                insets.right = rightPadding;
+                self.titleEdgeInsets = insets;
+                
+                insets = self.imageEdgeInsets;
+                insets.right = rightPadding;
+                self.imageEdgeInsets = insets;
             }
             
             [self addTarget:self.springboard action:@selector(buttonPressed:) forControlEvents:UIControlEventTouchUpInside];
