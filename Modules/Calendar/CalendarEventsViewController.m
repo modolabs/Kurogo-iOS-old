@@ -291,7 +291,7 @@
 - (void)showSearchBar
 {
     if (!theSearchBar) {
-        theSearchBar = [[KGOSearchBar defaultSearchBarWithFrame:navScrollView.frame] retain]; //[[KGOSearchBar alloc] initWithFrame:navScrollView.frame];
+        theSearchBar = [[KGOSearchBar alloc] initWithFrame:navScrollView.frame];
         theSearchBar.alpha = 0.0;
         if (!searchController) {
             searchController = [[KGOSearchDisplayController alloc] initWithSearchBar:theSearchBar delegate:self contentsController:self];

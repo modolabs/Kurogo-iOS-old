@@ -37,8 +37,6 @@
     KGOToolbar *_toolbar;
 }
 
-+ (KGOSearchBar *)defaultSearchBarWithFrame:(CGRect)frame;
-
 - (void)addToolbarButton:(UIBarButtonItem *)aButton animated:(BOOL)animated;
 - (void)addToolbarButtonWithTitle:(NSString *)title;
 - (void)addToolbarButtonWithImage:(UIImage *)image;

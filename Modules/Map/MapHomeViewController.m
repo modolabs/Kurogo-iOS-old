@@ -26,13 +26,6 @@
     _mapView.mapType = [[NSUserDefaults standardUserDefaults] integerForKey:MapTypePreference];
     [_mapView centerAndZoomToDefaultRegion];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mapTypeDidChange:) name:MapTypePreferenceChanged object:nil];
-	
-	// TODO: so maybe having a separate factory function in KGOSearchBar
-	// for default search bar isn't the best idea
-	CGRect frame = _searchBar.frame;
-	[_searchBar removeFromSuperview];
-    _searchBar = [[KGOSearchBar defaultSearchBarWithFrame:frame] retain];
-	[self.view addSubview:_searchBar];
 
 	_searchController = [[KGOSearchDisplayController alloc] initWithSearchBar:_searchBar delegate:self contentsController:self];
 	

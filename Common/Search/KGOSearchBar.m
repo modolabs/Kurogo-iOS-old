@@ -88,11 +88,6 @@
     return self;
 }
 
-+ (KGOSearchBar *)defaultSearchBarWithFrame:(CGRect)frame {
-    KGOSearchBar *searchBar = [[[KGOSearchBar alloc] initWithFrame:frame] autorelease];
-    return searchBar;
-}
-
 - (void)layoutSubviews {
     // sad way to use a background image for a search bar:
     // insert the image right below the text field

@@ -46,8 +46,7 @@
     [self loadModules];
     
     if ([self showsSearchBar]) {
-        //_searchBar = [[KGOSearchBar alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 44)];
-        _searchBar = [[KGOSearchBar defaultSearchBarWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 44)] retain];
+        _searchBar = [[KGOSearchBar alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 44)];
         NSDictionary *infoDict = [[NSBundle mainBundle] infoDictionary];
         _searchBar.placeholder = [NSString stringWithFormat:@"Search %@", [infoDict objectForKey:@"CFBundleName"]];
         [self.view addSubview:_searchBar];
