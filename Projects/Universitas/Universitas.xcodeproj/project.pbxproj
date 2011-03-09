@@ -84,8 +84,6 @@
 		EB1441111309EEB800396753 /* MapModule.m in Sources */ = {isa = PBXBuildFile; fileRef = EB1440F61309EEB800396753 /* MapModule.m */; };
 		EB1441131309EEB800396753 /* MapSearchResultAnnotation.m in Sources */ = {isa = PBXBuildFile; fileRef = EB1440F81309EEB800396753 /* MapSearchResultAnnotation.m */; };
 		EB1441151309EEB800396753 /* MapZoomLevel.m in Sources */ = {isa = PBXBuildFile; fileRef = EB1440FA1309EEB800396753 /* MapZoomLevel.m */; };
-		EB1441171309EEB800396753 /* MITMapDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EB1440FC1309EEB800396753 /* MITMapDetailViewController.m */; };
-		EB1441181309EEB800396753 /* MITMapDetailViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = EB1440FD1309EEB800396753 /* MITMapDetailViewController.xib */; };
 		EB14411B1309EEB800396753 /* PolygonOverlay.m in Sources */ = {isa = PBXBuildFile; fileRef = EB1441001309EEB800396753 /* PolygonOverlay.m */; };
 		EB14411D1309EEB800396753 /* TileServerManager.m in Sources */ = {isa = PBXBuildFile; fileRef = EB1441021309EEB800396753 /* TileServerManager.m */; };
 		EB1441221309EECE00396753 /* FullWebModule.m in Sources */ = {isa = PBXBuildFile; fileRef = EB1441201309EECE00396753 /* FullWebModule.m */; };
@@ -338,9 +336,6 @@
 		EB1440F81309EEB800396753 /* MapSearchResultAnnotation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MapSearchResultAnnotation.m; sourceTree = "<group>"; };
 		EB1440F91309EEB800396753 /* MapZoomLevel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MapZoomLevel.h; sourceTree = "<group>"; };
 		EB1440FA1309EEB800396753 /* MapZoomLevel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MapZoomLevel.m; sourceTree = "<group>"; };
-		EB1440FB1309EEB800396753 /* MITMapDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MITMapDetailViewController.h; sourceTree = "<group>"; };
-		EB1440FC1309EEB800396753 /* MITMapDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MITMapDetailViewController.m; sourceTree = "<group>"; };
-		EB1440FD1309EEB800396753 /* MITMapDetailViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MITMapDetailViewController.xib; sourceTree = "<group>"; };
 		EB1440FE1309EEB800396753 /* MITMapRoute.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MITMapRoute.h; sourceTree = "<group>"; };
 		EB1440FF1309EEB800396753 /* PolygonOverlay.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PolygonOverlay.h; sourceTree = "<group>"; };
 		EB1441001309EEB800396753 /* PolygonOverlay.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PolygonOverlay.m; sourceTree = "<group>"; };
@@ -863,9 +858,6 @@
 				EB1440F81309EEB800396753 /* MapSearchResultAnnotation.m */,
 				EB1440F91309EEB800396753 /* MapZoomLevel.h */,
 				EB1440FA1309EEB800396753 /* MapZoomLevel.m */,
-				EB1440FB1309EEB800396753 /* MITMapDetailViewController.h */,
-				EB1440FC1309EEB800396753 /* MITMapDetailViewController.m */,
-				EB1440FD1309EEB800396753 /* MITMapDetailViewController.xib */,
 				EB1440FE1309EEB800396753 /* MITMapRoute.h */,
 				EB1440FF1309EEB800396753 /* PolygonOverlay.h */,
 				EB1441001309EEB800396753 /* PolygonOverlay.m */,
@@ -1157,7 +1149,6 @@
 				EBAE86451215FB4900F370BE /* Default@2x.png in Resources */,
 				EB138BB112F231E3004DBB7C /* en.lproj in Resources */,
 				EB14410E1309EEB800396753 /* MapHomeViewController.xib in Resources */,
-				EB1441181309EEB800396753 /* MITMapDetailViewController.xib in Resources */,
 				EB9AF2A7130B59C3003B9769 /* MainWindow.xib in Resources */,
 				EB5F310A1323E8BC0066413F /* KGOTabbedViewController.xib in Resources */,
 				EB1B88C91324A6AC00108A8F /* common in Resources */,
@@ -1199,7 +1190,6 @@
 				DE728E7B10D6FF4700BFED37 /* StoryDetailViewController.m in Sources */,
 				DE728E7C10D6FF4700BFED37 /* StoryListViewController.m in Sources */,
 				DE728E7E10D6FF4700BFED37 /* StoryXMLParser.m in Sources */,
-				EB1441171309EEB800396753 /* MITMapDetailViewController.m in Sources */,
 				DE4AB0B410ED5148007476D9 /* NewsStory.m in Sources */,
 				DE18F9EE10F19105009A69B9 /* News.xcdatamodeld in Sources */,
 				DECBF6B610F8F91B009FAE35 /* NewsImageRep.m in Sources */,
