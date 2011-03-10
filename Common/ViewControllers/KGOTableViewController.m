@@ -2,7 +2,7 @@
 #import "KGOTheme.h"
 #import "KGOSearchDisplayController.h"
 
-#define GROUPED_SECTION_HEADER_VPADDING 22.0f
+#define GROUPED_SECTION_HEADER_VPADDING 24
 #define PLAIN_SECTION_HEADER_VPADDING 5.0f
 
 #define MAX_CELL_PADDING 20.0f
@@ -361,7 +361,8 @@
             // clear out any cached cell data more than maxCells back
             for (section = indexPath.section; section >= 0; section--) {
                 if (startRow >= 0) {
-                    if (didRemove = removeFromCellBuffer(section, startRow)) {
+                    didRemove = removeFromCellBuffer(section, startRow);
+                    if (didRemove) {
                         break;
                     }
                 } else if (section > 0) {
@@ -450,6 +451,8 @@
 */
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+    CGFloat height = 0;
+    
     id<KGOTableViewDataSource> dataSource = [self dataSourceForTableView:tableView];
 
     NSString *title = nil;
@@ -457,14 +460,14 @@
         title = [dataSource tableView:tableView titleForHeaderInSection:section];
     }
 
-    if (!title)
-        return 0;
-    
-    if (tableView.style == UITableViewStylePlain) {
-        return [[[KGOTheme sharedTheme] fontForPlainSectionHeader] pointSize] + PLAIN_SECTION_HEADER_VPADDING;
-    } else {
-        return [[[KGOTheme sharedTheme] fontForGroupedSectionHeader] pointSize] + GROUPED_SECTION_HEADER_VPADDING;
+    if (title) {
+        if (tableView.style == UITableViewStylePlain) {
+            height = [[[KGOTheme sharedTheme] fontForPlainSectionHeader] pointSize] + PLAIN_SECTION_HEADER_VPADDING;
+        } else {
+            height = [[[KGOTheme sharedTheme] fontForGroupedSectionHeader] pointSize] + GROUPED_SECTION_HEADER_VPADDING;
+        }
     }
+    return height;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -524,7 +527,7 @@
     }
     
     CGSize size = [title sizeWithFont:font];
-    UILabel *label = [[[UILabel alloc] initWithFrame:CGRectMake(hPadding, 0.0, tableView.bounds.size.width - hPadding * 2, size.height)] autorelease];
+    UILabel *label = [[[UILabel alloc] initWithFrame:CGRectMake(hPadding, floor((viewHeight - size.height) / 2), tableView.bounds.size.width - hPadding * 2, size.height)] autorelease];
 	
 	label.text = title;
 	label.textColor = textColor;

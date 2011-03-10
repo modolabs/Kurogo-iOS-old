@@ -116,6 +116,7 @@
 		EB46CA3C1327E53600AF7B5C /* ThemeConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = EB46CA3A1327E53600AF7B5C /* ThemeConstants.m */; };
 		EB46CA3E1327E7B700AF7B5C /* MainWindow-iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = EB46CA3D1327E7B700AF7B5C /* MainWindow-iPad.xib */; };
 		EB46CAE41328352200AF7B5C /* MapHomeViewController-iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = EB46CAE31328352100AF7B5C /* MapHomeViewController-iPad.xib */; };
+		EB46CB1A13298B9D00AF7B5C /* KGOToolbar.m in Sources */ = {isa = PBXBuildFile; fileRef = EB46CB1913298B9D00AF7B5C /* KGOToolbar.m */; };
 		EB4C2CDF127F138100058748 /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = EB4C2CDE127F138100058748 /* libsqlite3.dylib */; };
 		EB4C2CE1127F138900058748 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EB4C2CE0127F138900058748 /* CFNetwork.framework */; };
 		EB5773C212FDF91200BAF5F5 /* Config.plist in Resources */ = {isa = PBXBuildFile; fileRef = EB5773C112FDF91200BAF5F5 /* Config.plist */; };
@@ -404,6 +405,8 @@
 		EB46CA3A1327E53600AF7B5C /* ThemeConstants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ThemeConstants.m; sourceTree = "<group>"; };
 		EB46CA3D1327E7B700AF7B5C /* MainWindow-iPad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = "MainWindow-iPad.xib"; path = "../../../Resources/MainWindow-iPad.xib"; sourceTree = "<group>"; };
 		EB46CAE31328352100AF7B5C /* MapHomeViewController-iPad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "MapHomeViewController-iPad.xib"; sourceTree = "<group>"; };
+		EB46CB1813298B9D00AF7B5C /* KGOToolbar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGOToolbar.h; sourceTree = "<group>"; };
+		EB46CB1913298B9D00AF7B5C /* KGOToolbar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGOToolbar.m; sourceTree = "<group>"; };
 		EB4C2CDE127F138100058748 /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
 		EB4C2CE0127F138900058748 /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
 		EB5773C112FDF91200BAF5F5 /* Config.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Config.plist; path = ../Config.plist; sourceTree = "<group>"; };
@@ -756,6 +759,8 @@
 		EB13872112F22DBC004DBB7C /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				EB46CB1813298B9D00AF7B5C /* KGOToolbar.h */,
+				EB46CB1913298B9D00AF7B5C /* KGOToolbar.m */,
 				EB358FAE130B395D000250AD /* MITThumbnailView.h */,
 				EB358FAF130B395D000250AD /* MITThumbnailView.m */,
 				EB358FAA130B3778000250AD /* IconGrid.h */,
@@ -1377,6 +1382,7 @@
 				EB46CA301326FB8200AF7B5C /* KGOEventContactInfo.m in Sources */,
 				EB46CA331327011200AF7B5C /* KGOSidebarFrameViewController.m in Sources */,
 				EB46CA3C1327E53600AF7B5C /* ThemeConstants.m in Sources */,
+				EB46CB1A13298B9D00AF7B5C /* KGOToolbar.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
