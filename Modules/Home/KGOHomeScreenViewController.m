@@ -136,7 +136,6 @@
 }
 
 - (void)buttonPressed:(id)sender {
-NSLog(@"fagwrgnaewinfwngles");
     
     SpringboardIcon *anIcon = (SpringboardIcon *)sender;
 	// special case for full web link

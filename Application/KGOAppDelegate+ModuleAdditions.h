@@ -12,6 +12,7 @@
 
 - (KGOModule *)moduleForTag:(NSString *)aTag;
 - (BOOL)showPage:(NSString *)pageName forModuleTag:(NSString *)moduleTag params:(NSDictionary *)params;
+- (UIViewController *)visibleViewController;
 
 @property (nonatomic, readonly) KGONavigationStyle navigationStyle;
 

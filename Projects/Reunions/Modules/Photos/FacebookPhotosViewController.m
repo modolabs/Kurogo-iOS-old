@@ -97,11 +97,13 @@
 
 - (void)request:(FBRequest *)request didLoad:(id)result {
     NSLog(@"%@", [request.url description]);
+    NSLog(@"%@", [request.params description]);
+    NSLog(@"%@", [result description]);
     if (request == _groupsRequest) {
         
         NSArray *data = [result objectForKey:@"data"];
         for (id aGroup in data) {
-            if ([[aGroup objectForKey:@"name"] isEqualToString:@"Modo Labs UX"]) {
+            if ([[aGroup objectForKey:@"name"] isEqualToString:@"H35th-1975"]) {
                 _gid = [[aGroup objectForKey:@"id"] retain];
                 
                 NSString *query = [NSString stringWithFormat:@"SELECT pid FROM photo_tag WHERE subject=%@", _gid];

@@ -7,6 +7,10 @@
 @dynamic text;
 @dynamic date;
 
+- (NSString *)identifier {
+    return nil;
+}
+
 - (NSString *)title {
 	return self.text;
 }

@@ -22,6 +22,10 @@
     }
 }
 
+- (UIViewController *)visibleViewController {
+    return _visibleViewController;
+}
+
 #pragma mark -
 
 - (void)dealloc
