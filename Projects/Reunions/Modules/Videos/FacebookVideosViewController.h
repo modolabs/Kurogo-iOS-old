@@ -13,9 +13,11 @@ FBRequestDelegate> {
     NSMutableArray *_fbRequestQueue;
     FBRequest *_groupsRequest;
     FBRequest *_videosRequest;
+    FBRequest *_feedRequest;
 
     IconGrid *_iconGrid;
     NSMutableArray *_icons;
+    NSMutableSet *_videoIDs;
     
     NSString *_gid;
 }

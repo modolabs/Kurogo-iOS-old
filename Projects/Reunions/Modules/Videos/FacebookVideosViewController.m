@@ -1,6 +1,22 @@
 #import "FacebookVideosViewController.h"
 #import "IconGrid.h"
 #import "MITThumbnailView.h"
+#import "Foundation+KGOAdditions.h"
+
+@interface ControlWithURL : UIControl
+
+@property (nonatomic, retain) NSString *url;
+
+@end
+
+@implementation ControlWithURL
+
+@synthesize url;
+
+@end
+
+
+
 
 @implementation FacebookVideosViewController
 
@@ -21,6 +37,7 @@
     [[KGOSocialMediaController sharedController] loginFacebookWithDelegate:self];
     
     _iconGrid = [[[IconGrid alloc] initWithFrame:CGRectMake(10, 10, self.view.bounds.size.width - 10, self.view.bounds.size.height - 10)] autorelease];
+    _iconGrid.spacing = GridSpacingMake(10, 10);
     _iconGrid.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     
     [self.view addSubview:_iconGrid];
@@ -74,6 +91,40 @@
     [super dealloc];
 }
 
+- (UIView *)thumbnailWithSource:(NSString *)src caption:(NSString *)caption link:(NSString *)link {
+    
+    ControlWithURL *wrapperView = [[[ControlWithURL alloc] initWithFrame:CGRectMake(0, 0, 90, 130)] autorelease];
+    wrapperView.url = link;
+    
+    UILabel *label = [[[UILabel alloc] initWithFrame:CGRectMake(0, 90, 90, 40)] autorelease];
+    label.text = caption;
+    label.backgroundColor = [UIColor clearColor];
+    label.textColor = [UIColor whiteColor];
+    label.numberOfLines = 3;
+    label.font = [UIFont systemFontOfSize:10];
+    [wrapperView addSubview:label];
+    
+    MITThumbnailView *thumbView = [[[MITThumbnailView alloc] initWithFrame:CGRectMake(0, 0, 90, 90)] autorelease];
+    thumbView.userInteractionEnabled = NO;
+    thumbView.imageURL = src;
+    [thumbView loadImage];
+
+    [wrapperView addTarget:self action:@selector(openVideo:) forControlEvents:UIControlEventTouchUpInside];
+    [wrapperView addSubview:thumbView];
+    
+    return wrapperView;
+}
+
+- (void)openVideo:(id)sender {
+    if ([sender isKindOfClass:[ControlWithURL class]]) {
+        NSString *urlString = [(ControlWithURL *)sender url];
+        NSURL *url = [NSURL URLWithString:urlString];
+        if ([[UIApplication sharedApplication] canOpenURL:url]) {
+            [[UIApplication sharedApplication] openURL:url];
+        }
+    }
+}
+
 #pragma mark FacebookWrapperDelegate
 
 - (void)facebookDidLogin {
@@ -81,6 +132,8 @@
     
     _groupsRequest = [[[KGOSocialMediaController sharedController] facebook] requestWithGraphPath:@"me/groups" andDelegate:self];
     //[_fbRequestQueue addObject:request];
+    
+    _videoIDs = [[NSMutableSet alloc] init];
 }
 
 
@@ -107,7 +160,7 @@
         
         NSArray *data = [result objectForKey:@"data"];
         for (id aGroup in data) {
-            if ([[aGroup objectForKey:@"name"] isEqualToString:@"H35th-1975"]) {
+            if ([[aGroup objectForKey:@"name"] isEqualToString:@"Modo Labs UX"]) {
                 _gid = [[aGroup objectForKey:@"id"] retain];
                 NSLog(@"%@", _gid);
                 
@@ -117,10 +170,42 @@
                                                                                                      andParams:params
                                                                                                  andHttpMethod:@"GET"
                                                                                                    andDelegate:self];
+                
+                NSString *feedPath = [NSString stringWithFormat:@"%@/feed", _gid];
+                params = [NSMutableDictionary dictionaryWithObjectsAndKeys:@"25", @"limit", nil];
+                _feedRequest = [[[KGOSocialMediaController sharedController] facebook] requestWithGraphPath:feedPath
+                                                                                                  andParams:params
+                                                                                                andDelegate:self];
             }
         }
         
         _groupsRequest = nil;
+        
+    } else if (request == _feedRequest) {
+        _feedRequest = nil;
+        
+        NSArray *data = [result arrayForKey:@"data"];
+        for (NSDictionary *aPost in data) {
+            NSString *type = [aPost stringForKey:@"type" nilIfEmpty:YES];
+            if ([type isEqualToString:@"video"]) {
+                NSString *vid = [aPost stringForKey:@"id" nilIfEmpty:YES];
+                if (vid && ![_videoIDs containsObject:vid]) {
+                    [_videoIDs addObject:vid];
+                    DLog(@"requesting graph info for video %@", vid);
+                    FBRequest *aRequest = [[[KGOSocialMediaController sharedController] facebook] requestWithGraphPath:vid
+                                                                                                           andDelegate:self];
+                    [_fbRequestQueue addObject:aRequest];
+                }
+                NSString *thumb = [aPost stringForKey:@"picture" nilIfEmpty:YES];
+                NSString *name = [aPost stringForKey:@"name" nilIfEmpty:YES];
+                NSString *link = [aPost stringForKey:@"source" nilIfEmpty:YES];
+                if (thumb) {
+                    [_icons addObject:[self thumbnailWithSource:thumb caption:name link:link]];
+                    _iconGrid.icons = _icons;
+                    [_iconGrid setNeedsLayout];
+                }
+            }
+        }
         
     } else if (request == _videosRequest) {
         _videosRequest = nil;
@@ -144,28 +229,16 @@
         [_fbRequestQueue removeObject:request];
         
         DLog(@"info for video: %@", [result description]);
-        if ([result isKindOfClass:[NSArray class]]) {
+        if ([result isKindOfClass:[NSDictionary class]]) {
+            
+            
+        } else if ([result isKindOfClass:[NSArray class]]) {
             NSDictionary *photoInfo = [result lastObject];
-            //NSString *description = [photoInfo objectForKey:@"description"];
-            //NSString *src = [photoInfo objectForKey:@"src"];
             NSString *title = [photoInfo objectForKey:@"title"];
             NSString *thumb = [photoInfo objectForKey:@"thumbnail_link"];
+            NSString *link = [photoInfo objectForKey:@"src"];
             
-            CGFloat width = 300;
-            CGFloat height = 300;
-            
-            UIView *wrapperView = [[[UIView alloc] initWithFrame:CGRectMake(0, 0, width, height + 20)] autorelease];
-            UILabel *label = [[[UILabel alloc] initWithFrame:CGRectMake(0, height, width, 20)] autorelease];
-            label.text = title;
-            [wrapperView addSubview:label];
-            
-            MITThumbnailView *thumbView = [[[MITThumbnailView alloc] initWithFrame:CGRectMake(0, 0, width, height)] autorelease];
-            thumbView.imageURL = thumb;
-            [thumbView loadImage];
-            
-            [wrapperView addSubview:thumbView];
-            
-            [_icons addObject:wrapperView];
+            [_icons addObject:[self thumbnailWithSource:thumb caption:title link:link]];
             _iconGrid.icons = _icons;
             [_iconGrid setNeedsLayout];
         }
