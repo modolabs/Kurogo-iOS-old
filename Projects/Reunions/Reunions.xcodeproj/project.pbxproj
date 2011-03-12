@@ -90,6 +90,9 @@
 		EB358FAD130B3778000250AD /* IconGrid.m in Sources */ = {isa = PBXBuildFile; fileRef = EB358FAB130B3778000250AD /* IconGrid.m */; };
 		EB358FB1130B395D000250AD /* MITThumbnailView.m in Sources */ = {isa = PBXBuildFile; fileRef = EB358FAF130B395D000250AD /* MITThumbnailView.m */; };
 		EB3721AB11FA2F5200705180 /* NewsImage.m in Sources */ = {isa = PBXBuildFile; fileRef = EB3721A911FA2F5200705180 /* NewsImage.m */; };
+		EB3902FD132BFDF1008C90CA /* FacebookParentPost.m in Sources */ = {isa = PBXBuildFile; fileRef = EB3902FC132BFDF0008C90CA /* FacebookParentPost.m */; };
+		EB390300132BFE2C008C90CA /* FacebookPost.m in Sources */ = {isa = PBXBuildFile; fileRef = EB3902FF132BFE2B008C90CA /* FacebookPost.m */; };
+		EB390303132BFE5D008C90CA /* FacebookUser.m in Sources */ = {isa = PBXBuildFile; fileRef = EB390302132BFE5B008C90CA /* FacebookUser.m */; };
 		EB46C94A132590F900AF7B5C /* PhotosModule.m in Sources */ = {isa = PBXBuildFile; fileRef = EB46C941132590F900AF7B5C /* PhotosModule.m */; };
 		EB46C94B132590F900AF7B5C /* FacebookPhotosViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EB46C943132590F900AF7B5C /* FacebookPhotosViewController.m */; };
 		EB46C94C132590F900AF7B5C /* VideosModule.m in Sources */ = {isa = PBXBuildFile; fileRef = EB46C947132590F900AF7B5C /* VideosModule.m */; };
@@ -117,6 +120,12 @@
 		EB46CA3E1327E7B700AF7B5C /* MainWindow-iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = EB46CA3D1327E7B700AF7B5C /* MainWindow-iPad.xib */; };
 		EB46CAE41328352200AF7B5C /* MapHomeViewController-iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = EB46CAE31328352100AF7B5C /* MapHomeViewController-iPad.xib */; };
 		EB46CB1A13298B9D00AF7B5C /* KGOToolbar.m in Sources */ = {isa = PBXBuildFile; fileRef = EB46CB1913298B9D00AF7B5C /* KGOToolbar.m */; };
+		EB46CBB5132A7D0100AF7B5C /* FacebookMediaViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EB46CBB3132A7D0100AF7B5C /* FacebookMediaViewController.m */; };
+		EB46CBB6132A7D0100AF7B5C /* FacebookMediaViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = EB46CBB4132A7D0100AF7B5C /* FacebookMediaViewController.xib */; };
+		EB46CBBE132AE55400AF7B5C /* FacebookModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = EB46CBBC132AE55400AF7B5C /* FacebookModel.xcdatamodeld */; };
+		EB46CBC7132AE95400AF7B5C /* FacebookPhoto.m in Sources */ = {isa = PBXBuildFile; fileRef = EB46CBC6132AE95400AF7B5C /* FacebookPhoto.m */; };
+		EB46CBCA132AE95600AF7B5C /* FacebookComment.m in Sources */ = {isa = PBXBuildFile; fileRef = EB46CBC9132AE95500AF7B5C /* FacebookComment.m */; };
+		EB46CBCD132AE95700AF7B5C /* FacebookLike.m in Sources */ = {isa = PBXBuildFile; fileRef = EB46CBCC132AE95600AF7B5C /* FacebookLike.m */; };
 		EB4C2CDF127F138100058748 /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = EB4C2CDE127F138100058748 /* libsqlite3.dylib */; };
 		EB4C2CE1127F138900058748 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EB4C2CE0127F138900058748 /* CFNetwork.framework */; };
 		EB5773C212FDF91200BAF5F5 /* Config.plist in Resources */ = {isa = PBXBuildFile; fileRef = EB5773C112FDF91200BAF5F5 /* Config.plist */; };
@@ -358,6 +367,13 @@
 		EB358FAF130B395D000250AD /* MITThumbnailView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MITThumbnailView.m; sourceTree = "<group>"; };
 		EB3721A811FA2F5200705180 /* NewsImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NewsImage.h; sourceTree = "<group>"; };
 		EB3721A911FA2F5200705180 /* NewsImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NewsImage.m; sourceTree = "<group>"; };
+		EB3902F6132BFCF3008C90CA /* FacebookModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = FacebookModel.xcdatamodel; sourceTree = "<group>"; };
+		EB3902FB132BFDF0008C90CA /* FacebookParentPost.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FacebookParentPost.h; sourceTree = "<group>"; };
+		EB3902FC132BFDF0008C90CA /* FacebookParentPost.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FacebookParentPost.m; sourceTree = "<group>"; };
+		EB3902FE132BFE2A008C90CA /* FacebookPost.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FacebookPost.h; sourceTree = "<group>"; };
+		EB3902FF132BFE2B008C90CA /* FacebookPost.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FacebookPost.m; sourceTree = "<group>"; };
+		EB390301132BFE5A008C90CA /* FacebookUser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FacebookUser.h; sourceTree = "<group>"; };
+		EB390302132BFE5B008C90CA /* FacebookUser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FacebookUser.m; sourceTree = "<group>"; };
 		EB46C940132590F900AF7B5C /* PhotosModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhotosModule.h; sourceTree = "<group>"; };
 		EB46C941132590F900AF7B5C /* PhotosModule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PhotosModule.m; sourceTree = "<group>"; };
 		EB46C942132590F900AF7B5C /* FacebookPhotosViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FacebookPhotosViewController.h; sourceTree = "<group>"; };
@@ -407,6 +423,16 @@
 		EB46CAE31328352100AF7B5C /* MapHomeViewController-iPad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "MapHomeViewController-iPad.xib"; sourceTree = "<group>"; };
 		EB46CB1813298B9D00AF7B5C /* KGOToolbar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGOToolbar.h; sourceTree = "<group>"; };
 		EB46CB1913298B9D00AF7B5C /* KGOToolbar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGOToolbar.m; sourceTree = "<group>"; };
+		EB46CBB2132A7D0100AF7B5C /* FacebookMediaViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FacebookMediaViewController.h; sourceTree = "<group>"; };
+		EB46CBB3132A7D0100AF7B5C /* FacebookMediaViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FacebookMediaViewController.m; sourceTree = "<group>"; };
+		EB46CBB4132A7D0100AF7B5C /* FacebookMediaViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FacebookMediaViewController.xib; sourceTree = "<group>"; };
+		EB46CBC5132AE95300AF7B5C /* FacebookPhoto.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FacebookPhoto.h; sourceTree = "<group>"; };
+		EB46CBC6132AE95400AF7B5C /* FacebookPhoto.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FacebookPhoto.m; sourceTree = "<group>"; };
+		EB46CBC8132AE95400AF7B5C /* FacebookComment.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FacebookComment.h; sourceTree = "<group>"; };
+		EB46CBC9132AE95500AF7B5C /* FacebookComment.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FacebookComment.m; sourceTree = "<group>"; };
+		EB46CBCB132AE95600AF7B5C /* FacebookLike.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FacebookLike.h; sourceTree = "<group>"; };
+		EB46CBCC132AE95600AF7B5C /* FacebookLike.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FacebookLike.m; sourceTree = "<group>"; };
+		EB46CBD1132AEA5C00AF7B5C /* FacebookModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FacebookModel.h; sourceTree = "<group>"; };
 		EB4C2CDE127F138100058748 /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
 		EB4C2CE0127F138900058748 /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
 		EB5773C112FDF91200BAF5F5 /* Config.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Config.plist; path = ../Config.plist; sourceTree = "<group>"; };
@@ -897,6 +923,7 @@
 		EB358ACC1309F9AB000250AD /* Facebook */ = {
 			isa = PBXGroup;
 			children = (
+				EB46CBBB132AE53F00AF7B5C /* Model */,
 				EB358ACD1309F9CE000250AD /* FacebookModule.h */,
 				EB358ACE1309F9CE000250AD /* FacebookModule.m */,
 			);
@@ -917,6 +944,9 @@
 				EB46C941132590F900AF7B5C /* PhotosModule.m */,
 				EB46C942132590F900AF7B5C /* FacebookPhotosViewController.h */,
 				EB46C943132590F900AF7B5C /* FacebookPhotosViewController.m */,
+				EB46CBB2132A7D0100AF7B5C /* FacebookMediaViewController.h */,
+				EB46CBB3132A7D0100AF7B5C /* FacebookMediaViewController.m */,
+				EB46CBB4132A7D0100AF7B5C /* FacebookMediaViewController.xib */,
 			);
 			path = Photos;
 			sourceTree = "<group>";
@@ -976,6 +1006,27 @@
 			);
 			name = Calendar;
 			path = ../../../Modules/Calendar;
+			sourceTree = "<group>";
+		};
+		EB46CBBB132AE53F00AF7B5C /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				EB46CBBC132AE55400AF7B5C /* FacebookModel.xcdatamodeld */,
+				EB390301132BFE5A008C90CA /* FacebookUser.h */,
+				EB390302132BFE5B008C90CA /* FacebookUser.m */,
+				EB3902FE132BFE2A008C90CA /* FacebookPost.h */,
+				EB3902FF132BFE2B008C90CA /* FacebookPost.m */,
+				EB3902FB132BFDF0008C90CA /* FacebookParentPost.h */,
+				EB3902FC132BFDF0008C90CA /* FacebookParentPost.m */,
+				EB46CBC5132AE95300AF7B5C /* FacebookPhoto.h */,
+				EB46CBC6132AE95400AF7B5C /* FacebookPhoto.m */,
+				EB46CBCB132AE95600AF7B5C /* FacebookLike.h */,
+				EB46CBCC132AE95600AF7B5C /* FacebookLike.m */,
+				EB46CBC8132AE95400AF7B5C /* FacebookComment.h */,
+				EB46CBC9132AE95500AF7B5C /* FacebookComment.m */,
+				EB46CBD1132AEA5C00AF7B5C /* FacebookModel.h */,
+			);
+			name = Model;
 			sourceTree = "<group>";
 		};
 		EB5773F812FE0FAF00BAF5F5 /* Home */ = {
@@ -1248,6 +1299,7 @@
 				EB46CA3B1327E53600AF7B5C /* ThemeConfig.plist in Resources */,
 				EB46CA3E1327E7B700AF7B5C /* MainWindow-iPad.xib in Resources */,
 				EB46CAE41328352200AF7B5C /* MapHomeViewController-iPad.xib in Resources */,
+				EB46CBB6132A7D0100AF7B5C /* FacebookMediaViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1383,6 +1435,14 @@
 				EB46CA331327011200AF7B5C /* KGOSidebarFrameViewController.m in Sources */,
 				EB46CA3C1327E53600AF7B5C /* ThemeConstants.m in Sources */,
 				EB46CB1A13298B9D00AF7B5C /* KGOToolbar.m in Sources */,
+				EB46CBB5132A7D0100AF7B5C /* FacebookMediaViewController.m in Sources */,
+				EB46CBBE132AE55400AF7B5C /* FacebookModel.xcdatamodeld in Sources */,
+				EB46CBC7132AE95400AF7B5C /* FacebookPhoto.m in Sources */,
+				EB46CBCA132AE95600AF7B5C /* FacebookComment.m in Sources */,
+				EB46CBCD132AE95700AF7B5C /* FacebookLike.m in Sources */,
+				EB3902FD132BFDF1008C90CA /* FacebookParentPost.m in Sources */,
+				EB390300132BFE2C008C90CA /* FacebookPost.m in Sources */,
+				EB390303132BFE5D008C90CA /* FacebookUser.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1843,6 +1903,16 @@
 			);
 			currentVersion = EB46CA131326FB8200AF7B5C /* Calendar.xcdatamodel */;
 			path = Calendar.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+		EB46CBBC132AE55400AF7B5C /* FacebookModel.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				EB3902F6132BFCF3008C90CA /* FacebookModel.xcdatamodel */,
+			);
+			currentVersion = EB3902F6132BFCF3008C90CA /* FacebookModel.xcdatamodel */;
+			path = FacebookModel.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;
 		};

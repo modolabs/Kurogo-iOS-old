@@ -156,11 +156,15 @@
     NSLog(@"%@", [request.url description]);
     NSLog(@"%@", [request.params description]);
     NSLog(@"%@", [result description]);
+    
+    //NSSet *groupNames = [NSSet setWithObjects:@"H10th-2001", @"H35th-1975", @"H50th-1960", @"H25th-1985", nil];
+    NSSet *groupNames = [NSSet setWithObjects:@"H10th-2001", nil];
+    
     if (request == _groupsRequest) {
         
         NSArray *data = [result objectForKey:@"data"];
         for (id aGroup in data) {
-            if ([[aGroup objectForKey:@"name"] isEqualToString:@"Modo Labs UX"]) {
+            if ([groupNames containsObject:[aGroup objectForKey:@"name"]]) {
                 _gid = [[aGroup objectForKey:@"id"] retain];
                 NSLog(@"%@", _gid);
                 

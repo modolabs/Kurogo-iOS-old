@@ -7,6 +7,39 @@
 
 @implementation FacebookModule
 
+// code from http://developer.apple.com/library/ios/#qa/qa2010/qa1480.html
++ (NSDate *)dateFromRFC3339DateTimeString:(NSString *)rfc3339DateTimeString {
+    static NSDateFormatter *    sRFC3339DateFormatter;
+    NSDate *                    date;
+    
+    // If the date formatters aren't already set up, do that now and cache them 
+    // for subsequence reuse.
+    
+    if (sRFC3339DateFormatter == nil) {
+        NSLocale *                  enUSPOSIXLocale;
+        
+        sRFC3339DateFormatter = [[NSDateFormatter alloc] init];
+        assert(sRFC3339DateFormatter != nil);
+        
+        enUSPOSIXLocale = [[[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"] autorelease];
+        assert(enUSPOSIXLocale != nil);
+        
+        [sRFC3339DateFormatter setLocale:enUSPOSIXLocale];
+        [sRFC3339DateFormatter setDateFormat:@"yyyy'-'MM'-'dd'T'HH':'mm':'ss'Z'"];
+        [sRFC3339DateFormatter setTimeZone:[NSTimeZone timeZoneForSecondsFromGMT:0]];
+    }
+    
+    // Convert the RFC 3339 date time string to an NSDate.
+    date = [sRFC3339DateFormatter dateFromString:rfc3339DateTimeString];
+    return date;
+}
+
+- (NSArray *)objectModelNames {
+    return [NSArray arrayWithObject:@"FacebookModel"];
+}
+
+#pragma mark -
+
 - (UIViewController *)modulePage:(NSString *)pageName params:(NSDictionary *)params {
     UIViewController *vc = nil;
     if ([pageName isEqualToString:LocalPathPageNameHome]) {

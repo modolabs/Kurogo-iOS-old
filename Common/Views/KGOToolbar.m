@@ -8,7 +8,7 @@
 - (id)initWithCoder:(NSCoder *)aDecoder {
     self = [super initWithCoder:aDecoder];
     if (self) {
-        self.backgroundImage = [[KGOTheme sharedTheme] backgroundImageForSearchBar];
+        self.backgroundImage = [[KGOTheme sharedTheme] backgroundImageForToolbar];
     }
     return self;
 }
@@ -16,7 +16,7 @@
 - (id)initWithFrame:(CGRect)frame {
     self = [super initWithFrame:frame];
     if (self) {
-        self.backgroundImage = [[KGOTheme sharedTheme] backgroundImageForSearchBar];
+        self.backgroundImage = [[KGOTheme sharedTheme] backgroundImageForToolbar];
     }
     return self;
 }

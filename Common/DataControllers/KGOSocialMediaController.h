@@ -8,6 +8,9 @@ extern NSString * const KGOSocialMediaTypeTwitter;
 extern NSString * const KGOSocialMediaTypeEmail;
 extern NSString * const KGOSocialMediaTypeBitly;
 
+extern NSString * const FacebookDidLoginNotification;
+extern NSString * const FacebookDidLogoutNotification;
+
 @protocol TwitterWrapperDelegate <NSObject>
 
 - (void)twitterDidLogin;
@@ -45,6 +48,8 @@ extern NSString * const KGOSocialMediaTypeBitly;
 @end
 
 
+
+
 @interface KGOSocialMediaController : NSObject <UIActionSheetDelegate,
 MGTwitterEngineDelegate, ConnectionWrapperDelegate,
 FBSessionDelegate, FBDialogDelegate, FBRequestDelegate> {
@@ -57,7 +62,10 @@ FBSessionDelegate, FBDialogDelegate, FBRequestDelegate> {
 	ConnectionWrapper *_bitlyConnection;
 
 	Facebook *_facebook;
-    NSInteger *_facebookStartupCount;
+    NSInteger _facebookStartupCount;
+    NSMutableArray *_fbRequestQueue;
+    NSMutableArray *_fbRequestIdentifiers;
+    FBRequest *_fbSelfRequest;
     
     // settings for each social media object
     // internally we store this with the social media label (facebook, twitter, etc) as keys
@@ -68,7 +76,7 @@ FBSessionDelegate, FBDialogDelegate, FBRequestDelegate> {
 
 @property (nonatomic, assign) id<TwitterWrapperDelegate> twitterDelegate;
 @property (nonatomic, assign) id<BitlyWrapperDelegate> bitlyDelegate;
-@property (nonatomic, assign) id<FacebookWrapperDelegate> facebookDelegate;
+//@property (nonatomic, assign) id<FacebookWrapperDelegate> facebookDelegate;
 @property (nonatomic, retain) NSString *twitterUsername;
 
 + (KGOSocialMediaController *)sharedController;
@@ -103,16 +111,25 @@ FBSessionDelegate, FBDialogDelegate, FBRequestDelegate> {
 #pragma mark Facebook
 
 - (BOOL)isFacebookLoggedIn;
+- (NSString *)facebookDisplayName;
 - (void)parseCallbackURL:(NSURL *)url;
+
+- (FBRequest *)requestFacebookGraphPath:(NSString *)graphPath receiver:(id)receiver callback:(SEL)callback;
+- (FBRequest *)requestFacebookFQL:(NSString *)query receiver:(id)receiver callback:(SEL)callback;
+
+- (void)disconnectFacebookRequests:(id)receiver;
+
+- (void)shareOnFacebook:(NSString *)attachment prompt:(NSString *)prompt;
 
 - (void)startupFacebook;
 - (void)shutdownFacebook;
 
-- (void)shareOnFacebook:(NSString *)attachment prompt:(NSString *)prompt;
-
-- (void)loginFacebookWithDelegate:(id<FacebookWrapperDelegate>)delegate;
+//- (void)loginFacebookWithDelegate:(id<FacebookWrapperDelegate>)delegate;
+- (void)loginFacebook;
 - (void)logoutFacebook;
 
 @property (nonatomic, readonly) Facebook *facebook;
 
 @end
+
+

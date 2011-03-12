@@ -17,6 +17,7 @@
         [_visibleViewController release];
         _visibleViewController = [viewController retain];
 
+        [_visibleViewController viewWillAppear:NO];
         _visibleViewController.view.frame = CGRectMake(0, 0, _container.frame.size.width, _container.frame.size.height);
         [_container addSubview:viewController.view];
     }
