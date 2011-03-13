@@ -3,6 +3,7 @@
 #import "CoreDataManager.h"
 #import "FacebookModule.h"
 #import "FacebookUser.h"
+#import "FacebookComment.h"
 
 NSString * const FacebookPhotoEntityName = @"FacebookPhoto";
 
@@ -99,6 +100,15 @@ NSString * const FacebookPhotoEntityName = @"FacebookPhoto";
                 // TODO: don't assume images are always sorted in descending size
                 NSDictionary *smallImage = [[dictionary arrayForKey:@"images"] lastObject];
                 photo.thumbSrc = [smallImage stringForKey:@"source" nilIfEmpty:YES];
+            }
+        }
+        
+        NSDictionary *comments = [dictionary dictionaryForKey:@"comments"];
+        if (comments) {
+            NSArray *commentData = [comments arrayForKey:@"data"];
+            for (NSDictionary *commentDict in commentData) {
+                FacebookComment *aComment = [FacebookComment commentWithDictionary:commentDict];
+                aComment.parent = photo;
             }
         }
     }

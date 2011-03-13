@@ -7,8 +7,8 @@
 
 @synthesize imageURL, connection, imageData, loadingView, imageView, delegate;
 
+// TODO: move this into news, or theme config if we want a global placeholder
 + (UIImage *)placeholderImage {
-    // TODO: allow placeholders image to be set
     static NSString * const placeholderImageName = @"modules/news/news-placeholder.png";
     static UIImage *placeholderImage = nil;
     if (!placeholderImage) {
@@ -17,7 +17,7 @@
     return placeholderImage;
 }
 
-- (id) initWithFrame:(CGRect)frame {
+- (id)initWithFrame:(CGRect)frame {
     self = [super initWithFrame:frame];
     if (self != nil) {
         connection = nil;
@@ -27,7 +27,7 @@
         imageView = nil;
         self.opaque = YES;
         self.clipsToBounds = YES;
-        self.backgroundColor = [UIColor colorWithPatternImage:[MITThumbnailView placeholderImage]];
+        self.backgroundColor = [UIColor clearColor];
         self.contentMode = UIViewContentModeScaleAspectFill;
     }
     return self;
@@ -66,8 +66,6 @@
         imageView.hidden = NO;
         wasSuccessful = YES;
         [imageView setNeedsLayout];
-    } else {
-        self.backgroundColor = [UIColor colorWithPatternImage:[MITThumbnailView placeholderImage]];
     }
     [self setNeedsLayout];
     
@@ -77,15 +75,6 @@
 
 - (void)requestImage {
     // TODO: don't attempt to load anything if there's no net connection
-    
-    // temporary fix to prevent loading of directories as images
-    // need news office to improve feed
-    // 
-    // in the future, should spin off thumbnail as its own Core Data entity with an "not a valid image" flag
-    if (self.imageURL == nil) {
-        self.backgroundColor = [UIColor colorWithPatternImage:[MITThumbnailView placeholderImage]];
-        return;
-    }
     
     if ([self.connection isConnected]) {
         return;

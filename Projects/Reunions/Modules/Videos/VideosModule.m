@@ -38,6 +38,8 @@
                                                    @"user_groups",
                                                    @"user_videos",
                                                    @"friends_videos",
+                                                   @"user_likes",
+                                                   @"publish_stream",
                                                    nil]
                                            forKey:@"permissions"];
     }

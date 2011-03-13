@@ -10,4 +10,6 @@
 @property (nonatomic, retain) NSString * text;
 @property (nonatomic, retain) FacebookParentPost * parent;
 
++ (FacebookComment *)commentWithDictionary:(NSDictionary *)dictionary;
+
 @end

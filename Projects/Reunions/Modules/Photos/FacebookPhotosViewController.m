@@ -92,7 +92,7 @@
     if (photo.thumbSrc || photo.thumbData) {
         FacebookThumbnail *thumbnail = [[[FacebookThumbnail alloc] initWithFrame:CGRectMake(0, 0, 90, 130)] autorelease];
         thumbnail.photo = photo;
-        thumbnail.rotationAngle = (_icons.count % 2 == 0) ? 0.3 : -0.3;
+        thumbnail.rotationAngle = (_icons.count % 2 == 0) ? M_PI/12 : -M_PI/12;
         [thumbnail addTarget:self action:@selector(thumbnailTapped:) forControlEvents:UIControlEventTouchUpInside];
         [_icons addObject:thumbnail];
         _iconGrid.icons = _icons;
@@ -110,8 +110,14 @@
 
 - (void)thumbnailTapped:(FacebookThumbnail *)sender {
     FacebookPhoto *photo = sender.photo;
-    NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:photo, @"photo", nil];
-    [(KGOAppDelegate *)[[UIApplication sharedApplication] delegate] showPage:LocalPathPageNameDetail forModuleTag:FBPhotosTag params:params];
+    NSMutableArray *photos = [NSMutableArray array];
+    [_icons enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+        FacebookThumbnail *thumbnail = (FacebookThumbnail *)obj;
+        NSLog(@"adding photo with id %@", thumbnail.photo.identifier);
+        [photos addObject:thumbnail.photo];
+    }];
+    NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:photo, @"photo", photos, @"photos", nil];
+    [(KGOAppDelegate *)[[UIApplication sharedApplication] delegate] showPage:LocalPathPageNameDetail forModuleTag:PhotosTag params:params];
 }
 
 #pragma mark Facebook request callbacks
@@ -146,7 +152,7 @@
                 NSString *query = [NSString stringWithFormat:@"SELECT object_id, "
                                    "src_small, src_small_width, src_small_height, "
                                    "src, src_width, src_height, "
-                                   "owner, caption, created "
+                                   "owner, caption, created, aid "
                                    "FROM photo WHERE pid=%@", pid];
                 
                 [[KGOSocialMediaController sharedController] requestFacebookFQL:query receiver:self callback:@selector(didReceivePhoto:)];
@@ -170,9 +176,7 @@
     }
     
     FacebookPhoto *photo = [FacebookPhoto photoWithDictionary:photoInfo];
-    NSLog(@"created photo %@ thumbnail: %@", [photo description], photo.thumbSrc);
     if (photo) {
-        NSLog(@"displaying photo %@", [photo description]);
         [self displayPhoto:photo];
     }
 }
@@ -214,8 +218,8 @@
         _thumbnail.contentMode = UIViewContentModeScaleAspectFit;
         _thumbnail.userInteractionEnabled = NO;
 
-        [self addSubview:_label];
         [self addSubview:_thumbnail];
+        [self addSubview:_label];
     }
     return self;
 }
@@ -225,6 +229,9 @@
 }
 
 - (void)setPhoto:(FacebookPhoto *)photo {
+    [_photo release];
+    _photo = [photo retain];
+    
     _label.text = photo.title;
     if (photo.thumbData) {
         _thumbnail.imageData = photo.thumbData;
@@ -241,6 +248,13 @@
 - (void)setRotationAngle:(CGFloat)rotationAngle {
     _rotationAngle = rotationAngle;
     _thumbnail.transform = CGAffineTransformMakeRotation(rotationAngle);
+}
+
+- (void)dealloc {
+    self.photo = nil;
+    [_thumbnail release];
+    [_label release];
+    [super dealloc];
 }
 
 @end

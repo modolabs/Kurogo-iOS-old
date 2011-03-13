@@ -93,6 +93,8 @@
 		EB3902FD132BFDF1008C90CA /* FacebookParentPost.m in Sources */ = {isa = PBXBuildFile; fileRef = EB3902FC132BFDF0008C90CA /* FacebookParentPost.m */; };
 		EB390300132BFE2C008C90CA /* FacebookPost.m in Sources */ = {isa = PBXBuildFile; fileRef = EB3902FF132BFE2B008C90CA /* FacebookPost.m */; };
 		EB390303132BFE5D008C90CA /* FacebookUser.m in Sources */ = {isa = PBXBuildFile; fileRef = EB390302132BFE5B008C90CA /* FacebookUser.m */; };
+		EB390307132C45F8008C90CA /* FacebookPhotoDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EB390305132C45F5008C90CA /* FacebookPhotoDetailViewController.m */; };
+		EB390308132C45F8008C90CA /* FacebookPhotoDetailViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = EB390306132C45F6008C90CA /* FacebookPhotoDetailViewController.xib */; };
 		EB46C94A132590F900AF7B5C /* PhotosModule.m in Sources */ = {isa = PBXBuildFile; fileRef = EB46C941132590F900AF7B5C /* PhotosModule.m */; };
 		EB46C94B132590F900AF7B5C /* FacebookPhotosViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EB46C943132590F900AF7B5C /* FacebookPhotosViewController.m */; };
 		EB46C94C132590F900AF7B5C /* VideosModule.m in Sources */ = {isa = PBXBuildFile; fileRef = EB46C947132590F900AF7B5C /* VideosModule.m */; };
@@ -374,6 +376,9 @@
 		EB3902FF132BFE2B008C90CA /* FacebookPost.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FacebookPost.m; sourceTree = "<group>"; };
 		EB390301132BFE5A008C90CA /* FacebookUser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FacebookUser.h; sourceTree = "<group>"; };
 		EB390302132BFE5B008C90CA /* FacebookUser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FacebookUser.m; sourceTree = "<group>"; };
+		EB390304132C45F4008C90CA /* FacebookPhotoDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FacebookPhotoDetailViewController.h; sourceTree = "<group>"; };
+		EB390305132C45F5008C90CA /* FacebookPhotoDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FacebookPhotoDetailViewController.m; sourceTree = "<group>"; };
+		EB390306132C45F6008C90CA /* FacebookPhotoDetailViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FacebookPhotoDetailViewController.xib; sourceTree = "<group>"; };
 		EB46C940132590F900AF7B5C /* PhotosModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhotosModule.h; sourceTree = "<group>"; };
 		EB46C941132590F900AF7B5C /* PhotosModule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PhotosModule.m; sourceTree = "<group>"; };
 		EB46C942132590F900AF7B5C /* FacebookPhotosViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FacebookPhotosViewController.h; sourceTree = "<group>"; };
@@ -947,6 +952,9 @@
 				EB46CBB2132A7D0100AF7B5C /* FacebookMediaViewController.h */,
 				EB46CBB3132A7D0100AF7B5C /* FacebookMediaViewController.m */,
 				EB46CBB4132A7D0100AF7B5C /* FacebookMediaViewController.xib */,
+				EB390304132C45F4008C90CA /* FacebookPhotoDetailViewController.h */,
+				EB390305132C45F5008C90CA /* FacebookPhotoDetailViewController.m */,
+				EB390306132C45F6008C90CA /* FacebookPhotoDetailViewController.xib */,
 			);
 			path = Photos;
 			sourceTree = "<group>";
@@ -1300,6 +1308,7 @@
 				EB46CA3E1327E7B700AF7B5C /* MainWindow-iPad.xib in Resources */,
 				EB46CAE41328352200AF7B5C /* MapHomeViewController-iPad.xib in Resources */,
 				EB46CBB6132A7D0100AF7B5C /* FacebookMediaViewController.xib in Resources */,
+				EB390308132C45F8008C90CA /* FacebookPhotoDetailViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1443,6 +1452,7 @@
 				EB3902FD132BFDF1008C90CA /* FacebookParentPost.m in Sources */,
 				EB390300132BFE2C008C90CA /* FacebookPost.m in Sources */,
 				EB390303132BFE5D008C90CA /* FacebookUser.m in Sources */,
+				EB390307132C45F8008C90CA /* FacebookPhotoDetailViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

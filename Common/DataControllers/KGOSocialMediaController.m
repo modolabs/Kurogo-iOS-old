@@ -3,6 +3,7 @@
 #import "KGOAppDelegate.h"
 #import "JSONAPIRequest.h"
 #import "Foundation+KGOAdditions.h"
+#import "FacebookPost.h"
 
 NSString * const KGOSocialMediaTypeFacebook = @"Facebook";
 NSString * const KGOSocialMediaTypeTwitter = @"Twitter";
@@ -33,6 +34,12 @@ NSString * const FacebookDidLogoutNotification = @"FBDidLogout";
 @implementation FBRequestIdentifier
 
 @synthesize callback, receiver;
+
+@end
+
+@interface KGOSocialMediaController (Private)
+
+- (BOOL)connectFacebookRequest:(FBRequest *)request withReceiver:(id)receiver callback:(SEL)callback;
 
 @end
 
@@ -491,37 +498,85 @@ static KGOSocialMediaController *s_controller = nil;
 
 #pragma mark Facebook request wrappers
 
-- (FBRequest *)requestFacebookGraphPath:(NSString *)graphPath receiver:(id)receiver callback:(SEL)callback {
-    DLog(@"requesting graph path: %@", graphPath);
-    FBRequest *request = nil;
+- (BOOL)connectFacebookRequest:(FBRequest *)request withReceiver:(id)receiver callback:(SEL)callback {
     if ([receiver respondsToSelector:callback]) {
         FBRequestIdentifier *identifier = [[[FBRequestIdentifier alloc] init] autorelease];
         identifier.receiver = receiver;
         identifier.callback = callback;
         [_fbRequestIdentifiers addObject:identifier];
-        
-        request = [_facebook requestWithGraphPath:graphPath andDelegate:self];
-        [request connect];
         [_fbRequestQueue addObject:request];
+        [request connect];
+        return YES;
     }
-    return request;
+    return NO;
+}
+
+- (FBRequest *)requestFacebookGraphPath:(NSString *)graphPath receiver:(id)receiver callback:(SEL)callback {
+    DLog(@"requesting graph path: %@", graphPath);
+    FBRequest *request = [_facebook requestWithGraphPath:graphPath andDelegate:self];
+    if ([self connectFacebookRequest:request withReceiver:receiver callback:callback]) {
+        return request;
+    }
+    return nil;
 }
 
 - (FBRequest *)requestFacebookFQL:(NSString *)query receiver:(id)receiver callback:(SEL)callback {
     DLog(@"requesting FQL: %@", query);
-    FBRequest *request = nil;
-    if ([receiver respondsToSelector:callback]) {
-        FBRequestIdentifier *identifier = [[[FBRequestIdentifier alloc] init] autorelease];
-        identifier.receiver = receiver;
-        identifier.callback = callback;
-        [_fbRequestIdentifiers addObject:identifier];
-        
-        NSMutableDictionary *params = [NSMutableDictionary dictionaryWithObject:query forKey:@"query"];
-        request = [_facebook requestWithMethodName:@"fql.query" andParams:params andHttpMethod:@"GET" andDelegate:self];
-        [request connect];
-        [_fbRequestQueue addObject:request];
+    NSMutableDictionary *params = [NSMutableDictionary dictionaryWithObject:query forKey:@"query"];
+    FBRequest *request = [_facebook requestWithMethodName:@"fql.query" andParams:params andHttpMethod:@"GET" andDelegate:self];
+    if ([self connectFacebookRequest:request withReceiver:receiver callback:callback]) {
+        return request;
     }
-    return request;
+    return nil;
+}
+
+- (FBRequest *)likeFacebookPost:(FacebookPost *)post receiver:(id)receiver callback:(SEL)callback {
+    NSString *postID = post.identifier;
+    NSString *graphPath = [NSString stringWithFormat:@"%@/likes", postID];
+    // Facebook's internal method expects a NSMutableDictionary that it then
+    // populates with access token and other boilerplate.  passing nil for
+    // params causes all those populating steps to do nothing, resulting in an
+    // access denied error.  this means we always have to pass an initialized
+    // NSMutableDictionary even though it would be ridiculously simple for them
+    // to check for nil.
+    FBRequest *request = [_facebook requestWithGraphPath:graphPath
+                                               andParams:[NSMutableDictionary dictionary]
+                                           andHttpMethod:@"POST"
+                                             andDelegate:self];
+    if ([self connectFacebookRequest:request withReceiver:receiver callback:callback]) {
+        return request;
+    }
+    return nil;
+}
+
+- (FBRequest *)unlikeFacebookPost:(FacebookPost *)post receiver:(id)receiver callback:(SEL)callback {
+    NSString *postID = post.identifier;
+    NSString *graphPath = [NSString stringWithFormat:@"%@/likes", postID];
+    FBRequest *request = [_facebook requestWithGraphPath:graphPath
+                                               andParams:[NSMutableDictionary dictionary] // see comment above.
+                                           andHttpMethod:@"DELETE"
+                                             andDelegate:self];
+    if ([self connectFacebookRequest:request withReceiver:receiver callback:callback]) {
+        return request;
+    }
+    return nil;
+}
+
+
+- (void)disconnectFacebookRequests:(id)receiver {
+    NSArray *identifiers = [[_fbRequestIdentifiers copy] autorelease];
+    for (FBRequestIdentifier *anIdentifier in identifiers) {
+        if (anIdentifier.receiver == receiver) {
+            anIdentifier.receiver = nil;
+            NSInteger index = [_fbRequestIdentifiers indexOfObject:anIdentifier];
+            if (index != NSNotFound) {
+                FBRequest *request = [_fbRequestQueue objectAtIndex:index];
+                request.delegate = nil;
+                [_fbRequestIdentifiers removeObjectAtIndex:index];
+                [_fbRequestQueue removeObjectAtIndex:index];
+            }
+        }
+    }
 }
 
 - (void)didReceiveSelfInfo:(id)result {
@@ -570,7 +625,7 @@ static KGOSocialMediaController *s_controller = nil;
  * which is passed the parsed response object.
  */
 - (void)request:(FBRequest *)request didReceiveResponse:(NSURLResponse *)response {
-    NSLog(@"received response for %@", [request description]);
+    DLog(@"received response for %@", [request description]);
 }
 
 /**
@@ -581,32 +636,17 @@ static KGOSocialMediaController *s_controller = nil;
  * (void)request:(FBRequest *)request didReceiveResponse:(NSURLResponse *)response.
  */
 - (void)request:(FBRequest *)request didLoad:(id)result {
-    NSLog(@"%@", [request.url description]);
-    NSLog(@"%@", [request.params description]);
+    DLog(@"request succeeded for url: %@ params: %@", request.url, request.params);
     //NSLog(@"%@", [result description]);
     NSInteger index = [_fbRequestQueue indexOfObject:request];
     
     if (index != NSNotFound) {
         FBRequestIdentifier *identifier = [_fbRequestIdentifiers objectAtIndex:index];
-        [identifier.receiver performSelector:identifier.callback withObject:result];
+        if (identifier.receiver && identifier.callback) {
+            [identifier.receiver performSelector:identifier.callback withObject:result];
+        }
         [_fbRequestQueue removeObjectAtIndex:index];
         [_fbRequestIdentifiers removeObjectAtIndex:index];
-    }
-}
-
-- (void)disconnectFacebookRequests:(id)receiver {
-    NSArray *identifiers = [[_fbRequestIdentifiers copy] autorelease];
-    for (FBRequestIdentifier *anIdentifier in identifiers) {
-        if (anIdentifier.receiver == receiver) {
-            anIdentifier.receiver = nil;
-            NSInteger index = [_fbRequestIdentifiers indexOfObject:anIdentifier];
-            if (index != NSNotFound) {
-                FBRequest *request = [_fbRequestQueue objectAtIndex:index];
-                request.delegate = nil;
-                [_fbRequestIdentifiers removeObjectAtIndex:index];
-                [_fbRequestQueue removeObjectAtIndex:index];
-            }
-        }
     }
 }
 
@@ -614,7 +654,8 @@ static KGOSocialMediaController *s_controller = nil;
  * Called when an error prevents the Facebook API request from completing successfully.
  */
 - (void)request:(FBRequest *)request didFailWithError:(NSError *)error {
-    DLog(@"%@", [error description]);
+    DLog(@"failed to request facebook url: %@ params: %@", request.url, request.params);
+    NSLog(@"%@", [error description]);
     NSDictionary *userInfo = [error userInfo];
     if ([[userInfo stringForKey:@"type" nilIfEmpty:YES] isEqualToString:@"OAuthException"]) {
         [self logoutFacebook];

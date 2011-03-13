@@ -47,8 +47,9 @@ extern NSString * const FacebookDidLogoutNotification;
 
 @end
 
-
-
+// TODO: including this means all projects need the current Facebook module
+// need a way to make it optional
+@class FacebookPost;
 
 @interface KGOSocialMediaController : NSObject <UIActionSheetDelegate,
 MGTwitterEngineDelegate, ConnectionWrapperDelegate,
@@ -116,6 +117,8 @@ FBSessionDelegate, FBDialogDelegate, FBRequestDelegate> {
 
 - (FBRequest *)requestFacebookGraphPath:(NSString *)graphPath receiver:(id)receiver callback:(SEL)callback;
 - (FBRequest *)requestFacebookFQL:(NSString *)query receiver:(id)receiver callback:(SEL)callback;
+- (FBRequest *)likeFacebookPost:(FacebookPost *)post receiver:(id)receiver callback:(SEL)callback;
+- (FBRequest *)unlikeFacebookPost:(FacebookPost *)post receiver:(id)receiver callback:(SEL)callback;
 
 - (void)disconnectFacebookRequests:(id)receiver;
 
