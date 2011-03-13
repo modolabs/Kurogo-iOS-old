@@ -28,6 +28,7 @@
         self.opaque = YES;
         self.clipsToBounds = YES;
         self.backgroundColor = [UIColor colorWithPatternImage:[MITThumbnailView placeholderImage]];
+        self.contentMode = UIViewContentModeScaleAspectFill;
     }
     return self;
 }
@@ -57,7 +58,7 @@
             imageView = [[UIImageView alloc] initWithImage:nil]; // image is set below
             [self addSubview:imageView];
             imageView.frame = self.bounds;
-            imageView.contentMode = UIViewContentModeScaleAspectFill;
+            imageView.contentMode = self.contentMode;
             imageView.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
         }
         

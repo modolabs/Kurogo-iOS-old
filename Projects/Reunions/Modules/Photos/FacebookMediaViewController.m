@@ -30,7 +30,10 @@
     _loginView.alpha = 0;
     
     NSString *displayName = [[KGOSocialMediaController sharedController] facebookDisplayName];
-    NSString *html = [NSString stringWithFormat:@"Logged in as %@ (<a href=\"#\">Not You?</a>)", displayName];
+    NSString *html = [NSString stringWithFormat:
+                      @"<body style=\"background-color:transparent\">"
+                      "Logged in as %@ (<a href=\"#\" style=\"color:#9999ff\">Not You?</a>)"
+                      "</body>", displayName];
     [_signedInUserView loadHTMLString:html baseURL:nil];
 }
 

@@ -583,7 +583,7 @@ static KGOSocialMediaController *s_controller = nil;
 - (void)request:(FBRequest *)request didLoad:(id)result {
     NSLog(@"%@", [request.url description]);
     NSLog(@"%@", [request.params description]);
-    NSLog(@"%@", [result description]);
+    //NSLog(@"%@", [result description]);
     NSInteger index = [_fbRequestQueue indexOfObject:request];
     
     if (index != NSNotFound) {

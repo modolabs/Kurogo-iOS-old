@@ -1,9 +1,10 @@
 #import "FacebookPhotosViewController.h"
 #import "IconGrid.h"
-#import "MITThumbnailView.h"
 #import "Foundation+KGOAdditions.h"
 #import "FacebookModel.h"
 #import <QuartzCore/QuartzCore.h>
+#import "CoreDataManager.h"
+#import "KGOAppDelegate+ModuleAdditions.h"
 
 @implementation FacebookPhotosViewController
 
@@ -35,6 +36,9 @@
     [_scrollView addSubview:_iconGrid];
     
     _icons = [[NSMutableArray alloc] init];
+    _photosByThumbSrc = [[NSMutableDictionary alloc] init];
+    
+    [self loadThumbnailsFromCache];
 }
 
 
@@ -65,7 +69,49 @@
 
     [_gid release];
     [_iconGrid release];
+    [_icons release];
+    [_photosByThumbSrc release];
+    [_photoIDs release];
     [super dealloc];
+}
+
+#pragma mark When we already have photos
+
+- (void)loadThumbnailsFromCache {
+    // TODO: sort by date or whatever
+    NSArray *photos = [[CoreDataManager sharedManager] objectsForEntity:FacebookPhotoEntityName matchingPredicate:nil];
+    for (FacebookPhoto *aPhoto in photos) {
+        [_photoIDs addObject:aPhoto.identifier];
+        NSLog(@"found cached photo %@", aPhoto.identifier);
+        [self displayPhoto:aPhoto];
+    }
+}
+
+- (void)displayPhoto:(FacebookPhoto *)photo
+{
+    if (photo.thumbSrc || photo.thumbData) {
+        FacebookThumbnail *thumbnail = [[[FacebookThumbnail alloc] initWithFrame:CGRectMake(0, 0, 90, 130)] autorelease];
+        thumbnail.photo = photo;
+        thumbnail.rotationAngle = (_icons.count % 2 == 0) ? 0.3 : -0.3;
+        [thumbnail addTarget:self action:@selector(thumbnailTapped:) forControlEvents:UIControlEventTouchUpInside];
+        [_icons addObject:thumbnail];
+        _iconGrid.icons = _icons;
+        [_iconGrid setNeedsLayout];
+    }
+}
+
+- (void)thumbnail:(MITThumbnailView *)thumbnail didLoadData:(NSData *)data {
+    FacebookPhoto *photo = [_photosByThumbSrc objectForKey:thumbnail.imageURL];
+    if (photo) {
+        photo.thumbData = data;
+    }
+    [[CoreDataManager sharedManager] saveData];
+}
+
+- (void)thumbnailTapped:(FacebookThumbnail *)sender {
+    FacebookPhoto *photo = sender.photo;
+    NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:photo, @"photo", nil];
+    [(KGOAppDelegate *)[[UIApplication sharedApplication] delegate] showPage:LocalPathPageNameDetail forModuleTag:FBPhotosTag params:params];
 }
 
 #pragma mark Facebook request callbacks
@@ -76,13 +122,14 @@
     for (id aGroup in data) {
         if ([[aGroup objectForKey:@"name"] isEqualToString:@"Modo Labs UX"]) {
             _gid = [[aGroup objectForKey:@"id"] retain];
-            
+
+            // fql for photos
             NSString *query = [NSString stringWithFormat:@"SELECT pid FROM photo_tag WHERE subject=%@", _gid];
-            
-            _photosRequest = [[KGOSocialMediaController sharedController] requestFacebookFQL:query receiver:self callback:@selector(didReceivePhotoList:)];
-            
+            [[KGOSocialMediaController sharedController] requestFacebookFQL:query receiver:self callback:@selector(didReceivePhotoList:)];
+
+            // grou feed
             NSString *feedPath = [NSString stringWithFormat:@"%@/feed", _gid];
-            _feedRequest = [[KGOSocialMediaController sharedController] requestFacebookGraphPath:feedPath receiver:self callback:@selector(didReceiveFeed:)];
+            [[KGOSocialMediaController sharedController] requestFacebookGraphPath:feedPath receiver:self callback:@selector(didReceiveFeed:)];
         }
     }
 
@@ -96,21 +143,19 @@
             NSString *pid = [info objectForKey:@"pid"];
             if (pid && ![_photoIDs containsObject:pid]) {
                 DLog(@"received fql info for photo %@", pid);
-                //NSString *query = [NSString stringWithFormat:@"SELECT src_small, src_small_height, src_small_width, caption FROM photo WHERE pid=%@", pid];
                 NSString *query = [NSString stringWithFormat:@"SELECT object_id, "
                                    "src_small, src_small_width, src_small_height, "
                                    "src, src_width, src_height, "
                                    "owner, caption, created "
                                    "FROM photo WHERE pid=%@", pid];
                 
-                [[KGOSocialMediaController sharedController] requestFacebookFQL:query receiver:self callback:@selector(didReceivePhotos:)];
+                [[KGOSocialMediaController sharedController] requestFacebookFQL:query receiver:self callback:@selector(didReceivePhoto:)];
             }
         }
     }
 }
 
-- (void)didReceivePhotos:(id)result {
-    
+- (void)didReceivePhoto:(id)result {
     DLog(@"info for photo: %@", [result description]);
     
     NSDictionary *photoInfo = nil;
@@ -125,31 +170,11 @@
     }
     
     FacebookPhoto *photo = [FacebookPhoto photoWithDictionary:photoInfo];
-    if (photo.thumbSrc) {
-        
-        UIView *wrapperView = [[[UIView alloc] initWithFrame:CGRectMake(0, 0, 90, 130)] autorelease];
-        UILabel *label = [[[UILabel alloc] initWithFrame:CGRectMake(0, 90, 90, 40)] autorelease];
-        label.text = photo.title;
-        label.backgroundColor = [UIColor clearColor];
-        label.textColor = [UIColor whiteColor];
-        label.numberOfLines = 3;
-        label.font = [UIFont systemFontOfSize:10];
-        [wrapperView addSubview:label];
-        
-        MITThumbnailView *thumbView = [[[MITThumbnailView alloc] initWithFrame:CGRectMake(0, 0, 90, 90)] autorelease];
-        thumbView.imageURL = photo.thumbSrc;
-        [thumbView loadImage];
-        
-        [wrapperView addSubview:thumbView];
-        
-        CGFloat rotationAngle = 0.3 - 0.6 * (_icons.count % 2);
-        wrapperView.transform = CGAffineTransformMakeRotation(rotationAngle);
-        
-        [_icons addObject:wrapperView];
-        _iconGrid.icons = _icons;
-        [_iconGrid setNeedsLayout];
+    NSLog(@"created photo %@ thumbnail: %@", [photo description], photo.thumbSrc);
+    if (photo) {
+        NSLog(@"displaying photo %@", [photo description]);
+        [self displayPhoto:photo];
     }
-
 }
 
 - (void)didReceiveFeed:(id)result {
@@ -167,6 +192,55 @@
             }
         }
     }
+}
+
+@end
+
+@implementation FacebookThumbnail
+
+- (id)initWithFrame:(CGRect)frame {
+    self = [super initWithFrame:frame];
+    if (self) {
+        self.backgroundColor = [UIColor clearColor];
+        
+        _label = [[UILabel alloc] initWithFrame:CGRectMake(0, 90, 90, 40)];
+        _label.backgroundColor = [UIColor clearColor];
+        _label.textColor = [UIColor whiteColor];
+        _label.numberOfLines = 3;
+        _label.font = [UIFont systemFontOfSize:10];
+        _label.userInteractionEnabled = NO;
+        
+        _thumbnail = [[MITThumbnailView alloc] initWithFrame:CGRectMake(0, 0, 90, 90)];
+        _thumbnail.contentMode = UIViewContentModeScaleAspectFit;
+        _thumbnail.userInteractionEnabled = NO;
+
+        [self addSubview:_label];
+        [self addSubview:_thumbnail];
+    }
+    return self;
+}
+
+- (FacebookPhoto *)photo {
+    return _photo;
+}
+
+- (void)setPhoto:(FacebookPhoto *)photo {
+    _label.text = photo.title;
+    if (photo.thumbData) {
+        _thumbnail.imageData = photo.thumbData;
+    } else if (photo.thumbSrc) {
+        _thumbnail.imageURL = photo.thumbSrc;
+    }
+    [_thumbnail loadImage];
+}
+
+- (CGFloat)rotationAngle {
+    return _rotationAngle;
+}
+
+- (void)setRotationAngle:(CGFloat)rotationAngle {
+    _rotationAngle = rotationAngle;
+    _thumbnail.transform = CGAffineTransformMakeRotation(rotationAngle);
 }
 
 @end
