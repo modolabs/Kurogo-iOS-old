@@ -4,6 +4,7 @@
 
 
 @implementation FacebookParentPost
+@dynamic commentPath;
 @dynamic likes;
 @dynamic comments;
 

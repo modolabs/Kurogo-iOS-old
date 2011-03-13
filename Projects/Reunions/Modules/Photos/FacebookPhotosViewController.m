@@ -22,12 +22,11 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    _photoIDs = [[NSMutableSet alloc] init];
-
     CGRect frame = _scrollView.frame;
     frame.origin.y += _signedInUserView.frame.size.height;
     frame.size.height -= _signedInUserView.frame.size.height;
     _iconGrid = [[IconGrid alloc] initWithFrame:frame];
+    _iconGrid.delegate = self;
     _iconGrid.spacing = GridSpacingMake(10, 10);
     _iconGrid.padding = GridPaddingMake(10, 10, 10, 10);
     _iconGrid.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
@@ -37,6 +36,7 @@
     
     _icons = [[NSMutableArray alloc] init];
     _photosByThumbSrc = [[NSMutableDictionary alloc] init];
+    _photosByID = [[NSMutableDictionary alloc] init];
     
     [self loadThumbnailsFromCache];
 }
@@ -71,8 +71,16 @@
     [_iconGrid release];
     [_icons release];
     [_photosByThumbSrc release];
-    [_photoIDs release];
+    [_photosByID release];
     [super dealloc];
+}
+
+#pragma Icon grid delegate
+
+- (void)iconGridFrameDidChange:(IconGrid *)iconGrid {
+    CGSize size = _scrollView.contentSize;
+    size.height = iconGrid.frame.size.height;
+    _scrollView.contentSize = size;
 }
 
 #pragma mark When we already have photos
@@ -81,10 +89,11 @@
     // TODO: sort by date or whatever
     NSArray *photos = [[CoreDataManager sharedManager] objectsForEntity:FacebookPhotoEntityName matchingPredicate:nil];
     for (FacebookPhoto *aPhoto in photos) {
-        [_photoIDs addObject:aPhoto.identifier];
+        //[_photosByID setObject:aPhoto forKey:aPhoto.identifier];
         NSLog(@"found cached photo %@", aPhoto.identifier);
-        [self displayPhoto:aPhoto];
+        //[self displayPhoto:aPhoto];
     }
+    [[CoreDataManager sharedManager] deleteObjects:photos];
 }
 
 - (void)displayPhoto:(FacebookPhoto *)photo
@@ -130,10 +139,10 @@
             _gid = [[aGroup objectForKey:@"id"] retain];
 
             // fql for photos
-            NSString *query = [NSString stringWithFormat:@"SELECT pid FROM photo_tag WHERE subject=%@", _gid];
-            [[KGOSocialMediaController sharedController] requestFacebookFQL:query receiver:self callback:@selector(didReceivePhotoList:)];
+            //NSString *query = [NSString stringWithFormat:@"SELECT pid FROM photo_tag WHERE subject=%@", _gid];
+            //[[KGOSocialMediaController sharedController] requestFacebookFQL:query receiver:self callback:@selector(didReceivePhotoList:)];
 
-            // grou feed
+            // group feed
             NSString *feedPath = [NSString stringWithFormat:@"%@/feed", _gid];
             [[KGOSocialMediaController sharedController] requestFacebookGraphPath:feedPath receiver:self callback:@selector(didReceiveFeed:)];
         }
@@ -147,7 +156,7 @@
         
         for (NSDictionary *info in result) {
             NSString *pid = [info objectForKey:@"pid"];
-            if (pid && ![_photoIDs containsObject:pid]) {
+            if (pid && ![_photosByID objectForKey:pid]) {
                 DLog(@"received fql info for photo %@", pid);
                 NSString *query = [NSString stringWithFormat:@"SELECT object_id, "
                                    "src_small, src_small_width, src_small_height, "
@@ -176,7 +185,9 @@
     }
     
     FacebookPhoto *photo = [FacebookPhoto photoWithDictionary:photoInfo];
+    NSLog(@"%@", [photo description]);
     if (photo) {
+        [_photosByID setObject:photo forKey:photo.identifier];
         [self displayPhoto:photo];
     }
 }
@@ -188,10 +199,18 @@
         NSString *type = [aPost stringForKey:@"type" nilIfEmpty:YES];
         if ([type isEqualToString:@"photo"]) {
             NSString *pid = [aPost stringForKey:@"object_id" nilIfEmpty:YES];
-            if (pid && ![_photoIDs containsObject:pid]) {
-                [_photoIDs addObject:pid];
+            if (pid && ![_photosByID objectForKey:pid]) {
+                FacebookPhoto *aPhoto = [FacebookPhoto photoWithDictionary:aPost];
+                if (aPhoto) {
+                    aPhoto.commentPath = [aPost stringForKey:@"id" nilIfEmpty:YES];
+                    NSLog(@"%@", [aPhoto description]);
+                    [[CoreDataManager sharedManager] saveData];
+                    [_photosByID setObject:aPhoto forKey:pid];
+                    [self displayPhoto:aPhoto];
+                }
+
                 DLog(@"requesting graph info for photo %@", pid);
-                FBRequest *aRequest = [[KGOSocialMediaController sharedController] requestFacebookGraphPath:pid receiver:self callback:@selector(didReceivePhotos)];
+                FBRequest *aRequest = [[KGOSocialMediaController sharedController] requestFacebookGraphPath:pid receiver:self callback:@selector(didReceivePhoto:)];
                 [_fbRequestQueue addObject:aRequest];
             }
         }

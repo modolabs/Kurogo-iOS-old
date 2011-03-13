@@ -2,21 +2,7 @@
 #import "IconGrid.h"
 #import "MITThumbnailView.h"
 #import "Foundation+KGOAdditions.h"
-
-@interface ControlWithURL : UIControl
-
-@property (nonatomic, retain) NSString *url;
-
-@end
-
-@implementation ControlWithURL
-
-@synthesize url;
-
-@end
-
-
-
+#import "UIKit+KGOAdditions.h"
 
 @implementation FacebookVideosViewController
 
@@ -31,26 +17,20 @@
 }
 */
 
-- (void)loadView {
-	[super loadView];
-    
-    [[KGOSocialMediaController sharedController] loginFacebookWithDelegate:self];
-    
-    _iconGrid = [[[IconGrid alloc] initWithFrame:CGRectMake(10, 10, self.view.bounds.size.width - 10, self.view.bounds.size.height - 10)] autorelease];
-    _iconGrid.spacing = GridSpacingMake(10, 10);
-    _iconGrid.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-    
-    [self.view addSubview:_iconGrid];
-    
-    _icons = [[NSMutableArray alloc] init];
-}
-
-/*
-// Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    CGRect frame = _scrollView.frame;
+    _tableView = [[UITableView alloc] initWithFrame:frame style:UITableViewStylePlain];
+    _tableView.tableHeaderView = _signedInUserView;
+    _tableView.dataSource = self;
+    _tableView.delegate = self;
+    [self.view insertSubview:_tableView aboveSubview:_scrollView];
+    [_scrollView removeFromSuperview];
+    
+    _videos = [[NSMutableArray alloc] init];
+    _videoIDs = [[NSMutableSet alloc] init];
 }
-*/
 
 /*
 // Override to allow orientations other than the default portrait orientation.
@@ -75,77 +55,76 @@
 
 
 - (void)dealloc {
-    if (_groupsRequest) {
-        _groupsRequest.delegate = nil;
-    }
-    if (_videosRequest) {
-        _videosRequest.delegate = nil;
-    }
-    if (_fbRequestQueue) {
-        for (FBRequest *aRequest in _fbRequestQueue) {
-            aRequest.delegate = nil;
-        }
-    }
-    [_fbRequestQueue release];
+    [_tableView release];
+    [_videos release];
+    [_videoIDs release];
     [_gid release];
     [super dealloc];
 }
 
-- (UIView *)thumbnailWithSource:(NSString *)src caption:(NSString *)caption link:(NSString *)link {
-    
-    ControlWithURL *wrapperView = [[[ControlWithURL alloc] initWithFrame:CGRectMake(0, 0, 90, 130)] autorelease];
-    wrapperView.url = link;
-    
-    UILabel *label = [[[UILabel alloc] initWithFrame:CGRectMake(0, 90, 90, 40)] autorelease];
-    label.text = caption;
-    label.backgroundColor = [UIColor clearColor];
-    label.textColor = [UIColor whiteColor];
-    label.numberOfLines = 3;
-    label.font = [UIFont systemFontOfSize:10];
-    [wrapperView addSubview:label];
-    
-    MITThumbnailView *thumbView = [[[MITThumbnailView alloc] initWithFrame:CGRectMake(0, 0, 90, 90)] autorelease];
-    thumbView.userInteractionEnabled = NO;
-    thumbView.imageURL = src;
-    [thumbView loadImage];
+#pragma mark FacebookWrapperDelegate
 
-    [wrapperView addTarget:self action:@selector(openVideo:) forControlEvents:UIControlEventTouchUpInside];
-    [wrapperView addSubview:thumbView];
-    
-    return wrapperView;
-}
-
-- (void)openVideo:(id)sender {
-    if ([sender isKindOfClass:[ControlWithURL class]]) {
-        NSString *urlString = [(ControlWithURL *)sender url];
-        NSURL *url = [NSURL URLWithString:urlString];
-        if ([[UIApplication sharedApplication] canOpenURL:url]) {
-            [[UIApplication sharedApplication] openURL:url];
+- (void)didReceiveFeed:(id)result {
+    NSArray *data = [result arrayForKey:@"data"];
+    for (NSDictionary *aPost in data) {
+        NSLog(@"%@", [aPost description]);
+        NSString *type = [aPost stringForKey:@"type" nilIfEmpty:YES];
+        if ([type isEqualToString:@"video"]) {
+            [_videos addObject:aPost];
         }
     }
 }
 
-#pragma mark FacebookWrapperDelegate
+#pragma mark table view methods
 
-- (void)facebookDidLogin {
-    _fbRequestQueue = [[NSMutableArray alloc] init];
-    
-    _groupsRequest = [[[KGOSocialMediaController sharedController] facebook] requestWithGraphPath:@"me/groups" andDelegate:self];
-    //[_fbRequestQueue addObject:request];
-    
-    _videoIDs = [[NSMutableSet alloc] init];
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    return _videos.count;
 }
 
-
-- (void)facebookFailedToLogin {
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    NSDictionary *videoData = [_videos objectAtIndex:indexPath.row];
     
+    static NSString *CellIdentifier = @"Cell";
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    if (!cell) {
+        cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
+    }
+    
+    NSInteger thumbnailTag = 80;
+    NSInteger titleTag = 81;
+    //NSInteger subtitleTag = 82;
+    
+    MITThumbnailView *thumbnail = (MITThumbnailView *)[cell.contentView viewWithTag:thumbnailTag];
+    if (!thumbnail) {
+        thumbnail = [[[MITThumbnailView alloc] initWithFrame:CGRectMake(0, 0, 100, 75)] autorelease];
+        thumbnail.tag = thumbnailTag;
+    }
+    thumbnail.imageURL = [videoData stringForKey:@"picture" nilIfEmpty:YES];
+    [thumbnail loadImage];
+    [cell.contentView addSubview:thumbnail];
+    
+    UILabel *titleLabel = (UILabel *)[cell.contentView viewWithTag:titleTag];
+    if (!titleLabel) {
+        UIFont *titleFont = [UIFont systemFontOfSize:13];
+        titleLabel = [UILabel multilineLabelWithText:[videoData stringForKey:@"name" nilIfEmpty:YES]
+                                                font:titleFont
+                                               width:tableView.frame.size.width - 110];
+        CGRect frame = titleLabel.frame;
+        frame.origin.x = 115;
+        frame.origin.y = 10;
+        titleLabel.frame = frame;
+    } else {
+        titleLabel.text = [videoData stringForKey:@"name" nilIfEmpty:YES];
+    }
+    [cell.contentView addSubview:titleLabel];
+    
+    return cell;
 }
 
-
-- (void)facebookDidLogout {
-    
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 }
 
+/*
 #pragma mark FBRequestDelegate
 
 - (void)request:(FBRequest *)request didFailWithError:(NSError *)error {
@@ -248,5 +227,5 @@
         }
     }
 }
-
+*/
 @end

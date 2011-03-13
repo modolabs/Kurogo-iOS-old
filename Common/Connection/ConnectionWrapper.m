@@ -98,6 +98,10 @@
 }
 
 -(BOOL)requestDataFromURL:(NSURL *)url allowCachedResponse:(BOOL)shouldCache {
+    if (!url) {
+        return NO;
+    }
+    
 	if (isConnected) {	// if there's already a connection established
 		return NO;		// notify of failure
 	}

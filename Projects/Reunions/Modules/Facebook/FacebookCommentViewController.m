@@ -50,6 +50,7 @@
         NSString *identifier = [result stringForKey:@"id" nilIfEmpty:YES];
         FacebookComment *aComment = [FacebookComment commentWithID:identifier];
         aComment.text = _textView.text;
+        // TODO: set comment's owner as user
         [self.delegate didPostComment:aComment];
         [_spinner stopAnimating];
         [(KGOAppDelegate *)[[UIApplication sharedApplication] delegate] dismissAppModalViewControllerAnimated:YES];

@@ -25,6 +25,7 @@
 
 @end
 
+// TODO: FacebookWrapperDelegate doesn't work anymore, listen for notifications
 @interface KGOShareButtonController : NSObject <UIActionSheetDelegate,
 FacebookWrapperDelegate> {
 

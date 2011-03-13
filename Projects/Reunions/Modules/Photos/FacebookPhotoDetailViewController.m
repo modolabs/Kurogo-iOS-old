@@ -87,7 +87,8 @@
 }
 
 - (void)getCommentsForPhoto {
-    NSString *path = [NSString stringWithFormat:@"%@/comments", self.photo.identifier];
+    NSString *objectID = self.photo.commentPath.length ? self.photo.commentPath : self.photo.identifier;
+    NSString *path = [NSString stringWithFormat:@"%@/comments", objectID];
     [[KGOSocialMediaController sharedController] requestFacebookGraphPath:path
                                                                  receiver:self
                                                                  callback:@selector(didReceiveComments:)];
@@ -197,6 +198,7 @@
     if (!commentLabel) {
         UIFont *commentFont = [UIFont systemFontOfSize:15];
         commentLabel = [UILabel multilineLabelWithText:aComment.text font:commentFont width:tableView.frame.size.width - 20];
+        commentLabel.tag = commentTag;
         CGRect frame = commentLabel.frame;
         frame.origin.x = 10;
         frame.origin.y = 5;
@@ -210,6 +212,7 @@
     if (!authorLabel) {
         UIFont *authorFont = [UIFont systemFontOfSize:13];
         authorLabel = [UILabel multilineLabelWithText:aComment.owner.name font:authorFont width:tableView.frame.size.width - 20];
+        authorLabel.tag = authorTag;
         CGRect frame = authorLabel.frame;
         frame.origin.x = 10;
         frame.origin.y = 80;
@@ -225,6 +228,7 @@
     if (!dateLabel) {
         UIFont *dateFont = [UIFont systemFontOfSize:13];
         dateLabel = [UILabel multilineLabelWithText:dateString font:dateFont width:tableView.frame.size.width - 20];
+        dateLabel.tag = dateTag;
         CGRect frame = dateLabel.frame;
         frame.origin.x = 160;
         frame.origin.y = 80;

@@ -83,9 +83,9 @@
     if (!self.connection) {
         self.connection = [[[ConnectionWrapper alloc] initWithDelegate:self] autorelease];
     }
-    [self.connection requestDataFromURL:[NSURL URLWithString:self.imageURL] allowCachedResponse:YES];
-    
-    [(KGOAppDelegate *)[[UIApplication sharedApplication] delegate] showNetworkActivityIndicator];
+    if ([self.connection requestDataFromURL:[NSURL URLWithString:self.imageURL] allowCachedResponse:YES]) {    
+        [(KGOAppDelegate *)[[UIApplication sharedApplication] delegate] showNetworkActivityIndicator];
+    }
     
     self.imageData = nil;
     

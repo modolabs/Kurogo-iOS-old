@@ -1,22 +1,18 @@
 #import <UIKit/UIKit.h>
 #import "KGOSocialMediaController.h"
 #import "Facebook.h"
+#import "FacebookMediaViewController.h"
 
 @class IconGrid;
 
 // still deciding how FB wrapper work should be allocated
 // between KGOSocialMediaController and this class.
 // since this is a facebook module it would be fine to put as much fb stuff in here as we want
-@interface FacebookVideosViewController : UIViewController <FacebookWrapperDelegate,
-FBRequestDelegate> {
-    
-    NSMutableArray *_fbRequestQueue;
-    FBRequest *_groupsRequest;
-    FBRequest *_videosRequest;
-    FBRequest *_feedRequest;
+@interface FacebookVideosViewController : FacebookMediaViewController <UITableViewDataSource, UITableViewDelegate> {
 
-    IconGrid *_iconGrid;
-    NSMutableArray *_icons;
+    UITableView *_tableView;
+    
+    NSMutableArray *_videos;
     NSMutableSet *_videoIDs;
     
     NSString *_gid;

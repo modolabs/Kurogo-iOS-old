@@ -21,6 +21,9 @@ NSString * const FacebookPhotoEntityName = @"FacebookPhoto";
     
     FacebookPhoto *photo = nil;
     id identifier = [dictionary objectForKey:@"object_id"];
+    if (!identifier) {
+        identifier = [dictionary objectForKey:@"id"];
+    }
     // not sure yet if this is a string or number or if anything else is possible
     NSLog(@"object_id is %@ of type %@", identifier, [[identifier class] description]);
     

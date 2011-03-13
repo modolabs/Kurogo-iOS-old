@@ -3,7 +3,7 @@
 #import "KGOAppDelegate.h"
 #import "JSONAPIRequest.h"
 #import "Foundation+KGOAdditions.h"
-#import "FacebookPost.h"
+#import "FacebookParentPost.h"
 
 NSString * const KGOSocialMediaTypeFacebook = @"Facebook";
 NSString * const KGOSocialMediaTypeTwitter = @"Twitter";
@@ -39,7 +39,7 @@ NSString * const FacebookDidLogoutNotification = @"FBDidLogout";
 
 @interface KGOSocialMediaController (Private)
 
-- (BOOL)connectFacebookRequest:(FBRequest *)request withReceiver:(id)receiver callback:(SEL)callback;
+- (BOOL)queueFacebookRequest:(FBRequest *)request withReceiver:(id)receiver callback:(SEL)callback;
 
 @end
 
@@ -498,14 +498,14 @@ static KGOSocialMediaController *s_controller = nil;
 
 #pragma mark Facebook request wrappers
 
-- (BOOL)connectFacebookRequest:(FBRequest *)request withReceiver:(id)receiver callback:(SEL)callback {
+- (BOOL)queueFacebookRequest:(FBRequest *)request withReceiver:(id)receiver callback:(SEL)callback {
     if ([receiver respondsToSelector:callback]) {
+        NSLog(@"queueing request %@ params %@", request.url, request.params);
         FBRequestIdentifier *identifier = [[[FBRequestIdentifier alloc] init] autorelease];
         identifier.receiver = receiver;
         identifier.callback = callback;
         [_fbRequestIdentifiers addObject:identifier];
         [_fbRequestQueue addObject:request];
-        [request connect];
         return YES;
     }
     return NO;
@@ -514,7 +514,7 @@ static KGOSocialMediaController *s_controller = nil;
 - (FBRequest *)requestFacebookGraphPath:(NSString *)graphPath receiver:(id)receiver callback:(SEL)callback {
     DLog(@"requesting graph path: %@", graphPath);
     FBRequest *request = [_facebook requestWithGraphPath:graphPath andDelegate:self];
-    if ([self connectFacebookRequest:request withReceiver:receiver callback:callback]) {
+    if ([self queueFacebookRequest:request withReceiver:receiver callback:callback]) {
         return request;
     }
     return nil;
@@ -524,7 +524,8 @@ static KGOSocialMediaController *s_controller = nil;
     DLog(@"requesting FQL: %@", query);
     NSMutableDictionary *params = [NSMutableDictionary dictionaryWithObject:query forKey:@"query"];
     FBRequest *request = [_facebook requestWithMethodName:@"fql.query" andParams:params andHttpMethod:@"GET" andDelegate:self];
-    if ([self connectFacebookRequest:request withReceiver:receiver callback:callback]) {
+    if ([self queueFacebookRequest:request withReceiver:receiver callback:callback]) {
+        [request connect];
         return request;
     }
     return nil;
@@ -542,7 +543,7 @@ static KGOSocialMediaController *s_controller = nil;
                                                andParams:[NSMutableDictionary dictionary]
                                            andHttpMethod:@"POST"
                                              andDelegate:self];
-    if ([self connectFacebookRequest:request withReceiver:receiver callback:callback]) {
+    if ([self queueFacebookRequest:request withReceiver:receiver callback:callback]) {
         return request;
     }
     return nil;
@@ -554,19 +555,20 @@ static KGOSocialMediaController *s_controller = nil;
                                                andParams:[NSMutableDictionary dictionary] // see comment above.
                                            andHttpMethod:@"DELETE"
                                              andDelegate:self];
-    if ([self connectFacebookRequest:request withReceiver:receiver callback:callback]) {
+    if ([self queueFacebookRequest:request withReceiver:receiver callback:callback]) {
         return request;
     }
     return nil;
 }
 
-- (FBRequest *)addComment:(NSString *)comment toFacebookPost:(FacebookPost *)post receiver:(id)receiver callback:(SEL)callback {
+- (FBRequest *)addComment:(NSString *)comment toFacebookPost:(FacebookParentPost *)post receiver:(id)receiver callback:(SEL)callback {
     NSMutableDictionary *params = [NSMutableDictionary dictionaryWithObjectsAndKeys:comment, @"message", nil];
-    FBRequest *request = [_facebook requestWithGraphPath:[NSString stringWithFormat:@"%@/comments", post.identifier]
+    NSString *graphPath = post.commentPath.length ? post.commentPath : post.identifier;
+    FBRequest *request = [_facebook requestWithGraphPath:[NSString stringWithFormat:@"%@/comments", graphPath]
                                                andParams:params
                                            andHttpMethod:@"POST"
                                              andDelegate:self];
-    if ([self connectFacebookRequest:request withReceiver:receiver callback:callback]) {
+    if ([self queueFacebookRequest:request withReceiver:receiver callback:callback]) {
         return request;
     }
     return nil;

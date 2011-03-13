@@ -7,6 +7,7 @@
 @interface FacebookParentPost : FacebookPost {
 @private
 }
+@property (nonatomic, retain) NSString * commentPath;
 @property (nonatomic, retain) NSSet* likes;
 @property (nonatomic, retain) NSSet* comments;
 
