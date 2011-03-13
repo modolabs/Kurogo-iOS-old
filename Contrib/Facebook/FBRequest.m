@@ -282,7 +282,6 @@ static const NSTimeInterval kTimeoutInterval = 180.0;
   }
 
   NSString* url = [[self class] serializeURL:_url params:_params httpMethod:_httpMethod];
-    NSLog(@"facebook: requesting %@", url);
   NSMutableURLRequest* request =
     [NSMutableURLRequest requestWithURL:[NSURL URLWithString:url]
                             cachePolicy:NSURLRequestReloadIgnoringLocalCacheData

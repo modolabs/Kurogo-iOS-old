@@ -2,6 +2,15 @@
 #import "UIKit+KGOAdditions.h"
 #import "Foundation+KGOAdditions.h"
 #import "KGOSocialMediaController.h"
+#import "KGOAppDelegate.h"
+
+@interface FacebookPhotoDetailViewController (Private)
+
+- (void)getCommentsForPhoto;
+
+@end
+
+
 
 @implementation FacebookPhotoDetailViewController
 
@@ -32,7 +41,10 @@
 #pragma mark -
 
 - (IBAction)commentButtonPressed:(UIBarButtonItem *)sender {
-
+    FacebookCommentViewController *vc = [[[FacebookCommentViewController alloc] initWithNibName:@"FacebookCommentViewController" bundle:nil] autorelease];
+    vc.delegate = self;
+    vc.post = self.photo;
+    [(KGOAppDelegate *)[[UIApplication sharedApplication] delegate] presentAppModalViewController:vc animated:YES];
 }
 
 - (IBAction)likeButtonPressed:(UIBarButtonItem *)sender {
@@ -46,7 +58,7 @@
 
 - (void)didLikePhoto:(id)result {
     DLog(@"%@", [result description]);
-    if ([result isKindOfClass:[NSDictionary class]] && [[result stringForKey:@"result"] isEqualToString:@"true"]) {
+    if ([result isKindOfClass:[NSDictionary class]] && [[result stringForKey:@"result" nilIfEmpty:YES] isEqualToString:@"true"]) {
         _likeButton.enabled = YES;
         _likeButton.title = @"Unlike";
     }
@@ -54,7 +66,7 @@
 
 - (void)didUnikePhoto:(id)result {
     NSLog(@"%@", [result description]);
-    if ([result isKindOfClass:[NSDictionary class]] && [[result stringForKey:@"result"] isEqualToString:@"true"]) {
+    if ([result isKindOfClass:[NSDictionary class]] && [[result stringForKey:@"result" nilIfEmpty:YES] isEqualToString:@"true"]) {
         _likeButton.enabled = YES;
         _likeButton.title = @"Like";
     }
@@ -69,17 +81,20 @@
     _thumbnail.imageData = self.photo.data;
     [_thumbnail loadImage];
     
-    if (!self.photo.comments) {
-        NSString *path = [NSString stringWithFormat:@"%@/comments", self.photo.identifier];
-        [[KGOSocialMediaController sharedController] requestFacebookGraphPath:path
-                                                                     receiver:self
-                                                                     callback:@selector(didReceiveComments:)];
+    if (!self.photo.comments.count) {
+        [self getCommentsForPhoto];
     }
-    
-    [_tableView reloadData];
+}
+
+- (void)getCommentsForPhoto {
+    NSString *path = [NSString stringWithFormat:@"%@/comments", self.photo.identifier];
+    [[KGOSocialMediaController sharedController] requestFacebookGraphPath:path
+                                                                 receiver:self
+                                                                 callback:@selector(didReceiveComments:)];
 }
 
 - (void)didReceiveComments:(id)result {
+    NSLog(@"%@", [result description]);
     if ([result isKindOfClass:[NSDictionary class]]) {
         NSDictionary *resultDict = (NSDictionary *)result;
         NSArray *comments = [resultDict arrayForKey:@"data"];
@@ -88,6 +103,11 @@
             aComment.parent = self.photo;
         }
     }
+    [_tableView reloadData];
+}
+
+- (void)didPostComment:(FacebookComment *)aComment {
+    aComment.parent = self.photo;
     [_tableView reloadData];
 }
 
@@ -110,6 +130,8 @@
         KGODetailPager *pager = [[[KGODetailPager alloc] initWithPagerController:self delegate:self] autorelease];
         self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithCustomView:pager] autorelease];
     }
+    
+    [self displayPhoto];
 }
 
 - (void)viewDidUnload
@@ -132,6 +154,7 @@
     
     self.photo = (FacebookPhoto *)content;
     [self displayPhoto];
+    [_tableView reloadData];
 }
 
 - (NSInteger)numberOfSections:(KGODetailPager *)pager {

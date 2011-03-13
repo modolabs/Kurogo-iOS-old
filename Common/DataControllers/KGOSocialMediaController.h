@@ -119,6 +119,7 @@ FBSessionDelegate, FBDialogDelegate, FBRequestDelegate> {
 - (FBRequest *)requestFacebookFQL:(NSString *)query receiver:(id)receiver callback:(SEL)callback;
 - (FBRequest *)likeFacebookPost:(FacebookPost *)post receiver:(id)receiver callback:(SEL)callback;
 - (FBRequest *)unlikeFacebookPost:(FacebookPost *)post receiver:(id)receiver callback:(SEL)callback;
+- (FBRequest *)addComment:(NSString *)comment toFacebookPost:(FacebookPost *)post receiver:(id)receiver callback:(SEL)callback;
 
 - (void)disconnectFacebookRequests:(id)receiver;
 

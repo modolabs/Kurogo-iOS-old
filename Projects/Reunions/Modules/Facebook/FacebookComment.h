@@ -11,5 +11,6 @@
 @property (nonatomic, retain) FacebookParentPost * parent;
 
 + (FacebookComment *)commentWithDictionary:(NSDictionary *)dictionary;
++ (FacebookComment *)commentWithID:(NSString *)commentID;
 
 @end

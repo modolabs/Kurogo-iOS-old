@@ -2,9 +2,10 @@
 #import "FacebookModel.h"
 #import "KGODetailPager.h"
 #import "MITThumbnailView.h"
+#import "FacebookCommentViewController.h"
 
 @interface FacebookPhotoDetailViewController : UIViewController <UITableViewDataSource, UITableViewDelegate,
-KGODetailPagerController, KGODetailPagerDelegate> {
+KGODetailPagerController, KGODetailPagerDelegate, FacebookCommentDelegate> {
     IBOutlet UITableView *_tableView;
     IBOutlet UIBarButtonItem *_commentButton;
     IBOutlet UIBarButtonItem *_likeButton;

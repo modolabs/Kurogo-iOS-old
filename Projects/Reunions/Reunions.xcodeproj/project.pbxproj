@@ -95,6 +95,8 @@
 		EB390303132BFE5D008C90CA /* FacebookUser.m in Sources */ = {isa = PBXBuildFile; fileRef = EB390302132BFE5B008C90CA /* FacebookUser.m */; };
 		EB390307132C45F8008C90CA /* FacebookPhotoDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EB390305132C45F5008C90CA /* FacebookPhotoDetailViewController.m */; };
 		EB390308132C45F8008C90CA /* FacebookPhotoDetailViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = EB390306132C45F6008C90CA /* FacebookPhotoDetailViewController.xib */; };
+		EB39030C132C77D0008C90CA /* FacebookCommentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EB39030A132C779E008C90CA /* FacebookCommentViewController.m */; };
+		EB39030D132C77D0008C90CA /* FacebookCommentViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = EB39030B132C77B2008C90CA /* FacebookCommentViewController.xib */; };
 		EB46C94A132590F900AF7B5C /* PhotosModule.m in Sources */ = {isa = PBXBuildFile; fileRef = EB46C941132590F900AF7B5C /* PhotosModule.m */; };
 		EB46C94B132590F900AF7B5C /* FacebookPhotosViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EB46C943132590F900AF7B5C /* FacebookPhotosViewController.m */; };
 		EB46C94C132590F900AF7B5C /* VideosModule.m in Sources */ = {isa = PBXBuildFile; fileRef = EB46C947132590F900AF7B5C /* VideosModule.m */; };
@@ -379,6 +381,9 @@
 		EB390304132C45F4008C90CA /* FacebookPhotoDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FacebookPhotoDetailViewController.h; sourceTree = "<group>"; };
 		EB390305132C45F5008C90CA /* FacebookPhotoDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FacebookPhotoDetailViewController.m; sourceTree = "<group>"; };
 		EB390306132C45F6008C90CA /* FacebookPhotoDetailViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FacebookPhotoDetailViewController.xib; sourceTree = "<group>"; };
+		EB390309132C779B008C90CA /* FacebookCommentViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FacebookCommentViewController.h; sourceTree = "<group>"; };
+		EB39030A132C779E008C90CA /* FacebookCommentViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FacebookCommentViewController.m; sourceTree = "<group>"; };
+		EB39030B132C77B2008C90CA /* FacebookCommentViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FacebookCommentViewController.xib; sourceTree = "<group>"; };
 		EB46C940132590F900AF7B5C /* PhotosModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhotosModule.h; sourceTree = "<group>"; };
 		EB46C941132590F900AF7B5C /* PhotosModule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PhotosModule.m; sourceTree = "<group>"; };
 		EB46C942132590F900AF7B5C /* FacebookPhotosViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FacebookPhotosViewController.h; sourceTree = "<group>"; };
@@ -931,6 +936,9 @@
 				EB46CBBB132AE53F00AF7B5C /* Model */,
 				EB358ACD1309F9CE000250AD /* FacebookModule.h */,
 				EB358ACE1309F9CE000250AD /* FacebookModule.m */,
+				EB390309132C779B008C90CA /* FacebookCommentViewController.h */,
+				EB39030A132C779E008C90CA /* FacebookCommentViewController.m */,
+				EB39030B132C77B2008C90CA /* FacebookCommentViewController.xib */,
 			);
 			path = Facebook;
 			sourceTree = "<group>";
@@ -1309,6 +1317,7 @@
 				EB46CAE41328352200AF7B5C /* MapHomeViewController-iPad.xib in Resources */,
 				EB46CBB6132A7D0100AF7B5C /* FacebookMediaViewController.xib in Resources */,
 				EB390308132C45F8008C90CA /* FacebookPhotoDetailViewController.xib in Resources */,
+				EB39030D132C77D0008C90CA /* FacebookCommentViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1453,6 +1462,7 @@
 				EB390300132BFE2C008C90CA /* FacebookPost.m in Sources */,
 				EB390303132BFE5D008C90CA /* FacebookUser.m in Sources */,
 				EB390307132C45F8008C90CA /* FacebookPhotoDetailViewController.m in Sources */,
+				EB39030C132C77D0008C90CA /* FacebookCommentViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -531,8 +531,7 @@ static KGOSocialMediaController *s_controller = nil;
 }
 
 - (FBRequest *)likeFacebookPost:(FacebookPost *)post receiver:(id)receiver callback:(SEL)callback {
-    NSString *postID = post.identifier;
-    NSString *graphPath = [NSString stringWithFormat:@"%@/likes", postID];
+    NSString *graphPath = [NSString stringWithFormat:@"%@/likes", post.identifier];
     // Facebook's internal method expects a NSMutableDictionary that it then
     // populates with access token and other boilerplate.  passing nil for
     // params causes all those populating steps to do nothing, resulting in an
@@ -550,8 +549,7 @@ static KGOSocialMediaController *s_controller = nil;
 }
 
 - (FBRequest *)unlikeFacebookPost:(FacebookPost *)post receiver:(id)receiver callback:(SEL)callback {
-    NSString *postID = post.identifier;
-    NSString *graphPath = [NSString stringWithFormat:@"%@/likes", postID];
+    NSString *graphPath = [NSString stringWithFormat:@"%@/likes", post.identifier];
     FBRequest *request = [_facebook requestWithGraphPath:graphPath
                                                andParams:[NSMutableDictionary dictionary] // see comment above.
                                            andHttpMethod:@"DELETE"
@@ -562,6 +560,17 @@ static KGOSocialMediaController *s_controller = nil;
     return nil;
 }
 
+- (FBRequest *)addComment:(NSString *)comment toFacebookPost:(FacebookPost *)post receiver:(id)receiver callback:(SEL)callback {
+    NSMutableDictionary *params = [NSMutableDictionary dictionaryWithObjectsAndKeys:comment, @"message", nil];
+    FBRequest *request = [_facebook requestWithGraphPath:[NSString stringWithFormat:@"%@/comments", post.identifier]
+                                               andParams:params
+                                           andHttpMethod:@"POST"
+                                             andDelegate:self];
+    if ([self connectFacebookRequest:request withReceiver:receiver callback:callback]) {
+        return request;
+    }
+    return nil;
+}
 
 - (void)disconnectFacebookRequests:(id)receiver {
     NSArray *identifiers = [[_fbRequestIdentifiers copy] autorelease];
