@@ -27,6 +27,7 @@
 */
 - (void)dealloc
 {
+    [_comments release];
     [super dealloc];
 }
 
@@ -103,8 +104,13 @@
             FacebookComment *aComment = [FacebookComment commentWithDictionary:commentData];
             aComment.parent = self.photo;
         }
+        
+        NSSortDescriptor *sort = [NSSortDescriptor sortDescriptorWithKey:@"date" ascending:YES];
+        [_comments release];
+        _comments = [[self.photo.comments sortedArrayUsingDescriptors:[NSArray arrayWithObject:sort]] retain];
+        
+        [_tableView reloadData];
     }
-    [_tableView reloadData];
 }
 
 - (void)didPostComment:(FacebookComment *)aComment {
@@ -117,7 +123,10 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    // Do any additional setup after loading the view from its nib.
+    
+    NSSortDescriptor *sort = [NSSortDescriptor sortDescriptorWithKey:@"date" ascending:YES];
+    [_comments release];
+    _comments = [[self.photo.comments sortedArrayUsingDescriptors:[NSArray arrayWithObject:sort]] retain];
     
     _tableView.rowHeight = 100;
     CGRect frame = self.view.bounds;
@@ -155,6 +164,11 @@
     
     self.photo = (FacebookPhoto *)content;
     [self displayPhoto];
+    
+    NSSortDescriptor *sort = [NSSortDescriptor sortDescriptorWithKey:@"date" ascending:YES];
+    [_comments release];
+    _comments = [[self.photo.comments sortedArrayUsingDescriptors:[NSArray arrayWithObject:sort]] retain];
+    
     [_tableView reloadData];
 }
 
@@ -178,11 +192,12 @@
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return self.photo.comments.count;
+    return _comments.count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     FacebookComment *aComment = [_comments objectAtIndex:indexPath.row];
+    NSLog(@"%@", [aComment description]);
     
     static NSString *CellIdentifier = @"Cell";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];

@@ -20,9 +20,9 @@ NSString * const FacebookPhotoEntityName = @"FacebookPhoto";
 + (FacebookPhoto *)photoWithDictionary:(NSDictionary *)dictionary {
     
     FacebookPhoto *photo = nil;
-    id identifier = [dictionary objectForKey:@"object_id"];
+    id identifier = [dictionary objectForKey:@"object_id"]; // via feed or FQL
     if (!identifier) {
-        identifier = [dictionary objectForKey:@"id"];
+        identifier = [dictionary objectForKey:@"id"]; // via Photo Graph API
     }
     // not sure yet if this is a string or number or if anything else is possible
     NSLog(@"object_id is %@ of type %@", identifier, [[identifier class] description]);
@@ -35,33 +35,18 @@ NSString * const FacebookPhotoEntityName = @"FacebookPhoto";
             photo = [[CoreDataManager sharedManager] insertNewObjectForEntityForName:FacebookPhotoEntityName];
             photo.identifier = identifier;
             
-            // TODO: figure out whether these attributes of photos ever change -- 
-            // if so we need to put these lines outside the enclosing if statement
-            photo.src = [dictionary stringForKey:@"source" nilIfEmpty:YES]; // from Graph API
+            photo.src = [dictionary stringForKey:@"picture" nilIfEmpty:YES]; // from feed
+            if (!photo.src) {
+                photo.src = [dictionary stringForKey:@"source" nilIfEmpty:YES]; // from Graph API
+            }
             if (!photo.src) {
                 photo.src = [dictionary objectForKey:@"src"]; // from FQL
-            }
-            
-            CGFloat width = [dictionary floatForKey:@"width"]; // graph
-            if (!width) {
-                width = [[dictionary objectForKey:@"src_width"] floatValue]; // fql
-            }
-            if (width) {
-                photo.width = [NSNumber numberWithFloat:width];
-            }
-            
-            CGFloat height = [dictionary floatForKey:@"height"]; // graph
-            if (!height) {
-                height = [[dictionary objectForKey:@"src_height"] floatValue]; // fql
-            }
-            if (height) {
-                photo.height = [NSNumber numberWithFloat:height];
             }
             
             // TODO: decide if we're using created_time (created) or updated_time (modified)
             NSString *createdTime = [dictionary stringForKey:@"created_time" nilIfEmpty:YES]; // graph
             if (!createdTime) {
-                createdTime = [dictionary stringForKey:@"created" nilIfEmpty:YES];
+                createdTime = [dictionary stringForKey:@"created" nilIfEmpty:YES]; // fql
             }
             if (createdTime) {
                 // graph API returns RFC3339 strings
@@ -72,7 +57,24 @@ NSString * const FacebookPhotoEntityName = @"FacebookPhoto";
             }
         }
         
-        // attributes that might change
+        // attributes that can change, or that we might get through different API's
+        
+        CGFloat width = [dictionary floatForKey:@"width"]; // graph
+        if (!width) {
+            width = [[dictionary objectForKey:@"src_width"] floatValue]; // fql
+        }
+        if (width) {
+            photo.width = [NSNumber numberWithFloat:width];
+        }
+        
+        CGFloat height = [dictionary floatForKey:@"height"]; // graph
+        if (!height) {
+            height = [[dictionary objectForKey:@"src_height"] floatValue]; // fql
+        }
+        if (height) {
+            photo.height = [NSNumber numberWithFloat:height];
+        }
+        
         NSString *theTitle = [dictionary stringForKey:@"name" nilIfEmpty:YES]; // graph
         if (!theTitle) {
             theTitle = [dictionary stringForKey:@"caption" nilIfEmpty:YES]; // fql
