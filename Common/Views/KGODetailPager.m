@@ -1,5 +1,6 @@
 #import "KGODetailPager.h"
 #import "UIKit+KGOAdditions.h"
+#import "KGOTheme.h"
 
 static NSString * UpArrowImage = @"common/arrow-white-up.png";
 static NSString * DownArrowImage = @"common/arrow-white-down.png";
@@ -26,6 +27,9 @@ static NSString * DownArrowImage = @"common/arrow-white-down.png";
 - (id)initWithPagerController:(id<KGODetailPagerController>)controller delegate:(id<KGODetailPagerDelegate>)delegate {
     self = [super initWithItems:[NSArray arrayWithObjects:[UIImage imageWithPathName:UpArrowImage], [UIImage imageWithPathName:DownArrowImage], nil]];
     if (self) {
+        self.segmentedControlStyle = UISegmentedControlStyleBar;
+        self.tintColor = [[KGOTheme sharedTheme] tintColorForNavBar];
+        
 		_pagerController = controller;
 		_pagerDelegate = delegate;
 		
