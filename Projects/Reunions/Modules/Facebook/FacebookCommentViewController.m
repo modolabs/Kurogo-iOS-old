@@ -1,8 +1,8 @@
 #import "FacebookCommentViewController.h"
-#import "FacebookPost.h"
+#import "FacebookParentPost.h"
 #import "FacebookComment.h"
 #import <QuartzCore/QuartzCore.h>
-#import "KGOSocialMediaController.h"
+#import "KGOSocialMediaController+FacebookAPI.h"
 #import "KGOAppDelegate.h"
 #import "KGOTheme.h"
 #import "Foundation+KGOAdditions.h"

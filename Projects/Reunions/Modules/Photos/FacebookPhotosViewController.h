@@ -1,6 +1,4 @@
 #import <UIKit/UIKit.h>
-#import "KGOSocialMediaController.h"
-#import "Facebook.h"
 #import "FacebookMediaViewController.h"
 #import "IconGrid.h"
 #import "MITThumbnailView.h"

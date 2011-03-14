@@ -1,5 +1,6 @@
 #import "FacebookMediaViewController.h"
-#import "KGOSocialMediaController.h"
+#import "KGOSocialMediaController+FacebookAPI.h"
+#import "FacebookUser.h"
 
 @implementation FacebookMediaViewController
 
@@ -29,12 +30,14 @@
     _loginView.hidden = YES;
     _loginView.alpha = 0;
     
-    NSString *displayName = [[KGOSocialMediaController sharedController] facebookDisplayName];
-    NSString *html = [NSString stringWithFormat:
-                      @"<body style=\"background-color:transparent\">"
-                      "Logged in as %@ (<a href=\"#\" style=\"color:#9999ff\">Not You?</a>)"
-                      "</body>", displayName];
-    [_signedInUserView loadHTMLString:html baseURL:nil];
+    FacebookUser *user = [[KGOSocialMediaController sharedController] currentFacebookUser];
+    if (user) {
+        NSString *html = [NSString stringWithFormat:
+                          @"<body style=\"background-color:transparent\">"
+                          "Logged in as %@ (<a href=\"#\" style=\"color:#9999ff\">Not You?</a>)"
+                          "</body>", user.name];
+        [_signedInUserView loadHTMLString:html baseURL:nil];
+    }
 }
 
 #pragma mark - Web view delegate
@@ -106,13 +109,13 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     
-    NSString *name = [[KGOSocialMediaController sharedController] facebookDisplayName];
-    if (!name) {
+    if (![[KGOSocialMediaController sharedController] isFacebookLoggedIn]) {
         [self showLoginView];
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(facebookDidLogin:)
                                                      name:FacebookDidLoginNotification
                                                    object:nil];
+        [[KGOSocialMediaController sharedController] loginFacebook];
     } else {
         [self hideLoginView];
         [self facebookDidLogin:nil];

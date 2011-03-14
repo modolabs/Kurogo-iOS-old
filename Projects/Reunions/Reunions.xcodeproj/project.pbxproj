@@ -86,6 +86,7 @@
 		EB181B241317577D003728FF /* KGOPerson.m in Sources */ = {isa = PBXBuildFile; fileRef = EB181B221317577D003728FF /* KGOPerson.m */; };
 		EB1B88711324A4B800108A8F /* MainWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = EB1B88701324A4B800108A8F /* MainWindow.xib */; };
 		EB1B88781324A62100108A8F /* common in Resources */ = {isa = PBXBuildFile; fileRef = EB1B88771324A62100108A8F /* common */; };
+		EB214BC4132E67450093AA7D /* KGOSocialMediaController+FacebookAPI.m in Sources */ = {isa = PBXBuildFile; fileRef = EB214BC3132E67450093AA7D /* KGOSocialMediaController+FacebookAPI.m */; };
 		EB358AD01309F9CE000250AD /* FacebookModule.m in Sources */ = {isa = PBXBuildFile; fileRef = EB358ACE1309F9CE000250AD /* FacebookModule.m */; };
 		EB358FAD130B3778000250AD /* IconGrid.m in Sources */ = {isa = PBXBuildFile; fileRef = EB358FAB130B3778000250AD /* IconGrid.m */; };
 		EB358FB1130B395D000250AD /* MITThumbnailView.m in Sources */ = {isa = PBXBuildFile; fileRef = EB358FAF130B395D000250AD /* MITThumbnailView.m */; };
@@ -363,6 +364,8 @@
 		EB181B221317577D003728FF /* KGOPerson.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGOPerson.m; sourceTree = "<group>"; };
 		EB1B88701324A4B800108A8F /* MainWindow.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = MainWindow.xib; path = ../../../Resources/MainWindow.xib; sourceTree = "<group>"; };
 		EB1B88771324A62100108A8F /* common */ = {isa = PBXFileReference; lastKnownFileType = folder; path = common; sourceTree = "<group>"; };
+		EB214BC2132E67450093AA7D /* KGOSocialMediaController+FacebookAPI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "KGOSocialMediaController+FacebookAPI.h"; sourceTree = "<group>"; };
+		EB214BC3132E67450093AA7D /* KGOSocialMediaController+FacebookAPI.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "KGOSocialMediaController+FacebookAPI.m"; sourceTree = "<group>"; };
 		EB358ACD1309F9CE000250AD /* FacebookModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FacebookModule.h; sourceTree = "<group>"; };
 		EB358ACE1309F9CE000250AD /* FacebookModule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FacebookModule.m; sourceTree = "<group>"; };
 		EB358FAA130B3778000250AD /* IconGrid.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IconGrid.h; sourceTree = "<group>"; };
@@ -939,6 +942,8 @@
 				EB390309132C779B008C90CA /* FacebookCommentViewController.h */,
 				EB39030A132C779E008C90CA /* FacebookCommentViewController.m */,
 				EB39030B132C77B2008C90CA /* FacebookCommentViewController.xib */,
+				EB214BC2132E67450093AA7D /* KGOSocialMediaController+FacebookAPI.h */,
+				EB214BC3132E67450093AA7D /* KGOSocialMediaController+FacebookAPI.m */,
 			);
 			path = Facebook;
 			sourceTree = "<group>";
@@ -1463,6 +1468,7 @@
 				EB390303132BFE5D008C90CA /* FacebookUser.m in Sources */,
 				EB390307132C45F8008C90CA /* FacebookPhotoDetailViewController.m in Sources */,
 				EB39030C132C77D0008C90CA /* FacebookCommentViewController.m in Sources */,
+				EB214BC4132E67450093AA7D /* KGOSocialMediaController+FacebookAPI.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

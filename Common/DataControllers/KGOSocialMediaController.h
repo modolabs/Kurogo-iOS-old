@@ -47,10 +47,6 @@ extern NSString * const FacebookDidLogoutNotification;
 
 @end
 
-// TODO: including this means all projects need the current Facebook module
-// need a way to make it optional
-@class FacebookPost;
-
 @interface KGOSocialMediaController : NSObject <UIActionSheetDelegate,
 MGTwitterEngineDelegate, ConnectionWrapperDelegate,
 FBSessionDelegate, FBDialogDelegate, FBRequestDelegate> {
@@ -64,6 +60,10 @@ FBSessionDelegate, FBDialogDelegate, FBRequestDelegate> {
 
 	Facebook *_facebook;
     NSInteger _facebookStartupCount;
+    
+    // these objects are mutated by functions in the (FacebookAPI) category
+    // of this class.  if (FacebookAPI) is not included, these will be empty
+    // from start to finish.
     NSMutableArray *_fbRequestQueue;
     NSMutableArray *_fbRequestIdentifiers;
     FBRequest *_fbSelfRequest;
@@ -112,16 +112,7 @@ FBSessionDelegate, FBDialogDelegate, FBRequestDelegate> {
 #pragma mark Facebook
 
 - (BOOL)isFacebookLoggedIn;
-- (NSString *)facebookDisplayName;
 - (void)parseCallbackURL:(NSURL *)url;
-
-- (FBRequest *)requestFacebookGraphPath:(NSString *)graphPath receiver:(id)receiver callback:(SEL)callback;
-- (FBRequest *)requestFacebookFQL:(NSString *)query receiver:(id)receiver callback:(SEL)callback;
-- (FBRequest *)likeFacebookPost:(FacebookPost *)post receiver:(id)receiver callback:(SEL)callback;
-- (FBRequest *)unlikeFacebookPost:(FacebookPost *)post receiver:(id)receiver callback:(SEL)callback;
-- (FBRequest *)addComment:(NSString *)comment toFacebookPost:(FacebookPost *)post receiver:(id)receiver callback:(SEL)callback;
-
-- (void)disconnectFacebookRequests:(id)receiver;
 
 - (void)shareOnFacebook:(NSString *)attachment prompt:(NSString *)prompt;
 

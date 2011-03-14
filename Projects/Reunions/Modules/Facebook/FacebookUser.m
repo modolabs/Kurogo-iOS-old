@@ -8,6 +8,7 @@ NSString * const FacebookUserEntityName = @"FacebookUser";
 @implementation FacebookUser
 @dynamic name;
 @dynamic identifier;
+@dynamic isSelf;
 @dynamic posts;
 
 + (FacebookUser *)userWithID:(NSString *)anIdentifier {

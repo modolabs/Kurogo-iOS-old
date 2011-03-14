@@ -8,7 +8,7 @@
 
 @end
 
-@class FacebookPost;
+@class FacebookParentPost;
 
 @interface FacebookCommentViewController : UIViewController <UITextViewDelegate> {
     
@@ -19,7 +19,7 @@
     
 }
 
-@property(nonatomic, retain) FacebookPost *post;
+@property(nonatomic, retain) FacebookParentPost *post;
 @property(nonatomic, assign) id<FacebookCommentDelegate> delegate;
 
 - (IBAction)submitButtonPressed:(UIButton *)sender;

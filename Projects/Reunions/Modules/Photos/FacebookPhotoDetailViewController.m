@@ -1,7 +1,7 @@
 #import "FacebookPhotoDetailViewController.h"
 #import "UIKit+KGOAdditions.h"
 #import "Foundation+KGOAdditions.h"
-#import "KGOSocialMediaController.h"
+#import "KGOSocialMediaController+FacebookAPI.h"
 #import "KGOAppDelegate.h"
 
 @interface FacebookPhotoDetailViewController (Private)

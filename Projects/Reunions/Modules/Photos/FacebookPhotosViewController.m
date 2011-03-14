@@ -5,6 +5,7 @@
 #import <QuartzCore/QuartzCore.h>
 #import "CoreDataManager.h"
 #import "KGOAppDelegate+ModuleAdditions.h"
+#import "KGOSocialMediaController+FacebookAPI.h"
 
 @implementation FacebookPhotosViewController
 
