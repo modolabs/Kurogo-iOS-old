@@ -2,6 +2,7 @@
 #import "KGOSocialMediaController+FacebookAPI.h"
 #import "FacebookPhotosViewController.h"
 #import <QuartzCore/QuartzCore.h>
+#import "KGOAppDelegate.h"
 
 @implementation PhotoUploadViewController
 
@@ -19,7 +20,7 @@
 }
 
 - (void)cancelButtonPressed:(id)sender {
-    
+    [(KGOAppDelegate *)[[UIApplication sharedApplication] delegate] dismissAppModalViewControllerAnimated:YES];
 }
 
 /*

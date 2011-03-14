@@ -13,6 +13,7 @@
 }
 
 - (IBAction)submitButtonPressed:(UIButton *)sender;
+- (void)cancelButtonPressed:(id)sender;
 
 @property(nonatomic, retain) UIImage *photo;
 @property(nonatomic, retain) NSString *profile;

@@ -38,6 +38,7 @@
     for (KGOModule *aModule in allModules) {
         NSArray *moreViews = [aModule widgetViews];
         if (moreViews) {
+            DLog(@"preparing widgets for module %@", aModule.tag);
             for (KGOHomeScreenWidget *aWidget in moreViews) {
                 if (!aWidget.overlaps) {
                     switch (aWidget.gravity) {

@@ -9,9 +9,9 @@
 @interface FacebookPhotosViewController : FacebookMediaViewController <MITThumbnailDelegate, IconGridDelegate,
 UINavigationControllerDelegate, UIImagePickerControllerDelegate, FacebookUploadDelegate> {
     
-    // TODO: make the set track what photos have been displayed in the grid
     IconGrid *_iconGrid;
     NSMutableArray *_icons;
+    NSMutableSet *_displayedPhotos;
     NSMutableDictionary *_photosByID;
     NSMutableDictionary *_photosByThumbSrc;
 }

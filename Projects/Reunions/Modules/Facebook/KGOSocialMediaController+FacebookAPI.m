@@ -254,13 +254,9 @@
                 photo.title = [dictionary objectForKey:@"message"];
                 photo.height = [NSNumber numberWithFloat:image.size.height];
                 photo.width = [NSNumber numberWithFloat:image.size.width];
-                
-                // http://developer.apple.com/library/mac/#qa/qa2007/qa1509.html
-                CFDataRef data = CGDataProviderCopyData(CGImageGetDataProvider([image CGImage]));
-                photo.data = (NSData *)data;
-                CFRelease(data);
+                photo.data = UIImageJPEGRepresentation(image, 0.8);
             }
-
+            aPost = photo;
         }
         if (aPost) {
             aPost.date = [NSDate date]; // may not be totally accurate but it will be within one network roundtrip (~1 min)

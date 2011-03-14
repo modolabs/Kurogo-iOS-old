@@ -38,6 +38,7 @@
     _icons = [[NSMutableArray alloc] init];
     _photosByThumbSrc = [[NSMutableDictionary alloc] init];
     _photosByID = [[NSMutableDictionary alloc] init];
+    _displayedPhotos = [[NSMutableSet alloc] init];
     
     [self loadThumbnailsFromCache];
     
@@ -75,6 +76,7 @@
 
     [_iconGrid release];
     [_icons release];
+    [_displayedPhotos release];
     [_photosByThumbSrc release];
     [_photosByID release];
     [super dealloc];
@@ -84,29 +86,11 @@
 
 - (void)iconGridFrameDidChange:(IconGrid *)iconGrid {
     CGSize size = _scrollView.contentSize;
-    size.height = iconGrid.frame.size.height;
+    size.height = iconGrid.frame.size.height + _signedInUserView.frame.size.height;
     _scrollView.contentSize = size;
 }
 
 #pragma mark When we already have photos
-
-- (void)showUploadPhotoController:(id)sender
-{
-    UIImagePickerController *picker = [[[UIImagePickerController alloc] init] autorelease];
-    picker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
-    picker.delegate = self;
-    [(KGOAppDelegate *)[[UIApplication sharedApplication] delegate] presentAppModalViewController:picker animated:YES];
-}
-
-- (void)imagePickerController:(UIImagePickerController *)picker
-        didFinishPickingImage:(UIImage *)image
-                  editingInfo:(NSDictionary *)editingInfo
-{
-    NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:image, @"photo", _gid, @"profile", self, @"parentVC", nil];
-    [(KGOAppDelegate *)[[UIApplication sharedApplication] delegate] showPage:LocalPathPageNamePhotoUpload
-                                                                forModuleTag:PhotosTag
-                                                                      params:params];
-}
 
 - (void)loadThumbnailsFromCache {
     // TODO: sort by date or whatever
@@ -121,6 +105,10 @@
 
 - (void)displayPhoto:(FacebookPhoto *)photo
 {
+    if ([_displayedPhotos containsObject:photo.identifier]) {
+        return;
+    }
+    
     if (photo.thumbSrc || photo.thumbData || photo.data) { // omitting photo.src so we don't download full image until detail view
         FacebookThumbnail *thumbnail = [[[FacebookThumbnail alloc] initWithFrame:CGRectMake(0, 0, 90, 130)] autorelease];
         thumbnail.photo = photo;
@@ -129,6 +117,8 @@
         [_icons addObject:thumbnail];
         _iconGrid.icons = _icons;
         [_iconGrid setNeedsLayout];
+        
+        [_displayedPhotos addObject:photo.identifier];
     }
 }
 
@@ -152,13 +142,35 @@
     [(KGOAppDelegate *)[[UIApplication sharedApplication] delegate] showPage:LocalPathPageNameDetail forModuleTag:PhotosTag params:params];
 }
 
-#pragma mark KGOSocialMediaController facebook upload delegate
+#pragma mark Photo uploads
+
+- (void)showUploadPhotoController:(id)sender
+{
+    UIImagePickerController *picker = [[[UIImagePickerController alloc] init] autorelease];
+    picker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+    picker.delegate = self;
+    [(KGOAppDelegate *)[[UIApplication sharedApplication] delegate] presentAppModalViewController:picker animated:YES];
+}
+
+- (void)imagePickerController:(UIImagePickerController *)picker
+        didFinishPickingImage:(UIImage *)image
+                  editingInfo:(NSDictionary *)editingInfo
+{
+    NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:image, @"photo", _gid, @"profile", self, @"parentVC", nil];
+    [(KGOAppDelegate *)[[UIApplication sharedApplication] delegate] showPage:LocalPathPageNamePhotoUpload
+                                                                forModuleTag:PhotosTag
+                                                                      params:params];
+}
 
 - (void)uploadDidComplete:(FacebookPost *)result {
     [(KGOAppDelegate *)[[UIApplication sharedApplication] delegate] dismissAppModalViewControllerAnimated:YES];    
     
     FacebookPhoto *photo = (FacebookPhoto *)result;
     [_photosByID setObject:photo forKey:photo.identifier];
+    
+    [[KGOSocialMediaController sharedController] requestFacebookGraphPath:photo.identifier
+                                                                 receiver:self
+                                                                 callback:@selector(didReceivePhoto:)];
     
     [self displayPhoto:photo];
 }
@@ -218,11 +230,24 @@
         photoInfo = [result lastObject];
     }
     
-    FacebookPhoto *photo = [FacebookPhoto photoWithDictionary:photoInfo];
-    //NSLog(@"%@", [photo description]);
+    NSString * identifier = [photoInfo objectForKey:@"object_id"]; // via feed or FQL
+    if (!identifier) {
+        identifier = [photoInfo objectForKey:@"id"]; // via Photo Graph API
+    }
+    identifier = [NSString stringWithFormat:@"%@", identifier];
+    
+    FacebookPhoto *photo = [_photosByID objectForKey:identifier];
+    
     if (photo) {
-        [_photosByID setObject:photo forKey:photo.identifier];
+        [photo updateWithDictionary:photoInfo];
         [self displayPhoto:photo];
+        
+    } else {
+        photo = [FacebookPhoto photoWithDictionary:photoInfo];
+        if (photo) {
+            [_photosByID setObject:photo forKey:photo.identifier];
+            [self displayPhoto:photo];
+        }
     }
 }
 

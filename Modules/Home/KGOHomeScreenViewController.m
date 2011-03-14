@@ -130,6 +130,8 @@
         // Add properties for accessibility/automation visibility.
         anIcon.isAccessibilityElement = YES;
         anIcon.accessibilityLabel = aModule.longName;
+        
+        DLog(@"created home screen icon for %@: %@", aModule.tag, [anIcon description]);
     }
     
     return icons;

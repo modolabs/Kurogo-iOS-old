@@ -18,5 +18,6 @@
 
 + (FacebookPhoto *)photoWithID:(NSString *)identifier;
 + (FacebookPhoto *)photoWithDictionary:(NSDictionary *)dictionary;
+- (void)updateWithDictionary:(NSDictionary *)dictionary;
 
 @end
