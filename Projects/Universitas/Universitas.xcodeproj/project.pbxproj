@@ -15,6 +15,7 @@
 		3A82708D103DAA2400BB4109 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3A82708C103DAA2400BB4109 /* SystemConfiguration.framework */; };
 		3AA219501039D74700DB7637 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3AA2194F1039D74700DB7637 /* CoreData.framework */; };
 		4463CCB210D6F5750048CA83 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4463CCB110D6F5750048CA83 /* CoreLocation.framework */; };
+		4B050C55132E48F50016591D /* NewsDataManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B050C54132E48F50016591D /* NewsDataManager.m */; };
 		A623F1F2120A035A00341C5E /* ModoThreeStateSwitchControl.m in Sources */ = {isa = PBXBuildFile; fileRef = A623F1F0120A035A00341C5E /* ModoThreeStateSwitchControl.m */; };
 		BD9FA7EE1047A05E00BC3C0A /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BD9FA7ED1047A05E00BC3C0A /* MessageUI.framework */; };
 		DE0F6B3411109BC500F064D6 /* AboutMITVC.m in Sources */ = {isa = PBXBuildFile; fileRef = DE0F6B3311109BC500F064D6 /* AboutMITVC.m */; };
@@ -204,6 +205,8 @@
 		3A82708C103DAA2400BB4109 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = ../../../../../System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SOURCE_ROOT; };
 		3AA2194F1039D74700DB7637 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = /System/Library/Frameworks/CoreData.framework; sourceTree = "<absolute>"; };
 		4463CCB110D6F5750048CA83 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
+		4B050C53132E48F40016591D /* NewsDataManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NewsDataManager.h; sourceTree = "<group>"; };
+		4B050C54132E48F50016591D /* NewsDataManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NewsDataManager.m; sourceTree = "<group>"; };
 		A623F1EF120A035A00341C5E /* ModoThreeStateSwitchControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ModoThreeStateSwitchControl.h; sourceTree = "<group>"; };
 		A623F1F0120A035A00341C5E /* ModoThreeStateSwitchControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ModoThreeStateSwitchControl.m; sourceTree = "<group>"; };
 		BD9FA7ED1047A05E00BC3C0A /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
@@ -618,6 +621,8 @@
 				DE728E4610D6FF4700BFED37 /* StoryThumbnailView.m */,
 				DE728E6A10D6FF4700BFED37 /* StoryXMLParser.h */,
 				DE728E6B10D6FF4700BFED37 /* StoryXMLParser.m */,
+				4B050C53132E48F40016591D /* NewsDataManager.h */,
+				4B050C54132E48F50016591D /* NewsDataManager.m */,
 			);
 			name = News;
 			path = ../../../Modules/News;
@@ -1284,6 +1289,7 @@
 				EB46CA921327FE9700AF7B5C /* MapKit+KGOAdditions.m in Sources */,
 				EB46CA951327FECB00AF7B5C /* KGOSidebarFrameViewController.m in Sources */,
 				EB46CA981327FED600AF7B5C /* MapDetailViewController.m in Sources */,
+				4B050C55132E48F50016591D /* NewsDataManager.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
