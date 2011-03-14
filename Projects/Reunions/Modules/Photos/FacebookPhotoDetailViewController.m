@@ -53,7 +53,7 @@
     if ([_likeButton.title isEqualToString:@"Like"]) {
         [[KGOSocialMediaController sharedController] likeFacebookPost:self.photo receiver:self callback:@selector(didLikePhoto:)];
     } else if ([_likeButton.title isEqualToString:@"Unlike"]) {
-        [[KGOSocialMediaController sharedController] unlikeFacebookPost:self.photo receiver:self callback:@selector(didUnikePhoto:)];
+        [[KGOSocialMediaController sharedController] unlikeFacebookPost:self.photo receiver:self callback:@selector(didUnlikePhoto:)];
     }
 }
 
@@ -65,7 +65,7 @@
     }
 }
 
-- (void)didUnikePhoto:(id)result {
+- (void)didUnlikePhoto:(id)result {
     NSLog(@"%@", [result description]);
     if ([result isKindOfClass:[NSDictionary class]] && [[result stringForKey:@"result" nilIfEmpty:YES] isEqualToString:@"true"]) {
         _likeButton.enabled = YES;
@@ -113,7 +113,8 @@
     }
 }
 
-- (void)didPostComment:(FacebookComment *)aComment {
+- (void)uploadDidComplete:(FacebookPost *)result {
+    FacebookComment *aComment = (FacebookComment *)result;
     aComment.parent = self.photo;
     [_tableView reloadData];
 }

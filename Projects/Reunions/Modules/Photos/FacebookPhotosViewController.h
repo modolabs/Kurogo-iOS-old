@@ -2,23 +2,18 @@
 #import "FacebookMediaViewController.h"
 #import "IconGrid.h"
 #import "MITThumbnailView.h"
+#import "KGOSocialMediaController+FacebookAPI.h"
 
 @class FacebookPhoto;
 
-@interface FacebookPhotosViewController : FacebookMediaViewController <MITThumbnailDelegate, IconGridDelegate> {
+@interface FacebookPhotosViewController : FacebookMediaViewController <MITThumbnailDelegate, IconGridDelegate,
+UINavigationControllerDelegate, UIImagePickerControllerDelegate, FacebookUploadDelegate> {
     
-    NSMutableArray *_fbRequestQueue;
-    //FBRequest *_groupsRequest;
-    FBRequest *_photosRequest;
-    FBRequest *_feedRequest;
-
     // TODO: make the set track what photos have been displayed in the grid
     IconGrid *_iconGrid;
     NSMutableArray *_icons;
     NSMutableDictionary *_photosByID;
     NSMutableDictionary *_photosByThumbSrc;
-    
-    NSString *_gid;
 }
 
 - (void)didReceivePhoto:(id)result;

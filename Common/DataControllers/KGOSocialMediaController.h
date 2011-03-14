@@ -66,7 +66,8 @@ FBSessionDelegate, FBDialogDelegate, FBRequestDelegate> {
     // from start to finish.
     NSMutableArray *_fbRequestQueue;
     NSMutableArray *_fbRequestIdentifiers;
-    FBRequest *_fbSelfRequest;
+    NSMutableArray *_fbUploadQueue; // metadata of pending FacebookPost objects
+    NSMutableArray *_fbUploadData;
     
     // settings for each social media object
     // internally we store this with the social media label (facebook, twitter, etc) as keys

@@ -369,8 +369,6 @@ static KGOSocialMediaController *s_controller = nil;
         NSLog(@"starting up facebook");
 		NSString *facebookAppID = [[_appConfig objectForKey:KGOSocialMediaTypeFacebook] objectForKey:@"AppID"];
         _facebook = [[Facebook alloc] initWithAppId:facebookAppID];
-        _fbRequestQueue = [[NSMutableArray alloc] init];
-        _fbRequestIdentifiers = [[NSMutableArray alloc] init];
         
         NSDate *validDate = [[NSUserDefaults standardUserDefaults] objectForKey:FacebookTokenExpirationSetting];
         if ([validDate timeIntervalSinceNow] < 0) {
@@ -385,6 +383,12 @@ static KGOSocialMediaController *s_controller = nil;
                 
                 _facebook.accessToken = [[NSUserDefaults standardUserDefaults] objectForKey:FacebookTokenKey];
                 _facebook.expirationDate = validDate;
+                
+                // prep for modules that actually use facebook API's
+                _fbRequestQueue = [[NSMutableArray alloc] init];
+                _fbRequestIdentifiers = [[NSMutableArray alloc] init];
+                _fbUploadQueue = [[NSMutableArray alloc] init];
+                _fbUploadData = [[NSMutableArray alloc] init];
             }
         }
     } else {
@@ -404,11 +408,9 @@ static KGOSocialMediaController *s_controller = nil;
         }
         [_fbRequestQueue release];
         [_fbRequestIdentifiers release];
+        [_fbUploadQueue release];
+        [_fbUploadData release];
 
-        if (_fbSelfRequest) {
-            _fbSelfRequest.delegate = nil;
-        }
-        
         if (_facebook) {
             [_facebook release];
             _facebook = nil;
@@ -505,18 +507,6 @@ static KGOSocialMediaController *s_controller = nil;
  */
 - (void)request:(FBRequest *)request didReceiveResponse:(NSURLResponse *)response {
     DLog(@"received response for %@", [request description]);
-}
-
-/**
- * Called when an error prevents the Facebook API request from completing successfully.
- */
-- (void)request:(FBRequest *)request didFailWithError:(NSError *)error {
-    DLog(@"failed to request facebook url: %@ params: %@", request.url, request.params);
-    NSLog(@"%@", [error description]);
-    NSDictionary *userInfo = [error userInfo];
-    if ([[userInfo stringForKey:@"type" nilIfEmpty:YES] isEqualToString:@"OAuthException"]) {
-        [self logoutFacebook];
-    }
 }
 
 #pragma mark Facebook - FBDialogDelegate

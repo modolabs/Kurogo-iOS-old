@@ -17,6 +17,18 @@ NSString * const FacebookPhotoEntityName = @"FacebookPhoto";
 
 @synthesize thumbSrc = _thumbSrc;
 
++ (FacebookPhoto *)photoWithID:(NSString *)identifier {
+    identifier = [NSString stringWithFormat:@"%@", identifier]; // in case it comes from the json as a number or something
+    NSPredicate *pred = [NSPredicate predicateWithFormat:@"identifier like %@", identifier];
+    FacebookPhoto *photo = [[[CoreDataManager sharedManager] objectsForEntity:FacebookPhotoEntityName
+                                                            matchingPredicate:pred] lastObject];
+    if (!photo) {
+        photo = [[CoreDataManager sharedManager] insertNewObjectForEntityForName:FacebookPhotoEntityName];
+        photo.identifier = identifier;
+    }
+    return photo;
+}
+
 + (FacebookPhoto *)photoWithDictionary:(NSDictionary *)dictionary {
     
     FacebookPhoto *photo = nil;
@@ -28,32 +40,30 @@ NSString * const FacebookPhotoEntityName = @"FacebookPhoto";
     NSLog(@"object_id is %@ of type %@", identifier, [[identifier class] description]);
     
     if (identifier) {
-        identifier = [NSString stringWithFormat:@"%@", identifier];
-        NSPredicate *pred = [NSPredicate predicateWithFormat:@"identifier like %@", identifier];
-        photo = [[[CoreDataManager sharedManager] objectsForEntity:FacebookPhotoEntityName matchingPredicate:pred] lastObject];
-        if (!photo) {
-            photo = [[CoreDataManager sharedManager] insertNewObjectForEntityForName:FacebookPhotoEntityName];
-            photo.identifier = identifier;
-            
-            photo.src = [dictionary stringForKey:@"picture" nilIfEmpty:YES]; // from feed
-            if (!photo.src) {
-                photo.src = [dictionary stringForKey:@"source" nilIfEmpty:YES]; // from Graph API
-            }
-            if (!photo.src) {
-                photo.src = [dictionary objectForKey:@"src"]; // from FQL
-            }
-            
-            // TODO: decide if we're using created_time (created) or updated_time (modified)
-            NSString *createdTime = [dictionary stringForKey:@"created_time" nilIfEmpty:YES]; // graph
-            if (!createdTime) {
-                createdTime = [dictionary stringForKey:@"created" nilIfEmpty:YES]; // fql
-            }
-            if (createdTime) {
-                // graph API returns RFC3339 strings
-                NSDate *date = [FacebookModule dateFromRFC3339DateTimeString:createdTime];
-                if (date) {
-                    photo.date = date;
-                }
+        
+        photo = [FacebookPhoto photoWithID:identifier];
+        
+        NSString *theSrc = [dictionary stringForKey:@"picture" nilIfEmpty:YES]; // from feed
+        if (!theSrc) {
+            theSrc = [dictionary stringForKey:@"source" nilIfEmpty:YES]; // from Graph API
+        }
+        if (!theSrc) {
+            theSrc = [dictionary objectForKey:@"src"]; // from FQL
+        }
+        if (![theSrc isEqualToString:photo.src]) {
+            photo.src = theSrc;
+        }
+        
+        // TODO: decide if we're using created_time (created) or updated_time (modified)
+        NSString *createdTime = [dictionary stringForKey:@"created_time" nilIfEmpty:YES]; // graph
+        if (!createdTime) {
+            createdTime = [dictionary stringForKey:@"created" nilIfEmpty:YES]; // fql
+        }
+        if (createdTime) {
+            // graph API returns RFC3339 strings
+            NSDate *date = [FacebookModule dateFromRFC3339DateTimeString:createdTime];
+            if (date && ![date isEqualToDate:photo.date]) {
+                photo.date = date;
             }
         }
         

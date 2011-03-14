@@ -3,9 +3,10 @@
 #import "KGODetailPager.h"
 #import "MITThumbnailView.h"
 #import "FacebookCommentViewController.h"
+#import "KGOSocialMediaController+FacebookAPI.h"
 
 @interface FacebookPhotoDetailViewController : UIViewController <UITableViewDataSource, UITableViewDelegate,
-KGODetailPagerController, KGODetailPagerDelegate, FacebookCommentDelegate> {
+KGODetailPagerController, KGODetailPagerDelegate, FacebookUploadDelegate> {
     IBOutlet UITableView *_tableView;
     IBOutlet UIBarButtonItem *_commentButton;
     IBOutlet UIBarButtonItem *_likeButton;
@@ -26,6 +27,6 @@ KGODetailPagerController, KGODetailPagerDelegate, FacebookCommentDelegate> {
 - (void)didReceiveComments:(id)result;
 
 - (void)didLikePhoto:(id)result;
-- (void)didUnikePhoto:(id)result;
+- (void)didUnlikePhoto:(id)result;
 
 @end

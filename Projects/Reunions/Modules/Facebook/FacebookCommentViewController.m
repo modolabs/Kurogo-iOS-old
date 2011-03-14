@@ -36,14 +36,19 @@
 #pragma mark -
 
 - (IBAction)submitButtonPressed:(UIButton *)sender {
+    /*
     [[KGOSocialMediaController sharedController] addComment:_textView.text 
                                              toFacebookPost:self.post
                                                    receiver:self
                                                    callback:@selector(didPostComment:)];
+     */
+    [[KGOSocialMediaController sharedController] addComment:_textView.text toFacebookPost:self.post delegate:self.delegate];
+    
     _loadingViewContainer.hidden = NO;
     [_spinner startAnimating];
 }
 
+/*
 - (void)didPostComment:(id)result {
     NSLog(@"%@", [result description]);
     if ([result isKindOfClass:[NSDictionary class]]) {
@@ -56,11 +61,11 @@
         [(KGOAppDelegate *)[[UIApplication sharedApplication] delegate] dismissAppModalViewControllerAnimated:YES];
     }
 }
-
+ 
 - (void)didFailToPostComment:(NSError *)error {
     
 }
-
+*/
 #pragma mark - View lifecycle
 
 - (void)viewDidLoad
@@ -73,7 +78,7 @@
     
     _textView.layer.cornerRadius = 5.0;
     _textView.layer.borderColor = [[UIColor blackColor] CGColor];
-    _textView.layer.borderWidth = 2.0;
+    _textView.layer.borderWidth = 1.0;
 }
 
 - (void)viewDidUnload

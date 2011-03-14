@@ -14,7 +14,7 @@
     IBOutlet UIButton *_loginButton; // login or open facebook
 
     FBRequest *_groupsRequest;
-    NSString *_groupID;
+    NSString *_gid; // facebook group id
 }
 
 - (IBAction)filterValueChanged:(UISegmentedControl *)sender;

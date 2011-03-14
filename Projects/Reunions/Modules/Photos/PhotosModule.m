@@ -1,9 +1,12 @@
 #import "PhotosModule.h"
 #import "FacebookPhotosViewController.h"
 #import "FacebookPhotoDetailViewController.h"
+#import "PhotoUploadViewController.h"
 #import "KGOSocialMediaController.h"
 #import "KGOHomeScreenWidget.h"
 #import "KGOTheme.h"
+
+NSString * const LocalPathPageNamePhotoUpload = @"uploadPhoto";
 
 @implementation PhotosModule
 
@@ -20,6 +23,19 @@
             if (photos) {
                 [(FacebookPhotoDetailViewController *)vc setPhotos:photos];
             }
+        }
+    } else if ([pageName isEqualToString:LocalPathPageNamePhotoUpload]) {
+        UIImage *image = [params objectForKey:@"photo"];
+        NSString *profile = [params objectForKey:@"profile"];
+        FacebookPhotosViewController *photosVC = [params objectForKey:@"parentVC"];
+        if (image && profile && photosVC) {
+            PhotoUploadViewController *uploadVC = [[[PhotoUploadViewController alloc] initWithNibName:@"PhotoUploadViewController"
+                                                                                               bundle:nil] autorelease];
+            uploadVC.profile = profile;
+            uploadVC.photo = image;
+            uploadVC.parentVC = photosVC;
+            
+            vc = uploadVC;
         }
     }
     return vc;

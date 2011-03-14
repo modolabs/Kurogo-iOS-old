@@ -19,6 +19,7 @@
 @interface KGOSocialMediaController (Private)
 
 - (BOOL)queueFacebookRequest:(FBRequest *)request withReceiver:(id)receiver callback:(SEL)callback;
+- (void)photoDidUpload:(id)result;
 
 @end
 
@@ -40,27 +41,27 @@
     return NO;
 }
 
-- (FBRequest *)requestFacebookGraphPath:(NSString *)graphPath receiver:(id)receiver callback:(SEL)callback {
+- (BOOL)requestFacebookGraphPath:(NSString *)graphPath receiver:(id)receiver callback:(SEL)callback {
     DLog(@"requesting graph path: %@", graphPath);
     FBRequest *request = [_facebook requestWithGraphPath:graphPath andDelegate:self];
     if ([self queueFacebookRequest:request withReceiver:receiver callback:callback]) {
-        return request;
+        return YES;
     }
-    return nil;
+    return NO;
 }
 
-- (FBRequest *)requestFacebookFQL:(NSString *)query receiver:(id)receiver callback:(SEL)callback {
+- (BOOL)requestFacebookFQL:(NSString *)query receiver:(id)receiver callback:(SEL)callback {
     DLog(@"requesting FQL: %@", query);
     NSMutableDictionary *params = [NSMutableDictionary dictionaryWithObject:query forKey:@"query"];
     FBRequest *request = [_facebook requestWithMethodName:@"fql.query" andParams:params andHttpMethod:@"GET" andDelegate:self];
     if ([self queueFacebookRequest:request withReceiver:receiver callback:callback]) {
         [request connect];
-        return request;
+        return YES;
     }
-    return nil;
+    return NO;
 }
 
-- (FBRequest *)likeFacebookPost:(FacebookParentPost *)post receiver:(id)receiver callback:(SEL)callback {
+- (BOOL)likeFacebookPost:(FacebookParentPost *)post receiver:(id)receiver callback:(SEL)callback {
     NSString *graphPath = [NSString stringWithFormat:@"%@/likes", post.identifier];
     // Facebook's internal method expects a NSMutableDictionary that it then
     // populates with access token and other boilerplate.  passing nil for
@@ -73,38 +74,87 @@
                                            andHttpMethod:@"POST"
                                              andDelegate:self];
     if ([self queueFacebookRequest:request withReceiver:receiver callback:callback]) {
-        return request;
+        return YES;
     }
-    return nil;
+    return NO;
 }
 
-- (FBRequest *)unlikeFacebookPost:(FacebookParentPost *)post receiver:(id)receiver callback:(SEL)callback {
+- (BOOL)unlikeFacebookPost:(FacebookParentPost *)post receiver:(id)receiver callback:(SEL)callback {
     NSString *graphPath = [NSString stringWithFormat:@"%@/likes", post.identifier];
     FBRequest *request = [_facebook requestWithGraphPath:graphPath
                                                andParams:[NSMutableDictionary dictionary] // see comment above.
                                            andHttpMethod:@"DELETE"
                                              andDelegate:self];
     if ([self queueFacebookRequest:request withReceiver:receiver callback:callback]) {
-        return request;
+        return YES;
     }
-    return nil;
+    return NO;
 }
 
+/*
 // TODO: consider handling the callback internally and just passing back the comment id
-- (FBRequest *)addComment:(NSString *)comment toFacebookPost:(FacebookParentPost *)post receiver:(id)receiver callback:(SEL)callback {
+- (BOOL)addComment:(NSString *)comment toFacebookPost:(FacebookParentPost *)post receiver:(id)receiver callback:(SEL)callback {
     NSMutableDictionary *params = [NSMutableDictionary dictionaryWithObjectsAndKeys:comment, @"message", nil];
     NSString *graphPath = post.commentPath.length ? post.commentPath : post.identifier;
     FBRequest *request = [_facebook requestWithGraphPath:[NSString stringWithFormat:@"%@/comments", graphPath]
                                                andParams:params
                                            andHttpMethod:@"POST"
                                              andDelegate:self];
+    
     if ([self queueFacebookRequest:request withReceiver:receiver callback:callback]) {
-        return request;
+        return YES;
     }
-    return nil;
+    return NO;
+}
+*/
+
+- (BOOL)addComment:(NSString *)comment toFacebookPost:(FacebookParentPost *)post delegate:(id<FacebookUploadDelegate>)delegate {
+    NSMutableDictionary *params = [NSMutableDictionary dictionaryWithObjectsAndKeys:comment, @"message", nil];
+    NSString *graphPath = post.commentPath.length ? post.commentPath : post.identifier;
+    FBRequest *request = [_facebook requestWithGraphPath:[NSString stringWithFormat:@"%@/comments", graphPath]
+                                               andParams:params
+                                           andHttpMethod:@"POST"
+                                             andDelegate:self];
+    
+    // TODO: clean this this fragile dictionary structure
+    NSMutableDictionary *tempData = [[params mutableCopy] autorelease];
+    [tempData setObject:@"comment" forKey:@"type"];
+    [tempData setObject:delegate forKey:@"delegate"];
+    
+    [_fbUploadQueue addObject:request];
+    [_fbUploadData addObject:tempData];
+    
+    return YES;
+}
+
+- (BOOL)uploadPhoto:(UIImage *)photo
+  toFacebookProfile:(NSString *)profile
+            message:(NSString *)caption
+           delegate:(id<FacebookUploadDelegate>)delegate
+{
+    NSMutableDictionary *params = [NSMutableDictionary dictionaryWithObjectsAndKeys:
+                                   caption, @"message",
+                                   photo, @"image",
+                                   nil];
+    
+    FBRequest *request = [_facebook requestWithGraphPath:[NSString stringWithFormat:@"%@/photos", profile]
+                                               andParams:params
+                                           andHttpMethod:@"POST"
+                                             andDelegate:self];
+
+    // TODO: clean this this fragile dictionary structure
+    NSMutableDictionary *tempData = [[params mutableCopy] autorelease];
+    [tempData setObject:@"photo" forKey:@"type"];
+    [tempData setObject:delegate forKey:@"delegate"];
+    
+    [_fbUploadQueue addObject:request];
+    [_fbUploadData addObject:tempData];
+    
+    return YES;
 }
 
 - (void)disconnectFacebookRequests:(id)receiver {
+
     NSArray *identifiers = [[_fbRequestIdentifiers copy] autorelease];
     for (FBRequestIdentifier *anIdentifier in identifiers) {
         if (anIdentifier.receiver == receiver) {
@@ -118,12 +168,24 @@
             }
         }
     }
+    
+    NSArray *uploadDicts = [[_fbUploadData copy] autorelease];
+    for (NSDictionary *aDict in uploadDicts) {
+        if ([aDict objectForKey:@"delegate"] == receiver) {
+            NSInteger index = [_fbUploadData indexOfObject:aDict];
+            if (index != NSNotFound) {
+                FBRequest *request = [_fbUploadQueue objectAtIndex:index];
+                request.delegate = nil;
+                [_fbUploadData removeObjectAtIndex:index];
+                [_fbUploadQueue removeObjectAtIndex:index];
+            }
+        }
+    }
 }
 
+#pragma mark -
+
 - (void)didReceiveSelfInfo:(id)result {
-    _fbSelfRequest.delegate = nil;
-    _fbSelfRequest = nil;
-    
     FacebookUser *user = [FacebookUser userWithDictionary:result];
     user.isSelf = [NSNumber numberWithBool:YES];
     [[CoreDataManager sharedManager] saveData];
@@ -136,10 +198,8 @@
     if (user && [_facebook isSessionValid]) {
         return user;
     } else if ([_facebook isSessionValid]) {
-        if (!_fbSelfRequest) {
-            NSLog(@"getting facebook profile info");
-            _fbSelfRequest = [self requestFacebookGraphPath:@"me" receiver:self callback:@selector(didReceiveSelfInfo:)];
-        }
+        NSLog(@"getting facebook profile info");
+        [self requestFacebookGraphPath:@"me" receiver:self callback:@selector(didReceiveSelfInfo:)];
         return nil;
     } else {
         DLog(@"have user but facebook session invalid");
@@ -169,6 +229,72 @@
         }
         [_fbRequestQueue removeObjectAtIndex:index];
         [_fbRequestIdentifiers removeObjectAtIndex:index];
+        return;
+    }
+    
+    index = [_fbUploadQueue indexOfObject:request];
+    if (index != NSNotFound) {
+        FacebookPost *aPost = nil;
+        
+        NSDictionary *dictionary = [_fbUploadData objectAtIndex:index];
+        NSString *type = [dictionary objectForKey:@"type"];
+        if ([type isEqualToString:@"comment"] && [result isKindOfClass:[NSDictionary class]]) {
+            NSString *identifier = [result stringForKey:@"id" nilIfEmpty:YES];
+            FacebookComment *aComment = [FacebookComment commentWithID:identifier];
+            if (aComment) {
+                aComment.text = [dictionary stringForKey:@"message" nilIfEmpty:YES];
+                aPost = aComment;
+            }
+
+        } else if ([type isEqualToString:@"photo"]) {
+            NSString *identifier = [result stringForKey:@"id" nilIfEmpty:YES];
+            FacebookPhoto *photo = [FacebookPhoto photoWithID:identifier];
+            if (photo) {
+                UIImage *image = [dictionary objectForKey:@"image"];
+                photo.title = [dictionary objectForKey:@"message"];
+                photo.height = [NSNumber numberWithFloat:image.size.height];
+                photo.width = [NSNumber numberWithFloat:image.size.width];
+                
+                // http://developer.apple.com/library/mac/#qa/qa2007/qa1509.html
+                CFDataRef data = CGDataProviderCopyData(CGImageGetDataProvider([image CGImage]));
+                photo.data = (NSData *)data;
+                CFRelease(data);
+            }
+
+        }
+        if (aPost) {
+            aPost.date = [NSDate date]; // may not be totally accurate but it will be within one network roundtrip (~1 min)
+            aPost.owner = [self currentFacebookUser];
+            id <FacebookUploadDelegate> delegate = [dictionary objectForKey:@"delegate"];
+            
+            [delegate uploadDidComplete:aPost];
+        }
+        
+        [_fbUploadData removeObjectAtIndex:index];
+        [_fbUploadQueue removeObjectAtIndex:index];
+    }
+}
+
+// TODO: pass on errors to delegates
+- (void)request:(FBRequest *)request didFailWithError:(NSError *)error {
+    DLog(@"failed to request facebook url: %@ params: %@", request.url, request.params);
+    NSLog(@"%@", [error description]);
+    NSDictionary *userInfo = [error userInfo];
+    if ([[userInfo stringForKey:@"type" nilIfEmpty:YES] isEqualToString:@"OAuthException"]) {
+        [self logoutFacebook];
+    }
+    NSInteger index = [_fbRequestQueue indexOfObject:request];
+    
+    if (index != NSNotFound) {
+        [_fbRequestQueue removeObjectAtIndex:index];
+        [_fbRequestIdentifiers removeObjectAtIndex:index];
+        return;
+    }
+    
+    index = [_fbUploadQueue indexOfObject:request];
+    if (index != NSNotFound) {
+        [_fbUploadData removeObjectAtIndex:index];
+        [_fbUploadQueue removeObjectAtIndex:index];
     }
 }
 

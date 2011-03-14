@@ -1,11 +1,11 @@
 #import "FacebookPhotosViewController.h"
-#import "IconGrid.h"
 #import "Foundation+KGOAdditions.h"
 #import "FacebookModel.h"
 #import <QuartzCore/QuartzCore.h>
 #import "CoreDataManager.h"
 #import "KGOAppDelegate+ModuleAdditions.h"
-#import "KGOSocialMediaController+FacebookAPI.h"
+#import "PhotoUploadViewController.h"
+#import "PhotosModule.h"
 
 @implementation FacebookPhotosViewController
 
@@ -40,6 +40,11 @@
     _photosByID = [[NSMutableDictionary alloc] init];
     
     [self loadThumbnailsFromCache];
+    
+    self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithTitle:@"Upload"
+                                                                               style:UIBarButtonItemStyleBordered
+                                                                              target:self
+                                                                              action:@selector(showUploadPhotoController:)] autorelease];
 }
 
 
@@ -68,7 +73,6 @@
 - (void)dealloc {
     [[KGOSocialMediaController sharedController] disconnectFacebookRequests:self];
 
-    [_gid release];
     [_iconGrid release];
     [_icons release];
     [_photosByThumbSrc release];
@@ -86,6 +90,24 @@
 
 #pragma mark When we already have photos
 
+- (void)showUploadPhotoController:(id)sender
+{
+    UIImagePickerController *picker = [[[UIImagePickerController alloc] init] autorelease];
+    picker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+    picker.delegate = self;
+    [(KGOAppDelegate *)[[UIApplication sharedApplication] delegate] presentAppModalViewController:picker animated:YES];
+}
+
+- (void)imagePickerController:(UIImagePickerController *)picker
+        didFinishPickingImage:(UIImage *)image
+                  editingInfo:(NSDictionary *)editingInfo
+{
+    NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:image, @"photo", _gid, @"profile", self, @"parentVC", nil];
+    [(KGOAppDelegate *)[[UIApplication sharedApplication] delegate] showPage:LocalPathPageNamePhotoUpload
+                                                                forModuleTag:PhotosTag
+                                                                      params:params];
+}
+
 - (void)loadThumbnailsFromCache {
     // TODO: sort by date or whatever
     NSArray *photos = [[CoreDataManager sharedManager] objectsForEntity:FacebookPhotoEntityName matchingPredicate:nil];
@@ -99,7 +121,7 @@
 
 - (void)displayPhoto:(FacebookPhoto *)photo
 {
-    if (photo.thumbSrc || photo.thumbData) {
+    if (photo.thumbSrc || photo.thumbData || photo.data) { // omitting photo.src so we don't download full image until detail view
         FacebookThumbnail *thumbnail = [[[FacebookThumbnail alloc] initWithFrame:CGRectMake(0, 0, 90, 130)] autorelease];
         thumbnail.photo = photo;
         thumbnail.rotationAngle = (_icons.count % 2 == 0) ? M_PI/12 : -M_PI/12;
@@ -130,6 +152,17 @@
     [(KGOAppDelegate *)[[UIApplication sharedApplication] delegate] showPage:LocalPathPageNameDetail forModuleTag:PhotosTag params:params];
 }
 
+#pragma mark KGOSocialMediaController facebook upload delegate
+
+- (void)uploadDidComplete:(FacebookPost *)result {
+    [(KGOAppDelegate *)[[UIApplication sharedApplication] delegate] dismissAppModalViewControllerAnimated:YES];    
+    
+    FacebookPhoto *photo = (FacebookPhoto *)result;
+    [_photosByID setObject:photo forKey:photo.identifier];
+    
+    [self displayPhoto:photo];
+}
+
 #pragma mark Facebook request callbacks
 
 - (void)didReceiveGroups:(id)result {
@@ -140,8 +173,8 @@
             _gid = [[aGroup objectForKey:@"id"] retain];
 
             // fql for photos
-            //NSString *query = [NSString stringWithFormat:@"SELECT pid FROM photo_tag WHERE subject=%@", _gid];
-            //[[KGOSocialMediaController sharedController] requestFacebookFQL:query receiver:self callback:@selector(didReceivePhotoList:)];
+            NSString *query = [NSString stringWithFormat:@"SELECT pid FROM photo_tag WHERE subject=%@", _gid];
+            [[KGOSocialMediaController sharedController] requestFacebookFQL:query receiver:self callback:@selector(didReceivePhotoList:)];
 
             // group feed
             NSString *feedPath = [NSString stringWithFormat:@"%@/feed", _gid];
@@ -186,7 +219,7 @@
     }
     
     FacebookPhoto *photo = [FacebookPhoto photoWithDictionary:photoInfo];
-    NSLog(@"%@", [photo description]);
+    //NSLog(@"%@", [photo description]);
     if (photo) {
         [_photosByID setObject:photo forKey:photo.identifier];
         [self displayPhoto:photo];
@@ -211,8 +244,9 @@
                 }
 
                 DLog(@"requesting graph info for photo %@", pid);
-                FBRequest *aRequest = [[KGOSocialMediaController sharedController] requestFacebookGraphPath:pid receiver:self callback:@selector(didReceivePhoto:)];
-                [_fbRequestQueue addObject:aRequest];
+                [[KGOSocialMediaController sharedController] requestFacebookGraphPath:pid
+                                                                             receiver:self
+                                                                             callback:@selector(didReceivePhoto:)];
             }
         }
     }
@@ -257,6 +291,8 @@
         _thumbnail.imageData = photo.thumbData;
     } else if (photo.thumbSrc) {
         _thumbnail.imageURL = photo.thumbSrc;
+    } else if (photo.data) {
+        _thumbnail.imageData = photo.data;
     }
     [_thumbnail loadImage];
 }

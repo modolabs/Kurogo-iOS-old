@@ -16,6 +16,7 @@
 // non core data
 @property (nonatomic, retain) NSString *thumbSrc;
 
++ (FacebookPhoto *)photoWithID:(NSString *)identifier;
 + (FacebookPhoto *)photoWithDictionary:(NSDictionary *)dictionary;
 
 @end

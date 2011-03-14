@@ -1,13 +1,14 @@
 #import <UIKit/UIKit.h>
 
 @class FacebookComment;
-
+@protocol FacebookUploadDelegate;
+/*
 @protocol FacebookCommentDelegate <NSObject>
 
 - (void)didPostComment:(FacebookComment *)aComment;
 
 @end
-
+*/
 @class FacebookParentPost;
 
 @interface FacebookCommentViewController : UIViewController <UITextViewDelegate> {
@@ -20,10 +21,9 @@
 }
 
 @property(nonatomic, retain) FacebookParentPost *post;
-@property(nonatomic, assign) id<FacebookCommentDelegate> delegate;
+//@property(nonatomic, assign) id<FacebookCommentDelegate> delegate;
+@property(nonatomic, assign) id<FacebookUploadDelegate> delegate;
 
 - (IBAction)submitButtonPressed:(UIButton *)sender;
-- (void)didPostComment:(id)result;
-- (void)didFailToPostComment:(NSError *)error;
 
 @end

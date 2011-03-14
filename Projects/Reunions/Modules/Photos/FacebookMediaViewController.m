@@ -55,6 +55,8 @@
 
 - (void)dealloc
 {
+    [_gid release];
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
     [super dealloc];
 }
 
@@ -70,7 +72,9 @@
 
 - (void)facebookDidLogin:(NSNotification *)aNotification
 {
-    [[KGOSocialMediaController sharedController] requestFacebookGraphPath:@"me/groups" receiver:self callback:@selector(didReceiveGroups:)];
+    if (!_gid) {
+        [[KGOSocialMediaController sharedController] requestFacebookGraphPath:@"me/groups" receiver:self callback:@selector(didReceiveGroups:)];
+    }
     [self hideLoginView];
 }
 
@@ -85,9 +89,9 @@
     NSArray *data = [result arrayForKey:@"data"];
     for (id aGroup in data) {
         if ([[aGroup objectForKey:@"name"] isEqualToString:@"Modo Labs UX"]) {
-            _groupID = [[aGroup objectForKey:@"id"] retain];
+            _gid = [[aGroup objectForKey:@"id"] retain];
             
-            NSString *feedPath = [NSString stringWithFormat:@"%@/feed", _groupID];
+            NSString *feedPath = [NSString stringWithFormat:@"%@/feed", _gid];
             [[KGOSocialMediaController sharedController] requestFacebookGraphPath:feedPath receiver:self callback:@selector(didReceiveFeed:)];
         }
     }
@@ -110,7 +114,6 @@
 - (void)viewWillAppear:(BOOL)animated {
     
     if (![[KGOSocialMediaController sharedController] isFacebookLoggedIn]) {
-        [self showLoginView];
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(facebookDidLogin:)
                                                      name:FacebookDidLoginNotification

@@ -14,8 +14,6 @@
     
     NSMutableArray *_videos;
     NSMutableSet *_videoIDs;
-    
-    NSString *_gid;
 }
 
 @end
