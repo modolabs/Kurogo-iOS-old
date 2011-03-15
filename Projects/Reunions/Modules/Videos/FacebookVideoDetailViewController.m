@@ -1,5 +1,5 @@
 #import "FacebookVideoDetailViewController.h"
-
+#import "FacebookVideo.h"
 
 @implementation FacebookVideoDetailViewController
 
@@ -27,12 +27,34 @@
     // Release any cached data, images, etc that aren't in use.
 }
 
-#pragma mark - View lifecycle
-
-- (void)viewDidLoad
-{
-    [super viewDidLoad];
+- (void)displayPost {
+    if (!_thumbnail) {
+        CGRect frame = self.view.bounds;
+        frame.size.height = floor(frame.size.width * 9 / 16); // need to tweak this aspect ratio
+        _thumbnail = [[MITThumbnailView alloc] initWithFrame:frame];
+        _thumbnail.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleBottomMargin;
+        _thumbnail.contentMode = UIViewContentModeScaleAspectFit;
+        self.tableView.tableHeaderView = _thumbnail;
+    }
+    
+    _thumbnail.imageURL = self.video.thumbSrc;
+    _thumbnail.imageData = self.video.thumbData;
+    [_thumbnail loadImage];
+    
+    if (!self.video.comments.count) {
+        [self getCommentsForPost];
+    }
 }
+
+- (void)setVideo:(FacebookVideo *)video {
+    self.post = video;
+}
+
+- (FacebookVideo *)video {
+    return (FacebookVideo *)self.post;
+}
+
+#pragma mark - View lifecycle
 
 - (void)viewDidUnload
 {
@@ -45,6 +67,10 @@
 {
     // Return YES for supported orientations
     return (interfaceOrientation == UIInterfaceOrientationPortrait);
+}
+
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
+    return self.video.name;
 }
 
 @end

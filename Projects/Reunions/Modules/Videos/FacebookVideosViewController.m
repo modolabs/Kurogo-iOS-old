@@ -3,6 +3,7 @@
 #import "MITThumbnailView.h"
 #import "Foundation+KGOAdditions.h"
 #import "UIKit+KGOAdditions.h"
+#import "KGOAppDelegate+ModuleAdditions.h"
 #import "FacebookVideo.h"
 #import "FacebookUser.h"
 
@@ -62,7 +63,6 @@
     [_tableView release];
     [_videos release];
     [_videoIDs release];
-    [_gid release];
     [super dealloc];
 }
 
@@ -147,7 +147,10 @@
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    
+    FacebookVideo *aVideo = [_videos objectAtIndex:indexPath.row];
+    NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:_videos, @"videos", aVideo, @"video", nil];
+    [(KGOAppDelegate *)[[UIApplication sharedApplication] delegate] showPage:LocalPathPageNameDetail forModuleTag:VideoTag params:params];
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
 @end

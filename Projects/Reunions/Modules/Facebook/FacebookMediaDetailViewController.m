@@ -99,6 +99,8 @@
 - (void)uploadDidComplete:(FacebookPost *)result {
     FacebookComment *aComment = (FacebookComment *)result;
     aComment.parent = self.post;
+    
+    [(KGOAppDelegate *)[[UIApplication sharedApplication] delegate] dismissAppModalViewControllerAnimated:YES];
     [_tableView reloadData];
 }
 
@@ -113,6 +115,11 @@
     NSSortDescriptor *sort = [NSSortDescriptor sortDescriptorWithKey:@"date" ascending:YES];
     [_comments release];
     _comments = [[self.post.comments sortedArrayUsingDescriptors:[NSArray arrayWithObject:sort]] retain];
+    
+    if (self.post) {
+        KGODetailPager *pager = [[[KGODetailPager alloc] initWithPagerController:self delegate:self] autorelease];
+        self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithCustomView:pager] autorelease];
+    }
     
     [self displayPost];
 }

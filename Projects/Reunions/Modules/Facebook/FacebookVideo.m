@@ -17,18 +17,20 @@ NSString * const FacebookVideoEntityName = @"FacebookVideo";
 + (FacebookVideo *)videoWithDictionary:(NSDictionary *)dictionary {
     FacebookVideo *video = nil;
     
-    NSString *identifier = [dictionary objectForKey:@"object_id"];
-    if (!identifier) {
-        // doing this means we might set the video identifier either as that of
-        // a Post object (if the user linked to a youtube video), or the ID of
-        // a video object with no associated post ID.  the former will have
-        // longer length ID's.  this may lead to duping.
-        identifier = [dictionary objectForKey:@"id"];
+    NSString *postIdentifier = nil;
+    NSString *identifier = [dictionary objectForKey:@"id"]; // may be post ID (if from feed) or video ID (from direct video API)
+    NSString *videoIdentifier = [dictionary objectForKey:@"object_id"]; // video ID from feed
+    
+    if (videoIdentifier) {
+        postIdentifier = identifier;
+        identifier = videoIdentifier;
     }
+    
     if (identifier) {
         // force the id to be a string in case it's a number
         identifier = [NSString stringWithFormat:@"%@", identifier];
         video = [FacebookVideo videoWithID:identifier];
+        video.postIdentifier = postIdentifier;
 
         video.thumbSrc = [dictionary stringForKey:@"picture" nilIfEmpty:YES];
         video.name = [dictionary stringForKey:@"name" nilIfEmpty:YES];
@@ -44,7 +46,7 @@ NSString * const FacebookVideoEntityName = @"FacebookVideo";
             //NSInteger count = [likes integerForKey:@"count"];
             for (NSDictionary *aLike in [likes arrayForKey:@"data"]) {
                 FacebookUser *user = [FacebookUser userWithDictionary:aLike];
-                [video addLikesObject:user];
+                [video addLikesObject:user]; // not sure why this constitutes a warning
             }
         }
         
