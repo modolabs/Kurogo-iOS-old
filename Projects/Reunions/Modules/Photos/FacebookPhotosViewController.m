@@ -23,6 +23,8 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    self.title = @"Photos";
+    
     CGRect frame = _scrollView.frame;
     frame.origin.y += _signedInUserView.frame.size.height;
     frame.size.height -= _signedInUserView.frame.size.height;

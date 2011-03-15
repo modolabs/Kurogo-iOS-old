@@ -1,5 +1,5 @@
 #import "ScheduleModule.h"
-
+#import "ScheduleViewController.h"
 
 @implementation ScheduleModule
 
@@ -32,7 +32,7 @@
 - (UIViewController *)modulePage:(NSString *)pageName params:(NSDictionary *)params {
     UIViewController *vc = nil;
     if ([pageName isEqualToString:LocalPathPageNameHome]) {
-        
+        vc = [[[ScheduleViewController alloc] initWithStyle:UITableViewStylePlain] autorelease];
     }
     return vc;
 }

@@ -61,6 +61,11 @@
 
 #pragma mark - View lifecycle
 
+- (void)viewDidLoad
+{
+    self.title = @"Photo";
+}
+
 - (void)viewDidUnload
 {
     [super viewDidUnload];

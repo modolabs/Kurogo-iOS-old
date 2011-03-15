@@ -77,6 +77,8 @@
 {
     [super viewDidLoad];
     
+    self.title = @"Video";
+    
     UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
     [button setImage:[UIImage imageWithPathName:@"common/arrow-white-right"] forState:UIControlStateNormal];
     button.frame = CGRectMake(120, 80, 80, 60);

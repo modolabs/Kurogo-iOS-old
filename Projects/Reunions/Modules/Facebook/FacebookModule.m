@@ -69,21 +69,38 @@
     NSMutableArray *widgets = [NSMutableArray array];
     
     UIImageView *imageView = [[[UIImageView alloc] initWithImage:[UIImage imageWithPathName:@"modules/facebook/button-facebook.png"]] autorelease];
+    
+    // TODO: get rid of magic numbers
     CGRect frame = imageView.frame;
-    frame.origin.x = 5;
-    frame.origin.y = 5;
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+        //frame.origin.x = 5;
+        //frame.origin.y = 5;
+        frame = CGRectMake(5, 5, 31, 31);
+    } else {
+        frame = CGRectMake(22, 5, 31, 31);
+    }
     imageView.frame = frame;
     
-    CGFloat x = frame.origin.x + frame.size.width + 5;
-    UILabel *label = [[[UILabel alloc] initWithFrame:CGRectMake(x, 5, 120 - x - 5, 44)] autorelease];
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+        CGFloat x = frame.origin.x + frame.size.width + 5;
+        frame = CGRectMake(x, 5, 120 - x - 5, 44);
+    } else {
+        frame = CGRectMake(5, 40, 65, 40);
+    }
+    UILabel *label = [[[UILabel alloc] initWithFrame:frame] autorelease];
     label.font = font;
     label.text = @"Harvard-Radclife '96";
     label.numberOfLines = 0;
-    label.lineBreakMode = UILineBreakModeWordWrap;
+    label.lineBreakMode = UILineBreakModeCharacterWrap;
     label.backgroundColor = [UIColor clearColor];
     label.textColor = [UIColor whiteColor];
     
-    KGOHomeScreenWidget *widget = [[[KGOHomeScreenWidget alloc] initWithFrame:CGRectMake(0, 0, 120, 44)] autorelease];
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+        frame = CGRectMake(0, 0, 120, 44);
+    } else {
+        frame = CGRectMake(5, 900, 75, 100);
+    }
+    KGOHomeScreenWidget *widget = [[[KGOHomeScreenWidget alloc] initWithFrame:frame] autorelease];
     [widget addSubview:imageView];
     [widget addSubview:label];
     widget.gravity = KGOLayoutGravityBottomLeft;
