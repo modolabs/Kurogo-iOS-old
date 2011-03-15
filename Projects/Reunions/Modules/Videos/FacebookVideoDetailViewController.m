@@ -1,5 +1,6 @@
 #import "FacebookVideoDetailViewController.h"
 #import "FacebookVideo.h"
+#import "UIKit+KGOAdditions.h"
 
 @implementation FacebookVideoDetailViewController
 
@@ -29,6 +30,7 @@
 
 - (void)displayPost {
     if (!_thumbnail) {
+        
         CGRect frame = self.view.bounds;
         frame.size.height = floor(frame.size.width * 9 / 16); // need to tweak this aspect ratio
         _thumbnail = [[MITThumbnailView alloc] initWithFrame:frame];
@@ -54,7 +56,33 @@
     return (FacebookVideo *)self.post;
 }
 
+- (void)playVideo:(id)sender {
+    NSString *urlString = nil;
+    if ([self.video.src rangeOfString:@"fbcdn.net"].location != NSNotFound) {
+        urlString = self.video.src;
+    } else {
+        urlString = self.video.link;
+    }
+    
+    NSURL *url = [NSURL URLWithString:urlString];
+    
+    if ([[UIApplication sharedApplication] canOpenURL:url]) {
+        [[UIApplication sharedApplication] openURL:url];
+    }
+}
+
 #pragma mark - View lifecycle
+
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    
+    UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
+    [button setImage:[UIImage imageWithPathName:@"common/arrow-white-right"] forState:UIControlStateNormal];
+    button.frame = CGRectMake(120, 80, 80, 60);
+    [button addTarget:self action:@selector(playVideo:) forControlEvents:UIControlEventTouchUpInside];
+    [_thumbnail addSubview:button];
+}
 
 - (void)viewDidUnload
 {

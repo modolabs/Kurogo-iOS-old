@@ -9,6 +9,7 @@
 @property (nonatomic, retain) NSString * summary;
 @property (nonatomic, retain) NSString * thumbSrc;
 @property (nonatomic, retain) NSData * thumbData;
+@property (nonatomic, retain) NSString * link;
 @property (nonatomic, retain) NSString * src;
 
 + (FacebookVideo *)videoWithDictionary:(NSDictionary *)dictionary;

@@ -12,6 +12,7 @@ NSString * const FacebookVideoEntityName = @"FacebookVideo";
 @dynamic summary;
 @dynamic thumbSrc;
 @dynamic thumbData;
+@dynamic link;
 @dynamic src;
 
 + (FacebookVideo *)videoWithDictionary:(NSDictionary *)dictionary {
@@ -35,6 +36,7 @@ NSString * const FacebookVideoEntityName = @"FacebookVideo";
         video.thumbSrc = [dictionary stringForKey:@"picture" nilIfEmpty:YES];
         video.name = [dictionary stringForKey:@"name" nilIfEmpty:YES];
         video.src = [dictionary stringForKey:@"source" nilIfEmpty:YES];
+        video.link = [dictionary stringForKey:@"link" nilIfEmpty:YES];
         video.message = [dictionary stringForKey:@"message" nilIfEmpty:YES];
         video.summary = [dictionary stringForKey:@"description" nilIfEmpty:YES];
         
