@@ -17,11 +17,11 @@ NSString * const LocalPathPageNamePhotoUpload = @"uploadPhoto";
     } else if ([pageName isEqualToString:LocalPathPageNameDetail]) {
         FacebookPhoto *photo = [params objectForKey:@"photo"];
         if (photo) {
-            vc = [[[FacebookPhotoDetailViewController alloc] initWithNibName:@"FacebookPhotoDetailViewController" bundle:nil] autorelease];
+            vc = [[[FacebookPhotoDetailViewController alloc] initWithNibName:@"FacebookMediaDetailViewController" bundle:nil] autorelease];
             [(FacebookPhotoDetailViewController *)vc setPhoto:photo];
             NSArray *photos = [params objectForKey:@"photos"];
             if (photos) {
-                [(FacebookPhotoDetailViewController *)vc setPhotos:photos];
+                [(FacebookPhotoDetailViewController *)vc setPosts:photos];
             }
         }
     } else if ([pageName isEqualToString:LocalPathPageNamePhotoUpload]) {
@@ -67,8 +67,6 @@ NSString * const LocalPathPageNamePhotoUpload = @"uploadPhoto";
                                                    @"offline_access",
                                                    @"user_groups",
                                                    @"user_photos",
-                                                   @"friends_photos",
-                                                   @"user_likes",
                                                    @"publish_stream",
                                                    nil]
                                            forKey:@"permissions"];

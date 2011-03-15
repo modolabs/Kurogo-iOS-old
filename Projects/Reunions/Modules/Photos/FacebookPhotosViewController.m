@@ -261,7 +261,7 @@
             if (pid && ![_photosByID objectForKey:pid]) {
                 FacebookPhoto *aPhoto = [FacebookPhoto photoWithDictionary:aPost];
                 if (aPhoto) {
-                    aPhoto.commentPath = [aPost stringForKey:@"id" nilIfEmpty:YES];
+                    aPhoto.postIdentifier = [aPost stringForKey:@"id" nilIfEmpty:YES];
                     NSLog(@"%@", [aPhoto description]);
                     [[CoreDataManager sharedManager] saveData];
                     [_photosByID setObject:aPhoto forKey:pid];

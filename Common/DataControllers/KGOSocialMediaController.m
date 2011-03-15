@@ -365,6 +365,16 @@ static KGOSocialMediaController *s_controller = nil;
 - (void)startupFacebook {
     _facebookStartupCount++;
     
+    // prep for modules that actually use facebook API's
+    if (!_fbRequestQueue)
+        _fbRequestQueue = [[NSMutableArray alloc] init];
+    if (!_fbRequestIdentifiers)
+        _fbRequestIdentifiers = [[NSMutableArray alloc] init];
+    if (!_fbUploadQueue)
+        _fbUploadQueue = [[NSMutableArray alloc] init];
+    if (!_fbUploadData)
+        _fbUploadData = [[NSMutableArray alloc] init];
+    
     if (!_facebook) {
         NSLog(@"starting up facebook");
 		NSString *facebookAppID = [[_appConfig objectForKey:KGOSocialMediaTypeFacebook] objectForKey:@"AppID"];
@@ -383,12 +393,6 @@ static KGOSocialMediaController *s_controller = nil;
                 
                 _facebook.accessToken = [[NSUserDefaults standardUserDefaults] objectForKey:FacebookTokenKey];
                 _facebook.expirationDate = validDate;
-                
-                // prep for modules that actually use facebook API's
-                _fbRequestQueue = [[NSMutableArray alloc] init];
-                _fbRequestIdentifiers = [[NSMutableArray alloc] init];
-                _fbUploadQueue = [[NSMutableArray alloc] init];
-                _fbUploadData = [[NSMutableArray alloc] init];
             }
         }
     } else {
