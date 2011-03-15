@@ -1,20 +1,25 @@
-/****************************************************************
- *
- *  Copyright 2010 The President and Fellows of Harvard College
- *  Copyright 2010 Modo Labs Inc.
- *
- *****************************************************************/
+//
+//  NewsCategory.h
+//  Universitas
+//
+//  Created by Brian Patt on 3/15/11.
+//  Copyright (c) 2011 Modo Labs. All rights reserved.
+//
 
+#import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
 
+@class NewsStory;
 
-@interface NewsCategory : NSManagedObject
-
-@property (nonatomic, retain) NSNumber *category_id;
-@property (nonatomic, retain) NSNumber *expectedCount;
-@property (nonatomic, retain) NSNumber *isMainCategory;
-@property (nonatomic, retain) NSDate *lastUpdated;
-@property (nonatomic, retain) NSSet *stories;
-@property (nonatomic, retain) NSString *title;
+@interface NewsCategory : NSManagedObject {
+@private
+}
+@property (nonatomic, retain) NSNumber * moreStories;
+@property (nonatomic, retain) NSString * title;
+@property (nonatomic, retain) NSNumber * category_id;
+@property (nonatomic, retain) NSNumber * isMainCategory;
+@property (nonatomic, retain) NSDate * lastUpdated;
+@property (nonatomic, retain) NSNumber * nextSeekId;
+@property (nonatomic, retain) NSSet* stories;
 
 @end

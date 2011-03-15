@@ -1,5 +1,4 @@
 #import <UIKit/UIKit.h>
-#import "StoryXMLParser.h"
 #import "JSONAPIRequest.h"
 #import "NewsDataManager.h"
 #import "KGOScrollingTabstrip.h"
@@ -7,19 +6,16 @@
 #import "StoryDetailViewController.h"
 #import "KGOTableViewController.h"
 
-typedef int NewsCategoryId;
-
 @class KGOSearchDisplayController;
 @class NewsStory;
 
-@interface StoryListViewController : KGOTableViewController <KGOSearchBarDelegate,
-StoryXMLParserDelegate, NewsCategoriesDelegate, KGOScrollingTabstripDelegate, NewsControllerDelegate> {
+@interface StoryListViewController : KGOTableViewController <KGOSearchBarDelegate, NewsDataDelegate, KGOScrollingTabstripDelegate, NewsControllerDelegate> {
 	UITableView *storyTable;
     NewsStory *featuredStory;
     NSArray *stories;
     NSArray *categories;
     NewsCategoryId activeCategoryId;
-	StoryXMLParser *xmlParser;
+    BOOL activeCategoryHasMoreStories;
     
     NSArray *navButtons;
     
@@ -52,7 +48,6 @@ StoryXMLParserDelegate, NewsCategoriesDelegate, KGOScrollingTabstripDelegate, Ne
 @property (nonatomic, retain) NSArray *searchResults;
 @property (nonatomic, retain) NSArray *categories;
 @property (nonatomic, assign) NewsCategoryId activeCategoryId;
-@property (nonatomic, retain) StoryXMLParser *xmlParser;
 
 - (void)presentSearchResults:(NSArray *)results searchText:(NSString *)searchText;
 - (void)showSearchBar;

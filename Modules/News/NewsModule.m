@@ -1,13 +1,11 @@
 #import "NewsModule.h"
 #import "StoryListViewController.h"
-#import "StoryXMLParser.h"
 #import "NewsStory.h"
 #import "CoreDataManager.h"
 
 @implementation NewsModule
 
 @synthesize storyListChannelController;
-@synthesize xmlParser;
 
 - (UIViewController *)modulePage:(NSString *)pageName params:(NSDictionary *)params {
     UIViewController *vc = nil;

@@ -1,19 +1,40 @@
 #import <Foundation/Foundation.h>
 #import "KGORequestManager.h"
 #import "NewsCategory.h"
+#import "NewsStory.h"
 
-@protocol NewsCategoriesDelegate <NSObject>
-+ (void) categoriesUpdated:(NSArray *)categories;
+typedef int NewsCategoryId;
+
+@protocol NewsDataDelegate <NSObject>
+
+@optional
+- (void) categoriesUpdated:(NSArray *)categories;
+
+- (void) storiesUpdated:(NSArray *)stories forCategory:(NewsCategory *)category;
+
+- (void) storiesDidMakeProgress:(CGFloat)progress forCategoryId:(NewsCategoryId)categoryId;
+
 @end
 
 @interface NewsDataManager : NSObject<KGORequestDelegate> {
-    id<NewsCategoriesDelegate> categoriesDelegate;
+    NSMutableSet *delegates;
+    KGORequest *storiesRequest;
 }
-
-@property (nonatomic, retain) id<NewsCategoriesDelegate> categoriesDelegate;
 
 + (NewsDataManager *)sharedManager;
 
-- (void)requestCategories:(id<NewsCategoriesDelegate>)delegate;
+- (void)requestCategories;
+
+- (void)requestStoriesForCategory:(NewsCategoryId)categoryID loadMore:(BOOL)loadMore;
+
+- (void)registerDelegate:(id<NewsDataDelegate>)delegate;
+
+- (void)unregisterDelegate:(id<NewsDataDelegate>)delegate;
+
+- (NSInteger)loadMoreStoriesQuantityForCategoryId:(NewsCategoryId)categoryID;
+
+- (BOOL) busy;
+
+@property (nonatomic, retain) KGORequest *storiesRequest;
 
 @end

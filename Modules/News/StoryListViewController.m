@@ -51,7 +51,6 @@
 @synthesize searchQuery;
 @synthesize categories;
 @synthesize activeCategoryId;
-@synthesize xmlParser;
 @synthesize featuredStory;
 @synthesize totalAvailableResults;
 
@@ -76,17 +75,16 @@ static NSInteger numTries = 0;
 	// Story Table view
 	storyTable = [[UITableView alloc] initWithFrame:self.view.bounds];
     storyTable.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-	storyTable.delegate = self;
-	storyTable.dataSource = self;
+	//storyTable.delegate = self;
+	//storyTable.dataSource = self;
     storyTable.separatorColor = [UIColor colorWithWhite:0.5 alpha:1.0];
     storyTable.rowHeight = 50;
-	[self.view addSubview:storyTable];
+	//[self.view addSubview:storyTable];
+    [self addTableView:storyTable];
 	[storyTable release];
 }
 
 - (void)viewDidLoad {
-    [[NewsDataManager sharedManager] requestCategories:self];
-
 	// set up results table
     storyTable.frame = CGRectMake(0, navScrollView.frame.size.height, self.view.frame.size.width, self.view.frame.size.height - navScrollView.frame.size.height);
 
@@ -97,7 +95,9 @@ static NSInteger numTries = 0;
     [dropShadow release];
 
     [self setupActivityIndicator];
-    [self loadFromCache];
+    
+    [[NewsDataManager sharedManager] registerDelegate:self];
+    [[NewsDataManager sharedManager] requestCategories];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -154,9 +154,6 @@ static NSInteger numTries = 0;
     stories = nil;
     [categories release];
     categories = nil;
-    xmlParser.delegate = nil;
-    [xmlParser release];
-    xmlParser = nil;
     [super dealloc];
 }
 
@@ -197,7 +194,8 @@ static NSInteger numTries = 0;
             [allStoriesToSave addObjectsFromArray:categoryStories];
         }
         [postDateSortDescriptor release];
-        aCategory.expectedCount = [NSNumber numberWithInteger:0];
+        aCategory.moreStories = [NSNumber numberWithBool:YES];
+        aCategory.nextSeekId = [NSNumber numberWithInt:0];
     }
 
 	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"NOT bookmarked == YES"];
@@ -216,6 +214,7 @@ static NSInteger numTries = 0;
 - (void)categoriesUpdated:(NSArray *)newCategories {
     self.categories = newCategories;
     [self setupNavScroller];
+    [self loadFromCache]; // now that we have categories load the stories
 }
 
 #pragma mark -
@@ -341,10 +340,10 @@ static NSInteger numTries = 0;
 
 - (void)searchBarCancelButtonClicked:(KGOSearchBar *)searchBar {	
 	// cancel any outstanding search
-	if (self.xmlParser) {
-		[self.xmlParser abort]; // cancel previous category's request if it's still going
-		self.xmlParser = nil;
-	}
+	//if (self.xmlParser) {
+	//	[self.xmlParser abort]; // cancel previous category's request if it's still going
+	//	self.xmlParser = nil;
+	//}
 	
 	// hide search interface
 	[self hideSearchBar];
@@ -436,16 +435,17 @@ static NSInteger numTries = 0;
 - (void)switchToCategory:(NewsCategoryId)category {
     numTries = 0;
     if (category != self.activeCategoryId) {
-		if (self.xmlParser) {
-			[self.xmlParser abort]; // cancel previous category's request if it's still going
-			self.xmlParser = nil;
-		}
+		//if (self.xmlParser) {
+		//	[self.xmlParser abort]; // cancel previous category's request if it's still going
+		//	self.xmlParser = nil;
+		//}
 		self.activeCategoryId = category;
-		//self.stories = nil;
+        activeCategoryHasMoreStories = YES;
+		self.stories = [NSArray array];
 		if ([self.stories count] > 0) {
 			[storyTable scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:NO];
 		}
-		//[storyTable reloadData];
+		[self reloadDataForTableView:storyTable];
 		showingBookmarks = (category == BOOKMARK_BUTTON_TAG) ? YES : NO;
 		[self loadFromCache]; // makes request to server if no request has been made this session
     }
@@ -479,58 +479,26 @@ static NSInteger numTries = 0;
 		self.stories = allBookmarkedStories;
 		
 	} else {
-		// load what's in CoreData, up to categoryCount
-		NSPredicate *predicate = nil;
-		NSSortDescriptor *postDateSortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"postDate" ascending:NO];
-		NSSortDescriptor *storyIdSortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"story_id" ascending:NO];
-		NSArray *sortDescriptors = [NSArray arrayWithObjects:/*featuredSortDescriptor,*/ postDateSortDescriptor, storyIdSortDescriptor, nil];
-		[storyIdSortDescriptor release];
-		[postDateSortDescriptor release];
-		
-		if (self.activeCategoryId == 0) {//NewsCategoryIdTopNews) {
-			predicate = [NSPredicate predicateWithFormat:@"topStory == YES"];
-		} else {
-			predicate = [NSPredicate predicateWithFormat:@"ANY categories.category_id == %d", self.activeCategoryId];
-		}
-		
-		// if maxLength == 0, nothing's been loaded from the server this session -- show up to 10 results from core data
-		// else show up to maxLength
-		NSArray *results = [[CoreDataManager sharedManager] objectsForEntity:NewsStoryEntityName matchingPredicate:predicate sortDescriptors:sortDescriptors];
-		NewsCategory *aCategory = [[self.categories filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"category_id == %d", self.activeCategoryId]] lastObject];
-
-		DLog(@"activecategoryid: %d", self.activeCategoryId);
-        NSDate *lastUpdatedDate = [aCategory valueForKey:@"lastUpdated"];
-
-		[self setLastUpdated:lastUpdatedDate];
-		
-		NSInteger maxLength = [[aCategory valueForKey:@"expectedCount"] integerValue];
-		NSInteger resultsCount = [results count];
-		if (maxLength == 0) {
-			[self loadFromServer:NO]; // this creates a loop which will keep trying until there is at least something in this category
-			// TODO: make sure this doesn't become an infinite loop.
-			maxLength = 10;
-		}
-		if (maxLength > resultsCount) {
-			maxLength = resultsCount;
-		}
-        
-        // grab the first featured story from the list, regardless of pubdate
-        NSArray *featuredStories = [results filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"(featured == YES)"]];
-        if ([featuredStories count]) {
-            self.featuredStory = [featuredStories objectAtIndex:0];
-        }
-        
-        NSMutableArray *storyCandidates = [NSMutableArray arrayWithArray:[results subarrayWithRange:NSMakeRange(0, maxLength)]];
-        
-        if ([storyCandidates containsObject:self.featuredStory]) {
-            [storyCandidates removeObject:self.featuredStory];
-            self.stories = [[NSArray arrayWithObject:self.featuredStory] arrayByAddingObjectsFromArray:storyCandidates];
-        } else {
-            self.stories = storyCandidates;
-        }
+        [[NewsDataManager sharedManager] requestStoriesForCategory:self.activeCategoryId loadMore:NO];
 	}
-	[storyTable reloadData];
-    [storyTable flashScrollIndicators];
+	//[storyTable reloadData];
+    //[storyTable flashScrollIndicators];
+}
+
+- (void) storiesUpdated:(NSArray *)theStories forCategory:(NewsCategory *)category {
+    if(self.activeCategoryId == [category.category_id integerValue]) {
+        self.stories = theStories;
+        [self setLastUpdated:category.lastUpdated];
+        activeCategoryHasMoreStories = [category.moreStories boolValue];
+        [self reloadDataForTableView:storyTable];
+        [storyTable flashScrollIndicators];
+    }
+}
+
+- (void) storiesDidMakeProgress:(CGFloat)progress forCategoryId:(NewsCategoryId)categoryId {
+    if(self.activeCategoryId == categoryId) {
+        [self setProgress:progress];
+    }
 }
 
 - (void)loadFromServer:(BOOL)loadMore {
@@ -541,14 +509,14 @@ static NSInteger numTries = 0;
     NewsStory *lastStory = [self.stories lastObject];
     DLog(@"%@", [lastStory title]);
     NSInteger lastStoryId = (loadMore) ? [lastStory.story_id integerValue] : 0;
-    if (self.xmlParser) {
-		[self.xmlParser abort];
-	}
+    //if (self.xmlParser) {
+	//	[self.xmlParser abort];
+	//}
     
     if (numTries < 3) {
-        self.xmlParser = [[[StoryXMLParser alloc] init] autorelease];
-        xmlParser.delegate = self;
-        [xmlParser loadStoriesForCategory:self.activeCategoryId afterStoryId:lastStoryId count:10]; // count doesn't do anything at the moment (no server support)
+        //self.xmlParser = [[[StoryXMLParser alloc] init] autorelease];
+        //xmlParser.delegate = self;
+        //[xmlParser loadStoriesForCategory:self.activeCategoryId afterStoryId:lastStoryId count:10]; // count doesn't do anything at the moment (no server support)
         numTries++;
     }
 }
@@ -601,18 +569,18 @@ static NSInteger numTries = 0;
     if (!loadMore)
         searchIndex = 1;
     
-	if (self.xmlParser) {
-		[self.xmlParser abort];
-	}
-	self.xmlParser = [[[StoryXMLParser alloc] init] autorelease];
-	xmlParser.delegate = self;
+	//if (self.xmlParser) {
+	//	[self.xmlParser abort];
+	//}
+	//self.xmlParser = [[[StoryXMLParser alloc] init] autorelease];
+	//xmlParser.delegate = self;
 	
-	[xmlParser loadStoriesforQuery:query afterStoryId:lastStoryId searchIndex:searchIndex count:10];
+	//[xmlParser loadStoriesforQuery:query afterStoryId:lastStoryId searchIndex:searchIndex count:10];
 }
 
 #pragma mark -
 #pragma mark StoryXMLParser delegation
-
+/*
 - (void)parserDidStartDownloading:(StoryXMLParser *)parser {
     if (parser == self.xmlParser) {
 		[self setProgress:0.02];
@@ -722,6 +690,7 @@ static NSInteger numTries = 0;
     }
     
 }
+*/
 
 #pragma mark -
 #pragma mark Bottom status bar
@@ -764,6 +733,7 @@ static NSInteger numTries = 0;
 
     activityView.alpha = 1.0;
     storyTable.frame = CGRectMake(0, navScrollView.frame.size.height, self.view.frame.size.width, self.view.frame.size.height - navScrollView.frame.size.height - activityView.frame.size.height);
+     
 }
 
 #pragma mark -
@@ -778,10 +748,12 @@ static NSInteger numTries = 0;
     switch (section) {
         case 0:
             n = self.stories.count;
+            
+            NSInteger moreStories = [[NewsDataManager sharedManager] loadMoreStoriesQuantityForCategoryId:activeCategoryId];
 			// don't show "load x more" row if
 			if (!showingBookmarks && // showing bookmarks
 				!(searchResults && n >= totalAvailableResults) && // showing all search results
-				!(!searchResults && n >= MAX_ARTICLES)) { // showing all of a category
+				(moreStories > 0) ) { // category has more stories
 				n += 1; // + 1 for the "Load more articles..." row
 			}
             break;
@@ -820,18 +792,26 @@ static NSInteger numTries = 0;
 - (CellManipulator)tableView:(UITableView *)tableView manipulatorForCellAtIndexPath:(NSIndexPath *)indexPath {
     if (indexPath.row == self.stories.count) {
 
-        NSInteger remainingArticlesToLoad = (!searchResults) ? (200 - [self.stories count]) : (totalAvailableResults - [self.stories count]);
+        NSInteger loadMoreQuantity;
+        if(!searchResults) {
+            loadMoreQuantity = [[NewsDataManager sharedManager] loadMoreStoriesQuantityForCategoryId:self.activeCategoryId];
+        } else {
+            loadMoreQuantity = 666; // TODO compute the proper value
+        }
 
-        NSString *title = [NSString stringWithFormat:@"Load %d more articles...", (remainingArticlesToLoad > 10) ? 10 : remainingArticlesToLoad];
+        NSString *title = [NSString stringWithFormat:@"Load %d more articles...", loadMoreQuantity];
         UIColor *textColor;
         
-        if (!self.xmlParser) { // disable when a load is already in progress
+        //
+        //if (!self.xmlParser) { // disable when a load is already in progress
             textColor = [UIColor colorWithHexString:@"#1A1611"]; // enable
-        } else {
-            textColor = [UIColor colorWithHexString:@"#999999"]; // disable
-        }
+        //} else {
+        //    textColor = [UIColor colorWithHexString:@"#999999"]; // disable
+        //}
+        //
         
         return [[^(UITableViewCell *cell) {
+            cell.accessoryType = UITableViewCellAccessoryNone;
             cell.selectionStyle = UITableViewCellSelectionStyleGray;
             cell.textLabel.text = title;
             cell.textLabel.textColor = textColor;
@@ -839,6 +819,8 @@ static NSInteger numTries = 0;
         
     } else {
         return [[^(UITableViewCell *cell) {
+            cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+            cell.textLabel.text = nil;
             cell.selectionStyle = UITableViewCellSelectionStyleGray;
         } copy] autorelease];
     }
@@ -857,7 +839,7 @@ static NSInteger numTries = 0;
         
         CGFloat yOffset;
         NSString *placeholderImageName = nil;
-        NewsImage *image;
+        NewsImage *image = nil;
         NewsStory *story;
         CGRect thumbnailFrame;
         
@@ -880,13 +862,6 @@ static NSInteger numTries = 0;
         UIColor *titleColor = [story.read boolValue] ? [UIColor colorWithHexString:@"#666666"] : [UIColor blackColor];
         UIFont *dekFont = [UIFont systemFontOfSize:STORY_DEK_FONT_SIZE];
         UIColor *dekColor = [UIColor colorWithHexString:@"#0D0D0D"];
-
-        StoryThumbnailView *thumbnailView = [[[StoryThumbnailView alloc] initWithFrame:CGRectMake(0, 0, 320.0, FEATURE_IMAGE_HEIGHT)] autorelease];
-        thumbnailView.placeholderImageName = placeholderImageName;
-        thumbnailView.image = image;
-        [thumbnailView loadImage];
-
-        [views addObject:thumbnailView];
         
         // Calculate height
         CGFloat availableHeight = FEATURE_TEXT_HEIGHT;
@@ -899,14 +874,14 @@ static NSInteger numTries = 0;
             dekDimensions = [story.summary sizeWithFont:dekFont constrainedToSize:CGSizeMake(STORY_TEXT_WIDTH, availableHeight) lineBreakMode:UILineBreakModeTailTruncation];
         }
         
-        CGRect titleFrame = CGRectMake(STORY_TEXT_PADDING_LEFT,
+        CGRect titleFrame = CGRectMake(THUMBNAIL_WIDTH + STORY_TEXT_PADDING_LEFT,
                                        STORY_TEXT_PADDING_TOP + yOffset, 
-                                       STORY_TEXT_WIDTH + THUMBNAIL_WIDTH, 
+                                       STORY_TEXT_WIDTH, 
                                        titleDimensions.height);
         
-        CGRect dekFrame = CGRectMake(STORY_TEXT_PADDING_LEFT,
+        CGRect dekFrame = CGRectMake(THUMBNAIL_WIDTH + STORY_TEXT_PADDING_LEFT,
                                      ceil(CGRectGetMaxY(titleFrame)), 
-                                     STORY_TEXT_WIDTH + THUMBNAIL_WIDTH, 
+                                     STORY_TEXT_WIDTH, 
                                      dekDimensions.height);
         
         
@@ -934,19 +909,28 @@ static NSInteger numTries = 0;
         
         [views addObject:dekLabel];
         
+        // ThumbnailView
+        StoryThumbnailView *thumbnailView = [[[StoryThumbnailView alloc] initWithFrame:CGRectMake(0, 0, THUMBNAIL_WIDTH, THUMBNAIL_WIDTH)] autorelease];
+        thumbnailView.placeholderImageName = placeholderImageName;
+        thumbnailView.image = image;
+        [thumbnailView loadImage];
+        
+        [views addObject:thumbnailView];
+        
         return views;
     }
 }
 
 - (void)tableView:(UITableView *)tv didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 	if(indexPath.row == self.stories.count) {
-		if (!self.xmlParser) { // only "load x more..." if no other load is going on
-			if (!self.searchResults) {
-				[self loadFromServer:YES];
-			} else {
-				[self loadSearchResultsFromServer:YES forQuery:self.searchQuery];
-			}
-		}
+        if(![[NewsDataManager sharedManager] busy]) {
+            if (!self.searchResults) {
+                [[NewsDataManager sharedManager] requestStoriesForCategory:self.activeCategoryId loadMore:YES];
+            } else {
+                // do search here I think
+                //[self loadSearchResultsFromServer:YES forQuery:self.searchQuery];
+            }
+        }
 	} else {
         StoryDetailViewController *detailViewController = [[StoryDetailViewController alloc] init];
 		detailViewController.newsController = self;
