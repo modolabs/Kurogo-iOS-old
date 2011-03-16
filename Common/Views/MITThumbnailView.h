@@ -9,7 +9,7 @@
 
 @end
 
-
+// set backgroundColor to [UIColor colorwithPatternImage:] to use a placeholder thumbnail
 @interface MITThumbnailView : UIView <ConnectionWrapperDelegate> {
     NSString *imageURL;
     ConnectionWrapper *connection;

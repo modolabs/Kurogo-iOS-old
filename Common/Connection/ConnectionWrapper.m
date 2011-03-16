@@ -84,61 +84,6 @@
         isConnected = false;
         self.urlConnection = nil; // release the connection object
 
-        id alertDelegate = nil;
-        if ([self.delegate respondsToSelector:@selector(alertView:clickedButtonAtIndex:)]) {
-            alertDelegate = self.delegate;
-        }
-        
-        if ([self.delegate connection:self shouldDisplayAlertForError:error]) {
-            NSString *title = nil;
-            NSString *message = nil;
-            switch ([error code]) {
-                case kCFURLErrorCannotConnectToHost:
-                case kCFURLErrorCannotFindHost:
-                    title = NSLocalizedString(@"Connection Failed", nil);
-                    message = NSLocalizedString(@"Could not connect to server. Please try again later.", nil);
-                    break;
-                case kCFURLErrorNotConnectedToInternet:
-                    title = NSLocalizedString(@"Connection Failed", nil);
-                    message = NSLocalizedString(@"Please check your Internet connection and try again later.", nil);
-                    break;
-                case kCFURLErrorTimedOut:
-                    title = NSLocalizedString(@"Connection Failed", nil);
-                    message = NSLocalizedString(@"Server is taking too long to respond. Please try again later.", nil);
-                    break;
-                case kCFURLErrorBadServerResponse: case kCFURLErrorZeroByteResource:
-                case kCFURLErrorCannotDecodeRawData: case kCFURLErrorCannotDecodeContentData:
-                case kCFURLErrorCannotParseResponse:
-                    title = NSLocalizedString(@"Error Connecting", nil);
-                    message = NSLocalizedString(@"Bad response from server. Please try again later.", nil);
-                    break;
-                case kCFURLErrorUnknown: // all other CFURLConnection and CFURLProtocol errors
-                case kCFURLErrorCancelled: case kCFURLErrorBadURL: case kCFURLErrorUnsupportedURL:
-                case kCFURLErrorNetworkConnectionLost: case kCFURLErrorDNSLookupFailed:
-                case kCFURLErrorHTTPTooManyRedirects: case kCFURLErrorResourceUnavailable:
-                case kCFURLErrorRedirectToNonExistentLocation: case kCFURLErrorUserCancelledAuthentication:
-                case kCFURLErrorUserAuthenticationRequired: case kCFURLErrorInternationalRoamingOff:
-                case kCFURLErrorCallIsActive: case kCFURLErrorDataNotAllowed:
-                case kCFURLErrorRequestBodyStreamExhausted: case kCFURLErrorFileDoesNotExist:
-                case kCFURLErrorFileIsDirectory: case kCFURLErrorNoPermissionsToReadFile:
-                case kCFURLErrorDataLengthExceedsMaximum:
-                    title = NSLocalizedString(@"Error Connecting", nil);
-                    message = NSLocalizedString(@"Problem connecting to server. Please try again later.", nil);
-                    break;
-                default:
-                    break;
-            }
-            if (title != nil) {
-                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Connection Failed", nil)
-                                                                message:message
-                                                               delegate:alertDelegate
-                                                      cancelButtonTitle:NSLocalizedString(@"OK", nil) 
-                                                      otherButtonTitles:nil];
-                [alert show];
-                [alert release];
-            }
-        }
-
         if ([delegate respondsToSelector:@selector(connection:handleConnectionFailureWithError:)]) {
             [delegate connection:self handleConnectionFailureWithError:error];	// have the delegate decide what to do with the error
         }
@@ -153,6 +98,10 @@
 }
 
 -(BOOL)requestDataFromURL:(NSURL *)url allowCachedResponse:(BOOL)shouldCache {
+    if (!url) {
+        return NO;
+    }
+    
 	if (isConnected) {	// if there's already a connection established
 		return NO;		// notify of failure
 	}

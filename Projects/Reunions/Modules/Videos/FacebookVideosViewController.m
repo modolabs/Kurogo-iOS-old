@@ -1,6 +1,11 @@
 #import "FacebookVideosViewController.h"
 #import "IconGrid.h"
 #import "MITThumbnailView.h"
+#import "Foundation+KGOAdditions.h"
+#import "UIKit+KGOAdditions.h"
+#import "KGOAppDelegate+ModuleAdditions.h"
+#import "FacebookVideo.h"
+#import "FacebookUser.h"
 
 @implementation FacebookVideosViewController
 
@@ -15,25 +20,24 @@
 }
 */
 
-- (void)loadView {
-	[super loadView];
-    
-    [[KGOSocialMediaController sharedController] loginFacebookWithDelegate:self];
-    
-    _iconGrid = [[[IconGrid alloc] initWithFrame:CGRectMake(10, 10, self.view.bounds.size.width - 10, self.view.bounds.size.height - 10)] autorelease];
-    _iconGrid.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-    
-    [self.view addSubview:_iconGrid];
-    
-    _icons = [[NSMutableArray alloc] init];
-}
-
-/*
-// Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    self.title = @"Videos";
+    
+    CGRect frame = _scrollView.frame;
+    _tableView = [[UITableView alloc] initWithFrame:frame style:UITableViewStylePlain];
+    _tableView.tableHeaderView = _signedInUserView;
+    _tableView.backgroundColor = [UIColor whiteColor];
+    _tableView.dataSource = self;
+    _tableView.delegate = self;
+    _tableView.rowHeight = 72;
+    [self.view insertSubview:_tableView aboveSubview:_scrollView];
+    [_scrollView removeFromSuperview];
+    
+    _videos = [[NSMutableArray alloc] init];
+    _videoIDs = [[NSMutableSet alloc] init];
 }
-*/
 
 /*
 // Override to allow orientations other than the default portrait orientation.
@@ -58,118 +62,97 @@
 
 
 - (void)dealloc {
-    if (_groupsRequest) {
-        _groupsRequest.delegate = nil;
-    }
-    if (_videosRequest) {
-        _videosRequest.delegate = nil;
-    }
-    if (_fbRequestQueue) {
-        for (FBRequest *aRequest in _fbRequestQueue) {
-            aRequest.delegate = nil;
-        }
-    }
-    [_fbRequestQueue release];
-    [_gid release];
+    [_tableView release];
+    [_videos release];
+    [_videoIDs release];
     [super dealloc];
 }
 
-#pragma mark FacebookWrapperDelegate
+#pragma mark Facebook callbacks
 
-- (void)facebookDidLogin {
-    _fbRequestQueue = [[NSMutableArray alloc] init];
-    
-    _groupsRequest = [[[KGOSocialMediaController sharedController] facebook] requestWithGraphPath:@"me/groups" andDelegate:self];
-    //[_fbRequestQueue addObject:request];
-}
-
-
-- (void)facebookFailedToLogin {
-    
-}
-
-
-- (void)facebookDidLogout {
-    
-}
-
-#pragma mark FBRequestDelegate
-
-- (void)request:(FBRequest *)request didFailWithError:(NSError *)error {
-    NSLog(@"%@", [error description]);
-}
-
-- (void)request:(FBRequest *)request didLoad:(id)result {
-    NSLog(@"%@", [request.url description]);
-    NSLog(@"%@", [request.params description]);
-    NSLog(@"%@", [result description]);
-    if (request == _groupsRequest) {
-        
-        NSArray *data = [result objectForKey:@"data"];
-        for (id aGroup in data) {
-            if ([[aGroup objectForKey:@"name"] isEqualToString:@"H35th-1975"]) {
-                _gid = [[aGroup objectForKey:@"id"] retain];
-                NSLog(@"%@", _gid);
-                
-                NSString *query = [NSString stringWithFormat:@"SELECT vid FROM video_tag WHERE subject=%@", _gid];
-                NSMutableDictionary *params = [NSMutableDictionary dictionaryWithObject:query forKey:@"query"];
-                _videosRequest = [[[KGOSocialMediaController sharedController] facebook] requestWithMethodName:@"fql.query"
-                                                                                                     andParams:params
-                                                                                                 andHttpMethod:@"GET"
-                                                                                                   andDelegate:self];
+- (void)didReceiveFeed:(id)result {
+    NSArray *data = [result arrayForKey:@"data"];
+    for (NSDictionary *aPost in data) {
+        NSString *type = [aPost stringForKey:@"type" nilIfEmpty:YES];
+        if ([type isEqualToString:@"video"]) {
+            NSLog(@"video data: %@", [aPost description]);
+            FacebookVideo *aVideo = [FacebookVideo videoWithDictionary:aPost];
+            if (aVideo && ![_videoIDs containsObject:aVideo.identifier]) {
+                NSLog(@"created video %@", [aVideo description]);
+                [_videos addObject:aVideo];
+                [_videoIDs addObject:aVideo.identifier];
             }
-        }
-        
-        _groupsRequest = nil;
-        
-    } else if (request == _videosRequest) {
-        _videosRequest = nil;
-
-        if ([result isKindOfClass:[NSArray class]]) {
-            
-            for (NSDictionary *info in result) {
-                NSString *vid = [info objectForKey:@"vid"];
-                DLog(@"received video id %@", vid);
-                NSString *query = [NSString stringWithFormat:@"SELECT title, description, thumbnail_link, src FROM video WHERE vid=%@", vid];
-                NSMutableDictionary *params = [NSMutableDictionary dictionaryWithObject:query forKey:@"query"];
-                FBRequest *aRequest = [[[KGOSocialMediaController sharedController] facebook] requestWithMethodName:@"fql.query"
-                                                                                                          andParams:params
-                                                                                                      andHttpMethod:@"GET"
-                                                                                                        andDelegate:self];
-                [_fbRequestQueue addObject:aRequest];
-            }
-        }
-        
-    } else { // individual photos
-        [_fbRequestQueue removeObject:request];
-        
-        DLog(@"info for video: %@", [result description]);
-        if ([result isKindOfClass:[NSArray class]]) {
-            NSDictionary *photoInfo = [result lastObject];
-            //NSString *description = [photoInfo objectForKey:@"description"];
-            //NSString *src = [photoInfo objectForKey:@"src"];
-            NSString *title = [photoInfo objectForKey:@"title"];
-            NSString *thumb = [photoInfo objectForKey:@"thumbnail_link"];
-            
-            CGFloat width = 300;
-            CGFloat height = 300;
-            
-            UIView *wrapperView = [[[UIView alloc] initWithFrame:CGRectMake(0, 0, width, height + 20)] autorelease];
-            UILabel *label = [[[UILabel alloc] initWithFrame:CGRectMake(0, height, width, 20)] autorelease];
-            label.text = title;
-            [wrapperView addSubview:label];
-            
-            MITThumbnailView *thumbView = [[[MITThumbnailView alloc] initWithFrame:CGRectMake(0, 0, width, height)] autorelease];
-            thumbView.imageURL = thumb;
-            [thumbView loadImage];
-            
-            [wrapperView addSubview:thumbView];
-            
-            [_icons addObject:wrapperView];
-            _iconGrid.icons = _icons;
-            [_iconGrid setNeedsLayout];
         }
     }
+    [_tableView reloadData];
+}
+
+#pragma mark table view methods
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    return _videos.count;
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    FacebookVideo *aVideo = [_videos objectAtIndex:indexPath.row];
+    
+    static NSString *CellIdentifier = @"Cell";
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    if (!cell) {
+        cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
+    }
+    
+    NSInteger thumbnailTag = 80;
+    NSInteger titleTag = 81;
+    NSInteger subtitleTag = 82;
+    
+    MITThumbnailView *thumbnail = (MITThumbnailView *)[cell.contentView viewWithTag:thumbnailTag];
+    if (!thumbnail) {
+        thumbnail = [[[MITThumbnailView alloc] initWithFrame:CGRectMake(1, 1, 70, 70)] autorelease];
+        thumbnail.tag = thumbnailTag;
+    }
+    thumbnail.imageURL = aVideo.thumbSrc;
+    [thumbnail loadImage];
+    [cell.contentView addSubview:thumbnail];
+    
+    UILabel *titleLabel = (UILabel *)[cell.contentView viewWithTag:titleTag];
+    if (!titleLabel) {
+        UIFont *titleFont = [UIFont systemFontOfSize:13];
+        titleLabel = [UILabel multilineLabelWithText:aVideo.name
+                                                font:titleFont
+                                               width:tableView.frame.size.width - 80];
+        CGRect frame = titleLabel.frame;
+        frame.origin.x = 80;
+        frame.origin.y = 10;
+        titleLabel.frame = frame;
+    } else {
+        titleLabel.text = aVideo.name;
+    }
+    [cell.contentView addSubview:titleLabel];
+    
+    UILabel *subtitleLabel = (UILabel *)[cell.contentView viewWithTag:subtitleTag];
+    if (!subtitleLabel) {
+        UIFont *titleFont = [UIFont systemFontOfSize:13];
+        titleLabel = [UILabel multilineLabelWithText:aVideo.owner.name
+                                                font:titleFont
+                                               width:tableView.frame.size.width - 80];
+        CGRect frame = subtitleLabel.frame;
+        frame.origin.x = 80;
+        frame.origin.y = 40;
+        subtitleLabel.frame = frame;
+    } else {
+        subtitleLabel.text = aVideo.owner.name;
+    }
+    [cell.contentView addSubview:subtitleLabel];
+    
+    return cell;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    FacebookVideo *aVideo = [_videos objectAtIndex:indexPath.row];
+    NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:_videos, @"videos", aVideo, @"video", nil];
+    [(KGOAppDelegate *)[[UIApplication sharedApplication] delegate] showPage:LocalPathPageNameDetail forModuleTag:VideoTag params:params];
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
 @end

@@ -10,7 +10,6 @@
 @protocol ConnectionWrapperDelegate <NSObject>
 
 - (void)connection:(ConnectionWrapper *)wrapper handleData:(NSData *)data;
-- (BOOL)connection:(ConnectionWrapper *)wrapper shouldDisplayAlertForError:(NSError *)error;
 
 @optional
 

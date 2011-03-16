@@ -1,42 +1,10 @@
 #import "KGOSearchBar.h"
 #import "KGOTheme.h"
+#import "KGOToolbar.h"
 
 #define TOOLBAR_BUTTON_PADDING 4.0
 #define TOOLBAR_SEARCHBAR_OVERLAP 4.0
 #define TOOLBAR_BUTTON_SPACING 6.0
-
-
-@interface KGOToolbar : UIToolbar {
-}
-
-@property (nonatomic, retain) UIImage *backgroundImage;
-
-@end
-
-
-
-@implementation KGOToolbar
-
-@synthesize backgroundImage;
-
-- (void)drawRect:(CGRect)rect {
-    if (self.backgroundImage) {
-        // right-align the same background image
-        CGRect adjustedRect = CGRectMake(rect.origin.x + rect.size.width - self.backgroundImage.size.width, rect.origin.y, self.backgroundImage.size.width, self.backgroundImage.size.height);
-        [self.backgroundImage drawInRect:adjustedRect];
-    } else {
-        [super drawRect:rect];
-    }
-}
-
-- (void)dealloc {
-    self.backgroundImage = nil;
-    [super dealloc];
-}
-
-@end
-
-
 
 @implementation KGOSearchBar
 

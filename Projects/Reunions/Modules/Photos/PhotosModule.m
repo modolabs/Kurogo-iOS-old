@@ -1,15 +1,42 @@
 #import "PhotosModule.h"
 #import "FacebookPhotosViewController.h"
+#import "FacebookPhotoDetailViewController.h"
+#import "PhotoUploadViewController.h"
 #import "KGOSocialMediaController.h"
 #import "KGOHomeScreenWidget.h"
 #import "KGOTheme.h"
+
+NSString * const LocalPathPageNamePhotoUpload = @"uploadPhoto";
 
 @implementation PhotosModule
 
 - (UIViewController *)modulePage:(NSString *)pageName params:(NSDictionary *)params {
     UIViewController *vc = nil;
     if ([pageName isEqualToString:LocalPathPageNameHome]) {
-        vc = [[[FacebookPhotosViewController alloc] init] autorelease];
+        vc = [[[FacebookPhotosViewController alloc] initWithNibName:@"FacebookMediaViewController" bundle:nil] autorelease];
+    } else if ([pageName isEqualToString:LocalPathPageNameDetail]) {
+        FacebookPhoto *photo = [params objectForKey:@"photo"];
+        if (photo) {
+            vc = [[[FacebookPhotoDetailViewController alloc] initWithNibName:@"FacebookMediaDetailViewController" bundle:nil] autorelease];
+            [(FacebookPhotoDetailViewController *)vc setPhoto:photo];
+            NSArray *photos = [params objectForKey:@"photos"];
+            if (photos) {
+                [(FacebookPhotoDetailViewController *)vc setPosts:photos];
+            }
+        }
+    } else if ([pageName isEqualToString:LocalPathPageNamePhotoUpload]) {
+        UIImage *image = [params objectForKey:@"photo"];
+        NSString *profile = [params objectForKey:@"profile"];
+        FacebookPhotosViewController *photosVC = [params objectForKey:@"parentVC"];
+        if (image && profile && photosVC) {
+            PhotoUploadViewController *uploadVC = [[[PhotoUploadViewController alloc] initWithNibName:@"PhotoUploadViewController"
+                                                                                               bundle:nil] autorelease];
+            uploadVC.profile = profile;
+            uploadVC.photo = image;
+            uploadVC.parentVC = photosVC;
+            
+            vc = uploadVC;
+        }
     }
     return vc;
 }
@@ -40,7 +67,7 @@
                                                    @"offline_access",
                                                    @"user_groups",
                                                    @"user_photos",
-                                                   @"friends_photos",
+                                                   @"publish_stream",
                                                    nil]
                                            forKey:@"permissions"];
     }

@@ -75,6 +75,13 @@ static KGOTheme *s_sharedTheme = nil;
     return nil;
 }
 
+- (UIImage *)backgroundImageForToolbar {
+    NSString *imageName = [[themeDict objectForKey:@"Images"] objectForKey:@"ToolbarBackground"];
+    if (imageName)
+        return [UIImage imageWithPathName:imageName];
+    return nil;
+}
+
 - (UIImage *)backgroundImageForNavBar {
     NSString *imageName = [[themeDict objectForKey:@"Images"] objectForKey:@"NavBarBackground"];
     if (imageName)

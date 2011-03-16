@@ -14,6 +14,7 @@
 	IBOutlet UIBarButtonItem *_browseButton;
 	IBOutlet UIBarButtonItem *_bookmarksButton;
 	IBOutlet UIBarButtonItem *_settingsButton;
+    IBOutlet UIView *_mapBorder; // ipad only
 
 	// TODO: indoor map initially won't be MKMapView
 	IBOutlet MKMapView *_mapView;

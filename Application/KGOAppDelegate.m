@@ -344,7 +344,8 @@
 	NSArray *notifications = [self unreadNotifications];
 
 	for (KGONotification *notification in notifications) {
-		if(badgeCount = [notificationsByModule objectForKey:notification.moduleName]) {
+        badgeCount = [notificationsByModule objectForKey:notification.moduleName];
+		if(badgeCount) {
 			badgeCountInt = [badgeCount intValue] + 1;
 		} else {
 			badgeCountInt = 1;
@@ -355,9 +356,9 @@
     
 	// update the badge values for each tab item
 	for (KGOModule *module in self.modules) {
-		NSNumber *badgeValue = nil;
+		NSNumber *badgeValue = [notificationsByModule objectForKey:module.tag];
 		NSString *badgeString = nil;
-		if(badgeValue = [notificationsByModule objectForKey:module.tag]) {
+		if(badgeValue) {
 			badgeString = [badgeValue description];
 		}
 		[module setBadgeValue:badgeString];

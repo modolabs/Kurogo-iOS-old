@@ -2,6 +2,8 @@
 #import "SFHFKeychainUtils.h"
 #import "KGOAppDelegate.h"
 #import "JSONAPIRequest.h"
+#import "Foundation+KGOAdditions.h"
+#import "JSON.h"
 
 NSString * const KGOSocialMediaTypeFacebook = @"Facebook";
 NSString * const KGOSocialMediaTypeTwitter = @"Twitter";
@@ -11,15 +13,28 @@ NSString * const KGOSocialMediaTypeBitly = @"bit.ly";
 static NSString * const TwitterUsernameKey = @"TwitterUsername";
 static NSString * const TwitterServiceName = @"Twitter";
 
+// NSUserDefaults
 static NSString * const FacebookTokenKey = @"FBToken";
 static NSString * const FacebookTokenPermissions = @"FBTokenPermissions";
 static NSString * const FacebookTokenExpirationSetting = @"FBTokenExpiration";
+// NSNotifications
+NSString * const FacebookDidLoginNotification = @"FBDidLogin";
+NSString * const FacebookDidLogoutNotification = @"FBDidLogout";
+
+
+
+@interface KGOSocialMediaController (Private)
+
+- (void)closeBitlyConnection;
+
+@end
+
 
 static KGOSocialMediaController *s_controller = nil;
 
 @implementation KGOSocialMediaController
 
-@synthesize twitterDelegate, bitlyDelegate, facebookDelegate;
+@synthesize twitterDelegate, bitlyDelegate;//, facebookDelegate;
 
 + (KGOSocialMediaController *)sharedController {
 	if (s_controller == nil) {
@@ -117,26 +132,25 @@ static KGOSocialMediaController *s_controller = nil;
 - (void)shutdownBitly {
 	if (_bitlyConnection) {
 		[_bitlyConnection cancel];
-		[_bitlyConnection release];
-		_bitlyConnection = nil;
-		[(KGOAppDelegate *)[[UIApplication sharedApplication] delegate] hideNetworkActivityIndicator];
+        [self closeBitlyConnection];
 	}
 }
 
 #pragma mark bit.ly - ConnectionWrapper
 
 - (void)connection:(ConnectionWrapper *)wrapper handleData:(NSData *)data {
-    id jsonObj = [JSONAPIRequest objectWithJSONData:data];
-    if (jsonObj && [jsonObj isKindOfClass:[NSDictionary class]]) {
-        NSDictionary *urlData = [(NSDictionary *)jsonObj objectForKey:@"data"];
+	SBJsonParser *jsonParser = [[[SBJsonParser alloc] init] autorelease];
+    NSString *jsonString = [[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding] autorelease];
+    NSError *error = nil;
+    id result = [jsonParser objectWithString:jsonString error:&error];
+    if (result && [result isKindOfClass:[NSDictionary class]]) {
+        NSDictionary *urlData = [result dictionaryForKey:@"data"];
         if (urlData) {
-            NSString *shortURL = [urlData objectForKey:@"url"];
+            NSString *shortURL = [urlData stringForKey:@"url" nilIfEmpty:YES];
 			[self.bitlyDelegate didGetBitlyURL:shortURL];
         }
     }
-    [_bitlyConnection release];
-	_bitlyConnection = nil;
-	[(KGOAppDelegate *)[[UIApplication sharedApplication] delegate] hideNetworkActivityIndicator];
+    [self closeBitlyConnection];
 }
 
 - (BOOL)connection:(ConnectionWrapper *)connection shouldDisplayAlertForError:(NSError *)error {
@@ -145,13 +159,17 @@ static KGOSocialMediaController *s_controller = nil;
 
 - (void)connection:(ConnectionWrapper *)wrapper handleConnectionFailureWithError:(NSError *)error {
 	if (wrapper == _bitlyConnection) {
-		[_bitlyConnection release];
-		_bitlyConnection = nil;
 		if ([self.bitlyDelegate respondsToSelector:@selector(failedToGetBitlyURL)]) {
 			[self.bitlyDelegate failedToGetBitlyURL];
 		}
 	}
+    [self closeBitlyConnection];
+}
+
+- (void)closeBitlyConnection {
 	[(KGOAppDelegate *)[[UIApplication sharedApplication] delegate] hideNetworkActivityIndicator];
+    [_bitlyConnection release];
+    _bitlyConnection = nil;
 }
 
 #pragma mark -
@@ -174,10 +192,7 @@ static KGOSocialMediaController *s_controller = nil;
 - (void)shutdownTwitter {
 	self.twitterDelegate = nil;
 	if (_twitterEngine) {
-		for (NSString *identifier in [_twitterEngine connectionIdentifiers]) {
-			[_twitterEngine closeConnection:identifier];
-			[(KGOAppDelegate *)[[UIApplication sharedApplication] delegate] hideNetworkActivityIndicator];
-		}
+        [_twitterEngine closeAllConnections];
 		[_twitterEngine release];
 		_twitterEngine = nil;
 	}
@@ -226,6 +241,13 @@ static KGOSocialMediaController *s_controller = nil;
 
 - (void)postToTwitter:(NSString *)text {
 	[_twitterEngine sendUpdate:text];
+}
+
+- (void)getPostsForTwitterHashtag:(NSString *)hashtag {
+    if ([hashtag rangeOfString:@"#"].location != 0) {
+        hashtag = [NSString stringWithFormat:@"#%@", hashtag];
+    }
+    //[_twitterEngine
 }
 
 - (NSString *)twitterUsername {
@@ -296,14 +318,14 @@ static KGOSocialMediaController *s_controller = nil;
 	[(KGOAppDelegate *)[[UIApplication sharedApplication] delegate] hideNetworkActivityIndicator];
 }
 
-#pragma mark -
-#pragma mark Facebook
+#pragma mark - Facebook
 
 - (BOOL)isFacebookLoggedIn {
     return [_facebook isSessionValid];
 }
 
 - (void)parseCallbackURL:(NSURL *)url {
+    NSLog(@"handling facebook callback url");
     NSString *fragment = [url fragment];
     NSArray *parts = [fragment componentsSeparatedByString:@"&"];
     for (NSString *aPart in parts) {
@@ -313,10 +335,12 @@ static KGOSocialMediaController *s_controller = nil;
         if ([key isEqualToString:@"access_token"]) {
             _facebook.accessToken = value;
             [[NSUserDefaults standardUserDefaults] setObject:value forKey:FacebookTokenKey];
+            NSLog(@"set facebook access token");
 
             // record the set of permissions we authorized with, in case we change them later
             NSArray *permissions = [[_apiSettings objectForKey:KGOSocialMediaTypeFacebook] objectForKey:@"permissions"];
             [[NSUserDefaults standardUserDefaults] setObject:permissions forKey:FacebookTokenPermissions];
+            NSLog(@"stored facebook token permissions");
             
         } else if ([key isEqualToString:@"expires_in"]) {
             CGFloat interval = [value floatValue];
@@ -328,18 +352,28 @@ static KGOSocialMediaController *s_controller = nil;
             }
             _facebook.expirationDate = expiryDate;
             [[NSUserDefaults standardUserDefaults] setObject:expiryDate forKey:FacebookTokenExpirationSetting];
+            NSLog(@"set facebook expiration date");
         }
     }
     [[NSUserDefaults standardUserDefaults] synchronize];
-    
-    // delegate will have been established before the app switch
-    if ([_facebook isSessionValid]) {
-        [self.facebookDelegate facebookDidLogin];
+
+    if ([self isFacebookLoggedIn]) {
+        [[NSNotificationCenter defaultCenter] postNotificationName:FacebookDidLoginNotification object:self];
     }
 }
 
 - (void)startupFacebook {
     _facebookStartupCount++;
+    
+    // prep for modules that actually use facebook API's
+    if (!_fbRequestQueue)
+        _fbRequestQueue = [[NSMutableArray alloc] init];
+    if (!_fbRequestIdentifiers)
+        _fbRequestIdentifiers = [[NSMutableArray alloc] init];
+    if (!_fbUploadQueue)
+        _fbUploadQueue = [[NSMutableArray alloc] init];
+    if (!_fbUploadData)
+        _fbUploadData = [[NSMutableArray alloc] init];
     
     if (!_facebook) {
         NSLog(@"starting up facebook");
@@ -355,12 +389,15 @@ static KGOSocialMediaController *s_controller = nil;
             NSSet *storedSet = [NSSet setWithArray:storedPermissions];
             NSSet *neededSet = [NSSet setWithArray:neededPermissions];
             if ([storedSet isEqualToSet:neededSet]) {
+                NSLog(@"%@ %@", [[NSUserDefaults standardUserDefaults] objectForKey:FacebookTokenKey], validDate);
+                
                 _facebook.accessToken = [[NSUserDefaults standardUserDefaults] objectForKey:FacebookTokenKey];
                 _facebook.expirationDate = validDate;
             }
         }
+    } else {
+        NSLog(@"facebook already started");
     }
-    else { NSLog(@"facebook already started"); }
 }
 
 - (void)shutdownFacebook {
@@ -369,6 +406,15 @@ static KGOSocialMediaController *s_controller = nil;
     
     if (_facebookStartupCount <= 0) {
         NSLog(@"shutting down facebook");
+        for (FBRequest *aRequest in _fbRequestQueue) {
+            aRequest.delegate = nil;
+            [_fbRequestQueue removeObject:aRequest];
+        }
+        [_fbRequestQueue release];
+        [_fbRequestIdentifiers release];
+        [_fbUploadQueue release];
+        [_fbUploadData release];
+
         if (_facebook) {
             [_facebook release];
             _facebook = nil;
@@ -395,12 +441,12 @@ static KGOSocialMediaController *s_controller = nil;
     [_facebook dialog:@"feed" andParams:params andDelegate:self];
 }
 
-- (void)loginFacebookWithDelegate:(id<FacebookWrapperDelegate>)delegate {
-	self.facebookDelegate = delegate;
+//- (void)loginFacebookWithDelegate:(id<FacebookWrapperDelegate>)delegate {
+- (void)loginFacebook {
+	//self.facebookDelegate = delegate;
     
 	if ([_facebook isSessionValid]) {
         NSLog(@"already have session");
-		[self.facebookDelegate facebookDidLogin];
 		
 	} else {
         NSArray *permissions = [[_apiSettings objectForKey:KGOSocialMediaTypeFacebook] objectForKey:@"permissions"];
@@ -413,6 +459,10 @@ static KGOSocialMediaController *s_controller = nil;
     if (_facebook) {
         [_facebook logout:self];
     }
+    [[NSUserDefaults standardUserDefaults] removeObjectForKey:FacebookTokenPermissions];
+    [[NSUserDefaults standardUserDefaults] removeObjectForKey:FacebookTokenExpirationSetting];
+    [[NSUserDefaults standardUserDefaults] removeObjectForKey:FacebookTokenKey];
+    [[NSNotificationCenter defaultCenter] postNotificationName:FacebookDidLogoutNotification object:self];
 }
 
 - (NSString *)fbToken {
@@ -434,7 +484,6 @@ static KGOSocialMediaController *s_controller = nil;
  */
 - (void)fbDidLogin {
     NSLog(@"facebook logged in!");
-	[self.facebookDelegate facebookDidLogin];
 }
 
 /**
@@ -448,7 +497,8 @@ static KGOSocialMediaController *s_controller = nil;
  * Called when the request logout has succeeded.
  */
 - (void)fbDidLogout {
-	[self.facebookDelegate facebookDidLogout];
+	//[self.facebookDelegate facebookDidLogout];
+    [[NSNotificationCenter defaultCenter] postNotificationName:FacebookDidLoginNotification object:self];
 }
 
 #pragma mark Facebook - FBRequestDelegate
@@ -460,28 +510,7 @@ static KGOSocialMediaController *s_controller = nil;
  * which is passed the parsed response object.
  */
 - (void)request:(FBRequest *)request didReceiveResponse:(NSURLResponse *)response {
-    NSLog(@"received response");
-}
-
-/**
- * Called when a request returns and its response has been parsed into an object.
- * The resulting object may be a dictionary, an array, a string, or a number, depending
- * on the format of the API response.
- * If you need access to the raw response, use
- * (void)request:(FBRequest *)request didReceiveResponse:(NSURLResponse *)response.
- */
-- (void)request:(FBRequest *)request didLoad:(id)result {
-    DLog(@"%@", [result description]);
-    if ([result isKindOfClass:[NSArray class]]) {
-        result = [result objectAtIndex:0];
-    }
-}
-
-/**
- * Called when an error prevents the Facebook API request from completing successfully.
- */
-- (void)request:(FBRequest *)request didFailWithError:(NSError *)error {
-    DLog(@"%@", [error description]);
+    DLog(@"received response for %@", [request description]);
 }
 
 #pragma mark Facebook - FBDialogDelegate
@@ -494,3 +523,4 @@ static KGOSocialMediaController *s_controller = nil;
 }
 
 @end
+

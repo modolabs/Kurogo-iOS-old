@@ -77,7 +77,6 @@
 
 - (BOOL)showPage:(NSString *)pageName forModuleTag:(NSString *)moduleTag params:(NSDictionary *)params {
     BOOL didShow = NO;
-NSLog(@"fagwrgnaewinfwngles");
 
     KGOModule *module = [self moduleForTag:moduleTag];
     if (module) {
@@ -111,6 +110,15 @@ NSLog(@"fagwrgnaewinfwngles");
         }
     }
     return didShow;
+}
+
+- (UIViewController *)visibleViewController {
+    if (_appNavController) {
+        return _appNavController.visibleViewController;
+    } else if (_appHomeScreen && [_appHomeScreen isKindOfClass:[KGOSidebarFrameViewController class]]) {
+        return [(KGOSidebarFrameViewController *)_appHomeScreen visibleViewController];
+    }
+    return nil;
 }
 
 - (KGONavigationStyle)navigationStyle {

@@ -8,6 +8,7 @@
 #import "KGOMapCategory.h"
 #import "CoreDataManager.h"
 #import "MapKit+KGOAdditions.h"
+#import <QuartzCore/QuartzCore.h>
 
 @implementation MapHomeViewController
 
@@ -20,6 +21,10 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    if (_mapBorder) {
+        _mapBorder.layer.cornerRadius = 4;
+    }
+    
     KGOModule *mapModule = [(KGOAppDelegate *)[[UIApplication sharedApplication] delegate] moduleForTag:MapTag];
     self.title = mapModule.shortName;
 
@@ -27,6 +32,7 @@
     [_mapView centerAndZoomToDefaultRegion];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mapTypeDidChange:) name:MapTypePreferenceChanged object:nil];
 
+    _searchBar.placeholder = NSLocalizedString(@"Map Search Placeholder", nil);
 	_searchController = [[KGOSearchDisplayController alloc] initWithSearchBar:_searchBar delegate:self contentsController:self];
 	
 	indoorMode = NO;

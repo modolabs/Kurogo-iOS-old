@@ -22,80 +22,78 @@ Established in 1636, Harvard is the oldest institution of higher education in th
 		<dict>
 			<key>class</key>
 			<string>HomeModule</string>
-			<key>tag</key>
-			<string>home</string>
 			<key>shortName</key>
 			<string>Home</string>
+			<key>tag</key>
+			<string>home</string>
 		</dict>
 		<dict>
 			<key>class</key>
 			<string>PeopleModule</string>
-			<key>tag</key>
-			<string>people</string>
 			<key>longName</key>
 			<string>People</string>
 			<key>secondary</key>
 			<false/>
 			<key>shortName</key>
 			<string>People</string>
+			<key>tag</key>
+			<string>people</string>
 		</dict>
 		<dict>
 			<key>class</key>
 			<string>NewsModule</string>
-			<key>tag</key>
-			<string>news</string>
 			<key>longName</key>
 			<string>News</string>
 			<key>secondary</key>
 			<false/>
 			<key>shortName</key>
 			<string>News</string>
+			<key>tag</key>
+			<string>news</string>
 		</dict>
 		<dict>
 			<key>class</key>
 			<string>CalendarModule</string>
-			<key>tag</key>
-			<string>calendar</string>
 			<key>longName</key>
 			<string>Events Calendar</string>
 			<key>secondary</key>
 			<false/>
 			<key>shortName</key>
 			<string>Calendar</string>
+			<key>tag</key>
+			<string>calendar</string>
 		</dict>
 		<dict>
 			<key>class</key>
 			<string>MapModule</string>
-			<key>tag</key>
-			<string>map</string>
 			<key>longName</key>
 			<string>Map</string>
 			<key>secondary</key>
 			<false/>
 			<key>shortName</key>
 			<string>Map</string>
+			<key>tag</key>
+			<string>map</string>
 		</dict>
 		<dict>
 			<key>class</key>
 			<string>AboutModule</string>
-			<key>tag</key>
-			<string>about</string>
 			<key>longName</key>
 			<string>About</string>
 			<key>secondary</key>
 			<true/>
 			<key>shortName</key>
 			<string>About</string>
+			<key>tag</key>
+			<string>about</string>
 		</dict>
 		<dict>
 			<key>class</key>
 			<string>SettingsModule</string>
 			<key>iconImage</key>
-			<string>home/customize.png</string>
-			<key>tag</key>
-			<string>settings</string>
+			<string>modules/home/customize.png</string>
 			<key>listViewImage</key>
-			<string>home/module-settings.png</string>
+			<string>modules/home/module-settings.png</string>
 			<key>longName</key>
 			<string>Settings</string>
 			<key>secondary</key>
@@ -103,19 +101,23 @@ Established in 1636, Harvard is the oldest institution of higher education in th
 			<key>shortName</key>
 			<string>Settings</string>
 			<key>tabBarImage</key>
-			<string>home/tab-settings.png</string>
+			<string>modules/home/tab-settings.png</string>
+			<key>tag</key>
+			<string>settings</string>
 		</dict>
 		<dict>
 			<key>class</key>
-			<string>FullWebModule</string>
-			<key>tag</key>
-			<string>fullweb</string>
+			<string>ExternalURLModule</string>
 			<key>longName</key>
 			<string>Full Website</string>
 			<key>secondary</key>
 			<true/>
 			<key>shortName</key>
 			<string>Full Website</string>
+			<key>tag</key>
+			<string>fullweb</string>
+			<key>url</key>
+			<string>http://www.harvard.edu/?fullsite=yes</string>
 		</dict>
 	</array>
 	<key>NavigationControllerClass</key>

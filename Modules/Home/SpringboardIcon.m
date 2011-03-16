@@ -10,7 +10,7 @@
     
     self = [super initWithFrame:frame];
     if (self) {
-        self.compact;
+        self.compact = YES;
     }
     return self;
 }

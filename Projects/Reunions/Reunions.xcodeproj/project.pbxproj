@@ -70,6 +70,8 @@
 		EB1441801309F0E400396753 /* KGOTheme.m in Sources */ = {isa = PBXBuildFile; fileRef = EB14417E1309F0E400396753 /* KGOTheme.m */; };
 		EB1441AA1309F57400396753 /* MITBuildInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = EB1441A91309F57400396753 /* MITBuildInfo.m */; };
 		EB1441B01309F59700396753 /* KGOModule.m in Sources */ = {isa = PBXBuildFile; fileRef = EB1441AE1309F59700396753 /* KGOModule.m */; };
+		EB1744EA132E8FC40045F961 /* PhotoUploadViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EB1744E8132E8FC20045F961 /* PhotoUploadViewController.m */; };
+		EB1744EB132E8FC40045F961 /* PhotoUploadViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = EB1744E9132E8FC30045F961 /* PhotoUploadViewController.xib */; };
 		EB1815E0130C524A003728FF /* KGOHomeScreenViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EB1815DE130C524A003728FF /* KGOHomeScreenViewController.m */; };
 		EB18168D130C8EED003728FF /* KGOHomeScreenTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EB18168B130C8EED003728FF /* KGOHomeScreenTableViewController.m */; };
 		EB1816DC130C9680003728FF /* SpringboardIcon.m in Sources */ = {isa = PBXBuildFile; fileRef = EB1816DA130C9680003728FF /* SpringboardIcon.m */; };
@@ -86,10 +88,14 @@
 		EB181B241317577D003728FF /* KGOPerson.m in Sources */ = {isa = PBXBuildFile; fileRef = EB181B221317577D003728FF /* KGOPerson.m */; };
 		EB1B88711324A4B800108A8F /* MainWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = EB1B88701324A4B800108A8F /* MainWindow.xib */; };
 		EB1B88781324A62100108A8F /* common in Resources */ = {isa = PBXBuildFile; fileRef = EB1B88771324A62100108A8F /* common */; };
+		EB214BC4132E67450093AA7D /* KGOSocialMediaController+FacebookAPI.m in Sources */ = {isa = PBXBuildFile; fileRef = EB214BC3132E67450093AA7D /* KGOSocialMediaController+FacebookAPI.m */; };
 		EB358AD01309F9CE000250AD /* FacebookModule.m in Sources */ = {isa = PBXBuildFile; fileRef = EB358ACE1309F9CE000250AD /* FacebookModule.m */; };
 		EB358FAD130B3778000250AD /* IconGrid.m in Sources */ = {isa = PBXBuildFile; fileRef = EB358FAB130B3778000250AD /* IconGrid.m */; };
 		EB358FB1130B395D000250AD /* MITThumbnailView.m in Sources */ = {isa = PBXBuildFile; fileRef = EB358FAF130B395D000250AD /* MITThumbnailView.m */; };
 		EB3721AB11FA2F5200705180 /* NewsImage.m in Sources */ = {isa = PBXBuildFile; fileRef = EB3721A911FA2F5200705180 /* NewsImage.m */; };
+		EB3902FD132BFDF1008C90CA /* FacebookParentPost.m in Sources */ = {isa = PBXBuildFile; fileRef = EB3902FC132BFDF0008C90CA /* FacebookParentPost.m */; };
+		EB39030C132C77D0008C90CA /* FacebookCommentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EB39030A132C779E008C90CA /* FacebookCommentViewController.m */; };
+		EB39030D132C77D0008C90CA /* FacebookCommentViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = EB39030B132C77B2008C90CA /* FacebookCommentViewController.xib */; };
 		EB46C94A132590F900AF7B5C /* PhotosModule.m in Sources */ = {isa = PBXBuildFile; fileRef = EB46C941132590F900AF7B5C /* PhotosModule.m */; };
 		EB46C94B132590F900AF7B5C /* FacebookPhotosViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EB46C943132590F900AF7B5C /* FacebookPhotosViewController.m */; };
 		EB46C94C132590F900AF7B5C /* VideosModule.m in Sources */ = {isa = PBXBuildFile; fileRef = EB46C947132590F900AF7B5C /* VideosModule.m */; };
@@ -116,6 +122,12 @@
 		EB46CA3C1327E53600AF7B5C /* ThemeConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = EB46CA3A1327E53600AF7B5C /* ThemeConstants.m */; };
 		EB46CA3E1327E7B700AF7B5C /* MainWindow-iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = EB46CA3D1327E7B700AF7B5C /* MainWindow-iPad.xib */; };
 		EB46CAE41328352200AF7B5C /* MapHomeViewController-iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = EB46CAE31328352100AF7B5C /* MapHomeViewController-iPad.xib */; };
+		EB46CB1A13298B9D00AF7B5C /* KGOToolbar.m in Sources */ = {isa = PBXBuildFile; fileRef = EB46CB1913298B9D00AF7B5C /* KGOToolbar.m */; };
+		EB46CBBE132AE55400AF7B5C /* FacebookModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = EB46CBBC132AE55400AF7B5C /* FacebookModel.xcdatamodeld */; };
+		EB46CBC7132AE95400AF7B5C /* FacebookPhoto.m in Sources */ = {isa = PBXBuildFile; fileRef = EB46CBC6132AE95400AF7B5C /* FacebookPhoto.m */; };
+		EB46CBCA132AE95600AF7B5C /* FacebookComment.m in Sources */ = {isa = PBXBuildFile; fileRef = EB46CBC9132AE95500AF7B5C /* FacebookComment.m */; };
+		EB46CBCD132AE95700AF7B5C /* FacebookLike.m in Sources */ = {isa = PBXBuildFile; fileRef = EB46CBCC132AE95600AF7B5C /* FacebookLike.m */; };
+		EB4890A3133018B40036AEBF /* ScheduleViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EB4890A2133018B40036AEBF /* ScheduleViewController.m */; };
 		EB4C2CDF127F138100058748 /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = EB4C2CDE127F138100058748 /* libsqlite3.dylib */; };
 		EB4C2CE1127F138900058748 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EB4C2CE0127F138900058748 /* CFNetwork.framework */; };
 		EB5773C212FDF91200BAF5F5 /* Config.plist in Resources */ = {isa = PBXBuildFile; fileRef = EB5773C112FDF91200BAF5F5 /* Config.plist */; };
@@ -130,6 +142,16 @@
 		EB5F33B5132497D00066413F /* Icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = EB5F33A3132497D00066413F /* Icon@2x.png */; };
 		EB5F33C2132498050066413F /* modules in Resources */ = {isa = PBXBuildFile; fileRef = EB5F33C1132498050066413F /* modules */; };
 		EB5F33C8132498640066413F /* en.lproj in Resources */ = {isa = PBXBuildFile; fileRef = EB5F33C7132498640066413F /* en.lproj */; };
+		EB677E02132ED19B00981523 /* FacebookMediaViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EB677E00132ED19B00981523 /* FacebookMediaViewController.m */; };
+		EB677E03132ED19B00981523 /* FacebookMediaViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = EB677E01132ED19B00981523 /* FacebookMediaViewController.xib */; };
+		EB677E06132ED27F00981523 /* FacebookPhotoDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EB677E05132ED27F00981523 /* FacebookPhotoDetailViewController.m */; };
+		EB677E0A132FD4AF00981523 /* FacebookMediaDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EB677E08132FD4AF00981523 /* FacebookMediaDetailViewController.m */; };
+		EB677E0B132FD4AF00981523 /* FacebookMediaDetailViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = EB677E09132FD4AF00981523 /* FacebookMediaDetailViewController.xib */; };
+		EB677E17132FF12500981523 /* FacebookStatus.m in Sources */ = {isa = PBXBuildFile; fileRef = EB677E16132FF12500981523 /* FacebookStatus.m */; };
+		EB677E1A132FF12500981523 /* FacebookVideo.m in Sources */ = {isa = PBXBuildFile; fileRef = EB677E19132FF12500981523 /* FacebookVideo.m */; };
+		EB677E20132FF95F00981523 /* FacebookUser.m in Sources */ = {isa = PBXBuildFile; fileRef = EB677E1F132FF95C00981523 /* FacebookUser.m */; };
+		EB677E23132FF9CF00981523 /* FacebookPost.m in Sources */ = {isa = PBXBuildFile; fileRef = EB677E22132FF9CC00981523 /* FacebookPost.m */; };
+		EB677E261330043300981523 /* FacebookVideoDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EB677E251330043300981523 /* FacebookVideoDetailViewController.m */; };
 		EB6D02A911E3784100B65CE3 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EB6D02A811E3784100B65CE3 /* MapKit.framework */; };
 		EB6D111711EE143900B65CE3 /* TileServerManager.m in Sources */ = {isa = PBXBuildFile; fileRef = EB6D111511EE143900B65CE3 /* TileServerManager.m */; };
 		EB6D141611EE979500B65CE3 /* NewsCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = EB6D141411EE979500B65CE3 /* NewsCategory.m */; };
@@ -319,6 +341,9 @@
 		EB1441A91309F57400396753 /* MITBuildInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MITBuildInfo.m; path = Modules/About/MITBuildInfo.m; sourceTree = SOURCE_ROOT; };
 		EB1441AD1309F59700396753 /* KGOModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGOModule.h; sourceTree = "<group>"; };
 		EB1441AE1309F59700396753 /* KGOModule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGOModule.m; sourceTree = "<group>"; };
+		EB1744E7132E8FC20045F961 /* PhotoUploadViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhotoUploadViewController.h; sourceTree = "<group>"; };
+		EB1744E8132E8FC20045F961 /* PhotoUploadViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PhotoUploadViewController.m; sourceTree = "<group>"; };
+		EB1744E9132E8FC30045F961 /* PhotoUploadViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PhotoUploadViewController.xib; sourceTree = "<group>"; };
 		EB1815DD130C524A003728FF /* KGOHomeScreenViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGOHomeScreenViewController.h; sourceTree = "<group>"; };
 		EB1815DE130C524A003728FF /* KGOHomeScreenViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGOHomeScreenViewController.m; sourceTree = "<group>"; };
 		EB18168A130C8EED003728FF /* KGOHomeScreenTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGOHomeScreenTableViewController.h; sourceTree = "<group>"; };
@@ -349,6 +374,8 @@
 		EB181B221317577D003728FF /* KGOPerson.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGOPerson.m; sourceTree = "<group>"; };
 		EB1B88701324A4B800108A8F /* MainWindow.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = MainWindow.xib; path = ../../../Resources/MainWindow.xib; sourceTree = "<group>"; };
 		EB1B88771324A62100108A8F /* common */ = {isa = PBXFileReference; lastKnownFileType = folder; path = common; sourceTree = "<group>"; };
+		EB214BC2132E67450093AA7D /* KGOSocialMediaController+FacebookAPI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "KGOSocialMediaController+FacebookAPI.h"; sourceTree = "<group>"; };
+		EB214BC3132E67450093AA7D /* KGOSocialMediaController+FacebookAPI.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "KGOSocialMediaController+FacebookAPI.m"; sourceTree = "<group>"; };
 		EB358ACD1309F9CE000250AD /* FacebookModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FacebookModule.h; sourceTree = "<group>"; };
 		EB358ACE1309F9CE000250AD /* FacebookModule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FacebookModule.m; sourceTree = "<group>"; };
 		EB358FAA130B3778000250AD /* IconGrid.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IconGrid.h; sourceTree = "<group>"; };
@@ -357,6 +384,12 @@
 		EB358FAF130B395D000250AD /* MITThumbnailView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MITThumbnailView.m; sourceTree = "<group>"; };
 		EB3721A811FA2F5200705180 /* NewsImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NewsImage.h; sourceTree = "<group>"; };
 		EB3721A911FA2F5200705180 /* NewsImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NewsImage.m; sourceTree = "<group>"; };
+		EB3902F6132BFCF3008C90CA /* FacebookModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = FacebookModel.xcdatamodel; sourceTree = "<group>"; };
+		EB3902FB132BFDF0008C90CA /* FacebookParentPost.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FacebookParentPost.h; sourceTree = "<group>"; };
+		EB3902FC132BFDF0008C90CA /* FacebookParentPost.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FacebookParentPost.m; sourceTree = "<group>"; };
+		EB390309132C779B008C90CA /* FacebookCommentViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FacebookCommentViewController.h; sourceTree = "<group>"; };
+		EB39030A132C779E008C90CA /* FacebookCommentViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FacebookCommentViewController.m; sourceTree = "<group>"; };
+		EB39030B132C77B2008C90CA /* FacebookCommentViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FacebookCommentViewController.xib; sourceTree = "<group>"; };
 		EB46C940132590F900AF7B5C /* PhotosModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhotosModule.h; sourceTree = "<group>"; };
 		EB46C941132590F900AF7B5C /* PhotosModule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PhotosModule.m; sourceTree = "<group>"; };
 		EB46C942132590F900AF7B5C /* FacebookPhotosViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FacebookPhotosViewController.h; sourceTree = "<group>"; };
@@ -404,6 +437,17 @@
 		EB46CA3A1327E53600AF7B5C /* ThemeConstants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ThemeConstants.m; sourceTree = "<group>"; };
 		EB46CA3D1327E7B700AF7B5C /* MainWindow-iPad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = "MainWindow-iPad.xib"; path = "../../../Resources/MainWindow-iPad.xib"; sourceTree = "<group>"; };
 		EB46CAE31328352100AF7B5C /* MapHomeViewController-iPad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "MapHomeViewController-iPad.xib"; sourceTree = "<group>"; };
+		EB46CB1813298B9D00AF7B5C /* KGOToolbar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGOToolbar.h; sourceTree = "<group>"; };
+		EB46CB1913298B9D00AF7B5C /* KGOToolbar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGOToolbar.m; sourceTree = "<group>"; };
+		EB46CBC5132AE95300AF7B5C /* FacebookPhoto.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FacebookPhoto.h; sourceTree = "<group>"; };
+		EB46CBC6132AE95400AF7B5C /* FacebookPhoto.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FacebookPhoto.m; sourceTree = "<group>"; };
+		EB46CBC8132AE95400AF7B5C /* FacebookComment.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FacebookComment.h; sourceTree = "<group>"; };
+		EB46CBC9132AE95500AF7B5C /* FacebookComment.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FacebookComment.m; sourceTree = "<group>"; };
+		EB46CBCB132AE95600AF7B5C /* FacebookLike.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FacebookLike.h; sourceTree = "<group>"; };
+		EB46CBCC132AE95600AF7B5C /* FacebookLike.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FacebookLike.m; sourceTree = "<group>"; };
+		EB46CBD1132AEA5C00AF7B5C /* FacebookModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FacebookModel.h; sourceTree = "<group>"; };
+		EB4890A1133018B40036AEBF /* ScheduleViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScheduleViewController.h; sourceTree = "<group>"; };
+		EB4890A2133018B40036AEBF /* ScheduleViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ScheduleViewController.m; sourceTree = "<group>"; };
 		EB4C2CDE127F138100058748 /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
 		EB4C2CE0127F138900058748 /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
 		EB5773C112FDF91200BAF5F5 /* Config.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Config.plist; path = ../Config.plist; sourceTree = "<group>"; };
@@ -422,6 +466,24 @@
 		EB5F33A3132497D00066413F /* Icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon@2x.png"; sourceTree = "<group>"; };
 		EB5F33C1132498050066413F /* modules */ = {isa = PBXFileReference; lastKnownFileType = folder; path = modules; sourceTree = "<group>"; };
 		EB5F33C7132498640066413F /* en.lproj */ = {isa = PBXFileReference; lastKnownFileType = folder; path = en.lproj; sourceTree = "<group>"; };
+		EB677DFF132ED19300981523 /* FacebookMediaViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FacebookMediaViewController.h; sourceTree = "<group>"; };
+		EB677E00132ED19B00981523 /* FacebookMediaViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FacebookMediaViewController.m; sourceTree = "<group>"; };
+		EB677E01132ED19B00981523 /* FacebookMediaViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FacebookMediaViewController.xib; sourceTree = "<group>"; };
+		EB677E04132ED27E00981523 /* FacebookPhotoDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FacebookPhotoDetailViewController.h; sourceTree = "<group>"; };
+		EB677E05132ED27F00981523 /* FacebookPhotoDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FacebookPhotoDetailViewController.m; sourceTree = "<group>"; };
+		EB677E07132FD4AF00981523 /* FacebookMediaDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FacebookMediaDetailViewController.h; sourceTree = "<group>"; };
+		EB677E08132FD4AF00981523 /* FacebookMediaDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FacebookMediaDetailViewController.m; sourceTree = "<group>"; };
+		EB677E09132FD4AF00981523 /* FacebookMediaDetailViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FacebookMediaDetailViewController.xib; sourceTree = "<group>"; };
+		EB677E15132FF12500981523 /* FacebookStatus.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FacebookStatus.h; sourceTree = "<group>"; };
+		EB677E16132FF12500981523 /* FacebookStatus.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FacebookStatus.m; sourceTree = "<group>"; };
+		EB677E18132FF12500981523 /* FacebookVideo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FacebookVideo.h; sourceTree = "<group>"; };
+		EB677E19132FF12500981523 /* FacebookVideo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FacebookVideo.m; sourceTree = "<group>"; };
+		EB677E1E132FF95B00981523 /* FacebookUser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FacebookUser.h; sourceTree = "<group>"; };
+		EB677E1F132FF95C00981523 /* FacebookUser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FacebookUser.m; sourceTree = "<group>"; };
+		EB677E21132FF9CB00981523 /* FacebookPost.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FacebookPost.h; sourceTree = "<group>"; };
+		EB677E22132FF9CC00981523 /* FacebookPost.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FacebookPost.m; sourceTree = "<group>"; };
+		EB677E241330043300981523 /* FacebookVideoDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FacebookVideoDetailViewController.h; sourceTree = "<group>"; };
+		EB677E251330043300981523 /* FacebookVideoDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FacebookVideoDetailViewController.m; sourceTree = "<group>"; };
 		EB6D02A811E3784100B65CE3 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		EB6D111411EE143900B65CE3 /* TileServerManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TileServerManager.h; sourceTree = "<group>"; };
 		EB6D111511EE143900B65CE3 /* TileServerManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TileServerManager.m; sourceTree = "<group>"; };
@@ -756,6 +818,8 @@
 		EB13872112F22DBC004DBB7C /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				EB46CB1813298B9D00AF7B5C /* KGOToolbar.h */,
+				EB46CB1913298B9D00AF7B5C /* KGOToolbar.m */,
 				EB358FAE130B395D000250AD /* MITThumbnailView.h */,
 				EB358FAF130B395D000250AD /* MITThumbnailView.m */,
 				EB358FAA130B3778000250AD /* IconGrid.h */,
@@ -892,8 +956,20 @@
 		EB358ACC1309F9AB000250AD /* Facebook */ = {
 			isa = PBXGroup;
 			children = (
+				EB46CBBB132AE53F00AF7B5C /* Model */,
+				EB214BC2132E67450093AA7D /* KGOSocialMediaController+FacebookAPI.h */,
+				EB214BC3132E67450093AA7D /* KGOSocialMediaController+FacebookAPI.m */,
 				EB358ACD1309F9CE000250AD /* FacebookModule.h */,
 				EB358ACE1309F9CE000250AD /* FacebookModule.m */,
+				EB390309132C779B008C90CA /* FacebookCommentViewController.h */,
+				EB39030A132C779E008C90CA /* FacebookCommentViewController.m */,
+				EB39030B132C77B2008C90CA /* FacebookCommentViewController.xib */,
+				EB677DFF132ED19300981523 /* FacebookMediaViewController.h */,
+				EB677E00132ED19B00981523 /* FacebookMediaViewController.m */,
+				EB677E01132ED19B00981523 /* FacebookMediaViewController.xib */,
+				EB677E07132FD4AF00981523 /* FacebookMediaDetailViewController.h */,
+				EB677E08132FD4AF00981523 /* FacebookMediaDetailViewController.m */,
+				EB677E09132FD4AF00981523 /* FacebookMediaDetailViewController.xib */,
 			);
 			path = Facebook;
 			sourceTree = "<group>";
@@ -912,6 +988,11 @@
 				EB46C941132590F900AF7B5C /* PhotosModule.m */,
 				EB46C942132590F900AF7B5C /* FacebookPhotosViewController.h */,
 				EB46C943132590F900AF7B5C /* FacebookPhotosViewController.m */,
+				EB1744E7132E8FC20045F961 /* PhotoUploadViewController.h */,
+				EB1744E8132E8FC20045F961 /* PhotoUploadViewController.m */,
+				EB1744E9132E8FC30045F961 /* PhotoUploadViewController.xib */,
+				EB677E04132ED27E00981523 /* FacebookPhotoDetailViewController.h */,
+				EB677E05132ED27F00981523 /* FacebookPhotoDetailViewController.m */,
 			);
 			path = Photos;
 			sourceTree = "<group>";
@@ -932,6 +1013,8 @@
 				EB46C947132590F900AF7B5C /* VideosModule.m */,
 				EB46C948132590F900AF7B5C /* FacebookVideosViewController.h */,
 				EB46C949132590F900AF7B5C /* FacebookVideosViewController.m */,
+				EB677E241330043300981523 /* FacebookVideoDetailViewController.h */,
+				EB677E251330043300981523 /* FacebookVideoDetailViewController.m */,
 			);
 			path = Videos;
 			sourceTree = "<group>";
@@ -941,6 +1024,8 @@
 			children = (
 				EB46CA0E1326FA8C00AF7B5C /* ScheduleModule.h */,
 				EB46CA0F1326FA8C00AF7B5C /* ScheduleModule.m */,
+				EB4890A1133018B40036AEBF /* ScheduleViewController.h */,
+				EB4890A2133018B40036AEBF /* ScheduleViewController.m */,
 			);
 			path = Schedule;
 			sourceTree = "<group>";
@@ -971,6 +1056,31 @@
 			);
 			name = Calendar;
 			path = ../../../Modules/Calendar;
+			sourceTree = "<group>";
+		};
+		EB46CBBB132AE53F00AF7B5C /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				EB46CBBC132AE55400AF7B5C /* FacebookModel.xcdatamodeld */,
+				EB677E21132FF9CB00981523 /* FacebookPost.h */,
+				EB677E22132FF9CC00981523 /* FacebookPost.m */,
+				EB677E1E132FF95B00981523 /* FacebookUser.h */,
+				EB677E1F132FF95C00981523 /* FacebookUser.m */,
+				EB677E18132FF12500981523 /* FacebookVideo.h */,
+				EB677E19132FF12500981523 /* FacebookVideo.m */,
+				EB677E15132FF12500981523 /* FacebookStatus.h */,
+				EB677E16132FF12500981523 /* FacebookStatus.m */,
+				EB3902FB132BFDF0008C90CA /* FacebookParentPost.h */,
+				EB3902FC132BFDF0008C90CA /* FacebookParentPost.m */,
+				EB46CBC5132AE95300AF7B5C /* FacebookPhoto.h */,
+				EB46CBC6132AE95400AF7B5C /* FacebookPhoto.m */,
+				EB46CBCB132AE95600AF7B5C /* FacebookLike.h */,
+				EB46CBCC132AE95600AF7B5C /* FacebookLike.m */,
+				EB46CBC8132AE95400AF7B5C /* FacebookComment.h */,
+				EB46CBC9132AE95500AF7B5C /* FacebookComment.m */,
+				EB46CBD1132AEA5C00AF7B5C /* FacebookModel.h */,
+			);
+			name = Model;
 			sourceTree = "<group>";
 		};
 		EB5773F812FE0FAF00BAF5F5 /* Home */ = {
@@ -1243,6 +1353,10 @@
 				EB46CA3B1327E53600AF7B5C /* ThemeConfig.plist in Resources */,
 				EB46CA3E1327E7B700AF7B5C /* MainWindow-iPad.xib in Resources */,
 				EB46CAE41328352200AF7B5C /* MapHomeViewController-iPad.xib in Resources */,
+				EB39030D132C77D0008C90CA /* FacebookCommentViewController.xib in Resources */,
+				EB1744EB132E8FC40045F961 /* PhotoUploadViewController.xib in Resources */,
+				EB677E03132ED19B00981523 /* FacebookMediaViewController.xib in Resources */,
+				EB677E0B132FD4AF00981523 /* FacebookMediaDetailViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1377,6 +1491,24 @@
 				EB46CA301326FB8200AF7B5C /* KGOEventContactInfo.m in Sources */,
 				EB46CA331327011200AF7B5C /* KGOSidebarFrameViewController.m in Sources */,
 				EB46CA3C1327E53600AF7B5C /* ThemeConstants.m in Sources */,
+				EB46CB1A13298B9D00AF7B5C /* KGOToolbar.m in Sources */,
+				EB46CBBE132AE55400AF7B5C /* FacebookModel.xcdatamodeld in Sources */,
+				EB46CBC7132AE95400AF7B5C /* FacebookPhoto.m in Sources */,
+				EB46CBCA132AE95600AF7B5C /* FacebookComment.m in Sources */,
+				EB46CBCD132AE95700AF7B5C /* FacebookLike.m in Sources */,
+				EB3902FD132BFDF1008C90CA /* FacebookParentPost.m in Sources */,
+				EB39030C132C77D0008C90CA /* FacebookCommentViewController.m in Sources */,
+				EB214BC4132E67450093AA7D /* KGOSocialMediaController+FacebookAPI.m in Sources */,
+				EB1744EA132E8FC40045F961 /* PhotoUploadViewController.m in Sources */,
+				EB677E02132ED19B00981523 /* FacebookMediaViewController.m in Sources */,
+				EB677E06132ED27F00981523 /* FacebookPhotoDetailViewController.m in Sources */,
+				EB677E0A132FD4AF00981523 /* FacebookMediaDetailViewController.m in Sources */,
+				EB677E17132FF12500981523 /* FacebookStatus.m in Sources */,
+				EB677E1A132FF12500981523 /* FacebookVideo.m in Sources */,
+				EB677E20132FF95F00981523 /* FacebookUser.m in Sources */,
+				EB677E23132FF9CF00981523 /* FacebookPost.m in Sources */,
+				EB677E261330043300981523 /* FacebookVideoDetailViewController.m in Sources */,
+				EB4890A3133018B40036AEBF /* ScheduleViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1837,6 +1969,16 @@
 			);
 			currentVersion = EB46CA131326FB8200AF7B5C /* Calendar.xcdatamodel */;
 			path = Calendar.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+		EB46CBBC132AE55400AF7B5C /* FacebookModel.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				EB3902F6132BFCF3008C90CA /* FacebookModel.xcdatamodel */,
+			);
+			currentVersion = EB3902F6132BFCF3008C90CA /* FacebookModel.xcdatamodel */;
+			path = FacebookModel.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;
 		};

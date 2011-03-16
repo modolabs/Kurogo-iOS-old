@@ -102,7 +102,7 @@
 }
 
 - (NSDictionary *)queryParameters {
-    return [NSURL queryParametersFromString:[self query]];
+    return [NSURL parametersFromQueryString:[self query]];
 }
 
 @end

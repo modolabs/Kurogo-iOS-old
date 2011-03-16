@@ -44,6 +44,10 @@ typedef enum {
 - (UIColor *)tintColorForNavBar;
 - (UIImage *)titleImageForNavBar;
 
+// reasonable overrides
+
+- (UIImage *)backgroundImageForToolbar;
+
 // ridiculous overrides
 
 - (UIImage *)backgroundImageForNavBar;

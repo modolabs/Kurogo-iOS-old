@@ -7,6 +7,39 @@
 
 @implementation FacebookModule
 
+// code from http://developer.apple.com/library/ios/#qa/qa2010/qa1480.html
++ (NSDate *)dateFromRFC3339DateTimeString:(NSString *)rfc3339DateTimeString {
+    static NSDateFormatter *    sRFC3339DateFormatter;
+    NSDate *                    date;
+    
+    // If the date formatters aren't already set up, do that now and cache them 
+    // for subsequence reuse.
+    
+    if (sRFC3339DateFormatter == nil) {
+        NSLocale *                  enUSPOSIXLocale;
+        
+        sRFC3339DateFormatter = [[NSDateFormatter alloc] init];
+        assert(sRFC3339DateFormatter != nil);
+        
+        enUSPOSIXLocale = [[[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"] autorelease];
+        assert(enUSPOSIXLocale != nil);
+        
+        [sRFC3339DateFormatter setLocale:enUSPOSIXLocale];
+        [sRFC3339DateFormatter setDateFormat:@"yyyy'-'MM'-'dd'T'HH':'mm':'ss'Z'"];
+        [sRFC3339DateFormatter setTimeZone:[NSTimeZone timeZoneForSecondsFromGMT:0]];
+    }
+    
+    // Convert the RFC 3339 date time string to an NSDate.
+    date = [sRFC3339DateFormatter dateFromString:rfc3339DateTimeString];
+    return date;
+}
+
+- (NSArray *)objectModelNames {
+    return [NSArray arrayWithObject:@"FacebookModel"];
+}
+
+#pragma mark -
+
 - (UIViewController *)modulePage:(NSString *)pageName params:(NSDictionary *)params {
     UIViewController *vc = nil;
     if ([pageName isEqualToString:LocalPathPageNameHome]) {
@@ -36,21 +69,38 @@
     NSMutableArray *widgets = [NSMutableArray array];
     
     UIImageView *imageView = [[[UIImageView alloc] initWithImage:[UIImage imageWithPathName:@"modules/facebook/button-facebook.png"]] autorelease];
+    
+    // TODO: get rid of magic numbers
     CGRect frame = imageView.frame;
-    frame.origin.x = 5;
-    frame.origin.y = 5;
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+        //frame.origin.x = 5;
+        //frame.origin.y = 5;
+        frame = CGRectMake(5, 5, 31, 31);
+    } else {
+        frame = CGRectMake(22, 5, 31, 31);
+    }
     imageView.frame = frame;
     
-    CGFloat x = frame.origin.x + frame.size.width + 5;
-    UILabel *label = [[[UILabel alloc] initWithFrame:CGRectMake(x, 5, 120 - x - 5, 44)] autorelease];
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+        CGFloat x = frame.origin.x + frame.size.width + 5;
+        frame = CGRectMake(x, 5, 120 - x - 5, 44);
+    } else {
+        frame = CGRectMake(5, 40, 65, 40);
+    }
+    UILabel *label = [[[UILabel alloc] initWithFrame:frame] autorelease];
     label.font = font;
     label.text = @"Harvard-Radclife '96";
     label.numberOfLines = 0;
-    label.lineBreakMode = UILineBreakModeWordWrap;
+    label.lineBreakMode = UILineBreakModeCharacterWrap;
     label.backgroundColor = [UIColor clearColor];
     label.textColor = [UIColor whiteColor];
     
-    KGOHomeScreenWidget *widget = [[[KGOHomeScreenWidget alloc] initWithFrame:CGRectMake(0, 0, 120, 44)] autorelease];
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+        frame = CGRectMake(0, 0, 120, 44);
+    } else {
+        frame = CGRectMake(5, 900, 75, 100);
+    }
+    KGOHomeScreenWidget *widget = [[[KGOHomeScreenWidget alloc] initWithFrame:frame] autorelease];
     [widget addSubview:imageView];
     [widget addSubview:label];
     widget.gravity = KGOLayoutGravityBottomLeft;

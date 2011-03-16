@@ -139,13 +139,13 @@ NSString * const MapTypePreferenceChanged = @"MapTypeChanged";
         KGOPlacemark *placemark = [[[CoreDataManager sharedManager] objectsForEntity:KGOPlacemarkEntityName matchingPredicate:pred] lastObject];
         if (placemark) {
             KGOAppDelegate *appDelegate = (KGOAppDelegate *)[[UIApplication sharedApplication] delegate];
-            UIViewController *visibleVC = [[appDelegate theNavController] visibleViewController];
+            UIViewController *visibleVC = [appDelegate visibleViewController];
             // this will be true if we invoked browse categories from the map module
             if (![visibleVC isKindOfClass:[MapHomeViewController class]]) {
                 [appDelegate showPage:LocalPathPageNameHome forModuleTag:MapTag params:nil];
             }
             // otherwise we picked an annotation from another module
-            visibleVC = [[appDelegate theNavController] visibleViewController];
+            visibleVC = [appDelegate visibleViewController];
             if (![visibleVC isKindOfClass:[MapHomeViewController class]]) {
                 return NO;
             }
