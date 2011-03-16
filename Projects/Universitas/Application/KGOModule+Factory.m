@@ -3,7 +3,7 @@
 #import "AboutModule.h"
 #import "CalendarModule.h"
 #import "FacebookModule.h"
-#import "FullWebModule.h"
+#import "ExternalURLModule.h"
 #import "HomeModule.h"
 #import "LoginModule.h"
 #import "NewsModule.h"
@@ -29,8 +29,8 @@
     else if ([className isEqualToString:@"FacebookModule"])
         module = [[[FacebookModule alloc] initWithDictionary:args] autorelease];
     
-    else if ([className isEqualToString:@"FullWebModule"])
-        module = [[[FullWebModule alloc] initWithDictionary:args] autorelease];
+    else if ([className isEqualToString:@"ExternalURLModule"])
+        module = [[[ExternalURLModule alloc] initWithDictionary:args] autorelease];
     
     else if ([className isEqualToString:@"LoginModule"])
         module = [[[LoginModule alloc] initWithDictionary:args] autorelease];

@@ -94,14 +94,6 @@
     } else {
         aModule = [self.secondaryModules objectAtIndex:indexPath.row];
     }
-
-	if ([aModule.tag isEqualToString:FullWebTag]) {
-        NSString * file = [[NSBundle mainBundle] pathForResource:@"Config" ofType:@"plist"];
-        NSDictionary *infoDict = [NSDictionary dictionaryWithContentsOfFile:file];
-        NSString *urlString = [infoDict objectForKey:@"FullWebURL"];
-		[[UIApplication sharedApplication] openURL:[NSURL URLWithString:urlString]];
-		return;
-	}
     
 	[(KGOAppDelegate *)[[UIApplication sharedApplication] delegate] showPage:LocalPathPageNameHome forModuleTag:aModule.tag params:nil];
 }

@@ -107,7 +107,7 @@ Established in 1636, Harvard is the oldest institution of higher education in th
 		</dict>
 		<dict>
 			<key>class</key>
-			<string>FullWebModule</string>
+			<string>ExternalURLModule</string>
 			<key>longName</key>
 			<string>Full Website</string>
 			<key>secondary</key>
@@ -116,6 +116,8 @@ Established in 1636, Harvard is the oldest institution of higher education in th
 			<string>Full Website</string>
 			<key>tag</key>
 			<string>fullweb</string>
+			<key>url</key>
+			<string>http://www.harvard.edu/?fullsite=yes</string>
 		</dict>
 	</array>
 	<key>NavigationControllerClass</key>

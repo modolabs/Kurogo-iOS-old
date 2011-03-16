@@ -12,6 +12,11 @@
     id<KGOSearchDelegate> _searchDelegate;
 }
 
+// generally subclasses will not override this
+// except in special cases like ExternalURLModule
+- (id)initWithDictionary:(NSDictionary *)moduleDict;
+
+
 /*
  * you must override methods
  * - (UIViewController *)modulePage:(NSString *)pageID params:(NSDictionary *)params;

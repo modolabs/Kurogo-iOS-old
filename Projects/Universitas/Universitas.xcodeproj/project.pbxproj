@@ -86,7 +86,6 @@
 		EB1441151309EEB800396753 /* MapZoomLevel.m in Sources */ = {isa = PBXBuildFile; fileRef = EB1440FA1309EEB800396753 /* MapZoomLevel.m */; };
 		EB14411B1309EEB800396753 /* PolygonOverlay.m in Sources */ = {isa = PBXBuildFile; fileRef = EB1441001309EEB800396753 /* PolygonOverlay.m */; };
 		EB14411D1309EEB800396753 /* TileServerManager.m in Sources */ = {isa = PBXBuildFile; fileRef = EB1441021309EEB800396753 /* TileServerManager.m */; };
-		EB1441221309EECE00396753 /* FullWebModule.m in Sources */ = {isa = PBXBuildFile; fileRef = EB1441201309EECE00396753 /* FullWebModule.m */; };
 		EB1441451309EF7B00396753 /* KGOAppDelegate+ModuleAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = EB1441381309EF7B00396753 /* KGOAppDelegate+ModuleAdditions.m */; };
 		EB1441471309EF7B00396753 /* KGOAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = EB14413A1309EF7B00396753 /* KGOAppDelegate.m */; };
 		EB1441491309EF7B00396753 /* KGONotification.m in Sources */ = {isa = PBXBuildFile; fileRef = EB14413C1309EF7B00396753 /* KGONotification.m */; };
@@ -129,6 +128,7 @@
 		EB46CA951327FECB00AF7B5C /* KGOSidebarFrameViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EB46CA941327FECB00AF7B5C /* KGOSidebarFrameViewController.m */; };
 		EB46CA981327FED600AF7B5C /* MapDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EB46CA971327FED600AF7B5C /* MapDetailViewController.m */; };
 		EB46CB671329CF0400AF7B5C /* KGOToolbar.m in Sources */ = {isa = PBXBuildFile; fileRef = EB46CB661329CF0400AF7B5C /* KGOToolbar.m */; };
+		EB48910913310A930036AEBF /* ExternalURLModule.m in Sources */ = {isa = PBXBuildFile; fileRef = EB48910813310A930036AEBF /* ExternalURLModule.m */; };
 		EB4C2CDF127F138100058748 /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = EB4C2CDE127F138100058748 /* libsqlite3.dylib */; };
 		EB4C2CE1127F138900058748 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EB4C2CE0127F138900058748 /* CFNetwork.framework */; };
 		EB5F31091323E8BC0066413F /* KGOTabbedViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EB5F31071323E8BB0066413F /* KGOTabbedViewController.m */; };
@@ -342,8 +342,6 @@
 		EB1441001309EEB800396753 /* PolygonOverlay.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PolygonOverlay.m; sourceTree = "<group>"; };
 		EB1441011309EEB800396753 /* TileServerManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TileServerManager.h; sourceTree = "<group>"; };
 		EB1441021309EEB800396753 /* TileServerManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TileServerManager.m; sourceTree = "<group>"; };
-		EB14411F1309EECE00396753 /* FullWebModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FullWebModule.h; sourceTree = "<group>"; };
-		EB1441201309EECE00396753 /* FullWebModule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FullWebModule.m; sourceTree = "<group>"; };
 		EB1441321309EF5800396753 /* KGOInfo.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = KGOInfo.plist; sourceTree = "<group>"; };
 		EB1441371309EF7B00396753 /* KGOAppDelegate+ModuleAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "KGOAppDelegate+ModuleAdditions.h"; sourceTree = "<group>"; };
 		EB1441381309EF7B00396753 /* KGOAppDelegate+ModuleAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "KGOAppDelegate+ModuleAdditions.m"; sourceTree = "<group>"; };
@@ -423,6 +421,8 @@
 		EB46CA971327FED600AF7B5C /* MapDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MapDetailViewController.m; sourceTree = "<group>"; };
 		EB46CB651329CF0400AF7B5C /* KGOToolbar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGOToolbar.h; sourceTree = "<group>"; };
 		EB46CB661329CF0400AF7B5C /* KGOToolbar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGOToolbar.m; sourceTree = "<group>"; };
+		EB48910713310A930036AEBF /* ExternalURLModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ExternalURLModule.h; sourceTree = "<group>"; };
+		EB48910813310A930036AEBF /* ExternalURLModule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ExternalURLModule.m; sourceTree = "<group>"; };
 		EB4C2CDE127F138100058748 /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
 		EB4C2CE0127F138900058748 /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
 		EB5F31061323E8BB0066413F /* KGOTabbedViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGOTabbedViewController.h; sourceTree = "<group>"; };
@@ -580,8 +580,8 @@
 				EB1440BC1309EEA000396753 /* Calendar */,
 				DE81CF5F10C6BC390085573D /* News */,
 				EB181F73131EDECA003728FF /* People */,
+				EB48910613310A930036AEBF /* ExternalURL */,
 				DE81CF5E10C6BC390085573D /* About */,
-				EB14411E1309EECE00396753 /* Mobile Web */,
 				DE9EFBCE10FE7D3200F5F07E /* Settings */,
 			);
 			path = Modules;
@@ -873,16 +873,6 @@
 			path = ../../Modules/Map;
 			sourceTree = SOURCE_ROOT;
 		};
-		EB14411E1309EECE00396753 /* Mobile Web */ = {
-			isa = PBXGroup;
-			children = (
-				EB14411F1309EECE00396753 /* FullWebModule.h */,
-				EB1441201309EECE00396753 /* FullWebModule.m */,
-			);
-			name = "Mobile Web";
-			path = "../../Modules/Mobile Web";
-			sourceTree = SOURCE_ROOT;
-		};
 		EB1441361309EF7B00396753 /* Application */ = {
 			isa = PBXGroup;
 			children = (
@@ -991,6 +981,16 @@
 			name = Facebook;
 			path = ../../Modules/Facebook;
 			sourceTree = SOURCE_ROOT;
+		};
+		EB48910613310A930036AEBF /* ExternalURL */ = {
+			isa = PBXGroup;
+			children = (
+				EB48910713310A930036AEBF /* ExternalURLModule.h */,
+				EB48910813310A930036AEBF /* ExternalURLModule.m */,
+			);
+			name = ExternalURL;
+			path = ../../../Modules/ExternalURL;
+			sourceTree = "<group>";
 		};
 		EB99B08A12F36F3D0065EE93 /* Products */ = {
 			isa = PBXGroup;
@@ -1187,7 +1187,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				DE81CF6210C6BC390085573D /* NewsModule.m in Sources */,
-				EB1441221309EECE00396753 /* FullWebModule.m in Sources */,
 				DEA3B48D10C9BB7300BDA774 /* AboutModule.m in Sources */,
 				EB1441111309EEB800396753 /* MapModule.m in Sources */,
 				EB1441131309EEB800396753 /* MapSearchResultAnnotation.m in Sources */,
@@ -1290,6 +1289,7 @@
 				EB46CA951327FECB00AF7B5C /* KGOSidebarFrameViewController.m in Sources */,
 				EB46CA981327FED600AF7B5C /* MapDetailViewController.m in Sources */,
 				EB46CB671329CF0400AF7B5C /* KGOToolbar.m in Sources */,
+				EB48910913310A930036AEBF /* ExternalURLModule.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

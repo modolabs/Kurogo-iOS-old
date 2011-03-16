@@ -138,17 +138,7 @@
 }
 
 - (void)buttonPressed:(id)sender {
-    
     SpringboardIcon *anIcon = (SpringboardIcon *)sender;
-	// special case for full web link
-	if ([anIcon.moduleTag isEqualToString:FullWebTag]) {
-        NSString *file = [[NSBundle mainBundle] pathForResource:@"Config" ofType:@"plist"];
-        NSDictionary *infoDict = [NSDictionary dictionaryWithContentsOfFile:file];
-        NSString *urlString = [infoDict objectForKey:@"FullWebURL"];
-		[[UIApplication sharedApplication] openURL:[NSURL URLWithString:urlString]];
-		return;
-	}
-    
 	[(KGOAppDelegate *)[[UIApplication sharedApplication] delegate] showPage:LocalPathPageNameHome forModuleTag:anIcon.moduleTag params:nil];
 }
 
