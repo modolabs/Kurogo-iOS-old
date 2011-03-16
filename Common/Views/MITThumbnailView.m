@@ -131,8 +131,10 @@
 
 - (void)dealloc {
 	[connection cancel];
+    [(KGOAppDelegate *)[[UIApplication sharedApplication] delegate] hideNetworkActivityIndicator];
     [connection release];
     connection = nil;
+    
     [imageData release];
     imageData = nil;
     [loadingView release];
