@@ -15,6 +15,10 @@
 */
 
 - (NSArray *)widgetViews {
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        return nil;
+    }
+    
     NSString *title = @"Carl Fredricksen";
     
     UIFont *font = [[KGOTheme sharedTheme] fontForContentTitle];

@@ -26,9 +26,16 @@
 - (KGOHomeScreenWidget *)chatBubbleWidget {
     
     // TODO: add method to appDelegate to get home screen (or split view) boundaries
+    
+    CGRect frame;
     CGRect bounds = [[UIScreen mainScreen] applicationFrame];
-    CGFloat x = 125;
-    KGOHomeScreenWidget *widget = [[[KGOHomeScreenWidget alloc] initWithFrame:CGRectMake(x, 0, bounds.size.width - x - 5, 1)] autorelease];
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+        CGFloat x = 125;
+        frame = CGRectMake(x, 0, bounds.size.width - x - 5, 1);
+    } else {
+        frame = CGRectMake(5, 800, 150, 140);
+    }
+    KGOHomeScreenWidget *widget = [[[KGOHomeScreenWidget alloc] initWithFrame:frame] autorelease];
     
     widget.overlaps = YES;
     UIImageView *leftCap = [[[UIImageView alloc] initWithImage:[UIImage imageWithPathName:@"common/chatbubble-l2.png"]] autorelease];
@@ -38,14 +45,14 @@
     
     [widget addSubview:leftCap];
     
-    CGRect frame = rightCap.frame;
+    frame = rightCap.frame;
     frame.origin.x = widget.frame.size.width - rightCap.frame.size.width;
     rightCap.frame = frame;
     [widget addSubview:rightCap];
     
     frame = mid.frame;
     frame.origin.x = leftCap.frame.size.width;
-    frame.size.width = widget.frame.size.width - rightCap.frame.size.width;
+    frame.size.width = widget.frame.size.width - leftCap.frame.size.width - rightCap.frame.size.width;
     mid.frame = frame;
     [widget addSubview:mid];
     
@@ -57,10 +64,13 @@
     
     frame = widget.frame;
     frame.size.height = mid.frame.size.height;
-    frame.origin.y = bounds.size.height - frame.size.height;
-    widget.frame = frame;
     
-    widget.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin;
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+        widget.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleTopMargin;
+        frame.origin.y = bounds.size.height - frame.size.height;
+    }
+    
+    widget.frame = frame;
     
     NSLog(@"%@", [widget description]);
     
@@ -73,20 +83,36 @@
     
     NSMutableArray *widgets = [NSMutableArray array];
     
+    // TODO: get rid of magic numbers
     UIImageView *imageView = [[[UIImageView alloc] initWithImage:[UIImage imageWithPathName:@"modules/twitter/button-twitter.png"]] autorelease];
     CGRect frame = imageView.frame;
-    frame.origin.x = 5;
-    frame.origin.y = 5;
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+        //frame.origin.x = 5;
+        //frame.origin.y = 5;
+        frame = CGRectMake(5, 5, 31, 31);
+    } else {
+        frame = CGRectMake(22, 5, 31, 31);
+    }
     imageView.frame = frame;
     
-    CGFloat x = frame.origin.x + frame.size.width + 5;
-    UILabel *label = [[[UILabel alloc] initWithFrame:CGRectMake(x, 5, 120 - x - 5, 44)] autorelease];
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+        CGFloat x = frame.origin.x + frame.size.width + 5;
+        frame = CGRectMake(x, 5, 120 - x - 5, 44);
+    } else {
+        frame = CGRectMake(5, 40, 65, 40);
+    }
+    UILabel *label = [[[UILabel alloc] initWithFrame:frame] autorelease];
     label.font = font;
     label.text = @"#hr15th";
     label.backgroundColor = [UIColor clearColor];
     label.textColor = [UIColor whiteColor];
     
-    KGOHomeScreenWidget *widget = [[[KGOHomeScreenWidget alloc] initWithFrame:CGRectMake(0, 0, 120, 44)] autorelease];
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+        frame = CGRectMake(0, 0, 120, 44);
+    } else {
+        frame = CGRectMake(85, 900, 75, 100);
+    }
+    KGOHomeScreenWidget *widget = [[[KGOHomeScreenWidget alloc] initWithFrame:frame] autorelease];
     [widget addSubview:imageView];
     [widget addSubview:label];
     widget.gravity = KGOLayoutGravityBottomLeft;

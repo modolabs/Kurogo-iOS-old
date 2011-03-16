@@ -2,13 +2,12 @@
 #import <CoreData/CoreData.h>
 #import "FacebookPost.h"
 
-@class FacebookComment, FacebookLike;
+@class FacebookComment;
 
 @interface FacebookParentPost : FacebookPost {
 @private
 }
-@property (nonatomic, retain) NSString * commentPath;
-@property (nonatomic, retain) NSSet* likes;
+@property (nonatomic, retain) NSString * postIdentifier;
 @property (nonatomic, retain) NSSet* comments;
 
 @end

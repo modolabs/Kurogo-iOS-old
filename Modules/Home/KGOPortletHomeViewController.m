@@ -27,6 +27,10 @@
     }
     
     _occupiedAreas = malloc(sizeof(CGSize) * 4);
+    _occupiedAreas[KGOLayoutGravityTopLeft] = CGSizeZero;
+    _occupiedAreas[KGOLayoutGravityTopRight] = CGSizeZero;
+    _occupiedAreas[KGOLayoutGravityBottomLeft] = CGSizeZero;
+    _occupiedAreas[KGOLayoutGravityBottomRight] = CGSizeZero;
 
     KGOLayoutGravity neighborGravity;
     BOOL downward; // true if new views are laid out from the top
@@ -106,6 +110,7 @@
     iconGrid.spacing = [self moduleListSpacing];
     iconGrid.icons = [self iconsForPrimaryModules:YES];
     [self.view addSubview:iconGrid];
+    DLog(@"%@", [iconGrid description]);
 
     for (KGOHomeScreenWidget *aWidget in overlappingViews) {
         // TODO: respect gravity property

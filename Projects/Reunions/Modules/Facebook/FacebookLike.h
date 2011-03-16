@@ -9,4 +9,6 @@
 }
 @property (nonatomic, retain) FacebookParentPost * parent;
 
++ (FacebookLike *)likeWithDictionary:(NSDictionary *)dictionary;
+
 @end

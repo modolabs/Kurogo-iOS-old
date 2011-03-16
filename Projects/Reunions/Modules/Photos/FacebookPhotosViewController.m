@@ -23,6 +23,8 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    self.title = @"Photos";
+    
     CGRect frame = _scrollView.frame;
     frame.origin.y += _signedInUserView.frame.size.height;
     frame.size.height -= _signedInUserView.frame.size.height;
@@ -261,7 +263,7 @@
             if (pid && ![_photosByID objectForKey:pid]) {
                 FacebookPhoto *aPhoto = [FacebookPhoto photoWithDictionary:aPost];
                 if (aPhoto) {
-                    aPhoto.commentPath = [aPost stringForKey:@"id" nilIfEmpty:YES];
+                    aPhoto.postIdentifier = [aPost stringForKey:@"id" nilIfEmpty:YES];
                     NSLog(@"%@", [aPhoto description]);
                     [[CoreDataManager sharedManager] saveData];
                     [_photosByID setObject:aPhoto forKey:pid];

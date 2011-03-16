@@ -91,26 +91,9 @@
     return NO;
 }
 
-/*
-// TODO: consider handling the callback internally and just passing back the comment id
-- (BOOL)addComment:(NSString *)comment toFacebookPost:(FacebookParentPost *)post receiver:(id)receiver callback:(SEL)callback {
-    NSMutableDictionary *params = [NSMutableDictionary dictionaryWithObjectsAndKeys:comment, @"message", nil];
-    NSString *graphPath = post.commentPath.length ? post.commentPath : post.identifier;
-    FBRequest *request = [_facebook requestWithGraphPath:[NSString stringWithFormat:@"%@/comments", graphPath]
-                                               andParams:params
-                                           andHttpMethod:@"POST"
-                                             andDelegate:self];
-    
-    if ([self queueFacebookRequest:request withReceiver:receiver callback:callback]) {
-        return YES;
-    }
-    return NO;
-}
-*/
-
 - (BOOL)addComment:(NSString *)comment toFacebookPost:(FacebookParentPost *)post delegate:(id<FacebookUploadDelegate>)delegate {
     NSMutableDictionary *params = [NSMutableDictionary dictionaryWithObjectsAndKeys:comment, @"message", nil];
-    NSString *graphPath = post.commentPath.length ? post.commentPath : post.identifier;
+    NSString *graphPath = post.postIdentifier.length ? post.postIdentifier : post.identifier;
     FBRequest *request = [_facebook requestWithGraphPath:[NSString stringWithFormat:@"%@/comments", graphPath]
                                                andParams:params
                                            andHttpMethod:@"POST"
@@ -203,6 +186,9 @@
         return nil;
     } else {
         DLog(@"have user but facebook session invalid");
+        if (user) {
+            user.isSelf = nil;
+        }
         [self loginFacebook];
         return nil;
     }
@@ -219,7 +205,7 @@
  */
 - (void)request:(FBRequest *)request didLoad:(id)result {
     DLog(@"request succeeded for url: %@ params: %@", request.url, request.params);
-    //NSLog(@"%@", [result description]);
+    NSLog(@"%@", [result description]);
     NSInteger index = [_fbRequestQueue indexOfObject:request];
     
     if (index != NSNotFound) {
