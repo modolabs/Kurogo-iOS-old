@@ -11,6 +11,7 @@ NSString * const NewsTagTitle           = @"title";
 NSString * const NewsTagAuthor          = @"author";
 NSString * const NewsTagLink            = @"link";
 NSString * const NewsTagStoryId         = @"GUID";
+NSString * const NewsTagImage              = @"image";
 //NSString * const NewsTagFeatured        = @"harvard:featured";
 //NSString * const NewsTagFeaturedImage   = @"harvard:featured_photo";
 NSString * const NewsTagSummary         = @"description";
@@ -279,20 +280,20 @@ NSString * const NewsTagBody            = @"content";
             story.categories = [NSSet setWithObject:safeCategoryObject];
                                 
             
+            NSDictionary *imageDict = [storyDict objectForKey:NewsTagImage];
+            if (imageDict) {
+                // an old thumb may already exist
+                // in which case do not create a new one
+                if (!story.thumbImage) {
+                    story.thumbImage = [[CoreDataManager sharedManager] insertNewObjectForEntityForName:NewsImageEntityName];
+                }
+                story.thumbImage.url = [imageDict objectForKey:@"src"];
+                story.thumbImage.thumbParent = story;
+            } else {
+                story.thumbImage = nil;
+            }
             //story.featured = [NSNumber numberWithBool:![[storyDict objectForKey:NewsTagFeatured] isEqualToString:@"no"]];
             
-            
-            /*
-            NSDictionary *imageDict = [storyDict objectForKey:NewsTagImage];
-            
-            story.featuredImage = [self imageWithDictionary:imageDict];
-            story.featuredImage.featuredParent = story;
-            story.thumbImage = [self imageWithDictionary:[currentContents objectForKey:NewsTagImage]];
-            story.thumbImage.thumbParent = story;
-            */
-            
-            //[self performSelectorOnMainThread:@selector(reportProgress:) withObject:[NSNumber numberWithFloat:[newStories
-            //count] / (0.01 * expectedStoryCount)] waitUntilDone:NO];
         }
         
         safeCategoryObject.moreStories = [resultDict objectForKey:@"moreStories"];
@@ -307,6 +308,17 @@ NSString * const NewsTagBody            = @"content";
 
 - (BOOL) busy {
     return  (self.storiesRequest != nil);
+}
+
+- (void)saveImageData:(NSData *)data url:(NSString *)url {
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"url like %@", url];
+    NSArray *images = [[CoreDataManager sharedManager] 
+                       objectsForEntity:NewsImageEntityName
+                       matchingPredicate:predicate];
+    for (NewsImage *image in images) {
+        image.data = data;
+    }
+    [[CoreDataManager sharedManager] saveData];
 }
 
 #pragma mark KGORequestDelegate

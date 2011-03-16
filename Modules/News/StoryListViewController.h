@@ -5,11 +5,12 @@
 #import "KGOSearchBar.h"
 #import "StoryDetailViewController.h"
 #import "KGOTableViewController.h"
+#import "MITThumbnailView.h"
 
 @class KGOSearchDisplayController;
 @class NewsStory;
 
-@interface StoryListViewController : KGOTableViewController <KGOSearchBarDelegate, NewsDataDelegate, KGOScrollingTabstripDelegate, NewsControllerDelegate> {
+@interface StoryListViewController : KGOTableViewController <KGOSearchBarDelegate, NewsDataDelegate, KGOScrollingTabstripDelegate, NewsControllerDelegate, MITThumbnailDelegate> {
 	UITableView *storyTable;
     NewsStory *featuredStory;
     NSArray *stories;

@@ -1,7 +1,6 @@
 #import "KGOAppDelegate.h"
 #import "StoryListViewController.h"
 #import "StoryDetailViewController.h"
-#import "StoryThumbnailView.h"
 #import "StoryXMLParser.h"
 #import "NewsDataManager.h"
 #import "NewsStory.h"
@@ -910,15 +909,25 @@ static NSInteger numTries = 0;
         [views addObject:dekLabel];
         
         // ThumbnailView
-        StoryThumbnailView *thumbnailView = [[[StoryThumbnailView alloc] initWithFrame:CGRectMake(0, 0, THUMBNAIL_WIDTH, THUMBNAIL_WIDTH)] autorelease];
-        thumbnailView.placeholderImageName = placeholderImageName;
-        thumbnailView.image = image;
-        [thumbnailView loadImage];
+        MITThumbnailView *thumbnailView = [[[MITThumbnailView alloc] initWithFrame:CGRectMake(0, 0, THUMBNAIL_WIDTH, THUMBNAIL_WIDTH)] autorelease];
+        //thumbnailView.placeholderImageName = placeholderImageName;
+        if(story.thumbImage) {
+            thumbnailView.imageURL = story.thumbImage.url;
+            if(story.thumbImage.data) {
+                thumbnailView.imageData = story.thumbImage.data;
+            }
+            thumbnailView.delegate = self;
+            [thumbnailView loadImage];
+        }
         
         [views addObject:thumbnailView];
         
         return views;
     }
+}
+
+- (void)thumbnail:(MITThumbnailView *)thumbnail didLoadData:(NSData *)data {
+    [[NewsDataManager sharedManager] saveImageData:data url:thumbnail.imageURL];
 }
 
 - (void)tableView:(UITableView *)tv didSelectRowAtIndexPath:(NSIndexPath *)indexPath {

@@ -2,6 +2,7 @@
 #import "KGORequestManager.h"
 #import "NewsCategory.h"
 #import "NewsStory.h"
+#import "NewsImage.h"
 
 typedef int NewsCategoryId;
 
@@ -33,7 +34,9 @@ typedef int NewsCategoryId;
 
 - (NSInteger)loadMoreStoriesQuantityForCategoryId:(NewsCategoryId)categoryID;
 
-- (BOOL) busy;
+- (BOOL)busy;
+
+- (void)saveImageData:(NSData *)data url:(NSString *)url;
 
 @property (nonatomic, retain) KGORequest *storiesRequest;
 
