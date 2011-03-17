@@ -2,6 +2,8 @@
 #import "KGOHomeScreenWidget.h"
 #import "KGOTheme.h"
 #import "UIKit+KGOAdditions.h"
+#import "KGOAppDelegate+ModuleAdditions.h"
+#import "KGOHomeScreenViewController.h"
 
 #define BUTTON_WIDTH_IPHONE 120
 #define BUTTON_HEIGHT_IPHONE 46
@@ -49,9 +51,22 @@ NSString * const TwitterStatusDidUpdateNotification = @"TwitterUpdate";
 
         NSInteger numberOfLinesForSubtitle = 1;
         CGRect frame = bubbleView.frame;
-        // TODO: user home screen's usable frame instead of application frame
-        CGRect bounds = [[UIScreen mainScreen] applicationFrame];
-        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+
+        KGOAppDelegate *appDelegate = (KGOAppDelegate *)[[UIApplication sharedApplication] delegate];
+        KGONavigationStyle navStyle = [appDelegate navigationStyle];
+        KGOHomeScreenViewController *homeVC = (KGOHomeScreenViewController *)[appDelegate homescreen];
+        CGRect bounds = homeVC.springboardFrame;
+        
+        if (navStyle == KGONavigationStyleTabletSidebar) {
+            numberOfLinesForSubtitle = 2;
+            CGFloat bubbleHeight = 150;
+            frame = CGRectMake(5, bounds.size.height - bubbleHeight - BUTTON_HEIGHT_IPAD, 150, bubbleHeight);
+            bubbleView.frame = CGRectMake(0, 0, frame.size.width, frame.size.height - caratView.frame.size.height);
+            CGFloat x = floor(self.chatBubbleCaratOffset * bubbleView.frame.size.width - caratView.frame.size.width / 2 + LEFT_SHADOW_WIDTH);
+            caratView.frame = CGRectMake(x, bubbleView.frame.size.height - BOTTOM_SHADOW_HEIGHT,
+                                         caratView.frame.size.width,
+                                         caratView.frame.size.height);
+        } else {
             _chatBubble.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleTopMargin;
             CGFloat x = BUTTON_WIDTH_IPHONE + 5 - caratView.frame.size.width;
             frame = CGRectMake(x, bounds.size.height - frame.size.height,
@@ -65,15 +80,6 @@ NSString * const TwitterStatusDidUpdateNotification = @"TwitterUpdate";
 
             CGFloat y = floor(self.chatBubbleCaratOffset * bubbleView.frame.size.height - caratView.frame.size.height / 2 + BOTTOM_SHADOW_HEIGHT);
             caratView.frame = CGRectMake(0, y,
-                                         caratView.frame.size.width,
-                                         caratView.frame.size.height);
-        } else {
-            numberOfLinesForSubtitle = 2;
-            CGFloat bubbleHeight = 150;
-            frame = CGRectMake(5, bounds.size.height - bubbleHeight - BUTTON_HEIGHT_IPAD, 150, bubbleHeight);
-            bubbleView.frame = CGRectMake(0, 0, frame.size.width, frame.size.height - caratView.frame.size.height);
-            CGFloat x = floor(self.chatBubbleCaratOffset * bubbleView.frame.size.width - caratView.frame.size.width / 2 + LEFT_SHADOW_WIDTH);
-            caratView.frame = CGRectMake(x, bubbleView.frame.size.height - BOTTOM_SHADOW_HEIGHT,
                                          caratView.frame.size.width,
                                          caratView.frame.size.height);
         }
@@ -127,7 +133,19 @@ NSString * const TwitterStatusDidUpdateNotification = @"TwitterUpdate";
         label.textColor = [UIColor whiteColor];
         [_buttonWidget addSubview:label];
         
-        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+        KGOAppDelegate *appDelegate = (KGOAppDelegate *)[[UIApplication sharedApplication] delegate];
+        KGONavigationStyle navStyle = [appDelegate navigationStyle];
+        
+        if (navStyle == KGONavigationStyleTabletSidebar) {
+            frame.size.width = BUTTON_WIDTH_IPAD;
+            frame.size.height = BUTTON_HEIGHT_IPAD;
+            _buttonWidget.frame = frame;
+            
+            // TODO: stop using magic numbers
+            imageView.frame = CGRectMake(22, 5, 31, 31);
+            label.frame = CGRectMake(5, 40, 65, 40);
+            label.textAlignment = UITextAlignmentCenter;
+        } else {
             frame.size.width = BUTTON_WIDTH_IPHONE;
             frame.size.height = BUTTON_HEIGHT_IPHONE;
             _buttonWidget.frame = frame;
@@ -139,23 +157,18 @@ NSString * const TwitterStatusDidUpdateNotification = @"TwitterUpdate";
             CGFloat x = frame.origin.x + frame.size.width + 5;
             frame = CGRectMake(x, 5, BUTTON_WIDTH_IPHONE - x - 5, 31);
             label.frame = frame;
-        } else {
-            frame = [[UIScreen mainScreen] applicationFrame];
-            frame.size.width = BUTTON_WIDTH_IPAD;
-            frame.size.height = BUTTON_HEIGHT_IPAD;
-            _buttonWidget.frame = frame;
-
-            // TODO: stop using magic numbers
-            imageView.frame = CGRectMake(22, 5, 31, 31);
-            label.frame = CGRectMake(5, 40, 65, 40);
-            label.textAlignment = UITextAlignmentCenter;
         }
     }
     return _buttonWidget;
 }
 
 - (NSArray *)widgetViews {
-    return [NSArray arrayWithObjects:self.buttonWidget, self.chatBubble, nil];
+    KGOAppDelegate *appDelegate = (KGOAppDelegate *)[[UIApplication sharedApplication] delegate];
+    UIViewController *homeVC = [appDelegate homescreen];
+    if (UIInterfaceOrientationIsPortrait(homeVC.interfaceOrientation)) {
+        return [NSArray arrayWithObjects:self.buttonWidget, self.chatBubble, nil];
+    }
+    return nil;
 }
 
 @end

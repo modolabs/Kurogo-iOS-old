@@ -155,6 +155,15 @@
     return _navigationStyle;
 }
 
+- (UIViewController *)homescreen {
+    if (_appNavController) {
+        return [[_appNavController viewControllers] objectAtIndex:0];
+    } else if (_appHomeScreen) {
+        return _appHomeScreen;
+    }
+    return nil;
+}
+
 #pragma mark social media
 
 - (void)loadSocialMediaController {

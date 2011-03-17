@@ -19,7 +19,6 @@
         self.buttonImage = [UIImage imageWithPathName:@"modules/twitter/button-twitter.png"];
         self.labelText = @"#hr14";
         self.chatBubbleCaratOffset = 0.25;
-        self.chatBubble.hidden = YES;
     }
     return self;
 }

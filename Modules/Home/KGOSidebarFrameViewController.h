@@ -1,5 +1,7 @@
 #import "KGOHomeScreenViewController.h"
 
+@class KGOModule;
+
 @interface KGOSidebarFrameViewController : KGOHomeScreenViewController {
     
     UIView *_sidebar;
@@ -7,6 +9,7 @@
     UIView *_container;
     
     UIViewController *_visibleViewController;
+    NSArray *_widgetViews;
     
 }
 

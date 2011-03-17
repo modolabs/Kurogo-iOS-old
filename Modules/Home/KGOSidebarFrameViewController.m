@@ -60,10 +60,12 @@
     [super loadView];
     
     _topbar = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, 50)];
+    _topbar.autoresizingMask = UIViewAutoresizingFlexibleWidth;
     _topbar.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageWithPathName:@"modules/home/ipad-topbar.png"]];
     [self.view addSubview:_topbar];
     
     _sidebar = [[UIView alloc] initWithFrame:CGRectMake(0, _topbar.frame.size.height, SIDEBAR_WIDTH, self.view.bounds.size.height)];
+    _sidebar.autoresizingMask = UIViewAutoresizingFlexibleHeight;
     _springboardFrame = _sidebar.frame;
     
     [self.view addSubview:_sidebar];
@@ -74,6 +76,7 @@
                                                           _topbar.frame.size.height,
                                                           self.view.bounds.size.width - _sidebar.frame.size.width,
                                                           self.view.bounds.size.height - _topbar.frame.size.height)];
+    _container.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     [self.view addSubview:_container];
     
     if (self.primaryModules.count) {
@@ -96,23 +99,32 @@
 	return YES;
 }
 
+- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
+{
+    NSLog(@"%@", self.view);
+    [self setupWidgets];
+    
+    [_visibleViewController didRotateFromInterfaceOrientation:fromInterfaceOrientation];
+}
+
 #pragma mark -
 
 - (void)setupWidgets {
+    CGFloat topFreePixel;
+    CGFloat bottomFreePixel;
+    NSArray *widgets = [self allWidgets:&topFreePixel :&bottomFreePixel];
     
-    NSArray *allModules = [self.primaryModules arrayByAddingObjectsFromArray:self.secondaryModules];
-    
-    for (KGOModule *aModule in allModules) {
-        NSArray *moreViews = [aModule widgetViews];
-        // ignoring placement for now
-        if (moreViews) {
-            for (KGOHomeScreenWidget *aWidget in moreViews) {
-                aWidget.autoresizingMask = UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
-                [self.view addSubview:aWidget];
-                
-            }
-        }
+    for (KGOHomeScreenWidget *aWidget in _widgetViews) {
+        [aWidget removeFromSuperview];
     }
+    
+    NSMutableArray *mutableWidgetViews = [NSMutableArray array];
+    for (KGOHomeScreenWidget *aWidget in widgets) {
+        [mutableWidgetViews addObject:aWidget];
+        [_sidebar addSubview:aWidget];
+    }
+    [_widgetViews release];
+    _widgetViews = [mutableWidgetViews copy];
 }
 
 - (void)setupSidebarIcons {
@@ -131,14 +143,6 @@
         anIcon.frame = frame;
         [_sidebar addSubview:anIcon];
         currentY += frame.size.height + 10;
-    }
-    
-    CGFloat topFreePixel;
-    CGFloat bottomFreePixel;
-    NSArray *widgets = [self allWidgets:&topFreePixel :&bottomFreePixel];
-    
-    for (KGOHomeScreenWidget *aWidget in widgets) {
-        [self.view addSubview:aWidget];
     }
 }
 
