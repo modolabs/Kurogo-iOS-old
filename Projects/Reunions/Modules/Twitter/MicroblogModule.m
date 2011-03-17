@@ -37,7 +37,7 @@ NSString * const TwitterStatusDidUpdateNotification = @"TwitterUpdate";
 {
     if (!_chatBubble) {
         
-        _chatBubble = [[[KGOHomeScreenWidget alloc] initWithFrame:CGRectZero] autorelease];
+        _chatBubble = [[KGOHomeScreenWidget alloc] initWithFrame:CGRectZero];
         _chatBubble.overlaps = YES;
         
         UIImage *bubbleImage = [UIImage imageWithPathName:@"common/chatbubble-body"];
@@ -112,7 +112,7 @@ NSString * const TwitterStatusDidUpdateNotification = @"TwitterUpdate";
 - (KGOHomeScreenWidget *)buttonWidget {
     if (!_buttonWidget) {
         CGRect frame = CGRectZero; // all frames are set at the end
-        _buttonWidget = [[[KGOHomeScreenWidget alloc] initWithFrame:frame] autorelease];
+        _buttonWidget = [[KGOHomeScreenWidget alloc] initWithFrame:frame];
         _buttonWidget.gravity = KGOLayoutGravityBottomLeft;
         _buttonWidget.behavesAsIcon = YES;
         
