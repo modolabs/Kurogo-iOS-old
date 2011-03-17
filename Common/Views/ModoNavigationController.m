@@ -19,6 +19,7 @@
     self = [super init];
     if (self) {
         _modoNavBar = [[ModoNavigationBar alloc] initWithNavigationBar:self.navigationBar];
+        _modoNavBar.autoresizingMask = UIViewAutoresizingFlexibleWidth;
         _modoNavBar.delegate = self;
     }
     return self;
@@ -32,10 +33,6 @@
     if ([self.viewControllers count] > 1) {
         KGOAppDelegate *appDelegate = (KGOAppDelegate *)[[UIApplication sharedApplication] delegate];
         for (KGOModule *aModule in appDelegate.modules) {
-            //if ([aModule rootViewController] == [self.viewControllers objectAtIndex:1]) {
-            //    aModule.viewControllers = [self.viewControllers subarrayWithRange:NSMakeRange(1, [self.viewControllers count] - 1)];
-            //    break;
-            //}
         }
     }
 }

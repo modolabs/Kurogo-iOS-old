@@ -17,6 +17,7 @@ static NSString * const TwitterServiceName = @"Twitter";
 static NSString * const FacebookTokenKey = @"FBToken";
 static NSString * const FacebookTokenPermissions = @"FBTokenPermissions";
 static NSString * const FacebookTokenExpirationSetting = @"FBTokenExpiration";
+NSString * const FacebookUsernameKey = @"FBUsername";
 // NSNotifications
 NSString * const FacebookDidLoginNotification = @"FBDidLogin";
 NSString * const FacebookDidLogoutNotification = @"FBDidLogout";
@@ -466,6 +467,7 @@ static KGOSocialMediaController *s_controller = nil;
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:FacebookTokenPermissions];
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:FacebookTokenExpirationSetting];
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:FacebookTokenKey];
+    [[NSUserDefaults standardUserDefaults] removeObjectForKey:FacebookUsernameKey];
     [[NSNotificationCenter defaultCenter] postNotificationName:FacebookDidLogoutNotification object:self];
 }
 
