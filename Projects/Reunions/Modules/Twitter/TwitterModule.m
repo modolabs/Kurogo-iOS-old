@@ -61,8 +61,11 @@
                                              selector:@selector(hideChatBubble:)
                                                  name:FacebookStatusDidUpdateNotification
                                                object:nil];
+    [self requestStatusUpdates:nil];
+    
     if (!_twitterSearch) {
-        _twitterSearch = [[TwitterSearch alloc] initWithDelegate:self];
+         // avoid warning about ConnectionWrapper which has the same signature
+        _twitterSearch = [(TwitterSearch *)[TwitterSearch alloc] initWithDelegate:self];
     }
     
     if (!_statusPoller) {
@@ -83,15 +86,21 @@
         [_statusPoller release];
         _statusPoller = nil;
     }
+    if (_twitterSearch) {
+        _twitterSearch.delegate = nil;
+        [_twitterSearch release];
+        _twitterSearch = nil;
+    }
 }
 
 - (void)requestStatusUpdates:(NSTimer *)aTimer {
-    [_twitterSearch searchTwitterHashtag:@"wwdc"];
+    [_twitterSearch searchTwitterHashtag:@"sxsw"];
 }
 
 - (void)twitterSearch:(TwitterSearch *)twitterSearch didReceiveSearchResults:(NSArray *)results {
     if (results.count) {
         NSDictionary *aTweet = [results objectAtIndex:0];
+        NSLog(@"%@", aTweet);
         NSString *title = [aTweet stringForKey:@"text" nilIfEmpty:YES];
         NSString *user = [aTweet stringForKey:@"from_user" nilIfEmpty:YES];
         NSString *date = [aTweet stringForKey:@"created_at" nilIfEmpty:YES];

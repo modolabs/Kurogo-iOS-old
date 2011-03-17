@@ -95,6 +95,8 @@ NSString * const FacebookFeedDidUpdateNotification = @"FBFeedReceived";
                                                  name:TwitterStatusDidUpdateNotification
                                                object:nil];
     
+    [self requestStatusUpdates:nil];
+    
     if (!_statusPoller) {
         NSLog(@"scheduling timer...");
         NSTimeInterval interval = 15;
@@ -137,7 +139,6 @@ NSString * const FacebookFeedDidUpdateNotification = @"FBFeedReceived";
                                                                      receiver:self
                                                                      callback:@selector(didReceiveGroups:)];
     } else {
-        [self requestStatusUpdates:nil];
         [self startPollingStatusUpdates];
     }
 }

@@ -19,14 +19,17 @@
         return;
     }
     
-    NSString *urlString = [NSString stringWithFormat:@"http://search.twitter.com/search.json?q=#%@", hashtag];
+    NSString *urlString = [NSString stringWithFormat:@"http://search.twitter.com/search.json?q=#%@&result_type=recent", hashtag];
     urlString = [urlString stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
     
     _connection = [[ConnectionWrapper alloc] initWithDelegate:self];
-    [_connection requestDataFromURL:[NSURL URLWithString:urlString] allowCachedResponse:YES];
+    [_connection requestDataFromURL:[NSURL URLWithString:urlString] allowCachedResponse:NO];
 }
 
 - (void)connection:(ConnectionWrapper *)wrapper handleData:(NSData *)data {
+    [_connection release];
+    _connection = nil;
+    
     SBJsonParser *parser = [[[SBJsonParser alloc] init] autorelease];
     id jsonObj = [parser objectWithData:data];
     if ([jsonObj isKindOfClass:[NSDictionary class]]) {
@@ -36,6 +39,9 @@
 }
 
 - (void)connection:(ConnectionWrapper *)wrapper handleConnectionFailureWithError:(NSError *)error {
+    [_connection release];
+    _connection = nil;
+
     [self.delegate twitterSearch:self didFailWithError:error];
 }
 
