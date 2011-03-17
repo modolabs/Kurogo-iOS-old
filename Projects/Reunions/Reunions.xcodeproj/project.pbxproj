@@ -127,7 +127,6 @@
 		EB489132133115BB0036AEBF /* StoryGalleryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EB489121133115BB0036AEBF /* StoryGalleryViewController.m */; };
 		EB489133133115BB0036AEBF /* StoryImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = EB489123133115BB0036AEBF /* StoryImageView.m */; };
 		EB489134133115BB0036AEBF /* StoryListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EB489125133115BB0036AEBF /* StoryListViewController.m */; };
-		EB489135133115BB0036AEBF /* StoryThumbnailView.m in Sources */ = {isa = PBXBuildFile; fileRef = EB489127133115BB0036AEBF /* StoryThumbnailView.m */; };
 		EB489136133115BB0036AEBF /* StoryXMLParser.m in Sources */ = {isa = PBXBuildFile; fileRef = EB489129133115BB0036AEBF /* StoryXMLParser.m */; };
 		EB48913A1331173C0036AEBF /* MicroblogModule.m in Sources */ = {isa = PBXBuildFile; fileRef = EB4891391331173C0036AEBF /* MicroblogModule.m */; };
 		EB48913D1331699F0036AEBF /* TwitterSearch.m in Sources */ = {isa = PBXBuildFile; fileRef = EB48913C1331699E0036AEBF /* TwitterSearch.m */; };
@@ -448,8 +447,6 @@
 		EB489123133115BB0036AEBF /* StoryImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StoryImageView.m; sourceTree = "<group>"; };
 		EB489124133115BB0036AEBF /* StoryListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StoryListViewController.h; sourceTree = "<group>"; };
 		EB489125133115BB0036AEBF /* StoryListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StoryListViewController.m; sourceTree = "<group>"; };
-		EB489126133115BB0036AEBF /* StoryThumbnailView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StoryThumbnailView.h; sourceTree = "<group>"; };
-		EB489127133115BB0036AEBF /* StoryThumbnailView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StoryThumbnailView.m; sourceTree = "<group>"; };
 		EB489128133115BB0036AEBF /* StoryXMLParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StoryXMLParser.h; sourceTree = "<group>"; };
 		EB489129133115BB0036AEBF /* StoryXMLParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StoryXMLParser.m; sourceTree = "<group>"; };
 		EB4891381331173C0036AEBF /* MicroblogModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MicroblogModule.h; sourceTree = "<group>"; };
@@ -1051,7 +1048,7 @@
 				EB48910C13310D5F0036AEBF /* ExternalURLModule.m */,
 			);
 			name = ExternalURL;
-			path = "../../../../ios-copy/Modules/ExternalURL";
+			path = ../../../Modules/ExternalURL;
 			sourceTree = "<group>";
 		};
 		EB48910E133115B80036AEBF /* News */ = {
@@ -1066,13 +1063,11 @@
 				EB489123133115BB0036AEBF /* StoryImageView.m */,
 				EB489124133115BB0036AEBF /* StoryListViewController.h */,
 				EB489125133115BB0036AEBF /* StoryListViewController.m */,
-				EB489126133115BB0036AEBF /* StoryThumbnailView.h */,
-				EB489127133115BB0036AEBF /* StoryThumbnailView.m */,
 				EB489128133115BB0036AEBF /* StoryXMLParser.h */,
 				EB489129133115BB0036AEBF /* StoryXMLParser.m */,
 			);
 			name = News;
-			path = "../../../../ios-copy/Modules/News";
+			path = ../../../Modules/News;
 			sourceTree = "<group>";
 		};
 		EB489137133115DD0036AEBF /* Model */ = {
@@ -1517,7 +1512,6 @@
 				EB489132133115BB0036AEBF /* StoryGalleryViewController.m in Sources */,
 				EB489133133115BB0036AEBF /* StoryImageView.m in Sources */,
 				EB489134133115BB0036AEBF /* StoryListViewController.m in Sources */,
-				EB489135133115BB0036AEBF /* StoryThumbnailView.m in Sources */,
 				EB489136133115BB0036AEBF /* StoryXMLParser.m in Sources */,
 				EB48913A1331173C0036AEBF /* MicroblogModule.m in Sources */,
 				EB48913D1331699F0036AEBF /* TwitterSearch.m in Sources */,
