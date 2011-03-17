@@ -398,6 +398,10 @@ static KGOSocialMediaController *s_controller = nil;
     } else {
         NSLog(@"facebook already started");
     }
+    
+    if ([self isFacebookLoggedIn]) {
+        [[NSNotificationCenter defaultCenter] postNotificationName:FacebookDidLoginNotification object:self];
+    }
 }
 
 - (void)shutdownFacebook {

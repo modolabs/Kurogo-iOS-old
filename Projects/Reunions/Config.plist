@@ -17,8 +17,6 @@ Established in 1636, Harvard is the oldest institution of higher education in th
 	</dict>
 	<key>AppFeedbackAddress</key>
 	<string>digitalcomms@harvard.edu</string>
-	<key>FullWebURL</key>
-	<string>http://www.harvard.edu/?fullsite=yes</string>
 	<key>Location</key>
 	<dict>
 		<key>DefaultCenter</key>
@@ -154,7 +152,7 @@ Established in 1636, Harvard is the oldest institution of higher education in th
 			<key>shortName</key>
 			<string>Twitter</string>
 			<key>tag</key>
-			<string>fullweb</string>
+			<string>twitter</string>
 		</dict>
 		<dict>
 			<key>class</key>
@@ -164,9 +162,9 @@ Established in 1636, Harvard is the oldest institution of higher education in th
 			<key>secondary</key>
 			<true/>
 			<key>shortName</key>
-			<string>Twitter</string>
+			<string>Facebook</string>
 			<key>tag</key>
-			<string>settings</string>
+			<string>facebook</string>
 		</dict>
 	</array>
 	<key>OrganizationName</key>

@@ -15,21 +15,34 @@
 }
 
 - (void)showLoginView {
-    _loginView.hidden = NO;
-    [UIView animateWithDuration:0.4 animations:^(void) {
-        _loginView.alpha = 1;
-        
-    } completion:^(BOOL finished) {
-        if (finished) {
-            _loginView.hidden = YES;
-        }
-    }];
+    if (_loginView.alpha == 0) {
+        [UIView animateWithDuration:0.4 animations:^(void) {
+            _loginView.alpha = 1;
+            
+        } completion:^(BOOL finished) {
+            if (finished) {
+                _loginView.hidden = NO;
+            }
+        }];
+    } else {
+        _loginView.hidden = NO;
+    }
 }
 
 - (void)hideLoginView {
-    _loginView.hidden = YES;
-    _loginView.alpha = 0;
-    
+    if (_loginView.alpha != 0) {
+        [UIView animateWithDuration:0.4 animations:^(void) {
+            _loginView.alpha = 0;
+            
+        } completion:^(BOOL finished) {
+            if (finished) {
+                _loginView.hidden = YES;
+            }
+        }];
+    } else {
+        _loginView.hidden = YES;
+    }
+
     FacebookUser *user = [[KGOSocialMediaController sharedController] currentFacebookUser];
     if (user) {
         NSString *html = [NSString stringWithFormat:
@@ -72,9 +85,11 @@
 
 - (void)facebookDidLogin:(NSNotification *)aNotification
 {
-    if (!_gid) {
-        [[KGOSocialMediaController sharedController] requestFacebookGraphPath:@"me/groups" receiver:self callback:@selector(didReceiveGroups:)];
-    }
+    //if (!_gid) {
+    //    [[KGOSocialMediaController sharedController] requestFacebookGraphPath:@"me/groups"
+    //                                                                 receiver:self
+    //                                                                 callback:@selector(didReceiveGroups:)];
+    //}
     [self hideLoginView];
 }
 
@@ -83,7 +98,7 @@
     [self showLoginView];
 }
 
-
+/*
 - (void)didReceiveGroups:(id)result {
     
     NSArray *data = [result arrayForKey:@"data"];
@@ -100,7 +115,7 @@
 - (void)didReceiveFeed:(id)result {
     ;
 }
-
+*/
 #pragma mark - View lifecycle
 
 - (void)viewDidLoad

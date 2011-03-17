@@ -1,6 +1,7 @@
 #import "FacebookVideoDetailViewController.h"
-#import "FacebookVideo.h"
+#import "FacebookModel.h"
 #import "UIKit+KGOAdditions.h"
+#import "CoreDataManager.h"
 
 @implementation FacebookVideoDetailViewController
 
@@ -48,6 +49,19 @@
     }
 }
 
+- (void)loadVideosFromCache {
+    // TODO: sort by date or whatever
+    NSArray *videos = [[CoreDataManager sharedManager] objectsForEntity:FacebookVideoEntityName matchingPredicate:nil];
+    for (FacebookVideo *aVideo in videos) {
+        //[_photosByID setObject:aPhoto forKey:aPhoto.identifier];
+        NSLog(@"found cached video %@", aVideo.identifier);
+        //[self displayPhoto:aPhoto];
+    }
+    
+    self.posts = videos;
+    //[[CoreDataManager sharedManager] deleteObjects:photos];
+}
+
 - (void)setVideo:(FacebookVideo *)video {
     self.post = video;
 }
@@ -77,6 +91,8 @@
 {
     [super viewDidLoad];
     
+    [self loadVideosFromCache];
+    
     self.title = @"Video";
     
     UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -84,6 +100,7 @@
     button.frame = CGRectMake(120, 80, 80, 60);
     [button addTarget:self action:@selector(playVideo:) forControlEvents:UIControlEventTouchUpInside];
     [_thumbnail addSubview:button];
+    
 }
 
 - (void)viewDidUnload

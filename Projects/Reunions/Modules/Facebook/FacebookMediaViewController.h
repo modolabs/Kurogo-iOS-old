@@ -1,6 +1,4 @@
 #import <UIKit/UIKit.h>
-#import "FBConnect.h"
-
 
 @interface FacebookMediaViewController : UIViewController <UIWebViewDelegate> {
     
@@ -13,7 +11,6 @@
     IBOutlet UILabel *_loginHintLabel;
     IBOutlet UIButton *_loginButton; // login or open facebook
 
-    FBRequest *_groupsRequest;
     NSString *_gid; // facebook group id
 }
 
@@ -23,7 +20,10 @@
 - (void)showLoginView;
 - (void)hideLoginView;
 
-- (void)didReceiveGroups:(id)result;
-- (void)didReceiveFeed:(id)result;
+//- (void)didReceiveGroups:(id)result;
+//- (void)didReceiveFeed:(id)result;
+
+- (void)facebookDidLogout:(NSNotification *)aNotification;
+- (void)facebookDidLogin:(NSNotification *)aNotification;
 
 @end

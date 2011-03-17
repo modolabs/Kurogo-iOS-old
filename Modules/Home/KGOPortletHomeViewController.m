@@ -20,7 +20,7 @@
 
 - (void)loadView {
     [super loadView];
-    
+    /*
     CGFloat yOrigin = 0;
     if (_searchBar) {
         yOrigin = _searchBar.frame.size.height;
@@ -104,18 +104,31 @@
     CGFloat bottomFreePixel = self.view.frame.size.height - fmax(_occupiedAreas[KGOLayoutGravityBottomLeft].height, _occupiedAreas[KGOLayoutGravityBottomRight].height);
     
     free(_occupiedAreas);
+    */
     
-    IconGrid *iconGrid = [[[IconGrid alloc] initWithFrame:CGRectMake(0, topFreePixel, self.view.frame.size.width, bottomFreePixel - topFreePixel)] autorelease];
+    //IconGrid *iconGrid = [[[IconGrid alloc] initWithFrame:CGRectMake(0, topFreePixel, self.view.frame.size.width, bottomFreePixel - topFreePixel)] autorelease];
+    
+    CGFloat topFreePixel;
+    CGFloat bottomFreePixel;
+    NSArray *widgets = [self allWidgets:&topFreePixel :&bottomFreePixel];
+    
+    IconGrid *iconGrid = [[[IconGrid alloc] initWithFrame:CGRectMake(0, topFreePixel,
+                                                                     self.view.frame.size.width,
+                                                                     bottomFreePixel - topFreePixel)] autorelease];
     iconGrid.padding = [self moduleListMargins];
     iconGrid.spacing = [self moduleListSpacing];
     iconGrid.icons = [self iconsForPrimaryModules:YES];
     [self.view addSubview:iconGrid];
     DLog(@"%@", [iconGrid description]);
 
-    for (KGOHomeScreenWidget *aWidget in overlappingViews) {
-        // TODO: respect gravity property
-        [self.view addSubview:aWidget];
+    for (KGOHomeScreenWidget *aWidget in widgets) {
+       [self.view addSubview:aWidget];
     }
+
+    //for (KGOHomeScreenWidget *aWidget in overlappingViews) {
+        // TODO: respect gravity property
+    //    [self.view addSubview:aWidget];
+    //}
 }
 
 /*

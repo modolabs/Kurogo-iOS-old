@@ -3,7 +3,7 @@
 
 @interface KGOPortletHomeViewController : KGOHomeScreenViewController {
     
-    CGSize *_occupiedAreas;
+    //CGSize *_occupiedAreas;
 
 }
 

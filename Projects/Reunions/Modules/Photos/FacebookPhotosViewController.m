@@ -6,8 +6,58 @@
 #import "KGOAppDelegate+ModuleAdditions.h"
 #import "PhotoUploadViewController.h"
 #import "PhotosModule.h"
+#import "FacebookModule.h"
 
 @implementation FacebookPhotosViewController
+
+- (void)getGroupPhotos {
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:FacebookGroupReceivedNotification object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:FacebookFeedDidUpdateNotification object:nil];
+    
+    FacebookModule *fbModule = (FacebookModule *)[(KGOAppDelegate *)[[UIApplication sharedApplication] delegate] moduleForTag:@"facebook"];
+    if (fbModule.groupID) {
+        if (fbModule.latestFeedPosts) {
+            for (NSDictionary *aPost in fbModule.latestFeedPosts) {
+                NSString *type = [aPost stringForKey:@"type" nilIfEmpty:YES];
+                if ([type isEqualToString:@"photo"]) {
+                    NSString *pid = [aPost stringForKey:@"object_id" nilIfEmpty:YES];
+                    if (pid && ![_photosByID objectForKey:pid]) {
+                        FacebookPhoto *aPhoto = [FacebookPhoto photoWithDictionary:aPost];
+                        if (aPhoto) {
+                            aPhoto.postIdentifier = [aPost stringForKey:@"id" nilIfEmpty:YES];
+                            NSLog(@"%@", [aPhoto description]);
+                            [[CoreDataManager sharedManager] saveData];
+                            [_photosByID setObject:aPhoto forKey:pid];
+                            [self displayPhoto:aPhoto];
+                        }
+                        
+                        DLog(@"requesting graph info for photo %@", pid);
+                        [[KGOSocialMediaController sharedController] requestFacebookGraphPath:pid
+                                                                                     receiver:self
+                                                                                     callback:@selector(didReceivePhoto:)];
+                    }
+                }
+            }
+
+        } else {
+            [[NSNotificationCenter defaultCenter] addObserver:self
+                                                     selector:@selector(getGroupPhotos)
+                                                         name:FacebookGroupReceivedNotification
+                                                       object:nil];
+        }
+        
+        // fql for photos
+        NSString *query = [NSString stringWithFormat:@"SELECT pid FROM photo_tag WHERE subject=%@", fbModule.groupID];
+        [[KGOSocialMediaController sharedController] requestFacebookFQL:query receiver:self callback:@selector(didReceivePhotoList:)];
+
+    } else {
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(getGroupPhotos)
+                                                     name:FacebookFeedDidUpdateNotification
+                                                   object:nil];
+    }
+}
+
 
 // The designated initializer.  Override if you create the controller programmatically and want to perform customization that is not appropriate for viewDidLoad.
 /*
@@ -43,6 +93,7 @@
     _displayedPhotos = [[NSMutableSet alloc] init];
     
     [self loadThumbnailsFromCache];
+    [self getGroupPhotos];
     
     self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithTitle:@"Upload"
                                                                                style:UIBarButtonItemStyleBordered
@@ -178,7 +229,7 @@
 }
 
 #pragma mark Facebook request callbacks
-
+/*
 - (void)didReceiveGroups:(id)result {
     
     NSArray *data = [result arrayForKey:@"data"];
@@ -197,7 +248,7 @@
     }
 
 }
-
+*/
 - (void)didReceivePhotoList:(id)result {
     
     if ([result isKindOfClass:[NSArray class]]) {
@@ -253,6 +304,7 @@
     }
 }
 
+/*
 - (void)didReceiveFeed:(id)result {
     
     NSArray *data = [result arrayForKey:@"data"];
@@ -278,7 +330,7 @@
         }
     }
 }
-
+*/
 @end
 
 @implementation FacebookThumbnail

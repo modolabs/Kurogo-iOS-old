@@ -24,10 +24,6 @@
     
     [self loadModules];
     
-    for (KGOModule *aModule in self.modules) {
-        [aModule applicationDidFinishLaunching];
-    }
-    
     [self loadNavigationContainer]; // adds theNavController.view to self.window
     [self loadSocialMediaController]; // initializes social media settings
     
@@ -39,6 +35,10 @@
     [[AnalyticsWrapper sharedWrapper] setup];
 
     [self registerForRemoteNotifications:launchOptions];
+    
+    for (KGOModule *aModule in self.modules) {
+        [aModule applicationDidFinishLaunching];
+    }
 
     return YES;
 }

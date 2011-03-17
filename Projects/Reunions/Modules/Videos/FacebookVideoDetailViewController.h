@@ -9,4 +9,6 @@
 
 @property(nonatomic, retain) FacebookVideo *video;
 
+- (void)loadVideosFromCache;
+
 @end

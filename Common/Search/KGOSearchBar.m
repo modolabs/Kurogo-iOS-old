@@ -56,11 +56,14 @@
     return self;
 }
 
+// TODO: search bars have a minimum size restriction, need to make sure KGOSearchBar isn't created smaller
 - (void)layoutSubviews {
     // sad way to use a background image for a search bar:
     // insert the image right below the text field
     if (self.backgroundImage) {
         _backgroundView = [[UIImageView alloc] initWithImage:[self.backgroundImage stretchableImageWithLeftCapWidth:0 topCapHeight:0]];
+        _backgroundView.autoresizingMask = self.autoresizingMask;
+        _backgroundView.frame = _searchBar.frame;
         NSInteger viewIndex = 0;
         for (UIView *aView in _searchBar.subviews) {
             if ([aView isKindOfClass:[UITextField class]]) {
@@ -74,9 +77,12 @@
     if (self.dropShadowImage) {
         self.clipsToBounds = NO;
         _dropShadow = [[UIImageView alloc] initWithImage:[self.dropShadowImage stretchableImageWithLeftCapWidth:0 topCapHeight:0]];
-        _dropShadow.frame = CGRectMake(0, self.frame.size.height, self.frame.size.width, _dropShadow.frame.size.height);
+        _dropShadow.autoresizingMask = self.autoresizingMask;
+        _dropShadow.frame = CGRectMake(0, _searchBar.frame.size.height, _searchBar.frame.size.width, _dropShadow.frame.size.height);
         [self addSubview:_dropShadow];
     }
+    
+    NSLog(@"%@ %@ %@ %@", self, _backgroundView, _dropShadow, _searchBar);
     
     if (![_searchBar isDescendantOfView:self]) {
         [self addSubview:_searchBar];
@@ -307,7 +313,7 @@
     _searchBar.autocorrectionType = type;
 }
 
-- (UIBarStyle) barStyle {
+- (UIBarStyle)barStyle {
     return _searchBar.barStyle;
 }
 

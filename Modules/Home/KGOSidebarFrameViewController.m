@@ -4,6 +4,8 @@
 #import "UIKit+KGOAdditions.h"
 #import "KGOHomeScreenWidget.h"
 
+#define SIDEBAR_WIDTH 160
+
 @interface KGOSidebarFrameViewController (Private)
 
 - (void)setupSidebarIcons;
@@ -58,11 +60,12 @@
     [super loadView];
     
     _topbar = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, 50)];
-    //_topbar.backgroundColor = [UIColor blackColor];
     _topbar.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageWithPathName:@"modules/home/ipad-topbar.png"]];
     [self.view addSubview:_topbar];
     
-    _sidebar = [[UIView alloc] initWithFrame:CGRectMake(0, _topbar.frame.size.height, 180, self.view.bounds.size.height)];
+    _sidebar = [[UIView alloc] initWithFrame:CGRectMake(0, _topbar.frame.size.height, SIDEBAR_WIDTH, self.view.bounds.size.height)];
+    _springboardFrame = _sidebar.frame;
+    
     [self.view addSubview:_sidebar];
     [self setupSidebarIcons];
     [self setupWidgets];
@@ -128,6 +131,14 @@
         anIcon.frame = frame;
         [_sidebar addSubview:anIcon];
         currentY += frame.size.height + 10;
+    }
+    
+    CGFloat topFreePixel;
+    CGFloat bottomFreePixel;
+    NSArray *widgets = [self allWidgets:&topFreePixel :&bottomFreePixel];
+    
+    for (KGOHomeScreenWidget *aWidget in widgets) {
+        [self.view addSubview:aWidget];
     }
 }
 

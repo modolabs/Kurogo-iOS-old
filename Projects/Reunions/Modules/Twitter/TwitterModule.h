@@ -1,7 +1,6 @@
-#import "KGOModule.h"
+#import "MicroblogModule.h"
 
-
-@interface TwitterModule : KGOModule {
+@interface TwitterModule : MicroblogModule {
     
 }
 

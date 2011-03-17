@@ -4,6 +4,20 @@
 #import "KGOHomeScreenWidget.h"
 #import "KGOTheme.h"
 #import "UIKit+KGOAdditions.h"
+#import "Foundation+KGOAdditions.h"
+#import "FacebookUser.h"
+
+static NSString * const FacebookGroupKey = @"FBGroup";
+
+NSString * const FacebookGroupReceivedNotification = @"FBGroupReceived";
+NSString * const FacebookFeedDidUpdateNotification = @"FBFeedReceived";
+
+@interface FacebookModule (Private)
+
+- (void)setupPolling;
+- (void)shutdownPolling;
+
+@end
 
 @implementation FacebookModule
 
@@ -25,13 +39,178 @@
         assert(enUSPOSIXLocale != nil);
         
         [sRFC3339DateFormatter setLocale:enUSPOSIXLocale];
-        [sRFC3339DateFormatter setDateFormat:@"yyyy'-'MM'-'dd'T'HH':'mm':'ss'Z'"];
+        [sRFC3339DateFormatter setDateFormat:@"yyyy'-'MM'-'dd'T'HH':'mm':'ssZ"];
         [sRFC3339DateFormatter setTimeZone:[NSTimeZone timeZoneForSecondsFromGMT:0]];
     }
     
     // Convert the RFC 3339 date time string to an NSDate.
     date = [sRFC3339DateFormatter dateFromString:rfc3339DateTimeString];
     return date;
+}
+
++ (NSString *)agoStringFromDate:(NSDate *)date {
+    NSString *result = nil;
+    double minutes = -[date timeIntervalSinceNow] / 60;
+    if (minutes < 60) {
+        result = [NSString stringWithFormat:@"%.0f %@", minutes, NSLocalizedString(@"minutes ago", nil)];
+    } else {
+        double hours = minutes / 60;
+        if (hours < 24) {
+            result = [NSString stringWithFormat:@"%.0f %@", hours, NSLocalizedString(@"hours ago", nil)];
+        } else {
+            double days = hours / 24;
+            result = [NSString stringWithFormat:@"%.0f %@", days, NSLocalizedString(@"days ago", nil)];
+        }
+    }
+    return result;
+}
+
+#pragma mark polling
+
+- (void)startPollingStatusUpdates {
+    if (!_statusPoller) {
+        NSLog(@"scheduling timer...");
+        NSTimeInterval interval = 15;
+        _statusPoller = [[NSTimer timerWithTimeInterval:interval
+                                                 target:self
+                                               selector:@selector(requestStatusUpdates:)
+                                               userInfo:nil
+                                                repeats:YES] retain];
+        [[NSRunLoop currentRunLoop] addTimer:_statusPoller forMode:NSDefaultRunLoopMode];
+    }
+}
+
+- (void)stopPollingStatusUpdates {
+    if (_statusPoller) {
+        [_statusPoller invalidate];
+        [_statusPoller release];
+        _statusPoller = nil;
+    }
+}
+
+- (void)requestStatusUpdates:(NSTimer *)aTimer {
+    NSLog(@"requesting status update");
+    
+    NSString *feedPath = [NSString stringWithFormat:@"%@/feed", _gid];
+    [[KGOSocialMediaController sharedController] requestFacebookGraphPath:feedPath
+                                                                 receiver:self
+                                                                 callback:@selector(didReceiveFeed:)];
+    
+    
+}
+
+#pragma mark facebook connection
+
+- (void)requestGroupOrStartPolling {
+    _lastMessageDate = [[NSDate distantPast] retain];
+    
+    if (!_gid) {
+        NSLog(@"requesting groups");
+        [[KGOSocialMediaController sharedController] requestFacebookGraphPath:@"me/groups"
+                                                                     receiver:self
+                                                                     callback:@selector(didReceiveGroups:)];
+    } else {
+        [self requestStatusUpdates:nil];
+        [self startPollingStatusUpdates];
+    }
+}
+
+- (void)facebookDidLogin:(NSNotification *)aNotification
+{
+    NSLog(@"facebook logged in");
+    [self requestGroupOrStartPolling];
+}
+
+- (void)facebookDidLogout:(NSNotification *)aNotification
+{
+    [_gid release];
+    _gid = nil;
+    
+    [_latestFeedPosts release];
+    _latestFeedPosts = nil;
+    
+    [self shutdownPolling];
+    
+    [[NSUserDefaults standardUserDefaults] removeObjectForKey:FacebookGroupKey];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+}
+
+- (NSString *)groupID {
+    return _gid;
+}
+
+- (void)didReceiveGroups:(id)result {
+    NSArray *data = [result arrayForKey:@"data"];
+    for (id aGroup in data) {
+        // TODO: get group names from server
+        if ([[aGroup objectForKey:@"name"] isEqualToString:@"Modo Labs UX"]) {
+
+            [_gid release];
+            _gid = [[aGroup objectForKey:@"id"] retain];
+            
+            [[NSNotificationCenter defaultCenter] postNotificationName:FacebookGroupReceivedNotification object:self];
+
+            [[NSUserDefaults standardUserDefaults] setObject:_gid forKey:FacebookGroupKey];
+            [[NSUserDefaults standardUserDefaults] synchronize];
+            
+            [self startPollingStatusUpdates];
+        }
+    }
+}
+
+- (NSArray *)latestFeedPosts {
+    return _latestFeedPosts;
+}
+
+- (void)didReceiveFeed:(id)result {
+    NSArray *data = [result arrayForKey:@"data"];
+    if (data) {
+        [_latestFeedPosts release];
+        _latestFeedPosts = [data retain];
+        
+        for (NSDictionary *aPost in _latestFeedPosts) {
+            NSString *type = [aPost stringForKey:@"type" nilIfEmpty:YES];
+            if ([type isEqualToString:@"status"]) {
+                NSString *message = [aPost stringForKey:@"message" nilIfEmpty:YES];
+                
+                NSDictionary *from = [aPost dictionaryForKey:@"from"];
+                FacebookUser *user = [FacebookUser userWithDictionary:from];
+                
+                NSDate *lastUpdate = nil;
+                NSString *dateString = [aPost stringForKey:@"updated_time" nilIfEmpty:YES];
+                if (dateString) {
+                    lastUpdate = [FacebookModule dateFromRFC3339DateTimeString:dateString];
+                }
+                
+                // TODO: if we confirm that this is later than the twitter update, hide twitter's chatbubble
+                if (lastUpdate && [lastUpdate compare:_lastMessageDate] == NSOrderedDescending) {
+                    [_lastMessageDate release];
+                    _lastMessageDate = [lastUpdate retain];
+
+                    self.chatBubbleSubtitleLabel.text = [NSString stringWithFormat:
+                                                         @"%@ %@", user.name,
+                                                         [FacebookModule agoStringFromDate:_lastMessageDate]];
+                    self.chatBubbleTitleLabel.text = message;
+                    break;
+                }
+            }
+        }
+        
+        [[NSNotificationCenter defaultCenter] postNotificationName:FacebookFeedDidUpdateNotification object:self];
+    }
+}
+
+#pragma mark -
+
+- (id)initWithDictionary:(NSDictionary *)moduleDict {
+    self = [super initWithDictionary:moduleDict];
+    if (self) {
+        self.buttonImage = [UIImage imageWithPathName:@"modules/facebook/button-facebook.png"];
+        self.labelText = @"Harvard-Radcliffe Reunion";
+        self.chatBubbleCaratOffset = 0.75;
+        //self.chatBubble.hidden = YES;
+    }
+    return self;
 }
 
 - (NSArray *)objectModelNames {
@@ -47,68 +226,70 @@
     }
     return vc;
 }
-
+/*
 - (void)launch {
     [super launch];
     [[KGOSocialMediaController sharedController] startupFacebook];
+    [self setupPolling];
 }
+
 
 - (void)terminate {
     [super terminate];
     [[KGOSocialMediaController sharedController] shutdownFacebook];
+    [self shutdownPolling];
+}
+*/
+- (void)applicationDidFinishLaunching {
+    [[KGOSocialMediaController sharedController] startupFacebook];
+    _gid = [[[NSUserDefaults standardUserDefaults] objectForKey:FacebookGroupKey] retain];
+    NSLog(@"stored group id is %@", _gid);
+    [self setupPolling];
+}
+
+- (void)applicationWillTerminate {
+    [[KGOSocialMediaController sharedController] shutdownFacebook];
+    [self shutdownPolling];
+}
+
+- (void)applicationDidEnterBackground {
+    [self shutdownPolling];
+}
+
+- (void)applicationWillEnterForeground {
+    [self setupPolling];
+}
+
+- (void)setupPolling {
+    NSLog(@"setting up polling...");
+    if (![[KGOSocialMediaController sharedController] isFacebookLoggedIn]) {
+        NSLog(@"waiting for facebook to log in...");
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(facebookDidLogin:)
+                                                     name:FacebookDidLoginNotification
+                                                   object:nil];
+    } else {
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(facebookDidLogout:)
+                                                     name:FacebookDidLogoutNotification
+                                                   object:nil];
+        [self requestGroupOrStartPolling];
+    }
+}
+
+- (void)shutdownPolling {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    [self stopPollingStatusUpdates];
 }
 
 #pragma mark View on home screen
 
-
-
-- (NSArray *)widgetViews {
-    
-    UIFont *font = [[KGOTheme sharedTheme] fontForBodyText];
-    
-    NSMutableArray *widgets = [NSMutableArray array];
-    
-    UIImageView *imageView = [[[UIImageView alloc] initWithImage:[UIImage imageWithPathName:@"modules/facebook/button-facebook.png"]] autorelease];
-    
-    // TODO: get rid of magic numbers
-    CGRect frame = imageView.frame;
-    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
-        //frame.origin.x = 5;
-        //frame.origin.y = 5;
-        frame = CGRectMake(5, 5, 31, 31);
-    } else {
-        frame = CGRectMake(22, 5, 31, 31);
+- (KGOHomeScreenWidget *)buttonWidget {
+    KGOHomeScreenWidget *widget = [super buttonWidget];
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        widget.gravity = KGOLayoutGravityBottomRight;
     }
-    imageView.frame = frame;
-    
-    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
-        CGFloat x = frame.origin.x + frame.size.width + 5;
-        frame = CGRectMake(x, 5, 120 - x - 5, 44);
-    } else {
-        frame = CGRectMake(5, 40, 65, 40);
-    }
-    UILabel *label = [[[UILabel alloc] initWithFrame:frame] autorelease];
-    label.font = font;
-    label.text = @"Harvard-Radclife '96";
-    label.numberOfLines = 0;
-    label.lineBreakMode = UILineBreakModeCharacterWrap;
-    label.backgroundColor = [UIColor clearColor];
-    label.textColor = [UIColor whiteColor];
-    
-    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
-        frame = CGRectMake(0, 0, 120, 44);
-    } else {
-        frame = CGRectMake(5, 900, 75, 100);
-    }
-    KGOHomeScreenWidget *widget = [[[KGOHomeScreenWidget alloc] initWithFrame:frame] autorelease];
-    [widget addSubview:imageView];
-    [widget addSubview:label];
-    widget.gravity = KGOLayoutGravityBottomLeft;
-    widget.behavesAsIcon = YES;
-    
-    [widgets addObject:widget];
-
-    return widgets;
+    return widget;
 }
 
 #pragma mark Social media controller
