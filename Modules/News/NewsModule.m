@@ -20,7 +20,6 @@
 }
 
 - (void)dealloc {
-    self.xmlParser = nil;
     [super dealloc];
 }
 

@@ -1,7 +1,6 @@
 #import "KGOAppDelegate.h"
 #import "StoryListViewController.h"
 #import "StoryDetailViewController.h"
-#import "StoryXMLParser.h"
 #import "NewsDataManager.h"
 #import "NewsStory.h"
 #import "CoreDataManager.h"
