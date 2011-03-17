@@ -22,6 +22,7 @@
 
 @property(nonatomic, assign) id <TwitterSearchDelegate> delegate;
 
+- (id)initWithDelegate:(id<TwitterSearchDelegate>) delegate;
 - (void)searchTwitterHashtag:(NSString *)hashtag;
 
 @end

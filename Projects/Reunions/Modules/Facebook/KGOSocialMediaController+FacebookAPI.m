@@ -205,7 +205,7 @@
  */
 - (void)request:(FBRequest *)request didLoad:(id)result {
     DLog(@"request succeeded for url: %@ params: %@", request.url, request.params);
-    NSLog(@"%@", [result description]);
+    //NSLog(@"%@", [result description]);
     NSInteger index = [_fbRequestQueue indexOfObject:request];
     
     if (index != NSNotFound) {

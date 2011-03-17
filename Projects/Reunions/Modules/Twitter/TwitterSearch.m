@@ -6,6 +6,14 @@
 
 @synthesize delegate;
 
+- (id)initWithDelegate:(id<TwitterSearchDelegate>)aDelegate {
+    self = [super init];
+    if (self) {
+        self.delegate = aDelegate;
+    }
+    return self;
+}
+
 - (void)searchTwitterHashtag:(NSString *)hashtag {
     if (_connection) {
         return;

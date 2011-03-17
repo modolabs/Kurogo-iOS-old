@@ -67,7 +67,34 @@ NSString * const FacebookFeedDidUpdateNotification = @"FBFeedReceived";
 
 #pragma mark polling
 
+- (void)setupPolling {
+    NSLog(@"setting up polling...");
+    if (![[KGOSocialMediaController sharedController] isFacebookLoggedIn]) {
+        NSLog(@"waiting for facebook to log in...");
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(facebookDidLogin:)
+                                                     name:FacebookDidLoginNotification
+                                                   object:nil];
+    } else {
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(facebookDidLogout:)
+                                                     name:FacebookDidLogoutNotification
+                                                   object:nil];
+        [self requestGroupOrStartPolling];
+    }
+}
+
+- (void)shutdownPolling {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    [self stopPollingStatusUpdates];
+}
+
 - (void)startPollingStatusUpdates {
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(hideChatBubble:)
+                                                 name:TwitterStatusDidUpdateNotification
+                                               object:nil];
+    
     if (!_statusPoller) {
         NSLog(@"scheduling timer...");
         NSTimeInterval interval = 15;
@@ -187,10 +214,14 @@ NSString * const FacebookFeedDidUpdateNotification = @"FBFeedReceived";
                     [_lastMessageDate release];
                     _lastMessageDate = [lastUpdate retain];
 
+                    self.chatBubble.hidden = NO;
                     self.chatBubbleSubtitleLabel.text = [NSString stringWithFormat:
                                                          @"%@ %@", user.name,
                                                          [FacebookModule agoStringFromDate:_lastMessageDate]];
                     self.chatBubbleTitleLabel.text = message;
+                    
+                    [[NSNotificationCenter defaultCenter] postNotificationName:FacebookStatusDidUpdateNotification object:nil];
+
                     break;
                 }
             }
@@ -208,7 +239,6 @@ NSString * const FacebookFeedDidUpdateNotification = @"FBFeedReceived";
         self.buttonImage = [UIImage imageWithPathName:@"modules/facebook/button-facebook.png"];
         self.labelText = @"Harvard-Radcliffe Reunion";
         self.chatBubbleCaratOffset = 0.75;
-        //self.chatBubble.hidden = YES;
     }
     return self;
 }
@@ -258,28 +288,6 @@ NSString * const FacebookFeedDidUpdateNotification = @"FBFeedReceived";
 
 - (void)applicationWillEnterForeground {
     [self setupPolling];
-}
-
-- (void)setupPolling {
-    NSLog(@"setting up polling...");
-    if (![[KGOSocialMediaController sharedController] isFacebookLoggedIn]) {
-        NSLog(@"waiting for facebook to log in...");
-        [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(facebookDidLogin:)
-                                                     name:FacebookDidLoginNotification
-                                                   object:nil];
-    } else {
-        [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(facebookDidLogout:)
-                                                     name:FacebookDidLogoutNotification
-                                                   object:nil];
-        [self requestGroupOrStartPolling];
-    }
-}
-
-- (void)shutdownPolling {
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
-    [self stopPollingStatusUpdates];
 }
 
 #pragma mark View on home screen

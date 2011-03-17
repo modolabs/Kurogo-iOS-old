@@ -12,11 +12,18 @@
 #define BOTTOM_SHADOW_HEIGHT 7
 #define LEFT_SHADOW_WIDTH 5
 
+NSString * const FacebookStatusDidUpdateNotification = @"FacebookUpdate";
+NSString * const TwitterStatusDidUpdateNotification = @"TwitterUpdate";
+
 @implementation MicroblogModule
 
 @synthesize buttonImage, labelText, chatBubbleCaratOffset;
 
 #pragma mark View on home screen
+
+- (void)hideChatBubble:(NSNotification *)aNotification {
+    self.chatBubble.hidden = YES;
+}
 
 - (UILabel *)chatBubbleTitleLabel {
     return _chatBubbleTitleLabel;
@@ -79,7 +86,7 @@
         CGFloat bubbleHPadding = 10;
         CGFloat bubbleVPadding = 6;
         frame = bubbleView.frame;
-        frame.origin.x = bubbleHPadding;
+        frame.origin.x = bubbleHPadding + bubbleView.frame.origin.x;
         frame.origin.y = bubbleVPadding;
         frame.size.width -= bubbleHPadding * 2;
         frame.size.height = floor(bubbleView.frame.size.height * 0.6) - bubbleVPadding;

@@ -1,5 +1,8 @@
 #import "KGOModule.h"
 
+extern NSString * const FacebookStatusDidUpdateNotification;
+extern NSString * const TwitterStatusDidUpdateNotification;
+
 @class KGOHomeScreenWidget;
 
 @interface MicroblogModule : KGOModule {
@@ -11,6 +14,8 @@
     UILabel *_chatBubbleSubtitleLabel;
     
 }
+
+- (void)hideChatBubble:(NSNotification *)aNotification;
 
 @property(nonatomic, retain) UIImage *buttonImage;
 @property(nonatomic, retain) NSString *labelText;
