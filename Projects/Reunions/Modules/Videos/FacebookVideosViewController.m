@@ -6,8 +6,45 @@
 #import "KGOAppDelegate+ModuleAdditions.h"
 #import "FacebookVideo.h"
 #import "FacebookUser.h"
+#import "FacebookModule.h"
 
 @implementation FacebookVideosViewController
+
+- (void)getGroupVideos {
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:FacebookGroupReceivedNotification object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:FacebookFeedDidUpdateNotification object:nil];
+    
+    FacebookModule *fbModule = (FacebookModule *)[(KGOAppDelegate *)[[UIApplication sharedApplication] delegate] moduleForTag:@"facebook"];
+    if (fbModule.groupID) {
+        if (fbModule.latestFeedPosts) {
+            for (NSDictionary *aPost in fbModule.latestFeedPosts) {
+                NSString *type = [aPost stringForKey:@"type" nilIfEmpty:YES];
+                if ([type isEqualToString:@"video"]) {
+                    NSLog(@"video data: %@", [aPost description]);
+                    FacebookVideo *aVideo = [FacebookVideo videoWithDictionary:aPost];
+                    if (aVideo && ![_videoIDs containsObject:aVideo.identifier]) {
+                        NSLog(@"created video %@", [aVideo description]);
+                        [_videos addObject:aVideo];
+                        [_videoIDs addObject:aVideo.identifier];
+                    }
+                }
+            }
+            [_tableView reloadData];
+            
+        } else {
+            [[NSNotificationCenter defaultCenter] addObserver:self
+                                                     selector:@selector(getGroupVideos)
+                                                         name:FacebookGroupReceivedNotification
+                                                       object:nil];
+        }
+        
+    } else {
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(getGroupVideos)
+                                                     name:FacebookFeedDidUpdateNotification
+                                                   object:nil];
+    }
+}
 
 // The designated initializer.  Override if you create the controller programmatically and want to perform customization that is not appropriate for viewDidLoad.
 /*
@@ -37,6 +74,8 @@
     
     _videos = [[NSMutableArray alloc] init];
     _videoIDs = [[NSMutableSet alloc] init];
+    
+    [self getGroupVideos];
 }
 
 /*
@@ -69,7 +108,7 @@
 }
 
 #pragma mark Facebook callbacks
-
+/*
 - (void)didReceiveFeed:(id)result {
     NSArray *data = [result arrayForKey:@"data"];
     for (NSDictionary *aPost in data) {
@@ -86,7 +125,7 @@
     }
     [_tableView reloadData];
 }
-
+*/
 #pragma mark table view methods
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
