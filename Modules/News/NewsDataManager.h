@@ -4,7 +4,7 @@
 #import "NewsStory.h"
 #import "NewsImage.h"
 
-typedef int NewsCategoryId;
+typedef NSString* NewsCategoryId;
 
 @protocol NewsDataDelegate <NSObject>
 

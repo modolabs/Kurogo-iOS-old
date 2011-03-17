@@ -212,6 +212,8 @@ static NSInteger numTries = 0;
 #pragma mark NewsDataManager delegate methods
 - (void)categoriesUpdated:(NSArray *)newCategories {
     self.categories = newCategories;
+    NewsCategory *category = [self.categories objectAtIndex:0];
+    self.activeCategoryId = category.category_id;
     [self setupNavScroller];
     [self loadFromCache]; // now that we have categories load the stories
 }
@@ -262,7 +264,7 @@ static NSInteger numTries = 0;
         NSString *title = [tabstrip buttonTitleAtIndex:index];
         for (NewsCategory *aCategory in self.categories) {
             if ([aCategory.title isEqualToString:title]) {
-                NewsCategoryId tagValue = (NewsCategoryId)[aCategory.category_id intValue];
+                NewsCategoryId tagValue = aCategory.category_id;
                 [self switchToCategory:tagValue];
                 break;
             }
@@ -485,7 +487,7 @@ static NSInteger numTries = 0;
 }
 
 - (void) storiesUpdated:(NSArray *)theStories forCategory:(NewsCategory *)category {
-    if(self.activeCategoryId == [category.category_id integerValue]) {
+    if([self.activeCategoryId isEqualToString:category.category_id]) {
         self.stories = theStories;
         [self setLastUpdated:category.lastUpdated];
         activeCategoryHasMoreStories = [category.moreStories boolValue];
@@ -494,8 +496,8 @@ static NSInteger numTries = 0;
     }
 }
 
-- (void) storiesDidMakeProgress:(CGFloat)progress forCategoryId:(NewsCategoryId)categoryId {
-    if(self.activeCategoryId == categoryId) {
+- (void) storiesDidMakeProgress:(CGFloat)progress forCategoryId:(NewsCategoryId)categoryID {
+    if([self.activeCategoryId isEqualToString:categoryID]) {
         [self setProgress:progress];
     }
 }
@@ -802,11 +804,11 @@ static NSInteger numTries = 0;
         UIColor *textColor;
         
         //
-        //if (!self.xmlParser) { // disable when a load is already in progress
+        if (![[NewsDataManager sharedManager] busy]) { // disable when a load is already in progress
             textColor = [UIColor colorWithHexString:@"#1A1611"]; // enable
-        //} else {
-        //    textColor = [UIColor colorWithHexString:@"#999999"]; // disable
-        //}
+        } else {
+            textColor = [UIColor colorWithHexString:@"#999999"]; // disable
+        }
         //
         
         return [[^(UITableViewCell *cell) {

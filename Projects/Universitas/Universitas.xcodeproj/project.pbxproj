@@ -16,7 +16,7 @@
 		3AA219501039D74700DB7637 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3AA2194F1039D74700DB7637 /* CoreData.framework */; };
 		4463CCB210D6F5750048CA83 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4463CCB110D6F5750048CA83 /* CoreLocation.framework */; };
 		4B050C55132E48F50016591D /* NewsDataManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B050C54132E48F50016591D /* NewsDataManager.m */; };
-		4B2CA7FB133011700030B751 /* NewsCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B2CA7FA133011700030B751 /* NewsCategory.m */; };
+		4B8432E71331287600DCBA86 /* NewsCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B8432E61331287600DCBA86 /* NewsCategory.m */; };
 		4BA25BEB132ED94600ABB625 /* NewsStory.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BA25BEA132ED94600ABB625 /* NewsStory.m */; };
 		A623F1F2120A035A00341C5E /* ModoThreeStateSwitchControl.m in Sources */ = {isa = PBXBuildFile; fileRef = A623F1F0120A035A00341C5E /* ModoThreeStateSwitchControl.m */; };
 		BD9FA7EE1047A05E00BC3C0A /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BD9FA7ED1047A05E00BC3C0A /* MessageUI.framework */; };
@@ -206,8 +206,8 @@
 		4463CCB110D6F5750048CA83 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		4B050C53132E48F40016591D /* NewsDataManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NewsDataManager.h; sourceTree = "<group>"; };
 		4B050C54132E48F50016591D /* NewsDataManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NewsDataManager.m; sourceTree = "<group>"; };
-		4B2CA7F9133011700030B751 /* NewsCategory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NewsCategory.h; sourceTree = "<group>"; };
-		4B2CA7FA133011700030B751 /* NewsCategory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NewsCategory.m; sourceTree = "<group>"; };
+		4B8432E51331287600DCBA86 /* NewsCategory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NewsCategory.h; sourceTree = "<group>"; };
+		4B8432E61331287600DCBA86 /* NewsCategory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NewsCategory.m; sourceTree = "<group>"; };
 		4BA25BE9132ED94600ABB625 /* NewsStory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NewsStory.h; sourceTree = "<group>"; };
 		4BA25BEA132ED94600ABB625 /* NewsStory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NewsStory.m; sourceTree = "<group>"; };
 		A623F1EF120A035A00341C5E /* ModoThreeStateSwitchControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ModoThreeStateSwitchControl.h; sourceTree = "<group>"; };
@@ -556,9 +556,9 @@
 			children = (
 				DECBF6B410F8F91B009FAE35 /* NewsImageRep.h */,
 				DECBF6B510F8F91B009FAE35 /* NewsImageRep.m */,
+				4B8432E51331287600DCBA86 /* NewsCategory.h */,
+				4B8432E61331287600DCBA86 /* NewsCategory.m */,
 				DE18F9ED10F19105009A69B9 /* News.xcdatamodeld */,
-				4B2CA7F9133011700030B751 /* NewsCategory.h */,
-				4B2CA7FA133011700030B751 /* NewsCategory.m */,
 				4BA25BE9132ED94600ABB625 /* NewsStory.h */,
 				4BA25BEA132ED94600ABB625 /* NewsStory.m */,
 				EB3721A811FA2F5200705180 /* NewsImage.h */,
@@ -1281,9 +1281,9 @@
 				EB46CA981327FED600AF7B5C /* MapDetailViewController.m in Sources */,
 				4B050C55132E48F50016591D /* NewsDataManager.m in Sources */,
 				4BA25BEB132ED94600ABB625 /* NewsStory.m in Sources */,
-				4B2CA7FB133011700030B751 /* NewsCategory.m in Sources */,
 				EB46CB671329CF0400AF7B5C /* KGOToolbar.m in Sources */,
 				EB48910913310A930036AEBF /* ExternalURLModule.m in Sources */,
+				4B8432E71331287600DCBA86 /* NewsCategory.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

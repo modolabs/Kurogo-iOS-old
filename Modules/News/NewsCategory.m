@@ -1,22 +1,14 @@
-//
-//  NewsCategory.m
-//  Universitas
-//
-//  Created by Brian Patt on 3/15/11.
-//  Copyright (c) 2011 Modo Labs. All rights reserved.
-//
-
 #import "NewsCategory.h"
 #import "NewsStory.h"
 
 
 @implementation NewsCategory
-@dynamic moreStories;
-@dynamic title;
-@dynamic category_id;
-@dynamic isMainCategory;
 @dynamic lastUpdated;
 @dynamic nextSeekId;
+@dynamic category_id;
+@dynamic title;
+@dynamic isMainCategory;
+@dynamic moreStories;
 @dynamic stories;
 
 - (void)addStoriesObject:(NewsStory *)value {    

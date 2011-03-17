@@ -48,7 +48,7 @@
 @property (nonatomic, retain) NSString *searchQuery;
 @property (nonatomic, retain) NSArray *searchResults;
 @property (nonatomic, retain) NSArray *categories;
-@property (nonatomic, assign) NewsCategoryId activeCategoryId;
+@property (nonatomic, retain) NewsCategoryId activeCategoryId;
 
 - (void)presentSearchResults:(NSArray *)results searchText:(NSString *)searchText;
 - (void)showSearchBar;

@@ -77,7 +77,7 @@ NSString * const NewsTagBody            = @"content";
 }
 
 - (NewsCategory *)fetchCategoryFromCoreData:(NewsCategoryId)categoryID {
-    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"category_id = %i", categoryID];
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"category_id LIKE %@", categoryID];
     NSArray *categories =[[CoreDataManager sharedManager] objectsForEntity:NewsCategoryEntityName matchingPredicate:predicate];
     return [categories lastObject];
 }
@@ -103,16 +103,26 @@ NSString * const NewsTagBody            = @"content";
                                                                           params:nil];
     request.expectedResponseType = [NSArray class];
     request.handler = [[^(id result) {
-        NSArray *newCategoryTitles = result;
+        NSArray *newCategorieDicts = result;
         NSArray *oldCategories = [self fetchCategoriesFromCoreData];                
         
 		// check if the new categories are the same as the old categories
 		BOOL categoriesChanged = NO;
-		if([newCategoryTitles count] == [oldCategories count]) {
-			for (NSUInteger i=0; i < [newCategoryTitles count]; i++) {
-				NSString *newCategoryTitle = [newCategoryTitles objectAtIndex:i];
-				NSString *oldCategoryTitle = ((NewsCategory *)[oldCategories objectAtIndex:i]).title;
-				if (![newCategoryTitle isEqualToString:oldCategoryTitle]) {
+		if([newCategorieDicts count] == [oldCategories count]) {
+			for (NSUInteger i=0; i < [newCategorieDicts count]; i++) {
+                NSDictionary *newCategoryDict = [newCategorieDicts objectAtIndex:i];
+                NewsCategory *oldCategory = (NewsCategory *)[oldCategories objectAtIndex:i];
+                
+                NSString *oldID = oldCategory.category_id;
+                NSString *newID = [newCategoryDict objectForKey:@"id"];
+                if (![newID isEqualToString:oldID]) {
+					categoriesChanged = YES;
+					break;
+				}
+                
+                NSString *newTitle = [newCategoryDict objectForKey:@"title"];
+                NSString *oldTitle = oldCategory.title;
+				if (![newTitle isEqualToString:oldTitle]) {
 					categoriesChanged = YES;
 					break;
 				}
@@ -130,11 +140,10 @@ NSString * const NewsTagBody            = @"content";
         [[CoreDataManager sharedManager] deleteObjects:oldCategories];		
 		NSMutableArray *newCategories = [NSMutableArray arrayWithCapacity:[result count]];
 		
-        for (NewsCategoryId i = 0; i < [result count]; i++) {
-            NSString *categoryTitle = [result objectAtIndex:i];
+        for (NSDictionary *categoryDict in newCategorieDicts) {
             NewsCategory *aCategory = [[CoreDataManager sharedManager] insertNewObjectForEntityForName:NewsCategoryEntityName];
-            aCategory.title = categoryTitle;
-            aCategory.category_id = [NSNumber numberWithInt:i];
+            aCategory.title = [categoryDict objectForKey:@"title"];
+            aCategory.category_id = [categoryDict objectForKey:@"id"];
             aCategory.isMainCategory = [NSNumber numberWithBool:YES];
             aCategory.moreStories = [NSNumber numberWithInt:-1];
             aCategory.nextSeekId = [NSNumber numberWithInt:0];
@@ -172,7 +181,7 @@ NSString * const NewsTagBody            = @"content";
     [storyIdSortDescriptor release];
     [postDateSortDescriptor release];
     
-    predicate = [NSPredicate predicateWithFormat:@"ANY categories.category_id == %d", [category.category_id intValue]];
+    predicate = [NSPredicate predicateWithFormat:@"ANY categories.category_id LIKE %@", category.category_id];
     
     // if maxLength == 0, nothing's been loaded from the server this session -- show up to 10 results from core data
     // else show up to maxLength
@@ -217,7 +226,7 @@ NSString * const NewsTagBody            = @"content";
     // show that downloading is beginning
     for(id<NewsDataDelegate> delegate in delegates) {
         if([delegate respondsToSelector:@selector(storiesDidMakeProgress:forCategoryId:)]) {
-            [delegate storiesDidMakeProgress:0.0f forCategoryId:[category.category_id integerValue]];
+            [delegate storiesDidMakeProgress:0.0f forCategoryId:category.category_id];
         }
     }
     
@@ -232,12 +241,12 @@ NSString * const NewsTagBody            = @"content";
     NSInteger limit = LIMIT;
     NSString *limitValue = [NSString stringWithFormat:@"%d", limit];
     
-    NewsCategoryId categoryID = [category.category_id intValue];
+    NewsCategoryId categoryID = category.category_id;
     
     NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:
                             startValue, @"start",
                             limitValue, @"limit",
-                            [category.category_id stringValue], @"categoryID", nil];
+                            categoryID, @"categoryID", nil];
     
     KGORequest *request = [[KGORequestManager sharedManager] requestWithDelegate:self
                                                                           module:NewsTag
@@ -311,7 +320,7 @@ NSString * const NewsTagBody            = @"content";
 }
 
 - (void)saveImageData:(NSData *)data url:(NSString *)url {
-    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"url like %@", url];
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"url LIKE %@", url];
     NSArray *images = [[CoreDataManager sharedManager] 
                        objectsForEntity:NewsImageEntityName
                        matchingPredicate:predicate];
@@ -330,7 +339,7 @@ NSString * const NewsTagBody            = @"content";
     
     if([path isEqualToString:@"stories"]) {
         NSString *categoryID = [request.getParams objectForKey:@"categoryID"];
-        [self requestStoriesForCategory:[categoryID integerValue] loadMore:NO];
+        [self requestStoriesForCategory:categoryID loadMore:NO];
         return;
     
     } else if([path isEqualToString:@"categories"]) {
@@ -357,7 +366,7 @@ NSString * const NewsTagBody            = @"content";
         
         for(id<NewsDataDelegate> delegate in delegates) {
             if([delegate respondsToSelector:@selector(storiesDidMakeProgress:forCategoryId:)]) {
-                [delegate storiesDidMakeProgress:progress forCategoryId:[categoryID integerValue]];
+                [delegate storiesDidMakeProgress:progress forCategoryId:categoryID];
             }
         }
 
