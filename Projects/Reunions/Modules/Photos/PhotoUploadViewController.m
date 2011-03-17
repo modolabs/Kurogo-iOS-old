@@ -15,8 +15,7 @@
                                            toFacebookProfile:self.profile
                                                      message:_textView.text
                                                     delegate:self.parentVC];
-    
-    
+    [_spinner startAnimating];
 }
 
 - (void)cancelButtonPressed:(id)sender {

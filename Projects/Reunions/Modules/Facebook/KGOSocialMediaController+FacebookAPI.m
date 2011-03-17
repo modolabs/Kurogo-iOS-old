@@ -188,6 +188,7 @@
         DLog(@"have user but facebook session invalid");
         if (user) {
             user.isSelf = nil;
+            [[CoreDataManager sharedManager] saveData];
         }
         [self loginFacebook];
         return nil;

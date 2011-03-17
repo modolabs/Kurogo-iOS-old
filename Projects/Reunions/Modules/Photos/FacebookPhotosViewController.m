@@ -192,7 +192,9 @@
         [photos addObject:thumbnail.photo];
     }];
     NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:photo, @"photo", photos, @"photos", nil];
-    [(KGOAppDelegate *)[[UIApplication sharedApplication] delegate] showPage:LocalPathPageNameDetail forModuleTag:PhotosTag params:params];
+    [(KGOAppDelegate *)[[UIApplication sharedApplication] delegate] showPage:LocalPathPageNameDetail
+                                                                forModuleTag:PhotosTag
+                                                                      params:params];
 }
 
 #pragma mark Photo uploads
@@ -209,7 +211,12 @@
         didFinishPickingImage:(UIImage *)image
                   editingInfo:(NSDictionary *)editingInfo
 {
-    NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:image, @"photo", _gid, @"profile", self, @"parentVC", nil];
+    FacebookModule *fbModule = (FacebookModule *)[(KGOAppDelegate *)[[UIApplication sharedApplication] delegate] moduleForTag:@"facebook"];
+    NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:
+                            image, @"photo",
+                            fbModule.groupID, @"profile",
+                            self, @"parentVC",
+                            nil];
     [(KGOAppDelegate *)[[UIApplication sharedApplication] delegate] showPage:LocalPathPageNamePhotoUpload
                                                                 forModuleTag:PhotosTag
                                                                       params:params];
@@ -229,26 +236,7 @@
 }
 
 #pragma mark Facebook request callbacks
-/*
-- (void)didReceiveGroups:(id)result {
-    
-    NSArray *data = [result arrayForKey:@"data"];
-    for (id aGroup in data) {
-        if ([[aGroup objectForKey:@"name"] isEqualToString:@"Modo Labs UX"]) {
-            _gid = [[aGroup objectForKey:@"id"] retain];
 
-            // fql for photos
-            NSString *query = [NSString stringWithFormat:@"SELECT pid FROM photo_tag WHERE subject=%@", _gid];
-            [[KGOSocialMediaController sharedController] requestFacebookFQL:query receiver:self callback:@selector(didReceivePhotoList:)];
-
-            // group feed
-            NSString *feedPath = [NSString stringWithFormat:@"%@/feed", _gid];
-            [[KGOSocialMediaController sharedController] requestFacebookGraphPath:feedPath receiver:self callback:@selector(didReceiveFeed:)];
-        }
-    }
-
-}
-*/
 - (void)didReceivePhotoList:(id)result {
     
     if ([result isKindOfClass:[NSArray class]]) {
@@ -304,33 +292,6 @@
     }
 }
 
-/*
-- (void)didReceiveFeed:(id)result {
-    
-    NSArray *data = [result arrayForKey:@"data"];
-    for (NSDictionary *aPost in data) {
-        NSString *type = [aPost stringForKey:@"type" nilIfEmpty:YES];
-        if ([type isEqualToString:@"photo"]) {
-            NSString *pid = [aPost stringForKey:@"object_id" nilIfEmpty:YES];
-            if (pid && ![_photosByID objectForKey:pid]) {
-                FacebookPhoto *aPhoto = [FacebookPhoto photoWithDictionary:aPost];
-                if (aPhoto) {
-                    aPhoto.postIdentifier = [aPost stringForKey:@"id" nilIfEmpty:YES];
-                    NSLog(@"%@", [aPhoto description]);
-                    [[CoreDataManager sharedManager] saveData];
-                    [_photosByID setObject:aPhoto forKey:pid];
-                    [self displayPhoto:aPhoto];
-                }
-
-                DLog(@"requesting graph info for photo %@", pid);
-                [[KGOSocialMediaController sharedController] requestFacebookGraphPath:pid
-                                                                             receiver:self
-                                                                             callback:@selector(didReceivePhoto:)];
-            }
-        }
-    }
-}
-*/
 @end
 
 @implementation FacebookThumbnail

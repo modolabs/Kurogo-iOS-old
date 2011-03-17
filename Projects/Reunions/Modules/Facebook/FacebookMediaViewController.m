@@ -68,7 +68,6 @@
 
 - (void)dealloc
 {
-    [_gid release];
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     [super dealloc];
 }
@@ -85,11 +84,6 @@
 
 - (void)facebookDidLogin:(NSNotification *)aNotification
 {
-    //if (!_gid) {
-    //    [[KGOSocialMediaController sharedController] requestFacebookGraphPath:@"me/groups"
-    //                                                                 receiver:self
-    //                                                                 callback:@selector(didReceiveGroups:)];
-    //}
     [self hideLoginView];
 }
 
@@ -98,24 +92,6 @@
     [self showLoginView];
 }
 
-/*
-- (void)didReceiveGroups:(id)result {
-    
-    NSArray *data = [result arrayForKey:@"data"];
-    for (id aGroup in data) {
-        if ([[aGroup objectForKey:@"name"] isEqualToString:@"Modo Labs UX"]) {
-            _gid = [[aGroup objectForKey:@"id"] retain];
-            
-            NSString *feedPath = [NSString stringWithFormat:@"%@/feed", _gid];
-            [[KGOSocialMediaController sharedController] requestFacebookGraphPath:feedPath receiver:self callback:@selector(didReceiveFeed:)];
-        }
-    }
-}
-
-- (void)didReceiveFeed:(id)result {
-    ;
-}
-*/
 #pragma mark - View lifecycle
 
 - (void)viewDidLoad

@@ -9,6 +9,7 @@
     IBOutlet UITextView *_textView;
     
     IBOutlet UIView *_loadingView;
+    IBOutlet UIActivityIndicatorView *_spinner;
     
 }
 

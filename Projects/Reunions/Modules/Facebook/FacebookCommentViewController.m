@@ -36,36 +36,12 @@
 #pragma mark -
 
 - (IBAction)submitButtonPressed:(UIButton *)sender {
-    /*
-    [[KGOSocialMediaController sharedController] addComment:_textView.text 
-                                             toFacebookPost:self.post
-                                                   receiver:self
-                                                   callback:@selector(didPostComment:)];
-     */
     [[KGOSocialMediaController sharedController] addComment:_textView.text toFacebookPost:self.post delegate:self.delegate];
     
     _loadingViewContainer.hidden = NO;
     [_spinner startAnimating];
 }
 
-/*
-- (void)didPostComment:(id)result {
-    NSLog(@"%@", [result description]);
-    if ([result isKindOfClass:[NSDictionary class]]) {
-        NSString *identifier = [result stringForKey:@"id" nilIfEmpty:YES];
-        FacebookComment *aComment = [FacebookComment commentWithID:identifier];
-        aComment.text = _textView.text;
-        // TODO: set comment's owner as user
-        [self.delegate didPostComment:aComment];
-        [_spinner stopAnimating];
-        [(KGOAppDelegate *)[[UIApplication sharedApplication] delegate] dismissAppModalViewControllerAnimated:YES];
-    }
-}
- 
-- (void)didFailToPostComment:(NSError *)error {
-    
-}
-*/
 #pragma mark - View lifecycle
 
 - (void)viewDidLoad
