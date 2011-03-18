@@ -5,6 +5,7 @@
 #import "KGOHomeScreenWidget.h"
 
 #define SIDEBAR_WIDTH 160
+#define TOPBAR_HEIGHT 50
 
 @interface KGOSidebarFrameViewController (Private)
 
@@ -59,12 +60,12 @@
 {
     [super loadView];
     
-    _topbar = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, 50)];
+    _topbar = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, TOPBAR_HEIGHT)];
     _topbar.autoresizingMask = UIViewAutoresizingFlexibleWidth;
     _topbar.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageWithPathName:@"modules/home/ipad-topbar.png"]];
     [self.view addSubview:_topbar];
     
-    _sidebar = [[UIView alloc] initWithFrame:CGRectMake(0, _topbar.frame.size.height, SIDEBAR_WIDTH, self.view.bounds.size.height)];
+    _sidebar = [[UIView alloc] initWithFrame:CGRectMake(0, TOPBAR_HEIGHT, SIDEBAR_WIDTH, self.view.bounds.size.height - TOPBAR_HEIGHT)];
     _sidebar.autoresizingMask = UIViewAutoresizingFlexibleHeight;
     _springboardFrame = _sidebar.frame;
     
@@ -97,6 +98,10 @@
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
 	return YES;
+}
+
+- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
+    [_visibleViewController willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
 }
 
 - (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
