@@ -127,6 +127,40 @@
 @end
 
 
+@implementation NSDate (KGOAdditions)
+
+- (NSString *)agoString {
+    NSString *result = nil;
+    int seconds = -(int)[self timeIntervalSinceNow];
+    int minutes = seconds / 60;
+    if (minutes < 60) {
+        if (minutes == 1) {
+            result = [NSString stringWithFormat:@"%d %@", minutes, NSLocalizedString(@"minute ago", nil)];
+        } else {
+            result = [NSString stringWithFormat:@"%d %@", minutes, NSLocalizedString(@"minutes ago", nil)];
+        }
+    } else {
+        int hours = minutes / 60;
+        if (hours < 24) {
+            if (hours == 1) {
+                result = [NSString stringWithFormat:@"%d %@", hours, NSLocalizedString(@"hour ago", nil)];
+            } else {
+                result = [NSString stringWithFormat:@"%d %@", hours, NSLocalizedString(@"hours ago", nil)];
+            }
+        } else {
+            int days = hours / 24;
+            if (days == 1) {
+                result = [NSString stringWithFormat:@"%d %@", days, NSLocalizedString(@"day ago", nil)];
+            } else {
+                result = [NSString stringWithFormat:@"%d %@", days, NSLocalizedString(@"days ago", nil)];
+            }
+        }
+    }
+    return result;
+}
+
+@end
+
 
 typedef struct {
     ComparatorBlock comparator;

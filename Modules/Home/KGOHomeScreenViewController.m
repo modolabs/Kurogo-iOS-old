@@ -134,6 +134,8 @@
         if (moreViews) {
             DLog(@"preparing widgets for module %@", aModule.tag);
             for (KGOHomeScreenWidget *aWidget in moreViews) {
+                aWidget.module = aModule;
+                
                 if (!aWidget.overlaps) {
                     switch (aWidget.gravity) {
                         case KGOLayoutGravityBottomLeft:
