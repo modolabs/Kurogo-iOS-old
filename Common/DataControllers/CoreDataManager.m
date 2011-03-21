@@ -207,7 +207,7 @@
 				}
 			} else {
 				DLog(@"Could not migrate data.  Wiping out data...");
-#ifdef USE_MOBILE_DEV
+#ifdef DEBUG
                 NSString *backupFile = [NSString stringWithFormat:@"%@.bak", [self storeFileName]];
                 NSError *error = nil;
                 if ([[NSFileManager defaultManager] moveItemAtPath:[self storeFileName] toPath:backupFile error:&error]) {

@@ -2,17 +2,23 @@
 #import "KGOHomeScreenWidget.h"
 #import "KGOTheme.h"
 //#import "LoginViewController.h"
+#import "KGOWebViewController.h"
+#import "KGORequestManager.h"
 
 @implementation LoginModule
-/*
+
 - (UIViewController *)modulePage:(NSString *)pageName params:(NSDictionary *)params {
     UIViewController *vc = nil;
     if ([pageName isEqualToString:LocalPathPageNameHome]) {
-        vc = [[[LoginViewController alloc] initWithStyle:UITableViewStyleGrouped] autorelease];
+        KGOWebViewController *webVC = [[[KGOWebViewController alloc] init] autorelease];
+        NSURL *loginURL = [NSURL URLWithString:[NSString stringWithFormat:@"%@/%@", [[KGORequestManager sharedManager] serverURL], @"login"]];
+        webVC.requestURL = loginURL;
+        vc = webVC;
+        //vc = [[[LoginViewController alloc] initWithStyle:UITableViewStyleGrouped] autorelease];
     }
     return vc;
 }
-*/
+
 
 - (NSArray *)widgetViews {
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
