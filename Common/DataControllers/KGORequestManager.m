@@ -409,8 +409,8 @@ NSString * const KGORequestErrorDomain = @"com.modolabs.KGORequest.ErrorDomain";
         _uriScheme = useHTTPS ? @"https" : @"http";
         _host = [[serverConfig objectForKey:@"Host"] retain];
         
-        NSString *apiPath = [NSString stringWithFormat:@"/%@", [servers objectForKey:@"APIPath"]];
-        NSString *pathExtension = [serverConfig objectForKey:@"PathExtension"];
+        NSString *apiPath = [serverConfig objectForKey:@"APIPath"];
+        NSString *pathExtension = [serverConfig stringForKey:@"PathExtension" nilIfEmpty:YES];
         if (pathExtension) {
             _extendedHost = [[NSString alloc] initWithFormat:@"%@/%@", _host, pathExtension];
         } else {

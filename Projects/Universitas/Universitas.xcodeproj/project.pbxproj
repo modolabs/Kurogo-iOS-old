@@ -147,6 +147,8 @@
 		EBAE86401215FB0D00F370BE /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = EBAE863E1215FB0D00F370BE /* Icon.png */; };
 		EBAE86411215FB0D00F370BE /* Icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = EBAE863F1215FB0D00F370BE /* Icon@2x.png */; };
 		EBAE86451215FB4900F370BE /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = EBAE86441215FB4900F370BE /* Default@2x.png */; };
+		EBB120A7133802D300A4BD1D /* secret in Resources */ = {isa = PBXBuildFile; fileRef = EBB120A6133802D300A4BD1D /* secret */; };
+		EBB120AA1338046400A4BD1D /* KGOWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EBB120A91338046400A4BD1D /* KGOWebViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -439,6 +441,9 @@
 		EBAE863E1215FB0D00F370BE /* Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Icon.png; path = Resources/Icon.png; sourceTree = "<group>"; };
 		EBAE863F1215FB0D00F370BE /* Icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Icon@2x.png"; path = "Resources/Icon@2x.png"; sourceTree = "<group>"; };
 		EBAE86441215FB4900F370BE /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Default@2x.png"; path = "Resources/Default@2x.png"; sourceTree = "<group>"; };
+		EBB120A6133802D300A4BD1D /* secret */ = {isa = PBXFileReference; lastKnownFileType = folder; name = secret; path = Resources/secret; sourceTree = "<group>"; };
+		EBB120A81338046400A4BD1D /* KGOWebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGOWebViewController.h; sourceTree = "<group>"; };
+		EBB120A91338046400A4BD1D /* KGOWebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGOWebViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -505,6 +510,7 @@
 				EB1B88C81324A6AC00108A8F /* modules */,
 				EB9AF298130B56AD003B9769 /* MainWindow.xib */,
 				EB138BAE12F231E3004DBB7C /* en.lproj */,
+				EBB120A6133802D300A4BD1D /* secret */,
 				EB1441321309EF5800396753 /* KGOInfo.plist */,
 				EB138AFC12F22F31004DBB7C /* Config.plist */,
 				EB46CA8B1327F97100AF7B5C /* ThemeConfig.plist */,
@@ -759,6 +765,8 @@
 		EB1440221309EE3400396753 /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
+				EBB120A81338046400A4BD1D /* KGOWebViewController.h */,
+				EBB120A91338046400A4BD1D /* KGOWebViewController.m */,
 				EB1440231309EE3400396753 /* DatePickerViewController.h */,
 				EB1440241309EE3400396753 /* DatePickerViewController.m */,
 				EB1440251309EE3400396753 /* KGOCategoryListViewController.h */,
@@ -1155,6 +1163,7 @@
 				EB1B88CA1324A6AC00108A8F /* modules in Resources */,
 				EB46CA8A1327F95E00AF7B5C /* kurogo in Resources */,
 				EB46CA8E1327F97100AF7B5C /* ThemeConfig.plist in Resources */,
+				EBB120A7133802D300A4BD1D /* secret in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1284,6 +1293,7 @@
 				EB46CB671329CF0400AF7B5C /* KGOToolbar.m in Sources */,
 				EB48910913310A930036AEBF /* ExternalURLModule.m in Sources */,
 				4B8432E71331287600DCBA86 /* NewsCategory.m in Sources */,
+				EBB120AA1338046400A4BD1D /* KGOWebViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -2,12 +2,6 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>AboutAppText</key>
-	<string>The Harvard iPhone/iPod Touch application is part of a broader initiative to improve the mobile experience of students, faculty, staff, visitors, and neighbors who interact with Harvard&apos;s campus and community. We will continue to develop, expand and improve this application. We welcome your ideas and feedback.</string>
-	<key>AboutOrgText</key>
-	<string>Harvard University is devoted to excellence in teaching, learning, and research, and to developing leaders in many disciplines who make a difference globally. The University has twelve degree-granting Schools in addition to the Radcliffe Institute for Advanced Study.
-
-Established in 1636, Harvard is the oldest institution of higher education in the United States. The University, which is based in Cambridge and Boston, Massachusetts, has an enrollment of over 20,000 degree candidates, including undergraduate, graduate, and professional students. Harvard has more than 360,000 alumni around the world.</string>
 	<key>Analytics</key>
 	<dict>
 		<key>AccountID</key>
@@ -16,7 +10,7 @@ Established in 1636, Harvard is the oldest institution of higher education in th
 		<string></string>
 	</dict>
 	<key>AppFeedbackAddress</key>
-	<string>digitalcomms@harvard.edu</string>
+	<string>john.smith@example.com</string>
 	<key>Modules</key>
 	<array>
 		<dict>
@@ -124,17 +118,52 @@ Established in 1636, Harvard is the oldest institution of higher education in th
 	<string>UINavigationController</string>
 	<key>OrganizationName</key>
 	<string>Universitas</string>
-	<key>Security</key>
-	<dict>
-		<key>UseHTTPS</key>
-		<false/>
-	</dict>
 	<key>Servers</key>
 	<dict>
-		<key>APIPath</key>
-		<string>rest</string>
-		<key>development</key>
-		<string>localhost:8040</string>
+		<key>Development</key>
+		<dict>
+			<key>APIPath</key>
+			<string>rest</string>
+			<key>Host</key>
+			<string>localhost</string>
+			<key>PathExtension</key>
+			<string></string>
+			<key>UseHTTPS</key>
+			<false/>
+		</dict>
+		<key>Production</key>
+		<dict>
+			<key>APIPath</key>
+			<string>rest</string>
+			<key>Host</key>
+			<string>www.example.com</string>
+			<key>PathExtension</key>
+			<string></string>
+			<key>UseHTTPS</key>
+			<false/>
+		</dict>
+		<key>Staging</key>
+		<dict>
+			<key>APIPath</key>
+			<string>rest</string>
+			<key>Host</key>
+			<string>staging.example.com</string>
+			<key>PathExtension</key>
+			<string></string>
+			<key>UseHTTPS</key>
+			<false/>
+		</dict>
+		<key>Testing</key>
+		<dict>
+			<key>APIPath</key>
+			<string>rest</string>
+			<key>Host</key>
+			<string>example-text.com</string>
+			<key>PathExtension</key>
+			<string></string>
+			<key>UseHTTPS</key>
+			<false/>
+		</dict>
 	</dict>
 	<key>SocialMedia</key>
 	<dict>
