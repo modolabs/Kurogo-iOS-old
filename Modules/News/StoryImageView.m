@@ -30,7 +30,7 @@
         imageView.hidden = YES;
         if ([connection isConnected]) {
             [connection cancel];
-            KGOAppDelegate *appDelegate = (KGOAppDelegate *)[[UIApplication sharedApplication] delegate];
+            KGOAppDelegate *appDelegate = KGO_SHARED_APP_DELEGATE();
             [appDelegate hideNetworkActivityIndicator];
         }
         if (self.loadingView) {
@@ -105,7 +105,7 @@
     }
     [connection requestDataFromURL:[NSURL URLWithString:image.url] allowCachedResponse:YES];
     
-    KGOAppDelegate *appDelegate = (KGOAppDelegate *)[[UIApplication sharedApplication] delegate];
+    KGOAppDelegate *appDelegate = KGO_SHARED_APP_DELEGATE();
     [appDelegate showNetworkActivityIndicator];
     
     self.imageData = nil;
@@ -130,7 +130,7 @@
         [[CoreDataManager sharedManager] saveData];
     }
     
-    KGOAppDelegate *appDelegate = (KGOAppDelegate *)[[UIApplication sharedApplication] delegate];
+    KGOAppDelegate *appDelegate = KGO_SHARED_APP_DELEGATE();
     [appDelegate hideNetworkActivityIndicator];
 }
 

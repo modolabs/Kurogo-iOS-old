@@ -31,7 +31,7 @@
 
     // save module's view controllers
     if ([self.viewControllers count] > 1) {
-        KGOAppDelegate *appDelegate = (KGOAppDelegate *)[[UIApplication sharedApplication] delegate];
+        KGOAppDelegate *appDelegate = KGO_SHARED_APP_DELEGATE();
         for (KGOModule *aModule in appDelegate.modules) {
         }
     }

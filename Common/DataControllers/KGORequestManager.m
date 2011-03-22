@@ -387,7 +387,7 @@ NSString * const KGORequestErrorDomain = @"com.modolabs.KGORequest.ErrorDomain";
 - (id)init {
     self = [super init];
     if (self) {
-        NSDictionary *configDict = [(KGOAppDelegate *)[[UIApplication sharedApplication] delegate] appConfig];
+        NSDictionary *configDict = [KGO_SHARED_APP_DELEGATE() appConfig];
         NSDictionary *servers = [configDict objectForKey:@"Servers"];
         
 #ifdef USE_MOBILE_DEV

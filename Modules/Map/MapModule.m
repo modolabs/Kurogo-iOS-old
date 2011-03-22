@@ -126,7 +126,7 @@ NSString * const MapTypePreferenceChanged = @"MapTypeChanged";
 
 - (BOOL)handleLocalPath:(NSString *)localPath query:(NSString *)query {
     if ([localPath isEqualToString:LocalPathPageNameSearch]) {
-        KGOAppDelegate *appDelegate = (KGOAppDelegate *)[[UIApplication sharedApplication] delegate];
+        KGOAppDelegate *appDelegate = KGO_SHARED_APP_DELEGATE();
 
         NSDictionary *params = [NSURL parametersFromQueryString:query];
         NSString *searchText = [params objectForKey:@"q"];
@@ -138,7 +138,7 @@ NSString * const MapTypePreferenceChanged = @"MapTypeChanged";
         NSPredicate *pred = [NSPredicate predicateWithFormat:@"identifier like %@", placemarkID];
         KGOPlacemark *placemark = [[[CoreDataManager sharedManager] objectsForEntity:KGOPlacemarkEntityName matchingPredicate:pred] lastObject];
         if (placemark) {
-            KGOAppDelegate *appDelegate = (KGOAppDelegate *)[[UIApplication sharedApplication] delegate];
+            KGOAppDelegate *appDelegate = KGO_SHARED_APP_DELEGATE();
             UIViewController *visibleVC = [appDelegate visibleViewController];
             // this will be true if we invoked browse categories from the map module
             if (![visibleVC isKindOfClass:[MapHomeViewController class]]) {

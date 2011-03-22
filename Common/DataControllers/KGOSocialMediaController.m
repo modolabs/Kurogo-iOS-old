@@ -117,7 +117,7 @@ static KGOSocialMediaController *s_controller = nil;
 	NSString *username = [[_appConfig objectForKey:KGOSocialMediaTypeBitly] objectForKey:@"Username"];
 	NSString *key = [[_appConfig objectForKey:KGOSocialMediaTypeBitly] objectForKey:@"APIKey"];
 
-	[(KGOAppDelegate *)[[UIApplication sharedApplication] delegate] showNetworkActivityIndicator];
+	[KGO_SHARED_APP_DELEGATE() showNetworkActivityIndicator];
 	_bitlyConnection = [(ConnectionWrapper *)[ConnectionWrapper alloc] initWithDelegate:self]; // cast because multiple classes implement -initWithDelegate
 	NSString *bitlyURLString = [NSString stringWithFormat:@"http://api.bit.ly/v3/shorten"
 								"?login=%@"
@@ -168,7 +168,7 @@ static KGOSocialMediaController *s_controller = nil;
 }
 
 - (void)closeBitlyConnection {
-	[(KGOAppDelegate *)[[UIApplication sharedApplication] delegate] hideNetworkActivityIndicator];
+	[KGO_SHARED_APP_DELEGATE() hideNetworkActivityIndicator];
     [_bitlyConnection release];
     _bitlyConnection = nil;
 }
@@ -221,7 +221,7 @@ static KGOSocialMediaController *s_controller = nil;
 }
 
 - (void)loginTwitterWithUsername:(NSString *)username password:(NSString *)password {
-	[(KGOAppDelegate *)[[UIApplication sharedApplication] delegate] showNetworkActivityIndicator];
+	[KGO_SHARED_APP_DELEGATE() showNetworkActivityIndicator];
 	self.twitterUsername = username;
 	[_twitterEngine getXAuthAccessTokenForUsername:username password:password];
 }
@@ -270,7 +270,7 @@ static KGOSocialMediaController *s_controller = nil;
 	NSError *error = nil;
     [_twitterEngine setAccessToken:aToken];
     
-	[(KGOAppDelegate *)[[UIApplication sharedApplication] delegate] hideNetworkActivityIndicator];
+	[KGO_SHARED_APP_DELEGATE() hideNetworkActivityIndicator];
 	
 	if (!error) {
 		[[NSUserDefaults standardUserDefaults] setObject:_twitterUsername forKey:TwitterUsernameKey];
@@ -281,12 +281,12 @@ static KGOSocialMediaController *s_controller = nil;
 }
 
 - (void)requestSucceeded:(NSString *)connectionIdentifier {
-	[(KGOAppDelegate *)[[UIApplication sharedApplication] delegate] hideNetworkActivityIndicator];
+	[KGO_SHARED_APP_DELEGATE() hideNetworkActivityIndicator];
 	[self.twitterDelegate twitterRequestSucceeded:connectionIdentifier];
 }
 
 - (void)requestFailed:(NSString *)connectionIdentifier withError:(NSError *)error {
-	[(KGOAppDelegate *)[[UIApplication sharedApplication] delegate] hideNetworkActivityIndicator];
+	[KGO_SHARED_APP_DELEGATE() hideNetworkActivityIndicator];
 	
 	NSString *errorTitle;
 	NSString *errorMessage;
@@ -312,11 +312,11 @@ static KGOSocialMediaController *s_controller = nil;
 
 
 - (void)connectionStarted:(NSString *)connectionIdentifier {
-	[(KGOAppDelegate *)[[UIApplication sharedApplication] delegate] showNetworkActivityIndicator];
+	[KGO_SHARED_APP_DELEGATE() showNetworkActivityIndicator];
 }
 
 - (void)connectionFinished:(NSString *)connectionIdentifier {
-	[(KGOAppDelegate *)[[UIApplication sharedApplication] delegate] hideNetworkActivityIndicator];
+	[KGO_SHARED_APP_DELEGATE() hideNetworkActivityIndicator];
 }
 
 #pragma mark - Facebook

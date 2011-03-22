@@ -25,7 +25,7 @@
         _mapBorder.layer.cornerRadius = 4;
     }
     
-    KGOModule *mapModule = [(KGOAppDelegate *)[[UIApplication sharedApplication] delegate] moduleForTag:MapTag];
+    KGOModule *mapModule = [KGO_SHARED_APP_DELEGATE() moduleForTag:MapTag];
     self.title = mapModule.shortName;
 
     _mapView.mapType = [[NSUserDefaults standardUserDefaults] integerForKey:MapTypePreference];
@@ -142,7 +142,7 @@
     } copy] autorelease];
     
     categoryVC.categoriesRequest.handler = createMapCategories;
-	[(KGOAppDelegate *)[[UIApplication sharedApplication] delegate] presentAppModalViewController:categoryVC animated:YES];
+	[KGO_SHARED_APP_DELEGATE() presentAppModalViewController:categoryVC animated:YES];
 }
 
 - (IBAction)bookmarksButtonPressed {
@@ -152,7 +152,7 @@
 	MapSettingsViewController *vc = [[[MapSettingsViewController alloc] initWithStyle:UITableViewStyleGrouped] autorelease];
     vc.title = @"Settings";
     vc.view.backgroundColor = [[KGOTheme sharedTheme] backgroundColorForApplication];
-	[(KGOAppDelegate *)[[UIApplication sharedApplication] delegate] presentAppModalViewController:vc animated:YES];
+	[KGO_SHARED_APP_DELEGATE() presentAppModalViewController:vc animated:YES];
 }
 
 #pragma mark Map/List
@@ -236,7 +236,7 @@
 
 - (void)searchController:(KGOSearchDisplayController *)controller didSelectResult:(id<KGOSearchResult>)aResult {
     NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:aResult, @"place", controller, @"searchController", nil];
-    KGOAppDelegate *appDelegate = (KGOAppDelegate *)[[UIApplication sharedApplication] delegate];
+    KGOAppDelegate *appDelegate = KGO_SHARED_APP_DELEGATE();
     [appDelegate showPage:LocalPathPageNameDetail forModuleTag:MapTag params:params];
 }
 

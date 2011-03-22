@@ -17,7 +17,7 @@ static AnalyticsWrapper *s_sharedWrapper = nil;
 - (id)init {
     self = [super init];
     if (self) {
-        NSDictionary *infoDict = [(KGOAppDelegate *)[[UIApplication sharedApplication] delegate] appConfig];
+        NSDictionary *infoDict = [KGO_SHARED_APP_DELEGATE() appConfig];
 		_preferences = [[infoDict objectForKey:@"Analytics"] retain];
         _provider = KGOAnalyticsProviderNone;
     }

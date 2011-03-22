@@ -162,7 +162,7 @@
         } else if (category.items) {
             [params setObject:category.items forKey:@"items"];
         }
-        [(KGOAppDelegate *)[[UIApplication sharedApplication] delegate] showPage:LocalPathPageNameCategoryList forModuleTag:moduleTag params:params];
+        [KGO_SHARED_APP_DELEGATE() showPage:LocalPathPageNameCategoryList forModuleTag:moduleTag params:params];
         
     } else if (self.leafItems) {
         id<KGOSearchResult> leafItem = [self.leafItems objectAtIndex:indexPath.row];

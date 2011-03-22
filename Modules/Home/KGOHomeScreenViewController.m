@@ -5,6 +5,7 @@
 #import "SpringboardIcon.h"
 #import "KGOPersonWrapper.h"
 #import "KGOHomeScreenWidget.h"
+#import "KGOAppDelegate+ModuleAdditions.h"
 
 @interface KGOHomeScreenViewController (Private)
 
@@ -79,7 +80,6 @@
         _searchController = [[KGOSearchDisplayController alloc] initWithSearchBar:_searchBar delegate:self contentsController:self];
     }
 }
-
 
 - (void)didReceiveMemoryWarning {
     // Releases the view if it doesn't have a superview.
@@ -198,11 +198,14 @@
     free(occupiedAreas);
 
     return allWidgets;
-    //return remainingFrame;
+}
+
+- (void)refreshWidgets {
+    ;
 }
 
 - (NSArray *)iconsForPrimaryModules:(BOOL)isPrimary {
-    BOOL useCompactIcons = [(KGOAppDelegate *)[[UIApplication sharedApplication] delegate] navigationStyle] != KGONavigationStyleTabletSidebar;
+    BOOL useCompactIcons = [KGO_SHARED_APP_DELEGATE() navigationStyle] != KGONavigationStyleTabletSidebar;
     
     NSMutableArray *icons = [NSMutableArray array];
     NSArray *modules = (isPrimary) ? self.primaryModules : self.secondaryModules;
@@ -240,7 +243,7 @@
 
 - (void)buttonPressed:(id)sender {
     SpringboardIcon *anIcon = (SpringboardIcon *)sender;
-	[(KGOAppDelegate *)[[UIApplication sharedApplication] delegate] showPage:LocalPathPageNameHome forModuleTag:anIcon.moduleTag params:nil];
+	[KGO_SHARED_APP_DELEGATE() showPage:LocalPathPageNameHome forModuleTag:anIcon.moduleTag params:nil];
 }
 
 #pragma mark KGOSearchDisplayDelegate
@@ -251,7 +254,7 @@
 
 - (NSArray *)searchControllerValidModules:(KGOSearchDisplayController *)controller {
     NSMutableArray *searchableModules = [NSMutableArray arrayWithCapacity:4];
-    NSArray *modules = ((KGOAppDelegate *)[[UIApplication sharedApplication] delegate]).modules;
+    NSArray *modules = [KGO_SHARED_APP_DELEGATE() modules];
     for (KGOModule *aModule in modules) {
         if (aModule.supportsFederatedSearch) {
             [searchableModules addObject:aModule.tag];
@@ -269,7 +272,7 @@
     BOOL didShow = NO;
     if ([aResult isKindOfClass:[KGOPersonWrapper class]]) {
         NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:aResult, @"personDetails", nil];
-        didShow = [(KGOAppDelegate *)[[UIApplication sharedApplication] delegate] showPage:LocalPathPageNameDetail forModuleTag:PeopleTag params:params];
+        didShow = [KGO_SHARED_APP_DELEGATE() showPage:LocalPathPageNameDetail forModuleTag:PeopleTag params:params];
     }
     
     if (!didShow) {
@@ -365,7 +368,7 @@
 #pragma mark Private
 
 - (void)loadModules {
-    NSArray *modules = ((KGOAppDelegate *)[[UIApplication sharedApplication] delegate]).modules;
+    NSArray *modules = [KGO_SHARED_APP_DELEGATE() modules];
     NSMutableArray *primary = [NSMutableArray array];
     NSMutableArray *secondary = [NSMutableArray array];
     

@@ -18,6 +18,4 @@
 
 @property (nonatomic, retain) NSURL *requestURL;
 
-- (void)loadRequestIntoWebView:(NSURLRequest *)request;
-
 @end

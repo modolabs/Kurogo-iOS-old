@@ -75,8 +75,7 @@
 
 - (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType
 {
-    NSLog(@"%d %@ %@", navigationType, request, [[request URL] scheme]);
-    NSLog(@"%@ %@", [request URL], [[request URL] path]);
+    DLog(@"loading request with url %@", request.URL);
 
 #ifdef USE_MOBILE_DEV
     // the webview will refuse to load if the server uses a self-signed cert
@@ -152,7 +151,7 @@
         htmlString = [htmlString stringByReplacingOccurrencesOfString:@"action=\""
                                                            withString:[NSString stringWithFormat:@"action=\"%@/", originalURL]];
         
-        NSLog(@"%@", htmlString);
+        //DLog(@"%@", htmlString);
         [_webView loadHTMLString:htmlString baseURL:nil];
     }
     self.data = nil;

@@ -10,7 +10,6 @@
 @interface KGOSidebarFrameViewController (Private)
 
 - (void)setupSidebarIcons;
-- (void)setupWidgets;
 
 @end
 
@@ -71,7 +70,7 @@
     
     [self.view addSubview:_sidebar];
     [self setupSidebarIcons];
-    [self setupWidgets];
+    [self refreshWidgets];
     
     _container = [[UIView alloc] initWithFrame:CGRectMake(_sidebar.frame.size.width,
                                                           _topbar.frame.size.height,
@@ -82,7 +81,7 @@
     
     if (self.primaryModules.count) {
         KGOModule *defaultModule = [self.primaryModules objectAtIndex:0];
-        [(KGOAppDelegate *)[[UIApplication sharedApplication] delegate] showPage:LocalPathPageNameHome
+        [KGO_SHARED_APP_DELEGATE() showPage:LocalPathPageNameHome
                                                                     forModuleTag:defaultModule.tag
                                                                           params:nil];
     }
@@ -114,7 +113,7 @@
 
 #pragma mark -
 
-- (void)setupWidgets {
+- (void)refreshWidgets {
     CGFloat topFreePixel;
     CGFloat bottomFreePixel;
     NSArray *widgets = [self allWidgets:&topFreePixel :&bottomFreePixel];

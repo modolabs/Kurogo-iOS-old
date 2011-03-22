@@ -1,5 +1,4 @@
 #import <UIKit/UIKit.h>
-#import "JSONAPIRequest.h"
 #import "NewsDataManager.h"
 #import "KGOScrollingTabstrip.h"
 #import "KGOSearchBar.h"
@@ -61,8 +60,4 @@
 - (void)loadSearchResultsFromServer:(BOOL)loadMore forQuery:(NSString *)query;
 - (void)refreshCategories;
 
-//- (BOOL)canSelectPreviousStory;
-//- (BOOL)canSelectNextStory;
-//- (NewsStory *)selectPreviousStory;
-//- (NewsStory *)selectNextStory;
 @end

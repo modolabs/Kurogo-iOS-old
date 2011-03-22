@@ -7,7 +7,7 @@
 - (void)centerAndZoomToDefaultRegion {
     NSDictionary *locationPreferences = [[NSUserDefaults standardUserDefaults] dictionaryForKey:@"Location"];
     if (!locationPreferences) {    
-        KGOAppDelegate *appDelegate = (KGOAppDelegate *)[[UIApplication sharedApplication] delegate];
+        KGOAppDelegate *appDelegate = KGO_SHARED_APP_DELEGATE();
         locationPreferences = [[appDelegate appConfig] dictionaryForKey:@"Location"];
     }
     MKCoordinateRegion region = self.region;

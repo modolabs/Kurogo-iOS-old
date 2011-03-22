@@ -52,7 +52,7 @@
 - (void)abortRequest {
 	if (connectionWrapper != nil) {
 		[connectionWrapper cancel];
-		[((KGOAppDelegate *)[[UIApplication sharedApplication] delegate]) hideNetworkActivityIndicator];
+		[KGO_SHARED_APP_DELEGATE() hideNetworkActivityIndicator];
 		self.connectionWrapper = nil;
         [self autorelease];
 	}
@@ -94,7 +94,7 @@
 	self.connectionWrapper = [[[ConnectionWrapper alloc] initWithDelegate:self] autorelease];
 	BOOL requestSuccessfullyBegun = [connectionWrapper requestDataFromURL:[NSURL URLWithQueryParameters:self.params baseURL:[NSURL URLWithString:path]]];
 
-	[((KGOAppDelegate *)[[UIApplication sharedApplication] delegate]) showNetworkActivityIndicator];
+	[KGO_SHARED_APP_DELEGATE() showNetworkActivityIndicator];
 	
 	if(!requestSuccessfullyBegun) {
 		[self connection:self.connectionWrapper handleConnectionFailureWithError:nil];
@@ -117,7 +117,7 @@
 		[self connection:wrapper handleConnectionFailureWithError:error];		
     } else {
 		[jsonDelegate request:self jsonLoaded:result];
-		[((KGOAppDelegate *)[[UIApplication sharedApplication] delegate]) hideNetworkActivityIndicator];
+		[KGO_SHARED_APP_DELEGATE() hideNetworkActivityIndicator];
         self.connectionWrapper = nil;
         [self autorelease];
 	}
@@ -126,7 +126,7 @@
 - (void)connection:(ConnectionWrapper *)wrapper handleConnectionFailureWithError: (NSError *)error {
 	NSLog(@"Error: %@\ncode:%d\nuserinfo: %@\n%s", [error domain], [error code], [error userInfo], __PRETTY_FUNCTION__);
     
-	[((KGOAppDelegate *)[[UIApplication sharedApplication] delegate]) hideNetworkActivityIndicator];
+	[KGO_SHARED_APP_DELEGATE() hideNetworkActivityIndicator];
     self.connectionWrapper = nil;
 
 	if([jsonDelegate respondsToSelector:@selector(request:handleConnectionError:)]) {

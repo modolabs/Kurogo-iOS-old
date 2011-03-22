@@ -1,5 +1,4 @@
 #import <UIKit/UIKit.h>
-#import "JSONAPIRequest.h"
 #import "KGOTableViewController.h"
 #import "KGOSearchDisplayController.h"
 #import "KGODetailPager.h"

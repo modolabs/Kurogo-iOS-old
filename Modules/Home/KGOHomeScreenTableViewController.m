@@ -95,7 +95,7 @@
         aModule = [self.secondaryModules objectAtIndex:indexPath.row];
     }
     
-	[(KGOAppDelegate *)[[UIApplication sharedApplication] delegate] showPage:LocalPathPageNameHome forModuleTag:aModule.tag params:nil];
+	[KGO_SHARED_APP_DELEGATE() showPage:LocalPathPageNameHome forModuleTag:aModule.tag params:nil];
 }
 
 

@@ -22,7 +22,7 @@
             [aController setMessageBody:body isHTML:NO];
         }
 		
-		KGOAppDelegate *appDelegate = (KGOAppDelegate *)[[UIApplication sharedApplication] delegate];
+		KGOAppDelegate *appDelegate = KGO_SHARED_APP_DELEGATE();
 		[appDelegate presentAppModalViewController:aController animated:YES];
 		[aController release];
 		
@@ -47,7 +47,7 @@
 // Dismisses the email composition interface when users tap Cancel or Send. Proceeds to update the message field with the result of the operation.
 - (void)mailComposeController:(MFMailComposeViewController*)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError*)error 
 {	
-	KGOAppDelegate *appDelegate = (KGOAppDelegate *)[[UIApplication sharedApplication] delegate];
+	KGOAppDelegate *appDelegate = KGO_SHARED_APP_DELEGATE();
 	[appDelegate dismissAppModalViewControllerAnimated:YES];
     
     [self release];
