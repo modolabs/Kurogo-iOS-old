@@ -149,6 +149,7 @@
 		EBAE86451215FB4900F370BE /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = EBAE86441215FB4900F370BE /* Default@2x.png */; };
 		EBB120A7133802D300A4BD1D /* secret in Resources */ = {isa = PBXBuildFile; fileRef = EBB120A6133802D300A4BD1D /* secret */; };
 		EBB120AA1338046400A4BD1D /* KGOWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EBB120A91338046400A4BD1D /* KGOWebViewController.m */; };
+		EBB1212513382A4F00A4BD1D /* ModalLoginWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EBB1212413382A4F00A4BD1D /* ModalLoginWebViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -444,6 +445,8 @@
 		EBB120A6133802D300A4BD1D /* secret */ = {isa = PBXFileReference; lastKnownFileType = folder; name = secret; path = Resources/secret; sourceTree = "<group>"; };
 		EBB120A81338046400A4BD1D /* KGOWebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGOWebViewController.h; sourceTree = "<group>"; };
 		EBB120A91338046400A4BD1D /* KGOWebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGOWebViewController.m; sourceTree = "<group>"; };
+		EBB1212313382A4F00A4BD1D /* ModalLoginWebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ModalLoginWebViewController.h; path = "../../../../harvard/Harvard-Reunion-iOS/Modules/Login/ModalLoginWebViewController.h"; sourceTree = "<group>"; };
+		EBB1212413382A4F00A4BD1D /* ModalLoginWebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ModalLoginWebViewController.m; path = "../../../../harvard/Harvard-Reunion-iOS/Modules/Login/ModalLoginWebViewController.m"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -966,6 +969,8 @@
 		EB181FA5131EDF1B003728FF /* Login */ = {
 			isa = PBXGroup;
 			children = (
+				EBB1212313382A4F00A4BD1D /* ModalLoginWebViewController.h */,
+				EBB1212413382A4F00A4BD1D /* ModalLoginWebViewController.m */,
 				EB181FA6131EDF1B003728FF /* LoginModule.h */,
 				EB181FA7131EDF1B003728FF /* LoginModule.m */,
 			);
@@ -1294,6 +1299,7 @@
 				EB48910913310A930036AEBF /* ExternalURLModule.m in Sources */,
 				4B8432E71331287600DCBA86 /* NewsCategory.m in Sources */,
 				EBB120AA1338046400A4BD1D /* KGOWebViewController.m in Sources */,
+				EBB1212513382A4F00A4BD1D /* ModalLoginWebViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
