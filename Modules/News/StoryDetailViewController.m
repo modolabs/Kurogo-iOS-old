@@ -13,7 +13,7 @@
 
 @implementation StoryDetailViewController
 
-@synthesize newsController, story, storyView;
+@synthesize newsController, story, stories, storyView;
 
 - (void)loadView {
     [super loadView]; // surprisingly necessary empty call to super due to the way memory warnings work
@@ -24,19 +24,8 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-	storyPager = [[UISegmentedControl alloc] initWithItems:
-											[NSArray arrayWithObjects:
-                                            [UIImage imageWithPathName:@"common/arrow-white-up"], 
-											 [UIImage imageWithPathName:@"common/arrow-white-down"], 
-											 nil]];
-	[storyPager setMomentary:YES];
-	[storyPager setEnabled:NO forSegmentAtIndex:0];
-	[storyPager setEnabled:NO forSegmentAtIndex:1];
-	storyPager.segmentedControlStyle = UISegmentedControlStyleBar;
-	storyPager.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-	storyPager.frame = CGRectMake(0, 0, 80.0, storyPager.frame.size.height);
-	[storyPager addTarget:self action:@selector(didPressNavButton:) forControlEvents:UIControlEventValueChanged];
-	
+    storyPager = [[KGODetailPager alloc] initWithPagerController:self delegate:self];
+    
 	UIBarButtonItem * segmentBarItem = [[UIBarButtonItem alloc] initWithCustomView: storyPager];
 	self.navigationItem.rightBarButtonItem = segmentBarItem;
 	[segmentBarItem release];
@@ -51,15 +40,35 @@
     storyView.scalesPageToFit = NO;
 	[self.view addSubview: storyView];
 	storyView.delegate = self;
-	
-	if (self.story) {
-		[self displayStory:self.story];
-	}
+    
+    [storyPager selectPageAtSection:initialIndexPath.section row:initialIndexPath.row];
 }
 
-- (void)displayStory:(NewsStory *)aStory {
-	[storyPager setEnabled:[self.newsController canSelectPreviousStory] forSegmentAtIndex:0];
-	[storyPager setEnabled:[self.newsController canSelectNextStory] forSegmentAtIndex:1];
+- (void) setInitialIndexPath:(NSIndexPath *)theInitialIndexPath  {
+    initialIndexPath = [theInitialIndexPath retain];
+}
+
+# pragma KGODetailPagerController methods
+- (NSInteger)numberOfSections:(KGODetailPager *)pager {
+    return 1;
+}
+
+- (NSInteger)pager:(KGODetailPager *)pager numberOfPagesInSection:(NSInteger)section {
+    return self.stories.count;
+}
+
+- (id<KGOSearchResult>)pager:(KGODetailPager *)pager contentForPageAtIndexPath:(NSIndexPath *)indexPath {
+    return [self.stories objectAtIndex:indexPath.row];
+}
+
+# pragma 
+- (void)pager:(KGODetailPager*)pager showContentForPage:(id<KGOSearchResult>)content {
+    if(self.story == content) {
+        // story already being shown
+        return;
+    }
+    
+    self.story = (NewsStory *)content;
 
     KGOHTMLTemplate *template = [KGOHTMLTemplate templateWithPathName:@"modules/news/news_story_template.html"];
     
@@ -91,7 +100,7 @@
     [storyView loadTemplate:template values:values];
     
     // analytics
-    NSString *detailString = [NSString stringWithFormat:@"/news/story?id=%d", [self.story.story_id integerValue]];
+    NSString *detailString = [NSString stringWithFormat:@"/news/story?id=%@", self.story.identifier];
     [[AnalyticsWrapper sharedWrapper] trackPageview:detailString];
 }
 
@@ -187,7 +196,9 @@
 - (void)dealloc {
 	[shareController release];
 	[storyView release];
-    [story release];
+    self.story = nil;
+    self.stories = nil;
+    [initialIndexPath release];
     [super dealloc];
 }
 

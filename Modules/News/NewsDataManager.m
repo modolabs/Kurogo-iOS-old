@@ -176,7 +176,7 @@ NSString * const NewsTagBody            = @"body";
     
     NSPredicate *predicate = nil;
     NSSortDescriptor *postDateSortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"postDate" ascending:NO];
-    NSSortDescriptor *storyIdSortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"story_id" ascending:NO];
+    NSSortDescriptor *storyIdSortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"identifier" ascending:NO];
     NSArray *sortDescriptors = [NSArray arrayWithObjects:/*featuredSortDescriptor,*/ postDateSortDescriptor, storyIdSortDescriptor, nil];
     [storyIdSortDescriptor release];
     [postDateSortDescriptor release];
@@ -266,7 +266,7 @@ NSString * const NewsTagBody            = @"body";
             // use existing story if it's already in the db
             NSString *GUID = [storyDict objectForKey:NewsTagStoryId];
             NewsStory *story = [[CoreDataManager sharedManager] getObjectForEntity:NewsStoryEntityName 
-                                                                         attribute:@"story_id" 
+                                                                         attribute:@"identifier" 
                                                                              value:GUID];
             // otherwise create new
             if (!story) {
@@ -277,7 +277,7 @@ NSString * const NewsTagBody            = @"body";
             NSTimeInterval miliseconds = unixtime * 1000.;
             NSDate *postDate = [NSDate dateWithTimeIntervalSince1970:miliseconds];
             
-            story.story_id = GUID;
+            story.identifier = GUID;
             story.postDate = postDate;
             story.title = [storyDict objectForKey:NewsTagTitle];
             story.link = [storyDict objectForKey:NewsTagLink];

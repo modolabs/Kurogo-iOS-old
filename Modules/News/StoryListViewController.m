@@ -509,7 +509,7 @@ static NSInteger numTries = 0;
     // start new request
     NewsStory *lastStory = [self.stories lastObject];
     DLog(@"%@", [lastStory title]);
-    NSInteger lastStoryId = (loadMore) ? [lastStory.story_id integerValue] : 0;
+    NSInteger lastStoryId = (loadMore) ? [lastStory.identifier integerValue] : 0;
     //if (self.xmlParser) {
 	//	[self.xmlParser abort];
 	//}
@@ -566,7 +566,7 @@ static NSInteger numTries = 0;
 
 - (void)loadSearchResultsFromServer:(BOOL)loadMore forQuery:(NSString *)query {
     NewsStory *lastStory = [self.stories lastObject];
-    NSInteger lastStoryId = (loadMore) ? [lastStory.story_id integerValue] : 0;
+    NSInteger lastStoryId = (loadMore) ? [lastStory.identifier integerValue] : 0;
     if (!loadMore)
         searchIndex = 1;
     
@@ -952,9 +952,10 @@ static NSInteger numTries = 0;
         //} else {
         //    story = [self.stories objectAtIndex:indexPath.row];
         //}
-        NewsStory *story = [self.stories objectAtIndex:indexPath.row];
-        NSDictionary *params = [NSDictionary dictionaryWithObject:story forKey:@"story"];
-        [(KGOAppDelegate *)[[UIApplication sharedApplication] delegate] showPage:LocalPathPageNameDetail forModuleTag:NewsTag params:params];
+        NSMutableDictionary *params = [NSMutableDictionary dictionary];
+        [params setObject:indexPath forKey:@"indexPath"];
+        [params setObject:self.stories forKey:@"stories"];
+        [KGO_SHARED_APP_DELEGATE() showPage:LocalPathPageNameDetail forModuleTag:NewsTag params:params];
 	}
 }
 

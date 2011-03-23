@@ -18,8 +18,12 @@
         vc = [[[StoryListViewController alloc] init] autorelease];
     } else if([pageName isEqualToString:LocalPathPageNameDetail]) {
         vc = [[[StoryDetailViewController alloc] init] autorelease];
-        NewsStory *story = [params objectForKey:@"story"];
-        [(StoryDetailViewController *)vc setStory:story]; 
+        
+        NSArray *stories = [params objectForKey:@"stories"];
+        [(StoryDetailViewController *)vc setStories:stories]; 
+        
+        NSIndexPath *indexPath = [params objectForKey:@"indexPath"];
+        [(StoryDetailViewController *)vc setInitialIndexPath:indexPath];
     }
     return vc;
 }
