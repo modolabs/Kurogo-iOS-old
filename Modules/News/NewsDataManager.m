@@ -331,6 +331,16 @@ NSString * const NewsTagBody            = @"body";
     [[CoreDataManager sharedManager] saveData];
 }
 
+- (NSArray *)bookmarkedStories {
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"bookmarked == YES"];
+    return [[CoreDataManager sharedManager] objectsForEntity:NewsStoryEntityName matchingPredicate:predicate];
+}
+
+- (void)story:(NewsStory *)story bookmarked:(BOOL)bookmarked {
+    story.bookmarked = [NSNumber numberWithBool:bookmarked];
+    [[CoreDataManager sharedManager] saveData];
+}
+
 #pragma mark KGORequestDelegate
 
 - (void)request:(KGORequest *)request didHandleResult:(NSInteger)returnValue {

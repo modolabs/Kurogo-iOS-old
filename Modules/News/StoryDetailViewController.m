@@ -117,8 +117,8 @@
         } else {
             if ([[url path] rangeOfString:@"bookmark" options:NSBackwardsSearch].location != NSNotFound) {
 				// toggle bookmarked state
-				self.story.bookmarked = [NSNumber numberWithBool:([self.story.bookmarked boolValue]) ? NO : YES];
-				[[CoreDataManager sharedManager] saveData];
+                BOOL newBookmarkState = [self.story.bookmarked boolValue] ? NO : YES;
+                [[NewsDataManager sharedManager] story:self.story bookmarked:newBookmarkState];
 			} else if ([[url path] rangeOfString:@"share" options:NSBackwardsSearch].location != NSNotFound) {
                 // some how call the share controller
 				//[shareController shareInView:self.view];

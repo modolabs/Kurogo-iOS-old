@@ -38,6 +38,10 @@ typedef NSString* NewsCategoryId;
 
 - (void)saveImageData:(NSData *)data url:(NSString *)url;
 
+- (void)story:(NewsStory *)story bookmarked:(BOOL)bookmarked;
+
+- (NSArray *)bookmarkedStories;
+
 @property (nonatomic, retain) KGORequest *storiesRequest;
 
 @end

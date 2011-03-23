@@ -101,34 +101,19 @@ static NSInteger numTries = 0;
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-	// show / hide the bookmarks category
-	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"bookmarked == YES"];
-    NSMutableArray *allBookmarkedStories = [[CoreDataManager sharedManager] objectsForEntity:NewsStoryEntityName matchingPredicate:predicate];
-	hasBookmarks = ([allBookmarkedStories count] > 0) ? YES : NO;
-	//[self setupNavScrollButtons];
 	if (showingBookmarks) {
-		[self loadFromCache];
-		if (!hasBookmarks) {
-			[self buttonPressed:[navButtons objectAtIndex:0]];
-		}
-	}
-    // Unselect the selected row
-    [tempTableSelection release];
-	tempTableSelection = [[storyTable indexPathForSelectedRow] retain];
-	if (tempTableSelection) {
-        [storyTable beginUpdates];
-		[storyTable deselectRowAtIndexPath:tempTableSelection animated:YES];
-        [storyTable endUpdates];
-	}
+		self.stories = [[NewsDataManager sharedManager] bookmarkedStories];
+        
+        // we might want to do something special if all bookmarks are gone
+        // but i am skeptical
+        [self reloadDataForTableView:storyTable];        
+	} else if (self.stories.count) {
+        [self reloadDataForTableView:storyTable];
+    }
 }
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
-    if (tempTableSelection) {
-        [storyTable reloadRowsAtIndexPaths:[NSArray arrayWithObject:tempTableSelection] withRowAnimation:UITableViewRowAnimationNone];
-        [tempTableSelection release];
-        tempTableSelection = nil;
-	}
 }
 
 - (void)viewDidUnload {
@@ -215,7 +200,9 @@ static NSInteger numTries = 0;
     NewsCategory *category = [self.categories objectAtIndex:0];
     self.activeCategoryId = category.category_id;
     [self setupNavScroller];
-    [self loadFromCache]; // now that we have categories load the stories
+
+    // now that we have categories load the stories
+    [[NewsDataManager sharedManager] requestStoriesForCategory:self.activeCategoryId loadMore:NO]; 
 }
 
 #pragma mark -
@@ -434,7 +421,6 @@ static NSInteger numTries = 0;
 // It also forces odd behavior of the paging controls when a memory warning occurs while looking at a story
 
 - (void)switchToCategory:(NewsCategoryId)category {
-    numTries = 0;
     if (category != self.activeCategoryId) {
 		//if (self.xmlParser) {
 		//	[self.xmlParser abort]; // cancel previous category's request if it's still going
@@ -447,13 +433,23 @@ static NSInteger numTries = 0;
 			[storyTable scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:NO];
 		}
 		[self reloadDataForTableView:storyTable];
-		showingBookmarks = (category == BOOKMARK_BUTTON_TAG) ? YES : NO;
-		[self loadFromCache]; // makes request to server if no request has been made this session
+		showingBookmarks = NO;
+        
+        // makes request to server if no request has been made this session
+        [[NewsDataManager sharedManager] requestStoriesForCategory:self.activeCategoryId loadMore:NO];
     }
 }
 
+- (void)switchToBookmarks {
+    self.stories = [[NewsDataManager sharedManager] bookmarkedStories];
+    showingBookmarks = YES;
+    [self reloadDataForTableView:storyTable];
+}
+
 - (void)refresh:(id)sender {
-    numTries = 0;
+    // current hack just to test out the bookmark functionality
+    [self switchToBookmarks];
+    return;
     
 	if (!self.searchResults) {
 		// get active category
@@ -469,6 +465,10 @@ static NSInteger numTries = 0;
 		[self loadSearchResultsFromServer:NO forQuery:self.searchQuery];
 	}
 
+}
+
+- (void)loadCurrentCategory {
+    [[NewsDataManager sharedManager] requestStoriesForCategory:self.activeCategoryId loadMore:NO];
 }
 
 - (void)loadFromCache {
@@ -750,14 +750,15 @@ static NSInteger numTries = 0;
         case 0:
             n = self.stories.count;
             
-            NSInteger moreStories = [[NewsDataManager sharedManager] loadMoreStoriesQuantityForCategoryId:activeCategoryId];
-			// don't show "load x more" row if
-			if (!showingBookmarks && // showing bookmarks
-				!(searchResults && n >= totalAvailableResults) && // showing all search results
-				(moreStories > 0) ) { // category has more stories
-				n += 1; // + 1 for the "Load more articles..." row
-			}
-            break;
+            if(!showingBookmarks) {
+                NSInteger moreStories = [[NewsDataManager sharedManager] loadMoreStoriesQuantityForCategoryId:activeCategoryId];
+                // don't show "load x more" row if
+                if (!(searchResults && n >= totalAvailableResults) && // showing all search results
+                    (moreStories > 0) ) { // category has more stories
+                    n += 1; // + 1 for the "Load more articles..." row
+                }
+                break;
+            }
     }
 	return n;
 }
