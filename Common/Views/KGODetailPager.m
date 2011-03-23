@@ -12,7 +12,6 @@ static NSString * DownArrowImage = @"common/arrow-white-down.png";
 
 - (void)didSelectSegment:(id)sender;
 - (void)updateSegmentStates;
-- (void)selectPageAtSection:(NSInteger)section row:(NSInteger)row;
 - (void)pageUp;
 - (void)pageDown;
 
@@ -109,7 +108,8 @@ static NSString * DownArrowImage = @"common/arrow-white-down.png";
 
 - (void)selectPageAtSection:(NSInteger)section row:(NSInteger)row {
 	if (section >= 0 && row >= 0) {
-		self.currentIndexPath = [NSIndexPath indexPathForRow:row inSection:section];
+        [_currentIndexPath release];
+		_currentIndexPath = [[NSIndexPath indexPathForRow:row inSection:section] retain];
 		id<KGOSearchResult> content = [self.controller pager:self contentForPageAtIndexPath:self.currentIndexPath];
 		[self.delegate pager:self showContentForPage:content];
         [self updateSegmentStates];
@@ -129,7 +129,7 @@ static NSString * DownArrowImage = @"common/arrow-white-down.png";
 - (void)dealloc {
 	_pagerDelegate = nil;
 	_pagerController = nil;
-	self.currentIndexPath = nil;
+	[_currentIndexPath release];
 	[_sections release];
 	[_pagesBySection release];
 	[super dealloc];

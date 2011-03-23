@@ -31,9 +31,13 @@
 
 - (id)initWithPagerController:(id<KGODetailPagerController>)controller delegate:(id<KGODetailPagerDelegate>)delegate;
 
-@property (nonatomic, retain) NSIndexPath *currentIndexPath;
+- (void)selectPageAtSection:(NSInteger)section row:(NSInteger)row;
+
+@property (nonatomic, readonly) NSIndexPath *currentIndexPath;
 
 @property (nonatomic, readonly) id<KGODetailPagerDelegate> delegate;
 @property (nonatomic, readonly) id<KGODetailPagerController> controller;
+
+
 
 @end
