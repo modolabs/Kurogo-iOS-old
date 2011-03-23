@@ -52,7 +52,7 @@
 	} else if ([buttonTitle isEqualToString:KGOSocialMediaTypeTwitter]) {
 		UIViewController *twitterVC = [[[TwitterViewController alloc] initWithMessage:[self.delegate twitterTitle]
 																				  url:[self.delegate twitterUrl]] autorelease];
-		KGOAppDelegate *appDelegate = (KGOAppDelegate *)[[UIApplication sharedApplication] delegate];
+		KGOAppDelegate *appDelegate = KGO_SHARED_APP_DELEGATE();
 		[appDelegate presentAppModalViewController:twitterVC animated:YES];
 	}
 }

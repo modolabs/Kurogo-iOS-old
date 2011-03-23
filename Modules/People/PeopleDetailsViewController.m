@@ -285,14 +285,14 @@
 			creator.displayedPerson = [self.person convertToABPerson];
 			[creator setNewPersonViewDelegate:self];
 			
-			KGOAppDelegate *appDelegate = (KGOAppDelegate *)[[UIApplication sharedApplication] delegate];
+			KGOAppDelegate *appDelegate = KGO_SHARED_APP_DELEGATE();
 			[appDelegate presentAppModalViewController:creator animated:YES];
 			
 		} else {
 			ABPeoplePickerNavigationController *picker = [[[ABPeoplePickerNavigationController alloc] init] autorelease];
 			[picker setPeoplePickerDelegate:self];
 			
-			KGOAppDelegate *appDelegate = (KGOAppDelegate *)[[UIApplication sharedApplication] delegate];
+			KGOAppDelegate *appDelegate = KGO_SHARED_APP_DELEGATE();
 			[appDelegate presentAppModalViewController:picker animated:YES];
 		}
 		
@@ -320,7 +320,7 @@
 
 - (void)newPersonViewController:(ABNewPersonViewController *)newPersonViewController didCompleteWithNewPerson:(ABRecordRef)person
 {	
-	KGOAppDelegate *appDelegate = (KGOAppDelegate *)[[UIApplication sharedApplication] delegate];
+	KGOAppDelegate *appDelegate = KGO_SHARED_APP_DELEGATE();
 	[appDelegate dismissAppModalViewControllerAnimated:YES];
 }
 
@@ -345,7 +345,7 @@
     self.person.ABPerson = person;
     [self.person saveToAddressBook];
 	
-	KGOAppDelegate *appDelegate = (KGOAppDelegate *)[[UIApplication sharedApplication] delegate];
+	KGOAppDelegate *appDelegate = KGO_SHARED_APP_DELEGATE();
 	[appDelegate dismissAppModalViewControllerAnimated:YES];
 	
 	return NO; // don't navigate to built-in view
@@ -361,7 +361,7 @@
 	
 - (void)peoplePickerNavigationControllerDidCancel:(ABPeoplePickerNavigationController *)peoplePicker
 {
-	KGOAppDelegate *appDelegate = (KGOAppDelegate *)[[UIApplication sharedApplication] delegate];
+	KGOAppDelegate *appDelegate = KGO_SHARED_APP_DELEGATE();
 	[appDelegate dismissAppModalViewControllerAnimated:YES];
 }
 

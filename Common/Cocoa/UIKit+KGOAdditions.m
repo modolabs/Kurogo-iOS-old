@@ -10,7 +10,7 @@
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
         image = [UIImage imageNamed:[NSString stringWithFormat:@"ipad/%@", pathName]];
     }
-    if (!image) {    
+    if (!image) {
         image = [UIImage imageNamed:pathName];
     }
     if (!image) {

@@ -84,7 +84,7 @@
         self.connection = [[[ConnectionWrapper alloc] initWithDelegate:self] autorelease];
     }
     if ([self.connection requestDataFromURL:[NSURL URLWithString:self.imageURL] allowCachedResponse:YES]) {    
-        [(KGOAppDelegate *)[[UIApplication sharedApplication] delegate] showNetworkActivityIndicator];
+        [KGO_SHARED_APP_DELEGATE() showNetworkActivityIndicator];
     }
     
     self.imageData = nil;
@@ -109,19 +109,19 @@
     }
     
     self.connection = nil;
-    [(KGOAppDelegate *)[[UIApplication sharedApplication] delegate] hideNetworkActivityIndicator];
+    [KGO_SHARED_APP_DELEGATE() hideNetworkActivityIndicator];
 }
 
 - (void)connection:(ConnectionWrapper *)wrapper handleConnectionFailureWithError:(NSError *)error {
     self.imageData = nil;
     [self displayImage]; // will fail to load the image, displays placeholder thumbnail instead
     self.connection = nil;
-    [(KGOAppDelegate *)[[UIApplication sharedApplication] delegate] hideNetworkActivityIndicator];
+    [KGO_SHARED_APP_DELEGATE() hideNetworkActivityIndicator];
 }
 
 - (void)dealloc {
 	[connection cancel];
-    [(KGOAppDelegate *)[[UIApplication sharedApplication] delegate] hideNetworkActivityIndicator];
+    [KGO_SHARED_APP_DELEGATE() hideNetworkActivityIndicator];
     [connection release];
     connection = nil;
     

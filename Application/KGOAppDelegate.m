@@ -24,10 +24,6 @@
     
     [self loadModules];
     
-    for (KGOModule *aModule in self.modules) {
-        [aModule applicationDidFinishLaunching];
-    }
-    
     [self loadNavigationContainer]; // adds theNavController.view to self.window
     [self loadSocialMediaController]; // initializes social media settings
     
@@ -39,6 +35,10 @@
     [[AnalyticsWrapper sharedWrapper] setup];
 
     [self registerForRemoteNotifications:launchOptions];
+    
+    for (KGOModule *aModule in self.modules) {
+        [aModule applicationDidFinishLaunching];
+    }
 
     return YES;
 }
@@ -149,8 +149,19 @@
 
 - (NSDictionary *)appConfig {
     if (!_appConfig) {
-		NSString * file = [[NSBundle mainBundle] pathForResource:@"Config" ofType:@"plist"];
-        _appConfig = [[NSDictionary alloc] initWithContentsOfFile:file];
+        NSString * mainFile = [[NSBundle mainBundle] pathForResource:@"Config" ofType:@"plist"];
+        NSString * secretFile = [[NSBundle mainBundle] pathForResource:@"secret/Config" ofType:@"plist"];
+        if (!secretFile) {
+            _appConfig = [[NSDictionary alloc] initWithContentsOfFile:mainFile];
+        } else {
+            NSMutableDictionary *mutableDict = [NSMutableDictionary dictionaryWithContentsOfFile:mainFile];
+            NSDictionary *overrides = [NSDictionary dictionaryWithContentsOfFile:secretFile];
+            for (id aKey in [overrides allKeys]) {
+                [mutableDict setObject:[overrides objectForKey:aKey] forKey:aKey];
+            }
+            _appConfig = [mutableDict copy];
+        }
+        NSLog(@"%@", [_appConfig description]);
     }
     return _appConfig;
 }

@@ -16,7 +16,7 @@
 - (UIViewController *)modulePage:(NSString *)pageName params:(NSDictionary *)params {
     UIViewController *vc = nil;
     if ([pageName isEqualToString:LocalPathPageNameHome]) {
-        KGONavigationStyle style = [(KGOAppDelegate *)[[UIApplication sharedApplication] delegate] navigationStyle];
+        KGONavigationStyle style = [KGO_SHARED_APP_DELEGATE() navigationStyle];
         switch (style) {
             case KGONavigationStyleTableView:
                 vc = [[[KGOHomeScreenTableViewController alloc] init] autorelease];

@@ -34,6 +34,12 @@
 @end
 
 
+@interface NSDate (KGOAdditions)
+
+- (NSString *)agoString;
+
+@end
+
 
 typedef NSComparisonResult (^ComparatorBlock)(id, id, void *);
 

@@ -645,7 +645,7 @@
         KGOEvent *event = [self.events objectAtIndex:indexPath.row];
         
         NSDictionary *params = [NSDictionary dictionaryWithObject:event forKey:@"event"];
-        [(KGOAppDelegate *)[[UIApplication sharedApplication] delegate] showPage:LocalPathPageNameDetail forModuleTag:CalendarTag params:params];
+        [KGO_SHARED_APP_DELEGATE() showPage:LocalPathPageNameDetail forModuleTag:CalendarTag params:params];
 
     } else {
         

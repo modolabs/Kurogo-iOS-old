@@ -29,7 +29,6 @@
 }
 
 - (void)dealloc {
-    self.xmlParser = nil;
     [super dealloc];
 }
 
@@ -100,7 +99,7 @@
         self.selectedResult = [self.searchResults objectAtIndex:prevIndex];
         prevStory = (NewsStory *)self.selectedResult;
         
-        KGOAppDelegate *appDelegate = (KGOAppDelegate *)[[UIApplication sharedApplication] delegate];
+        KGOAppDelegate *appDelegate = KGO_SHARED_APP_DELEGATE();
         NSIndexPath *currentIndexPath = [appDelegate.springboard.searchResultsTableView indexPathForSelectedRow];
         NSInteger selectedRow = prevIndex >= MAX_FEDERATED_SEARCH_RESULTS ? MAX_FEDERATED_SEARCH_RESULTS : prevIndex;
         NSIndexPath *prevIndexPath = [NSIndexPath indexPathForRow:selectedRow inSection:currentIndexPath.section];
@@ -117,7 +116,7 @@
         self.selectedResult = [self.searchResults objectAtIndex:nextIndex];
         nextStory = (NewsStory *)self.selectedResult;
         
-        KGOAppDelegate *appDelegate = (KGOAppDelegate *)[[UIApplication sharedApplication] delegate];
+        KGOAppDelegate *appDelegate = KGO_SHARED_APP_DELEGATE();
         NSIndexPath *currentIndexPath = [appDelegate.springboard.searchResultsTableView indexPathForSelectedRow];
         NSInteger selectedRow = nextIndex >= MAX_FEDERATED_SEARCH_RESULTS ? MAX_FEDERATED_SEARCH_RESULTS : nextIndex;
         NSIndexPath *nextIndexPath = [NSIndexPath indexPathForRow:selectedRow inSection:currentIndexPath.section];

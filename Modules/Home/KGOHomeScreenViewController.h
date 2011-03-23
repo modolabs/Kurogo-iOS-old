@@ -14,12 +14,18 @@
     
     NSArray *_primaryModules;
     NSArray *_secondaryModules;
+    
+    CGRect _springboardFrame;
 }
 
 @property (nonatomic, readonly) NSArray *primaryModules;
 @property (nonatomic, readonly) NSArray *secondaryModules;
+@property (nonatomic, readonly) CGRect springboardFrame;
 
 - (NSArray *)iconsForPrimaryModules:(BOOL)isPrimary;
+
+- (NSArray *)allWidgets:(CGFloat *)topFreePixel :(CGFloat *)bottomFreePixel;
+- (void)refreshWidgets;                     // does nothing by default
 
 - (CGSize)moduleLabelMaxDimensions;
 - (CGSize)secondaryModuleLabelMaxDimensions;

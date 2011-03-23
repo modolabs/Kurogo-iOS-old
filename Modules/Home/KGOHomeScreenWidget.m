@@ -1,9 +1,10 @@
 #import "KGOHomeScreenWidget.h"
-
+#import "KGOAppDelegate+ModuleAdditions.h"
+#import "KGOModule.h"
 
 @implementation KGOHomeScreenWidget
 
-@synthesize gravity, behavesAsIcon, overlaps;
+@synthesize gravity, overlaps, module;
 
 - (id)initWithFrame:(CGRect)frame {
     
@@ -15,10 +16,33 @@
     return self;
 }
 
-- (void)tapped {
+- (BOOL)behavesAsIcon {
+    return _behavesAsIcon;
+}
+
+- (void)setBehavesAsIcon:(BOOL)behavesAsIcon {
+    if (_behavesAsIcon != behavesAsIcon) {
+        _behavesAsIcon = behavesAsIcon;
+        if (_behavesAsIcon) {
+            [self removeTarget:self action:@selector(customTapAction:) forControlEvents:UIControlEventTouchUpInside];
+            [self addTarget:self action:@selector(defaultTapAction:) forControlEvents:UIControlEventTouchUpInside];
+        } else {
+            [self removeTarget:self action:@selector(defaultTapAction:) forControlEvents:UIControlEventTouchUpInside];
+            [self addTarget:self action:@selector(customTapAction:) forControlEvents:UIControlEventTouchUpInside];
+        }
+    }
+}
+
+- (void)customTapAction:(KGOHomeScreenWidget *)sender {
     ;
 }
 
+- (void)defaultTapAction:(KGOHomeScreenWidget *)sender {
+	[KGO_SHARED_APP_DELEGATE() showPage:LocalPathPageNameHome
+                                                                forModuleTag:self.module.tag
+                                                                      params:nil];
+}
+             
 - (void)dealloc {
     [super dealloc];
 }

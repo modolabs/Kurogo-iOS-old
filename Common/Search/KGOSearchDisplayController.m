@@ -70,7 +70,7 @@ showingOnlySearchResults = _showingOnlySearchResults;
 	_searchBar.text = text;
     NSArray *moduleTags = [self.delegate searchControllerValidModules:self];
     for (NSString *moduleTag in moduleTags) {
-        KGOModule *module = [(KGOAppDelegate *)[[UIApplication sharedApplication] delegate] moduleForTag:moduleTag];
+        KGOModule *module = [KGO_SHARED_APP_DELEGATE() moduleForTag:moduleTag];
         if ([module supportsFederatedSearch]) { // TODO: use a less strict check
             [module performSearchWithText:text params:params delegate:self];
         }
@@ -210,7 +210,7 @@ showingOnlySearchResults = _showingOnlySearchResults;
 - (void)toolbarItemTapped:(UIBarButtonItem *)item {
     if ([item.title isEqualToString:NSLocalizedString(@"Map", nil)]) {
         NSDictionary *params = [NSDictionary dictionaryWithObject:self.searchResults forKey:@"searchResults"];
-        [(KGOAppDelegate *)[[UIApplication sharedApplication] delegate] showPage:LocalPathPageNameSearch forModuleTag:MapTag params:params];
+        [KGO_SHARED_APP_DELEGATE() showPage:LocalPathPageNameSearch forModuleTag:MapTag params:params];
     }
 }
 
@@ -271,7 +271,7 @@ showingOnlySearchResults = _showingOnlySearchResults;
 				}
 				[recentsParams addObject:moduleTag];
 				
-				KGOModule *module = [(KGOAppDelegate *)[[UIApplication sharedApplication] delegate] moduleForTag:moduleTag];
+				KGOModule *module = [KGO_SHARED_APP_DELEGATE() moduleForTag:moduleTag];
 				if ([module supportsFederatedSearch]) { // TODO: use a less strict check
 					[searchResults addObjectsFromArray:[module cachedResultsForSearchText:searchText params:nil]];
 				}

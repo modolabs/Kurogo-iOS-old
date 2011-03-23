@@ -24,7 +24,10 @@
 - (void)drawRect:(CGRect)rect {
     if (self.backgroundImage) {
         // right-align the same background image
-        CGRect adjustedRect = CGRectMake(rect.origin.x + rect.size.width - self.backgroundImage.size.width, rect.origin.y, self.backgroundImage.size.width, self.backgroundImage.size.height);
+        CGRect adjustedRect = rect;
+        if (self.backgroundImage.size.width > rect.size.width) {
+            adjustedRect = CGRectMake(rect.origin.x + rect.size.width - self.backgroundImage.size.width, rect.origin.y, self.backgroundImage.size.width, self.backgroundImage.size.height);
+        }
         [self.backgroundImage drawInRect:adjustedRect];
     } else {
         [super drawRect:rect];

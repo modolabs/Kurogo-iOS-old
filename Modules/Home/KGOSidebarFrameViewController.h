@@ -1,4 +1,11 @@
+/* because we have home screens like this,
+ * ipad view controllers that wish to implement rotation methods
+ * should use the app delegate's homescreen method and get its orientation
+ * instead of using self.interfaceOrientation 
+ */
 #import "KGOHomeScreenViewController.h"
+
+@class KGOModule;
 
 @interface KGOSidebarFrameViewController : KGOHomeScreenViewController {
     
@@ -7,6 +14,7 @@
     UIView *_container;
     
     UIViewController *_visibleViewController;
+    NSArray *_widgetViews;
     
 }
 

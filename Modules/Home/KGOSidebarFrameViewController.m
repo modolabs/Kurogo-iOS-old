@@ -4,10 +4,12 @@
 #import "UIKit+KGOAdditions.h"
 #import "KGOHomeScreenWidget.h"
 
+#define SIDEBAR_WIDTH 160
+#define TOPBAR_HEIGHT 50
+
 @interface KGOSidebarFrameViewController (Private)
 
 - (void)setupSidebarIcons;
-- (void)setupWidgets;
 
 @end
 
@@ -57,25 +59,29 @@
 {
     [super loadView];
     
-    _topbar = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, 50)];
-    //_topbar.backgroundColor = [UIColor blackColor];
+    _topbar = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, TOPBAR_HEIGHT)];
+    _topbar.autoresizingMask = UIViewAutoresizingFlexibleWidth;
     _topbar.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageWithPathName:@"modules/home/ipad-topbar.png"]];
     [self.view addSubview:_topbar];
     
-    _sidebar = [[UIView alloc] initWithFrame:CGRectMake(0, _topbar.frame.size.height, 180, self.view.bounds.size.height)];
+    _sidebar = [[UIView alloc] initWithFrame:CGRectMake(0, TOPBAR_HEIGHT, SIDEBAR_WIDTH, self.view.bounds.size.height - TOPBAR_HEIGHT)];
+    _sidebar.autoresizingMask = UIViewAutoresizingFlexibleHeight;
+    _springboardFrame = _sidebar.frame;
+    
     [self.view addSubview:_sidebar];
     [self setupSidebarIcons];
-    [self setupWidgets];
+    [self refreshWidgets];
     
     _container = [[UIView alloc] initWithFrame:CGRectMake(_sidebar.frame.size.width,
                                                           _topbar.frame.size.height,
                                                           self.view.bounds.size.width - _sidebar.frame.size.width,
                                                           self.view.bounds.size.height - _topbar.frame.size.height)];
+    _container.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     [self.view addSubview:_container];
     
     if (self.primaryModules.count) {
         KGOModule *defaultModule = [self.primaryModules objectAtIndex:0];
-        [(KGOAppDelegate *)[[UIApplication sharedApplication] delegate] showPage:LocalPathPageNameHome
+        [KGO_SHARED_APP_DELEGATE() showPage:LocalPathPageNameHome
                                                                     forModuleTag:defaultModule.tag
                                                                           params:nil];
     }
@@ -93,23 +99,36 @@
 	return YES;
 }
 
+- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
+    [_visibleViewController willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
+}
+
+- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
+{
+    NSLog(@"%@", self.view);
+    [self setupWidgets];
+    
+    [_visibleViewController didRotateFromInterfaceOrientation:fromInterfaceOrientation];
+}
+
 #pragma mark -
 
-- (void)setupWidgets {
+- (void)refreshWidgets {
+    CGFloat topFreePixel;
+    CGFloat bottomFreePixel;
+    NSArray *widgets = [self allWidgets:&topFreePixel :&bottomFreePixel];
     
-    NSArray *allModules = [self.primaryModules arrayByAddingObjectsFromArray:self.secondaryModules];
-    
-    for (KGOModule *aModule in allModules) {
-        NSArray *moreViews = [aModule widgetViews];
-        // ignoring placement for now
-        if (moreViews) {
-            for (KGOHomeScreenWidget *aWidget in moreViews) {
-                aWidget.autoresizingMask = UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
-                [self.view addSubview:aWidget];
-                
-            }
-        }
+    for (KGOHomeScreenWidget *aWidget in _widgetViews) {
+        [aWidget removeFromSuperview];
     }
+    
+    NSMutableArray *mutableWidgetViews = [NSMutableArray array];
+    for (KGOHomeScreenWidget *aWidget in widgets) {
+        [mutableWidgetViews addObject:aWidget];
+        [_sidebar addSubview:aWidget];
+    }
+    [_widgetViews release];
+    _widgetViews = [mutableWidgetViews copy];
 }
 
 - (void)setupSidebarIcons {

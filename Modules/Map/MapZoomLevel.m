@@ -82,7 +82,7 @@
     tile.frame = rect;
      
     if (![[NSFileManager defaultManager] fileExistsAtPath:tile.path]) {
-		//KGOAppDelegate *appDelegate = (KGOAppDelegate *)[[UIApplication sharedApplication] delegate];
+		//KGOAppDelegate *appDelegate = KGO_SHARED_APP_DELEGATE();
         //[appDelegate showNetworkActivityIndicator];
         NSString* sUrl = [NSString stringWithFormat:@"%@/maptile/%d/%d/%d", MITMobileWebAPIURLString, level, row, col];
         NSURL* url = [NSURL URLWithString:sUrl];
@@ -126,7 +126,7 @@
     
     if (![[NSFileManager defaultManager] fileExistsAtPath:tile.path]) {
         DLog(@"%@", tile.path);
-		//KGOAppDelegate *appDelegate = (KGOAppDelegate *)[[UIApplication sharedApplication] delegate];
+		//KGOAppDelegate *appDelegate = KGO_SHARED_APP_DELEGATE();
         //[appDelegate showNetworkActivityIndicator];
         NSString* sUrl = [NSString stringWithFormat:@"%@/maptile/%d/%d/%d", MITMobileWebAPIURLString, level, row, col];
         NSURL* url = [NSURL URLWithString:sUrl];

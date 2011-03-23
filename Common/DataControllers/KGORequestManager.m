@@ -46,7 +46,7 @@ NSString * const KGORequestErrorDomain = @"com.modolabs.KGORequest.ErrorDomain";
             userInfo = [NSDictionary dictionaryWithObjectsAndKeys:[NSString stringWithFormat:@"cannot handle request: %@", [self.url absoluteString]], @"message", nil];
             error = [NSError errorWithDomain:KGORequestErrorDomain code:KGORequestErrorBadRequest userInfo:userInfo];
         } else {
-            _connection = [[NSURLConnection alloc] initWithRequest:request delegate:self];
+            _connection = [[NSURLConnection alloc] initWithRequest:request delegate:self startImmediately:YES];
             if (_connection) {
                 [_data release];
                 _data = [[NSMutableData alloc] init];
@@ -193,22 +193,6 @@ NSString * const KGORequestErrorDomain = @"com.modolabs.KGORequest.ErrorDomain";
 	}
 }
 
-- (void)runHandlerOnResult:(id)result {
-	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-	NSInteger num = self.handler(result);
-	[self performSelectorOnMainThread:@selector(handlerDidFinish:) withObject:[NSNumber numberWithInt:num] waitUntilDone:YES];
-	[pool release];
-}
-
-- (void)handlerDidFinish:(NSNumber *)result {
-    NSLog(@"%@", self.delegate);
-	if ([self.delegate respondsToSelector:@selector(request:didHandleResult:)]) {
-		[self.delegate request:self didHandleResult:[result integerValue]];
-	}
-	[self.delegate requestWillTerminate:self];
-	[self release];
-}
-
 // no further messages will be received after this
 - (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error {
 	[_connection release];
@@ -250,6 +234,45 @@ NSString * const KGORequestErrorDomain = @"com.modolabs.KGORequest.ErrorDomain";
 	[self terminateWithErrorCode:errCode userInfo:[error userInfo]];
 }
 
+#ifdef USE_MOBILE_DEV
+
+// the implementations of the following two delegate methods allow NSURLConnection to proceed with self-signed certs
+//http://stackoverflow.com/questions/933331/how-to-use-nsurlconnection-to-connect-with-ssl-for-an-untrusted-cert
+- (BOOL)connection:(NSURLConnection *)connection canAuthenticateAgainstProtectionSpace:(NSURLProtectionSpace *)protectionSpace {
+    return [protectionSpace.authenticationMethod isEqualToString:NSURLAuthenticationMethodServerTrust];
+}
+
+- (void)connection:(NSURLConnection *)connection didReceiveAuthenticationChallenge:(NSURLAuthenticationChallenge *)challenge {
+    if ([challenge.protectionSpace.authenticationMethod isEqualToString:NSURLAuthenticationMethodServerTrust]) {
+        if ([[[KGORequestManager sharedManager] host] isEqualToString:challenge.protectionSpace.host]) {
+            [challenge.sender useCredential:[NSURLCredential credentialForTrust:challenge.protectionSpace.serverTrust]
+                 forAuthenticationChallenge:challenge];
+        }
+    }
+    
+    [challenge.sender continueWithoutCredentialForAuthenticationChallenge:challenge];
+}
+
+#endif
+
+#pragma mark -
+
+- (void)runHandlerOnResult:(id)result {
+	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+	NSInteger num = self.handler(result);
+	[self performSelectorOnMainThread:@selector(handlerDidFinish:) withObject:[NSNumber numberWithInt:num] waitUntilDone:YES];
+	[pool release];
+}
+
+- (void)handlerDidFinish:(NSNumber *)result {
+    NSLog(@"%@", self.delegate);
+	if ([self.delegate respondsToSelector:@selector(request:didHandleResult:)]) {
+		[self.delegate request:self didHandleResult:[result integerValue]];
+	}
+	[self.delegate requestWillTerminate:self];
+	[self release];
+}
+
 - (void)terminateWithErrorCode:(KGORequestErrorCode)errCode userInfo:(NSDictionary *)userInfo {
 	NSError *kgoError = [NSError errorWithDomain:KGORequestErrorDomain code:errCode userInfo:userInfo];
 	if ([self.delegate respondsToSelector:@selector(request:didFailWithError:)]) {
@@ -276,6 +299,14 @@ NSString * const KGORequestErrorDomain = @"com.modolabs.KGORequest.ErrorDomain";
 		s_sharedManager = [[KGORequestManager alloc] init];
 	}
 	return s_sharedManager;
+}
+
+- (NSURL *)serverURL {
+    return [NSURL URLWithString:[NSString stringWithFormat:@"%@://%@", _uriScheme, _extendedHost]];
+}
+
+- (NSURL *)hostURL {
+    return [NSURL URLWithString:[NSString stringWithFormat:@"%@://%@", _uriScheme, _host]];
 }
 
 - (KGORequest *)requestWithDelegate:(id<KGORequestDelegate>)delegate module:(NSString *)module path:(NSString *)path params:(NSDictionary *)params {
@@ -356,16 +387,36 @@ NSString * const KGORequestErrorDomain = @"com.modolabs.KGORequest.ErrorDomain";
 - (id)init {
     self = [super init];
     if (self) {
-        NSDictionary *configDict = [(KGOAppDelegate *)[[UIApplication sharedApplication] delegate] appConfig];
+        NSDictionary *configDict = [KGO_SHARED_APP_DELEGATE() appConfig];
         NSDictionary *servers = [configDict objectForKey:@"Servers"];
-        NSDictionary *security = [configDict objectForKey:@"Security"];
-        BOOL useHTTPS = [security boolForKey:@"UseHTTPS"];
+        
+#ifdef USE_MOBILE_DEV
+        NSDictionary *serverConfig = [servers objectForKey:@"Development"];
+#else
+    #ifdef USE_MOBILE_TEST
+        NSDictionary *serverConfig = [servers objectForKey:@"Testing"];
+    #else
+        #ifdef USE_MOBILE_STAGE
+        NSDictionary *serverConfig = [servers objectForKey:@"Staging"];
+        #else
+        NSDictionary *serverConfig = [servers objectForKey:@"Production"];
+        #endif
+    #endif
+#endif
+
+        BOOL useHTTPS = [serverConfig boolForKey:@"UseHTTPS"];
         
         _uriScheme = useHTTPS ? @"https" : @"http";
-        // TODO: allow this mode to be changed
-        _host = [[servers objectForKey:@"development"] retain];
-        NSString *apiPath = [NSString stringWithFormat:@"/%@", [servers objectForKey:@"APIPath"]];
-		_baseURL = [[NSURL alloc] initWithScheme:_uriScheme host:_host path:apiPath];
+        _host = [[serverConfig objectForKey:@"Host"] retain];
+        
+        NSString *apiPath = [serverConfig objectForKey:@"APIPath"];
+        NSString *pathExtension = [serverConfig stringForKey:@"PathExtension" nilIfEmpty:YES];
+        if (pathExtension) {
+            _extendedHost = [[NSString alloc] initWithFormat:@"%@/%@", _host, pathExtension];
+        } else {
+            _extendedHost = [_host copy];
+        }
+        _baseURL = [[NSURL alloc] initWithString:[NSString stringWithFormat:@"%@://%@/%@", _uriScheme, _extendedHost, apiPath]];
 	}
 	return self;
 }
@@ -380,6 +431,7 @@ NSString * const KGORequestErrorDomain = @"com.modolabs.KGORequest.ErrorDomain";
 
 - (void)dealloc {
 	self.host = nil;
+    [_extendedHost release];
 	[_uriScheme release];
 	[_accessToken release];
 	[_apiVersionsByModule release];

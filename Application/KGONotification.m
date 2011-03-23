@@ -18,7 +18,7 @@
 }
 
 - (void)markAsRead {
-    NSMutableArray *unreadNotifications = [(KGOAppDelegate *)[[UIApplication sharedApplication] delegate] unreadNotifications];
+    NSMutableArray *unreadNotifications = [KGO_SHARED_APP_DELEGATE() unreadNotifications];
     [unreadNotifications removeObject:self];
 }
 

@@ -4,6 +4,8 @@
 #import "UIKit+KGOAdditions.h"
 #import "SpringboardIcon.h"
 #import "KGOPersonWrapper.h"
+#import "KGOHomeScreenWidget.h"
+#import "KGOAppDelegate+ModuleAdditions.h"
 
 @interface KGOHomeScreenViewController (Private)
 
@@ -43,6 +45,8 @@
 - (void)loadView {
     [super loadView];
     
+    _springboardFrame = self.view.bounds;
+    
     [self loadModules];
     
     if ([self showsSearchBar]) {
@@ -77,7 +81,6 @@
     }
 }
 
-
 - (void)didReceiveMemoryWarning {
     // Releases the view if it doesn't have a superview.
     [super didReceiveMemoryWarning];
@@ -100,8 +103,109 @@
 
 #pragma mark Springboard helper methods
 
+- (CGRect)springboardFrame {
+    return _springboardFrame;
+}
+
+- (NSArray *)allWidgets:(CGFloat *)topFreePixel :(CGFloat *)bottomFreePixel {
+    CGFloat yOrigin = 0;
+    if (_searchBar) {
+        yOrigin = _searchBar.frame.size.height;
+    }
+    
+    CGSize *occupiedAreas = malloc(sizeof(CGSize) * 4);
+    
+    occupiedAreas[KGOLayoutGravityTopLeft] = CGSizeZero;
+    occupiedAreas[KGOLayoutGravityTopRight] = CGSizeZero;
+    occupiedAreas[KGOLayoutGravityBottomLeft] = CGSizeZero;
+    occupiedAreas[KGOLayoutGravityBottomRight] = CGSizeZero;
+    
+    KGOLayoutGravity neighborGravity;
+    BOOL downward; // true if new views are laid out from the top
+    
+    // populate widgets at the top
+    //NSMutableArray *overlappingViews = [NSMutableArray array];
+    
+    NSMutableArray *allWidgets = [NSMutableArray array];
+    NSArray *allModules = [self.primaryModules arrayByAddingObjectsFromArray:self.secondaryModules];
+    
+    for (KGOModule *aModule in allModules) {
+        NSArray *moreViews = [aModule widgetViews];
+        if (moreViews) {
+            DLog(@"preparing widgets for module %@", aModule.tag);
+            for (KGOHomeScreenWidget *aWidget in moreViews) {
+                aWidget.module = aModule;
+                
+                if (!aWidget.overlaps) {
+                    switch (aWidget.gravity) {
+                        case KGOLayoutGravityBottomLeft:
+                            neighborGravity = KGOLayoutGravityBottomRight;
+                            downward = NO;
+                            break;
+                        case KGOLayoutGravityBottomRight:
+                            neighborGravity = KGOLayoutGravityBottomLeft;
+                            downward = NO;
+                            break;
+                        case KGOLayoutGravityTopRight:
+                            neighborGravity = KGOLayoutGravityTopLeft;
+                            downward = YES;
+                            break;
+                        case KGOLayoutGravityTopLeft:
+                        default:
+                            neighborGravity = KGOLayoutGravityTopRight;
+                            downward = YES;
+                            break;
+                    }
+                    
+                    CGRect frame = aWidget.frame;
+                    
+                    CGFloat currentYForGravity;
+                    if (frame.size.width + occupiedAreas[neighborGravity].width <= self.springboardFrame.size.width) {
+                        currentYForGravity = occupiedAreas[aWidget.gravity].height;
+                    } else {
+                        currentYForGravity = fmax(occupiedAreas[aWidget.gravity].height, occupiedAreas[neighborGravity].height);
+                    }
+                    
+                    if (downward) {
+                        frame.origin.y = yOrigin + currentYForGravity;
+                        occupiedAreas[aWidget.gravity].height = frame.origin.y - yOrigin + frame.size.height;
+                    } else {
+                        frame.origin.y = self.springboardFrame.size.height - currentYForGravity - aWidget.frame.size.height;
+                        occupiedAreas[aWidget.gravity].height = self.springboardFrame.size.height - frame.origin.y;
+                    }
+                    
+                    if (frame.size.width > occupiedAreas[aWidget.gravity].width)
+                        occupiedAreas[aWidget.gravity].width = frame.size.width;
+                    
+                    if (aWidget.gravity == KGOLayoutGravityTopRight || aWidget.gravity == KGOLayoutGravityBottomRight) {
+                        frame.origin.x = self.springboardFrame.size.width - aWidget.frame.size.width;
+                    }
+                    aWidget.frame = frame;
+                    aWidget.autoresizingMask = UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
+
+                }                
+
+                [allWidgets addObject:aWidget];
+            }
+        }
+    }
+    
+    *topFreePixel = yOrigin + fmax(occupiedAreas[KGOLayoutGravityTopLeft].height,
+                                             occupiedAreas[KGOLayoutGravityTopRight].height);
+    
+    *bottomFreePixel = self.springboardFrame.size.height - fmax(occupiedAreas[KGOLayoutGravityBottomLeft].height,
+                                                                occupiedAreas[KGOLayoutGravityBottomRight].height);
+    free(occupiedAreas);
+
+    return allWidgets;
+}
+
+- (void)refreshWidgets {
+    ;
+}
+
 - (NSArray *)iconsForPrimaryModules:(BOOL)isPrimary {
-    BOOL useCompactIcons = [(KGOAppDelegate *)[[UIApplication sharedApplication] delegate] navigationStyle] != KGONavigationStyleTabletSidebar;
+    BOOL useCompactIcons = [KGO_SHARED_APP_DELEGATE() navigationStyle] != KGONavigationStyleTabletSidebar;
     
     NSMutableArray *icons = [NSMutableArray array];
     NSArray *modules = (isPrimary) ? self.primaryModules : self.secondaryModules;
@@ -139,7 +243,7 @@
 
 - (void)buttonPressed:(id)sender {
     SpringboardIcon *anIcon = (SpringboardIcon *)sender;
-	[(KGOAppDelegate *)[[UIApplication sharedApplication] delegate] showPage:LocalPathPageNameHome forModuleTag:anIcon.moduleTag params:nil];
+	[KGO_SHARED_APP_DELEGATE() showPage:LocalPathPageNameHome forModuleTag:anIcon.moduleTag params:nil];
 }
 
 #pragma mark KGOSearchDisplayDelegate
@@ -150,7 +254,7 @@
 
 - (NSArray *)searchControllerValidModules:(KGOSearchDisplayController *)controller {
     NSMutableArray *searchableModules = [NSMutableArray arrayWithCapacity:4];
-    NSArray *modules = ((KGOAppDelegate *)[[UIApplication sharedApplication] delegate]).modules;
+    NSArray *modules = [KGO_SHARED_APP_DELEGATE() modules];
     for (KGOModule *aModule in modules) {
         if (aModule.supportsFederatedSearch) {
             [searchableModules addObject:aModule.tag];
@@ -168,7 +272,7 @@
     BOOL didShow = NO;
     if ([aResult isKindOfClass:[KGOPersonWrapper class]]) {
         NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:aResult, @"personDetails", nil];
-        didShow = [(KGOAppDelegate *)[[UIApplication sharedApplication] delegate] showPage:LocalPathPageNameDetail forModuleTag:PeopleTag params:params];
+        didShow = [KGO_SHARED_APP_DELEGATE() showPage:LocalPathPageNameDetail forModuleTag:PeopleTag params:params];
     }
     
     if (!didShow) {
@@ -264,7 +368,7 @@
 #pragma mark Private
 
 - (void)loadModules {
-    NSArray *modules = ((KGOAppDelegate *)[[UIApplication sharedApplication] delegate]).modules;
+    NSArray *modules = [KGO_SHARED_APP_DELEGATE() modules];
     NSMutableArray *primary = [NSMutableArray array];
     NSMutableArray *secondary = [NSMutableArray array];
     

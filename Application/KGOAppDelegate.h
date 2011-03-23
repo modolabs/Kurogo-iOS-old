@@ -1,5 +1,7 @@
 #import <UIKit/UIKit.h>
 
+#define KGO_SHARED_APP_DELEGATE() (KGOAppDelegate *)[[UIApplication sharedApplication] delegate]
+
 typedef enum {
     KGONavigationStyleUnknown,
     KGONavigationStyleTableView,

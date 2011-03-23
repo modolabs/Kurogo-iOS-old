@@ -1,8 +1,7 @@
 build/
-Secret.m
 *.mode1v3
 *.pbxuser
 *.xcuserdatad
 *.xcworkspacedata
 MITBuildInfo.m
-
+Projects/*/Resources/secret/Config.plist

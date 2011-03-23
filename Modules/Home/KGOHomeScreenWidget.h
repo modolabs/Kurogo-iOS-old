@@ -9,14 +9,19 @@ typedef enum {
     KGOLayoutGravityBottomRight
 } KGOLayoutGravity;
 
-@interface KGOHomeScreenWidget : UIView {
+@class KGOModule;
+
+@interface KGOHomeScreenWidget : UIControl {
+    
+    BOOL _behavesAsIcon;
 
 }
 
 @property (nonatomic) KGOLayoutGravity gravity;
 @property (nonatomic) BOOL behavesAsIcon;
 @property (nonatomic) BOOL overlaps;
+@property (nonatomic, assign) KGOModule *module;
 
-- (void)tapped; // non-default home screen behavior, implement only if behavesAsIcon == NO
+- (void)customTapAction:(KGOHomeScreenWidget *)sender; // non-default home screen behavior, called only if behavesAsIcon == NO
 
 @end

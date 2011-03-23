@@ -123,7 +123,7 @@ static NSString * const CredentialsKey = @"Credentials";
 	navBar.items = [NSArray arrayWithObject:navigationItem];
 	*/
 	self.view.opaque = YES;
-	self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:MITImageNameBackground]];
+	self.view.backgroundColor = [UIColor colorWithPatternImage:[[KGOTheme sharedTheme] backgroundColorForApplication]];
 	//[self.view addSubview:navBar];
 	[[KGOSocialMediaController sharedController] loginTwitterWithDelegate:self];
 }
@@ -311,11 +311,11 @@ static NSString * const CredentialsKey = @"Credentials";
 }
 
 - (void)hideNetworkActivity {
-	[(KGOAppDelegate *)[[UIApplication sharedApplication] delegate] hideNetworkActivityIndicator];
+	[KGO_SHARED_APP_DELEGATE() hideNetworkActivityIndicator];
 }
 
 - (void)showNetworkActivity {
-	[(KGOAppDelegate *)[[UIApplication sharedApplication] delegate] showNetworkActivityIndicator];
+	[KGO_SHARED_APP_DELEGATE() showNetworkActivityIndicator];
 }
 
 #pragma mark communication with twitter

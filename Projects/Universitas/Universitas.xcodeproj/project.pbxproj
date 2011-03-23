@@ -19,6 +19,7 @@
 		4B790C5B133185DE006D28EF /* KGOHTMLTemplate.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B790C5A133185DE006D28EF /* KGOHTMLTemplate.m */; };
 		4B8432E71331287600DCBA86 /* NewsCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B8432E61331287600DCBA86 /* NewsCategory.m */; };
 		4BA25BEB132ED94600ABB625 /* NewsStory.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BA25BEA132ED94600ABB625 /* NewsStory.m */; };
+		4BEFB607133A320F003579E7 /* ModalLoginWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BEFB606133A320F003579E7 /* ModalLoginWebViewController.m */; };
 		A623F1F2120A035A00341C5E /* ModoThreeStateSwitchControl.m in Sources */ = {isa = PBXBuildFile; fileRef = A623F1F0120A035A00341C5E /* ModoThreeStateSwitchControl.m */; };
 		BD9FA7EE1047A05E00BC3C0A /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BD9FA7ED1047A05E00BC3C0A /* MessageUI.framework */; };
 		DE0F6B3411109BC500F064D6 /* AboutMITVC.m in Sources */ = {isa = PBXBuildFile; fileRef = DE0F6B3311109BC500F064D6 /* AboutMITVC.m */; };
@@ -148,6 +149,8 @@
 		EBAE86401215FB0D00F370BE /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = EBAE863E1215FB0D00F370BE /* Icon.png */; };
 		EBAE86411215FB0D00F370BE /* Icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = EBAE863F1215FB0D00F370BE /* Icon@2x.png */; };
 		EBAE86451215FB4900F370BE /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = EBAE86441215FB4900F370BE /* Default@2x.png */; };
+		EBB120A7133802D300A4BD1D /* secret in Resources */ = {isa = PBXBuildFile; fileRef = EBB120A6133802D300A4BD1D /* secret */; };
+		EBB120AA1338046400A4BD1D /* KGOWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EBB120A91338046400A4BD1D /* KGOWebViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -213,6 +216,8 @@
 		4B8432E61331287600DCBA86 /* NewsCategory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NewsCategory.m; sourceTree = "<group>"; };
 		4BA25BE9132ED94600ABB625 /* NewsStory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NewsStory.h; sourceTree = "<group>"; };
 		4BA25BEA132ED94600ABB625 /* NewsStory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NewsStory.m; sourceTree = "<group>"; };
+		4BEFB605133A320F003579E7 /* ModalLoginWebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ModalLoginWebViewController.h; sourceTree = "<group>"; };
+		4BEFB606133A320F003579E7 /* ModalLoginWebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ModalLoginWebViewController.m; sourceTree = "<group>"; };
 		A623F1EF120A035A00341C5E /* ModoThreeStateSwitchControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ModoThreeStateSwitchControl.h; sourceTree = "<group>"; };
 		A623F1F0120A035A00341C5E /* ModoThreeStateSwitchControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ModoThreeStateSwitchControl.m; sourceTree = "<group>"; };
 		BD9FA7ED1047A05E00BC3C0A /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
@@ -442,6 +447,9 @@
 		EBAE863E1215FB0D00F370BE /* Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Icon.png; path = Resources/Icon.png; sourceTree = "<group>"; };
 		EBAE863F1215FB0D00F370BE /* Icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Icon@2x.png"; path = "Resources/Icon@2x.png"; sourceTree = "<group>"; };
 		EBAE86441215FB4900F370BE /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Default@2x.png"; path = "Resources/Default@2x.png"; sourceTree = "<group>"; };
+		EBB120A6133802D300A4BD1D /* secret */ = {isa = PBXFileReference; lastKnownFileType = folder; name = secret; path = Resources/secret; sourceTree = "<group>"; };
+		EBB120A81338046400A4BD1D /* KGOWebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGOWebViewController.h; sourceTree = "<group>"; };
+		EBB120A91338046400A4BD1D /* KGOWebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGOWebViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -508,6 +516,7 @@
 				EB1B88C81324A6AC00108A8F /* modules */,
 				EB9AF298130B56AD003B9769 /* MainWindow.xib */,
 				EB138BAE12F231E3004DBB7C /* en.lproj */,
+				EBB120A6133802D300A4BD1D /* secret */,
 				EB1441321309EF5800396753 /* KGOInfo.plist */,
 				EB138AFC12F22F31004DBB7C /* Config.plist */,
 				EB46CA8B1327F97100AF7B5C /* ThemeConfig.plist */,
@@ -764,6 +773,8 @@
 		EB1440221309EE3400396753 /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
+				EBB120A81338046400A4BD1D /* KGOWebViewController.h */,
+				EBB120A91338046400A4BD1D /* KGOWebViewController.m */,
 				EB1440231309EE3400396753 /* DatePickerViewController.h */,
 				EB1440241309EE3400396753 /* DatePickerViewController.m */,
 				EB1440251309EE3400396753 /* KGOCategoryListViewController.h */,
@@ -963,6 +974,8 @@
 		EB181FA5131EDF1B003728FF /* Login */ = {
 			isa = PBXGroup;
 			children = (
+				4BEFB605133A320F003579E7 /* ModalLoginWebViewController.h */,
+				4BEFB606133A320F003579E7 /* ModalLoginWebViewController.m */,
 				EB181FA6131EDF1B003728FF /* LoginModule.h */,
 				EB181FA7131EDF1B003728FF /* LoginModule.m */,
 			);
@@ -1160,6 +1173,7 @@
 				EB1B88CA1324A6AC00108A8F /* modules in Resources */,
 				EB46CA8A1327F95E00AF7B5C /* kurogo in Resources */,
 				EB46CA8E1327F97100AF7B5C /* ThemeConfig.plist in Resources */,
+				EBB120A7133802D300A4BD1D /* secret in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1290,6 +1304,8 @@
 				EB48910913310A930036AEBF /* ExternalURLModule.m in Sources */,
 				4B8432E71331287600DCBA86 /* NewsCategory.m in Sources */,
 				4B790C5B133185DE006D28EF /* KGOHTMLTemplate.m in Sources */,
+				EBB120AA1338046400A4BD1D /* KGOWebViewController.m in Sources */,
+				4BEFB607133A320F003579E7 /* ModalLoginWebViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

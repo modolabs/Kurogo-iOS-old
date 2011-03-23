@@ -97,7 +97,7 @@
         pickerVC.delegate = self;
         pickerVC.date = self.date;
         
-        KGOAppDelegate *appDelegate = (KGOAppDelegate *)[[UIApplication sharedApplication] delegate];
+        KGOAppDelegate *appDelegate = KGO_SHARED_APP_DELEGATE();
         [appDelegate presentAppModalViewController:pickerVC animated:YES];
         
     } else {
@@ -166,7 +166,7 @@
 - (void)datePickerViewControllerDidCancel:(DatePickerViewController *)controller {
     self.displayDate = self.date;
     
-	KGOAppDelegate *appDelegate = (KGOAppDelegate *)[[UIApplication sharedApplication] delegate];
+	KGOAppDelegate *appDelegate = KGO_SHARED_APP_DELEGATE();
     [appDelegate dismissAppModalViewControllerAnimated:YES];
 }
 
@@ -175,7 +175,7 @@
     
     [self.delegate pager:self didSelectDate:self.date];
     
-	KGOAppDelegate *appDelegate = (KGOAppDelegate *)[[UIApplication sharedApplication] delegate];
+	KGOAppDelegate *appDelegate = KGO_SHARED_APP_DELEGATE();
     [appDelegate dismissAppModalViewControllerAnimated:YES];
 }
 

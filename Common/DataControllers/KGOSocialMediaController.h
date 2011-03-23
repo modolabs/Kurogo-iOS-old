@@ -8,6 +8,8 @@ extern NSString * const KGOSocialMediaTypeTwitter;
 extern NSString * const KGOSocialMediaTypeEmail;
 extern NSString * const KGOSocialMediaTypeBitly;
 
+extern NSString * const FacebookUsernameKey;
+
 extern NSString * const FacebookDidLoginNotification;
 extern NSString * const FacebookDidLogoutNotification;
 

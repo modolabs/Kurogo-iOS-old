@@ -15,6 +15,7 @@
 - (UIViewController *)visibleViewController;
 
 @property (nonatomic, readonly) KGONavigationStyle navigationStyle;
+@property (nonatomic, readonly) UIViewController *homescreen;
 
 #pragma mark Social Media
 

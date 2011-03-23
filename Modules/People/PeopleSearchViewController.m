@@ -109,7 +109,7 @@ searchBar = _searchBar;
 
 - (void)searchController:(KGOSearchDisplayController *)controller didSelectResult:(id<KGOSearchResult>)aResult {
     NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:aResult, @"person", nil];
-    [(KGOAppDelegate *)[[UIApplication sharedApplication] delegate] showPage:LocalPathPageNameDetail forModuleTag:PeopleTag params:params];
+    [KGO_SHARED_APP_DELEGATE() showPage:LocalPathPageNameDetail forModuleTag:PeopleTag params:params];
 }
 
 - (void)searchController:(KGOSearchDisplayController *)controller willHideSearchResultsTableView:(UITableView *)tableView {
@@ -264,7 +264,7 @@ searchBar = _searchBar;
         {
             KGOPersonWrapper *person = [_recentlyViewed objectAtIndex:indexPath.row];
             NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:person, @"person", self, @"pager", nil];
-            [(KGOAppDelegate *)[[UIApplication sharedApplication] delegate] showPage:LocalPathPageNameDetail forModuleTag:PeopleTag params:params];
+            [KGO_SHARED_APP_DELEGATE() showPage:LocalPathPageNameDetail forModuleTag:PeopleTag params:params];
             break;
         }
         case 2: // clear recents
