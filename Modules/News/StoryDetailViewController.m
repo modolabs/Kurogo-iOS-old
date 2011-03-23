@@ -69,17 +69,9 @@
 	[dateFormatter release];
     
     NSString *thumbnailURL = story.thumbImage.url;
-    NSString *thumbnailWidth = @"140";
-    NSString *thumbnailHeight = @"96";
     
     if (!thumbnailURL) {
         thumbnailURL = @"";
-    }
-    if (!thumbnailWidth) {
-        thumbnailWidth = @"";
-    }
-    if (!thumbnailHeight) {
-        thumbnailHeight = @"";
     }
     
 	NSString *isBookmarked = ([self.story.bookmarked boolValue]) ? @"on" : @"";
@@ -90,8 +82,6 @@
     [values setValue:isBookmarked forKey:@"BOOKMARKED"];
     [values setValue:postDate forKey:@"DATE"];
     [values setValue:thumbnailURL forKey:@"THUMBNAIL_URL"];
-    [values setValue:thumbnailWidth forKey:@"THUMBNAIL_WIDTH"];
-    [values setValue:thumbnailHeight forKey:@"THUMBNAIL_HEIGHT"];
     [values setValue:story.body forKey:@"BODY"];
     [values setValue:story.summary forKey:@"DEK"];
     
