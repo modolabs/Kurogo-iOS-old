@@ -104,23 +104,6 @@
     [[AnalyticsWrapper sharedWrapper] trackPageview:detailString];
 }
 
-- (void)didPressNavButton:(id)sender {
-    if ([sender isKindOfClass:[UISegmentedControl class]]) {
-        UISegmentedControl *theControl = (UISegmentedControl *)sender;
-        NSInteger i = theControl.selectedSegmentIndex;
-		NewsStory *newStory = nil;
-        if (i == 0) { // previous
-			newStory = [self.newsController selectPreviousStory];
-        } else { // next
-			newStory = [self.newsController selectNextStory];
-        }
-		if (newStory) {
-			self.story = newStory;
-			[self displayStory:self.story]; // updates enabled state of storyPager as a side effect
-		}
-    }
-}
-
 - (BOOL)webView:(UIWebView*)webView shouldStartLoadWithRequest:(NSURLRequest*)request navigationType:(UIWebViewNavigationType)navigationType {
 	BOOL result = YES;
 
