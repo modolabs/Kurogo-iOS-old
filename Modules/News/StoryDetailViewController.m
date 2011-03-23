@@ -1,9 +1,11 @@
 #import "StoryDetailViewController.h"
 #import "KGOAppDelegate.h"
+#import "UIKit+KGOAdditions.h"
 #import <QuartzCore/QuartzCore.h>
 #import "NewsStory.h"
 #import "CoreDataManager.h"
 #import "Foundation+KGOAdditions.h"
+#import "KGOHTMLTemplate.h"
 #import "StoryListViewController.h"
 #import "StoryGalleryViewController.h"
 #import "NewsImage.h"
@@ -21,11 +23,11 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-	
+    
 	storyPager = [[UISegmentedControl alloc] initWithItems:
 											[NSArray arrayWithObjects:
-											 [UIImage imageNamed:MITImageNameUpArrow], 
-											 [UIImage imageNamed:MITImageNameDownArrow], 
+                                            [UIImage imageWithPathName:@"common/arrow-white-up"], 
+											 [UIImage imageWithPathName:@"common/arrow-white-down"], 
 											 nil]];
 	[storyPager setMomentary:YES];
 	[storyPager setEnabled:NO forSegmentAtIndex:0];
@@ -59,21 +61,14 @@
 	[storyPager setEnabled:[self.newsController canSelectPreviousStory] forSegmentAtIndex:0];
 	[storyPager setEnabled:[self.newsController canSelectNextStory] forSegmentAtIndex:1];
 
-	NSURL *baseURL = [NSURL fileURLWithPath:[[NSBundle mainBundle] resourcePath] isDirectory:YES];
-    NSURL *fileURL = [NSURL URLWithString:@"news/news_story_template.html" relativeToURL:baseURL];
-    
-    NSError *error = nil;
-    NSMutableString *htmlString = [NSMutableString stringWithContentsOfURL:fileURL encoding:NSUTF8StringEncoding error:&error];
-    if (!htmlString) {
-        return;
-    }
+    KGOHTMLTemplate *template = [KGOHTMLTemplate templateWithPathName:@"modules/news/news_story_template.html"];
     
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
     [dateFormatter setDateFormat:@"MMM d, y"];
     NSString *postDate = [dateFormatter stringFromDate:story.postDate];
 	[dateFormatter release];
     
-    NSString *thumbnailURL = story.featuredImage.url;
+    NSString *thumbnailURL = story.thumbImage.url;
     NSString *thumbnailWidth = @"140";
     NSString *thumbnailHeight = @"96";
     
@@ -87,25 +82,24 @@
         thumbnailHeight = @"";
     }
     
-    NSArray *keys = [NSArray arrayWithObjects:
-                     @"__TITLE__", @"__AUTHOR__", @"__DATE__", @"__BOOKMARKED__",
-                     @"__THUMBNAIL_URL__", @"__THUMBNAIL_WIDTH__", @"__THUMBNAIL_HEIGHT__", 
-                     @"__DEK__", @"__BODY__", nil];
-    
 	NSString *isBookmarked = ([self.story.bookmarked boolValue]) ? @"on" : @"";
 	
-    NSArray *values = [NSArray arrayWithObjects:
-                       story.title, story.author, postDate, isBookmarked, 
-					   thumbnailURL, thumbnailWidth, thumbnailHeight, 
-					   story.summary, story.body, nil];
-    
-    [htmlString replaceOccurrencesOfStrings:keys withStrings:values options:NSLiteralSearch];
+    NSMutableDictionary *values = [NSMutableDictionary dictionary];
+    [values setValue:story.title forKey:@"TITLE"];
+    [values setValue:story.author forKey:@"AUTHOR"];
+    [values setValue:isBookmarked forKey:@"BOOKMARKED"];
+    [values setValue:postDate forKey:@"DATE"];
+    [values setValue:thumbnailURL forKey:@"THUMBNAIL_URL"];
+    [values setValue:thumbnailWidth forKey:@"THUMBNAIL_WIDTH"];
+    [values setValue:thumbnailHeight forKey:@"THUMBNAIL_HEIGHT"];
+    [values setValue:story.body forKey:@"BODY"];
+    [values setValue:story.summary forKey:@"DEK"];
     
     // mark story as read
     self.story.read = [NSNumber numberWithBool:YES];
 	[[CoreDataManager sharedManager] saveDataWithTemporaryMergePolicy:NSMergeByPropertyObjectTrumpMergePolicy];
-	[storyView loadHTMLString:htmlString baseURL:baseURL];
-
+    [storyView loadTemplate:template values:values];
+    
     // analytics
     NSString *detailString = [NSString stringWithFormat:@"/news/story?id=%d", [self.story.story_id integerValue]];
     [[AnalyticsWrapper sharedWrapper] trackPageview:detailString];

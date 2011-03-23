@@ -1,5 +1,6 @@
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
+#import "KGOHTMLTemplate.h"
 
 @interface UIImage (KGOAdditions)
 
@@ -23,6 +24,12 @@
 @interface UILabel (KGOAdditions)
 
 + (UILabel *)multilineLabelWithText:(NSString *)text font:(UIFont *)font width:(CGFloat)width;
+
+@end
+
+@interface UIWebView (KGOAdditions)
+
+- (void)loadTemplate:(KGOHTMLTemplate *)template values:(NSDictionary *)values;
 
 @end
 

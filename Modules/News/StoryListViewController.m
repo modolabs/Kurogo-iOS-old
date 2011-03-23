@@ -1,4 +1,5 @@
 #import "KGOAppDelegate.h"
+#import "KGOAppDelegate+ModuleAdditions.h"
 #import "StoryListViewController.h"
 #import "StoryDetailViewController.h"
 #import "StoryXMLParser.h"
@@ -943,22 +944,18 @@ static NSInteger numTries = 0;
             }
         }
 	} else {
-        StoryDetailViewController *detailViewController = [[StoryDetailViewController alloc] init];
-		detailViewController.newsController = self;
-		NewsStory *story = nil;
-        if (self.searchResults == nil     // this is not a search
-            && self.featuredStory != nil  // we have a featured story
-            && !showingBookmarks          // we are not looking at bookmarks
-            && indexPath.row == 0)
-        {
-            story = self.featuredStory;
-        } else {
-            story = [self.stories objectAtIndex:indexPath.row];
-        }
-        detailViewController.story = story;
-        
-        [self.navigationController pushViewController:detailViewController animated:YES];
-        [detailViewController release];
+        //if (self.searchResults == nil     // this is not a search
+        //    && self.featuredStory != nil  // we have a featured story
+        //    && !showingBookmarks          // we are not looking at bookmarks
+        //    && indexPath.row == 0)
+        //{
+        //    story = self.featuredStory;
+        //} else {
+        //    story = [self.stories objectAtIndex:indexPath.row];
+        //}
+        NewsStory *story = [self.stories objectAtIndex:indexPath.row];
+        NSDictionary *params = [NSDictionary dictionaryWithObject:story forKey:@"story"];
+        [(KGOAppDelegate *)[[UIApplication sharedApplication] delegate] showPage:LocalPathPageNameDetail forModuleTag:NewsTag params:params];
 	}
 }
 

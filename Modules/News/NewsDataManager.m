@@ -16,7 +16,7 @@ NSString * const NewsTagImage              = @"image";
 //NSString * const NewsTagFeaturedImage   = @"harvard:featured_photo";
 NSString * const NewsTagSummary         = @"description";
 NSString * const NewsTagPostDate        = @"pubDate";
-NSString * const NewsTagBody            = @"content";
+NSString * const NewsTagBody            = @"body";
 
 
 @interface NewsDataManager (Private)
@@ -246,7 +246,8 @@ NSString * const NewsTagBody            = @"content";
     NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:
                             startValue, @"start",
                             limitValue, @"limit",
-                            categoryID, @"categoryID", nil];
+                            categoryID, @"categoryID", 
+                            @"full", @"mode", nil];
     
     KGORequest *request = [[KGORequestManager sharedManager] requestWithDelegate:self
                                                                           module:NewsTag
