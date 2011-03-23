@@ -18,7 +18,7 @@
 - (void)loadView {
     [super loadView]; // surprisingly necessary empty call to super due to the way memory warnings work
 	
-	shareController = [(KGOShareButtonController *)[KGOShareButtonController alloc] initWithDelegate:self];
+	//shareController = [[KGOShareButtonController alloc] initWithShareDelegate:self];
 }
 
 - (void)viewDidLoad {
@@ -120,7 +120,8 @@
 				self.story.bookmarked = [NSNumber numberWithBool:([self.story.bookmarked boolValue]) ? NO : YES];
 				[[CoreDataManager sharedManager] saveData];
 			} else if ([[url path] rangeOfString:@"share" options:NSBackwardsSearch].location != NSNotFound) {
-				[self share:nil];
+                // some how call the share controller
+				//[shareController shareInView:self.view];
 			}
             result = NO;
 		}
@@ -177,7 +178,7 @@
 }
 
 - (void)dealloc {
-	[shareController release];
+	//[shareController release];
 	[storyView release];
     self.story = nil;
     self.stories = nil;

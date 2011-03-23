@@ -36,6 +36,4 @@
 
 - (void) setInitialIndexPath:(NSIndexPath *)initialIndexPath;
 
-- (void)displayStory:(NewsStory *)aStory;
-
 @end
