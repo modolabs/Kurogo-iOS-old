@@ -6,6 +6,9 @@
 #define REQUEST_CATEGORIES_UNCHANGED 2
 #define LIMIT 10
 
+// 2 hours
+#define NEWS_CATEGORY_EXPIRES_TIME 7200.0
+
 NSString * const NewsTagItem            = @"item";
 NSString * const NewsTagTitle           = @"title";
 NSString * const NewsTagAuthor          = @"author";
@@ -16,7 +19,7 @@ NSString * const NewsTagImage              = @"image";
 //NSString * const NewsTagFeaturedImage   = @"harvard:featured_photo";
 NSString * const NewsTagSummary         = @"description";
 NSString * const NewsTagPostDate        = @"pubDate";
-NSString * const NewsTagBody            = @"content";
+NSString * const NewsTagBody            = @"body";
 
 
 @interface NewsDataManager (Private)
@@ -169,22 +172,19 @@ NSString * const NewsTagBody            = @"content";
     return allBookmarkedStories;
 }
 
-- (void)requestStoriesForCategory:(NewsCategoryId)categoryID loadMore:(BOOL)loadMore {
+- (void)requestStoriesForCategory:(NewsCategoryId)categoryID loadMore:(BOOL)loadMore forceRefresh:(BOOL)forceRefresh {
     // load what's in CoreData
     NewsCategory *category =[self fetchCategoryFromCoreData:categoryID];
     [[[CoreDataManager sharedManager] managedObjectContext] refreshObject:category mergeChanges:NO];
     
     NSPredicate *predicate = nil;
     NSSortDescriptor *postDateSortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"postDate" ascending:NO];
-    NSSortDescriptor *storyIdSortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"story_id" ascending:NO];
+    NSSortDescriptor *storyIdSortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"identifier" ascending:NO];
     NSArray *sortDescriptors = [NSArray arrayWithObjects:/*featuredSortDescriptor,*/ postDateSortDescriptor, storyIdSortDescriptor, nil];
     [storyIdSortDescriptor release];
     [postDateSortDescriptor release];
     
     predicate = [NSPredicate predicateWithFormat:@"ANY categories.category_id LIKE %@", category.category_id];
-    
-    // if maxLength == 0, nothing's been loaded from the server this session -- show up to 10 results from core data
-    // else show up to maxLength
     NSArray *results = [[CoreDataManager sharedManager] objectsForEntity:NewsStoryEntityName matchingPredicate:predicate sortDescriptors:sortDescriptors];
     
     // grab the first featured story from the list, regardless of pubdate
@@ -210,7 +210,14 @@ NSString * const NewsTagBody            = @"content";
         }
     }
     
-    if (loadMore || ([results count] == 0)) {
+    BOOL categoryFresh;
+    if(category.lastUpdated) {
+        categoryFresh = (-[category.lastUpdated timeIntervalSinceNow] < NEWS_CATEGORY_EXPIRES_TIME);
+    } else {
+        categoryFresh = NO;
+    }
+    
+    if (loadMore || ([results count] == 0) || !categoryFresh || forceRefresh) {
         [self loadStoriesFromServerForCategory:category loadMore:loadMore];
         // this creates a loop which will keep trying until there is at least something in this category
     }
@@ -246,7 +253,8 @@ NSString * const NewsTagBody            = @"content";
     NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:
                             startValue, @"start",
                             limitValue, @"limit",
-                            categoryID, @"categoryID", nil];
+                            categoryID, @"categoryID", 
+                            @"full", @"mode", nil];
     
     KGORequest *request = [[KGORequestManager sharedManager] requestWithDelegate:self
                                                                           module:NewsTag
@@ -258,6 +266,18 @@ NSString * const NewsTagBody            = @"content";
     request.handler = [[^(id result) {
         NewsCategory *safeCategoryObject = [self fetchCategoryFromCoreData:categoryID];
         
+        if (!loadMore) {
+            // this is a refresh load, so we need to prune
+            // all old stories
+            NSSet *safeStorySet = [NSSet setWithSet:safeCategoryObject.stories];
+            for (NewsStory *story in safeStorySet) {
+                if(![story.bookmarked boolValue]) {
+                    [[CoreDataManager sharedManager] deleteObject:story];
+                }
+                story.categories = [NSSet set];
+            }
+        }
+        
         NSDictionary *resultDict = (NSDictionary *)result;
         NSArray *stories = [resultDict objectForKey:@"stories"];
         
@@ -265,7 +285,7 @@ NSString * const NewsTagBody            = @"content";
             // use existing story if it's already in the db
             NSString *GUID = [storyDict objectForKey:NewsTagStoryId];
             NewsStory *story = [[CoreDataManager sharedManager] getObjectForEntity:NewsStoryEntityName 
-                                                                         attribute:@"story_id" 
+                                                                         attribute:@"identifier" 
                                                                              value:GUID];
             // otherwise create new
             if (!story) {
@@ -276,7 +296,7 @@ NSString * const NewsTagBody            = @"content";
             NSTimeInterval miliseconds = unixtime * 1000.;
             NSDate *postDate = [NSDate dateWithTimeIntervalSince1970:miliseconds];
             
-            story.story_id = GUID;
+            story.identifier = GUID;
             story.postDate = postDate;
             story.title = [storyDict objectForKey:NewsTagTitle];
             story.link = [storyDict objectForKey:NewsTagLink];
@@ -330,6 +350,16 @@ NSString * const NewsTagBody            = @"content";
     [[CoreDataManager sharedManager] saveData];
 }
 
+- (NSArray *)bookmarkedStories {
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"bookmarked == YES"];
+    return [[CoreDataManager sharedManager] objectsForEntity:NewsStoryEntityName matchingPredicate:predicate];
+}
+
+- (void)story:(NewsStory *)story bookmarked:(BOOL)bookmarked {
+    story.bookmarked = [NSNumber numberWithBool:bookmarked];
+    [[CoreDataManager sharedManager] saveData];
+}
+
 #pragma mark KGORequestDelegate
 
 - (void)request:(KGORequest *)request didHandleResult:(NSInteger)returnValue {
@@ -339,7 +369,7 @@ NSString * const NewsTagBody            = @"content";
     
     if([path isEqualToString:@"stories"]) {
         NSString *categoryID = [request.getParams objectForKey:@"categoryID"];
-        [self requestStoriesForCategory:categoryID loadMore:NO];
+        [self requestStoriesForCategory:categoryID loadMore:NO forceRefresh:NO];
         return;
     
     } else if([path isEqualToString:@"categories"]) {

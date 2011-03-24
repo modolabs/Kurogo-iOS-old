@@ -1,9 +1,11 @@
 #import "StoryDetailViewController.h"
 #import "KGOAppDelegate.h"
+#import "UIKit+KGOAdditions.h"
 #import <QuartzCore/QuartzCore.h>
 #import "NewsStory.h"
 #import "CoreDataManager.h"
 #import "Foundation+KGOAdditions.h"
+#import "KGOHTMLTemplate.h"
 #import "StoryListViewController.h"
 #import "StoryGalleryViewController.h"
 #import "NewsImage.h"
@@ -11,30 +13,19 @@
 
 @implementation StoryDetailViewController
 
-@synthesize newsController, story, storyView;
+@synthesize newsController, story, stories, storyView;
 
 - (void)loadView {
     [super loadView]; // surprisingly necessary empty call to super due to the way memory warnings work
 	
-	shareController = [(KGOShareButtonController *)[KGOShareButtonController alloc] initWithDelegate:self];
+	//shareController = [[KGOShareButtonController alloc] initWithShareDelegate:self];
 }
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-	
-	storyPager = [[UISegmentedControl alloc] initWithItems:
-											[NSArray arrayWithObjects:
-											 [UIImage imageNamed:MITImageNameUpArrow], 
-											 [UIImage imageNamed:MITImageNameDownArrow], 
-											 nil]];
-	[storyPager setMomentary:YES];
-	[storyPager setEnabled:NO forSegmentAtIndex:0];
-	[storyPager setEnabled:NO forSegmentAtIndex:1];
-	storyPager.segmentedControlStyle = UISegmentedControlStyleBar;
-	storyPager.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-	storyPager.frame = CGRectMake(0, 0, 80.0, storyPager.frame.size.height);
-	[storyPager addTarget:self action:@selector(didPressNavButton:) forControlEvents:UIControlEventValueChanged];
-	
+    
+    storyPager = [[KGODetailPager alloc] initWithPagerController:self delegate:self];
+    
 	UIBarButtonItem * segmentBarItem = [[UIBarButtonItem alloc] initWithCustomView: storyPager];
 	self.navigationItem.rightBarButtonItem = segmentBarItem;
 	[segmentBarItem release];
@@ -49,83 +40,68 @@
     storyView.scalesPageToFit = NO;
 	[self.view addSubview: storyView];
 	storyView.delegate = self;
-	
-	if (self.story) {
-		[self displayStory:self.story];
-	}
+    
+    [storyPager selectPageAtSection:initialIndexPath.section row:initialIndexPath.row];
 }
 
-- (void)displayStory:(NewsStory *)aStory {
-	[storyPager setEnabled:[self.newsController canSelectPreviousStory] forSegmentAtIndex:0];
-	[storyPager setEnabled:[self.newsController canSelectNextStory] forSegmentAtIndex:1];
+- (void) setInitialIndexPath:(NSIndexPath *)theInitialIndexPath  {
+    initialIndexPath = [theInitialIndexPath retain];
+}
 
-	NSURL *baseURL = [NSURL fileURLWithPath:[[NSBundle mainBundle] resourcePath] isDirectory:YES];
-    NSURL *fileURL = [NSURL URLWithString:@"news/news_story_template.html" relativeToURL:baseURL];
-    
-    NSError *error = nil;
-    NSMutableString *htmlString = [NSMutableString stringWithContentsOfURL:fileURL encoding:NSUTF8StringEncoding error:&error];
-    if (!htmlString) {
+# pragma KGODetailPagerController methods
+- (NSInteger)numberOfSections:(KGODetailPager *)pager {
+    return 1;
+}
+
+- (NSInteger)pager:(KGODetailPager *)pager numberOfPagesInSection:(NSInteger)section {
+    return self.stories.count;
+}
+
+- (id<KGOSearchResult>)pager:(KGODetailPager *)pager contentForPageAtIndexPath:(NSIndexPath *)indexPath {
+    return [self.stories objectAtIndex:indexPath.row];
+}
+
+# pragma 
+- (void)pager:(KGODetailPager*)pager showContentForPage:(id<KGOSearchResult>)content {
+    if(self.story == content) {
+        // story already being shown
         return;
     }
+    
+    self.story = (NewsStory *)content;
+
+    KGOHTMLTemplate *template = [KGOHTMLTemplate templateWithPathName:@"modules/news/news_story_template.html"];
     
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
     [dateFormatter setDateFormat:@"MMM d, y"];
     NSString *postDate = [dateFormatter stringFromDate:story.postDate];
 	[dateFormatter release];
     
-    NSString *thumbnailURL = story.featuredImage.url;
-    NSString *thumbnailWidth = @"140";
-    NSString *thumbnailHeight = @"96";
+    NSString *thumbnailURL = story.thumbImage.url;
     
     if (!thumbnailURL) {
         thumbnailURL = @"";
     }
-    if (!thumbnailWidth) {
-        thumbnailWidth = @"";
-    }
-    if (!thumbnailHeight) {
-        thumbnailHeight = @"";
-    }
-    
-    NSArray *keys = [NSArray arrayWithObjects:
-                     @"__TITLE__", @"__AUTHOR__", @"__DATE__", @"__BOOKMARKED__",
-                     @"__THUMBNAIL_URL__", @"__THUMBNAIL_WIDTH__", @"__THUMBNAIL_HEIGHT__", 
-                     @"__DEK__", @"__BODY__", nil];
     
 	NSString *isBookmarked = ([self.story.bookmarked boolValue]) ? @"on" : @"";
 	
-    NSArray *values = [NSArray arrayWithObjects:
-                       story.title, story.author, postDate, isBookmarked, 
-					   thumbnailURL, thumbnailWidth, thumbnailHeight, 
-					   story.summary, story.body, nil];
-    
-    [htmlString replaceOccurrencesOfStrings:keys withStrings:values options:NSLiteralSearch];
+    NSMutableDictionary *values = [NSMutableDictionary dictionary];
+    [values setValue:story.title forKey:@"TITLE"];
+    [values setValue:story.author forKey:@"AUTHOR"];
+    [values setValue:isBookmarked forKey:@"BOOKMARKED"];
+    [values setValue:postDate forKey:@"DATE"];
+    [values setValue:thumbnailURL forKey:@"THUMBNAIL_URL"];
+    [values setValue:story.body forKey:@"BODY"];
+    [values setValue:story.summary forKey:@"DEK"];
     
     // mark story as read
     self.story.read = [NSNumber numberWithBool:YES];
 	[[CoreDataManager sharedManager] saveDataWithTemporaryMergePolicy:NSMergeByPropertyObjectTrumpMergePolicy];
-	[storyView loadHTMLString:htmlString baseURL:baseURL];
-
+    [storyView loadTemplate:template values:values];
+    
     // analytics
-    NSString *detailString = [NSString stringWithFormat:@"/news/story?id=%d", [self.story.story_id integerValue]];
+    NSString *detailString = [NSString stringWithFormat:@"/news/story?id=%@", self.story.identifier];
     [[AnalyticsWrapper sharedWrapper] trackPageview:detailString];
-}
-
-- (void)didPressNavButton:(id)sender {
-    if ([sender isKindOfClass:[UISegmentedControl class]]) {
-        UISegmentedControl *theControl = (UISegmentedControl *)sender;
-        NSInteger i = theControl.selectedSegmentIndex;
-		NewsStory *newStory = nil;
-        if (i == 0) { // previous
-			newStory = [self.newsController selectPreviousStory];
-        } else { // next
-			newStory = [self.newsController selectNextStory];
-        }
-		if (newStory) {
-			self.story = newStory;
-			[self displayStory:self.story]; // updates enabled state of storyPager as a side effect
-		}
-    }
 }
 
 - (BOOL)webView:(UIWebView*)webView shouldStartLoadWithRequest:(NSURLRequest*)request navigationType:(UIWebViewNavigationType)navigationType {
@@ -141,10 +117,11 @@
         } else {
             if ([[url path] rangeOfString:@"bookmark" options:NSBackwardsSearch].location != NSNotFound) {
 				// toggle bookmarked state
-				self.story.bookmarked = [NSNumber numberWithBool:([self.story.bookmarked boolValue]) ? NO : YES];
-				[[CoreDataManager sharedManager] saveData];
+                BOOL newBookmarkState = [self.story.bookmarked boolValue] ? NO : YES;
+                [[NewsDataManager sharedManager] story:self.story bookmarked:newBookmarkState];
 			} else if ([[url path] rangeOfString:@"share" options:NSBackwardsSearch].location != NSNotFound) {
-				[self share:nil];
+                // some how call the share controller
+				//[shareController shareInView:self.view];
 			}
             result = NO;
 		}
@@ -201,9 +178,11 @@
 }
 
 - (void)dealloc {
-	[shareController release];
+	//[shareController release];
 	[storyView release];
-    [story release];
+    self.story = nil;
+    self.stories = nil;
+    [initialIndexPath release];
     [super dealloc];
 }
 

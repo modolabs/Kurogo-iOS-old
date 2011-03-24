@@ -16,6 +16,7 @@
 		3AA219501039D74700DB7637 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3AA2194F1039D74700DB7637 /* CoreData.framework */; };
 		4463CCB210D6F5750048CA83 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4463CCB110D6F5750048CA83 /* CoreLocation.framework */; };
 		4B050C55132E48F50016591D /* NewsDataManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B050C54132E48F50016591D /* NewsDataManager.m */; };
+		4B790C5B133185DE006D28EF /* KGOHTMLTemplate.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B790C5A133185DE006D28EF /* KGOHTMLTemplate.m */; };
 		4B8432E71331287600DCBA86 /* NewsCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B8432E61331287600DCBA86 /* NewsCategory.m */; };
 		4BA25BEB132ED94600ABB625 /* NewsStory.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BA25BEA132ED94600ABB625 /* NewsStory.m */; };
 		A623F1F2120A035A00341C5E /* ModoThreeStateSwitchControl.m in Sources */ = {isa = PBXBuildFile; fileRef = A623F1F0120A035A00341C5E /* ModoThreeStateSwitchControl.m */; };
@@ -36,6 +37,7 @@
 		DECBF6B610F8F91B009FAE35 /* NewsImageRep.m in Sources */ = {isa = PBXBuildFile; fileRef = DECBF6B510F8F91B009FAE35 /* NewsImageRep.m */; };
 		DED3CCE910418F5F003D3B74 /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = DED3CCE810418F5F003D3B74 /* Default.png */; };
 		DEE6B1CD111774300037F03C /* Entitlements.plist in Resources */ = {isa = PBXBuildFile; fileRef = DEE6B1CC111774300037F03C /* Entitlements.plist */; };
+		EB0336AB133AEDED00ACF2BB /* ModalLoginWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EB0336AA133AEDED00ACF2BB /* ModalLoginWebViewController.m */; };
 		EB138BB112F231E3004DBB7C /* en.lproj in Resources */ = {isa = PBXBuildFile; fileRef = EB138BAE12F231E3004DBB7C /* en.lproj */; };
 		EB138F0512F253A1004DBB7C /* libGoogleAnalytics.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EB138F0312F253A1004DBB7C /* libGoogleAnalytics.a */; };
 		EB1440421309EE3400396753 /* AnalyticsWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = EB143FDD1309EE3400396753 /* AnalyticsWrapper.m */; };
@@ -143,7 +145,6 @@
 		EBAE86451215FB4900F370BE /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = EBAE86441215FB4900F370BE /* Default@2x.png */; };
 		EBB120A7133802D300A4BD1D /* secret in Resources */ = {isa = PBXBuildFile; fileRef = EBB120A6133802D300A4BD1D /* secret */; };
 		EBB120AA1338046400A4BD1D /* KGOWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EBB120A91338046400A4BD1D /* KGOWebViewController.m */; };
-		EBB1212513382A4F00A4BD1D /* ModalLoginWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EBB1212413382A4F00A4BD1D /* ModalLoginWebViewController.m */; };
 		EBB1219E1338DE4000A4BD1D /* KGOEventWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = EBB1219D1338DE4000A4BD1D /* KGOEventWrapper.m */; };
 		EBB121A11339006600A4BD1D /* KGOAttendeeWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = EBB121A01339006400A4BD1D /* KGOAttendeeWrapper.m */; };
 		EBB121ED13392F3300A4BD1D /* EventKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EBB121EC13392F3300A4BD1D /* EventKit.framework */; };
@@ -213,6 +214,8 @@
 		4463CCB110D6F5750048CA83 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		4B050C53132E48F40016591D /* NewsDataManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NewsDataManager.h; sourceTree = "<group>"; };
 		4B050C54132E48F50016591D /* NewsDataManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NewsDataManager.m; sourceTree = "<group>"; };
+		4B790C59133185DE006D28EF /* KGOHTMLTemplate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGOHTMLTemplate.h; sourceTree = "<group>"; };
+		4B790C5A133185DE006D28EF /* KGOHTMLTemplate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGOHTMLTemplate.m; sourceTree = "<group>"; };
 		4B8432E51331287600DCBA86 /* NewsCategory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NewsCategory.h; sourceTree = "<group>"; };
 		4B8432E61331287600DCBA86 /* NewsCategory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NewsCategory.m; sourceTree = "<group>"; };
 		4BA25BE9132ED94600ABB625 /* NewsStory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NewsStory.h; sourceTree = "<group>"; };
@@ -247,6 +250,8 @@
 		DECBF6B510F8F91B009FAE35 /* NewsImageRep.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NewsImageRep.m; sourceTree = "<group>"; };
 		DED3CCE810418F5F003D3B74 /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Default.png; path = Resources/Default.png; sourceTree = "<group>"; };
 		DEE6B1CC111774300037F03C /* Entitlements.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Entitlements.plist; sourceTree = "<group>"; };
+		EB0336A9133AEDED00ACF2BB /* ModalLoginWebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ModalLoginWebViewController.h; sourceTree = "<group>"; };
+		EB0336AA133AEDED00ACF2BB /* ModalLoginWebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ModalLoginWebViewController.m; sourceTree = "<group>"; };
 		EB138AFC12F22F31004DBB7C /* Config.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Config.plist; sourceTree = "<group>"; };
 		EB138BAE12F231E3004DBB7C /* en.lproj */ = {isa = PBXFileReference; lastKnownFileType = folder; name = en.lproj; path = Localization/en.lproj; sourceTree = "<group>"; };
 		EB138E8E12F24EB2004DBB7C /* Proj.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Proj.xcodeproj; path = Proj/Proj.xcodeproj; sourceTree = "<group>"; };
@@ -437,8 +442,6 @@
 		EBB120A6133802D300A4BD1D /* secret */ = {isa = PBXFileReference; lastKnownFileType = folder; name = secret; path = Resources/secret; sourceTree = "<group>"; };
 		EBB120A81338046400A4BD1D /* KGOWebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGOWebViewController.h; sourceTree = "<group>"; };
 		EBB120A91338046400A4BD1D /* KGOWebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGOWebViewController.m; sourceTree = "<group>"; };
-		EBB1212313382A4F00A4BD1D /* ModalLoginWebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ModalLoginWebViewController.h; sourceTree = "<group>"; };
-		EBB1212413382A4F00A4BD1D /* ModalLoginWebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ModalLoginWebViewController.m; sourceTree = "<group>"; };
 		EBB1219C1338DE3F00A4BD1D /* KGOEventWrapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGOEventWrapper.h; sourceTree = "<group>"; };
 		EBB1219D1338DE4000A4BD1D /* KGOEventWrapper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGOEventWrapper.m; sourceTree = "<group>"; };
 		EBB1219F1339006400A4BD1D /* KGOAttendeeWrapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGOAttendeeWrapper.h; sourceTree = "<group>"; };
@@ -698,6 +701,8 @@
 		EB143FD91309EE3400396753 /* Common */ = {
 			isa = PBXGroup;
 			children = (
+				4B790C59133185DE006D28EF /* KGOHTMLTemplate.h */,
+				4B790C5A133185DE006D28EF /* KGOHTMLTemplate.m */,
 				EB14416C1309F07B00396753 /* KGOTheme.h */,
 				EB14416D1309F07B00396753 /* KGOTheme.m */,
 				EB143FE81309EE3400396753 /* Constants.h */,
@@ -974,8 +979,8 @@
 		EB181FA5131EDF1B003728FF /* Login */ = {
 			isa = PBXGroup;
 			children = (
-				EBB1212313382A4F00A4BD1D /* ModalLoginWebViewController.h */,
-				EBB1212413382A4F00A4BD1D /* ModalLoginWebViewController.m */,
+				EB0336A9133AEDED00ACF2BB /* ModalLoginWebViewController.h */,
+				EB0336AA133AEDED00ACF2BB /* ModalLoginWebViewController.m */,
 				EB181FA6131EDF1B003728FF /* LoginModule.h */,
 				EB181FA7131EDF1B003728FF /* LoginModule.m */,
 			);
@@ -1309,8 +1314,8 @@
 				EB46CB671329CF0400AF7B5C /* KGOToolbar.m in Sources */,
 				EB48910913310A930036AEBF /* ExternalURLModule.m in Sources */,
 				4B8432E71331287600DCBA86 /* NewsCategory.m in Sources */,
+				4B790C5B133185DE006D28EF /* KGOHTMLTemplate.m in Sources */,
 				EBB120AA1338046400A4BD1D /* KGOWebViewController.m in Sources */,
-				EBB1212513382A4F00A4BD1D /* ModalLoginWebViewController.m in Sources */,
 				EBB1219E1338DE4000A4BD1D /* KGOEventWrapper.m in Sources */,
 				EBB121A11339006600A4BD1D /* KGOAttendeeWrapper.m in Sources */,
 				EBB121F1133A917200A4BD1D /* CalendarHomeViewController.m in Sources */,
@@ -1319,6 +1324,7 @@
 				EBB121FE133AB64D00A4BD1D /* KGOEventCategory.m in Sources */,
 				EBB12201133AB68800A4BD1D /* KGOCalendarGroup.m in Sources */,
 				EBB12204133AB6B400A4BD1D /* KGOEventAttendee.m in Sources */,
+				EB0336AB133AEDED00ACF2BB /* ModalLoginWebViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

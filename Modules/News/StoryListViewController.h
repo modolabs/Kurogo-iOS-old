@@ -54,6 +54,7 @@
 
 - (void)pruneStories;
 - (void)switchToCategory:(NewsCategoryId)category;
+- (void)switchToBookmarks;
 - (void)loadFromCache;
 - (void)loadFromServer:(BOOL)loadMore;
 - (void)loadSearchResultsFromCache;

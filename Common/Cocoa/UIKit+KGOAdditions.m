@@ -125,4 +125,13 @@
 
 @end
 
+@implementation UIWebView (KGOAdditions)
+
+- (void)loadTemplate:(KGOHTMLTemplate *)template values:(NSDictionary *)values {
+    NSString *htmlString = [template fillOutWithDictionary:values];
+    [self loadHTMLString:htmlString baseURL:[template baseURL]];
+}
+
+@end
+
 

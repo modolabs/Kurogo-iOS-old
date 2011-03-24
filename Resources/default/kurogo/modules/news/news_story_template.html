@@ -68,7 +68,7 @@
             <span class="postdate">__DATE__</span>
         </p>    
         <div id="content">
-            <div id="image"><a id="thumbnailLink" href="image"><img class="thumbnail" src="__THUMBNAIL_URL__" width="__THUMBNAIL_WIDTH__" height="__THUMBNAIL_HEIGHT__">
+            <div id="image"><a id="thumbnailLink" href="image"><img class="thumbnail" src="__THUMBNAIL_URL__" onload="imageLoaded(this)" onerror="imageFailed(this)">
                 <br /></a>
             </div>
             <!--<p class="dek">__DEK__</p>--><div id="body">__BODY__</div>
@@ -127,5 +127,34 @@
             removeClass(shareButton, "pressed");
         });
         
+        function imageLoaded(imageNode) {
+            var maxWidth = 140;
+            var maxHeight = 140;
+            
+            var newWidth = imageNode.width;
+            var newHeight = imageNode.height;
+            
+            if(imageNode.width == 1 && imageNode.height == 1) {
+                // dont show tiny images
+                imageNode.style.display = "none";
+            }
+            
+            if(newWidth > maxWidth) {
+                newHeight = Math.round(newHeight * maxWidth / newWidth);
+                newWidth = maxWidth;
+            }
+            
+            if(newHeight > maxHeight) {
+                newWidth = Math.round(newWidth * maxHeight / newHeight);
+                newHeight = maxHeight;
+            }
+            
+            imageNode.width = newWidth;
+            imageNode.height = newHeight;
+        }
+        
+        function imageFailed(imageNode) {
+            imageNode.style.display = "none";
+        }
     </script>
 </html>

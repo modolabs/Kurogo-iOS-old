@@ -6,11 +6,24 @@
 @implementation NewsModule
 
 @synthesize storyListChannelController;
+#pragma mark Navigation
+
+- (NSArray *)registeredPageNames {
+    return [NSArray arrayWithObjects:LocalPathPageNameHome, LocalPathPageNameSearch, LocalPathPageNameDetail, nil];
+}
 
 - (UIViewController *)modulePage:(NSString *)pageName params:(NSDictionary *)params {
     UIViewController *vc = nil;
     if ([pageName isEqualToString:LocalPathPageNameHome]) {
         vc = [[[StoryListViewController alloc] init] autorelease];
+    } else if([pageName isEqualToString:LocalPathPageNameDetail]) {
+        vc = [[[StoryDetailViewController alloc] init] autorelease];
+        
+        NSArray *stories = [params objectForKey:@"stories"];
+        [(StoryDetailViewController *)vc setStories:stories]; 
+        
+        NSIndexPath *indexPath = [params objectForKey:@"indexPath"];
+        [(StoryDetailViewController *)vc setInitialIndexPath:indexPath];
     }
     return vc;
 }

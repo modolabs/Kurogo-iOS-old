@@ -1,4 +1,5 @@
 #import "KGOAppDelegate.h"
+#import "KGOAppDelegate+ModuleAdditions.h"
 #import "StoryListViewController.h"
 #import "StoryDetailViewController.h"
 #import "NewsDataManager.h"
@@ -100,34 +101,19 @@ static NSInteger numTries = 0;
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-	// show / hide the bookmarks category
-	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"bookmarked == YES"];
-    NSMutableArray *allBookmarkedStories = [[CoreDataManager sharedManager] objectsForEntity:NewsStoryEntityName matchingPredicate:predicate];
-	hasBookmarks = ([allBookmarkedStories count] > 0) ? YES : NO;
-	//[self setupNavScrollButtons];
 	if (showingBookmarks) {
-		[self loadFromCache];
-		if (!hasBookmarks) {
-			[self buttonPressed:[navButtons objectAtIndex:0]];
-		}
-	}
-    // Unselect the selected row
-    [tempTableSelection release];
-	tempTableSelection = [[storyTable indexPathForSelectedRow] retain];
-	if (tempTableSelection) {
-        [storyTable beginUpdates];
-		[storyTable deselectRowAtIndexPath:tempTableSelection animated:YES];
-        [storyTable endUpdates];
-	}
+		self.stories = [[NewsDataManager sharedManager] bookmarkedStories];
+        
+        // we might want to do something special if all bookmarks are gone
+        // but i am skeptical
+        [self reloadDataForTableView:storyTable];        
+	} else if (self.stories.count) {
+        [self reloadDataForTableView:storyTable];
+    }
 }
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
-    if (tempTableSelection) {
-        [storyTable reloadRowsAtIndexPaths:[NSArray arrayWithObject:tempTableSelection] withRowAnimation:UITableViewRowAnimationNone];
-        [tempTableSelection release];
-        tempTableSelection = nil;
-	}
 }
 
 - (void)viewDidUnload {
@@ -214,7 +200,9 @@ static NSInteger numTries = 0;
     NewsCategory *category = [self.categories objectAtIndex:0];
     self.activeCategoryId = category.category_id;
     [self setupNavScroller];
-    [self loadFromCache]; // now that we have categories load the stories
+
+    // now that we have categories load the stories
+    [[NewsDataManager sharedManager] requestStoriesForCategory:self.activeCategoryId loadMore:NO forceRefresh:NO]; 
 }
 
 #pragma mark -
@@ -433,7 +421,6 @@ static NSInteger numTries = 0;
 // It also forces odd behavior of the paging controls when a memory warning occurs while looking at a story
 
 - (void)switchToCategory:(NewsCategoryId)category {
-    numTries = 0;
     if (category != self.activeCategoryId) {
 		//if (self.xmlParser) {
 		//	[self.xmlParser abort]; // cancel previous category's request if it's still going
@@ -446,13 +433,28 @@ static NSInteger numTries = 0;
 			[storyTable scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:NO];
 		}
 		[self reloadDataForTableView:storyTable];
-		showingBookmarks = (category == BOOKMARK_BUTTON_TAG) ? YES : NO;
-		[self loadFromCache]; // makes request to server if no request has been made this session
+		showingBookmarks = NO;
+        
+        // makes request to server if no request has been made this session
+        [[NewsDataManager sharedManager] requestStoriesForCategory:self.activeCategoryId loadMore:NO forceRefresh:NO];
     }
 }
 
+- (void)switchToBookmarks {
+    self.stories = [[NewsDataManager sharedManager] bookmarkedStories];
+    showingBookmarks = YES;
+    [self reloadDataForTableView:storyTable];
+}
+
 - (void)refresh:(id)sender {
-    numTries = 0;
+    // current hack just to test out the bookmark functionality
+    //[self switchToBookmarks];
+    //return;
+    
+    if (!showingBookmarks) {
+        [[NewsDataManager sharedManager] requestStoriesForCategory:self.activeCategoryId loadMore:NO forceRefresh:YES];
+        return;
+    }
     
 	if (!self.searchResults) {
 		// get active category
@@ -508,7 +510,7 @@ static NSInteger numTries = 0;
     // start new request
     NewsStory *lastStory = [self.stories lastObject];
     DLog(@"%@", [lastStory title]);
-    NSInteger lastStoryId = (loadMore) ? [lastStory.story_id integerValue] : 0;
+    NSInteger lastStoryId = (loadMore) ? [lastStory.identifier integerValue] : 0;
     //if (self.xmlParser) {
 	//	[self.xmlParser abort];
 	//}
@@ -565,7 +567,7 @@ static NSInteger numTries = 0;
 
 - (void)loadSearchResultsFromServer:(BOOL)loadMore forQuery:(NSString *)query {
     NewsStory *lastStory = [self.stories lastObject];
-    NSInteger lastStoryId = (loadMore) ? [lastStory.story_id integerValue] : 0;
+    NSInteger lastStoryId = (loadMore) ? [lastStory.identifier integerValue] : 0;
     if (!loadMore)
         searchIndex = 1;
     
@@ -578,119 +580,6 @@ static NSInteger numTries = 0;
 	//[xmlParser loadStoriesforQuery:query afterStoryId:lastStoryId searchIndex:searchIndex count:10];
 }
 
-#pragma mark -
-#pragma mark StoryXMLParser delegation
-/*
-- (void)parserDidStartDownloading:(StoryXMLParser *)parser {
-    if (parser == self.xmlParser) {
-		[self setProgress:0.02];
-    }
-}
-
-- (void)parserDidMakeConnection:(StoryXMLParser *)parser {
-    if (parser == self.xmlParser) {
-		[self setProgress:0.1];
-		[storyTable reloadData];
-    }
-}
-
-- (void)parser:(StoryXMLParser *)parser downloadMadeProgress:(CGFloat)progress {
-    if (parser == self.xmlParser) {
-		[self setProgress:0.1 + 0.2 * progress];
-    }
-}
-
-- (void)parserDidStartParsing:(StoryXMLParser *)parser {
-    if (parser == self.xmlParser) {
-		[self setProgress:0.3];
-    }
-}
-
-- (void)parser:(StoryXMLParser *)parser didMakeProgress:(CGFloat)percentDone {
-    if (parser == self.xmlParser) {
-		[self setProgress:0.3 + 0.7 * percentDone * 0.01];
-    }
-}
-
-- (void)parser:(StoryXMLParser *)parser didFailWithDownloadError:(NSError *)error {
-    if (parser == self.xmlParser) {
-		// TODO: make sure we aren't showing redundant alert views in addition to ConnectionWrapper
-        if ([error code] == NSURLErrorNotConnectedToInternet) {
-            DLog(@"News download failed because there's no net connection");
-        } else {
-            DLog(@"Download failed for parser %@ with error %@", parser, [error userInfo]);
-        }
-		[self setStatusText:@"Update failed"];
-		
-		UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Update failed"
-														message:@"Please check your connection and try again."
-													   delegate:nil
-											  cancelButtonTitle:NSLocalizedString(@"OK", nil) 
-											  otherButtonTitles:nil];
-		[alert show];
-		[alert release];
-        if ([self.stories count] > 0) {
-            [storyTable deselectRowAtIndexPath:[NSIndexPath indexPathForRow:[self.stories count] inSection:0] animated:YES];
-        }
-    }
-}
-
-- (void)parser:(StoryXMLParser *)parser didFailWithParseError:(NSError *)error {
-    if (parser == self.xmlParser) {
-		// TODO: make sure we aren't showing redundant alert views in addition to ConnectionWrapper
-		[self setStatusText:@"Update failed"];
-		UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Update failed"
-														message:@"Please check your connection and try again."
-													   delegate:nil
-											  cancelButtonTitle:NSLocalizedString(@"OK", nil) 
-											  otherButtonTitles:nil];
-		[alert show];
-		[alert release];
-        if ([self.stories count] > 0) {
-            [storyTable deselectRowAtIndexPath:[NSIndexPath indexPathForRow:[self.stories count] inSection:0] animated:YES];
-        }
-    }
-}
-
-- (void)parserDidFinishParsing:(StoryXMLParser *)parser {
-    if (parser == self.xmlParser) {
-		// basic category request
-		if (!parser.isSearch) {
-			NSManagedObject *aCategory = [[self.categories filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"category_id == %d", self.activeCategoryId]] lastObject];
-			NSInteger length = [[aCategory valueForKey:@"expectedCount"] integerValue];
-			if (length == 0) { // fresh load of category, set its updated date
-				[aCategory setValue:[NSDate date] forKey:@"lastUpdated"];
-			} else {
-                numTries = 0;
-            }
-			length += [self.xmlParser.newStories count];
-            
-            DLog(@"setting expectedCount = %d", length);            
-			[aCategory setValue:[NSNumber numberWithInteger:length] forKey:@"expectedCount"];
-			if (!parser.loadingMore && [self.stories count] > 0) {
-				[storyTable scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:NO];
-			}
-            searchIndex = 1;
-			self.xmlParser = nil;
-			[self loadFromCache];
-		}
-		// result of a search request
-		else {
-            if (!parser.loadingMore) {
-                totalAvailableResults = self.xmlParser.totalAvailableResults;
-                if ([self.stories count] > 0) {
-                    [storyTable scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:NO];
-                }
-            }
-            
-            searchIndex = self.xmlParser.searchIndex;
-			self.xmlParser = nil;
-			[self loadSearchResultsFromCache];
-		}
-    }
-    
-}
-*/
 
 #pragma mark -
 #pragma mark Bottom status bar
@@ -749,14 +638,15 @@ static NSInteger numTries = 0;
         case 0:
             n = self.stories.count;
             
-            NSInteger moreStories = [[NewsDataManager sharedManager] loadMoreStoriesQuantityForCategoryId:activeCategoryId];
-			// don't show "load x more" row if
-			if (!showingBookmarks && // showing bookmarks
-				!(searchResults && n >= totalAvailableResults) && // showing all search results
-				(moreStories > 0) ) { // category has more stories
-				n += 1; // + 1 for the "Load more articles..." row
-			}
-            break;
+            if(!showingBookmarks) {
+                NSInteger moreStories = [[NewsDataManager sharedManager] loadMoreStoriesQuantityForCategoryId:activeCategoryId];
+                // don't show "load x more" row if
+                if (!(searchResults && n >= totalAvailableResults) && // showing all search results
+                    (moreStories > 0) ) { // category has more stories
+                    n += 1; // + 1 for the "Load more articles..." row
+                }
+                break;
+            }
     }
 	return n;
 }
@@ -935,74 +825,27 @@ static NSInteger numTries = 0;
 	if(indexPath.row == self.stories.count) {
         if(![[NewsDataManager sharedManager] busy]) {
             if (!self.searchResults) {
-                [[NewsDataManager sharedManager] requestStoriesForCategory:self.activeCategoryId loadMore:YES];
+                [[NewsDataManager sharedManager] requestStoriesForCategory:self.activeCategoryId loadMore:YES forceRefresh:NO];
             } else {
                 // do search here I think
                 //[self loadSearchResultsFromServer:YES forQuery:self.searchQuery];
             }
         }
 	} else {
-        StoryDetailViewController *detailViewController = [[StoryDetailViewController alloc] init];
-		detailViewController.newsController = self;
-		NewsStory *story = nil;
-        if (self.searchResults == nil     // this is not a search
-            && self.featuredStory != nil  // we have a featured story
-            && !showingBookmarks          // we are not looking at bookmarks
-            && indexPath.row == 0)
-        {
-            story = self.featuredStory;
-        } else {
-            story = [self.stories objectAtIndex:indexPath.row];
-        }
-        detailViewController.story = story;
-        
-        [self.navigationController pushViewController:detailViewController animated:YES];
-        [detailViewController release];
+        //if (self.searchResults == nil     // this is not a search
+        //    && self.featuredStory != nil  // we have a featured story
+        //    && !showingBookmarks          // we are not looking at bookmarks
+        //    && indexPath.row == 0)
+        //{
+        //    story = self.featuredStory;
+        //} else {
+        //    story = [self.stories objectAtIndex:indexPath.row];
+        //}
+        NSMutableDictionary *params = [NSMutableDictionary dictionary];
+        [params setObject:indexPath forKey:@"indexPath"];
+        [params setObject:self.stories forKey:@"stories"];
+        [KGO_SHARED_APP_DELEGATE() showPage:LocalPathPageNameDetail forModuleTag:NewsTag params:params];
 	}
 }
-
-#pragma mark -
-#pragma mark Browsing hooks
-
-- (BOOL)canSelectPreviousStory {
-	NSIndexPath *currentIndexPath = [storyTable indexPathForSelectedRow];
-	if (currentIndexPath.row > 0) {
-		return YES;
-	} else {
-		return NO;
-	}
-}
-
-- (BOOL)canSelectNextStory {
-	NSIndexPath *currentIndexPath = [storyTable indexPathForSelectedRow];
-	if (currentIndexPath.row + 1 < [self.stories count]) {
-		return YES;
-	} else {
-		return NO;
-	}
-}
-
-- (NewsStory *)selectPreviousStory {
-	NewsStory *prevStory = nil;
-	if ([self canSelectPreviousStory]) {
-		NSIndexPath *currentIndexPath = [storyTable indexPathForSelectedRow];
-		NSIndexPath *prevIndexPath = [NSIndexPath indexPathForRow:currentIndexPath.row - 1 inSection:currentIndexPath.section];
-		prevStory = [self.stories objectAtIndex:prevIndexPath.row];
-		[storyTable selectRowAtIndexPath:prevIndexPath animated:NO scrollPosition:UITableViewScrollPositionMiddle];
-	}
-	return prevStory;
-}
-
-- (NewsStory *)selectNextStory {
-	NewsStory *nextStory = nil;
-	if ([self canSelectNextStory]) {
-		NSIndexPath *currentIndexPath = [storyTable indexPathForSelectedRow];
-		NSIndexPath *nextIndexPath = [NSIndexPath indexPathForRow:currentIndexPath.row + 1 inSection:currentIndexPath.section];
-		nextStory = [self.stories objectAtIndex:nextIndexPath.row];
-		[storyTable selectRowAtIndexPath:nextIndexPath animated:NO scrollPosition:UITableViewScrollPositionMiddle];
-	}
-	return nextStory;
-}
-
 
 @end
