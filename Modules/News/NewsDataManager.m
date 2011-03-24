@@ -4,7 +4,8 @@
 
 #define REQUEST_CATEGORIES_CHANGED 1
 #define REQUEST_CATEGORIES_UNCHANGED 2
-#define LIMIT 10
+#define LIMIT 5
+#define NEWS_CATEGORY_EXPIRES_TIME 30.0
 
 NSString * const NewsTagItem            = @"item";
 NSString * const NewsTagTitle           = @"title";
@@ -169,7 +170,7 @@ NSString * const NewsTagBody            = @"body";
     return allBookmarkedStories;
 }
 
-- (void)requestStoriesForCategory:(NewsCategoryId)categoryID loadMore:(BOOL)loadMore {
+- (void)requestStoriesForCategory:(NewsCategoryId)categoryID loadMore:(BOOL)loadMore forceRefresh:(BOOL)forceRefresh {
     // load what's in CoreData
     NewsCategory *category =[self fetchCategoryFromCoreData:categoryID];
     [[[CoreDataManager sharedManager] managedObjectContext] refreshObject:category mergeChanges:NO];
@@ -182,9 +183,6 @@ NSString * const NewsTagBody            = @"body";
     [postDateSortDescriptor release];
     
     predicate = [NSPredicate predicateWithFormat:@"ANY categories.category_id LIKE %@", category.category_id];
-    
-    // if maxLength == 0, nothing's been loaded from the server this session -- show up to 10 results from core data
-    // else show up to maxLength
     NSArray *results = [[CoreDataManager sharedManager] objectsForEntity:NewsStoryEntityName matchingPredicate:predicate sortDescriptors:sortDescriptors];
     
     // grab the first featured story from the list, regardless of pubdate
@@ -210,7 +208,14 @@ NSString * const NewsTagBody            = @"body";
         }
     }
     
-    if (loadMore || ([results count] == 0)) {
+    BOOL categoryFresh;
+    if(category.lastUpdated) {
+        categoryFresh = (-[category.lastUpdated timeIntervalSinceNow] < NEWS_CATEGORY_EXPIRES_TIME);
+    } else {
+        categoryFresh = NO;
+    }
+    
+    if (loadMore || ([results count] == 0) || !categoryFresh || forceRefresh) {
         [self loadStoriesFromServerForCategory:category loadMore:loadMore];
         // this creates a loop which will keep trying until there is at least something in this category
     }
@@ -258,6 +263,18 @@ NSString * const NewsTagBody            = @"body";
     request.expectedResponseType = [NSDictionary class];
     request.handler = [[^(id result) {
         NewsCategory *safeCategoryObject = [self fetchCategoryFromCoreData:categoryID];
+        
+        if (!loadMore) {
+            // this is a refresh load, so we need to prune
+            // all old stories
+            NSSet *safeStorySet = [NSSet setWithSet:safeCategoryObject.stories];
+            for (NewsStory *story in safeStorySet) {
+                if(![story.bookmarked boolValue]) {
+                    [[CoreDataManager sharedManager] deleteObject:story];
+                }
+                story.categories = [NSSet set];
+            }
+        }
         
         NSDictionary *resultDict = (NSDictionary *)result;
         NSArray *stories = [resultDict objectForKey:@"stories"];
@@ -350,7 +367,7 @@ NSString * const NewsTagBody            = @"body";
     
     if([path isEqualToString:@"stories"]) {
         NSString *categoryID = [request.getParams objectForKey:@"categoryID"];
-        [self requestStoriesForCategory:categoryID loadMore:NO];
+        [self requestStoriesForCategory:categoryID loadMore:NO forceRefresh:NO];
         return;
     
     } else if([path isEqualToString:@"categories"]) {

@@ -26,7 +26,7 @@ typedef NSString* NewsCategoryId;
 
 - (void)requestCategories;
 
-- (void)requestStoriesForCategory:(NewsCategoryId)categoryID loadMore:(BOOL)loadMore;
+- (void)requestStoriesForCategory:(NewsCategoryId)categoryID loadMore:(BOOL)loadMore forceRefresh:(BOOL)forceRefresh;
 
 - (void)registerDelegate:(id<NewsDataDelegate>)delegate;
 

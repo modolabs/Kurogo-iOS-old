@@ -202,7 +202,7 @@ static NSInteger numTries = 0;
     [self setupNavScroller];
 
     // now that we have categories load the stories
-    [[NewsDataManager sharedManager] requestStoriesForCategory:self.activeCategoryId loadMore:NO]; 
+    [[NewsDataManager sharedManager] requestStoriesForCategory:self.activeCategoryId loadMore:NO forceRefresh:NO]; 
 }
 
 #pragma mark -
@@ -436,7 +436,7 @@ static NSInteger numTries = 0;
 		showingBookmarks = NO;
         
         // makes request to server if no request has been made this session
-        [[NewsDataManager sharedManager] requestStoriesForCategory:self.activeCategoryId loadMore:NO];
+        [[NewsDataManager sharedManager] requestStoriesForCategory:self.activeCategoryId loadMore:NO forceRefresh:NO];
     }
 }
 
@@ -448,8 +448,13 @@ static NSInteger numTries = 0;
 
 - (void)refresh:(id)sender {
     // current hack just to test out the bookmark functionality
-    [self switchToBookmarks];
-    return;
+    //[self switchToBookmarks];
+    //return;
+    
+    if (!showingBookmarks) {
+        [[NewsDataManager sharedManager] requestStoriesForCategory:self.activeCategoryId loadMore:NO forceRefresh:YES];
+        return;
+    }
     
 	if (!self.searchResults) {
 		// get active category
@@ -465,10 +470,6 @@ static NSInteger numTries = 0;
 		[self loadSearchResultsFromServer:NO forQuery:self.searchQuery];
 	}
 
-}
-
-- (void)loadCurrentCategory {
-    [[NewsDataManager sharedManager] requestStoriesForCategory:self.activeCategoryId loadMore:NO];
 }
 
 - (void)loadFromCache {
@@ -824,7 +825,7 @@ static NSInteger numTries = 0;
 	if(indexPath.row == self.stories.count) {
         if(![[NewsDataManager sharedManager] busy]) {
             if (!self.searchResults) {
-                [[NewsDataManager sharedManager] requestStoriesForCategory:self.activeCategoryId loadMore:YES];
+                [[NewsDataManager sharedManager] requestStoriesForCategory:self.activeCategoryId loadMore:YES forceRefresh:NO];
             } else {
                 // do search here I think
                 //[self loadSearchResultsFromServer:YES forQuery:self.searchQuery];
