@@ -165,7 +165,7 @@ enum CalendarDetailRowTypes {
 		
 		numRows++;
 	}
-	if ([self.event.categories count] > 0 && isRegularEvent) {
+	if ([self.event.calendars count] > 0 && isRegularEvent) {
         rowTypes[numRows] = CalendarDetailRowTypeCategories;
         
         [categoriesString release];
@@ -173,7 +173,7 @@ enum CalendarDetailRowTypes {
         UIFont *cellFont = [[KGOTheme sharedTheme] fontForTableCellTitleWithStyle:UITableViewCellStyleDefault];
         CGSize textSize = [CalendarTag sizeWithFont:cellFont];
         // one line height per category, +1 each for "Categorized as" and <ul> spacing, 5px between lines
-        categoriesHeight = (textSize.height + 5.0) * ([event.categories count] + 2);
+        categoriesHeight = (textSize.height + 5.0) * ([event.calendars count] + 2);
 		
         numRows++;
 	}
@@ -261,7 +261,7 @@ enum CalendarDetailRowTypes {
     descriptionString = nil;
     categoriesString = nil;
 	
-    NSInteger catID = [[[self.event.categories anyObject] identifier] intValue];
+    NSInteger catID = [[[self.event.calendars anyObject] identifier] intValue];
     isRegularEvent = (catID != kCalendarAcademicCategoryID && catID != kCalendarHolidayCategoryID);
 }
 
@@ -308,13 +308,13 @@ enum CalendarDetailRowTypes {
 		
 		NSMutableArray *tempCats = [NSMutableArray array];
 		
-		for (KGOEventCategory *category in event.categories) {
+		for (KGOCalendar *category in event.calendars) {
 			[tempCats addObject:category];
 		}
 		
 		NSArray *tempA = [tempCats sortedArrayUsingSelector:@selector(compare:)];
 		
-		for (KGOEventCategory *category in tempA) {
+		for (KGOCalendar *category in tempA) {
 			NSString *catIDString = [NSString stringWithFormat:@"catID=%d", [category.identifier intValue]];
 			NSURL *categoryURL = [NSURL internalURLWithModuleTag:CalendarTag path:CalendarStateCategoryEventList query:catIDString];
 			[categoriesBody appendString:[NSString stringWithFormat:
@@ -330,7 +330,7 @@ enum CalendarDetailRowTypes {
 		UIFont *cellFont = [[KGOTheme sharedTheme] fontForTableCellTitleWithStyle:KGOTableCellStyleDefault];
 		CGSize textSize = [CalendarTag sizeWithFont:cellFont];
 		// one line height per category, +1 each for "Categorized as" and <ul> spacing, 5px between lines
-		categoriesHeight = (textSize.height + 5.0) * ([event.categories count] + 2);
+		categoriesHeight = (textSize.height + 5.0) * ([event.calendars count] + 2);
 		
 		CGRect frame = CGRectMake(WEB_VIEW_PADDING, WEB_VIEW_PADDING, self.tableView.frame.size.width - 2 * WEB_VIEW_PADDING, categoriesHeight);
 		UIWebView *webView = [[[UIWebView alloc] initWithFrame:frame] autorelease];

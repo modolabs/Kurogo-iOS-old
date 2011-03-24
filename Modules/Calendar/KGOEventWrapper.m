@@ -21,6 +21,11 @@ categories = _categories,
 contacts = _contacts,
 bookmarked = _bookmarked;
 
+#pragma mark KGOSearchResult
+
+
+#pragma mark -
+
 + (EKEventStore *)sharedEventStore
 {
     static EKEventStore *s_eventStore = nil;

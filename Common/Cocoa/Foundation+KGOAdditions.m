@@ -74,13 +74,10 @@
 	NSMutableArray *components = [NSMutableArray arrayWithCapacity:[parameters count]];
 
     [parameters enumerateKeysAndObjectsUsingBlock:^(id key, id value, BOOL *stop) {
-        NSString *encodedKey = [[key stringByReplacingOccurrencesOfString:@" " withString:@"+"] stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-        NSString *encodedValue = [[value stringByReplacingOccurrencesOfString:@" " withString:@"+"] stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+        NSString *encodedKey = [[key stringByReplacingOccurrencesOfString:@" " withString:@"+"] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+        NSString *encodedValue = [[value stringByReplacingOccurrencesOfString:@" " withString:@"+"] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
         
-        encodedKey = [encodedKey stringByReplacingOccurrencesOfString:@"&" withString:@"%26"];
-        encodedValue = [encodedValue stringByReplacingOccurrencesOfString:@"&" withString:@"%26"];
-        
-		[components addObject:[NSString stringWithFormat:@"%@=%@", key, value]];
+		[components addObject:[NSString stringWithFormat:@"%@=%@", encodedKey, encodedValue]];
     }];
 
 	return [components componentsJoinedByString:@"&"];

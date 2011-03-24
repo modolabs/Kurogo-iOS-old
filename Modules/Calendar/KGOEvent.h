@@ -1,7 +1,7 @@
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
 
-@class KGOCalendar, KGOEventAttendee, KGOEventCategory;
+@class KGOCalendar, KGOEventAttendee;
 
 @interface KGOEvent : NSManagedObject {
 @private
@@ -17,9 +17,8 @@
 @property (nonatomic, retain) NSString * location;
 @property (nonatomic, retain) NSString * summary;
 @property (nonatomic, retain) NSDate * end;
-@property (nonatomic, retain) NSSet* categories;
+@property (nonatomic, retain) NSSet* calendars;
 @property (nonatomic, retain) NSSet* attendees;
 @property (nonatomic, retain) KGOEventAttendee * organizer;
-@property (nonatomic, retain) KGOCalendar * calendar;
 
 @end

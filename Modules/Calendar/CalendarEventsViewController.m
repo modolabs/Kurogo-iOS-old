@@ -203,8 +203,8 @@
         // if we receive nil from core data, then make a trip to the server
         [categories release];
         if (theCatID != kCalendarTopLevelCategoryID) {
-            KGOEventCategory *category = [CalendarDataManager categoryWithID:theCatID];
-            NSMutableArray *subCategories = [[[category.subCategories allObjects] mutableCopy] autorelease];
+            KGOCalendar *category = [CalendarDataManager categoryWithID:theCatID];
+            NSMutableArray *subCategories = [[[category.subCalendars allObjects] mutableCopy] autorelease];
             // sort "All" category, i.e. the category that is a subcategory of itself, to the beginning
             [subCategories removeObject:category];
             categories = [[NSArray arrayWithObject:category] arrayByAddingObjectsFromArray:subCategories];
@@ -458,7 +458,7 @@
         NSMutableArray *arrayForTable = [NSMutableArray arrayWithCapacity:[result count]];
         
         for (NSDictionary *catDict in result) {
-            KGOEventCategory *category = [CalendarDataManager categoryWithDict:catDict];
+            KGOCalendar *category = [CalendarDataManager categoryWithDict:catDict];
             [arrayForTable addObject:category];
         }
         
@@ -481,7 +481,7 @@
 		if (activeEventList == CalendarEventListTypeCategory) {
             
 			for (NSDictionary *catDict in result) {
-				KGOEventCategory *category = [CalendarDataManager categoryWithDict:catDict];
+				KGOCalendar *category = [CalendarDataManager categoryWithDict:catDict];
 				[arrayForTable addObject:category];
 			}
             [categories release];
@@ -489,7 +489,7 @@
             
 		} else {
             // academic & holiday events have no category so we assign something to differentiate them
-            KGOEventCategory *category = nil;
+            KGOCalendar *category = nil;
             switch (activeEventList) {
                 case CalendarEventListTypeAcademic:
                     category = [CalendarDataManager categoryWithID:kCalendarAcademicCategoryID];
@@ -629,7 +629,7 @@
         } copy] autorelease];
         
     } else {
-        KGOEventCategory *category = [categories objectAtIndex:indexPath.row];
+        KGOCalendar *category = [categories objectAtIndex:indexPath.row];
         NSString *title = category.title;
         
         return [[^(UITableViewCell *cell) {

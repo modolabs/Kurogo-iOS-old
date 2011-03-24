@@ -35,6 +35,16 @@
 	return self;
 }
 
+- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
+{
+    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
+    if (self) {
+		_tableController = [[KGOTableController alloc] initWithViewController:self];
+		_tableController.dataSource = self;
+	}
+	return self;
+}
+
 - (id)initWithStyle:(UITableViewStyle)style {
     self = [super init];
     if (self) {
@@ -288,7 +298,7 @@
     UITableView *tableView = [[[UITableView alloc] initWithFrame:frame style:style] autorelease];
 
     if (style == UITableViewStyleGrouped) {
-        tableView.backgroundColor = [[KGOTheme sharedTheme] backgroundColorForApplication]; // [UIColor clearColor];
+        tableView.backgroundColor = [[KGOTheme sharedTheme] backgroundColorForApplication];
     }
 	
 	[self addTableView:tableView withDataSource:dataSource];

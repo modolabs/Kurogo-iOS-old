@@ -1,7 +1,7 @@
 #import "KGOCategoryListViewController.h"
 #import "KGOSearchModel.h"
 #import "KGOMapCategory.h"
-#import "KGOEventCategory.h"
+#import "KGOCalendar.h"
 #import "KGOAppDelegate+ModuleAdditions.h"
 #import "KGOTheme.h"
 #import "CoreDataManager.h"
@@ -151,7 +151,7 @@
         // TODO: need better way to get module tag
         if ([category isKindOfClass:[KGOMapCategory class]]) {
             moduleTag = MapTag;
-        } else if ([category isKindOfClass:[KGOEventCategory class]]) {
+        } else if ([category isKindOfClass:[KGOCalendar class]]) {
             moduleTag = CalendarTag;
         }
         

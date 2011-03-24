@@ -4,7 +4,7 @@
 
 @implementation CalendarHomeViewController
 
-@synthesize searchTerms;
+@synthesize searchTerms, currentCalendar = _currentCalendar;
 
 /*
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -42,6 +42,8 @@
     _dataManager = [[CalendarDataManager alloc] init];
     _dataManager.delegate = self;
     [_dataManager requestGroups];
+    
+    [_datePager setDate:[NSDate date]];
 }
 
 - (void)viewDidUnload
@@ -71,22 +73,152 @@
     [self setupTabstripButtons];
 }
 
-
-- (void)categoriesDidChange:(NSArray *)categories
+- (void)groupDataDidChange:(KGOCalendarGroup *)group
 {
+    NSLog(@"%@", [group.calendars description]);
+    
+    if (group.calendars.count) {
+        [_loadingView stopAnimating];
+        
+        UITableViewStyle style = (group.calendars.count > 1) ? UITableViewStyleGrouped : UITableViewStylePlain;
+        if (group.calendars.count > 1) {
+            style = UITableViewStyleGrouped;
+        } else {
+            style = UITableViewStylePlain;
+        }
+        
+        CGRect frame = self.view.frame;
+        if ([_datePager isDescendantOfView:self.view]) {
+            frame.origin.y += _datePager.frame.size.height;
+            frame.size.height -= _datePager.frame.size.height;
+        }
+        if ([_tabstrip isDescendantOfView:self.view]) {
+            frame.origin.y += _tabstrip.frame.size.height;
+            frame.size.height -= _tabstrip.frame.size.height;
+        }
+
+        UITableView *tableView = [self addTableViewWithFrame:frame style:style];
+        
+        self.currentCalendar = (group.calendars.count > 1) ? nil : [group.calendars anyObject];
+    }
+}
+
+- (void)categoriesDidChange:(NSArray *)categories group:(NSString *)group
+{
+    if ([group isEqualToString:[_groupTitles objectAtIndex:_currentGroupIndex]]) {
+    }
+}
+
+// TODO: flesh out placeholder functions
+static bool isOverOneMonth(NSTimeInterval interval) {
+    return interval > 31 * 24 * 60 * 60;
+}
+
+static bool isOverOneDay(NSTimeInterval interval) {
+    return interval > 24 * 60 * 60;
+}
+
+static bool isOverOneHour(NSTimeInterval interval) {
+    return interval > 60 * 60;
 }
 
 
 - (void)eventsDidChange:(NSArray *)events category:(NSString *)category
 {
+    if (![_currentCalendar.identifier isEqualToString:category]) {
+        return;
+    }
+    
+    [_currentSections release];
+    _currentSections = nil;
+    
+    [_currentEventsBySection release];
+    _currentEventsBySection = nil;
+    
+    if (events.count) {
+        // TODO: make sure this set of events is what we last requested
+        NSMutableDictionary *eventsBySection = [NSMutableDictionary dictionary];
+        NSMutableArray *sectionTitles = [NSMutableArray array];
+        NSArray *sortDescriptors = [NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"startDate" ascending:YES]];
+        NSArray *sortedEvents = [events sortedArrayUsingDescriptors:sortDescriptors];
+        KGOEventWrapper *firstEvent = [sortedEvents objectAtIndex:0];
+        KGOEventWrapper *lastEvent = [sortedEvents lastObject];
+        NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+        NSTimeInterval interval = [lastEvent.startDate timeIntervalSinceDate:firstEvent.startDate];
+        if (isOverOneMonth(interval)) {
+            [formatter setDateStyle:NSDateFormatterMediumStyle];
+            [formatter setTimeStyle:NSDateFormatterNoStyle];
+
+        } else if (isOverOneDay(interval)) {
+            [formatter setDateStyle:NSDateFormatterMediumStyle];
+            [formatter setTimeStyle:NSDateFormatterNoStyle];
+
+        } else if (isOverOneHour(interval)) {
+            [formatter setDateStyle:NSDateFormatterNoStyle];
+            [formatter setTimeStyle:NSDateFormatterMediumStyle];
+        
+        } else {
+            [formatter setDateStyle:NSDateFormatterNoStyle];
+            [formatter setTimeStyle:NSDateFormatterMediumStyle];
+        
+        }
+        
+        for (KGOEventWrapper *event in events) {
+            NSString *title = [formatter stringFromDate:event.startDate];
+            NSMutableArray *eventsForCurrentSection = [eventsBySection objectForKey:title];
+            if (!eventsForCurrentSection) {
+                eventsForCurrentSection = [NSMutableArray array];
+                [eventsBySection setObject:eventsForCurrentSection forKey:title];
+                [sectionTitles addObject:title];
+            }
+            [eventsForCurrentSection addObject:event];
+        }
+    
+        _currentSections = [sectionTitles copy];
+        _currentEventsBySection = [eventsBySection copy];
+    }
+    
+    [self reloadDataForTableView:self.tableView];
+}
+
+
+
+- (KGOCalendar *)currentCalendar
+{
+    return _currentCalendar;
+}
+
+- (void)setCurrentCalendar:(KGOCalendar *)currentCalendar
+{
+    [_currentCalendar release];
+    _currentCalendar = [currentCalendar retain];
+    
+    if (_currentCalendar) {
+        [_dataManager requestEventsForCalendar:_currentCalendar time:[NSDate date]];
+    }
 }
 
 #pragma mark - Scrolling tabstrip
 
 - (void)tabstrip:(KGOScrollingTabstrip *)tabstrip clickedButtonAtIndex:(NSUInteger)index
 {
+    // TODO: make tabstrip only return indexes of non-special buttons
+    // since what it does now is way too confusing
+    if (index == [tabstrip searchButtonIndex] || index == [tabstrip bookmarkButtonIndex]) {
+        return;
+    }
+    
+    NSString *title = [tabstrip buttonTitleAtIndex:index];
+    index = [_groupTitles indexOfObject:title];
+    
     if (index != _currentGroupIndex) {
+        [self removeTableView:self.tableView];
+        [_loadingView startAnimating];
+
         _currentGroupIndex = index;
+        [_dataManager selectGroupAtIndex:index];
+        KGOCalendarGroup *group = [_dataManager currentGroup];
+        [self groupDataDidChange:group];
     }
 }
 
@@ -98,6 +230,7 @@
         NSString *buttonTitle = [_groupTitles objectAtIndex:i];
         [_tabstrip addButtonWithTitle:buttonTitle];
     }
+    [_tabstrip setNeedsLayout];
     
     if (_currentGroupIndex >= _groupTitles.count) {
         _currentGroupIndex = 0;
@@ -110,9 +243,10 @@
 
 - (void)pager:(KGODatePager *)pager didSelectDate:(NSDate *)date
 {
+    // TODO: show loading indicator
+    
+    [_dataManager requestEventsForCalendar:_currentCalendar startDate:date endDate:nil];
 }
-
-
 
 #pragma mark Table view methods
 
@@ -132,10 +266,18 @@
 
     } else if (_currentCategories) {
         num = _currentCategories.count;
-
     }
 
     return num;
+}
+
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
+{
+    if (_currentSections && _currentEventsBySection) {
+        return [_currentSections objectAtIndex:section];
+    }
+    
+    return nil;
 }
 
 - (KGOTableCellStyle)tableView:(UITableView *)tableView styleForCellAtIndexPath:(NSIndexPath *)indexPath {
@@ -183,7 +325,7 @@
 
 - (CellManipulator)tableView:(UITableView *)tableView manipulatorForCellAtIndexPath:(NSIndexPath *)indexPath {
     if (_currentCategories) {
-        KGOEventCategory *category = [_currentCategories objectAtIndex:indexPath.row];
+        KGOCalendar *category = [_currentCategories objectAtIndex:indexPath.row];
         NSString *title = category.title;
         
         return [[^(UITableViewCell *cell) {

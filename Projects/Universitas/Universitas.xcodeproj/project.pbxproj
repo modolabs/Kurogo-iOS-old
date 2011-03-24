@@ -38,6 +38,8 @@
 		DED3CCE910418F5F003D3B74 /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = DED3CCE810418F5F003D3B74 /* Default.png */; };
 		DEE6B1CD111774300037F03C /* Entitlements.plist in Resources */ = {isa = PBXBuildFile; fileRef = DEE6B1CC111774300037F03C /* Entitlements.plist */; };
 		EB0336AB133AEDED00ACF2BB /* ModalLoginWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EB0336AA133AEDED00ACF2BB /* ModalLoginWebViewController.m */; };
+		EB0336AE133BA23E00ACF2BB /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = EB0336AD133BA23E00ACF2BB /* Reachability.m */; };
+		EB0336B1133BA32900ACF2BB /* KGORequest.m in Sources */ = {isa = PBXBuildFile; fileRef = EB0336B0133BA32900ACF2BB /* KGORequest.m */; };
 		EB138BB112F231E3004DBB7C /* en.lproj in Resources */ = {isa = PBXBuildFile; fileRef = EB138BAE12F231E3004DBB7C /* en.lproj */; };
 		EB138F0512F253A1004DBB7C /* libGoogleAnalytics.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EB138F0312F253A1004DBB7C /* libGoogleAnalytics.a */; };
 		EB1440421309EE3400396753 /* AnalyticsWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = EB143FDD1309EE3400396753 /* AnalyticsWrapper.m */; };
@@ -152,7 +154,7 @@
 		EBB121F2133A917200A4BD1D /* CalendarHomeViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = EBB121F0133A915200A4BD1D /* CalendarHomeViewController.xib */; };
 		EBB121F8133AB5DD00A4BD1D /* KGOEventContactInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = EBB121F7133AB5CF00A4BD1D /* KGOEventContactInfo.m */; };
 		EBB121FB133AB61200A4BD1D /* KGOEvent.m in Sources */ = {isa = PBXBuildFile; fileRef = EBB121FA133AB60000A4BD1D /* KGOEvent.m */; };
-		EBB121FE133AB64D00A4BD1D /* KGOEventCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = EBB121FD133AB63700A4BD1D /* KGOEventCategory.m */; };
+		EBB121FE133AB64D00A4BD1D /* KGOCalendar.m in Sources */ = {isa = PBXBuildFile; fileRef = EBB121FD133AB63700A4BD1D /* KGOCalendar.m */; };
 		EBB12201133AB68800A4BD1D /* KGOCalendarGroup.m in Sources */ = {isa = PBXBuildFile; fileRef = EBB12200133AB67400A4BD1D /* KGOCalendarGroup.m */; };
 		EBB12204133AB6B400A4BD1D /* KGOEventAttendee.m in Sources */ = {isa = PBXBuildFile; fileRef = EBB12203133AB6A500A4BD1D /* KGOEventAttendee.m */; };
 /* End PBXBuildFile section */
@@ -252,6 +254,10 @@
 		DEE6B1CC111774300037F03C /* Entitlements.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Entitlements.plist; sourceTree = "<group>"; };
 		EB0336A9133AEDED00ACF2BB /* ModalLoginWebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ModalLoginWebViewController.h; sourceTree = "<group>"; };
 		EB0336AA133AEDED00ACF2BB /* ModalLoginWebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ModalLoginWebViewController.m; sourceTree = "<group>"; };
+		EB0336AC133BA23E00ACF2BB /* Reachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Reachability.h; sourceTree = "<group>"; };
+		EB0336AD133BA23E00ACF2BB /* Reachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Reachability.m; sourceTree = "<group>"; };
+		EB0336AF133BA32900ACF2BB /* KGORequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGORequest.h; sourceTree = "<group>"; };
+		EB0336B0133BA32900ACF2BB /* KGORequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGORequest.m; sourceTree = "<group>"; };
 		EB138AFC12F22F31004DBB7C /* Config.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Config.plist; sourceTree = "<group>"; };
 		EB138BAE12F231E3004DBB7C /* en.lproj */ = {isa = PBXFileReference; lastKnownFileType = folder; name = en.lproj; path = Localization/en.lproj; sourceTree = "<group>"; };
 		EB138E8E12F24EB2004DBB7C /* Proj.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Proj.xcodeproj; path = Proj/Proj.xcodeproj; sourceTree = "<group>"; };
@@ -454,8 +460,8 @@
 		EBB121F7133AB5CF00A4BD1D /* KGOEventContactInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGOEventContactInfo.m; sourceTree = "<group>"; };
 		EBB121F9133AB5EE00A4BD1D /* KGOEvent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGOEvent.h; sourceTree = "<group>"; };
 		EBB121FA133AB60000A4BD1D /* KGOEvent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGOEvent.m; sourceTree = "<group>"; };
-		EBB121FC133AB62400A4BD1D /* KGOEventCategory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGOEventCategory.h; sourceTree = "<group>"; };
-		EBB121FD133AB63700A4BD1D /* KGOEventCategory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGOEventCategory.m; sourceTree = "<group>"; };
+		EBB121FC133AB62400A4BD1D /* KGOCalendar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGOCalendar.h; sourceTree = "<group>"; };
+		EBB121FD133AB63700A4BD1D /* KGOCalendar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGOCalendar.m; sourceTree = "<group>"; };
 		EBB121FF133AB65F00A4BD1D /* KGOCalendarGroup.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGOCalendarGroup.h; sourceTree = "<group>"; };
 		EBB12200133AB67400A4BD1D /* KGOCalendarGroup.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGOCalendarGroup.m; sourceTree = "<group>"; };
 		EBB12202133AB69700A4BD1D /* KGOEventAttendee.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGOEventAttendee.h; sourceTree = "<group>"; };
@@ -745,10 +751,14 @@
 		EB143FE31309EE3400396753 /* Connection */ = {
 			isa = PBXGroup;
 			children = (
+				EB0336AC133BA23E00ACF2BB /* Reachability.h */,
+				EB0336AD133BA23E00ACF2BB /* Reachability.m */,
 				EB143FE41309EE3400396753 /* ConnectionWrapper.h */,
 				EB143FE51309EE3400396753 /* ConnectionWrapper.m */,
 				EB143FE61309EE3400396753 /* JSONAPIRequest.h */,
 				EB143FE71309EE3400396753 /* JSONAPIRequest.m */,
+				EB0336AF133BA32900ACF2BB /* KGORequest.h */,
+				EB0336B0133BA32900ACF2BB /* KGORequest.m */,
 			);
 			path = Connection;
 			sourceTree = "<group>";
@@ -1039,8 +1049,8 @@
 				EBB12203133AB6A500A4BD1D /* KGOEventAttendee.m */,
 				EBB121FF133AB65F00A4BD1D /* KGOCalendarGroup.h */,
 				EBB12200133AB67400A4BD1D /* KGOCalendarGroup.m */,
-				EBB121FC133AB62400A4BD1D /* KGOEventCategory.h */,
-				EBB121FD133AB63700A4BD1D /* KGOEventCategory.m */,
+				EBB121FC133AB62400A4BD1D /* KGOCalendar.h */,
+				EBB121FD133AB63700A4BD1D /* KGOCalendar.m */,
 				EBB121F9133AB5EE00A4BD1D /* KGOEvent.h */,
 				EBB121FA133AB60000A4BD1D /* KGOEvent.m */,
 				EBB121F6133AB5C700A4BD1D /* KGOEventContactInfo.h */,
@@ -1321,10 +1331,12 @@
 				EBB121F1133A917200A4BD1D /* CalendarHomeViewController.m in Sources */,
 				EBB121F8133AB5DD00A4BD1D /* KGOEventContactInfo.m in Sources */,
 				EBB121FB133AB61200A4BD1D /* KGOEvent.m in Sources */,
-				EBB121FE133AB64D00A4BD1D /* KGOEventCategory.m in Sources */,
+				EBB121FE133AB64D00A4BD1D /* KGOCalendar.m in Sources */,
 				EBB12201133AB68800A4BD1D /* KGOCalendarGroup.m in Sources */,
 				EBB12204133AB6B400A4BD1D /* KGOEventAttendee.m in Sources */,
 				EB0336AB133AEDED00ACF2BB /* ModalLoginWebViewController.m in Sources */,
+				EB0336AE133BA23E00ACF2BB /* Reachability.m in Sources */,
+				EB0336B1133BA32900ACF2BB /* KGORequest.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
