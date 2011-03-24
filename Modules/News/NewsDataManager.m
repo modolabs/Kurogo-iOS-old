@@ -4,8 +4,10 @@
 
 #define REQUEST_CATEGORIES_CHANGED 1
 #define REQUEST_CATEGORIES_UNCHANGED 2
-#define LIMIT 5
-#define NEWS_CATEGORY_EXPIRES_TIME 30.0
+#define LIMIT 10
+
+// 2 hours
+#define NEWS_CATEGORY_EXPIRES_TIME 7200.0
 
 NSString * const NewsTagItem            = @"item";
 NSString * const NewsTagTitle           = @"title";
