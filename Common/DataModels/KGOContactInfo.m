@@ -1,7 +1,7 @@
-#import "KGOContact.h"
+#import "KGOContactInfo.h"
 
 
-@implementation KGOContact
+@implementation KGOContactInfo
 
 @dynamic identifier;
 @dynamic label;

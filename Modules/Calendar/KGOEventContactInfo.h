@@ -1,19 +1,15 @@
+#import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
-#import "KGOSearchModel.h"
 
-@class KGOEvent;
+@class KGOEventAttendee;
 
-@interface KGOEventContactInfo : NSManagedObject 
-{
+@interface KGOEventContactInfo : NSManagedObject {
+@private
 }
-
+@property (nonatomic, retain) NSString * value;
 @property (nonatomic, retain) NSString * label;
 @property (nonatomic, retain) NSString * type;
-@property (nonatomic, retain) NSString * displayText;
-@property (nonatomic, retain) NSString * contact;
-@property (nonatomic, retain) KGOEvent * event;
+@property (nonatomic, retain) NSString * identifier;
+@property (nonatomic, retain) KGOEventAttendee * attendee;
 
 @end
-
-
-

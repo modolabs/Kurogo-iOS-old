@@ -1,30 +1,19 @@
+#import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
 
-@class KGOEvent;
+@class KGOCalendarGroup, KGOEvent, KGOEventCategory;
 
-@interface KGOEventCategory :  NSManagedObject  
-{
+@interface KGOEventCategory : NSManagedObject {
+@private
 }
-
 @property (nonatomic, retain) NSString * title;
-@property (nonatomic, retain) NSNumber * identifier;
+@property (nonatomic, retain) NSString * identifier;
 @property (nonatomic, retain) NSSet* subCategories;
 @property (nonatomic, retain) KGOEventCategory * parentCategory;
 @property (nonatomic, retain) NSSet* events;
+@property (nonatomic, retain) KGOCalendarGroup * group;
+
++ (KGOEventCategory *)categoryWithID:(NSString *)identifier;
++ (KGOEventCategory *)categoryWithDictionary:(NSDictionary *)aDict;
 
 @end
-
-
-@interface KGOEventCategory (CoreDataGeneratedAccessors)
-- (void)addSubCategoriesObject:(KGOEventCategory *)value;
-- (void)removeSubCategoriesObject:(KGOEventCategory *)value;
-- (void)addSubCategories:(NSSet *)value;
-- (void)removeSubCategories:(NSSet *)value;
-
-- (void)addEventsObject:(KGOEvent *)value;
-- (void)removeEventsObject:(KGOEvent *)value;
-- (void)addEvents:(NSSet *)value;
-- (void)removeEvents:(NSSet *)value;
-
-@end
-

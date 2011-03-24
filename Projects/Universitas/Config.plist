@@ -23,6 +23,16 @@
 		</dict>
 		<dict>
 			<key>class</key>
+			<string>LoginModule</string>
+			<key>shortName</key>
+			<string>Login</string>
+			<key>tag</key>
+			<string>login</string>
+			<key>secondary</key>
+			<true/>
+		</dict>
+		<dict>
+			<key>class</key>
 			<string>PeopleModule</string>
 			<key>longName</key>
 			<string>People</string>

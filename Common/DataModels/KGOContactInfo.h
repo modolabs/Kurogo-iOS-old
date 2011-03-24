@@ -1,7 +1,7 @@
 #import <CoreData/CoreData.h>
 
 
-@interface KGOContact : NSManagedObject {
+@interface KGOContactInfo : NSManagedObject {
 
 }
 

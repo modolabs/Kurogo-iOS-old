@@ -7,9 +7,11 @@
     UIActivityIndicatorView *_loadingView;
     NSURL *_requestURL;
 
-    NSURLRequest *_request;
+    NSMutableURLRequest *_request;
     NSURLConnection *_connection;
     NSMutableData *_data;
+    
+    NSURLResponse *_latestResponse;
 
 }
 

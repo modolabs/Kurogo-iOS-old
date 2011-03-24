@@ -1,9 +1,9 @@
-#import "KGOContact.h"
+#import "KGOContactInfo.h"
 #import "CoreDataManager.h"
 
 @class KGOPerson;
 
-@interface PersonContact : KGOContact
+@interface PersonContact : KGOContactInfo
 {
 }
 

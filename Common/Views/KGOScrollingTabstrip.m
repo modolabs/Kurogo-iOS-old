@@ -41,6 +41,15 @@
     return self;
 }
 
+- (id)initWithCoder:(NSCoder *)aDecoder
+{
+    self = [super initWithCoder:aDecoder];
+    if (self) {
+        _buttons = [[NSMutableArray alloc] init];
+    }
+    return self;
+}
+
 - (void)setShowsSearchButton:(BOOL)shows {
     if (shows != (_searchButton != nil)) {
         if (shows) {
@@ -127,6 +136,7 @@
     aButton.titleEdgeInsets = UIEdgeInsetsMake(0, 0, 1.0, 0); // needed to center text vertically within button
     CGSize size = [aButton.titleLabel.text sizeWithFont:aButton.titleLabel.font];
 
+    // TODO: make configurable
 	UIImage *stretchableButtonImage = [[UIImage imageWithPathName:@"common/scrolltabs-selected.png"] stretchableImageWithLeftCapWidth:15 topCapHeight:0];
     [aButton setBackgroundImage:nil forState:UIControlStateNormal];
     [aButton setBackgroundImage:stretchableButtonImage forState:UIControlStateHighlighted];
@@ -183,7 +193,6 @@
         _contentView = [[UIView alloc] initWithFrame:self.frame];
         
         [_scrollView addSubview:_contentView];
-        _scrollView.contentSize = _contentView.frame.size;
         [self addSubview:_scrollView];
     }
     
@@ -198,6 +207,7 @@
         
         if (_contentView.frame.size.width < xOffset) {
             _contentView.frame = CGRectMake(_contentView.frame.origin.x, _contentView.frame.origin.y, xOffset, _contentView.frame.size.height);
+            _scrollView.contentSize = _contentView.frame.size;
         }
     }
     

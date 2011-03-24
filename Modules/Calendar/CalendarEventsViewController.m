@@ -573,7 +573,7 @@
     if (tableView == _eventListTableView) {
         KGOEvent *event = [self.events objectAtIndex:indexPath.row];
         
-        if (event.shortloc) {
+        if (event.briefLocation) {
             // right align event location
             CGFloat maxWidth = tableView.frame.size.width - 20;
             UIFont *font = [[KGOTheme sharedTheme] fontForTableCellTitleWithStyle:KGOTableCellStyleSubtitle];
@@ -581,7 +581,7 @@
             CGFloat textHeight = 10.0 + (textSize.width > maxWidth ? textSize.height * 1 : textSize.height);
             
             font = [[KGOTheme sharedTheme] fontForTableCellSubtitleWithStyle:KGOTableCellStyleSubtitle];
-            CGSize locationTextSize = [event.shortloc sizeWithFont:font
+            CGSize locationTextSize = [event.briefLocation sizeWithFont:font
                                                           forWidth:100.0
                                                      lineBreakMode:UILineBreakModeTailTruncation];
             CGRect locationFrame = CGRectMake(maxWidth - locationTextSize.width,
@@ -591,7 +591,7 @@
             
             UILabel *locationLabel = [[[UILabel alloc] initWithFrame:locationFrame] autorelease];
             locationLabel.lineBreakMode = UILineBreakModeTailTruncation;
-            locationLabel.text = event.shortloc;
+            locationLabel.text = event.briefLocation;
             locationLabel.textColor = [[KGOTheme sharedTheme] textColorForTableCellSubtitleWithStyle:KGOTableCellStyleSubtitle];
             locationLabel.font = font;
             locationLabel.highlightedTextColor = [UIColor whiteColor];

@@ -1,19 +1,23 @@
 #import "CalendarModule.h"
-#import "CalendarEventsViewController.h"
+#import "CalendarHomeViewController.h"
 #import "CalendarConstants.h"
 #import "CalendarDetailViewController.h"
 #import "CalendarDataManager.h"
-#import "JSONAPIRequest.h"
 #import "CalendarModel.h"
 
+NSString * const KGODataModelNameCalendar = @"Calendar";
 
 @implementation CalendarModule
 
-@synthesize request;
+@synthesize request = _request;
 
 - (void)dealloc {
 	self.request = nil;
     [super dealloc];
+}
+
+- (NSString *)defaultCalendar {
+    return nil; // TODO
 }
 
 #pragma mark Search
@@ -23,18 +27,23 @@
 }
 
 - (void)performSearchWithText:(NSString *)searchText params:(NSDictionary *)params delegate:(id<KGOSearchDelegate>)delegate {
-    _searchDelegate = delegate;
+    //_searchDelegate = delegate;
     
-    self.request = [JSONAPIRequest requestWithJSONAPIDelegate:self];
-    [self.request requestObjectFromModule:@"calendar"
-                                  command:@"search"
-                               parameters:[NSDictionary dictionaryWithObjectsAndKeys:searchText, @"q", nil]];
+    NSString *calendar = [self defaultCalendar];
+    if (![params objectForKey:@"calendar"] && calendar) {
+        NSMutableDictionary *mutableDict = [[params mutableCopy] autorelease];
+        [mutableDict setObject:calendar forKey:@"calendar"];
+        params = mutableDict;
+    }
+
+    self.request = [[KGORequestManager sharedManager] requestWithDelegate:self module:@"calendar" path:@"search" params:params];
+    [self.request connect];
 }
 
 #pragma mark Data
 
 - (NSArray *)objectModelNames {
-    return [NSArray arrayWithObject:@"Calendar"];
+    return [NSArray arrayWithObject:KGODataModelNameCalendar];
 }
 
 #pragma mark Navigation
@@ -48,14 +57,14 @@
 - (UIViewController *)modulePage:(NSString *)pageName params:(NSDictionary *)params {
     UIViewController *vc = nil;
     if ([pageName isEqualToString:LocalPathPageNameHome]) {
-        vc = [[[CalendarEventsViewController alloc] init] autorelease];
+        vc = [[[CalendarHomeViewController alloc] initWithNibName:@"CalendarHomeViewController" bundle:nil] autorelease];
         
     } else if ([pageName isEqualToString:LocalPathPageNameSearch]) {
-        vc = [[[CalendarEventsViewController alloc] init] autorelease];
+        vc = [[[CalendarHomeViewController alloc] initWithNibName:@"CalendarHomeViewController" bundle:nil] autorelease];
         
         NSString *searchText = [params objectForKey:@"q"];
         if (searchText) {
-            [(CalendarEventsViewController *)vc setSearchTerms:searchText];
+            [(CalendarHomeViewController *)vc setSearchTerms:searchText];
         }
         
     } else if ([pageName isEqualToString:LocalPathPageNameDetail]) {
@@ -72,34 +81,25 @@
     return vc;
 }
 
-#pragma mark JSONAPIDelegate
+#pragma mark KGORequestDelegate
 
-- (void)request:(JSONAPIRequest *)request jsonLoaded:(id)result
-{	
+- (void)requestWillTerminate:(KGORequest *)request {
+    self.request = nil;
+}
+
+- (void)request:(KGORequest *)request didReceiveResult:(id)result {
     self.request = nil;
     
-    NSArray *resultEvents = [result objectForKey:@"events"];
-    NSMutableArray *arrayForTable = nil;
-    
-    if ([resultEvents isKindOfClass:[NSArray class]]) {
-        arrayForTable = [NSMutableArray arrayWithCapacity:[resultEvents count]];
-        
-        for (NSDictionary *eventDict in resultEvents) {
-            KGOEvent *event = [CalendarDataManager eventWithDict:eventDict];
-            [arrayForTable addObject:event];
-        }
+    NSArray *resultArray = [result arrayForKey:@"results"];
+    NSMutableArray *searchResults = [NSMutableArray arrayWithCapacity:[(NSArray *)resultArray count]];
+    for (id aResult in resultArray) {
+        NSLog(@"%@", [aResult description]);
+        KGOEventWrapper *anEvent = [[[KGOEventWrapper alloc] initWithDictionary:aResult] autorelease];
+        [searchResults addObject:anEvent];
     }
-    
-    [_searchDelegate searcher:self didReceiveResults:arrayForTable];
+    [self.searchDelegate searcher:self didReceiveResults:searchResults];
 }
 
-- (void)request:(JSONAPIRequest *)request madeProgress:(CGFloat)progress {
-
-}
-
-- (void)request:(JSONAPIRequest *)request handleConnectionError:(NSError *)error {
-
-}
 
 @end
 

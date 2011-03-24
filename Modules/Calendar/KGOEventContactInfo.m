@@ -1,12 +1,14 @@
 #import "KGOEventContactInfo.h"
-#import "KGOEvent.h"
+#import "KGOEventAttendee.h"
 
-@implementation KGOEventContactInfo 
+NSString * const KGOEntityNameEventContactInfo = @"KGOEventContactInfo";
 
+@implementation KGOEventContactInfo
+@dynamic value;
 @dynamic label;
 @dynamic type;
-@dynamic displayText;
-@dynamic contact;
-@dynamic event;
+@dynamic identifier;
+@dynamic attendee;
+
 
 @end

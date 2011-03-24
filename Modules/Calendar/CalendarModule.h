@@ -1,14 +1,14 @@
 #import <Foundation/Foundation.h>
 #import "KGOModule.h"
-#import "JSONAPIRequest.h"
+#import "KGORequestManager.h"
 
-@interface CalendarModule : KGOModule <JSONAPIDelegate> {
-
-    JSONAPIRequest *request;
+@interface CalendarModule : KGOModule <KGORequestDelegate> {
 	
 }
 
-@property (nonatomic, retain) JSONAPIRequest *request;
+@property (nonatomic, retain) KGORequest *request;
+
+- (NSString *)defaultCalendar;
 
 @end
 

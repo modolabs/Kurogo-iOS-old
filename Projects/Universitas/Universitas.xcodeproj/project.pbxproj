@@ -71,10 +71,6 @@
 		EB1440D81309EEA000396753 /* CalendarDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EB1440C41309EEA000396753 /* CalendarDetailViewController.m */; };
 		EB1440DA1309EEA000396753 /* CalendarEventsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EB1440C61309EEA000396753 /* CalendarEventsViewController.m */; };
 		EB1440DD1309EEA000396753 /* CalendarModule.m in Sources */ = {isa = PBXBuildFile; fileRef = EB1440C91309EEA000396753 /* CalendarModule.m */; };
-		EB1440DF1309EEA000396753 /* KGOEvent.m in Sources */ = {isa = PBXBuildFile; fileRef = EB1440CB1309EEA000396753 /* KGOEvent.m */; };
-		EB1440E11309EEA000396753 /* KGOEventAttendee.m in Sources */ = {isa = PBXBuildFile; fileRef = EB1440CD1309EEA000396753 /* KGOEventAttendee.m */; };
-		EB1440E31309EEA000396753 /* KGOEventCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = EB1440CF1309EEA000396753 /* KGOEventCategory.m */; };
-		EB1440E51309EEA000396753 /* KGOEventContactInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = EB1440D11309EEA000396753 /* KGOEventContactInfo.m */; };
 		EB1441071309EEB800396753 /* KGOMapCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = EB1440EB1309EEB800396753 /* KGOMapCategory.m */; };
 		EB1441091309EEB800396753 /* KGOPlacemark.m in Sources */ = {isa = PBXBuildFile; fileRef = EB1440ED1309EEB800396753 /* KGOPlacemark.m */; };
 		EB14410B1309EEB800396753 /* MapBookmarkManager.m in Sources */ = {isa = PBXBuildFile; fileRef = EB1440EF1309EEB800396753 /* MapBookmarkManager.m */; };
@@ -104,7 +100,7 @@
 		EB181F93131EDECA003728FF /* PeopleDetailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EB181F82131EDECA003728FF /* PeopleDetailsViewController.m */; };
 		EB181F95131EDECA003728FF /* PeopleModule.m in Sources */ = {isa = PBXBuildFile; fileRef = EB181F84131EDECA003728FF /* PeopleModule.m */; };
 		EB181F97131EDECA003728FF /* PeopleSearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EB181F86131EDECA003728FF /* PeopleSearchViewController.m */; };
-		EB181FA0131EDEFF003728FF /* KGOContact.m in Sources */ = {isa = PBXBuildFile; fileRef = EB181F9C131EDEFF003728FF /* KGOContact.m */; };
+		EB181FA0131EDEFF003728FF /* KGOContactInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = EB181F9C131EDEFF003728FF /* KGOContactInfo.m */; };
 		EB181FA2131EDEFF003728FF /* KGOPostalAddress.m in Sources */ = {isa = PBXBuildFile; fileRef = EB181F9E131EDEFF003728FF /* KGOPostalAddress.m */; };
 		EB181FA9131EDF1B003728FF /* LoginModule.m in Sources */ = {isa = PBXBuildFile; fileRef = EB181FA7131EDF1B003728FF /* LoginModule.m */; };
 		EB181FB7131EDF30003728FF /* KGOHomeScreenTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EB181FAD131EDF30003728FF /* KGOHomeScreenTableViewController.m */; };
@@ -117,8 +113,6 @@
 		EB1B88CA1324A6AC00108A8F /* modules in Resources */ = {isa = PBXBuildFile; fileRef = EB1B88C81324A6AC00108A8F /* modules */; };
 		EB35903B130B4945000250AD /* IconGrid.m in Sources */ = {isa = PBXBuildFile; fileRef = EB359037130B4945000250AD /* IconGrid.m */; };
 		EB35903D130B4945000250AD /* MITThumbnailView.m in Sources */ = {isa = PBXBuildFile; fileRef = EB359039130B4945000250AD /* MITThumbnailView.m */; };
-		EB359048130B49E4000250AD /* FacebookModule.m in Sources */ = {isa = PBXBuildFile; fileRef = EB359044130B49E4000250AD /* FacebookModule.m */; };
-		EB35904A130B49E4000250AD /* FacebookPhotosViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EB359046130B49E4000250AD /* FacebookPhotosViewController.m */; };
 		EB3721AB11FA2F5200705180 /* NewsImage.m in Sources */ = {isa = PBXBuildFile; fileRef = EB3721A911FA2F5200705180 /* NewsImage.m */; };
 		EB46C96813259B8F00AF7B5C /* KGOModule+Factory.m in Sources */ = {isa = PBXBuildFile; fileRef = EB46C96713259B8F00AF7B5C /* KGOModule+Factory.m */; };
 		EB46CA8A1327F95E00AF7B5C /* kurogo in Resources */ = {isa = PBXBuildFile; fileRef = EB46CA891327F95E00AF7B5C /* kurogo */; };
@@ -150,6 +144,16 @@
 		EBB120A7133802D300A4BD1D /* secret in Resources */ = {isa = PBXBuildFile; fileRef = EBB120A6133802D300A4BD1D /* secret */; };
 		EBB120AA1338046400A4BD1D /* KGOWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EBB120A91338046400A4BD1D /* KGOWebViewController.m */; };
 		EBB1212513382A4F00A4BD1D /* ModalLoginWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EBB1212413382A4F00A4BD1D /* ModalLoginWebViewController.m */; };
+		EBB1219E1338DE4000A4BD1D /* KGOEventWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = EBB1219D1338DE4000A4BD1D /* KGOEventWrapper.m */; };
+		EBB121A11339006600A4BD1D /* KGOAttendeeWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = EBB121A01339006400A4BD1D /* KGOAttendeeWrapper.m */; };
+		EBB121ED13392F3300A4BD1D /* EventKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EBB121EC13392F3300A4BD1D /* EventKit.framework */; };
+		EBB121F1133A917200A4BD1D /* CalendarHomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EBB121EF133A913100A4BD1D /* CalendarHomeViewController.m */; };
+		EBB121F2133A917200A4BD1D /* CalendarHomeViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = EBB121F0133A915200A4BD1D /* CalendarHomeViewController.xib */; };
+		EBB121F8133AB5DD00A4BD1D /* KGOEventContactInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = EBB121F7133AB5CF00A4BD1D /* KGOEventContactInfo.m */; };
+		EBB121FB133AB61200A4BD1D /* KGOEvent.m in Sources */ = {isa = PBXBuildFile; fileRef = EBB121FA133AB60000A4BD1D /* KGOEvent.m */; };
+		EBB121FE133AB64D00A4BD1D /* KGOEventCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = EBB121FD133AB63700A4BD1D /* KGOEventCategory.m */; };
+		EBB12201133AB68800A4BD1D /* KGOCalendarGroup.m in Sources */ = {isa = PBXBuildFile; fileRef = EBB12200133AB67400A4BD1D /* KGOCalendarGroup.m */; };
+		EBB12204133AB6B400A4BD1D /* KGOEventAttendee.m in Sources */ = {isa = PBXBuildFile; fileRef = EBB12203133AB6A500A4BD1D /* KGOEventAttendee.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -315,14 +319,6 @@
 		EB1440C71309EEA000396753 /* CalendarModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CalendarModel.h; sourceTree = "<group>"; };
 		EB1440C81309EEA000396753 /* CalendarModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CalendarModule.h; sourceTree = "<group>"; };
 		EB1440C91309EEA000396753 /* CalendarModule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CalendarModule.m; sourceTree = "<group>"; };
-		EB1440CA1309EEA000396753 /* KGOEvent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGOEvent.h; sourceTree = "<group>"; };
-		EB1440CB1309EEA000396753 /* KGOEvent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGOEvent.m; sourceTree = "<group>"; };
-		EB1440CC1309EEA000396753 /* KGOEventAttendee.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGOEventAttendee.h; sourceTree = "<group>"; };
-		EB1440CD1309EEA000396753 /* KGOEventAttendee.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGOEventAttendee.m; sourceTree = "<group>"; };
-		EB1440CE1309EEA000396753 /* KGOEventCategory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGOEventCategory.h; sourceTree = "<group>"; };
-		EB1440CF1309EEA000396753 /* KGOEventCategory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGOEventCategory.m; sourceTree = "<group>"; };
-		EB1440D01309EEA000396753 /* KGOEventContactInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGOEventContactInfo.h; sourceTree = "<group>"; };
-		EB1440D11309EEA000396753 /* KGOEventContactInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGOEventContactInfo.m; sourceTree = "<group>"; };
 		EB1440EA1309EEB800396753 /* KGOMapCategory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGOMapCategory.h; sourceTree = "<group>"; };
 		EB1440EB1309EEB800396753 /* KGOMapCategory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGOMapCategory.m; sourceTree = "<group>"; };
 		EB1440EC1309EEB800396753 /* KGOPlacemark.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGOPlacemark.h; sourceTree = "<group>"; };
@@ -379,8 +375,8 @@
 		EB181F84131EDECA003728FF /* PeopleModule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PeopleModule.m; sourceTree = "<group>"; };
 		EB181F85131EDECA003728FF /* PeopleSearchViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PeopleSearchViewController.h; sourceTree = "<group>"; };
 		EB181F86131EDECA003728FF /* PeopleSearchViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PeopleSearchViewController.m; sourceTree = "<group>"; };
-		EB181F9B131EDEFF003728FF /* KGOContact.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGOContact.h; sourceTree = "<group>"; };
-		EB181F9C131EDEFF003728FF /* KGOContact.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGOContact.m; sourceTree = "<group>"; };
+		EB181F9B131EDEFF003728FF /* KGOContactInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGOContactInfo.h; sourceTree = "<group>"; };
+		EB181F9C131EDEFF003728FF /* KGOContactInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGOContactInfo.m; sourceTree = "<group>"; };
 		EB181F9D131EDEFF003728FF /* KGOPostalAddress.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGOPostalAddress.h; sourceTree = "<group>"; };
 		EB181F9E131EDEFF003728FF /* KGOPostalAddress.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGOPostalAddress.m; sourceTree = "<group>"; };
 		EB181FA6131EDF1B003728FF /* LoginModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginModule.h; sourceTree = "<group>"; };
@@ -403,10 +399,6 @@
 		EB359037130B4945000250AD /* IconGrid.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IconGrid.m; sourceTree = "<group>"; };
 		EB359038130B4945000250AD /* MITThumbnailView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MITThumbnailView.h; sourceTree = "<group>"; };
 		EB359039130B4945000250AD /* MITThumbnailView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MITThumbnailView.m; sourceTree = "<group>"; };
-		EB359043130B49E4000250AD /* FacebookModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FacebookModule.h; sourceTree = "<group>"; };
-		EB359044130B49E4000250AD /* FacebookModule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FacebookModule.m; sourceTree = "<group>"; };
-		EB359045130B49E4000250AD /* FacebookPhotosViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FacebookPhotosViewController.h; sourceTree = "<group>"; };
-		EB359046130B49E4000250AD /* FacebookPhotosViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FacebookPhotosViewController.m; sourceTree = "<group>"; };
 		EB3721A811FA2F5200705180 /* NewsImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NewsImage.h; sourceTree = "<group>"; };
 		EB3721A911FA2F5200705180 /* NewsImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NewsImage.m; sourceTree = "<group>"; };
 		EB46C96613259B8F00AF7B5C /* KGOModule+Factory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "KGOModule+Factory.h"; path = "Application/KGOModule+Factory.h"; sourceTree = SOURCE_ROOT; };
@@ -445,8 +437,26 @@
 		EBB120A6133802D300A4BD1D /* secret */ = {isa = PBXFileReference; lastKnownFileType = folder; name = secret; path = Resources/secret; sourceTree = "<group>"; };
 		EBB120A81338046400A4BD1D /* KGOWebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGOWebViewController.h; sourceTree = "<group>"; };
 		EBB120A91338046400A4BD1D /* KGOWebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGOWebViewController.m; sourceTree = "<group>"; };
-		EBB1212313382A4F00A4BD1D /* ModalLoginWebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ModalLoginWebViewController.h; path = "../../../../harvard/Harvard-Reunion-iOS/Modules/Login/ModalLoginWebViewController.h"; sourceTree = "<group>"; };
-		EBB1212413382A4F00A4BD1D /* ModalLoginWebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ModalLoginWebViewController.m; path = "../../../../harvard/Harvard-Reunion-iOS/Modules/Login/ModalLoginWebViewController.m"; sourceTree = "<group>"; };
+		EBB1212313382A4F00A4BD1D /* ModalLoginWebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ModalLoginWebViewController.h; sourceTree = "<group>"; };
+		EBB1212413382A4F00A4BD1D /* ModalLoginWebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ModalLoginWebViewController.m; sourceTree = "<group>"; };
+		EBB1219C1338DE3F00A4BD1D /* KGOEventWrapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGOEventWrapper.h; sourceTree = "<group>"; };
+		EBB1219D1338DE4000A4BD1D /* KGOEventWrapper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGOEventWrapper.m; sourceTree = "<group>"; };
+		EBB1219F1339006400A4BD1D /* KGOAttendeeWrapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGOAttendeeWrapper.h; sourceTree = "<group>"; };
+		EBB121A01339006400A4BD1D /* KGOAttendeeWrapper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGOAttendeeWrapper.m; sourceTree = "<group>"; };
+		EBB121EC13392F3300A4BD1D /* EventKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = EventKit.framework; path = System/Library/Frameworks/EventKit.framework; sourceTree = SDKROOT; };
+		EBB121EE133A912500A4BD1D /* CalendarHomeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CalendarHomeViewController.h; sourceTree = "<group>"; };
+		EBB121EF133A913100A4BD1D /* CalendarHomeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CalendarHomeViewController.m; sourceTree = "<group>"; };
+		EBB121F0133A915200A4BD1D /* CalendarHomeViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CalendarHomeViewController.xib; sourceTree = "<group>"; };
+		EBB121F6133AB5C700A4BD1D /* KGOEventContactInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGOEventContactInfo.h; sourceTree = "<group>"; };
+		EBB121F7133AB5CF00A4BD1D /* KGOEventContactInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGOEventContactInfo.m; sourceTree = "<group>"; };
+		EBB121F9133AB5EE00A4BD1D /* KGOEvent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGOEvent.h; sourceTree = "<group>"; };
+		EBB121FA133AB60000A4BD1D /* KGOEvent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGOEvent.m; sourceTree = "<group>"; };
+		EBB121FC133AB62400A4BD1D /* KGOEventCategory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGOEventCategory.h; sourceTree = "<group>"; };
+		EBB121FD133AB63700A4BD1D /* KGOEventCategory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGOEventCategory.m; sourceTree = "<group>"; };
+		EBB121FF133AB65F00A4BD1D /* KGOCalendarGroup.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGOCalendarGroup.h; sourceTree = "<group>"; };
+		EBB12200133AB67400A4BD1D /* KGOCalendarGroup.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGOCalendarGroup.m; sourceTree = "<group>"; };
+		EBB12202133AB69700A4BD1D /* KGOEventAttendee.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGOEventAttendee.h; sourceTree = "<group>"; };
+		EBB12203133AB6A500A4BD1D /* KGOEventAttendee.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGOEventAttendee.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -454,6 +464,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EBB121ED13392F3300A4BD1D /* EventKit.framework in Frameworks */,
 				1D60589F0D05DD5A006BFB54 /* Foundation.framework in Frameworks */,
 				1DF5F4E00D08C38300B7A737 /* UIKit.framework in Frameworks */,
 				3AA219501039D74700DB7637 /* CoreData.framework in Frameworks */,
@@ -540,6 +551,7 @@
 				BD9FA7ED1047A05E00BC3C0A /* MessageUI.framework */,
 				3A82708C103DAA2400BB4109 /* SystemConfiguration.framework */,
 				3AA2194F1039D74700DB7637 /* CoreData.framework */,
+				EBB121EC13392F3300A4BD1D /* EventKit.framework */,
 				1DF5F4DF0D08C38300B7A737 /* UIKit.framework */,
 				1D30AB110D05D00D00671497 /* Foundation.framework */,
 				DE7720D810C57DBC00620A7D /* CoreGraphics.framework */,
@@ -580,7 +592,6 @@
 			isa = PBXGroup;
 			children = (
 				EB181FA5131EDF1B003728FF /* Login */,
-				EB359042130B49E4000250AD /* Facebook */,
 				EB1441571309EFB100396753 /* Home */,
 				EB1440E61309EEB800396753 /* Map */,
 				EB1440BC1309EEA000396753 /* Calendar */,
@@ -821,7 +832,7 @@
 		EB1440BC1309EEA000396753 /* Calendar */ = {
 			isa = PBXGroup;
 			children = (
-				EB1440BD1309EEA000396753 /* Calendar.xcdatamodeld */,
+				EBB1219B1338DDEA00A4BD1D /* Model */,
 				EB1440BF1309EEA000396753 /* CalendarConstants.h */,
 				EB1440C01309EEA000396753 /* CalendarConstants.m */,
 				EB1440C11309EEA000396753 /* CalendarDataManager.h */,
@@ -830,17 +841,11 @@
 				EB1440C41309EEA000396753 /* CalendarDetailViewController.m */,
 				EB1440C51309EEA000396753 /* CalendarEventsViewController.h */,
 				EB1440C61309EEA000396753 /* CalendarEventsViewController.m */,
-				EB1440C71309EEA000396753 /* CalendarModel.h */,
 				EB1440C81309EEA000396753 /* CalendarModule.h */,
 				EB1440C91309EEA000396753 /* CalendarModule.m */,
-				EB1440CA1309EEA000396753 /* KGOEvent.h */,
-				EB1440CB1309EEA000396753 /* KGOEvent.m */,
-				EB1440CC1309EEA000396753 /* KGOEventAttendee.h */,
-				EB1440CD1309EEA000396753 /* KGOEventAttendee.m */,
-				EB1440CE1309EEA000396753 /* KGOEventCategory.h */,
-				EB1440CF1309EEA000396753 /* KGOEventCategory.m */,
-				EB1440D01309EEA000396753 /* KGOEventContactInfo.h */,
-				EB1440D11309EEA000396753 /* KGOEventContactInfo.m */,
+				EBB121EE133A912500A4BD1D /* CalendarHomeViewController.h */,
+				EBB121EF133A913100A4BD1D /* CalendarHomeViewController.m */,
+				EBB121F0133A915200A4BD1D /* CalendarHomeViewController.xib */,
 			);
 			name = Calendar;
 			path = ../../Modules/Calendar;
@@ -958,8 +963,8 @@
 		EB181F9A131EDEFF003728FF /* DataModels */ = {
 			isa = PBXGroup;
 			children = (
-				EB181F9B131EDEFF003728FF /* KGOContact.h */,
-				EB181F9C131EDEFF003728FF /* KGOContact.m */,
+				EB181F9B131EDEFF003728FF /* KGOContactInfo.h */,
+				EB181F9C131EDEFF003728FF /* KGOContactInfo.m */,
 				EB181F9D131EDEFF003728FF /* KGOPostalAddress.h */,
 				EB181F9E131EDEFF003728FF /* KGOPostalAddress.m */,
 			);
@@ -976,18 +981,6 @@
 			);
 			name = Login;
 			path = ../../Modules/Login;
-			sourceTree = SOURCE_ROOT;
-		};
-		EB359042130B49E4000250AD /* Facebook */ = {
-			isa = PBXGroup;
-			children = (
-				EB359043130B49E4000250AD /* FacebookModule.h */,
-				EB359044130B49E4000250AD /* FacebookModule.m */,
-				EB359045130B49E4000250AD /* FacebookPhotosViewController.h */,
-				EB359046130B49E4000250AD /* FacebookPhotosViewController.m */,
-			);
-			name = Facebook;
-			path = ../../Modules/Facebook;
 			sourceTree = SOURCE_ROOT;
 		};
 		EB48910613310A930036AEBF /* ExternalURL */ = {
@@ -1030,6 +1023,29 @@
 				EBAA860D12F728CE00B743C3 /* libSFHFKeychainUtils.a */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		EBB1219B1338DDEA00A4BD1D /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				EB1440C71309EEA000396753 /* CalendarModel.h */,
+				EB1440BD1309EEA000396753 /* Calendar.xcdatamodeld */,
+				EBB12202133AB69700A4BD1D /* KGOEventAttendee.h */,
+				EBB12203133AB6A500A4BD1D /* KGOEventAttendee.m */,
+				EBB121FF133AB65F00A4BD1D /* KGOCalendarGroup.h */,
+				EBB12200133AB67400A4BD1D /* KGOCalendarGroup.m */,
+				EBB121FC133AB62400A4BD1D /* KGOEventCategory.h */,
+				EBB121FD133AB63700A4BD1D /* KGOEventCategory.m */,
+				EBB121F9133AB5EE00A4BD1D /* KGOEvent.h */,
+				EBB121FA133AB60000A4BD1D /* KGOEvent.m */,
+				EBB121F6133AB5C700A4BD1D /* KGOEventContactInfo.h */,
+				EBB121F7133AB5CF00A4BD1D /* KGOEventContactInfo.m */,
+				EBB1219C1338DE3F00A4BD1D /* KGOEventWrapper.h */,
+				EBB1219D1338DE4000A4BD1D /* KGOEventWrapper.m */,
+				EBB1219F1339006400A4BD1D /* KGOAttendeeWrapper.h */,
+				EBB121A01339006400A4BD1D /* KGOAttendeeWrapper.m */,
+			);
+			name = Model;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -1169,6 +1185,7 @@
 				EB46CA8A1327F95E00AF7B5C /* kurogo in Resources */,
 				EB46CA8E1327F97100AF7B5C /* ThemeConfig.plist in Resources */,
 				EBB120A7133802D300A4BD1D /* secret in Resources */,
+				EBB121F2133A917200A4BD1D /* CalendarHomeViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1257,16 +1274,10 @@
 				EB14410D1309EEB800396753 /* MapHomeViewController.m in Sources */,
 				EB1441071309EEB800396753 /* KGOMapCategory.m in Sources */,
 				EB1441091309EEB800396753 /* KGOPlacemark.m in Sources */,
-				EB1440E11309EEA000396753 /* KGOEventAttendee.m in Sources */,
-				EB1440DF1309EEA000396753 /* KGOEvent.m in Sources */,
-				EB1440E51309EEA000396753 /* KGOEventContactInfo.m in Sources */,
-				EB1440E31309EEA000396753 /* KGOEventCategory.m in Sources */,
 				EB1441151309EEB800396753 /* MapZoomLevel.m in Sources */,
 				EB14416F1309F07B00396753 /* KGOTheme.m in Sources */,
 				EB1441A41309F54D00396753 /* MITBuildInfo.m in Sources */,
 				EB1441731309F09600396753 /* KGOModule.m in Sources */,
-				EB359048130B49E4000250AD /* FacebookModule.m in Sources */,
-				EB35904A130B49E4000250AD /* FacebookPhotosViewController.m in Sources */,
 				EB35903B130B4945000250AD /* IconGrid.m in Sources */,
 				EB35903D130B4945000250AD /* MITThumbnailView.m in Sources */,
 				EB181F88131EDECA003728FF /* KGOPerson.m in Sources */,
@@ -1278,7 +1289,7 @@
 				EB181F93131EDECA003728FF /* PeopleDetailsViewController.m in Sources */,
 				EB181F95131EDECA003728FF /* PeopleModule.m in Sources */,
 				EB181F97131EDECA003728FF /* PeopleSearchViewController.m in Sources */,
-				EB181FA0131EDEFF003728FF /* KGOContact.m in Sources */,
+				EB181FA0131EDEFF003728FF /* KGOContactInfo.m in Sources */,
 				EB181FA2131EDEFF003728FF /* KGOPostalAddress.m in Sources */,
 				EB181FA9131EDF1B003728FF /* LoginModule.m in Sources */,
 				EB181FB7131EDF30003728FF /* KGOHomeScreenTableViewController.m in Sources */,
@@ -1300,6 +1311,14 @@
 				4B8432E71331287600DCBA86 /* NewsCategory.m in Sources */,
 				EBB120AA1338046400A4BD1D /* KGOWebViewController.m in Sources */,
 				EBB1212513382A4F00A4BD1D /* ModalLoginWebViewController.m in Sources */,
+				EBB1219E1338DE4000A4BD1D /* KGOEventWrapper.m in Sources */,
+				EBB121A11339006600A4BD1D /* KGOAttendeeWrapper.m in Sources */,
+				EBB121F1133A917200A4BD1D /* CalendarHomeViewController.m in Sources */,
+				EBB121F8133AB5DD00A4BD1D /* KGOEventContactInfo.m in Sources */,
+				EBB121FB133AB61200A4BD1D /* KGOEvent.m in Sources */,
+				EBB121FE133AB64D00A4BD1D /* KGOEventCategory.m in Sources */,
+				EBB12201133AB68800A4BD1D /* KGOCalendarGroup.m in Sources */,
+				EBB12204133AB6B400A4BD1D /* KGOEventAttendee.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

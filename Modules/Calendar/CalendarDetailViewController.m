@@ -134,7 +134,7 @@ enum CalendarDetailRowTypes {
 		rowTypes[numRows] = CalendarDetailRowTypeTime;
 		numRows++;
 	}
-	if (self.event.shortloc || self.event.location) {
+	if (self.event.briefLocation || self.event.location) {
 		rowTypes[numRows] = CalendarDetailRowTypeLocation;
 		numRows++;
 	}
@@ -356,7 +356,7 @@ enum CalendarDetailRowTypes {
 			title = [event dateStringWithDateStyle:NSDateFormatterFullStyle timeStyle:NSDateFormatterShortStyle separator:@"\n"];
 			break;
 		case CalendarDetailRowTypeLocation:
-			title = (event.location != nil) ? event.location : event.shortloc;
+			title = (event.location != nil) ? event.location : event.briefLocation;
 			if ([event hasCoords]) {
 				accessoryView = [[KGOTheme sharedTheme] accessoryViewForType:TableViewCellAccessoryMap];
 			} else {
