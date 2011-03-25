@@ -24,12 +24,12 @@
 		<dict>
 			<key>class</key>
 			<string>LoginModule</string>
+			<key>secondary</key>
+			<true/>
 			<key>shortName</key>
 			<string>Login</string>
 			<key>tag</key>
 			<string>login</string>
-			<key>secondary</key>
-			<true/>
 		</dict>
 		<dict>
 			<key>class</key>
@@ -124,6 +124,13 @@
 			<string>http://www.harvard.edu/?fullsite=yes</string>
 		</dict>
 	</array>
+	<key>Location</key>
+	<dict>
+		<key>DefaultCenter</key>
+		<string>42.3944, -71.1453</string>
+		<key>DefaultZoom</key>
+		<string>16</string>
+	</dict>
 	<key>NavigationControllerClass</key>
 	<string>UINavigationController</string>
 	<key>OrganizationName</key>

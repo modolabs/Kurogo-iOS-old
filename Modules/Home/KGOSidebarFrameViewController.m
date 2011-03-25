@@ -69,7 +69,7 @@
     _springboardFrame = _sidebar.frame;
     
     [self.view addSubview:_sidebar];
-    [self setupSidebarIcons];
+    [self refreshModules];
     [self refreshWidgets];
     
     _container = [[UIView alloc] initWithFrame:CGRectMake(_sidebar.frame.size.width,
@@ -131,10 +131,14 @@
     _widgetViews = [mutableWidgetViews copy];
 }
 
-- (void)setupSidebarIcons {
+- (void)refreshModules {
     // TODO: move this section out of setupSidebarIcons
-    UIImageView *imageView = [[[UIImageView alloc] initWithImage:[UIImage imageWithPathName:@"modules/home/ipad-sidebar-header"]] autorelease];
-    [_sidebar addSubview:imageView];
+    UIImageView *imageView = [_sidebar viewWithTag:1234];
+    if (!imageView) {
+        imageView = [[[UIImageView alloc] initWithImage:[UIImage imageWithPathName:@"modules/home/ipad-sidebar-header"]] autorelease];
+        imageView.tag = 1234;
+        [_sidebar addSubview:imageView];
+    }
     /////
     
     NSArray *primaryIcons = [self iconsForPrimaryModules:YES];

@@ -43,7 +43,7 @@ NSString * const MITNewsTwoFirstRunKey = @"MITNews2ClearedCachedArticles";
 
 // notification names
 
-NSString * const kTileServerManagerProjectionIsReady = @"TileServerManagerProjectionIsReadyNotification";
+NSString * const ModuleListDidChangeNotification = @"ModuleList";
 
 // core data entity names
 NSString * const KGOPersonEntityName = @"KGOPerson";

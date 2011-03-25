@@ -6,10 +6,12 @@
 #import "KGOPersonWrapper.h"
 #import "KGOHomeScreenWidget.h"
 #import "KGOAppDelegate+ModuleAdditions.h"
+#import "KGORequestManager.h"
 
 @interface KGOHomeScreenViewController (Private)
 
 - (void)loadModules;
+- (void)moduleListDidChange:(NSNotification *)aNotification;
 + (GridSpacing)spacingWithArgs:(NSArray *)args;
 + (GridPadding)paddingWithArgs:(NSArray *)args;
 + (CGSize)maxLabelDimensionsForModules:(NSArray *)modules font:(UIFont *)font;
@@ -27,6 +29,10 @@
 		NSString * file = [[NSBundle mainBundle] pathForResource:@"ThemeConfig" ofType:@"plist"];
         NSDictionary *themeDict = [NSDictionary dictionaryWithContentsOfFile:file];
         _preferences = [[themeDict objectForKey:@"HomeScreen"] retain];
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(moduleListDidChange:)
+                                                     name:ModuleListDidChangeNotification
+                                                   object:nil];
     }
     return self;
 }
@@ -37,6 +43,10 @@
 		NSString * file = [[NSBundle mainBundle] pathForResource:@"ThemeConfig" ofType:@"plist"];
         NSDictionary *themeDict = [NSDictionary dictionaryWithContentsOfFile:file];
         _preferences = [[themeDict objectForKey:@"HomeScreen"] retain];
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(moduleListDidChange:)
+                                                     name:ModuleListDidChangeNotification
+                                                   object:nil];
     }
     return self;
 }
@@ -204,6 +214,10 @@
     ;
 }
 
+- (void)refreshModules {
+    ;
+}
+
 - (NSArray *)iconsForPrimaryModules:(BOOL)isPrimary {
     BOOL useCompactIcons = [KGO_SHARED_APP_DELEGATE() navigationStyle] != KGONavigationStyleTabletSidebar;
     
@@ -367,6 +381,12 @@
 
 #pragma mark Private
 
+- (void)moduleListDidChange:(NSNotification *)aNotification
+{
+    [self loadModules];
+    [self refreshModules];
+}
+
 - (void)loadModules {
     NSArray *modules = [KGO_SHARED_APP_DELEGATE() modules];
     NSMutableArray *primary = [NSMutableArray array];
@@ -375,6 +395,9 @@
     for (KGOModule *aModule in modules) {
         // special case for home module
         if ([aModule isKindOfClass:[HomeModule class]])
+            continue;
+        
+        if (![[KGORequestManager sharedManager] isModuleAvailable:aModule.tag])
             continue;
         
         if (aModule.secondary) {

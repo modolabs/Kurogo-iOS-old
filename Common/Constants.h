@@ -52,7 +52,7 @@ extern NSString * const MITNewsTwoFirstRunKey;
 
 // notification names
 
-extern NSString * const kTileServerManagerProjectionIsReady;
+extern NSString * const ModuleListDidChangeNotification;
 
 // core data entity names
 

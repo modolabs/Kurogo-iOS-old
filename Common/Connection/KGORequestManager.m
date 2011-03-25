@@ -21,6 +21,23 @@
     return [_reachability currentReachabilityStatus] != NotReachable;
 }
 
+- (BOOL)isModuleAvailable:(NSString *)moduleTag
+{
+    NSDictionary *dict = [_apiDataByModule objectForKey:moduleTag];
+    if (dict) {
+        NSLog(@"module %@ is available", moduleTag);
+    } else {
+        NSLog(@"module %@ is not available", moduleTag);
+    }
+    return dict != nil;
+}
+
+- (BOOL)isModuleAuthorized:(NSString *)moduleTag
+{
+    // TODO: add this to hello API
+    return YES;
+}
+
 - (NSURL *)serverURL {
     return [NSURL URLWithString:[NSString stringWithFormat:@"%@://%@", _uriScheme, _extendedHost]];
 }
@@ -29,13 +46,25 @@
     return [NSURL URLWithString:[NSString stringWithFormat:@"%@://%@", _uriScheme, _host]];
 }
 
-- (KGORequest *)requestWithDelegate:(id<KGORequestDelegate>)delegate module:(NSString *)module path:(NSString *)path params:(NSDictionary *)params {
+- (KGORequest *)requestWithDelegate:(id<KGORequestDelegate>)delegate
+                             module:(NSString *)module // TODO: now that we have hello, we should check parameter validity
+                               path:(NSString *)path
+                             params:(NSDictionary *)params
+{
 	BOOL authorized = YES; // TODO: determine this value
+
+    // TODO: add version parameters v and vmin.  this will become required.
+
 	KGORequest *request = nil;
 	if (authorized) {
 		request = [[[KGORequest alloc] init] autorelease];
 		request.delegate = delegate;
-		NSURL *requestBaseURL = [[_baseURL URLByAppendingPathComponent:module] URLByAppendingPathComponent:path];
+        NSURL *requestBaseURL;
+        if (module) {
+            requestBaseURL = [[_baseURL URLByAppendingPathComponent:module] URLByAppendingPathComponent:path];
+        } else {
+            requestBaseURL = [_baseURL URLByAppendingPathComponent:path];
+        }
 		NSMutableDictionary *mutableParams = [[params mutableCopy] autorelease];
 		if (_accessToken) {
 			[mutableParams setObject:_accessToken forKey:@"token"];
@@ -145,6 +174,10 @@
 }
 
 - (void)registerWithKGOServer {
+    
+    _helloRequest = [self requestWithDelegate:self module:nil path:@"hello" params:nil];
+    _helloRequest.expectedResponseType = [NSDictionary class];
+    [_helloRequest connect];
 	
 }
 
@@ -158,7 +191,7 @@
     [_reachability release];
 	[_uriScheme release];
 	[_accessToken release];
-	[_apiVersionsByModule release];
+	[_apiDataByModule release];
 	[super dealloc];
 }
 
@@ -166,12 +199,34 @@
 
 
 - (void)requestWillTerminate:(KGORequest *)request {
+    if (request == _helloRequest) {
+        _helloRequest = nil;
+    }
 }
 
 - (void)request:(KGORequest *)request didFailWithError:(NSError *)error {
+    NSLog(@"%@", [error description]);
 }
 
-- (void)request:(KGORequest *)request receivedResultDict:(NSDictionary *)result {
+- (void)request:(KGORequest *)request didReceiveResult:(id)result {
+    if (request == _helloRequest) {
+        NSMutableDictionary *dictionary = [NSMutableDictionary dictionary];
+        NSArray *modules = [result arrayForKey:@"modules"];
+        for (NSDictionary *moduleData in modules) {
+            
+            NSString *moduleID = [moduleData stringForKey:@"id" nilIfEmpty:YES];
+            if (moduleID) {
+                [dictionary setObject:moduleData forKey:moduleID];
+            }
+        }
+        
+        if (dictionary.count) {
+            [_apiDataByModule release];
+            _apiDataByModule = [dictionary copy];
+        }
+        
+        [[NSNotificationCenter defaultCenter] postNotificationName:ModuleListDidChangeNotification object:self];
+    }
 }
 
 @end

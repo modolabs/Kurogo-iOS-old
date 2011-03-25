@@ -23,7 +23,8 @@
 	NSString *_accessToken;
 	NSURL *_baseURL;
 
-	NSDictionary *_apiVersionsByModule;
+    KGORequest *_helloRequest;
+	NSDictionary *_apiDataByModule;
 }
 
 @property (nonatomic, retain) NSString *host;
@@ -32,7 +33,14 @@
 
 + (KGORequestManager *)sharedManager;
 - (BOOL)isReachable;
-- (KGORequest *)requestWithDelegate:(id<KGORequestDelegate>)delegate module:(NSString *)module path:(NSString *)path params:(NSDictionary *)params;
+
+- (BOOL)isModuleAvailable:(NSString *)moduleTag;
+- (BOOL)isModuleAuthorized:(NSString *)moduleTag;
+
+- (KGORequest *)requestWithDelegate:(id<KGORequestDelegate>)delegate
+                             module:(NSString *)module
+                               path:(NSString *)path
+                             params:(NSDictionary *)params;
 - (void)showAlertForError:(NSError *)error;
 
 // probably will modify these to take login creds
