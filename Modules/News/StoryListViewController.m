@@ -22,9 +22,6 @@
 #define STORY_TITLE_FONT_SIZE 15.0
 #define STORY_DEK_FONT_SIZE 12.0
 
-#define SEARCH_BUTTON_TAG 7947
-#define BOOKMARK_BUTTON_TAG 7948
-
 #define MAX_ARTICLES 50
 
 @interface StoryListViewController (Private)
@@ -219,12 +216,11 @@ static NSInteger numTries = 0;
 }
 
 - (void)setupNavScrollButtons {
+    navScrollView.showsSearchButton = YES;
+    navScrollView.showsBookmarkButton = YES;
     for (NewsCategory *aCategory in self.categories) {
         [navScrollView addButtonWithTitle:aCategory.title];
     }
-    
-    navScrollView.showsSearchButton = YES;
-    navScrollView.showsBookmarkButton = hasBookmarks;
     
     [navScrollView setNeedsLayout];
 
@@ -244,7 +240,7 @@ static NSInteger numTries = 0;
     if (index == [tabstrip searchButtonIndex]) {
         [self showSearchBar];
     } else if (index == [tabstrip bookmarkButtonIndex]) {
-        [self switchToCategory:BOOKMARK_BUTTON_TAG];
+        [self switchToBookmarks];
     } else {
         NSString *title = [tabstrip buttonTitleAtIndex:index];
         for (NewsCategory *aCategory in self.categories) {
