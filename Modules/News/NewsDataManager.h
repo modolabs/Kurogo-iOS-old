@@ -9,17 +9,22 @@ typedef NSString* NewsCategoryId;
 @protocol NewsDataDelegate <NSObject>
 
 @optional
-- (void) categoriesUpdated:(NSArray *)categories;
+- (void)categoriesUpdated:(NSArray *)categories;
 
-- (void) storiesUpdated:(NSArray *)stories forCategory:(NewsCategory *)category;
+- (void)storiesUpdated:(NSArray *)stories forCategory:(NewsCategory *)category;
 
-- (void) storiesDidMakeProgress:(CGFloat)progress forCategoryId:(NewsCategoryId)categoryId;
+- (void)storiesDidMakeProgress:(CGFloat)progress forCategoryId:(NewsCategoryId)categoryId;
+
+- (void)storiesDidFailWithCategoryId:(NewsCategoryId)categoryId;
+
+- (void)searchResults:(NSArray *)results forSearchTerms:(NSString *)searchTerms;
 
 @end
 
 @interface NewsDataManager : NSObject<KGORequestDelegate> {
     NSMutableSet *delegates;
     KGORequest *storiesRequest;
+    KGORequest *searchRequest;
 }
 
 + (NewsDataManager *)sharedManager;
@@ -27,6 +32,8 @@ typedef NSString* NewsCategoryId;
 - (void)requestCategories;
 
 - (void)requestStoriesForCategory:(NewsCategoryId)categoryID loadMore:(BOOL)loadMore forceRefresh:(BOOL)forceRefresh;
+
+- (void) search:(NSString *)searchTerms;
 
 - (void)registerDelegate:(id<NewsDataDelegate>)delegate;
 
@@ -43,5 +50,6 @@ typedef NSString* NewsCategoryId;
 - (NSArray *)bookmarkedStories;
 
 @property (nonatomic, retain) KGORequest *storiesRequest;
+@property (nonatomic, retain) KGORequest *searchRequest;
 
 @end

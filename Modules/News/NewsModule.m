@@ -32,9 +32,29 @@
     return [NSArray arrayWithObject:@"News"];
 }
 
+#pragma mark Search
+
+- (BOOL)supportsFederatedSearch {
+    return YES;
+}
+
+- (void)performSearchWithText:(NSString *)searchText params:(NSDictionary *)params delegate:(id<KGOSearchDelegate>)delegate {
+    
+    self.searchDelegate = delegate;
+    
+    [[NewsDataManager sharedManager] registerDelegate:self];
+    [[NewsDataManager sharedManager] search:searchText];
+}
+
+- (void) searchResults:(NSArray *)results forSearchTerms:(NSString *)searchTerms {
+ 
+    [self.searchDelegate searcher:self didReceiveResults:results];
+}
+
 - (void)dealloc {
     [super dealloc];
 }
+
 
 /*
 #pragma mark StoryXMLParser delegation
