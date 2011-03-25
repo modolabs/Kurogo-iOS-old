@@ -21,6 +21,24 @@ static KGOTheme *s_sharedTheme = nil;
     return s_sharedTheme;
 }
 
+- (UIFont *)defaultFont {
+    return [self matchFontWithLabel:nil defaultSize:0];
+}
+
+- (UIFont *)defaultBoldFont {
+    return [self matchBoldFontWithLabel:nil defaultSize:0];
+}
+
+
+- (UIFont *)defaultSmallFont {
+    return [self matchFontWithLabel:nil defaultSize:-2];
+}
+
+- (UIFont *)defaultSmallBoldFont {
+    return [self matchBoldFontWithLabel:nil defaultSize:-2];
+}
+
+
 - (UIFont *)fontForContentTitle {
     return [self matchBoldFontWithLabel:@"ContentTitle" defaultSize:7];
 }
@@ -274,6 +292,9 @@ static NSString * KGOAccessoryImageCheckmarkHighlighted = @"common/action-checkm
 #pragma mark -
 
 - (NSString *)fontNameForLabel:(NSString *)label size:(CGFloat *)fontSize {
+    if (!label)
+        return nil;
+
     NSDictionary *fontInfo = [fontDict objectForKey:label];
     NSString *fontName = nil;
     if (fontInfo) {
@@ -348,13 +369,13 @@ static NSString * KGOAccessoryImageCheckmarkHighlighted = @"common/action-checkm
 
         NSString *fontSizePref = [userSettings objectForKey:@"DefaultFontSize"];
         if ([fontSizePref isEqualToString:@"Tiny"]) {
-            fontSize -= 2;
+            fontSize -= 3;
         } else if ([fontSizePref isEqualToString:@"Small"]) {
-            fontSize -= 1;
+            fontSize -= 1.5;
         } else if ([fontSizePref isEqualToString:@"Large"]) {
-            fontSize += 1;
+            fontSize += 1.5;
         } else if ([fontSizePref isEqualToString:@"Huge"]) {
-            fontSize += 2;
+            fontSize += 3;
         }
         [mutableFontDict setObject:[NSNumber numberWithFloat:fontSize] forKey:@"DefaultFontSize"];
         

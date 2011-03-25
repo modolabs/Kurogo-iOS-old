@@ -1,41 +1,21 @@
 #import <UIKit/UIKit.h>
-#import "CalendarConstants.h"
 #import "KGOShareButtonController.h"
-#import "KGOAppDelegate.h"
-#import "KGOShareButtonController.h"
-#import "KGOTableViewController.h"
+#import "KGODetailPager.h"
 
-@class KGOEvent;
+@class KGOEventWrapper, EventDetailTableView;
 
-@interface CalendarDetailViewController : KGOTableViewController <KGOShareButtonDelegate, UIWebViewDelegate> {
-	
-    BOOL isRegularEvent;
+@interface CalendarDetailViewController : UIViewController <KGOShareButtonDelegate,
+KGODetailPagerController, KGODetailPagerDelegate> {
     
-	KGOEvent *event;
-	CalendarEventListType* rowTypes;
-	NSInteger numRows;
-	
-	UIButton *shareButton;
-	
-    NSInteger descriptionHeight;
-	NSMutableString *descriptionString;
-	
-    CGFloat categoriesHeight;
-	NSMutableString *categoriesString;
-
-	// list of events to scroll through for previous/next buttons
-	NSArray *events;
-	
-	KGOShareButtonController *shareController;
+    EventDetailTableView *_tableView;
+    KGOEventWrapper *_event;
+    
+    KGOShareButtonController *_shareController;
 }
 
-@property (nonatomic, assign) KGOEvent *event;
-@property (nonatomic, assign) NSArray *events;
-
-- (void)reloadEvent;
-- (void)setupHeader;
-- (void)setupShareButton;
-- (void)showNextEvent:(id)sender;
+@property (nonatomic, retain) NSArray *sections;
+@property (nonatomic, retain) NSDictionary *eventsBySection;
+@property (nonatomic, retain) NSIndexPath *indexPath;
 
 @end
 

@@ -1,6 +1,7 @@
 #import "KGOAttendeeWrapper.h"
 #import <EventKit/EventKit.h>
 #import "KGOEventAttendee.h"
+#import "KGOEventContactInfo.h"
 
 @implementation KGOAttendeeWrapper
 
@@ -18,6 +19,8 @@ attendeeStatus = _attendeeStatus;
     return self;
 }
 
+#pragma mark EventKit
+
 - (EKParticipant *)EKAttendee
 {
     return _ekAttendee;
@@ -29,6 +32,18 @@ attendeeStatus = _attendeeStatus;
     _ekAttendee = [attendee retain];
     
     
+}
+
+#pragma mark CoreData
+
+- (NSSet *)contactInfo
+{
+    return _kgoAttendee.contactInfo;
+}
+
+- (void)setContactInfo:(NSSet *)contactInfo
+{
+    _kgoAttendee.contactInfo = contactInfo;
 }
 
 - (KGOEventAttendee *)KGOAttendee

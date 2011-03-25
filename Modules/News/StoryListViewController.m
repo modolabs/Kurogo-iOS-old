@@ -230,19 +230,21 @@
     }
 }
 
+- (void)tabstripSearchButtonPressed:(KGOScrollingTabstrip *)tabstrip {
+    [self showSearchBar];
+}
+
+- (void)tabstripBookmarkButtonPressed:(KGOScrollingTabstrip *)tabstrip {
+    [self switchToBookmarks];
+}
+
 - (void)tabstrip:(KGOScrollingTabstrip *)tabstrip clickedButtonAtIndex:(NSUInteger)index {
-    if (index == [tabstrip searchButtonIndex]) {
-        [self showSearchBar];
-    } else if (index == [tabstrip bookmarkButtonIndex]) {
-        [self switchToBookmarks];
-    } else {
-        NSString *title = [tabstrip buttonTitleAtIndex:index];
-        for (NewsCategory *aCategory in self.categories) {
-            if ([aCategory.title isEqualToString:title]) {
-                NewsCategoryId tagValue = aCategory.category_id;
-                [self switchToCategory:tagValue];
-                break;
-            }
+    NSString *title = [tabstrip buttonTitleAtIndex:index];
+    for (NewsCategory *aCategory in self.categories) {
+        if ([aCategory.title isEqualToString:title]) {
+            NewsCategoryId tagValue = aCategory.category_id;
+            [self switchToCategory:tagValue];
+            break;
         }
     }
 }

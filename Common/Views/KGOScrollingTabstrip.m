@@ -1,4 +1,5 @@
 #import "KGOScrollingTabstrip.h"
+#import "KGOTheme.h"
 #import "UIKit+KGOAdditions.h"
 
 #define SCROLL_TAB_HORIZONTAL_MARGIN 5.0
@@ -53,7 +54,9 @@
 - (void)setShowsSearchButton:(BOOL)shows {
     if (shows != (_searchButton != nil)) {
         if (shows) {
-            _searchButton = [UIButton buttonWithType:UIButtonTypeCustom];
+            [_searchButton release];
+            _searchButton = [[UIButton buttonWithType:UIButtonTypeCustom] retain];
+
             UIImage *image = [UIImage imageWithPathName:@"common/search.png"];
             [_searchButton setImage:image forState:UIControlStateNormal];
             _searchButton.adjustsImageWhenHighlighted = NO;
@@ -68,13 +71,8 @@
             CGFloat yOrigin = floor((self.frame.size.height - image.size.height) / 2);
             _searchButton.frame = CGRectMake(0, yOrigin, buttonWidth, image.size.height);
             [_searchButton addTarget:self action:@selector(buttonPressed:) forControlEvents:UIControlEventTouchUpInside];
-            if ([_buttons count] > 0) {
-                [_buttons insertObject:_searchButton atIndex:0];
-            } else {
-                [_buttons addObject:_searchButton];
-            }
         } else {
-            [_buttons removeObject:_searchButton];
+            [_searchButton release];
             _searchButton = nil;
         }
     }
@@ -88,7 +86,8 @@
     if (shows != (_bookmarkButton != nil)) {
         
         if (shows) {
-            _bookmarkButton = [UIButton buttonWithType:UIButtonTypeCustom];
+            [_bookmarkButton release];
+            _bookmarkButton = [[UIButton buttonWithType:UIButtonTypeCustom] retain];
             UIImage *image = [UIImage imageWithPathName:@"common/bookmark.png"];
             [_bookmarkButton setImage:image forState:UIControlStateNormal];
             _bookmarkButton.adjustsImageWhenHighlighted = NO;
@@ -103,18 +102,8 @@
             CGFloat yOrigin = floor((self.frame.size.height - image.size.height) / 2);
             _bookmarkButton.frame = CGRectMake(0, yOrigin, buttonWidth, image.size.height);
             [_bookmarkButton addTarget:self action:@selector(buttonPressed:) forControlEvents:UIControlEventTouchUpInside];
-            NSUInteger insertIndex = 0;
-            if (self.showsSearchButton) {
-                insertIndex++;
-            }
-            
-            if ([_buttons count] > insertIndex) {
-                [_buttons insertObject:_bookmarkButton atIndex:insertIndex];
-            } else {
-                [_buttons addObject:_bookmarkButton];
-            }
         } else {
-            [_buttons removeObject:_bookmarkButton];
+            [_bookmarkButton release];
             _bookmarkButton = nil;
         }
     }
@@ -131,8 +120,7 @@
     [aButton setTitle:title forState:UIControlStateNormal];
     [aButton setTitleColor:[UIColor colorWithHexString:@"#E0E0E0"] forState:UIControlStateNormal];
     [aButton setTitleColor:[UIColor whiteColor] forState:UIControlStateHighlighted];
-    aButton.titleLabel.font = [UIFont boldSystemFontOfSize:13.0];
-    aButton.titleLabel.tag = 1002;
+    aButton.titleLabel.font = [[KGOTheme sharedTheme] defaultSmallBoldFont];
     aButton.titleEdgeInsets = UIEdgeInsetsMake(0, 0, 1.0, 0); // needed to center text vertically within button
     CGSize size = [aButton.titleLabel.text sizeWithFont:aButton.titleLabel.font];
 
@@ -154,20 +142,6 @@
         return nil;
     }
     return [button titleForState:UIControlStateNormal];
-}
-
-- (NSInteger)searchButtonIndex {
-    if (_searchButton) {
-        return [_buttons indexOfObject:_searchButton];
-    }
-    return NSNotFound;
-}
-
-- (NSInteger)bookmarkButtonIndex {
-    if (_bookmarkButton) {
-        return [_buttons indexOfObject:_bookmarkButton];
-    }
-    return NSNotFound;
 }
 
 - (NSUInteger)numberOfButtons {
@@ -197,7 +171,16 @@
     }
     
     CGFloat xOffset = SCROLL_TAB_HORIZONTAL_MARGIN;
-    for (UIButton *aButton in _buttons) {
+    NSMutableArray *allButtons = [NSMutableArray array];
+    if (_searchButton) {
+        [allButtons addObject:_searchButton];
+    }
+    if (_bookmarkButton) {
+        [allButtons addObject:_bookmarkButton];
+    }
+    [allButtons addObjectsFromArray:_buttons];
+    
+    for (UIButton *aButton in allButtons) {
         aButton.frame = CGRectMake(xOffset, aButton.frame.origin.y, aButton.frame.size.width, aButton.frame.size.height);
         xOffset += aButton.frame.size.width + SCROLL_TAB_HORIZONTAL_MARGIN;
         
@@ -246,7 +229,7 @@
 - (void)buttonPressed:(id)sender {
     UIButton *pressedButton = (UIButton *)sender;
     
-    if (pressedButton != _pressedButton && [_buttons containsObject:pressedButton]) {
+    if (pressedButton != _pressedButton) {
         
         if (_pressedButton.adjustsImageWhenHighlighted) {
             [_pressedButton setTitleColor:[UIColor colorWithHexString:@"#E0E0E0"] forState:UIControlStateNormal];
@@ -263,9 +246,22 @@
 
         _pressedButton = pressedButton;
     }
-    
-    NSUInteger index = [_buttons indexOfObject:_pressedButton];
-    [self.delegate tabstrip:self clickedButtonAtIndex:index];
+
+    if (_pressedButton == _searchButton) {
+        if ([self.delegate respondsToSelector:@selector(tabstripSearchButtonPressed:)]) {
+            [self.delegate tabstripSearchButtonPressed:self];
+        }
+        
+    } else if (_pressedButton == _bookmarkButton) {
+        if ([self.delegate respondsToSelector:@selector(tabstripBookmarkButtonPressed:)]) {
+            [self.delegate tabstripBookmarkButtonPressed:self];
+        }
+
+    } else {
+        NSUInteger index = [_buttons indexOfObject:_pressedButton];
+        if (index != NSNotFound)
+            [self.delegate tabstrip:self clickedButtonAtIndex:index];
+    }
 }
 
 - (void)sideButtonPressed:(id)sender {
