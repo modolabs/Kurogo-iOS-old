@@ -269,6 +269,7 @@ static bool isOverOneHour(NSTimeInterval interval) {
     
     if (_currentCalendar) {
         //[_dataManager requestEventsForCalendar:_currentCalendar startDate:date endDate:nil];
+        [_dataManager requestEventsForCalendar:_currentCalendar time:date];
     }
 }
 
