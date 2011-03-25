@@ -865,11 +865,11 @@ static NSInteger numTries = 0;
 }
           
 - (void)searchController:(KGOSearchDisplayController *)controller didSelectResult:(id<KGOSearchResult>)aResult {
-    NSLog(@"Attempt to do a search");
+    NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:aResult, @"story", nil];
+    [KGO_SHARED_APP_DELEGATE() showPage:LocalPathPageNameDetail forModuleTag:NewsTag params:params];
 }
       
 - (void)searchController:(KGOSearchDisplayController *)controller willHideSearchResultsTableView:(UITableView *)tableView {
-    
     [self hideSearchBar];
 }
 @end

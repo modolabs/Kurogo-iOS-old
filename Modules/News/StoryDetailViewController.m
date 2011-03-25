@@ -11,9 +11,15 @@
 #import "NewsImage.h"
 #import "AnalyticsWrapper.h"
 
+@interface StoryDetailViewController (Private) 
+
+- (void)displayCurrentStory;
+
+@end
+
 @implementation StoryDetailViewController
 
-@synthesize newsController, story, stories, storyView;
+@synthesize newsController, story, stories, storyView, multiplePages;
 
 - (void)loadView {
     [super loadView]; // surprisingly necessary empty call to super due to the way memory warnings work
@@ -23,12 +29,6 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
-    storyPager = [[KGODetailPager alloc] initWithPagerController:self delegate:self];
-    
-	UIBarButtonItem * segmentBarItem = [[UIBarButtonItem alloc] initWithCustomView: storyPager];
-	self.navigationItem.rightBarButtonItem = segmentBarItem;
-	[segmentBarItem release];
 	
     self.view.opaque = YES;
     self.view.backgroundColor = [UIColor whiteColor];
@@ -41,7 +41,17 @@
 	[self.view addSubview: storyView];
 	storyView.delegate = self;
     
-    [storyPager selectPageAtSection:initialIndexPath.section row:initialIndexPath.row];
+    if(multiplePages) {
+        storyPager = [[KGODetailPager alloc] initWithPagerController:self delegate:self];
+        
+        UIBarButtonItem * segmentBarItem = [[UIBarButtonItem alloc] initWithCustomView: storyPager];
+        self.navigationItem.rightBarButtonItem = segmentBarItem;
+        [segmentBarItem release];
+        
+        [storyPager selectPageAtSection:initialIndexPath.section row:initialIndexPath.row];
+    } else {
+        [self displayCurrentStory];
+    }
 }
 
 - (void) setInitialIndexPath:(NSIndexPath *)theInitialIndexPath  {
@@ -69,6 +79,10 @@
     }
     
     self.story = (NewsStory *)content;
+    [self displayCurrentStory];
+}
+
+- (void)displayCurrentStory {
 
     KGOHTMLTemplate *template = [KGOHTMLTemplate templateWithPathName:@"modules/news/news_story_template.html"];
     

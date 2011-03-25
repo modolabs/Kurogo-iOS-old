@@ -19,11 +19,20 @@
     } else if([pageName isEqualToString:LocalPathPageNameDetail]) {
         vc = [[[StoryDetailViewController alloc] init] autorelease];
         
-        NSArray *stories = [params objectForKey:@"stories"];
-        [(StoryDetailViewController *)vc setStories:stories]; 
+        if ([params objectForKey:@"story"]) { // show only one story
+            NewsStory *story = [params objectForKey:@"story"];
+            [(StoryDetailViewController *)vc setStory:story];
+            
+            [(StoryDetailViewController *)vc setMultiplePages:NO];
+        } else if([params objectForKey:@"stories"]) {
+            NSArray *stories = [params objectForKey:@"stories"];
+            [(StoryDetailViewController *)vc setStories:stories]; 
         
-        NSIndexPath *indexPath = [params objectForKey:@"indexPath"];
-        [(StoryDetailViewController *)vc setInitialIndexPath:indexPath];
+            NSIndexPath *indexPath = [params objectForKey:@"indexPath"];
+            [(StoryDetailViewController *)vc setInitialIndexPath:indexPath];
+            
+            [(StoryDetailViewController *)vc setMultiplePages:YES];
+        }
     }
     return vc;
 }

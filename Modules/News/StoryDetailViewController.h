@@ -26,13 +26,16 @@
     
 	KGOShareButtonController *shareController;
     NSIndexPath *initialIndexPath;
+    
+    BOOL multiplePages;
 }
 
 @property (nonatomic, retain) id<NewsControllerDelegate> newsController;
 //@property (nonatomic, retain) StoryListViewController *newsController;
 @property (nonatomic, retain) UIWebView *storyView;
 @property (nonatomic, retain) NSArray *stories;
-@property (nonatomic, retain) NewsStory *story; // should be private
+@property (nonatomic, retain) NewsStory *story; // use if you only want to present one story
+@property BOOL multiplePages;
 
 - (void) setInitialIndexPath:(NSIndexPath *)initialIndexPath;
 

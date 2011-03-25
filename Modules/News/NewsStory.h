@@ -23,4 +23,5 @@
 @property (nonatomic, retain) NewsImage * thumbImage;
 @property (nonatomic, retain) NewsImage * featuredImage;
 
+
 @end

@@ -47,4 +47,8 @@
     [self didChangeValueForKey:@"categories" withSetMutation:NSKeyValueMinusSetMutation usingObjects:value];
 }
 
+- (NSString *)subtitle {
+    return self.summary;
+}
+
 @end
