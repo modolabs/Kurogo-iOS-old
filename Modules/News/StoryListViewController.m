@@ -74,13 +74,11 @@ static NSInteger numTries = 0;
 	// Story Table view
 	storyTable = [[UITableView alloc] initWithFrame:self.view.bounds];
     storyTable.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-	//storyTable.delegate = self;
-	//storyTable.dataSource = self;
     storyTable.separatorColor = [UIColor colorWithWhite:0.5 alpha:1.0];
     storyTable.rowHeight = 50;
-	//[self.view addSubview:storyTable];
     [self addTableView:storyTable];
 	[storyTable release];
+    
 }
 
 - (void)viewDidLoad {
@@ -279,15 +277,10 @@ static NSInteger numTries = 0;
 - (void)showSearchBar {
 	if (!theSearchBar) {
 		theSearchBar = [[KGOSearchBar alloc] initWithFrame:CGRectMake(0.0, 0.0, self.view.frame.size.width, 44.0)];
-		theSearchBar.delegate = self;
 		theSearchBar.alpha = 0.0;
-        CGRect frame = CGRectMake(0.0, theSearchBar.frame.size.height, self.view.frame.size.width,
-                                  self.view.frame.size.height - (theSearchBar.frame.size.height + activityView.frame.size.height));
         if (!searchController) {
             searchController = [[KGOSearchDisplayController alloc] initWithSearchBar:theSearchBar delegate:self contentsController:self];
         }
-        //searchController = [[KGOSearchDisplayController alloc] initWithFrame:frame searchBar:theSearchBar contentsController:self];
-        //searchController.delegate = self;
 		[self.view addSubview:theSearchBar];
 	}
 	[self.view bringSubviewToFront:theSearchBar];
@@ -314,6 +307,7 @@ static NSInteger numTries = 0;
     [theSearchBar release];
     theSearchBar = nil;
     [searchController release];
+    searchController = nil;
 }
 
 - (void)searchOverlayTapped {
@@ -326,6 +320,7 @@ static NSInteger numTries = 0;
 
 #pragma mark UISearchBar delegation
 
+/*
 - (void)searchBarCancelButtonClicked:(KGOSearchBar *)searchBar {	
 	// cancel any outstanding search
 	//if (self.xmlParser) {
@@ -338,6 +333,7 @@ static NSInteger numTries = 0;
     self.searchResults = nil;
     [self loadFromCache];
 }
+*/
 
 - (void)searchBarSearchButtonClicked:(KGOSearchBar *)searchBar {
 	self.searchQuery = searchBar.text;
@@ -501,6 +497,12 @@ static NSInteger numTries = 0;
     if([self.activeCategoryId isEqualToString:categoryID]) {
         [self setProgress:progress];
     }
+}
+
+- (void) storiesDidFailWithCategoryId:(NewsCategoryId)categoryID {
+    if([self.activeCategoryId isEqualToString:categoryID]) {
+        [self setStatusText:@"Most recent update failed!"];
+    }    
 }
 
 - (void)loadFromServer:(BOOL)loadMore {
@@ -848,4 +850,26 @@ static NSInteger numTries = 0;
 	}
 }
 
+
+#pragma KGOSearchDisplayDelegate
+- (BOOL)searchControllerShouldShowSuggestions:(KGOSearchDisplayController *)controller {
+    return NO;
+}
+
+- (NSArray *)searchControllerValidModules:(KGOSearchDisplayController *)controller {
+    return [NSArray arrayWithObject:NewsTag];
+}
+      
+- (NSString *)searchControllerModuleTag:(KGOSearchDisplayController *)controller {
+    return NewsTag;
+}
+          
+- (void)searchController:(KGOSearchDisplayController *)controller didSelectResult:(id<KGOSearchResult>)aResult {
+    NSLog(@"Attempt to do a search");
+}
+      
+- (void)searchController:(KGOSearchDisplayController *)controller willHideSearchResultsTableView:(UITableView *)tableView {
+    
+    [self hideSearchBar];
+}
 @end

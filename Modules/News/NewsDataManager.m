@@ -28,12 +28,14 @@ NSString * const NewsTagBody            = @"body";
 - (NewsCategory *)fetchCategoryFromCoreData:(NewsCategoryId)categoryID;
 - (void)updateCategoriesFromNetwork;
 - (void)loadStoriesFromServerForCategory:(NewsCategory *)category loadMore:(BOOL)loadMore;
+- (NewsStory *)storyWithDictionary:(NSDictionary *)dict;
 
 @end
 
 @implementation NewsDataManager
 
 @synthesize storiesRequest;
+@synthesize searchRequest;
 
 + (NewsDataManager *)sharedManager {
 	static NewsDataManager *s_sharedManager = nil;
@@ -282,47 +284,11 @@ NSString * const NewsTagBody            = @"body";
         NSArray *stories = [resultDict objectForKey:@"stories"];
         
         for (NSDictionary *storyDict in stories) {
-            // use existing story if it's already in the db
-            NSString *GUID = [storyDict objectForKey:NewsTagStoryId];
-            NewsStory *story = [[CoreDataManager sharedManager] getObjectForEntity:NewsStoryEntityName 
-                                                                         attribute:@"identifier" 
-                                                                             value:GUID];
-            // otherwise create new
-            if (!story) {
-                story = (NewsStory *)[[CoreDataManager sharedManager] insertNewObjectForEntityForName:NewsStoryEntityName];
-            }
-            
-            double unixtime = [((NSNumber *)[storyDict objectForKey:@"pubDate"]) doubleValue];
-            NSTimeInterval miliseconds = unixtime * 1000.;
-            NSDate *postDate = [NSDate dateWithTimeIntervalSince1970:miliseconds];
-            
-            story.identifier = GUID;
-            story.postDate = postDate;
-            story.title = [storyDict objectForKey:NewsTagTitle];
-            story.link = [storyDict objectForKey:NewsTagLink];
-            story.author = [storyDict objectForKey:NewsTagAuthor];
-            story.summary = [storyDict objectForKey:NewsTagSummary];
-            if([storyDict objectForKey:NewsTagBody]) {
-                story.body = [storyDict objectForKey:NewsTagBody];
-            }
-            
-            story.categories = [NSSet setWithObject:safeCategoryObject];
-                                
-            
-            NSDictionary *imageDict = [storyDict objectForKey:NewsTagImage];
-            if (imageDict) {
-                // an old thumb may already exist
-                // in which case do not create a new one
-                if (!story.thumbImage) {
-                    story.thumbImage = [[CoreDataManager sharedManager] insertNewObjectForEntityForName:NewsImageEntityName];
-                }
-                story.thumbImage.url = [imageDict objectForKey:@"src"];
-                story.thumbImage.thumbParent = story;
-            } else {
-                story.thumbImage = nil;
-            }
-            //story.featured = [NSNumber numberWithBool:![[storyDict objectForKey:NewsTagFeatured] isEqualToString:@"no"]];
-            
+            NewsStory *story =[self storyWithDictionary:storyDict]; 
+            NSMutableSet *mutableCategories = [NSMutableSet setWithCapacity:1];
+            [mutableCategories unionSet:story.categories];
+            [mutableCategories addObject:safeCategoryObject];
+            story.categories = mutableCategories;
         }
         
         safeCategoryObject.moreStories = [resultDict objectForKey:@"moreStories"];
@@ -338,6 +304,32 @@ NSString * const NewsTagBody            = @"body";
 - (BOOL) busy {
     return  (self.storiesRequest != nil);
 }
+
+- (void) search:(NSString *)searchTerms {
+    
+    NSMutableDictionary *params = [NSMutableDictionary dictionary];
+    [params setObject:searchTerms forKey:@"q"];
+    [params setObject:@"0" forKey:@"categoryID"];
+    
+    self.searchRequest = [[KGORequestManager sharedManager] requestWithDelegate:self
+                                                                          module:NewsTag
+                                                                            path:@"search"
+                                                                          params:params];
+    self.searchRequest.expectedResponseType = [NSArray class];
+    self.searchRequest.handler = [[^(id stories) {
+        
+        for (NSDictionary *storyDict in stories) {
+            NewsStory *story =[self storyWithDictionary:storyDict]; 
+            story.searchResult = [NSNumber numberWithInt:1];
+        }
+        
+        [[CoreDataManager sharedManager] saveData];
+        return [stories count];
+    } copy] autorelease];                               
+    
+    [self.searchRequest connect];
+}
+    
 
 - (void)saveImageData:(NSData *)data url:(NSString *)url {
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"url LIKE %@", url];
@@ -360,6 +352,46 @@ NSString * const NewsTagBody            = @"body";
     [[CoreDataManager sharedManager] saveData];
 }
 
+- (NewsStory *)storyWithDictionary:(NSDictionary *)storyDict {
+    // use existing story if it's already in the db
+    NSString *GUID = [storyDict objectForKey:NewsTagStoryId];
+    NewsStory *story = [[CoreDataManager sharedManager] getObjectForEntity:NewsStoryEntityName 
+                                                                 attribute:@"identifier" 
+                                                                     value:GUID];
+    // otherwise create new
+    if (!story) {
+        story = (NewsStory *)[[CoreDataManager sharedManager] insertNewObjectForEntityForName:NewsStoryEntityName];
+    }
+    
+    double unixtime = [((NSNumber *)[storyDict objectForKey:@"pubDate"]) doubleValue];
+    NSDate *postDate = [NSDate dateWithTimeIntervalSince1970:unixtime];
+    
+    story.identifier = GUID;
+    story.postDate = postDate;
+    story.title = [storyDict objectForKey:NewsTagTitle];
+    story.link = [storyDict objectForKey:NewsTagLink];
+    story.author = [storyDict objectForKey:NewsTagAuthor];
+    story.summary = [storyDict objectForKey:NewsTagSummary];
+    if([storyDict objectForKey:NewsTagBody]) {
+        story.body = [storyDict objectForKey:NewsTagBody];
+    }
+    
+    NSDictionary *imageDict = [storyDict objectForKey:NewsTagImage];
+    if (imageDict) {
+        // an old thumb may already exist
+        // in which case do not create a new one
+        if (!story.thumbImage) {
+            story.thumbImage = [[CoreDataManager sharedManager] insertNewObjectForEntityForName:NewsImageEntityName];
+        }
+        story.thumbImage.url = [imageDict objectForKey:@"src"];
+        story.thumbImage.thumbParent = story;
+    } else {
+        story.thumbImage = nil;
+    }
+    //story.featured = [NSNumber numberWithBool:![[storyDict objectForKey:NewsTagFeatured] isEqualToString:@"no"]]
+    return story;
+}
+
 #pragma mark KGORequestDelegate
 
 - (void)request:(KGORequest *)request didHandleResult:(NSInteger)returnValue {
@@ -370,10 +402,26 @@ NSString * const NewsTagBody            = @"body";
     if([path isEqualToString:@"stories"]) {
         NSString *categoryID = [request.getParams objectForKey:@"categoryID"];
         [self requestStoriesForCategory:categoryID loadMore:NO forceRefresh:NO];
-        return;
     
-    } else if([path isEqualToString:@"categories"]) {
-    
+    } else if([path isEqualToString:@"search"]) {
+        NSString *searchTerms = [request.getParams objectForKey:@"q"];
+        
+        NSPredicate *predicate = nil;
+        NSSortDescriptor *relevanceSortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"searchResult" ascending:YES];
+        NSArray *sortDescriptors = [NSArray arrayWithObject:relevanceSortDescriptor];
+        [relevanceSortDescriptor release];
+        
+        predicate = [NSPredicate predicateWithFormat:@"searchResult > 0"];
+        
+        // show everything that comes back
+        NSArray *results = [[CoreDataManager sharedManager] objectsForEntity:NewsStoryEntityName matchingPredicate:predicate sortDescriptors:sortDescriptors];
+
+        for(id<NewsDataDelegate> delegate in delegates) {
+            if([delegate respondsToSelector:@selector(searchResults:forSearchTerms:)])
+                [delegate searchResults:results forSearchTerms:searchTerms];            
+        }
+        
+    } else if([path isEqualToString:@"categories"]) {    
         switch (returnValue) {
             case REQUEST_CATEGORIES_CHANGED:
                 categories = [self fetchCategoriesFromCoreData];
@@ -400,6 +448,25 @@ NSString * const NewsTagBody            = @"body";
             }
         }
 
+    }
+}
+
+- (void)request:(KGORequest *)request didFailWithError:(NSError *)error {
+    if ([request.path isEqualToString:@"stories"]) {
+        NSString *categoryID = [request.getParams objectForKey:@"categoryID"];
+        
+        for(id<NewsDataDelegate> delegate in delegates) {
+            if([delegate respondsToSelector:@selector(storiesDidFailWithCategoryId:)]) {
+                [delegate storiesDidFailWithCategoryId:categoryID];
+            }
+        }
+        
+        [[KGORequestManager sharedManager] showAlertForError:error];
+    } else if ([request.path isEqualToString:@"categories"]) {
+        NSArray *categories = [self fetchCategoriesFromCoreData];
+        if ([categories count] == 0) {
+            [[KGORequestManager sharedManager] showAlertForError:error];
+        }
     }
 }
 
