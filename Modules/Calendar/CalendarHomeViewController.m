@@ -62,6 +62,10 @@
 {
     [super viewDidLoad];
     
+    self.title = @"Events";
+    
+    _currentGroupIndex = NSNotFound;
+    
     _tabstrip.delegate = self;
     _datePager.delegate = self;
     
@@ -196,6 +200,8 @@ static bool isOverOneHour(NSTimeInterval interval) {
         _currentEventsBySection = [eventsBySection copy];
     }
     
+    [_loadingView stopAnimating];
+    self.tableView.hidden = NO;
     [self reloadDataForTableView:self.tableView];
 }
 
@@ -242,7 +248,7 @@ static bool isOverOneHour(NSTimeInterval interval) {
 
 - (void)setupTabstripButtons
 {
-    _tabstrip.showsSearchButton = YES;
+    _tabstrip.showsSearchButton = NO;
 
     for (NSInteger i = 0; i < _groupTitles.count; i++) {
         NSString *buttonTitle = [_groupTitles objectAtIndex:i];
@@ -250,21 +256,19 @@ static bool isOverOneHour(NSTimeInterval interval) {
     }
     [_tabstrip setNeedsLayout];
     
-    if (_currentGroupIndex >= _groupTitles.count) {
-        _currentGroupIndex = 0;
-    }
-    
-    [_tabstrip selectButtonAtIndex:_currentGroupIndex];
+    // TODO: preserve previous selection if any
+    [_tabstrip selectButtonAtIndex:0];
 }
 
 #pragma mark - Date pager
 
 - (void)pager:(KGODatePager *)pager didSelectDate:(NSDate *)date
 {
-    // TODO: show loading indicator
+    [_loadingView startAnimating];
+    self.tableView.hidden = YES;
     
     if (_currentCalendar) {
-        [_dataManager requestEventsForCalendar:_currentCalendar startDate:date endDate:nil];
+        //[_dataManager requestEventsForCalendar:_currentCalendar startDate:date endDate:nil];
     }
 }
 

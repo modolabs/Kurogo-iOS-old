@@ -91,23 +91,7 @@ enum CalendarDetailRowTypes {
 		}
 		self.event = [self.events objectAtIndex:currentEventIndex];
 		[self reloadEvent];
-		
-		if (isRegularEvent) {
-            //[self requestEventDetails];
-        }
     }
-}
-
-- (void)requestEventDetails
-{
-	// No longer required as the details come with the initial header requests
-	//JSONAPIRequest *apiRequest = [JSONAPIRequest requestWithJSONAPIDelegate:self];
-	//NSString *eventID = [NSString stringWithFormat:@"%d", [self.event.eventID intValue]];
-	/*
-	[apiRequest requestObjectFromModule:@"calendar" 
-								command:@"detail" 
-							 parameters:[NSDictionary dictionaryWithObjectsAndKeys:eventID, @"id", nil]];
-	 */
 }
 
 // helper function that maintains consistency of descriptionString and descriptionHeight
@@ -518,15 +502,6 @@ enum CalendarDetailRowTypes {
 */
 - (NSString *)twitterTitle {
 	return event.title;
-}
-
-#pragma mark JSONAPIDelegate for background refreshing of events
-
-- (void)request:(JSONAPIRequest *)request jsonLoaded:(id)result {
-	if (result && [result isKindOfClass:[NSDictionary class]]) {
-		[self.event updateWithDict:result];
-		[self reloadEvent];
-	}
 }
 
 

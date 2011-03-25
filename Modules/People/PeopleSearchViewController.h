@@ -2,11 +2,15 @@
 #import "KGOTableViewController.h"
 #import "KGOSearchDisplayController.h"
 #import "KGODetailPager.h"
+#import "KGORequestManager.h"
 
 @class KGOSearchBar;
 
 @interface PeopleSearchViewController : KGOTableViewController <
+KGORequestDelegate, // TODO: separate this from view logic
 UIActionSheetDelegate, KGOSearchDisplayDelegate, KGODetailPagerController> {
+    
+    KGORequest *_request;
 	
     KGOSearchDisplayController *_searchController;
 	NSString *_searchTerms;
