@@ -28,6 +28,7 @@ NSString * const NewsTagBody            = @"body";
 - (NewsCategory *)fetchCategoryFromCoreData:(NewsCategoryId)categoryID;
 - (void)updateCategoriesFromNetwork;
 - (void)loadStoriesFromServerForCategory:(NewsCategory *)category loadMore:(BOOL)loadMore;
+- (NSArray *)fetchLatestSearchResultsFromCoreData;
 - (NewsStory *)storyWithDictionary:(NSDictionary *)dict;
 
 @end
@@ -35,7 +36,8 @@ NSString * const NewsTagBody            = @"body";
 @implementation NewsDataManager
 
 @synthesize storiesRequest;
-@synthesize searchRequest;
+@synthesize searchRequests;
+@synthesize firstSearchResultReceived;
 
 + (NewsDataManager *)sharedManager {
 	static NewsDataManager *s_sharedManager = nil;
@@ -271,13 +273,13 @@ NSString * const NewsTagBody            = @"body";
         if (!loadMore) {
             // this is a refresh load, so we need to prune
             // all old stories
-            NSSet *safeStorySet = [NSSet setWithSet:safeCategoryObject.stories];
-            for (NewsStory *story in safeStorySet) {
-                if(![story.bookmarked boolValue]) {
+            
+            for (NewsStory *story in safeCategoryObject.stories) {
+                if(![story.bookmarked boolValue] && ([story.categories count] <= 1)) {
                     [[CoreDataManager sharedManager] deleteObject:story];
                 }
-                story.categories = [NSSet set];
             }
+            safeCategoryObject.stories = [NSSet set];
         }
         
         NSDictionary *resultDict = (NSDictionary *)result;
@@ -307,29 +309,68 @@ NSString * const NewsTagBody            = @"body";
 
 - (void) search:(NSString *)searchTerms {
     
-    NSMutableDictionary *params = [NSMutableDictionary dictionary];
-    [params setObject:searchTerms forKey:@"q"];
-    [params setObject:@"0" forKey:@"categoryID"];
+    // cancel any previous search requests
+    for (KGORequest *request in self.searchRequests) {
+        [request cancel];
+    }
+    self.firstSearchResultReceived = NO;
+    self.searchRequests = [NSMutableSet setWithCapacity:1];
     
-    self.searchRequest = [[KGORequestManager sharedManager] requestWithDelegate:self
+    NSArray *categories = [self fetchCategoriesFromCoreData];
+    for(NewsCategory *category in categories) {
+        NSMutableDictionary *params = [NSMutableDictionary dictionary];
+        [params setObject:searchTerms forKey:@"q"];
+        [params setObject:category.category_id forKey:@"categoryID"];
+    
+        KGORequest *request = [[KGORequestManager sharedManager] requestWithDelegate:self
                                                                           module:NewsTag
                                                                             path:@"search"
                                                                           params:params];
-    self.searchRequest.expectedResponseType = [NSArray class];
-    self.searchRequest.handler = [[^(id stories) {
+        request.expectedResponseType = [NSArray class];
+        request.handler = [[^(id stories) {
         
-        for (NSDictionary *storyDict in stories) {
-            NewsStory *story =[self storyWithDictionary:storyDict]; 
-            story.searchResult = [NSNumber numberWithInt:1];
-        }
+            if(!self.firstSearchResultReceived) {
+                NSLog(@"for categoryID=%@ and first=%i", [params objectForKey:@"categoryID"], self.firstSearchResultReceived);
+                
+                // remove all old search results
+                for (NewsStory *story in [self fetchLatestSearchResultsFromCoreData]) {
+                    if(![story.bookmarked boolValue] && ([story.categories count] == 0)) {
+                        [[CoreDataManager sharedManager] deleteObject:story];
+                    } else {
+                        story.searchResult = [NSNumber numberWithInt:0];
+                    }
+                }
+                self.firstSearchResultReceived = YES;
+            } 
+            
+            for (NSDictionary *storyDict in stories) {
+                NewsStory *story =[self storyWithDictionary:storyDict]; 
+                story.searchResult = [NSNumber numberWithInt:1];
+            }
         
-        [[CoreDataManager sharedManager] saveData];
-        return [stories count];
-    } copy] autorelease];                               
-    
-    [self.searchRequest connect];
+            [[CoreDataManager sharedManager] saveData];
+            return [stories count];
+        } copy] autorelease];                               
+        
+        [request connect];
+        
+        [self.searchRequests addObject:request];
+    }
 }
     
+- (NSArray *)fetchLatestSearchResultsFromCoreData {
+    NSPredicate *predicate = nil;
+    NSSortDescriptor *relevanceSortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"searchResult" ascending:YES];
+    NSArray *sortDescriptors = [NSArray arrayWithObject:relevanceSortDescriptor];
+    [relevanceSortDescriptor release];
+    
+    predicate = [NSPredicate predicateWithFormat:@"searchResult > 0"];
+    
+    // show everything that comes back
+    NSArray *results = [[CoreDataManager sharedManager] objectsForEntity:NewsStoryEntityName matchingPredicate:predicate sortDescriptors:sortDescriptors];
+    
+    return results;
+}
 
 - (void)saveImageData:(NSData *)data url:(NSString *)url {
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"url LIKE %@", url];
@@ -404,21 +445,17 @@ NSString * const NewsTagBody            = @"body";
         [self requestStoriesForCategory:categoryID loadMore:NO forceRefresh:NO];
     
     } else if([path isEqualToString:@"search"]) {
-        NSString *searchTerms = [request.getParams objectForKey:@"q"];
+        [self.searchRequests removeObject:request];
         
-        NSPredicate *predicate = nil;
-        NSSortDescriptor *relevanceSortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"searchResult" ascending:YES];
-        NSArray *sortDescriptors = [NSArray arrayWithObject:relevanceSortDescriptor];
-        [relevanceSortDescriptor release];
+        if(self.searchRequests.count == 0) { // all searches have completed
+            NSString *searchTerms = [request.getParams objectForKey:@"q"];
         
-        predicate = [NSPredicate predicateWithFormat:@"searchResult > 0"];
+            NSArray *results = [self fetchLatestSearchResultsFromCoreData];
         
-        // show everything that comes back
-        NSArray *results = [[CoreDataManager sharedManager] objectsForEntity:NewsStoryEntityName matchingPredicate:predicate sortDescriptors:sortDescriptors];
-
-        for(id<NewsDataDelegate> delegate in delegates) {
-            if([delegate respondsToSelector:@selector(searchResults:forSearchTerms:)])
-                [delegate searchResults:results forSearchTerms:searchTerms];            
+            for(id<NewsDataDelegate> delegate in delegates) {
+                if([delegate respondsToSelector:@selector(searchResults:forSearchTerms:)])
+                    [delegate searchResults:results forSearchTerms:searchTerms];            
+            }
         }
         
     } else if([path isEqualToString:@"categories"]) {    
@@ -473,6 +510,10 @@ NSString * const NewsTagBody            = @"body";
 -(void)requestWillTerminate:(KGORequest *)request {
     if(request == self.storiesRequest) {
         self.storiesRequest = nil;
+    }
+    
+    if(self.searchRequests) {
+        [self.searchRequests removeObject:request];
     }
     
     request.delegate = nil;

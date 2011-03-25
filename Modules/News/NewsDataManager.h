@@ -24,7 +24,7 @@ typedef NSString* NewsCategoryId;
 @interface NewsDataManager : NSObject<KGORequestDelegate> {
     NSMutableSet *delegates;
     KGORequest *storiesRequest;
-    KGORequest *searchRequest;
+    NSMutableSet *searchRequests;
 }
 
 + (NewsDataManager *)sharedManager;
@@ -50,6 +50,7 @@ typedef NSString* NewsCategoryId;
 - (NSArray *)bookmarkedStories;
 
 @property (nonatomic, retain) KGORequest *storiesRequest;
-@property (nonatomic, retain) KGORequest *searchRequest;
+@property (nonatomic, retain) NSMutableSet *searchRequests;
+@property (assign) BOOL firstSearchResultReceived;
 
 @end
