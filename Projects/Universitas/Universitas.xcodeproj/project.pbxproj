@@ -18,7 +18,6 @@
 		4B050C55132E48F50016591D /* NewsDataManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B050C54132E48F50016591D /* NewsDataManager.m */; };
 		4B8432E71331287600DCBA86 /* NewsCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B8432E61331287600DCBA86 /* NewsCategory.m */; };
 		4BA25BEB132ED94600ABB625 /* NewsStory.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BA25BEA132ED94600ABB625 /* NewsStory.m */; };
-		A623F1F2120A035A00341C5E /* ModoThreeStateSwitchControl.m in Sources */ = {isa = PBXBuildFile; fileRef = A623F1F0120A035A00341C5E /* ModoThreeStateSwitchControl.m */; };
 		BD9FA7EE1047A05E00BC3C0A /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BD9FA7ED1047A05E00BC3C0A /* MessageUI.framework */; };
 		DE0F6B3411109BC500F064D6 /* AboutMITVC.m in Sources */ = {isa = PBXBuildFile; fileRef = DE0F6B3311109BC500F064D6 /* AboutMITVC.m */; };
 		DE18F9EE10F19105009A69B9 /* News.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = DE18F9ED10F19105009A69B9 /* News.xcdatamodeld */; };
@@ -204,8 +203,6 @@
 		4B8432E61331287600DCBA86 /* NewsCategory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NewsCategory.m; sourceTree = "<group>"; };
 		4BA25BE9132ED94600ABB625 /* NewsStory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NewsStory.h; sourceTree = "<group>"; };
 		4BA25BEA132ED94600ABB625 /* NewsStory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NewsStory.m; sourceTree = "<group>"; };
-		A623F1EF120A035A00341C5E /* ModoThreeStateSwitchControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ModoThreeStateSwitchControl.h; sourceTree = "<group>"; };
-		A623F1F0120A035A00341C5E /* ModoThreeStateSwitchControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ModoThreeStateSwitchControl.m; sourceTree = "<group>"; };
 		BD9FA7ED1047A05E00BC3C0A /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
 		DE0F6B3211109BC500F064D6 /* AboutMITVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AboutMITVC.h; sourceTree = "<group>"; };
 		DE0F6B3311109BC500F064D6 /* AboutMITVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AboutMITVC.m; sourceTree = "<group>"; };
@@ -537,15 +534,6 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		A623F1EE120A033100341C5E /* Views */ = {
-			isa = PBXGroup;
-			children = (
-				A623F1EF120A035A00341C5E /* ModoThreeStateSwitchControl.h */,
-				A623F1F0120A035A00341C5E /* ModoThreeStateSwitchControl.m */,
-			);
-			name = Views;
-			sourceTree = "<group>";
-		};
 		DE4AAFAC10ED4E63007476D9 /* Model */ = {
 			isa = PBXGroup;
 			children = (
@@ -618,7 +606,6 @@
 		DE9EFBCE10FE7D3200F5F07E /* Settings */ = {
 			isa = PBXGroup;
 			children = (
-				A623F1EE120A033100341C5E /* Views */,
 				DE9EFBD010FE7D8900F5F07E /* SettingsModule.h */,
 				DE9EFBD110FE7D8900F5F07E /* SettingsModule.m */,
 				DE6D9318110A8EFA00DAF213 /* SettingsTableViewController.h */,
@@ -1183,7 +1170,6 @@
 				EB1440D41309EEA000396753 /* CalendarConstants.m in Sources */,
 				EB14410F1309EEB800396753 /* MapModel.xcdatamodeld in Sources */,
 				EB3721AB11FA2F5200705180 /* NewsImage.m in Sources */,
-				A623F1F2120A035A00341C5E /* ModoThreeStateSwitchControl.m in Sources */,
 				EB14414A1309EF7B00396753 /* main.m in Sources */,
 				EB14415F1309EFB100396753 /* KGOSpringboardViewController.m in Sources */,
 				EB1441491309EF7B00396753 /* KGONotification.m in Sources */,

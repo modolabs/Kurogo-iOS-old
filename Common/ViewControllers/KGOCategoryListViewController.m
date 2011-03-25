@@ -118,7 +118,7 @@
 }
 
 - (KGOTableCellStyle)tableView:(UITableView *)tableView styleForCellAtIndexPath:(NSIndexPath *)indexPath {
-    return UITableViewCellStyleDefault;
+    return KGOTableCellStyleDefault;
 }
 
 - (CellManipulator)tableView:(UITableView *)tableView manipulatorForCellAtIndexPath:(NSIndexPath *)indexPath {

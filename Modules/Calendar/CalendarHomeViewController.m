@@ -307,9 +307,9 @@ static bool isOverOneHour(NSTimeInterval interval) {
 
 - (KGOTableCellStyle)tableView:(UITableView *)tableView styleForCellAtIndexPath:(NSIndexPath *)indexPath {
     if (_currentCategories) {
-        return UITableViewCellStyleDefault;
+        return KGOTableCellStyleDefault;
     }
-    return UITableViewCellStyleSubtitle;
+    return KGOTableCellStyleSubtitle;
 }
 
 - (NSArray *)tableView:(UITableView *)tableView viewsForCellAtIndexPath:(NSIndexPath *)indexPath {

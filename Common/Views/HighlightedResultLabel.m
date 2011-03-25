@@ -31,17 +31,17 @@ text = _text;
 
 - (void)setSearchTokens:(NSArray *)tokens {
     [_searchTokens release];
-
-    _searchTokens = [[tokens sortedArrayUsingBlock:^(id a, id b, void *context) {
-        NSInteger lenA = [(NSString *)a length];
-        NSInteger lenB = [(NSString *)b length];
+    
+    _searchTokens = [[tokens sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2) {
+        NSInteger lenA = [(NSString *)obj1 length];
+        NSInteger lenB = [(NSString *)obj2 length];
         if (lenA < lenB)
             return NSOrderedDescending; // we want long strings first
         else if (lenA > lenB)
             return NSOrderedAscending;
         else
             return NSOrderedSame;
-    } context:NULL] retain];
+    }] retain];
 }
 
 - (NSArray *)searchTokens {

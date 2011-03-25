@@ -62,7 +62,7 @@ searchBar = _searchBar;
     
     // search hint
     NSString *searchHints = NSLocalizedString(@"Tip: You can search above by a person's first or last name or email address.", nil);
-	UIFont *hintsFont = [UIFont systemFontOfSize:[UIFont systemFontSize]];
+	UIFont *hintsFont = [[KGOTheme sharedTheme] fontForBodyText];
     UILabel *hintsLabel = [UILabel multilineLabelWithText:searchHints font:hintsFont width:self.tableView.frame.size.width - 30];
     hintsLabel.frame = CGRectMake(15, 5, hintsLabel.frame.size.width, hintsLabel.frame.size.height);
     hintsLabel.textColor = [UIColor colorWithHexString:@"#404040"];

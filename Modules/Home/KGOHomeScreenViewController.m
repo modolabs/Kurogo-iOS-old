@@ -1,6 +1,7 @@
 #import "KGOHomeScreenViewController.h"
-#import "KGOModule.h"
 #import "HomeModule.h"
+#import "SettingsModule.h"
+#import "ExternalURLModule.h"
 #import "UIKit+KGOAdditions.h"
 #import "SpringboardIcon.h"
 #import "KGOPersonWrapper.h"
@@ -397,8 +398,12 @@
         if ([aModule isKindOfClass:[HomeModule class]])
             continue;
         
-        if (![[KGORequestManager sharedManager] isModuleAvailable:aModule.tag])
+        if (![[KGORequestManager sharedManager] isModuleAvailable:aModule.tag]
+            && ![aModule isKindOfClass:[SettingsModule class]]    // settings has no server connection
+            && ![aModule isKindOfClass:[ExternalURLModule class]] // locally configurable for now
+        ) { 
             continue;
+        }
         
         if (aModule.secondary) {
             [secondary addObject:aModule];

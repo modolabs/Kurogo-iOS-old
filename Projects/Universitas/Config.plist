@@ -208,5 +208,23 @@
 			<string></string>
 		</dict>
 	</dict>
+	<key>UserSettings</key>
+	<dict>
+		<key>DefaultFont</key>
+		<array>
+			<string>Georgia</string>
+			<string>Verdana</string>
+			<string>Helvetica</string>
+			<string>Courier</string>
+		</array>
+		<key>DefaultFontSize</key>
+		<array>
+			<string>Tiny</string>
+			<string>Small</string>
+			<string>Regular</string>
+			<string>Large</string>
+			<string>Huge</string>
+		</array>
+	</dict>
 </dict>
 </plist>

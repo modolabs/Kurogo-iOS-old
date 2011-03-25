@@ -422,14 +422,23 @@
 	
     NSArray *cachedViews = [self tableView:tableView cachedViewsForCellAtIndexPath:indexPath];
     UITableViewCell *cell = nil;
+    KGOTableCellStyle internalStyle;
     UITableViewCellStyle style;
 	
 	if ([dataSource respondsToSelector:@selector(tableView:styleForCellAtIndexPath:)]) {
-		style = [dataSource tableView:tableView styleForCellAtIndexPath:indexPath];
+		internalStyle = [dataSource tableView:tableView styleForCellAtIndexPath:indexPath];
 	} else {
-		style = UITableViewCellStyleDefault;
+		internalStyle = KGOTableCellStyleDefault;
 	}
-	NSString *cellID = [NSString stringWithFormat:@"%d.%d", indexPath.section, style];
+    
+    switch (internalStyle) {
+        case KGOTableCellStyleValue1:   style = UITableViewCellStyleValue1; break;
+        case KGOTableCellStyleValue2:   style = UITableViewCellStyleValue2; break;
+        case KGOTableCellStyleSubtitle: style = UITableViewCellStyleSubtitle; break;
+        default:                        style = UITableViewCellStyleDefault; break;
+    }
+    
+	NSString *cellID = [NSString stringWithFormat:@"%d.%d", indexPath.section, internalStyle];
 	cell = [tableView dequeueReusableCellWithIdentifier:cellID];
 	
 	if (cell == nil) {
@@ -442,6 +451,9 @@
 			}
 		}
 	}
+    
+    cell.textLabel.font = [[KGOTheme sharedTheme] fontForTableCellTitleWithStyle:internalStyle];
+    cell.detailTextLabel.font = [[KGOTheme sharedTheme] fontForTableCellSubtitleWithStyle:internalStyle];
 	
     if ([dataSource respondsToSelector:@selector(tableView:manipulatorForCellAtIndexPath:)]) {
         CellManipulator manipulateCell = [dataSource tableView:tableView manipulatorForCellAtIndexPath:indexPath];

@@ -23,6 +23,8 @@
 	</dict>
 	<key>Fonts</key>
 	<dict>
+		<key>DefaultFontSize</key>
+		<integer>15</integer>
 		<key>ContentTitle</key>
 		<dict>
 			<key>color</key>
@@ -30,7 +32,7 @@
 			<key>font</key>
 			<string>Georgia</string>
 			<key>size</key>
-			<integer>22</integer>
+			<integer>7</integer>
 		</dict>
 		<key>DefaultBoldFont</key>
 		<string>Helvetica-Bold</string>
@@ -38,48 +40,44 @@
 		<string>Helvetica</string>
 		<key>GroupedSectionHeader</key>
 		<dict>
+			<key>bold</key>
+			<true/>
 			<key>color</key>
 			<string>#554C41</string>
-			<key>font</key>
-			<string>Helvetica-Bold</string>
 			<key>size</key>
-			<integer>17</integer>
+			<integer>2</integer>
 		</dict>
 		<key>PlainSectionHeader</key>
 		<dict>
 			<key>color</key>
 			<string>#EBE7E3</string>
-			<key>font</key>
-			<string>Helvetica-Bold</string>
+			<key>bold</key>
+			<true/>
 			<key>size</key>
-			<integer>15</integer>
+			<integer>0</integer>
 		</dict>
 		<key>TableCellSubtitle</key>
 		<dict>
 			<key>color</key>
 			<string>#505050</string>
-			<key>font</key>
-			<string>Helvetica</string>
 			<key>size</key>
-			<integer>13</integer>
+			<integer>-2</integer>
 		</dict>
 		<key>TableCellTitle</key>
 		<dict>
 			<key>color</key>
 			<string>#1A1611</string>
-			<key>font</key>
-			<string>Helvetica-Bold</string>
+			<key>bold</key>
+			<true/>
 			<key>size</key>
-			<integer>17</integer>
+			<integer>2</integer>
 		</dict>
 		<key>TableFooter</key>
 		<dict>
 			<key>color</key>
 			<string>#505050</string>
-			<key>font</key>
-			<string>Helvetica</string>
 			<key>size</key>
-			<integer>12</integer>
+			<integer>-3</integer>
 		</dict>
 	</dict>
 	<key>HomeScreen</key>

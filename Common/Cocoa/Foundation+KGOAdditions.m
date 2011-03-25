@@ -159,43 +159,6 @@
 @end
 
 
-typedef struct {
-    ComparatorBlock comparator;
-    void *userData;
-} ComparatorInfo;
-
-static NSComparisonResult sortWithBlock(id a, id b, void *context) {
-    ComparatorInfo *info = (ComparatorInfo *)context;
-    ComparatorBlock comparator = info->comparator;
-    void *userData = info->userData;
-    return comparator(a, b, userData);
-}
-
-
-@implementation NSMutableArray (KGOAdditions)
-
-- (void)sortUsingBlock:(ComparatorBlock)comparator context:(void *)context {
-    ComparatorInfo info;
-    info.comparator = comparator;
-    info.userData = context;
-    [self sortUsingFunction:sortWithBlock context:&info];
-}
-
-@end
-
-
-@implementation NSArray (KGOAdditions)
-
-- (NSArray *)sortedArrayUsingBlock:(ComparatorBlock)comparator context:(void *)context {
-    ComparatorInfo info;
-    info.comparator = comparator;
-    info.userData = context;
-    return [self sortedArrayUsingFunction:sortWithBlock context:&info];
-}
-
-@end
-
-
 @implementation NSArray (JSONParser)
 
 - (NSString *)stringAtIndex:(NSInteger)index {
