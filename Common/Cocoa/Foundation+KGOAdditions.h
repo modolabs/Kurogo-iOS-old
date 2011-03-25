@@ -41,22 +41,6 @@
 @end
 
 
-typedef NSComparisonResult (^ComparatorBlock)(id, id, void *);
-
-@interface NSMutableArray (KGOAdditions)
-
-- (void)sortUsingBlock:(ComparatorBlock)comparator context:(void *)context ;
-
-@end
-
-
-@interface NSArray (KGOAdditions)
-
-- (NSArray *)sortedArrayUsingBlock:(ComparatorBlock)comparator context:(void *)context;
-
-@end
-
-
 @interface NSArray (JSONParser)
 
 // returns nil on failure

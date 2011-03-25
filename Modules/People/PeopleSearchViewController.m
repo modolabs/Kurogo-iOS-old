@@ -2,7 +2,7 @@
 #import "KGOPersonWrapper.h"
 #import "KGOAppDelegate.h"
 #import "KGOAppDelegate+ModuleAdditions.h"
-#import "ModoNavigationController.h"
+#import "HarvardNavigationController.h"
 // external modules
 #import "Foundation+KGOAdditions.h"
 #import "UIKit+KGOAdditions.h"
@@ -10,6 +10,7 @@
 #import "KGOSearchDisplayController.h"
 #import "KGOTheme.h"
 #import "ThemeConstants.h"
+#import "PersonContact.h"
 #import "CoreDataManager.h"
 
 
@@ -31,11 +32,14 @@ searchBar = _searchBar;
 
 - (void)viewDidLoad {
 	[super viewDidLoad];
-	
-    // TODO: make this come from API
+    
+    self.title = @"People";
+    
+    _phoneDirectoryEntries = [PersonContact directoryContacts];
     if (!_phoneDirectoryEntries) {
-        NSString *filename = [[[NSBundle mainBundle] bundlePath] stringByAppendingPathComponent:@"people/peopleSearchStaticPhoneRowsArray.plist"];
-        _phoneDirectoryEntries = [[NSArray alloc] initWithContentsOfFile:filename];
+        _request = [[KGORequestManager sharedManager] requestWithDelegate:self module:PeopleTag path:@"contacts" params:nil];
+        _request.expectedResponseType = [NSDictionary class];
+        [_request connect];
     }
     
     _searchBar = [[KGOSearchBar alloc] initWithFrame:CGRectMake(0.0f, 0.0f, self.view.frame.size.width, 44)];
@@ -58,7 +62,7 @@ searchBar = _searchBar;
     
     // search hint
     NSString *searchHints = NSLocalizedString(@"Tip: You can search above by a person's first or last name or email address.", nil);
-	UIFont *hintsFont = [UIFont systemFontOfSize:[UIFont systemFontSize]];
+	UIFont *hintsFont = [[KGOTheme sharedTheme] fontForBodyText];
     UILabel *hintsLabel = [UILabel multilineLabelWithText:searchHints font:hintsFont width:self.tableView.frame.size.width - 30];
     hintsLabel.frame = CGRectMake(15, 5, hintsLabel.frame.size.width, hintsLabel.frame.size.height);
     hintsLabel.textColor = [UIColor colorWithHexString:@"#404040"];
@@ -78,6 +82,28 @@ searchBar = _searchBar;
 	[self reloadDataForTableView:self.tableView];
 }
 
+#pragma mark - KGORequestDelegate
+
+- (void)requestWillTerminate:(KGORequest *)request
+{
+    _request = nil;
+}
+
+- (void)request:(KGORequest *)request didReceiveResult:(id)result
+{
+    NSArray *contacts = [result arrayForKey:@"results"];
+    NSMutableArray *array = [NSMutableArray array];
+    for (NSDictionary *contactDict in contacts) {
+        PersonContact *aContact = [PersonContact personContactWithDictionary:contactDict
+                                                                        type:[contactDict stringForKey:@"type" nilIfEmpty:YES]];
+        [array addObject:aContact];
+    }
+    [_phoneDirectoryEntries release];
+    _phoneDirectoryEntries = [array copy];
+    
+    [self reloadDataForTableView:self.tableView];
+}
+
 #pragma mark memory
 
 - (void)didReceiveMemoryWarning {
@@ -85,6 +111,9 @@ searchBar = _searchBar;
 }
 
 - (void)dealloc {
+    if (_request) {
+        [_request cancel];
+    }
 	[_searchTerms release];
 	[_searchTokens release];
 	[_searchController release];
@@ -186,10 +215,10 @@ searchBar = _searchBar;
     switch (indexPath.section) {
         case 0:
         {
-            NSDictionary *rowProperties = [_phoneDirectoryEntries objectAtIndex:indexPath.row];
-            title = [rowProperties objectForKey:@"mainText"];
-            detailText = [rowProperties objectForKey:@"secondaryText"];
-            accessoryTag = TableViewCellAccessoryPhone;
+            PersonContact *contact = [_phoneDirectoryEntries objectAtIndex:indexPath.row];
+            title = contact.label;
+            detailText = contact.value;
+            accessoryTag = TableViewCellAccessoryPhone; // TODO: use the type to determine this
             backgroundColor = [[KGOTheme sharedTheme] backgroundColorForSecondaryCell];
             break;
         }
@@ -252,9 +281,10 @@ searchBar = _searchBar;
 	
     switch (indexPath.section) {
         case 0:
-        { 
-            NSDictionary *rowProperties = [_phoneDirectoryEntries objectAtIndex:indexPath.row];
-            NSURL *externURL = [NSURL URLWithString:[rowProperties objectForKey:@"URL"]];
+        {
+            PersonContact *contact = [_phoneDirectoryEntries objectAtIndex:indexPath.row];
+            NSString *urlString = [NSString stringWithFormat:@"tel:%@", contact.value];
+            NSURL *externURL = [NSURL URLWithString:urlString];
             if ([[UIApplication sharedApplication] canOpenURL:externURL])
                 [[UIApplication sharedApplication] openURL:externURL];
             

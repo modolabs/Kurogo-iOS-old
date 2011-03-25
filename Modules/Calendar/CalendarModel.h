@@ -1,6 +1,6 @@
 #import "CoreDataManager.h"
 #import "KGOCalendarGroup.h"
-#import "KGOEventCategory.h"
+#import "KGOCalendar.h"
 #import "KGOEventContactInfo.h"
 #import "KGOEvent.h"
 #import "KGOEventAttendee.h"

@@ -25,6 +25,7 @@
 - (NSArray *)iconsForPrimaryModules:(BOOL)isPrimary;
 
 - (NSArray *)allWidgets:(CGFloat *)topFreePixel :(CGFloat *)bottomFreePixel;
+- (void)refreshModules;
 - (void)refreshWidgets;                     // does nothing by default
 
 - (CGSize)moduleLabelMaxDimensions;

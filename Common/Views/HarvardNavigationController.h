@@ -6,17 +6,17 @@
  *****************************************************************/
 
 #import <UIKit/UIKit.h>
-#import "ModoNavigationBar.h"
+#import "HarvardNavigationBar.h"
 
-@interface ModoNavigationController : UINavigationController {
+@interface HarvardNavigationController : UINavigationController {
 
-    ModoNavigationBar *_modoNavBar;
+    HarvardNavigationBar *_modoNavBar;
     NSArray *oldSubviews;
 }
 
 - (void)updateNavBar;
-- (void)navigationBar:(ModoNavigationBar *)navigationBar willHideSubviews:(NSArray *)subviews;
+- (void)navigationBar:(HarvardNavigationBar *)navigationBar willHideSubviews:(NSArray *)subviews;
 
-@property (nonatomic, readonly) ModoNavigationBar *modoNavBar;
+@property (nonatomic, readonly) HarvardNavigationBar *modoNavBar;
 
 @end

@@ -1,8 +1,6 @@
 #import "CalendarDetailViewController.h"
 #import "CalendarModel.h"
 #import "Foundation+KGOAdditions.h"
-#import "MapBookmarkManager.h"
-#import "MapSearchResultAnnotation.h"
 #import "AnalyticsWrapper.h"
 #import "MITMailComposeController.h"
 #import "ThemeConstants.h"
@@ -51,6 +49,7 @@ enum CalendarDetailRowTypes {
 	descriptionString = nil;
     //categoriesString = nil;
 	
+    
 	// setup nav bar
 	if (self.events.count > 1) {
 		UISegmentedControl *segmentControl = [[UISegmentedControl alloc] initWithItems:[NSArray arrayWithObjects:
@@ -91,23 +90,7 @@ enum CalendarDetailRowTypes {
 		}
 		self.event = [self.events objectAtIndex:currentEventIndex];
 		[self reloadEvent];
-		
-		if (isRegularEvent) {
-            //[self requestEventDetails];
-        }
     }
-}
-
-- (void)requestEventDetails
-{
-	// No longer required as the details come with the initial header requests
-	//JSONAPIRequest *apiRequest = [JSONAPIRequest requestWithJSONAPIDelegate:self];
-	//NSString *eventID = [NSString stringWithFormat:@"%d", [self.event.eventID intValue]];
-	/*
-	[apiRequest requestObjectFromModule:@"calendar" 
-								command:@"detail" 
-							 parameters:[NSDictionary dictionaryWithObjectsAndKeys:eventID, @"id", nil]];
-	 */
 }
 
 // helper function that maintains consistency of descriptionString and descriptionHeight
@@ -165,7 +148,7 @@ enum CalendarDetailRowTypes {
 		
 		numRows++;
 	}
-	if ([self.event.categories count] > 0 && isRegularEvent) {
+	if ([self.event.calendars count] > 0 && isRegularEvent) {
         rowTypes[numRows] = CalendarDetailRowTypeCategories;
         
         [categoriesString release];
@@ -173,7 +156,7 @@ enum CalendarDetailRowTypes {
         UIFont *cellFont = [[KGOTheme sharedTheme] fontForTableCellTitleWithStyle:UITableViewCellStyleDefault];
         CGSize textSize = [CalendarTag sizeWithFont:cellFont];
         // one line height per category, +1 each for "Categorized as" and <ul> spacing, 5px between lines
-        categoriesHeight = (textSize.height + 5.0) * ([event.categories count] + 2);
+        categoriesHeight = (textSize.height + 5.0) * ([event.calendars count] + 2);
 		
         numRows++;
 	}
@@ -261,7 +244,7 @@ enum CalendarDetailRowTypes {
     descriptionString = nil;
     categoriesString = nil;
 	
-    NSInteger catID = [[[self.event.categories anyObject] identifier] intValue];
+    NSInteger catID = [[[self.event.calendars anyObject] identifier] intValue];
     isRegularEvent = (catID != kCalendarAcademicCategoryID && catID != kCalendarHolidayCategoryID);
 }
 
@@ -308,13 +291,13 @@ enum CalendarDetailRowTypes {
 		
 		NSMutableArray *tempCats = [NSMutableArray array];
 		
-		for (KGOEventCategory *category in event.categories) {
+		for (KGOCalendar *category in event.calendars) {
 			[tempCats addObject:category];
 		}
 		
 		NSArray *tempA = [tempCats sortedArrayUsingSelector:@selector(compare:)];
 		
-		for (KGOEventCategory *category in tempA) {
+		for (KGOCalendar *category in tempA) {
 			NSString *catIDString = [NSString stringWithFormat:@"catID=%d", [category.identifier intValue]];
 			NSURL *categoryURL = [NSURL internalURLWithModuleTag:CalendarTag path:CalendarStateCategoryEventList query:catIDString];
 			[categoriesBody appendString:[NSString stringWithFormat:
@@ -330,7 +313,7 @@ enum CalendarDetailRowTypes {
 		UIFont *cellFont = [[KGOTheme sharedTheme] fontForTableCellTitleWithStyle:KGOTableCellStyleDefault];
 		CGSize textSize = [CalendarTag sizeWithFont:cellFont];
 		// one line height per category, +1 each for "Categorized as" and <ul> spacing, 5px between lines
-		categoriesHeight = (textSize.height + 5.0) * ([event.categories count] + 2);
+		categoriesHeight = (textSize.height + 5.0) * ([event.calendars count] + 2);
 		
 		CGRect frame = CGRectMake(WEB_VIEW_PADDING, WEB_VIEW_PADDING, self.tableView.frame.size.width - 2 * WEB_VIEW_PADDING, categoriesHeight);
 		UIWebView *webView = [[[UIWebView alloc] initWithFrame:frame] autorelease];
@@ -400,6 +383,7 @@ enum CalendarDetailRowTypes {
 	NSInteger rowType = rowTypes[indexPath.row];
 	
 	switch (rowType) {
+        /*	
 		case CalendarDetailRowTypeLocation:
             if ([event hasCoords]) {
                 [[MapBookmarkManager defaultManager] pruneNonBookmarks];
@@ -417,7 +401,6 @@ enum CalendarDetailRowTypes {
                 [[UIApplication sharedApplication] openURL:internalURL];
             }
 			break;
-		/*	
 		case CalendarDetailRowTypePhone:
 		{
 			NSString *phoneString = [event.phone stringByReplacingOccurrencesOfString:@"-" withString:@""];
@@ -518,15 +501,6 @@ enum CalendarDetailRowTypes {
 */
 - (NSString *)twitterTitle {
 	return event.title;
-}
-
-#pragma mark JSONAPIDelegate for background refreshing of events
-
-- (void)request:(JSONAPIRequest *)request jsonLoaded:(id)result {
-	if (result && [result isKindOfClass:[NSDictionary class]]) {
-		[self.event updateWithDict:result];
-		[self reloadEvent];
-	}
 }
 
 

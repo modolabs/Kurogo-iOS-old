@@ -1,6 +1,9 @@
 #import "KGOTheme.h"
 #import "UIKit+KGOAdditions.h"
 
+NSString * const KGOUserPreferencesKey = @"KGOUserPrefs";
+NSString * const KGOUserPreferencesDidChangeNotification = @"KGOUserPrefsChanged";
+
 NSString * const KGOAccessoryTypeNone = @"None";
 NSString * const KGOAccessoryTypeBlank = @"Blank";
 NSString * const KGOAccessoryTypeChevron = @"Chevron";
@@ -19,7 +22,7 @@ static KGOTheme *s_sharedTheme = nil;
 }
 
 - (UIFont *)fontForContentTitle {
-    return [self matchBoldFontWithLabel:@"ContentTitle" defaultSize:22];
+    return [self matchBoldFontWithLabel:@"ContentTitle" defaultSize:7];
 }
 
 - (UIColor *)textColorForContentTitle {
@@ -30,7 +33,7 @@ static KGOTheme *s_sharedTheme = nil;
 }
 
 - (UIFont *)fontForBodyText {
-    return [self matchFontWithLabel:@"BodyText" defaultSize:15];
+    return [self matchFontWithLabel:@"BodyText" defaultSize:0];
 }
 
 - (UIColor *)textColorForBodyText {
@@ -38,6 +41,15 @@ static KGOTheme *s_sharedTheme = nil;
     if (!color)
         color = [UIColor blackColor];
     return color;
+}
+
+- (CGFloat)defaultFontSize
+{
+    CGFloat fontSize = [[fontDict objectForKey:@"DefaultFontSize"] floatValue];
+    if (fontSize) {
+        return fontSize;
+    }
+    return [UIFont systemFontSize];
 }
 
 #pragma mark Colors
@@ -108,20 +120,20 @@ static KGOTheme *s_sharedTheme = nil;
 - (UIFont *)fontForTableCellTitleWithStyle:(KGOTableCellStyle)style {
     switch (style) {
         case KGOTableCellStyleValue2:
-            return [self matchBoldFontWithLabel:@"TableCellValue2Title" defaultSize:14];
+            return [self matchBoldFontWithLabel:@"TableCellValue2Title" defaultSize:-1];
         case KGOTableCellStyleBodyText:
-            return [self matchFontWithLabel:@"TableCellTitle" defaultSize:15];
+            return [self matchFontWithLabel:@"TableCellTitle" defaultSize:0];
         case KGOTableCellStyleURL:
-            return [self matchFontWithLabel:@"TableCellTitle" defaultSize:17];
+            return [self matchFontWithLabel:@"TableCellTitle" defaultSize:2];
         default: // default, subtitle, value1
-            return [self matchBoldFontWithLabel:@"TableCellTitle" defaultSize:17];
+            return [self matchBoldFontWithLabel:@"TableCellTitle" defaultSize:2];
     }
 }
 
 - (UIColor *)textColorForTableCellTitleWithStyle:(KGOTableCellStyle)style {
     UIColor *color = nil;
     switch (style) {
-        case UITableViewCellStyleValue2:
+        case KGOTableCellStyleValue2:
             color = [self matchTextColorWithLabel:@"TableCellValue2Title"];
             break;
         default:
@@ -137,12 +149,12 @@ static KGOTheme *s_sharedTheme = nil;
 
 - (UIFont *)fontForTableCellSubtitleWithStyle:(KGOTableCellStyle)style {
     switch (style) {
-        case UITableViewCellStyleValue1:
-            return [self matchFontWithLabel:@"TableCellValue1Subtitle" defaultSize:13];
-        case UITableViewCellStyleValue2:
-            return [self matchBoldFontWithLabel:@"TableCellTitle" defaultSize:17];
+        case KGOTableCellStyleValue1:
+            return [self matchFontWithLabel:@"TableCellValue1Subtitle" defaultSize:-2];
+        case KGOTableCellStyleValue2:
+            return [self matchBoldFontWithLabel:@"TableCellTitle" defaultSize:2];
         default:
-            return [self matchFontWithLabel:@"TableCellSubtitle" defaultSize:13];
+            return [self matchFontWithLabel:@"TableCellSubtitle" defaultSize:-2];
     }
 }
 
@@ -150,10 +162,10 @@ static KGOTheme *s_sharedTheme = nil;
     UIColor *color = nil;
     
     switch (style) {
-        case UITableViewCellStyleValue1:
+        case KGOTableCellStyleValue1:
             color = [self matchTextColorWithLabel:@"TableCellValue1Subtitle"];
             break;
-        case UITableViewCellStyleValue2:
+        case KGOTableCellStyleValue2:
             color = [self matchTextColorWithLabel:@"TableCellValue2Subitle"];
             break;
         default:
@@ -168,7 +180,7 @@ static KGOTheme *s_sharedTheme = nil;
 }
 
 - (UIFont *)fontForGroupedSectionHeader {
-    return [self matchBoldFontWithLabel:@"GroupedSectionHeader" defaultSize:17];
+    return [self matchBoldFontWithLabel:@"GroupedSectionHeader" defaultSize:2];
 }
 
 - (UIColor *)textColorForGroupedSectionHeader {
@@ -179,7 +191,7 @@ static KGOTheme *s_sharedTheme = nil;
 }
 
 - (UIFont *)fontForPlainSectionHeader {
-    return [self matchBoldFontWithLabel:@"PlainSectionHeader" defaultSize:15];
+    return [self matchBoldFontWithLabel:@"PlainSectionHeader" defaultSize:0];
 }
 
 - (UIColor *)textColorForPlainSectionHeader {
@@ -197,7 +209,7 @@ static KGOTheme *s_sharedTheme = nil;
 }
 
 - (UIFont *)fontForTableFooter {
-    return [self matchBoldFontWithLabel:@"TableFooter" defaultSize:12];
+    return [self matchBoldFontWithLabel:@"TableFooter" defaultSize:-3];
 }
 
 - (UIColor *)textColorForTableFooter {
@@ -260,23 +272,25 @@ static NSString * KGOAccessoryImageCheckmarkHighlighted = @"common/action-checkm
 }
 
 #pragma mark -
-#pragma mark Private
 
 - (NSString *)fontNameForLabel:(NSString *)label size:(CGFloat *)fontSize {
     NSDictionary *fontInfo = [fontDict objectForKey:label];
     NSString *fontName = nil;
     if (fontInfo) {
-        CGFloat newFontSize = [[themeDict objectForKey:@"size"] floatValue];
-        if (newFontSize)
-            *fontSize = newFontSize;
+        NSNumber *newFontSize = [themeDict objectForKey:@"size"];
+        if (newFontSize) {
+            *fontSize = [newFontSize floatValue];
+        }
         fontName = [themeDict objectForKey:@"font"];
     }
     return fontName;
 }
 
 - (UIFont *)matchFontWithLabel:(NSString *)label defaultSize:(CGFloat)defaultSize {
-    CGFloat fontSize = defaultSize;
-    NSString *fontName = [self fontNameForLabel:label size:&fontSize];
+    CGFloat fontSize = [self defaultFontSize];
+    CGFloat fontOffset = defaultSize;
+    NSString *fontName = [self fontNameForLabel:label size:&fontOffset];
+    fontSize += fontOffset;
     if (!fontName)
         fontName = [fontDict objectForKey:@"DefaultFont"];
     if (fontName)
@@ -285,8 +299,10 @@ static NSString * KGOAccessoryImageCheckmarkHighlighted = @"common/action-checkm
 }
 
 - (UIFont *)matchBoldFontWithLabel:(NSString *)label defaultSize:(CGFloat)defaultSize {
-    CGFloat fontSize = defaultSize;
-    NSString *fontName = [self fontNameForLabel:label size:&fontSize];
+    CGFloat fontSize = [self defaultFontSize];
+    CGFloat fontOffset = defaultSize;
+    NSString *fontName = [self fontNameForLabel:label size:&fontOffset];
+    fontSize += fontOffset;
     if (!fontName)
         fontName = [fontDict objectForKey:@"DefaultBoldFont"];
     if (fontName)
@@ -317,6 +333,51 @@ static NSString * KGOAccessoryImageCheckmarkHighlighted = @"common/action-checkm
     return color;
 }
 
+#pragma mark - Private
+
+- (void)loadFontPreferences
+{
+    NSMutableDictionary *mutableFontDict = [[themeDict objectForKey:@"Fonts"] mutableCopy];
+    NSDictionary *userSettings = [[NSUserDefaults standardUserDefaults] objectForKey:KGOUserPreferencesKey];
+    if (userSettings) {
+        // TODO: reduce the hard-coded ness of our settings overrides
+        CGFloat fontSize = [[mutableFontDict objectForKey:@"DefaultFontSize"] floatValue];
+        if (!fontSize) {
+            fontSize = [UIFont systemFontSize];
+        }
+
+        NSString *fontSizePref = [userSettings objectForKey:@"DefaultFontSize"];
+        if ([fontSizePref isEqualToString:@"Tiny"]) {
+            fontSize -= 2;
+        } else if ([fontSizePref isEqualToString:@"Small"]) {
+            fontSize -= 1;
+        } else if ([fontSizePref isEqualToString:@"Large"]) {
+            fontSize += 1;
+        } else if ([fontSizePref isEqualToString:@"Huge"]) {
+            fontSize += 2;
+        }
+        [mutableFontDict setObject:[NSNumber numberWithFloat:fontSize] forKey:@"DefaultFontSize"];
+        
+        NSString *fontPref = [userSettings objectForKey:@"DefaultFont"];
+        if (fontPref) {
+            UIFont *font = [UIFont fontWithName:fontPref size:fontSize];
+            if (font) {
+                [mutableFontDict setObject:fontPref forKey:@"DefaultFont"];
+            }
+            NSString *boldFontPref = [NSString stringWithFormat:@"%@-Bold", fontPref];
+            font = [UIFont fontWithName:boldFontPref size:fontSize];
+            if (font) {
+                [mutableFontDict setObject:boldFontPref forKey:@"DefaultBoldFont"];
+            }
+        }
+    }
+    fontDict = [mutableFontDict copy];
+}
+
+- (void)userDefaultsDidChange:(NSNotification *)aNotification
+{
+    [self loadFontPreferences];
+}
 
 #pragma mark -
 
@@ -325,7 +386,12 @@ static NSString * KGOAccessoryImageCheckmarkHighlighted = @"common/action-checkm
     if (self) {
 		NSString * file = [[NSBundle mainBundle] pathForResource:@"ThemeConfig" ofType:@"plist"];
         themeDict = [[NSDictionary alloc] initWithContentsOfFile:file];
-		fontDict = [themeDict objectForKey:@"Fonts"];
+        [self loadFontPreferences];
+        
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(userDefaultsDidChange:)
+                                                     name:KGOUserPreferencesDidChangeNotification
+                                                   object:nil];
     }
     return self;
 }

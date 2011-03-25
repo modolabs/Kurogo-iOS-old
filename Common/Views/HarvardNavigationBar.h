@@ -10,7 +10,7 @@
 #import <UIKit/UIKit.h>
 
 
-@interface ModoNavigationBar : UINavigationBar /*<UINavigationBarDelegate>*/ {
+@interface HarvardNavigationBar : UINavigationBar {
     
     UINavigationBar *_navigationBar;
 

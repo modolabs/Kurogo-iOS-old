@@ -37,10 +37,21 @@
     [_scrollView addSubview:secondGrid];
 }
 
+- (void)refreshModules
+{
+    primaryGrid.icons = [self iconsForPrimaryModules:YES];
+    secondGrid.icons = [self iconsForPrimaryModules:NO];
+    
+    [primaryGrid setNeedsLayout];
+    [secondGrid setNeedsLayout];
+}
+
 - (void)iconGridFrameDidChange:(IconGrid *)iconGrid {
-    CGRect frame = secondGrid.frame;
-    frame.origin.y = iconGrid.frame.origin.y + iconGrid.frame.size.height;
-    secondGrid.frame = frame;
+    if (iconGrid == primaryGrid) {
+        CGRect frame = secondGrid.frame;
+        frame.origin.y = iconGrid.frame.origin.y + iconGrid.frame.size.height;
+        secondGrid.frame = frame;
+    }
 }
 
 - (void)dealloc {

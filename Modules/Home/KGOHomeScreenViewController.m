@@ -1,15 +1,18 @@
 #import "KGOHomeScreenViewController.h"
-#import "KGOModule.h"
 #import "HomeModule.h"
+#import "SettingsModule.h"
+#import "ExternalURLModule.h"
 #import "UIKit+KGOAdditions.h"
 #import "SpringboardIcon.h"
 #import "KGOPersonWrapper.h"
 #import "KGOHomeScreenWidget.h"
 #import "KGOAppDelegate+ModuleAdditions.h"
+#import "KGORequestManager.h"
 
 @interface KGOHomeScreenViewController (Private)
 
 - (void)loadModules;
+- (void)moduleListDidChange:(NSNotification *)aNotification;
 + (GridSpacing)spacingWithArgs:(NSArray *)args;
 + (GridPadding)paddingWithArgs:(NSArray *)args;
 + (CGSize)maxLabelDimensionsForModules:(NSArray *)modules font:(UIFont *)font;
@@ -27,6 +30,10 @@
 		NSString * file = [[NSBundle mainBundle] pathForResource:@"ThemeConfig" ofType:@"plist"];
         NSDictionary *themeDict = [NSDictionary dictionaryWithContentsOfFile:file];
         _preferences = [[themeDict objectForKey:@"HomeScreen"] retain];
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(moduleListDidChange:)
+                                                     name:ModuleListDidChangeNotification
+                                                   object:nil];
     }
     return self;
 }
@@ -37,6 +44,10 @@
 		NSString * file = [[NSBundle mainBundle] pathForResource:@"ThemeConfig" ofType:@"plist"];
         NSDictionary *themeDict = [NSDictionary dictionaryWithContentsOfFile:file];
         _preferences = [[themeDict objectForKey:@"HomeScreen"] retain];
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(moduleListDidChange:)
+                                                     name:ModuleListDidChangeNotification
+                                                   object:nil];
     }
     return self;
 }
@@ -204,6 +215,10 @@
     ;
 }
 
+- (void)refreshModules {
+    ;
+}
+
 - (NSArray *)iconsForPrimaryModules:(BOOL)isPrimary {
     BOOL useCompactIcons = [KGO_SHARED_APP_DELEGATE() navigationStyle] != KGONavigationStyleTabletSidebar;
     
@@ -367,6 +382,12 @@
 
 #pragma mark Private
 
+- (void)moduleListDidChange:(NSNotification *)aNotification
+{
+    [self loadModules];
+    [self refreshModules];
+}
+
 - (void)loadModules {
     NSArray *modules = [KGO_SHARED_APP_DELEGATE() modules];
     NSMutableArray *primary = [NSMutableArray array];
@@ -376,6 +397,13 @@
         // special case for home module
         if ([aModule isKindOfClass:[HomeModule class]])
             continue;
+        
+        if (![[KGORequestManager sharedManager] isModuleAvailable:aModule.tag]
+            && ![aModule isKindOfClass:[SettingsModule class]]    // settings has no server connection
+            && ![aModule isKindOfClass:[ExternalURLModule class]] // locally configurable for now
+        ) { 
+            continue;
+        }
         
         if (aModule.secondary) {
             [secondary addObject:aModule];

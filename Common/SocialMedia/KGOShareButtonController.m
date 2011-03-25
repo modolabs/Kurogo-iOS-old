@@ -1,7 +1,6 @@
 #import "KGOShareButtonController.h"
 #import "KGOAppDelegate.h"
 #import "TwitterViewController.h"
-#import "JSONAPIRequest.h"
 #import "MITMailComposeController.h"
 
 @implementation KGOShareButtonController
@@ -82,7 +81,6 @@
 #pragma mark -
 
 - (void)dealloc {
-	[[KGOSocialMediaController sharedController] setFacebookDelegate:nil];
 	self.delegate = nil;
     [super dealloc];
 }

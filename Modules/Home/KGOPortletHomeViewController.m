@@ -2,6 +2,7 @@
 #import "KGOHomeScreenWidget.h"
 #import "SpringboardIcon.h"
 #import "KGOModule.h"
+#import "IconGrid.h"
 
 @implementation KGOPortletHomeViewController
 
@@ -14,18 +15,22 @@
     // TODO: if we support rotation, we'll need to selectively hide widgets
     _visibleWidgets = [[self allWidgets:&topFreePixel :&bottomFreePixel] retain];
     
-    IconGrid *iconGrid = [[[IconGrid alloc] initWithFrame:CGRectMake(0, topFreePixel,
-                                                                     self.view.frame.size.width,
-                                                                     bottomFreePixel - topFreePixel)] autorelease];
-    iconGrid.padding = [self moduleListMargins];
-    iconGrid.spacing = [self moduleListSpacing];
-    iconGrid.icons = [self iconsForPrimaryModules:YES];
-    [self.view addSubview:iconGrid];
-    DLog(@"%@", [iconGrid description]);
+    _iconGrid = [[[IconGrid alloc] initWithFrame:CGRectMake(0, topFreePixel,
+                                                            self.view.frame.size.width,
+                                                            bottomFreePixel - topFreePixel)] autorelease];
+    _iconGrid.padding = [self moduleListMargins];
+    _iconGrid.spacing = [self moduleListSpacing];
+    _iconGrid.icons = [self iconsForPrimaryModules:YES];
+    [self.view addSubview:_iconGrid];
 
     for (KGOHomeScreenWidget *aWidget in _visibleWidgets) {
        [self.view addSubview:aWidget];
     }
+}
+
+- (void)refreshModules {
+    _iconGrid.icons = [self iconsForPrimaryModules:YES];
+    [_iconGrid setNeedsLayout];
 }
 
 - (void)refreshWidgets {
@@ -74,6 +79,7 @@
 
 - (void)dealloc {
     [_visibleWidgets release];
+    [_iconGrid release];
     [super dealloc];
 }
 

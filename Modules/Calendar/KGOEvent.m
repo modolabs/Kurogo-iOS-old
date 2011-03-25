@@ -1,11 +1,13 @@
 #import "KGOEvent.h"
 #import "KGOCalendarGroup.h"
 #import "KGOEventAttendee.h"
-#import "KGOEventCategory.h"
+#import "KGOCalendar.h"
+#import "CoreDataManager.h"
 
 NSString * const KGOEntityNameEvent = @"KGOEvent";
 
 @implementation KGOEvent
+@dynamic bookmarked;
 @dynamic start;
 @dynamic lastUpdate;
 @dynamic rrule;
@@ -17,37 +19,49 @@ NSString * const KGOEntityNameEvent = @"KGOEvent";
 @dynamic location;
 @dynamic summary;
 @dynamic end;
-@dynamic categories;
+@dynamic calendars;
 @dynamic attendees;
-@dynamic organizer;
-@dynamic calendar;
+@dynamic organizers;
 
-- (void)addCategoriesObject:(KGOEventCategory *)value {    
++ (KGOEvent *)eventWithID:(NSString *)identifier
+{
+    NSPredicate *pred = [NSPredicate predicateWithFormat:@"identifier = %@", identifier];
+    KGOEvent *event = [[[CoreDataManager sharedManager] objectsForEntity:KGOEntityNameEvent matchingPredicate:pred] lastObject];
+    if (!event) {
+        event = [[CoreDataManager sharedManager] insertNewObjectForEntityForName:KGOEntityNameEvent];
+        event.identifier = identifier;
+    }
+    return event;
+}
+
+#pragma mark - Core data generated methods
+
+- (void)addCalendarsObject:(KGOCalendar *)value {    
     NSSet *changedObjects = [[NSSet alloc] initWithObjects:&value count:1];
-    [self willChangeValueForKey:@"categories" withSetMutation:NSKeyValueUnionSetMutation usingObjects:changedObjects];
-    [[self primitiveValueForKey:@"categories"] addObject:value];
-    [self didChangeValueForKey:@"categories" withSetMutation:NSKeyValueUnionSetMutation usingObjects:changedObjects];
+    [self willChangeValueForKey:@"calendars" withSetMutation:NSKeyValueUnionSetMutation usingObjects:changedObjects];
+    [[self primitiveValueForKey:@"calendars"] addObject:value];
+    [self didChangeValueForKey:@"calendars" withSetMutation:NSKeyValueUnionSetMutation usingObjects:changedObjects];
     [changedObjects release];
 }
 
-- (void)removeCategoriesObject:(KGOEventCategory *)value {
+- (void)removeCalendarsObject:(KGOCalendar *)value {
     NSSet *changedObjects = [[NSSet alloc] initWithObjects:&value count:1];
-    [self willChangeValueForKey:@"categories" withSetMutation:NSKeyValueMinusSetMutation usingObjects:changedObjects];
-    [[self primitiveValueForKey:@"categories"] removeObject:value];
-    [self didChangeValueForKey:@"categories" withSetMutation:NSKeyValueMinusSetMutation usingObjects:changedObjects];
+    [self willChangeValueForKey:@"calendars" withSetMutation:NSKeyValueMinusSetMutation usingObjects:changedObjects];
+    [[self primitiveValueForKey:@"calendars"] removeObject:value];
+    [self didChangeValueForKey:@"calendars" withSetMutation:NSKeyValueMinusSetMutation usingObjects:changedObjects];
     [changedObjects release];
 }
 
-- (void)addCategories:(NSSet *)value {    
-    [self willChangeValueForKey:@"categories" withSetMutation:NSKeyValueUnionSetMutation usingObjects:value];
-    [[self primitiveValueForKey:@"categories"] unionSet:value];
-    [self didChangeValueForKey:@"categories" withSetMutation:NSKeyValueUnionSetMutation usingObjects:value];
+- (void)addCalendars:(NSSet *)value {    
+    [self willChangeValueForKey:@"calendars" withSetMutation:NSKeyValueUnionSetMutation usingObjects:value];
+    [[self primitiveValueForKey:@"calendars"] unionSet:value];
+    [self didChangeValueForKey:@"calendars" withSetMutation:NSKeyValueUnionSetMutation usingObjects:value];
 }
 
-- (void)removeCategories:(NSSet *)value {
-    [self willChangeValueForKey:@"categories" withSetMutation:NSKeyValueMinusSetMutation usingObjects:value];
-    [[self primitiveValueForKey:@"categories"] minusSet:value];
-    [self didChangeValueForKey:@"categories" withSetMutation:NSKeyValueMinusSetMutation usingObjects:value];
+- (void)removeCalendars:(NSSet *)value {
+    [self willChangeValueForKey:@"calendars" withSetMutation:NSKeyValueMinusSetMutation usingObjects:value];
+    [[self primitiveValueForKey:@"calendars"] minusSet:value];
+    [self didChangeValueForKey:@"calendars" withSetMutation:NSKeyValueMinusSetMutation usingObjects:value];
 }
 
 
@@ -80,6 +94,32 @@ NSString * const KGOEntityNameEvent = @"KGOEvent";
 }
 
 
+- (void)addOrganizersObject:(KGOEventAttendee *)value {    
+    NSSet *changedObjects = [[NSSet alloc] initWithObjects:&value count:1];
+    [self willChangeValueForKey:@"attendees" withSetMutation:NSKeyValueUnionSetMutation usingObjects:changedObjects];
+    [[self primitiveValueForKey:@"attendees"] addObject:value];
+    [self didChangeValueForKey:@"attendees" withSetMutation:NSKeyValueUnionSetMutation usingObjects:changedObjects];
+    [changedObjects release];
+}
 
+- (void)removeOrganizersObject:(KGOEventAttendee *)value {
+    NSSet *changedObjects = [[NSSet alloc] initWithObjects:&value count:1];
+    [self willChangeValueForKey:@"attendees" withSetMutation:NSKeyValueMinusSetMutation usingObjects:changedObjects];
+    [[self primitiveValueForKey:@"attendees"] removeObject:value];
+    [self didChangeValueForKey:@"attendees" withSetMutation:NSKeyValueMinusSetMutation usingObjects:changedObjects];
+    [changedObjects release];
+}
+
+- (void)addOrganizers:(NSSet *)value {    
+    [self willChangeValueForKey:@"attendees" withSetMutation:NSKeyValueUnionSetMutation usingObjects:value];
+    [[self primitiveValueForKey:@"attendees"] unionSet:value];
+    [self didChangeValueForKey:@"attendees" withSetMutation:NSKeyValueUnionSetMutation usingObjects:value];
+}
+
+- (void)removeOrganizers:(NSSet *)value {
+    [self willChangeValueForKey:@"attendees" withSetMutation:NSKeyValueMinusSetMutation usingObjects:value];
+    [[self primitiveValueForKey:@"attendees"] minusSet:value];
+    [self didChangeValueForKey:@"attendees" withSetMutation:NSKeyValueMinusSetMutation usingObjects:value];
+}
 
 @end

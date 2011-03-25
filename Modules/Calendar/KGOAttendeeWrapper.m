@@ -4,7 +4,8 @@
 
 @implementation KGOAttendeeWrapper
 
-@synthesize name = _name,
+@synthesize identifier,
+name = _name,
 attendeeType = _attendeeType,
 attendeeStatus = _attendeeStatus;
 

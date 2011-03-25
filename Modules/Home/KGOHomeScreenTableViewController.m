@@ -28,6 +28,9 @@
     [self.view bringSubviewToFront:_searchBar];
 }
 
+- (void)refreshModules {
+    [_tableView reloadData];
+}
 
 #pragma mark -
 #pragma mark Table view data source

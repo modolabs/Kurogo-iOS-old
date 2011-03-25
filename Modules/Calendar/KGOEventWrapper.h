@@ -3,7 +3,7 @@
 #import <MapKit/MapKit.h>
 #import "KGOSearchModel.h"
 
-@class EKEvent, KGOEvent, KGOAttendeeWrapper;
+@class EKEvent, KGOEvent, KGOAttendeeWrapper, KGOCalendar;
 
 @interface KGOEventWrapper : NSObject <KGOSearchResult, MKAnnotation> {
     
@@ -25,13 +25,12 @@
     
     NSDictionary *_rrule; // recurrenceRule in EKEvent
     NSSet *_attendees;
-    KGOAttendeeWrapper *_organizer; // KGOEventAttendee, EKParticipant
+    NSSet *_organizers; // KGOEventAttendee, EKParticipant
     
     // core data only -- no eventkit counterpart
     
     CLLocationCoordinate2D _coordinate;
-    NSSet *_categories;
-    NSSet *_contacts;
+    NSMutableSet *_calendars;
     BOOL _bookmarked;
     NSString *_briefLocation;
     
@@ -47,14 +46,13 @@
 @property (nonatomic, retain) NSString *location;
 @property (nonatomic, retain) NSString *summary;
 @property (nonatomic, retain) NSDictionary *rrule;
-@property (nonatomic, retain) KGOAttendeeWrapper *organizer;
+@property (nonatomic, retain) NSSet *organizers;
 @property (nonatomic, retain) NSSet *attendees;
 @property (nonatomic) BOOL allDay;
 
 // non-eventkit properties
 @property (nonatomic) CLLocationCoordinate2D coordinate;
-@property (nonatomic, retain) NSSet *categories;
-@property (nonatomic, retain) NSSet *contacts;
+@property (nonatomic, retain) NSSet *calendars;
 @property (nonatomic) BOOL bookmarked;
 @property (nonatomic, retain) NSString *briefLocation;
 
@@ -75,6 +73,7 @@
 - (id)initWithKGOEvent:(KGOEvent *)event;
 - (KGOEvent *)convertToKGOEvent;
 - (void)saveToCoreData;
+- (void)addCalendar:(KGOCalendar *)aCalendar;
 
 // invoking -bookmark will cause the event to be saved to core data
 // but -unbookmark won't remove it from core data

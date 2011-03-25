@@ -14,6 +14,7 @@
     
 }
 
+@property (nonatomic, retain) NSString *identifier;
 @property (nonatomic, retain) NSString *name;
 @property (nonatomic) EKParticipantType attendeeType;
 @property (nonatomic) EKParticipantStatus attendeeStatus;

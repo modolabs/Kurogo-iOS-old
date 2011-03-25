@@ -1,5 +1,4 @@
 #import <UIKit/UIKit.h>
-#import "JSONAPIRequest.h"
 #import "CalendarConstants.h"
 #import "KGOShareButtonController.h"
 #import "KGOAppDelegate.h"
@@ -8,7 +7,7 @@
 
 @class KGOEvent;
 
-@interface CalendarDetailViewController : KGOTableViewController <KGOShareButtonDelegate, JSONAPIDelegate, UIWebViewDelegate> {
+@interface CalendarDetailViewController : KGOTableViewController <KGOShareButtonDelegate, UIWebViewDelegate> {
 	
     BOOL isRegularEvent;
     
@@ -36,7 +35,6 @@
 - (void)reloadEvent;
 - (void)setupHeader;
 - (void)setupShareButton;
-- (void)requestEventDetails;
 - (void)showNextEvent:(id)sender;
 
 @end

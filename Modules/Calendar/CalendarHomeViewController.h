@@ -8,10 +8,13 @@ KGOScrollingTabstripDelegate, CalendarDataManagerDelegate> {
     
     IBOutlet KGODatePager *_datePager;
     IBOutlet KGOScrollingTabstrip *_tabstrip;
+    IBOutlet UIActivityIndicatorView *_loadingView;
     
     NSMutableArray *_groupTitles;
     NSInteger _currentGroupIndex;
 
+    KGOCalendar *_currentCalendar;
+    
     // the table will either be a plain, possibly sectioned list of events
     // or a grouped, unsectioned list of categories.
     NSArray *_currentSections;
@@ -23,5 +26,6 @@ KGOScrollingTabstripDelegate, CalendarDataManagerDelegate> {
 }
 
 @property(nonatomic, retain) NSString *searchTerms;
+@property(nonatomic, retain) KGOCalendar *currentCalendar;
 
 @end

@@ -369,7 +369,7 @@ showingOnlySearchResults = _showingOnlySearchResults;
 }
 
 - (KGOTableCellStyle)tableView:(UITableView *)tableView styleForCellAtIndexPath:(NSIndexPath *)indexPath {
-    return UITableViewCellStyleSubtitle;
+    return KGOTableCellStyleSubtitle;
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {

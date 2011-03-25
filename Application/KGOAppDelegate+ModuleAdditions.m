@@ -1,6 +1,6 @@
 #import "KGOAppDelegate+ModuleAdditions.h"
 #import "KGOSpringboardViewController.h"
-#import "ModoNavigationController.h"
+#import "HarvardNavigationController.h"
 #import "KGOSidebarFrameViewController.h"
 #import "KGOTheme.h"
 #import "KGOModule+Factory.h"
@@ -39,7 +39,7 @@
             if (navBarImage) {
                 // for people who insist on using a background image for their nav bar, they 
                 // get this unfortunate navigation controller subclass
-                _appNavController = [[ModoNavigationController alloc] initWithRootViewController:homeVC];
+                _appNavController = [[HarvardNavigationController alloc] initWithRootViewController:homeVC];
             } else {
                 // normal people get the normal navigation controller
                 _appNavController = [[UINavigationController alloc] initWithRootViewController:homeVC];

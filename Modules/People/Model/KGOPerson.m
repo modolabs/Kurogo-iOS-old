@@ -3,6 +3,7 @@
 #import "PersonAddress.h"
 #import "PersonContact.h"
 #import "PersonOrganization.h"
+#import "CoreDataManager.h"
 
 @implementation KGOPerson 
 

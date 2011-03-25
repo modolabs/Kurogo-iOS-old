@@ -1,144 +1,41 @@
 #import "SettingsTableViewController.h"
 #import "KGOAppDelegate.h"
 #import "KGOModule.h"
-#import "ModoThreeStateSwitchControl.h"
-#import <MapKit/MapKit.h>
 #import "KGOTheme.h"
 #import "UIKit+KGOAdditions.h"
 
-#define TITLE_HEIGHT 20.0
-#define SUBTITLE_HEIGHT 44.0
-#define PADDING 10.0
-const CGFloat kMapTypeSwitchWidth = 180.0f;
-const CGFloat kMapTypeSwitchHeight = 29.0f;
-
-typedef enum {
-	kMapsSettingsSection = 0,
-	kBehaviorSettingsSection
-} SettingsTableSection;
-
 @interface SettingsTableViewController (Private)
 
-- (UIView *)tableView:(UITableView *)tableView viewForHeaderWithTitle:(NSString *)aTitle andSubtitle:(NSString *)subtitle;
-- (void)behaviorSwitchDidToggle:(id)sender;
-- (void)addSwitchToCell:(UITableViewCell *)cell withToggleHandler:(SEL)switchToggleHandler;
-- (void)addSegmentedControlToCell:(UITableViewCell *)cell 
-				withToggleHandler:(SEL)controlValueChangedHandler 
-			  activeSegmentImages:(NSArray *)activeImages 
-			inactiveSegmentImages:(NSArray *)activeImages
-			   activeSegmentIndex:(NSInteger)index;
+- (NSString *)readableStringForKey:(NSString *)key;
 
-@end
-
-@implementation SettingsTableViewController (Private)
-
-- (UIView *)tableView:(UITableView *)tableView viewForHeaderWithTitle:(NSString *)aTitle andSubtitle:(NSString *)subtitle {
-	UIView *result = [[[UIView alloc] initWithFrame:CGRectMake(0, 0, tableView.frame.size.width, SUBTITLE_HEIGHT + TITLE_HEIGHT)] autorelease];
-	
-	UILabel *titleView = [[UILabel alloc] initWithFrame:CGRectMake(PADDING, PADDING, 200, TITLE_HEIGHT)];
-	titleView.font = [[KGOTheme sharedTheme] fontForGroupedSectionHeader];
-	titleView.textColor = [[KGOTheme sharedTheme] textColorForGroupedSectionHeader];
-	titleView.backgroundColor = [UIColor clearColor];
-	titleView.text = aTitle;
-	
-	[result addSubview:titleView];
-	[titleView release];
-	
-	if ([subtitle length] > 0) {
-		UILabel *subtitleView = [[UILabel alloc] initWithFrame:CGRectMake(PADDING, round(TITLE_HEIGHT + 1.5 * PADDING), round(tableView.frame.size.width-2 * PADDING), SUBTITLE_HEIGHT)];
-		subtitleView.numberOfLines = 0;
-		subtitleView.backgroundColor = [UIColor clearColor];
-		subtitleView.lineBreakMode = UILineBreakModeWordWrap;
-		subtitleView.font = [UIFont systemFontOfSize:[UIFont systemFontSize]];
-		subtitleView.text = subtitle;	
-		[result addSubview:subtitleView];
-		[subtitleView release];
-	}
-	
-	return result;
-}
-
-- (void)addSwitchToCell:(UITableViewCell *)cell withToggleHandler:(SEL)switchToggleHandler {
-	
-	UISwitch *aSwitch = [[UISwitch alloc] initWithFrame:CGRectZero];
-	cell.accessoryView = aSwitch;
-	if (switchToggleHandler) {
-		[aSwitch addTarget:self action:switchToggleHandler forControlEvents:UIControlEventValueChanged];
-	}
-	[aSwitch release];	
-}
-
-- (void)addSegmentedControlToCell:(UITableViewCell *)cell 
-				withToggleHandler:(SEL)controlValueChangedHandler 
-			  activeSegmentImages:(NSArray *)activeImages 
-			inactiveSegmentImages:(NSArray *)inactiveImages
-			   activeSegmentIndex:(NSInteger)index {
-	
-	ModoThreeStateSwitchControl* seg = [[ModoThreeStateSwitchControl alloc] initWithActiveSegmentImages:activeImages 
-																			   andInactiveSegmentImages:inactiveImages];
-	[seg setSelectedSegmentIndex:index];
-	[seg setSegmentedControlStyle:UISegmentedControlStyleBar];
-	[seg setFrame:CGRectMake(0, 0, kMapTypeSwitchWidth, kMapTypeSwitchHeight)];
-	[seg addTarget:self action:controlValueChangedHandler forControlEvents:UIControlEventValueChanged];
-	[seg updateSegmentImages];
-
-	cell.accessoryView = seg;
-	[seg release];
-}
-
-#pragma mark Accessory view handlers
-
-- (void)behaviorSwitchDidToggle:(id)sender {
-	// If there are ever other behavior switches, check the sender's tag before doing anything.
-	BOOL currentShakePref = [[NSUserDefaults standardUserDefaults] boolForKey:ShakeToReturnPrefKey];
-	[[NSUserDefaults standardUserDefaults] setBool:!currentShakePref forKey:ShakeToReturnPrefKey];
-}
-
-- (void)mapControlDidChangeValue:(id)sender {
-	if ([sender isKindOfClass:[ModoThreeStateSwitchControl class]])
-	{
-		ModoThreeStateSwitchControl *threeSwitch = (ModoThreeStateSwitchControl *)sender;
-		[threeSwitch updateSegmentImages];
-		// Save preference.
-		MKMapType mapType = MKMapTypeStandard;
-		// Map types and segmented indexes might coincide, but just to be safe let's check the index, then assign a map type.
-		switch ([threeSwitch selectedSegmentIndex]) {
-			case 0:
-				break;
-			case 1:
-				mapType = MKMapTypeSatellite;
-				break;
-			case 2:
-				mapType = MKMapTypeHybrid;
-				break;
-			default:
-				break;
-		}
-		[[NSUserDefaults standardUserDefaults] setInteger:mapType forKey:MapTypePrefKey];
-	}
-}
-
-- (NSInteger)segmentIndexForMapType:(MKMapType)mapType {
-	switch (mapType) {
-		case MKMapTypeStandard:
-			return 0;
-		case MKMapTypeSatellite:
-			return 1;
-		case MKMapTypeHybrid:
-			return 2;
-		default:
-			return 0;
-	}	
-}
-	
 @end
 
 @implementation SettingsTableViewController
-/*
+
+- (NSString *)readableStringForKey:(NSString *)key
+{
+    if ([key isEqualToString:@"DefaultFont"]) {
+        return NSLocalizedString(@"Default Font", nil);
+        
+    } else if ([key isEqualToString:@"DefaultFontSize"]) {
+        return NSLocalizedString(@"Default Font Size", nil);
+        
+    }
+    return key;
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    _availableUserSettings = [[[KGO_SHARED_APP_DELEGATE() appConfig] objectForKey:@"UserSettings"] retain];
+    _setUserSettings = [[[NSUserDefaults standardUserDefaults] objectForKey:KGOUserPreferencesKey] retain];
+
+    _settingKeys = [[[_availableUserSettings allKeys] sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2) {
+        return [(NSString *)obj1 compare:(NSString *)obj2];
+    }] retain];
 }
-*/
+
+
 - (void)didReceiveMemoryWarning {
 	// Releases the view if it doesn't have a superview.
     [super didReceiveMemoryWarning];
@@ -151,129 +48,77 @@ typedef enum {
 }
 
 - (void)dealloc {
+    [_availableUserSettings release];
+    [_settingKeys release];
+    [_setUserSettings release];
     [super dealloc];
 }
 
-
 #pragma mark Table view methods
 
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-	return 2;
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
+    return _availableUserSettings.count;    
 }
 
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    NSInteger rows = 0;
-    switch (section) {
-		case kMapsSettingsSection:
-			rows = 1;
-			break;
-		case kBehaviorSettingsSection:
-			rows = 1;
-			break;			
-        default:
-            rows = 0;
-            break;
-    }
-    return rows;
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    NSString *key = [_settingKeys objectAtIndex:section];
+    return [[_availableUserSettings objectForKey:key] count];
 }
 
-- (UIView *) tableView: (UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
-	
-	UIView *headerView = nil;
-	
-	switch (section) {
-		case kMapsSettingsSection:
-			headerView = [self tableView:tableView viewForHeaderWithTitle:@"Maps" andSubtitle:nil];
-			break;
-		case kBehaviorSettingsSection:
-			headerView = [self tableView:tableView viewForHeaderWithTitle:@"Behavior" andSubtitle:nil];
-		default:
-			break;
-	}
-	
-	return headerView;
-}
-
-- (CGFloat)tableView: (UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
-	CGFloat height = TITLE_HEIGHT + 2.5 * PADDING;
-		
-	return height;
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
+{
+    return [self readableStringForKey:[_settingKeys objectAtIndex:section]];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     static NSString *CellIdentifier = @"Cell";
 
-	NSString *label = nil;
-	SEL switchToggleHandler = nil;
-	BOOL switchIsOnNow = NO;
-	
-	switch (indexPath.section) {
-		case kMapsSettingsSection:
-		{
-			label = @"Map Type";
-			switchToggleHandler = @selector(mapControlDidChangeValue:);
-			break;
-		}
-		case kBehaviorSettingsSection:
-		{
-			label = @"Shake To Go Home";
-			switchToggleHandler = @selector(behaviorSwitchDidToggle:);
-			switchIsOnNow = [[NSUserDefaults standardUserDefaults] boolForKey:ShakeToReturnPrefKey];
-			break;
-		}
-        default:
-            break;
-    }
-	
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil) {
-        cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CellIdentifier] autorelease];
-        cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        cell.backgroundColor = [UIColor colorWithWhite:1.0 alpha:0.65];
-		
-		switch (indexPath.section) {
-			case kBehaviorSettingsSection:
-			{
-				[self addSwitchToCell:cell withToggleHandler:switchToggleHandler];
-				[((UISwitch *)(cell.accessoryView)) setOn:switchIsOnNow];
-				break;
-			}
-			case kMapsSettingsSection:
-			{
-				NSArray *activeSegmentImages = [NSArray arrayWithObjects:
-												[UIImage imageWithPathName:@"modules/settings/map_switch_active1.png"],
-												[UIImage imageWithPathName:@"modules/settings/map_switch_active2.png"],
-												[UIImage imageWithPathName:@"modules/settings/map_switch_active3.png"],
-												nil];
-				NSArray *inactiveSegmentImages = [NSArray arrayWithObjects:
-												  [UIImage imageWithPathName:@"modules/settings/map_switch_inactive1.png"],
-												  [UIImage imageWithPathName:@"modules/settings/map_switch_inactive2.png"],
-												  [UIImage imageWithPathName:@"modules/settings/map_switch_inactive3.png"],
-												  nil];
-				[self addSegmentedControlToCell:cell 
-							  withToggleHandler:switchToggleHandler 
-							activeSegmentImages:activeSegmentImages
-						  inactiveSegmentImages:inactiveSegmentImages
-							 activeSegmentIndex:[self segmentIndexForMapType:
-												 [[NSUserDefaults standardUserDefaults] integerForKey:MapTypePrefKey]]];
-				break;
-			}	
-			default:
-				break;
-		}
-    }            
+        cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
+    }
+
+    NSString *key = [_settingKeys objectAtIndex:indexPath.section];
+    NSArray *options = [_availableUserSettings objectForKey:key];
+    NSString *optionValue = [options objectAtIndex:indexPath.row];
+    cell.textLabel.text = optionValue;
+    cell.textLabel.font = [[KGOTheme sharedTheme] fontForTableCellTitleWithStyle:KGOTableCellStyleDefault];
     
-    cell.textLabel.backgroundColor = [UIColor clearColor];
-    cell.textLabel.text = label;
-    cell.detailTextLabel.text = nil;
-    cell.accessoryType = UITableViewCellAccessoryNone;
-    cell.accessoryView.tag = indexPath.row;
+    NSString *selectedOption = [_setUserSettings objectForKey:key];
+    if ([selectedOption isEqualToString:optionValue]) {
+        cell.accessoryType = UITableViewCellAccessoryCheckmark;
+    } else {
+        cell.accessoryType = UITableViewCellAccessoryNone;
+    }
     
     return cell;    
 }
 
-- (void) reloadSettings {
-	[self.tableView reloadData];
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    NSString *key = [_settingKeys objectAtIndex:indexPath.section];
+    NSArray *options = [_availableUserSettings objectForKey:key];
+    NSString *optionValue = [options objectAtIndex:indexPath.row];
+
+    NSString *selectedOption = [_setUserSettings objectForKey:key];
+    if (![selectedOption isEqualToString:optionValue]) {
+        NSMutableDictionary *dict = [[_setUserSettings mutableCopy] autorelease];
+        if (!dict) {
+            dict = [NSMutableDictionary dictionary];
+        }
+        [dict setObject:optionValue forKey:key];
+        [_setUserSettings release];
+        _setUserSettings = [dict copy];
+
+        [[NSUserDefaults standardUserDefaults] setObject:dict forKey:KGOUserPreferencesKey];
+        [[NSUserDefaults standardUserDefaults] synchronize];
+        
+        [[NSNotificationCenter defaultCenter] postNotificationName:KGOUserPreferencesDidChangeNotification object:key];
+        
+        [tableView reloadData];
+    }
 }
 
 @end

@@ -7,8 +7,19 @@
 
 @synthesize delegate;
 
-- (id)initWithFrame:(CGRect)frame {
-    
+- (id)initWithCoder:(NSCoder *)aDecoder
+{
+    self = [super initWithCoder:aDecoder];
+    if (self) {
+        _dateFormatter = [[NSDateFormatter alloc] init];
+        self.backgroundColor = [UIColor grayColor];
+        self.incrementUnit = NSDayCalendarUnit;
+    }
+    return self;
+}
+
+- (id)initWithFrame:(CGRect)frame
+{    
     self = [super initWithFrame:frame];
     if (self) {
         _dateFormatter = [[NSDateFormatter alloc] init];
@@ -110,7 +121,6 @@
         if (_incrementUnit & NSYearCalendarUnit)  [components setYear:offset];
         
         self.date = [[NSCalendar currentCalendar] dateByAddingComponents:components toDate:self.date options:NSWrapCalendarComponents];
-        [self.delegate pager:self didSelectDate:self.date];
     }
 }
 
@@ -138,6 +148,7 @@
         [_date release];
         _date = [aDate retain];
         self.displayDate = aDate;
+        [self.delegate pager:self didSelectDate:_date];
     }
 }
 
@@ -172,8 +183,6 @@
 
 - (void)datePickerViewController:(DatePickerViewController *)controller didSelectDate:(NSDate *)date {
     self.date = date;
-    
-    [self.delegate pager:self didSelectDate:self.date];
     
 	KGOAppDelegate *appDelegate = KGO_SHARED_APP_DELEGATE();
     [appDelegate dismissAppModalViewControllerAnimated:YES];

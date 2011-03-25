@@ -1,9 +1,6 @@
 #import "MapModule.h"
 #import "MapDetailViewController.h"
-#import "MapSearchResultAnnotation.h"
 #import "KGOPlacemark.h"
-#import "MapBookmarkManager.h"
-#import "TileServerManager.h"
 #import "MapHomeViewController.h"
 #import "KGOCategoryListViewController.h"
 #import "CoreDataManager.h"
@@ -21,14 +18,6 @@ NSString * const MapTypePreferenceChanged = @"MapTypeChanged";
 {	
 	[super dealloc];
 }
-/*
-- (void)applicationDidFinishLaunching
-{
-    // force TileServerManager to load so we can get projection info asap
-    [TileServerManager isInitialized];
-}
-*/
-
 
 - (void)launch {
 #ifdef DEBUG
