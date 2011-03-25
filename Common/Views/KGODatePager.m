@@ -7,8 +7,19 @@
 
 @synthesize delegate;
 
-- (id)initWithFrame:(CGRect)frame {
-    
+- (id)initWithCoder:(NSCoder *)aDecoder
+{
+    self = [super initWithCoder:aDecoder];
+    if (self) {
+        _dateFormatter = [[NSDateFormatter alloc] init];
+        self.backgroundColor = [UIColor grayColor];
+        self.incrementUnit = NSDayCalendarUnit;
+    }
+    return self;
+}
+
+- (id)initWithFrame:(CGRect)frame
+{    
     self = [super initWithFrame:frame];
     if (self) {
         _dateFormatter = [[NSDateFormatter alloc] init];

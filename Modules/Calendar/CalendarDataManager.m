@@ -56,14 +56,14 @@
     return success;
 }
 
-
+/*
 - (BOOL)requestCalendarsForGroup:(NSString *)groupID
 {
     BOOL success = NO;
     KGOCalendarGroup *group = [KGOCalendarGroup groupWithID:groupID];
     if (group.calendars.count) {
         success = YES;
-        [self.delegate categoriesDidChange:[group.calendars allObjects] group:groupID];
+        [self.delegate groupDataDidChange:group];
     }
 
     // TODO: use a timeout value to decide whether or not to check for update
@@ -83,6 +83,7 @@
     }
     return success;
 }
+*/
 
 - (BOOL)requestEventsForCalendar:(KGOCalendar *)calendar params:(NSDictionary *)params
 {
@@ -145,10 +146,6 @@
     if (request == _groupsRequest) {
         _groupsRequest = nil;
         
-    } else if ([request.path isEqualToString:@"categories"]) {
-        NSString *group = [request.getParams objectForKey:@"category"];
-        [_categoriesRequests removeObjectForKey:group];
-        
     } else { // events
         NSString *category = [request.getParams objectForKey:@"category"];
         [_eventsRequests removeObjectForKey:category];
@@ -156,6 +153,7 @@
 }
 
 /*
+// TODO: let delegate know of failure so UI can be adjusted accordingly
 - (void)request:(KGORequest *)request didFailWithError:(NSError *)error
 {
     [[KGORequestManager sharedManager] showAlertForError:error];
@@ -168,8 +166,12 @@
     if (request == _groupsRequest) {
         //_groupsRequest = nil;
         
-        //NSInteger total = [result integerForKey:@"total"];
+        NSInteger total = [result integerForKey:@"total"];
         NSInteger returned = [result integerForKey:@"returned"];
+        if (total > returned) {
+            // TODO: implement paging
+        }
+        
         //NSString *displayField = [result stringForKey:@"displayField" nilIfEmpty:YES];
 
         NSMutableSet *oldGroupIDs = [NSMutableSet set];
@@ -215,17 +217,54 @@
             [self.delegate groupsDidChange:newGroups];
         }
         
-    } else if ([request.path isEqualToString:@"categories"]) {
-        NSString *group = [request.getParams objectForKey:@"category"];
-        //[_categoriesRequests removeObjectForKey:group];
+    } else if ([request.path isEqualToString:@"events"]) { // events
         
+        NSString *calendarID = [request.getParams objectForKey:@"calendar"];
+        KGOCalendar *calendar = [KGOCalendar calendarWithID:calendarID];
+
+        // search results boilerplate
+        NSInteger total = [result integerForKey:@"total"];
+        NSInteger returned = [result integerForKey:@"returned"];
+        if (total > returned) {
+            // TODO: implement paging
+        }
         
-    } else { // events
-        NSString *category = [request.getParams objectForKey:@"category"];
-        //[_eventsRequests removeObjectForKey:category];
+        //NSString *displayField = [result stringForKey:@"displayField" nilIfEmpty:YES];
         
+        NSArray *eventDicts = [result arrayForKey:@"results"];
+        if (returned > eventDicts.count)
+            returned = eventDicts.count;
         
+        NSMutableArray *array = [NSMutableArray array];
+        for (NSInteger i = 0; i < returned; i++) {
+            NSDictionary *aDict = [eventDicts objectAtIndex:i];
+            KGOEventWrapper *event = [[KGOEventWrapper alloc] initWithDictionary:aDict];
+            [event addCalendar:calendar];
+            [array addObject:event];
+        }
+        [self.delegate eventsDidChange:array calendar:calendar];
     }
+}
+
+- (void)dealloc
+{
+    if (_groupsRequest) {
+        [_groupsRequest cancel];
+    }
+    
+    [_categoriesRequests enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
+        [(KGORequest *)obj cancel];
+    }];
+    [_categoriesRequests release];
+     
+    [_eventsRequests enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
+        [(KGORequest *)obj cancel];
+    }];
+    [_eventsRequests release];
+    
+    [_currentGroup release];
+    
+    [super dealloc];
 }
 
 @end

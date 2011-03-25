@@ -6,7 +6,7 @@ NSString * const KGOEntityNameEventAttendee = @"KGOEventAttendee";
 
 @implementation KGOEventAttendee
 @dynamic name;
-@dynamic uid;
+@dynamic identifier;
 @dynamic attendeeType;
 @dynamic event;
 @dynamic contactInfo;

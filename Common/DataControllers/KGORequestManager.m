@@ -41,7 +41,7 @@
 			[mutableParams setObject:_accessToken forKey:@"token"];
 		}
 
-		request.url = [NSURL URLWithQueryParameters:params baseURL:requestBaseURL];
+		request.url = [NSURL URLWithQueryParameters:mutableParams baseURL:requestBaseURL];
 		request.module = module;
 		request.path = path;
 		request.getParams = mutableParams;

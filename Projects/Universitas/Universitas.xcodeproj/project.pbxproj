@@ -73,7 +73,6 @@
 		EB1440D41309EEA000396753 /* CalendarConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = EB1440C01309EEA000396753 /* CalendarConstants.m */; };
 		EB1440D61309EEA000396753 /* CalendarDataManager.m in Sources */ = {isa = PBXBuildFile; fileRef = EB1440C21309EEA000396753 /* CalendarDataManager.m */; };
 		EB1440D81309EEA000396753 /* CalendarDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EB1440C41309EEA000396753 /* CalendarDetailViewController.m */; };
-		EB1440DA1309EEA000396753 /* CalendarEventsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EB1440C61309EEA000396753 /* CalendarEventsViewController.m */; };
 		EB1440DD1309EEA000396753 /* CalendarModule.m in Sources */ = {isa = PBXBuildFile; fileRef = EB1440C91309EEA000396753 /* CalendarModule.m */; };
 		EB1441071309EEB800396753 /* KGOMapCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = EB1440EB1309EEB800396753 /* KGOMapCategory.m */; };
 		EB1441091309EEB800396753 /* KGOPlacemark.m in Sources */ = {isa = PBXBuildFile; fileRef = EB1440ED1309EEB800396753 /* KGOPlacemark.m */; };
@@ -325,8 +324,6 @@
 		EB1440C21309EEA000396753 /* CalendarDataManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CalendarDataManager.m; sourceTree = "<group>"; };
 		EB1440C31309EEA000396753 /* CalendarDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CalendarDetailViewController.h; sourceTree = "<group>"; };
 		EB1440C41309EEA000396753 /* CalendarDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CalendarDetailViewController.m; sourceTree = "<group>"; };
-		EB1440C51309EEA000396753 /* CalendarEventsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CalendarEventsViewController.h; sourceTree = "<group>"; };
-		EB1440C61309EEA000396753 /* CalendarEventsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CalendarEventsViewController.m; sourceTree = "<group>"; };
 		EB1440C71309EEA000396753 /* CalendarModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CalendarModel.h; sourceTree = "<group>"; };
 		EB1440C81309EEA000396753 /* CalendarModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CalendarModule.h; sourceTree = "<group>"; };
 		EB1440C91309EEA000396753 /* CalendarModule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CalendarModule.m; sourceTree = "<group>"; };
@@ -854,8 +851,6 @@
 				EB1440C21309EEA000396753 /* CalendarDataManager.m */,
 				EB1440C31309EEA000396753 /* CalendarDetailViewController.h */,
 				EB1440C41309EEA000396753 /* CalendarDetailViewController.m */,
-				EB1440C51309EEA000396753 /* CalendarEventsViewController.h */,
-				EB1440C61309EEA000396753 /* CalendarEventsViewController.m */,
 				EB1440C81309EEA000396753 /* CalendarModule.h */,
 				EB1440C91309EEA000396753 /* CalendarModule.m */,
 				EBB121EE133A912500A4BD1D /* CalendarHomeViewController.h */,
@@ -1242,7 +1237,6 @@
 				DE6D9401110AD1ED00DAF213 /* SettingsTableViewController.m in Sources */,
 				DE0F6B3411109BC500F064D6 /* AboutMITVC.m in Sources */,
 				EB1440DD1309EEA000396753 /* CalendarModule.m in Sources */,
-				EB1440DA1309EEA000396753 /* CalendarEventsViewController.m in Sources */,
 				EB1440D81309EEA000396753 /* CalendarDetailViewController.m in Sources */,
 				EB1440D21309EEA000396753 /* Calendar.xcdatamodeld in Sources */,
 				EB1440D61309EEA000396753 /* CalendarDataManager.m in Sources */,

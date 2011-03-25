@@ -1,6 +1,15 @@
 #import "CalendarHomeViewController.h"
-#import "KGOAppDelegate.h"
+#import "KGOAppDelegate+ModuleAdditions.h"
 #import "CalendarModel.h"
+
+
+@interface CalendarHomeViewController (Private)
+
+- (void)clearEvents;
+- (void)clearCalendars;
+
+@end
+
 
 @implementation CalendarHomeViewController
 
@@ -19,6 +28,8 @@
 
 - (void)dealloc
 {
+    [self clearCalendars];
+    [self clearEvents];
     [super dealloc];
 }
 
@@ -28,6 +39,21 @@
     [super didReceiveMemoryWarning];
     
     // Release any cached data, images, etc that aren't in use.
+}
+
+- (void)clearEvents
+{
+    [_currentSections release];
+    _currentSections = nil;
+    
+    [_currentEventsBySection release];
+    _currentEventsBySection = nil;
+}
+
+- (void)clearCalendars
+{
+    [_currentCategories release];
+    _currentCategories = nil;
 }
 
 #pragma mark - View lifecycle
@@ -76,6 +102,9 @@
 - (void)groupDataDidChange:(KGOCalendarGroup *)group
 {
     NSLog(@"%@", [group.calendars description]);
+
+    [self clearCalendars];
+    [self clearEvents];
     
     if (group.calendars.count) {
         [_loadingView stopAnimating];
@@ -83,6 +112,8 @@
         UITableViewStyle style = (group.calendars.count > 1) ? UITableViewStyleGrouped : UITableViewStylePlain;
         if (group.calendars.count > 1) {
             style = UITableViewStyleGrouped;
+            // TODO: sort
+            _currentCategories = [[group.calendars allObjects] retain];
         } else {
             style = UITableViewStylePlain;
         }
@@ -97,15 +128,9 @@
             frame.size.height -= _tabstrip.frame.size.height;
         }
 
-        UITableView *tableView = [self addTableViewWithFrame:frame style:style];
+        self.tableView = [self addTableViewWithFrame:frame style:style];
         
         self.currentCalendar = (group.calendars.count > 1) ? nil : [group.calendars anyObject];
-    }
-}
-
-- (void)categoriesDidChange:(NSArray *)categories group:(NSString *)group
-{
-    if ([group isEqualToString:[_groupTitles objectAtIndex:_currentGroupIndex]]) {
     }
 }
 
@@ -123,17 +148,13 @@ static bool isOverOneHour(NSTimeInterval interval) {
 }
 
 
-- (void)eventsDidChange:(NSArray *)events category:(NSString *)category
+- (void)eventsDidChange:(NSArray *)events calendar:(KGOCalendar *)calendar
 {
-    if (![_currentCalendar.identifier isEqualToString:category]) {
+    if (_currentCalendar != calendar) {
         return;
     }
     
-    [_currentSections release];
-    _currentSections = nil;
-    
-    [_currentEventsBySection release];
-    _currentEventsBySection = nil;
+    [self clearEvents];
     
     if (events.count) {
         // TODO: make sure this set of events is what we last requested
@@ -146,20 +167,17 @@ static bool isOverOneHour(NSTimeInterval interval) {
         NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
         NSTimeInterval interval = [lastEvent.startDate timeIntervalSinceDate:firstEvent.startDate];
         if (isOverOneMonth(interval)) {
-            [formatter setDateStyle:NSDateFormatterMediumStyle];
-            [formatter setTimeStyle:NSDateFormatterNoStyle];
+            [formatter setDateFormat:@"MMMM"];
 
         } else if (isOverOneDay(interval)) {
-            [formatter setDateStyle:NSDateFormatterMediumStyle];
-            [formatter setTimeStyle:NSDateFormatterNoStyle];
+            [formatter setDateFormat:@"EEE MMMM d"];
 
         } else if (isOverOneHour(interval)) {
-            [formatter setDateStyle:NSDateFormatterNoStyle];
-            [formatter setTimeStyle:NSDateFormatterMediumStyle];
+            [formatter setDateFormat:@"h a"];
         
         } else {
             [formatter setDateStyle:NSDateFormatterNoStyle];
-            [formatter setTimeStyle:NSDateFormatterMediumStyle];
+            [formatter setTimeStyle:NSDateFormatterNoStyle];
         
         }
         
@@ -245,7 +263,9 @@ static bool isOverOneHour(NSTimeInterval interval) {
 {
     // TODO: show loading indicator
     
-    [_dataManager requestEventsForCalendar:_currentCalendar startDate:date endDate:nil];
+    if (_currentCalendar) {
+        [_dataManager requestEventsForCalendar:_currentCalendar startDate:date endDate:nil];
+    }
 }
 
 #pragma mark Table view methods
@@ -273,7 +293,7 @@ static bool isOverOneHour(NSTimeInterval interval) {
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
-    if (_currentSections && _currentEventsBySection) {
+    if (_currentSections.count > 1) {
         return [_currentSections objectAtIndex:section];
     }
     
@@ -348,16 +368,18 @@ static bool isOverOneHour(NSTimeInterval interval) {
             cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         } copy] autorelease];
     }
+    return nil;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     if (_currentCategories) {
-        ;
+        KGOCalendar *calendar = [_currentCategories objectAtIndex:indexPath.row];
+        NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:calendar, @"calendar", nil];
+        [KGO_SHARED_APP_DELEGATE() showPage:LocalPathPageNameCategoryList forModuleTag:CalendarTag params:params];
         
     } else if (_currentSections && _currentEventsBySection) {
         NSArray *eventsForSection = [_currentEventsBySection objectForKey:[_currentSections objectAtIndex:indexPath.section]];
         KGOEventWrapper *event = [eventsForSection objectAtIndex:indexPath.row];
-        
         NSDictionary *params = [NSDictionary dictionaryWithObject:event forKey:@"event"];
         [KGO_SHARED_APP_DELEGATE() showPage:LocalPathPageNameDetail forModuleTag:CalendarTag params:params];
     }

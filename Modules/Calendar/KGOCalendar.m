@@ -15,7 +15,7 @@ NSString * const KGOEntityNameEventCategory = @"KGOCalendar";
 @dynamic events;
 @dynamic groups;
 
-+ (KGOCalendar *)categoryWithID:(NSString *)identifier
++ (KGOCalendar *)calendarWithID:(NSString *)identifier
 {
     NSPredicate *pred = [NSPredicate predicateWithFormat:@"identifier like %@", identifier];
     KGOCalendar *category = [[[CoreDataManager sharedManager] objectsForEntity:KGOEntityNameEventCategory
@@ -29,15 +29,20 @@ NSString * const KGOEntityNameEventCategory = @"KGOCalendar";
 }
 
 
-+ (KGOCalendar *)categoryWithDictionary:(NSDictionary *)aDict
++ (KGOCalendar *)calendarWithDictionary:(NSDictionary *)aDict
 {
     KGOCalendar *category = nil;
     NSString *identifier = [aDict stringForKey:@"id" nilIfEmpty:YES];
     if (identifier) {
-        category = [KGOCalendar categoryWithID:identifier];
-        
-        // TODO: fill out
-        
+        category = [KGOCalendar calendarWithID:identifier];
+        NSString *title = [aDict stringForKey:@"title" nilIfEmpty:YES];
+        if (title && ![category.title isEqualToString:title]) {
+            category.title = title;
+        }
+        NSString *type = [aDict stringForKey:@"type" nilIfEmpty:YES];
+        if (type && ![category.type isEqualToString:type]) {
+            category.type = type;
+        }
     }
     
     return category;
@@ -125,7 +130,7 @@ NSString * const KGOEntityNameEventCategory = @"KGOCalendar";
 
 
 
-- (void)addGroupsObject:(KGOEvent *)value {    
+- (void)addGroupsObject:(KGOCalendarGroup *)value {    
     NSSet *changedObjects = [[NSSet alloc] initWithObjects:&value count:1];
     [self willChangeValueForKey:@"groups" withSetMutation:NSKeyValueUnionSetMutation usingObjects:changedObjects];
     [[self primitiveValueForKey:@"groups"] addObject:value];
@@ -133,7 +138,7 @@ NSString * const KGOEntityNameEventCategory = @"KGOCalendar";
     [changedObjects release];
 }
 
-- (void)removeGroupsObject:(KGOEvent *)value {
+- (void)removeGroupsObject:(KGOCalendarGroup *)value {
     NSSet *changedObjects = [[NSSet alloc] initWithObjects:&value count:1];
     [self willChangeValueForKey:@"groups" withSetMutation:NSKeyValueMinusSetMutation usingObjects:changedObjects];
     [[self primitiveValueForKey:@"groups"] removeObject:value];

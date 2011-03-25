@@ -82,7 +82,6 @@
 #pragma mark -
 
 - (void)dealloc {
-	[[KGOSocialMediaController sharedController] setFacebookDelegate:nil];
 	self.delegate = nil;
     [super dealloc];
 }

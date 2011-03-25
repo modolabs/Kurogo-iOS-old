@@ -15,7 +15,7 @@
 @property (nonatomic, retain) NSSet* events;
 @property (nonatomic, retain) NSSet* groups;
 
-+ (KGOCalendar *)categoryWithID:(NSString *)identifier;
-+ (KGOCalendar *)categoryWithDictionary:(NSDictionary *)aDict;
++ (KGOCalendar *)calendarWithID:(NSString *)identifier;
++ (KGOCalendar *)calendarWithDictionary:(NSDictionary *)aDict;
 
 @end

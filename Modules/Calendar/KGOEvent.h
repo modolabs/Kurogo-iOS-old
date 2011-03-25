@@ -6,9 +6,10 @@
 @interface KGOEvent : NSManagedObject {
 @private
 }
+@property (nonatomic, retain) NSNumber * bookmarked;
 @property (nonatomic, retain) NSDate * start;
 @property (nonatomic, retain) NSDate * lastUpdate;
-@property (nonatomic, retain) NSString * rrule;
+@property (nonatomic, retain) NSData * rrule;
 @property (nonatomic, retain) NSNumber * longitude;
 @property (nonatomic, retain) NSString * briefLocation;
 @property (nonatomic, retain) NSNumber * latitude;
@@ -19,6 +20,8 @@
 @property (nonatomic, retain) NSDate * end;
 @property (nonatomic, retain) NSSet* calendars;
 @property (nonatomic, retain) NSSet* attendees;
-@property (nonatomic, retain) KGOEventAttendee * organizer;
+@property (nonatomic, retain) NSSet* organizers;
+
++ (KGOEvent *)eventWithID:(NSString *)identifier;
 
 @end
