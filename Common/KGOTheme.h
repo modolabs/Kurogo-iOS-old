@@ -36,6 +36,11 @@ typedef enum {
 
 #pragma mark generic
 
+- (UIFont *)defaultFont;
+- (UIFont *)defaultBoldFont;
+- (UIFont *)defaultSmallFont;
+- (UIFont *)defaultSmallBoldFont;
+
 - (UIFont *)fontForContentTitle;
 - (UIColor *)textColorForContentTitle;
 - (UIFont *)fontForBodyText;

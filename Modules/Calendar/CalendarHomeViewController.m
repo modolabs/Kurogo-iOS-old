@@ -226,15 +226,6 @@ static bool isOverOneHour(NSTimeInterval interval) {
 
 - (void)tabstrip:(KGOScrollingTabstrip *)tabstrip clickedButtonAtIndex:(NSUInteger)index
 {
-    // TODO: make tabstrip only return indexes of non-special buttons
-    // since what it does now is way too confusing
-    if (index == [tabstrip searchButtonIndex] || index == [tabstrip bookmarkButtonIndex]) {
-        return;
-    }
-    
-    NSString *title = [tabstrip buttonTitleAtIndex:index];
-    index = [_groupTitles indexOfObject:title];
-    
     if (index != _currentGroupIndex) {
         [self removeTableView:self.tableView];
         [_loadingView startAnimating];

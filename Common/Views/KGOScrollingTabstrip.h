@@ -2,9 +2,14 @@
 
 @class KGOScrollingTabstrip;
 
-@protocol KGOScrollingTabstripDelegate
+@protocol KGOScrollingTabstripDelegate <NSObject>
 
 - (void)tabstrip:(KGOScrollingTabstrip *)tabstrip clickedButtonAtIndex:(NSUInteger)index;
+
+@optional
+
+- (void)tabstripSearchButtonPressed:(KGOScrollingTabstrip *)tabstrip;
+- (void)tabstripBookmarkButtonPressed:(KGOScrollingTabstrip *)tabstrip;
 
 @end
 
@@ -36,8 +41,6 @@
 
 @property (readonly) NSUInteger numberOfButtons;
 
-- (NSInteger)searchButtonIndex;
-- (NSInteger)bookmarkButtonIndex;
 - (NSString *)buttonTitleAtIndex:(NSUInteger)index;
 
 @property (nonatomic, assign) id<KGOScrollingTabstripDelegate> delegate;
