@@ -68,10 +68,11 @@ NSString * const KGODataModelNameCalendar = @"Calendar";
         }
         
     } else if ([pageName isEqualToString:LocalPathPageNameDetail]) {
-        KGOEvent *event = [params objectForKey:@"event"];
-        if (event) {
-            vc = [[[CalendarDetailViewController alloc] init] autorelease];
-        }
+        CalendarDetailViewController *detailVC = [[[CalendarDetailViewController alloc] init] autorelease];
+        detailVC.indexPath = [params objectForKey:@"currentIndexPath"];
+        detailVC.eventsBySection = [params objectForKey:@"eventsBySection"];
+        detailVC.sections = [params objectForKey:@"sections"];
+        vc = detailVC;
         
     } else if ([pageName isEqualToString:LocalPathPageNameCategoryList]) {
         

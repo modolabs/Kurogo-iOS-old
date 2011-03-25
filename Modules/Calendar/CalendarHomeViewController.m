@@ -383,9 +383,12 @@ static bool isOverOneHour(NSTimeInterval interval) {
         [KGO_SHARED_APP_DELEGATE() showPage:LocalPathPageNameCategoryList forModuleTag:CalendarTag params:params];
         
     } else if (_currentSections && _currentEventsBySection) {
-        NSArray *eventsForSection = [_currentEventsBySection objectForKey:[_currentSections objectAtIndex:indexPath.section]];
-        KGOEventWrapper *event = [eventsForSection objectAtIndex:indexPath.row];
-        NSDictionary *params = [NSDictionary dictionaryWithObject:event forKey:@"event"];
+        NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:
+                                _currentEventsBySection, @"eventsBySection",
+                                _currentSections, @"sections",
+                                indexPath, @"currentIndexPath",
+                                nil];
+                               
         [KGO_SHARED_APP_DELEGATE() showPage:LocalPathPageNameDetail forModuleTag:CalendarTag params:params];
     }
 }

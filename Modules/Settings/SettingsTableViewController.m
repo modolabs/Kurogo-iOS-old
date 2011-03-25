@@ -93,7 +93,7 @@
         cell.accessoryType = UITableViewCellAccessoryNone;
     }
     
-    return cell;    
+    return cell;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath

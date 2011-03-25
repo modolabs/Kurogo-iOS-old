@@ -74,6 +74,7 @@
 		EB033765133C2B8C00ACF2BB /* KGOToolbar.m in Sources */ = {isa = PBXBuildFile; fileRef = EB033727133C2B8C00ACF2BB /* KGOToolbar.m */; };
 		EB033766133C2B8C00ACF2BB /* MITThumbnailView.m in Sources */ = {isa = PBXBuildFile; fileRef = EB033729133C2B8C00ACF2BB /* MITThumbnailView.m */; };
 		EB033767133C2B8C00ACF2BB /* TabViewControl.m in Sources */ = {isa = PBXBuildFile; fileRef = EB03372B133C2B8C00ACF2BB /* TabViewControl.m */; };
+		EB03376B133D26F100ACF2BB /* EventDetailTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = EB03376A133D26E400ACF2BB /* EventDetailTableView.m */; };
 		EB138BB112F231E3004DBB7C /* en.lproj in Resources */ = {isa = PBXBuildFile; fileRef = EB138BAE12F231E3004DBB7C /* en.lproj */; };
 		EB138F0512F253A1004DBB7C /* libGoogleAnalytics.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EB138F0312F253A1004DBB7C /* libGoogleAnalytics.a */; };
 		EB1440D21309EEA000396753 /* Calendar.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = EB1440BD1309EEA000396753 /* Calendar.xcdatamodeld */; };
@@ -308,6 +309,8 @@
 		EB033729133C2B8C00ACF2BB /* MITThumbnailView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MITThumbnailView.m; sourceTree = "<group>"; };
 		EB03372A133C2B8C00ACF2BB /* TabViewControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TabViewControl.h; sourceTree = "<group>"; };
 		EB03372B133C2B8C00ACF2BB /* TabViewControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TabViewControl.m; sourceTree = "<group>"; };
+		EB033769133D26D600ACF2BB /* EventDetailTableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EventDetailTableView.h; sourceTree = "<group>"; };
+		EB03376A133D26E400ACF2BB /* EventDetailTableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EventDetailTableView.m; sourceTree = "<group>"; };
 		EB138AFC12F22F31004DBB7C /* Config.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Config.plist; sourceTree = "<group>"; };
 		EB138BAE12F231E3004DBB7C /* en.lproj */ = {isa = PBXFileReference; lastKnownFileType = folder; name = en.lproj; path = Localization/en.lproj; sourceTree = "<group>"; };
 		EB138EE812F251EB004DBB7C /* Facebook.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Facebook.xcodeproj; path = Facebook/Facebook.xcodeproj; sourceTree = "<group>"; };
@@ -821,6 +824,8 @@
 				EBB121EE133A912500A4BD1D /* CalendarHomeViewController.h */,
 				EBB121EF133A913100A4BD1D /* CalendarHomeViewController.m */,
 				EBB121F0133A915200A4BD1D /* CalendarHomeViewController.xib */,
+				EB033769133D26D600ACF2BB /* EventDetailTableView.h */,
+				EB03376A133D26E400ACF2BB /* EventDetailTableView.m */,
 			);
 			name = Calendar;
 			path = ../../Modules/Calendar;
@@ -1251,6 +1256,7 @@
 				EB033765133C2B8C00ACF2BB /* KGOToolbar.m in Sources */,
 				EB033766133C2B8C00ACF2BB /* MITThumbnailView.m in Sources */,
 				EB033767133C2B8C00ACF2BB /* TabViewControl.m in Sources */,
+				EB03376B133D26F100ACF2BB /* EventDetailTableView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
