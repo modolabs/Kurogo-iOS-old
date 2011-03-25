@@ -2,7 +2,6 @@
 #import "Constants.h"
 #import "KGOAppDelegate.h"
 #import "SFHFKeychainUtils.h"
-#import "MITLoadingActivityView.h"
 #import "JSONAPIRequest.h"
 #import "KGOTheme.h"
 #import "UIKit+KGOAdditions.h"
@@ -52,7 +51,8 @@ static NSString * const CredentialsKey = @"Credentials";
 @synthesize connection, contentView;
 
 - (id) initWithMessage: (NSString *)aMessage url:(NSString *)aLongUrl {
-	if(self = [super init]) {
+    self = [super init];
+	if(self) {
 		passwordField = nil;
 		usernameField = nil;
 		
@@ -148,8 +148,9 @@ static NSString * const CredentialsKey = @"Credentials";
 	authenticationRequestInProcess = NO;
 	
 	navigationItem.title = @"Post to Twitter";
-	if (longURL && !shortURL) {            
-		self.contentView = [[[MITLoadingActivityView alloc] initWithFrame:CGRectMake(0, 44.0, self.view.frame.size.width, self.view.frame.size.height)] autorelease];
+	if (longURL && !shortURL) {
+        // there was supposed to be a loading indicator here
+		self.contentView = [[[UIView alloc] initWithFrame:CGRectMake(0, 44.0, self.view.frame.size.width, self.view.frame.size.height)] autorelease];
 		[[KGOSocialMediaController sharedController] getBitlyURLForLongURL:longURL delegate:self];
 		
 	} else {

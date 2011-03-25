@@ -5,12 +5,12 @@
  *
  *****************************************************************/
 
-#import "ModoNavigationBar.h"
+#import "HarvardNavigationBar.h"
 #import "UIKit+KGOAdditions.h"
-#import "ModoNavigationController.h"
+#import "HarvardNavigationController.h"
 #import "KGOTheme.h"
 
-@implementation ModoNavigationBar
+@implementation HarvardNavigationBar
 
 @synthesize navigationBar = _navigationBar;
 
@@ -57,9 +57,9 @@
 
 
 - (UINavigationItem *)popNavigationItemAnimated:(BOOL)animated {
-    // part of a workaround to make sure old back buttons disappear; see ModoNavigationController.m
-    if ([self.delegate isKindOfClass:[ModoNavigationController class]]) {
-        [(ModoNavigationController *)self.delegate navigationBar:self willHideSubviews:self.subviews];
+    // part of a workaround to make sure old back buttons disappear; see HarvardNavigationController.m
+    if ([self.delegate isKindOfClass:[HarvardNavigationController class]]) {
+        [(HarvardNavigationController *)self.delegate navigationBar:self willHideSubviews:self.subviews];
     }
 
     UINavigationItem *item = [super popNavigationItemAnimated:animated];

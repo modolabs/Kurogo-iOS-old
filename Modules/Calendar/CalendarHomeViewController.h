@@ -2,10 +2,9 @@
 #import "KGODatePager.h"
 #import "KGOScrollingTabstrip.h"
 #import "CalendarDataManager.h"
-#import "KGORequestManager.h"
 
 @interface CalendarHomeViewController : KGOTableViewController <KGODatePagerDelegate,
-KGOScrollingTabstripDelegate, CalendarDataManagerDelegate, KGORequestDelegate> {
+KGOScrollingTabstripDelegate, CalendarDataManagerDelegate> {
     
     IBOutlet KGODatePager *_datePager;
     IBOutlet KGOScrollingTabstrip *_tabstrip;

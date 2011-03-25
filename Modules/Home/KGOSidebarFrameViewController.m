@@ -106,7 +106,7 @@
 - (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
 {
     NSLog(@"%@", self.view);
-    [self setupWidgets];
+    [self refreshWidgets];
     
     [_visibleViewController didRotateFromInterfaceOrientation:fromInterfaceOrientation];
 }

@@ -2,7 +2,7 @@
 #import "KGOPersonWrapper.h"
 #import "KGOAppDelegate.h"
 #import "KGOAppDelegate+ModuleAdditions.h"
-#import "ModoNavigationController.h"
+#import "HarvardNavigationController.h"
 // external modules
 #import "Foundation+KGOAdditions.h"
 #import "UIKit+KGOAdditions.h"

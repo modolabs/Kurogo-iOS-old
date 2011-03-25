@@ -2,7 +2,7 @@
 #import "KGOAppDelegate.h"
 #import "UIKit+KGOAdditions.h"
 #import "Foundation+KGOAdditions.h"
-#import "ModoNavigationController.h"
+#import "HarvardNavigationController.h"
 #import "MapBookmarkManager.h"
 #import "TileServerManager.h"
 #import "AnalyticsWrapper.h"

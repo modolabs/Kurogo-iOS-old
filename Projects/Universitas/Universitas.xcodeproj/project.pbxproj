@@ -65,9 +65,8 @@
 		EB14408E1309EE3400396753 /* KGODatePager.m in Sources */ = {isa = PBXBuildFile; fileRef = EB1440331309EE3400396753 /* KGODatePager.m */; };
 		EB1440901309EE3400396753 /* KGODetailPager.m in Sources */ = {isa = PBXBuildFile; fileRef = EB1440351309EE3400396753 /* KGODetailPager.m */; };
 		EB1440921309EE3400396753 /* KGOScrollingTabstrip.m in Sources */ = {isa = PBXBuildFile; fileRef = EB1440371309EE3400396753 /* KGOScrollingTabstrip.m */; };
-		EB1440941309EE3400396753 /* MITLoadingActivityView.m in Sources */ = {isa = PBXBuildFile; fileRef = EB1440391309EE3400396753 /* MITLoadingActivityView.m */; };
-		EB1440961309EE3400396753 /* ModoNavigationBar.m in Sources */ = {isa = PBXBuildFile; fileRef = EB14403B1309EE3400396753 /* ModoNavigationBar.m */; };
-		EB1440981309EE3400396753 /* ModoNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = EB14403D1309EE3400396753 /* ModoNavigationController.m */; };
+		EB1440961309EE3400396753 /* HarvardNavigationBar.m in Sources */ = {isa = PBXBuildFile; fileRef = EB14403B1309EE3400396753 /* HarvardNavigationBar.m */; };
+		EB1440981309EE3400396753 /* HarvardNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = EB14403D1309EE3400396753 /* HarvardNavigationController.m */; };
 		EB14409A1309EE3400396753 /* TabViewControl.m in Sources */ = {isa = PBXBuildFile; fileRef = EB14403F1309EE3400396753 /* TabViewControl.m */; };
 		EB1440D21309EEA000396753 /* Calendar.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = EB1440BD1309EEA000396753 /* Calendar.xcdatamodeld */; };
 		EB1440D41309EEA000396753 /* CalendarConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = EB1440C01309EEA000396753 /* CalendarConstants.m */; };
@@ -309,12 +308,10 @@
 		EB1440351309EE3400396753 /* KGODetailPager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGODetailPager.m; sourceTree = "<group>"; };
 		EB1440361309EE3400396753 /* KGOScrollingTabstrip.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGOScrollingTabstrip.h; sourceTree = "<group>"; };
 		EB1440371309EE3400396753 /* KGOScrollingTabstrip.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGOScrollingTabstrip.m; sourceTree = "<group>"; };
-		EB1440381309EE3400396753 /* MITLoadingActivityView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MITLoadingActivityView.h; sourceTree = "<group>"; };
-		EB1440391309EE3400396753 /* MITLoadingActivityView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MITLoadingActivityView.m; sourceTree = "<group>"; };
-		EB14403A1309EE3400396753 /* ModoNavigationBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ModoNavigationBar.h; sourceTree = "<group>"; };
-		EB14403B1309EE3400396753 /* ModoNavigationBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ModoNavigationBar.m; sourceTree = "<group>"; };
-		EB14403C1309EE3400396753 /* ModoNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ModoNavigationController.h; sourceTree = "<group>"; };
-		EB14403D1309EE3400396753 /* ModoNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ModoNavigationController.m; sourceTree = "<group>"; };
+		EB14403A1309EE3400396753 /* HarvardNavigationBar.h */ = {isa = PBXFileReference; fileEncoding = 4; path = HarvardNavigationBar.h; sourceTree = "<group>"; };
+		EB14403B1309EE3400396753 /* HarvardNavigationBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HarvardNavigationBar.m; sourceTree = "<group>"; };
+		EB14403C1309EE3400396753 /* HarvardNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HarvardNavigationController.h; sourceTree = "<group>"; };
+		EB14403D1309EE3400396753 /* HarvardNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HarvardNavigationController.m; sourceTree = "<group>"; };
 		EB14403E1309EE3400396753 /* TabViewControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TabViewControl.h; sourceTree = "<group>"; };
 		EB14403F1309EE3400396753 /* TabViewControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TabViewControl.m; sourceTree = "<group>"; };
 		EB1440BE1309EEA000396753 /* Calendar.xcdatamodel */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = wrapper.xcdatamodel; path = Calendar.xcdatamodel; sourceTree = "<group>"; };
@@ -829,12 +826,10 @@
 				EB1440351309EE3400396753 /* KGODetailPager.m */,
 				EB1440361309EE3400396753 /* KGOScrollingTabstrip.h */,
 				EB1440371309EE3400396753 /* KGOScrollingTabstrip.m */,
-				EB1440381309EE3400396753 /* MITLoadingActivityView.h */,
-				EB1440391309EE3400396753 /* MITLoadingActivityView.m */,
-				EB14403A1309EE3400396753 /* ModoNavigationBar.h */,
-				EB14403B1309EE3400396753 /* ModoNavigationBar.m */,
-				EB14403C1309EE3400396753 /* ModoNavigationController.h */,
-				EB14403D1309EE3400396753 /* ModoNavigationController.m */,
+				EB14403A1309EE3400396753 /* HarvardNavigationBar.h */,
+				EB14403B1309EE3400396753 /* HarvardNavigationBar.m */,
+				EB14403C1309EE3400396753 /* HarvardNavigationController.h */,
+				EB14403D1309EE3400396753 /* HarvardNavigationController.m */,
 				EB14403E1309EE3400396753 /* TabViewControl.h */,
 				EB14403F1309EE3400396753 /* TabViewControl.m */,
 			);
@@ -1253,7 +1248,6 @@
 				EB14404C1309EE3400396753 /* Constants.m in Sources */,
 				EB1440841309EE3400396753 /* KGOShareButtonController.m in Sources */,
 				EB14408A1309EE3400396753 /* TwitterViewController.m in Sources */,
-				EB1440941309EE3400396753 /* MITLoadingActivityView.m in Sources */,
 				EB1440921309EE3400396753 /* KGOScrollingTabstrip.m in Sources */,
 				EB14409A1309EE3400396753 /* TabViewControl.m in Sources */,
 				EB14414A1309EF7B00396753 /* main.m in Sources */,
@@ -1267,8 +1261,8 @@
 				EB1440461309EE3400396753 /* UIKit+KGOAdditions.m in Sources */,
 				EB1440441309EE3400396753 /* Foundation+KGOAdditions.m in Sources */,
 				EB1441491309EF7B00396753 /* KGONotification.m in Sources */,
-				EB1440961309EE3400396753 /* ModoNavigationBar.m in Sources */,
-				EB1440981309EE3400396753 /* ModoNavigationController.m in Sources */,
+				EB1440961309EE3400396753 /* HarvardNavigationBar.m in Sources */,
+				EB1440981309EE3400396753 /* HarvardNavigationController.m in Sources */,
 				EB1441471309EF7B00396753 /* KGOAppDelegate.m in Sources */,
 				EB1441451309EF7B00396753 /* KGOAppDelegate+ModuleAdditions.m in Sources */,
 				EB14415D1309EFB100396753 /* HomeModule.m in Sources */,

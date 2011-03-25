@@ -5,20 +5,20 @@
  *
  *****************************************************************/
 
-#import "ModoNavigationController.h"
+#import "HarvardNavigationController.h"
 #import "KGOAppDelegate.h"
 #import "KGOModule.h"
 
 #define NAV_BAR_HEIGHT 44.0f
 
-@implementation ModoNavigationController
+@implementation HarvardNavigationController
 
 @synthesize modoNavBar = _modoNavBar;
 
 - (id)init {
     self = [super init];
     if (self) {
-        _modoNavBar = [[ModoNavigationBar alloc] initWithNavigationBar:self.navigationBar];
+        _modoNavBar = [[HarvardNavigationBar alloc] initWithNavigationBar:self.navigationBar];
         _modoNavBar.autoresizingMask = UIViewAutoresizingFlexibleWidth;
         _modoNavBar.delegate = self;
     }
@@ -81,10 +81,10 @@
 }
 */
 
-// called by ModoNavigationBar prior to popping a navigation item.
+// called by HarvardNavigationBar prior to popping a navigation item.
 // occasionally the back button from the previous item doesn't get hidden as expected
 // so we force it to be removed in the navigationBar didPopItem
-- (void)navigationBar:(ModoNavigationBar *)navigationBar willHideSubviews:(NSArray *)subviews {
+- (void)navigationBar:(HarvardNavigationBar *)navigationBar willHideSubviews:(NSArray *)subviews {
     oldSubviews = [subviews retain];
 }
 
