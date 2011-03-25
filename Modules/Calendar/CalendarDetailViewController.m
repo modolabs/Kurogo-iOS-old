@@ -1,8 +1,6 @@
 #import "CalendarDetailViewController.h"
 #import "CalendarModel.h"
 #import "Foundation+KGOAdditions.h"
-#import "MapBookmarkManager.h"
-#import "MapSearchResultAnnotation.h"
 #import "AnalyticsWrapper.h"
 #import "MITMailComposeController.h"
 #import "ThemeConstants.h"
@@ -51,6 +49,7 @@ enum CalendarDetailRowTypes {
 	descriptionString = nil;
     //categoriesString = nil;
 	
+    
 	// setup nav bar
 	if (self.events.count > 1) {
 		UISegmentedControl *segmentControl = [[UISegmentedControl alloc] initWithItems:[NSArray arrayWithObjects:
@@ -384,6 +383,7 @@ enum CalendarDetailRowTypes {
 	NSInteger rowType = rowTypes[indexPath.row];
 	
 	switch (rowType) {
+        /*	
 		case CalendarDetailRowTypeLocation:
             if ([event hasCoords]) {
                 [[MapBookmarkManager defaultManager] pruneNonBookmarks];
@@ -401,7 +401,6 @@ enum CalendarDetailRowTypes {
                 [[UIApplication sharedApplication] openURL:internalURL];
             }
 			break;
-		/*	
 		case CalendarDetailRowTypePhone:
 		{
 			NSString *phoneString = [event.phone stringByReplacingOccurrencesOfString:@"-" withString:@""];

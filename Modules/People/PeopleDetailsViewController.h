@@ -1,7 +1,6 @@
 #import <UIKit/UIKit.h>
 #import <AddressBook/AddressBook.h>
 #import <AddressBookUI/AddressBookUI.h>
-#import "MapSearchResultAnnotation.h"
 #import "KGOTableViewController.h"
 #import "KGODetailPager.h"
 #import "KGOPersonWrapper.h"

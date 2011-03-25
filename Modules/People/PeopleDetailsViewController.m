@@ -3,8 +3,6 @@
 #import "UIKit+KGOAdditions.h"
 #import "Foundation+KGOAdditions.h"
 #import "HarvardNavigationController.h"
-#import "MapBookmarkManager.h"
-#import "TileServerManager.h"
 #import "AnalyticsWrapper.h"
 #import "MITMailComposeController.h"
 #import "ThemeConstants.h"

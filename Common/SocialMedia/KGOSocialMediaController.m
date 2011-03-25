@@ -1,7 +1,6 @@
 #import "KGOSocialMediaController.h"
 #import "SFHFKeychainUtils.h"
 #import "KGOAppDelegate.h"
-#import "JSONAPIRequest.h"
 #import "Foundation+KGOAdditions.h"
 #import "JSON.h"
 

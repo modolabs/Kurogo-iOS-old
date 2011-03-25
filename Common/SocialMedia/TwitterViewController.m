@@ -2,7 +2,6 @@
 #import "Constants.h"
 #import "KGOAppDelegate.h"
 #import "SFHFKeychainUtils.h"
-#import "JSONAPIRequest.h"
 #import "KGOTheme.h"
 #import "UIKit+KGOAdditions.h"
 
@@ -123,7 +122,7 @@ static NSString * const CredentialsKey = @"Credentials";
 	navBar.items = [NSArray arrayWithObject:navigationItem];
 	*/
 	self.view.opaque = YES;
-	self.view.backgroundColor = [UIColor colorWithPatternImage:[[KGOTheme sharedTheme] backgroundColorForApplication]];
+	self.view.backgroundColor = [[KGOTheme sharedTheme] backgroundColorForApplication];
 	//[self.view addSubview:navBar];
 	[[KGOSocialMediaController sharedController] loginTwitterWithDelegate:self];
 }

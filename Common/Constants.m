@@ -1,24 +1,5 @@
 #import "Constants.h"
 
-#ifdef USE_MOBILE_DEV
-NSString * const MITMobileWebDomainString =        @"localhost:8888";
-NSString * const MITMobileWebAPIURLString = @"http://localhost:8888/api/";
-#else
-    #ifdef USE_MOBILE_TEST
-    NSString * const MITMobileWebDomainString = @"mobile-dev.harvard.edu";
-    NSString * const MITMobileWebAPIURLString = @"http://mobile-dev.harvard.edu/api/";
-    #else
-        #ifdef USE_MOBILE_STAGE
-        NSString * const MITMobileWebDomainString = @"mobile-staging.harvard.edu";
-        NSString * const MITMobileWebAPIURLString = @"http://mobile-staging.harvard.edu/api/";
-        #else
-        NSString * const MITMobileWebDomainString = @"m.harvard.edu";
-        NSString * const MITMobileWebAPIURLString = @"http://m.harvard.edu/api/";
-        #endif
-    #endif
-#endif
-
-
 // local path names for handleLocalPath
 NSString * const LocalPathPageNameHome = @"index";
 NSString * const LocalPathPageNameDetail = @"detail";
@@ -54,35 +35,13 @@ NSString * const VideoTag     = @"video";
 
 
 
+// preferences
 
-
-
-NSString * const KGOModuleTabOrderKey = @"KGOModuleTabOrder";
-NSString * const MITActiveModuleKey = @"ActiveModule";
+NSString * const ShakeToReturnPrefKey = @"ShakeToReturnHome";
+NSString * const MapTypePrefKey = @"MapTypePreference";
 NSString * const MITNewsTwoFirstRunKey = @"MITNews2ClearedCachedArticles";
-NSString * const MITEventsModuleInSortOrderKey = @"MITEventsModuleInSortOrder";
-NSString * const EmergencyUnreadCountKey = @"UnreadEmergencyCount";
-NSString * const ShuttleSubscriptionsKey = @"ActiveShuttleSubscriptions";
-NSString * const StellarTermKey = @"StellarTerm";
-NSString * const MITDeviceIdKey = @"device_id";
-NSString * const MITPassCodeKey = @"pass_key";
-NSString * const PushNotificationSettingsKey = @"ModulesDisabledForPush";
-NSString * const KGOModulesSavedStateKey = @"KGOModulesSavedState";
-NSString * const ShakeToReturnPrefKey = @"ShakeToReturnHomePref";
-NSString * const MapTypePrefKey = @"MapTypePref";
-
 
 // notification names
-NSString * const EmergencyInfoDidLoadNotification = @"MITEmergencyInfoDidLoadNotification";
-NSString * const EmergencyInfoDidFailToLoadNotification = @"MITEmergencyInfoDidFailToLoadNotification";
-NSString * const EmergencyInfoDidChangeNotification = @"MITEmergencyInfoDidChangeNotification";
-NSString * const EmergencyContactsDidLoadNotification = @"MITEmergencyContactsDidLoadNotification";
-
-NSString * const ShuttleAlertRemoved = @"MITShuttleAlertRemovedNotification";
-
-NSString * const UnreadBadgeValuesChangeNotification = @"UnreadBadgeValuesChangeNotification";
-
-NSString * const MyStellarAlertNotification = @"MyStellarAlertNotification";
 
 NSString * const kTileServerManagerProjectionIsReady = @"TileServerManagerProjectionIsReadyNotification";
 
@@ -100,18 +59,6 @@ NSString * const NewsCategoryEntityName = @"NewsCategory";
 NSString * const NewsImageEntityName = @"NewsImage";
 NSString * const NewsImageRepEntityName = @"NewsImageRep";
 
-NSString * const StellarCourseEntityName = @"StellarCourse";
-NSString * const StellarClassEntityName = @"StellarClass";
-NSString * const StellarClassTimeEntityName = @"StellarClassTime";
-NSString * const StellarStaffMemberEntityName = @"StellarStaffMember";
-NSString * const StellarAnnouncementEntityName = @"StellarAnnouncement";
-NSString * const EmergencyInfoEntityName = @"EmergencyInfo";
-NSString * const EmergencyContactEntityName = @"EmergencyContact";
-NSString * const ShuttleRouteEntityName = @"ShuttleRouteCache";
-NSString * const ShuttleStopEntityName = @"ShuttleStopLocation";
-NSString * const ShuttleRouteStopEntityName = @"ShuttleRouteStop";
-NSString * const CalendarEventEntityName = @"KGOEvent";
-NSString * const CalendarCategoryEntityName = @"EventCategory";
 
 // local paths for handleLocalPath
 NSString * const LocalPathMapsSelectedAnnotation = @"annotation";
@@ -119,24 +66,8 @@ NSString * const LocalPathMapsSelectedAnnotation = @"annotation";
 
 // resource names
 
-NSString * const ImageNameHomeScreenBackground = @"home/home-background.png";
-NSString * const MITImageNameBackground      = @"global/body-background.png";
-
-NSString * const MITImageNameScrollTabBackgroundOpaque = @"global/scrolltabs-background-opaque.png";
-NSString * const MITImageNameScrollTabBackgroundTranslucent = @"global/scrolltabs-background-transparent.png";
-NSString * const MITImageNameScrollTabLeftEndCap = @"global/scrolltabs-leftarrow.png";
-NSString * const MITImageNameScrollTabRightEndCap = @"global/scrolltabs-rightarrow.png";
-NSString * const MITImageNameScrollTabSelectedTab = @"global/scrolltabs-selected.png";
-
-NSString * const MITImageNameLeftArrow = @"global/arrow-white-left.png";
-NSString * const MITImageNameRightArrow = @"global/arrow-white-right.png";
 NSString * const MITImageNameUpArrow = @"global/arrow-white-up.png";
 NSString * const MITImageNameDownArrow = @"global/arrow-white-down.png";
-
-NSString * const MITImageNameSubheadBarBackground = @"global/subheadbar_background.png";
-
-NSString * const MITImageNameSearch = @"global/search.png";
-NSString * const MITImageNameBookmark = @"global/bookmark.png";
 
 // errors
 NSString * const MapsErrorDomain = @"com.modolabs.Maps.ErrorDomain";

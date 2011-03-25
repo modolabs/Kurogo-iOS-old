@@ -1,7 +1,6 @@
 #import "KGOShareButtonController.h"
 #import "KGOAppDelegate.h"
 #import "TwitterViewController.h"
-#import "JSONAPIRequest.h"
 #import "MITMailComposeController.h"
 
 @implementation KGOShareButtonController
