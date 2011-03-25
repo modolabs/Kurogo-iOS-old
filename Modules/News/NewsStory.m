@@ -7,6 +7,7 @@
 @dynamic author;
 @dynamic read;
 @dynamic featured;
+@dynamic hasBody;
 @dynamic identifier;
 @dynamic link;
 @dynamic postDate;

@@ -11,6 +11,7 @@
 @property (nonatomic, retain) NSString * author;
 @property (nonatomic, retain) NSNumber * read;
 @property (nonatomic, retain) NSNumber * featured;
+@property (nonatomic, retain) NSNumber * hasBody;
 @property (nonatomic, retain) NSString * identifier;
 @property (nonatomic, retain) NSString * link;
 @property (nonatomic, retain) NSDate * postDate;

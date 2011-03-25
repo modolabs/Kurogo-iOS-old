@@ -19,6 +19,7 @@ NSString * const NewsTagImage              = @"image";
 //NSString * const NewsTagFeaturedImage   = @"harvard:featured_photo";
 NSString * const NewsTagSummary         = @"description";
 NSString * const NewsTagPostDate        = @"pubDate";
+NSString * const NewsTagHasBody         = @"hasBody";
 NSString * const NewsTagBody            = @"body";
 
 
@@ -413,6 +414,7 @@ NSString * const NewsTagBody            = @"body";
     story.link = [storyDict objectForKey:NewsTagLink];
     story.author = [storyDict objectForKey:NewsTagAuthor];
     story.summary = [storyDict objectForKey:NewsTagSummary];
+    story.hasBody = [storyDict objectForKey:NewsTagHasBody];
     if([storyDict objectForKey:NewsTagBody]) {
         story.body = [storyDict objectForKey:NewsTagBody];
     }

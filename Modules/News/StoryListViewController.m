@@ -629,10 +629,16 @@
         //} else {
         //    story = [self.stories objectAtIndex:indexPath.row];
         //}
-        NSMutableDictionary *params = [NSMutableDictionary dictionary];
-        [params setObject:indexPath forKey:@"indexPath"];
-        [params setObject:self.stories forKey:@"stories"];
-        [KGO_SHARED_APP_DELEGATE() showPage:LocalPathPageNameDetail forModuleTag:NewsTag params:params];
+        
+        NewsStory *story = [self.stories objectAtIndex:indexPath.row];
+        if([[story hasBody] boolValue]) {
+            NSMutableDictionary *params = [NSMutableDictionary dictionary];
+            [params setObject:indexPath forKey:@"indexPath"];
+            [params setObject:self.stories forKey:@"stories"];
+            [KGO_SHARED_APP_DELEGATE() showPage:LocalPathPageNameDetail forModuleTag:NewsTag params:params];
+        } else {
+            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:story.link]];
+        }
 	}
 }
 
@@ -651,8 +657,13 @@
 }
           
 - (void)searchController:(KGOSearchDisplayController *)controller didSelectResult:(id<KGOSearchResult>)aResult {
-    NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:aResult, @"story", nil];
-    [KGO_SHARED_APP_DELEGATE() showPage:LocalPathPageNameDetail forModuleTag:NewsTag params:params];
+    NewsStory *story = aResult;
+    if([[story hasBody] boolValue]) {
+        NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:aResult, @"story", nil];
+        [KGO_SHARED_APP_DELEGATE() showPage:LocalPathPageNameDetail forModuleTag:NewsTag params:params];
+    } else {
+        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:story.link]];
+    }
 }
       
 - (void)searchController:(KGOSearchDisplayController *)controller willHideSearchResultsTableView:(UITableView *)tableView {
