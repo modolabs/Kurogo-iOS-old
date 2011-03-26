@@ -13,7 +13,7 @@
     
     UIView *footerView = [[UIView alloc] initWithFrame:CGRectMake(10, 0, self.view.frame.size.width - 20, 45)];
     UILabel *footerLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, footerView.frame.size.width, 30)];
-    footerLabel.text = @"Copyright © 2011 The President and Fellows of Harvard College";
+    footerLabel.text = NSLocalizedString(@"AboutFooterText", nil);
     footerLabel.backgroundColor = [UIColor clearColor];
     footerLabel.textAlignment = UITextAlignmentCenter;
     footerLabel.textColor = [[KGOTheme sharedTheme] textColorForTableFooter];
@@ -136,7 +136,11 @@
                 break;
             }
             case 1: {
-                NSString *subject = [NSString stringWithFormat:@"Feedback for Harvard Mobile %@ (%@)", [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"], MITBuildNumber];
+                NSString *subject = [NSString stringWithFormat:@"%@ %@ %@ (%@) %@",
+                                     NSLocalizedString(@"AppFeedbackEmailSubjectBeforeName", nil),
+                                     [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"],
+                                     NSLocalizedString(@"AppFeedbackEmailSubjectAfterName", nil),
+                                     MITBuildNumber];
 				NSString * file = [[NSBundle mainBundle] pathForResource:@"Config" ofType:@"plist"];
 				NSDictionary *infoDict = [NSDictionary dictionaryWithContentsOfFile:file];
                 NSString *email = [infoDict objectForKey:@"AppFeedbackAddress"];

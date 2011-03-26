@@ -1,20 +1,33 @@
 #import "UIKit+KGOAdditions.h"
 #import "KGOModule.h"
+#import "Foundation+KGOAdditions.h"
 
 @implementation KGOModule
 
 @synthesize tag = _tag, shortName = _shortName, longName = _longName;
-@synthesize enabled, badgeValue, tabBarImage, iconImage, listViewImage, secondary;
+@synthesize enabled, badgeValue, tabBarImage, iconImage, listViewImage, secondary, apiMaxVersion, apiMinVersion;
 @synthesize searchDelegate;
 
 - (id)initWithDictionary:(NSDictionary *)moduleDict {
     self = [super init];
     if (self) {
+
+        // server syntax
+        NSString *title = [moduleDict stringForKey:@"title" nilIfEmpty:YES];
+        if (title) {
+            self.shortName = title;
+            self.longName = title;
+        } else {        
+            self.shortName = [moduleDict objectForKey:@"shortName"];
+            self.longName = [moduleDict objectForKey:@"longName"];
+        }
         
-        self.shortName = [moduleDict objectForKey:@"shortName"];
-        self.longName = [moduleDict objectForKey:@"longName"];
         self.secondary = [[moduleDict objectForKey:@"secondary"] boolValue];
         self.tag = [moduleDict objectForKey:@"tag"];
+
+        // this implies we can't have a version zero of the api
+        self.apiMinVersion = [moduleDict integerForKey:@"vmax"];
+        self.apiMaxVersion = [moduleDict integerForKey:@"vmin"];
 
         NSString *imageName = [moduleDict objectForKey:@"tabBarImage"];
         if (!imageName) {
@@ -152,10 +165,10 @@
 
 - (void)applicationWillEnterForeground {
 }
-
+/*
 - (void)applicationDidFinishLaunching {
 }
-
+*/
 - (void)applicationWillTerminate {
 }
 

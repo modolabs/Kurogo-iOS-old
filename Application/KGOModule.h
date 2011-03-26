@@ -26,7 +26,10 @@
 
 - (NSArray *)widgetViews; // array of KGOHomeScreenWidget objects, ordered by z-index
 
-@property (nonatomic, copy) NSString *tag;       // module ID
+@property (nonatomic) NSInteger apiMinVersion;
+@property (nonatomic) NSInteger apiMaxVersion;
+
+@property (nonatomic, copy) NSString *tag;       // unique
 @property (nonatomic, copy) NSString *shortName; // what label shows up on home screen
 @property (nonatomic, copy) NSString *longName;
 
@@ -88,7 +91,8 @@
 
 - (void)applicationDidEnterBackground;
 - (void)applicationWillEnterForeground;
-- (void)applicationDidFinishLaunching;
+// now that modules can be created later (after login), applicationDidFinishLaunching is probably not relevant
+//- (void)applicationDidFinishLaunching;
 - (void)applicationWillTerminate;
 
 - (void)didReceiveMemoryWarning;

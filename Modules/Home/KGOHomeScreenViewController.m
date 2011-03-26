@@ -84,7 +84,6 @@
     } else {
         NSDictionary *infoDict = [[NSBundle mainBundle] infoDictionary];
         self.navigationItem.title = [infoDict objectForKey:@"CFBundleName"];
-        //self.navigationItem.title = NSLocalizedString(@"AppName", nil);
     }
     
     if (!_searchController) {
@@ -397,13 +396,6 @@
         // special case for home module
         if ([aModule isKindOfClass:[HomeModule class]])
             continue;
-        
-        if (![[KGORequestManager sharedManager] isModuleAvailable:aModule.tag]
-            && ![aModule isKindOfClass:[SettingsModule class]]    // settings has no server connection
-            && ![aModule isKindOfClass:[ExternalURLModule class]] // locally configurable for now
-        ) { 
-            continue;
-        }
         
         if (aModule.secondary) {
             [secondary addObject:aModule];

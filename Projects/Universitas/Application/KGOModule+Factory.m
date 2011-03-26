@@ -15,6 +15,20 @@
 + (KGOModule *)moduleWithDictionary:(NSDictionary *)args {
     KGOModule *module = nil;
     NSString *className = [args objectForKey:@"class"];
+    if (!className) {
+        NSDictionary *moduleMap = [NSDictionary dictionaryWithObjectsAndKeys:
+                                   @"AboutModule", @"about",
+                                   @"CalendarModule", @"calendar",
+                                   @"LoginModule", @"login",
+                                   @"MapModule", @"map",
+                                   @"NewsModule", @"news",
+                                   @"PeopleModule", @"people",
+                                   @"SettingsModule", @"customize",
+                                   nil];
+        
+        NSString *serverID = [args objectForKey:@"id"];
+        className = [moduleMap objectForKey:serverID];
+    }
     
     if ([className isEqualToString:@"AboutModule"])
         module = [[[AboutModule alloc] initWithDictionary:args] autorelease];

@@ -1,0 +1,183 @@
+This is the text of an email written on 3/10.  It is more of a working
+plan than actual documentation.  Expect to see more of the latter as
+time goes on.
+
+-------
+Theming
+-------
+
+For any given project, the Xcode project will contain a Resources
+group which contains the following:
+
+Resources/
+    common/
+    modules/
+    ipad/
+        common/
+        modules/
+    kurogo/         # references a theme in the top level Resources directory
+        common/
+        modules/
+    ThemeConfig.plist
+
+ThemeConfig.plist contains a bunch of strings that define fonts,
+colors, image names, home screen style, etc.
+
+The lowercase folders contain assets (images, templates, audio files if any).
+
+In code, images must be referenced using the category method [UIImage
+imageWithPathName:], instead of [UIImage imageNamed:].  This will
+search for images in the following order.
+
+1. If the app is on iPad and a corresponding file exists in the ipad
+   folder, use that.
+
+2. Otherwise if a corresponding file exists with the exact name
+   (common/myfile or modules/mymodule/myfile), use that.
+
+3. Otherwise, use the default asset in the kurogo folder.
+
+Remember that folders (blue icons in Xcode) reflect the filesystem in
+the built application, not the filesystem on the computer building the
+app.  Thus the kurogo folder itself may come from different top-level
+themes.  We use Xcode to select one of many base file paths containing
+a kurogo folder.
+
+Differences from Mobile Web
+
+- You can instantiate the same module as many times as you want and
+  give it a different home screen icon.
+
+- Modules are identified by class name rather than id ("tag").  The
+  tag needs to be per-application unique.
+
+- All this is done via Config.plist and cannot be changed at runtime
+  (although the server can shut off existing modules).
+
+Obviously there are other differences.  These are just interesting right now.
+
+-----------
+Repo Layout
+-----------
+
+The overall layout roughly but not fully matches what I sent out a few
+months ago (multiple projects in the top-level Projects folder, all
+shared files in other top-level folders).
+
+At the top level we have:
+
+Application
+Common
+Contrib
+LICENSE
+Modules
+Projects
+Resources
+doc
+scripts
+tests
+
+The basic idea is that anything that appears in a folder under
+Projects will override anything by the same name in a top-level
+folder.
+
+Directories with stuff in them are covered in the remaining sections.
+
+-----------
+Application
+-----------
+
+This folder contains main, KGOAppDelegate, and KGOModule (and a dead
+KGONotification class).  All projects must implement a category method
+called -moduleWithDictionary which will dynamically instantiate module
+classes based on the project's Config.plist file.  Projects may copy
+the KGOModule+Factory.* files from the Universitas project.
+
+------
+Common
+------
+
+This is all the utility stuff.  Projects should just include this
+entire directory.
+
+-------
+Contrib
+-------
+
+This contains external code libraries.  There are many subdirectories,
+but only six are actual libraries, one is a binary, and the rest are
+wrapper projects around the source code to make them work as libraries
+in iOS.  Only the wrapper projects should be referenced in the
+xcodeproj file of the project we're working on.
+
+The six projects are
+
+JSON -- tracks json-framework as a git submodule.  BSD License.
+SFHFKeychainUtils -- tracks scifihifi-iphone as a git submodule.  MIT License.
+OAuth -- tracks OAuthConsumer in subversion.  Apache 2.0 License.
+Twitter -- tracks MGTwitterEngine as a git submodule.  Attribution required.
+Facebook -- tracks facebook-ios-sdk as a git submodule.  Apache 2.0 License.
+Proj -- tracks proj in Subversion.  MIT License.
+
+The binary is GoogleAnalytics and should be referenced directly, if at all.
+
+If we ever decide to change git submodules to a different version,
+everybody will have to run `git submodule update` to sync up their
+versions.
+
+There is a subdirectory called usr where public header files get
+copied via a build script in all the wrapper projects.  This directory
+is referenced in the main projects as a header search path.
+
+-------
+Modules
+-------
+
+This directory contains default implementations of modules shipping
+with Universitas.  Projects add their own modules to the Modules
+subdirectory inside the project directory.
+
+--------
+Projects
+--------
+
+Each directory in here corresponds to one project.  For example:
+
+Universitas
+    Application/
+    Config.plist
+    KGOInfo.plist
+    Localization/
+    Modules/
+    Resources/
+        Default.png
+        Icon.png
+        common/
+        modules/
+    Universitas.xcodeproj
+
+In this subdirectory:
+
+- Application/ contains the module factory.
+
+- Localization/ includes the strings file.  All user facing strings
+  should use NSLocalizedString.  At some point we will include a
+  script that runs genstrings without overwriting existing strings.
+
+- Modules/ includes project-specific modules.
+
+- Resources/ is as described above.
+
+- KGOInfo.plist is the file that is usually known as Info.plist.
+  Standard application configurations go here.
+
+- Config.plist is for application configurations that only we care
+  about.  These include server names, the list of modules and their
+  order, third-party API keys (which we will work on git-ignoring
+  later), etc.
+
+---------
+Resources
+---------
+
+See Theming section above.

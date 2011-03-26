@@ -23,64 +23,6 @@
 		</dict>
 		<dict>
 			<key>class</key>
-			<string>LoginModule</string>
-			<key>secondary</key>
-			<true/>
-			<key>shortName</key>
-			<string>Login</string>
-			<key>tag</key>
-			<string>login</string>
-		</dict>
-		<dict>
-			<key>class</key>
-			<string>PeopleModule</string>
-			<key>longName</key>
-			<string>People</string>
-			<key>secondary</key>
-			<false/>
-			<key>shortName</key>
-			<string>People</string>
-			<key>tag</key>
-			<string>people</string>
-		</dict>
-		<dict>
-			<key>class</key>
-			<string>NewsModule</string>
-			<key>longName</key>
-			<string>News</string>
-			<key>secondary</key>
-			<false/>
-			<key>shortName</key>
-			<string>News</string>
-			<key>tag</key>
-			<string>news</string>
-		</dict>
-		<dict>
-			<key>class</key>
-			<string>CalendarModule</string>
-			<key>longName</key>
-			<string>Events Calendar</string>
-			<key>secondary</key>
-			<false/>
-			<key>shortName</key>
-			<string>Calendar</string>
-			<key>tag</key>
-			<string>calendar</string>
-		</dict>
-		<dict>
-			<key>class</key>
-			<string>MapModule</string>
-			<key>longName</key>
-			<string>Map</string>
-			<key>secondary</key>
-			<false/>
-			<key>shortName</key>
-			<string>Map</string>
-			<key>tag</key>
-			<string>map</string>
-		</dict>
-		<dict>
-			<key>class</key>
 			<string>AboutModule</string>
 			<key>longName</key>
 			<string>About</string>
@@ -175,7 +117,7 @@
 			<key>APIPath</key>
 			<string>rest</string>
 			<key>Host</key>
-			<string>example-text.com</string>
+			<string>example-test.com</string>
 			<key>PathExtension</key>
 			<string></string>
 			<key>UseHTTPS</key>
@@ -184,6 +126,8 @@
 	</dict>
 	<key>SocialMedia</key>
 	<dict>
+		<key>Email</key>
+		<dict/>
 		<key>bit.ly</key>
 		<dict>
 			<key>APIKey</key>

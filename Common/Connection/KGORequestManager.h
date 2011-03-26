@@ -24,7 +24,6 @@
 	NSURL *_baseURL;
 
     KGORequest *_helloRequest;
-	NSDictionary *_apiDataByModule;
 }
 
 @property (nonatomic, retain) NSString *host;

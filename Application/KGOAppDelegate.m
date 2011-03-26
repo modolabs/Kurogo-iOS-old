@@ -37,12 +37,6 @@
 
     [self registerForRemoteNotifications:launchOptions];
     [[KGORequestManager sharedManager] registerWithKGOServer];
-    
-    /*
-    for (KGOModule *aModule in self.modules) {
-        [aModule applicationDidFinishLaunching];
-    }
-    */
 
     return YES;
 }

@@ -26,6 +26,7 @@ typedef enum {
     
     NSDictionary *_appConfig;
     
+    NSDictionary *_modulesByTag;
     NSArray *_modules; // all registered modules as defined in Config.plist
     KGOModule *_visibleModule;
 

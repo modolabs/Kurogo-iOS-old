@@ -1,6 +1,6 @@
 #import "KGORequestManager.h"
 #import "Foundation+KGOAdditions.h"
-#import "KGOAppDelegate.h"
+#import "KGOAppDelegate+ModuleAdditions.h"
 #import "CoreDataManager.h"
 #import "Reachability.h"
 
@@ -23,13 +23,8 @@
 
 - (BOOL)isModuleAvailable:(NSString *)moduleTag
 {
-    NSDictionary *dict = [_apiDataByModule objectForKey:moduleTag];
-    if (dict) {
-        NSLog(@"module %@ is available", moduleTag);
-    } else {
-        NSLog(@"module %@ is not available", moduleTag);
-    }
-    return dict != nil;
+    // TODO: add this to hello API
+    return YES;
 }
 
 - (BOOL)isModuleAuthorized:(NSString *)moduleTag
@@ -191,7 +186,6 @@
     [_reachability release];
 	[_uriScheme release];
 	[_accessToken release];
-	[_apiDataByModule release];
 	[super dealloc];
 }
 
@@ -210,21 +204,8 @@
 
 - (void)request:(KGORequest *)request didReceiveResult:(id)result {
     if (request == _helloRequest) {
-        NSMutableDictionary *dictionary = [NSMutableDictionary dictionary];
         NSArray *modules = [result arrayForKey:@"modules"];
-        for (NSDictionary *moduleData in modules) {
-            
-            NSString *moduleID = [moduleData stringForKey:@"id" nilIfEmpty:YES];
-            if (moduleID) {
-                [dictionary setObject:moduleData forKey:moduleID];
-            }
-        }
-        
-        if (dictionary.count) {
-            [_apiDataByModule release];
-            _apiDataByModule = [dictionary copy];
-        }
-        
+        [KGO_SHARED_APP_DELEGATE() loadModulesFromArray:modules];
         [[NSNotificationCenter defaultCenter] postNotificationName:ModuleListDidChangeNotification object:self];
     }
 }
