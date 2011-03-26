@@ -73,8 +73,10 @@
                     NSDictionary *infoDict = [[NSBundle mainBundle] infoDictionary];
                     if (!showBuildNumber) {
                         cell.textLabel.text = [NSString stringWithFormat:@"%@ %@", [infoDict objectForKey:@"CFBundleName"], [infoDict objectForKey:@"CFBundleVersion"]];
+                        cell.imageView.image = nil;
                     } else {
                         cell.textLabel.text = [NSString stringWithFormat:@"%@ %@ (%@)", [infoDict objectForKey:@"CFBundleName"], [infoDict objectForKey:@"CFBundleVersion"], MITBuildNumber];
+                        cell.imageView.image = [UIImage imageWithPathName:@"common/githash.png"];
                     }
                     cell.textLabel.textAlignment = UITextAlignmentCenter;
                     cell.textLabel.font = [[KGOTheme sharedTheme] fontForTableCellTitleWithStyle:UITableViewCellStyleDefault];
