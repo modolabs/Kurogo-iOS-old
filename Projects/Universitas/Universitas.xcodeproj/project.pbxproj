@@ -1155,7 +1155,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "PATH=$PATH:/usr/local/git/bin\nFULLREV=`git rev-parse HEAD`\nREV=`echo $FULLREV | cut -c 1-8`\nABOUT_DIR=\"${PROJECT_DIR}/Modules/About\"\n[ -d \"${ABOUT_DIR}\" ] || mkdir \"${ABOUT_DIR}\"\nBUILD_INFO_FILE=\"${ABOUT_DIR}/MITBuildInfo.m\"\n\necho \"#import \\\"MITBuildInfo.h\\\";\" > ${BUILD_INFO_FILE}\necho \"\" >> ${BUILD_INFO_FILE}\necho \"NSString * const MITBuildNumber = @\\\"$REV\\\";\" >> ${BUILD_INFO_FILE}\n\nHASH2PNG=\"${PROJECT_DIR}/../../scripts/hash2png.py\"\nif [ -f \"${HASH2PNG}\" ]; then\n    python \"${HASH2PNG}\" $FULLREV\n    if [ -d \"${TARGET_BUILD_DIR}/${TARGET_NAME}.app/common/\" ]; then\n        mv githash.png \"${TARGET_BUILD_DIR}/${TARGET_NAME}.app/common/\"\n    fi\nfi\n";
+			shellScript = "PATH=$PATH:/usr/local/git/bin\nFULLREV=`git rev-parse HEAD`\nREV=`echo $FULLREV | cut -c 1-8`\nABOUT_DIR=\"${PROJECT_DIR}/Modules/About\"\n[ -d \"${ABOUT_DIR}\" ] || mkdir \"${ABOUT_DIR}\"\nBUILD_INFO_FILE=\"${ABOUT_DIR}/MITBuildInfo.m\"\n\necho \"#import \\\"MITBuildInfo.h\\\";\" > ${BUILD_INFO_FILE}\necho \"\" >> ${BUILD_INFO_FILE}\necho \"NSString * const MITBuildNumber = @\\\"$REV\\\";\" >> ${BUILD_INFO_FILE}\n\nHASH2PNG=\"${PROJECT_DIR}/../../scripts/hash2png.py\"\nif [ -f \"${HASH2PNG}\" ]; then\n    python \"${HASH2PNG}\" $FULLREV\n    mv githash.png \"${PROJECT_DIR}/Resources/common/\"\nfi\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 

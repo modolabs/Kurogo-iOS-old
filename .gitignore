@@ -4,4 +4,5 @@ build/
 *.xcuserdatad
 *.xcworkspacedata
 MITBuildInfo.m
+githash.png
 Projects/*/Resources/secret/Config.plist
