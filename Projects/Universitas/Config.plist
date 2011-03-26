@@ -138,11 +138,11 @@
 		<key>Facebook</key>
 		<dict>
 			<key>APIKey</key>
-			<string>aa41ebe2c7ee67478d6628dbc5965ae6</string>
+			<string></string>
 			<key>APISecret</key>
-			<string>09433e5ea4ac451151c476844fa9626c</string>
+			<string></string>
 			<key>AppID</key>
-			<string>140621452667226</string>
+			<string></string>
 		</dict>
 		<key>Twitter</key>
 		<dict>

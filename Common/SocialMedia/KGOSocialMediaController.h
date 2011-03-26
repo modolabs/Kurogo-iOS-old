@@ -29,15 +29,6 @@ extern NSString * const FacebookDidLogoutNotification;
 @end
 
 
-@protocol FacebookWrapperDelegate
-
-- (void)facebookDidLogin;
-- (void)facebookFailedToLogin;
-- (void)facebookDidLogout;
-
-@end
-
-
 
 @protocol BitlyWrapperDelegate <NSObject>
 
@@ -80,7 +71,6 @@ FBSessionDelegate, FBDialogDelegate, FBRequestDelegate> {
 
 @property (nonatomic, assign) id<TwitterWrapperDelegate> twitterDelegate;
 @property (nonatomic, assign) id<BitlyWrapperDelegate> bitlyDelegate;
-//@property (nonatomic, assign) id<FacebookWrapperDelegate> facebookDelegate;
 @property (nonatomic, retain) NSString *twitterUsername;
 
 + (KGOSocialMediaController *)sharedController;
@@ -122,7 +112,6 @@ FBSessionDelegate, FBDialogDelegate, FBRequestDelegate> {
 - (void)startupFacebook;
 - (void)shutdownFacebook;
 
-//- (void)loginFacebookWithDelegate:(id<FacebookWrapperDelegate>)delegate;
 - (void)loginFacebook;
 - (void)logoutFacebook;
 

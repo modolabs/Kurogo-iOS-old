@@ -43,10 +43,12 @@
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
 	NSString *buttonTitle = [actionSheet buttonTitleAtIndex:buttonIndex];
 	if ([buttonTitle isEqualToString:KGOSocialMediaTypeEmail]) {
-        [MITMailComposeController presentMailControllerWithEmail:nil subject:[self.delegate emailSubject] body:[self.delegate emailBody]];
+        [MITMailComposeController presentMailControllerWithEmail:nil
+                                                         subject:[self.delegate emailSubject]
+                                                            body:[self.delegate emailBody]];
 
 	} else if ([buttonTitle isEqualToString:KGOSocialMediaTypeFacebook]) {
-		[[KGOSocialMediaController sharedController] loginFacebookWithDelegate:self];
+        [self showFacebookDialog];
 
 	} else if ([buttonTitle isEqualToString:KGOSocialMediaTypeTwitter]) {
 		UIViewController *twitterVC = [[[TwitterViewController alloc] initWithMessage:[self.delegate twitterTitle]
@@ -56,27 +58,12 @@
 	}
 }
 
-#pragma mark -
-#pragma mark Facebook delegation
-
-- (void)facebookDidLogin {
-    loggedIntoFacebook = YES;
-    [self showFacebookDialog];
-}
-
-- (void)facebookDidLogout {
-	;
-}
-
-- (void)facebookFailedToLogin {
-	;
-}
+#pragma mark - Facebook
 
 - (void)showFacebookDialog {
-	[[KGOSocialMediaController sharedController] shareOnFacebook:[self.delegate fbDialogAttachment] prompt:[self.delegate fbDialogPrompt]];
+	[[KGOSocialMediaController sharedController] shareOnFacebook:[self.delegate fbDialogAttachment]
+                                                          prompt:[self.delegate fbDialogPrompt]];
 }
-
-
 
 #pragma mark -
 

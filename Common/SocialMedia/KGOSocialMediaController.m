@@ -441,13 +441,12 @@ static KGOSocialMediaController *s_controller = nil;
      nil];
      [params setObject:actionLinks forKey:@"action_links"];
      */    
-    
+
+    [self startupFacebook];
     [_facebook dialog:@"feed" andParams:params andDelegate:self];
 }
 
-//- (void)loginFacebookWithDelegate:(id<FacebookWrapperDelegate>)delegate {
 - (void)loginFacebook {
-	//self.facebookDelegate = delegate;
     
 	if ([_facebook isSessionValid]) {
         NSLog(@"already have session");
@@ -520,11 +519,16 @@ static KGOSocialMediaController *s_controller = nil;
 
 #pragma mark Facebook - FBDialogDelegate
 
-/**
- * Called when a UIServer Dialog successfully return.
- */
+// these two methods are called at the very end of the FBDialog chain.
+// other success/error messages may be sent before these.
+
 - (void)dialogDidComplete:(FBDialog *)dialog {
     DLog(@"published successfully");
+    [self shutdownFacebook];
+}
+
+- (void)dialogDidNotComplete:(FBDialog *)dialog {
+    [self shutdownFacebook];
 }
 
 @end
