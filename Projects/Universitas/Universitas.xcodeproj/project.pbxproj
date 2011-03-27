@@ -18,6 +18,11 @@
 		4B050C55132E48F50016591D /* NewsDataManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B050C54132E48F50016591D /* NewsDataManager.m */; };
 		4B8432E71331287600DCBA86 /* NewsCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B8432E61331287600DCBA86 /* NewsCategory.m */; };
 		4BA25BEB132ED94600ABB625 /* NewsStory.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BA25BEA132ED94600ABB625 /* NewsStory.m */; };
+		562F4B79133EFA10000B9344 /* ContentModule.m in Sources */ = {isa = PBXBuildFile; fileRef = 562F4B74133EFA10000B9344 /* ContentModule.m */; };
+		562F4B7A133EFA10000B9344 /* ContentTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 562F4B76133EFA10000B9344 /* ContentTableViewController.m */; };
+		562F4B7B133EFA10000B9344 /* ContentWebView.m in Sources */ = {isa = PBXBuildFile; fileRef = 562F4B78133EFA10000B9344 /* ContentWebView.m */; };
+		562F4B7F133EFA96000B9344 /* AdmissionsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 562F4B7E133EFA96000B9344 /* AdmissionsViewController.m */; };
+		562F4B82133EFAA7000B9344 /* AdmissionsModule.m in Sources */ = {isa = PBXBuildFile; fileRef = 562F4B81133EFAA7000B9344 /* AdmissionsModule.m */; };
 		BD9FA7EE1047A05E00BC3C0A /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BD9FA7ED1047A05E00BC3C0A /* MessageUI.framework */; };
 		DE0F6B3411109BC500F064D6 /* AboutMITVC.m in Sources */ = {isa = PBXBuildFile; fileRef = DE0F6B3311109BC500F064D6 /* AboutMITVC.m */; };
 		DE18F9EE10F19105009A69B9 /* News.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = DE18F9ED10F19105009A69B9 /* News.xcdatamodeld */; };
@@ -206,6 +211,16 @@
 		4B8432E61331287600DCBA86 /* NewsCategory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NewsCategory.m; sourceTree = "<group>"; };
 		4BA25BE9132ED94600ABB625 /* NewsStory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NewsStory.h; sourceTree = "<group>"; };
 		4BA25BEA132ED94600ABB625 /* NewsStory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NewsStory.m; sourceTree = "<group>"; };
+		562F4B73133EFA10000B9344 /* ContentModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ContentModule.h; path = ../../../Modules/Content/ContentModule.h; sourceTree = "<group>"; };
+		562F4B74133EFA10000B9344 /* ContentModule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ContentModule.m; path = ../../../Modules/Content/ContentModule.m; sourceTree = "<group>"; };
+		562F4B75133EFA10000B9344 /* ContentTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ContentTableViewController.h; path = ../../../Modules/Content/ContentTableViewController.h; sourceTree = "<group>"; };
+		562F4B76133EFA10000B9344 /* ContentTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ContentTableViewController.m; path = ../../../Modules/Content/ContentTableViewController.m; sourceTree = "<group>"; };
+		562F4B77133EFA10000B9344 /* ContentWebView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ContentWebView.h; path = ../../../Modules/Content/ContentWebView.h; sourceTree = "<group>"; };
+		562F4B78133EFA10000B9344 /* ContentWebView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ContentWebView.m; path = ../../../Modules/Content/ContentWebView.m; sourceTree = "<group>"; };
+		562F4B7D133EFA96000B9344 /* AdmissionsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AdmissionsViewController.h; path = Admissions/AdmissionsViewController.h; sourceTree = "<group>"; };
+		562F4B7E133EFA96000B9344 /* AdmissionsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AdmissionsViewController.m; path = Admissions/AdmissionsViewController.m; sourceTree = "<group>"; };
+		562F4B80133EFAA6000B9344 /* AdmissionsModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AdmissionsModule.h; path = Admissions/AdmissionsModule.h; sourceTree = "<group>"; };
+		562F4B81133EFAA7000B9344 /* AdmissionsModule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AdmissionsModule.m; path = Admissions/AdmissionsModule.m; sourceTree = "<group>"; };
 		BD9FA7ED1047A05E00BC3C0A /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
 		DE0F6B3211109BC500F064D6 /* AboutMITVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AboutMITVC.h; sourceTree = "<group>"; };
 		DE0F6B3311109BC500F064D6 /* AboutMITVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AboutMITVC.m; sourceTree = "<group>"; };
@@ -543,6 +558,30 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		562F4B61133EC6DE000B9344 /* Content */ = {
+			isa = PBXGroup;
+			children = (
+				562F4B73133EFA10000B9344 /* ContentModule.h */,
+				562F4B74133EFA10000B9344 /* ContentModule.m */,
+				562F4B75133EFA10000B9344 /* ContentTableViewController.h */,
+				562F4B76133EFA10000B9344 /* ContentTableViewController.m */,
+				562F4B77133EFA10000B9344 /* ContentWebView.h */,
+				562F4B78133EFA10000B9344 /* ContentWebView.m */,
+			);
+			name = Content;
+			sourceTree = "<group>";
+		};
+		562F4B7C133EFA3D000B9344 /* Admissions */ = {
+			isa = PBXGroup;
+			children = (
+				562F4B7D133EFA96000B9344 /* AdmissionsViewController.h */,
+				562F4B7E133EFA96000B9344 /* AdmissionsViewController.m */,
+				562F4B80133EFAA6000B9344 /* AdmissionsModule.h */,
+				562F4B81133EFAA7000B9344 /* AdmissionsModule.m */,
+			);
+			name = Admissions;
+			sourceTree = "<group>";
+		};
 		DE4AAFAC10ED4E63007476D9 /* Model */ = {
 			isa = PBXGroup;
 			children = (
@@ -562,6 +601,8 @@
 		DE715445102FE468005E6111 /* Modules */ = {
 			isa = PBXGroup;
 			children = (
+				562F4B7C133EFA3D000B9344 /* Admissions */,
+				562F4B61133EC6DE000B9344 /* Content */,
 				EB181FA5131EDF1B003728FF /* Login */,
 				EB1441571309EFB100396753 /* Home */,
 				EB1440E61309EEB800396753 /* Map */,
@@ -1266,6 +1307,11 @@
 				EB033766133C2B8C00ACF2BB /* MITThumbnailView.m in Sources */,
 				EB033767133C2B8C00ACF2BB /* TabViewControl.m in Sources */,
 				EB03376B133D26F100ACF2BB /* EventDetailTableView.m in Sources */,
+				562F4B79133EFA10000B9344 /* ContentModule.m in Sources */,
+				562F4B7A133EFA10000B9344 /* ContentTableViewController.m in Sources */,
+				562F4B7B133EFA10000B9344 /* ContentWebView.m in Sources */,
+				562F4B7F133EFA96000B9344 /* AdmissionsViewController.m in Sources */,
+				562F4B82133EFAA7000B9344 /* AdmissionsModule.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -12,6 +12,8 @@
     NSMutableData *_data;
     
     NSURLResponse *_latestResponse;
+    
+    NSString * htmlString;
 
 }
 
@@ -19,5 +21,10 @@
 @property (nonatomic, retain) NSData *data;
 
 @property (nonatomic, retain) NSURL *requestURL;
+
+@property (nonatomic, retain) NSString * htmlString;
+
+- (void)setRequestURL:(NSURL *)requestURL;
+- (void) setLoadHtmlString: (NSString *) htmlStringText;
 
 @end

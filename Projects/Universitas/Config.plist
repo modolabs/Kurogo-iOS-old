@@ -11,6 +11,13 @@
 	</dict>
 	<key>AppFeedbackAddress</key>
 	<string>john.smith@example.com</string>
+	<key>Location</key>
+	<dict>
+		<key>DefaultCenter</key>
+		<string>42.3944, -71.1453</string>
+		<key>DefaultZoom</key>
+		<string>16</string>
+	</dict>
 	<key>Modules</key>
 	<array>
 		<dict>
@@ -65,14 +72,25 @@
 			<key>url</key>
 			<string>http://www.modolabs.com</string>
 		</dict>
+		<dict>
+			<key>class</key>
+			<string>AdmissionsModule</string>
+			<key>iconImage</key>
+			<string>modules/home/customize.png</string>
+			<key>listViewImage</key>
+			<string>modules/home/module-settings.png</string>
+			<key>longName</key>
+			<string>Admissions</string>
+			<key>shortName</key>
+			<string>Admissions</string>
+			<key>secondary</key>
+			<string>NO</string>
+			<key>tabBarImage</key>
+			<string>modules/home/tab-settings.png</string>
+			<key>tag</key>
+			<string>admissions</string>
+		</dict>
 	</array>
-	<key>Location</key>
-	<dict>
-		<key>DefaultCenter</key>
-		<string>42.3944, -71.1453</string>
-		<key>DefaultZoom</key>
-		<string>16</string>
-	</dict>
 	<key>NavigationControllerClass</key>
 	<string>UINavigationController</string>
 	<key>OrganizationName</key>
@@ -84,7 +102,7 @@
 			<key>APIPath</key>
 			<string>rest</string>
 			<key>Host</key>
-			<string>localhost</string>
+			<string>localhost:8888</string>
 			<key>PathExtension</key>
 			<string></string>
 			<key>UseHTTPS</key>
@@ -126,8 +144,6 @@
 	</dict>
 	<key>SocialMedia</key>
 	<dict>
-		<key>Email</key>
-		<dict/>
 		<key>bit.ly</key>
 		<dict>
 			<key>APIKey</key>
@@ -135,6 +151,8 @@
 			<key>Username</key>
 			<string></string>
 		</dict>
+		<key>Email</key>
+		<dict/>
 		<key>Facebook</key>
 		<dict>
 			<key>APIKey</key>

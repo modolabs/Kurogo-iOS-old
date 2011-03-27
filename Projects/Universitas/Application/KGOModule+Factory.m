@@ -9,6 +9,7 @@
 #import	"MapModule.h"
 #import "PeopleModule.h"
 #import "SettingsModule.h"
+#import "AdmissionsModule.h"
 
 @implementation KGOModule (Factory)
 
@@ -24,6 +25,7 @@
                                    @"NewsModule", @"news",
                                    @"PeopleModule", @"people",
                                    @"SettingsModule", @"customize",
+                                   @"AdmissionsModule", @"admissions",
                                    nil];
         
         NSString *serverID = [args objectForKey:@"id"];
@@ -32,6 +34,9 @@
     
     if ([className isEqualToString:@"AboutModule"])
         module = [[[AboutModule alloc] initWithDictionary:args] autorelease];
+    
+    else if ([className isEqualToString:@"AdmissionsModule"])
+        module = [[[AdmissionsModule alloc] initWithDictionary:args] autorelease];
     
     else if ([className isEqualToString:@"CalendarModule"])
         module = [[[CalendarModule alloc] initWithDictionary:args] autorelease];

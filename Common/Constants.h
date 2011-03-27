@@ -33,10 +33,8 @@ extern NSString * const TransitTag;
 extern NSString * const PhotosTag;
 extern NSString * const LoginTag;
 extern NSString * const VideoTag;
-
-
-
-
+extern NSString * const ContentTag;
+extern NSString * const AdmissionsTag;
 
 
 
