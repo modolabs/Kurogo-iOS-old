@@ -165,10 +165,10 @@
 
 - (void)applicationWillEnterForeground {
 }
-/*
+
 - (void)applicationDidFinishLaunching {
 }
-*/
+
 - (void)applicationWillTerminate {
 }
 

@@ -16,21 +16,41 @@
     NSArray *moduleData = [[self appConfig] objectForKey:@"Modules"];
     
     [self loadModulesFromArray:moduleData];
+}
 
-    /*
-    NSMutableDictionary *modulesByTag = [NSMutableDictionary dictionaryWithCapacity:[moduleData count]];
-    NSMutableArray *modules = [NSMutableArray arrayWithCapacity:[moduleData count]];
-    for (NSDictionary *moduleDict in moduleData) {
-        KGOModule *aModule = [KGOModule moduleWithDictionary:moduleDict]; // home will return nil
-        if (aModule) {
-            [modules addObject:aModule];
-            [modulesByTag setObject:aModule forKey:aModule.tag];
+- (void)loadHomeModule {
+    NSArray *moduleData = [[self appConfig] objectForKey:@"Modules"];
+    NSDictionary *homeData = nil;
+    for (NSDictionary *aDict in moduleData) {
+        if ([[aDict objectForKey:@"class"] isEqualToString:@"HomeModule"]) {
+            homeData = aDict;
+            break;
         }
     }
-    
-    _modules = [[NSArray alloc] initWithArray:modules];
-    _modulesByTag = [[NSDictionary alloc] initWithDictionary:modulesByTag];
-     */
+    if (!homeData) {
+        homeData = [NSDictionary dictionaryWithObjectsAndKeys:
+                    @"HomeModule", @"class",
+                    @"home", @"tag", nil];
+    }
+    KGOModule *homeModule = [KGOModule moduleWithDictionary:homeData];
+
+    NSArray *modules = nil;
+    if (_modules) {
+        modules = [_modules arrayByAddingObject:homeModule];
+    } else {
+        modules = [NSArray arrayWithObject:homeModule];
+    }
+    [_modules release];
+    _modules = [modules copy];
+
+    NSMutableDictionary *modulesByTag = nil;
+    if (_modulesByTag) {
+        modulesByTag = [_modulesByTag mutableCopy];
+    } else {
+        modulesByTag = [NSDictionary dictionaryWithObject:homeModule forKey:homeModule.tag];
+    }
+    [_modulesByTag release];
+    _modulesByTag = [modulesByTag copy];
 }
 
 - (void)loadModulesFromArray:(NSArray *)moduleArray {
@@ -44,10 +64,14 @@
     }
     
     for (NSDictionary *moduleDict in moduleArray) {
+        if ([[moduleDict objectForKey:@"class"] isEqualToString:@"HomeModule"])
+            continue;
+        
         KGOModule *aModule = [KGOModule moduleWithDictionary:moduleDict];
         if (aModule) {
             [modules addObject:aModule];
             [modulesByTag setObject:aModule forKey:aModule.tag];
+            [aModule applicationDidFinishLaunching];
         }
     }
 
@@ -56,6 +80,8 @@
 
     [_modulesByTag release];
     _modulesByTag = [modulesByTag copy];
+
+    [[NSNotificationCenter defaultCenter] postNotificationName:ModuleListDidChangeNotification object:self];
 }
 
 - (void)loadNavigationContainer {

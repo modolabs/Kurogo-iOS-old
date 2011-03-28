@@ -23,8 +23,7 @@
     networkActivityRefCount = 0;
     showingAlertView = NO;
     
-    [self loadModules];
-    
+    [self loadHomeModule];
     [self loadNavigationContainer]; // adds theNavController.view to self.window
     [self loadSocialMediaController]; // initializes social media settings
     
@@ -37,6 +36,8 @@
 
     [self registerForRemoteNotifications:launchOptions];
     [[KGORequestManager sharedManager] registerWithKGOServer];
+    
+    [self loadModules];
 
     return YES;
 }

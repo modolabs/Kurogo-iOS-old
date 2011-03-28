@@ -91,8 +91,7 @@
 
 - (void)applicationDidEnterBackground;
 - (void)applicationWillEnterForeground;
-// now that modules can be created later (after login), applicationDidFinishLaunching is probably not relevant
-//- (void)applicationDidFinishLaunching;
+- (void)applicationDidFinishLaunching;
 - (void)applicationWillTerminate;
 
 - (void)didReceiveMemoryWarning;
