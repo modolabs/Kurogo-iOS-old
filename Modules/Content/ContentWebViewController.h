@@ -10,7 +10,7 @@
 #import "KGOWebViewController.h"
 #import "KGORequestManager.h"
 
-@interface ContentWebView : KGOWebViewController <KGORequestDelegate>{
+@interface ContentWebViewController : KGOWebViewController <KGORequestDelegate>{
     
     
 }

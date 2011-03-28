@@ -13,7 +13,7 @@
     
     NSURLResponse *_latestResponse;
     
-    NSString * htmlString;
+    NSString * HTMLString;
 
 }
 
@@ -22,9 +22,8 @@
 
 @property (nonatomic, retain) NSURL *requestURL;
 
-@property (nonatomic, retain) NSString * htmlString;
+@property (nonatomic, retain) NSString * HTMLString;
 
-- (void)setRequestURL:(NSURL *)requestURL;
-- (void) setLoadHtmlString: (NSString *) htmlStringText;
+- (void) showHTMLString: (NSString *) HTMLStringText;
 
 @end

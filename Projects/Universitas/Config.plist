@@ -74,17 +74,17 @@
 		</dict>
 		<dict>
 			<key>class</key>
-			<string>AdmissionsModule</string>
+			<string>ContentModule</string>
 			<key>iconImage</key>
 			<string>modules/home/customize.png</string>
 			<key>listViewImage</key>
 			<string>modules/home/module-settings.png</string>
 			<key>longName</key>
 			<string>Admissions</string>
-			<key>shortName</key>
-			<string>Admissions</string>
 			<key>secondary</key>
 			<string>NO</string>
+			<key>shortName</key>
+			<string>Admissions</string>
 			<key>tabBarImage</key>
 			<string>modules/home/tab-settings.png</string>
 			<key>tag</key>

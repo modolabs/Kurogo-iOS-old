@@ -4,7 +4,7 @@
 @implementation KGOWebViewController
 
 @synthesize data = _data, connection = _connection;
-@synthesize htmlString;
+@synthesize HTMLString;
 
 - (void)dealloc
 {
@@ -35,8 +35,8 @@
         [_webView loadRequest:[NSURLRequest requestWithURL:self.requestURL]];
     }
     
-    if (self.htmlString != nil) {
-        [_webView loadHTMLString:self.htmlString baseURL:nil];
+    if (self.HTMLString != nil) {
+        [_webView loadHTMLString:self.HTMLString baseURL:nil];
     }
     
     
@@ -57,13 +57,13 @@
     }
 }
 
-- (void) setLoadHtmlString: (NSString *) htmlStringText
+- (void) showHTMLString: (NSString *) HTMLStringText
 {
-    [htmlString release];
-    self.htmlString = htmlStringText;
+    [HTMLString release];
+    self.HTMLString = HTMLStringText;
     
     if (_webView){
-        [_webView loadHTMLString:self.htmlString baseURL:nil];
+        [_webView loadHTMLString:self.HTMLString baseURL:nil];
     }
 }
 

@@ -8,16 +8,13 @@
 
 #import <UIKit/UIKit.h>
 #import "KGORequestManager.h"
-#import "ContentWebView.h"
 
 
 @interface ContentTableViewController : UITableViewController <KGORequestDelegate> {
 	
     int numberOfFeeds;
     NSMutableDictionary * listOfFeeds;
-    
-    ContentWebView * webViewController;
-    
+    NSMutableArray * feedKeys;
     UIView * loadingView;
     UIActivityIndicatorView * loadingIndicator;
     
@@ -29,7 +26,6 @@
 
 @property (nonatomic, retain) NSString * moduleTag;
 @property (nonatomic, retain) KGORequest *request;
-@property (nonatomic, retain) ContentWebView * webViewController;
 @property (nonatomic, retain) UIView * loadingView;
 @property (nonatomic, retain) UIActivityIndicatorView * loadingIndicator;
 @property (nonatomic, retain) UIWebView * singleFeedView;

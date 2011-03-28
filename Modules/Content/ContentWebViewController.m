@@ -6,10 +6,10 @@
 //  Copyright 2011 ModoLabs Inc. All rights reserved.
 //
 
-#import "ContentWebView.h"
+#import "ContentWebViewController.h"
+#import "Foundation+KGOAdditions.h"
 
-
-@implementation ContentWebView
+@implementation ContentWebViewController
 
 - (void)dealloc
 {
@@ -59,12 +59,12 @@
     
     NSLog(@"%@", [result description]);
     
-    NSDictionary * resultDict = [result objectForKey:@"feedData"];
+    NSDictionary * resultDict = [result dictionaryForKey:@"feedData"];
     
-    NSString * htmlStringText = [resultDict objectForKey:@"contentBody"]; 
-    [super setLoadHtmlString: htmlStringText];
+    NSString * htmlStringText = [resultDict stringForKey:@"contentBody" nilIfEmpty:NO]; 
+    [self showHTMLString:htmlStringText];
     
-    NSString * titleString = [resultDict objectForKey:@"title"];
+    NSString * titleString = [resultDict stringForKey:@"title" nilIfEmpty:NO];
     self.title = titleString;
     
     NSLog(@"%@", htmlStringText);
