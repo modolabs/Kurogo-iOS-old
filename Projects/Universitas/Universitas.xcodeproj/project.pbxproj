@@ -80,6 +80,7 @@
 		EB03376B133D26F100ACF2BB /* EventDetailTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = EB03376A133D26E400ACF2BB /* EventDetailTableView.m */; };
 		EB033771133D5FD000ACF2BB /* zh_TW.lproj in Resources */ = {isa = PBXBuildFile; fileRef = EB033770133D5FD000ACF2BB /* zh_TW.lproj */; };
 		EB033775133D629500ACF2BB /* ja.lproj in Resources */ = {isa = PBXBuildFile; fileRef = EB033774133D629500ACF2BB /* ja.lproj */; };
+		EB0CF98D13403141003B8E45 /* TwitterViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = EB0CF98C13403141003B8E45 /* TwitterViewController.xib */; };
 		EB138BB112F231E3004DBB7C /* en.lproj in Resources */ = {isa = PBXBuildFile; fileRef = EB138BAE12F231E3004DBB7C /* en.lproj */; };
 		EB138F0512F253A1004DBB7C /* libGoogleAnalytics.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EB138F0312F253A1004DBB7C /* libGoogleAnalytics.a */; };
 		EB1440D21309EEA000396753 /* Calendar.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = EB1440BD1309EEA000396753 /* Calendar.xcdatamodeld */; };
@@ -324,6 +325,7 @@
 		EB03376A133D26E400ACF2BB /* EventDetailTableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EventDetailTableView.m; sourceTree = "<group>"; };
 		EB033770133D5FD000ACF2BB /* zh_TW.lproj */ = {isa = PBXFileReference; lastKnownFileType = folder; name = zh_TW.lproj; path = Localization/zh_TW.lproj; sourceTree = "<group>"; };
 		EB033774133D629500ACF2BB /* ja.lproj */ = {isa = PBXFileReference; lastKnownFileType = folder; name = ja.lproj; path = Localization/ja.lproj; sourceTree = "<group>"; };
+		EB0CF98C13403141003B8E45 /* TwitterViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = TwitterViewController.xib; path = "../../../../src/Harvard-Reunion-iOS/Common/SocialMedia/TwitterViewController.xib"; sourceTree = "<group>"; };
 		EB138AFC12F22F31004DBB7C /* Config.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Config.plist; sourceTree = "<group>"; };
 		EB138BAE12F231E3004DBB7C /* en.lproj */ = {isa = PBXFileReference; lastKnownFileType = folder; name = en.lproj; path = Localization/en.lproj; sourceTree = "<group>"; };
 		EB138EE812F251EB004DBB7C /* Facebook.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Facebook.xcodeproj; path = Facebook/Facebook.xcodeproj; sourceTree = "<group>"; };
@@ -743,6 +745,7 @@
 				EB033706133C2B8C00ACF2BB /* KGOSocialMediaController.m */,
 				EB033707133C2B8C00ACF2BB /* TwitterViewController.h */,
 				EB033708133C2B8C00ACF2BB /* TwitterViewController.m */,
+				EB0CF98C13403141003B8E45 /* TwitterViewController.xib */,
 			);
 			path = SocialMedia;
 			sourceTree = "<group>";
@@ -1161,6 +1164,7 @@
 				EB03375A133C2B8C00ACF2BB /* KGOTabbedViewController.xib in Resources */,
 				EB033771133D5FD000ACF2BB /* zh_TW.lproj in Resources */,
 				EB033775133D629500ACF2BB /* ja.lproj in Resources */,
+				EB0CF98D13403141003B8E45 /* TwitterViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

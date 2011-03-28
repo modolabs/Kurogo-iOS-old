@@ -9,15 +9,20 @@ NSString * const KGOSocialMediaTypeTwitter = @"Twitter";
 NSString * const KGOSocialMediaTypeEmail = @"Email";
 NSString * const KGOSocialMediaTypeBitly = @"bit.ly";
 
+// NSUserDefaults
 static NSString * const TwitterUsernameKey = @"TwitterUsername";
 static NSString * const TwitterServiceName = @"Twitter";
 
-// NSUserDefaults
 static NSString * const FacebookTokenKey = @"FBToken";
 static NSString * const FacebookTokenPermissions = @"FBTokenPermissions";
 static NSString * const FacebookTokenExpirationSetting = @"FBTokenExpiration";
+
 NSString * const FacebookUsernameKey = @"FBUsername";
+
 // NSNotifications
+NSString * const TwitterDidLoginNotification = @"TwitterLoggedIn";
+NSString * const TwitterDidLogoutNotification = @"TwitterLoggedOut";
+
 NSString * const FacebookDidLoginNotification = @"FBDidLogin";
 NSString * const FacebookDidLogoutNotification = @"FBDidLogout";
 
@@ -83,6 +88,10 @@ static KGOSocialMediaController *s_controller = nil;
 
 - (BOOL)supportsEmailSharing {
 	return [_appConfig objectForKey:KGOSocialMediaTypeEmail] != nil;
+}
+
+- (BOOL)supportsBitlyURLShortening {
+    return [_appConfig objectForKey:KGOSocialMediaTypeBitly] != nil;
 }
 
 - (id)init {
@@ -198,6 +207,10 @@ static KGOSocialMediaController *s_controller = nil;
 	}
 }
 
+- (BOOL)isTwitterLoggedIn {
+    return _twitterEngine.accessToken != nil;
+}
+
 - (void)loginTwitterWithDelegate:(id<TwitterWrapperDelegate>)delegate {
 	self.twitterDelegate = delegate;
 	[self startupTwitter];
@@ -270,6 +283,8 @@ static KGOSocialMediaController *s_controller = nil;
     [_twitterEngine setAccessToken:aToken];
     
 	[KGO_SHARED_APP_DELEGATE() hideNetworkActivityIndicator];
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:TwitterDidLoginNotification object:self];
 	
 	if (!error) {
 		[[NSUserDefaults standardUserDefaults] setObject:_twitterUsername forKey:TwitterUsernameKey];

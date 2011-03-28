@@ -206,7 +206,6 @@
     if (request == _helloRequest) {
         NSArray *modules = [result arrayForKey:@"modules"];
         [KGO_SHARED_APP_DELEGATE() loadModulesFromArray:modules];
-        [[NSNotificationCenter defaultCenter] postNotificationName:ModuleListDidChangeNotification object:self];
     }
 }
 

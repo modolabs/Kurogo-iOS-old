@@ -5,6 +5,7 @@
 #pragma mark Setup
 
 - (void)loadModules;
+- (void)loadHomeModule;
 - (void)loadModulesFromArray:(NSArray *)moduleArray;
 - (void)loadNavigationContainer;
 - (NSArray *)coreDataModelsNames;
