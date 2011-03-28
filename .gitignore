@@ -3,6 +3,7 @@ build/
 *.pbxuser
 *.xcuserdatad
 *.xcworkspacedata
+.DS_Store
 MITBuildInfo.m
 githash.png
 Projects/*/Resources/secret/Config.plist
