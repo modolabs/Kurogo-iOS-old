@@ -17,7 +17,13 @@
 		4463CCB210D6F5750048CA83 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4463CCB110D6F5750048CA83 /* CoreLocation.framework */; };
 		4B050C55132E48F50016591D /* NewsDataManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B050C54132E48F50016591D /* NewsDataManager.m */; };
 		4B8432E71331287600DCBA86 /* NewsCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B8432E61331287600DCBA86 /* NewsCategory.m */; };
+		4B94C42F1340BD8C000A5784 /* EmergencyHomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B94C42C1340BD8C000A5784 /* EmergencyHomeViewController.m */; };
+		4B94C4311340C025000A5784 /* TwitterViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4B94C4301340C025000A5784 /* TwitterViewController.xib */; };
+		4B94C4361340C949000A5784 /* EmergencyModule.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B94C4341340C949000A5784 /* EmergencyModule.m */; };
+		4B94C4421340E466000A5784 /* EmergencyDataManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B94C4411340E466000A5784 /* EmergencyDataManager.m */; };
 		4BA25BEB132ED94600ABB625 /* NewsStory.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BA25BEA132ED94600ABB625 /* NewsStory.m */; };
+		4BA642D813413F4D00FB3AAE /* EmergencyNotice.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BA642D613413F4D00FB3AAE /* EmergencyNotice.m */; };
+		4BA642DB13413F8A00FB3AAE /* Emergency.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 4BA642D913413F8A00FB3AAE /* Emergency.xcdatamodeld */; };
 		562F4B79133EFA10000B9344 /* ContentModule.m in Sources */ = {isa = PBXBuildFile; fileRef = 562F4B74133EFA10000B9344 /* ContentModule.m */; };
 		562F4B7A133EFA10000B9344 /* ContentTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 562F4B76133EFA10000B9344 /* ContentTableViewController.m */; };
 		562F4B7B133EFA10000B9344 /* ContentWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 562F4B78133EFA10000B9344 /* ContentWebViewController.m */; };
@@ -80,7 +86,6 @@
 		EB03376B133D26F100ACF2BB /* EventDetailTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = EB03376A133D26E400ACF2BB /* EventDetailTableView.m */; };
 		EB033771133D5FD000ACF2BB /* zh_TW.lproj in Resources */ = {isa = PBXBuildFile; fileRef = EB033770133D5FD000ACF2BB /* zh_TW.lproj */; };
 		EB033775133D629500ACF2BB /* ja.lproj in Resources */ = {isa = PBXBuildFile; fileRef = EB033774133D629500ACF2BB /* ja.lproj */; };
-		EB0CF98D13403141003B8E45 /* TwitterViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = EB0CF98C13403141003B8E45 /* TwitterViewController.xib */; };
 		EB138BB112F231E3004DBB7C /* en.lproj in Resources */ = {isa = PBXBuildFile; fileRef = EB138BAE12F231E3004DBB7C /* en.lproj */; };
 		EB138F0512F253A1004DBB7C /* libGoogleAnalytics.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EB138F0312F253A1004DBB7C /* libGoogleAnalytics.a */; };
 		EB1440D21309EEA000396753 /* Calendar.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = EB1440BD1309EEA000396753 /* Calendar.xcdatamodeld */; };
@@ -208,8 +213,18 @@
 		4B050C54132E48F50016591D /* NewsDataManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NewsDataManager.m; sourceTree = "<group>"; };
 		4B8432E51331287600DCBA86 /* NewsCategory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NewsCategory.h; sourceTree = "<group>"; };
 		4B8432E61331287600DCBA86 /* NewsCategory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NewsCategory.m; sourceTree = "<group>"; };
+		4B94C42B1340BD8C000A5784 /* EmergencyHomeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = EmergencyHomeViewController.h; path = ../../../Modules/Emergency/EmergencyHomeViewController.h; sourceTree = "<group>"; };
+		4B94C42C1340BD8C000A5784 /* EmergencyHomeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = EmergencyHomeViewController.m; path = ../../../Modules/Emergency/EmergencyHomeViewController.m; sourceTree = "<group>"; };
+		4B94C4301340C025000A5784 /* TwitterViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TwitterViewController.xib; sourceTree = "<group>"; };
+		4B94C4331340C949000A5784 /* EmergencyModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = EmergencyModule.h; path = ../../../Modules/Emergency/EmergencyModule.h; sourceTree = "<group>"; };
+		4B94C4341340C949000A5784 /* EmergencyModule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = EmergencyModule.m; path = ../../../Modules/Emergency/EmergencyModule.m; sourceTree = "<group>"; };
+		4B94C4401340E466000A5784 /* EmergencyDataManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = EmergencyDataManager.h; path = ../../../Modules/Emergency/EmergencyDataManager.h; sourceTree = "<group>"; };
+		4B94C4411340E466000A5784 /* EmergencyDataManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = EmergencyDataManager.m; path = ../../../Modules/Emergency/EmergencyDataManager.m; sourceTree = "<group>"; };
 		4BA25BE9132ED94600ABB625 /* NewsStory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NewsStory.h; sourceTree = "<group>"; };
 		4BA25BEA132ED94600ABB625 /* NewsStory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NewsStory.m; sourceTree = "<group>"; };
+		4BA642D513413F4D00FB3AAE /* EmergencyNotice.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EmergencyNotice.h; sourceTree = "<group>"; };
+		4BA642D613413F4D00FB3AAE /* EmergencyNotice.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EmergencyNotice.m; sourceTree = "<group>"; };
+		4BA642DA13413F8A00FB3AAE /* Emergency.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Emergency.xcdatamodel; sourceTree = "<group>"; };
 		562F4B73133EFA10000B9344 /* ContentModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ContentModule.h; path = ../../../Modules/Content/ContentModule.h; sourceTree = "<group>"; };
 		562F4B74133EFA10000B9344 /* ContentModule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ContentModule.m; path = ../../../Modules/Content/ContentModule.m; sourceTree = "<group>"; };
 		562F4B75133EFA10000B9344 /* ContentTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ContentTableViewController.h; path = ../../../Modules/Content/ContentTableViewController.h; sourceTree = "<group>"; };
@@ -325,7 +340,6 @@
 		EB03376A133D26E400ACF2BB /* EventDetailTableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EventDetailTableView.m; sourceTree = "<group>"; };
 		EB033770133D5FD000ACF2BB /* zh_TW.lproj */ = {isa = PBXFileReference; lastKnownFileType = folder; name = zh_TW.lproj; path = Localization/zh_TW.lproj; sourceTree = "<group>"; };
 		EB033774133D629500ACF2BB /* ja.lproj */ = {isa = PBXFileReference; lastKnownFileType = folder; name = ja.lproj; path = Localization/ja.lproj; sourceTree = "<group>"; };
-		EB0CF98C13403141003B8E45 /* TwitterViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = TwitterViewController.xib; path = "../../../../src/Harvard-Reunion-iOS/Common/SocialMedia/TwitterViewController.xib"; sourceTree = "<group>"; };
 		EB138AFC12F22F31004DBB7C /* Config.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Config.plist; sourceTree = "<group>"; };
 		EB138BAE12F231E3004DBB7C /* en.lproj */ = {isa = PBXFileReference; lastKnownFileType = folder; name = en.lproj; path = Localization/en.lproj; sourceTree = "<group>"; };
 		EB138EE812F251EB004DBB7C /* Facebook.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Facebook.xcodeproj; path = Facebook/Facebook.xcodeproj; sourceTree = "<group>"; };
@@ -554,6 +568,31 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		4B94C4371340E184000A5784 /* Emergency */ = {
+			isa = PBXGroup;
+			children = (
+				4BA642D313413F4D00FB3AAE /* Model */,
+				4B94C42C1340BD8C000A5784 /* EmergencyHomeViewController.m */,
+				4B94C42B1340BD8C000A5784 /* EmergencyHomeViewController.h */,
+				4B94C4341340C949000A5784 /* EmergencyModule.m */,
+				4B94C4331340C949000A5784 /* EmergencyModule.h */,
+				4B94C4401340E466000A5784 /* EmergencyDataManager.h */,
+				4B94C4411340E466000A5784 /* EmergencyDataManager.m */,
+			);
+			name = Emergency;
+			sourceTree = "<group>";
+		};
+		4BA642D313413F4D00FB3AAE /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				4BA642D513413F4D00FB3AAE /* EmergencyNotice.h */,
+				4BA642D613413F4D00FB3AAE /* EmergencyNotice.m */,
+				4BA642D913413F8A00FB3AAE /* Emergency.xcdatamodeld */,
+			);
+			name = Model;
+			path = ../../../Modules/Emergency/Model;
+			sourceTree = "<group>";
+		};
 		562F4B61133EC6DE000B9344 /* Content */ = {
 			isa = PBXGroup;
 			children = (
@@ -586,6 +625,7 @@
 		DE715445102FE468005E6111 /* Modules */ = {
 			isa = PBXGroup;
 			children = (
+				4B94C4371340E184000A5784 /* Emergency */,
 				562F4B61133EC6DE000B9344 /* Content */,
 				EB181FA5131EDF1B003728FF /* Login */,
 				EB1441571309EFB100396753 /* Home */,
@@ -739,13 +779,13 @@
 		EB033702133C2B8C00ACF2BB /* SocialMedia */ = {
 			isa = PBXGroup;
 			children = (
+				4B94C4301340C025000A5784 /* TwitterViewController.xib */,
 				EB033703133C2B8C00ACF2BB /* KGOShareButtonController.h */,
 				EB033704133C2B8C00ACF2BB /* KGOShareButtonController.m */,
 				EB033705133C2B8C00ACF2BB /* KGOSocialMediaController.h */,
 				EB033706133C2B8C00ACF2BB /* KGOSocialMediaController.m */,
 				EB033707133C2B8C00ACF2BB /* TwitterViewController.h */,
 				EB033708133C2B8C00ACF2BB /* TwitterViewController.m */,
-				EB0CF98C13403141003B8E45 /* TwitterViewController.xib */,
 			);
 			path = SocialMedia;
 			sourceTree = "<group>";
@@ -1164,7 +1204,7 @@
 				EB03375A133C2B8C00ACF2BB /* KGOTabbedViewController.xib in Resources */,
 				EB033771133D5FD000ACF2BB /* zh_TW.lproj in Resources */,
 				EB033775133D629500ACF2BB /* ja.lproj in Resources */,
-				EB0CF98D13403141003B8E45 /* TwitterViewController.xib in Resources */,
+				4B94C4311340C025000A5784 /* TwitterViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1296,6 +1336,11 @@
 				562F4B79133EFA10000B9344 /* ContentModule.m in Sources */,
 				562F4B7A133EFA10000B9344 /* ContentTableViewController.m in Sources */,
 				562F4B7B133EFA10000B9344 /* ContentWebViewController.m in Sources */,
+				4B94C42F1340BD8C000A5784 /* EmergencyHomeViewController.m in Sources */,
+				4B94C4361340C949000A5784 /* EmergencyModule.m in Sources */,
+				4B94C4421340E466000A5784 /* EmergencyDataManager.m in Sources */,
+				4BA642D813413F4D00FB3AAE /* EmergencyNotice.m in Sources */,
+				4BA642DB13413F8A00FB3AAE /* Emergency.xcdatamodeld in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1719,6 +1764,16 @@
 /* End XCConfigurationList section */
 
 /* Begin XCVersionGroup section */
+		4BA642D913413F8A00FB3AAE /* Emergency.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				4BA642DA13413F8A00FB3AAE /* Emergency.xcdatamodel */,
+			);
+			currentVersion = 4BA642DA13413F8A00FB3AAE /* Emergency.xcdatamodel */;
+			path = Emergency.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
 		DE18F9ED10F19105009A69B9 /* News.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
