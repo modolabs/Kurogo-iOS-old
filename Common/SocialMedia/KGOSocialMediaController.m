@@ -39,7 +39,7 @@ static KGOSocialMediaController *s_controller = nil;
 
 @implementation KGOSocialMediaController
 
-@synthesize twitterDelegate, bitlyDelegate;//, facebookDelegate;
+@synthesize bitlyDelegate;
 
 + (KGOSocialMediaController *)sharedController {
 	if (s_controller == nil) {
@@ -97,9 +97,7 @@ static KGOSocialMediaController *s_controller = nil;
 - (id)init {
     self = [super init];
     if (self) {
-		NSString * file = [[NSBundle mainBundle] pathForResource:@"Config" ofType:@"plist"];
-        NSDictionary *infoDict = [NSDictionary dictionaryWithContentsOfFile:file];
-		
+        NSDictionary *infoDict = [KGO_SHARED_APP_DELEGATE() appConfig];
 		_appConfig = [[infoDict objectForKey:@"SocialMedia"] retain];
 	}
 	return self;
@@ -190,8 +188,11 @@ static KGOSocialMediaController *s_controller = nil;
 #define TwitterResponseCodeUnauthorized 401
 
 - (void)startupTwitter {
+    _twitterStartupCount++;
+    
 	if (!_twitterEngine) {
 		_twitterEngine = [[MGTwitterEngine alloc] initWithDelegate:self];
+        
 		NSString *key = [[_appConfig objectForKey:KGOSocialMediaTypeTwitter] objectForKey:@"OAuthConsumerKey"];
 		NSString *secret = [[_appConfig objectForKey:KGOSocialMediaTypeTwitter] objectForKey:@"OAuthConsumerSecret"];
 		[_twitterEngine setConsumerKey:key secret:secret];
@@ -199,37 +200,38 @@ static KGOSocialMediaController *s_controller = nil;
 }
 
 - (void)shutdownTwitter {
-	self.twitterDelegate = nil;
-	if (_twitterEngine) {
-        [_twitterEngine closeAllConnections];
-		[_twitterEngine release];
-		_twitterEngine = nil;
-	}
+    if (_twitterStartupCount > 0)
+        _twitterStartupCount--;
+
+    if (_twitterStartupCount <= 0) {
+        if (_twitterEngine) {
+            [_twitterEngine closeAllConnections];
+            [_twitterEngine release];
+            _twitterEngine = nil;
+        }
+    }
 }
 
 - (BOOL)isTwitterLoggedIn {
     return _twitterEngine.accessToken != nil;
 }
 
-- (void)loginTwitterWithDelegate:(id<TwitterWrapperDelegate>)delegate {
-	self.twitterDelegate = delegate;
-	[self startupTwitter];
-	
+// TODO: make this function more usable
+- (BOOL)loginTwitter {
 	NSString *username = [self twitterUsername];
 	if (!username) {
-		[self.twitterDelegate promptForTwitterLogin];
-		return;
+		return NO;
 	}
 	
 	NSError *error = nil;
 	NSString *password = [SFHFKeychainUtils getPasswordForUsername:username andServiceName:TwitterServiceName error:&error];
 	if (error) {
 		NSLog(@"something went wrong looking up access token, error=%@", error);
-		[self.twitterDelegate twitterFailedToLogin];
-		return;
+		return NO;
 	}
 	
 	[_twitterEngine getXAuthAccessTokenForUsername:username password:password];
+    return YES;
 }
 
 - (void)loginTwitterWithUsername:(NSString *)username password:(NSString *)password {
@@ -248,8 +250,8 @@ static KGOSocialMediaController *s_controller = nil;
 	if (error) {
 		NSLog(@"failed to log out of Twitter: %@", [error description]);
 	}
-	
-	[self.twitterDelegate twitterDidLogout];
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:TwitterDidLogoutNotification object:nil];
 }
 
 - (void)postToTwitter:(NSString *)text {
@@ -284,11 +286,9 @@ static KGOSocialMediaController *s_controller = nil;
     
 	[KGO_SHARED_APP_DELEGATE() hideNetworkActivityIndicator];
     
-    [[NSNotificationCenter defaultCenter] postNotificationName:TwitterDidLoginNotification object:self];
-	
 	if (!error) {
 		[[NSUserDefaults standardUserDefaults] setObject:_twitterUsername forKey:TwitterUsernameKey];
-		[self.twitterDelegate twitterDidLogin];
+        [[NSNotificationCenter defaultCenter] postNotificationName:TwitterDidLoginNotification object:self];
 	} else {
 		NSLog(@"error on saving token=%@", [error description]);
 	}
@@ -296,7 +296,6 @@ static KGOSocialMediaController *s_controller = nil;
 
 - (void)requestSucceeded:(NSString *)connectionIdentifier {
 	[KGO_SHARED_APP_DELEGATE() hideNetworkActivityIndicator];
-	[self.twitterDelegate twitterRequestSucceeded:connectionIdentifier];
 }
 
 - (void)requestFailed:(NSString *)connectionIdentifier withError:(NSError *)error {
@@ -307,13 +306,13 @@ static KGOSocialMediaController *s_controller = nil;
 	
 	if (error.code == TwitterResponseCodeUnauthorized) {
 		errorTitle = NSLocalizedString(@"Login failed", nil);
-		errorMessage = NSLocalizedString(@"Twitter username and password is not recognized", nil);
+		errorMessage = NSLocalizedString(@"Unable to log in to Twitter, please check your credentials and try again.", nil);
 		
 		[self logoutTwitter];
 		
 	} else {
-		errorTitle = NSLocalizedString(@"Network failed", nil);
-		errorMessage = NSLocalizedString(@"Failure connecting to Twitter", nil);
+		errorTitle = NSLocalizedString(@"Connection Failed", nil);
+		errorMessage = NSLocalizedString(@"Unable to connect to Twitter, please try again later.", nil);
 	}
 	
 	UIAlertView *alertView = [[[UIAlertView alloc] initWithTitle:errorTitle 

@@ -23,15 +23,18 @@
     self.title = NSLocalizedString(@"Twitter", nil);
     
     _loginHintLabel.text = NSLocalizedString(@"Sign into your Twitter account.", nil);
+    
+    UIImage *backgroundImage = [UIImage imageWithPathName:@"common/generic-button-background.png"];
+    UIImage *backgroundImagePressed = [UIImage imageWithPathName:@"common/generic-button-background-pressed.png"];
+    
     [_signInButton setTitle:NSLocalizedString(@"Sign In", nil) forState:UIControlStateNormal];
+    [_signInButton setBackgroundImage:backgroundImage forState:UIControlStateNormal];
+    [_signInButton setBackgroundImage:backgroundImagePressed forState:UIControlStateHighlighted];
     
     [_signOutButton setTitle:NSLocalizedString(@"Sign Out", nil) forState:UIControlStateNormal];
-    // TODO: make these images just background and use for both login/out
-    UIImage *signOutImage = [UIImage imageWithPathName:@"common/twitter_signout.png"];
-    [_signOutButton setBackgroundImage:signOutImage forState:UIControlStateNormal];
-    UIImage *signOutImagePressed = [UIImage imageWithPathName:@"common/twitter_signout_pressed.png"];
-    [_signOutButton setBackgroundImage:signOutImagePressed forState:UIControlStateHighlighted];
-
+    [_signOutButton setBackgroundImage:backgroundImage forState:UIControlStateNormal];
+    [_signOutButton setBackgroundImage:backgroundImagePressed forState:UIControlStateHighlighted];
+    
     [_tweetButton setTitle:NSLocalizedString(@"Tweet", nil) forState:UIControlStateNormal];
     _usernameField.placeholder = NSLocalizedString(@"Username", nil);
     _passwordField.placeholder = NSLocalizedString(@"Password", nil);
