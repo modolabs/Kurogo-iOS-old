@@ -1,7 +1,6 @@
 #import "StoryImageView.h"
 #import "KGOAppDelegate.h"
 #import "CoreDataManager.h"
-#import "NewsImageRep.h"
 #import "NewsImage.h"
 
 @implementation StoryImageView

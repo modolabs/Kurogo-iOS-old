@@ -133,7 +133,7 @@
 
 - (void)refreshModules {
     // TODO: move this section out of setupSidebarIcons
-    UIImageView *imageView = [_sidebar viewWithTag:1234];
+    UIImageView *imageView = (UIImageView *)[_sidebar viewWithTag:1234];
     if (!imageView) {
         imageView = [[[UIImageView alloc] initWithImage:[UIImage imageWithPathName:@"modules/home/ipad-sidebar-header"]] autorelease];
         imageView.tag = 1234;

@@ -16,22 +16,6 @@ extern NSString * const FacebookUsernameKey;
 extern NSString * const FacebookDidLoginNotification;
 extern NSString * const FacebookDidLogoutNotification;
 
-@protocol TwitterWrapperDelegate <NSObject>
-
-- (void)twitterDidLogin;
-- (void)promptForTwitterLogin;
-- (void)twitterFailedToLogin;
-- (void)twitterDidLogout;
-
-- (void)twitterRequestSucceeded:(NSString *)connectionIdentifier;
-
-@optional
-
-- (void)twitterRequestFailed:(NSString *)connectionIdentifier withError:(NSError *)error;
-
-@end
-
-
 
 @protocol BitlyWrapperDelegate <NSObject>
 
@@ -49,6 +33,7 @@ FBSessionDelegate, FBDialogDelegate, FBRequestDelegate> {
 	
 	NSDictionary *_appConfig; // from config plist
 	
+    NSInteger _twitterStartupCount;
 	MGTwitterEngine *_twitterEngine;
 	NSString *_twitterUsername;
 	
@@ -72,7 +57,6 @@ FBSessionDelegate, FBDialogDelegate, FBRequestDelegate> {
     NSMutableDictionary *_apiSettings;
 }
 
-@property (nonatomic, assign) id<TwitterWrapperDelegate> twitterDelegate;
 @property (nonatomic, assign) id<BitlyWrapperDelegate> bitlyDelegate;
 @property (nonatomic, retain) NSString *twitterUsername;
 
@@ -97,8 +81,8 @@ FBSessionDelegate, FBDialogDelegate, FBRequestDelegate> {
 - (void)startupTwitter;
 - (void)shutdownTwitter;
 
-- (void)loginTwitterWithDelegate:(id<TwitterWrapperDelegate>)delegate;
 - (void)loginTwitterWithUsername:(NSString *)username password:(NSString *)password;
+- (BOOL)loginTwitter;
 - (void)logoutTwitter;
 
 - (void)postToTwitter:(NSString *)text;
