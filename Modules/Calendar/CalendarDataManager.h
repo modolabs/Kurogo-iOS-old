@@ -1,6 +1,5 @@
 #import <Foundation/Foundation.h>
 #import "CalendarModel.h"
-#import "CalendarConstants.h"
 #import "KGORequestManager.h"
 
 @protocol CalendarDataManagerDelegate <NSObject>
