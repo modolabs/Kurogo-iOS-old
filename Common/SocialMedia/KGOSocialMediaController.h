@@ -8,6 +8,9 @@ extern NSString * const KGOSocialMediaTypeTwitter;
 extern NSString * const KGOSocialMediaTypeEmail;
 extern NSString * const KGOSocialMediaTypeBitly;
 
+extern NSString * const TwitterDidLoginNotification;
+extern NSString * const TwitterDidLogoutNotification;
+
 extern NSString * const FacebookUsernameKey;
 
 extern NSString * const FacebookDidLoginNotification;
@@ -85,8 +88,11 @@ FBSessionDelegate, FBDialogDelegate, FBRequestDelegate> {
 - (BOOL)supportsFacebookSharing;
 - (BOOL)supportsTwitterSharing;
 - (BOOL)supportsEmailSharing;
+- (BOOL)supportsBitlyURLShortening;
 
 #pragma mark Twitter
+
+- (BOOL)isTwitterLoggedIn;
 
 - (void)startupTwitter;
 - (void)shutdownTwitter;

@@ -3,34 +3,47 @@
 #import "ConnectionWrapper.h"
 #import "KGOSocialMediaController.h"
 
-// TODO: make dependence on bit.ly optional
-@interface TwitterViewController : UIViewController <UITextFieldDelegate,
-TwitterWrapperDelegate, BitlyWrapperDelegate> {
-	NSString *message;
-	NSString *longURL;
-    NSString *shortURL;
-	
-	UILabel *usernameLabel;
-    UILabel *counterLabel;
-	UIView *contentView;
-	UINavigationItem *navigationItem;
-	UIButton *signOutButton;
-	
-	UITextField *usernameField;
-	UITextField *passwordField;
-	
-	UITextField *messageField;
-	
-	MGTwitterEngine *twitterEngine;
-    OAToken *token;
-	BOOL authenticationRequestInProcess;
+@class TwitterViewController;
+
+@protocol TwitterViewControllerDelegate <NSObject>
+
+- (BOOL)controllerShouldContineToMessageScreen:(TwitterViewController *)controller;
+- (void)controllerDidLogin:(TwitterViewController *)controller;
+
+@end
+
+
+@interface TwitterViewController : UIViewController <UITextFieldDelegate, BitlyWrapperDelegate> {
     
-    ConnectionWrapper *connection;
+    // pre signed-in state. shown by default.
+    IBOutlet UIView *_loginContainerView;
+    IBOutlet UILabel *_loginHintLabel;
+    IBOutlet UITextField *_usernameField;
+    IBOutlet UITextField *_passwordField;
+    IBOutlet UIButton *_signInButton;
+
+    // loading state. hidden by default.
+    IBOutlet UIView *_loadingView;
+    IBOutlet UIActivityIndicatorView *_spinnerView;
+    
+    // message state. hidden by default.
+    IBOutlet UIView *_messageContainerView;
+    IBOutlet UILabel *_usernameLabel;
+    IBOutlet UILabel *_counterLabel;
+    IBOutlet UITextView *_messageView;
+    IBOutlet UIButton *_tweetButton;
+    IBOutlet UIButton *_signOutButton;
 }
 
-- (id) initWithMessage:(NSString *)aMessage url:(NSString *)longURL;
+- (IBAction)signOutButtonPressed:(UIButton *)sender;
+- (IBAction)signInButtonPressed:(UIButton *)sender;
+- (IBAction)tweetButtonPressed:(UIButton *)sender;
 
-@property (nonatomic, retain) ConnectionWrapper *connection;
-@property (nonatomic, retain) UIView *contentView;
+- (void)twitterDidLogout:(NSNotification *)aNotification;
+- (void)twitterDidLogin:(NSNotification *)aNotification;
+
+@property (nonatomic, retain) NSString *longURL;
+@property (nonatomic, retain) NSString *shortURL;
+@property (nonatomic, retain) NSString *preCannedMessage;
 
 @end
