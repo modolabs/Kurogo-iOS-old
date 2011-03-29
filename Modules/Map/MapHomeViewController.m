@@ -8,6 +8,8 @@
 #import "KGOMapCategory.h"
 #import "CoreDataManager.h"
 #import "MapKit+KGOAdditions.h"
+#import "UIKit+KGOAdditions.h"
+#import "KGOToolbar.h"
 #import <QuartzCore/QuartzCore.h>
 
 @implementation MapHomeViewController
@@ -43,14 +45,14 @@
 		_infoButton.image = nil;
 	} else {
 		items = [NSArray arrayWithObjects:_locateUserButton, spacer, _browseButton, spacer, _bookmarksButton, spacer, _settingsButton, nil];
-		_locateUserButton.image = nil;
+		_locateUserButton.image = [UIImage imageWithPathName:@"modules/map/map_button_location"];
 	}
 
 	_bottomBar.items = items;
 	
-	_browseButton.image = nil;
-	_bookmarksButton.image = nil;
-	_settingsButton.image = nil;
+	_browseButton.image = [UIImage imageWithPathName:@"modules/map/map_button_browse"];
+	_bookmarksButton.image = [UIImage imageWithPathName:@"modules/map/map_button_bookmark"];
+	_settingsButton.image = [UIImage imageWithPathName:@"modules/map/map_button_settings"];
 }
 
 /*

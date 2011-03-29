@@ -8,7 +8,7 @@
 @interface MapHomeViewController : UIViewController <MKMapViewDelegate, KGOSearchDisplayDelegate> {
 	
 	IBOutlet KGOSearchBar *_searchBar;
-	IBOutlet UIToolbar *_bottomBar;
+	IBOutlet KGOToolbar *_bottomBar;
 	IBOutlet UIBarButtonItem *_infoButton; // indoor maps only
 	IBOutlet UIBarButtonItem *_locateUserButton; // outdoor maps only (for now)
 	IBOutlet UIBarButtonItem *_browseButton;
