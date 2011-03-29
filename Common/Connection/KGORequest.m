@@ -2,6 +2,7 @@
 #import "JSON.h"
 #import "KGORequestManager.h"
 #import "Foundation+KGOAdditions.h"
+#import "KGOAppDelegate.h"
 
 NSString * const KGORequestErrorDomain = @"com.modolabs.KGORequest.ErrorDomain";
 
@@ -62,6 +63,11 @@ NSString * const KGORequestErrorDomain = @"com.modolabs.KGORequest.ErrorDomain";
         }
         [[KGORequestManager sharedManager] showAlertForError:error];
     }
+    
+    if (success) {
+        [KGO_SHARED_APP_DELEGATE() showNetworkActivityIndicator];
+    }
+    
 	return success;
 }
 
@@ -119,6 +125,8 @@ NSString * const KGORequestErrorDomain = @"com.modolabs.KGORequest.ErrorDomain";
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection {
 	[_connection release];
 	_connection = nil;
+    
+    [KGO_SHARED_APP_DELEGATE() hideNetworkActivityIndicator];
 	
 	id result = nil;
     
@@ -198,6 +206,8 @@ NSString * const KGORequestErrorDomain = @"com.modolabs.KGORequest.ErrorDomain";
 	_connection = nil;
 	[_data release];
 	_data = nil;
+    
+    [KGO_SHARED_APP_DELEGATE() hideNetworkActivityIndicator];
 	
 	KGORequestErrorCode errCode;
 	switch ([error code]) {
