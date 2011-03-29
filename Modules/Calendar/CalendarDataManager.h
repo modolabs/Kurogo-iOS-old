@@ -20,13 +20,18 @@
     NSMutableDictionary *_categoriesRequests;
     NSMutableDictionary *_eventsRequests;
     
+    NSDictionary *_dateFormatters;
+    
 }
 
 @property (nonatomic, assign) id<CalendarDataManagerDelegate> delegate;
 @property (nonatomic, readonly) KGOCalendarGroup *currentGroup;
+@property (nonatomic, retain) NSString *moduleTag;
 
 - (BOOL)requestGroups;
 //- (BOOL)requestCalendarsForGroup:(NSString *)group;
+
+- (BOOL)requestEventsForCalendar:(KGOCalendar *)calendar params:(NSDictionary *)params;
 - (BOOL)requestEventsForCalendar:(KGOCalendar *)calendar startDate:(NSDate *)startDate endDate:(NSDate *)endDate;
 - (BOOL)requestEventsForCalendar:(KGOCalendar *)calendar time:(NSDate *)time;
 

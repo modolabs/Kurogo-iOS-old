@@ -5,8 +5,10 @@
 #import "KGOTheme.h"
 #import "KGOModule+Factory.h"
 #import "HomeModule.h"
+#import "LoginModule.h"
 #import "KGOSocialMediaController.h"
 #import "AnalyticsWrapper.h"
+#import "Foundation+KGOAdditions.h"
 
 @implementation KGOAppDelegate (ModuleListAdditions)
 
@@ -18,6 +20,8 @@
     [self loadModulesFromArray:moduleData];
 }
 
+// we need to do this separately since currently we have no way of
+// functioning without the home screen
 - (void)loadHomeModule {
     NSArray *moduleData = [[self appConfig] objectForKey:@"Modules"];
     NSDictionary *homeData = nil;
@@ -54,6 +58,7 @@
 }
 
 - (void)loadModulesFromArray:(NSArray *)moduleArray {
+    NSLog(@"%@", moduleArray);
     NSMutableDictionary *modulesByTag = [[_modulesByTag mutableCopy] autorelease];
     if (!modulesByTag) {
         modulesByTag = [NSMutableDictionary dictionaryWithCapacity:[moduleArray count]];
@@ -64,14 +69,26 @@
     }
     
     for (NSDictionary *moduleDict in moduleArray) {
-        if ([[moduleDict objectForKey:@"class"] isEqualToString:@"HomeModule"])
+        if ([[moduleDict objectForKey:@"class"] isEqualToString:@"HomeModule"]
+            || [[moduleDict objectForKey:@"id"] isEqualToString:@"home"]
+        ) {
+            // TODO: make certain modules not duplicable (home, possibly login)
+            KGOModule *homeModule = [(KGOHomeScreenViewController *)self.homescreen homeModule];
+            homeModule.secure = [moduleDict boolForKey:@"secure"];
+            homeModule.apiMaxVersion = [moduleDict integerForKey:@"vmax"];
+            homeModule.apiMinVersion = [moduleDict integerForKey:@"vmin"];
             continue;
+        }
         
         KGOModule *aModule = [KGOModule moduleWithDictionary:moduleDict];
         if (aModule) {
             [modules addObject:aModule];
             [modulesByTag setObject:aModule forKey:aModule.tag];
             [aModule applicationDidFinishLaunching];
+            NSLog(@"%@", [aModule description]);
+            if ([aModule isKindOfClass:[LoginModule class]]) {
+                [[KGORequestManager sharedManager] setLoginPath:aModule.tag];
+            }
         }
     }
 

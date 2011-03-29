@@ -1,5 +1,6 @@
 #import "KGOHomeScreenViewController.h"
 #import "HomeModule.h"
+#import "LoginModule.h"
 #import "SettingsModule.h"
 #import "ExternalURLModule.h"
 #import "UIKit+KGOAdditions.h"
@@ -22,7 +23,7 @@
 
 @implementation KGOHomeScreenViewController
 
-@synthesize primaryModules = _primaryModules, secondaryModules = _secondaryModules;
+@synthesize primaryModules = _primaryModules, secondaryModules = _secondaryModules, homeModule;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -56,7 +57,7 @@
 - (void)loadView {
     [super loadView];
     
-    _springboardFrame = self.view.bounds;
+    //_springboardFrame = self.view.bounds;
     
     [self loadModules];
     
@@ -111,10 +112,31 @@
     [super dealloc];
 }
 
+- (void)showLoadingView
+{
+    UIView *container = [[[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, self.view.bounds.size.height)] autorelease];
+    container.tag = 3245;
+    container.backgroundColor = [UIColor colorWithWhite:0.0 alpha:0.5];
+    container.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+    UIActivityIndicatorView *spinny = [[[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge] autorelease];
+    [spinny startAnimating];
+    spinny.center = container.center;
+    spinny.autoresizingMask = UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleBottomMargin;
+    [container addSubview:spinny];
+    [self.view addSubview:container];
+}
+
+- (void)hideLoadingView
+{
+    UIView *loadingView = [self.view viewWithTag:3245];
+    [loadingView removeFromSuperview];
+}
+
 #pragma mark Springboard helper methods
 
 - (CGRect)springboardFrame {
-    return _springboardFrame;
+    //return _springboardFrame;
+    return self.view.bounds;
 }
 
 - (NSArray *)allWidgets:(CGFloat *)topFreePixel :(CGFloat *)bottomFreePixel {
@@ -384,6 +406,7 @@
 - (void)moduleListDidChange:(NSNotification *)aNotification
 {
     [self loadModules];
+    [self refreshWidgets];
     [self refreshModules];
 }
 
@@ -394,8 +417,15 @@
     
     for (KGOModule *aModule in modules) {
         // special case for home module
-        if ([aModule isKindOfClass:[HomeModule class]])
+        if ([aModule isKindOfClass:[HomeModule class]]) {
+            self.homeModule = aModule;
             continue;
+        }
+
+        // TODO: make the home API report whether modules are secondary
+        if ([aModule isKindOfClass:[LoginModule class]]) {
+            aModule.secondary = YES;
+        }
         
         if (aModule.secondary) {
             [secondary addObject:aModule];
@@ -409,6 +439,10 @@
     
     [_primaryModules release];
     _primaryModules = [primary copy];
+    
+    if (self.homeModule.secure && ![[KGORequestManager sharedManager] isUserLoggedIn]) {
+        [[KGORequestManager sharedManager] loginKurogoServer];
+    }
 }
 
 + (GridPadding)paddingWithArgs:(NSArray *)args {

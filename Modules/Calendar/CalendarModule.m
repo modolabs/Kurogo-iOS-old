@@ -26,7 +26,7 @@ NSString * const KGODataModelNameCalendar = @"Calendar";
 }
 
 - (void)performSearchWithText:(NSString *)searchText params:(NSDictionary *)params delegate:(id<KGOSearchDelegate>)delegate {
-    //_searchDelegate = delegate;
+    self.searchDelegate = delegate;
     
     NSString *calendar = [self defaultCalendar];
     if (![params objectForKey:@"calendar"] && calendar) {
@@ -35,7 +35,7 @@ NSString * const KGODataModelNameCalendar = @"Calendar";
         params = mutableDict;
     }
 
-    self.request = [[KGORequestManager sharedManager] requestWithDelegate:self module:@"calendar" path:@"search" params:params];
+    self.request = [[KGORequestManager sharedManager] requestWithDelegate:self module:self.tag path:@"search" params:params];
     [self.request connect];
 }
 
@@ -56,15 +56,22 @@ NSString * const KGODataModelNameCalendar = @"Calendar";
 - (UIViewController *)modulePage:(NSString *)pageName params:(NSDictionary *)params {
     UIViewController *vc = nil;
     if ([pageName isEqualToString:LocalPathPageNameHome]) {
-        vc = [[[CalendarHomeViewController alloc] initWithNibName:@"CalendarHomeViewController" bundle:nil] autorelease];
+        CalendarHomeViewController *calendarVC = [[[CalendarHomeViewController alloc] initWithNibName:@"CalendarHomeViewController"
+                                                                                               bundle:nil] autorelease];
+        calendarVC.moduleTag = self.tag;
+        vc = calendarVC;
         
     } else if ([pageName isEqualToString:LocalPathPageNameSearch]) {
-        vc = [[[CalendarHomeViewController alloc] initWithNibName:@"CalendarHomeViewController" bundle:nil] autorelease];
+        CalendarHomeViewController *calendarVC = [[[CalendarHomeViewController alloc] initWithNibName:@"CalendarHomeViewController"
+                                                                                               bundle:nil] autorelease];
+        calendarVC.moduleTag = self.tag;
         
         NSString *searchText = [params objectForKey:@"q"];
         if (searchText) {
-            [(CalendarHomeViewController *)vc setSearchTerms:searchText];
+            [calendarVC setSearchTerms:searchText];
         }
+        
+        vc = calendarVC;
         
     } else if ([pageName isEqualToString:LocalPathPageNameDetail]) {
         CalendarDetailViewController *detailVC = [[[CalendarDetailViewController alloc] init] autorelease];

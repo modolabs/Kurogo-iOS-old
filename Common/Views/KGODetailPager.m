@@ -2,9 +2,6 @@
 #import "UIKit+KGOAdditions.h"
 #import "KGOTheme.h"
 
-static NSString * UpArrowImage = @"common/arrow-white-up.png";
-static NSString * DownArrowImage = @"common/arrow-white-down.png";
-
 #define PAGE_UP_SEGMENT 0
 #define PAGE_DOWN_SEGMENT 1
 
@@ -24,7 +21,14 @@ static NSString * DownArrowImage = @"common/arrow-white-down.png";
 
 
 - (id)initWithPagerController:(id<KGODetailPagerController>)controller delegate:(id<KGODetailPagerDelegate>)delegate {
-    self = [super initWithItems:[NSArray arrayWithObjects:[UIImage imageWithPathName:UpArrowImage], [UIImage imageWithPathName:DownArrowImage], nil]];
+    static NSString * UpArrowImage = @"common/arrow-white-up.png";
+    static NSString * DownArrowImage = @"common/arrow-white-down.png";
+    
+    self = [super initWithItems:[NSArray arrayWithObjects:
+                                 [UIImage imageWithPathName:UpArrowImage],
+                                 [UIImage imageWithPathName:DownArrowImage],
+                                 nil]];
+
     if (self) {
         self.segmentedControlStyle = UISegmentedControlStyleBar;
         self.tintColor = [[KGOTheme sharedTheme] tintColorForNavBar];
@@ -42,7 +46,7 @@ static NSString * DownArrowImage = @"common/arrow-white-down.png";
 			indexPathBuilder = [NSIndexPath indexPathWithIndex:numberOfPages];
 			
 			for (NSUInteger i = 1; i < numberOfSections; i++) {
-				numberOfPages = [controller pager:self numberOfPagesInSection:0];
+				numberOfPages = [controller pager:self numberOfPagesInSection:i];
 				indexPathBuilder = [indexPathBuilder indexPathByAddingIndex:numberOfPages];
 			}
 		}

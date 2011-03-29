@@ -1,16 +1,12 @@
 #import <UIKit/UIKit.h>
-#import "KGOShareButtonController.h"
 #import "KGODetailPager.h"
 
 @class KGOEventWrapper, EventDetailTableView;
 
-@interface CalendarDetailViewController : UIViewController <KGOShareButtonDelegate,
-KGODetailPagerController, KGODetailPagerDelegate> {
+@interface CalendarDetailViewController : UIViewController <KGODetailPagerController, KGODetailPagerDelegate> {
     
     EventDetailTableView *_tableView;
     KGOEventWrapper *_event;
-    
-    KGOShareButtonController *_shareController;
 }
 
 @property (nonatomic, retain) NSArray *sections;

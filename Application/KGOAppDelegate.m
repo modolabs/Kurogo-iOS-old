@@ -35,7 +35,7 @@
     [[AnalyticsWrapper sharedWrapper] setup];
 
     [self registerForRemoteNotifications:launchOptions];
-    [[KGORequestManager sharedManager] registerWithKGOServer];
+    [[KGORequestManager sharedManager] registerWithKurogoServer];
     
     [self loadModules];
 
@@ -277,7 +277,6 @@
 // Call these instead of [theNavigationController presentModal...]
 // because the default behavior hides the view controller behind, in case we want transparent modal views.
 - (void)presentAppModalViewController:(UIViewController *)viewController animated:(BOOL)animated {
-	NSLog(@"%@", [viewController description]);
 	if (!viewController) return;
 	
     _appModalHolder.view.hidden = NO;

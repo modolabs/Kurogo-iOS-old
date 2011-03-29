@@ -1,11 +1,7 @@
 #import "ModalLoginWebViewController.h"
 #import "KGORequestManager.h"
 #import "KGOAppDelegate.h"
-
-// these constants are defined in Kurogo-Mobile-Web
-// TODO: put this config in more transparent place
-static NSString * const UserHashCookieName = @"lh";
-static NSString * const UserTokenCookieName = @"lt";
+#import "LoginModule.h"
 
 @implementation ModalLoginWebViewController
 
@@ -26,26 +22,9 @@ static NSString * const UserTokenCookieName = @"lt";
 
 - (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType
 {
-    //NSArray *cookies = [[NSHTTPCookieStorage sharedHTTPCookieStorage] cookiesForURL:[[KGORequestManager sharedManager] hostURL]];
-    NSArray *cookies = [[NSHTTPCookieStorage sharedHTTPCookieStorage] cookies];
-
-    BOOL userHashCookieExists = NO;
-    BOOL userTokenCookieExists = NO;
-    
-    for (NSHTTPCookie *aCookie in cookies) {
-        DLog(@"cookie: %@", [aCookie description]);
-        NSString *name = [aCookie name];
-        if ([name isEqualToString:UserHashCookieName]) {
-            userHashCookieExists = YES;
-        } else if ([name isEqualToString:UserTokenCookieName]) {
-            userTokenCookieExists = YES;
-        }
-        if (userTokenCookieExists && userHashCookieExists) {
-            
-            [self.loginModule userDidLogin];
-            
-            return NO;
-        }
+    if ([[KGORequestManager sharedManager] isUserLoggedIn]) {
+        [self.loginModule userDidLogin];
+        return NO;
     }
     
     return [super webView:webView shouldStartLoadWithRequest:request navigationType:navigationType];

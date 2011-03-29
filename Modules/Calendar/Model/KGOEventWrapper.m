@@ -47,7 +47,16 @@ bookmarked = _bookmarked;
     self = [super init];
     if (self) {
         self.identifier = identifier;
+
+        // basic info
+        self.title = [dictionary stringForKey:@"title" nilIfEmpty:YES];
+        if (!self.title) {
+            // TODO: deprecate this from API
+            self.title = [dictionary stringForKey:@"summary" nilIfEmpty:YES];
+        }
         self.summary = [dictionary stringForKey:@"description" nilIfEmpty:YES];
+
+        // time
         NSTimeInterval startTimestamp = [dictionary floatForKey:@"start"];
         if (startTimestamp) {
             self.startDate = [NSDate dateWithTimeIntervalSince1970:startTimestamp];
@@ -56,10 +65,19 @@ bookmarked = _bookmarked;
         if (endTimestamp) {
             self.endDate = [NSDate dateWithTimeIntervalSince1970:endTimestamp];
         }
+        NSNumber *allDay = [dictionary objectForKey:@"allday"];
+        if (allDay && [allDay isKindOfClass:[NSNumber class]]) {
+            self.allDay = [allDay boolValue];
+        } else {
+            self.allDay = (endTimestamp - startTimestamp) + 1 >= 24 * 60 * 60;
+        }
+
+        // location
         self.location = [dictionary stringForKey:@"location" nilIfEmpty:YES];
-        self.title = [dictionary stringForKey:@"summary" nilIfEmpty:YES];
-        // TODO: better way to figure out all-day events
-        self.allDay = (endTimestamp - startTimestamp) + 1 >= 24 * 60 * 60;
+        
+        // TODO: contact info
+        
+        
         self.lastUpdate = [NSDate date];
     }
     return self;

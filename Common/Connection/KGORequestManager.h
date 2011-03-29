@@ -5,6 +5,9 @@
 
 @protocol KGORequestDelegate;
 
+extern NSString * const UserHashCookieName;
+extern NSString * const UserTokenCookieName;
+
 // use this class to create requests Kurogo server.
 // requests to facebook, bitly etc are handled by KGOSocialMediaController
 @interface KGORequestManager : NSObject <KGORequestDelegate, UIAlertViewDelegate> {
@@ -42,8 +45,11 @@
                              params:(NSDictionary *)params;
 - (void)showAlertForError:(NSError *)error;
 
-// probably will modify these to take login creds
-- (void)registerWithKGOServer;
-- (void)authenticateWithKGOServer;
+- (void)registerWithKurogoServer;
+- (BOOL)isUserLoggedIn;
+- (void)loginKurogoServer;
+- (void)logoutKurogoServer;
+
+@property (nonatomic, retain) NSString *loginPath;
 
 @end

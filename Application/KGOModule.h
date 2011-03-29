@@ -22,14 +22,19 @@
  * - (UIViewController *)modulePage:(NSString *)pageID params:(NSDictionary *)params;
  */
 
-#pragma mark Appearance on home screen
+#pragma mark API properties
 
-- (NSArray *)widgetViews; // array of KGOHomeScreenWidget objects, ordered by z-index
+@property (nonatomic, copy) NSString *tag;       // unique
 
 @property (nonatomic) NSInteger apiMinVersion;
 @property (nonatomic) NSInteger apiMaxVersion;
 
-@property (nonatomic, copy) NSString *tag;       // unique
+@property (nonatomic) BOOL secure;
+
+#pragma mark Appearance on home screen
+
+- (NSArray *)widgetViews; // array of KGOHomeScreenWidget objects, ordered by z-index
+
 @property (nonatomic, copy) NSString *shortName; // what label shows up on home screen
 @property (nonatomic, copy) NSString *longName;
 

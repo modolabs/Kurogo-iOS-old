@@ -3,11 +3,11 @@
 
 @interface LoginModule : KGOModule <KGORequestDelegate> {
     
-    NSString *_userName;
-    NSString *_userClass;
-    
     KGORequest *_sessionInfoRequest;
 }
+
+@property(nonatomic, retain) NSString *username;
+@property(nonatomic, retain) NSString *userDescription;
 
 - (void)userDidLogin;
 

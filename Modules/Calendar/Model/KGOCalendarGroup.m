@@ -61,7 +61,15 @@ NSString * const KGOEntityNameCalendarGroup = @"KGOCalendarGroup";
         }
         
         NSArray *calendars = [aDict arrayForKey:@"calendars"];
-        if (calendars.count) {
+        if (!calendars) {
+            // if the API doesn't support calendar groups,
+            // create a calendar that looks just like the group
+            KGOCalendar *aCalendar = [KGOCalendar calendarWithDictionary:aDict];
+            if (![group.calendars containsObject:aCalendar]) {
+                [group addCalendarsObject:aCalendar];
+            }
+            
+        } else if (calendars.count) {
             for (NSDictionary *calendarData in calendars) {
                 KGOCalendar *aCalendar = [KGOCalendar calendarWithDictionary:calendarData];
                 if (![group.calendars containsObject:aCalendar]) {

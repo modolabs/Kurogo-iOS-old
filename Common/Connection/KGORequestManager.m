@@ -3,10 +3,15 @@
 #import "KGOAppDelegate+ModuleAdditions.h"
 #import "CoreDataManager.h"
 #import "Reachability.h"
+#import "KGOHomeScreenViewController.h"
+#import "KGOModule.h"
+
+NSString * const UserHashCookieName = @"lh";
+NSString * const UserTokenCookieName = @"lt";
 
 @implementation KGORequestManager
 
-@synthesize host = _host;
+@synthesize host = _host, loginPath;
 
 + (KGORequestManager *)sharedManager {
 	static KGORequestManager *s_sharedManager = nil;
@@ -168,18 +173,6 @@
 	return self;
 }
 
-- (void)registerWithKGOServer {
-    
-    _helloRequest = [self requestWithDelegate:self module:nil path:@"hello" params:nil];
-    _helloRequest.expectedResponseType = [NSDictionary class];
-    [_helloRequest connect];
-	
-}
-
-- (void)authenticateWithKGOServer {
-	
-}
-
 - (void)dealloc {
 	self.host = nil;
     [_extendedHost release];
@@ -187,6 +180,63 @@
 	[_uriScheme release];
 	[_accessToken release];
 	[super dealloc];
+}
+
+#pragma mark auth
+
+- (void)registerWithKurogoServer
+{
+    // TODO: this is a bad place to mess with the home screen UI
+    [(KGOHomeScreenViewController *)[KGO_SHARED_APP_DELEGATE() homescreen] showLoadingView];
+    _helloRequest = [self requestWithDelegate:self module:nil path:@"hello" params:nil];
+    _helloRequest.expectedResponseType = [NSDictionary class];
+    [_helloRequest connect];
+}
+
+
+- (void)loginKurogoServer
+{
+    KGOModule *loginModule = [KGO_SHARED_APP_DELEGATE() moduleForTag:self.loginPath];
+    UIViewController *loginController = [loginModule modulePage:LocalPathPageNameHome params:nil];
+    [KGO_SHARED_APP_DELEGATE() presentAppModalViewController:loginController animated:NO];
+}
+
+- (void)logoutKurogoServer
+{
+    NSArray *cookies = [[NSHTTPCookieStorage sharedHTTPCookieStorage] cookies];
+    for (NSHTTPCookie *aCookie in cookies) {
+        NSString *name = [aCookie name];
+        if ([name isEqualToString:UserHashCookieName]) {
+            [[NSHTTPCookieStorage sharedHTTPCookieStorage] deleteCookie:aCookie];
+        } else if ([name isEqualToString:UserTokenCookieName]) {
+            [[NSHTTPCookieStorage sharedHTTPCookieStorage] deleteCookie:aCookie];
+        }
+    }
+    
+    // TODO: clean up this request, even though we don't really care if it fails
+    [self requestWithDelegate:self module:self.loginPath path:@"logout" params:nil];
+}
+
+- (BOOL)isUserLoggedIn
+{
+    NSArray *cookies = [[NSHTTPCookieStorage sharedHTTPCookieStorage] cookies];
+    
+    BOOL userHashCookieExists = NO;
+    BOOL userTokenCookieExists = NO;
+    
+    for (NSHTTPCookie *aCookie in cookies) {
+        DLog(@"cookie: %@", [aCookie description]);
+        NSString *name = [aCookie name];
+        if ([name isEqualToString:UserHashCookieName]) {
+            userHashCookieExists = YES;
+        } else if ([name isEqualToString:UserTokenCookieName]) {
+            userTokenCookieExists = YES;
+        }
+        if (userTokenCookieExists && userHashCookieExists) {
+            return YES;
+        }
+    }
+    return NO;
 }
 
 #pragma mark KGORequestDelegate
@@ -207,6 +257,7 @@
         NSArray *modules = [result arrayForKey:@"modules"];
         [KGO_SHARED_APP_DELEGATE() loadModulesFromArray:modules];
     }
+    [(KGOHomeScreenViewController *)[KGO_SHARED_APP_DELEGATE() homescreen] hideLoadingView];
 }
 
 @end

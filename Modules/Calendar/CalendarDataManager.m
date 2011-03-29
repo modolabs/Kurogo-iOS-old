@@ -3,16 +3,9 @@
 #import "Foundation+KGOAdditions.h"
 #import "CalendarModel.h"
 
-@interface CalendarDataManager (Private)
-
-- (BOOL)requestEventsForCalendar:(KGOCalendar *)calendar params:(NSDictionary *)params;
-
-@end
-
-
 @implementation CalendarDataManager
 
-@synthesize delegate;
+@synthesize delegate, moduleTag;
 
 - (KGOCalendarGroup *)currentGroup
 {
@@ -49,41 +42,12 @@
             return success;
         }
         
-        _groupsRequest = [[KGORequestManager sharedManager] requestWithDelegate:self module:@"calendar" path:@"groups" params:nil];
+        _groupsRequest = [[KGORequestManager sharedManager] requestWithDelegate:self module:self.moduleTag path:@"groups" params:nil];
         _groupsRequest.expectedResponseType = [NSDictionary class];
         [_groupsRequest connect];
     }
     return success;
 }
-
-/*
-- (BOOL)requestCalendarsForGroup:(NSString *)groupID
-{
-    BOOL success = NO;
-    KGOCalendarGroup *group = [KGOCalendarGroup groupWithID:groupID];
-    if (group.calendars.count) {
-        success = YES;
-        [self.delegate groupDataDidChange:group];
-    }
-
-    // TODO: use a timeout value to decide whether or not to check for update
-    if ([[KGORequestManager sharedManager] isReachable]) {
-        KGORequest *request = [_categoriesRequests objectForKey:groupID];
-        
-        if (request) {
-            return success;
-        }
-        
-        NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:groupID, @"category", nil];
-        request = [[KGORequestManager sharedManager] requestWithDelegate:self module:@"calendar" path:@"categories" params:params];
-        request.expectedResponseType = [NSArray class];
-        [_categoriesRequests setObject:request forKey:groupID];
-        [request connect];
-        success = YES;
-    }
-    return success;
-}
-*/
 
 - (BOOL)requestEventsForCalendar:(KGOCalendar *)calendar params:(NSDictionary *)params
 {
@@ -97,7 +61,7 @@
             [_eventsRequests removeObjectForKey:requestIdentifier];
         }
         
-        request = [[KGORequestManager sharedManager] requestWithDelegate:self module:@"calendar" path:@"events" params:params];
+        request = [[KGORequestManager sharedManager] requestWithDelegate:self module:self.moduleTag path:@"events" params:params];
         request.expectedResponseType = [NSDictionary class];
         [_eventsRequests setObject:request forKey:requestIdentifier];
         [request connect];
@@ -147,7 +111,7 @@
         _groupsRequest = nil;
         
     } else { // events
-        NSString *category = [request.getParams objectForKey:@"category"];
+        NSString *category = [request.getParams objectForKey:@"calendar"];
         [_eventsRequests removeObjectForKey:category];
     }
 }
@@ -162,9 +126,9 @@
 - (void)request:(KGORequest *)request didReceiveResult:(id)result
 {
     NSLog(@"%@", [result description]);
-    
+
+#pragma mark Request - groups
     if (request == _groupsRequest) {
-        //_groupsRequest = nil;
         
         NSInteger total = [result integerForKey:@"total"];
         NSInteger returned = [result integerForKey:@"returned"];
@@ -217,6 +181,7 @@
             [self.delegate groupsDidChange:newGroups];
         }
         
+#pragma mark Request - events
     } else if ([request.path isEqualToString:@"events"]) { // events
         
         NSString *calendarID = [request.getParams objectForKey:@"calendar"];

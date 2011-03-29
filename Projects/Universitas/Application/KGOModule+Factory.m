@@ -20,6 +20,7 @@
         NSDictionary *moduleMap = [NSDictionary dictionaryWithObjectsAndKeys:
                                    @"AboutModule", @"about",
                                    @"CalendarModule", @"calendar",
+                                   @"HomeModule", @"home",
                                    @"LoginModule", @"login",
                                    @"MapModule", @"map",
                                    @"NewsModule", @"news",

@@ -66,7 +66,7 @@
     
     _sidebar = [[UIView alloc] initWithFrame:CGRectMake(0, TOPBAR_HEIGHT, SIDEBAR_WIDTH, self.view.bounds.size.height - TOPBAR_HEIGHT)];
     _sidebar.autoresizingMask = UIViewAutoresizingFlexibleHeight;
-    _springboardFrame = _sidebar.frame;
+    //_springboardFrame = _sidebar.frame;
     
     [self.view addSubview:_sidebar];
     [self refreshModules];
@@ -85,6 +85,11 @@
                                                                     forModuleTag:defaultModule.tag
                                                                           params:nil];
     }
+}
+
+- (CGRect)springboardFrame
+{
+    return _sidebar.frame;
 }
 
 - (void)viewDidUnload

@@ -9,15 +9,12 @@
 - (void)loadView {
     [super loadView];
     
-    CGFloat topFreePixel;
-    CGFloat bottomFreePixel;
-    
     // TODO: if we support rotation, we'll need to selectively hide widgets
-    _visibleWidgets = [[self allWidgets:&topFreePixel :&bottomFreePixel] retain];
+    _visibleWidgets = [[self allWidgets:&_topFreePixel :&_bottomFreePixel] retain];
     
-    _iconGrid = [[[IconGrid alloc] initWithFrame:CGRectMake(0, topFreePixel,
+    _iconGrid = [[[IconGrid alloc] initWithFrame:CGRectMake(0, _topFreePixel,
                                                             self.view.frame.size.width,
-                                                            bottomFreePixel - topFreePixel)] autorelease];
+                                                            _bottomFreePixel - _topFreePixel)] autorelease];
     _iconGrid.padding = [self moduleListMargins];
     _iconGrid.spacing = [self moduleListSpacing];
     _iconGrid.icons = [self iconsForPrimaryModules:YES];
@@ -29,6 +26,7 @@
 }
 
 - (void)refreshModules {
+    _iconGrid.frame = CGRectMake(0, _topFreePixel, self.view.frame.size.width, _bottomFreePixel - _topFreePixel);
     _iconGrid.icons = [self iconsForPrimaryModules:YES];
     [_iconGrid setNeedsLayout];
 }
@@ -39,9 +37,7 @@
     }
 
     [_visibleWidgets release];
-    CGFloat topFreePixel;
-    CGFloat bottomFreePixel;
-    _visibleWidgets = [[self allWidgets:&topFreePixel :&bottomFreePixel] retain];
+    _visibleWidgets = [[self allWidgets:&_topFreePixel :&_bottomFreePixel] retain];
 
     for (KGOHomeScreenWidget *aWidget in _visibleWidgets) {
         [self.view addSubview:aWidget];

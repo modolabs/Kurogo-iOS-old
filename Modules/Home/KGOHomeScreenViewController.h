@@ -15,18 +15,27 @@
     NSArray *_primaryModules;
     NSArray *_secondaryModules;
     
-    CGRect _springboardFrame;
+    //CGRect _springboardFrame;
 }
+
+@property (nonatomic, retain) KGOModule *homeModule;
 
 @property (nonatomic, readonly) NSArray *primaryModules;
 @property (nonatomic, readonly) NSArray *secondaryModules;
 @property (nonatomic, readonly) CGRect springboardFrame;
 
+- (void)showLoadingView;
+- (void)hideLoadingView;
+
 - (NSArray *)iconsForPrimaryModules:(BOOL)isPrimary;
 
 - (NSArray *)allWidgets:(CGFloat *)topFreePixel :(CGFloat *)bottomFreePixel;
+
+// display module representations on home screen. default implementation does nothing.
 - (void)refreshModules;
-- (void)refreshWidgets;                     // does nothing by default
+
+// display widgets on home screen. default implementation does nothing.
+- (void)refreshWidgets;
 
 - (CGSize)moduleLabelMaxDimensions;
 - (CGSize)secondaryModuleLabelMaxDimensions;

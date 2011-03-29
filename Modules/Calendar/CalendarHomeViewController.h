@@ -21,10 +21,10 @@ KGOScrollingTabstripDelegate, CalendarDataManagerDelegate> {
     NSDictionary *_currentEventsBySection;
 
     NSArray *_currentCategories;
-    
-    CalendarDataManager *_dataManager;
 }
 
+@property(nonatomic, retain) NSString *moduleTag;
+@property(nonatomic, retain) CalendarDataManager *dataManager;
 @property(nonatomic, retain) NSString *searchTerms;
 @property(nonatomic, retain) KGOCalendar *currentCalendar;
 

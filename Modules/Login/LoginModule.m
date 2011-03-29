@@ -9,14 +9,21 @@
 
 @implementation LoginModule
 
+@synthesize username, userDescription;
+
 - (UIViewController *)modulePage:(NSString *)pageName params:(NSDictionary *)params {
     UIViewController *vc = nil;
     if ([pageName isEqualToString:LocalPathPageNameHome]) {
-        ModalLoginWebViewController *webVC = [[[ModalLoginWebViewController alloc] init] autorelease];
-        NSURL *loginURL = [NSURL URLWithString:[NSString stringWithFormat:@"%@/%@", [[KGORequestManager sharedManager] serverURL], @"login"]];
-        webVC.loginModule = self;
-        webVC.requestURL = loginURL;
-        [KGO_SHARED_APP_DELEGATE() presentAppModalViewController:webVC animated:YES];
+        if (![[KGORequestManager sharedManager] isUserLoggedIn]) {        
+            ModalLoginWebViewController *webVC = [[[ModalLoginWebViewController alloc] init] autorelease];
+            NSURL *loginURL = [NSURL URLWithString:[NSString stringWithFormat:@"%@/%@", [[KGORequestManager sharedManager] serverURL], self.tag]];
+            webVC.loginModule = self;
+            webVC.requestURL = loginURL;
+            vc = webVC;
+
+        } else {
+            
+        }
     }
     return vc;
 }
@@ -39,7 +46,7 @@
 - (void)request:(KGORequest *)request didReceiveResult:(id)result
 {
     NSDictionary *userDict = [result dictionaryForKey:@"user"];
-    _userName = [[userDict stringForKey:@"name" nilIfEmpty:YES] retain];
+    self.username = [userDict stringForKey:@"name" nilIfEmpty:YES];
     
     [(KGOHomeScreenViewController *)[KGO_SHARED_APP_DELEGATE() homescreen] refreshWidgets];
 }
@@ -55,10 +62,9 @@
     frame = CGRectMake(10, 10, frame.size.width - 20, 80);
     KGOHomeScreenWidget *widget = [[[KGOHomeScreenWidget alloc] initWithFrame:frame] autorelease];
     
-    NSString *title = _userName;
-    NSString *class = @"Class of 1996"; // _userClass;
+    NSString *title = self.username;
     if (!title) {
-        title = class;
+        title = @"Anonymous";
     }
     
     UIFont *font = [[KGOTheme sharedTheme] fontForContentTitle];
@@ -72,21 +78,26 @@
     
     [widget addSubview:titleLabel];
 
-    if (_userName) {
+    if (self.userDescription) {
         font = [[KGOTheme sharedTheme] fontForBodyText];
-        size = [class sizeWithFont:font];
-        UILabel *classLabel = [[[UILabel alloc] initWithFrame:CGRectMake(10, titleLabel.frame.size.height + 20, size.width, size.height)] autorelease];
-        classLabel.font = font;
-        classLabel.backgroundColor = [UIColor clearColor];
-        classLabel.textColor = [UIColor whiteColor];
-        classLabel.text = class;
+        size = [self.userDescription sizeWithFont:font];
+        UILabel *subtitleLabel = [[[UILabel alloc] initWithFrame:CGRectMake(10, titleLabel.frame.size.height + 20, size.width, size.height)] autorelease];
+        subtitleLabel.font = font;
+        subtitleLabel.backgroundColor = [UIColor clearColor];
+        subtitleLabel.textColor = [UIColor whiteColor];
+        subtitleLabel.text = self.userDescription;
 
-        [widget addSubview:classLabel];
+        [widget addSubview:subtitleLabel];
     }
     
     return [NSArray arrayWithObject:widget];
 }
 
-
+- (void)dealloc
+{
+    self.username = nil;
+    self.userDescription = nil;
+    [super dealloc];
+}
 
 @end
