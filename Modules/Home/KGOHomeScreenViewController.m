@@ -160,8 +160,12 @@
 
 - (void)hideLoadingView
 {
-    [self.loadingView removeFromSuperview];
-    self.loadingView = nil;
+    [UIView animateWithDuration:0.2 animations:^(void) {
+        self.loadingView.alpha = 0;
+    } completion:^(BOOL finished) {
+        [self.loadingView removeFromSuperview];
+        self.loadingView = nil;
+    }];
 }
 
 #pragma mark Springboard helper methods
