@@ -16,6 +16,11 @@
 		3AA219501039D74700DB7637 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3AA2194F1039D74700DB7637 /* CoreData.framework */; };
 		4463CCB210D6F5750048CA83 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4463CCB110D6F5750048CA83 /* CoreLocation.framework */; };
 		4B050C55132E48F50016591D /* NewsDataManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B050C54132E48F50016591D /* NewsDataManager.m */; };
+		4B3904EF134147D000CD9C6F /* EmergencyDataManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B3904E5134147D000CD9C6F /* EmergencyDataManager.m */; };
+		4B3904F0134147D000CD9C6F /* EmergencyHomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B3904E7134147D000CD9C6F /* EmergencyHomeViewController.m */; };
+		4B3904F1134147D000CD9C6F /* EmergencyModule.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B3904E9134147D000CD9C6F /* EmergencyModule.m */; };
+		4B3904F2134147D000CD9C6F /* Emergency.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 4B3904EB134147D000CD9C6F /* Emergency.xcdatamodeld */; };
+		4B3904F3134147D000CD9C6F /* EmergencyNotice.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B3904EE134147D000CD9C6F /* EmergencyNotice.m */; };
 		562F4B79133EFA10000B9344 /* ContentModule.m in Sources */ = {isa = PBXBuildFile; fileRef = 562F4B74133EFA10000B9344 /* ContentModule.m */; };
 		562F4B7A133EFA10000B9344 /* ContentTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 562F4B76133EFA10000B9344 /* ContentTableViewController.m */; };
 		562F4B7B133EFA10000B9344 /* ContentWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 562F4B78133EFA10000B9344 /* ContentWebViewController.m */; };
@@ -204,6 +209,15 @@
 		4463CCB110D6F5750048CA83 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		4B050C53132E48F40016591D /* NewsDataManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NewsDataManager.h; sourceTree = "<group>"; };
 		4B050C54132E48F50016591D /* NewsDataManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NewsDataManager.m; sourceTree = "<group>"; };
+		4B3904E4134147D000CD9C6F /* EmergencyDataManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EmergencyDataManager.h; sourceTree = "<group>"; };
+		4B3904E5134147D000CD9C6F /* EmergencyDataManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EmergencyDataManager.m; sourceTree = "<group>"; };
+		4B3904E6134147D000CD9C6F /* EmergencyHomeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EmergencyHomeViewController.h; sourceTree = "<group>"; };
+		4B3904E7134147D000CD9C6F /* EmergencyHomeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EmergencyHomeViewController.m; sourceTree = "<group>"; };
+		4B3904E8134147D000CD9C6F /* EmergencyModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EmergencyModule.h; sourceTree = "<group>"; };
+		4B3904E9134147D000CD9C6F /* EmergencyModule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EmergencyModule.m; sourceTree = "<group>"; };
+		4B3904EC134147D000CD9C6F /* Emergency.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Emergency.xcdatamodel; sourceTree = "<group>"; };
+		4B3904ED134147D000CD9C6F /* EmergencyNotice.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EmergencyNotice.h; sourceTree = "<group>"; };
+		4B3904EE134147D000CD9C6F /* EmergencyNotice.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EmergencyNotice.m; sourceTree = "<group>"; };
 		562F4B73133EFA10000B9344 /* ContentModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ContentModule.h; path = ../../../Modules/Content/ContentModule.h; sourceTree = "<group>"; };
 		562F4B74133EFA10000B9344 /* ContentModule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ContentModule.m; path = ../../../Modules/Content/ContentModule.m; sourceTree = "<group>"; };
 		562F4B75133EFA10000B9344 /* ContentTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ContentTableViewController.h; path = ../../../Modules/Content/ContentTableViewController.h; sourceTree = "<group>"; };
@@ -546,6 +560,31 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		4B3904E3134147D000CD9C6F /* Emergency */ = {
+			isa = PBXGroup;
+			children = (
+				4B3904E4134147D000CD9C6F /* EmergencyDataManager.h */,
+				4B3904E5134147D000CD9C6F /* EmergencyDataManager.m */,
+				4B3904E6134147D000CD9C6F /* EmergencyHomeViewController.h */,
+				4B3904E7134147D000CD9C6F /* EmergencyHomeViewController.m */,
+				4B3904E8134147D000CD9C6F /* EmergencyModule.h */,
+				4B3904E9134147D000CD9C6F /* EmergencyModule.m */,
+				4B3904EA134147D000CD9C6F /* Model */,
+			);
+			name = Emergency;
+			path = ../../../Modules/Emergency;
+			sourceTree = "<group>";
+		};
+		4B3904EA134147D000CD9C6F /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				4B3904EB134147D000CD9C6F /* Emergency.xcdatamodeld */,
+				4B3904ED134147D000CD9C6F /* EmergencyNotice.h */,
+				4B3904EE134147D000CD9C6F /* EmergencyNotice.m */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
 		562F4B61133EC6DE000B9344 /* Content */ = {
 			isa = PBXGroup;
 			children = (
@@ -562,6 +601,7 @@
 		DE715445102FE468005E6111 /* Modules */ = {
 			isa = PBXGroup;
 			children = (
+				4B3904E3134147D000CD9C6F /* Emergency */,
 				562F4B61133EC6DE000B9344 /* Content */,
 				EB181FA5131EDF1B003728FF /* Login */,
 				EB1441571309EFB100396753 /* Home */,
@@ -1293,6 +1333,11 @@
 				EB03387A1340DBF400ACF2BB /* KGOMapCategory.m in Sources */,
 				EB03387B1340DBF400ACF2BB /* KGOPlacemark.m in Sources */,
 				EB03387C1340DBF400ACF2BB /* MapModel.xcdatamodeld in Sources */,
+				4B3904EF134147D000CD9C6F /* EmergencyDataManager.m in Sources */,
+				4B3904F0134147D000CD9C6F /* EmergencyHomeViewController.m in Sources */,
+				4B3904F1134147D000CD9C6F /* EmergencyModule.m in Sources */,
+				4B3904F2134147D000CD9C6F /* Emergency.xcdatamodeld in Sources */,
+				4B3904F3134147D000CD9C6F /* EmergencyNotice.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1716,6 +1761,16 @@
 /* End XCConfigurationList section */
 
 /* Begin XCVersionGroup section */
+		4B3904EB134147D000CD9C6F /* Emergency.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				4B3904EC134147D000CD9C6F /* Emergency.xcdatamodel */,
+			);
+			currentVersion = 4B3904EC134147D000CD9C6F /* Emergency.xcdatamodel */;
+			path = Emergency.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
 		EB033700133C2B8C00ACF2BB /* RecentSearches.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (

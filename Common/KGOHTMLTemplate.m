@@ -25,6 +25,7 @@
         fileURL = [NSURL URLWithString:pathName relativeToURL:baseURL];
         template = [NSMutableString stringWithContentsOfURL:fileURL encoding:NSUTF8StringEncoding error:&error];
     }
+    NSAssert((template != nil), ([NSString stringWithFormat:@"failed to find template for %@", pathName]));
     return [[KGOHTMLTemplate alloc] initWithString:template baseURL:baseURL];
 }
 

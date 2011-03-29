@@ -2,6 +2,7 @@
 #import "KGOModule.h"
 #import "AboutModule.h"
 #import "CalendarModule.h"
+#import "EmergencyModule.h"
 #import "ExternalURLModule.h"
 #import "HomeModule.h"
 #import "LoginModule.h"
@@ -21,6 +22,7 @@
                                    @"AboutModule", @"about",
                                    @"CalendarModule", @"calendar",
                                    @"HomeModule", @"home",
+                                   @"EmergencyModule", @"emergency",
                                    @"LoginModule", @"login",
                                    @"MapModule", @"map",
                                    @"NewsModule", @"news",
@@ -47,6 +49,9 @@
     
     else if ([className isEqualToString:@"ExternalURLModule"])
         module = [[[ExternalURLModule alloc] initWithDictionary:args] autorelease];
+    
+    else if ([className isEqualToString:@"EmergencyModule"])
+        module = [[[EmergencyModule alloc] initWithDictionary:args] autorelease];
     
     else if ([className isEqualToString:@"LoginModule"])
         module = [[[LoginModule alloc] initWithDictionary:args] autorelease];

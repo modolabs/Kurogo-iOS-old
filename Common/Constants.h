@@ -64,6 +64,8 @@ extern NSString * const NewsCategoryEntityName;
 extern NSString * const NewsImageEntityName;
 extern NSString * const NewsImageRepEntityName;
 
+extern NSString * const EmergencyNoticeEntityName;
+
 
 // resource names
 extern NSString * const MITImageNameUpArrow;

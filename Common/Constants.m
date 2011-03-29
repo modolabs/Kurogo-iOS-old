@@ -59,6 +59,8 @@ NSString * const NewsCategoryEntityName = @"NewsCategory";
 NSString * const NewsImageEntityName = @"NewsImage";
 NSString * const NewsImageRepEntityName = @"NewsImageRep";
 
+NSString * const EmergencyNoticeEntityName = @"EmergencyNotice";
+
 
 // local paths for handleLocalPath
 NSString * const LocalPathMapsSelectedAnnotation = @"annotation";
