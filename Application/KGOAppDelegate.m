@@ -281,7 +281,6 @@
     _appModalHolder.view.hidden = NO;
 
     UIViewController *presentedViewController = viewController;
-
     if (viewController.modalPresentationStyle == UIModalPresentationFullScreen) {
         if (viewController.navigationController || [viewController isKindOfClass:[UINavigationController class]]) {
             presentedViewController = viewController;
@@ -296,7 +295,7 @@
                                                                       style:UIBarButtonItemStyleDone
                                                                      target:self
                                                                      action:@selector(dismissAppModalViewController:)] autorelease];
-            presentedViewController.navigationItem.rightBarButtonItem = item;
+            viewController.navigationItem.rightBarButtonItem = item;
         }
     }
     
