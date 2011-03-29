@@ -1,7 +1,6 @@
 #import "KGOAttendeeWrapper.h"
 #import <EventKit/EventKit.h>
-#import "KGOEventAttendee.h"
-#import "KGOEventContactInfo.h"
+#import "CalendarModel.h"
 
 @implementation KGOAttendeeWrapper
 
@@ -43,6 +42,12 @@ attendeeStatus = _attendeeStatus;
 
 - (void)setContactInfo:(NSSet *)contactInfo
 {
+    if (!_kgoAttendee) {
+        _kgoAttendee = [[CoreDataManager sharedManager] insertNewObjectForEntityForName:KGOEntityNameEventAttendee];
+        _kgoAttendee.name = self.name;
+        _kgoAttendee.identifier = self.identifier;
+    }
+    
     _kgoAttendee.contactInfo = contactInfo;
 }
 

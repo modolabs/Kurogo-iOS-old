@@ -110,7 +110,6 @@
     
     if (_event.organizers) {
         NSMutableArray *contactInfo = [NSMutableArray array];
-        
         for (KGOAttendeeWrapper *organizer in _event.organizers) {
             for (KGOEventContactInfo *aContact in organizer.contactInfo) {
                 NSString *type;
@@ -172,7 +171,7 @@
     
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
     if (cell == nil) {
-        cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier] autorelease];
+        cell = [[[UITableViewCell alloc] initWithStyle:style reuseIdentifier:cellIdentifier] autorelease];
     }
     
     cell.textLabel.text = [cellData objectForKey:@"title"];
