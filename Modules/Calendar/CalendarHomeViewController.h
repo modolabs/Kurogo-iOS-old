@@ -27,5 +27,6 @@ KGOScrollingTabstripDelegate, CalendarDataManagerDelegate> {
 @property(nonatomic, retain) CalendarDataManager *dataManager;
 @property(nonatomic, retain) NSString *searchTerms;
 @property(nonatomic, retain) KGOCalendar *currentCalendar;
+@property(nonatomic) BOOL showsGroups;
 
 @end

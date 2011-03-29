@@ -59,6 +59,8 @@ NSString * const KGODataModelNameCalendar = @"Calendar";
         CalendarHomeViewController *calendarVC = [[[CalendarHomeViewController alloc] initWithNibName:@"CalendarHomeViewController"
                                                                                                bundle:nil] autorelease];
         calendarVC.moduleTag = self.tag;
+        calendarVC.showsGroups = YES;
+        calendarVC.title = NSLocalizedString(@"Events", nil);
         vc = calendarVC;
         
     } else if ([pageName isEqualToString:LocalPathPageNameSearch]) {
@@ -70,6 +72,7 @@ NSString * const KGODataModelNameCalendar = @"Calendar";
         if (searchText) {
             [calendarVC setSearchTerms:searchText];
         }
+        calendarVC.showsGroups = YES;
         
         vc = calendarVC;
         
@@ -81,6 +84,14 @@ NSString * const KGODataModelNameCalendar = @"Calendar";
         vc = detailVC;
         
     } else if ([pageName isEqualToString:LocalPathPageNameCategoryList]) {
+        CalendarHomeViewController *calendarVC = [[[CalendarHomeViewController alloc] initWithNibName:@"CalendarHomeViewController"
+                                                                                               bundle:nil] autorelease];
+        KGOCalendar *calendar = [params objectForKey:@"calendar"];
+        calendarVC.currentCalendar = calendar;
+        calendarVC.moduleTag = self.tag;
+        calendarVC.showsGroups = NO;
+        calendarVC.title = calendar.title;
+        vc = calendarVC;
         
     } else if ([pageName isEqualToString:LocalPathPageNameItemList]) {
         
