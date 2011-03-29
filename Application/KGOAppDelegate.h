@@ -63,6 +63,7 @@ typedef enum {
 
 - (void)setupAppModalHolder;
 - (void)presentAppModalViewController:(UIViewController *)viewController animated:(BOOL)animated;
+- (void)presentAppModalViewController:(UIViewController *)viewController animated:(BOOL)animated cancelButtonTitle:(NSString *)title;
 - (void)dismissAppModalViewControllerAnimated:(BOOL)animated;
 
 @end

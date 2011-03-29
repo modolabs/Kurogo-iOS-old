@@ -8,6 +8,7 @@
 
 NSString * const UserHashCookieName = @"lh";
 NSString * const UserTokenCookieName = @"lt";
+NSString * const HelloRequestDidCompleteNotification = @"HelloComplete";
 
 @implementation KGORequestManager
 
@@ -186,8 +187,6 @@ NSString * const UserTokenCookieName = @"lt";
 
 - (void)registerWithKurogoServer
 {
-    // TODO: this is a bad place to mess with the home screen UI
-    [(KGOHomeScreenViewController *)[KGO_SHARED_APP_DELEGATE() homescreen] showLoadingView];
     _helloRequest = [self requestWithDelegate:self module:nil path:@"hello" params:nil];
     _helloRequest.expectedResponseType = [NSDictionary class];
     [_helloRequest connect];
@@ -198,7 +197,9 @@ NSString * const UserTokenCookieName = @"lt";
 {
     KGOModule *loginModule = [KGO_SHARED_APP_DELEGATE() moduleForTag:self.loginPath];
     UIViewController *loginController = [loginModule modulePage:LocalPathPageNameHome params:nil];
-    [KGO_SHARED_APP_DELEGATE() presentAppModalViewController:loginController animated:NO];
+    loginController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+    loginController.modalPresentationStyle = UIModalPresentationFullScreen;
+    [KGO_SHARED_APP_DELEGATE() presentAppModalViewController:loginController animated:YES];
 }
 
 - (void)logoutKurogoServer
@@ -245,6 +246,7 @@ NSString * const UserTokenCookieName = @"lt";
 - (void)requestWillTerminate:(KGORequest *)request {
     if (request == _helloRequest) {
         _helloRequest = nil;
+        [[NSNotificationCenter defaultCenter] postNotificationName:HelloRequestDidCompleteNotification object:self];
     }
 }
 
@@ -257,7 +259,6 @@ NSString * const UserTokenCookieName = @"lt";
         NSArray *modules = [result arrayForKey:@"modules"];
         [KGO_SHARED_APP_DELEGATE() loadModulesFromArray:modules];
     }
-    [(KGOHomeScreenViewController *)[KGO_SHARED_APP_DELEGATE() homescreen] hideLoadingView];
 }
 
 @end

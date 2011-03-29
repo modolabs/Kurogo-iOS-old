@@ -274,25 +274,41 @@
     [self.window addSubview:_appModalHolder.view];
 }
 
-// Call these instead of [theNavigationController presentModal...]
-// because the default behavior hides the view controller behind, in case we want transparent modal views.
-- (void)presentAppModalViewController:(UIViewController *)viewController animated:(BOOL)animated {
+- (void)presentAppModalViewController:(UIViewController *)viewController animated:(BOOL)animated cancelButtonTitle:(NSString *)title
+{
 	if (!viewController) return;
 	
     _appModalHolder.view.hidden = NO;
 
-	if (viewController.navigationController || [viewController isKindOfClass:[UINavigationController class]]) {
-		[_appModalHolder presentModalViewController:viewController animated:animated];
-	} else {
-		// since any VC can be presented modally, some will not have nav bars built in
-		UINavigationController *navC = [[[UINavigationController alloc] initWithRootViewController:viewController] autorelease];
-		viewController.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithTitle:@"Done"
-																							 style:UIBarButtonItemStyleDone
-																							target:self
-																							action:@selector(dismissAppModalViewController:)] autorelease];
-		[_appModalHolder presentModalViewController:navC animated:animated];
-	}
+    UIViewController *presentedViewController = viewController;
+
+    if (viewController.modalPresentationStyle == UIModalPresentationFullScreen) {
+        if (viewController.navigationController || [viewController isKindOfClass:[UINavigationController class]]) {
+            presentedViewController = viewController;
+        } else {
+            // since any VC can be presented modally, some will not have nav bars built in
+            UINavigationController *navC = [[[UINavigationController alloc] initWithRootViewController:viewController] autorelease];
+            presentedViewController = navC;
+        }
+
+        if (title && !presentedViewController.navigationItem.rightBarButtonItem) {
+            UIBarButtonItem *item = [[[UIBarButtonItem alloc] initWithTitle:title
+                                                                      style:UIBarButtonItemStyleDone
+                                                                     target:self
+                                                                     action:@selector(dismissAppModalViewController:)] autorelease];
+            presentedViewController.navigationItem.rightBarButtonItem = item;
+        }
+    }
+    
+    [_appModalHolder presentModalViewController:presentedViewController animated:animated];
+    
+}
+
+- (void)presentAppModalViewController:(UIViewController *)viewController animated:(BOOL)animated {
+	if (!viewController) return;
 	
+    _appModalHolder.view.hidden = NO;
+    [_appModalHolder presentModalViewController:viewController animated:animated];
 }
 
 - (void)dismissAppModalViewController:(id)sender {

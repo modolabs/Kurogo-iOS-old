@@ -109,7 +109,7 @@
         pickerVC.date = self.date;
         
         KGOAppDelegate *appDelegate = KGO_SHARED_APP_DELEGATE();
-        [appDelegate presentAppModalViewController:pickerVC animated:YES];
+        [appDelegate presentAppModalViewController:pickerVC animated:YES cancelButtonTitle:@"Done"];
         
     } else {
         // previous or next date

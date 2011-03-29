@@ -149,6 +149,7 @@
 		EB99B67912F3A8EE0065EE93 /* libOAuth.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EB99B67812F3A8E40065EE93 /* libOAuth.a */; };
 		EB9AF2A7130B59C3003B9769 /* MainWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = EB9AF298130B56AD003B9769 /* MainWindow.xib */; };
 		EB9AF2BD130B5AC2003B9769 /* Config.plist in Resources */ = {isa = PBXBuildFile; fileRef = EB138AFC12F22F31004DBB7C /* Config.plist */; };
+		EB9DE0A11341854A00598644 /* ko.lproj in Resources */ = {isa = PBXBuildFile; fileRef = EB9DE0A01341854A00598644 /* ko.lproj */; };
 		EBAA866B12F72A4600B743C3 /* libSFHFKeychainUtils.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EBAA860D12F728CE00B743C3 /* libSFHFKeychainUtils.a */; };
 		EBAE86401215FB0D00F370BE /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = EBAE863E1215FB0D00F370BE /* Icon.png */; };
 		EBAE86411215FB0D00F370BE /* Icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = EBAE863F1215FB0D00F370BE /* Icon@2x.png */; };
@@ -446,6 +447,7 @@
 		EB99B67312F3A8E40065EE93 /* OAuthConsumer.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = OAuthConsumer.xcodeproj; path = OAuth/OAuthConsumer.xcodeproj; sourceTree = "<group>"; };
 		EB99B85E12F3AEC10065EE93 /* usr */ = {isa = PBXFileReference; lastKnownFileType = folder; path = usr; sourceTree = "<group>"; };
 		EB9AF298130B56AD003B9769 /* MainWindow.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = MainWindow.xib; path = ../../Resources/MainWindow.xib; sourceTree = SOURCE_ROOT; };
+		EB9DE0A01341854A00598644 /* ko.lproj */ = {isa = PBXFileReference; lastKnownFileType = folder; path = ko.lproj; sourceTree = "<group>"; };
 		EBAA860812F728CE00B743C3 /* SFHFKeychainUtils.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = SFHFKeychainUtils.xcodeproj; path = SFHFKeychainUtils/SFHFKeychainUtils.xcodeproj; sourceTree = "<group>"; };
 		EBAE863E1215FB0D00F370BE /* Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Icon.png; path = Resources/Icon.png; sourceTree = "<group>"; };
 		EBAE863F1215FB0D00F370BE /* Icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Icon@2x.png"; path = "Resources/Icon@2x.png"; sourceTree = "<group>"; };
@@ -818,6 +820,7 @@
 			children = (
 				EB03382C1340D3B900ACF2BB /* en.lproj */,
 				EB03382D1340D3B900ACF2BB /* ja.lproj */,
+				EB9DE0A01341854A00598644 /* ko.lproj */,
 				EB03382E1340D3B900ACF2BB /* zh_TW.lproj */,
 			);
 			path = Localization;
@@ -966,10 +969,10 @@
 			children = (
 				EB46CA931327FECB00AF7B5C /* KGOSidebarFrameViewController.h */,
 				EB46CA941327FECB00AF7B5C /* KGOSidebarFrameViewController.m */,
-				EB181FAC131EDF30003728FF /* KGOHomeScreenTableViewController.h */,
-				EB181FAD131EDF30003728FF /* KGOHomeScreenTableViewController.m */,
 				EB181FAE131EDF30003728FF /* KGOHomeScreenViewController.h */,
 				EB181FAF131EDF30003728FF /* KGOHomeScreenViewController.m */,
+				EB181FAC131EDF30003728FF /* KGOHomeScreenTableViewController.h */,
+				EB181FAD131EDF30003728FF /* KGOHomeScreenTableViewController.m */,
 				EB181FB0131EDF30003728FF /* KGOHomeScreenWidget.h */,
 				EB181FB1131EDF30003728FF /* KGOHomeScreenWidget.m */,
 				EB181FB2131EDF30003728FF /* KGOPortletHomeViewController.h */,
@@ -1204,6 +1207,7 @@
 				EB03382F1340D3B900ACF2BB /* en.lproj in Resources */,
 				EB0338301340D3B900ACF2BB /* ja.lproj in Resources */,
 				EB0338311340D3B900ACF2BB /* zh_TW.lproj in Resources */,
+				EB9DE0A11341854A00598644 /* ko.lproj in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

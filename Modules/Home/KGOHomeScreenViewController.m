@@ -23,7 +23,7 @@
 
 @implementation KGOHomeScreenViewController
 
-@synthesize primaryModules = _primaryModules, secondaryModules = _secondaryModules, homeModule;
+@synthesize primaryModules = _primaryModules, secondaryModules = _secondaryModules, homeModule, loadingView;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -57,14 +57,14 @@
 - (void)loadView {
     [super loadView];
     
-    //_springboardFrame = self.view.bounds;
-    
     [self loadModules];
     
     if ([self showsSearchBar]) {
         _searchBar = [[KGOSearchBar alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 44)];
         NSDictionary *infoDict = [[NSBundle mainBundle] infoDictionary];
-        _searchBar.placeholder = [NSString stringWithFormat:@"Search %@", [infoDict objectForKey:@"CFBundleName"]];
+        _searchBar.placeholder = [NSString stringWithFormat:@"%@ %@",
+                                  NSLocalizedString(@"Search", nil),
+                                  [infoDict objectForKey:@"CFBundleName"]];
         [self.view addSubview:_searchBar];
     }
 }
@@ -90,6 +90,16 @@
     if (!_searchController) {
         _searchController = [[KGOSearchDisplayController alloc] initWithSearchBar:_searchBar delegate:self contentsController:self];
     }
+    
+    // TODO: make KGORequestManager cache states better so we can check
+    // whether this is needed.
+    // also if there are widgets that exist before the hello is complete
+    // they will show up above the loading view
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(hideLoadingView)
+                                                 name:HelloRequestDidCompleteNotification
+                                               object:nil];
+    [self showLoadingView];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -114,22 +124,44 @@
 
 - (void)showLoadingView
 {
-    UIView *container = [[[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, self.view.bounds.size.height)] autorelease];
-    container.tag = 3245;
-    container.backgroundColor = [UIColor colorWithWhite:0.0 alpha:0.5];
-    container.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-    UIActivityIndicatorView *spinny = [[[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge] autorelease];
+    self.loadingView = [[[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, self.view.bounds.size.height)] autorelease];
+    self.loadingView.backgroundColor = [UIColor colorWithWhite:0.3 alpha:1];
+    self.loadingView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+    
+    UIViewAutoresizing allMargins =  UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleBottomMargin;
+    
+    UIActivityIndicatorView *spinny = [[[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite] autorelease];
     [spinny startAnimating];
-    spinny.center = container.center;
-    spinny.autoresizingMask = UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleBottomMargin;
-    [container addSubview:spinny];
-    [self.view addSubview:container];
+    spinny.autoresizingMask = allMargins;
+
+    NSString *loadingText = NSLocalizedString(@"Loading...", nil);
+    UIFont *font = [[KGOTheme sharedTheme] fontForBodyText];
+    CGSize size = [loadingText sizeWithFont:font];
+    UILabel *loadingLabel = [[[UILabel alloc] initWithFrame:CGRectMake(0, 0, size.width, size.height)] autorelease];
+    loadingLabel.text = loadingText;
+    loadingLabel.font = font;
+    loadingLabel.textColor = [UIColor whiteColor];
+    loadingLabel.autoresizingMask = allMargins;
+    loadingLabel.backgroundColor = [UIColor clearColor];
+
+    CGFloat combinedWidth = spinny.frame.size.width + loadingLabel.frame.size.width + 5;
+    CGFloat combinedX = floor((self.loadingView.frame.size.width - combinedWidth) / 2);
+    CGFloat spinnyY = floor((self.loadingView.frame.size.height - spinny.frame.size.height) / 2);
+    CGFloat loadingY = floor((self.loadingView.frame.size.height - loadingLabel.frame.size.height) / 2);
+    
+    loadingLabel.frame = CGRectMake(combinedX + spinny.frame.size.width + 5,
+                                    loadingY, loadingLabel.frame.size.width, loadingLabel.frame.size.height);
+    spinny.frame = CGRectMake(combinedX, spinnyY, spinny.frame.size.width, spinny.frame.size.height);
+    
+    [self.loadingView addSubview:loadingLabel];
+    [self.loadingView addSubview:spinny];
+    [self.view addSubview:self.loadingView];
 }
 
 - (void)hideLoadingView
 {
-    UIView *loadingView = [self.view viewWithTag:3245];
-    [loadingView removeFromSuperview];
+    [self.loadingView removeFromSuperview];
+    self.loadingView = nil;
 }
 
 #pragma mark Springboard helper methods

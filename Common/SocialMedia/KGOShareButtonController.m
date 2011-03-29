@@ -54,7 +54,7 @@
 		TwitterViewController *twitterVC = [[[TwitterViewController alloc] initWithNibName:@"TwitterViewController" bundle:nil] autorelease];
         twitterVC.preCannedMessage = [self.delegate twitterTitle];
         twitterVC.longURL = [self.delegate twitterUrl];
-		[KGO_SHARED_APP_DELEGATE() presentAppModalViewController:twitterVC animated:YES];
+		[KGO_SHARED_APP_DELEGATE() presentAppModalViewController:twitterVC animated:YES cancelButtonTitle:@"Cancel"];
 	}
 }
 

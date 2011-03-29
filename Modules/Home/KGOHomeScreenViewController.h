@@ -14,8 +14,6 @@
     
     NSArray *_primaryModules;
     NSArray *_secondaryModules;
-    
-    //CGRect _springboardFrame;
 }
 
 @property (nonatomic, retain) KGOModule *homeModule;
@@ -23,6 +21,7 @@
 @property (nonatomic, readonly) NSArray *primaryModules;
 @property (nonatomic, readonly) NSArray *secondaryModules;
 @property (nonatomic, readonly) CGRect springboardFrame;
+@property (nonatomic, retain) UIView *loadingView;
 
 - (void)showLoadingView;
 - (void)hideLoadingView;
