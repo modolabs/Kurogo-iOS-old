@@ -123,16 +123,17 @@
             style = UITableViewStyleGrouped;
             // TODO: sort
             _currentCategories = [[group.calendars allObjects] retain];
+            _datePager.hidden = YES;
         } else {
             style = UITableViewStylePlain;
         }
         
         CGRect frame = self.view.frame;
-        if ([_datePager isDescendantOfView:self.view]) {
+        if (!_datePager.hidden && [_datePager isDescendantOfView:self.view]) {
             frame.origin.y += _datePager.frame.size.height;
             frame.size.height -= _datePager.frame.size.height;
         }
-        if ([_tabstrip isDescendantOfView:self.view]) {
+        if (!_tabstrip.hidden && [_tabstrip isDescendantOfView:self.view]) {
             frame.origin.y += _tabstrip.frame.size.height;
             frame.size.height -= _tabstrip.frame.size.height;
         }
