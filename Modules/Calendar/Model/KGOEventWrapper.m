@@ -192,7 +192,12 @@ bookmarked = _bookmarked;
     [[CoreDataManager sharedManager] saveData];
 }
 
-- (void)bookmark
+- (BOOL)isBookmarked
+{
+    return [self.KGOEvent.bookmarked boolValue];
+}
+
+- (void)addBookmark
 {
     if (!self.KGOEvent) {
         [self convertToKGOEvent];
@@ -200,7 +205,7 @@ bookmarked = _bookmarked;
     self.KGOEvent.bookmarked = [NSNumber numberWithBool:YES];
 }
 
-- (void)unbookmark
+- (void)removeBookmark
 {
     if (!self.KGOEvent) {
         self.KGOEvent.bookmarked = [NSNumber numberWithBool:NO];

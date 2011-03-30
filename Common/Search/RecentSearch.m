@@ -15,4 +15,16 @@
 	return self.text;
 }
 
+- (BOOL)isBookmarked {
+    return NO;
+}
+
+- (void)addBookmark {
+    // do nothing
+}
+
+- (void)removeBookmark {
+    // do nothing
+}
+
 @end

@@ -2,7 +2,7 @@
 
 @implementation KGOTabbedViewController
 
-@synthesize tabs = _tabs, tabViewHeader = _tabViewHeader;
+@synthesize tabs = _tabs, tabViewHeader = _tabViewHeader, tabViewContainer = _tabViewContainer;
 @synthesize delegate;
 
 - (void)setTabViewHeader:(UIView *)tabViewHeader {

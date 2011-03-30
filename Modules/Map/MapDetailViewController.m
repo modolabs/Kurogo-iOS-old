@@ -11,21 +11,63 @@
 
 - (UIView *)tabbedControl:(KGOTabbedControl *)control containerViewAtIndex:(NSInteger)index {
     UIView *view = nil;
-    switch (index) {
-        case 0: {
-            break;
-        }
-        case 1: {
-            break;
-        }
-        default:
-            break;
+    NSString *title = [control titleForTabAtIndex:index];
+    if ([title isEqualToString:@"Photo"]) {
+
+    
+    } else if ([title isEqualToString:@"Details"]) {
+        UIWebView *webView = [[[UIWebView alloc] initWithFrame:CGRectMake(0, 0, self.tabViewContainer.frame.size.width, self.tabViewContainer.frame.size.height)] autorelease];
+        [webView loadHTMLString:self.placemark.info baseURL:nil];
+        view = webView;
     }
     return view;
 }
 
 - (NSArray *)itemsForTabbedControl:(KGOTabbedControl *)control {
     return [NSArray arrayWithObjects:@"Photo", @"Details", nil];
+}
+
+- (CGFloat)headerWidthWithButtons
+{
+    CGFloat result = self.view.bounds.size.width - 10;
+    if (_bookmarkButton) {
+        result -= _bookmarkButton.frame.size.width + 10;
+    }
+    return result;
+}
+
+- (void)showBookmarkButton
+{
+    if (!_bookmarkButton) {
+        UIImage *placeholder = [UIImage imageWithPathName:@"common/bookmark_off.png"];
+        CGFloat buttonX = [self headerWidthWithButtons] - placeholder.size.width;
+        
+        _bookmarkButton = [[UIButton buttonWithType:UIButtonTypeCustom] retain];
+        _bookmarkButton.frame = CGRectMake(buttonX, 10, placeholder.size.width, placeholder.size.height);
+        
+        [_bookmarkButton addTarget:self action:@selector(toggleBookmark:) forControlEvents:UIControlEventTouchUpInside];
+        [self.tabViewHeader addSubview:_bookmarkButton];
+    }
+    
+    UIImage *buttonImage, *pressedButtonImage;
+    if ([self.placemark isBookmarked]) {
+        buttonImage = [UIImage imageWithPathName:@"common/bookmark_on.png"];
+        pressedButtonImage = [UIImage imageWithPathName:@"common/bookmark_on_pressed.png"];
+    } else {
+        buttonImage = [UIImage imageWithPathName:@"common/bookmark_off.png"];
+        pressedButtonImage = [UIImage imageWithPathName:@"common/bookmark_off_pressed.png"];
+    }
+    [_bookmarkButton setImage:buttonImage forState:UIControlStateNormal];
+    [_bookmarkButton setImage:pressedButtonImage forState:UIControlStateHighlighted];
+}
+
+- (void)hideBookmarkButton
+{
+    if (_bookmarkButton) {
+        [_bookmarkButton removeFromSuperview];
+        [_bookmarkButton release];
+        _bookmarkButton = nil;
+    }
 }
 
 #pragma mark KGODetailPager

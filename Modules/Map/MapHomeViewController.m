@@ -3,6 +3,7 @@
 #import "KGOAppDelegate+ModuleAdditions.h"
 #import "MapModule.h"
 #import "MapSettingsViewController.h"
+#import "KGOBookmarksViewController.h"
 #import "KGOTheme.h"
 #import "Foundation+KGOAdditions.h"
 #import "KGOMapCategory.h"
@@ -148,6 +149,13 @@
 }
 
 - (IBAction)bookmarksButtonPressed {
+    
+    NSPredicate *pred = [NSPredicate predicateWithFormat:@"bookmarked = YES"];
+    NSArray *array = [[CoreDataManager sharedManager] objectsForEntity:KGOPlacemarkEntityName matchingPredicate:pred];
+    KGOBookmarksViewController *vc = [[[KGOBookmarksViewController alloc] initWithStyle:UITableViewStylePlain] autorelease];
+    vc.bookmarkedItems = array;
+    vc.searchDisplayDelegate = self;
+    [KGO_SHARED_APP_DELEGATE() presentAppModalViewController:vc animated:YES cancelButtonTitle:nil];
 }
 
 - (IBAction)settingsButtonPressed {
@@ -237,9 +245,16 @@
 }
 
 - (void)searchController:(KGOSearchDisplayController *)controller didSelectResult:(id<KGOSearchResult>)aResult {
-    NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:aResult, @"place", controller, @"searchController", nil];
-    KGOAppDelegate *appDelegate = KGO_SHARED_APP_DELEGATE();
-    [appDelegate showPage:LocalPathPageNameDetail forModuleTag:MapTag params:params];
+    // TODO: this is depending on the incorrect use of KGOSearchDisplayDelegate
+    // in KGOBookmarksViewController and needs to be fixed when that is fixed.
+    if (controller) {
+        NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:aResult, @"place", controller, @"searchController", nil];
+        KGOAppDelegate *appDelegate = KGO_SHARED_APP_DELEGATE();
+        [appDelegate showPage:LocalPathPageNameDetail forModuleTag:MapTag params:params];
+
+    } else if ([aResult conformsToProtocol:@protocol(MKAnnotation)]) {
+        [_mapView addAnnotation:(id<MKAnnotation>)aResult];
+    }
 }
 
 - (BOOL)searchControllerShouldLinkToMap:(KGOSearchDisplayController *)controller {

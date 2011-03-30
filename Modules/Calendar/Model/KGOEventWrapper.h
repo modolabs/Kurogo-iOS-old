@@ -75,11 +75,6 @@
 - (void)saveToCoreData;
 - (void)addCalendar:(KGOCalendar *)aCalendar;
 
-// invoking -bookmark will cause the event to be saved to core data
-// but -unbookmark won't remove it from core data
-- (void)bookmark;
-- (void)unbookmark;
-
 @property (nonatomic, retain) KGOEvent *KGOEvent; // setting this will override eventkit if saved
 
 

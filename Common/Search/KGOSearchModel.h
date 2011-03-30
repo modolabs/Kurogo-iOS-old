@@ -6,6 +6,10 @@
 - (NSString *)identifier;
 - (NSString *)title;
 
+- (BOOL)isBookmarked;
+- (void)addBookmark;
+- (void)removeBookmark;
+
 @optional
 
 - (NSString *)subtitle;

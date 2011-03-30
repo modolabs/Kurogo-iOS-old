@@ -96,6 +96,18 @@ webpages = _webpages;
     return subtitle;
 }
 
+- (BOOL)isBookmarked {
+    return NO;
+}
+
+- (void)addBookmark {
+    // do nothing
+}
+
+- (void)removeBookmark {
+    // do nothing
+}
+
 #pragma mark -
 #pragma mark Dictionary representation
 

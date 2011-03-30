@@ -149,7 +149,6 @@
 		EB99B67912F3A8EE0065EE93 /* libOAuth.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EB99B67812F3A8E40065EE93 /* libOAuth.a */; };
 		EB9AF2A7130B59C3003B9769 /* MainWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = EB9AF298130B56AD003B9769 /* MainWindow.xib */; };
 		EB9AF2BD130B5AC2003B9769 /* Config.plist in Resources */ = {isa = PBXBuildFile; fileRef = EB138AFC12F22F31004DBB7C /* Config.plist */; };
-		EB9DE0A11341854A00598644 /* ko.lproj in Resources */ = {isa = PBXBuildFile; fileRef = EB9DE0A01341854A00598644 /* ko.lproj */; };
 		EBAA866B12F72A4600B743C3 /* libSFHFKeychainUtils.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EBAA860D12F728CE00B743C3 /* libSFHFKeychainUtils.a */; };
 		EBAE86401215FB0D00F370BE /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = EBAE863E1215FB0D00F370BE /* Icon.png */; };
 		EBAE86411215FB0D00F370BE /* Icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = EBAE863F1215FB0D00F370BE /* Icon@2x.png */; };
@@ -158,6 +157,7 @@
 		EBB121ED13392F3300A4BD1D /* EventKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EBB121EC13392F3300A4BD1D /* EventKit.framework */; };
 		EBB121F1133A917200A4BD1D /* CalendarHomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EBB121EF133A913100A4BD1D /* CalendarHomeViewController.m */; };
 		EBB121F2133A917200A4BD1D /* CalendarHomeViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = EBB121F0133A915200A4BD1D /* CalendarHomeViewController.xib */; };
+		EBE2CC1E1342AD2F0037546A /* KGOBookmarksViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EBE2CC1D1342AD2F0037546A /* KGOBookmarksViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -447,7 +447,6 @@
 		EB99B67312F3A8E40065EE93 /* OAuthConsumer.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = OAuthConsumer.xcodeproj; path = OAuth/OAuthConsumer.xcodeproj; sourceTree = "<group>"; };
 		EB99B85E12F3AEC10065EE93 /* usr */ = {isa = PBXFileReference; lastKnownFileType = folder; path = usr; sourceTree = "<group>"; };
 		EB9AF298130B56AD003B9769 /* MainWindow.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = MainWindow.xib; path = ../../Resources/MainWindow.xib; sourceTree = SOURCE_ROOT; };
-		EB9DE0A01341854A00598644 /* ko.lproj */ = {isa = PBXFileReference; lastKnownFileType = folder; path = ko.lproj; sourceTree = "<group>"; };
 		EBAA860812F728CE00B743C3 /* SFHFKeychainUtils.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = SFHFKeychainUtils.xcodeproj; path = SFHFKeychainUtils/SFHFKeychainUtils.xcodeproj; sourceTree = "<group>"; };
 		EBAE863E1215FB0D00F370BE /* Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Icon.png; path = Resources/Icon.png; sourceTree = "<group>"; };
 		EBAE863F1215FB0D00F370BE /* Icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Icon@2x.png"; path = "Resources/Icon@2x.png"; sourceTree = "<group>"; };
@@ -457,6 +456,8 @@
 		EBB121EE133A912500A4BD1D /* CalendarHomeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CalendarHomeViewController.h; sourceTree = "<group>"; };
 		EBB121EF133A913100A4BD1D /* CalendarHomeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CalendarHomeViewController.m; sourceTree = "<group>"; };
 		EBB121F0133A915200A4BD1D /* CalendarHomeViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CalendarHomeViewController.xib; sourceTree = "<group>"; };
+		EBE2CC1C1342AD2E0037546A /* KGOBookmarksViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGOBookmarksViewController.h; sourceTree = "<group>"; };
+		EBE2CC1D1342AD2F0037546A /* KGOBookmarksViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGOBookmarksViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -784,6 +785,8 @@
 				EB033714133C2B8C00ACF2BB /* KGOWebViewController.m */,
 				EB033715133C2B8C00ACF2BB /* MITMailComposeController.h */,
 				EB033716133C2B8C00ACF2BB /* MITMailComposeController.m */,
+				EBE2CC1C1342AD2E0037546A /* KGOBookmarksViewController.h */,
+				EBE2CC1D1342AD2F0037546A /* KGOBookmarksViewController.m */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -820,7 +823,6 @@
 			children = (
 				EB03382C1340D3B900ACF2BB /* en.lproj */,
 				EB03382D1340D3B900ACF2BB /* ja.lproj */,
-				EB9DE0A01341854A00598644 /* ko.lproj */,
 				EB03382E1340D3B900ACF2BB /* zh_TW.lproj */,
 			);
 			path = Localization;
@@ -1207,7 +1209,6 @@
 				EB03382F1340D3B900ACF2BB /* en.lproj in Resources */,
 				EB0338301340D3B900ACF2BB /* ja.lproj in Resources */,
 				EB0338311340D3B900ACF2BB /* zh_TW.lproj in Resources */,
-				EB9DE0A11341854A00598644 /* ko.lproj in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1342,6 +1343,7 @@
 				4B3904F1134147D000CD9C6F /* EmergencyModule.m in Sources */,
 				4B3904F2134147D000CD9C6F /* Emergency.xcdatamodeld in Sources */,
 				4B3904F3134147D000CD9C6F /* EmergencyNotice.m in Sources */,
+				EBE2CC1E1342AD2F0037546A /* KGOBookmarksViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

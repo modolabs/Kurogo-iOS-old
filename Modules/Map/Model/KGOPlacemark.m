@@ -29,6 +29,22 @@
     return CLLocationCoordinate2DMake([self.latitude floatValue], [self.longitude floatValue]);
 }
 
+- (BOOL)isBookmarked {
+    return [self.bookmarked boolValue];
+}
+
+- (void)addBookmark {
+    if (![self isBookmarked]) {
+        self.bookmarked = [NSNumber numberWithBool:YES];
+    }
+}
+
+- (void)removeBookmark {
+    if ([self isBookmarked]) {
+        self.bookmarked = [NSNumber numberWithBool:NO];
+    }
+}
+
 #pragma mark -
 
 + (KGOPlacemark *)placemarkWithDictionary:(NSDictionary *)dictionary {
