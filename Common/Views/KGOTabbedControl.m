@@ -1,4 +1,4 @@
-#import "TabViewControl.h"
+#import "KGOTabbedControl.h"
 #import "Foundation+KGOAdditions.h"
 #import "UIKit+KGOAdditions.h"
 
@@ -32,7 +32,6 @@
         // TODO: use config for font
         self.tabFont = [UIFont boldSystemFontOfSize:15];
         
-        self.opaque = NO;
 		[self addTarget:self action:@selector(touchUpInside:forEvent:) forControlEvents:UIControlEventTouchUpInside];
 		[self addTarget:self action:@selector(touchDown:forEvent:) forControlEvents:UIControlEventTouchDown];
 		[self addTarget:self action:@selector(touchUpOutside:forEvent:) forControlEvents:UIControlEventTouchUpOutside];
@@ -53,6 +52,7 @@
         self.tabFont = [UIFont boldSystemFontOfSize:15];
         
         self.opaque = NO;
+        self.backgroundColor = [UIColor clearColor];
 		[self addTarget:self action:@selector(touchUpInside:forEvent:) forControlEvents:UIControlEventTouchUpInside];
 		[self addTarget:self action:@selector(touchDown:forEvent:) forControlEvents:UIControlEventTouchDown];
 		[self addTarget:self action:@selector(touchUpOutside:forEvent:) forControlEvents:UIControlEventTouchUpOutside];

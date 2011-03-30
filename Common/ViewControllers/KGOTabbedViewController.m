@@ -1,22 +1,10 @@
 #import "KGOTabbedViewController.h"
+#import "KGODetailPageHeaderView.h"
 
 @implementation KGOTabbedViewController
 
 @synthesize tabs = _tabs, tabViewHeader = _tabViewHeader, tabViewContainer = _tabViewContainer;
 @synthesize delegate;
-
-- (void)setTabViewHeader:(UIView *)tabViewHeader {
-    if (_tabViewHeader) {
-        [_tabViewHeader removeFromSuperview];
-        [_tabViewHeader release];
-    }
-    _tabViewHeader = [tabViewHeader retain];
-    [self.view addSubview:_tabViewHeader];
-}
-
-- (UIView *)tabViewHeader {
-    return _tabViewHeader;
-}
 
 - (void)reloadTabContent {
     [self tabbedControl:_tabs didSwitchToTabAtIndex:[_tabs selectedTabIndex]];
@@ -38,6 +26,18 @@
 
 - (NSArray *)itemsForTabbedControl:(KGOTabbedControl *)control {
     return nil;
+}
+
+- (void)headerViewFrameDidChange:(KGODetailPageHeaderView *)headerView
+{
+    CGRect frame = _tabs.frame;
+    frame.origin.y = headerView.frame.size.height;
+    _tabs.frame = frame;
+    
+    frame = _tabViewContainer.frame;
+    frame.origin.y = _tabs.frame.origin.y + _tabs.frame.size.height;
+    frame.size.height = self.view.bounds.size.height - frame.origin.y;
+    _tabViewContainer.frame = frame;
 }
 
 #pragma mark -
@@ -62,8 +62,9 @@
 
 - (void)dealloc
 {
-    //self.tabs = nil;
+    self.tabs = nil;
     self.tabViewHeader = nil;
+    self.tabViewContainer = nil;
     [super dealloc];
 }
 
@@ -90,10 +91,16 @@
             [_tabs insertTabWithImage:item atIndex:_tabs.numberOfTabs animated:NO];
         }
     }
+    
+    if ([_tabs numberOfTabs]) {
+        [_tabs setSelectedTabIndex:0];
+    }
 }
 
 - (void)viewDidUnload
 {
+    [_tabViewHeader release];
+    _tabViewHeader = nil;
     [super viewDidUnload];
     // Release any retained subviews of the main view.
     // e.g. self.myOutlet = nil;

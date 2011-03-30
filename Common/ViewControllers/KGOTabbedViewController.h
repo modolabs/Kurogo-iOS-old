@@ -1,5 +1,6 @@
 #import <UIKit/UIKit.h>
-#import "TabViewControl.h"
+#import "KGOTabbedControl.h"
+#import "KGODetailPageHeaderView.h"
 
 @protocol KGOTabbedViewDelegate <NSObject>
 
@@ -8,16 +9,16 @@
 
 @end
 
-@interface KGOTabbedViewController : UIViewController <KGOTabbedControlDelegate, KGOTabbedViewDelegate> {
+@interface KGOTabbedViewController : UIViewController <KGOTabbedControlDelegate, KGOTabbedViewDelegate, KGODetailPageHeaderDelegate> {
     
     IBOutlet KGOTabbedControl *_tabs;
-    IBOutlet UIView *_tabViewHeader;
+    IBOutlet KGODetailPageHeaderView *_tabViewHeader;
     IBOutlet UIView *_tabViewContainer;
     
 }
 
 @property (nonatomic, assign) id<KGOTabbedViewDelegate> delegate;
-@property (nonatomic, retain) UIView *tabViewHeader;
+@property (nonatomic, retain) KGODetailPageHeaderView *tabViewHeader;
 @property (nonatomic, retain) UIView *tabViewContainer;
 @property (nonatomic, retain) KGOTabbedControl *tabs;
 

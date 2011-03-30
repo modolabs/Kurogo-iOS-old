@@ -77,7 +77,7 @@
 		EB033764133C2B8C00ACF2BB /* KGOScrollingTabstrip.m in Sources */ = {isa = PBXBuildFile; fileRef = EB033725133C2B8C00ACF2BB /* KGOScrollingTabstrip.m */; };
 		EB033765133C2B8C00ACF2BB /* KGOToolbar.m in Sources */ = {isa = PBXBuildFile; fileRef = EB033727133C2B8C00ACF2BB /* KGOToolbar.m */; };
 		EB033766133C2B8C00ACF2BB /* MITThumbnailView.m in Sources */ = {isa = PBXBuildFile; fileRef = EB033729133C2B8C00ACF2BB /* MITThumbnailView.m */; };
-		EB033767133C2B8C00ACF2BB /* TabViewControl.m in Sources */ = {isa = PBXBuildFile; fileRef = EB03372B133C2B8C00ACF2BB /* TabViewControl.m */; };
+		EB033767133C2B8C00ACF2BB /* KGOTabbedControl.m in Sources */ = {isa = PBXBuildFile; fileRef = EB03372B133C2B8C00ACF2BB /* KGOTabbedControl.m */; };
 		EB03376B133D26F100ACF2BB /* EventDetailTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = EB03376A133D26E400ACF2BB /* EventDetailTableView.m */; };
 		EB03382F1340D3B900ACF2BB /* en.lproj in Resources */ = {isa = PBXBuildFile; fileRef = EB03382C1340D3B900ACF2BB /* en.lproj */; };
 		EB0338301340D3B900ACF2BB /* ja.lproj in Resources */ = {isa = PBXBuildFile; fileRef = EB03382D1340D3B900ACF2BB /* ja.lproj */; };
@@ -158,6 +158,7 @@
 		EBB121F1133A917200A4BD1D /* CalendarHomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EBB121EF133A913100A4BD1D /* CalendarHomeViewController.m */; };
 		EBB121F2133A917200A4BD1D /* CalendarHomeViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = EBB121F0133A915200A4BD1D /* CalendarHomeViewController.xib */; };
 		EBE2CC1E1342AD2F0037546A /* KGOBookmarksViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EBE2CC1D1342AD2F0037546A /* KGOBookmarksViewController.m */; };
+		EBE2CC2113438AEA0037546A /* KGODetailPageHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = EBE2CC2013438AEA0037546A /* KGODetailPageHeaderView.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -325,8 +326,8 @@
 		EB033727133C2B8C00ACF2BB /* KGOToolbar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGOToolbar.m; sourceTree = "<group>"; };
 		EB033728133C2B8C00ACF2BB /* MITThumbnailView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MITThumbnailView.h; sourceTree = "<group>"; };
 		EB033729133C2B8C00ACF2BB /* MITThumbnailView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MITThumbnailView.m; sourceTree = "<group>"; };
-		EB03372A133C2B8C00ACF2BB /* TabViewControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TabViewControl.h; sourceTree = "<group>"; };
-		EB03372B133C2B8C00ACF2BB /* TabViewControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TabViewControl.m; sourceTree = "<group>"; };
+		EB03372A133C2B8C00ACF2BB /* KGOTabbedControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGOTabbedControl.h; sourceTree = "<group>"; };
+		EB03372B133C2B8C00ACF2BB /* KGOTabbedControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGOTabbedControl.m; sourceTree = "<group>"; };
 		EB033769133D26D600ACF2BB /* EventDetailTableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EventDetailTableView.h; sourceTree = "<group>"; };
 		EB03376A133D26E400ACF2BB /* EventDetailTableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EventDetailTableView.m; sourceTree = "<group>"; };
 		EB03382C1340D3B900ACF2BB /* en.lproj */ = {isa = PBXFileReference; lastKnownFileType = folder; path = en.lproj; sourceTree = "<group>"; };
@@ -458,6 +459,8 @@
 		EBB121F0133A915200A4BD1D /* CalendarHomeViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CalendarHomeViewController.xib; sourceTree = "<group>"; };
 		EBE2CC1C1342AD2E0037546A /* KGOBookmarksViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGOBookmarksViewController.h; sourceTree = "<group>"; };
 		EBE2CC1D1342AD2F0037546A /* KGOBookmarksViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGOBookmarksViewController.m; sourceTree = "<group>"; };
+		EBE2CC1F13438AEA0037546A /* KGODetailPageHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGODetailPageHeaderView.h; sourceTree = "<group>"; };
+		EBE2CC2013438AEA0037546A /* KGODetailPageHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGODetailPageHeaderView.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -812,8 +815,10 @@
 				EB033727133C2B8C00ACF2BB /* KGOToolbar.m */,
 				EB033728133C2B8C00ACF2BB /* MITThumbnailView.h */,
 				EB033729133C2B8C00ACF2BB /* MITThumbnailView.m */,
-				EB03372A133C2B8C00ACF2BB /* TabViewControl.h */,
-				EB03372B133C2B8C00ACF2BB /* TabViewControl.m */,
+				EB03372A133C2B8C00ACF2BB /* KGOTabbedControl.h */,
+				EB03372B133C2B8C00ACF2BB /* KGOTabbedControl.m */,
+				EBE2CC1F13438AEA0037546A /* KGODetailPageHeaderView.h */,
+				EBE2CC2013438AEA0037546A /* KGODetailPageHeaderView.m */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -1318,7 +1323,7 @@
 				EB033764133C2B8C00ACF2BB /* KGOScrollingTabstrip.m in Sources */,
 				EB033765133C2B8C00ACF2BB /* KGOToolbar.m in Sources */,
 				EB033766133C2B8C00ACF2BB /* MITThumbnailView.m in Sources */,
-				EB033767133C2B8C00ACF2BB /* TabViewControl.m in Sources */,
+				EB033767133C2B8C00ACF2BB /* KGOTabbedControl.m in Sources */,
 				EB03376B133D26F100ACF2BB /* EventDetailTableView.m in Sources */,
 				562F4B79133EFA10000B9344 /* ContentModule.m in Sources */,
 				562F4B7A133EFA10000B9344 /* ContentTableViewController.m in Sources */,
@@ -1344,6 +1349,7 @@
 				4B3904F2134147D000CD9C6F /* Emergency.xcdatamodeld in Sources */,
 				4B3904F3134147D000CD9C6F /* EmergencyNotice.m in Sources */,
 				EBE2CC1E1342AD2F0037546A /* KGOBookmarksViewController.m in Sources */,
+				EBE2CC2113438AEA0037546A /* KGODetailPageHeaderView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

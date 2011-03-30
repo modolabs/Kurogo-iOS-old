@@ -5,14 +5,11 @@
 #import "UIKit+KGOAdditions.h"
 #import "Foundation+KGOAdditions.h"
 #import "KGORequestManager.h"
+#import "KGODetailPageHeaderView.h"
 
 @interface EventDetailTableView (Private)
 
-- (CGFloat)headerWidthWithButtons;
 - (void)setupTableHeader;
-
-- (void)share:(id)sender;
-- (void)toggleBookmark:(id)sender;
 
 @end
 
@@ -56,8 +53,6 @@
 - (void)dealloc
 {
 	[_shareController release];
-    [self hideShareButton];
-    [self hideBookmarkButton];
     self.event = nil;
     self.delegate = nil;
     self.dataSource = nil;
@@ -141,8 +136,6 @@
     
     _sections = [mutableSections copy];
     
-    [self hideBookmarkButton];
-    [self hideShareButton];
     [self setupTableHeader];
     [self reloadData];
 }
@@ -188,16 +181,12 @@
 
 - (void)setupTableHeader
 {
-    self.tableHeaderView = [[[UIView alloc] initWithFrame:CGRectMake(0, 0, self.bounds.size.width, 1)] autorelease];
-
-    [self showShareButton];
-    [self showBookmarkButton];
-    
-    // title
-    UILabel *titleLabel = [UILabel multilineLabelWithText:_event.title
-                                                     font:[[KGOTheme sharedTheme] fontForContentTitle]
-                                                    width:[self headerWidthWithButtons] - 10];
-    titleLabel.textColor = [[KGOTheme sharedTheme] textColorForContentTitle];
+    if (!_headerView) {
+        _headerView = [[KGODetailPageHeaderView alloc] initWithFrame:CGRectMake(0, 0, self.bounds.size.width, 1)];
+        _headerView.showsBookmarkButton = YES;
+    }
+    _headerView.detailItem = self.event;
+    _headerView.showsShareButton = [self twitterUrl] != nil;
     
     // time
     // TODO: consolidate date formatter objects
@@ -212,139 +201,32 @@
                             dateString,
                             [formatter stringFromDate:_event.startDate],
                             [formatter stringFromDate:_event.endDate]];
-    UILabel *timeLabel = [UILabel multilineLabelWithText:timeString
-                                                    font:[[KGOTheme sharedTheme] fontForBodyText]
-                                                   width:[self headerWidthWithButtons] - 10];
-    timeLabel.textColor = [[KGOTheme sharedTheme] textColorForBodyText];
+    
+    _headerView.subtitleLabel.text = timeString;
     
     // description
     UILabel *summaryLabel = [UILabel multilineLabelWithText:_event.summary
                                                        font:[[KGOTheme sharedTheme] fontForTableFooter]
                                                       width:self.bounds.size.width - 10];
-    summaryLabel.textColor = [[KGOTheme sharedTheme] textColorForBodyText];
-    
-    CGRect frame = titleLabel.frame;
-    frame.origin.x = 10;
-    frame.origin.y += 10;
-    titleLabel.frame = frame;
-    
-    frame = timeLabel.frame;
-    frame.origin.x = 10;
-    frame.origin.y += titleLabel.frame.size.height + 20;
-    timeLabel.frame = frame;
-    
-    frame = summaryLabel.frame;
-    frame.origin.x = 10;
-    frame.origin.y += titleLabel.frame.size.height + timeLabel.frame.size.height + 30;
+    summaryLabel.textColor = [[KGOTheme sharedTheme] textColorForTableFooter];
+    CGRect frame = summaryLabel.frame;
+    frame.origin.y = _headerView.frame.size.height;
     summaryLabel.frame = frame;
+
+    frame = CGRectMake(0, 0,
+                       self.bounds.size.width,
+                       _headerView.frame.size.height + summaryLabel.frame.size.height + 10);
+    UIView *containerView = [[[UIView alloc] initWithFrame:frame] autorelease];
     
-    frame = self.tableHeaderView.frame;
-    frame.size.height = titleLabel.frame.size.height + timeLabel.frame.size.height + summaryLabel.frame.size.height + 40;
-    self.tableHeaderView.frame = frame;
-    
-    [self.tableHeaderView addSubview:titleLabel];
-    [self.tableHeaderView addSubview:timeLabel];
-    [self.tableHeaderView addSubview:summaryLabel];
-    
-    self.tableHeaderView = self.tableHeaderView; // force contents to resize
+    [containerView addSubview:_headerView];
+    [containerView addSubview:summaryLabel];
+
+    self.tableHeaderView = containerView;
 }
 
-- (CGFloat)headerWidthWithButtons
-{
-    // assuming share button occupies far right
-    // and bookmark button comes after share
-    CGFloat result = self.bounds.size.width - 10;
-    if (_shareButton) {
-        result -= _shareButton.frame.size.width + 10;
-    }
-    if (_bookmarkButton) {
-        result -= _bookmarkButton.frame.size.width + 10;
-    }
-    return result;
-}
-
-- (void)showBookmarkButton
-{
-    if (!_bookmarkButton) {
-        UIImage *placeholder = [UIImage imageWithPathName:@"common/bookmark_off.png"];
-        CGFloat buttonX = [self headerWidthWithButtons] - placeholder.size.width;
-        
-        _bookmarkButton = [[UIButton buttonWithType:UIButtonTypeCustom] retain];
-        _bookmarkButton.frame = CGRectMake(buttonX, 10, placeholder.size.width, placeholder.size.height);
-
-        [_bookmarkButton addTarget:self action:@selector(toggleBookmark:) forControlEvents:UIControlEventTouchUpInside];
-        [self.tableHeaderView addSubview:_bookmarkButton];
-    }
-    
-    UIImage *buttonImage, *pressedButtonImage;
-    if (_event.bookmarked) {
-        buttonImage = [UIImage imageWithPathName:@"common/bookmark_on.png"];
-        pressedButtonImage = [UIImage imageWithPathName:@"common/bookmark_on_pressed.png"];
-    } else {
-        buttonImage = [UIImage imageWithPathName:@"common/bookmark_off.png"];
-        pressedButtonImage = [UIImage imageWithPathName:@"common/bookmark_off_pressed.png"];
-    }
-    [_bookmarkButton setImage:buttonImage forState:UIControlStateNormal];
-    [_bookmarkButton setImage:pressedButtonImage forState:UIControlStateHighlighted];
-}
-
-- (void)showShareButton
-{
-    if (!_shareButton && [self twitterUrl]) {
-        UIImage *buttonImage = [UIImage imageWithPathName:@"common/share.png"];
-        CGFloat buttonX = [self headerWidthWithButtons] - buttonImage.size.width;
-        
-        _shareButton = [[UIButton buttonWithType:UIButtonTypeCustom] retain];
-        _shareButton.frame = CGRectMake(buttonX, 10, buttonImage.size.width, buttonImage.size.height);
-        [_shareButton setImage:buttonImage forState:UIControlStateNormal];
-        [_shareButton setImage:[UIImage imageWithPathName:@"common/share_pressed.png"] forState:UIControlStateHighlighted];
-        [_shareButton addTarget:self action:@selector(share:) forControlEvents:UIControlEventTouchUpInside];
-        [self.tableHeaderView addSubview:_shareButton];
-        
-        if (_bookmarkButton) {
-            CGRect frame = _bookmarkButton.frame;
-            frame.origin.x = [self headerWidthWithButtons];
-            _bookmarkButton.frame = frame;
-        }
-    }
-}
-
-- (void)hideBookmarkButton
-{
-    if (_bookmarkButton) {
-        [_bookmarkButton removeFromSuperview];
-        [_bookmarkButton release];
-        _bookmarkButton = nil;
-    }
-}
-
-- (void)hideShareButton
-{
-    if (_shareButton) {
-        [_shareButton removeFromSuperview];
-        [_shareButton release];
-        _shareButton = nil;
-    }
-    
-    // make sure bookmark button is flushed right
-    if (_bookmarkButton) {
-        CGRect frame = _bookmarkButton.frame;
-        frame.origin.x = [self headerWidthWithButtons];
-        _bookmarkButton.frame = frame;
-    }
-}
-
-#pragma mark - button actions
-
-- (void)share:(id)sender
+- (void)headerView:(KGODetailPageHeaderView *)headerView shareButtonPressed:(id)sender
 {
     [_shareController shareInView:self];
-}
-
-- (void)toggleBookmark:(id)sender
-{
-    _event.bookmarked = !_event.bookmarked;
-    [self showBookmarkButton];
 }
 
 #pragma mark KGOShareButtonDelegate

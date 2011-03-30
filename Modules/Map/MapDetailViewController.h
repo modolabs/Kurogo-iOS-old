@@ -4,20 +4,11 @@
 
 @class KGOPlacemark;
 
-@interface MapDetailViewController : KGOTabbedViewController <KGODetailPagerDelegate> {
-    
-    UILabel *_titleLabel;
-    UIView *_contentView;
-    
-    UIButton *_bookmarkButton;
+@interface MapDetailViewController : KGOTabbedViewController <KGODetailPagerDelegate, UIWebViewDelegate> {
     
 }
 
 @property (nonatomic, retain) KGOPlacemark *placemark;
 @property (nonatomic, retain) KGODetailPager *pager;
-
-// TODO: there needs to be a universal bookmark ui
-- (void)showBookmarkButton;
-- (void)hideBookmarkButton;
 
 @end
