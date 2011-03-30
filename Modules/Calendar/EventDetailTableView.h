@@ -1,8 +1,20 @@
 #import <UIKit/UIKit.h>
 #import "KGOShareButtonController.h"
+#import "KGODetailPageHeaderView.h"
+
+@interface EventDetailTableHeader : KGODetailPageHeaderView {
+    
+    UILabel *_descriptionLabel;
+
+}
+
+@property (nonatomic, readonly) UILabel *descriptionLabel;
+
+@end
+
 
 @class KGOEventWrapper;
-@class KGODetailPageHeaderView;
+
 
 @interface EventDetailTableView : UITableView <UITableViewDelegate, UITableViewDataSource, KGOShareButtonDelegate> {
     
@@ -14,7 +26,7 @@
     
     KGOShareButtonController *_shareController;
     
-    KGODetailPageHeaderView *_headerView;
+    EventDetailTableHeader *_headerView;
 }
 
 @property (nonatomic, retain) KGOEventWrapper *event;

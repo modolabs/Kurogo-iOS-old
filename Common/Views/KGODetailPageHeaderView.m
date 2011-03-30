@@ -22,7 +22,7 @@
 @implementation KGODetailPageHeaderView
 
 @synthesize showsShareButton, showsBookmarkButton, delegate;
-
+/*
 - (id)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];
@@ -31,7 +31,7 @@
     }
     return self;
 }
-
+*/
 - (void)dealloc
 {
     self.delegate = nil;
@@ -43,7 +43,7 @@
     [super dealloc];
 }
 
-- (void)layoutSubviews
+- (void)inflateSubviews
 {
     if (_titleLabel) {
         CGFloat maxWidth = self.frame.size.width - 2 * LABEL_PADDING;
@@ -63,7 +63,7 @@
     if (_subtitleLabel) {
         CGFloat maxWidth = [self headerWidthWithButtons] - 2 * LABEL_PADDING;
         CGSize constraintSize = CGSizeMake(maxWidth, _subtitleLabel.font.lineHeight * MAX_SUBTITLE_LINES);
-        CGSize textSize = [_titleLabel.text sizeWithFont:_subtitleLabel.font constrainedToSize:constraintSize];
+        CGSize textSize = [_subtitleLabel.text sizeWithFont:_subtitleLabel.font constrainedToSize:constraintSize];
         CGFloat y = LABEL_PADDING;
         if (_titleLabel) {
             y += _titleLabel.frame.size.height + LABEL_PADDING;
@@ -78,11 +78,18 @@
         frame.size.height = fmaxf(frame.size.height, LABEL_PADDING + _subtitleLabel.frame.origin.y + _subtitleLabel.frame.size.height);
         self.frame = frame;
     }
-    
-    if (_bookmarkButton || _shareButton) {
+
+    if (_shareButton) {
+        [self layoutShareButton];
         CGRect frame = frame;
-        CGFloat height = _bookmarkButton != nil ? _bookmarkButton.frame.size.height : _shareButton.frame.size.height;
-        frame.size.height = fmaxf(frame.size.height, LABEL_PADDING * 2 + height);
+        frame.size.height = fmaxf(frame.size.height, LABEL_PADDING * 2 + _shareButton.frame.size.height);
+        self.frame = frame;
+    }
+    
+    if (_bookmarkButton) {
+        [self layoutBookmarkButton];
+        CGRect frame = frame;
+        frame.size.height = fmaxf(frame.size.height, LABEL_PADDING * 2 + _bookmarkButton.frame.size.height);
         self.frame = frame;
     }
 }
@@ -94,6 +101,7 @@
         _titleLabel.backgroundColor = [UIColor clearColor];
         _titleLabel.font = [[KGOTheme sharedTheme] fontForContentTitle];
         _titleLabel.textColor = [[KGOTheme sharedTheme] textColorForContentTitle];
+        _titleLabel.numberOfLines = MAX_TITLE_LINES;
     }
     return _titleLabel;
 }
@@ -105,6 +113,7 @@
         _subtitleLabel.backgroundColor = [UIColor clearColor];
         _subtitleLabel.font = [[KGOTheme sharedTheme] fontForBodyText];
         _subtitleLabel.textColor = [[KGOTheme sharedTheme] textColorForBodyText];
+        _subtitleLabel.numberOfLines = MAX_SUBTITLE_LINES;
     }
     return _subtitleLabel;
 }
@@ -151,9 +160,17 @@
     [_detailItem release];
     _detailItem = [item retain];
     
+    CGRect frame = self.frame;
+    frame.size.height = 0;
+    self.frame = frame;
+    
     self.titleLabel.text = _detailItem.title;
     if ([_detailItem respondsToSelector:@selector(subtitle)]) {
         self.subtitleLabel.text = [_detailItem subtitle];
+    } else {
+        [_subtitleLabel removeFromSuperview];
+        [_subtitleLabel release];
+        _subtitleLabel = nil;
     }
 }
 
@@ -161,12 +178,12 @@
 {
     // assuming share button occupies far right
     // and bookmark button comes after share
-    CGFloat result = self.bounds.size.width - 10;
+    CGFloat result = self.bounds.size.width - LABEL_PADDING;
     if (_shareButton) {
-        result -= _shareButton.frame.size.width + 10;
+        result -= _shareButton.frame.size.width + LABEL_PADDING;
     }
     if (_bookmarkButton) {
-        result -= _bookmarkButton.frame.size.width + 10;
+        result -= _bookmarkButton.frame.size.width + LABEL_PADDING;
     }
     return result;
 }
@@ -195,6 +212,7 @@
         
         [_bookmarkButton addTarget:self action:@selector(toggleBookmark:) forControlEvents:UIControlEventTouchUpInside];
         [self addSubview:_bookmarkButton];
+        
     }
     
     UIImage *buttonImage, *pressedButtonImage;
@@ -207,6 +225,13 @@
     }
     [_bookmarkButton setImage:buttonImage forState:UIControlStateNormal];
     [_bookmarkButton setImage:pressedButtonImage forState:UIControlStateHighlighted];
+    
+    CGRect frame = _bookmarkButton.frame;
+    if (_shareButton) {
+        frame.origin.x = self.bounds.size.width - _shareButton.frame.size.width - frame.size.width - 2 * LABEL_PADDING;
+    }
+    frame.origin.y = LABEL_PADDING + (_titleLabel == nil ? 0 : _titleLabel.frame.size.height + LABEL_PADDING);
+    _bookmarkButton.frame = frame;
 }
 
 - (void)hideBookmarkButton
@@ -222,7 +247,7 @@
 {
     if (!_shareButton) {
         UIImage *buttonImage = [UIImage imageWithPathName:@"common/share.png"];
-        CGFloat buttonX = [self headerWidthWithButtons] - buttonImage.size.width;
+        CGFloat buttonX = self.frame.size.width - buttonImage.size.width - LABEL_PADDING;
         CGFloat buttonY = LABEL_PADDING + (_titleLabel == nil ? 0 : _titleLabel.frame.size.height + LABEL_PADDING);
         
         _shareButton = [[UIButton buttonWithType:UIButtonTypeCustom] retain];
@@ -234,11 +259,10 @@
         }
         [self addSubview:_shareButton];
         
-        if (_bookmarkButton) {
-            CGRect frame = _bookmarkButton.frame;
-            frame.origin.x = [self headerWidthWithButtons];
-            _bookmarkButton.frame = frame;
-        }
+    } else {
+        CGRect frame = _shareButton.frame;
+        frame.origin.y = LABEL_PADDING + (_titleLabel == nil ? 0 : _titleLabel.frame.size.height + LABEL_PADDING);
+        _shareButton.frame = frame;
     }
 }
 

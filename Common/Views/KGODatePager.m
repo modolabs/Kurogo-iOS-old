@@ -109,7 +109,7 @@
         pickerVC.date = self.date;
         
         KGOAppDelegate *appDelegate = KGO_SHARED_APP_DELEGATE();
-        [appDelegate presentAppModalViewController:pickerVC animated:YES cancelButtonTitle:@"Done"];
+        [appDelegate presentAppModalNavigationController:pickerVC animated:YES];
         
     } else {
         // previous or next date
@@ -120,7 +120,7 @@
         if (_incrementUnit & NSMonthCalendarUnit) [components setMonth:offset];
         if (_incrementUnit & NSYearCalendarUnit)  [components setYear:offset];
         
-        self.date = [[NSCalendar currentCalendar] dateByAddingComponents:components toDate:self.date options:NSWrapCalendarComponents];
+        self.date = [[NSCalendar currentCalendar] dateByAddingComponents:components toDate:self.date options:0];
     }
 }
 

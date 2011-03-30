@@ -274,7 +274,7 @@
     [self.window addSubview:_appModalHolder.view];
 }
 
-- (void)presentAppModalViewController:(UIViewController *)viewController animated:(BOOL)animated cancelButtonTitle:(NSString *)title
+- (void)presentAppModalNavigationController:(UIViewController *)viewController animated:(BOOL)animated
 {
 	if (!viewController) return;
 	
@@ -289,18 +289,16 @@
             UINavigationController *navC = [[[UINavigationController alloc] initWithRootViewController:viewController] autorelease];
             presentedViewController = navC;
         }
-
-        if (title && !presentedViewController.navigationItem.rightBarButtonItem) {
-            UIBarButtonItem *item = [[[UIBarButtonItem alloc] initWithTitle:title
-                                                                      style:UIBarButtonItemStyleDone
-                                                                     target:self
-                                                                     action:@selector(dismissAppModalViewController:)] autorelease];
-            viewController.navigationItem.rightBarButtonItem = item;
-        }
     }
     
     [_appModalHolder presentModalViewController:presentedViewController animated:animated];
     
+    if (viewController.modalPresentationStyle == UIModalPresentationFullScreen && !viewController.navigationItem.rightBarButtonItem) {
+        UIBarButtonItem *item = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone
+                                                                               target:self
+                                                                               action:@selector(dismissAppModalViewControllerAnimated:)] autorelease];
+        viewController.navigationItem.rightBarButtonItem = item;
+    }
 }
 
 - (void)presentAppModalViewController:(UIViewController *)viewController animated:(BOOL)animated {

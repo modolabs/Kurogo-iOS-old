@@ -26,7 +26,6 @@
     UILabel *_subtitleLabel;
     
     id<KGOSearchResult> _detailItem;
-    
 }
 
 @property(nonatomic, assign) id<KGODetailPageHeaderDelegate> delegate;
@@ -35,5 +34,7 @@
 @property(nonatomic) BOOL showsBookmarkButton;
 @property(nonatomic, readonly) UILabel *titleLabel;
 @property(nonatomic, readonly) UILabel *subtitleLabel;
+
+- (void)inflateSubviews;
 
 @end

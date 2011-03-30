@@ -23,7 +23,7 @@
         }
 		
 		KGOAppDelegate *appDelegate = KGO_SHARED_APP_DELEGATE();
-		[appDelegate presentAppModalViewController:aController animated:YES];
+		[appDelegate presentAppModalNavigationController:aController animated:YES];
 		[aController release];
 		
 	} else {

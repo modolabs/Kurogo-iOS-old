@@ -8,7 +8,7 @@
 - (void)clearEvents;
 - (void)clearCalendars;
 - (void)setupTabstripButtons;
-- (void)requestEventsForCurrentCalendar;
+- (void)requestEventsForCurrentCalendar:(NSDate *)date;
 - (void)loadTableViewWithStyle:(UITableViewStyle)style;
 
 @end
@@ -235,15 +235,15 @@ static bool isOverOneHour(NSTimeInterval interval) {
     [_currentCalendar release];
     _currentCalendar = [currentCalendar retain];
     
-    [self requestEventsForCurrentCalendar];
+    [self requestEventsForCurrentCalendar:[NSDate date]];
 }
 
-- (void)requestEventsForCurrentCalendar
+- (void)requestEventsForCurrentCalendar:(NSDate *)date
 {
     if (_currentCalendar) {
         self.tableView.hidden = YES;
         [_loadingView startAnimating];
-        [self.dataManager requestEventsForCalendar:_currentCalendar time:[NSDate date]];
+        [self.dataManager requestEventsForCalendar:_currentCalendar time:date];
     }
 }
 
@@ -280,7 +280,7 @@ static bool isOverOneHour(NSTimeInterval interval) {
 
 - (void)pager:(KGODatePager *)pager didSelectDate:(NSDate *)date
 {
-    [self requestEventsForCurrentCalendar];
+    [self requestEventsForCurrentCalendar:date];
 }
 
 #pragma mark Table view methods

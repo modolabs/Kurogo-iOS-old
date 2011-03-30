@@ -145,7 +145,7 @@
     } copy] autorelease];
     
     categoryVC.categoriesRequest.handler = createMapCategories;
-	[KGO_SHARED_APP_DELEGATE() presentAppModalViewController:categoryVC animated:YES cancelButtonTitle:@"Cancel"];
+	[KGO_SHARED_APP_DELEGATE() presentAppModalNavigationController:categoryVC animated:YES];
 }
 
 - (IBAction)bookmarksButtonPressed {
@@ -155,14 +155,14 @@
     KGOBookmarksViewController *vc = [[[KGOBookmarksViewController alloc] initWithStyle:UITableViewStylePlain] autorelease];
     vc.bookmarkedItems = array;
     vc.searchDisplayDelegate = self;
-    [KGO_SHARED_APP_DELEGATE() presentAppModalViewController:vc animated:YES cancelButtonTitle:nil];
+    [KGO_SHARED_APP_DELEGATE() presentAppModalNavigationController:vc animated:YES];
 }
 
 - (IBAction)settingsButtonPressed {
 	MapSettingsViewController *vc = [[[MapSettingsViewController alloc] initWithStyle:UITableViewStyleGrouped] autorelease];
     vc.title = @"Settings";
     vc.view.backgroundColor = [[KGOTheme sharedTheme] backgroundColorForApplication];
-	[KGO_SHARED_APP_DELEGATE() presentAppModalViewController:vc animated:YES cancelButtonTitle:@"Done"];
+	[KGO_SHARED_APP_DELEGATE() presentAppModalNavigationController:vc animated:YES];
 }
 
 #pragma mark Map/List

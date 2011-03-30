@@ -37,7 +37,7 @@
 
 - (IBAction)signOutButtonPressed:(UIButton *)sender;
 - (IBAction)signInButtonPressed:(UIButton *)sender;
-- (IBAction)tweetButtonPressed:(UIButton *)sender;
+- (IBAction)tweetButtonPressed:(id)sender;
 
 - (void)twitterDidLogout:(NSNotification *)aNotification;
 - (void)twitterDidLogin:(NSNotification *)aNotification;

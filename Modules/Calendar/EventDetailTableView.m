@@ -13,6 +13,59 @@
 
 @end
 
+@implementation EventDetailTableHeader : KGODetailPageHeaderView
+
+- (UILabel *)descriptionLabel
+{
+    if (!_descriptionLabel) {
+        _descriptionLabel = [[UILabel alloc] init];
+        _descriptionLabel.font = [[KGOTheme sharedTheme] fontForTableFooter];
+        _descriptionLabel.textColor = [[KGOTheme sharedTheme] textColorForTableFooter];
+        _descriptionLabel.backgroundColor = [UIColor clearColor];
+        _descriptionLabel.numberOfLines = 0;
+    }
+    return _descriptionLabel;
+}
+
+- (void)inflateSubviews
+{
+    [super inflateSubviews];
+    
+    if (_descriptionLabel) {
+        CGSize constraintSize = CGSizeMake(self.frame.size.width - 20, 2000);
+        CGRect frame = _descriptionLabel.frame;
+        frame.size = [_descriptionLabel.text sizeWithFont:_descriptionLabel.font constrainedToSize:constraintSize];
+        frame.origin.x = 10;
+        frame.origin.y = self.frame.size.height;
+        _descriptionLabel.frame = frame;
+        
+        [self addSubview:_descriptionLabel];
+        
+        frame = self.frame;
+        frame.size.height += _descriptionLabel.frame.size.height + 10;
+        self.frame = frame;
+    }
+}
+
+- (void)setDetailItem:(id<KGOSearchResult>)item
+{
+    [super setDetailItem:item];
+
+    if (_descriptionLabel) {
+        [_descriptionLabel removeFromSuperview];
+        [_descriptionLabel release];
+        _descriptionLabel = nil;
+    }
+}
+
+- (void)dealloc
+{
+    [_descriptionLabel release];
+    [super dealloc];
+}
+
+@end
+
 
 @implementation EventDetailTableView
 
@@ -136,8 +189,8 @@
     
     _sections = [mutableSections copy];
     
-    [self setupTableHeader];
     [self reloadData];
+    [self setupTableHeader];
 }
 
 #pragma mark - UITableViewDataSource
@@ -182,7 +235,7 @@
 - (void)setupTableHeader
 {
     if (!_headerView) {
-        _headerView = [[KGODetailPageHeaderView alloc] initWithFrame:CGRectMake(0, 0, self.bounds.size.width, 1)];
+        _headerView = [[EventDetailTableHeader alloc] initWithFrame:CGRectMake(0, 0, self.bounds.size.width, 1)];
         _headerView.showsBookmarkButton = YES;
     }
     _headerView.detailItem = self.event;
@@ -197,31 +250,23 @@
     
     [formatter setDateStyle:NSDateFormatterNoStyle];
     [formatter setTimeStyle:NSDateFormatterShortStyle];
-    NSString *timeString = [NSString stringWithFormat:@"%@\n%@-%@",
-                            dateString,
-                            [formatter stringFromDate:_event.startDate],
-                            [formatter stringFromDate:_event.endDate]];
-    
+    NSString *timeString = nil;
+    if (_event.endDate) {
+        timeString = [NSString stringWithFormat:@"%@\n%@-%@",
+                      dateString,
+                      [formatter stringFromDate:_event.startDate],
+                      [formatter stringFromDate:_event.endDate]];
+    } else {
+        timeString = [NSString stringWithFormat:@"%@\n%@",
+                      dateString,
+                      [formatter stringFromDate:_event.startDate]];
+    }
     _headerView.subtitleLabel.text = timeString;
+    _headerView.descriptionLabel.text = _event.summary;
     
-    // description
-    UILabel *summaryLabel = [UILabel multilineLabelWithText:_event.summary
-                                                       font:[[KGOTheme sharedTheme] fontForTableFooter]
-                                                      width:self.bounds.size.width - 10];
-    summaryLabel.textColor = [[KGOTheme sharedTheme] textColorForTableFooter];
-    CGRect frame = summaryLabel.frame;
-    frame.origin.y = _headerView.frame.size.height;
-    summaryLabel.frame = frame;
-
-    frame = CGRectMake(0, 0,
-                       self.bounds.size.width,
-                       _headerView.frame.size.height + summaryLabel.frame.size.height + 10);
-    UIView *containerView = [[[UIView alloc] initWithFrame:frame] autorelease];
+    [_headerView inflateSubviews];
     
-    [containerView addSubview:_headerView];
-    [containerView addSubview:summaryLabel];
-
-    self.tableHeaderView = containerView;
+    self.tableHeaderView = _headerView;
 }
 
 - (void)headerView:(KGODetailPageHeaderView *)headerView shareButtonPressed:(id)sender

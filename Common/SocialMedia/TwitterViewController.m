@@ -20,6 +20,14 @@
 {
     [super viewDidLoad];
     
+    self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithTitle:@"Tweet"
+                                                                               style:UIBarButtonItemStyleDone
+                                                                              target:self
+                                                                              action:@selector(tweetButtonPressed:)] autorelease];
+    self.navigationItem.leftBarButtonItem = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
+                                                                                           target:KGO_SHARED_APP_DELEGATE()
+                                                                                           action:@selector(dismissAppModalViewControllerAnimated:)] autorelease];
+    
     self.title = NSLocalizedString(@"Twitter", nil);
     
     _loginHintLabel.text = NSLocalizedString(@"Sign into your Twitter account.", nil);
@@ -71,7 +79,7 @@
     _loadingView.hidden = NO;
 }
 
-- (IBAction)tweetButtonPressed:(UIButton *)sender
+- (IBAction)tweetButtonPressed:(id)sender
 {
     [[KGOSocialMediaController sharedController] postToTwitter:_messageView.text];
     _loadingView.hidden = NO;
