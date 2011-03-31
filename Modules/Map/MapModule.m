@@ -89,7 +89,7 @@ NSString * const MapTypePreferenceChanged = @"MapTypeChanged";
         if (place) {
             detailVC.placemark = place;
         }
-        KGOSearchDisplayController *controller = [params objectForKey:@"searchController"];
+        id<KGODetailPagerController> controller = [params objectForKey:@"pagerController"];
         if (controller) {
             KGODetailPager *pager = [[[KGODetailPager alloc] initWithPagerController:controller delegate:detailVC] autorelease];
             detailVC.pager = pager;
@@ -159,7 +159,7 @@ NSString * const MapTypePreferenceChanged = @"MapTypeChanged";
     NSArray *resultArray = [result arrayForKey:@"results"];
     NSMutableArray *searchResults = [NSMutableArray arrayWithCapacity:[(NSArray *)resultArray count]];
     for (id aResult in resultArray) {
-        KGOPlacemark *placemark = [[KGOPlacemark placemarkWithDictionary:aResult] autorelease];
+        KGOPlacemark *placemark = [KGOPlacemark placemarkWithDictionary:aResult];
         if (placemark)
             [searchResults addObject:placemark];
     }

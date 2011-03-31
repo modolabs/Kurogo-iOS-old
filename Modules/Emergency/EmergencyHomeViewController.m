@@ -117,7 +117,7 @@
         if(_notice) {
             template = [KGOHTMLTemplate templateWithPathName:@"modules/emergency/emergency_notice_template.html"];
         
-            NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+            NSDateFormatter *dateFormatter = [[[NSDateFormatter alloc] init] autorelease];
             [dateFormatter setDateFormat:@"MMM d, y"];
             NSString *pubDate = [dateFormatter stringFromDate:_notice.pubDate];
         

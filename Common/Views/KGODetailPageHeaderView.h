@@ -35,6 +35,4 @@
 @property(nonatomic, readonly) UILabel *titleLabel;
 @property(nonatomic, readonly) UILabel *subtitleLabel;
 
-- (void)inflateSubviews;
-
 @end

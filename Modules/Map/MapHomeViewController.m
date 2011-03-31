@@ -230,6 +230,44 @@
 	[_mapListToggle setEnabled:NO forSegmentAtIndex:1];
 }
 
+#pragma mark MKMapViewDelegate
+
+- (MKAnnotationView *)mapView:(MKMapView *)mapView viewForAnnotation:(id<MKAnnotation>)annotation
+{
+    MKAnnotationView *view = nil;
+    if (![annotation isKindOfClass:[MKUserLocation class]]) {
+        static NSString *AnnotationIdentifier = @"adfgweg";
+        view = [mapView dequeueReusableAnnotationViewWithIdentifier:AnnotationIdentifier];
+        if (!view) {
+            view = [[[MKPinAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:AnnotationIdentifier] autorelease];
+            view.rightCalloutAccessoryView = [UIButton buttonWithType:UIButtonTypeDetailDisclosure];
+        }
+    }
+    return view;
+}
+
+- (void)mapView:(MKMapView *)mapView annotationView:(MKAnnotationView *)view calloutAccessoryControlTapped:(UIControl *)control
+{
+    id<MKAnnotation> annotation = view.annotation;
+    if ([annotation conformsToProtocol:@protocol(KGOSearchResult)]) {
+        NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:annotation, @"place", self, @"pagerController", nil];
+        KGOAppDelegate *appDelegate = KGO_SHARED_APP_DELEGATE();
+        [appDelegate showPage:LocalPathPageNameDetail forModuleTag:MapTag params:params];
+    }
+}
+
+#pragma mark KGODetailPagerController
+
+- (id<KGOSearchResult>)pager:(KGODetailPager *)pager contentForPageAtIndexPath:(NSIndexPath *)indexPath
+{
+    return [self.annotations objectAtIndex:indexPath.row];
+}
+
+- (NSInteger)pager:(KGODetailPager *)pager numberOfPagesInSection:(NSInteger)section
+{
+    return self.annotations.count;
+}
+
 #pragma mark SearchDisplayDelegate
 
 - (BOOL)searchControllerShouldShowSuggestions:(KGOSearchDisplayController *)controller {
@@ -248,12 +286,13 @@
     // TODO: this is depending on the incorrect use of KGOSearchDisplayDelegate
     // in KGOBookmarksViewController and needs to be fixed when that is fixed.
     if (controller) {
-        NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:aResult, @"place", controller, @"searchController", nil];
+        NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:aResult, @"place", controller, @"pagerController", nil];
         KGOAppDelegate *appDelegate = KGO_SHARED_APP_DELEGATE();
         [appDelegate showPage:LocalPathPageNameDetail forModuleTag:MapTag params:params];
 
     } else if ([aResult conformsToProtocol:@protocol(MKAnnotation)]) {
-        [_mapView addAnnotation:(id<MKAnnotation>)aResult];
+        id<MKAnnotation> annotation = (id<MKAnnotation>)aResult;
+        [_mapView addAnnotation:annotation];
     }
 }
 

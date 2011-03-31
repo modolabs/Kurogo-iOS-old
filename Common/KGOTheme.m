@@ -358,7 +358,7 @@ static NSString * KGOAccessoryImageCheckmarkHighlighted = @"common/action-checkm
 
 - (void)loadFontPreferences
 {
-    NSMutableDictionary *mutableFontDict = [[themeDict objectForKey:@"Fonts"] mutableCopy];
+    NSMutableDictionary *mutableFontDict = [[[themeDict objectForKey:@"Fonts"] mutableCopy] autorelease];
     NSDictionary *userSettings = [[NSUserDefaults standardUserDefaults] objectForKey:KGOUserPreferencesKey];
     if (userSettings) {
         // TODO: reduce the hard-coded ness of our settings overrides

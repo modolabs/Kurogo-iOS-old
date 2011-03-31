@@ -39,6 +39,7 @@
     NSLog(@"%@", [self.placemark description]);
 
     self.tabViewHeader.detailItem = self.placemark;
+    //[self.tabViewHeader inflateSubviews];
     [self reloadTabContent];
 }
 

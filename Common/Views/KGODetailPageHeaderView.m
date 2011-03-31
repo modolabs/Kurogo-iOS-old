@@ -43,8 +43,13 @@
     [super dealloc];
 }
 
-- (void)inflateSubviews
+- (void)layoutSubviews
 {
+    CGRect oldFrame = self.frame;
+    CGFloat titleHeight = 0;
+    CGFloat subtitleHeight = 0;
+    CGFloat buttonHeight = 0;
+    
     if (_titleLabel) {
         CGFloat maxWidth = self.frame.size.width - 2 * LABEL_PADDING;
         CGSize constraintSize = CGSizeMake(maxWidth, _titleLabel.font.lineHeight * MAX_TITLE_LINES);
@@ -54,10 +59,7 @@
         if (![_titleLabel isDescendantOfView:self]) {
             [self addSubview:_titleLabel];
         }
-        
-        CGRect frame = self.frame;
-        frame.size.height = fmaxf(frame.size.height, LABEL_PADDING * 2 + _titleLabel.frame.size.height);
-        self.frame = frame;
+        titleHeight = _titleLabel.frame.size.height + LABEL_PADDING;
     }
     
     if (_subtitleLabel) {
@@ -73,24 +75,27 @@
         if (![_subtitleLabel isDescendantOfView:self]) {
             [self addSubview:_subtitleLabel];
         }
-        
-        CGRect frame = self.frame;
-        frame.size.height = fmaxf(frame.size.height, LABEL_PADDING + _subtitleLabel.frame.origin.y + _subtitleLabel.frame.size.height);
-        self.frame = frame;
+        subtitleHeight = _subtitleLabel.frame.size.height + LABEL_PADDING;
     }
 
-    if (_shareButton) {
+    if (_showsShareButton) {
         [self layoutShareButton];
-        CGRect frame = frame;
-        frame.size.height = fmaxf(frame.size.height, LABEL_PADDING * 2 + _shareButton.frame.size.height);
-        self.frame = frame;
+        buttonHeight = _shareButton.frame.size.height + LABEL_PADDING;
     }
     
-    if (_bookmarkButton) {
+    if (_showsBookmarkButton) {
         [self layoutBookmarkButton];
-        CGRect frame = frame;
-        frame.size.height = fmaxf(frame.size.height, LABEL_PADDING * 2 + _bookmarkButton.frame.size.height);
-        self.frame = frame;
+        buttonHeight = _bookmarkButton.frame.size.height + LABEL_PADDING;
+    }
+    
+    CGRect frame = self.frame;
+    frame.size.height = titleHeight + fmaxf(subtitleHeight, buttonHeight) + LABEL_PADDING;
+    self.frame = frame;
+
+    if ((self.frame.size.width != oldFrame.size.width || self.frame.size.height != oldFrame.size.height)
+        && [self.delegate respondsToSelector:@selector(headerViewFrameDidChange:)]
+    ) {
+        [self.delegate headerViewFrameDidChange:self];
     }
 }
 
@@ -132,9 +137,7 @@
 {
     _showsShareButton = shows;
     
-    if (_showsShareButton) {
-        [self layoutShareButton];
-    } else {
+    if (!_showsShareButton) {
         [self hideShareButton];
     }
 }
@@ -143,9 +146,7 @@
 {
     _showsBookmarkButton = shows;
     
-    if (_showsBookmarkButton) {
-        [self layoutBookmarkButton];
-    } else {
+    if (!_showsBookmarkButton) {
         [self hideBookmarkButton];
     }
 }
@@ -172,6 +173,8 @@
         [_subtitleLabel release];
         _subtitleLabel = nil;
     }
+    
+    [self setNeedsLayout];
 }
 
 - (CGFloat)headerWidthWithButtons

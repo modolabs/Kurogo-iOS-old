@@ -15,6 +15,7 @@ NSString * const UnreadNotificationsKey = @"UnreadNotifications";
 
 
 // module tags
+// TODO: get rid of all uses of these tags and use the tag given by the server
 NSString * const AboutTag      = @"about";
 NSString * const CalendarTag   = @"calendar";
 NSString * const CoursesTag    = @"courses";
@@ -37,8 +38,6 @@ NSString * const VideoTag     = @"video";
 
 // preferences
 
-NSString * const ShakeToReturnPrefKey = @"ShakeToReturnHome";
-NSString * const MapTypePrefKey = @"MapTypePreference";
 NSString * const MITNewsTwoFirstRunKey = @"MITNews2ClearedCachedArticles";
 
 // notification names

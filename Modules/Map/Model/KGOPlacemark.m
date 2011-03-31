@@ -54,7 +54,7 @@
     if ([idObject isKindOfClass:[NSString class]] || [idObject isKindOfClass:[NSNumber class]]) {
         theIdentifier = [idObject description];
     }
-    NSLog(@"%@ %@", theIdentifier, categoryPath);
+    NSLog(@"%@ %@", theIdentifier, [categoryPath componentsJoinedByString:@"/"]);
     
     KGOPlacemark *placemark = nil;
     if (categoryPath && theIdentifier) {

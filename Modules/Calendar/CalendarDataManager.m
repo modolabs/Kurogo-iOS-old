@@ -203,7 +203,7 @@
         NSMutableArray *array = [NSMutableArray array];
         for (NSInteger i = 0; i < returned; i++) {
             NSDictionary *aDict = [eventDicts objectAtIndex:i];
-            KGOEventWrapper *event = [[KGOEventWrapper alloc] initWithDictionary:aDict];
+            KGOEventWrapper *event = [[[KGOEventWrapper alloc] initWithDictionary:aDict] autorelease];
             [event addCalendar:calendar];
             [array addObject:event];
         }

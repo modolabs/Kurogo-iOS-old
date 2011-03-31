@@ -13,59 +13,6 @@
 
 @end
 
-@implementation EventDetailTableHeader : KGODetailPageHeaderView
-
-- (UILabel *)descriptionLabel
-{
-    if (!_descriptionLabel) {
-        _descriptionLabel = [[UILabel alloc] init];
-        _descriptionLabel.font = [[KGOTheme sharedTheme] fontForTableFooter];
-        _descriptionLabel.textColor = [[KGOTheme sharedTheme] textColorForTableFooter];
-        _descriptionLabel.backgroundColor = [UIColor clearColor];
-        _descriptionLabel.numberOfLines = 0;
-    }
-    return _descriptionLabel;
-}
-
-- (void)inflateSubviews
-{
-    [super inflateSubviews];
-    
-    if (_descriptionLabel) {
-        CGSize constraintSize = CGSizeMake(self.frame.size.width - 20, 2000);
-        CGRect frame = _descriptionLabel.frame;
-        frame.size = [_descriptionLabel.text sizeWithFont:_descriptionLabel.font constrainedToSize:constraintSize];
-        frame.origin.x = 10;
-        frame.origin.y = self.frame.size.height;
-        _descriptionLabel.frame = frame;
-        
-        [self addSubview:_descriptionLabel];
-        
-        frame = self.frame;
-        frame.size.height += _descriptionLabel.frame.size.height + 10;
-        self.frame = frame;
-    }
-}
-
-- (void)setDetailItem:(id<KGOSearchResult>)item
-{
-    [super setDetailItem:item];
-
-    if (_descriptionLabel) {
-        [_descriptionLabel removeFromSuperview];
-        [_descriptionLabel release];
-        _descriptionLabel = nil;
-    }
-}
-
-- (void)dealloc
-{
-    [_descriptionLabel release];
-    [super dealloc];
-}
-
-@end
-
 
 @implementation EventDetailTableView
 
@@ -232,10 +179,26 @@
 
 #pragma mark - Table header
 
+- (void)headerViewFrameDidChange:(KGODetailPageHeaderView *)headerView
+{
+    CGRect frame = _headerView.frame;
+    frame.size.height += _descriptionLabel.frame.size.height;
+    if (frame.size.height != self.tableHeaderView.frame.size.height) {
+        self.tableHeaderView.frame = frame;
+
+        frame = _descriptionLabel.frame;
+        frame.origin.y = _headerView.frame.size.height;
+        _descriptionLabel.frame = frame;
+        
+        self.tableHeaderView = self.tableHeaderView;
+    }
+}
+
 - (void)setupTableHeader
 {
     if (!_headerView) {
-        _headerView = [[EventDetailTableHeader alloc] initWithFrame:CGRectMake(0, 0, self.bounds.size.width, 1)];
+        _headerView = [[KGODetailPageHeaderView alloc] initWithFrame:CGRectMake(0, 0, self.bounds.size.width, 1)];
+        _headerView.delegate = self;
         _headerView.showsBookmarkButton = YES;
     }
     _headerView.detailItem = self.event;
@@ -262,11 +225,33 @@
                       [formatter stringFromDate:_event.startDate]];
     }
     _headerView.subtitleLabel.text = timeString;
-    _headerView.descriptionLabel.text = _event.summary;
+
+    if (!_descriptionLabel) {
+        _descriptionLabel = [UILabel multilineLabelWithText:_event.summary
+                                                       font:[[KGOTheme sharedTheme] fontForTableFooter]
+                                                      width:self.frame.size.width - 20];
+        _descriptionLabel.textColor = [[KGOTheme sharedTheme] textColorForTableFooter];
+    } else {
+        CGRect frame = _descriptionLabel.frame;
+        _descriptionLabel.text = _event.summary;
+        frame.size = [_descriptionLabel.text sizeWithFont:_descriptionLabel.font
+                                        constrainedToSize:CGSizeMake(self.frame.size.width - 20, 2000)];
+        _descriptionLabel.frame = frame;
+    }
     
-    [_headerView inflateSubviews];
+    CGRect frame = _headerView.frame;
+    frame.size.height += _descriptionLabel.frame.size.height;
+    UIView *containerView = [[[UIView alloc] initWithFrame:frame] autorelease];
+
+    frame = _descriptionLabel.frame;
+    frame.origin.x = 10;
+    frame.origin.y = _headerView.frame.size.height;
+    _descriptionLabel.frame = frame;
     
-    self.tableHeaderView = _headerView;
+    [containerView addSubview:_headerView];
+    [containerView addSubview:_descriptionLabel];
+    
+    self.tableHeaderView = containerView;
 }
 
 - (void)headerView:(KGODetailPageHeaderView *)headerView shareButtonPressed:(id)sender

@@ -235,7 +235,7 @@ bookmarked = _bookmarked;
     if (!self.attendees) {
         NSMutableSet *set = [NSMutableSet set];
         for (KGOEventAttendee *anAttendee in _kgoEvent.attendees) {
-            [set addObject:[[KGOAttendeeWrapper alloc] initWithKGOAttendee:anAttendee]];
+            [set addObject:[[[KGOAttendeeWrapper alloc] initWithKGOAttendee:anAttendee] autorelease]];
         }
         self.attendees = set;
     }    

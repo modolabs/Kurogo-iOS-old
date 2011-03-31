@@ -15,7 +15,8 @@ NSString * const EmergencyNoticeRetrievedNotification = @"EmergencyNoticeRetriev
 @implementation EmergencyDataManager
 
 - (id)initManagerWithTag:(NSString *)aTag {
-    if ((self = [super init])) {
+    self = [super init];
+    if (self) {
         tag = [aTag retain];
     }
     return self;
@@ -32,7 +33,7 @@ NSString * const EmergencyNoticeRetrievedNotification = @"EmergencyNoticeRetriev
         managers = [NSMutableDictionary new];
     }
     if (![managers objectForKey:tag]) {
-        EmergencyDataManager *manager = [[EmergencyDataManager alloc] initManagerWithTag:tag];
+        EmergencyDataManager *manager = [[[EmergencyDataManager alloc] initManagerWithTag:tag] autorelease];
         [managers setObject:manager forKey:tag];
     }
     return [managers objectForKey:tag];

@@ -40,8 +40,6 @@ extern NSString * const LocalPathMapsSelectedAnnotation;
 
 // preferences
 
-extern NSString * const ShakeToReturnPrefKey;
-extern NSString * const MapTypePrefKey;
 extern NSString * const MITNewsTwoFirstRunKey;
 
 

@@ -3,27 +3,16 @@
 
 @class KGOPlacemark;
 
-@interface KGOMapCategory : NSManagedObject <KGOCategory>
-{
+@interface KGOMapCategory : NSManagedObject <KGOCategory> {
+@private
 }
-
-@property (nonatomic, retain) NSString * title;
 @property (nonatomic, retain) NSString * identifier;
+@property (nonatomic, retain) NSString * title;
 @property (nonatomic, retain) NSNumber * sortOrder;
-@property (nonatomic, retain) NSSet* places;
 @property (nonatomic, retain) NSSet* subcategories;
+@property (nonatomic, retain) NSSet* places;
 @property (nonatomic, retain) KGOMapCategory * parentCategory;
 
 + (KGOMapCategory *)categoryWithPath:(NSArray *)categoryPath;
 
 @end
-
-
-@interface KGOMapCategory (CoreDataGeneratedAccessors)
-- (void)addPlacesObject:(KGOPlacemark *)value;
-- (void)removePlacesObject:(KGOPlacemark *)value;
-- (void)addPlaces:(NSSet *)value;
-- (void)removePlaces:(NSSet *)value;
-
-@end
-

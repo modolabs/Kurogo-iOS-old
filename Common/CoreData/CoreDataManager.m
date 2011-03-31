@@ -98,7 +98,9 @@
 	
 	NSError *error = nil;
 	NSArray *objects = [self.managedObjectContext executeFetchRequest:request error:&error];
-
+    if (error) {
+        NSLog(@"error fetching objects for %@: predicate: %@, error: %@", entityName, predicate, [error description]);
+    }
     return ([objects count] > 0) ? objects : nil;
 }
 

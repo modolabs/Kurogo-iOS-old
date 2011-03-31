@@ -82,7 +82,7 @@
 {
     [super viewDidLoad];
     
-    NSLog(@"%@", [_tabs description]);
+    self.tabViewHeader.delegate = self;
     
     for (id item in [self.delegate itemsForTabbedControl:_tabs]) {
         if ([item isKindOfClass:[NSString class]]) {

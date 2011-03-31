@@ -186,7 +186,7 @@ static bool isOverOneHour(NSTimeInterval interval) {
         NSArray *sortedEvents = [events sortedArrayUsingDescriptors:sortDescriptors];
         KGOEventWrapper *firstEvent = [sortedEvents objectAtIndex:0];
         KGOEventWrapper *lastEvent = [sortedEvents lastObject];
-        NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+        NSDateFormatter *formatter = [[[NSDateFormatter alloc] init] autorelease];
         NSTimeInterval interval = [lastEvent.startDate timeIntervalSinceDate:firstEvent.startDate];
         if (isOverOneMonth(interval)) {
             [formatter setDateFormat:@"MMMM"];

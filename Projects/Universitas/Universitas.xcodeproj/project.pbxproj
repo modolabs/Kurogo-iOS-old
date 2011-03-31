@@ -94,7 +94,6 @@
 		EB0338701340DBE100ACF2BB /* NewsCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = EB03386A1340DBE100ACF2BB /* NewsCategory.m */; };
 		EB0338711340DBE100ACF2BB /* NewsImage.m in Sources */ = {isa = PBXBuildFile; fileRef = EB03386C1340DBE100ACF2BB /* NewsImage.m */; };
 		EB0338721340DBE100ACF2BB /* NewsStory.m in Sources */ = {isa = PBXBuildFile; fileRef = EB03386E1340DBE100ACF2BB /* NewsStory.m */; };
-		EB03387A1340DBF400ACF2BB /* KGOMapCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = EB0338751340DBF400ACF2BB /* KGOMapCategory.m */; };
 		EB03387B1340DBF400ACF2BB /* KGOPlacemark.m in Sources */ = {isa = PBXBuildFile; fileRef = EB0338771340DBF400ACF2BB /* KGOPlacemark.m */; };
 		EB03387C1340DBF400ACF2BB /* MapModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = EB0338781340DBF400ACF2BB /* MapModel.xcdatamodeld */; };
 		EB0CF98D13403141003B8E45 /* TwitterViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = EB0CF98C13403141003B8E45 /* TwitterViewController.xib */; };
@@ -159,6 +158,7 @@
 		EBB121F2133A917200A4BD1D /* CalendarHomeViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = EBB121F0133A915200A4BD1D /* CalendarHomeViewController.xib */; };
 		EBE2CC1E1342AD2F0037546A /* KGOBookmarksViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EBE2CC1D1342AD2F0037546A /* KGOBookmarksViewController.m */; };
 		EBE2CC2113438AEA0037546A /* KGODetailPageHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = EBE2CC2013438AEA0037546A /* KGODetailPageHeaderView.m */; };
+		EBE2CC641343E4D00037546A /* KGOMapCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = EBE2CC631343E4D00037546A /* KGOMapCategory.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -356,8 +356,6 @@
 		EB03386C1340DBE100ACF2BB /* NewsImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NewsImage.m; sourceTree = "<group>"; };
 		EB03386D1340DBE100ACF2BB /* NewsStory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NewsStory.h; sourceTree = "<group>"; };
 		EB03386E1340DBE100ACF2BB /* NewsStory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NewsStory.m; sourceTree = "<group>"; };
-		EB0338741340DBF400ACF2BB /* KGOMapCategory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGOMapCategory.h; sourceTree = "<group>"; };
-		EB0338751340DBF400ACF2BB /* KGOMapCategory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGOMapCategory.m; sourceTree = "<group>"; };
 		EB0338761340DBF400ACF2BB /* KGOPlacemark.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGOPlacemark.h; sourceTree = "<group>"; };
 		EB0338771340DBF400ACF2BB /* KGOPlacemark.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGOPlacemark.m; sourceTree = "<group>"; };
 		EB0338791340DBF400ACF2BB /* MapModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = MapModel.xcdatamodel; sourceTree = "<group>"; };
@@ -461,6 +459,8 @@
 		EBE2CC1D1342AD2F0037546A /* KGOBookmarksViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGOBookmarksViewController.m; sourceTree = "<group>"; };
 		EBE2CC1F13438AEA0037546A /* KGODetailPageHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGODetailPageHeaderView.h; sourceTree = "<group>"; };
 		EBE2CC2013438AEA0037546A /* KGODetailPageHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGODetailPageHeaderView.m; sourceTree = "<group>"; };
+		EBE2CC621343E4D00037546A /* KGOMapCategory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGOMapCategory.h; sourceTree = "<group>"; };
+		EBE2CC631343E4D00037546A /* KGOMapCategory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGOMapCategory.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -873,11 +873,11 @@
 		EB0338731340DBF400ACF2BB /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				EB0338741340DBF400ACF2BB /* KGOMapCategory.h */,
-				EB0338751340DBF400ACF2BB /* KGOMapCategory.m */,
+				EB0338781340DBF400ACF2BB /* MapModel.xcdatamodeld */,
 				EB0338761340DBF400ACF2BB /* KGOPlacemark.h */,
 				EB0338771340DBF400ACF2BB /* KGOPlacemark.m */,
-				EB0338781340DBF400ACF2BB /* MapModel.xcdatamodeld */,
+				EBE2CC621343E4D00037546A /* KGOMapCategory.h */,
+				EBE2CC631343E4D00037546A /* KGOMapCategory.m */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -1340,7 +1340,6 @@
 				EB0338701340DBE100ACF2BB /* NewsCategory.m in Sources */,
 				EB0338711340DBE100ACF2BB /* NewsImage.m in Sources */,
 				EB0338721340DBE100ACF2BB /* NewsStory.m in Sources */,
-				EB03387A1340DBF400ACF2BB /* KGOMapCategory.m in Sources */,
 				EB03387B1340DBF400ACF2BB /* KGOPlacemark.m in Sources */,
 				EB03387C1340DBF400ACF2BB /* MapModel.xcdatamodeld in Sources */,
 				4B3904EF134147D000CD9C6F /* EmergencyDataManager.m in Sources */,
@@ -1350,6 +1349,7 @@
 				4B3904F3134147D000CD9C6F /* EmergencyNotice.m in Sources */,
 				EBE2CC1E1342AD2F0037546A /* KGOBookmarksViewController.m in Sources */,
 				EBE2CC2113438AEA0037546A /* KGODetailPageHeaderView.m in Sources */,
+				EBE2CC641343E4D00037546A /* KGOMapCategory.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

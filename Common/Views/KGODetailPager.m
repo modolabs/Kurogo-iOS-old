@@ -37,7 +37,10 @@
 		_pagerDelegate = delegate;
 		
 		NSIndexPath *indexPathBuilder = nil;
-		NSUInteger numberOfSections = [controller numberOfSections:self];
+        NSUInteger numberOfSections = 1;
+        if ([controller respondsToSelector:@selector(numberOfSections:)]) {
+            numberOfSections = [controller numberOfSections:self];
+        }
 		
 		if (numberOfSections) {
 			_sections = [[NSIndexSet alloc] initWithIndexesInRange:NSMakeRange(0, numberOfSections)];

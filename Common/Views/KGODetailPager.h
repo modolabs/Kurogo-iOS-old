@@ -12,10 +12,13 @@
 
 @protocol KGODetailPagerController <NSObject>
 
-// TODO: rename this to numberOfPagerSections to be more specific
-- (NSInteger)numberOfSections:(KGODetailPager *)pager;
 - (NSInteger)pager:(KGODetailPager *)pager numberOfPagesInSection:(NSInteger)section;
 - (id<KGOSearchResult>)pager:(KGODetailPager *)pager contentForPageAtIndexPath:(NSIndexPath *)indexPath;
+
+@optional
+
+// TODO: rename this to numberOfPagerSections to be more specific
+- (NSInteger)numberOfSections:(KGODetailPager *)pager;
 
 @end
 
