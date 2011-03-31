@@ -240,6 +240,7 @@
         view = [mapView dequeueReusableAnnotationViewWithIdentifier:AnnotationIdentifier];
         if (!view) {
             view = [[[MKPinAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:AnnotationIdentifier] autorelease];
+            view.canShowCallout = YES;
             view.rightCalloutAccessoryView = [UIButton buttonWithType:UIButtonTypeDetailDisclosure];
         }
     }
