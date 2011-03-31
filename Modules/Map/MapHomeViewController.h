@@ -46,4 +46,6 @@ KGOSearchDisplayDelegate, KGODetailPagerController> {
 
 - (void)mapTypeDidChange:(NSNotification *)aNotification;
 
++ (MKCoordinateRegion)regionForAnnotations:(NSArray *)annotations restrictedToClass:(Class)restriction;
+
 @end

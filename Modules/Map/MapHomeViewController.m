@@ -11,6 +11,7 @@
 #import "MapKit+KGOAdditions.h"
 #import "UIKit+KGOAdditions.h"
 #import "KGOToolbar.h"
+#import "KGOPlacemark.h"
 #import <QuartzCore/QuartzCore.h>
 
 @implementation MapHomeViewController
@@ -315,6 +316,8 @@
 			[_mapView addAnnotation:annotation];
 		}
 	}
+    
+    _mapView.region = [MapHomeViewController regionForAnnotations:_mapView.annotations restrictedToClass:[KGOPlacemark class]];
 	
 	_searchResultsTableView = tableView;
 }
@@ -333,6 +336,40 @@
 	}
 
 	_searchResultsTableView = nil;
+}
+
+// this is about 1km at the equator
+#define MINIMUM_COORDINATE_DELTA 0.01
+
++ (MKCoordinateRegion)regionForAnnotations:(NSArray *)annotations restrictedToClass:(Class)restriction
+{
+    double minLat = 90;
+    double maxLat = -90;
+    double minLon = 180;
+    double maxLon = -180;
+
+    for (id<MKAnnotation> annotation in annotations) {
+        if (!restriction || [annotation isKindOfClass:restriction]) {
+            CLLocationCoordinate2D coord = annotation.coordinate;
+            if (coord.latitude > maxLat)  maxLat = coord.latitude;
+            if (coord.longitude > maxLon) maxLon = coord.longitude;
+            if (coord.latitude < minLat)  minLat = coord.latitude;
+            if (coord.longitude < minLon) minLon = coord.longitude;
+        }
+    }
+    
+    CLLocationCoordinate2D center = CLLocationCoordinate2DMake(0, 0);
+    MKCoordinateSpan span = MKCoordinateSpanMake(0, 0);
+    
+    if (maxLat >= minLat && maxLon >= minLon) {
+        center.latitude = (minLat + maxLat) / 2;
+        center.longitude = (minLon + maxLon) / 2;
+        
+        span.latitudeDelta = fmax((maxLat - minLat) * 1.4, MINIMUM_COORDINATE_DELTA);
+        span.longitudeDelta = fmax((maxLon - minLon) * 1.4, MINIMUM_COORDINATE_DELTA);
+    }
+    
+    return MKCoordinateRegionMake(center, span);
 }
 
 @end
