@@ -8,6 +8,7 @@ NSString * const KGOSocialMediaTypeFacebook = @"Facebook";
 NSString * const KGOSocialMediaTypeTwitter = @"Twitter";
 NSString * const KGOSocialMediaTypeEmail = @"Email";
 NSString * const KGOSocialMediaTypeBitly = @"bit.ly";
+NSString * const KGOSocialMediaTypeFoursquare = @"Foursquare";
 
 // NSUserDefaults
 static NSString * const TwitterUsernameKey = @"TwitterUsername";
@@ -92,6 +93,10 @@ static KGOSocialMediaController *s_controller = nil;
 
 - (BOOL)supportsBitlyURLShortening {
     return [_appConfig objectForKey:KGOSocialMediaTypeBitly] != nil;
+}
+
+- (BOOL)supportsFoursquare {
+    return [_appConfig objectForKey:KGOSocialMediaTypeFoursquare] != nil;
 }
 
 - (id)init {
@@ -258,13 +263,6 @@ static KGOSocialMediaController *s_controller = nil;
 	[_twitterEngine sendUpdate:text];
 }
 
-- (void)getPostsForTwitterHashtag:(NSString *)hashtag {
-    if ([hashtag rangeOfString:@"#"].location != 0) {
-        hashtag = [NSString stringWithFormat:@"#%@", hashtag];
-    }
-    //[_twitterEngine
-}
-
 - (NSString *)twitterUsername {
 	if (_twitterUsername) {
 		return _twitterUsername;
@@ -331,6 +329,7 @@ static KGOSocialMediaController *s_controller = nil;
 - (void)connectionFinished:(NSString *)connectionIdentifier {
 	[KGO_SHARED_APP_DELEGATE() hideNetworkActivityIndicator];
 }
+
 
 #pragma mark - Facebook
 

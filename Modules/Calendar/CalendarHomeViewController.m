@@ -69,12 +69,6 @@
     _currentGroupIndex = NSNotFound;
     
     _datePager.delegate = self;
-    
-    if (!self.dataManager) {
-        self.dataManager = [[[CalendarDataManager alloc] init] autorelease];
-        self.dataManager.delegate = self;
-        self.dataManager.moduleTag = self.moduleTag;
-    }
 
     if (self.showsGroups) {
         _tabstrip.delegate = self;
@@ -86,6 +80,12 @@
     
     [_datePager setDate:[NSDate date]];
     [self loadTableViewWithStyle:UITableViewStylePlain];
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    self.dataManager.delegate = self;
 }
 
 - (void)viewDidUnload
@@ -374,12 +374,8 @@ static bool isOverOneHour(NSTimeInterval interval) {
         KGOEventWrapper *event = [eventsForSection objectAtIndex:indexPath.row];
         
         NSString *title = event.title;
-        NSLog(@"%@", event);
-        // TODO: consolidate date formatter objects into CalendarDataManager
-        NSDateFormatter *formatter = [[[NSDateFormatter alloc] init] autorelease];
-        [formatter setDateStyle:NSDateFormatterShortStyle];
-        [formatter setTimeStyle:NSDateFormatterShortStyle];
-        NSString *subtitle = [formatter stringFromDate:event.startDate];
+        DLog(@"%@", event);
+        NSString *subtitle = [self.dataManager shortDateTimeStringFromDate:event.startDate];
         
         return [[^(UITableViewCell *cell) {
             cell.selectionStyle = UITableViewCellSelectionStyleGray;

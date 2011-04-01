@@ -27,6 +27,8 @@
 			<string>Home</string>
 			<key>tag</key>
 			<string>home</string>
+			<key>hidden</key>
+			<true/>
 		</dict>
 		<dict>
 			<key>class</key>
@@ -160,6 +162,13 @@
 			<key>APISecret</key>
 			<string></string>
 			<key>AppID</key>
+			<string></string>
+		</dict>
+		<key>Foursquare</key>
+		<dict>
+			<key>ClientID</key>
+			<string></string>
+			<key>ClientSecret</key>
 			<string></string>
 		</dict>
 		<key>Twitter</key>

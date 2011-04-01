@@ -1,7 +1,7 @@
 #import <UIKit/UIKit.h>
 #import "KGODetailPager.h"
 
-@class KGOEventWrapper, EventDetailTableView;
+@class KGOEventWrapper, EventDetailTableView, CalendarDataManager;
 
 @interface CalendarDetailViewController : UIViewController <KGODetailPagerController, KGODetailPagerDelegate> {
     
@@ -12,6 +12,9 @@
 @property (nonatomic, retain) NSArray *sections;
 @property (nonatomic, retain) NSDictionary *eventsBySection;
 @property (nonatomic, retain) NSIndexPath *indexPath;
+@property (nonatomic, retain) CalendarDataManager *dataManager;
+
+- (void)setupTableView;
 
 @end
 

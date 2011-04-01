@@ -67,9 +67,8 @@
     }
     
     if (canHandle) {
-        if ([urlKey isEqualToString:@"Facebook"]) {
+        if ([urlKey isEqualToString:@"com.facebook"]) {
             canHandle = [self handleFacebookURL:url];
-
         } else {
             canHandle = [self handleInternalURL:url];
         }
@@ -237,7 +236,8 @@
 
 @implementation KGOAppDelegate (URLHandlers)
 
-- (BOOL)handleFacebookURL:(NSURL *)url {
+- (BOOL)handleFacebookURL:(NSURL *)url
+{
     // TODO: make sure this balances out
     NSLog(@"is facebook started?");
     [[KGOSocialMediaController sharedController] startupFacebook];
@@ -315,6 +315,7 @@
 - (void)dismissAppModalViewControllerAnimated:(BOOL)animated {
     if (_appModalHolder.modalViewController) {
         [_appModalHolder dismissModalViewControllerAnimated:animated];
+        // TODO: send viewWillAppear message to visible view controller
         [self performSelector:@selector(checkIfOkToHideAppModalViewController) withObject:nil afterDelay:0.100];
     }
 }

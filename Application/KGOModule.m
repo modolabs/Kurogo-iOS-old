@@ -5,7 +5,7 @@
 @implementation KGOModule
 
 @synthesize tag = _tag, shortName = _shortName, longName = _longName;
-@synthesize enabled, badgeValue, tabBarImage, iconImage, listViewImage, secondary, apiMaxVersion, apiMinVersion, secure;
+@synthesize enabled, hidden, badgeValue, tabBarImage, iconImage, listViewImage, secondary, apiMaxVersion, apiMinVersion, secure;
 @synthesize searchDelegate;
 
 - (id)initWithDictionary:(NSDictionary *)moduleDict {
@@ -22,6 +22,7 @@
             self.longName = [moduleDict objectForKey:@"longName"];
         }
         
+        self.hidden = [moduleDict boolForKey:@"hidden"];
         self.secondary = [[moduleDict objectForKey:@"secondary"] boolValue];
         self.tag = [moduleDict objectForKey:@"tag"];
         
@@ -49,7 +50,8 @@
         }
         self.listViewImage = [UIImage imageWithPathName:imageName];
         
-        self.enabled = YES;
+        
+        self.enabled = YES; // TODO: decide what this means or don't use it
     }
     return self;
 }

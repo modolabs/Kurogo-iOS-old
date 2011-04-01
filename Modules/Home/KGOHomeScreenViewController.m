@@ -455,6 +455,9 @@
         // special case for home module
         if ([aModule isKindOfClass:[HomeModule class]]) {
             self.homeModule = aModule;
+        }
+
+        if (aModule.hidden) {
             continue;
         }
 

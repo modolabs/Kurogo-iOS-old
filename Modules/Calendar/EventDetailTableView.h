@@ -2,7 +2,7 @@
 #import "KGOShareButtonController.h"
 #import "KGODetailPageHeaderView.h"
 
-@class KGOEventWrapper;
+@class KGOEventWrapper, CalendarDataManager;
 
 @interface EventDetailTableView : UITableView <UITableViewDelegate,
 UITableViewDataSource, KGOShareButtonDelegate, KGODetailPageHeaderDelegate> {
@@ -20,5 +20,8 @@ UITableViewDataSource, KGOShareButtonDelegate, KGODetailPageHeaderDelegate> {
 }
 
 @property (nonatomic, retain) KGOEventWrapper *event;
+@property (nonatomic, retain) CalendarDataManager *dataManager;
+
+- (UIView *)viewForTableHeader;
 
 @end

@@ -7,6 +7,47 @@
 
 @synthesize delegate, moduleTag;
 
+- (id)init
+{
+    self = [super init];
+    if (self) {
+        NSDateFormatter *mediumDayDF = [[[NSDateFormatter alloc] init] autorelease];
+        [mediumDayDF setDateStyle:NSDateFormatterMediumStyle];
+        [mediumDayDF setTimeStyle:NSDateFormatterNoStyle];
+        NSDateFormatter *shortTimeDF = [[[NSDateFormatter alloc] init] autorelease];
+        [shortTimeDF setDateStyle:NSDateFormatterNoStyle];
+        [shortTimeDF setTimeStyle:NSDateFormatterShortStyle];
+        NSDateFormatter *dateTimeDF = [[[NSDateFormatter alloc] init] autorelease];
+        [dateTimeDF setDateStyle:NSDateFormatterShortStyle];
+        [dateTimeDF setTimeStyle:NSDateFormatterShortStyle];
+        
+        //NSDateFormatter *DF = [[[NSDateFormatter alloc] init] autorelease];
+        
+        
+        _dateFormatters = [[NSDictionary alloc] initWithObjectsAndKeys:
+                           mediumDayDF, @"mediumDay",
+                           shortTimeDF, @"shortTime",
+                           dateTimeDF, @"dateTime",
+                           nil];
+    }
+    return self;
+}
+
+- (NSString *)mediumDateStringFromDate:(NSDate *)date
+{
+    return [[_dateFormatters objectForKey:@"mediumDay"] stringFromDate:date];
+}
+
+- (NSString *)shortTimeStringFromDate:(NSDate *)date
+{
+    return [[_dateFormatters objectForKey:@"shortTime"] stringFromDate:date];
+}
+
+- (NSString *)shortDateTimeStringFromDate:(NSDate *)date
+{
+    return [[_dateFormatters objectForKey:@"dateTime"] stringFromDate:date];
+}
+
 - (KGOCalendarGroup *)currentGroup
 {
     return _currentGroup;
@@ -213,6 +254,8 @@
 
 - (void)dealloc
 {
+    [_dateFormatters release];
+    
     if (_groupsRequest) {
         [_groupsRequest cancel];
     }

@@ -46,6 +46,7 @@
 
 @property (nonatomic, retain) NSString *badgeValue;
 @property (nonatomic) BOOL enabled; // whether or not the module is available to the user
+@property (nonatomic) BOOL hidden; // module is available but not shown on home screen
 
 #pragma mark Navigation
 

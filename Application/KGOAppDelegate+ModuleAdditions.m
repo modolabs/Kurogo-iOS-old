@@ -34,7 +34,9 @@
     if (!homeData) {
         homeData = [NSDictionary dictionaryWithObjectsAndKeys:
                     @"HomeModule", @"class",
-                    @"home", @"tag", nil];
+                    @"home", @"tag",
+                    @"hidden", [NSNumber numberWithBool:YES],
+                    nil];
     }
     KGOModule *homeModule = [KGOModule moduleWithDictionary:homeData];
 

@@ -7,6 +7,7 @@ extern NSString * const KGOSocialMediaTypeFacebook;
 extern NSString * const KGOSocialMediaTypeTwitter;
 extern NSString * const KGOSocialMediaTypeEmail;
 extern NSString * const KGOSocialMediaTypeBitly;
+extern NSString * const KGOSocialMediaTypeFoursquare;
 
 extern NSString * const TwitterDidLoginNotification;
 extern NSString * const TwitterDidLogoutNotification;
@@ -27,6 +28,8 @@ extern NSString * const FacebookDidLogoutNotification;
 
 @end
 
+@class KGOFoursquareEngine;
+
 @interface KGOSocialMediaController : NSObject <UIActionSheetDelegate,
 MGTwitterEngineDelegate, ConnectionWrapperDelegate,
 FBSessionDelegate, FBDialogDelegate, FBRequestDelegate> {
@@ -39,16 +42,19 @@ FBSessionDelegate, FBDialogDelegate, FBRequestDelegate> {
 	
 	ConnectionWrapper *_bitlyConnection;
 
+    // facebook objects manipulated directly by the methods in this file.
 	Facebook *_facebook;
     NSInteger _facebookStartupCount;
     
-    // these objects are mutated by functions in the (FacebookAPI) category
-    // of this class.  if (FacebookAPI) is not included, these will be empty
-    // from start to finish.
+    // optional facebook objects - used by methods in (FacebookAPI) category.
     NSMutableArray *_fbRequestQueue;
     NSMutableArray *_fbRequestIdentifiers;
     NSMutableArray *_fbUploadQueue; // metadata of pending FacebookPost objects
     NSMutableArray *_fbUploadData;
+    
+    // optional foursquare objects - used by methods in the (Foursquare) category.
+    KGOFoursquareEngine *_foursquareEngine;
+    NSInteger _foursquareStartupCount;
     
     // settings for each social media object
     // internally we store this with the social media label (facebook, twitter, etc) as keys
@@ -72,6 +78,7 @@ FBSessionDelegate, FBDialogDelegate, FBRequestDelegate> {
 - (BOOL)supportsFacebookSharing;
 - (BOOL)supportsTwitterSharing;
 - (BOOL)supportsEmailSharing;
+- (BOOL)supportsFoursquare;
 - (BOOL)supportsBitlyURLShortening;
 
 #pragma mark Twitter

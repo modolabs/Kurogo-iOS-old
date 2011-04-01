@@ -6,15 +6,11 @@
 #import "Foundation+KGOAdditions.h"
 #import "KGORequestManager.h"
 #import "KGODetailPageHeaderView.h"
-
-@interface EventDetailTableView (Private)
-
-- (void)setupTableHeader;
-
-@end
-
+#import "CalendarDataManager.h"
 
 @implementation EventDetailTableView
+
+@synthesize dataManager;
 
 - (id)initWithFrame:(CGRect)frame style:(UITableViewStyle)style
 {
@@ -137,7 +133,9 @@
     _sections = [mutableSections copy];
     
     [self reloadData];
-    [self setupTableHeader];
+    
+    
+    self.tableHeaderView = [self viewForTableHeader];
 }
 
 #pragma mark - UITableViewDataSource
@@ -194,7 +192,7 @@
     }
 }
 
-- (void)setupTableHeader
+- (UIView *)viewForTableHeader
 {
     if (!_headerView) {
         _headerView = [[KGODetailPageHeaderView alloc] initWithFrame:CGRectMake(0, 0, self.bounds.size.width, 1)];
@@ -205,27 +203,20 @@
     _headerView.showsShareButton = [self twitterUrl] != nil;
     
     // time
-    // TODO: consolidate date formatter objects
-    NSDateFormatter *formatter = [[[NSDateFormatter alloc] init] autorelease];
-    [formatter setDateStyle:NSDateFormatterMediumStyle];
-    [formatter setTimeStyle:NSDateFormatterNoStyle];
-    NSString *dateString = [formatter stringFromDate:_event.startDate];
-    
-    [formatter setDateStyle:NSDateFormatterNoStyle];
-    [formatter setTimeStyle:NSDateFormatterShortStyle];
+    NSString *dateString = [self.dataManager mediumDateStringFromDate:_event.startDate];
     NSString *timeString = nil;
     if (_event.endDate) {
         timeString = [NSString stringWithFormat:@"%@\n%@-%@",
                       dateString,
-                      [formatter stringFromDate:_event.startDate],
-                      [formatter stringFromDate:_event.endDate]];
+                      [self.dataManager shortTimeStringFromDate:_event.startDate],
+                      [self.dataManager shortTimeStringFromDate:_event.endDate]];
     } else {
         timeString = [NSString stringWithFormat:@"%@\n%@",
                       dateString,
-                      [formatter stringFromDate:_event.startDate]];
+                      [self.dataManager shortTimeStringFromDate:_event.startDate]];
     }
     _headerView.subtitleLabel.text = timeString;
-
+    
     if (!_descriptionLabel) {
         _descriptionLabel = [UILabel multilineLabelWithText:_event.summary
                                                        font:[[KGOTheme sharedTheme] fontForTableFooter]
@@ -242,7 +233,7 @@
     CGRect frame = _headerView.frame;
     frame.size.height += _descriptionLabel.frame.size.height;
     UIView *containerView = [[[UIView alloc] initWithFrame:frame] autorelease];
-
+    
     frame = _descriptionLabel.frame;
     frame.origin.x = 10;
     frame.origin.y = _headerView.frame.size.height;
@@ -251,7 +242,7 @@
     [containerView addSubview:_headerView];
     [containerView addSubview:_descriptionLabel];
     
-    self.tableHeaderView = containerView;
+    return containerView;
 }
 
 - (void)headerView:(KGODetailPageHeaderView *)headerView shareButtonPressed:(id)sender

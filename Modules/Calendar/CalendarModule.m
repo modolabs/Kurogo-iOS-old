@@ -8,7 +8,7 @@ NSString * const KGODataModelNameCalendar = @"Calendar";
 
 @implementation CalendarModule
 
-@synthesize request = _request;
+@synthesize request = _request, dataManager;
 
 - (void)dealloc {
 	self.request = nil;
@@ -17,6 +17,14 @@ NSString * const KGODataModelNameCalendar = @"Calendar";
 
 - (NSString *)defaultCalendar {
     return nil; // TODO
+}
+
+- (void)launch {
+
+    if (!self.dataManager) {
+        self.dataManager = [[[CalendarDataManager alloc] init] autorelease];
+        self.dataManager.moduleTag = self.tag;
+    }
 }
 
 #pragma mark Search
@@ -53,26 +61,31 @@ NSString * const KGODataModelNameCalendar = @"Calendar";
             LocalPathPageNameCategoryList, LocalPathPageNameItemList, nil];
 }
 
+
 - (UIViewController *)modulePage:(NSString *)pageName params:(NSDictionary *)params {
     UIViewController *vc = nil;
-    if ([pageName isEqualToString:LocalPathPageNameHome]) {
+    if ([pageName isEqualToString:LocalPathPageNameHome]
+        || [pageName isEqualToString:LocalPathPageNameSearch]
+        || [pageName isEqualToString:LocalPathPageNameCategoryList]
+    ) {
         CalendarHomeViewController *calendarVC = [[[CalendarHomeViewController alloc] initWithNibName:@"CalendarHomeViewController"
                                                                                                bundle:nil] autorelease];
         calendarVC.moduleTag = self.tag;
         calendarVC.showsGroups = YES;
         calendarVC.title = NSLocalizedString(@"Events", nil);
-        vc = calendarVC;
-        
-    } else if ([pageName isEqualToString:LocalPathPageNameSearch]) {
-        CalendarHomeViewController *calendarVC = [[[CalendarHomeViewController alloc] initWithNibName:@"CalendarHomeViewController"
-                                                                                               bundle:nil] autorelease];
-        calendarVC.moduleTag = self.tag;
-        
+        calendarVC.dataManager = self.dataManager;
+        // TODO: we might not need to set the following as long as viewWillAppear is properly invoked
+        self.dataManager.delegate = calendarVC;
+
+        // requested search path
         NSString *searchText = [params objectForKey:@"q"];
         if (searchText) {
             [calendarVC setSearchTerms:searchText];
         }
-        calendarVC.showsGroups = YES;
+
+        // requested category path
+        KGOCalendar *calendar = [params objectForKey:@"calendar"];
+        calendarVC.currentCalendar = calendar;
         
         vc = calendarVC;
         
@@ -81,17 +94,8 @@ NSString * const KGODataModelNameCalendar = @"Calendar";
         detailVC.indexPath = [params objectForKey:@"currentIndexPath"];
         detailVC.eventsBySection = [params objectForKey:@"eventsBySection"];
         detailVC.sections = [params objectForKey:@"sections"];
+        detailVC.dataManager = self.dataManager;
         vc = detailVC;
-        
-    } else if ([pageName isEqualToString:LocalPathPageNameCategoryList]) {
-        CalendarHomeViewController *calendarVC = [[[CalendarHomeViewController alloc] initWithNibName:@"CalendarHomeViewController"
-                                                                                               bundle:nil] autorelease];
-        KGOCalendar *calendar = [params objectForKey:@"calendar"];
-        calendarVC.currentCalendar = calendar;
-        calendarVC.moduleTag = self.tag;
-        calendarVC.showsGroups = NO;
-        calendarVC.title = calendar.title;
-        vc = calendarVC;
         
     } else if ([pageName isEqualToString:LocalPathPageNameItemList]) {
         

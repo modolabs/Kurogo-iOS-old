@@ -93,6 +93,13 @@
 - (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType
 {
     DLog(@"loading request with url %@", request.URL);
+    if ([[request.URL host] rangeOfString:@"foursquare.com"].location != NSNotFound)
+        return YES;
+    if ([[[request URL] scheme] isEqualToString:@"harvardreunion"]) {
+        [[UIApplication sharedApplication] openURL:request.URL];
+        return NO;
+    }
+        
 
 #ifdef USE_MOBILE_DEV
     // the webview will refuse to load if the server uses a self-signed cert

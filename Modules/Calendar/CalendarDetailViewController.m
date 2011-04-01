@@ -7,27 +7,39 @@
 #import "KGORequestManager.h"
 #import "Foundation+KGOAdditions.h"
 #import "UIKit+KGOAdditions.h"
+#import "CalendarDataManager.h"
 
 @implementation CalendarDetailViewController
 
-@synthesize sections, eventsBySection, indexPath;
+@synthesize sections, eventsBySection, indexPath, dataManager;
 
 - (void)loadView {
     [super loadView];
 
-	CGRect frame = CGRectMake(0, 0, self.view.bounds.size.width, self.view.bounds.size.height);
-    _tableView = [[EventDetailTableView alloc] initWithFrame:frame style:UITableViewStyleGrouped];
-    _tableView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-    _tableView.backgroundColor = [[KGOTheme sharedTheme] backgroundColorForApplication];
-    
-    [self.view addSubview:_tableView];
-
     self.title = NSLocalizedString(@"Event Detail", nil);
     
+    [self setupTableView];
+}
+
+- (void)viewDidLoad
+{
     KGODetailPager *pager = [[[KGODetailPager alloc] initWithPagerController:self delegate:self] autorelease];
     self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithCustomView:pager] autorelease];
     if (self.indexPath) {
         [pager selectPageAtSection:self.indexPath.section row:self.indexPath.row];
+    }
+}
+
+- (void)setupTableView
+{
+    if (!_tableView) {
+        CGRect frame = CGRectMake(0, 0, self.view.bounds.size.width, self.view.bounds.size.height);
+        _tableView = [[EventDetailTableView alloc] initWithFrame:frame style:UITableViewStyleGrouped];
+        _tableView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+        _tableView.backgroundColor = [UIColor clearColor];
+        _tableView.dataManager = self.dataManager;
+        
+        [self.view addSubview:_tableView];
     }
 }
 
@@ -51,7 +63,6 @@
 
 - (NSInteger)pager:(KGODetailPager *)pager numberOfPagesInSection:(NSInteger)section
 {
-    NSLog(@"%@", self.sections);
     NSString *sectionName = [self.sections objectAtIndex:section];
     return [[self.eventsBySection objectForKey:sectionName] count];
 }
@@ -66,6 +77,7 @@
 - (void)dealloc {
     [_event release];
     [_tableView release];
+    self.dataManager = nil;
     self.sections = nil;
     self.indexPath = nil;
     self.eventsBySection = nil;
