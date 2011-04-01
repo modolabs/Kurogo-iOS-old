@@ -236,6 +236,30 @@
 
 @implementation KGOAppDelegate (URLHandlers)
 
+- (NSString *)defaultURLScheme
+{
+    static NSString *internalScheme = nil;
+
+    if (internalScheme == nil) {
+        NSDictionary *infoDict = [[NSBundle mainBundle] infoDictionary];
+        NSArray *urlTypes = [infoDict objectForKey:@"CFBundleURLTypes"];
+        NSString *bundleID = [infoDict objectForKey:@"CFBundleIdentifier"];
+        
+        for (NSDictionary *type in urlTypes) {
+            NSString *urlKey = [type objectForKey:@"CFBundleURLName"];
+            if ([urlKey isEqualToString:bundleID]) {
+                NSArray *schemes = [type objectForKey:@"CFBundleURLSchemes"];
+                if (schemes.count) {
+                    internalScheme = [schemes objectAtIndex:0];
+                }
+                break;
+            }
+        }
+    }
+
+    return internalScheme;
+}
+
 - (BOOL)handleFacebookURL:(NSURL *)url
 {
     // TODO: make sure this balances out
@@ -315,7 +339,7 @@
 - (void)dismissAppModalViewControllerAnimated:(BOOL)animated {
     if (_appModalHolder.modalViewController) {
         [_appModalHolder dismissModalViewControllerAnimated:animated];
-        // TODO: send viewWillAppear message to visible view controller
+        [_visibleViewController viewWillAppear:NO];
         [self performSelector:@selector(checkIfOkToHideAppModalViewController) withObject:nil afterDelay:0.100];
     }
 }

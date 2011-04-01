@@ -1,5 +1,6 @@
 #import "KGOWebViewController.h"
 #import "KGORequestManager.h"
+#import "KGOAppDelegate.h"
 
 @implementation KGOWebViewController
 
@@ -92,20 +93,18 @@
 
 - (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType
 {
-    DLog(@"loading request with url %@", request.URL);
-    if ([[request.URL host] rangeOfString:@"foursquare.com"].location != NSNotFound)
-        return YES;
-    if ([[[request URL] scheme] isEqualToString:@"harvardreunion"]) {
+    if ([[request.URL scheme] isEqualToString:[KGO_SHARED_APP_DELEGATE() defaultURLScheme]]) {
         [[UIApplication sharedApplication] openURL:request.URL];
         return NO;
     }
-        
 
 #ifdef USE_MOBILE_DEV
+    
     // the webview will refuse to load if the server uses a self-signed cert
     // so we will get the contents directly and load it into the webview
     if ([[[request URL] scheme] isEqualToString:@"https"]
-       // && [[[request URL] host] isEqualToString:[[KGORequestManager sharedManager] host]]
+        && ([[[request URL] host] rangeOfString:[[KGORequestManager sharedManager] host]].location != NSNotFound
+            || [[[request URL] host] rangeOfString:@"google.com"].location != NSNotFound) // blacklisting as part of login process
     ) {
         if (request != _request) {
             [_request release];

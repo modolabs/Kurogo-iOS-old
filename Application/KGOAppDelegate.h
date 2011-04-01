@@ -22,6 +22,7 @@ typedef enum {
     UINavigationController *_appNavController;
     UIViewController *_appHomeScreen;
     UIViewController *_appModalHolder;
+    UIViewController *_visibleViewController;
     KGONavigationStyle _navigationStyle;
     
     NSDictionary *_appConfig;
@@ -51,6 +52,7 @@ typedef enum {
 
 @interface KGOAppDelegate (URLHandlers)
 
+- (NSString *)defaultURLScheme;
 - (BOOL)handleInternalURL:(NSURL *)url;
 - (BOOL)handleFacebookURL:(NSURL *)url;
 
