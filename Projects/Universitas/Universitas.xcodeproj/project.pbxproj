@@ -157,6 +157,12 @@
 		EBB121ED13392F3300A4BD1D /* EventKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EBB121EC13392F3300A4BD1D /* EventKit.framework */; };
 		EBB121F1133A917200A4BD1D /* CalendarHomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EBB121EF133A913100A4BD1D /* CalendarHomeViewController.m */; };
 		EBB121F2133A917200A4BD1D /* CalendarHomeViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = EBB121F0133A915200A4BD1D /* CalendarHomeViewController.xib */; };
+		EBC1C70C1347B8D20045CE9C /* kurogo.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = EBC1C7041347B8D20045CE9C /* kurogo.xcconfig */; };
+		EBC1C70D1347B8D20045CE9C /* release.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = EBC1C7051347B8D20045CE9C /* release.xcconfig */; };
+		EBC1C7141347C5750045CE9C /* dev_server.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = EBC1C7101347C5750045CE9C /* dev_server.xcconfig */; };
+		EBC1C7151347C5750045CE9C /* kurogo_debug.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = EBC1C7111347C5750045CE9C /* kurogo_debug.xcconfig */; };
+		EBC1C7161347C5750045CE9C /* stage_server.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = EBC1C7121347C5750045CE9C /* stage_server.xcconfig */; };
+		EBC1C7171347C5750045CE9C /* test_server.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = EBC1C7131347C5750045CE9C /* test_server.xcconfig */; };
 		EBE2CC1E1342AD2F0037546A /* KGOBookmarksViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EBE2CC1D1342AD2F0037546A /* KGOBookmarksViewController.m */; };
 		EBE2CC2113438AEA0037546A /* KGODetailPageHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = EBE2CC2013438AEA0037546A /* KGODetailPageHeaderView.m */; };
 		EBE2CC641343E4D00037546A /* KGOMapCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = EBE2CC631343E4D00037546A /* KGOMapCategory.m */; };
@@ -458,6 +464,12 @@
 		EBB121EE133A912500A4BD1D /* CalendarHomeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CalendarHomeViewController.h; sourceTree = "<group>"; };
 		EBB121EF133A913100A4BD1D /* CalendarHomeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CalendarHomeViewController.m; sourceTree = "<group>"; };
 		EBB121F0133A915200A4BD1D /* CalendarHomeViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CalendarHomeViewController.xib; sourceTree = "<group>"; };
+		EBC1C7041347B8D20045CE9C /* kurogo.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = kurogo.xcconfig; sourceTree = "<group>"; };
+		EBC1C7051347B8D20045CE9C /* release.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = release.xcconfig; sourceTree = "<group>"; };
+		EBC1C7101347C5750045CE9C /* dev_server.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = dev_server.xcconfig; sourceTree = "<group>"; };
+		EBC1C7111347C5750045CE9C /* kurogo_debug.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = kurogo_debug.xcconfig; sourceTree = "<group>"; };
+		EBC1C7121347C5750045CE9C /* stage_server.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = stage_server.xcconfig; sourceTree = "<group>"; };
+		EBC1C7131347C5750045CE9C /* test_server.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = test_server.xcconfig; sourceTree = "<group>"; };
 		EBE2CC1C1342AD2E0037546A /* KGOBookmarksViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGOBookmarksViewController.h; sourceTree = "<group>"; };
 		EBE2CC1D1342AD2F0037546A /* KGOBookmarksViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGOBookmarksViewController.m; sourceTree = "<group>"; };
 		EBE2CC1F13438AEA0037546A /* KGODetailPageHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGODetailPageHeaderView.h; sourceTree = "<group>"; };
@@ -519,6 +531,7 @@
 				EB0338261340D39C00ACF2BB /* Localization */,
 				29B97323FDCFA39411CA2CEA /* Frameworks */,
 				19C28FACFE9D520D11CA2CBB /* Products */,
+				EBC1C6FF1347B8D20045CE9C /* xcconfig */,
 			);
 			name = CustomTemplate;
 			sourceTree = "<group>";
@@ -1087,6 +1100,20 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		EBC1C6FF1347B8D20045CE9C /* xcconfig */ = {
+			isa = PBXGroup;
+			children = (
+				EBC1C7041347B8D20045CE9C /* kurogo.xcconfig */,
+				EBC1C7111347C5750045CE9C /* kurogo_debug.xcconfig */,
+				EBC1C7101347C5750045CE9C /* dev_server.xcconfig */,
+				EBC1C7121347C5750045CE9C /* stage_server.xcconfig */,
+				EBC1C7131347C5750045CE9C /* test_server.xcconfig */,
+				EBC1C7051347B8D20045CE9C /* release.xcconfig */,
+			);
+			name = xcconfig;
+			path = ../../xcconfig;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -1219,6 +1246,12 @@
 				EB03382F1340D3B900ACF2BB /* en.lproj in Resources */,
 				EB0338301340D3B900ACF2BB /* ja.lproj in Resources */,
 				EB0338311340D3B900ACF2BB /* zh_TW.lproj in Resources */,
+				EBC1C70C1347B8D20045CE9C /* kurogo.xcconfig in Resources */,
+				EBC1C70D1347B8D20045CE9C /* release.xcconfig in Resources */,
+				EBC1C7141347C5750045CE9C /* dev_server.xcconfig in Resources */,
+				EBC1C7151347C5750045CE9C /* kurogo_debug.xcconfig in Resources */,
+				EBC1C7161347C5750045CE9C /* stage_server.xcconfig in Resources */,
+				EBC1C7171347C5750045CE9C /* test_server.xcconfig in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1364,383 +1397,112 @@
 /* Begin XCBuildConfiguration section */
 		1D6058940D05DD3E006BFB54 /* Debug - Development */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = EBC1C7101347C5750045CE9C /* dev_server.xcconfig */;
 			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				COPY_PHASE_STRIP = NO;
-				GCC_DYNAMIC_NO_PIC = NO;
-				GCC_OPTIMIZATION_LEVEL = 0;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "$(SRCROOT)/../../Application/Prefix.pch";
-				HEADER_SEARCH_PATHS = (
-					"${SDK_DIR}/usr/include/libxml2",
-					"\"$(SRCROOT)/../../Contrib/usr/local/include\"",
-				);
-				INFOPLIST_FILE = KGOInfo.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"${SDK_DIR}/usr/include/libxml2",
-					"\"$(SRCROOT)/../../Contrib/GoogleAnalytics\"",
-				);
-				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_NAME = Universitas;
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
-				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = "Debug - Development";
 		};
 		1D6058950D05DD3E006BFB54 /* Release - Production */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = EBC1C7051347B8D20045CE9C /* release.xcconfig */;
 			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
-				COPY_PHASE_STRIP = YES;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "$(SRCROOT)/../../Application/Prefix.pch";
-				HEADER_SEARCH_PATHS = (
-					"${SDK_DIR}/usr/include/libxml2",
-					"\"$(SRCROOT)/../../Contrib/usr/local/include\"",
-				);
-				INFOPLIST_FILE = KGOInfo.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"${SDK_DIR}/usr/include/libxml2",
-					"\"$(SRCROOT)/../../Contrib/GoogleAnalytics\"",
-				);
-				ONLY_ACTIVE_ARCH = NO;
 				PRODUCT_NAME = Universitas;
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
-				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = 1;
-				VALIDATE_PRODUCT = YES;
 			};
 			name = "Release - Production";
 		};
 		C01FCF4F08A954540054247B /* Debug - Development */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = EBC1C7111347C5750045CE9C /* kurogo_debug.xcconfig */;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				GCC_C_LANGUAGE_STANDARD = c99;
-				GCC_WARN_ABOUT_RETURN_TYPE = YES;
-				GCC_WARN_UNUSED_VARIABLE = YES;
-				HEADER_SEARCH_PATHS = (
-					"${SDK_DIR}/usr/include/libxml2",
-					"\"Facebook Connect\"",
-				);
-				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
-				ONLY_ACTIVE_ARCH = YES;
-				OTHER_CFLAGS = (
-					"-DDEBUG",
-					"-DUSE_MOBILE_DEV",
-				);
-				OTHER_LDFLAGS = (
-					"-all_load",
-					"-ObjC",
-				);
-				PREBINDING = NO;
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
-				SDKROOT = iphoneos;
 			};
 			name = "Debug - Development";
 		};
 		C01FCF5008A954540054247B /* Release - Production */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = EBC1C7041347B8D20045CE9C /* kurogo.xcconfig */;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				CODE_SIGN_ENTITLEMENTS = "";
-				CODE_SIGN_IDENTITY = "";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
-				GCC_C_LANGUAGE_STANDARD = c99;
-				GCC_WARN_ABOUT_RETURN_TYPE = YES;
-				GCC_WARN_UNUSED_VARIABLE = YES;
-				HEADER_SEARCH_PATHS = (
-					"${SDK_DIR}/usr/include/libxml2",
-					"\"Facebook Connect\"",
-				);
-				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
-				ONLY_ACTIVE_ARCH = YES;
-				OTHER_LDFLAGS = (
-					"-all_load",
-					"-ObjC",
-				);
-				PREBINDING = NO;
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
-				SDKROOT = iphoneos;
 			};
 			name = "Release - Production";
 		};
 		DE8B4CF7110F92DC00B7D991 /* Debug - Staging */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = EBC1C7111347C5750045CE9C /* kurogo_debug.xcconfig */;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				GCC_C_LANGUAGE_STANDARD = c99;
-				GCC_WARN_ABOUT_RETURN_TYPE = YES;
-				GCC_WARN_UNUSED_VARIABLE = YES;
-				HEADER_SEARCH_PATHS = (
-					"${SDK_DIR}/usr/include/libxml2",
-					"\"Facebook Connect\"",
-					"${PROJECT_DIR}/../libProj/build/${BUILD_STYLE}-${PLATFORM_NAME}/usr/local/include",
-				);
-				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
-				ONLY_ACTIVE_ARCH = YES;
-				OTHER_CFLAGS = (
-					"-DDEBUG",
-					"-DUSE_MOBILE_STAGE",
-				);
-				OTHER_LDFLAGS = (
-					"-all_load",
-					"-ObjC",
-				);
-				PREBINDING = NO;
-				SDKROOT = iphoneos;
 			};
 			name = "Debug - Staging";
 		};
 		DE8B4CF8110F92DC00B7D991 /* Debug - Staging */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = EBC1C7121347C5750045CE9C /* stage_server.xcconfig */;
 			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				COPY_PHASE_STRIP = YES;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "$(SRCROOT)/../../Application/Prefix.pch";
-				HEADER_SEARCH_PATHS = (
-					"${SDK_DIR}/usr/include/libxml2",
-					"\"$(SRCROOT)/../../Contrib/usr/local/include\"",
-				);
-				INFOPLIST_FILE = KGOInfo.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"${SDK_DIR}/usr/include/libxml2",
-					"\"$(SRCROOT)/../../Contrib/GoogleAnalytics\"",
-				);
-				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_NAME = Universitas;
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
-				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = "Debug - Staging";
 		};
 		DE8B4DBE110FAB1100B7D991 /* Debug - Production */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = EBC1C7111347C5750045CE9C /* kurogo_debug.xcconfig */;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				GCC_C_LANGUAGE_STANDARD = c99;
-				GCC_WARN_ABOUT_RETURN_TYPE = YES;
-				GCC_WARN_UNUSED_VARIABLE = YES;
-				HEADER_SEARCH_PATHS = (
-					"${SDK_DIR}/usr/include/libxml2",
-					"\"Facebook Connect\"",
-				);
-				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
-				ONLY_ACTIVE_ARCH = YES;
-				OTHER_CFLAGS = "-DDEBUG";
-				OTHER_LDFLAGS = (
-					"-all_load",
-					"-ObjC",
-				);
-				PREBINDING = NO;
-				SDKROOT = iphoneos;
 			};
 			name = "Debug - Production";
 		};
 		DE8B4DBF110FAB1100B7D991 /* Debug - Production */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				COPY_PHASE_STRIP = YES;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "$(SRCROOT)/../../Application/Prefix.pch";
-				HEADER_SEARCH_PATHS = (
-					"${SDK_DIR}/usr/include/libxml2",
-					"\"$(SRCROOT)/../../Contrib/usr/local/include\"",
-				);
-				INFOPLIST_FILE = KGOInfo.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"${SDK_DIR}/usr/include/libxml2",
-					"\"$(SRCROOT)/../../Contrib/GoogleAnalytics\"",
-				);
-				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_NAME = Universitas;
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
-				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = "Debug - Production";
 		};
 		DEB0B3DD11122D3200021561 /* Release - Staging */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = EBC1C7041347B8D20045CE9C /* kurogo.xcconfig */;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				GCC_C_LANGUAGE_STANDARD = c99;
-				GCC_WARN_ABOUT_RETURN_TYPE = YES;
-				GCC_WARN_UNUSED_VARIABLE = YES;
-				HEADER_SEARCH_PATHS = (
-					"${SDK_DIR}/usr/include/libxml2",
-					"\"Facebook Connect\"",
-				);
-				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
-				ONLY_ACTIVE_ARCH = YES;
-				OTHER_CFLAGS = "-DUSE_MOBILE_STAGE";
-				OTHER_LDFLAGS = (
-					"-all_load",
-					"-ObjC",
-				);
-				PREBINDING = NO;
-				SDKROOT = iphoneos;
 			};
 			name = "Release - Staging";
 		};
 		DEB0B3DE11122D3200021561 /* Release - Staging */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = EBC1C7121347C5750045CE9C /* stage_server.xcconfig */;
 			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				COPY_PHASE_STRIP = YES;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "$(SRCROOT)/../../Application/Prefix.pch";
-				HEADER_SEARCH_PATHS = (
-					"${SDK_DIR}/usr/include/libxml2",
-					"\"$(SRCROOT)/../../Contrib/usr/local/include\"",
-				);
-				INFOPLIST_FILE = KGOInfo.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"${SDK_DIR}/usr/include/libxml2",
-					"\"$(SRCROOT)/../../Contrib/GoogleAnalytics\"",
-				);
-				ONLY_ACTIVE_ARCH = NO;
 				PRODUCT_NAME = Universitas;
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
-				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = "Release - Staging";
 		};
 		EBAE87911219905300F370BE /* Debug - Testing */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = EBC1C7111347C5750045CE9C /* kurogo_debug.xcconfig */;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				GCC_C_LANGUAGE_STANDARD = c99;
-				GCC_WARN_ABOUT_RETURN_TYPE = YES;
-				GCC_WARN_UNUSED_VARIABLE = YES;
-				HEADER_SEARCH_PATHS = (
-					"${SDK_DIR}/usr/include/libxml2",
-					"\"Facebook Connect\"",
-				);
-				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
-				ONLY_ACTIVE_ARCH = YES;
-				OTHER_CFLAGS = (
-					"-DDEBUG",
-					"-DUSE_MOBILE_TEST",
-				);
-				OTHER_LDFLAGS = (
-					"-all_load",
-					"-ObjC",
-				);
-				PREBINDING = NO;
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
-				SDKROOT = iphoneos;
 			};
 			name = "Debug - Testing";
 		};
 		EBAE87921219905300F370BE /* Debug - Testing */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = EBC1C7131347C5750045CE9C /* test_server.xcconfig */;
 			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				COPY_PHASE_STRIP = NO;
-				GCC_DYNAMIC_NO_PIC = NO;
-				GCC_OPTIMIZATION_LEVEL = 0;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "$(SRCROOT)/../../Application/Prefix.pch";
-				HEADER_SEARCH_PATHS = (
-					"${SDK_DIR}/usr/include/libxml2",
-					"\"$(SRCROOT)/../../Contrib/usr/local/include\"",
-				);
-				INFOPLIST_FILE = KGOInfo.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"${SDK_DIR}/usr/include/libxml2",
-					"\"$(SRCROOT)/../../Contrib/GoogleAnalytics\"",
-				);
-				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_NAME = Universitas;
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
-				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = "Debug - Testing";
 		};
 		EBAEA0731223320800F370BE /* Release - Testing */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = EBC1C7041347B8D20045CE9C /* kurogo.xcconfig */;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				GCC_C_LANGUAGE_STANDARD = c99;
-				GCC_WARN_ABOUT_RETURN_TYPE = YES;
-				GCC_WARN_UNUSED_VARIABLE = YES;
-				HEADER_SEARCH_PATHS = (
-					"${SDK_DIR}/usr/include/libxml2",
-					"\"Facebook Connect\"",
-				);
-				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
-				ONLY_ACTIVE_ARCH = YES;
-				OTHER_CFLAGS = "-DUSE_MOBILE_TEST";
-				OTHER_LDFLAGS = (
-					"-all_load",
-					"-ObjC",
-				);
-				PREBINDING = NO;
-				SDKROOT = iphoneos;
 			};
 			name = "Release - Testing";
 		};
 		EBAEA0741223320800F370BE /* Release - Testing */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = EBC1C7131347C5750045CE9C /* test_server.xcconfig */;
 			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				COPY_PHASE_STRIP = YES;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "$(SRCROOT)/../../Application/Prefix.pch";
-				HEADER_SEARCH_PATHS = (
-					"${SDK_DIR}/usr/include/libxml2",
-					"\"$(SRCROOT)/../../Contrib/usr/local/include\"",
-				);
-				INFOPLIST_FILE = KGOInfo.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"${SDK_DIR}/usr/include/libxml2",
-					"\"$(SRCROOT)/../../Contrib/GoogleAnalytics\"",
-				);
-				ONLY_ACTIVE_ARCH = NO;
 				PRODUCT_NAME = Universitas;
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
-				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = "Release - Testing";

@@ -1,0 +1,2 @@
+CODE_SIGN_IDENTITY = "iPhone Distribution"
+VALIDATE_PRODUCT = YES
