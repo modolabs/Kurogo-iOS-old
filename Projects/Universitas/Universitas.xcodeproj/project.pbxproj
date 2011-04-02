@@ -1399,8 +1399,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = EBC1C7101347C5750045CE9C /* dev_server.xcconfig */;
 			buildSettings = {
-				PRODUCT_NAME = Universitas;
-				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = "Debug - Development";
 		};
@@ -1408,8 +1406,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = EBC1C7051347B8D20045CE9C /* release.xcconfig */;
 			buildSettings = {
-				PRODUCT_NAME = Universitas;
-				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = "Release - Production";
 		};
@@ -1417,6 +1413,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = EBC1C7111347C5750045CE9C /* kurogo_debug.xcconfig */;
 			buildSettings = {
+				PRODUCT_NAME = Universitas;
 			};
 			name = "Debug - Development";
 		};
@@ -1424,7 +1421,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = EBC1C7041347B8D20045CE9C /* kurogo.xcconfig */;
 			buildSettings = {
-				CODE_SIGN_ENTITLEMENTS = "";
+				PRODUCT_NAME = Universitas;
 			};
 			name = "Release - Production";
 		};
@@ -1432,6 +1429,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = EBC1C7111347C5750045CE9C /* kurogo_debug.xcconfig */;
 			buildSettings = {
+				PRODUCT_NAME = Universitas;
 			};
 			name = "Debug - Staging";
 		};
@@ -1439,8 +1437,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = EBC1C7121347C5750045CE9C /* stage_server.xcconfig */;
 			buildSettings = {
-				PRODUCT_NAME = Universitas;
-				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = "Debug - Staging";
 		};
@@ -1448,14 +1444,13 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = EBC1C7111347C5750045CE9C /* kurogo_debug.xcconfig */;
 			buildSettings = {
+				PRODUCT_NAME = Universitas;
 			};
 			name = "Debug - Production";
 		};
 		DE8B4DBF110FAB1100B7D991 /* Debug - Production */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				PRODUCT_NAME = Universitas;
-				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = "Debug - Production";
 		};
@@ -1463,6 +1458,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = EBC1C7041347B8D20045CE9C /* kurogo.xcconfig */;
 			buildSettings = {
+				PRODUCT_NAME = Universitas;
 			};
 			name = "Release - Staging";
 		};
@@ -1470,8 +1466,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = EBC1C7121347C5750045CE9C /* stage_server.xcconfig */;
 			buildSettings = {
-				PRODUCT_NAME = Universitas;
-				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = "Release - Staging";
 		};
@@ -1479,6 +1473,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = EBC1C7111347C5750045CE9C /* kurogo_debug.xcconfig */;
 			buildSettings = {
+				PRODUCT_NAME = Universitas;
 			};
 			name = "Debug - Testing";
 		};
@@ -1486,8 +1481,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = EBC1C7131347C5750045CE9C /* test_server.xcconfig */;
 			buildSettings = {
-				PRODUCT_NAME = Universitas;
-				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = "Debug - Testing";
 		};
@@ -1495,6 +1488,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = EBC1C7041347B8D20045CE9C /* kurogo.xcconfig */;
 			buildSettings = {
+				PRODUCT_NAME = Universitas;
 			};
 			name = "Release - Testing";
 		};
@@ -1502,8 +1496,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = EBC1C7131347C5750045CE9C /* test_server.xcconfig */;
 			buildSettings = {
-				PRODUCT_NAME = Universitas;
-				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = "Release - Testing";
 		};
