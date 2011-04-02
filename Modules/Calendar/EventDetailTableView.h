@@ -22,6 +22,13 @@ UITableViewDataSource, KGOShareButtonDelegate, KGODetailPageHeaderDelegate> {
 @property (nonatomic, retain) KGOEventWrapper *event;
 @property (nonatomic, retain) CalendarDataManager *dataManager;
 
+// functions split out for subclassing
+
 - (UIView *)viewForTableHeader;
+
+- (NSArray *)sectionForBasicInfo;
+- (NSArray *)sectionForAttendeeInfo;
+- (NSArray *)sectionForContactInfo;
+- (NSArray *)sectionForExtendedInfo;
 
 @end

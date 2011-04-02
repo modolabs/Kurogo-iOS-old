@@ -10,6 +10,7 @@
 @property (nonatomic, retain) NSDate * start;
 @property (nonatomic, retain) NSDate * lastUpdate;
 @property (nonatomic, retain) NSData * rrule;
+@property (nonatomic, retain) NSData * userInfo;
 @property (nonatomic, retain) NSNumber * longitude;
 @property (nonatomic, retain) NSString * briefLocation;
 @property (nonatomic, retain) NSNumber * latitude;

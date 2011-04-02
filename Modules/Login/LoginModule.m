@@ -16,7 +16,7 @@
     if ([pageName isEqualToString:LocalPathPageNameHome]) {
         if (![[KGORequestManager sharedManager] isUserLoggedIn]) {        
             ModalLoginWebViewController *webVC = [[[ModalLoginWebViewController alloc] init] autorelease];
-            NSURL *loginURL = [NSURL URLWithString:[NSString stringWithFormat:@"%@/%@", [[KGORequestManager sharedManager] serverURL], self.tag]];
+            NSURL *loginURL = [NSURL URLWithString:[NSString stringWithFormat:@"%@/%@/?%@", [[KGORequestManager sharedManager] serverURL], self.tag, @"nativeApp=true"]];
             webVC.loginModule = self;
             webVC.requestURL = loginURL;
             vc = webVC;

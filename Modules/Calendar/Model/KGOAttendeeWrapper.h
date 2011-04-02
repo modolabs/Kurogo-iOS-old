@@ -1,7 +1,7 @@
 #import <Foundation/Foundation.h>
 #import <EventKit/EKParticipant.h>
 
-@class KGOEventAttendee;
+@class KGOEventAttendee, KGOEventWrapper;
 
 @interface KGOAttendeeWrapper : NSObject {
     
@@ -12,8 +12,11 @@
     EKParticipantType _attendeeType;
     EKParticipantStatus _attendeeStatus;
     
+    KGOEventWrapper *_event;
+    
 }
 
+@property (nonatomic, retain) KGOEventWrapper *event;
 @property (nonatomic, retain) NSString *identifier;
 @property (nonatomic, retain) NSString *name;
 @property (nonatomic, retain) NSSet *contactInfo;
@@ -21,6 +24,7 @@
 @property (nonatomic) EKParticipantStatus attendeeStatus;
 
 - (id)initWithDictionary:(NSDictionary *)dictionary;
+- (id)initWithKGOAttendee:(KGOEventAttendee *)attendee;
 
 @property (nonatomic, retain) EKParticipant *EKAttendee;
 @property (nonatomic, retain) KGOEventAttendee *KGOAttendee;
