@@ -35,7 +35,8 @@ searchBar = _searchBar;
     
     self.title = @"People";
     
-    _phoneDirectoryEntries = [PersonContact directoryContacts];
+    [_phoneDirectoryEntries release];
+    _phoneDirectoryEntries = [[PersonContact directoryContacts] retain];
     if (!_phoneDirectoryEntries) {
         _request = [[KGORequestManager sharedManager] requestWithDelegate:self module:PeopleTag path:@"contacts" params:nil];
         _request.expectedResponseType = [NSDictionary class];
