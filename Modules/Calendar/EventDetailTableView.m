@@ -67,40 +67,80 @@
     [_event release];
     _event = [event retain];
     
-    NSLog(@"%@ %@ %@", [_event description], _event.title, _event.location);
+    NSLog(@"%@ %@ %@ %@", [_event description], _event.title, _event.location, _event.userInfo);
     
     [_sections release];
     NSMutableArray *mutableSections = [NSMutableArray array];
-
-    NSMutableArray *basicInfo = [NSMutableArray array];
-    if (_event.location) {
-        if (_event.briefLocation) {
-            [basicInfo addObject:[NSDictionary dictionaryWithObjectsAndKeys:
-                                  _event.briefLocation, @"title",
-                                  _event.location, @"subtitle",
-                                  TableViewCellAccessoryMap, @"accessory",
-                                  nil]];
-        } else {
-            [basicInfo addObject:[NSDictionary dictionaryWithObjectsAndKeys:
-                                  _event.location, @"title",
-                                  TableViewCellAccessoryMap, @"accessory",
-                                  nil]];
-        }
-    }
-    
-    if (_event.attendees) {
-        [basicInfo addObject:[NSDictionary dictionaryWithObjectsAndKeys:
-                              [NSString stringWithFormat:@"%d others attending", _event.attendees.count], @"title",
-                              KGOAccessoryTypeChevron, @"accessory",
-                              nil]];
-    }
-    
+    NSArray *basicInfo = [self sectionForBasicInfo];
     if (basicInfo.count) {
         [mutableSections addObject:basicInfo];
     }
+
+    NSArray *attendeeInfo = [self sectionForAttendeeInfo];
+    if (attendeeInfo.count) {
+        [mutableSections addObject:attendeeInfo];
+    }
+
+    NSArray *contactInfo = [self sectionForContactInfo];
+    if (contactInfo.count) {
+        [mutableSections addObject:contactInfo];
+    }
     
+    NSArray *extendedInfo = [self sectionForExtendedInfo];
+    if (extendedInfo.count) {
+        [mutableSections addObject:extendedInfo];
+    }
+    
+    _sections = [mutableSections copy];
+    
+    [self reloadData];
+    
+    
+    self.tableHeaderView = [self viewForTableHeader];
+}
+
+
+
+- (NSArray *)sectionForBasicInfo
+{
+    NSArray *basicInfo = nil;
+    if (_event.location || _event) {
+        if (_event.briefLocation) {
+            basicInfo = [NSArray arrayWithObject:[NSDictionary dictionaryWithObjectsAndKeys:
+                                                  _event.briefLocation, @"title",
+                                                  _event.location, @"subtitle",
+                                                  TableViewCellAccessoryMap, @"accessory",
+                                                  nil]];
+        } else {
+            basicInfo = [NSArray arrayWithObject:[NSDictionary dictionaryWithObjectsAndKeys:
+                                                   _event.location, @"title",
+                                                   TableViewCellAccessoryMap, @"accessory",
+                                                   nil]];
+        }
+    }
+    
+    return basicInfo;
+}
+
+- (NSArray *)sectionForAttendeeInfo
+{
+    NSArray *attendeeInfo = nil;
+    if (_event.attendees) {
+        NSString *attendeeString = [NSString stringWithFormat:@"%d %@",
+                                    _event.attendees.count,
+                                    NSLocalizedString(@"others attending", nil)];
+        attendeeInfo = [NSArray arrayWithObject:[NSDictionary dictionaryWithObjectsAndKeys:
+                                                 attendeeString, @"title",
+                                                 KGOAccessoryTypeChevron, @"accessory",
+                                                 nil]];
+    }
+    return attendeeInfo;
+}
+
+- (NSArray *)sectionForContactInfo
+{
+    NSMutableArray *contactInfo = [NSMutableArray array];
     if (_event.organizers) {
-        NSMutableArray *contactInfo = [NSMutableArray array];
         for (KGOAttendeeWrapper *organizer in _event.organizers) {
             for (KGOEventContactInfo *aContact in organizer.contactInfo) {
                 NSString *type;
@@ -108,12 +148,15 @@
                 if ([aContact.type isEqualToString:@"phone"]) {
                     type = NSLocalizedString(@"Organizer phone", nil);
                     accessory = TableViewCellAccessoryPhone;
+                    
                 } else if ([aContact.type isEqualToString:@"email"]) {
                     type = NSLocalizedString(@"Organizer email", nil);
                     accessory = TableViewCellAccessoryEmail;
+                    
                 } else if ([aContact.type isEqualToString:@"url"]) {
                     type = NSLocalizedString(@"Event website", nil);
                     accessory = TableViewCellAccessoryExternal;
+                    
                 } else {
                     type = NSLocalizedString(@"Contact", nil);
                     accessory = KGOAccessoryTypeNone;
@@ -127,15 +170,29 @@
             }
         }
         
-        [mutableSections addObject:contactInfo];
     }
+    return contactInfo;
+}
+
+#define DESCRIPTION_LABEL_TAG 5
+
+- (NSArray *)sectionForExtendedInfo
+{
+    NSArray *extendedInfo = nil;
     
-    _sections = [mutableSections copy];
-    
-    [self reloadData];
-    
-    
-    self.tableHeaderView = [self viewForTableHeader];
+    if (_event.summary) {
+        UILabel *label = [UILabel multilineLabelWithText:_event.summary
+                                                    font:[[KGOTheme sharedTheme] fontForTableCellTitleWithStyle:KGOTableCellStyleBodyText]
+                                                   width:self.frame.size.width - 20];
+        label.textColor = [[KGOTheme sharedTheme] textColorForTableCellTitleWithStyle:KGOTableCellStyleBodyText];
+        label.tag = DESCRIPTION_LABEL_TAG;
+        CGRect frame = label.frame;
+        frame.origin = CGPointMake(10, 10);
+        label.frame = frame;
+        
+        extendedInfo = [NSArray arrayWithObject:label];
+    }
+    return extendedInfo;
 }
 
 #pragma mark - UITableViewDataSource
@@ -153,41 +210,96 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     UITableViewCellStyle style = UITableViewCellStyleDefault;
-    NSDictionary *cellData = [[_sections objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
-    if ([cellData objectForKey:@"subtitle"]) {
-        style = UITableViewCellStyleSubtitle;
+    NSString *cellIdentifier;
+    id cellData = [[_sections objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
+    if ([cellData isKindOfClass:[NSDictionary class]]) {    
+        if ([cellData objectForKey:@"subtitle"]) {
+            style = UITableViewCellStyleSubtitle;
+        }
+        cellIdentifier = [NSString stringWithFormat:@"%d", style];
+
+    } else {
+        cellIdentifier = [NSString stringWithFormat:@"%d.%d", indexPath.section, indexPath.row];
     }
-    
-    NSString *cellIdentifier = [NSString stringWithFormat:@"%d", style];
     
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
     if (cell == nil) {
         cell = [[[UITableViewCell alloc] initWithStyle:style reuseIdentifier:cellIdentifier] autorelease];
+
+    } else {
+        UIView *view = [cell viewWithTag:DESCRIPTION_LABEL_TAG];
+        [view removeFromSuperview];
     }
-    
-    cell.textLabel.text = [cellData objectForKey:@"title"];
-    cell.detailTextLabel.text = [cellData objectForKey:@"subtitle"];
-    cell.accessoryView = [[KGOTheme sharedTheme] accessoryViewForType:[cellData objectForKey:@"accessory"]];
+        
+    if ([cellData isKindOfClass:[NSDictionary class]]) {    
+        cell.textLabel.text = [cellData objectForKey:@"title"];
+        cell.detailTextLabel.text = [cellData objectForKey:@"subtitle"];
+        if ([cellData objectForKey:@"image"]) {
+            cell.imageView.image = [cellData objectForKey:@"image"];
+        }
+        
+        NSString *accessory = [cellData objectForKey:@"accessory"];
+        cell.accessoryView = [[KGOTheme sharedTheme] accessoryViewForType:accessory];
+        if (accessory && ![accessory isEqualToString:KGOAccessoryTypeNone]) {
+            cell.selectionStyle = UITableViewCellSelectionStyleNone;
+
+        } else {
+            cell.selectionStyle = UITableViewCellSelectionStyleGray;
+        }
+
+    } else {
+        if ([cellData isKindOfClass:[UILabel class]]) {
+            [cell.contentView addSubview:cellData];
+        }
+    }
     
     return cell;
 }
 
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    id cellData = [[_sections objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
+    if ([cellData isKindOfClass:[UILabel class]]) {
+        return [(UILabel *)cellData frame].size.height + 20;
+    }
+    return tableView.rowHeight;
+}
+
 #pragma mark - UITableViewDelegate
 
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    id cellData = [[_sections objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
+    if ([cellData isKindOfClass:[NSDictionary class]]) {    
+        NSString *accessory = [cellData objectForKey:@"acecssory"];
+        NSURL *url = nil;
+        if ([accessory isEqualToString:TableViewCellAccessoryPhone]) {
+            NSString *urlString = [NSString stringWithFormat:@"tel:%@", [cellData objectForKey:@"subtitle"]];
+            url = [NSURL URLWithString:urlString];
+            
+        } else if ([accessory isEqualToString:TableViewCellAccessoryEmail]) {
+            NSString *urlString = [NSString stringWithFormat:@"mailto:%@", [cellData objectForKey:@"subtitle"]];
+            url = [NSURL URLWithString:urlString];
+            
+        } else if ([accessory isEqualToString:TableViewCellAccessoryExternal]) {
+            url = [NSURL URLWithString:[cellData objectForKey:@"subtitle"]];
+            
+        } else if ([accessory isEqualToString:TableViewCellAccessoryMap]) {
+            
+        }
+
+        if (url && [[UIApplication sharedApplication] canOpenURL:url]) {
+            [[UIApplication sharedApplication] openURL:url];
+        }
+    }
+}
 
 #pragma mark - Table header
 
 - (void)headerViewFrameDidChange:(KGODetailPageHeaderView *)headerView
 {
-    CGRect frame = _headerView.frame;
-    frame.size.height += _descriptionLabel.frame.size.height;
-    if (frame.size.height != self.tableHeaderView.frame.size.height) {
-        self.tableHeaderView.frame = frame;
-
-        frame = _descriptionLabel.frame;
-        frame.origin.y = _headerView.frame.size.height;
-        _descriptionLabel.frame = frame;
-        
+    if (_headerView.frame.size.height != self.tableHeaderView.frame.size.height) {
+        self.tableHeaderView.frame = _headerView.frame;
         self.tableHeaderView = self.tableHeaderView;
     }
 }
@@ -217,32 +329,7 @@
     }
     _headerView.subtitleLabel.text = timeString;
     
-    if (!_descriptionLabel) {
-        _descriptionLabel = [UILabel multilineLabelWithText:_event.summary
-                                                       font:[[KGOTheme sharedTheme] fontForTableFooter]
-                                                      width:self.frame.size.width - 20];
-        _descriptionLabel.textColor = [[KGOTheme sharedTheme] textColorForTableFooter];
-    } else {
-        CGRect frame = _descriptionLabel.frame;
-        _descriptionLabel.text = _event.summary;
-        frame.size = [_descriptionLabel.text sizeWithFont:_descriptionLabel.font
-                                        constrainedToSize:CGSizeMake(self.frame.size.width - 20, 2000)];
-        _descriptionLabel.frame = frame;
-    }
-    
-    CGRect frame = _headerView.frame;
-    frame.size.height += _descriptionLabel.frame.size.height;
-    UIView *containerView = [[[UIView alloc] initWithFrame:frame] autorelease];
-    
-    frame = _descriptionLabel.frame;
-    frame.origin.x = 10;
-    frame.origin.y = _headerView.frame.size.height;
-    _descriptionLabel.frame = frame;
-    
-    [containerView addSubview:_headerView];
-    [containerView addSubview:_descriptionLabel];
-    
-    return containerView;
+    return _headerView;
 }
 
 - (void)headerView:(KGODetailPageHeaderView *)headerView shareButtonPressed:(id)sender

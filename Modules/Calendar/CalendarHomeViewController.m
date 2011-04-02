@@ -321,43 +321,7 @@ static bool isOverOneHour(NSTimeInterval interval) {
     }
     return KGOTableCellStyleSubtitle;
 }
-/*
-- (NSArray *)tableView:(UITableView *)tableView viewsForCellAtIndexPath:(NSIndexPath *)indexPath {
-    if (!_currentCategories && _currentSections && _currentEventsBySection) {
-        NSArray *eventsForSection = [_currentEventsBySection objectForKey:[_currentSections objectAtIndex:indexPath.section]];
-        KGOEventWrapper *event = [eventsForSection objectAtIndex:indexPath.row];
-    
-        if (event.briefLocation) {
-            // right align event location
-            CGFloat maxWidth = tableView.frame.size.width - 20;
-            UIFont *font = [[KGOTheme sharedTheme] fontForTableCellTitleWithStyle:KGOTableCellStyleSubtitle];
-            CGSize textSize = [event.title sizeWithFont:font];
-            CGFloat textHeight = 10.0 + (textSize.width > maxWidth ? textSize.height * 1 : textSize.height);
-            
-            font = [[KGOTheme sharedTheme] fontForTableCellSubtitleWithStyle:KGOTableCellStyleSubtitle];
-            CGSize locationTextSize = [event.briefLocation sizeWithFont:font
-                                                               forWidth:100.0
-                                                          lineBreakMode:UILineBreakModeTailTruncation];
-            CGRect locationFrame = CGRectMake(maxWidth - locationTextSize.width,
-                                              textHeight,
-                                              locationTextSize.width,
-                                              locationTextSize.height);
-            
-            UILabel *locationLabel = [[[UILabel alloc] initWithFrame:locationFrame] autorelease];
-            locationLabel.lineBreakMode = UILineBreakModeTailTruncation;
-            locationLabel.text = event.briefLocation;
-            locationLabel.textColor = [[KGOTheme sharedTheme] textColorForTableCellSubtitleWithStyle:KGOTableCellStyleSubtitle];
-            locationLabel.font = font;
-            locationLabel.highlightedTextColor = [UIColor whiteColor];
-            
-            return [NSArray arrayWithObject:locationLabel];
-        }
-    
-    }
-    
-	return nil;
-}
-*/
+
 - (CellManipulator)tableView:(UITableView *)tableView manipulatorForCellAtIndexPath:(NSIndexPath *)indexPath {
     if (_currentCategories) {
         KGOCalendar *category = [_currentCategories objectAtIndex:indexPath.row];
@@ -374,7 +338,6 @@ static bool isOverOneHour(NSTimeInterval interval) {
         KGOEventWrapper *event = [eventsForSection objectAtIndex:indexPath.row];
         
         NSString *title = event.title;
-        DLog(@"%@", event);
         NSString *subtitle = [self.dataManager shortDateTimeStringFromDate:event.startDate];
         
         return [[^(UITableViewCell *cell) {

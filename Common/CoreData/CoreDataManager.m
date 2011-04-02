@@ -78,9 +78,12 @@
 
 - (id)insertNewObjectForEntityForName:(NSString *)entityName context:(NSManagedObjectContext *)aManagedObjectContext {
     DLog(@"inserting new %@ object", entityName);
-    self.managedObjectContext;
-	NSEntityDescription *entityDescription = [[managedObjectModel entitiesByName] objectForKey:entityName];
-	return [[[NSManagedObject alloc] initWithEntity:entityDescription insertIntoManagedObjectContext:aManagedObjectContext] autorelease];
+    if (self.managedObjectContext) {
+        NSEntityDescription *entityDescription = [[managedObjectModel entitiesByName] objectForKey:entityName];
+        return [[[NSManagedObject alloc] initWithEntity:entityDescription
+                         insertIntoManagedObjectContext:aManagedObjectContext] autorelease];
+    }
+    return nil;
 }
 
 - (id)insertNewObjectWithNoContextForEntity:(NSString *)entityName {

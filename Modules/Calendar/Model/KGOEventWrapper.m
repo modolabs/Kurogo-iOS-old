@@ -19,7 +19,8 @@ rrule = _rrule,
 organizers = _organizers,
 coordinate = _coordinate,
 calendars = _calendars,
-bookmarked = _bookmarked;
+bookmarked = _bookmarked, 
+userInfo = _userInfo;
 
 #pragma mark KGOSearchResult
 
@@ -175,6 +176,16 @@ bookmarked = _bookmarked;
         _kgoEvent.summary = self.summary;
         _kgoEvent.organizers = self.organizers;
         _kgoEvent.lastUpdate = [NSDate date];
+        if (_userInfo) {
+            _kgoEvent.userInfo = [NSKeyedArchiver archivedDataWithRootObject:_userInfo];
+        }
+        if (self.attendees) {
+            NSMutableSet *set = [NSMutableSet set];
+            for (KGOAttendeeWrapper *attendee in self.attendees) {
+                [set addObject:[attendee KGOAttendee]];
+            }
+            _kgoEvent.attendees = set;
+        }
     }
     return _kgoEvent;
 }
@@ -238,7 +249,11 @@ bookmarked = _bookmarked;
             [set addObject:[[[KGOAttendeeWrapper alloc] initWithKGOAttendee:anAttendee] autorelease]];
         }
         self.attendees = set;
-    }    
+    }
+    
+    if (!self.userInfo) {
+        self.userInfo = [NSKeyedUnarchiver unarchiveObjectWithData:_kgoEvent.userInfo];
+    }
 }
 
 @end

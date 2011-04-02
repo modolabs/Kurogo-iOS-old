@@ -33,6 +33,7 @@
     NSMutableSet *_calendars;
     BOOL _bookmarked;
     NSString *_briefLocation;
+    NSDictionary *_userInfo;
     
     // not yet supported EKEvent properties: alarms, availability, isDetached,
     // status, calendar (this will be always set to local) 
@@ -48,6 +49,7 @@
 @property (nonatomic, retain) NSDictionary *rrule;
 @property (nonatomic, retain) NSSet *organizers;
 @property (nonatomic, retain) NSSet *attendees;
+@property (nonatomic, retain) NSDictionary *userInfo;
 @property (nonatomic) BOOL allDay;
 
 // non-eventkit properties

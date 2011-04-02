@@ -11,6 +11,7 @@ NSString * const KGOEntityNameEvent = @"KGOEvent";
 @dynamic start;
 @dynamic lastUpdate;
 @dynamic rrule;
+@dynamic userInfo;
 @dynamic longitude;
 @dynamic briefLocation;
 @dynamic latitude;
