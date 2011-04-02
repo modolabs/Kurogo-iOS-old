@@ -32,6 +32,10 @@ KGOSearchDisplayDelegate, KGODetailPagerController> {
 @property (nonatomic, retain) NSString *searchTerms;
 @property (nonatomic, retain) NSArray *annotations;
 
+@property (nonatomic) BOOL searchOnLoad; // tell the controller to start searching right away
+@property (nonatomic, retain) NSDictionary *searchParams; // custom query to search if different from display text
+
+
 - (IBAction)infoButtonPressed;
 - (IBAction)locateUserButtonPressed;
 - (IBAction)browseButtonPressed;

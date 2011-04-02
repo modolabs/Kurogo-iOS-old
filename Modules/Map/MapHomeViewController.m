@@ -16,7 +16,7 @@
 
 @implementation MapHomeViewController
 
-@synthesize searchTerms;
+@synthesize searchTerms, searchOnLoad, searchParams;
 
 - (void)mapTypeDidChange:(NSNotification *)aNotification {
     _mapView.mapType = [[aNotification object] integerValue];
@@ -36,9 +36,7 @@
     [_mapView centerAndZoomToDefaultRegion];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mapTypeDidChange:) name:MapTypePreferenceChanged object:nil];
 
-    _searchBar.placeholder = NSLocalizedString(@"Map Search Placeholder", nil);
-	_searchController = [[KGOSearchDisplayController alloc] initWithSearchBar:_searchBar delegate:self contentsController:self];
-	
+	// set up toolbar buttons
 	indoorMode = NO;
 	NSArray *items = nil;
 	UIBarButtonItem *spacer = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil] autorelease];
@@ -55,6 +53,16 @@
 	_browseButton.image = [UIImage imageWithPathName:@"modules/map/map_button_browse"];
 	_bookmarksButton.image = [UIImage imageWithPathName:@"modules/map/map_button_bookmark"];
 	_settingsButton.image = [UIImage imageWithPathName:@"modules/map/map_button_settings"];
+
+    // set up search bar
+    _searchBar.placeholder = NSLocalizedString(@"Map Search Placeholder", nil);
+	_searchController = [[KGOSearchDisplayController alloc] initWithSearchBar:_searchBar delegate:self contentsController:self];
+    if (self.searchTerms) {
+        _searchBar.text = self.searchTerms;
+    }
+    if (self.searchOnLoad) {
+        [_searchController executeSearch:self.searchTerms params:self.searchParams];
+    }
 }
 
 /*

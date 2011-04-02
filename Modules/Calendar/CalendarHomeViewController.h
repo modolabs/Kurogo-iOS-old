@@ -29,4 +29,8 @@ KGOScrollingTabstripDelegate, CalendarDataManagerDelegate> {
 @property(nonatomic, retain) KGOCalendar *currentCalendar;
 @property(nonatomic) BOOL showsGroups;
 
+- (void)clearEvents;
+- (void)clearCalendars;
+- (void)setupTabstripButtons;
+
 @end

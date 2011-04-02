@@ -79,5 +79,8 @@
 
 @property (nonatomic, retain) KGOEvent *KGOEvent; // setting this will override eventkit if saved
 
+// subclass properties
+
+- (NSString *)placemarkID;
 
 @end

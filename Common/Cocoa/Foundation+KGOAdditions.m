@@ -1,4 +1,5 @@
 #import "Foundation+KGOAdditions.h"
+#import "KGOAppDelegate.h"
 
 @implementation NSURL (MITAdditions)
 /*
@@ -15,11 +16,9 @@
     if ([query length] > 0) {
         path = [path stringByAppendingFormat:@"?%@", query];
     }
-	
-	NSArray *urlTypes = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleURLTypes"];
-	if ([urlTypes count]) {
-		NSArray *urlSchemes = [[urlTypes objectAtIndex:0] objectForKey:@"CFBundleURLSchemes"];
-		NSString *defaultScheme = [urlSchemes objectAtIndex:0];
+    
+    NSString *defaultScheme = [KGO_SHARED_APP_DELEGATE() defaultURLScheme];
+	if (defaultScheme) {
 		url = [[[NSURL alloc] initWithScheme:defaultScheme host:tag path:path] autorelease];
 	}
 	

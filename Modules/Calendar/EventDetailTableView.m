@@ -7,6 +7,7 @@
 #import "KGORequestManager.h"
 #import "KGODetailPageHeaderView.h"
 #import "CalendarDataManager.h"
+#import "MITMailComposeController.h"
 
 @implementation EventDetailTableView
 
@@ -227,6 +228,7 @@
         cell = [[[UITableViewCell alloc] initWithStyle:style reuseIdentifier:cellIdentifier] autorelease];
 
     } else {
+        cell.imageView.image = nil;
         UIView *view = [cell viewWithTag:DESCRIPTION_LABEL_TAG];
         [view removeFromSuperview];
     }
@@ -241,10 +243,10 @@
         NSString *accessory = [cellData objectForKey:@"accessory"];
         cell.accessoryView = [[KGOTheme sharedTheme] accessoryViewForType:accessory];
         if (accessory && ![accessory isEqualToString:KGOAccessoryTypeNone]) {
-            cell.selectionStyle = UITableViewCellSelectionStyleNone;
+            cell.selectionStyle = UITableViewCellSelectionStyleGray;
 
         } else {
-            cell.selectionStyle = UITableViewCellSelectionStyleGray;
+            cell.selectionStyle = UITableViewCellSelectionStyleNone;
         }
 
     } else {
@@ -271,23 +273,28 @@
 {
     id cellData = [[_sections objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
     if ([cellData isKindOfClass:[NSDictionary class]]) {    
-        NSString *accessory = [cellData objectForKey:@"acecssory"];
+        NSString *accessory = [cellData objectForKey:@"accessory"];
         NSURL *url = nil;
         if ([accessory isEqualToString:TableViewCellAccessoryPhone]) {
             NSString *urlString = [NSString stringWithFormat:@"tel:%@", [cellData objectForKey:@"subtitle"]];
             url = [NSURL URLWithString:urlString];
             
         } else if ([accessory isEqualToString:TableViewCellAccessoryEmail]) {
-            NSString *urlString = [NSString stringWithFormat:@"mailto:%@", [cellData objectForKey:@"subtitle"]];
-            url = [NSURL URLWithString:urlString];
+            [MITMailComposeController presentMailControllerWithEmail:[cellData objectForKey:@"subtitle"] subject:nil body:nil];
             
         } else if ([accessory isEqualToString:TableViewCellAccessoryExternal]) {
             url = [NSURL URLWithString:[cellData objectForKey:@"subtitle"]];
             
         } else if ([accessory isEqualToString:TableViewCellAccessoryMap]) {
-            
-        }
+            NSString *placemarkID = [_event placemarkID];
+            NSString *placemarkString = placemarkID ? [NSString stringWithFormat:@"&identifier=%@", placemarkID] : @"";
+            NSString *queryString = [NSString stringWithFormat:@"title=%@&lat=%.4f&lon=%.4f%@",
+                                     _event.title,
+                                     _event.coordinate.latitude, _event.coordinate.longitude, placemarkString];
 
+            url = [NSURL internalURLWithModuleTag:MapTag path:LocalPathPageNameSearch query:queryString];
+        }
+        
         if (url && [[UIApplication sharedApplication] canOpenURL:url]) {
             [[UIApplication sharedApplication] openURL:url];
         }
