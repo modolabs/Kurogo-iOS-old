@@ -3,10 +3,11 @@
 #import "KGOTheme.h"
 
 @implementation AboutMITVC
+@synthesize orgName, orgAboutText;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.navigationItem.title = NSLocalizedString(@"AboutOrgTitle", nil);
+    self.navigationItem.title = orgName; //NSLocalizedString(@"AboutOrgTitle", nil);
     
     [[AnalyticsWrapper sharedWrapper] trackPageview:@"/about/harvard"];
 }
@@ -24,7 +25,7 @@
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    NSString *aboutText = NSLocalizedString(@"AboutOrgText", nil);
+    NSString *aboutText = orgAboutText; //NSLocalizedString(@"AboutOrgText", nil);
     UIFont *aboutFont = [UIFont systemFontOfSize:15.0];
     CGSize aboutSize = [aboutText sizeWithFont:aboutFont constrainedToSize:CGSizeMake(270, 2000) lineBreakMode:UILineBreakModeWordWrap];
     return aboutSize.height;
@@ -43,7 +44,7 @@
         cell.detailTextLabel.backgroundColor = [UIColor clearColor];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
     }
-    cell.textLabel.text = NSLocalizedString(@"AboutOrgText", nil);
+    cell.textLabel.text = orgAboutText; //NSLocalizedString(@"AboutOrgText", nil);
     cell.textLabel.font = [[KGOTheme sharedTheme] fontForBodyText];
     cell.textLabel.textColor = [[KGOTheme sharedTheme] textColorForTableCellTitleWithStyle:UITableViewCellStyleDefault];
     cell.textLabel.lineBreakMode = UILineBreakModeWordWrap;

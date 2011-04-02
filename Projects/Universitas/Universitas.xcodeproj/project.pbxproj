@@ -24,6 +24,7 @@
 		562F4B79133EFA10000B9344 /* ContentModule.m in Sources */ = {isa = PBXBuildFile; fileRef = 562F4B74133EFA10000B9344 /* ContentModule.m */; };
 		562F4B7A133EFA10000B9344 /* ContentTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 562F4B76133EFA10000B9344 /* ContentTableViewController.m */; };
 		562F4B7B133EFA10000B9344 /* ContentWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 562F4B78133EFA10000B9344 /* ContentWebViewController.m */; };
+		56D8D29A1346B95600110008 /* AboutCreditsWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 56D8D2991346B95600110008 /* AboutCreditsWebViewController.m */; };
 		BD9FA7EE1047A05E00BC3C0A /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BD9FA7ED1047A05E00BC3C0A /* MessageUI.framework */; };
 		DE0F6B3411109BC500F064D6 /* AboutMITVC.m in Sources */ = {isa = PBXBuildFile; fileRef = DE0F6B3311109BC500F064D6 /* AboutMITVC.m */; };
 		DE6D9401110AD1ED00DAF213 /* SettingsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DE6D9319110A8EFA00DAF213 /* SettingsTableViewController.m */; };
@@ -226,6 +227,8 @@
 		562F4B76133EFA10000B9344 /* ContentTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ContentTableViewController.m; path = ../../../Modules/Content/ContentTableViewController.m; sourceTree = "<group>"; };
 		562F4B77133EFA10000B9344 /* ContentWebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ContentWebViewController.h; path = ../../../Modules/Content/ContentWebViewController.h; sourceTree = "<group>"; };
 		562F4B78133EFA10000B9344 /* ContentWebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ContentWebViewController.m; path = ../../../Modules/Content/ContentWebViewController.m; sourceTree = "<group>"; };
+		56D8D2981346B95500110008 /* AboutCreditsWebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AboutCreditsWebViewController.h; sourceTree = "<group>"; };
+		56D8D2991346B95600110008 /* AboutCreditsWebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AboutCreditsWebViewController.m; sourceTree = "<group>"; };
 		BD9FA7ED1047A05E00BC3C0A /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
 		DE0F6B3211109BC500F064D6 /* AboutMITVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AboutMITVC.h; sourceTree = "<group>"; };
 		DE0F6B3311109BC500F064D6 /* AboutMITVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AboutMITVC.m; sourceTree = "<group>"; };
@@ -633,6 +636,8 @@
 				DEC02F9C110578240054BE32 /* AboutTableViewController.m */,
 				DE0F6B3211109BC500F064D6 /* AboutMITVC.h */,
 				DE0F6B3311109BC500F064D6 /* AboutMITVC.m */,
+				56D8D2981346B95500110008 /* AboutCreditsWebViewController.h */,
+				56D8D2991346B95600110008 /* AboutCreditsWebViewController.m */,
 			);
 			name = About;
 			path = ../../../Modules/About;
@@ -1350,6 +1355,7 @@
 				EBE2CC1E1342AD2F0037546A /* KGOBookmarksViewController.m in Sources */,
 				EBE2CC2113438AEA0037546A /* KGODetailPageHeaderView.m in Sources */,
 				EBE2CC641343E4D00037546A /* KGOMapCategory.m in Sources */,
+				56D8D29A1346B95600110008 /* AboutCreditsWebViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

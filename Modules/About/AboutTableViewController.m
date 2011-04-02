@@ -5,15 +5,47 @@
 #import "MITMailComposeController.h"
 #import "KGOTheme.h"
 #import "ThemeConstants.h"
+#import "Foundation+KGOAdditions.h"
+#import "AboutCreditsWebViewController.h"
 
 @implementation AboutTableViewController
+@synthesize request;
+
+- (id)initWithStyle:(UITableViewStyle)style {
+    
+    self = [super initWithStyle:style];
+    if (self) {
+        self.title = @"About";
+        
+        self.request = [[KGORequestManager sharedManager] requestWithDelegate:self
+                                                                       module:@"about"
+                                                                         path:@"alldata"
+                                                                        params:[NSDictionary dictionaryWithObjectsAndKeys:nil]];
+        self.request.expectedResponseType = [NSDictionary class];
+        if (self.request) {
+            [self.request connect];
+            //[self addLoadingView];
+        }
+        
+        // initialize as empty strings if not-assigned.
+        if (aboutText == nil) aboutText = @"About";
+        if (orgText == nil) orgText = @"";
+        if (orgName == nil) orgText = @"About";
+        if (orgEmail == nil) orgText = @"";
+        if (orgWebsite == nil) orgText = @"";
+        if (credits == nil) orgText = @"";
+        if (copyright == nil) orgText = @"";
+    }
+    return self;
+
+}
 
 - (void)viewDidLoad {
     showBuildNumber = NO;
     
     UIView *footerView = [[UIView alloc] initWithFrame:CGRectMake(10, 0, self.view.frame.size.width - 20, 45)];
     UILabel *footerLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, footerView.frame.size.width, 30)];
-    footerLabel.text = NSLocalizedString(@"AboutFooterText", nil);
+    footerLabel.text = copyright; //NSLocalizedString(@"AboutFooterText", nil);
     footerLabel.backgroundColor = [UIColor clearColor];
     footerLabel.textAlignment = UITextAlignmentCenter;
     footerLabel.textColor = [[KGOTheme sharedTheme] textColorForTableFooter];
@@ -35,7 +67,7 @@
         case 0:
             return 2;
         case 1:
-            return 2;
+            return 3;
         default:
             return 0;
     }
@@ -43,10 +75,15 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     if (indexPath.section == 0 && indexPath.row == 1) {
-        NSString *aboutText = NSLocalizedString(@"AboutAppText", nil);
+        //NSString *aboutText = aboutText; //NSLocalizedString(@"AboutAppText", nil);
         UIFont *aboutFont = [UIFont systemFontOfSize:14.0];
-        CGSize aboutSize = [aboutText sizeWithFont:aboutFont constrainedToSize:CGSizeMake(tableView.frame.size.width, 2000) lineBreakMode:UILineBreakModeWordWrap];
-        return aboutSize.height + 40;
+        if ((aboutText != nil)) {
+            CGSize aboutSize = [aboutText sizeWithFont:aboutFont constrainedToSize:CGSizeMake(tableView.frame.size.width, 2000) lineBreakMode:UILineBreakModeWordWrap];
+            
+            return aboutSize.height + 40;
+        }
+        else
+            return 0;
     }
     else {
         return self.tableView.rowHeight;
@@ -88,7 +125,7 @@
                     break;
                 case 1:
                 {
-                    cell.textLabel.text = NSLocalizedString(@"AboutAppText", nil);
+                    cell.textLabel.text = aboutText;
                     cell.textLabel.lineBreakMode = UILineBreakModeWordWrap;
                     cell.textLabel.numberOfLines = 0;
                     cell.textLabel.font = [[KGOTheme sharedTheme] fontForBodyText];
@@ -105,12 +142,20 @@
         case 1:
             switch (indexPath.row) {
                 case 0:
-                    cell.textLabel.text = NSLocalizedString(@"AboutOrgTitle", nil);
+                    cell.textLabel.text = orgName;
                     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
                     cell.selectionStyle = UITableViewCellSelectionStyleGray;
                     cell.textLabel.textColor = [[KGOTheme sharedTheme] textColorForTableCellTitleWithStyle:UITableViewCellStyleDefault];
                     break;
+                
                 case 1:
+                    cell.textLabel.text = NSLocalizedString(@"Credits", nil);
+                    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+                    cell.selectionStyle = UITableViewCellSelectionStyleGray;
+                    cell.textLabel.textColor = [[KGOTheme sharedTheme] textColorForTableCellTitleWithStyle:UITableViewCellStyleDefault];
+                    break;
+                    
+                case 2:
                     cell.textLabel.text = NSLocalizedString(@"Send Feedback", nil);
                     cell.accessoryView = [[KGOTheme sharedTheme] accessoryViewForType:TableViewCellAccessoryEmail];
                     cell.selectionStyle = UITableViewCellSelectionStyleGray;
@@ -133,19 +178,25 @@
         switch (indexPath.row) {
             case 0: {
                 AboutMITVC *aboutMITVC = [[AboutMITVC alloc] initWithStyle:UITableViewStyleGrouped];
+                aboutMITVC.orgName = orgName;
+                aboutMITVC.orgAboutText = orgText;
                 [self.navigationController pushViewController:aboutMITVC animated:YES];
                 [aboutMITVC release];
                 break;
             }
             case 1: {
-                NSString *subject = [NSString stringWithFormat:@"%@ %@ %@ (%@) %@",
-                                     NSLocalizedString(@"AppFeedbackEmailSubjectBeforeName", nil),
-                                     [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"],
-                                     NSLocalizedString(@"AppFeedbackEmailSubjectAfterName", nil),
-                                     MITBuildNumber];
-				NSString * file = [[NSBundle mainBundle] pathForResource:@"Config" ofType:@"plist"];
-				NSDictionary *infoDict = [NSDictionary dictionaryWithContentsOfFile:file];
-                NSString *email = [infoDict objectForKey:@"AppFeedbackAddress"];
+                AboutCreditsWebViewController * creditsWebViewController = [[AboutCreditsWebViewController alloc] init];
+                [creditsWebViewController setHTMLString: credits];
+                [self.navigationController pushViewController:creditsWebViewController animated:YES];
+                [creditsWebViewController release];
+                break;
+            }
+            case 2: {
+                NSDictionary *infoDict = [[NSBundle mainBundle] infoDictionary];
+                    
+                NSString *subject = [NSString stringWithFormat:@"%@:%@ %@, Build: %@", @"Regarding", [infoDict objectForKey:@"CFBundleName"], [infoDict objectForKey:@"CFBundleVersion"], MITBuildNumber];
+                
+                NSString *email = orgEmail;
                 [MITMailComposeController presentMailControllerWithEmail:email subject:subject body:[NSString string]];
 				break;
             }
@@ -164,5 +215,30 @@
 }
 
 
+#pragma mark KGORequestDelegate
+
+- (void)requestWillTerminate:(KGORequest *)request {
+    self.request = nil;
+}
+
+- (void)request:(KGORequest *)request didReceiveResult:(id)result {
+    self.request = nil;
+    
+    NSLog(@"%@", [result description]);
+    
+    NSDictionary * resultDict = (NSDictionary * ) result;
+    
+    aboutText = [[resultDict stringForKey:@"aboutHTML" nilIfEmpty:NO] retain];
+    orgText = [[resultDict stringForKey:@"siteAboutHTML" nilIfEmpty:NO] retain];
+    orgName = [[resultDict stringForKey:@"orgName" nilIfEmpty:NO] retain];
+    orgEmail = [[resultDict stringForKey:@"email" nilIfEmpty:NO] retain];
+    orgWebsite = [[resultDict stringForKey:@"website" nilIfEmpty:NO] retain];
+    copyright = [[resultDict stringForKey:@"copyright" nilIfEmpty:NO] retain];
+    credits = [[result stringForKey:@"credits" nilIfEmpty:NO] retain];
+
+    [self.tableView reloadData];
+    //[self removeLoadingView];
+    
+}
 @end
 
