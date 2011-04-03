@@ -256,4 +256,9 @@ userInfo = _userInfo;
     }
 }
 
+- (NSString *)placemarkID
+{
+    return nil;
+}
+
 @end

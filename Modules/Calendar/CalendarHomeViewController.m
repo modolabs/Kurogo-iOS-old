@@ -5,9 +5,6 @@
 
 @interface CalendarHomeViewController (Private)
 
-- (void)clearEvents;
-- (void)clearCalendars;
-- (void)setupTabstripButtons;
 - (void)requestEventsForCurrentCalendar:(NSDate *)date;
 - (void)loadTableViewWithStyle:(UITableViewStyle)style;
 

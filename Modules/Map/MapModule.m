@@ -38,11 +38,15 @@ NSString * const MapTypePreferenceChanged = @"MapTypeChanged";
 
 - (void)performSearchWithText:(NSString *)searchText params:(NSDictionary *)params delegate:(id<KGOSearchDelegate>)delegate {
     self.searchDelegate = delegate;
+
+    if (!params) {
+        params = [NSDictionary dictionaryWithObjectsAndKeys:searchText, @"q", nil];
+    }
     
     self.request = [[KGORequestManager sharedManager] requestWithDelegate:self
                                                                    module:MapTag
                                                                      path:@"search"
-                                                                   params:[NSDictionary dictionaryWithObjectsAndKeys:searchText, @"q", nil]];
+                                                                   params:params];
     self.request.expectedResponseType = [NSDictionary class];
     if (self.request)
         [self.request connect];
@@ -81,6 +85,11 @@ NSString * const MapTypePreferenceChanged = @"MapTypeChanged";
             [(MapHomeViewController *)vc setSearchTerms:searchText];
         }
         
+        NSString *identifier = [params objectForKey:@"identifier"];
+        if (identifier) {
+            [(MapHomeViewController *)vc setSearchTerms:identifier];
+        }
+        
     } else if ([pageName isEqualToString:LocalPathPageNameDetail]) {
         vc = [[[MapDetailViewController alloc] init] autorelease];
         MapDetailViewController *detailVC = (MapDetailViewController *)vc;
@@ -115,17 +124,16 @@ NSString * const MapTypePreferenceChanged = @"MapTypeChanged";
 
 - (BOOL)handleLocalPath:(NSString *)localPath query:(NSString *)query {
     if ([localPath isEqualToString:LocalPathPageNameSearch]) {
-        KGOAppDelegate *appDelegate = KGO_SHARED_APP_DELEGATE();
-
         NSDictionary *params = [NSURL parametersFromQueryString:query];
         NSString *searchText = [params objectForKey:@"q"];
         if (searchText) {
-            return [appDelegate showPage:LocalPathPageNameSearch forModuleTag:MapTag params:params];
+            return [KGO_SHARED_APP_DELEGATE() showPage:LocalPathPageNameSearch forModuleTag:MapTag params:params];
         }
         
         NSString *placemarkID = [params objectForKey:@"identifier"];
         NSPredicate *pred = [NSPredicate predicateWithFormat:@"identifier like %@", placemarkID];
-        KGOPlacemark *placemark = [[[CoreDataManager sharedManager] objectsForEntity:KGOPlacemarkEntityName matchingPredicate:pred] lastObject];
+        KGOPlacemark *placemark = [[[CoreDataManager sharedManager] objectsForEntity:KGOPlacemarkEntityName
+                                                                   matchingPredicate:pred] lastObject];
         if (placemark) {
             KGOAppDelegate *appDelegate = KGO_SHARED_APP_DELEGATE();
             UIViewController *visibleVC = [appDelegate visibleViewController];
@@ -142,7 +150,9 @@ NSString * const MapTypePreferenceChanged = @"MapTypeChanged";
             [appDelegate dismissAppModalViewControllerAnimated:YES];
             [(MapHomeViewController *)visibleVC setAnnotations:[NSArray arrayWithObject:placemark]];
             return YES;
+            
         }
+        
     }
     return NO;
 }
