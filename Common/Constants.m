@@ -8,6 +8,7 @@ NSString * const LocalPathPageNameCategoryList = @"categories";
 NSString * const LocalPathPageNameItemList = @"items";
 NSString * const LocalPathPageNameMapList = @"map";
 NSString * const LocalPathPageNameBookmarks = @"bookmarks";
+NSString * const LocalPathPageNameWebViewDetail = @"webView";
 
 // keys for NSUserDefaults dictionary go here (app preferences)
 NSString * const DeviceTokenKey = @"DeviceToken";

@@ -9,6 +9,7 @@ extern NSString * const LocalPathPageNameCategoryList;
 extern NSString * const LocalPathPageNameItemList;
 extern NSString * const LocalPathPageNameMapList;
 extern NSString * const LocalPathPageNameBookmarks;
+extern NSString * const LocalPathPageNameWebViewDetail;
 
 // keys for NSUserDefaults dictionary go here (app preferences)
 extern NSString * const DeviceTokenKey;

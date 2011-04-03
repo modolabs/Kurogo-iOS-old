@@ -23,12 +23,12 @@
 		<dict>
 			<key>class</key>
 			<string>HomeModule</string>
+			<key>hidden</key>
+			<true/>
 			<key>shortName</key>
 			<string>Home</string>
 			<key>tag</key>
 			<string>home</string>
-			<key>hidden</key>
-			<true/>
 		</dict>
 		<dict>
 			<key>class</key>
