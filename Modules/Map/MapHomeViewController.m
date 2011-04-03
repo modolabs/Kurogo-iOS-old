@@ -22,6 +22,61 @@
     _mapView.mapType = [[aNotification object] integerValue];
 }
 
+- (void)setupToolbarButtons {
+    _infoButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    [_infoButton setImage:[UIImage imageWithPathName:@"modules/map/map-button-info"] forState:UIControlStateNormal];
+    
+    _locateUserButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    [_locateUserButton setImage:[UIImage imageWithPathName:@"modules/map/map-button-location"] forState:UIControlStateNormal];
+
+    _browseButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    [_browseButton setImage:[UIImage imageWithPathName:@"modules/map/map-button-browse"] forState:UIControlStateNormal];
+    
+    _bookmarksButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    [_bookmarksButton setImage:[UIImage imageWithPathName:@"modules/map/map-button-favorites"] forState:UIControlStateNormal];
+
+    _settingsButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    [_settingsButton setImage:[UIImage imageWithPathName:@"modules/map/map-button-settings"] forState:UIControlStateNormal];
+        
+    UIImage *normalImage = [UIImage imageWithPathName:@"common/secondary-toolbar-button"];
+    UIImage *pressedImage = [UIImage imageWithPathName:@"common/secondary-toolbar-button-pressed"];
+    CGRect frame = CGRectZero;
+    if (normalImage) {
+        frame.size = normalImage.size;
+    } else {
+        frame.size = CGSizeMake(42, 31);
+    }
+
+    NSArray *buttons = [NSArray arrayWithObjects:_infoButton, _locateUserButton, _browseButton, _bookmarksButton, _settingsButton, nil];
+    for (UIButton *aButton in buttons) {
+        aButton.frame = frame;
+        [aButton setBackgroundImage:normalImage forState:UIControlStateNormal];
+        [aButton setBackgroundImage:pressedImage forState:UIControlStateHighlighted];
+        [aButton addTarget:self action:@selector(toolbarButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
+    }
+    
+	indoorMode = NO;
+	NSArray *items = nil;
+	UIBarButtonItem *spacer = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil] autorelease];
+	if (indoorMode) {
+		items = [NSArray arrayWithObjects:
+                 [[[UIBarButtonItem alloc] initWithCustomView:_infoButton] autorelease], spacer,
+                 [[[UIBarButtonItem alloc] initWithCustomView:_browseButton] autorelease], spacer,
+                 [[[UIBarButtonItem alloc] initWithCustomView:_bookmarksButton] autorelease], spacer,
+                 [[[UIBarButtonItem alloc] initWithCustomView:_settingsButton] autorelease],
+                 nil];
+	} else {
+		items = [NSArray arrayWithObjects:
+                 [[[UIBarButtonItem alloc] initWithCustomView:_locateUserButton] autorelease], spacer,
+                 [[[UIBarButtonItem alloc] initWithCustomView:_browseButton] autorelease], spacer,
+                 [[[UIBarButtonItem alloc] initWithCustomView:_bookmarksButton] autorelease], spacer,
+                 [[[UIBarButtonItem alloc] initWithCustomView:_settingsButton] autorelease],
+                 nil];
+	}
+    
+	_bottomBar.items = items;
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     
@@ -37,22 +92,7 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mapTypeDidChange:) name:MapTypePreferenceChanged object:nil];
 
 	// set up toolbar buttons
-	indoorMode = NO;
-	NSArray *items = nil;
-	UIBarButtonItem *spacer = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil] autorelease];
-	if (indoorMode) {
-		items = [NSArray arrayWithObjects:_infoButton, spacer, _browseButton, spacer, _bookmarksButton, spacer, _settingsButton, nil];
-		_infoButton.image = nil;
-	} else {
-		items = [NSArray arrayWithObjects:_locateUserButton, spacer, _browseButton, spacer, _bookmarksButton, spacer, _settingsButton, nil];
-		_locateUserButton.image = [UIImage imageWithPathName:@"modules/map/map_button_location"];
-	}
-
-	_bottomBar.items = items;
-	
-	_browseButton.image = [UIImage imageWithPathName:@"modules/map/map_button_browse"];
-	_bookmarksButton.image = [UIImage imageWithPathName:@"modules/map/map_button_bookmark"];
-	_settingsButton.image = [UIImage imageWithPathName:@"modules/map/map_button_settings"];
+    [self setupToolbarButtons];
 
     // set up search bar
     _searchBar.placeholder = NSLocalizedString(@"Map Search Placeholder", nil);
@@ -102,6 +142,21 @@
 }
 
 #pragma mark -
+
+- (void)toolbarButtonPressed:(id)sender
+{
+    if (sender == _infoButton) {
+        [self infoButtonPressed];
+    } else if (sender == _locateUserButton) {
+        [self locateUserButtonPressed];
+    } else if (sender == _browseButton) {
+        [self browseButtonPressed];
+    } else if (sender == _bookmarksButton) {
+        [self bookmarksButtonPressed];
+    } else if (sender == _settingsButton) {
+        [self settingsButtonPressed];
+    }
+}
 
 - (IBAction)infoButtonPressed {
 	
