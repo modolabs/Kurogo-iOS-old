@@ -21,4 +21,6 @@
 @property (nonatomic, retain) NSNumber * order;
 @property (nonatomic, retain) EmergencyContactsSection * section;
 
+- (NSString *)summary;
+
 @end

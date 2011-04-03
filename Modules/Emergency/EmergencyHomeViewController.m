@@ -149,11 +149,7 @@
         if (indexPath.row < self.primaryContacts.count) {
             EmergencyContact *contact = [self.primaryContacts objectAtIndex:indexPath.row];
             title = contact.title;
-            if (contact.subtitle) {
-                detailText = [NSString stringWithFormat:@"%@ (%@)", contact.subtitle, contact.formattedPhone];
-            } else {
-                detailText = [NSString stringWithFormat:@"(%@)", contact.formattedPhone];
-            }
+            detailText = contact.summary;
             accessoryTag = TableViewCellAccessoryPhone;
 
         } else if(indexPath.row == self.primaryContacts.count) {
