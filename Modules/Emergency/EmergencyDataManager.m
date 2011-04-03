@@ -2,7 +2,7 @@
 #import "Foundation+KGOAdditions.h"
 #import "CoreDataManager.h"
 
-#define CONTACTS_EXPIRE 60 
+#define CONTACTS_EXPIRE 60 * 60 * 24 * 30
 
 NSString * const EmergencyNoticeRetrievedNotification = @"EmergencyNoticeRetrieved";
 NSString * const EmergencyContactsRetrievedNotification = @"EmergencyContactsRetrieved";
