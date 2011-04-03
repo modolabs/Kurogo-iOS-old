@@ -41,7 +41,7 @@
 
 // properties defined in Theme.plist
 - (BOOL)showsSearchBar;                     // true to show search bar on home screen
-- (UIImage *)backgroundImage;               // home screen background image
+- (UIColor *)backgroundColor;               // home screen background color or image
 - (UIFont *)moduleLabelFont;
 - (UIFont *)moduleLabelFontLarge;
 - (UIColor *)moduleLabelTextColor;

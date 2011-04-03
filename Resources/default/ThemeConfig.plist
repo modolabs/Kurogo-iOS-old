@@ -6,8 +6,6 @@
 	<dict>
 		<key>AppBackground</key>
 		<string>common/body-background.png</string>
-		<key>HomeScreenBackground</key>
-		<string>home/home-background.png</string>
 		<key>NavBarTintColor</key>
 		<string>#870E16</string>
 		<key>PlainSectionHeaderBackground</key>
@@ -23,8 +21,6 @@
 	</dict>
 	<key>Fonts</key>
 	<dict>
-		<key>DefaultFontSize</key>
-		<integer>15</integer>
 		<key>ContentTitle</key>
 		<dict>
 			<key>color</key>
@@ -38,6 +34,8 @@
 		<string>Helvetica-Bold</string>
 		<key>DefaultFont</key>
 		<string>Helvetica</string>
+		<key>DefaultFontSize</key>
+		<integer>15</integer>
 		<key>GroupedSectionHeader</key>
 		<dict>
 			<key>bold</key>
@@ -49,10 +47,10 @@
 		</dict>
 		<key>PlainSectionHeader</key>
 		<dict>
-			<key>color</key>
-			<string>#EBE7E3</string>
 			<key>bold</key>
 			<true/>
+			<key>color</key>
+			<string>#EBE7E3</string>
 			<key>size</key>
 			<integer>0</integer>
 		</dict>
@@ -65,10 +63,10 @@
 		</dict>
 		<key>TableCellTitle</key>
 		<dict>
-			<key>color</key>
-			<string>#1A1611</string>
 			<key>bold</key>
 			<true/>
+			<key>color</key>
+			<string>#1A1611</string>
 			<key>size</key>
 			<integer>2</integer>
 		</dict>
@@ -82,7 +80,7 @@
 	</dict>
 	<key>HomeScreen</key>
 	<dict>
-		<key>BackgroundImage</key>
+		<key>BackgroundColor</key>
 		<string>modules/home/home-background.png</string>
 		<key>ModuleLabelFont</key>
 		<dict>

@@ -13,3 +13,4 @@ LIBRARY_SEARCH_PATHS = "$(SDKROOT)/usr/include/libxml2" "$(SRCROOT)/../../Contri
 OTHER_LDFLAGS = -all_load -ObjC
 PREBINDING = NO
 SDKROOT = iphoneos
+SHARED_CFLAGS = -DNS_BLOCK_ASSERTIONS

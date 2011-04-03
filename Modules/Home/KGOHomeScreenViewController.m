@@ -70,9 +70,9 @@
 }
 
 - (void)viewDidLoad {
-    UIImage *background = [self backgroundImage];
-    if (background) {
-        self.view.backgroundColor = [UIColor colorWithPatternImage:background];
+    UIColor *backgroundColor = [self backgroundColor];
+    if (backgroundColor) {
+        self.view.backgroundColor = backgroundColor;
     }
     
 	UIBarButtonItem *newBackButton = [[UIBarButtonItem alloc] initWithTitle:@"Home" style:UIBarButtonItemStyleBordered target:nil action:nil];	
@@ -367,9 +367,16 @@
     return [number boolValue];
 }
 
-- (UIImage *)backgroundImage {
-    NSString *filename = [_preferences objectForKey:@"BackgroundImage"];
-    return [UIImage imageWithPathName:filename];
+- (UIColor *)backgroundColor {
+    NSString *colorName = [_preferences objectForKey:@"BackgroundColor"];
+    UIColor *color = [UIColor colorWithHexString:colorName];
+    if (!color) {
+        UIImage *image = [UIImage imageWithPathName:colorName];
+        if (image) {
+            color = [UIColor colorWithPatternImage:image];
+        }
+    }
+    return color;
 }
 
 // primary modules
