@@ -60,6 +60,8 @@ NSString * const NewsImageEntityName = @"NewsImage";
 NSString * const NewsImageRepEntityName = @"NewsImageRep";
 
 NSString * const EmergencyNoticeEntityName = @"EmergencyNotice";
+NSString * const EmergencyContactsSectionEntityName = @"EmergencyContactsSection";
+NSString * const EmergencyContactEntityName = @"EmergencyContact";
 
 
 // local paths for handleLocalPath
