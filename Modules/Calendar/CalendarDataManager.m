@@ -94,6 +94,51 @@
 {
     BOOL success = NO;
     
+    NSArray *events = [calendar.events allObjects];
+    if (events) {    
+        NSMutableArray *predTemplates = [NSMutableArray array];
+        NSMutableArray *predArguments = [NSMutableArray array];
+        
+        NSDate *start = [params objectForKey:@"start"];
+        if (!start) {
+            NSDate *time = [params objectForKey:@"time"];
+            if (time) {
+                NSUInteger flags = NSYearCalendarUnit | NSMonthCalendarUnit | NSDayCalendarUnit;
+                NSDateComponents *comps = [[NSCalendar currentCalendar] components:flags fromDate:time];
+                start = [[NSCalendar currentCalendar] dateFromComponents:comps];
+            }
+        }
+        
+        if (start) {
+            [predTemplates addObject:[NSString stringWithFormat:@"start >= %@"]];
+            [predArguments addObject:start];
+        }
+        
+        NSDate *end = [params objectForKey:@"end"];
+        if (end) {
+            [predTemplates addObject:[NSString stringWithFormat:@"end < %@"]];
+            [predArguments addObject:start];
+        }
+
+        NSArray *filteredEvents;
+        if (predTemplates.count) {
+            NSPredicate *pred = [NSPredicate predicateWithFormat:[predTemplates componentsJoinedByString:@" AND "]
+                                                   argumentArray:predArguments];
+            
+            filteredEvents = [events filteredArrayUsingPredicate:pred];
+        } else {
+            filteredEvents = events;
+        }
+        
+        NSMutableArray *wrappers = [NSMutableArray arrayWithCapacity:filteredEvents.count];
+        for (KGOEvent *event in filteredEvents) {
+            [wrappers addObject:[[[KGOEventWrapper alloc] initWithKGOEvent:event] autorelease]];
+        }
+        
+        [self.delegate eventsDidChange:wrappers calendar:calendar];
+    }
+    
+    // TODO: use a timeout value to decide whether or not to check for update
     if ([[KGORequestManager sharedManager] isReachable]) {
         NSString *requestIdentifier = calendar.identifier;
         KGORequest *request = [_eventsRequests objectForKey:requestIdentifier];
@@ -247,7 +292,10 @@
             KGOEventWrapper *event = [[[KGOEventWrapper alloc] initWithDictionary:aDict] autorelease];
             [event addCalendar:calendar];
             [array addObject:event];
+            [event convertToKGOEvent];
         }
+        
+        [[CoreDataManager sharedManager] saveData];
         [self.delegate eventsDidChange:array calendar:calendar];
     }
 }

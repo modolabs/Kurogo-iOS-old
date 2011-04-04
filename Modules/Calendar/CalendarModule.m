@@ -19,8 +19,10 @@ NSString * const KGODataModelNameCalendar = @"Calendar";
     return nil; // TODO
 }
 
-- (void)launch {
-
+- (void)launch
+{
+    [super launch];
+    
     if (!self.dataManager) {
         self.dataManager = [[[CalendarDataManager alloc] init] autorelease];
         self.dataManager.moduleTag = self.tag;

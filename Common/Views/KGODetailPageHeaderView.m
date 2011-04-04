@@ -10,10 +10,6 @@
 @interface KGODetailPageHeaderView (Private)
 
 - (void)toggleBookmark:(id)sender;
-- (void)layoutBookmarkButton;
-- (void)layoutShareButton;
-- (void)hideShareButton;
-- (void)hideBookmarkButton;
 - (CGFloat)headerWidthWithButtons;
 
 @end

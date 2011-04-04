@@ -61,6 +61,7 @@
 // server api
 
 - (id)initWithDictionary:(NSDictionary *)dictionary;
+- (void)updateWithDictionary:(NSDictionary *)dictionary;
 
 // eventkit
 
@@ -76,6 +77,8 @@
 - (KGOEvent *)convertToKGOEvent;
 - (void)saveToCoreData;
 - (void)addCalendar:(KGOCalendar *)aCalendar;
+- (NSSet *)unwrappedOrganizers;
+- (NSSet *)unwrappedAttendees;
 
 @property (nonatomic, retain) KGOEvent *KGOEvent; // setting this will override eventkit if saved
 

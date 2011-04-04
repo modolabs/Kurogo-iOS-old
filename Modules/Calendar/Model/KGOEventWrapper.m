@@ -36,7 +36,6 @@ userInfo = _userInfo;
     return s_eventStore;
 }
 
-
 - (id)initWithDictionary:(NSDictionary *)dictionary
 {
     NSString *identifier = [dictionary stringForKey:@"id" nilIfEmpty:YES];
@@ -48,40 +47,50 @@ userInfo = _userInfo;
     self = [super init];
     if (self) {
         self.identifier = identifier;
-
-        // basic info
-        self.title = [dictionary stringForKey:@"title" nilIfEmpty:YES];
-        if (!self.title) {
-            // TODO: deprecate this from API
-            self.title = [dictionary stringForKey:@"summary" nilIfEmpty:YES];
-        }
-        self.summary = [dictionary stringForKey:@"description" nilIfEmpty:YES];
-
-        // time
-        NSTimeInterval startTimestamp = [dictionary floatForKey:@"start"];
-        if (startTimestamp) {
-            self.startDate = [NSDate dateWithTimeIntervalSince1970:startTimestamp];
-        }
-        NSTimeInterval endTimestamp = [dictionary floatForKey:@"end"];
-        if (endTimestamp) {
-            self.endDate = [NSDate dateWithTimeIntervalSince1970:endTimestamp];
-        }
-        NSNumber *allDay = [dictionary objectForKey:@"allday"];
-        if (allDay && [allDay isKindOfClass:[NSNumber class]]) {
-            self.allDay = [allDay boolValue];
-        } else {
-            self.allDay = (endTimestamp - startTimestamp) + 1 >= 24 * 60 * 60;
-        }
-
-        // location
-        self.location = [dictionary stringForKey:@"location" nilIfEmpty:YES];
         
-        // TODO: contact info
+        KGOEvent *storedEvent = [KGOEvent eventWithID:self.identifier];
+        if (storedEvent) {
+            self.KGOEvent = storedEvent;
+        }
         
-        
-        self.lastUpdate = [NSDate date];
+        [self updateWithDictionary:dictionary];        
     }
     return self;
+}
+
+- (void)updateWithDictionary:(NSDictionary *)dictionary
+{
+    // basic info
+    self.title = [dictionary stringForKey:@"title" nilIfEmpty:YES];
+    if (!self.title) {
+        // TODO: deprecate this from API
+        self.title = [dictionary stringForKey:@"summary" nilIfEmpty:YES];
+    }
+    self.summary = [dictionary stringForKey:@"description" nilIfEmpty:YES];
+    
+    // time
+    NSTimeInterval startTimestamp = [dictionary floatForKey:@"start"];
+    if (startTimestamp) {
+        self.startDate = [NSDate dateWithTimeIntervalSince1970:startTimestamp];
+    }
+    NSTimeInterval endTimestamp = [dictionary floatForKey:@"end"];
+    if (endTimestamp) {
+        self.endDate = [NSDate dateWithTimeIntervalSince1970:endTimestamp];
+    }
+    NSNumber *allDay = [dictionary objectForKey:@"allday"];
+    if (allDay && [allDay isKindOfClass:[NSNumber class]]) {
+        self.allDay = [allDay boolValue];
+    } else {
+        self.allDay = (endTimestamp - startTimestamp) + 1 >= 24 * 60 * 60;
+    }
+    
+    // location
+    self.location = [dictionary stringForKey:@"location" nilIfEmpty:YES];
+    
+    // TODO: contact info
+    
+    
+    self.lastUpdate = [NSDate date];
 }
 
 - (id)initWithEKEvent:(EKEvent *)event
@@ -148,23 +157,34 @@ userInfo = _userInfo;
     return self;
 }
 
+- (NSSet *)unwrappedOrganizers
+{
+    if (!self.organizers.count)
+        return nil;
+    
+    NSMutableSet *set = [NSMutableSet set];
+    for (KGOAttendeeWrapper *wrapper in self.organizers) {
+        [set addObject:[wrapper KGOAttendee]];
+    }
+    return set;
+}
+
+- (NSSet *)unwrappedAttendees
+{
+    if (!self.attendees.count)
+        return nil;
+    
+    NSMutableSet *set = [NSMutableSet set];
+    for (KGOAttendeeWrapper *wrapper in self.attendees) {
+        [set addObject:[wrapper KGOAttendee]];
+    }
+    return set;
+}
+
 - (KGOEvent *)convertToKGOEvent
 {
-    [_kgoEvent release];
-    _kgoEvent = [KGOEvent eventWithID:self.identifier];
-    
-    // TODO: complete this
-    if (![_kgoEvent.title isEqualToString:self.title]
-        || ![_kgoEvent.location isEqualToString:self.location] 
-        || ![_kgoEvent.briefLocation isEqualToString:self.briefLocation]
-        || ![_kgoEvent.start isEqualToDate:self.startDate]
-        || ![_kgoEvent.end isEqualToDate:self.endDate]
-        || [_kgoEvent.latitude floatValue] != self.coordinate.latitude
-        || [_kgoEvent.longitude floatValue] != self.coordinate.longitude
-        || ![_kgoEvent.summary isEqualToString:self.summary]
-        || ![_kgoEvent.calendars isEqualToSet:self.calendars]
-        || ![_kgoEvent.organizers isEqualToSet:self.organizers] 
-    ) {
+    if (!_kgoEvent) {
+        _kgoEvent = [[KGOEvent eventWithID:self.identifier] retain];
         _kgoEvent.title = self.title;
         _kgoEvent.location = self.location;
         _kgoEvent.briefLocation = self.briefLocation;
@@ -172,19 +192,13 @@ userInfo = _userInfo;
         _kgoEvent.end = self.endDate;
         _kgoEvent.latitude = [NSNumber numberWithFloat:self.coordinate.latitude];
         _kgoEvent.longitude = [NSNumber numberWithFloat:self.coordinate.longitude];
-        _kgoEvent.calendars = self.calendars;
         _kgoEvent.summary = self.summary;
-        _kgoEvent.organizers = self.organizers;
+        _kgoEvent.organizers = [self unwrappedOrganizers];
+        _kgoEvent.attendees = [self unwrappedAttendees];
         _kgoEvent.lastUpdate = [NSDate date];
+        
         if (_userInfo) {
             _kgoEvent.userInfo = [NSKeyedArchiver archivedDataWithRootObject:_userInfo];
-        }
-        if (self.attendees) {
-            NSMutableSet *set = [NSMutableSet set];
-            for (KGOAttendeeWrapper *attendee in self.attendees) {
-                [set addObject:[attendee KGOAttendee]];
-            }
-            _kgoEvent.attendees = set;
         }
     }
     return _kgoEvent;
@@ -200,6 +214,7 @@ userInfo = _userInfo;
 
 - (void)saveToCoreData
 {
+    [self convertToKGOEvent];
     [[CoreDataManager sharedManager] saveData];
 }
 
@@ -218,7 +233,7 @@ userInfo = _userInfo;
 
 - (void)removeBookmark
 {
-    if (!self.KGOEvent) {
+    if (self.KGOEvent) {
         self.KGOEvent.bookmarked = [NSNumber numberWithBool:NO];
     }
 }
@@ -247,6 +262,14 @@ userInfo = _userInfo;
         NSMutableSet *set = [NSMutableSet set];
         for (KGOEventAttendee *anAttendee in _kgoEvent.attendees) {
             [set addObject:[[[KGOAttendeeWrapper alloc] initWithKGOAttendee:anAttendee] autorelease]];
+        }
+        self.attendees = set;
+    }
+    
+    if (!self.organizers) {
+        NSMutableSet *set = [NSMutableSet set];
+        for (KGOEventAttendee *anOrganizer in _kgoEvent.organizers) {
+            [set addObject:[[[KGOAttendeeWrapper alloc] initWithKGOAttendee:anOrganizer] autorelease]];
         }
         self.attendees = set;
     }

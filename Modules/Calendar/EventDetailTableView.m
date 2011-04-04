@@ -154,9 +154,12 @@
             for (KGOEventContactInfo *aContact in organizer.contactInfo) {
                 NSString *type;
                 NSString *accessory;
+                NSString *url = nil;
+                
                 if ([aContact.type isEqualToString:@"phone"]) {
                     type = NSLocalizedString(@"Organizer phone", nil);
                     accessory = TableViewCellAccessoryPhone;
+                    url = [NSString stringWithFormat:@"tel:%@", aContact.value];
                     
                 } else if ([aContact.type isEqualToString:@"email"]) {
                     type = NSLocalizedString(@"Organizer email", nil);
@@ -165,17 +168,24 @@
                 } else if ([aContact.type isEqualToString:@"url"]) {
                     type = NSLocalizedString(@"Event website", nil);
                     accessory = TableViewCellAccessoryExternal;
+                    url = aContact.value;
                     
                 } else {
                     type = NSLocalizedString(@"Contact", nil);
                     accessory = KGOAccessoryTypeNone;
                 }
                 
-                [contactInfo addObject:[NSDictionary dictionaryWithObjectsAndKeys:
-                                        type, @"title",
-                                        aContact.value, @"subtitle",
-                                        accessory, @"accessory",
-                                        nil]];
+                NSDictionary *cellInfo;
+                if (url) {
+                    cellInfo = [NSDictionary dictionaryWithObjectsAndKeys:
+                                type, @"title", aContact.value, @"subtitle", accessory, @"accessory", url, @"url", nil];
+                } else {
+                    cellInfo = [NSDictionary dictionaryWithObjectsAndKeys:
+                                type, @"title", aContact.value, @"subtitle", accessory, @"accessory", nil];
+                }
+                
+                
+                [contactInfo addObject:cellInfo];
             }
         }
         
@@ -283,24 +293,22 @@
     if ([cellData isKindOfClass:[NSDictionary class]]) {    
         NSString *accessory = [cellData objectForKey:@"accessory"];
         NSURL *url = nil;
-        if ([accessory isEqualToString:TableViewCellAccessoryPhone]) {
-            NSString *urlString = [NSString stringWithFormat:@"tel:%@", [cellData objectForKey:@"subtitle"]];
+        NSString *urlString = [cellData objectForKey:@"url"];
+        if (urlString) {
             url = [NSURL URLWithString:urlString];
-            
+        }
+        
+        if (url && [[UIApplication sharedApplication] canOpenURL:url]) {
+            [[UIApplication sharedApplication] openURL:url];
+            [tableView deselectRowAtIndexPath:indexPath animated:YES];
+
         } else if ([accessory isEqualToString:TableViewCellAccessoryEmail]) {
             [MITMailComposeController presentMailControllerWithEmail:[cellData objectForKey:@"subtitle"] subject:nil body:nil];
-            
-        } else if ([accessory isEqualToString:TableViewCellAccessoryExternal]) {
-            url = [NSURL URLWithString:[cellData objectForKey:@"subtitle"]];
             
         } else if ([accessory isEqualToString:TableViewCellAccessoryMap]) {
             NSArray *annotations = [NSArray arrayWithObject:_event];
             NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:annotations, @"annotations", nil];
             [KGO_SHARED_APP_DELEGATE() showPage:LocalPathPageNameHome forModuleTag:MapTag params:params];
-        }
-        
-        if (url && [[UIApplication sharedApplication] canOpenURL:url]) {
-            [[UIApplication sharedApplication] openURL:url];
         }
     }
 }
