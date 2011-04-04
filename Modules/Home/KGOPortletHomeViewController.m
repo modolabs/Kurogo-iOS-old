@@ -39,8 +39,10 @@
     [_visibleWidgets release];
     _visibleWidgets = [[self allWidgets:&_topFreePixel :&_bottomFreePixel] retain];
 
-    for (KGOHomeScreenWidget *aWidget in _visibleWidgets) {
-        [self.view addSubview:aWidget];
+    if (!self.loadingView) {
+        for (KGOHomeScreenWidget *aWidget in _visibleWidgets) {
+            [self.view addSubview:aWidget];
+        }
     }
 }
 

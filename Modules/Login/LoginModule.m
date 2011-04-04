@@ -16,7 +16,7 @@
     if ([pageName isEqualToString:LocalPathPageNameHome]) {
         if (![[KGORequestManager sharedManager] isUserLoggedIn]) {        
             ModalLoginWebViewController *webVC = [[[ModalLoginWebViewController alloc] init] autorelease];
-            NSURL *loginURL = [NSURL URLWithString:[NSString stringWithFormat:@"%@/%@/?%@", [[KGORequestManager sharedManager] serverURL], self.tag, @"nativeApp=true"]];
+            NSURL *loginURL = [NSURL URLWithString:[NSString stringWithFormat:@"%@/%@/?nativeApp=true", [[KGORequestManager sharedManager] serverURL], self.tag]];NSLog(@"%@", loginURL);
             webVC.loginModule = self;
             webVC.requestURL = loginURL;
             vc = webVC;
@@ -48,7 +48,7 @@
     NSDictionary *userDict = [result dictionaryForKey:@"user"];
     self.username = [userDict stringForKey:@"name" nilIfEmpty:YES];
     
-    [(KGOHomeScreenViewController *)[KGO_SHARED_APP_DELEGATE() homescreen] refreshWidgets];
+    [[NSNotificationCenter defaultCenter] postNotificationName:KGOLoginDidCompleteNotification object:self];
 }
 
 

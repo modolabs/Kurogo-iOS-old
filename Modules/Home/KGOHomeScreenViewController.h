@@ -24,6 +24,7 @@
 @property (nonatomic, retain) UIView *loadingView;
 
 - (void)showLoadingView;
+- (void)hideLoadingViewIfLoginOK;
 - (void)hideLoadingView;
 
 - (NSArray *)iconsForPrimaryModules:(BOOL)isPrimary;

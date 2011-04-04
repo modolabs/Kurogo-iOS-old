@@ -96,7 +96,7 @@
     // also if there are widgets that exist before the hello is complete
     // they will show up above the loading view
     [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(hideLoadingView)
+                                             selector:@selector(hideLoadingViewIfLoginOK)
                                                  name:HelloRequestDidCompleteNotification
                                                object:nil];
     [self showLoadingView];
@@ -124,48 +124,66 @@
 
 - (void)showLoadingView
 {
-    self.loadingView = [[[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, self.view.bounds.size.height)] autorelease];
-    self.loadingView.backgroundColor = [UIColor colorWithWhite:0.3 alpha:1];
-    self.loadingView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-    
-    UIViewAutoresizing allMargins =  UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleBottomMargin;
-    
-    UIActivityIndicatorView *spinny = [[[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite] autorelease];
-    [spinny startAnimating];
-    spinny.autoresizingMask = allMargins;
+    if (!self.loadingView) {
+        self.loadingView = [[[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, self.view.bounds.size.height)] autorelease];
+        self.loadingView.backgroundColor = [UIColor colorWithWhite:0.3 alpha:1];
+        self.loadingView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+        
+        UIViewAutoresizing allMargins =  UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleBottomMargin;
+        
+        UIActivityIndicatorView *spinny = [[[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite] autorelease];
+        [spinny startAnimating];
+        spinny.autoresizingMask = allMargins;
+        
+        NSString *loadingText = NSLocalizedString(@"Loading...", nil);
+        UIFont *font = [[KGOTheme sharedTheme] fontForBodyText];
+        CGSize size = [loadingText sizeWithFont:font];
+        UILabel *loadingLabel = [[[UILabel alloc] initWithFrame:CGRectMake(0, 0, size.width, size.height)] autorelease];
+        loadingLabel.text = loadingText;
+        loadingLabel.font = font;
+        loadingLabel.textColor = [UIColor whiteColor];
+        loadingLabel.autoresizingMask = allMargins;
+        loadingLabel.backgroundColor = [UIColor clearColor];
+        
+        CGFloat combinedWidth = spinny.frame.size.width + loadingLabel.frame.size.width + 5;
+        CGFloat combinedX = floor((self.loadingView.frame.size.width - combinedWidth) / 2);
+        CGFloat spinnyY = floor((self.loadingView.frame.size.height - spinny.frame.size.height) / 2);
+        CGFloat loadingY = floor((self.loadingView.frame.size.height - loadingLabel.frame.size.height) / 2);
+        
+        loadingLabel.frame = CGRectMake(combinedX + spinny.frame.size.width + 5,
+                                        loadingY, loadingLabel.frame.size.width, loadingLabel.frame.size.height);
+        spinny.frame = CGRectMake(combinedX, spinnyY, spinny.frame.size.width, spinny.frame.size.height);
+        
+        [self.loadingView addSubview:loadingLabel];
+        [self.loadingView addSubview:spinny];
+        [self.view addSubview:self.loadingView];
+    }
+    NSLog(@"subviews %@", [self.view.subviews description]);
+}
 
-    NSString *loadingText = NSLocalizedString(@"Loading...", nil);
-    UIFont *font = [[KGOTheme sharedTheme] fontForBodyText];
-    CGSize size = [loadingText sizeWithFont:font];
-    UILabel *loadingLabel = [[[UILabel alloc] initWithFrame:CGRectMake(0, 0, size.width, size.height)] autorelease];
-    loadingLabel.text = loadingText;
-    loadingLabel.font = font;
-    loadingLabel.textColor = [UIColor whiteColor];
-    loadingLabel.autoresizingMask = allMargins;
-    loadingLabel.backgroundColor = [UIColor clearColor];
-
-    CGFloat combinedWidth = spinny.frame.size.width + loadingLabel.frame.size.width + 5;
-    CGFloat combinedX = floor((self.loadingView.frame.size.width - combinedWidth) / 2);
-    CGFloat spinnyY = floor((self.loadingView.frame.size.height - spinny.frame.size.height) / 2);
-    CGFloat loadingY = floor((self.loadingView.frame.size.height - loadingLabel.frame.size.height) / 2);
-    
-    loadingLabel.frame = CGRectMake(combinedX + spinny.frame.size.width + 5,
-                                    loadingY, loadingLabel.frame.size.width, loadingLabel.frame.size.height);
-    spinny.frame = CGRectMake(combinedX, spinnyY, spinny.frame.size.width, spinny.frame.size.height);
-    
-    [self.loadingView addSubview:loadingLabel];
-    [self.loadingView addSubview:spinny];
-    [self.view addSubview:self.loadingView];
+- (void)hideLoadingViewIfLoginOK
+{
+    if (self.homeModule.secure && ![[KGORequestManager sharedManager] isUserLoggedIn]) {
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(hideLoadingView)
+                                                     name:KGOLoginDidCompleteNotification
+                                                   object:nil];
+    } else {
+        [self hideLoadingView];
+    }
 }
 
 - (void)hideLoadingView
 {
-    [UIView animateWithDuration:0.2 animations:^(void) {
-        self.loadingView.alpha = 0;
-    } completion:^(BOOL finished) {
-        [self.loadingView removeFromSuperview];
-        self.loadingView = nil;
-    }];
+    if (self.loadingView) {
+        [UIView animateWithDuration:0.2 animations:^(void) {
+            self.loadingView.alpha = 0;
+        } completion:^(BOOL finished) {
+            [self.loadingView removeFromSuperview];
+            self.loadingView = nil;
+            [self refreshWidgets];
+        }];
+    }
 }
 
 #pragma mark Springboard helper methods

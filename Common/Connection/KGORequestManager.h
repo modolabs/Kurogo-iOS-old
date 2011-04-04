@@ -8,6 +8,7 @@
 extern NSString * const UserHashCookieName;
 extern NSString * const UserTokenCookieName;
 extern NSString * const HelloRequestDidCompleteNotification;
+extern NSString * const KGOLoginDidCompleteNotification; // sent by LoginModule
 
 // use this class to create requests Kurogo server.
 // requests to facebook, bitly etc are handled by KGOSocialMediaController

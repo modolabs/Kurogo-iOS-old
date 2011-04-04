@@ -3,12 +3,12 @@
 #import "KGOAppDelegate+ModuleAdditions.h"
 #import "CoreDataManager.h"
 #import "Reachability.h"
-#import "KGOHomeScreenViewController.h"
 #import "KGOModule.h"
 
 NSString * const UserHashCookieName = @"lh";
 NSString * const UserTokenCookieName = @"lt";
 NSString * const HelloRequestDidCompleteNotification = @"HelloComplete";
+NSString * const KGOLoginDidCompleteNotification = @"LoginComplete";
 
 @implementation KGORequestManager
 
