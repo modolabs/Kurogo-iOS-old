@@ -5,36 +5,29 @@
 @interface KGOTabbedControl (Private)
 
 - (CGSize)foregroundSizeForTabAtIndex:(NSUInteger)tabIndex;
-- (NSInteger)tabIndexAtLocation:(CGPoint)point;
-- (void)touchUpOutside:(id)sender forEvent:(UIEvent *)event;
-- (void)touchDown:(id)sender forEvent:(UIEvent *)event;
-- (void)touchUpInside:(id)sender forEvent:(UIEvent *)event;
 - (UIColor *)textColorForState:(KGOTabState)state;
 - (UIImage *)imageForState:(KGOTabState)state;
 - (void)didInsertTabAtIndex:(NSInteger)index animated:(BOOL)animated;
+- (UIButton *)buttonForTab;
 
 @end
 
 @implementation KGOTabbedControl
 
-@synthesize tabPadding, tabSpacing, tabFont;
+@synthesize tabPadding, tabSpacing, tabFont, delegate;
 
 // for initializing from nib files
 - (id)initWithCoder:(NSCoder *)aDecoder {
     self = [super initWithCoder:aDecoder];
     if (self) {
         _tabs = [[NSMutableArray alloc] init];
-        _selectedTabIndex = KGOTabbedControlNoTab;
-        _pressedTabIndex = KGOTabbedControlNoTab;
+        _tabContents = [[NSMutableArray alloc] init];
+        _selectedTabIndex = NSNotFound;
         
         self.tabSpacing = 10;
         self.tabPadding = 5;
         // TODO: use config for font
         self.tabFont = [UIFont boldSystemFontOfSize:15];
-        
-		[self addTarget:self action:@selector(touchUpInside:forEvent:) forControlEvents:UIControlEventTouchUpInside];
-		[self addTarget:self action:@selector(touchDown:forEvent:) forControlEvents:UIControlEventTouchDown];
-		[self addTarget:self action:@selector(touchUpOutside:forEvent:) forControlEvents:UIControlEventTouchUpOutside];
     }
     return self;
 }
@@ -43,8 +36,8 @@
     self = [super initWithFrame:frame];
     if (self) {
         _tabs = [[NSMutableArray alloc] init];
-        _selectedTabIndex = KGOTabbedControlNoTab;
-        _pressedTabIndex = KGOTabbedControlNoTab;
+        _tabContents = [[NSMutableArray alloc] init];
+        _selectedTabIndex = NSNotFound;
         
         self.tabSpacing = 10;
         self.tabPadding = 5;
@@ -53,9 +46,6 @@
         
         self.opaque = NO;
         self.backgroundColor = [UIColor clearColor];
-		[self addTarget:self action:@selector(touchUpInside:forEvent:) forControlEvents:UIControlEventTouchUpInside];
-		[self addTarget:self action:@selector(touchDown:forEvent:) forControlEvents:UIControlEventTouchDown];
-		[self addTarget:self action:@selector(touchUpOutside:forEvent:) forControlEvents:UIControlEventTouchUpOutside];
     }
     return self;
 }
@@ -64,8 +54,8 @@
     self = [super init];
     if (self) {
         _tabs = [[NSMutableArray alloc] initWithCapacity:items.count];
-        _selectedTabIndex = KGOTabbedControlNoTab;
-        _pressedTabIndex = KGOTabbedControlNoTab;
+        _tabContents = [[NSMutableArray alloc] initWithCapacity:items.count];
+        _selectedTabIndex = NSNotFound;
         
         for (id item in items) {
             if ([item isKindOfClass:[NSString class]]) {
@@ -81,9 +71,6 @@
         self.tabFont = [UIFont boldSystemFontOfSize:15];
 
         self.opaque = NO;
-		[self addTarget:self action:@selector(touchUpInside:forEvent:) forControlEvents:UIControlEventTouchUpInside];
-		[self addTarget:self action:@selector(touchDown:forEvent:) forControlEvents:UIControlEventTouchDown];
-		[self addTarget:self action:@selector(touchUpOutside:forEvent:) forControlEvents:UIControlEventTouchUpOutside];
     }
     return self;
 }
@@ -93,15 +80,21 @@
 }
 
 - (void)setSelectedTabIndex:(NSInteger)index {
-    if (_selectedTabIndex != KGOTabbedControlNoTab) {
-        _tabStates[_selectedTabIndex] = KGOTabStateInactive;
-    }
-    
-    // TODO: check enabled states
-    if (index == KGOTabbedControlNoTab || (index >= 0 && index < self.numberOfTabs)) {
+    if (index != _selectedTabIndex) {
+        UIButton *button;
+        
+        if (_selectedTabIndex != NSNotFound) {
+            button = [_tabs objectAtIndex:_selectedTabIndex];
+            [button setBackgroundImage:[self imageForState:KGOTabStateInactive] forState:UIControlStateNormal];
+            [button setTitleColor:[self textColorForState:KGOTabStateInactive] forState:UIControlStateNormal];
+        }
+        
         _selectedTabIndex = index;
-        if (index != KGOTabbedControlNoTab) {
-            _tabStates[_selectedTabIndex] = KGOTabStateActive;
+        
+        if (_selectedTabIndex != NSNotFound) {
+            button = [_tabs objectAtIndex:_selectedTabIndex];
+            [button setBackgroundImage:[self imageForState:KGOTabStateActive] forState:UIControlStateNormal];
+            [button setTitleColor:[self textColorForState:KGOTabStateActive] forState:UIControlStateNormal];
         }
     }
 }
@@ -110,62 +103,55 @@
     return _selectedTabIndex;
 }
 
-- (void)setPressedTabIndex:(NSInteger)index {
-    if (_pressedTabIndex != KGOTabbedControlNoTab) {
-        _tabStates[_pressedTabIndex] = KGOTabStateInactive;
-    }
-    
-    // TODO: check enabled states
-    if (index == KGOTabbedControlNoTab || (index >= 0 && index < self.numberOfTabs)) {
-        _pressedTabIndex = index;
-        if (index != KGOTabbedControlNoTab) {
-            _tabStates[_pressedTabIndex] = KGOTabStatePressed;
-        }
-    }
-}
-
-- (NSInteger)pressedTabIndex {
-    return _pressedTabIndex;
-}
-
 - (void)insertTabWithImage:(UIImage *)image atIndex:(NSUInteger)index animated:(BOOL)animated {
-    if (![image isKindOfClass:[UIImage class]] || index > _tabs.count) return;
-    [_tabs insertObject:image atIndex:index];
+    if (![image isKindOfClass:[UIImage class]] || index > _tabContents.count) return;
+    [_tabContents insertObject:image atIndex:index];
+
+    UIButton *button = [self buttonForTab];
+    [button setImage:image forState:UIControlStateNormal];
+    [_tabs insertObject:button atIndex:index];
+
     [self didInsertTabAtIndex:index animated:animated];
 }
 
 - (void)insertTabWithTitle:(NSString *)title atIndex:(NSUInteger)index animated:(BOOL)animated {
-    if (![title isKindOfClass:[NSString class]] || index > _tabs.count) return;
-    [_tabs insertObject:title atIndex:index];
+    if (![title isKindOfClass:[NSString class]] || index > _tabContents.count) return;
+    [_tabContents insertObject:title atIndex:index];
+    
+    UIButton *button = [self buttonForTab];
+    [button setTitle:title forState:UIControlStateNormal];
+    [_tabs insertObject:button atIndex:index];
+
     [self didInsertTabAtIndex:index animated:animated];
 }
 
-- (void)didInsertTabAtIndex:(NSInteger)index animated:(BOOL)animated {
+- (UIButton *)buttonForTab {
+    UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
+    [button setBackgroundImage:[self imageForState:KGOTabStateInactive] forState:UIControlStateNormal];
+    [button setBackgroundImage:[self imageForState:KGOTabStatePressed] forState:UIControlStateHighlighted];
+    [button setTitleColor:[self textColorForState:KGOTabStateInactive] forState:UIControlStateNormal];
+    [button setTitleColor:[self textColorForState:KGOTabStatePressed] forState:UIControlStateHighlighted];
+    [button addTarget:self action:@selector(didSelectTab:) forControlEvents:UIControlEventTouchUpInside];
+    button.titleLabel.font = self.tabFont;
+    return button;
+}
+
+- (void)didInsertTabAtIndex:(NSInteger)index animated:(BOOL)animated
+{
     CGFloat *newTabWidths = malloc(_tabs.count * sizeof(CGFloat));
-    KGOTabState *newTabStates = malloc(_tabs.count * sizeof(KGOTabState));
     for (NSUInteger i = 0; i < _tabs.count; i++) {
         if (i < index) {
             newTabWidths[i] = _tabMinWidths[i];
-            newTabStates[i] = _tabStates[i];
         } else if (i == index) {
             newTabWidths[i] = 0;
-            newTabStates[i] = KGOTabStateInactive;
         } else {
             newTabWidths[i] = _tabMinWidths[i-1];
-            newTabStates[i] = _tabStates[i-1];
         }
     }
     if (_tabMinWidths) {
         free(_tabMinWidths);
     }
     _tabMinWidths = newTabWidths;
-    if (_tabStates) {
-        free(_tabStates);
-    }
-    _tabStates = newTabStates;
-    
-    // TODO: don't ignore animated parameter
-    [self setNeedsDisplay];
 }
 
 - (BOOL)isEnabledForTabAtIndex:(NSUInteger)index {
@@ -180,11 +166,6 @@
         free(_tabMinWidths);
         _tabMinWidths = NULL;
     }
-    
-    if (_tabStates) {
-        free(_tabStates);
-        _tabStates = NULL;
-    }
 }
 
 - (void)removeTabAtIndex:(NSUInteger)index animated:(BOOL)animated {
@@ -192,27 +173,21 @@
     
     // TODO: don't ignore animated parameter
     
-    
+    [_tabContents removeObjectAtIndex:index];
     [_tabs removeObjectAtIndex:index];
     CGFloat *newTabWidths = NULL;
-    KGOTabState *newTabStates = NULL;
     if (_tabs.count) {
         newTabWidths = malloc(_tabs.count * sizeof(CGFloat));
-        newTabStates = malloc(_tabs.count * sizeof(KGOTabState));
         for (NSUInteger i = 0; i < _tabs.count; i++) {
             if (i < index) {
                 newTabWidths[i] = _tabMinWidths[i];
-                newTabStates[i] = _tabStates[i];
             } else {
                 newTabWidths[i] = _tabMinWidths[i+1];
-                newTabStates[i] = _tabStates[i+1];
             }
         }
     }
     free(_tabMinWidths);
     _tabMinWidths = newTabWidths;
-    free(_tabStates);
-    _tabStates = newTabStates;
 }
 
 - (void)setEnabled:(BOOL)enabled forTabAtIndex:(NSUInteger)index {
@@ -220,15 +195,15 @@
 
 - (void)setImage:(UIImage *)image forTabAtIndex:(NSUInteger)index {
     if (index < self.numberOfTabs && [image isKindOfClass:[UIImage class]]) {
-        [_tabs removeObjectAtIndex:index];
-        [_tabs insertObject:image atIndex:index];
+        [_tabContents removeObjectAtIndex:index];
+        [_tabContents insertObject:image atIndex:index];
     }
 }
 
 - (void)setTitle:(NSString *)title forTabAtIndex:(NSUInteger)index {
     if (index < self.numberOfTabs && [title isKindOfClass:[NSString class]]) {
-        [_tabs removeObjectAtIndex:index];
-        [_tabs insertObject:title atIndex:index];
+        [_tabContents removeObjectAtIndex:index];
+        [_tabContents insertObject:title atIndex:index];
     }
 }
 
@@ -240,14 +215,14 @@
 
 - (NSString *)titleForTabAtIndex:(NSUInteger)index {
     if (index < self.numberOfTabs) {
-        return [_tabs stringAtIndex:index];
+        return [_tabContents stringAtIndex:index];
     }
     return nil;
 }
 
 - (UIImage *)imageForTabAtIndex:(NSUInteger)index {
     if (index < self.numberOfTabs) {
-        id image = [_tabs objectAtIndex:index];
+        id image = [_tabContents objectAtIndex:index];
         if ([image isKindOfClass:[UIImage class]]) {
             return image;
         }
@@ -284,7 +259,7 @@
     
     switch (state) {
         case KGOTabStateInactive:
-            return [UIColor blackColor];
+            return [UIColor whiteColor];
         case KGOTabStateActive:
             return [UIColor blackColor];
         case KGOTabStatePressed:
@@ -296,63 +271,43 @@
     }
 }
 
-- (void)drawRect:(CGRect)rect {
-    
-	CGContextRef context =  UIGraphicsGetCurrentContext();
-	CGFloat tabOffset = self.tabSpacing;
-
-	for (int tabIndex = 0; tabIndex < _tabs.count; tabIndex++) {
-		id foreground = [_tabs objectAtIndex:tabIndex];
-        CGSize size = [self foregroundSizeForTabAtIndex:tabIndex];
-        KGOTabState state = _tabStates[tabIndex];
-        UIImage *tabBackground = [self imageForState:state];
-        CGRect tabRect = CGRectMake(tabOffset, 0, fmaxf(size.width + self.tabPadding * 2, _tabMinWidths[tabIndex]), self.frame.size.height);
-        CGRect foregroundRect = CGRectMake(tabOffset + floor((tabRect.size.width - size.width) / 2),
-                                           floor((tabRect.size.height - size.height) / 2), size.width, size.height);
-        
-        [tabBackground drawInRect:tabRect];
-        
-        if ([foreground isKindOfClass:[NSString class]]) {
-            UIColor *textColor = [self textColorForState:state];
-            CGContextSetFillColorWithColor(context, textColor.CGColor);
-            [(NSString *)foreground drawInRect:foregroundRect withFont:self.tabFont];
-        } else if ([foreground isKindOfClass:[UIImage class]]) {
-            [(UIImage *)foreground drawInRect:foregroundRect];
+- (void)layoutSubviews
+{
+    for (UIView *aView in self.subviews) {
+        if ([aView isKindOfClass:[UIButton class]]) {
+            [aView removeFromSuperview];
         }
+    }
+    
+	CGFloat tabOffset = self.tabSpacing;
+	for (int tabIndex = 0; tabIndex < _tabs.count; tabIndex++) {
+        UIButton *button = [_tabs objectAtIndex:tabIndex];
+        
+        CGSize size = [self foregroundSizeForTabAtIndex:tabIndex];
+        CGRect tabRect = CGRectMake(tabOffset, 0,
+                                    fmaxf(size.width + self.tabPadding * 2, _tabMinWidths[tabIndex]),
+                                    self.frame.size.height);
+        button.frame = tabRect;
+        [self addSubview:button];
+
 		// set the offset for the next tab
 		tabOffset = tabRect.origin.x + tabRect.size.width + self.tabSpacing;
 	}	
-	
 }
 
-- (void)touchUpOutside:(id)sender forEvent:(UIEvent *)event {
-    _tabStates[_pressedTabIndex] = KGOTabStateInactive;
-	_pressedTabIndex = KGOTabbedControlNoTab;
-	[self setNeedsDisplay];
-}
-
-- (void)touchDown:(id)sender forEvent:(UIEvent *)event {
-	NSSet *touches = [event touchesForView:self];
-	UITouch *touch = [touches anyObject];
-	CGPoint touchLocation = [touch locationInView:self];
-    self.pressedTabIndex = [self tabIndexAtLocation:touchLocation];
-
-	[self setNeedsDisplay];
-}
-
-- (void)touchUpInside:(id)sender forEvent:(UIEvent *)event {
-	NSSet *touches = [event touchesForView:self];
-	UITouch *touch = [touches anyObject];
-	CGPoint touchLocation = [touch locationInView:self];
-    self.selectedTabIndex = [self tabIndexAtLocation:touchLocation];
-
-    [self setNeedsDisplay];
+- (void)didSelectTab:(id)sender
+{
+    NSInteger index = [_tabs indexOfObject:sender];
+    if (index != NSNotFound) {
+        self.selectedTabIndex = index;
+        [self.delegate tabbedControl:self didSwitchToTabAtIndex:index];
+    }
 }
 
 - (CGSize)foregroundSizeForTabAtIndex:(NSUInteger)tabIndex {
     CGSize size = CGSizeZero;
-    if (tabIndex < _tabs.count) {    
-		id foreground = [_tabs objectAtIndex:tabIndex];
+    if (tabIndex < _tabContents.count) {    
+		id foreground = [_tabContents objectAtIndex:tabIndex];
         
         if ([foreground isKindOfClass:[NSString class]]) {
             size = [(NSString *)foreground sizeWithFont:self.tabFont];
@@ -365,34 +320,11 @@
     return size;
 }
 
-- (NSInteger)tabIndexAtLocation:(CGPoint)point {
-
-    NSInteger tabIndex = KGOTabbedControlNoTab;
-	CGFloat tabOffset = self.tabSpacing;
-
-	for (int testIndex = 0; testIndex < _tabs.count; testIndex++) {
-        CGSize size = [self foregroundSizeForTabAtIndex:testIndex];
-        
-        CGRect tabRect = CGRectMake(tabOffset, 0, fmaxf(size.width, _tabMinWidths[testIndex]), self.frame.size.height);
-
-		if (CGRectContainsPoint(tabRect, point)) {
-			tabIndex = testIndex;
-		}
-
-		// set the offset for the next tab
-		tabOffset = tabRect.origin.x + tabRect.size.width + self.tabSpacing;
-	}
-    
-    return tabIndex;
-}
-
 - (void)dealloc {
     [_tabs release];
+    [_tabContents release];
     if (_tabMinWidths) {
         free(_tabMinWidths);
-    }
-    if (_tabStates) {
-        free(_tabStates);
     }
     [super dealloc];
 }

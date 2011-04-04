@@ -1,10 +1,9 @@
 #import "KGOBookmarksViewController.h"
 #import "KGOSearchDisplayController.h"
-#import "KGOSearchModel.h"
 
 @implementation KGOBookmarksViewController
 
-@synthesize bookmarkedItems, searchDisplayDelegate;
+@synthesize bookmarkedItems, searchResultsDelegate;
 
 - (id)initWithStyle:(UITableViewStyle)style
 {
@@ -18,7 +17,7 @@
 - (void)dealloc
 {
     [_mutableItems release];
-    self.searchDisplayDelegate = nil;
+    self.searchResultsDelegate = nil;
     self.bookmarkedItems = nil;
     [super dealloc];
 }
@@ -78,6 +77,11 @@
     return (interfaceOrientation == UIInterfaceOrientationPortrait);
 }
 
+- (void)searcher:(id)searcher didReceiveResults:(NSArray *)results
+{
+    self.bookmarkedItems = results;
+}
+
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -129,7 +133,7 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     id<KGOSearchResult> aResult = [_mutableItems objectAtIndex:indexPath.row];
-    [self.searchDisplayDelegate searchController:nil didSelectResult:aResult];
+    [self.searchResultsDelegate resultsHolder:self didSelectResult:aResult];
     [self dismissModalViewControllerAnimated:YES];
 }
 

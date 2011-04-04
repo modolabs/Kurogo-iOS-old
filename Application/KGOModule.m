@@ -5,7 +5,7 @@
 @implementation KGOModule
 
 @synthesize tag = _tag, shortName = _shortName, longName = _longName;
-@synthesize enabled, hidden, badgeValue, tabBarImage, iconImage, listViewImage, secondary, apiMaxVersion, apiMinVersion, secure;
+@synthesize enabled, hidden, badgeValue, tabBarImage, iconImage, listViewImage, secondary, apiMaxVersion, apiMinVersion, protected;
 @synthesize searchDelegate;
 
 - (id)initWithDictionary:(NSDictionary *)moduleDict {
@@ -26,7 +26,7 @@
         self.secondary = [[moduleDict objectForKey:@"secondary"] boolValue];
         self.tag = [moduleDict objectForKey:@"tag"];
         
-        self.secure = [moduleDict boolForKey:@"secure"];
+        self.protected = [moduleDict boolForKey:@"protected"];
 
         // this implies we can't have a version zero of the api
         self.apiMinVersion = [moduleDict integerForKey:@"vmax"];
@@ -76,7 +76,7 @@
 
 #pragma mark Search
 
-- (void)performSearchWithText:(NSString *)text params:(NSDictionary *)params delegate:(id<KGOSearchDelegate>)delegate {
+- (void)performSearchWithText:(NSString *)text params:(NSDictionary *)params delegate:(id<KGOSearchResultsHolder>)delegate {
 }
 
 - (NSArray *)cachedResultsForSearchText:(NSString *)text params:(NSDictionary *)params {

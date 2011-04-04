@@ -13,10 +13,6 @@
 
 @end
 
-enum {
-    KGOTabbedControlNoTab = -1
-};
-
 typedef enum {
     KGOTabStateInactive,
     KGOTabStateActive,
@@ -24,14 +20,14 @@ typedef enum {
     KGOTabStateDisabled
 } KGOTabState;
 
-@interface KGOTabbedControl : UIControl {
+@interface KGOTabbedControl : UIView { // UIControl {
     
     NSMutableArray *_tabs;
+    NSMutableArray *_tabContents;
     CGFloat *_tabMinWidths;
     KGOTabState *_tabStates;
 
     NSInteger _selectedTabIndex;
-    NSInteger _pressedTabIndex;
 
 }
 
@@ -41,7 +37,7 @@ typedef enum {
 
 @property(nonatomic, readonly) NSUInteger numberOfTabs;
 @property(nonatomic) NSInteger selectedTabIndex;
-@property(nonatomic) NSInteger pressedTabIndex;
+@property(nonatomic, assign) id<KGOTabbedControlDelegate> delegate;
 
 - (void)insertTabWithImage:(UIImage *)image atIndex:(NSUInteger)index animated:(BOOL)animated;
 - (void)insertTabWithTitle:(NSString *)title atIndex:(NSUInteger)index animated:(BOOL)animated;

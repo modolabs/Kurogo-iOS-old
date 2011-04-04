@@ -159,6 +159,20 @@
 
 @synthesize dataSource = _dataSource, caching;
 
+- (id)initWithTableView:(UITableView *)tableView dataSource:(id<KGOTableViewDataSource>)dataSource {
+    self = [super init];
+    if (self) {
+		_currentTableView = tableView;
+        _currentTableView.delegate = self;
+        _currentTableView.dataSource = dataSource;
+        _tableViewDataSources = [[NSMutableArray alloc] initWithObjects:dataSource, nil];
+        _tableViews = [[NSMutableArray alloc] initWithObjects:_currentTableView, nil];
+		_currentContentBuffer = [NSMutableDictionary dictionary];
+		_cellContentBuffers = [[NSMutableArray alloc] initWithObjects:_currentContentBuffer, nil];
+	}
+	return self;
+}
+
 - (id)initWithSearchController:(KGOSearchDisplayController *)searchController {
     self = [super init];
     if (self) {

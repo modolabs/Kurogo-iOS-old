@@ -8,13 +8,18 @@
 @protocol KGOSearchResult;
 
 
-@protocol KGOSearchDisplayDelegate <NSObject>
+@protocol KGOSearchResultsDelegate <NSObject>
+
+- (void)resultsHolder:(id<KGOSearchResultsHolder>)resultsHolder didSelectResult:(id<KGOSearchResult>)aResult;
+
+@end
+
+
+@protocol KGOSearchDisplayDelegate <KGOSearchResultsDelegate>
 
 - (BOOL)searchControllerShouldShowSuggestions:(KGOSearchDisplayController *)controller; // whether or not to show recent searches
 - (NSArray *)searchControllerValidModules:(KGOSearchDisplayController *)controller; // modules to pass the search term to
-
 - (NSString *)searchControllerModuleTag:(KGOSearchDisplayController *)controller; // module tag to associate with saved search term
-- (void)searchController:(KGOSearchDisplayController *)controller didSelectResult:(id<KGOSearchResult>)aResult;
 
 @optional
 
@@ -28,7 +33,7 @@
 
 @class KGOTableController;
 
-@interface KGOSearchDisplayController : NSObject <KGOSearchBarDelegate, KGOTableViewDataSource, KGOSearchDelegate, KGODetailPagerController> {
+@interface KGOSearchDisplayController : NSObject <KGOSearchBarDelegate, KGOTableViewDataSource, KGOSearchResultsHolder, KGODetailPagerController> {
     
     id<KGOSearchDisplayDelegate> _delegate;
     NSArray *_searchResults;
@@ -51,7 +56,10 @@
 @property (nonatomic, readonly) UIViewController *searchContentsController;
 @property (nonatomic, readonly) KGOTableController *searchTableController;
 
-- (id)initWithSearchBar:(KGOSearchBar *)searchBar delegate:(id<KGOSearchDisplayDelegate>)delegate contentsController:(UIViewController *)viewController;
+- (id)initWithSearchBar:(KGOSearchBar *)searchBar
+               delegate:(id<KGOSearchDisplayDelegate>)delegate
+     contentsController:(UIViewController *)viewController;
+
 - (void)setActive:(BOOL)visible animated:(BOOL)animated;
 - (void)executeSearch:(NSString *)text params:(NSDictionary *)params;
 

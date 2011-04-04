@@ -96,6 +96,7 @@ typedef void (^CellManipulator)(UITableViewCell *);
 @property (nonatomic, assign) id<KGOTableViewDataSource> dataSource;
 @property BOOL caching;
 
+- (id)initWithTableView:(UITableView *)tableView dataSource:(id<KGOTableViewDataSource>)dataSource;
 - (id)initWithViewController:(KGOTableViewController *)viewController;
 - (id)initWithSearchController:(KGOSearchDisplayController *)searchController;
 

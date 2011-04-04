@@ -163,7 +163,7 @@
 
 - (void)hideLoadingViewIfLoginOK
 {
-    if (self.homeModule.secure && ![[KGORequestManager sharedManager] isUserLoggedIn]) {
+    if (self.homeModule.protected && ![[KGORequestManager sharedManager] isUserLoggedIn]) {
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(hideLoadingView)
                                                      name:KGOLoginDidCompleteNotification
@@ -357,7 +357,7 @@
     return HomeTag;
 }
 
-- (void)searchController:(KGOSearchDisplayController *)controller didSelectResult:(id<KGOSearchResult>)aResult {
+- (void)resultsHolder:(id<KGOSearchResultsHolder>)searcher didSelectResult:(id<KGOSearchResult>)aResult {
     // TODO: come up with a better way to figure out which module the search result belongs to
     BOOL didShow = NO;
     if ([aResult isKindOfClass:[KGOPersonWrapper class]]) {
@@ -504,7 +504,7 @@
     [_primaryModules release];
     _primaryModules = [primary copy];
     
-    if (self.homeModule.secure && ![[KGORequestManager sharedManager] isUserLoggedIn]) {
+    if (self.homeModule.protected && ![[KGORequestManager sharedManager] isUserLoggedIn]) {
         [[KGORequestManager sharedManager] loginKurogoServer];
     }
 }

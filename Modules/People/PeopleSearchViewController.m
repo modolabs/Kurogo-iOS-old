@@ -137,7 +137,7 @@ searchBar = _searchBar;
     return PeopleTag;
 }
 
-- (void)searchController:(KGOSearchDisplayController *)controller didSelectResult:(id<KGOSearchResult>)aResult {
+- (void)resultsHolder:(id<KGOSearchResultsHolder>)resultsHolder didSelectResult:(id<KGOSearchResult>)aResult {
     NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:aResult, @"person", nil];
     [KGO_SHARED_APP_DELEGATE() showPage:LocalPathPageNameDetail forModuleTag:PeopleTag params:params];
 }

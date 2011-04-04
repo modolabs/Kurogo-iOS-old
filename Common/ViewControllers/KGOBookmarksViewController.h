@@ -1,17 +1,15 @@
 #import <UIKit/UIKit.h>
+#import "KGOSearchModel.h"
 
-// this isn't the right protocol to use, but anyone who implements this does
-// what we need it to do.  TODO: find a way to share the didSelectResult:
-// method that we want.
-@protocol KGOSearchDisplayDelegate;
+@protocol KGOSearchResultsDelegate;
 
-@interface KGOBookmarksViewController : UITableViewController {
+@interface KGOBookmarksViewController : UITableViewController <KGOSearchResultsHolder> {
     
     NSMutableArray *_mutableItems;
     
 }
 
 @property(nonatomic, retain) NSArray *bookmarkedItems;
-@property(nonatomic, assign) id<KGOSearchDisplayDelegate> searchDisplayDelegate;
+@property(nonatomic, assign) id<KGOSearchResultsDelegate> searchResultsDelegate;
 
 @end

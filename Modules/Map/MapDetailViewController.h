@@ -1,10 +1,15 @@
 #import <UIKit/UIKit.h>
 #import "KGOTabbedViewController.h"
 #import "KGODetailPager.h"
+#import "KGOSearchModel.h"
+#import "KGORequest.h"
 
-@class KGOPlacemark;
+@class KGOPlacemark, KGOSearchResultListTableView;
 
-@interface MapDetailViewController : KGOTabbedViewController <KGODetailPagerDelegate, UIWebViewDelegate> {
+@interface MapDetailViewController : KGOTabbedViewController <KGODetailPagerDelegate, UIWebViewDelegate, KGORequestDelegate> {
+    
+    KGORequest *_request;
+    KGOSearchResultListTableView *_tableView;
     
 }
 
