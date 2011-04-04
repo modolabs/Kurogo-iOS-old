@@ -30,6 +30,16 @@
     }
 }
 
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    
+    NSIndexPath *selectedIndexPath = [_tableView indexPathForSelectedRow];
+    if (selectedIndexPath) {
+        [_tableView deselectRowAtIndexPath:selectedIndexPath animated:YES];
+    }
+}
+
 - (void)setupTableView
 {
     if (!_tableView) {

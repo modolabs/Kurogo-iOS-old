@@ -89,9 +89,12 @@
 
     _mapView.mapType = [[NSUserDefaults standardUserDefaults] integerForKey:MapTypePreference];
     [_mapView centerAndZoomToDefaultRegion];
+    if (self.annotations.count) { // these would have been set before _mapView was set up
+        [_mapView addAnnotations:self.annotations];
+        _mapView.region = [MapHomeViewController regionForAnnotations:self.annotations restrictedToClass:NULL];
+    }
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mapTypeDidChange:) name:MapTypePreferenceChanged object:nil];
 
-	// set up toolbar buttons
     [self setupToolbarButtons];
 
     // set up search bar
@@ -128,17 +131,25 @@
 
 
 - (void)dealloc {
+    [_annotations release];
 	[_searchController release];
     [super dealloc];
 }
 
 - (NSArray *)annotations {
-    return _mapView.annotations;
+    return _annotations;
 }
 
 - (void)setAnnotations:(NSArray *)annotations {
-    [_mapView removeAnnotations:_mapView.annotations];
-    [_mapView addAnnotations:annotations];
+    [_annotations release];
+    _annotations = [annotations retain];
+
+    if (_mapView) {
+        [_mapView removeAnnotations:_mapView.annotations];
+        if (_annotations) {
+            [_mapView addAnnotations:_annotations];
+        }
+    }
 }
 
 #pragma mark -
@@ -299,7 +310,7 @@
 - (MKAnnotationView *)mapView:(MKMapView *)mapView viewForAnnotation:(id<MKAnnotation>)annotation
 {
     MKAnnotationView *view = nil;
-    if (![annotation isKindOfClass:[MKUserLocation class]]) {
+    if ([annotation isKindOfClass:[KGOPlacemark class]]) {
         static NSString *AnnotationIdentifier = @"adfgweg";
         view = [mapView dequeueReusableAnnotationViewWithIdentifier:AnnotationIdentifier];
         if (!view) {

@@ -8,6 +8,7 @@
 #import "KGODetailPageHeaderView.h"
 #import "CalendarDataManager.h"
 #import "MITMailComposeController.h"
+#import "KGOAppDelegate+ModuleAdditions.h"
 
 @implementation EventDetailTableView
 
@@ -105,21 +106,28 @@
 - (NSArray *)sectionForBasicInfo
 {
     NSArray *basicInfo = nil;
-    if (_event.location || _event) {
+    if (_event.location || _event.coordinate.latitude || _event.coordinate.longitude) {
+        NSMutableDictionary *locationDict = [NSMutableDictionary dictionary];
+        
         if (_event.briefLocation) {
-            basicInfo = [NSArray arrayWithObject:[NSDictionary dictionaryWithObjectsAndKeys:
-                                                  _event.briefLocation, @"title",
-                                                  _event.location, @"subtitle",
-                                                  TableViewCellAccessoryMap, @"accessory",
-                                                  nil]];
-        } else {
-            basicInfo = [NSArray arrayWithObject:[NSDictionary dictionaryWithObjectsAndKeys:
-                                                   _event.location, @"title",
-                                                   TableViewCellAccessoryMap, @"accessory",
-                                                   nil]];
+            [locationDict setObject:_event.briefLocation forKey:@"title"];
+            if (_event.location) {
+                [locationDict setObject:_event.location forKey:@"subtitle"];
+            }
+            
+        } else if (_event.location) {
+            [locationDict setObject:_event.location forKey:@"title"];
+        } else { // if we got this far there has to be a lat/lon
+            [locationDict setObject:@"View on Map" forKey:@"title"];
         }
+
+        if (_event.coordinate.latitude || _event.coordinate.longitude) {
+            [locationDict setObject:TableViewCellAccessoryMap forKey: @"accessory"];
+        }
+        
+        basicInfo = [NSArray arrayWithObject:locationDict];
     }
-    
+    NSLog(@"%@", basicInfo);
     return basicInfo;
 }
 
@@ -286,13 +294,9 @@
             url = [NSURL URLWithString:[cellData objectForKey:@"subtitle"]];
             
         } else if ([accessory isEqualToString:TableViewCellAccessoryMap]) {
-            NSString *placemarkID = [_event placemarkID];
-            NSString *placemarkString = placemarkID ? [NSString stringWithFormat:@"&identifier=%@", placemarkID] : @"";
-            NSString *queryString = [NSString stringWithFormat:@"q=%@&lat=%.4f&lon=%.4f%@",
-                                     _event.title,
-                                     _event.coordinate.latitude, _event.coordinate.longitude, placemarkString];
-
-            url = [NSURL internalURLWithModuleTag:MapTag path:LocalPathPageNameSearch query:queryString];
+            NSArray *annotations = [NSArray arrayWithObject:_event];
+            NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:annotations, @"annotations", nil];
+            [KGO_SHARED_APP_DELEGATE() showPage:LocalPathPageNameHome forModuleTag:MapTag params:params];
         }
         
         if (url && [[UIApplication sharedApplication] canOpenURL:url]) {

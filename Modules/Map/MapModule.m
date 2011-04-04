@@ -70,25 +70,31 @@ NSString * const MapTypePreferenceChanged = @"MapTypeChanged";
 
 - (UIViewController *)modulePage:(NSString *)pageName params:(NSDictionary *)params {
     UIViewController *vc = nil;
-    if ([pageName isEqualToString:LocalPathPageNameHome]) {
+    if ([pageName isEqualToString:LocalPathPageNameHome] || [pageName isEqualToString:LocalPathPageNameSearch]) {
+        MapHomeViewController *mapVC;
         if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
-            vc = [[[MapHomeViewController alloc] initWithNibName:@"MapHomeViewController" bundle:nil] autorelease];
+            mapVC = [[[MapHomeViewController alloc] initWithNibName:@"MapHomeViewController" bundle:nil] autorelease];
         } else {
-            vc = [[[MapHomeViewController alloc] initWithNibName:@"MapHomeViewController-iPad" bundle:nil] autorelease];
+            mapVC = [[[MapHomeViewController alloc] initWithNibName:@"MapHomeViewController-iPad" bundle:nil] autorelease];
         }
         
-    } else if ([pageName isEqualToString:LocalPathPageNameSearch]) {
-        vc = [[[MapHomeViewController alloc] init] autorelease];
+    //} else if ([pageName isEqualToString:LocalPathPageNameSearch]) {
+        //MapHomeViewController *mapVC = [[[MapHomeViewController alloc] init] autorelease];
         
         NSString *searchText = [params objectForKey:@"q"];
         if (searchText) {
-            [(MapHomeViewController *)vc setSearchTerms:searchText];
+            mapVC.searchTerms = searchText;
+            mapVC.searchOnLoad = YES;
+            mapVC.searchParams = params;
+        }
+
+        NSArray *annotations = [params objectForKey:@"annotations"];
+        if (annotations) {
+            NSLog(@"%@", annotations);
+            mapVC.annotations = annotations;
         }
         
-        NSString *identifier = [params objectForKey:@"identifier"];
-        if (identifier) {
-            [(MapHomeViewController *)vc setSearchTerms:identifier];
-        }
+        vc = mapVC;
         
     } else if ([pageName isEqualToString:LocalPathPageNameDetail]) {
         vc = [[[MapDetailViewController alloc] init] autorelease];

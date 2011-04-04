@@ -10,16 +10,13 @@ KGOSearchDisplayDelegate, KGODetailPagerController> {
 	
 	IBOutlet KGOSearchBar *_searchBar;
 	IBOutlet KGOToolbar *_bottomBar;
-	//IBOutlet UIBarButtonItem *_infoButton; // indoor maps only
-	//IBOutlet UIBarButtonItem *_locateUserButton; // outdoor maps only (for now)
-	//IBOutlet UIBarButtonItem *_browseButton;
-	//IBOutlet UIBarButtonItem *_bookmarksButton;
-	//IBOutlet UIBarButtonItem *_settingsButton;
-	IBOutlet UIButton *_infoButton; // indoor maps only
-	IBOutlet UIButton *_locateUserButton; // outdoor maps only (for now)
-	IBOutlet UIButton *_browseButton;
-	IBOutlet UIButton *_bookmarksButton;
-	IBOutlet UIButton *_settingsButton;
+
+	UIButton *_infoButton; // indoor maps only
+	UIButton *_locateUserButton; // outdoor maps only (for now)
+	UIButton *_browseButton;
+	UIButton *_bookmarksButton;
+	UIButton *_settingsButton;
+    
     IBOutlet UIView *_mapBorder; // ipad only
 
 	// TODO: indoor map initially won't be MKMapView
