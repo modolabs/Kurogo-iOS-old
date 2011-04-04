@@ -14,5 +14,6 @@
 }
 
 @property (nonatomic, retain) KGORequest * request;
+@property (nonatomic, retain) NSString * moduleTag;
 
 @end

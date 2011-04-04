@@ -1,6 +1,8 @@
 #import <Foundation/Foundation.h>
 #import "KGORequestManager.h"
 #import "EmergencyNotice.h"
+#import "EmergencyContactsSection.h"
+#import "EmergencyContact.h"
 
 
 enum EmergencyNoticeStatus {
@@ -8,23 +10,20 @@ enum EmergencyNoticeStatus {
     EmergencyNoticeActive,           // feed exists and emergency notice found
 };
 extern NSString * const EmergencyNoticeRetrievedNotification;
+extern NSString * const EmergencyContactsRetrievedNotification;
 
-@interface EmergencyNoticeNotification : NSObject <KGORequestDelegate> {
-@private
-    NSString *_tag;
-    EmergencyNotice *_notice;
-}
-
-@property (readonly) NSString *tag;
-@property (readonly) EmergencyNotice *notice;
-@end
-
-@interface EmergencyDataManager : NSObject {
+@interface EmergencyDataManager : NSObject <KGORequestDelegate> {
     NSString *tag;
 }
 
 + (EmergencyDataManager *)managerForTag:(NSString *)tag;
 - (void)fetchLatestEmergencyNotice;
 - (EmergencyNotice *)latestEmergency;
+
+- (BOOL)contactsFresh;
+- (BOOL)hasSecondaryContacts;
+- (void)fetchContacts;
+- (NSArray *)primaryContacts;
+- (NSArray *)allContacts;
 
 @end

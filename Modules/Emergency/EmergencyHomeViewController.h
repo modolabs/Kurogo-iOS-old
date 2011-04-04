@@ -1,11 +1,3 @@
-//
-//  EmergencyHomeViewController.h
-//  Universitas
-//
-//  Created by Brian Patt on 3/28/11.
-//  Copyright 2011 __MyCompanyName__. All rights reserved.
-//
-
 #import <UIKit/UIKit.h>
 #import "KGOTableViewController.h"
 #import "EmergencyNotice.h"
@@ -24,11 +16,16 @@ enum EmergencyLoadingStatus {
     EmergencyNotice *_notice;
     UIWebView *_infoWebView;
     enum EmergencyLoadingStatus loadingStatus;
+    
+    NSArray *_primaryContacts;
+    BOOL _hasMoreContact;
 }
 
 @property (nonatomic, retain) NSNumber *contentDivHeight;
 @property (nonatomic, retain) EmergencyModule *module;
 @property (nonatomic, retain) EmergencyNotice *notice;
 @property (nonatomic, retain) UIWebView *infoWebView;
+
+@property (nonatomic, retain) NSArray *primaryContacts;
 
 @end

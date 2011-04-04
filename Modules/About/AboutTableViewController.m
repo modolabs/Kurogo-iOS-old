@@ -7,9 +7,11 @@
 #import "ThemeConstants.h"
 #import "Foundation+KGOAdditions.h"
 #import "AboutCreditsWebViewController.h"
+#import "KGOAppDelegate+ModuleAdditions.h"
 
 @implementation AboutTableViewController
 @synthesize request;
+@synthesize moduleTag;
 
 - (id)initWithStyle:(UITableViewStyle)style {
     
@@ -176,19 +178,14 @@
     }
     else if (indexPath.section == 1) {
         switch (indexPath.row) {
-            case 0: {
-                AboutMITVC *aboutMITVC = [[AboutMITVC alloc] initWithStyle:UITableViewStyleGrouped];
-                aboutMITVC.orgName = orgName;
-                aboutMITVC.orgAboutText = orgText;
-                [self.navigationController pushViewController:aboutMITVC animated:YES];
-                [aboutMITVC release];
+            case 0: {                
+                NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:orgName, @"orgName", orgText, @"orgText", nil];
+                [KGO_SHARED_APP_DELEGATE() showPage:LocalPathPageNameDetail forModuleTag:self.moduleTag params:params];
                 break;
             }
             case 1: {
-                AboutCreditsWebViewController * creditsWebViewController = [[AboutCreditsWebViewController alloc] init];
-                [creditsWebViewController setHTMLString: credits];
-                [self.navigationController pushViewController:creditsWebViewController animated:YES];
-                [creditsWebViewController release];
+                NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:credits, @"creditsHTMLString", nil];
+                [KGO_SHARED_APP_DELEGATE() showPage:LocalPathPageNameWebViewDetail forModuleTag:self.moduleTag params:params];
                 break;
             }
             case 2: {

@@ -2,10 +2,15 @@
 #import "EmergencyDataManager.h"
 #import "KGOHTMLTemplate.h"
 #import "UIKit+KGOAdditions.h"
+#import "ThemeConstants.h"
+#import "KGOAppDelegate.h"
+#import "KGOAppDelegate+ModuleAdditions.h"
+
 
 @interface EmergencyHomeViewController (Private)
 
 - (void)emergencyNoticeRetrieved:(NSNotification *)notification;
+- (void)emergencyContactsRetrieved:(NSNotification *)notification;
 - (NSArray *)noticeViewsWithtableView:(UITableView *)tableView;
 
 @end
@@ -15,6 +20,8 @@
 @synthesize module = _module;
 @synthesize notice = _notice;
 @synthesize infoWebView = _infoWebView;
+
+@synthesize primaryContacts = _primaryContacts;
 
 - (id)init {
     if ((self = [self initWithStyle:UITableViewStyleGrouped])) {
@@ -27,6 +34,8 @@
 {
     self.module = nil;
     self.infoWebView.delegate = nil;
+    self.notice = nil;
+    self.primaryContacts = nil;
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     [super dealloc];
 }
@@ -54,8 +63,24 @@
     [super viewDidLoad];
     self.notice = nil;
     EmergencyDataManager *manager = [EmergencyDataManager managerForTag:_module.tag];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(emergencyNoticeRetrieved:) name:EmergencyNoticeRetrievedNotification object:manager];
-    [[EmergencyDataManager managerForTag:_module.tag] fetchLatestEmergencyNotice];
+    
+    if(_module.noticeFeedExists) {
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(emergencyNoticeRetrieved:) name:EmergencyNoticeRetrievedNotification object:manager];
+        [manager fetchLatestEmergencyNotice];
+    }
+    
+    if(_module.contactsFeedExists) {
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(emergencyContactsRetrieved:) name:EmergencyContactsRetrievedNotification object:manager];
+
+        // load cached contacts
+        self.primaryContacts = [manager primaryContacts];
+        _hasMoreContact = [manager hasSecondaryContacts];
+        
+        // refresh contacts (if stale)
+        if (![manager contactsFresh]) {
+            [manager fetchContacts];
+        }
+    }
 }
 
 - (void)viewDidUnload
@@ -72,23 +97,104 @@
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return 1;
+    NSInteger sections = 0;
+    if (_module.noticeFeedExists) {
+        sections++;
+    }
+    if(_module.contactsFeedExists) {
+        sections++;
+    }
+    return sections;
+}
+
+- (NSInteger)sectionIndexForNotice {
+    return _module.noticeFeedExists ? 0 : -1;
+}
+
+- (NSInteger)sectionIndexForContacts {
+    if (!_module.contactsFeedExists) {
+        return -1;
+    }
+    
+    return _module.noticeFeedExists ? 1 : 0;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    if(section == 0) {
+    if(section == [self sectionIndexForNotice]) {
         return 1;
+    } else if(section == [self sectionIndexForContacts]) {
+        NSInteger contactRows = self.primaryContacts.count;
+        if(_hasMoreContact) {
+            contactRows++;
+        }
+        return contactRows;
     }
     return 0;
 }
 
 - (NSArray *)tableView:(UITableView *)tableView viewsForCellAtIndexPath:(NSIndexPath *)indexPath {  
-    if(_module.noticeFeedExists) {
-        if(indexPath.row == 0 && indexPath.section == 0) {
-            return [self noticeViewsWithtableView:tableView];
-        }
+    if(indexPath.section == [self sectionIndexForNotice]) {
+        return [self noticeViewsWithtableView:tableView];
     }
     return nil;
+}
+
+- (CellManipulator)tableView:(UITableView *)tableView manipulatorForCellAtIndexPath:(NSIndexPath *)indexPath {
+    
+    NSString *title = nil;
+    NSString *detailText = nil;
+    NSString *accessoryTag = nil;
+    
+    if(indexPath.section == [self sectionIndexForContacts]) {
+        if (indexPath.row < self.primaryContacts.count) {
+            EmergencyContact *contact = [self.primaryContacts objectAtIndex:indexPath.row];
+            title = contact.title;
+            detailText = contact.summary;
+            accessoryTag = TableViewCellAccessoryPhone;
+
+        } else if(indexPath.row == self.primaryContacts.count) {
+            title = @"More contacts";
+        }
+    }
+    
+    return [[^(UITableViewCell *cell) {
+        cell.textLabel.text = title;
+        cell.detailTextLabel.text = detailText;
+        if(accessoryTag) {
+            cell.accessoryView = [[KGOTheme sharedTheme] accessoryViewForType:accessoryTag];
+        } else {
+            cell.accessoryView = nil;
+        }
+    } copy] autorelease];
+}
+
+- (KGOTableCellStyle)tableView:(UITableView *)tableView styleForCellAtIndexPath:(NSIndexPath *)indexPath {
+    if(indexPath.section == [self sectionIndexForContacts]) {
+        if (indexPath.row < self.primaryContacts.count) {
+            return KGOTableCellStyleSubtitle;          
+        } 
+    }
+    return KGOTableCellStyleDefault;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+	
+	[tableView deselectRowAtIndexPath:indexPath animated:YES];
+	
+    if (indexPath.section == [self sectionIndexForContacts]) {
+        if (indexPath.row < self.primaryContacts.count) {
+            EmergencyContact *contact = [self.primaryContacts objectAtIndex:indexPath.row];
+            NSString *urlString = [NSString stringWithFormat:@"tel:%@", contact.dialablePhone];
+            NSURL *externURL = [NSURL URLWithString:urlString];
+            if ([[UIApplication sharedApplication] canOpenURL:externURL])
+                [[UIApplication sharedApplication] openURL:externURL];
+            
+            
+        } else if (indexPath.row == self.primaryContacts.count) {
+            [KGO_SHARED_APP_DELEGATE() showPage:EmergencyContactsPathPageName forModuleTag:_module.tag params:nil];
+        }
+    }
+    
 }
 
 - (NSArray *)noticeViewsWithtableView:(UITableView *)tableView {
@@ -140,7 +246,6 @@
         return;
     }
     NSString *output = [webView stringByEvaluatingJavaScriptFromString:@"document.getElementById(\"content\").offsetHeight;"];
-    NSLog(@"height = %@", output);
     self.contentDivHeight = [NSNumber numberWithInt:[output intValue]];
     if(self.contentDivHeight) {
         [self reloadDataForTableView:self.tableView];
@@ -159,6 +264,13 @@
     }
     self.contentDivHeight = nil;
         
+    [self reloadDataForTableView:self.tableView];
+}
+
+- (void)emergencyContactsRetrieved:(NSNotification *)notification {
+    EmergencyDataManager *manager = [EmergencyDataManager managerForTag:_module.tag];
+    self.primaryContacts = [manager primaryContacts];
+    _hasMoreContact = [manager hasSecondaryContacts];    
     [self reloadDataForTableView:self.tableView];
 }
 @end

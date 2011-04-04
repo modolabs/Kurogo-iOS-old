@@ -1,5 +1,6 @@
 #import "EmergencyModule.h"
 #import "EmergencyHomeViewController.h"
+#import "EmergencyContactsViewController.h"
 
 NSString * const EmergencyContactsPathPageName = @"contacts";
 
@@ -40,7 +41,10 @@ NSString * const EmergencyContactsPathPageName = @"contacts";
     if ([pageName isEqualToString:LocalPathPageNameHome]) {
         vc = [[[EmergencyHomeViewController alloc] init] autorelease];
         [(EmergencyHomeViewController *)vc setModule:self];
-    }   
+    } else if([pageName isEqualToString:EmergencyContactsPathPageName]) {
+        vc = [[[EmergencyContactsViewController alloc] init] autorelease];
+        [(EmergencyContactsViewController *)vc setModule:self];
+    }
     return vc;
 }
 

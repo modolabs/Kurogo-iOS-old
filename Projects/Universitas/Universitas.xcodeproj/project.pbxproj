@@ -21,6 +21,9 @@
 		4B3904F1134147D000CD9C6F /* EmergencyModule.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B3904E9134147D000CD9C6F /* EmergencyModule.m */; };
 		4B3904F2134147D000CD9C6F /* Emergency.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 4B3904EB134147D000CD9C6F /* Emergency.xcdatamodeld */; };
 		4B3904F3134147D000CD9C6F /* EmergencyNotice.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B3904EE134147D000CD9C6F /* EmergencyNotice.m */; };
+		4BD493691349144400891968 /* EmergencyContactsSection.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BD493681349144400891968 /* EmergencyContactsSection.m */; };
+		4BD4936C1349146900891968 /* EmergencyContact.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BD4936B1349146900891968 /* EmergencyContact.m */; };
+		4BD4936F13492C2400891968 /* EmergencyContactsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BD4936E13492C2400891968 /* EmergencyContactsViewController.m */; };
 		562F4B79133EFA10000B9344 /* ContentModule.m in Sources */ = {isa = PBXBuildFile; fileRef = 562F4B74133EFA10000B9344 /* ContentModule.m */; };
 		562F4B7A133EFA10000B9344 /* ContentTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 562F4B76133EFA10000B9344 /* ContentTableViewController.m */; };
 		562F4B7B133EFA10000B9344 /* ContentWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 562F4B78133EFA10000B9344 /* ContentWebViewController.m */; };
@@ -227,6 +230,12 @@
 		4B3904EC134147D000CD9C6F /* Emergency.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Emergency.xcdatamodel; sourceTree = "<group>"; };
 		4B3904ED134147D000CD9C6F /* EmergencyNotice.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EmergencyNotice.h; sourceTree = "<group>"; };
 		4B3904EE134147D000CD9C6F /* EmergencyNotice.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EmergencyNotice.m; sourceTree = "<group>"; };
+		4BD493671349144400891968 /* EmergencyContactsSection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EmergencyContactsSection.h; sourceTree = "<group>"; };
+		4BD493681349144400891968 /* EmergencyContactsSection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EmergencyContactsSection.m; sourceTree = "<group>"; };
+		4BD4936A1349146900891968 /* EmergencyContact.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EmergencyContact.h; sourceTree = "<group>"; };
+		4BD4936B1349146900891968 /* EmergencyContact.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EmergencyContact.m; sourceTree = "<group>"; };
+		4BD4936D13492C2400891968 /* EmergencyContactsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EmergencyContactsViewController.h; sourceTree = "<group>"; };
+		4BD4936E13492C2400891968 /* EmergencyContactsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EmergencyContactsViewController.m; sourceTree = "<group>"; };
 		562F4B73133EFA10000B9344 /* ContentModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ContentModule.h; path = ../../../Modules/Content/ContentModule.h; sourceTree = "<group>"; };
 		562F4B74133EFA10000B9344 /* ContentModule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ContentModule.m; path = ../../../Modules/Content/ContentModule.m; sourceTree = "<group>"; };
 		562F4B75133EFA10000B9344 /* ContentTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ContentTableViewController.h; path = ../../../Modules/Content/ContentTableViewController.h; sourceTree = "<group>"; };
@@ -585,6 +594,8 @@
 		4B3904E3134147D000CD9C6F /* Emergency */ = {
 			isa = PBXGroup;
 			children = (
+				4BD4936D13492C2400891968 /* EmergencyContactsViewController.h */,
+				4BD4936E13492C2400891968 /* EmergencyContactsViewController.m */,
 				4B3904E4134147D000CD9C6F /* EmergencyDataManager.h */,
 				4B3904E5134147D000CD9C6F /* EmergencyDataManager.m */,
 				4B3904E6134147D000CD9C6F /* EmergencyHomeViewController.h */,
@@ -600,7 +611,11 @@
 		4B3904EA134147D000CD9C6F /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				4BD493671349144400891968 /* EmergencyContactsSection.h */,
+				4BD493681349144400891968 /* EmergencyContactsSection.m */,
 				4B3904EB134147D000CD9C6F /* Emergency.xcdatamodeld */,
+				4BD4936A1349146900891968 /* EmergencyContact.h */,
+				4BD4936B1349146900891968 /* EmergencyContact.m */,
 				4B3904ED134147D000CD9C6F /* EmergencyNotice.h */,
 				4B3904EE134147D000CD9C6F /* EmergencyNotice.m */,
 			);
@@ -1389,6 +1404,9 @@
 				EBE2CC2113438AEA0037546A /* KGODetailPageHeaderView.m in Sources */,
 				EBE2CC641343E4D00037546A /* KGOMapCategory.m in Sources */,
 				56D8D29A1346B95600110008 /* AboutCreditsWebViewController.m in Sources */,
+				4BD493691349144400891968 /* EmergencyContactsSection.m in Sources */,
+				4BD4936C1349146900891968 /* EmergencyContact.m in Sources */,
+				4BD4936F13492C2400891968 /* EmergencyContactsViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
