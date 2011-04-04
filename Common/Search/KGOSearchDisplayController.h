@@ -15,7 +15,7 @@
 @end
 
 
-@protocol KGOSearchDiplayDelegate <KGOSearchResultsDelegate>
+@protocol KGOSearchDisplayDelegate <KGOSearchResultsDelegate>
 
 - (BOOL)searchControllerShouldShowSuggestions:(KGOSearchDisplayController *)controller; // whether or not to show recent searches
 - (NSArray *)searchControllerValidModules:(KGOSearchDisplayController *)controller; // modules to pass the search term to
@@ -35,7 +35,7 @@
 
 @interface KGOSearchDisplayController : NSObject <KGOSearchBarDelegate, KGOTableViewDataSource, KGOSearchResultsHolder, KGODetailPagerController> {
     
-    id<KGOSearchDiplayDelegate> _delegate;
+    id<KGOSearchDisplayDelegate> _delegate;
     NSArray *_searchResults;
     BOOL _showingOnlySearchResults;
 
@@ -48,7 +48,7 @@
 }
 
 @property (nonatomic, readonly) BOOL showingOnlySearchResults; // NO if tableview includes search suggestions
-@property (nonatomic, readonly) id<KGOSearchDiplayDelegate> delegate;
+@property (nonatomic, readonly) id<KGOSearchDisplayDelegate> delegate;
 @property (nonatomic, retain) NSArray *searchResults;
 
 @property (nonatomic, readonly) KGOSearchBar *searchBar;
@@ -57,7 +57,7 @@
 @property (nonatomic, readonly) KGOTableController *searchTableController;
 
 - (id)initWithSearchBar:(KGOSearchBar *)searchBar
-               delegate:(id<KGOSearchDiplayDelegate>)delegate
+               delegate:(id<KGOSearchDisplayDelegate>)delegate
      contentsController:(UIViewController *)viewController;
 
 - (void)setActive:(BOOL)visible animated:(BOOL)animated;

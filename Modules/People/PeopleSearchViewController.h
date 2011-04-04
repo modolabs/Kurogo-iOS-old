@@ -8,7 +8,7 @@
 
 @interface PeopleSearchViewController : KGOTableViewController <
 KGORequestDelegate, // TODO: separate this from view logic
-UIActionSheetDelegate, KGOSearchDiplayDelegate, KGODetailPagerController> {
+UIActionSheetDelegate, KGOSearchDisplayDelegate, KGODetailPagerController> {
     
     KGORequest *_request;
 	

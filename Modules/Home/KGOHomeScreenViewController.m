@@ -336,7 +336,7 @@
 	[KGO_SHARED_APP_DELEGATE() showPage:LocalPathPageNameHome forModuleTag:anIcon.moduleTag params:nil];
 }
 
-#pragma mark KGOSearchDiplayDelegate
+#pragma mark KGOSearchDisplayDelegate
 
 - (BOOL)searchControllerShouldShowSuggestions:(KGOSearchDisplayController *)controller {
     return YES;

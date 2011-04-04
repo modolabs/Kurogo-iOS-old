@@ -5,7 +5,7 @@
 
 @class KGOSearchBar;
 
-@interface KGOHomeScreenViewController : UIViewController <KGOSearchDiplayDelegate> {
+@interface KGOHomeScreenViewController : UIViewController <KGOSearchDisplayDelegate> {
     
     NSDictionary *_preferences;
     

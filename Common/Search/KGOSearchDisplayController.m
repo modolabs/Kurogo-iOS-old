@@ -33,7 +33,7 @@ searchResults = _searchResults,
 showingOnlySearchResults = _showingOnlySearchResults;
 
 
-- (id)initWithSearchBar:(KGOSearchBar *)searchBar delegate:(id<KGOSearchDiplayDelegate>)delegate contentsController:(UIViewController *)viewController {
+- (id)initWithSearchBar:(KGOSearchBar *)searchBar delegate:(id<KGOSearchDisplayDelegate>)delegate contentsController:(UIViewController *)viewController {
     self = [super init];
     if (self) {
         _searchBar = [searchBar retain];

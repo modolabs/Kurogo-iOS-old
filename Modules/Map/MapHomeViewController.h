@@ -6,7 +6,7 @@
 @class MKMapView;
 
 @interface MapHomeViewController : UIViewController <MKMapViewDelegate,
-KGOSearchDiplayDelegate, KGODetailPagerController> {
+KGOSearchDisplayDelegate, KGODetailPagerController> {
 	
 	IBOutlet KGOSearchBar *_searchBar;
 	IBOutlet KGOToolbar *_bottomBar;
