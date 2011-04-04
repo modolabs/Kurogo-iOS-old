@@ -645,7 +645,7 @@
 }
 
 
-#pragma KGOSearchDisplayDelegate
+#pragma mark KGOSearchDisplayDelegate
 - (BOOL)searchControllerShouldShowSuggestions:(KGOSearchDisplayController *)controller {
     return NO;
 }
@@ -658,7 +658,7 @@
     return NewsTag;
 }
           
-- (void)searchController:(KGOSearchDisplayController *)controller didSelectResult:(id<KGOSearchResult>)aResult {
+- (void)resultsHolder:(id<KGOSearchResultsHolder>)resultsHolder didSelectResult:(id<KGOSearchResult>)aResult {
     NewsStory *story = aResult;
     if([[story hasBody] boolValue]) {
         NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:aResult, @"story", nil];

@@ -76,7 +76,7 @@
         ) {
             // TODO: make certain modules not duplicable (home, possibly login)
             KGOModule *homeModule = [(KGOHomeScreenViewController *)self.homescreen homeModule];
-            homeModule.secure = [moduleDict boolForKey:@"secure"];
+            homeModule.protected = [moduleDict boolForKey:@"protected"];
             homeModule.apiMaxVersion = [moduleDict integerForKey:@"vmax"];
             homeModule.apiMinVersion = [moduleDict integerForKey:@"vmin"];
             continue;

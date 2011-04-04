@@ -2,6 +2,8 @@
 #import "KGOPlacemark.h"
 #import "UIKit+KGOAdditions.h"
 #import "KGOTheme.h"
+#import "KGOSearchResultListTableView.h"
+#import "KGORequestManager.h"
 
 @implementation MapDetailViewController
 
@@ -20,6 +22,26 @@
         [webView loadHTMLString:self.placemark.info baseURL:nil];
         webView.delegate = self;
         view = webView;
+    } else if ([title isEqualToString:@"Nearby"]) {
+        if (!_tableView) {
+            CGRect frame = CGRectMake(0, 0, self.tabViewContainer.frame.size.width, self.tabViewContainer.frame.size.height);
+            _tableView = [[[KGOSearchResultListTableView alloc] initWithFrame:frame] autorelease];
+            
+            NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:
+                                    @"nearby", @"type",
+                                    [NSString stringWithFormat:@"%.5f", self.placemark.coordinate.latitude], @"lat",
+                                    [NSString stringWithFormat:@"%.5f", self.placemark.coordinate.longitude], @"lon",
+                                    nil];
+            _request = [[KGORequestManager sharedManager] requestWithDelegate:self
+                                                                       module:MapTag
+                                                                         path:@"search"
+                                                                       params:params];
+            _request.expectedResponseType = [NSDictionary class];
+            if (_request)
+                [_request connect];
+        }
+        
+        view = _tableView;
     }
     return view;
 }
@@ -30,6 +52,7 @@
     if (self.placemark.info) {
         [tabs addObject:NSLocalizedString(@"Details", nil)];
     }
+    [tabs addObject:NSLocalizedString(@"Nearby", nil)];
     return tabs;
 }
 
@@ -39,7 +62,10 @@
     NSLog(@"%@", [self.placemark description]);
 
     self.tabViewHeader.detailItem = self.placemark;
-    //[self.tabViewHeader inflateSubviews];
+    
+    [_tableView release];
+    _tableView = nil;
+
     [self reloadTabContent];
 }
 
@@ -50,10 +76,32 @@
     }
 }
 
+#pragma mark KGORequestDelegate
+
+- (void)requestWillTerminate:(KGORequest *)request {
+    _request = nil;
+}
+
+- (void)request:(KGORequest *)request didReceiveResult:(id)result {
+    _request = nil;
+    
+    NSArray *resultArray = [result arrayForKey:@"results"];
+    NSMutableArray *searchResults = [NSMutableArray arrayWithCapacity:[(NSArray *)resultArray count]];
+    for (id aResult in resultArray) {
+        KGOPlacemark *aPlacemark = [KGOPlacemark placemarkWithDictionary:aResult];
+        if (aPlacemark)
+            [searchResults addObject:aPlacemark];
+    }
+    NSLog(@"%@", searchResults);
+    [_tableView searcher:self didReceiveResults:searchResults];
+}
+
 #pragma mark -
 
 - (void)dealloc
 {
+    [_request cancel];
+    [_tableView release];
     [super dealloc];
 }
 

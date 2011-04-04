@@ -8,12 +8,12 @@
 @interface NewsModule : KGOModule <NewsDataDelegate> {
 	StoryListViewController *storyListChannelController;
     NSInteger totalResults;
-    id<KGOSearchDelegate> *searchDelegate;
+    id<KGOSearchResultsHolder> *searchDelegate;
 }
 
 - (void)loadSearchResultsFromCache;
 
 @property (nonatomic, retain) StoryListViewController *storyListChannelController;
-@property (nonatomic, retain) id<KGOSearchDelegate> searchDelegate;
+@property (nonatomic, retain) id<KGOSearchResultsHolder> searchDelegate;
 
 @end

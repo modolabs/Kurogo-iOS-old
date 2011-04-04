@@ -33,7 +33,7 @@ searchResults = _searchResults,
 showingOnlySearchResults = _showingOnlySearchResults;
 
 
-- (id)initWithSearchBar:(KGOSearchBar *)searchBar delegate:(id<KGOSearchDisplayDelegate>)delegate contentsController:(UIViewController *)viewController {
+- (id)initWithSearchBar:(KGOSearchBar *)searchBar delegate:(id<KGOSearchDiplayDelegate>)delegate contentsController:(UIViewController *)viewController {
     self = [super init];
     if (self) {
         _searchBar = [searchBar retain];
@@ -304,7 +304,7 @@ showingOnlySearchResults = _showingOnlySearchResults;
 
 }
 
-#pragma mark KGOSearchDelegate
+#pragma mark KGOSearchResultsHolder
 
 - (void)searcher:(id)searcher didReceiveResults:(NSArray *)results {
     if (!_showingOnlySearchResults) {
@@ -335,7 +335,7 @@ showingOnlySearchResults = _showingOnlySearchResults;
         [self unfocusSearchBarAnimated:YES];
         [self executeSearch:recentSearch.text params:nil];
     } else {
-        [self.delegate searchController:self didSelectResult:result];
+        [self.delegate resultsHolder:self didSelectResult:result];
     }
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
 }

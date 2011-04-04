@@ -40,10 +40,8 @@
 
 #pragma mark -
 
-// currently only used by KGOSearchDisplayController
-@protocol KGOSearchDelegate
+@protocol KGOSearchResultsHolder <NSObject>
 
 - (void)searcher:(id)searcher didReceiveResults:(NSArray *)results;
 
 @end
-

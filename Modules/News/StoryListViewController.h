@@ -10,7 +10,7 @@
 @class KGOSearchDisplayController;
 @class NewsStory;
 
-@interface StoryListViewController : KGOTableViewController <KGOSearchBarDelegate, NewsDataDelegate, KGOScrollingTabstripDelegate, KGOSearchDisplayDelegate, MITThumbnailDelegate> {
+@interface StoryListViewController : KGOTableViewController <KGOSearchBarDelegate, NewsDataDelegate, KGOScrollingTabstripDelegate, KGOSearchDiplayDelegate, MITThumbnailDelegate> {
 	UITableView *storyTable;
     NewsStory *featuredStory;
     NSArray *stories;

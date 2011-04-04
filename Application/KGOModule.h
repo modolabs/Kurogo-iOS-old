@@ -1,6 +1,6 @@
 #import <Foundation/Foundation.h>
 
-@protocol KGOSearchDelegate;
+@protocol KGOSearchResultsHolder;
 @class KGONotification;
 
 @interface KGOModule : NSObject {
@@ -9,7 +9,7 @@
     BOOL _active;
     BOOL _visible;
     
-    id<KGOSearchDelegate> _searchDelegate;
+    id<KGOSearchResultsHolder> _searchDelegate;
 }
 
 // generally subclasses will not override this
@@ -29,7 +29,7 @@
 @property (nonatomic) NSInteger apiMinVersion;
 @property (nonatomic) NSInteger apiMaxVersion;
 
-@property (nonatomic) BOOL secure;
+@property (nonatomic) BOOL protected;
 
 #pragma mark Appearance on home screen
 
@@ -57,12 +57,12 @@
 #pragma mark Search
 
 // when state of search results changes, send messages to the delegate
-- (void)performSearchWithText:(NSString *)text params:(NSDictionary *)params delegate:(id<KGOSearchDelegate>)delegate;
+- (void)performSearchWithText:(NSString *)text params:(NSDictionary *)params delegate:(id<KGOSearchResultsHolder>)delegate;
 
 - (NSArray *)cachedResultsForSearchText:(NSString *)text params:(NSDictionary *)params;
 
 @property (nonatomic, readonly) BOOL supportsFederatedSearch;
-@property (nonatomic, assign) id<KGOSearchDelegate> searchDelegate;
+@property (nonatomic, assign) id<KGOSearchResultsHolder> searchDelegate;
 
 #pragma mark Data
 

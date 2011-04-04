@@ -22,7 +22,7 @@
     return YES;
 }
 
-- (void)performSearchWithText:(NSString *)searchText params:(NSDictionary *)params delegate:(id<KGOSearchDelegate>)delegate {
+- (void)performSearchWithText:(NSString *)searchText params:(NSDictionary *)params delegate:(id<KGOSearchResultsHolder>)delegate {
     self.searchDelegate = delegate;
     
     self.request = [[KGORequestManager sharedManager] requestWithDelegate:self

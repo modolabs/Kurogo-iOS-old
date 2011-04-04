@@ -229,7 +229,7 @@
     NSArray *array = [[CoreDataManager sharedManager] objectsForEntity:KGOPlacemarkEntityName matchingPredicate:pred];
     KGOBookmarksViewController *vc = [[[KGOBookmarksViewController alloc] initWithStyle:UITableViewStylePlain] autorelease];
     vc.bookmarkedItems = array;
-    vc.searchDisplayDelegate = self;
+    vc.searchResultsDelegate = self;
     [KGO_SHARED_APP_DELEGATE() presentAppModalNavigationController:vc animated:YES];
 }
 
@@ -358,15 +358,13 @@
 	return MapTag;
 }
 
-- (void)searchController:(KGOSearchDisplayController *)controller didSelectResult:(id<KGOSearchResult>)aResult {
-    // TODO: this is depending on the incorrect use of KGOSearchDisplayDelegate
-    // in KGOBookmarksViewController and needs to be fixed when that is fixed.
-    if (controller) {
-        NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:aResult, @"place", controller, @"pagerController", nil];
+- (void)resultsHolder:(id<KGOSearchResultsHolder>)resultsHolder didSelectResult:(id<KGOSearchResult>)aResult {
+    if ([resultsHolder isKindOfClass:[KGOSearchDisplayController class]]) {
+        NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:aResult, @"place", resultsHolder, @"pagerController", nil];
         KGOAppDelegate *appDelegate = KGO_SHARED_APP_DELEGATE();
         [appDelegate showPage:LocalPathPageNameDetail forModuleTag:MapTag params:params];
 
-    } else if ([aResult conformsToProtocol:@protocol(MKAnnotation)]) {
+    } else if ([aResult conformsToProtocol:@protocol(MKAnnotation)]) { // TODO: check if search is bookmarks, not by the result selected
         id<MKAnnotation> annotation = (id<MKAnnotation>)aResult;
         [_mapView addAnnotation:annotation];
     }
