@@ -11,6 +11,7 @@
 #import "PeopleModule.h"
 #import "ContentModule.h"
 #import "SettingsModule.h"
+#import "VideoModule.h"
 
 @implementation KGOModule (Factory)
 
@@ -67,6 +68,9 @@
     
     else if ([className isEqualToString:@"SettingsModule"])
         module = [[[SettingsModule alloc] initWithDictionary:args] autorelease];
+    
+    else if ([className isEqualToString:@"VideoModule"])
+        module = [[[VideoModule alloc] initWithDictionary:args] autorelease];
     
     return module;
 }

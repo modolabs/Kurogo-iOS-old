@@ -92,6 +92,18 @@
 			<key>tag</key>
 			<string>admissions</string>
 		</dict>
+		<dict>
+			<key>class</key>
+			<string>VideoModule</string>
+			<key>longName</key>
+			<string>Video</string>
+			<key>secondary</key>
+			<false/>
+			<key>shortName</key>
+			<string>Video</string>
+			<key>tag</key>
+			<string>video</string>
+		</dict>
 	</array>
 	<key>NavigationControllerClass</key>
 	<string>UINavigationController</string>

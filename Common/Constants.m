@@ -33,7 +33,7 @@ NSString * const SettingsTag   = @"settings";
 NSString * const TransitTag    = @"transit";
 NSString * const PhotosTag     = @"photos";
 NSString * const LoginTag      = @"login";
-NSString * const VideoTag     = @"video";
+NSString * const VideoModuleTag     = @"video";
 
 
 
