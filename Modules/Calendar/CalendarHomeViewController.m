@@ -200,7 +200,7 @@ static bool isOverOneHour(NSTimeInterval interval) {
         
         }
         
-        for (KGOEventWrapper *event in events) {
+        for (KGOEventWrapper *event in sortedEvents) {
             NSString *title = [formatter stringFromDate:event.startDate];
             NSMutableArray *eventsForCurrentSection = [eventsBySection objectForKey:title];
             if (!eventsForCurrentSection) {

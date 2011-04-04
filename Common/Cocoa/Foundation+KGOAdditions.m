@@ -145,10 +145,19 @@
             }
         } else {
             int days = hours / 24;
-            if (days == 1) {
-                result = [NSString stringWithFormat:@"%d %@", days, NSLocalizedString(@"day ago", nil)];
+            if (days < 7) {
+                if (days == 1) {
+                    result = [NSString stringWithFormat:@"%d %@", days, NSLocalizedString(@"day ago", nil)];
+                } else {
+                    result = [NSString stringWithFormat:@"%d %@", days, NSLocalizedString(@"days ago", nil)];
+                }
             } else {
-                result = [NSString stringWithFormat:@"%d %@", days, NSLocalizedString(@"days ago", nil)];
+                static NSDateFormatter *shortFormatter = nil;
+                if (shortFormatter == nil) {
+                    shortFormatter = [[NSDateFormatter alloc] init];
+                    [shortFormatter setDateStyle:NSDateFormatterShortStyle];
+                }
+                result = [shortFormatter stringFromDate:self];
             }
         }
     }
