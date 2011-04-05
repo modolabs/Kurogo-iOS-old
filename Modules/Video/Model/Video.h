@@ -21,7 +21,7 @@
 @property (nonatomic, retain) NSString * url;
 @property (nonatomic, retain) NSString * type;
 @property (nonatomic, retain) NSString * title;
-@property (nonatomic, retain) NSString * image;
+@property (nonatomic, retain) NSString * imageURLString;
 @property (nonatomic, retain) NSNumber * height;
 @property (nonatomic, retain) NSNumber * duration;
 @property (nonatomic, retain) NSSet* tags;

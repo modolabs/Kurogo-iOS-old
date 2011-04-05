@@ -85,16 +85,18 @@
     
     static NSString *CellIdentifier = @"Cell";
     
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:
+                             CellIdentifier];
     if (cell == nil) {
-        cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
+        cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault 
+                                       reuseIdentifier:CellIdentifier] autorelease];
     }
     
     // Configure the cell...
     if (self.videos.count > indexPath.row) {
-//        Video *video = [self.videos objectAtIndex:indexPath.row];
-        NSDictionary *info = [self.videos objectAtIndex:indexPath.row];
-        cell.textLabel.text = [info objectForKey:@"title"];
+        Video *video = [self.videos objectAtIndex:indexPath.row];
+//        NSDictionary *info = [self.videos objectAtIndex:indexPath.row];
+        cell.textLabel.text = video.title;
     }
     return cell;
 }

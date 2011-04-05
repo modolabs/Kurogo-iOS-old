@@ -32,7 +32,8 @@
 		A627E6B2134A65FD00403110 /* VideoModule.m in Sources */ = {isa = PBXBuildFile; fileRef = A627E6AF134A65FD00403110 /* VideoModule.m */; };
 		A627E6B9134A662200403110 /* Video.m in Sources */ = {isa = PBXBuildFile; fileRef = A627E6B5134A662200403110 /* Video.m */; };
 		A627E6BB134A662200403110 /* VideoTag.m in Sources */ = {isa = PBXBuildFile; fileRef = A627E6B8134A662200403110 /* VideoTag.m */; };
-		A6C36F64134A8B9000BDFFAB /* Video.xcdatamodel in Sources */ = {isa = PBXBuildFile; fileRef = A6C36F63134A8B9000BDFFAB /* Video.xcdatamodel */; };
+		A6484128134B9272006649D8 /* Video.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = A6484127134B9272006649D8 /* Video.xcdatamodeld */; };
+		A6C19893134B95B3009A163B /* Video.xcdatamodel in Sources */ = {isa = PBXBuildFile; fileRef = A6C19892134B95B3009A163B /* Video.xcdatamodel */; };
 		BD9FA7EE1047A05E00BC3C0A /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BD9FA7ED1047A05E00BC3C0A /* MessageUI.framework */; };
 		DE0F6B3411109BC500F064D6 /* AboutMITVC.m in Sources */ = {isa = PBXBuildFile; fileRef = DE0F6B3311109BC500F064D6 /* AboutMITVC.m */; };
 		DE6D9401110AD1ED00DAF213 /* SettingsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DE6D9319110A8EFA00DAF213 /* SettingsTableViewController.m */; };
@@ -293,7 +294,7 @@
 		A627E6B5134A662200403110 /* Video.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Video.m; path = ../../Modules/Video/Model/Video.m; sourceTree = SOURCE_ROOT; };
 		A627E6B7134A662200403110 /* VideoTag.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VideoTag.h; path = ../../Modules/Video/Model/VideoTag.h; sourceTree = SOURCE_ROOT; };
 		A627E6B8134A662200403110 /* VideoTag.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VideoTag.m; path = ../../Modules/Video/Model/VideoTag.m; sourceTree = SOURCE_ROOT; };
-		A6C36F63134A8B9000BDFFAB /* Video.xcdatamodel */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = wrapper.xcdatamodel; name = Video.xcdatamodel; path = ../../Modules/Video/Model/Video.xcdatamodel; sourceTree = SOURCE_ROOT; };
+		A6C19892134B95B3009A163B /* Video.xcdatamodel */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = wrapper.xcdatamodel; path = Video.xcdatamodel; sourceTree = "<group>"; };
 		BD9FA7ED1047A05E00BC3C0A /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
 		DE0F6B3211109BC500F064D6 /* AboutMITVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AboutMITVC.h; sourceTree = "<group>"; };
 		DE0F6B3311109BC500F064D6 /* AboutMITVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AboutMITVC.m; sourceTree = "<group>"; };
@@ -690,7 +691,6 @@
 		A627E6A4134A657000403110 /* Video */ = {
 			isa = PBXGroup;
 			children = (
-				A6C36F63134A8B9000BDFFAB /* Video.xcdatamodel */,
 				A627E6B3134A660E00403110 /* Model */,
 				A627E6AA134A65FD00403110 /* VideoDataManager.h */,
 				A627E6AB134A65FD00403110 /* VideoDataManager.m */,
@@ -706,6 +706,7 @@
 		A627E6B3134A660E00403110 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				A6484127134B9272006649D8 /* Video.xcdatamodeld */,
 				A627E6B4134A662200403110 /* Video.h */,
 				A627E6B5134A662200403110 /* Video.m */,
 				A627E6B7134A662200403110 /* VideoTag.h */,
@@ -1496,8 +1497,9 @@
 				A627E6B2134A65FD00403110 /* VideoModule.m in Sources */,
 				A627E6B9134A662200403110 /* Video.m in Sources */,
 				A627E6BB134A662200403110 /* VideoTag.m in Sources */,
-				A6C36F64134A8B9000BDFFAB /* Video.xcdatamodel in Sources */,
 				EB469CB6134A7DA4005796E4 /* KGOSearchResultListTableView.m in Sources */,
+				A6484128134B9272006649D8 /* Video.xcdatamodeld in Sources */,
+				A6C19893134B95B3009A163B /* Video.xcdatamodel in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1677,6 +1679,17 @@
 			);
 			currentVersion = 4B3904EC134147D000CD9C6F /* Emergency.xcdatamodel */;
 			path = Emergency.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+		A6484127134B9272006649D8 /* Video.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				A6C19892134B95B3009A163B /* Video.xcdatamodel */,
+			);
+			currentVersion = A6C19892134B95B3009A163B /* Video.xcdatamodel */;
+			name = Video.xcdatamodeld;
+			path = ../Video/Model/Video.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;
 		};

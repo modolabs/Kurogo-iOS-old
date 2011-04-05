@@ -19,7 +19,7 @@
 @dynamic url;
 @dynamic type;
 @dynamic title;
-@dynamic image;
+@dynamic imageURLString;
 @dynamic height;
 @dynamic duration;
 @dynamic tags;

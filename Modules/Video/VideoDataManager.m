@@ -23,9 +23,13 @@
     else if ([request.path isEqualToString:@"videos"]) {
         if ([result isKindOfClass:[NSArray class]]) {
             for (NSDictionary *dict in result) {
-//                Video *video = [[CoreDataManager sharedManager]
-//                                insertNewObjectForEntityForName:@"Video"];
-//                video.title = [dict objectForKey:@"title"];
+//                NSManagedObject *test = 
+//                [[CoreDataManager sharedManager]
+//                 insertNewObjectForEntityForName:@"NewsImage"];
+                Video *video = [[CoreDataManager sharedManager]
+                                insertNewObjectForEntityForName:@"Video"];
+                video.title = [dict objectForKey:@"title"];
+                [self.videos addObject:video];
                 // TODO: Method for setting up video with dict that 
                 // handles all of the properties.
             }
@@ -117,8 +121,7 @@
     BOOL succeeded = NO;
     // TODO: Check cached core data objects first.
     if ([self isRequestInProgressForPath:@"videos"] ||
-        ![[self class] requestManagerIsReachable])
-    {
+        ![[self class] requestManagerIsReachable]) {
         // Give responseBlock cached sections.
         responseBlock(self.sections);
     }    
@@ -175,8 +178,7 @@
             responseBlock(result);
         }
         else if ([request.path isEqualToString:@"videos"]) {
-            //responseBlock(self.videos);
-            responseBlock(result);
+            responseBlock(self.videos);
         }
         else if ([request.path isEqualToString:@"search"]) {
         }        
