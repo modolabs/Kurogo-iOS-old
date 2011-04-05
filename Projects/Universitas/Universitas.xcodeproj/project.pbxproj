@@ -182,35 +182,35 @@
 			isa = PBXContainerItemProxy;
 			containerPortal = EB99B67312F3A8E40065EE93 /* OAuthConsumer.xcodeproj */;
 			proxyType = 1;
-			remoteGlobalIDString = EB1391B112F26F48004DBB7C /* OAuthConsumer */;
+			remoteGlobalIDString = EB1391B112F26F48004DBB7C;
 			remoteInfo = OAuthConsumer;
 		};
 		7ED994E61345352B00D8F866 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = EBAA860812F728CE00B743C3 /* SFHFKeychainUtils.xcodeproj */;
 			proxyType = 1;
-			remoteGlobalIDString = D2AAC07D0554694100DB518D /* SFHFKeychainUtils */;
+			remoteGlobalIDString = D2AAC07D0554694100DB518D;
 			remoteInfo = SFHFKeychainUtils;
 		};
 		7ED994E81345352B00D8F866 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = EB138EE812F251EB004DBB7C /* Facebook.xcodeproj */;
 			proxyType = 1;
-			remoteGlobalIDString = D2AAC07D0554694100DB518D /* facebook-ios-sdk */;
+			remoteGlobalIDString = D2AAC07D0554694100DB518D;
 			remoteInfo = "facebook-ios-sdk";
 		};
 		7ED994EA1345352B00D8F866 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = EB99B38C12F37FDC0065EE93 /* JSON.xcodeproj */;
 			proxyType = 1;
-			remoteGlobalIDString = FE2BBD7F0D8B0D3900184787 /* libjson */;
+			remoteGlobalIDString = FE2BBD7F0D8B0D3900184787;
 			remoteInfo = libjson;
 		};
 		7ED994EC1345352B00D8F866 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = EB99B08912F36F3D0065EE93 /* Twitter.xcodeproj */;
 			proxyType = 1;
-			remoteGlobalIDString = D2AAC07D0554694100DB518D /* Twitter */;
+			remoteGlobalIDString = D2AAC07D0554694100DB518D;
 			remoteInfo = Twitter;
 		};
 		EB138EEC12F251EB004DBB7C /* PBXContainerItemProxy */ = {
