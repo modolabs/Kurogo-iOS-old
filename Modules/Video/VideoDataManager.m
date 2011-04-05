@@ -28,11 +28,13 @@
 //                 insertNewObjectForEntityForName:@"NewsImage"];
                 Video *video = [[CoreDataManager sharedManager]
                                 insertNewObjectForEntityForName:@"Video"];
-                video.title = [dict objectForKey:@"title"];
+//                video.title = [dict objectForKey:@"title"];
+                [video setUpWithDictionary:dict];
                 [self.videos addObject:video];
                 // TODO: Method for setting up video with dict that 
                 // handles all of the properties.
             }
+            [[CoreDataManager sharedManager] saveData];;
         }        
     }
     else if ([request.path isEqualToString:@"search"]) {
@@ -40,11 +42,11 @@
 }
 
 + (BOOL)requestManagerIsReachable {
-#if TARGET_IPHONE_SIMULATOR
+//#if TARGET_IPHONE_SIMULATOR
     return YES;
-#else
-    return [[KGORequestManager sharedManager] isReachable];
-#endif
+//#else
+//    return [[KGORequestManager sharedManager] isReachable];
+//#endif
 }
 
 - (BOOL)isRequestInProgressForPath:(NSString *)path {

@@ -34,6 +34,10 @@
 		A627E6BB134A662200403110 /* VideoTag.m in Sources */ = {isa = PBXBuildFile; fileRef = A627E6B8134A662200403110 /* VideoTag.m */; };
 		A6484128134B9272006649D8 /* Video.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = A6484127134B9272006649D8 /* Video.xcdatamodeld */; };
 		A6C19893134B95B3009A163B /* Video.xcdatamodel in Sources */ = {isa = PBXBuildFile; fileRef = A6C19892134B95B3009A163B /* Video.xcdatamodel */; };
+		A6F2F81B134BAC75009F597D /* VideoDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A6F2F819134BAC75009F597D /* VideoDetailViewController.m */; };
+		A6F2F83D134BAEDD009F597D /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A6F2F83C134BAEDD009F597D /* MediaPlayer.framework */; };
+		A6F2F9B3134BDFF7009F597D /* video in Resources */ = {isa = PBXBuildFile; fileRef = A6F2F9B0134BDFF7009F597D /* video */; };
+		A6F2FA21134BE23F009F597D /* VideoWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A6F2FA20134BE23F009F597D /* VideoWebViewController.m */; };
 		BD9FA7EE1047A05E00BC3C0A /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BD9FA7ED1047A05E00BC3C0A /* MessageUI.framework */; };
 		DE0F6B3411109BC500F064D6 /* AboutMITVC.m in Sources */ = {isa = PBXBuildFile; fileRef = DE0F6B3311109BC500F064D6 /* AboutMITVC.m */; };
 		DE6D9401110AD1ED00DAF213 /* SettingsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DE6D9319110A8EFA00DAF213 /* SettingsTableViewController.m */; };
@@ -295,6 +299,12 @@
 		A627E6B7134A662200403110 /* VideoTag.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VideoTag.h; path = ../../Modules/Video/Model/VideoTag.h; sourceTree = SOURCE_ROOT; };
 		A627E6B8134A662200403110 /* VideoTag.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VideoTag.m; path = ../../Modules/Video/Model/VideoTag.m; sourceTree = SOURCE_ROOT; };
 		A6C19892134B95B3009A163B /* Video.xcdatamodel */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = wrapper.xcdatamodel; path = Video.xcdatamodel; sourceTree = "<group>"; };
+		A6F2F818134BAC75009F597D /* VideoDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VideoDetailViewController.h; path = ../../Modules/Video/VideoDetailViewController.h; sourceTree = SOURCE_ROOT; };
+		A6F2F819134BAC75009F597D /* VideoDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VideoDetailViewController.m; path = ../../Modules/Video/VideoDetailViewController.m; sourceTree = SOURCE_ROOT; };
+		A6F2F83C134BAEDD009F597D /* MediaPlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaPlayer.framework; path = System/Library/Frameworks/MediaPlayer.framework; sourceTree = SDKROOT; };
+		A6F2F9B0134BDFF7009F597D /* video */ = {isa = PBXFileReference; lastKnownFileType = folder; name = video; path = ../../Resources/default/kurogo/modules/video; sourceTree = SOURCE_ROOT; };
+		A6F2FA1F134BE23F009F597D /* VideoWebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VideoWebViewController.h; path = ../../Modules/Video/VideoWebViewController.h; sourceTree = SOURCE_ROOT; };
+		A6F2FA20134BE23F009F597D /* VideoWebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VideoWebViewController.m; path = ../../Modules/Video/VideoWebViewController.m; sourceTree = SOURCE_ROOT; };
 		BD9FA7ED1047A05E00BC3C0A /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
 		DE0F6B3211109BC500F064D6 /* AboutMITVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AboutMITVC.h; sourceTree = "<group>"; };
 		DE0F6B3311109BC500F064D6 /* AboutMITVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AboutMITVC.m; sourceTree = "<group>"; };
@@ -568,6 +578,7 @@
 				EB99B67212F3A8D80065EE93 /* libjson.a in Frameworks */,
 				EB99B28412F377560065EE93 /* libTwitter.a in Frameworks */,
 				EB99B28312F377520065EE93 /* libfacebook_ios_sdk.a in Frameworks */,
+				A6F2F83D134BAEDD009F597D /* MediaPlayer.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -585,6 +596,7 @@
 		29B97314FDCFA39411CA2CEA /* CustomTemplate */ = {
 			isa = PBXGroup;
 			children = (
+				A6F2F9B0134BDFF7009F597D /* video */,
 				EB1441361309EF7B00396753 /* Application */,
 				EB0336B2133C2B8B00ACF2BB /* Common */,
 				EB1387B912F22DF7004DBB7C /* Contrib */,
@@ -640,6 +652,7 @@
 				29366C19118E401C009D6863 /* libxml2.dylib */,
 				29366C1D118E4151009D6863 /* Security.framework */,
 				EB6D02A811E3784100B65CE3 /* MapKit.framework */,
+				A6F2F83C134BAEDD009F597D /* MediaPlayer.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -696,6 +709,10 @@
 				A627E6AB134A65FD00403110 /* VideoDataManager.m */,
 				A627E6AC134A65FD00403110 /* VideoListViewController.h */,
 				A627E6AD134A65FD00403110 /* VideoListViewController.m */,
+				A6F2F818134BAC75009F597D /* VideoDetailViewController.h */,
+				A6F2F819134BAC75009F597D /* VideoDetailViewController.m */,
+				A6F2FA1F134BE23F009F597D /* VideoWebViewController.h */,
+				A6F2FA20134BE23F009F597D /* VideoWebViewController.m */,
 				A627E6AE134A65FD00403110 /* VideoModule.h */,
 				A627E6AF134A65FD00403110 /* VideoModule.m */,
 			);
@@ -1353,6 +1370,7 @@
 				EBC1C7151347C5750045CE9C /* kurogo_debug.xcconfig in Resources */,
 				EBC1C7161347C5750045CE9C /* stage_server.xcconfig in Resources */,
 				EBC1C7171347C5750045CE9C /* test_server.xcconfig in Resources */,
+				A6F2F9B3134BDFF7009F597D /* video in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1500,6 +1518,8 @@
 				EB469CB6134A7DA4005796E4 /* KGOSearchResultListTableView.m in Sources */,
 				A6484128134B9272006649D8 /* Video.xcdatamodeld in Sources */,
 				A6C19893134B95B3009A163B /* Video.xcdatamodel in Sources */,
+				A6F2F81B134BAC75009F597D /* VideoDetailViewController.m in Sources */,
+				A6F2FA21134BE23F009F597D /* VideoWebViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
