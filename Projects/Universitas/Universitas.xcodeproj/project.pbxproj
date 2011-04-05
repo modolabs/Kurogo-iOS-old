@@ -178,6 +178,41 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		7ED994E41345352B00D8F866 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = EB99B67312F3A8E40065EE93 /* OAuthConsumer.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = EB1391B112F26F48004DBB7C /* OAuthConsumer */;
+			remoteInfo = OAuthConsumer;
+		};
+		7ED994E61345352B00D8F866 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = EBAA860812F728CE00B743C3 /* SFHFKeychainUtils.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = D2AAC07D0554694100DB518D /* SFHFKeychainUtils */;
+			remoteInfo = SFHFKeychainUtils;
+		};
+		7ED994E81345352B00D8F866 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = EB138EE812F251EB004DBB7C /* Facebook.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = D2AAC07D0554694100DB518D /* facebook-ios-sdk */;
+			remoteInfo = "facebook-ios-sdk";
+		};
+		7ED994EA1345352B00D8F866 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = EB99B38C12F37FDC0065EE93 /* JSON.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = FE2BBD7F0D8B0D3900184787 /* libjson */;
+			remoteInfo = libjson;
+		};
+		7ED994EC1345352B00D8F866 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = EB99B08912F36F3D0065EE93 /* Twitter.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = D2AAC07D0554694100DB518D /* Twitter */;
+			remoteInfo = Twitter;
+		};
 		EB138EEC12F251EB004DBB7C /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = EB138EE812F251EB004DBB7C /* Facebook.xcodeproj */;
@@ -1189,6 +1224,11 @@
 			buildRules = (
 			);
 			dependencies = (
+				7ED994EB1345352B00D8F866 /* PBXTargetDependency */,
+				7ED994E91345352B00D8F866 /* PBXTargetDependency */,
+				7ED994E51345352B00D8F866 /* PBXTargetDependency */,
+				7ED994ED1345352B00D8F866 /* PBXTargetDependency */,
+				7ED994E71345352B00D8F866 /* PBXTargetDependency */,
 			);
 			name = Universitas;
 			productName = Universitas;
@@ -1462,6 +1502,34 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		7ED994E51345352B00D8F866 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = OAuthConsumer;
+			targetProxy = 7ED994E41345352B00D8F866 /* PBXContainerItemProxy */;
+		};
+		7ED994E71345352B00D8F866 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = SFHFKeychainUtils;
+			targetProxy = 7ED994E61345352B00D8F866 /* PBXContainerItemProxy */;
+		};
+		7ED994E91345352B00D8F866 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "facebook-ios-sdk";
+			targetProxy = 7ED994E81345352B00D8F866 /* PBXContainerItemProxy */;
+		};
+		7ED994EB1345352B00D8F866 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = libjson;
+			targetProxy = 7ED994EA1345352B00D8F866 /* PBXContainerItemProxy */;
+		};
+		7ED994ED1345352B00D8F866 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = Twitter;
+			targetProxy = 7ED994EC1345352B00D8F866 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		1D6058940D05DD3E006BFB54 /* Debug - Development */ = {
