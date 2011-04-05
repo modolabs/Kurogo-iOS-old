@@ -6,7 +6,6 @@
 #import "KGOTheme.h"
 #import "ThemeConstants.h"
 #import "Foundation+KGOAdditions.h"
-#import "AboutCreditsWebViewController.h"
 #import "KGOAppDelegate+ModuleAdditions.h"
 
 @implementation AboutTableViewController
