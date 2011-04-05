@@ -149,7 +149,7 @@
 			<key>APIPath</key>
 			<string>rest</string>
 			<key>Host</key>
-			<string>example-test.com</string>
+			<string>kurogo.hq.modolabs.com</string>
 			<key>PathExtension</key>
 			<string></string>
 			<key>UseHTTPS</key>
