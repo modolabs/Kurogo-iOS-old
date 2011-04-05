@@ -27,7 +27,6 @@
 		562F4B79133EFA10000B9344 /* ContentModule.m in Sources */ = {isa = PBXBuildFile; fileRef = 562F4B74133EFA10000B9344 /* ContentModule.m */; };
 		562F4B7A133EFA10000B9344 /* ContentTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 562F4B76133EFA10000B9344 /* ContentTableViewController.m */; };
 		562F4B7B133EFA10000B9344 /* ContentWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 562F4B78133EFA10000B9344 /* ContentWebViewController.m */; };
-		56D8D29A1346B95600110008 /* AboutCreditsWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 56D8D2991346B95600110008 /* AboutCreditsWebViewController.m */; };
 		A627E6B0134A65FD00403110 /* VideoDataManager.m in Sources */ = {isa = PBXBuildFile; fileRef = A627E6AB134A65FD00403110 /* VideoDataManager.m */; };
 		A627E6B1134A65FD00403110 /* VideoListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A627E6AD134A65FD00403110 /* VideoListViewController.m */; };
 		A627E6B2134A65FD00403110 /* VideoModule.m in Sources */ = {isa = PBXBuildFile; fileRef = A627E6AF134A65FD00403110 /* VideoModule.m */; };
@@ -249,8 +248,6 @@
 		562F4B76133EFA10000B9344 /* ContentTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ContentTableViewController.m; path = ../../../Modules/Content/ContentTableViewController.m; sourceTree = "<group>"; };
 		562F4B77133EFA10000B9344 /* ContentWebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ContentWebViewController.h; path = ../../../Modules/Content/ContentWebViewController.h; sourceTree = "<group>"; };
 		562F4B78133EFA10000B9344 /* ContentWebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ContentWebViewController.m; path = ../../../Modules/Content/ContentWebViewController.m; sourceTree = "<group>"; };
-		56D8D2981346B95500110008 /* AboutCreditsWebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AboutCreditsWebViewController.h; sourceTree = "<group>"; };
-		56D8D2991346B95600110008 /* AboutCreditsWebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AboutCreditsWebViewController.m; sourceTree = "<group>"; };
 		A627E6AA134A65FD00403110 /* VideoDataManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VideoDataManager.h; path = ../../Modules/Video/VideoDataManager.h; sourceTree = SOURCE_ROOT; };
 		A627E6AB134A65FD00403110 /* VideoDataManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VideoDataManager.m; path = ../../Modules/Video/VideoDataManager.m; sourceTree = SOURCE_ROOT; };
 		A627E6AC134A65FD00403110 /* VideoListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VideoListViewController.h; path = ../../Modules/Video/VideoListViewController.h; sourceTree = SOURCE_ROOT; };
@@ -712,8 +709,6 @@
 				DEC02F9C110578240054BE32 /* AboutTableViewController.m */,
 				DE0F6B3211109BC500F064D6 /* AboutMITVC.h */,
 				DE0F6B3311109BC500F064D6 /* AboutMITVC.m */,
-				56D8D2981346B95500110008 /* AboutCreditsWebViewController.h */,
-				56D8D2991346B95600110008 /* AboutCreditsWebViewController.m */,
 			);
 			name = About;
 			path = ../../../Modules/About;
@@ -1453,7 +1448,6 @@
 				EBE2CC1E1342AD2F0037546A /* KGOBookmarksViewController.m in Sources */,
 				EBE2CC2113438AEA0037546A /* KGODetailPageHeaderView.m in Sources */,
 				EBE2CC641343E4D00037546A /* KGOMapCategory.m in Sources */,
-				56D8D29A1346B95600110008 /* AboutCreditsWebViewController.m in Sources */,
 				4BD493691349144400891968 /* EmergencyContactsSection.m in Sources */,
 				4BD4936C1349146900891968 /* EmergencyContact.m in Sources */,
 				4BD4936F13492C2400891968 /* EmergencyContactsViewController.m in Sources */,

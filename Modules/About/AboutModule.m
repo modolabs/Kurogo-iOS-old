@@ -2,7 +2,7 @@
 #import "AboutTableViewController.h"
 #import "Foundation+KGOAdditions.h"
 #import "AboutMITVC.h"
-#import "AboutCreditsWebViewController.h"
+#import "KGOWebViewController.h"
 
 @implementation AboutModule
 
@@ -23,9 +23,12 @@
         vc = aboutMITVC;
     }
     else if ([pageName isEqualToString:LocalPathPageNameWebViewDetail]) {
-        AboutCreditsWebViewController * creditsWebViewController = [[AboutCreditsWebViewController alloc] init];
+        KGOWebViewController * creditsWebViewController = [[KGOWebViewController alloc] init];
         NSString * credits = [params stringForKey:@"creditsHTMLString" nilIfEmpty: NO];
         [creditsWebViewController setHTMLString: credits];
+        creditsWebViewController.title = @"Credits";
+        creditsWebViewController.loadsLinksExternally = YES;
+        [creditsWebViewController applyTemplate:@"modules/about/credits.html"];
         
         vc = creditsWebViewController;
     }

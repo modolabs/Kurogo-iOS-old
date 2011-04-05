@@ -15,6 +15,7 @@
     
     NSString * HTMLString;
 
+    NSMutableArray *_templateStack;
 }
 
 @property (nonatomic, retain) NSURLConnection *connection;
@@ -24,6 +25,10 @@
 
 @property (nonatomic, retain) NSString * HTMLString;
 
+@property (nonatomic) BOOL loadsLinksExternally;
+
 - (void) showHTMLString: (NSString *) HTMLStringText;
+
+- (void)applyTemplate:(NSString *)filename;
 
 @end

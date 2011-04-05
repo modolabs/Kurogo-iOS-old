@@ -1,14 +1,17 @@
 #import "KGOWebViewController.h"
 #import "KGORequestManager.h"
 #import "KGOAppDelegate.h"
+#import "KGOHTMLTemplate.h"
 
 @implementation KGOWebViewController
 
-@synthesize data = _data, connection = _connection;
+@synthesize data = _data, connection = _connection, loadsLinksExternally;
 @synthesize HTMLString;
 
 - (void)dealloc
 {
+    self.requestURL = nil;
+    [_templateStack release];
     [super dealloc];
 }
 
@@ -58,6 +61,28 @@
     }
 }
 
+- (void)applyTemplate:(NSString *)filename
+{
+    if (!_templateStack) {
+        _templateStack = [[NSMutableArray alloc] init];
+    }
+
+    if ([_templateStack containsObject:filename]) {
+        return;
+    } else {
+        [_templateStack addObject:filename];
+    }
+    
+    KGOHTMLTemplate *template = [KGOHTMLTemplate templateWithPathName:filename];
+    NSString *wrappedString = [template fillOutWithDictionary:[NSDictionary dictionaryWithObjectsAndKeys:HTMLString, @"BODY", nil]];
+    NSURL *url = [NSURL URLWithString:[[NSBundle mainBundle] resourcePath]];
+    if (_webView) {
+        [_webView loadHTMLString:wrappedString baseURL:url];
+    } else {
+        HTMLString = [wrappedString retain];
+    }
+}
+
 - (void) showHTMLString: (NSString *) HTMLStringText
 {
     [HTMLString release];
@@ -93,7 +118,14 @@
 
 - (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType
 {
-    if ([[request.URL scheme] isEqualToString:[KGO_SHARED_APP_DELEGATE() defaultURLScheme]]) {
+    NSString *scheme = [request.URL scheme];
+    
+    if ([scheme isEqualToString:[KGO_SHARED_APP_DELEGATE() defaultURLScheme]]) {
+        [[UIApplication sharedApplication] openURL:request.URL];
+        return NO;
+    }
+    
+    if (self.loadsLinksExternally && ([scheme isEqualToString:@"http"] || [scheme isEqualToString:@"https"])) {
         [[UIApplication sharedApplication] openURL:request.URL];
         return NO;
     }
@@ -102,7 +134,7 @@
     
     // the webview will refuse to load if the server uses a self-signed cert
     // so we will get the contents directly and load it into the webview
-    if ([[[request URL] scheme] isEqualToString:@"https"]
+    if ([scheme isEqualToString:@"https"]
         && ([[[request URL] host] rangeOfString:[[KGORequestManager sharedManager] host]].location != NSNotFound
             || [[[request URL] host] rangeOfString:@"google.com"].location != NSNotFound) // blacklisting as part of login process
     ) {
@@ -117,7 +149,7 @@
         }
         return NO;
 
-    } else if ([[[request URL] scheme] isEqualToString:@"applewebdata"]) {
+    } else if ([scheme isEqualToString:@"applewebdata"]) {
         // crazy experiment to make google apps work
         
         if (request != _request) {
