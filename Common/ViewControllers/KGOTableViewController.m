@@ -312,7 +312,7 @@
     UITableView *tableView = [[[UITableView alloc] initWithFrame:frame style:style] autorelease];
 
     if (style == UITableViewStyleGrouped) {
-        tableView.backgroundColor = [[KGOTheme sharedTheme] backgroundColorForApplication];
+        tableView.backgroundColor = [UIColor clearColor];
     }
 	
 	[self addTableView:tableView withDataSource:dataSource];
@@ -471,7 +471,9 @@
 	
     if ([dataSource respondsToSelector:@selector(tableView:manipulatorForCellAtIndexPath:)]) {
         CellManipulator manipulateCell = [dataSource tableView:tableView manipulatorForCellAtIndexPath:indexPath];
-        manipulateCell(cell);
+        if (manipulateCell) {
+            manipulateCell(cell);
+        }
     }
     
 	if (cachedViews.count) {
