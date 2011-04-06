@@ -78,9 +78,6 @@ NSString * const MapTypePreferenceChanged = @"MapTypeChanged";
             mapVC = [[[MapHomeViewController alloc] initWithNibName:@"MapHomeViewController-iPad" bundle:nil] autorelease];
         }
         
-    //} else if ([pageName isEqualToString:LocalPathPageNameSearch]) {
-        //MapHomeViewController *mapVC = [[[MapHomeViewController alloc] init] autorelease];
-        
         NSString *searchText = [params objectForKey:@"q"];
         if (searchText) {
             mapVC.searchTerms = searchText;

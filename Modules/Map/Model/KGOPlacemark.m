@@ -3,6 +3,7 @@
 #import "Foundation+KGOAdditions.h"
 #import "CoreDataManager.h"
 #import <CoreLocation/CoreLocation.h>
+#import "KGOHTMLTemplate.h"
 
 @implementation KGOPlacemark
 
@@ -18,6 +19,7 @@
 @dynamic photo;
 @dynamic bookmarked;
 @dynamic category;
+@dynamic photoURL;
 
 #pragma mark KGOSearchResult, MKAnnotation
 
@@ -68,7 +70,18 @@
         }
         
         placemark.title = [dictionary stringForKey:@"title" nilIfEmpty:YES];
-        placemark.info = [dictionary stringForKey:@"description" nilIfEmpty:YES];
+        
+        id descriptionInfo = [dictionary objectForKey:@"description"];
+        if ([descriptionInfo isKindOfClass:[NSString class]] && [descriptionInfo length]) {
+            placemark.info = descriptionInfo;
+            
+        } else if ([descriptionInfo isKindOfClass:[NSArray class]]) {
+            KGOHTMLTemplate *itemTemplate = [[[KGOHTMLTemplate alloc] init] autorelease];
+            // TODO: this is relying on the server returning "label" and "title"
+            // for each field item, may not be robust
+            itemTemplate.templateString = @"<li><strong>__label__:</strong>__title__</li>";
+            placemark.info = [NSString stringWithFormat:@"<ul>%@</ul>", [itemTemplate stringWithMultiReplacements:descriptionInfo]];
+        }
         
         CLLocationDegrees lat = [dictionary floatForKey:@"lat"];
         CLLocationDegrees lon = [dictionary floatForKey:@"lon"];
