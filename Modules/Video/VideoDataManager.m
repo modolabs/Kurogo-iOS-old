@@ -21,20 +21,15 @@
         self.sections = result;
     }
     else if ([request.path isEqualToString:@"videos"]) {
+        [self.videos removeAllObjects];
         if ([result isKindOfClass:[NSArray class]]) {
             for (NSDictionary *dict in result) {
-//                NSManagedObject *test = 
-//                [[CoreDataManager sharedManager]
-//                 insertNewObjectForEntityForName:@"NewsImage"];
                 Video *video = [[CoreDataManager sharedManager]
                                 insertNewObjectForEntityForName:@"Video"];
-//                video.title = [dict objectForKey:@"title"];
                 [video setUpWithDictionary:dict];
                 [self.videos addObject:video];
-                // TODO: Method for setting up video with dict that 
-                // handles all of the properties.
             }
-            [[CoreDataManager sharedManager] saveData];;
+            [[CoreDataManager sharedManager] saveData];
         }        
     }
     else if ([request.path isEqualToString:@"search"]) {
@@ -125,7 +120,7 @@
     if ([self isRequestInProgressForPath:@"videos"] ||
         ![[self class] requestManagerIsReachable]) {
         // Give responseBlock cached sections.
-        responseBlock(self.sections);
+        responseBlock(self.videos);
     }    
     else {
         KGORequest *request = 
@@ -170,7 +165,7 @@
 
 - (void)request:(KGORequest *)request didReceiveResult:(id)result
 {
-    NSLog(@"%@", [result description]);
+    //NSLog(@"%@", [result description]);
     [self storeResult:result forRequest:request];
     
     VideoDataRequestResponse responseBlock = 

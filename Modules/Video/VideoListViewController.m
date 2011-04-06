@@ -18,6 +18,7 @@ static const NSInteger kVideoListCellThumbnailTag = 0x78;
 + (NSString *)detailTextForVideo:(Video *)video;
 - (void)updateThumbnailView:(MITThumbnailView *)thumbnailView 
                    forVideo:(Video *)video;
+- (void)requestVideosForActiveSection;
 
 @end
 
@@ -45,6 +46,22 @@ static const NSInteger kVideoListCellThumbnailTag = 0x78;
     }
     [thumbnailView displayImage];
 }
+
+- (void)requestVideosForActiveSection {    
+    if (self.videoSections.count > self.activeSectionIndex) {
+        [self.dataManager 
+         requestVideosForSection:
+         [[self.videoSections objectAtIndex:self.activeSectionIndex] 
+          objectForKey:@"value"]
+         thenRunBlock:^(id result) { 
+             if ([result isKindOfClass:[NSArray class]])
+             {
+                 self.videos = result;
+                 [self.tableView reloadData];
+             }
+         }];
+    }
+}    
 
 @end
 
@@ -82,30 +99,34 @@ static const NSInteger kVideoListCellThumbnailTag = 0x78;
 
 #pragma mark UIViewController
 
+- (void)loadView {
+    [super loadView];
+    
+    self.navScrollView =
+    [[[KGOScrollingTabstrip alloc] 
+      initWithFrame:CGRectMake(0, 
+                               0, 
+                               [UIScreen mainScreen].applicationFrame.size.width, 
+                               44)]
+     autorelease];
+    self.navScrollView.delegate = self;
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.tableView.rowHeight = 90.0f;
     
     [self.dataManager requestSectionsThenRunBlock:
-     ^(id result)
-     {
-         if ([result isKindOfClass:[NSArray class]])
-         {
-             NSLog(@"Retrieved sections. There are %d of them.", [result count]);
+     ^(id result) {
+         if ([result isKindOfClass:[NSArray class]]) {
              self.videoSections = result;
-             [self.dataManager 
-              requestVideosForSection:
-              [[self.videoSections objectAtIndex:self.activeSectionIndex] 
-               objectForKey:@"value"]
-              thenRunBlock:
-              ^(id result)
-              {
-                  if ([result isKindOfClass:[NSArray class]])
-                  {
-                      self.videos = result;
-                      [self.tableView reloadData];
-                  }
-              }];
+             for (NSDictionary *sectionInfo in videoSections) {
+                 [self.navScrollView addButtonWithTitle:
+                  [sectionInfo objectForKey:@"title"]];
+             }
+             [self.navScrollView selectButtonAtIndex:self.activeSectionIndex];
+             [self.navScrollView setNeedsLayout];
+             [self requestVideosForActiveSection];
          }
      }];
 }
@@ -179,7 +200,8 @@ static const NSInteger kVideoListCellThumbnailTag = 0x78;
         Video *video = [self.videos objectAtIndex:indexPath.row];
         VideoDetailViewController *detailViewController = 
         [[VideoDetailViewController alloc] initWithVideo:video];
-        [self.navigationController pushViewController:detailViewController animated:YES];
+        [self.navigationController pushViewController:detailViewController 
+                                             animated:YES];
         [detailViewController release];
     }
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
@@ -202,5 +224,11 @@ static const NSInteger kVideoListCellThumbnailTag = 0x78;
                              value:thumbnail.imageURL];
     video.thumbnailImageData = data;
 }
-    
+
+#pragma mark KGOScrollingTabstripDelegate
+- (void)tabstrip:(KGOScrollingTabstrip *)tabstrip clickedButtonAtIndex:(NSUInteger)index {
+    self.activeSectionIndex = index;
+    [self requestVideosForActiveSection];
+}
+
 @end
