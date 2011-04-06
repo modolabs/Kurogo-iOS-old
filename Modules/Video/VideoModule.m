@@ -9,6 +9,8 @@
 #import "VideoModule.h"
 #import "VideoListViewController.h"
 
+NSString * const KGODataModelNameVideo = @"Video";
+
 @implementation VideoModule
 
 - (NSArray *)registeredPageNames {
@@ -28,6 +30,12 @@
         // TODO.
     }
     return vc;
+}
+
+#pragma mark Data
+
+- (NSArray *)objectModelNames {
+    return [NSArray arrayWithObject:KGODataModelNameVideo];
 }
 
 @end

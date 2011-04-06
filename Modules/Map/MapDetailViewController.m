@@ -13,16 +13,16 @@
 
 - (UIView *)tabbedControl:(KGOTabbedControl *)control containerViewAtIndex:(NSInteger)index {
     UIView *view = nil;
-    NSString *title = [control titleForTabAtIndex:index];
-    if ([title isEqualToString:@"Photo"]) {
+    if (index == _photoTabIndex) {
 
     
-    } else if ([title isEqualToString:@"Details"]) {
+    } else if (index == _detailsTabIndex) {
         UIWebView *webView = [[[UIWebView alloc] initWithFrame:CGRectMake(10, 10, self.tabViewContainer.frame.size.width - 20, self.tabViewContainer.frame.size.height - 20)] autorelease];
         [webView loadHTMLString:self.placemark.info baseURL:nil];
         webView.delegate = self;
         view = webView;
-    } else if ([title isEqualToString:@"Nearby"]) {
+        
+    } else if (index == _nearbyTabIndex) {
         if (!_tableView) {
             CGRect frame = CGRectMake(0, 0, self.tabViewContainer.frame.size.width, self.tabViewContainer.frame.size.height);
             _tableView = [[[KGOSearchResultListTableView alloc] initWithFrame:frame] autorelease];
@@ -48,11 +48,23 @@
 
 - (NSArray *)itemsForTabbedControl:(KGOTabbedControl *)control {
     NSMutableArray *tabs = [NSMutableArray array];
-    [tabs addObject:NSLocalizedString(@"Photo", nil)];
+    _photoTabIndex = NSNotFound;
+    _nearbyTabIndex = NSNotFound;
+    _detailsTabIndex = NSNotFound;
+    
+    NSInteger currentTabIndex = 0;
+    if (self.placemark.photoURL) {
+        [tabs addObject:NSLocalizedString(@"Photo", nil)];
+        _photoTabIndex = currentTabIndex;
+        currentTabIndex++;
+    }
     if (self.placemark.info) {
         [tabs addObject:NSLocalizedString(@"Details", nil)];
+        _detailsTabIndex = currentTabIndex;
+        currentTabIndex++;
     }
     [tabs addObject:NSLocalizedString(@"Nearby", nil)];
+    _nearbyTabIndex = currentTabIndex;
     return tabs;
 }
 

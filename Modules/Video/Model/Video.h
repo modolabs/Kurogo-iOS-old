@@ -2,9 +2,6 @@
 //  Video.h
 //  Universitas
 //
-//  Created by Jim Kang on 3/30/11.
-//  Copyright 2011 Modo Labs. All rights reserved.
-//
 
 #import <CoreData/CoreData.h>
 
@@ -21,10 +18,14 @@
 @property (nonatomic, retain) NSString * url;
 @property (nonatomic, retain) NSString * type;
 @property (nonatomic, retain) NSString * title;
-@property (nonatomic, retain) NSString * image;
+@property (nonatomic, retain) NSString * imageURLString;
 @property (nonatomic, retain) NSNumber * height;
 @property (nonatomic, retain) NSNumber * duration;
 @property (nonatomic, retain) NSSet* tags;
+@property (nonatomic, retain) NSString * mobileURL;
+@property (nonatomic, retain) NSString * stillFrameImage;
+
+- (void)setUpWithDictionary:(NSDictionary *)dictionaryFromAPI;
 
 @end
 

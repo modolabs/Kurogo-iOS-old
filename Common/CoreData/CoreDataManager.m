@@ -196,37 +196,51 @@
 	NSDictionary *options = [NSDictionary dictionaryWithObjectsAndKeys:
                              [NSNumber numberWithBool:YES], NSMigratePersistentStoresAutomaticallyOption,
                              [NSNumber numberWithBool:YES], NSInferMappingModelAutomaticallyOption, nil];
-	
-    if (![persistentStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:storeURL options:options error:&error])  {
+
+    NSPersistentStore *store = [persistentStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType
+                                                                        configuration:nil
+                                                                                  URL:storeURL
+                                                                              options:options
+                                                                                error:&error];
+    if (!store) {
+        BOOL tryAgain = [self migrateData];
+        
 		DLog(@"CoreDataManager failed to create or access the persistent store: %@", [error userInfo]);
-		
-		// see if we failed because of changes to the db
-		//if (![[self storeFileName] isEqualToString:[self currentStoreFileName]]) {
-		//	NSLog(@"This app has been upgraded since last use of Core Data. If it crashes on launch, reinstalling should fix it.");
-			if ([self migrateData]) {
-				DLog(@"Attempting to recreate the persistent store...");
-				storeURL = [NSURL fileURLWithPath:[self storeFileName]];
-				if (![persistentStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType 
-															  configuration:nil URL:storeURL options:options error:&error]) {
-					DLog(@"Failed to recreate the persistent store: %@", [error userInfo]);
-				}
-			} else {
-				DLog(@"Could not migrate data.  Wiping out data...");
+        if (tryAgain) {
+            storeURL = [NSURL fileURLWithPath:[self storeFileName]];
+            
+        } else {
+            DLog(@"Could not migrate data.  Wiping out data...");
 #ifdef DEBUG
-                NSString *backupFile = [NSString stringWithFormat:@"%@.bak", [self storeFileName]];
-                NSError *error = nil;
-                if ([[NSFileManager defaultManager] moveItemAtPath:[self storeFileName] toPath:backupFile error:&error]) {
-                    NSLog(@"Old core data is stored at %@", backupFile);
-                } else {
-                    NSLog(@"Could not move old file.  Error %d: %@ %@\nApp will now crash.", [error code], [error domain], [error userInfo]);
-                }
+            NSString *backupFile = [NSString stringWithFormat:@"%@.bak", [self storeFileName]];
+            if ([[NSFileManager defaultManager] moveItemAtPath:[self storeFileName] toPath:backupFile error:&error]) {
+                NSLog(@"Old core data is stored at %@", backupFile);
+                tryAgain = YES;
+                
+            } else {
+                NSLog(@"Failed to move old core data to backup file: %@", [error description]);
+            }
 #else
-                if ([[NSFileManager defaultManager] removeItemAtPath:[self storeFileName] error:&error]) {
-                    DLog(@"Could not delete old file.  App will now crash.");
-                }                
+            if ([[NSFileManager defaultManager] removeItemAtPath:[self storeFileName] error:&error]) {
+                tryAgain = YES;
+                
+            } else {
+                NSLog(@"Failed to delete old core data file: %@", [error description]);
+            }
 #endif
-			}
-		//}
+        }
+        
+        if (tryAgain) {
+            DLog(@"Attempting to recreate the persistent store");
+            store = [persistentStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType 
+                                                             configuration:nil
+                                                                       URL:storeURL
+                                                                   options:options
+                                                                     error:&error];
+            if (!store) {
+                NSLog(@"Still failed to create the persistent store: %@", [error description]);
+            }
+        }
     }
 	
     return persistentStoreCoordinator;

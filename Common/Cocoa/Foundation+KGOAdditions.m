@@ -28,21 +28,6 @@
 @end
 
 
-@implementation NSMutableString (MITAdditions)
-
-- (void)replaceOccurrencesOfStrings:(NSArray *)targets withStrings:(NSArray *)replacements options:(NSStringCompareOptions)options {
-    assert([targets count] == [replacements count]);
-    NSInteger i = 0;
-    for (NSString *target in targets) {
-        [self replaceOccurrencesOfString:target withString:[replacements objectAtIndex:i] options:options range:NSMakeRange(0, [self length])];
-        i++;
-    }
-}
-
-@end
-
-
-
 @implementation NSURL (KGOAdditions)
 
 
@@ -99,25 +84,6 @@
 
 - (NSDictionary *)queryParameters {
     return [NSURL parametersFromQueryString:[self query]];
-}
-
-@end
-
-
-@implementation NSMutableString (KGOAdditions)
-
-+ (NSMutableString *)stringWithContentsOfTemplate:(NSString *)fileName searchStrings:(NSArray *)searchStrings replacements:(NSArray *)replacements {
-	NSURL *baseURL = [NSURL fileURLWithPath:[[NSBundle mainBundle] resourcePath] isDirectory:YES];
-	NSURL *fileURL = [NSURL URLWithString:fileName relativeToURL:baseURL];
-	NSError *error = nil;
-	NSMutableString *target = [NSMutableString stringWithContentsOfURL:fileURL encoding:NSUTF8StringEncoding error:&error];
-	if (!target) {
-		DLog(@"Failed to load template at %@. %@", fileURL, [error userInfo]);
-	}
-	[target replaceOccurrencesOfStrings:searchStrings 
-							withStrings:replacements
-								options:NSLiteralSearch];
-	return target;
 }
 
 @end

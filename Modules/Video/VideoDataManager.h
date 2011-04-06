@@ -23,6 +23,6 @@ typedef void (^VideoDataRequestResponse)(id result);
 @property (nonatomic, retain) NSString *moduleTag;
 @property (nonatomic, retain) NSArray *sections;
 // TODO: Make this dict of arrays per section.
-@property (nonatomic, retain) NSArray *videos; 
+@property (nonatomic, retain) NSMutableArray *videos; 
 
 @end

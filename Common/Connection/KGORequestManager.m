@@ -226,7 +226,6 @@ NSString * const KGOLoginDidCompleteNotification = @"LoginComplete";
     BOOL userTokenCookieExists = NO;
     
     for (NSHTTPCookie *aCookie in cookies) {
-        DLog(@"cookie: %@", [aCookie description]);
         NSString *name = [aCookie name];
         if ([name isEqualToString:UserHashCookieName]) {
             userHashCookieExists = YES;

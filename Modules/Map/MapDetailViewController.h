@@ -11,6 +11,10 @@
     KGORequest *_request;
     KGOSearchResultListTableView *_tableView;
     
+    NSInteger _photoTabIndex;
+    NSInteger _detailsTabIndex;
+    NSInteger _nearbyTabIndex;
+    
 }
 
 @property (nonatomic, retain) KGOPlacemark *placemark;

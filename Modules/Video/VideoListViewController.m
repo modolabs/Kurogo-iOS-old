@@ -6,6 +6,7 @@
 #import "VideoListViewController.h"
 #import "Constants.h"
 #import "Video.h"
+#import "VideoDetailViewController.h"
 
 @implementation VideoListViewController
 
@@ -85,30 +86,33 @@
     
     static NSString *CellIdentifier = @"Cell";
     
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:
+                             CellIdentifier];
     if (cell == nil) {
-        cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
+        cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault 
+                                       reuseIdentifier:CellIdentifier] autorelease];
     }
     
     // Configure the cell...
     if (self.videos.count > indexPath.row) {
-//        Video *video = [self.videos objectAtIndex:indexPath.row];
-        NSDictionary *info = [self.videos objectAtIndex:indexPath.row];
-        cell.textLabel.text = [info objectForKey:@"title"];
+        Video *video = [self.videos objectAtIndex:indexPath.row];
+//        NSDictionary *info = [self.videos objectAtIndex:indexPath.row];
+        cell.textLabel.text = video.title;
     }
     return cell;
 }
 
 #pragma mark UITableViewDelegate
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    // Navigation logic may go here. Create and push another view controller.
-    /*
-     <#DetailViewController#> *detailViewController = [[<#DetailViewController#> alloc] initWithNibName:@"<#Nib name#>" bundle:nil];
-     // ...
-     // Pass the selected object to the new view controller.
-     [self.navigationController pushViewController:detailViewController animated:YES];
-     [detailViewController release];
-     */
+
+    if (self.videos.count > indexPath.row) {
+        Video *video = [self.videos objectAtIndex:indexPath.row];
+        VideoDetailViewController *detailViewController = 
+        [[VideoDetailViewController alloc] initWithVideo:video];
+        [self.navigationController pushViewController:detailViewController animated:YES];
+        [detailViewController release];
+    }
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {

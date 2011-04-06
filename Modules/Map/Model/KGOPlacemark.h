@@ -13,6 +13,7 @@
 @property (nonatomic, retain) NSString * geometryType;
 @property (nonatomic, retain) NSString * title;
 @property (nonatomic, retain) NSNumber * latitude;
+@property (nonatomic, retain) NSString * photoURL;
 @property (nonatomic, retain) NSString * identifier;
 @property (nonatomic, retain) NSData * geometry;
 @property (nonatomic, retain) NSString * info;
