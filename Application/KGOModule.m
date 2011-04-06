@@ -5,36 +5,19 @@
 @implementation KGOModule
 
 @synthesize tag = _tag, shortName = _shortName, longName = _longName;
-@synthesize enabled, hidden, badgeValue, tabBarImage, iconImage, listViewImage, secondary, apiMaxVersion, apiMinVersion, protected;
+@synthesize enabled, hidden, badgeValue, tabBarImage, iconImage, listViewImage, secondary, apiMaxVersion, apiMinVersion, hasAccess;
 @synthesize searchDelegate;
 
 - (id)initWithDictionary:(NSDictionary *)moduleDict {
     self = [super init];
     if (self) {
-
-        // server syntax
-        NSString *title = [moduleDict stringForKey:@"title" nilIfEmpty:YES];
-        if (title) {
-            self.shortName = title;
-            self.longName = title;
-        } else {        
-            self.shortName = [moduleDict objectForKey:@"shortName"];
-            self.longName = [moduleDict objectForKey:@"longName"];
-        }
         
         self.hidden = [moduleDict boolForKey:@"hidden"];
         self.secondary = [[moduleDict objectForKey:@"secondary"] boolValue];
         self.tag = [moduleDict objectForKey:@"tag"];
-        
-        self.protected = [moduleDict boolForKey:@"protected"];
 
-        // this implies we can't have a version zero of the api
-        self.apiMinVersion = [moduleDict integerForKey:@"vmax"];
-        self.apiMaxVersion = [moduleDict integerForKey:@"vmin"];
-        
-        if (!self.apiMaxVersion) self.apiMaxVersion = 1;
-        if (!self.apiMinVersion) self.apiMinVersion = 1;
-
+        [self updateWithDictionary:moduleDict];
+         
         NSString *imageName = [moduleDict objectForKey:@"tabBarImage"];
         if (!imageName) {
             imageName = [NSString stringWithFormat:@"modules/home/tab-%@", self.tag];
@@ -57,6 +40,29 @@
         self.enabled = YES; // TODO: decide what this means or don't use it
     }
     return self;
+}
+
+// properties that are allowed to be changed from the server
+- (void)updateWithDictionary:(NSDictionary *)moduleDict
+{
+    // server syntax
+    NSString *title = [moduleDict stringForKey:@"title" nilIfEmpty:YES];
+    if (title) {
+        self.shortName = title;
+        self.longName = title;
+    } else {        
+        self.shortName = [moduleDict objectForKey:@"shortName"];
+        self.longName = [moduleDict objectForKey:@"longName"];
+    }
+    
+    self.hasAccess = [moduleDict boolForKey:@"access"];
+
+    // this implies we can't have a version zero of the api
+    self.apiMinVersion = [moduleDict integerForKey:@"vmax"];
+    self.apiMaxVersion = [moduleDict integerForKey:@"vmin"];
+    
+    if (!self.apiMaxVersion) self.apiMaxVersion = 1;
+    if (!self.apiMinVersion) self.apiMinVersion = 1;
 }
 
 - (NSArray *)widgetViews {

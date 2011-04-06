@@ -16,7 +16,8 @@
     if ([pageName isEqualToString:LocalPathPageNameHome]) {
         if (![[KGORequestManager sharedManager] isUserLoggedIn]) {        
             ModalLoginWebViewController *webVC = [[[ModalLoginWebViewController alloc] init] autorelease];
-            NSURL *loginURL = [NSURL URLWithString:[NSString stringWithFormat:@"%@/%@/?nativeApp=true", [[KGORequestManager sharedManager] serverURL], self.tag]];NSLog(@"%@", loginURL);
+            NSURL *loginURL = [NSURL URLWithString:[NSString stringWithFormat:@"%@/%@/?nativeApp=true",
+                                                    [[KGORequestManager sharedManager] serverURL], self.tag]];
             webVC.loginModule = self;
             webVC.requestURL = loginURL;
             vc = webVC;
@@ -28,69 +29,67 @@
     return vc;
 }
 
-
-- (void)userDidLogin
+- (UIView *)currentUserWidget
 {
-    [KGO_SHARED_APP_DELEGATE() dismissAppModalViewControllerAnimated:YES];
+    NSDictionary *userDict = [[[KGORequestManager sharedManager] sessionInfo] dictionaryForKey:@"user"];
     
-    _sessionInfoRequest = [[KGORequestManager sharedManager] requestWithDelegate:self module:@"login" path:@"session" params:nil];
-    _sessionInfoRequest.expectedResponseType = [NSDictionary class];
-    [_sessionInfoRequest connect];
-}
-
-- (void)requestWillTerminate:(KGORequest *)request
-{
-    _sessionInfoRequest = nil;
-}
-
-- (void)request:(KGORequest *)request didReceiveResult:(id)result
-{
-    NSDictionary *userDict = [result dictionaryForKey:@"user"];
     self.username = [userDict stringForKey:@"name" nilIfEmpty:YES];
     
-    [[NSNotificationCenter defaultCenter] postNotificationName:KGOLoginDidCompleteNotification object:self];
-}
-
-
-- (NSArray *)widgetViews {
-    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-        return nil;
-    }
-
     KGOHomeScreenViewController *homeVC = (KGOHomeScreenViewController *)[KGO_SHARED_APP_DELEGATE() homescreen];
     CGRect frame = [homeVC springboardFrame];
     frame = CGRectMake(10, 10, frame.size.width - 20, 80);
     KGOHomeScreenWidget *widget = [[[KGOHomeScreenWidget alloc] initWithFrame:frame] autorelease];
     
     NSString *title = self.username;
+    NSString *subtitle = self.userDescription;
     if (!title) {
-        title = @"Anonymous";
+        title = self.userDescription;
+        subtitle = nil;
     }
     
-    UIFont *font = [[KGOTheme sharedTheme] fontForContentTitle];
-    CGSize size = [title sizeWithFont:font];
+    UILabel *titleLabel = nil;
     
-    UILabel *titleLabel = [[[UILabel alloc] initWithFrame:CGRectMake(10, 10, size.width, size.height)] autorelease];
-    titleLabel.font = font;
-    titleLabel.text = title;
-    titleLabel.backgroundColor = [UIColor clearColor];
-    titleLabel.textColor = [UIColor whiteColor];
+    if (title) {
+        UIFont *font = [[KGOTheme sharedTheme] fontForContentTitle];
+        CGSize size = [title sizeWithFont:font];
+        
+        UILabel *titleLabel = [[[UILabel alloc] initWithFrame:CGRectMake(10, 10, size.width, size.height)] autorelease];
+        titleLabel.font = font;
+        titleLabel.text = title;
+        titleLabel.backgroundColor = [UIColor clearColor];
+        titleLabel.textColor = [UIColor whiteColor];
+        
+        [widget addSubview:titleLabel];
+    }
     
-    [widget addSubview:titleLabel];
-
-    if (self.userDescription) {
-        font = [[KGOTheme sharedTheme] fontForBodyText];
-        size = [self.userDescription sizeWithFont:font];
+    if (subtitle) {
+        UIFont *font = [[KGOTheme sharedTheme] fontForBodyText];
+        CGSize size = [self.userDescription sizeWithFont:font];
         UILabel *subtitleLabel = [[[UILabel alloc] initWithFrame:CGRectMake(10, titleLabel.frame.size.height + 20, size.width, size.height)] autorelease];
         subtitleLabel.font = font;
         subtitleLabel.backgroundColor = [UIColor clearColor];
         subtitleLabel.textColor = [UIColor whiteColor];
-        subtitleLabel.text = self.userDescription;
-
+        subtitleLabel.text = subtitle;
+        
         [widget addSubview:subtitleLabel];
     }
     
     return [NSArray arrayWithObject:widget];
+    
+}
+
+- (NSArray *)widgetViews {
+    KGONavigationStyle navStyle = [KGO_SHARED_APP_DELEGATE() navigationStyle];
+    if (navStyle != KGONavigationStylePortlet) {
+        return nil;
+    }
+    
+    NSMutableArray *widgets = [NSMutableArray array];
+    UIView *currentUserWidget = [self currentUserWidget];
+    if (currentUserWidget) {
+        [widgets addObject:currentUserWidget];
+    }
+    return widgets;
 }
 
 - (void)dealloc

@@ -23,12 +23,16 @@
 @property (nonatomic, readonly) CGRect springboardFrame;
 @property (nonatomic, retain) UIView *loadingView;
 
+// login states
+- (void)standbyForServerHello;
+- (void)helloRequestDidComplete:(NSNotification *)aNotification;
+- (void)loginDidComplete:(NSNotification *)aNotification;
+- (void)logoutDidComplete:(NSNotification *)aNotification;
 - (void)showLoadingView;
-- (void)hideLoadingViewIfLoginOK;
 - (void)hideLoadingView;
 
+// springboard helpers
 - (NSArray *)iconsForPrimaryModules:(BOOL)isPrimary;
-
 - (NSArray *)allWidgets:(CGFloat *)topFreePixel :(CGFloat *)bottomFreePixel;
 
 // display module representations on home screen. default implementation does nothing.
