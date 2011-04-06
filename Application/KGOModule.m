@@ -31,6 +31,9 @@
         // this implies we can't have a version zero of the api
         self.apiMinVersion = [moduleDict integerForKey:@"vmax"];
         self.apiMaxVersion = [moduleDict integerForKey:@"vmin"];
+        
+        if (!self.apiMaxVersion) self.apiMaxVersion = 1;
+        if (!self.apiMinVersion) self.apiMinVersion = 1;
 
         NSString *imageName = [moduleDict objectForKey:@"tabBarImage"];
         if (!imageName) {

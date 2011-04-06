@@ -158,11 +158,12 @@
         [self.loadingView addSubview:spinny];
         [self.view addSubview:self.loadingView];
     }
-    NSLog(@"subviews %@", [self.view.subviews description]);
 }
 
 - (void)hideLoadingViewIfLoginOK
 {
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:ModuleListDidChangeNotification object:nil];
+    
     if (self.homeModule.protected && ![[KGORequestManager sharedManager] isUserLoggedIn]) {
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(hideLoadingView)
@@ -175,6 +176,8 @@
 
 - (void)hideLoadingView
 {
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:KGOLoginDidCompleteNotification object:nil];
+    
     if (self.loadingView) {
         [UIView animateWithDuration:0.2 animations:^(void) {
             self.loadingView.alpha = 0;
@@ -189,7 +192,6 @@
 #pragma mark Springboard helper methods
 
 - (CGRect)springboardFrame {
-    //return _springboardFrame;
     return self.view.bounds;
 }
 
@@ -275,14 +277,12 @@
             }
         }
     }
-    
     *topFreePixel = yOrigin + fmax(occupiedAreas[KGOLayoutGravityTopLeft].height,
                                              occupiedAreas[KGOLayoutGravityTopRight].height);
     
     *bottomFreePixel = self.springboardFrame.size.height - fmax(occupiedAreas[KGOLayoutGravityBottomLeft].height,
                                                                 occupiedAreas[KGOLayoutGravityBottomRight].height);
     free(occupiedAreas);
-
     return allWidgets;
 }
 
