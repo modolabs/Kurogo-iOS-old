@@ -1,17 +1,17 @@
 <html>
     <head>
         <style type="text/css">
-            html {padding: 8px;}
-            body {font-family:Helvetica;font-size: 15px;margin: 0;padding: 0;color:#333}
-            a { color: #8C000B; text-decoration:none; }
-            .slugline {font-family: Georgia; color:#1A1611;font-size:22px;line-height: 24px;margin: 0;padding: 0;font-weight:normal}
-            .dek {font-family: Georgia; font-size: 16px;line-height: 20px;margin: 14px 0;color: #1A1611}
+            html {padding: 0;}
+            body {font-family:Helvetica;font-size: 15px;margin: 0;padding: 12px 10px;color:#333}
+            a { color: #003366; text-decoration:none; }
+            .slugline {font-family: 'Helvetica Neue', Helvetica, sans-serif; color:#171717;font-size:22px;line-height: 25px;margin: 0 0 8px 0;padding: 0;font-weight:normal}
+            .dek {font-family: font-family: 'Helvetica Neue', Helvetica, sans-serif; font-size: 16px;line-height: 20px;margin: 14px 0 18px 0;color: #171717}
             .dek:empty { margin: 0; } /* CSS 3: shrink if no content */
             .inlineControls {
                 float: right;
                 -webkit-user-select: none;
                 position: relative;
-                top: 6px;
+                top: 1px;
             }
             .inlineControls a {
                 -webkit-tap-highlight-color: rgba(0,0,0,0);
@@ -20,6 +20,7 @@
                 display: inline-block;
                 width: 44px;
                 height: 38px;
+				margin-left: 4px;
                 -webkit-user-select: none;
             }
             #bookmarkButton {
@@ -44,13 +45,13 @@
             #shareButton.pressed {
                 background: url('common/share_pressed@2x.png') no-repeat;
             }
-            .byline {font-size: 11px;color: #666666;min-height:30px;}
+            .byline {font-size: 12px; line-height: 16px; color: #666666;min-height:30px;}
             .inline-separator {margin: 0 3px;}
             #content {}
             .credential {font-size:8pt;}
             .wp-caption {max-width:300px;font-size:8pt;color:#808080;}
-            #image {float:right;margin: 3px 0 -1px 8px;}
-            #image img.thumbnail {float:right; margin-bottom: 6px; border: 1px solid #666; /* scale to width respecting aspect */}
+            #image {float:right;margin: 3px 0 -1px 9px;}
+            #image img.thumbnail {float:right; margin-bottom: 6px; border: 1px solid #999; /* scale to width respecting aspect */}
             #image img.enlarge { float:right; margin-left: 4px; }
             #image div { float:right; margin-top: 2px; margin-right:-2px; }
             #image a { text-align:right; font-size:11px; line-height: 30px; text-decoration:none; color:#777;}
@@ -68,7 +69,7 @@
             <a href="share"><span width="44" height="38" alt="Share" id="shareButton" class=""></span></a>
         </span>
         <p class="byline">
-            <span class="credit">by <span class="author">__AUTHOR__</span><br /></span>
+            <span class="credit"><span class="author">__AUTHOR__</span><br /></span>
             <span class="postdate">__DATE__</span>
         </p>    
         <div id="content">

@@ -7,7 +7,7 @@
 		<key>AppBackground</key>
 		<string>common/body-background.png</string>
 		<key>NavBarTintColor</key>
-		<string>#870E16</string>
+		<string>#cfd0d1</string>
 		<key>PlainSectionHeaderBackground</key>
 		<string>#333333</string>
 		<key>PrimaryCellBackground</key>
@@ -24,9 +24,9 @@
 		<key>ContentTitle</key>
 		<dict>
 			<key>color</key>
-			<string>#1A1611</string>
+			<string>#171717</string>
 			<key>font</key>
-			<string>Georgia</string>
+			<string>Helvetica</string>
 			<key>size</key>
 			<integer>7</integer>
 		</dict>
@@ -41,7 +41,7 @@
 			<key>bold</key>
 			<true/>
 			<key>color</key>
-			<string>#554C41</string>
+			<string>#505050</string>
 			<key>size</key>
 			<integer>2</integer>
 		</dict>
@@ -50,7 +50,7 @@
 			<key>bold</key>
 			<true/>
 			<key>color</key>
-			<string>#EBE7E3</string>
+			<string>#E0E0E0</string>
 			<key>size</key>
 			<integer>0</integer>
 		</dict>
@@ -66,7 +66,7 @@
 			<key>bold</key>
 			<true/>
 			<key>color</key>
-			<string>#1A1611</string>
+			<string>#171717</string>
 			<key>size</key>
 			<integer>2</integer>
 		</dict>
