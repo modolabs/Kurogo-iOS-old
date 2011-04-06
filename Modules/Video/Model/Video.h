@@ -26,6 +26,7 @@
 @property (nonatomic, retain) NSString * stillFrameImage;
 
 - (void)setUpWithDictionary:(NSDictionary *)dictionaryFromAPI;
+- (NSString *)durationString;
 
 @end
 

@@ -85,4 +85,19 @@
     }        
 }
 
+- (NSString *)durationString {
+    NSInteger rawDuration = [self.duration intValue];
+    NSInteger totalMinutes = rawDuration / 60;
+    NSInteger displaySeconds = rawDuration - (totalMinutes * 60);
+    NSInteger displayHours = totalMinutes / 60;
+    NSInteger displayMinutes = totalMinutes - (displayHours * 60);
+    NSString *durationString = [NSString stringWithFormat:@"%02d:%02d", 
+                                displayMinutes, displaySeconds];
+    if (displayHours > 0) {
+        durationString = [NSString stringWithFormat:@"%2d:%@", 
+                          durationString, displayHours];
+    }
+    return durationString;
+}
+
 @end

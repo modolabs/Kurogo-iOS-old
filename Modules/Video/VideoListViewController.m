@@ -7,6 +7,36 @@
 #import "Constants.h"
 #import "Video.h"
 #import "VideoDetailViewController.h"
+#import "MITThumbnailView.h"
+
+#pragma mark Private methods
+
+@interface VideoListViewController (Private)
+
++ (NSString *)detailTextForVideo:(Video *)video;
+- (UIImage *)thumbnailForURLString:(NSString *)urlString;
+
+@end
+
+@implementation VideoListViewController (Private)
+
++ (NSString *)detailTextForVideo:(Video *)video {
+    return [NSString stringWithFormat:@"(%@) %@", 
+            [video durationString], video.videoDescription];
+}
+
+- (UIImage *)thumbnailForURLString:(NSString *)urlString {
+    UIImage *thumbnail = [self.thumbnailCache objectForKey:urlString];
+    if (!thumbnail) {
+        thumbnail = [UIImage imageWithData:
+                     [NSData dataWithContentsOfURL:[NSURL URLWithString:urlString]]];
+        [self.thumbnailCache setObject:thumbnail forKey:urlString];
+    }
+    return thumbnail;
+}
+
+@end
+
 
 @implementation VideoListViewController
 
@@ -16,6 +46,7 @@
 @synthesize videos;
 @synthesize videoSections;
 @synthesize activeSectionIndex;
+@synthesize thumbnailCache;
 
 #pragma mark NSObject
 
@@ -26,11 +57,13 @@
         self.dataManager = [[[VideoDataManager alloc] init] autorelease];
         self.dataManager.moduleTag = moduleTag = VideoModuleTag;
         self.activeSectionIndex = 0;
+        self.thumbnailCache = [NSMutableDictionary dictionaryWithCapacity:20];
 	}
 	return self;
 }
 
 - (void)dealloc {
+    [thumbnailCache release];
     [videoSections release];
     [videos release];
     [navScrollView release];
@@ -43,6 +76,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.tableView.rowHeight = 80.0f;
     
     [self.dataManager requestSectionsThenRunBlock:
      ^(id result)
@@ -89,15 +123,23 @@
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:
                              CellIdentifier];
     if (cell == nil) {
-        cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault 
+        cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle 
                                        reuseIdentifier:CellIdentifier] autorelease];
+        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+        cell.textLabel.font = [UIFont systemFontOfSize:17.0f];
+        cell.textLabel.numberOfLines = 2;
+        cell.detailTextLabel.font = [UIFont systemFontOfSize:13.0f];
+        cell.detailTextLabel.numberOfLines = 2;
     }
     
     // Configure the cell...
     if (self.videos.count > indexPath.row) {
+        NSAutoreleasePool *cellConfigPool = [[NSAutoreleasePool alloc] init];
         Video *video = [self.videos objectAtIndex:indexPath.row];
-//        NSDictionary *info = [self.videos objectAtIndex:indexPath.row];
         cell.textLabel.text = video.title;
+        cell.detailTextLabel.text = [[self class] detailTextForVideo:video];
+        cell.imageView.image = [self thumbnailForURLString:video.imageURLString];
+        [cellConfigPool release];
     }
     return cell;
 }
