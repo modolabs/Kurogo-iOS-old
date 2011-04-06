@@ -10,6 +10,14 @@
 
 - (void)dealloc
 {
+    if (self.connection) {
+        [self.connection cancel];
+        self.connection = nil;
+    }
+    
+    _webView.delegate = nil;
+    [_webView release];
+    
     self.requestURL = nil;
     [_templateStack release];
     [super dealloc];
@@ -74,7 +82,7 @@
     }
     
     KGOHTMLTemplate *template = [KGOHTMLTemplate templateWithPathName:filename];
-    NSString *wrappedString = [template fillOutWithDictionary:[NSDictionary dictionaryWithObjectsAndKeys:HTMLString, @"BODY", nil]];
+    NSString *wrappedString = [template stringWithReplacements:[NSDictionary dictionaryWithObjectsAndKeys:HTMLString, @"BODY", nil]];
     NSURL *url = [NSURL URLWithString:[[NSBundle mainBundle] resourcePath]];
     if (_webView) {
         [_webView loadHTMLString:wrappedString baseURL:url];
@@ -207,6 +215,7 @@
 - (NSCachedURLResponse *)connection:(NSURLConnection *)connection willCacheResponse:(NSCachedURLResponse *)cachedResponse {
     NSLog(@"response: %@, storage: %d, userInfo: %@",
           [cachedResponse description], cachedResponse.storagePolicy, cachedResponse.userInfo);
+    
     return cachedResponse;
 }
 
