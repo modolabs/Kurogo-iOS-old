@@ -30,6 +30,8 @@
 - (void)setUpWithDictionary:(NSDictionary *)dictionaryFromAPI;
 - (NSString *)durationString;
 
+@property (nonatomic, retain) NSDictionary *objectKeyCounterpartsForAPIKeys;
+
 @end
 
 

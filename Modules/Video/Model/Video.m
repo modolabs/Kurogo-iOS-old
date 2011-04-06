@@ -50,12 +50,13 @@
 @dynamic stillFrameImageURLString;
 @dynamic stillFrameImageData;
 @dynamic thumbnailImageData;
-    
-- (void)setUpWithDictionary:(NSDictionary *)dictionaryFromAPI {
-    static NSDictionary *objectKeyCounterpartsForAPIKeys = nil;
-    
-    if (!objectKeyCounterpartsForAPIKeys) {
-        objectKeyCounterpartsForAPIKeys = 
+
+@synthesize objectKeyCounterpartsForAPIKeys;
+
+- (id)initWithEntity:(NSEntityDescription *)entity insertIntoManagedObjectContext:(NSManagedObjectContext *)context {
+    self = [super initWithEntity:entity insertIntoManagedObjectContext:context];
+    if (self) {
+        self.objectKeyCounterpartsForAPIKeys = 
         [NSDictionary dictionaryWithObjectsAndKeys:
          @"videoID", @"id",
          @"videoDescription", @"description",
@@ -63,9 +64,18 @@
          @"stillFrameImageURLString", @"stillFrameImage",
          nil];
     }
+    return self;
+}
+
+- (void)dealloc {
+    [objectKeyCounterpartsForAPIKeys release];
+    [super dealloc];
+}
+
+- (void)setUpWithDictionary:(NSDictionary *)dictionaryFromAPI {
     
     for (NSString *APIKey in dictionaryFromAPI) {
-        NSString *keyToSet = [objectKeyCounterpartsForAPIKeys objectForKey:APIKey];
+        NSString *keyToSet = [self.objectKeyCounterpartsForAPIKeys objectForKey:APIKey];
         if (!keyToSet) {
             keyToSet = APIKey;
         }

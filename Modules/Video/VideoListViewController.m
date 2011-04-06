@@ -196,10 +196,10 @@ static const NSInteger kVideoListCellThumbnailTag = 0x78;
 #pragma mark MITThumbnailDelegate
 - (void)thumbnail:(MITThumbnailView *)thumbnail didLoadData:(NSData *)data {
     // Store the loaded thumbnail so that it doesn't have to be loaded again.
-    Video *video = (Video *)
-    [[CoreDataManager sharedManager] getObjectForEntity:@"Video" 
-                                              attribute:@"thumbnailURLString"
-                                                  value:thumbnail.imageURL];
+    Video *video = (Video *)[[CoreDataManager sharedManager] 
+                             getObjectForEntity:@"Video" 
+                             attribute:@"thumbnailURLString"
+                             value:thumbnail.imageURL];
     video.thumbnailImageData = data;
 }
     
