@@ -18,14 +18,19 @@
 @property (nonatomic, retain) NSString * url;
 @property (nonatomic, retain) NSString * type;
 @property (nonatomic, retain) NSString * title;
-@property (nonatomic, retain) NSString * imageURLString;
+@property (nonatomic, retain) NSString * thumbnailURLString;
 @property (nonatomic, retain) NSNumber * height;
 @property (nonatomic, retain) NSNumber * duration;
 @property (nonatomic, retain) NSSet* tags;
 @property (nonatomic, retain) NSString * mobileURL;
-@property (nonatomic, retain) NSString * stillFrameImage;
+@property (nonatomic, retain) NSString * stillFrameImageURLString;
+@property (nonatomic, retain) NSData * stillFrameImageData;
+@property (nonatomic, retain) NSData * thumbnailImageData;
 
 - (void)setUpWithDictionary:(NSDictionary *)dictionaryFromAPI;
+- (NSString *)durationString;
+
+@property (nonatomic, retain) NSDictionary *objectKeyCounterpartsForAPIKeys;
 
 @end
 

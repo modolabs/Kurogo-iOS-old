@@ -21,7 +21,7 @@ VideoDetailSubviewTags;
 
 static const CGFloat kVideoDetailMargin = 10.0f;
 static const CGFloat kVideoTitleLabelHeight = 80.0f;
-static const CGFloat kVideoDescriptionLabelHeight = 64.0f;
+static const CGFloat kVideoDescriptionLabelHeight = 192.0f;
 
 #pragma mark Private methods
 
@@ -57,7 +57,7 @@ static const CGFloat kVideoDescriptionLabelHeight = 64.0f;
     UIImage *image = 
     [UIImage imageWithData:
      [NSData dataWithContentsOfURL:[NSURL URLWithString:
-                                    self.video.stillFrameImage]]];
+                                    self.video.stillFrameImageURLString]]];
     UIImageView *imageView = [[UIImageView alloc] initWithImage:image];
     imageView.tag = kVideoDetailImageViewTag;
     CGRect imageViewFrame = imageView.frame;
@@ -118,7 +118,7 @@ static const CGFloat kVideoDescriptionLabelHeight = 64.0f;
     NSAutoreleasePool *loadViewPool = [[NSAutoreleasePool alloc] init];
     
     UIScrollView *scrollView = [[UIScrollView alloc] initWithFrame:self.view.frame];
-    scrollView.contentSize = CGSizeMake(self.view.frame.size.width, 1000);
+    scrollView.contentSize = CGSizeMake(self.view.frame.size.width, 640);
     scrollView.tag = kVideoDetailScrollViewTag;
     scrollView.scrollEnabled = YES;
     [self.view addSubview:scrollView];

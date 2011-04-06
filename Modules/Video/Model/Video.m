@@ -42,28 +42,40 @@
 @dynamic url;
 @dynamic type;
 @dynamic title;
-@dynamic imageURLString;
+@dynamic thumbnailURLString;
 @dynamic height;
 @dynamic duration;
 @dynamic tags;
 @dynamic mobileURL;
-@dynamic stillFrameImage;
+@dynamic stillFrameImageURLString;
+@dynamic stillFrameImageData;
+@dynamic thumbnailImageData;
 
-    
-- (void)setUpWithDictionary:(NSDictionary *)dictionaryFromAPI {
-    static NSDictionary *objectKeyCounterpartsForAPIKeys = nil;
-    
-    if (!objectKeyCounterpartsForAPIKeys) {
-        objectKeyCounterpartsForAPIKeys = 
+@synthesize objectKeyCounterpartsForAPIKeys;
+
+- (id)initWithEntity:(NSEntityDescription *)entity insertIntoManagedObjectContext:(NSManagedObjectContext *)context {
+    self = [super initWithEntity:entity insertIntoManagedObjectContext:context];
+    if (self) {
+        self.objectKeyCounterpartsForAPIKeys = 
         [NSDictionary dictionaryWithObjectsAndKeys:
          @"videoID", @"id",
          @"videoDescription", @"description",
-         @"imageURLString", @"image",
+         @"thumbnailURLString", @"image",
+         @"stillFrameImageURLString", @"stillFrameImage",
          nil];
     }
+    return self;
+}
+
+- (void)dealloc {
+    [objectKeyCounterpartsForAPIKeys release];
+    [super dealloc];
+}
+
+- (void)setUpWithDictionary:(NSDictionary *)dictionaryFromAPI {
     
     for (NSString *APIKey in dictionaryFromAPI) {
-        NSString *keyToSet = [objectKeyCounterpartsForAPIKeys objectForKey:APIKey];
+        NSString *keyToSet = [self.objectKeyCounterpartsForAPIKeys objectForKey:APIKey];
         if (!keyToSet) {
             keyToSet = APIKey;
         }
@@ -83,6 +95,21 @@
             }
         }
     }        
+}
+
+- (NSString *)durationString {
+    NSInteger rawDuration = [self.duration intValue];
+    NSInteger totalMinutes = rawDuration / 60;
+    NSInteger displaySeconds = rawDuration - (totalMinutes * 60);
+    NSInteger displayHours = totalMinutes / 60;
+    NSInteger displayMinutes = totalMinutes - (displayHours * 60);
+    NSString *durationString = [NSString stringWithFormat:@"%02d:%02d", 
+                                displayMinutes, displaySeconds];
+    if (displayHours > 0) {
+        durationString = [NSString stringWithFormat:@"%2d:%@", 
+                          durationString, displayHours];
+    }
+    return durationString;
 }
 
 @end

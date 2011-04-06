@@ -7,8 +7,9 @@
 #import "KGOTableViewController.h"
 #import "VideoDataManager.h"
 #import "KGOScrollingTabstrip.h"
+#import "MITThumbnailView.h"
 
-@interface VideoListViewController : UITableViewController {
+@interface VideoListViewController : UITableViewController <MITThumbnailDelegate> {
 
 }
 
