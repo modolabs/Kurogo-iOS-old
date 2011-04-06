@@ -209,10 +209,10 @@
     
     NSString *htmlString;
     if (loadingStatus == Loading) {
-        htmlString = @"<html><body><div id=\"content\">Loading...</div></body></html>";
+        htmlString = @"<html><body style=\"font:15px/1.33em Helvetica;color:#333;margin:0;padding:2px\"><div id=\"content\">Loading...</div></body></html>";
         [self.infoWebView loadHTMLString:htmlString baseURL:[[NSBundle mainBundle] resourceURL]];
     } else if(loadingStatus == Failed) {
-        htmlString =@"<html><body><div id=\"content\">Failed to load.</div></body></html>";
+        htmlString =@"<html><body style=\"font:15px/1.33em Helvetica;color:#333;margin:0;padding:2px\"><div id=\"content\">Failed to load.</div></body></html>";
         [self.infoWebView loadHTMLString:htmlString baseURL:[[NSBundle mainBundle] resourceURL]];
     }
     
