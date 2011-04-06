@@ -90,6 +90,8 @@
             placemark.longitude = [NSNumber numberWithFloat:[dictionary floatForKey:@"lon"]];
         }
 
+        placemark.photoURL = [dictionary stringForKey:@"photo" nilIfEmpty:YES];
+        
         NSString *theGeometryType = [dictionary stringForKey:@"geometryType" nilIfEmpty:YES];
         if (theGeometryType) {
             placemark.geometryType = theGeometryType;

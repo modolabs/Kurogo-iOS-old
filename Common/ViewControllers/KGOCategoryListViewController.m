@@ -36,6 +36,8 @@
     } else if (!self.leafItems && self.leafItemsRequest) {
         [self.leafItemsRequest connect];
     }
+    
+    self.view.backgroundColor = [[KGOTheme sharedTheme] backgroundColorForApplication];
 }
 
 - (NSArray *)categories {
@@ -145,39 +147,24 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     
-    NSString *moduleTag = nil;
     if (self.categories) {
         id<KGOCategory> category = [self.categories objectAtIndex:indexPath.row];
-        // TODO: need better way to get module tag
-        if ([category isKindOfClass:[KGOMapCategory class]]) {
-            moduleTag = MapTag;
-        } else if ([category isKindOfClass:[KGOCalendar class]]) {
-            moduleTag = CalendarTag;
+        if ([category respondsToSelector:@selector(moduleTag)]) {
+            NSMutableDictionary *params = [NSMutableDictionary dictionaryWithObjectsAndKeys:category, @"parentCategory", nil];
+            if (category.children) {
+                [params setObject:category.children forKey:@"categories"];
+                
+            } else if (category.items) {
+                [params setObject:category.items forKey:@"items"];
+            }
+            [KGO_SHARED_APP_DELEGATE() showPage:LocalPathPageNameCategoryList forModuleTag:[category moduleTag] params:params];
         }
-        
-        NSMutableDictionary *params = [NSMutableDictionary dictionaryWithObjectsAndKeys:category, @"parentCategory", nil];
-        if (category.children) {
-            [params setObject:category.children forKey:@"categories"];
-            
-        } else if (category.items) {
-            [params setObject:category.items forKey:@"items"];
-        }
-        [KGO_SHARED_APP_DELEGATE() showPage:LocalPathPageNameCategoryList forModuleTag:moduleTag params:params];
         
     } else if (self.leafItems) {
         id<KGOSearchResult> leafItem = [self.leafItems objectAtIndex:indexPath.row];
-        // TODO: need better way to get module tag
-        if ([leafItem isKindOfClass:[KGOPlacemark class]]) {
-            moduleTag = MapTag;
-        } else if ([leafItem isKindOfClass:[KGOEvent class]]) {
-            moduleTag = CalendarTag;
-        }
-        
-        NSString *identifier = leafItem.identifier;
-        NSString *query = [NSString stringWithFormat:@"identifier = %@", identifier];
-        NSURL *url = [NSURL internalURLWithModuleTag:moduleTag path:LocalPathPageNameSearch query:query];
-        if ([[UIApplication sharedApplication] canOpenURL:url]) {
-            [[UIApplication sharedApplication] openURL:url];
+        if ([leafItem respondsToSelector:@selector(moduleTag)]) {
+            NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:leafItem, @"detailItem", nil];
+            [KGO_SHARED_APP_DELEGATE() showPage:LocalPathPageNameDetail forModuleTag:[leafItem moduleTag] params:params];
         }
     }
 }

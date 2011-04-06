@@ -9,6 +9,39 @@
 #import "KGOSocialMediaController.h"
 #import "AnalyticsWrapper.h"
 #import "Foundation+KGOAdditions.h"
+#import "KGORequestManager.h"
+
+@interface KGOAppDelegate (PrivateModuleListAdditions)
+
+- (void)addModule:(KGOModule *)module;
+
+@end
+
+@implementation KGOAppDelegate (PrivateModuleListAdditions)
+
+- (void)addModule:(KGOModule *)module
+{
+    NSArray *modules = nil;
+    if (_modules) {
+        modules = [_modules arrayByAddingObject:module];
+    } else {
+        modules = [NSArray arrayWithObject:module];
+    }
+    [_modules release];
+    _modules = [modules copy];
+    
+    NSMutableDictionary *modulesByTag = nil;
+    if (_modulesByTag) {
+        modulesByTag = [_modulesByTag mutableCopy];
+    } else {
+        modulesByTag = [NSDictionary dictionaryWithObject:module forKey:module.tag];
+    }
+    [_modulesByTag release];
+    _modulesByTag = [modulesByTag copy];
+}
+
+@end
+
 
 @implementation KGOAppDelegate (ModuleListAdditions)
 
@@ -16,8 +49,7 @@
 
 - (void)loadModules {
     NSArray *moduleData = [[self appConfig] objectForKey:@"Modules"];
-    
-    [self loadModulesFromArray:moduleData];
+    [self loadModulesFromArray:moduleData local:YES];
 }
 
 // we need to do this separately since currently we have no way of
@@ -39,28 +71,12 @@
                     nil];
     }
     KGOModule *homeModule = [KGOModule moduleWithDictionary:homeData];
+    homeModule.hasAccess = YES;
 
-    NSArray *modules = nil;
-    if (_modules) {
-        modules = [_modules arrayByAddingObject:homeModule];
-    } else {
-        modules = [NSArray arrayWithObject:homeModule];
-    }
-    [_modules release];
-    _modules = [modules copy];
-
-    NSMutableDictionary *modulesByTag = nil;
-    if (_modulesByTag) {
-        modulesByTag = [_modulesByTag mutableCopy];
-    } else {
-        modulesByTag = [NSDictionary dictionaryWithObject:homeModule forKey:homeModule.tag];
-    }
-    [_modulesByTag release];
-    _modulesByTag = [modulesByTag copy];
+    [self addModule:homeModule];
 }
 
-- (void)loadModulesFromArray:(NSArray *)moduleArray {
-    NSLog(@"%@", moduleArray);
+- (void)loadModulesFromArray:(NSArray *)moduleArray local:(BOOL)isLocal {
     NSMutableDictionary *modulesByTag = [[_modulesByTag mutableCopy] autorelease];
     if (!modulesByTag) {
         modulesByTag = [NSMutableDictionary dictionaryWithCapacity:[moduleArray count]];
@@ -71,26 +87,26 @@
     }
     
     for (NSDictionary *moduleDict in moduleArray) {
-        if ([[moduleDict objectForKey:@"class"] isEqualToString:@"HomeModule"]
-            || [[moduleDict objectForKey:@"id"] isEqualToString:@"home"]
-        ) {
-            // TODO: make certain modules not duplicable (home, possibly login)
-            KGOModule *homeModule = [(KGOHomeScreenViewController *)self.homescreen homeModule];
-            homeModule.protected = [moduleDict boolForKey:@"protected"];
-            homeModule.apiMaxVersion = [moduleDict integerForKey:@"vmax"];
-            homeModule.apiMinVersion = [moduleDict integerForKey:@"vmin"];
-            continue;
+        NSString *tag = [moduleDict stringForKey:@"tag" nilIfEmpty:YES];
+        KGOModule *aModule = [self moduleForTag:tag];
+        if (aModule) {
+            [aModule updateWithDictionary:moduleDict];
+            DLog(@"updating module: %@", [aModule description]);
+        } else {
+            aModule = [KGOModule moduleWithDictionary:moduleDict];
+            if (aModule) {
+                [modules addObject:aModule];
+                [modulesByTag setObject:aModule forKey:aModule.tag];
+                [aModule applicationDidFinishLaunching];
+                if ([aModule isKindOfClass:[LoginModule class]]) {
+                    [[KGORequestManager sharedManager] setLoginPath:aModule.tag];
+                }
+                DLog(@"new module: %@", [aModule description]);
+            }
         }
         
-        KGOModule *aModule = [KGOModule moduleWithDictionary:moduleDict];
-        if (aModule) {
-            [modules addObject:aModule];
-            [modulesByTag setObject:aModule forKey:aModule.tag];
-            [aModule applicationDidFinishLaunching];
-            NSLog(@"%@", [aModule description]);
-            if ([aModule isKindOfClass:[LoginModule class]]) {
-                [[KGORequestManager sharedManager] setLoginPath:aModule.tag];
-            }
+        if (isLocal) {
+            aModule.hasAccess = YES;
         }
     }
 
@@ -150,7 +166,10 @@
     BOOL didShow = NO;
 
     KGOModule *module = [self moduleForTag:moduleTag];
+    
     if (module) {
+        [module launch];
+
         UIViewController *vc = [module modulePage:pageName params:params];
         if (vc) {
             // storing mainly for calling viewWillAppear on modal transitions,

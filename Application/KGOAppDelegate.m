@@ -5,7 +5,6 @@
 #import "AudioToolbox/AudioToolbox.h"
 #import "AnalyticsWrapper.h"
 #import "KGOSocialMediaController.h"
-#import "KGORequestManager.h"
 
 @implementation KGOAppDelegate
 
@@ -35,7 +34,6 @@
     [[AnalyticsWrapper sharedWrapper] setup];
 
     [self registerForRemoteNotifications:launchOptions];
-    [[KGORequestManager sharedManager] registerWithKurogoServer];
     
     [self loadModules];
 
@@ -128,6 +126,8 @@
 
 - (void)applicationDidReceiveMemoryWarning:(UIApplication *)application {
     for (KGOModule *aModule in self.modules) {
+        // TODO: check whether the module is being used, if not send 
+        // a -terminate message
         [aModule didReceiveMemoryWarning];
     }
 }

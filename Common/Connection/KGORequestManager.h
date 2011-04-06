@@ -5,10 +5,9 @@
 
 @protocol KGORequestDelegate;
 
-extern NSString * const UserHashCookieName;
-extern NSString * const UserTokenCookieName;
 extern NSString * const HelloRequestDidCompleteNotification;
-extern NSString * const KGOLoginDidCompleteNotification; // sent by LoginModule
+extern NSString * const KGODidLogoutNotification;
+extern NSString * const KGODidLoginNotification;
 
 // use this class to create requests Kurogo server.
 // requests to facebook, bitly etc are handled by KGOSocialMediaController
@@ -29,6 +28,9 @@ extern NSString * const KGOLoginDidCompleteNotification; // sent by LoginModule
 	NSURL *_baseURL;
 
     KGORequest *_helloRequest;
+    KGORequest *_sessionRequest;
+    
+    NSDictionary *_sessionInfo;
 }
 
 @property (nonatomic, retain) NSString *host;
@@ -47,10 +49,14 @@ extern NSString * const KGOLoginDidCompleteNotification; // sent by LoginModule
                              params:(NSDictionary *)params;
 - (void)showAlertForError:(NSError *)error;
 
-- (void)registerWithKurogoServer;
+- (void)requestServerHello;
 - (BOOL)isUserLoggedIn;
+- (void)requestSessionInfo;
 - (void)loginKurogoServer;
 - (void)logoutKurogoServer;
+- (BOOL)requestingSessionInfo;
+
+- (NSDictionary *)sessionInfo;
 
 @property (nonatomic, retain) NSString *loginPath;
 

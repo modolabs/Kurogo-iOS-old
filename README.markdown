@@ -60,3 +60,9 @@ This project is based on
 and contributions from
 [Harvard University](https://github.com/modolabs/Harvard-Mobile-for-iPhone).
 
+## Help
+
+More documentation is on the way, but for now please join our 
+[Kurogo-Dev](https://groups.google.com/group/kurogo-dev?pli=1) list to find out
+more about Kurogo for iOS. You can also email questions directly to 
+kurogo-dev@googlegroups.com

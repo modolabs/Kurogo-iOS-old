@@ -24,12 +24,17 @@
 
 #pragma mark API properties
 
+// allow the server to change module title (longName, shortName), api versions
+// (apiMinVersion, apiMaxVersion), and access control status (hasAccess).
+// tag should not be changed once it is set -- probably want to make readonly.
+- (void)updateWithDictionary:(NSDictionary *)moduleDict;
+
 @property (nonatomic, copy) NSString *tag;       // unique
 
 @property (nonatomic) NSInteger apiMinVersion;
 @property (nonatomic) NSInteger apiMaxVersion;
 
-@property (nonatomic) BOOL protected;
+@property (nonatomic) BOOL hasAccess;
 
 #pragma mark Appearance on home screen
 

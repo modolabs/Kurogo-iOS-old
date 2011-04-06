@@ -508,9 +508,9 @@
 
     if (title) {
         if (tableView.style == UITableViewStylePlain) {
-            height = [[[KGOTheme sharedTheme] fontForPlainSectionHeader] pointSize] + PLAIN_SECTION_HEADER_VPADDING;
+            height = [[[KGOTheme sharedTheme] fontForPlainSectionHeader] lineHeight] + PLAIN_SECTION_HEADER_VPADDING;
         } else {
-            height = [[[KGOTheme sharedTheme] fontForGroupedSectionHeader] pointSize] + GROUPED_SECTION_HEADER_VPADDING;
+            height = [[[KGOTheme sharedTheme] fontForGroupedSectionHeader] lineHeight] + GROUPED_SECTION_HEADER_VPADDING;
         }
     }
     return height;

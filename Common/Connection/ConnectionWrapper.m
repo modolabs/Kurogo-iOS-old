@@ -99,6 +99,7 @@
 
 -(BOOL)requestDataFromURL:(NSURL *)url allowCachedResponse:(BOOL)shouldCache {
     if (!url) {
+        DLog(@"ConnectionWrapper: attempted to request nil URL");
         return NO;
     }
     

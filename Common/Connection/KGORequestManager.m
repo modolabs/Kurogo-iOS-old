@@ -5,10 +5,9 @@
 #import "Reachability.h"
 #import "KGOModule.h"
 
-NSString * const UserHashCookieName = @"lh";
-NSString * const UserTokenCookieName = @"lt";
 NSString * const HelloRequestDidCompleteNotification = @"HelloComplete";
-NSString * const KGOLoginDidCompleteNotification = @"LoginComplete";
+NSString * const KGODidLoginNotification = @"LoginComplete";
+NSString * const KGODidLogoutNotification = @"LogoutComplete";
 
 @implementation KGORequestManager
 
@@ -35,8 +34,8 @@ NSString * const KGOLoginDidCompleteNotification = @"LoginComplete";
 
 - (BOOL)isModuleAuthorized:(NSString *)moduleTag
 {
-    // TODO: add this to hello API
-    return YES;
+    KGOModule *module = [KGO_SHARED_APP_DELEGATE() moduleForTag:moduleTag];
+    return module.hasAccess;
 }
 
 - (NSURL *)serverURL {
@@ -185,7 +184,7 @@ NSString * const KGOLoginDidCompleteNotification = @"LoginComplete";
 
 #pragma mark auth
 
-- (void)registerWithKurogoServer
+- (void)requestServerHello
 {
     _helloRequest = [self requestWithDelegate:self module:nil path:@"hello" params:nil];
     _helloRequest.expectedResponseType = [NSDictionary class];
@@ -204,15 +203,9 @@ NSString * const KGOLoginDidCompleteNotification = @"LoginComplete";
 
 - (void)logoutKurogoServer
 {
-    NSArray *cookies = [[NSHTTPCookieStorage sharedHTTPCookieStorage] cookies];
-    for (NSHTTPCookie *aCookie in cookies) {
-        NSString *name = [aCookie name];
-        if ([name isEqualToString:UserHashCookieName]) {
-            [[NSHTTPCookieStorage sharedHTTPCookieStorage] deleteCookie:aCookie];
-        } else if ([name isEqualToString:UserTokenCookieName]) {
-            [[NSHTTPCookieStorage sharedHTTPCookieStorage] deleteCookie:aCookie];
-        }
-    }
+    [_sessionInfo release];
+    _sessionInfo = nil;
+    [[NSNotificationCenter defaultCenter] postNotificationName:KGODidLogoutNotification object:self];
     
     // TODO: clean up this request, even though we don't really care if it fails
     [self requestWithDelegate:self module:self.loginPath path:@"logout" params:nil];
@@ -220,23 +213,33 @@ NSString * const KGOLoginDidCompleteNotification = @"LoginComplete";
 
 - (BOOL)isUserLoggedIn
 {
-    NSArray *cookies = [[NSHTTPCookieStorage sharedHTTPCookieStorage] cookies];
-    
-    BOOL userHashCookieExists = NO;
-    BOOL userTokenCookieExists = NO;
-    
-    for (NSHTTPCookie *aCookie in cookies) {
-        NSString *name = [aCookie name];
-        if ([name isEqualToString:UserHashCookieName]) {
-            userHashCookieExists = YES;
-        } else if ([name isEqualToString:UserTokenCookieName]) {
-            userTokenCookieExists = YES;
-        }
-        if (userTokenCookieExists && userHashCookieExists) {
+    NSDictionary *userInfo = [_sessionInfo dictionaryForKey:@"user"];
+    if (userInfo) {
+        NSString *authority = [userInfo stringForKey:@"authority" nilIfEmpty:YES];
+        if (authority) {
             return YES;
         }
     }
     return NO;
+}
+
+- (NSDictionary *)sessionInfo
+{
+    return _sessionInfo;
+}
+
+- (void)requestSessionInfo
+{
+    if (!_sessionRequest) {
+        _sessionRequest = [[KGORequestManager sharedManager] requestWithDelegate:self module:@"login" path:@"session" params:nil];
+        _sessionRequest.expectedResponseType = [NSDictionary class];
+        [_sessionRequest connect];
+    }
+}
+
+- (BOOL)requestingSessionInfo
+{
+    return _sessionRequest != nil;
 }
 
 #pragma mark KGORequestDelegate
@@ -245,7 +248,8 @@ NSString * const KGOLoginDidCompleteNotification = @"LoginComplete";
 - (void)requestWillTerminate:(KGORequest *)request {
     if (request == _helloRequest) {
         _helloRequest = nil;
-        [[NSNotificationCenter defaultCenter] postNotificationName:HelloRequestDidCompleteNotification object:self];
+    } else if (request == _sessionRequest) {
+        _sessionRequest = nil;
     }
 }
 
@@ -256,7 +260,18 @@ NSString * const KGOLoginDidCompleteNotification = @"LoginComplete";
 - (void)request:(KGORequest *)request didReceiveResult:(id)result {
     if (request == _helloRequest) {
         NSArray *modules = [result arrayForKey:@"modules"];
-        [KGO_SHARED_APP_DELEGATE() loadModulesFromArray:modules];
+        [KGO_SHARED_APP_DELEGATE() loadModulesFromArray:modules local:NO];
+        [[NSNotificationCenter defaultCenter] postNotificationName:HelloRequestDidCompleteNotification object:self];
+
+    } else if (request == _sessionRequest) {
+        [_sessionInfo release];
+        _sessionInfo = [result retain];
+        NSLog(@"%@", _sessionInfo);
+
+        NSDictionary *userDict = [_sessionInfo dictionaryForKey:@"user"];
+        if ([userDict stringForKey:@"authority" nilIfEmpty:YES]) {
+            [[NSNotificationCenter defaultCenter] postNotificationName:KGODidLoginNotification object:self];
+        }
     }
 }
 

@@ -91,15 +91,7 @@
         _searchController = [[KGOSearchDisplayController alloc] initWithSearchBar:_searchBar delegate:self contentsController:self];
     }
     
-    // TODO: make KGORequestManager cache states better so we can check
-    // whether this is needed.
-    // also if there are widgets that exist before the hello is complete
-    // they will show up above the loading view
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(hideLoadingViewIfLoginOK)
-                                                 name:HelloRequestDidCompleteNotification
-                                               object:nil];
-    [self showLoadingView];
+    [self standbyForServerHello];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -120,6 +112,53 @@
     [_searchBar release];
     [_searchController release];
     [super dealloc];
+}
+
+#pragma mark - Login states
+
+- (void)standbyForServerHello
+{
+    // TODO: make KGORequestManager cache states better so we can check
+    // whether this is needed.
+    [[KGORequestManager sharedManager] requestServerHello];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(helloRequestDidComplete:)
+                                                 name:HelloRequestDidCompleteNotification
+                                               object:nil];
+    [self showLoadingView];
+}
+
+- (void)loginDidComplete:(NSNotification *)aNotification
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:KGODidLoginNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(logoutDidComplete:)
+                                                 name:KGODidLogoutNotification
+                                               object:nil];
+    [self hideLoadingView];
+}
+
+- (void)logoutDidComplete:(NSNotification *)aNotification
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:KGODidLogoutNotification object:nil];
+    [self standbyForServerHello];
+}
+
+- (void)helloRequestDidComplete:(NSNotification *)aNotification
+{
+    for (KGOModule *aModule in [KGO_SHARED_APP_DELEGATE() modules]) {
+        if (!aModule.hasAccess && ![[KGORequestManager sharedManager] isUserLoggedIn]) {
+            NSLog(@"%@ %@", aModule.tag, aModule);
+            [[NSNotificationCenter defaultCenter] addObserver:self
+                                                     selector:@selector(loginDidComplete:)
+                                                         name:KGODidLoginNotification
+                                                       object:nil];
+            [[KGORequestManager sharedManager] loginKurogoServer];
+            break;
+        } else {
+            [self hideLoadingView];
+        }
+    }
 }
 
 - (void)showLoadingView
@@ -160,24 +199,8 @@
     }
 }
 
-- (void)hideLoadingViewIfLoginOK
-{
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:ModuleListDidChangeNotification object:nil];
-    
-    if (self.homeModule.protected && ![[KGORequestManager sharedManager] isUserLoggedIn]) {
-        [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(hideLoadingView)
-                                                     name:KGOLoginDidCompleteNotification
-                                                   object:nil];
-    } else {
-        [self hideLoadingView];
-    }
-}
-
 - (void)hideLoadingView
 {
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:KGOLoginDidCompleteNotification object:nil];
-    
     if (self.loadingView) {
         [UIView animateWithDuration:0.2 animations:^(void) {
             self.loadingView.alpha = 0;
@@ -354,7 +377,7 @@
 }
 
 - (NSString *)searchControllerModuleTag:(KGOSearchDisplayController *)controller {
-    return HomeTag;
+    return self.homeModule.tag;
 }
 
 - (void)resultsHolder:(id<KGOSearchResultsHolder>)searcher didSelectResult:(id<KGOSearchResult>)aResult {
@@ -503,10 +526,6 @@
     
     [_primaryModules release];
     _primaryModules = [primary copy];
-    
-    if (self.homeModule.protected && ![[KGORequestManager sharedManager] isUserLoggedIn]) {
-        [[KGORequestManager sharedManager] loginKurogoServer];
-    }
 }
 
 + (GridPadding)paddingWithArgs:(NSArray *)args {
