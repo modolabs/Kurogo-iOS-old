@@ -1,16 +1,15 @@
 #import <UIKit/UIKit.h>
 
 @interface KGOHTMLTemplate : NSObject {
-
-    NSString *template;
-    NSURL *baseURL;
+    
 }
+
+@property(nonatomic, retain) NSURL *baseURL;
+@property(nonatomic, retain) NSString *templateString;
 
 + (KGOHTMLTemplate *)templateWithPathName:(NSString *)pathName;
 
-- (id)initWithString:(NSString *)template baseURL:(NSURL *)baseURL;
+- (NSString *)stringWithReplacements:(NSDictionary *)replacementDict;
+- (NSString *)stringWithMultiReplacements:(NSArray *)replacements;
 
-- (NSString *)fillOutWithDictionary:(NSDictionary *)dict;
-
-- (NSURL *)baseURL;
 @end
