@@ -7,14 +7,17 @@
 #import "Constants.h"
 #import "Video.h"
 #import "VideoDetailViewController.h"
-#import "MITThumbnailView.h"
+#import "CoreDataManager.h"
+
+static const NSInteger kVideoListCellThumbnailTag = 0x78;
 
 #pragma mark Private methods
 
 @interface VideoListViewController (Private)
 
 + (NSString *)detailTextForVideo:(Video *)video;
-- (UIImage *)thumbnailForURLString:(NSString *)urlString;
+- (void)updateThumbnailView:(MITThumbnailView *)thumbnailView 
+                   forVideo:(Video *)video;
 
 @end
 
@@ -25,14 +28,22 @@
             [video durationString], video.videoDescription];
 }
 
-- (UIImage *)thumbnailForURLString:(NSString *)urlString {
-    UIImage *thumbnail = [self.thumbnailCache objectForKey:urlString];
-    if (!thumbnail) {
-        thumbnail = [UIImage imageWithData:
-                     [NSData dataWithContentsOfURL:[NSURL URLWithString:urlString]]];
-        [self.thumbnailCache setObject:thumbnail forKey:urlString];
+- (void)updateThumbnailView:(MITThumbnailView *)thumbnailView 
+                   forVideo:(Video *)video {
+    // Does this thumbnail view have the correct image loaded?
+    if (![thumbnailView.imageURL isEqualToString:video.thumbnailURLString]) {
+        // Update URL.
+        thumbnailView.imageURL = video.thumbnailURLString;
+        thumbnailView.imageData = nil;
     }
-    return thumbnail;
+    // Load the image data if necessary.
+    if (!(thumbnailView.imageData)) {
+        if (video.thumbnailImageData) {
+            thumbnailView.imageData = video.thumbnailImageData;
+        }
+        [thumbnailView loadImage];
+    }
+    [thumbnailView displayImage];
 }
 
 @end
@@ -46,7 +57,6 @@
 @synthesize videos;
 @synthesize videoSections;
 @synthesize activeSectionIndex;
-@synthesize thumbnailCache;
 
 #pragma mark NSObject
 
@@ -57,13 +67,11 @@
         self.dataManager = [[[VideoDataManager alloc] init] autorelease];
         self.dataManager.moduleTag = moduleTag = VideoModuleTag;
         self.activeSectionIndex = 0;
-        self.thumbnailCache = [NSMutableDictionary dictionaryWithCapacity:20];
 	}
 	return self;
 }
 
 - (void)dealloc {
-    [thumbnailCache release];
     [videoSections release];
     [videos release];
     [navScrollView release];
@@ -76,7 +84,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.tableView.rowHeight = 80.0f;
+    self.tableView.rowHeight = 90.0f;
     
     [self.dataManager requestSectionsThenRunBlock:
      ^(id result)
@@ -100,6 +108,12 @@
               }];
          }
      }];
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
+    // Save whatever thumbnail data we've downloaded.
+    [[CoreDataManager sharedManager] saveData];
 }
 
 #pragma mark UITableViewDataSource
@@ -130,15 +144,29 @@
         cell.textLabel.numberOfLines = 2;
         cell.detailTextLabel.font = [UIFont systemFontOfSize:13.0f];
         cell.detailTextLabel.numberOfLines = 2;
+        cell.indentationLevel = 1;
+        cell.indentationWidth = 120;
+        
+        MITThumbnailView *thumbnailView = 
+        [[MITThumbnailView alloc] initWithFrame:CGRectMake(0, 0, 120, 90)];
+        thumbnailView.tag = kVideoListCellThumbnailTag;
+        thumbnailView.delegate = self;
+        [cell.contentView addSubview:thumbnailView];
+        [thumbnailView release];
     }
     
     // Configure the cell...
     if (self.videos.count > indexPath.row) {
         NSAutoreleasePool *cellConfigPool = [[NSAutoreleasePool alloc] init];
+        
         Video *video = [self.videos objectAtIndex:indexPath.row];
         cell.textLabel.text = video.title;
         cell.detailTextLabel.text = [[self class] detailTextForVideo:video];
-        cell.imageView.image = [self thumbnailForURLString:video.imageURLString];
+                
+        MITThumbnailView *thumbnailView = 
+        (MITThumbnailView *)[cell.contentView viewWithTag:kVideoListCellThumbnailTag];        
+        [self updateThumbnailView:thumbnailView forVideo:video];
+        
         [cellConfigPool release];
     }
     return cell;
@@ -165,4 +193,14 @@
     return self.navScrollView.frame.size.height;
 }
 
+#pragma mark MITThumbnailDelegate
+- (void)thumbnail:(MITThumbnailView *)thumbnail didLoadData:(NSData *)data {
+    // Store the loaded thumbnail so that it doesn't have to be loaded again.
+    Video *video = (Video *)
+    [[CoreDataManager sharedManager] getObjectForEntity:@"Video" 
+                                              attribute:@"thumbnailURLString"
+                                                  value:thumbnail.imageURL];
+    video.thumbnailImageData = data;
+}
+    
 @end

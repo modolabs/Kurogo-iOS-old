@@ -57,7 +57,7 @@ static const CGFloat kVideoDescriptionLabelHeight = 192.0f;
     UIImage *image = 
     [UIImage imageWithData:
      [NSData dataWithContentsOfURL:[NSURL URLWithString:
-                                    self.video.stillFrameImage]]];
+                                    self.video.stillFrameImageURLString]]];
     UIImageView *imageView = [[UIImageView alloc] initWithImage:image];
     imageView.tag = kVideoDetailImageViewTag;
     CGRect imageViewFrame = imageView.frame;

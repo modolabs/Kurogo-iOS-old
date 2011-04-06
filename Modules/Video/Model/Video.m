@@ -42,13 +42,14 @@
 @dynamic url;
 @dynamic type;
 @dynamic title;
-@dynamic imageURLString;
+@dynamic thumbnailURLString;
 @dynamic height;
 @dynamic duration;
 @dynamic tags;
 @dynamic mobileURL;
-@dynamic stillFrameImage;
-
+@dynamic stillFrameImageURLString;
+@dynamic stillFrameImageData;
+@dynamic thumbnailImageData;
     
 - (void)setUpWithDictionary:(NSDictionary *)dictionaryFromAPI {
     static NSDictionary *objectKeyCounterpartsForAPIKeys = nil;
@@ -58,7 +59,8 @@
         [NSDictionary dictionaryWithObjectsAndKeys:
          @"videoID", @"id",
          @"videoDescription", @"description",
-         @"imageURLString", @"image",
+         @"thumbnailURLString", @"image",
+         @"stillFrameImageURLString", @"stillFrameImage",
          nil];
     }
     

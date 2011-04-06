@@ -7,8 +7,9 @@
 #import "KGOTableViewController.h"
 #import "VideoDataManager.h"
 #import "KGOScrollingTabstrip.h"
+#import "MITThumbnailView.h"
 
-@interface VideoListViewController : UITableViewController {
+@interface VideoListViewController : UITableViewController <MITThumbnailDelegate> {
 
 }
 
@@ -19,7 +20,5 @@
 // Array of NSDictionaries containing title and value keys.
 @property (nonatomic, retain) NSArray *videoSections;
 @property (assign) NSInteger activeSectionIndex;
-// Key: url string. Value: UIImage.
-@property (nonatomic, retain) NSMutableDictionary *thumbnailCache;
 
 @end
