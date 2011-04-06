@@ -8,14 +8,6 @@
 @end
 
 
-@interface NSMutableString (MITAdditions)
-
-- (void)replaceOccurrencesOfStrings:(NSArray *)targets withStrings:(NSArray *)replacements options:(NSStringCompareOptions)options;
-
-@end
-
-
-
 @interface NSURL (KGOAdditions)
 
 + (NSString *)queryStringWithParameters:(NSDictionary *)parameters;
@@ -25,13 +17,6 @@
 
 @end
 
-
-
-@interface NSMutableString (KGOAdditions)
-
-+ (NSMutableString *)stringWithContentsOfTemplate:(NSString *)fileName searchStrings:(NSArray *)searchStrings replacements:(NSArray *)replacements;
-
-@end
 
 
 @interface NSDate (KGOAdditions)
