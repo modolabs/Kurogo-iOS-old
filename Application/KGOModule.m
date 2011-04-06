@@ -9,6 +9,9 @@
 @synthesize searchDelegate;
 
 - (id)initWithDictionary:(NSDictionary *)moduleDict {
+    NSLog(@"%@", moduleDict);
+    
+    
     self = [super init];
     if (self) {
         

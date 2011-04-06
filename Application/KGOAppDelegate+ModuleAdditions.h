@@ -6,7 +6,7 @@
 
 - (void)loadModules;
 - (void)loadHomeModule;
-- (void)loadModulesFromArray:(NSArray *)moduleArray;
+- (void)loadModulesFromArray:(NSArray *)moduleArray local:(BOOL)isLocal;
 - (void)loadNavigationContainer;
 - (NSArray *)coreDataModelsNames;
 

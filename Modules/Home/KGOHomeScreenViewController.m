@@ -148,6 +148,7 @@
 {
     for (KGOModule *aModule in [KGO_SHARED_APP_DELEGATE() modules]) {
         if (!aModule.hasAccess && ![[KGORequestManager sharedManager] isUserLoggedIn]) {
+            NSLog(@"%@ %@", aModule.tag, aModule);
             [[NSNotificationCenter defaultCenter] addObserver:self
                                                      selector:@selector(loginDidComplete:)
                                                          name:KGODidLoginNotification
@@ -525,10 +526,6 @@
     
     [_primaryModules release];
     _primaryModules = [primary copy];
-    
-    if (self.homeModule.hasAccess && ![[KGORequestManager sharedManager] isUserLoggedIn]) {
-        [[KGORequestManager sharedManager] loginKurogoServer];
-    }
 }
 
 + (GridPadding)paddingWithArgs:(NSArray *)args {

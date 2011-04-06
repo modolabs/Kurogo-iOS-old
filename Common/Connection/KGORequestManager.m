@@ -260,7 +260,7 @@ NSString * const KGODidLogoutNotification = @"LogoutComplete";
 - (void)request:(KGORequest *)request didReceiveResult:(id)result {
     if (request == _helloRequest) {
         NSArray *modules = [result arrayForKey:@"modules"];
-        [KGO_SHARED_APP_DELEGATE() loadModulesFromArray:modules];
+        [KGO_SHARED_APP_DELEGATE() loadModulesFromArray:modules local:NO];
         [[NSNotificationCenter defaultCenter] postNotificationName:HelloRequestDidCompleteNotification object:self];
 
     } else if (request == _sessionRequest) {

@@ -49,13 +49,7 @@
 
 - (void)loadModules {
     NSArray *moduleData = [[self appConfig] objectForKey:@"Modules"];
-    [self loadModulesFromArray:moduleData];
-
-    // local modules should all be authorized.  if any tags overlap with
-    // server modules, the server will override the access setting.
-    for (KGOModule *aModule in _modules) {
-        aModule.hasAccess = YES;
-    }
+    [self loadModulesFromArray:moduleData local:YES];
 }
 
 // we need to do this separately since currently we have no way of
@@ -77,11 +71,12 @@
                     nil];
     }
     KGOModule *homeModule = [KGOModule moduleWithDictionary:homeData];
+    homeModule.hasAccess = YES;
 
     [self addModule:homeModule];
 }
 
-- (void)loadModulesFromArray:(NSArray *)moduleArray {
+- (void)loadModulesFromArray:(NSArray *)moduleArray local:(BOOL)isLocal {
     NSMutableDictionary *modulesByTag = [[_modulesByTag mutableCopy] autorelease];
     if (!modulesByTag) {
         modulesByTag = [NSMutableDictionary dictionaryWithCapacity:[moduleArray count]];
@@ -92,17 +87,6 @@
     }
     
     for (NSDictionary *moduleDict in moduleArray) {
-        /*
-        if ([[moduleDict objectForKey:@"class"] isEqualToString:@"HomeModule"]
-            || [[moduleDict objectForKey:@"id"] isEqualToString:@"home"]
-        ) {
-            // TODO: make certain modules not duplicable (home, possibly login)
-            KGOModule *homeModule = [(KGOHomeScreenViewController *)self.homescreen homeModule];
-            [homeModule updateWithDictionary:moduleDict];
-            continue;
-        }
-         */
-
         NSString *tag = [moduleDict stringForKey:@"tag" nilIfEmpty:YES];
         KGOModule *aModule = [self moduleForTag:tag];
         if (aModule) {
@@ -119,6 +103,10 @@
                 }
                 DLog(@"new module: %@", [aModule description]);
             }
+        }
+        
+        if (isLocal) {
+            aModule.hasAccess = YES;
         }
     }
 
