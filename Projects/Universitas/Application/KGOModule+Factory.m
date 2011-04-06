@@ -22,6 +22,7 @@
         NSDictionary *moduleMap = [NSDictionary dictionaryWithObjectsAndKeys:
                                    @"AboutModule", @"about",
                                    @"CalendarModule", @"calendar",
+                                   @"ContentModule", @"content",
                                    @"HomeModule", @"home",
                                    @"EmergencyModule", @"emergency",
                                    @"LoginModule", @"login",
@@ -29,7 +30,7 @@
                                    @"NewsModule", @"news",
                                    @"PeopleModule", @"people",
                                    @"SettingsModule", @"customize",
-                                   @"ContentModule", @"content",
+                                   @"VideoModule", @"video",
                                    nil];
         
         NSString *serverID = [args objectForKey:@"id"];

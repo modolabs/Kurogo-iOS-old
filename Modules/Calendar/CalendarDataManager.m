@@ -101,7 +101,8 @@
         
         NSDate *start = [params objectForKey:@"start"];
         if (!start) {
-            NSDate *time = [params objectForKey:@"time"];
+            NSTimeInterval interval = [[params objectForKey:@"time"] doubleValue];
+            NSDate *time = [NSDate dateWithTimeIntervalSince1970:interval];
             if (time) {
                 NSUInteger flags = NSYearCalendarUnit | NSMonthCalendarUnit | NSDayCalendarUnit;
                 NSDateComponents *comps = [[NSCalendar currentCalendar] components:flags fromDate:time];
@@ -110,13 +111,13 @@
         }
         
         if (start) {
-            [predTemplates addObject:[NSString stringWithFormat:@"start >= %@"]];
+            [predTemplates addObject:@"start >= %@"];
             [predArguments addObject:start];
         }
         
         NSDate *end = [params objectForKey:@"end"];
         if (end) {
-            [predTemplates addObject:[NSString stringWithFormat:@"end < %@"]];
+            [predTemplates addObject:@"end < %@"];
             [predArguments addObject:start];
         }
 
