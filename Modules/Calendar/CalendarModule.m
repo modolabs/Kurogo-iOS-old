@@ -74,6 +74,11 @@ NSString * const KGODataModelNameCalendar = @"Calendar";
         calendarVC.moduleTag = self.tag;
         calendarVC.showsGroups = YES;
         calendarVC.title = NSLocalizedString(@"Events", nil);
+        
+        if (!self.dataManager) {
+            self.dataManager = [[[CalendarDataManager alloc] init] autorelease];
+            self.dataManager.moduleTag = self.tag;
+        }
         calendarVC.dataManager = self.dataManager;
         // TODO: we might not need to set the following as long as viewWillAppear is properly invoked
         self.dataManager.delegate = calendarVC;
