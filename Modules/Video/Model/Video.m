@@ -107,7 +107,7 @@
                                 displayMinutes, displaySeconds];
     if (displayHours > 0) {
         durationString = [NSString stringWithFormat:@"%2d:%@", 
-                          durationString, displayHours];
+                          displayHours, durationString];
     }
     return durationString;
 }
