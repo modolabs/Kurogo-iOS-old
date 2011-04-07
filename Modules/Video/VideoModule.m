@@ -15,6 +15,7 @@ NSString * const KGODataModelNameVideo = @"Video";
 
 @synthesize dataManager;
 //@synthesize currentSearchResults;
+@synthesize searchSection;
 
 - (NSArray *)registeredPageNames {
     return [NSArray arrayWithObjects:LocalPathPageNameHome, LocalPathPageNameSearch, LocalPathPageNameDetail, nil];
@@ -48,7 +49,9 @@ NSString * const KGODataModelNameVideo = @"Video";
     return YES; // TODO: Make search optionally not hit network if we can tell it's federated search.
 }
 
-- (void)performSearchWithText:(NSString *)searchText params:(NSDictionary *)params delegate:(id<KGOSearchResultsHolder>)delegate {
+- (void)performSearchWithText:(NSString *)searchText 
+                       params:(NSDictionary *)params 
+                     delegate:(id<KGOSearchResultsHolder>)delegate {
     
     self.searchDelegate = delegate;
 //    self.currentSearchResults = nil;
@@ -59,7 +62,7 @@ NSString * const KGODataModelNameVideo = @"Video";
     
     // TODO: Get section
     [self.dataManager 
-     requestSearchOfSection:@"nasa" 
+     requestSearchOfSection:self.searchSection 
      query:searchText
      thenRunBlock:
      ^(id result) { 

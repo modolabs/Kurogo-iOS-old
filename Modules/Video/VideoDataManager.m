@@ -35,6 +35,7 @@
     else if ([request.path isEqualToString:@"search"]) {
         // TODO: Don't store these entities. Delete them when they're 
         // done being used.
+        [self.videosFromCurrentSearch removeAllObjects];
         if ([result isKindOfClass:[NSArray class]]) {
             for (NSDictionary *dict in result) {
                 Video *video = [[CoreDataManager sharedManager]

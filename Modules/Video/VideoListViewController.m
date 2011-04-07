@@ -8,6 +8,8 @@
 #import "Video.h"
 #import "VideoDetailViewController.h"
 #import "CoreDataManager.h"
+#import "VideoModule.h"
+#import "KGOAppDelegate+ModuleAdditions.h"
 
 static const NSInteger kVideoListCellThumbnailTag = 0x78;
 
@@ -276,6 +278,13 @@ static const NSInteger kVideoListCellThumbnailTag = 0x78;
 - (void)tabstrip:(KGOScrollingTabstrip *)tabstrip clickedButtonAtIndex:(NSUInteger)index {
     self.activeSectionIndex = index;
     [self requestVideosForActiveSection];
+    if (self.videoSections.count > self.activeSectionIndex) {
+        VideoModule *module = 
+        (VideoModule *)[KGO_SHARED_APP_DELEGATE() moduleForTag:VideoModuleTag];
+        module.searchSection = 
+        [[self.videoSections objectAtIndex:self.activeSectionIndex] 
+         objectForKey:@"value"];
+    }    
 }
 
 - (void)tabstripSearchButtonPressed:(KGOScrollingTabstrip *)tabstrip {
@@ -298,17 +307,19 @@ static const NSInteger kVideoListCellThumbnailTag = 0x78;
 
 - (void)resultsHolder:(id<KGOSearchResultsHolder>)resultsHolder 
       didSelectResult:(id<KGOSearchResult>)aResult {
-    //    NewsStory *story = aResult;
-    //    if([[story hasBody] boolValue]) {
-    //        NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:aResult, @"story", nil];
-    //        [KGO_SHARED_APP_DELEGATE() showPage:LocalPathPageNameDetail forModuleTag:NewsTag params:params];
-    //    } else {
-    //        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:story.link]];
-    //    }
+    
+    if ([aResult isKindOfClass:[Video class]]) {
+        VideoDetailViewController *detailViewController = 
+        [[VideoDetailViewController alloc] initWithVideo:(Video *)aResult];
+        [self.navigationController pushViewController:detailViewController 
+                                             animated:YES];
+        [detailViewController release];    
+    }
 }
 
 - (void)searchController:(KGOSearchDisplayController *)controller willHideSearchResultsTableView:(UITableView *)tableView {
     [self hideSearchBar];
+    [self.navScrollView selectButtonAtIndex:self.activeSectionIndex];
 }
 
 @end

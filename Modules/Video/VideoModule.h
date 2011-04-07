@@ -8,5 +8,6 @@
 
 @property (nonatomic, retain) VideoDataManager *dataManager;
 //@property (nonatomic, retain) NSArray *currentSearchResults;
+@property (nonatomic, retain) NSString *searchSection;
 
 @end
