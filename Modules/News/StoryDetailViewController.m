@@ -24,7 +24,7 @@
 - (void)loadView {
     [super loadView]; // surprisingly necessary empty call to super due to the way memory warnings work
 	
-	//shareController = [[KGOShareButtonController alloc] initWithShareDelegate:self];
+	shareController = [(KGOShareButtonController *)[KGOShareButtonController alloc] initWithDelegate:self];
 }
 
 - (void)viewDidLoad {
@@ -135,7 +135,7 @@
                 [[NewsDataManager sharedManager] story:self.story bookmarked:newBookmarkState];
 			} else if ([[url path] rangeOfString:@"share" options:NSBackwardsSearch].location != NSNotFound) {
                 // some how call the share controller
-				//[shareController shareInView:self.view];
+				[shareController shareInView:self.view];
 			}
             result = NO;
 		}
@@ -152,11 +152,11 @@
 }
 
 - (NSString *)emailSubject {
-	return [NSString stringWithFormat:@"Harvard Gazette: %@", story.title];
+	return [NSString stringWithFormat:@"%@", story.title];
 }
 
 - (NSString *)emailBody {
-	return [NSString stringWithFormat:@"I thought you might be interested in this story found on the Harvard Gazette:\n\n\"%@\"\n%@\n\n%@\n\nTo view this story, click the link above or paste it into your browser.", story.title, story.summary, story.link];
+	return [NSString stringWithFormat:@"I thought you might be interested in this story:\n\n\"%@\"\n%@\n\n%@\n\nTo view this story, click the link above or paste it into your browser.", story.title, story.summary, story.link];
 }
 
 - (NSString *)fbDialogPrompt {
@@ -168,12 +168,8 @@
                             @"{\"name\":\"%@\","
                             "\"href\":\"%@\","
                             //"\"caption\":\"%@\","
-                            "\"description\":\"%@\","
-                            "\"media\":["
-                            "{\"type\":\"image\","
-                            "\"src\":\"%@\","
-                            "\"href\":\"%@\"}]}",
-                            story.title, story.link, story.summary, story.featuredImage.url, story.link];    
+                            "\"description\":\"%@\"}",
+                            story.title, story.link, story.summary];    
 	return attachment;
 }
 
@@ -192,7 +188,7 @@
 }
 
 - (void)dealloc {
-	//[shareController release];
+    [shareController release];
 	[storyView release];
     self.story = nil;
     self.stories = nil;

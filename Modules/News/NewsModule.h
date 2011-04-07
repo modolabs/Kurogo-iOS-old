@@ -11,9 +11,6 @@
     id<KGOSearchResultsHolder> *searchDelegate;
 }
 
-- (void)loadSearchResultsFromCache;
-
 @property (nonatomic, retain) StoryListViewController *storyListChannelController;
-@property (nonatomic, retain) id<KGOSearchResultsHolder> searchDelegate;
 
 @end
