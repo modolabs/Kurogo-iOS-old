@@ -9,7 +9,7 @@
 @interface VideoDataManager (Private)
 
 - (void)storeResult:(id)result forRequest:(KGORequest *)request;
-+ (BOOL)requestManagerIsReachable;
+- (BOOL)requestManagerIsReachable;
 - (BOOL)isRequestInProgressForPath:(NSString *)path;
 
 @end
@@ -33,15 +33,28 @@
         }        
     }
     else if ([request.path isEqualToString:@"search"]) {
+        // TODO: Don't store these entities. Delete them when they're 
+        // done being used.
+        if ([result isKindOfClass:[NSArray class]]) {
+            for (NSDictionary *dict in result) {
+                Video *video = [[CoreDataManager sharedManager]
+                                insertNewObjectForEntityForName:@"Video"];                             
+                [video setUpWithDictionary:dict];
+                [self.videosFromCurrentSearch addObject:video];
+            }
+        }
     }
 }
 
-+ (BOOL)requestManagerIsReachable {
-//#if TARGET_IPHONE_SIMULATOR
+- (BOOL)requestManagerIsReachable {
+#if TARGET_IPHONE_SIMULATOR
     return YES;
-//#else
-//    return [[KGORequestManager sharedManager] isReachable];
-//#endif
+#else
+//    if ([self.reachability currentReachabilityStatus] == NotReachable) {
+//        return NO;
+//    }
+    return YES;
+#endif
 }
 
 - (BOOL)isRequestInProgressForPath:(NSString *)path {
@@ -62,6 +75,8 @@
 @synthesize sections;
 @synthesize pendingRequests;
 @synthesize videos;
+@synthesize reachability;
+@synthesize videosFromCurrentSearch;
 
 #pragma mark NSObject
 
@@ -74,11 +89,17 @@
         [NSMutableDictionary dictionaryWithCapacity:3];
         self.pendingRequests = [NSMutableSet setWithCapacity:3];
         self.videos = [NSMutableArray arrayWithCapacity:30];
+        self.videosFromCurrentSearch = [NSMutableArray arrayWithCapacity:30];
+        self.reachability = [Reachability reachabilityWithHostName:
+                             [KGORequestManager sharedManager].host];
+        self.moduleTag = VideoModuleTag;
 	}
 	return self;
 }
 
 - (void)dealloc {    
+    [videosFromCurrentSearch release];
+    [reachability release];
     [videos release];
     [responseBlocksForRequestPaths release];
     [moduleTag release];
@@ -93,7 +114,7 @@
     BOOL succeeded = NO;
     
     if ([self isRequestInProgressForPath:@"sections"] || 
-        ![[self class] requestManagerIsReachable]) {
+        ![self requestManagerIsReachable]) {
         responseBlock(self.sections);
     }    
     else {
@@ -116,10 +137,10 @@
 - (BOOL)requestVideosForSection:(NSString *)section 
                    thenRunBlock:(VideoDataRequestResponse)responseBlock {
     BOOL succeeded = NO;
-    // TODO: Check cached core data objects first.
     if ([self isRequestInProgressForPath:@"videos"] ||
-        ![[self class] requestManagerIsReachable]) {
+        ![self requestManagerIsReachable]) {
         // Give responseBlock cached sections.
+        // TODO: Check update self.videos with store.
         responseBlock(self.videos);
     }    
     else {
@@ -145,9 +166,31 @@
                          query:(NSString *)query 
                   thenRunBlock:(VideoDataRequestResponse)responseBlock {
     BOOL succeeded = NO;
-    // TODO: Check cached core data objects first.
-//    [self.responseBlocksForRequests setObject:[[responseBlock copy] autorelease] 
-//                                   forKey:request];    
+    
+    if ([self isRequestInProgressForPath:@"search"] ||
+        ![self requestManagerIsReachable]) {
+        // Give responseBlock cached sections.
+        // TODO: Check update self.videos with store.
+        responseBlock(self.videos);
+    }    
+    else {
+        KGORequest *request = 
+        [[KGORequestManager sharedManager] 
+         requestWithDelegate:self 
+         module:self.moduleTag 
+         path:@"search" 
+         params:[NSDictionary dictionaryWithObjectsAndKeys:
+                 query, @"q",
+                 section, @"section",
+                 nil]];
+        request.expectedResponseType = [NSArray class];
+        
+        [self.responseBlocksForRequestPaths 
+         setObject:[[responseBlock copy] autorelease] forKey:request.path];
+        [self.pendingRequests addObject:request];
+        [request connect];
+        succeeded = YES;
+    } 
     return succeeded;
 }
 
@@ -178,6 +221,7 @@
             responseBlock(self.videos);
         }
         else if ([request.path isEqualToString:@"search"]) {
+            responseBlock(self.videosFromCurrentSearch);
         }        
     }
 }

@@ -1,5 +1,6 @@
 #import <Foundation/Foundation.h>
 #import "KGORequestManager.h"
+#import "Reachability.h"
 
 typedef void (^VideoDataRequestResponse)(id result);
 
@@ -22,7 +23,8 @@ typedef void (^VideoDataRequestResponse)(id result);
 @property (nonatomic, retain) NSMutableSet *pendingRequests; 
 @property (nonatomic, retain) NSString *moduleTag;
 @property (nonatomic, retain) NSArray *sections;
-// TODO: Make this dict of arrays per section.
-@property (nonatomic, retain) NSMutableArray *videos; 
+@property (nonatomic, retain) NSMutableArray *videos;
+@property (nonatomic, retain) NSMutableArray *videosFromCurrentSearch;
+@property (nonatomic, retain) Reachability *reachability;
 
 @end

@@ -11,6 +11,7 @@
 
 + (NSDate *)dateFromPublishedDictionary:(NSDictionary *)dictionary;
 + (NSSet *)tagsFromTagsDictionary:(NSDictionary *)dictionary;
+- (void)setUpTranslationDictionary;
 
 @end
 
@@ -29,6 +30,16 @@
     // TODO.
     return nil;
 }
+
+- (void)setUpTranslationDictionary {
+    self.objectKeyCounterpartsForAPIKeys = 
+    [NSDictionary dictionaryWithObjectsAndKeys:
+     @"videoID", @"id",
+     @"videoDescription", @"description",
+     @"thumbnailURLString", @"image",
+     @"stillFrameImageURLString", @"stillFrameImage",
+     nil];
+}    
 
 @end
 
@@ -56,13 +67,7 @@
 - (id)initWithEntity:(NSEntityDescription *)entity insertIntoManagedObjectContext:(NSManagedObjectContext *)context {
     self = [super initWithEntity:entity insertIntoManagedObjectContext:context];
     if (self) {
-        self.objectKeyCounterpartsForAPIKeys = 
-        [NSDictionary dictionaryWithObjectsAndKeys:
-         @"videoID", @"id",
-         @"videoDescription", @"description",
-         @"thumbnailURLString", @"image",
-         @"stillFrameImageURLString", @"stillFrameImage",
-         nil];
+        [self setUpTranslationDictionary];
     }
     return self;
 }
