@@ -85,35 +85,35 @@
 		<key>ModuleLabelFont</key>
 		<dict>
 			<key>color</key>
-			<string>#000000</string>
+			<string>#333333</string>
 			<key>font</key>
 			<string>Helvetica</string>
 			<key>size</key>
-			<integer>12</integer>
+			<integer>13</integer>
 		</dict>
 		<key>ModuleLabelTitleMargin</key>
-		<integer>8</integer>
+		<integer>2</integer>
 		<key>ModuleListMargins</key>
-		<string>24 12 0 12</string>
+		<string>20 12 0 12</string>
 		<key>ModuleListSpacing</key>
-		<string>10 20</string>
+		<string>9 32</string>
 		<key>NavigationStyle</key>
 		<string>Springboard</string>
 		<key>SecondaryModuleLabelFont</key>
 		<dict>
 			<key>color</key>
-			<string>#000000</string>
+			<string>#333333</string>
 			<key>font</key>
 			<string>Helvetica</string>
 			<key>size</key>
-			<integer>12</integer>
+			<integer>13</integer>
 		</dict>
 		<key>SecondaryModuleLabelTitleMargin</key>
 		<integer>8</integer>
 		<key>SecondaryModuleListMargins</key>
-		<string>80 16 0 16</string>
+		<string>84 14 0 14</string>
 		<key>SecondaryModuleListSpacing</key>
-		<string>30 20</string>
+		<string>28 30</string>
 		<key>ShowsSearchBar</key>
 		<true/>
 	</dict>
