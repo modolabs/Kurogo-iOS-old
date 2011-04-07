@@ -53,7 +53,7 @@
         UIFont *font = [[KGOTheme sharedTheme] fontForContentTitle];
         CGSize size = [title sizeWithFont:font];
         
-        UILabel *titleLabel = [[[UILabel alloc] initWithFrame:CGRectMake(10, 10, size.width, size.height)] autorelease];
+        titleLabel = [[[UILabel alloc] initWithFrame:CGRectMake(10, 10, size.width, size.height)] autorelease];
         titleLabel.font = font;
         titleLabel.text = title;
         titleLabel.backgroundColor = [UIColor clearColor];
@@ -74,8 +74,9 @@
         [widget addSubview:subtitleLabel];
     }
     
-    return [NSArray arrayWithObject:widget];
+    widget.behavesAsIcon = NO;
     
+    return widget;
 }
 
 - (NSArray *)widgetViews {

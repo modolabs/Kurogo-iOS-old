@@ -39,8 +39,8 @@
 
 - (void)defaultTapAction:(KGOHomeScreenWidget *)sender {
 	[KGO_SHARED_APP_DELEGATE() showPage:LocalPathPageNameHome
-                                                                forModuleTag:self.module.tag
-                                                                      params:nil];
+                           forModuleTag:self.module.tag
+                                 params:nil];
 }
              
 - (void)dealloc {

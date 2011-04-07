@@ -20,6 +20,10 @@ static const NSInteger kVideoListCellThumbnailTag = 0x78;
                    forVideo:(Video *)video;
 - (void)requestVideosForActiveSection;
 
+#pragma mark Search UI
+- (void)showSearchBar;
+- (void)hideSearchBar;
+
 @end
 
 @implementation VideoListViewController (Private)
@@ -63,6 +67,44 @@ static const NSInteger kVideoListCellThumbnailTag = 0x78;
     }
 }    
 
+#pragma mark Search UI
+
+- (void)showSearchBar {
+	if (!self.theSearchBar) {
+		self.theSearchBar = 
+        [[[KGOSearchBar alloc] initWithFrame:
+          CGRectMake(0.0, 0.0, self.view.frame.size.width, 44.0)]
+         autorelease];
+        
+		self.theSearchBar.alpha = 0.0;
+        
+        if (!self.searchController) {
+            self.searchController = 
+            [[[KGOSearchDisplayController alloc] 
+             initWithSearchBar:self.theSearchBar delegate:self contentsController:self]
+             autorelease];
+        }
+		[self.view addSubview:self.theSearchBar];
+	}
+	[self.view bringSubviewToFront:self.theSearchBar];
+	[UIView beginAnimations:nil context:NULL];
+	[UIView setAnimationDuration:0.4];
+	self.theSearchBar.alpha = 1.0;
+	[UIView commitAnimations];
+    [self.searchController setActive:YES animated:YES];
+}
+
+- (void)hideSearchBar {
+	if (self.theSearchBar) {
+		[UIView beginAnimations:nil context:NULL];
+		[UIView setAnimationDuration:0.4];
+        [UIView setAnimationDelegate:self];
+        //[UIView setAnimationDidStopSelector:@selector(releaseSearchBar)];
+		self.theSearchBar.alpha = 0.0;
+		[UIView commitAnimations];
+	}
+}
+
 @end
 
 
@@ -74,6 +116,8 @@ static const NSInteger kVideoListCellThumbnailTag = 0x78;
 @synthesize videos;
 @synthesize videoSections;
 @synthesize activeSectionIndex;
+@synthesize theSearchBar;
+@synthesize searchController;
 
 #pragma mark NSObject
 
@@ -82,13 +126,15 @@ static const NSInteger kVideoListCellThumbnailTag = 0x78;
 	if (self)
 	{
         self.dataManager = [[[VideoDataManager alloc] init] autorelease];
-        self.dataManager.moduleTag = moduleTag = VideoModuleTag;
+        self.moduleTag = VideoModuleTag;
         self.activeSectionIndex = 0;
 	}
 	return self;
 }
 
 - (void)dealloc {
+    [searchController release];
+    [theSearchBar release];
     [videoSections release];
     [videos release];
     [navScrollView release];
@@ -109,6 +155,7 @@ static const NSInteger kVideoListCellThumbnailTag = 0x78;
                                [UIScreen mainScreen].applicationFrame.size.width, 
                                44)]
      autorelease];
+    self.navScrollView.showsSearchButton = YES;
     self.navScrollView.delegate = self;
 }
 
@@ -229,6 +276,39 @@ static const NSInteger kVideoListCellThumbnailTag = 0x78;
 - (void)tabstrip:(KGOScrollingTabstrip *)tabstrip clickedButtonAtIndex:(NSUInteger)index {
     self.activeSectionIndex = index;
     [self requestVideosForActiveSection];
+}
+
+- (void)tabstripSearchButtonPressed:(KGOScrollingTabstrip *)tabstrip {
+    [self showSearchBar];
+}
+
+
+#pragma mark KGOSearchDisplayDelegate
+- (BOOL)searchControllerShouldShowSuggestions:(KGOSearchDisplayController *)controller {
+    return NO;
+}
+
+- (NSArray *)searchControllerValidModules:(KGOSearchDisplayController *)controller {
+    return [NSArray arrayWithObject:VideoModuleTag];
+}
+
+- (NSString *)searchControllerModuleTag:(KGOSearchDisplayController *)controller {
+    return VideoModuleTag;
+}
+
+- (void)resultsHolder:(id<KGOSearchResultsHolder>)resultsHolder 
+      didSelectResult:(id<KGOSearchResult>)aResult {
+    //    NewsStory *story = aResult;
+    //    if([[story hasBody] boolValue]) {
+    //        NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:aResult, @"story", nil];
+    //        [KGO_SHARED_APP_DELEGATE() showPage:LocalPathPageNameDetail forModuleTag:NewsTag params:params];
+    //    } else {
+    //        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:story.link]];
+    //    }
+}
+
+- (void)searchController:(KGOSearchDisplayController *)controller willHideSearchResultsTableView:(UITableView *)tableView {
+    [self hideSearchBar];
 }
 
 @end
