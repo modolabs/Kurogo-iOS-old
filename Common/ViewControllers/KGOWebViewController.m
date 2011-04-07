@@ -10,6 +10,7 @@
 
 - (void)dealloc
 {
+    self.webView.delegate = nil;
     self.webView = nil;
     
     self.requestURL = nil;
