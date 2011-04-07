@@ -61,6 +61,7 @@
 @dynamic stillFrameImageURLString;
 @dynamic stillFrameImageData;
 @dynamic thumbnailImageData;
+@dynamic source;
 
 @synthesize objectKeyCounterpartsForAPIKeys;
 

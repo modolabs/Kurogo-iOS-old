@@ -19,28 +19,38 @@
 - (void)storeResult:(id)result forRequest:(KGORequest *)request {
     if ([request.path isEqualToString:@"sections"]) {
         self.sections = result;
+        [[NSUserDefaults standardUserDefaults] 
+         setObject:self.sections forKey:@"Kurogo video sections array"];
     }
     else if ([request.path isEqualToString:@"videos"]) {
+        // Clear old stuff.
+        [[CoreDataManager sharedManager] deleteObjects:self.videos];
         [self.videos removeAllObjects];
+        
         if ([result isKindOfClass:[NSArray class]]) {
             for (NSDictionary *dict in result) {
                 Video *video = [[CoreDataManager sharedManager]
                                 insertNewObjectForEntityForName:@"Video"];
                 [video setUpWithDictionary:dict];
+                video.source = [request.getParams objectForKey:@"section"];
                 [self.videos addObject:video];
             }
             [[CoreDataManager sharedManager] saveData];
         }        
     }
     else if ([request.path isEqualToString:@"search"]) {
-        // TODO: Don't store these entities. Delete them when they're 
-        // done being used.
-        [self.videosFromCurrentSearch removeAllObjects];
+        // Clear old stuff.
+        [[CoreDataManager sharedManager] deleteObjects:self.videosFromCurrentSearch];
+        [self.videosFromCurrentSearch removeAllObjects];        
+        
         if ([result isKindOfClass:[NSArray class]]) {
             for (NSDictionary *dict in result) {
                 Video *video = [[CoreDataManager sharedManager]
                                 insertNewObjectForEntityForName:@"Video"];                             
-                [video setUpWithDictionary:dict];
+                [video setUpWithDictionary:dict];                
+                video.source = [NSString stringWithFormat:@"search: %@|%@", 
+                                [request.getParams objectForKey:@"q"],
+                                [request.getParams objectForKey:@"section"]];
                 [self.videosFromCurrentSearch addObject:video];
             }
         }
@@ -48,14 +58,14 @@
 }
 
 - (BOOL)requestManagerIsReachable {
-#if TARGET_IPHONE_SIMULATOR
+//#if TARGET_IPHONE_SIMULATOR
+//    return YES;
+//#else
+    if ([self.reachability currentReachabilityStatus] == NotReachable) {
+        return NO;
+    }
     return YES;
-#else
-//    if ([self.reachability currentReachabilityStatus] == NotReachable) {
-//        return NO;
-//    }
-    return YES;
-#endif
+//#endif
 }
 
 - (BOOL)isRequestInProgressForPath:(NSString *)path {
@@ -90,9 +100,8 @@
         [NSMutableDictionary dictionaryWithCapacity:3];
         self.pendingRequests = [NSMutableSet setWithCapacity:3];
         self.videos = [NSMutableArray arrayWithCapacity:30];
-        self.videosFromCurrentSearch = [NSMutableArray arrayWithCapacity:30];
-        self.reachability = [Reachability reachabilityWithHostName:
-                             [KGORequestManager sharedManager].host];
+        self.videosFromCurrentSearch = [NSMutableArray arrayWithCapacity:30];        
+        self.reachability = [Reachability reachabilityForInternetConnection];
         self.moduleTag = VideoModuleTag;
 	}
 	return self;
@@ -116,6 +125,10 @@
     
     if ([self isRequestInProgressForPath:@"sections"] || 
         ![self requestManagerIsReachable]) {
+        
+        // Get last saved sections.
+        self.sections = [[NSUserDefaults standardUserDefaults] 
+                         objectForKey:@"Kurogo video sections array"];        
         responseBlock(self.sections);
     }    
     else {
@@ -140,8 +153,15 @@
     BOOL succeeded = NO;
     if ([self isRequestInProgressForPath:@"videos"] ||
         ![self requestManagerIsReachable]) {
-        // Give responseBlock cached sections.
-        // TODO: Check update self.videos with store.
+        
+        // Get last saved videos for this section.
+        NSArray *fetchedVideos = [[CoreDataManager sharedManager] 
+                                  objectsForEntity:@"Video" 
+                                  matchingPredicate:[NSPredicate predicateWithFormat:
+                                                     @"source == %@", section]];
+        if (fetchedVideos) {
+            [self.videos addObjectsFromArray:fetchedVideos];
+        }
         responseBlock(self.videos);
     }    
     else {
@@ -170,9 +190,16 @@
     
     if ([self isRequestInProgressForPath:@"search"] ||
         ![self requestManagerIsReachable]) {
-        // Give responseBlock cached sections.
-        // TODO: Check update self.videos with store.
-        responseBlock(self.videos);
+        // Get last searched-for videos.
+        NSArray *fetchedVideos = 
+        [[CoreDataManager sharedManager] 
+         objectsForEntity:@"Video" 
+         matchingPredicate:[NSPredicate predicateWithFormat:
+                            @"source == 'search: %@|%@'", query, section]];
+        if (fetchedVideos) {
+            [self.videosFromCurrentSearch addObjectsFromArray:fetchedVideos];
+        }
+        responseBlock(self.videosFromCurrentSearch);
     }    
     else {
         KGORequest *request = 

@@ -26,6 +26,8 @@
 @property (nonatomic, retain) NSString * stillFrameImageURLString;
 @property (nonatomic, retain) NSData * stillFrameImageData;
 @property (nonatomic, retain) NSData * thumbnailImageData;
+// source can be "search" or the name of a section.
+@property (nonatomic, retain) NSString * source;
 
 - (void)setUpWithDictionary:(NSDictionary *)dictionaryFromAPI;
 - (NSString *)durationString;

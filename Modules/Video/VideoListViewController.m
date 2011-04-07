@@ -21,6 +21,7 @@ static const NSInteger kVideoListCellThumbnailTag = 0x78;
 - (void)updateThumbnailView:(MITThumbnailView *)thumbnailView 
                    forVideo:(Video *)video;
 - (void)requestVideosForActiveSection;
+- (void)removeAllThumbnailViews;
 
 #pragma mark Search UI
 - (void)showSearchBar;
@@ -68,6 +69,21 @@ static const NSInteger kVideoListCellThumbnailTag = 0x78;
          }];
     }
 }    
+
+- (void)removeAllThumbnailViews {
+    NSInteger sections = [self.tableView numberOfSections];
+    for (NSInteger section = 0; section < sections; ++section) {
+        NSInteger rows = [self.tableView numberOfRowsInSection:section];
+        for (NSInteger row = 0; row < rows; ++row) {
+            UITableViewCell *cell = 
+            [self.tableView cellForRowAtIndexPath:
+             [NSIndexPath indexPathForRow:row inSection:section]];
+            UIView *thumbnailView = 
+            [cell.contentView viewWithTag:kVideoListCellThumbnailTag];
+            [thumbnailView removeFromSuperview];
+        }
+    }
+}
 
 #pragma mark Search UI
 
@@ -135,6 +151,10 @@ static const NSInteger kVideoListCellThumbnailTag = 0x78;
 }
 
 - (void)dealloc {
+    // Need to do this so that they don't live on and try to call this object, 
+    // which is set as their delegate.
+    [self removeAllThumbnailViews];
+    
     [searchController release];
     [theSearchBar release];
     [videoSections release];
