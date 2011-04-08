@@ -15,6 +15,7 @@
     self = [super initWithCoder:aDecoder];
     if (self) {
         _searchBar = [[UISearchBar alloc] initWithCoder:aDecoder]; // do this first so _searchBar can receive setter methods right away
+        _searchBar.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
         _searchBar.delegate = self;
 
         UIColor *color = [[KGOTheme sharedTheme] tintColorForSearchBar];
@@ -38,6 +39,7 @@
     self = [super initWithFrame:frame];
     if (self) {
         _searchBar = [[UISearchBar alloc] initWithFrame:frame]; // do this first so _searchBar can receive setter methods right away
+        _searchBar.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
         _searchBar.delegate = self;
 
         UIColor *color = [[KGOTheme sharedTheme] tintColorForSearchBar];
@@ -61,17 +63,19 @@
     // sad way to use a background image for a search bar:
     // insert the image right below the text field
     if (self.backgroundImage) {
-        _backgroundView = [[UIImageView alloc] initWithImage:[self.backgroundImage stretchableImageWithLeftCapWidth:0 topCapHeight:0]];
-        _backgroundView.autoresizingMask = self.autoresizingMask;
-        _backgroundView.frame = _searchBar.frame;
-        NSInteger viewIndex = 0;
-        for (UIView *aView in _searchBar.subviews) {
-            if ([aView isKindOfClass:[UITextField class]]) {
-                break;
+        if (!_backgroundView) {
+            _backgroundView = [[UIImageView alloc] initWithImage:[self.backgroundImage stretchableImageWithLeftCapWidth:0 topCapHeight:0]];
+            _backgroundView.autoresizingMask = self.autoresizingMask;
+            _backgroundView.frame = _searchBar.frame;
+            NSInteger viewIndex = 0;
+            for (UIView *aView in _searchBar.subviews) {
+                if ([aView isKindOfClass:[UITextField class]]) {
+                    break;
+                }
+                viewIndex++;
             }
-            viewIndex++;
+            [_searchBar insertSubview:_backgroundView atIndex:viewIndex];
         }
-        [_searchBar insertSubview:_backgroundView atIndex:viewIndex];
     }
     
     if (self.dropShadowImage) {

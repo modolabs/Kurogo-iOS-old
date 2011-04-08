@@ -146,6 +146,7 @@
 		EB469CB6134A7DA4005796E4 /* KGOSearchResultListTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = EB469CB5134A7DA4005796E4 /* KGOSearchResultListTableView.m */; };
 		EB46A346134EB942005796E4 /* ThemeConfig-iPad.plist in Resources */ = {isa = PBXBuildFile; fileRef = EB46A345134EB942005796E4 /* ThemeConfig-iPad.plist */; };
 		EB46A348134EB97C005796E4 /* MainWindow-iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = EB46A347134EB97C005796E4 /* MainWindow-iPad.xib */; };
+		EB46A399134F655D005796E4 /* KGOSplitViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EB46A398134F6540005796E4 /* KGOSplitViewController.m */; };
 		EB46C96813259B8F00AF7B5C /* KGOModule+Factory.m in Sources */ = {isa = PBXBuildFile; fileRef = EB46C96713259B8F00AF7B5C /* KGOModule+Factory.m */; };
 		EB46CA8A1327F95E00AF7B5C /* kurogo in Resources */ = {isa = PBXBuildFile; fileRef = EB46CA891327F95E00AF7B5C /* kurogo */; };
 		EB46CA8E1327F97100AF7B5C /* ThemeConfig.plist in Resources */ = {isa = PBXBuildFile; fileRef = EB46CA8B1327F97100AF7B5C /* ThemeConfig.plist */; };
@@ -506,6 +507,8 @@
 		EB469CB5134A7DA4005796E4 /* KGOSearchResultListTableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGOSearchResultListTableView.m; sourceTree = "<group>"; };
 		EB46A345134EB942005796E4 /* ThemeConfig-iPad.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "ThemeConfig-iPad.plist"; path = "../../Resources/default/ThemeConfig-iPad.plist"; sourceTree = "<group>"; };
 		EB46A347134EB97C005796E4 /* MainWindow-iPad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = "MainWindow-iPad.xib"; path = "../../Resources/MainWindow-iPad.xib"; sourceTree = "<group>"; };
+		EB46A397134F653B005796E4 /* KGOSplitViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGOSplitViewController.h; sourceTree = "<group>"; };
+		EB46A398134F6540005796E4 /* KGOSplitViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGOSplitViewController.m; sourceTree = "<group>"; };
 		EB46C96613259B8F00AF7B5C /* KGOModule+Factory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "KGOModule+Factory.h"; path = "Application/KGOModule+Factory.h"; sourceTree = SOURCE_ROOT; };
 		EB46C96713259B8F00AF7B5C /* KGOModule+Factory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "KGOModule+Factory.m"; path = "Application/KGOModule+Factory.m"; sourceTree = SOURCE_ROOT; };
 		EB46CA891327F95E00AF7B5C /* kurogo */ = {isa = PBXFileReference; lastKnownFileType = folder; name = kurogo; path = ../../Resources/default/kurogo; sourceTree = "<group>"; };
@@ -1103,22 +1106,24 @@
 		EB1441571309EFB100396753 /* Home */ = {
 			isa = PBXGroup;
 			children = (
-				EB46CA931327FECB00AF7B5C /* KGOSidebarFrameViewController.h */,
-				EB46CA941327FECB00AF7B5C /* KGOSidebarFrameViewController.m */,
+				EB1441581309EFB100396753 /* HomeModule.h */,
+				EB1441591309EFB100396753 /* HomeModule.m */,
+				EB181FB4131EDF30003728FF /* SpringboardIcon.h */,
+				EB181FB5131EDF30003728FF /* SpringboardIcon.m */,
+				EB181FB0131EDF30003728FF /* KGOHomeScreenWidget.h */,
+				EB181FB1131EDF30003728FF /* KGOHomeScreenWidget.m */,
 				EB181FAE131EDF30003728FF /* KGOHomeScreenViewController.h */,
 				EB181FAF131EDF30003728FF /* KGOHomeScreenViewController.m */,
 				EB181FAC131EDF30003728FF /* KGOHomeScreenTableViewController.h */,
 				EB181FAD131EDF30003728FF /* KGOHomeScreenTableViewController.m */,
-				EB181FB0131EDF30003728FF /* KGOHomeScreenWidget.h */,
-				EB181FB1131EDF30003728FF /* KGOHomeScreenWidget.m */,
-				EB181FB2131EDF30003728FF /* KGOPortletHomeViewController.h */,
-				EB181FB3131EDF30003728FF /* KGOPortletHomeViewController.m */,
-				EB181FB4131EDF30003728FF /* SpringboardIcon.h */,
-				EB181FB5131EDF30003728FF /* SpringboardIcon.m */,
-				EB1441581309EFB100396753 /* HomeModule.h */,
-				EB1441591309EFB100396753 /* HomeModule.m */,
 				EB14415A1309EFB100396753 /* KGOSpringboardViewController.h */,
 				EB14415B1309EFB100396753 /* KGOSpringboardViewController.m */,
+				EB181FB2131EDF30003728FF /* KGOPortletHomeViewController.h */,
+				EB181FB3131EDF30003728FF /* KGOPortletHomeViewController.m */,
+				EB46CA931327FECB00AF7B5C /* KGOSidebarFrameViewController.h */,
+				EB46CA941327FECB00AF7B5C /* KGOSidebarFrameViewController.m */,
+				EB46A397134F653B005796E4 /* KGOSplitViewController.h */,
+				EB46A398134F6540005796E4 /* KGOSplitViewController.m */,
 			);
 			name = Home;
 			path = ../../Modules/Home;
@@ -1518,6 +1523,7 @@
 				A6C19893134B95B3009A163B /* Video.xcdatamodel in Sources */,
 				A6F2F81B134BAC75009F597D /* VideoDetailViewController.m in Sources */,
 				A6F2FA21134BE23F009F597D /* VideoWebViewController.m in Sources */,
+				EB46A399134F655D005796E4 /* KGOSplitViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

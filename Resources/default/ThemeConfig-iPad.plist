@@ -21,10 +21,6 @@
 	</dict>
 	<key>Fonts</key>
 	<dict>
-		<key>DefaultFont</key>
-		<string>Helvetica</string>
-		<key>DefaultFontSize</key>
-		<integer>15</integer>
 		<key>BodyText</key>
 		<dict>
 			<key>color</key>
@@ -34,7 +30,21 @@
 			<key>size</key>
 			<integer>0</integer>
 		</dict>
-		<key>SmallPrint</key>
+		<key>Byline</key>
+		<dict>
+			<key>color</key>
+			<string>#808080</string>
+			<key>size</key>
+			<integer>-3</integer>
+		</dict>
+		<key>Caption</key>
+		<dict>
+			<key>color</key>
+			<string>#505050</string>
+			<key>size</key>
+			<integer>-3</integer>
+		</dict>
+		<key>ContentSubtitle</key>
 		<dict>
 			<key>color</key>
 			<string>#505050</string>
@@ -50,47 +60,18 @@
 			<key>size</key>
 			<integer>7</integer>
 		</dict>
-		<key>ContentSubtitle</key>
+		<key>DefaultFont</key>
+		<string>Helvetica</string>
+		<key>DefaultFontSize</key>
+		<integer>15</integer>
+		<key>NavListLabel</key>
 		<dict>
+			<key>bold</key>
+			<true/>
 			<key>color</key>
 			<string>#505050</string>
 			<key>size</key>
 			<integer>-3</integer>
-		</dict>
-		<key>PageTitle</key>
-		<dict>
-			<key>color</key>
-			<string>#505050</string>
-			<key>size</key>
-			<integer>-3</integer>
-		</dict>
-		<key>PageSubtitle</key>
-		<dict>
-			<key>color</key>
-			<string>#808080</string>
-			<key>size</key>
-			<integer>-1</integer>
-		</dict>
-		<key>Caption</key>
-		<dict>
-			<key>color</key>
-			<string>#505050</string>
-			<key>size</key>
-			<integer>-3</integer>
-		</dict>
-		<key>Byline</key>
-		<dict>
-			<key>color</key>
-			<string>#808080</string>
-			<key>size</key>
-			<integer>-3</integer>
-		</dict>
-		<key>NavListTitle</key>
-		<dict>
-			<key>color</key>
-			<string>#505050</string>
-			<key>size</key>
-			<integer>-2</integer>
 		</dict>
 		<key>NavListSubtitle</key>
 		<dict>
@@ -101,14 +82,12 @@
 			<key>size</key>
 			<integer>2</integer>
 		</dict>
-		<key>NavListLabel</key>
+		<key>NavListTitle</key>
 		<dict>
 			<key>color</key>
 			<string>#505050</string>
-			<key>bold</key>
-			<true/>
 			<key>size</key>
-			<integer>-3</integer>
+			<integer>-2</integer>
 		</dict>
 		<key>NavListValue</key>
 		<dict>
@@ -116,6 +95,20 @@
 			<string>#505050</string>
 			<key>size</key>
 			<integer>0</integer>
+		</dict>
+		<key>PageSubtitle</key>
+		<dict>
+			<key>color</key>
+			<string>#808080</string>
+			<key>size</key>
+			<integer>-1</integer>
+		</dict>
+		<key>PageTitle</key>
+		<dict>
+			<key>color</key>
+			<string>#505050</string>
+			<key>size</key>
+			<integer>-3</integer>
 		</dict>
 		<key>SectionHeader</key>
 		<dict>
@@ -135,33 +128,38 @@
 			<key>size</key>
 			<integer>2</integer>
 		</dict>
-		<key>Tab</key>
-		<dict>
-			<key>color</key>
-			<string>#FFFFFF</string>
-			<key>size</key>
-			<integer>-2</integer>
-			<key>bold</key>
-			<true/>
-		</dict>
-		<key>TabSelected</key>
+		<key>SmallPrint</key>
 		<dict>
 			<key>color</key>
 			<string>#505050</string>
 			<key>size</key>
-			<integer>-2</integer>
+			<integer>-3</integer>
+		</dict>
+		<key>Tab</key>
+		<dict>
 			<key>bold</key>
 			<true/>
+			<key>color</key>
+			<string>#FFFFFF</string>
+			<key>size</key>
+			<integer>-2</integer>
+		</dict>
+		<key>TabSelected</key>
+		<dict>
+			<key>bold</key>
+			<true/>
+			<key>color</key>
+			<string>#505050</string>
+			<key>size</key>
+			<integer>-2</integer>
 		</dict>
 	</dict>
 	<key>HomeScreen</key>
 	<dict>
 		<key>BackgroundColor</key>
 		<string>modules/home/home-background.png</string>
-		<key>NavigationStyle</key>
-		<string>Springboard</string>
-		<key>ShowsSearchBar</key>
-		<true/>
+		<key>ModuleIconSize</key>
+		<string>66 66</string>
 		<key>ModuleLabelFont</key>
 		<dict>
 			<key>color</key>
@@ -175,8 +173,10 @@
 		<string>20 12 0 12</string>
 		<key>ModuleListSpacing</key>
 		<string>9 32</string>
-		<key>ModuleIconSize</key>
-		<string>66 66</string>
+		<key>NavigationStyle</key>
+		<string>SplitView</string>
+		<key>SecondaryModuleIconSize</key>
+		<string>52 52</string>
 		<key>SecondaryModuleLabelFont</key>
 		<dict>
 			<key>color</key>
@@ -190,8 +190,8 @@
 		<string>84 14 0 14</string>
 		<key>SecondaryModuleListSpacing</key>
 		<string>28 30</string>
-		<key>SecondaryModuleIconSize</key>
-		<string>52 52</string>
+		<key>ShowsSearchBar</key>
+		<true/>
 	</dict>
 	<key>Images</key>
 	<dict>

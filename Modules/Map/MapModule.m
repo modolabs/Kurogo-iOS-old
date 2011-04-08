@@ -75,7 +75,11 @@ NSString * const MapTypePreferenceChanged = @"MapTypeChanged";
         if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
             mapVC = [[[MapHomeViewController alloc] initWithNibName:@"MapHomeViewController" bundle:nil] autorelease];
         } else {
-            mapVC = [[[MapHomeViewController alloc] initWithNibName:@"MapHomeViewController-iPad" bundle:nil] autorelease];
+            if ([[NSBundle mainBundle] pathForResource:@"MapHomeViewController-iPad" ofType:@"nib"] != nil) {
+                mapVC = [[[MapHomeViewController alloc] initWithNibName:@"MapHomeViewController-iPad" bundle:nil] autorelease];
+            } else {
+                mapVC = [[[MapHomeViewController alloc] initWithNibName:@"MapHomeViewController" bundle:nil] autorelease];
+            }
         }
         
         NSString *searchText = [params objectForKey:@"q"];

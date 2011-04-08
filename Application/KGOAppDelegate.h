@@ -2,12 +2,16 @@
 
 #define KGO_SHARED_APP_DELEGATE() (KGOAppDelegate *)[[UIApplication sharedApplication] delegate]
 
+// the config strings for these are List, Grid, Portlet, Sidebar, and SplitView.
+// TODO: make these options more visible
 typedef enum {
     KGONavigationStyleUnknown,
     KGONavigationStyleTableView,
     KGONavigationStyleIconGrid,
     KGONavigationStylePortlet,
-    KGONavigationStyleTabletSidebar // not enabled for iPhone
+    // the following are not enabled for iPhone
+    KGONavigationStyleTabletSidebar,
+    KGONavigationStyleTabletSplitView
 } KGONavigationStyle;
 
 @class KGOModule;
@@ -58,7 +62,8 @@ typedef enum {
 
 @end
 
-
+// TODO: remove this whole category. modal views should belong to the view
+// controller that asked for them, not the application.
 @interface KGOAppDelegate (AppModalViewController)
 
 - (void)setupAppModalHolder;

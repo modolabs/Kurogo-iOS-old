@@ -30,9 +30,7 @@
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
-		NSString * file = [[NSBundle mainBundle] pathForResource:@"ThemeConfig" ofType:@"plist"];
-        NSDictionary *themeDict = [NSDictionary dictionaryWithContentsOfFile:file];
-        _preferences = [[themeDict objectForKey:@"HomeScreen"] retain];
+        _preferences = [[[KGOTheme sharedTheme] homescreenConfig] retain];
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(moduleListDidChange:)
                                                      name:ModuleListDidChangeNotification
@@ -44,9 +42,7 @@
 - (id)init {
     self = [super init];
     if (self) {
-		NSString * file = [[NSBundle mainBundle] pathForResource:@"ThemeConfig" ofType:@"plist"];
-        NSDictionary *themeDict = [NSDictionary dictionaryWithContentsOfFile:file];
-        _preferences = [[themeDict objectForKey:@"HomeScreen"] retain];
+        _preferences = [[[KGOTheme sharedTheme] homescreenConfig] retain];
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(moduleListDidChange:)
                                                      name:ModuleListDidChangeNotification
@@ -62,7 +58,8 @@
     [self loadModules];
     
     if ([self showsSearchBar]) {
-        _searchBar = [[KGOSearchBar alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 44)];
+        _searchBar = [[KGOSearchBar alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, 44)];
+        _searchBar.autoresizingMask = UIViewAutoresizingFlexibleWidth;
         NSDictionary *infoDict = [[NSBundle mainBundle] infoDictionary];
         _searchBar.placeholder = [NSString stringWithFormat:@"%@ %@",
                                   NSLocalizedString(@"Search", nil),
@@ -114,6 +111,14 @@
     [_searchBar release];
     [_searchController release];
     [super dealloc];
+}
+
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation
+{
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        return YES;
+    }
+    return toInterfaceOrientation == UIInterfaceOrientationPortrait;
 }
 
 #pragma mark - Login states

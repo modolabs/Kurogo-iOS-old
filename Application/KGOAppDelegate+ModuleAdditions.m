@@ -123,26 +123,46 @@
     if (!_appHomeScreen && !_appNavController) {    
         HomeModule *homeModule = (HomeModule *)[self moduleForTag:HomeTag];
         UIViewController *homeVC = [homeModule modulePage:LocalPathPageNameHome params:nil];
-        if ([self navigationStyle] == KGONavigationStyleTabletSidebar) {
-            _appHomeScreen = [homeVC retain];
-            [self.window addSubview:homeVC.view];
-        } else {
-            UIImage *navBarImage = [[KGOTheme sharedTheme] backgroundImageForNavBar];
-            if (navBarImage) {
-                // for people who insist on using a background image for their nav bar, they 
-                // get this unfortunate navigation controller subclass
-                _appNavController = [[HarvardNavigationController alloc] initWithRootViewController:homeVC];
-            } else {
-                // normal people get the normal navigation controller
-                _appNavController = [[UINavigationController alloc] initWithRootViewController:homeVC];
+        KGONavigationStyle navStyle = [self navigationStyle];
+        switch (navStyle) {
+            case KGONavigationStyleTabletSidebar:
+            case KGONavigationStyleTabletSplitView:
+            {
+                _appHomeScreen = [homeVC retain];
+                self.window.rootViewController = _appHomeScreen;
+                
+                NSLog(@"%@", _appHomeScreen);
+                if ([_appHomeScreen isKindOfClass:[UISplitViewController class]]) {
+                    for (UIViewController *aVC in [(UISplitViewController *)_appHomeScreen viewControllers]) {
+                        NSLog(@"%@", aVC);
+                        if ([aVC shouldAutorotateToInterfaceOrientation:UIInterfaceOrientationLandscapeRight]) {
+                            NSLog(@"vc %@ can rotate", aVC);
+                        }
+                    }
+                }
+                
+                break;
             }
-            _appNavController.view.backgroundColor = [[KGOTheme sharedTheme] backgroundColorForApplication];
-            [self.window addSubview:_appNavController.view];
+            default:
+            {
+                UIImage *navBarImage = [[KGOTheme sharedTheme] backgroundImageForNavBar];
+                if (navBarImage) {
+                    // for people who insist on using a background image for their nav bar, they 
+                    // get this unfortunate navigation controller subclass
+                    _appNavController = [[HarvardNavigationController alloc] initWithRootViewController:homeVC];
+                } else {
+                    // normal people get the normal navigation controller
+                    _appNavController = [[UINavigationController alloc] initWithRootViewController:homeVC];
+                }
+                _appNavController.view.backgroundColor = [[KGOTheme sharedTheme] backgroundColorForApplication];
+                self.window.rootViewController = _appNavController;
+                break;
+            }
         }
     }
 }
 
-- (NSArray *)coreDataModelsNames {
+- (NSArray *)coreDataModelNames {
     if (!_modules) {
         [self loadModules];
     }
@@ -162,6 +182,7 @@
     return [_modulesByTag objectForKey:aTag];
 }
 
+// this should never be called on the home module.
 - (BOOL)showPage:(NSString *)pageName forModuleTag:(NSString *)moduleTag params:(NSDictionary *)params {
     BOOL didShow = NO;
 
@@ -182,17 +203,35 @@
                 _visibleModule = module;
             }
             
-            if ([self navigationStyle] == KGONavigationStyleTabletSidebar) {
-                KGOSidebarFrameViewController *sidebarVC = (KGOSidebarFrameViewController *)_appHomeScreen;
-                [sidebarVC showViewController:vc];
-                
-            } else {            
-                // if the visible view controller is modal, push new view controllers on the modal nav controller.
-                // there should be no reason to push a view controller behind what's visible.
-                if (!_appModalHolder.view.hidden && [_appModalHolder.modalViewController isKindOfClass:[UINavigationController class]]) {
-                    [(UINavigationController *)_appModalHolder.modalViewController pushViewController:vc animated:YES];
-                } else {
-                    [_appNavController pushViewController:vc animated:YES];
+            KGONavigationStyle navStyle = [self navigationStyle];
+            switch (navStyle) {
+                case KGONavigationStyleTabletSidebar:
+                {
+                    KGOSidebarFrameViewController *sidebarVC = (KGOSidebarFrameViewController *)_appHomeScreen;
+                    [sidebarVC showViewController:vc];
+                    break;
+                }
+                case KGONavigationStyleTabletSplitView:
+                {
+                    UISplitViewController *splitVC = (UISplitViewController *)_appHomeScreen;
+                    splitVC.viewControllers = [NSArray arrayWithObjects:
+                                               [splitVC.viewControllers objectAtIndex:0],
+                                               vc,
+                                               nil];
+                    break;
+                }
+                default:
+                {
+                    // if the visible view controller is modal, push new view controllers on the modal nav controller.
+                    // there should be no reason to push a view controller behind what's visible.
+                    if (!_appModalHolder.view.hidden
+                        && [_appModalHolder.modalViewController isKindOfClass:[UINavigationController class]]
+                    ) {
+                        [(UINavigationController *)_appModalHolder.modalViewController pushViewController:vc animated:YES];
+                    } else {
+                        [_appNavController pushViewController:vc animated:YES];
+                    }
+                    break;
                 }
             }
             
@@ -218,16 +257,10 @@
 - (KGONavigationStyle)navigationStyle {
     if (_navigationStyle == KGONavigationStyleUnknown) {
         
-        NSString * file = [[NSBundle mainBundle] pathForResource:@"ThemeConfig" ofType:@"plist"];
-        NSDictionary *themeDict = [[NSDictionary alloc] initWithContentsOfFile:file];
-        NSDictionary *homescreenDict = [[themeDict objectForKey:@"HomeScreen"] retain];
+        NSDictionary *homescreenDict = [[KGOTheme sharedTheme] homescreenConfig];
         NSString *style;
         
-        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
-            style = [homescreenDict objectForKey:@"NavigationStyle"];
-        } else {
-            style = [homescreenDict objectForKey:@"TabletNavigationStyle"];
-        }
+        style = [homescreenDict objectForKey:@"NavigationStyle"];
         
         if ([style isEqualToString:@"Grid"]) {
             _navigationStyle = KGONavigationStyleIconGrid;
@@ -240,6 +273,9 @@
             
         } else if ([style isEqualToString:@"Sidebar"] && UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
             _navigationStyle = KGONavigationStyleTabletSidebar;
+            
+        } else if ([style isEqualToString:@"SplitView"] && UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+            _navigationStyle = KGONavigationStyleTabletSplitView;
             
         } else {
             _navigationStyle = KGONavigationStyleIconGrid;

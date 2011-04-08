@@ -4,6 +4,7 @@
 #import "KGOHomeScreenTableViewController.h"
 #import "KGOPortletHomeViewController.h"
 #import "KGOSidebarFrameViewController.h"
+#import "KGOSplitViewController.h"
 
 @implementation HomeModule
 
@@ -27,6 +28,20 @@
             case KGONavigationStyleTabletSidebar:
                 vc = [[[KGOSidebarFrameViewController alloc] init] autorelease];
                 break;
+            case KGONavigationStyleTabletSplitView:
+            {
+                KGOHomeScreenTableViewController *tableVC = [[[KGOHomeScreenTableViewController alloc] init] autorelease];
+                UINavigationController *navC = [[[UINavigationController alloc] initWithRootViewController:tableVC] autorelease];
+                
+                KGOSplitViewController *splitVC = [[[KGOSplitViewController alloc] init] autorelease];
+                splitVC.delegate = splitVC;
+                splitVC.viewControllers = [NSArray arrayWithObjects:
+                                           navC,
+                                           [[[KGOSpringboardViewController alloc] init] autorelease],
+                                           nil];
+                vc = splitVC;
+                break;
+            }
             case KGONavigationStyleIconGrid:
             default:
                 vc = [[[KGOSpringboardViewController alloc] init] autorelease];
