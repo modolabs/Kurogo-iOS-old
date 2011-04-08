@@ -220,7 +220,12 @@
     } copy] autorelease];
     
     categoryVC.categoriesRequest.handler = createMapCategories;
-	[KGO_SHARED_APP_DELEGATE() presentAppModalNavigationController:categoryVC animated:YES];
+    UINavigationController *navC = [[[UINavigationController alloc] initWithRootViewController:categoryVC] autorelease];
+    UIBarButtonItem *item = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone
+                                                                           target:self
+                                                                           action:@selector(dismissModalViewControllerAnimated:)] autorelease];
+    categoryVC.navigationItem.rightBarButtonItem = item;
+    [self presentModalViewController:navC animated:YES];
 }
 
 - (IBAction)bookmarksButtonPressed {
@@ -230,14 +235,24 @@
     KGOBookmarksViewController *vc = [[[KGOBookmarksViewController alloc] initWithStyle:UITableViewStylePlain] autorelease];
     vc.bookmarkedItems = array;
     vc.searchResultsDelegate = self;
-    [KGO_SHARED_APP_DELEGATE() presentAppModalNavigationController:vc animated:YES];
+    UINavigationController *navC = [[[UINavigationController alloc] initWithRootViewController:vc] autorelease];
+    UIBarButtonItem *item = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone
+                                                                           target:self
+                                                                           action:@selector(dismissModalViewControllerAnimated:)] autorelease];
+    vc.navigationItem.rightBarButtonItem = item;
+    [self presentModalViewController:navC animated:YES];
 }
 
 - (IBAction)settingsButtonPressed {
 	MapSettingsViewController *vc = [[[MapSettingsViewController alloc] initWithStyle:UITableViewStyleGrouped] autorelease];
     vc.title = @"Settings";
     vc.view.backgroundColor = [[KGOTheme sharedTheme] backgroundColorForApplication];
-	[KGO_SHARED_APP_DELEGATE() presentAppModalNavigationController:vc animated:YES];
+    UINavigationController *navC = [[[UINavigationController alloc] initWithRootViewController:vc] autorelease];
+    UIBarButtonItem *item = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone
+                                                                           target:self
+                                                                           action:@selector(dismissModalViewControllerAnimated:)] autorelease];
+    vc.navigationItem.rightBarButtonItem = item;
+    [self presentModalViewController:navC animated:YES];
 }
 
 #pragma mark Map/List

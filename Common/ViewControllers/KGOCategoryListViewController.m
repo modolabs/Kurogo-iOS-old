@@ -40,6 +40,14 @@
     self.view.backgroundColor = [[KGOTheme sharedTheme] backgroundColorForApplication];
 }
 
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation
+{
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        return YES;
+    }
+    return toInterfaceOrientation == UIInterfaceOrientationPortrait;
+}
+
 - (NSArray *)categories {
 	return _categories;
 }
