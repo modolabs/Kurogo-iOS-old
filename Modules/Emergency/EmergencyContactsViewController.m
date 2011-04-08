@@ -1,7 +1,6 @@
 #import "EmergencyContactsViewController.h"
 #import "EmergencyDataManager.h"
 #import "UIKit+KGOAdditions.h"
-#import "ThemeConstants.h"
 #import "KGOAppDelegate.h"
 #import "KGOAppDelegate+ModuleAdditions.h"
 
@@ -95,7 +94,7 @@
     return [[^(UITableViewCell *cell) {
         cell.textLabel.text = contact.title;
         cell.detailTextLabel.text = contact.summary;
-        cell.accessoryView = [[KGOTheme sharedTheme] accessoryViewForType:TableViewCellAccessoryPhone];
+        cell.accessoryView = [[KGOTheme sharedTheme] accessoryViewForType:KGOAccessoryTypePhone];
     } copy] autorelease];
 }
 

@@ -7,6 +7,28 @@ extern NSString * const KGOAccessoryTypeNone;
 extern NSString * const KGOAccessoryTypeBlank;
 extern NSString * const KGOAccessoryTypeCheckmark;
 extern NSString * const KGOAccessoryTypeChevron;
+extern NSString * const KGOAccessoryTypePhone;
+extern NSString * const KGOAccessoryTypePeople;
+extern NSString * const KGOAccessoryTypeMap;
+extern NSString * const KGOAccessoryTypeEmail;
+extern NSString * const KGOAccessoryTypeExternal;
+
+extern NSString * const KGOThemePropertyBodyText;
+extern NSString * const KGOThemePropertySmallPrint;
+extern NSString * const KGOThemePropertyContentTitle;
+extern NSString * const KGOThemePropertyContentSubtitle;
+extern NSString * const KGOFontPageTitle;
+extern NSString * const KGOThemePropertyPageSubtitle;
+extern NSString * const KGOThemePropertyCaption;
+extern NSString * const KGOThemePropertyByline;
+extern NSString * const KGOThemePropertyNavListTitle;
+extern NSString * const KGOThemePropertyNavListSubtitle;
+extern NSString * const KGOThemePropertyNavListLabel;
+extern NSString * const KGOThemePropertyNavListValue;
+extern NSString * const KGOThemePropertySectionHeader;
+extern NSString * const KGOThemePropertySectionHeaderGrouped;
+extern NSString * const KGOThemePropertyTab;
+extern NSString * const KGOThemePropertyTabSelected;
 
 typedef enum {
 	KGOTableCellStyleDefault,
@@ -17,35 +39,21 @@ typedef enum {
 	KGOTableCellStyleURL
 } KGOTableCellStyle;
 
+
 @interface KGOTheme : NSObject {
     
     NSDictionary *themeDict;
 	NSDictionary *fontDict;
-
 }
 
 + (KGOTheme *)sharedTheme;
 
-#pragma mark custom properties
-
-- (NSString *)fontNameForLabel:(NSString *)label size:(CGFloat *)fontSize;
-- (UIColor *)matchTextColorWithLabel:(NSString *)label;
-- (UIFont *)matchFontWithLabel:(NSString *)label defaultSize:(CGFloat)defaultSize;
-- (UIFont *)matchBoldFontWithLabel:(NSString *)label defaultSize:(CGFloat)defaultSize;
-- (UIColor *)matchBackgroundColorWithLabel:(NSString *)label;
-
 #pragma mark generic
 
-- (UIFont *)defaultFont;
-- (UIFont *)defaultBoldFont;
-- (UIFont *)defaultSmallFont;
-- (UIFont *)defaultSmallBoldFont;
-
-- (UIFont *)fontForContentTitle;
-- (UIColor *)textColorForContentTitle;
-- (UIFont *)fontForBodyText;
-- (UIColor *)textColorForBodyText;
 - (CGFloat)defaultFontSize;
+- (NSString *)defaultFontName;
+- (UIFont *)fontForThemedProperty:(NSString *)themeProperty;
+- (UIColor *)textColorForThemedProperty:(NSString *)themeProperty;
 
 - (UIColor *)backgroundColorForApplication;
 - (UIColor *)linkColor;
@@ -65,17 +73,7 @@ typedef enum {
 
 #pragma mark tableview
 
-- (UIFont *)fontForTableCellTitleWithStyle:(KGOTableCellStyle)style;
-- (UIColor *)textColorForTableCellTitleWithStyle:(KGOTableCellStyle)style;
-- (UIFont *)fontForTableCellSubtitleWithStyle:(KGOTableCellStyle)style;
-- (UIColor *)textColorForTableCellSubtitleWithStyle:(KGOTableCellStyle)style;
-- (UIFont *)fontForGroupedSectionHeader;
-- (UIColor *)textColorForGroupedSectionHeader;
-- (UIFont *)fontForPlainSectionHeader;
-- (UIColor *)textColorForPlainSectionHeader;
 - (UIColor *)backgroundColorForPlainSectionHeader;
-- (UIFont *)fontForTableFooter;
-- (UIColor *)textColorForTableFooter;
 
 #pragma mark tableviewcell
 

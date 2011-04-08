@@ -144,10 +144,11 @@
 		EB1B88C91324A6AC00108A8F /* common in Resources */ = {isa = PBXBuildFile; fileRef = EB1B88C71324A6AC00108A8F /* common */; };
 		EB1B88CA1324A6AC00108A8F /* modules in Resources */ = {isa = PBXBuildFile; fileRef = EB1B88C81324A6AC00108A8F /* modules */; };
 		EB469CB6134A7DA4005796E4 /* KGOSearchResultListTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = EB469CB5134A7DA4005796E4 /* KGOSearchResultListTableView.m */; };
+		EB46A346134EB942005796E4 /* ThemeConfig-iPad.plist in Resources */ = {isa = PBXBuildFile; fileRef = EB46A345134EB942005796E4 /* ThemeConfig-iPad.plist */; };
+		EB46A348134EB97C005796E4 /* MainWindow-iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = EB46A347134EB97C005796E4 /* MainWindow-iPad.xib */; };
 		EB46C96813259B8F00AF7B5C /* KGOModule+Factory.m in Sources */ = {isa = PBXBuildFile; fileRef = EB46C96713259B8F00AF7B5C /* KGOModule+Factory.m */; };
 		EB46CA8A1327F95E00AF7B5C /* kurogo in Resources */ = {isa = PBXBuildFile; fileRef = EB46CA891327F95E00AF7B5C /* kurogo */; };
 		EB46CA8E1327F97100AF7B5C /* ThemeConfig.plist in Resources */ = {isa = PBXBuildFile; fileRef = EB46CA8B1327F97100AF7B5C /* ThemeConfig.plist */; };
-		EB46CA8F1327F97100AF7B5C /* ThemeConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = EB46CA8D1327F97100AF7B5C /* ThemeConstants.m */; };
 		EB46CA951327FECB00AF7B5C /* KGOSidebarFrameViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EB46CA941327FECB00AF7B5C /* KGOSidebarFrameViewController.m */; };
 		EB46CA981327FED600AF7B5C /* MapDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EB46CA971327FED600AF7B5C /* MapDetailViewController.m */; };
 		EB48910913310A930036AEBF /* ExternalURLModule.m in Sources */ = {isa = PBXBuildFile; fileRef = EB48910813310A930036AEBF /* ExternalURLModule.m */; };
@@ -503,12 +504,12 @@
 		EB1B88C81324A6AC00108A8F /* modules */ = {isa = PBXFileReference; lastKnownFileType = folder; name = modules; path = Resources/modules; sourceTree = "<group>"; };
 		EB469CB4134A7DA4005796E4 /* KGOSearchResultListTableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGOSearchResultListTableView.h; sourceTree = "<group>"; };
 		EB469CB5134A7DA4005796E4 /* KGOSearchResultListTableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGOSearchResultListTableView.m; sourceTree = "<group>"; };
+		EB46A345134EB942005796E4 /* ThemeConfig-iPad.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "ThemeConfig-iPad.plist"; path = "../../Resources/default/ThemeConfig-iPad.plist"; sourceTree = "<group>"; };
+		EB46A347134EB97C005796E4 /* MainWindow-iPad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = "MainWindow-iPad.xib"; path = "../../Resources/MainWindow-iPad.xib"; sourceTree = "<group>"; };
 		EB46C96613259B8F00AF7B5C /* KGOModule+Factory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "KGOModule+Factory.h"; path = "Application/KGOModule+Factory.h"; sourceTree = SOURCE_ROOT; };
 		EB46C96713259B8F00AF7B5C /* KGOModule+Factory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "KGOModule+Factory.m"; path = "Application/KGOModule+Factory.m"; sourceTree = SOURCE_ROOT; };
 		EB46CA891327F95E00AF7B5C /* kurogo */ = {isa = PBXFileReference; lastKnownFileType = folder; name = kurogo; path = ../../Resources/default/kurogo; sourceTree = "<group>"; };
 		EB46CA8B1327F97100AF7B5C /* ThemeConfig.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = ThemeConfig.plist; path = ../../Resources/default/ThemeConfig.plist; sourceTree = "<group>"; };
-		EB46CA8C1327F97100AF7B5C /* ThemeConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ThemeConstants.h; path = ../../Resources/default/ThemeConstants.h; sourceTree = "<group>"; };
-		EB46CA8D1327F97100AF7B5C /* ThemeConstants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ThemeConstants.m; path = ../../Resources/default/ThemeConstants.m; sourceTree = "<group>"; };
 		EB46CA931327FECB00AF7B5C /* KGOSidebarFrameViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGOSidebarFrameViewController.h; sourceTree = "<group>"; };
 		EB46CA941327FECB00AF7B5C /* KGOSidebarFrameViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGOSidebarFrameViewController.m; sourceTree = "<group>"; };
 		EB46CA961327FED600AF7B5C /* MapDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MapDetailViewController.h; sourceTree = "<group>"; };
@@ -615,11 +616,11 @@
 				EB1B88C81324A6AC00108A8F /* modules */,
 				EBB120A6133802D300A4BD1D /* secret */,
 				EB9AF298130B56AD003B9769 /* MainWindow.xib */,
+				EB46A347134EB97C005796E4 /* MainWindow-iPad.xib */,
 				EB1441321309EF5800396753 /* KGOInfo.plist */,
 				EB138AFC12F22F31004DBB7C /* Config.plist */,
 				EB46CA8B1327F97100AF7B5C /* ThemeConfig.plist */,
-				EB46CA8C1327F97100AF7B5C /* ThemeConstants.h */,
-				EB46CA8D1327F97100AF7B5C /* ThemeConstants.m */,
+				EB46A345134EB942005796E4 /* ThemeConfig-iPad.plist */,
 				EBAE86441215FB4900F370BE /* Default@2x.png */,
 				EBAE863E1215FB0D00F370BE /* Icon.png */,
 				EBAE863F1215FB0D00F370BE /* Icon@2x.png */,
@@ -1367,6 +1368,8 @@
 				EBC1C7151347C5750045CE9C /* kurogo_debug.xcconfig in Resources */,
 				EBC1C7161347C5750045CE9C /* stage_server.xcconfig in Resources */,
 				EBC1C7171347C5750045CE9C /* test_server.xcconfig in Resources */,
+				EB46A346134EB942005796E4 /* ThemeConfig-iPad.plist in Resources */,
+				EB46A348134EB97C005796E4 /* MainWindow-iPad.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1433,7 +1436,6 @@
 				EB181FBF131EDF30003728FF /* SpringboardIcon.m in Sources */,
 				EB181FC5131EDF43003728FF /* MapSettingsViewController.m in Sources */,
 				EB46C96813259B8F00AF7B5C /* KGOModule+Factory.m in Sources */,
-				EB46CA8F1327F97100AF7B5C /* ThemeConstants.m in Sources */,
 				EB46CA951327FECB00AF7B5C /* KGOSidebarFrameViewController.m in Sources */,
 				EB46CA981327FED600AF7B5C /* MapDetailViewController.m in Sources */,
 				4B050C55132E48F50016591D /* NewsDataManager.m in Sources */,
@@ -1569,6 +1571,7 @@
 			baseConfigurationReference = EBC1C7111347C5750045CE9C /* kurogo_debug.xcconfig */;
 			buildSettings = {
 				PRODUCT_NAME = Universitas;
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = "Debug - Development";
 		};
@@ -1577,6 +1580,7 @@
 			baseConfigurationReference = EBC1C7041347B8D20045CE9C /* kurogo.xcconfig */;
 			buildSettings = {
 				PRODUCT_NAME = Universitas;
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = "Release - Production";
 		};
@@ -1585,6 +1589,7 @@
 			baseConfigurationReference = EBC1C7111347C5750045CE9C /* kurogo_debug.xcconfig */;
 			buildSettings = {
 				PRODUCT_NAME = Universitas;
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = "Debug - Staging";
 		};
@@ -1600,6 +1605,7 @@
 			baseConfigurationReference = EBC1C7111347C5750045CE9C /* kurogo_debug.xcconfig */;
 			buildSettings = {
 				PRODUCT_NAME = Universitas;
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = "Debug - Production";
 		};
@@ -1614,6 +1620,7 @@
 			baseConfigurationReference = EBC1C7041347B8D20045CE9C /* kurogo.xcconfig */;
 			buildSettings = {
 				PRODUCT_NAME = Universitas;
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = "Release - Staging";
 		};
@@ -1629,6 +1636,7 @@
 			baseConfigurationReference = EBC1C7111347C5750045CE9C /* kurogo_debug.xcconfig */;
 			buildSettings = {
 				PRODUCT_NAME = Universitas;
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = "Debug - Testing";
 		};
@@ -1644,6 +1652,7 @@
 			baseConfigurationReference = EBC1C7041347B8D20045CE9C /* kurogo.xcconfig */;
 			buildSettings = {
 				PRODUCT_NAME = Universitas;
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = "Release - Testing";
 		};

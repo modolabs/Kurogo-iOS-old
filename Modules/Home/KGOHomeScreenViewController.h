@@ -47,16 +47,20 @@
 // properties defined in Theme.plist
 - (BOOL)showsSearchBar;                     // true to show search bar on home screen
 - (UIColor *)backgroundColor;               // home screen background color or image
+
 - (UIFont *)moduleLabelFont;
 - (UIFont *)moduleLabelFontLarge;
 - (UIColor *)moduleLabelTextColor;
 - (CGFloat)moduleLabelTitleMargin;          // spacing between image and title
 - (GridSpacing)moduleListSpacing;           // spacing between icons or list elements
 - (GridPadding)moduleListMargins;           // margins around entire grid/list
+- (CGSize)moduleIconSize;
+
 - (UIFont *)secondaryModuleLabelFont;
 - (UIColor *)secondaryModuleLabelTextColor;
 - (GridSpacing)secondaryModuleListSpacing;
 - (GridPadding)secondaryModuleListMargins;
 - (CGFloat)secondaryModuleLabelTitleMargin;
+- (CGSize)secondaryModuleIconSize;
 
 @end

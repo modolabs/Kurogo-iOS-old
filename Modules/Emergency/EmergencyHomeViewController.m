@@ -2,7 +2,6 @@
 #import "EmergencyDataManager.h"
 #import "KGOHTMLTemplate.h"
 #import "UIKit+KGOAdditions.h"
-#import "ThemeConstants.h"
 #import "KGOAppDelegate.h"
 #import "KGOAppDelegate+ModuleAdditions.h"
 
@@ -150,7 +149,7 @@
             EmergencyContact *contact = [self.primaryContacts objectAtIndex:indexPath.row];
             title = contact.title;
             detailText = contact.summary;
-            accessoryTag = TableViewCellAccessoryPhone;
+            accessoryTag = KGOAccessoryTypePhone;
 
         } else if(indexPath.row == self.primaryContacts.count) {
             title = @"More contacts";

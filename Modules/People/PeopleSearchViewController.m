@@ -9,7 +9,6 @@
 #import "KGOSearchBar.h"
 #import "KGOSearchDisplayController.h"
 #import "KGOTheme.h"
-#import "ThemeConstants.h"
 #import "PersonContact.h"
 #import "CoreDataManager.h"
 
@@ -63,7 +62,7 @@ searchBar = _searchBar;
     
     // search hint
     NSString *searchHints = NSLocalizedString(@"Tip: You can search above by a person's first or last name or email address.", nil);
-	UIFont *hintsFont = [[KGOTheme sharedTheme] fontForBodyText];
+	UIFont *hintsFont = [[KGOTheme sharedTheme] fontForThemedProperty:KGOThemePropertyBodyText];
     UILabel *hintsLabel = [UILabel multilineLabelWithText:searchHints font:hintsFont width:self.tableView.frame.size.width - 30];
     hintsLabel.frame = CGRectMake(15, 5, hintsLabel.frame.size.width, hintsLabel.frame.size.height);
     hintsLabel.textColor = [UIColor colorWithHexString:@"#404040"];
@@ -188,7 +187,7 @@ searchBar = _searchBar;
 - (NSArray *)tableView:(UITableView *)tableView viewsForCellAtIndexPath:(NSIndexPath *)indexPath {
     // making this button into a cell assumes that this table is being created as a grouped table view
     if (indexPath.section == 2) {
-        UIFont *font = [[KGOTheme sharedTheme] fontForTableCellTitleWithStyle:UITableViewCellStyleDefault];
+        UIFont *font = [[KGOTheme sharedTheme] fontForThemedProperty:KGOThemePropertyNavListTitle];
         NSString *title = NSLocalizedString(@"Clear Recents", nil);
         CGSize size = [title sizeWithFont:font];
         
@@ -219,7 +218,7 @@ searchBar = _searchBar;
             PersonContact *contact = [_phoneDirectoryEntries objectAtIndex:indexPath.row];
             title = contact.label;
             detailText = contact.value;
-            accessoryTag = TableViewCellAccessoryPhone; // TODO: use the type to determine this
+            accessoryTag = KGOAccessoryTypePhone; // TODO: use the type to determine this
             backgroundColor = [[KGOTheme sharedTheme] backgroundColorForSecondaryCell];
             break;
         }

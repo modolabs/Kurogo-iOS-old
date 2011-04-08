@@ -1,5 +1,7 @@
+
 #import "KGOTheme.h"
 #import "UIKit+KGOAdditions.h"
+#import "Foundation+KGOAdditions.h"
 
 NSString * const KGOUserPreferencesKey = @"KGOUserPrefs";
 NSString * const KGOUserPreferencesDidChangeNotification = @"KGOUserPrefsChanged";
@@ -8,6 +10,36 @@ NSString * const KGOAccessoryTypeNone = @"None";
 NSString * const KGOAccessoryTypeBlank = @"Blank";
 NSString * const KGOAccessoryTypeChevron = @"Chevron";
 NSString * const KGOAccessoryTypeCheckmark = @"Check";
+NSString * const KGOAccessoryTypePhone = @"Phone";
+NSString * const KGOAccessoryTypePeople = @"People";
+NSString * const KGOAccessoryTypeMap = @"Map";
+NSString * const KGOAccessoryTypeEmail = @"Email";
+NSString * const KGOAccessoryTypeExternal = @"External";
+
+
+NSString * const KGOThemePropertyBodyText = @"BodyText";
+NSString * const KGOThemePropertySmallPrint = @"SmallPrint";
+NSString * const KGOThemePropertyContentTitle = @"ContentTitle";
+NSString * const KGOThemePropertyContentSubtitle = @"ContentSubtitle";
+NSString * const KGOThemePropertyPageTitle = @"PageTitle";
+NSString * const KGOThemePropertyPageSubtitle = @"PageSubtitle";
+NSString * const KGOThemePropertyCaption = @"Caption";
+NSString * const KGOThemePropertyByline = @"Byline";
+NSString * const KGOThemePropertyNavListTitle = @"NavListTitle";
+NSString * const KGOThemePropertyNavListSubtitle = @"NavListSubtitle";
+NSString * const KGOThemePropertyNavListLabel = @"NavListLabel";
+NSString * const KGOThemePropertyNavListValue = @"NavListValue";
+NSString * const KGOThemePropertySectionHeader = @"SectionHeader";
+NSString * const KGOThemePropertySectionHeaderGrouped = @"SectionHeaderGrouped";
+NSString * const KGOThemePropertyTab = @"Tab";
+NSString * const KGOThemePropertyTabSelected = @"TabSelected";
+
+@interface KGOTheme (Private)
+
+- (UIColor *)matchBackgroundColorWithLabel:(NSString *)label;
+
+@end
+
 
 
 @implementation KGOTheme
@@ -21,56 +53,105 @@ static KGOTheme *s_sharedTheme = nil;
     return s_sharedTheme;
 }
 
-- (UIFont *)defaultFont {
-    return [self matchFontWithLabel:nil defaultSize:0];
-}
-
-- (UIFont *)defaultBoldFont {
-    return [self matchBoldFontWithLabel:nil defaultSize:0];
-}
-
-
-- (UIFont *)defaultSmallFont {
-    return [self matchFontWithLabel:nil defaultSize:-2];
-}
-
-- (UIFont *)defaultSmallBoldFont {
-    return [self matchBoldFontWithLabel:nil defaultSize:-2];
-}
-
-
-- (UIFont *)fontForContentTitle {
-    return [self matchBoldFontWithLabel:@"ContentTitle" defaultSize:7];
-}
-
-- (UIColor *)textColorForContentTitle {
-    UIColor *color = [self matchTextColorWithLabel:@"ContentTitle"];
-    if (!color)
-        color = [UIColor blackColor];
-    return color;
-}
-
-- (UIFont *)fontForBodyText {
-    return [self matchFontWithLabel:@"BodyText" defaultSize:0];
-}
-
-- (UIColor *)textColorForBodyText {
-    UIColor *color = [self matchTextColorWithLabel:@"BodyText"];
-    if (!color)
-        color = [UIColor blackColor];
-    return color;
+- (NSString *)defaultFontName
+{
+    NSString *fontName = nil;
+    NSDictionary *fontInfo = [fontDict objectForKey:KGOThemePropertyBodyText];
+    if (fontInfo) {
+        fontName = [fontInfo stringForKey:@"font" nilIfEmpty:YES];
+    }
+    
+    if (!fontName) {
+        fontName = [[UIFont systemFontOfSize:[UIFont systemFontSize]] fontName];
+    }
+    
+    return fontName;
 }
 
 - (CGFloat)defaultFontSize
 {
-    CGFloat fontSize = [[fontDict objectForKey:@"DefaultFontSize"] floatValue];
-    if (fontSize) {
-        return fontSize;
+    static CGFloat FontSize = 0;
+    
+    if (!FontSize) {
+        
+        FontSize = [UIFont systemFontSize];
+
+        NSDictionary *fontInfo = [fontDict objectForKey:KGOThemePropertyBodyText];
+        if (fontInfo) {
+            CGFloat fontOffset = [fontInfo floatForKey:@"size"];
+            FontSize += fontOffset;
+        }
     }
-    return [UIFont systemFontSize];
+
+    return FontSize;
+}
+
+- (UIFont *)fontForThemedProperty:(NSString *)themeProperty
+{
+    UIFont *font = nil;
+    
+    NSString *fontName = nil;
+    CGFloat fontSize = [self defaultFontSize];
+    
+    NSDictionary *fontInfo = [fontDict objectForKey:themeProperty];
+    
+    if (fontInfo) {
+        fontName = [fontInfo stringForKey:@"font" nilIfEmpty:YES];
+        fontSize += [fontInfo floatForKey:@"size"];
+        if ([fontInfo boolForKey:@"bold"]) {
+            // short circuit if bold font is defined
+            font = [UIFont fontWithName:[NSString stringWithFormat:@"%@-Bold", fontName]
+                                   size:fontSize];
+        } else {
+            font = [UIFont fontWithName:fontName size:fontSize];
+        }
+        
+    } else {
+        font = [UIFont fontWithName:[self defaultFontName] size:fontSize];
+    }
+    
+    if (!font) {
+        font = [UIFont systemFontOfSize:fontSize];
+    }
+    
+    return font;
+}
+
+- (UIColor *)textColorForThemedProperty:(NSString *)themeProperty
+{
+    UIColor *color = nil;
+    NSDictionary *fontInfo = [fontDict objectForKey:themeProperty];
+    if (fontInfo) {
+        NSString *hexString = [fontInfo objectForKey:@"color"];
+        if (hexString) {
+            color = [UIColor colorWithHexString:hexString];
+        }
+    }
+    
+    if (!color) {
+        color = [UIColor blackColor];
+    }
+    
+    return color;
 }
 
 #pragma mark Colors
+
+- (UIColor *)matchBackgroundColorWithLabel:(NSString *)label {
+    UIColor *color = nil;
+    NSString *colorString = [[themeDict objectForKey:@"Colors"] objectForKey:label];
+    if (colorString) {
+        // check if there is a valid image first
+        UIImage *image = [UIImage imageWithPathName:colorString];
+        if (image) {
+            // TODO: if we get to this point we need to make sure iphone/ipad resources are distinguished
+            color = [UIColor colorWithPatternImage:image];
+        } else {
+            color = [UIColor colorWithHexString:colorString];
+        }
+    }
+    return color;
+}
 
 - (UIColor *)linkColor {
     UIColor *color = [self matchBackgroundColorWithLabel:@"Link"];
@@ -133,92 +214,6 @@ static KGOTheme *s_sharedTheme = nil;
     return nil;
 }
 
-#pragma mark UITableView
-
-- (UIFont *)fontForTableCellTitleWithStyle:(KGOTableCellStyle)style {
-    switch (style) {
-        case KGOTableCellStyleValue2:
-            return [self matchBoldFontWithLabel:@"TableCellValue2Title" defaultSize:-1];
-        case KGOTableCellStyleBodyText:
-            return [self matchFontWithLabel:@"TableCellTitle" defaultSize:0];
-        case KGOTableCellStyleURL:
-            return [self matchFontWithLabel:@"TableCellTitle" defaultSize:2];
-        default: // default, subtitle, value1
-            return [self matchBoldFontWithLabel:@"TableCellTitle" defaultSize:2];
-    }
-}
-
-- (UIColor *)textColorForTableCellTitleWithStyle:(KGOTableCellStyle)style {
-    UIColor *color = nil;
-    switch (style) {
-        case KGOTableCellStyleValue2:
-            color = [self matchTextColorWithLabel:@"TableCellValue2Title"];
-            break;
-        default:
-            color = [self matchTextColorWithLabel:@"TableCellTitle"];
-            break;
-    }
-    if (!color) {
-		NSLog(@"no color configured for table cell style %d", style);
-        color = [UIColor blackColor];
-	}
-    return color;
-}
-
-- (UIFont *)fontForTableCellSubtitleWithStyle:(KGOTableCellStyle)style {
-    switch (style) {
-        case KGOTableCellStyleValue1:
-            return [self matchFontWithLabel:@"TableCellValue1Subtitle" defaultSize:-2];
-        case KGOTableCellStyleValue2:
-            return [self matchBoldFontWithLabel:@"TableCellTitle" defaultSize:2];
-        default:
-            return [self matchFontWithLabel:@"TableCellSubtitle" defaultSize:-2];
-    }
-}
-
-- (UIColor *)textColorForTableCellSubtitleWithStyle:(KGOTableCellStyle)style {
-    UIColor *color = nil;
-    
-    switch (style) {
-        case KGOTableCellStyleValue1:
-            color = [self matchTextColorWithLabel:@"TableCellValue1Subtitle"];
-            break;
-        case KGOTableCellStyleValue2:
-            color = [self matchTextColorWithLabel:@"TableCellValue2Subitle"];
-            break;
-        default:
-            color = [self matchTextColorWithLabel:@"TableCellSubtitle"];
-            break;
-    }
-    if (!color) {
-		NSLog(@"no color configured for table cell style %d", style);
-        color = [UIColor blackColor];
-	}
-    return color;
-}
-
-- (UIFont *)fontForGroupedSectionHeader {
-    return [self matchBoldFontWithLabel:@"GroupedSectionHeader" defaultSize:2];
-}
-
-- (UIColor *)textColorForGroupedSectionHeader {
-    UIColor *color = [self matchTextColorWithLabel:@"GroupedSectionHeader"];
-    if (!color)
-        color = [UIColor grayColor];
-    return color;
-}
-
-- (UIFont *)fontForPlainSectionHeader {
-    return [self matchBoldFontWithLabel:@"PlainSectionHeader" defaultSize:0];
-}
-
-- (UIColor *)textColorForPlainSectionHeader {
-    UIColor *color = [self matchTextColorWithLabel:@"PlainSectionHeader"];
-    if (!color)
-        color = [UIColor grayColor];
-    return color;
-}
-
 - (UIColor *)backgroundColorForPlainSectionHeader {
     UIColor *color = [self matchBackgroundColorWithLabel:@"PlainSectionHeaderBackground"];
     if (!color)
@@ -226,132 +221,57 @@ static KGOTheme *s_sharedTheme = nil;
     return color;
 }
 
-- (UIFont *)fontForTableFooter {
-    return [self matchBoldFontWithLabel:@"TableFooter" defaultSize:-3];
-}
-
-- (UIColor *)textColorForTableFooter {
-    UIColor *color = [self matchTextColorWithLabel:@"TableFooter"];
-    if (!color)
-        color = [UIColor grayColor];
-    return color;
-}
-
-#pragma mark UITableViewCell
-
-static NSString * KGOAccessoryImageBlank = @"common/action-blank.png";
-static NSString * KGOAccessoryImageChevron = @"common/action-arrow.png";
-static NSString * KGOAccessoryImageChevronHighlighted = @"common/action-arrow-highlighted.png";
-static NSString * KGOAccessoryImageCheckmark = @"common/action-checkmark.png";
-static NSString * KGOAccessoryImageCheckmarkHighlighted = @"common/action-checkmark-highlighted.png";
-
-// provide None, Blank, and Chevron by default.
-// other styles can be defined in theme plist
-- (UIImageView *)accessoryViewForType:(NSString *)accessoryType {
-    if (!accessoryType || [accessoryType isEqualToString:KGOAccessoryTypeNone]) {
-
-        return nil;
-
-    } else if ([accessoryType isEqualToString:KGOAccessoryTypeBlank]) {
-    
-        UIImage *image = [UIImage imageWithPathName:KGOAccessoryImageBlank];
-        return [[[UIImageView alloc] initWithImage:image] autorelease];
-        
-    } else if ([accessoryType isEqualToString:KGOAccessoryTypeChevron]) {
-
-        UIImage *image = [UIImage imageWithPathName:KGOAccessoryImageChevron];
-        UIImage *highlightedImage = [UIImage imageWithPathName:KGOAccessoryImageChevronHighlighted];
-        return [[[UIImageView alloc] initWithImage:image highlightedImage:highlightedImage] autorelease];
-    
-    } else if ([accessoryType isEqualToString:KGOAccessoryTypeCheckmark]) {
-        
-        UIImage *image = [UIImage imageWithPathName:KGOAccessoryImageCheckmark];
-        UIImage *highlightedImage = [UIImage imageWithPathName:KGOAccessoryImageCheckmarkHighlighted];
-        return [[[UIImageView alloc] initWithImage:image highlightedImage:highlightedImage] autorelease];
-        
-    } else {
-
-        NSDictionary *actionDict = [[themeDict objectForKey:@"TableViewCellActions"] objectForKey:accessoryType];
-        NSString *imageName = [NSString stringWithFormat:@"common/%@.png", [actionDict objectForKey:@"image"]];
-        NSString *highlightedName = [NSString stringWithFormat:@"common/%@.png", [actionDict objectForKey:@"highlightedImage"]];
-
-        UIImage *image = [UIImage imageWithPathName:imageName];
-        UIImage *highlightedImage = [UIImage imageWithPathName:highlightedName];
-        
-        return [[[UIImageView alloc] initWithImage:image highlightedImage:highlightedImage] autorelease];
-    }    
-}
-
 - (UIColor *)backgroundColorForSecondaryCell {
-    UIColor *color = [self matchTextColorWithLabel:@"SecondaryCellBackground"];
+    UIColor *color = [self matchBackgroundColorWithLabel:@"SecondaryCellBackground"];
     if (!color)
         color = [UIColor whiteColor];
     return color;
 }
 
-#pragma mark -
+#pragma mark UITableViewCell
 
-- (NSString *)fontNameForLabel:(NSString *)label size:(CGFloat *)fontSize {
-    if (!label)
-        return nil;
-
-    NSDictionary *fontInfo = [fontDict objectForKey:label];
-    NSString *fontName = nil;
-    if (fontInfo) {
-        NSNumber *newFontSize = [themeDict objectForKey:@"size"];
-        if (newFontSize) {
-            *fontSize = [newFontSize floatValue];
-        }
-        fontName = [themeDict objectForKey:@"font"];
+// provide None, Blank, and Chevron by default.
+// other styles can be defined in theme plist
+- (UIImageView *)accessoryViewForType:(NSString *)accessoryType {
+    
+    static NSDictionary *CellAccessoryImages = nil;
+    static NSDictionary *CellAccessoryImagesHighlighted = nil;
+    
+    if (CellAccessoryImages == nil) {
+        CellAccessoryImages = [[NSDictionary alloc] initWithObjectsAndKeys:
+                               @"common/action-blank", KGOAccessoryTypeBlank,
+                               @"common/action-checkmark", KGOAccessoryTypeCheckmark,
+                               @"common/action-arrow", KGOAccessoryTypeChevron,
+                               @"common/action-phone", KGOAccessoryTypePhone,
+                               @"common/action-people", KGOAccessoryTypePeople,
+                               @"common/action-map", KGOAccessoryTypeMap,
+                               @"common/action-email", KGOAccessoryTypeEmail,
+                               @"common/action-external", KGOAccessoryTypeExternal,
+                               nil];
     }
-    return fontName;
-}
-
-- (UIFont *)matchFontWithLabel:(NSString *)label defaultSize:(CGFloat)defaultSize {
-    CGFloat fontSize = [self defaultFontSize];
-    CGFloat fontOffset = defaultSize;
-    NSString *fontName = [self fontNameForLabel:label size:&fontOffset];
-    fontSize += fontOffset;
-    if (!fontName)
-        fontName = [fontDict objectForKey:@"DefaultFont"];
-    if (fontName)
-        return [UIFont fontWithName:fontName size:fontSize];
-    return [UIFont systemFontOfSize:fontSize];
-}
-
-- (UIFont *)matchBoldFontWithLabel:(NSString *)label defaultSize:(CGFloat)defaultSize {
-    CGFloat fontSize = [self defaultFontSize];
-    CGFloat fontOffset = defaultSize;
-    NSString *fontName = [self fontNameForLabel:label size:&fontOffset];
-    fontSize += fontOffset;
-    if (!fontName)
-        fontName = [fontDict objectForKey:@"DefaultBoldFont"];
-    if (fontName)
-        return [UIFont fontWithName:fontName size:fontSize];
-    return [UIFont boldSystemFontOfSize:fontSize];
-}
-
-- (UIColor *)matchTextColorWithLabel:(NSString *)label {
-    NSString *hexString = [[fontDict objectForKey:label] objectForKey:@"color"];
-    if (hexString)
-        return [UIColor colorWithHexString:hexString];
-    return nil;
-}
-
-- (UIColor *)matchBackgroundColorWithLabel:(NSString *)label {
-    UIColor *color = nil;
-    NSString *colorString = [[themeDict objectForKey:@"Colors"] objectForKey:label];
-    if (colorString) {
-        // check if there is a valid image first
-        UIImage *image = [UIImage imageWithPathName:colorString];
+    if (CellAccessoryImagesHighlighted == nil) {
+        CellAccessoryImagesHighlighted = [[NSDictionary alloc] initWithObjectsAndKeys:
+                                          @"common/action-checkmark-highlighted", KGOAccessoryTypeCheckmark,
+                                          @"common/action-arrow-highlighted", KGOAccessoryTypeChevron,
+                                          @"common/action-phone-highlighted", KGOAccessoryTypePhone,
+                                          @"common/action-people-highlighted", KGOAccessoryTypePeople,
+                                          @"common/action-map-highlighted", KGOAccessoryTypeMap,
+                                          @"common/action-email-highlighted", KGOAccessoryTypeEmail,
+                                          @"common/action-external-highlighted", KGOAccessoryTypeExternal,
+                                          nil];
+    }
+    
+    if (accessoryType && ![accessoryType isEqualToString:KGOAccessoryTypeNone]) {
+        UIImage *image = [CellAccessoryImages objectForKey:accessoryType];
+        UIImage *highlightedImage = [CellAccessoryImages objectForKey:accessoryType];
         if (image) {
-            // TODO: if we get to this point we need to make sure iphone/ipad resources are distinguished
-            color = [UIColor colorWithPatternImage:image];
-        } else {
-            color = [UIColor colorWithHexString:colorString];
+            if (highlightedImage) {
+                return [[[UIImageView alloc] initWithImage:image highlightedImage:highlightedImage] autorelease];
+            }
+            return [[[UIImageView alloc] initWithImage:image] autorelease];
         }
     }
-    return color;
+    return nil;
 }
 
 #pragma mark - Private
@@ -385,11 +305,6 @@ static NSString * KGOAccessoryImageCheckmarkHighlighted = @"common/action-checkm
             if (font) {
                 [mutableFontDict setObject:fontPref forKey:@"DefaultFont"];
             }
-            NSString *boldFontPref = [NSString stringWithFormat:@"%@-Bold", fontPref];
-            font = [UIFont fontWithName:boldFontPref size:fontSize];
-            if (font) {
-                [mutableFontDict setObject:boldFontPref forKey:@"DefaultBoldFont"];
-            }
         }
     }
     fontDict = [mutableFontDict copy];
@@ -402,11 +317,18 @@ static NSString * KGOAccessoryImageCheckmarkHighlighted = @"common/action-checkm
 
 #pragma mark -
 
-- (id)init {
+- (id)init
+{
     self = [super init];
     if (self) {
-		NSString * file = [[NSBundle mainBundle] pathForResource:@"ThemeConfig" ofType:@"plist"];
-        themeDict = [[NSDictionary alloc] initWithContentsOfFile:file];
+        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+            NSString *file = [[NSBundle mainBundle] pathForResource:@"ThemeConfig-iPad" ofType:@"plist"];
+            themeDict = [[NSDictionary alloc] initWithContentsOfFile:file];
+        }
+        if (!themeDict) {
+            NSString *file = [[NSBundle mainBundle] pathForResource:@"ThemeConfig" ofType:@"plist"];
+            themeDict = [[NSDictionary alloc] initWithContentsOfFile:file];
+        }
         [self loadFontPreferences];
         
         [[NSNotificationCenter defaultCenter] addObserver:self
@@ -417,7 +339,8 @@ static NSString * KGOAccessoryImageCheckmarkHighlighted = @"common/action-checkm
     return self;
 }
 
-- (void)dealloc {
+- (void)dealloc
+{
 	fontDict = nil;
     [themeDict release];
     [super dealloc];

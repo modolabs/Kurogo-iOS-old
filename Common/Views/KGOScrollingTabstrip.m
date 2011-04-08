@@ -120,7 +120,7 @@
     [aButton setTitle:title forState:UIControlStateNormal];
     [aButton setTitleColor:[UIColor colorWithHexString:@"#E0E0E0"] forState:UIControlStateNormal];
     [aButton setTitleColor:[UIColor whiteColor] forState:UIControlStateHighlighted];
-    aButton.titleLabel.font = [[KGOTheme sharedTheme] defaultSmallBoldFont];
+    aButton.titleLabel.font = [[KGOTheme sharedTheme] fontForThemedProperty:KGOThemePropertySmallPrint];
     aButton.titleEdgeInsets = UIEdgeInsetsMake(0, 0, 1.0, 0); // needed to center text vertically within button
     CGSize size = [aButton.titleLabel.text sizeWithFont:aButton.titleLabel.font];
 

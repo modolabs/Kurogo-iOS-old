@@ -4,7 +4,6 @@
 #import "AboutMITVC.h"
 #import "MITMailComposeController.h"
 #import "KGOTheme.h"
-#import "ThemeConstants.h"
 #import "Foundation+KGOAdditions.h"
 #import "KGOAppDelegate+ModuleAdditions.h"
 
@@ -49,8 +48,8 @@
     footerLabel.text = copyright; //NSLocalizedString(@"AboutFooterText", nil);
     footerLabel.backgroundColor = [UIColor clearColor];
     footerLabel.textAlignment = UITextAlignmentCenter;
-    footerLabel.textColor = [[KGOTheme sharedTheme] textColorForTableFooter];
-    footerLabel.font = [[KGOTheme sharedTheme] fontForTableFooter];
+    footerLabel.font = [[KGOTheme sharedTheme] fontForThemedProperty:KGOThemePropertySmallPrint];
+    footerLabel.textColor = [[KGOTheme sharedTheme] textColorForThemedProperty:KGOThemePropertySmallPrint];
     footerLabel.lineBreakMode = UILineBreakModeWordWrap;
     footerLabel.numberOfLines = 0;
     [footerView addSubview:footerLabel];
@@ -117,8 +116,8 @@
                         cell.imageView.image = [UIImage imageWithPathName:@"common/githash.png"];
                     }
                     cell.textLabel.textAlignment = UITextAlignmentCenter;
-                    cell.textLabel.font = [[KGOTheme sharedTheme] fontForTableCellTitleWithStyle:UITableViewCellStyleDefault];
-        			cell.textLabel.textColor = [[KGOTheme sharedTheme] textColorForTableCellTitleWithStyle:UITableViewCellStyleDefault];
+                    cell.textLabel.font = [[KGOTheme sharedTheme] fontForThemedProperty:KGOThemePropertyNavListTitle];
+        			cell.textLabel.textColor = [[KGOTheme sharedTheme] textColorForThemedProperty:KGOThemePropertyNavListTitle];
                     cell.accessoryType = UITableViewCellAccessoryNone;
                     cell.selectionStyle = UITableViewCellSelectionStyleNone;
                     cell.backgroundColor = [UIColor whiteColor];
@@ -129,8 +128,8 @@
                     cell.textLabel.text = aboutText;
                     cell.textLabel.lineBreakMode = UILineBreakModeWordWrap;
                     cell.textLabel.numberOfLines = 0;
-                    cell.textLabel.font = [[KGOTheme sharedTheme] fontForBodyText];
-        			cell.textLabel.textColor = [[KGOTheme sharedTheme] textColorForTableCellTitleWithStyle:UITableViewCellStyleDefault];
+                    cell.textLabel.font = [[KGOTheme sharedTheme] fontForThemedProperty:KGOThemePropertyBodyText];
+        			cell.textLabel.textColor = [[KGOTheme sharedTheme] textColorForThemedProperty:KGOThemePropertyNavListTitle];
                     cell.accessoryType = UITableViewCellAccessoryNone;
                     cell.selectionStyle = UITableViewCellSelectionStyleNone;
                     cell.backgroundColor = [UIColor whiteColor];
@@ -146,19 +145,19 @@
                     cell.textLabel.text = orgName;
                     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
                     cell.selectionStyle = UITableViewCellSelectionStyleGray;
-                    cell.textLabel.textColor = [[KGOTheme sharedTheme] textColorForTableCellTitleWithStyle:UITableViewCellStyleDefault];
+                    cell.textLabel.textColor = [[KGOTheme sharedTheme] textColorForThemedProperty:KGOThemePropertyNavListTitle];
                     break;
                 
                 case 1:
                     cell.textLabel.text = NSLocalizedString(@"Credits", nil);
                     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
                     cell.selectionStyle = UITableViewCellSelectionStyleGray;
-                    cell.textLabel.textColor = [[KGOTheme sharedTheme] textColorForTableCellTitleWithStyle:UITableViewCellStyleDefault];
+                    cell.textLabel.textColor = [[KGOTheme sharedTheme] textColorForThemedProperty:KGOThemePropertyNavListTitle];
                     break;
                     
                 case 2:
                     cell.textLabel.text = NSLocalizedString(@"Send Feedback", nil);
-                    cell.accessoryView = [[KGOTheme sharedTheme] accessoryViewForType:TableViewCellAccessoryEmail];
+                    cell.accessoryView = [[KGOTheme sharedTheme] accessoryViewForType:KGOAccessoryTypeEmail];
                     cell.selectionStyle = UITableViewCellSelectionStyleGray;
                     break;
                 break;

@@ -438,6 +438,8 @@
     UITableViewCell *cell = nil;
     KGOTableCellStyle internalStyle;
     UITableViewCellStyle style;
+    UIFont *titleFont = nil;
+    UIFont *subtitleFont = nil;
 	
 	if ([dataSource respondsToSelector:@selector(tableView:styleForCellAtIndexPath:)]) {
 		internalStyle = [dataSource tableView:tableView styleForCellAtIndexPath:indexPath];
@@ -446,10 +448,25 @@
 	}
     
     switch (internalStyle) {
-        case KGOTableCellStyleValue1:   style = UITableViewCellStyleValue1; break;
-        case KGOTableCellStyleValue2:   style = UITableViewCellStyleValue2; break;
-        case KGOTableCellStyleSubtitle: style = UITableViewCellStyleSubtitle; break;
-        default:                        style = UITableViewCellStyleDefault; break;
+        case KGOTableCellStyleValue1:
+            style = UITableViewCellStyleValue1;
+            titleFont = [[KGOTheme sharedTheme] fontForThemedProperty:KGOThemePropertyNavListTitle];
+            subtitleFont = [[KGOTheme sharedTheme] fontForThemedProperty:KGOThemePropertyBodyText];
+            break;
+        case KGOTableCellStyleValue2:
+            style = UITableViewCellStyleValue2;
+            titleFont = [[KGOTheme sharedTheme] fontForThemedProperty:KGOThemePropertyNavListLabel];
+            subtitleFont = [[KGOTheme sharedTheme] fontForThemedProperty:KGOThemePropertyNavListValue];
+            break;
+        case KGOTableCellStyleSubtitle:
+            titleFont = [[KGOTheme sharedTheme] fontForThemedProperty:KGOThemePropertyNavListTitle];
+            subtitleFont = [[KGOTheme sharedTheme] fontForThemedProperty:KGOThemePropertyNavListSubtitle];
+            style = UITableViewCellStyleSubtitle;
+            break;
+        default:
+            titleFont = [[KGOTheme sharedTheme] fontForThemedProperty:KGOThemePropertyNavListTitle];
+            style = UITableViewCellStyleDefault;
+            break;
     }
     
 	NSString *cellID = [NSString stringWithFormat:@"%d.%d", indexPath.section, internalStyle];
@@ -466,8 +483,12 @@
 		}
 	}
     
-    cell.textLabel.font = [[KGOTheme sharedTheme] fontForTableCellTitleWithStyle:internalStyle];
-    cell.detailTextLabel.font = [[KGOTheme sharedTheme] fontForTableCellSubtitleWithStyle:internalStyle];
+    // TODO: set theme colors as well
+    
+    cell.textLabel.font = titleFont;
+    if (subtitleFont) {
+        cell.detailTextLabel.font = subtitleFont;
+    }
 	
     if ([dataSource respondsToSelector:@selector(tableView:manipulatorForCellAtIndexPath:)]) {
         CellManipulator manipulateCell = [dataSource tableView:tableView manipulatorForCellAtIndexPath:indexPath];
@@ -508,9 +529,9 @@
 
     if (title) {
         if (tableView.style == UITableViewStylePlain) {
-            height = [[[KGOTheme sharedTheme] fontForPlainSectionHeader] lineHeight] + PLAIN_SECTION_HEADER_VPADDING;
+            height = [[[KGOTheme sharedTheme] fontForThemedProperty:KGOThemePropertySectionHeader] lineHeight] + PLAIN_SECTION_HEADER_VPADDING;
         } else {
-            height = [[[KGOTheme sharedTheme] fontForGroupedSectionHeader] lineHeight] + GROUPED_SECTION_HEADER_VPADDING;
+            height = [[[KGOTheme sharedTheme] fontForThemedProperty:KGOThemePropertySectionHeaderGrouped] lineHeight] + GROUPED_SECTION_HEADER_VPADDING;
         }
     }
     return height;
@@ -559,14 +580,14 @@
     CGFloat viewHeight;
     
     if (tableView.style == UITableViewStylePlain) {
-        font = [[KGOTheme sharedTheme] fontForPlainSectionHeader];
-        textColor = [[KGOTheme sharedTheme] textColorForPlainSectionHeader];
+        font = [[KGOTheme sharedTheme] fontForThemedProperty:KGOThemePropertySectionHeader];
+        textColor = [[KGOTheme sharedTheme] textColorForThemedProperty:KGOThemePropertySectionHeader];
         bgColor = [[KGOTheme sharedTheme] backgroundColorForPlainSectionHeader];
         hPadding = 10.0f;
         viewHeight = font.pointSize + PLAIN_SECTION_HEADER_VPADDING;
     } else {
-        font = [[KGOTheme sharedTheme] fontForGroupedSectionHeader];
-        textColor = [[KGOTheme sharedTheme] textColorForGroupedSectionHeader];
+        font = [[KGOTheme sharedTheme] fontForThemedProperty:KGOThemePropertySectionHeaderGrouped];
+        textColor = [[KGOTheme sharedTheme] textColorForThemedProperty:KGOThemePropertySectionHeaderGrouped];
         bgColor = [UIColor clearColor];
         hPadding = 20.0f;
         viewHeight = font.pointSize + GROUPED_SECTION_HEADER_VPADDING;

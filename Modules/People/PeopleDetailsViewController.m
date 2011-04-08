@@ -5,7 +5,6 @@
 #import "HarvardNavigationController.h"
 #import "AnalyticsWrapper.h"
 #import "MITMailComposeController.h"
-#import "ThemeConstants.h"
 #import "KGOTheme.h"
 #import "CoreDataManager.h"
 
@@ -51,7 +50,7 @@
     
     // information in header: photo, name
     
-    UIFont *font = [[KGOTheme sharedTheme] fontForContentTitle];
+    UIFont *font = [[KGOTheme sharedTheme] fontForThemedProperty:KGOThemePropertyContentTitle];
     UILabel *nameLabel = [UILabel multilineLabelWithText:self.person.name font:font width:self.tableView.frame.size.width - 20];
     nameLabel.frame = CGRectMake(10, 10, nameLabel.frame.size.width, nameLabel.frame.size.height);
 
@@ -209,13 +208,13 @@
         title = [self displayTitleForSection:indexPath.section label:label];
 
         if (indexPath.section == _addressSection) {
-            accessoryTag = TableViewCellAccessoryMap;
+            accessoryTag = KGOAccessoryTypeMap;
             // TODO: check for lookup-ability of address
             //accessoryTag = KGOAccessoryTypeBlank;
         } else if (indexPath.section == _emailSection) {
-            accessoryTag = TableViewCellAccessoryEmail;
+            accessoryTag = KGOAccessoryTypeEmail;
         } else if (indexPath.section == _phoneSection) {
-            accessoryTag = TableViewCellAccessoryPhone;
+            accessoryTag = KGOAccessoryTypePhone;
         }
     }
     
@@ -234,13 +233,13 @@
 		NSDictionary *personAttribute = [[self.sectionArray objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
         NSString *value = [personAttribute objectForKey:@"value"];
 
-        UIFont *font = [[KGOTheme sharedTheme] fontForTableCellSubtitleWithStyle:UITableViewCellStyleValue2];
+        UIFont *font = [[KGOTheme sharedTheme] fontForThemedProperty:KGOThemePropertyNavListValue];
         
         // inner 20 for padding; 0.75 is approx ratio allocated to detail text label, 20 for accessory
         CGFloat width = floor((tableView.frame.size.width - 20) * 0.75) - 20;
         CGFloat originX = self.tableView.frame.size.width - 20 - width;
         
-        UIColor *textColor = [[KGOTheme sharedTheme] textColorForTableCellSubtitleWithStyle:UITableViewCellStyleValue2];
+        UIColor *textColor = [[KGOTheme sharedTheme] textColorForThemedProperty:KGOThemePropertyNavListValue];
 
         // use a textView for the address so people can copy/paste.
         if (indexPath.section == _addressSection) {

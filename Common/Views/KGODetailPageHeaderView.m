@@ -100,8 +100,8 @@
     if (!_titleLabel) {
         _titleLabel = [[UILabel alloc] init];
         _titleLabel.backgroundColor = [UIColor clearColor];
-        _titleLabel.font = [[KGOTheme sharedTheme] fontForContentTitle];
-        _titleLabel.textColor = [[KGOTheme sharedTheme] textColorForContentTitle];
+        _titleLabel.font = [[KGOTheme sharedTheme] fontForThemedProperty:KGOThemePropertyContentTitle];
+        _titleLabel.textColor = [[KGOTheme sharedTheme] textColorForThemedProperty:KGOThemePropertyContentTitle];
         _titleLabel.numberOfLines = MAX_TITLE_LINES;
     }
     return _titleLabel;
@@ -112,8 +112,8 @@
     if (!_subtitleLabel) {
         _subtitleLabel = [[UILabel alloc] init];
         _subtitleLabel.backgroundColor = [UIColor clearColor];
-        _subtitleLabel.font = [[KGOTheme sharedTheme] fontForBodyText];
-        _subtitleLabel.textColor = [[KGOTheme sharedTheme] textColorForBodyText];
+        _subtitleLabel.font = [[KGOTheme sharedTheme] fontForThemedProperty:KGOThemePropertyBodyText];
+        _subtitleLabel.textColor = [[KGOTheme sharedTheme] textColorForThemedProperty:KGOThemePropertyBodyText];
         _subtitleLabel.numberOfLines = MAX_SUBTITLE_LINES;
     }
     return _subtitleLabel;

@@ -9,6 +9,7 @@
 #import "KGOHomeScreenWidget.h"
 #import "KGOAppDelegate+ModuleAdditions.h"
 #import "KGORequestManager.h"
+#import "Foundation+KGOAdditions.h"
 
 @interface KGOHomeScreenViewController (Private)
 
@@ -16,6 +17,7 @@
 - (void)moduleListDidChange:(NSNotification *)aNotification;
 + (GridSpacing)spacingWithArgs:(NSArray *)args;
 + (GridPadding)paddingWithArgs:(NSArray *)args;
++ (CGSize)sizeWithArgs:(NSArray *)args;
 + (CGSize)maxLabelDimensionsForModules:(NSArray *)modules font:(UIFont *)font;
 
 @end
@@ -175,7 +177,7 @@
         spinny.autoresizingMask = allMargins;
         
         NSString *loadingText = NSLocalizedString(@"Loading...", nil);
-        UIFont *font = [[KGOTheme sharedTheme] fontForBodyText];
+        UIFont *font = [[KGOTheme sharedTheme] fontForThemedProperty:KGOThemePropertyBodyText];
         CGSize size = [loadingText sizeWithFont:font];
         UILabel *loadingLabel = [[[UILabel alloc] initWithFrame:CGRectMake(0, 0, size.width, size.height)] autorelease];
         loadingLabel.text = loadingText;
@@ -326,8 +328,11 @@
     KGOModule *aModule = [modules lastObject];
     CGSize labelSize = (isPrimary) ? [self moduleLabelMaxDimensions] : [self secondaryModuleLabelMaxDimensions];
     CGRect frame = CGRectZero;
-    
-    frame.size = [aModule iconImage].size;
+
+    frame.size = (isPrimary) ? [self moduleIconSize] : [self secondaryModuleIconSize];
+    if (!frame.size.width || !frame.size.height) {
+        frame.size = [[aModule iconImage] size];
+    }
     if (useCompactIcons) {
         frame.size.width = fmax(frame.size.width, labelSize.width);
         frame.size.height += labelSize.height + (isPrimary) ? [self moduleLabelTitleMargin] : [self secondaryModuleLabelTitleMargin];
@@ -424,12 +429,26 @@
 
 - (UIFont *)moduleLabelFont {
     NSDictionary *fontArgs = [_preferences objectForKey:@"ModuleLabelFont"];
-    return [UIFont fontWithName:[fontArgs objectForKey:@"font"] size:[[fontArgs objectForKey:@"size"] floatValue]];
+    NSString *fontName = [fontArgs objectForKey:@"font"];
+    if (!fontName) {
+        fontName = [[KGOTheme sharedTheme] defaultFontName];
+    }
+    CGFloat fontOffset = [fontArgs floatForKey:@"size"];
+    CGFloat fontSize = [[KGOTheme sharedTheme] defaultFontSize] + fontOffset;
+    
+    return [UIFont fontWithName:fontName size:fontSize];
 }
 
 - (UIFont *)moduleLabelFontLarge {
     NSDictionary *fontArgs = [_preferences objectForKey:@"ModuleLabelFontLarge"];
-    return [UIFont fontWithName:[fontArgs objectForKey:@"font"] size:[[fontArgs objectForKey:@"size"] floatValue]];
+    NSString *fontName = [fontArgs objectForKey:@"font"];
+    if (!fontName) {
+        fontName = [[KGOTheme sharedTheme] defaultFontName];
+    }
+    CGFloat fontOffset = [fontArgs floatForKey:@"size"];
+    CGFloat fontSize = [[KGOTheme sharedTheme] defaultFontSize] + fontOffset;
+    
+    return [UIFont fontWithName:fontName size:fontSize];
 }
 
 - (UIColor *)moduleLabelTextColor {
@@ -455,11 +474,23 @@
     return [number floatValue];
 }
 
+- (CGSize)moduleIconSize {
+    NSArray *args = [[_preferences objectForKey:@"ModuleIconSize"] componentsSeparatedByString:@" "];
+    return [KGOHomeScreenViewController sizeWithArgs:args];
+}
+
 // secondary modules
 
 - (UIFont *)secondaryModuleLabelFont {
     NSDictionary *fontArgs = [_preferences objectForKey:@"SecondaryModuleLabelFont"];
-    return [UIFont fontWithName:[fontArgs objectForKey:@"font"] size:[[fontArgs objectForKey:@"size"] floatValue]];
+    NSString *fontName = [fontArgs objectForKey:@"font"];
+    if (!fontName) {
+        fontName = [[KGOTheme sharedTheme] defaultFontName];
+    }
+    CGFloat fontOffset = [fontArgs floatForKey:@"size"];
+    CGFloat fontSize = [[KGOTheme sharedTheme] defaultFontSize] + fontOffset;
+    
+    return [UIFont fontWithName:fontName size:fontSize];
 }
 
 - (UIColor *)secondaryModuleLabelTextColor {
@@ -483,6 +514,11 @@
 - (CGFloat)secondaryModuleLabelTitleMargin {
     NSNumber *number = [_preferences objectForKey:@"SecondaryModuleLabelTitleMargin"];
     return [number floatValue];
+}
+
+- (CGSize)secondaryModuleIconSize {
+    NSArray *args = [[_preferences objectForKey:@"SecondaryModuleIconSize"] componentsSeparatedByString:@" "];
+    return [KGOHomeScreenViewController sizeWithArgs:args];
 }
 
 #pragma mark Private
@@ -566,6 +602,22 @@
         }
     }
     return spacing;
+}
+
++ (CGSize)sizeWithArgs:(NSArray *)args {
+    CGSize size;
+    for (NSInteger i = 0; i < args.count; i++) {
+        CGFloat value = [[args objectAtIndex:i] floatValue];
+        switch (i) {
+            case 0:
+                size.width = value;
+                break;
+            case 1:
+                size.height = value;
+                break;
+        }
+    }
+    return size;
 }
 
 + (CGSize)maxLabelDimensionsForModules:(NSArray *)modules font:(UIFont *)font {

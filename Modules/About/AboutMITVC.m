@@ -45,8 +45,8 @@
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
     }
     cell.textLabel.text = orgAboutText; //NSLocalizedString(@"AboutOrgText", nil);
-    cell.textLabel.font = [[KGOTheme sharedTheme] fontForBodyText];
-    cell.textLabel.textColor = [[KGOTheme sharedTheme] textColorForTableCellTitleWithStyle:UITableViewCellStyleDefault];
+    cell.textLabel.font = [[KGOTheme sharedTheme] fontForThemedProperty:KGOThemePropertyBodyText];
+    cell.textLabel.textColor = [[KGOTheme sharedTheme] textColorForThemedProperty:KGOThemePropertyNavListTitle];
     cell.textLabel.lineBreakMode = UILineBreakModeWordWrap;
     cell.textLabel.numberOfLines = 0;
 	

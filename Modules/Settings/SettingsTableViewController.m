@@ -84,7 +84,8 @@
     NSArray *options = [_availableUserSettings objectForKey:key];
     NSString *optionValue = [options objectAtIndex:indexPath.row];
     cell.textLabel.text = optionValue;
-    cell.textLabel.font = [[KGOTheme sharedTheme] fontForTableCellTitleWithStyle:KGOTableCellStyleDefault];
+    cell.textLabel.font = [[KGOTheme sharedTheme] fontForThemedProperty:KGOThemePropertyNavListTitle];
+    cell.textLabel.textColor = [[KGOTheme sharedTheme] textColorForThemedProperty:KGOThemePropertyNavListTitle];
     
     NSString *selectedOption = [_setUserSettings objectForKey:key];
     if ([selectedOption isEqualToString:optionValue]) {
