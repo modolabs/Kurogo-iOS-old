@@ -55,35 +55,20 @@ static KGOTheme *s_sharedTheme = nil;
 
 - (NSString *)defaultFontName
 {
-    NSString *fontName = nil;
-    NSDictionary *fontInfo = [fontDict objectForKey:KGOThemePropertyBodyText];
-    if (fontInfo) {
-        fontName = [fontInfo stringForKey:@"font" nilIfEmpty:YES];
-    }
-    
+    NSString *fontName = [fontDict stringForKey:@"DefaultFont" nilIfEmpty:YES];
     if (!fontName) {
         fontName = [[UIFont systemFontOfSize:[UIFont systemFontSize]] fontName];
     }
-    
     return fontName;
 }
 
 - (CGFloat)defaultFontSize
 {
-    static CGFloat FontSize = 0;
-    
-    if (!FontSize) {
-        
-        FontSize = [UIFont systemFontSize];
-
-        NSDictionary *fontInfo = [fontDict objectForKey:KGOThemePropertyBodyText];
-        if (fontInfo) {
-            CGFloat fontOffset = [fontInfo floatForKey:@"size"];
-            FontSize += fontOffset;
-        }
+    CGFloat fontSize = [fontDict floatForKey:@"DefaultFontSize"];
+    if (!fontSize) {
+        fontSize = [UIFont systemFontSize];
     }
-
-    return FontSize;
+    return fontSize;
 }
 
 - (UIFont *)fontForThemedProperty:(NSString *)themeProperty
