@@ -92,7 +92,8 @@
         
         NSArray *categories = nil;
         if (self.parentCategory == nil) {
-            NSPredicate *pred = [NSPredicate predicateWithFormat:@"parentCategory = NULL"];
+            NSPredicate *pred = [NSPredicate predicateWithFormat:@"parentCategory = nil"];
+            //NSPredicate *pred = nil;
             categories = [[CoreDataManager sharedManager] objectsForEntity:self.categoryEntityName matchingPredicate:pred];
         } else {
             categories = [self.parentCategory children];

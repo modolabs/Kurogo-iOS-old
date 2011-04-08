@@ -185,6 +185,7 @@
     
     __block JSONObjectHandler createMapCategories;
     __block NSUInteger sortOrder = 0;
+    __block CoreDataManager *coreDataManager = [CoreDataManager sharedManager];
     createMapCategories = [[^(id jsonObj) {
         NSInteger categoriesCreated = 0;
         NSArray *jsonArray = (NSArray *)jsonObj;
@@ -216,6 +217,8 @@
             }
         }
         
+        [coreDataManager saveData];
+        
         return categoriesCreated;
     } copy] autorelease];
     
@@ -235,6 +238,7 @@
     KGOBookmarksViewController *vc = [[[KGOBookmarksViewController alloc] initWithStyle:UITableViewStylePlain] autorelease];
     vc.bookmarkedItems = array;
     vc.searchResultsDelegate = self;
+    // TODO: don't wrap in a nav controller for navstyles with no navigation controllers
     UINavigationController *navC = [[[UINavigationController alloc] initWithRootViewController:vc] autorelease];
     UIBarButtonItem *item = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone
                                                                            target:self
@@ -247,6 +251,7 @@
 	MapSettingsViewController *vc = [[[MapSettingsViewController alloc] initWithStyle:UITableViewStyleGrouped] autorelease];
     vc.title = @"Settings";
     vc.view.backgroundColor = [[KGOTheme sharedTheme] backgroundColorForApplication];
+    // TODO: don't wrap in a nav controller for navstyles with no navigation controllers
     UINavigationController *navC = [[[UINavigationController alloc] initWithRootViewController:vc] autorelease];
     UIBarButtonItem *item = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone
                                                                            target:self

@@ -4,7 +4,7 @@
 @class KGOPlacemark;
 
 @interface KGOMapCategory : NSManagedObject <KGOCategory> {
-@private
+    
 }
 @property (nonatomic, retain) NSString * identifier;
 @property (nonatomic, retain) NSString * title;

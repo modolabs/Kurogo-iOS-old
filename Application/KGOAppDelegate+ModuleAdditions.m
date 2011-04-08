@@ -214,10 +214,20 @@
                 case KGONavigationStyleTabletSplitView:
                 {
                     UISplitViewController *splitVC = (UISplitViewController *)_appHomeScreen;
-                    splitVC.viewControllers = [NSArray arrayWithObjects:
-                                               [splitVC.viewControllers objectAtIndex:0],
-                                               vc,
-                                               nil];
+                    UIViewController *detailVC = [splitVC.viewControllers objectAtIndex:1];
+                    if (detailVC.modalViewController) {
+                        if ([detailVC.modalViewController isKindOfClass:[UINavigationController class]]) {
+                            [(UINavigationController *)detailVC.modalViewController pushViewController:vc animated:YES];
+                        } else if (detailVC.modalViewController.navigationController) {
+                            [detailVC.modalViewController.navigationController pushViewController:vc animated:YES];
+                        }
+                        
+                    } else {
+                        splitVC.viewControllers = [NSArray arrayWithObjects:
+                                                   [splitVC.viewControllers objectAtIndex:0],
+                                                   vc,
+                                                   nil];
+                    }
                     break;
                 }
                 default:

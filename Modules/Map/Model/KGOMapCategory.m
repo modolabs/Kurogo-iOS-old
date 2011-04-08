@@ -12,6 +12,13 @@
 @dynamic subcategories;
 @dynamic parentCategory;
 
+- (NSString *)moduleTag
+{
+    // TODO: find a better way to set this.
+    // would anyone have an app with multiple map modules with browse categories?
+    return MapTag;
+}
+
 - (NSArray *)items {
 	return [self.places allObjects];
 }
@@ -47,10 +54,7 @@
                 category = [[CoreDataManager sharedManager] insertNewObjectForEntityForName:MapCategoryEntityName];
                 category.identifier = [NSString stringWithString:pathRep]; // pathRep is mutatable so make a copy
                 category.parentCategory = parentCategory;
-                //[[CoreDataManager sharedManager] saveData];
                 DLog(@"created new category with id %@, parent id: %@", category.identifier, category.parentCategory.identifier);
-            } else {
-                DLog(@"found category with identifier %@", category.identifier);
             }
 
             parentCategory = category;

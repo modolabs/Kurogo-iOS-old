@@ -94,13 +94,16 @@
 	NSEntityDescription *entity = [NSEntityDescription entityForName:entityName inManagedObjectContext:self.managedObjectContext];
 	NSFetchRequest *request = [[[NSFetchRequest alloc] init] autorelease];
 	[request setEntity:entity];
-	[request setPredicate:predicate];
+    if (predicate) {
+        [request setPredicate:predicate];
+    }
     if (sortDescriptors) {
         [request setSortDescriptors:sortDescriptors];
     }
-	
+NSLog(@"%@", self.managedObjectContext);
 	NSError *error = nil;
 	NSArray *objects = [self.managedObjectContext executeFetchRequest:request error:&error];
+NSLog(@"%@", objects);
     if (error) {
         NSLog(@"error fetching objects for %@: predicate: %@, error: %@", entityName, predicate, [error description]);
     }
@@ -119,6 +122,7 @@
 }
 
 - (void)saveData {
+    NSLog(@"saving: %@", self.managedObjectContext);
 	NSError *error;
 	if (![self.managedObjectContext save:&error]) {
         DLog(@"Failed to save to data store: %@", [error localizedDescription]);

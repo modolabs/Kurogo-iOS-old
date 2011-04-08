@@ -21,12 +21,15 @@ NSString * const MapTypePreferenceChanged = @"MapTypeChanged";
 
 - (void)launch {
 #ifdef DEBUG
-    NSLog(@"deleting map categories");
-    for (NSManagedObject *aCategory in [[CoreDataManager sharedManager] objectsForEntity:MapCategoryEntityName matchingPredicate:nil]) {
-        [[CoreDataManager sharedManager] deleteObject:aCategory];
+    if (![self isActive]) {
+        NSLog(@"deleting map categories");
+        for (NSManagedObject *aCategory in [[CoreDataManager sharedManager] objectsForEntity:MapCategoryEntityName matchingPredicate:nil]) {
+            [[CoreDataManager sharedManager] deleteObject:aCategory];
+        }
         [[CoreDataManager sharedManager] saveData];
     }
 #endif
+    [super launch];
 }
 
 
