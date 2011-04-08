@@ -135,6 +135,13 @@ static KGOTheme *s_sharedTheme = nil;
     return color;
 }
 
+#pragma mark Homescreen
+
+- (NSDictionary *)homescreenConfig
+{
+    return [themeDict dictionaryForKey:@"HomeScreen"];
+}
+
 #pragma mark Colors
 
 - (UIColor *)matchBackgroundColorWithLabel:(NSString *)label {
@@ -262,8 +269,8 @@ static KGOTheme *s_sharedTheme = nil;
     }
     
     if (accessoryType && ![accessoryType isEqualToString:KGOAccessoryTypeNone]) {
-        UIImage *image = [CellAccessoryImages objectForKey:accessoryType];
-        UIImage *highlightedImage = [CellAccessoryImages objectForKey:accessoryType];
+        UIImage *image = [UIImage imageWithPathName:[CellAccessoryImages objectForKey:accessoryType]];
+        UIImage *highlightedImage = [UIImage imageWithPathName:[CellAccessoryImages objectForKey:accessoryType]];
         if (image) {
             if (highlightedImage) {
                 return [[[UIImageView alloc] initWithImage:image highlightedImage:highlightedImage] autorelease];

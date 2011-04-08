@@ -71,6 +71,10 @@ typedef enum {
 - (UIImage *)backgroundImageForSearchBar;
 - (UIImage *)backgroundImageForSearchBarDropShadow;
 
+#pragma mark homescreen
+
+- (NSDictionary *)homescreenConfig;
+
 #pragma mark tableview
 
 - (UIColor *)backgroundColorForPlainSectionHeader;
