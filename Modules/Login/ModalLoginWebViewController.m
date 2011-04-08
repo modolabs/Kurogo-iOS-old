@@ -40,7 +40,7 @@
     NSLog(@"attempting to load %@", request.URL);
 
     if ([[KGORequestManager sharedManager] isUserLoggedIn]) {
-        [KGO_SHARED_APP_DELEGATE() dismissAppModalViewControllerAnimated:YES];
+        [self dismissModalViewControllerAnimated:YES];
         return NO;
     }
     
