@@ -571,7 +571,7 @@
 
 + (GridPadding)paddingWithArgs:(NSArray *)args {
     // top, left, bottom, right
-    GridPadding padding;
+    GridPadding padding = GridPaddingZero;
     for (NSInteger i = 0; i < args.count; i++) {
         CGFloat value = [[args objectAtIndex:i] floatValue];
         switch (i) {
@@ -594,7 +594,7 @@
 
 + (GridSpacing)spacingWithArgs:(NSArray *)args {
     // width, height
-    GridSpacing spacing;
+    GridSpacing spacing = GridSpacingZero;
     for (NSInteger i = 0; i < args.count; i++) {
         CGFloat value = [[args objectAtIndex:i] floatValue];
         switch (i) {
@@ -610,7 +610,7 @@
 }
 
 + (CGSize)sizeWithArgs:(NSArray *)args {
-    CGSize size;
+    CGSize size = CGSizeZero;
     for (NSInteger i = 0; i < args.count; i++) {
         CGFloat value = [[args objectAtIndex:i] floatValue];
         switch (i) {

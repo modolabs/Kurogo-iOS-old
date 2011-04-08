@@ -130,17 +130,6 @@
             {
                 _appHomeScreen = [homeVC retain];
                 self.window.rootViewController = _appHomeScreen;
-                
-                NSLog(@"%@", _appHomeScreen);
-                if ([_appHomeScreen isKindOfClass:[UISplitViewController class]]) {
-                    for (UIViewController *aVC in [(UISplitViewController *)_appHomeScreen viewControllers]) {
-                        NSLog(@"%@", aVC);
-                        if ([aVC shouldAutorotateToInterfaceOrientation:UIInterfaceOrientationLandscapeRight]) {
-                            NSLog(@"vc %@ can rotate", aVC);
-                        }
-                    }
-                }
-                
                 break;
             }
             default:
