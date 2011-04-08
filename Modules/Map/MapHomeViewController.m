@@ -12,11 +12,12 @@
 #import "UIKit+KGOAdditions.h"
 #import "KGOToolbar.h"
 #import "KGOPlacemark.h"
+#import "KGOSidebarFrameViewController.h"
 #import <QuartzCore/QuartzCore.h>
 
 @implementation MapHomeViewController
 
-@synthesize searchTerms, searchOnLoad, searchParams;
+@synthesize searchTerms, searchOnLoad, searchParams, mapModule;
 
 - (void)mapTypeDidChange:(NSNotification *)aNotification {
     _mapView.mapType = [[aNotification object] integerValue];
@@ -338,6 +339,18 @@
             view.canShowCallout = YES;
             view.rightCalloutAccessoryView = [UIButton buttonWithType:UIButtonTypeDetailDisclosure];
         }
+    } else if ([annotation conformsToProtocol:@protocol(KGOSearchResult)]) {
+        id<KGOSearchResult> aResult = (id<KGOSearchResult>)annotation;
+        if ([aResult respondsToSelector:@selector(annotationImage)]) {
+            UIImage *image = [aResult annotationImage];
+            if (image) {
+                view = [[[MKAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:@"fajwioth"] autorelease];
+                view.image = image;
+                view.canShowCallout = YES;
+                // TODO: not all annotations will want to do this
+                view.rightCalloutAccessoryView = [UIButton buttonWithType:UIButtonTypeDetailDisclosure];
+            }
+        }
     }
     return view;
 }
@@ -346,9 +359,17 @@
 {
     id<MKAnnotation> annotation = view.annotation;
     if ([annotation conformsToProtocol:@protocol(KGOSearchResult)]) {
-        NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:annotation, @"place", self, @"pagerController", nil];
         KGOAppDelegate *appDelegate = KGO_SHARED_APP_DELEGATE();
-        [appDelegate showPage:LocalPathPageNameDetail forModuleTag:MapTag params:params];
+        NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:annotation, @"place", self, @"pagerController", nil];
+        KGONavigationStyle navStyle = [appDelegate navigationStyle];
+        // TODO: clean up sidebar home screen so we don't have to deal with this
+        if (navStyle == KGONavigationStyleTabletSidebar) {
+            UIViewController *vc = [self.mapModule modulePage:LocalPathPageNameDetail params:params];
+            [(KGOSidebarFrameViewController *)[appDelegate homescreen] showDetailViewController:vc];
+            
+        } else {
+            [appDelegate showPage:LocalPathPageNameDetail forModuleTag:self.mapModule.tag params:params];
+        }
     }
 }
 
@@ -367,7 +388,7 @@
 #pragma mark SearchDisplayDelegate
 
 - (BOOL)searchControllerShouldShowSuggestions:(KGOSearchDisplayController *)controller {
-	return YES;
+    return [KGO_SHARED_APP_DELEGATE() navigationStyle] != KGONavigationStyleTabletSidebar;
 }
 
 - (NSArray *)searchControllerValidModules:(KGOSearchDisplayController *)controller {
@@ -396,6 +417,10 @@
 }
 
 - (void)searchController:(KGOSearchDisplayController *)controller didShowSearchResultsTableView:(UITableView *)tableView {
+    
+    if ([KGO_SHARED_APP_DELEGATE() navigationStyle] == KGONavigationStyleTabletSidebar) {
+        tableView.hidden = YES;
+    }
 
 	// show our map view above the list view
 	if (controller.showingOnlySearchResults) {

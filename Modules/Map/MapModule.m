@@ -85,6 +85,8 @@ NSString * const MapTypePreferenceChanged = @"MapTypeChanged";
             }
         }
         
+        mapVC.mapModule = self;
+        
         NSString *searchText = [params objectForKey:@"q"];
         if (searchText) {
             mapVC.searchTerms = searchText;

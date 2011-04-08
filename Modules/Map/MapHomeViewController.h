@@ -4,6 +4,7 @@
 
 @class KGOSearchBar;
 @class MKMapView;
+@class MapModule;
 
 @interface MapHomeViewController : UIViewController <MKMapViewDelegate,
 KGOSearchDisplayDelegate, KGODetailPagerController> {
@@ -30,6 +31,8 @@ KGOSearchDisplayDelegate, KGODetailPagerController> {
 
     NSArray *_annotations;
 }
+
+@property (nonatomic, retain) MapModule *mapModule;
 
 @property (nonatomic, retain) NSString *searchTerms;
 @property (nonatomic, retain) NSArray *annotations;
