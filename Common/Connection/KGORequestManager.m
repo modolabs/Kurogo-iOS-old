@@ -198,7 +198,7 @@ NSString * const KGODidLogoutNotification = @"LogoutComplete";
     UIViewController *loginController = [loginModule modulePage:LocalPathPageNameHome params:nil];
     loginController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
     loginController.modalPresentationStyle = UIModalPresentationFullScreen;
-    [KGO_SHARED_APP_DELEGATE() presentAppModalViewController:loginController animated:YES];
+    [[KGO_SHARED_APP_DELEGATE() homescreen] presentModalViewController:loginController animated:YES];
 }
 
 - (void)logoutKurogoServer
