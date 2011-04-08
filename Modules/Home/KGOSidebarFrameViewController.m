@@ -3,9 +3,13 @@
 #import "KGOModule.h"
 #import "UIKit+KGOAdditions.h"
 #import "KGOHomeScreenWidget.h"
+#import <QuartzCore/QuartzCore.h>
 
 #define SIDEBAR_WIDTH 160
 #define TOPBAR_HEIGHT 50
+
+#define DETAIL_VIEW_WIDTH 320
+#define DETAIL_VIEW_HEIGHT 460
 
 @interface KGOSidebarFrameViewController (Private)
 
@@ -22,11 +26,30 @@
         
         [_visibleViewController release];
         _visibleViewController = [viewController retain];
+        [self hideDetailViewController];
 
         [_visibleViewController viewWillAppear:NO];
         _visibleViewController.view.frame = CGRectMake(0, 0, _container.frame.size.width, _container.frame.size.height);
         [_container addSubview:viewController.view];
     }
+}
+
+- (void)showDetailViewController:(UIViewController *)viewController
+{
+    _detailViewController = [viewController retain];
+    _detailViewController.view.frame = CGRectMake(_container.frame.size.width - DETAIL_VIEW_WIDTH - 10,
+                                                  _container.frame.size.height - DETAIL_VIEW_HEIGHT - 10,
+                                                  DETAIL_VIEW_WIDTH,
+                                                  DETAIL_VIEW_HEIGHT);
+    _detailViewController.view.layer.cornerRadius = 5;
+    [_container addSubview:_detailViewController.view];
+}
+
+- (void)hideDetailViewController
+{
+    [_detailViewController.view removeFromSuperview];
+    [_detailViewController release];
+    _detailViewController = nil;
 }
 
 - (UIViewController *)visibleViewController {
@@ -38,6 +61,7 @@
 - (void)dealloc
 {
     [_visibleViewController release];
+    [_detailViewController release];
     [_topbar release];
     [_sidebar release];
     [_container release];
@@ -82,8 +106,8 @@
     if (self.primaryModules.count) {
         KGOModule *defaultModule = [self.primaryModules objectAtIndex:0];
         [KGO_SHARED_APP_DELEGATE() showPage:LocalPathPageNameHome
-                                                                    forModuleTag:defaultModule.tag
-                                                                          params:nil];
+                               forModuleTag:defaultModule.tag
+                                     params:nil];
     }
 }
 

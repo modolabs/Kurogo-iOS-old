@@ -16,10 +16,13 @@
     UIViewController *_visibleViewController;
     NSArray *_widgetViews;
     
+    UIViewController *_detailViewController;
 }
 
 @property (nonatomic, readonly) UIViewController *visibleViewController;
 
 - (void)showViewController:(UIViewController *)viewController;
+- (void)showDetailViewController:(UIViewController *)viewController;
+- (void)hideDetailViewController;
 
 @end
