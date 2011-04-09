@@ -98,7 +98,7 @@ NSString * const MapTypePreferenceChanged = @"MapTypeChanged";
 
         NSArray *annotations = [params objectForKey:@"annotations"];
         if (annotations) {
-            NSLog(@"%@", annotations);
+            NSLog(@"annotations: %@", annotations);
             mapVC.annotations = annotations;
         }
         
