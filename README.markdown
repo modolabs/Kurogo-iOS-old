@@ -22,7 +22,8 @@ when critical core behavior has been altered.
 
 ### Requirements
 
-Building the project requires Xcode 3.2 and above.
+Building the project requires Xcode 3.2.5 and above, with the iOS 4.2
+SDK and above.
 
 ### Checking out source code and dependencies
 
