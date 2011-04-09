@@ -15,6 +15,9 @@
 
 + (CoreDataManager *)sharedManager;
 
+- (void)mergeChanges:(NSNotification *)aNotification;
+- (void)observeSaveForContext:(NSManagedObjectContext *)aContext;
+
 - (NSArray *)fetchDataForAttribute:(NSString *)attributeName;
 - (NSArray *)fetchDataForAttribute:(NSString *)attributeName sortDescriptor:(NSSortDescriptor *)sortDescriptor;
 - (void)clearDataForAttribute:(NSString *)attributeName;

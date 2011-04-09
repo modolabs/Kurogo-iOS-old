@@ -47,6 +47,11 @@
     }
 }
 
+- (NSString *)moduleTag
+{
+    return MapTag;
+}
+
 #pragma mark -
 
 + (KGOPlacemark *)placemarkWithDictionary:(NSDictionary *)dictionary {

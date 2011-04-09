@@ -23,7 +23,9 @@ NSString * const MapTypePreferenceChanged = @"MapTypeChanged";
 #ifdef DEBUG
     if (![self isActive]) {
         NSLog(@"deleting map categories");
-        for (NSManagedObject *aCategory in [[CoreDataManager sharedManager] objectsForEntity:MapCategoryEntityName matchingPredicate:nil]) {
+        for (NSManagedObject *aCategory in [[CoreDataManager sharedManager] objectsForEntity:MapCategoryEntityName
+                                                                           matchingPredicate:nil]
+        ) {
             [[CoreDataManager sharedManager] deleteObject:aCategory];
         }
         [[CoreDataManager sharedManager] saveData];
@@ -103,33 +105,135 @@ NSString * const MapTypePreferenceChanged = @"MapTypeChanged";
         vc = mapVC;
         
     } else if ([pageName isEqualToString:LocalPathPageNameDetail]) {
-        vc = [[[MapDetailViewController alloc] init] autorelease];
-        MapDetailViewController *detailVC = (MapDetailViewController *)vc;
-
         KGOPlacemark *place = [params objectForKey:@"place"];
         if (place) {
+            MapDetailViewController *detailVC = [[[MapDetailViewController alloc] init] autorelease];
+            id<KGODetailPagerController> controller = [params objectForKey:@"pagerController"];
+            if (controller) {
+                KGODetailPager *pager = [[[KGODetailPager alloc] initWithPagerController:controller delegate:detailVC] autorelease];
+                detailVC.pager = pager;
+            }
             detailVC.placemark = place;
+            
+            vc = detailVC;
         }
-        id<KGODetailPagerController> controller = [params objectForKey:@"pagerController"];
-        if (controller) {
-            KGODetailPager *pager = [[[KGODetailPager alloc] initWithPagerController:controller delegate:detailVC] autorelease];
-            detailVC.pager = pager;
+        
+        KGOPlacemark *detailItem = [params objectForKey:@"detailItem"];
+        if (detailItem) {
+            NSArray *annotations = [NSArray arrayWithObject:detailItem];
+            NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:annotations, @"annotations", nil];
+            
+            UIViewController *homescreen = [KGO_SHARED_APP_DELEGATE() homescreen];
+            UIViewController *topVC = homescreen.navigationController.topViewController;
+            if (topVC.modalViewController) {
+                [topVC dismissModalViewControllerAnimated:YES];
+            }
+            
+            return [self modulePage:LocalPathPageNameHome params:params];
         }
         
     } else if ([pageName isEqualToString:LocalPathPageNameCategoryList]) {
+        
+        KGOCategoryListViewController *categoryVC = [[[KGOCategoryListViewController alloc] init] autorelease];
+        categoryVC.categoryEntityName = MapCategoryEntityName;
+
+        KGOMapCategory *parentCategory = [params objectForKey:@"parentCategory"];
+        if ([parentCategory isKindOfClass:[KGOMapCategory class]]) {
+            categoryVC.parentCategory = parentCategory;
+        }
+        
 		NSArray *categories = [params objectForKey:@"categories"];
-		if (categories) {
-			vc = [[[KGOCategoryListViewController alloc] init] autorelease];
-            KGOCategoryListViewController *categoryVC = (KGOCategoryListViewController *)vc;
-            categoryVC.categoryEntityName = MapCategoryEntityName;
+        NSArray *items = [params objectForKey:@"items"];
+        BOOL hasSubcategories = [parentCategory.hasSubcategories boolValue];
+        
+        if (parentCategory && hasSubcategories && !items.count) {
+            NSDictionary *params = [NSDictionary dictionaryWithObject:parentCategory.identifier forKey:@"group"];
+            
+            categoryVC.categoriesRequest = [[KGORequestManager sharedManager] requestWithDelegate:categoryVC
+                                                                                           module:self.tag
+                                                                                             path:@"categories"
+                                                                                           params:params];
+            categoryVC.categoriesRequest.expectedResponseType = [NSArray class];
+            
+            __block JSONObjectHandler createMapCategories;
+            __block NSUInteger sortOrder = 0;
+            __block CoreDataManager *coreDataManager = [CoreDataManager sharedManager];
+            createMapCategories = [[^(id jsonObj) {
+                NSInteger categoriesCreated = 0;
+                NSArray *jsonArray = (NSArray *)jsonObj;
+                for (id categoryObj in jsonArray) {
+                    if ([categoryObj isKindOfClass:[NSDictionary class]]) {
+                        NSDictionary *categoryDict = (NSDictionary *)categoryObj;
+                        NSArray *categoryPath = nil;
+                        id identifier = [categoryDict objectForKey:@"id"];
+                        if ([identifier isKindOfClass:[NSArray class]]) {
+                            categoryPath = identifier;
+                        } else if ([identifier isKindOfClass:[NSNumber class]] || [identifier isKindOfClass:[NSString class]]) {
+                            categoryPath = [NSArray arrayWithObject:identifier];
+                        }
+                        if (categoryPath) {
+                            KGOMapCategory *category = [KGOMapCategory categoryWithPath:categoryPath];
+                            NSString *title = [categoryDict stringForKey:@"title" nilIfEmpty:YES];
+                            if (title && ![category.title isEqualToString:title]) {
+                                category.title = title;
+                                category.sortOrder = [NSNumber numberWithInt:sortOrder];
+                                sortOrder++; // this can be anything so long as it's ascending within the parent category
+                            }
+                            categoriesCreated++;
+                            
+                            NSArray *subcategories = [categoryDict arrayForKey:@"subcategories"];
+                            // TODO: make the API return whether or not there are pending subcategories
+                            // this is going to break when we do that
+                            if (subcategories.count) {
+                                categoriesCreated += createMapCategories(subcategories);
+                                category.hasSubcategories = [NSNumber numberWithBool:YES];
+                            }
+                        }
+                    }
+                }
+                
+                [coreDataManager saveDataWithTemporaryMergePolicy:NSOverwriteMergePolicy];
+                
+                return categoriesCreated;
+            } copy] autorelease];
+
+            categoryVC.categoriesRequest.handler = createMapCategories;
+        
+        } else if (parentCategory && !categories.count && !items.count) {
+            // TODO: communicate this delimiter better between server & client
+            NSString *categoryPath = [parentCategory.identifier stringByReplacingOccurrencesOfString:@"/" withString:@":"];
+            NSDictionary *params = [NSDictionary dictionaryWithObject:categoryPath
+                                                               forKey:@"category"];
+            categoryVC.leafItemsRequest = [[KGORequestManager sharedManager] requestWithDelegate:categoryVC
+                                                                                          module:self.tag
+                                                                                            path:@"places"
+                                                                                          params:params];
+            
+            JSONObjectHandler createMapItems = [[^(id jsonObj) {
+                NSArray *results = [jsonObj arrayForKey:@"results"];
+                __block NSInteger count = 0;
+                [results enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+                    KGOPlacemark *placemark = [KGOPlacemark placemarkWithDictionary:obj];
+                    if (placemark) {
+                        count++;
+                    }
+                }];
+                
+                return count;
+                
+            } copy] autorelease];
+            
+            categoryVC.leafItemsRequest.handler = createMapItems;
+            
+        } else if (categories) {
             categoryVC.categories = categories;
             
-            KGOMapCategory *parentCategory = [params objectForKey:@"parentCategory"];
-            if ([parentCategory isKindOfClass:[KGOMapCategory class]]) {
-                categoryVC.parentCategory = parentCategory;
-            }
-		}
+		} else if (items) {
+            categoryVC.leafItems = items;
+            
+        }
         
+        vc = categoryVC;
     }
     return vc;
 }

@@ -93,8 +93,8 @@
         NSArray *categories = nil;
         if (self.parentCategory == nil) {
             NSPredicate *pred = [NSPredicate predicateWithFormat:@"parentCategory = nil"];
-            //NSPredicate *pred = nil;
             categories = [[CoreDataManager sharedManager] objectsForEntity:self.categoryEntityName matchingPredicate:pred];
+
         } else {
             categories = [self.parentCategory children];
         }
@@ -103,6 +103,8 @@
 
     } else if (request == self.leafItemsRequest) {
         self.leafItems = self.parentCategory.items;
+        NSLog(@"%@", self.parentCategory);
+        NSLog(@"%@", self.leafItems);
     }
 
     [self reloadDataForTableView:self.tableView];

@@ -12,6 +12,7 @@
 @property (nonatomic, retain) NSSet* subcategories;
 @property (nonatomic, retain) NSSet* places;
 @property (nonatomic, retain) KGOMapCategory * parentCategory;
+@property (nonatomic, retain) NSNumber *hasSubcategories;
 
 + (KGOMapCategory *)categoryWithPath:(NSArray *)categoryPath;
 

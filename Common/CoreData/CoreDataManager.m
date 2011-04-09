@@ -100,10 +100,8 @@
     if (sortDescriptors) {
         [request setSortDescriptors:sortDescriptors];
     }
-NSLog(@"%@", self.managedObjectContext);
 	NSError *error = nil;
 	NSArray *objects = [self.managedObjectContext executeFetchRequest:request error:&error];
-NSLog(@"%@", objects);
     if (error) {
         NSLog(@"error fetching objects for %@: predicate: %@, error: %@", entityName, predicate, [error description]);
     }
@@ -141,7 +139,7 @@ NSLog(@"%@", objects);
 - (void)saveDataWithTemporaryMergePolicy:(id)temporaryMergePolicy {
     NSManagedObjectContext *context = [self managedObjectContext];
     id originalMergePolicy = [context mergePolicy];
-    [context setMergePolicy:NSOverwriteMergePolicy];
+    [context setMergePolicy:temporaryMergePolicy];
 	[self saveData];
 	[context setMergePolicy:originalMergePolicy];
 }
@@ -150,7 +148,7 @@ NSLog(@"%@", objects);
 #pragma mark Core Data stack
 
 // modified to allow safe multithreaded Core Data use
--(NSManagedObjectContext *)managedObjectContext {
+- (NSManagedObjectContext *)managedObjectContext {
     NSMutableDictionary *threadDict = [[NSThread currentThread] threadDictionary];
     NSManagedObjectContext *localContext = [threadDict objectForKey:@"MITCoreDataManagedObjectContext"];
     if (localContext) {
@@ -159,12 +157,43 @@ NSLog(@"%@", objects);
     
     NSPersistentStoreCoordinator *coordinator = [self persistentStoreCoordinator];
     if (coordinator != nil) {
-        localContext = [[NSManagedObjectContext alloc] init];
+        localContext = [[[NSManagedObjectContext alloc] init] autorelease];
         [localContext setPersistentStoreCoordinator: coordinator];
         [threadDict setObject:localContext forKey:@"MITCoreDataManagedObjectContext"];
-        [localContext release];
+        
+        NSLog(@"current thread: %@", [NSThread currentThread]);
+        
+        if ([NSThread currentThread] != [NSThread mainThread]) {
+            [self performSelectorOnMainThread:@selector(observeSaveForContext:) withObject:localContext waitUntilDone:NO];
+        }
     }
     return localContext;
+}
+
+- (void)observeSaveForContext:(NSManagedObjectContext *)aContext
+{
+    NSLog(@"observing saves for new context: %@", aContext);
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(mergeChanges:)
+                                                 name:NSManagedObjectContextDidSaveNotification
+                                               object:aContext];
+}
+
+- (void)mergeChanges:(NSNotification *)aNotification
+{
+    NSLog(@"local context did save %@", aNotification);
+    
+    if ([NSThread currentThread] == [NSThread mainThread]) {
+        NSLog(@"saving changes on main thread %@, context %@", [NSThread currentThread], [self managedObjectContext]);
+        [[self managedObjectContext] mergeChangesFromContextDidSaveNotification:aNotification];
+        
+    } else {
+        NSLog(@"saving changes on remote thread %@, context %@", [NSThread currentThread], [self managedObjectContext]);
+        //[[self managedObjectContext] performSelectorOnMainThread:@selector(mergeChangesFromContextDidSaveNotification:)
+        //                                              withObject:aNotification
+        //                                           waitUntilDone:YES];
+        [self performSelectorOnMainThread:@selector(mergeChanges:) withObject:aNotification waitUntilDone:YES];
+    }
 }
 
 # pragma mark Everything below here is auto-generated
@@ -255,7 +284,6 @@ NSLog(@"%@", objects);
 	
     return persistentStoreCoordinator;
 }
-
 
 #pragma mark -
 #pragma mark Application's documents directory

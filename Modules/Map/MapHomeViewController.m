@@ -85,8 +85,7 @@
         _mapBorder.layer.cornerRadius = 4;
     }
     
-    KGOModule *mapModule = [KGO_SHARED_APP_DELEGATE() moduleForTag:MapTag];
-    self.title = mapModule.shortName;
+    self.title = self.mapModule.shortName;
 
     _mapView.mapType = [[NSUserDefaults standardUserDefaults] integerForKey:MapTypePreference];
     [_mapView centerAndZoomToDefaultRegion];
@@ -181,46 +180,33 @@
 - (IBAction)browseButtonPressed {
 	KGOCategoryListViewController *categoryVC = [[[KGOCategoryListViewController alloc] init] autorelease];
     categoryVC.categoryEntityName = MapCategoryEntityName;
-    categoryVC.categoriesRequest = [[KGORequestManager sharedManager] requestWithDelegate:categoryVC module:MapTag path:@"categories" params:nil];
-    categoryVC.categoriesRequest.expectedResponseType = [NSArray class];
-    
-    __block JSONObjectHandler createMapCategories;
-    __block NSUInteger sortOrder = 0;
-    __block CoreDataManager *coreDataManager = [CoreDataManager sharedManager];
-    createMapCategories = [[^(id jsonObj) {
-        NSInteger categoriesCreated = 0;
-        NSArray *jsonArray = (NSArray *)jsonObj;
-        for (id categoryObj in jsonArray) {
-            if ([categoryObj isKindOfClass:[NSDictionary class]]) {
-                NSDictionary *categoryDict = (NSDictionary *)categoryObj;
-                NSArray *categoryPath = nil;
-                id identifier = [categoryDict objectForKey:@"id"];
-                if ([identifier isKindOfClass:[NSArray class]]) {
-                    categoryPath = identifier;
-                } else if ([identifier isKindOfClass:[NSNumber class]] || [identifier isKindOfClass:[NSString class]]) {
-                    categoryPath = [NSArray arrayWithObject:identifier];
-                }
-                if (categoryPath) {
-                    KGOMapCategory *category = [KGOMapCategory categoryWithPath:categoryPath];
-                    NSString *title = [categoryDict stringForKey:@"title" nilIfEmpty:YES];
-                    if (title && ![category.title isEqualToString:title]) {
-                        category.title = title;
-                        category.sortOrder = [NSNumber numberWithInt:sortOrder];
-                        sortOrder++; // this can be anything so long as it's ascending within the parent category
-                    }
-                    categoriesCreated++;
-                }
 
-                NSArray *subcategories = [categoryDict arrayForKey:@"subcategories"];
-                if (subcategories.count) {
-                    categoriesCreated += createMapCategories(subcategories);
-                }
+    categoryVC.categoriesRequest = [[KGORequestManager sharedManager] requestWithDelegate:categoryVC
+                                                                                   module:self.mapModule.tag
+                                                                                     path:@"groups"
+                                                                                   params:nil];
+    
+    __block CoreDataManager *coreDataManager = [CoreDataManager sharedManager];
+    JSONObjectHandler createMapCategories = [[^(id jsonObj) {
+        NSDictionary *results = [jsonObj dictionaryForKey:@"results"];
+        __block NSInteger count = 0;
+        [results enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
+            NSArray *categoryPath = [NSArray arrayWithObject:key];
+            KGOMapCategory *category = [KGOMapCategory categoryWithPath:categoryPath];
+            NSString *title = [obj stringForKey:@"title" nilIfEmpty:YES];
+            if (title && ![category.title isEqualToString:title]) {
+                category.title = title;
             }
-        }
+            if (![category.hasSubcategories boolValue]) {
+                category.hasSubcategories = [NSNumber numberWithBool:YES];
+            }
+            count++;
+        }];
         
         [coreDataManager saveData];
         
-        return categoriesCreated;
+        return count;
+        
     } copy] autorelease];
     
     categoryVC.categoriesRequest.handler = createMapCategories;

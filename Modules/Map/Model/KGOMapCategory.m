@@ -11,6 +11,7 @@
 @dynamic places;
 @dynamic subcategories;
 @dynamic parentCategory;
+@dynamic hasSubcategories;
 
 - (NSString *)moduleTag
 {
