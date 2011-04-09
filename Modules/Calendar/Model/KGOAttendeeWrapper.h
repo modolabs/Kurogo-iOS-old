@@ -17,6 +17,7 @@
 }
 
 @property (nonatomic, retain) KGOEventWrapper *event;
+@property (nonatomic, retain) KGOEventWrapper *organizedEvent;
 @property (nonatomic, retain) NSString *identifier;
 @property (nonatomic, retain) NSString *name;
 @property (nonatomic, retain) NSSet *contactInfo;
@@ -25,6 +26,7 @@
 
 - (id)initWithDictionary:(NSDictionary *)dictionary;
 - (id)initWithKGOAttendee:(KGOEventAttendee *)attendee;
+- (void)convertToKGOAttendee;
 
 @property (nonatomic, retain) EKParticipant *EKAttendee;
 @property (nonatomic, retain) KGOEventAttendee *KGOAttendee;

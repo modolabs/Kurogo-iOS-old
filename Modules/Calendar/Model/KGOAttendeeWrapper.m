@@ -9,7 +9,8 @@
 name = _name,
 attendeeType = _attendeeType,
 attendeeStatus = _attendeeStatus,
-event = _event;
+event = _event,
+organizedEvent;
 
 - (id)initWithDictionary:(NSDictionary *)dictionary
 {
@@ -49,24 +50,29 @@ event = _event;
     return self;
 }
 
-- (NSSet *)contactInfo
-{
-    return self.KGOAttendee.contactInfo;
-}
-
-- (void)setContactInfo:(NSSet *)contactInfo
-{
-    self.KGOAttendee.contactInfo = contactInfo;
-}
-
-- (KGOEventAttendee *)KGOAttendee
+- (void)convertToKGOAttendee
 {
     if (!_kgoAttendee) {
         _kgoAttendee = [[CoreDataManager sharedManager] insertNewObjectForEntityForName:KGOEntityNameEventAttendee];
         _kgoAttendee.name = self.name;
         _kgoAttendee.identifier = self.identifier;
     }
+}
 
+- (NSSet *)contactInfo
+{
+    [self convertToKGOAttendee];
+    return self.KGOAttendee.contactInfo;
+}
+
+- (void)setContactInfo:(NSSet *)contactInfo
+{
+    [self convertToKGOAttendee];
+    self.KGOAttendee.contactInfo = contactInfo;
+}
+
+- (KGOEventAttendee *)KGOAttendee
+{
     return _kgoAttendee;
 }
 

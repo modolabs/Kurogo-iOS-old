@@ -2,11 +2,12 @@
 #import <EventKit/EventKit.h>
 #import "CalendarModel.h"
 #import "Foundation+KGOAdditions.h"
+#import "UIKit+KGOAdditions.h"
 
 @implementation KGOEventWrapper
 
 @synthesize identifier = _identifier,
-attendees = _attendees,
+//attendees = _attendees,
 endDate = _endDate,
 startDate = _startDate,
 lastUpdate = _lastUpdate,
@@ -16,13 +17,18 @@ briefLocation = _briefLocation,
 title = _title,
 summary = _summary,
 rrule = _rrule,
-organizers = _organizers,
+//organizers = _organizers,
 coordinate = _coordinate,
 calendars = _calendars,
 bookmarked = _bookmarked, 
 userInfo = _userInfo;
 
 #pragma mark KGOSearchResult
+
+- (UIImage *)annotationImage
+{
+    return [UIImage imageWithPathName:@"modules/calendar/event_map_pin"];
+}
 
 
 #pragma mark -
@@ -93,6 +99,8 @@ userInfo = _userInfo;
     self.lastUpdate = [NSDate date];
 }
 
+#pragma mark eventkit
+
 - (id)initWithEKEvent:(EKEvent *)event
 {
     self = [super init];
@@ -148,6 +156,8 @@ userInfo = _userInfo;
     // TODO: rrule
 }
 
+#pragma mark - core data
+
 - (id)initWithKGOEvent:(KGOEvent *)event
 {
     self = [super init];
@@ -157,6 +167,33 @@ userInfo = _userInfo;
     return self;
 }
 
+- (NSSet *)organizers
+{
+    return _organizers;
+}
+
+- (void)setOrganizers:(NSSet *)organizers
+{
+    [_organizers release];
+    _organizers = [organizers retain];
+    
+    NSSet *unwrapperOrganizers = [self unwrappedOrganizers];
+    if (unwrapperOrganizers.count) {
+        if (!_kgoEvent) {
+            [self convertToKGOEvent];
+        } else {
+            _kgoEvent.organizers = unwrapperOrganizers;
+        }
+        
+    } else if (_kgoEvent) {
+        for (KGOAttendeeWrapper *wrapper in _organizers) {
+            [wrapper convertToKGOAttendee];
+            KGOEventAttendee *attendee = [wrapper KGOAttendee];
+            attendee.organizedEvent = _kgoEvent;
+        }
+    }
+}
+
 - (NSSet *)unwrappedOrganizers
 {
     if (!self.organizers.count)
@@ -164,9 +201,40 @@ userInfo = _userInfo;
     
     NSMutableSet *set = [NSMutableSet set];
     for (KGOAttendeeWrapper *wrapper in self.organizers) {
-        [set addObject:[wrapper KGOAttendee]];
+        KGOEventAttendee *attendee = [wrapper KGOAttendee];
+        if (attendee) {
+            [set addObject:attendee];
+        }
     }
+    NSLog(@"unwrapped organizers: %@", set);
     return set;
+}
+
+- (NSSet *)attendees
+{
+    return _attendees;
+}
+
+- (void)setAttendees:(NSSet *)attendees
+{
+    [_attendees release];
+    _attendees = [attendees retain];
+    
+    NSSet *unwrappedAttendees = [self unwrappedAttendees];
+    if (unwrappedAttendees.count) {
+        if (!_kgoEvent) {
+            [self convertToKGOEvent];
+        } else {
+            _kgoEvent.attendees = unwrappedAttendees;
+        }
+        
+    } else if (_kgoEvent) {
+        for (KGOAttendeeWrapper *wrapper in _attendees) {
+            [wrapper convertToKGOAttendee];
+            KGOEventAttendee *attendee = [wrapper KGOAttendee];
+            attendee.event = _kgoEvent;
+        }
+    }
 }
 
 - (NSSet *)unwrappedAttendees
@@ -176,8 +244,12 @@ userInfo = _userInfo;
     
     NSMutableSet *set = [NSMutableSet set];
     for (KGOAttendeeWrapper *wrapper in self.attendees) {
-        [set addObject:[wrapper KGOAttendee]];
+        KGOEventAttendee *attendee = [wrapper KGOAttendee];
+        if (attendee) {
+            [set addObject:attendee];
+        }
     }
+    NSLog(@"unwrapped attendees: %@", set);
     return set;
 }
 

@@ -10,6 +10,7 @@
 @property (nonatomic, retain) NSString * identifier;
 @property (nonatomic, retain) NSString * attendeeType;
 @property (nonatomic, retain) KGOEvent * event;
+@property (nonatomic, retain) KGOEvent * organizedEvent;
 @property (nonatomic, retain) NSSet* contactInfo;
 
 @end

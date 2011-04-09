@@ -10,7 +10,7 @@ NSString * const KGOEntityNameEventAttendee = @"KGOEventAttendee";
 @dynamic attendeeType;
 @dynamic event;
 @dynamic contactInfo;
-
+@dynamic organizedEvent;
 
 - (void)addContactInfoObject:(KGOEventContactInfo *)value {    
     NSSet *changedObjects = [[NSSet alloc] initWithObjects:&value count:1];
