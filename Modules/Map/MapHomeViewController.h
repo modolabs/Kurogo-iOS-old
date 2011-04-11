@@ -11,6 +11,7 @@ KGOSearchDisplayDelegate, KGODetailPagerController> {
 	
 	IBOutlet KGOSearchBar *_searchBar;
 	IBOutlet KGOToolbar *_bottomBar;
+    IBOutlet UIImageView *_toolbarDropShadow;
 
 	UIButton *_infoButton; // indoor maps only
 	UIButton *_locateUserButton; // outdoor maps only (for now)
