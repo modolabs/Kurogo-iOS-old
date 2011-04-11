@@ -5,70 +5,122 @@
 
 @implementation KGOShareButtonController
 
-@synthesize delegate = _delegate;
+@synthesize contentsController, shareTitle, shareURL, shareBody, actionSheetTitle;
 
-- (id)initWithDelegate:(id<KGOShareButtonDelegate>)delegate {
+- (id)initWithContentsController:(UIViewController *)aController {
     self = [super init];
     if (self) {
-		_delegate = delegate;
+        self.contentsController = aController;
 	}
 	return self;
 }
 
-#pragma mark Action Sheet
+- (NSUInteger)shareTypes
+{
+    return _shareTypes;
+}
+
+- (void)setShareTypes:(NSUInteger)shareTypes
+{
+    if (_shareTypes != shareTypes) {
+        _shareTypes = shareTypes;
+        [_shareMethods release];
+        _shareMethods = nil;
+    }
+}
 
 - (void)shareInView:(UIView *)view {
-    UIActionSheet *shareSheet = nil;
     
-    shareSheet = [[UIActionSheet alloc] initWithTitle:[self.delegate actionSheetTitle]
-                                             delegate:self
-                                    cancelButtonTitle:@"Cancel"
-                               destructiveButtonTitle:nil
-                                    otherButtonTitles:nil];
+    if (!_shareMethods) {
+        NSMutableArray *methods = [NSMutableArray array];
+        
+        if (self.shareTypes | KGOShareControllerShareTypeEmail
+            && [[KGOSocialMediaController sharedController] supportsEmailSharing]
+        ) {
+            [methods addObject:KGOSocialMediaTypeEmail];
+        }
+        
+        if (self.shareTypes | KGOShareControllerShareTypeFacebook
+            && [[KGOSocialMediaController sharedController] supportsFacebookSharing]
+        ) {
+            [methods addObject:KGOSocialMediaTypeFacebook];
+        }
+        
+        if (self.shareTypes | KGOShareControllerShareTypeTwitter
+            && [[KGOSocialMediaController sharedController] supportsTwitterSharing]
+        ) {
+            [methods addObject:KGOSocialMediaTypeTwitter];
+        }
+        
+        _shareMethods = [methods copy];
+    }
+
+    if (_shareMethods.count > 1) {
+        
+        
+        UIActionSheet *shareSheet = [[UIActionSheet alloc] initWithTitle:self.actionSheetTitle
+                                                                delegate:self
+                                                       cancelButtonTitle:@"Cancel"
+                                                  destructiveButtonTitle:nil
+                                                       otherButtonTitles:nil];
+        
+        for (NSString *aMethod in _shareMethods) {
+            [shareSheet addButtonWithTitle:[KGOSocialMediaController localizedNameForService:aMethod]];
+        }
 	
-	if ([[KGOSocialMediaController sharedController] supportsEmailSharing]) {
-		[shareSheet addButtonWithTitle:KGOSocialMediaTypeEmail];
-	}
-	if ([[KGOSocialMediaController sharedController] supportsFacebookSharing]) {
-		[shareSheet addButtonWithTitle:KGOSocialMediaTypeFacebook];
-	}
-	if ([[KGOSocialMediaController sharedController] supportsTwitterSharing]) {
-		[shareSheet addButtonWithTitle:KGOSocialMediaTypeTwitter];
-	}
-    
-	[shareSheet showInView:view];
-    [shareSheet release];
+        [shareSheet showInView:view];
+        [shareSheet release];
+    }
 }
 
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
-	NSString *buttonTitle = [actionSheet buttonTitleAtIndex:buttonIndex];
-	if ([buttonTitle isEqualToString:KGOSocialMediaTypeEmail]) {
+    if (buttonIndex > [actionSheet cancelButtonIndex]) {
+        buttonIndex--;
+    }
+    
+    NSString *method = [_shareMethods objectAtIndex:buttonIndex];
+
+	if ([method isEqualToString:KGOSocialMediaTypeEmail]) {
+        // TODO: make this string configurable
+        NSString *emailBody = [NSString stringWithFormat:@"I thought you might be interested in this...\n\n%@", self.shareBody];
         [MITMailComposeController presentMailControllerWithEmail:nil
-                                                         subject:[self.delegate emailSubject]
-                                                            body:[self.delegate emailBody]];
+                                                         subject:self.shareTitle
+                                                            body:emailBody];
 
-	} else if ([buttonTitle isEqualToString:KGOSocialMediaTypeFacebook]) {
-        [self showFacebookDialog];
+	} else if ([method isEqualToString:KGOSocialMediaTypeFacebook]) {
+        NSString *attachment = [NSString stringWithFormat:
+                                @"{\"name\":\"%@\","
+                                "\"href\":\"%@\","
+                                "\"description\":\"%@\"}",
+                                self.shareTitle, self.shareURL, self.shareBody];
+        
+        [[KGOSocialMediaController sharedController] shareOnFacebook:attachment prompt:nil];
 
-	} else if ([buttonTitle isEqualToString:KGOSocialMediaTypeTwitter]) {
-		TwitterViewController *twitterVC = [[[TwitterViewController alloc] initWithNibName:@"TwitterViewController" bundle:nil] autorelease];
-        twitterVC.preCannedMessage = [self.delegate twitterTitle];
-        twitterVC.longURL = [self.delegate twitterUrl];
-		[KGO_SHARED_APP_DELEGATE() presentAppModalNavigationController:twitterVC animated:YES];
+	} else if ([method isEqualToString:KGOSocialMediaTypeTwitter]) {
+		TwitterViewController *twitterVC = [[[TwitterViewController alloc] initWithNibName:@"TwitterViewController"
+                                                                                    bundle:nil] autorelease];
+        twitterVC.preCannedMessage = self.shareTitle;
+        twitterVC.longURL = self.shareURL;
+        
+        UINavigationController *navC = [[[UINavigationController alloc] initWithRootViewController:twitterVC] autorelease];
+        navC.modalPresentationStyle = UIModalPresentationFormSheet;
+        
+		[self.contentsController presentModalViewController:navC animated:YES];
 	}
-}
-
-#pragma mark - Facebook
-
-- (void)showFacebookDialog {
-	[[KGOSocialMediaController sharedController] shareOnFacebook:[self.delegate fbDialogAttachment]
-                                                          prompt:[self.delegate fbDialogPrompt]];
 }
 
 #pragma mark -
 
 - (void)dealloc {
-	self.delegate = nil;
+    self.contentsController = nil;
+    
+    self.shareTitle = nil;
+    self.actionSheetTitle = nil;
+    self.shareBody = nil;
+    self.shareURL = nil;
+    [_shareMethods release];
+    _shareMethods = nil;
+
     [super dealloc];
 }
 

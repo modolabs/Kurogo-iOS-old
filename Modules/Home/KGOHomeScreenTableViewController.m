@@ -29,6 +29,7 @@
 }
 
 - (void)refreshModules {
+    [super refreshModules];
     [_tableView reloadData];
 }
 

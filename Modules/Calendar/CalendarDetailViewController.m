@@ -8,6 +8,7 @@
 #import "Foundation+KGOAdditions.h"
 #import "UIKit+KGOAdditions.h"
 #import "CalendarDataManager.h"
+#import "KGOShareButtonController.h"
 
 @implementation CalendarDetailViewController
 
@@ -17,6 +18,9 @@
     [super loadView];
 
     self.title = NSLocalizedString(@"Event Detail", nil);
+    
+    _shareController = [(KGOShareButtonController *)[KGOShareButtonController alloc] initWithContentsController:self];
+    _shareController.shareTypes = KGOShareControllerShareTypeEmail | KGOShareControllerShareTypeFacebook | KGOShareControllerShareTypeTwitter;
     
     [self setupTableView];
 }
@@ -82,11 +86,50 @@
     return self.sections.count;
 }
 
+#pragma mark - Share button
+
+- (void)shareButtonPressed:(id)sender
+{
+    _shareController.actionSheetTitle = @"Share this event";
+    _shareController.shareTitle = _event.title;
+    _shareController.shareBody = _event.summary;
+    
+    NSString *urlString = nil;
+    for (KGOAttendeeWrapper *organizer in _event.organizers) {
+        for (KGOContactInfo *contact in organizer.contactInfo) {
+            if ([contact.type isEqualToString:@"url"]) {
+                urlString = contact.value;
+                break;
+            }
+        }
+        if (urlString)
+            break;
+    }
+    
+    if (!urlString) {
+        KGOCalendar *calendar = [_event.calendars anyObject];
+        NSString *startString = [NSString stringWithFormat:@"%.0f", [_event.startDate timeIntervalSince1970]];
+        NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:
+                                _event.identifier, @"id",
+                                calendar.identifier, @"calendar",
+                                calendar.type, @"type",
+                                startString, @"time",
+                                nil];
+        
+        urlString = [[NSURL URLWithQueryParameters:params baseURL:[[KGORequestManager sharedManager] serverURL]] absoluteString];
+    }
+    
+    _shareController.shareURL = urlString;
+    
+    [_shareController shareInView:self.view];
+}
+
 #pragma mark -
 
 - (void)dealloc {
     [_event release];
     [_tableView release];
+	[_shareController release];
     self.dataManager = nil;
     self.sections = nil;
     self.indexPath = nil;

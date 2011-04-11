@@ -161,6 +161,8 @@
 }
 
 - (void)refreshModules {
+    [super refreshModules];
+
     // TODO: move this section out of setupSidebarIcons
     UIImageView *imageView = (UIImageView *)[_sidebar viewWithTag:1234];
     if (!imageView) {

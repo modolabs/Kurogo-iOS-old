@@ -8,10 +8,11 @@
 #import "CalendarDataManager.h"
 #import "MITMailComposeController.h"
 #import "KGOAppDelegate+ModuleAdditions.h"
+#import "CalendarDetailViewController.h"
 
 @implementation EventDetailTableView
 
-@synthesize dataManager;
+@synthesize dataManager, viewController;
 
 - (id)initWithFrame:(CGRect)frame style:(UITableViewStyle)style
 {
@@ -19,8 +20,6 @@
     if (self) {
         self.delegate = self;
         self.dataSource = self;
-        
-        _shareController = [(KGOShareButtonController *)[KGOShareButtonController alloc] initWithDelegate:self];
     }
     return self;
 }
@@ -31,8 +30,6 @@
     if (self) {
         self.delegate = self;
         self.dataSource = self;
-        
-        _shareController = [(KGOShareButtonController *)[KGOShareButtonController alloc] initWithDelegate:self];
     }
     return self;
 }
@@ -49,7 +46,6 @@
 
 - (void)dealloc
 {
-	[_shareController release];
     self.event = nil;
     self.delegate = nil;
     self.dataSource = nil;
@@ -330,7 +326,7 @@
         _headerView.showsBookmarkButton = YES;
     }
     _headerView.detailItem = self.event;
-    _headerView.showsShareButton = [self twitterUrl] != nil;
+    _headerView.showsShareButton = YES;
     
     // time
     NSString *dateString = [self.dataManager mediumDateStringFromDate:_event.startDate];
@@ -352,70 +348,7 @@
 
 - (void)headerView:(KGODetailPageHeaderView *)headerView shareButtonPressed:(id)sender
 {
-    [_shareController shareInView:self];
-}
-
-#pragma mark KGOShareButtonDelegate
-
-- (NSString *)actionSheetTitle {
-	return [NSString stringWithString:@"Share this event"];
-}
-
-- (NSString *)emailSubject {
-    return _event.title;
-}
-
-- (NSString *)emailBody {
-	return [NSString stringWithFormat:@"I thought you might be interested in this event...\n%@\n%@\n%@",
-            _event.title,
-            [self twitterUrl],
-            _event.summary];
-}
-
-- (NSString *)fbDialogPrompt {
-	return nil;
-}
-
-- (NSString *)fbDialogAttachment {
-    NSString *attachment = [NSString stringWithFormat:
-                            @"{\"name\":\"%@\","
-                            "\"href\":\"%@\","
-                            "\"description\":\"%@\"}",
-                            _event.title, [self twitterUrl], _event.summary];
-    return attachment;
-}
-
-- (NSString *)twitterUrl {
-    NSString *urlString = nil;
-    for (KGOAttendeeWrapper *organizer in _event.organizers) {
-        for (KGOContactInfo *contact in organizer.contactInfo) {
-            if ([contact.type isEqualToString:@"url"]) {
-                urlString = contact.value;
-                break;
-            }
-        }
-        if (urlString)
-            break;
-    }
-    
-    if (!urlString) {
-        KGOCalendar *calendar = [_event.calendars anyObject];
-        NSString *startString = [NSString stringWithFormat:@"%.0f", [_event.startDate timeIntervalSince1970]];
-        NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:
-                                _event.identifier, @"id",
-                                calendar.identifier, @"calendar",
-                                calendar.type, @"type",
-                                startString, @"time",
-                                nil];
-        
-        urlString = [[NSURL URLWithQueryParameters:params baseURL:[[KGORequestManager sharedManager] serverURL]] absoluteString];
-    }
-    
-    return urlString;
-}
-
-- (NSString *)twitterTitle {
-	return _event.title;
+    [self.viewController shareButtonPressed:sender];
 }
 
 @end

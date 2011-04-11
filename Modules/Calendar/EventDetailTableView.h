@@ -3,9 +3,10 @@
 #import "KGODetailPageHeaderView.h"
 
 @class KGOEventWrapper, CalendarDataManager;
+@class CalendarDetailViewController;
 
 @interface EventDetailTableView : UITableView <UITableViewDelegate,
-UITableViewDataSource, KGOShareButtonDelegate, KGODetailPageHeaderDelegate> {
+UITableViewDataSource, KGODetailPageHeaderDelegate> {
     
     NSArray *_sections;
     KGOEventWrapper *_event;
@@ -13,12 +14,11 @@ UITableViewDataSource, KGOShareButtonDelegate, KGODetailPageHeaderDelegate> {
     UIButton *_shareButton;
     UIButton *_bookmarkButton;
     
-    KGOShareButtonController *_shareController;
-    
     KGODetailPageHeaderView *_headerView;
     UILabel *_descriptionLabel;
 }
 
+@property (nonatomic, assign) CalendarDetailViewController *viewController;
 @property (nonatomic, retain) KGOEventWrapper *event;
 @property (nonatomic, retain) CalendarDataManager *dataManager;
 
