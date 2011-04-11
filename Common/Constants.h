@@ -43,6 +43,9 @@ extern NSString * const LocalPathMapsSelectedAnnotation;
 
 extern NSString * const MITNewsTwoFirstRunKey;
 
+extern NSString * const FacebookGroupKey;
+extern NSString * const FacebookGroupTitleKey;
+extern NSString * const TwitterHashTagKey;
 
 // notification names
 

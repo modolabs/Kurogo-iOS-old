@@ -8,7 +8,7 @@ NSString * const KGOSocialMediaTypeFacebook = @"Facebook";
 NSString * const KGOSocialMediaTypeTwitter = @"Twitter";
 NSString * const KGOSocialMediaTypeEmail = @"Email";
 NSString * const KGOSocialMediaTypeBitly = @"bit.ly";
-NSString * const KGOSocialMediaTypeFoursquare = @"Foursquare";
+NSString * const KGOSocialMediaTypeFoursquare = @"foursquare";
 
 // NSUserDefaults
 static NSString * const TwitterUsernameKey = @"TwitterUsername";
@@ -226,7 +226,7 @@ static KGOSocialMediaController *s_controller = nil;
         return NSLocalizedString(@"Twitter", nil);
         
     } else if ([service isEqualToString:KGOSocialMediaTypeFoursquare]) {
-        return NSLocalizedString(@"Foursquare", nil);
+        return NSLocalizedString(@"foursquare", nil);
         
     }
     return service;

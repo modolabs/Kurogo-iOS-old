@@ -97,23 +97,99 @@ static NSString * const KGOSettingsSocialMedia = @"SocialMedia";
     return [self readableStringForKey:[_settingKeys objectAtIndex:section]];
 }
 
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    static NSString *CellIdentifier = @"Cell";
+- (NSArray *)tableView:(UITableView *)tableView viewsForCellAtIndexPath:(NSIndexPath *)indexPath
+{
+    NSString *key = [_settingKeys objectAtIndex:indexPath.section];
+    if ([key isEqualToString:KGOSettingsSocialMedia]) {
+        NSArray *options = [_availableUserSettings objectForKey:key];
+        id optionValue = [options objectAtIndex:indexPath.row];
+        if ([optionValue isKindOfClass:[NSDictionary class]]) {
+            NSString *service = [optionValue stringForKey:@"service" nilIfEmpty:YES];
 
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-    if (cell == nil) {
-        cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier] autorelease];
+            NSMutableArray *views = [NSMutableArray array];
+            
+            CGFloat width = tableView.frame.size.width - 40; // adjust for padding and chevron
+            CGFloat y = 10;
+            UIFont *font = [[KGOTheme sharedTheme] fontForThemedProperty:KGOThemePropertyNavListTitle];
+            UILabel *titleLabel = [[[UILabel alloc] initWithFrame:CGRectMake(10, y, width, font.lineHeight)] autorelease];
+            titleLabel.backgroundColor = [UIColor clearColor];
+            titleLabel.font = font;
+            titleLabel.text = [KGOSocialMediaController localizedNameForService:service];
+            y += titleLabel.frame.size.height + 1;
+            [views addObject:titleLabel];
+            
+            font = [[KGOTheme sharedTheme] fontForThemedProperty:KGOThemePropertyNavListSubtitle];
+            NSString *string = [optionValue stringForKey:@"subtitle" nilIfEmpty:YES];
+            if (string) {
+                UILabel *subtitleLabel = [UILabel multilineLabelWithText:string font:font width:width];
+                CGRect frame = subtitleLabel.frame;
+                frame.origin.x = 10;
+                frame.origin.y = y;
+                subtitleLabel.frame = frame;
+                y += subtitleLabel.frame.size.height + 1;
+                [views addObject:subtitleLabel];
+            }
+
+            UILabel *label = [[[UILabel alloc] initWithFrame:CGRectMake(10, 45, tableView.frame.size.width - 20, font.lineHeight)] autorelease];
+            label.backgroundColor = [UIColor clearColor];
+            label.font = font;
+            label.textColor = [[KGOTheme sharedTheme] textColorForThemedProperty:KGOThemePropertyNavListSubtitle];
+            if ([[KGOSocialMediaController sharedController] isLoggedInService:service]) {
+                label.text = @"Signed in - tap to sign out";
+                
+            } else {
+                label.text = @"Not signed in - tap to sign in";
+            }
+            [views addObject:label];
+            
+            return views;
+        }
     }
+    
+    return nil;
+}
 
+- (KGOTableCellStyle)tableView:(UITableView *)tableView styleForCellAtIndexPath:(NSIndexPath *)indexPath
+{
+    return KGOTableCellStyleSubtitle;
+}
+
+- (CellManipulator)tableView:(UITableView *)tableView manipulatorForCellAtIndexPath:(NSIndexPath *)indexPath
+{
     NSString *key = [_settingKeys objectAtIndex:indexPath.section];
     NSArray *options = [_availableUserSettings objectForKey:key];
     
     UIFont *cellTitleFont = nil;
     NSString *cellTitle = nil;
     NSString *cellSubtitle = nil;
+    NSString *accessory = nil;
     
     id optionValue = [options objectAtIndex:indexPath.row];
-    if ([optionValue isKindOfClass:[NSString class]]) {
+    if ([key isEqualToString:KGOSettingsLogin]) {
+        // TODO: clean up these ways of getting strings
+        NSDictionary *dictionary = [[KGORequestManager sharedManager] sessionInfo];
+        NSString *name = [[dictionary dictionaryForKey:@"user"] stringForKey:@"name" nilIfEmpty:YES];
+        if (name) {
+            cellTitle = [NSString stringWithFormat:@"You are signed in as %@", name];
+        } else {
+            cellTitle = [NSString stringWithFormat:@"You are signed in anonymously"];
+        }
+        cellSubtitle = @"Tap to sign out";
+    
+    } else if ([key isEqualToString:KGOSettingsSocialMedia]) {
+        // just don't want any other branches
+        
+    } else if ([key isEqualToString:KGOSettingsWidgets]) {
+        cellTitle = [optionValue stringForKey:@"title" nilIfEmpty:YES];
+        NSString *tag = [optionValue stringForKey:@"tag" nilIfEmpty:YES];
+        if ([tag isEqualToString:@"twitter"]) {
+            cellSubtitle = [[NSUserDefaults standardUserDefaults] stringForKey:TwitterHashTagKey];
+            
+        } else if ([tag isEqualToString:@"facebook"]) {
+            cellSubtitle = [[NSUserDefaults standardUserDefaults] stringForKey:FacebookGroupTitleKey];
+        }
+        
+    } else if ([optionValue isKindOfClass:[NSString class]]) {
         cellTitle = optionValue;
         
     } else if ([optionValue isKindOfClass:[NSDictionary class]]) {
@@ -121,12 +197,6 @@ static NSString * const KGOSettingsSocialMedia = @"SocialMedia";
         cellTitle = [optionValue stringForKey:@"title" nilIfEmpty:YES];
         cellSubtitle = [optionValue stringForKey:@"subtitle" nilIfEmpty:YES];
     }
-    
-    cell.textLabel.text = cellTitle;
-    cell.textLabel.textColor = [[KGOTheme sharedTheme] textColorForThemedProperty:KGOThemePropertyNavListTitle];
-    cell.detailTextLabel.text = cellSubtitle;
-    cell.detailTextLabel.font = [[KGOTheme sharedTheme] fontForThemedProperty:KGOThemePropertyNavListSubtitle];
-    cell.detailTextLabel.textColor = [[KGOTheme sharedTheme] textColorForThemedProperty:KGOThemePropertyNavListSubtitle];
 
     // special treatment for different sections
     if ([key isEqualToString:KGOSettingsDefaultFont]) {
@@ -138,23 +208,32 @@ static NSString * const KGOSettingsSocialMedia = @"SocialMedia";
     
     id optionSelected = [_setUserSettings objectForKey:key];
     if ([optionSelected isKindOfClass:[NSString class]] && [optionValue isKindOfClass:[NSString class]]) {
-        cell.accessoryType = [optionSelected isEqualToString:optionValue]
-            ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
+        accessory = [optionSelected isEqualToString:optionValue] ? KGOAccessoryTypeCheckmark : KGOAccessoryTypeNone;
 
     } else if ([optionSelected isKindOfClass:[NSArray class]] && [optionValue isKindOfClass:[NSDictionary class]]) {
         NSString *optionTag = [optionValue stringForKey:@"tag" nilIfEmpty:YES];
-        cell.accessoryType = [optionSelected containsObject:optionTag]
-            ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
+        accessory = [optionSelected containsObject:optionTag] ? KGOAccessoryTypeCheckmark : KGOAccessoryTypeNone;
             
     } else {
-        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+        accessory = KGOAccessoryTypeChevron;
     }
     
-    return cell;
+    return [[^(UITableViewCell *cell) {
+        cell.textLabel.text = cellTitle;
+        cell.textLabel.textColor = [[KGOTheme sharedTheme] textColorForThemedProperty:KGOThemePropertyNavListTitle];
+        cell.textLabel.font = cellTitleFont;
+        cell.selectionStyle = UITableViewCellSelectionStyleGray;
+        cell.detailTextLabel.text = cellSubtitle;
+        cell.detailTextLabel.font = [[KGOTheme sharedTheme] fontForThemedProperty:KGOThemePropertyNavListSubtitle];
+        cell.detailTextLabel.textColor = [[KGOTheme sharedTheme] textColorForThemedProperty:KGOThemePropertyNavListSubtitle];
+        cell.accessoryView = [[KGOTheme sharedTheme] accessoryViewForType:accessory];
+    } copy] autorelease];
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    
     NSString *key = [_settingKeys objectAtIndex:indexPath.section];
     NSArray *options = [_availableUserSettings objectForKey:key];
     id optionValue = [options objectAtIndex:indexPath.row];
@@ -213,7 +292,7 @@ static NSString * const KGOSettingsSocialMedia = @"SocialMedia";
         
         [[NSNotificationCenter defaultCenter] postNotificationName:KGOUserPreferencesDidChangeNotification object:key];
         
-        [tableView reloadData];
+        [self reloadDataForTableView:tableView];
     }
 }
 

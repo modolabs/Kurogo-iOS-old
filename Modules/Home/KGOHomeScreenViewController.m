@@ -32,9 +32,15 @@
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         _preferences = [[[KGOTheme sharedTheme] homescreenConfig] retain];
+        
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(moduleListDidChange:)
                                                      name:ModuleListDidChangeNotification
+                                                   object:nil];
+        
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(moduleListDidChange:)
+                                                     name:KGOUserPreferencesDidChangeNotification
                                                    object:nil];
     }
     return self;
@@ -44,9 +50,15 @@
     self = [super init];
     if (self) {
         _preferences = [[[KGOTheme sharedTheme] homescreenConfig] retain];
+        
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(moduleListDidChange:)
                                                      name:ModuleListDidChangeNotification
+                                                   object:nil];
+
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(moduleListDidChange:)
+                                                     name:KGOUserPreferencesDidChangeNotification
                                                    object:nil];
     }
     return self;

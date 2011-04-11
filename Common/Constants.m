@@ -39,6 +39,11 @@ NSString * const VideoModuleTag     = @"video";
 
 // preferences
 
+// TODO: clean up settings module and make all these go away
+NSString * const FacebookGroupKey = @"FBGroup";
+NSString * const FacebookGroupTitleKey = @"FBGroupTitle";
+NSString * const TwitterHashTagKey = @"TwitterHashTag";
+
 NSString * const MITNewsTwoFirstRunKey = @"MITNews2ClearedCachedArticles";
 
 // notification names
