@@ -1,16 +1,15 @@
-#import "KGOEventAttendee.h"
-#import "KGOEvent.h"
+#import "KGOEventParticipant.h"
 #import "KGOEventContactInfo.h"
+#import "KGOEventParticipantRelation.h"
 
-NSString * const KGOEntityNameEventAttendee = @"KGOEventAttendee";
+NSString * const KGOEntityNameEventAttendee = @"KGOEventParticipant";
 
-@implementation KGOEventAttendee
-@dynamic name;
-@dynamic identifier;
+@implementation KGOEventParticipant
 @dynamic attendeeType;
-@dynamic event;
+@dynamic identifier;
+@dynamic name;
 @dynamic contactInfo;
-@dynamic organizedEvent;
+@dynamic events;
 
 - (void)addContactInfoObject:(KGOEventContactInfo *)value {    
     NSSet *changedObjects = [[NSSet alloc] initWithObjects:&value count:1];
@@ -39,6 +38,7 @@ NSString * const KGOEntityNameEventAttendee = @"KGOEventAttendee";
     [[self primitiveValueForKey:@"contactInfo"] minusSet:value];
     [self didChangeValueForKey:@"contactInfo" withSetMutation:NSKeyValueMinusSetMutation usingObjects:value];
 }
+
 
 
 @end

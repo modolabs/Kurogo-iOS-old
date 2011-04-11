@@ -47,8 +47,8 @@
 @property (nonatomic, retain) NSString *location;
 @property (nonatomic, retain) NSString *summary;
 @property (nonatomic, retain) NSDictionary *rrule;
-@property (nonatomic, retain) NSSet *organizers;
-@property (nonatomic, retain) NSSet *attendees;
+@property (nonatomic, retain) NSSet *organizers; // set of KGOAttendeeWrapper objects
+@property (nonatomic, retain) NSSet *attendees;  // set of KGOAttendeeWrapper objects
 @property (nonatomic, retain) NSDictionary *userInfo;
 @property (nonatomic) BOOL allDay;
 

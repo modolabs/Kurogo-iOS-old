@@ -41,7 +41,7 @@ organizedEvent;
 
 #pragma mark CoreData
 
-- (id)initWithKGOAttendee:(KGOEventAttendee *)attendee
+- (id)initWithKGOAttendee:(KGOEventParticipant *)attendee
 {
     self = [super init];
     if (self) {
@@ -71,12 +71,12 @@ organizedEvent;
     self.KGOAttendee.contactInfo = contactInfo;
 }
 
-- (KGOEventAttendee *)KGOAttendee
+- (KGOEventParticipant *)KGOAttendee
 {
     return _kgoAttendee;
 }
 
-- (void)setKGOAttendee:(KGOEventAttendee *)attendee
+- (void)setKGOAttendee:(KGOEventParticipant *)attendee
 {
     [_kgoAttendee release];
     _kgoAttendee = [attendee retain];
