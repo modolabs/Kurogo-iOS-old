@@ -178,6 +178,11 @@ static KGOTheme *s_sharedTheme = nil;
 
 // this one can be nil
 // TODO: make nil/non-nil distinction more transparent
+- (UIColor *)tintColorForToolbar {
+    UIColor *color = [self matchBackgroundColorWithLabel:@"ToolbarTintColor"];
+    return color;
+}
+
 - (UIColor *)tintColorForSearchBar {
     UIColor *color = [self matchBackgroundColorWithLabel:@"SearchBarTintColor"];
     return color;
