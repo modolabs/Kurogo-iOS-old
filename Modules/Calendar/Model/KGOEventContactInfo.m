@@ -1,5 +1,5 @@
 #import "KGOEventContactInfo.h"
-#import "KGOEventAttendee.h"
+#import "KGOEventParticipant.h"
 
 NSString * const KGOEntityNameEventContactInfo = @"KGOEventContactInfo";
 

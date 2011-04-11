@@ -25,7 +25,7 @@
     
     NSDictionary *_rrule; // recurrenceRule in EKEvent
     NSSet *_attendees;
-    NSSet *_organizers; // KGOEventAttendee, EKParticipant
+    NSSet *_organizers; // KGOEventParticipant, EKParticipant
     
     // core data only -- no eventkit counterpart
     

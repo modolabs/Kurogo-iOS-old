@@ -2,11 +2,11 @@
 #import <CoreData/CoreData.h>
 #import "KGOContactInfo.h"
 
-@class KGOEventAttendee;
+@class KGOEventParticipant;
 
 @interface KGOEventContactInfo : KGOContactInfo {
 @private
 }
-@property (nonatomic, retain) KGOEventAttendee * attendee;
+@property (nonatomic, retain) KGOEventParticipant * attendee;
 
 @end
