@@ -133,7 +133,7 @@
 - (NSArray *)sectionForAttendeeInfo
 {
     NSArray *attendeeInfo = nil;
-    if (_event.attendees) {
+    if (_event.attendees.count) {
         NSString *attendeeString = [NSString stringWithFormat:@"%d %@",
                                     _event.attendees.count,
                                     NSLocalizedString(@"others attending", nil)];
@@ -202,7 +202,7 @@
         UILabel *label = [UILabel multilineLabelWithText:_event.summary
                                                     font:[[KGOTheme sharedTheme] fontForThemedProperty:KGOThemePropertyBodyText]
                                                    width:self.frame.size.width - 20];
-        label.textColor = [[KGOTheme sharedTheme] textColorForThemedProperty:KGOThemePropertyBodyText];
+        label.textColor = [[KGOTheme sharedTheme] textColorForThemedProperty:KGOThemePropertyNavListSubtitle];
         label.tag = DESCRIPTION_LABEL_TAG;
         CGRect frame = label.frame;
         frame.origin = CGPointMake(10, 10);
