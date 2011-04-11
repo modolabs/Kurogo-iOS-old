@@ -53,6 +53,23 @@ static KGOTheme *s_sharedTheme = nil;
     return s_sharedTheme;
 }
 
+- (UIFont *)defaultFont
+{
+    return [UIFont fontWithName:[self defaultFontName] size:[self defaultFontSize]];
+}
+
+- (UIFont *)defaultBoldFont
+{
+    NSString *fontName = [self defaultFontName];
+    CGFloat size = [self defaultFontSize];
+    UIFont *font = [UIFont fontWithName:[NSString stringWithFormat:@"%@-Bold", fontName]
+                                   size:size];
+    if (!font) {
+        font = [UIFont fontWithName:fontName size:size];
+    }
+    return font;
+}
+
 - (NSString *)defaultFontName
 {
     NSString *fontName = [fontDict stringForKey:@"DefaultFont" nilIfEmpty:YES];
