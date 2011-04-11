@@ -230,6 +230,7 @@ showingOnlySearchResults = _showingOnlySearchResults;
     // save search term to recent searches
     NSString *moduleTag = [self.delegate searchControllerModuleTag:self];
     NSPredicate *pred = [NSPredicate predicateWithFormat:@"text = %@ AND module = %@", searchBar.text, moduleTag];
+    DLog(@"%@", [pred description]);
     RecentSearch *recentSearch = [[[CoreDataManager sharedManager] objectsForEntity:RecentSearchesEntityName matchingPredicate:pred] lastObject];
     if (!recentSearch) {
         recentSearch = [[CoreDataManager sharedManager] insertNewObjectForEntityForName:RecentSearchesEntityName];

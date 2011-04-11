@@ -43,6 +43,7 @@ searchBar = _searchBar;
     }
     
     _searchBar = [[KGOSearchBar alloc] initWithFrame:CGRectMake(0.0f, 0.0f, self.view.frame.size.width, 44)];
+    _searchBar.autoresizingMask = UIViewAutoresizingFlexibleWidth;
 	_searchBar.placeholder = NSLocalizedString(@"Search", nil);
 
     if (!_searchController) {

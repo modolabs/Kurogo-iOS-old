@@ -255,6 +255,7 @@
 - (void)showSearchBar {
 	if (!theSearchBar) {
 		theSearchBar = [[KGOSearchBar alloc] initWithFrame:CGRectMake(0.0, 0.0, self.view.frame.size.width, 44.0)];
+        theSearchBar.autoresizingMask = UIViewAutoresizingFlexibleWidth;
 		theSearchBar.alpha = 0.0;
         if (!searchController) {
             searchController = [[KGOSearchDisplayController alloc] initWithSearchBar:theSearchBar delegate:self contentsController:self];

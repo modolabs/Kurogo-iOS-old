@@ -249,6 +249,8 @@
             // for failed data migrations
             NSString *backupFile = [NSString stringWithFormat:@"%@.bak", [self storeFileName]];
             if ([[NSFileManager defaultManager] moveItemAtPath:[self storeFileName] toPath:backupFile error:&error]) {                 NSLog(@"Old core data is stored at %@", backupFile);
+                tryAgain = YES;
+                
             } else {
                 NSLog(@"Failed to move old core data to backup file: %@", [error description]);
                 // try to just delete it so we can at least mimic production behavior

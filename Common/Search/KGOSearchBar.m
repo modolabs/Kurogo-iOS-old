@@ -1,10 +1,82 @@
 #import "KGOSearchBar.h"
 #import "KGOTheme.h"
 #import "KGOToolbar.h"
+#import "UIKit+KGOAdditions.h"
+#import <QuartzCore/QuartzCore.h>
 
-#define TOOLBAR_BUTTON_PADDING 4.0
-#define TOOLBAR_SEARCHBAR_OVERLAP 4.0
-#define TOOLBAR_BUTTON_SPACING 6.0
+#define TOOLBAR_BUTTON_PADDING 5
+#define TOOLBAR_BUTTON_SPACING 6
+#define TOOLBAR_MINIMUM_WIDTH 1
+#define TOOLBAR_ANIMATION_DURATION 0.3
+
+// the toolbar provides too much padding by default
+#define TEXTFIELD_RIGHT_ALLOWANCE 4
+
+#define SEARCH_BAR_HEIGHT 44
+
+#define TEXTFIELD_VERTICAL_PADDING 6
+#define TEXTFIELD_HORIZONTAL_PADDING 6
+
+@implementation KGOSearchBarTextField
+
+- (void)layoutSubviews
+{
+    // UITextField by default attaches an animation to the text label the first
+    // time it replaces the editing text, which causes the text to fly in from
+    // the top left.  not sure why it does this, but for now we'll remove all
+    // animations on labels since any SDK change will be at most cosmetic.
+    for (UIView *aView in self.subviews) {
+        if ([aView isKindOfClass:[UILabel class]]) {
+            [aView.layer removeAllAnimations];
+        }
+    }
+    [super layoutSubviews];
+}
+
+// TODO: stop hardcoding these numbers when we decide what looks right.
+
+- (CGRect)leftViewRectForBounds:(CGRect)bounds
+{
+    CGRect rect = bounds;
+    rect.origin.x = 6;
+    rect.origin.y = 7;
+    rect.size.width = 20;
+    rect.size.height = bounds.size.height - 14;
+    
+    return rect;
+}
+
+- (CGRect)textRectForBounds:(CGRect)bounds
+{
+    CGRect rect = bounds;
+    rect.origin.x = 26;
+    rect.origin.y = 7;
+    rect.size.width = bounds.size.width - 12 - 20;
+    rect.size.height = bounds.size.height - 14;
+    
+    return rect;
+}
+
+- (CGRect)placeholderRectForBounds:(CGRect)bounds
+{
+    return [self textRectForBounds:bounds];
+}
+
+- (CGRect)editingRectForBounds:(CGRect)bounds
+{
+    return [self textRectForBounds:bounds];
+}
+
+@end
+
+@interface KGOSearchBar (Private)
+
+- (void)setupBackgroundView; // ensures that background image is bottommost view
+- (void)setupTextField;
+- (void)setupToolbar;
+
+@end
+
 
 @implementation KGOSearchBar
 
@@ -14,37 +86,9 @@
     
     self = [super initWithCoder:aDecoder];
     if (self) {
-        _searchBar = [[UISearchBar alloc] initWithCoder:aDecoder]; // do this first so _searchBar can receive setter methods right away
-        _searchBar.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-        _searchBar.delegate = self;
-
         UIColor *color = [[KGOTheme sharedTheme] tintColorForSearchBar];
         if (color) {
-            _searchBar.tintColor = color;
-        }
-        UIImage *image = [[[KGOTheme sharedTheme] backgroundImageForSearchBar] stretchableImageWithLeftCapWidth:15 topCapHeight:0];
-        if (image) {
-            self.backgroundImage = image;
-        }
-        image = [[KGOTheme sharedTheme] backgroundImageForSearchBarDropShadow];
-        if (image) {
-            self.dropShadowImage = image;
-        }
-    }
-    return self;
-}
-
-- (id)initWithFrame:(CGRect)frame {
-    
-    self = [super initWithFrame:frame];
-    if (self) {
-        _searchBar = [[UISearchBar alloc] initWithFrame:frame]; // do this first so _searchBar can receive setter methods right away
-        _searchBar.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-        _searchBar.delegate = self;
-
-        UIColor *color = [[KGOTheme sharedTheme] tintColorForSearchBar];
-        if (color) {
-            _searchBar.tintColor = color;
+            self.tintColor = color;
         }
         UIImage *image = [[KGOTheme sharedTheme] backgroundImageForSearchBar];
         if (image) {
@@ -54,75 +98,54 @@
         if (image) {
             self.dropShadowImage = image;
         }
+        
+        [self setupToolbar];
+        [self setupTextField];
     }
     return self;
 }
 
-// TODO: search bars have a minimum size restriction, need to make sure KGOSearchBar isn't created smaller
-- (void)layoutSubviews {
-    // sad way to use a background image for a search bar:
-    // insert the image right below the text field
-    if (self.backgroundImage) {
-        if (!_backgroundView) {
-            _backgroundView = [[UIImageView alloc] initWithImage:[self.backgroundImage stretchableImageWithLeftCapWidth:0 topCapHeight:0]];
-            _backgroundView.autoresizingMask = self.autoresizingMask;
-            _backgroundView.frame = _searchBar.frame;
-            NSInteger viewIndex = 0;
-            for (UIView *aView in _searchBar.subviews) {
-                if ([aView isKindOfClass:[UITextField class]]) {
-                    break;
-                }
-                viewIndex++;
-            }
-            [_searchBar insertSubview:_backgroundView atIndex:viewIndex];
+- (id)initWithFrame:(CGRect)frame {
+    
+    self = [super initWithFrame:frame];
+    if (self) {
+        UIColor *color = [[KGOTheme sharedTheme] tintColorForSearchBar];
+        if (color) {
+            self.tintColor = color;
         }
+        UIImage *image = [[KGOTheme sharedTheme] backgroundImageForSearchBar];
+        if (image) {
+            self.backgroundImage = image;
+        }
+        image = [[KGOTheme sharedTheme] backgroundImageForSearchBarDropShadow];
+        if (image) {
+            self.dropShadowImage = image;
+        }
+        
+        [self setupToolbar];
+        [self setupTextField];
     }
-    
-    if (self.dropShadowImage) {
-        self.clipsToBounds = NO;
-        _dropShadow = [[UIImageView alloc] initWithImage:[self.dropShadowImage stretchableImageWithLeftCapWidth:0 topCapHeight:0]];
-        _dropShadow.autoresizingMask = self.autoresizingMask;
-        _dropShadow.frame = CGRectMake(0, _searchBar.frame.size.height, _searchBar.frame.size.width, _dropShadow.frame.size.height);
-        [self addSubview:_dropShadow];
-    }
-    
-    NSLog(@"%@ %@ %@ %@", self, _backgroundView, _dropShadow, _searchBar);
-    
-    if (![_searchBar isDescendantOfView:self]) {
-        [self addSubview:_searchBar];
-    }
-    
-    if (![_toolbar isDescendantOfView:self]) {
-        [self addSubview:_toolbar];
-    }
-}
-
-- (void)setNeedsLayout {
-    [super setNeedsLayout];
-    
-    if (self.backgroundImage && _backgroundView) {
-        [_backgroundView removeFromSuperview];
-        [_backgroundView release];
-        _backgroundView = nil;
-    }
-    if (self.dropShadowImage && _dropShadow) {
-        [_dropShadow removeFromSuperview];
-        [_dropShadow release];
-        _dropShadow = nil;
-    }
+    return self;
 }
 
 - (void)dealloc {
-    self.backgroundImage = nil;
-    self.dropShadowImage = nil;
-    [_backgroundView release];
-    [_dropShadow release];
-    [_searchBar release];
+    self.backgroundImage = nil; // releases _backgroundImage, _backgroundView
+    self.dropShadowImage = nil; // releases _dropShadowImage, _dropShadow
+
+    [_textField release];
+    [_bookmarkButton release];
+
     [_toolbar release];
+    [_toolbarTintColor release];
+    [_hiddenToolbarItems release];
+    [_cancelButton release];
+
+    [_scopeButtonControl release];
+
     [super dealloc];
 }
 
-#pragma mark Extra views
+#pragma mark Subview creation
 
 - (UIImage *)backgroundImage {
     return _backgroundImage;
@@ -131,10 +154,8 @@
 - (void)setBackgroundImage:(UIImage *)image {
     [_backgroundImage release];
     _backgroundImage = [image retain];
-
-    if (_backgroundImage) {
-        _toolbar.backgroundColor = [UIColor clearColor];
-    }
+    
+    [self setupBackgroundView];
 }
 
 - (UIImage *)dropShadowImage {
@@ -144,35 +165,94 @@
 - (void)setDropShadowImage:(UIImage *)image {
     [_dropShadowImage release];
     _dropShadowImage = [image retain];
+    
+    if (_dropShadowImage) {
+        if (!_dropShadow) {
+            _dropShadow = [[UIImageView alloc] initWithImage:[self.dropShadowImage stretchableImageWithLeftCapWidth:0 topCapHeight:0]];
+            _dropShadow.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+            _dropShadow.frame = CGRectMake(0, self.frame.size.height, self.frame.size.width, _dropShadow.frame.size.height);
+            [self addSubview:_dropShadow];
+        }
+        
+    } else if (_dropShadow) {
+        [_dropShadow removeFromSuperview];
+        [_dropShadow release];
+        _dropShadow = nil;
+    }
+}
+
+- (void)setupToolbar
+{
+    if (!_toolbar) {
+        CGRect frame = CGRectMake(self.frame.size.width - TOOLBAR_MINIMUM_WIDTH, 0, TOOLBAR_MINIMUM_WIDTH, self.frame.size.height);
+        _toolbar = [[KGOToolbar alloc] initWithFrame:frame];
+        _toolbar.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleLeftMargin;
+        _toolbar.backgroundColor = [UIColor clearColor];
+        _toolbar.backgroundImage = [UIImage imageWithPathName:@"common/action-blank"]; // transparent image
+        _toolbar.tintColor = self.tintColor;
+
+        [self addSubview:_toolbar];
+    }
+}
+
+- (void)setupTextField
+{
+    CGRect frame = CGRectMake(TEXTFIELD_HORIZONTAL_PADDING, TEXTFIELD_VERTICAL_PADDING,
+                              self.frame.size.width - TOOLBAR_MINIMUM_WIDTH - TEXTFIELD_HORIZONTAL_PADDING * 2,
+                              self.frame.size.height - TEXTFIELD_VERTICAL_PADDING * 2);
+    _textField = [[KGOSearchBarTextField alloc] initWithFrame:frame];
+    _textField.leftView = [[[UIImageView alloc] initWithImage:[UIImage imageWithPathName:@"common/search_gray"]] autorelease];
+    _textField.leftViewMode = UITextFieldViewModeAlways;
+    _textField.autocapitalizationType = UITextAutocapitalizationTypeNone;
+    _textField.clearButtonMode = UITextFieldViewModeWhileEditing;
+    _textField.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+    _textField.returnKeyType = UIReturnKeySearch;
+    _textField.background = [[UIImage imageWithPathName:@"common/search_bar_text_field"] stretchableImageWithLeftCapWidth:20
+                                                                                                             topCapHeight:0];
+    _textField.font = [UIFont systemFontOfSize:14];
+    _textField.delegate = self;
+    
+    [self addSubview:_textField];
+}
+
+- (void)setupBackgroundView
+{
+    if (self.backgroundImage) {
+        if (!_backgroundView) {
+            _backgroundView = [[UIImageView alloc] initWithImage:[self.backgroundImage stretchableImageWithLeftCapWidth:0
+                                                                                                           topCapHeight:0]];
+            _backgroundView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+            _backgroundView.frame = self.frame;
+        }
+        
+        if (self.subviews.count) {
+            [self insertSubview:_backgroundView atIndex:0];
+            
+        } else {
+            [self addSubview:_backgroundView];
+        }
+        
+    } else if (_backgroundView) {
+        [_backgroundView removeFromSuperview];
+        [_backgroundView release];
+        _backgroundView = nil;
+    }
 }
 
 #pragma mark Toolbar
 
 - (void)hideToolbarAnimated:(BOOL)animated {
-    if (_toolbar) {
-        if (animated) {
-            [UIView beginAnimations:@"searching" context:nil];
-            [UIView setAnimationDuration:0.4];
-        }
-        _toolbar.alpha = 0.0;
-        _searchBar.frame = CGRectMake(0, 0, self.frame.size.width, self.frame.size.height);
-        if (animated) {
-            [UIView commitAnimations];
-        }
+    if (_toolbar.items.count) {
+        _hiddenToolbarItems = [_toolbar.items copy];
+        [self setToolbarItems:nil animated:animated];
     }
 }
 
 - (void)showToolbarAnimated:(BOOL)animated {
-    if (_toolbar) {
-        if (animated) {
-            [UIView beginAnimations:@"searching" context:nil];
-            [UIView setAnimationDuration:0.4];
-        }
-        _toolbar.alpha = 1.0;
-        _searchBar.frame = CGRectMake(0.0f, 0.0f, self.frame.size.width - _toolbar.frame.size.width + TOOLBAR_SEARCHBAR_OVERLAP, self.frame.size.height);
-        if (animated) {
-            [UIView commitAnimations];
-        }
+    if (_hiddenToolbarItems) {
+        [self setToolbarItems:_hiddenToolbarItems animated:animated];
+        [_hiddenToolbarItems release];
+        _hiddenToolbarItems = nil;
     }
 }
 
@@ -188,36 +268,29 @@
 }
 
 - (void)setToolbarItems:(NSArray *)items animated:(BOOL)animated {
-    // get toolbar size
-    CGRect frame = CGRectZero;
-    frame.size.height = self.frame.size.height;
-    CGFloat width = items.count ? TOOLBAR_BUTTON_SPACING : 0.0;
+    CGFloat toolbarWidth = TOOLBAR_MINIMUM_WIDTH;
     for (UIBarButtonItem *anItem in items) {
-        width += anItem.width + TOOLBAR_BUTTON_SPACING;
+        toolbarWidth += anItem.width + TOOLBAR_BUTTON_SPACING + 10;
     }
-    frame.size.width = width;
-    
-    // adjust search bar size
-    CGFloat searchBarWidth = self.frame.size.width - width;
-    frame.origin.x = searchBarWidth;
-    _searchBar.frame = CGRectMake(0, 0, searchBarWidth + TOOLBAR_SEARCHBAR_OVERLAP, self.frame.size.height);
-    
-    // construct toolbar
-    if (!_toolbar) {
-        _toolbar = [[KGOToolbar alloc] initWithFrame:frame];
-        _toolbar.tintColor = _searchBar.tintColor;
-        if (!self.backgroundImage) {
-            _toolbar.translucent = [_searchBar isTranslucent];
-            _toolbar.barStyle = _searchBar.barStyle;
-        } else {
-            _toolbar.backgroundImage = self.backgroundImage;
-        }
-        [self addSubview:_toolbar];
-        
+    CGRect toolbarFrame = CGRectMake(self.frame.size.width - toolbarWidth, 0, toolbarWidth, self.frame.size.height);
+    CGFloat textFieldWidth = self.frame.size.width - toolbarWidth - TEXTFIELD_HORIZONTAL_PADDING + TEXTFIELD_RIGHT_ALLOWANCE;
+    if (!items.count) {
+        textFieldWidth -= TEXTFIELD_HORIZONTAL_PADDING; // keep left/right margins symmetric when no buttons are present
+    }
+    CGRect textFieldFrame = CGRectMake(TEXTFIELD_HORIZONTAL_PADDING, TEXTFIELD_VERTICAL_PADDING,
+                                       textFieldWidth,
+                                       self.frame.size.height - TEXTFIELD_VERTICAL_PADDING * 2);
+    if (animated) {
+        [_toolbar setItems:items animated:YES];
+        [UIView animateWithDuration:TOOLBAR_ANIMATION_DURATION animations:^(void) {
+            _toolbar.frame = toolbarFrame;
+            _textField.frame = textFieldFrame;
+        }];
     } else {
-        _toolbar.frame = frame;
+        _toolbar.items = items;
+        _toolbar.frame = toolbarFrame;
+        _textField.frame = textFieldFrame;
     }
-    [_toolbar setItems:items animated:animated];
 }
 
 - (void)addToolbarButton:(UIBarButtonItem *)aButton animated:(BOOL)animated {
@@ -230,13 +303,21 @@
 }
 
 - (void)addToolbarButtonWithTitle:(NSString *)title {
-    UIBarButtonItem *item = [[[UIBarButtonItem alloc] initWithTitle:title style:UIBarButtonItemStyleBordered target:self action:@selector(toolbarItemTapped:)] autorelease];
+    UIBarButtonItem *item = [[[UIBarButtonItem alloc] initWithTitle:title
+                                                              style:UIBarButtonItemStyleBordered
+                                                             target:self
+                                                             action:@selector(toolbarItemTapped:)] autorelease];
+    // TODO: make these into UIButtons so we don't have to guess the font size
     item.width = [title sizeWithFont:[UIFont boldSystemFontOfSize:[UIFont smallSystemFontSize]]].width + 2 * TOOLBAR_BUTTON_PADDING;
     [self addToolbarButton:item animated:NO];
 }
 
 - (void)addToolbarButtonWithImage:(UIImage *)image {
-    UIBarButtonItem *item = [[[UIBarButtonItem alloc] initWithImage:image style:UIBarButtonItemStyleBordered target:self action:@selector(toolbarItemTapped:)] autorelease];
+    UIBarButtonItem *item = [[[UIBarButtonItem alloc] initWithImage:image
+                                                              style:UIBarButtonItemStyleBordered
+                                                             target:self
+                                                             action:@selector(toolbarItemTapped:)] autorelease];
+    // TODO: make these into UIButtons
     item.width = image.size.width + 2 * TOOLBAR_BUTTON_PADDING;
     [self addToolbarButton:item animated:NO];
 }
@@ -249,199 +330,300 @@
     }
 }
 
-#pragma mark UISearchBar delegate
-
-- (void)searchBarTextDidBeginEditing:(UISearchBar *)searchBar {
-    if ([self.delegate respondsToSelector:@selector(searchBarTextDidBeginEditing:)]) {
-        [self.delegate searchBarTextDidBeginEditing:self];
-    }
-    [self hideToolbarAnimated:YES];
+- (UIColor *)tintColor {
+    return _toolbarTintColor;
 }
 
-- (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar {
-    if ([self.delegate respondsToSelector:@selector(searchBarSearchButtonClicked:)]) {
-        [self.delegate searchBarSearchButtonClicked:self];
+- (void)setTintColor:(UIColor *)color {
+    [_toolbarTintColor release];
+    _toolbarTintColor = [color retain];
+    
+    _toolbar.tintColor = _toolbarTintColor;
+}
+
+- (BOOL)showsCancelButton {
+    return _cancelButton != nil;
+}
+
+- (void)setShowsCancelButton:(BOOL)showsCancelButton {
+    [self setShowsCancelButton:showsCancelButton animated:NO];
+}
+
+- (void)setShowsCancelButton:(BOOL)showsCancelButton animated:(BOOL)animated {
+    if (showsCancelButton) {
+        if (!_cancelButton) {
+            // we can't easily estimate the size of a UIBarButtonSystemItem,
+            // so we have to create our own and and provide our own width
+            UIButton *innerButton = [UIButton buttonWithType:UIButtonTypeCustom];
+            UIImage *image = [UIImage imageWithPathName:@"common/searchbar_button_background"];
+            UIImage *pressedImage = [UIImage imageWithPathName:@"common/searchbar_button_background_pressed"];
+            NSString *cancelString = NSLocalizedString(@"Cancel", nil);
+            innerButton.titleLabel.font = [UIFont boldSystemFontOfSize:[UIFont smallSystemFontSize]];
+            CGSize size = [cancelString sizeWithFont:innerButton.titleLabel.font];
+            innerButton.frame = CGRectMake(0, 0,
+                                           size.width + TOOLBAR_BUTTON_PADDING * 2,
+                                           image.size.height);
+            [innerButton setBackgroundImage:[image stretchableImageWithLeftCapWidth:10 topCapHeight:0]
+                                   forState:UIControlStateNormal];
+            [innerButton setBackgroundImage:[pressedImage stretchableImageWithLeftCapWidth:10 topCapHeight:0]
+                                   forState:UIControlStateHighlighted];
+            [innerButton setTitle:cancelString forState:UIControlStateNormal];
+            [innerButton addTarget:self action:@selector(cancelButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
+            
+            _cancelButton = [[UIBarButtonItem alloc] initWithCustomView:innerButton];
+            _cancelButton.width = innerButton.frame.size.width;
+        }
+        
+        if (_toolbar.items.count) {
+            _hiddenToolbarItems = [_toolbar.items copy];
+        }
+        [self setToolbarItems:[NSArray arrayWithObject:_cancelButton] animated:animated];
+        
+    } else {
+        [self setToolbarItems:_hiddenToolbarItems animated:animated];
+        if (_hiddenToolbarItems) {
+            [_hiddenToolbarItems release];
+            _hiddenToolbarItems = nil;
+        }
+        
+        if (_cancelButton) {
+            [_cancelButton release];
+            _cancelButton = nil;
+        }
     }
 }
 
-- (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar {
+#pragma mark Text field delegation
+
+// sent by _bookmarkButton
+- (void)searchBarBookmarkButtonClicked:(id)sender {
+    if ([self.delegate respondsToSelector:@selector(searchBarBookmarkButtonClicked:)]) {
+        [self.delegate searchBarBookmarkButtonClicked:self];
+    }
+}
+
+- (void)cancelButtonPressed:(id)sender
+{
     if ([self.delegate respondsToSelector:@selector(searchBarCancelButtonClicked:)]) {
         [self.delegate searchBarCancelButtonClicked:self];
     }
     [self showToolbarAnimated:YES];
 }
 
-- (void)searchBarBookmarkButtonClicked:(UISearchBar *)searchBar {
-    if ([self.delegate respondsToSelector:@selector(searchBarBookmarkButtonClicked:)]) {
-        [self.delegate searchBarBookmarkButtonClicked:self];
+- (BOOL)textFieldShouldReturn:(UITextField *)textField
+{
+    if ([self.delegate respondsToSelector:@selector(searchBarSearchButtonClicked:)]) {
+        [self.delegate searchBarSearchButtonClicked:self];
+    }
+    return YES;
+}
+
+- (BOOL)textFieldShouldEndEditing:(UITextField *)textField
+{
+    return YES;
+}
+
+- (BOOL)textFieldShouldClear:(UITextField *)textField
+{
+    return YES;
+}
+
+- (void)textFieldDidBeginEditing:(UITextField *)textField
+{
+    if ([self.delegate respondsToSelector:@selector(searchBarTextDidBeginEditing:)]) {
+        [self.delegate searchBarTextDidBeginEditing:self];
     }
 }
 
-- (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText {
+- (BOOL)textFieldShouldBeginEditing:(UITextField *)textField
+{
+    return YES;
+}
+
+- (void)textFieldDidEndEditing:(UITextField *)textField
+{
+    // TODO: decide if we need something here
+    [textField setNeedsLayout];
+}
+
+- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
+{
+    // TODO: this isn't quite accurate, see if we need to do more
+    NSMutableString *text = [textField.text mutableCopy];
+    [text replaceCharactersInRange:range withString:string];
     if ([self.delegate respondsToSelector:@selector(searchBar:textDidChange:)]) {
-        [self.delegate searchBar:self textDidChange:searchText];
+        [self.delegate searchBar:self textDidChange:text];
     }
+    return YES;
 }
-
-- (void)searchBar:(UISearchBar *)searchBar selectedScopeButtonIndexDidChange:(NSInteger)selectedScope {
-    if ([self.delegate respondsToSelector:@selector(searchBar:selectedScopeButtonIndexDidChange:)]) {
-        [self.delegate searchBar:self selectedScopeButtonIndexDidChange:selectedScope];
-    }
-}
-
-#pragma mark UIResponder
 
 - (BOOL)becomeFirstResponder {
-    return [_searchBar becomeFirstResponder];
+    if ([_textField becomeFirstResponder]) {
+        [self setShowsCancelButton:YES animated:YES];
+    }
+    return YES;
 }
 
 - (BOOL)resignFirstResponder {
-    return [_searchBar resignFirstResponder];
+    if ([_textField resignFirstResponder]) {
+        [self setShowsCancelButton:NO animated:YES];
+    }
+    return YES;
 }
 
-#pragma mark UISearchBar tasks
+#pragma mark Text field properties
 
 - (UITextAutocapitalizationType) autocapitalizationType {
-    return _searchBar.autocapitalizationType;
+    return _textField.autocapitalizationType;
 }
 
 - (void)setAutocapitalizationType:(UITextAutocapitalizationType)type {
-    _searchBar.autocapitalizationType = type;
+    _textField.autocapitalizationType = type;
 }
 
 - (UITextAutocorrectionType) autocorrectionType {
-    return _searchBar.autocapitalizationType;
+    return _textField.autocapitalizationType;
 }
 
 - (void)setAutocorrectionType:(UITextAutocorrectionType)type {
-    _searchBar.autocorrectionType = type;
-}
-
-- (UIBarStyle)barStyle {
-    return _searchBar.barStyle;
-}
-
-- (void)setBarStyle:(UIBarStyle)style {
-    _searchBar.barStyle = style;
-    if (!self.backgroundImage) {
-        _toolbar.barStyle = style;
-    }
+    _textField.autocorrectionType = type;
 }
 
 - (UIKeyboardType)keyboardType {
-    return _searchBar.keyboardType;
+    return _textField.keyboardType;
 }
 
 - (void)setKeyboardType:(UIKeyboardType)type {
-    _searchBar.keyboardType = type;
+    _textField.keyboardType = type;
+}
+
+- (UIKeyboardAppearance)keyboardAppearance {
+    return _textField.keyboardAppearance;
+}
+
+- (void)setKeyboardAppearance:(UIKeyboardAppearance)keyboardAppearance {
+    _textField.keyboardAppearance = keyboardAppearance;
 }
 
 - (NSString *)placeholder {
-    return _searchBar.placeholder;
+    return _textField.placeholder;
 }
 
 - (void)setPlaceholder:(NSString *)placeholder {
-    _searchBar.placeholder = placeholder;
-}
-
-- (NSString *)prompt {
-    return _searchBar.prompt;
-}
-
-- (void)setPrompt:(NSString *)prompt {
-    _searchBar.prompt = prompt;
-}
-
-- (NSArray *)scopeButtonTitles {
-    return _searchBar.scopeButtonTitles;
-}
-
-- (void)setScopeButtonTitles:(NSArray *)titles {
-    _searchBar.scopeButtonTitles = titles;
-}
-
-- (BOOL)isSearchResultsButtonSelected {
-    return [_searchBar isSearchResultsButtonSelected];
-}
-
-- (void)setSearchResultsButtonSelected:(BOOL)selected {
-    _searchBar.searchResultsButtonSelected = selected;
-}
-
-- (NSInteger)selectedScopeButtonIndex {
-    return _searchBar.selectedScopeButtonIndex;
-}
-
-- (void)setSelectedScopeButtonIndex:(NSInteger)index {
-    _searchBar.selectedScopeButtonIndex = index;
-}
-
-- (BOOL)showsBookmarkButton {
-    return _searchBar.showsBookmarkButton;
-}
-
-- (void)setShowsBookmarkButton:(BOOL)shows {
-    _searchBar.showsBookmarkButton = shows;
-}
-
-- (BOOL)showsCancelButton {
-    return _searchBar.showsCancelButton;
-}
-
-- (void)setShowsCancelButton:(BOOL)shows {
-    _searchBar.showsCancelButton = shows;
-}
-
-- (BOOL)showsScopeBar {
-    return _searchBar.showsScopeBar;
-}
-
-- (void)setShowsScopeBar:(BOOL)shows {
-    _searchBar.showsScopeBar = shows;
-}
-
-- (BOOL)showsSearchResultsButton {
-    return _searchBar.showsSearchResultsButton;
-}
-
-- (void)setShowsSearchResultsButton:(BOOL)shows {
-    _searchBar.showsSearchResultsButton = shows;
+    _textField.placeholder = placeholder;
 }
 
 - (NSString *)text {
-    return _searchBar.text;
+    DLog(@"textfield: %@", _textField.text);
+    return _textField.text;
 }
 
 - (void)setText:(NSString *)text {
-    _searchBar.text = text;
+    _textField.text = text;
 }
 
-- (UIColor *)tintColor {
-    return _searchBar.tintColor;
+- (UIFont *)font {
+    return _textField.font;
 }
 
-- (void)setTintColor:(UIColor *)color {
-    _searchBar.tintColor = color;
-    _toolbar.tintColor = color;
+- (void)setFont:(UIFont *)font {
+    _textField.font = font;
 }
 
-- (BOOL)isTranslucent {
-    return [_searchBar isTranslucent];
+- (UIColor *)textColor {
+    return _textField.textColor;
 }
 
-- (void)setTranslucent:(BOOL)translucent {
-    _searchBar.translucent = translucent;
-    if (!self.backgroundImage) {
-        _toolbar.translucent = translucent;
+- (void)setTextColor:(UIColor *)textColor {
+    _textField.textColor = textColor;
+}
+
+- (BOOL)showsBookmarkButton {
+    return _bookmarkButton != nil;
+}
+
+- (void)setShowsBookmarkButton:(BOOL)shows {
+    if (shows) {
+        if (!_bookmarkButton) {
+            _bookmarkButton = [[UIButton buttonWithType:UIButtonTypeCustom] retain];
+            UIImage *image = [UIImage imageWithPathName:@"common/searchfield_star"];
+            [_bookmarkButton setImage:image forState:UIControlStateNormal];
+            _bookmarkButton.frame = CGRectMake(0, 0, image.size.width, image.size.height);
+            [_bookmarkButton addTarget:self
+                                action:@selector(searchBarBookmarkButtonClicked:)
+                      forControlEvents:UIControlEventTouchUpInside];
+            _textField.rightView = _bookmarkButton;
+        }
+        
+    } else if (_bookmarkButton) {
+        if (_textField.rightView == _bookmarkButton) {
+            _textField.rightView = nil;
+        }
+        [_bookmarkButton release];
+        _bookmarkButton = nil;
+    }
+}
+                     
+#pragma mark Segmented control properties
+
+- (NSArray *)scopeButtonTitles {
+    NSMutableArray *array = [NSMutableArray arrayWithCapacity:[_scopeButtonControl numberOfSegments]];
+    for (int i = 0; i < [_scopeButtonControl numberOfSegments]; i++) {
+        [array addObject:[_scopeButtonControl titleForSegmentAtIndex:i]];
+    }
+    return [[array copy] autorelease];
+}
+
+- (void)setScopeButtonTitles:(NSArray *)titles {
+    [_scopeButtonControl removeAllSegments];
+    for (int i = 0; i < titles.count; i++) {
+        id foreground = [titles objectAtIndex:i];
+        if ([foreground isKindOfClass:[NSString class]]) {
+            [_scopeButtonControl insertSegmentWithTitle:foreground atIndex:[_scopeButtonControl numberOfSegments] animated:NO];
+        } else if ([foreground isKindOfClass:[UIImage class]]) {
+            [_scopeButtonControl insertSegmentWithImage:foreground atIndex:[_scopeButtonControl numberOfSegments] animated:NO];
+        }
     }
 }
 
-- (void)setShowsCancelButton:(BOOL)showsCancelButton animated:(BOOL)animated {
-    [_searchBar setShowsCancelButton:showsCancelButton animated:animated];
-    if (showsCancelButton) {
-        [self hideToolbarAnimated:animated];
-    } else {
-        [self showToolbarAnimated:animated];
+- (NSInteger)selectedScopeButtonIndex {
+    return _scopeButtonControl.selectedSegmentIndex;
+}
+
+- (void)setSelectedScopeButtonIndex:(NSInteger)index {
+    [_scopeButtonControl setSelectedSegmentIndex:index];
+    
+    if ([self.delegate respondsToSelector:@selector(searchBar:selectedScopeButtonIndexDidChange:)]) {
+        [self.delegate searchBar:self selectedScopeButtonIndexDidChange:index];
+    }
+}
+
+- (BOOL)showsScopeBar {
+    return _scopeButtonControl != nil;
+}
+
+- (void)setShowsScopeBar:(BOOL)shows {
+    if (shows) {
+        // TODO: make sure this doesn't mess up drop shadow
+        if (!_scopeButtonControl) {
+            CGRect frame = self.frame;
+            frame.origin.x = 0;
+            frame.origin.y = self.frame.size.height;
+            _scopeButtonControl = [[UISegmentedControl alloc] initWithFrame:frame];
+            frame = self.frame;
+            frame.size.height += _scopeButtonControl.frame.size.height;
+            self.frame = frame;
+            [self addSubview:_scopeButtonControl];
+        }
+        
+    } else if (_scopeButtonControl) {
+        [_scopeButtonControl removeFromSuperview];
+        [_scopeButtonControl release];
+        _scopeButtonControl = nil;
+
+        CGRect frame = self.frame;
+        frame.size.height = SEARCH_BAR_HEIGHT;
+        self.frame = frame;
     }
 }
 

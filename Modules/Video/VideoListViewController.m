@@ -93,7 +93,7 @@ static const NSInteger kVideoListCellThumbnailTag = 0x78;
         [[[KGOSearchBar alloc] initWithFrame:
           CGRectMake(0.0, 0.0, self.view.frame.size.width, 44.0)]
          autorelease];
-        
+        self.theSearchBar.autoresizingMask = UIViewAutoresizingFlexibleWidth;
 		self.theSearchBar.alpha = 0.0;
         
         if (!self.searchController) {
