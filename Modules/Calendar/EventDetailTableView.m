@@ -318,8 +318,8 @@
 {
     if (_headerView.frame.size.height != self.tableHeaderView.frame.size.height) {
         self.tableHeaderView.frame = _headerView.frame;
-        self.tableHeaderView = self.tableHeaderView;
     }
+    self.tableHeaderView = self.tableHeaderView;
 }
 
 - (UIView *)viewForTableHeader
