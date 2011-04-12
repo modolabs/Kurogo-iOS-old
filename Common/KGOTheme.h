@@ -25,6 +25,8 @@ extern NSString * const KGOThemePropertyNavListTitle;
 extern NSString * const KGOThemePropertyNavListSubtitle;
 extern NSString * const KGOThemePropertyNavListLabel;
 extern NSString * const KGOThemePropertyNavListValue;
+extern NSString * const KGOThemePropertyScrollTab;
+extern NSString * const KGOThemePropertyScrollTabSelected;
 extern NSString * const KGOThemePropertySectionHeader;
 extern NSString * const KGOThemePropertySectionHeaderGrouped;
 extern NSString * const KGOThemePropertyTab;

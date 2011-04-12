@@ -118,9 +118,12 @@
     UIButton *aButton = [UIButton buttonWithType:UIButtonTypeCustom];
     
     [aButton setTitle:title forState:UIControlStateNormal];
-    [aButton setTitleColor:[UIColor colorWithHexString:@"#E0E0E0"] forState:UIControlStateNormal];
-    [aButton setTitleColor:[UIColor whiteColor] forState:UIControlStateHighlighted];
-    aButton.titleLabel.font = [[KGOTheme sharedTheme] fontForThemedProperty:KGOThemePropertySmallPrint];
+    [aButton setTitleColor:[[KGOTheme sharedTheme] textColorForThemedProperty:KGOThemePropertyScrollTab]
+                  forState:UIControlStateNormal];
+    [aButton setTitleColor:[[KGOTheme sharedTheme] textColorForThemedProperty:KGOThemePropertyScrollTabSelected]
+                  forState:UIControlStateHighlighted];
+    
+    aButton.titleLabel.font = [[KGOTheme sharedTheme] fontForThemedProperty:KGOThemePropertyScrollTab];
     aButton.titleEdgeInsets = UIEdgeInsetsMake(0, 0, 1.0, 0); // needed to center text vertically within button
     CGSize size = [aButton.titleLabel.text sizeWithFont:aButton.titleLabel.font];
 
