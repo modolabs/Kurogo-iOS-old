@@ -139,6 +139,7 @@
 
 
 - (void)dealloc {
+    _mapView.delegate = nil;
     [_annotations release];
 	[_searchController release];
     [_toolbarDropShadow release];
@@ -432,7 +433,9 @@
 		}
 	}
     
-    _mapView.region = [MapHomeViewController regionForAnnotations:_mapView.annotations restrictedToClass:[KGOPlacemark class]];
+    if (_mapView.annotations.count) {
+        _mapView.region = [MapHomeViewController regionForAnnotations:_mapView.annotations restrictedToClass:[KGOPlacemark class]];
+    }
 	
 	_searchResultsTableView = tableView;
 }
