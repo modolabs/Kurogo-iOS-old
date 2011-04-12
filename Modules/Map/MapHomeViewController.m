@@ -215,6 +215,7 @@
                                                                            target:self
                                                                            action:@selector(dismissModalViewControllerAnimated:)] autorelease];
     categoryVC.navigationItem.rightBarButtonItem = item;
+    navC.modalPresentationStyle = UIModalPresentationFormSheet;
     [self presentModalViewController:navC animated:YES];
 }
 
@@ -231,6 +232,7 @@
                                                                            target:self
                                                                            action:@selector(dismissModalViewControllerAnimated:)] autorelease];
     vc.navigationItem.rightBarButtonItem = item;
+    navC.modalPresentationStyle = UIModalPresentationFormSheet;
     [self presentModalViewController:navC animated:YES];
 }
 
@@ -244,6 +246,7 @@
                                                                            target:self
                                                                            action:@selector(dismissModalViewControllerAnimated:)] autorelease];
     vc.navigationItem.rightBarButtonItem = item;
+    navC.modalPresentationStyle = UIModalPresentationFormSheet;
     [self presentModalViewController:navC animated:YES];
 }
 
