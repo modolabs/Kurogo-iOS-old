@@ -37,7 +37,7 @@
 
 - (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType
 {
-    DLog(@"attempting to load %@", request.URL);
+    DLog(@"attempting to load %@ %@ %p", request.URL, request, request);
 
     if ([[KGORequestManager sharedManager] isUserLoggedIn]) {
         [self dismissModalViewControllerAnimated:YES];
@@ -47,10 +47,17 @@
     // we have to keep calling this because we can't tell when the user is 
     // looking at which screen
     if ([[KGORequestManager sharedManager] requestingSessionInfo]) {
+        DLog(@"session info request in progress, delaying request");
+#ifdef USE_MOBILE_DEV
+        if ([[[request URL] absoluteString] isEqualToString:@"about:blank"]) {
+            return YES;
+        }
+#endif
         [webView performSelector:@selector(loadRequest:) withObject:request afterDelay:0.1];
         return NO;
+
     }
-    
+
     [[KGORequestManager sharedManager] requestSessionInfo];
     
 #ifdef USE_MOBILE_DEV
@@ -66,7 +73,7 @@
         if (request != _request) {
             [_request release];
             _request = [request mutableCopy];
-            NSLog(@"%@", [_request HTTPMethod]);
+            NSLog(@"%p request method: %@", _request, [_request HTTPMethod]);
             NSLog(@"post data: %@", [[[NSString alloc] initWithData:[_request HTTPBody] encoding:NSUTF8StringEncoding] autorelease]);
             
             self.data = [NSMutableData data];
@@ -204,6 +211,7 @@
                                                                withString:[NSString stringWithFormat:@"action=\"%@/", originalURL]];
         }
         
+        DLog(@"loading faked html: %@", htmlString);
         [self.webView loadHTMLString:htmlString baseURL:nil];
     }
     self.data = nil;
