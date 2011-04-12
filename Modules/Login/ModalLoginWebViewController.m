@@ -37,7 +37,7 @@
 
 - (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType
 {
-    NSLog(@"attempting to load %@", request.URL);
+    DLog(@"attempting to load %@", request.URL);
 
     if ([[KGORequestManager sharedManager] isUserLoggedIn]) {
         [self dismissModalViewControllerAnimated:YES];
@@ -115,6 +115,17 @@
 }
 
 #ifdef USE_MOBILE_DEV
+
+#pragma mark - Webview
+
+- (void)webViewDidFinishLoad:(UIWebView *)webView
+{
+    [super webViewDidFinishLoad:webView];
+    
+    NSString *contents = [webView stringByEvaluatingJavaScriptFromString:@"document.getElementsByTagName(\"html\")[0].innerHTML"];
+    DLog(@"webview finshed loading: %@", contents);
+}
+
 #pragma mark - NSURLConnection
 /*
 - (NSCachedURLResponse *)connection:(NSURLConnection *)connection willCacheResponse:(NSCachedURLResponse *)cachedResponse {
@@ -167,6 +178,8 @@
 }
 
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection {
+    NSLog(@"connection finshed for %@", [connection description]);
+    
     self.connection = nil;
     NSString *htmlString = [[[NSString alloc] initWithData:_data encoding:NSUTF8StringEncoding] autorelease];
     if (htmlString) {
@@ -197,7 +210,7 @@
 }
 
 - (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error {
-    NSLog(@"%@", [error description]);
+    NSLog(@"webview connection failed: %@", [error description]);
     
     self.connection = nil;
     self.data = nil;

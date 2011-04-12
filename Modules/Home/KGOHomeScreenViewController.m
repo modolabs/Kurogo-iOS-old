@@ -14,7 +14,6 @@
 @interface KGOHomeScreenViewController (Private)
 
 - (void)loadModules;
-- (void)showSettingsModule:(id)sender;
 - (void)moduleListDidChange:(NSNotification *)aNotification;
 + (GridSpacing)spacingWithArgs:(NSArray *)args;
 + (GridPadding)paddingWithArgs:(NSArray *)args;
@@ -439,11 +438,11 @@
 #pragma mark config settings
 
 - (CGSize)moduleLabelMaxDimensions {
-    return [KGOHomeScreenViewController maxLabelDimensionsForModules:_primaryModules font:[self moduleLabelFont]];
+    return [KGOHomeScreenViewController maxLabelDimensionsForModules:self.primaryModules font:[self moduleLabelFont]];
 }
 
 - (CGSize)secondaryModuleLabelMaxDimensions {
-    return [KGOHomeScreenViewController maxLabelDimensionsForModules:_secondaryModules font:[self secondaryModuleLabelFont]];
+    return [KGOHomeScreenViewController maxLabelDimensionsForModules:self.secondaryModules font:[self secondaryModuleLabelFont]];
 }
 
 - (BOOL)showsSearchBar

@@ -35,6 +35,9 @@
 - (NSArray *)iconsForPrimaryModules:(BOOL)isPrimary;
 - (NSArray *)allWidgets:(CGFloat *)topFreePixel :(CGFloat *)bottomFreePixel;
 
+
+- (void)showSettingsModule:(id)sender;
+
 // display module representations on home screen. default implementation does nothing.
 - (void)refreshModules;
 

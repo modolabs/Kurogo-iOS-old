@@ -10,16 +10,20 @@
 @interface KGOSidebarFrameViewController : KGOHomeScreenViewController {
     
     UIView *_sidebar;
-    UIView *_topbar;
+    UIImageView *_topbar;
     UIView *_container;
     
     UIViewController *_visibleViewController;
     NSArray *_widgetViews;
     
     UIViewController *_detailViewController;
+    
+    CGFloat _topFreePixel;
+    CGFloat _bottomFreePixel;
 }
 
 @property (nonatomic, readonly) UIViewController *visibleViewController;
+@property (nonatomic, readonly) NSArray *widgetViews;
 
 - (void)showViewController:(UIViewController *)viewController;
 - (void)showDetailViewController:(UIViewController *)viewController;
