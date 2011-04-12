@@ -26,6 +26,8 @@
 }
 
 - (void)refreshModules {
+    [super refreshModules];
+    
     _iconGrid.frame = CGRectMake(0, _topFreePixel, self.view.frame.size.width, _bottomFreePixel - _topFreePixel);
     _iconGrid.icons = [self iconsForPrimaryModules:YES];
     [_iconGrid setNeedsLayout];

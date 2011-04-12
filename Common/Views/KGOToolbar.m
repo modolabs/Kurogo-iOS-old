@@ -9,6 +9,7 @@
     self = [super initWithCoder:aDecoder];
     if (self) {
         self.backgroundImage = [[KGOTheme sharedTheme] backgroundImageForToolbar];
+        self.tintColor  = [[KGOTheme sharedTheme] tintColorForToolbar];
     }
     return self;
 }
@@ -17,6 +18,7 @@
     self = [super initWithFrame:frame];
     if (self) {
         self.backgroundImage = [[KGOTheme sharedTheme] backgroundImageForToolbar];
+        self.tintColor  = [[KGOTheme sharedTheme] tintColorForToolbar];
     }
     return self;
 }

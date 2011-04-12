@@ -39,6 +39,8 @@
 
 - (void)refreshModules
 {
+    [super refreshModules];
+
     primaryGrid.icons = [self iconsForPrimaryModules:YES];
     secondGrid.icons = [self iconsForPrimaryModules:NO];
     

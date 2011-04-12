@@ -3,41 +3,33 @@
 #import <MessageUI/MFMailComposeViewController.h>
 #import "KGOSocialMediaController.h"
 
-@protocol KGOShareButtonDelegate
+typedef enum {
+    KGOShareControllerShareTypeEmail = 1,
+    KGOShareControllerShareTypeFacebook = 1 << 1,
+    KGOShareControllerShareTypeTwitter = 1 << 2
+} KGOShareControllerShareType;
 
-- (NSString *)actionSheetTitle;
 
-- (NSString *)emailSubject;
-- (NSString *)emailBody;
 
-- (NSString *)fbDialogPrompt;
-
-// TODO: simplify the following...
-// currently we are making the delegate do all the work of contstructing
-// a JSON string to match the spec at
-// http://wiki.developers.facebook.com/index.php/Attachment_%28Streams%29
-- (NSString *)fbDialogAttachment;
-
-- (NSString *)twitterUrl;
-- (NSString *)twitterTitle;
-
-@optional
-
-@end
 
 @interface KGOShareButtonController : NSObject <UIActionSheetDelegate> {
-
-    BOOL loggedIntoFacebook;
-	id<KGOShareButtonDelegate> _delegate;
+    
+    NSArray *_shareMethods;
+    NSUInteger _shareTypes;
 
 }
 
-@property (nonatomic, assign) id<KGOShareButtonDelegate> delegate;
+@property (nonatomic, assign) UIViewController *contentsController;
 
-- (id)initWithDelegate:(id<KGOShareButtonDelegate>)delegate;
+@property (nonatomic) NSUInteger shareTypes;
+@property (nonatomic, retain) NSString *actionSheetTitle;
+
+@property (nonatomic, retain) NSString *shareTitle; // email subject and twitter message
+@property (nonatomic, retain) NSString *shareURL;
+@property (nonatomic, retain) NSString *shareBody;  // email body
+
+- (id)initWithContentsController:(UIViewController *)controller;
 
 - (void)shareInView:(UIView *)view;
-
-- (void)showFacebookDialog;
 
 @end

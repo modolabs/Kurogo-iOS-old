@@ -35,6 +35,9 @@
 - (NSArray *)iconsForPrimaryModules:(BOOL)isPrimary;
 - (NSArray *)allWidgets:(CGFloat *)topFreePixel :(CGFloat *)bottomFreePixel;
 
+
+- (void)showSettingsModule:(id)sender;
+
 // display module representations on home screen. default implementation does nothing.
 - (void)refreshModules;
 
@@ -44,16 +47,17 @@
 - (CGSize)moduleLabelMaxDimensions;
 - (CGSize)secondaryModuleLabelMaxDimensions;
 
-// properties defined in Theme.plist
-- (BOOL)showsSearchBar;                     // true to show search bar on home screen
-- (UIColor *)backgroundColor;               // home screen background color or image
+// properties defined in ThemeConfig.plist
+- (BOOL)showsSearchBar;           // true to show search bar on home screen.  default is NO.
+- (BOOL)showsSettingsInNavBar;    // true to show settings button in top right.  default is NO.
+- (UIColor *)backgroundColor;     // home screen background color or image
 
 - (UIFont *)moduleLabelFont;
 - (UIFont *)moduleLabelFontLarge;
 - (UIColor *)moduleLabelTextColor;
-- (CGFloat)moduleLabelTitleMargin;          // spacing between image and title
-- (GridSpacing)moduleListSpacing;           // spacing between icons or list elements
-- (GridPadding)moduleListMargins;           // margins around entire grid/list
+- (CGFloat)moduleLabelTitleMargin; // spacing between image and title
+- (GridSpacing)moduleListSpacing;  // spacing between icons or list elements
+- (GridPadding)moduleListMargins;  // margins around entire grid/list
 - (CGSize)moduleIconSize;
 
 - (UIFont *)secondaryModuleLabelFont;

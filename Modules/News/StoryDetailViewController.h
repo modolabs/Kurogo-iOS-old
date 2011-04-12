@@ -1,8 +1,8 @@
 #import <UIKit/UIKit.h>
-#import "KGOShareButtonController.h"
 #import "KGODetailPager.h"
 
 @class NewsStory;
+@class KGOShareButtonController;
 //@class StoryListViewController;
 
 @protocol NewsControllerDelegate <NSObject>
@@ -14,7 +14,7 @@
 
 @end
 
-@interface StoryDetailViewController : UIViewController <UIWebViewDelegate, KGOShareButtonDelegate, KGODetailPagerController, KGODetailPagerDelegate> {
+@interface StoryDetailViewController : UIViewController <UIWebViewDelegate, KGODetailPagerController, KGODetailPagerDelegate> {
 	//StoryListViewController *newsController;
     id<NewsControllerDelegate> newsController;
 	

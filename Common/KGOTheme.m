@@ -96,15 +96,17 @@ static KGOTheme *s_sharedTheme = nil;
     CGFloat fontSize = [self defaultFontSize];
     
     NSDictionary *fontInfo = [fontDict objectForKey:themeProperty];
-    
     if (fontInfo) {
         fontName = [fontInfo stringForKey:@"font" nilIfEmpty:YES];
+        if (!fontName) {
+            fontName = [self defaultFontName];
+        }
         fontSize += [fontInfo floatForKey:@"size"];
         if ([fontInfo boolForKey:@"bold"]) {
-            // short circuit if bold font is defined
             font = [UIFont fontWithName:[NSString stringWithFormat:@"%@-Bold", fontName]
                                    size:fontSize];
-        } else {
+        }
+        if (!font) {
             font = [UIFont fontWithName:fontName size:fontSize];
         }
         
@@ -178,6 +180,11 @@ static KGOTheme *s_sharedTheme = nil;
 
 // this one can be nil
 // TODO: make nil/non-nil distinction more transparent
+- (UIColor *)tintColorForToolbar {
+    UIColor *color = [self matchBackgroundColorWithLabel:@"ToolbarTintColor"];
+    return color;
+}
+
 - (UIColor *)tintColorForSearchBar {
     UIColor *color = [self matchBackgroundColorWithLabel:@"SearchBarTintColor"];
     return color;

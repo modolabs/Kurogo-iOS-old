@@ -8,7 +8,7 @@ NSString * const KGOSocialMediaTypeFacebook = @"Facebook";
 NSString * const KGOSocialMediaTypeTwitter = @"Twitter";
 NSString * const KGOSocialMediaTypeEmail = @"Email";
 NSString * const KGOSocialMediaTypeBitly = @"bit.ly";
-NSString * const KGOSocialMediaTypeFoursquare = @"Foursquare";
+NSString * const KGOSocialMediaTypeFoursquare = @"foursquare";
 
 // NSUserDefaults
 static NSString * const TwitterUsernameKey = @"TwitterUsername";
@@ -71,34 +71,6 @@ static KGOSocialMediaController *s_controller = nil;
     [mediaDictionary release];
 }
 
-- (NSArray *)allSupportedSharingTypes {
-	return nil;
-}
-
-- (BOOL)supportsSharing {
-	return [[self allSupportedSharingTypes] count] > 0;
-}
-
-- (BOOL)supportsFacebookSharing {
-	return [_appConfig objectForKey:KGOSocialMediaTypeFacebook] != nil;
-}
-
-- (BOOL)supportsTwitterSharing {
-	return [_appConfig objectForKey:KGOSocialMediaTypeTwitter] != nil;
-}
-
-- (BOOL)supportsEmailSharing {
-	return [_appConfig objectForKey:KGOSocialMediaTypeEmail] != nil;
-}
-
-- (BOOL)supportsBitlyURLShortening {
-    return [_appConfig objectForKey:KGOSocialMediaTypeBitly] != nil;
-}
-
-- (BOOL)supportsFoursquare {
-    return [_appConfig objectForKey:KGOSocialMediaTypeFoursquare] != nil;
-}
-
 - (id)init {
     self = [super init];
     if (self) {
@@ -117,6 +89,147 @@ static KGOSocialMediaController *s_controller = nil;
 	[_appConfig release];
 	
 	[super dealloc];
+}
+
+#pragma mark Capabilities
+
+- (NSArray *)allSupportedSharingTypes {
+    NSMutableArray *array = [NSMutableArray array];
+    if ([self supportsEmailSharing]) {
+        [array addObject:KGOSocialMediaTypeEmail];
+    }
+    if ([self supportsFacebookSharing]) {
+        [array addObject:KGOSocialMediaTypeFacebook];
+    }
+    if ([self supportsTwitterSharing]) {
+        [array addObject:KGOSocialMediaTypeTwitter];
+    }
+	return array;
+}
+
+- (BOOL)supportsSharing {
+	return [[self allSupportedSharingTypes] count] > 0;
+}
+
+- (BOOL)supportsFacebookSharing {
+    NSDictionary *facebookConfig = [_appConfig objectForKey:KGOSocialMediaTypeFacebook];
+    NSString *appID = [facebookConfig stringForKey:@"AppID" nilIfEmpty:YES];
+    return appID != nil;
+}
+
+- (BOOL)supportsTwitterSharing {
+	NSDictionary *twitterConfig = [_appConfig objectForKey:KGOSocialMediaTypeTwitter];
+    NSString *key = [twitterConfig stringForKey:@"OAuthConsumerKey" nilIfEmpty:YES];
+    return key != nil;
+}
+
+- (BOOL)supportsEmailSharing {
+	return [_appConfig objectForKey:KGOSocialMediaTypeEmail] != nil;
+}
+
+- (BOOL)supportsBitlyURLShortening {
+    NSDictionary *bitlyConfig = [_appConfig objectForKey:KGOSocialMediaTypeBitly];
+    NSString *username = [bitlyConfig stringForKey:@"Username" nilIfEmpty:YES];
+    return username != nil;
+}
+
+- (BOOL)supportsFoursquare {
+    NSDictionary *foursquareConfig = [_appConfig objectForKey:KGOSocialMediaTypeFoursquare];
+    NSString *clientID = [foursquareConfig stringForKey:@"ClientID" nilIfEmpty:YES];
+    return clientID != nil;
+}
+
+- (BOOL)supportsService:(NSString *)service
+{
+    if ([service isEqualToString:KGOSocialMediaTypeFacebook]) {
+        return [self supportsFacebookSharing];
+        
+    } else if ([service isEqualToString:KGOSocialMediaTypeTwitter]) {
+        return [self supportsTwitterSharing];
+        
+    } else if ([service isEqualToString:KGOSocialMediaTypeFoursquare]) {
+        return [self supportsFoursquare];
+        
+    }
+    return NO;
+}
+
+#pragma mark Generic queries by service name
+
+- (BOOL)isLoggedInService:(NSString *)service
+{
+    if ([self supportsService:service]) {
+        if ([service isEqualToString:KGOSocialMediaTypeFacebook]) {
+            return [self isFacebookLoggedIn];
+            
+        } else if ([service isEqualToString:KGOSocialMediaTypeTwitter]) {
+            return [self isTwitterLoggedIn];
+            
+        } else if ([service isEqualToString:KGOSocialMediaTypeFoursquare]) {
+            // this method is defined in an optional category
+            // TODO: move method here
+            if ([self respondsToSelector:@selector(isFoursquareLoggedIn)]) {
+                
+            }
+        }
+    }
+    return NO;
+}
+
+- (void)loginService:(NSString *)service
+{
+    if ([self supportsService:service]) {
+        if ([service isEqualToString:KGOSocialMediaTypeFacebook]) {
+            [self loginFacebook];
+            
+        } else if ([service isEqualToString:KGOSocialMediaTypeTwitter]) {
+            [self loginTwitter];
+            
+        } else if ([service isEqualToString:KGOSocialMediaTypeFoursquare]) {
+            // this method is defined in an optional category
+            // TODO: move category methods here if they are essential
+            if ([self respondsToSelector:@selector(loginFoursquare)]) {
+                [self performSelector:@selector(loginFoursquare)];
+            }
+        }
+    }  
+}
+
+- (void)logoutService:(NSString *)service
+{
+    if ([self supportsService:service]) {
+        if ([service isEqualToString:KGOSocialMediaTypeFacebook]) {
+            [self logoutFacebook];
+            
+        } else if ([service isEqualToString:KGOSocialMediaTypeTwitter]) {
+            [self logoutTwitter];
+            
+        } else if ([service isEqualToString:KGOSocialMediaTypeFoursquare]) {
+            // this method is defined in an optional category
+            // TODO: move category methods here if they are essential
+            if ([self respondsToSelector:@selector(logoutFoursquare)]) {
+                [self performSelector:@selector(logoutFoursquare)];
+            }
+        }
+    }  
+}
+
++ (NSString *)localizedNameForService:(NSString *)service
+{
+    if ([service isEqualToString:KGOSocialMediaTypeEmail]) {
+        return NSLocalizedString(@"Email", nil);
+        
+    } else if ([service isEqualToString:KGOSocialMediaTypeFacebook]) {
+        return NSLocalizedString(@"Facebook", nil);
+        
+    } else if ([service isEqualToString:KGOSocialMediaTypeTwitter]) {
+        return NSLocalizedString(@"Twitter", nil);
+        
+    } else if ([service isEqualToString:KGOSocialMediaTypeFoursquare]) {
+        return NSLocalizedString(@"foursquare", nil);
+        
+    }
+    return service;
 }
 
 #pragma mark -
@@ -446,14 +559,6 @@ static KGOSocialMediaController *s_controller = nil;
 	if (prompt) {
 		[params setObject:prompt forKey:@"user_message_prompt"];
 	}
-    
-    // if we want to add an arbitrary list of links, do something like the following:
-    /*
-     NSDictionary* actionLinks = [NSArray arrayWithObjects:
-     [NSDictionary dictionaryWithObjectsAndKeys:@"Always Running",@"text",@"http://itsti.me/",@"href", nil],
-     nil];
-     [params setObject:actionLinks forKey:@"action_links"];
-     */    
 
     [self startupFacebook];
     [_facebook dialog:@"feed" andParams:params andDelegate:self];

@@ -9,7 +9,7 @@
 #import "StoryListViewController.h"
 #import "StoryGalleryViewController.h"
 #import "NewsImage.h"
-#import "AnalyticsWrapper.h"
+#import "KGOShareButtonController.h"
 
 @interface StoryDetailViewController (Private) 
 
@@ -24,7 +24,8 @@
 - (void)loadView {
     [super loadView]; // surprisingly necessary empty call to super due to the way memory warnings work
 	
-	shareController = [(KGOShareButtonController *)[KGOShareButtonController alloc] initWithDelegate:self];
+	shareController = [[KGOShareButtonController alloc] initWithContentsController:self];
+    shareController.shareTypes = KGOShareControllerShareTypeEmail | KGOShareControllerShareTypeFacebook | KGOShareControllerShareTypeTwitter;
 }
 
 - (void)viewDidLoad {
@@ -112,10 +113,6 @@
     self.story.read = [NSNumber numberWithBool:YES];
 	[[CoreDataManager sharedManager] saveDataWithTemporaryMergePolicy:NSMergeByPropertyObjectTrumpMergePolicy];
     [storyView loadTemplate:template values:values];
-    
-    // analytics
-    NSString *detailString = [NSString stringWithFormat:@"/news/story?id=%@", self.story.identifier];
-    [[AnalyticsWrapper sharedWrapper] trackPageview:detailString];
 }
 
 - (BOOL)webView:(UIWebView*)webView shouldStartLoadWithRequest:(NSURLRequest*)request navigationType:(UIWebViewNavigationType)navigationType {
@@ -144,41 +141,11 @@
 }
 
 - (void)share:(id)sender {
+    shareController.actionSheetTitle = @"Share article with a friend";
+    shareController.shareTitle = story.title;
+    shareController.shareBody = story.summary;
+    shareController.shareURL = story.link;
 	[shareController shareInView:self.view];
-}
-
-- (NSString *)actionSheetTitle {
-	return [NSString stringWithString:@"Share article with a friend"];
-}
-
-- (NSString *)emailSubject {
-	return [NSString stringWithFormat:@"%@", story.title];
-}
-
-- (NSString *)emailBody {
-	return [NSString stringWithFormat:@"I thought you might be interested in this story:\n\n\"%@\"\n%@\n\n%@\n\nTo view this story, click the link above or paste it into your browser.", story.title, story.summary, story.link];
-}
-
-- (NSString *)fbDialogPrompt {
-	return nil;
-}
-
-- (NSString *)fbDialogAttachment {
-    NSString *attachment = [NSString stringWithFormat:
-                            @"{\"name\":\"%@\","
-                            "\"href\":\"%@\","
-                            //"\"caption\":\"%@\","
-                            "\"description\":\"%@\"}",
-                            story.title, story.link, story.summary];    
-	return attachment;
-}
-
-- (NSString *)twitterUrl {
-	return story.link;
-}
-
-- (NSString *)twitterTitle {
-	return story.title;
 }
 
 - (void)didReceiveMemoryWarning {

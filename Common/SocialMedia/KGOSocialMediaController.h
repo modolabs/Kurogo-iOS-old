@@ -80,6 +80,14 @@ FBSessionDelegate, FBDialogDelegate, FBRequestDelegate> {
 - (BOOL)supportsEmailSharing;
 - (BOOL)supportsFoursquare;
 - (BOOL)supportsBitlyURLShortening;
+- (BOOL)supportsService:(NSString *)service;
+
+#pragma mark Queries by service name
+
+- (BOOL)isLoggedInService:(NSString *)service;
+- (void)loginService:(NSString *)service;
+- (void)logoutService:(NSString *)service;
++ (NSString *)localizedNameForService:(NSString *)service;
 
 #pragma mark Twitter
 

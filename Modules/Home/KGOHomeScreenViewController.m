@@ -31,9 +31,15 @@
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         _preferences = [[[KGOTheme sharedTheme] homescreenConfig] retain];
+        
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(moduleListDidChange:)
                                                      name:ModuleListDidChangeNotification
+                                                   object:nil];
+        
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(moduleListDidChange:)
+                                                     name:KGOUserPreferencesDidChangeNotification
                                                    object:nil];
     }
     return self;
@@ -43,9 +49,15 @@
     self = [super init];
     if (self) {
         _preferences = [[[KGOTheme sharedTheme] homescreenConfig] retain];
+        
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(moduleListDidChange:)
                                                      name:ModuleListDidChangeNotification
+                                                   object:nil];
+
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(moduleListDidChange:)
+                                                     name:KGOUserPreferencesDidChangeNotification
                                                    object:nil];
     }
     return self;
@@ -74,10 +86,12 @@
         self.view.backgroundColor = backgroundColor;
     }
     
+    // left nav bar button
 	UIBarButtonItem *newBackButton = [[UIBarButtonItem alloc] initWithTitle:@"Home" style:UIBarButtonItemStyleBordered target:nil action:nil];	
 	[[self navigationItem] setBackBarButtonItem: newBackButton];
 	[newBackButton release];
     
+    // nav bar title
     UIImage *masthead = [[KGOTheme sharedTheme] titleImageForNavBar];
     if (masthead) {
         self.navigationItem.titleView = [[[UIImageView alloc] initWithImage:masthead] autorelease];
@@ -86,7 +100,7 @@
         self.navigationItem.title = [infoDict objectForKey:@"CFBundleName"];
     }
     
-    if (!_searchController) {
+    if (_searchBar && !_searchController) {
         _searchController = [[KGOSearchDisplayController alloc] initWithSearchBar:_searchBar delegate:self contentsController:self];
     }
     
@@ -102,6 +116,10 @@
 
 - (void)viewDidUnload {
     [super viewDidUnload];
+    
+    [_searchBar release];
+    _searchBar = nil;
+    
     [_searchController release];
     _searchController = nil;
 }
@@ -321,7 +339,15 @@
 }
 
 - (void)refreshModules {
-    ;
+    if ([self showsSettingsInNavBar]) {
+        UIImage *image = [UIImage imageWithPathName:@"common/navbar-settings"];
+        UIBarButtonItem *item = [[[UIBarButtonItem alloc] initWithImage:image
+                                                                  style:UIBarButtonItemStyleBordered
+                                                                 target:self
+                                                                 action:@selector(showSettingsModule:)] autorelease];
+        item.width = 30;
+        self.navigationItem.rightBarButtonItem = item;
+    }
 }
 
 - (NSArray *)iconsForPrimaryModules:(BOOL)isPrimary {
@@ -369,6 +395,12 @@
 	[KGO_SHARED_APP_DELEGATE() showPage:LocalPathPageNameHome forModuleTag:anIcon.moduleTag params:nil];
 }
 
+- (void)showSettingsModule:(id)sender
+{
+    // TODO: add a method to retrieve the first instance of a module by class name
+    [KGO_SHARED_APP_DELEGATE() showPage:LocalPathPageNameHome forModuleTag:@"settings" params:nil];
+}
+
 #pragma mark KGOSearchDisplayDelegate
 
 - (BOOL)searchControllerShouldShowSuggestions:(KGOSearchDisplayController *)controller {
@@ -406,16 +438,21 @@
 #pragma mark config settings
 
 - (CGSize)moduleLabelMaxDimensions {
-    return [KGOHomeScreenViewController maxLabelDimensionsForModules:_primaryModules font:[self moduleLabelFont]];
+    return [KGOHomeScreenViewController maxLabelDimensionsForModules:self.primaryModules font:[self moduleLabelFont]];
 }
 
 - (CGSize)secondaryModuleLabelMaxDimensions {
-    return [KGOHomeScreenViewController maxLabelDimensionsForModules:_secondaryModules font:[self secondaryModuleLabelFont]];
+    return [KGOHomeScreenViewController maxLabelDimensionsForModules:self.secondaryModules font:[self secondaryModuleLabelFont]];
 }
 
-- (BOOL)showsSearchBar {
-    NSNumber *number = [_preferences objectForKey:@"ShowsSearchBar"];
-    return [number boolValue];
+- (BOOL)showsSearchBar
+{
+    return [_preferences boolForKey:@"ShowsSearchBar"];
+}
+
+- (BOOL)showsSettingsInNavBar
+{
+    return [_preferences boolForKey:@"ShowsSettingsInNavBar"];
 }
 
 - (UIColor *)backgroundColor {
