@@ -86,7 +86,7 @@
     _topbar = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, TOPBAR_HEIGHT)];
     _topbar.autoresizingMask = UIViewAutoresizingFlexibleWidth;
     _topbar.image = [UIImage imageWithPathName:@"common/navbar-background"];
-    //_topbar.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageWithPathName:@"modules/home/navbar-background.png"]];
+    _topbar.userInteractionEnabled = YES;
     [self.view addSubview:_topbar];
     
     // fake toolbar
