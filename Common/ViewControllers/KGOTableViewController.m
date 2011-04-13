@@ -313,6 +313,7 @@
 
     if (style == UITableViewStyleGrouped) {
         tableView.backgroundColor = [UIColor clearColor];
+        tableView.backgroundView = nil;
     }
 	
 	[self addTableView:tableView withDataSource:dataSource];
