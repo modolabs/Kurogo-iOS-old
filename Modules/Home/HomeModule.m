@@ -8,6 +8,15 @@
 
 @implementation HomeModule
 
+- (BOOL)hidden
+{
+    return YES;
+}
+
+- (void)setHidden:(BOOL)hidden
+{
+}
+
 #pragma mark Navigation
 
 - (NSArray *)registeredPageNames {
@@ -32,13 +41,10 @@
             {
                 KGOHomeScreenTableViewController *tableVC = [[[KGOHomeScreenTableViewController alloc] init] autorelease];
                 UINavigationController *navC = [[[UINavigationController alloc] initWithRootViewController:tableVC] autorelease];
-                
                 KGOSplitViewController *splitVC = [[[KGOSplitViewController alloc] init] autorelease];
                 splitVC.delegate = splitVC;
-                splitVC.viewControllers = [NSArray arrayWithObjects:
-                                           navC,
-                                           [[[KGOSpringboardViewController alloc] init] autorelease],
-                                           nil];
+                splitVC.rootViewController = navC;
+                [splitVC displayFirstModule];
                 vc = splitVC;
                 break;
             }

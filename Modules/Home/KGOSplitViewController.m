@@ -1,8 +1,14 @@
 #import "KGOSplitViewController.h"
 #import "KGOTheme.h"
+#import "KGOModule.h"
+#import "KGOAppDelegate.h"
+#import "HomeModule.h"
 
 @implementation KGOSplitViewController
 
+@synthesize isShowingModuleHome;
+
+/*
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -11,9 +17,13 @@
     }
     return self;
 }
+*/
 
 - (void)dealloc
 {
+    self.rootViewController = nil;
+    self.rightViewController = nil;
+    [_moduleListButton release];
     [super dealloc];
 }
 
@@ -27,15 +37,6 @@
 
 #pragma mark - View lifecycle
 
-/*
-// Implement loadView to create a view hierarchy programmatically, without using a nib.
-- (void)loadView
-{
-}
-*/
-
-
-// Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -52,8 +53,78 @@
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
-    // Return YES for supported orientations
 	return YES;
+}
+
+- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
+{
+    [super willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
+}
+
+- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
+{
+    [super didRotateFromInterfaceOrientation:fromInterfaceOrientation];
+}
+
+#pragma mark - Properties
+
+- (UIViewController *)rootViewController
+{
+    return _rootViewController;
+}
+
+- (void)setRootViewController:(UIViewController *)rootViewController
+{
+    [_rootViewController release];
+    _rootViewController = [rootViewController retain];
+}
+
+- (UIViewController *)rightViewController
+{
+    return _rightViewController;
+}
+
+- (void)setRightViewController:(UIViewController *)viewController
+{
+    [_rightViewController release];
+    _rightViewController = [viewController retain];
+    
+    if (_moduleListButton) {
+        _rightViewController.navigationItem.leftBarButtonItem = _moduleListButton;
+    }
+
+    UINavigationController *navC = [[UINavigationController alloc] initWithRootViewController:viewController];
+    
+    if (_rootViewController && _rightViewController) {
+        self.viewControllers = [NSArray arrayWithObjects:_rootViewController, navC, nil];
+    }
+}
+
+#pragma mark -
+
+- (void)displayFirstModule
+{
+    KGOModule *firstModule = nil;
+    for (KGOModule *aModule in [KGO_SHARED_APP_DELEGATE() modules]) {
+        if (!aModule.hidden && aModule.hasAccess) {
+            firstModule = aModule;
+            break;
+        }
+    }
+    
+    if (!firstModule) {
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(displayFirstModule)
+                                                     name:ModuleListDidChangeNotification
+                                                   object:nil];
+
+    } else {
+        [[NSNotificationCenter defaultCenter] removeObserver:self];
+        
+        UIViewController *firstModuleVC = [firstModule modulePage:LocalPathPageNameHome params:nil];
+        self.rightViewController = firstModuleVC;
+        self.isShowingModuleHome = YES;
+    }
 }
 
 #pragma mark UISplitViewControllerDelegate
@@ -70,15 +141,27 @@
           withBarButtonItem:(UIBarButtonItem *)barButtonItem
        forPopoverController:(UIPopoverController *)pc
 {
-    DLog(@"splitVC will hide VC %@ %@", aViewController, aViewController.view);
+    if (self.isShowingModuleHome) {
+        _moduleListButton = barButtonItem;
+        barButtonItem.title = @"Modules";
+        self.rightViewController.navigationItem.leftBarButtonItem = barButtonItem;
+        pc.contentViewController = self.rootViewController;
+    }
+
+    DLog(@"splitVC will hide VC %@ %@ %@ %@", aViewController, aViewController.view, barButtonItem, pc);
 }
 
 - (void)splitViewController:(UISplitViewController *)svc
      willShowViewController:(UIViewController *)aViewController
   invalidatingBarButtonItem:(UIBarButtonItem *)barButtonItem
 {
-    DLog(@"splitVC will show VC %@ %@", aViewController, aViewController.view);
+    _moduleListButton = nil;
+    self.rightViewController.navigationItem.leftBarButtonItem = nil;
+    
+    DLog(@"splitVC will show VC %@ %@ %@", aViewController, aViewController.view, barButtonItem);
 }
+
+#pragma mark UIPopoverControllerDelegate
 
 - (BOOL)popoverControllerShouldDismissPopover:(UIPopoverController *)popoverController
 {

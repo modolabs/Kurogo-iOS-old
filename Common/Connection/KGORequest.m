@@ -271,17 +271,13 @@ NSString * const KGORequestErrorDomain = @"com.modolabs.KGORequest.ErrorDomain";
 - (void)runHandlerOnResult:(id)result {
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 	NSInteger num = self.handler(result);
-    NSArray *array = [[CoreDataManager sharedManager] objectsForEntity:@"KGOMapCategory" matchingPredicate:[NSPredicate predicateWithFormat:@"identifier = %@", @"boston"]];
-    NSLog(@"adfwgrawger %@ %@", [NSThread currentThread], [array lastObject]);
+    // TODO: see if it's safe to remove this (and the CoreDataManager import)
     [[CoreDataManager sharedManager] saveDataWithTemporaryMergePolicy:NSOverwriteMergePolicy];
 	[self performSelectorOnMainThread:@selector(handlerDidFinish:) withObject:[NSNumber numberWithInt:num] waitUntilDone:YES];
 	[pool release];
 }
 
 - (void)handlerDidFinish:(NSNumber *)result {
-    NSArray *array = [[CoreDataManager sharedManager] objectsForEntity:@"KGOMapCategory" matchingPredicate:[NSPredicate predicateWithFormat:@"identifier = %@", @"boston"]];
-    NSLog(@"tuy345ggr %@ %@", [NSThread currentThread], [array lastObject]);
-    
 	if ([self.delegate respondsToSelector:@selector(request:didHandleResult:)]) {
 		[self.delegate request:self didHandleResult:[result integerValue]];
 	}

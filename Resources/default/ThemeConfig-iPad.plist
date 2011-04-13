@@ -82,10 +82,10 @@
 		</dict>
 		<key>NavListTitle</key>
 		<dict>
-			<key>color</key>
-			<string>#171717</string>
 			<key>bold</key>
 			<true/>
+			<key>color</key>
+			<string>#171717</string>
 			<key>size</key>
 			<integer>2</integer>
 		</dict>
@@ -135,6 +135,15 @@
 			<key>size</key>
 			<integer>-3</integer>
 		</dict>
+		<key>ScrollTab</key>
+		<dict>
+			<key>bold</key>
+			<true/>
+			<key>color</key>
+			<string>#FFFFFF</string>
+			<key>size</key>
+			<integer>-1</integer>
+		</dict>
 		<key>Tab</key>
 		<dict>
 			<key>bold</key>
@@ -143,6 +152,15 @@
 			<string>#FFFFFF</string>
 			<key>size</key>
 			<integer>-2</integer>
+		</dict>
+		<key>ScrollTabSelected</key>
+		<dict>
+			<key>bold</key>
+			<true/>
+			<key>color</key>
+			<string>#FFFFFF</string>
+			<key>size</key>
+			<integer>-1</integer>
 		</dict>
 		<key>TabSelected</key>
 		<dict>

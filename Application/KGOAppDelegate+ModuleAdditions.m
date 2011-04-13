@@ -2,6 +2,7 @@
 #import "KGOSpringboardViewController.h"
 #import "HarvardNavigationController.h"
 #import "KGOSidebarFrameViewController.h"
+#import "KGOSplitViewController.h"
 #import "KGOTheme.h"
 #import "KGOModule+Factory.h"
 #import "HomeModule.h"
@@ -67,7 +68,6 @@
         homeData = [NSDictionary dictionaryWithObjectsAndKeys:
                     @"HomeModule", @"class",
                     @"home", @"tag",
-                    @"hidden", [NSNumber numberWithBool:YES],
                     nil];
     }
     KGOModule *homeModule = [KGOModule moduleWithDictionary:homeData];
@@ -186,7 +186,9 @@
             // so assuming it's never deallocated when we try to access it
             _visibleViewController = vc;
             
-            if (_visibleModule != module) {
+            BOOL moduleDidChange = (_visibleModule != module);
+
+            if (moduleDidChange) {
                 [_visibleModule willBecomeHidden];
                 [module willBecomeVisible];
                 _visibleModule = module;
@@ -202,20 +204,25 @@
                 }
                 case KGONavigationStyleTabletSplitView:
                 {
-                    UISplitViewController *splitVC = (UISplitViewController *)_appHomeScreen;
-                    UIViewController *detailVC = [splitVC.viewControllers objectAtIndex:1];
-                    if (detailVC.modalViewController) {
-                        if ([detailVC.modalViewController isKindOfClass:[UINavigationController class]]) {
-                            [(UINavigationController *)detailVC.modalViewController pushViewController:vc animated:YES];
-                        } else if (detailVC.modalViewController.navigationController) {
-                            [detailVC.modalViewController.navigationController pushViewController:vc animated:YES];
+                    KGOSplitViewController *splitVC = (KGOSplitViewController *)_appHomeScreen;
+                    if (splitVC.rightViewController.modalViewController) {
+                        UIViewController *modalVC = splitVC.rightViewController.modalViewController;
+                        if ([modalVC isKindOfClass:[UINavigationController class]]) {
+                            [(UINavigationController *)modalVC pushViewController:vc animated:YES];
+                        } else if (modalVC.navigationController) {
+                            [modalVC.navigationController pushViewController:vc animated:YES];
                         }
                         
                     } else {
-                        splitVC.viewControllers = [NSArray arrayWithObjects:
-                                                   [splitVC.viewControllers objectAtIndex:0],
-                                                   vc,
-                                                   nil];
+                        if (moduleDidChange) {
+                            //UINavigationController *detailNavC = [[[UINavigationController alloc] initWithRootViewController:vc] autorelease];
+                            splitVC.isShowingModuleHome = YES;
+                            //splitVC.detailViewController = detailNavC;
+                            splitVC.rightViewController = vc;
+                        } else {
+                            splitVC.isShowingModuleHome = NO;
+                            [splitVC.rightViewController.navigationController pushViewController:vc animated:YES];
+                        }
                     }
                     break;
                 }
