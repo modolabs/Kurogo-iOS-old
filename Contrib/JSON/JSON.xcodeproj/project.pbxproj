@@ -560,7 +560,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "cp ${CONFIGURATION_BUILD_DIR}${PUBLIC_HEADERS_FOLDER_PATH}/* ../usr/local/include";
+			shellScript = "if [ \"${DEPLOYMENT_LOCATION}\" = \"YES\" ]; then\n    cp -r ${DSTROOT}${PUBLIC_HEADERS_FOLDER_PATH}/* ../usr/local/include\nelse\n    cp -r ${CONFIGURATION_BUILD_DIR}${PUBLIC_HEADERS_FOLDER_PATH}/* ../usr/local/include\nfi";
 		};
 /* End PBXShellScriptBuildPhase section */
 

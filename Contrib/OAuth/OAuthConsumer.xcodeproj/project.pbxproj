@@ -392,7 +392,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "[ ! -d ../usr/local/include/OAuthConsumer ] || rm -r ../usr/local/include/OAuthConsumer\ncp -r ${CONFIGURATION_BUILD_DIR}${PUBLIC_HEADERS_FOLDER_PATH} ../usr/local/include/OAuthConsumer";
+			shellScript = "[ ! -d ../usr/local/include/OAuthConsumer ] || rm -r ../usr/local/include/OAuthConsumer\n\nif [ \"${DEPLOYMENT_LOCATION}\" = \"YES\" ]; then\n    cp -r ${DSTROOT}${PUBLIC_HEADERS_FOLDER_PATH} ../usr/local/include/OAuthConsumer\nelse\n    cp -r ${CONFIGURATION_BUILD_DIR}${PUBLIC_HEADERS_FOLDER_PATH} ../usr/local/include/OAuthConsumer\nfi\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 

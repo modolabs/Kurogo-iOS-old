@@ -254,7 +254,7 @@ userInfo = _userInfo;
             [set addObject:attendee];
         }
     }
-    NSLog(@"unwrapped attendees: %@", set);
+    DLog(@"unwrapped attendees: %@", set);
     return set;
 }
 

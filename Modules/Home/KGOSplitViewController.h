@@ -16,6 +16,4 @@
 @property(nonatomic, retain) UIViewController *rightViewController;
 @property(nonatomic) BOOL isShowingModuleHome;
 
-- (id)initWithRootViewController:(UIViewController *)rootViewController;
-
 @end

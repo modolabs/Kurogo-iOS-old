@@ -29,7 +29,7 @@
         aTemplate.templateString = [NSMutableString stringWithContentsOfURL:fileURL encoding:NSUTF8StringEncoding error:&error];
     }
 
-    NSAssert(aTemplate.templateString != nil, @"could not find template for path name %@", pathName);
+    NSAssert1(aTemplate.templateString != nil, @"could not find template for path name %@", pathName);
     return aTemplate;
 }
 
