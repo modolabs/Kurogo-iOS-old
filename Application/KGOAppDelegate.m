@@ -132,7 +132,6 @@
 
 - (void)dealloc {
     self.deviceToken = nil;
-    [_appModalHolder release];
     [_appConfig release];
     [_unreadNotifications release];
     [_modules release];

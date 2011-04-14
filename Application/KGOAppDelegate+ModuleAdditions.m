@@ -229,17 +229,10 @@
                 default:
                 {
                     // if the visible view controller is modal, push new view controllers on the modal nav controller.
-                    // there should be no reason to push a view controller behind what's visible.
-                    // TODO: get rid of appModalHolder and thus the first condition here
                     UIViewController *homescreen = [self homescreen];
                     UIViewController *topVC = homescreen.navigationController.topViewController;
                     
-                    if (!_appModalHolder.view.hidden
-                        && [_appModalHolder.modalViewController isKindOfClass:[UINavigationController class]]
-                    ) {
-                        [(UINavigationController *)_appModalHolder.modalViewController pushViewController:vc animated:YES];
-                        
-                    } else if (topVC.modalViewController && [topVC.modalViewController isKindOfClass:[UINavigationController class]]) {
+                    if (topVC.modalViewController && [topVC.modalViewController isKindOfClass:[UINavigationController class]]) {
                         [(UINavigationController *)topVC.modalViewController pushViewController:vc animated:YES];
                         
                     } else {

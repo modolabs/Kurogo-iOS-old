@@ -25,7 +25,6 @@ typedef enum {
     UIWindow *window;
     UINavigationController *_appNavController;
     UIViewController *_appHomeScreen;
-    UIViewController *_appModalHolder;
     UIViewController *_visibleViewController;
     KGONavigationStyle _navigationStyle;
     
