@@ -19,3 +19,25 @@
 + (KGOCalendar *)calendarWithDictionary:(NSDictionary *)aDict;
 
 @end
+
+@interface KGOCalendar (CoreDataGeneratedAccessors)
+
+- (void)addSubCategoriesObject:(KGOCalendar *)value;
+- (void)removeSubCategoriesObject:(KGOCalendar *)value;
+
+- (void)addSubCategories:(NSSet *)value;
+- (void)removeSubCategories:(NSSet *)value;
+
+- (void)addEventsObject:(KGOEvent *)value;
+- (void)removeEventsObject:(KGOEvent *)value;
+
+- (void)addEvents:(NSSet *)value;
+- (void)removeEvents:(NSSet *)value;
+
+- (void)addGroupsObject:(KGOCalendarGroup *)value;
+- (void)removeGroupsObject:(KGOCalendarGroup *)value;
+
+- (void)addGroups:(NSSet *)value;
+- (void)removeGroups:(NSSet *)value;
+
+@end

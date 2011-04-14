@@ -54,7 +54,7 @@
 
 // non-eventkit properties
 @property (nonatomic) CLLocationCoordinate2D coordinate;
-@property (nonatomic, retain) NSSet *calendars;
+@property (nonatomic, retain) NSMutableSet *calendars;
 @property (nonatomic) BOOL bookmarked;
 @property (nonatomic, retain) NSString *briefLocation;
 

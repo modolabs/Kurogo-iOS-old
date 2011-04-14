@@ -7,8 +7,8 @@
 @implementation KGOEventWrapper
 
 @synthesize identifier = _identifier,
-endDate = _endDate,
 startDate = _startDate,
+endDate = _endDate,
 lastUpdate = _lastUpdate,
 allDay = _allDay,
 location = _location,
@@ -74,11 +74,10 @@ userInfo = _userInfo;
     
     // time
     NSTimeInterval startTimestamp = [dictionary floatForKey:@"start"];
-    if (startTimestamp) {
-        self.startDate = [NSDate dateWithTimeIntervalSince1970:startTimestamp];
-    }
+    self.startDate = [NSDate dateWithTimeIntervalSince1970:startTimestamp];
+
     NSTimeInterval endTimestamp = [dictionary floatForKey:@"end"];
-    if (endTimestamp) {
+    if (endTimestamp > startTimestamp) {
         self.endDate = [NSDate dateWithTimeIntervalSince1970:endTimestamp];
     }
     NSNumber *allDay = [dictionary objectForKey:@"allday"];
@@ -207,7 +206,6 @@ userInfo = _userInfo;
             [set addObject:attendee];
         }
     }
-    NSLog(@"unwrapped organizers: %@", set);
     return set;
 }
 
@@ -254,7 +252,6 @@ userInfo = _userInfo;
             [set addObject:attendee];
         }
     }
-    DLog(@"unwrapped attendees: %@", set);
     return set;
 }
 
@@ -262,38 +259,45 @@ userInfo = _userInfo;
 {
     if (!_kgoEvent) {
         _kgoEvent = [[KGOEvent eventWithID:self.identifier] retain];
-        _kgoEvent.title = self.title;
-        _kgoEvent.location = self.location;
-        _kgoEvent.briefLocation = self.briefLocation;
-        _kgoEvent.start = self.startDate;
-        _kgoEvent.end = self.endDate;
-        _kgoEvent.latitude = [NSNumber numberWithFloat:self.coordinate.latitude];
-        _kgoEvent.longitude = [NSNumber numberWithFloat:self.coordinate.longitude];
-        _kgoEvent.summary = self.summary;
-        [[self unwrappedOrganizers] enumerateObjectsUsingBlock:^(id obj, BOOL *stop) {
-            KGOEventParticipantRelation *relation = [KGOEventParticipantRelation relationWithEvent:_kgoEvent participant:obj];
-            relation.isOrganizer = [NSNumber numberWithBool:YES];
-        }];
-        [[self unwrappedAttendees] enumerateObjectsUsingBlock:^(id obj, BOOL *stop) {
-            KGOEventParticipantRelation *relation = [KGOEventParticipantRelation relationWithEvent:_kgoEvent participant:obj];
-            relation.isAttendee = [NSNumber numberWithBool:YES];
-        }];
-        
-        _kgoEvent.lastUpdate = [NSDate date];
-        
-        if (_userInfo) {
-            _kgoEvent.userInfo = [NSKeyedArchiver archivedDataWithRootObject:_userInfo];
-        }
     }
+
+    _kgoEvent.title = self.title;
+    _kgoEvent.location = self.location;
+    _kgoEvent.briefLocation = self.briefLocation;
+    _kgoEvent.start = self.startDate;
+    _kgoEvent.end = self.endDate;
+    _kgoEvent.latitude = [NSNumber numberWithFloat:self.coordinate.latitude];
+    _kgoEvent.longitude = [NSNumber numberWithFloat:self.coordinate.longitude];
+    _kgoEvent.summary = self.summary;
+    _kgoEvent.calendars = _calendars;
+    [[self unwrappedOrganizers] enumerateObjectsUsingBlock:^(id obj, BOOL *stop) {
+        KGOEventParticipantRelation *relation = [KGOEventParticipantRelation relationWithEvent:_kgoEvent participant:obj];
+        relation.isOrganizer = [NSNumber numberWithBool:YES];
+    }];
+    [[self unwrappedAttendees] enumerateObjectsUsingBlock:^(id obj, BOOL *stop) {
+        KGOEventParticipantRelation *relation = [KGOEventParticipantRelation relationWithEvent:_kgoEvent participant:obj];
+        relation.isAttendee = [NSNumber numberWithBool:YES];
+    }];
+    
+    if (_userInfo) {
+        _kgoEvent.userInfo = [NSKeyedArchiver archivedDataWithRootObject:_userInfo];
+    }
+    
+    _kgoEvent.lastUpdate = [NSDate date];
+    
     return _kgoEvent;
 }
 
 - (void)addCalendar:(KGOCalendar *)aCalendar
 {
-    if (!_calendars) {
-        _calendars = [[NSMutableSet alloc] init];
+    if (!self.calendars) {
+        self.calendars = [NSMutableSet set];
     }
-    [_calendars addObject:aCalendar];
+    [self.calendars addObject:aCalendar];
+
+    if (_kgoEvent) {
+        [aCalendar addEventsObject:_kgoEvent];
+    }
 }
 
 - (void)saveToCoreData
@@ -339,7 +343,7 @@ userInfo = _userInfo;
     if (!self.startDate)     self.startDate     = _kgoEvent.start;
     if (!self.endDate)       self.endDate       = _kgoEvent.end;
     if (!self.summary)       self.summary       = _kgoEvent.summary;
-    if (!self.calendars)     self.calendars     = _kgoEvent.calendars;
+    if (!self.calendars)     self.calendars     = [[_kgoEvent.calendars mutableCopy] autorelease];
 
     if (!self.rrule && _kgoEvent.rrule) {
         self.rrule = [NSKeyedUnarchiver unarchiveObjectWithData:event.rrule];

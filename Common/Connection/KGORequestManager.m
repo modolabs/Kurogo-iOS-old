@@ -167,7 +167,6 @@ NSString * const KGODidLogoutNotification = @"LogoutComplete";
         }
         _baseURL = [[NSURL alloc] initWithString:[NSString stringWithFormat:@"%@://%@/%@", _uriScheme, _extendedHost, apiPath]];
         
-        
         _reachability = [[Reachability reachabilityWithHostName:_host] retain];
 	}
 	return self;
@@ -194,17 +193,32 @@ NSString * const KGODidLogoutNotification = @"LogoutComplete";
 
 - (void)loginKurogoServer
 {
-    KGOModule *loginModule = [KGO_SHARED_APP_DELEGATE() moduleForTag:self.loginPath];
-    UIViewController *loginController = [loginModule modulePage:LocalPathPageNameHome params:nil];
-    loginController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-    loginController.modalPresentationStyle = UIModalPresentationFullScreen;
-    [[KGO_SHARED_APP_DELEGATE() homescreen] presentModalViewController:loginController animated:YES];
+    if ([self isUserLoggedIn]) {
+        DLog(@"user is already logged in");
+        [[NSNotificationCenter defaultCenter] postNotificationName:KGODidLoginNotification object:self];
+        
+    } else {
+        DLog(@"showing modal login screen");
+        KGOModule *loginModule = [KGO_SHARED_APP_DELEGATE() moduleForTag:self.loginPath];
+        UIViewController *loginController = [loginModule modulePage:LocalPathPageNameHome params:nil];
+        loginController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+        loginController.modalPresentationStyle = UIModalPresentationFullScreen;
+        [[KGO_SHARED_APP_DELEGATE() homescreen] presentModalViewController:loginController animated:YES];
+    }
 }
 
 - (void)logoutKurogoServer
 {
+    NSArray *cookies = [[[[NSHTTPCookieStorage sharedHTTPCookieStorage] cookies] copy] autorelease];
+    for (NSHTTPCookie *aCookie in cookies) {
+        if ([[aCookie domain] rangeOfString:[self host]].location != NSNotFound) {
+            [[NSHTTPCookieStorage sharedHTTPCookieStorage] deleteCookie:aCookie];
+        }
+    }
+    
     [_sessionInfo release];
     _sessionInfo = nil;
+    
     [[NSNotificationCenter defaultCenter] postNotificationName:KGODidLogoutNotification object:self];
     
     // TODO: clean up this request, even though we don't really care if it fails
@@ -266,7 +280,7 @@ NSString * const KGODidLogoutNotification = @"LogoutComplete";
     } else if (request == _sessionRequest) {
         [_sessionInfo release];
         _sessionInfo = [result retain];
-        NSLog(@"%@", _sessionInfo);
+        DLog(@"received session info: %@", _sessionInfo);
 
         NSDictionary *userDict = [_sessionInfo dictionaryForKey:@"user"];
         if ([userDict stringForKey:@"authority" nilIfEmpty:YES]) {

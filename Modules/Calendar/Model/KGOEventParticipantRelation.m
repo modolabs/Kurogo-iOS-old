@@ -13,6 +13,12 @@
 
 + (KGOEventParticipantRelation *)relationWithEvent:(KGOEvent *)event participant:(KGOEventParticipant *)participant
 {
+    for (KGOEventParticipantRelation *aRelation in event.particpants) {
+        if (aRelation.participant == participant) {
+            return aRelation;
+        }
+    }
+    
     KGOEventParticipantRelation *relation = [[CoreDataManager sharedManager] insertNewObjectForEntityForName:@"KGOEventParticipantRelation"];
     relation.event = event;
     relation.participant = participant;

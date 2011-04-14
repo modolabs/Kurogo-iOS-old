@@ -3,6 +3,8 @@
 #import "Foundation+KGOAdditions.h"
 #import "CalendarModel.h"
 
+#define EVENT_TIMEOUT -3600
+
 @implementation CalendarDataManager
 
 @synthesize delegate, moduleTag;
@@ -77,7 +79,6 @@
         [self.delegate groupsDidChange:oldGroups];
     }
     
-    // TODO: use a timeout value to decide whether or not to check for update
     if ([[KGORequestManager sharedManager] isReachable]) {
         if(_groupsRequest) {
             return success;
@@ -93,20 +94,22 @@
 - (BOOL)requestEventsForCalendar:(KGOCalendar *)calendar params:(NSDictionary *)params
 {
     BOOL success = NO;
-    
+    NSLog(@"%@", params);    
     NSArray *events = [calendar.events allObjects];
-    if (events) {    
-        NSMutableArray *predTemplates = [NSMutableArray array];
-        NSMutableArray *predArguments = [NSMutableArray array];
+    if (events.count) {
+        NSMutableArray *predTemplates = [NSMutableArray arrayWithObject:@"lastUpdate > %@"];
+        NSMutableArray *predArguments = [NSMutableArray arrayWithObject:[NSDate dateWithTimeIntervalSinceNow:EVENT_TIMEOUT]];
         
         NSDate *start = [params objectForKey:@"start"];
         if (!start) {
             NSTimeInterval interval = [[params objectForKey:@"time"] doubleValue];
-            NSDate *time = [NSDate dateWithTimeIntervalSince1970:interval];
-            if (time) {
-                NSUInteger flags = NSYearCalendarUnit | NSMonthCalendarUnit | NSDayCalendarUnit;
-                NSDateComponents *comps = [[NSCalendar currentCalendar] components:flags fromDate:time];
-                start = [[NSCalendar currentCalendar] dateFromComponents:comps];
+            if (interval) {
+                NSDate *time = [NSDate dateWithTimeIntervalSince1970:interval];
+                if (time) {
+                    NSUInteger flags = NSYearCalendarUnit | NSMonthCalendarUnit | NSDayCalendarUnit;
+                    NSDateComponents *comps = [[NSCalendar currentCalendar] components:flags fromDate:time];
+                    start = [[NSCalendar currentCalendar] dateFromComponents:comps];
+                }
             }
         }
         
@@ -114,7 +117,7 @@
             [predTemplates addObject:@"start >= %@"];
             [predArguments addObject:start];
         }
-        
+
         NSDate *end = [params objectForKey:@"end"];
         if (end) {
             [predTemplates addObject:@"end < %@"];
@@ -137,6 +140,10 @@
         }
         
         [self.delegate eventsDidChange:wrappers calendar:calendar];
+        
+        if (wrappers.count) {
+            return YES;
+        }
     }
     
     // TODO: use a timeout value to decide whether or not to check for update
@@ -152,6 +159,10 @@
         request.expectedResponseType = [NSDictionary class];
         [_eventsRequests setObject:request forKey:requestIdentifier];
         [request connect];
+        
+        if (request) {
+            success = YES;
+        }
     }
     
     return success;

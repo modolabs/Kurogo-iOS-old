@@ -215,9 +215,7 @@
                         
                     } else {
                         if (moduleDidChange) {
-                            //UINavigationController *detailNavC = [[[UINavigationController alloc] initWithRootViewController:vc] autorelease];
                             splitVC.isShowingModuleHome = YES;
-                            //splitVC.detailViewController = detailNavC;
                             splitVC.rightViewController = vc;
                         } else {
                             splitVC.isShowingModuleHome = NO;
@@ -253,12 +251,23 @@
 }
 
 - (UIViewController *)visibleViewController {
-    if (_appNavController) {
-        return _appNavController.visibleViewController;
-    } else if (_appHomeScreen && [_appHomeScreen isKindOfClass:[KGOSidebarFrameViewController class]]) {
-        return [(KGOSidebarFrameViewController *)_appHomeScreen visibleViewController];
+    KGONavigationStyle navStyle = [self navigationStyle];
+    switch (navStyle) {
+        case KGONavigationStyleTabletSidebar:
+        {
+            return _appHomeScreen;
+        }
+        case KGONavigationStyleTabletSplitView:
+        {
+            KGOSplitViewController *splitVC = (KGOSplitViewController *)_appHomeScreen;
+            return splitVC.rightViewController.navigationController.topViewController;
+        }
+        default:
+        {
+            UIViewController *homescreen = [self homescreen];
+            return homescreen.navigationController.topViewController;
+        }
     }
-    return nil;
 }
 
 - (KGONavigationStyle)navigationStyle {

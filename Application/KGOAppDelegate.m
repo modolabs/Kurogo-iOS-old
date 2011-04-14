@@ -5,6 +5,7 @@
 #import "AudioToolbox/AudioToolbox.h"
 #import "AnalyticsWrapper.h"
 #import "KGOSocialMediaController.h"
+#import "KGORequestManager.h"
 
 @implementation KGOAppDelegate
 
@@ -22,6 +23,7 @@
     networkActivityRefCount = 0;
     showingAlertView = NO;
     
+    [[KGORequestManager sharedManager] requestSessionInfo];
     [self loadHomeModule];
     [self loadNavigationContainer]; // adds theNavController.view to self.window
     [self loadSocialMediaController]; // initializes social media settings

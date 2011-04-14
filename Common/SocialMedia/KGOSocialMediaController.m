@@ -608,11 +608,11 @@ static KGOSocialMediaController *s_controller = nil;
 
 #pragma mark Facebook - FBSessionDelegate
 
-/**
- * Called when the user has logged in successfully.
- */
+// called if user logs in successfully via pop-up dialog
+// (3G or equivalent devices and lower)
 - (void)fbDidLogin {
     NSLog(@"facebook logged in!");
+    [[NSNotificationCenter defaultCenter] postNotificationName:FacebookDidLoginNotification object:self];
 }
 
 /**
@@ -627,7 +627,7 @@ static KGOSocialMediaController *s_controller = nil;
  */
 - (void)fbDidLogout {
 	//[self.facebookDelegate facebookDidLogout];
-    [[NSNotificationCenter defaultCenter] postNotificationName:FacebookDidLoginNotification object:self];
+    [[NSNotificationCenter defaultCenter] postNotificationName:FacebookDidLogoutNotification object:self];
 }
 
 #pragma mark Facebook - FBRequestDelegate
