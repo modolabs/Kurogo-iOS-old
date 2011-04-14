@@ -301,7 +301,10 @@
             [tableView deselectRowAtIndexPath:indexPath animated:YES];
 
         } else if ([accessory isEqualToString:KGOAccessoryTypeEmail]) {
-            [MITMailComposeController presentMailControllerWithEmail:[cellData objectForKey:@"subtitle"] subject:nil body:nil];
+            [self.viewController presentMailControllerWithEmail:[cellData objectForKey:@"subtitle"]
+                                                        subject:nil
+                                                           body:nil
+                                                       delegate:self];
             
         } else if ([accessory isEqualToString:KGOAccessoryTypeMap]) {
             NSArray *annotations = [NSArray arrayWithObject:_event];
@@ -309,6 +312,13 @@
             [KGO_SHARED_APP_DELEGATE() showPage:LocalPathPageNameHome forModuleTag:MapTag params:params];
         }
     }
+}
+
+- (void)mailComposeController:(MFMailComposeViewController*)controller
+          didFinishWithResult:(MFMailComposeResult)result
+                        error:(NSError*)error 
+{
+    [self.viewController dismissModalViewControllerAnimated:YES];
 }
 
 #pragma mark - Table header

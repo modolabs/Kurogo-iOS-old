@@ -5,7 +5,7 @@
 
 @implementation KGODatePager
 
-@synthesize delegate;
+@synthesize delegate, contentsController;
 
 - (id)initWithCoder:(NSCoder *)aDecoder
 {
@@ -108,8 +108,7 @@
         pickerVC.delegate = self;
         pickerVC.date = self.date;
         
-        KGOAppDelegate *appDelegate = KGO_SHARED_APP_DELEGATE();
-        [appDelegate presentAppModalNavigationController:pickerVC animated:YES];
+        [self.contentsController presentModalViewController:pickerVC animated:YES];
         
     } else {
         // previous or next date
@@ -176,16 +175,13 @@
 
 - (void)datePickerViewControllerDidCancel:(DatePickerViewController *)controller {
     self.displayDate = self.date;
-    
-	KGOAppDelegate *appDelegate = KGO_SHARED_APP_DELEGATE();
-    [appDelegate dismissAppModalViewControllerAnimated:YES];
+    [self.contentsController dismissModalViewControllerAnimated:YES];
 }
 
 - (void)datePickerViewController:(DatePickerViewController *)controller didSelectDate:(NSDate *)date {
     self.date = date;
     
-	KGOAppDelegate *appDelegate = KGO_SHARED_APP_DELEGATE();
-    [appDelegate dismissAppModalViewControllerAnimated:YES];
+    [self.contentsController dismissModalViewControllerAnimated:YES];
 }
 
 - (void)datePickerViewController:(DatePickerViewController *)controller valueChanged:(NSDate *)date {

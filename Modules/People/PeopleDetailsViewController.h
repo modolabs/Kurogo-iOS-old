@@ -4,12 +4,15 @@
 #import "KGOTableViewController.h"
 #import "KGODetailPager.h"
 #import "KGOPersonWrapper.h"
+#import <MessageUI/MFMailComposeViewController.h>
+
 
 @interface PeopleDetailsViewController : KGOTableViewController
 	<ABPeoplePickerNavigationControllerDelegate, 
 	 ABNewPersonViewControllerDelegate, 
 	 ABPersonViewControllerDelegate, 
-     KGODetailPagerDelegate> 
+     KGODetailPagerDelegate,
+     MFMailComposeViewControllerDelegate> 
 {
 
     KGOPersonWrapper *_person;

@@ -192,7 +192,7 @@
                 NSString *subject = [NSString stringWithFormat:@"%@:%@ %@, Build: %@", @"Regarding", [infoDict objectForKey:@"CFBundleName"], [infoDict objectForKey:@"CFBundleVersion"], MITBuildNumber];
                 
                 NSString *email = orgEmail;
-                [MITMailComposeController presentMailControllerWithEmail:email subject:subject body:[NSString string]];
+                [self presentMailControllerWithEmail:email subject:subject body:[NSString string] delegate:self];
 				break;
             }
             default:
@@ -201,6 +201,13 @@
     }
     
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
+}
+
+- (void)mailComposeController:(MFMailComposeViewController*)controller
+          didFinishWithResult:(MFMailComposeResult)result
+                        error:(NSError*)error 
+{
+    [self dismissModalViewControllerAnimated:YES];
 }
 
 #pragma mark -

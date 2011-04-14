@@ -1,12 +1,15 @@
 #import <Foundation/Foundation.h>
-#import <MessageUI/MFMailComposeViewController.h>
+
+@protocol MFMailComposeViewControllerDelegate;
 
 // TODO: add protocol for classes to do things after the controller is dismissed
 
-@interface MITMailComposeController : NSObject <MFMailComposeViewControllerDelegate> {
+@interface UIViewController (MITMailComposeController)
 
-}
-
-+ (void)presentMailControllerWithEmail:(NSString *)email subject:(NSString *)subject body:(NSString *)body;
+- (void)presentMailControllerWithEmail:(NSString *)email
+                               subject:(NSString *)subject
+                                  body:(NSString *)body
+                              delegate:(id<MFMailComposeViewControllerDelegate>)delegate;
 
 @end
+

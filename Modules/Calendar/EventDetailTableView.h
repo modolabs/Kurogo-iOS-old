@@ -1,12 +1,13 @@
 #import <UIKit/UIKit.h>
 #import "KGOShareButtonController.h"
 #import "KGODetailPageHeaderView.h"
+#import <MessageUI/MFMailComposeViewController.h>
 
 @class KGOEventWrapper, CalendarDataManager;
 @class CalendarDetailViewController;
 
 @interface EventDetailTableView : UITableView <UITableViewDelegate,
-UITableViewDataSource, KGODetailPageHeaderDelegate> {
+UITableViewDataSource, KGODetailPageHeaderDelegate, MFMailComposeViewControllerDelegate> {
     
     NSArray *_sections;
     KGOEventWrapper *_event;

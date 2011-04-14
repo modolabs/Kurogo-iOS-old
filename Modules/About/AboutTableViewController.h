@@ -1,7 +1,10 @@
 #import <UIKit/UIKit.h>
 #import "KGORequestManager.h"
+#import <MessageUI/MFMailComposeViewController.h>
 
-@interface AboutTableViewController : UITableViewController <KGORequestDelegate>{
+@interface AboutTableViewController : UITableViewController <
+KGORequestDelegate, MFMailComposeViewControllerDelegate> {
+    
     BOOL showBuildNumber;
     
     NSString * aboutText;

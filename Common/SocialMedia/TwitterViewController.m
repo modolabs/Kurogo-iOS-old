@@ -25,8 +25,8 @@
                                                                               target:self
                                                                               action:@selector(tweetButtonPressed:)] autorelease];
     self.navigationItem.leftBarButtonItem = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
-                                                                                           target:KGO_SHARED_APP_DELEGATE()
-                                                                                           action:@selector(dismissAppModalViewControllerAnimated:)] autorelease];
+                                                                                           target:self
+                                                                                           action:@selector(dismissModalViewControllerAnimated:)] autorelease];
     
     self.title = NSLocalizedString(@"Twitter", nil);
     

@@ -26,8 +26,6 @@
     [self loadNavigationContainer]; // adds theNavController.view to self.window
     [self loadSocialMediaController]; // initializes social media settings
     
-    [self setupAppModalHolder];  // adds appModalHolder.view to self.window
-
     self.window.backgroundColor = [UIColor blackColor]; // necessary for horizontal flip transitions -- background shows through
     [self.window makeKeyAndVisible];
     
@@ -282,76 +280,6 @@
     NSString *query = [[url query] stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
     
     return [module handleLocalPath:path query:query];
-}
-
-@end
-
-#pragma mark -
-
-@implementation KGOAppDelegate (AppModalViewController)
-
-- (void)setupAppModalHolder {
-    _appModalHolder = [[UIViewController alloc] initWithNibName:nil bundle:nil];
-    _appModalHolder.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-    _appModalHolder.view.userInteractionEnabled = NO;
-    _appModalHolder.view.hidden = YES;
-    [self.window addSubview:_appModalHolder.view];
-}
-
-- (void)presentAppModalNavigationController:(UIViewController *)viewController animated:(BOOL)animated
-{
-	if (!viewController) return;
-	
-    _appModalHolder.view.hidden = NO;
-
-    UIViewController *presentedViewController = viewController;
-    if (viewController.modalPresentationStyle == UIModalPresentationFullScreen) {
-        if (viewController.navigationController || [viewController isKindOfClass:[UINavigationController class]]) {
-            presentedViewController = viewController;
-        } else {
-            // since any VC can be presented modally, some will not have nav bars built in
-            UINavigationController *navC = [[[UINavigationController alloc] initWithRootViewController:viewController] autorelease];
-            presentedViewController = navC;
-        }
-    }
-    
-    [_appModalHolder presentModalViewController:presentedViewController animated:animated];
-    
-    if (viewController.modalPresentationStyle == UIModalPresentationFullScreen && !viewController.navigationItem.rightBarButtonItem) {
-        UIBarButtonItem *item = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone
-                                                                               target:self
-                                                                               action:@selector(dismissAppModalViewControllerAnimated:)] autorelease];
-        viewController.navigationItem.rightBarButtonItem = item;
-    }
-}
-
-- (void)presentAppModalViewController:(UIViewController *)viewController animated:(BOOL)animated {
-	if (!viewController) return;
-	
-    _appModalHolder.view.hidden = NO;
-    [_appModalHolder presentModalViewController:viewController animated:animated];
-}
-
-- (void)dismissAppModalViewController:(id)sender {
-	[self dismissAppModalViewControllerAnimated:YES];
-}
-
-- (void)dismissAppModalViewControllerAnimated:(BOOL)animated {
-    if (_appModalHolder.modalViewController) {
-        [_appModalHolder dismissModalViewControllerAnimated:animated];
-        [_visibleViewController viewWillAppear:NO];
-        [self performSelector:@selector(checkIfOkToHideAppModalViewController) withObject:nil afterDelay:0.100];
-    }
-}
-
-// This is a sad hack for telling when the dismissAppModalViewController animation has completed. It depends on appModalHolder.modalViewController being defined as long as the modal vc is still animating. If Apple ever changes this behavior, the slide-away transition will become a jarring pop.
-- (void)checkIfOkToHideAppModalViewController {
-    if (!_appModalHolder.modalViewController) {
-        // allow taps to reach subviews of the tabbar again
-        _appModalHolder.view.hidden = YES;
-    } else {
-        [self performSelector:@selector(checkIfOkToHideAppModalViewController) withObject:nil afterDelay:0.100];
-    }
 }
 
 @end

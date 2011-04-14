@@ -262,8 +262,7 @@ NSString * const MapTypePreferenceChanged = @"MapTypeChanged";
             if (![visibleVC isKindOfClass:[MapHomeViewController class]]) {
                 return NO;
             }
-            // this will dismiss browse categories list, otherwise it does nothing
-            [appDelegate dismissAppModalViewControllerAnimated:YES];
+            [visibleVC dismissModalViewControllerAnimated:YES];
             [(MapHomeViewController *)visibleVC setAnnotations:[NSArray arrayWithObject:placemark]];
             return YES;
             

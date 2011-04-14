@@ -83,9 +83,10 @@
 	if ([method isEqualToString:KGOSocialMediaTypeEmail]) {
         // TODO: make this string configurable
         NSString *emailBody = [NSString stringWithFormat:@"I thought you might be interested in this...\n\n%@", self.shareBody];
-        [MITMailComposeController presentMailControllerWithEmail:nil
-                                                         subject:self.shareTitle
-                                                            body:emailBody];
+        [self.contentsController presentMailControllerWithEmail:nil
+                                                        subject:self.shareTitle
+                                                           body:emailBody 
+                                                       delegate:self];
 
 	} else if ([method isEqualToString:KGOSocialMediaTypeFacebook]) {
         NSString *attachment = [NSString stringWithFormat:
@@ -108,6 +109,14 @@
 		[self.contentsController presentModalViewController:navC animated:YES];
 	}
 }
+
+- (void)mailComposeController:(MFMailComposeViewController*)controller
+          didFinishWithResult:(MFMailComposeResult)result
+                        error:(NSError*)error 
+{
+    [self.contentsController dismissModalViewControllerAnimated:YES];
+}
+
 
 #pragma mark -
 

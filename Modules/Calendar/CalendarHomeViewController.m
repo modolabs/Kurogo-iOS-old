@@ -65,6 +65,7 @@
     
     _currentGroupIndex = NSNotFound;
     
+    _datePager.contentsController = self;
     _datePager.delegate = self;
 
     if (self.showsGroups) {

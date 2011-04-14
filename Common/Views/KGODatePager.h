@@ -30,5 +30,6 @@
 
 @property (nonatomic) NSCalendarUnit incrementUnit;
 @property (nonatomic, assign) id<KGODatePagerDelegate> delegate;
+@property (nonatomic, assign) UIViewController *contentsController;
 
 @end

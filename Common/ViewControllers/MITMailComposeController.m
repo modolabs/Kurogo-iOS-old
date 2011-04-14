@@ -1,15 +1,18 @@
 #import "MITMailComposeController.h"
-#import "KGOAppDelegate.h"
+#import <MessageUI/MFMailComposeViewController.h>
 
-@implementation MITMailComposeController
+@implementation UIViewController (MITMailComposeController)
 
-+ (void)presentMailControllerWithEmail:(NSString *)email subject:(NSString *)subject body:(NSString *)body
+- (void)presentMailControllerWithEmail:(NSString *)email
+                               subject:(NSString *)subject
+                                  body:(NSString *)body
+                              delegate:(id<MFMailComposeViewControllerDelegate>)delegate
 {
 	Class mailClass = (NSClassFromString(@"MFMailComposeViewController"));
 	if ((mailClass != nil) && [mailClass canSendMail]) {
 		
-		MFMailComposeViewController *aController = [[MFMailComposeViewController alloc] init];
-		aController.mailComposeDelegate = [[MITMailComposeController alloc] init]; // releases self when dismissed
+		MFMailComposeViewController *aController = [[[MFMailComposeViewController alloc] init] autorelease];
+        aController.mailComposeDelegate = delegate;
 
 		if (email != nil) {
             NSArray *toRecipient = [NSArray arrayWithObject:email]; 
@@ -21,10 +24,8 @@
         if (body != nil) {
             [aController setMessageBody:body isHTML:NO];
         }
-		
-		KGOAppDelegate *appDelegate = KGO_SHARED_APP_DELEGATE();
-		[appDelegate presentAppModalNavigationController:aController animated:YES];
-		[aController release];
+        
+        [self presentModalViewController:aController animated:YES];
 		
 	} else {
         NSMutableArray *array = [NSMutableArray array];
@@ -39,18 +40,12 @@
                                [array componentsJoinedByString:@"&"]];
         
 		NSURL *externURL = [NSURL URLWithString:urlString];
-		if ([[UIApplication sharedApplication] canOpenURL:externURL])
+        
+		if ([[UIApplication sharedApplication] canOpenURL:externURL]) {
 			[[UIApplication sharedApplication] openURL:externURL];
+        }
 	}
 }
 
-// Dismisses the email composition interface when users tap Cancel or Send. Proceeds to update the message field with the result of the operation.
-- (void)mailComposeController:(MFMailComposeViewController*)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError*)error 
-{	
-	KGOAppDelegate *appDelegate = KGO_SHARED_APP_DELEGATE();
-	[appDelegate dismissAppModalViewControllerAnimated:YES];
-    
-    [self release];
-}
-
 @end
+

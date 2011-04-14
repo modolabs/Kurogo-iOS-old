@@ -281,16 +281,14 @@
 			ABNewPersonViewController *creator = [[[ABNewPersonViewController alloc] init] autorelease];
 			creator.displayedPerson = [self.person convertToABPerson];
 			[creator setNewPersonViewDelegate:self];
-			
-			KGOAppDelegate *appDelegate = KGO_SHARED_APP_DELEGATE();
-			[appDelegate presentAppModalNavigationController:creator animated:YES];
+            
+            [self presentModalViewController:creator animated:YES];
 			
 		} else {
 			ABPeoplePickerNavigationController *picker = [[[ABPeoplePickerNavigationController alloc] init] autorelease];
 			[picker setPeoplePickerDelegate:self];
-			
-			KGOAppDelegate *appDelegate = KGO_SHARED_APP_DELEGATE();
-			[appDelegate presentAppModalNavigationController:picker animated:YES];
+            
+            [self presentModalViewController:picker animated:YES];
 		}
 		
 	} else {
@@ -316,9 +314,8 @@
 #pragma mark Address book methods
 
 - (void)newPersonViewController:(ABNewPersonViewController *)newPersonViewController didCompleteWithNewPerson:(ABRecordRef)person
-{	
-	KGOAppDelegate *appDelegate = KGO_SHARED_APP_DELEGATE();
-	[appDelegate dismissAppModalViewControllerAnimated:YES];
+{
+    [self dismissModalViewControllerAnimated:YES];
 }
 
 - (BOOL)        personViewController:(ABPersonViewController *)personViewController 
@@ -341,9 +338,8 @@
 {
     self.person.ABPerson = person;
     [self.person saveToAddressBook];
-	
-	KGOAppDelegate *appDelegate = KGO_SHARED_APP_DELEGATE();
-	[appDelegate dismissAppModalViewControllerAnimated:YES];
+    
+    [self dismissModalViewControllerAnimated:YES];
 	
 	return NO; // don't navigate to built-in view
 }
@@ -358,8 +354,7 @@
 	
 - (void)peoplePickerNavigationControllerDidCancel:(ABPeoplePickerNavigationController *)peoplePicker
 {
-	KGOAppDelegate *appDelegate = KGO_SHARED_APP_DELEGATE();
-	[appDelegate dismissAppModalViewControllerAnimated:YES];
+    [self dismissModalViewControllerAnimated:YES];
 }
 
 
@@ -387,7 +382,14 @@
 
 - (void)emailIconTapped:(NSString *)email
 {
-    [MITMailComposeController presentMailControllerWithEmail:email subject:nil body:nil];
+    [self presentMailControllerWithEmail:email subject:nil body:nil delegate:self];
+}
+
+- (void)mailComposeController:(MFMailComposeViewController*)controller
+          didFinishWithResult:(MFMailComposeResult)result
+                        error:(NSError*)error 
+{
+    [self dismissModalViewControllerAnimated:YES];
 }
 
 @end
