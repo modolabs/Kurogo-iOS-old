@@ -449,7 +449,7 @@
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
 {
     // TODO: this isn't quite accurate, see if we need to do more
-    NSMutableString *text = [textField.text mutableCopy];
+    NSMutableString *text = [[textField.text mutableCopy] autorelease];
     [text replaceCharactersInRange:range withString:string];
     if ([self.delegate respondsToSelector:@selector(searchBar:textDidChange:)]) {
         [self.delegate searchBar:self textDidChange:text];

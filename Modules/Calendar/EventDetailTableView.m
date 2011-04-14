@@ -67,33 +67,36 @@
     NSLog(@"%@ %@ %@ %@", [_event description], _event.title, _event.location, _event.userInfo);
     
     [_sections release];
-    NSMutableArray *mutableSections = [NSMutableArray array];
-    NSArray *basicInfo = [self sectionForBasicInfo];
-    if (basicInfo.count) {
-        [mutableSections addObject:basicInfo];
+    
+    if (_event) {
+        NSMutableArray *mutableSections = [NSMutableArray array];
+        NSArray *basicInfo = [self sectionForBasicInfo];
+        if (basicInfo.count) {
+            [mutableSections addObject:basicInfo];
+        }
+        
+        NSArray *attendeeInfo = [self sectionForAttendeeInfo];
+        if (attendeeInfo.count) {
+            [mutableSections addObject:attendeeInfo];
+        }
+        
+        NSArray *contactInfo = [self sectionForContactInfo];
+        if (contactInfo.count) {
+            [mutableSections addObject:contactInfo];
+        }
+        
+        NSArray *extendedInfo = [self sectionForExtendedInfo];
+        if (extendedInfo.count) {
+            [mutableSections addObject:extendedInfo];
+        }
+        
+        _sections = [mutableSections copy];
+        
+        [self reloadData];
+        
+        
+        self.tableHeaderView = [self viewForTableHeader];
     }
-
-    NSArray *attendeeInfo = [self sectionForAttendeeInfo];
-    if (attendeeInfo.count) {
-        [mutableSections addObject:attendeeInfo];
-    }
-
-    NSArray *contactInfo = [self sectionForContactInfo];
-    if (contactInfo.count) {
-        [mutableSections addObject:contactInfo];
-    }
-    
-    NSArray *extendedInfo = [self sectionForExtendedInfo];
-    if (extendedInfo.count) {
-        [mutableSections addObject:extendedInfo];
-    }
-    
-    _sections = [mutableSections copy];
-    
-    [self reloadData];
-    
-    
-    self.tableHeaderView = [self viewForTableHeader];
 }
 
 

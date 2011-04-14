@@ -536,14 +536,21 @@ static KGOSocialMediaController *s_controller = nil;
     
     if (_facebookStartupCount <= 0) {
         NSLog(@"shutting down facebook");
-        for (FBRequest *aRequest in _fbRequestQueue) {
-            aRequest.delegate = nil;
-            [_fbRequestQueue removeObject:aRequest];
-        }
+        [_fbRequestQueue enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+            [(FBRequest *)obj setDelegate:nil];
+        }];
+        
         [_fbRequestQueue release];
+        _fbRequestQueue = nil;
+        
         [_fbRequestIdentifiers release];
+        _fbRequestIdentifiers = nil;
+        
         [_fbUploadQueue release];
+        _fbUploadQueue = nil;
+        
         [_fbUploadData release];
+        _fbUploadData = nil;
 
         if (_facebook) {
             [_facebook release];

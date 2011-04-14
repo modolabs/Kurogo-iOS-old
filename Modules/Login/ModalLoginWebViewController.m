@@ -39,6 +39,17 @@
 {
     DLog(@"attempting to load %@ %@ %p", request.URL, request, request);
 
+    DLog(@"%@ %@", [[request URL] host], [[KGORequestManager sharedManager] host]);
+
+    /*
+    if (![[[request URL] host] isEqualToString:[[KGORequestManager sharedManager] host]]) {
+        if ([[UIApplication sharedApplication] canOpenURL:[request URL]]) {
+            [[UIApplication sharedApplication] openURL:[request URL]];
+        }
+        return NO;
+    }
+    */
+
     if ([[KGORequestManager sharedManager] isUserLoggedIn]) {
         [self dismissModalViewControllerAnimated:YES];
         return NO;
