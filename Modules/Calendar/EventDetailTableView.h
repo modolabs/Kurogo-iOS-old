@@ -37,5 +37,6 @@ KGORequestDelegate> {
 - (NSArray *)sectionForExtendedInfo;
 
 - (void)requestEventDetails;
+- (void)eventDetailsDidChange;
 
 @end

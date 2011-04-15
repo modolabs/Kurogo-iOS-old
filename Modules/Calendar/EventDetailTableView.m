@@ -64,45 +64,53 @@
     [_event release];
     _event = [event retain];
     
-    NSLog(@"%@ %@ %@ %@", [_event description], _event.title, _event.location, _event.userInfo);
+    DLog(@"%@ %@ %@ %@", [_event description], _event.title, _event.location, _event.userInfo);
     
     [_sections release];
+    _sections = nil;
     
     if (_event) {
+        [self reloadData];
+        self.tableHeaderView = [self viewForTableHeader];
+        
         // TODO: see if there is a way to tell we don't need to update this event
         if (!_event.summary.length) {
             [self requestEventDetails];
+        } else {
+            [self eventDetailsDidChange];
         }
-        
-        NSMutableArray *mutableSections = [NSMutableArray array];
-        NSArray *basicInfo = [self sectionForBasicInfo];
-        if (basicInfo.count) {
-            [mutableSections addObject:basicInfo];
-        }
-        
-        NSArray *attendeeInfo = [self sectionForAttendeeInfo];
-        if (attendeeInfo.count) {
-            [mutableSections addObject:attendeeInfo];
-        }
-        
-        NSArray *contactInfo = [self sectionForContactInfo];
-        if (contactInfo.count) {
-            [mutableSections addObject:contactInfo];
-        }
-        
-        NSArray *extendedInfo = [self sectionForExtendedInfo];
-        if (extendedInfo.count) {
-            [mutableSections addObject:extendedInfo];
-        }
-        
-        _sections = [mutableSections copy];
-        
-        [self reloadData];
-        
-        self.tableHeaderView = [self viewForTableHeader];
     }
 }
 
+- (void)eventDetailsDidChange
+{
+    NSMutableArray *mutableSections = [NSMutableArray array];
+    NSArray *basicInfo = [self sectionForBasicInfo];
+    if (basicInfo.count) {
+        [mutableSections addObject:basicInfo];
+    }
+    
+    NSArray *attendeeInfo = [self sectionForAttendeeInfo];
+    if (attendeeInfo.count) {
+        [mutableSections addObject:attendeeInfo];
+    }
+    
+    NSArray *contactInfo = [self sectionForContactInfo];
+    if (contactInfo.count) {
+        [mutableSections addObject:contactInfo];
+    }
+    
+    NSArray *extendedInfo = [self sectionForExtendedInfo];
+    if (extendedInfo.count) {
+        [mutableSections addObject:extendedInfo];
+    }
+    
+    _sections = [mutableSections copy];
+    
+    [self reloadData];
+    
+    self.tableHeaderView = [self viewForTableHeader];
+}
 
 
 - (NSArray *)sectionForBasicInfo
@@ -400,10 +408,7 @@
     [_event updateWithDictionary:result];
     [_event convertToKGOEvent];
 
-    // TODO: decide whether this line is necessary given the available info
-    self.tableHeaderView = [self viewForTableHeader];
-
-    [self reloadData];
+    [self eventDetailsDidChange];
 }
 
 - (void)requestWillTerminate:(KGORequest *)request
