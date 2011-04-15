@@ -14,7 +14,7 @@
 
 @implementation TwitterViewController
 
-@synthesize longURL, preCannedMessage, shortURL;
+@synthesize longURL, preCannedMessage, shortURL, delegate;
 
 - (void)viewDidLoad
 {
@@ -88,6 +88,8 @@
 - (void)twitterDidLogin:(NSNotification *)aNotification
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self name:TwitterDidLoginNotification object:nil];
+    
+    [self.delegate controllerDidLogin:self];
     
     self.title = NSLocalizedString(@"Post to Twitter", nil);
     _messageContainerView.hidden = NO;

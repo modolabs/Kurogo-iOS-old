@@ -50,9 +50,9 @@ NSString * const KGORequestErrorDomain = @"com.modolabs.KGORequest.ErrorDomain";
         } else {
             _connection = [[NSURLConnection alloc] initWithRequest:request delegate:self startImmediately:YES];
             if (_connection) {
+                [self retain];
                 [_data release];
                 _data = [[NSMutableData alloc] init];
-                [self retain];
                 success = YES;
             }
         }
@@ -75,16 +75,17 @@ NSString * const KGORequestErrorDomain = @"com.modolabs.KGORequest.ErrorDomain";
 
 - (void)cancel {
 	// we still may be retained by other objects
-	[_connection cancel];
-	[_connection release];
-	_connection = nil;
-	
 	self.delegate = nil;
 	
 	[_data release];
 	_data = nil;
     
-	[self release];
+    if (_connection) {
+        [_connection cancel];
+        [_connection release];
+        _connection = nil;
+        [self release];
+    }
 }
 
 - (void)dealloc {

@@ -245,7 +245,8 @@ NSString * const KGODidLogoutNotification = @"LogoutComplete";
 - (void)requestSessionInfo
 {
     if (!_sessionRequest) {
-        _sessionRequest = [[KGORequestManager sharedManager] requestWithDelegate:self module:@"login" path:@"session" params:nil];
+        DLog(@"requesting session info");
+        _sessionRequest = [self requestWithDelegate:self module:@"login" path:@"session" params:nil];
         _sessionRequest.expectedResponseType = [NSDictionary class];
         [_sessionRequest connect];
     }
@@ -282,8 +283,7 @@ NSString * const KGODidLogoutNotification = @"LogoutComplete";
         _sessionInfo = [result retain];
         DLog(@"received session info: %@", _sessionInfo);
 
-        NSDictionary *userDict = [_sessionInfo dictionaryForKey:@"user"];
-        if ([userDict stringForKey:@"authority" nilIfEmpty:YES]) {
+        if ([self isUserLoggedIn]) {
             [[NSNotificationCenter defaultCenter] postNotificationName:KGODidLoginNotification object:self];
         }
     }

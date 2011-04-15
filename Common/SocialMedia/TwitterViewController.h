@@ -3,6 +3,8 @@
 #import "ConnectionWrapper.h"
 #import "KGOSocialMediaController.h"
 
+// TODO: strip this down to handle just the login UI
+
 @class TwitterViewController;
 
 @protocol TwitterViewControllerDelegate <NSObject>
@@ -45,5 +47,7 @@
 @property (nonatomic, retain) NSString *longURL;
 @property (nonatomic, retain) NSString *shortURL;
 @property (nonatomic, retain) NSString *preCannedMessage;
+
+@property (nonatomic, assign) id<TwitterViewControllerDelegate> delegate;
 
 @end

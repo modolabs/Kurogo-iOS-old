@@ -443,7 +443,6 @@ static KGOSocialMediaController *s_controller = nil;
 	[KGO_SHARED_APP_DELEGATE() hideNetworkActivityIndicator];
 }
 
-
 #pragma mark - Facebook
 
 - (BOOL)isFacebookLoggedIn {

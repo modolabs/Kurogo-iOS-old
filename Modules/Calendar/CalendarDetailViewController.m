@@ -51,6 +51,7 @@
         _tableView = [[EventDetailTableView alloc] initWithFrame:frame style:UITableViewStyleGrouped];
         _tableView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
         _tableView.backgroundColor = [UIColor clearColor];
+        _tableView.viewController = self;
         _tableView.dataManager = self.dataManager;
         
         [self.view addSubview:_tableView];

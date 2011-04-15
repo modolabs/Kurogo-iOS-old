@@ -69,6 +69,11 @@
     [_sections release];
     
     if (_event) {
+        // TODO: see if there is a way to tell we don't need to update this event
+        if (!_event.summary.length) {
+            [self requestEventDetails];
+        }
+        
         NSMutableArray *mutableSections = [NSMutableArray array];
         NSArray *basicInfo = [self sectionForBasicInfo];
         if (basicInfo.count) {
@@ -93,7 +98,6 @@
         _sections = [mutableSections copy];
         
         [self reloadData];
-        
         
         self.tableHeaderView = [self viewForTableHeader];
     }
@@ -362,6 +366,50 @@
 - (void)headerView:(KGODetailPageHeaderView *)headerView shareButtonPressed:(id)sender
 {
     [self.viewController shareButtonPressed:sender];
+}
+
+#pragma mark detail
+
+- (void)requestEventDetails
+{
+    NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:
+                            _event.identifier, @"id",
+                            [NSString stringWithFormat:@"%.0f", [_event.startDate timeIntervalSince1970]], @"start",
+                            nil];
+    NSLog(@"%@", params);
+    if (_eventDetailRequest) {
+        [_eventDetailRequest cancel];
+        [_eventDetailRequest release];
+        _eventDetailRequest = nil;
+    }
+    
+    _eventDetailRequest = [[[KGORequestManager sharedManager] requestWithDelegate:self
+                                                                           module:self.dataManager.moduleTag
+                                                                             path:@"detail"
+                                                                           params:params] retain];
+    [_eventDetailRequest connect];
+}
+
+- (void)request:(KGORequest *)request didFailWithError:(NSError *)error
+{
+    NSLog(@"%@", [error description]);
+}
+
+- (void)request:(KGORequest *)request didReceiveResult:(id)result
+{
+    [_event updateWithDictionary:result];
+    [_event convertToKGOEvent];
+
+    // TODO: decide whether this line is necessary given the available info
+    self.tableHeaderView = [self viewForTableHeader];
+
+    [self reloadData];
+}
+
+- (void)requestWillTerminate:(KGORequest *)request
+{
+    [_eventDetailRequest release];
+    _eventDetailRequest = nil;
 }
 
 @end
