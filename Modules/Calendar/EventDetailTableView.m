@@ -46,6 +46,10 @@
 
 - (void)dealloc
 {
+    if (_eventDetailRequest) {
+        [_eventDetailRequest cancel];
+        [_eventDetailRequest release];
+    }
     self.event = nil;
     self.delegate = nil;
     self.dataSource = nil;
@@ -73,11 +77,11 @@
         [self reloadData];
         self.tableHeaderView = [self viewForTableHeader];
         
+        [self eventDetailsDidChange];
+
         // TODO: see if there is a way to tell we don't need to update this event
         if (!_event.summary.length) {
             [self requestEventDetails];
-        } else {
-            [self eventDetailsDidChange];
         }
     }
 }
@@ -228,6 +232,8 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
+    DLog(@"%d %@", section, [_sections objectAtIndex:section]);
+    
     return [[_sections objectAtIndex:section] count];
 }
 
@@ -240,6 +246,7 @@
 {
     UITableViewCellStyle style = UITableViewCellStyleDefault;
     NSString *cellIdentifier;
+    DLog(@"%@ %@", indexPath, [_sections objectAtIndex:indexPath.section]);
     id cellData = [[_sections objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
     if ([cellData isKindOfClass:[NSDictionary class]]) {    
         if ([cellData objectForKey:@"subtitle"]) {
@@ -406,7 +413,7 @@
 - (void)request:(KGORequest *)request didReceiveResult:(id)result
 {
     [_event updateWithDictionary:result];
-    [_event convertToKGOEvent];
+    [_event saveToCoreData];
 
     [self eventDetailsDidChange];
 }

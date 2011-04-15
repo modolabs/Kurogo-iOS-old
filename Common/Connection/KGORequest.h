@@ -49,7 +49,7 @@ typedef NSInteger (^JSONObjectHandler)(id);
 @property(nonatomic) NSURLRequestCachePolicy cachePolicy; // default is NSURLRequestReloadIgnoringLocalAndRemoteCacheData
 @property(nonatomic) NSTimeInterval timeout; // default is 30 seconds
 
-@property(nonatomic) Class expectedResponseType; // default is NSDictionary
+@property(nonatomic, assign) Class expectedResponseType; // default is NSDictionary
 @property(nonatomic, copy) JSONObjectHandler handler;
 
 // urls are of the form
