@@ -10,6 +10,6 @@
 @property (nonatomic, retain) NSString * identifier;
 @property (nonatomic, retain) NSString * name;
 @property (nonatomic, retain) NSSet* contactInfo;
-@property (nonatomic, retain) KGOEventParticipantRelation * events;
+@property (nonatomic, retain) NSSet* events;
 
 @end

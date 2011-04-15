@@ -270,6 +270,12 @@ userInfo = _userInfo;
     _kgoEvent.longitude = [NSNumber numberWithFloat:self.coordinate.longitude];
     _kgoEvent.summary = self.summary;
     _kgoEvent.calendars = _calendars;
+
+    for (KGOEventParticipantRelation *aRelation in _kgoEvent.particpants) {
+        [[CoreDataManager sharedManager] deleteObject:aRelation];
+    }
+    _kgoEvent.particpants = nil;
+    
     [[self unwrappedOrganizers] enumerateObjectsUsingBlock:^(id obj, BOOL *stop) {
         KGOEventParticipantRelation *relation = [KGOEventParticipantRelation relationWithEvent:_kgoEvent participant:obj];
         relation.isOrganizer = [NSNumber numberWithBool:YES];
@@ -351,6 +357,7 @@ userInfo = _userInfo;
     
     NSMutableSet *attendees = [NSMutableSet set];
     NSMutableSet *organizers = [NSMutableSet set];
+    NSLog(@"%d", _kgoEvent.particpants.count);
     [_kgoEvent.particpants enumerateObjectsUsingBlock:^(id obj, BOOL *stop) {
         KGOEventParticipantRelation *relation = (KGOEventParticipantRelation *)obj;
         KGOEventParticipant *participant = relation.participant;
