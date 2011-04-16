@@ -216,7 +216,7 @@
     if (_event.summary) {
         UILabel *label = [UILabel multilineLabelWithText:_event.summary
                                                     font:[[KGOTheme sharedTheme] fontForThemedProperty:KGOThemePropertyBodyText]
-                                                   width:self.frame.size.width - 20];
+                                                   width:self.frame.size.width - 40];
         label.textColor = [[KGOTheme sharedTheme] textColorForThemedProperty:KGOThemePropertyNavListSubtitle];
         label.tag = DESCRIPTION_LABEL_TAG;
         CGRect frame = label.frame;
