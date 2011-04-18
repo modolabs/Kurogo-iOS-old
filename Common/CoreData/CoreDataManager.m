@@ -11,7 +11,6 @@
 @implementation CoreDataManager
 
 @synthesize managedObjectModel;
-@synthesize managedObjectContext;
 @synthesize persistentStoreCoordinator;
 
 #pragma mark -
@@ -154,19 +153,18 @@
     NSMutableDictionary *threadDict = [[NSThread currentThread] threadDictionary];
     NSManagedObjectContext *localContext = [threadDict objectForKey:@"MITCoreDataManagedObjectContext"];
     if (localContext) {
-        if (![localContext persistentStoreCoordinator]) {
-            [localContext setPersistentStoreCoordinator:coordinator];
+        if ([localContext persistentStoreCoordinator] != coordinator) {
+            [threadDict removeObjectForKey:@"MITCoreDataManagedObjectContext"];
+            localContext = nil;
         }
-        
-        return localContext;
     }
     
-    if (coordinator != nil) {
+    if (!localContext && coordinator != nil) {
         localContext = [[[NSManagedObjectContext alloc] init] autorelease];
-        [localContext setPersistentStoreCoordinator: coordinator];
+        [localContext setPersistentStoreCoordinator:coordinator];
         [threadDict setObject:localContext forKey:@"MITCoreDataManagedObjectContext"];
         
-        NSLog(@"current thread: %@", [NSThread currentThread]);
+        DLog(@"current thread: %@", [NSThread currentThread]);
         
         if ([NSThread currentThread] != [NSThread mainThread]) {
             [self performSelectorOnMainThread:@selector(observeSaveForContext:) withObject:localContext waitUntilDone:NO];
@@ -186,17 +184,16 @@
 
 - (void)mergeChanges:(NSNotification *)aNotification
 {
-    NSLog(@"local context did save %@", aNotification);
+    DLog(@"local context did save %@", aNotification);
     
     if ([NSThread currentThread] == [NSThread mainThread]) {
-        NSLog(@"saving changes on main thread %@, context %@", [NSThread currentThread], [self managedObjectContext]);
+        DLog(@"saving changes on main thread %@, context %@", [NSThread currentThread], self.managedObjectContext);
+        DLog(@"managed object context has persistent store coordinator %@", [self.managedObjectContext persistentStoreCoordinator]);
         [[self managedObjectContext] mergeChangesFromContextDidSaveNotification:aNotification];
         
     } else {
-        NSLog(@"saving changes on remote thread %@, context %@", [NSThread currentThread], [self managedObjectContext]);
-        //[[self managedObjectContext] performSelectorOnMainThread:@selector(mergeChangesFromContextDidSaveNotification:)
-        //                                              withObject:aNotification
-        //                                           waitUntilDone:YES];
+        DLog(@"saving changes on remote thread %@, context %@", [NSThread currentThread], self.managedObjectContext);
+        DLog(@"managed object context has persistent store coordinator %@", [self.managedObjectContext persistentStoreCoordinator]);
         [self performSelectorOnMainThread:@selector(mergeChanges:) withObject:aNotification waitUntilDone:YES];
     }
 }
@@ -225,7 +222,7 @@
     if (persistentStoreCoordinator != nil) {
         return persistentStoreCoordinator;
     }
-	
+    
 	NSURL *storeURL = [NSURL fileURLWithPath:[self storeFileName]];
 	
 	NSError *error;
@@ -253,7 +250,8 @@
             // TODO: perhaps put an alertview here so devs remember to check
             // for failed data migrations
             NSString *backupFile = [NSString stringWithFormat:@"%@.bak", [self storeFileName]];
-            if ([[NSFileManager defaultManager] moveItemAtPath:[self storeFileName] toPath:backupFile error:&error]) {                 NSLog(@"Old core data is stored at %@", backupFile);
+            if ([[NSFileManager defaultManager] moveItemAtPath:[self storeFileName] toPath:backupFile error:&error]) {
+                NSLog(@"Old core data is stored at %@", backupFile);
                 tryAgain = YES;
                 
             } else {
@@ -303,7 +301,10 @@
     }
     
     if ([[NSFileManager defaultManager] removeItemAtPath:[self storeFileName] error:&error]) {
-        success = YES;
+        NSPersistentStoreCoordinator *coordinator = [self persistentStoreCoordinator];
+        NSLog(@"%@", coordinator);
+        
+        success = coordinator != nil;
         
     } else {
         NSLog(@"could not delete store, %@", [error description]);
@@ -443,7 +444,6 @@
 
 -(void)dealloc {
 	[managedObjectModel release];
-	[managedObjectContext release];
 	[persistentStoreCoordinator release];
 
 	[super dealloc];
