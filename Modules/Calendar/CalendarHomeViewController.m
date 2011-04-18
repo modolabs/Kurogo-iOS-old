@@ -77,7 +77,7 @@
     }
     
     [_datePager setDate:[NSDate date]];
-    [self loadTableViewWithStyle:UITableViewStylePlain];
+    //[self loadTableViewWithStyle:UITableViewStylePlain];
 }
 
 - (void)viewWillAppear:(BOOL)animated

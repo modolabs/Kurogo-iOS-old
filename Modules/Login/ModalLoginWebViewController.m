@@ -34,7 +34,8 @@
         [self dismissModalViewControllerAnimated:YES];
         return;
     }
-    
+
+    DLog(@"subscribing to login notifications");
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(dismissModalViewControllerAnimated:)
                                                  name:KGODidLoginNotification
