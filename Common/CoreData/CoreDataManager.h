@@ -37,5 +37,6 @@
 - (NSString *)storeFileName;
 - (NSString *)currentStoreFileName;
 - (BOOL)migrateData;
+- (BOOL)deleteStore;
 
 @end

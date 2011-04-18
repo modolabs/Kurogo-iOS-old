@@ -219,6 +219,10 @@ NSString * const KGODidLogoutNotification = @"LogoutComplete";
     [_sessionInfo release];
     _sessionInfo = nil;
     
+    if ([[CoreDataManager sharedManager] deleteStore]) {
+        DLog(@"deleted store");
+    }
+    
     [[NSNotificationCenter defaultCenter] postNotificationName:KGODidLogoutNotification object:self];
     
     // TODO: clean up this request, even though we don't really care if it fails

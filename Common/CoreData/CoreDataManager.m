@@ -149,13 +149,18 @@
 
 // modified to allow safe multithreaded Core Data use
 - (NSManagedObjectContext *)managedObjectContext {
+    NSPersistentStoreCoordinator *coordinator = [self persistentStoreCoordinator];
+
     NSMutableDictionary *threadDict = [[NSThread currentThread] threadDictionary];
     NSManagedObjectContext *localContext = [threadDict objectForKey:@"MITCoreDataManagedObjectContext"];
     if (localContext) {
+        if (![localContext persistentStoreCoordinator]) {
+            [localContext setPersistentStoreCoordinator:coordinator];
+        }
+        
         return localContext;
     }
     
-    NSPersistentStoreCoordinator *coordinator = [self persistentStoreCoordinator];
     if (coordinator != nil) {
         localContext = [[[NSManagedObjectContext alloc] init] autorelease];
         [localContext setPersistentStoreCoordinator: coordinator];
@@ -285,6 +290,25 @@
     }
 	
     return persistentStoreCoordinator;
+}
+
+- (BOOL)deleteStore
+{
+    BOOL success = NO;
+    NSError *error = nil;
+
+    @synchronized(self) {
+        [persistentStoreCoordinator release];
+        persistentStoreCoordinator = nil;
+    }
+    
+    if ([[NSFileManager defaultManager] removeItemAtPath:[self storeFileName] error:&error]) {
+        success = YES;
+        
+    } else {
+        NSLog(@"could not delete store, %@", [error description]);
+    }
+    return success;
 }
 
 #pragma mark -
