@@ -12,7 +12,7 @@
 
 @implementation EventDetailTableView
 
-@synthesize dataManager, viewController;
+@synthesize dataManager, viewController, headerView = _headerView;
 
 - (id)initWithFrame:(CGRect)frame style:(UITableViewStyle)style
 {
@@ -53,6 +53,7 @@
     self.event = nil;
     self.delegate = nil;
     self.dataSource = nil;
+    self.headerView = nil;
     [super dealloc];
 }
 
@@ -228,6 +229,11 @@
     return extendedInfo;
 }
 
+- (NSArray *)sections
+{
+    return _sections;
+}
+
 #pragma mark - UITableViewDataSource
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -344,21 +350,21 @@
 
 - (void)headerViewFrameDidChange:(KGODetailPageHeaderView *)headerView
 {
-    if (_headerView.frame.size.height != self.tableHeaderView.frame.size.height) {
-        self.tableHeaderView.frame = _headerView.frame;
+    if (self.headerView.frame.size.height != self.tableHeaderView.frame.size.height) {
+        self.tableHeaderView.frame = self.headerView.frame;
     }
     self.tableHeaderView = self.tableHeaderView;
 }
 
 - (UIView *)viewForTableHeader
 {
-    if (!_headerView) {
-        _headerView = [[KGODetailPageHeaderView alloc] initWithFrame:CGRectMake(0, 0, self.bounds.size.width, 1)];
-        _headerView.delegate = self;
-        _headerView.showsBookmarkButton = YES;
+    if (!self.headerView) {
+        self.headerView = [[[KGODetailPageHeaderView alloc] initWithFrame:CGRectMake(0, 0, self.bounds.size.width, 1)] autorelease];
+        self.headerView.delegate = self;
+        self.headerView.showsBookmarkButton = YES;
     }
-    _headerView.detailItem = self.event;
-    _headerView.showsShareButton = YES;
+    self.headerView.detailItem = self.event;
+    self.headerView.showsShareButton = YES;
     
     // time
     NSString *dateString = [self.dataManager mediumDateStringFromDate:_event.startDate];
@@ -373,9 +379,9 @@
                       dateString,
                       [self.dataManager shortTimeStringFromDate:_event.startDate]];
     }
-    _headerView.subtitleLabel.text = timeString;
+    self.headerView.subtitleLabel.text = timeString;
     
-    return _headerView;
+    return self.headerView;
 }
 
 - (void)headerView:(KGODetailPageHeaderView *)headerView shareButtonPressed:(id)sender
