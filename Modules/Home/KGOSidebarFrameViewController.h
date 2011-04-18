@@ -17,6 +17,7 @@
     NSArray *_widgetViews;
     
     UIViewController *_detailViewController;
+    UIViewController *_outgoingDetailViewController;
     
     CGFloat _topFreePixel;
     CGFloat _bottomFreePixel;

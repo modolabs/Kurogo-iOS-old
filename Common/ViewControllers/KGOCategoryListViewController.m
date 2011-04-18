@@ -84,7 +84,7 @@
 	self.tableView.tableHeaderView = _headerView;
 }
 
-#pragma KGORequestDelegate
+#pragma mark KGORequestDelegate
 
 - (void)request:(KGORequest *)request didHandleResult:(NSInteger)returnValue {
     if (request == self.categoriesRequest) {    
@@ -103,8 +103,8 @@
 
     } else if (request == self.leafItemsRequest) {
         self.leafItems = self.parentCategory.items;
-        NSLog(@"%@", self.parentCategory);
-        NSLog(@"%@", self.leafItems);
+        DLog(@"parent category: %@", self.parentCategory);
+        DLog(@"leaf items: %@", self.leafItems);
     }
 
     [self reloadDataForTableView:self.tableView];

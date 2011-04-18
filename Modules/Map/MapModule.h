@@ -11,4 +11,6 @@ extern NSString * const MapTypePreferenceChanged;
 
 @property (nonatomic, retain) KGORequest *request;
 
+- (KGORequest *)subcategoriesRequestForCategory:(NSString *)category delegate:(id<KGORequestDelegate>)delegate;
+
 @end

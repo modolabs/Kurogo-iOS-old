@@ -22,34 +22,86 @@
 
 - (void)showViewController:(UIViewController *)viewController {
     if (viewController != _visibleViewController) {
-        [_visibleViewController.view removeFromSuperview];
-        
-        [_visibleViewController release];
-        _visibleViewController = [viewController retain];
-        [self hideDetailViewController];
 
-        [_visibleViewController viewWillAppear:NO];
-        _visibleViewController.view.frame = CGRectMake(0, 0, _container.frame.size.width, _container.frame.size.height);
-        [_container addSubview:viewController.view];
+        if (_visibleViewController.modalViewController) {
+            UINavigationController *navC = nil;
+            if ([_visibleViewController.modalViewController isKindOfClass:[UINavigationController class]]) {
+                navC = (UINavigationController *)_visibleViewController.modalViewController;
+            } else if (_visibleViewController.modalViewController.navigationController) {
+                navC = _visibleViewController.modalViewController.navigationController;
+            }
+
+            if (navC) { // navC takes care of view(Did|Will)(Disa|A)ppear
+                [navC pushViewController:viewController animated:YES];
+            }
+            
+        } else {
+            [_visibleViewController viewWillDisappear:NO];
+            [_visibleViewController.view removeFromSuperview];
+            [_visibleViewController viewDidDisappear:NO];
+            
+            [_visibleViewController release];
+            _visibleViewController = [viewController retain];
+            [self hideDetailViewController];
+            
+            [_visibleViewController viewWillAppear:NO];
+            _visibleViewController.view.frame = CGRectMake(0, 0, _container.frame.size.width, _container.frame.size.height);
+            [_container addSubview:viewController.view];
+            [_visibleViewController viewDidDisappear:NO];
+        }
     }
 }
 
 - (void)showDetailViewController:(UIViewController *)viewController
 {
+    if (_detailViewController) {
+        [self hideDetailViewController];
+    }
+    
     _detailViewController = [viewController retain];
-    _detailViewController.view.frame = CGRectMake(_container.frame.size.width - DETAIL_VIEW_WIDTH - 10,
-                                                  _container.frame.size.height - DETAIL_VIEW_HEIGHT - 10,
-                                                  DETAIL_VIEW_WIDTH,
-                                                  DETAIL_VIEW_HEIGHT);
+    [_detailViewController viewWillAppear:YES];
+    _detailViewController.view.frame = CGRectMake(self.view.bounds.size.width - 20,
+                                                  self.view.bounds.size.height - 20,
+                                                  10,
+                                                  10);
     _detailViewController.view.layer.cornerRadius = 5;
-    [_container addSubview:_detailViewController.view];
+    _detailViewController.view.autoresizingMask = UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleLeftMargin;
+
+    [self.view addSubview:_detailViewController.view];
+
+    CGRect afterFrame = CGRectMake(self.view.bounds.size.width - DETAIL_VIEW_WIDTH - 10,
+                                   self.view.bounds.size.height - DETAIL_VIEW_HEIGHT - 10,
+                                   DETAIL_VIEW_WIDTH,
+                                   DETAIL_VIEW_HEIGHT);
+
+    [UIView animateWithDuration:0.4 animations:^(void) {
+        _detailViewController.view.frame = afterFrame;
+    } completion:^(BOOL finished) {
+        [_detailViewController viewDidAppear:YES];
+    }];
 }
 
 - (void)hideDetailViewController
 {
-    [_detailViewController.view removeFromSuperview];
-    [_detailViewController release];
+    [_detailViewController viewWillDisappear:YES];
+    
+    _outgoingDetailViewController = _detailViewController;
     _detailViewController = nil;
+    
+    CGRect afterFrame = CGRectMake(self.view.bounds.size.width - 20,
+                                   self.view.bounds.size.height - 20,
+                                   10,
+                                   10);
+    
+    [UIView animateWithDuration:0.4 animations:^(void) {
+        _outgoingDetailViewController.view.frame = afterFrame;
+        
+    } completion:^(BOOL finished) {
+        [_outgoingDetailViewController.view removeFromSuperview];
+        [_outgoingDetailViewController viewDidDisappear:YES];
+        [_outgoingDetailViewController release];
+        _outgoingDetailViewController = nil;
+    }];
 }
 
 - (UIViewController *)visibleViewController {

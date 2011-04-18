@@ -190,36 +190,7 @@
 - (IBAction)browseButtonPressed {
 	KGOCategoryListViewController *categoryVC = [[[KGOCategoryListViewController alloc] init] autorelease];
     categoryVC.categoryEntityName = MapCategoryEntityName;
-
-    categoryVC.categoriesRequest = [[KGORequestManager sharedManager] requestWithDelegate:categoryVC
-                                                                                   module:self.mapModule.tag
-                                                                                     path:@"groups"
-                                                                                   params:nil];
-    
-    __block CoreDataManager *coreDataManager = [CoreDataManager sharedManager];
-    JSONObjectHandler createMapCategories = [[^(id jsonObj) {
-        NSDictionary *results = [jsonObj dictionaryForKey:@"results"];
-        __block NSInteger count = 0;
-        [results enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
-            NSArray *categoryPath = [NSArray arrayWithObject:key];
-            KGOMapCategory *category = [KGOMapCategory categoryWithPath:categoryPath];
-            NSString *title = [obj stringForKey:@"title" nilIfEmpty:YES];
-            if (title && ![category.title isEqualToString:title]) {
-                category.title = title;
-            }
-            if (![category.hasSubcategories boolValue]) {
-                category.hasSubcategories = [NSNumber numberWithBool:YES];
-            }
-            count++;
-        }];
-        
-        [coreDataManager saveData];
-        
-        return count;
-        
-    } copy] autorelease];
-    
-    categoryVC.categoriesRequest.handler = createMapCategories;
+    categoryVC.categoriesRequest = [self.mapModule subcategoriesRequestForCategory:nil delegate:categoryVC];
     UINavigationController *navC = [[[UINavigationController alloc] initWithRootViewController:categoryVC] autorelease];
     UIBarButtonItem *item = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone
                                                                            target:self

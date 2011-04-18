@@ -122,14 +122,18 @@ NSString * const MapTypePreferenceChanged = @"MapTypeChanged";
         if (detailItem) {
             NSArray *annotations = [NSArray arrayWithObject:detailItem];
             NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:annotations, @"annotations", nil];
-            
-            UIViewController *homescreen = [KGO_SHARED_APP_DELEGATE() homescreen];
-            UIViewController *topVC = homescreen.navigationController.topViewController;
+
+            UIViewController *topVC = [KGO_SHARED_APP_DELEGATE() visibleViewController];
             if (topVC.modalViewController) {
                 [topVC dismissModalViewControllerAnimated:YES];
             }
             
-            return [self modulePage:LocalPathPageNameHome params:params];
+            if ([topVC isKindOfClass:[MapHomeViewController class]]) {
+                [(MapHomeViewController *)topVC setAnnotations:annotations];
+                
+            } else {
+                return [self modulePage:LocalPathPageNameHome params:params];
+            }
         }
         
     } else if ([pageName isEqualToString:LocalPathPageNameCategoryList]) {
@@ -147,57 +151,7 @@ NSString * const MapTypePreferenceChanged = @"MapTypeChanged";
         BOOL hasSubcategories = [parentCategory.hasSubcategories boolValue];
         
         if (parentCategory && hasSubcategories && !items.count) {
-            NSDictionary *params = [NSDictionary dictionaryWithObject:parentCategory.identifier forKey:@"group"];
-            
-            categoryVC.categoriesRequest = [[KGORequestManager sharedManager] requestWithDelegate:categoryVC
-                                                                                           module:self.tag
-                                                                                             path:@"categories"
-                                                                                           params:params];
-            categoryVC.categoriesRequest.expectedResponseType = [NSArray class];
-            
-            __block JSONObjectHandler createMapCategories;
-            __block NSUInteger sortOrder = 0;
-            __block CoreDataManager *coreDataManager = [CoreDataManager sharedManager];
-            createMapCategories = [[^(id jsonObj) {
-                NSInteger categoriesCreated = 0;
-                NSArray *jsonArray = (NSArray *)jsonObj;
-                for (id categoryObj in jsonArray) {
-                    if ([categoryObj isKindOfClass:[NSDictionary class]]) {
-                        NSDictionary *categoryDict = (NSDictionary *)categoryObj;
-                        NSArray *categoryPath = nil;
-                        id identifier = [categoryDict objectForKey:@"id"];
-                        if ([identifier isKindOfClass:[NSArray class]]) {
-                            categoryPath = identifier;
-                        } else if ([identifier isKindOfClass:[NSNumber class]] || [identifier isKindOfClass:[NSString class]]) {
-                            categoryPath = [NSArray arrayWithObject:identifier];
-                        }
-                        if (categoryPath) {
-                            KGOMapCategory *category = [KGOMapCategory categoryWithPath:categoryPath];
-                            NSString *title = [categoryDict stringForKey:@"title" nilIfEmpty:YES];
-                            if (title && ![category.title isEqualToString:title]) {
-                                category.title = title;
-                                category.sortOrder = [NSNumber numberWithInt:sortOrder];
-                                sortOrder++; // this can be anything so long as it's ascending within the parent category
-                            }
-                            categoriesCreated++;
-                            
-                            NSArray *subcategories = [categoryDict arrayForKey:@"subcategories"];
-                            // TODO: make the API return whether or not there are pending subcategories
-                            // this is going to break when we do that
-                            if (subcategories.count) {
-                                categoriesCreated += createMapCategories(subcategories);
-                                category.hasSubcategories = [NSNumber numberWithBool:YES];
-                            }
-                        }
-                    }
-                }
-                
-                [coreDataManager saveDataWithTemporaryMergePolicy:NSOverwriteMergePolicy];
-                
-                return categoriesCreated;
-            } copy] autorelease];
-
-            categoryVC.categoriesRequest.handler = createMapCategories;
+            categoryVC.categoriesRequest = [self subcategoriesRequestForCategory:parentCategory.identifier delegate:categoryVC];
         
         } else if (parentCategory && !categories.count && !items.count) {
             // TODO: communicate this delimiter better between server & client
@@ -238,6 +192,67 @@ NSString * const MapTypePreferenceChanged = @"MapTypeChanged";
     return vc;
 }
 
+- (KGORequest *)subcategoriesRequestForCategory:(NSString *)category delegate:(id<KGORequestDelegate>)delegate
+{
+    NSDictionary *params = nil;
+    
+    if (category) {
+        params = [NSDictionary dictionaryWithObject:category forKey:@"category"];
+    }
+    
+    KGORequest *categoriesRequest = [[KGORequestManager sharedManager] requestWithDelegate:delegate
+                                                                                    module:self.tag
+                                                                                      path:@"categories"
+                                                                                    params:params];
+    categoriesRequest.expectedResponseType = [NSArray class];
+    
+    __block JSONObjectHandler createMapCategories;
+    __block NSUInteger sortOrder = 0;
+    __block CoreDataManager *coreDataManager = [CoreDataManager sharedManager];
+    createMapCategories = [[^(id jsonObj) {
+        NSInteger categoriesCreated = 0;
+        NSArray *jsonArray = (NSArray *)jsonObj;
+        for (id categoryObj in jsonArray) {
+            if ([categoryObj isKindOfClass:[NSDictionary class]]) {
+                NSDictionary *categoryDict = (NSDictionary *)categoryObj;
+                NSArray *categoryPath = nil;
+                id identifier = [categoryDict objectForKey:@"id"];
+                if ([identifier isKindOfClass:[NSArray class]]) {
+                    categoryPath = identifier;
+                } else if ([identifier isKindOfClass:[NSNumber class]] || [identifier isKindOfClass:[NSString class]]) {
+                    categoryPath = [NSArray arrayWithObject:identifier];
+                }
+                if (categoryPath) {
+                    KGOMapCategory *category = [KGOMapCategory categoryWithPath:categoryPath];
+                    NSString *title = [categoryDict stringForKey:@"title" nilIfEmpty:YES];
+                    if (title && ![category.title isEqualToString:title]) {
+                        category.title = title;
+                        category.sortOrder = [NSNumber numberWithInt:sortOrder];
+                        sortOrder++; // this can be anything so long as it's ascending within the parent category
+                    }
+                    categoriesCreated++;
+                    
+                    NSArray *subcategories = [categoryDict arrayForKey:@"subcategories"];
+                    // TODO: make the API return whether or not there are pending subcategories
+                    // this is going to break when we do that
+                    if (subcategories.count) {
+                        categoriesCreated += createMapCategories(subcategories);
+                        category.hasSubcategories = [NSNumber numberWithBool:YES];
+                    }
+                }
+            }
+        }
+        
+        [coreDataManager saveDataWithTemporaryMergePolicy:NSOverwriteMergePolicy];
+        
+        return categoriesCreated;
+    } copy] autorelease];
+    
+    categoriesRequest.handler = createMapCategories;
+    
+    return categoriesRequest;
+}
+
 - (BOOL)handleLocalPath:(NSString *)localPath query:(NSString *)query {
     if ([localPath isEqualToString:LocalPathPageNameSearch]) {
         NSDictionary *params = [NSURL parametersFromQueryString:query];
@@ -275,21 +290,25 @@ NSString * const MapTypePreferenceChanged = @"MapTypeChanged";
 #pragma mark KGORequestDelegate
 
 - (void)requestWillTerminate:(KGORequest *)request {
-    self.request = nil;
+    if (request == self.request) {
+        self.request = nil;
+    }
 }
 
 - (void)request:(KGORequest *)request didReceiveResult:(id)result {
-    self.request = nil;
-    
-    NSArray *resultArray = [result arrayForKey:@"results"];
-    NSMutableArray *searchResults = [NSMutableArray arrayWithCapacity:[(NSArray *)resultArray count]];
-    for (id aResult in resultArray) {
-        KGOPlacemark *placemark = [KGOPlacemark placemarkWithDictionary:aResult];
-        if (placemark)
-            [searchResults addObject:placemark];
+    if (request == self.request) {
+        self.request = nil;
+        
+        NSArray *resultArray = [result arrayForKey:@"results"];
+        NSMutableArray *searchResults = [NSMutableArray arrayWithCapacity:[(NSArray *)resultArray count]];
+        for (id aResult in resultArray) {
+            KGOPlacemark *placemark = [KGOPlacemark placemarkWithDictionary:aResult];
+            if (placemark)
+                [searchResults addObject:placemark];
+        }
+        DLog(@"%@", searchResults);
+        [self.searchDelegate searcher:self didReceiveResults:searchResults];
     }
-    NSLog(@"%@", searchResults);
-    [self.searchDelegate searcher:self didReceiveResults:searchResults];
 }
 
 @end
