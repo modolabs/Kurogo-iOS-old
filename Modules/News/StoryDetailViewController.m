@@ -131,21 +131,16 @@
                 BOOL newBookmarkState = [self.story.bookmarked boolValue] ? NO : YES;
                 [[NewsDataManager sharedManager] story:self.story bookmarked:newBookmarkState];
 			} else if ([[url path] rangeOfString:@"share" options:NSBackwardsSearch].location != NSNotFound) {
-                // some how call the share controller
+                shareController.actionSheetTitle = @"Share article with a friend";
+                shareController.shareTitle = story.title;
+                shareController.shareBody = story.body;
+                shareController.shareURL = story.link;
 				[shareController shareInView:self.view];
 			}
             result = NO;
 		}
 	}
 	return result;
-}
-
-- (void)share:(id)sender {
-    shareController.actionSheetTitle = @"Share article with a friend";
-    shareController.shareTitle = story.title;
-    shareController.shareBody = story.summary;
-    shareController.shareURL = story.link;
-	[shareController shareInView:self.view];
 }
 
 - (void)didReceiveMemoryWarning {
