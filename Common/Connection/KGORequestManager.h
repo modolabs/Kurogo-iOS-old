@@ -29,6 +29,7 @@ extern NSString * const KGODidLoginNotification;
 
     KGORequest *_helloRequest;
     KGORequest *_sessionRequest;
+    KGORequest *_logoutRequest;
     
     NSDictionary *_sessionInfo;
 }
