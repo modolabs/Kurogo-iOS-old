@@ -9,14 +9,16 @@ extern NSString * const KGOSocialMediaTypeEmail;
 extern NSString * const KGOSocialMediaTypeBitly;
 extern NSString * const KGOSocialMediaTypeFoursquare;
 
+// NSUserDefaults
+extern NSString * const FacebookUsernameKey;
+
+
+// NSNotifications
 extern NSString * const TwitterDidLoginNotification;
 extern NSString * const TwitterDidLogoutNotification;
 
-extern NSString * const FacebookUsernameKey;
-
 extern NSString * const FacebookDidLoginNotification;
 extern NSString * const FacebookDidLogoutNotification;
-
 
 @protocol BitlyWrapperDelegate <NSObject>
 
@@ -28,11 +30,24 @@ extern NSString * const FacebookDidLogoutNotification;
 
 @end
 
+
 @class KGOFoursquareEngine;
+
+// methods that become available by including categories
+@protocol KGOSocialMediaOptionalMethods <NSObject>
+
+@optional
+
+- (BOOL)isFoursquareLoggedIn;
+- (void)loginFoursquare;
+- (void)logoutFoursquare;
+
+@end
 
 @interface KGOSocialMediaController : NSObject <UIActionSheetDelegate,
 MGTwitterEngineDelegate, ConnectionWrapperDelegate,
-FBSessionDelegate, FBDialogDelegate, FBRequestDelegate> {
+FBSessionDelegate, FBDialogDelegate, FBRequestDelegate,
+KGOSocialMediaOptionalMethods> {
 	
 	NSDictionary *_appConfig; // from config plist
 	

@@ -3,9 +3,17 @@
 #import "KGOAppDelegate.h"
 #import "KGOHTMLTemplate.h"
 
+// UIWebView throws WebKit errors, but the WebKit framework can't be imported
+// in iOS so we'll just reproduce the error constants here
+enum {
+    WebKitErrorCannotShowMIMEType = 100,
+    WebKitErrorCannotShowURL = 101,
+    WebKitErrorFrameLoadInterruptedByPolicyChange = 102
+};
+
 @implementation KGOWebViewController
 
-@synthesize loadsLinksExternally, webView = _webView;
+@synthesize loadsLinksExternally, webView = _webView, delegate;
 @synthesize HTMLString;
 
 - (void)dealloc
@@ -123,6 +131,8 @@
 
 - (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType
 {
+    DLog(@"loading request %@", [request URL]);
+    
     NSString *scheme = [request.URL scheme];
     
     if ([scheme isEqualToString:[KGO_SHARED_APP_DELEGATE() defaultURLScheme]]) {
@@ -134,6 +144,16 @@
         [[UIApplication sharedApplication] openURL:request.URL];
         return NO;
     }
+    
+    static NSArray *schemeWhitelist = nil;
+    if (!schemeWhitelist) {
+        schemeWhitelist = [[NSArray alloc] initWithObjects:@"http", @"https", @"applewebdata", nil];
+    }
+    
+    if (scheme && ![schemeWhitelist containsObject:scheme]) {
+        return NO;
+    }
+    
     return YES;
 }
 
@@ -157,6 +177,15 @@
 - (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error
 {
     NSLog(@"%@", [error description]);
+    
+    // we seem to get to this point when our original request gets redirected
+    // to a URL to which we return NO in -shouldStartLoadWithRequest.
+    // TODO: figure out why we aren't being dismissed by other triggers
+    if ([error code] == WebKitErrorFrameLoadInterruptedByPolicyChange) {
+        if ([self.delegate respondsToSelector:@selector(webViewControllerFrameLoadInterrupted:)]) {
+            [self.delegate webViewControllerFrameLoadInterrupted:self];
+        }
+    }
 }
 
 @end

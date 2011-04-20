@@ -1,5 +1,16 @@
 #import <UIKit/UIKit.h>
 
+@class KGOWebViewController;
+
+@protocol KGOWebViewControllerDelegate <NSObject>
+
+@optional
+
+- (void)webViewControllerFrameLoadInterrupted:(KGOWebViewController *)webVC;
+
+@end
+
+
 @interface KGOWebViewController : UIViewController <UIWebViewDelegate> {
     
     UIWebView *_webView;
@@ -11,6 +22,7 @@
     NSMutableArray *_templateStack;
 }
 
+@property (nonatomic, assign) id<KGOWebViewControllerDelegate> delegate;
 @property (nonatomic, retain) UIWebView *webView;
 @property (nonatomic, retain) NSURL *requestURL;
 

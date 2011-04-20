@@ -166,10 +166,8 @@ static KGOSocialMediaController *s_controller = nil;
             return [self isTwitterLoggedIn];
             
         } else if ([service isEqualToString:KGOSocialMediaTypeFoursquare]) {
-            // this method is defined in an optional category
-            // TODO: move method here
             if ([self respondsToSelector:@selector(isFoursquareLoggedIn)]) {
-                
+                return [self isFoursquareLoggedIn];
             }
         }
     }
@@ -186,10 +184,8 @@ static KGOSocialMediaController *s_controller = nil;
             [self loginTwitter];
             
         } else if ([service isEqualToString:KGOSocialMediaTypeFoursquare]) {
-            // this method is defined in an optional category
-            // TODO: move category methods here if they are essential
             if ([self respondsToSelector:@selector(loginFoursquare)]) {
-                [self performSelector:@selector(loginFoursquare)];
+                [self loginFoursquare];
             }
         }
     }  
@@ -205,10 +201,8 @@ static KGOSocialMediaController *s_controller = nil;
             [self logoutTwitter];
             
         } else if ([service isEqualToString:KGOSocialMediaTypeFoursquare]) {
-            // this method is defined in an optional category
-            // TODO: move category methods here if they are essential
             if ([self respondsToSelector:@selector(logoutFoursquare)]) {
-                [self performSelector:@selector(logoutFoursquare)];
+                [self logoutFoursquare];
             }
         }
     }  
