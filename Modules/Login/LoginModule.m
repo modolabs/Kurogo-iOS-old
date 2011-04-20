@@ -20,6 +20,7 @@
                                                     [[KGORequestManager sharedManager] serverURL], self.tag]];
             webVC.loginModule = self;
             webVC.requestURL = loginURL;
+            webVC.delegate = self;
             vc = webVC;
 
         } else {

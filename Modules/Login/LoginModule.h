@@ -1,15 +1,12 @@
 #import "KGOModule.h"
-//#import "KGORequestManager.h"
+#import "KGOWebViewController.h"
 
-@interface LoginModule : KGOModule {// <KGORequestDelegate> {
-    
-    //KGORequest *_sessionInfoRequest;
+@interface LoginModule : KGOModule <KGOWebViewControllerDelegate> {
+
 }
 
 @property(nonatomic, retain) NSString *username;
 @property(nonatomic, retain) NSString *userDescription;
-
-//- (void)userDidLogin;
 
 - (UIView *)currentUserWidget;
 

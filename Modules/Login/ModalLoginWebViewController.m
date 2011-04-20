@@ -54,18 +54,19 @@
 
 - (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType
 {
-    DLog(@"attempting to load %@ %@ %p", request.URL, request, request);
+    NSURL *url = [request URL];
 
-    DLog(@"%@ %@", [[request URL] host], [[KGORequestManager sharedManager] host]);
-
-    /*
-    if (![[[request URL] host] isEqualToString:[[KGORequestManager sharedManager] host]]) {
-        if ([[UIApplication sharedApplication] canOpenURL:[request URL]]) {
-            [[UIApplication sharedApplication] openURL:[request URL]];
+    DLog(@"attempting to load %@ %@ %p", url, request, request);
+    DLog(@"%@ %@", [url host], [[KGORequestManager sharedManager] host]);
+    
+    if ([self.delegate respondsToSelector:@selector(webViewController:shouldLoadExternallyForURL:)]) {
+        if ([self.delegate webViewController:self shouldLoadExternallyForURL:url]) {
+            if ([[UIApplication sharedApplication] canOpenURL:url]) {
+                [[UIApplication sharedApplication] openURL:url];
+            }
+            return NO;
         }
-        return NO;
     }
-    */
 
     if ([[KGORequestManager sharedManager] isUserLoggedIn]) {
         [self dismissModalViewControllerAnimated:YES];
@@ -78,7 +79,7 @@
     
 #ifdef USE_MOBILE_DEV
     
-    NSString *scheme = [request.URL scheme];
+    NSString *scheme = [url scheme];
     
     // the webview will refuse to load if the server uses a self-signed cert
     // so we will get the contents directly and load it into the webview
