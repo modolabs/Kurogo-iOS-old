@@ -326,10 +326,13 @@
             [tableView deselectRowAtIndexPath:indexPath animated:YES];
 
         } else if ([accessory isEqualToString:KGOAccessoryTypeEmail]) {
-            [self.viewController presentMailControllerWithEmail:[cellData objectForKey:@"subtitle"]
-                                                        subject:nil
-                                                           body:nil
-                                                       delegate:self];
+            if ([self.viewController isKindOfClass:[CalendarDetailViewController class]]) {
+                CalendarDetailViewController *detailVC = (CalendarDetailViewController *)self.viewController;
+                [detailVC presentMailControllerWithEmail:[cellData objectForKey:@"subtitle"]
+                                                 subject:nil
+                                                    body:nil
+                                                delegate:self];
+            }
             
         } else if ([accessory isEqualToString:KGOAccessoryTypeMap]) {
             NSArray *annotations = [NSArray arrayWithObject:_event];
@@ -386,7 +389,9 @@
 
 - (void)headerView:(KGODetailPageHeaderView *)headerView shareButtonPressed:(id)sender
 {
-    [self.viewController shareButtonPressed:sender];
+    if ([self.viewController isKindOfClass:[CalendarDetailViewController class]]) {
+        [(CalendarDetailViewController *)self.viewController shareButtonPressed:sender];
+    }
 }
 
 #pragma mark detail

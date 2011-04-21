@@ -94,59 +94,69 @@
 - (BOOL)requestEventsForCalendar:(KGOCalendar *)calendar params:(NSDictionary *)params
 {
     BOOL success = NO;
-    NSLog(@"%@", params);    
+    DLog(@"%@", params);    
     NSArray *events = [calendar.events allObjects];
     if (events.count) {
-        NSMutableArray *predTemplates = [NSMutableArray arrayWithObject:@"lastUpdate > %@"];
-        NSMutableArray *predArguments = [NSMutableArray arrayWithObject:[NSDate dateWithTimeIntervalSinceNow:EVENT_TIMEOUT]];
+        NSArray *oldEvents = [events filteredArrayUsingPredicate:
+                              [NSPredicate predicateWithFormat:
+                               @"lastUpdate < %@",
+                               [NSDate dateWithTimeIntervalSinceNow:EVENT_TIMEOUT]]];
         
-        NSDate *start = [params objectForKey:@"start"];
-        if (!start) {
-            NSTimeInterval interval = [[params objectForKey:@"time"] doubleValue];
-            if (interval) {
-                NSDate *time = [NSDate dateWithTimeIntervalSince1970:interval];
-                if (time) {
-                    NSUInteger flags = NSYearCalendarUnit | NSMonthCalendarUnit | NSDayCalendarUnit;
-                    NSDateComponents *comps = [[NSCalendar currentCalendar] components:flags fromDate:time];
-                    start = [[NSCalendar currentCalendar] dateFromComponents:comps];
+        if (oldEvents.count) {
+            [[CoreDataManager sharedManager] deleteObjects:oldEvents];
+            
+        } else {
+            
+            NSMutableArray *predTemplates = [NSMutableArray array];
+            NSMutableArray *predArguments = [NSMutableArray array];
+            
+            NSDate *start = [params objectForKey:@"start"];
+            if (!start) {
+                NSTimeInterval interval = [[params objectForKey:@"time"] doubleValue];
+                if (interval) {
+                    NSDate *time = [NSDate dateWithTimeIntervalSince1970:interval];
+                    if (time) {
+                        NSUInteger flags = NSYearCalendarUnit | NSMonthCalendarUnit | NSDayCalendarUnit;
+                        NSDateComponents *comps = [[NSCalendar currentCalendar] components:flags fromDate:time];
+                        start = [[NSCalendar currentCalendar] dateFromComponents:comps];
+                    }
                 }
             }
-        }
-        
-        if (start) {
-            [predTemplates addObject:@"start >= %@"];
-            [predArguments addObject:start];
-        }
-
-        NSDate *end = [params objectForKey:@"end"];
-        if (end) {
-            [predTemplates addObject:@"end < %@"];
-            [predArguments addObject:start];
-        }
-
-        NSArray *filteredEvents;
-        if (predTemplates.count) {
-            NSPredicate *pred = [NSPredicate predicateWithFormat:[predTemplates componentsJoinedByString:@" AND "]
-                                                   argumentArray:predArguments];
             
-            filteredEvents = [events filteredArrayUsingPredicate:pred];
-        } else {
-            filteredEvents = events;
-        }
-        
-        NSMutableArray *wrappers = [NSMutableArray arrayWithCapacity:filteredEvents.count];
-        for (KGOEvent *event in filteredEvents) {
-            [wrappers addObject:[[[KGOEventWrapper alloc] initWithKGOEvent:event] autorelease]];
-        }
-        
-        [self.delegate eventsDidChange:wrappers calendar:calendar];
-        
-        if (wrappers.count) {
-            return YES;
+            if (start) {
+                [predTemplates addObject:@"start >= %@"];
+                [predArguments addObject:start];
+            }
+            
+            NSDate *end = [params objectForKey:@"end"];
+            if (end) {
+                [predTemplates addObject:@"end < %@"];
+                [predArguments addObject:start];
+            }
+            
+            NSArray *filteredEvents;
+            if (predTemplates.count) {
+                NSPredicate *pred = [NSPredicate predicateWithFormat:[predTemplates componentsJoinedByString:@" AND "]
+                                                       argumentArray:predArguments];
+                
+                filteredEvents = [events filteredArrayUsingPredicate:pred];
+            } else {
+                filteredEvents = events;
+            }
+            
+            NSMutableArray *wrappers = [NSMutableArray arrayWithCapacity:filteredEvents.count];
+            for (KGOEvent *event in filteredEvents) {
+                [wrappers addObject:[[[KGOEventWrapper alloc] initWithKGOEvent:event] autorelease]];
+            }
+            
+            [self.delegate eventsDidChange:wrappers calendar:calendar];
+            
+            if (wrappers.count) {
+                return YES;
+            }
         }
     }
     
-    // TODO: use a timeout value to decide whether or not to check for update
     if ([[KGORequestManager sharedManager] isReachable]) {
         NSString *requestIdentifier = calendar.identifier;
         KGORequest *request = [_eventsRequests objectForKey:requestIdentifier];
