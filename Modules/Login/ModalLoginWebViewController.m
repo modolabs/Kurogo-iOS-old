@@ -59,8 +59,8 @@
     DLog(@"attempting to load %@ %@ %p", url, request, request);
     DLog(@"%@ %@", [url host], [[KGORequestManager sharedManager] host]);
     
-    if ([self.delegate respondsToSelector:@selector(webViewController:shouldLoadExternallyForURL:)]) {
-        if ([self.delegate webViewController:self shouldLoadExternallyForURL:url]) {
+    if ([self.delegate respondsToSelector:@selector(webViewController:shouldOpenSystemBrowserForURL:)]) {
+        if ([self.delegate webViewController:self shouldOpenSystemBrowserForURL:url]) {
             if ([[UIApplication sharedApplication] canOpenURL:url]) {
                 [[UIApplication sharedApplication] openURL:url];
             }
