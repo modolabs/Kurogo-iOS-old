@@ -191,6 +191,9 @@
 - (IBAction)browseButtonPressed {
 	KGOCategoryListViewController *categoryVC = [[[KGOCategoryListViewController alloc] init] autorelease];
     categoryVC.categoryEntityName = MapCategoryEntityName;
+    NSPredicate *pred = [NSPredicate predicateWithFormat:@"parentCategory = nil"];
+    NSArray *sortDescriptors = [NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"sortOrder" ascending:YES]];
+    categoryVC.categories = [[CoreDataManager sharedManager] objectsForEntity:MapCategoryEntityName matchingPredicate:pred sortDescriptors:sortDescriptors];
     categoryVC.categoriesRequest = [self.mapModule subcategoriesRequestForCategory:nil delegate:categoryVC];
     UINavigationController *navC = [[[UINavigationController alloc] initWithRootViewController:categoryVC] autorelease];
     UIBarButtonItem *item = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone

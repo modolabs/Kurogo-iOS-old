@@ -30,10 +30,10 @@
 		self.tableView = [self addTableViewWithFrame:frame style:style];
 	}
     
-    if (!self.categories && self.categoriesRequest) {
+    if (!self.categories.count && self.categoriesRequest) {
         [self.categoriesRequest connect];
         
-    } else if (!self.leafItems && self.leafItemsRequest) {
+    } else if (!self.leafItems.count && self.leafItemsRequest) {
         [self.leafItemsRequest connect];
     }
     
