@@ -2,6 +2,7 @@
 #import "KGORequestManager.h"
 #import "KGOAppDelegate.h"
 #import "KGOHTMLTemplate.h"
+#import <QuartzCore/QuartzCore.h>
 
 // UIWebView throws WebKit errors, but the WebKit framework can't be imported
 // in iOS so we'll just reproduce the error constants here
@@ -13,7 +14,7 @@ enum {
 
 @implementation KGOWebViewController
 
-@synthesize loadsLinksExternally, webView = _webView, delegate;
+@synthesize loadsLinksInternally, webView = _webView, delegate;
 @synthesize HTMLString;
 
 - (void)dealloc
@@ -53,8 +54,42 @@ enum {
     if (self.HTMLString != nil) {
         [_webView loadHTMLString:self.HTMLString baseURL:nil];
     }
-    
-    
+}
+
+- (void)fadeInDismissControls
+{
+    [self showDismissControlsAnimated:YES];
+}
+
+- (void)showDismissControlsAnimated:(BOOL)animated
+{
+    if (!_dismissView) {
+        _dismissView = [[UIView alloc] initWithFrame:CGRectMake(0, self.view.frame.size.height - 44, self.view.frame.size.width, 44)];
+        _dismissView.backgroundColor = [UIColor colorWithWhite:0.6 alpha:0.8];
+        
+        UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
+        button.titleLabel.textColor = [UIColor whiteColor];
+        button.backgroundColor = [UIColor clearColor];
+        button.layer.borderColor = [[UIColor colorWithWhite:0.8 alpha:1] CGColor];
+        button.layer.borderWidth = 1;
+        button.frame = CGRectMake(floor(self.view.frame.size.width / 4), 5, floor(self.view.frame.size.width / 2), 34);
+        [button setTitle:NSLocalizedString(@"Exit this screen", nil) forState:UIControlStateNormal];
+        [button addTarget:self.parentViewController
+                   action:@selector(dismissModalViewControllerAnimated:)
+         forControlEvents:UIControlEventTouchUpInside];
+        [_dismissView addSubview:button];
+        
+        if (animated) {
+            _dismissView.alpha = 0;
+        }
+        [self.view addSubview:_dismissView];
+        
+        if (animated) {
+            [UIView animateWithDuration:1 animations:^(void) {
+                _dismissView.alpha = 1;
+            }];
+        }
+    }
 }
 
 - (NSURL *)requestURL
@@ -136,13 +171,19 @@ enum {
     NSURL *url = [request URL];
     NSString *scheme = [url scheme];
     
-    if ([self.delegate respondsToSelector:@selector(webViewController:shouldLoadExternallyForURL:)]) {
-        if ([self.delegate webViewController:self shouldLoadExternallyForURL:url]) {
+    // TODO: give delegates more control over other navigation types.
+    // the other clauses in this method should just be the fallback for 
+    // non-implementing delegates
+    if (navigationType == UIWebViewNavigationTypeLinkClicked
+        && [self.delegate respondsToSelector:@selector(webViewController:shouldOpenSystemBrowserForURL:)]
+    ) {
+        BOOL shouldOpenBrowser = [self.delegate webViewController:self shouldOpenSystemBrowserForURL:url];
+        if (shouldOpenBrowser) {
             if ([[UIApplication sharedApplication] canOpenURL:url]) {
                 [[UIApplication sharedApplication] openURL:url];
             }
-            return NO;
         }
+        return !shouldOpenBrowser;
     }
     
     if ([scheme isEqualToString:[KGO_SHARED_APP_DELEGATE() defaultURLScheme]]) {
@@ -150,17 +191,11 @@ enum {
         return NO;
     }
     
-    if (self.loadsLinksExternally && ([scheme isEqualToString:@"http"] || [scheme isEqualToString:@"https"])) {
+    if (navigationType == UIWebViewNavigationTypeLinkClicked
+        && !self.loadsLinksInternally
+        && ([scheme isEqualToString:@"http"] || [scheme isEqualToString:@"https"])
+    ) {
         [[UIApplication sharedApplication] openURL:request.URL];
-        return NO;
-    }
-    
-    static NSArray *schemeWhitelist = nil;
-    if (!schemeWhitelist) {
-        schemeWhitelist = [[NSArray alloc] initWithObjects:@"http", @"https", @"applewebdata", nil];
-    }
-    
-    if (scheme && ![schemeWhitelist containsObject:scheme]) {
         return NO;
     }
     

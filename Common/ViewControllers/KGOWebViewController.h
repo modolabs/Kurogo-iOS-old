@@ -7,7 +7,7 @@
 @optional
 
 - (void)webViewControllerFrameLoadInterrupted:(KGOWebViewController *)webVC;
-- (BOOL)webViewController:(KGOWebViewController *)webVC shouldLoadExternallyForURL:(NSURL *)url;
+- (BOOL)webViewController:(KGOWebViewController *)webVC shouldOpenSystemBrowserForURL:(NSURL *)url;
 
 @end
 
@@ -21,6 +21,8 @@
     NSString * HTMLString;
 
     NSMutableArray *_templateStack;
+    
+    UIView *_dismissView;
 }
 
 @property (nonatomic, assign) id<KGOWebViewControllerDelegate> delegate;
@@ -29,10 +31,14 @@
 
 @property (nonatomic, retain) NSString * HTMLString;
 
-@property (nonatomic) BOOL loadsLinksExternally;
+@property (nonatomic) BOOL loadsLinksInternally; // defaults to NO
 
 - (void) showHTMLString: (NSString *) HTMLStringText;
 
 - (void)applyTemplate:(NSString *)filename;
+
+// UI for leaving when we get stuck in a full screen modal view
+- (void)fadeInDismissControls;
+- (void)showDismissControlsAnimated:(BOOL)animated;
 
 @end
