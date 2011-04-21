@@ -75,6 +75,11 @@
                  nil];
 	}
     
+    CLAuthorizationStatus status = [CLLocationManager authorizationStatus];
+    if (status == kCLAuthorizationStatusRestricted || status == kCLAuthorizationStatusDenied) {
+        _locateUserButton.enabled = NO;
+    }
+    
 	_bottomBar.items = items;
 }
 
@@ -183,10 +188,6 @@
 	
 }
 
-- (IBAction)locateUserButtonPressed {
-	
-}
-
 - (IBAction)browseButtonPressed {
 	KGOCategoryListViewController *categoryVC = [[[KGOCategoryListViewController alloc] init] autorelease];
     categoryVC.categoryEntityName = MapCategoryEntityName;
@@ -229,6 +230,93 @@
     vc.navigationItem.rightBarButtonItem = item;
     navC.modalPresentationStyle = UIModalPresentationFormSheet;
     [self presentModalViewController:navC animated:YES];
+}
+
+- (IBAction)locateUserButtonPressed
+{
+    _didCenter = NO;
+    
+    if (!_userLocation) {
+        if (!_locationManager) {
+            _locationManager = [[CLLocationManager alloc] init];
+            _locationManager.distanceFilter = kCLDistanceFilterNone;
+            _locationManager.desiredAccuracy = kCLLocationAccuracyBest;
+            _locationManager.delegate = self;
+        }
+        _userLocation = [_locationManager location];
+    }
+    
+    if (_userLocation) {
+        [self showUserLocationIfInRange];
+        
+    } else {
+        [_locationManager startUpdatingLocation];
+    }
+}
+
+#pragma mark User location
+
+- (void)showUserLocationIfInRange
+{
+    if (_didCenter) {
+        return;
+    }
+    
+    CLLocation *location;
+    NSDictionary *locationPreferences = [[NSUserDefaults standardUserDefaults] dictionaryForKey:@"Location"];
+    if (!locationPreferences) {    
+        KGOAppDelegate *appDelegate = KGO_SHARED_APP_DELEGATE();
+        locationPreferences = [[appDelegate appConfig] dictionaryForKey:@"Location"];
+    }
+    
+    NSString *latLonString = [locationPreferences stringForKey:@"DefaultCenter" nilIfEmpty:YES];
+    if (latLonString) {
+        NSArray *parts = [latLonString componentsSeparatedByString:@","];
+        if (parts.count == 2) {
+            NSString *lat = [parts objectAtIndex:0];
+            NSString *lon = [parts objectAtIndex:1];
+            location = [[CLLocation alloc] initWithLatitude:[lat floatValue] longitude:[lon floatValue]];
+        }
+    }
+
+    DLog(@"%@ %@", location, _userLocation);
+    // TODO: make maximum distance a config parameter
+    if ([_userLocation distanceFromLocation:location] <= 4000) {
+        _mapView.showsUserLocation = YES;
+        _mapView.centerCoordinate = _userLocation.coordinate;
+        _didCenter = YES;
+    } else {
+        DLog(@"distance %.1f is out of bounds", [_userLocation distanceFromLocation:location]);
+        _locateUserButton.enabled = NO;
+    }
+}
+
+- (void)locationManager:(CLLocationManager *)manager didChangeAuthorizationStatus:(CLAuthorizationStatus)status
+{
+    if (status == kCLAuthorizationStatusRestricted || status == kCLAuthorizationStatusDenied) {
+        _locateUserButton.enabled = NO;
+        _mapView.showsUserLocation = NO;
+    } else {
+        _locateUserButton.enabled = YES;
+    }
+}
+
+- (void)locationManager:(CLLocationManager *)manager didFailWithError:(NSError *)error
+{
+    DLog(@"location update failed: %@", [error description]);
+    if ([error code] == kCLErrorDenied) {
+        [_locationManager stopUpdatingLocation];
+        _locateUserButton.enabled = NO;
+        _mapView.showsUserLocation = NO;
+    }    
+}
+
+- (void)locationManager:(CLLocationManager *)manager didUpdateToLocation:(CLLocation *)newLocation fromLocation:(CLLocation *)oldLocation
+{
+    [_userLocation release];
+    _userLocation = [newLocation retain];
+    
+    [self showUserLocationIfInRange];
 }
 
 #pragma mark Map/List
@@ -376,6 +464,7 @@
         [appDelegate showPage:LocalPathPageNameDetail forModuleTag:MapTag params:params];
 
     } else if ([aResult conformsToProtocol:@protocol(MKAnnotation)]) { // TODO: check if search is bookmarks, not by the result selected
+        [_mapView removeAnnotations:[_mapView annotations]];
         id<MKAnnotation> annotation = (id<MKAnnotation>)aResult;
         [_mapView addAnnotation:annotation];
     }

@@ -7,7 +7,7 @@
 @class MapModule;
 
 @interface MapHomeViewController : UIViewController <MKMapViewDelegate,
-KGOSearchDisplayDelegate, KGODetailPagerController> {
+KGOSearchDisplayDelegate, KGODetailPagerController, CLLocationManagerDelegate> {
 	
 	IBOutlet KGOSearchBar *_searchBar;
 	IBOutlet KGOToolbar *_bottomBar;
@@ -18,6 +18,10 @@ KGOSearchDisplayDelegate, KGODetailPagerController> {
 	UIButton *_browseButton;
 	UIButton *_bookmarksButton;
 	UIButton *_settingsButton;
+    
+    CLLocationManager *_locationManager;
+    CLLocation *_userLocation;
+    BOOL _didCenter;
     
     IBOutlet UIView *_mapBorder; // ipad only
 
@@ -47,6 +51,8 @@ KGOSearchDisplayDelegate, KGODetailPagerController> {
 - (IBAction)browseButtonPressed;
 - (IBAction)bookmarksButtonPressed;
 - (IBAction)settingsButtonPressed;
+
+- (void)showUserLocationIfInRange;
 
 - (void)setupToolbarButtons;
 - (void)toolbarButtonPressed:(id)sender;
