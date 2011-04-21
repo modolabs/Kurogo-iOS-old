@@ -7,6 +7,7 @@
 @optional
 
 - (void)webViewControllerFrameLoadInterrupted:(KGOWebViewController *)webVC;
+- (BOOL)webViewController:(KGOWebViewController *)webVC shouldLoadExternallyForURL:(NSURL *)url;
 
 @end
 

@@ -133,7 +133,17 @@ enum {
 {
     DLog(@"loading request %@", [request URL]);
     
-    NSString *scheme = [request.URL scheme];
+    NSURL *url = [request URL];
+    NSString *scheme = [url scheme];
+    
+    if ([self.delegate respondsToSelector:@selector(webViewController:shouldLoadExternallyForURL:)]) {
+        if ([self.delegate webViewController:self shouldLoadExternallyForURL:url]) {
+            if ([[UIApplication sharedApplication] canOpenURL:url]) {
+                [[UIApplication sharedApplication] openURL:url];
+            }
+            return NO;
+        }
+    }
     
     if ([scheme isEqualToString:[KGO_SHARED_APP_DELEGATE() defaultURLScheme]]) {
         [[UIApplication sharedApplication] openURL:request.URL];
