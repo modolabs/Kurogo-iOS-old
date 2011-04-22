@@ -203,12 +203,17 @@ NSString * const KGODidLogoutNotification = @"LogoutComplete";
         [[NSNotificationCenter defaultCenter] postNotificationName:KGODidLoginNotification object:self];
         
     } else {
-        DLog(@"showing modal login screen");
+        DLog(@"attempting to show modal login screen");
+        UIViewController *homescreen = [KGO_SHARED_APP_DELEGATE() homescreen];
+        if (homescreen.modalViewController) {
+            DLog(@"already showing modal login screen");
+            return;
+        }
         KGOModule *loginModule = [KGO_SHARED_APP_DELEGATE() moduleForTag:self.loginPath];
         UIViewController *loginController = [loginModule modulePage:LocalPathPageNameHome params:nil];
         loginController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
         loginController.modalPresentationStyle = UIModalPresentationFullScreen;
-        [[KGO_SHARED_APP_DELEGATE() homescreen] presentModalViewController:loginController animated:YES];
+        [homescreen presentModalViewController:loginController animated:YES];
     }
 }
 

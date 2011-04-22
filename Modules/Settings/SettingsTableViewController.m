@@ -60,6 +60,10 @@ static NSString * const KGOSettingsSocialMedia = @"SocialMedia";
     }] retain];
 }
 
+- (void)viewWillAppear:(BOOL)animated
+{
+    [self reloadDataForTableView:self.tableView];
+}
 
 - (void)didReceiveMemoryWarning {
 	// Releases the view if it doesn't have a superview.
