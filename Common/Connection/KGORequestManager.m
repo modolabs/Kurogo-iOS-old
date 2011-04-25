@@ -131,6 +131,80 @@ NSString * const KGODidLogoutNotification = @"LogoutComplete";
 	}
 }
 
+#pragma mark Push notifications
+
+@synthesize devicePushToken;
+
+NSString * const KGOPushDeviceIDKey = @"KGOPushDeviceID";
+NSString * const KGOPushDevicePassKeyKey = @"KGOPushDevicePassKey";
+NSString * const KGODeviceTokenKey = @"KGODeviceToken";
+
+- (void)registerNewDeviceToken
+{
+    if (!self.devicePushToken) {
+        DLog(@"cannot register nil device token");
+        return;
+    }
+    
+    NSDictionary *params = nil;
+
+    // this will be of the form "<21d34 2323a 12324>"
+    NSString *hex = [self.devicePushToken description];
+	// eliminate the "<" and ">" and " "
+	hex = [hex stringByReplacingOccurrencesOfString:@"<" withString:@""];
+	hex = [hex stringByReplacingOccurrencesOfString:@">" withString:@""];
+	hex = [hex stringByReplacingOccurrencesOfString:@" " withString:@""];
+    
+    if (self.devicePushID && self.devicePushPassKey) {
+        // we should only get here if Apple changes our device token,
+        // which we've never actually seen happen before
+        params = [NSDictionary dictionaryWithObjectsAndKeys:
+                  self.devicePushID, @"device_id",
+                  self.devicePushPassKey, @"pass_key",
+                  @"ios", @"platform",
+                  hex, @"device_token",
+                  nil];
+        
+        // TODO: do something safer than hard coding "push" as the module tag
+        _deviceRegistrationRequest = [self requestWithDelegate:self
+                                                        module:@"push"
+                                                          path:@"updatetoken"
+                                                        params:params];
+        
+    } else {
+        params = [NSDictionary dictionaryWithObjectsAndKeys:
+                  @"ios", @"platform",
+                  hex, @"device_token",
+                  nil];
+        
+        // TODO: do something safer than hard coding "push" as the module tag
+        _deviceRegistrationRequest = [self requestWithDelegate:self
+                                                        module:@"push"
+                                                          path:@"register"
+                                                        params:params];
+    }
+    
+    [_deviceRegistrationRequest connect];
+}
+
+- (NSString *)devicePushID
+{
+    // if the user doesn't register,
+    // this will keep doing extra work and returning nil anyway
+    if (!_devicePushID) {
+        _devicePushID = [[[NSUserDefaults standardUserDefaults] stringForKey:KGOPushDeviceIDKey] retain];
+    }
+    return _devicePushID;
+}
+
+- (NSString *)devicePushPassKey
+{
+    if (!_devicePushPassKey) {
+        _devicePushPassKey = [[[NSUserDefaults standardUserDefaults] stringForKey:KGOPushDevicePassKeyKey] retain];
+    }
+    return _devicePushPassKey;
+}
+
 #pragma mark initialization
 
 - (id)init {
@@ -168,6 +242,8 @@ NSString * const KGODidLogoutNotification = @"LogoutComplete";
         _baseURL = [[NSURL alloc] initWithString:[NSString stringWithFormat:@"%@://%@/%@", _uriScheme, _extendedHost, apiPath]];
         
         _reachability = [[Reachability reachabilityWithHostName:_host] retain];
+        
+        self.devicePushToken = [[NSUserDefaults standardUserDefaults] objectForKey:KGODeviceTokenKey];
 	}
 	return self;
 }
@@ -178,11 +254,16 @@ NSString * const KGODidLogoutNotification = @"LogoutComplete";
     [_helloRequest cancel];
     [_sessionRequest cancel];
     [_logoutRequest cancel];
+    [_deviceRegistrationRequest cancel];
     
     [_extendedHost release];
     [_reachability release];
 	[_uriScheme release];
 	[_accessToken release];
+    
+    [_devicePushID release];
+    [_devicePushPassKey release];
+    self.devicePushToken = nil;
 	[super dealloc];
 }
 
@@ -289,11 +370,27 @@ NSString * const KGODidLogoutNotification = @"LogoutComplete";
         _sessionRequest = nil;
     } else if (request == _logoutRequest) {
         _logoutRequest = nil;
+    } else if (request == _deviceRegistrationRequest) {
+        _deviceRegistrationRequest = nil;
     }
 }
 
 - (void)request:(KGORequest *)request didFailWithError:(NSError *)error {
     NSLog(@"%@", [error description]);
+    
+    if (request == _deviceRegistrationRequest) {
+        NSDictionary *userInfo = [error userInfo];
+        // TODO: coordinate with kurogo server on error codes.
+        // Unauthorized appears to be 4 right now, but 401 or 403 might
+        // make more sense.
+        NSString *title = [userInfo stringForKey:@"title" nilIfEmpty:YES];
+        if ([title isEqualToString:@"Unauthorized"] && ![self isUserLoggedIn]) {
+            [[NSNotificationCenter defaultCenter] addObserver:self
+                                                     selector:@selector(registerNewDeviceToken)
+                                                         name:KGODidLoginNotification
+                                                       object:nil];
+        }
+    }
 }
 
 - (void)request:(KGORequest *)request didReceiveResult:(id)result {
@@ -309,6 +406,19 @@ NSString * const KGODidLogoutNotification = @"LogoutComplete";
 
         if ([self isUserLoggedIn]) {
             [[NSNotificationCenter defaultCenter] postNotificationName:KGODidLoginNotification object:self];
+        }
+        
+    } else if (request == _deviceRegistrationRequest) {
+        DLog(@"registered new device for push notifications: %@", result);
+        NSString *deviceID = [result stringForKey:@"device_id" nilIfEmpty:YES];
+        NSString *passKey = [result stringForKey:@"pass_key" nilIfEmpty:YES];
+        if (deviceID && passKey) {
+            NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+            [defaults setObject:deviceID forKey:KGOPushDeviceIDKey];
+            [defaults setObject:passKey forKey:KGOPushDevicePassKeyKey];
+            [defaults synchronize];
+            
+            [[NSNotificationCenter defaultCenter] removeObserver:self name:KGODidLoginNotification object:nil];
         }
     }
 }

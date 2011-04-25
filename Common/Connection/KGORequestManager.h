@@ -28,10 +28,16 @@ extern NSString * const KGODidLoginNotification;
 	NSURL *_baseURL;
 
     KGORequest *_helloRequest;
+    
+    // login info
     KGORequest *_sessionRequest;
     KGORequest *_logoutRequest;
-    
     NSDictionary *_sessionInfo;
+
+    // push notification info
+    KGORequest *_deviceRegistrationRequest;
+    NSString *_devicePushID;
+    NSString *_devicePushPassKey;
 }
 
 @property (nonatomic, retain) NSString *host;
@@ -50,7 +56,12 @@ extern NSString * const KGODidLoginNotification;
                              params:(NSDictionary *)params;
 - (void)showAlertForError:(NSError *)error;
 
+#pragma mark -
+
 - (void)requestServerHello;
+
+#pragma mark Kurogo server login
+
 - (BOOL)isUserLoggedIn;
 - (void)requestSessionInfo;
 - (void)loginKurogoServer;
@@ -60,5 +71,16 @@ extern NSString * const KGODidLoginNotification;
 - (NSDictionary *)sessionInfo;
 
 @property (nonatomic, retain) NSString *loginPath;
+
+#pragma mark Push notification registration
+
+- (void)registerNewDeviceToken;
+
+// returned by Apple's push servers when we register.  nil if not available.
+@property (nonatomic, retain) NSData *devicePushToken;
+// device ID assigned by Kurogo server
+@property (nonatomic, readonly) NSString *devicePushID;
+// device pass key assigned by Kurogo server
+@property (nonatomic, readonly) NSString *devicePushPassKey;
 
 @end

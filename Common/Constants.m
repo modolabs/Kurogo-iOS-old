@@ -11,28 +11,16 @@ NSString * const LocalPathPageNameBookmarks = @"bookmarks";
 NSString * const LocalPathPageNameWebViewDetail = @"webView";
 
 // keys for NSUserDefaults dictionary go here (app preferences)
-NSString * const DeviceTokenKey = @"DeviceToken";
 NSString * const UnreadNotificationsKey = @"UnreadNotifications";
 
 
 // module tags
 // TODO: get rid of all uses of these tags and use the tag given by the server
-NSString * const AboutTag      = @"about";
-NSString * const CalendarTag   = @"calendar";
-NSString * const CoursesTag    = @"courses";
-NSString * const DiningTag	   = @"dining";
-NSString * const EmergencyTag  = @"emergency";
-NSString * const FullWebTag    = @"fullweb";
 NSString * const HomeTag       = @"home";
-NSString * const LibrariesTag  = @"libraries";
 NSString * const MapTag        = @"map";
 NSString * const NewsTag       = @"news";
 NSString * const PeopleTag     = @"people";
-NSString * const SchoolsTag    = @"schools";
-NSString * const SettingsTag   = @"settings";
-NSString * const TransitTag    = @"transit";
 NSString * const PhotosTag     = @"photos";
-NSString * const LoginTag      = @"login";
 NSString * const VideoModuleTag     = @"video";
 
 

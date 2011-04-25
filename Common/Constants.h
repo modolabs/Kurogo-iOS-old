@@ -12,27 +12,15 @@ extern NSString * const LocalPathPageNameBookmarks;
 extern NSString * const LocalPathPageNameWebViewDetail;
 
 // keys for NSUserDefaults dictionary go here (app preferences)
-extern NSString * const DeviceTokenKey;
 extern NSString * const UnreadNotificationsKey;
 
 
 // module tags
-extern NSString * const AboutTag;
-extern NSString * const CalendarTag;
-extern NSString * const CoursesTag;
-extern NSString * const DiningTag;
-extern NSString * const EmergencyTag;
-extern NSString * const FullWebTag;
 extern NSString * const HomeTag;
-extern NSString * const LibrariesTag;
 extern NSString * const MapTag;
 extern NSString * const NewsTag;
 extern NSString * const PeopleTag;
-extern NSString * const SettingsTag;
-extern NSString * const SchoolsTag;
-extern NSString * const TransitTag;
 extern NSString * const PhotosTag;
-extern NSString * const LoginTag;
 extern NSString * const VideoModuleTag;
 
 

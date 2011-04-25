@@ -6,12 +6,11 @@
 #import "AnalyticsWrapper.h"
 #import "KGOSocialMediaController.h"
 #import "KGORequestManager.h"
+#import "Foundation+KGOAdditions.h"
 
 @implementation KGOAppDelegate
 
 @synthesize window, modules = _modules;
-@synthesize deviceToken = devicePushToken;
-//@synthesize theNavController;
 
 #pragma mark -
 #pragma mark Application lifecycle
@@ -133,7 +132,6 @@
 }
 
 - (void)dealloc {
-    self.deviceToken = nil;
     [_appConfig release];
     [_unreadNotifications release];
     [_modules release];
@@ -187,13 +185,19 @@
 
 - (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
 	DLog(@"Registered for push notifications. deviceToken == %@", deviceToken);
-    self.deviceToken = deviceToken;
+    KGORequestManager *requestManager = [KGORequestManager sharedManager];
+    if (![requestManager.devicePushToken isEqualToData:deviceToken]) {
+        requestManager.devicePushToken = deviceToken;
+        [requestManager registerNewDeviceToken];
+    }
 }
 
 - (void)application:(UIApplication *)application didFailToRegisterForRemoteNotificationsWithError:(NSError *)error {
     NSLog(@"Failed to register for remote notifications. Error: %@", error);
 }
 
+// TODO: decide if we want to keep the following behavior, which only runs
+// while the app is open and thus seems pretty redundant
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo {
 	// vibrate the phone
 	AudioServicesPlayAlertSound(kSystemSoundID_Vibrate);
@@ -206,11 +210,12 @@
         showingAlertView = YES;
 
         NSString *appDisplayName = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleDisplayName"];
-        UIAlertView *alertView =[[[UIAlertView alloc] initWithTitle:appDisplayName
+        // TODO: figure out if it's really necessary to construct this alert view
+        UIAlertView *alertView = [[[UIAlertView alloc] initWithTitle:appDisplayName
                                                             message:[[userInfo objectForKey:@"aps"] objectForKey:@"alert"]
                                                            delegate:self
-                                                  cancelButtonTitle:@"Close"
-                                                  otherButtonTitles:@"View", nil] autorelease];
+                                                  cancelButtonTitle:NSLocalizedString(@"Close", nil)
+                                                  otherButtonTitles:NSLocalizedString(@"View", nil), nil] autorelease];
         [alertView show];
     }
 }
@@ -221,7 +226,9 @@
     KGOModule *module = [self moduleForTag:latestNotification.moduleName];
 	[module handleNotification:latestNotification];
 
-    if ([[alertView buttonTitleAtIndex:buttonIndex] isEqualToString:@"View"]) {
+    NSString *viewTitle = NSLocalizedString(@"View", nil);
+    
+    if ([[alertView buttonTitleAtIndex:buttonIndex] isEqualToString:viewTitle]) {
         [module willBecomeVisible];
         // TODO: show the module
     }
@@ -262,7 +269,7 @@
 - (BOOL)handleFacebookURL:(NSURL *)url
 {
     // TODO: make sure this balances out
-    NSLog(@"is facebook started?");
+    DLog(@"is facebook started?");
     [[KGOSocialMediaController sharedController] startupFacebook];
     [[KGOSocialMediaController sharedController] parseCallbackURL:url];
     
@@ -287,14 +294,11 @@
 
 #pragma mark -
 
-
 @implementation KGOAppDelegate (Notifications)
 
 - (void)registerForRemoteNotifications:(NSDictionary *)launchOptions {
     // Register for push notifications
     [[UIApplication sharedApplication] registerForRemoteNotificationTypes:(UIRemoteNotificationTypeAlert | UIRemoteNotificationTypeBadge | UIRemoteNotificationTypeSound)];
-    // get deviceToken if it exists
-    self.deviceToken = [[NSUserDefaults standardUserDefaults] objectForKey:DeviceTokenKey];
 	
 	[self updateNotificationUI];
 	//[self updateNotificationServer];
