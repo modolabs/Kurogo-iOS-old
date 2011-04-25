@@ -133,8 +133,6 @@ NSString * const KGODidLogoutNotification = @"LogoutComplete";
 
 #pragma mark Push notifications
 
-@synthesize devicePushToken;
-
 NSString * const KGOPushDeviceIDKey = @"KGOPushDeviceID";
 NSString * const KGOPushDevicePassKeyKey = @"KGOPushDevicePassKey";
 NSString * const KGODeviceTokenKey = @"KGODeviceToken";
@@ -143,6 +141,11 @@ NSString * const KGODeviceTokenKey = @"KGODeviceToken";
 {
     if (!self.devicePushToken) {
         DLog(@"cannot register nil device token");
+        return;
+    }
+    
+    if (_deviceRegistrationRequest) {
+        DLog(@"device registration request already in progress");
         return;
     }
     
@@ -203,6 +206,17 @@ NSString * const KGODeviceTokenKey = @"KGODeviceToken";
         _devicePushPassKey = [[[NSUserDefaults standardUserDefaults] stringForKey:KGOPushDevicePassKeyKey] retain];
     }
     return _devicePushPassKey;
+}
+
+- (NSData *)devicePushToken
+{
+    return [[NSUserDefaults standardUserDefaults] dataForKey:KGODeviceTokenKey];
+}
+
+- (void)setDevicePushToken:(NSData *)devicePushToken
+{
+    [[NSUserDefaults standardUserDefaults] setObject:devicePushToken forKey:KGODeviceTokenKey];
+    [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
 #pragma mark initialization
@@ -411,8 +425,11 @@ NSString * const KGODeviceTokenKey = @"KGODeviceToken";
     } else if (request == _deviceRegistrationRequest) {
         DLog(@"registered new device for push notifications: %@", result);
         NSString *deviceID = [result stringForKey:@"device_id" nilIfEmpty:YES];
-        NSString *passKey = [result stringForKey:@"pass_key" nilIfEmpty:YES];
-        if (deviceID && passKey) {
+        NSString *passKey = [result objectForKey:@"pass_key"];
+        if ([passKey isKindOfClass:[NSNumber class]]) {
+            passKey = [passKey description];
+        }
+        if (deviceID && [passKey isKindOfClass:[NSString class]]) {
             NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
             [defaults setObject:deviceID forKey:KGOPushDeviceIDKey];
             [defaults setObject:passKey forKey:KGOPushDevicePassKeyKey];
