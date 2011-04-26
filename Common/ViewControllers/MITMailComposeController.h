@@ -11,5 +11,11 @@
                                   body:(NSString *)body
                               delegate:(id<MFMailComposeViewControllerDelegate>)delegate;
 
+- (void)presentMailControllerWithEmail:(NSString *)email
+                               subject:(NSString *)subject
+                                  body:(NSString *)body
+                              delegate:(id<MFMailComposeViewControllerDelegate>)delegate
+                                isHTML:(BOOL)isHTML;
+
 @end
 

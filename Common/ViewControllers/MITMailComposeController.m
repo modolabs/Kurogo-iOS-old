@@ -8,6 +8,15 @@
                                   body:(NSString *)body
                               delegate:(id<MFMailComposeViewControllerDelegate>)delegate
 {
+    [self presentMailControllerWithEmail:email subject:subject body:body delegate:delegate isHTML:NO];
+}
+
+- (void)presentMailControllerWithEmail:(NSString *)email
+                               subject:(NSString *)subject
+                                  body:(NSString *)body
+                              delegate:(id<MFMailComposeViewControllerDelegate>)delegate
+                                isHTML:(BOOL)isHTML
+{
 	Class mailClass = (NSClassFromString(@"MFMailComposeViewController"));
 	if ((mailClass != nil) && [mailClass canSendMail]) {
 		
@@ -22,7 +31,7 @@
             [aController setSubject:subject];
         }
         if (body != nil) {
-            [aController setMessageBody:body isHTML:NO];
+            [aController setMessageBody:body isHTML:isHTML];
         }
         
         [self presentModalViewController:aController animated:YES];
