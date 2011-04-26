@@ -23,5 +23,6 @@ typedef enum {
 @property (nonatomic, assign) KGOModule *module;
 
 - (void)customTapAction:(KGOHomeScreenWidget *)sender; // non-default home screen behavior, called only if behavesAsIcon == NO
+- (void)defaultTapAction:(KGOHomeScreenWidget *)sender;
 
 @end
