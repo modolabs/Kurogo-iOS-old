@@ -577,21 +577,19 @@
     UIFont *font;
     UIColor *textColor;
     UIColor *bgColor;
-    CGFloat hPadding;
+    CGFloat hPadding = 10;
     CGFloat viewHeight;
     
     if (tableView.style == UITableViewStylePlain) {
         font = [[KGOTheme sharedTheme] fontForThemedProperty:KGOThemePropertySectionHeader];
         textColor = [[KGOTheme sharedTheme] textColorForThemedProperty:KGOThemePropertySectionHeader];
         bgColor = [[KGOTheme sharedTheme] backgroundColorForPlainSectionHeader];
-        hPadding = 10.0f;
-        viewHeight = font.pointSize + PLAIN_SECTION_HEADER_VPADDING;
+        viewHeight = font.lineHeight + PLAIN_SECTION_HEADER_VPADDING;
     } else {
         font = [[KGOTheme sharedTheme] fontForThemedProperty:KGOThemePropertySectionHeaderGrouped];
         textColor = [[KGOTheme sharedTheme] textColorForThemedProperty:KGOThemePropertySectionHeaderGrouped];
         bgColor = [UIColor clearColor];
-        hPadding = 20.0f;
-        viewHeight = font.pointSize + GROUPED_SECTION_HEADER_VPADDING;
+        viewHeight = font.lineHeight + GROUPED_SECTION_HEADER_VPADDING;
     }
     
     CGSize size = [title sizeWithFont:font];

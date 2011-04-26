@@ -60,7 +60,7 @@
         
         UIActionSheet *shareSheet = [[UIActionSheet alloc] initWithTitle:self.actionSheetTitle
                                                                 delegate:self
-                                                       cancelButtonTitle:@"Cancel"
+                                                       cancelButtonTitle:NSLocalizedString(@"Cancel", @"share action sheet")
                                                   destructiveButtonTitle:nil
                                                        otherButtonTitles:nil];
         

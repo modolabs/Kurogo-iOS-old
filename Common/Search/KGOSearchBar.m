@@ -355,9 +355,9 @@
             // we can't easily estimate the size of a UIBarButtonSystemItem,
             // so we have to create our own and and provide our own width
             UIButton *innerButton = [UIButton buttonWithType:UIButtonTypeCustom];
-            UIImage *image = [UIImage imageWithPathName:@"common/searchbar_button_background"];
-            UIImage *pressedImage = [UIImage imageWithPathName:@"common/searchbar_button_background_pressed"];
-            NSString *cancelString = NSLocalizedString(@"Cancel", nil);
+            UIImage *image = [UIImage imageWithPathName:@"common/toolbar-button"];
+            UIImage *pressedImage = [UIImage imageWithPathName:@"common/toolbar-button-pressed"];
+            NSString *cancelString = NSLocalizedString(@"Cancel", @"search bar cancel button");
             innerButton.titleLabel.font = [UIFont boldSystemFontOfSize:[UIFont smallSystemFontSize]];
             CGSize size = [cancelString sizeWithFont:innerButton.titleLabel.font];
             innerButton.frame = CGRectMake(0, 0,

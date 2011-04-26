@@ -22,8 +22,14 @@
     [self.view addSubview:scrim];
     [scrim release];
     
-    doneButton = [[UIBarButtonItem alloc] initWithTitle:@"Go" style:UIBarButtonItemStylePlain target:self action:@selector(navBarButtonPressed:)];
-    cancelButton = [[UIBarButtonItem alloc] initWithTitle:@"Cancel" style:UIBarButtonItemStylePlain target:self action:@selector(navBarButtonPressed:)];
+    doneButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Go", @"DatePickerViewController nav bar")
+                                                  style:UIBarButtonItemStylePlain
+                                                 target:self
+                                                 action:@selector(navBarButtonPressed:)];
+    cancelButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Cancel", @"DatePickerViewController nav bar")
+                                                    style:UIBarButtonItemStylePlain
+                                                   target:self
+                                                   action:@selector(navBarButtonPressed:)];
     
 	if (!self.navigationController) {
 		UINavigationItem *navItem = [[[UINavigationItem alloc] initWithTitle:self.title] autorelease];

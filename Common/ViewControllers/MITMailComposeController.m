@@ -1,4 +1,5 @@
 #import "MITMailComposeController.h"
+#import "KGOTheme.h"
 #import <MessageUI/MFMailComposeViewController.h>
 
 @implementation UIViewController (MITMailComposeController)
@@ -33,6 +34,8 @@
         if (body != nil) {
             [aController setMessageBody:body isHTML:isHTML];
         }
+
+        aController.navigationBar.barStyle = [[KGOTheme sharedTheme] defaultNavBarStyle];
         
         [self presentModalViewController:aController animated:YES];
 		

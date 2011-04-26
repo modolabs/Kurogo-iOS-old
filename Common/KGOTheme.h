@@ -69,12 +69,13 @@ typedef enum {
 // reasonable overrides
 
 - (UIImage *)backgroundImageForToolbar;
+- (UIImage *)backgroundImageForSearchBar;
+- (UIImage *)backgroundImageForSearchBarDropShadow;
 
 // ridiculous overrides
 
 - (UIImage *)backgroundImageForNavBar;
-- (UIImage *)backgroundImageForSearchBar;
-- (UIImage *)backgroundImageForSearchBarDropShadow;
+- (UIBarStyle)defaultNavBarStyle;
 
 #pragma mark homescreen
 

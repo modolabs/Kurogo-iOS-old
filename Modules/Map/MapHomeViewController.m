@@ -201,6 +201,7 @@
                                                                            action:@selector(dismissModalViewControllerAnimated:)] autorelease];
     categoryVC.navigationItem.rightBarButtonItem = item;
     navC.modalPresentationStyle = UIModalPresentationFormSheet;
+    navC.navigationBar.barStyle = [[KGOTheme sharedTheme] defaultNavBarStyle];
     [self presentModalViewController:navC animated:YES];
 }
 
@@ -218,6 +219,7 @@
                                                                            action:@selector(dismissModalViewControllerAnimated:)] autorelease];
     vc.navigationItem.rightBarButtonItem = item;
     navC.modalPresentationStyle = UIModalPresentationFormSheet;
+    navC.navigationBar.barStyle = [[KGOTheme sharedTheme] defaultNavBarStyle];
     [self presentModalViewController:navC animated:YES];
 }
 
@@ -232,6 +234,7 @@
                                                                            action:@selector(dismissModalViewControllerAnimated:)] autorelease];
     vc.navigationItem.rightBarButtonItem = item;
     navC.modalPresentationStyle = UIModalPresentationFormSheet;
+    navC.navigationBar.barStyle = [[KGOTheme sharedTheme] defaultNavBarStyle];
     [self presentModalViewController:navC animated:YES];
 }
 
