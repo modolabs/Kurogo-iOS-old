@@ -17,7 +17,7 @@
 #define STORY_TEXT_PADDING_BOTTOM 7.0 // from baseline of 12pt font, is roughly 5px
 #define STORY_TEXT_PADDING_LEFT 7.0
 #define STORY_TEXT_PADDING_RIGHT 7.0
-#define STORY_TEXT_WIDTH (320.0 - STORY_TEXT_PADDING_LEFT - STORY_TEXT_PADDING_RIGHT - THUMBNAIL_WIDTH - ACCESSORY_WIDTH_PLUS_PADDING) // 8px horizontal padding
+#define STORY_TEXT_WIDTH(width) ((width) - STORY_TEXT_PADDING_LEFT - STORY_TEXT_PADDING_RIGHT - THUMBNAIL_WIDTH - ACCESSORY_WIDTH_PLUS_PADDING) // 8px horizontal padding
 #define STORY_TEXT_HEIGHT (THUMBNAIL_WIDTH - STORY_TEXT_PADDING_TOP - STORY_TEXT_PADDING_BOTTOM) // 8px vertical padding (bottom is less because descenders on dekLabel go below baseline)
 #define STORY_TITLE_FONT_SIZE 15.0
 #define STORY_DEK_FONT_SIZE 12.0
@@ -294,7 +294,7 @@
 
 - (void)setupActivityIndicator {
     activityView = [[UIView alloc] initWithFrame:CGRectZero];
-    activityView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin;
+    activityView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin;
     activityView.tag = 9;
     activityView.backgroundColor = [UIColor blackColor];
     activityView.userInteractionEnabled = NO;
@@ -315,7 +315,7 @@
     
     [self.view addSubview:activityView];
     
-    CGFloat bottom = CGRectGetMaxY(storyTable.frame);
+    CGFloat bottom = self.view.frame.size.height;
     CGFloat height = labelSize.height + 8;
     activityView.frame = CGRectMake(0, bottom - height, self.view.bounds.size.width, height);
     
@@ -550,25 +550,27 @@
         UIFont *dekFont = [UIFont systemFontOfSize:STORY_DEK_FONT_SIZE];
         UIColor *dekColor = [UIColor colorWithHexString:@"#0D0D0D"];
         
+        CGFloat cellWidth = tableView.frame.size.width;
+        
         // Calculate height
         CGFloat availableHeight = FEATURE_TEXT_HEIGHT;
-        CGSize titleDimensions = [story.title sizeWithFont:titleFont constrainedToSize:CGSizeMake(STORY_TEXT_WIDTH, availableHeight) lineBreakMode:UILineBreakModeTailTruncation];
+        CGSize titleDimensions = [story.title sizeWithFont:titleFont constrainedToSize:CGSizeMake(STORY_TEXT_WIDTH(cellWidth), availableHeight) lineBreakMode:UILineBreakModeTailTruncation];
         availableHeight -= titleDimensions.height;
         
         CGSize dekDimensions = CGSizeZero;
         // if not even one line will fit, don't show the deck at all
         if (availableHeight > dekFont.lineHeight) {
-            dekDimensions = [story.summary sizeWithFont:dekFont constrainedToSize:CGSizeMake(STORY_TEXT_WIDTH, availableHeight) lineBreakMode:UILineBreakModeTailTruncation];
+            dekDimensions = [story.summary sizeWithFont:dekFont constrainedToSize:CGSizeMake(STORY_TEXT_WIDTH(cellWidth), availableHeight) lineBreakMode:UILineBreakModeTailTruncation];
         }
         
         CGRect titleFrame = CGRectMake(THUMBNAIL_WIDTH + STORY_TEXT_PADDING_LEFT,
                                        STORY_TEXT_PADDING_TOP + yOffset, 
-                                       STORY_TEXT_WIDTH, 
+                                       STORY_TEXT_WIDTH(cellWidth), 
                                        titleDimensions.height);
         
         CGRect dekFrame = CGRectMake(THUMBNAIL_WIDTH + STORY_TEXT_PADDING_LEFT,
                                      ceil(CGRectGetMaxY(titleFrame)), 
-                                     STORY_TEXT_WIDTH, 
+                                     STORY_TEXT_WIDTH(cellWidth), 
                                      dekDimensions.height);
         
         
