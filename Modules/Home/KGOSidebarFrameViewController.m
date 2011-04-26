@@ -291,10 +291,13 @@
     NSMutableArray *mutableWidgetViews = [NSMutableArray array];
     for (KGOHomeScreenWidget *aWidget in widgets) {
         [mutableWidgetViews addObject:aWidget];
-        [self.view addSubview:aWidget];
+        if (!self.loadingView) {
+            [self.view addSubview:aWidget];
+        }
     }
     [_widgetViews release];
     _widgetViews = [mutableWidgetViews copy];
+    
 }
 
 - (void)refreshModules {
