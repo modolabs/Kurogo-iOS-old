@@ -19,6 +19,7 @@
 @property (nonatomic, retain) NSDate * end;
 @property (nonatomic, retain) NSData * userInfo;
 @property (nonatomic, retain) NSNumber * bookmarked;
+@property (nonatomic, retain) NSString * placemarkID;
 @property (nonatomic, retain) NSSet* calendars;
 @property (nonatomic, retain) NSSet* particpants;
 

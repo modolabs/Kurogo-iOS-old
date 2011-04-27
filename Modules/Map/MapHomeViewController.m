@@ -201,6 +201,7 @@
                                                                            action:@selector(dismissModalViewControllerAnimated:)] autorelease];
     categoryVC.navigationItem.rightBarButtonItem = item;
     navC.modalPresentationStyle = UIModalPresentationFormSheet;
+    navC.navigationBar.barStyle = [[KGOTheme sharedTheme] defaultNavBarStyle];
     [self presentModalViewController:navC animated:YES];
 }
 
@@ -218,12 +219,13 @@
                                                                            action:@selector(dismissModalViewControllerAnimated:)] autorelease];
     vc.navigationItem.rightBarButtonItem = item;
     navC.modalPresentationStyle = UIModalPresentationFormSheet;
+    navC.navigationBar.barStyle = [[KGOTheme sharedTheme] defaultNavBarStyle];
     [self presentModalViewController:navC animated:YES];
 }
 
 - (IBAction)settingsButtonPressed {
 	MapSettingsViewController *vc = [[[MapSettingsViewController alloc] initWithStyle:UITableViewStyleGrouped] autorelease];
-    vc.title = @"Settings";
+    vc.title = NSLocalizedString(@"Map Settings", nil);
     vc.view.backgroundColor = [[KGOTheme sharedTheme] backgroundColorForApplication];
 
     UINavigationController *navC = [[[UINavigationController alloc] initWithRootViewController:vc] autorelease];
@@ -232,6 +234,7 @@
                                                                            action:@selector(dismissModalViewControllerAnimated:)] autorelease];
     vc.navigationItem.rightBarButtonItem = item;
     navC.modalPresentationStyle = UIModalPresentationFormSheet;
+    navC.navigationBar.barStyle = [[KGOTheme sharedTheme] defaultNavBarStyle];
     [self presentModalViewController:navC animated:YES];
 }
 

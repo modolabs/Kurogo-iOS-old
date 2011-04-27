@@ -64,7 +64,7 @@
     }
     
     if (subtitle) {
-        UIFont *font = [[KGOTheme sharedTheme] fontForThemedProperty:KGOThemePropertyBodyText];
+        UIFont *font = [[KGOTheme sharedTheme] fontForThemedProperty:KGOThemePropertyContentSubtitle];
         CGSize size = [self.userDescription sizeWithFont:font];
         UILabel *subtitleLabel = [[[UILabel alloc] initWithFrame:CGRectMake(10, titleLabel.frame.size.height + 20, size.width, size.height)] autorelease];
         subtitleLabel.font = font;

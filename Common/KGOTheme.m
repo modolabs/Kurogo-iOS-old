@@ -246,6 +246,12 @@ static KGOTheme *s_sharedTheme = nil;
     return color;
 }
 
+- (UIBarStyle)defaultNavBarStyle
+{
+    // TODO: create a config setting for this
+    return UIBarStyleBlack;
+}
+
 #pragma mark UITableViewCell
 
 // provide None, Blank, and Chevron by default.

@@ -19,6 +19,7 @@ NSString * const KGOEntityNameEvent = @"KGOEvent";
 @dynamic end;
 @dynamic userInfo;
 @dynamic bookmarked;
+@dynamic placemarkID;
 @dynamic calendars;
 @dynamic particpants;
 

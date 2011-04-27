@@ -112,8 +112,8 @@
     if (!_subtitleLabel) {
         _subtitleLabel = [[UILabel alloc] init];
         _subtitleLabel.backgroundColor = [UIColor clearColor];
-        _subtitleLabel.font = [[KGOTheme sharedTheme] fontForThemedProperty:KGOThemePropertyBodyText];
-        _subtitleLabel.textColor = [[KGOTheme sharedTheme] textColorForThemedProperty:KGOThemePropertyBodyText];
+        _subtitleLabel.font = [[KGOTheme sharedTheme] fontForThemedProperty:KGOThemePropertyContentSubtitle];
+        _subtitleLabel.textColor = [[KGOTheme sharedTheme] textColorForThemedProperty:KGOThemePropertyContentSubtitle];
         _subtitleLabel.numberOfLines = MAX_SUBTITLE_LINES;
     }
     return _subtitleLabel;
