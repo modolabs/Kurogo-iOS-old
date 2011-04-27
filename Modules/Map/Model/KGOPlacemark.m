@@ -84,7 +84,7 @@
             KGOHTMLTemplate *itemTemplate = [[[KGOHTMLTemplate alloc] init] autorelease];
             // TODO: this is relying on the server returning "label" and "title"
             // for each field item, may not be robust
-            itemTemplate.templateString = @"<li><strong>__label__:</strong>__title__</li>";
+            itemTemplate.templateString = @"<li><strong>__label__: </strong>__title__</li>";
             placemark.info = [NSString stringWithFormat:@"<ul>%@</ul>", [itemTemplate stringWithMultiReplacements:descriptionInfo]];
         }
         

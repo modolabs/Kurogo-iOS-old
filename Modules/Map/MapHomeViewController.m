@@ -225,7 +225,7 @@
 
 - (IBAction)settingsButtonPressed {
 	MapSettingsViewController *vc = [[[MapSettingsViewController alloc] initWithStyle:UITableViewStyleGrouped] autorelease];
-    vc.title = @"Settings";
+    vc.title = NSLocalizedString(@"Map Settings", nil);
     vc.view.backgroundColor = [[KGOTheme sharedTheme] backgroundColorForApplication];
 
     UINavigationController *navC = [[[UINavigationController alloc] initWithRootViewController:vc] autorelease];

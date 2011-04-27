@@ -71,7 +71,7 @@
 #pragma mark KGODetailPager
 
 - (void)loadAnnotationContent {
-    NSLog(@"%@", [self.placemark description]);
+    DLog(@"%@", [self.placemark description]);
 
     self.tabViewHeader.detailItem = self.placemark;
     
