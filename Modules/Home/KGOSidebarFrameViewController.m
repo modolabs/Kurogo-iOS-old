@@ -142,7 +142,7 @@
     [self.view addSubview:_topbar];
     
     // fake toolbar
-    UIImage *image = [UIImage imageWithPathName:@"common/scrolltabs-background-opaque"];
+    UIImage *image = [UIImage imageWithPathName:@"common/toolbar-background"];
     UIImageView *fakeToolbar = [[[UIImageView alloc] initWithFrame:CGRectMake(0, TOPBAR_HEIGHT, self.view.bounds.size.width, image.size.height)] autorelease];
     fakeToolbar.image = image;
     fakeToolbar.autoresizingMask = UIViewAutoresizingFlexibleWidth;
@@ -211,6 +211,25 @@
 - (CGRect)springboardFrame
 {
     return self.view.frame;
+}
+
+- (void)buttonPressed:(id)sender {
+    [super buttonPressed:sender];
+    
+    SpringboardIcon *anIcon = (SpringboardIcon *)sender;
+    
+    UIFont *font = [self moduleLabelFontLarge];
+    NSString *boldName = [NSString stringWithFormat:@"%@-Bold", [font fontName]];
+    UIFont *boldFont = [UIFont fontWithName:boldName size:[font pointSize]];
+    if (boldFont) {
+        anIcon.titleLabel.font = boldFont;
+    }
+    
+    for (UIView *aView in [_sidebar subviews]) {
+        if (aView != sender && [aView isKindOfClass:[SpringboardIcon class]]) {
+            [(SpringboardIcon *)aView titleLabel].font = font;
+        }
+    }
 }
 
 - (void)viewDidUnload

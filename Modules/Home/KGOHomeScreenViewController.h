@@ -37,6 +37,7 @@
 
 
 - (void)showSettingsModule:(id)sender;
+- (void)buttonPressed:(id)sender; // called when a module icon is tapped
 
 // display module representations on home screen. default implementation does nothing.
 - (void)refreshModules;
