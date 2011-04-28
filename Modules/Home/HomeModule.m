@@ -5,6 +5,7 @@
 #import "KGOPortletHomeViewController.h"
 #import "KGOSidebarFrameViewController.h"
 #import "KGOSplitViewController.h"
+#import "KGORequestManager.h"
 
 @implementation HomeModule
 
@@ -15,6 +16,15 @@
 
 - (void)setHidden:(BOOL)hidden
 {
+}
+
+- (NSArray *)applicationStateNotificationNames
+{
+    return [NSArray arrayWithObjects:
+            KGODidLoginNotification,
+            KGODidLogoutNotification,
+            KGOUserPreferencesDidChangeNotification,
+            nil];
 }
 
 #pragma mark Navigation
