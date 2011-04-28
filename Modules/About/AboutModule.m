@@ -27,7 +27,6 @@
         NSString * credits = [params stringForKey:@"creditsHTMLString" nilIfEmpty: NO];
         [creditsWebViewController setHTMLString: credits];
         creditsWebViewController.title = @"Credits";
-        creditsWebViewController.loadsLinksExternally = YES;
         [creditsWebViewController applyTemplate:@"modules/about/credits.html"];
         
         vc = creditsWebViewController;
