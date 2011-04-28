@@ -196,6 +196,11 @@
 - (void)handleNotification:(KGONotification *)aNotification {
 }
 
+- (NSArray *)applicationStateNotificationNames
+{
+    return nil;
+}
+
 #pragma mark Social media
 
 - (NSSet *)socialMediaTypes {

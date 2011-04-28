@@ -111,6 +111,10 @@
 
 - (void)handleNotification:(KGONotification *)aNotification;
 
+// notification names that get sent by activities within the app that affect
+// the settings module.
+- (NSArray *)applicationStateNotificationNames;
+
 #pragma mark Social media
 
 - (NSSet *)socialMediaTypes;
