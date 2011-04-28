@@ -6,7 +6,6 @@
 
 - (CGSize)foregroundSizeForTabAtIndex:(NSUInteger)tabIndex;
 - (UIColor *)textColorForState:(KGOTabState)state;
-- (UIImage *)imageForState:(KGOTabState)state;
 - (void)didInsertTabAtIndex:(NSInteger)index animated:(BOOL)animated;
 - (UIButton *)buttonForTab;
 
@@ -85,7 +84,8 @@
         
         if (_selectedTabIndex != NSNotFound) {
             button = [_tabs objectAtIndex:_selectedTabIndex];
-            [button setBackgroundImage:[self imageForState:KGOTabStateInactive] forState:UIControlStateNormal];
+            [button setBackgroundImage:[self backgroundImageForState:KGOTabStateInactive atIndex:_selectedTabIndex]
+                              forState:UIControlStateNormal];
             [button setTitleColor:[self textColorForState:KGOTabStateInactive] forState:UIControlStateNormal];
         }
         
@@ -93,7 +93,8 @@
         
         if (_selectedTabIndex != NSNotFound) {
             button = [_tabs objectAtIndex:_selectedTabIndex];
-            [button setBackgroundImage:[self imageForState:KGOTabStateActive] forState:UIControlStateNormal];
+            [button setBackgroundImage:[self backgroundImageForState:KGOTabStateActive atIndex:_selectedTabIndex]
+                              forState:UIControlStateNormal];
             [button setTitleColor:[self textColorForState:KGOTabStateActive] forState:UIControlStateNormal];
         }
     }
@@ -127,8 +128,6 @@
 
 - (UIButton *)buttonForTab {
     UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
-    [button setBackgroundImage:[self imageForState:KGOTabStateInactive] forState:UIControlStateNormal];
-    [button setBackgroundImage:[self imageForState:KGOTabStatePressed] forState:UIControlStateHighlighted];
     [button setTitleColor:[self textColorForState:KGOTabStateInactive] forState:UIControlStateNormal];
     [button setTitleColor:[self textColorForState:KGOTabStatePressed] forState:UIControlStateHighlighted];
     [button addTarget:self action:@selector(didSelectTab:) forControlEvents:UIControlEventTouchUpInside];
@@ -237,7 +236,7 @@
     return 0;
 }
 
-- (UIImage *)imageForState:(KGOTabState)state {
+- (UIImage *)backgroundImageForState:(KGOTabState)state atIndex:(NSUInteger)index {
     // TODO: use config and cache these results
     
     switch (state) {
@@ -282,6 +281,10 @@
 	CGFloat tabOffset = self.tabSpacing;
 	for (int tabIndex = 0; tabIndex < _tabs.count; tabIndex++) {
         UIButton *button = [_tabs objectAtIndex:tabIndex];
+        [button setBackgroundImage:[self backgroundImageForState:KGOTabStateInactive atIndex:tabIndex]
+                          forState:UIControlStateNormal];
+        [button setBackgroundImage:[self backgroundImageForState:KGOTabStatePressed atIndex:tabIndex]
+                          forState:UIControlStateHighlighted];
         
         CGSize size = [self foregroundSizeForTabAtIndex:tabIndex];
         CGRect tabRect = CGRectMake(tabOffset, 0,

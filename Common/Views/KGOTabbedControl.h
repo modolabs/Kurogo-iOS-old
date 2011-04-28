@@ -31,6 +31,8 @@ typedef enum {
 
 }
 
+- (id)initWithItems:(NSArray *)items;
+
 @property(nonatomic) CGFloat tabSpacing;
 @property(nonatomic) CGFloat tabPadding;
 @property(nonatomic, retain) UIFont *tabFont;
@@ -51,6 +53,10 @@ typedef enum {
 - (NSString *)titleForTabAtIndex:(NSUInteger)index;
 - (UIImage *)imageForTabAtIndex:(NSUInteger)index;
 - (CGFloat)minimumWidthForTabAtIndex:(NSUInteger)index;
+
+// for subclasses
+
+- (UIImage *)backgroundImageForState:(KGOTabState)state atIndex:(NSUInteger)index;
 
 @end
 
