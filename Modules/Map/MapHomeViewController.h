@@ -5,6 +5,7 @@
 @class KGOSearchBar;
 @class MKMapView;
 @class MapModule;
+@class KGOSegmentedControl;
 
 @interface MapHomeViewController : UIViewController <MKMapViewDelegate,
 KGOSearchDisplayDelegate, KGODetailPagerController, CLLocationManagerDelegate> {
@@ -32,7 +33,7 @@ KGOSearchDisplayDelegate, KGODetailPagerController, CLLocationManagerDelegate> {
 	
 	KGOSearchDisplayController *_searchController;
 	UITableView *_searchResultsTableView; // only used as temporary reference
-	UISegmentedControl *_mapListToggle;
+	KGOSegmentedControl *_mapListToggle;
 
     NSArray *_annotations;
 }

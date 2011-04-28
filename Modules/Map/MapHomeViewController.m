@@ -13,6 +13,7 @@
 #import "KGOToolbar.h"
 #import "KGOPlacemark.h"
 #import "KGOSidebarFrameViewController.h"
+#import "KGOSegmentedControl.h"
 #import <QuartzCore/QuartzCore.h>
 
 @implementation MapHomeViewController
@@ -328,18 +329,21 @@
 #pragma mark Map/List
 
 - (void)showMapListToggle {
+    UIImage *mapButton = [UIImage imageWithPathName:@"common/button-icon-viewonmap"];
+    UIImage *listButton = [UIImage imageWithPathName:@"common/button-icon-viewaslist"];
+    CGFloat width = mapButton.size.width + listButton.size.width + 4 * 4.0; // 4.0 is spacing defined in KGOSearchBar.m
+
 	if (!_mapListToggle) {
-		_mapListToggle = [[UISegmentedControl alloc] initWithItems:[NSArray arrayWithObjects:@"Map", @"List", nil]];
-		_mapListToggle.tintColor = _searchBar.tintColor;
-		_mapListToggle.segmentedControlStyle = UISegmentedControlStyleBar;
-		[_mapListToggle setEnabled:NO forSegmentAtIndex:0];
+		_mapListToggle = [[KGOSegmentedControl alloc] initWithItems:[NSArray arrayWithObjects:mapButton, listButton, nil]];
+        _mapListToggle.frame = CGRectMake(0, 0, width, 31);
+        _mapListToggle.tabFont = [UIFont boldSystemFontOfSize:[UIFont smallSystemFontSize]];
+        _mapListToggle.selectedSegmentIndex = 0;
 		[_mapListToggle addTarget:self action:@selector(mapListSelectionChanged:) forControlEvents:UIControlEventValueChanged];
 	}
 	
 	if (!_searchBar.toolbarItems.count) {
 		UIBarButtonItem *item = [[[UIBarButtonItem alloc] initWithCustomView:_mapListToggle] autorelease];
-		UIFont *smallFont = [UIFont boldSystemFontOfSize:[UIFont smallSystemFontSize]];
-		item.width = [@"Map" sizeWithFont:smallFont].width + [@"List" sizeWithFont:smallFont].width + 4 * 4.0; // 4.0 is spacing defined in KGOSearchBar.m
+		item.width = width;
 		[_searchBar addToolbarButton:item animated:NO];
 	}
 }
@@ -374,9 +378,8 @@
 	
     // TODO: fine-tune when to enable this, e.g under proximity and gps enabled conditions
     [_locateUserButton setEnabled:YES];
-
-	[_mapListToggle setEnabled:NO forSegmentAtIndex:0];
-	[_mapListToggle setEnabled:YES forSegmentAtIndex:1];
+    
+    _mapListToggle.selectedSegmentIndex = 0;
 }
 
 - (void)switchToListView {
@@ -386,8 +389,7 @@
     
     [_locateUserButton setEnabled:NO];
 	
-	[_mapListToggle setEnabled:YES forSegmentAtIndex:0];
-	[_mapListToggle setEnabled:NO forSegmentAtIndex:1];
+    _mapListToggle.selectedSegmentIndex = 1;
 }
 
 #pragma mark MKMapViewDelegate
