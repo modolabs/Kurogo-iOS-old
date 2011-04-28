@@ -270,10 +270,10 @@
 {
     // TODO: make sure this balances out
     DLog(@"is facebook started?");
-    [[KGOSocialMediaController sharedController] startupFacebook];
-    [[KGOSocialMediaController sharedController] parseCallbackURL:url];
+    [[KGOSocialMediaController facebookService] startup];
+    [[KGOSocialMediaController facebookService] parseCallbackURL:url];
     
-    return [[KGOSocialMediaController sharedController] isFacebookLoggedIn];
+    return [[KGOSocialMediaController facebookService] isSignedIn];
 }
 
 - (BOOL)handleInternalURL:(NSURL *)url {

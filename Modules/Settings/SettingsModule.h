@@ -2,6 +2,8 @@
 
 @interface SettingsModule : KGOModule {
     
+    NSMutableSet *_notificationNames;
+    
 }
 
 @end

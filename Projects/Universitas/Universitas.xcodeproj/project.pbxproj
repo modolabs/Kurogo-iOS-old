@@ -123,6 +123,11 @@
 		EB14415F1309EFB100396753 /* KGOSpringboardViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EB14415B1309EFB100396753 /* KGOSpringboardViewController.m */; };
 		EB1441731309F09600396753 /* KGOModule.m in Sources */ = {isa = PBXBuildFile; fileRef = EB1441711309F09600396753 /* KGOModule.m */; };
 		EB1441A41309F54D00396753 /* MITBuildInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = EB1441A31309F54D00396753 /* MITBuildInfo.m */; };
+		EB1637BF13690455003C69E2 /* KGOSegmentedControl.m in Sources */ = {isa = PBXBuildFile; fileRef = EB1637BE13690455003C69E2 /* KGOSegmentedControl.m */; };
+		EB1637CB13690476003C69E2 /* KGOFacebookService.m in Sources */ = {isa = PBXBuildFile; fileRef = EB1637C213690476003C69E2 /* KGOFacebookService.m */; };
+		EB1637CC13690476003C69E2 /* KGOFoursquareEngine.m in Sources */ = {isa = PBXBuildFile; fileRef = EB1637C413690476003C69E2 /* KGOFoursquareEngine.m */; };
+		EB1637CD13690476003C69E2 /* KGOFoursquareService.m in Sources */ = {isa = PBXBuildFile; fileRef = EB1637C613690476003C69E2 /* KGOFoursquareService.m */; };
+		EB1637CE13690476003C69E2 /* KGOTwitterService.m in Sources */ = {isa = PBXBuildFile; fileRef = EB1637C913690476003C69E2 /* KGOTwitterService.m */; };
 		EB181F88131EDECA003728FF /* KGOPerson.m in Sources */ = {isa = PBXBuildFile; fileRef = EB181F76131EDECA003728FF /* KGOPerson.m */; };
 		EB181F8A131EDECA003728FF /* KGOPersonWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = EB181F78131EDECA003728FF /* KGOPersonWrapper.m */; };
 		EB181F8B131EDECA003728FF /* PeopleDataModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = EB181F79131EDECA003728FF /* PeopleDataModel.xcdatamodeld */; };
@@ -469,6 +474,19 @@
 		EB1441711309F09600396753 /* KGOModule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGOModule.m; sourceTree = "<group>"; };
 		EB14419F1309F51100396753 /* MITBuildInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MITBuildInfo.h; sourceTree = "<group>"; };
 		EB1441A31309F54D00396753 /* MITBuildInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MITBuildInfo.m; path = Modules/About/MITBuildInfo.m; sourceTree = SOURCE_ROOT; };
+		EB1637BD13690455003C69E2 /* KGOSegmentedControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGOSegmentedControl.h; sourceTree = "<group>"; };
+		EB1637BE13690455003C69E2 /* KGOSegmentedControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGOSegmentedControl.m; sourceTree = "<group>"; };
+		EB1637C013690476003C69E2 /* BitlyWrapperDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BitlyWrapperDelegate.h; sourceTree = "<group>"; };
+		EB1637C113690476003C69E2 /* KGOFacebookService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGOFacebookService.h; sourceTree = "<group>"; };
+		EB1637C213690476003C69E2 /* KGOFacebookService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGOFacebookService.m; sourceTree = "<group>"; };
+		EB1637C313690476003C69E2 /* KGOFoursquareEngine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGOFoursquareEngine.h; sourceTree = "<group>"; };
+		EB1637C413690476003C69E2 /* KGOFoursquareEngine.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGOFoursquareEngine.m; sourceTree = "<group>"; };
+		EB1637C513690476003C69E2 /* KGOFoursquareService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGOFoursquareService.h; sourceTree = "<group>"; };
+		EB1637C613690476003C69E2 /* KGOFoursquareService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGOFoursquareService.m; sourceTree = "<group>"; };
+		EB1637C713690476003C69E2 /* KGOSocialMediaService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGOSocialMediaService.h; sourceTree = "<group>"; };
+		EB1637C813690476003C69E2 /* KGOTwitterService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGOTwitterService.h; sourceTree = "<group>"; };
+		EB1637C913690476003C69E2 /* KGOTwitterService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGOTwitterService.m; sourceTree = "<group>"; };
+		EB1637CA13690476003C69E2 /* TwitterViewControllerDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TwitterViewControllerDelegate.h; sourceTree = "<group>"; };
 		EB181F75131EDECA003728FF /* KGOPerson.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGOPerson.h; sourceTree = "<group>"; };
 		EB181F76131EDECA003728FF /* KGOPerson.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGOPerson.m; sourceTree = "<group>"; };
 		EB181F77131EDECA003728FF /* KGOPersonWrapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGOPersonWrapper.h; sourceTree = "<group>"; };
@@ -900,6 +918,17 @@
 		EB033702133C2B8C00ACF2BB /* SocialMedia */ = {
 			isa = PBXGroup;
 			children = (
+				EB1637C013690476003C69E2 /* BitlyWrapperDelegate.h */,
+				EB1637C113690476003C69E2 /* KGOFacebookService.h */,
+				EB1637C213690476003C69E2 /* KGOFacebookService.m */,
+				EB1637C313690476003C69E2 /* KGOFoursquareEngine.h */,
+				EB1637C413690476003C69E2 /* KGOFoursquareEngine.m */,
+				EB1637C513690476003C69E2 /* KGOFoursquareService.h */,
+				EB1637C613690476003C69E2 /* KGOFoursquareService.m */,
+				EB1637C713690476003C69E2 /* KGOSocialMediaService.h */,
+				EB1637C813690476003C69E2 /* KGOTwitterService.h */,
+				EB1637C913690476003C69E2 /* KGOTwitterService.m */,
+				EB1637CA13690476003C69E2 /* TwitterViewControllerDelegate.h */,
 				EB033703133C2B8C00ACF2BB /* KGOShareButtonController.h */,
 				EB033704133C2B8C00ACF2BB /* KGOShareButtonController.m */,
 				EB033705133C2B8C00ACF2BB /* KGOSocialMediaController.h */,
@@ -936,6 +965,8 @@
 		EB033717133C2B8C00ACF2BB /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				EB1637BD13690455003C69E2 /* KGOSegmentedControl.h */,
+				EB1637BE13690455003C69E2 /* KGOSegmentedControl.m */,
 				EB469CB4134A7DA4005796E4 /* KGOSearchResultListTableView.h */,
 				EB469CB5134A7DA4005796E4 /* KGOSearchResultListTableView.m */,
 				EB033718133C2B8C00ACF2BB /* HarvardNavigationBar.h */,
@@ -1538,6 +1569,11 @@
 				EB46A5411352874D005796E4 /* KGOEvent.m in Sources */,
 				EB46A5441352874D005796E4 /* KGOEventParticipant.m in Sources */,
 				EB46A5471352874E005796E4 /* KGOEventParticipantRelation.m in Sources */,
+				EB1637BF13690455003C69E2 /* KGOSegmentedControl.m in Sources */,
+				EB1637CB13690476003C69E2 /* KGOFacebookService.m in Sources */,
+				EB1637CC13690476003C69E2 /* KGOFoursquareEngine.m in Sources */,
+				EB1637CD13690476003C69E2 /* KGOFoursquareService.m in Sources */,
+				EB1637CE13690476003C69E2 /* KGOTwitterService.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

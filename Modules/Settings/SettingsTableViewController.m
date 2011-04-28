@@ -59,12 +59,12 @@ static NSString * const KGOSettingsSocialMedia = @"SocialMedia";
         return [(NSString *)obj1 compare:(NSString *)obj2];
     }] retain];
 }
-
+/*
 - (void)viewWillAppear:(BOOL)animated
 {
     [self reloadDataForTableView:self.tableView];
 }
-
+*/
 - (void)didReceiveMemoryWarning {
 	// Releases the view if it doesn't have a superview.
     [super didReceiveMemoryWarning];
@@ -81,6 +81,11 @@ static NSString * const KGOSettingsSocialMedia = @"SocialMedia";
     [_settingKeys release];
     [_setUserSettings release];
     [super dealloc];
+}
+
+- (void)settingDidChange:(NSNotification *)aNotification
+{
+    [self reloadDataForTableView:self.tableView];
 }
 
 #pragma mark Table view methods
@@ -108,7 +113,8 @@ static NSString * const KGOSettingsSocialMedia = @"SocialMedia";
         NSArray *options = [_availableUserSettings objectForKey:key];
         id optionValue = [options objectAtIndex:indexPath.row];
         if ([optionValue isKindOfClass:[NSDictionary class]]) {
-            NSString *service = [optionValue stringForKey:@"service" nilIfEmpty:YES];
+            NSString *serviceName = [optionValue stringForKey:@"service" nilIfEmpty:YES];
+            id<KGOSocialMediaService> service = [[KGOSocialMediaController sharedController] serviceWithType:serviceName];
 
             NSMutableArray *views = [NSMutableArray array];
             
@@ -118,7 +124,7 @@ static NSString * const KGOSettingsSocialMedia = @"SocialMedia";
             UILabel *titleLabel = [[[UILabel alloc] initWithFrame:CGRectMake(10, y, width, font.lineHeight)] autorelease];
             titleLabel.backgroundColor = [UIColor clearColor];
             titleLabel.font = font;
-            titleLabel.text = [KGOSocialMediaController localizedNameForService:service];
+            titleLabel.text = [service serviceDisplayName];
             y += titleLabel.frame.size.height + 1;
             [views addObject:titleLabel];
             
@@ -138,9 +144,16 @@ static NSString * const KGOSettingsSocialMedia = @"SocialMedia";
             label.backgroundColor = [UIColor clearColor];
             label.font = font;
             label.textColor = [[KGOTheme sharedTheme] textColorForThemedProperty:KGOThemePropertyNavListSubtitle];
-            if ([[KGOSocialMediaController sharedController] isLoggedInService:service]) {
-                label.text = @"Signed in - tap to sign out";
-                
+            
+            if ([service isSignedIn]) {
+                NSString *username = [service userDisplayName];
+                if (username) {
+                    label.text = [NSString stringWithFormat:@"Signed in as %@ - tap to sign out", username];
+            
+                } else {
+                    label.text = @"Signed in - tap to sign out";
+                }
+
             } else {
                 label.text = @"Not signed in - tap to sign in";
             }
@@ -266,13 +279,12 @@ static NSString * const KGOSettingsSocialMedia = @"SocialMedia";
     } else {
         if ([key isEqualToString:KGOSettingsSocialMedia] && [optionValue isKindOfClass:[NSDictionary class]]) {
             // login/logout
-            NSString *service = [optionValue stringForKey:@"service" nilIfEmpty:YES];
-            if (service) {
-                if ([[KGOSocialMediaController sharedController] isLoggedInService:service]) {
-                    [[KGOSocialMediaController sharedController] logoutService:service];
-                } else {
-                    [[KGOSocialMediaController sharedController] loginService:service];
-                }
+            NSString *serviceName = [optionValue stringForKey:@"service" nilIfEmpty:YES];
+            id<KGOSocialMediaService> service = [[KGOSocialMediaController sharedController] serviceWithType:serviceName];
+            if ([service isSignedIn]) {
+                [service signout];
+            } else {
+                [service signin];
             }
             
         } else if ([key isEqualToString:KGOSettingsLogin]) {
@@ -296,7 +308,7 @@ static NSString * const KGOSettingsSocialMedia = @"SocialMedia";
         
         [[NSNotificationCenter defaultCenter] postNotificationName:KGOUserPreferencesDidChangeNotification object:key];
         
-        [self reloadDataForTableView:tableView];
+        //[self reloadDataForTableView:tableView];
     }
 }
 

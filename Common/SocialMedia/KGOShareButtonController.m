@@ -57,10 +57,13 @@
 
     if (_shareMethods.count > 1) {
         
-        
+        NSString *cancelTitle = nil;
+        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+            cancelTitle = NSLocalizedString(@"Cancel", @"share action sheet");
+        }
         UIActionSheet *shareSheet = [[UIActionSheet alloc] initWithTitle:self.actionSheetTitle
                                                                 delegate:self
-                                                       cancelButtonTitle:NSLocalizedString(@"Cancel", @"share action sheet")
+                                                       cancelButtonTitle:cancelTitle
                                                   destructiveButtonTitle:nil
                                                        otherButtonTitles:nil];
         
@@ -74,8 +77,14 @@
 }
 
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
-    if (buttonIndex > [actionSheet cancelButtonIndex]) {
-        buttonIndex--;
+    
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+        if (buttonIndex == [actionSheet cancelButtonIndex]) {
+            return;
+        }
+        if (buttonIndex > [actionSheet cancelButtonIndex]) {
+            buttonIndex--;
+        }
     }
     
     NSString *method = [_shareMethods objectAtIndex:buttonIndex];
@@ -96,7 +105,7 @@
                                 "\"description\":\"%@\"}",
                                 self.shareTitle, self.shareURL, self.shareBody];
         
-        [[KGOSocialMediaController sharedController] shareOnFacebook:attachment prompt:nil];
+        [[KGOSocialMediaController facebookService] shareOnFacebook:attachment prompt:nil];
 
 	} else if ([method isEqualToString:KGOSocialMediaTypeTwitter]) {
 		TwitterViewController *twitterVC = [[[TwitterViewController alloc] initWithNibName:@"TwitterViewController"

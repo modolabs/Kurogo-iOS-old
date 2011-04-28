@@ -2,18 +2,11 @@
 #import "MGTwitterEngine.h"
 #import "ConnectionWrapper.h"
 #import "KGOSocialMediaController.h"
+#import "BitlyWrapperDelegate.h"
 
 // TODO: strip this down to handle just the login UI
 
-@class TwitterViewController;
-
-@protocol TwitterViewControllerDelegate <NSObject>
-
-- (BOOL)controllerShouldContineToMessageScreen:(TwitterViewController *)controller;
-- (void)controllerDidLogin:(TwitterViewController *)controller;
-
-@end
-
+@protocol TwitterViewControllerDelegate;
 
 @interface TwitterViewController : UIViewController <UITextFieldDelegate, BitlyWrapperDelegate> {
     
