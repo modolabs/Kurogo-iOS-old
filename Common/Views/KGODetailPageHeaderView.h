@@ -40,4 +40,6 @@
 - (void)hideShareButton;
 - (void)hideBookmarkButton;
 
+- (CGFloat)headerWidthWithButtons;
+
 @end

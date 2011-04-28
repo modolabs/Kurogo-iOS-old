@@ -10,7 +10,6 @@
 @interface KGODetailPageHeaderView (Private)
 
 - (void)toggleBookmark:(id)sender;
-- (CGFloat)headerWidthWithButtons;
 
 @end
 
@@ -47,14 +46,10 @@
     CGFloat buttonHeight = 0;
     
     if (_titleLabel) {
-        CGFloat maxWidth = self.frame.size.width - 2 * LABEL_PADDING;
+        CGFloat maxWidth = self.bounds.size.width - 2 * LABEL_PADDING;
         CGSize constraintSize = CGSizeMake(maxWidth, _titleLabel.font.lineHeight * MAX_TITLE_LINES);
         CGSize textSize = [_titleLabel.text sizeWithFont:_titleLabel.font constrainedToSize:constraintSize];
         _titleLabel.frame = CGRectMake(LABEL_PADDING, LABEL_PADDING, maxWidth, textSize.height);
-        
-        if (![_titleLabel isDescendantOfView:self]) {
-            [self addSubview:_titleLabel];
-        }
         titleHeight = _titleLabel.frame.size.height + LABEL_PADDING;
     }
     
@@ -67,10 +62,6 @@
             y += _titleLabel.frame.size.height + LABEL_PADDING;
         }
         _subtitleLabel.frame = CGRectMake(LABEL_PADDING, y, maxWidth, textSize.height);
-        
-        if (![_subtitleLabel isDescendantOfView:self]) {
-            [self addSubview:_subtitleLabel];
-        }
         subtitleHeight = _subtitleLabel.frame.size.height + LABEL_PADDING;
     }
 
@@ -162,15 +153,26 @@
     self.frame = frame;
     
     self.titleLabel.text = _detailItem.title;
+    if (![_titleLabel isDescendantOfView:self]) {
+        [self addSubview:_titleLabel];
+    }
+    
+    NSString *subtitle = nil;
     if ([_detailItem respondsToSelector:@selector(subtitle)]) {
+        subtitle = [_detailItem subtitle];
+    }
+    
+    if (subtitle) {
         self.subtitleLabel.text = [_detailItem subtitle];
+        if (![_subtitleLabel isDescendantOfView:self]) {
+            [self addSubview:_subtitleLabel];
+        }
+    
     } else {
         [_subtitleLabel removeFromSuperview];
         [_subtitleLabel release];
         _subtitleLabel = nil;
     }
-    
-    [self setNeedsLayout];
 }
 
 - (CGFloat)headerWidthWithButtons
@@ -204,7 +206,7 @@
     if (!_bookmarkButton) {
         UIImage *placeholder = [UIImage imageWithPathName:@"common/bookmark_off.png"];
         CGFloat buttonX = [self headerWidthWithButtons] - placeholder.size.width;
-        CGFloat buttonY = LABEL_PADDING + (_titleLabel == nil ? 0 : _titleLabel.frame.size.height + LABEL_PADDING);
+        CGFloat buttonY = LABEL_PADDING + (_subtitleLabel == nil ? 0 : _titleLabel.frame.size.height + LABEL_PADDING);
         
         _bookmarkButton = [[UIButton buttonWithType:UIButtonTypeCustom] retain];
         _bookmarkButton.frame = CGRectMake(buttonX, buttonY, placeholder.size.width, placeholder.size.height);
@@ -229,7 +231,7 @@
     if (_shareButton) {
         frame.origin.x = self.bounds.size.width - _shareButton.frame.size.width - frame.size.width - 2 * LABEL_PADDING;
     }
-    frame.origin.y = LABEL_PADDING + (_titleLabel == nil ? 0 : _titleLabel.frame.size.height + LABEL_PADDING);
+    frame.origin.y = LABEL_PADDING + (_subtitleLabel == nil ? 0 : _titleLabel.frame.size.height + LABEL_PADDING);
     _bookmarkButton.frame = frame;
 }
 
