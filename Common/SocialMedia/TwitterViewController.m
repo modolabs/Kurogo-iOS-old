@@ -100,8 +100,8 @@
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self name:TwitterDidLoginNotification object:nil];
     [self refreshNavBarItems];
-    
-    [_signInButton setTitle:NSLocalizedString(@"Sign Out", nil) forState:UIControlStateNormal];
+
+    _signInButton.hidden = YES;
     
     if ([self.delegate respondsToSelector:@selector(controllerDidLogin:)]) {
         [self.delegate controllerDidLogin:self];
@@ -109,6 +109,7 @@
     
     _messageContainerView.hidden = NO;
     _loginContainerView.hidden = YES;
+    _usernameLabel.text = [[KGOSocialMediaController twitterService] userDisplayName];
     
     if (self.longURL && !self.shortURL && [[KGOSocialMediaController sharedController] supportsBitlyURLShortening]) {
         _loadingView.hidden = NO;
@@ -132,6 +133,8 @@
         }
     }
     
+    [_messageView becomeFirstResponder];
+    
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(twitterDidLogout:)
                                                  name:TwitterDidLogoutNotification
@@ -142,7 +145,8 @@
 - (void)twitterDidLogout:(NSNotification *)aNotification
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self name:TwitterDidLogoutNotification object:nil];
-    [_signInButton setTitle:NSLocalizedString(@"Sign In", nil) forState:UIControlStateNormal];
+    [_signInButton setTitle:NSLocalizedString(@"Sign in", nil) forState:UIControlStateNormal];
+    _signInButton.hidden = NO;
     [self refreshNavBarItems];
     
     _loadingView.hidden = YES;
