@@ -5,6 +5,8 @@
 @implementation MKMapView (KGOAdditions)
 
 - (void)centerAndZoomToDefaultRegion {
+    // TODO: remove this thing about NSUserDefaults if we aren't actually
+    // going to use it
     NSDictionary *locationPreferences = [[NSUserDefaults standardUserDefaults] dictionaryForKey:@"Location"];
     if (!locationPreferences) {    
         KGOAppDelegate *appDelegate = KGO_SHARED_APP_DELEGATE();

@@ -201,6 +201,11 @@
     return nil;
 }
 
+- (NSArray *)userDefaults
+{
+    return nil;
+}
+
 #pragma mark Social media
 
 - (NSSet *)socialMediaTypes {

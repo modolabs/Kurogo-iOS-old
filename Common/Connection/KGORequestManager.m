@@ -328,6 +328,14 @@ NSString * const KGODeviceTokenKey = @"KGODeviceToken";
         DLog(@"deleted store");
     }
     
+    for (KGOModule *aModule in [KGO_SHARED_APP_DELEGATE() modules]) {
+        for (NSString *aDefault in [aModule userDefaults]) {
+            [[NSUserDefaults standardUserDefaults] removeObjectForKey:aDefault];
+        }
+    }
+    
+    //[[NSUserDefaults standardUserDefaults] re
+    
     [[NSNotificationCenter defaultCenter] postNotificationName:KGODidLogoutNotification object:self];
     
     // this clears up cached session data on the server.

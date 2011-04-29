@@ -34,6 +34,11 @@ NSString * const MapTypePreferenceChanged = @"MapTypeChanged";
     [super launch];
 }
 
+- (NSArray *)userDefaults
+{
+    return [NSArray arrayWithObjects:MapTypePreference, nil];
+}
+
 
 #pragma mark Search
 

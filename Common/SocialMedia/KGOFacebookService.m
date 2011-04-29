@@ -3,10 +3,9 @@
 #import "KGOSocialMediaController.h"
 
 // NSUserDefaults
-static NSString * const FacebookTokenKey = @"FBToken";
-static NSString * const FacebookTokenPermissions = @"FBTokenPermissions";
-static NSString * const FacebookTokenExpirationSetting = @"FBTokenExpiration";
-
+NSString * const FacebookTokenKey = @"FBToken";
+NSString * const FacebookTokenPermissions = @"FBTokenPermissions";
+NSString * const FacebookTokenExpirationSetting = @"FBTokenExpiration";
 NSString * const FacebookUsernameKey = @"FBUsername";
 
 

@@ -7,7 +7,7 @@
 
 // NSUserDefaults
 NSString * const FoursquareUsernameKey = @"FoursquareUsername";
-static NSString * const FoursquareUserIDKey = @"FoursquareUserID";
+NSString * const FoursquareUserIDKey = @"FoursquareUserID";
 
 static NSString * const FoursquareBaseURL = @"https://api.foursquare.com/v2";
 
@@ -174,8 +174,8 @@ static NSString * const FoursquareBaseURL = @"https://api.foursquare.com/v2";
 
 @implementation KGOFoursquareEngine
 
-static NSString * const FoursquareOAuthTokenKey = @"4squareToken";
-static NSString * const FoursquareOAuthExpirationDate = @"4squareExpiration";
+NSString * const FoursquareOAuthTokenKey = @"4squareToken";
+NSString * const FoursquareOAuthExpirationDate = @"4squareExpiration";
 
 @synthesize authCode, redirectURI, clientID, clientSecret;
 

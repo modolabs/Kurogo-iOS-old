@@ -3,6 +3,8 @@
 #import "MGTwitterEngine.h"
 #import "TwitterViewControllerDelegate.h"
 
+extern NSString * const TwitterUsernameKey;
+
 @interface KGOTwitterService : NSObject <KGOSocialMediaService,
 MGTwitterEngineDelegate, TwitterViewControllerDelegate> {
     

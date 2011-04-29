@@ -269,6 +269,8 @@
         return;
     }
     
+    // TODO: remove this thing about NSUserDefaults if we aren't actually
+    // going to use it
     CLLocation *location;
     NSDictionary *locationPreferences = [[NSUserDefaults standardUserDefaults] dictionaryForKey:@"Location"];
     if (!locationPreferences) {    

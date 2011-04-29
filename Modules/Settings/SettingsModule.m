@@ -44,4 +44,9 @@
     [super dealloc];
 }
 
+- (NSArray *)userDefaults
+{
+    return [NSArray arrayWithObjects:KGOUserPreferencesKey, nil];
+}
+
 @end

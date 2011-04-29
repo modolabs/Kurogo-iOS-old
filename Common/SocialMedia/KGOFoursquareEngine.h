@@ -2,6 +2,9 @@
 #import "KGOWebViewController.h"
 
 extern NSString * const FoursquareUsernameKey;
+extern NSString * const FoursquareUserIDKey;
+extern NSString * const FoursquareOAuthTokenKey;
+extern NSString * const FoursquareOAuthExpirationDate; // not supported by foursquare yet
 
 @class KGOFoursquareRequest;
 

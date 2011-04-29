@@ -115,6 +115,9 @@
 // the settings module.
 - (NSArray *)applicationStateNotificationNames;
 
+// names of keys saved in user defaults which get wiped on logout.
+- (NSArray *)userDefaults;
+
 #pragma mark Social media
 
 - (NSSet *)socialMediaTypes;

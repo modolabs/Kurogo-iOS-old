@@ -5,8 +5,7 @@
 #import "KGOSocialMediaController.h"
 #import "TwitterViewController.h"
 
-// NSUserDefaults
-static NSString * const TwitterUsernameKey = @"TwitterUsername";
+NSString * const TwitterUsernameKey = @"TwitterUsername";
 static NSString * const TwitterServiceName = @"Twitter";
 
 

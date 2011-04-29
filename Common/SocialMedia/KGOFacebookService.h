@@ -2,6 +2,9 @@
 #import "KGOSocialMediaService.h"
 #import "Facebook.h"
 
+extern NSString * const FacebookTokenKey;
+extern NSString * const FacebookTokenPermissions;
+extern NSString * const FacebookTokenExpirationSetting;
 extern NSString * const FacebookUsernameKey;
 
 @interface KGOFacebookService : NSObject <KGOSocialMediaService, 
