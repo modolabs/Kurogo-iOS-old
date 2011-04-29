@@ -292,6 +292,7 @@
 
     } else {
         if ([cellData isKindOfClass:[UILabel class]]) {
+            cell.selectionStyle = UITableViewCellSelectionStyleNone;
             [cell.contentView addSubview:cellData];
         }
     }
