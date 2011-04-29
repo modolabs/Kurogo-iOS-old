@@ -1,5 +1,6 @@
 #import "KGOSegmentedControl.h"
 #import "UIKit+KGOAdditions.h"
+#import "KGOTheme.h"
 
 @implementation KGOSegmentedControl
 
@@ -65,6 +66,22 @@
     }
     
     return [[UIImage imageWithPathName:imagePath] stretchableImageWithLeftCapWidth:15.0 topCapHeight:0];
+}
+
+- (UIColor *)textColorForState:(KGOTabState)state {
+    
+    switch (state) {
+        case KGOTabStateInactive:
+            return [[KGOTheme sharedTheme] textColorForThemedProperty:KGOThemePropertyScrollTab];
+        case KGOTabStateActive:
+            return [[KGOTheme sharedTheme] textColorForThemedProperty:KGOThemePropertyScrollTabSelected];
+        case KGOTabStatePressed:
+            return [[KGOTheme sharedTheme] textColorForThemedProperty:KGOThemePropertyScrollTabSelected];
+        case KGOTabStateDisabled:
+            return [[KGOTheme sharedTheme] textColorForThemedProperty:KGOThemePropertyScrollTab];
+        default:
+            return nil;
+    }
 }
 
 - (void)addTarget:(id)target action:(SEL)action forControlEvents:(UIControlEvents)controlEvents

@@ -1,6 +1,7 @@
 #import "KGOTabbedControl.h"
 #import "Foundation+KGOAdditions.h"
 #import "UIKit+KGOAdditions.h"
+#import "KGOTheme.h"
 
 @interface KGOTabbedControl (Private)
 
@@ -258,13 +259,13 @@
     
     switch (state) {
         case KGOTabStateInactive:
-            return [UIColor whiteColor];
+            return [[KGOTheme sharedTheme] textColorForThemedProperty:KGOThemePropertyTab];
         case KGOTabStateActive:
-            return [UIColor blackColor];
+            return [[KGOTheme sharedTheme] textColorForThemedProperty:KGOThemePropertyTabSelected];
         case KGOTabStatePressed:
-            return [UIColor blackColor];
+            return [[KGOTheme sharedTheme] textColorForThemedProperty:KGOThemePropertyTabSelected];
         case KGOTabStateDisabled:
-            return [UIColor blackColor];
+            return [[KGOTheme sharedTheme] textColorForThemedProperty:KGOThemePropertyTab];
         default:
             return nil;
     }
@@ -281,8 +282,14 @@
 	CGFloat tabOffset = self.tabSpacing;
 	for (int tabIndex = 0; tabIndex < _tabs.count; tabIndex++) {
         UIButton *button = [_tabs objectAtIndex:tabIndex];
-        [button setBackgroundImage:[self backgroundImageForState:KGOTabStateInactive atIndex:tabIndex]
-                          forState:UIControlStateNormal];
+        
+        if (_selectedTabIndex == tabIndex) {
+            [button setBackgroundImage:[self backgroundImageForState:KGOTabStateActive atIndex:tabIndex]
+                              forState:UIControlStateNormal];
+        } else {
+            [button setBackgroundImage:[self backgroundImageForState:KGOTabStateInactive atIndex:tabIndex]
+                              forState:UIControlStateNormal];
+        }
         [button setBackgroundImage:[self backgroundImageForState:KGOTabStatePressed atIndex:tabIndex]
                           forState:UIControlStateHighlighted];
         
