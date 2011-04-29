@@ -3,6 +3,10 @@
 #import "KGOScrollingTabstrip.h"
 #import "CalendarDataManager.h"
 
+bool isOverOneMonth(NSTimeInterval interval);
+bool isOverOneDay(NSTimeInterval interval);
+bool isOverOneHour(NSTimeInterval interval);
+
 @interface CalendarHomeViewController : KGOTableViewController <KGODatePagerDelegate,
 KGOScrollingTabstripDelegate, CalendarDataManagerDelegate> {
     

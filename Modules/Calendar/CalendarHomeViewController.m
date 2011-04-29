@@ -11,6 +11,22 @@
 @end
 
 
+
+
+// TODO: flesh out placeholder functions
+bool isOverOneMonth(NSTimeInterval interval) {
+    return interval > 31 * 24 * 60 * 60;
+}
+
+bool isOverOneDay(NSTimeInterval interval) {
+    return interval > 24 * 60 * 60;
+}
+
+bool isOverOneHour(NSTimeInterval interval) {
+    return interval > 60 * 60;
+}
+
+
 @implementation CalendarHomeViewController
 
 @synthesize searchTerms, dataManager, moduleTag, showsGroups, currentCalendar = _currentCalendar;
@@ -152,19 +168,6 @@
         frame.size.height -= _tabstrip.frame.size.height;
     }
     self.tableView = [self addTableViewWithFrame:frame style:style];
-}
-
-// TODO: flesh out placeholder functions
-static bool isOverOneMonth(NSTimeInterval interval) {
-    return interval > 31 * 24 * 60 * 60;
-}
-
-static bool isOverOneDay(NSTimeInterval interval) {
-    return interval > 24 * 60 * 60;
-}
-
-static bool isOverOneHour(NSTimeInterval interval) {
-    return interval > 60 * 60;
 }
 
 
