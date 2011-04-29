@@ -27,10 +27,8 @@
     IBOutlet UILabel *_counterLabel;
     IBOutlet UITextView *_messageView;
     IBOutlet UIButton *_tweetButton;
-    IBOutlet UIButton *_signOutButton;
 }
 
-- (IBAction)signOutButtonPressed:(UIButton *)sender;
 - (IBAction)signInButtonPressed:(UIButton *)sender;
 - (IBAction)tweetButtonPressed:(id)sender;
 

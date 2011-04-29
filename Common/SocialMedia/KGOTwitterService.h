@@ -6,7 +6,7 @@
 extern NSString * const TwitterUsernameKey;
 
 @interface KGOTwitterService : NSObject <KGOSocialMediaService,
-MGTwitterEngineDelegate, TwitterViewControllerDelegate> {
+MGTwitterEngineDelegate, TwitterViewControllerDelegate, UIAlertViewDelegate> {
     
     NSString *_oauthKey;
     NSString *_oauthSecret;
@@ -16,6 +16,11 @@ MGTwitterEngineDelegate, TwitterViewControllerDelegate> {
 	NSString *_twitterUsername;
     NSString *_twitterPassword;
     
+    id _lastTarget;
+    SEL _lastSuccessAction;
+    SEL _lastFailureAction;
+    NSString *_lastConnectionIdentifier;
+    
 }
 
 @property (nonatomic, retain) NSString *twitterUsername;
@@ -24,5 +29,7 @@ MGTwitterEngineDelegate, TwitterViewControllerDelegate> {
 - (NSString *)twitterUsername;
 - (void)setTwitterUsername:(NSString *)username;
 - (void)postToTwitter:(NSString *)text;
+- (void)postToTwitter:(NSString *)text target:(id)target success:(SEL)successAction failure:(SEL)failureAction;
+- (void)disconnectTarget:(id)target;
 
 @end

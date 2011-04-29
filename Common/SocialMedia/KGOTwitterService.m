@@ -42,6 +42,21 @@ static NSString * const TwitterServiceName = @"Twitter";
 	[_twitterEngine sendUpdate:text];
 }
 
+- (void)postToTwitter:(NSString *)text target:(id)target success:(SEL)successAction failure:(SEL)failureAction
+{
+    _lastTarget = target;
+    _lastSuccessAction = successAction;
+    _lastFailureAction = failureAction;
+    _lastConnectionIdentifier = [[_twitterEngine sendUpdate:text] retain];
+}
+
+- (void)disconnectTarget:(id)target
+{
+    if (target == _lastTarget) {
+        _lastTarget = nil;
+    }
+}
+
 - (void)dealloc
 {
     [_oauthKey release];
@@ -145,7 +160,7 @@ static NSString * const TwitterServiceName = @"Twitter";
 
 #pragma mark TwitterViewControllerDelegate
 
-- (BOOL)controllerShouldContineToMessageScreen:(TwitterViewController *)controller
+- (BOOL)controllerShouldContinueToMessageScreen:(TwitterViewController *)controller
 {
     return NO;
 }
@@ -189,11 +204,29 @@ static NSString * const TwitterServiceName = @"Twitter";
 
 - (void)requestSucceeded:(NSString *)connectionIdentifier {
 	//[KGO_SHARED_APP_DELEGATE() hideNetworkActivityIndicator];
+    
+    if (connectionIdentifier == _lastConnectionIdentifier) {
+        [_lastConnectionIdentifier release];
+        _lastConnectionIdentifier = nil;
+        
+        if (_lastSuccessAction) {
+            [_lastTarget performSelector:_lastSuccessAction];
+        }
+    }
 }
 
 - (void)requestFailed:(NSString *)connectionIdentifier withError:(NSError *)error {
 	//[KGO_SHARED_APP_DELEGATE() hideNetworkActivityIndicator];
-	
+
+    id<UIAlertViewDelegate> alertViewDelegate = nil;
+    
+    if (connectionIdentifier == _lastConnectionIdentifier) {
+        [_lastConnectionIdentifier release];
+        _lastConnectionIdentifier = nil;
+        
+        alertViewDelegate = _lastTarget;
+    }
+    
 	NSString *errorTitle;
 	NSString *errorMessage;
     
@@ -212,12 +245,18 @@ static NSString * const TwitterServiceName = @"Twitter";
 	
 	UIAlertView *alertView = [[[UIAlertView alloc] initWithTitle:errorTitle 
 														 message:errorMessage
-														delegate:nil 
+														delegate:alertViewDelegate
 											   cancelButtonTitle:NSLocalizedString(@"OK", nil) 
 											   otherButtonTitles:nil] autorelease];
 	[alertView show];
 }
 
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if (_lastFailureAction) {
+        [_lastTarget performSelector:_lastFailureAction];
+    }
+}
 
 - (void)connectionStarted:(NSString *)connectionIdentifier {
 	[KGO_SHARED_APP_DELEGATE() showNetworkActivityIndicator];

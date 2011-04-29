@@ -4,7 +4,12 @@
 
 @protocol TwitterViewControllerDelegate <NSObject>
 
-- (BOOL)controllerShouldContineToMessageScreen:(TwitterViewController *)controller;
+- (BOOL)controllerShouldContinueToMessageScreen:(TwitterViewController *)controller;
+
+@optional
+
 - (void)controllerDidLogin:(TwitterViewController *)controller;
+- (void)controllerDidPostTweet:(TwitterViewController *)controller;
+- (void)controllerFailedToTweet:(TwitterViewController *)controller;
 
 @end

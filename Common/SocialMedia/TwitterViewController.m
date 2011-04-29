@@ -9,6 +9,7 @@
 @interface TwitterViewController (Private)
 
 - (void)updateCounter:(NSString *)message delta:(NSInteger)deltaChars;
+- (void)refreshNavBarItems;
 
 @end
 
@@ -16,42 +17,39 @@
 
 @synthesize longURL, preCannedMessage, shortURL, delegate;
 
-- (void)viewDidLoad
+- (void)refreshNavBarItems
 {
-    [super viewDidLoad];
-    
     UIBarButtonItem *cancelButton = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
                                                                                    target:self
                                                                                    action:@selector(dismissModalViewControllerAnimated:)] autorelease];
-    if ([self.delegate controllerShouldContineToMessageScreen:self]) {
-        self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithTitle:@"Tweet"
+
+    if ([[KGOSocialMediaController twitterService] isSignedIn]) {
+        NSString *title = NSLocalizedString(@"Tweet", nil);
+        self.title = title;
+        self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithTitle:title
                                                                                    style:UIBarButtonItemStyleDone
                                                                                   target:self
                                                                                   action:@selector(tweetButtonPressed:)] autorelease];
         self.navigationItem.leftBarButtonItem = cancelButton;
     } else {
-        
+        self.title = NSLocalizedString(@"Sign in to Twitter", nil);
         self.navigationItem.rightBarButtonItem = cancelButton;
     }
+}
+
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
     
-    self.title = NSLocalizedString(@"Twitter", nil);
+    [self refreshNavBarItems];
     
     _loginHintLabel.text = NSLocalizedString(@"Sign into your Twitter account.", nil);
     
-    UIImage *backgroundImage = [UIImage imageWithPathName:@"common/generic-button-background.png"];
-    UIImage *backgroundImagePressed = [UIImage imageWithPathName:@"common/generic-button-background-pressed.png"];
-    
-    [_signInButton setTitle:NSLocalizedString(@"Sign In", nil) forState:UIControlStateNormal];
+    UIImage *backgroundImage = [[UIImage imageWithPathName:@"common/generic-button-background.png"] stretchableImageWithLeftCapWidth:10 topCapHeight:10];
+    UIImage *backgroundImagePressed = [[UIImage imageWithPathName:@"common/generic-button-background-pressed.png"] stretchableImageWithLeftCapWidth:10 topCapHeight:10];
+
     [_signInButton setBackgroundImage:backgroundImage forState:UIControlStateNormal];
     [_signInButton setBackgroundImage:backgroundImagePressed forState:UIControlStateHighlighted];
-    
-    [_signOutButton setTitle:NSLocalizedString(@"Sign Out", nil) forState:UIControlStateNormal];
-    [_signOutButton setBackgroundImage:backgroundImage forState:UIControlStateNormal];
-    [_signOutButton setBackgroundImage:backgroundImagePressed forState:UIControlStateHighlighted];
-    
-    [_tweetButton setTitle:NSLocalizedString(@"Tweet", nil) forState:UIControlStateNormal];
-    _usernameField.placeholder = NSLocalizedString(@"Username", nil);
-    _passwordField.placeholder = NSLocalizedString(@"Password", nil);
     
     _messageView.layer.cornerRadius = 5.0;
     _messageView.layer.borderWidth = 2.0;
@@ -59,45 +57,56 @@
     
     if ([[KGOSocialMediaController twitterService] isSignedIn]) {
         [self twitterDidLogin:nil];
-        [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(twitterDidLogout:)
-                                                     name:TwitterDidLogoutNotification
-                                                   object:nil];
 
     } else {
         [self twitterDidLogout:nil];
-        [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(twitterDidLogin:)
-                                                     name:TwitterDidLoginNotification
-                                                   object:nil];
     }
 }
 
 - (IBAction)signInButtonPressed:(UIButton *)sender
 {
-    [(KGOTwitterService *)[KGOSocialMediaController twitterService] loginTwitterWithUsername:_usernameField.text password:_passwordField.text];
-    _loadingView.hidden = NO;
-}
-
-- (IBAction)signOutButtonPressed:(UIButton *)sender
-{
-    [[KGOSocialMediaController twitterService] signout];
-    _loadingView.hidden = NO;
+    if ([[KGOSocialMediaController twitterService] isSignedIn]) {
+        [[KGOSocialMediaController twitterService] signout];
+    } else {
+        [[KGOSocialMediaController twitterService] loginTwitterWithUsername:_usernameField.text password:_passwordField.text];
+        _loadingView.hidden = NO;
+    }
 }
 
 - (IBAction)tweetButtonPressed:(id)sender
 {
-    [[KGOSocialMediaController twitterService] postToTwitter:_messageView.text];
+    [[KGOSocialMediaController twitterService] postToTwitter:_messageView.text
+                                                      target:self
+                                                     success:@selector(tweetDidSucceed)
+                                                     failure:@selector(tweetDidFail)];
     _loadingView.hidden = NO;
+}
+
+- (void)tweetDidSucceed
+{
+    if ([self.delegate respondsToSelector:@selector(controllerDidPostTweet:)]) {
+        [self.delegate controllerDidPostTweet:self];
+    }
+}
+
+- (void)tweetDidFail
+{
+    if ([self.delegate respondsToSelector:@selector(controllerFailedToTweet:)]) {
+        [self.delegate controllerFailedToTweet:self];
+    }
 }
 
 - (void)twitterDidLogin:(NSNotification *)aNotification
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self name:TwitterDidLoginNotification object:nil];
+    [self refreshNavBarItems];
     
-    [self.delegate controllerDidLogin:self];
+    [_signInButton setTitle:NSLocalizedString(@"Sign Out", nil) forState:UIControlStateNormal];
     
-    self.title = NSLocalizedString(@"Post to Twitter", nil);
+    if ([self.delegate respondsToSelector:@selector(controllerDidLogin:)]) {
+        [self.delegate controllerDidLogin:self];
+    }
+    
     _messageContainerView.hidden = NO;
     _loginContainerView.hidden = YES;
     
@@ -133,8 +142,9 @@
 - (void)twitterDidLogout:(NSNotification *)aNotification
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self name:TwitterDidLogoutNotification object:nil];
+    [_signInButton setTitle:NSLocalizedString(@"Sign In", nil) forState:UIControlStateNormal];
+    [self refreshNavBarItems];
     
-    self.title = NSLocalizedString(@"Sign In to Twitter", nil);
     _loadingView.hidden = YES;
     _messageContainerView.hidden = YES;
     _loginContainerView.hidden = NO;
