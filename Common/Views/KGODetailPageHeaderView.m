@@ -7,13 +7,6 @@
 #define MAX_TITLE_LINES 3
 #define MAX_SUBTITLE_LINES 5
 
-@interface KGODetailPageHeaderView (Private)
-
-- (void)toggleBookmark:(id)sender;
-
-@end
-
-
 @implementation KGODetailPageHeaderView
 
 @synthesize showsShareButton, showsBookmarkButton, delegate;

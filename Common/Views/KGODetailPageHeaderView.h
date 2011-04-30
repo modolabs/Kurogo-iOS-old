@@ -39,6 +39,7 @@
 - (void)layoutShareButton;
 - (void)hideShareButton;
 - (void)hideBookmarkButton;
+- (void)toggleBookmark:(id)sender;
 
 - (CGFloat)headerWidthWithButtons;
 
