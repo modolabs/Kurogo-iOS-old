@@ -147,9 +147,7 @@
             categories = [self.parentCategory children];
         }
         
-        self.categories = [categories sortedArrayUsingComparator:^NSComparisonResult(id<KGOCategory> obj1, id<KGOCategory> obj2) {
-            return [obj1.title compare:obj2.title];
-        }];
+        self.categories = categories;
 
     } else if (request == self.leafItemsRequest) {
         self.leafItems = self.parentCategory.items;
