@@ -12,6 +12,7 @@
 @dynamic subcategories;
 @dynamic parentCategory;
 @dynamic hasSubcategories;
+@dynamic browsable;
 
 - (NSString *)moduleTag
 {

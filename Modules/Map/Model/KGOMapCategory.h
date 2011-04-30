@@ -13,6 +13,7 @@
 @property (nonatomic, retain) NSSet* places;
 @property (nonatomic, retain) KGOMapCategory * parentCategory;
 @property (nonatomic, retain) NSNumber *hasSubcategories;
+@property (nonatomic, retain) NSNumber * browsable;
 
 + (KGOMapCategory *)categoryWithPath:(NSArray *)categoryPath;
 

@@ -1,14 +1,17 @@
 #import <UIKit/UIKit.h>
 #import <MapKit/MKMapView.h>
 #import "KGOSearchDisplayController.h"
+#import "KGORequest.h"
 
 @class KGOSearchBar;
 @class MKMapView;
 @class MapModule;
 @class KGOSegmentedControl;
+@class KGOPlacemark;
 
 @interface MapHomeViewController : UIViewController <MKMapViewDelegate,
-KGOSearchDisplayDelegate, KGODetailPagerController, CLLocationManagerDelegate> {
+KGOSearchDisplayDelegate, KGODetailPagerController, CLLocationManagerDelegate,
+KGORequestDelegate> {
 	
 	IBOutlet KGOSearchBar *_searchBar;
 	IBOutlet KGOToolbar *_bottomBar;
@@ -36,6 +39,9 @@ KGOSearchDisplayDelegate, KGODetailPagerController, CLLocationManagerDelegate> {
 	KGOSegmentedControl *_mapListToggle;
 
     NSArray *_annotations;
+
+    KGOPlacemark *_pendingPlacemark;
+    KGORequest *_placemarkInfoRequest;
 }
 
 @property (nonatomic, retain) MapModule *mapModule;

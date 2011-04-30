@@ -18,7 +18,7 @@ NSString * const MapTypePreferenceChanged = @"MapTypeChanged";
 {	
 	[super dealloc];
 }
-
+/*
 - (void)launch {
 #ifdef DEBUG
     if (![self isActive]) {
@@ -33,7 +33,7 @@ NSString * const MapTypePreferenceChanged = @"MapTypeChanged";
 #endif
     [super launch];
 }
-
+*/
 - (NSArray *)userDefaults
 {
     return [NSArray arrayWithObjects:MapTypePreference, nil];
@@ -234,6 +234,9 @@ NSString * const MapTypePreferenceChanged = @"MapTypeChanged";
                         category.title = title;
                         category.sortOrder = [NSNumber numberWithInt:sortOrder];
                         sortOrder++; // this can be anything so long as it's ascending within the parent category
+                    }
+                    if (![category.browsable boolValue]) {
+                        category.browsable = [NSNumber numberWithBool:YES];
                     }
                     categoriesCreated++;
                     

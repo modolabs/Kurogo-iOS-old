@@ -23,6 +23,8 @@
 @property (nonatomic, retain) KGOMapCategory *category;
 
 + (KGOPlacemark *)placemarkWithDictionary:(NSDictionary *)dictionary;
++ (KGOPlacemark *)placemarkWithID:(NSString *)placemarkID categoryPath:(NSArray *)categoryPath;
+- (void)updateWithDictionary:(NSDictionary *)dictionary;
 
 @end
 
