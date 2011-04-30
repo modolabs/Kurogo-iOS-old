@@ -14,6 +14,8 @@
 	NSArray *_categories;
     NSArray *_leafItems;
     KGORequest *_request;
+    
+    UIView *_loadingView;
 
 }
 
@@ -28,5 +30,8 @@
 
 @property (nonatomic, retain) KGORequest *leafItemsRequest;
 @property (nonatomic, retain) NSString *leafItemEntityName;
+
+- (void)showLoadingView;
+- (void)hideLoadingView;
 
 @end

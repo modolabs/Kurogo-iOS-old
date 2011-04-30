@@ -32,9 +32,11 @@
     
     if (!self.categories.count && self.categoriesRequest) {
         [self.categoriesRequest connect];
+        [self showLoadingView];
         
     } else if (!self.leafItems.count && self.leafItemsRequest) {
         [self.leafItemsRequest connect];
+        [self showLoadingView];
     }
     
     self.view.backgroundColor = [[KGOTheme sharedTheme] backgroundColorForApplication];
@@ -86,14 +88,60 @@
 
 #pragma mark KGORequestDelegate
 
+- (void)showLoadingView
+{
+    if (!_loadingView) {
+        UIActivityIndicatorView *spinny = [[[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray] autorelease];
+
+        NSString *text = NSLocalizedString(@"Loading...", nil);
+        UIFont *font = [UIFont systemFontOfSize:15];
+        CGSize size = [text sizeWithFont:font];
+        UILabel *label = [[[UILabel alloc] initWithFrame:CGRectMake(spinny.frame.size.width, 0, size.width, size.height)] autorelease];
+        label.text = text;
+        label.font = font;
+        label.backgroundColor = [UIColor clearColor];
+        label.textColor = [[KGOTheme sharedTheme] textColorForThemedProperty:KGOThemePropertyBodyText];
+                
+        CGFloat totalWidth = spinny.frame.size.width + label.frame.size.width;
+        CGFloat totalHeight = fmaxf(spinny.frame.size.height, label.frame.size.height);
+        _loadingView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, totalWidth, totalHeight)];
+        _loadingView.center = self.view.center;
+        _loadingView.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin;
+
+        [spinny startAnimating];
+        [_loadingView addSubview:spinny];
+        [_loadingView addSubview:label];
+        
+        [self.view addSubview:_loadingView];
+    }
+}
+
+- (void)hideLoadingView
+{
+    if (_loadingView) {
+        [_loadingView removeFromSuperview];
+        [_loadingView release];
+        _loadingView = nil;
+    }
+}
+
 - (void)request:(KGORequest *)request didHandleResult:(NSInteger)returnValue {
     if (request == self.categoriesRequest) {    
         self.categoriesRequest = nil;
         
         NSArray *categories = nil;
         if (self.parentCategory == nil) {
-            NSPredicate *pred = [NSPredicate predicateWithFormat:@"parentCategory = nil"];
-            categories = [[CoreDataManager sharedManager] objectsForEntity:self.categoryEntityName matchingPredicate:pred];
+            NSPredicate *pred = nil;
+            NSArray *sortDescriptors = nil;
+            if ([self.categoryEntityName isEqualToString:MapCategoryEntityName]) {
+                pred = [NSPredicate predicateWithFormat:@"parentCategory = nil AND browsable = YES"];
+                sortDescriptors = [NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"sortOrder" ascending:YES]];
+            } else {
+                pred = [NSPredicate predicateWithFormat:@"parentCategory = nil"];
+            }
+            categories = [[CoreDataManager sharedManager] objectsForEntity:self.categoryEntityName
+                                                         matchingPredicate:pred
+                                                           sortDescriptors:sortDescriptors];
 
         } else {
             categories = [self.parentCategory children];
@@ -113,8 +161,11 @@
 - (void)requestWillTerminate:(KGORequest *)request {
     if (request == self.categoriesRequest) {
         self.categoriesRequest = nil;
+        [self hideLoadingView];
+
     } else if (request == self.leafItemsRequest) {
         self.leafItemsRequest = nil;
+        [self hideLoadingView];
     }
 }
 
