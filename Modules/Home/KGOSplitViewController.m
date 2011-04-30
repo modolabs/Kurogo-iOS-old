@@ -93,7 +93,7 @@
         _rightViewController.navigationItem.leftBarButtonItem = _moduleListButton;
     }
 
-    UINavigationController *navC = [[UINavigationController alloc] initWithRootViewController:viewController];
+    UINavigationController *navC = [[[UINavigationController alloc] initWithRootViewController:viewController] autorelease];
     
     if (_rootViewController && _rightViewController) {
         self.viewControllers = [NSArray arrayWithObjects:_rootViewController, navC, nil];

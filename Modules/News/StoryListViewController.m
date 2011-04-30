@@ -526,10 +526,10 @@
         NSMutableArray *views = [NSMutableArray array];
         
         CGFloat yOffset;
-        NSString *placeholderImageName = nil;
-        NewsImage *image = nil;
+        //NSString *placeholderImageName = nil;
+        //NewsImage *image = nil;
         NewsStory *story;
-        CGRect thumbnailFrame;
+        //CGRect thumbnailFrame;
         
         if (self.featuredStory != nil  // we have a featured story
             && !showingBookmarks          // we are not looking at bookmarks
@@ -537,9 +537,9 @@
         {
             yOffset = FEATURE_IMAGE_HEIGHT - FEATURE_TEXT_HEIGHT;
             story = self.featuredStory;
-            image = story.featuredImage;
-            placeholderImageName = @"news/news-placeholder-a1.png";
-            thumbnailFrame = CGRectMake(0, 0, tableView.frame.size.width, FEATURE_IMAGE_HEIGHT);
+            //image = story.featuredImage;
+            //placeholderImageName = @"news/news-placeholder-a1.png";
+            //thumbnailFrame = CGRectMake(0, 0, tableView.frame.size.width, FEATURE_IMAGE_HEIGHT);
         } else {
             yOffset = 0;
             story = [self.stories objectAtIndex:indexPath.row];

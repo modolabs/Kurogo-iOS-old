@@ -139,7 +139,7 @@ bool isOverOneHour(NSTimeInterval interval) {
     if (group.calendars.count) {
         [_loadingView stopAnimating];
         
-        UITableViewStyle style = (group.calendars.count > 1) ? UITableViewStyleGrouped : UITableViewStylePlain;
+        UITableViewStyle style;
         if (group.calendars.count > 1) {
             style = UITableViewStyleGrouped;
             // TODO: sort
