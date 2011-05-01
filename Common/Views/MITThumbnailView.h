@@ -17,8 +17,6 @@
     UIActivityIndicatorView *loadingView;
     UIImageView *imageView;
     id<MITThumbnailDelegate> delegate;
-    
-    UIImage *placeholderImage;
 }
 
 - (void)loadImage;

@@ -15,7 +15,6 @@
         imageData = nil;
         loadingView = nil;
         imageView = nil;
-        placeholderImage = nil;
         self.opaque = YES;
         self.clipsToBounds = YES;
         self.backgroundColor = [UIColor clearColor];
