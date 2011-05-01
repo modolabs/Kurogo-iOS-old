@@ -128,6 +128,7 @@
 		EB1637CC13690476003C69E2 /* KGOFoursquareEngine.m in Sources */ = {isa = PBXBuildFile; fileRef = EB1637C413690476003C69E2 /* KGOFoursquareEngine.m */; };
 		EB1637CD13690476003C69E2 /* KGOFoursquareService.m in Sources */ = {isa = PBXBuildFile; fileRef = EB1637C613690476003C69E2 /* KGOFoursquareService.m */; };
 		EB1637CE13690476003C69E2 /* KGOTwitterService.m in Sources */ = {isa = PBXBuildFile; fileRef = EB1637C913690476003C69E2 /* KGOTwitterService.m */; };
+		EB163ABA136CFB2F003C69E2 /* Default-Portrait~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = EB163AB9136CFB2F003C69E2 /* Default-Portrait~ipad.png */; };
 		EB181F88131EDECA003728FF /* KGOPerson.m in Sources */ = {isa = PBXBuildFile; fileRef = EB181F76131EDECA003728FF /* KGOPerson.m */; };
 		EB181F8A131EDECA003728FF /* KGOPersonWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = EB181F78131EDECA003728FF /* KGOPersonWrapper.m */; };
 		EB181F8B131EDECA003728FF /* PeopleDataModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = EB181F79131EDECA003728FF /* PeopleDataModel.xcdatamodeld */; };
@@ -150,7 +151,6 @@
 		EB46A346134EB942005796E4 /* ThemeConfig-iPad.plist in Resources */ = {isa = PBXBuildFile; fileRef = EB46A345134EB942005796E4 /* ThemeConfig-iPad.plist */; };
 		EB46A348134EB97C005796E4 /* MainWindow-iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = EB46A347134EB97C005796E4 /* MainWindow-iPad.xib */; };
 		EB46A399134F655D005796E4 /* KGOSplitViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EB46A398134F6540005796E4 /* KGOSplitViewController.m */; };
-		EB46A4B213501A4E005796E4 /* Default-Portrait.png in Resources */ = {isa = PBXBuildFile; fileRef = EB46A4B113501A4D005796E4 /* Default-Portrait.png */; };
 		EB46A4B413501A80005796E4 /* Icon-72.png in Resources */ = {isa = PBXBuildFile; fileRef = EB46A4B313501A7F005796E4 /* Icon-72.png */; };
 		EB46A5411352874D005796E4 /* KGOEvent.m in Sources */ = {isa = PBXBuildFile; fileRef = EB46A5401352874C005796E4 /* KGOEvent.m */; };
 		EB46A5441352874D005796E4 /* KGOEventParticipant.m in Sources */ = {isa = PBXBuildFile; fileRef = EB46A5431352874D005796E4 /* KGOEventParticipant.m */; };
@@ -487,6 +487,7 @@
 		EB1637C813690476003C69E2 /* KGOTwitterService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGOTwitterService.h; sourceTree = "<group>"; };
 		EB1637C913690476003C69E2 /* KGOTwitterService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGOTwitterService.m; sourceTree = "<group>"; };
 		EB1637CA13690476003C69E2 /* TwitterViewControllerDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TwitterViewControllerDelegate.h; sourceTree = "<group>"; };
+		EB163AB9136CFB2F003C69E2 /* Default-Portrait~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Default-Portrait~ipad.png"; path = "Resources/Default-Portrait~ipad.png"; sourceTree = "<group>"; };
 		EB181F75131EDECA003728FF /* KGOPerson.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGOPerson.h; sourceTree = "<group>"; };
 		EB181F76131EDECA003728FF /* KGOPerson.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGOPerson.m; sourceTree = "<group>"; };
 		EB181F77131EDECA003728FF /* KGOPersonWrapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGOPersonWrapper.h; sourceTree = "<group>"; };
@@ -526,7 +527,6 @@
 		EB46A347134EB97C005796E4 /* MainWindow-iPad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = "MainWindow-iPad.xib"; path = "../../Resources/MainWindow-iPad.xib"; sourceTree = "<group>"; };
 		EB46A397134F653B005796E4 /* KGOSplitViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGOSplitViewController.h; sourceTree = "<group>"; };
 		EB46A398134F6540005796E4 /* KGOSplitViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGOSplitViewController.m; sourceTree = "<group>"; };
-		EB46A4B113501A4D005796E4 /* Default-Portrait.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Default-Portrait.png"; path = "Resources/Default-Portrait.png"; sourceTree = "<group>"; };
 		EB46A4B313501A7F005796E4 /* Icon-72.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Icon-72.png"; path = "Resources/Icon-72.png"; sourceTree = "<group>"; };
 		EB46A53F1352874B005796E4 /* KGOEvent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGOEvent.h; sourceTree = "<group>"; };
 		EB46A5401352874C005796E4 /* KGOEvent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGOEvent.m; sourceTree = "<group>"; };
@@ -649,12 +649,12 @@
 				EB138AFC12F22F31004DBB7C /* Config.plist */,
 				EB46CA8B1327F97100AF7B5C /* ThemeConfig.plist */,
 				EB46A345134EB942005796E4 /* ThemeConfig-iPad.plist */,
-				EB46A4B113501A4D005796E4 /* Default-Portrait.png */,
 				EBAE86441215FB4900F370BE /* Default@2x.png */,
 				EB46A4B313501A7F005796E4 /* Icon-72.png */,
 				EBAE863E1215FB0D00F370BE /* Icon.png */,
 				EBAE863F1215FB0D00F370BE /* Icon@2x.png */,
 				DED3CCE810418F5F003D3B74 /* Default.png */,
+				EB163AB9136CFB2F003C69E2 /* Default-Portrait~ipad.png */,
 				DEE6B1CC111774300037F03C /* Entitlements.plist */,
 			);
 			name = Resources;
@@ -1417,8 +1417,8 @@
 				EBC1C7171347C5750045CE9C /* test_server.xcconfig in Resources */,
 				EB46A346134EB942005796E4 /* ThemeConfig-iPad.plist in Resources */,
 				EB46A348134EB97C005796E4 /* MainWindow-iPad.xib in Resources */,
-				EB46A4B213501A4E005796E4 /* Default-Portrait.png in Resources */,
 				EB46A4B413501A80005796E4 /* Icon-72.png in Resources */,
+				EB163ABA136CFB2F003C69E2 /* Default-Portrait~ipad.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
