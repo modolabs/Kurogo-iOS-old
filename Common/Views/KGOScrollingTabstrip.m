@@ -158,6 +158,8 @@
     if (!_backgroundImageView) {
         UIImage *backgroundImage = [UIImage imageWithPathName:@"common/scrolltabs-background-opaque.png"];
         _backgroundImageView = [[[UIImageView alloc] initWithImage:[backgroundImage stretchableImageWithLeftCapWidth:0 topCapHeight:0]] autorelease];
+        _backgroundImageView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+        _backgroundImageView.frame = self.bounds;
         [self addSubview:_backgroundImageView];
     }
 
