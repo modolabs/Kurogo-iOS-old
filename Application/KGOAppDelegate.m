@@ -25,7 +25,12 @@
     [[KGORequestManager sharedManager] requestSessionInfo];
     [self loadHomeModule];
     [self loadNavigationContainer]; // adds theNavController.view to self.window
-    [self loadSocialMediaController]; // initializes social media settings
+
+    // refresh social media settings as modules get added
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(loadSocialMediaController)
+                                                 name:ModuleListDidChangeNotification
+                                               object:nil];
     
     self.window.backgroundColor = [UIColor blackColor]; // necessary for horizontal flip transitions -- background shows through
     [self.window makeKeyAndVisible];
@@ -39,9 +44,15 @@
     return YES;
 }
 
+// for iOS versions before 4.2
+- (BOOL)application:(UIApplication *)application handleOpenURL:(NSURL *)url
+{
+    return [self application:application openURL:url sourceApplication:nil annotation:nil];
+}
+
 - (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation {
 
-    NSLog(@"attempting to handle URL %@\nsource application: %@\nannotation: %@", [url description], [sourceApplication description], [annotation description]);
+    DLog(@"attempting to handle URL %@\nsource application: %@\nannotation: %@", [url description], [sourceApplication description], [annotation description]);
     
     BOOL canHandle = NO;
 
