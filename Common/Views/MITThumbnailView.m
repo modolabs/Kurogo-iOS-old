@@ -7,16 +7,6 @@
 
 @synthesize imageURL, connection, imageData, loadingView, imageView, delegate;
 
-// TODO: move this into news, or theme config if we want a global placeholder
-+ (UIImage *)placeholderImage {
-    static NSString * const placeholderImageName = @"modules/news/news-placeholder.png";
-    static UIImage *placeholderImage = nil;
-    if (!placeholderImage) {
-        placeholderImage = [[UIImage imageWithPathName:placeholderImageName] retain];
-    }
-    return placeholderImage;
-}
-
 - (id)initWithFrame:(CGRect)frame {
     self = [super initWithFrame:frame];
     if (self != nil) {
@@ -25,6 +15,7 @@
         imageData = nil;
         loadingView = nil;
         imageView = nil;
+        placeholderImage = nil;
         self.opaque = YES;
         self.clipsToBounds = YES;
         self.backgroundColor = [UIColor clearColor];
@@ -99,6 +90,10 @@
     [loadingView startAnimating];
 }
 
+- (void)setPlaceholderImage:(UIImage *)image {
+    self.backgroundColor = [UIColor colorWithPatternImage:image];
+}
+     
 // ConnectionWrapper delegate
 - (void)connection:(ConnectionWrapper *)wrapper handleData:(NSData *)data {
     // TODO: If memory usage becomes a concern, convert images to PNG using UIImagePNGRepresentation(). PNGs use considerably less RAM.

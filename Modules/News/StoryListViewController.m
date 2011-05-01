@@ -600,7 +600,7 @@
         
         // ThumbnailView
         MITThumbnailView *thumbnailView = [[[MITThumbnailView alloc] initWithFrame:CGRectMake(0, 0, THUMBNAIL_WIDTH, THUMBNAIL_WIDTH)] autorelease];
-        //thumbnailView.placeholderImageName = placeholderImageName;
+        [thumbnailView setPlaceholderImage:[UIImage imageWithPathName:@"modules/news/news-placeholder.png"]];
         if(story.thumbImage) {
             thumbnailView.imageURL = story.thumbImage.url;
             if(story.thumbImage.data) {

@@ -17,12 +17,14 @@
     UIActivityIndicatorView *loadingView;
     UIImageView *imageView;
     id<MITThumbnailDelegate> delegate;
+    
+    UIImage *placeholderImage;
 }
 
 - (void)loadImage;
 - (void)requestImage;
 - (BOOL)displayImage;
-+ (UIImage *)placeholderImage;
+- (void)setPlaceholderImage:(UIImage *)image;
 
 @property (nonatomic, assign) id<MITThumbnailDelegate> delegate;
 @property (nonatomic, retain) NSString *imageURL;
