@@ -172,10 +172,13 @@
             _pendingPlacemark = [annotation retain];
             
             // TODO: server needs a detail API
-            NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:[_pendingPlacemark identifier], @"q", nil];
+            NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:
+                                    [_pendingPlacemark identifier], @"id",
+                                    _pendingPlacemark.category.identifier, @"category",
+                                    nil];
             _placemarkInfoRequest = [[KGORequestManager sharedManager] requestWithDelegate:self
                                                                                     module:self.mapModule.tag
-                                                                                      path:@"search"
+                                                                                      path:@"detail"
                                                                                     params:params];
             [_placemarkInfoRequest connect];
             return;
@@ -200,16 +203,13 @@
 - (void)request:(KGORequest *)request didReceiveResult:(id)result
 {
     if (_pendingPlacemark) {
-        NSArray *results = [result arrayForKey:@"results"];
-        if (results.count) {
-            // TODO: find a way to filter results
-            NSDictionary *dictionary = [results objectAtIndex:0];
-            [_pendingPlacemark updateWithDictionary:dictionary];
+        NSString *incomingID = [result stringForKey:@"id" nilIfEmpty:YES];
+        if ([incomingID isEqualToString:_pendingPlacemark.identifier]) {
+            [_pendingPlacemark updateWithDictionary:result];
             DLog(@"%@", _pendingPlacemark);
-            [_mapView removeAnnotation:_pendingPlacemark];
+            [_mapView removeAnnotations:[_mapView annotations]];
             [_mapView addAnnotation:_pendingPlacemark];
         }
-        
         [_pendingPlacemark release];
         _pendingPlacemark = nil;
     }
@@ -277,10 +277,6 @@
     vc.view.backgroundColor = [[KGOTheme sharedTheme] backgroundColorForApplication];
 
     UINavigationController *navC = [[[UINavigationController alloc] initWithRootViewController:vc] autorelease];
-    UIBarButtonItem *item = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone
-                                                                           target:self
-                                                                           action:@selector(dismissModalViewControllerAnimated:)] autorelease];
-    vc.navigationItem.rightBarButtonItem = item;
     navC.modalPresentationStyle = UIModalPresentationFormSheet;
     navC.navigationBar.barStyle = [[KGOTheme sharedTheme] defaultNavBarStyle];
     [self presentModalViewController:navC animated:YES];
@@ -504,6 +500,24 @@
         } else {
             [appDelegate showPage:LocalPathPageNameDetail forModuleTag:self.mapModule.tag params:params];
         }
+    }
+}
+
+- (void)mapView:(MKMapView *)mapView didAddAnnotationViews:(NSArray *)views
+{
+    NSInteger calloutCount = 0;
+    id<MKAnnotation> selectedAnnotation = nil;
+    for (MKAnnotationView *aView in views) {
+        if ([aView canShowCallout]) {
+            calloutCount++;
+            if (calloutCount > 1)
+                return;
+            selectedAnnotation = aView.annotation;
+        }
+    }
+    
+    if (calloutCount == 1) {
+        [mapView selectAnnotation:selectedAnnotation animated:YES];
     }
 }
 
