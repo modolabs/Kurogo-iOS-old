@@ -12,7 +12,7 @@ NSString * const FacebookUsernameKey = @"FBUsername";
 @implementation KGOFacebookService
 
 - (void)parseCallbackURL:(NSURL *)url {
-    NSLog(@"handling facebook callback url");
+    DLog(@"handling facebook callback url %@", url);
     NSString *fragment = [url fragment];
     NSArray *parts = [fragment componentsSeparatedByString:@"&"];
     for (NSString *aPart in parts) {
@@ -22,12 +22,12 @@ NSString * const FacebookUsernameKey = @"FBUsername";
         if ([key isEqualToString:@"access_token"]) {
             _facebook.accessToken = value;
             [[NSUserDefaults standardUserDefaults] setObject:value forKey:FacebookTokenKey];
-            NSLog(@"set facebook access token");
+            DLog(@"set facebook access token %@", value);
             
             // record the set of permissions we authorized with, in case we change them later
             NSArray *permissions = [_apiSettings objectForKey:@"permissions"];
             [[NSUserDefaults standardUserDefaults] setObject:permissions forKey:FacebookTokenPermissions];
-            NSLog(@"stored facebook token permissions");
+            DLog(@"stored facebook token permissions %@", permissions);
             
         } else if ([key isEqualToString:@"expires_in"]) {
             CGFloat interval = [value floatValue];
@@ -39,7 +39,7 @@ NSString * const FacebookUsernameKey = @"FBUsername";
             }
             _facebook.expirationDate = expiryDate;
             [[NSUserDefaults standardUserDefaults] setObject:expiryDate forKey:FacebookTokenExpirationSetting];
-            NSLog(@"set facebook expiration date");
+            DLog(@"set facebook expiration date %@", expiryDate);
         }
     }
     [[NSUserDefaults standardUserDefaults] synchronize];
@@ -60,6 +60,27 @@ NSString * const FacebookUsernameKey = @"FBUsername";
     [_apiSettings release];
     
     [super dealloc];
+}
+
+- (void)refreshPermissionList
+{
+    if (_facebook && (!_facebook.accessToken || !_facebook.expirationDate)) {
+        NSDate *validDate = [[NSUserDefaults standardUserDefaults] objectForKey:FacebookTokenExpirationSetting];
+        if ([validDate timeIntervalSinceNow] < 0) {
+            [[NSUserDefaults standardUserDefaults] removeObjectForKey:FacebookTokenKey];
+        } else {
+            NSArray *storedPermissions = [[NSUserDefaults standardUserDefaults] objectForKey:FacebookTokenPermissions];
+            NSArray *neededPermissions = [_apiSettings objectForKey:@"permissions"];
+            NSSet *storedSet = [NSSet setWithArray:storedPermissions];
+            NSSet *neededSet = [NSSet setWithArray:neededPermissions];
+            if ([neededSet isSubsetOfSet:storedSet]) {
+                DLog(@"%@ %@", [[NSUserDefaults standardUserDefaults] objectForKey:FacebookTokenKey], validDate);
+                
+                _facebook.accessToken = [[NSUserDefaults standardUserDefaults] objectForKey:FacebookTokenKey];
+                _facebook.expirationDate = validDate;
+            }
+        }
+    }
 }
 
 #pragma mark KGOSocialMediaService implementation
@@ -101,21 +122,8 @@ NSString * const FacebookUsernameKey = @"FBUsername";
         NSLog(@"starting up facebook");
         _facebook = [[Facebook alloc] initWithAppId:_appID];
         
-        NSDate *validDate = [[NSUserDefaults standardUserDefaults] objectForKey:FacebookTokenExpirationSetting];
-        if ([validDate timeIntervalSinceNow] < 0) {
-            [[NSUserDefaults standardUserDefaults] removeObjectForKey:FacebookTokenKey];
-        } else {
-            NSArray *storedPermissions = [[NSUserDefaults standardUserDefaults] objectForKey:FacebookTokenPermissions];
-            NSArray *neededPermissions = [_apiSettings objectForKey:@"permissions"];
-            NSSet *storedSet = [NSSet setWithArray:storedPermissions];
-            NSSet *neededSet = [NSSet setWithArray:neededPermissions];
-            if ([storedSet isEqualToSet:neededSet]) {
-                DLog(@"%@ %@", [[NSUserDefaults standardUserDefaults] objectForKey:FacebookTokenKey], validDate);
-                
-                _facebook.accessToken = [[NSUserDefaults standardUserDefaults] objectForKey:FacebookTokenKey];
-                _facebook.expirationDate = validDate;
-            }
-        }
+        [self refreshPermissionList];
+        
     } else {
         NSLog(@"facebook already started");
     }
@@ -202,6 +210,8 @@ NSString * const FacebookUsernameKey = @"FBUsername";
             [_apiSettings setObject:options forKey:setting];
         }
     }
+    
+    [self refreshPermissionList];
 }
 
 
