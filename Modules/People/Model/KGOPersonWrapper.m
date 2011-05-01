@@ -555,10 +555,10 @@ webpages = _webpages;
         NSDictionary *addressDict = [aDict dictionaryForKey:@"value"];
         if (addressDict) {
             NSMutableDictionary *convertedAddressDict = [NSMutableDictionary dictionary];
-            for (NSString *label in [valueMap allKeys]) {
-                NSString *value = [addressDict stringForKey:label nilIfEmpty:YES];
+            for (NSString *aLabel in [valueMap allKeys]) {
+                NSString *value = [addressDict stringForKey:aLabel nilIfEmpty:YES];
                 if (value) {
-                    [convertedAddressDict setObject:value forKey:[valueMap objectForKey:label]];
+                    [convertedAddressDict setObject:value forKey:[valueMap objectForKey:aLabel]];
                 }
             }
             if (convertedAddressDict.count) {

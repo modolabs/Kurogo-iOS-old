@@ -16,14 +16,14 @@
     }
     else if ([pageName isEqualToString:LocalPathPageNameDetail]) {
         
-        AboutMITVC *aboutMITVC = [[AboutMITVC alloc] initWithStyle:UITableViewStyleGrouped];
+        AboutMITVC *aboutMITVC = [[[AboutMITVC alloc] initWithStyle:UITableViewStyleGrouped] autorelease];
         aboutMITVC.orgName = [params stringForKey:@"orgName" nilIfEmpty:NO];
         aboutMITVC.orgAboutText = [params stringForKey:@"orgText" nilIfEmpty:NO];
 
         vc = aboutMITVC;
     }
     else if ([pageName isEqualToString:LocalPathPageNameWebViewDetail]) {
-        KGOWebViewController * creditsWebViewController = [[KGOWebViewController alloc] init];
+        KGOWebViewController * creditsWebViewController = [[[KGOWebViewController alloc] init] autorelease];
         NSString * credits = [params stringForKey:@"creditsHTMLString" nilIfEmpty: NO];
         [creditsWebViewController setHTMLString: credits];
         creditsWebViewController.title = @"Credits";

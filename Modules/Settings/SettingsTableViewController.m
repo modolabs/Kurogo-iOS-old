@@ -140,7 +140,7 @@ static NSString * const KGOSettingsSocialMedia = @"SocialMedia";
                 [views addObject:subtitleLabel];
             }
 
-            UILabel *label = [[[UILabel alloc] initWithFrame:CGRectMake(10, 45, tableView.frame.size.width - 20, font.lineHeight)] autorelease];
+            UILabel *label = [[[UILabel alloc] initWithFrame:CGRectMake(10, y, tableView.frame.size.width - 20, font.lineHeight)] autorelease];
             label.backgroundColor = [UIColor clearColor];
             label.font = font;
             label.textColor = [[KGOTheme sharedTheme] textColorForThemedProperty:KGOThemePropertyNavListSubtitle];
