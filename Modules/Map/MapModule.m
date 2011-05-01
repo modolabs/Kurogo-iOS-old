@@ -7,6 +7,7 @@
 #import "KGOMapCategory.h"
 #import "KGOAppDelegate+ModuleAdditions.h"
 #import "Foundation+KGOAdditions.h"
+#import "KGOSidebarFrameViewController.h"
 
 NSString * const MapTypePreference = @"MapType";
 NSString * const MapTypePreferenceChanged = @"MapTypeChanged";
@@ -131,6 +132,15 @@ NSString * const MapTypePreferenceChanged = @"MapTypeChanged";
             UIViewController *topVC = [KGO_SHARED_APP_DELEGATE() visibleViewController];
             if (topVC.modalViewController) {
                 [topVC dismissModalViewControllerAnimated:YES];
+            }
+            
+            KGONavigationStyle navStyle = [KGO_SHARED_APP_DELEGATE() navigationStyle];
+            if (navStyle == KGONavigationStyleTabletSidebar) {
+                KGOSidebarFrameViewController *homescreen = (KGOSidebarFrameViewController *)[KGO_SHARED_APP_DELEGATE() homescreen];
+                topVC = homescreen.visibleViewController;
+                if (topVC.modalViewController) {
+                    [topVC dismissModalViewControllerAnimated:YES];
+                }
             }
             
             if ([topVC isKindOfClass:[MapHomeViewController class]]) {
