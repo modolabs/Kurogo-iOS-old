@@ -8,6 +8,7 @@
 #import "Foundation+KGOAdditions.h"
 #import "KGOPlacemark.h"
 #import "KGOEvent.h"
+#import <QuartzCore/QuartzCore.h>
 
 @implementation KGOCategoryListViewController
 
@@ -91,7 +92,7 @@
 - (void)showLoadingView
 {
     if (!_loadingView) {
-        UIActivityIndicatorView *spinny = [[[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray] autorelease];
+        UIActivityIndicatorView *spinny = [[[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite] autorelease];
 
         NSString *text = NSLocalizedString(@"Loading...", nil);
         UIFont *font = [UIFont systemFontOfSize:15];
@@ -100,14 +101,19 @@
         label.text = text;
         label.font = font;
         label.backgroundColor = [UIColor clearColor];
-        label.textColor = [[KGOTheme sharedTheme] textColorForThemedProperty:KGOThemePropertyBodyText];
+        label.textColor = [UIColor whiteColor];
                 
         CGFloat totalWidth = spinny.frame.size.width + label.frame.size.width;
         CGFloat totalHeight = fmaxf(spinny.frame.size.height, label.frame.size.height);
-        _loadingView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, totalWidth, totalHeight)];
+        _loadingView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, totalWidth + 20, totalHeight + 20)];
         _loadingView.center = self.view.center;
         _loadingView.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin;
+        _loadingView.backgroundColor = [UIColor colorWithWhite:0 alpha:0.8];
+        _loadingView.layer.cornerRadius = 10;
 
+        spinny.frame = CGRectMake(10, 10, spinny.frame.size.width, spinny.frame.size.height);
+        label.frame = CGRectMake(label.frame.origin.x + 10, 10, label.frame.size.width, label.frame.size.height);
+        
         [spinny startAnimating];
         [_loadingView addSubview:spinny];
         [_loadingView addSubview:label];
@@ -155,6 +161,7 @@
         DLog(@"leaf items: %@", self.leafItems);
     }
 
+    [self hideLoadingView];
     [self reloadDataForTableView:self.tableView];
 }
 
