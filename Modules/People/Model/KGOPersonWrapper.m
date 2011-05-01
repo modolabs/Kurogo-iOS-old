@@ -5,7 +5,6 @@
 #import "PersonContact.h"
 #import "PersonOrganization.h"
 #import "PersonAddress.h"
-#import "AddressBookUtils.h"
 
 NSString * const KGOPersonContactTypeEmail = @"email";
 NSString * const KGOPersonContactTypePhone = @"phone";
@@ -556,10 +555,10 @@ webpages = _webpages;
         NSDictionary *addressDict = [aDict dictionaryForKey:@"value"];
         if (addressDict) {
             NSMutableDictionary *convertedAddressDict = [NSMutableDictionary dictionary];
-            for (NSString *aLabel in [valueMap allKeys]) {
-                NSString *value = [addressDict stringForKey:aLabel nilIfEmpty:YES];
+            for (NSString *label in [valueMap allKeys]) {
+                NSString *value = [addressDict stringForKey:label nilIfEmpty:YES];
                 if (value) {
-                    [convertedAddressDict setObject:value forKey:[valueMap objectForKey:aLabel]];
+                    [convertedAddressDict setObject:value forKey:[valueMap objectForKey:label]];
                 }
             }
             if (convertedAddressDict.count) {
@@ -614,8 +613,8 @@ webpages = _webpages;
 
     ABMutableMultiValueRef multi = ABMultiValueCreateMutable(kABMultiStringPropertyType);
     for (NSDictionary *aDict in values) {
-        //NSString *label = [aDict objectForKey:@"label"];
-        NSString *label = (NSString *)kABOtherLabel;
+        NSString *label = [aDict objectForKey:@"label"];
+        label = (NSString *)kABOtherLabel;
         id value = [aDict objectForKey:@"value"];
         if ([value isKindOfClass:expectedClass]) {
             ABMultiValueAddValueAndLabel(multi, (CFTypeRef)value, (CFStringRef)label, NULL);
@@ -649,7 +648,40 @@ webpages = _webpages;
 
 - (NSArray *)getMultiValueRecordProperty:(ABPropertyID)property {
     [self convertToABPerson]; // make sure we have a reference to the address book
-    return [AddressBookUtils getMultiValueRecordProperty:property record:_abRecord];
+    NSMutableArray *result = nil;
+    
+    ABMultiValueRef multi = ABRecordCopyValue(_abRecord, property);
+    if (multi) {
+        CFIndex count = ABMultiValueGetCount(multi);
+        result = [NSMutableArray arrayWithCapacity:count];
+        
+        for (CFIndex i = 0; i < count; i++) {
+            NSDictionary *valueSet = nil;
+            
+            CFStringRef label = ABMultiValueCopyLabelAtIndex(multi, i);
+            CFTypeRef value = ABMultiValueCopyValueAtIndex(multi, i);
+            
+            if (label) {
+                valueSet = [NSDictionary dictionaryWithObjectsAndKeys:(NSString *)label, @"label", (id)value, @"value", nil];
+            } else if (value) {
+                valueSet = [NSDictionary dictionaryWithObjectsAndKeys:(id)value, @"value", nil];
+            }
+            
+            if (valueSet) {
+                [result addObject:valueSet];
+            }
+            
+            if (label) {
+                CFRelease(label);
+            }
+            if (value) {
+                CFRelease(value);
+            }
+        }
+        CFRelease(multi);
+    }
+    
+    return result;
 }
 
 - (BOOL)saveToAddressBook {

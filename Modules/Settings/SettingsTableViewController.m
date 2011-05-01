@@ -5,9 +5,7 @@
 #import "KGORequestManager.h"
 #import "KGOSocialMediaController.h"
 #import "UIKit+KGOAdditions.h"
-#import "KGOAppDelegate+ModuleAdditions.h"
 #import "Foundation+KGOAdditions.h"
-#import "ReunionHomeModule.h"
 
 static NSString * const KGOSettingsDefaultFont = @"DefaultFont";
 static NSString * const KGOSettingsDefaultFontSize = @"DefaultFontSize";
@@ -120,7 +118,7 @@ static NSString * const KGOSettingsSocialMedia = @"SocialMedia";
 
             NSMutableArray *views = [NSMutableArray array];
             
-            CGFloat width = tableView.frame.size.width - 45; // adjust for padding and chevron
+            CGFloat width = tableView.frame.size.width - 40; // adjust for padding and chevron
             CGFloat y = 10;
             UIFont *font = [[KGOTheme sharedTheme] fontForThemedProperty:KGOThemePropertyNavListTitle];
             UILabel *titleLabel = [[[UILabel alloc] initWithFrame:CGRectMake(10, y, width, font.lineHeight)] autorelease];
@@ -142,7 +140,7 @@ static NSString * const KGOSettingsSocialMedia = @"SocialMedia";
                 [views addObject:subtitleLabel];
             }
 
-            UILabel *label = [[[UILabel alloc] initWithFrame:CGRectMake(10, y, tableView.frame.size.width - 20, font.lineHeight)] autorelease];
+            UILabel *label = [[[UILabel alloc] initWithFrame:CGRectMake(10, 45, tableView.frame.size.width - 20, font.lineHeight)] autorelease];
             label.backgroundColor = [UIColor clearColor];
             label.font = font;
             label.textColor = [[KGOTheme sharedTheme] textColorForThemedProperty:KGOThemePropertyNavListSubtitle];
@@ -163,54 +161,6 @@ static NSString * const KGOSettingsSocialMedia = @"SocialMedia";
             
             return views;
         }
-    } else if ([key isEqualToString:KGOSettingsLogin]) {
-        // TODO: clean up these ways of getting strings
-        NSString *cellTitle = nil;
-        NSString *cellSubtitle = nil;
-        
-        NSDictionary *dictionary = [[KGORequestManager sharedManager] sessionInfo];
-        NSString *name = [[dictionary dictionaryForKey:@"user"] stringForKey:@"name" nilIfEmpty:YES];
-        KGOAppDelegate *appDelegate = KGO_SHARED_APP_DELEGATE();
-        ReunionHomeModule *homeModule = (ReunionHomeModule *)[appDelegate moduleForTag:@"home"];
-        NSString *number = [homeModule reunionNumber];
-        NSString *year = [homeModule reunionYear];
-        if (name) {
-            cellTitle = [NSString stringWithFormat:@"You are signed in as %@ (%@th Reunion)", name, number];
-            cellSubtitle = @"Tap to sign out";
-        } else if (year) {
-            cellTitle = [NSString stringWithFormat:@"You are viewing the class of %@ (%@th Reunion) anonymously", year, number];
-            cellSubtitle = @"Tap to sign in";
-        } else {
-            cellTitle = [NSString stringWithFormat:@"Loading…"];
-            cellSubtitle = @"";
-        }
-
-        NSMutableArray *views = [NSMutableArray array];
-
-        CGFloat width = tableView.frame.size.width - 45; // adjust for padding and chevron
-        CGFloat y = 10;
-        UIFont *font = [[KGOTheme sharedTheme] fontForThemedProperty:KGOThemePropertyNavListTitle];
-        CGSize labelSize = [cellTitle sizeWithFont:font
-                                 constrainedToSize:CGSizeMake(width, 1000)
-                                     lineBreakMode:UILineBreakModeWordWrap];
-        UILabel *titleLabel = [[[UILabel alloc] initWithFrame:CGRectMake(10, y, width, labelSize.height)] autorelease];
-        titleLabel.backgroundColor = [UIColor clearColor];
-        titleLabel.numberOfLines = 2;
-        titleLabel.lineBreakMode = UILineBreakModeWordWrap;
-        titleLabel.font = font;
-        titleLabel.text = cellTitle;
-        y += titleLabel.frame.size.height + 1;
-        [views addObject:titleLabel];
-
-        font = [[KGOTheme sharedTheme] fontForThemedProperty:KGOThemePropertyNavListSubtitle];
-        UILabel *label = [[[UILabel alloc] initWithFrame:CGRectMake(10, y, tableView.frame.size.width - 20, font.lineHeight)] autorelease];
-        label.backgroundColor = [UIColor clearColor];
-        label.font = font;
-        label.text = cellSubtitle;
-        label.textColor = [[KGOTheme sharedTheme] textColorForThemedProperty:KGOThemePropertyNavListSubtitle];
-        [views addObject:label];
-
-        return views;
     }
     
     return nil;
@@ -233,7 +183,15 @@ static NSString * const KGOSettingsSocialMedia = @"SocialMedia";
     
     id optionValue = [options objectAtIndex:indexPath.row];
     if ([key isEqualToString:KGOSettingsLogin]) {
-        // custom view
+        // TODO: clean up these ways of getting strings
+        NSDictionary *dictionary = [[KGORequestManager sharedManager] sessionInfo];
+        NSString *name = [[dictionary dictionaryForKey:@"user"] stringForKey:@"name" nilIfEmpty:YES];
+        if (name) {
+            cellTitle = [NSString stringWithFormat:@"You are signed in as %@", name];
+        } else {
+            cellTitle = [NSString stringWithFormat:@"You are signed in anonymously"];
+        }
+        cellSubtitle = @"Tap to sign out";
     
     } else if ([key isEqualToString:KGOSettingsSocialMedia]) {
         // just don't want any other branches
