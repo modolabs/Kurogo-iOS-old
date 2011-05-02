@@ -2,6 +2,7 @@
 #import "FBConnect.h"
 #import <MessageUI/MFMailComposeViewController.h>
 #import "KGOSocialMediaController.h"
+#import "TwitterViewControllerDelegate.h"
 
 typedef enum {
     KGOShareControllerShareTypeEmail = 1,
@@ -12,7 +13,8 @@ typedef enum {
 
 
 
-@interface KGOShareButtonController : NSObject <UIActionSheetDelegate, MFMailComposeViewControllerDelegate> {
+@interface KGOShareButtonController : NSObject <UIActionSheetDelegate,
+MFMailComposeViewControllerDelegate, TwitterViewControllerDelegate> {
     
     NSArray *_shareMethods;
     NSUInteger _shareTypes;

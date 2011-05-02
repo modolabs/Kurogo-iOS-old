@@ -130,6 +130,7 @@
         }
         if (messageParts.count) {
             _messageView.text = [messageParts componentsJoinedByString:@"\n"];
+            [self updateCounter:_messageView.text delta:0];
         }
     }
     
@@ -197,8 +198,8 @@
 	}
 }
 
-- (void)updateCounter:(NSString *)aMessage delta:(NSInteger)deltaChars{
-	_counterLabel.text = [NSString stringWithFormat:@"%i", TWEET_MAX_CHARS-[aMessage length]-deltaChars];
+- (void)updateCounter:(NSString *)aMessage delta:(NSInteger)deltaChars {
+	_counterLabel.text = [NSString stringWithFormat:@"%i", TWEET_MAX_CHARS - [aMessage length] - deltaChars];
 }
 
 @end

@@ -112,6 +112,7 @@
                                                                                     bundle:nil] autorelease];
         twitterVC.preCannedMessage = self.shareTitle;
         twitterVC.longURL = self.shareURL;
+        twitterVC.delegate = self;
         
         UINavigationController *navC = [[[UINavigationController alloc] initWithRootViewController:twitterVC] autorelease];
         navC.modalPresentationStyle = UIModalPresentationFormSheet;
@@ -127,6 +128,23 @@
     [self.contentsController dismissModalViewControllerAnimated:YES];
 }
 
+
+#pragma mark TwitterViewControllerDelegate
+
+- (BOOL)controllerShouldContinueToMessageScreen:(TwitterViewController *)controller
+{
+    return YES;
+}
+
+- (void)controllerDidPostTweet:(TwitterViewController *)controller
+{
+    [self.contentsController dismissModalViewControllerAnimated:YES];
+}
+
+- (void)controllerFailedToTweet:(TwitterViewController *)controller
+{
+    [self.contentsController dismissModalViewControllerAnimated:YES];
+}
 
 #pragma mark -
 
