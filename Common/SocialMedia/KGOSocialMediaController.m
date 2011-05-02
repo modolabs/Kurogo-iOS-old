@@ -243,6 +243,8 @@ static KGOSocialMediaController *s_controller = nil;
         if (urlData) {
             NSString *shortURL = [urlData stringForKey:@"url" nilIfEmpty:YES];
 			[self.bitlyDelegate didGetBitlyURL:shortURL];
+        } else if ([self.bitlyDelegate respondsToSelector:@selector(failedToGetBitlyURL)]) {
+            [self.bitlyDelegate failedToGetBitlyURL];
         }
     }
     [self closeBitlyConnection];
