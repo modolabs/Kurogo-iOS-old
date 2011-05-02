@@ -76,9 +76,11 @@
                  nil];
 	}
     
-    CLAuthorizationStatus status = [CLLocationManager authorizationStatus];
-    if (status == kCLAuthorizationStatusRestricted || status == kCLAuthorizationStatusDenied) {
-        _locateUserButton.enabled = NO;
+    if ([CLLocationManager respondsToSelector:@selector(authorizationStatus)]) { // 4.2 and above only
+        CLAuthorizationStatus status = [CLLocationManager authorizationStatus];
+        if (status == kCLAuthorizationStatusRestricted || status == kCLAuthorizationStatusDenied) {
+            _locateUserButton.enabled = NO;
+        }
     }
     
 	_bottomBar.items = items;
