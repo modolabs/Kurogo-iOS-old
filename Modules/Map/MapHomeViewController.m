@@ -590,6 +590,8 @@
 		[self switchToMapView];
 	}
 	
+    [_mapView removeAnnotations:[_mapView annotations]];
+    
 	for (id<KGOSearchResult> aResult in controller.searchResults) {
 		if ([aResult conformsToProtocol:@protocol(MKAnnotation)]) {
 			id<MKAnnotation> annotation = (id<MKAnnotation>)aResult;
