@@ -38,6 +38,16 @@
     CGFloat subtitleHeight = 0;
     CGFloat buttonHeight = 0;
     
+    if (_showsShareButton) {
+        [self layoutShareButton];
+        buttonHeight = _shareButton.frame.size.height + LABEL_PADDING;
+    }
+    
+    if (_showsBookmarkButton) {
+        [self layoutBookmarkButton];
+        buttonHeight = _bookmarkButton.frame.size.height + LABEL_PADDING;
+    }
+    
     if (_titleLabel) {
         CGFloat maxWidth;
         if (_subtitleLabel) {
@@ -61,16 +71,6 @@
         }
         _subtitleLabel.frame = CGRectMake(LABEL_PADDING, y, maxWidth, textSize.height);
         subtitleHeight = _subtitleLabel.frame.size.height + LABEL_PADDING;
-    }
-
-    if (_showsShareButton) {
-        [self layoutShareButton];
-        buttonHeight = _shareButton.frame.size.height + LABEL_PADDING;
-    }
-    
-    if (_showsBookmarkButton) {
-        [self layoutBookmarkButton];
-        buttonHeight = _bookmarkButton.frame.size.height + LABEL_PADDING;
     }
     
     CGRect frame = self.frame;
