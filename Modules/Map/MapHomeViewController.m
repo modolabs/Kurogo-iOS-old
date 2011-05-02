@@ -293,7 +293,7 @@
             _locationManager.desiredAccuracy = kCLLocationAccuracyBest;
             _locationManager.delegate = self;
         }
-        _userLocation = [_locationManager location];
+        _userLocation = [[_locationManager location] retain];
     }
     
     if (_userLocation) {
@@ -334,9 +334,15 @@
     DLog(@"%@ %@", location, _userLocation);
     // TODO: make maximum distance a config parameter
     if ([_userLocation distanceFromLocation:location] <= 4000) {
-        _mapView.showsUserLocation = YES;
-        _mapView.centerCoordinate = _userLocation.coordinate;
-        _didCenter = YES;
+        if (!_mapView.showsUserLocation) {
+            _mapView.showsUserLocation = YES;
+        } else {
+            if (!_didCenter) {
+                _mapView.centerCoordinate = _userLocation.coordinate;
+                _didCenter = YES;
+            }
+        }
+        
     } else {
         DLog(@"distance %.1f is out of bounds", [_userLocation distanceFromLocation:location]);
         
@@ -457,6 +463,14 @@
 }
 
 #pragma mark MKMapViewDelegate
+
+- (void)mapView:(MKMapView *)mapView didUpdateUserLocation:(MKUserLocation *)userLocation
+{
+    if (!_didCenter) {
+        _mapView.centerCoordinate = userLocation.coordinate;
+        _didCenter = YES;
+    }
+}
 
 - (MKAnnotationView *)mapView:(MKMapView *)mapView viewForAnnotation:(id<MKAnnotation>)annotation
 {
