@@ -36,12 +36,15 @@
 {
     [super viewDidLoad];
 
-    self.navigationItem.rightBarButtonItem = self.editButtonItem;
-    self.navigationItem.leftBarButtonItem = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
-                                                                                           target:self
-                                                                                           action:@selector(dismissModalViewControllerAnimated:)] autorelease];
+    self.navigationItem.leftBarButtonItem = self.editButtonItem;
+    self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone
+                                                                                            target:self
+                                                                                            action:@selector(dismissModalViewControllerAnimated:)] autorelease];
     
     _mutableItems = [self.bookmarkedItems mutableCopy];
+    self.navigationItem.leftBarButtonItem.enabled = _mutableItems.count > 0;
+    
+    self.title = NSLocalizedString(@"Bookmarks", @"title of generic bookmark view controller");
 }
 
 - (void)viewDidUnload
@@ -127,6 +130,10 @@
         [aResult removeBookmark];
         [_mutableItems removeObject:aResult];
         [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
+        
+        if (!_mutableItems.count) {
+            self.navigationItem.leftBarButtonItem.enabled = NO;
+        }
     }
 }
 

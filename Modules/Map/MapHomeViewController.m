@@ -262,10 +262,6 @@
     vc.searchResultsDelegate = self;
 
     UINavigationController *navC = [[[UINavigationController alloc] initWithRootViewController:vc] autorelease];
-    UIBarButtonItem *item = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone
-                                                                           target:self
-                                                                           action:@selector(dismissModalViewControllerAnimated:)] autorelease];
-    vc.navigationItem.rightBarButtonItem = item;
     navC.modalPresentationStyle = UIModalPresentationFormSheet;
     navC.navigationBar.barStyle = [[KGOTheme sharedTheme] defaultNavBarStyle];
     [self presentModalViewController:navC animated:YES];
