@@ -334,14 +334,15 @@ NSString * const KGODeviceTokenKey = @"KGODeviceToken";
         }
     }
     
-    //[[NSUserDefaults standardUserDefaults] re
-    
     [[NSNotificationCenter defaultCenter] postNotificationName:KGODidLogoutNotification object:self];
-    
-    // this clears up cached session data on the server.
-    // the server will see us as being logged out from the lack of cookies, so
-    // if this request fails the server will just have some expired session data.
-    _logoutRequest = [self requestWithDelegate:self module:self.loginPath path:@"logout" params:nil];
+
+    NSMutableDictionary *params = [NSMutableDictionary dictionary];
+    [params setObject:@"1" forKey:@"hard"];
+    NSString *authority = [_sessionInfo objectForKey:@"authority"];
+    if (authority) {
+        [params setObject:authority forKey:@"authority"];
+    }
+    _logoutRequest = [self requestWithDelegate:self module:self.loginPath path:@"logout" params:params];
 }
 
 - (BOOL)isUserLoggedIn
