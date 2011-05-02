@@ -39,7 +39,12 @@
     CGFloat buttonHeight = 0;
     
     if (_titleLabel) {
-        CGFloat maxWidth = self.bounds.size.width - 2 * LABEL_PADDING;
+        CGFloat maxWidth;
+        if (_subtitleLabel) {
+            maxWidth = self.bounds.size.width - 2 * LABEL_PADDING;
+        } else {
+            maxWidth = [self headerWidthWithButtons] - 2 * LABEL_PADDING;
+        }
         CGSize constraintSize = CGSizeMake(maxWidth, _titleLabel.font.lineHeight * MAX_TITLE_LINES);
         CGSize textSize = [_titleLabel.text sizeWithFont:_titleLabel.font constrainedToSize:constraintSize];
         _titleLabel.frame = CGRectMake(LABEL_PADDING, LABEL_PADDING, maxWidth, textSize.height);

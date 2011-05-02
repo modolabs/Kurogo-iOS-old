@@ -352,6 +352,8 @@ userInfo = _userInfo;
     if (!self.endDate)       self.endDate       = _kgoEvent.end;
     if (!self.summary)       self.summary       = _kgoEvent.summary;
     if (!self.calendars)     self.calendars     = [[_kgoEvent.calendars mutableCopy] autorelease];
+    
+    self.coordinate = CLLocationCoordinate2DMake([_kgoEvent.latitude floatValue], [_kgoEvent.longitude floatValue]);
 
     if (!self.rrule && _kgoEvent.rrule) {
         self.rrule = [NSKeyedUnarchiver unarchiveObjectWithData:event.rrule];
@@ -359,7 +361,7 @@ userInfo = _userInfo;
     
     NSMutableSet *attendees = [NSMutableSet set];
     NSMutableSet *organizers = [NSMutableSet set];
-    NSLog(@"%d", _kgoEvent.particpants.count);
+    DLog(@"%d participants", _kgoEvent.particpants.count);
     [_kgoEvent.particpants enumerateObjectsUsingBlock:^(id obj, BOOL *stop) {
         KGOEventParticipantRelation *relation = (KGOEventParticipantRelation *)obj;
         KGOEventParticipant *participant = relation.participant;
