@@ -31,12 +31,12 @@
     
     if ([[KGORequestManager sharedManager] isUserLoggedIn]) {
         DLog(@"user logged in while we were being presented");
-        [self dismissModalViewControllerAnimated:YES];
+        [self.parentViewController dismissModalViewControllerAnimated:YES];
         return;
     }
 
     DLog(@"subscribing to login notifications");
-    [[NSNotificationCenter defaultCenter] addObserver:self
+    [[NSNotificationCenter defaultCenter] addObserver:self.parentViewController
                                              selector:@selector(dismissModalViewControllerAnimated:)
                                                  name:KGODidLoginNotification
                                                object:nil];
@@ -47,7 +47,7 @@
     [super webView:webView didFailLoadWithError:error];
 
     if ([[KGORequestManager sharedManager] isUserLoggedIn]) {
-        [self dismissModalViewControllerAnimated:YES];
+        [self.parentViewController dismissModalViewControllerAnimated:YES];
     }
 }
 
@@ -71,7 +71,7 @@
     }
 
     if ([[KGORequestManager sharedManager] isUserLoggedIn]) {
-        [self dismissModalViewControllerAnimated:YES];
+        [self.parentViewController dismissModalViewControllerAnimated:YES];
         return NO;
     }
 
