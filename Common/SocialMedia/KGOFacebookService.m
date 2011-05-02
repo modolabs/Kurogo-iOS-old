@@ -40,6 +40,11 @@ NSString * const FacebookUsernameKey = @"FBUsername";
             _facebook.expirationDate = expiryDate;
             [[NSUserDefaults standardUserDefaults] setObject:expiryDate forKey:FacebookTokenExpirationSetting];
             DLog(@"set facebook expiration date %@", expiryDate);
+
+        } else if ([key isEqualToString:@"error"]) {
+            [_facebook handleOpenURL:url];
+            return;
+            
         }
     }
     [[NSUserDefaults standardUserDefaults] synchronize];
