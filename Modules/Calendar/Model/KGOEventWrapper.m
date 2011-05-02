@@ -323,12 +323,14 @@ userInfo = _userInfo;
         [self convertToKGOEvent];
     }
     self.KGOEvent.bookmarked = [NSNumber numberWithBool:YES];
+    [[CoreDataManager sharedManager] saveData];
 }
 
 - (void)removeBookmark
 {
     if (self.KGOEvent) {
         self.KGOEvent.bookmarked = [NSNumber numberWithBool:NO];
+        [[CoreDataManager sharedManager] saveData];
     }
 }
 

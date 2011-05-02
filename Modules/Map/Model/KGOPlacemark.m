@@ -38,12 +38,14 @@
 - (void)addBookmark {
     if (![self isBookmarked]) {
         self.bookmarked = [NSNumber numberWithBool:YES];
+        [[CoreDataManager sharedManager] saveData];
     }
 }
 
 - (void)removeBookmark {
     if ([self isBookmarked]) {
         self.bookmarked = [NSNumber numberWithBool:NO];
+        [[CoreDataManager sharedManager] saveData];
     }
 }
 
