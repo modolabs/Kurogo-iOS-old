@@ -130,7 +130,7 @@
         }
 
     } else {
-        result = [[CoreDataManager sharedManager] objectsForEntity:KGOPlacemarkEntityName matchingPredicate:pred];
+        result = [[[CoreDataManager sharedManager] objectsForEntity:KGOPlacemarkEntityName matchingPredicate:pred] lastObject];
         if (!result) {
             result = [[CoreDataManager sharedManager] insertNewObjectForEntityForName:KGOPlacemarkEntityName];
             result.identifier = placemarkID;
