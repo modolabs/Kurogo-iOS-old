@@ -27,6 +27,8 @@
     [self loadNavigationContainer]; // adds theNavController.view to self.window
 
     // refresh social media settings as modules get added
+    // TODO: rename -loadSocialMediaController so it doesn't look like a method
+    // that creates new references
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(loadSocialMediaController)
                                                  name:ModuleListDidChangeNotification
@@ -143,6 +145,8 @@
 }
 
 - (void)dealloc {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+
     [_appConfig release];
     [_unreadNotifications release];
     [_modules release];

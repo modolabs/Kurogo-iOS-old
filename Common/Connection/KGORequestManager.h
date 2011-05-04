@@ -6,6 +6,7 @@
 @protocol KGORequestDelegate;
 
 extern NSString * const HelloRequestDidCompleteNotification;
+extern NSString * const HelloRequestDidFailNotification;
 extern NSString * const KGODidLogoutNotification;
 extern NSString * const KGODidLoginNotification;
 

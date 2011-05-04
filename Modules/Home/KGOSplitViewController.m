@@ -113,6 +113,8 @@
     }
     
     if (!firstModule) {
+        // TODO: this overrides whichever method in the superclass responds
+        // to this notification
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(displayFirstModule)
                                                      name:ModuleListDidChangeNotification

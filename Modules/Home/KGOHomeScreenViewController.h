@@ -5,7 +5,7 @@
 
 @class KGOSearchBar;
 
-@interface KGOHomeScreenViewController : UIViewController <KGOSearchDisplayDelegate> {
+@interface KGOHomeScreenViewController : UIViewController <KGOSearchDisplayDelegate, UIAlertViewDelegate> {
     
     NSDictionary *_preferences;
     
@@ -26,10 +26,12 @@
 // login states
 - (void)standbyForServerHello;
 - (void)helloRequestDidComplete:(NSNotification *)aNotification;
+- (void)helloRequestDidFail:(NSNotification *)aNotification;
 - (void)loginDidComplete:(NSNotification *)aNotification;
 - (void)logoutDidComplete:(NSNotification *)aNotification;
 - (void)showLoadingView;
 - (void)hideLoadingView;
+- (void)subscribeToModuleChangeNotifications;
 
 // springboard helpers
 - (NSArray *)iconsForPrimaryModules:(BOOL)isPrimary;

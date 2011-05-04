@@ -147,6 +147,8 @@
 
 
 - (void)dealloc {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+
     if (_placemarkInfoRequest) {
         [_placemarkInfoRequest cancel];
     }

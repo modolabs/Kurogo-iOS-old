@@ -365,6 +365,8 @@ static KGOTheme *s_sharedTheme = nil;
 
 - (void)dealloc
 {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+
 	fontDict = nil;
     [themeDict release];
     [super dealloc];

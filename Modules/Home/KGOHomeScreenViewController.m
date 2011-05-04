@@ -31,16 +31,7 @@
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         _preferences = [[[KGOTheme sharedTheme] homescreenConfig] retain];
-        
-        [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(moduleListDidChange:)
-                                                     name:ModuleListDidChangeNotification
-                                                   object:nil];
-        
-        [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(moduleListDidChange:)
-                                                     name:KGOUserPreferencesDidChangeNotification
-                                                   object:nil];
+        [self subscribeToModuleChangeNotifications];
     }
     return self;
 }
@@ -49,18 +40,22 @@
     self = [super init];
     if (self) {
         _preferences = [[[KGOTheme sharedTheme] homescreenConfig] retain];
-        
-        [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(moduleListDidChange:)
-                                                     name:ModuleListDidChangeNotification
-                                                   object:nil];
-
-        [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(moduleListDidChange:)
-                                                     name:KGOUserPreferencesDidChangeNotification
-                                                   object:nil];
+        [self subscribeToModuleChangeNotifications];
     }
     return self;
+}
+
+- (void)subscribeToModuleChangeNotifications
+{
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(moduleListDidChange:)
+                                                 name:ModuleListDidChangeNotification
+                                               object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(moduleListDidChange:)
+                                                 name:KGOUserPreferencesDidChangeNotification
+                                               object:nil];
 }
 
 // Implement loadView to create a view hierarchy programmatically, without using a nib.
@@ -125,6 +120,8 @@
 }
 
 - (void)dealloc {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+
     [_preferences release];
     [_searchBar release];
     [_searchController release];
@@ -150,6 +147,12 @@
                                              selector:@selector(helloRequestDidComplete:)
                                                  name:HelloRequestDidCompleteNotification
                                                object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(helloRequestDidFail:)
+                                                 name:HelloRequestDidFailNotification
+                                               object:nil];
+    
     [self showLoadingView];
 }
 
@@ -169,11 +172,15 @@
     [self standbyForServerHello];
 }
 
+// in response to HelloRequestDidCompleteNotification
 - (void)helloRequestDidComplete:(NSNotification *)aNotification
 {
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:HelloRequestDidFailNotification object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:HelloRequestDidCompleteNotification object:nil];
+    
     for (KGOModule *aModule in [KGO_SHARED_APP_DELEGATE() modules]) {
         if (!aModule.hasAccess && ![[KGORequestManager sharedManager] isUserLoggedIn]) {
-            NSLog(@"%@ %@", aModule.tag, aModule);
+            DLog(@"%@ %@", aModule.tag, aModule);
             [[NSNotificationCenter defaultCenter] addObserver:self
                                                      selector:@selector(loginDidComplete:)
                                                          name:KGODidLoginNotification
@@ -184,6 +191,23 @@
             [self hideLoadingView];
         }
     }
+}
+
+// in response to HelloRequestDidFailNotification
+- (void)helloRequestDidFail:(NSNotification *)aNotification {
+    NSString *message = NSLocalizedString(@"Could not connect to server.  Please try again later.",
+                                          @"error message for hello request failure");
+    NSString *retry = NSLocalizedString(@"Retry", @"retry button for hello request failure");
+    UIAlertView *alertView = [[[UIAlertView alloc] initWithTitle:nil
+                                                         message:message
+                                                        delegate:self 
+                                               cancelButtonTitle:nil 
+                                               otherButtonTitles:retry, nil] autorelease];
+    [alertView show];
+}
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
+    [[KGORequestManager sharedManager] requestServerHello];
 }
 
 - (void)showLoadingView
@@ -562,6 +586,7 @@
     NSArray *args = [[_preferences objectForKey:@"SecondaryModuleIconSize"] componentsSeparatedByString:@" "];
     return [KGOHomeScreenViewController sizeWithArgs:args];
 }
+
 
 #pragma mark Private
 

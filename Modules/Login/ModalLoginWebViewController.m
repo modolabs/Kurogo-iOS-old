@@ -9,6 +9,8 @@
 
 - (void)dealloc
 {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+
     if (self.connection) {
         [self.connection cancel];
         self.connection = nil;
@@ -48,6 +50,10 @@
 
     if ([[KGORequestManager sharedManager] isUserLoggedIn]) {
         [self.parentViewController dismissModalViewControllerAnimated:YES];
+    } else {
+        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Network Error" message:@"Connection Failure. Please try again" delegate:self cancelButtonTitle:nil otherButtonTitles:@"Retry", nil];
+        [alertView show];
+        [alertView release];
     }
 }
 
@@ -261,5 +267,10 @@
 }
 
 #endif
+
+#pragma AlertView Delegate methods
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
+    [self retryRequest];
+}
 
 @end
