@@ -29,6 +29,7 @@ extern NSString * const KGODidLoginNotification;
 	NSURL *_baseURL;
 
     KGORequest *_helloRequest;
+    KGORequest *_retryRequest;
     
     // login info
     KGORequest *_sessionRequest;
@@ -55,7 +56,9 @@ extern NSString * const KGODidLoginNotification;
                              module:(NSString *)module
                                path:(NSString *)path
                              params:(NSDictionary *)params;
-- (void)showAlertForError:(NSError *)error;
+
+- (void)showAlertForError:(NSError *)error request:(KGORequest *)request;
+- (void)showAlertForError:(NSError *)error request:(KGORequest *)request delegate:(id<UIAlertViewDelegate>)delegate;
 
 #pragma mark -
 

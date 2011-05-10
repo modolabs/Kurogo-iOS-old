@@ -22,6 +22,42 @@ NSString * const KGORequestErrorDomain = @"com.modolabs.KGORequest.ErrorDomain";
 @synthesize url, module, path, getParams, postParams, format, delegate, cachePolicy, timeout;
 @synthesize expectedResponseType, handler;
 
++ (KGORequestErrorCode)internalCodeForNSError:(NSError *)error
+{
+	KGORequestErrorCode errCode;
+	switch ([error code]) {
+		case kCFURLErrorCannotConnectToHost: case kCFURLErrorCannotFindHost:
+		case kCFURLErrorDNSLookupFailed: case kCFURLErrorResourceUnavailable:
+			errCode = KGORequestErrorUnreachable;
+			break;
+		case kCFURLErrorNotConnectedToInternet: case kCFURLErrorInternationalRoamingOff: case kCFURLErrorNetworkConnectionLost:
+			errCode = KGORequestErrorDeviceOffline;
+			break;
+		case kCFURLErrorTimedOut: case kCFURLErrorRequestBodyStreamExhausted: case kCFURLErrorDataLengthExceedsMaximum:
+			errCode = KGORequestErrorTimeout;
+			break;
+		case kCFURLErrorBadServerResponse: case kCFURLErrorZeroByteResource: case kCFURLErrorCannotDecodeRawData:
+		case kCFURLErrorCannotDecodeContentData: case kCFURLErrorCannotParseResponse: case kCFURLErrorRedirectToNonExistentLocation:
+			errCode = KGORequestErrorBadResponse;
+			break;
+		case kCFURLErrorBadURL: case kCFURLErrorUnsupportedURL: case kCFURLErrorFileDoesNotExist: 
+			errCode = KGORequestErrorBadRequest;
+			break;
+		case kCFURLErrorUserAuthenticationRequired:
+			errCode = KGORequestErrorForbidden;
+			break;
+		case kCFURLErrorCancelled: case kCFURLErrorUserCancelledAuthentication: case kCFURLErrorCallIsActive:
+			errCode = KGORequestErrorInterrupted;
+			break;
+		case kCFURLErrorDataNotAllowed: case kCFURLErrorUnknown: case kCFURLErrorHTTPTooManyRedirects:
+		default:
+			errCode = KGORequestErrorOther;
+			break;
+	}
+    
+    return errCode;
+}
+
 - (id)init {
     self = [super init];
     if (self) {
@@ -63,7 +99,7 @@ NSString * const KGORequestErrorDomain = @"com.modolabs.KGORequest.ErrorDomain";
             userInfo = [NSDictionary dictionaryWithObjectsAndKeys:[NSString stringWithFormat:@"could not connect to url: %@", [self.url absoluteString]], @"message", nil];
             error = [NSError errorWithDomain:KGORequestErrorDomain code:KGORequestErrorBadRequest userInfo:userInfo];
         }
-        [[KGORequestManager sharedManager] showAlertForError:error];
+        [[KGORequestManager sharedManager] showAlertForError:error request:self];
     }
     
     if (success) {
@@ -84,6 +120,7 @@ NSString * const KGORequestErrorDomain = @"com.modolabs.KGORequest.ErrorDomain";
         [_connection cancel];
         [_connection release];
         _connection = nil;
+        [KGO_SHARED_APP_DELEGATE() hideNetworkActivityIndicator];
         [self release];
     }
 }
@@ -91,8 +128,12 @@ NSString * const KGORequestErrorDomain = @"com.modolabs.KGORequest.ErrorDomain";
 - (void)dealloc {
 	self.delegate = nil;
 	[_data release];
-	[_connection cancel];
-	[_connection release];
+    if (_connection) {
+        DLog(@"Warning: KGORequest is not retained but has a connection reference. This should never happen.");
+        [_connection cancel];
+        [_connection release];
+        [KGO_SHARED_APP_DELEGATE() hideNetworkActivityIndicator];
+    }
 	self.url = nil;
 	self.module = nil;
 	self.path = nil;
@@ -211,37 +252,7 @@ NSString * const KGORequestErrorDomain = @"com.modolabs.KGORequest.ErrorDomain";
 	_data = nil;
     
     [KGO_SHARED_APP_DELEGATE() hideNetworkActivityIndicator];
-	
-	KGORequestErrorCode errCode;
-	switch ([error code]) {
-		case kCFURLErrorCannotConnectToHost: case kCFURLErrorCannotFindHost:
-		case kCFURLErrorDNSLookupFailed: case kCFURLErrorResourceUnavailable:
-			errCode = KGORequestErrorUnreachable;
-			break;
-		case kCFURLErrorNotConnectedToInternet: case kCFURLErrorInternationalRoamingOff: case kCFURLErrorNetworkConnectionLost:
-			errCode = KGORequestErrorDeviceOffline;
-			break;
-		case kCFURLErrorTimedOut: case kCFURLErrorRequestBodyStreamExhausted: case kCFURLErrorDataLengthExceedsMaximum:
-			errCode = KGORequestErrorTimeout;
-			break;
-		case kCFURLErrorBadServerResponse: case kCFURLErrorZeroByteResource: case kCFURLErrorCannotDecodeRawData:
-		case kCFURLErrorCannotDecodeContentData: case kCFURLErrorCannotParseResponse: case kCFURLErrorRedirectToNonExistentLocation:
-			errCode = KGORequestErrorBadResponse;
-			break;
-		case kCFURLErrorBadURL: case kCFURLErrorUnsupportedURL: case kCFURLErrorFileDoesNotExist: 
-			errCode = KGORequestErrorBadRequest;
-			break;
-		case kCFURLErrorUserAuthenticationRequired:
-			errCode = KGORequestErrorForbidden;
-			break;
-		case kCFURLErrorCancelled: case kCFURLErrorUserCancelledAuthentication: case kCFURLErrorCallIsActive:
-			errCode = KGORequestErrorInterrupted;
-			break;
-		case kCFURLErrorDataNotAllowed: case kCFURLErrorUnknown: case kCFURLErrorHTTPTooManyRedirects:
-		default:
-			errCode = KGORequestErrorOther;
-			break;
-	}
+    KGORequestErrorCode errCode = [KGORequest internalCodeForNSError:error];
 	
 	[self terminateWithErrorCode:errCode userInfo:[error userInfo]];
 }
@@ -287,11 +298,17 @@ NSString * const KGORequestErrorDomain = @"com.modolabs.KGORequest.ErrorDomain";
 }
 
 - (void)terminateWithErrorCode:(KGORequestErrorCode)errCode userInfo:(NSDictionary *)userInfo {
+    if (self.url) {
+        NSMutableDictionary *mutableUserInfo = [[userInfo mutableCopy] autorelease];
+        [mutableUserInfo setObject:[self.url absoluteString] forKey:@"url"];
+        userInfo = [NSDictionary dictionaryWithDictionary:mutableUserInfo];
+    }
+    
 	NSError *kgoError = [NSError errorWithDomain:KGORequestErrorDomain code:errCode userInfo:userInfo];
 	if ([self.delegate respondsToSelector:@selector(request:didFailWithError:)]) {
 		[self.delegate request:self didFailWithError:kgoError];
 	} else {
-		[[KGORequestManager sharedManager] showAlertForError:kgoError];
+		[[KGORequestManager sharedManager] showAlertForError:kgoError request:self];
 	}
 	
 	[self.delegate requestWillTerminate:self];

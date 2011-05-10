@@ -3,14 +3,19 @@
 #import "KGOAppDelegate.h"
 #import "KGOHTMLTemplate.h"
 #import <QuartzCore/QuartzCore.h>
+#import "UIKit+KGOAdditions.h"
 
 // UIWebView throws WebKit errors, but the WebKit framework can't be imported
 // in iOS so we'll just reproduce the error constants here
+NSString * const WebKitErrorDomain = @"WebKitErrorDomain";
+
 enum {
     WebKitErrorCannotShowMIMEType = 100,
     WebKitErrorCannotShowURL = 101,
     WebKitErrorFrameLoadInterruptedByPolicyChange = 102
 };
+
+
 
 @implementation KGOWebViewController
 
@@ -64,20 +69,35 @@ enum {
 - (void)showDismissControlsAnimated:(BOOL)animated
 {
     if (!_dismissView) {
-        _dismissView = [[UIView alloc] initWithFrame:CGRectMake(0, self.view.frame.size.height - 44, self.view.frame.size.width, 44)];
-        _dismissView.backgroundColor = [UIColor colorWithWhite:0.6 alpha:0.8];
+        CGFloat viewWidth = self.view.bounds.size.width;
+        CGFloat viewHeight = self.view.bounds.size.height;
         
+        _dismissView = [[UIView alloc] initWithFrame:CGRectMake(0, viewHeight - 44, viewWidth, 44)];
+        UIImageView *backgroundImageView = [[[UIImageView alloc] initWithFrame:_dismissView.frame] autorelease];
+        [backgroundImageView setImage:[UIImage imageNamed:@"common/linkback-bar"]];
+        _dismissView = backgroundImageView;
+        _dismissView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin;
+        
+        UIImage *buttonImage = [[UIImage imageNamed:@"common/toolbar-button"] 
+                                 stretchableImageWithLeftCapWidth:10 topCapHeight:10];
+        UIImage *buttomImagePressed = [[UIImage imageNamed:@"common/toolbar-button-pressed"] 
+                                        stretchableImageWithLeftCapWidth:10 topCapHeight:10];
+        ;
         UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
         button.titleLabel.textColor = [UIColor whiteColor];
-        button.backgroundColor = [UIColor clearColor];
-        button.layer.borderColor = [[UIColor colorWithWhite:0.8 alpha:1] CGColor];
-        button.layer.borderWidth = 1;
-        button.frame = CGRectMake(floor(self.view.frame.size.width / 4), 5, floor(self.view.frame.size.width / 2), 34);
+        //button.layer.borderColor = [[UIColor colorWithWhite:0.2 alpha:1] CGColor];
+        //button.layer.borderWidth = 1;
+        button.frame = CGRectMake(floor(viewWidth / 4), 5, floor(viewWidth / 2), 34);
+        button.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
+        [button setBackgroundImage:buttonImage forState:UIControlStateNormal];
+        [button setBackgroundImage:buttomImagePressed forState:UIControlStateHighlighted];
+        
         [button setTitle:NSLocalizedString(@"Exit this screen", nil) forState:UIControlStateNormal];
         [button addTarget:self.parentViewController
                    action:@selector(dismissModalViewControllerAnimated:)
          forControlEvents:UIControlEventTouchUpInside];
         [_dismissView addSubview:button];
+        //_dismissView.userInteractionEnabled = YES;
         
         if (animated) {
             _dismissView.alpha = 0;
@@ -88,6 +108,8 @@ enum {
             [UIView animateWithDuration:1 animations:^(void) {
                 _dismissView.alpha = 1;
             }];
+        } else {
+            _dismissView.alpha = 1;
         }
     }
 }
@@ -105,6 +127,10 @@ enum {
     if (_webView) {
         [_webView loadRequest:[NSURLRequest requestWithURL:self.requestURL]];
     }
+}
+
+- (void)retryRequest {
+    [_webView loadRequest:[NSURLRequest requestWithURL:self.requestURL]];
 }
 
 - (void)applyTemplate:(NSString *)filename
@@ -223,13 +249,27 @@ enum {
 {
     NSLog(@"%@", [error description]);
     
-    // we seem to get to this point when our original request gets redirected
-    // to a URL to which we return NO in -shouldStartLoadWithRequest.
-    // TODO: figure out why we aren't being dismissed by other triggers
-    if ([error code] == WebKitErrorFrameLoadInterruptedByPolicyChange) {
-        if ([self.delegate respondsToSelector:@selector(webViewControllerFrameLoadInterrupted:)]) {
-            [self.delegate webViewControllerFrameLoadInterrupted:self];
+    if ([[error domain] isEqualToString:NSURLErrorDomain]) {
+        KGORequestErrorCode code = [KGORequest internalCodeForNSError:error];
+        NSError *kgoError = [NSError errorWithDomain:KGORequestErrorDomain code:code userInfo:[error userInfo]];
+        [[KGORequestManager sharedManager] showAlertForError:kgoError request:nil delegate:self];
+    
+    } else if ([[error domain] isEqualToString:WebKitErrorDomain]) {    
+        // we seem to get to this point when our original request gets redirected
+        // to a URL to which we return NO in -shouldStartLoadWithRequest.
+        // TODO: figure out why we aren't being dismissed by other triggers
+        if ([error code] == WebKitErrorFrameLoadInterruptedByPolicyChange) {
+            if ([self.delegate respondsToSelector:@selector(webViewControllerFrameLoadInterrupted:)]) {
+                [self.delegate webViewControllerFrameLoadInterrupted:self];
+            }
         }
+    }
+}
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if (buttonIndex != [alertView cancelButtonIndex]) {
+        [_webView loadRequest:_webView.request];
     }
 }
 

@@ -31,6 +31,24 @@ typedef NSInteger (^JSONObjectHandler)(id);
 
 @end
 
+
+extern NSString * const KGORequestErrorDomain;
+// wrapper for most common kCFURLError constants, plus custom states
+// TODO: coordinate with server-side error messages and 
+// HTTP status codes
+typedef enum {
+	KGORequestErrorBadRequest,
+	KGORequestErrorForbidden,
+	KGORequestErrorUnreachable,
+	KGORequestErrorDeviceOffline,
+	KGORequestErrorTimeout,
+	KGORequestErrorBadResponse,
+	KGORequestErrorVersionMismatch,
+	KGORequestErrorInterrupted,
+	KGORequestErrorServerMessage,
+	KGORequestErrorOther
+} KGORequestErrorCode;
+
 @interface KGORequest : NSObject {
 	
 	NSMutableData *_data;
@@ -62,22 +80,6 @@ typedef NSInteger (^JSONObjectHandler)(id);
 - (BOOL)connect;
 - (void)cancel;  // call to stop receiving messages
 
++ (KGORequestErrorCode)internalCodeForNSError:(NSError *)error;
+
 @end
-
-
-extern NSString * const KGORequestErrorDomain;
-// wrapper for most common kCFURLError constants, plus custom states
-// TODO: coordinate with server-side error messages and 
-// HTTP status codes
-typedef enum {
-	KGORequestErrorBadRequest,
-	KGORequestErrorForbidden,
-	KGORequestErrorUnreachable,
-	KGORequestErrorDeviceOffline,
-	KGORequestErrorTimeout,
-	KGORequestErrorBadResponse,
-	KGORequestErrorVersionMismatch,
-	KGORequestErrorInterrupted,
-	KGORequestErrorServerMessage,
-	KGORequestErrorOther
-} KGORequestErrorCode;

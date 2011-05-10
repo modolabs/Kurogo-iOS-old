@@ -12,7 +12,7 @@
 @end
 
 
-@interface KGOWebViewController : UIViewController <UIWebViewDelegate> {
+@interface KGOWebViewController : UIViewController <UIWebViewDelegate, UIAlertViewDelegate> {
     
     UIWebView *_webView;
     UIActivityIndicatorView *_loadingView;
@@ -36,6 +36,9 @@
 - (void) showHTMLString: (NSString *) HTMLStringText;
 
 - (void)applyTemplate:(NSString *)filename;
+
+// useful if a network connection causes a request to fail
+- (void)retryRequest;
 
 // UI for leaving when we get stuck in a full screen modal view
 - (void)fadeInDismissControls;

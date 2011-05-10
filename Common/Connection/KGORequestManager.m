@@ -78,29 +78,39 @@ NSString * const KGODidLogoutNotification = @"LogoutComplete";
 	} else {
 		NSDictionary *userInfo = [NSDictionary dictionaryWithObjectsAndKeys:nil];
 		NSError *error = [NSError errorWithDomain:KGORequestErrorDomain code:KGORequestErrorForbidden userInfo:userInfo];
-		[self showAlertForError:error];
+		[self showAlertForError:error request:request];
 	}
 	return request;
 }
 
-- (void)showAlertForError:(NSError *)error {
+- (void)showAlertForError:(NSError *)error request:(KGORequest *)request
+{
+    [self showAlertForError:error request:request delegate:self];
+}
+
+- (void)showAlertForError:(NSError *)error request:(KGORequest *)request delegate:(id<UIAlertViewDelegate>)delegate
+{
     DLog(@"%@", [error userInfo]);
     
 	NSString *title = nil;
 	NSString *message = nil;
+    BOOL canRetry = NO;
 	
 	switch ([error code]) {
 		case KGORequestErrorBadRequest: case KGORequestErrorUnreachable:
 			title = NSLocalizedString(@"Connection Failed", nil);
 			message = NSLocalizedString(@"Could not connect to server. Please try again later.", nil);
+            canRetry = YES;
 			break;
 		case KGORequestErrorDeviceOffline:
 			title = NSLocalizedString(@"Connection Failed", nil);
 			message = NSLocalizedString(@"Please check your Internet connection and try again.", nil);
+            canRetry = YES;
 			break;
 		case KGORequestErrorTimeout:
 			title = NSLocalizedString(@"Connection Timed Out", nil);
 			message = NSLocalizedString(@"Server is taking too long to respond. Please try again later.", nil);
+            canRetry = YES;
 			break;
 		case KGORequestErrorForbidden:
 			title = NSLocalizedString(@"Unauthorized Request", nil);
@@ -116,6 +126,7 @@ NSString * const KGODidLogoutNotification = @"LogoutComplete";
 		case KGORequestErrorBadResponse: case KGORequestErrorOther:
 			title = NSLocalizedString(@"Connection Failed", nil);
 			message = NSLocalizedString(@"Problem connecting to server. Please try again later.", nil);
+            canRetry = YES;
 			break;
 		case KGORequestErrorServerMessage:
 			title = [[error userInfo] objectForKey:@"title"];
@@ -127,9 +138,32 @@ NSString * const KGODidLogoutNotification = @"LogoutComplete";
 	}
 	
 	if (title) {
-		UIAlertView *alertView = [[[UIAlertView alloc] initWithTitle:title message:message delegate:self cancelButtonTitle:NSLocalizedString(@"OK", nil) otherButtonTitles:nil] autorelease];
+        if (delegate == self) {
+            [_retryRequest release];
+            _retryRequest = [request retain];
+        }
+        
+        NSString *retryOption = nil;
+        if (canRetry) {
+            retryOption = NSLocalizedString(@"Retry", nil);
+        }
+        
+		UIAlertView *alertView = [[[UIAlertView alloc] initWithTitle:title
+                                                             message:message
+                                                            delegate:delegate
+                                                   cancelButtonTitle:NSLocalizedString(@"Cancel", nil)
+                                                   otherButtonTitles:retryOption, nil] autorelease];
 		[alertView show];
 	}
+}
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if (buttonIndex != [alertView cancelButtonIndex]) {
+        [_retryRequest connect];
+        [_retryRequest release];
+        _retryRequest = nil;
+    }
 }
 
 #pragma mark Push notifications
@@ -140,6 +174,7 @@ NSString * const KGODeviceTokenKey = @"KGODeviceToken";
 
 - (void)registerNewDeviceToken
 {
+    
     if (!self.devicePushToken) {
         DLog(@"cannot register nil device token");
         return;
@@ -396,6 +431,7 @@ NSString * const KGODeviceTokenKey = @"KGODeviceToken";
         // make more sense.
         NSString *title = [userInfo stringForKey:@"title" nilIfEmpty:YES];
         if ([title isEqualToString:@"Unauthorized"] && ![self isUserLoggedIn]) {
+            [[NSNotificationCenter defaultCenter] removeObserver:self name:KGODidLoginNotification object:nil];
             [[NSNotificationCenter defaultCenter] addObserver:self
                                                      selector:@selector(registerNewDeviceToken)
                                                          name:KGODidLoginNotification
