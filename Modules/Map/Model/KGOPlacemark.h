@@ -21,6 +21,7 @@
 @property (nonatomic, retain) NSData * photo;
 @property (nonatomic, retain) NSNumber * bookmarked;
 @property (nonatomic, retain) KGOMapCategory *category;
+@property (nonatomic, retain) NSData * userInfo;
 
 + (KGOPlacemark *)placemarkWithDictionary:(NSDictionary *)dictionary;
 + (KGOPlacemark *)placemarkWithID:(NSString *)placemarkID categoryPath:(NSArray *)categoryPath;

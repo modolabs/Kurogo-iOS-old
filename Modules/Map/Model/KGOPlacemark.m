@@ -20,6 +20,7 @@
 @dynamic bookmarked;
 @dynamic category;
 @dynamic photoURL;
+@dynamic userInfo;
 
 #pragma mark KGOSearchResult, MKAnnotation
 

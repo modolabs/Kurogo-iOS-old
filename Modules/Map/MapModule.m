@@ -129,22 +129,26 @@ NSString * const MapTypePreferenceChanged = @"MapTypeChanged";
             NSArray *annotations = [NSArray arrayWithObject:detailItem];
             NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:annotations, @"annotations", nil];
 
-            UIViewController *topVC = [KGO_SHARED_APP_DELEGATE() visibleViewController];
+            KGOAppDelegate *appDelegate = KGO_SHARED_APP_DELEGATE();
+            
+            UIViewController *topVC = [appDelegate visibleViewController];
             if (topVC.modalViewController) {
                 [topVC dismissModalViewControllerAnimated:YES];
             }
             
-            KGONavigationStyle navStyle = [KGO_SHARED_APP_DELEGATE() navigationStyle];
+            KGONavigationStyle navStyle = [appDelegate navigationStyle];
             if (navStyle == KGONavigationStyleTabletSidebar) {
-                KGOSidebarFrameViewController *homescreen = (KGOSidebarFrameViewController *)[KGO_SHARED_APP_DELEGATE() homescreen];
+                KGOSidebarFrameViewController *homescreen = (KGOSidebarFrameViewController *)[appDelegate homescreen];
                 topVC = homescreen.visibleViewController;
-                if (topVC.modalViewController) {
-                    [topVC dismissModalViewControllerAnimated:YES];
-                }
             }
             
             if ([topVC isKindOfClass:[MapHomeViewController class]]) {
-                [(MapHomeViewController *)topVC setAnnotations:annotations];
+                MapHomeViewController *mapVC = (MapHomeViewController *)topVC;
+                [mapVC setAnnotations:annotations];
+                if (mapVC.selectedPopover) {
+                    [mapVC dismissPopoverAnimated:YES];
+                    return nil;
+                }
                 
             } else {
                 return [self modulePage:LocalPathPageNameHome params:params];
@@ -200,6 +204,26 @@ NSString * const MapTypePreferenceChanged = @"MapTypeChanged";
 		} else if (items) {
             categoryVC.leafItems = items;
             
+        }
+        
+        KGOAppDelegate *appDelegate = KGO_SHARED_APP_DELEGATE();
+        UIViewController *topVC = [appDelegate visibleViewController];
+
+        KGONavigationStyle navStyle = [appDelegate navigationStyle];
+        if (navStyle == KGONavigationStyleTabletSidebar) {
+            KGOSidebarFrameViewController *homescreen = (KGOSidebarFrameViewController *)[appDelegate homescreen];
+            topVC = homescreen.visibleViewController;
+        }
+        
+        if ([topVC isKindOfClass:[MapHomeViewController class]]) {
+            MapHomeViewController *mapVC = (MapHomeViewController *)topVC;
+            if (mapVC.selectedPopover) {
+                mapVC.selectedPopover.contentViewController = categoryVC;
+                return nil;
+            }
+            
+        } else {
+            return [self modulePage:LocalPathPageNameHome params:params];
         }
         
         vc = categoryVC;

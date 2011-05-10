@@ -11,7 +11,7 @@
 
 @interface MapHomeViewController : UIViewController <MKMapViewDelegate,
 KGOSearchDisplayDelegate, KGODetailPagerController, CLLocationManagerDelegate,
-KGORequestDelegate> {
+KGORequestDelegate, UIPopoverControllerDelegate> {
 	
 	IBOutlet KGOSearchBar *_searchBar;
 	IBOutlet KGOToolbar *_bottomBar;
@@ -20,8 +20,11 @@ KGORequestDelegate> {
 	UIButton *_infoButton; // indoor maps only
 	UIButton *_locateUserButton; // outdoor maps only (for now)
 	UIButton *_browseButton;
+    UIBarButtonItem *_browseBarButtonItem;
 	UIButton *_bookmarksButton;
+    UIBarButtonItem *_bookmarksBarButtonItem;
 	UIButton *_settingsButton;
+    UIBarButtonItem *_settingsBarButtonItem;
     
     CLLocationManager *_locationManager;
     CLLocation *_userLocation;
@@ -44,6 +47,7 @@ KGORequestDelegate> {
     KGORequest *_placemarkInfoRequest;
 }
 
+@property (nonatomic, retain) UIPopoverController *selectedPopover;
 @property (nonatomic, retain) MapModule *mapModule;
 
 @property (nonatomic, retain) NSString *searchTerms;
@@ -52,6 +56,7 @@ KGORequestDelegate> {
 @property (nonatomic) BOOL searchOnLoad; // tell the controller to start searching right away
 @property (nonatomic, retain) NSDictionary *searchParams; // custom query to search if different from display text
 
+- (void)dismissPopoverAnimated:(BOOL)animated;
 
 - (IBAction)infoButtonPressed;
 - (IBAction)locateUserButtonPressed;

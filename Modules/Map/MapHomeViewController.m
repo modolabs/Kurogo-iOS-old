@@ -18,7 +18,7 @@
 
 @implementation MapHomeViewController
 
-@synthesize searchTerms, searchOnLoad, searchParams, mapModule;
+@synthesize searchTerms, searchOnLoad, searchParams, mapModule, selectedPopover;
 
 - (void)mapTypeDidChange:(NSNotification *)aNotification {
     _mapView.mapType = [[aNotification object] integerValue];
@@ -60,19 +60,29 @@
 	indoorMode = NO;
 	NSArray *items = nil;
 	UIBarButtonItem *spacer = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil] autorelease];
+    
+    [_browseBarButtonItem release];
+    _browseBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:_browseButton];
+
+    [_bookmarksBarButtonItem release];
+    _bookmarksBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:_bookmarksButton];
+
+    [_settingsBarButtonItem release];
+    _settingsBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:_settingsButton];
+    
 	if (indoorMode) {
 		items = [NSArray arrayWithObjects:
                  [[[UIBarButtonItem alloc] initWithCustomView:_infoButton] autorelease], spacer,
-                 [[[UIBarButtonItem alloc] initWithCustomView:_browseButton] autorelease], spacer,
-                 [[[UIBarButtonItem alloc] initWithCustomView:_bookmarksButton] autorelease], spacer,
-                 [[[UIBarButtonItem alloc] initWithCustomView:_settingsButton] autorelease],
+                 _browseBarButtonItem, spacer,
+                 _bookmarksBarButtonItem, spacer,
+                 _settingsBarButtonItem,
                  nil];
 	} else {
 		items = [NSArray arrayWithObjects:
                  [[[UIBarButtonItem alloc] initWithCustomView:_locateUserButton] autorelease], spacer,
-                 [[[UIBarButtonItem alloc] initWithCustomView:_browseButton] autorelease], spacer,
-                 [[[UIBarButtonItem alloc] initWithCustomView:_bookmarksButton] autorelease], spacer,
-                 [[[UIBarButtonItem alloc] initWithCustomView:_settingsButton] autorelease],
+                 _browseBarButtonItem, spacer,
+                 _bookmarksBarButtonItem, spacer,
+                 _settingsBarButtonItem,
                  nil];
 	}
     
@@ -99,7 +109,11 @@
     [_mapView centerAndZoomToDefaultRegion];
     if (self.annotations.count) { // these would have been set before _mapView was set up
         [_mapView addAnnotations:self.annotations];
-        _mapView.region = [MapHomeViewController regionForAnnotations:self.annotations restrictedToClass:NULL];
+        // TODO: rewrite regionForAnnotations: to return a success value
+        MKCoordinateRegion region = [MapHomeViewController regionForAnnotations:self.annotations restrictedToClass:NULL];
+        if (region.center.latitude && region.center.longitude) {
+            _mapView.region = region;
+        }
     }
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mapTypeDidChange:) name:MapTypePreferenceChanged object:nil];
 
@@ -245,16 +259,33 @@
     categoryVC.categoryEntityName = MapCategoryEntityName;
     NSPredicate *pred = [NSPredicate predicateWithFormat:@"parentCategory = nil AND browsable = YES"];
     NSArray *sortDescriptors = [NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"sortOrder" ascending:YES]];
-    categoryVC.categories = [[CoreDataManager sharedManager] objectsForEntity:MapCategoryEntityName matchingPredicate:pred sortDescriptors:sortDescriptors];
-    categoryVC.categoriesRequest = [self.mapModule subcategoriesRequestForCategory:nil delegate:categoryVC];
+    categoryVC.categories = [[CoreDataManager sharedManager] objectsForEntity:MapCategoryEntityName
+                                                            matchingPredicate:pred
+                                                              sortDescriptors:sortDescriptors];
+    categoryVC.categoriesRequest = [self.mapModule subcategoriesRequestForCategory:nil
+                                                                          delegate:categoryVC];
+    
     UINavigationController *navC = [[[UINavigationController alloc] initWithRootViewController:categoryVC] autorelease];
-    UIBarButtonItem *item = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone
-                                                                           target:self
-                                                                           action:@selector(dismissModalViewControllerAnimated:)] autorelease];
-    categoryVC.navigationItem.rightBarButtonItem = item;
     navC.modalPresentationStyle = UIModalPresentationFormSheet;
     navC.navigationBar.barStyle = [[KGOTheme sharedTheme] defaultNavBarStyle];
-    [self presentModalViewController:navC animated:YES];
+
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+        UIBarButtonItem *item = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone
+                                                                               target:self
+                                                                               action:@selector(dismissModalViewControllerAnimated:)] autorelease];
+        categoryVC.navigationItem.rightBarButtonItem = item;
+        [self presentModalViewController:navC animated:YES];
+
+    } else {
+        [self dismissPopoverAnimated:YES];
+        self.selectedPopover = [[[UIPopoverController alloc] initWithContentViewController:navC] autorelease];
+        // 320 and 600 are the minimum width and maximum height specified in the documentation
+        self.selectedPopover.popoverContentSize = CGSizeMake(320, 600);
+        self.selectedPopover.delegate = self;
+        [self.selectedPopover presentPopoverFromBarButtonItem:_browseBarButtonItem
+                                     permittedArrowDirections:UIPopoverArrowDirectionUp
+                                                     animated:YES];
+    }
 }
 
 - (IBAction)bookmarksButtonPressed {
@@ -268,22 +299,47 @@
     UINavigationController *navC = [[[UINavigationController alloc] initWithRootViewController:vc] autorelease];
     navC.modalPresentationStyle = UIModalPresentationFormSheet;
     navC.navigationBar.barStyle = [[KGOTheme sharedTheme] defaultNavBarStyle];
-    [self presentModalViewController:navC animated:YES];
+
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+        [self presentModalViewController:navC animated:YES];
+        
+    } else {
+        [self dismissPopoverAnimated:YES];
+        self.selectedPopover = [[[UIPopoverController alloc] initWithContentViewController:navC] autorelease];
+        // 320 and 600 are the minimum width and maximum height specified in the documentation
+        self.selectedPopover.popoverContentSize = CGSizeMake(320, 600);
+        self.selectedPopover.delegate = self;
+        [self.selectedPopover presentPopoverFromBarButtonItem:_bookmarksBarButtonItem
+                                     permittedArrowDirections:UIPopoverArrowDirectionUp
+                                                     animated:YES];
+    }
 }
 
 - (IBAction)settingsButtonPressed {
 	MapSettingsViewController *vc = [[[MapSettingsViewController alloc] initWithStyle:UITableViewStyleGrouped] autorelease];
     vc.title = NSLocalizedString(@"Map Settings", nil);
     vc.view.backgroundColor = [[KGOTheme sharedTheme] backgroundColorForApplication];
-
+    
     UINavigationController *navC = [[[UINavigationController alloc] initWithRootViewController:vc] autorelease];
-    UIBarButtonItem *item = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone
-                                                                           target:self
-                                                                           action:@selector(dismissModalViewControllerAnimated:)] autorelease];
-    vc.navigationItem.rightBarButtonItem = item;
     navC.modalPresentationStyle = UIModalPresentationFormSheet;
     navC.navigationBar.barStyle = [[KGOTheme sharedTheme] defaultNavBarStyle];
-    [self presentModalViewController:navC animated:YES];
+
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+        UIBarButtonItem *item = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone
+                                                                               target:self
+                                                                               action:@selector(dismissModalViewControllerAnimated:)] autorelease];
+        vc.navigationItem.rightBarButtonItem = item;
+        [self presentModalViewController:navC animated:YES];
+        
+    } else {
+        [self dismissPopoverAnimated:YES];
+        self.selectedPopover = [[[UIPopoverController alloc] initWithContentViewController:navC] autorelease];
+        self.selectedPopover.popoverContentSize = CGSizeMake(320, 240);
+        self.selectedPopover.delegate = self;
+        [self.selectedPopover presentPopoverFromBarButtonItem:_settingsBarButtonItem
+                                     permittedArrowDirections:UIPopoverArrowDirectionUp
+                                                     animated:YES];
+    }
 }
 
 - (IBAction)locateUserButtonPressed
@@ -305,6 +361,19 @@
         
     } else {
         [_locationManager startUpdatingLocation];
+    }
+}
+
+- (void)popoverControllerDidDismissPopover:(UIPopoverController *)popoverController
+{
+    self.selectedPopover = nil;
+}
+
+- (void)dismissPopoverAnimated:(BOOL)animated;
+{
+    if (self.selectedPopover) {
+        [self.selectedPopover dismissPopoverAnimated:YES];
+        self.selectedPopover = nil;
     }
 }
 
@@ -337,7 +406,7 @@
 
     DLog(@"%@ %@", location, _userLocation);
     // TODO: make maximum distance a config parameter
-    if ([_userLocation distanceFromLocation:location] <= 4000) {
+    if ([_userLocation distanceFromLocation:location] <= 40000) {
         if (!_mapView.showsUserLocation) {
             _mapView.showsUserLocation = YES;
         } else {
@@ -358,6 +427,7 @@
                                                    otherButtonTitles:nil] autorelease];
         [alertView show];
         
+        _mapView.showsUserLocation = NO;
         _locateUserButton.enabled = NO;
     }
 }
@@ -485,7 +555,12 @@
         if (!view) {
             view = [[[MKPinAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:AnnotationIdentifier] autorelease];
             view.canShowCallout = YES;
-            view.rightCalloutAccessoryView = [UIButton buttonWithType:UIButtonTypeDetailDisclosure];
+            
+            KGONavigationStyle navStyle = [KGO_SHARED_APP_DELEGATE() navigationStyle];
+            if (navStyle != KGONavigationStyleTabletSidebar) {
+                // TODO: not all annotations will want to do this
+                view.rightCalloutAccessoryView = [UIButton buttonWithType:UIButtonTypeDetailDisclosure];
+            }
         }
     } else if ([annotation conformsToProtocol:@protocol(KGOSearchResult)]) {
         id<KGOSearchResult> aResult = (id<KGOSearchResult>)annotation;
@@ -495,8 +570,12 @@
                 view = [[[MKAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:@"fajwioth"] autorelease];
                 view.image = image;
                 view.canShowCallout = YES;
-                // TODO: not all annotations will want to do this
-                view.rightCalloutAccessoryView = [UIButton buttonWithType:UIButtonTypeDetailDisclosure];
+                
+                KGONavigationStyle navStyle = [KGO_SHARED_APP_DELEGATE() navigationStyle];
+                if (navStyle != KGONavigationStyleTabletSidebar) {
+                    // TODO: not all annotations will want to do this
+                    view.rightCalloutAccessoryView = [UIButton buttonWithType:UIButtonTypeDetailDisclosure];
+                }
             }
         }
     }
@@ -509,15 +588,7 @@
     if ([annotation conformsToProtocol:@protocol(KGOSearchResult)]) {
         KGOAppDelegate *appDelegate = KGO_SHARED_APP_DELEGATE();
         NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:annotation, @"place", self, @"pagerController", nil];
-        KGONavigationStyle navStyle = [appDelegate navigationStyle];
-        // TODO: clean up sidebar home screen so we don't have to deal with this
-        if (navStyle == KGONavigationStyleTabletSidebar) {
-            UIViewController *vc = [self.mapModule modulePage:LocalPathPageNameDetail params:params];
-            [(KGOSidebarFrameViewController *)[appDelegate homescreen] showDetailViewController:vc];
-            
-        } else {
-            [appDelegate showPage:LocalPathPageNameDetail forModuleTag:self.mapModule.tag params:params];
-        }
+        [appDelegate showPage:LocalPathPageNameDetail forModuleTag:self.mapModule.tag params:params];
     }
 }
 
@@ -539,16 +610,64 @@
     }
 }
 
+- (void)mapView:(MKMapView *)mapView didSelectAnnotationView:(MKAnnotationView *)view
+{
+    KGOAppDelegate *appDelegate = KGO_SHARED_APP_DELEGATE();
+    KGONavigationStyle navStyle = [appDelegate navigationStyle];
+    // TODO: clean up sidebar home screen so we don't have to deal with this
+    if (navStyle == KGONavigationStyleTabletSidebar) {
+        id<MKAnnotation> annotation = view.annotation;
+        if ([annotation conformsToProtocol:@protocol(KGOSearchResult)]) {
+            NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:annotation, @"place", self, @"pagerController", nil];
+            UIViewController *vc = [self.mapModule modulePage:LocalPathPageNameDetail params:params];
+            [(KGOSidebarFrameViewController *)[appDelegate homescreen] showDetailViewController:vc];
+        }
+    }
+}
+
+- (void)mapView:(MKMapView *)mapView didDeselectAnnotationView:(MKAnnotationView *)view
+{
+    NSInteger searchResultAnnotationCount = mapView.selectedAnnotations.count;
+    for (id<MKAnnotation> anAnnotation in mapView.selectedAnnotations) {
+        if (view.annotation == anAnnotation // this is what was deselected
+            || ![anAnnotation conformsToProtocol:@protocol(KGOSearchResult)] // we don't count annotations not provided by us
+        ) {
+            searchResultAnnotationCount--;
+        }
+    }
+    
+    if (!searchResultAnnotationCount) {    
+        KGOAppDelegate *appDelegate = KGO_SHARED_APP_DELEGATE();
+        KGONavigationStyle navStyle = [appDelegate navigationStyle];
+        // TODO: clean up sidebar home screen so we don't have to deal with this
+        if (navStyle == KGONavigationStyleTabletSidebar) {
+            [(KGOSidebarFrameViewController *)[appDelegate homescreen] hideDetailViewController];
+        }
+    }
+}
+
 #pragma mark KGODetailPagerController
 
 - (id<KGOSearchResult>)pager:(KGODetailPager *)pager contentForPageAtIndexPath:(NSIndexPath *)indexPath
 {
-    return [self.annotations objectAtIndex:indexPath.row];
+    NSMutableArray *displayables = [NSMutableArray array];
+    for (id<MKAnnotation> anAnnotation in _mapView.annotations) {
+        if ([anAnnotation conformsToProtocol:@protocol(KGOSearchResult)]) {
+            [displayables addObject:anAnnotation];
+        }
+    }
+    return [displayables objectAtIndex:indexPath.row];
 }
 
 - (NSInteger)pager:(KGODetailPager *)pager numberOfPagesInSection:(NSInteger)section
 {
-    return self.annotations.count;
+    NSInteger count = 0;
+    for (id<MKAnnotation> anAnnotation in _mapView.annotations) {
+        if ([anAnnotation conformsToProtocol:@protocol(KGOSearchResult)]) {
+            count++;
+        }
+    }
+    return count;
 }
 
 #pragma mark SearchDisplayDelegate
@@ -575,6 +694,7 @@
         [_mapView removeAnnotations:[_mapView annotations]];
         id<MKAnnotation> annotation = (id<MKAnnotation>)aResult;
         [_mapView addAnnotation:annotation];
+        [self dismissPopoverAnimated:YES];
     }
 }
 
@@ -596,15 +716,21 @@
 	
     [_mapView removeAnnotations:[_mapView annotations]];
     
+    NSMutableArray *addedAnnotations = [NSMutableArray array];
 	for (id<KGOSearchResult> aResult in controller.searchResults) {
 		if ([aResult conformsToProtocol:@protocol(MKAnnotation)]) {
-			id<MKAnnotation> annotation = (id<MKAnnotation>)aResult;
-			[_mapView addAnnotation:annotation];
+            [addedAnnotations addObject:aResult];
 		}
 	}
     
-    if (_mapView.annotations.count) {
-        _mapView.region = [MapHomeViewController regionForAnnotations:_mapView.annotations restrictedToClass:[KGOPlacemark class]];
+    [_mapView addAnnotations:addedAnnotations];
+    
+    if (addedAnnotations.count) {
+        // TODO: rewrite regionForAnnotations: to return a success value
+        MKCoordinateRegion region = [MapHomeViewController regionForAnnotations:addedAnnotations restrictedToClass:NULL];
+        if (region.center.latitude && region.center.longitude) {
+            _mapView.region = region;
+        }
     }
 	
 	_searchResultsTableView = tableView;
