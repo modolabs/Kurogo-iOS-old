@@ -68,6 +68,14 @@
         CGFloat y = LABEL_PADDING;
         if (_titleLabel) {
             y += _titleLabel.frame.size.height + LABEL_PADDING;
+            
+            CGRect buttonFrame = _bookmarkButton.frame;
+            buttonFrame.origin.y = y;
+            _bookmarkButton.frame = buttonFrame;
+            
+            buttonFrame = _shareButton.frame;
+            buttonFrame.origin.y = y;
+            _shareButton.frame = buttonFrame;
         }
         _subtitleLabel.frame = CGRectMake(LABEL_PADDING, y, maxWidth, textSize.height);
         subtitleHeight = _subtitleLabel.frame.size.height + LABEL_PADDING;
@@ -195,9 +203,22 @@
         [self.detailItem addBookmark];
     }
 
-    [self layoutBookmarkButton];
+    [self setupBookmarkButtonImages];
 }
 
+- (void)setupBookmarkButtonImages
+{
+    UIImage *buttonImage, *pressedButtonImage;
+    if ([self.detailItem isBookmarked]) {
+        buttonImage = [UIImage imageWithPathName:@"common/bookmark_on.png"];
+        pressedButtonImage = [UIImage imageWithPathName:@"common/bookmark_on_pressed.png"];
+    } else {
+        buttonImage = [UIImage imageWithPathName:@"common/bookmark_off.png"];
+        pressedButtonImage = [UIImage imageWithPathName:@"common/bookmark_off_pressed.png"];
+    }
+    [_bookmarkButton setImage:buttonImage forState:UIControlStateNormal];
+    [_bookmarkButton setImage:pressedButtonImage forState:UIControlStateHighlighted];
+}
 
 - (void)layoutBookmarkButton
 {
@@ -214,16 +235,7 @@
         
     }
     
-    UIImage *buttonImage, *pressedButtonImage;
-    if ([self.detailItem isBookmarked]) {
-        buttonImage = [UIImage imageWithPathName:@"common/bookmark_on.png"];
-        pressedButtonImage = [UIImage imageWithPathName:@"common/bookmark_on_pressed.png"];
-    } else {
-        buttonImage = [UIImage imageWithPathName:@"common/bookmark_off.png"];
-        pressedButtonImage = [UIImage imageWithPathName:@"common/bookmark_off_pressed.png"];
-    }
-    [_bookmarkButton setImage:buttonImage forState:UIControlStateNormal];
-    [_bookmarkButton setImage:pressedButtonImage forState:UIControlStateHighlighted];
+    [self setupBookmarkButtonImages];
     
     CGRect frame = _bookmarkButton.frame;
     if (_shareButton) {

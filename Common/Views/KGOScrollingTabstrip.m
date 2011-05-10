@@ -164,12 +164,15 @@
     }
 
     if (!_scrollView) {
-        _scrollView = [[UIScrollView alloc] initWithFrame:self.frame];
+        _scrollView = [[UIScrollView alloc] initWithFrame:self.bounds];
         _scrollView.delegate = self;
         _scrollView.scrollsToTop = NO;
         _scrollView.showsHorizontalScrollIndicator = NO;
+        _scrollView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
         
-        _contentView = [[UIView alloc] initWithFrame:self.frame];
+        _contentView = [[UIView alloc] initWithFrame:self.bounds];
+        _contentView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+
         
         [_scrollView addSubview:_contentView];
         [self addSubview:_scrollView];
@@ -218,7 +221,12 @@
             CGRect imageFrame = CGRectMake(self.frame.size.width - rightScrollImage.size.width,0,rightScrollImage.size.width,rightScrollImage.size.height);
             _rightScrollButton = [UIButton buttonWithType:UIButtonTypeCustom];
             _rightScrollButton.frame = imageFrame;
-            _rightScrollButton.hidden = NO;
+            if (_scrollView.contentSize.width > _scrollView.frame.size.width) {
+                _rightScrollButton.hidden = NO;
+            } else {
+                _rightScrollButton.hidden = YES;
+            }
+            _rightScrollButton.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin;
             [_rightScrollButton setImage:rightScrollImage forState:UIControlStateNormal];
             [_rightScrollButton addTarget:self action:@selector(sideButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
         }
@@ -312,6 +320,13 @@
 			_rightScrollButton.hidden = NO;
 		}
 	}
+}
+
+- (void)setFrame:(CGRect)frame {
+    [super setFrame:frame];
+    if(_scrollView) {
+        [self scrollViewDidScroll:_scrollView];
+    }
 }
 
 - (void)dealloc {

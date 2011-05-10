@@ -35,6 +35,7 @@
 @property(nonatomic, readonly) UILabel *titleLabel;
 @property(nonatomic, readonly) UILabel *subtitleLabel;
 
+- (void)setupBookmarkButtonImages;
 - (void)layoutBookmarkButton;
 - (void)layoutShareButton;
 - (void)hideShareButton;

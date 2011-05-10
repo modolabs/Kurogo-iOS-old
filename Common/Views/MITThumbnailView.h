@@ -13,10 +13,12 @@
 @interface MITThumbnailView : UIView <ConnectionWrapperDelegate> {
     NSString *imageURL;
     ConnectionWrapper *connection;
-    NSData *imageData;
+    NSData *_imageData;
     UIActivityIndicatorView *loadingView;
     UIImageView *imageView;
     id<MITThumbnailDelegate> delegate;
+    
+    BOOL _didDisplayImage;
 }
 
 - (void)loadImage;

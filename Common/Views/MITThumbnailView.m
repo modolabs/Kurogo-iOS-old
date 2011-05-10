@@ -5,14 +5,14 @@
 
 @implementation MITThumbnailView
 
-@synthesize imageURL, connection, imageData, loadingView, imageView, delegate;
+@synthesize imageURL, connection, loadingView, imageView, delegate;
 
 - (id)initWithFrame:(CGRect)frame {
     self = [super initWithFrame:frame];
     if (self != nil) {
         connection = nil;
         imageURL = nil;
-        imageData = nil;
+        _imageData = nil;
         loadingView = nil;
         imageView = nil;
         self.opaque = YES;
@@ -21,6 +21,20 @@
         self.contentMode = UIViewContentModeScaleAspectFill;
     }
     return self;
+}
+
+- (NSData *)imageData
+{
+    return _imageData;
+}
+
+- (void)setImageData:(NSData *)imageData
+{
+    if (![_imageData isEqualToData:imageData]) {
+        [_imageData release];
+        _imageData = [imageData retain];
+        _didDisplayImage = NO;
+    }
 }
 
 - (void)loadImage {
@@ -35,7 +49,9 @@
 }
 
 - (BOOL)displayImage {
-    BOOL wasSuccessful = NO;
+    if (_didDisplayImage) {
+        return _didDisplayImage;
+    }
     
     [loadingView stopAnimating];
     loadingView.hidden = YES;
@@ -54,13 +70,13 @@
         
         imageView.image = image;
         imageView.hidden = NO;
-        wasSuccessful = YES;
+        _didDisplayImage = YES;
         [imageView setNeedsLayout];
     }
     [self setNeedsLayout];
     
     [image release];
-    return wasSuccessful;
+    return _didDisplayImage;
 }
 
 - (void)requestImage {
@@ -118,9 +134,8 @@
     [KGO_SHARED_APP_DELEGATE() hideNetworkActivityIndicator];
     [connection release];
     connection = nil;
-    
-    [imageData release];
-    imageData = nil;
+
+    self.imageData = nil;
     [loadingView release];
     [imageView release];
     [imageURL release];
