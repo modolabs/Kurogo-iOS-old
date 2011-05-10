@@ -47,6 +47,8 @@
     BOOL _showingMapView;
 }
 
+@property (nonatomic) BOOL showsSearchOverlay;
+
 @property (nonatomic, readonly) BOOL showingOnlySearchResults; // NO if tableview includes search suggestions
 @property (nonatomic, readonly) id<KGOSearchDisplayDelegate> delegate;
 @property (nonatomic, retain) NSArray *searchResults;

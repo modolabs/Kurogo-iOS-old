@@ -30,12 +30,17 @@ static NSString * RecentSearchesEntityName = @"RecentSearch";
 searchContentsController = _searchContentsController,
 searchTableController = _searchTableController,
 searchResults = _searchResults,
-showingOnlySearchResults = _showingOnlySearchResults;
+showingOnlySearchResults = _showingOnlySearchResults, showsSearchOverlay;
 
 
-- (id)initWithSearchBar:(KGOSearchBar *)searchBar delegate:(id<KGOSearchDisplayDelegate>)delegate contentsController:(UIViewController *)viewController {
+- (id)initWithSearchBar:(KGOSearchBar *)searchBar
+               delegate:(id<KGOSearchDisplayDelegate>)delegate
+     contentsController:(UIViewController *)viewController
+{
     self = [super init];
     if (self) {
+        self.showsSearchOverlay = YES;
+        
         _searchBar = [searchBar retain];
         _searchBar.delegate = self;
         
@@ -129,6 +134,10 @@ showingOnlySearchResults = _showingOnlySearchResults;
 }
 
 - (void)showSearchOverlayAnimated:(BOOL)animated {
+    if (!self.showsSearchOverlay) {
+        return;
+    }
+    
     if (!_searchOverlay) {
         CGFloat yOrigin = _searchBar.frame.origin.y + _searchBar.frame.size.height;
         CGSize containerSize = _searchContentsController.view.frame.size;
@@ -169,9 +178,11 @@ showingOnlySearchResults = _showingOnlySearchResults;
 }
 
 - (void)releaseSearchOverlay {
-    [_searchOverlay removeFromSuperview];
-    [_searchOverlay release];
-    _searchOverlay = nil;
+    if (_searchOverlay) {
+        [_searchOverlay removeFromSuperview];
+        [_searchOverlay release];
+        _searchOverlay = nil;
+    }
 }
 
 - (void)searchOverlayTapped {
@@ -379,6 +390,13 @@ showingOnlySearchResults = _showingOnlySearchResults;
     }
     return nil;
 }
+
+// TODO: uncomment and edit if we have search results that need multiple sections
+/*
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+    return 1;
+}
+*/
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
 	return self.searchResults.count;
