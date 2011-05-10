@@ -5,7 +5,6 @@
 
 @implementation NewsModule
 
-@synthesize storyListChannelController;
 #pragma mark Navigation
 
 - (NSArray *)registeredPageNames {
@@ -16,8 +15,16 @@
     UIViewController *vc = nil;
     if ([pageName isEqualToString:LocalPathPageNameHome]) {
         vc = [[[StoryListViewController alloc] init] autorelease];
+        [(StoryListViewController *)vc setDataManager:[self dataManager]];
+        
+        if ([params objectForKey:@"category"]) {
+            NewsCategory *category = [params objectForKey:@"category"];
+            [(StoryListViewController *)vc setActiveCategoryId:category.category_id];
+        }
+        
     } else if([pageName isEqualToString:LocalPathPageNameDetail]) {
         vc = [[[StoryDetailViewController alloc] init] autorelease];
+        [(StoryDetailViewController *)vc setDataManager:[self dataManager]];
         
         if ([params objectForKey:@"story"]) { // show only one story
             NewsStory *story = [params objectForKey:@"story"];
@@ -33,8 +40,16 @@
             
             [(StoryDetailViewController *)vc setMultiplePages:YES];
         }
+        
+        if ([params objectForKey:@"category"]) {
+            [(StoryDetailViewController *)vc setCategory:[params objectForKey:@"category"]];
+        }
     }
     return vc;
+}
+
+- (NewsDataManager *)dataManager {
+    return [NewsDataManager sharedManager];
 }
 
 - (NSArray *)objectModelNames {
@@ -51,8 +66,8 @@
     
     self.searchDelegate = delegate;
     
-    [[NewsDataManager sharedManager] registerDelegate:self];
-    [[NewsDataManager sharedManager] search:searchText];
+    [self.dataManager registerDelegate:self];
+    [self.dataManager search:searchText];
 }
 
 - (void) searchResults:(NSArray *)results forSearchTerms:(NSString *)searchTerms {

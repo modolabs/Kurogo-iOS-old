@@ -3,6 +3,7 @@
 
 @class NewsStory;
 @class KGOShareButtonController;
+@class NewsDataManager;
 //@class StoryListViewController;
 
 @protocol NewsControllerDelegate <NSObject>
@@ -31,10 +32,12 @@
 }
 
 @property (nonatomic, retain) id<NewsControllerDelegate> newsController;
-//@property (nonatomic, retain) StoryListViewController *newsController;
+@property (nonatomic, retain) NewsDataManager *dataManager;
+
 @property (nonatomic, retain) UIWebView *storyView;
 @property (nonatomic, retain) NSArray *stories;
 @property (nonatomic, retain) NewsStory *story; // use if you only want to present one story
+@property (nonatomic, retain) NewsStory *category; // use only if you want the news home button to back to specific category
 @property BOOL multiplePages;
 
 - (void) setInitialIndexPath:(NSIndexPath *)initialIndexPath;

@@ -44,6 +44,7 @@
 @property (nonatomic, retain) NSArray *stories;
 @property (nonatomic, retain) NSArray *categories;
 @property (nonatomic, retain) NewsCategoryId activeCategoryId;
+@property (nonatomic, retain) NewsDataManager *dataManager;
 
 - (void)showSearchBar;
 

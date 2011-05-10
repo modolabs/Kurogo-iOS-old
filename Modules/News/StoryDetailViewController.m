@@ -9,17 +9,22 @@
 #import "StoryListViewController.h"
 #import "StoryGalleryViewController.h"
 #import "NewsImage.h"
+#import "KGOAppDelegate.h"
+#import "KGOAppDelegate+ModuleAdditions.h"
 #import "KGOShareButtonController.h"
+#import "KGOToolbar.h"
 
 @interface StoryDetailViewController (Private) 
 
 - (void)displayCurrentStory;
+- (UIButton *)toolbarCloseButton;
 
 @end
 
 @implementation StoryDetailViewController
 
-@synthesize newsController, story, stories, storyView, multiplePages;
+@synthesize newsController, story, stories, storyView, multiplePages, category;
+@synthesize dataManager;
 
 - (void)loadView {
     [super loadView]; // surprisingly necessary empty call to super due to the way memory warnings work
@@ -34,8 +39,27 @@
     self.view.opaque = YES;
     self.view.backgroundColor = [UIColor whiteColor];
     self.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+    
+    CGRect storyViewFrame;
+    KGOToolbar *alternateToolbar = nil;
+    if ([KGO_SHARED_APP_DELEGATE() navigationStyle] == KGONavigationStyleTabletSidebar) {
+        alternateToolbar = [[[KGOToolbar alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 44)] autorelease];
+        alternateToolbar.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+        
+        // left bar item
+        UIBarButtonItem *leftBarItem = [[[UIBarButtonItem alloc] initWithCustomView:[self toolbarCloseButton]] autorelease];
+        UIBarButtonItem *flexibleMiddleItem = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil] autorelease];
 
-	storyView = [[UIWebView alloc] initWithFrame:self.view.bounds];
+        alternateToolbar.items = [NSArray arrayWithObjects:leftBarItem, flexibleMiddleItem, nil];
+        
+        [self.view addSubview:alternateToolbar];
+        
+        storyViewFrame = CGRectMake(0, 44, self.view.frame.size.width, self.view.frame.size.height - 44);
+    } else {
+        storyViewFrame = self.view.bounds;
+    }
+
+	storyView = [[UIWebView alloc] initWithFrame:storyViewFrame];
     storyView.dataDetectorTypes = UIDataDetectorTypeLink;
     storyView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     storyView.scalesPageToFit = NO;
@@ -46,7 +70,12 @@
         storyPager = [[KGODetailPager alloc] initWithPagerController:self delegate:self];
         
         UIBarButtonItem * segmentBarItem = [[UIBarButtonItem alloc] initWithCustomView: storyPager];
-        self.navigationItem.rightBarButtonItem = segmentBarItem;
+        if(alternateToolbar) {
+            alternateToolbar.items = [alternateToolbar.items arrayByAddingObject:segmentBarItem];
+        } else {
+            self.navigationItem.rightBarButtonItem = segmentBarItem;
+        }
+        
         [segmentBarItem release];
         
         [storyPager selectPageAtSection:initialIndexPath.section row:initialIndexPath.row];
@@ -101,11 +130,19 @@
 	NSString *isBookmarked = ([self.story.bookmarked boolValue]) ? @"on" : @"";
 	
     NSMutableDictionary *values = [NSMutableDictionary dictionary];
+    NSString *maxWidth;
+    if(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+        maxWidth = @"140";
+    } else {
+        maxWidth = @"320";
+    }
+    
     [values setValue:story.title forKey:@"TITLE"];
     [values setValue:story.author forKey:@"AUTHOR"];
     [values setValue:isBookmarked forKey:@"BOOKMARKED"];
     [values setValue:postDate forKey:@"DATE"];
     [values setValue:thumbnailURL forKey:@"THUMBNAIL_URL"];
+    [values setValue:maxWidth forKey:@"THUMBNAIL_MAX_WIDTH"];
     [values setValue:story.body forKey:@"BODY"];
     [values setValue:story.summary forKey:@"DEK"];
     
@@ -129,11 +166,11 @@
             if ([[url path] rangeOfString:@"bookmark" options:NSBackwardsSearch].location != NSNotFound) {
 				// toggle bookmarked state
                 BOOL newBookmarkState = [self.story.bookmarked boolValue] ? NO : YES;
-                [[NewsDataManager sharedManager] story:self.story bookmarked:newBookmarkState];
+                [self.dataManager story:self.story bookmarked:newBookmarkState];
 			} else if ([[url path] rangeOfString:@"share" options:NSBackwardsSearch].location != NSNotFound) {
                 shareController.actionSheetTitle = @"Share article with a friend";
                 shareController.shareTitle = story.title;
-                shareController.shareBody = story.body;
+                shareController.shareBody = story.summary;
                 shareController.shareURL = story.link;
 				[shareController shareInView:self.view];
 			}
@@ -141,6 +178,40 @@
 		}
 	}
 	return result;
+}
+
+- (void)goHome:(id)sender {
+    NSDictionary *params = nil;
+    if (self.category) {
+        params = [NSDictionary dictionaryWithObject:self.category forKey:@"category"];
+    }
+    [KGO_SHARED_APP_DELEGATE() showPage:LocalPathPageNameHome forModuleTag:NewsTag params:params];
+}
+     
+- (UIButton *)toolbarCloseButton {
+    NSString *title = NSLocalizedString(@"News", @"News Module Home");
+    UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
+    [button addTarget:self action:@selector(goHome:) forControlEvents:UIControlEventTouchUpInside];
+    
+    [button setTitle:title forState:UIControlStateNormal];
+    [button setTitleColor:[UIColor whiteColor]
+                  forState:UIControlStateNormal];
+    [button setTitleColor:[UIColor whiteColor]
+                  forState:UIControlStateHighlighted];
+    
+    button.titleLabel.font = [[KGOTheme sharedTheme] fontForThemedProperty:KGOThemePropertyScrollTabSelected];
+    button.titleEdgeInsets = UIEdgeInsetsMake(0, 0, 1.0, 0); // needed to center text vertically within button
+    CGSize size = [button.titleLabel.text sizeWithFont:button.titleLabel.font];
+    
+    UIImage *stretchableButtonImage = [[UIImage imageWithPathName:@"common/secondary-toolbar-button.png"] stretchableImageWithLeftCapWidth:15 topCapHeight:0];
+    UIImage *stretchableButtonImagePressed = [[UIImage imageWithPathName:@"common/secondary-toolbar-button-pressed.png"] stretchableImageWithLeftCapWidth:15 topCapHeight:0];
+    
+    [button setBackgroundImage:stretchableButtonImage forState:UIControlStateNormal];
+    [button setBackgroundImage:stretchableButtonImagePressed forState:UIControlStateHighlighted];
+    
+    button.frame = CGRectMake(0, 0, size.width +15, stretchableButtonImage.size.height);
+    
+    return button;
 }
 
 - (void)didReceiveMemoryWarning {
@@ -154,6 +225,7 @@
 	[storyView release];
     self.story = nil;
     self.stories = nil;
+    self.category = nil;
     [initialIndexPath release];
     [super dealloc];
 }

@@ -35,6 +35,8 @@ typedef NSString* NewsCategoryId;
 
 - (void) search:(NSString *)searchTerms;
 
+- (NSArray *)searchableCategories;
+
 - (void)registerDelegate:(id<NewsDataDelegate>)delegate;
 
 - (void)unregisterDelegate:(id<NewsDataDelegate>)delegate;
@@ -51,6 +53,5 @@ typedef NSString* NewsCategoryId;
 
 @property (nonatomic, retain) KGORequest *storiesRequest;
 @property (nonatomic, retain) NSMutableSet *searchRequests;
-@property (assign) BOOL firstSearchResultReceived;
 
 @end

@@ -38,10 +38,13 @@
 - (void)releaseSearchBar;
 - (void)hideSearchBar;
 
+- (NewsCategory *)activeCategory;
+
 @end
 
 @implementation StoryListViewController
 
+@synthesize dataManager;
 @synthesize stories;
 @synthesize categories;
 @synthesize activeCategoryId;
@@ -84,14 +87,14 @@
 
     [self setupActivityIndicator];
     
-    [[NewsDataManager sharedManager] registerDelegate:self];
-    [[NewsDataManager sharedManager] requestCategories];
+    [self.dataManager registerDelegate:self];
+    [self.dataManager requestCategories];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
 	if (showingBookmarks) {
-		self.stories = [[NewsDataManager sharedManager] bookmarkedStories];
+		self.stories = [self.dataManager bookmarkedStories];
         
         // we might want to do something special if all bookmarks are gone
         // but i am skeptical
@@ -186,12 +189,14 @@
 #pragma mark NewsDataManager delegate methods
 - (void)categoriesUpdated:(NSArray *)newCategories {
     self.categories = newCategories;
-    NewsCategory *category = [self.categories objectAtIndex:0];
-    self.activeCategoryId = category.category_id;
+    if (![self activeCategory]) {
+        NewsCategory *category = [self.categories objectAtIndex:0];
+        self.activeCategoryId = category.category_id;
+    }
     [self setupNavScroller];
 
     // now that we have categories load the stories
-    [[NewsDataManager sharedManager] requestStoriesForCategory:self.activeCategoryId loadMore:NO forceRefresh:NO]; 
+    [self.dataManager requestStoriesForCategory:self.activeCategoryId loadMore:NO forceRefresh:NO]; 
 }
 
 #pragma mark -
@@ -205,6 +210,7 @@
     
     navScrollView = [[KGOScrollingTabstrip alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 44.0) delegate:self buttonTitles:nil];
     navScrollView.delegate = self;
+    navScrollView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
     [self.view addSubview:navScrollView];
     [self setupNavScrollButtons];
 }
@@ -220,9 +226,10 @@
 
 	// highlight active category
     if (self.categories.count) {
-        NewsCategory *firstCategory = [self.categories objectAtIndex:0];
+        NewsCategory *defaultCategory = self.activeCategory;
+        
         for (NSInteger i = 0; i < navScrollView.numberOfButtons; i++) {
-            if ([[navScrollView buttonTitleAtIndex:i] isEqualToString:firstCategory.title]) {
+            if ([[navScrollView buttonTitleAtIndex:i] isEqualToString:defaultCategory.title]) {
                 [navScrollView selectButtonAtIndex:i];
                 break;
             }
@@ -258,7 +265,13 @@
         theSearchBar.autoresizingMask = UIViewAutoresizingFlexibleWidth;
 		theSearchBar.alpha = 0.0;
         if (!searchController) {
-            searchController = [[KGOSearchDisplayController alloc] initWithSearchBar:theSearchBar delegate:self contentsController:self];
+            searchController = [[KGOSearchDisplayController alloc] initWithSearchBar:theSearchBar
+                                                                            delegate:self
+                                                                  contentsController:self];
+
+            if ([KGO_SHARED_APP_DELEGATE() navigationStyle] == KGONavigationStyleTabletSidebar) {
+                searchController.showsSearchOverlay = NO;
+            }
         }
 		[self.view addSubview:theSearchBar];
 	}
@@ -370,19 +383,19 @@
 		showingBookmarks = NO;
         
         // makes request to server if no request has been made this session
-        [[NewsDataManager sharedManager] requestStoriesForCategory:self.activeCategoryId loadMore:NO forceRefresh:NO];
+        [self.dataManager requestStoriesForCategory:self.activeCategoryId loadMore:NO forceRefresh:NO];
     }
 }
 
 - (void)switchToBookmarks {
-    self.stories = [[NewsDataManager sharedManager] bookmarkedStories];
+    self.stories = [self.dataManager bookmarkedStories];
     showingBookmarks = YES;
     [self reloadDataForTableView:storyTable];
 }
 
 - (void)refresh:(id)sender {    
     if (!showingBookmarks) {
-        [[NewsDataManager sharedManager] requestStoriesForCategory:self.activeCategoryId loadMore:NO forceRefresh:YES];
+        [self.dataManager requestStoriesForCategory:self.activeCategoryId loadMore:NO forceRefresh:YES];
         return;
     }
 }
@@ -471,7 +484,7 @@
             n = self.stories.count;
             
             if(!showingBookmarks) {
-                NSInteger moreStories = [[NewsDataManager sharedManager] loadMoreStoriesQuantityForCategoryId:activeCategoryId];
+                NSInteger moreStories = [self.dataManager loadMoreStoriesQuantityForCategoryId:activeCategoryId];
                 // don't show "load x more" row if
                 if (moreStories > 0 ) { // category has more stories
                     n += 1; // + 1 for the "Load more articles..." row
@@ -485,13 +498,13 @@
 - (CellManipulator)tableView:(UITableView *)tableView manipulatorForCellAtIndexPath:(NSIndexPath *)indexPath {
     if (indexPath.row == self.stories.count) {
 
-        NSInteger loadMoreQuantity = [[NewsDataManager sharedManager] loadMoreStoriesQuantityForCategoryId:self.activeCategoryId];
+        NSInteger loadMoreQuantity = [self.dataManager loadMoreStoriesQuantityForCategoryId:self.activeCategoryId];
 
         NSString *title = [NSString stringWithFormat:@"Load %d more articles...", loadMoreQuantity];
         UIColor *textColor;
         
         //
-        if (![[NewsDataManager sharedManager] busy]) { // disable when a load is already in progress
+        if (![self.dataManager busy]) { // disable when a load is already in progress
             textColor = [UIColor colorWithHexString:@"#1A1611"]; // enable
         } else {
             textColor = [UIColor colorWithHexString:@"#999999"]; // disable
@@ -617,13 +630,13 @@
 }
 
 - (void)thumbnail:(MITThumbnailView *)thumbnail didLoadData:(NSData *)data {
-    [[NewsDataManager sharedManager] saveImageData:data url:thumbnail.imageURL];
+    [self.dataManager saveImageData:data url:thumbnail.imageURL];
 }
 
 - (void)tableView:(UITableView *)tv didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 	if(indexPath.row == self.stories.count) {
-        if(![[NewsDataManager sharedManager] busy]) {
-            [[NewsDataManager sharedManager] requestStoriesForCategory:self.activeCategoryId loadMore:YES forceRefresh:NO];
+        if(![self.dataManager busy]) {
+            [self.dataManager requestStoriesForCategory:self.activeCategoryId loadMore:YES forceRefresh:NO];
         }
 	} else {
         //if (self.featuredStory != nil  // we have a featured story
@@ -640,6 +653,8 @@
             NSMutableDictionary *params = [NSMutableDictionary dictionary];
             [params setObject:indexPath forKey:@"indexPath"];
             [params setObject:self.stories forKey:@"stories"];
+            [params setObject:[self activeCategory] forKey:@"category"];
+            
             [KGO_SHARED_APP_DELEGATE() showPage:LocalPathPageNameDetail forModuleTag:NewsTag params:params];
         } else {
             [[UIApplication sharedApplication] openURL:[NSURL URLWithString:story.link]];
@@ -647,6 +662,19 @@
 	}
 }
 
+- (NewsCategory *)activeCategory {
+    if (!self.activeCategoryId) {
+        return [self.categories objectAtIndex:0];
+    }
+    
+    for (NewsCategory *category in self.categories) {
+        if([category.category_id isEqualToString:self.activeCategoryId]) {
+            return category;
+        }
+    }
+    
+    return nil;
+}
 
 #pragma mark KGOSearchDisplayDelegate
 - (BOOL)searchControllerShouldShowSuggestions:(KGOSearchDisplayController *)controller {
