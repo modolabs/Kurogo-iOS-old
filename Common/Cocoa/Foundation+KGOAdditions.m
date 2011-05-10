@@ -1,6 +1,14 @@
 #import "Foundation+KGOAdditions.h"
 #import "KGOAppDelegate.h"
 
+
+KGOSign KGOGetIntegerSign(NSInteger x) {
+    if (x > 0)
+        return KGOSignPositive;
+    return (x == 0) ? KGOSignZero : KGOSignNegative;
+}
+
+
 @implementation NSURL (MITAdditions)
 /*
 + (NSURL *)internalURLWithModuleTag:(NSString *)tag path:(NSString *)path {

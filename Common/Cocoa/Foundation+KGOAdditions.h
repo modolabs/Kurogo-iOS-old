@@ -1,5 +1,14 @@
 #import <Foundation/Foundation.h>
 
+typedef enum {
+    KGOSignPositive = 1,
+    KGOSignNegative = -1,
+    KGOSignZero = 0
+} KGOSign;
+
+KGOSign KGOGetIntegerSign(NSInteger x);
+
+
 @interface NSURL (MITAdditions)
 
 //+ (NSURL *)internalURLWithModuleTag:(NSString *)tag path:(NSString *)path;
