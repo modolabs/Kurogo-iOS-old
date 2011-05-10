@@ -4,6 +4,9 @@
 #import "KGOAppDelegate+ModuleAdditions.h"
 #import <objc/runtime.h>
 
+NSString * const CoreDataDidDeleteStoreNotification = @"CoreDataDidDelete";
+
+
 // not sure what to call this, just a placeholder for now, still hard coding file name below
 #define SQLLITE_PREFIX @"CoreDataXML."
 
@@ -302,13 +305,18 @@
     
     if ([[NSFileManager defaultManager] removeItemAtPath:[self storeFileName] error:&error]) {
         NSPersistentStoreCoordinator *coordinator = [self persistentStoreCoordinator];
-        NSLog(@"%@", coordinator);
+        DLog(@"%@", coordinator);
         
         success = coordinator != nil;
         
     } else {
         NSLog(@"could not delete store, %@", [error description]);
     }
+    
+    if (success) {
+        [[NSNotificationCenter defaultCenter] postNotificationName:CoreDataDidDeleteStoreNotification object:self];
+    }
+    
     return success;
 }
 
