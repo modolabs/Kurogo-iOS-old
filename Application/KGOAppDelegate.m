@@ -201,7 +201,7 @@
 - (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
 	DLog(@"Registered for push notifications. deviceToken == %@", deviceToken);
     KGORequestManager *requestManager = [KGORequestManager sharedManager];
-    if (![requestManager.devicePushToken isEqualToData:deviceToken]) {
+    if (![requestManager.devicePushToken isEqualToData:deviceToken] || ![[KGORequestManager sharedManager] devicePushPassKey]) {
         requestManager.devicePushToken = deviceToken;
         [requestManager registerNewDeviceToken];
     }

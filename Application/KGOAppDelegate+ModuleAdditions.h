@@ -18,6 +18,7 @@
 
 @property (nonatomic, readonly) KGONavigationStyle navigationStyle;
 @property (nonatomic, readonly) UIViewController *homescreen;
+@property (nonatomic, readonly) KGOModule *visibleModule;
 
 #pragma mark Social Media
 

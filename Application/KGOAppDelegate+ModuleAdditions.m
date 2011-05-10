@@ -148,6 +148,9 @@
                 break;
             }
         }
+        // TODO: see if there is a better place to put this
+        NSString *pagePath = [NSString stringWithFormat:@"/%@/%@", homeModule.tag, LocalPathPageNameHome];
+        [[AnalyticsWrapper sharedWrapper] trackPageview:pagePath];
     }
 }
 
@@ -169,6 +172,11 @@
 
 - (KGOModule *)moduleForTag:(NSString *)aTag {
     return [_modulesByTag objectForKey:aTag];
+}
+
+- (KGOModule *)visibleModule
+{
+    return _visibleModule;
 }
 
 // this should never be called on the home module.
