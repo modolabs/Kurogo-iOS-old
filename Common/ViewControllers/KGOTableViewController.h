@@ -86,7 +86,11 @@ typedef void (^CellManipulator)(UITableViewCell *);
 	NSMutableArray *_cellContentBuffers;
 	
 	UITableView *_currentTableView;
+    CGFloat _currentTableWidth; // decache when width changes
     NSMutableDictionary *_currentContentBuffer;
+    
+    NSInteger _lastCachedSection;
+    NSInteger _lastCachedRow;
 
     id<KGOTableViewDataSource> _dataSource;
 }
@@ -115,5 +119,6 @@ typedef void (^CellManipulator)(UITableViewCell *);
 
 - (void)reloadDataForTableView:(UITableView *)tableView;
 - (void)decacheTableView:(UITableView *)tableView;
+- (BOOL)removeCachedViewsInSection:(NSInteger)section row:(NSInteger)row;
 
 @end
