@@ -587,7 +587,6 @@
     return [KGOHomeScreenViewController sizeWithArgs:args];
 }
 
-
 #pragma mark Private
 
 - (void)moduleListDidChange:(NSNotification *)aNotification

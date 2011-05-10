@@ -5,7 +5,7 @@
  */
 #import "KGOHomeScreenViewController.h"
 
-@class KGOModule;
+@class KGOModule, SpringboardIcon;
 
 @interface KGOSidebarFrameViewController : KGOHomeScreenViewController {
     
@@ -25,9 +25,15 @@
 
 @property (nonatomic, readonly) UIViewController *visibleViewController;
 @property (nonatomic, readonly) NSArray *widgetViews;
+@property (nonatomic) NSTimeInterval animationDuration;
+@property (nonatomic, readonly) UIView *container;
+@property (nonatomic, readonly) UIViewController *detailViewController;
 
 - (void)showViewController:(UIViewController *)viewController;
 - (void)showDetailViewController:(UIViewController *)viewController;
 - (void)hideDetailViewController;
+
+- (void)highlightIconForModule:(KGOModule *)module;
+- (void)highlightIcon:(SpringboardIcon *)anIcon;
 
 @end

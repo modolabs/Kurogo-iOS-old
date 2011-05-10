@@ -3,12 +3,11 @@
 #import "KGOModule.h"
 #import "UIKit+KGOAdditions.h"
 #import "KGOHomeScreenWidget.h"
-#import <QuartzCore/QuartzCore.h>
 
-#define SIDEBAR_WIDTH 160
+#define SIDEBAR_WIDTH 161
 #define TOPBAR_HEIGHT 51
 
-#define DETAIL_VIEW_WIDTH 320
+#define DETAIL_VIEW_WIDTH 340
 #define DETAIL_VIEW_HEIGHT 460
 
 @interface KGOSidebarFrameViewController (Private)
@@ -19,8 +18,12 @@
 
 @implementation KGOSidebarFrameViewController
 
+@synthesize animationDuration;
 
 - (void)showViewController:(UIViewController *)viewController {
+    
+    [self highlightIconForModule:[KGO_SHARED_APP_DELEGATE() visibleModule]];
+    
     if (viewController != _visibleViewController) {
 
         if (_visibleViewController.modalViewController) {
@@ -36,20 +39,43 @@
             }
             
         } else {
-            [_visibleViewController viewWillDisappear:NO];
-            [_visibleViewController.view removeFromSuperview];
-            [_visibleViewController viewDidDisappear:NO];
-            
-            [_visibleViewController release];
-            _visibleViewController = [viewController retain];
+
             [self hideDetailViewController];
             
-            [_visibleViewController viewWillAppear:NO];
-            _visibleViewController.view.frame = CGRectMake(0, 0, _container.frame.size.width, _container.frame.size.height);
+            [viewController viewWillAppear:YES];
+            viewController.view.frame = _container.bounds;
+            viewController.view.alpha = 0.1;
+            
             [_container addSubview:viewController.view];
-            [_visibleViewController viewDidDisappear:NO];
+            
+            [_visibleViewController viewWillDisappear:NO];
+
+            [UIView animateWithDuration:self.animationDuration animations:^(void) {
+                viewController.view.alpha = 1;
+                _visibleViewController.view.alpha = 0;
+                
+            } completion:^(BOOL finished) {
+                
+                [_visibleViewController.view removeFromSuperview];
+                [_visibleViewController viewDidDisappear:YES];
+                
+                [_visibleViewController release];
+                _visibleViewController = [viewController retain];
+                
+                [_visibleViewController viewDidAppear:YES];
+            }];
         }
     }
+}
+
+- (UIView *)container
+{
+    return _container;
+}
+
+- (UIViewController *)detailViewController
+{
+    return _detailViewController;
 }
 
 - (void)showDetailViewController:(UIViewController *)viewController
@@ -60,22 +86,20 @@
     
     _detailViewController = [viewController retain];
     [_detailViewController viewWillAppear:YES];
-    _detailViewController.view.frame = CGRectMake(self.view.bounds.size.width - 20,
-                                                  self.view.bounds.size.height - 20,
-                                                  10,
-                                                  10);
-    _detailViewController.view.layer.cornerRadius = 5;
-    _detailViewController.view.autoresizingMask = UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleLeftMargin;
+    CGRect frame = CGRectMake(self.view.bounds.size.width - DETAIL_VIEW_WIDTH - 5,
+                              self.view.bounds.size.height,
+                              DETAIL_VIEW_WIDTH,
+                              _container.frame.size.height - 44);
+    
+    _detailViewController.view.frame = frame;
+    _detailViewController.view.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleLeftMargin;
 
     [self.view addSubview:_detailViewController.view];
-
-    CGRect afterFrame = CGRectMake(self.view.bounds.size.width - DETAIL_VIEW_WIDTH - 10,
-                                   self.view.bounds.size.height - DETAIL_VIEW_HEIGHT - 10,
-                                   DETAIL_VIEW_WIDTH,
-                                   DETAIL_VIEW_HEIGHT);
+    
+    frame.origin.y = _container.frame.origin.y + 44;
 
     [UIView animateWithDuration:0.4 animations:^(void) {
-        _detailViewController.view.frame = afterFrame;
+        _detailViewController.view.frame = frame;
     } completion:^(BOOL finished) {
         [_detailViewController viewDidAppear:YES];
     }];
@@ -88,10 +112,8 @@
     _outgoingDetailViewController = _detailViewController;
     _detailViewController = nil;
     
-    CGRect afterFrame = CGRectMake(self.view.bounds.size.width - 20,
-                                   self.view.bounds.size.height - 20,
-                                   10,
-                                   10);
+    CGRect afterFrame = _outgoingDetailViewController.view.frame;
+    afterFrame.origin.y = self.view.bounds.size.height;
     
     [UIView animateWithDuration:0.4 animations:^(void) {
         _outgoingDetailViewController.view.frame = afterFrame;
@@ -168,6 +190,8 @@
     _container = [[UIView alloc] initWithFrame:containerFrame];
 
     [self.view addSubview:_container];
+
+    self.animationDuration = 0.2;
 }
 
 - (void)viewDidLoad
@@ -210,14 +234,32 @@
 
 - (CGRect)springboardFrame
 {
-    return self.view.frame;
+    CGFloat currentWidth = self.view.bounds.size.width;
+    CGFloat currentHeight = self.view.bounds.size.height;
+
+    CGFloat longerDimension = fmaxf(currentWidth, currentHeight);
+    CGFloat shorterDimension = fminf(currentWidth, currentHeight);
+    
+    if (UIInterfaceOrientationIsPortrait(self.interfaceOrientation)) {
+        return CGRectMake(0, 0, shorterDimension, longerDimension);
+    } else if (UIInterfaceOrientationIsLandscape(self.interfaceOrientation)) {
+        return CGRectMake(0, 0, longerDimension, shorterDimension);
+    }
+    
+    return self.view.bounds;
 }
 
-- (void)buttonPressed:(id)sender {
-    [super buttonPressed:sender];
-    
-    SpringboardIcon *anIcon = (SpringboardIcon *)sender;
-    
+- (void)highlightIconForModule:(KGOModule *)module
+{
+    for (UIView *aView in _sidebar.subviews) {
+        if ([aView isKindOfClass:[SpringboardIcon class]] && [(SpringboardIcon *)aView module] == module) {
+            [self highlightIcon:(SpringboardIcon *)aView];
+        }
+    }
+}
+
+- (void)highlightIcon:(SpringboardIcon *)anIcon
+{
     UIFont *font = [self moduleLabelFontLarge];
     NSString *boldName = [NSString stringWithFormat:@"%@-Bold", [font fontName]];
     UIFont *boldFont = [UIFont fontWithName:boldName size:[font pointSize]];
@@ -226,10 +268,15 @@
     }
     
     for (UIView *aView in [_sidebar subviews]) {
-        if (aView != sender && [aView isKindOfClass:[SpringboardIcon class]]) {
+        if (aView != anIcon && [aView isKindOfClass:[SpringboardIcon class]]) {
             [(SpringboardIcon *)aView titleLabel].font = font;
         }
     }
+}
+
+- (void)buttonPressed:(id)sender {
+    [super buttonPressed:sender];
+    [self highlightIcon:sender];
 }
 
 - (void)viewDidUnload
@@ -255,6 +302,8 @@
     
     // TODO: figure out what's really supposed to happen here
     if (UIInterfaceOrientationIsPortrait(statusBarOrientation)) {
+        currentWidth -= statusBarFrame.size.height;
+        currentHeight += statusBarFrame.size.height;
 
     } else if (UIInterfaceOrientationIsLandscape(statusBarOrientation)) {
         currentWidth -= statusBarFrame.size.width;
@@ -288,7 +337,7 @@
 
 - (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
 {    
-    [self refreshWidgets];
+    //[self refreshWidgets];
     
     [_visibleViewController didRotateFromInterfaceOrientation:fromInterfaceOrientation];
 }
