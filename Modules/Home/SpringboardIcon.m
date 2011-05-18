@@ -29,13 +29,22 @@
             
             [self setImage:image forState:UIControlStateNormal];
             
-            self.titleLabel.numberOfLines = 0;
-            self.titleLabel.lineBreakMode = UILineBreakModeWordWrap;
-            self.titleLabel.textAlignment = UITextAlignmentCenter;
-            
             // TODO: add config setting for icon titles to be displayed on springboard
             NSString *title = self.module.longName;
             [self setTitle:title forState:UIControlStateNormal];
+            
+            //
+            // Warning!
+            // Do not access self.titleLabel until after setting the icon and title so 
+            // that they have valid frames.  self.titleLabel calls layoutSubviews and 
+            // when positioning frames during launch the CALayer associated with the 
+            // view may end up dividing by 0 if any of the subview frames are [0,0,0,0].
+            // This problem only occurs on certain devices (it's a race condition) and 
+            // when built with optimization turned on so it can be difficult to diagnose.
+            //
+            self.titleLabel.numberOfLines = 0;
+            self.titleLabel.lineBreakMode = UILineBreakModeWordWrap;
+            self.titleLabel.textAlignment = UITextAlignmentCenter;
 
             UIFont *titleFont;
 
