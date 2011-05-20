@@ -46,7 +46,7 @@ enum {
 {
     [super loadView];
     
-    self.webView = [[UIWebView alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, self.view.bounds.size.height)];
+    self.webView = [[[UIWebView alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, self.view.bounds.size.height)] autorelease];
     _webView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     _webView.delegate = self;
 
@@ -82,7 +82,7 @@ enum {
                                  stretchableImageWithLeftCapWidth:10 topCapHeight:10];
         UIImage *buttomImagePressed = [[UIImage imageNamed:@"common/toolbar-button-pressed"] 
                                         stretchableImageWithLeftCapWidth:10 topCapHeight:10];
-        ;
+        
         UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
         button.titleLabel.textColor = [UIColor whiteColor];
         //button.layer.borderColor = [[UIColor colorWithWhite:0.2 alpha:1] CGColor];
@@ -97,7 +97,7 @@ enum {
                    action:@selector(dismissModalViewControllerAnimated:)
          forControlEvents:UIControlEventTouchUpInside];
         [_dismissView addSubview:button];
-        //_dismissView.userInteractionEnabled = YES;
+        _dismissView.userInteractionEnabled = YES;
         
         if (animated) {
             _dismissView.alpha = 0;
