@@ -27,7 +27,7 @@ KGORequestDelegate> {
 @property (nonatomic, retain) KGOEventWrapper *event;
 @property (nonatomic, retain) CalendarDataManager *dataManager;
 @property (nonatomic, retain) KGODetailPageHeaderView *headerView;
-@property (nonatomic, readonly) NSArray *sections;
+@property (nonatomic, readonly) NSArray * sections;
 
 // functions split out for subclassing
 

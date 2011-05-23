@@ -15,4 +15,7 @@
 
 @property (nonatomic, retain) NSData *data;
 
+- (void)didLogin:(NSNotification *)aNotification;
+- (void)dismissModal;
+
 @end

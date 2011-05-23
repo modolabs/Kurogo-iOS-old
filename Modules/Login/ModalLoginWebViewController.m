@@ -32,28 +32,49 @@
     [super viewDidLoad];
     
     if ([[KGORequestManager sharedManager] isUserLoggedIn]) {
-        DLog(@"user logged in while we were being presented");
+        DLog(@"dismissing because user logged in while we were being presented");
         [self.parentViewController dismissModalViewControllerAnimated:YES];
         return;
     }
 
     DLog(@"subscribing to login notifications");
-    [[NSNotificationCenter defaultCenter] addObserver:self.parentViewController
-                                             selector:@selector(dismissModalViewControllerAnimated:)
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(didLogin:)
                                                  name:KGODidLoginNotification
                                                object:nil];
 }
 
+- (void)didLogin:(NSNotification *)aNotification
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:KGODidLoginNotification object:nil];
+    
+    if ([self.webView isLoading]) {
+        // this will make us end up in webView:didFailLoadWithError:
+        // with a code of NSURLErrorCancelled
+        [self.webView stopLoading];
+    }
+    
+    DLog(@"received login notification, dismissing self");
+    // prevent view controller animations from occurring too close to each other
+    [self performSelector:@selector(dismissModal) withObject:nil afterDelay:0.75];
+}
+
+- (void)dismissModal
+{
+    if (self.parentViewController.modalViewController == self) {
+        DLog(@"invoking dismiss");
+        [self.parentViewController dismissModalViewControllerAnimated:YES];
+    }
+}
+
 - (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error
 {
-    [super webView:webView didFailLoadWithError:error];
-
     if ([[KGORequestManager sharedManager] isUserLoggedIn]) {
-        [self.parentViewController dismissModalViewControllerAnimated:YES];
+        DLog(@"logged in, we are safe to dismiss");
+        [self dismissModal];
+
     } else {
-        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Network Error" message:@"Connection Failure. Please try again" delegate:self cancelButtonTitle:nil otherButtonTitles:@"Retry", nil];
-        [alertView show];
-        [alertView release];
+        [super webView:webView didFailLoadWithError:error];
     }
 }
 
@@ -77,7 +98,8 @@
     }
 
     if ([[KGORequestManager sharedManager] isUserLoggedIn]) {
-        [self.parentViewController dismissModalViewControllerAnimated:YES];
+        DLog(@"not loading because we are already logged in");
+        [self dismissModal];
         return NO;
     }
 

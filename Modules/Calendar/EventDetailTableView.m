@@ -12,7 +12,7 @@
 
 @implementation EventDetailTableView
 
-@synthesize dataManager, viewController, headerView = _headerView;
+@synthesize dataManager, viewController, headerView = _headerView, sections = _sections;
 
 - (id)initWithFrame:(CGRect)frame style:(UITableViewStyle)style
 {
@@ -110,6 +110,7 @@
         [mutableSections addObject:extendedInfo];
     }
     
+    [_sections release];
     _sections = [mutableSections copy];
     
     [self reloadData];
@@ -142,7 +143,7 @@
         
         basicInfo = [NSArray arrayWithObject:locationDict];
     }
-    NSLog(@"%@", basicInfo);
+    DLog(@"%@", basicInfo);
     return basicInfo;
 }
 
@@ -190,7 +191,7 @@
                     accessory = KGOAccessoryTypeNone;
                 }
                 
-                NSDictionary *cellInfo;
+                NSDictionary *cellInfo = nil;
                 if (url) {
                     cellInfo = [NSDictionary dictionaryWithObjectsAndKeys:
                                 type, @"title", aContact.value, @"subtitle", accessory, @"accessory", url, @"url", nil];
@@ -229,10 +230,6 @@
     return extendedInfo;
 }
 
-- (NSArray *)sections
-{
-    return _sections;
-}
 
 #pragma mark - UITableViewDataSource
 
@@ -254,7 +251,7 @@
     NSString *cellIdentifier;
     DLog(@"%@ %@", indexPath, [_sections objectAtIndex:indexPath.section]);
     id cellData = [[_sections objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
-    if ([cellData isKindOfClass:[NSDictionary class]]) {    
+    if ([cellData isKindOfClass:[NSDictionary class]]) {
         if ([cellData objectForKey:@"subtitle"]) {
             style = UITableViewCellStyleSubtitle;
         }
@@ -314,7 +311,7 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     id cellData = [[_sections objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
-    if ([cellData isKindOfClass:[NSDictionary class]]) {    
+    if ([cellData isKindOfClass:[NSDictionary class]]) {
         NSString *accessory = [cellData objectForKey:@"accessory"];
         NSURL *url = nil;
         NSString *urlString = [cellData objectForKey:@"url"];
@@ -327,13 +324,10 @@
             [tableView deselectRowAtIndexPath:indexPath animated:YES];
 
         } else if ([accessory isEqualToString:KGOAccessoryTypeEmail]) {
-            if ([self.viewController isKindOfClass:[CalendarDetailViewController class]]) {
-                CalendarDetailViewController *detailVC = (CalendarDetailViewController *)self.viewController;
-                [detailVC presentMailControllerWithEmail:[cellData objectForKey:@"subtitle"]
-                                                 subject:nil
-                                                    body:nil
-                                                delegate:self];
-            }
+            [self.viewController presentMailControllerWithEmail:[cellData objectForKey:@"subtitle"]
+                                                        subject:nil
+                                                           body:nil
+                                                       delegate:self];
             
         } else if ([accessory isEqualToString:KGOAccessoryTypeMap]) {
             NSArray *annotations = [NSArray arrayWithObject:_event];

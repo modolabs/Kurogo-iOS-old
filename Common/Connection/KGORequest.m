@@ -79,7 +79,18 @@ NSString * const KGORequestErrorDomain = @"com.modolabs.KGORequest.ErrorDomain";
 	} else {
         DLog(@"requesting %@", [self.url absoluteString]);
         
-        NSURLRequest *request = [NSURLRequest requestWithURL:self.url cachePolicy:self.cachePolicy timeoutInterval:self.timeout];
+        NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:self.url cachePolicy:self.cachePolicy timeoutInterval:self.timeout];
+        static NSString *userAgent = nil;
+        if (userAgent == nil) {
+            NSDictionary *infoDict = [[NSBundle mainBundle] infoDictionary];
+            userAgent = [[NSString alloc] initWithFormat:@"%@/%@ (%@ %@)",
+                         [infoDict objectForKey:@"CFBundleName"],
+                         [infoDict objectForKey:@"CFBundleVersion"],
+                         (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) ? @"iPad" : @"iPhone",
+                         [[UIDevice currentDevice] systemVersion]];
+        }
+        [request setValue:userAgent forHTTPHeaderField:@"User-Agent"];
+
         if (![NSURLConnection canHandleRequest:request]) {
             userInfo = [NSDictionary dictionaryWithObjectsAndKeys:[NSString stringWithFormat:@"cannot handle request: %@", [self.url absoluteString]], @"message", nil];
             error = [NSError errorWithDomain:KGORequestErrorDomain code:KGORequestErrorBadRequest userInfo:userInfo];
