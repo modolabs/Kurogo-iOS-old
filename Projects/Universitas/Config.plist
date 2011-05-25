@@ -21,62 +21,122 @@
 	<key>Modules</key>
 	<array>
 		<dict>
-			<key>class</key>
-			<string>HomeModule</string>
-			<key>hidden</key>
-			<true/>
-			<key>shortName</key>
-			<string>Home</string>
+			<key>id</key>
+			<string>home</string>
 			<key>tag</key>
 			<string>home</string>
-		</dict>
-		<dict>
-			<key>class</key>
-			<string>AboutModule</string>
-			<key>longName</key>
-			<string>About</string>
-			<key>secondary</key>
+			<key>hidden</key>
 			<true/>
-			<key>shortName</key>
-			<string>About</string>
-			<key>tag</key>
-			<string>about</string>
+			<key>title</key>
+			<string>Home</string>
 		</dict>
 		<dict>
-			<key>class</key>
-			<string>SettingsModule</string>
-			<key>iconImage</key>
-			<string>modules/home/customize.png</string>
-			<key>listViewImage</key>
-			<string>modules/home/module-settings.png</string>
-			<key>longName</key>
+			<key>id</key>
+			<string>people</string>
+			<key>tag</key>
+			<string>people</string>
+			<key>title</key>
+			<string>Directory</string>
+		</dict>
+		<dict>
+			<key>id</key>
+			<string>map</string>
+			<key>tag</key>
+			<string>map</string>
+			<key>title</key>
+			<string>Map</string>
+		</dict>
+		<dict>
+			<key>news</key>
+			<string>news</string>
+			<key>tag</key>
+			<string>news</string>
+			<key>title</key>
+			<string>News</string>
+		</dict>
+		<dict>
+			<key>id</key>
+			<string>calendar</string>
+			<key>tag</key>
+			<string>calendar</string>
+			<key>title</key>
+			<string>Events</string>
+		</dict>
+		<dict>
+			<key>id</key>
+			<string>video</string>
+			<key>tag</key>
+			<string>video</string>
+			<key>title</key>
+			<string>Video</string>
+		</dict>
+		<dict>
+			<key>id</key>
+			<string>emergency</string>
+			<key>tag</key>
+			<string>emergency</string>
+			<key>title</key>
+			<string>Emergency</string>
+		</dict>
+		<dict>
+			<key>id</key>
+			<string>content</string>
+			<key>tag</key>
+			<string>admissions</string>
+			<key>title</key>
+			<string>Admissions</string>
+		</dict>
+		<dict>
+			<key>id</key>
+			<string>customize</string>
+			<key>tag</key>
+			<string>customize</string>
+			<key>title</key>
 			<string>Settings</string>
 			<key>secondary</key>
 			<true/>
-			<key>shortName</key>
-			<string>Settings</string>
-			<key>tabBarImage</key>
-			<string>modules/home/tab-settings.png</string>
-			<key>tag</key>
-			<string>settings</string>
 		</dict>
 		<dict>
-			<key>class</key>
-			<string>ExternalURLModule</string>
-			<key>longName</key>
-			<string>Full Website</string>
-			<key>secondary</key>
-			<true/>
-			<key>shortName</key>
-			<string>Full Website</string>
+			<key>id</key>
+			<string>fullweb</string>
 			<key>tag</key>
 			<string>fullweb</string>
-			<key>url</key>
-			<string>http://www.modolabs.com</string>
+			<key>title</key>
+			<string>Full Website</string>
+			<key>secondary</key>
+			<true/>
+			<key>payload</key>
+			<dict>
+				<key>url</key>
+				<string>http://www.modolabs.com</string>
+			</dict>
+		</dict>
+		<dict>
+			<key>payload</key>
+			<dict>
+				<key>url</key>
+				<string>http://m.modolabs.com</string>
+			</dict>
+			<key>id</key>
+			<string>fullweb</string>
+			<key>tag</key>
+			<string>mobileweb</string>
+			<key>title</key>
+			<string>Mobile Website</string>
+			<key>secondary</key>
+			<true/>
+		</dict>
+		<dict>
+			<key>id</key>
+			<string>about</string>
+			<key>tag</key>
+			<string>about</string>
+			<key>title</key>
+			<string>About</string>
+			<key>secondary</key>
+			<true/>
 		</dict>
 	</array>
-	<key>NavigationControllerClass</key>
-	<string>UINavigationController</string>
 	<key>OrganizationName</key>
 	<string>Universitas</string>
 	<key>Servers</key>
@@ -160,24 +220,6 @@
 			<key>OAuthConsumerSecret</key>
 			<string></string>
 		</dict>
-	</dict>
-	<key>UserSettings</key>
-	<dict>
-		<key>DefaultFont</key>
-		<array>
-			<string>Georgia</string>
-			<string>Verdana</string>
-			<string>Helvetica</string>
-			<string>Courier</string>
-		</array>
-		<key>DefaultFontSize</key>
-		<array>
-			<string>Tiny</string>
-			<string>Small</string>
-			<string>Regular</string>
-			<string>Large</string>
-			<string>Huge</string>
-		</array>
 	</dict>
 </dict>
 </plist>

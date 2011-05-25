@@ -15,7 +15,7 @@
     NewsStory *featuredStory;
     NSArray *stories;
     NSArray *categories;
-    NewsCategoryId activeCategoryId;
+    NSString *activeCategoryId;
     BOOL activeCategoryHasMoreStories;
     
     NSArray *navButtons;
@@ -43,13 +43,13 @@
 @property (nonatomic, retain) NewsStory *featuredStory;
 @property (nonatomic, retain) NSArray *stories;
 @property (nonatomic, retain) NSArray *categories;
-@property (nonatomic, retain) NewsCategoryId activeCategoryId;
+@property (nonatomic, retain) NSString *activeCategoryId;
 @property (nonatomic, retain) NewsDataManager *dataManager;
 
 - (void)showSearchBar;
 
 - (void)pruneStories;
-- (void)switchToCategory:(NewsCategoryId)category;
+- (void)switchToCategory:(NSString *)category;
 - (void)switchToBookmarks;
 
 @end

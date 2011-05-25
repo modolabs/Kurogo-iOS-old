@@ -4,7 +4,7 @@
 @implementation ExternalURLModule
 
 @synthesize url;
-
+/*
 - (id)initWithDictionary:(NSDictionary *)moduleDict {
     self = [super initWithDictionary:moduleDict];
     if (self) {
@@ -12,7 +12,7 @@
     }
     return self;
 }
-
+*/
 - (UIViewController *)modulePage:(NSString *)pageName params:(NSDictionary *)params {
     
     NSURL *externalURL = [NSURL URLWithString:self.url];
@@ -21,6 +21,16 @@
     }
 
     return nil;
+}
+
+- (void)handleInitialPayload:(NSDictionary *)payload
+{
+    self.url = [payload stringForKey:@"url" nilIfEmpty:YES];
+}
+
+- (BOOL)requiresKurogoServer
+{
+    return NO;
 }
 
 @end

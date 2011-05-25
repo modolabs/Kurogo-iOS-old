@@ -25,6 +25,7 @@
                                    @"ContentModule", @"content",
                                    @"HomeModule", @"home",
                                    @"EmergencyModule", @"emergency",
+                                   @"ExternalURLModule", @"fullweb",
                                    @"LoginModule", @"login",
                                    @"MapModule", @"map",
                                    @"NewsModule", @"news",

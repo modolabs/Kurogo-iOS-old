@@ -6,7 +6,6 @@
 @interface SpringboardIcon : UIButton {
     
     KGOModule *_module;
-    CGFloat _titleImageGap;
 
 }
 

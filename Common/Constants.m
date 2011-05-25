@@ -37,6 +37,7 @@ NSString * const MITNewsTwoFirstRunKey = @"MITNews2ClearedCachedArticles";
 // notification names
 
 NSString * const ModuleListDidChangeNotification = @"ModuleList";
+NSString * const UserSettingsDidChangeNotification = @"UserSettingsChanged";
 
 // core data entity names
 NSString * const KGOPersonEntityName = @"KGOPerson";

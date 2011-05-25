@@ -26,7 +26,7 @@ NSString * const NewsTagBody            = @"body";
 
 @interface NewsDataManager (Private)
 
-- (NewsCategory *)fetchCategoryFromCoreData:(NewsCategoryId)categoryID;
+- (NewsCategory *)fetchCategoryFromCoreData:(NSString *)categoryID;
 - (void)updateCategoriesFromNetwork;
 - (void)loadStoriesFromServerForCategory:(NewsCategory *)category loadMore:(BOOL)loadMore;
 - (NSArray *)fetchLatestSearchResultsFromCoreData;
@@ -66,7 +66,8 @@ NSString * const NewsTagBody            = @"body";
 - (void)requestCategories {
     NSArray *categories = [self fetchCategoriesFromCoreData];
     if(categories) {
-        for(id<NewsDataDelegate> delegate in delegates) {
+        NSSet *safeDelegates = [NSSet setWithSet:delegates];
+        for(id<NewsDataDelegate> delegate in safeDelegates) {
             if([delegate respondsToSelector:@selector(categoriesUpdated:)]) {
                 [delegate categoriesUpdated:categories];
             }
@@ -83,13 +84,13 @@ NSString * const NewsTagBody            = @"body";
     return categoryObjects;
 }
 
-- (NewsCategory *)fetchCategoryFromCoreData:(NewsCategoryId)categoryID {
+- (NewsCategory *)fetchCategoryFromCoreData:(NSString *)categoryID {
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"category_id LIKE %@", categoryID];
     NSArray *categories =[[CoreDataManager sharedManager] objectsForEntity:NewsCategoryEntityName matchingPredicate:predicate];
     return [categories lastObject];
 }
 
-- (NSInteger)loadMoreStoriesQuantityForCategoryId:(NewsCategoryId)categoryID {
+- (NSInteger)loadMoreStoriesQuantityForCategoryId:(NSString *)categoryID {
     NewsCategory *category = [self fetchCategoryFromCoreData:categoryID];
     if ([category.nextSeekId integerValue] == 0) {
         return LIMIT;
@@ -175,7 +176,7 @@ NSString * const NewsTagBody            = @"body";
     return allBookmarkedStories;
 }
 
-- (void)requestStoriesForCategory:(NewsCategoryId)categoryID loadMore:(BOOL)loadMore forceRefresh:(BOOL)forceRefresh {
+- (void)requestStoriesForCategory:(NSString *)categoryID loadMore:(BOOL)loadMore forceRefresh:(BOOL)forceRefresh {
     // load what's in CoreData
     NewsCategory *category =[self fetchCategoryFromCoreData:categoryID];
     [[[CoreDataManager sharedManager] managedObjectContext] refreshObject:category mergeChanges:NO];
@@ -251,7 +252,7 @@ NSString * const NewsTagBody            = @"body";
     NSInteger limit = LIMIT;
     NSString *limitValue = [NSString stringWithFormat:@"%d", limit];
     
-    NewsCategoryId categoryID = category.category_id;
+    NSString *categoryID = category.category_id;
     
     NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:
                             startValue, @"start",
@@ -432,24 +433,22 @@ NSString * const NewsTagBody            = @"body";
 #pragma mark KGORequestDelegate
 
 - (void)request:(KGORequest *)request didHandleResult:(NSInteger)returnValue {
-    NSArray *categories;
-    
     NSString *path = request.path;
     
-    if([path isEqualToString:@"stories"]) {
+    if ([path isEqualToString:@"stories"]) {
         NSString *categoryID = [request.getParams objectForKey:@"categoryID"];
         [self requestStoriesForCategory:categoryID loadMore:NO forceRefresh:NO];
     
-    } else if([path isEqualToString:@"search"]) {
+    } else if ([path isEqualToString:@"search"]) {
         [self.searchRequests removeObject:request];
         
-        if(self.searchRequests.count == 0) { // all searches have completed
+        if (self.searchRequests.count == 0) { // all searches have completed
             NSString *searchTerms = [request.getParams objectForKey:@"q"];
         
             NSArray *results = [self fetchLatestSearchResultsFromCoreData];
         
-            for(id<NewsDataDelegate> delegate in delegates) {
-                if([delegate respondsToSelector:@selector(searchResults:forSearchTerms:)])
+            for (id<NewsDataDelegate> delegate in delegates) {
+                if ([delegate respondsToSelector:@selector(searchResults:forSearchTerms:)])
                     [delegate searchResults:results forSearchTerms:searchTerms];            
             }
         }
@@ -457,14 +456,17 @@ NSString * const NewsTagBody            = @"body";
     } else if([path isEqualToString:@"categories"]) {    
         switch (returnValue) {
             case REQUEST_CATEGORIES_CHANGED:
-                categories = [self fetchCategoriesFromCoreData];
-                for(id<NewsDataDelegate> delegate in delegates) {
-                    if([delegate respondsToSelector:@selector(categoriesUpdated:)]) {
-                        [delegate categoriesUpdated:categories];
+            {
+                NSArray *categories = [self fetchCategoriesFromCoreData];
+                if (categories) {
+                    for (id<NewsDataDelegate> delegate in delegates) {
+                        if ([delegate respondsToSelector:@selector(categoriesUpdated:)]) {
+                            [delegate categoriesUpdated:categories];
+                        }
                     }
                 }
                 break;
-            
+            }
             default:
                 break;
         }

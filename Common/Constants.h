@@ -38,6 +38,7 @@ extern NSString * const TwitterHashTagKey;
 // notification names
 
 extern NSString * const ModuleListDidChangeNotification;
+extern NSString * const UserSettingsDidChangeNotification;
 
 // core data entity names
 

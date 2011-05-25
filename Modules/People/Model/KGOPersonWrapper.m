@@ -613,11 +613,10 @@ webpages = _webpages;
 
     ABMutableMultiValueRef multi = ABMultiValueCreateMutable(kABMultiStringPropertyType);
     for (NSDictionary *aDict in values) {
-        NSString *label = [aDict objectForKey:@"label"];
-        label = (NSString *)kABOtherLabel;
         id value = [aDict objectForKey:@"value"];
         if ([value isKindOfClass:expectedClass]) {
-            ABMultiValueAddValueAndLabel(multi, (CFTypeRef)value, (CFStringRef)label, NULL);
+            // TODO: support labels other than kABOtherLabel
+            ABMultiValueAddValueAndLabel(multi, (CFTypeRef)value, kABOtherLabel, NULL);
         }
     }
     success = ABRecordSetValue(_abRecord, property, multi, &error);
@@ -663,19 +662,15 @@ webpages = _webpages;
             
             if (label) {
                 valueSet = [NSDictionary dictionaryWithObjectsAndKeys:(NSString *)label, @"label", (id)value, @"value", nil];
+                CFRelease(label);
+                CFRelease(value);
             } else if (value) {
                 valueSet = [NSDictionary dictionaryWithObjectsAndKeys:(id)value, @"value", nil];
+                CFRelease(value);
             }
             
             if (valueSet) {
                 [result addObject:valueSet];
-            }
-            
-            if (label) {
-                CFRelease(label);
-            }
-            if (value) {
-                CFRelease(value);
             }
         }
         CFRelease(multi);

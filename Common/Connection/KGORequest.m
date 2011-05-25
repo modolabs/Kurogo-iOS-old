@@ -4,8 +4,6 @@
 #import "Foundation+KGOAdditions.h"
 #import "KGOAppDelegate.h"
 
-#import "CoreDataManager.h"
-
 NSString * const KGORequestErrorDomain = @"com.modolabs.KGORequest.ErrorDomain";
 
 @interface KGORequest (Private)
@@ -294,8 +292,6 @@ NSString * const KGORequestErrorDomain = @"com.modolabs.KGORequest.ErrorDomain";
 - (void)runHandlerOnResult:(id)result {
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 	NSInteger num = self.handler(result);
-    // TODO: see if it's safe to remove this (and the CoreDataManager import)
-    [[CoreDataManager sharedManager] saveDataWithTemporaryMergePolicy:NSOverwriteMergePolicy];
 	[self performSelectorOnMainThread:@selector(handlerDidFinish:) withObject:[NSNumber numberWithInt:num] waitUntilDone:YES];
 	[pool release];
 }

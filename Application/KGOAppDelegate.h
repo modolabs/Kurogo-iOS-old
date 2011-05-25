@@ -30,8 +30,8 @@ typedef enum {
     
     NSDictionary *_appConfig;
     
-    NSDictionary *_modulesByTag;
-    NSArray *_modules; // all registered modules as defined in Config.plist
+    NSMutableDictionary *_modulesByTag;
+    NSMutableArray *_modules;
     KGOModule *_visibleModule;
 
     NSInteger networkActivityRefCount; // the number of concurrent network connections the user should know about. If > 0, spinny in status bar is shown

@@ -22,8 +22,7 @@
 
 // Implement loadView to create a view hierarchy programmatically, without using a nib.
 - (void)loadView {
-    UIWebView *webView =
-    [[UIWebView alloc] initWithFrame:[UIScreen mainScreen].applicationFrame];
+    UIWebView *webView = [[UIWebView alloc] initWithFrame:[UIScreen mainScreen].applicationFrame];
     self.view = webView;
     [webView loadRequest:[NSURLRequest requestWithURL:self.URL]];
     [webView release];

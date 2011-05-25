@@ -10,9 +10,6 @@
 @interface SettingsTableViewController : KGOTableViewController {
     
     NSArray *_settingKeys;
-    NSDictionary *_availableUserSettings;
-    NSDictionary *_setUserSettings;
-
 }
 
 - (void)settingDidChange:(NSNotification *)aNotification;

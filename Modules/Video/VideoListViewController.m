@@ -32,8 +32,7 @@ static const NSInteger kVideoListCellThumbnailTag = 0x78;
 @implementation VideoListViewController (Private)
 
 + (NSString *)detailTextForVideo:(Video *)video {
-    return [NSString stringWithFormat:@"(%@) %@", 
-            [video durationString], video.videoDescription];
+    return [NSString stringWithFormat:@"(%@) %@", [video durationString], video.videoDescription];
 }
 
 - (void)updateThumbnailView:(MITThumbnailView *)thumbnailView 
@@ -56,13 +55,10 @@ static const NSInteger kVideoListCellThumbnailTag = 0x78;
 
 - (void)requestVideosForActiveSection {    
     if (self.videoSections.count > self.activeSectionIndex) {
-        [self.dataManager 
-         requestVideosForSection:
-         [[self.videoSections objectAtIndex:self.activeSectionIndex] 
-          objectForKey:@"value"]
-         thenRunBlock:^(id result) { 
-             if ([result isKindOfClass:[NSArray class]])
-             {
+        NSString *section = [[self.videoSections objectAtIndex:self.activeSectionIndex] objectForKey:@"value"];
+        [self.dataManager requestVideosForSection:section
+                                     thenRunBlock:^(id result) { 
+             if ([result isKindOfClass:[NSArray class]]) {
                  self.videos = result;
                  [self.tableView reloadData];
              }
@@ -75,11 +71,8 @@ static const NSInteger kVideoListCellThumbnailTag = 0x78;
     for (NSInteger section = 0; section < sections; ++section) {
         NSInteger rows = [self.tableView numberOfRowsInSection:section];
         for (NSInteger row = 0; row < rows; ++row) {
-            UITableViewCell *cell = 
-            [self.tableView cellForRowAtIndexPath:
-             [NSIndexPath indexPathForRow:row inSection:section]];
-            UIView *thumbnailView = 
-            [cell.contentView viewWithTag:kVideoListCellThumbnailTag];
+            UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:row inSection:section]];
+            UIView *thumbnailView = [cell.contentView viewWithTag:kVideoListCellThumbnailTag];
             [thumbnailView removeFromSuperview];
         }
     }
@@ -89,18 +82,15 @@ static const NSInteger kVideoListCellThumbnailTag = 0x78;
 
 - (void)showSearchBar {
 	if (!self.theSearchBar) {
-		self.theSearchBar = 
-        [[[KGOSearchBar alloc] initWithFrame:
-          CGRectMake(0.0, 0.0, self.view.frame.size.width, 44.0)]
-         autorelease];
+        CGRect frame = CGRectMake(0, 0, self.view.bounds.size.width, 44);
+		self.theSearchBar = [[[KGOSearchBar alloc] initWithFrame:frame] autorelease];
         self.theSearchBar.autoresizingMask = UIViewAutoresizingFlexibleWidth;
 		self.theSearchBar.alpha = 0.0;
         
         if (!self.searchController) {
-            self.searchController = 
-            [[[KGOSearchDisplayController alloc] 
-             initWithSearchBar:self.theSearchBar delegate:self contentsController:self]
-             autorelease];
+            self.searchController = [[[KGOSearchDisplayController alloc] initWithSearchBar:self.theSearchBar
+                                                                                  delegate:self
+                                                                        contentsController:self] autorelease];
         }
 		[self.view addSubview:self.theSearchBar];
 	}
@@ -141,8 +131,7 @@ static const NSInteger kVideoListCellThumbnailTag = 0x78;
 
 - (id)initWithStyle:(UITableViewStyle)style {
     self = [super initWithStyle:style];
-	if (self)
-	{
+	if (self) {
         self.dataManager = [[[VideoDataManager alloc] init] autorelease];
         self.moduleTag = VideoModuleTag;
         self.activeSectionIndex = 0;
@@ -170,13 +159,8 @@ static const NSInteger kVideoListCellThumbnailTag = 0x78;
 - (void)loadView {
     [super loadView];
     
-    self.navScrollView =
-    [[[KGOScrollingTabstrip alloc] 
-      initWithFrame:CGRectMake(0, 
-                               0, 
-                               [UIScreen mainScreen].applicationFrame.size.width, 
-                               44)]
-     autorelease];
+    CGRect frame = CGRectMake(0, 0, self.view.bounds.size.width, 44);
+    self.navScrollView = [[[KGOScrollingTabstrip alloc] initWithFrame:frame] autorelease];
     self.navScrollView.showsSearchButton = YES;
     self.navScrollView.delegate = self;
 }
@@ -185,13 +169,11 @@ static const NSInteger kVideoListCellThumbnailTag = 0x78;
     [super viewDidLoad];
     self.tableView.rowHeight = 90.0f;
     
-    [self.dataManager requestSectionsThenRunBlock:
-     ^(id result) {
+    [self.dataManager requestSectionsThenRunBlock:^(id result) {
          if ([result isKindOfClass:[NSArray class]]) {
              self.videoSections = result;
              for (NSDictionary *sectionInfo in videoSections) {
-                 [self.navScrollView addButtonWithTitle:
-                  [sectionInfo objectForKey:@"title"]];
+                 [self.navScrollView addButtonWithTitle:[sectionInfo objectForKey:@"title"]];
              }
              [self.navScrollView selectButtonAtIndex:self.activeSectionIndex];
              [self.navScrollView setNeedsLayout];
@@ -224,8 +206,7 @@ static const NSInteger kVideoListCellThumbnailTag = 0x78;
     
     static NSString *CellIdentifier = @"Cell";
     
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:
-                             CellIdentifier];
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil) {
         cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle 
                                        reuseIdentifier:CellIdentifier] autorelease];
@@ -237,8 +218,7 @@ static const NSInteger kVideoListCellThumbnailTag = 0x78;
         cell.indentationLevel = 1;
         cell.indentationWidth = 120;
         
-        MITThumbnailView *thumbnailView = 
-        [[MITThumbnailView alloc] initWithFrame:CGRectMake(0, 0, 120, 90)];
+        MITThumbnailView *thumbnailView = [[MITThumbnailView alloc] initWithFrame:CGRectMake(0, 0, 120, 90)];
         thumbnailView.tag = kVideoListCellThumbnailTag;
         thumbnailView.delegate = self;
         [cell.contentView addSubview:thumbnailView];
@@ -253,8 +233,7 @@ static const NSInteger kVideoListCellThumbnailTag = 0x78;
         cell.textLabel.text = video.title;
         cell.detailTextLabel.text = [[self class] detailTextForVideo:video];
                 
-        MITThumbnailView *thumbnailView = 
-        (MITThumbnailView *)[cell.contentView viewWithTag:kVideoListCellThumbnailTag];        
+        MITThumbnailView *thumbnailView = (MITThumbnailView *)[cell.contentView viewWithTag:kVideoListCellThumbnailTag];        
         [self updateThumbnailView:thumbnailView forVideo:video];
         
         [cellConfigPool release];
@@ -299,11 +278,8 @@ static const NSInteger kVideoListCellThumbnailTag = 0x78;
     self.activeSectionIndex = index;
     [self requestVideosForActiveSection];
     if (self.videoSections.count > self.activeSectionIndex) {
-        VideoModule *module = 
-        (VideoModule *)[KGO_SHARED_APP_DELEGATE() moduleForTag:VideoModuleTag];
-        module.searchSection = 
-        [[self.videoSections objectAtIndex:self.activeSectionIndex] 
-         objectForKey:@"value"];
+        VideoModule *module = (VideoModule *)[KGO_SHARED_APP_DELEGATE() moduleForTag:VideoModuleTag];
+        module.searchSection = [[self.videoSections objectAtIndex:self.activeSectionIndex] objectForKey:@"value"];
     }    
 }
 
@@ -329,8 +305,7 @@ static const NSInteger kVideoListCellThumbnailTag = 0x78;
       didSelectResult:(id<KGOSearchResult>)aResult {
     
     if ([aResult isKindOfClass:[Video class]]) {
-        VideoDetailViewController *detailViewController = 
-        [[VideoDetailViewController alloc] initWithVideo:(Video *)aResult];
+        VideoDetailViewController *detailViewController = [[VideoDetailViewController alloc] initWithVideo:(Video *)aResult];
         [self.navigationController pushViewController:detailViewController 
                                              animated:YES];
         [detailViewController release];    

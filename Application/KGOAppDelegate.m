@@ -22,6 +22,9 @@
     networkActivityRefCount = 0;
     showingAlertView = NO;
     
+    _modulesByTag = [[NSMutableDictionary alloc] init];
+    _modules = [[NSMutableArray alloc] init];
+    
     [[KGORequestManager sharedManager] requestSessionInfo];
     [self loadHomeModule];
     [self loadNavigationContainer]; // adds theNavController.view to self.window
@@ -239,7 +242,7 @@
     KGONotification *latestNotification = [_unreadNotifications lastObject];
 	
     KGOModule *module = [self moduleForTag:latestNotification.moduleName];
-	[module handleNotification:latestNotification];
+	[module handleRemoteNotification:latestNotification];
 
     NSString *viewTitle = NSLocalizedString(@"View", nil);
     
@@ -325,7 +328,7 @@
         [_unreadNotifications addObject:notification];
         
         KGOModule *module = [self moduleForTag:notification.moduleName];
-		[module handleNotification:notification];
+		[module handleRemoteNotification:notification];
         [module willBecomeVisible];
 		NSLog(@"Application opened in response to notification=%@", notification);
 	}	

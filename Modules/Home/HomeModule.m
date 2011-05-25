@@ -6,6 +6,7 @@
 #import "KGOSidebarFrameViewController.h"
 #import "KGOSplitViewController.h"
 #import "KGORequestManager.h"
+#import "KGOUserSetting.h"
 
 @implementation HomeModule
 
@@ -72,5 +73,6 @@
 - (NSArray *)objectModelNames {
     return [NSArray arrayWithObject:@"RecentSearches"];
 }
+
 
 @end

@@ -5,22 +5,6 @@
 
 @implementation SettingsModule
 
-- (void)launch
-{
-    [super launch];
-    
-    if (!_notificationNames) {
-        _notificationNames = [[NSMutableSet alloc] init];
-        
-        for (KGOModule *aModule in [KGO_SHARED_APP_DELEGATE() modules]) {
-            NSArray *names = [aModule applicationStateNotificationNames];
-            if (names) {
-                [_notificationNames addObjectsFromArray:names];
-            }
-        }
-    }
-}
-
 - (UIViewController *)modulePage:(NSString *)pageName params:(NSDictionary *)params {
     UIViewController *vc = nil;
     if ([pageName isEqualToString:LocalPathPageNameHome]) {
@@ -49,6 +33,11 @@
 - (NSArray *)userDefaults
 {
     return [NSArray arrayWithObjects:KGOUserPreferencesKey, nil];
+}
+
+- (BOOL)requiresKurogoServer
+{
+    return NO;
 }
 
 @end

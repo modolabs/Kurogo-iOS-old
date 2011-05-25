@@ -20,25 +20,15 @@
 
 @implementation KGOAppDelegate (PrivateModuleListAdditions)
 
-- (void)addModule:(KGOModule *)module
+- (void)addModule:(KGOModule *)aModule
 {
-    NSArray *modules = nil;
-    if (_modules) {
-        modules = [_modules arrayByAddingObject:module];
-    } else {
-        modules = [NSArray arrayWithObject:module];
+    [_modules addObject:aModule];
+    [_modulesByTag setObject:aModule forKey:aModule.tag];
+    [aModule applicationDidFinishLaunching];
+    if ([aModule isKindOfClass:[LoginModule class]]) {
+        [[KGORequestManager sharedManager] setLoginPath:aModule.tag];
     }
-    [_modules release];
-    _modules = [modules copy];
-    
-    NSMutableDictionary *modulesByTag = nil;
-    if (_modulesByTag) {
-        modulesByTag = [_modulesByTag mutableCopy];
-    } else {
-        modulesByTag = [NSDictionary dictionaryWithObject:module forKey:module.tag];
-    }
-    [_modulesByTag release];
-    _modulesByTag = [modulesByTag copy];
+    DLog(@"new module: %@", [aModule description]);
 }
 
 @end
@@ -49,21 +39,23 @@
 #pragma mark Setup
 
 - (void)loadModules {
-    NSArray *moduleData = [[self appConfig] objectForKey:@"Modules"];
-    [self loadModulesFromArray:moduleData local:YES];
+    NSArray *moduleArray = [[self appConfig] arrayForKey:@"Modules"];
+    [self loadModulesFromArray:moduleArray local:YES];
 }
 
 // we need to do this separately since currently we have no way of
 // functioning without the home screen
+// TODO: make it possible to start from any module
 - (void)loadHomeModule {
-    NSArray *moduleData = [[self appConfig] objectForKey:@"Modules"];
     NSDictionary *homeData = nil;
-    for (NSDictionary *aDict in moduleData) {
-        if ([[aDict objectForKey:@"class"] isEqualToString:@"HomeModule"]) {
-            homeData = aDict;
+    NSArray *moduleArray = [[self appConfig] arrayForKey:@"Modules"];
+    for (NSDictionary *moduleData in moduleArray) {
+        if ([[moduleData objectForKey:@"id"] isEqualToString:@"home"]) {
+            homeData = moduleData;
             break;
         }
     }
+    
     if (!homeData) {
         homeData = [NSDictionary dictionaryWithObjectsAndKeys:
                     @"HomeModule", @"class",
@@ -72,20 +64,11 @@
     }
     KGOModule *homeModule = [KGOModule moduleWithDictionary:homeData];
     homeModule.hasAccess = YES;
-
     [self addModule:homeModule];
 }
 
-- (void)loadModulesFromArray:(NSArray *)moduleArray local:(BOOL)isLocal {
-    NSMutableDictionary *modulesByTag = [[_modulesByTag mutableCopy] autorelease];
-    if (!modulesByTag) {
-        modulesByTag = [NSMutableDictionary dictionaryWithCapacity:[moduleArray count]];
-    }
-    NSMutableArray *modules = [[_modules mutableCopy] autorelease];
-    if (!modules) {
-        modules = [NSMutableArray array];
-    }
-    
+- (void)loadModulesFromArray:(NSArray *)moduleArray local:(BOOL)isLocal
+{
     for (NSDictionary *moduleDict in moduleArray) {
         NSString *tag = [moduleDict stringForKey:@"tag" nilIfEmpty:YES];
         KGOModule *aModule = [self moduleForTag:tag];
@@ -95,26 +78,13 @@
         } else {
             aModule = [KGOModule moduleWithDictionary:moduleDict];
             if (aModule) {
-                [modules addObject:aModule];
-                [modulesByTag setObject:aModule forKey:aModule.tag];
-                [aModule applicationDidFinishLaunching];
-                if ([aModule isKindOfClass:[LoginModule class]]) {
-                    [[KGORequestManager sharedManager] setLoginPath:aModule.tag];
+                [self addModule:aModule];
+                if (isLocal) {
+                    aModule.hasAccess = YES;
                 }
-                DLog(@"new module: %@", [aModule description]);
             }
         }
-        
-        if (isLocal) {
-            aModule.hasAccess = YES;
-        }
     }
-
-    [_modules release];
-    _modules = [modules copy];
-
-    [_modulesByTag release];
-    _modulesByTag = [modulesByTag copy];
 
     [[NSNotificationCenter defaultCenter] postNotificationName:ModuleListDidChangeNotification object:self];
 }
@@ -186,7 +156,9 @@
     KGOModule *module = [self moduleForTag:moduleTag];
     
     if (module) {
-        [module launch];
+        if (![module isLaunched]) {
+            [module launch];
+        }
 
         UIViewController *vc = [module modulePage:pageName params:params];
         if (vc) {

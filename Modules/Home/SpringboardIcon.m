@@ -1,6 +1,7 @@
 #import "SpringboardIcon.h"
 #import "KGOHomeScreenViewController.h"
 #import "KGOModule.h"
+#import "UIKit+KGOAdditions.h"
 
 @implementation SpringboardIcon
 
@@ -24,57 +25,25 @@
     _module = [aModule retain];
     
     if (_module && self.springboard) {
-        UIImage *image = [[self.module iconImage] stretchableImageWithLeftCapWidth:0.0 topCapHeight:0.0];
+        UIImage *image = [self.module iconImage];
+        if (!image) {
+            image = [UIImage blankImageOfSize:self.frame.size];
+        }
+        
         if (image) {
-            
             [self setImage:image forState:UIControlStateNormal];
             
             // TODO: add config setting for icon titles to be displayed on springboard
             NSString *title = self.module.longName;
             [self setTitle:title forState:UIControlStateNormal];
             
-            //
-            // Warning!
-            // Do not access self.titleLabel until after setting the icon and title so 
-            // that they have valid frames.  self.titleLabel calls layoutSubviews and 
-            // when positioning frames during launch the CALayer associated with the 
-            // view may end up dividing by 0 if any of the subview frames are [0,0,0,0].
-            // This problem only occurs on certain devices (it's a race condition) and 
-            // when built with optimization turned on so it can be difficult to diagnose.
-            //
-            self.titleLabel.numberOfLines = 0;
-            self.titleLabel.lineBreakMode = UILineBreakModeWordWrap;
-            self.titleLabel.textAlignment = UITextAlignmentCenter;
-
-            UIFont *titleFont;
-
             if (self.module.secondary) {
-                self.titleLabel.textColor = [self.springboard secondaryModuleLabelTextColor];
                 [self setTitleColor:[self.springboard secondaryModuleLabelTextColor] forState:UIControlStateNormal];
-                titleFont = [self.springboard secondaryModuleLabelFont];
-                _titleImageGap = [self.springboard secondaryModuleLabelTitleMargin];
             } else {
-                self.titleLabel.textColor = [self.springboard moduleLabelTextColor];
                 [self setTitleColor:[self.springboard moduleLabelTextColor] forState:UIControlStateNormal];
-                titleFont = self.compact ? [self.springboard moduleLabelFont] : [self.springboard moduleLabelFontLarge];
-                _titleImageGap = [self.springboard moduleLabelTitleMargin];
             }
-            self.titleLabel.font = titleFont;
-            
             [self addTarget:self.springboard action:@selector(buttonPressed:) forControlEvents:UIControlEventTouchUpInside];
-
         }
-#ifdef DEBUG
-        else {
-            NSString *message = [NSString stringWithFormat:@"missing image: %@ not found", [self.module iconImage]];
-            UIAlertView *alertView = [[[UIAlertView alloc] initWithTitle:@"debug warning"
-                                                                 message:message
-                                                                delegate:nil
-                                                       cancelButtonTitle:@"OK"
-                                                       otherButtonTitles: nil] autorelease];
-            [alertView show];
-        }
-#endif
     }
 }
 
@@ -86,11 +55,22 @@
     NSString *title = [self titleForState:UIControlStateNormal];
     UIImage *image = [self imageForState:UIControlStateNormal];
     CGSize imageSize = CGSizeZero;
+    CGFloat titleImageGap = 0;
+    
+    UILabel *titleLabel = self.titleLabel;
+    
+    titleLabel.numberOfLines = 0;
+    titleLabel.lineBreakMode = UILineBreakModeWordWrap;
+    titleLabel.textAlignment = UITextAlignmentCenter;
     
     if (self.module.secondary) {
         imageSize = [self.springboard secondaryModuleIconSize];
+        titleImageGap = [self.springboard secondaryModuleLabelTitleMargin];
+        titleLabel.font = [self.springboard secondaryModuleLabelFont];
     } else {
         imageSize = [self.springboard moduleIconSize];
+        titleImageGap = [self.springboard moduleLabelTitleMargin];
+        titleLabel.font = self.compact ? [self.springboard moduleLabelFont] : [self.springboard moduleLabelFontLarge];
     }
 
     // calculate title edge insets.
@@ -107,7 +87,7 @@
         }
         CGFloat sideInsets = floor((self.frame.size.width - imageSize.width) / 2);
         self.imageEdgeInsets = UIEdgeInsetsMake(0, sideInsets, self.frame.size.height - imageSize.height, sideInsets);
-        self.titleEdgeInsets = UIEdgeInsetsMake(imageSize.height + _titleImageGap + extraLineHeight, // want title below image
+        self.titleEdgeInsets = UIEdgeInsetsMake(imageSize.height + titleImageGap + extraLineHeight, // want title below image
                                                 -self.frame.size.width,                             // and not to the right
                                                 0, 0);
     } else {

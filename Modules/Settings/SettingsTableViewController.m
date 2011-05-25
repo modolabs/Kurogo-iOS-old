@@ -1,5 +1,5 @@
 #import "SettingsTableViewController.h"
-#import "KGOAppDelegate.h"
+#import "KGOAppDelegate+ModuleAdditions.h"
 #import "KGOModule.h"
 #import "KGOTheme.h"
 #import "KGORequestManager.h"
@@ -7,64 +7,24 @@
 #import "UIKit+KGOAdditions.h"
 #import "Foundation+KGOAdditions.h"
 
-static NSString * const KGOSettingsDefaultFont = @"DefaultFont";
-static NSString * const KGOSettingsDefaultFontSize = @"DefaultFontSize";
-static NSString * const KGOSettingsLogin = @"Login";
-static NSString * const KGOSettingsWidgets = @"Widgets";
-static NSString * const KGOSettingsSocialMedia = @"SocialMedia";
-
-
-@interface SettingsTableViewController (Private)
-
-- (NSString *)readableStringForKey:(NSString *)key;
-
-@end
+#import "KGOUserSettingsManager.h"
+#import "KGOUserSetting.h"
 
 @implementation SettingsTableViewController
-
-- (NSString *)readableStringForKey:(NSString *)key
-{
-    if ([key isEqualToString:KGOSettingsDefaultFont]) {
-        return NSLocalizedString(@"Default font", nil);
-        
-    } else if ([key isEqualToString:KGOSettingsDefaultFontSize]) {
-        return NSLocalizedString(@"Default font size", nil);
-        
-    } else if ([key isEqualToString:KGOSettingsWidgets]) {
-        return NSLocalizedString(@"Updates to show on home screen", nil);
-        
-    } else if ([key isEqualToString:KGOSettingsSocialMedia]) {
-        return NSLocalizedString(@"Third party services", nil);
-
-    } else if ([key isEqualToString:KGOSettingsLogin]) {
-        return nil;
-        
-    }
-    return key;
-}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    _availableUserSettings = [[[KGO_SHARED_APP_DELEGATE() appConfig] objectForKey:@"UserSettings"] retain];
-    _setUserSettings = [[[NSUserDefaults standardUserDefaults] objectForKey:KGOUserPreferencesKey] retain];
-    if (!_setUserSettings) {
-        NSDictionary *defaultUserSettings = [[KGO_SHARED_APP_DELEGATE() appConfig] objectForKey:@"DefaultUserSettings"];
-        if (defaultUserSettings) {
-            _setUserSettings = [defaultUserSettings copy];
-        }
-    }
-
-    _settingKeys = [[[_availableUserSettings allKeys] sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2) {
-        return [(NSString *)obj1 compare:(NSString *)obj2];
-    }] retain];
+    _settingKeys = [[[KGOUserSettingsManager sharedManager] settingsKeys] retain];
 }
-/*
+
 - (void)viewWillAppear:(BOOL)animated
 {
-    [self reloadDataForTableView:self.tableView];
+    if ([self isViewLoaded]) {
+        [self reloadDataForTableView:self.tableView];
+    }
 }
-*/
+
 - (void)didReceiveMemoryWarning {
 	// Releases the view if it doesn't have a superview.
     [super didReceiveMemoryWarning];
@@ -77,9 +37,7 @@ static NSString * const KGOSettingsSocialMedia = @"SocialMedia";
 }
 
 - (void)dealloc {
-    [_availableUserSettings release];
     [_settingKeys release];
-    [_setUserSettings release];
     [super dealloc];
 }
 
@@ -92,80 +50,79 @@ static NSString * const KGOSettingsSocialMedia = @"SocialMedia";
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return _availableUserSettings.count;    
+    NSInteger count = _settingKeys.count;
+    // TODO: need better way to determine if login is part of the app
+    if ([[KGORequestManager sharedManager] isUserLoggedIn]) {
+        count += 1;
+    }
+    return count;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    NSString *key = [_settingKeys objectAtIndex:section];
-    return [[_availableUserSettings objectForKey:key] count];
+    NSInteger settingsSection = section;
+    if ([[KGORequestManager sharedManager] isUserLoggedIn]) {
+        if (settingsSection == 0) {
+            return 1;
+        } else {
+            settingsSection--;
+        }
+    }
+    
+    NSString *key = [_settingKeys objectAtIndex:settingsSection];
+    KGOUserSetting *setting = [[KGOUserSettingsManager sharedManager] settingForKey:key];
+    if ([key isEqualToString:@"Modules"]) {
+        // special case
+        NSArray *items = [setting.defaultValue objectForKey:@"items"];
+        return items.count;
+        
+    } else if (!setting.unrestricted) {
+        return setting.options.count;
+    }
+    return 0;
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
-    return [self readableStringForKey:[_settingKeys objectAtIndex:section]];
+    NSInteger settingsSection = section;
+    if ([[KGORequestManager sharedManager] isUserLoggedIn]) {
+        if (settingsSection == 0) {
+            return NSLocalizedString(@"Login", @"title of login section in settings");
+        } else {
+            settingsSection--;
+        }
+    }
+    
+    NSString *key = [_settingKeys objectAtIndex:settingsSection];
+    KGOUserSetting *setting = [[KGOUserSettingsManager sharedManager] settingForKey:key];
+    return setting.title;
 }
-
+/*
 - (NSArray *)tableView:(UITableView *)tableView viewsForCellAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSString *key = [_settingKeys objectAtIndex:indexPath.section];
-    if ([key isEqualToString:KGOSettingsSocialMedia]) {
-        NSArray *options = [_availableUserSettings objectForKey:key];
-        id optionValue = [options objectAtIndex:indexPath.row];
-        if ([optionValue isKindOfClass:[NSDictionary class]]) {
-            NSString *serviceName = [optionValue stringForKey:@"service" nilIfEmpty:YES];
-            id<KGOSocialMediaService> service = [[KGOSocialMediaController sharedController] serviceWithType:serviceName];
-
-            NSMutableArray *views = [NSMutableArray array];
-            
-            CGFloat width = tableView.frame.size.width - 40; // adjust for padding and chevron
-            CGFloat y = 10;
-            UIFont *font = [[KGOTheme sharedTheme] fontForThemedProperty:KGOThemePropertyNavListTitle];
-            UILabel *titleLabel = [[[UILabel alloc] initWithFrame:CGRectMake(10, y, width, font.lineHeight)] autorelease];
-            titleLabel.backgroundColor = [UIColor clearColor];
-            titleLabel.font = font;
-            titleLabel.text = [service serviceDisplayName];
-            y += titleLabel.frame.size.height + 1;
-            [views addObject:titleLabel];
-            
-            font = [[KGOTheme sharedTheme] fontForThemedProperty:KGOThemePropertyNavListSubtitle];
-            NSString *string = [optionValue stringForKey:@"subtitle" nilIfEmpty:YES];
-            if (string) {
-                UILabel *subtitleLabel = [UILabel multilineLabelWithText:string font:font width:width];
-                CGRect frame = subtitleLabel.frame;
-                frame.origin.x = 10;
-                frame.origin.y = y;
-                subtitleLabel.frame = frame;
-                y += subtitleLabel.frame.size.height + 1;
-                [views addObject:subtitleLabel];
-            }
-
-            UILabel *label = [[[UILabel alloc] initWithFrame:CGRectMake(10, y, tableView.frame.size.width - 20, font.lineHeight)] autorelease];
-            label.backgroundColor = [UIColor clearColor];
-            label.font = font;
-            label.textColor = [[KGOTheme sharedTheme] textColorForThemedProperty:KGOThemePropertyNavListSubtitle];
-            
-            if ([service isSignedIn]) {
-                NSString *username = [service userDisplayName];
-                if (username) {
-                    label.text = [NSString stringWithFormat:@"Signed in as %@ - tap to sign out", username];
-            
-                } else {
-                    label.text = @"Signed in - tap to sign out";
-                }
-
-            } else {
-                label.text = @"Not signed in - tap to sign in";
-            }
-            [views addObject:label];
-            
-            return views;
+    NSInteger settingsSection = indexPath.section;
+    if ([[KGORequestManager sharedManager] isUserLoggedIn]) {
+        if (settingsSection == 0) {
+            return nil;
+        } else {
+            settingsSection--;
         }
+    }
+    
+    NSString *key = [_settingKeys objectAtIndex:settingsSection];
+    KGOUserSetting *setting = [[KGOUserSettingsManager sharedManager] settingForKey:key];
+    
+    if ([key isEqualToString:@"Modules"]) {
+        // special case
+        NSArray *items = [setting.defaultValue objectForKey:@"items"];
+        
+    } else if (!setting.unrestricted) {
+
     }
     
     return nil;
 }
-
+*/
 - (KGOTableCellStyle)tableView:(UITableView *)tableView styleForCellAtIndexPath:(NSIndexPath *)indexPath
 {
     return KGOTableCellStyleSubtitle;
@@ -173,72 +130,52 @@ static NSString * const KGOSettingsSocialMedia = @"SocialMedia";
 
 - (CellManipulator)tableView:(UITableView *)tableView manipulatorForCellAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSString *key = [_settingKeys objectAtIndex:indexPath.section];
-    NSArray *options = [_availableUserSettings objectForKey:key];
-    
-    UIFont *cellTitleFont = nil;
     NSString *cellTitle = nil;
     NSString *cellSubtitle = nil;
     NSString *accessory = nil;
     
-    id optionValue = [options objectAtIndex:indexPath.row];
-    if ([key isEqualToString:KGOSettingsLogin]) {
-        // TODO: clean up these ways of getting strings
-        NSDictionary *dictionary = [[KGORequestManager sharedManager] sessionInfo];
-        NSString *name = [[dictionary dictionaryForKey:@"user"] stringForKey:@"name" nilIfEmpty:YES];
-        if (name) {
-            cellTitle = [NSString stringWithFormat:@"You are signed in as %@", name];
+    NSInteger settingsSection = indexPath.section;
+    if ([[KGORequestManager sharedManager] isUserLoggedIn]) {
+        if (settingsSection == 0) {
+            // TODO: clean up these ways of getting strings
+            NSDictionary *dictionary = [[KGORequestManager sharedManager] sessionInfo];
+            NSString *name = [[dictionary dictionaryForKey:@"user"] stringForKey:@"name" nilIfEmpty:YES];
+            if (name) {
+                cellTitle = [NSString stringWithFormat:@"%@ %@",
+                             NSLocalizedString(@"You are signed in as", nil),
+                             name];
+            } else {
+                cellTitle = NSLocalizedString(@"You are signed in anonymously", nil);
+            }
+            cellSubtitle = NSLocalizedString(@"Tap to sign out", nil);
+
         } else {
-            cellTitle = [NSString stringWithFormat:@"You are signed in anonymously"];
+            settingsSection--;
         }
-        cellSubtitle = @"Tap to sign out";
-    
-    } else if ([key isEqualToString:KGOSettingsSocialMedia]) {
-        // just don't want any other branches
-        
-    } else if ([key isEqualToString:KGOSettingsWidgets]) {
-        cellTitle = [optionValue stringForKey:@"title" nilIfEmpty:YES];
-        NSString *tag = [optionValue stringForKey:@"tag" nilIfEmpty:YES];
-        if ([tag isEqualToString:@"twitter"]) {
-            cellSubtitle = [[NSUserDefaults standardUserDefaults] stringForKey:TwitterHashTagKey];
-            
-        } else if ([tag isEqualToString:@"facebook"]) {
-            cellSubtitle = [[NSUserDefaults standardUserDefaults] stringForKey:FacebookGroupTitleKey];
-        }
-        
-    } else if ([optionValue isKindOfClass:[NSString class]]) {
-        cellTitle = optionValue;
-        
-    } else if ([optionValue isKindOfClass:[NSDictionary class]]) {
-        // TODO: the current setup is not amenable to localization
-        cellTitle = [optionValue stringForKey:@"title" nilIfEmpty:YES];
-        cellSubtitle = [optionValue stringForKey:@"subtitle" nilIfEmpty:YES];
     }
-
-    // special treatment for different sections
-    if ([key isEqualToString:KGOSettingsDefaultFont]) {
-        cellTitleFont = [[KGOTheme sharedTheme] defaultBoldFont];
+    
+    NSString *key = [_settingKeys objectAtIndex:settingsSection];
+    KGOUserSetting *setting = [[KGOUserSettingsManager sharedManager] settingForKey:key];
+    
+    if ([key isEqualToString:@"Modules"]) {
+        // special case
+        NSArray *items = [setting.defaultValue objectForKey:@"items"];
+        NSString *moduleTag = [items objectAtIndex:indexPath.row];
+        KGOModule *module = [KGO_SHARED_APP_DELEGATE() moduleForTag:moduleTag];
+        cellTitle = module.longName;
         
     } else {
-        cellTitleFont = [[KGOTheme sharedTheme] fontForThemedProperty:KGOThemePropertyNavListTitle];
+        NSDictionary *currentOption = [setting.options dictionaryAtIndex:indexPath.row];
+        cellTitle = [currentOption stringForKey:@"title" nilIfEmpty:NO];
+        if (setting.selectedValue == currentOption) {
+            accessory = KGOAccessoryTypeCheckmark;
+        }
     }
-    
-    id optionSelected = [_setUserSettings objectForKey:key];
-    if ([optionSelected isKindOfClass:[NSString class]] && [optionValue isKindOfClass:[NSString class]]) {
-        accessory = [optionSelected isEqualToString:optionValue] ? KGOAccessoryTypeCheckmark : KGOAccessoryTypeNone;
-
-    } else if ([optionSelected isKindOfClass:[NSArray class]] && [optionValue isKindOfClass:[NSDictionary class]]) {
-        NSString *optionTag = [optionValue stringForKey:@"tag" nilIfEmpty:YES];
-        accessory = [optionSelected containsObject:optionTag] ? KGOAccessoryTypeCheckmark : KGOAccessoryTypeNone;
-            
-    } else {
-        accessory = KGOAccessoryTypeChevron;
-    }
-    
+        
     return [[^(UITableViewCell *cell) {
         cell.textLabel.text = cellTitle;
         cell.textLabel.textColor = [[KGOTheme sharedTheme] textColorForThemedProperty:KGOThemePropertyNavListTitle];
-        cell.textLabel.font = cellTitleFont;
+        cell.textLabel.font = [[KGOTheme sharedTheme] fontForThemedProperty:KGOThemePropertyNavListTitle];
         cell.selectionStyle = UITableViewCellSelectionStyleGray;
         cell.detailTextLabel.text = cellSubtitle;
         cell.detailTextLabel.font = [[KGOTheme sharedTheme] fontForThemedProperty:KGOThemePropertyNavListSubtitle];
@@ -251,65 +188,26 @@ static NSString * const KGOSettingsSocialMedia = @"SocialMedia";
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
-    NSString *key = [_settingKeys objectAtIndex:indexPath.section];
-    NSArray *options = [_availableUserSettings objectForKey:key];
-    id optionValue = [options objectAtIndex:indexPath.row];
-    id optionSelected = [_setUserSettings objectForKey:key];
-    id newOptionSelected = nil;
-    
-    if ([optionSelected isKindOfClass:[NSString class]] && [optionValue isKindOfClass:[NSString class]]) {
-        if (![optionSelected isEqualToString:optionValue]) {
-            newOptionSelected = optionValue;
-        }
-        
-    } else if ([optionSelected isKindOfClass:[NSArray class]] && [optionValue isKindOfClass:[NSDictionary class]]) {
-        NSString *optionTag = [optionValue stringForKey:@"tag" nilIfEmpty:YES];
-        newOptionSelected = [[optionSelected mutableCopy] autorelease];
-        if (!newOptionSelected) {
-            newOptionSelected = [NSMutableArray array];
-        }
-        if ([optionSelected containsObject:optionTag]) { // remove from prefs
-            [newOptionSelected removeObject:optionTag];
-            
-        } else { // add to prefs
-            [newOptionSelected addObject:optionTag];
-            
-        }
-        
-    } else {
-        if ([key isEqualToString:KGOSettingsSocialMedia] && [optionValue isKindOfClass:[NSDictionary class]]) {
-            // login/logout
-            NSString *serviceName = [optionValue stringForKey:@"service" nilIfEmpty:YES];
-            id<KGOSocialMediaService> service = [[KGOSocialMediaController sharedController] serviceWithType:serviceName];
-            if ([service isSignedIn]) {
-                [service signout];
-            } else {
-                [service signin];
-            }
-            
-        } else if ([key isEqualToString:KGOSettingsLogin]) {
+    NSInteger settingsSection = indexPath.section;
+    if ([[KGORequestManager sharedManager] isUserLoggedIn]) {
+        if (settingsSection == 0) {
             // currently assuming the user has to be logged in to get here
             [[KGORequestManager sharedManager] logoutKurogoServer];
-            
+
+        } else {
+            settingsSection--;
         }
     }
     
-    if (newOptionSelected) {
-        NSMutableDictionary *dict = [[_setUserSettings mutableCopy] autorelease];
-        if (!dict) {
-            dict = [NSMutableDictionary dictionary];
-        }
-        [dict setObject:newOptionSelected forKey:key];
-        [_setUserSettings release];
-        _setUserSettings = [dict copy];
-
-        [[NSUserDefaults standardUserDefaults] setObject:dict forKey:KGOUserPreferencesKey];
-        [[NSUserDefaults standardUserDefaults] synchronize];
+    NSString *key = [_settingKeys objectAtIndex:settingsSection];
+    KGOUserSetting *setting = [[KGOUserSettingsManager sharedManager] settingForKey:key];
+    
+    if ([key isEqualToString:@"Modules"]) {
         
-        [[NSNotificationCenter defaultCenter] postNotificationName:KGOUserPreferencesDidChangeNotification object:key];
-        
-        //[self reloadDataForTableView:tableView];
-    }
+    } else {
+        [[KGOUserSettingsManager sharedManager] selectOption:indexPath.row forSetting:setting.key];
+        [tableView reloadSections:[NSIndexSet indexSetWithIndex:indexPath.section] withRowAnimation:UITableViewRowAnimationNone];
+    }    
 }
 
 @end

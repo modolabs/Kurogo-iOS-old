@@ -607,7 +607,7 @@
             self.homeModule = aModule;
         }
 
-        if (aModule.hidden) {
+        if (aModule.hidden || !aModule.hasAccess) {
             continue;
         }
 

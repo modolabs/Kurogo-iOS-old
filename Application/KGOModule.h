@@ -24,6 +24,8 @@
 
 #pragma mark API properties
 
+- (BOOL)requiresKurogoServer;
+
 // allow the server to change module title (longName, shortName), api versions
 // (apiMinVersion, apiMaxVersion), and access control status (hasAccess).
 // tag should not be changed once it is set -- probably want to make readonly.
@@ -72,6 +74,7 @@
 #pragma mark Data
 
 - (NSArray *)objectModelNames;
+- (void)clearCachedData;
 
 #pragma mark Module state
 
@@ -109,14 +112,30 @@
 
 #pragma mark Notifications
 
-- (void)handleNotification:(KGONotification *)aNotification;
+- (void)handleRemoteNotification:(KGONotification *)aNotification;
+- (void)handleLocalNotification:(KGONotification *)aNotification;
+
+// remote notification tags that this module needs to handle
+- (NSSet *)notificationTagNames;
+
+// if the server hello returns a payload for this module, evaluate it
+- (void)handleInitialPayload:(NSDictionary *)payload;
+
+#pragma mark Settings
 
 // notification names that get sent by activities within the app that affect
-// the settings module.
+// the settings module.  for example, suppose we are an ipad app with a twitter
+// widget from which the user is able to log into twitter.  if this widget is in
+// the foreground but the settings module is in the background and still
+// visible, we need the settings module to listen for such changes to the login
+// status.  this is not a desirable way to update the settings module.
 - (NSArray *)applicationStateNotificationNames;
 
-// names of keys saved in user defaults which get wiped on logout.
-- (NSArray *)userDefaults;
+// an array of KGOUserSetting objects
+@property (nonatomic, retain) NSArray *userSettings;
+- (NSArray *)userSettings;
+
+- (void)resetUserSettings:(BOOL)hard;
 
 #pragma mark Social media
 

@@ -187,16 +187,19 @@
 
 #pragma mark -
 #pragma mark NewsDataManager delegate methods
+
 - (void)categoriesUpdated:(NSArray *)newCategories {
     self.categories = newCategories;
-    if (![self activeCategory]) {
+    if (![self activeCategory] && self.categories.count) {
         NewsCategory *category = [self.categories objectAtIndex:0];
         self.activeCategoryId = category.category_id;
     }
     [self setupNavScroller];
 
     // now that we have categories load the stories
-    [self.dataManager requestStoriesForCategory:self.activeCategoryId loadMore:NO forceRefresh:NO]; 
+    if (self.activeCategoryId) {
+        [self.dataManager requestStoriesForCategory:self.activeCategoryId loadMore:NO forceRefresh:NO]; 
+    }
 }
 
 #pragma mark -
@@ -249,7 +252,7 @@
     NSString *title = [tabstrip buttonTitleAtIndex:index];
     for (NewsCategory *aCategory in self.categories) {
         if ([aCategory.title isEqualToString:title]) {
-            NewsCategoryId tagValue = aCategory.category_id;
+            NSString *tagValue = aCategory.category_id;
             [self switchToCategory:tagValue];
             break;
         }
@@ -367,12 +370,8 @@
 // Having all of the CoreData logic stuffed into here makes for ugly connections from story views back to this list view
 // It also forces odd behavior of the paging controls when a memory warning occurs while looking at a story
 
-- (void)switchToCategory:(NewsCategoryId)category {
-    if (category != self.activeCategoryId) {
-		//if (self.xmlParser) {
-		//	[self.xmlParser abort]; // cancel previous category's request if it's still going
-		//	self.xmlParser = nil;
-		//}
+- (void)switchToCategory:(NSString *)category {
+    if (![category isEqualToString:self.activeCategoryId]) {
 		self.activeCategoryId = category;
         activeCategoryHasMoreStories = YES;
 		self.stories = [NSArray array];
@@ -410,13 +409,13 @@
     }
 }
 
-- (void) storiesDidMakeProgress:(CGFloat)progress forCategoryId:(NewsCategoryId)categoryID {
+- (void) storiesDidMakeProgress:(CGFloat)progress forCategoryId:(NSString *)categoryID {
     if([self.activeCategoryId isEqualToString:categoryID]) {
         [self setProgress:progress];
     }
 }
 
-- (void) storiesDidFailWithCategoryId:(NewsCategoryId)categoryID {
+- (void) storiesDidFailWithCategoryId:(NSString *)categoryID {
     if([self.activeCategoryId isEqualToString:categoryID]) {
         [self setStatusText:@"Most recent update failed!"];
     }    

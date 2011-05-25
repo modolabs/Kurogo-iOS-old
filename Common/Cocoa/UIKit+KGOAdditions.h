@@ -5,6 +5,7 @@
 @interface UIImage (KGOAdditions)
 
 + (UIImage *)imageWithPathName:(NSString *)pathName;
++ (UIImage *)blankImageOfSize:(CGSize)size;
 
 @end
 

@@ -4,8 +4,6 @@
 #import "NewsStory.h"
 #import "NewsImage.h"
 
-typedef NSString* NewsCategoryId;
-
 @protocol NewsDataDelegate <NSObject>
 
 @optional
@@ -13,9 +11,9 @@ typedef NSString* NewsCategoryId;
 
 - (void)storiesUpdated:(NSArray *)stories forCategory:(NewsCategory *)category;
 
-- (void)storiesDidMakeProgress:(CGFloat)progress forCategoryId:(NewsCategoryId)categoryId;
+- (void)storiesDidMakeProgress:(CGFloat)progress forCategoryId:(NSString *)categoryId;
 
-- (void)storiesDidFailWithCategoryId:(NewsCategoryId)categoryId;
+- (void)storiesDidFailWithCategoryId:(NSString *)categoryId;
 
 - (void)searchResults:(NSArray *)results forSearchTerms:(NSString *)searchTerms;
 
@@ -31,7 +29,7 @@ typedef NSString* NewsCategoryId;
 
 - (void)requestCategories;
 
-- (void)requestStoriesForCategory:(NewsCategoryId)categoryID loadMore:(BOOL)loadMore forceRefresh:(BOOL)forceRefresh;
+- (void)requestStoriesForCategory:(NSString *)categoryID loadMore:(BOOL)loadMore forceRefresh:(BOOL)forceRefresh;
 
 - (void) search:(NSString *)searchTerms;
 
@@ -41,7 +39,7 @@ typedef NSString* NewsCategoryId;
 
 - (void)unregisterDelegate:(id<NewsDataDelegate>)delegate;
 
-- (NSInteger)loadMoreStoriesQuantityForCategoryId:(NewsCategoryId)categoryID;
+- (NSInteger)loadMoreStoriesQuantityForCategoryId:(NSString *)categoryID;
 
 - (BOOL)busy;
 
