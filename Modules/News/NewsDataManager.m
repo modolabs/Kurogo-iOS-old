@@ -15,7 +15,7 @@ NSString * const NewsTagTitle           = @"title";
 NSString * const NewsTagAuthor          = @"author";
 NSString * const NewsTagLink            = @"link";
 NSString * const NewsTagStoryId         = @"GUID";
-NSString * const NewsTagImage              = @"image";
+NSString * const NewsTagImage           = @"image";
 //NSString * const NewsTagFeatured        = @"harvard:featured";
 //NSString * const NewsTagFeaturedImage   = @"harvard:featured_photo";
 NSString * const NewsTagSummary         = @"description";
@@ -109,14 +109,16 @@ NSString * const NewsTagBody            = @"body";
                                                                           module:NewsTag
                                                                             path:@"categories"
                                                                           params:nil];
+
     request.expectedResponseType = [NSArray class];
+    
+    __block NewsDataManager *blockSelf = self;
     request.handler = [[^(id result) {
         NSArray *newCategorieDicts = result;
-        NSArray *oldCategories = [self fetchCategoriesFromCoreData];                
-        
+        NSArray *oldCategories = [blockSelf fetchCategoriesFromCoreData];
 		// check if the new categories are the same as the old categories
 		BOOL categoriesChanged = NO;
-		if([newCategorieDicts count] == [oldCategories count]) {
+		if ([newCategorieDicts count] == [oldCategories count]) {
 			for (NSUInteger i=0; i < [newCategorieDicts count]; i++) {
                 NSDictionary *newCategoryDict = [newCategorieDicts objectAtIndex:i];
                 NewsCategory *oldCategory = (NewsCategory *)[oldCategories objectAtIndex:i];
@@ -139,14 +141,13 @@ NSString * const NewsTagBody            = @"body";
 			categoriesChanged = YES;
 		}
 		
-		if(!categoriesChanged) {
+		if (!categoriesChanged) {
 			// categories do not need to be updated
 			return REQUEST_CATEGORIES_UNCHANGED;
 		}
         
         
-        [[CoreDataManager sharedManager] deleteObjects:oldCategories];		
-		NSMutableArray *newCategories = [NSMutableArray arrayWithCapacity:[result count]];
+        [[CoreDataManager sharedManager] deleteObjects:oldCategories];
 		
         for (NSDictionary *categoryDict in newCategorieDicts) {
             NewsCategory *aCategory = [[CoreDataManager sharedManager] insertNewObjectForEntityForName:NewsCategoryEntityName];
@@ -155,8 +156,9 @@ NSString * const NewsTagBody            = @"body";
             aCategory.isMainCategory = [NSNumber numberWithBool:YES];
             aCategory.moreStories = [NSNumber numberWithInt:-1];
             aCategory.nextSeekId = [NSNumber numberWithInt:0];
-            [newCategories addObject:aCategory];
         }
+        
+        [[CoreDataManager sharedManager] saveData];
         
         
         return REQUEST_CATEGORIES_CHANGED;
@@ -235,17 +237,15 @@ NSString * const NewsTagBody            = @"body";
     }
     
     // show that downloading is beginning
-    for(id<NewsDataDelegate> delegate in delegates) {
+    for (id<NewsDataDelegate> delegate in delegates) {
         if([delegate respondsToSelector:@selector(storiesDidMakeProgress:forCategoryId:)]) {
             [delegate storiesDidMakeProgress:0.0f forCategoryId:category.category_id];
         }
     }
     
-    NSInteger start;
-    if(loadMore) {
+    NSInteger start = 0;
+    if (loadMore) {
         start = [category.nextSeekId intValue];
-    } else {
-        start = 0;
     }
     
     NSString *startValue = [NSString stringWithFormat:@"%d", start];
@@ -267,8 +267,10 @@ NSString * const NewsTagBody            = @"body";
     self.storiesRequest = request;
     
     request.expectedResponseType = [NSDictionary class];
+    
+    __block NewsDataManager *blockSelf = self;
     request.handler = [[^(id result) {
-        NewsCategory *safeCategoryObject = [self fetchCategoryFromCoreData:categoryID];
+        NewsCategory *safeCategoryObject = [blockSelf fetchCategoryFromCoreData:categoryID];
         
         if (!loadMore) {
             // this is a refresh load, so we need to prune
@@ -286,7 +288,7 @@ NSString * const NewsTagBody            = @"body";
         NSArray *stories = [resultDict objectForKey:@"stories"];
         
         for (NSDictionary *storyDict in stories) {
-            NewsStory *story =[self storyWithDictionary:storyDict]; 
+            NewsStory *story = [blockSelf storyWithDictionary:storyDict]; 
             NSMutableSet *mutableCategories = [NSMutableSet setWithCapacity:1];
             [mutableCategories unionSet:story.categories];
             [mutableCategories addObject:safeCategoryObject];
@@ -296,6 +298,8 @@ NSString * const NewsTagBody            = @"body";
         safeCategoryObject.moreStories = [resultDict objectForKey:@"moreStories"];
         safeCategoryObject.nextSeekId = [NSNumber numberWithInt:(start + limit)];
         safeCategoryObject.lastUpdated = [NSDate date];
+        [[CoreDataManager sharedManager] saveData];
+
         return [stories count];
     } copy] autorelease];
     
