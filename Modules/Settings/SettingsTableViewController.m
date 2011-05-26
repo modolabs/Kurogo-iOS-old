@@ -133,6 +133,7 @@
     NSString *cellTitle = nil;
     NSString *cellSubtitle = nil;
     NSString *accessory = nil;
+    BOOL showsReorderControl = NO;
     
     NSInteger settingsSection = indexPath.section;
     if ([[KGORequestManager sharedManager] isUserLoggedIn]) {
@@ -159,10 +160,12 @@
     
     if ([key isEqualToString:@"Modules"]) {
         // special case
-        NSArray *items = [setting.defaultValue objectForKey:@"items"];
+        NSDictionary *selectedDict = [[KGOUserSettingsManager sharedManager] selectedValueDictForSetting:key];
+        NSArray *items = [selectedDict objectForKey:@"items"];
         NSString *moduleTag = [items objectAtIndex:indexPath.row];
         KGOModule *module = [KGO_SHARED_APP_DELEGATE() moduleForTag:moduleTag];
         cellTitle = module.longName;
+        showsReorderControl = YES;
         
     } else {
         NSDictionary *currentOption = [setting.options dictionaryAtIndex:indexPath.row];
@@ -180,14 +183,113 @@
         cell.detailTextLabel.text = cellSubtitle;
         cell.detailTextLabel.font = [[KGOTheme sharedTheme] fontForThemedProperty:KGOThemePropertyNavListSubtitle];
         cell.detailTextLabel.textColor = [[KGOTheme sharedTheme] textColorForThemedProperty:KGOThemePropertyNavListSubtitle];
-        cell.accessoryView = [[KGOTheme sharedTheme] accessoryViewForType:accessory];
+        if (showsReorderControl) {
+            cell.showsReorderControl = showsReorderControl;
+        } else {
+            cell.accessoryView = [[KGOTheme sharedTheme] accessoryViewForType:accessory];
+        }
+        
     } copy] autorelease];
+}
+
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+{
+    UIView *view = [super tableView:tableView viewForHeaderInSection:section];
+    
+    NSInteger settingsSection = section;
+    if ([[KGORequestManager sharedManager] isUserLoggedIn]) {
+        settingsSection--;
+    }
+
+    if (settingsSection > 0) {
+        NSString *key = [_settingKeys objectAtIndex:settingsSection];
+        if ([key isEqualToString:@"Modules"]) {
+            if (!_editButton) {
+                NSString *title = NSLocalizedString(@"Edit", @"module reordering enablement button");
+                _editButton = [[UIButton genericButtonWithTitle:title] retain];
+                _editButton.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin;
+                CGRect frame = _editButton.frame;
+                frame.origin.x = view.bounds.size.width - frame.size.width - 10;
+                frame.origin.y = 5;
+                _editButton.frame = frame;
+                [_editButton addTarget:self action:@selector(editModuleButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
+            }
+            if (![_editButton isDescendantOfView:view]) {
+                [view addSubview:_editButton];
+            }
+        }
+    }
+    
+    return view;
+}
+
+- (void)editModuleButtonPressed:(id)sender
+{
+    BOOL willEdit = !self.tableView.editing;
+    [self.tableView setEditing:willEdit animated:YES];
+
+    NSString *title = nil;
+    if (willEdit) {
+        title = NSLocalizedString(@"Done", @"module reordering enablement button");
+        
+    } else {
+        // user clicked Done button
+        NSString *moduleOrderID = [[KGOUserSettingsManager sharedManager] selectedValueForSetting:@"Modules"];
+        if (![moduleOrderID isEqualToString:@"default"]) {
+            [[NSNotificationCenter defaultCenter] postNotificationName:KGOUserPreferencesDidChangeNotification object:self];
+        }
+        title = NSLocalizedString(@"Edit", @"module reordering enablement button");
+    }
+
+    [_editButton setTitle:title forState:UIControlStateNormal];
+    
+    CGSize size = [title sizeWithFont:_editButton.titleLabel.font];
+    CGRect frame = _editButton.frame;
+    CGFloat previousWidth = frame.size.width;
+    frame.size.width = size.width + 16;
+    frame.origin.x -= frame.size.width - previousWidth;
+    _editButton.frame = frame;
+}
+
+- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    NSInteger settingsSection = indexPath.section;
+    if ([[KGORequestManager sharedManager] isUserLoggedIn]) {
+        if (settingsSection == 0) {
+            return NO;
+        }
+        settingsSection--;
+    }
+    
+    NSString *key = [_settingKeys objectAtIndex:settingsSection];
+    return [key isEqualToString:@"Modules"];
+}
+
+- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)sourceIndexPath toIndexPath:(NSIndexPath *)destinationIndexPath
+{
+    NSDictionary *selectedDict = [[KGOUserSettingsManager sharedManager] selectedValueDictForSetting:@"Modules"];
+    NSMutableArray *items = [[[selectedDict objectForKey:@"items"] mutableCopy] autorelease];
+    
+    id movedObject = [items objectAtIndex:sourceIndexPath.row];
+    [items removeObjectAtIndex:sourceIndexPath.row];
+    [items insertObject:movedObject atIndex:destinationIndexPath.row];
+    
+    NSDictionary *newDict = [NSDictionary dictionaryWithObjectsAndKeys:@"id", @"selected", items, @"items", nil];
+    [[KGOUserSettingsManager sharedManager] selectValue:newDict forSetting:@"Modules"];
+}
+
+- (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return UITableViewCellEditingStyleNone;
+}
+
+- (BOOL)tableView:(UITableView *)tableView shouldIndentWhileEditingRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return NO;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    
     NSInteger settingsSection = indexPath.section;
     if ([[KGORequestManager sharedManager] isUserLoggedIn]) {
         if (settingsSection == 0) {
@@ -202,12 +304,14 @@
     NSString *key = [_settingKeys objectAtIndex:settingsSection];
     KGOUserSetting *setting = [[KGOUserSettingsManager sharedManager] settingForKey:key];
     
-    if ([key isEqualToString:@"Modules"]) {
-        
-    } else {
+    if (![key isEqualToString:@"Modules"]) {
         [[KGOUserSettingsManager sharedManager] selectOption:indexPath.row forSetting:setting.key];
+        [[KGOUserSettingsManager sharedManager] saveSettings];
         [tableView reloadSections:[NSIndexSet indexSetWithIndex:indexPath.section] withRowAnimation:UITableViewRowAnimationNone];
-    }    
+    }
+    [[NSNotificationCenter defaultCenter] postNotificationName:KGOUserPreferencesDidChangeNotification object:self];
+
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
 @end

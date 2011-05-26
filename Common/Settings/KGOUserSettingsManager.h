@@ -13,6 +13,7 @@
 - (NSArray *)settingsKeys;
 - (KGOUserSetting *)settingForKey:(NSString *)key;
 
+- (NSDictionary *)selectedValueDictForSetting:(NSString *)key;
 - (id)selectedValueForSetting:(NSString *)key;
 - (void)selectOption:(NSUInteger)option forSetting:(NSString *)key;
 - (void)selectValue:(id)selectedValue forSetting:(NSString *)key;

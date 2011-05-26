@@ -28,6 +28,15 @@
 
 @end
 
+@interface UIButton (KGOAdditions)
+
++ (UIButton *)genericButtonWithTitle:(NSString *)title;
++ (UIButton *)genericButtonWithImage:(UIImage *)image;
+
+@end
+
+
+
 @interface UIWebView (KGOAdditions)
 
 - (void)loadTemplate:(KGOHTMLTemplate *)template values:(NSDictionary *)values;

@@ -56,12 +56,12 @@
 					<string>people</string>
 					<string>map</string>
 					<string>news</string>
-					<string>events</string>
+					<string>calendar</string>
 					<string>emergency</string>
 					<string>video</string>
 					<string>admissions</string>
 					<string>about</string>
-					<string>settings</string>
+					<string>customize</string>
 					<string>mobileweb</string>
 					<string>fullweb</string>
 				</array>

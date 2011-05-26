@@ -77,10 +77,10 @@ NSString * const KGOUserSettingPreferenceKey = @"ModuleSettings";
 - (NSUInteger)selectedOptionForKey:(NSString *)key
 {
     KGOUserSetting *setting = [self settingForKey:key];
-    return [setting.options indexOfObject:[self selectedValueForSetting:key]];
+    return [setting.options indexOfObject:[self selectedValueDictForSetting:key]];
 }
 
-- (id)selectedValueForSetting:(NSString *)key
+- (NSDictionary *)selectedValueDictForSetting:(NSString *)key
 {
     KGOUserSetting *setting = [self settingForKey:key];
     if (setting.selectedValue) {
@@ -88,6 +88,12 @@ NSString * const KGOUserSettingPreferenceKey = @"ModuleSettings";
     } else {
         return setting.defaultValue;
     }
+}
+
+- (NSString *)selectedValueForSetting:(NSString *)key
+{
+    NSDictionary *dict = [self selectedValueDictForSetting:key];
+    return [dict objectForKey:@"id"];
 }
 
 - (void)selectOption:(NSUInteger)option forSetting:(NSString *)key
@@ -112,7 +118,9 @@ NSString * const KGOUserSettingPreferenceKey = @"ModuleSettings";
     NSMutableDictionary *plistSettings = [NSMutableDictionary dictionary];
     [_settings enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
         KGOUserSetting *userSetting = (KGOUserSetting *)obj;
-        [plistSettings setObject:userSetting.selectedValue forKey:key];
+        if (userSetting.selectedValue) {
+            [plistSettings setObject:userSetting.selectedValue forKey:key];
+        }
     }];
 
     [[NSUserDefaults standardUserDefaults] setObject:plistSettings forKey:KGOUserSettingPreferenceKey];

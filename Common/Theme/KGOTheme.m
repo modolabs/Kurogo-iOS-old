@@ -1,7 +1,7 @@
-
 #import "KGOTheme.h"
 #import "UIKit+KGOAdditions.h"
 #import "Foundation+KGOAdditions.h"
+#import "KGOUserSettingsManager.h"
 
 NSString * const KGOUserPreferencesKey = @"KGOUserPrefs";
 NSString * const KGOUserPreferencesDidChangeNotification = @"KGOUserPrefsChanged";
@@ -303,34 +303,35 @@ static KGOTheme *s_sharedTheme = nil;
 - (void)loadFontPreferences
 {
     NSMutableDictionary *mutableFontDict = [[[themeDict objectForKey:@"Fonts"] mutableCopy] autorelease];
-    NSDictionary *userSettings = [[NSUserDefaults standardUserDefaults] objectForKey:KGOUserPreferencesKey];
-    if (userSettings) {
-        // TODO: reduce the hard-coded ness of our settings overrides
-        CGFloat fontSize = [[mutableFontDict objectForKey:@"DefaultFontSize"] floatValue];
-        if (!fontSize) {
-            fontSize = [UIFont systemFontSize];
+    
+    CGFloat fontSize = [[mutableFontDict objectForKey:@"DefaultFontSize"] floatValue];
+    if (!fontSize) {
+        fontSize = [UIFont systemFontSize];
+    }
+    
+    NSString *fontSizePref = [[KGOUserSettingsManager sharedManager] selectedValueForSetting:@"FontSize"];
+    if (fontSizePref) {
+        if ([fontSizePref isEqualToString:@"Tiny"]) {
+            fontSize -= 4;
+        } else if ([fontSizePref isEqualToString:@"Small"]) {
+            fontSize -= 2;
+        } else if ([fontSizePref isEqualToString:@"Large"]) {
+            fontSize += 2;
+        } else if ([fontSizePref isEqualToString:@"Huge"]) {
+            fontSize += 4;
         }
 
-        NSString *fontSizePref = [userSettings objectForKey:@"DefaultFontSize"];
-        if ([fontSizePref isEqualToString:@"Tiny"]) {
-            fontSize -= 3;
-        } else if ([fontSizePref isEqualToString:@"Small"]) {
-            fontSize -= 1.5;
-        } else if ([fontSizePref isEqualToString:@"Large"]) {
-            fontSize += 1.5;
-        } else if ([fontSizePref isEqualToString:@"Huge"]) {
-            fontSize += 3;
-        }
         [mutableFontDict setObject:[NSNumber numberWithFloat:fontSize] forKey:@"DefaultFontSize"];
-        
-        NSString *fontPref = [userSettings objectForKey:@"DefaultFont"];
-        if (fontPref) {
-            UIFont *font = [UIFont fontWithName:fontPref size:fontSize];
-            if (font) {
-                [mutableFontDict setObject:fontPref forKey:@"DefaultFont"];
-            }
+    }
+
+    NSString *fontPref = [[KGOUserSettingsManager sharedManager] selectedValueForSetting:@"Font"];
+    if (fontPref) {
+        UIFont *font = [UIFont fontWithName:fontPref size:fontSize];
+        if (font) {
+            [mutableFontDict setObject:fontPref forKey:@"DefaultFont"];
         }
     }
+        
     fontDict = [mutableFontDict copy];
 }
 
