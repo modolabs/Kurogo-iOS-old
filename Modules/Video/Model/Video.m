@@ -93,6 +93,18 @@
             self.tags = [[self class] tagsFromTagsDictionary:
                          [dictionaryFromAPI objectForKey:APIKey]];
         }
+        else if ([keyToSet isEqualToString:@"videoID"]) {
+            id value = [dictionaryFromAPI valueForKey:APIKey];
+            if ([value isKindOfClass:[NSString class]]) {
+                self.videoID = value;
+            }
+            else if ([value isKindOfClass:[NSNumber class]]) {
+                self.videoID = [value stringValue];
+            }
+            else {
+                NSAssert(NO, @"Trying to set videoID to a value with an invalid type.");
+            }
+        }
         else {
             id value = [dictionaryFromAPI valueForKey:APIKey];
             if ((value) && (![value isKindOfClass:[NSNull class]])) {
