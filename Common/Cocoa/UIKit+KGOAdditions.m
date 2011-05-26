@@ -21,47 +21,14 @@
 
 + (UIImage *)blankImageOfSize:(CGSize)size
 {
-    // this is from the QuartzCache sample code for Mac OS X Tiger.
-    // TODO: this seems to create noisy pixels
+    UIGraphicsBeginImageContextWithOptions(size, NO, 1.0);
+    CGContextRef context = UIGraphicsGetCurrentContext();
+    CGContextSetRGBFillColor(context, 0, 0, 0, 0);
     
-    int bitsPerComponent = 8;
-    int componentsPerPixel = 4; // argb
+    CGContextFillRect(context, CGRectMake(0, 0, size.width, size.height));
     
-    int bitsPerPixel = bitsPerComponent * componentsPerPixel;
-    
-    size_t bytesPerRow = ceil(bitsPerPixel * size.width / 32) * 4;
-    size_t skipBytes = bytesPerRow - size.width * 4;
-    size_t dataSize = bytesPerRow * size.height;
-    unsigned char *data = malloc(dataSize);
-    
-    if (data == NULL) {
-        return nil;
-    }
-    
-    unsigned char *p = data;
-    
-    for (int i = 0; i < size.height; i++) {
-        for (int j = 0; j < size.width; j++) {
-            *p++ = 0x00; // A
-            *p++ = 0xff; // R
-            *p++ = 0xff; // G
-            *p++ = 0xff; // B
-        }
-        p += skipBytes;
-    }
-    
-    CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
-    CGBitmapInfo bitmapInfo = kCGImageAlphaFirst;
-    CGDataProviderRef provider = CGDataProviderCreateWithData(NULL, data, dataSize, NULL);
-    CGImageRef imageRef = CGImageCreate(size.width, size.height, bitsPerComponent, bitsPerPixel,
-                                        bytesPerRow, colorSpace, bitmapInfo,
-                                        provider, NULL, false, kCGRenderingIntentDefault);
-    CFRelease(colorSpace);
-    CFRelease(provider);
-    
-    UIImage *image = [UIImage imageWithCGImage:imageRef];
-    CFRelease(imageRef);
-    free(data);
+	UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
+	UIGraphicsEndImageContext();
     
     return image;
 }
