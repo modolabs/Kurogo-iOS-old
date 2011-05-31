@@ -50,15 +50,11 @@
 
 - (void) addLoadingView {
     
-    loadingView = [[[UIView alloc] initWithFrame:
-                   CGRectMake(self.view.frame.origin.x, 
-                              self.view.frame.origin.y, 
-                              self.view.frame.size.width, 
-                              self.view.frame.size.height)] autorelease];
-    
+    self.loadingView = [[[UIView alloc] initWithFrame:self.view.bounds] autorelease];
     loadingView.backgroundColor = [UIColor whiteColor];
+    loadingView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     
-    loadingIndicator = [[[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray] autorelease];
+    self.loadingIndicator = [[[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray] autorelease];
     [loadingIndicator startAnimating];
     loadingIndicator.center = self.view.center;
     [loadingView addSubview:loadingIndicator];
@@ -73,8 +69,8 @@
 
 - (void) showSingleFeedWebView: (NSString *) titleString htmlString: (NSString *) htmlStringText {
     [self removeLoadingView];
-    singleFeedView = [[[UIWebView alloc] init] autorelease];
-    singleFeedView.frame = self.view.frame;
+    self.singleFeedView = [[[UIWebView alloc] init] autorelease];
+    singleFeedView.frame = self.view.bounds;
     
     [singleFeedView loadHTMLString:htmlStringText baseURL:nil];
     self.title = titleString;
@@ -83,6 +79,12 @@
 
 - (void)dealloc
 {
+    self.singleFeedView = nil;
+    self.loadingIndicator = nil;
+    self.loadingView = nil;
+    self.moduleTag = nil;
+    [listOfFeeds release];
+    [feedKeys release];
     [super dealloc];
 }
 
@@ -223,14 +225,11 @@
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
-    NSString * feedKey = [[listOfFeeds allKeys] objectAtIndex:indexPath.row];
+    NSString * feedKey = [feedKeys objectAtIndex:indexPath.row];
         
-    NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:feedKey, @"key", self.moduleTag, @"moduleTag", nil];
+    NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:feedKey, @"key", nil];
     [KGO_SHARED_APP_DELEGATE() showPage:LocalPathPageNameDetail forModuleTag:self.moduleTag params:params];
-     
 }
-
-
 
 #pragma mark KGORequestDelegate
 
@@ -241,9 +240,9 @@
 - (void)request:(KGORequest *)request didReceiveResult:(id)result {
     self.request = nil;
     
-    NSLog(@"%@", [result description]);
+    DLog(@"%@", [result description]);
    
-    NSDictionary * resultDict = (NSDictionary * ) result; 
+    NSDictionary *resultDict = (NSDictionary *)result; 
     numberOfFeeds = [resultDict integerForKey:@"totalFeeds"];
     
     listOfFeeds = [[NSMutableDictionary alloc] initWithCapacity:numberOfFeeds];
@@ -253,16 +252,14 @@
     
     for (int count=0; count < numberOfFeeds; count++){
         NSDictionary * pagesDictionary = [pages objectAtIndex:count];
-        
-        [feedKeys addObject:[pagesDictionary stringForKey:@"key" nilIfEmpty:NO]];
-        
-        [listOfFeeds setValue:[pagesDictionary stringForKey:@"title" nilIfEmpty:NO] 
-                        forKey:[feedKeys objectAtIndex:count]];
+        NSString *key = [pagesDictionary stringForKey:@"key" nilIfEmpty:YES];
+        if (key) {
+            [feedKeys addObject:key];
+            
+            NSString *title = [pagesDictionary stringForKey:@"title" nilIfEmpty:NO];
+            [listOfFeeds setValue:title forKey:key];
+        }
     }
-    
-    NSString * temp = [resultDict stringForKey:@"totalFeeds" nilIfEmpty:NO];
-    
-    NSLog(@"%@", temp);
     
     // if only one feed, then directly show the feed contents in the WebView
     if (numberOfFeeds == 1) {
@@ -276,8 +273,9 @@
         return;
     }
     
-        [self.tableView reloadData];
-        [self removeLoadingView];
+    [self.tableView reloadData];
+    [self removeLoadingView];
 
 }
+
 @end
