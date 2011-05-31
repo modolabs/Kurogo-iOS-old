@@ -7,6 +7,7 @@
 @protocol NewsDataDelegate <NSObject>
 
 @optional
+
 - (void)categoriesUpdated:(NSArray *)categories;
 
 - (void)storiesUpdated:(NSArray *)stories forCategory:(NewsCategory *)category;
@@ -15,7 +16,7 @@
 
 - (void)storiesDidFailWithCategoryId:(NSString *)categoryId;
 
-- (void)searchResults:(NSArray *)results forSearchTerms:(NSString *)searchTerms;
+- (void)didReceiveSearchResults:(NSArray *)results forSearchTerms:(NSString *)searchTerms;
 
 @end
 
@@ -25,8 +26,6 @@
     NSMutableSet *searchRequests;
 }
 
-+ (NewsDataManager *)sharedManager;
-
 - (void)requestCategories;
 
 - (void)requestStoriesForCategory:(NSString *)categoryID loadMore:(BOOL)loadMore forceRefresh:(BOOL)forceRefresh;
@@ -34,10 +33,6 @@
 - (void) search:(NSString *)searchTerms;
 
 - (NSArray *)searchableCategories;
-
-- (void)registerDelegate:(id<NewsDataDelegate>)delegate;
-
-- (void)unregisterDelegate:(id<NewsDataDelegate>)delegate;
 
 - (NSInteger)loadMoreStoriesQuantityForCategoryId:(NSString *)categoryID;
 
@@ -49,7 +44,11 @@
 
 - (NSArray *)bookmarkedStories;
 
+@property (nonatomic, assign) id<NewsDataDelegate> delegate;
+
 @property (nonatomic, retain) KGORequest *storiesRequest;
 @property (nonatomic, retain) NSMutableSet *searchRequests;
+
+@property (nonatomic, retain) NSString *moduleTag;
 
 @end

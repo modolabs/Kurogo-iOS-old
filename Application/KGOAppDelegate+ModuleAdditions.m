@@ -169,8 +169,8 @@
             BOOL moduleDidChange = (_visibleModule != module);
 
             if (moduleDidChange) {
-                [_visibleModule willBecomeHidden];
-                [module willBecomeVisible];
+                [_visibleModule becomeHidden];
+                [module becomeVisible];
                 _visibleModule = module;
             }
             

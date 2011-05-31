@@ -5,6 +5,14 @@
 
 @implementation NewsModule
 
+- (void)willLaunch
+{
+    if (!_dataManager) {
+        _dataManager = [[NewsDataManager alloc] init];
+        _dataManager.moduleTag = self.tag;
+    }
+}
+
 #pragma mark Navigation
 
 - (NSArray *)registeredPageNames {
@@ -14,8 +22,10 @@
 - (UIViewController *)modulePage:(NSString *)pageName params:(NSDictionary *)params {
     UIViewController *vc = nil;
     if ([pageName isEqualToString:LocalPathPageNameHome]) {
-        vc = [[[StoryListViewController alloc] init] autorelease];
-        [(StoryListViewController *)vc setDataManager:[self dataManager]];
+        StoryListViewController *storyVC = [[[StoryListViewController alloc] init] autorelease];
+        storyVC.dataManager = _dataManager;
+        _dataManager.delegate = storyVC;
+        vc = storyVC;
         
         if ([params objectForKey:@"category"]) {
             NewsCategory *category = [params objectForKey:@"category"];
@@ -23,33 +33,34 @@
         }
         
     } else if([pageName isEqualToString:LocalPathPageNameDetail]) {
-        vc = [[[StoryDetailViewController alloc] init] autorelease];
-        [(StoryDetailViewController *)vc setDataManager:[self dataManager]];
+        StoryDetailViewController *detailVC = [[[StoryDetailViewController alloc] init] autorelease];
+        detailVC.dataManager = _dataManager;
+        vc = detailVC;
         
         if ([params objectForKey:@"story"]) { // show only one story
             NewsStory *story = [params objectForKey:@"story"];
-            [(StoryDetailViewController *)vc setStory:story];
+            [detailVC setStory:story];
+            [detailVC setMultiplePages:NO];
             
-            [(StoryDetailViewController *)vc setMultiplePages:NO];
         } else if([params objectForKey:@"stories"]) {
             NSArray *stories = [params objectForKey:@"stories"];
-            [(StoryDetailViewController *)vc setStories:stories]; 
+            [detailVC setStories:stories]; 
         
             NSIndexPath *indexPath = [params objectForKey:@"indexPath"];
-            [(StoryDetailViewController *)vc setInitialIndexPath:indexPath];
-            
-            [(StoryDetailViewController *)vc setMultiplePages:YES];
+            [detailVC setInitialIndexPath:indexPath];
+            [detailVC setMultiplePages:YES];
         }
         
         if ([params objectForKey:@"category"]) {
-            [(StoryDetailViewController *)vc setCategory:[params objectForKey:@"category"]];
+            [detailVC setCategory:[params objectForKey:@"category"]];
         }
     }
     return vc;
 }
 
+// TODO: check if this is being used
 - (NewsDataManager *)dataManager {
-    return [NewsDataManager sharedManager];
+    return _dataManager;
 }
 
 - (NSArray *)objectModelNames {
@@ -66,16 +77,18 @@
     
     self.searchDelegate = delegate;
     
-    [self.dataManager registerDelegate:self];
     [self.dataManager search:searchText];
 }
 
-- (void) searchResults:(NSArray *)results forSearchTerms:(NSString *)searchTerms {
+- (void)didReceiveSearchResults:(NSArray *)results forSearchTerms:(NSString *)searchTerms {
  
     [self.searchDelegate searcher:self didReceiveResults:results];
 }
 
 - (void)dealloc {
+    [_dataManager release];
+    _dataManager = nil;
+    
     [super dealloc];
 }
 

@@ -5,11 +5,12 @@
 
 @interface KGOModule : NSObject {
     
+    id<KGOSearchResultsHolder> _searchDelegate;
+
+@private
     BOOL _launched;
     BOOL _active;
     BOOL _visible;
-    
-    id<KGOSearchResultsHolder> _searchDelegate;
 }
 
 // generally subclasses will not override this
@@ -87,17 +88,34 @@
  */
 
 @property (readonly) BOOL isLaunched; // true if anything controlled by the module (other than self) is retained.
-- (void)launch;     // called if necessary components (e.g. data managers) of the module are needed.
-- (void)terminate;  // called if module is launched and no aspects of the module are needed (views, data managers, etc.)
-                    // module must be safe to release after this is called.
+- (void)willLaunch;  // called if necessary components (e.g. data managers) of the module are needed.
+- (void)didLaunch;
+
+- (void)willTerminate; // called if module is launched and no aspects of the module are needed (views, data managers, etc.)
+- (void)didTerminate;  // module must be safe to release after this is called.
 
 @property (readonly) BOOL isActive;   // true if any views controlled by the module are currently retained.
 - (void)willBecomeActive;  // called when view resources need to be set up.
-- (void)willBecomeDormant; // called when view resources are no longer needed, but other aspects (e.g. data managers) may be retained.
+- (void)didBecomeActive;
+
+- (void)willBecomeInactive; // called when view resources are no longer needed, but other aspects (e.g. data managers) may be retained.
+- (void)didBecomeInactive;
 
 @property (readonly) BOOL isVisible;  // true if any views controlled by the module is currently visible to the user.
 - (void)willBecomeVisible; // called if the module is about to be shown.
+- (void)didBecomeVisible;
+
 - (void)willBecomeHidden;  // called on visible module when (an)other module(s) will take up all of the visible screen.
+- (void)didBecomeHidden;
+
+// don't override the following
+
+- (void)launch;
+- (void)terminate;
+- (void)becomeActive;
+- (void)becomeInactive;
+- (void)becomeVisible;
+- (void)becomeHidden;
 
 #pragma mark Application state
 

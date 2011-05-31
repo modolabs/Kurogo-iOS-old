@@ -70,6 +70,8 @@ typedef enum {
 @property(nonatomic, assign) Class expectedResponseType; // default is NSDictionary
 @property(nonatomic, copy) JSONObjectHandler handler;
 
+@property(nonatomic, retain) id result;
+
 // urls are of the form
 // https://<kurogo-server>/<module>/<path>?<key>=<value>
 // https://kurogo.hq.modolabs.com/people/search?q=Some+Guy

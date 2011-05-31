@@ -86,8 +86,7 @@
     [dropShadow release];
 
     [self setupActivityIndicator];
-    
-    [self.dataManager registerDelegate:self];
+
     [self.dataManager requestCategories];
 }
 
@@ -654,7 +653,7 @@
             [params setObject:self.stories forKey:@"stories"];
             [params setObject:[self activeCategory] forKey:@"category"];
             
-            [KGO_SHARED_APP_DELEGATE() showPage:LocalPathPageNameDetail forModuleTag:NewsTag params:params];
+            [KGO_SHARED_APP_DELEGATE() showPage:LocalPathPageNameDetail forModuleTag:self.dataManager.moduleTag params:params];
         } else {
             [[UIApplication sharedApplication] openURL:[NSURL URLWithString:story.link]];
         }
@@ -681,18 +680,18 @@
 }
 
 - (NSArray *)searchControllerValidModules:(KGOSearchDisplayController *)controller {
-    return [NSArray arrayWithObject:NewsTag];
+    return [NSArray arrayWithObject:self.dataManager.moduleTag];
 }
       
 - (NSString *)searchControllerModuleTag:(KGOSearchDisplayController *)controller {
-    return NewsTag;
+    return self.dataManager.moduleTag;
 }
           
 - (void)resultsHolder:(id<KGOSearchResultsHolder>)resultsHolder didSelectResult:(id<KGOSearchResult>)aResult {
     NewsStory *story = aResult;
     if([[story hasBody] boolValue]) {
         NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:aResult, @"story", nil];
-        [KGO_SHARED_APP_DELEGATE() showPage:LocalPathPageNameDetail forModuleTag:NewsTag params:params];
+        [KGO_SHARED_APP_DELEGATE() showPage:LocalPathPageNameDetail forModuleTag:self.dataManager.moduleTag params:params];
     } else {
         [[UIApplication sharedApplication] openURL:[NSURL URLWithString:story.link]];
     }

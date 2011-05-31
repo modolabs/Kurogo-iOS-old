@@ -164,7 +164,13 @@
                                              selector:@selector(logoutDidComplete:)
                                                  name:KGODidLogoutNotification
                                                object:nil];
-    [self hideLoadingView];
+    
+    if (self.homeModule.hasAccess) {
+        [self hideLoadingView];
+        
+    } else {
+        [self standbyForServerHello];
+    }
 }
 
 - (void)logoutDidComplete:(NSNotification *)aNotification
@@ -609,6 +615,7 @@
         }
 
         if (aModule.hidden || !aModule.hasAccess) {
+            DLog(@"skipping module %@", aModule);
             continue;
         }
 
@@ -638,8 +645,6 @@
             return (order1 < order2) ? NSOrderedAscending : NSOrderedSame;
     }] retain];
     
-    //_secondaryModules = [secondary copy];
-    
     [_primaryModules release];
 
     _primaryModules = [[primary sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2) {
@@ -650,8 +655,6 @@
         else
             return (order1 < order2) ? NSOrderedAscending : NSOrderedSame;
     }] retain];
-
-    //_primaryModules = [primary copy];
 }
 
 + (GridPadding)paddingWithArgs:(NSArray *)args {

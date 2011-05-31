@@ -446,6 +446,7 @@ NSString * const KGODeviceTokenKey = @"KGODeviceToken";
 - (void)request:(KGORequest *)request didReceiveResult:(id)result {
     if (request == _helloRequest) {
         NSArray *modules = [result arrayForKey:@"modules"];
+        DLog(@"received modules from hello: %@", modules);
         [KGO_SHARED_APP_DELEGATE() loadModulesFromArray:modules local:NO];
         [[NSNotificationCenter defaultCenter] postNotificationName:HelloRequestDidCompleteNotification object:self];
 

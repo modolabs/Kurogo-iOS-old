@@ -126,64 +126,163 @@
     return _launched;
 }
 
-- (void)launch {
-    @synchronized(self) {
-        _launched = YES;
-    }
-}
-
-- (void)terminate {
-    if ([self isActive]) {
-        [self willBecomeDormant];
-    }
-    
-    @synchronized(self) {
-        _launched = NO;
-    }
-}
-
 - (BOOL)isActive {
     return _active;
-}
-
-- (void)willBecomeActive {
-    if (![self isLaunched]) {
-        [self launch];
-    }
-    
-    @synchronized(self) {
-        _active = YES;
-    }
-}
-
-- (void)willBecomeDormant {
-    if ([self isVisible]) {
-        [self willBecomeHidden];
-    }
-    
-    @synchronized(self) {
-        _active = NO;
-    }
 }
 
 - (BOOL)isVisible {
     return _visible;
 }
 
-- (void)willBecomeVisible {
-    if (![self isActive]) {
-        [self willBecomeActive];
+- (void)willLaunch
+{
+}
+
+- (void)didLaunch
+{
+}
+
+- (void)launch
+{
+    if ([self isLaunched]) {
+        return;
     }
+    
+    [self willLaunch];
+    
+    @synchronized(self) {
+        _launched = YES;
+    }
+    
+    [self didLaunch];
+}
+
+- (void)willTerminate
+{
+}
+
+- (void)didTerminate
+{
+}
+
+- (void)terminate
+{
+    if (![self isLaunched]) {
+        return;
+    }
+    
+    if ([self isActive]) {
+        [self becomeInactive];
+    }
+    
+    [self willTerminate];
+    
+    @synchronized(self) {
+        _launched = NO;
+    }
+    
+    [self didTerminate];
+}
+
+- (void)willBecomeActive {
+}
+
+- (void)didBecomeActive
+{
+}
+
+- (void)becomeActive
+{
+    if ([self isActive]) {
+        return;
+    }
+    
+    if (![self isLaunched]) {
+        [self launch];
+    }
+
+    [self willBecomeActive];
+
+    @synchronized(self) {
+        _active = YES;
+    }
+
+    [self didBecomeActive];
+}
+
+- (void)willBecomeInactive
+{
+}
+
+- (void)didBecomeInactive
+{
+}
+
+- (void)becomeInactive
+{
+    if (![self isActive]) {
+        return;
+    }
+    
+    if ([self isVisible]) {
+        [self becomeHidden];
+    }
+
+    [self willBecomeInactive];
+    
+    @synchronized(self) {
+        _active = NO;
+    }
+    
+    [self didBecomeInactive];
+}
+
+- (void)willBecomeVisible {
+}
+
+- (void)didBecomeVisible
+{
+}
+
+- (void)becomeVisible
+{
+    if ([self isVisible]) {
+        return;
+    }
+    
+    if (![self isActive]) {
+        [self becomeActive];
+    }
+    
+    [self willBecomeVisible];
     
     @synchronized(self) {
         _visible = YES;
     }
+    
+    [self didBecomeVisible];
 }
 
 - (void)willBecomeHidden {
+}
+
+- (void)didBecomeHidden
+{
+}
+
+- (void)becomeHidden
+{
+    if (![self isVisible]) {
+        return;
+    }
+    
+    [self willBecomeHidden];
+    
     @synchronized(self) {
         _visible = NO;
     }
+    
+    [self didBecomeHidden];
 }
 
 
@@ -256,6 +355,21 @@
     // specify if your app uses extra setup arguments
     // for Facebook, enter a list of permissions requested
     return nil;
+}
+
+#pragma mark NSObject
+
+- (NSString *)description
+{
+    NSMutableArray *params = [NSMutableArray arrayWithObject:[NSString stringWithFormat:@"tag = %@", self.tag]];
+    if (!self.hasAccess) {
+        [params addObject:@"hasAccess = NO"];
+    }
+    if (self.hidden) {
+        [params addObject:@"hidden = YES"];
+    }
+    
+    return [NSString stringWithFormat:@"<%@: %p; %@>", [self class], self, [params componentsJoinedByString:@"; "]];
 }
 
 @end

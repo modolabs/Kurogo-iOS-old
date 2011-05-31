@@ -185,7 +185,7 @@
     if (self.category) {
         params = [NSDictionary dictionaryWithObject:self.category forKey:@"category"];
     }
-    [KGO_SHARED_APP_DELEGATE() showPage:LocalPathPageNameHome forModuleTag:NewsTag params:params];
+    [KGO_SHARED_APP_DELEGATE() showPage:LocalPathPageNameHome forModuleTag:self.dataManager.moduleTag params:params];
 }
      
 - (UIButton *)toolbarCloseButton {

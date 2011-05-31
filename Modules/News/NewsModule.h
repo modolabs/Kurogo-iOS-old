@@ -7,8 +7,10 @@
 
 @interface NewsModule : KGOModule <NewsDataDelegate> {
     NSInteger totalResults;
-    id<KGOSearchResultsHolder> *searchDelegate;
+    //id<KGOSearchResultsHolder> *searchDelegate;
+    NewsDataManager *_dataManager;
 }
 
 - (NewsDataManager *)dataManager;
+
 @end

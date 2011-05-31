@@ -108,7 +108,7 @@
 
 - (void)applicationDidEnterBackground:(UIApplication *)application {
     for (KGOModule *aModule in self.modules) {
-        [aModule willBecomeDormant];
+        [aModule becomeInactive];
         [aModule applicationDidEnterBackground];
     }
 }
@@ -247,7 +247,7 @@
     NSString *viewTitle = NSLocalizedString(@"View", nil);
     
     if ([[alertView buttonTitleAtIndex:buttonIndex] isEqualToString:viewTitle]) {
-        [module willBecomeVisible];
+        [module becomeVisible];
         // TODO: show the module
     }
     
@@ -329,7 +329,7 @@
         
         KGOModule *module = [self moduleForTag:notification.moduleName];
 		[module handleRemoteNotification:notification];
-        [module willBecomeVisible];
+        [module becomeVisible];
 		NSLog(@"Application opened in response to notification=%@", notification);
 	}	
 }
