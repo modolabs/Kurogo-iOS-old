@@ -22,12 +22,6 @@
 
 @end
 
-@interface UILabel (KGOAdditions)
-
-+ (UILabel *)multilineLabelWithText:(NSString *)text font:(UIFont *)font width:(CGFloat)width;
-
-@end
-
 @interface UIButton (KGOAdditions)
 
 + (UIButton *)genericButtonWithTitle:(NSString *)title;

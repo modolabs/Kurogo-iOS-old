@@ -7,6 +7,7 @@
 #import "MITMailComposeController.h"
 #import "KGOTheme.h"
 #import "CoreDataManager.h"
+#import "KGOLabel.h"
 
 @interface PeopleDetailsViewController (Private)
 
@@ -51,7 +52,7 @@
     // information in header: photo, name
     
     UIFont *font = [[KGOTheme sharedTheme] fontForThemedProperty:KGOThemePropertyContentTitle];
-    UILabel *nameLabel = [UILabel multilineLabelWithText:self.person.name font:font width:self.tableView.frame.size.width - 20];
+    KGOLabel *nameLabel = [KGOLabel multilineLabelWithText:self.person.name font:font width:self.tableView.frame.size.width - 20];
     nameLabel.frame = CGRectMake(10, 10, nameLabel.frame.size.width, nameLabel.frame.size.height);
 
     UIView *header = [[[UIView alloc] initWithFrame:CGRectMake(0, 0, self.tableView.frame.size.width, nameLabel.frame.size.height + 14)] autorelease];
@@ -264,7 +265,7 @@
             return [NSArray arrayWithObject:textView];
 
         } else {
-            UILabel *label = [UILabel multilineLabelWithText:value font:font width:width];
+            KGOLabel *label = [KGOLabel multilineLabelWithText:value font:font width:width];
             label.frame = CGRectMake(originX, 10, width, label.frame.size.height);
             return [NSArray arrayWithObject:label];
         }

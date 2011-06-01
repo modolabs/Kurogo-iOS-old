@@ -105,6 +105,7 @@
 		EB0338721340DBE100ACF2BB /* NewsStory.m in Sources */ = {isa = PBXBuildFile; fileRef = EB03386E1340DBE100ACF2BB /* NewsStory.m */; };
 		EB03387B1340DBF400ACF2BB /* KGOPlacemark.m in Sources */ = {isa = PBXBuildFile; fileRef = EB0338771340DBF400ACF2BB /* KGOPlacemark.m */; };
 		EB03387C1340DBF400ACF2BB /* MapModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = EB0338781340DBF400ACF2BB /* MapModel.xcdatamodeld */; };
+		EB0370F11396B6B500AD881F /* KGOLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = EB0370F01396B6B500AD881F /* KGOLabel.m */; };
 		EB0CF98D13403141003B8E45 /* TwitterViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = EB0CF98C13403141003B8E45 /* TwitterViewController.xib */; };
 		EB138F0512F253A1004DBB7C /* libGoogleAnalytics.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EB138F0312F253A1004DBB7C /* libGoogleAnalytics.a */; };
 		EB1440D61309EEA000396753 /* CalendarDataManager.m in Sources */ = {isa = PBXBuildFile; fileRef = EB1440C21309EEA000396753 /* CalendarDataManager.m */; };
@@ -440,6 +441,8 @@
 		EB0338761340DBF400ACF2BB /* KGOPlacemark.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGOPlacemark.h; sourceTree = "<group>"; };
 		EB0338771340DBF400ACF2BB /* KGOPlacemark.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGOPlacemark.m; sourceTree = "<group>"; };
 		EB0338791340DBF400ACF2BB /* MapModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = MapModel.xcdatamodel; sourceTree = "<group>"; };
+		EB0370EF1396B6B500AD881F /* KGOLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGOLabel.h; sourceTree = "<group>"; };
+		EB0370F01396B6B500AD881F /* KGOLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGOLabel.m; sourceTree = "<group>"; };
 		EB0CF98C13403141003B8E45 /* TwitterViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TwitterViewController.xib; sourceTree = "<group>"; };
 		EB138AFC12F22F31004DBB7C /* Config.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Config.plist; sourceTree = "<group>"; };
 		EB138EE812F251EB004DBB7C /* Facebook.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Facebook.xcodeproj; path = Facebook/Facebook.xcodeproj; sourceTree = "<group>"; };
@@ -969,6 +972,8 @@
 		EB033717133C2B8C00ACF2BB /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				EB0370EF1396B6B500AD881F /* KGOLabel.h */,
+				EB0370F01396B6B500AD881F /* KGOLabel.m */,
 				EB1637BD13690455003C69E2 /* KGOSegmentedControl.h */,
 				EB1637BE13690455003C69E2 /* KGOSegmentedControl.m */,
 				EB469CB4134A7DA4005796E4 /* KGOSearchResultListTableView.h */,
@@ -1602,6 +1607,7 @@
 				EBEB7675138AE52200C011D3 /* KGOTheme.m in Sources */,
 				EBEB7679138AE55000C011D3 /* KGOUserSetting.m in Sources */,
 				EBEB767C138AE5B700C011D3 /* KGOUserSettingsManager.m in Sources */,
+				EB0370F11396B6B500AD881F /* KGOLabel.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

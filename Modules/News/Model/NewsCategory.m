@@ -7,6 +7,7 @@
 @dynamic nextSeekId;
 @dynamic category_id;
 @dynamic title;
+@dynamic moduleTag;
 @dynamic isMainCategory;
 @dynamic moreStories;
 @dynamic stories;

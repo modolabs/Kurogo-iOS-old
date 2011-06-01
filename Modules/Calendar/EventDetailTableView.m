@@ -9,6 +9,7 @@
 #import "MITMailComposeController.h"
 #import "KGOAppDelegate+ModuleAdditions.h"
 #import "CalendarDetailViewController.h"
+#import "KGOLabel.h"
 
 @implementation EventDetailTableView
 
@@ -216,9 +217,9 @@
     NSArray *extendedInfo = nil;
     
     if (_event.summary) {
-        UILabel *label = [UILabel multilineLabelWithText:_event.summary
-                                                    font:[[KGOTheme sharedTheme] fontForThemedProperty:KGOThemePropertyBodyText]
-                                                   width:self.frame.size.width - 40];
+        KGOLabel *label = [KGOLabel multilineLabelWithText:_event.summary
+                                                      font:[[KGOTheme sharedTheme] fontForThemedProperty:KGOThemePropertyBodyText]
+                                                     width:self.frame.size.width - 40];
         label.textColor = [[KGOTheme sharedTheme] textColorForThemedProperty:KGOThemePropertyBodyText];
         label.tag = DESCRIPTION_LABEL_TAG;
         CGRect frame = label.frame;

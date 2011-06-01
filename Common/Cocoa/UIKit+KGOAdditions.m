@@ -121,24 +121,6 @@
 @end
 
 
-@implementation UILabel (KGOAdditions)
-
-+ (UILabel *)multilineLabelWithText:(NSString *)text font:(UIFont *)font width:(CGFloat)width {
-	CGSize labelSize = [text sizeWithFont:font
-                        constrainedToSize:CGSizeMake(width, 1000)
-                            lineBreakMode:UILineBreakModeWordWrap];
-    UILabel *label = [[[UILabel alloc] initWithFrame:CGRectMake(0, 0, width, labelSize.height)] autorelease];
-    label.text = text;
-    label.font = font;
-    label.numberOfLines = 0;
-    label.lineBreakMode = UILineBreakModeWordWrap;
-    label.backgroundColor = [UIColor clearColor];
-
-    return label;
-}
-
-@end
-
 
 @implementation UIButton (KGOAdditions)
 
