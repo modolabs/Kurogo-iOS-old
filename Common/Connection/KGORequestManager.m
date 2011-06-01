@@ -486,14 +486,11 @@ NSString * const KGODeviceTokenKey = @"KGODeviceToken";
         [_sessionInfo release];
         _sessionInfo = nil;
         
+        // TODO: decide how to handle data deletion.
+        // e.g. keep track of data on a per-user basis?
+        
         if ([[CoreDataManager sharedManager] deleteStore]) {
             DLog(@"deleted store");
-        }
-        
-        for (KGOModule *aModule in [KGO_SHARED_APP_DELEGATE() modules]) {
-            for (NSString *aDefault in [aModule userDefaults]) {
-                [[NSUserDefaults standardUserDefaults] removeObjectForKey:aDefault];
-            }
         }
         
         [[NSNotificationCenter defaultCenter] postNotificationName:KGODidLogoutNotification object:self];

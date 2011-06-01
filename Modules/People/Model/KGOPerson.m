@@ -20,8 +20,13 @@
 @dynamic contacts;
 
 + (KGOPerson *)personWithIdentifier:(NSString *)anIdentifier {
-    KGOPerson *person = [[CoreDataManager sharedManager] insertNewObjectForEntityForName:KGOPersonEntityName];
-    person.identifier = anIdentifier;
+    KGOPerson *person = [[CoreDataManager sharedManager] uniqueObjectForEntity:KGOPersonEntityName
+                                                                     attribute:@"identifier"
+                                                                         value:anIdentifier];
+    if (!person) {
+        person = [[CoreDataManager sharedManager] insertNewObjectForEntityForName:KGOPersonEntityName];
+        person.identifier = anIdentifier;
+    }
     return person;
 }
 

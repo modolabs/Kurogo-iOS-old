@@ -374,9 +374,9 @@ NSString * const NewsTagBody            = @"body";
 - (NewsStory *)storyWithDictionary:(NSDictionary *)storyDict {
     // use existing story if it's already in the db
     NSString *GUID = [storyDict stringForKey:NewsTagStoryId nilIfEmpty:YES];
-    NewsStory *story = [[CoreDataManager sharedManager] getObjectForEntity:NewsStoryEntityName 
-                                                                 attribute:@"identifier" 
-                                                                     value:GUID];
+    NewsStory *story = [[CoreDataManager sharedManager] uniqueObjectForEntity:NewsStoryEntityName 
+                                                                    attribute:@"identifier" 
+                                                                        value:GUID];
     // otherwise create new
     if (!story) {
         story = (NewsStory *)[[CoreDataManager sharedManager] insertNewObjectForEntityForName:NewsStoryEntityName];

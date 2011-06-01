@@ -1,5 +1,4 @@
 #import "MITThumbnailView.h"
-#import "CoreDataManager.h"
 #import "KGOAppDelegate.h"
 #import "UIKit+KGOAdditions.h"
 

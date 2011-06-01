@@ -288,7 +288,11 @@ webpages = _webpages;
     _kgoPerson.birthday = self.birthday;
     _kgoPerson.photo = self.photo;
     
+    for (PersonOrganization *anOrg in _kgoPerson.organizations) {
+        [[CoreDataManager sharedManager] deleteObject:anOrg];
+    }
     _kgoPerson.organizations = nil;
+    
     for (NSDictionary *aDict in _organizations) {
         //NSString *label = [aDict stringForKey:@"label" nilIfEmpty:YES]; // we are currently ignoring this in core data
         NSDictionary *orgDict = [aDict dictionaryForKey:@"value"];
@@ -301,7 +305,11 @@ webpages = _webpages;
         }
     }
 
+    for (PersonOrganization *anAddress in _kgoPerson.addresses) {
+        [[CoreDataManager sharedManager] deleteObject:anAddress];
+    }
     _kgoPerson.addresses = nil;
+    
     for (NSDictionary *aDict in _addresses) {
         NSString *label = [aDict stringForKey:@"label" nilIfEmpty:YES];
         NSDictionary *addressDict = [aDict dictionaryForKey:@"value"];
@@ -317,6 +325,10 @@ webpages = _webpages;
             anAddress.street2 = [addressDict stringForKey:@"street2" nilIfEmpty:YES];
             anAddress.zip = [addressDict stringForKey:@"zip" nilIfEmpty:YES];
         }
+    }
+    
+    for (PersonContact *aContact in _kgoPerson.contacts) {
+        [[CoreDataManager sharedManager] deleteObject:aContact];
     }
     
     NSMutableSet *allContacts = [NSMutableSet set];
@@ -343,8 +355,8 @@ webpages = _webpages;
 
 + (KGOPersonWrapper *)personWithUID:(NSString *)uid
 {
-	KGOPersonWrapper *person = [[CoreDataManager sharedManager] getObjectForEntity:KGOPersonEntityName attribute:@"uid" value:uid];
-	return person;
+    KGOPerson *person = [KGOPerson personWithIdentifier:uid];
+    return [[[KGOPersonWrapper alloc] initWithKGOPerson:person] autorelease];
 }
 
 + (NSDate *)recentlyViewedThreshold {
@@ -451,8 +463,9 @@ webpages = _webpages;
         }
     }
 
-
     if (self.organizations.count) {
+        // this assumes the address book only takes one job per person
+        // while our data model takes multiple
         NSDictionary *labelValue = [self.organizations objectAtIndex:0];
         NSDictionary *orgDict = [labelValue objectForKey:@"value"];
         if (orgDict) {

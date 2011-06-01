@@ -27,7 +27,7 @@ extern NSString * const CoreDataDidDeleteStoreNotification;
 - (id)insertNewObjectWithNoContextForEntity:(NSString *)entityName;
 - (id)objectsForEntity:(NSString *)entityName matchingPredicate:(NSPredicate *)predicate sortDescriptors:(NSArray *)sortDescriptors;
 - (id)objectsForEntity:(NSString *)entityName matchingPredicate:(NSPredicate *)predicate;
-- (id)getObjectForEntity:(NSString *)entityName attribute:(NSString *)attributeName value:(id)value;
+- (id)uniqueObjectForEntity:(NSString *)entityName attribute:(NSString *)attributeName value:(id)value;
 
 - (void)deleteObjects:(NSArray *)objects;
 - (void)deleteObject:(NSManagedObject *)object;

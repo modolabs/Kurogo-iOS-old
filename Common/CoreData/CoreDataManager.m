@@ -114,15 +114,21 @@ NSString * const CoreDataDidDeleteStoreNotification = @"CoreDataDidDelete";
     return [self objectsForEntity:entityName matchingPredicate:predicate sortDescriptors:nil];
 }
 
-- (id)getObjectForEntity:(NSString *)entityName attribute:(NSString *)attributeName value:(id)value {	
-	NSString *predicateFormat = [attributeName stringByAppendingString:@" like %@"];
-	NSPredicate *predicate = [NSPredicate predicateWithFormat:predicateFormat, value];
+- (id)uniqueObjectForEntity:(NSString *)entityName attribute:(NSString *)attributeName value:(id)value {
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"%K = %@", attributeName, value];
     NSArray *objects = [self objectsForEntity:entityName matchingPredicate:predicate];
-    return ([objects count] > 0) ? [objects lastObject] : nil;
+    if (objects.count == 1) {
+        return [objects lastObject];
+    } else if (objects.count == 0) {
+        return nil;
+    } else {
+        NSLog(@"Warning: more than one %@ object where %@ = %@", entityName, attributeName, value);
+        return [objects objectAtIndex:0];
+    }
 }
 
 - (void)saveData {
-    NSLog(@"saving: %@", self.managedObjectContext);
+    DLog(@"saving: %@", self.managedObjectContext);
 	NSError *error;
 	if (![self.managedObjectContext save:&error]) {
         DLog(@"Failed to save to data store: %@", [error localizedDescription]);
