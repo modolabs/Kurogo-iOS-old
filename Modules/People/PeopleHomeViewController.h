@@ -4,7 +4,7 @@
 #import "KGODetailPager.h"
 #import "KGORequestManager.h"
 
-@class KGOSearchBar;
+@class KGOSearchBar, PeopleModule;
 
 @interface PeopleHomeViewController : KGOTableViewController <
 KGORequestDelegate, // TODO: separate this from view logic
@@ -25,5 +25,7 @@ UIActionSheetDelegate, KGOSearchDisplayDelegate, KGODetailPagerController> {
 @property (nonatomic, retain) NSString *searchTerms;
 @property (nonatomic, retain) NSArray *searchTokens;
 @property (nonatomic, retain) KGOSearchBar *searchBar;
+
+@property (nonatomic, assign) PeopleModule *module;
 
 @end

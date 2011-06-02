@@ -2,8 +2,6 @@
 #import "KGOPersonWrapper.h"
 #import "KGOAppDelegate.h"
 #import "KGOAppDelegate+ModuleAdditions.h"
-#import "HarvardNavigationController.h"
-// external modules
 #import "Foundation+KGOAdditions.h"
 #import "UIKit+KGOAdditions.h"
 #import "KGOSearchBar.h"
@@ -12,6 +10,7 @@
 #import "PersonContact.h"
 #import "CoreDataManager.h"
 #import "KGOLabel.h"
+#import "PeopleModule.h"
 
 @interface PeopleHomeViewController (Private)
 
@@ -25,7 +24,7 @@
 @synthesize searchTerms = _searchTerms,
 searchTokens = _searchTokens,
 searchController = _searchController,
-searchBar = _searchBar;
+searchBar = _searchBar, module;
 
 #pragma mark view
 
@@ -37,7 +36,7 @@ searchBar = _searchBar;
     [_phoneDirectoryEntries release];
     _phoneDirectoryEntries = [[PersonContact directoryContacts] retain];
     if (!_phoneDirectoryEntries) {
-        _request = [[KGORequestManager sharedManager] requestWithDelegate:self module:PeopleTag path:@"contacts" params:nil];
+        _request = [[KGORequestManager sharedManager] requestWithDelegate:self module:self.module.tag path:@"contacts" params:nil];
         _request.expectedResponseType = [NSDictionary class];
         [_request connect];
     }
@@ -130,16 +129,16 @@ searchBar = _searchBar;
 }
 
 - (NSArray *)searchControllerValidModules:(KGOSearchDisplayController *)controller {
-    return [NSArray arrayWithObject:PeopleTag];
+    return [NSArray arrayWithObject:self.module.tag];
 }
 
 - (NSString *)searchControllerModuleTag:(KGOSearchDisplayController *)controller {
-    return PeopleTag;
+    return self.module.tag;
 }
 
 - (void)resultsHolder:(id<KGOSearchResultsHolder>)resultsHolder didSelectResult:(id<KGOSearchResult>)aResult {
     NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:aResult, @"person", nil];
-    [KGO_SHARED_APP_DELEGATE() showPage:LocalPathPageNameDetail forModuleTag:PeopleTag params:params];
+    [KGO_SHARED_APP_DELEGATE() showPage:LocalPathPageNameDetail forModuleTag:self.module.tag params:params];
 }
 
 - (void)searchController:(KGOSearchDisplayController *)controller willHideSearchResultsTableView:(UITableView *)tableView {
@@ -295,7 +294,7 @@ searchBar = _searchBar;
         {
             KGOPersonWrapper *person = [_recentlyViewed objectAtIndex:indexPath.row];
             NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:person, @"person", self, @"pager", nil];
-            [KGO_SHARED_APP_DELEGATE() showPage:LocalPathPageNameDetail forModuleTag:PeopleTag params:params];
+            [KGO_SHARED_APP_DELEGATE() showPage:LocalPathPageNameDetail forModuleTag:self.module.tag params:params];
             break;
         }
         case 2: // clear recents

@@ -60,13 +60,15 @@
     UIViewController *vc = nil;
     if ([pageName isEqualToString:LocalPathPageNameHome]) {
         vc = [[[PeopleHomeViewController alloc] init] autorelease];
+        [(PeopleHomeViewController *)vc setModule:self];
         
     } else if ([pageName isEqualToString:LocalPathPageNameSearch]) {
-        vc = [[[PeopleHomeViewController alloc] init] autorelease];
+        PeopleHomeViewController *homeVC = [[[PeopleHomeViewController alloc] init] autorelease];
+        homeVC.module = self;
 
         NSString *searchText = [params objectForKey:@"q"];
         if (searchText) {
-            [(PeopleHomeViewController *)vc setSearchTerms:searchText];
+            homeVC.searchTerms = searchText;
         }
         
     } else if ([pageName isEqualToString:LocalPathPageNameDetail]) {
