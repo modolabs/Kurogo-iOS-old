@@ -303,30 +303,40 @@
 }
 
 - (void)addToolbarButtonWithTitle:(NSString *)title {
+    [self addToolbarButtonWithTitle:title target:self action:@selector(toolbarItemTapped:)];
+}
+
+- (void)addToolbarButtonWithTitle:(NSString *)title target:(id)target action:(SEL)action
+{
     UIBarButtonItem *item = [[[UIBarButtonItem alloc] initWithTitle:title
                                                               style:UIBarButtonItemStyleBordered
-                                                             target:self
-                                                             action:@selector(toolbarItemTapped:)] autorelease];
+                                                             target:target
+                                                             action:action] autorelease];
     // TODO: make these into UIButtons so we don't have to guess the font size
     item.width = [title sizeWithFont:[UIFont boldSystemFontOfSize:[UIFont smallSystemFontSize]]].width + 2 * TOOLBAR_BUTTON_PADDING;
     [self addToolbarButton:item animated:NO];
 }
 
 - (void)addToolbarButtonWithImage:(UIImage *)image {
+    [self addToolbarButtonWithImage:image target:self action:@selector(toolbarItemTapped:)];
+}
+
+- (void)addToolbarButtonWithImage:(UIImage *)image target:(id)target action:(SEL)action
+{
     UIBarButtonItem *item = [[[UIBarButtonItem alloc] initWithImage:image
                                                               style:UIBarButtonItemStyleBordered
-                                                             target:self
-                                                             action:@selector(toolbarItemTapped:)] autorelease];
+                                                             target:target
+                                                             action:action] autorelease];
     // TODO: make these into UIButtons
     item.width = image.size.width + 2 * TOOLBAR_BUTTON_PADDING;
     [self addToolbarButton:item animated:NO];
 }
 
 - (void)toolbarItemTapped:(id)sender {
-    if ([self.delegate respondsToSelector:@selector(toolbarItemTapped:)]) {
-        if ([sender isKindOfClass:[UIBarButtonItem class]]) {
-            [self.delegate toolbarItemTapped:(UIBarButtonItem *)sender];
-        }
+    if ([self.delegate respondsToSelector:@selector(toolbarItemTapped:)]
+        && [sender isKindOfClass:[UIBarButtonItem class]]
+    ) {
+        [self.delegate toolbarItemTapped:(UIBarButtonItem *)sender];
     }
 }
 
@@ -350,6 +360,10 @@
 }
 
 - (void)setShowsCancelButton:(BOOL)showsCancelButton animated:(BOOL)animated {
+    if (showsCancelButton == [self showsCancelButton]) {
+        return;
+    }
+    
     if (showsCancelButton) {
         if (!_cancelButton) {
             // we can't easily estimate the size of a UIBarButtonSystemItem,

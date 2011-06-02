@@ -124,12 +124,12 @@ showingOnlySearchResults = _showingOnlySearchResults, showsSearchOverlay;
 }
 
 - (void)focusSearchBarAnimated:(BOOL)animated {
-    [_searchBar setShowsCancelButton:YES animated:animated];
+    //[_searchBar setShowsCancelButton:YES animated:animated];
     [_searchBar becomeFirstResponder];
 }
 
 - (void)unfocusSearchBarAnimated:(BOOL)animated {
-    [_searchBar setShowsCancelButton:NO animated:animated];
+    //[_searchBar setShowsCancelButton:NO animated:animated];
     [_searchBar resignFirstResponder];
 }
 

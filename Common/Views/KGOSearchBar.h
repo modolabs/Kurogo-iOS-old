@@ -32,7 +32,7 @@
 @end
 
 
-@interface KGOSearchBar : UIView <UITextFieldDelegate> { // <UISearchBarDelegate> {
+@interface KGOSearchBar : UIView <UITextFieldDelegate> {
 
     // text field and cached properties
     KGOSearchBarTextField *_textField;
@@ -56,7 +56,9 @@
 
 - (void)addToolbarButton:(UIBarButtonItem *)aButton animated:(BOOL)animated;
 - (void)addToolbarButtonWithTitle:(NSString *)title;
+- (void)addToolbarButtonWithTitle:(NSString *)title target:(id)target action:(SEL)action;
 - (void)addToolbarButtonWithImage:(UIImage *)image;
+- (void)addToolbarButtonWithImage:(UIImage *)image target:(id)target action:(SEL)action;
 
 - (void)setToolbarItems:(NSArray *)items animated:(BOOL)animated;
 

@@ -67,9 +67,29 @@ KGOSign KGOGetIntegerSign(NSInteger x) {
 
     [parameters enumerateKeysAndObjectsUsingBlock:^(id key, id value, BOOL *stop) {
         NSString *encodedKey = [[key stringByReplacingOccurrencesOfString:@" " withString:@"+"] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-        NSString *encodedValue = [[value stringByReplacingOccurrencesOfString:@" " withString:@"+"] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+
+        if ([value isKindOfClass:[NSString class]]) {        
+            NSString *encodedValue = [[value stringByReplacingOccurrencesOfString:@" " withString:@"+"] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+            
+            [components addObject:[NSString stringWithFormat:@"%@=%@", encodedKey, encodedValue]];
+
+        } else if ([value isKindOfClass:[NSDictionary class]]) {
+            for (NSString *singleKey in [value allKeys]) {
+                NSString *singleValue = [value stringForKey:singleKey nilIfEmpty:YES];
+                if (singleValue) {
+                    [components addObject:[NSString stringWithFormat:@"%@[%@]=%@", encodedKey, singleKey, singleValue]];
+                }
+            }
+            
+        } else if ([value isKindOfClass:[NSArray class]]) {
+            for (NSInteger i = 0; i < [value count]; i++) {
+                NSString *singleValue = [value stringAtIndex:i];
+                if (singleValue) {
+                    [components addObject:[NSString stringWithFormat:@"%@[%d]=%@", encodedKey, i, singleValue]];
+                }
+            }
+        }
         
-		[components addObject:[NSString stringWithFormat:@"%@=%@", encodedKey, encodedValue]];
     }];
 
 	return [components componentsJoinedByString:@"&"];
@@ -80,6 +100,8 @@ KGOSign KGOGetIntegerSign(NSInteger x) {
     return [NSURL URLWithString:queryString relativeToURL:baseURL];
 }
 
+// TODO: create backwards equivalent of +queryStringWithParameters:
+// so we can parse queries like ?blah[a]=2&blah[b]=3
 + (NSDictionary *)parametersFromQueryString:(NSString *)queryString {
     NSArray *components = [queryString componentsSeparatedByString:@"&"];
     NSMutableDictionary *dictionary = [NSMutableDictionary dictionary];
