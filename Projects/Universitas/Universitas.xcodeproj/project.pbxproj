@@ -137,7 +137,7 @@
 		EB181F91131EDECA003728FF /* PersonOrganization.m in Sources */ = {isa = PBXBuildFile; fileRef = EB181F80131EDECA003728FF /* PersonOrganization.m */; };
 		EB181F93131EDECA003728FF /* PeopleDetailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EB181F82131EDECA003728FF /* PeopleDetailsViewController.m */; };
 		EB181F95131EDECA003728FF /* PeopleModule.m in Sources */ = {isa = PBXBuildFile; fileRef = EB181F84131EDECA003728FF /* PeopleModule.m */; };
-		EB181F97131EDECA003728FF /* PeopleSearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EB181F86131EDECA003728FF /* PeopleSearchViewController.m */; };
+		EB181F97131EDECA003728FF /* PeopleHomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EB181F86131EDECA003728FF /* PeopleHomeViewController.m */; };
 		EB181FA9131EDF1B003728FF /* LoginModule.m in Sources */ = {isa = PBXBuildFile; fileRef = EB181FA7131EDF1B003728FF /* LoginModule.m */; };
 		EB181FB7131EDF30003728FF /* KGOHomeScreenTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EB181FAD131EDF30003728FF /* KGOHomeScreenTableViewController.m */; };
 		EB181FB9131EDF30003728FF /* KGOHomeScreenViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EB181FAF131EDF30003728FF /* KGOHomeScreenViewController.m */; };
@@ -506,8 +506,8 @@
 		EB181F82131EDECA003728FF /* PeopleDetailsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PeopleDetailsViewController.m; sourceTree = "<group>"; };
 		EB181F83131EDECA003728FF /* PeopleModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PeopleModule.h; sourceTree = "<group>"; };
 		EB181F84131EDECA003728FF /* PeopleModule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PeopleModule.m; sourceTree = "<group>"; };
-		EB181F85131EDECA003728FF /* PeopleSearchViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PeopleSearchViewController.h; sourceTree = "<group>"; };
-		EB181F86131EDECA003728FF /* PeopleSearchViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PeopleSearchViewController.m; sourceTree = "<group>"; };
+		EB181F85131EDECA003728FF /* PeopleHomeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; path = PeopleHomeViewController.h; sourceTree = "<group>"; };
+		EB181F86131EDECA003728FF /* PeopleHomeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PeopleHomeViewController.m; sourceTree = "<group>"; };
 		EB181FA6131EDF1B003728FF /* LoginModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginModule.h; sourceTree = "<group>"; };
 		EB181FA7131EDF1B003728FF /* LoginModule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginModule.m; sourceTree = "<group>"; };
 		EB181FAC131EDF30003728FF /* KGOHomeScreenTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGOHomeScreenTableViewController.h; sourceTree = "<group>"; };
@@ -1188,8 +1188,8 @@
 				EB181F82131EDECA003728FF /* PeopleDetailsViewController.m */,
 				EB181F83131EDECA003728FF /* PeopleModule.h */,
 				EB181F84131EDECA003728FF /* PeopleModule.m */,
-				EB181F85131EDECA003728FF /* PeopleSearchViewController.h */,
-				EB181F86131EDECA003728FF /* PeopleSearchViewController.m */,
+				EB181F85131EDECA003728FF /* PeopleHomeViewController.h */,
+				EB181F86131EDECA003728FF /* PeopleHomeViewController.m */,
 			);
 			name = People;
 			path = ../../Modules/People;
@@ -1507,7 +1507,7 @@
 				EB181F91131EDECA003728FF /* PersonOrganization.m in Sources */,
 				EB181F93131EDECA003728FF /* PeopleDetailsViewController.m in Sources */,
 				EB181F95131EDECA003728FF /* PeopleModule.m in Sources */,
-				EB181F97131EDECA003728FF /* PeopleSearchViewController.m in Sources */,
+				EB181F97131EDECA003728FF /* PeopleHomeViewController.m in Sources */,
 				EB181FA9131EDF1B003728FF /* LoginModule.m in Sources */,
 				EB181FB7131EDF30003728FF /* KGOHomeScreenTableViewController.m in Sources */,
 				EB181FB9131EDF30003728FF /* KGOHomeScreenViewController.m in Sources */,

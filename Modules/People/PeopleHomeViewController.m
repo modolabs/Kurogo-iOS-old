@@ -1,4 +1,4 @@
-#import "PeopleSearchViewController.h"
+#import "PeopleHomeViewController.h"
 #import "KGOPersonWrapper.h"
 #import "KGOAppDelegate.h"
 #import "KGOAppDelegate+ModuleAdditions.h"
@@ -13,14 +13,14 @@
 #import "CoreDataManager.h"
 #import "KGOLabel.h"
 
-@interface PeopleSearchViewController (Private)
+@interface PeopleHomeViewController (Private)
 
 - (void)promptToClearRecents;
 
 @end
 
 
-@implementation PeopleSearchViewController
+@implementation PeopleHomeViewController
 
 @synthesize searchTerms = _searchTerms,
 searchTokens = _searchTokens,

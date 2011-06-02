@@ -1,5 +1,5 @@
 #import "PeopleModule.h"
-#import "PeopleSearchViewController.h"
+#import "PeopleHomeViewController.h"
 #import "PeopleDetailsViewController.h"
 #import "KGOPersonWrapper.h"
 #import "KGOSearchModel.h"
@@ -10,9 +10,8 @@
 
 #pragma mark Module state
 
-- (void)terminate {
-    [super terminate];
-    
+- (void)willTerminate
+{
     [KGOPersonWrapper clearOldResults];
 }
 
@@ -24,11 +23,22 @@
 
 - (void)performSearchWithText:(NSString *)searchText params:(NSDictionary *)params delegate:(id<KGOSearchResultsHolder>)delegate {
     self.searchDelegate = delegate;
+
+    NSMutableDictionary *mutableParams = nil;
+    if (params) {
+        mutableParams = [[params mutableCopy] autorelease];
+    } else {
+        mutableParams = [NSMutableDictionary dictionary];
+    }
+
+    if (searchText) {
+        [mutableParams setObject:searchText forKey:@"q"];
+    }
     
     self.request = [[KGORequestManager sharedManager] requestWithDelegate:self
-                                                                   module:PeopleTag
+                                                                   module:self.tag
                                                                      path:@"search"
-                                                                   params:[NSDictionary dictionaryWithObjectsAndKeys:searchText, @"q", nil]];
+                                                                   params:mutableParams];
     self.request.expectedResponseType = [NSDictionary class];
     if (self.request)
         [self.request connect];
@@ -49,14 +59,14 @@
 - (UIViewController *)modulePage:(NSString *)pageName params:(NSDictionary *)params {
     UIViewController *vc = nil;
     if ([pageName isEqualToString:LocalPathPageNameHome]) {
-        vc = [[[PeopleSearchViewController alloc] init] autorelease];
+        vc = [[[PeopleHomeViewController alloc] init] autorelease];
         
     } else if ([pageName isEqualToString:LocalPathPageNameSearch]) {
-        vc = [[[PeopleSearchViewController alloc] init] autorelease];
+        vc = [[[PeopleHomeViewController alloc] init] autorelease];
 
         NSString *searchText = [params objectForKey:@"q"];
         if (searchText) {
-            [(PeopleSearchViewController *)vc setSearchTerms:searchText];
+            [(PeopleHomeViewController *)vc setSearchTerms:searchText];
         }
         
     } else if ([pageName isEqualToString:LocalPathPageNameDetail]) {

@@ -6,7 +6,7 @@
 
 @class KGOSearchBar;
 
-@interface PeopleSearchViewController : KGOTableViewController <
+@interface PeopleHomeViewController : KGOTableViewController <
 KGORequestDelegate, // TODO: separate this from view logic
 UIActionSheetDelegate, KGOSearchDisplayDelegate, KGODetailPagerController> {
     
