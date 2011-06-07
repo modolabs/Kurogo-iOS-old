@@ -23,7 +23,7 @@
     return nil;
 }
 
-- (void)handleInitialPayload:(NSDictionary *)payload
+- (void)evaluateInitialiationPayload:(NSDictionary *)payload
 {
     self.url = [payload stringForKey:@"url" nilIfEmpty:YES];
 }

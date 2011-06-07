@@ -13,6 +13,7 @@
 @property (nonatomic, retain) NSString * moduleTag;
 @property (nonatomic, retain) NSNumber * isMainCategory;
 @property (nonatomic, retain) NSNumber * moreStories;
+@property (nonatomic, retain) NSString * url;
 @property (nonatomic, retain) NSSet* stories;
 
 @end

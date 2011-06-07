@@ -57,7 +57,7 @@ KGOSign KGOGetIntegerSign(NSInteger x) {
             url = [[[NSURL alloc] initWithScheme:defaultScheme host:tag path:path] autorelease];
         }
 	}
-	
+    
     return url;
 }
 
@@ -158,6 +158,21 @@ KGOSign KGOGetIntegerSign(NSInteger x) {
         }
     }
     return result;
+}
+
+@end
+
+
+
+@implementation NSArray (KGOAdditions)
+
+- (NSArray *)mappedArrayUsingBlock:(id (^)(id element))block
+{
+    NSMutableArray *queue = [NSMutableArray array];
+    [self enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+        [queue addObject:block(obj)];
+    }];
+    return [[queue copy] autorelease];
 }
 
 @end

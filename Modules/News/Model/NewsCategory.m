@@ -11,6 +11,7 @@
 @dynamic isMainCategory;
 @dynamic moreStories;
 @dynamic stories;
+@dynamic url;
 
 - (void)addStoriesObject:(NewsStory *)value {    
     NSSet *changedObjects = [[NSSet alloc] initWithObjects:&value count:1];

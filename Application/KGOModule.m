@@ -72,7 +72,7 @@
     
     NSDictionary *payload = [moduleDict dictionaryForKey:@"payload"];
     if (payload) {
-        [self handleInitialPayload:payload];
+        [self evaluateInitialiationPayload:payload];
     }
 }
 
@@ -320,7 +320,7 @@
     return nil;
 }
 
-- (void)handleInitialPayload:(NSDictionary *)payload
+- (void)evaluateInitialiationPayload:(NSDictionary *)payload
 {
 }
 

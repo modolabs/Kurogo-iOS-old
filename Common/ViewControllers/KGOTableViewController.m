@@ -294,7 +294,9 @@
 		tableView.dataSource = _searchController;
 	}
 	
-	[self.viewController.view addSubview:tableView];
+    if (![tableView isDescendantOfView:self.viewController.view]) {
+        [self.viewController.view addSubview:tableView];
+    }
 }
 
 - (UITableView *)addTableViewWithStyle:(UITableViewStyle)style {

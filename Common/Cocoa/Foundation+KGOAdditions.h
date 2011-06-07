@@ -35,6 +35,13 @@ KGOSign KGOGetIntegerSign(NSInteger x);
 @end
 
 
+@interface NSArray (KGOAdditions)
+
+- (NSArray *)mappedArrayUsingBlock:(id(^)(id element))block;
+
+@end
+
+
 @interface NSArray (JSONParser)
 
 // returns nil on failure

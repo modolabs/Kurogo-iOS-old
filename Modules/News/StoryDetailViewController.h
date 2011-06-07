@@ -3,7 +3,7 @@
 
 @class NewsStory;
 @class KGOShareButtonController;
-@class NewsDataManager;
+@class NewsDataController;
 //@class StoryListViewController;
 
 @protocol NewsControllerDelegate <NSObject>
@@ -32,7 +32,7 @@
 }
 
 @property (nonatomic, retain) id<NewsControllerDelegate> newsController;
-@property (nonatomic, retain) NewsDataManager *dataManager;
+@property (nonatomic, retain) NewsDataController *dataManager;
 
 @property (nonatomic, retain) UIWebView *storyView;
 @property (nonatomic, retain) NSArray *stories;

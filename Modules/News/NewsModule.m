@@ -1,16 +1,51 @@
 #import "NewsModule.h"
 #import "StoryListViewController.h"
 #import "NewsStory.h"
+#import "NewsCategory.h"
 #import "CoreDataManager.h"
+#import "RSSNewsDataController.h"
+#import "JSONNewsDataController.h"
 
 @implementation NewsModule
 
 - (void)willLaunch
 {
     if (!_dataManager) {
-        _dataManager = [[NewsDataManager alloc] init];
-        _dataManager.moduleTag = self.tag;
+        NSString *format = [_payload objectForKey:@"format"];
+        if ([format isEqualToString:@"rss"]) {
+            _controllerClass = NewsDataControllerClassRSS;
+        }
+        
+        switch (_controllerClass) {
+            case NewsDataControllerClassRSS:
+                _dataManager = [[RSSNewsDataController alloc] init];
+                _dataManager.moduleTag = self.tag;
+                break;
+            case NewsDataControllerClassJSON:
+            default:
+                _dataManager = [[JSONNewsDataController alloc] init];
+                _dataManager.moduleTag = self.tag;
+                break;
+        }
+        
+        if (_payload) {
+            [_dataManager readFeedData:_payload];
+            [_payload release];
+            _payload = nil;
+        }
     }
+}
+
+- (void)willTerminate
+{
+    [_dataManager release];
+    _dataManager = nil;
+}
+
+- (void)evaluateInitialiationPayload:(NSDictionary *)payload
+{
+    [_payload release];
+    _payload = [payload retain];
 }
 
 #pragma mark Navigation
@@ -22,7 +57,8 @@
 - (UIViewController *)modulePage:(NSString *)pageName params:(NSDictionary *)params {
     UIViewController *vc = nil;
     if ([pageName isEqualToString:LocalPathPageNameHome]) {
-        StoryListViewController *storyVC = [[[StoryListViewController alloc] init] autorelease];
+        StoryListViewController *storyVC = [[[StoryListViewController alloc] initWithNibName:@"StoryListViewController"
+                                                                                      bundle:nil] autorelease];
         storyVC.dataManager = _dataManager;
         _dataManager.delegate = storyVC;
         vc = storyVC;
@@ -59,7 +95,7 @@
 }
 
 // TODO: check if this is being used
-- (NewsDataManager *)dataManager {
+- (NewsDataController *)dataManager {
     return _dataManager;
 }
 
@@ -76,8 +112,7 @@
 - (void)performSearchWithText:(NSString *)searchText params:(NSDictionary *)params delegate:(id<KGOSearchResultsHolder>)delegate {
     
     self.searchDelegate = delegate;
-    
-    [self.dataManager search:searchText];
+    [_dataManager searchStories:searchText];
 }
 
 - (void)didReceiveSearchResults:(NSArray *)results forSearchTerms:(NSString *)searchTerms {

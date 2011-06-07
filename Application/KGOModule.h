@@ -137,7 +137,7 @@
 - (NSSet *)notificationTagNames;
 
 // if the server hello returns a payload for this module, evaluate it
-- (void)handleInitialPayload:(NSDictionary *)payload;
+- (void)evaluateInitialiationPayload:(NSDictionary *)payload;
 
 #pragma mark Settings
 
