@@ -7,7 +7,6 @@
 #import "Foundation+KGOAdditions.h"
 #import "KGOHTMLTemplate.h"
 #import "StoryListViewController.h"
-#import "StoryGalleryViewController.h"
 #import "NewsImage.h"
 #import "KGOAppDelegate.h"
 #import "KGOAppDelegate+ModuleAdditions.h"
