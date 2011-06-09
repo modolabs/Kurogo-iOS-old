@@ -182,12 +182,6 @@
 		EBB121ED13392F3300A4BD1D /* EventKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EBB121EC13392F3300A4BD1D /* EventKit.framework */; };
 		EBB121F1133A917200A4BD1D /* CalendarHomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EBB121EF133A913100A4BD1D /* CalendarHomeViewController.m */; };
 		EBB121F2133A917200A4BD1D /* CalendarHomeViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = EBB121F0133A915200A4BD1D /* CalendarHomeViewController.xib */; };
-		EBC1C70C1347B8D20045CE9C /* kurogo.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = EBC1C7041347B8D20045CE9C /* kurogo.xcconfig */; };
-		EBC1C70D1347B8D20045CE9C /* release.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = EBC1C7051347B8D20045CE9C /* release.xcconfig */; };
-		EBC1C7141347C5750045CE9C /* dev_server.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = EBC1C7101347C5750045CE9C /* dev_server.xcconfig */; };
-		EBC1C7151347C5750045CE9C /* kurogo_debug.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = EBC1C7111347C5750045CE9C /* kurogo_debug.xcconfig */; };
-		EBC1C7161347C5750045CE9C /* stage_server.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = EBC1C7121347C5750045CE9C /* stage_server.xcconfig */; };
-		EBC1C7171347C5750045CE9C /* test_server.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = EBC1C7131347C5750045CE9C /* test_server.xcconfig */; };
 		EBE2CC1E1342AD2F0037546A /* KGOBookmarksViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EBE2CC1D1342AD2F0037546A /* KGOBookmarksViewController.m */; };
 		EBE2CC2113438AEA0037546A /* KGODetailPageHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = EBE2CC2013438AEA0037546A /* KGODetailPageHeaderView.m */; };
 		EBE2CC641343E4D00037546A /* KGOMapCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = EBE2CC631343E4D00037546A /* KGOMapCategory.m */; };
@@ -1459,12 +1453,6 @@
 				EB03382F1340D3B900ACF2BB /* en.lproj in Resources */,
 				EB0338301340D3B900ACF2BB /* ja.lproj in Resources */,
 				EB0338311340D3B900ACF2BB /* zh_TW.lproj in Resources */,
-				EBC1C70C1347B8D20045CE9C /* kurogo.xcconfig in Resources */,
-				EBC1C70D1347B8D20045CE9C /* release.xcconfig in Resources */,
-				EBC1C7141347C5750045CE9C /* dev_server.xcconfig in Resources */,
-				EBC1C7151347C5750045CE9C /* kurogo_debug.xcconfig in Resources */,
-				EBC1C7161347C5750045CE9C /* stage_server.xcconfig in Resources */,
-				EBC1C7171347C5750045CE9C /* test_server.xcconfig in Resources */,
 				EB46A346134EB942005796E4 /* ThemeConfig-iPad.plist in Resources */,
 				EB46A348134EB97C005796E4 /* MainWindow-iPad.xib in Resources */,
 				EB46A4B413501A80005796E4 /* Icon-72.png in Resources */,
