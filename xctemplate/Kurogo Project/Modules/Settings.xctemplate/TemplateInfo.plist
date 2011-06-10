@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>Ancestors</key>
+	<array>
+		<string>com.modolabs.cocoaTouchApplication</string>
+	</array>
+	<key>Identifier</key>
+	<string>com.modolabs.kurogo.modules.settings</string>
+	<key>Kind</key>
+	<string>Xcode.Xcode3.ProjectTemplateUnitKind</string>
+	<key>Options</key>
+	<array>
+		<dict>
+			<key>Default</key>
+			<string>true</string>
+			<key>Description</key>
+			<string>Include settings module in this app</string>
+			<key>Identifier</key>
+			<string>includeSettingsModule</string>
+			<key>Name</key>
+			<string>Include Settings Module</string>
+			<key>SortOrder</key>
+			<integer>1</integer>
+			<key>Type</key>
+			<string>checkbox</string>
+			<key>Units</key>
+			<dict>
+				<key>true</key>
+				<array>
+					<dict>
+						<key>Definitions</key>
+						<dict>
+							<key>KGOModule+Factory.m:moduleWithDictionary:settings</key>
+							<string>  @&quot;SettingsModule&quot;, @&quot;settings&quot;,
+</string>
+							<key>Modules/Settings</key>
+							<dict>
+								<key>Group</key>
+								<string>Modules</string>
+								<key>Path</key>
+								<string>Modules/Settings</string>
+							</dict>
+						</dict>
+						<key>Nodes</key>
+						<array>
+							<string>Modules/Settings</string>
+							<string>KGOModule+Factory.m:import:SettingsModule.h</string>
+							<string>KGOModule+Factory.m:moduleWithDictionary:settings</string>
+						</array>
+					</dict>
+				</array>
+			</dict>
+		</dict>
+	</array>
+</dict>
+</plist>

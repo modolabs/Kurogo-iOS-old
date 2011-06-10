@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>Definitions</key>
+	<dict>
+		<key>*:comments</key>
+		<string>//  ___FILENAME___
+</string>
+		<key>*:import:*</key>
+		<string>#import &quot;___*___&quot;
+</string>
+		<key>KGOPrefix.pch</key>
+		<dict>
+			<key>Beginning</key>
+			<string>//
+// Prefix header for all source files of the &apos;___PACKAGENAME___&apos; target in the &apos;___PACKAGENAME___&apos; project
+//
+</string>
+			<key>Group</key>
+			<string>Supporting Files</string>
+			<key>TargetIndices</key>
+			<array/>
+		</dict>
+		<key>KGOPrefix.pch:objC</key>
+		<dict>
+			<key>Beginning</key>
+			<string>#ifdef __OBJC__</string>
+			<key>End</key>
+			<string>#endif</string>
+			<key>Indent</key>
+			<integer>1</integer>
+		</dict>
+		<key>xcconfig/kurogo.xcconfig</key>
+		<dict>
+			<key>Group</key>
+			<string>xcconfig</string>
+			<key>Path</key>
+			<string>xcconfig/kurogo.xcconfig</string>
+		</dict>
+		<key>xcconfig/kurogo_debug.xcconfig</key>
+		<dict>
+			<key>Group</key>
+			<string>xcconfig</string>
+			<key>Path</key>
+			<string>xcconfig/kurogo_debug.xcconfig</string>
+		</dict>
+		<key>xcconfig/dev_server.xcconfig</key>
+		<dict>
+			<key>Group</key>
+			<string>xcconfig</string>
+			<key>Path</key>
+			<string>xcconfig/dev_server.xcconfig</string>
+		</dict>
+		<key>xcconfig/test_server.xcconfig</key>
+		<dict>
+			<key>Group</key>
+			<string>xcconfig</string>
+			<key>Path</key>
+			<string>xcconfig/test_server.xcconfig</string>
+		</dict>
+		<key>xcconfig/stage_server.xcconfig</key>
+		<dict>
+			<key>Group</key>
+			<string>xcconfig</string>
+			<key>Path</key>
+			<string>xcconfig/stage_server.xcconfig</string>
+		</dict>
+		<key>xcconfig/release.xcconfig</key>
+		<dict>
+			<key>Group</key>
+			<string>xcconfig</string>
+			<key>Path</key>
+			<string>xcconfig/release.xcconfig</string>
+		</dict>
+	</dict>
+	<key>Identifier</key>
+	<string>com.modolabs.kurogo.base</string>
+	<key>Kind</key>
+	<string>Xcode.Xcode3.ProjectTemplateUnitKind</string>
+	<key>Options</key>
+	<array>
+		<dict>
+			<key>Description</key>
+			<string>Your new product&apos;s name.</string>
+			<key>EmptyReplacement</key>
+			<string>ProductName</string>
+			<key>Identifier</key>
+			<string>productName</string>
+			<key>Name</key>
+			<string>Product Name</string>
+			<key>NotPersisted</key>
+			<true/>
+			<key>Required</key>
+			<true/>
+			<key>Type</key>
+			<string>text</string>
+		</dict>
+	</array>
+	<key>Project</key>
+	<dict>
+		<key>Configurations</key>
+		<dict>
+			<key>Debug - Development</key>
+			<dict/>
+			<key>Debug - Production</key>
+			<dict/>
+			<key>Debug - Staging</key>
+			<dict/>
+			<key>Debug - Testing</key>
+			<dict/>
+			<key>Release - Production</key>
+			<dict/>
+			<key>Release - Staging</key>
+			<dict/>
+			<key>Release - Testing</key>
+			<dict/>
+		</dict>
+		<key>SharedSettings</key>
+		<dict>
+			<key>GCC_C_LANGUAGE_STANDARD</key>
+			<string>gnu99</string>
+			<key>GCC_WARN_ABOUT_RETURN_TYPE</key>
+			<string>YES</string>
+			<key>GCC_WARN_UNUSED_VARIABLE</key>
+			<string>YES</string>
+		</dict>
+	</dict>
+	<key>Targets</key>
+	<array>
+		<dict>
+			<key>Configurations</key>
+			<dict>
+				<key>Debug - Development</key>
+				<dict/>
+				<key>Debug - Production</key>
+				<dict/>
+				<key>Debug - Staging</key>
+				<dict/>
+				<key>Debug - Testing</key>
+				<dict/>
+				<key>Release - Production</key>
+				<dict/>
+				<key>Release - Staging</key>
+				<dict/>
+				<key>Release - Testing</key>
+				<dict/>
+			</dict>
+			<key>Name</key>
+			<string>___PACKAGENAME___</string>
+			<key>SharedSettings</key>
+			<dict>
+				<key>ALWAYS_SEARCH_USER_PATHS</key>
+				<string>NO</string>
+				<key>PRODUCT_NAME</key>
+				<string>$(TARGET_NAME)</string>
+			</dict>
+		</dict>
+	</array>
+</dict>
+</plist>

@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>Ancestors</key>
+	<array>
+		<string>com.modolabs.cocoaTouchApplication</string>
+	</array>
+	<key>Identifier</key>
+	<string>com.modolabs.kurogo.modules.login</string>
+	<key>Kind</key>
+	<string>Xcode.Xcode3.ProjectTemplateUnitKind</string>
+	<key>Options</key>
+	<array>
+		<dict>
+			<key>Default</key>
+			<string>true</string>
+			<key>Description</key>
+			<string>Include login module in this app</string>
+			<key>Identifier</key>
+			<string>includeLoginModule</string>
+			<key>Name</key>
+			<string>Include Login Module</string>
+			<key>SortOrder</key>
+			<integer>1</integer>
+			<key>Type</key>
+			<string>checkbox</string>
+			<key>Units</key>
+			<dict>
+				<key>true</key>
+				<array>
+					<dict>
+						<key>Definitions</key>
+						<dict>
+							<key>KGOModule+Factory.m:moduleWithDictionary:login</key>
+							<string>  @&quot;LoginModule&quot;, @&quot;login&quot;,
+</string>
+							<key>Modules/Login</key>
+							<dict>
+								<key>Group</key>
+								<string>Modules</string>
+								<key>Path</key>
+								<string>Modules/Login</string>
+							</dict>
+						</dict>
+						<key>Nodes</key>
+						<array>
+							<string>Modules/Login</string>
+							<string>KGOModule+Factory.m:import:LoginModule.h</string>
+							<string>KGOModule+Factory.m:moduleWithDictionary:login</string>
+						</array>
+					</dict>
+				</array>
+			</dict>
+		</dict>
+	</array>
+</dict>
+</plist>

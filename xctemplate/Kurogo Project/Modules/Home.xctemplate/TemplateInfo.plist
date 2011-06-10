@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>Ancestors</key>
+	<array>
+		<string>com.modolabs.cocoaTouchApplication</string>
+	</array>
+	<key>Identifier</key>
+	<string>com.modolabs.kurogo.modules.home</string>
+	<key>Kind</key>
+	<string>Xcode.Xcode3.ProjectTemplateUnitKind</string>
+	<key>Options</key>
+	<array>
+		<dict>
+			<key>Default</key>
+			<string>true</string>
+			<key>Description</key>
+			<string>Include home module in this app</string>
+			<key>Identifier</key>
+			<string>includeHomeModule</string>
+			<key>Name</key>
+			<string>Include Home Module</string>
+			<key>SortOrder</key>
+			<integer>1</integer>
+			<key>Type</key>
+			<string>checkbox</string>
+			<key>Units</key>
+			<dict>
+				<key>true</key>
+				<array>
+					<dict>
+						<key>Definitions</key>
+						<dict>
+							<key>KGOModule+Factory.m:moduleWithDictionary:home</key>
+							<string>  @&quot;HomeModule&quot;, @&quot;home&quot;,
+</string>
+							<key>Modules/Home</key>
+							<dict>
+								<key>Group</key>
+								<string>Modules</string>
+								<key>Path</key>
+								<string>Modules/Home</string>
+							</dict>
+						</dict>
+						<key>Nodes</key>
+						<array>
+							<string>Modules/Home</string>
+							<string>KGOModule+Factory.m:import:HomeModule.h</string>
+							<string>KGOModule+Factory.m:moduleWithDictionary:home</string>
+						</array>
+					</dict>
+				</array>
+			</dict>
+		</dict>
+	</array>
+</dict>
+</plist>

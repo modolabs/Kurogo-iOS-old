@@ -1,0 +1,285 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>Ancestors</key>
+	<array>
+		<string>com.modolabs.kurogo.cocoaTouchUniversalApplication</string>
+		<string>com.modolabs.kurogo.modules.about</string>
+		<string>com.modolabs.kurogo.modules.calendar</string>
+		<string>com.modolabs.kurogo.modules.content</string>
+		<string>com.modolabs.kurogo.modules.emergency</string>
+		<string>com.modolabs.kurogo.modules.externalurl</string>
+		<string>com.modolabs.kurogo.modules.home</string>
+		<string>com.modolabs.kurogo.modules.login</string>
+		<string>com.modolabs.kurogo.modules.map</string>
+		<string>com.modolabs.kurogo.modules.news</string>
+		<string>com.modolabs.kurogo.modules.people</string>
+		<string>com.modolabs.kurogo.modules.settings</string>
+		<string>com.modolabs.kurogo.modules.video</string>
+	</array>
+	<key>Concrete</key>
+	<true/>
+	<key>Definitions</key>
+	<dict>
+		<key>Common</key>
+		<dict>
+			<key>Path</key>
+			<string>Common</string>
+		</dict>
+		<key>Config.plist</key>
+		<dict>
+			<key>Group</key>
+			<string>Supporting Files</string>
+			<key>Path</key>
+			<string>Supporting Files/Config.plist</string>
+		</dict>
+		<key>KGOAppDelegate.h:ivars:moduleAdditions</key>
+		<string>UINavigationController *_appNavController;
+UIViewController *_appHomeScreen;
+UIViewController *_visibleViewController;
+KGONavigationStyle _navigationStyle;
+
+NSDictionary *_appConfig;
+
+NSMutableDictionary *_modulesByTag;
+NSMutableArray *_modules;
+KGOModule *_visibleModule;
+
+// number of concurrent network connections the user should know about. If &gt; 0, spinny in status bar is shown
+NSInteger networkActivityRefCount; 
+
+// push notifications
+NSData *_deviceToken;
+NSMutableArray *_unreadNotifications;
+BOOL showingAlertView;</string>
+		<key>KGOAppDelegate.m:import:moduleAdditions</key>
+		<string>#import &quot;KGOAppDelegate+ModuleAdditions.h&quot;
+#import &quot;KGOModule.h&quot;
+#import &quot;AnalyticsWrapper.h&quot;
+#import &quot;KGOSocialMediaController.h&quot;
+#import &quot;KGORequestManager.h&quot;
+#import &quot;Foundation+KGOAdditions.h&quot;</string>
+		<key>KGOAppDelegate.m:applicationdidFinishLaunchingWithOptions:moduleAdditions</key>
+		<string>_navigationStyle = KGONavigationStyleUnknown;
+
+networkActivityRefCount = 0;
+showingAlertView = NO;
+
+_modulesByTag = [[NSMutableDictionary alloc] init];
+_modules = [[NSMutableArray alloc] init];
+
+[[KGORequestManager sharedManager] requestSessionInfo];
+[self loadHomeModule];
+[self loadNavigationContainer]; // adds theNavController.view to self.window
+
+// refresh social media settings as modules get added
+// TODO: rename -loadSocialMediaController so it doesn&apos;t look like a method
+// that creates new references
+[[NSNotificationCenter defaultCenter] addObserver:self
+                                         selector:@selector(loadSocialMediaController)
+                                             name:ModuleListDidChangeNotification
+                                           object:nil];
+
+self.window.backgroundColor = [UIColor blackColor]; // necessary for horizontal flip transitions -- background shows through
+[self.window makeKeyAndVisible];
+
+[[AnalyticsWrapper sharedWrapper] setup];
+
+[self registerForRemoteNotifications:launchOptions];
+
+[self loadModules];</string>
+		<key>KGOAppDelegate.m:applicationWillTerminate:moduleAdditions</key>
+		<string>[[AnalyticsWrapper sharedWrapper] shutdown];
+
+// Let each module perform clean up as necessary
+for (KGOModule *aModule in self.modules) {
+    [aModule terminate];
+    [aModule applicationWillTerminate];
+}
+
+// Save preferences
+[[NSUserDefaults standardUserDefaults] synchronize];</string>
+		<key>KGOAppDelegate.m:applicationDidEnterBackground:moduleAdditions</key>
+		<string>for (KGOModule *aModule in self.modules) {
+    [aModule becomeInactive];
+    [aModule applicationDidEnterBackground];
+}</string>
+		<key>KGOAppDelegate.m:applicationWillEnterForeground:moduleAdditions</key>
+		<string>for (KGOModule *aModule in self.modules) {
+    [aModule applicationWillEnterForeground];
+}</string>
+		<key>KGOAppDelegate.m:dealloc:_window</key>
+		<string>[[NSNotificationCenter defaultCenter] removeObserver:self];
+
+[_appConfig release];
+[_unreadNotifications release];
+[_modules release];
+[_window release];</string>
+		<key>KGOAppDelegate.m:applicationDidReceiveMemoryWarning:moduleAdditions</key>
+		<string>for (KGOModule *aModule in self.modules) {
+    // TODO: check whether the module is being used, if not send 
+    // a -terminate message
+    [aModule didReceiveMemoryWarning];
+}</string>
+		<key>KGOAppDelegate+ModuleAdditions.h</key>
+		<dict>
+			<key>Group</key>
+			<string>Application</string>
+			<key>Path</key>
+			<string>Application/KGOAppDelegate+ModuleAdditions.h</string>
+		</dict>
+		<key>KGOAppDelegate+ModuleAdditions.m</key>
+		<dict>
+			<key>Group</key>
+			<string>Application</string>
+			<key>Path</key>
+			<string>Application/KGOAppDelegate+ModuleAdditions.m</string>
+		</dict>
+		<key>KGOModule+Factory.h</key>
+		<dict>
+			<key>Beginning</key>
+			<string>#import &quot;KGOModule.h&quot;
+
+@interface KGOModule (Factory)
+
++ (KGOModule *)moduleWithDictionary:(NSDictionary *)args;
+</string>
+			<key>Group</key>
+			<string>Application</string>
+			<key>Path</key>
+			<string>Application/KGOModule+Factory.h</string>
+		</dict>
+		<key>KGOModule+Factory.m</key>
+		<dict>
+			<key>Group</key>
+			<string>Application</string>
+			<key>Path</key>
+			<string>Application/KGOModule+Factory.m</string>
+		</dict>
+		<key>KGOModule+Factory.m:import</key>
+		<dict>
+			<key>Beginning</key>
+			<string>#import &quot;KGOModule+Factory.h&quot;</string>
+			<key>End</key>
+			<string>
+</string>
+		</dict>
+		<key>KGOModule+Factory.m:moduleWithDictionary</key>
+		<dict>
+			<key>Beginning</key>
+			<string>+ (KGOModule *)moduleWithDictionary:(NSDictionary *)args {
+    KGOModule *module = nil;
+    NSString *className = [args objectForKey:@&quot;class&quot;];
+    if (!className) {
+        NSDictionary *moduleMap = [NSDictionary dictionaryWithObjectsAndKeys:</string>
+			<key>End</key>
+			<string>                                   nil];
+        
+        NSString *serverID = [args objectForKey:@&quot;id&quot;];
+        className = [moduleMap objectForKey:serverID];
+    }
+
+    if (className) {
+        Class moduleClass = NSClassFromString(className);
+        if (moduleClass) {
+            module = [[[moduleClass alloc] initWithDictionary:args] autorelease];
+        }
+    }
+    
+    if (!module) {
+        DLog(@&quot;could not initialize module with params: %@&quot;, [args description]);
+    }
+    
+    return module;
+}</string>
+			<key>Indent</key>
+			<integer>11</integer>
+		</dict>
+		<key>KGOModule.h</key>
+		<dict>
+			<key>Group</key>
+			<string>Application</string>
+			<key>Path</key>
+			<string>Application/KGOModule.h</string>
+		</dict>
+		<key>KGOModule.m</key>
+		<dict>
+			<key>Group</key>
+			<string>Application</string>
+			<key>Path</key>
+			<string>Application/KGOModule.m</string>
+		</dict>
+		<key>KGOPrefix.pch:objC:importCocoa:importConstants</key>
+		<string>#import &quot;Constants.h&quot; // shared constants</string>
+		<key>Localization</key>
+		<dict>
+			<key>Path</key>
+			<string>Localization</string>
+		</dict>
+		<key>Resources/MainWindow_iPad.xib</key>
+		<dict>
+			<key>Group</key>
+			<string>Resources</string>
+			<key>Path</key>
+			<string>Resources/MainWindow_iPad.xib</string>
+		</dict>
+		<key>Resources/MainWindow_iPhone.xib</key>
+		<dict>
+			<key>Group</key>
+			<string>Resources</string>
+			<key>Path</key>
+			<string>Resources/MainWindow_iPhone.xib</string>
+		</dict>
+	</dict>
+	<key>Description</key>
+	<string>This template provides a Universitas-like project.</string>
+	<key>Identifier</key>
+	<string>com.modolabs.kurogo.unversitas</string>
+	<key>Kind</key>
+	<string>Xcode.Xcode3.ProjectTemplateUnitKind</string>
+	<key>Nodes</key>
+	<array>
+		<string>KGOAppDelegate.h:class:KGOModule</string>
+		<string>KGOAppDelegate.h:ivars:moduleAdditions</string>
+		<string>KGOAppDelegate.m:import:moduleAdditions</string>
+		<string>KGOAppDelegate.m:applicationdidFinishLaunchingWithOptions:moduleAdditions</string>
+		<string>KGOAppDelegate.m:applicationDidReceiveMemoryWarning:moduleAdditions</string>
+		<string>KGOAppDelegate.m:applicationWillTerminate:moduleAdditions</string>
+		<string>KGOAppDelegate.m:applicationDidEnterBackground:moduleAdditions</string>
+		<string>KGOAppDelegate.m:applicationWillEnterForeground:moduleAdditions</string>
+		<string>KGOModule+Factory.m:import</string>
+		<string>KGOModule+Factory.h:methods</string>
+		<string>KGOModule+Factory.m:moduleWithDictionary</string>
+		<string>KGOPrefix.pch:objC:importCocoa:importConstants</string>
+		<string>Config.plist</string>
+		<string>Common</string>
+		<string>Localization</string>
+		<string>Resources/MainWindow_iPhone.xib</string>
+		<string>Resources/MainWindow_iPad.xib</string>
+		<string>xcconfig/dev_server.xcconfig</string>
+		<string>xcconfig/kurogo.xcconfig</string>
+		<string>xcconfig/kurogo_debug.xcconfig</string>
+		<string>xcconfig/release.xcconfig</string>
+		<string>xcconfig/stage_server.xcconfig</string>
+		<string>xcconfig/test_server.xcconfig</string>
+	</array>
+	<key>Options</key>
+	<array/>
+	<key>Targets</key>
+	<array>
+		<dict>
+			<key>Frameworks</key>
+			<array>
+				<string>CoreData</string>
+				<string>QuartzCore</string>
+				<string>MapKit</string>
+				<string>CoreLocation</string>
+				<string>AudioToolbox</string>
+				<string>CFNetwork</string>
+				<string>MessageUI</string>
+			</array>
+		</dict>
+	</array>
+</dict>
+</plist>

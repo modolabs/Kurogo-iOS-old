@@ -1,0 +1,316 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>Ancestors</key>
+	<array>
+		<string>com.modolabs.kurogo.objectiveCApplication</string>
+		<string>com.modolabs.kurogo.iPhoneBase</string>
+	</array>
+	<key>Definitions</key>
+	<dict>
+		<key>*:viewControllerMethods</key>
+		<string>- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+	[super viewWillDisappear:animated];
+}
+
+- (void)viewDidDisappear:(BOOL)animated
+{
+	[super viewDidDisappear:animated];
+}
+</string>
+		<key>KGOAppDelegate.h</key>
+		<dict>
+			<key>Group</key>
+			<string>Application</string>
+			<key>Path</key>
+			<string>Application/KGOAppDelegate</string>
+			<key>TargetIndices</key>
+			<array/>
+		</dict>
+		<key>KGOAppDelegate.h:ivars</key>
+		<dict>
+			<key>Beginning</key>
+			<string>@interface KGOAppDelegate : NSObject &lt;UIApplicationDelegate&gt; {
+</string>
+			<key>End</key>
+			<string>}
+</string>
+			<key>Indent</key>
+			<integer>1</integer>
+		</dict>
+		<key>KGOAppDelegate.h:methods:window</key>
+		<string>@property (nonatomic, retain) IBOutlet UIWindow *window;
+</string>
+		<key>KGOAppDelegate.m</key>
+		<dict>
+			<key>End</key>
+			<string>@end</string>
+			<key>Group</key>
+			<string>Application</string>
+			<key>Path</key>
+			<string>Application/KGOAppDelegate</string>
+		</dict>
+		<key>KGOAppDelegate.m:applicationDidBecomeActive</key>
+		<dict>
+			<key>Beginning</key>
+			<string>- (void)applicationDidBecomeActive:(UIApplication *)application
+{</string>
+			<key>End</key>
+			<string>}
+</string>
+			<key>Indent</key>
+			<integer>1</integer>
+		</dict>
+		<key>KGOAppDelegate.m:applicationDidBecomeActive:comments</key>
+		<string>/*
+ Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
+ */
+</string>
+		<key>KGOAppDelegate.m:applicationDidEnterBackground</key>
+		<dict>
+			<key>Beginning</key>
+			<string>- (void)applicationDidEnterBackground:(UIApplication *)application
+{</string>
+			<key>End</key>
+			<string>}
+</string>
+			<key>Indent</key>
+			<integer>1</integer>
+		</dict>
+		<key>KGOAppDelegate.m:applicationDidEnterBackground:comments</key>
+		<string>/*
+ Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later. 
+ If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
+ */
+</string>
+		<key>KGOAppDelegate.m:applicationdidFinishLaunchingWithOptions</key>
+		<dict>
+			<key>Beginning</key>
+			<string>- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
+{</string>
+			<key>End</key>
+			<string>    return YES;
+}
+</string>
+			<key>Indent</key>
+			<integer>1</integer>
+		</dict>
+		<key>KGOAppDelegate.m:applicationdidFinishLaunchingWithOptions:comments</key>
+		<string>// Override point for customization after application launch.</string>
+		<key>KGOAppDelegate.m:applicationLifecycle</key>
+		<string>- (void)applicationDidReceiveMemoryWarning:(UIApplication *)application
+{
+    // Free up as much memory as possible by purging cached data objects that can be recreated (or reloaded from disk) later.
+}
+
+- (void)applicationDidEnterBackground:(UIApplication *)application
+{
+    /*
+     Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later. 
+     If your application supports background execution, called instead of applicationWillTerminate: when the user quits.
+     */
+}
+
+- (void)applicationWillEnterForeground:(UIApplication *)application
+{
+    /*
+     Called as part of  transition from the background to the inactive state: here you can undo many of the changes made on entering the background.
+     */
+}
+
+- (void)applicationDidBecomeActive:(UIApplication *)application
+{
+    /*
+     Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
+     */
+}
+</string>
+		<key>KGOAppDelegate.m:applicationWillEnterForeground</key>
+		<dict>
+			<key>Beginning</key>
+			<string>- (void)applicationWillEnterForeground:(UIApplication *)application
+{</string>
+			<key>End</key>
+			<string>}
+</string>
+			<key>Indent</key>
+			<integer>1</integer>
+		</dict>
+		<key>KGOAppDelegate.m:applicationWillEnterForeground:comments</key>
+		<string>/*
+ Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
+ */
+</string>
+		<key>KGOAppDelegate.m:applicationWillResignActive</key>
+		<dict>
+			<key>Beginning</key>
+			<string>- (void)applicationWillResignActive:(UIApplication *)application
+{</string>
+			<key>End</key>
+			<string>}
+</string>
+			<key>Indent</key>
+			<integer>1</integer>
+		</dict>
+		<key>KGOAppDelegate.m:applicationWillResignActive:comments</key>
+		<string>/*
+ Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
+ Use this method to pause ongoing tasks, disable timers, and throttle down OpenGL ES frame rates. Games should use this method to pause the game.
+ */
+</string>
+		<key>KGOAppDelegate.m:applicationWillTerminate</key>
+		<dict>
+			<key>Beginning</key>
+			<string>- (void)applicationWillTerminate:(UIApplication *)application
+{</string>
+			<key>End</key>
+			<string>}
+</string>
+			<key>Indent</key>
+			<integer>1</integer>
+		</dict>
+		<key>KGOAppDelegate.m:applicationWillTerminate:comments</key>
+		<string>/*
+ Called when the application is about to terminate.
+ Save data if appropriate.
+ See also applicationDidEnterBackground:.
+ */
+</string>
+		<key>KGOAppDelegate.m:applicationDidReceiveMemoryWarning</key>
+		<dict>
+			<key>Beginning</key>
+			<string>- (void)applicationDidReceiveMemoryWarning:(UIApplication *)application {
+</string>
+			<key>End</key>
+			<string>}
+
+</string>
+			<key>Indent</key>
+			<integer>1</integer>
+		</dict>
+		<key>KGOAppDelegate.m:implementation</key>
+		<string>@implementation KGOAppDelegate
+
+</string>
+		<key>KGOInfo.plist:iPhone</key>
+		<string>&lt;key&gt;CFBundleDisplayName&lt;/key&gt;
+&lt;string&gt;${PRODUCT_NAME}&lt;/string&gt;
+&lt;key&gt;CFBundleVersion&lt;/key&gt;
+&lt;string&gt;1.0&lt;/string&gt;
+&lt;key&gt;CFBundleShortVersionString&lt;/key&gt;
+&lt;string&gt;1.0&lt;/string&gt;
+&lt;key&gt;LSRequiresIPhoneOS&lt;/key&gt;
+&lt;true/&gt;</string>
+		<key>KGOInfo.plist:NSMainNibFile</key>
+		<string>&lt;key&gt;NSMainNibFile&lt;/key&gt;
+&lt;string&gt;MainWindow&lt;/string&gt;</string>
+		<key>KGOPrefix.pch:Availability:iPhoneAvailability</key>
+		<string>#import &lt;Availability.h&gt;
+
+#ifndef __IPHONE_3_0
+#warning &quot;This project uses features only available in iPhone SDK 3.0 and later.&quot;
+#endif
+</string>
+		<key>main.m:main:UIApplicationMain</key>
+		<string>NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+int retVal = UIApplicationMain(argc, argv, nil, nil);
+[pool release];
+return retVal;
+</string>
+	</dict>
+	<key>Identifier</key>
+	<string>com.modolabs.kurogo.cocoaTouchApplication</string>
+	<key>Kind</key>
+	<string>Xcode.Xcode3.ProjectTemplateUnitKind</string>
+	<key>Nodes</key>
+	<array>
+		<string>main.m:main:UIApplicationMain</string>
+		<string>KGOInfo.plist:iPhone</string>
+		<string>KGOInfo.plist:NSMainNibFile</string>
+		<string>KGOPrefix.pch:Availability:iPhoneAvailability</string>
+		<string>KGOAppDelegate.h:comments</string>
+		<string>KGOAppDelegate.h:import:importCocoa</string>
+		<string>KGOAppDelegate.h:class</string>
+		<string>KGOAppDelegate.h:ivars</string>
+		<string>KGOAppDelegate.h:methods:window</string>
+		<string>KGOAppDelegate.m:comments</string>
+		<string>KGOAppDelegate.m:import:KGOAppDelegate.h</string>
+		<string>KGOAppDelegate.m:implementation</string>
+		<string>KGOAppDelegate.m:synthesize:window=_window</string>
+		<string>KGOAppDelegate.m:applicationdidFinishLaunchingWithOptions:comments</string>
+		<string>KGOAppDelegate.m:applicationdidFinishLaunchingWithOptions:setup</string>
+		<string>KGOAppDelegate.m:applicationWillResignActive:comments</string>
+		<string>KGOAppDelegate.m:applicationDidEnterBackground:comments</string>
+		<string>KGOAppDelegate.m:applicationWillEnterForeground:comments</string>
+		<string>KGOAppDelegate.m:applicationDidBecomeActive:comments</string>
+		<string>KGOAppDelegate.m:applicationWillTerminate:comments</string>
+		<string>KGOAppDelegate.m:applicationDidReceiveMemoryWarning</string>
+		<string>KGOAppDelegate.m:dealloc:_window</string>
+	</array>
+	<key>Options</key>
+	<array>
+		<dict>
+			<key>Default</key>
+			<string>true</string>
+			<key>Description</key>
+			<string>Indicates whether a unit test bundle should be created.</string>
+			<key>Identifier</key>
+			<string>includeUnitTests</string>
+			<key>Name</key>
+			<string>Include Unit Tests</string>
+			<key>SortOrder</key>
+			<integer>1</integer>
+			<key>Type</key>
+			<string>checkbox</string>
+			<key>Units</key>
+			<dict>
+				<key>true</key>
+				<array>
+					<dict>
+						<key>Components</key>
+						<array>
+							<dict>
+								<key>Identifier</key>
+								<string>com.apple.dt.unit.cocoaTouchApplicationUnitTestBundle</string>
+								<key>Name</key>
+								<string>___PACKAGENAME___Tests</string>
+							</dict>
+						</array>
+					</dict>
+				</array>
+			</dict>
+		</dict>
+	</array>
+	<key>Project</key>
+	<dict>
+		<key>SharedSettings</key>
+		<dict>
+			<key>CODE_SIGN_IDENTITY[sdk=iphoneos*]</key>
+			<string>iPhone Developer</string>
+		</dict>
+	</dict>
+	<key>Targets</key>
+	<array>
+		<dict>
+			<key>Frameworks</key>
+			<array>
+				<string>UIKit</string>
+				<string>Foundation</string>
+				<string>CoreGraphics</string>
+			</array>
+		</dict>
+	</array>
+</dict>
+</plist>

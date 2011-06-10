@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>Ancestors</key>
+	<array>
+		<string>com.modolabs.kurogo.cocoaTouchApplication</string>
+	</array>
+	<key>Identifier</key>
+	<string>com.modolabs.kurogo.cocoaTouchUniversalApplication</string>
+	<key>Kind</key>
+	<string>Xcode.Xcode3.ProjectTemplateUnitKind</string>
+	<key>Options</key>
+	<array>
+		<dict>
+			<key>Default</key>
+			<string>Universal</string>
+			<key>Description</key>
+			<string>What device family to create a project for.</string>
+			<key>Identifier</key>
+			<string>universalDeviceFamily</string>
+			<key>Name</key>
+			<string>Device Family</string>
+			<key>Type</key>
+			<string>popup</string>
+			<key>Units</key>
+			<dict>
+				<key>iPad</key>
+				<dict>
+					<key>Definitions</key>
+					<dict>
+						<key>*:shouldAutorotateToInterfaceOrientation</key>
+						<string>- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
+{
+    return YES;
+}
+</string>
+					</dict>
+					<key>Nodes</key>
+					<array>
+						<string>KGOInfo.plist:UISupportedInterfaceOrientations~iPad</string>
+						<string>en.lproj/MainWindow.xib</string>
+					</array>
+					<key>Project</key>
+					<dict>
+						<key>SharedSettings</key>
+						<dict>
+							<key>ARCHS</key>
+							<string>$(ARCHS_UNIVERSAL_IPHONE_OS)</string>
+							<key>TARGETED_DEVICE_FAMILY</key>
+							<string>2</string>
+						</dict>
+					</dict>
+				</dict>
+				<key>iPhone</key>
+				<dict>
+					<key>Nodes</key>
+					<array>
+						<string>KGOInfo.plist:UISupportedInterfaceOrientations~iPhone</string>
+						<string>en.lproj/MainWindow.xib</string>
+					</array>
+				</dict>
+				<key>Universal</key>
+				<dict>
+					<key>Definitions</key>
+					<dict>
+						<key>KGOInfo.plist:NSMainNibFile</key>
+						<string>&lt;key&gt;NSMainNibFile&lt;/key&gt;
+&lt;string&gt;MainWindow_iPhone&lt;/string&gt;
+&lt;key&gt;NSMainNibFile~ipad&lt;/key&gt;
+&lt;string&gt;MainWindow_iPad&lt;/string&gt;</string>
+						<key>*:shouldAutorotateToInterfaceOrientation</key>
+						<string>- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
+{
+    return (interfaceOrientation == UIInterfaceOrientationPortrait) || UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad;
+}
+</string>
+					</dict>
+					<key>Nodes</key>
+					<array>
+						<string>KGOInfo.plist:UISupportedInterfaceOrientations~iPhone</string>
+						<string>KGOInfo.plist:UISupportedInterfaceOrientations~iPad</string>
+					</array>
+					<key>Project</key>
+					<dict>
+						<key>SharedSettings</key>
+						<dict>
+							<key>TARGETED_DEVICE_FAMILY</key>
+							<string>1,2</string>
+						</dict>
+					</dict>
+				</dict>
+			</dict>
+		</dict>
+	</array>
+</dict>
+</plist>
