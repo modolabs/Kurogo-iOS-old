@@ -64,6 +64,7 @@
 		AA747D9E0F9514B9006C5449 /* Twitter_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Twitter_Prefix.pch; sourceTree = SOURCE_ROOT; };
 		AACBBE490F95108600F1A2B1 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		D2AAC07E0554694100DB518D /* libTwitter.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libTwitter.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		EB0453CA13A19FA4002FD9A6 /* static_library.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = static_library.xcconfig; path = ../../xcconfig/static_library.xcconfig; sourceTree = "<group>"; };
 		EB138FFB12F26C52004DBB7C /* MGTwitterEngine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MGTwitterEngine.h; path = ../Twitter/MGTwitterEngine.h; sourceTree = "<group>"; };
 		EB138FFC12F26C52004DBB7C /* MGTwitterEngine.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MGTwitterEngine.m; path = ../Twitter/MGTwitterEngine.m; sourceTree = "<group>"; };
 		EB13900112F26C52004DBB7C /* MGTwitterEngineDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MGTwitterEngineDelegate.h; sourceTree = "<group>"; };
@@ -135,6 +136,7 @@
 				32C88DFF0371C24200C91783 /* Other Sources */,
 				0867D69AFE84028FC02AAC07 /* Frameworks */,
 				034768DFFF38A50411DB9C8B /* Products */,
+				EB0453CA13A19FA4002FD9A6 /* static_library.xcconfig */,
 			);
 			name = Twitter;
 			sourceTree = "<group>";
@@ -381,7 +383,6 @@
 					$SDKROOT/usr/include/libxml2,
 					"$(SRCROOT)/../usr/local/include",
 				);
-				INSTALL_PATH = /usr/local/lib;
 				PRODUCT_NAME = Twitter;
 			};
 			name = Debug;
@@ -399,35 +400,21 @@
 					$SDKROOT/usr/include/libxml2,
 					"$(SRCROOT)/../usr/local/include",
 				);
-				INSTALL_PATH = /usr/local/lib;
 				PRODUCT_NAME = Twitter;
 			};
 			name = Release;
 		};
 		1DEB922308733DC00010E9CD /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = EB0453CA13A19FA4002FD9A6 /* static_library.xcconfig */;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
-				GCC_C_LANGUAGE_STANDARD = c99;
-				GCC_OPTIMIZATION_LEVEL = 0;
-				GCC_WARN_ABOUT_RETURN_TYPE = YES;
-				GCC_WARN_UNUSED_VARIABLE = YES;
-				OTHER_LDFLAGS = "-ObjC";
-				PREBINDING = NO;
-				SDKROOT = iphoneos;
 			};
 			name = Debug;
 		};
 		1DEB922408733DC00010E9CD /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = EB0453CA13A19FA4002FD9A6 /* static_library.xcconfig */;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
-				GCC_C_LANGUAGE_STANDARD = c99;
-				GCC_WARN_ABOUT_RETURN_TYPE = YES;
-				GCC_WARN_UNUSED_VARIABLE = YES;
-				OTHER_LDFLAGS = "-ObjC";
-				PREBINDING = NO;
-				SDKROOT = iphoneos;
 			};
 			name = Release;
 		};

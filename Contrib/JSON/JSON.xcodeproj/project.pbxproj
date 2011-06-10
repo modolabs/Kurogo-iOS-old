@@ -179,6 +179,7 @@
 		E75716430C96DB530084A449 /* NSObject+JSON.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+JSON.h"; sourceTree = "<group>"; };
 		E75716440C96DB530084A449 /* NSObject+JSON.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+JSON.m"; sourceTree = "<group>"; };
 		E76A1EB60C996C2000A0CC83 /* DataDrivenTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DataDrivenTest.m; sourceTree = "<group>"; };
+		EB0453CF13A1A092002FD9A6 /* static_library.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = static_library.xcconfig; path = ../../xcconfig/static_library.xcconfig; sourceTree = "<group>"; };
 		FE2BBD800D8B0D3900184787 /* libjson.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libjson.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		FE2BBDAC0D8B0EE100184787 /* libjsontests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "libjsontests-Info.plist"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -204,6 +205,7 @@
 				BCC0465E0FB62C2B00F9F2D3 /* Resources */,
 				BCC047D30FB742FC00F9F2D3 /* Documentation */,
 				BCC046DF0FB6478C00F9F2D3 /* Scripts */,
+				EB0453CF13A1A092002FD9A6 /* static_library.xcconfig */,
 			);
 			sourceTree = "<group>";
 		};
@@ -586,21 +588,16 @@
 /* Begin XCBuildConfiguration section */
 		53D229750C9611FF00276605 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = EB0453CF13A1A092002FD9A6 /* static_library.xcconfig */;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
-				COPY_PHASE_STRIP = NO;
-				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
-				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CFLAGS = "-Wparentheses";
 			};
 			name = Debug;
 		};
 		53D229760C9611FF00276605 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = EB0453CF13A1A092002FD9A6 /* static_library.xcconfig */;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
-				COPY_PHASE_STRIP = YES;
-				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				OTHER_CFLAGS = "-Wparentheses";
 			};
 			name = Release;
@@ -629,56 +626,26 @@
 		FE2BBD840D8B0D3900184787 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
-				COPY_PHASE_STRIP = NO;
-				DEPLOYMENT_LOCATION = NO;
-				GCC_C_LANGUAGE_STANDARD = gnu99;
-				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_ENABLE_FIX_AND_CONTINUE = YES;
-				GCC_ENABLE_OBJC_GC = unsupported;
 				GCC_MODEL_TUNING = G5;
-				GCC_OPTIMIZATION_LEVEL = 0;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
 				OTHER_LDFLAGS = (
 					"-framework",
 					Foundation,
 				);
-				PREBINDING = NO;
-				PRIVATE_HEADERS_FOLDER_PATH = /usr/local/include;
 				PRODUCT_NAME = json;
-				PUBLIC_HEADERS_FOLDER_PATH = /usr/local/include;
-				SDKROOT = iphoneos;
 			};
 			name = Debug;
 		};
 		FE2BBD850D8B0D3900184787 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
-				COPY_PHASE_STRIP = YES;
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DEPLOYMENT_LOCATION = NO;
-				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_ENABLE_FIX_AND_CONTINUE = NO;
-				GCC_ENABLE_OBJC_GC = unsupported;
 				GCC_MODEL_TUNING = G5;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
 				OTHER_LDFLAGS = (
 					"-framework",
 					Foundation,
 				);
-				PREBINDING = NO;
-				PRIVATE_HEADERS_FOLDER_PATH = /usr/local/include;
 				PRODUCT_NAME = json;
-				PUBLIC_HEADERS_FOLDER_PATH = /usr/local/include;
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = NO;
 			};
 			name = Release;
 		};
