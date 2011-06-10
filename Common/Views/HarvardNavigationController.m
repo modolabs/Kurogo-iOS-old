@@ -6,7 +6,7 @@
  *****************************************************************/
 
 #import "HarvardNavigationController.h"
-#import "KGOAppDelegate.h"
+#import "KGOAppDelegate+ModuleAdditions.h"
 #import "KGOModule.h"
 
 #define NAV_BAR_HEIGHT 44.0f
@@ -31,8 +31,7 @@
 
     // save module's view controllers
     if ([self.viewControllers count] > 1) {
-        KGOAppDelegate *appDelegate = KGO_SHARED_APP_DELEGATE();
-        for (KGOModule *aModule in appDelegate.modules) {
+        for (KGOModule *aModule in [KGO_SHARED_APP_DELEGATE() modules]) {
         }
     }
 }

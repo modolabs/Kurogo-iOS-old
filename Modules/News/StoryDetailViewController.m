@@ -1,5 +1,5 @@
 #import "StoryDetailViewController.h"
-#import "KGOAppDelegate.h"
+#import "KGOAppDelegate+ModuleAdditions.h"
 #import "UIKit+KGOAdditions.h"
 #import <QuartzCore/QuartzCore.h>
 #import "NewsStory.h"
@@ -8,8 +8,6 @@
 #import "KGOHTMLTemplate.h"
 #import "StoryListViewController.h"
 #import "NewsImage.h"
-#import "KGOAppDelegate.h"
-#import "KGOAppDelegate+ModuleAdditions.h"
 #import "KGOShareButtonController.h"
 #import "KGOToolbar.h"
 

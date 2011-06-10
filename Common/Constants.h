@@ -1,6 +1,17 @@
 #import <Foundation/Foundation.h>
 #import "MITBuildInfo.h"
 
+// the config strings for these are List, Grid, Portlet, Sidebar, and SplitView.
+typedef enum {
+    KGONavigationStyleUnknown,
+    KGONavigationStyleTableView,
+    KGONavigationStyleIconGrid,
+    KGONavigationStylePortlet,
+    // the following are not enabled for iPhone
+    KGONavigationStyleTabletSidebar,
+    KGONavigationStyleTabletSplitView
+} KGONavigationStyle;
+
 // local path names for handleLocalPath
 extern NSString * const LocalPathPageNameHome;
 extern NSString * const LocalPathPageNameDetail;

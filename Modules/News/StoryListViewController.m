@@ -1,4 +1,3 @@
-#import "KGOAppDelegate.h"
 #import "KGOAppDelegate+ModuleAdditions.h"
 #import "StoryListViewController.h"
 #import "StoryDetailViewController.h"

@@ -1,5 +1,5 @@
 #import "KGOShareButtonController.h"
-#import "KGOAppDelegate.h"
+#import "KGOAppDelegate+ModuleAdditions.h"
 #import "TwitterViewController.h"
 #import "MITMailComposeController.h"
 

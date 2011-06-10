@@ -1,7 +1,7 @@
 #import "SettingsModule.h"
 #import "SettingsTableViewController.h"
 #import "KGOModule.h"
-#import "KGOAppDelegate.h"
+#import "KGOAppDelegate+ModuleAdditions.h"
 
 @implementation SettingsModule
 

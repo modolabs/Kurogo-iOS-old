@@ -1,5 +1,5 @@
 #import "TwitterViewController.h"
-#import "KGOAppDelegate.h"
+#import "KGOAppDelegate+ModuleAdditions.h"
 #import "KGOTheme.h"
 #import "UIKit+KGOAdditions.h"
 #import <QuartzCore/QuartzCore.h>

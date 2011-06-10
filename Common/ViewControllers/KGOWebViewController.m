@@ -1,6 +1,6 @@
 #import "KGOWebViewController.h"
 #import "KGORequestManager.h"
-#import "KGOAppDelegate.h"
+#import "KGOAppDelegate+ModuleAdditions.h"
 #import "KGOHTMLTemplate.h"
 #import <QuartzCore/QuartzCore.h>
 #import "UIKit+KGOAdditions.h"

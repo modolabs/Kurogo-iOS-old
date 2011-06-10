@@ -1,5 +1,5 @@
 #import "AnalyticsWrapper.h"
-#import "KGOAppDelegate.h"
+#import "KGOAppDelegate+ModuleAdditions.h"
 
 @implementation AnalyticsWrapper
 

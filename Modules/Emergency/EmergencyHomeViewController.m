@@ -2,7 +2,6 @@
 #import "EmergencyDataManager.h"
 #import "KGOHTMLTemplate.h"
 #import "UIKit+KGOAdditions.h"
-#import "KGOAppDelegate.h"
 #import "KGOAppDelegate+ModuleAdditions.h"
 
 

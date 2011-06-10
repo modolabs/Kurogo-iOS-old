@@ -1,6 +1,5 @@
 #import "PeopleHomeViewController.h"
 #import "KGOPersonWrapper.h"
-#import "KGOAppDelegate.h"
 #import "KGOAppDelegate+ModuleAdditions.h"
 #import "Foundation+KGOAdditions.h"
 #import "UIKit+KGOAdditions.h"

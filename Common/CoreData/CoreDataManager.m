@@ -1,6 +1,5 @@
 #import "CoreDataManager.h"
 #import "MITBuildInfo.h"
-#import "KGOAppDelegate.h"
 #import "KGOAppDelegate+ModuleAdditions.h"
 #import <objc/runtime.h>
 

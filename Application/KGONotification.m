@@ -1,5 +1,5 @@
 #import "KGONotification.h"
-#import "KGOAppDelegate.h"
+#import "KGOAppDelegate+ModuleAdditions.h"
 
 @implementation KGONotification
 

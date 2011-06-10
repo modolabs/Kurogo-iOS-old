@@ -1,6 +1,6 @@
 #import "KGOSearchDisplayController.h"
 #import "KGOTheme.h"
-#import "KGOAppDelegate.h"
+#import "KGOAppDelegate+ModuleAdditions.h"
 #import "KGOModule.h"
 #import "KGOTableViewController.h"
 #import "KGOSearchModel.h"

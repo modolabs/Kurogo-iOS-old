@@ -1,5 +1,5 @@
 #import "KGOSocialMediaController.h"
-#import "KGOAppDelegate.h"
+#import "KGOAppDelegate+ModuleAdditions.h"
 #import "Foundation+KGOAdditions.h"
 #import "JSON.h"
 #import "BitlyWrapperDelegate.h"

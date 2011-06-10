@@ -1,6 +1,6 @@
 #import "KGODatePager.h"
 #import "KGOTheme.h"
-#import "KGOAppDelegate.h"
+#import "KGOAppDelegate+ModuleAdditions.h"
 #import "UIKit+KGOAdditions.h"
 
 @implementation KGODatePager

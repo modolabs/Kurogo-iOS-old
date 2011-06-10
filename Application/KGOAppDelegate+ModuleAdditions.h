@@ -1,8 +1,35 @@
 #import "KGOAppDelegate.h"
 
+#define KGO_SHARED_APP_DELEGATE() (KGOAppDelegate *)[[UIApplication sharedApplication] delegate]
+
+@interface KGOAppDelegate (URLHandlers)
+
+- (NSString *)defaultURLScheme;
+- (BOOL)handleInternalURL:(NSURL *)url;
+- (BOOL)handleFacebookURL:(NSURL *)url;
+
+@end
+
+@interface KGOAppDelegate (Notifications)
+
+- (void)registerForRemoteNotifications:(NSDictionary *)launchOptions;
+- (void)updateNotificationUI;
+- (void)saveUnreadNotifications;
+
+@property (nonatomic, readonly) NSMutableArray *unreadNotifications;
+
+@end
+
 @interface KGOAppDelegate (ModuleListAdditions)
 
+// TODO: this doesn't make sense in a category called ModuleListAdditions
+- (void)showNetworkActivityIndicator;
+- (void)hideNetworkActivityIndicator;
+
 #pragma mark Setup
+
+@property (nonatomic, readonly) NSArray *modules;
+@property (nonatomic, readonly) NSDictionary *appConfig;
 
 - (void)loadModules;
 - (void)loadHomeModule;

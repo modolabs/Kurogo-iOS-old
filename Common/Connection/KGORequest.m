@@ -2,7 +2,7 @@
 #import "JSON.h"
 #import "KGORequestManager.h"
 #import "Foundation+KGOAdditions.h"
-#import "KGOAppDelegate.h"
+#import "KGOAppDelegate+ModuleAdditions.h"
 
 NSString * const KGORequestErrorDomain = @"com.modolabs.KGORequest.ErrorDomain";
 

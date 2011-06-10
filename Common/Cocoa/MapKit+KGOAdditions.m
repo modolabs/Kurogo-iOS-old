@@ -1,5 +1,5 @@
 #import "MapKit+KGOAdditions.h"
-#import "KGOAppDelegate.h"
+#import "KGOAppDelegate+ModuleAdditions.h"
 #import "Foundation+KGOAdditions.h"
 
 @implementation MKMapView (KGOAdditions)
