@@ -12,9 +12,6 @@
 @synthesize userSettings;
 
 - (id)initWithDictionary:(NSDictionary *)moduleDict {
-    NSLog(@"%@", moduleDict);
-    
-    
     self = [super init];
     if (self) {
         
@@ -68,8 +65,6 @@
     if (!self.apiMaxVersion) self.apiMaxVersion = 1;
     if (!self.apiMinVersion) self.apiMinVersion = 1;
     
-    self.enabled = [[KGORequestManager sharedManager] isReachable] || ![self requiresKurogoServer];
-    
     NSDictionary *payload = [moduleDict dictionaryForKey:@"payload"];
     if (payload) {
         [self evaluateInitialiationPayload:payload];
@@ -78,7 +73,8 @@
 
 - (BOOL)requiresKurogoServer
 {
-    return YES;
+    // only set this to YES if a connection is absolutely required (no cache)
+    return NO;
 }
 
 #pragma Appearance
