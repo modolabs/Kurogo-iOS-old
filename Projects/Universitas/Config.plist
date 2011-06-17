@@ -21,12 +21,12 @@
 	<key>Modules</key>
 	<array>
 		<dict>
+			<key>hidden</key>
+			<true/>
 			<key>id</key>
 			<string>home</string>
 			<key>tag</key>
 			<string>home</string>
-			<key>hidden</key>
-			<true/>
 			<key>title</key>
 			<string>Home</string>
 		</dict>
@@ -47,7 +47,7 @@
 			<string>Map</string>
 		</dict>
 		<dict>
-			<key>news</key>
+			<key>id</key>
 			<string>news</string>
 			<key>tag</key>
 			<string>news</string>
@@ -89,52 +89,52 @@
 		<dict>
 			<key>id</key>
 			<string>customize</string>
+			<key>secondary</key>
+			<true/>
 			<key>tag</key>
 			<string>customize</string>
 			<key>title</key>
 			<string>Settings</string>
-			<key>secondary</key>
-			<true/>
 		</dict>
 		<dict>
 			<key>id</key>
 			<string>fullweb</string>
-			<key>tag</key>
-			<string>fullweb</string>
-			<key>title</key>
-			<string>Full Website</string>
-			<key>secondary</key>
-			<true/>
 			<key>payload</key>
 			<dict>
 				<key>url</key>
 				<string>http://www.modolabs.com</string>
 			</dict>
+			<key>secondary</key>
+			<true/>
+			<key>tag</key>
+			<string>fullweb</string>
+			<key>title</key>
+			<string>Full Website</string>
 		</dict>
 		<dict>
+			<key>id</key>
+			<string>fullweb</string>
 			<key>payload</key>
 			<dict>
 				<key>url</key>
 				<string>http://m.modolabs.com</string>
 			</dict>
-			<key>id</key>
-			<string>fullweb</string>
+			<key>secondary</key>
+			<true/>
 			<key>tag</key>
 			<string>mobileweb</string>
 			<key>title</key>
 			<string>Mobile Website</string>
-			<key>secondary</key>
-			<true/>
 		</dict>
 		<dict>
 			<key>id</key>
 			<string>about</string>
+			<key>secondary</key>
+			<true/>
 			<key>tag</key>
 			<string>about</string>
 			<key>title</key>
 			<string>About</string>
-			<key>secondary</key>
-			<true/>
 		</dict>
 	</array>
 	<key>OrganizationName</key>

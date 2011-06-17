@@ -3,6 +3,7 @@
 #import "PeopleDetailsViewController.h"
 #import "KGOPersonWrapper.h"
 #import "KGOSearchModel.h"
+#import "PersonContact.h"
 
 @implementation PeopleModule
 
@@ -13,6 +14,13 @@
 - (void)willTerminate
 {
     [KGOPersonWrapper clearOldResults];
+}
+
+- (BOOL)requiresKurogoServer
+{
+    // if no contact info has ever been imported, this module is not useful without connection
+    NSArray *contacts = [PersonContact directoryContacts];
+    return contacts.count <= 0;
 }
 
 #pragma mark Search

@@ -35,9 +35,4 @@
     return [NSArray arrayWithObjects:KGOUserPreferencesKey, nil];
 }
 
-- (BOOL)requiresKurogoServer
-{
-    return NO;
-}
-
 @end

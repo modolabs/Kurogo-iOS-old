@@ -30,6 +30,11 @@
     return vc;
 }
 
+- (BOOL)requiresKurogoServer
+{
+    return YES;
+}
+
 - (UIView *)currentUserWidget
 {
     NSDictionary *userDict = [[[KGORequestManager sharedManager] sessionInfo] dictionaryForKey:@"user"];

@@ -39,11 +39,6 @@ NSString * const NewsTagBody            = @"body";
 }
 */
 
-- (BOOL)requiresKurogoServer
-{
-    return YES;
-}
-
 - (void)requestCategoriesFromServer {
     KGORequest *request = [[KGORequestManager sharedManager] requestWithDelegate:self
                                                                           module:self.moduleTag

@@ -187,7 +187,7 @@
     
     for (KGOModule *aModule in [KGO_SHARED_APP_DELEGATE() modules]) {
         if (!aModule.hasAccess && ![[KGORequestManager sharedManager] isUserLoggedIn]) {
-            DLog(@"%@ %@", aModule.tag, aModule);
+            DLog(@"%@ module requires login: %@", aModule.tag, aModule);
             [[NSNotificationCenter defaultCenter] addObserver:self
                                                      selector:@selector(loginDidComplete:)
                                                          name:KGODidLoginNotification
@@ -208,13 +208,20 @@
     UIAlertView *alertView = [[[UIAlertView alloc] initWithTitle:nil
                                                          message:message
                                                         delegate:self 
-                                               cancelButtonTitle:nil 
+                                               cancelButtonTitle:NSLocalizedString(@"Cancel", @"cancel button for hello request failure")
                                                otherButtonTitles:retry, nil] autorelease];
     [alertView show];
 }
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
-    [[KGORequestManager sharedManager] requestServerHello];
+    if (buttonIndex == alertView.cancelButtonIndex) {
+        [self loadModules];
+        [self refreshModules];
+        [self hideLoadingView];
+
+    } else {
+        [[KGORequestManager sharedManager] requestServerHello];
+    }
 }
 
 - (void)showLoadingView
@@ -415,6 +422,8 @@
         anIcon.isAccessibilityElement = YES;
         anIcon.accessibilityLabel = aModule.longName;
         
+        anIcon.enabled = aModule.enabled;
+        
         DLog(@"created home screen icon for %@: %@", aModule.tag, [anIcon description]);
     }
     
@@ -608,6 +617,8 @@
     NSMutableArray *primary = [NSMutableArray array];
     NSMutableArray *secondary = [NSMutableArray array];
     
+    BOOL networkIsReachable = [[KGORequestManager sharedManager] isReachable];
+    
     for (KGOModule *aModule in modules) {
         // special case for home module
         if ([aModule isKindOfClass:[HomeModule class]]) {
@@ -629,32 +640,27 @@
         } else {
             [primary addObject:aModule];
         }
+        
+        aModule.enabled = networkIsReachable || ![aModule requiresKurogoServer];
     }
 
-    [_secondaryModules release];
-    
     NSDictionary *modulePreference = [[KGOUserSettingsManager sharedManager] selectedValueDictForSetting:@"Modules"];
-    NSArray *moduleOrder = [modulePreference objectForKey:@"items"];
-    
-    _secondaryModules = [[secondary sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2) {
+    __block NSArray *moduleOrder = [modulePreference objectForKey:@"items"];
+
+    NSComparisonResult (^moduleSort)(id, id) = ^(id obj1, id obj2) {
         NSInteger order1 = [moduleOrder indexOfObject:[(KGOModule *)obj1 tag]];
         NSInteger order2 = [moduleOrder indexOfObject:[(KGOModule *)obj2 tag]];
         if (order1 > order2)
             return NSOrderedDescending;
         else
             return (order1 < order2) ? NSOrderedAscending : NSOrderedSame;
-    }] retain];
+    };
+    
+    [_secondaryModules release];
+    _secondaryModules = [[secondary sortedArrayUsingComparator:moduleSort] retain];
     
     [_primaryModules release];
-
-    _primaryModules = [[primary sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2) {
-        NSInteger order1 = [moduleOrder indexOfObject:[(KGOModule *)obj1 tag]];
-        NSInteger order2 = [moduleOrder indexOfObject:[(KGOModule *)obj2 tag]];
-        if (order1 > order2)
-            return NSOrderedDescending;
-        else
-            return (order1 < order2) ? NSOrderedAscending : NSOrderedSame;
-    }] retain];
+    _primaryModules = [[primary sortedArrayUsingComparator:moduleSort] retain];
 }
 
 + (GridPadding)paddingWithArgs:(NSArray *)args {

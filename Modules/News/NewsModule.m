@@ -48,6 +48,14 @@
     _payload = [payload retain];
 }
 
+- (BOOL)requiresKurogoServer
+{
+    if (_dataManager) {
+        return [_dataManager requiresKurogoServer];
+    }
+    return NO;
+}
+
 #pragma mark Navigation
 
 - (NSArray *)registeredPageNames {
