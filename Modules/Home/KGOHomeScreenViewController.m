@@ -65,7 +65,7 @@
     
     [self loadModules];
     
-    if ([self showsSearchBar]) {
+    if ([self showsSearchBar] && !_searchBar) {
         _searchBar = [[KGOSearchBar alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, 44)];
         _searchBar.autoresizingMask = UIViewAutoresizingFlexibleWidth;
         NSDictionary *infoDict = [[NSBundle mainBundle] infoDictionary];

@@ -12,12 +12,17 @@
 - (void)loadView {
     [super loadView];
     
-    _scrollView = [[UIScrollView alloc] initWithFrame:self.view.bounds];
+    CGRect frame = self.view.bounds;
+    if (_searchBar) {
+        frame.origin.y = _searchBar.frame.size.height;
+        frame.size.height -= _searchBar.frame.size.height;
+    }
+    _scrollView = [[UIScrollView alloc] initWithFrame:frame];
     _scrollView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     [self.view addSubview:_scrollView];
     
     if (!primaryGrid) {
-        primaryGrid = [[[IconGrid alloc] initWithFrame:CGRectMake(0, _searchBar.frame.size.height, self.view.bounds.size.width, 1)] autorelease];
+        primaryGrid = [[[IconGrid alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, 1)] autorelease];
         primaryGrid.padding = [self moduleListMargins];
         primaryGrid.spacing = [self moduleListSpacing];
         primaryGrid.icons = [self iconsForPrimaryModules:YES];
