@@ -168,13 +168,8 @@
 		EB93486A139ED48500446243 /* NewsStoryTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = EB934867139ED48500446243 /* NewsStoryTableViewCell.m */; };
 		EB93486B139ED48500446243 /* NewsStoryTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = EB934868139ED48500446243 /* NewsStoryTableViewCell.xib */; };
 		EB93486C139ED48500446243 /* StoryListViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = EB934869139ED48500446243 /* StoryListViewController.xib */; };
-		EB99B28312F377520065EE93 /* libfacebook_ios_sdk.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EB138EED12F251EB004DBB7C /* libfacebook_ios_sdk.a */; };
-		EB99B28412F377560065EE93 /* libTwitter.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EB99B08E12F36F3D0065EE93 /* libTwitter.a */; };
-		EB99B67212F3A8D80065EE93 /* libjson.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EB99B39312F37FDC0065EE93 /* libjson.a */; };
-		EB99B67912F3A8EE0065EE93 /* libOAuth.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EB99B67812F3A8E40065EE93 /* libOAuth.a */; };
 		EB9AF2A7130B59C3003B9769 /* MainWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = EB9AF298130B56AD003B9769 /* MainWindow.xib */; };
 		EB9AF2BD130B5AC2003B9769 /* Config.plist in Resources */ = {isa = PBXBuildFile; fileRef = EB138AFC12F22F31004DBB7C /* Config.plist */; };
-		EBAA866B12F72A4600B743C3 /* libSFHFKeychainUtils.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EBAA860D12F728CE00B743C3 /* libSFHFKeychainUtils.a */; };
 		EBAE86401215FB0D00F370BE /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = EBAE863E1215FB0D00F370BE /* Icon.png */; };
 		EBAE86411215FB0D00F370BE /* Icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = EBAE863F1215FB0D00F370BE /* Icon@2x.png */; };
 		EBAE86451215FB4900F370BE /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = EBAE86441215FB4900F370BE /* Default@2x.png */; };
@@ -182,6 +177,11 @@
 		EBB121ED13392F3300A4BD1D /* EventKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EBB121EC13392F3300A4BD1D /* EventKit.framework */; };
 		EBB121F1133A917200A4BD1D /* CalendarHomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EBB121EF133A913100A4BD1D /* CalendarHomeViewController.m */; };
 		EBB121F2133A917200A4BD1D /* CalendarHomeViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = EBB121F0133A915200A4BD1D /* CalendarHomeViewController.xib */; };
+		EBE242C113AFD3030082C277 /* libfacebook_ios_sdk.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EBE242BC13AFD3030082C277 /* libfacebook_ios_sdk.a */; };
+		EBE242C213AFD3030082C277 /* libjson.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EBE242BD13AFD3030082C277 /* libjson.a */; };
+		EBE242C313AFD3030082C277 /* libOAuth.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EBE242BE13AFD3030082C277 /* libOAuth.a */; };
+		EBE242C413AFD3030082C277 /* libSFHFKeychainUtils.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EBE242BF13AFD3030082C277 /* libSFHFKeychainUtils.a */; };
+		EBE242C513AFD3030082C277 /* libTwitter.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EBE242C013AFD3030082C277 /* libTwitter.a */; };
 		EBE2CC1E1342AD2F0037546A /* KGOBookmarksViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EBE2CC1D1342AD2F0037546A /* KGOBookmarksViewController.m */; };
 		EBE2CC2113438AEA0037546A /* KGODetailPageHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = EBE2CC2013438AEA0037546A /* KGODetailPageHeaderView.m */; };
 		EBE2CC641343E4D00037546A /* KGOMapCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = EBE2CC631343E4D00037546A /* KGOMapCategory.m */; };
@@ -190,79 +190,6 @@
 		EBEB7679138AE55000C011D3 /* KGOUserSetting.m in Sources */ = {isa = PBXBuildFile; fileRef = EBEB7678138AE55000C011D3 /* KGOUserSetting.m */; };
 		EBEB767C138AE5B700C011D3 /* KGOUserSettingsManager.m in Sources */ = {isa = PBXBuildFile; fileRef = EBEB767B138AE5B700C011D3 /* KGOUserSettingsManager.m */; };
 /* End PBXBuildFile section */
-
-/* Begin PBXContainerItemProxy section */
-		7ED994E41345352B00D8F866 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = EB99B67312F3A8E40065EE93 /* OAuthConsumer.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = EB1391B112F26F48004DBB7C;
-			remoteInfo = OAuthConsumer;
-		};
-		7ED994E61345352B00D8F866 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = EBAA860812F728CE00B743C3 /* SFHFKeychainUtils.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = D2AAC07D0554694100DB518D;
-			remoteInfo = SFHFKeychainUtils;
-		};
-		7ED994E81345352B00D8F866 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = EB138EE812F251EB004DBB7C /* Facebook.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = D2AAC07D0554694100DB518D;
-			remoteInfo = "facebook-ios-sdk";
-		};
-		7ED994EA1345352B00D8F866 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = EB99B38C12F37FDC0065EE93 /* JSON.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = FE2BBD7F0D8B0D3900184787;
-			remoteInfo = libjson;
-		};
-		7ED994EC1345352B00D8F866 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = EB99B08912F36F3D0065EE93 /* Twitter.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = D2AAC07D0554694100DB518D;
-			remoteInfo = Twitter;
-		};
-		EB138EEC12F251EB004DBB7C /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = EB138EE812F251EB004DBB7C /* Facebook.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = D2AAC07E0554694100DB518D;
-			remoteInfo = "facebook-ios-sdk";
-		};
-		EB99B08D12F36F3D0065EE93 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = EB99B08912F36F3D0065EE93 /* Twitter.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = D2AAC07E0554694100DB518D;
-			remoteInfo = Twitter;
-		};
-		EB99B39212F37FDC0065EE93 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = EB99B38C12F37FDC0065EE93 /* JSON.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = FE2BBD800D8B0D3900184787;
-			remoteInfo = libjson;
-		};
-		EB99B67712F3A8E40065EE93 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = EB99B67312F3A8E40065EE93 /* OAuthConsumer.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = EB1391B212F26F48004DBB7C;
-			remoteInfo = OAuthConsumer;
-		};
-		EBAA860C12F728CE00B743C3 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = EBAA860812F728CE00B743C3 /* SFHFKeychainUtils.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = D2AAC07E0554694100DB518D;
-			remoteInfo = SFHFKeychainUtils;
-		};
-/* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		1D30AB110D05D00D00671497 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -438,7 +365,6 @@
 		EB0371421396E87500AD881F /* KGOSearchResultListTableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGOSearchResultListTableView.m; sourceTree = "<group>"; };
 		EB0CF98C13403141003B8E45 /* TwitterViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TwitterViewController.xib; sourceTree = "<group>"; };
 		EB138AFC12F22F31004DBB7C /* Config.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Config.plist; sourceTree = "<group>"; };
-		EB138EE812F251EB004DBB7C /* Facebook.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Facebook.xcodeproj; path = Facebook/Facebook.xcodeproj; sourceTree = "<group>"; };
 		EB138F0212F253A1004DBB7C /* GANTracker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GANTracker.h; sourceTree = "<group>"; };
 		EB138F0312F253A1004DBB7C /* libGoogleAnalytics.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libGoogleAnalytics.a; sourceTree = "<group>"; };
 		EB1440C11309EEA000396753 /* CalendarDataManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CalendarDataManager.h; sourceTree = "<group>"; };
@@ -551,11 +477,7 @@
 		EB934867139ED48500446243 /* NewsStoryTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NewsStoryTableViewCell.m; sourceTree = "<group>"; };
 		EB934868139ED48500446243 /* NewsStoryTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NewsStoryTableViewCell.xib; sourceTree = "<group>"; };
 		EB934869139ED48500446243 /* StoryListViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = StoryListViewController.xib; sourceTree = "<group>"; };
-		EB99B08912F36F3D0065EE93 /* Twitter.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Twitter.xcodeproj; path = Twitter/Twitter.xcodeproj; sourceTree = "<group>"; };
-		EB99B38C12F37FDC0065EE93 /* JSON.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = JSON.xcodeproj; path = JSON/JSON.xcodeproj; sourceTree = "<group>"; };
-		EB99B67312F3A8E40065EE93 /* OAuthConsumer.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = OAuthConsumer.xcodeproj; path = OAuth/OAuthConsumer.xcodeproj; sourceTree = "<group>"; };
 		EB9AF298130B56AD003B9769 /* MainWindow.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = MainWindow.xib; path = ../../Resources/MainWindow.xib; sourceTree = SOURCE_ROOT; };
-		EBAA860812F728CE00B743C3 /* SFHFKeychainUtils.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = SFHFKeychainUtils.xcodeproj; path = SFHFKeychainUtils/SFHFKeychainUtils.xcodeproj; sourceTree = "<group>"; };
 		EBAE863E1215FB0D00F370BE /* Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Icon.png; path = Resources/Icon.png; sourceTree = "<group>"; };
 		EBAE863F1215FB0D00F370BE /* Icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Icon@2x.png"; path = "Resources/Icon@2x.png"; sourceTree = "<group>"; };
 		EBAE86441215FB4900F370BE /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Default@2x.png"; path = "Resources/Default@2x.png"; sourceTree = "<group>"; };
@@ -570,6 +492,11 @@
 		EBC1C7111347C5750045CE9C /* kurogo_debug.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = kurogo_debug.xcconfig; sourceTree = "<group>"; };
 		EBC1C7121347C5750045CE9C /* stage_server.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = stage_server.xcconfig; sourceTree = "<group>"; };
 		EBC1C7131347C5750045CE9C /* test_server.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = test_server.xcconfig; sourceTree = "<group>"; };
+		EBE242BC13AFD3030082C277 /* libfacebook_ios_sdk.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libfacebook_ios_sdk.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		EBE242BD13AFD3030082C277 /* libjson.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libjson.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		EBE242BE13AFD3030082C277 /* libOAuth.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libOAuth.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		EBE242BF13AFD3030082C277 /* libSFHFKeychainUtils.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libSFHFKeychainUtils.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		EBE242C013AFD3030082C277 /* libTwitter.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libTwitter.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		EBE2CC1C1342AD2E0037546A /* KGOBookmarksViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGOBookmarksViewController.h; sourceTree = "<group>"; };
 		EBE2CC1D1342AD2F0037546A /* KGOBookmarksViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGOBookmarksViewController.m; sourceTree = "<group>"; };
 		EBE2CC1F13438AEA0037546A /* KGODetailPageHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGODetailPageHeaderView.h; sourceTree = "<group>"; };
@@ -591,6 +518,11 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EBE242C113AFD3030082C277 /* libfacebook_ios_sdk.a in Frameworks */,
+				EBE242C213AFD3030082C277 /* libjson.a in Frameworks */,
+				EBE242C313AFD3030082C277 /* libOAuth.a in Frameworks */,
+				EBE242C413AFD3030082C277 /* libSFHFKeychainUtils.a in Frameworks */,
+				EBE242C513AFD3030082C277 /* libTwitter.a in Frameworks */,
 				EBB121ED13392F3300A4BD1D /* EventKit.framework in Frameworks */,
 				1D60589F0D05DD5A006BFB54 /* Foundation.framework in Frameworks */,
 				1DF5F4E00D08C38300B7A737 /* UIKit.framework in Frameworks */,
@@ -609,11 +541,6 @@
 				EB4C2CDF127F138100058748 /* libsqlite3.dylib in Frameworks */,
 				EB4C2CE1127F138900058748 /* CFNetwork.framework in Frameworks */,
 				EB138F0512F253A1004DBB7C /* libGoogleAnalytics.a in Frameworks */,
-				EBAA866B12F72A4600B743C3 /* libSFHFKeychainUtils.a in Frameworks */,
-				EB99B67912F3A8EE0065EE93 /* libOAuth.a in Frameworks */,
-				EB99B67212F3A8D80065EE93 /* libjson.a in Frameworks */,
-				EB99B28412F377560065EE93 /* libTwitter.a in Frameworks */,
-				EB99B28312F377520065EE93 /* libfacebook_ios_sdk.a in Frameworks */,
 				A6F2F83D134BAEDD009F597D /* MediaPlayer.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1067,24 +994,16 @@
 		EB1387B912F22DF7004DBB7C /* Contrib */ = {
 			isa = PBXGroup;
 			children = (
+				EBE242BD13AFD3030082C277 /* libjson.a */,
+				EBE242BC13AFD3030082C277 /* libfacebook_ios_sdk.a */,
+				EBE242BF13AFD3030082C277 /* libSFHFKeychainUtils.a */,
+				EBE242BE13AFD3030082C277 /* libOAuth.a */,
+				EBE242C013AFD3030082C277 /* libTwitter.a */,
 				EB138F0112F253A1004DBB7C /* GoogleAnalytics */,
-				EB99B67312F3A8E40065EE93 /* OAuthConsumer.xcodeproj */,
-				EB99B38C12F37FDC0065EE93 /* JSON.xcodeproj */,
-				EB99B08912F36F3D0065EE93 /* Twitter.xcodeproj */,
-				EB138EE812F251EB004DBB7C /* Facebook.xcodeproj */,
-				EBAA860812F728CE00B743C3 /* SFHFKeychainUtils.xcodeproj */,
 			);
 			name = Contrib;
 			path = ../../Contrib;
 			sourceTree = SOURCE_ROOT;
-		};
-		EB138EE912F251EB004DBB7C /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				EB138EED12F251EB004DBB7C /* libfacebook_ios_sdk.a */,
-			);
-			name = Products;
-			sourceTree = "<group>";
 		};
 		EB138F0112F253A1004DBB7C /* GoogleAnalytics */ = {
 			isa = PBXGroup;
@@ -1246,38 +1165,6 @@
 			path = DataControllers;
 			sourceTree = "<group>";
 		};
-		EB99B08A12F36F3D0065EE93 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				EB99B08E12F36F3D0065EE93 /* libTwitter.a */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
-		EB99B38D12F37FDC0065EE93 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				EB99B39312F37FDC0065EE93 /* libjson.a */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
-		EB99B67412F3A8E40065EE93 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				EB99B67812F3A8E40065EE93 /* libOAuth.a */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
-		EBAA860912F728CE00B743C3 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				EBAA860D12F728CE00B743C3 /* libSFHFKeychainUtils.a */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
 		EBC1C6FF1347B8D20045CE9C /* xcconfig */ = {
 			isa = PBXGroup;
 			children = (
@@ -1329,11 +1216,6 @@
 			buildRules = (
 			);
 			dependencies = (
-				7ED994EB1345352B00D8F866 /* PBXTargetDependency */,
-				7ED994E91345352B00D8F866 /* PBXTargetDependency */,
-				7ED994E51345352B00D8F866 /* PBXTargetDependency */,
-				7ED994ED1345352B00D8F866 /* PBXTargetDependency */,
-				7ED994E71345352B00D8F866 /* PBXTargetDependency */,
 			);
 			name = Universitas;
 			productName = Universitas;
@@ -1360,72 +1242,12 @@
 			);
 			mainGroup = 29B97314FDCFA39411CA2CEA /* CustomTemplate */;
 			projectDirPath = "";
-			projectReferences = (
-				{
-					ProductGroup = EB138EE912F251EB004DBB7C /* Products */;
-					ProjectRef = EB138EE812F251EB004DBB7C /* Facebook.xcodeproj */;
-				},
-				{
-					ProductGroup = EB99B38D12F37FDC0065EE93 /* Products */;
-					ProjectRef = EB99B38C12F37FDC0065EE93 /* JSON.xcodeproj */;
-				},
-				{
-					ProductGroup = EB99B67412F3A8E40065EE93 /* Products */;
-					ProjectRef = EB99B67312F3A8E40065EE93 /* OAuthConsumer.xcodeproj */;
-				},
-				{
-					ProductGroup = EBAA860912F728CE00B743C3 /* Products */;
-					ProjectRef = EBAA860812F728CE00B743C3 /* SFHFKeychainUtils.xcodeproj */;
-				},
-				{
-					ProductGroup = EB99B08A12F36F3D0065EE93 /* Products */;
-					ProjectRef = EB99B08912F36F3D0065EE93 /* Twitter.xcodeproj */;
-				},
-			);
 			projectRoot = "";
 			targets = (
 				1D6058900D05DD3D006BFB54 /* Universitas */,
 			);
 		};
 /* End PBXProject section */
-
-/* Begin PBXReferenceProxy section */
-		EB138EED12F251EB004DBB7C /* libfacebook_ios_sdk.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = libfacebook_ios_sdk.a;
-			remoteRef = EB138EEC12F251EB004DBB7C /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		EB99B08E12F36F3D0065EE93 /* libTwitter.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = libTwitter.a;
-			remoteRef = EB99B08D12F36F3D0065EE93 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		EB99B39312F37FDC0065EE93 /* libjson.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = libjson.a;
-			remoteRef = EB99B39212F37FDC0065EE93 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		EB99B67812F3A8E40065EE93 /* libOAuth.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = libOAuth.a;
-			remoteRef = EB99B67712F3A8E40065EE93 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		EBAA860D12F728CE00B743C3 /* libSFHFKeychainUtils.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = libSFHFKeychainUtils.a;
-			remoteRef = EBAA860C12F728CE00B743C3 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		1D60588D0D05DD3D006BFB54 /* Resources */ = {
@@ -1620,34 +1442,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
-
-/* Begin PBXTargetDependency section */
-		7ED994E51345352B00D8F866 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = OAuthConsumer;
-			targetProxy = 7ED994E41345352B00D8F866 /* PBXContainerItemProxy */;
-		};
-		7ED994E71345352B00D8F866 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = SFHFKeychainUtils;
-			targetProxy = 7ED994E61345352B00D8F866 /* PBXContainerItemProxy */;
-		};
-		7ED994E91345352B00D8F866 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = "facebook-ios-sdk";
-			targetProxy = 7ED994E81345352B00D8F866 /* PBXContainerItemProxy */;
-		};
-		7ED994EB1345352B00D8F866 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = libjson;
-			targetProxy = 7ED994EA1345352B00D8F866 /* PBXContainerItemProxy */;
-		};
-		7ED994ED1345352B00D8F866 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = Twitter;
-			targetProxy = 7ED994EC1345352B00D8F866 /* PBXContainerItemProxy */;
-		};
-/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		1D6058940D05DD3E006BFB54 /* Debug - Development */ = {

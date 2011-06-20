@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Workspace
+   version = "1.0">
+   <FileRef
+      location = "group:Universitas/Universitas.xcodeproj">
+   </FileRef>
+   <FileRef
+      location = "group:../Contrib/OAuth/OAuthConsumer.xcodeproj">
+   </FileRef>
+   <FileRef
+      location = "group:../Contrib/JSON/JSON.xcodeproj">
+   </FileRef>
+   <FileRef
+      location = "group:../Contrib/Facebook/Facebook.xcodeproj">
+   </FileRef>
+   <FileRef
+      location = "group:../Contrib/SFHFKeychainUtils/SFHFKeychainUtils.xcodeproj">
+   </FileRef>
+   <FileRef
+      location = "group:../Contrib/Twitter/Twitter.xcodeproj">
+   </FileRef>
+</Workspace>

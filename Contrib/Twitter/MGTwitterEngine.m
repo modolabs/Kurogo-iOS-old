@@ -8,7 +8,7 @@
 
 #import "MGTwitterEngine.h"
 #import "MGTwitterHTTPURLConnection.h"
-#import <OAuthConsumer/OAuthConsumer.h>
+#import "OAuthConsumer.h"
 
 #import "NSData+Base64.h"
 

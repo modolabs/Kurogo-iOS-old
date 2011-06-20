@@ -320,7 +320,6 @@
 				EB1391D812F270DD004DBB7C /* Resources */,
 				EB1391AF12F26F48004DBB7C /* Sources */,
 				EB1391B012F26F48004DBB7C /* Frameworks */,
-				EB99B42912F38ADC0065EE93 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -383,22 +382,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
-
-/* Begin PBXShellScriptBuildPhase section */
-		EB99B42912F38ADC0065EE93 /* ShellScript */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "[ ! -d ../usr/local/include/OAuthConsumer ] || rm -r ../usr/local/include/OAuthConsumer\n\nif [ \"${DEPLOYMENT_LOCATION}\" = \"YES\" ]; then\n    cp -r ${DSTROOT}${PUBLIC_HEADERS_FOLDER_PATH} ../usr/local/include/OAuthConsumer\nelse\n    cp -r ${CONFIGURATION_BUILD_DIR}${PUBLIC_HEADERS_FOLDER_PATH} ../usr/local/include/OAuthConsumer\nfi\n";
-		};
-/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		EB1391AF12F26F48004DBB7C /* Sources */ = {

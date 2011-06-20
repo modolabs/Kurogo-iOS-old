@@ -457,7 +457,6 @@
 				FE2BBD7D0D8B0D3900184787 /* Sources */,
 				FE2BBD7E0D8B0D3900184787 /* Frameworks */,
 				BC5BC6BE1249E3E500F22EB1 /* ShellScript */,
-				EB99B3FE12F388930065EE93 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -550,19 +549,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "exec $SOURCE_ROOT/Scripts/InstallDocumentation.sh";
-		};
-		EB99B3FE12F388930065EE93 /* ShellScript */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "if [ \"${DEPLOYMENT_LOCATION}\" = \"YES\" ]; then\n    cp -r ${DSTROOT}${PUBLIC_HEADERS_FOLDER_PATH}/* ../usr/local/include\nelse\n    cp -r ${CONFIGURATION_BUILD_DIR}${PUBLIC_HEADERS_FOLDER_PATH}/* ../usr/local/include\nfi";
 		};
 /* End PBXShellScriptBuildPhase section */
 
