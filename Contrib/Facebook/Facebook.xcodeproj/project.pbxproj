@@ -221,7 +221,11 @@
 				GCC_ENABLE_FIX_AND_CONTINUE = YES;
 				GCC_MODEL_TUNING = G5;
 				GCC_PREFIX_HEADER = "$(SRCROOT)/../facebook-ios-sdk/src/facebook_ios_sdk_Prefix.pch";
-				HEADER_SEARCH_PATHS = "$(SRCROOT)/../usr/local/include";
+				HEADER_SEARCH_PATHS = (
+					"$(SRCROOT)/../usr/local/include",
+					"$(DSTROOT)/**",
+					"$(BUILT_PRODUCTS_DIR)/**",
+				);
 				PRODUCT_NAME = facebook_ios_sdk;
 			};
 			name = Debug;
@@ -231,7 +235,11 @@
 			buildSettings = {
 				GCC_MODEL_TUNING = G5;
 				GCC_PREFIX_HEADER = "$(SRCROOT)/../facebook-ios-sdk/src/facebook_ios_sdk_Prefix.pch";
-				HEADER_SEARCH_PATHS = "$(SRCROOT)/../usr/local/include";
+				HEADER_SEARCH_PATHS = (
+					"$(SRCROOT)/../usr/local/include",
+					"$(DSTROOT)/**",
+					"$(BUILT_PRODUCTS_DIR)/**",
+				);
 				PRODUCT_NAME = facebook_ios_sdk;
 			};
 			name = Release;

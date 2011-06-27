@@ -365,6 +365,8 @@
 				HEADER_SEARCH_PATHS = (
 					$SDKROOT/usr/include/libxml2,
 					"$(SRCROOT)/../usr/local/include",
+					"$(DSTROOT)/**",
+					"$(BUILT_PRODUCTS_DIR)/**",
 				);
 				PRODUCT_NAME = Twitter;
 			};
@@ -382,6 +384,8 @@
 				HEADER_SEARCH_PATHS = (
 					$SDKROOT/usr/include/libxml2,
 					"$(SRCROOT)/../usr/local/include",
+					"$(DSTROOT)/**",
+					"$(BUILT_PRODUCTS_DIR)/**",
 				);
 				PRODUCT_NAME = Twitter;
 			};
