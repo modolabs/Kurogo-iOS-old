@@ -23,6 +23,8 @@
 		4BD493691349144400891968 /* EmergencyContactsSection.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BD493681349144400891968 /* EmergencyContactsSection.m */; };
 		4BD4936C1349146900891968 /* EmergencyContact.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BD4936B1349146900891968 /* EmergencyContact.m */; };
 		4BD4936F13492C2400891968 /* EmergencyContactsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BD4936E13492C2400891968 /* EmergencyContactsViewController.m */; };
+		562CD69F13B9AEA600C5CB94 /* LinksModule.m in Sources */ = {isa = PBXBuildFile; fileRef = 562CD69E13B9AEA600C5CB94 /* LinksModule.m */; };
+		562CD6A213B9AF0600C5CB94 /* LinksTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 562CD6A113B9AF0500C5CB94 /* LinksTableViewController.m */; };
 		562F4B79133EFA10000B9344 /* ContentModule.m in Sources */ = {isa = PBXBuildFile; fileRef = 562F4B74133EFA10000B9344 /* ContentModule.m */; };
 		562F4B7A133EFA10000B9344 /* ContentTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 562F4B76133EFA10000B9344 /* ContentTableViewController.m */; };
 		562F4B7B133EFA10000B9344 /* ContentWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 562F4B78133EFA10000B9344 /* ContentWebViewController.m */; };
@@ -216,6 +218,10 @@
 		4BD4936B1349146900891968 /* EmergencyContact.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EmergencyContact.m; sourceTree = "<group>"; };
 		4BD4936D13492C2400891968 /* EmergencyContactsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EmergencyContactsViewController.h; sourceTree = "<group>"; };
 		4BD4936E13492C2400891968 /* EmergencyContactsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EmergencyContactsViewController.m; sourceTree = "<group>"; };
+		562CD69D13B9AEA600C5CB94 /* LinksModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LinksModule.h; path = ../../../Modules/Links/LinksModule.h; sourceTree = "<group>"; };
+		562CD69E13B9AEA600C5CB94 /* LinksModule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LinksModule.m; path = ../../../Modules/Links/LinksModule.m; sourceTree = "<group>"; };
+		562CD6A013B9AF0500C5CB94 /* LinksTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LinksTableViewController.h; sourceTree = "<group>"; };
+		562CD6A113B9AF0500C5CB94 /* LinksTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LinksTableViewController.m; sourceTree = "<group>"; };
 		562F4B73133EFA10000B9344 /* ContentModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ContentModule.h; path = ../../../Modules/Content/ContentModule.h; sourceTree = "<group>"; };
 		562F4B74133EFA10000B9344 /* ContentModule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ContentModule.m; path = ../../../Modules/Content/ContentModule.m; sourceTree = "<group>"; };
 		562F4B75133EFA10000B9344 /* ContentTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ContentTableViewController.h; path = ../../../Modules/Content/ContentTableViewController.h; sourceTree = "<group>"; };
@@ -581,8 +587,8 @@
 				EBB120A6133802D300A4BD1D /* secret */,
 				EB9AF298130B56AD003B9769 /* MainWindow.xib */,
 				EB46A347134EB97C005796E4 /* MainWindow-iPad.xib */,
-				EB1441321309EF5800396753 /* KGOInfo.plist */,
 				EB138AFC12F22F31004DBB7C /* Config.plist */,
+				EB1441321309EF5800396753 /* KGOInfo.plist */,
 				EB46CA8B1327F97100AF7B5C /* ThemeConfig.plist */,
 				EB46A345134EB942005796E4 /* ThemeConfig-iPad.plist */,
 				EBAE86441215FB4900F370BE /* Default@2x.png */,
@@ -652,6 +658,17 @@
 			path = Model;
 			sourceTree = "<group>";
 		};
+		562CD69C13B9AE6D00C5CB94 /* Links */ = {
+			isa = PBXGroup;
+			children = (
+				562CD69D13B9AEA600C5CB94 /* LinksModule.h */,
+				562CD69E13B9AEA600C5CB94 /* LinksModule.m */,
+				562CD6A013B9AF0500C5CB94 /* LinksTableViewController.h */,
+				562CD6A113B9AF0500C5CB94 /* LinksTableViewController.m */,
+			);
+			name = Links;
+			sourceTree = "<group>";
+		};
 		562F4B61133EC6DE000B9344 /* Content */ = {
 			isa = PBXGroup;
 			children = (
@@ -699,6 +716,7 @@
 		DE715445102FE468005E6111 /* Modules */ = {
 			isa = PBXGroup;
 			children = (
+				562CD69C13B9AE6D00C5CB94 /* Links */,
 				4B3904E3134147D000CD9C6F /* Emergency */,
 				562F4B61133EC6DE000B9344 /* Content */,
 				EB181FA5131EDF1B003728FF /* Login */,
@@ -1438,6 +1456,8 @@
 				EB934864139ED47700446243 /* NewsDataController.m in Sources */,
 				EB934865139ED47700446243 /* RSSNewsDataController.m in Sources */,
 				EB93486A139ED48500446243 /* NewsStoryTableViewCell.m in Sources */,
+				562CD69F13B9AEA600C5CB94 /* LinksModule.m in Sources */,
+				562CD6A213B9AF0600C5CB94 /* LinksTableViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1570,7 +1590,7 @@
 				1D6058950D05DD3E006BFB54 /* Release - Production */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = "Release - Production";
+			defaultConfigurationName = "Debug - Development";
 		};
 		C01FCF4E08A954540054247B /* Build configuration list for PBXProject "Universitas" */ = {
 			isa = XCConfigurationList;
@@ -1584,7 +1604,7 @@
 				C01FCF5008A954540054247B /* Release - Production */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = "Release - Production";
+			defaultConfigurationName = "Debug - Development";
 		};
 /* End XCConfigurationList section */
 
