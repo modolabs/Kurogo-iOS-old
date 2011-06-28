@@ -235,7 +235,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				GCC_ENABLE_FIX_AND_CONTINUE = YES;
-				GCC_MODEL_TUNING = G5;
 				GCC_PREFIX_HEADER = "$(SRCROOT)/../facebook-ios-sdk/src/facebook_ios_sdk_Prefix.pch";
 				HEADER_SEARCH_PATHS = (
 					"$(DSTROOT)/**",
@@ -248,7 +247,6 @@
 		1DEB922008733DC00010E9CD /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				GCC_MODEL_TUNING = G5;
 				GCC_PREFIX_HEADER = "$(SRCROOT)/../facebook-ios-sdk/src/facebook_ios_sdk_Prefix.pch";
 				HEADER_SEARCH_PATHS = (
 					"$(DSTROOT)/**",

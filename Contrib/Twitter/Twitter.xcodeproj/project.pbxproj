@@ -353,19 +353,12 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
-				COPY_PHASE_STRIP = NO;
 				DSTROOT = /tmp/Twitter.dst;
-				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_ENABLE_FIX_AND_CONTINUE = YES;
-				GCC_MODEL_TUNING = G5;
-				GCC_OPTIMIZATION_LEVEL = 0;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = Twitter_Prefix.pch;
 				HEADER_SEARCH_PATHS = (
+					"${inherited}",
 					$SDKROOT/usr/include/libxml2,
-					"$(DSTROOT)/**",
-					"$(BUILT_PRODUCTS_DIR)/**",
 				);
 				PRODUCT_NAME = Twitter;
 			};
@@ -375,15 +368,11 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				DSTROOT = /tmp/Twitter.dst;
-				GCC_MODEL_TUNING = G5;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = Twitter_Prefix.pch;
 				HEADER_SEARCH_PATHS = (
+					"${inherited}",
 					$SDKROOT/usr/include/libxml2,
-					"$(DSTROOT)/**",
-					"$(BUILT_PRODUCTS_DIR)/**",
 				);
 				PRODUCT_NAME = Twitter;
 			};

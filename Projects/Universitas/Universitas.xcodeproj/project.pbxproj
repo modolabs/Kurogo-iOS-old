@@ -1462,7 +1462,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = EBC1C7111347C5750045CE9C /* kurogo_debug.xcconfig */;
 			buildSettings = {
-				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				PRODUCT_NAME = Universitas;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -1472,7 +1471,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = EBC1C7041347B8D20045CE9C /* kurogo.xcconfig */;
 			buildSettings = {
-				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				PRODUCT_NAME = Universitas;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -1482,7 +1480,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = EBC1C7111347C5750045CE9C /* kurogo_debug.xcconfig */;
 			buildSettings = {
-				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				PRODUCT_NAME = Universitas;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -1499,7 +1496,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = EBC1C7111347C5750045CE9C /* kurogo_debug.xcconfig */;
 			buildSettings = {
-				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				PRODUCT_NAME = Universitas;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -1515,7 +1511,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = EBC1C7041347B8D20045CE9C /* kurogo.xcconfig */;
 			buildSettings = {
-				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				PRODUCT_NAME = Universitas;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -1532,7 +1527,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = EBC1C7111347C5750045CE9C /* kurogo_debug.xcconfig */;
 			buildSettings = {
-				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				PRODUCT_NAME = Universitas;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -1549,7 +1543,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = EBC1C7041347B8D20045CE9C /* kurogo.xcconfig */;
 			buildSettings = {
-				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				PRODUCT_NAME = Universitas;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
