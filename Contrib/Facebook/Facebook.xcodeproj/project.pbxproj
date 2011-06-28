@@ -21,6 +21,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		EB0AC42013B9656500269FD8 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = EB99B32D12F37DF90065EE93 /* JSON.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = FE2BBD7F0D8B0D3900184787;
+			remoteInfo = libjson;
+		};
 		EB99B33612F37DF90065EE93 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = EB99B32D12F37DF90065EE93 /* JSON.xcodeproj */;
@@ -153,6 +160,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				EB0AC42113B9656500269FD8 /* PBXTargetDependency */,
 			);
 			name = "facebook-ios-sdk";
 			productName = "facebook-ios-sdk";
@@ -214,6 +222,14 @@
 		};
 /* End PBXSourcesBuildPhase section */
 
+/* Begin PBXTargetDependency section */
+		EB0AC42113B9656500269FD8 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = libjson;
+			targetProxy = EB0AC42013B9656500269FD8 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
 /* Begin XCBuildConfiguration section */
 		1DEB921F08733DC00010E9CD /* Debug */ = {
 			isa = XCBuildConfiguration;
@@ -222,7 +238,6 @@
 				GCC_MODEL_TUNING = G5;
 				GCC_PREFIX_HEADER = "$(SRCROOT)/../facebook-ios-sdk/src/facebook_ios_sdk_Prefix.pch";
 				HEADER_SEARCH_PATHS = (
-					"$(SRCROOT)/../usr/local/include",
 					"$(DSTROOT)/**",
 					"$(BUILT_PRODUCTS_DIR)/**",
 				);
@@ -236,7 +251,6 @@
 				GCC_MODEL_TUNING = G5;
 				GCC_PREFIX_HEADER = "$(SRCROOT)/../facebook-ios-sdk/src/facebook_ios_sdk_Prefix.pch";
 				HEADER_SEARCH_PATHS = (
-					"$(SRCROOT)/../usr/local/include",
 					"$(DSTROOT)/**",
 					"$(BUILT_PRODUCTS_DIR)/**",
 				);

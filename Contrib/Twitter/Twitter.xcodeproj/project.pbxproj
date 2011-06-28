@@ -364,7 +364,6 @@
 				GCC_PREFIX_HEADER = Twitter_Prefix.pch;
 				HEADER_SEARCH_PATHS = (
 					$SDKROOT/usr/include/libxml2,
-					"$(SRCROOT)/../usr/local/include",
 					"$(DSTROOT)/**",
 					"$(BUILT_PRODUCTS_DIR)/**",
 				);
@@ -383,7 +382,6 @@
 				GCC_PREFIX_HEADER = Twitter_Prefix.pch;
 				HEADER_SEARCH_PATHS = (
 					$SDKROOT/usr/include/libxml2,
-					"$(SRCROOT)/../usr/local/include",
 					"$(DSTROOT)/**",
 					"$(BUILT_PRODUCTS_DIR)/**",
 				);
