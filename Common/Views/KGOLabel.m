@@ -32,6 +32,23 @@
     if (size.height < rect.size.height) {
         rect.size = size;
     }
+    if (size.width < self.frame.size.width) {
+        CGFloat xOriginOffset = 0;
+        switch (self.textAlignment) {
+            case UITextAlignmentLeft:
+                xOriginOffset = 0;
+                break;
+                
+            case UITextAlignmentCenter:
+                xOriginOffset = (self.frame.size.width - size.width) / 2;
+                break;
+                
+            case UITextAlignmentRight:
+                xOriginOffset = self.frame.size.width - size.width;
+                break;
+        }
+        rect.origin.x += xOriginOffset;
+    }
     [super drawTextInRect:rect];
 }
 
