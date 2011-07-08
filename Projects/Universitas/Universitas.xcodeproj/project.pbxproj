@@ -88,9 +88,6 @@
 		EB033766133C2B8C00ACF2BB /* MITThumbnailView.m in Sources */ = {isa = PBXBuildFile; fileRef = EB033729133C2B8C00ACF2BB /* MITThumbnailView.m */; };
 		EB033767133C2B8C00ACF2BB /* KGOTabbedControl.m in Sources */ = {isa = PBXBuildFile; fileRef = EB03372B133C2B8C00ACF2BB /* KGOTabbedControl.m */; };
 		EB03376B133D26F100ACF2BB /* EventDetailTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = EB03376A133D26E400ACF2BB /* EventDetailTableView.m */; };
-		EB03382F1340D3B900ACF2BB /* en.lproj in Resources */ = {isa = PBXBuildFile; fileRef = EB03382C1340D3B900ACF2BB /* en.lproj */; };
-		EB0338301340D3B900ACF2BB /* ja.lproj in Resources */ = {isa = PBXBuildFile; fileRef = EB03382D1340D3B900ACF2BB /* ja.lproj */; };
-		EB0338311340D3B900ACF2BB /* zh_TW.lproj in Resources */ = {isa = PBXBuildFile; fileRef = EB03382E1340D3B900ACF2BB /* zh_TW.lproj */; };
 		EB0338441340DB0500ACF2BB /* Calendar.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = EB0338331340DB0500ACF2BB /* Calendar.xcdatamodeld */; };
 		EB0338451340DB0500ACF2BB /* KGOAttendeeWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = EB0338371340DB0500ACF2BB /* KGOAttendeeWrapper.m */; };
 		EB0338461340DB0500ACF2BB /* KGOCalendar.m in Sources */ = {isa = PBXBuildFile; fileRef = EB0338391340DB0500ACF2BB /* KGOCalendar.m */; };
@@ -164,6 +161,12 @@
 		EB6D02A911E3784100B65CE3 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EB6D02A811E3784100B65CE3 /* MapKit.framework */; };
 		EB7F32D310CD6FB300188BCD /* AddressBook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EB7F32D210CD6FB300188BCD /* AddressBook.framework */; };
 		EB7F32D710CD6FBB00188BCD /* AddressBookUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EB7F32D610CD6FBB00188BCD /* AddressBookUI.framework */; };
+		EB83AE4C13C747AA006CCEDB /* Settings.plist in Resources */ = {isa = PBXBuildFile; fileRef = EB83AE4A13C747AA006CCEDB /* Settings.plist */; };
+		EB83AE4E13C747B3006CCEDB /* Settings.plist in Resources */ = {isa = PBXBuildFile; fileRef = EB83AE4A13C747AA006CCEDB /* Settings.plist */; };
+		EB83AE5113C747BE006CCEDB /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = EB83AE4F13C747BE006CCEDB /* Localizable.strings */; };
+		EB83AE5313C747C5006CCEDB /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = EB83AE4F13C747BE006CCEDB /* Localizable.strings */; };
+		EB83AE5513C747CF006CCEDB /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = EB83AE4F13C747BE006CCEDB /* Localizable.strings */; };
+		EB83AE5D13C75C0C006CCEDB /* staging.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = EB83AE5C13C75C0C006CCEDB /* staging.xcconfig */; };
 		EB934863139ED47700446243 /* JSONNewsDataController.m in Sources */ = {isa = PBXBuildFile; fileRef = EB93485E139ED47700446243 /* JSONNewsDataController.m */; };
 		EB934864139ED47700446243 /* NewsDataController.m in Sources */ = {isa = PBXBuildFile; fileRef = EB934860139ED47700446243 /* NewsDataController.m */; };
 		EB934865139ED47700446243 /* RSSNewsDataController.m in Sources */ = {isa = PBXBuildFile; fileRef = EB934862139ED47700446243 /* RSSNewsDataController.m */; };
@@ -338,9 +341,6 @@
 		EB03372B133C2B8C00ACF2BB /* KGOTabbedControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGOTabbedControl.m; sourceTree = "<group>"; };
 		EB033769133D26D600ACF2BB /* EventDetailTableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EventDetailTableView.h; sourceTree = "<group>"; };
 		EB03376A133D26E400ACF2BB /* EventDetailTableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EventDetailTableView.m; sourceTree = "<group>"; };
-		EB03382C1340D3B900ACF2BB /* en.lproj */ = {isa = PBXFileReference; lastKnownFileType = folder; path = en.lproj; sourceTree = "<group>"; };
-		EB03382D1340D3B900ACF2BB /* ja.lproj */ = {isa = PBXFileReference; lastKnownFileType = folder; path = ja.lproj; sourceTree = "<group>"; };
-		EB03382E1340D3B900ACF2BB /* zh_TW.lproj */ = {isa = PBXFileReference; lastKnownFileType = folder; path = zh_TW.lproj; sourceTree = "<group>"; };
 		EB0338341340DB0500ACF2BB /* Calendar.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Calendar.xcdatamodel; sourceTree = "<group>"; };
 		EB0338351340DB0500ACF2BB /* CalendarModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CalendarModel.h; sourceTree = "<group>"; };
 		EB0338361340DB0500ACF2BB /* KGOAttendeeWrapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGOAttendeeWrapper.h; sourceTree = "<group>"; };
@@ -473,6 +473,12 @@
 		EB6D02A811E3784100B65CE3 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		EB7F32D210CD6FB300188BCD /* AddressBook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBook.framework; path = System/Library/Frameworks/AddressBook.framework; sourceTree = SDKROOT; };
 		EB7F32D610CD6FBB00188BCD /* AddressBookUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBookUI.framework; path = System/Library/Frameworks/AddressBookUI.framework; sourceTree = SDKROOT; };
+		EB83AE4B13C747AA006CCEDB /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = en; path = en.lproj/Settings.plist; sourceTree = "<group>"; };
+		EB83AE4D13C747B3006CCEDB /* zh_TW */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = zh_TW; path = zh_TW.lproj/Settings.plist; sourceTree = "<group>"; };
+		EB83AE5013C747BE006CCEDB /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
+		EB83AE5213C747C5006CCEDB /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/Localizable.strings; sourceTree = "<group>"; };
+		EB83AE5413C747CF006CCEDB /* zh_TW */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = zh_TW; path = zh_TW.lproj/Localizable.strings; sourceTree = "<group>"; };
+		EB83AE5C13C75C0C006CCEDB /* staging.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = staging.xcconfig; sourceTree = "<group>"; };
 		EB93485D139ED47700446243 /* JSONNewsDataController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JSONNewsDataController.h; sourceTree = "<group>"; };
 		EB93485E139ED47700446243 /* JSONNewsDataController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JSONNewsDataController.m; sourceTree = "<group>"; };
 		EB93485F139ED47700446243 /* NewsDataController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NewsDataController.h; sourceTree = "<group>"; };
@@ -494,10 +500,7 @@
 		EBB121F0133A915200A4BD1D /* CalendarHomeViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CalendarHomeViewController.xib; sourceTree = "<group>"; };
 		EBC1C7041347B8D20045CE9C /* kurogo.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = kurogo.xcconfig; sourceTree = "<group>"; };
 		EBC1C7051347B8D20045CE9C /* release.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = release.xcconfig; sourceTree = "<group>"; };
-		EBC1C7101347C5750045CE9C /* dev_server.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = dev_server.xcconfig; sourceTree = "<group>"; };
 		EBC1C7111347C5750045CE9C /* kurogo_debug.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = kurogo_debug.xcconfig; sourceTree = "<group>"; };
-		EBC1C7121347C5750045CE9C /* stage_server.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = stage_server.xcconfig; sourceTree = "<group>"; };
-		EBC1C7131347C5750045CE9C /* test_server.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = test_server.xcconfig; sourceTree = "<group>"; };
 		EBE242BC13AFD3030082C277 /* libfacebook_ios_sdk.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libfacebook_ios_sdk.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		EBE242BD13AFD3030082C277 /* libjson.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libjson.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		EBE242BE13AFD3030082C277 /* libOAuth.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libOAuth.a; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -951,9 +954,8 @@
 		EB0338261340D39C00ACF2BB /* Localization */ = {
 			isa = PBXGroup;
 			children = (
-				EB03382C1340D3B900ACF2BB /* en.lproj */,
-				EB03382D1340D3B900ACF2BB /* ja.lproj */,
-				EB03382E1340D3B900ACF2BB /* zh_TW.lproj */,
+				EB83AE4F13C747BE006CCEDB /* Localizable.strings */,
+				EB83AE4A13C747AA006CCEDB /* Settings.plist */,
 			);
 			path = Localization;
 			sourceTree = "<group>";
@@ -1186,11 +1188,9 @@
 		EBC1C6FF1347B8D20045CE9C /* xcconfig */ = {
 			isa = PBXGroup;
 			children = (
+				EB83AE5C13C75C0C006CCEDB /* staging.xcconfig */,
 				EBC1C7041347B8D20045CE9C /* kurogo.xcconfig */,
 				EBC1C7111347C5750045CE9C /* kurogo_debug.xcconfig */,
-				EBC1C7101347C5750045CE9C /* dev_server.xcconfig */,
-				EBC1C7121347C5750045CE9C /* stage_server.xcconfig */,
-				EBC1C7131347C5750045CE9C /* test_server.xcconfig */,
 				EBC1C7051347B8D20045CE9C /* release.xcconfig */,
 			);
 			name = xcconfig;
@@ -1288,15 +1288,18 @@
 				EBB121F2133A917200A4BD1D /* CalendarHomeViewController.xib in Resources */,
 				EB03375A133C2B8C00ACF2BB /* KGOTabbedViewController.xib in Resources */,
 				EB0CF98D13403141003B8E45 /* TwitterViewController.xib in Resources */,
-				EB03382F1340D3B900ACF2BB /* en.lproj in Resources */,
-				EB0338301340D3B900ACF2BB /* ja.lproj in Resources */,
-				EB0338311340D3B900ACF2BB /* zh_TW.lproj in Resources */,
 				EB46A346134EB942005796E4 /* ThemeConfig-iPad.plist in Resources */,
 				EB46A348134EB97C005796E4 /* MainWindow-iPad.xib in Resources */,
 				EB46A4B413501A80005796E4 /* Icon-72.png in Resources */,
 				EB163ABA136CFB2F003C69E2 /* Default-Portrait~ipad.png in Resources */,
 				EB93486B139ED48500446243 /* NewsStoryTableViewCell.xib in Resources */,
 				EB93486C139ED48500446243 /* StoryListViewController.xib in Resources */,
+				EB83AE4C13C747AA006CCEDB /* Settings.plist in Resources */,
+				EB83AE4E13C747B3006CCEDB /* Settings.plist in Resources */,
+				EB83AE5113C747BE006CCEDB /* Localizable.strings in Resources */,
+				EB83AE5313C747C5006CCEDB /* Localizable.strings in Resources */,
+				EB83AE5513C747CF006CCEDB /* Localizable.strings in Resources */,
+				EB83AE5D13C75C0C006CCEDB /* staging.xcconfig in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1463,117 +1466,75 @@
 		};
 /* End PBXSourcesBuildPhase section */
 
+/* Begin PBXVariantGroup section */
+		EB83AE4A13C747AA006CCEDB /* Settings.plist */ = {
+			isa = PBXVariantGroup;
+			children = (
+				EB83AE4B13C747AA006CCEDB /* en */,
+				EB83AE4D13C747B3006CCEDB /* zh_TW */,
+			);
+			name = Settings.plist;
+			sourceTree = "<group>";
+		};
+		EB83AE4F13C747BE006CCEDB /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				EB83AE5013C747BE006CCEDB /* en */,
+				EB83AE5213C747C5006CCEDB /* ja */,
+				EB83AE5413C747CF006CCEDB /* zh_TW */,
+			);
+			name = Localizable.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
 /* Begin XCBuildConfiguration section */
-		1D6058940D05DD3E006BFB54 /* Debug - Development */ = {
+		EB83AE5613C75B2B006CCEDB /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = EBC1C7101347C5750045CE9C /* dev_server.xcconfig */;
+			baseConfigurationReference = EBC1C7111347C5750045CE9C /* kurogo_debug.xcconfig */;
+			buildSettings = {
+				PRODUCT_NAME = Universitas;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		EB83AE5713C75B2B006CCEDB /* Debug */ = {
+			isa = XCBuildConfiguration;
 			buildSettings = {
 			};
-			name = "Debug - Development";
+			name = Debug;
 		};
-		1D6058950D05DD3E006BFB54 /* Release - Production */ = {
+		EB83AE5813C75B33006CCEDB /* Staging */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = EBC1C7041347B8D20045CE9C /* kurogo.xcconfig */;
+			buildSettings = {
+				PRODUCT_NAME = Universitas;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Staging;
+		};
+		EB83AE5913C75B33006CCEDB /* Staging */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = EB83AE5C13C75C0C006CCEDB /* staging.xcconfig */;
+			buildSettings = {
+			};
+			name = Staging;
+		};
+		EB83AE5A13C75B3A006CCEDB /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = EBC1C7041347B8D20045CE9C /* kurogo.xcconfig */;
+			buildSettings = {
+				PRODUCT_NAME = Universitas;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		EB83AE5B13C75B3A006CCEDB /* Release */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = EBC1C7051347B8D20045CE9C /* release.xcconfig */;
 			buildSettings = {
 			};
-			name = "Release - Production";
-		};
-		C01FCF4F08A954540054247B /* Debug - Development */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = EBC1C7111347C5750045CE9C /* kurogo_debug.xcconfig */;
-			buildSettings = {
-				PRODUCT_NAME = Universitas;
-				TARGETED_DEVICE_FAMILY = "1,2";
-			};
-			name = "Debug - Development";
-		};
-		C01FCF5008A954540054247B /* Release - Production */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = EBC1C7041347B8D20045CE9C /* kurogo.xcconfig */;
-			buildSettings = {
-				PRODUCT_NAME = Universitas;
-				TARGETED_DEVICE_FAMILY = "1,2";
-			};
-			name = "Release - Production";
-		};
-		DE8B4CF7110F92DC00B7D991 /* Debug - Staging */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = EBC1C7111347C5750045CE9C /* kurogo_debug.xcconfig */;
-			buildSettings = {
-				PRODUCT_NAME = Universitas;
-				TARGETED_DEVICE_FAMILY = "1,2";
-			};
-			name = "Debug - Staging";
-		};
-		DE8B4CF8110F92DC00B7D991 /* Debug - Staging */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = EBC1C7121347C5750045CE9C /* stage_server.xcconfig */;
-			buildSettings = {
-			};
-			name = "Debug - Staging";
-		};
-		DE8B4DBE110FAB1100B7D991 /* Debug - Production */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = EBC1C7111347C5750045CE9C /* kurogo_debug.xcconfig */;
-			buildSettings = {
-				PRODUCT_NAME = Universitas;
-				TARGETED_DEVICE_FAMILY = "1,2";
-			};
-			name = "Debug - Production";
-		};
-		DE8B4DBF110FAB1100B7D991 /* Debug - Production */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-			};
-			name = "Debug - Production";
-		};
-		DEB0B3DD11122D3200021561 /* Release - Staging */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = EBC1C7041347B8D20045CE9C /* kurogo.xcconfig */;
-			buildSettings = {
-				PRODUCT_NAME = Universitas;
-				TARGETED_DEVICE_FAMILY = "1,2";
-			};
-			name = "Release - Staging";
-		};
-		DEB0B3DE11122D3200021561 /* Release - Staging */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = EBC1C7121347C5750045CE9C /* stage_server.xcconfig */;
-			buildSettings = {
-			};
-			name = "Release - Staging";
-		};
-		EBAE87911219905300F370BE /* Debug - Testing */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = EBC1C7111347C5750045CE9C /* kurogo_debug.xcconfig */;
-			buildSettings = {
-				PRODUCT_NAME = Universitas;
-				TARGETED_DEVICE_FAMILY = "1,2";
-			};
-			name = "Debug - Testing";
-		};
-		EBAE87921219905300F370BE /* Debug - Testing */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = EBC1C7131347C5750045CE9C /* test_server.xcconfig */;
-			buildSettings = {
-			};
-			name = "Debug - Testing";
-		};
-		EBAEA0731223320800F370BE /* Release - Testing */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = EBC1C7041347B8D20045CE9C /* kurogo.xcconfig */;
-			buildSettings = {
-				PRODUCT_NAME = Universitas;
-				TARGETED_DEVICE_FAMILY = "1,2";
-			};
-			name = "Release - Testing";
-		};
-		EBAEA0741223320800F370BE /* Release - Testing */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = EBC1C7131347C5750045CE9C /* test_server.xcconfig */;
-			buildSettings = {
-			};
-			name = "Release - Testing";
+			name = Release;
 		};
 /* End XCBuildConfiguration section */
 
@@ -1581,30 +1542,22 @@
 		1D6058960D05DD3E006BFB54 /* Build configuration list for PBXNativeTarget "Universitas" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				1D6058940D05DD3E006BFB54 /* Debug - Development */,
-				EBAE87921219905300F370BE /* Debug - Testing */,
-				DE8B4CF8110F92DC00B7D991 /* Debug - Staging */,
-				DE8B4DBF110FAB1100B7D991 /* Debug - Production */,
-				DEB0B3DE11122D3200021561 /* Release - Staging */,
-				EBAEA0741223320800F370BE /* Release - Testing */,
-				1D6058950D05DD3E006BFB54 /* Release - Production */,
+				EB83AE5713C75B2B006CCEDB /* Debug */,
+				EB83AE5913C75B33006CCEDB /* Staging */,
+				EB83AE5B13C75B3A006CCEDB /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = "Debug - Development";
+			defaultConfigurationName = Debug;
 		};
 		C01FCF4E08A954540054247B /* Build configuration list for PBXProject "Universitas" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				C01FCF4F08A954540054247B /* Debug - Development */,
-				EBAE87911219905300F370BE /* Debug - Testing */,
-				DE8B4CF7110F92DC00B7D991 /* Debug - Staging */,
-				DE8B4DBE110FAB1100B7D991 /* Debug - Production */,
-				DEB0B3DD11122D3200021561 /* Release - Staging */,
-				EBAEA0731223320800F370BE /* Release - Testing */,
-				C01FCF5008A954540054247B /* Release - Production */,
+				EB83AE5613C75B2B006CCEDB /* Debug */,
+				EB83AE5813C75B33006CCEDB /* Staging */,
+				EB83AE5A13C75B3A006CCEDB /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = "Debug - Development";
+			defaultConfigurationName = Debug;
 		};
 /* End XCConfigurationList section */
 

@@ -107,7 +107,7 @@
         [[KGORequestManager sharedManager] requestSessionInfo];
     }
     
-#ifdef USE_MOBILE_DEV
+#ifdef ALLOW_SELF_SIGNED_CERTIFICATE
     
     NSString *scheme = [url scheme];
     
@@ -168,7 +168,7 @@
     return YES;
 }
 
-#ifdef USE_MOBILE_DEV
+#ifdef ALLOW_SELF_SIGNED_CERTIFICATE
 
 #pragma mark - Webview
 

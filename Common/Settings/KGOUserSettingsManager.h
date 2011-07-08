@@ -1,5 +1,9 @@
 #import <Foundation/Foundation.h>
 
+#ifdef DEBUG
+extern NSString * const KGOUserSettingServerKey;
+#endif
+
 @class KGOUserSetting;
 
 @interface KGOUserSettingsManager : NSObject {

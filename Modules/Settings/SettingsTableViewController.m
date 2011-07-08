@@ -173,6 +173,7 @@
         if (setting.selectedValue == currentOption) {
             accessory = KGOAccessoryTypeCheckmark;
         }
+        cellSubtitle = [currentOption stringForKey:@"subtitle" nilIfEmpty:YES];
     }
         
     return [[^(UITableViewCell *cell) {
