@@ -48,11 +48,11 @@ NSString * const RSSTagItemBody       = @"content:encoded";
             }
         }
     }
-    _currentCategories = [categories retain];
+    self.currentCategories = categories;
     [[CoreDataManager sharedManager] saveData];
     
     if ([self.delegate respondsToSelector:@selector(dataController:didRetrieveCategories:)]) {
-        [self.delegate dataController:self didRetrieveCategories:_currentCategories];
+        [self.delegate dataController:self didRetrieveCategories:self.currentCategories];
     }
 }
 
@@ -333,9 +333,8 @@ NSString * const RSSTagItemBody       = @"content:encoded";
     
 	if ([elementName isEqualToString:RSSTagItem]) {
         NewsStory *story = [self storyWithDictionary:_currentItemData];
-        NSArray *stories = [_currentStories arrayByAddingObject:story];
-        [_currentStories release];
-        _currentStories = [stories retain];
+        NSArray *stories = [self.currentStories arrayByAddingObject:story];
+        self.currentStories = [stories retain];
         [_currentItemData release];
         _currentItemData = nil;
         
@@ -345,7 +344,7 @@ NSString * const RSSTagItemBody       = @"content:encoded";
     }
 
     // assume there are 10 stories
-    CGFloat progress = 0.3 + fminf(0.7, 0.7 * _currentStories.count / 10);
+    CGFloat progress = 0.3 + fminf(0.7, 0.7 * self.currentStories.count / 10);
     [self performSelectorOnMainThread:@selector(reportProgress:)
                            withObject:[NSNumber numberWithFloat:progress]
                         waitUntilDone:NO];
@@ -355,14 +354,13 @@ NSString * const RSSTagItemBody       = @"content:encoded";
 
 - (void)parserDidStartDocument:(NSXMLParser *)parser {
     _currentStack = [[NSMutableArray alloc] init];
-    _currentStories = [[NSMutableArray alloc] init];
+    self.currentStories = [NSMutableArray array];
 }
 
 - (void)parser:(NSXMLParser *)parser parseErrorOccurred:(NSError *)error {
     [self performSelectorOnMainThread:@selector(parseError:) withObject:error waitUntilDone:NO];
     
-    [_currentStories release];
-    _currentStories = nil;
+    self.currentStories = nil;
     
     [_xmlParser release];
     _xmlParser = nil;
@@ -382,10 +380,9 @@ NSString * const RSSTagItemBody       = @"content:encoded";
     
     _done = YES;
 
-    [self performSelectorOnMainThread:@selector(parseEnded:) withObject:_currentStories waitUntilDone:YES];
+    [self performSelectorOnMainThread:@selector(parseEnded:) withObject:self.currentStories waitUntilDone:YES];
     
-    [_currentStories release];
-    _currentStories = nil;
+    self.currentStories = nil;
     
     [_xmlParser release];
     _xmlParser = nil;
