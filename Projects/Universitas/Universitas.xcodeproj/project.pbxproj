@@ -167,6 +167,7 @@
 		EB83AE5313C747C5006CCEDB /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = EB83AE4F13C747BE006CCEDB /* Localizable.strings */; };
 		EB83AE5513C747CF006CCEDB /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = EB83AE4F13C747BE006CCEDB /* Localizable.strings */; };
 		EB83AE5D13C75C0C006CCEDB /* staging.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = EB83AE5C13C75C0C006CCEDB /* staging.xcconfig */; };
+		EB83AE6C13C7B387006CCEDB /* libjson.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EB83AE6B13C7B387006CCEDB /* libjson.a */; };
 		EB934863139ED47700446243 /* JSONNewsDataController.m in Sources */ = {isa = PBXBuildFile; fileRef = EB93485E139ED47700446243 /* JSONNewsDataController.m */; };
 		EB934864139ED47700446243 /* NewsDataController.m in Sources */ = {isa = PBXBuildFile; fileRef = EB934860139ED47700446243 /* NewsDataController.m */; };
 		EB934865139ED47700446243 /* RSSNewsDataController.m in Sources */ = {isa = PBXBuildFile; fileRef = EB934862139ED47700446243 /* RSSNewsDataController.m */; };
@@ -183,8 +184,6 @@
 		EBB121F1133A917200A4BD1D /* CalendarHomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EBB121EF133A913100A4BD1D /* CalendarHomeViewController.m */; };
 		EBB121F2133A917200A4BD1D /* CalendarHomeViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = EBB121F0133A915200A4BD1D /* CalendarHomeViewController.xib */; };
 		EBE242C113AFD3030082C277 /* libfacebook_ios_sdk.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EBE242BC13AFD3030082C277 /* libfacebook_ios_sdk.a */; };
-		EBE242C213AFD3030082C277 /* libjson.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EBE242BD13AFD3030082C277 /* libjson.a */; };
-		EBE242C313AFD3030082C277 /* libOAuth.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EBE242BE13AFD3030082C277 /* libOAuth.a */; };
 		EBE242C413AFD3030082C277 /* libSFHFKeychainUtils.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EBE242BF13AFD3030082C277 /* libSFHFKeychainUtils.a */; };
 		EBE242C513AFD3030082C277 /* libTwitter.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EBE242C013AFD3030082C277 /* libTwitter.a */; };
 		EBE2CC1E1342AD2F0037546A /* KGOBookmarksViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EBE2CC1D1342AD2F0037546A /* KGOBookmarksViewController.m */; };
@@ -479,6 +478,7 @@
 		EB83AE5213C747C5006CCEDB /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/Localizable.strings; sourceTree = "<group>"; };
 		EB83AE5413C747CF006CCEDB /* zh_TW */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = zh_TW; path = zh_TW.lproj/Localizable.strings; sourceTree = "<group>"; };
 		EB83AE5C13C75C0C006CCEDB /* staging.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = staging.xcconfig; sourceTree = "<group>"; };
+		EB83AE6B13C7B387006CCEDB /* libjson.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libjson.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		EB93485D139ED47700446243 /* JSONNewsDataController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JSONNewsDataController.h; sourceTree = "<group>"; };
 		EB93485E139ED47700446243 /* JSONNewsDataController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JSONNewsDataController.m; sourceTree = "<group>"; };
 		EB93485F139ED47700446243 /* NewsDataController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NewsDataController.h; sourceTree = "<group>"; };
@@ -527,9 +527,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EB83AE6C13C7B387006CCEDB /* libjson.a in Frameworks */,
 				EBE242C113AFD3030082C277 /* libfacebook_ios_sdk.a in Frameworks */,
-				EBE242C213AFD3030082C277 /* libjson.a in Frameworks */,
-				EBE242C313AFD3030082C277 /* libOAuth.a in Frameworks */,
 				EBE242C413AFD3030082C277 /* libSFHFKeychainUtils.a in Frameworks */,
 				EBE242C513AFD3030082C277 /* libTwitter.a in Frameworks */,
 				EBB121ED13392F3300A4BD1D /* EventKit.framework in Frameworks */,
@@ -568,6 +567,7 @@
 		29B97314FDCFA39411CA2CEA /* CustomTemplate */ = {
 			isa = PBXGroup;
 			children = (
+				EB83AE6B13C7B387006CCEDB /* libjson.a */,
 				EB1441361309EF7B00396753 /* Application */,
 				EB0336B2133C2B8B00ACF2BB /* Common */,
 				EB1387B912F22DF7004DBB7C /* Contrib */,

@@ -647,7 +647,7 @@
 				53D229760C9611FF00276605 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Debug;
+			defaultConfigurationName = Release;
 		};
 		BCC047190FB651CD00F9F2D3 /* Build configuration list for PBXAggregateTarget "Documentation" */ = {
 			isa = XCConfigurationList;
@@ -656,7 +656,7 @@
 				BCC047180FB651AF00F9F2D3 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Debug;
+			defaultConfigurationName = Release;
 		};
 		FE2BBD950D8B0DC900184787 /* Build configuration list for PBXNativeTarget "libjson" */ = {
 			isa = XCConfigurationList;
@@ -665,7 +665,7 @@
 				FE2BBD850D8B0D3900184787 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Debug;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

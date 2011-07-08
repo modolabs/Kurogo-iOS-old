@@ -47,6 +47,7 @@
 		EB13906B12F26C52004DBB7C /* NSData+Base64.m in Sources */ = {isa = PBXBuildFile; fileRef = EB13903012F26C52004DBB7C /* NSData+Base64.m */; };
 		EB13906C12F26C52004DBB7C /* NSString+UUID.h in Headers */ = {isa = PBXBuildFile; fileRef = EB13903112F26C52004DBB7C /* NSString+UUID.h */; };
 		EB13906D12F26C52004DBB7C /* NSString+UUID.m in Sources */ = {isa = PBXBuildFile; fileRef = EB13903212F26C52004DBB7C /* NSString+UUID.m */; };
+		EB83AE6113C7AF58006CCEDB /* libOAuth.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EB83AE6013C7AF58006CCEDB /* libOAuth.a */; };
 		EB99B01012F3698D0065EE93 /* libxml2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = EB99B00F12F3698D0065EE93 /* libxml2.dylib */; };
 /* End PBXBuildFile section */
 
@@ -103,6 +104,7 @@
 		EB13903012F26C52004DBB7C /* NSData+Base64.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSData+Base64.m"; sourceTree = "<group>"; };
 		EB13903112F26C52004DBB7C /* NSString+UUID.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+UUID.h"; sourceTree = "<group>"; };
 		EB13903212F26C52004DBB7C /* NSString+UUID.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+UUID.m"; sourceTree = "<group>"; };
+		EB83AE6013C7AF58006CCEDB /* libOAuth.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libOAuth.a; sourceTree = SOURCE_ROOT; };
 		EB99AFD112F367340065EE93 /* OAuthConsumer.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = OAuthConsumer.xcodeproj; path = ../OAuth/OAuthConsumer.xcodeproj; sourceTree = SOURCE_ROOT; };
 		EB99B00F12F3698D0065EE93 /* libxml2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libxml2.dylib; path = usr/lib/libxml2.dylib; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
@@ -112,6 +114,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EB83AE6113C7AF58006CCEDB /* libOAuth.a in Frameworks */,
 				AACBBE4A0F95108600F1A2B1 /* Foundation.framework in Frameworks */,
 				EB99B01012F3698D0065EE93 /* libxml2.dylib in Frameworks */,
 			);
@@ -161,6 +164,7 @@
 			isa = PBXGroup;
 			children = (
 				AA747D9E0F9514B9006C5449 /* Twitter_Prefix.pch */,
+				EB83AE6013C7AF58006CCEDB /* libOAuth.a */,
 			);
 			name = "Other Sources";
 			sourceTree = "<group>";
@@ -360,6 +364,10 @@
 					"${inherited}",
 					$SDKROOT/usr/include/libxml2,
 				);
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)\"",
+				);
 				PRODUCT_NAME = Twitter;
 			};
 			name = Debug;
@@ -373,6 +381,10 @@
 				HEADER_SEARCH_PATHS = (
 					"${inherited}",
 					$SDKROOT/usr/include/libxml2,
+				);
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)\"",
 				);
 				PRODUCT_NAME = Twitter;
 			};
@@ -402,7 +414,7 @@
 				1DEB922008733DC00010E9CD /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Debug;
+			defaultConfigurationName = Release;
 		};
 		1DEB922208733DC00010E9CD /* Build configuration list for PBXProject "Twitter" */ = {
 			isa = XCConfigurationList;
@@ -411,7 +423,7 @@
 				1DEB922408733DC00010E9CD /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Debug;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

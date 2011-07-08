@@ -236,10 +236,6 @@
 			buildSettings = {
 				GCC_ENABLE_FIX_AND_CONTINUE = YES;
 				GCC_PREFIX_HEADER = "$(SRCROOT)/../facebook-ios-sdk/src/facebook_ios_sdk_Prefix.pch";
-				HEADER_SEARCH_PATHS = (
-					"$(DSTROOT)/**",
-					"$(BUILT_PRODUCTS_DIR)/**",
-				);
 				PRODUCT_NAME = facebook_ios_sdk;
 			};
 			name = Debug;
@@ -248,10 +244,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				GCC_PREFIX_HEADER = "$(SRCROOT)/../facebook-ios-sdk/src/facebook_ios_sdk_Prefix.pch";
-				HEADER_SEARCH_PATHS = (
-					"$(DSTROOT)/**",
-					"$(BUILT_PRODUCTS_DIR)/**",
-				);
 				PRODUCT_NAME = facebook_ios_sdk;
 			};
 			name = Release;
@@ -280,7 +272,7 @@
 				1DEB922008733DC00010E9CD /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Debug;
+			defaultConfigurationName = Release;
 		};
 		1DEB922208733DC00010E9CD /* Build configuration list for PBXProject "Facebook" */ = {
 			isa = XCConfigurationList;
@@ -289,7 +281,7 @@
 				1DEB922408733DC00010E9CD /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Debug;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

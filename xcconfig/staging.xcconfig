@@ -1,2 +1,1 @@
-CODE_SIGN_IDENTITY = iPhone Distribution
 SHARED_CFLAGS = -DSTAGING

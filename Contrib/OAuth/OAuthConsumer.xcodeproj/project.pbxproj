@@ -458,7 +458,7 @@
 				1DEB91B308733DA50010E9CD /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Debug;
+			defaultConfigurationName = Release;
 		};
 		EB1391B712F26F6B004DBB7C /* Build configuration list for PBXNativeTarget "OAuthConsumer" */ = {
 			isa = XCConfigurationList;
@@ -467,7 +467,7 @@
 				EB1391B412F26F48004DBB7C /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Debug;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
