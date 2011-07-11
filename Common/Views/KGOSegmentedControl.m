@@ -59,7 +59,9 @@
         imagePosition = @"middle";
     }
 
-    if (state == KGOTabStateActive || state == KGOTabStatePressed) {
+    if (state == KGOTabStateActive) {
+        imagePath = [NSString stringWithFormat:@"common/toolbar-segmented-%@-selected", imagePosition];
+    } else if (state == KGOTabStatePressed) {
         imagePath = [NSString stringWithFormat:@"common/toolbar-segmented-%@-pressed", imagePosition];
     } else {
         imagePath = [NSString stringWithFormat:@"common/toolbar-segmented-%@", imagePosition];
