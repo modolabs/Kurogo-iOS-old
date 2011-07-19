@@ -1,15 +1,22 @@
 #import <UIKit/UIKit.h>
+#import "KGOModule.h"
 #import "KGORequestManager.h"
 #import "KGOTableViewController.h"
 
-
+typedef enum {
+    LinksDisplayTypeList,
+    LinksDisplayTypeSpringboard
+} LinksDisplayType;
 
 @interface LinksTableViewController : KGOTableViewController <KGORequestDelegate>{
+    
+    NSString *moduleTag;
     
     NSArray * linksArray;
     
     NSString * description;
-    BOOL displayTypeIsList;
+    
+    LinksDisplayType displayType;
     
     UIView * loadingView;
     UIActivityIndicatorView * loadingIndicator;

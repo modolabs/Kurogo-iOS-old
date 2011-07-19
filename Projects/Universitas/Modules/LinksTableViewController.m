@@ -1,4 +1,5 @@
 #import "LinksTableViewController.h"
+#import "KGOAppDelegate+ModuleAdditions.h"
 #import "KGOLabel.h"
 
 
@@ -7,7 +8,7 @@
 @synthesize loadingIndicator;
 @synthesize loadingView;
 
-- (id)initWithModuleTag: (NSString *) moduleTag
+- (id)initWithModuleTag: (NSString *) aModuleTag
 {
     self = [super initWithStyle:UITableViewStyleGrouped];
     if (self) {
@@ -16,6 +17,8 @@
         self.title = NSLocalizedString(@"Links", nil);
         if ((nil == linksArray) || (nil == description))
             [self addLoadingView];
+        
+        moduleTag = [aModuleTag retain];
             
     }
     return self;
@@ -42,6 +45,7 @@
 
 - (void)dealloc
 {
+    [moduleTag release];
     [linksArray dealloc];
     [description dealloc];
     self.loadingIndicator = nil;
@@ -144,8 +148,12 @@
     cell.detailTextLabel.lineBreakMode = UILineBreakModeTailTruncation;
     cell.detailTextLabel.text = linkSubtitle;
     
-    UIImageView * accessoryImageView = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"kurogo/common/action-external.png"]] autorelease];
-    cell.accessoryView = accessoryImageView;
+    if([(NSDictionary *)[linksArray objectAtIndex:indexPath.row] objectForKey:@"url"]) {
+        UIImageView * accessoryImageView = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"kurogo/common/action-external.png"]] autorelease];
+        cell.accessoryView = accessoryImageView;
+    } else {
+        cell.accessoryView = nil;
+    }
     cell.selectionStyle = UITableViewCellSelectionStyleGray;
     // Configure the cell...
     
@@ -159,12 +167,21 @@
 {
     NSURL *url = nil;
     NSString *urlString = [(NSDictionary *)[linksArray objectAtIndex:indexPath.row] objectForKey:@"url"];
+    NSString *groupString = [(NSDictionary *)[linksArray objectAtIndex:indexPath.row] objectForKey:@"group"];
+    NSString *title = [(NSDictionary *)[linksArray objectAtIndex:indexPath.row] objectForKey:@"title"];
+    
     if (urlString) {
         url = [NSURL URLWithString:urlString];
-    }
     
-    if (url && [[UIApplication sharedApplication] canOpenURL:url]) {
-        [[UIApplication sharedApplication] openURL:url];
+        if ([[UIApplication sharedApplication] canOpenURL:url]) {
+            [[UIApplication sharedApplication] openURL:url];
+        }
+    } else if (groupString) {
+        NSMutableDictionary *params = [NSMutableDictionary dictionary];
+        [params setObject:groupString forKey:@"group"];
+        [params setObject:title forKey:@"title"];
+    
+        [KGO_SHARED_APP_DELEGATE() showPage:LocalPathPageNameItemList forModuleTag:moduleTag params:params];
     }
         
     [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
@@ -185,16 +202,16 @@
     description = [[result objectForKey:@"description"] retain];
     linksArray = [[result objectForKey:@"links"] retain];
     
-    NSString * displayType = [result objectForKey:@"displayType"];
-    
-    
-    if ([displayType isEqualToString:@"list"])
-        displayTypeIsList = YES;
+    NSString * displayTypeString = [result objectForKey:@"displayType"];    
+    if ([displayTypeString isEqualToString:@"list"])
+        displayType = LinksDisplayTypeList;
+    else if([displayTypeString isEqualToString:@"springboard"])
+        displayType = LinksDisplayTypeSpringboard;
     else
-        displayTypeIsList = NO;
+        displayType = LinksDisplayTypeList; // default
     
     // Display as TableView
-    if (displayTypeIsList == YES) {
+    if (displayType == LinksDisplayTypeList) {
         self.tableView.tableHeaderView = [self viewForTableHeader];
         [self.tableView reloadData];
     }
