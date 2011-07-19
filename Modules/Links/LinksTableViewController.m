@@ -60,6 +60,7 @@
     iconGrid.delegate = nil;
     [iconGrid release];
     [scrollView release];
+    [descriptionLabel release];
     [super dealloc];
 }
 
