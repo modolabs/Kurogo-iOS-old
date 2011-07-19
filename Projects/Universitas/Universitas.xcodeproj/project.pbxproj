@@ -15,6 +15,7 @@
 		3A82708D103DAA2400BB4109 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3A82708C103DAA2400BB4109 /* SystemConfiguration.framework */; };
 		3AA219501039D74700DB7637 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3AA2194F1039D74700DB7637 /* CoreData.framework */; };
 		4463CCB210D6F5750048CA83 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4463CCB110D6F5750048CA83 /* CoreLocation.framework */; };
+		4B2A10B013D609300028298E /* LinksTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B2A10AF13D609300028298E /* LinksTableViewController.m */; };
 		4B3904EF134147D000CD9C6F /* EmergencyDataManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B3904E5134147D000CD9C6F /* EmergencyDataManager.m */; };
 		4B3904F0134147D000CD9C6F /* EmergencyHomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B3904E7134147D000CD9C6F /* EmergencyHomeViewController.m */; };
 		4B3904F1134147D000CD9C6F /* EmergencyModule.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B3904E9134147D000CD9C6F /* EmergencyModule.m */; };
@@ -24,7 +25,6 @@
 		4BD4936C1349146900891968 /* EmergencyContact.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BD4936B1349146900891968 /* EmergencyContact.m */; };
 		4BD4936F13492C2400891968 /* EmergencyContactsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BD4936E13492C2400891968 /* EmergencyContactsViewController.m */; };
 		562CD69F13B9AEA600C5CB94 /* LinksModule.m in Sources */ = {isa = PBXBuildFile; fileRef = 562CD69E13B9AEA600C5CB94 /* LinksModule.m */; };
-		562CD6A213B9AF0600C5CB94 /* LinksTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 562CD6A113B9AF0500C5CB94 /* LinksTableViewController.m */; };
 		562F4B79133EFA10000B9344 /* ContentModule.m in Sources */ = {isa = PBXBuildFile; fileRef = 562F4B74133EFA10000B9344 /* ContentModule.m */; };
 		562F4B7A133EFA10000B9344 /* ContentTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 562F4B76133EFA10000B9344 /* ContentTableViewController.m */; };
 		562F4B7B133EFA10000B9344 /* ContentWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 562F4B78133EFA10000B9344 /* ContentWebViewController.m */; };
@@ -205,6 +205,8 @@
 		3A82708C103DAA2400BB4109 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = ../../../../../System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SOURCE_ROOT; };
 		3AA2194F1039D74700DB7637 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = /System/Library/Frameworks/CoreData.framework; sourceTree = "<absolute>"; };
 		4463CCB110D6F5750048CA83 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
+		4B2A10AE13D609300028298E /* LinksTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LinksTableViewController.h; path = ../../../Modules/Links/LinksTableViewController.h; sourceTree = "<group>"; };
+		4B2A10AF13D609300028298E /* LinksTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LinksTableViewController.m; path = ../../../Modules/Links/LinksTableViewController.m; sourceTree = "<group>"; };
 		4B3904E4134147D000CD9C6F /* EmergencyDataManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EmergencyDataManager.h; sourceTree = "<group>"; };
 		4B3904E5134147D000CD9C6F /* EmergencyDataManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EmergencyDataManager.m; sourceTree = "<group>"; };
 		4B3904E6134147D000CD9C6F /* EmergencyHomeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EmergencyHomeViewController.h; sourceTree = "<group>"; };
@@ -222,8 +224,6 @@
 		4BD4936E13492C2400891968 /* EmergencyContactsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EmergencyContactsViewController.m; sourceTree = "<group>"; };
 		562CD69D13B9AEA600C5CB94 /* LinksModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LinksModule.h; path = ../../../Modules/Links/LinksModule.h; sourceTree = "<group>"; };
 		562CD69E13B9AEA600C5CB94 /* LinksModule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LinksModule.m; path = ../../../Modules/Links/LinksModule.m; sourceTree = "<group>"; };
-		562CD6A013B9AF0500C5CB94 /* LinksTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LinksTableViewController.h; sourceTree = "<group>"; };
-		562CD6A113B9AF0500C5CB94 /* LinksTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LinksTableViewController.m; sourceTree = "<group>"; };
 		562F4B73133EFA10000B9344 /* ContentModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ContentModule.h; path = ../../../Modules/Content/ContentModule.h; sourceTree = "<group>"; };
 		562F4B74133EFA10000B9344 /* ContentModule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ContentModule.m; path = ../../../Modules/Content/ContentModule.m; sourceTree = "<group>"; };
 		562F4B75133EFA10000B9344 /* ContentTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ContentTableViewController.h; path = ../../../Modules/Content/ContentTableViewController.h; sourceTree = "<group>"; };
@@ -664,10 +664,10 @@
 		562CD69C13B9AE6D00C5CB94 /* Links */ = {
 			isa = PBXGroup;
 			children = (
+				4B2A10AE13D609300028298E /* LinksTableViewController.h */,
+				4B2A10AF13D609300028298E /* LinksTableViewController.m */,
 				562CD69D13B9AEA600C5CB94 /* LinksModule.h */,
 				562CD69E13B9AEA600C5CB94 /* LinksModule.m */,
-				562CD6A013B9AF0500C5CB94 /* LinksTableViewController.h */,
-				562CD6A113B9AF0500C5CB94 /* LinksTableViewController.m */,
 			);
 			name = Links;
 			sourceTree = "<group>";
@@ -1460,7 +1460,7 @@
 				EB934865139ED47700446243 /* RSSNewsDataController.m in Sources */,
 				EB93486A139ED48500446243 /* NewsStoryTableViewCell.m in Sources */,
 				562CD69F13B9AEA600C5CB94 /* LinksModule.m in Sources */,
-				562CD6A213B9AF0600C5CB94 /* LinksTableViewController.m in Sources */,
+				4B2A10B013D609300028298E /* LinksTableViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
