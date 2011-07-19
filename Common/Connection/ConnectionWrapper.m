@@ -117,18 +117,30 @@
 	// create the request
     NSURLRequestCachePolicy cachePolicy = (shouldCache) ? NSURLRequestReturnCacheDataElseLoad : NSURLRequestReloadIgnoringLocalAndRemoteCacheData;
 
-	NSURLRequest *request = [NSURLRequest requestWithURL:	url
+	NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:	url
 											 cachePolicy:	cachePolicy	// Make sure not to cache in case of update for URL
 										 timeoutInterval:	TIMEOUT_INTERVAL];
 	
+    static NSString *userAgent = nil;
+    if (userAgent == nil) {
+        NSDictionary *infoDict = [[NSBundle mainBundle] infoDictionary];
+        userAgent = [[NSString alloc] initWithFormat:@"%@/%@ (%@ %@)",
+                     [infoDict objectForKey:@"CFBundleName"],
+                     [infoDict objectForKey:@"CFBundleVersion"],
+                     (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) ? @"iPad" : @"iPhone",
+                     [[UIDevice currentDevice] systemVersion]];
+    }
+    [request setValue:userAgent forHTTPHeaderField:@"User-Agent"];
+    
 	// 'pre-flight' check to make sure it will go through
 	if(![NSURLConnection canHandleRequest:request]) {	// if the request will fail
 		[self resetObjects];							// then release & reset variables
 		return NO;										// and notify of failure
 	}
-	
+    
 	self.urlConnection = [[[NSURLConnection alloc] initWithRequest:request delegate:self] autorelease];	// try and form a connection
 	
+    
 	if (self.urlConnection) {			// if the connection was successfully formed
 		isConnected = YES;								// record that it's successful
 		tempData = [ [NSMutableData data] retain ];		// then allocate memory for incoming data
