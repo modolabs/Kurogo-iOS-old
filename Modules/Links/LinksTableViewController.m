@@ -1,7 +1,11 @@
+#import "IconGrid.h"
+#import "MITThumbnailView.h"
 #import "LinksTableViewController.h"
 #import "KGOAppDelegate+ModuleAdditions.h"
 #import "KGOLabel.h"
+#import "KGOTheme.h"
 
+#define OVERLAY_TAG 233
 
 @implementation LinksTableViewController
 @synthesize request;
@@ -31,8 +35,11 @@
     loadingView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     
     self.loadingIndicator = [[[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray] autorelease];
+    loadingIndicator.autoresizingMask = UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin;
+    
     [loadingIndicator startAnimating];
-    loadingIndicator.center = self.view.center;
+    loadingIndicator.center = self.loadingView.center;
+
     [loadingView addSubview:loadingIndicator];
     [self.view addSubview:loadingView];
 }
@@ -50,6 +57,9 @@
     [description dealloc];
     self.loadingIndicator = nil;
     self.loadingView = nil;
+    iconGrid.delegate = nil;
+    [iconGrid release];
+    [scrollView release];
     [super dealloc];
 }
 
@@ -73,6 +83,16 @@
 {
     linksArray = nil;
     description = nil;
+    
+    [descriptionLabel release];
+    descriptionLabel = nil;
+    
+    [iconGrid release];
+    iconGrid = nil;
+    
+    [scrollView release];
+    scrollView = nil;
+    
     self.loadingIndicator = nil;
     self.loadingView = nil;
     [super viewDidUnload];
@@ -160,19 +180,15 @@
     return cell;
 }
 
-
-#pragma mark - Table view delegate
-
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
-{
+- (void)openLink:(NSDictionary *)linkDict {
     NSURL *url = nil;
-    NSString *urlString = [(NSDictionary *)[linksArray objectAtIndex:indexPath.row] objectForKey:@"url"];
-    NSString *groupString = [(NSDictionary *)[linksArray objectAtIndex:indexPath.row] objectForKey:@"group"];
-    NSString *title = [(NSDictionary *)[linksArray objectAtIndex:indexPath.row] objectForKey:@"title"];
+    NSString *urlString = [linkDict objectForKey:@"url"];
+    NSString *groupString = [linkDict objectForKey:@"group"];
+    NSString *title = [linkDict objectForKey:@"title"];
     
     if (urlString) {
         url = [NSURL URLWithString:urlString];
-    
+        
         if ([[UIApplication sharedApplication] canOpenURL:url]) {
             [[UIApplication sharedApplication] openURL:url];
         }
@@ -180,10 +196,16 @@
         NSMutableDictionary *params = [NSMutableDictionary dictionary];
         [params setObject:groupString forKey:@"group"];
         [params setObject:title forKey:@"title"];
-    
-        [KGO_SHARED_APP_DELEGATE() showPage:LocalPathPageNameItemList forModuleTag:moduleTag params:params];
-    }
         
+        [KGO_SHARED_APP_DELEGATE() showPage:LocalPathPageNameItemList forModuleTag:moduleTag params:params];
+    }    
+}
+
+#pragma mark - Table view delegate
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    [self openLink:[linksArray objectAtIndex:indexPath.row]];        
     [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
@@ -214,12 +236,76 @@
     if (displayType == LinksDisplayTypeList) {
         self.tableView.tableHeaderView = [self viewForTableHeader];
         [self.tableView reloadData];
+    } else {
+        [self.tableView removeFromSuperview];
+        [self layoutSpringboard];
     }
 
     [self removeLoadingView];
     
 }
 
+- (void)layoutSpringboard {
+    
+    if (!scrollView) {
+        scrollView = [[UIScrollView alloc] initWithFrame:self.view.bounds];
+        [self.view addSubview:scrollView];
+    }
+    
+    if(!descriptionLabel) {
+        descriptionLabel = [[KGOLabel alloc] initWithFrame:CGRectMake(10, 0, self.view.frame.size.width-20, 300)];
+        descriptionLabel.numberOfLines = 0;
+        descriptionLabel.font = [[KGOTheme sharedTheme] fontForThemedProperty:KGOThemePropertyPageSubtitle];
+        descriptionLabel.textColor = [[KGOTheme sharedTheme] textColorForThemedProperty:KGOThemePropertyPageSubtitle];
+        descriptionLabel.backgroundColor = [UIColor clearColor];
+        [scrollView addSubview:descriptionLabel];
+    }
+    
+    CGSize descriptionSize = [description sizeWithFont:descriptionLabel.font constrainedToSize:descriptionLabel.frame.size];
+    CGRect descriptionFrame = descriptionLabel.frame;
+    descriptionFrame.size = descriptionSize;
+    descriptionLabel.frame = descriptionFrame;
+    descriptionLabel.text = description;
+    
+    if(!iconGrid) {
+        iconGrid = [[IconGrid alloc] initWithFrame:CGRectMake(0, descriptionLabel.frame.size.height, scrollView.frame.size.width, scrollView.frame.size.height - descriptionLabel.frame.size.height)];
+        iconGrid.delegate = self;
+        [scrollView addSubview:iconGrid];
+    }
+    
+    NSMutableArray *icons = [NSMutableArray array];
+    
+    for (NSInteger index=0; index < linksArray.count; index++) {
+        NSDictionary *linkDict = [linksArray objectAtIndex:index];
+                                  
+        UIControl *iconView = [[[UIControl alloc] initWithFrame:CGRectMake(0, 0, 80, 120)] autorelease];
+        
+        MITThumbnailView *thumbnailView = [[MITThumbnailView alloc] initWithFrame:CGRectMake(0, 0, 80, 80)];
+        thumbnailView.userInteractionEnabled = NO;
+        NSString *iconURL = [linkDict objectForKey:@"iconURL"];
+        thumbnailView.imageURL = [iconURL stringByReplacingOccurrencesOfString:@" " withString:@"%20"];            
+        [thumbnailView loadImage];
+        [iconView addSubview:thumbnailView];
+        
+        KGOLabel *label = [[[KGOLabel alloc] initWithFrame:CGRectMake(0, 80, 80, 40)] autorelease];
+        label.font = [[KGOTheme sharedTheme] fontForThemedProperty:KGOThemePropertySmallPrint];
+        label.textColor = [[KGOTheme sharedTheme] textColorForThemedProperty:KGOThemePropertySmallPrint];
+        label.numberOfLines = 2;
+        label.lineBreakMode = UILineBreakModeMiddleTruncation;
+        label.text = [linkDict objectForKey:@"title"];
+        label.backgroundColor = [UIColor clearColor];
+        label.textAlignment = UITextAlignmentCenter;
+        label.userInteractionEnabled = NO;
+        
+        [iconView addSubview:label];
+        iconView.tag = index;
+        [iconView addTarget:self action:@selector(touchStart:) forControlEvents:UIControlEventTouchDown];
+        [iconView addTarget:self action:@selector(touchEnd:) forControlEvents:UIControlEventTouchUpOutside];
+        [iconView addTarget:self action:@selector(linkSelected:) forControlEvents:UIControlEventTouchUpInside];
+        [icons addObject:iconView];
+    }
+    iconGrid.icons = icons;
+}
 
 #pragma mark - Table header
 
@@ -242,4 +328,35 @@
     return headerView;
 }
 
+#pragma mark - IconGrid delegate
+
+- (void)iconGridFrameDidChange:(IconGrid *)aIconGrid {
+    scrollView.contentSize = CGSizeMake(aIconGrid.frame.size.width, aIconGrid.frame.origin.y + aIconGrid.frame.size.height);
+}
+
+#pragma mark - icon grid touches
+
+- (void)touchStart:(id)sender {
+    UIView *buttonView = sender;
+    UIView *overlay = [[[UIView alloc] initWithFrame:buttonView.bounds] autorelease];
+    overlay.userInteractionEnabled = NO;
+    overlay.backgroundColor = [UIColor blackColor];
+    overlay.alpha = 0.1;
+    overlay.tag = OVERLAY_TAG;
+    [buttonView addSubview:overlay];
+}
+
+- (void)touchEnd:(id)sender {
+    UIView *buttonView = sender;
+    UIView *overlay = [buttonView viewWithTag:OVERLAY_TAG];
+    [overlay removeFromSuperview];
+}
+
+- (void)linkSelected:(id)sender {
+    UIView *buttonView = sender;
+    UIView *overlay = [buttonView viewWithTag:OVERLAY_TAG];
+    [overlay removeFromSuperview];
+    
+    [self openLink:[linksArray objectAtIndex:buttonView.tag]];
+}
 @end

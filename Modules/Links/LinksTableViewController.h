@@ -1,5 +1,6 @@
 #import <UIKit/UIKit.h>
 #import "KGOModule.h"
+#import "IconGrid.h"
 #import "KGORequestManager.h"
 #import "KGOTableViewController.h"
 
@@ -8,7 +9,7 @@ typedef enum {
     LinksDisplayTypeSpringboard
 } LinksDisplayType;
 
-@interface LinksTableViewController : KGOTableViewController <KGORequestDelegate>{
+@interface LinksTableViewController : KGOTableViewController <KGORequestDelegate, IconGridDelegate>{
     
     NSString *moduleTag;
     
@@ -22,6 +23,11 @@ typedef enum {
     UIActivityIndicatorView * loadingIndicator;
     
     UIView * headerView;
+    
+    // views for SpringBoard
+    IconGrid *iconGrid;
+    UIScrollView *scrollView;
+    UILabel *descriptionLabel;
     
 }
 
