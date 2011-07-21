@@ -5,11 +5,15 @@
 #import "MITMailComposeController.h"
 #import "KGOTheme.h"
 #import "Foundation+KGOAdditions.h"
-#import "KGOAppDelegate+ModuleAdditions.h"
+#import "KGOWebViewController.h"
 
 @implementation AboutTableViewController
 @synthesize request;
 @synthesize moduleTag;
+@synthesize resultDict;
+@synthesize resultKeys;
+@synthesize loadingIndicator;
+@synthesize loadingView;
 
 - (id)initWithStyle:(UITableViewStyle)style {
     
@@ -19,43 +23,46 @@
         
         self.request = [[KGORequestManager sharedManager] requestWithDelegate:self
                                                                        module:@"about"
-                                                                         path:@"alldata"
+                                                                         path:@"index"
                                                                         params:[NSDictionary dictionaryWithObjectsAndKeys:nil]];
         self.request.expectedResponseType = [NSDictionary class];
         if (self.request) {
             [self.request connect];
-            //[self addLoadingView];
+            [self addLoadingView];
         }
-        
-        // initialize as empty strings if not-assigned.
-        if (aboutText == nil) aboutText = @"About";
-        if (orgText == nil) orgText = @"";
-        if (orgName == nil) orgText = @"About";
-        if (orgEmail == nil) orgText = @"";
-        if (orgWebsite == nil) orgText = @"";
-        if (credits == nil) orgText = @"";
-        if (copyright == nil) orgText = @"";
     }
     return self;
 
 }
 
+- (void) addLoadingView {
+    
+    self.loadingView = [[[UIView alloc] initWithFrame:self.view.bounds] autorelease];
+    loadingView.backgroundColor = [UIColor whiteColor];
+    loadingView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+    
+    self.loadingIndicator = [[[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray] autorelease];
+    [loadingIndicator startAnimating];
+    loadingIndicator.center = self.view.center;
+    [loadingView addSubview:loadingIndicator];
+    [self.view addSubview:loadingView];
+}
+
+- (void) removeLoadingView {
+    [self.loadingIndicator stopAnimating];
+    [self.loadingView removeFromSuperview];
+}
+
 - (void)viewDidLoad {
     showBuildNumber = NO;
+}
+
+-(void) viewDidUnload {
+    [super viewDidUnload];
     
-    UIView *footerView = [[UIView alloc] initWithFrame:CGRectMake(10, 0, self.view.frame.size.width - 20, 45)];
-    UILabel *footerLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, footerView.frame.size.width, 30)];
-    footerLabel.text = copyright; //NSLocalizedString(@"AboutFooterText", nil);
-    footerLabel.backgroundColor = [UIColor clearColor];
-    footerLabel.textAlignment = UITextAlignmentCenter;
-    footerLabel.font = [[KGOTheme sharedTheme] fontForThemedProperty:KGOThemePropertySmallPrint];
-    footerLabel.textColor = [[KGOTheme sharedTheme] textColorForThemedProperty:KGOThemePropertySmallPrint];
-    footerLabel.lineBreakMode = UILineBreakModeWordWrap;
-    footerLabel.numberOfLines = 0;
-    [footerView addSubview:footerLabel];
-    self.tableView.tableFooterView = footerView;
-    [footerLabel release];
-    [footerView release];
+    self.resultDict = nil;
+    self.resultKeys = nil;
+
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
@@ -65,16 +72,21 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     switch (section) {
         case 0:
-            return 2;
+            return 1;
+            
         case 1:
-            return 3;
+            if (resultDict != nil)
+                return [[resultDict allKeys] count];
+            else
+                return 0;
+            
         default:
             return 0;
     }
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (indexPath.section == 0 && indexPath.row == 1) {
+    /*if (indexPath.section == 0 && indexPath.row == 1) {
         //NSString *aboutText = aboutText; //NSLocalizedString(@"AboutAppText", nil);
         UIFont *aboutFont = [UIFont systemFontOfSize:14.0];
         if ((aboutText != nil)) {
@@ -84,6 +96,25 @@
         }
         else
             return 0;
+    }*/
+    if (indexPath.section == 1) {
+        NSDictionary *itemDict = (NSDictionary *)[resultDict objectForKey:[self.resultKeys objectAtIndex:indexPath.row]];
+        
+        BOOL hasTyepString = NO;
+        NSString * type = @"webView";
+        
+        if ([[itemDict allKeys] containsObject:@"type"]){
+            
+            hasTyepString = YES;
+            type = [itemDict objectForKey:@"type"];
+        }
+        
+        if ([type isEqualToString:@"map"]){
+            return 0;
+        }
+        else
+            return self.tableView.rowHeight;
+        
     }
     else {
         return self.tableView.rowHeight;
@@ -123,7 +154,7 @@
                     cell.backgroundColor = [UIColor whiteColor];
                 }
                     break;
-                case 1:
+              /*  case 1:
                 {
                     cell.textLabel.text = aboutText;
                     cell.textLabel.lineBreakMode = UILineBreakModeWordWrap;
@@ -134,34 +165,42 @@
                     cell.selectionStyle = UITableViewCellSelectionStyleNone;
                     cell.backgroundColor = [UIColor whiteColor];
                 }
-                    break;
+                    break;*/
                 default:
                     break;
             }
             break;
-        case 1:
-            switch (indexPath.row) {
-                case 0:
-                    cell.textLabel.text = orgName;
-                    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-                    cell.selectionStyle = UITableViewCellSelectionStyleGray;
-                    cell.textLabel.textColor = [[KGOTheme sharedTheme] textColorForThemedProperty:KGOThemePropertyNavListTitle];
-                    break;
+            
+        case 1:{
+            if (self.resultDict != nil) {
+            NSDictionary *itemDict = (NSDictionary *)[resultDict objectForKey:[self.resultKeys objectAtIndex:indexPath.row]];
+            NSString * titleString = [itemDict objectForKey:@"title"];
+            
+            BOOL hasTyepString = NO;
+            NSString * type = @"webView";
+            
+            if ([[itemDict allKeys] containsObject:@"type"]){
                 
-                case 1:
-                    cell.textLabel.text = NSLocalizedString(@"Credits", nil);
-                    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-                    cell.selectionStyle = UITableViewCellSelectionStyleGray;
-                    cell.textLabel.textColor = [[KGOTheme sharedTheme] textColorForThemedProperty:KGOThemePropertyNavListTitle];
-                    break;
-                    
-                case 2:
-                    cell.textLabel.text = NSLocalizedString(@"Send Feedback", nil);
-                    cell.accessoryView = [[KGOTheme sharedTheme] accessoryViewForType:KGOAccessoryTypeEmail];
-                    cell.selectionStyle = UITableViewCellSelectionStyleGray;
-                    break;
-                break;
+                hasTyepString = YES;
+                type = [itemDict objectForKey:@"type"];
             }
+            
+            if ([type isEqualToString:@"email"]){
+                cell.accessoryView = [[KGOTheme sharedTheme] accessoryViewForType:KGOAccessoryTypeEmail];
+            }
+            else if ([type isEqualToString:@"phone"]){
+                cell.accessoryView = [[KGOTheme sharedTheme] accessoryViewForType:KGOAccessoryTypePhone];
+            }
+            else if ([type isEqualToString:@"webView"]){
+                cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+            }
+            
+            cell.textLabel.text = titleString;
+            cell.selectionStyle = UITableViewCellSelectionStyleGray;
+            }
+        }
+            break;
+
         default:
             break;
     }
@@ -175,29 +214,34 @@
         [self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationNone];
     }
     else if (indexPath.section == 1) {
-        switch (indexPath.row) {
-            case 0: {                
-                NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:orgName, @"orgName", orgText, @"orgText", nil];
-                [KGO_SHARED_APP_DELEGATE() showPage:LocalPathPageNameDetail forModuleTag:self.moduleTag params:params];
-                break;
-            }
-            case 1: {
-                NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:credits, @"creditsHTMLString", nil];
-                [KGO_SHARED_APP_DELEGATE() showPage:LocalPathPageNameWebViewDetail forModuleTag:self.moduleTag params:params];
-                break;
-            }
-            case 2: {
-                NSDictionary *infoDict = [[NSBundle mainBundle] infoDictionary];
-                    
-                NSString *subject = [NSString stringWithFormat:@"%@:%@ %@, Build: %@", @"Regarding", [infoDict objectForKey:@"CFBundleName"], [infoDict objectForKey:@"CFBundleVersion"], MITBuildNumber];
-                
-                NSString *email = orgEmail;
-                [self presentMailControllerWithEmail:email subject:subject body:[NSString string] delegate:self];
-				break;
-            }
-            default:
-                break;
+
+        NSDictionary *itemDict = (NSDictionary *)[resultDict objectForKey:[self.resultKeys objectAtIndex:indexPath.row]];
+        
+        BOOL hasTyepString = NO;
+        NSString * type = @"webView";
+        
+        if ([[itemDict allKeys] containsObject:@"type"]){
+            
+            hasTyepString = YES;
+            type = [itemDict objectForKey:@"type"];
         }
+
+        if ([type isEqualToString:@"webView"]){
+            
+            [KGO_SHARED_APP_DELEGATE() showPage:LocalPathPageNameDetail 
+                                   forModuleTag:self.moduleTag 
+                                         params:(NSDictionary *)[resultDict objectForKey:[self.resultKeys objectAtIndex:indexPath.row]]];
+        }
+        else if ([type isEqualToString:@"email"]){
+            [self presentMailControllerWithEmail:[itemDict objectForKey:@"email"] subject:@"" body:[NSString string] delegate:self];
+        }
+        else if ([type isEqualToString:@"phone"]) {
+            NSURL *externURL = [NSURL URLWithString:[NSString stringWithFormat:@"tel:%@", [itemDict objectForKey:@"phone"]]];
+            if ([[UIApplication sharedApplication] canOpenURL:externURL]) {
+                [[UIApplication sharedApplication] openURL:externURL];
+            }
+        }
+
     }
     
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
@@ -214,6 +258,8 @@
 
 - (void)dealloc {
     [super dealloc];
+    [self.resultDict dealloc];
+   // [self.resultKeys dealloc];
 }
 
 
@@ -228,18 +274,19 @@
     
     NSLog(@"%@", [result description]);
     
-    NSDictionary * resultDict = (NSDictionary * ) result;
+    self.resultDict = result;
     
-    aboutText = [[resultDict stringForKey:@"aboutHTML" nilIfEmpty:NO] retain];
-    orgText = [[resultDict stringForKey:@"siteAboutHTML" nilIfEmpty:NO] retain];
-    orgName = [[resultDict stringForKey:@"orgName" nilIfEmpty:NO] retain];
-    orgEmail = [[resultDict stringForKey:@"email" nilIfEmpty:NO] retain];
-    orgWebsite = [[resultDict stringForKey:@"website" nilIfEmpty:NO] retain];
-    copyright = [[resultDict stringForKey:@"copyright" nilIfEmpty:NO] retain];
-    credits = [[result stringForKey:@"credits" nilIfEmpty:NO] retain];
-
+    if (nil != self.resultKeys)
+        [self.resultKeys release];
+    
+    self.resultKeys = [[[NSMutableArray alloc] init] retain];
+    
+    int count = 0;
+    for (NSString * key in self.resultDict)
+         [self.resultKeys insertObject:key atIndex:count++];
+    
     [self.tableView reloadData];
-    //[self removeLoadingView];
+    [self removeLoadingView];
     
 }
 @end

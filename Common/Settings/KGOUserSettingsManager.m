@@ -210,7 +210,7 @@ NSString * const KGOUserSettingServerKey = @"ServerSelection";
         [serverSetting _setOptions:options];
 
         // default to prod server (most likely to be up on first build?)
-        [serverSetting _setDefaultValue:[options objectAtIndex:3]];
+        [serverSetting _setDefaultValue:[options objectAtIndex:0]];
         
         id savedSetting = [savedSettings objectForKey:KGOUserSettingServerKey];
         if (savedSetting) {
