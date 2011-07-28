@@ -284,6 +284,7 @@
 			[creator setNewPersonViewDelegate:self];
             
             UINavigationController *addContactNavController = [[UINavigationController alloc] initWithRootViewController:creator];
+            addContactNavController.navigationBar.barStyle = [[KGOTheme sharedTheme] defaultNavBarStyle];
             [self presentModalViewController:addContactNavController animated:YES];
             [addContactNavController release];
             
