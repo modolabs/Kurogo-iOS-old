@@ -123,12 +123,25 @@
                 }
             }
             
+            NSDate *end = [params objectForKey:@"end"];
+            if (!end) {
+                NSTimeInterval interval = [[params objectForKey:@"time"] doubleValue] + 24*60*60; // add 24 hrs
+                if (interval) {
+                    NSDate *time = [NSDate dateWithTimeIntervalSince1970:interval];
+                    if (time) {
+                        NSUInteger flags = NSYearCalendarUnit | NSMonthCalendarUnit | NSDayCalendarUnit;
+                        NSDateComponents *comps = [[NSCalendar currentCalendar] components:flags fromDate:time];
+                        end = [[NSCalendar currentCalendar] dateFromComponents:comps];
+                    }
+                }
+            }
+            
             if (start) {
                 [predTemplates addObject:@"start >= %@"];
                 [predArguments addObject:start];
             }
             
-            NSDate *end = [params objectForKey:@"end"];
+            
             if (end) {
                 [predTemplates addObject:@"end < %@"];
                 [predArguments addObject:start];
