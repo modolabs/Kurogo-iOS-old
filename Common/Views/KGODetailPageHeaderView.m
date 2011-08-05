@@ -265,8 +265,8 @@
         _shareButton.frame = CGRectMake(buttonX, buttonY, buttonImage.size.width, buttonImage.size.height);
         [_shareButton setImage:buttonImage forState:UIControlStateNormal];
         [_shareButton setImage:[UIImage imageWithPathName:@"common/share_pressed.png"] forState:UIControlStateHighlighted];
-        if ([self.delegate respondsToSelector:@selector(shareButtonPressed:)]) {
-            [_shareButton addTarget:self.delegate action:@selector(shareButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
+        if ([self.delegate respondsToSelector:@selector(headerView: shareButtonPressed:)]) {
+            [_shareButton addTarget:self.delegate action:@selector(headerView: shareButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
         }
         [self addSubview:_shareButton];
         

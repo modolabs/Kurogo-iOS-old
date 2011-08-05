@@ -55,7 +55,7 @@
         _shareMethods = [methods copy];
     }
 
-    if (_shareMethods.count > 1) {
+    if (_shareMethods.count > 0) {
         
         NSString *cancelTitle = nil;
         if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
