@@ -163,6 +163,7 @@ static const NSInteger kVideoListCellThumbnailTag = 0x78;
     self.navScrollView = [[[KGOScrollingTabstrip alloc] initWithFrame:frame] autorelease];
     self.navScrollView.showsSearchButton = YES;
     self.navScrollView.delegate = self;
+    
 }
 
 - (void)viewDidLoad {
