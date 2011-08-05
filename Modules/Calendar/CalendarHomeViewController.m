@@ -199,9 +199,9 @@ bool isOverOneHour(NSTimeInterval interval) {
             [formatter setDateFormat:@"h a"];
         
         } else {
-            [formatter setDateStyle:NSDateFormatterNoStyle];
-            [formatter setTimeStyle:NSDateFormatterNoStyle];
-        
+           // [formatter setDateStyle:NSDateFormatterNoStyle];
+           // [formatter setTimeStyle:NSDateFormatterNoStyle];
+            [formatter setDateFormat:@"h a"]; // default to hourly format
         }
         
         for (KGOEventWrapper *event in sortedEvents) {
@@ -309,7 +309,7 @@ bool isOverOneHour(NSTimeInterval interval) {
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
-    if (_currentSections.count > 1) {
+    if (_currentSections.count >= 1) {
         return [_currentSections objectAtIndex:section];
     }
     
