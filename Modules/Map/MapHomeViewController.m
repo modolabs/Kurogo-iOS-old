@@ -352,6 +352,7 @@
             _locationManager.distanceFilter = kCLDistanceFilterNone;
             _locationManager.desiredAccuracy = kCLLocationAccuracyBest;
             _locationManager.delegate = self;
+       
         }
         _userLocation = [[_locationManager location] retain];
     }
@@ -363,6 +364,7 @@
         [_locationManager startUpdatingLocation];
     }
 }
+
 
 - (void)popoverControllerDidDismissPopover:(UIPopoverController *)popoverController
 {
@@ -403,7 +405,7 @@
             location = [[[CLLocation alloc] initWithLatitude:[lat floatValue] longitude:[lon floatValue]] autorelease];
         }
     }
-
+    
     DLog(@"%@ %@", location, _userLocation);
     // TODO: make maximum distance a config parameter
     if ([_userLocation distanceFromLocation:location] <= 40000) {
