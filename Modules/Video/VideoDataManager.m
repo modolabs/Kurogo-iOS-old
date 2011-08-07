@@ -96,7 +96,7 @@
         self.videosFromCurrentSearch = [NSMutableArray arrayWithCapacity:30];        
         self.reachability = [Reachability reachabilityForInternetConnection];
         self.moduleTag = VideoModuleTag;
-	}
+    }
 	return self;
 }
 
@@ -112,6 +112,7 @@
 }
 
 #pragma mark Public
+
 
 - (BOOL)requestSectionsThenRunBlock:(VideoDataRequestResponse)responseBlock {
     BOOL succeeded = NO;

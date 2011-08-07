@@ -62,6 +62,8 @@
 @dynamic stillFrameImageData;
 @dynamic thumbnailImageData;
 @dynamic source;
+@dynamic streamingURL;
+@dynamic publishedTimeStamp;
 
 @synthesize objectKeyCounterpartsForAPIKeys;
 
@@ -75,8 +77,10 @@
 
 - (void)dealloc {
     [objectKeyCounterpartsForAPIKeys release];
+
     [super dealloc];
 }
+
 
 - (void)setUpWithDictionary:(NSDictionary *)dictionaryFromAPI {
     
@@ -93,6 +97,19 @@
             self.tags = [[self class] tagsFromTagsDictionary:
                          [dictionaryFromAPI objectForKey:APIKey]];
         }
+        else if ([keyToSet isEqualToString:@"streamingURL"]) {
+            id value = [dictionaryFromAPI valueForKey:APIKey];
+            if ([value isKindOfClass:[NSString class]]) {
+                self.streamingURL = value;
+            }
+        }
+        else if ([keyToSet isEqualToString:@"publishedTimeStamp"]) {
+            id value = [dictionaryFromAPI valueForKey:APIKey];
+            if ([value isKindOfClass:[NSString class]]) {
+                self.publishedTimeStamp = value;
+            }
+        }
+
         else if ([keyToSet isEqualToString:@"videoID"]) {
             id value = [dictionaryFromAPI valueForKey:APIKey];
             if ([value isKindOfClass:[NSString class]]) {
@@ -107,9 +124,9 @@
         }
         else {
             id value = [dictionaryFromAPI valueForKey:APIKey];
-            if ((value) && (![value isKindOfClass:[NSNull class]])) {
-                [self setValue:[dictionaryFromAPI valueForKey:APIKey] 
-                        forKey:keyToSet];
+            if ((value) && (![value isKindOfClass:[NSNull class]])) { 
+                [self setValue:[dictionaryFromAPI valueForKey:APIKey] forKey:keyToSet];
+                
             }
         }
     }        
