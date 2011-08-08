@@ -64,6 +64,7 @@
 @dynamic source;
 @dynamic streamingURL;
 @dynamic publishedTimeStamp;
+@dynamic date;
 
 @synthesize objectKeyCounterpartsForAPIKeys;
 
@@ -109,7 +110,13 @@
                 self.publishedTimeStamp = value;
             }
         }
-
+        else if ([keyToSet isEqualToString:@"date"]) {
+            id value = [dictionaryFromAPI valueForKey:APIKey];
+            if ([value isKindOfClass:[NSString class]]) {
+                self.date = value;
+            }
+        }
+        
         else if ([keyToSet isEqualToString:@"videoID"]) {
             id value = [dictionaryFromAPI valueForKey:APIKey];
             if ([value isKindOfClass:[NSString class]]) {
@@ -125,7 +132,9 @@
         else {
             id value = [dictionaryFromAPI valueForKey:APIKey];
             if ((value) && (![value isKindOfClass:[NSNull class]])) { 
-                [self setValue:[dictionaryFromAPI valueForKey:APIKey] forKey:keyToSet];
+                if (![keyToSet isEqualToString:@"date"]){
+                    [self setValue:[dictionaryFromAPI valueForKey:APIKey] forKey:keyToSet];
+                }
                 
             }
         }
