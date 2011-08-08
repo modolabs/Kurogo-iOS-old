@@ -10,6 +10,8 @@
 #import "KGOAppDelegate+ModuleAdditions.h"
 #import "CalendarDetailViewController.h"
 #import "KGOLabel.h"
+#import <EventKitUI/EKEventEditViewController.h>
+
 
 @implementation EventDetailTableView
 
@@ -352,7 +354,7 @@
     if (self.headerView.frame.size.height != self.tableHeaderView.frame.size.height) {
         self.tableHeaderView.frame = self.headerView.frame;
     }
-    self.tableHeaderView = self.tableHeaderView;
+    self.tableHeaderView = self.headerView;
 }
 
 - (UIView *)viewForTableHeader
@@ -360,10 +362,12 @@
     if (!self.headerView) {
         self.headerView = [[[KGODetailPageHeaderView alloc] initWithFrame:CGRectMake(0, 0, self.bounds.size.width, 1)] autorelease];
         self.headerView.delegate = self;
-        self.headerView.showsBookmarkButton = YES;
+        self.headerView.showsBookmarkButton = NO;
+        
     }
     self.headerView.detailItem = self.event;
     self.headerView.showsShareButton = YES;
+    self.headerView.showsCalendarButton = YES;
     
     // time
     NSString *dateString = [self.dataManager mediumDateStringFromDate:_event.startDate];
@@ -388,6 +392,40 @@
     if ([self.viewController isKindOfClass:[CalendarDetailViewController class]]) {
         [(CalendarDetailViewController *)self.viewController shareButtonPressed:sender];
     }
+}
+
+# pragma mark CalendarButtonDelegate
+
+- (void) calendarButtonPressed:(id)sender {
+    
+    EKEventStore *eventStore = [[EKEventStore alloc] init];            
+    NSAutoreleasePool *eventAddPool = [[NSAutoreleasePool alloc] init];
+    
+    EKEvent *newEvent = [EKEvent eventWithEventStore:eventStore];
+    newEvent.calendar = [eventStore defaultCalendarForNewEvents];
+    
+    newEvent.title = self.event.title;
+    newEvent.startDate = self.event.startDate;
+    newEvent.endDate = self.event.endDate;
+    
+    if (self.event.location.length > 0)
+        newEvent.location = self.event.location;
+    
+    if (self.event.summary) {
+        newEvent.notes = self.event.summary;
+    }
+
+    
+    EKEventEditViewController *eventViewController = 
+    [[EKEventEditViewController alloc] init];
+    eventViewController.event = newEvent;
+    eventViewController.eventStore = eventStore;
+    eventViewController.editViewDelegate = self.viewController;
+    [self.viewController presentModalViewController:eventViewController animated:YES];
+    
+    [eventAddPool release];            
+    [eventStore release];
+    
 }
 
 #pragma mark detail

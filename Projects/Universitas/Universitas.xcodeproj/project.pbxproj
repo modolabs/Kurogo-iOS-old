@@ -28,6 +28,8 @@
 		562F4B79133EFA10000B9344 /* ContentModule.m in Sources */ = {isa = PBXBuildFile; fileRef = 562F4B74133EFA10000B9344 /* ContentModule.m */; };
 		562F4B7A133EFA10000B9344 /* ContentTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 562F4B76133EFA10000B9344 /* ContentTableViewController.m */; };
 		562F4B7B133EFA10000B9344 /* ContentWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 562F4B78133EFA10000B9344 /* ContentWebViewController.m */; };
+		56388BDA13EF42EE005BA72E /* EventKitUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 56388BD913EF42EE005BA72E /* EventKitUI.framework */; };
+		56388BDC13EF4306005BA72E /* EventKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 56388BDB13EF4305005BA72E /* EventKit.framework */; };
 		A627E6B0134A65FD00403110 /* VideoDataManager.m in Sources */ = {isa = PBXBuildFile; fileRef = A627E6AB134A65FD00403110 /* VideoDataManager.m */; };
 		A627E6B1134A65FD00403110 /* VideoListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A627E6AD134A65FD00403110 /* VideoListViewController.m */; };
 		A627E6B2134A65FD00403110 /* VideoModule.m in Sources */ = {isa = PBXBuildFile; fileRef = A627E6AF134A65FD00403110 /* VideoModule.m */; };
@@ -180,7 +182,6 @@
 		EBAE86411215FB0D00F370BE /* Icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = EBAE863F1215FB0D00F370BE /* Icon@2x.png */; };
 		EBAE86451215FB4900F370BE /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = EBAE86441215FB4900F370BE /* Default@2x.png */; };
 		EBB120A7133802D300A4BD1D /* secret in Resources */ = {isa = PBXBuildFile; fileRef = EBB120A6133802D300A4BD1D /* secret */; };
-		EBB121ED13392F3300A4BD1D /* EventKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EBB121EC13392F3300A4BD1D /* EventKit.framework */; };
 		EBB121F1133A917200A4BD1D /* CalendarHomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EBB121EF133A913100A4BD1D /* CalendarHomeViewController.m */; };
 		EBB121F2133A917200A4BD1D /* CalendarHomeViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = EBB121F0133A915200A4BD1D /* CalendarHomeViewController.xib */; };
 		EBE242C113AFD3030082C277 /* libfacebook_ios_sdk.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EBE242BC13AFD3030082C277 /* libfacebook_ios_sdk.a */; };
@@ -230,6 +231,9 @@
 		562F4B76133EFA10000B9344 /* ContentTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ContentTableViewController.m; path = ../../../Modules/Content/ContentTableViewController.m; sourceTree = "<group>"; };
 		562F4B77133EFA10000B9344 /* ContentWebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ContentWebViewController.h; path = ../../../Modules/Content/ContentWebViewController.h; sourceTree = "<group>"; };
 		562F4B78133EFA10000B9344 /* ContentWebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ContentWebViewController.m; path = ../../../Modules/Content/ContentWebViewController.m; sourceTree = "<group>"; };
+		56388BD713EF42B6005BA72E /* EventKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = EventKit.framework; path = System/Library/Frameworks/EventKit.framework; sourceTree = SDKROOT; };
+		56388BD913EF42EE005BA72E /* EventKitUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = EventKitUI.framework; path = System/Library/Frameworks/EventKitUI.framework; sourceTree = SDKROOT; };
+		56388BDB13EF4305005BA72E /* EventKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = EventKit.framework; path = System/Library/Frameworks/EventKit.framework; sourceTree = SDKROOT; };
 		A627E6AA134A65FD00403110 /* VideoDataManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VideoDataManager.h; path = ../../Modules/Video/VideoDataManager.h; sourceTree = SOURCE_ROOT; };
 		A627E6AB134A65FD00403110 /* VideoDataManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VideoDataManager.m; path = ../../Modules/Video/VideoDataManager.m; sourceTree = SOURCE_ROOT; };
 		A627E6AC134A65FD00403110 /* VideoListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VideoListViewController.h; path = ../../Modules/Video/VideoListViewController.h; sourceTree = SOURCE_ROOT; };
@@ -527,11 +531,12 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				56388BDC13EF4306005BA72E /* EventKit.framework in Frameworks */,
+				56388BDA13EF42EE005BA72E /* EventKitUI.framework in Frameworks */,
 				EB83AE6C13C7B387006CCEDB /* libjson.a in Frameworks */,
 				EBE242C113AFD3030082C277 /* libfacebook_ios_sdk.a in Frameworks */,
 				EBE242C413AFD3030082C277 /* libSFHFKeychainUtils.a in Frameworks */,
 				EBE242C513AFD3030082C277 /* libTwitter.a in Frameworks */,
-				EBB121ED13392F3300A4BD1D /* EventKit.framework in Frameworks */,
 				1D60589F0D05DD5A006BFB54 /* Foundation.framework in Frameworks */,
 				1DF5F4E00D08C38300B7A737 /* UIKit.framework in Frameworks */,
 				3AA219501039D74700DB7637 /* CoreData.framework in Frameworks */,
@@ -609,6 +614,9 @@
 			isa = PBXGroup;
 			children = (
 				EB4C2CDE127F138100058748 /* libsqlite3.dylib */,
+				56388BDB13EF4305005BA72E /* EventKit.framework */,
+				56388BD913EF42EE005BA72E /* EventKitUI.framework */,
+				56388BD713EF42B6005BA72E /* EventKit.framework */,
 				EB4C2CE0127F138900058748 /* CFNetwork.framework */,
 				296F9EDC110A0F5400EC8FCA /* AudioToolbox.framework */,
 				4463CCB110D6F5750048CA83 /* CoreLocation.framework */,

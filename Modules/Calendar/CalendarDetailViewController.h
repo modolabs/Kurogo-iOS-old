@@ -1,9 +1,10 @@
 #import <UIKit/UIKit.h>
 #import "KGODetailPager.h"
+#import <EventKitUI/EventKitUI.h>
 
 @class KGOEventWrapper, EventDetailTableView, CalendarDataManager, KGOShareButtonController;
 
-@interface CalendarDetailViewController : UIViewController <KGODetailPagerController, KGODetailPagerDelegate> {
+@interface CalendarDetailViewController : UIViewController <KGODetailPagerController, KGODetailPagerDelegate, EKEventEditViewDelegate> {
     
     EventDetailTableView *_tableView;
     KGOEventWrapper *_event;

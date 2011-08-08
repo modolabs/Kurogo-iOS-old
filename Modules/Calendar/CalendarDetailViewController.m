@@ -56,6 +56,8 @@
         
         [self.view addSubview:_tableView];
     }
+    
+    [_tableView reloadData];
 }
 
 #pragma mark - KGODetailPager
@@ -123,6 +125,12 @@
     _shareController.shareURL = urlString;
     
     [_shareController shareInView:self.view];
+}
+
+#pragma mark EKEventEditViewDelegate
+- (void)eventEditViewController:(EKEventEditViewController *)controller 
+          didCompleteWithAction:(EKEventEditViewAction)action {
+    [controller dismissModalViewControllerAnimated:YES];
 }
 
 #pragma mark -

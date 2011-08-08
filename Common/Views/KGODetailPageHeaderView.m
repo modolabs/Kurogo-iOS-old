@@ -9,7 +9,7 @@
 
 @implementation KGODetailPageHeaderView
 
-@synthesize showsShareButton, showsBookmarkButton, delegate;
+@synthesize showsShareButton, showsBookmarkButton, showsCalendarButton, delegate;
 /*
 - (id)initWithFrame:(CGRect)frame
 {
@@ -46,6 +46,11 @@
     if (_showsBookmarkButton) {
         [self layoutBookmarkButton];
         buttonHeight = _bookmarkButton.frame.size.height + LABEL_PADDING;
+    }
+    
+    if (_showsCalendarButton) {
+        [self layoutCalendarButton];
+        buttonHeight = _calendarButton.frame.size.height + LABEL_PADDING;
     }
     
     if (_titleLabel) {
@@ -126,6 +131,11 @@
     return _showsBookmarkButton;
 }
 
+- (BOOL)showsCalendarButton 
+{
+    return _showsCalendarButton;
+}
+
 - (void)setShowsShareButton:(BOOL)shows
 {
     _showsShareButton = shows;
@@ -141,6 +151,15 @@
     
     if (!_showsBookmarkButton) {
         [self hideBookmarkButton];
+    }
+}
+
+- (void) setShowsCalendarButton:(BOOL)shows
+{
+    _showsCalendarButton = shows;
+    
+    if (!_showsCalendarButton) {
+        [self hideCalendarButton];
     }
 }
 
@@ -162,19 +181,22 @@
     if (![_titleLabel isDescendantOfView:self]) {
         [self addSubview:_titleLabel];
     }
-    
+
     NSString *subtitle = nil;
     if ([_detailItem respondsToSelector:@selector(subtitle)]) {
         subtitle = [_detailItem subtitle];
     }
-    
     if (subtitle) {
         self.subtitleLabel.text = [_detailItem subtitle];
         if (![_subtitleLabel isDescendantOfView:self]) {
             [self addSubview:_subtitleLabel];
         }
     
-    } else {
+    } 
+    else if (self.subtitleLabel.text){
+        [self addSubview:_subtitleLabel];
+    }
+    else {
         [_subtitleLabel removeFromSuperview];
         [_subtitleLabel release];
         _subtitleLabel = nil;
@@ -192,6 +214,9 @@
     if (_bookmarkButton) {
         result -= _bookmarkButton.frame.size.width + LABEL_PADDING;
     }
+    if (_calendarButton) {
+        result -= _calendarButton.frame.size.width + LABEL_PADDING;
+    }
     return result;
 }
 
@@ -207,7 +232,7 @@
 }
 
 - (void)setupBookmarkButtonImages
-{
+{    
     UIImage *buttonImage, *pressedButtonImage;
     if ([self.detailItem isBookmarked]) {
         buttonImage = [UIImage imageWithPathName:@"common/bookmark_on.png"];
@@ -218,6 +243,18 @@
     }
     [_bookmarkButton setImage:buttonImage forState:UIControlStateNormal];
     [_bookmarkButton setImage:pressedButtonImage forState:UIControlStateHighlighted];
+    }
+
+- (void) setupCalendarButtonImages 
+{
+    UIImage *buttonImage, *pressedButtonImage;
+    
+    buttonImage = [UIImage imageWithPathName:@"modules/home/calendar-tiny.png"];
+    pressedButtonImage = [UIImage imageWithPathName:@"modules/home/calendar-tiny.png"];
+    
+    [_calendarButton setImage:buttonImage forState:UIControlStateNormal];
+    [_calendarButton setImage:pressedButtonImage forState:UIControlStateHighlighted];
+
 }
 
 - (void)layoutBookmarkButton
@@ -245,12 +282,48 @@
     _bookmarkButton.frame = frame;
 }
 
+- (void) layoutCalendarButton
+{
+    if (!_calendarButton) {
+        UIImage *placeholder = [UIImage imageWithPathName:@"modules/home/calendar-tiny.png"];
+        CGFloat buttonX = [self headerWidthWithButtons] - placeholder.size.width;
+        CGFloat buttonY = LABEL_PADDING + (_subtitleLabel == nil ? 0 : _titleLabel.frame.size.height + LABEL_PADDING);
+        
+        _calendarButton = [[UIButton buttonWithType:UIButtonTypeCustom] retain];
+        _calendarButton.frame = CGRectMake(buttonX, buttonY, placeholder.size.width, placeholder.size.height);
+        
+        [_calendarButton addTarget:self.delegate action:@selector(calendarButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
+        [self addSubview:_calendarButton];
+    }
+    
+    [self setupCalendarButtonImages];
+    
+    CGRect frame = _calendarButton.frame;
+    if (_shareButton) {
+        frame.origin.x = self.bounds.size.width - _shareButton.frame.size.width - frame.size.width - 2 * LABEL_PADDING;
+        
+        if (_bookmarkButton)
+            frame.origin.x -= _bookmarkButton.frame.size.width + LABEL_PADDING;
+    }
+    frame.origin.y = LABEL_PADDING + (_subtitleLabel == nil ? 0 : _titleLabel.frame.size.height + LABEL_PADDING);
+    _calendarButton.frame = frame;
+}
+
 - (void)hideBookmarkButton
 {
     if (_bookmarkButton) {
         [_bookmarkButton removeFromSuperview];
         [_bookmarkButton release];
         _bookmarkButton = nil;
+    }
+}
+
+- (void) hideCalendarButton 
+{
+    if (_calendarButton) {
+        [_calendarButton removeFromSuperview];
+        [_calendarButton release];
+        _calendarButton = nil;
     }
 }
 
