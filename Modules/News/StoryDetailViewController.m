@@ -31,6 +31,8 @@
 }
 
 - (void)viewDidLoad {
+    self.navigationItem.title = @"Story";
+    
     [super viewDidLoad];
 	
     self.view.opaque = YES;
@@ -79,6 +81,7 @@
     } else {
         [self displayCurrentStory];
     }
+    
 }
 
 - (void) setInitialIndexPath:(NSIndexPath *)theInitialIndexPath  {

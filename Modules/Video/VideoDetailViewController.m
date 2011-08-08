@@ -164,12 +164,16 @@ static const CGFloat extraScrollViewHeight = 100.0f;
     [scrollView release];
     
     [loadViewPool release];
+    
 }
 
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
-- (void)viewDidLoad {
+- (void)viewDidLoad {  
+    self.navigationItem.title = @"View Video"; 
+    
     [super viewDidLoad];
     [self.player play];
+    
 }
 
 /*

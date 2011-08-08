@@ -181,7 +181,7 @@ static const NSInteger kVideoListCellThumbnailTag = 0x78;
              [self requestVideosForActiveSection];
          }
      }];
-    self.navigationItem.title = @"Videos"; 
+    self.navigationItem.title = @"Video"; 
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
