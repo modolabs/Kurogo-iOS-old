@@ -21,7 +21,7 @@ VideoDetailSubviewTags;
 
 static const CGFloat kVideoDetailMargin = 10.0f;
 static const CGFloat kVideoTitleLabelHeight = 80.0f;
-static const CGFloat kVideoDescriptionLabelHeight = 192.0f;
+static const CGFloat extraScrollViewHeight = 100.0f;
 
 #pragma mark Private methods
 
@@ -118,10 +118,6 @@ static const CGFloat kVideoDescriptionLabelHeight = 192.0f;
     NSAutoreleasePool *loadViewPool = [[NSAutoreleasePool alloc] init];
     
     UIScrollView *scrollView = [[UIScrollView alloc] initWithFrame:self.view.frame];
-    scrollView.contentSize = CGSizeMake(self.view.frame.size.width, 640);
-    scrollView.tag = kVideoDetailScrollViewTag;
-    scrollView.scrollEnabled = YES;
-    [self.view addSubview:scrollView];
     
     UILabel *titleLabel = 
     [[UILabel alloc] initWithFrame:
@@ -141,6 +137,8 @@ static const CGFloat kVideoDescriptionLabelHeight = 192.0f;
     [self makeAndAddVideoImageViewToView:scrollView];
     
     UIView *videoImageView = [scrollView viewWithTag:kVideoDetailImageViewTag];
+    
+    CGSize descriptionSize = [video.videoDescription sizeWithFont:[UIFont systemFontOfSize:15.0f] constrainedToSize:CGSizeMake(310.0f, FLT_MAX) lineBreakMode:UILineBreakModeWordWrap];
         
     UILabel *descriptionLabel = 
     [[UILabel alloc] initWithFrame:
@@ -148,13 +146,18 @@ static const CGFloat kVideoDescriptionLabelHeight = 192.0f;
                 kVideoDetailMargin * 3 + kVideoTitleLabelHeight 
                 + videoImageView.frame.size.height,
                 self.view.frame.size.width - 2 * kVideoDetailMargin, 
-                kVideoDescriptionLabelHeight)];
+                descriptionSize.height)];
     descriptionLabel.tag = kVideoDetailDescriptionTag;
     descriptionLabel.numberOfLines = 0;
     descriptionLabel.font = [UIFont systemFontOfSize:15.0f];
     descriptionLabel.text = video.videoDescription;
     descriptionLabel.backgroundColor = [UIColor clearColor];
     [scrollView addSubview:descriptionLabel];
+    
+    scrollView.contentSize = CGSizeMake(self.view.frame.size.width, (titleLabel.frame.size.height + videoImageView.frame.size.height + descriptionSize.height + extraScrollViewHeight));
+    scrollView.tag = kVideoDetailScrollViewTag;
+    scrollView.scrollEnabled = YES;
+    [self.view addSubview:scrollView];
 
     [titleLabel release];
     [descriptionLabel release];
