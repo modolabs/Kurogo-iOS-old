@@ -28,6 +28,7 @@
 @property (nonatomic, retain) NSData * thumbnailImageData;
 @property (nonatomic, retain) NSData * streamingURL;
 @property (nonatomic, retain) NSData * publishedTimeStamp;
+@property (nonatomic, retain) NSString * date;
 // source can be "search" or the name of a section.
 @property (nonatomic, retain) NSString * source;
 
