@@ -48,6 +48,7 @@
 {
     [super viewDidLoad];
     EmergencyDataManager *manager = [EmergencyDataManager managerForTag:_module.tag];
+    self.navigationItem.title = @"Contacts";
     
     if(_module.contactsFeedExists) {
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(emergencyContactsRetrieved:) name:EmergencyContactsRetrievedNotification object:manager];

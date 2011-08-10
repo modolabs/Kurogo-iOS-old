@@ -79,6 +79,7 @@
             [manager fetchContacts];
         }
     }
+    self.navigationItem.title = @"Emergency Info";
 }
 
 - (void)viewDidUnload

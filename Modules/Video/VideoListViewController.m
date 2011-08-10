@@ -5,7 +5,6 @@
 
 #import "VideoListViewController.h"
 #import "Constants.h"
-#import "Video.h"
 #import "VideoDetailViewController.h"
 #import "CoreDataManager.h"
 #import "VideoModule.h"
@@ -64,7 +63,9 @@ static const NSInteger kVideoListCellThumbnailTag = 0x78;
              }
          }];
     }
-}    
+}
+
+
 
 - (void)removeAllThumbnailViews {
     NSInteger sections = [self.tableView numberOfSections];
@@ -163,7 +164,6 @@ static const NSInteger kVideoListCellThumbnailTag = 0x78;
     self.navScrollView = [[[KGOScrollingTabstrip alloc] initWithFrame:frame] autorelease];
     self.navScrollView.showsSearchButton = YES;
     self.navScrollView.delegate = self;
-    
 }
 
 - (void)viewDidLoad {
@@ -245,11 +245,12 @@ static const NSInteger kVideoListCellThumbnailTag = 0x78;
 
 #pragma mark UITableViewDelegate
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-
     if (self.videos.count > indexPath.row) {
+        NSString *section = [[self.videoSections objectAtIndex:self.activeSectionIndex] objectForKey:@"value"];
+
         Video *video = [self.videos objectAtIndex:indexPath.row];
         VideoDetailViewController *detailViewController = 
-        [[VideoDetailViewController alloc] initWithVideo:video];
+        [[VideoDetailViewController alloc] initWithVideo:video andSection:section];
         [self.navigationController pushViewController:detailViewController 
                                              animated:YES];
         [detailViewController release];
@@ -306,8 +307,10 @@ static const NSInteger kVideoListCellThumbnailTag = 0x78;
 - (void)resultsHolder:(id<KGOSearchResultsHolder>)resultsHolder 
       didSelectResult:(id<KGOSearchResult>)aResult {
     
+    NSString *section = [[self.videoSections objectAtIndex:self.activeSectionIndex] objectForKey:@"value"];
+    
     if ([aResult isKindOfClass:[Video class]]) {
-        VideoDetailViewController *detailViewController = [[VideoDetailViewController alloc] initWithVideo:(Video *)aResult];
+        VideoDetailViewController *detailViewController = [[VideoDetailViewController alloc] initWithVideo:(Video *)aResult andSection:section];
         [self.navigationController pushViewController:detailViewController 
                                              animated:YES];
         [detailViewController release];    

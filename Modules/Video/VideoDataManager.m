@@ -53,6 +53,20 @@
             }
         }
     }
+    else if ([request.path isEqualToString:@"detail"]) {
+        // Clear old stuff.
+        [[CoreDataManager sharedManager] deleteObjects:self.detailVideo];
+        [self.detailVideo removeAllObjects];
+        
+        if ([result isKindOfClass:[NSDictionary class]]) {
+            NSDictionary *dict = (NSDictionary *)result;
+                Video *video = [[CoreDataManager sharedManager] insertNewObjectForEntityForName:@"Video"];
+                [video setUpWithDictionary:dict];
+                video.source = [request.getParams objectForKey:@"section"];
+                [self.detailVideo addObject:video];
+            [[CoreDataManager sharedManager] saveData];
+        }        
+    }
 }
 
 - (BOOL)requestManagerIsReachable {
@@ -82,6 +96,7 @@
 @synthesize videos;
 @synthesize reachability;
 @synthesize videosFromCurrentSearch;
+@synthesize detailVideo; 
 
 #pragma mark NSObject
 
@@ -93,7 +108,8 @@
         self.responseBlocksForRequestPaths = [NSMutableDictionary dictionaryWithCapacity:3];
         self.pendingRequests = [NSMutableSet setWithCapacity:3];
         self.videos = [NSMutableArray arrayWithCapacity:30];
-        self.videosFromCurrentSearch = [NSMutableArray arrayWithCapacity:30];        
+        self.videosFromCurrentSearch = [NSMutableArray arrayWithCapacity:30];
+        self.detailVideo = [NSMutableArray arrayWithCapacity:30];
         self.reachability = [Reachability reachabilityForInternetConnection];
         self.moduleTag = VideoModuleTag;
     }
@@ -169,6 +185,33 @@
     return succeeded;
 }
 
+- (BOOL)requestVideoForDetailSection:(NSString *)section andVideoID:(NSString *)videoID 
+                   thenRunBlock:(VideoDataRequestResponse)responseBlock {
+    BOOL succeeded = NO;
+    
+    NSDictionary *params = [NSDictionary dictionaryWithObject:section forKey:@"section"];
+    NSMutableDictionary *mutableParams = [[params mutableCopy] autorelease];
+    if (mutableParams == nil) {
+        // make sure this is not nil in case we want to auto-append parameters
+        mutableParams = [NSMutableDictionary dictionary];
+    }
+    
+    [mutableParams setObject:videoID forKey:@"videoid"];
+    
+    KGORequest *request = [[KGORequestManager sharedManager] requestWithDelegate:self 
+                                                                          module:self.moduleTag 
+                                                                            path:@"detail" 
+                                                                          params:mutableParams];
+    request.expectedResponseType = [NSDictionary class];
+    [self.responseBlocksForRequestPaths setObject:[[responseBlock copy] autorelease]
+                                           forKey:request.path];
+    [self.pendingRequests addObject:request];
+    if([request connect])
+        succeeded = YES;
+    
+    return succeeded;
+}
+
 - (BOOL)requestSearchOfSection:(NSString *)section 
                          query:(NSString *)query 
                   thenRunBlock:(VideoDataRequestResponse)responseBlock {
@@ -232,7 +275,10 @@
         }
         else if ([request.path isEqualToString:@"search"]) {
             responseBlock(self.videosFromCurrentSearch);
-        }        
+        }
+        else if ([request.path isEqualToString:@"detail"]) {
+            responseBlock(detailVideo);
+        }
     }
 }
 

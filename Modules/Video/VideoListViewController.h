@@ -10,9 +10,11 @@
 #import "MITThumbnailView.h"
 #import "KGOSearchBar.h"
 #import "KGOSearchDisplayController.h"
+#import "Video.h"
 
 @interface VideoListViewController : UITableViewController <MITThumbnailDelegate,
 KGOScrollingTabstripDelegate, KGOSearchDisplayDelegate> {
+
 
 }
 

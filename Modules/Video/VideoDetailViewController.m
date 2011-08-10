@@ -10,6 +10,7 @@
 #import "VideoWebViewController.h"
 #import "UIKit+KGOAdditions.h"
 
+
 typedef enum {
     kVideoDetailScrollViewTag = 0x1890,
     kVideoDetailTitleLabelTag,
@@ -35,6 +36,7 @@ static const CGFloat extraScrollViewHeight = 100.0f;
 #pragma mark Subview setup
 - (void)makeAndAddVideoImageViewToView:(UIView *)parentView;
 
+
 @end
 
 @implementation VideoDetailViewController (Private)
@@ -42,6 +44,7 @@ static const CGFloat extraScrollViewHeight = 100.0f;
 - (void)launchWebViewWithVideo {
     VideoWebViewController *webViewController = 
     [[VideoWebViewController alloc] initWithURL:[NSURL URLWithString:self.video.url]];
+    webViewController.navigationItem.title = self.video.title; 
     [self.navigationController pushViewController:webViewController animated:YES];
     [webViewController release];
 }
@@ -101,13 +104,22 @@ static const CGFloat extraScrollViewHeight = 100.0f;
 
 @synthesize video;
 @synthesize player;
+@synthesize dataManager;
+@synthesize section;
+@synthesize scrollView;
+
+UILabel *titleLabel;
 
 // The designated initializer.  Override if you create the controller programmatically and want to perform customization that is not appropriate for viewDidLoad.
-- (id)initWithVideo:(Video *)aVideo {
+- (id)initWithVideo:(Video *)aVideo andSection:(NSString *)videoSection{
+    
+    self.dataManager = [[[VideoDataManager alloc] init] autorelease];
     self = [super initWithNibName:nil bundle:nil];
     if (self) {
         // Custom initialization.
         self.video = aVideo;
+        self.section = videoSection;
+        
     }
     return self;
 }
@@ -115,11 +127,13 @@ static const CGFloat extraScrollViewHeight = 100.0f;
 - (void)loadView {
     [super loadView];
     
+    [self requestVideoForDetailView];
+    
     NSAutoreleasePool *loadViewPool = [[NSAutoreleasePool alloc] init];
     
-    UIScrollView *scrollView = [[UIScrollView alloc] initWithFrame:self.view.frame];
+    scrollView = [[UIScrollView alloc] initWithFrame:self.view.frame];
     
-    UILabel *titleLabel = 
+    titleLabel = 
     [[UILabel alloc] initWithFrame:
      CGRectMake(kVideoDetailMargin, 
                 0, 
@@ -131,15 +145,31 @@ static const CGFloat extraScrollViewHeight = 100.0f;
     titleLabel.text = video.title;
     titleLabel.backgroundColor = [UIColor clearColor];
     [scrollView addSubview:titleLabel];
-
+    
     // TODO: When non-YouTube feeds are worked in, if they have streams
     // playable in MPMoviePlayerController, put an embedded player here conditionally.
     [self makeAndAddVideoImageViewToView:scrollView];
     
-    UIView *videoImageView = [scrollView viewWithTag:kVideoDetailImageViewTag];
+    [titleLabel release];
+    [loadViewPool release];
+}
+
+- (void)requestVideoForDetailView{
+        [self.dataManager requestVideoForDetailSection:self.section andVideoID:(NSString *)self.video.videoID 
+                                      thenRunBlock:^(id result) { 
+                                          if ([result isKindOfClass:[NSArray class]]) {                                              
+                                              NSArray *videoArray = result; 
+                                              Video *temp = [videoArray objectAtIndex:0];
+                                              self.video.videoDescription = temp.videoDescription; 
+                                              [self setDescription];
+                                          }
+                                      }];
+}
+
+- (void) setDescription{
+    CGSize descriptionSize = [video.videoDescription sizeWithFont:[UIFont systemFontOfSize:15.0f] constrainedToSize:CGSizeMake(300.0f, FLT_MAX) lineBreakMode:UILineBreakModeWordWrap];
     
-    CGSize descriptionSize = [video.videoDescription sizeWithFont:[UIFont systemFontOfSize:15.0f] constrainedToSize:CGSizeMake(310.0f, FLT_MAX) lineBreakMode:UILineBreakModeWordWrap];
-        
+    UIView *videoImageView = [scrollView viewWithTag:kVideoDetailImageViewTag];
     UILabel *descriptionLabel = 
     [[UILabel alloc] initWithFrame:
      CGRectMake(kVideoDetailMargin, 
@@ -149,8 +179,8 @@ static const CGFloat extraScrollViewHeight = 100.0f;
                 descriptionSize.height)];
     descriptionLabel.tag = kVideoDetailDescriptionTag;
     descriptionLabel.numberOfLines = 0;
-    descriptionLabel.font = [UIFont systemFontOfSize:15.0f];
     descriptionLabel.text = video.videoDescription;
+    descriptionLabel.font = [UIFont systemFontOfSize:15.0f];
     descriptionLabel.backgroundColor = [UIColor clearColor];
     [scrollView addSubview:descriptionLabel];
     
@@ -158,13 +188,9 @@ static const CGFloat extraScrollViewHeight = 100.0f;
     scrollView.tag = kVideoDetailScrollViewTag;
     scrollView.scrollEnabled = YES;
     [self.view addSubview:scrollView];
-
-    [titleLabel release];
+    
     [descriptionLabel release];
     [scrollView release];
-    
-    [loadViewPool release];
-    
 }
 
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
@@ -199,6 +225,7 @@ static const CGFloat extraScrollViewHeight = 100.0f;
 
 
 - (void)dealloc {
+    [dataManager release];
     [player release];
     [video release];
     [super dealloc];

@@ -140,30 +140,24 @@
                 self.videoDescription = value;
             }
         }
-        else if ([keyToSet isEqualToString:@"published"]) {
-            id value = [dictionaryFromAPI valueForKey:APIKey];
-            if ([value isKindOfClass:[NSDate class]]) {
-                self.published = value;
-            }
-        }
         else if ([keyToSet isEqualToString:@"url"]) {
             id value = [dictionaryFromAPI valueForKey:APIKey];
             if ([value isKindOfClass:[NSString class]]) {
                 self.url = value;
             }
-        }
+        }/*
         else if ([keyToSet isEqualToString:@"streamingURL"]) {
             id value = [dictionaryFromAPI valueForKey:APIKey];
             if ([value isKindOfClass:[NSString class]]) {
                 self.streamingURL = value;
             }
-        }
+        }*/
         else if ([keyToSet isEqualToString:@"author"]) {
             id value = [dictionaryFromAPI valueForKey:APIKey];
             if ([value isKindOfClass:[NSString class]]) {
                 self.author = value;
             }
-        }
+        }/*
         else if ([keyToSet isEqualToString:@"height"]) {
             id value = [dictionaryFromAPI valueForKey:APIKey];
             if ([value isKindOfClass:[NSNumber class]]) {
@@ -194,15 +188,15 @@
                 self.date = value;
             }
         }
-       /*
+       
         else {
             id value = [dictionaryFromAPI valueForKey:APIKey];
             if ((value) && (![value isKindOfClass:[NSNull class]])) { 
                 [self setValue:[dictionaryFromAPI valueForKey:APIKey] forKey:keyToSet];
                 
             }
-        }
-         */
+        }*/
+         
     }        
 }
 
