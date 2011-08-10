@@ -24,8 +24,8 @@
     }
     else if ([request.path isEqualToString:@"videos"]) {
         // Clear old stuff.
-        [[CoreDataManager sharedManager] deleteObjects:self.videos];
-        [self.videos removeAllObjects];
+        //[[CoreDataManager sharedManager] deleteObjects:self.videos];
+        //[self.videos removeAllObjects];
         
         if ([result isKindOfClass:[NSArray class]]) {
             for (NSDictionary *dict in result) {
@@ -132,6 +132,10 @@
 
 - (BOOL)requestSectionsThenRunBlock:(VideoDataRequestResponse)responseBlock {
     BOOL succeeded = NO;
+    
+    //clear old cache when sections are first requested
+    [[CoreDataManager sharedManager] deleteObjects:self.videos];
+    [self.videos removeAllObjects];
     
     if ([self isRequestInProgressForPath:@"sections"] || ![self requestManagerIsReachable]) {
         // Get last saved sections.
