@@ -24,8 +24,8 @@
     }
     else if ([request.path isEqualToString:@"videos"]) {
         // Clear old stuff.
-        //[[CoreDataManager sharedManager] deleteObjects:self.videos];
-        //[self.videos removeAllObjects];
+        [[CoreDataManager sharedManager] deleteObjects:self.videos];
+        [self.videos removeAllObjects];
         
         if ([result isKindOfClass:[NSArray class]]) {
             for (NSDictionary *dict in result) {
