@@ -133,10 +133,6 @@
 - (BOOL)requestSectionsThenRunBlock:(VideoDataRequestResponse)responseBlock {
     BOOL succeeded = NO;
     
-    //clear old cache when sections are first requested
-    [[CoreDataManager sharedManager] deleteObjects:self.videos];
-    [self.videos removeAllObjects];
-    
     if ([self isRequestInProgressForPath:@"sections"] || ![self requestManagerIsReachable]) {
         // Get last saved sections.
         self.sections = [[NSUserDefaults standardUserDefaults] objectForKey:@"Kurogo video sections array"];        
@@ -159,6 +155,7 @@
 
 - (BOOL)requestVideosForSection:(NSString *)section 
                    thenRunBlock:(VideoDataRequestResponse)responseBlock {
+    
     BOOL succeeded = NO;
     if ([self isRequestInProgressForPath:@"videos"] || ![self requestManagerIsReachable]) {
         
@@ -251,6 +248,7 @@
     } 
     return succeeded;
 }
+
 
 #pragma mark KGORequestDelegate
 - (void)requestWillTerminate:(KGORequest *)request

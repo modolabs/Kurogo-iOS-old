@@ -52,7 +52,7 @@ static const NSInteger kVideoListCellThumbnailTag = 0x78;
     [thumbnailView displayImage];
 }
 
-- (void)requestVideosForActiveSection {    
+- (void)requestVideosForActiveSection { 
     if (self.videoSections.count > self.activeSectionIndex) {
         NSString *section = [[self.videoSections objectAtIndex:self.activeSectionIndex] objectForKey:@"value"];
         [self.dataManager requestVideosForSection:section
@@ -236,7 +236,7 @@ static const NSInteger kVideoListCellThumbnailTag = 0x78;
         cell.detailTextLabel.text = [[self class] detailTextForVideo:video];
                 
         MITThumbnailView *thumbnailView = (MITThumbnailView *)[cell.contentView viewWithTag:kVideoListCellThumbnailTag];        
-        [self updateThumbnailView:thumbnailView forVideo:video];
+        [self updateThumbnailView:thumbnailView forVideo:video];//this line places thumbnail image
         
         [cellConfigPool release];
     }
@@ -245,9 +245,9 @@ static const NSInteger kVideoListCellThumbnailTag = 0x78;
 
 #pragma mark UITableViewDelegate
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+   
     if (self.videos.count > indexPath.row) {
         NSString *section = [[self.videoSections objectAtIndex:self.activeSectionIndex] objectForKey:@"value"];
-
         Video *video = [self.videos objectAtIndex:indexPath.row];
         VideoDetailViewController *detailViewController = 
         [[VideoDetailViewController alloc] initWithVideo:video andSection:section];

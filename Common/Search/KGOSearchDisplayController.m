@@ -8,6 +8,7 @@
 #import "KGOAppDelegate+ModuleAdditions.h"
 #import "RecentSearch.h"
 #import <MapKit/MKAnnotation.h>
+#import "Video.h"
 
 #define MAX_SEARCH_RESULTS 25
 
@@ -365,16 +366,36 @@ showingOnlySearchResults = _showingOnlySearchResults, showsSearchOverlay;
     if (![result respondsToSelector:@selector(viewsForTableCell)] || ![result viewsForTableCell]) {
         NSString *title = [result title];
         NSString *subtitle = [result respondsToSelector:@selector(subtitle)] ? [result subtitle] : nil;
-        
-        // TODO: have the objects decide this
         NSString *accessoryType = [result isKindOfClass:[RecentSearch class]] ? nil : KGOAccessoryTypeChevron;
-        
-        return [[^(UITableViewCell *cell) {
-            cell.selectionStyle = UITableViewCellSelectionStyleGray;
-            cell.textLabel.text = title;
-            cell.detailTextLabel.text = subtitle;
-            cell.accessoryView = [[KGOTheme sharedTheme] accessoryViewForType:accessoryType];
-        } copy] autorelease];
+        if([result isKindOfClass:[Video class]]){
+            Video *video = (Video *)result; 
+            subtitle = [NSString stringWithFormat:@"(%@) %@", [video durationString], video.videoDescription];
+            
+            return [[^(UITableViewCell *cell) {
+                cell.selectionStyle = UITableViewCellSelectionStyleGray;
+                cell.textLabel.text = title;
+                cell.detailTextLabel.text = subtitle;
+                cell.accessoryView = [[KGOTheme sharedTheme] accessoryViewForType:accessoryType];
+                [cell.imageView setBounds:CGRectMake(0, 0, 50, 50)];
+                [cell.imageView setClipsToBounds:NO];
+                [cell.imageView setFrame:CGRectMake(0, 0, 50, 50)];
+                [cell.imageView setContentMode:UIViewContentModeScaleAspectFill];
+                
+                NSString *temp = video.thumbnailURLString;
+                NSData *data=[NSData dataWithContentsOfURL:[NSURL URLWithString:temp]];
+                UIImage *pic = [UIImage imageWithData:data];
+                cell.imageView.image = pic;
+            } copy] autorelease];
+            
+        } else{
+        // TODO: have the objects decide this
+            return [[^(UITableViewCell *cell) {
+                cell.selectionStyle = UITableViewCellSelectionStyleGray;
+                cell.textLabel.text = title;
+                cell.detailTextLabel.text = subtitle;
+                cell.accessoryView = [[KGOTheme sharedTheme] accessoryViewForType:accessoryType];
+            } copy] autorelease];
+        }
     }
     
     return nil;
