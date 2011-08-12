@@ -257,9 +257,10 @@
 #pragma mark -
 
 - (void)dealloc {
+    [self.resultDict release];
+    [self.resultKeys release];
+    
     [super dealloc];
-    [self.resultDict dealloc];
-   // [self.resultKeys dealloc];
 }
 
 
