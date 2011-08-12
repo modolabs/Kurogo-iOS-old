@@ -90,9 +90,17 @@
     NSString *method = [_shareMethods objectAtIndex:buttonIndex];
 
 	if ([method isEqualToString:KGOSocialMediaTypeEmail]) {
+        
         // TODO: make this string configurable
         NSString *emailBody = [NSString stringWithFormat:
-                               @"I thought you might be interested in this...\n\n%@\n\n%@", self.shareBody, self.shareURL];
+                               @"I thought you might be interested in this...\n\n"];//, self.shareBody, self.shareURL];
+        
+        if (nil != self.shareBody)
+            emailBody = [emailBody stringByAppendingFormat:@"%@\n\n", self.shareBody];
+        
+        if (nil != self.shareURL)
+            emailBody = [emailBody stringByAppendingFormat:@"%@\n\n", self.shareURL];
+                        
         [self.contentsController presentMailControllerWithEmail:nil
                                                         subject:self.shareTitle
                                                            body:emailBody 
