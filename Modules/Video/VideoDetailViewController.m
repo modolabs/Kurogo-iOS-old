@@ -10,7 +10,6 @@
 #import "VideoWebViewController.h"
 #import "UIKit+KGOAdditions.h"
 
-
 typedef enum {
     kVideoDetailScrollViewTag = 0x1890,
     kVideoDetailTitleLabelTag,
@@ -57,15 +56,12 @@ static const CGFloat extraScrollViewHeight = 100.0f;
 #pragma mark Subview setup
 - (void)makeAndAddVideoImageViewToView:(UIView *)parentView
 {
-    UIImage *image = 
-    [UIImage imageWithData:
-     [NSData dataWithContentsOfURL:[NSURL URLWithString:
-                                    self.video.stillFrameImageURLString]]];
+    UIImage *image = [UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:self.video.stillFrameImageURLString]]];
     UIImageView *imageView = [[UIImageView alloc] initWithImage:image];
     imageView.tag = kVideoDetailImageViewTag;
     CGRect imageViewFrame = imageView.frame;
     imageViewFrame.origin.x = kVideoDetailMargin;
-    imageViewFrame.origin.y = kVideoDetailMargin * 2 + kVideoTitleLabelHeight;
+    imageViewFrame.origin.y = kVideoDetailMargin * 2 + kVideoTitleLabelHeight + bookmarkSharingView.frame.size.height;
     // Scale frame to fit in view.
     CGFloat idealFrameWidth = parentView.frame.size.width - 2 * kVideoDetailMargin;
     if (imageViewFrame.size.width > idealFrameWidth) {
@@ -107,6 +103,7 @@ static const CGFloat extraScrollViewHeight = 100.0f;
 @synthesize dataManager;
 @synthesize section;
 @synthesize scrollView;
+@synthesize headerView = _headerView;
 
 UILabel *titleLabel;
 
@@ -127,6 +124,10 @@ UILabel *titleLabel;
 - (void)loadView {
     [super loadView];
     
+    _shareController = [[KGOShareButtonController alloc] initWithContentsController:self];
+    _shareController.shareTypes = KGOShareControllerShareTypeEmail | KGOShareControllerShareTypeFacebook | KGOShareControllerShareTypeTwitter;
+    
+    
     [self requestVideoForDetailView];
     
     NSAutoreleasePool *loadViewPool = [[NSAutoreleasePool alloc] init];
@@ -145,6 +146,10 @@ UILabel *titleLabel;
     titleLabel.text = video.title;
     titleLabel.backgroundColor = [UIColor clearColor];
     [scrollView addSubview:titleLabel];
+    
+    //add sharing and bookmark buttons
+    bookmarkSharingView = [self viewForTableHeader];
+    [scrollView addSubview:bookmarkSharingView];
     
     // TODO: When non-YouTube feeds are worked in, if they have streams
     // playable in MPMoviePlayerController, put an embedded player here conditionally.
@@ -174,7 +179,7 @@ UILabel *titleLabel;
     [[UILabel alloc] initWithFrame:
      CGRectMake(kVideoDetailMargin, 
                 kVideoDetailMargin * 3 + kVideoTitleLabelHeight 
-                + videoImageView.frame.size.height,
+             + videoImageView.frame.size.height + bookmarkSharingView.frame.size.height,
                 self.view.frame.size.width - 2 * kVideoDetailMargin, 
                 descriptionSize.height)];
     descriptionLabel.tag = kVideoDetailDescriptionTag;
@@ -192,6 +197,33 @@ UILabel *titleLabel;
     [descriptionLabel release];
     [scrollView release];
 }
+
+- (UIView *)viewForTableHeader
+{
+    if (!self.headerView) {
+        self.headerView = [[[KGODetailPageHeaderView alloc] initWithFrame:CGRectMake(0, kVideoTitleLabelHeight-10, self.view.bounds.size.width, 30)] autorelease];
+        self.headerView.delegate = self;
+        self.headerView.showsBookmarkButton = YES;
+        
+    }
+    self.headerView.showsShareButton = YES;
+    self.headerView.showsCalendarButton = NO;
+    
+    return self.headerView;
+}
+
+- (void)headerView:(KGODetailPageHeaderView *)headerVw shareButtonPressed:(id)sender
+{
+    _shareController.actionSheetTitle = @"Share this event";
+    _shareController.shareTitle = video.title;
+    //_shareController.shareBody = video.videoDescription;
+       _shareController.shareURL = video.url;
+    
+    [_shareController shareInView:self.view];
+
+}
+
+
 
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad {  
