@@ -243,7 +243,7 @@
     }
     [_bookmarkButton setImage:buttonImage forState:UIControlStateNormal];
     [_bookmarkButton setImage:pressedButtonImage forState:UIControlStateHighlighted];
-    }
+}
 
 - (void) setupCalendarButtonImages 
 {

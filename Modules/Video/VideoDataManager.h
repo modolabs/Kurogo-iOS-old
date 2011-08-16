@@ -5,6 +5,12 @@
 
 typedef void (^VideoDataRequestResponse)(id result);
 
+@class VideoDataManager; 
+@protocol VideoDataDelegate <NSObject> 
+@optional
+- (void)dataController:(VideoDataManager *)controller didRetrieveVideos:(NSArray *)bookmarks;
+
+@end
 @interface VideoDataManager : NSObject<KGORequestDelegate> {
     
 }
@@ -22,6 +28,9 @@ typedef void (^VideoDataRequestResponse)(id result);
                          query:(NSString *)query
                   thenRunBlock:(VideoDataRequestResponse)responseBlock;
 
+- (void)fetchBookmarks;
+- (NSArray *)bookmarkedVideos;
+
 
 // Key: KGORequest. Value: VideoDataRequestResponse.
 @property (nonatomic, retain) NSMutableDictionary *responseBlocksForRequestPaths; 
@@ -32,5 +41,8 @@ typedef void (^VideoDataRequestResponse)(id result);
 @property (nonatomic, retain) NSMutableArray *videosFromCurrentSearch;
 @property (nonatomic, retain) NSMutableArray *detailVideo;
 @property (nonatomic, retain) Reachability *reachability;
+
+@property (nonatomic, assign) id<VideoDataDelegate> delegate;
+
 
 @end

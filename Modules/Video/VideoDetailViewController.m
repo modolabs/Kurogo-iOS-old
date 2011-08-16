@@ -136,10 +136,7 @@ UILabel *titleLabel;
     
     titleLabel = 
     [[UILabel alloc] initWithFrame:
-     CGRectMake(kVideoDetailMargin, 
-                0, 
-                self.view.frame.size.width - 2 * kVideoDetailMargin, 
-                kVideoTitleLabelHeight)];
+     CGRectMake(kVideoDetailMargin, 0, self.view.frame.size.width - 2 * kVideoDetailMargin, kVideoTitleLabelHeight)];
     titleLabel.tag = kVideoDetailTitleLabelTag;
     titleLabel.numberOfLines = 0;
     titleLabel.font = [UIFont fontWithName:@"Georgia" size:22.0f];
@@ -201,28 +198,27 @@ UILabel *titleLabel;
 - (UIView *)viewForTableHeader
 {
     if (!self.headerView) {
-        self.headerView = [[[KGODetailPageHeaderView alloc] initWithFrame:CGRectMake(0, kVideoTitleLabelHeight-10, self.view.bounds.size.width, 30)] autorelease];
+        self.headerView = [[[VideoDetailHeaderView alloc] initWithFrame:CGRectMake(0, kVideoTitleLabelHeight-10, self.view.bounds.size.width, 30)] autorelease];
+        self.headerView.video = self.video; 
         self.headerView.delegate = self;
         self.headerView.showsBookmarkButton = YES;
         
     }
     self.headerView.showsShareButton = YES;
-    self.headerView.showsCalendarButton = NO;
     
     return self.headerView;
 }
 
-- (void)headerView:(KGODetailPageHeaderView *)headerVw shareButtonPressed:(id)sender
+- (void)headerView:(VideoDetailHeaderView *)headerView shareButtonPressed:(id)sender
 {
     _shareController.actionSheetTitle = @"Share this event";
     _shareController.shareTitle = video.title;
     //_shareController.shareBody = video.videoDescription;
-       _shareController.shareURL = video.url;
+    _shareController.shareURL = video.url;
     
     [_shareController shareInView:self.view];
 
 }
-
 
 
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.

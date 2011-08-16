@@ -11,13 +11,13 @@
 #import <MediaPlayer/MediaPlayer.h>
 #import "VideoDataManager.h"
 #import "KGOShareButtonController.h"
-#import "KGODetailPageHeaderView.h"
+#import "VideoDetailHeaderView.h"
 
 
 
-@interface VideoDetailViewController : UIViewController <KGODetailPageHeaderDelegate>{
+@interface VideoDetailViewController : UIViewController <VideoDetailHeaderDelegate>{
     KGOShareButtonController *_shareController;    
-    KGODetailPageHeaderView *_headerView;
+    VideoDetailHeaderView *_headerView;
     UIView *bookmarkSharingView;
 
 }
@@ -27,7 +27,7 @@
 @property (nonatomic, retain) VideoDataManager *dataManager;
 @property (nonatomic, retain) NSString *section;
 @property (nonatomic, retain) UIScrollView *scrollView;
-@property (nonatomic, retain) KGODetailPageHeaderView *headerView;
+@property (nonatomic, retain) VideoDetailHeaderView *headerView;
 
 - (id)initWithVideo:(Video *)aVideo andSection:(NSString *)videoSection;
 - (void)requestVideoForDetailView;

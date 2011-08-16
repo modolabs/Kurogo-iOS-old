@@ -24,7 +24,7 @@ static const NSInteger kVideoListCellThumbnailTag = 0x78;
 
 #pragma mark Search UI
 - (void)showSearchBar;
-- (void)hideSearchBar;
+- (void)hideSearchBar; 
 
 @end
 
@@ -164,6 +164,11 @@ static const NSInteger kVideoListCellThumbnailTag = 0x78;
     self.navScrollView = [[[KGOScrollingTabstrip alloc] initWithFrame:frame] autorelease];
     self.navScrollView.showsSearchButton = YES;
     self.navScrollView.delegate = self;
+    BOOL bookmarksExist = NO;//[self.dataManager bookmarkedVideos].count > 0;
+    if(bookmarksExist){
+        [self.navScrollView setShowsBookmarkButton:YES]; 
+    }
+    
 }
 
 - (void)viewDidLoad {
@@ -182,6 +187,21 @@ static const NSInteger kVideoListCellThumbnailTag = 0x78;
          }
      }];
     self.navigationItem.title = @"Video"; 
+}
+
+
+- (void)tabstripBookmarkButtonPressed:(id)sender{
+    NSLog(@"tabstip bookmark button pressed");
+    [self switchToBookmarks];
+}
+
+- (void)switchToBookmarks {
+    showingBookmarks = YES;
+    //self.videos = [self.dataManager bookmarkedVideos];
+}
+
+- (void)dataController:(VideoDataManager *)manager didRetrieveVideos:(NSArray *)bookmarkedVidoes{
+    
 }
 
 - (void)viewWillDisappear:(BOOL)animated {

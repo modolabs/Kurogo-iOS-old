@@ -9,6 +9,7 @@
 - (void)headerViewFrameDidChange:(KGODetailPageHeaderView *)headerView;
 - (void)headerView:(KGODetailPageHeaderView *)headerView shareButtonPressed:(id)sender;
 
+
 @end
 
 @protocol KGODetailPageCalendarButtonDelegate <NSObject>

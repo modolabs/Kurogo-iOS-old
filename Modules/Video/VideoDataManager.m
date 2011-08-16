@@ -97,6 +97,7 @@
 @synthesize reachability;
 @synthesize videosFromCurrentSearch;
 @synthesize detailVideo; 
+@synthesize delegate; 
 
 #pragma mark NSObject
 
@@ -247,6 +248,23 @@
         succeeded = YES;
     } 
     return succeeded;
+}
+
+- (NSArray *)bookmarkedVideos
+{
+    //needs to be changed
+    NSPredicate *pred = [NSPredicate predicateWithFormat:@"bookmarked == YES", self.moduleTag];
+    return [[CoreDataManager sharedManager] objectsForEntity:NewsStoryEntityName matchingPredicate:pred];
+}
+
+- (void)fetchBookmarks{
+    
+    NSArray *bookmarks = [self bookmarkedVideos];
+    
+    if ([self.delegate respondsToSelector:@selector(dataController:didRetrieveStories:)]) {
+        [self.delegate dataController:self didRetrieveVideos:bookmarks];
+    }
+
 }
 
 
