@@ -80,8 +80,7 @@ currentCategories = _currentCategories, currentStories = _currentStories;
 
 - (NSArray *)bookmarkedStories
 {
-    NSPredicate *pred = [NSPredicate predicateWithFormat:
-                         @"bookmarked == YES AND ANY categories.moduleTag = %@", self.moduleTag];
+    NSPredicate *pred = [NSPredicate predicateWithFormat:@"bookmarked == YES AND ANY categories.moduleTag = %@", self.moduleTag];
     return [[CoreDataManager sharedManager] objectsForEntity:NewsStoryEntityName matchingPredicate:pred];
 }
 

@@ -186,6 +186,7 @@
 }
 
 - (void)tabstripBookmarkButtonPressed:(KGOScrollingTabstrip *)tabstrip {
+    self.activeCategoryId = nil; 
     [self switchToBookmarks];
 }
 
