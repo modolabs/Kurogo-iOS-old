@@ -26,6 +26,7 @@
         // Clear old stuff.
         [[CoreDataManager sharedManager] deleteObjects:self.videos];
         [self.videos removeAllObjects];
+        //[self pruneVideos];
         
         if ([result isKindOfClass:[NSArray class]]) {
             for (NSDictionary *dict in result) {
@@ -39,8 +40,9 @@
     }
     else if ([request.path isEqualToString:@"search"]) {
         // Clear old stuff.
-        [[CoreDataManager sharedManager] deleteObjects:self.videosFromCurrentSearch];
-        [self.videosFromCurrentSearch removeAllObjects];        
+        [[CoreDataManager sharedManager] deleteObjects:self.videos];
+        [self.videos removeAllObjects];
+        //[self pruneVideos];       
         
         if ([result isKindOfClass:[NSArray class]]) {
             for (NSDictionary *dict in result) {
@@ -55,15 +57,16 @@
     }
     else if ([request.path isEqualToString:@"detail"]) {
         // Clear old stuff.
-        [[CoreDataManager sharedManager] deleteObjects:self.detailVideo];
-        [self.detailVideo removeAllObjects];
+        //[[CoreDataManager sharedManager] deleteObjects:self.videos];
+        //[self.videos removeAllObjects];
+        //[self pruneVideos];
         
         if ([result isKindOfClass:[NSDictionary class]]) {
             NSDictionary *dict = (NSDictionary *)result;
-                Video *video = [[CoreDataManager sharedManager] insertNewObjectForEntityForName:@"Video"];
-                [video setUpWithDictionary:dict];
-                video.source = [request.getParams objectForKey:@"section"];
-                [self.detailVideo addObject:video];
+            Video *video = [[CoreDataManager sharedManager] insertNewObjectForEntityForName:@"Video"];
+            [video setUpWithDictionary:dict];
+            video.source = [request.getParams objectForKey:@"section"];
+            [self.detailVideo addObject:video];
             [[CoreDataManager sharedManager] saveData];
         }        
     }
@@ -150,12 +153,12 @@
         [request connect];
         succeeded = YES;
     } 
-
+    
     return succeeded;
 }
 
-- (BOOL)requestVideosForSection:(NSString *)section 
-                   thenRunBlock:(VideoDataRequestResponse)responseBlock {
+- (BOOL)requestVideosForSection:(NSString *)section thenRunBlock:(VideoDataRequestResponse)responseBlock {
+    
     
     BOOL succeeded = NO;
     if ([self isRequestInProgressForPath:@"videos"] || ![self requestManagerIsReachable]) {
@@ -188,7 +191,7 @@
 }
 
 - (BOOL)requestVideoForDetailSection:(NSString *)section andVideoID:(NSString *)videoID 
-                   thenRunBlock:(VideoDataRequestResponse)responseBlock {
+                        thenRunBlock:(VideoDataRequestResponse)responseBlock {
     BOOL succeeded = NO;
     
     NSDictionary *params = [NSDictionary dictionaryWithObject:section forKey:@"section"];
@@ -252,19 +255,30 @@
 
 - (NSArray *)bookmarkedVideos
 {
-    //needs to be changed
-    NSPredicate *pred = [NSPredicate predicateWithFormat:@"bookmarked == YES", self.moduleTag];
-    return [[CoreDataManager sharedManager] objectsForEntity:NewsStoryEntityName matchingPredicate:pred];
+    
+    NSPredicate *pred = [NSPredicate predicateWithFormat:@"bookmarked == YES"];
+    return [[CoreDataManager sharedManager] objectsForEntity:@"Video" matchingPredicate:pred];
+    
 }
 
 - (void)fetchBookmarks{
     
     NSArray *bookmarks = [self bookmarkedVideos];
     
-    if ([self.delegate respondsToSelector:@selector(dataController:didRetrieveStories:)]) {
+    if ([self.delegate respondsToSelector:@selector(dataController:didRetrieveStories:)]) {///////////////////
         [self.delegate dataController:self didRetrieveVideos:bookmarks];
     }
+    
+}
 
+- (void)pruneVideos{
+    NSArray *nonBookmarkedVideos = nil;
+    NSPredicate *pred = [NSPredicate predicateWithFormat:@"bookmarked != YES"];
+    nonBookmarkedVideos = [[CoreDataManager sharedManager] objectsForEntity:@"Video" matchingPredicate:pred];
+    
+    [[CoreDataManager sharedManager] deleteObjects:nonBookmarkedVideos];
+    [self.videos removeObjectsInArray:nonBookmarkedVideos];
+    [[CoreDataManager sharedManager] saveData];
 }
 
 
