@@ -175,7 +175,7 @@ static NSString * const TwitterServiceName = @"Twitter";
 #pragma mark MGTwitterEngineDelegate
 
 // TODO: figure out when we really need to show the network activity indicator
-
+/*
 // gets called in response to -[getXAuthAccessTokenForUsername:password:]
 - (void)accessTokenReceived:(OAToken *)aToken forRequest:(NSString *)connectionIdentifier {
 	NSError *error = nil;
@@ -203,7 +203,7 @@ static NSString * const TwitterServiceName = @"Twitter";
 
     [[NSNotificationCenter defaultCenter] postNotificationName:TwitterDidLoginNotification object:self];
 }
-
+*/
 - (void)requestSucceeded:(NSString *)connectionIdentifier {
 	//[KGO_SHARED_APP_DELEGATE() hideNetworkActivityIndicator];
     
