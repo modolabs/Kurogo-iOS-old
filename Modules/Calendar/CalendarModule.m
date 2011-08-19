@@ -13,6 +13,7 @@ NSString * const KGODataModelNameCalendar = @"Calendar";
 - (void)dealloc {
 	self.request = nil;
     [super dealloc];
+    
 }
 
 - (NSString *)defaultCalendar {

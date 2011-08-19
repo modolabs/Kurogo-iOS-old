@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0B976E2713FADE6D0085CA3A /* VideoDetailHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0B976E2613FADE6D0085CA3A /* VideoDetailHeaderView.m */; };
 		1D60589F0D05DD5A006BFB54 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D30AB110D05D00D00671497 /* Foundation.framework */; };
 		1DF5F4E00D08C38300B7A737 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DF5F4DF0D08C38300B7A737 /* UIKit.framework */; };
 		29366C1A118E401C009D6863 /* libxml2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 29366C19118E401C009D6863 /* libxml2.dylib */; };
@@ -196,6 +197,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		0B976E2513FADE6D0085CA3A /* VideoDetailHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VideoDetailHeaderView.h; path = ../Video/VideoDetailHeaderView.h; sourceTree = "<group>"; };
+		0B976E2613FADE6D0085CA3A /* VideoDetailHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VideoDetailHeaderView.m; path = ../Video/VideoDetailHeaderView.m; sourceTree = "<group>"; };
 		1D30AB110D05D00D00671497 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		1D6058910D05DD3D006BFB54 /* Universitas.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Universitas.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1DF5F4DF0D08C38300B7A737 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
@@ -702,6 +705,8 @@
 				A627E6AD134A65FD00403110 /* VideoListViewController.m */,
 				A6F2F818134BAC75009F597D /* VideoDetailViewController.h */,
 				A6F2F819134BAC75009F597D /* VideoDetailViewController.m */,
+				0B976E2513FADE6D0085CA3A /* VideoDetailHeaderView.h */,
+				0B976E2613FADE6D0085CA3A /* VideoDetailHeaderView.m */,
 				A6F2FA1F134BE23F009F597D /* VideoWebViewController.h */,
 				A6F2FA20134BE23F009F597D /* VideoWebViewController.m */,
 				A627E6AE134A65FD00403110 /* VideoModule.h */,
@@ -1469,6 +1474,8 @@
 				562CD69F13B9AEA600C5CB94 /* LinksModule.m in Sources */,
 				4B2A10B013D609300028298E /* LinksTableViewController.m in Sources */,
 				56388C1A13FDF957005BA72E /* VideoDetailHeaderView.m in Sources */,
+
+
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

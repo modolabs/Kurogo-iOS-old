@@ -146,7 +146,7 @@
 			<key>APIPath</key>
 			<string>rest</string>
 			<key>Host</key>
-			<string>localhost:8888</string>
+			<string>demo.modolabs.com/dario</string>
 			<key>PathExtension</key>
 			<string></string>
 			<key>UseHTTPS</key>
