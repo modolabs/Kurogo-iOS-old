@@ -1,5 +1,5 @@
 #import "KGOTwitterService.h"
-#import "SFHFKeychainUtils.h"
+//#import "SFHFKeychainUtils.h"
 #import "KGOAppDelegate+ModuleAdditions.h"
 #import "Foundation+KGOAdditions.h"
 #import "KGOSocialMediaController.h"
@@ -20,7 +20,7 @@ static NSString * const TwitterServiceName = @"Twitter";
 	//[KGO_SHARED_APP_DELEGATE() showNetworkActivityIndicator];
     _twitterPassword = [password retain];
 	self.twitterUsername = username;
-	[_twitterEngine getXAuthAccessTokenForUsername:username password:password];
+	//[_twitterEngine getXAuthAccessTokenForUsername:username password:password];
 }
 
 - (NSString *)twitterUsername {
@@ -39,7 +39,7 @@ static NSString * const TwitterServiceName = @"Twitter";
 }
 
 - (void)postToTwitter:(NSString *)text {
-	[_twitterEngine sendUpdate:text];
+	//[_twitterEngine sendUpdate:text];
 }
 
 - (void)postToTwitter:(NSString *)text target:(id)target success:(SEL)successAction failure:(SEL)failureAction
@@ -47,7 +47,7 @@ static NSString * const TwitterServiceName = @"Twitter";
     _lastTarget = target;
     _lastSuccessAction = successAction;
     _lastFailureAction = failureAction;
-    _lastConnectionIdentifier = [[_twitterEngine sendUpdate:text] retain];
+    //_lastConnectionIdentifier = [[_twitterEngine sendUpdate:text] retain];
 }
 
 - (void)disconnectTarget:(id)target
@@ -63,7 +63,7 @@ static NSString * const TwitterServiceName = @"Twitter";
     [_oauthSecret release];
     [_twitterUsername release];
     [_twitterPassword release];
-    [_twitterEngine release];
+    //[_twitterEngine release];
     
     [super dealloc];
 }
@@ -82,7 +82,7 @@ static NSString * const TwitterServiceName = @"Twitter";
 
 - (void)startup {
     _twitterStartupCount++;
-    
+    /*
 	if (!_twitterEngine) {
 		_twitterEngine = [[MGTwitterEngine alloc] initWithDelegate:self];
 		[_twitterEngine setConsumerKey:_oauthKey secret:_oauthSecret];
@@ -100,6 +100,7 @@ static NSString * const TwitterServiceName = @"Twitter";
             }
         }
 	}
+    */
 }
 
 - (void)shutdown {
@@ -107,16 +108,17 @@ static NSString * const TwitterServiceName = @"Twitter";
         _twitterStartupCount--;
     
     if (_twitterStartupCount <= 0) {
-        if (_twitterEngine) {
-            [_twitterEngine closeAllConnections];
-            [_twitterEngine release];
-            _twitterEngine = nil;
-        }
+        //if (_twitterEngine) {
+        //    [_twitterEngine closeAllConnections];
+        //    [_twitterEngine release];
+        //    _twitterEngine = nil;
+        //}
     }
 }
 
 - (BOOL)isSignedIn {
-    return _twitterEngine.accessToken != nil;
+    return NO;
+    //return _twitterEngine.accessToken != nil;
 }
 
 - (void)signin {
@@ -130,14 +132,14 @@ static NSString * const TwitterServiceName = @"Twitter";
 
 - (void)signout {
 
-    _twitterEngine.accessToken = nil;
+    //_twitterEngine.accessToken = nil;
     
     // cleanup
     
 	NSString *username = [[NSUserDefaults standardUserDefaults] objectForKey:TwitterUsernameKey];
     if (username) {
         NSError *error = nil;
-        [SFHFKeychainUtils deleteItemForUsername:username andServiceName:TwitterServiceName error:&error];
+        //[SFHFKeychainUtils deleteItemForUsername:username andServiceName:TwitterServiceName error:&error];
         
         if (error) {
             NSLog(@"failed to log out of Twitter: %@", [error description]);
@@ -177,15 +179,15 @@ static NSString * const TwitterServiceName = @"Twitter";
 // gets called in response to -[getXAuthAccessTokenForUsername:password:]
 - (void)accessTokenReceived:(OAToken *)aToken forRequest:(NSString *)connectionIdentifier {
 	NSError *error = nil;
-    [_twitterEngine setAccessToken:aToken];
+    //[_twitterEngine setAccessToken:aToken];
     
 	//[KGO_SHARED_APP_DELEGATE() hideNetworkActivityIndicator];
     if (_twitterPassword) {
-        [SFHFKeychainUtils storeUsername:_twitterUsername
-                             andPassword:_twitterPassword
-                          forServiceName:TwitterServiceName
-                          updateExisting:YES
-                                   error:&error];
+        //[SFHFKeychainUtils storeUsername:_twitterUsername
+        //                     andPassword:_twitterPassword
+        //                  forServiceName:TwitterServiceName
+        //                  updateExisting:YES
+        //                           error:&error];
         
         [_twitterPassword release];
         _twitterPassword = nil;
