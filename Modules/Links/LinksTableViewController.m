@@ -7,6 +7,12 @@
 
 #define OVERLAY_TAG 233
 
+@interface LinksTableViewController (Private)
+
+- (void)layoutSpringboard;
+
+@end
+
 @implementation LinksTableViewController
 @synthesize request;
 @synthesize loadingIndicator;
@@ -281,7 +287,7 @@
                                   
         UIControl *iconView = [[[UIControl alloc] initWithFrame:CGRectMake(0, 0, 80, 120)] autorelease];
         
-        MITThumbnailView *thumbnailView = [[MITThumbnailView alloc] initWithFrame:CGRectMake(0, 0, 80, 80)];
+        MITThumbnailView *thumbnailView = [[[MITThumbnailView alloc] initWithFrame:CGRectMake(0, 0, 80, 80)] autorelease];
         thumbnailView.userInteractionEnabled = NO;
         NSString *iconURL = [linkDict objectForKey:@"iconURL"];
         thumbnailView.imageURL = [iconURL stringByReplacingOccurrencesOfString:@" " withString:@"%20"];            

@@ -85,42 +85,6 @@
     }
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    /*if (indexPath.section == 0 && indexPath.row == 1) {
-        //NSString *aboutText = aboutText; //NSLocalizedString(@"AboutAppText", nil);
-        UIFont *aboutFont = [UIFont systemFontOfSize:14.0];
-        if ((aboutText != nil)) {
-            CGSize aboutSize = [aboutText sizeWithFont:aboutFont constrainedToSize:CGSizeMake(tableView.frame.size.width, 2000) lineBreakMode:UILineBreakModeWordWrap];
-            
-            return aboutSize.height + 40;
-        }
-        else
-            return 0;
-    }*/
-    if (indexPath.section == 1) {
-        NSDictionary *itemDict = (NSDictionary *)[resultDict objectForKey:[self.resultKeys objectAtIndex:indexPath.row]];
-        
-        BOOL hasTyepString = NO;
-        NSString * type = @"webView";
-        
-        if ([[itemDict allKeys] containsObject:@"type"]){
-            
-            hasTyepString = YES;
-            type = [itemDict objectForKey:@"type"];
-        }
-        
-        if ([type isEqualToString:@"map"]){
-            return 0;
-        }
-        else
-            return self.tableView.rowHeight;
-        
-    }
-    else {
-        return self.tableView.rowHeight;
-    }
-}
-
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     static NSString *CellIdentifier = @"Cell";
     
@@ -171,35 +135,32 @@
             }
             break;
             
-        case 1:{
+        case 1:
+        {
             if (self.resultDict != nil) {
-            NSDictionary *itemDict = (NSDictionary *)[resultDict objectForKey:[self.resultKeys objectAtIndex:indexPath.row]];
-            NSString * titleString = [itemDict objectForKey:@"title"];
-            
-            BOOL hasTyepString = NO;
-            NSString * type = @"webView";
-            
-            if ([[itemDict allKeys] containsObject:@"type"]){
+                NSDictionary *itemDict = (NSDictionary *)[resultDict objectForKey:[self.resultKeys objectAtIndex:indexPath.row]];
+                NSString * titleString = [itemDict objectForKey:@"title"];
                 
-                hasTyepString = YES;
-                type = [itemDict objectForKey:@"type"];
+                NSString *type = [itemDict stringForKey:@"type" nilIfEmpty:YES];
+                if (!type) {
+                    type = @"webView";
+                }
+                
+                if ([type isEqualToString:@"email"]){
+                    cell.accessoryView = [[KGOTheme sharedTheme] accessoryViewForType:KGOAccessoryTypeEmail];
+                }
+                else if ([type isEqualToString:@"phone"]){
+                    cell.accessoryView = [[KGOTheme sharedTheme] accessoryViewForType:KGOAccessoryTypePhone];
+                }
+                else if ([type isEqualToString:@"webView"]){
+                    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+                }
+                
+                cell.textLabel.text = titleString;
+                cell.selectionStyle = UITableViewCellSelectionStyleGray;
             }
-            
-            if ([type isEqualToString:@"email"]){
-                cell.accessoryView = [[KGOTheme sharedTheme] accessoryViewForType:KGOAccessoryTypeEmail];
-            }
-            else if ([type isEqualToString:@"phone"]){
-                cell.accessoryView = [[KGOTheme sharedTheme] accessoryViewForType:KGOAccessoryTypePhone];
-            }
-            else if ([type isEqualToString:@"webView"]){
-                cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-            }
-            
-            cell.textLabel.text = titleString;
-            cell.selectionStyle = UITableViewCellSelectionStyleGray;
-            }
-        }
             break;
+        }
 
         default:
             break;
@@ -217,20 +178,13 @@
 
         NSDictionary *itemDict = (NSDictionary *)[resultDict objectForKey:[self.resultKeys objectAtIndex:indexPath.row]];
         
-        BOOL hasTyepString = NO;
-        NSString * type = @"webView";
-        
-        if ([[itemDict allKeys] containsObject:@"type"]){
-            
-            hasTyepString = YES;
-            type = [itemDict objectForKey:@"type"];
-        }
+        NSString *type = [itemDict stringForKey:@"type" nilIfEmpty:YES];
 
-        if ([type isEqualToString:@"webView"]){
-            
+        if (!type) {
+            NSDictionary *params = (NSDictionary *)[resultDict objectForKey:[self.resultKeys objectAtIndex:indexPath.row]];
             [KGO_SHARED_APP_DELEGATE() showPage:LocalPathPageNameDetail 
                                    forModuleTag:self.moduleTag 
-                                         params:(NSDictionary *)[resultDict objectForKey:[self.resultKeys objectAtIndex:indexPath.row]]];
+                                         params:params];
         }
         else if ([type isEqualToString:@"email"]){
             [self presentMailControllerWithEmail:[itemDict objectForKey:@"email"] subject:@"" body:[NSString string] delegate:self];
@@ -257,8 +211,8 @@
 #pragma mark -
 
 - (void)dealloc {
-    [self.resultDict release];
-    [self.resultKeys release];
+    [resultDict release];
+    [resultKeys release];
     
     [super dealloc];
 }
@@ -273,15 +227,17 @@
 - (void)request:(KGORequest *)request didReceiveResult:(id)result {
     self.request = nil;
     
-    NSLog(@"%@", [result description]);
+    DLog(@"%@", [result description]);
     
     self.resultDict = result;
     
     if (nil != self.resultKeys)
         [self.resultKeys release];
     
-    self.resultKeys = [[[NSMutableArray alloc] init] retain];
+    self.resultKeys = [NSMutableArray arrayWithCapacity:self.resultDict.count];
     
+    // TODO: we need to make the API return results in an array
+    // currently we are showing links in random order
     int count = 0;
     for (NSString * key in self.resultDict)
          [self.resultKeys insertObject:key atIndex:count++];

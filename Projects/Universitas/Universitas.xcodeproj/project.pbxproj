@@ -507,7 +507,6 @@
 		EBC1C7051347B8D20045CE9C /* release.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = release.xcconfig; sourceTree = "<group>"; };
 		EBC1C7111347C5750045CE9C /* kurogo_debug.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = kurogo_debug.xcconfig; sourceTree = "<group>"; };
 		EBE242BC13AFD3030082C277 /* libfacebook_ios_sdk.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libfacebook_ios_sdk.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		EBE242BD13AFD3030082C277 /* libjson.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libjson.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		EBE242BE13AFD3030082C277 /* libOAuth.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libOAuth.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		EBE242BF13AFD3030082C277 /* libSFHFKeychainUtils.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libSFHFKeychainUtils.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		EBE242C013AFD3030082C277 /* libTwitter.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libTwitter.a; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -571,7 +570,6 @@
 		29B97314FDCFA39411CA2CEA /* CustomTemplate */ = {
 			isa = PBXGroup;
 			children = (
-				EB640C6A13FDFFFB00CFAC5B /* libjson.a */,
 				EB1441361309EF7B00396753 /* Application */,
 				EB0336B2133C2B8B00ACF2BB /* Common */,
 				EB1387B912F22DF7004DBB7C /* Contrib */,
@@ -1023,7 +1021,7 @@
 		EB1387B912F22DF7004DBB7C /* Contrib */ = {
 			isa = PBXGroup;
 			children = (
-				EBE242BD13AFD3030082C277 /* libjson.a */,
+				EB640C6A13FDFFFB00CFAC5B /* libjson.a */,
 				EBE242BC13AFD3030082C277 /* libfacebook_ios_sdk.a */,
 				EBE242BF13AFD3030082C277 /* libSFHFKeychainUtils.a */,
 				EBE242BE13AFD3030082C277 /* libOAuth.a */,
