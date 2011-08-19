@@ -86,6 +86,11 @@
             person = [KGOPersonWrapper personWithUID:uid];
         } else {
             person = [params objectForKey:@"person"];
+            
+            if (nil == person.identifier) {
+                NSString * identifierString = [NSString stringWithFormat:@"%@-%@", person.name, [[NSDate date] description]];
+                person.identifier = identifierString;
+            }
         }
         
         if (person) {
