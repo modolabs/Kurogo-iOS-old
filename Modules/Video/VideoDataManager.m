@@ -26,7 +26,7 @@
         // Clear old stuff.
         [[CoreDataManager sharedManager] deleteObjects:self.videos];
         [self.videos removeAllObjects];
-        //[self pruneVideos];
+        //[self pruneVideos]; ////////will clear old movies and leave bookmarks alone but still flawed. 
         
         if ([result isKindOfClass:[NSArray class]]) {
             for (NSDictionary *dict in result) {
@@ -100,7 +100,7 @@
 @synthesize reachability;
 @synthesize videosFromCurrentSearch;
 @synthesize detailVideo; 
-@synthesize delegate; 
+ 
 
 #pragma mark NSObject
 
@@ -261,24 +261,29 @@
     
 }
 
-- (void)fetchBookmarks{
-    
-    NSArray *bookmarks = [self bookmarkedVideos];
-    
-    if ([self.delegate respondsToSelector:@selector(dataController:didRetrieveStories:)]) {///////////////////
-        [self.delegate dataController:self didRetrieveVideos:bookmarks];
-    }
-    
-}
 
 - (void)pruneVideos{
     NSArray *nonBookmarkedVideos = nil;
-    NSPredicate *pred = [NSPredicate predicateWithFormat:@"bookmarked != YES"];
-    nonBookmarkedVideos = [[CoreDataManager sharedManager] objectsForEntity:@"Video" matchingPredicate:pred];
+    BOOL bookmarks = NO;
     
-    [[CoreDataManager sharedManager] deleteObjects:nonBookmarkedVideos];
-    [self.videos removeObjectsInArray:nonBookmarkedVideos];
-    [[CoreDataManager sharedManager] saveData];
+    for(Video *vid in self.videos){
+        if ([vid isBookmarked]) {
+            bookmarks = YES;
+            break;
+        }
+    }
+    if (bookmarks) {
+        NSPredicate *pred = [NSPredicate predicateWithFormat:@"bookmarked != YES"];
+        nonBookmarkedVideos = [[CoreDataManager sharedManager] objectsForEntity:@"Video" matchingPredicate:pred];
+    
+        [[CoreDataManager sharedManager] deleteObjects:nonBookmarkedVideos];
+        [self.videos removeObjectsInArray:nonBookmarkedVideos];
+        //[[CoreDataManager sharedManager] saveData];
+    }
+    else{
+        [[CoreDataManager sharedManager] deleteObjects:self.videos];
+        [self.videos removeAllObjects];
+    }
 }
 
 

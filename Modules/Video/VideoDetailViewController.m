@@ -186,7 +186,7 @@ UILabel *titleLabel;
     descriptionLabel.backgroundColor = [UIColor clearColor];
     [scrollView addSubview:descriptionLabel];
     
-    scrollView.contentSize = CGSizeMake(self.view.frame.size.width, (titleLabel.frame.size.height + videoImageView.frame.size.height + descriptionSize.height + extraScrollViewHeight));
+    scrollView.contentSize = CGSizeMake(self.view.frame.size.width, (titleLabel.frame.size.height + videoImageView.frame.size.height + descriptionSize.height + bookmarkSharingView.frame.size.height + extraScrollViewHeight));
     scrollView.tag = kVideoDetailScrollViewTag;
     scrollView.scrollEnabled = YES;
     [self.view addSubview:scrollView];

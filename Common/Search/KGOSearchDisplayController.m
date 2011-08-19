@@ -8,13 +8,12 @@
 #import "KGOAppDelegate+ModuleAdditions.h"
 #import "RecentSearch.h"
 #import <MapKit/MKAnnotation.h>
-#import "Video.h"
+#import "Foundation+KGOAdditions.h"
 
 #define MAX_SEARCH_RESULTS 25
 
 
 static NSString * RecentSearchesEntityName = @"RecentSearch";
-
 
 @interface KGOSearchDisplayController (Private)
 
@@ -48,7 +47,7 @@ showingOnlySearchResults = _showingOnlySearchResults, showsSearchOverlay;
         _delegate = delegate;
         
         _searchContentsController = viewController;
-
+        
         // UI Automation testing
 		_searchBar.isAccessibilityElement = YES; // Make search bar available to automation and accessibility features.
 		_searchBar.accessibilityLabel = [NSString stringWithFormat:@"%@ %@", viewController.title, @"Search Bar"];
@@ -86,6 +85,7 @@ showingOnlySearchResults = _showingOnlySearchResults, showsSearchOverlay;
 #pragma mark Search UI
 
 - (void)showSearchResultsTableView {
+    
     if (!_searchTableController) {
         _searchTableController = [[KGOTableController alloc] initWithSearchController:self];
     }
@@ -143,14 +143,14 @@ showingOnlySearchResults = _showingOnlySearchResults, showsSearchOverlay;
         CGFloat yOrigin = _searchBar.frame.origin.y + _searchBar.frame.size.height;
         CGSize containerSize = _searchContentsController.view.frame.size;
         CGRect frame = CGRectMake(0.0, yOrigin, containerSize.width, containerSize.height - yOrigin);
-
+        
         _searchOverlay = [[UIControl alloc] initWithFrame:frame];
         _searchOverlay.backgroundColor = [UIColor colorWithWhite:0.0 alpha:0.8];
         _searchOverlay.alpha = 0.0;
-
+        
         [_searchOverlay addTarget:self action:@selector(searchOverlayTapped) forControlEvents:UIControlEventTouchDown];
     }
-
+    
     [_searchContentsController.view addSubview:_searchOverlay];
     
     if (animated) {
@@ -238,7 +238,7 @@ showingOnlySearchResults = _showingOnlySearchResults, showsSearchOverlay;
     
     self.searchResults = [NSArray array];
     [self reloadSearchResultsTableView];
-
+    
     // save search term to recent searches
     NSString *moduleTag = [self.delegate searchControllerModuleTag:self];
     NSPredicate *pred = [NSPredicate predicateWithFormat:@"text = %@ AND module = %@", searchBar.text, moduleTag];
@@ -261,7 +261,7 @@ showingOnlySearchResults = _showingOnlySearchResults, showsSearchOverlay;
 }
 
 - (void)searchBarBookmarkButtonClicked:(KGOSearchBar *)searchBar {
-
+    
 }
 
 - (void)searchBar:(KGOSearchBar *)searchBar textDidChange:(NSString *)searchText {
@@ -314,7 +314,7 @@ showingOnlySearchResults = _showingOnlySearchResults, showsSearchOverlay;
 }
 
 - (void)searchBar:(KGOSearchBar *)searchBar selectedScopeButtonIndexDidChange:(NSInteger)selectedScope {
-
+    
 }
 
 #pragma mark KGOSearchResultsHolder
@@ -342,13 +342,21 @@ showingOnlySearchResults = _showingOnlySearchResults, showsSearchOverlay;
 #pragma mark KGOTableDataSource
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    NewsStory *newsStory;
     id<KGOSearchResult> result = [self.searchResults objectAtIndex:indexPath.row];
     if ([result isKindOfClass:[RecentSearch class]]) {
-        RecentSearch *recentSearch = (RecentSearch *)result;
+        RecentSearch *recentSearch = (RecentSearch *)newsStory;
         [self unfocusSearchBarAnimated:YES];
         [self executeSearch:recentSearch.text params:nil];
     } else {
-        [self.delegate resultsHolder:self didSelectResult:result];
+        if([result isKindOfClass:[NSDictionary class]]){
+            NSDictionary *story = (NSDictionary *)result; 
+            newsStory = [self storyWithDictionary:story]; 
+            [self.delegate resultsHolder:self didSelectResult:newsStory];
+        }
+        else{
+            [self.delegate resultsHolder:self didSelectResult:result];
+        }
     }
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
@@ -362,13 +370,41 @@ showingOnlySearchResults = _showingOnlySearchResults, showsSearchOverlay;
 }
 
 - (CellManipulator)tableView:(UITableView *)tableView manipulatorForCellAtIndexPath:(NSIndexPath *)indexPath {
+    NSString *title;
+    NSString *subtitle;
     id<KGOSearchResult> result = [self.searchResults objectAtIndex:indexPath.row];
+    NSString *accessoryType = [result isKindOfClass:[RecentSearch class]] ? nil : KGOAccessoryTypeChevron;
+    
     if (![result respondsToSelector:@selector(viewsForTableCell)] || ![result viewsForTableCell]) {
-        NSString *title = [result title];
-        NSString *subtitle = [result respondsToSelector:@selector(subtitle)] ? [result subtitle] : nil;
-        NSString *accessoryType = [result isKindOfClass:[RecentSearch class]] ? nil : KGOAccessoryTypeChevron;
-        if([result isKindOfClass:[Video class]]){
-            Video *video = (Video *)result; 
+        if([result isKindOfClass:[NSDictionary class]]){
+            NSDictionary *story = (NSDictionary *)result; 
+            NewsStory *newsStory = [self storyWithDictionary:story]; 
+            title = newsStory.title;
+            subtitle = newsStory.summary; 
+            
+            return [[^(UITableViewCell *cell) {
+                cell.selectionStyle = UITableViewCellSelectionStyleGray;
+                cell.textLabel.text = title;
+                cell.detailTextLabel.text = subtitle;
+                cell.accessoryView = [[KGOTheme sharedTheme] accessoryViewForType:accessoryType];
+                
+                /*///To add image to news search result/////
+                 [cell.imageView setBounds:CGRectMake(0, 0, 50, 50)];
+                 [cell.imageView setClipsToBounds:NO];
+                 [cell.imageView setFrame:CGRectMake(0, 0, 50, 50)];
+                 [cell.imageView setContentMode:UIViewContentModeScaleAspectFill];
+                 NSMutableDictionary *imageDict = story.image;
+                 NSString *URLString = [imageDict objectForKey:@"src"];
+                 NSData *data=[NSData dataWithContentsOfURL:[NSURL URLWithString:URLString]];
+                 UIImage *image = [UIImage imageWithData:data];
+                 cell.imageView.image = image;
+                 */
+            } copy] autorelease];
+            
+        }
+        else if([result isKindOfClass:[Video class]]){
+            Video *video = (Video *)result;
+            title = [video title];
             subtitle = [NSString stringWithFormat:@"(%@) %@", [video durationString], video.videoDescription];
             
             return [[^(UITableViewCell *cell) {
@@ -381,14 +417,18 @@ showingOnlySearchResults = _showingOnlySearchResults, showsSearchOverlay;
                 [cell.imageView setFrame:CGRectMake(0, 0, 50, 50)];
                 [cell.imageView setContentMode:UIViewContentModeScaleAspectFill];
                 
-                NSString *temp = video.thumbnailURLString;
-                NSData *data=[NSData dataWithContentsOfURL:[NSURL URLWithString:temp]];
+                NSString *URLString = video.thumbnailURLString;
+                NSData *data=[NSData dataWithContentsOfURL:[NSURL URLWithString:URLString]];
                 UIImage *pic = [UIImage imageWithData:data];
                 cell.imageView.image = pic;
             } copy] autorelease];
             
-        } else{
-        // TODO: have the objects decide this
+        } 
+        else{
+            title = [result title];
+            subtitle = [result respondsToSelector:@selector(subtitle)] ? [result subtitle] : nil;
+            
+            // TODO: have the objects decide this
             return [[^(UITableViewCell *cell) {
                 cell.selectionStyle = UITableViewCellSelectionStyleGray;
                 cell.textLabel.text = title;
@@ -401,6 +441,8 @@ showingOnlySearchResults = _showingOnlySearchResults, showsSearchOverlay;
     return nil;
 }
 
+
+
 - (KGOTableCellStyle)tableView:(UITableView *)tableView styleForCellAtIndexPath:(NSIndexPath *)indexPath {
     return KGOTableCellStyleSubtitle;
 }
@@ -412,12 +454,51 @@ showingOnlySearchResults = _showingOnlySearchResults, showsSearchOverlay;
     return nil;
 }
 
+- (NewsStory *)storyWithDictionary:(NSDictionary *)storyDict {
+    // use existing story if it's already in the db
+    NSString *GUID = [storyDict stringForKey:@"GUID" nilIfEmpty:YES];
+    NewsStory *story = [[CoreDataManager sharedManager] uniqueObjectForEntity:NewsStoryEntityName 
+                                                                    attribute:@"identifier" 
+                                                                        value:GUID];
+    // otherwise create new
+    if (!story) {
+        story = (NewsStory *)[[CoreDataManager sharedManager] insertNewObjectForEntityForName:NewsStoryEntityName];
+        story.identifier = GUID;
+    }
+    
+    double unixtime = [storyDict floatForKey:@"pubDate"];
+    NSDate *postDate = [NSDate dateWithTimeIntervalSince1970:unixtime];
+    
+    story.postDate = postDate;
+    story.title = [storyDict stringForKey:@"title" nilIfEmpty:YES];
+    story.link = [storyDict stringForKey:@"link" nilIfEmpty:YES];
+    story.author = [storyDict stringForKey:@"author" nilIfEmpty:YES];
+    story.summary = [storyDict stringForKey:@"description" nilIfEmpty:YES];
+    story.hasBody = [NSNumber numberWithBool:[storyDict boolForKey:@"hasBody"]];
+    story.body = [storyDict stringForKey:@"body" nilIfEmpty:YES];
+    
+    NSDictionary *imageDict = [storyDict objectForKey:@"image"];
+    if (imageDict) {
+        // an old thumb may already exist
+        // in which case do not create a new one
+        if (!story.thumbImage) {
+            story.thumbImage = [[CoreDataManager sharedManager] insertNewObjectForEntityForName:NewsImageEntityName];
+        }
+        //story.thumbImage.url = [imageDict stringForKey:@"src" nilIfEmpty:YES];
+        //story.thumbImage.thumbParent = story;
+    } else {
+        story.thumbImage = nil;
+    }
+    return story;
+}
+
+
 // TODO: uncomment and edit if we have search results that need multiple sections
 /*
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return 1;
-}
-*/
+ - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+ return 1;
+ }
+ */
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
 	return self.searchResults.count;

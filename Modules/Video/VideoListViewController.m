@@ -21,11 +21,10 @@ static const NSInteger kVideoListCellThumbnailTag = 0x78;
                    forVideo:(Video *)video;
 - (void)requestVideosForActiveSection;
 - (void)removeAllThumbnailViews;
-
+        
 #pragma mark Search UI
 - (void)showSearchBar;
 - (void)hideSearchBar; 
-
 @end
 
 @implementation VideoListViewController (Private)
@@ -191,20 +190,15 @@ static const NSInteger kVideoListCellThumbnailTag = 0x78;
 
 
 - (void)tabstripBookmarkButtonPressed:(id)sender{
-    NSLog(@"tabstip bookmark button pressed");
     [self switchToBookmarks];
 }
 
 - (void)switchToBookmarks {
     showingBookmarks = YES;
-    //self.videos = [self.dataManager bookmarkedVideos];
-}
-
-- (void)dataController:(VideoDataManager *)manager didRetrieveVideos:(NSArray *)bookmarkedVidoes{
-    self.videos = bookmarkedVidoes;
+    self.videos = [self.dataManager bookmarkedVideos];
     [self.tableView reloadData];
-
 }
+
 
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];

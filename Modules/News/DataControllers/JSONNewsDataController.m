@@ -106,7 +106,7 @@ NSString * const NewsTagBody            = @"body";
     return category;
 }
 
-- (void)searchStories:(NSString *)searchTerms {
+- (void)delegate:(id<KGOSearchResultsHolder>)searchDelegate searchStories:(NSString *)searchTerms {
     
     // cancel any previous search requests
     for (KGORequest *request in self.searchRequests) {
@@ -139,7 +139,7 @@ NSString * const NewsTagBody            = @"body";
                 NewsStory *story = [blockSelf storyWithDictionary:storyDict]; 
                 story.searchResult = [NSNumber numberWithInt:1];
             }
-            
+            [searchDelegate searcher:self didReceiveResults:stories];
             return [stories count];
         } copy] autorelease];                               
         
