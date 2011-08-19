@@ -153,6 +153,7 @@
 
         } else if(indexPath.row == self.primaryContacts.count) {
             title = @"More contacts";
+            accessoryTag = KGOAccessoryTypeChevron;
         }
     }
     

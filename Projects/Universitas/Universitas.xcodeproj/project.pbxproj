@@ -30,6 +30,7 @@
 		562F4B7B133EFA10000B9344 /* ContentWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 562F4B78133EFA10000B9344 /* ContentWebViewController.m */; };
 		56388BDA13EF42EE005BA72E /* EventKitUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 56388BD913EF42EE005BA72E /* EventKitUI.framework */; };
 		56388BDC13EF4306005BA72E /* EventKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 56388BDB13EF4305005BA72E /* EventKit.framework */; };
+		56388C1A13FDF957005BA72E /* VideoDetailHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 56388C1913FDF957005BA72E /* VideoDetailHeaderView.m */; };
 		A627E6B0134A65FD00403110 /* VideoDataManager.m in Sources */ = {isa = PBXBuildFile; fileRef = A627E6AB134A65FD00403110 /* VideoDataManager.m */; };
 		A627E6B1134A65FD00403110 /* VideoListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A627E6AD134A65FD00403110 /* VideoListViewController.m */; };
 		A627E6B2134A65FD00403110 /* VideoModule.m in Sources */ = {isa = PBXBuildFile; fileRef = A627E6AF134A65FD00403110 /* VideoModule.m */; };
@@ -160,6 +161,7 @@
 		EB48910913310A930036AEBF /* ExternalURLModule.m in Sources */ = {isa = PBXBuildFile; fileRef = EB48910813310A930036AEBF /* ExternalURLModule.m */; };
 		EB4C2CDF127F138100058748 /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = EB4C2CDE127F138100058748 /* libsqlite3.dylib */; };
 		EB4C2CE1127F138900058748 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EB4C2CE0127F138900058748 /* CFNetwork.framework */; };
+		EB640C6B13FDFFFB00CFAC5B /* libjson.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EB640C6A13FDFFFB00CFAC5B /* libjson.a */; };
 		EB6D02A911E3784100B65CE3 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EB6D02A811E3784100B65CE3 /* MapKit.framework */; };
 		EB7F32D310CD6FB300188BCD /* AddressBook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EB7F32D210CD6FB300188BCD /* AddressBook.framework */; };
 		EB7F32D710CD6FBB00188BCD /* AddressBookUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EB7F32D610CD6FBB00188BCD /* AddressBookUI.framework */; };
@@ -169,7 +171,6 @@
 		EB83AE5313C747C5006CCEDB /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = EB83AE4F13C747BE006CCEDB /* Localizable.strings */; };
 		EB83AE5513C747CF006CCEDB /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = EB83AE4F13C747BE006CCEDB /* Localizable.strings */; };
 		EB83AE5D13C75C0C006CCEDB /* staging.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = EB83AE5C13C75C0C006CCEDB /* staging.xcconfig */; };
-		EB83AE6C13C7B387006CCEDB /* libjson.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EB83AE6B13C7B387006CCEDB /* libjson.a */; };
 		EB934863139ED47700446243 /* JSONNewsDataController.m in Sources */ = {isa = PBXBuildFile; fileRef = EB93485E139ED47700446243 /* JSONNewsDataController.m */; };
 		EB934864139ED47700446243 /* NewsDataController.m in Sources */ = {isa = PBXBuildFile; fileRef = EB934860139ED47700446243 /* NewsDataController.m */; };
 		EB934865139ED47700446243 /* RSSNewsDataController.m in Sources */ = {isa = PBXBuildFile; fileRef = EB934862139ED47700446243 /* RSSNewsDataController.m */; };
@@ -185,8 +186,6 @@
 		EBB121F1133A917200A4BD1D /* CalendarHomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EBB121EF133A913100A4BD1D /* CalendarHomeViewController.m */; };
 		EBB121F2133A917200A4BD1D /* CalendarHomeViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = EBB121F0133A915200A4BD1D /* CalendarHomeViewController.xib */; };
 		EBE242C113AFD3030082C277 /* libfacebook_ios_sdk.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EBE242BC13AFD3030082C277 /* libfacebook_ios_sdk.a */; };
-		EBE242C413AFD3030082C277 /* libSFHFKeychainUtils.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EBE242BF13AFD3030082C277 /* libSFHFKeychainUtils.a */; };
-		EBE242C513AFD3030082C277 /* libTwitter.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EBE242C013AFD3030082C277 /* libTwitter.a */; };
 		EBE2CC1E1342AD2F0037546A /* KGOBookmarksViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EBE2CC1D1342AD2F0037546A /* KGOBookmarksViewController.m */; };
 		EBE2CC2113438AEA0037546A /* KGODetailPageHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = EBE2CC2013438AEA0037546A /* KGODetailPageHeaderView.m */; };
 		EBE2CC641343E4D00037546A /* KGOMapCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = EBE2CC631343E4D00037546A /* KGOMapCategory.m */; };
@@ -234,6 +233,8 @@
 		56388BD713EF42B6005BA72E /* EventKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = EventKit.framework; path = System/Library/Frameworks/EventKit.framework; sourceTree = SDKROOT; };
 		56388BD913EF42EE005BA72E /* EventKitUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = EventKitUI.framework; path = System/Library/Frameworks/EventKitUI.framework; sourceTree = SDKROOT; };
 		56388BDB13EF4305005BA72E /* EventKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = EventKit.framework; path = System/Library/Frameworks/EventKit.framework; sourceTree = SDKROOT; };
+		56388C1813FDF957005BA72E /* VideoDetailHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VideoDetailHeaderView.h; path = ../Video/VideoDetailHeaderView.h; sourceTree = "<group>"; };
+		56388C1913FDF957005BA72E /* VideoDetailHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VideoDetailHeaderView.m; path = ../Video/VideoDetailHeaderView.m; sourceTree = "<group>"; };
 		A627E6AA134A65FD00403110 /* VideoDataManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VideoDataManager.h; path = ../../Modules/Video/VideoDataManager.h; sourceTree = SOURCE_ROOT; };
 		A627E6AB134A65FD00403110 /* VideoDataManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VideoDataManager.m; path = ../../Modules/Video/VideoDataManager.m; sourceTree = SOURCE_ROOT; };
 		A627E6AC134A65FD00403110 /* VideoListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VideoListViewController.h; path = ../../Modules/Video/VideoListViewController.h; sourceTree = SOURCE_ROOT; };
@@ -473,6 +474,7 @@
 		EB48910813310A930036AEBF /* ExternalURLModule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ExternalURLModule.m; sourceTree = "<group>"; };
 		EB4C2CDE127F138100058748 /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
 		EB4C2CE0127F138900058748 /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
+		EB640C6A13FDFFFB00CFAC5B /* libjson.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libjson.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		EB6D02A811E3784100B65CE3 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		EB7F32D210CD6FB300188BCD /* AddressBook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBook.framework; path = System/Library/Frameworks/AddressBook.framework; sourceTree = SDKROOT; };
 		EB7F32D610CD6FBB00188BCD /* AddressBookUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBookUI.framework; path = System/Library/Frameworks/AddressBookUI.framework; sourceTree = SDKROOT; };
@@ -482,7 +484,6 @@
 		EB83AE5213C747C5006CCEDB /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/Localizable.strings; sourceTree = "<group>"; };
 		EB83AE5413C747CF006CCEDB /* zh_TW */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = zh_TW; path = zh_TW.lproj/Localizable.strings; sourceTree = "<group>"; };
 		EB83AE5C13C75C0C006CCEDB /* staging.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = staging.xcconfig; sourceTree = "<group>"; };
-		EB83AE6B13C7B387006CCEDB /* libjson.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libjson.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		EB93485D139ED47700446243 /* JSONNewsDataController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JSONNewsDataController.h; sourceTree = "<group>"; };
 		EB93485E139ED47700446243 /* JSONNewsDataController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JSONNewsDataController.m; sourceTree = "<group>"; };
 		EB93485F139ED47700446243 /* NewsDataController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NewsDataController.h; sourceTree = "<group>"; };
@@ -506,7 +507,6 @@
 		EBC1C7051347B8D20045CE9C /* release.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = release.xcconfig; sourceTree = "<group>"; };
 		EBC1C7111347C5750045CE9C /* kurogo_debug.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = kurogo_debug.xcconfig; sourceTree = "<group>"; };
 		EBE242BC13AFD3030082C277 /* libfacebook_ios_sdk.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libfacebook_ios_sdk.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		EBE242BD13AFD3030082C277 /* libjson.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libjson.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		EBE242BE13AFD3030082C277 /* libOAuth.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libOAuth.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		EBE242BF13AFD3030082C277 /* libSFHFKeychainUtils.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libSFHFKeychainUtils.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		EBE242C013AFD3030082C277 /* libTwitter.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libTwitter.a; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -531,12 +531,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EB640C6B13FDFFFB00CFAC5B /* libjson.a in Frameworks */,
+				EBE242C113AFD3030082C277 /* libfacebook_ios_sdk.a in Frameworks */,
 				56388BDC13EF4306005BA72E /* EventKit.framework in Frameworks */,
 				56388BDA13EF42EE005BA72E /* EventKitUI.framework in Frameworks */,
-				EB83AE6C13C7B387006CCEDB /* libjson.a in Frameworks */,
-				EBE242C113AFD3030082C277 /* libfacebook_ios_sdk.a in Frameworks */,
-				EBE242C413AFD3030082C277 /* libSFHFKeychainUtils.a in Frameworks */,
-				EBE242C513AFD3030082C277 /* libTwitter.a in Frameworks */,
 				1D60589F0D05DD5A006BFB54 /* Foundation.framework in Frameworks */,
 				1DF5F4E00D08C38300B7A737 /* UIKit.framework in Frameworks */,
 				3AA219501039D74700DB7637 /* CoreData.framework in Frameworks */,
@@ -572,7 +570,6 @@
 		29B97314FDCFA39411CA2CEA /* CustomTemplate */ = {
 			isa = PBXGroup;
 			children = (
-				EB83AE6B13C7B387006CCEDB /* libjson.a */,
 				EB1441361309EF7B00396753 /* Application */,
 				EB0336B2133C2B8B00ACF2BB /* Common */,
 				EB1387B912F22DF7004DBB7C /* Contrib */,
@@ -696,6 +693,8 @@
 		A627E6A4134A657000403110 /* Video */ = {
 			isa = PBXGroup;
 			children = (
+				56388C1813FDF957005BA72E /* VideoDetailHeaderView.h */,
+				56388C1913FDF957005BA72E /* VideoDetailHeaderView.m */,
 				A627E6B3134A660E00403110 /* Model */,
 				A627E6AA134A65FD00403110 /* VideoDataManager.h */,
 				A627E6AB134A65FD00403110 /* VideoDataManager.m */,
@@ -1022,7 +1021,7 @@
 		EB1387B912F22DF7004DBB7C /* Contrib */ = {
 			isa = PBXGroup;
 			children = (
-				EBE242BD13AFD3030082C277 /* libjson.a */,
+				EB640C6A13FDFFFB00CFAC5B /* libjson.a */,
 				EBE242BC13AFD3030082C277 /* libfacebook_ios_sdk.a */,
 				EBE242BF13AFD3030082C277 /* libSFHFKeychainUtils.a */,
 				EBE242BE13AFD3030082C277 /* libOAuth.a */,
@@ -1469,6 +1468,7 @@
 				EB93486A139ED48500446243 /* NewsStoryTableViewCell.m in Sources */,
 				562CD69F13B9AEA600C5CB94 /* LinksModule.m in Sources */,
 				4B2A10B013D609300028298E /* LinksTableViewController.m in Sources */,
+				56388C1A13FDF957005BA72E /* VideoDetailHeaderView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

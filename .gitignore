@@ -6,3 +6,4 @@ build/
 MITBuildInfo.m
 githash.png
 Projects/*/Resources/secret/Config.plist
+Projects/*/*.xcodeproj/project.xcworkspace/

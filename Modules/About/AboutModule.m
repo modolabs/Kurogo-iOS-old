@@ -22,7 +22,9 @@
         NSString * command = [params objectForKey:@"command"];
         self.webViewTitle = [params objectForKey:@"title"];
 
-        
+        // this is awkward. i would think about making a standard class of REST APIs that return
+        // the entire HTML as the contents of the API "response" value, and make KGOWebViewController
+        // able to deal with that generically.
         self.aboutRequest = [[KGORequestManager sharedManager] requestWithDelegate:self
                                                                        module:@"about"
                                                                          path:command

@@ -398,8 +398,7 @@
 
 - (void) calendarButtonPressed:(id)sender {
     
-    EKEventStore *eventStore = [[EKEventStore alloc] init];            
-    NSAutoreleasePool *eventAddPool = [[NSAutoreleasePool alloc] init];
+    EKEventStore *eventStore = [[[EKEventStore alloc] init] autorelease];
     
     EKEvent *newEvent = [EKEvent eventWithEventStore:eventStore];
     newEvent.calendar = [eventStore defaultCalendarForNewEvents];
@@ -416,16 +415,13 @@
     }
 
     
-    EKEventEditViewController *eventViewController = 
-    [[EKEventEditViewController alloc] init];
+    EKEventEditViewController *eventViewController = [[[EKEventEditViewController alloc] init] autorelease];
     eventViewController.event = newEvent;
     eventViewController.eventStore = eventStore;
-    eventViewController.editViewDelegate = self.viewController;
-    [self.viewController presentModalViewController:eventViewController animated:YES];
-    
-    [eventAddPool release];            
-    [eventStore release];
-    
+    if ([self.viewController isKindOfClass:[CalendarDetailViewController class]]) {
+        eventViewController.editViewDelegate = (CalendarDetailViewController *)self.viewController;
+    }
+    [self.viewController presentModalViewController:eventViewController animated:YES];    
 }
 
 #pragma mark detail
