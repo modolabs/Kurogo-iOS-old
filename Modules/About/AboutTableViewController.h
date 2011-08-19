@@ -7,8 +7,7 @@ KGORequestDelegate, MFMailComposeViewControllerDelegate> {
     
     BOOL showBuildNumber;
     
-    NSDictionary * resultDict;
-    NSMutableArray * resultKeys;
+    NSArray * resultArray;
     
     UIView * loadingView;
     UIActivityIndicatorView * loadingIndicator;
@@ -16,8 +15,7 @@ KGORequestDelegate, MFMailComposeViewControllerDelegate> {
 
 @property (nonatomic, retain) KGORequest * request;
 @property (nonatomic, retain) NSString * moduleTag;
-@property (nonatomic, retain) NSDictionary * resultDict;
-@property (nonatomic, retain) NSMutableArray * resultKeys;
+@property (nonatomic, retain) NSArray * resultArray;
 
 @property (nonatomic, retain) UIView * loadingView;
 @property (nonatomic, retain) UIActivityIndicatorView * loadingIndicator;

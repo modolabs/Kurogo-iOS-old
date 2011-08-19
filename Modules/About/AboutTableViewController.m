@@ -10,8 +10,7 @@
 @implementation AboutTableViewController
 @synthesize request;
 @synthesize moduleTag;
-@synthesize resultDict;
-@synthesize resultKeys;
+@synthesize resultArray;
 @synthesize loadingIndicator;
 @synthesize loadingView;
 
@@ -25,7 +24,7 @@
                                                                        module:@"about"
                                                                          path:@"index"
                                                                         params:[NSDictionary dictionaryWithObjectsAndKeys:nil]];
-        self.request.expectedResponseType = [NSDictionary class];
+        self.request.expectedResponseType = [NSArray class];
         if (self.request) {
             [self.request connect];
             [self addLoadingView];
@@ -60,8 +59,7 @@
 -(void) viewDidUnload {
     [super viewDidUnload];
     
-    self.resultDict = nil;
-    self.resultKeys = nil;
+    self.resultArray = nil;
 
 }
 
@@ -75,8 +73,8 @@
             return 1;
             
         case 1:
-            if (resultDict != nil)
-                return [[resultDict allKeys] count];
+            if (resultArray != nil)
+                return [resultArray count];
             else
                 return 0;
             
@@ -137,8 +135,8 @@
             
         case 1:
         {
-            if (self.resultDict != nil) {
-                NSDictionary *itemDict = (NSDictionary *)[resultDict objectForKey:[self.resultKeys objectAtIndex:indexPath.row]];
+            if (self.resultArray != nil) {
+                NSDictionary *itemDict = (NSDictionary *)[resultArray objectAtIndex:indexPath.row];
                 NSString * titleString = [itemDict objectForKey:@"title"];
                 
                 NSString *type = [itemDict stringForKey:@"type" nilIfEmpty:YES];
@@ -176,12 +174,12 @@
     }
     else if (indexPath.section == 1) {
 
-        NSDictionary *itemDict = (NSDictionary *)[resultDict objectForKey:[self.resultKeys objectAtIndex:indexPath.row]];
+        NSDictionary *itemDict = (NSDictionary *)[resultArray objectAtIndex:indexPath.row];
         
         NSString *type = [itemDict stringForKey:@"type" nilIfEmpty:YES];
 
         if (!type) {
-            NSDictionary *params = (NSDictionary *)[resultDict objectForKey:[self.resultKeys objectAtIndex:indexPath.row]];
+            NSDictionary *params = (NSDictionary *)[resultArray objectAtIndex:indexPath.row];
             [KGO_SHARED_APP_DELEGATE() showPage:LocalPathPageNameDetail 
                                    forModuleTag:self.moduleTag 
                                          params:params];
@@ -211,8 +209,7 @@
 #pragma mark -
 
 - (void)dealloc {
-    [resultDict release];
-    [resultKeys release];
+    [resultArray release];
     
     [super dealloc];
 }
@@ -228,19 +225,7 @@
     self.request = nil;
     
     DLog(@"%@", [result description]);
-    
-    self.resultDict = result;
-    
-    if (nil != self.resultKeys)
-        [self.resultKeys release];
-    
-    self.resultKeys = [NSMutableArray arrayWithCapacity:self.resultDict.count];
-    
-    // TODO: we need to make the API return results in an array
-    // currently we are showing links in random order
-    int count = 0;
-    for (NSString * key in self.resultDict)
-         [self.resultKeys insertObject:key atIndex:count++];
+    resultArray = [result copy];
     
     [self.tableView reloadData];
     [self removeLoadingView];
