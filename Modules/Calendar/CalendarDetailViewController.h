@@ -1,6 +1,7 @@
 #import <UIKit/UIKit.h>
 #import "KGODetailPager.h"
 #import <EventKitUI/EventKitUI.h>
+#import "KGOCalendar.h"
 
 @class KGOEventWrapper, EventDetailTableView, CalendarDataManager, KGOShareButtonController;
 
@@ -16,6 +17,7 @@
 @property (nonatomic, retain) NSDictionary *eventsBySection;
 @property (nonatomic, retain) NSIndexPath *indexPath;
 @property (nonatomic, retain) CalendarDataManager *dataManager;
+@property (nonatomic, retain) id<KGOSearchResult> searchResult; 
 
 - (void)setupTableView;
 - (void)shareButtonPressed:(id)sender;

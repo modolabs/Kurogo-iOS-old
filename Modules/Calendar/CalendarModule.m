@@ -37,12 +37,9 @@ NSString * const KGODataModelNameCalendar = @"Calendar";
 - (void)performSearchWithText:(NSString *)searchText params:(NSDictionary *)params delegate:(id<KGOSearchResultsHolder>)delegate {
     self.searchDelegate = delegate;
     
-    NSString *calendar = [self defaultCalendar];
-    if (![params objectForKey:@"calendar"] && calendar) {
-        NSMutableDictionary *mutableDict = [[params mutableCopy] autorelease];
-        [mutableDict setObject:calendar forKey:@"calendar"];
-        params = mutableDict;
-    }
+    //NSString *calendar = [self defaultCalendar];
+    params = [NSDictionary dictionaryWithObjectsAndKeys:searchText, @"q", nil];
+
 
     self.request = [[KGORequestManager sharedManager] requestWithDelegate:self module:self.tag path:@"search" params:params];
     [self.request connect];
@@ -96,6 +93,7 @@ NSString * const KGODataModelNameCalendar = @"Calendar";
         detailVC.indexPath = [params objectForKey:@"currentIndexPath"];
         detailVC.eventsBySection = [params objectForKey:@"eventsBySection"];
         detailVC.sections = [params objectForKey:@"sections"];
+        detailVC.searchResult = [params objectForKey:@"searchResult"];
         detailVC.dataManager = self.dataManager;
         vc = detailVC;
         

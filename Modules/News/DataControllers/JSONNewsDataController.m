@@ -22,6 +22,7 @@ NSString * const NewsTagPostDate        = @"pubDate";
 NSString * const NewsTagHasBody         = @"hasBody";
 NSString * const NewsTagBody            = @"body";
 
+
 @implementation JSONNewsDataController
 
 @synthesize storiesRequest;

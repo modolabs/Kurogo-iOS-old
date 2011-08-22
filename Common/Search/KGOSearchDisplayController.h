@@ -5,6 +5,7 @@
 #import "KGODetailPager.h"
 #import "Video.h"
 #import "NewsStory.h"
+#import "NewsImage.h"
 
 @class KGOSearchDisplayController;
 @protocol KGOSearchResult;

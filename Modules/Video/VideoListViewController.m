@@ -327,8 +327,7 @@ static const NSInteger kVideoListCellThumbnailTag = 0x78;
     
     if ([aResult isKindOfClass:[Video class]]) {
         VideoDetailViewController *detailViewController = [[VideoDetailViewController alloc] initWithVideo:(Video *)aResult andSection:section];
-        [self.navigationController pushViewController:detailViewController 
-                                             animated:YES];
+        [self.navigationController pushViewController:detailViewController animated:YES];
         [detailViewController release];    
     }
 }

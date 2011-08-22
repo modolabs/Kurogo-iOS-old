@@ -387,18 +387,16 @@ showingOnlySearchResults = _showingOnlySearchResults, showsSearchOverlay;
                 cell.textLabel.text = title;
                 cell.detailTextLabel.text = subtitle;
                 cell.accessoryView = [[KGOTheme sharedTheme] accessoryViewForType:accessoryType];
-                
-                /*///To add image to news search result/////
-                 [cell.imageView setBounds:CGRectMake(0, 0, 50, 50)];
-                 [cell.imageView setClipsToBounds:NO];
-                 [cell.imageView setFrame:CGRectMake(0, 0, 50, 50)];
-                 [cell.imageView setContentMode:UIViewContentModeScaleAspectFill];
-                 NSMutableDictionary *imageDict = story.image;
-                 NSString *URLString = [imageDict objectForKey:@"src"];
-                 NSData *data=[NSData dataWithContentsOfURL:[NSURL URLWithString:URLString]];
-                 UIImage *image = [UIImage imageWithData:data];
-                 cell.imageView.image = image;
-                 */
+                /*----Code for adding image to news search result-----////
+                [cell.imageView setBounds:CGRectMake(0, 0, 50, 50)];
+                [cell.imageView setClipsToBounds:NO];
+                [cell.imageView setFrame:CGRectMake(0, 0, 50, 50)];
+                [cell.imageView setContentMode:UIViewContentModeScaleAspectFill];
+                NSString *URLString = newsStory.thumbImage.url; 
+                NSData *data=[NSData dataWithContentsOfURL:[NSURL URLWithString:URLString]];
+                UIImage *image = [UIImage imageWithData:data];
+                cell.imageView.image = image;
+                */
             } copy] autorelease];
             
         }
@@ -484,8 +482,8 @@ showingOnlySearchResults = _showingOnlySearchResults, showsSearchOverlay;
         if (!story.thumbImage) {
             story.thumbImage = [[CoreDataManager sharedManager] insertNewObjectForEntityForName:NewsImageEntityName];
         }
-        //story.thumbImage.url = [imageDict stringForKey:@"src" nilIfEmpty:YES];
-        //story.thumbImage.thumbParent = story;
+        story.thumbImage.url = [imageDict stringForKey:@"src" nilIfEmpty:YES];
+        story.thumbImage.thumbParent = story;
     } else {
         story.thumbImage = nil;
     }

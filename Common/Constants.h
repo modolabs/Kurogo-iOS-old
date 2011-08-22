@@ -33,6 +33,7 @@ extern NSString * const NewsTag;
 extern NSString * const PeopleTag;
 extern NSString * const PhotosTag;
 extern NSString * const VideoModuleTag;
+extern NSString * const CalendarTag;
 
 
 

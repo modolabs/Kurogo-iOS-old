@@ -1,7 +1,6 @@
 #import "CalendarDetailViewController.h"
 #import "EventDetailTableView.h"
 #import "KGOEventWrapper.h"
-#import "KGOCalendar.h"
 #import "KGOAttendeeWrapper.h"
 #import "KGOContactInfo.h"
 #import "KGORequestManager.h"
@@ -12,7 +11,7 @@
 
 @implementation CalendarDetailViewController
 
-@synthesize sections, eventsBySection, indexPath, dataManager;
+@synthesize sections, eventsBySection, indexPath, dataManager, searchResult;
 
 - (void)loadView {
     [super loadView];
@@ -31,6 +30,9 @@
     self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithCustomView:pager] autorelease];
     if (self.indexPath) {
         [pager selectPageAtSection:self.indexPath.section row:self.indexPath.row];
+    }
+    else if(self.searchResult){
+        [self pager:pager showContentForPage:searchResult];
     }
 }
 

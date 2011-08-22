@@ -377,6 +377,7 @@ bool isOverOneHour(NSTimeInterval interval) {
     }
 }
 
+#pragma mark Search UI
 - (void)showSearchBar {
 	if (!self.theSearchBar) {
         CGRect frame = CGRectMake(0, 0, self.view.bounds.size.width, 44);
@@ -420,15 +421,23 @@ bool isOverOneHour(NSTimeInterval interval) {
 }
 
 - (NSArray *)searchControllerValidModules:(KGOSearchDisplayController *)controller {
-    return [NSArray arrayWithObject:VideoModuleTag];
+    return [NSArray arrayWithObject:CalendarTag];
 }
 
 - (NSString *)searchControllerModuleTag:(KGOSearchDisplayController *)controller {
-    return VideoModuleTag;
+    return CalendarTag;
 }
 
 - (void)resultsHolder:(id<KGOSearchResultsHolder>)resultsHolder didSelectResult:(id<KGOSearchResult>)aResult{
     
+    NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:
+                            _currentEventsBySection, @"eventsBySection",
+                            _currentSections, @"sections",
+                            aResult, @"searchResult",
+                            nil];
+    
+    [KGO_SHARED_APP_DELEGATE() showPage:LocalPathPageNameDetail forModuleTag:self.moduleTag params:params];
+
 }
 
 
