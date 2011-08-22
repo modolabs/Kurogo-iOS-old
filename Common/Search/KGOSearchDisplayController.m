@@ -422,6 +422,22 @@ showingOnlySearchResults = _showingOnlySearchResults, showsSearchOverlay;
             } copy] autorelease];
             
         } 
+        else if([result isKindOfClass:[KGOEventWrapper class]]){
+            KGOEventWrapper *event = (KGOEventWrapper *)result; 
+            title = [event title];
+             
+            NSDateFormatter *dateFormatter = [[[NSDateFormatter alloc] init] autorelease];
+            [dateFormatter setDateStyle:NSDateFormatterShortStyle];
+            [dateFormatter setTimeStyle:NSDateFormatterShortStyle];
+            subtitle = [dateFormatter stringFromDate:[event startDate]]; 
+            
+            return [[^(UITableViewCell *cell) {
+                cell.selectionStyle = UITableViewCellSelectionStyleGray;
+                cell.textLabel.text = title;
+                cell.detailTextLabel.text = subtitle;
+                cell.accessoryView = [[KGOTheme sharedTheme] accessoryViewForType:accessoryType];
+            } copy] autorelease];
+        }
         else{
             title = [result title];
             subtitle = [result respondsToSelector:@selector(subtitle)] ? [result subtitle] : nil;
@@ -451,6 +467,7 @@ showingOnlySearchResults = _showingOnlySearchResults, showsSearchOverlay;
     }
     return nil;
 }
+
 
 - (NewsStory *)storyWithDictionary:(NSDictionary *)storyDict {
     // use existing story if it's already in the db

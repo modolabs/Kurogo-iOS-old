@@ -38,7 +38,16 @@ NSString * const KGODataModelNameCalendar = @"Calendar";
     self.searchDelegate = delegate;
     
     //NSString *calendar = [self defaultCalendar];
-    params = [NSDictionary dictionaryWithObjectsAndKeys:searchText, @"q", nil];
+    
+    //Start and end dates for the Calendar Search
+    NSDate *currentDate = [NSDate date];
+    NSDate *endDate = [NSDate dateWithTimeIntervalSinceNow:604800];//# of seconds in a 7 day period
+    NSString *startDateString = [NSString stringWithFormat:@"%.0f", [currentDate timeIntervalSince1970]];
+    NSString *endDateString = [NSString stringWithFormat:@"%.0f", [endDate timeIntervalSince1970]];
+    
+    params = [NSDictionary dictionaryWithObjectsAndKeys:searchText, @"q", 
+                                                        startDateString, @"start", 
+                                                        endDateString, @"end", nil];
 
 
     self.request = [[KGORequestManager sharedManager] requestWithDelegate:self module:self.tag path:@"search" params:params];

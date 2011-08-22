@@ -6,6 +6,7 @@
 #import "Video.h"
 #import "NewsStory.h"
 #import "NewsImage.h"
+#import "KGOEventWrapper.h"
 
 @class KGOSearchDisplayController;
 @protocol KGOSearchResult;
