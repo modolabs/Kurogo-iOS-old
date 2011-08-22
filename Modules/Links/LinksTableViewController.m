@@ -179,7 +179,8 @@
         UIImageView * accessoryImageView = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"kurogo/common/action-external.png"]] autorelease];
         cell.accessoryView = accessoryImageView;
     } else {
-        cell.accessoryView = nil;
+        UIImageView * accessoryImageView = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"kurogo/common/action-arrow.png"]] autorelease];
+        cell.accessoryView = accessoryImageView;
     }
     cell.selectionStyle = UITableViewCellSelectionStyleGray;
     // Configure the cell...
