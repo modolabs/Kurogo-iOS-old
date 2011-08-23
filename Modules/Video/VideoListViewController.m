@@ -163,10 +163,6 @@ static const NSInteger kVideoListCellThumbnailTag = 0x78;
     self.navScrollView = [[[KGOScrollingTabstrip alloc] initWithFrame:frame] autorelease];
     self.navScrollView.showsSearchButton = YES;
     self.navScrollView.delegate = self;
-    BOOL bookmarksExist = [self.dataManager bookmarkedVideos].count > 0;
-    if(bookmarksExist){
-        [self.navScrollView setShowsBookmarkButton:YES]; 
-    }
     
 }
 
@@ -204,6 +200,10 @@ static const NSInteger kVideoListCellThumbnailTag = 0x78;
     if(bookmarksExist){
         [self.navScrollView setShowsBookmarkButton:YES]; 
     }
+    else 
+        [self.navScrollView setShowsBookmarkButton:NO]; 
+    
+    
     [self.navScrollView setNeedsLayout];
     
     [super viewWillAppear:animated];
