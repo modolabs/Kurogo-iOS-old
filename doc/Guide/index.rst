@@ -32,4 +32,8 @@ This guide serves as a tour of the project source code and its features.
    support
    github
    setup
+   tour
+   modules
+   config
+   theming
 

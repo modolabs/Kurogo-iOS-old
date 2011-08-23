@@ -54,7 +54,6 @@
 		DEA3B48D10C9BB7300BDA774 /* AboutModule.m in Sources */ = {isa = PBXBuildFile; fileRef = DEA3B48C10C9BB7300BDA774 /* AboutModule.m */; };
 		DEC02F9D110578240054BE32 /* AboutTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DEC02F9C110578240054BE32 /* AboutTableViewController.m */; };
 		DED3CCE910418F5F003D3B74 /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = DED3CCE810418F5F003D3B74 /* Default.png */; };
-		DEE6B1CD111774300037F03C /* Entitlements.plist in Resources */ = {isa = PBXBuildFile; fileRef = DEE6B1CC111774300037F03C /* Entitlements.plist */; };
 		EB0336AB133AEDED00ACF2BB /* ModalLoginWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EB0336AA133AEDED00ACF2BB /* ModalLoginWebViewController.m */; };
 		EB03372D133C2B8C00ACF2BB /* AnalyticsWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = EB0336B6133C2B8B00ACF2BB /* AnalyticsWrapper.m */; };
 		EB03372E133C2B8C00ACF2BB /* Foundation+KGOAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = EB0336B9133C2B8B00ACF2BB /* Foundation+KGOAdditions.m */; };
@@ -274,7 +273,6 @@
 		DEC02F9B110578240054BE32 /* AboutTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AboutTableViewController.h; sourceTree = "<group>"; };
 		DEC02F9C110578240054BE32 /* AboutTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AboutTableViewController.m; sourceTree = "<group>"; };
 		DED3CCE810418F5F003D3B74 /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Default.png; path = Resources/Default.png; sourceTree = "<group>"; };
-		DEE6B1CC111774300037F03C /* Entitlements.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Entitlements.plist; sourceTree = "<group>"; };
 		EB0336A9133AEDED00ACF2BB /* ModalLoginWebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ModalLoginWebViewController.h; sourceTree = "<group>"; };
 		EB0336AA133AEDED00ACF2BB /* ModalLoginWebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ModalLoginWebViewController.m; sourceTree = "<group>"; };
 		EB0336B5133C2B8B00ACF2BB /* AnalyticsWrapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AnalyticsWrapper.h; sourceTree = "<group>"; };
@@ -605,7 +603,6 @@
 				EBAE863F1215FB0D00F370BE /* Icon@2x.png */,
 				DED3CCE810418F5F003D3B74 /* Default.png */,
 				EB163AB9136CFB2F003C69E2 /* Default-Portrait~ipad.png */,
-				DEE6B1CC111774300037F03C /* Entitlements.plist */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -1286,7 +1283,6 @@
 			files = (
 				EB9AF2BD130B5AC2003B9769 /* Config.plist in Resources */,
 				DED3CCE910418F5F003D3B74 /* Default.png in Resources */,
-				DEE6B1CD111774300037F03C /* Entitlements.plist in Resources */,
 				EBAE86401215FB0D00F370BE /* Icon.png in Resources */,
 				EBAE86411215FB0D00F370BE /* Icon@2x.png in Resources */,
 				EBAE86451215FB4900F370BE /* Default@2x.png in Resources */,
