@@ -11,6 +11,7 @@
 #import "KGORequestManager.h"
 #import "Foundation+KGOAdditions.h"
 #import "KGOUserSettingsManager.h"
+#import "VideoDetailViewController.h"
 
 @interface KGOHomeScreenViewController (Private)
 
@@ -466,10 +467,16 @@
     // TODO: come up with a better way to figure out which module the search result belongs to
     BOOL didShow = NO;
     if ([aResult isKindOfClass:[KGOPersonWrapper class]]) {
-        NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:aResult, @"personDetails", nil];
-        didShow = [KGO_SHARED_APP_DELEGATE() showPage:LocalPathPageNameDetail forModuleTag:PeopleTag params:params];
+        NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:aResult, @"person", nil];
+        [KGO_SHARED_APP_DELEGATE() showPage:LocalPathPageNameDetail forModuleTag:PeopleTag params:params];
     }
     
+    if ([aResult isKindOfClass:[Video class]]) {
+        VideoDetailViewController *detailViewController = [[VideoDetailViewController alloc] initWithVideo:(Video *)aResult andSection:nil];
+        [self.navigationController pushViewController:detailViewController animated:YES];
+        [detailViewController release];    
+    }
+
     if (!didShow) {
         NSLog(@"home screen search controller failed to respond to search result %@", [aResult description]);
     }

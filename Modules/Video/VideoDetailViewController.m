@@ -127,8 +127,9 @@ UILabel *titleLabel;
     _shareController = [[KGOShareButtonController alloc] initWithContentsController:self];
     _shareController.shareTypes = KGOShareControllerShareTypeEmail | KGOShareControllerShareTypeFacebook | KGOShareControllerShareTypeTwitter;
     
-    
-    [self requestVideoForDetailView];
+    if(self.section){
+        [self requestVideoForDetailView];
+    }
     
     NSAutoreleasePool *loadViewPool = [[NSAutoreleasePool alloc] init];
     
@@ -140,7 +141,7 @@ UILabel *titleLabel;
     titleLabel.tag = kVideoDetailTitleLabelTag;
     titleLabel.numberOfLines = 0;
     titleLabel.font = [UIFont fontWithName:@"Georgia" size:22.0f];
-    titleLabel.text = video.title;
+    titleLabel.text = self.video.title;
     titleLabel.backgroundColor = [UIColor clearColor];
     [scrollView addSubview:titleLabel];
     
@@ -151,6 +152,12 @@ UILabel *titleLabel;
     // TODO: When non-YouTube feeds are worked in, if they have streams
     // playable in MPMoviePlayerController, put an embedded player here conditionally.
     [self makeAndAddVideoImageViewToView:scrollView];
+    
+    //Federated search doesn't have a reference to the videos section.
+    //Therfore we cannot requestVideoForDeatilView
+    if(!self.section){
+        [self setDescription];
+    }
     
     [titleLabel release];
     [loadViewPool release];
