@@ -59,6 +59,8 @@
 }
 
 - (void)viewWillAppear:(BOOL)animated {
+    [self setupNavScrollButtons];
+    
     [super viewWillAppear:animated];
     /*
 	if (showingBookmarks) {

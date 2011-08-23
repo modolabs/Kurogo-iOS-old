@@ -199,6 +199,15 @@ static const NSInteger kVideoListCellThumbnailTag = 0x78;
     [self.tableView reloadData];
 }
 
+- (void)viewWillAppear:(BOOL)animated {
+    BOOL bookmarksExist = [self.dataManager bookmarkedVideos].count > 0;
+    if(bookmarksExist){
+        [self.navScrollView setShowsBookmarkButton:YES]; 
+    }
+    [self.navScrollView setNeedsLayout];
+    
+    [super viewWillAppear:animated];
+}
 
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
