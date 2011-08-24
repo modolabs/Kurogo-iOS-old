@@ -26,6 +26,7 @@ UIActionSheetDelegate, KGOSearchDisplayDelegate, KGODetailPagerController> {
 @property (nonatomic, retain) NSArray *searchTokens;
 @property (nonatomic, retain) KGOSearchBar *searchBar;
 
-@property (nonatomic, assign) PeopleModule *module;
+@property (nonatomic, assign) PeopleModule *module; 
+
 
 @end

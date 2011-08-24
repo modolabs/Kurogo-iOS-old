@@ -16,14 +16,15 @@
 + (PersonContact *)personContactWithDictionary:(NSDictionary *)aDict type:(NSString *)aType {
     PersonContact *contact = [[CoreDataManager sharedManager] insertNewObjectForEntityForName:PersonContactEntityName];
     contact.type = aType;
-    contact.identifier = [aDict stringForKey:@"id" nilIfEmpty:YES];
-    contact.label = [aDict stringForKey:@"label" nilIfEmpty:YES];
-    contact.value = [aDict stringForKey:@"value" nilIfEmpty:YES];
+    contact.url = [aDict stringForKey:@"url" nilIfEmpty:YES];
+    contact.title = [aDict stringForKey:@"title" nilIfEmpty:YES];
+    contact.subtitle = [aDict stringForKey:@"subtitle" nilIfEmpty:YES];
+    contact.group = [aDict stringForKey:@"group" nilIfEmpty:YES];
     return contact;
 }
 
 - (NSDictionary *)dictionary {
-    return [self dictionaryWithValuesForKeys:[NSArray arrayWithObjects:@"value", @"label", @"type", @"identifier", nil]];
+    return [self dictionaryWithValuesForKeys:[NSArray arrayWithObjects:@"subtitle", @"title", @"type", @"identifier", nil]];
 }
 
 @end
