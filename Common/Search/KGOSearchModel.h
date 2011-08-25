@@ -27,6 +27,7 @@
 
 @protocol KGOCategory <NSObject>
 
+- (NSString *)identifier;
 - (NSString *)title;
 - (id<KGOCategory>)parent; // nil if this is top level category.
 - (NSArray *)children;     // an array of id<KGOCategory> objects. may be nil.

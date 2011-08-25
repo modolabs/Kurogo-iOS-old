@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		0B976E2713FADE6D0085CA3A /* VideoDetailHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0B976E2613FADE6D0085CA3A /* VideoDetailHeaderView.m */; };
 		1D60589F0D05DD5A006BFB54 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D30AB110D05D00D00671497 /* Foundation.framework */; };
 		1DF5F4E00D08C38300B7A737 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DF5F4DF0D08C38300B7A737 /* UIKit.framework */; };
 		29366C1A118E401C009D6863 /* libxml2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 29366C19118E401C009D6863 /* libxml2.dylib */; };
@@ -74,7 +73,6 @@
 		EB033755133C2B8C00ACF2BB /* KGOSocialMediaController.m in Sources */ = {isa = PBXBuildFile; fileRef = EB033706133C2B8C00ACF2BB /* KGOSocialMediaController.m */; };
 		EB033756133C2B8C00ACF2BB /* TwitterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EB033708133C2B8C00ACF2BB /* TwitterViewController.m */; };
 		EB033757133C2B8C00ACF2BB /* DatePickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EB03370B133C2B8C00ACF2BB /* DatePickerViewController.m */; };
-		EB033758133C2B8C00ACF2BB /* KGOCategoryListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EB03370D133C2B8C00ACF2BB /* KGOCategoryListViewController.m */; };
 		EB033759133C2B8C00ACF2BB /* KGOTabbedViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EB03370F133C2B8C00ACF2BB /* KGOTabbedViewController.m */; };
 		EB03375A133C2B8C00ACF2BB /* KGOTabbedViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = EB033710133C2B8C00ACF2BB /* KGOTabbedViewController.xib */; };
 		EB03375B133C2B8C00ACF2BB /* KGOTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EB033712133C2B8C00ACF2BB /* KGOTableViewController.m */; };
@@ -162,6 +160,7 @@
 		EB4C2CDF127F138100058748 /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = EB4C2CDE127F138100058748 /* libsqlite3.dylib */; };
 		EB4C2CE1127F138900058748 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EB4C2CE0127F138900058748 /* CFNetwork.framework */; };
 		EB640C6B13FDFFFB00CFAC5B /* libjson.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EB640C6A13FDFFFB00CFAC5B /* libjson.a */; };
+		EB6BC7F614058A0B0095744E /* MapCategoryListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EB6BC7F514058A0B0095744E /* MapCategoryListViewController.m */; };
 		EB6D02A911E3784100B65CE3 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EB6D02A811E3784100B65CE3 /* MapKit.framework */; };
 		EB7F32D310CD6FB300188BCD /* AddressBook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EB7F32D210CD6FB300188BCD /* AddressBook.framework */; };
 		EB7F32D710CD6FBB00188BCD /* AddressBookUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EB7F32D610CD6FBB00188BCD /* AddressBookUI.framework */; };
@@ -189,6 +188,7 @@
 		EBE2CC1E1342AD2F0037546A /* KGOBookmarksViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EBE2CC1D1342AD2F0037546A /* KGOBookmarksViewController.m */; };
 		EBE2CC2113438AEA0037546A /* KGODetailPageHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = EBE2CC2013438AEA0037546A /* KGODetailPageHeaderView.m */; };
 		EBE2CC641343E4D00037546A /* KGOMapCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = EBE2CC631343E4D00037546A /* KGOMapCategory.m */; };
+		EBE9C57B14058F390090B001 /* MapDataManager.m in Sources */ = {isa = PBXBuildFile; fileRef = EBE9C57A14058F390090B001 /* MapDataManager.m */; };
 		EBEB7674138AE52200C011D3 /* KGOHTMLTemplate.m in Sources */ = {isa = PBXBuildFile; fileRef = EBEB7671138AE52200C011D3 /* KGOHTMLTemplate.m */; };
 		EBEB7675138AE52200C011D3 /* KGOTheme.m in Sources */ = {isa = PBXBuildFile; fileRef = EBEB7673138AE52200C011D3 /* KGOTheme.m */; };
 		EBEB7679138AE55000C011D3 /* KGOUserSetting.m in Sources */ = {isa = PBXBuildFile; fileRef = EBEB7678138AE55000C011D3 /* KGOUserSetting.m */; };
@@ -313,8 +313,6 @@
 		EB033708133C2B8C00ACF2BB /* TwitterViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TwitterViewController.m; sourceTree = "<group>"; };
 		EB03370A133C2B8C00ACF2BB /* DatePickerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DatePickerViewController.h; sourceTree = "<group>"; };
 		EB03370B133C2B8C00ACF2BB /* DatePickerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DatePickerViewController.m; sourceTree = "<group>"; };
-		EB03370C133C2B8C00ACF2BB /* KGOCategoryListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGOCategoryListViewController.h; sourceTree = "<group>"; };
-		EB03370D133C2B8C00ACF2BB /* KGOCategoryListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGOCategoryListViewController.m; sourceTree = "<group>"; };
 		EB03370E133C2B8C00ACF2BB /* KGOTabbedViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGOTabbedViewController.h; sourceTree = "<group>"; };
 		EB03370F133C2B8C00ACF2BB /* KGOTabbedViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGOTabbedViewController.m; sourceTree = "<group>"; };
 		EB033710133C2B8C00ACF2BB /* KGOTabbedViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = KGOTabbedViewController.xib; sourceTree = "<group>"; };
@@ -385,10 +383,10 @@
 		EB1440C81309EEA000396753 /* CalendarModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CalendarModule.h; sourceTree = "<group>"; };
 		EB1440C91309EEA000396753 /* CalendarModule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CalendarModule.m; sourceTree = "<group>"; };
 		EB1440F01309EEB800396753 /* MapHomeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MapHomeViewController.h; sourceTree = "<group>"; };
-		EB1440F11309EEB800396753 /* MapHomeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MapHomeViewController.m; sourceTree = "<group>"; };
+		EB1440F11309EEB800396753 /* MapHomeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = MapHomeViewController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		EB1440F21309EEB800396753 /* MapHomeViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MapHomeViewController.xib; sourceTree = "<group>"; };
 		EB1440F51309EEB800396753 /* MapModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MapModule.h; sourceTree = "<group>"; };
-		EB1440F61309EEB800396753 /* MapModule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MapModule.m; sourceTree = "<group>"; };
+		EB1440F61309EEB800396753 /* MapModule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = MapModule.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		EB1441321309EF5800396753 /* KGOInfo.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = KGOInfo.plist; sourceTree = "<group>"; };
 		EB1441371309EF7B00396753 /* KGOAppDelegate+ModuleAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "KGOAppDelegate+ModuleAdditions.h"; sourceTree = "<group>"; };
 		EB1441381309EF7B00396753 /* KGOAppDelegate+ModuleAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "KGOAppDelegate+ModuleAdditions.m"; sourceTree = "<group>"; };
@@ -476,6 +474,8 @@
 		EB4C2CDE127F138100058748 /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
 		EB4C2CE0127F138900058748 /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
 		EB640C6A13FDFFFB00CFAC5B /* libjson.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libjson.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		EB6BC7F414058A0B0095744E /* MapCategoryListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MapCategoryListViewController.h; sourceTree = "<group>"; };
+		EB6BC7F514058A0B0095744E /* MapCategoryListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MapCategoryListViewController.m; sourceTree = "<group>"; };
 		EB6D02A811E3784100B65CE3 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		EB7F32D210CD6FB300188BCD /* AddressBook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBook.framework; path = System/Library/Frameworks/AddressBook.framework; sourceTree = SDKROOT; };
 		EB7F32D610CD6FBB00188BCD /* AddressBookUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBookUI.framework; path = System/Library/Frameworks/AddressBookUI.framework; sourceTree = SDKROOT; };
@@ -517,6 +517,8 @@
 		EBE2CC2013438AEA0037546A /* KGODetailPageHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGODetailPageHeaderView.m; sourceTree = "<group>"; };
 		EBE2CC621343E4D00037546A /* KGOMapCategory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGOMapCategory.h; sourceTree = "<group>"; };
 		EBE2CC631343E4D00037546A /* KGOMapCategory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGOMapCategory.m; sourceTree = "<group>"; };
+		EBE9C57914058F390090B001 /* MapDataManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MapDataManager.h; sourceTree = "<group>"; };
+		EBE9C57A14058F390090B001 /* MapDataManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MapDataManager.m; sourceTree = "<group>"; };
 		EBEB7670138AE52200C011D3 /* KGOHTMLTemplate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGOHTMLTemplate.h; sourceTree = "<group>"; };
 		EBEB7671138AE52200C011D3 /* KGOHTMLTemplate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGOHTMLTemplate.m; sourceTree = "<group>"; };
 		EBEB7672138AE52200C011D3 /* KGOTheme.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGOTheme.h; sourceTree = "<group>"; };
@@ -908,8 +910,6 @@
 			children = (
 				EB03370A133C2B8C00ACF2BB /* DatePickerViewController.h */,
 				EB03370B133C2B8C00ACF2BB /* DatePickerViewController.m */,
-				EB03370C133C2B8C00ACF2BB /* KGOCategoryListViewController.h */,
-				EB03370D133C2B8C00ACF2BB /* KGOCategoryListViewController.m */,
 				EB03370E133C2B8C00ACF2BB /* KGOTabbedViewController.h */,
 				EB03370F133C2B8C00ACF2BB /* KGOTabbedViewController.m */,
 				EB033710133C2B8C00ACF2BB /* KGOTabbedViewController.xib */,
@@ -1076,6 +1076,10 @@
 				EB1440F21309EEB800396753 /* MapHomeViewController.xib */,
 				EB1440F51309EEB800396753 /* MapModule.h */,
 				EB1440F61309EEB800396753 /* MapModule.m */,
+				EB6BC7F414058A0B0095744E /* MapCategoryListViewController.h */,
+				EB6BC7F514058A0B0095744E /* MapCategoryListViewController.m */,
+				EBE9C57914058F390090B001 /* MapDataManager.h */,
+				EBE9C57A14058F390090B001 /* MapDataManager.m */,
 			);
 			name = Map;
 			path = ../../Modules/Map;
@@ -1396,7 +1400,6 @@
 				EB033755133C2B8C00ACF2BB /* KGOSocialMediaController.m in Sources */,
 				EB033756133C2B8C00ACF2BB /* TwitterViewController.m in Sources */,
 				EB033757133C2B8C00ACF2BB /* DatePickerViewController.m in Sources */,
-				EB033758133C2B8C00ACF2BB /* KGOCategoryListViewController.m in Sources */,
 				EB033759133C2B8C00ACF2BB /* KGOTabbedViewController.m in Sources */,
 				EB03375B133C2B8C00ACF2BB /* KGOTableViewController.m in Sources */,
 				EB03375C133C2B8C00ACF2BB /* KGOWebViewController.m in Sources */,
@@ -1470,8 +1473,8 @@
 				562CD69F13B9AEA600C5CB94 /* LinksModule.m in Sources */,
 				4B2A10B013D609300028298E /* LinksTableViewController.m in Sources */,
 				56388C1A13FDF957005BA72E /* VideoDetailHeaderView.m in Sources */,
-
-
+				EB6BC7F614058A0B0095744E /* MapCategoryListViewController.m in Sources */,
+				EBE9C57B14058F390090B001 /* MapDataManager.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
