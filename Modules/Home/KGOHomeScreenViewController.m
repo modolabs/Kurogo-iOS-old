@@ -490,9 +490,18 @@
     
     if ([aResult isKindOfClass:[KGOEventWrapper class]]) {
         NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys: aResult, @"searchResult",nil];
-        
         [KGO_SHARED_APP_DELEGATE() showPage:LocalPathPageNameDetail forModuleTag:CalendarTag params:params];
-        
+    }
+    
+    if ([aResult isKindOfClass:[NewsStory class]]) {
+        NewsStory *story = aResult;
+        if([[story hasBody] boolValue]) {
+            NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:aResult, @"story", nil];
+            [KGO_SHARED_APP_DELEGATE() showPage:LocalPathPageNameDetail forModuleTag:NewsTag params:params];
+        } else {
+            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:story.link]];
+        }
+   
     }
 
     if (!didShow) {

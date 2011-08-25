@@ -296,6 +296,7 @@ searchBar = _searchBar, module;
                 [[UIApplication sharedApplication] openURL:externURL];
             else if(contact.group){
                 PeopleGroupContactViewController *pgcvc = [[PeopleGroupContactViewController alloc] initWithGroup:contact.group];
+                pgcvc.navigationItem.title = contact.title; 
                 [self.navigationController pushViewController:pgcvc animated:YES];
                 [pgcvc release];
 
