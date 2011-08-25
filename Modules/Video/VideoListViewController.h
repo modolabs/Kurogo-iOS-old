@@ -10,10 +10,12 @@
 #import "MITThumbnailView.h"
 #import "KGOSearchBar.h"
 #import "KGOSearchDisplayController.h"
+#import "Video.h"
 
 @interface VideoListViewController : UITableViewController <MITThumbnailDelegate,
 KGOScrollingTabstripDelegate, KGOSearchDisplayDelegate> {
 
+    BOOL showingBookmarks;
 }
 
 @property (nonatomic, retain) VideoDataManager *dataManager;
@@ -29,5 +31,7 @@ KGOScrollingTabstripDelegate, KGOSearchDisplayDelegate> {
 @property (nonatomic, retain) KGOSearchBar *theSearchBar;
 @property (nonatomic, retain) KGOSearchDisplayController *searchController;
 //NSInteger searchIndex;
+
+- (void)switchToBookmarks;
 
 @end

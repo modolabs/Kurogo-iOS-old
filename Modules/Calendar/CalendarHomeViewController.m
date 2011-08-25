@@ -1,12 +1,16 @@
 #import "CalendarHomeViewController.h"
 #import "KGOAppDelegate+ModuleAdditions.h"
 #import "CalendarModel.h"
+#import "CalendarDetailViewController.h"
 
 
 @interface CalendarHomeViewController (Private)
 
 - (void)requestEventsForCurrentCalendar:(NSDate *)date;
 - (void)loadTableViewWithStyle:(UITableViewStyle)style;
+
+- (void)showSearchBar;
+- (void)hideSearchBar;
 
 @end
 
@@ -30,6 +34,8 @@ bool isOverOneHour(NSTimeInterval interval) {
 @implementation CalendarHomeViewController
 
 @synthesize searchTerms, dataManager, moduleTag, showsGroups, currentCalendar = _currentCalendar;
+@synthesize theSearchBar;
+@synthesize searchController;
 
 /*
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -48,6 +54,8 @@ bool isOverOneHour(NSTimeInterval interval) {
     [self clearCalendars];
     [self clearEvents];
     [super dealloc];
+    [searchController release];
+    [theSearchBar release];
 }
 
 - (void)didReceiveMemoryWarning
@@ -83,13 +91,14 @@ bool isOverOneHour(NSTimeInterval interval) {
     
     _datePager.contentsController = self;
     _datePager.delegate = self;
-
+    
+    
     if (self.showsGroups) {
         _tabstrip.delegate = self;
         [self.dataManager requestGroups]; // response to this will populate the tabstrip
     } else {
-        _datePager.frame = _tabstrip.frame; // TODO: this might not be correct
-        [_tabstrip removeFromSuperview];
+        //_datePager.frame = _tabstrip.frame; // TODO: this might not be correct
+        //[_tabstrip removeFromSuperview];
     }
     
     [_datePager setDate:[NSDate date]];
@@ -199,9 +208,9 @@ bool isOverOneHour(NSTimeInterval interval) {
             [formatter setDateFormat:@"h a"];
         
         } else {
-            [formatter setDateStyle:NSDateFormatterNoStyle];
-            [formatter setTimeStyle:NSDateFormatterNoStyle];
-        
+           // [formatter setDateStyle:NSDateFormatterNoStyle];
+           // [formatter setTimeStyle:NSDateFormatterNoStyle];
+            [formatter setDateFormat:@"h a"]; // default to hourly format
         }
         
         for (KGOEventWrapper *event in sortedEvents) {
@@ -265,7 +274,7 @@ bool isOverOneHour(NSTimeInterval interval) {
 
 - (void)setupTabstripButtons
 {
-    _tabstrip.showsSearchButton = NO;
+    _tabstrip.showsSearchButton = YES;
 
     for (NSInteger i = 0; i < _groupTitles.count; i++) {
         NSString *buttonTitle = [_groupTitles objectAtIndex:i];
@@ -309,7 +318,7 @@ bool isOverOneHour(NSTimeInterval interval) {
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
-    if (_currentSections.count > 1) {
+    if (_currentSections.count >= 1) {
         return [_currentSections objectAtIndex:section];
     }
     
@@ -367,5 +376,75 @@ bool isOverOneHour(NSTimeInterval interval) {
         [KGO_SHARED_APP_DELEGATE() showPage:LocalPathPageNameDetail forModuleTag:self.moduleTag params:params];
     }
 }
+
+#pragma mark Search UI
+- (void)showSearchBar {
+	if (!self.theSearchBar) {
+        CGRect frame = CGRectMake(0, 0, self.view.bounds.size.width, 44);
+		self.theSearchBar = [[[KGOSearchBar alloc] initWithFrame:frame] autorelease];
+        self.theSearchBar.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+		self.theSearchBar.alpha = 0.0;
+        
+        if (!self.searchController) {
+            self.searchController = [[[KGOSearchDisplayController alloc] initWithSearchBar:self.theSearchBar
+                                                                                  delegate:self
+                                                                        contentsController:self] autorelease];
+        }
+		[self.view addSubview:self.theSearchBar];
+	}
+	[self.view bringSubviewToFront:self.theSearchBar];
+	[UIView beginAnimations:nil context:NULL];
+	[UIView setAnimationDuration:0.4];
+	self.theSearchBar.alpha = 1.0;
+	[UIView commitAnimations];
+    [self.searchController setActive:YES animated:YES];
+}
+
+- (void)hideSearchBar {
+	if (self.theSearchBar) {
+		[UIView beginAnimations:nil context:NULL];
+		[UIView setAnimationDuration:0.4];
+        [UIView setAnimationDelegate:self];
+        //[UIView setAnimationDidStopSelector:@selector(releaseSearchBar)];
+		self.theSearchBar.alpha = 0.0;
+		[UIView commitAnimations];
+	}
+}
+
+- (void)tabstripSearchButtonPressed:(KGOScrollingTabstrip *)tabstrip {
+    [self showSearchBar];
+}
+
+#pragma mark KGOSearchDisplayDelegate
+- (BOOL)searchControllerShouldShowSuggestions:(KGOSearchDisplayController *)controller {
+    return NO;
+}
+
+- (NSArray *)searchControllerValidModules:(KGOSearchDisplayController *)controller {
+    return [NSArray arrayWithObject:CalendarTag];
+}
+
+- (NSString *)searchControllerModuleTag:(KGOSearchDisplayController *)controller {
+    return CalendarTag;
+}
+
+- (void)resultsHolder:(id<KGOSearchResultsHolder>)resultsHolder didSelectResult:(id<KGOSearchResult>)aResult{
+    
+    NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:
+                            _currentEventsBySection, @"eventsBySection",
+                            _currentSections, @"sections",
+                            aResult, @"searchResult",
+                            nil];
+    
+    [KGO_SHARED_APP_DELEGATE() showPage:LocalPathPageNameDetail forModuleTag:self.moduleTag params:params];
+
+}
+
+
+- (void)searchController:(KGOSearchDisplayController *)controller willHideSearchResultsTableView:(UITableView *)tableView {
+    [self hideSearchBar];
+    [_tabstrip selectButtonAtIndex:_currentGroupIndex];
+}
+
 
 @end

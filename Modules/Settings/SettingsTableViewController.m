@@ -130,7 +130,7 @@
 
 - (CellManipulator)tableView:(UITableView *)tableView manipulatorForCellAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSString *cellTitle = nil;
+    __block NSString *cellTitle = nil;
     NSString *cellSubtitle = nil;
     NSString *accessory = nil;
     BOOL showsReorderControl = NO;
@@ -173,6 +173,7 @@
         if (setting.selectedValue == currentOption) {
             accessory = KGOAccessoryTypeCheckmark;
         }
+        cellSubtitle = [currentOption stringForKey:@"subtitle" nilIfEmpty:YES];
     }
         
     return [[^(UITableViewCell *cell) {

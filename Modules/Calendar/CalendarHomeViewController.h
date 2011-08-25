@@ -2,12 +2,14 @@
 #import "KGODatePager.h"
 #import "KGOScrollingTabstrip.h"
 #import "CalendarDataManager.h"
+#import "KGOSearchBar.h"
+#import "KGOSearchDisplayController.h"
 
 bool isOverOneMonth(NSTimeInterval interval);
 bool isOverOneDay(NSTimeInterval interval);
 bool isOverOneHour(NSTimeInterval interval);
 
-@interface CalendarHomeViewController : KGOTableViewController <KGODatePagerDelegate,
+@interface CalendarHomeViewController : KGOTableViewController <KGODatePagerDelegate, KGOSearchDisplayDelegate, 
 KGOScrollingTabstripDelegate, CalendarDataManagerDelegate> {
     
     IBOutlet KGODatePager *_datePager;
@@ -26,6 +28,9 @@ KGOScrollingTabstripDelegate, CalendarDataManagerDelegate> {
 
     NSArray *_currentCategories;
 }
+
+@property (nonatomic, retain) KGOSearchBar *theSearchBar;
+@property (nonatomic, retain) KGOSearchDisplayController *searchController;
 
 @property(nonatomic, retain) NSString *moduleTag;
 @property(nonatomic, retain) CalendarDataManager *dataManager;

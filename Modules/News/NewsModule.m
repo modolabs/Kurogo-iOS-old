@@ -120,7 +120,7 @@
 - (void)performSearchWithText:(NSString *)searchText params:(NSDictionary *)params delegate:(id<KGOSearchResultsHolder>)delegate {
     
     self.searchDelegate = delegate;
-    [_dataManager searchStories:searchText];
+    [_dataManager delegate:delegate searchStories:searchText];
 }
 
 - (void)didReceiveSearchResults:(NSArray *)results forSearchTerms:(NSString *)searchTerms {

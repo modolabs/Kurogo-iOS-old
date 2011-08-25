@@ -6,7 +6,8 @@ static NSTimeInterval kNewsCategoryExpireTime = 7200;
 
 @implementation NewsDataController
 
-@synthesize currentCategory, moduleTag, delegate;
+@synthesize currentCategory, moduleTag, delegate,
+currentCategories = _currentCategories, currentStories = _currentStories;
 
 - (BOOL)requiresKurogoServer
 {
@@ -24,7 +25,7 @@ static NSTimeInterval kNewsCategoryExpireTime = 7200;
                                                            matchingPredicate:predicate
                                                              sortDescriptors:[NSArray arrayWithObject:sort]];
         if (results.count) {
-            _currentCategories = [results copy];
+            self.currentCategories = results;
         }
     }
 
@@ -52,12 +53,12 @@ static NSTimeInterval kNewsCategoryExpireTime = 7200;
         NSArray *categories = [[CoreDataManager sharedManager] objectsForEntity:NewsCategoryEntityName
                                                               matchingPredicate:predicate];
         if (categories.count) {
-            _currentCategories = [categories retain];
+            self.currentCategories = categories;
         }
     }
     
     NSPredicate *pred = [NSPredicate predicateWithFormat:@"category_id like %@", categoryId];
-    NSArray *matches = [_currentCategories filteredArrayUsingPredicate:pred];
+    NSArray *matches = [self.currentCategories filteredArrayUsingPredicate:pred];
     if (matches.count > 1) {
         NSLog(@"warning: duplicate categories found for id %@", categoryId);
     }
@@ -67,15 +68,10 @@ static NSTimeInterval kNewsCategoryExpireTime = 7200;
 
 - (NSArray *)searchableCategories
 {
-    return _currentCategories;
+    return self.currentCategories;
 }
 
 #pragma mark stories
-
-- (NSArray *)latestStories
-{
-    return _currentStories;
-}
 
 - (BOOL)canLoadMoreStories
 {
@@ -84,8 +80,7 @@ static NSTimeInterval kNewsCategoryExpireTime = 7200;
 
 - (NSArray *)bookmarkedStories
 {
-    NSPredicate *pred = [NSPredicate predicateWithFormat:
-                         @"bookmarked == YES AND ANY categories.moduleTag = %@", self.moduleTag];
+    NSPredicate *pred = [NSPredicate predicateWithFormat:@"bookmarked == YES AND ANY categories.moduleTag = %@", self.moduleTag];
     return [[CoreDataManager sharedManager] objectsForEntity:NewsStoryEntityName matchingPredicate:pred];
 }
 

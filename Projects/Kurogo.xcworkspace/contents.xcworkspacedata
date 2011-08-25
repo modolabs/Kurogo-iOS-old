@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Workspace
+   version = "1.0">
+   <FileRef
+      location = "group:Universitas/Universitas.xcodeproj">
+   </FileRef>
+   <FileRef
+      location = "group:../Contrib/JSON/JSON.xcodeproj">
+   </FileRef>
+   <FileRef
+      location = "group:../Contrib/Facebook/Facebook.xcodeproj">
+   </FileRef>
+</Workspace>

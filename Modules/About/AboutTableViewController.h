@@ -7,16 +7,20 @@ KGORequestDelegate, MFMailComposeViewControllerDelegate> {
     
     BOOL showBuildNumber;
     
-    NSString * aboutText;
-    NSString * orgText;
-    NSString * orgName;
-    NSString * orgEmail;
-    NSString * orgWebsite;
-    NSString * credits;
-    NSString * copyright;
+    NSArray * resultArray;
+    
+    UIView * loadingView;
+    UIActivityIndicatorView * loadingIndicator;
 }
 
 @property (nonatomic, retain) KGORequest * request;
 @property (nonatomic, retain) NSString * moduleTag;
+@property (nonatomic, retain) NSArray * resultArray;
+
+@property (nonatomic, retain) UIView * loadingView;
+@property (nonatomic, retain) UIActivityIndicatorView * loadingIndicator;
+
+- (void) addLoadingView;
+- (void) removeLoadingView; 
 
 @end

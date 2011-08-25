@@ -1,7 +1,13 @@
+#import "KGOAppDelegate+ModuleAdditions.h"
 #import "KGOUserSettingsManager.h"
 #import "KGOUserSetting.h"
+#import "Foundation+KGOAdditions.h"
 
 NSString * const KGOUserSettingPreferenceKey = @"ModuleSettings";
+
+#ifdef DEBUG
+NSString * const KGOUserSettingServerKey = @"ServerSelection";
+#endif
 
 @interface KGOUserSetting (Setters)
 
@@ -146,6 +152,8 @@ NSString * const KGOUserSettingPreferenceKey = @"ModuleSettings";
         NSDictionary *availableSettings = [NSDictionary dictionaryWithContentsOfFile:filename];
         NSDictionary *savedSettings = [[NSUserDefaults standardUserDefaults] objectForKey:KGOUserSettingPreferenceKey];
 
+        NSLog(@"%@", savedSettings);
+        
         __block NSMutableDictionary *theSettings = _settings;
         [availableSettings enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
             KGOUserSetting *aSetting = [[[KGOUserSetting alloc] init] autorelease];
@@ -175,6 +183,42 @@ NSString * const KGOUserSettingPreferenceKey = @"ModuleSettings";
 
             [theSettings setObject:aSetting forKey:key];
         }];
+
+#ifdef DEBUG
+        KGOUserSetting *serverSetting = [[[KGOUserSetting alloc] init] autorelease];
+        [serverSetting _setKey:KGOUserSettingServerKey];
+        [serverSetting _setTitle:NSLocalizedString(@"Server", @"heading for server selection in settings")];
+        [serverSetting _setUnrestricted:NO];
+        
+        NSArray *configTitles = [NSArray arrayWithObjects:
+                                 @"Development", @"Testing", @"Staging", @"Production", nil];
+        NSDictionary *configDict = [KGO_SHARED_APP_DELEGATE() appConfig];
+        NSDictionary *servers = [configDict dictionaryForKey:@"Servers"];
+        
+        NSMutableArray *options = [NSMutableArray array];
+        
+        for (NSString *configTitle in configTitles) {
+            NSString *host = [[servers dictionaryForKey:configTitle] stringForKey:@"Host" nilIfEmpty:YES];
+            if (host) {
+                [options addObject:[NSDictionary dictionaryWithObjectsAndKeys:
+                                    configTitle, @"id",
+                                    configTitle, @"title",
+                                    host, @"subtitle", nil]];
+            }
+        }
+
+        [serverSetting _setOptions:options];
+
+        // default to prod server (most likely to be up on first build?)
+        [serverSetting _setDefaultValue:[options objectAtIndex:0]];
+        
+        id savedSetting = [savedSettings objectForKey:KGOUserSettingServerKey];
+        if (savedSetting) {
+            serverSetting.selectedValue = savedSetting;
+        }
+        
+        [_settings setObject:serverSetting forKey:KGOUserSettingServerKey];
+#endif
     }
     return self;
 }

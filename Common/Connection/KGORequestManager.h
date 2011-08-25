@@ -60,6 +60,8 @@ extern NSString * const KGODidLoginNotification;
 - (void)showAlertForError:(NSError *)error request:(KGORequest *)request;
 - (void)showAlertForError:(NSError *)error request:(KGORequest *)request delegate:(id<UIAlertViewDelegate>)delegate;
 
+- (void)selectServerConfig:(NSString *)config;
+
 #pragma mark -
 
 - (void)requestServerHello;

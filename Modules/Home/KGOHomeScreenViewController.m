@@ -11,6 +11,9 @@
 #import "KGORequestManager.h"
 #import "Foundation+KGOAdditions.h"
 #import "KGOUserSettingsManager.h"
+#import "VideoDetailViewController.h"
+#import "KGOPlacemark.h"
+
 
 @interface KGOHomeScreenViewController (Private)
 
@@ -65,7 +68,7 @@
     
     [self loadModules];
     
-    if ([self showsSearchBar]) {
+    if ([self showsSearchBar] && !_searchBar) {
         _searchBar = [[KGOSearchBar alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, 44)];
         _searchBar.autoresizingMask = UIViewAutoresizingFlexibleWidth;
         NSDictionary *infoDict = [[NSBundle mainBundle] infoDictionary];
@@ -466,10 +469,41 @@
     // TODO: come up with a better way to figure out which module the search result belongs to
     BOOL didShow = NO;
     if ([aResult isKindOfClass:[KGOPersonWrapper class]]) {
-        NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:aResult, @"personDetails", nil];
-        didShow = [KGO_SHARED_APP_DELEGATE() showPage:LocalPathPageNameDetail forModuleTag:PeopleTag params:params];
+        NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:aResult, @"person", nil];
+        [KGO_SHARED_APP_DELEGATE() showPage:LocalPathPageNameDetail forModuleTag:PeopleTag params:params];
     }
     
+    if ([aResult isKindOfClass:[Video class]]) {
+        VideoDetailViewController *detailViewController = [[VideoDetailViewController alloc] initWithVideo:(Video *)aResult andSection:nil];
+        [self.navigationController pushViewController:detailViewController animated:YES];
+        [detailViewController release];    
+    }
+    
+    if ([aResult isKindOfClass:[KGOPlacemark class]]) {
+        KGOPlacemark *placemark = (KGOPlacemark *)aResult;
+        NSMutableArray *placemarkArray = [[NSArray alloc] initWithObjects:placemark, nil];
+        NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:placemarkArray, @"annotations", nil];
+        KGOAppDelegate *appDelegate = KGO_SHARED_APP_DELEGATE();
+        [appDelegate showPage:LocalPathPageNameHome forModuleTag:MapTag params:params];
+        [placemarkArray release];
+    }
+    
+    if ([aResult isKindOfClass:[KGOEventWrapper class]]) {
+        NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys: aResult, @"searchResult",nil];
+        [KGO_SHARED_APP_DELEGATE() showPage:LocalPathPageNameDetail forModuleTag:CalendarTag params:params];
+    }
+    
+    if ([aResult isKindOfClass:[NewsStory class]]) {
+        NewsStory *story = aResult;
+        if([[story hasBody] boolValue]) {
+            NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:aResult, @"story", nil];
+            [KGO_SHARED_APP_DELEGATE() showPage:LocalPathPageNameDetail forModuleTag:NewsTag params:params];
+        } else {
+            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:story.link]];
+        }
+   
+    }
+
     if (!didShow) {
         NSLog(@"home screen search controller failed to respond to search result %@", [aResult description]);
     }

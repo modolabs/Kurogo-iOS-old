@@ -26,6 +26,7 @@
         // Clear old stuff.
         [[CoreDataManager sharedManager] deleteObjects:self.videos];
         [self.videos removeAllObjects];
+        //[self pruneVideos]; ////////will clear old movies and leave bookmarks alone but still flawed. 
         
         if ([result isKindOfClass:[NSArray class]]) {
             for (NSDictionary *dict in result) {
@@ -39,8 +40,9 @@
     }
     else if ([request.path isEqualToString:@"search"]) {
         // Clear old stuff.
-        [[CoreDataManager sharedManager] deleteObjects:self.videosFromCurrentSearch];
-        [self.videosFromCurrentSearch removeAllObjects];        
+        [[CoreDataManager sharedManager] deleteObjects:self.videos];
+        [self.videos removeAllObjects];
+        //[self pruneVideos];       
         
         if ([result isKindOfClass:[NSArray class]]) {
             for (NSDictionary *dict in result) {
@@ -52,6 +54,21 @@
                 [self.videosFromCurrentSearch addObject:video];
             }
         }
+    }
+    else if ([request.path isEqualToString:@"detail"]) {
+        // Clear old stuff.
+        //[[CoreDataManager sharedManager] deleteObjects:self.videos];
+        //[self.videos removeAllObjects];
+        //[self pruneVideos];
+        
+        if ([result isKindOfClass:[NSDictionary class]]) {
+            NSDictionary *dict = (NSDictionary *)result;
+            Video *video = [[CoreDataManager sharedManager] insertNewObjectForEntityForName:@"Video"];
+            [video setUpWithDictionary:dict];
+            video.source = [request.getParams objectForKey:@"section"];
+            [self.detailVideo addObject:video];
+            [[CoreDataManager sharedManager] saveData];
+        }        
     }
 }
 
@@ -82,6 +99,8 @@
 @synthesize videos;
 @synthesize reachability;
 @synthesize videosFromCurrentSearch;
+@synthesize detailVideo; 
+ 
 
 #pragma mark NSObject
 
@@ -93,10 +112,11 @@
         self.responseBlocksForRequestPaths = [NSMutableDictionary dictionaryWithCapacity:3];
         self.pendingRequests = [NSMutableSet setWithCapacity:3];
         self.videos = [NSMutableArray arrayWithCapacity:30];
-        self.videosFromCurrentSearch = [NSMutableArray arrayWithCapacity:30];        
+        self.videosFromCurrentSearch = [NSMutableArray arrayWithCapacity:30];
+        self.detailVideo = [NSMutableArray arrayWithCapacity:30];
         self.reachability = [Reachability reachabilityForInternetConnection];
         self.moduleTag = VideoModuleTag;
-	}
+    }
 	return self;
 }
 
@@ -112,6 +132,7 @@
 }
 
 #pragma mark Public
+
 
 - (BOOL)requestSectionsThenRunBlock:(VideoDataRequestResponse)responseBlock {
     BOOL succeeded = NO;
@@ -132,12 +153,13 @@
         [request connect];
         succeeded = YES;
     } 
-
+    
     return succeeded;
 }
 
-- (BOOL)requestVideosForSection:(NSString *)section 
-                   thenRunBlock:(VideoDataRequestResponse)responseBlock {
+- (BOOL)requestVideosForSection:(NSString *)section thenRunBlock:(VideoDataRequestResponse)responseBlock {
+    
+    
     BOOL succeeded = NO;
     if ([self isRequestInProgressForPath:@"videos"] || ![self requestManagerIsReachable]) {
         
@@ -164,6 +186,33 @@
         [request connect];
         succeeded = YES;
     }    
+    
+    return succeeded;
+}
+
+- (BOOL)requestVideoForDetailSection:(NSString *)section andVideoID:(NSString *)videoID 
+                        thenRunBlock:(VideoDataRequestResponse)responseBlock {
+    BOOL succeeded = NO;
+    
+    NSDictionary *params = [NSDictionary dictionaryWithObject:section forKey:@"section"];
+    NSMutableDictionary *mutableParams = [[params mutableCopy] autorelease];
+    if (mutableParams == nil) {
+        // make sure this is not nil in case we want to auto-append parameters
+        mutableParams = [NSMutableDictionary dictionary];
+    }
+    
+    [mutableParams setObject:videoID forKey:@"videoid"];
+    
+    KGORequest *request = [[KGORequestManager sharedManager] requestWithDelegate:self 
+                                                                          module:self.moduleTag 
+                                                                            path:@"detail" 
+                                                                          params:mutableParams];
+    request.expectedResponseType = [NSDictionary class];
+    [self.responseBlocksForRequestPaths setObject:[[responseBlock copy] autorelease]
+                                           forKey:request.path];
+    [self.pendingRequests addObject:request];
+    if([request connect])
+        succeeded = YES;
     
     return succeeded;
 }
@@ -204,6 +253,40 @@
     return succeeded;
 }
 
+- (NSArray *)bookmarkedVideos
+{
+    
+    NSPredicate *pred = [NSPredicate predicateWithFormat:@"bookmarked == YES"];
+    return [[CoreDataManager sharedManager] objectsForEntity:@"Video" matchingPredicate:pred];
+    
+}
+
+
+- (void)pruneVideos{
+    NSArray *nonBookmarkedVideos = nil;
+    BOOL bookmarks = NO;
+    
+    for(Video *vid in self.videos){
+        if ([vid isBookmarked]) {
+            bookmarks = YES;
+            break;
+        }
+    }
+    if (bookmarks) {
+        NSPredicate *pred = [NSPredicate predicateWithFormat:@"bookmarked != YES"];
+        nonBookmarkedVideos = [[CoreDataManager sharedManager] objectsForEntity:@"Video" matchingPredicate:pred];
+    
+        [[CoreDataManager sharedManager] deleteObjects:nonBookmarkedVideos];
+        [self.videos removeObjectsInArray:nonBookmarkedVideos];
+        //[[CoreDataManager sharedManager] saveData];
+    }
+    else{
+        [[CoreDataManager sharedManager] deleteObjects:self.videos];
+        [self.videos removeAllObjects];
+    }
+}
+
+
 #pragma mark KGORequestDelegate
 - (void)requestWillTerminate:(KGORequest *)request
 {
@@ -231,7 +314,10 @@
         }
         else if ([request.path isEqualToString:@"search"]) {
             responseBlock(self.videosFromCurrentSearch);
-        }        
+        }
+        else if ([request.path isEqualToString:@"detail"]) {
+            responseBlock(detailVideo);
+        }
     }
 }
 

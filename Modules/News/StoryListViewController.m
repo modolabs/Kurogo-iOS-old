@@ -59,6 +59,8 @@
 }
 
 - (void)viewWillAppear:(BOOL)animated {
+    [self setupNavScrollButtons];
+    
     [super viewWillAppear:animated];
     /*
 	if (showingBookmarks) {
@@ -186,6 +188,7 @@
 }
 
 - (void)tabstripBookmarkButtonPressed:(KGOScrollingTabstrip *)tabstrip {
+    self.activeCategoryId = nil; 
     [self switchToBookmarks];
 }
 
@@ -213,9 +216,9 @@
 
 - (void)switchToBookmarks {
     showingBookmarks = YES;
-    self.stories = [self.dataManager bookmarkedStories];
+    [self.dataManager fetchBookmarks];
 }
-
+//START HERE TO DEBUG NEWS BOOKMARK ISSUE
 - (void)refresh:(id)sender {    
     if (!showingBookmarks) {
         [self.dataManager requestStoriesForCategory:self.activeCategoryId afterId:nil];

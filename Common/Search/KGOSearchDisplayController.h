@@ -3,6 +3,10 @@
 #import "KGOSearchBar.h"
 #import "KGOTableViewController.h"
 #import "KGODetailPager.h"
+#import "Video.h"
+#import "NewsStory.h"
+#import "NewsImage.h"
+#import "KGOEventWrapper.h"
 
 @class KGOSearchDisplayController;
 @protocol KGOSearchResult;
@@ -77,5 +81,6 @@
 - (void)reloadSearchResultsTableView;
 
 - (BOOL)canShowMapView; // whether there are mappable results to link to map module
+- (NewsStory *)storyWithDictionary:(NSDictionary *)storyDict;
 
 @end

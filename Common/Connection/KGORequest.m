@@ -266,7 +266,7 @@ NSString * const KGORequestErrorDomain = @"com.modolabs.KGORequest.ErrorDomain";
 	[self terminateWithErrorCode:errCode userInfo:[error userInfo]];
 }
 
-#ifdef USE_MOBILE_DEV
+#ifdef ALLOW_SELF_SIGNED_CERTIFICATE
 
 // the implementations of the following two delegate methods allow NSURLConnection to proceed with self-signed certs
 //http://stackoverflow.com/questions/933331/how-to-use-nsurlconnection-to-connect-with-ssl-for-an-untrusted-cert

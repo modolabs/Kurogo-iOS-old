@@ -79,6 +79,7 @@
             [manager fetchContacts];
         }
     }
+    self.navigationItem.title = @"Emergency Info";
 }
 
 - (void)viewDidUnload
@@ -152,6 +153,7 @@
 
         } else if(indexPath.row == self.primaryContacts.count) {
             title = @"More contacts";
+            accessoryTag = KGOAccessoryTypeChevron;
         }
     }
     

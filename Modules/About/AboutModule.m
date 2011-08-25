@@ -2,9 +2,11 @@
 #import "AboutTableViewController.h"
 #import "Foundation+KGOAdditions.h"
 #import "AboutMITVC.h"
-#import "KGOWebViewController.h"
+#import "KGOAppDelegate+ModuleAdditions.h"
 
 @implementation AboutModule
+@synthesize aboutRequest;
+@synthesize webViewTitle;
 
 - (UIViewController *)modulePage:(NSString *)pageName params:(NSDictionary *)params {
     UIViewController *vc = nil;
@@ -14,25 +16,67 @@
         vc = aboutVc;
         
     }
-    else if ([pageName isEqualToString:LocalPathPageNameDetail]) {
-        
-        AboutMITVC *aboutMITVC = [[[AboutMITVC alloc] initWithStyle:UITableViewStyleGrouped] autorelease];
-        aboutMITVC.orgName = [params stringForKey:@"orgName" nilIfEmpty:NO];
-        aboutMITVC.orgAboutText = [params stringForKey:@"orgText" nilIfEmpty:NO];
 
-        vc = aboutMITVC;
-    }
-    else if ([pageName isEqualToString:LocalPathPageNameWebViewDetail]) {
-        KGOWebViewController * creditsWebViewController = [[[KGOWebViewController alloc] init] autorelease];
-        NSString * credits = [params stringForKey:@"creditsHTMLString" nilIfEmpty: NO];
-        [creditsWebViewController setHTMLString: credits];
-        creditsWebViewController.title = @"Credits";
-        [creditsWebViewController applyTemplate:@"modules/about/credits.html"];
+    else if ([pageName isEqualToString:LocalPathPageNameDetail]) {
+
+        NSString * command = [params objectForKey:@"command"];
+        self.webViewTitle = [params objectForKey:@"title"];
+
+        // this is awkward. i would think about making a standard class of REST APIs that return
+        // the entire HTML as the contents of the API "response" value, and make KGOWebViewController
+        // able to deal with that generically.
+        self.aboutRequest = [[KGORequestManager sharedManager] requestWithDelegate:self
+                                                                       module:@"about"
+                                                                         path:command
+                                                                       params:[NSDictionary dictionaryWithObjectsAndKeys:nil]];
         
-        vc = creditsWebViewController;
+        self.aboutRequest.expectedResponseType = [NSString class];
+        if (self.aboutRequest) {
+            [self.aboutRequest connect];
+        }
+
     }
+    
+    else if ([pageName isEqualToString:LocalPathPageNameWebViewDetail]) {
+       
+        KGOWebViewController * webViewController = [[[KGOWebViewController alloc] init] autorelease];
+
+        
+        [webViewController setHTMLString: [params objectForKey:@"htmlString"]];
+        webViewController.title = self.webViewTitle;
+        vc = webViewController;
+    }
+
 
     return vc;
 }
+
+
+#pragma mark KGORequestDelegate
+
+- (void)requestWillTerminate:(KGORequest *)request {
+    self.aboutRequest = nil;
+}
+
+- (void)request:(KGORequest *)request didReceiveResult:(id)result {
+    self.aboutRequest = nil;
+    
+    NSLog(@"%@", [result description]);
+    
+    if ([result isKindOfClass:[NSString class]])
+        [KGO_SHARED_APP_DELEGATE() showPage:LocalPathPageNameWebViewDetail
+                           forModuleTag:self.tag 
+                                 params:[NSDictionary dictionaryWithObjectsAndKeys:result, @"htmlString", nil]];    
+
+}
+
+#pragma mark -
+
+- (void)dealloc {
+    [super dealloc];
+    self.aboutRequest = nil;
+    self.webViewTitle = nil;
+}
+
 
 @end

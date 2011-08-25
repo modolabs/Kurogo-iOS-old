@@ -10,7 +10,7 @@
     [super loadView];
 	self.title = NSLocalizedString(@"Jump to a Date", nil);
 	
-    self.view.backgroundColor = [UIColor clearColor];
+    //self.view.backgroundColor = [UIColor clearColor];
     if (!self.date) {
         self.date = [NSDate date];
     }
@@ -54,6 +54,7 @@
 	datePicker.minimumDate = [NSDate dateWithTimeIntervalSinceNow:-10 * 366 * 24 * 3600];
     [datePicker addTarget:self action:@selector(datePickerValueChanged:) forControlEvents:UIControlEventValueChanged];
     [self.view addSubview:datePicker];
+     
 }
 
 - (void)navBarButtonPressed:(id)sender

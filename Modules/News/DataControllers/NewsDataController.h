@@ -27,6 +27,9 @@
 
 - (BOOL)requiresKurogoServer;
 
+@property (nonatomic, retain) NSArray *currentCategories;
+@property (nonatomic, retain) NSArray *currentStories;
+
 @property (nonatomic, retain) NewsCategory *currentCategory;
 @property (nonatomic, retain) NSString *moduleTag;
 @property (nonatomic, assign) id<NewsDataDelegate> delegate;

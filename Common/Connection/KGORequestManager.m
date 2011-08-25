@@ -5,6 +5,13 @@
 #import "Reachability.h"
 #import "KGOModule.h"
 
+#ifdef DEBUG
+#import "KGOUserSettingsManager.h"
+// the constant KGOUserPreferencesDidChangeNotification is defined in the following file,
+// whether or not it's the appropriate place
+#import "KGOTheme.h"
+#endif
+
 NSString * const HelloRequestDidCompleteNotification = @"HelloDidComplete";
 NSString * const HelloRequestDidFailNotification = @"HelloDidFail";
 NSString * const KGODidLoginNotification = @"LoginComplete";
@@ -66,10 +73,20 @@ NSString * const KGODidLogoutNotification = @"LogoutComplete";
         } else {
             requestBaseURL = [_baseURL URLByAppendingPathComponent:path];
         }
+
 		NSMutableDictionary *mutableParams = [[params mutableCopy] autorelease];
+        if (mutableParams == nil) {
+            // make sure this is not nil in case we want to auto-append parameters
+            mutableParams = [NSMutableDictionary dictionary];
+        }
+
 		if (_accessToken) {
 			[mutableParams setObject:_accessToken forKey:@"token"];
 		}
+
+#ifdef DEBUG
+        [mutableParams setObject:@"1" forKey:@"debug"];
+#endif
 
 		request.url = [NSURL URLWithQueryParameters:mutableParams baseURL:requestBaseURL];
 		request.module = module;
@@ -257,42 +274,72 @@ NSString * const KGODeviceTokenKey = @"KGODeviceToken";
 
 #pragma mark initialization
 
+NSString * const kHTTPURIScheme = @"http";
+NSString * const kHTTPSURIScheme = @"https";
+
+- (void)selectServerConfig:(NSString *)config
+{
+    NSDictionary *configDict = [KGO_SHARED_APP_DELEGATE() appConfig];
+    NSDictionary *servers = [configDict objectForKey:@"Servers"];
+    
+    NSDictionary *serverConfig = [servers dictionaryForKey:config];
+    if (serverConfig) {
+        BOOL useHTTPS = [serverConfig boolForKey:@"UseHTTPS"];
+        NSString *apiPath = [serverConfig objectForKey:@"APIPath"];
+        NSString *pathExtension = [serverConfig stringForKey:@"PathExtension" nilIfEmpty:YES];
+
+        @synchronized(self) {
+            _uriScheme = useHTTPS ? kHTTPSURIScheme : kHTTPURIScheme;
+            
+            [_host release];
+            _host = [[serverConfig objectForKey:@"Host"] retain];
+            
+            [_extendedHost release];
+            if (pathExtension) {
+                _extendedHost = [[NSString alloc] initWithFormat:@"%@/%@", _host, pathExtension];
+            } else {
+                _extendedHost = [_host copy];
+            }
+            
+            [_baseURL release];
+            _baseURL = [[NSURL alloc] initWithString:[NSString stringWithFormat:@"%@://%@/%@", _uriScheme, _extendedHost, apiPath]];
+            
+            [_reachability release];
+            _reachability = [[Reachability reachabilityWithHostName:_host] retain];
+        }
+    }
+}
+
+#ifdef DEBUG
+- (void)selectServerConfigFromPreferences
+{
+    NSString *serverSetting = [[KGOUserSettingsManager sharedManager] selectedValueForSetting:KGOUserSettingServerKey];
+    if (serverSetting) {
+        [self selectServerConfig:serverSetting];
+    } else {
+        [self selectServerConfig:@"Production"];
+    }
+}
+#endif
+
 - (id)init {
     self = [super init];
     if (self) {
-        NSDictionary *configDict = [KGO_SHARED_APP_DELEGATE() appConfig];
-        NSDictionary *servers = [configDict objectForKey:@"Servers"];
-        
-#ifdef USE_MOBILE_DEV
-        NSDictionary *serverConfig = [servers objectForKey:@"Development"];
+#ifdef DEBUG
+        [self selectServerConfigFromPreferences];
+
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(selectServerConfigFromPreferences)
+                                                     name:KGOUserPreferencesDidChangeNotification
+                                                   object:nil];
 #else
-    #ifdef USE_MOBILE_TEST
-        NSDictionary *serverConfig = [servers objectForKey:@"Testing"];
+    #ifdef STAGING
+        [self selectServerConfig:@"Staging"];
     #else
-        #ifdef USE_MOBILE_STAGE
-        NSDictionary *serverConfig = [servers objectForKey:@"Staging"];
-        #else
-        NSDictionary *serverConfig = [servers objectForKey:@"Production"];
-        #endif
+        [self selectServerConfig:@"Production"];
     #endif
 #endif
 
-        BOOL useHTTPS = [serverConfig boolForKey:@"UseHTTPS"];
-        
-        _uriScheme = useHTTPS ? @"https" : @"http";
-        _host = [[serverConfig objectForKey:@"Host"] retain];
-        
-        NSString *apiPath = [serverConfig objectForKey:@"APIPath"];
-        NSString *pathExtension = [serverConfig stringForKey:@"PathExtension" nilIfEmpty:YES];
-        if (pathExtension) {
-            _extendedHost = [[NSString alloc] initWithFormat:@"%@/%@", _host, pathExtension];
-        } else {
-            _extendedHost = [_host copy];
-        }
-        _baseURL = [[NSURL alloc] initWithString:[NSString stringWithFormat:@"%@://%@/%@", _uriScheme, _extendedHost, apiPath]];
-        
-        _reachability = [[Reachability reachabilityWithHostName:_host] retain];
-        
         self.devicePushToken = [[NSUserDefaults standardUserDefaults] objectForKey:KGODeviceTokenKey];
 	}
 	return self;

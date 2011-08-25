@@ -13,6 +13,7 @@ NSString * const KGODataModelNameCalendar = @"Calendar";
 - (void)dealloc {
 	self.request = nil;
     [super dealloc];
+    
 }
 
 - (NSString *)defaultCalendar {
@@ -36,12 +37,18 @@ NSString * const KGODataModelNameCalendar = @"Calendar";
 - (void)performSearchWithText:(NSString *)searchText params:(NSDictionary *)params delegate:(id<KGOSearchResultsHolder>)delegate {
     self.searchDelegate = delegate;
     
-    NSString *calendar = [self defaultCalendar];
-    if (![params objectForKey:@"calendar"] && calendar) {
-        NSMutableDictionary *mutableDict = [[params mutableCopy] autorelease];
-        [mutableDict setObject:calendar forKey:@"calendar"];
-        params = mutableDict;
-    }
+    //NSString *calendar = [self defaultCalendar];
+    
+    //Start and end dates for the Calendar Search
+    NSDate *currentDate = [NSDate date];
+    NSDate *endDate = [NSDate dateWithTimeIntervalSinceNow:604800];//# of seconds in a 7 day period
+    NSString *startDateString = [NSString stringWithFormat:@"%.0f", [currentDate timeIntervalSince1970]];
+    NSString *endDateString = [NSString stringWithFormat:@"%.0f", [endDate timeIntervalSince1970]];
+    
+    params = [NSDictionary dictionaryWithObjectsAndKeys:searchText, @"q", 
+                                                        startDateString, @"start", 
+                                                        endDateString, @"end", nil];
+
 
     self.request = [[KGORequestManager sharedManager] requestWithDelegate:self module:self.tag path:@"search" params:params];
     [self.request connect];
@@ -95,6 +102,7 @@ NSString * const KGODataModelNameCalendar = @"Calendar";
         detailVC.indexPath = [params objectForKey:@"currentIndexPath"];
         detailVC.eventsBySection = [params objectForKey:@"eventsBySection"];
         detailVC.sections = [params objectForKey:@"sections"];
+        detailVC.searchResult = [params objectForKey:@"searchResult"];
         detailVC.dataManager = self.dataManager;
         vc = detailVC;
         

@@ -283,7 +283,11 @@
 			creator.displayedPerson = [self.person convertToABPerson];
 			[creator setNewPersonViewDelegate:self];
             
-            [self presentModalViewController:creator animated:YES];
+            UINavigationController *addContactNavController = [[UINavigationController alloc] initWithRootViewController:creator];
+            addContactNavController.navigationBar.barStyle = [[KGOTheme sharedTheme] defaultNavBarStyle];
+            [self presentModalViewController:addContactNavController animated:YES];
+            [addContactNavController release];
+            
 			
 		} else {
 			ABPeoplePickerNavigationController *picker = [[[ABPeoplePickerNavigationController alloc] init] autorelease];

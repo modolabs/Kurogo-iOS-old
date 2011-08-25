@@ -1,18 +1,19 @@
 #import <Foundation/Foundation.h>
 #import "KGOSocialMediaService.h"
-#import "MGTwitterEngine.h"
+//#import "MGTwitterEngine.h"
 #import "TwitterViewControllerDelegate.h"
 
 extern NSString * const TwitterUsernameKey;
 
 @interface KGOTwitterService : NSObject <KGOSocialMediaService,
-MGTwitterEngineDelegate, TwitterViewControllerDelegate, UIAlertViewDelegate> {
+//MGTwitterEngineDelegate, 
+TwitterViewControllerDelegate, UIAlertViewDelegate> {
     
     NSString *_oauthKey;
     NSString *_oauthSecret;
 	
     NSInteger _twitterStartupCount;
-	MGTwitterEngine *_twitterEngine;
+	//MGTwitterEngine *_twitterEngine;
 	NSString *_twitterUsername;
     NSString *_twitterPassword;
     

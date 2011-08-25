@@ -22,6 +22,7 @@ NSString * const NewsTagPostDate        = @"pubDate";
 NSString * const NewsTagHasBody         = @"hasBody";
 NSString * const NewsTagBody            = @"body";
 
+
 @implementation JSONNewsDataController
 
 @synthesize storiesRequest;
@@ -48,7 +49,7 @@ NSString * const NewsTagBody            = @"body";
     request.expectedResponseType = [NSArray class];
     
     __block NewsDataController *blockSelf = self;
-    __block NSArray *oldCategories = _currentCategories;
+    __block NSArray *oldCategories = self.currentCategories;
     
     request.handler = [[^(id result) {
         NSArray *newCategoryDicts = (NSArray *)result;
@@ -106,7 +107,7 @@ NSString * const NewsTagBody            = @"body";
     return category;
 }
 
-- (void)searchStories:(NSString *)searchTerms {
+- (void)delegate:(id<KGOSearchResultsHolder>)searchDelegate searchStories:(NSString *)searchTerms {
     
     // cancel any previous search requests
     for (KGORequest *request in self.searchRequests) {
@@ -139,7 +140,7 @@ NSString * const NewsTagBody            = @"body";
                 NewsStory *story = [blockSelf storyWithDictionary:storyDict]; 
                 story.searchResult = [NSNumber numberWithInt:1];
             }
-            
+            [searchDelegate searcher:self didReceiveResults:stories];
             return [stories count];
         } copy] autorelease];                               
         
@@ -159,9 +160,9 @@ NSString * const NewsTagBody            = @"body";
     NSInteger start = 0;
     if (afterId) {
         NSPredicate *pred = [NSPredicate predicateWithFormat:@"identifier = %@", afterId];
-        NewsStory *story = [[_currentStories filteredArrayUsingPredicate:pred] lastObject];
+        NewsStory *story = [[self.currentStories filteredArrayUsingPredicate:pred] lastObject];
         if (story) {
-            NSInteger index = [_currentStories indexOfObject:story];
+            NSInteger index = [self.currentStories indexOfObject:story];
             if (index != NSNotFound) {
                 start = index;
             }

@@ -38,6 +38,7 @@
 		BCE5E2AE129C809700C156C0 /* SBJsonStreamParser.m in Sources */ = {isa = PBXBuildFile; fileRef = BCE5E2AB129C809700C156C0 /* SBJsonStreamParser.m */; };
 		BCE5E2AF129C809700C156C0 /* SBJsonStreamParserState.h in Headers */ = {isa = PBXBuildFile; fileRef = BCE5E2AC129C809700C156C0 /* SBJsonStreamParserState.h */; };
 		BCE5E2B0129C809700C156C0 /* SBJsonStreamParserState.m in Sources */ = {isa = PBXBuildFile; fileRef = BCE5E2AD129C809700C156C0 /* SBJsonStreamParserState.m */; };
+		EB0AC42413B9677400269FD8 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EB0AC42313B9677400269FD8 /* Foundation.framework */; };
 		FE2BBD860D8B0D6000184787 /* JSON.h in Headers */ = {isa = PBXBuildFile; fileRef = 53D2299A0C96129800276605 /* JSON.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FE2BBD870D8B0D6000184787 /* NSObject+JSON.h in Headers */ = {isa = PBXBuildFile; fileRef = E75716430C96DB530084A449 /* NSObject+JSON.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FE2BBD880D8B0D6000184787 /* NSObject+JSON.m in Sources */ = {isa = PBXBuildFile; fileRef = E75716440C96DB530084A449 /* NSObject+JSON.m */; };
@@ -180,6 +181,7 @@
 		E75716440C96DB530084A449 /* NSObject+JSON.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+JSON.m"; sourceTree = "<group>"; };
 		E76A1EB60C996C2000A0CC83 /* DataDrivenTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DataDrivenTest.m; sourceTree = "<group>"; };
 		EB0453CF13A1A092002FD9A6 /* static_library.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = static_library.xcconfig; path = ../../xcconfig/static_library.xcconfig; sourceTree = "<group>"; };
+		EB0AC42313B9677400269FD8 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		FE2BBD800D8B0D3900184787 /* libjson.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libjson.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		FE2BBDAC0D8B0EE100184787 /* libjsontests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "libjsontests-Info.plist"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -189,6 +191,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EB0AC42413B9677400269FD8 /* Foundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -201,6 +204,7 @@
 				53D229950C96123C00276605 /* Classes */,
 				53D229960C96124500276605 /* Tests */,
 				BCB559FF1221D09300ACE34F /* Data */,
+				EB0AC42513B9677F00269FD8 /* Frameworks */,
 				53D229820C96121600276605 /* Products */,
 				BCC0465E0FB62C2B00F9F2D3 /* Resources */,
 				BCC047D30FB742FC00F9F2D3 /* Documentation */,
@@ -425,6 +429,14 @@
 			path = "../json-framework";
 			sourceTree = "<group>";
 		};
+		EB0AC42513B9677F00269FD8 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				EB0AC42313B9677400269FD8 /* Foundation.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
@@ -457,7 +469,6 @@
 				FE2BBD7D0D8B0D3900184787 /* Sources */,
 				FE2BBD7E0D8B0D3900184787 /* Frameworks */,
 				BC5BC6BE1249E3E500F22EB1 /* ShellScript */,
-				EB99B3FE12F388930065EE93 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -473,6 +484,9 @@
 /* Begin PBXProject section */
 		53D229730C9611FF00276605 /* Project object */ = {
 			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0420;
+			};
 			buildConfigurationList = 53D229740C9611FF00276605 /* Build configuration list for PBXProject "JSON" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
@@ -551,19 +565,6 @@
 			shellPath = /bin/sh;
 			shellScript = "exec $SOURCE_ROOT/Scripts/InstallDocumentation.sh";
 		};
-		EB99B3FE12F388930065EE93 /* ShellScript */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "if [ \"${DEPLOYMENT_LOCATION}\" = \"YES\" ]; then\n    cp -r ${DSTROOT}${PUBLIC_HEADERS_FOLDER_PATH}/* ../usr/local/include\nelse\n    cp -r ${CONFIGURATION_BUILD_DIR}${PUBLIC_HEADERS_FOLDER_PATH}/* ../usr/local/include\nfi";
-		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -617,7 +618,6 @@
 			buildSettings = {
 				COPY_PHASE_STRIP = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				GCC_ENABLE_FIX_AND_CONTINUE = NO;
 				PRODUCT_NAME = Documentation;
 				ZERO_LINK = NO;
 			};
@@ -626,12 +626,6 @@
 		FE2BBD840D8B0D3900184787 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				GCC_ENABLE_FIX_AND_CONTINUE = YES;
-				GCC_MODEL_TUNING = G5;
-				OTHER_LDFLAGS = (
-					"-framework",
-					Foundation,
-				);
 				PRODUCT_NAME = json;
 			};
 			name = Debug;
@@ -639,12 +633,6 @@
 		FE2BBD850D8B0D3900184787 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				GCC_ENABLE_FIX_AND_CONTINUE = NO;
-				GCC_MODEL_TUNING = G5;
-				OTHER_LDFLAGS = (
-					"-framework",
-					Foundation,
-				);
 				PRODUCT_NAME = json;
 			};
 			name = Release;

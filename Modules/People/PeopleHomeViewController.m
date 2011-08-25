@@ -10,6 +10,7 @@
 #import "CoreDataManager.h"
 #import "KGOLabel.h"
 #import "PeopleModule.h"
+#import "PeopleGroupContactViewController.h"
 
 @interface PeopleHomeViewController (Private)
 
@@ -24,6 +25,7 @@
 searchTokens = _searchTokens,
 searchController = _searchController,
 searchBar = _searchBar, module;
+ 
 
 #pragma mark view
 
@@ -33,7 +35,7 @@ searchBar = _searchBar, module;
     self.title = @"People";
     
     [_phoneDirectoryEntries release];
-    _phoneDirectoryEntries = [[PersonContact directoryContacts] retain];
+    //_phoneDirectoryEntries = [[PersonContact directoryContacts] retain];
     if (!_phoneDirectoryEntries) {
         _request = [[KGORequestManager sharedManager] requestWithDelegate:self module:self.module.tag path:@"contacts" params:nil];
         _request.expectedResponseType = [NSDictionary class];
@@ -94,7 +96,7 @@ searchBar = _searchBar, module;
     NSMutableArray *array = [NSMutableArray array];
     for (NSDictionary *contactDict in contacts) {
         PersonContact *aContact = [PersonContact personContactWithDictionary:contactDict
-                                                                        type:[contactDict stringForKey:@"type" nilIfEmpty:YES]];
+                                                                        type:[contactDict stringForKey:@"class" nilIfEmpty:YES]];
         [array addObject:aContact];
     }
     [_phoneDirectoryEntries release];
@@ -215,10 +217,16 @@ searchBar = _searchBar, module;
         case 0:
         {
             PersonContact *contact = [_phoneDirectoryEntries objectAtIndex:indexPath.row];
-            title = contact.label;
-            detailText = contact.value;
-            accessoryTag = KGOAccessoryTypePhone; // TODO: use the type to determine this
-            backgroundColor = [[KGOTheme sharedTheme] backgroundColorForSecondaryCell];
+            title = contact.title;
+            if([contact.type isEqualToString:@"phone"]){
+                detailText = contact.subtitle;
+                accessoryTag = KGOAccessoryTypePhone; 
+                backgroundColor = [[KGOTheme sharedTheme] backgroundColorForSecondaryCell];
+            }
+            else{
+                accessoryTag = KGOAccessoryTypeChevron; 
+                backgroundColor = [[KGOTheme sharedTheme] backgroundColorForSecondaryCell];
+            }
             break;
         }
         case 1:
@@ -279,13 +287,20 @@ searchBar = _searchBar, module;
 	[tableView deselectRowAtIndexPath:indexPath animated:YES];
 	
     switch (indexPath.section) {
-        case 0:
+        case 0: //Static numbers and groups
         {
             PersonContact *contact = [_phoneDirectoryEntries objectAtIndex:indexPath.row];
-            NSString *urlString = [NSString stringWithFormat:@"tel:%@", contact.value];
+            NSString *urlString = contact.url;
             NSURL *externURL = [NSURL URLWithString:urlString];
             if ([[UIApplication sharedApplication] canOpenURL:externURL])
                 [[UIApplication sharedApplication] openURL:externURL];
+            else if(contact.group){
+                PeopleGroupContactViewController *pgcvc = [[PeopleGroupContactViewController alloc] initWithGroup:contact.group];
+                pgcvc.navigationItem.title = contact.title; 
+                [self.navigationController pushViewController:pgcvc animated:YES];
+                [pgcvc release];
+
+            }
             
             break;
         }

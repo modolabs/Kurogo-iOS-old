@@ -12,3 +12,4 @@
 @property (nonatomic, retain) NSMutableSet *searchRequests;
 
 @end
+

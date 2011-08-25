@@ -26,6 +26,10 @@
 @property (nonatomic, retain) NSString * stillFrameImageURLString;
 @property (nonatomic, retain) NSData * stillFrameImageData;
 @property (nonatomic, retain) NSData * thumbnailImageData;
+@property (nonatomic, retain) NSData * streamingURL;
+@property (nonatomic, retain) NSData * publishedTimeStamp;
+@property (nonatomic, retain) NSString * date;
+@property (nonatomic, retain) NSNumber *bookmarked;
 // source can be "search" or the name of a section.
 @property (nonatomic, retain) NSString * source;
 
@@ -42,6 +46,9 @@
 - (void)removeTagsObject:(NSManagedObject *)value;
 - (void)addTags:(NSSet *)value;
 - (void)removeTags:(NSSet *)value;
+- (BOOL)isBookmarked;
+- (void)addBookmark;
+- (void)removeBookmark;
 
 @end
 

@@ -22,6 +22,8 @@ NSString * const NewsTag       = @"news";
 NSString * const PeopleTag     = @"people";
 NSString * const PhotosTag     = @"photos";
 NSString * const VideoModuleTag     = @"video";
+NSString * const CalendarTag     = @"calendar";
+
 
 
 

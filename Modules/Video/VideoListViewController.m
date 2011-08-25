@@ -5,7 +5,6 @@
 
 #import "VideoListViewController.h"
 #import "Constants.h"
-#import "Video.h"
 #import "VideoDetailViewController.h"
 #import "CoreDataManager.h"
 #import "VideoModule.h"
@@ -22,11 +21,10 @@ static const NSInteger kVideoListCellThumbnailTag = 0x78;
                    forVideo:(Video *)video;
 - (void)requestVideosForActiveSection;
 - (void)removeAllThumbnailViews;
-
+        
 #pragma mark Search UI
 - (void)showSearchBar;
-- (void)hideSearchBar;
-
+- (void)hideSearchBar; 
 @end
 
 @implementation VideoListViewController (Private)
@@ -53,7 +51,7 @@ static const NSInteger kVideoListCellThumbnailTag = 0x78;
     [thumbnailView displayImage];
 }
 
-- (void)requestVideosForActiveSection {    
+- (void)requestVideosForActiveSection { 
     if (self.videoSections.count > self.activeSectionIndex) {
         NSString *section = [[self.videoSections objectAtIndex:self.activeSectionIndex] objectForKey:@"value"];
         [self.dataManager requestVideosForSection:section
@@ -64,7 +62,9 @@ static const NSInteger kVideoListCellThumbnailTag = 0x78;
              }
          }];
     }
-}    
+}
+
+
 
 - (void)removeAllThumbnailViews {
     NSInteger sections = [self.tableView numberOfSections];
@@ -163,6 +163,7 @@ static const NSInteger kVideoListCellThumbnailTag = 0x78;
     self.navScrollView = [[[KGOScrollingTabstrip alloc] initWithFrame:frame] autorelease];
     self.navScrollView.showsSearchButton = YES;
     self.navScrollView.delegate = self;
+    
 }
 
 - (void)viewDidLoad {
@@ -180,6 +181,32 @@ static const NSInteger kVideoListCellThumbnailTag = 0x78;
              [self requestVideosForActiveSection];
          }
      }];
+    self.navigationItem.title = @"Video"; 
+}
+
+
+- (void)tabstripBookmarkButtonPressed:(id)sender{
+    [self switchToBookmarks];
+}
+
+- (void)switchToBookmarks {
+    showingBookmarks = YES;
+    self.videos = [self.dataManager bookmarkedVideos];
+    [self.tableView reloadData];
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+    BOOL bookmarksExist = [self.dataManager bookmarkedVideos].count > 0;
+    if(bookmarksExist){
+        [self.navScrollView setShowsBookmarkButton:YES]; 
+    }
+    else 
+        [self.navScrollView setShowsBookmarkButton:NO]; 
+    
+    
+    [self.navScrollView setNeedsLayout];
+    
+    [super viewWillAppear:animated];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -234,7 +261,7 @@ static const NSInteger kVideoListCellThumbnailTag = 0x78;
         cell.detailTextLabel.text = [[self class] detailTextForVideo:video];
                 
         MITThumbnailView *thumbnailView = (MITThumbnailView *)[cell.contentView viewWithTag:kVideoListCellThumbnailTag];        
-        [self updateThumbnailView:thumbnailView forVideo:video];
+        [self updateThumbnailView:thumbnailView forVideo:video];//this line places thumbnail image
         
         [cellConfigPool release];
     }
@@ -243,11 +270,12 @@ static const NSInteger kVideoListCellThumbnailTag = 0x78;
 
 #pragma mark UITableViewDelegate
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-
+   
     if (self.videos.count > indexPath.row) {
+        NSString *section = [[self.videoSections objectAtIndex:self.activeSectionIndex] objectForKey:@"value"];
         Video *video = [self.videos objectAtIndex:indexPath.row];
         VideoDetailViewController *detailViewController = 
-        [[VideoDetailViewController alloc] initWithVideo:video];
+        [[VideoDetailViewController alloc] initWithVideo:video andSection:section];
         [self.navigationController pushViewController:detailViewController 
                                              animated:YES];
         [detailViewController release];
@@ -304,10 +332,11 @@ static const NSInteger kVideoListCellThumbnailTag = 0x78;
 - (void)resultsHolder:(id<KGOSearchResultsHolder>)resultsHolder 
       didSelectResult:(id<KGOSearchResult>)aResult {
     
+    NSString *section = [[self.videoSections objectAtIndex:self.activeSectionIndex] objectForKey:@"value"];
+    
     if ([aResult isKindOfClass:[Video class]]) {
-        VideoDetailViewController *detailViewController = [[VideoDetailViewController alloc] initWithVideo:(Video *)aResult];
-        [self.navigationController pushViewController:detailViewController 
-                                             animated:YES];
+        VideoDetailViewController *detailViewController = [[VideoDetailViewController alloc] initWithVideo:(Video *)aResult andSection:section];
+        [self.navigationController pushViewController:detailViewController animated:YES];
         [detailViewController release];    
     }
 }

@@ -1,5 +1,5 @@
 #import "MapHomeViewController.h"
-#import "KGOCategoryListViewController.h"
+#import "MapCategoryListViewController.h"
 #import "KGOAppDelegate+ModuleAdditions.h"
 #import "MapModule.h"
 #import "MapSettingsViewController.h"
@@ -183,6 +183,7 @@
     [_annotations release];
     _annotations = [annotations retain];
     
+    /*
     if (_annotations.count == 1) {
         id<MKAnnotation> annotation = [_annotations lastObject];
         if ([annotation isKindOfClass:[KGOPlacemark class]] && !annotation.coordinate.latitude && !annotation.coordinate.longitude) {
@@ -202,6 +203,7 @@
             return;
         }
     }
+    */
 
     if (_mapView) {
         [_mapView removeAnnotations:_mapView.annotations];
@@ -255,15 +257,21 @@
 }
 
 - (IBAction)browseButtonPressed {
-	KGOCategoryListViewController *categoryVC = [[[KGOCategoryListViewController alloc] init] autorelease];
+	MapCategoryListViewController *categoryVC = [[[MapCategoryListViewController alloc] init] autorelease];
     categoryVC.categoryEntityName = MapCategoryEntityName;
-    NSPredicate *pred = [NSPredicate predicateWithFormat:@"parentCategory = nil AND browsable = YES"];
+    categoryVC.dataManager = self.mapModule.dataManager;
+    NSPredicate *pred = [NSPredicate predicateWithFormat:@"parentCategory = nil"];
     NSArray *sortDescriptors = [NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"sortOrder" ascending:YES]];
+    categoryVC.listItems = [[CoreDataManager sharedManager] objectsForEntity:MapCategoryEntityName
+                                                           matchingPredicate:pred
+                                                             sortDescriptors:sortDescriptors];
+    /*
     categoryVC.categories = [[CoreDataManager sharedManager] objectsForEntity:MapCategoryEntityName
                                                             matchingPredicate:pred
                                                               sortDescriptors:sortDescriptors];
-    categoryVC.categoriesRequest = [self.mapModule subcategoriesRequestForCategory:nil
-                                                                          delegate:categoryVC];
+     */
+    //categoryVC.categoriesRequest = [self.mapModule subcategoriesRequestForCategory:nil
+    //                                                                      delegate:categoryVC];
     
     UINavigationController *navC = [[[UINavigationController alloc] initWithRootViewController:categoryVC] autorelease];
     navC.modalPresentationStyle = UIModalPresentationFormSheet;
@@ -352,6 +360,7 @@
             _locationManager.distanceFilter = kCLDistanceFilterNone;
             _locationManager.desiredAccuracy = kCLLocationAccuracyBest;
             _locationManager.delegate = self;
+       
         }
         _userLocation = [[_locationManager location] retain];
     }
@@ -363,6 +372,7 @@
         [_locationManager startUpdatingLocation];
     }
 }
+
 
 - (void)popoverControllerDidDismissPopover:(UIPopoverController *)popoverController
 {
@@ -403,7 +413,7 @@
             location = [[[CLLocation alloc] initWithLatitude:[lat floatValue] longitude:[lon floatValue]] autorelease];
         }
     }
-
+    
     DLog(@"%@ %@", location, _userLocation);
     // TODO: make maximum distance a config parameter
     if ([_userLocation distanceFromLocation:location] <= 40000) {
