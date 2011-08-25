@@ -12,6 +12,8 @@
 #import "Foundation+KGOAdditions.h"
 #import "KGOUserSettingsManager.h"
 #import "VideoDetailViewController.h"
+#import "KGOPlacemark.h"
+
 
 @interface KGOHomeScreenViewController (Private)
 
@@ -475,6 +477,22 @@
         VideoDetailViewController *detailViewController = [[VideoDetailViewController alloc] initWithVideo:(Video *)aResult andSection:nil];
         [self.navigationController pushViewController:detailViewController animated:YES];
         [detailViewController release];    
+    }
+    
+    if ([aResult isKindOfClass:[KGOPlacemark class]]) {
+        KGOPlacemark *placemark = (KGOPlacemark *)aResult;
+        NSMutableArray *placemarkArray = [[NSArray alloc] initWithObjects:placemark, nil];
+        NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:placemarkArray, @"annotations", nil];
+        KGOAppDelegate *appDelegate = KGO_SHARED_APP_DELEGATE();
+        [appDelegate showPage:LocalPathPageNameHome forModuleTag:MapTag params:params];
+        [placemarkArray release];
+    }
+    
+    if ([aResult isKindOfClass:[KGOEventWrapper class]]) {
+        NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys: aResult, @"searchResult",nil];
+        
+        [KGO_SHARED_APP_DELEGATE() showPage:LocalPathPageNameDetail forModuleTag:CalendarTag params:params];
+        
     }
 
     if (!didShow) {
