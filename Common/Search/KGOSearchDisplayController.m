@@ -345,7 +345,7 @@ showingOnlySearchResults = _showingOnlySearchResults, showsSearchOverlay;
     NewsStory *newsStory;
     id<KGOSearchResult> result = [self.searchResults objectAtIndex:indexPath.row];
     if ([result isKindOfClass:[RecentSearch class]]) {
-        RecentSearch *recentSearch = (RecentSearch *)newsStory;
+        RecentSearch *recentSearch = (RecentSearch *)result;
         [self unfocusSearchBarAnimated:YES];
         [self executeSearch:recentSearch.text params:nil];
     } else {
