@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0B2150A314058F5700BD30A3 /* PeopleGroupContactViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0B2150A214058F5700BD30A3 /* PeopleGroupContactViewController.m */; };
 		1D60589F0D05DD5A006BFB54 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D30AB110D05D00D00671497 /* Foundation.framework */; };
 		1DF5F4E00D08C38300B7A737 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DF5F4DF0D08C38300B7A737 /* UIKit.framework */; };
 		29366C1A118E401C009D6863 /* libxml2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 29366C19118E401C009D6863 /* libxml2.dylib */; };
@@ -196,6 +197,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		0B2150A114058F5600BD30A3 /* PeopleGroupContactViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PeopleGroupContactViewController.h; sourceTree = "<group>"; };
+		0B2150A214058F5700BD30A3 /* PeopleGroupContactViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PeopleGroupContactViewController.m; sourceTree = "<group>"; };
 		0B976E2513FADE6D0085CA3A /* VideoDetailHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VideoDetailHeaderView.h; path = ../Video/VideoDetailHeaderView.h; sourceTree = "<group>"; };
 		0B976E2613FADE6D0085CA3A /* VideoDetailHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VideoDetailHeaderView.m; path = ../Video/VideoDetailHeaderView.m; sourceTree = "<group>"; };
 		1D30AB110D05D00D00671497 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -1140,6 +1143,8 @@
 				EB181F84131EDECA003728FF /* PeopleModule.m */,
 				EB181F85131EDECA003728FF /* PeopleHomeViewController.h */,
 				EB181F86131EDECA003728FF /* PeopleHomeViewController.m */,
+				0B2150A114058F5600BD30A3 /* PeopleGroupContactViewController.h */,
+				0B2150A214058F5700BD30A3 /* PeopleGroupContactViewController.m */,
 			);
 			name = People;
 			path = ../../Modules/People;
@@ -1475,6 +1480,7 @@
 				56388C1A13FDF957005BA72E /* VideoDetailHeaderView.m in Sources */,
 				EB6BC7F614058A0B0095744E /* MapCategoryListViewController.m in Sources */,
 				EBE9C57B14058F390090B001 /* MapDataManager.m in Sources */,
+				0B2150A314058F5700BD30A3 /* PeopleGroupContactViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

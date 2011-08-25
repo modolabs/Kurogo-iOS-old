@@ -146,9 +146,9 @@
 			<key>APIPath</key>
 			<string>rest</string>
 			<key>Host</key>
-			<string>demo.modolabs.com/dario</string>
+			<string>demo.modolabs.com</string>
 			<key>PathExtension</key>
-			<string></string>
+			<string>dario2</string>
 			<key>UseHTTPS</key>
 			<false/>
 		</dict>
@@ -168,7 +168,7 @@
 			<key>APIPath</key>
 			<string>rest</string>
 			<key>Host</key>
-			<string>staging.example.com</string>
+			<string>localhost:8888</string>
 			<key>PathExtension</key>
 			<string></string>
 			<key>UseHTTPS</key>
