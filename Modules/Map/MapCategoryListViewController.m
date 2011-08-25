@@ -1,4 +1,4 @@
-#import "KGOCategoryListViewController.h"
+#import "MapCategoryListViewController.h"
 #import "KGOSearchModel.h"
 #import "KGOMapCategory.h"
 #import "KGOCalendar.h"
@@ -7,39 +7,61 @@
 #import "CoreDataManager.h"
 #import "Foundation+KGOAdditions.h"
 #import "KGOPlacemark.h"
-#import "KGOEvent.h"
+//#import "KGOEvent.h"
 #import <QuartzCore/QuartzCore.h>
 
-@implementation KGOCategoryListViewController
+@implementation MapCategoryListViewController
 
-@synthesize parentCategory, categoriesRequest, categoryEntityName, leafItemsRequest, leafItemEntityName;
+@synthesize parentCategory, //categoriesRequest, 
+categoryEntityName, //leafItemsRequest, 
+leafItemEntityName,
+dataManager,
+listItems,
+headerView = _headerView;
 
 - (void)loadView {
 	[super loadView];
     
     self.title = NSLocalizedString(@"Browse", nil);
 
-    UITableViewStyle style;
-    if (self.categories || self.categoriesRequest) {
-        style = UITableViewStyleGrouped;
-    } else {
-        style = UITableViewStylePlain;
+    UITableViewStyle style = UITableViewStyleGrouped;
+    BOOL isPopulated = NO;
+    if (self.listItems.count) {
+        id object = [self.listItems objectAtIndex:0];
+        if ([object conformsToProtocol:@protocol(KGOCategory)]) {
+            isPopulated = YES;
+        } else if ([object conformsToProtocol:@protocol(KGOSearchResult)]) {
+            style = UITableViewStylePlain;
+            isPopulated = YES;
+        }
     }
-	
-	if (!self.tableView) {
+
+	if (isPopulated && !self.tableView) {
 		CGRect frame = CGRectMake(0, 0, self.view.bounds.size.width, self.view.bounds.size.height);
 		self.tableView = [self addTableViewWithFrame:frame style:style];
-	}
-    
+
+	} else {
+        self.dataManager.delegate = self;
+        if (self.parentCategory) {
+            [self.dataManager requestChildrenForCategory:self.parentCategory.identifier];
+        } else {
+            [self.dataManager requestBrowseIndex];
+        }
+        [self showLoadingView];
+    }
+    /*
     if (!self.categories.count && self.categoriesRequest) {
         [self.categoriesRequest connect];
-        [self showLoadingView];
         
     } else if (!self.leafItems.count && self.leafItemsRequest) {
         [self.leafItemsRequest connect];
         [self showLoadingView];
     }
-    
+    */
+}
+
+- (void)viewDidLoad
+{
     self.view.backgroundColor = [[KGOTheme sharedTheme] backgroundColorForApplication];
 }
 
@@ -50,7 +72,7 @@
     }
     return toInterfaceOrientation == UIInterfaceOrientationPortrait;
 }
-
+/*
 - (NSArray *)categories {
 	return _categories;
 }
@@ -86,7 +108,7 @@
 	_headerView = [headerView retain];
 	self.tableView.tableHeaderView = _headerView;
 }
-
+*/
 #pragma mark KGORequestDelegate
 
 - (void)showLoadingView
@@ -130,7 +152,7 @@
         _loadingView = nil;
     }
 }
-
+/*
 - (void)request:(KGORequest *)request didHandleResult:(NSInteger)returnValue {
     if (request == self.categoriesRequest) {    
         self.categoriesRequest = nil;
@@ -175,10 +197,30 @@
         [self hideLoadingView];
     }
 }
+*/
+
+- (void)mapDataManager:(MapDataManager *)dataManager
+    didReceiveChildren:(NSArray *)children
+           forCategory:(NSString *)categoryID
+{
+    [self hideLoadingView];
+
+    self.listItems = children;
+    id object = [self.listItems objectAtIndex:0];
+    
+    UITableViewStyle style = UITableViewStyleGrouped;
+    if ([object conformsToProtocol:@protocol(KGOSearchResult)]) {
+        style = UITableViewStylePlain;
+    }
+    
+    CGRect frame = CGRectMake(0, 0, self.view.bounds.size.width, self.view.bounds.size.height);
+    self.tableView = [self addTableViewWithFrame:frame style:style];
+}
 
 #pragma mark Table view methods
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    /*
     NSInteger count = 0;
     if (self.categories) {
         count = self.categories.count;
@@ -186,6 +228,8 @@
         count = self.leafItems.count;
     }
     return count;
+     */
+    return self.listItems.count;
 }
 
 - (KGOTableCellStyle)tableView:(UITableView *)tableView styleForCellAtIndexPath:(NSIndexPath *)indexPath {
@@ -196,6 +240,15 @@
     NSString *title = nil;
     NSString *accessory = nil;
     
+    id object = [self.listItems objectAtIndex:indexPath.row];
+    if ([object conformsToProtocol:@protocol(KGOCategory)]) {
+        title = [(id<KGOCategory>)object title];
+        accessory = KGOAccessoryTypeChevron;
+    } else if ([object conformsToProtocol:@protocol(KGOSearchResult)]) {
+        title = [(id<KGOCategory>)object title];
+    }
+    
+    /*
     if (self.categories) {        
         id<KGOCategory> category = [self.categories objectAtIndex:indexPath.row];
         title = category.title;
@@ -206,6 +259,7 @@
         title = leafItem.title;
         //accessory = KGOAccessoryTypeChevron;
     }
+     */
     
     return [[^(UITableViewCell *cell) {
         cell.selectionStyle = UITableViewCellSelectionStyleGray;
@@ -214,8 +268,31 @@
     } copy] autorelease];
 }
 
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    id object = [self.listItems objectAtIndex:indexPath.row];
+    if ([object conformsToProtocol:@protocol(KGOCategory)]) {
+        id<KGOCategory> category = (id<KGOCategory>)object;
+        if ([category respondsToSelector:@selector(moduleTag)]) {
+            NSMutableDictionary *params = [NSMutableDictionary dictionaryWithObjectsAndKeys:category, @"parentCategory", nil];
+            if (category.children.count) {
+                //[params setObject:category.children forKey:@"categories"];
+                [params setObject:category.children forKey:@"listItems"];
+                
+            } else if (category.items.count) {
+                //[params setObject:category.items forKey:@"items"];
+                [params setObject:category.items forKey:@"listItems"];
+            }
+            [KGO_SHARED_APP_DELEGATE() showPage:LocalPathPageNameCategoryList forModuleTag:[category moduleTag] params:params];
+        }
+    } else if ([object conformsToProtocol:@protocol(KGOSearchResult)]) {
+        id<KGOSearchResult> leafItem = (id<KGOSearchResult>)leafItem;
+        if ([leafItem respondsToSelector:@selector(moduleTag)]) {
+            NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:leafItem, @"detailItem", nil];
+            [KGO_SHARED_APP_DELEGATE() showPage:LocalPathPageNameDetail forModuleTag:[leafItem moduleTag] params:params];
+        }
+    }
+    /*    
     if (self.categories) {
         id<KGOCategory> category = [self.categories objectAtIndex:indexPath.row];
         if ([category respondsToSelector:@selector(moduleTag)]) {
@@ -236,6 +313,7 @@
             [KGO_SHARED_APP_DELEGATE() showPage:LocalPathPageNameDetail forModuleTag:[leafItem moduleTag] params:params];
         }
     }
+     */
 }
 
 #pragma mark -
@@ -255,15 +333,16 @@
 
 
 - (void)dealloc {
+    /*
     self.categoriesRequest.delegate = nil;
     self.categoriesRequest = nil;
     
     self.leafItemsRequest.delegate = nil;
     self.leafItemsRequest = nil;
-    
+    */
 	self.headerView = nil;
-	self.categories = nil;
-    self.leafItems = nil;
+	//self.categories = nil;
+    //self.leafItems = nil;
     
     self.categoryEntityName = nil;
     self.leafItemEntityName = nil;

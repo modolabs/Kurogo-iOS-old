@@ -11,8 +11,11 @@
 @dynamic places;
 @dynamic subcategories;
 @dynamic parentCategory;
-@dynamic hasSubcategories;
-@dynamic browsable;
+//@dynamic hasSubcategories;
+//@dynamic browsable;
+@dynamic latitude;
+@dynamic longitude;
+@dynamic subtitle;
 
 - (NSString *)moduleTag
 {
@@ -31,6 +34,53 @@
 
 - (NSArray *)children {
 	return [self.subcategories allObjects];
+}
+
++ (KGOMapCategory *)categoryWithIdentifier:(NSString *)categoryID
+{
+    NSPredicate *pred = [NSPredicate predicateWithFormat:@"identifier like %@", categoryID];
+    NSArray *results = [[CoreDataManager sharedManager] objectsForEntity:MapCategoryEntityName matchingPredicate:pred];
+    if (results.count > 1) {
+        DLog(@"Warning: multiple category objects found for id %@", categoryID);
+    }
+    KGOMapCategory *category = [results lastObject];
+    if (!category) {
+        category = [[CoreDataManager sharedManager] insertNewObjectForEntityForName:MapCategoryEntityName];
+        category.identifier = categoryID;
+        DLog(@"created new category with id %@", category.identifier);
+    }
+    return category;
+}
+
++ (KGOMapCategory *)categoryWithDictionary:(NSDictionary *)dictionary
+{
+    KGOMapCategory *category = nil;
+    
+    NSString *identifier = [dictionary stringForKey:@"id" nilIfEmpty:YES];
+    if (identifier) {
+        category = [KGOMapCategory categoryWithIdentifier:identifier];
+        NSString *title = [dictionary stringForKey:@"title" nilIfEmpty:YES];
+        if (title) {
+            category.title = title;
+        }
+        NSString *subtitle = [dictionary stringForKey:@"subtitle" nilIfEmpty:YES];
+        if (subtitle) {
+            category.subtitle = subtitle;
+        }
+        CGFloat lat = [dictionary floatForKey:@"lat"];
+        if (lat) {
+            category.latitude = [NSNumber numberWithFloat:lat];
+        }
+        CGFloat lon = [dictionary floatForKey:@"lon"];
+        if (lat) {
+            category.longitude = [NSNumber numberWithFloat:lon];
+        }
+        NSString *group = [dictionary stringForKey:@"group" nilIfEmpty:YES];
+        if (group) {
+            category.parentCategory = [KGOMapCategory categoryWithIdentifier:group];
+        }
+    }
+    return category;
 }
 
 + (KGOMapCategory *)categoryWithPath:(NSArray *)categoryPath {

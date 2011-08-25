@@ -18,7 +18,7 @@
 @dynamic sortOrder;
 @dynamic photo;
 @dynamic bookmarked;
-@dynamic category;
+@dynamic categories;
 @dynamic photoURL;
 @dynamic userInfo;
 
@@ -100,46 +100,68 @@
 }
 
 + (KGOPlacemark *)placemarkWithDictionary:(NSDictionary *)dictionary {
-    NSArray *categoryPath = [dictionary arrayForKey:@"category"];
     NSString *theIdentifier = nil;
     id idObject = [dictionary objectForKey:@"id"];
     if ([idObject isKindOfClass:[NSString class]] || [idObject isKindOfClass:[NSNumber class]]) {
         theIdentifier = [idObject description];
     }
-    DLog(@"%@ %@", theIdentifier, [categoryPath componentsJoinedByString:@"/"]);
+    CGFloat latitude = [dictionary floatForKey:@"lat"];
+    CGFloat longitude = [dictionary floatForKey:@"lon"];
     
     KGOPlacemark *placemark = nil;
-    if (categoryPath && theIdentifier) {
-        placemark = [KGOPlacemark placemarkWithID:theIdentifier categoryPath:categoryPath];
+    if (theIdentifier && (latitude || longitude)) {
+        placemark = [KGOPlacemark placemarkWithID:theIdentifier latitude:latitude longitude:longitude];
         [placemark updateWithDictionary:dictionary];
     }
     
     return placemark;
 }
 
-+ (KGOPlacemark *)placemarkWithID:(NSString *)placemarkID categoryPath:(NSArray *)categoryPath
++ (KGOPlacemark *)placemarkWithID:(NSString *)placemarkID latitude:(CGFloat)latitude longitude:(CGFloat)longitude
 {
-    NSPredicate *pred = [NSPredicate predicateWithFormat:@"identifier like %@", placemarkID];
-    KGOPlacemark *result = nil;
-    if (categoryPath) {
-        KGOMapCategory *category = [KGOMapCategory categoryWithPath:categoryPath];
-        result = [[category.places filteredSetUsingPredicate:pred] anyObject];
-        if (!result) {
-            result = [[CoreDataManager sharedManager] insertNewObjectForEntityForName:KGOPlacemarkEntityName];
-            result.identifier = placemarkID;
-            result.category = category;
-        }
+    NSPredicate *pred = [NSPredicate predicateWithFormat:
+                         @"identifier like %@ and latitude = %@ and longitude = %@",
+                         placemarkID, [NSNumber numberWithFloat:latitude], [NSNumber numberWithFloat:longitude]];
 
-    } else {
-        result = [[[CoreDataManager sharedManager] objectsForEntity:KGOPlacemarkEntityName matchingPredicate:pred] lastObject];
-        if (!result) {
-            result = [[CoreDataManager sharedManager] insertNewObjectForEntityForName:KGOPlacemarkEntityName];
-            result.identifier = placemarkID;
-        }
+    KGOPlacemark *result = [[[CoreDataManager sharedManager] objectsForEntity:KGOPlacemarkEntityName
+                                                            matchingPredicate:pred] lastObject];
+    if (!result) {
+        result = [[CoreDataManager sharedManager] insertNewObjectForEntityForName:KGOPlacemarkEntityName];
+        result.identifier = placemarkID;
+        result.latitude = [NSNumber numberWithFloat:latitude];
+        result.longitude = [NSNumber numberWithFloat:longitude];
     }
     
     return result;
 }
 
+
+- (void)addCategoriesObject:(KGOPlacemark *)value {    
+    NSSet *changedObjects = [[NSSet alloc] initWithObjects:&value count:1];
+    [self willChangeValueForKey:@"categories" withSetMutation:NSKeyValueUnionSetMutation usingObjects:changedObjects];
+    [[self primitiveValueForKey:@"categories"] addObject:value];
+    [self didChangeValueForKey:@"categories" withSetMutation:NSKeyValueUnionSetMutation usingObjects:changedObjects];
+    [changedObjects release];
+}
+
+- (void)removeCategoriesObject:(KGOPlacemark *)value {
+    NSSet *changedObjects = [[NSSet alloc] initWithObjects:&value count:1];
+    [self willChangeValueForKey:@"categories" withSetMutation:NSKeyValueMinusSetMutation usingObjects:changedObjects];
+    [[self primitiveValueForKey:@"categories"] removeObject:value];
+    [self didChangeValueForKey:@"categories" withSetMutation:NSKeyValueMinusSetMutation usingObjects:changedObjects];
+    [changedObjects release];
+}
+
+- (void)addCategories:(NSSet *)value {    
+    [self willChangeValueForKey:@"categories" withSetMutation:NSKeyValueUnionSetMutation usingObjects:value];
+    [[self primitiveValueForKey:@"categories"] unionSet:value];
+    [self didChangeValueForKey:@"categories" withSetMutation:NSKeyValueUnionSetMutation usingObjects:value];
+}
+
+- (void)removeCategories:(NSSet *)value {
+    [self willChangeValueForKey:@"categories" withSetMutation:NSKeyValueMinusSetMutation usingObjects:value];
+    [[self primitiveValueForKey:@"categories"] minusSet:value];
+    [self didChangeValueForKey:@"categories" withSetMutation:NSKeyValueMinusSetMutation usingObjects:value];
+}
 
 @end

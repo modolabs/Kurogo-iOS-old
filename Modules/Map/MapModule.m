@@ -2,7 +2,7 @@
 #import "MapDetailViewController.h"
 #import "KGOPlacemark.h"
 #import "MapHomeViewController.h"
-#import "KGOCategoryListViewController.h"
+#import "MapCategoryListViewController.h"
 #import "CoreDataManager.h"
 #import "KGOMapCategory.h"
 #import "KGOAppDelegate+ModuleAdditions.h"
@@ -13,15 +13,20 @@ NSString * const MapTypePreference = @"MapType";
 NSString * const MapTypePreferenceChanged = @"MapTypeChanged";
 
 @implementation MapModule
-@synthesize request = _request;
+
+//@synthesize request = _request;
+@synthesize dataManager;
 
 - (void)dealloc
 {	
+    self.dataManager = nil;
+    
 	[super dealloc];
 }
-/*
+
 - (void)willLaunch {
 #ifdef DEBUG
+    /*
     if (![self isActive]) {
         NSLog(@"deleting map categories");
         for (NSManagedObject *aCategory in [[CoreDataManager sharedManager] objectsForEntity:MapCategoryEntityName
@@ -31,10 +36,15 @@ NSString * const MapTypePreferenceChanged = @"MapTypeChanged";
         }
         [[CoreDataManager sharedManager] saveData];
     }
+     */
 #endif
-    [super launch];
+    [super willLaunch];
+    
+    if (!self.dataManager) {
+        self.dataManager = [[[MapDataManager alloc] init] autorelease];
+        self.dataManager.moduleTag = self.tag;
+    }
 }
-*/
 
 
 #pragma mark Search
@@ -43,20 +53,12 @@ NSString * const MapTypePreferenceChanged = @"MapTypeChanged";
     return YES;
 }
 
-- (void)performSearchWithText:(NSString *)searchText params:(NSDictionary *)params delegate:(id<KGOSearchResultsHolder>)delegate {
-    self.searchDelegate = delegate;
-
-    if (!params) {
-        params = [NSDictionary dictionaryWithObjectsAndKeys:searchText, @"q", nil];
-    }
-    
-    self.request = [[KGORequestManager sharedManager] requestWithDelegate:self
-                                                                   module:MapTag
-                                                                     path:@"search"
-                                                                   params:params];
-    self.request.expectedResponseType = [NSDictionary class];
-    if (self.request)
-        [self.request connect];
+- (void)performSearchWithText:(NSString *)searchText
+                       params:(NSDictionary *)params
+                     delegate:(id<KGOSearchResultsHolder>)delegate
+{
+    self.dataManager.searchDelegate = delegate;
+    [self.dataManager search:searchText];
 }
 
 
@@ -100,7 +102,7 @@ NSString * const MapTypePreferenceChanged = @"MapTypeChanged";
 
         NSArray *annotations = [params objectForKey:@"annotations"];
         if (annotations) {
-            NSLog(@"annotations: %@", annotations);
+            DLog(@"annotations: %@", annotations);
             mapVC.annotations = annotations;
         }
         
@@ -153,7 +155,8 @@ NSString * const MapTypePreferenceChanged = @"MapTypeChanged";
         
     } else if ([pageName isEqualToString:LocalPathPageNameCategoryList]) {
         
-        KGOCategoryListViewController *categoryVC = [[[KGOCategoryListViewController alloc] init] autorelease];
+        MapCategoryListViewController *categoryVC = [[[MapCategoryListViewController alloc] init] autorelease];
+        categoryVC.dataManager = self.dataManager;
         categoryVC.categoryEntityName = MapCategoryEntityName;
 
         KGOMapCategory *parentCategory = [params objectForKey:@"parentCategory"];
@@ -161,8 +164,18 @@ NSString * const MapTypePreferenceChanged = @"MapTypeChanged";
             categoryVC.parentCategory = parentCategory;
         }
         
+        NSArray *listItems = [params objectForKey:@"listItems"];
+        if (listItems) {
+            categoryVC.listItems = listItems;
+        }
+        /*
 		NSArray *categories = [params objectForKey:@"categories"];
-        NSArray *items = [params objectForKey:@"items"];
+        if (categories) {
+            categoryVC.listItems = categories;
+        } else {            
+            NSArray *items = [params objectForKey:@"items"];
+            categoryVC.listItems = items;
+        }
         BOOL hasSubcategories = [parentCategory.hasSubcategories boolValue];
         
         if (parentCategory && hasSubcategories && !items.count) {
@@ -201,7 +214,7 @@ NSString * const MapTypePreferenceChanged = @"MapTypeChanged";
             categoryVC.leafItems = items;
             
         }
-        
+        */
         KGOAppDelegate *appDelegate = KGO_SHARED_APP_DELEGATE();
         UIViewController *topVC = [appDelegate visibleViewController];
 
@@ -226,7 +239,7 @@ NSString * const MapTypePreferenceChanged = @"MapTypeChanged";
     }
     return vc;
 }
-
+/*
 - (KGORequest *)subcategoriesRequestForCategory:(NSString *)category delegate:(id<KGORequestDelegate>)delegate
 {
     NSDictionary *params = nil;
@@ -290,7 +303,7 @@ NSString * const MapTypePreferenceChanged = @"MapTypeChanged";
     
     return categoriesRequest;
 }
-
+*/
 - (BOOL)handleLocalPath:(NSString *)localPath query:(NSString *)query {
     if ([localPath isEqualToString:LocalPathPageNameSearch]) {
         NSDictionary *params = [NSURL parametersFromQueryString:query];
@@ -324,7 +337,7 @@ NSString * const MapTypePreferenceChanged = @"MapTypeChanged";
     }
     return NO;
 }
-
+/*
 #pragma mark KGORequestDelegate
 
 - (void)requestWillTerminate:(KGORequest *)request {
@@ -348,5 +361,5 @@ NSString * const MapTypePreferenceChanged = @"MapTypeChanged";
         [self.searchDelegate searcher:self didReceiveResults:searchResults];
     }
 }
-
+*/
 @end
