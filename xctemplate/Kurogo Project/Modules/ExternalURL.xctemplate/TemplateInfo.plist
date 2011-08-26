@@ -35,17 +35,31 @@
 							<key>KGOModule+Factory.m:moduleWithDictionary:externalurl</key>
 							<string>  @&quot;ExternalURLModule&quot;, @&quot;externalurl&quot;,
 </string>
-							<key>Modules/ExternalURL</key>
+							<key>../../../Modules/ExternalURL/ExternalURLModule.h</key>
 							<dict>
 								<key>Group</key>
-								<string>Modules</string>
+								<array>
+									<string>Modules</string>
+									<string>ExternalURL</string>
+								</array>
 								<key>Path</key>
-								<string>Modules/ExternalURL</string>
+								<string>Modules/ExternalURL/ExternalURLModule.h</string>
+							</dict>
+							<key>../../../Modules/ExternalURL/ExternalURLModule.m</key>
+							<dict>
+								<key>Group</key>
+								<array>
+									<string>Modules</string>
+									<string>ExternalURL</string>
+								</array>
+								<key>Path</key>
+								<string>Modules/ExternalURL/ExternalURLModule.m</string>
 							</dict>
 						</dict>
 						<key>Nodes</key>
 						<array>
-							<string>Modules/ExternalURL</string>
+							<string>../../../Modules/ExternalURL/ExternalURLModule.h</string>
+							<string>../../../Modules/ExternalURL/ExternalURLModule.m</string>
 							<string>KGOModule+Factory.m:import:ExternalURLModule.h</string>
 							<string>KGOModule+Factory.m:moduleWithDictionary:externalurl</string>
 						</array>

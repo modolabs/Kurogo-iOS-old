@@ -45,33 +45,19 @@
 			<key>Path</key>
 			<string>xcconfig/kurogo_debug.xcconfig</string>
 		</dict>
-		<key>xcconfig/dev_server.xcconfig</key>
-		<dict>
-			<key>Group</key>
-			<string>xcconfig</string>
-			<key>Path</key>
-			<string>xcconfig/dev_server.xcconfig</string>
-		</dict>
-		<key>xcconfig/test_server.xcconfig</key>
-		<dict>
-			<key>Group</key>
-			<string>xcconfig</string>
-			<key>Path</key>
-			<string>xcconfig/test_server.xcconfig</string>
-		</dict>
-		<key>xcconfig/stage_server.xcconfig</key>
-		<dict>
-			<key>Group</key>
-			<string>xcconfig</string>
-			<key>Path</key>
-			<string>xcconfig/stage_server.xcconfig</string>
-		</dict>
 		<key>xcconfig/release.xcconfig</key>
 		<dict>
 			<key>Group</key>
 			<string>xcconfig</string>
 			<key>Path</key>
 			<string>xcconfig/release.xcconfig</string>
+		</dict>
+		<key>xcconfig/staging.xcconfig</key>
+		<dict>
+			<key>Group</key>
+			<string>xcconfig</string>
+			<key>Path</key>
+			<string>xcconfig/staging.xcconfig</string>
 		</dict>
 	</dict>
 	<key>Identifier</key>

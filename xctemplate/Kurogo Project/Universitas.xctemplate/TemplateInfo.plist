@@ -34,6 +34,20 @@
 			<key>Path</key>
 			<string>Supporting Files/Config.plist</string>
 		</dict>
+		<key>KGOAppDelegate+ModuleAdditions.h</key>
+		<dict>
+			<key>Group</key>
+			<string>Application</string>
+			<key>Path</key>
+			<string>Application/KGOAppDelegate+ModuleAdditions.h</string>
+		</dict>
+		<key>KGOAppDelegate+ModuleAdditions.m</key>
+		<dict>
+			<key>Group</key>
+			<string>Application</string>
+			<key>Path</key>
+			<string>Application/KGOAppDelegate+ModuleAdditions.m</string>
+		</dict>
 		<key>KGOAppDelegate.h:ivars:moduleAdditions</key>
 		<string>UINavigationController *_appNavController;
 UIViewController *_appHomeScreen;
@@ -53,13 +67,11 @@ NSInteger networkActivityRefCount;
 NSData *_deviceToken;
 NSMutableArray *_unreadNotifications;
 BOOL showingAlertView;</string>
-		<key>KGOAppDelegate.m:import:moduleAdditions</key>
-		<string>#import &quot;KGOAppDelegate+ModuleAdditions.h&quot;
-#import &quot;KGOModule.h&quot;
-#import &quot;AnalyticsWrapper.h&quot;
-#import &quot;KGOSocialMediaController.h&quot;
-#import &quot;KGORequestManager.h&quot;
-#import &quot;Foundation+KGOAdditions.h&quot;</string>
+		<key>KGOAppDelegate.m:applicationDidEnterBackground:moduleAdditions</key>
+		<string>for (KGOModule *aModule in self.modules) {
+    [aModule becomeInactive];
+    [aModule applicationDidEnterBackground];
+}</string>
 		<key>KGOAppDelegate.m:applicationdidFinishLaunchingWithOptions:moduleAdditions</key>
 		<string>_navigationStyle = KGONavigationStyleUnknown;
 
@@ -89,6 +101,16 @@ self.window.backgroundColor = [UIColor blackColor]; // necessary for horizontal 
 [self registerForRemoteNotifications:launchOptions];
 
 [self loadModules];</string>
+		<key>KGOAppDelegate.m:applicationDidReceiveMemoryWarning:moduleAdditions</key>
+		<string>for (KGOModule *aModule in self.modules) {
+    // TODO: check whether the module is being used, if not send 
+    // a -terminate message
+    [aModule didReceiveMemoryWarning];
+}</string>
+		<key>KGOAppDelegate.m:applicationWillEnterForeground:moduleAdditions</key>
+		<string>for (KGOModule *aModule in self.modules) {
+    [aModule applicationWillEnterForeground];
+}</string>
 		<key>KGOAppDelegate.m:applicationWillTerminate:moduleAdditions</key>
 		<string>[[AnalyticsWrapper sharedWrapper] shutdown];
 
@@ -100,15 +122,6 @@ for (KGOModule *aModule in self.modules) {
 
 // Save preferences
 [[NSUserDefaults standardUserDefaults] synchronize];</string>
-		<key>KGOAppDelegate.m:applicationDidEnterBackground:moduleAdditions</key>
-		<string>for (KGOModule *aModule in self.modules) {
-    [aModule becomeInactive];
-    [aModule applicationDidEnterBackground];
-}</string>
-		<key>KGOAppDelegate.m:applicationWillEnterForeground:moduleAdditions</key>
-		<string>for (KGOModule *aModule in self.modules) {
-    [aModule applicationWillEnterForeground];
-}</string>
 		<key>KGOAppDelegate.m:dealloc:_window</key>
 		<string>[[NSNotificationCenter defaultCenter] removeObserver:self];
 
@@ -116,26 +129,13 @@ for (KGOModule *aModule in self.modules) {
 [_unreadNotifications release];
 [_modules release];
 [_window release];</string>
-		<key>KGOAppDelegate.m:applicationDidReceiveMemoryWarning:moduleAdditions</key>
-		<string>for (KGOModule *aModule in self.modules) {
-    // TODO: check whether the module is being used, if not send 
-    // a -terminate message
-    [aModule didReceiveMemoryWarning];
-}</string>
-		<key>KGOAppDelegate+ModuleAdditions.h</key>
-		<dict>
-			<key>Group</key>
-			<string>Application</string>
-			<key>Path</key>
-			<string>Application/KGOAppDelegate+ModuleAdditions.h</string>
-		</dict>
-		<key>KGOAppDelegate+ModuleAdditions.m</key>
-		<dict>
-			<key>Group</key>
-			<string>Application</string>
-			<key>Path</key>
-			<string>Application/KGOAppDelegate+ModuleAdditions.m</string>
-		</dict>
+		<key>KGOAppDelegate.m:import:moduleAdditions</key>
+		<string>#import &quot;KGOAppDelegate+ModuleAdditions.h&quot;
+#import &quot;KGOModule.h&quot;
+#import &quot;AnalyticsWrapper.h&quot;
+#import &quot;KGOSocialMediaController.h&quot;
+#import &quot;KGORequestManager.h&quot;
+#import &quot;Foundation+KGOAdditions.h&quot;</string>
 		<key>KGOModule+Factory.h</key>
 		<dict>
 			<key>Beginning</key>
@@ -257,12 +257,10 @@ for (KGOModule *aModule in self.modules) {
 		<string>Localization</string>
 		<string>Resources/MainWindow_iPhone.xib</string>
 		<string>Resources/MainWindow_iPad.xib</string>
-		<string>xcconfig/dev_server.xcconfig</string>
 		<string>xcconfig/kurogo.xcconfig</string>
 		<string>xcconfig/kurogo_debug.xcconfig</string>
 		<string>xcconfig/release.xcconfig</string>
-		<string>xcconfig/stage_server.xcconfig</string>
-		<string>xcconfig/test_server.xcconfig</string>
+		<string>xcconfig/staging.xcconfig</string>
 	</array>
 	<key>Options</key>
 	<array/>
