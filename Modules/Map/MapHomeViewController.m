@@ -775,10 +775,13 @@
     for (id<MKAnnotation> annotation in annotations) {
         if (!restriction || [annotation isKindOfClass:restriction]) {
             CLLocationCoordinate2D coord = annotation.coordinate;
-            if (coord.latitude > maxLat)  maxLat = coord.latitude;
-            if (coord.longitude > maxLon) maxLon = coord.longitude;
-            if (coord.latitude < minLat)  minLat = coord.latitude;
-            if (coord.longitude < minLon) minLon = coord.longitude;
+            //Check to make sure the lat and long are in a valid range. 
+            if(coord.latitude < 90 && coord.latitude > -90 && coord.longitude < 180 && coord.longitude > -180){
+                if (coord.latitude > maxLat)  maxLat = coord.latitude;
+                if (coord.longitude > maxLon) maxLon = coord.longitude;
+                if (coord.latitude < minLat)  minLat = coord.latitude;
+                if (coord.longitude < minLon) minLon = coord.longitude;
+            }
         }
     }
     
@@ -795,5 +798,34 @@
     
     return MKCoordinateRegionMake(center, span);
 }
-
+/*
+- (void)recenterMapForAnnotations: (NSArray *)annotations {
+    //NSArray *coordinates = [self.mapView valueForKeyPath:@"annotations.coordinate" ];
+    CLLocationCoordinate2D maxCoord = {-90.0f, -180.0f};
+    CLLocationCoordinate2D minCoord = {90.0f, 180.0f};
+    for(NSValue *value in coordinates) {
+        CLLocationCoordinate2D coord = {0.0f, 0.0f};
+        [value getValue:&coord];
+        if(coord.longitude > maxCoord.longitude) {
+            maxCoord.longitude = coord.longitude;
+        }
+        if(coord.latitude > maxCoord.latitude) {
+            maxCoord.latitude = coord.latitude;
+        }
+        if(coord.longitude < minCoord.longitude) {
+            minCoord.longitude = coord.longitude;
+        }
+        CLICK HERE to purchase this book now.MAP ANNOTATIONS 475
+        if(coord.latitude < minCoord.latitude) {
+            minCoord.latitude = coord.latitude;
+        }
+    }
+    MKCoordinateRegion region = {{0.0f, 0.0f}, {0.0f, 0.0f}};
+    region.center.longitude = (minCoord.longitude + maxCoord.longitude) / 2.0;
+    region.center.latitude = (minCoord.latitude + maxCoord.latitude) / 2.0;
+    region.span.longitudeDelta = maxCoord.longitude - minCoord.longitude;
+    region.span.latitudeDelta = maxCoord.latitude - minCoord.latitude;
+   
+}
+*/
 @end
