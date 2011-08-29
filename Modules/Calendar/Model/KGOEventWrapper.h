@@ -40,7 +40,7 @@
 }
 
 @property (nonatomic, retain) NSString *identifier;
-@property (nonatomic, retain) NSString *title;
+@property (nonatomic, copy) NSString *title;
 @property (nonatomic, retain) NSDate *startDate;
 @property (nonatomic, retain) NSDate *endDate;
 @property (nonatomic, retain) NSDate *lastUpdate;
