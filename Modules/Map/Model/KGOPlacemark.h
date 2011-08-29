@@ -8,7 +8,7 @@
 {
 }
 
-@property (nonatomic, retain) NSString * title;
+@property (nonatomic, copy) NSString * title;
 @property (nonatomic, retain) NSNumber * sortOrder;
 
 @property (nonatomic, retain) NSNumber * latitude;
