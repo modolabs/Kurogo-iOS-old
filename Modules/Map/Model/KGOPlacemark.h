@@ -30,7 +30,7 @@
 
 + (KGOPlacemark *)placemarkWithDictionary:(NSDictionary *)dictionary;
 - (void)updateWithDictionary:(NSDictionary *)dictionary;
-
+- (void)addCategoriesObject:(KGOPlacemark *)value;
 + (KGOPlacemark *)placemarkWithID:(NSString *)placemarkID latitude:(CGFloat)latitude longitude:(CGFloat)longitude;
 
 @end
