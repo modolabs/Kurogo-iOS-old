@@ -45,8 +45,8 @@
     _story = [story retain];
 
     // title
-    _titleLabel.text = _story.title;
-    
+    NSString *title = [_story.title stringByReplacingOccurrencesOfString:[NSString stringWithFormat:@"&apos;"] withString:@"'"];
+    _titleLabel.text = title;
     CGSize constraint = CGSizeMake(_titleLabel.frame.size.width, self.frame.size.height - 10);
     CGSize size = [_story.title sizeWithFont:_titleLabel.font constrainedToSize:constraint];
     CGRect frame = _titleLabel.frame;
