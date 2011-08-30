@@ -361,6 +361,7 @@
 	if (indexPath.row == self.stories.count) {
         NewsStory *story = [self.stories lastObject];
         NSString *lastId = story.identifier;
+        self.dataManager.currentStories = self.stories; 
         [self.dataManager requestStoriesForCategory:self.activeCategoryId afterId:lastId];
 
 	} else {
