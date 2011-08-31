@@ -79,7 +79,7 @@
     
     // -setPlaceholderImage sets the background color on MITThumbnailView
     // TODO: do some renaming so it's clearer what's happening here
-    if (!_thumbnailView.backgroundColor) {
+    if (!_thumbnailView.imageURL) {
         [_thumbnailView setPlaceholderImage:[UIImage imageWithPathName:@"modules/news/news-placeholder.png"]];
     }
 }
