@@ -18,6 +18,7 @@ currentCategories = _currentCategories, currentStories = _currentStories;
 
 - (NSArray *)latestCategories
 {
+    
     if (!_currentCategories) {    
         NSPredicate *predicate = [NSPredicate predicateWithFormat:@"isMainCategory = YES AND moduleTag = %@", self.moduleTag];
         NSSortDescriptor *sort = [[[NSSortDescriptor alloc] initWithKey:@"category_id" ascending:YES] autorelease];
@@ -47,7 +48,7 @@ currentCategories = _currentCategories, currentStories = _currentStories;
     if ([self.currentCategory.category_id isEqualToString:categoryId]) {
         return self.currentCategory;
     }
-    
+    /* No need to do this hear. It gets done in latestCategories
     if (!_currentCategories) {
         NSPredicate *predicate = [NSPredicate predicateWithFormat:@"moduleTag = %@", self.moduleTag];
         NSArray *categories = [[CoreDataManager sharedManager] objectsForEntity:NewsCategoryEntityName
@@ -56,7 +57,7 @@ currentCategories = _currentCategories, currentStories = _currentStories;
             self.currentCategories = categories;
         }
     }
-    
+    */
     NSPredicate *pred = [NSPredicate predicateWithFormat:@"category_id like %@", categoryId];
     NSArray *matches = [self.currentCategories filteredArrayUsingPredicate:pred];
     if (matches.count > 1) {

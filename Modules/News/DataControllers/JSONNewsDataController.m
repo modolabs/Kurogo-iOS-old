@@ -152,7 +152,6 @@ NSString * const NewsTagBody            = @"body";
 - (void)requestStoriesForCategory:(NSString *)categoryId afterId:(NSString *)afterId
 {
     // TODO: signal that loading progress is 0
-
     if (![categoryId isEqualToString:self.currentCategory.category_id]) {
         self.currentCategory = [self categoryWithId:categoryId];
     }
