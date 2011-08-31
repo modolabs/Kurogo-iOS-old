@@ -53,20 +53,21 @@ NSString * const NewsTagBody            = @"body";
     
     request.handler = [[^(id result) {
         NSArray *newCategoryDicts = (NSArray *)result;
-        
+        /*
         NSArray *oldCategoryIds = [oldCategories mappedArrayUsingBlock:^id(id element) {
             return [(NewsCategory *)element category_id];
         }];
-        
+        */
         NSArray *newCategoryIds = [newCategoryDicts mappedArrayUsingBlock:^id(id element) {
             return [(NSDictionary *)element stringForKey:@"id" nilIfEmpty:YES];
         }];
-        
+        /*
+         Always want to mark Categories as changed because the last updated time changes each time this function is called
         if ([oldCategoryIds isEqualToArray:newCategoryIds]) {
 			// categories do not need to be updated
 			return REQUEST_CATEGORIES_UNCHANGED;
 		} 
-
+         */
         for (NewsCategory *oldCategory in oldCategories) {
             if (![newCategoryIds containsObject:oldCategory.category_id]) {
                 [[CoreDataManager sharedManager] deleteObject:oldCategory];
@@ -103,6 +104,7 @@ NSString * const NewsTagBody            = @"body";
         category.isMainCategory = [NSNumber numberWithBool:YES];
         category.moreStories = [NSNumber numberWithInt:-1];
         category.nextSeekId = [NSNumber numberWithInt:0];
+        category.lastUpdated = [NSDate dateWithTimeIntervalSince1970:[[categoryDict objectForKey:@"time"] doubleValue]];
     }
     return category;
 }

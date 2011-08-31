@@ -2,6 +2,7 @@
 #import "CoreDataManager.h"
 #import "NewsCategory.h"
 
+
 static NSTimeInterval kNewsCategoryExpireTime = 7200;
 
 @implementation NewsDataController
@@ -35,11 +36,17 @@ currentCategories = _currentCategories, currentStories = _currentStories;
 
 - (void)fetchCategories {
     NSArray *results = [self latestCategories];
+    NSDate *now = [NSDate date]; 
     if (results) {
-        if ([self.delegate respondsToSelector:@selector(dataController:didRetrieveCategories:)]) {
+        NewsCategory *category = [results objectAtIndex:0];
+        if ([category.lastUpdated timeIntervalSince1970]+kNewsCategoryExpireTime < [now timeIntervalSince1970]){
+            [self requestCategoriesFromServer];
+        }
+        else if ([self.delegate respondsToSelector:@selector(dataController:didRetrieveCategories:)]) {
             [self.delegate dataController:self didRetrieveCategories:results];
         }
-    } else {
+    } 
+    else {
         [self requestCategoriesFromServer];
     }
 }
@@ -111,7 +118,7 @@ currentCategories = _currentCategories, currentStories = _currentStories;
         || -[self.currentCategory.lastUpdated timeIntervalSinceNow] > kNewsCategoryExpireTime
         || !self.currentCategory.stories.count)
     {
-        DLog(@"%@", self.currentCategory.lastUpdated);
+        DLog(@"last updated: %@", self.currentCategory.lastUpdated);
         [self requestStoriesForCategory:categoryId afterId:nil];
         return;
     }
