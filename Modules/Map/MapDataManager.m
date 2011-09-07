@@ -128,7 +128,8 @@
                 KGOPlacemark *placemark = [KGOPlacemark placemarkWithDictionary:placemarkData];
                 if (placemark) {
                     placemark.sortOrder = [NSNumber numberWithInt:count];
-                    [placemark addCategoriesObject:parentCategory];
+                    KGOPlacemark *parent = (KGOPlacemark *)parentCategory;
+                    [placemark addCategoriesObject:parent];
                     [results addObject:placemark];
                     count++;
                 }

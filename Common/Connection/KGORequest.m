@@ -232,7 +232,7 @@ NSString * const KGORequestErrorDomain = @"com.modolabs.KGORequest.ErrorDomain";
 	}
 	
 	BOOL canProceed = [self.result isKindOfClass:self.expectedResponseType];
-	if (!canProceed) {
+	if (!canProceed) { 
 		NSDictionary *errorInfo = [NSDictionary dictionaryWithObjectsAndKeys:@"result type does not match expected response type", @"message", nil];
 		[self terminateWithErrorCode:KGORequestErrorBadResponse userInfo:errorInfo];
 		return;

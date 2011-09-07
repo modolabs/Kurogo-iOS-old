@@ -2,6 +2,7 @@
 #import "CoreDataManager.h"
 #import "NewsCategory.h"
 
+
 static NSTimeInterval kNewsCategoryExpireTime = 7200;
 
 @implementation NewsDataController
@@ -18,6 +19,7 @@ currentCategories = _currentCategories, currentStories = _currentStories;
 
 - (NSArray *)latestCategories
 {
+    
     if (!_currentCategories) {    
         NSPredicate *predicate = [NSPredicate predicateWithFormat:@"isMainCategory = YES AND moduleTag = %@", self.moduleTag];
         NSSortDescriptor *sort = [[[NSSortDescriptor alloc] initWithKey:@"category_id" ascending:YES] autorelease];
@@ -34,11 +36,17 @@ currentCategories = _currentCategories, currentStories = _currentStories;
 
 - (void)fetchCategories {
     NSArray *results = [self latestCategories];
+    NSDate *now = [NSDate date]; 
     if (results) {
-        if ([self.delegate respondsToSelector:@selector(dataController:didRetrieveCategories:)]) {
+        NewsCategory *category = [results objectAtIndex:0];
+        if ([category.lastUpdated timeIntervalSince1970]+kNewsCategoryExpireTime < [now timeIntervalSince1970]){
+            [self requestCategoriesFromServer];
+        }
+        else if ([self.delegate respondsToSelector:@selector(dataController:didRetrieveCategories:)]) {
             [self.delegate dataController:self didRetrieveCategories:results];
         }
-    } else {
+    } 
+    else {
         [self requestCategoriesFromServer];
     }
 }
@@ -47,7 +55,7 @@ currentCategories = _currentCategories, currentStories = _currentStories;
     if ([self.currentCategory.category_id isEqualToString:categoryId]) {
         return self.currentCategory;
     }
-    
+    /* No need to do this hear. It gets done in latestCategories
     if (!_currentCategories) {
         NSPredicate *predicate = [NSPredicate predicateWithFormat:@"moduleTag = %@", self.moduleTag];
         NSArray *categories = [[CoreDataManager sharedManager] objectsForEntity:NewsCategoryEntityName
@@ -56,7 +64,7 @@ currentCategories = _currentCategories, currentStories = _currentStories;
             self.currentCategories = categories;
         }
     }
-    
+    */
     NSPredicate *pred = [NSPredicate predicateWithFormat:@"category_id like %@", categoryId];
     NSArray *matches = [self.currentCategories filteredArrayUsingPredicate:pred];
     if (matches.count > 1) {
@@ -110,7 +118,7 @@ currentCategories = _currentCategories, currentStories = _currentStories;
         || -[self.currentCategory.lastUpdated timeIntervalSinceNow] > kNewsCategoryExpireTime
         || !self.currentCategory.stories.count)
     {
-        DLog(@"%@", self.currentCategory.lastUpdated);
+        DLog(@"last updated: %@", self.currentCategory.lastUpdated);
         [self requestStoriesForCategory:categoryId afterId:nil];
         return;
     }

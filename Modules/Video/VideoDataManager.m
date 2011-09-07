@@ -40,8 +40,8 @@
     }
     else if ([request.path isEqualToString:@"search"]) {
         // Clear old stuff.
-        [[CoreDataManager sharedManager] deleteObjects:self.videos];
-        [self.videos removeAllObjects];
+        [[CoreDataManager sharedManager] deleteObjects:self.videosFromCurrentSearch];
+        [self.videosFromCurrentSearch removeAllObjects];
         //[self pruneVideos];       
         
         if ([result isKindOfClass:[NSArray class]]) {

@@ -45,8 +45,8 @@
     _story = [story retain];
 
     // title
-    _titleLabel.text = _story.title;
-    
+    NSString *title = [_story.title stringByReplacingOccurrencesOfString:[NSString stringWithFormat:@"&apos;"] withString:@"'"];
+    _titleLabel.text = title;
     CGSize constraint = CGSizeMake(_titleLabel.frame.size.width, self.frame.size.height - 10);
     CGSize size = [_story.title sizeWithFont:_titleLabel.font constrainedToSize:constraint];
     CGRect frame = _titleLabel.frame;
@@ -79,7 +79,7 @@
     
     // -setPlaceholderImage sets the background color on MITThumbnailView
     // TODO: do some renaming so it's clearer what's happening here
-    if (!_thumbnailView.backgroundColor) {
+    if (!_thumbnailView.imageURL) {
         [_thumbnailView setPlaceholderImage:[UIImage imageWithPathName:@"modules/news/news-placeholder.png"]];
     }
 }

@@ -59,7 +59,7 @@
 }
 
 - (void)viewWillAppear:(BOOL)animated {
-    [self setupNavScrollButtons];
+    //[self setupNavScrollButtons]; // This is called from dataConroller:didRetrieveCategories: once the categories are retrieved
     
     [super viewWillAppear:animated];
     /*
@@ -124,10 +124,12 @@
 {
     self.categories = theCategories;
     
+   /* This is decided again later in setupNavScrollButtons
     if (!self.activeCategoryId && theCategories.count) {
         NewsCategory *category = [theCategories objectAtIndex:0];
         self.activeCategoryId = category.category_id;
     }
+    */
     [self setupNavScrollButtons]; // update button pressed states
     
     // now that we have categories load the stories
@@ -361,6 +363,7 @@
 	if (indexPath.row == self.stories.count) {
         NewsStory *story = [self.stories lastObject];
         NSString *lastId = story.identifier;
+        self.dataManager.currentStories = self.stories; 
         [self.dataManager requestStoriesForCategory:self.activeCategoryId afterId:lastId];
 
 	} else {
