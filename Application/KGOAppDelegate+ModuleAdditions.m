@@ -43,12 +43,6 @@
     return _modules;
 }
 
-- (void)setModules:(NSArray *)modules
-{
-    [_modules release];
-    _modules = [modules retain];
-}
-
 #pragma mark -
 #pragma mark Shared resources
 

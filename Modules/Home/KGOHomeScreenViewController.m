@@ -481,11 +481,10 @@
     
     if ([aResult isKindOfClass:[KGOPlacemark class]]) {
         KGOPlacemark *placemark = (KGOPlacemark *)aResult;
-        NSMutableArray *placemarkArray = [[NSArray alloc] initWithObjects:placemark, nil];
+        NSArray *placemarkArray = [NSArray arrayWithObjects:placemark, nil];
         NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:placemarkArray, @"annotations", nil];
         KGOAppDelegate *appDelegate = KGO_SHARED_APP_DELEGATE();
         [appDelegate showPage:LocalPathPageNameHome forModuleTag:MapTag params:params];
-        [placemarkArray release];
     }
     
     if ([aResult isKindOfClass:[KGOEventWrapper class]]) {

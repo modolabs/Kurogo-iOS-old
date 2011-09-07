@@ -68,7 +68,7 @@
 {
     if ([content isKindOfClass:[KGOEventWrapper class]]) {
         [_event release];
-        _event = [content retain];
+        _event = [(KGOEventWrapper *)content retain];
         _tableView.event = _event;
     }
 }

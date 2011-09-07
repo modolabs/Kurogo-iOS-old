@@ -496,7 +496,7 @@
 }
 
 - (UITextAutocorrectionType) autocorrectionType {
-    return _textField.autocapitalizationType;
+    return _textField.autocorrectionType;
 }
 
 - (void)setAutocorrectionType:(UITextAutocorrectionType)type {
