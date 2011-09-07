@@ -13,6 +13,8 @@
 
 }
 
+- (id)initWithURL:(NSURL *)theURL;
+
 @property (nonatomic, retain) NSURL *URL;
 
 @end
