@@ -61,17 +61,16 @@
 
 - (void)dismissModal
 {
-    if (self.parentViewController.modalViewController == self) {
-        DLog(@"invoking dismiss");
-        [self.parentViewController dismissModalViewControllerAnimated:YES];
-    }
+    DLog(@"invoking dismiss");
+    [self dismissModalViewControllerAnimated:YES];
 }
 
 - (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error
 {
     if ([[KGORequestManager sharedManager] isUserLoggedIn]) {
+
         DLog(@"logged in, we are safe to dismiss");
-        [self dismissModal];
+        [self didLogin:nil];
 
     } else {
         [super webView:webView didFailLoadWithError:error];
