@@ -4,6 +4,7 @@
 #define NEWS_CATEGORY_EXPIRES_TIME 7200.0
 
 @class NewsDataController, NewsCategory, NewsStory;
+@protocol KGOSearchResultsHolder;
 
 @protocol NewsDataDelegate <NSObject>
 
@@ -36,6 +37,7 @@
 @property (nonatomic, retain) NewsCategory *currentCategory;
 @property (nonatomic, retain) NSString *moduleTag;
 @property (nonatomic, assign) id<NewsDataDelegate> delegate;
+@property (nonatomic, assign) id<KGOSearchResultsHolder> searchDelegate;
 
 @property (nonatomic, copy) NSDate *feedListModifiedDate;
 

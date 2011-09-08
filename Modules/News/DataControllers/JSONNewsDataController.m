@@ -113,7 +113,7 @@ NSString * const NewsTagBody            = @"body";
     return category;
 }
 
-- (void)delegate:(id<KGOSearchResultsHolder>)searchDelegate searchStories:(NSString *)searchTerms {
+- (void)searchStories:(NSString *)searchTerms {
     
     // cancel any previous search requests
     for (KGORequest *request in self.searchRequests) {
@@ -146,9 +146,11 @@ NSString * const NewsTagBody            = @"body";
                 NewsStory *story = [blockSelf storyWithDictionary:storyDict]; 
                 story.searchResult = [NSNumber numberWithInt:1];
             }
-            [searchDelegate searcher:self didReceiveResults:stories];
+            if (blockSelf.searchDelegate) {
+                [blockSelf.searchDelegate searcher:blockSelf didReceiveResults:stories];
+            }
             return [stories count];
-        } copy] autorelease];                               
+        } copy] autorelease];
         
         [self.searchRequests addObject:request];
         [request connect];

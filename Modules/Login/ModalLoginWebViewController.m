@@ -33,7 +33,7 @@
     
     if ([[KGORequestManager sharedManager] isUserLoggedIn]) {
         DLog(@"dismissing because user logged in while we were being presented");
-        [self.parentViewController dismissModalViewControllerAnimated:YES];
+        [self dismissModal];
         return;
     }
 

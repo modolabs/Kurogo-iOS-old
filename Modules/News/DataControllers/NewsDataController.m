@@ -8,7 +8,7 @@ static NSString * const FeedListModifiedDateKey = @"feedListModifiedDateArray";
 
 @implementation NewsDataController
 
-@synthesize currentCategory, moduleTag, delegate,
+@synthesize currentCategory, moduleTag, delegate, searchDelegate,
 currentCategories = _currentCategories, currentStories = _currentStories;
 
 - (BOOL)requiresKurogoServer

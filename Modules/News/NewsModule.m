@@ -117,10 +117,12 @@
     return YES;
 }
 
-- (void)performSearchWithText:(NSString *)searchText params:(NSDictionary *)params delegate:(id<KGOSearchResultsHolder>)delegate {
-    
-    self.searchDelegate = delegate;
-    [_dataManager delegate:delegate searchStories:searchText];
+- (void)performSearchWithText:(NSString *)searchText
+                       params:(NSDictionary *)params
+                     delegate:(id<KGOSearchResultsHolder>)delegate
+{
+    _dataManager.searchDelegate = delegate;
+    [_dataManager searchStories:searchText];
 }
 
 - (void)didReceiveSearchResults:(NSArray *)results forSearchTerms:(NSString *)searchTerms {

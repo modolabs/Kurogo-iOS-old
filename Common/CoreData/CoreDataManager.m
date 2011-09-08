@@ -183,7 +183,7 @@ NSString * const CoreDataDidDeleteStoreNotification = @"CoreDataDidDelete";
         
         DLog(@"current thread: %@", [NSThread currentThread]);
         
-        if ([NSThread currentThread] != [NSThread mainThread]) {
+        if (![[NSThread currentThread] isMainThread]) {
             [self performSelectorOnMainThread:@selector(observeSaveForContext:) withObject:localContext waitUntilDone:NO];
         }
     }
