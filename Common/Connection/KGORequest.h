@@ -29,6 +29,8 @@ typedef NSInteger (^JSONObjectHandler)(id);
 - (void)request:(KGORequest *)request didMakeProgress:(CGFloat)progress;
 - (void)requestDidReceiveResponse:(KGORequest *)request;
 
+- (void)requestResponseUnchanged:(KGORequest *)request;
+
 @end
 
 
@@ -62,6 +64,7 @@ typedef enum {
 @property(nonatomic, retain) NSString *path;
 @property(nonatomic, retain) NSDictionary *getParams;
 @property(nonatomic, retain) NSDictionary *postParams;
+@property(nonatomic, retain) NSDate *ifModifiedSince; // If-Modified-Since header
 
 @property(nonatomic, retain) NSString *format; // default is json
 @property(nonatomic) NSURLRequestCachePolicy cachePolicy; // default is NSURLRequestReloadIgnoringLocalAndRemoteCacheData

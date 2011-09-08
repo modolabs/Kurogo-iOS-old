@@ -107,7 +107,7 @@ NSString * const KGODidLogoutNotification = @"LogoutComplete";
 
 - (void)showAlertForError:(NSError *)error request:(KGORequest *)request delegate:(id<UIAlertViewDelegate>)delegate
 {
-    DLog(@"%@", [error userInfo]);
+    DLog(@"%d %@", [error code], [error userInfo]);
     
 	NSString *title = nil;
 	NSString *message = nil;
@@ -468,9 +468,8 @@ NSString * const kHTTPSURIScheme = @"https";
     }
 }
 
-- (void)request:(KGORequest *)request didFailWithError:(NSError *)error {
-    NSLog(@"%@", [error description]);
-    
+- (void)request:(KGORequest *)request didFailWithError:(NSError *)error
+{
     if (request == _deviceRegistrationRequest) {
         NSDictionary *userInfo = [error userInfo];
         // TODO: coordinate with kurogo server on error codes.

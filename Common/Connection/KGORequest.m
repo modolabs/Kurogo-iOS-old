@@ -17,7 +17,8 @@ NSString * const KGORequestErrorDomain = @"com.modolabs.KGORequest.ErrorDomain";
 
 @implementation KGORequest
 
-@synthesize url, module, path, getParams, postParams, format, delegate, cachePolicy, timeout;
+@synthesize url, module, path, getParams, postParams, cachePolicy, ifModifiedSince;
+@synthesize format, delegate, timeout;
 @synthesize expectedResponseType, handler, result = _result;
 
 + (KGORequestErrorCode)internalCodeForNSError:(NSError *)error
@@ -59,7 +60,7 @@ NSString * const KGORequestErrorDomain = @"com.modolabs.KGORequest.ErrorDomain";
 - (id)init {
     self = [super init];
     if (self) {
-		self.cachePolicy = NSURLRequestReloadIgnoringLocalAndRemoteCacheData;
+		self.cachePolicy = NSURLRequestUseProtocolCachePolicy;
 		self.timeout = 30;
 		self.expectedResponseType = [NSDictionary class];
 	}
@@ -88,6 +89,14 @@ NSString * const KGORequestErrorDomain = @"com.modolabs.KGORequest.ErrorDomain";
                          [[UIDevice currentDevice] systemVersion]];
         }
         [request setValue:userAgent forHTTPHeaderField:@"User-Agent"];
+
+        if (self.ifModifiedSince) {
+            NSDateFormatter *formatter = [[[NSDateFormatter alloc] init] autorelease];
+            [formatter setTimeZone:[NSTimeZone timeZoneWithAbbreviation:@"GMT"]];
+            [formatter setDateFormat:@"EEE', 'dd' 'MM' 'yyyy' 'HH':'mm':'ss' GMT'"];
+            NSString *dateString = [formatter stringFromDate:self.ifModifiedSince];
+            [request setValue:dateString forHTTPHeaderField:@"If-Modified-Since"];
+        }
 
         if (![NSURLConnection canHandleRequest:request]) {
             userInfo = [NSDictionary dictionaryWithObjectsAndKeys:[NSString stringWithFormat:@"cannot handle request: %@", [self.url absoluteString]], @"message", nil];
@@ -158,7 +167,17 @@ NSString * const KGORequestErrorDomain = @"com.modolabs.KGORequest.ErrorDomain";
 
 - (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response {
     _contentLength = [response expectedContentLength];
-	// could receive multiple responses (e.g. from redirect), so reset tempData with every request (last request received will deliver payload)
+    if ([response isKindOfClass:[NSHTTPURLResponse class]]) {
+        NSInteger statusCode = [(NSHTTPURLResponse *)response statusCode];
+        // TODO: decide how we want to handle this more generically
+        // currently anyone who doesn't implement the callback will show the user a needless error
+        if (statusCode == 304 && [self.delegate respondsToSelector:@selector(requestResponseUnchanged:)]) {
+            [self.delegate requestResponseUnchanged:self];
+        }
+    }
+    
+	// could receive multiple responses (e.g. from redirect), so reset tempData with every request 
+    // (last request received will deliver payload)
 	// TODO: we may want to do something about redirects
 	[_data setLength:0];
     if ([self.delegate respondsToSelector:@selector(requestDidReceiveResponse:)]) {
@@ -180,7 +199,7 @@ NSString * const KGORequestErrorDomain = @"com.modolabs.KGORequest.ErrorDomain";
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection {
 	[_connection release];
 	_connection = nil;
-    
+
     [KGO_SHARED_APP_DELEGATE() hideNetworkActivityIndicator];
 	
 	if (!self.format || [self.format isEqualToString:@"json"]) {
@@ -239,7 +258,6 @@ NSString * const KGORequestErrorDomain = @"com.modolabs.KGORequest.ErrorDomain";
 	}
     
 	if (self.handler != nil) {
-        NSLog(@"%@", self.delegate);
         _thread = [[NSThread alloc] initWithTarget:self selector:@selector(runHandlerOnResult:) object:self.result];
 		[self performSelector:@selector(setHandler:) onThread:_thread withObject:self.handler waitUntilDone:NO];
 		[_thread start];
@@ -259,6 +277,8 @@ NSString * const KGORequestErrorDomain = @"com.modolabs.KGORequest.ErrorDomain";
 	_connection = nil;
 	[_data release];
 	_data = nil;
+
+    DLog(@"connection failed with error %d: %@", [error code], [error description]);
     
     [KGO_SHARED_APP_DELEGATE() hideNetworkActivityIndicator];
     KGORequestErrorCode errCode = [KGORequest internalCodeForNSError:error];
