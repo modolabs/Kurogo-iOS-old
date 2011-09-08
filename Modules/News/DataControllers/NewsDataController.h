@@ -1,5 +1,8 @@
 #import <Foundation/Foundation.h>
 
+// 2 hours
+#define NEWS_CATEGORY_EXPIRES_TIME 7200.0
+
 @class NewsDataController, NewsCategory, NewsStory;
 
 @protocol NewsDataDelegate <NSObject>
@@ -33,6 +36,8 @@
 @property (nonatomic, retain) NewsCategory *currentCategory;
 @property (nonatomic, retain) NSString *moduleTag;
 @property (nonatomic, assign) id<NewsDataDelegate> delegate;
+
+@property (nonatomic, copy) NSDate *feedListModifiedDate;
 
 // categories
 - (void)readFeedData:(NSDictionary *)feedData;

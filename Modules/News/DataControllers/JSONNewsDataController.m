@@ -8,8 +8,6 @@
 #define REQUEST_CATEGORIES_UNCHANGED 2
 #define LOADMORE_LIMIT 10
 
-// 2 hours
-#define NEWS_CATEGORY_EXPIRES_TIME 7200.0
 
 NSString * const NewsTagItem            = @"item";
 NSString * const NewsTagTitle           = @"title";
@@ -48,37 +46,44 @@ NSString * const NewsTagBody            = @"body";
     
     request.expectedResponseType = [NSArray class];
     
+    NSDate *date = self.feedListModifiedDate;
+    if (date) {
+        request.ifModifiedSince = date;
+    }
+    
     __block NewsDataController *blockSelf = self;
     __block NSArray *oldCategories = self.currentCategories;
     
     request.handler = [[^(id result) {
+
         NSArray *newCategoryDicts = (NSArray *)result;
+
         /*
-        NSArray *oldCategoryIds = [oldCategories mappedArrayUsingBlock:^id(id element) {
-            return [(NewsCategory *)element category_id];
-        }];
-        */
         NSArray *newCategoryIds = [newCategoryDicts mappedArrayUsingBlock:^id(id element) {
             return [(NSDictionary *)element stringForKey:@"id" nilIfEmpty:YES];
         }];
-        /*
-         Always want to mark Categories as changed because the last updated time changes each time this function is called
-        if ([oldCategoryIds isEqualToArray:newCategoryIds]) {
-			// categories do not need to be updated
-			return REQUEST_CATEGORIES_UNCHANGED;
-		} 
          */
+        
+        [[CoreDataManager sharedManager] deleteObjects:oldCategories];
+        blockSelf.currentCategories = nil;
+        
+        [[CoreDataManager sharedManager] saveDataWithTemporaryMergePolicy:NSOverwriteMergePolicy];
+
+        /*
         for (NewsCategory *oldCategory in oldCategories) {
             if (![newCategoryIds containsObject:oldCategory.category_id]) {
                 [[CoreDataManager sharedManager] deleteObject:oldCategory];
             }
         }
-        
+         */
+
         for (NSDictionary *categoryDict in newCategoryDicts) {
             (void)[blockSelf categoryWithDictionary:categoryDict];
         }
         
-        [[CoreDataManager sharedManager] saveData];
+        [[CoreDataManager sharedManager] saveDataWithTemporaryMergePolicy:NSOverwriteMergePolicy];
+
+        blockSelf.feedListModifiedDate = [NSDate date];
         
         return REQUEST_CATEGORIES_CHANGED;
         
@@ -104,7 +109,6 @@ NSString * const NewsTagBody            = @"body";
         category.isMainCategory = [NSNumber numberWithBool:YES];
         category.moreStories = [NSNumber numberWithInt:-1];
         category.nextSeekId = [NSNumber numberWithInt:0];
-        category.lastUpdated = [NSDate dateWithTimeIntervalSince1970:[[categoryDict objectForKey:@"time"] doubleValue]];
     }
     return category;
 }
@@ -543,6 +547,18 @@ NSString * const NewsTagBody            = @"body";
             [self.delegate dataController:self didRetrieveCategories:existingCategories];
         }
     }
+}
+
+- (void)requestResponseUnchanged:(KGORequest *)request
+{
+    [request cancel];
+
+    NSDate *date = [self feedListModifiedDate];
+    if (!date || [date timeIntervalSinceNow] + NEWS_CATEGORY_EXPIRES_TIME < 0) {
+        self.feedListModifiedDate = [NSDate date];
+    }
+    
+    [self fetchCategories];
 }
 
 - (void)requestWillTerminate:(KGORequest *)request {

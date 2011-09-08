@@ -1,9 +1,10 @@
 #import "NewsDataController.h"
 #import "CoreDataManager.h"
 #import "NewsCategory.h"
+#import "Foundation+KGOAdditions.h"
 
-
-static NSTimeInterval kNewsCategoryExpireTime = 7200;
+static NSString * const FeedListModifiedDateKey = @"feedListModifiedDateArray";
+//static NSTimeInterval kNewsCategoryExpireTime = 7200;
 
 @implementation NewsDataController
 
@@ -15,11 +16,32 @@ currentCategories = _currentCategories, currentStories = _currentStories;
     return NO;
 }
 
+- (NSDate *)feedListModifiedDate
+{
+    NSDictionary *modDates = [[NSUserDefaults standardUserDefaults] dictionaryForKey:FeedListModifiedDateKey];
+    NSDate *result = [modDates dateForKey:self.moduleTag];
+    if ([result isKindOfClass:[NSDate class]]) {
+        return result;
+    }
+    return nil;
+}
+
+- (void)setFeedListModifiedDate:(NSDate *)date
+{
+    NSDictionary *modDates = [[NSUserDefaults standardUserDefaults] dictionaryForKey:FeedListModifiedDateKey];
+    NSMutableDictionary *mutableModDates = modDates ? [modDates mutableCopy] : [NSMutableDictionary dictionary];
+    if (self.moduleTag) {
+        [mutableModDates setObject:date forKey:self.moduleTag];
+    } else {
+        NSLog(@"Warning: NewsDataController moduleTag not set, cannot save preferences");
+    }
+    [[NSUserDefaults standardUserDefaults] setObject:mutableModDates forKey:FeedListModifiedDateKey];
+}
+
 #pragma mark categories
 
 - (NSArray *)latestCategories
 {
-    
     if (!_currentCategories) {    
         NSPredicate *predicate = [NSPredicate predicateWithFormat:@"isMainCategory = YES AND moduleTag = %@", self.moduleTag];
         NSSortDescriptor *sort = [[[NSSortDescriptor alloc] initWithKey:@"category_id" ascending:YES] autorelease];
@@ -34,19 +56,13 @@ currentCategories = _currentCategories, currentStories = _currentStories;
     return _currentCategories;
 }
 
-- (void)fetchCategories {
+- (void)fetchCategories
+{
+    NSDate *lastUpdate = [self feedListModifiedDate];
     NSArray *results = [self latestCategories];
-    NSDate *now = [NSDate date]; 
-    if (results) {
-        NewsCategory *category = [results objectAtIndex:0];
-        if ([category.lastUpdated timeIntervalSince1970]+kNewsCategoryExpireTime < [now timeIntervalSince1970]){
-            [self requestCategoriesFromServer];
-        }
-        else if ([self.delegate respondsToSelector:@selector(dataController:didRetrieveCategories:)]) {
-            [self.delegate dataController:self didRetrieveCategories:results];
-        }
-    } 
-    else {
+    if (results.count && lastUpdate && [lastUpdate timeIntervalSinceNow] + NEWS_CATEGORY_EXPIRES_TIME >= 0) {
+        [self.delegate dataController:self didRetrieveCategories:results];
+    } else {
         [self requestCategoriesFromServer];
     }
 }
@@ -115,7 +131,8 @@ currentCategories = _currentCategories, currentStories = _currentStories;
     [[[CoreDataManager sharedManager] managedObjectContext] refreshObject:self.currentCategory mergeChanges:NO];
     
     if (!self.currentCategory.lastUpdated
-        || -[self.currentCategory.lastUpdated timeIntervalSinceNow] > kNewsCategoryExpireTime
+        || -[self.currentCategory.lastUpdated timeIntervalSinceNow] > NEWS_CATEGORY_EXPIRES_TIME
+        // TODO: make sure the following doesn't result an infinite loop if stories legitimately don't exist
         || !self.currentCategory.stories.count)
     {
         DLog(@"last updated: %@", self.currentCategory.lastUpdated);

@@ -150,10 +150,10 @@
 #pragma mark Category selector
 
 - (void)setupNavScrollButtons {
+    BOOL showsSearchButton = YES; // TODO: when would this be false?
     BOOL bookmarksExist = [self.dataManager bookmarkedStories].count > 0;
-    if (self.categories.count > 1 || bookmarksExist) {
-        // TODO: need criteria for showing search button
-        _navScrollView.showsSearchButton = YES;
+    if (self.categories.count > 1 || bookmarksExist || showsSearchButton) {
+        _navScrollView.showsSearchButton = showsSearchButton;
         _navScrollView.showsBookmarkButton = bookmarksExist;
         
         NewsCategory *activeCategory = nil;
