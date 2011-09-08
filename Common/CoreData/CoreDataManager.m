@@ -64,12 +64,20 @@ NSString * const CoreDataDidDeleteStoreNotification = @"CoreDataDidDelete";
 
 - (void)deleteObjects:(NSArray *)objects {
     for (NSManagedObject *object in objects) {
-        [self.managedObjectContext deleteObject:object];
+        [self deleteObject:object];
     }
 }
 
-- (void)deleteObject:(NSManagedObject *)object {
-	[self.managedObjectContext deleteObject:object];
+- (void)deleteObject:(NSManagedObject *)object
+{
+    DLog(@"deleting object %@ in context %@", [object objectID], [object managedObjectContext]);
+    if ([[NSThread currentThread] isMainThread]) {
+        DLog(@"context %@ is deleting an object", self.managedObjectContext);
+        [self.managedObjectContext deleteObject:object];
+    } else {
+        DLog(@"passing object to main thread");
+        [self performSelectorOnMainThread:@selector(deleteObject:) withObject:object waitUntilDone:YES];
+    }
 }
 
 // TODO: consider using initWithEntity:insertIntoManagedObjectContext instead
@@ -128,6 +136,7 @@ NSString * const CoreDataDidDeleteStoreNotification = @"CoreDataDidDelete";
 
 - (void)saveData {
     DLog(@"saving: %@", self.managedObjectContext);
+    DLog(@"deleted %d objects", [[self.managedObjectContext deletedObjects] count]);
 	NSError *error;
 	if (![self.managedObjectContext save:&error]) {
         DLog(@"Failed to save to data store: %@", [error localizedDescription]);
@@ -192,16 +201,16 @@ NSString * const CoreDataDidDeleteStoreNotification = @"CoreDataDidDelete";
 
 - (void)mergeChanges:(NSNotification *)aNotification
 {
-    DLog(@"local context did save %@", aNotification);
+    DLog(@"local context did save %@ %@", [aNotification name], [aNotification object]);
     
-    if ([NSThread currentThread] == [NSThread mainThread]) {
+    if ([[NSThread currentThread] isMainThread]) {
         DLog(@"saving changes on main thread %@, context %@", [NSThread currentThread], self.managedObjectContext);
-        DLog(@"managed object context has persistent store coordinator %@", [self.managedObjectContext persistentStoreCoordinator]);
+        DLog(@"persistent store coordinator %@", [self.managedObjectContext persistentStoreCoordinator]);
         [[self managedObjectContext] mergeChangesFromContextDidSaveNotification:aNotification];
         
     } else {
         DLog(@"saving changes on remote thread %@, context %@", [NSThread currentThread], self.managedObjectContext);
-        DLog(@"managed object context has persistent store coordinator %@", [self.managedObjectContext persistentStoreCoordinator]);
+        DLog(@"persistent store coordinator %@", [self.managedObjectContext persistentStoreCoordinator]);
         [self performSelectorOnMainThread:@selector(mergeChanges:) withObject:aNotification waitUntilDone:YES];
     }
 }
