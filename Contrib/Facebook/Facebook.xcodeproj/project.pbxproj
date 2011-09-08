@@ -264,6 +264,21 @@
 			};
 			name = Release;
 		};
+		EB14B0661419557900B4A716 /* Staging */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = EB0453D013A1A0A1002FD9A6 /* static_library.xcconfig */;
+			buildSettings = {
+			};
+			name = Staging;
+		};
+		EB14B0671419557900B4A716 /* Staging */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_PREFIX_HEADER = "$(SRCROOT)/../facebook-ios-sdk/src/facebook_ios_sdk_Prefix.pch";
+				PRODUCT_NAME = facebook_ios_sdk;
+			};
+			name = Staging;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -272,6 +287,7 @@
 			buildConfigurations = (
 				1DEB921F08733DC00010E9CD /* Debug */,
 				1DEB922008733DC00010E9CD /* Release */,
+				EB14B0671419557900B4A716 /* Staging */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -281,6 +297,7 @@
 			buildConfigurations = (
 				1DEB922308733DC00010E9CD /* Debug */,
 				1DEB922408733DC00010E9CD /* Release */,
+				EB14B0661419557900B4A716 /* Staging */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

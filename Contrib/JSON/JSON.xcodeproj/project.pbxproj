@@ -623,6 +623,31 @@
 			};
 			name = Release;
 		};
+		EB14B0681419559400B4A716 /* Staging */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = EB0453CF13A1A092002FD9A6 /* static_library.xcconfig */;
+			buildSettings = {
+				OTHER_CFLAGS = "-Wparentheses";
+			};
+			name = Staging;
+		};
+		EB14B0691419559400B4A716 /* Staging */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = json;
+			};
+			name = Staging;
+		};
+		EB14B06A1419559400B4A716 /* Staging */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				PRODUCT_NAME = Documentation;
+				ZERO_LINK = NO;
+			};
+			name = Staging;
+		};
 		FE2BBD840D8B0D3900184787 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -645,6 +670,7 @@
 			buildConfigurations = (
 				53D229750C9611FF00276605 /* Debug */,
 				53D229760C9611FF00276605 /* Release */,
+				EB14B0681419559400B4A716 /* Staging */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -654,6 +680,7 @@
 			buildConfigurations = (
 				BCC047170FB651AF00F9F2D3 /* Debug */,
 				BCC047180FB651AF00F9F2D3 /* Release */,
+				EB14B06A1419559400B4A716 /* Staging */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -663,6 +690,7 @@
 			buildConfigurations = (
 				FE2BBD840D8B0D3900184787 /* Debug */,
 				FE2BBD850D8B0D3900184787 /* Release */,
+				EB14B0691419559400B4A716 /* Staging */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

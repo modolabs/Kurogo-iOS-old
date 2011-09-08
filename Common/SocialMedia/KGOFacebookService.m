@@ -71,7 +71,7 @@ NSString * const FacebookUsernameKey = @"FBUsername";
 {
     if (_facebook && (!_facebook.accessToken || !_facebook.expirationDate)) {
         NSDate *validDate = [[NSUserDefaults standardUserDefaults] objectForKey:FacebookTokenExpirationSetting];
-        if ([validDate timeIntervalSinceNow] < 0) {
+        if (!validDate || [validDate timeIntervalSinceNow] < 0) {
             [[NSUserDefaults standardUserDefaults] removeObjectForKey:FacebookTokenKey];
         } else {
             NSArray *storedPermissions = [[NSUserDefaults standardUserDefaults] objectForKey:FacebookTokenPermissions];
@@ -125,7 +125,7 @@ NSString * const FacebookUsernameKey = @"FBUsername";
     
     if (!_facebook) {
         NSLog(@"starting up facebook");
-        _facebook = [[Facebook alloc] initWithAppId:_appID];
+        _facebook = [[Facebook alloc] initWithAppId:_appID andDelegate:self];
         
         [self refreshPermissionList];
         
@@ -181,7 +181,7 @@ NSString * const FacebookUsernameKey = @"FBUsername";
 	} else {
         NSArray *permissions = [_apiSettings objectForKey:@"permissions"];
         DLog(@"asking for permission: %@", [permissions description]);
-		[_facebook authorize:permissions delegate:self];
+		[_facebook authorize:permissions];
 	}
 }
 
