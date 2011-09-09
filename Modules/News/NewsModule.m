@@ -8,9 +8,28 @@
 
 @implementation NewsModule
 
+
+- (id)initWithDictionary:(NSDictionary *)moduleDict {
+    
+    self = [super initWithDictionary:moduleDict];
+    
+    // Need to set DataManager and its NewsDataDelegate temporarily to retrieve
+    // Categories to support Federated Search
+    if (self) {
+        
+        [self willLaunch]; // does nothing except assign dataManager
+        
+        _dataManager.delegate = self; // temporarily to fetch category results
+        [_dataManager requestCategoriesFromServer]; // request categories from server
+
+    }
+    return self;
+}
+
+
 - (void)willLaunch
 {
-    if (!_dataManager) {
+    if ((!_dataManager) || (_payload)){ // if _payload then it could reassign the default dataManager.
         NSString *format = [_payload objectForKey:@"format"];
         if ([format isEqualToString:@"rss"]) {
             _controllerClass = NewsDataControllerClassRSS;
@@ -121,6 +140,8 @@
                        params:(NSDictionary *)params
                      delegate:(id<KGOSearchResultsHolder>)delegate
 {
+    [self willLaunch];
+    
     _dataManager.searchDelegate = delegate;
     [_dataManager searchStories:searchText];
 }
@@ -135,6 +156,13 @@
     _dataManager = nil;
     
     [super dealloc];
+}
+
+#pragma mark NewsDataDelegate (to retrieve Categories)
+
+- (void)dataController:(NewsDataController *)controller didRetrieveCategories:(NSArray *)categories{
+    
+    // Does nothing.
 }
 
 @end

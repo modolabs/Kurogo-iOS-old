@@ -451,7 +451,7 @@
 }
 
 - (NSArray *)searchControllerValidModules:(KGOSearchDisplayController *)controller {
-    NSMutableArray *searchableModules = [NSMutableArray arrayWithCapacity:4];
+    NSMutableArray *searchableModules = [NSMutableArray arrayWithCapacity:5];
     NSArray *modules = [KGO_SHARED_APP_DELEGATE() modules];
     for (KGOModule *aModule in modules) {
         if (aModule.supportsFederatedSearch) {

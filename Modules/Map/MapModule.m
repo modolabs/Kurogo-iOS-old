@@ -57,6 +57,8 @@ NSString * const MapTypePreferenceChanged = @"MapTypeChanged";
                        params:(NSDictionary *)params
                      delegate:(id<KGOSearchResultsHolder>)delegate
 {
+    [self willLaunch];
+    
     self.dataManager.searchDelegate = delegate;
     [self.dataManager search:searchText];
 }
