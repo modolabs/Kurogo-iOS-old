@@ -279,6 +279,44 @@ KGOSign KGOGetIntegerSign(NSInteger x) {
 
 @implementation NSDictionary (JSONParser)
 
+- (NSString *)stringForKey:(NSString *)key {
+    id object = [self objectForKey:key];
+    if ([object isKindOfClass:[NSString class]]) {
+        return (NSString *)object;
+    }
+    return nil;
+}
+
+- (NSString *)nonemptyStringForKey:(NSString *)key {
+    id object = [self objectForKey:key];
+    if ([object isKindOfClass:[NSString class]] && [(NSString *)object length]) {
+        return (NSString *)object;
+    }
+    return nil;
+}
+
+- (NSString *)forcedStringForKey:(NSString *)key {
+    NSString *string = [self stringForKey:key];
+    if (!string) {
+        NSNumber *number = [self numberForKey:key];
+        if (number) {
+            string = [number description];
+        }
+    }
+    return string;
+}
+
+- (NSString *)nonemptyForcedStringForKey:(NSString *)key {
+    NSString *string = [self nonemptyStringForKey:key];
+    if (!string) {
+        NSNumber *number = [self numberForKey:key];
+        if (number) {
+            string = [number description];
+        }
+    }
+    return string;
+}
+
 - (NSString *)stringForKey:(NSString *)key nilIfEmpty:(BOOL)nilIfEmpty {
     id object = [self objectForKey:key];
     if ([object isKindOfClass:[NSString class]]) {
@@ -314,7 +352,7 @@ KGOSign KGOGetIntegerSign(NSInteger x) {
 }
 
 - (NSDate *)dateForKey:(NSString *)key format:(NSString *)format {
-    NSString *string = [self stringForKey:key nilIfEmpty:YES];
+    NSString *string = [self nonemptyStringForKey:key];
     if (string) {
         NSDateFormatter *df = [[[NSDateFormatter alloc] init] autorelease];
         [df setDateFormat:format];

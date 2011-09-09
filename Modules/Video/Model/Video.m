@@ -1,9 +1,6 @@
-// 
-//  Video.m
-//  Universitas
-//
-
 #import "Video.h"
+#import "Foundation+KGOAdditions.h"
+#import "CoreDataManager.h"
 
 #pragma mark Private methods
 
@@ -11,7 +8,7 @@
 
 + (NSDate *)dateFromPublishedDictionary:(NSDictionary *)dictionary;
 + (NSSet *)tagsFromTagsDictionary:(NSDictionary *)dictionary;
-- (void)setUpTranslationDictionary;
+//- (void)setUpTranslationDictionary;
 
 @end
 
@@ -30,7 +27,7 @@
     // TODO.
     return nil;
 }
-
+/*
 - (void)setUpTranslationDictionary {
     self.objectKeyCounterpartsForAPIKeys = 
     [NSDictionary dictionaryWithObjectsAndKeys:
@@ -40,7 +37,7 @@
      @"stillFrameImageURLString", @"stillFrameImage",
      nil];
 }    
-
+*/
 @end
 
 @implementation Video 
@@ -65,10 +62,11 @@
 @dynamic streamingURL;
 @dynamic publishedTimeStamp;
 @dynamic date;
+@dynamic sortOrder;
 @synthesize bookmarked;
 
-@synthesize objectKeyCounterpartsForAPIKeys;
-
+//@synthesize objectKeyCounterpartsForAPIKeys;
+/*
 - (id)initWithEntity:(NSEntityDescription *)entity insertIntoManagedObjectContext:(NSManagedObjectContext *)context {
     self = [super initWithEntity:entity insertIntoManagedObjectContext:context];
     if (self) {
@@ -76,129 +74,53 @@
     }
     return self;
 }
-
+*/
 - (void)dealloc {
-    [objectKeyCounterpartsForAPIKeys release];
+    //[objectKeyCounterpartsForAPIKeys release];
 
     [super dealloc];
 }
 
++ (Video *)videoWithID:(NSString *)identifier
+{
+    Video *video = [[CoreDataManager sharedManager] uniqueObjectForEntity:@"Video"
+                                                                attribute:@"videoID"
+                                                                    value:identifier];
+    if (!video) {
+        video = [[CoreDataManager sharedManager] insertNewObjectForEntityForName:@"Video"];
+        video.videoID = identifier;
+    }
+    return video;
+}
 
-- (void)setUpWithDictionary:(NSDictionary *)dictionaryFromAPI {
-    
-    for (NSString *APIKey in dictionaryFromAPI) {
-        NSString *keyToSet = [self.objectKeyCounterpartsForAPIKeys objectForKey:APIKey];
-        if (!keyToSet) {
-            keyToSet = APIKey;
-        }
-        if ([keyToSet isEqualToString:@"published"]) {
-            self.published = [[self class] dateFromPublishedDictionary:
-                              [dictionaryFromAPI objectForKey:APIKey]];
-        }
-        else if ([keyToSet isEqualToString:@"videoID"]) {
-            id value = [dictionaryFromAPI valueForKey:APIKey];
-            if ([value isKindOfClass:[NSString class]]) {
-                self.videoID = value;
-            }
-            else if ([value isKindOfClass:[NSNumber class]]) {
-                self.videoID = [value stringValue];
-            }
-            else {
-                NSAssert(NO, @"Trying to set videoID to a value with an invalid type.");
-            }
-        }
-        else if ([keyToSet isEqualToString:@"duration"]) {
-            id value = [dictionaryFromAPI valueForKey:APIKey];
-            if ([value isKindOfClass:[NSNumber class]]) {
-                self.duration = value;
-            }
-        }
-        else if ([keyToSet isEqualToString:@"stillFrameImageURLString"]) {
-            id value = [dictionaryFromAPI valueForKey:APIKey];
-            if ([value isKindOfClass:[NSString class]]) {
-                self.stillFrameImageURLString = value;
-            }
-        }
-        else if ([keyToSet isEqualToString:@"title"]) {
-            id value = [dictionaryFromAPI valueForKey:APIKey];
-            if ([value isKindOfClass:[NSString class]]) {
-                self.title = value;
-            }
-        }
-        else if ([keyToSet isEqualToString:@"thumbnailURLString"]) {
-            id value = [dictionaryFromAPI valueForKey:APIKey];
-            if ([value isKindOfClass:[NSString class]]) {
-                self.thumbnailURLString = value;
-            }
-        }
-        else if ([keyToSet isEqualToString:@"tags"]) {
-            self.tags = [[self class] tagsFromTagsDictionary:
-                         [dictionaryFromAPI objectForKey:APIKey]];
-        }
-        else if ([keyToSet isEqualToString:@"videoDescription"]) {
-            id value = [dictionaryFromAPI valueForKey:APIKey];
-            if ([value isKindOfClass:[NSString class]]) {
-                self.videoDescription = value;
-            }
-        }
-        else if ([keyToSet isEqualToString:@"url"]) {
-            id value = [dictionaryFromAPI valueForKey:APIKey];
-            if ([value isKindOfClass:[NSString class]]) {
-                self.url = value;
-            }
-        }/*
-        else if ([keyToSet isEqualToString:@"streamingURL"]) {
-            id value = [dictionaryFromAPI valueForKey:APIKey];
-            if ([value isKindOfClass:[NSString class]]) {
-                self.streamingURL = value;
-            }
-        }*/
-        else if ([keyToSet isEqualToString:@"author"]) {
-            id value = [dictionaryFromAPI valueForKey:APIKey];
-            if ([value isKindOfClass:[NSString class]]) {
-                self.author = value;
-            }
-        }/*
-        else if ([keyToSet isEqualToString:@"height"]) {
-            id value = [dictionaryFromAPI valueForKey:APIKey];
-            if ([value isKindOfClass:[NSNumber class]]) {
-                self.height = value;
-            }
-        }
-        else if ([keyToSet isEqualToString:@"width"]) {
-            id value = [dictionaryFromAPI valueForKey:APIKey];
-            if ([value isKindOfClass:[NSNumber class]]) {
-                self.width = value;
-            }
-        }
-        else if ([keyToSet isEqualToString:@"mobileURL"]) {
-            id value = [dictionaryFromAPI valueForKey:APIKey];
-            if ([value isKindOfClass:[NSString class]]) {
-                self.mobileURL = value;
-            }
-        }
-        else if ([keyToSet isEqualToString:@"publishedTimeStamp"]) {
-            id value = [dictionaryFromAPI valueForKey:APIKey];
-            if ([value isKindOfClass:[NSString class]]) {
-                self.publishedTimeStamp = value;
-            }
-        }
-        else if ([keyToSet isEqualToString:@"date"]) {
-            id value = [dictionaryFromAPI valueForKey:APIKey];
-            if ([value isKindOfClass:[NSString class]]) {
-                self.date = value;
-            }
-        }
-       
-        else {
-            id value = [dictionaryFromAPI valueForKey:APIKey];
-            if ((value) && (![value isKindOfClass:[NSNull class]])) { 
-                [self setValue:[dictionaryFromAPI valueForKey:APIKey] forKey:keyToSet];
-                
-            }
-        }*/
-         
-    }        
++ (Video *)videoWithDictionary:(NSDictionary *)dictionary
+{
+    Video *result = nil;
+    NSString *videoID = [dictionary nonemptyForcedStringForKey:@"id"];
+    if (videoID) {
+        result = [Video videoWithID:videoID];
+        [result updateWithDictionary:dictionary];
+    }
+    return result;
+}
+
+- (void)updateWithDictionary:(NSDictionary *)dictionary
+{
+    self.title = [dictionary stringForKey:@"title"];
+    self.author = [dictionary stringForKey:@"author"];
+    self.stillFrameImageURLString = [dictionary nonemptyStringForKey:@"stillFrameImage"];
+    self.thumbnailURLString = [dictionary nonemptyStringForKey:@"image"];
+    self.duration = [dictionary numberForKey:@"duration"];
+    self.videoDescription = [dictionary nonemptyStringForKey:@"description"];
+    self.url = [dictionary nonemptyStringForKey:@"url"];
+    NSDictionary *dateDict = [dictionary dictionaryForKey:@"published"];
+    if (dateDict) {
+        self.published = [Video dateFromPublishedDictionary:dateDict];
+    }
+    NSDictionary *tagsDict = [dictionary dictionaryForKey:@"tags"];
+    if (tagsDict) {
+        self.tags = [Video tagsFromTagsDictionary:tagsDict];
+    }
 }
 
 - (NSString *)durationString {

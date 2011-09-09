@@ -9,6 +9,7 @@
 #import "VideoDetailViewController.h"
 #import "VideoWebViewController.h"
 #import "UIKit+KGOAdditions.h"
+#import "KGOLabel.h"
 
 typedef enum {
     kVideoDetailScrollViewTag = 0x1890,
@@ -54,8 +55,12 @@ static const CGFloat extraScrollViewHeight = 100.0f;
 }
 
 #pragma mark Subview setup
+// TODO: this function is only used once with parentView being self.scrollView
+// don't code this to look like it's causing side effects somewhere else.
 - (void)makeAndAddVideoImageViewToView:(UIView *)parentView
 {
+    // TODO: we should be able to use MITThumbnailView to do this.
+    // no need to use a synchronous request.
     UIImage *image = [UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:self.video.stillFrameImageURLString]]];
     UIImageView *imageView = [[UIImageView alloc] initWithImage:image];
     imageView.tag = kVideoDetailImageViewTag;
@@ -105,18 +110,13 @@ static const CGFloat extraScrollViewHeight = 100.0f;
 @synthesize scrollView;
 @synthesize headerView = _headerView;
 
-UILabel *titleLabel;
-
-// The designated initializer.  Override if you create the controller programmatically and want to perform customization that is not appropriate for viewDidLoad.
-- (id)initWithVideo:(Video *)aVideo andSection:(NSString *)videoSection{
-    
+- (id)initWithVideo:(Video *)aVideo andSection:(NSString *)videoSection
+{
     self.dataManager = [[[VideoDataManager alloc] init] autorelease];
     self = [super initWithNibName:nil bundle:nil];
     if (self) {
-        // Custom initialization.
         self.video = aVideo;
         self.section = videoSection;
-        
     }
     return self;
 }
@@ -127,22 +127,22 @@ UILabel *titleLabel;
     _shareController = [[KGOShareButtonController alloc] initWithContentsController:self];
     _shareController.shareTypes = KGOShareControllerShareTypeEmail | KGOShareControllerShareTypeFacebook | KGOShareControllerShareTypeTwitter;
     
-    if(self.section){
+    if (self.section) {
         [self requestVideoForDetailView];
     }
     
-    NSAutoreleasePool *loadViewPool = [[NSAutoreleasePool alloc] init];
-    
-    scrollView = [[UIScrollView alloc] initWithFrame:self.view.frame];
-    
-    titleLabel = 
-    [[UILabel alloc] initWithFrame:
-     CGRectMake(kVideoDetailMargin, 0, self.view.frame.size.width - 2 * kVideoDetailMargin, kVideoTitleLabelHeight)];
+    self.scrollView = [[[UIScrollView alloc] initWithFrame:self.view.bounds] autorelease];
+
+    CGFloat width = self.view.bounds.size.width - 2 * kVideoDetailMargin;
+    // TODO: don't hard code fonts
+    UILabel *titleLabel = [KGOLabel multilineLabelWithText:self.video.title
+                                             font:[UIFont fontWithName:@"Georgia" size:22]
+                                            width:width];
+    titleLabel.frame = CGRectMake(kVideoDetailMargin,
+                                  kVideoDetailMargin,
+                                  titleLabel.frame.size.width,
+                                  kVideoTitleLabelHeight); // we're fixing the height despite setting numberOfLines to 0?
     titleLabel.tag = kVideoDetailTitleLabelTag;
-    titleLabel.numberOfLines = 0;
-    titleLabel.font = [UIFont fontWithName:@"Georgia" size:22.0f];
-    titleLabel.text = self.video.title;
-    titleLabel.backgroundColor = [UIColor clearColor];
     [scrollView addSubview:titleLabel];
     
     //add sharing and bookmark buttons
@@ -155,57 +155,49 @@ UILabel *titleLabel;
     
     //Federated search doesn't have a reference to the videos section.
     //Therfore we cannot requestVideoForDeatilView
-    if(!self.section){
+    if (!self.section) {
         [self setDescription];
     }
     
-    [titleLabel release];
-    [loadViewPool release];
+    [self.view addSubview:scrollView];
 }
 
-- (void)requestVideoForDetailView{
-        [self.dataManager requestVideoForDetailSection:self.section andVideoID:(NSString *)self.video.videoID 
-                                      thenRunBlock:^(id result) { 
-                                          if ([result isKindOfClass:[NSArray class]]) {                                              
-                                              NSArray *videoArray = result; 
-                                              Video *temp = [videoArray objectAtIndex:0];
-                                              self.video.videoDescription = temp.videoDescription; 
-                                              [self setDescription];
-                                          }
+- (void)requestVideoForDetailView {
+    __block VideoDetailViewController *blockSelf = self;
+    [self.dataManager requestVideoForDetailSection:self.section
+                                        andVideoID:(NSString *)self.video.videoID 
+                                      thenRunBlock:^(id result) {
+                                          //blockSelf.video.videoDescription = [(Video *)result videoDescription];
+                                          [blockSelf setDescription];
                                       }];
 }
 
-- (void) setDescription{
-    CGSize descriptionSize = [video.videoDescription sizeWithFont:[UIFont systemFontOfSize:15.0f] constrainedToSize:CGSizeMake(300.0f, FLT_MAX) lineBreakMode:UILineBreakModeWordWrap];
-    
+- (void)setDescription
+{
     UIView *videoImageView = [scrollView viewWithTag:kVideoDetailImageViewTag];
-    UILabel *descriptionLabel = 
-    [[UILabel alloc] initWithFrame:
-     CGRectMake(kVideoDetailMargin, 
-                kVideoDetailMargin * 3 + kVideoTitleLabelHeight 
-             + videoImageView.frame.size.height + bookmarkSharingView.frame.size.height,
-                self.view.frame.size.width - 2 * kVideoDetailMargin, 
-                descriptionSize.height)];
+    CGFloat width = self.view.bounds.size.width - 2 * kVideoDetailMargin;
+    CGFloat y = kVideoDetailMargin * 3 + kVideoTitleLabelHeight + videoImageView.frame.size.height + bookmarkSharingView.frame.size.height;
+    // TODO: don't hard code fonts
+    UILabel *descriptionLabel = [KGOLabel multilineLabelWithText:video.videoDescription
+                                                            font:[UIFont systemFontOfSize:15]
+                                                           width:width];
+    descriptionLabel.frame = CGRectMake(kVideoDetailMargin, y, width, descriptionLabel.frame.size.height);
     descriptionLabel.tag = kVideoDetailDescriptionTag;
-    descriptionLabel.numberOfLines = 0;
-    descriptionLabel.text = video.videoDescription;
-    descriptionLabel.font = [UIFont systemFontOfSize:15.0f];
     descriptionLabel.backgroundColor = [UIColor clearColor];
     [scrollView addSubview:descriptionLabel];
     
-    scrollView.contentSize = CGSizeMake(self.view.frame.size.width, (titleLabel.frame.size.height + videoImageView.frame.size.height + descriptionSize.height + bookmarkSharingView.frame.size.height + extraScrollViewHeight));
+    scrollView.contentSize = CGSizeMake(self.view.frame.size.width, y + descriptionLabel.frame.size.height);
     scrollView.tag = kVideoDetailScrollViewTag;
     scrollView.scrollEnabled = YES;
-    [self.view addSubview:scrollView];
-    
-    [descriptionLabel release];
-    [scrollView release];
 }
 
 - (UIView *)viewForTableHeader
 {
     if (!self.headerView) {
-        self.headerView = [[[VideoDetailHeaderView alloc] initWithFrame:CGRectMake(0, kVideoTitleLabelHeight-10, self.view.bounds.size.width, 30)] autorelease];
+        self.headerView = [[[VideoDetailHeaderView alloc] initWithFrame:CGRectMake(0,
+                                                                                   kVideoTitleLabelHeight-10,
+                                                                                   self.view.bounds.size.width,
+                                                                                   30)] autorelease];
         self.headerView.video = self.video; 
         self.headerView.delegate = self;
         self.headerView.showsBookmarkButton = YES;
@@ -218,7 +210,7 @@ UILabel *titleLabel;
 
 - (void)headerView:(VideoDetailHeaderView *)headerView shareButtonPressed:(id)sender
 {
-    _shareController.actionSheetTitle = @"Share this event";
+    _shareController.actionSheetTitle = NSLocalizedString(@"Share Video", nil);
     _shareController.shareTitle = video.title;
     //_shareController.shareBody = video.videoDescription;
     _shareController.shareURL = video.url;
@@ -230,11 +222,11 @@ UILabel *titleLabel;
 
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad {  
-    self.navigationItem.title = @"View Video"; 
-    
     [super viewDidLoad];
-    [self.player play];
+
+    self.navigationItem.title = NSLocalizedString(@"View Video", nil);
     
+    [self.player play];
 }
 
 /*
@@ -263,6 +255,7 @@ UILabel *titleLabel;
     [dataManager release];
     [player release];
     [video release];
+    self.scrollView = nil;
     [super dealloc];
 }
 

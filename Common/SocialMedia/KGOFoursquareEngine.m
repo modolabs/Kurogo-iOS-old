@@ -59,7 +59,6 @@ static NSString * const FoursquareBaseURL = @"https://api.foursquare.com/v2";
                                                                         format:NSPropertyListBinaryFormat_v1_0
                                                                        options:0
                                                                          error:&error]];
-        [self.postParams release];
         self.postParams = nil;
 
          if (error) {

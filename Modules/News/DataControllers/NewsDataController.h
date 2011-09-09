@@ -25,14 +25,14 @@
 @interface NewsDataController : NSObject {
     
     NSMutableSet *_searchRequests;
-    NSArray *_currentStories; // stories displayed in the view
+    NSMutableArray *_currentStories; // stories displayed in the view
     NSArray *_currentCategories;
 }
 
 - (BOOL)requiresKurogoServer;
 
 @property (nonatomic, retain) NSArray *currentCategories;
-@property (nonatomic, retain) NSArray *currentStories;
+@property (nonatomic, retain) NSMutableArray *currentStories;
 
 @property (nonatomic, retain) NewsCategory *currentCategory;
 @property (nonatomic, retain) NSString *moduleTag;

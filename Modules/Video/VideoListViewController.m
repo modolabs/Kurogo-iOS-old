@@ -29,6 +29,9 @@ static const NSInteger kVideoListCellThumbnailTag = 0x78;
 
 @implementation VideoListViewController (Private)
 
+// TODO: this entire category could be done by subclassing the table view cells and removing
+// unnecessary logic from this class (see MITThumbmailView delegation below)
+
 + (NSString *)detailTextForVideo:(Video *)video {
     return [NSString stringWithFormat:@"(%@) %@", [video durationString], video.videoDescription];
 }
@@ -54,11 +57,12 @@ static const NSInteger kVideoListCellThumbnailTag = 0x78;
 - (void)requestVideosForActiveSection { 
     if (self.videoSections.count > self.activeSectionIndex) {
         NSString *section = [[self.videoSections objectAtIndex:self.activeSectionIndex] objectForKey:@"value"];
+        __block VideoListViewController *blockSelf = self;
         [self.dataManager requestVideosForSection:section
                                      thenRunBlock:^(id result) { 
              if ([result isKindOfClass:[NSArray class]]) {
-                 self.videos = result;
-                 [self.tableView reloadData];
+                 blockSelf.videos = result;
+                 [blockSelf.tableView reloadData];
              }
          }];
     }
@@ -170,16 +174,15 @@ static const NSInteger kVideoListCellThumbnailTag = 0x78;
     [super viewDidLoad];
     self.tableView.rowHeight = 90.0f;
     
+    __block VideoListViewController *blockSelf = self;
     [self.dataManager requestSectionsThenRunBlock:^(id result) {
-         if ([result isKindOfClass:[NSArray class]]) {
-             self.videoSections = result;
-             for (NSDictionary *sectionInfo in videoSections) {
-                 [self.navScrollView addButtonWithTitle:[sectionInfo objectForKey:@"title"]];
-             }
-             [self.navScrollView selectButtonAtIndex:self.activeSectionIndex];
-             [self.navScrollView setNeedsLayout];
-             [self requestVideosForActiveSection];
-         }
+        blockSelf.videoSections = (NSArray *)result;
+        for (NSDictionary *sectionInfo in blockSelf.videoSections) {
+            [blockSelf.navScrollView addButtonWithTitle:[sectionInfo objectForKey:@"title"]];
+        }
+        [blockSelf.navScrollView selectButtonAtIndex:blockSelf.activeSectionIndex];
+        [blockSelf.navScrollView setNeedsLayout];
+        [blockSelf requestVideosForActiveSection];
      }];
     self.navigationItem.title = @"Video"; 
 }
@@ -274,6 +277,7 @@ static const NSInteger kVideoListCellThumbnailTag = 0x78;
     if (self.videos.count > indexPath.row) {
         NSString *section = [[self.videoSections objectAtIndex:self.activeSectionIndex] objectForKey:@"value"];
         Video *video = [self.videos objectAtIndex:indexPath.row];
+        // FIXME: call appDelegate showPage here, don't assume a nav controller exists
         VideoDetailViewController *detailViewController = 
         [[VideoDetailViewController alloc] initWithVideo:video andSection:section];
         [self.navigationController pushViewController:detailViewController 

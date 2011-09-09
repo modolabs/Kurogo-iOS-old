@@ -48,7 +48,7 @@
 	
     // TODO: configure these strings
     self.navigationItem.title = @"News";
-    self.navigationItem.backBarButtonItem = [[[UIBarButtonItem alloc] initWithTitle:@"Headlines"
+    self.navigationItem.backBarButtonItem = [[[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Headlines", nil)
                                                                               style:UIBarButtonItemStylePlain
                                                                              target:nil
                                                                              action:nil] autorelease];
@@ -363,7 +363,8 @@
 	if (indexPath.row == self.stories.count) {
         NewsStory *story = [self.stories lastObject];
         NSString *lastId = story.identifier;
-        self.dataManager.currentStories = self.stories; 
+        // TODO: doesn't seem right that we need to se this on the datamanager
+        self.dataManager.currentStories = [[self.stories mutableCopy] autorelease];
         [self.dataManager requestStoriesForCategory:self.activeCategoryId afterId:lastId];
 
 	} else {

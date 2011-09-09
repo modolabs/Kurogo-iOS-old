@@ -1,6 +1,6 @@
 #import <Foundation/Foundation.h>
 #import "KGORequestManager.h"
-#import "Reachability.h"
+//#import "Reachability.h"
 #import "Video.h"
 
 typedef void (^VideoDataRequestResponse)(id result);
@@ -34,8 +34,7 @@ typedef void (^VideoDataRequestResponse)(id result);
 @property (nonatomic, retain) NSArray *sections;
 @property (nonatomic, retain) NSMutableArray *videos;
 @property (nonatomic, retain) NSMutableArray *videosFromCurrentSearch;
-@property (nonatomic, retain) NSMutableArray *detailVideo;
-@property (nonatomic, retain) Reachability *reachability;
+@property (nonatomic, retain) Video *detailVideo;
 
 
 

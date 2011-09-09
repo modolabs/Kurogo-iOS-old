@@ -40,7 +40,7 @@
     if (!nextButton) {
         UIImage *dropShadowImage = [[KGOTheme sharedTheme] backgroundImageForSearchBarDropShadow];
         if (dropShadowImage) {
-            UIImageView *dropShadow = [[UIImageView alloc] initWithImage:dropShadowImage];
+            UIImageView *dropShadow = [[[UIImageView alloc] initWithImage:dropShadowImage] autorelease];
             dropShadow.frame = CGRectMake(0, self.frame.size.height, dropShadow.frame.size.width, dropShadow.frame.size.height);
             [self addSubview:dropShadow];
             self.clipsToBounds = NO;

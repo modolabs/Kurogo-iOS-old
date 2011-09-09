@@ -29,9 +29,9 @@ NSString * const KGODataModelNameVideo = @"Video";
               autorelease];        
     } 
     else if ([pageName isEqualToString:LocalPathPageNameSearch]) {        
-        // TODO.
+        // FIXME
     } else if ([pageName isEqualToString:LocalPathPageNameDetail]) {
-        // TODO.
+        // FIXME
     }
     return vc;
 }
@@ -61,16 +61,16 @@ NSString * const KGODataModelNameVideo = @"Video";
     }
     
     // TODO: Get section
-    [self.dataManager 
-     requestSearchOfSection:self.searchSection 
-     query:searchText
-     thenRunBlock:
-     ^(id result) { 
-         if ([result isKindOfClass:[NSArray class]])
-         {
-             [self.searchDelegate searcher:self didReceiveResults:result];
-         }
-     }];
+    __block VideoModule *blockSelf = self;
+    [self.dataManager requestSearchOfSection:self.searchSection 
+                                       query:searchText
+                                thenRunBlock:^(id result) {
+                                    if ([result isKindOfClass:[NSArray class]])
+                                    {
+                                        [blockSelf.searchDelegate searcher:blockSelf
+                                                         didReceiveResults:result];
+                                    }
+                                }];
 }
 
 - (void)dealloc {

@@ -29,7 +29,7 @@ currentCategories = _currentCategories, currentStories = _currentStories;
 - (void)setFeedListModifiedDate:(NSDate *)date
 {
     NSDictionary *modDates = [[NSUserDefaults standardUserDefaults] dictionaryForKey:FeedListModifiedDateKey];
-    NSMutableDictionary *mutableModDates = modDates ? [modDates mutableCopy] : [NSMutableDictionary dictionary];
+    NSMutableDictionary *mutableModDates = modDates ? [[modDates mutableCopy] autorelease] : [NSMutableDictionary dictionary];
     if (self.moduleTag) {
         [mutableModDates setObject:date forKey:self.moduleTag];
     } else {

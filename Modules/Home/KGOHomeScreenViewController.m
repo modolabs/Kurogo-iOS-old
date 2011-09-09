@@ -466,7 +466,7 @@
 }
 
 - (void)resultsHolder:(id<KGOSearchResultsHolder>)searcher didSelectResult:(id<KGOSearchResult>)aResult {
-    // TODO: come up with a better way to figure out which module the search result belongs to
+    // FIXME: come up with a better way to figure out which module the search result belongs to
     BOOL didShow = NO;
     if ([aResult isKindOfClass:[KGOPersonWrapper class]]) {
         NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:aResult, @"person", nil];

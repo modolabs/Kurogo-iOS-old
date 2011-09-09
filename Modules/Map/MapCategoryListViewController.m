@@ -286,7 +286,7 @@ headerView = _headerView;
             [KGO_SHARED_APP_DELEGATE() showPage:LocalPathPageNameCategoryList forModuleTag:[category moduleTag] params:params];
         }
     } else if ([object conformsToProtocol:@protocol(KGOSearchResult)]) {
-        id<KGOSearchResult> leafItem = (id<KGOSearchResult>)leafItem;
+        id<KGOSearchResult> leafItem = (id<KGOSearchResult>)object;
         if ([leafItem respondsToSelector:@selector(moduleTag)]) {
             NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:leafItem, @"detailItem", nil];
             [KGO_SHARED_APP_DELEGATE() showPage:LocalPathPageNameDetail forModuleTag:[leafItem moduleTag] params:params];

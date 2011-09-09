@@ -333,8 +333,7 @@ NSString * const RSSTagItemBody       = @"content:encoded";
     
 	if ([elementName isEqualToString:RSSTagItem]) {
         NewsStory *story = [self storyWithDictionary:_currentItemData];
-        NSArray *stories = [self.currentStories arrayByAddingObject:story];
-        self.currentStories = [stories retain];
+        [self.currentStories addObject:story];
         [_currentItemData release];
         _currentItemData = nil;
         

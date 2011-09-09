@@ -30,13 +30,21 @@
 @property (nonatomic, retain) NSData * publishedTimeStamp;
 @property (nonatomic, retain) NSString * date;
 @property (nonatomic, retain) NSNumber *bookmarked;
+@property (nonatomic, retain) NSNumber * sortOrder;
 // source can be "search" or the name of a section.
 @property (nonatomic, retain) NSString * source;
 
-- (void)setUpWithDictionary:(NSDictionary *)dictionaryFromAPI;
++ (Video *)videoWithID:(NSString *)identifier;
++ (Video *)videoWithDictionary:(NSDictionary *)dictionary;
+- (void)updateWithDictionary:(NSDictionary *)dictionary;
+
 - (NSString *)durationString;
 
-@property (nonatomic, retain) NSDictionary *objectKeyCounterpartsForAPIKeys;
+- (BOOL)isBookmarked;
+- (void)addBookmark;
+- (void)removeBookmark;
+
+//@property (nonatomic, retain) NSDictionary *objectKeyCounterpartsForAPIKeys;
 
 @end
 
@@ -46,9 +54,6 @@
 - (void)removeTagsObject:(NSManagedObject *)value;
 - (void)addTags:(NSSet *)value;
 - (void)removeTags:(NSSet *)value;
-- (BOOL)isBookmarked;
-- (void)addBookmark;
-- (void)removeBookmark;
 
 @end
 
