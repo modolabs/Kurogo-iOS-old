@@ -14,5 +14,7 @@
     IconGrid *secondGrid;
 }
 
+- (void) adjustScrollView;
+
 @end
 
