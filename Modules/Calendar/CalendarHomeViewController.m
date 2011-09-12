@@ -35,7 +35,7 @@ bool isOverOneHour(NSTimeInterval interval) {
 
 @synthesize searchTerms, dataManager, moduleTag, showsGroups, currentCalendar = _currentCalendar;
 @synthesize theSearchBar;
-@synthesize searchController;
+//@synthesize searchController;
 
 /*
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -54,7 +54,7 @@ bool isOverOneHour(NSTimeInterval interval) {
     [self clearCalendars];
     [self clearEvents];
     [super dealloc];
-    [searchController release];
+    //[searchController release];
     [theSearchBar release];
 }
 
@@ -377,45 +377,18 @@ bool isOverOneHour(NSTimeInterval interval) {
     }
 }
 
-#pragma mark Search UI
-- (void)showSearchBar {
-	if (!self.theSearchBar) {
-        CGRect frame = CGRectMake(0, 0, self.view.bounds.size.width, 44);
-		self.theSearchBar = [[[KGOSearchBar alloc] initWithFrame:frame] autorelease];
-        self.theSearchBar.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-		self.theSearchBar.alpha = 0.0;
-        
-        if (!self.searchController) {
-            self.searchController = [[[KGOSearchDisplayController alloc] initWithSearchBar:self.theSearchBar
-                                                                                  delegate:self
-                                                                        contentsController:self] autorelease];
-        }
-		[self.view addSubview:self.theSearchBar];
-	}
-	[self.view bringSubviewToFront:self.theSearchBar];
-	[UIView beginAnimations:nil context:NULL];
-	[UIView setAnimationDuration:0.4];
-	self.theSearchBar.alpha = 1.0;
-	[UIView commitAnimations];
-    [self.searchController setActive:YES animated:YES];
+- (BOOL)tabstripShouldShowSearchDisplayController:(KGOScrollingTabstrip *)tabstrip
+{
+    return YES;
 }
 
-- (void)hideSearchBar {
-	if (self.theSearchBar) {
-		[UIView beginAnimations:nil context:NULL];
-		[UIView setAnimationDuration:0.4];
-        [UIView setAnimationDelegate:self];
-        //[UIView setAnimationDidStopSelector:@selector(releaseSearchBar)];
-		self.theSearchBar.alpha = 0.0;
-		[UIView commitAnimations];
-	}
-}
-
-- (void)tabstripSearchButtonPressed:(KGOScrollingTabstrip *)tabstrip {
-    [self showSearchBar];
+- (UIViewController *)viewControllerForTabstrip:(KGOScrollingTabstrip *)tabstrip
+{
+    return self;
 }
 
 #pragma mark KGOSearchDisplayDelegate
+
 - (BOOL)searchControllerShouldShowSuggestions:(KGOSearchDisplayController *)controller {
     return NO;
 }
@@ -442,7 +415,7 @@ bool isOverOneHour(NSTimeInterval interval) {
 
 
 - (void)searchController:(KGOSearchDisplayController *)controller willHideSearchResultsTableView:(UITableView *)tableView {
-    [self hideSearchBar];
+    [_tabstrip hideSearchBar];
     [_tabstrip selectButtonAtIndex:_currentGroupIndex];
 }
 

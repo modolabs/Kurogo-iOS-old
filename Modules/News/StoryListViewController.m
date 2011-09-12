@@ -184,11 +184,11 @@
         _storyTable.frame = CGRectMake(0, 0, self.view.bounds.size.width, self.view.bounds.size.height - dh);
     }
 }
-
+/*
 - (void)tabstripSearchButtonPressed:(KGOScrollingTabstrip *)tabstrip {
     [self showSearchBar];
 }
-
+*/
 - (void)tabstripBookmarkButtonPressed:(KGOScrollingTabstrip *)tabstrip {
     self.activeCategoryId = nil; 
     [self switchToBookmarks];
@@ -225,50 +225,6 @@
     if (!showingBookmarks) {
         [self.dataManager requestStoriesForCategory:self.activeCategoryId afterId:nil];
     }
-}
-
-- (void)alertView:(UIAlertView *)alertView willDismissWithButtonIndex:(NSInteger)buttonIndex {
-    [searchController focusSearchBarAnimated:YES];
-}
-
-#pragma mark -
-#pragma mark Search UI
-
-- (void)showSearchBar {
-	if (!theSearchBar) {
-		theSearchBar = [[KGOSearchBar alloc] initWithFrame:CGRectMake(0.0, 0.0, self.view.bounds.size.width, 44.0)];
-        theSearchBar.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-		theSearchBar.alpha = 0.0;
-        if (!searchController) {
-            searchController = [[KGOSearchDisplayController alloc] initWithSearchBar:theSearchBar
-                                                                            delegate:self
-                                                                  contentsController:self];
-            
-            if ([KGO_SHARED_APP_DELEGATE() navigationStyle] == KGONavigationStyleTabletSidebar) {
-                searchController.showsSearchOverlay = NO;
-            }
-        }
-		[self.view addSubview:theSearchBar];
-	}
-	[self.view bringSubviewToFront:theSearchBar];
-    [UIView animateWithDuration:0.4 animations:^(void) {
-        theSearchBar.alpha = 1.0;
-    }];
-    [searchController setActive:YES animated:YES];
-}
-
-- (void)hideSearchBar {
-	if (theSearchBar) {
-        [UIView animateWithDuration:0.4 animations:^(void) {
-            theSearchBar.alpha = 0;
-        } completion:^(BOOL finished) {
-            [theSearchBar removeFromSuperview];
-            [theSearchBar release];
-            theSearchBar = nil;
-            [searchController release];
-            searchController = nil;
-        }];
-	}
 }
 
 #pragma mark -
@@ -379,6 +335,16 @@
 
 #pragma mark - KGOSearchDisplayDelegate
 
+- (BOOL)tabstripShouldShowSearchDisplayController:(KGOScrollingTabstrip *)tabstrip
+{
+    return YES;
+}
+
+- (UIViewController *)viewControllerForTabstrip:(KGOScrollingTabstrip *)tabstrip
+{
+    return self;
+}
+
 - (BOOL)searchControllerShouldShowSuggestions:(KGOSearchDisplayController *)controller {
     return NO;
 }
@@ -402,7 +368,7 @@
 }
       
 - (void)searchController:(KGOSearchDisplayController *)controller willHideSearchResultsTableView:(UITableView *)tableView {
-    [self hideSearchBar];
+    [_navScrollView hideSearchBar];
 }
 
 @end

@@ -1,6 +1,7 @@
 #import <UIKit/UIKit.h>
 
 @class KGOScrollingTabstrip;
+@protocol KGOSearchDisplayDelegate;
 
 @protocol KGOScrollingTabstripDelegate <NSObject>
 
@@ -12,6 +13,17 @@
 - (void)tabstripBookmarkButtonPressed:(KGOScrollingTabstrip *)tabstrip;
 
 @end
+
+// a stricter version of KGOScrollingTabstripDelegate
+// which allows the tabstrip to do the search animation
+@protocol KGOScrollingTabstripSearchDelegate <KGOScrollingTabstripDelegate, KGOSearchDisplayDelegate>
+
+- (BOOL)tabstripShouldShowSearchDisplayController:(KGOScrollingTabstrip *)tabstrip;
+- (UIViewController *)viewControllerForTabstrip:(KGOScrollingTabstrip *)tabstrip;
+
+@end
+
+@class KGOSearchBar, KGOSearchDisplayController;
 
 
 @interface KGOScrollingTabstrip : UIView <UIScrollViewDelegate>
@@ -44,6 +56,11 @@
 - (NSString *)buttonTitleAtIndex:(NSUInteger)index;
 
 @property (nonatomic, assign) id<KGOScrollingTabstripDelegate> delegate;
+@property (nonatomic, retain) KGOSearchBar *searchBar;
+@property (nonatomic, retain) KGOSearchDisplayController *searchController;
+
+- (void)showSearchBar;
+- (void)hideSearchBar;
 
 @end
 

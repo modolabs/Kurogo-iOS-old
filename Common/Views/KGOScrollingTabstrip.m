@@ -1,5 +1,8 @@
 #import "KGOScrollingTabstrip.h"
+#import "KGOSearchBar.h"
+#import "KGOSearchDisplayController.h"
 #import "KGOTheme.h"
+#import "KGOAppDelegate+ModuleAdditions.h"
 #import "UIKit+KGOAdditions.h"
 
 #define SCROLL_TAB_HORIZONTAL_MARGIN 5.0
@@ -8,6 +11,7 @@
 
 @interface KGOScrollingTabstrip (Private)
 
+- (void)showHideScrollButtons;
 - (void)sideButtonPressed:(id)sender;
 - (void)buttonPressed:(id)sender;
 
@@ -16,7 +20,7 @@
 
 @implementation KGOScrollingTabstrip
 
-@synthesize delegate;
+@synthesize delegate, searchBar, searchController;
 
 - (id)initWithFrame:(CGRect)frame delegate:(id<KGOScrollingTabstripDelegate>)delegate buttonTitles:(NSString *)title, ... {
     self = [super initWithFrame:frame];
@@ -213,8 +217,9 @@
             _leftScrollButton.hidden = YES;
             [_leftScrollButton setImage:leftScrollImage forState:UIControlStateNormal];
             [_leftScrollButton addTarget:self action:@selector(sideButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
+            
+            [self addSubview:_leftScrollButton];
         }
-        [self addSubview:_leftScrollButton];
         
         if (!_rightScrollButton) {
             UIImage *rightScrollImage = [UIImage imageWithPathName:@"common/scrolltabs-rightarrow.png"];
@@ -229,8 +234,12 @@
             _rightScrollButton.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin;
             [_rightScrollButton setImage:rightScrollImage forState:UIControlStateNormal];
             [_rightScrollButton addTarget:self action:@selector(sideButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
+            
+            [self addSubview:_rightScrollButton];
         }
-        [self addSubview:_rightScrollButton];
+        
+        // only do this if we start the scroller in a different position
+        //[self showHideScrollButtons];
     }
 }
 
@@ -242,39 +251,91 @@
 - (void)buttonPressed:(id)sender {
     UIButton *pressedButton = (UIButton *)sender;
     
-    if (pressedButton != _pressedButton) {
-        
-        if (_pressedButton.adjustsImageWhenHighlighted) {
-            [_pressedButton setTitleColor:[UIColor colorWithHexString:@"#E0E0E0"] forState:UIControlStateNormal];
-            [_pressedButton setBackgroundImage:nil forState:UIControlStateNormal];
-        }
-
-        if (pressedButton.adjustsImageWhenHighlighted) {
-            UIImage *buttonImage = [UIImage imageWithPathName:@"common/scrolltabs-selected.png"];
-            UIImage *stretchableButtonImage = [buttonImage stretchableImageWithLeftCapWidth:15 topCapHeight:0];
-            
-            [pressedButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-            [pressedButton setBackgroundImage:stretchableButtonImage forState:UIControlStateNormal];
-        }
-
-        _pressedButton = pressedButton;
-    }
-
-    if (_pressedButton == _searchButton) {
+    if (pressedButton == _searchButton) {
         if ([self.delegate respondsToSelector:@selector(tabstripSearchButtonPressed:)]) {
             [self.delegate tabstripSearchButtonPressed:self];
-        }
-        
-    } else if (_pressedButton == _bookmarkButton) {
-        if ([self.delegate respondsToSelector:@selector(tabstripBookmarkButtonPressed:)]) {
-            [self.delegate tabstripBookmarkButtonPressed:self];
+        } else {
+            [self showSearchBar]; // default action
         }
 
     } else {
-        NSUInteger index = [_buttons indexOfObject:_pressedButton];
-        if (index != NSNotFound)
-            [self.delegate tabstrip:self clickedButtonAtIndex:index];
+        if (pressedButton != _pressedButton) {
+            
+            if (_pressedButton.adjustsImageWhenHighlighted) {
+                [_pressedButton setTitleColor:[UIColor colorWithHexString:@"#E0E0E0"] forState:UIControlStateNormal];
+                [_pressedButton setBackgroundImage:nil forState:UIControlStateNormal];
+            }
+            
+            if (pressedButton.adjustsImageWhenHighlighted) {
+                UIImage *buttonImage = [UIImage imageWithPathName:@"common/scrolltabs-selected.png"];
+                UIImage *stretchableButtonImage = [buttonImage stretchableImageWithLeftCapWidth:15 topCapHeight:0];
+                
+                [pressedButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+                [pressedButton setBackgroundImage:stretchableButtonImage forState:UIControlStateNormal];
+            }
+            
+            _pressedButton = pressedButton;
+        }
+        
+        if (_pressedButton == _bookmarkButton) {
+            if ([self.delegate respondsToSelector:@selector(tabstripBookmarkButtonPressed:)]) {
+                [self.delegate tabstripBookmarkButtonPressed:self];
+            }
+            
+        } else {
+            NSUInteger index = [_buttons indexOfObject:_pressedButton];
+            if (index != NSNotFound)
+                [self.delegate tabstrip:self clickedButtonAtIndex:index];
+        }
     }
+}
+
+- (void)showSearchBar
+{
+    if ([self.delegate conformsToProtocol:@protocol(KGOScrollingTabstripSearchDelegate)]) {
+        id<KGOScrollingTabstripSearchDelegate> strictDelegate = (id<KGOScrollingTabstripSearchDelegate>)self.delegate;
+        if ([strictDelegate tabstripShouldShowSearchDisplayController:self]) {
+            if (!self.searchBar) {
+                UIViewController *vc = [strictDelegate viewControllerForTabstrip:self];
+                
+                self.searchBar = [[[KGOSearchBar alloc] initWithFrame:self.frame] autorelease];
+                self.searchBar.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+                self.searchBar.alpha = 0.0;
+                if (!self.searchController) {
+                    self.searchController = [[[KGOSearchDisplayController alloc] initWithSearchBar:self.searchBar
+                                                                                          delegate:strictDelegate
+                                                                                contentsController:vc] autorelease];
+                    
+                    if ([KGO_SHARED_APP_DELEGATE() navigationStyle] == KGONavigationStyleTabletSidebar) {
+                        self.searchController.showsSearchOverlay = NO;
+                    }
+                }
+                [self addSubview:self.searchBar];
+            }
+            
+            [self bringSubviewToFront:self.searchBar];
+
+            [UIView animateWithDuration:0.4 animations:^{
+                self.searchBar.alpha = 1.0;
+            }];
+
+            [self.searchController setActive:YES animated:YES];
+        }
+    }
+}
+
+- (void)hideSearchBar
+{
+	if (self.searchBar) {
+        [UIView animateWithDuration:0.4 animations:^{
+            self.searchBar.alpha = 0;
+        } completion:^(BOOL finished) {
+            //[self sendSubviewToBack:self.searchBar];
+            [self.searchBar removeFromSuperview];
+            self.searchBar = nil;
+            self.searchController = nil;
+        }];
+	}
 }
 
 - (void)sideButtonPressed:(id)sender {
@@ -306,19 +367,25 @@
 	[_scrollView scrollRectToVisible:tabRect animated:YES];
 }
 
+- (void)showHideScrollButtons
+{
+    CGPoint offset = _scrollView.contentOffset;
+    if (offset.x <= 0) {
+        _leftScrollButton.hidden = YES;
+    } else {
+        _leftScrollButton.hidden = NO;
+    }
+    if (offset.x >= _scrollView.contentSize.width - _scrollView.frame.size.width) {
+        _rightScrollButton.hidden = YES;
+    } else {
+        _rightScrollButton.hidden = NO;
+    }
+}
+
+// scroll view delegation
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
 	if (scrollView == _scrollView) {
-		CGPoint offset = scrollView.contentOffset;
-		if (offset.x <= 0) {
-			_leftScrollButton.hidden = YES;
-		} else {
-			_leftScrollButton.hidden = NO;
-		}
-		if (offset.x >= _scrollView.contentSize.width - _scrollView.frame.size.width) {
-			_rightScrollButton.hidden = YES;
-		} else {
-			_rightScrollButton.hidden = NO;
-		}
+        [self showHideScrollButtons];
 	}
 }
 
@@ -330,6 +397,7 @@
 }
 
 - (void)dealloc {
+    self.searchBar = nil;
     [_contentView release];
     [_scrollView release];
     [_buttons release];

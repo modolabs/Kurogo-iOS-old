@@ -21,10 +21,12 @@ static const NSInteger kVideoListCellThumbnailTag = 0x78;
                    forVideo:(Video *)video;
 - (void)requestVideosForActiveSection;
 - (void)removeAllThumbnailViews;
-        
+
+/*
 #pragma mark Search UI
 - (void)showSearchBar;
 - (void)hideSearchBar; 
+*/
 @end
 
 @implementation VideoListViewController (Private)
@@ -82,41 +84,6 @@ static const NSInteger kVideoListCellThumbnailTag = 0x78;
     }
 }
 
-#pragma mark Search UI
-
-- (void)showSearchBar {
-	if (!self.theSearchBar) {
-        CGRect frame = CGRectMake(0, 0, self.view.bounds.size.width, 44);
-		self.theSearchBar = [[[KGOSearchBar alloc] initWithFrame:frame] autorelease];
-        self.theSearchBar.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-		self.theSearchBar.alpha = 0.0;
-        
-        if (!self.searchController) {
-            self.searchController = [[[KGOSearchDisplayController alloc] initWithSearchBar:self.theSearchBar
-                                                                                  delegate:self
-                                                                        contentsController:self] autorelease];
-        }
-		[self.view addSubview:self.theSearchBar];
-	}
-	[self.view bringSubviewToFront:self.theSearchBar];
-	[UIView beginAnimations:nil context:NULL];
-	[UIView setAnimationDuration:0.4];
-	self.theSearchBar.alpha = 1.0;
-	[UIView commitAnimations];
-    [self.searchController setActive:YES animated:YES];
-}
-
-- (void)hideSearchBar {
-	if (self.theSearchBar) {
-		[UIView beginAnimations:nil context:NULL];
-		[UIView setAnimationDuration:0.4];
-        [UIView setAnimationDelegate:self];
-        //[UIView setAnimationDidStopSelector:@selector(releaseSearchBar)];
-		self.theSearchBar.alpha = 0.0;
-		[UIView commitAnimations];
-	}
-}
-
 @end
 
 
@@ -129,7 +96,7 @@ static const NSInteger kVideoListCellThumbnailTag = 0x78;
 @synthesize videoSections;
 @synthesize activeSectionIndex;
 @synthesize theSearchBar;
-@synthesize searchController;
+//@synthesize searchController;
 
 #pragma mark NSObject
 
@@ -148,7 +115,7 @@ static const NSInteger kVideoListCellThumbnailTag = 0x78;
     // which is set as their delegate.
     [self removeAllThumbnailViews];
     
-    [searchController release];
+    //[searchController release];
     [theSearchBar release];
     [videoSections release];
     [videos release];
@@ -184,18 +151,7 @@ static const NSInteger kVideoListCellThumbnailTag = 0x78;
         [blockSelf.navScrollView setNeedsLayout];
         [blockSelf requestVideosForActiveSection];
      }];
-    self.navigationItem.title = @"Video"; 
-}
-
-
-- (void)tabstripBookmarkButtonPressed:(id)sender{
-    [self switchToBookmarks];
-}
-
-- (void)switchToBookmarks {
-    showingBookmarks = YES;
-    self.videos = [self.dataManager bookmarkedVideos];
-    [self.tableView reloadData];
+    self.navigationItem.title = [[KGO_SHARED_APP_DELEGATE() moduleForTag:self.moduleTag] shortName];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -312,13 +268,24 @@ static const NSInteger kVideoListCellThumbnailTag = 0x78;
     if (self.videoSections.count > self.activeSectionIndex) {
         VideoModule *module = (VideoModule *)[KGO_SHARED_APP_DELEGATE() moduleForTag:VideoModuleTag];
         module.searchSection = [[self.videoSections objectAtIndex:self.activeSectionIndex] objectForKey:@"value"];
-    }    
+    }
 }
 
-- (void)tabstripSearchButtonPressed:(KGOScrollingTabstrip *)tabstrip {
-    [self showSearchBar];
+- (void)tabstripBookmarkButtonPressed:(id)sender {
+    showingBookmarks = YES;
+    self.videos = [self.dataManager bookmarkedVideos];
+    [self.tableView reloadData];
 }
 
+- (BOOL)tabstripShouldShowSearchDisplayController:(KGOScrollingTabstrip *)tabstrip
+{
+    return YES;
+}
+
+- (UIViewController *)viewControllerForTabstrip:(KGOScrollingTabstrip *)tabstrip
+{
+    return self;
+}
 
 #pragma mark KGOSearchDisplayDelegate
 - (BOOL)searchControllerShouldShowSuggestions:(KGOSearchDisplayController *)controller {
@@ -345,8 +312,9 @@ static const NSInteger kVideoListCellThumbnailTag = 0x78;
     }
 }
 
-- (void)searchController:(KGOSearchDisplayController *)controller willHideSearchResultsTableView:(UITableView *)tableView {
-    [self hideSearchBar];
+- (void)searchController:(KGOSearchDisplayController *)controller willHideSearchResultsTableView:(UITableView *)tableView
+{
+    [self.navScrollView hideSearchBar];
     [self.navScrollView selectButtonAtIndex:self.activeSectionIndex];
 }
 

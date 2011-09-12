@@ -13,7 +13,8 @@
 #import "Video.h"
 
 @interface VideoListViewController : UITableViewController <MITThumbnailDelegate,
-KGOScrollingTabstripDelegate, KGOSearchDisplayDelegate> {
+//KGOScrollingTabstripDelegate, KGOSearchDisplayDelegate> {
+KGOScrollingTabstripSearchDelegate> {
 
     BOOL showingBookmarks;
 }
@@ -29,9 +30,9 @@ KGOScrollingTabstripDelegate, KGOSearchDisplayDelegate> {
 // Search bits
 // NSInteger totalAvailableResults;
 @property (nonatomic, retain) KGOSearchBar *theSearchBar;
-@property (nonatomic, retain) KGOSearchDisplayController *searchController;
+//@property (nonatomic, retain) KGOSearchDisplayController *searchController;
 //NSInteger searchIndex;
 
-- (void)switchToBookmarks;
+//- (void)switchToBookmarks;
 
 @end

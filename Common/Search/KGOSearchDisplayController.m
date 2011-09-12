@@ -154,10 +154,9 @@ showingOnlySearchResults = _showingOnlySearchResults, showsSearchOverlay;
     [_searchContentsController.view addSubview:_searchOverlay];
     
     if (animated) {
-        [UIView beginAnimations:nil context:NULL];
-        [UIView setAnimationDuration:0.4];
-        _searchOverlay.alpha = 1.0;
-        [UIView commitAnimations];
+        [UIView animateWithDuration:0.4 animations:^{
+            _searchOverlay.alpha = 1.0;
+        }];
     } else {
         _searchOverlay.alpha = 1.0;
     }
@@ -187,7 +186,11 @@ showingOnlySearchResults = _showingOnlySearchResults, showsSearchOverlay;
 }
 
 - (void)searchOverlayTapped {
-    [self setActive:NO animated:YES];
+    if (self.searchBar.text.length) {
+        [self setActive:NO animated:YES];
+    } else {
+        [self searchBarCancelButtonClicked:self.searchBar];
+    }
 }
 
 - (void)setActive:(BOOL)visible animated:(BOOL)animated {

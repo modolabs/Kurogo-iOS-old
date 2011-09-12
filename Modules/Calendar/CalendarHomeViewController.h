@@ -10,7 +10,9 @@ bool isOverOneDay(NSTimeInterval interval);
 bool isOverOneHour(NSTimeInterval interval);
 
 @interface CalendarHomeViewController : KGOTableViewController <KGODatePagerDelegate, KGOSearchDisplayDelegate, 
-KGOScrollingTabstripDelegate, CalendarDataManagerDelegate> {
+//KGOScrollingTabstripDelegate, 
+KGOScrollingTabstripSearchDelegate,
+CalendarDataManagerDelegate> {
     
     IBOutlet KGODatePager *_datePager;
     IBOutlet KGOScrollingTabstrip *_tabstrip;
@@ -30,7 +32,7 @@ KGOScrollingTabstripDelegate, CalendarDataManagerDelegate> {
 }
 
 @property (nonatomic, retain) KGOSearchBar *theSearchBar;
-@property (nonatomic, retain) KGOSearchDisplayController *searchController;
+//@property (nonatomic, retain) KGOSearchDisplayController *searchController;
 
 @property(nonatomic, retain) NSString *moduleTag;
 @property(nonatomic, retain) CalendarDataManager *dataManager;

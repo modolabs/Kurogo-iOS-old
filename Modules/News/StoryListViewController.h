@@ -12,7 +12,9 @@
 @class NewsStory;
 
 @interface StoryListViewController : KGOTableViewController <KGOSearchBarDelegate,
-NewsDataDelegate, KGOScrollingTabstripDelegate, KGOSearchDisplayDelegate> {
+NewsDataDelegate, 
+KGOScrollingTabstripSearchDelegate> {
+//KGOScrollingTabstripDelegate, KGOSearchDisplayDelegate> {
     
 	IBOutlet UITableView *_storyTable;
     IBOutlet NewsStoryTableViewCell *_storyCell;
@@ -32,7 +34,7 @@ NewsDataDelegate, KGOScrollingTabstripDelegate, KGOSearchDisplayDelegate> {
 	// Search bits
 	NSInteger totalAvailableResults;
 	KGOSearchBar *theSearchBar;
-    KGOSearchDisplayController *searchController;
+    //KGOSearchDisplayController *searchController;
     NSInteger searchIndex;
 	
 	BOOL showingBookmarks;
@@ -44,7 +46,7 @@ NewsDataDelegate, KGOScrollingTabstripDelegate, KGOSearchDisplayDelegate> {
 @property (nonatomic, retain) NSString *activeCategoryId;
 @property (nonatomic, retain) NewsDataController *dataManager;
 
-- (void)showSearchBar;
+//- (void)showSearchBar;
 - (void)switchToCategory:(NSString *)category;
 - (void)switchToBookmarks;
 
