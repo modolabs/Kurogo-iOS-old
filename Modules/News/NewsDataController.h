@@ -1,4 +1,10 @@
 #import <Foundation/Foundation.h>
+#import "KGORequestManager.h"
+
+// needed by classes that import this
+#import "NewsCategory.h"
+#import "NewsStory.h"
+#import "NewsImage.h"
 
 // 2 hours
 #define NEWS_CATEGORY_EXPIRES_TIME 7200.0
@@ -22,11 +28,13 @@
 
 @end
 
-@interface NewsDataController : NSObject {
+@interface NewsDataController : NSObject <KGORequestDelegate> {
     
     NSMutableSet *_searchRequests;
     NSMutableArray *_currentStories; // stories displayed in the view
     NSArray *_currentCategories;
+    
+    NSMutableArray *_searchResults;
 }
 
 - (BOOL)requiresKurogoServer;
@@ -41,8 +49,12 @@
 
 @property (nonatomic, copy) NSDate *feedListModifiedDate;
 
+
+
+@property (nonatomic, retain) KGORequest *storiesRequest;
+@property (nonatomic, retain) NSMutableSet *searchRequests;
+
 // categories
-- (void)readFeedData:(NSDictionary *)feedData;
 - (void)fetchCategories; // fetches from core data first, then server if no results
 - (NSArray *)latestCategories;
 - (void)requestCategoriesFromServer;

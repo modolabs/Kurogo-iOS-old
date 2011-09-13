@@ -60,6 +60,7 @@
     if (![self isBookmarked]) {
         self.bookmarked = [NSNumber numberWithBool:YES];
     }
+    self.searchResult = [NSNumber numberWithInt:0];
 }
 
 - (void)removeBookmark {

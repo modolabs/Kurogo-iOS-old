@@ -13,7 +13,7 @@
 #import "KGOUserSettingsManager.h"
 #import "VideoDetailViewController.h"
 #import "KGOPlacemark.h"
-
+#import "NewsStory.h"
 
 @interface KGOHomeScreenViewController (Private)
 

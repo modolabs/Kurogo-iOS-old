@@ -146,6 +146,7 @@
 		EB181FC5131EDF43003728FF /* MapSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EB181FC3131EDF43003728FF /* MapSettingsViewController.m */; };
 		EB1B88C91324A6AC00108A8F /* common in Resources */ = {isa = PBXBuildFile; fileRef = EB1B88C71324A6AC00108A8F /* common */; };
 		EB1B88CA1324A6AC00108A8F /* modules in Resources */ = {isa = PBXBuildFile; fileRef = EB1B88C81324A6AC00108A8F /* modules */; };
+		EB29B169141EA6C400D8559A /* NewsDataController.m in Sources */ = {isa = PBXBuildFile; fileRef = EB29B168141EA6C400D8559A /* NewsDataController.m */; };
 		EB46A346134EB942005796E4 /* ThemeConfig-iPad.plist in Resources */ = {isa = PBXBuildFile; fileRef = EB46A345134EB942005796E4 /* ThemeConfig-iPad.plist */; };
 		EB46A348134EB97C005796E4 /* MainWindow-iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = EB46A347134EB97C005796E4 /* MainWindow-iPad.xib */; };
 		EB46A399134F655D005796E4 /* KGOSplitViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EB46A398134F6540005796E4 /* KGOSplitViewController.m */; };
@@ -169,9 +170,6 @@
 		EB7F32D710CD6FBB00188BCD /* AddressBookUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EB7F32D610CD6FBB00188BCD /* AddressBookUI.framework */; };
 		EB83AE4C13C747AA006CCEDB /* Settings.plist in Resources */ = {isa = PBXBuildFile; fileRef = EB83AE4A13C747AA006CCEDB /* Settings.plist */; };
 		EB83AE5113C747BE006CCEDB /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = EB83AE4F13C747BE006CCEDB /* Localizable.strings */; };
-		EB934863139ED47700446243 /* JSONNewsDataController.m in Sources */ = {isa = PBXBuildFile; fileRef = EB93485E139ED47700446243 /* JSONNewsDataController.m */; };
-		EB934864139ED47700446243 /* NewsDataController.m in Sources */ = {isa = PBXBuildFile; fileRef = EB934860139ED47700446243 /* NewsDataController.m */; };
-		EB934865139ED47700446243 /* RSSNewsDataController.m in Sources */ = {isa = PBXBuildFile; fileRef = EB934862139ED47700446243 /* RSSNewsDataController.m */; };
 		EB93486A139ED48500446243 /* NewsStoryTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = EB934867139ED48500446243 /* NewsStoryTableViewCell.m */; };
 		EB93486B139ED48500446243 /* NewsStoryTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = EB934868139ED48500446243 /* NewsStoryTableViewCell.xib */; };
 		EB93486C139ED48500446243 /* StoryListViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = EB934869139ED48500446243 /* StoryListViewController.xib */; };
@@ -451,6 +449,8 @@
 		EB181FC3131EDF43003728FF /* MapSettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MapSettingsViewController.m; sourceTree = "<group>"; };
 		EB1B88C71324A6AC00108A8F /* common */ = {isa = PBXFileReference; lastKnownFileType = folder; name = common; path = Resources/common; sourceTree = "<group>"; };
 		EB1B88C81324A6AC00108A8F /* modules */ = {isa = PBXFileReference; lastKnownFileType = folder; name = modules; path = Resources/modules; sourceTree = "<group>"; };
+		EB29B167141EA6C400D8559A /* NewsDataController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NewsDataController.h; sourceTree = "<group>"; };
+		EB29B168141EA6C400D8559A /* NewsDataController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NewsDataController.m; sourceTree = "<group>"; };
 		EB46A345134EB942005796E4 /* ThemeConfig-iPad.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "ThemeConfig-iPad.plist"; path = "../../../Resources/default/ThemeConfig-iPad.plist"; sourceTree = "<group>"; };
 		EB46A347134EB97C005796E4 /* MainWindow-iPad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = "MainWindow-iPad.xib"; path = "../../Resources/MainWindow-iPad.xib"; sourceTree = "<group>"; };
 		EB46A397134F653B005796E4 /* KGOSplitViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGOSplitViewController.h; sourceTree = "<group>"; };
@@ -487,12 +487,6 @@
 		EB83AE5213C747C5006CCEDB /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/Localizable.strings; sourceTree = "<group>"; };
 		EB83AE5413C747CF006CCEDB /* zh_TW */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = zh_TW; path = zh_TW.lproj/Localizable.strings; sourceTree = "<group>"; };
 		EB83AE5C13C75C0C006CCEDB /* staging.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = staging.xcconfig; sourceTree = "<group>"; };
-		EB93485D139ED47700446243 /* JSONNewsDataController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JSONNewsDataController.h; sourceTree = "<group>"; };
-		EB93485E139ED47700446243 /* JSONNewsDataController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JSONNewsDataController.m; sourceTree = "<group>"; };
-		EB93485F139ED47700446243 /* NewsDataController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NewsDataController.h; sourceTree = "<group>"; };
-		EB934860139ED47700446243 /* NewsDataController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NewsDataController.m; sourceTree = "<group>"; };
-		EB934861139ED47700446243 /* RSSNewsDataController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RSSNewsDataController.h; sourceTree = "<group>"; };
-		EB934862139ED47700446243 /* RSSNewsDataController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RSSNewsDataController.m; sourceTree = "<group>"; };
 		EB934866139ED48500446243 /* NewsStoryTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NewsStoryTableViewCell.h; sourceTree = "<group>"; };
 		EB934867139ED48500446243 /* NewsStoryTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NewsStoryTableViewCell.m; sourceTree = "<group>"; };
 		EB934868139ED48500446243 /* NewsStoryTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NewsStoryTableViewCell.xib; sourceTree = "<group>"; };
@@ -764,8 +758,9 @@
 		DE81CF5F10C6BC390085573D /* News */ = {
 			isa = PBXGroup;
 			children = (
-				EB93485C139ED47700446243 /* DataControllers */,
 				EB0338661340DBE100ACF2BB /* Model */,
+				EB29B167141EA6C400D8559A /* NewsDataController.h */,
+				EB29B168141EA6C400D8559A /* NewsDataController.m */,
 				DE81CF6010C6BC390085573D /* NewsModule.h */,
 				DE81CF6110C6BC390085573D /* NewsModule.m */,
 				DE728E6610D6FF4700BFED37 /* StoryListViewController.h */,
@@ -1197,19 +1192,6 @@
 			path = ../../../Modules/ExternalURL;
 			sourceTree = "<group>";
 		};
-		EB93485C139ED47700446243 /* DataControllers */ = {
-			isa = PBXGroup;
-			children = (
-				EB93485D139ED47700446243 /* JSONNewsDataController.h */,
-				EB93485E139ED47700446243 /* JSONNewsDataController.m */,
-				EB93485F139ED47700446243 /* NewsDataController.h */,
-				EB934860139ED47700446243 /* NewsDataController.m */,
-				EB934861139ED47700446243 /* RSSNewsDataController.h */,
-				EB934862139ED47700446243 /* RSSNewsDataController.m */,
-			);
-			path = DataControllers;
-			sourceTree = "<group>";
-		};
 		EBC1C6FF1347B8D20045CE9C /* xcconfig */ = {
 			isa = PBXGroup;
 			children = (
@@ -1477,9 +1459,6 @@
 				EB0370F11396B6B500AD881F /* KGOLabel.m in Sources */,
 				EB0371401396E84500AD881F /* KGOSearchBar.m in Sources */,
 				EB0371431396E87500AD881F /* KGOSearchResultListTableView.m in Sources */,
-				EB934863139ED47700446243 /* JSONNewsDataController.m in Sources */,
-				EB934864139ED47700446243 /* NewsDataController.m in Sources */,
-				EB934865139ED47700446243 /* RSSNewsDataController.m in Sources */,
 				EB93486A139ED48500446243 /* NewsStoryTableViewCell.m in Sources */,
 				562CD69F13B9AEA600C5CB94 /* LinksModule.m in Sources */,
 				4B2A10B013D609300028298E /* LinksTableViewController.m in Sources */,
@@ -1488,6 +1467,7 @@
 				EBE9C57B14058F390090B001 /* MapDataManager.m in Sources */,
 				0B2150A314058F5700BD30A3 /* PeopleGroupContactViewController.m in Sources */,
 				EB14B0AC141957E300B4A716 /* main.m in Sources */,
+				EB29B169141EA6C400D8559A /* NewsDataController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

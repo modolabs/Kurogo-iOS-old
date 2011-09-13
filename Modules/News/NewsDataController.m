@@ -1,13 +1,12 @@
-#import "JSONNewsDataController.h"
+#import "NewsDataController.h"
 #import "CoreDataManager.h"
 #import "Foundation+KGOAdditions.h"
 #import "KGORequest.h"
-#import "NewsCategory.h"
+
 
 #define REQUEST_CATEGORIES_CHANGED 1
 #define REQUEST_CATEGORIES_UNCHANGED 2
 #define LOADMORE_LIMIT 10
-
 
 NSString * const NewsTagItem            = @"item";
 NSString * const NewsTagTitle           = @"title";
@@ -21,20 +20,211 @@ NSString * const NewsTagHasBody         = @"hasBody";
 NSString * const NewsTagBody            = @"body";
 
 
-@implementation JSONNewsDataController
+static NSString * const FeedListModifiedDateKey = @"feedListModifiedDateArray";
+//static NSTimeInterval kNewsCategoryExpireTime = 7200;
 
+@implementation NewsDataController
+
+@synthesize currentCategory, moduleTag, delegate, searchDelegate,
+currentCategories = _currentCategories, currentStories = _currentStories;
 @synthesize storiesRequest;
 @synthesize searchRequests;
-@synthesize delegate, moduleTag;
 
-#pragma mark NewsDataController
-/*
-- (id) init {
-    self = [super init];
-    if (self) {
-        self.storiesRequest = nil;
+- (BOOL)requiresKurogoServer
+{
+    return NO;
+}
+
+- (NSDate *)feedListModifiedDate
+{
+    NSDictionary *modDates = [[NSUserDefaults standardUserDefaults] dictionaryForKey:FeedListModifiedDateKey];
+    NSDate *result = [modDates dateForKey:self.moduleTag];
+    if ([result isKindOfClass:[NSDate class]]) {
+        return result;
     }
-    return self;
+    return nil;
+}
+
+- (void)setFeedListModifiedDate:(NSDate *)date
+{
+    NSDictionary *modDates = [[NSUserDefaults standardUserDefaults] dictionaryForKey:FeedListModifiedDateKey];
+    NSMutableDictionary *mutableModDates = modDates ? [[modDates mutableCopy] autorelease] : [NSMutableDictionary dictionary];
+    if (self.moduleTag) {
+        [mutableModDates setObject:date forKey:self.moduleTag];
+    } else {
+        NSLog(@"Warning: NewsDataController moduleTag not set, cannot save preferences");
+    }
+    [[NSUserDefaults standardUserDefaults] setObject:mutableModDates forKey:FeedListModifiedDateKey];
+}
+
+- (void)dealloc
+{
+    self.currentCategories = nil;
+    self.currentStories = nil;
+    self.delegate = nil;
+    self.searchDelegate = nil;
+    self.moduleTag = nil;
+    self.storiesRequest = nil;
+    self.searchRequests = nil;
+
+    [_searchResults release];
+    
+    [super dealloc];
+}
+
+#pragma mark categories
+
+- (NSArray *)latestCategories
+{
+    if (!_currentCategories) {    
+        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"isMainCategory = YES AND moduleTag = %@", self.moduleTag];
+        NSSortDescriptor *sort = [[[NSSortDescriptor alloc] initWithKey:@"category_id" ascending:YES] autorelease];
+        NSArray *results = [[CoreDataManager sharedManager] objectsForEntity:NewsCategoryEntityName
+                                                           matchingPredicate:predicate
+                                                             sortDescriptors:[NSArray arrayWithObject:sort]];
+        if (results.count) {
+            self.currentCategories = results;
+        }
+    }
+
+    return _currentCategories;
+}
+
+- (void)fetchCategories
+{
+    NSDate *lastUpdate = [self feedListModifiedDate];
+    NSArray *results = [self latestCategories];
+    if (results.count && lastUpdate && [lastUpdate timeIntervalSinceNow] + NEWS_CATEGORY_EXPIRES_TIME >= 0) {
+        [self.delegate dataController:self didRetrieveCategories:results];
+    } else {
+        [self requestCategoriesFromServer];
+    }
+}
+
+- (NewsCategory *)categoryWithId:(NSString *)categoryId {
+    if ([self.currentCategory.category_id isEqualToString:categoryId]) {
+        return self.currentCategory;
+    }
+    /* No need to do this hear. It gets done in latestCategories
+    if (!_currentCategories) {
+        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"moduleTag = %@", self.moduleTag];
+        NSArray *categories = [[CoreDataManager sharedManager] objectsForEntity:NewsCategoryEntityName
+                                                              matchingPredicate:predicate];
+        if (categories.count) {
+            self.currentCategories = categories;
+        }
+    }
+    */
+    NSPredicate *pred = [NSPredicate predicateWithFormat:@"category_id like %@", categoryId];
+    NSArray *matches = [self.currentCategories filteredArrayUsingPredicate:pred];
+    if (matches.count > 1) {
+        NSLog(@"warning: duplicate categories found for id %@", categoryId);
+    }
+    
+    return [matches lastObject];
+}
+
+- (NSArray *)searchableCategories
+{
+    return self.currentCategories;
+}
+
+#pragma mark stories
+
+- (BOOL)canLoadMoreStories
+{
+    if ([self.currentCategory.moreStories intValue] > 0)
+        return YES;
+    
+    return NO;
+}
+
+- (NSArray *)bookmarkedStories
+{
+    NSPredicate *pred = [NSPredicate predicateWithFormat:@"bookmarked == YES AND ANY categories.moduleTag = %@", self.moduleTag];
+    return [[CoreDataManager sharedManager] objectsForEntity:NewsStoryEntityName matchingPredicate:pred];
+}
+
+- (void)fetchBookmarks
+{
+    NSArray *bookmarks = [self bookmarkedStories];
+    
+    if ([self.delegate respondsToSelector:@selector(dataController:didRetrieveStories:)]) {
+        [self.delegate dataController:self didRetrieveStories:bookmarks];
+    }
+}
+
+- (void)fetchStoriesForCategory:(NSString *)categoryId
+                        startId:(NSString *)startId
+{
+    if (categoryId && ![categoryId isEqualToString:self.currentCategory.category_id]) {
+        self.currentCategory = [self categoryWithId:categoryId];
+    }
+
+    NSManagedObjectContext *context = [[CoreDataManager sharedManager] managedObjectContext];
+    if ([self.currentCategory managedObjectContext] != context) {
+        self.currentCategory = (NewsCategory *)[context objectWithID:[self.currentCategory objectID]];
+    }
+    [[[CoreDataManager sharedManager] managedObjectContext] refreshObject:self.currentCategory mergeChanges:NO];
+    
+    if (!self.currentCategory.lastUpdated
+        || -[self.currentCategory.lastUpdated timeIntervalSinceNow] > NEWS_CATEGORY_EXPIRES_TIME
+        // TODO: make sure the following doesn't result an infinite loop if stories legitimately don't exist
+        || !self.currentCategory.stories.count)
+    {
+        DLog(@"last updated: %@", self.currentCategory.lastUpdated);
+        [self requestStoriesForCategory:categoryId afterId:nil];
+        return;
+    }
+    
+    NSSortDescriptor *dateSort = [[[NSSortDescriptor alloc] initWithKey:@"postDate" ascending:NO] autorelease];
+    NSSortDescriptor *idSort = [[[NSSortDescriptor alloc] initWithKey:@"identifier" ascending:NO] autorelease];
+    NSArray *sortDescriptors = [NSArray arrayWithObjects:dateSort, idSort, nil];
+    
+    NSArray *results = [self.currentCategory.stories sortedArrayUsingDescriptors:sortDescriptors];
+    
+    if ([self.delegate respondsToSelector:@selector(dataController:didRetrieveStories:)]) {
+        [self.delegate dataController:self didRetrieveStories:results];
+    }
+}
+
+- (void)pruneStoriesForCategoryId:(NSString *)categoryId
+{
+    NewsCategory *category = nil;
+    NSArray *stories = nil;
+    
+    if (categoryId) {
+        category = [self categoryWithId:categoryId];
+        NSPredicate *pred = [NSPredicate predicateWithFormat:@"bookmarked != YES"];
+        stories = [[category.stories filteredSetUsingPredicate:pred] allObjects];
+        
+    } else if (!categoryId) {
+        NSPredicate *pred = [NSPredicate predicateWithFormat:
+                             @"bookmarked != YES AND ANY categories.moduleTag = %@", self.moduleTag];
+        stories = [[CoreDataManager sharedManager] objectsForEntity:NewsStoryEntityName
+                                                  matchingPredicate:pred];
+    }
+    
+    [[CoreDataManager sharedManager] deleteObjects:stories];
+    
+    if (category) {
+        category.stories = nil;
+    }
+    [[CoreDataManager sharedManager] saveData];
+    
+    if ([self.delegate respondsToSelector:@selector(dataController:didPruneStoriesForCategoryId:)]) {
+        [self.delegate dataController:self didPruneStoriesForCategoryId:categoryId];
+    }
+}
+
+/*
+- (void)readFeedData:(NSDictionary *)feedData
+{
+}
+
+- (void)fetchSearchResultsFromStore
+{
+    
 }
 */
 
@@ -55,34 +245,34 @@ NSString * const NewsTagBody            = @"body";
     __block NSArray *oldCategories = self.currentCategories;
     
     request.handler = [[^(id result) {
-
+        
         NSArray *newCategoryDicts = (NSArray *)result;
-
+        
         /*
-        NSArray *newCategoryIds = [newCategoryDicts mappedArrayUsingBlock:^id(id element) {
-            return [(NSDictionary *)element stringForKey:@"id" nilIfEmpty:YES];
-        }];
+         NSArray *newCategoryIds = [newCategoryDicts mappedArrayUsingBlock:^id(id element) {
+         return [(NSDictionary *)element stringForKey:@"id" nilIfEmpty:YES];
+         }];
          */
         
         [[CoreDataManager sharedManager] deleteObjects:oldCategories];
         blockSelf.currentCategories = nil;
         
-        [[CoreDataManager sharedManager] saveDataWithTemporaryMergePolicy:NSOverwriteMergePolicy];
-
+        //[[CoreDataManager sharedManager] saveDataWithTemporaryMergePolicy:NSOverwriteMergePolicy];
+        
         /*
-        for (NewsCategory *oldCategory in oldCategories) {
-            if (![newCategoryIds containsObject:oldCategory.category_id]) {
-                [[CoreDataManager sharedManager] deleteObject:oldCategory];
-            }
-        }
+         for (NewsCategory *oldCategory in oldCategories) {
+         if (![newCategoryIds containsObject:oldCategory.category_id]) {
+         [[CoreDataManager sharedManager] deleteObject:oldCategory];
+         }
+         }
          */
-
+        
         for (NSDictionary *categoryDict in newCategoryDicts) {
             (void)[blockSelf categoryWithDictionary:categoryDict];
         }
         
         [[CoreDataManager sharedManager] saveDataWithTemporaryMergePolicy:NSOverwriteMergePolicy];
-
+        
         blockSelf.feedListModifiedDate = [NSDate date];
         
         return REQUEST_CATEGORIES_CHANGED;
@@ -113,57 +303,13 @@ NSString * const NewsTagBody            = @"body";
     return category;
 }
 
-- (void)searchStories:(NSString *)searchTerms {
-    
-    // cancel any previous search requests
-    for (KGORequest *request in self.searchRequests) {
-        [request cancel];
-    }
-
-    // remove all old search results
-    for (NewsStory *story in [self latestSearchResults]) {
-        story.searchResult = [NSNumber numberWithInt:0];
-    }
-    [[CoreDataManager sharedManager] saveData];
-
-    self.searchRequests = [NSMutableSet setWithCapacity:1];
-    
-    for (NewsCategory *category in [self searchableCategories]) {
-        NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:
-                                category.category_id, @"categoryID",
-                                searchTerms, @"q", nil];
-        
-        KGORequest *request = [[KGORequestManager sharedManager] requestWithDelegate:self
-                                                                              module:self.moduleTag
-                                                                                path:@"search"
-                                                                              params:params];
-        request.expectedResponseType = [NSArray class];
-        
-        __block JSONNewsDataController *blockSelf = self;
-        request.handler = [[^(id stories) {
-            
-            for (NSDictionary *storyDict in stories) {
-                NewsStory *story = [blockSelf storyWithDictionary:storyDict]; 
-                story.searchResult = [NSNumber numberWithInt:1];
-            }
-            if (blockSelf.searchDelegate) {
-                [blockSelf.searchDelegate searcher:blockSelf didReceiveResults:stories];
-            }
-            return [stories count];
-        } copy] autorelease];
-        
-        [self.searchRequests addObject:request];
-        [request connect];
-    }
-}
-
 - (void)requestStoriesForCategory:(NSString *)categoryId afterId:(NSString *)afterId
 {
     // TODO: signal that loading progress is 0
     if (![categoryId isEqualToString:self.currentCategory.category_id]) {
         self.currentCategory = [self categoryWithId:categoryId];
     }
-
+    
     NSInteger start = 0;
     if (afterId) {
         NSPredicate *pred = [NSPredicate predicateWithFormat:@"identifier = %@", afterId];
@@ -262,188 +408,51 @@ NSString * const NewsTagBody            = @"body";
     return story;
 }
 
-//#pragma mark Additional APIs for Kurogo server
+#pragma mark Search
+
+- (void)searchStories:(NSString *)searchTerms
+{
+    // cancel any previous search requests
+    for (KGORequest *request in self.searchRequests) {
+        [request cancel];
+    }
+    
+    if (!_searchResults) {
+        _searchResults = [[NSMutableArray alloc] init];
+    } else {
+        for (NewsStory *aStory in _searchResults) {
+            aStory.searchResult = [NSNumber numberWithInt:0];
+        }
+        [_searchResults release];
+        _searchResults = [[NSMutableArray alloc] init];
+    }
+    
+    /*
+     // remove all old search results
+     for (NewsStory *story in [self latestSearchResults]) {
+     story.searchResult = [NSNumber numberWithInt:0];
+     }
+     [[CoreDataManager sharedManager] saveData];
+     */
+    
+    self.searchRequests = [NSMutableSet setWithCapacity:1];
+    
+    for (NewsCategory *category in [self searchableCategories]) {
+        NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:
+                                category.category_id, @"categoryID",
+                                searchTerms, @"q", nil];
+        
+        KGORequest *request = [[KGORequestManager sharedManager] requestWithDelegate:self
+                                                                              module:self.moduleTag
+                                                                                path:@"search"
+                                                                              params:params];
+        request.expectedResponseType = [NSArray class];
+        
+        [self.searchRequests addObject:request];
+        [request connect];
+    }
+}
 /*
-- (NSInteger)loadMoreStoriesQuantityForCategoryId:(NSString *)categoryID {
-    NewsCategory *category = [self fetchCategoryFromCoreData:categoryID];
-    if ([category.nextSeekId integerValue] == 0) {
-        return LOADMORE_LIMIT;
-    } else {
-        NSInteger remaining = [category.moreStories integerValue];
-        if(remaining > LOADMORE_LIMIT) {
-            return LOADMORE_LIMIT;
-        } else {
-            return remaining;
-        }
-    }
-}
-*/
-/*
-- (void)requestStoriesForCategory:(NSString *)categoryID loadMore:(BOOL)loadMore forceRefresh:(BOOL)forceRefresh {
-    // load what's in CoreData
-    NewsCategory *category =[self fetchCategoryFromCoreData:categoryID];
-    [[[CoreDataManager sharedManager] managedObjectContext] refreshObject:category mergeChanges:NO];
-    
-    NSPredicate *predicate = nil;
-    NSSortDescriptor *postDateSortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"postDate" ascending:NO];
-    NSSortDescriptor *storyIdSortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"identifier" ascending:NO];
-    NSArray *sortDescriptors = [NSArray arrayWithObjects://featuredSortDescriptor,
-                                postDateSortDescriptor, storyIdSortDescriptor, nil];
-    [storyIdSortDescriptor release];
-    [postDateSortDescriptor release];
-    
-    predicate = [NSPredicate predicateWithFormat:@"ANY categories.category_id LIKE %@ AND ANY categories.moduleTag = %@", category.category_id, self.moduleTag];
-    NSArray *results = [[CoreDataManager sharedManager] objectsForEntity:NewsStoryEntityName matchingPredicate:predicate sortDescriptors:sortDescriptors];
-    
-    // grab the first featured story from the list, regardless of pubdate
-    //NSArray *featuredStories = [results filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"(featured == YES)"]
-    NSArray *stories;
-    NewsStory *featuredStory = nil;
-    //if ([featuredStories count]) {
-    //    featuredStory = [featuredStories objectAtIndex:0];
-    //}
-    
-    NSMutableArray *storyCandidates = [NSMutableArray arrayWithArray:results];
-    
-    if ([storyCandidates containsObject:featuredStory]) {
-        [storyCandidates removeObject:featuredStory];
-        stories = [[NSArray arrayWithObject:featuredStory] arrayByAddingObjectsFromArray:storyCandidates];
-    } else {
-        stories = storyCandidates;
-    }
-    
-    if ([self.delegate respondsToSelector:@selector(storiesUpdated:forCategory:)]) {
-        [self.delegate storiesUpdated:stories forCategory:category];
-    }
-    
-    BOOL categoryFresh;
-    if (category.lastUpdated) {
-        categoryFresh = (-[category.lastUpdated timeIntervalSinceNow] < NEWS_CATEGORY_EXPIRES_TIME);
-    } else {
-        categoryFresh = NO;
-    }
-    
-    if (loadMore || ([results count] == 0) || !categoryFresh || forceRefresh) {
-        [self loadStoriesFromServerForCategory:category loadMore:loadMore];
-        // this creates a loop which will keep trying until there is at least something in this category
-    }
-}
-
--(void) loadStoriesFromServerForCategory:(NewsCategory *)category loadMore:(BOOL)loadMore {
-    if ([self busy]) {
-        // refuse to service request
-        // could cancel old request instead
-        return;
-    }
-    
-    // show that downloading is beginning
-    if([self.delegate respondsToSelector:@selector(storiesDidMakeProgress:forCategoryId:)]) {
-        [self.delegate storiesDidMakeProgress:0.0f forCategoryId:category.category_id];
-    }
-    
-    NSInteger start = 0;
-    if (loadMore) {
-        start = [category.nextSeekId intValue];
-    }
-    
-    NSString *startValue = [NSString stringWithFormat:@"%d", start];
-    NSInteger limit = LOADMORE_LIMIT;
-    NSString *limitValue = [NSString stringWithFormat:@"%d", limit];
-    
-    NSString *categoryID = category.category_id;
-    
-    NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:
-                            startValue, @"start",
-                            limitValue, @"limit",
-                            categoryID, @"categoryID", 
-                            @"full", @"mode", nil];
-    
-    KGORequest *request = [[KGORequestManager sharedManager] requestWithDelegate:self
-                                                                          module:self.moduleTag
-                                                                            path:@"stories"
-                                                                          params:params];
-    self.storiesRequest = request;
-    
-    request.expectedResponseType = [NSDictionary class];
-    
-    __block NewsDataController *blockSelf = self;
-    request.handler = [[^(id result) {
-        NewsCategory *safeCategoryObject = [blockSelf fetchCategoryFromCoreData:categoryID];
-        
-        if (!loadMore) {
-            // this is a refresh load, so we need to prune
-            // all old stories
-            
-            for (NewsStory *story in safeCategoryObject.stories) {
-                if (![story.bookmarked boolValue] && ([story.categories count] <= 1)) {
-                    [[CoreDataManager sharedManager] deleteObject:story];
-                }
-            }
-            safeCategoryObject.stories = [NSSet set];
-        }
-        
-        NSDictionary *resultDict = (NSDictionary *)result;
-        NSArray *stories = [resultDict arrayForKey:@"stories"];
-        
-        for (NSDictionary *storyDict in stories) {
-            NewsStory *story = [blockSelf storyWithDictionary:storyDict]; 
-            NSMutableSet *mutableCategories = [NSMutableSet setWithCapacity:1];
-            [mutableCategories unionSet:story.categories];
-            [mutableCategories addObject:safeCategoryObject];
-            story.categories = mutableCategories;
-        }
-        
-        // TODO: is [resultDict objectForKey:@"moreStories"] really a set?
-        safeCategoryObject.moreStories = [resultDict objectForKey:@"moreStories"];
-        safeCategoryObject.nextSeekId = [NSNumber numberWithInt:(start + limit)];
-        safeCategoryObject.lastUpdated = [NSDate date];
-        [[CoreDataManager sharedManager] saveData];
-
-        return [stories count];
-    } copy] autorelease];
-    
-    [request connect];
-}
-
-- (BOOL) busy {
-    return  (self.storiesRequest != nil);
-}
-    
-- (NSArray *)searchableCategories {
-    return [self fetchCategoriesFromCoreData];
-}
-
-- (NSArray *)fetchLatestSearchResultsFromCoreData {
-    NSPredicate *predicate = nil;
-    NSSortDescriptor *relevanceSortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"searchResult" ascending:YES];
-    NSArray *sortDescriptors = [NSArray arrayWithObject:relevanceSortDescriptor];
-    [relevanceSortDescriptor release];
-    
-    predicate = [NSPredicate predicateWithFormat:@"searchResult > 0"];
-    
-    // show everything that comes back
-    NSArray *results = [[CoreDataManager sharedManager] objectsForEntity:NewsStoryEntityName matchingPredicate:predicate sortDescriptors:sortDescriptors];
-    
-    return results;
-}
-
-- (void)saveImageData:(NSData *)data url:(NSString *)url {
-    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"url LIKE %@", url];
-    NSArray *images = [[CoreDataManager sharedManager] 
-                       objectsForEntity:NewsImageEntityName
-                       matchingPredicate:predicate];
-    for (NewsImage *image in images) {
-        image.data = data;
-    }
-    [[CoreDataManager sharedManager] saveData];
-}
-
-- (void)story:(NewsStory *)story bookmarked:(BOOL)bookmarked {
-    story.bookmarked = [NSNumber numberWithBool:bookmarked];
-    [[CoreDataManager sharedManager] saveData];
-}
-*/
-
 - (NSArray *)latestSearchResults
 {
     NSPredicate *predicate = nil;
@@ -467,8 +476,19 @@ NSString * const NewsTagBody            = @"body";
         [self.delegate dataController:self didRetrieveStories:results];
     }
 }
-
+*/
 #pragma mark KGORequestDelegate
+
+- (void)request:(KGORequest *)request didReceiveResult:(id)result
+{
+    if ([self.searchRequests containsObject:request]) {
+        for (NSDictionary *storyDict in (NSArray *)result) {
+            NewsStory *story = [self storyWithDictionary:storyDict]; 
+            story.searchResult = [NSNumber numberWithInt:1];
+            [_searchResults addObject:story];
+        }
+    }
+}
 
 - (void)request:(KGORequest *)request didHandleResult:(NSInteger)returnValue {
     NSString *path = request.path;
@@ -477,34 +497,32 @@ NSString * const NewsTagBody            = @"body";
         NSString *categoryId = [request.getParams objectForKey:@"categoryID"];
         NSString *startId = [request.getParams objectForKey:@"start"];
         [self fetchStoriesForCategory:categoryId startId:startId];
-    
-    } else if ([path isEqualToString:@"search"]) {
+        
+    }/* else if ([path isEqualToString:@"search"]) {
         [self.searchRequests removeObject:request];
         
         if (self.searchRequests.count == 0) { // all searches have completed
             //NSString *searchTerms = [request.getParams objectForKey:@"q"];
-        
+            
             [self fetchSearchResultsFromStore];
-
-            /*
-            if ([self.delegate respondsToSelector:@selector(didReceiveSearchResults:forSearchTerms:)]) {
-                [self.delegate didReceiveSearchResults:results forSearchTerms:searchTerms];            
-            }
-             */
+            
+             //if ([self.delegate respondsToSelector:@selector(didReceiveSearchResults:forSearchTerms:)]) {
+             //[self.delegate didReceiveSearchResults:results forSearchTerms:searchTerms];            
+             //}
         }
         
-    } else if([path isEqualToString:@"categories"]) {    
+    }*/ else if ([path isEqualToString:@"categories"]) {    
         switch (returnValue) {
             case REQUEST_CATEGORIES_CHANGED:
             {
                 [self fetchCategories];
                 /*
-                NSArray *categories = [self fetchCategoriesFromStore];
-                if (categories) {
-                    if ([self.delegate respondsToSelector:@selector(categoriesUpdated:)]) {
-                        [self.delegate categoriesUpdated:categories];
-                    }
-                }
+                 NSArray *categories = [self fetchCategoriesFromStore];
+                 if (categories) {
+                 if ([self.delegate respondsToSelector:@selector(categoriesUpdated:)]) {
+                 [self.delegate categoriesUpdated:categories];
+                 }
+                 }
                  */
                 break;
             }
@@ -542,7 +560,7 @@ NSString * const NewsTagBody            = @"body";
         
     } else if ([request.path isEqualToString:@"categories"]) {
         [[KGORequestManager sharedManager] showAlertForError:error request:request];
-
+        
         // don't call -fetchCategories since it may issue another request
         NSArray *existingCategories = [self latestCategories];
         if (existingCategories && [self.delegate respondsToSelector:@selector(dataController:didRetrieveCategories:)]) {
@@ -554,7 +572,7 @@ NSString * const NewsTagBody            = @"body";
 - (void)requestResponseUnchanged:(KGORequest *)request
 {
     [request cancel];
-
+    
     NSDate *date = [self feedListModifiedDate];
     if (!date || [date timeIntervalSinceNow] + NEWS_CATEGORY_EXPIRES_TIME < 0) {
         self.feedListModifiedDate = [NSDate date];
@@ -569,7 +587,21 @@ NSString * const NewsTagBody            = @"body";
         
     } else if ([self.searchRequests containsObject:request]) {
         [self.searchRequests removeObject:request];
+        
+        if (self.searchRequests.count == 0) { // all searches have completed
+            if (_searchResults
+                && [self.delegate respondsToSelector:@selector(dataController:didRetrieveStories:)])
+            {
+                [self.delegate dataController:self didReceiveSearchResults:_searchResults];
+                [self.searchDelegate searcher:self didReceiveResults:_searchResults];
+                
+                [_searchResults release];
+                _searchResults = nil;
+            }
+        }
     }
 }
 
 @end
+
+

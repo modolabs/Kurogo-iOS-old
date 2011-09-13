@@ -1,14 +1,10 @@
 #import "NewsModule.h"
 #import "StoryListViewController.h"
-#import "NewsStory.h"
-#import "NewsCategory.h"
-#import "CoreDataManager.h"
-#import "RSSNewsDataController.h"
-#import "JSONNewsDataController.h"
+#import "NewsDataController.h"
 
 @implementation NewsModule
 
-
+/*
 - (id)initWithDictionary:(NSDictionary *)moduleDict {
     
     self = [super initWithDictionary:moduleDict];
@@ -25,33 +21,15 @@
     }
     return self;
 }
-
+*/
 
 - (void)willLaunch
 {
-    if ((!_dataManager) || (_payload)){ // if _payload then it could reassign the default dataManager.
-        NSString *format = [_payload objectForKey:@"format"];
-        if ([format isEqualToString:@"rss"]) {
-            _controllerClass = NewsDataControllerClassRSS;
-        }
+    if (!_dataManager) {
+        _dataManager = [[NewsDataController alloc] init];
+        _dataManager.moduleTag = self.tag;
         
-        switch (_controllerClass) {
-            case NewsDataControllerClassRSS:
-                _dataManager = [[RSSNewsDataController alloc] init];
-                _dataManager.moduleTag = self.tag;
-                break;
-            case NewsDataControllerClassJSON:
-            default:
-                _dataManager = [[JSONNewsDataController alloc] init];
-                _dataManager.moduleTag = self.tag;
-                break;
-        }
-        
-        if (_payload) {
-            [_dataManager readFeedData:_payload];
-            [_payload release];
-            _payload = nil;
-        }
+        // TODO: make a categories request either here or in performSearch
     }
 }
 
@@ -61,18 +39,9 @@
     _dataManager = nil;
 }
 
-- (void)evaluateInitialiationPayload:(NSDictionary *)payload
-{
-    [_payload release];
-    _payload = [payload retain];
-}
-
 - (BOOL)requiresKurogoServer
 {
-    if (_dataManager) {
-        return [_dataManager requiresKurogoServer];
-    }
-    return NO;
+    return YES;
 }
 
 #pragma mark Navigation
@@ -100,22 +69,26 @@
         detailVC.dataManager = _dataManager;
         vc = detailVC;
         
-        if ([params objectForKey:@"story"]) { // show only one story
-            NewsStory *story = [params objectForKey:@"story"];
+        NewsStory *story = [params objectForKey:@"story"];
+        if (story) { // show only one story
             [detailVC setStory:story];
             [detailVC setMultiplePages:NO];
             
-        } else if([params objectForKey:@"stories"]) {
+        } else {
             NSArray *stories = [params objectForKey:@"stories"];
-            [detailVC setStories:stories]; 
-        
-            NSIndexPath *indexPath = [params objectForKey:@"indexPath"];
-            [detailVC setInitialIndexPath:indexPath];
-            [detailVC setMultiplePages:YES];
+            if (stories) {
+                [detailVC setStories:stories]; 
+                
+                NSIndexPath *indexPath = [params objectForKey:@"indexPath"];
+                [detailVC setInitialIndexPath:indexPath];
+                [detailVC setMultiplePages:YES];
+            }
         }
-        
-        if ([params objectForKey:@"category"]) {
-            [detailVC setCategory:[params objectForKey:@"category"]];
+
+        // TODO: figure out why this (defined in detail vc class) is NewsStory
+        NewsStory *category = [params objectForKey:@"category"];
+        if (category) {
+            [detailVC setCategory:category];
         }
     }
     return vc;
@@ -146,8 +119,8 @@
     [_dataManager searchStories:searchText];
 }
 
-- (void)didReceiveSearchResults:(NSArray *)results forSearchTerms:(NSString *)searchTerms {
- 
+- (void)didReceiveSearchResults:(NSArray *)results forSearchTerms:(NSString *)searchTerms
+{
     [self.searchDelegate searcher:self didReceiveResults:results];
 }
 
@@ -157,12 +130,12 @@
     
     [super dealloc];
 }
-
+/*
 #pragma mark NewsDataDelegate (to retrieve Categories)
 
 - (void)dataController:(NewsDataController *)controller didRetrieveCategories:(NSArray *)categories{
     
     // Does nothing.
 }
-
+*/
 @end

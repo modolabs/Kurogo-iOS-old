@@ -1,4 +1,0 @@
-@interface NewsDataManager (Protected)
-
-
-@end

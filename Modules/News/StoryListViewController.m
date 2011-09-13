@@ -124,12 +124,11 @@
 {
     self.categories = theCategories;
     
-   /* This is decided again later in setupNavScrollButtons
     if (!self.activeCategoryId && theCategories.count) {
         NewsCategory *category = [theCategories objectAtIndex:0];
         self.activeCategoryId = category.category_id;
     }
-    */
+
     [self setupNavScrollButtons]; // update button pressed states
     
     // now that we have categories load the stories
@@ -184,11 +183,7 @@
         _storyTable.frame = CGRectMake(0, 0, self.view.bounds.size.width, self.view.bounds.size.height - dh);
     }
 }
-/*
-- (void)tabstripSearchButtonPressed:(KGOScrollingTabstrip *)tabstrip {
-    [self showSearchBar];
-}
-*/
+
 - (void)tabstripBookmarkButtonPressed:(KGOScrollingTabstrip *)tabstrip {
     self.activeCategoryId = nil; 
     [self switchToBookmarks];
@@ -329,7 +324,9 @@
         [params setObject:self.stories forKey:@"stories"];
         [params setObject:self.dataManager.currentCategory forKey:@"category"];
         
-        [KGO_SHARED_APP_DELEGATE() showPage:LocalPathPageNameDetail forModuleTag:self.dataManager.moduleTag params:params];
+        [KGO_SHARED_APP_DELEGATE() showPage:LocalPathPageNameDetail
+                               forModuleTag:self.dataManager.moduleTag
+                                     params:params];
 	}
 }
 
@@ -359,9 +356,11 @@
           
 - (void)resultsHolder:(id<KGOSearchResultsHolder>)resultsHolder didSelectResult:(id<KGOSearchResult>)aResult {
     NewsStory *story = aResult;
-    if([[story hasBody] boolValue]) {
+    if ([[story hasBody] boolValue]) {
         NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:aResult, @"story", nil];
-        [KGO_SHARED_APP_DELEGATE() showPage:LocalPathPageNameDetail forModuleTag:self.dataManager.moduleTag params:params];
+        [KGO_SHARED_APP_DELEGATE() showPage:LocalPathPageNameDetail 
+                               forModuleTag:self.dataManager.moduleTag
+                                     params:params];
     } else {
         [[UIApplication sharedApplication] openURL:[NSURL URLWithString:story.link]];
     }

@@ -345,21 +345,23 @@ showingOnlySearchResults = _showingOnlySearchResults, showsSearchOverlay;
 #pragma mark KGOTableDataSource
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    NewsStory *newsStory;
+    //NewsStory *newsStory;
     id<KGOSearchResult> result = [self.searchResults objectAtIndex:indexPath.row];
     if ([result isKindOfClass:[RecentSearch class]]) {
         RecentSearch *recentSearch = (RecentSearch *)result;
         [self unfocusSearchBarAnimated:YES];
         [self executeSearch:recentSearch.text params:nil];
     } else {
+        /*
         if([result isKindOfClass:[NSDictionary class]]){
             NSDictionary *story = (NSDictionary *)result; 
             newsStory = [self storyWithDictionary:story]; 
             [self.delegate resultsHolder:self didSelectResult:newsStory];
         }
         else{
+            */
             [self.delegate resultsHolder:self didSelectResult:result];
-        }
+        //}
     }
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
@@ -378,7 +380,9 @@ showingOnlySearchResults = _showingOnlySearchResults, showsSearchOverlay;
     id<KGOSearchResult> result = [self.searchResults objectAtIndex:indexPath.row];
     NSString *accessoryType = [result isKindOfClass:[RecentSearch class]] ? nil : KGOAccessoryTypeChevron;
     
+    // FIXME
     if (![result respondsToSelector:@selector(viewsForTableCell)] || ![result viewsForTableCell]) {
+        /*
         if([result isKindOfClass:[NSDictionary class]]){
             NSDictionary *story = (NSDictionary *)result; 
             NewsStory *newsStory = [self storyWithDictionary:story]; 
@@ -390,20 +394,20 @@ showingOnlySearchResults = _showingOnlySearchResults, showsSearchOverlay;
                 cell.textLabel.text = title;
                 cell.detailTextLabel.text = subtitle;
                 cell.accessoryView = [[KGOTheme sharedTheme] accessoryViewForType:accessoryType];
-                /*----Code for adding image to news search result-----////
-                [cell.imageView setBounds:CGRectMake(0, 0, 50, 50)];
-                [cell.imageView setClipsToBounds:NO];
-                [cell.imageView setFrame:CGRectMake(0, 0, 50, 50)];
-                [cell.imageView setContentMode:UIViewContentModeScaleAspectFill];
-                NSString *URLString = newsStory.thumbImage.url; 
-                NSData *data=[NSData dataWithContentsOfURL:[NSURL URLWithString:URLString]];
-                UIImage *image = [UIImage imageWithData:data];
-                cell.imageView.image = image;
-                */
+                //----Code for adding image to news search result-----////
+                //[cell.imageView setBounds:CGRectMake(0, 0, 50, 50)];
+                //[cell.imageView setClipsToBounds:NO];
+                //[cell.imageView setFrame:CGRectMake(0, 0, 50, 50)];
+                //[cell.imageView setContentMode:UIViewContentModeScaleAspectFill];
+                //NSString *URLString = newsStory.thumbImage.url; 
+                //NSData *data=[NSData dataWithContentsOfURL:[NSURL URLWithString:URLString]];
+                //UIImage *image = [UIImage imageWithData:data];
+                //cell.imageView.image = image;
             } copy] autorelease];
             
         }
-        else if([result isKindOfClass:[Video class]]){
+        else */
+        if([result isKindOfClass:[Video class]]){
             Video *video = (Video *)result;
             title = [video title];
             subtitle = [NSString stringWithFormat:@"(%@) %@", [video durationString], video.videoDescription];
@@ -471,7 +475,7 @@ showingOnlySearchResults = _showingOnlySearchResults, showsSearchOverlay;
     return nil;
 }
 
-
+/*
 - (NewsStory *)storyWithDictionary:(NSDictionary *)storyDict {
     // use existing story if it's already in the db
     NSString *GUID = [storyDict stringForKey:@"GUID" nilIfEmpty:YES];
@@ -509,7 +513,7 @@ showingOnlySearchResults = _showingOnlySearchResults, showsSearchOverlay;
     }
     return story;
 }
-
+*/
 
 // TODO: uncomment and edit if we have search results that need multiple sections
 /*

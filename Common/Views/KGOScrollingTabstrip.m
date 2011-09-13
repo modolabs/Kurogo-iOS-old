@@ -315,8 +315,9 @@
             
             [self bringSubviewToFront:self.searchBar];
 
+            __block KGOScrollingTabstrip *blockSelf = self;
             [UIView animateWithDuration:0.4 animations:^{
-                self.searchBar.alpha = 1.0;
+                blockSelf.searchBar.alpha = 1.0;
             }];
 
             [self.searchController setActive:YES animated:YES];
@@ -327,13 +328,14 @@
 - (void)hideSearchBar
 {
 	if (self.searchBar) {
+        __block KGOScrollingTabstrip *blockSelf = self;
         [UIView animateWithDuration:0.4 animations:^{
-            self.searchBar.alpha = 0;
+            blockSelf.searchBar.alpha = 0;
         } completion:^(BOOL finished) {
             //[self sendSubviewToBack:self.searchBar];
-            [self.searchBar removeFromSuperview];
-            self.searchBar = nil;
-            self.searchController = nil;
+            [blockSelf.searchBar removeFromSuperview];
+            blockSelf.searchBar = nil;
+            blockSelf.searchController = nil;
         }];
 	}
 }
