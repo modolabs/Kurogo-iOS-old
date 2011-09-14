@@ -4,32 +4,11 @@
 
 @implementation NewsModule
 
-/*
-- (id)initWithDictionary:(NSDictionary *)moduleDict {
-    
-    self = [super initWithDictionary:moduleDict];
-    
-    // Need to set DataManager and its NewsDataDelegate temporarily to retrieve
-    // Categories to support Federated Search
-    if (self) {
-        
-        [self willLaunch]; // does nothing except assign dataManager
-        
-        _dataManager.delegate = self; // temporarily to fetch category results
-        [_dataManager requestCategoriesFromServer]; // request categories from server
-
-    }
-    return self;
-}
-*/
-
 - (void)willLaunch
 {
     if (!_dataManager) {
         _dataManager = [[NewsDataController alloc] init];
         _dataManager.moduleTag = self.tag;
-        
-        // TODO: make a categories request either here or in performSearch
     }
 }
 
@@ -94,11 +73,6 @@
     return vc;
 }
 
-// TODO: check if this is being used
-- (NewsDataController *)dataManager {
-    return _dataManager;
-}
-
 - (NSArray *)objectModelNames {
     return [NSArray arrayWithObject:@"News"];
 }
@@ -113,29 +87,42 @@
                        params:(NSDictionary *)params
                      delegate:(id<KGOSearchResultsHolder>)delegate
 {
-    [self willLaunch];
-    
-    _dataManager.searchDelegate = delegate;
-    [_dataManager searchStories:searchText];
+    self.searchDelegate = delegate;
+
+    [_searchText release];
+    _searchText = [searchText retain];
+
+    _dataManager.delegate = self;
+    [_dataManager fetchCategories];
 }
 
 - (void)didReceiveSearchResults:(NSArray *)results forSearchTerms:(NSString *)searchTerms
 {
     [self.searchDelegate searcher:self didReceiveResults:results];
+    self.searchDelegate = nil;
 }
 
 - (void)dealloc {
     [_dataManager release];
     _dataManager = nil;
+
+    [_searchText release];
+    _searchText = nil;
     
     [super dealloc];
 }
-/*
+
 #pragma mark NewsDataDelegate (to retrieve Categories)
 
-- (void)dataController:(NewsDataController *)controller didRetrieveCategories:(NSArray *)categories{
-    
-    // Does nothing.
+- (void)dataController:(NewsDataController *)controller didRetrieveCategories:(NSArray *)categories
+{
+    if (self.searchDelegate) {
+        _dataManager.searchDelegate = self.searchDelegate;
+        self.searchDelegate = nil;
+        [_dataManager searchStories:_searchText];
+        [_searchText release];
+        _searchText = nil;
+    }
 }
-*/
+
 @end

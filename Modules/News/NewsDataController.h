@@ -74,8 +74,8 @@
 
 // search
 - (void)searchStories:(NSString *)searchTerms;
-- (void)fetchSearchResultsFromStore;
-- (NSArray *)latestSearchResults;
+//- (void)fetchSearchResultsFromStore;
+//- (NSArray *)latestSearchResults;
 
 
 - (void)pruneStoriesForCategoryId:(NSString *)categoryId;

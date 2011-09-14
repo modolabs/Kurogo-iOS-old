@@ -55,13 +55,16 @@
     self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh
                                                                                             target:self
                                                                                             action:@selector(refresh:)] autorelease];
+    //self.dataManager.delegate = self;
     [self.dataManager fetchCategories];
 }
 
-- (void)viewWillAppear:(BOOL)animated {
-    //[self setupNavScrollButtons]; // This is called from dataConroller:didRetrieveCategories: once the categories are retrieved
-    
+- (void)viewWillAppear:(BOOL)animated
+{
     [super viewWillAppear:animated];
+
+    [self setupNavScrollButtons]; // needed for updating bookmark status
+    
     /*
 	if (showingBookmarks) {
 		self.stories = [self.dataManager bookmarkedStories];
@@ -152,6 +155,8 @@
     BOOL showsSearchButton = YES; // TODO: when would this be false?
     BOOL bookmarksExist = [self.dataManager bookmarkedStories].count > 0;
     if (self.categories.count > 1 || bookmarksExist || showsSearchButton) {
+        [_navScrollView removeAllRegularButtons];
+        
         _navScrollView.showsSearchButton = showsSearchButton;
         _navScrollView.showsBookmarkButton = bookmarksExist;
         
