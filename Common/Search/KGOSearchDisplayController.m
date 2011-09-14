@@ -260,6 +260,7 @@ showingOnlySearchResults = _showingOnlySearchResults, showsSearchOverlay;
 	_showingOnlySearchResults = NO;
     [self hideSearchResultsTableView];
     [self setActive:NO animated:YES];
+    [_searchBar setShowsCancelButton:NO animated:YES];
     _searchBar.text = nil;
 }
 

@@ -480,7 +480,7 @@
 
 - (BOOL)resignFirstResponder {
     if ([_textField resignFirstResponder]) {
-        [self setShowsCancelButton:NO animated:YES];
+        //[self setShowsCancelButton:NO animated:YES];
     }
     return YES;
 }
