@@ -156,7 +156,7 @@
             }
         }
         DLog(@"%@", searchResults);
-        [self.searchDelegate searcher:self didReceiveResults:searchResults];
+        [self.searchDelegate receivedSearchResults:searchResults forSource:nil];
     }
 }
 

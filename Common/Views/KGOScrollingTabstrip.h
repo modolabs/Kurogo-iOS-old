@@ -50,6 +50,7 @@
 @property (nonatomic) BOOL showsBookmarkButton;
 
 - (void)addButtonWithTitle:(NSString *)title;
+- (void)removeAllRegularButtons;
 
 @property (readonly) NSUInteger numberOfButtons;
 

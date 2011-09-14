@@ -82,7 +82,7 @@
     return toInterfaceOrientation == UIInterfaceOrientationPortrait;
 }
 
-- (void)searcher:(id)searcher didReceiveResults:(NSArray *)results
+- (void)receivedSearchResults:(NSArray *)results forSource:(NSString *)source
 {
     self.bookmarkedItems = results;
 }

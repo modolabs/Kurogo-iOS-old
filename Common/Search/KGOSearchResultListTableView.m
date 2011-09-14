@@ -52,7 +52,7 @@
 
 #pragma mark KGOSearchResultsHolder
 
-- (void)searcher:(id)searcher didReceiveResults:(NSArray *)results
+- (void)receivedSearchResults:(NSArray *)results forSource:(NSString *)source
 {
     self.items = results;
     [_tableController reloadDataForTableView:self];

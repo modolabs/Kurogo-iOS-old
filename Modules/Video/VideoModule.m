@@ -67,8 +67,8 @@ NSString * const KGODataModelNameVideo = @"Video";
                                 thenRunBlock:^(id result) {
                                     if ([result isKindOfClass:[NSArray class]])
                                     {
-                                        [blockSelf.searchDelegate searcher:blockSelf
-                                                         didReceiveResults:result];
+                                        [blockSelf.searchDelegate receivedSearchResults:result
+                                                                              forSource:blockSelf.shortName];
                                     }
                                 }];
 }

@@ -9,36 +9,10 @@
 
 @implementation KGOSpringboardViewController
 
-- (void) viewWillAppear:(BOOL)animated {
-    [super viewWillAppear:animated];
-    
-    [self adjustScrollView];
-}
+#pragma mark -
 
 - (void)loadView {
     [super loadView];
-
-    //[self adjustScrollView];
-}
-
-- (void) adjustScrollView {
-
-    
-    if (primaryGrid) {
-        [primaryGrid removeFromSuperview];
-        primaryGrid = nil;
-    }
-    
-    if (secondGrid) {
-        [secondGrid removeFromSuperview];   
-        secondGrid = nil;
-    }
-    
-    if (_scrollView) {
-        [_scrollView removeFromSuperview];
-        _scrollView = nil;
-    }
-    
     
     CGRect frame = self.view.bounds;
     if (_searchBar) {
@@ -48,7 +22,6 @@
     _scrollView = [[UIScrollView alloc] initWithFrame:frame];
     _scrollView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     _scrollView.contentSize = self.view.bounds.size;
-    
     [self.view addSubview:_scrollView];
     
     if (!primaryGrid) {
@@ -69,8 +42,12 @@
     
     [_scrollView addSubview:primaryGrid];
     [_scrollView addSubview:secondGrid];
-    
-    
+}
+
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    [self iconGridFrameDidChange:secondGrid];
 }
 
 - (void)refreshModules
@@ -91,18 +68,19 @@
         secondGrid.frame = frame;
     }
     
-    if ((secondGrid.frame.origin.y + secondGrid.frame.size.height) > self.view.bounds.size.height) {
-                
-        CGRect contentRect = CGRectZero;
-        for (UIView *view in _scrollView.subviews)
-            contentRect = CGRectUnion(contentRect, view.frame);
-        
-        contentRect.size.height += 20;
-        _scrollView.contentSize = contentRect.size;
+    CGFloat scrollHeight = secondGrid.frame.origin.y + secondGrid.frame.size.height; // pad bottom
+    if (_searchBar) {
+        scrollHeight += _searchBar.frame.size.height;
     }
+    if (scrollHeight != _scrollView.contentSize.height) {
+        _scrollView.contentSize = CGSizeMake(_scrollView.contentSize.width, scrollHeight);
+    }
+    
+    [_scrollView scrollRectToVisible:CGRectMake(0, 0, 1, 1) animated:NO];
 }
 
 - (void)dealloc {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
     [_scrollView release];
     [super dealloc];
 }

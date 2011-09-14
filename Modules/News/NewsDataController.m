@@ -555,7 +555,8 @@ currentCategories = _currentCategories, currentStories = _currentStories;
                     [self.delegate dataController:self didReceiveSearchResults:_searchResults];
                 }
 
-                [self.searchDelegate searcher:self didReceiveResults:_searchResults];
+                // TODO: use a user-facing string instead of module tag
+                [self.searchDelegate receivedSearchResults:_searchResults forSource:self.moduleTag];
                 
                 [_searchResults release];
                 _searchResults = nil;

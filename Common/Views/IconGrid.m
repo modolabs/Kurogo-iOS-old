@@ -90,13 +90,13 @@ const GridSpacing GridSpacingZero = {0, 0};
     // finish the loop
     [self layoutRow:iconsInCurrentRow yOrigin:yOrigin width:currentRowWidth];
     
-    // resize our frame if it is too short to fit all icons.
+    // resize our frame if it is taller/shorter than the requisite icon space.
     CGFloat maxHeight = 0;
     for (UIView *anIcon in iconsInCurrentRow) {
         if (maxHeight < anIcon.frame.size.height)
             maxHeight = anIcon.frame.size.height;
     }
-    if (self.frame.size.height < maxHeight + yOrigin + self.bottomPadding) {
+    if (self.frame.size.height != maxHeight + yOrigin + self.bottomPadding) {
         CGRect frame = self.frame;
         frame.size.height = maxHeight + yOrigin + self.bottomPadding;
         self.frame = frame;

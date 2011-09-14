@@ -128,7 +128,7 @@ NSString * const KGODataModelNameCalendar = @"Calendar";
         KGOEventWrapper *anEvent = [[[KGOEventWrapper alloc] initWithDictionary:aResult] autorelease];
         [searchResults addObject:anEvent];
     }
-    [self.searchDelegate searcher:self didReceiveResults:searchResults];
+    [self.searchDelegate receivedSearchResults:searchResults forSource:self.shortName];
 }
 
 

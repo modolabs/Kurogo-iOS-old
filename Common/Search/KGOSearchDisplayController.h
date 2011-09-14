@@ -40,7 +40,7 @@
 @interface KGOSearchDisplayController : NSObject <KGOSearchBarDelegate, KGOTableViewDataSource, KGOSearchResultsHolder, KGODetailPagerController> {
     
     id<KGOSearchDisplayDelegate> _delegate;
-    NSArray *_searchResults;
+    //NSArray *_searchResults;
     BOOL _showingOnlySearchResults;
 
     KGOSearchBar *_searchBar;
@@ -55,12 +55,19 @@
 
 @property (nonatomic, readonly) BOOL showingOnlySearchResults; // NO if tableview includes search suggestions
 @property (nonatomic, readonly) id<KGOSearchDisplayDelegate> delegate;
-@property (nonatomic, retain) NSArray *searchResults;
+
+//@property (nonatomic, retain) NSArray *searchResults;
+@property (nonatomic, readonly) NSArray *searchResults;
+
+@property (nonatomic, retain) NSMutableDictionary *multiSearchResults;
+@property (nonatomic, retain) NSMutableArray *searchSources;
 
 @property (nonatomic, readonly) KGOSearchBar *searchBar;
 @property (nonatomic, getter=isActive) BOOL active;
 @property (nonatomic, readonly) UIViewController *searchContentsController;
 @property (nonatomic, readonly) KGOTableController *searchTableController;
+
+@property (nonatomic) NSUInteger maxResultsPerSection;
 
 - (id)initWithSearchBar:(KGOSearchBar *)searchBar
                delegate:(id<KGOSearchDisplayDelegate>)delegate

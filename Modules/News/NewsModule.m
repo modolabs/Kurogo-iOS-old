@@ -98,7 +98,7 @@
 
 - (void)didReceiveSearchResults:(NSArray *)results forSearchTerms:(NSString *)searchTerms
 {
-    [self.searchDelegate searcher:self didReceiveResults:results];
+    [self.searchDelegate receivedSearchResults:results forSource:self.shortName];
     self.searchDelegate = nil;
 }
 

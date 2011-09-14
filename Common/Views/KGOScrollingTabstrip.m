@@ -155,6 +155,12 @@
     return [_buttons count];
 }
 
+- (void)removeAllRegularButtons
+{
+    [_buttons release];
+    _buttons = [[NSMutableArray alloc] init];
+}
+
 // TODO: get config values for tabstrip
 - (void)layoutSubviews {
     [super layoutSubviews];
@@ -195,7 +201,6 @@
     for (UIButton *aButton in allButtons) {
         aButton.frame = CGRectMake(xOffset, aButton.frame.origin.y, aButton.frame.size.width, aButton.frame.size.height);
         xOffset += aButton.frame.size.width + SCROLL_TAB_HORIZONTAL_MARGIN;
-        
         if (![aButton isDescendantOfView:self]) {
             [_contentView addSubview:aButton];
         }

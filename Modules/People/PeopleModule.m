@@ -125,7 +125,7 @@
         if (person)
             [searchResults addObject:person];
     }
-    [self.searchDelegate searcher:self didReceiveResults:searchResults];
+    [self.searchDelegate receivedSearchResults:searchResults forSource:self.shortName];
 }
 
 #pragma mark -
