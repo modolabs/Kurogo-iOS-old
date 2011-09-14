@@ -67,6 +67,19 @@ NSString * const KGORequestErrorDomain = @"com.modolabs.KGORequest.ErrorDomain";
 	return self;
 }
 
+- (BOOL)connectWithResponseType:(Class)responseType callback:(JSONObjectHandler)callback
+{
+    self.handler = [[callback copy] autorelease];
+    self.expectedResponseType = responseType;
+    return [self connect];
+}
+
+- (BOOL)connectWithCallback:(JSONObjectHandler)callback
+{
+    self.handler = [[callback copy] autorelease];
+    return [self connect];
+}
+
 - (BOOL)connect {
     NSError *error = nil;
     NSDictionary *userInfo = nil;

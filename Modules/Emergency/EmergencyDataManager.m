@@ -51,14 +51,15 @@ NSString * const EmergencyContactsRetrievedNotification = @"EmergencyContactsRet
                            path:@"notice"
                            params:nil];
     
-    request.expectedResponseType = [NSDictionary class];
-    request.handler = [[^(id result) {
-        int retval;
+    __block EmergencyDataManager *blockSelf = self;
+    [request connectWithResponseType:[NSDictionary class]
+                            callback:^(id result) {
+        NSInteger retval;
         NSDictionary *emergencyNoticeResult = (NSDictionary *)result;
         
-        NSArray *cachedNotices = [self cachedNotices];
+        NSArray *cachedNotices = [blockSelf cachedNotices];
         [[CoreDataManager sharedManager] deleteObjects:cachedNotices];
-            
+        
         id notice = [emergencyNoticeResult objectForKey:@"notice"];
         if(notice != [NSNull null]) {
             NSDictionary *noticeDict = (NSDictionary *)notice;
@@ -74,9 +75,7 @@ NSString * const EmergencyContactsRetrievedNotification = @"EmergencyContactsRet
         
         [[CoreDataManager sharedManager] saveData];
         return retval;
-    } copy] autorelease];
-    
-    [request connect];
+    }];
 }
 
 - (NSArray *)cachedNotices {
@@ -106,13 +105,14 @@ NSString * const EmergencyContactsRetrievedNotification = @"EmergencyContactsRet
                            path:@"contacts"
                            params:nil];
     
-    request.expectedResponseType = [NSDictionary class];
-    request.handler = [[^(id result) {
+    __block EmergencyDataManager *blockSelf = self;
+    [request connectWithResponseType:[NSDictionary class]
+                            callback:^(id result) {
         NSDictionary *emergencyContactsResult = (NSDictionary *)result;
         
         // delete old contacts
-        EmergencyContactsSection *primary = [self contactsSection:@"primary"];
-        EmergencyContactsSection *secondary = [self contactsSection:@"secondary"];
+        EmergencyContactsSection *primary = [blockSelf contactsSection:@"primary"];
+        EmergencyContactsSection *secondary = [blockSelf contactsSection:@"secondary"];
         if (primary) {
             [[CoreDataManager sharedManager] deleteObject:primary];
         }
@@ -144,8 +144,8 @@ NSString * const EmergencyContactsRetrievedNotification = @"EmergencyContactsRet
         [[CoreDataManager sharedManager] saveData];
         
         // return the number of sections created
-        return [[emergencyContactsResult allKeys] count];
-    } copy] autorelease];
+        return (NSInteger)[[emergencyContactsResult allKeys] count];
+    }];
     
     [request connect];    
 }

@@ -244,7 +244,7 @@ currentCategories = _currentCategories, currentStories = _currentStories;
     __block NewsDataController *blockSelf = self;
     __block NSArray *oldCategories = self.currentCategories;
     
-    request.handler = [[^(id result) {
+    [request connectWithCallback:^(id result) {
         
         NSArray *newCategoryDicts = (NSArray *)result;
         
@@ -277,7 +277,7 @@ currentCategories = _currentCategories, currentStories = _currentStories;
         
         return REQUEST_CATEGORIES_CHANGED;
         
-    } copy] autorelease];
+    }];
     
 	if (![request connect]) {
 		DLog(@"failed to dispatch request");
@@ -337,11 +337,9 @@ currentCategories = _currentCategories, currentStories = _currentStories;
                                                                           params:params];
     self.storiesRequest = request;
     
-    request.expectedResponseType = [NSDictionary class];
-    
     __block NewsDataController *blockSelf = self;
     __block NewsCategory *category = self.currentCategory;
-    request.handler = [[^(id result) {
+    [request connectWithCallback:^(id result) {
         NSDictionary *resultDict = (NSDictionary *)result;
         NSArray *stories = [resultDict arrayForKey:@"stories"];
         // need to bring category to local context
@@ -364,8 +362,8 @@ currentCategories = _currentCategories, currentStories = _currentStories;
         mergedCategory.lastUpdated = [NSDate date];
         [[CoreDataManager sharedManager] saveData];
         
-        return [stories count];
-    } copy] autorelease];
+        return (NSInteger)[stories count];
+    }];
     
     [request connect];
 }

@@ -83,6 +83,8 @@ typedef enum {
 @property(nonatomic, assign) id<KGORequestDelegate> delegate;
 
 - (BOOL)connect;
+- (BOOL)connectWithResponseType:(Class)responseType callback:(JSONObjectHandler)callback;
+- (BOOL)connectWithCallback:(JSONObjectHandler)callback;
 - (void)cancel;  // call to stop receiving messages
 
 + (KGORequestErrorCode)internalCodeForNSError:(NSError *)error;
