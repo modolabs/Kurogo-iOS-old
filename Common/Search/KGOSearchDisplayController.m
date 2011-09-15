@@ -272,6 +272,8 @@ maxResultsPerSection;
     [self setActive:NO animated:YES];
     [_searchBar setShowsCancelButton:NO animated:YES];
     _searchBar.text = nil;
+    self.multiSearchResults = nil;
+    self.searchSources = nil;
 }
 
 - (void)searchBarBookmarkButtonClicked:(KGOSearchBar *)searchBar {
