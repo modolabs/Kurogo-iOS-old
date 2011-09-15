@@ -56,14 +56,14 @@
 {
     KGOMapCategory *category = nil;
     
-    NSString *identifier = [dictionary stringForKey:@"id" nilIfEmpty:YES];
+    NSString *identifier = [dictionary nonemptyStringForKey:@"id"];
     if (identifier) {
         category = [KGOMapCategory categoryWithIdentifier:identifier];
-        NSString *title = [dictionary stringForKey:@"title" nilIfEmpty:YES];
+        NSString *title = [dictionary nonemptyStringForKey:@"title"];
         if (title) {
             category.title = title;
         }
-        NSString *subtitle = [dictionary stringForKey:@"subtitle" nilIfEmpty:YES];
+        NSString *subtitle = [dictionary nonemptyStringForKey:@"subtitle"];
         if (subtitle) {
             category.subtitle = subtitle;
         }
@@ -75,7 +75,7 @@
         if (lat) {
             category.longitude = [NSNumber numberWithFloat:lon];
         }
-        NSString *group = [dictionary stringForKey:@"group" nilIfEmpty:YES];
+        NSString *group = [dictionary nonemptyStringForKey:@"group"];
         if (group) {
             category.parentCategory = [KGOMapCategory categoryWithIdentifier:group];
         }

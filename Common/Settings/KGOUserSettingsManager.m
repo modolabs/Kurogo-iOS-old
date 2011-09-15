@@ -198,7 +198,7 @@ NSString * const KGOUserSettingServerKey = @"ServerSelection";
         NSMutableArray *options = [NSMutableArray array];
         
         for (NSString *configTitle in configTitles) {
-            NSString *host = [[servers dictionaryForKey:configTitle] stringForKey:@"Host" nilIfEmpty:YES];
+            NSString *host = [[servers dictionaryForKey:configTitle] nonemptyStringForKey:@"Host"];
             if (host) {
                 [options addObject:[NSDictionary dictionaryWithObjectsAndKeys:
                                     configTitle, @"id",

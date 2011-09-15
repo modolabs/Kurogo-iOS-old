@@ -39,7 +39,7 @@
 {
     NSDictionary *userDict = [[[KGORequestManager sharedManager] sessionInfo] dictionaryForKey:@"user"];
     
-    self.username = [userDict stringForKey:@"name" nilIfEmpty:YES];
+    self.username = [userDict nonemptyStringForKey:@"name"];
     
     KGOHomeScreenViewController *homeVC = (KGOHomeScreenViewController *)[KGO_SHARED_APP_DELEGATE() homescreen];
     CGRect frame = [homeVC springboardFrame];

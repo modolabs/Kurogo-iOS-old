@@ -16,8 +16,8 @@ organizedEvent;
 {
     self = [super init];
     if (self) {
-        self.name = [dictionary stringForKey:@"display_name" nilIfEmpty:YES];
-        self.identifier = [dictionary stringForKey:@"id" nilIfEmpty:YES];
+        self.name = [dictionary nonemptyStringForKey:@"display_name"];
+        self.identifier = [dictionary nonemptyStringForKey:@"id"];
     }
     return self;
 }

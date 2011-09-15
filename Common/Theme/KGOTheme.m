@@ -74,7 +74,7 @@ static KGOTheme *s_sharedTheme = nil;
 
 - (NSString *)defaultFontName
 {
-    NSString *fontName = [fontDict stringForKey:@"DefaultFont" nilIfEmpty:YES];
+    NSString *fontName = [fontDict nonemptyStringForKey:@"DefaultFont"];
     if (!fontName) {
         fontName = [[UIFont systemFontOfSize:[UIFont systemFontSize]] fontName];
     }
@@ -99,7 +99,7 @@ static KGOTheme *s_sharedTheme = nil;
     
     NSDictionary *fontInfo = [fontDict objectForKey:themeProperty];
     if (fontInfo) {
-        fontName = [fontInfo stringForKey:@"font" nilIfEmpty:YES];
+        fontName = [fontInfo nonemptyStringForKey:@"font"];
         if (!fontName) {
             fontName = [self defaultFontName];
         }

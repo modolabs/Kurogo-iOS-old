@@ -42,7 +42,7 @@ userInfo = _userInfo;
 
 - (id)initWithDictionary:(NSDictionary *)dictionary
 {
-    NSString *identifier = [dictionary stringForKey:@"id" nilIfEmpty:YES];
+    NSString *identifier = [dictionary nonemptyStringForKey:@"id"];
     if (!identifier) {
         [self release];
         return nil;
@@ -65,12 +65,8 @@ userInfo = _userInfo;
 - (void)updateWithDictionary:(NSDictionary *)dictionary
 {
     // basic info
-    self.title = [dictionary stringForKey:@"title" nilIfEmpty:YES];
-    if (!self.title) {
-        // TODO: deprecate this from API
-        self.title = [dictionary stringForKey:@"summary" nilIfEmpty:YES];
-    }
-    self.summary = [dictionary stringForKey:@"description" nilIfEmpty:YES];
+    self.title = [dictionary nonemptyStringForKey:@"title"];
+    self.summary = [dictionary nonemptyStringForKey:@"description"];
     
     // time
     NSTimeInterval startTimestamp = [dictionary floatForKey:@"start"];
@@ -88,7 +84,7 @@ userInfo = _userInfo;
     }
     
     // location
-    self.location = [dictionary stringForKey:@"location" nilIfEmpty:YES];
+    self.location = [dictionary nonemptyStringForKey:@"location"];
     
     // TODO: contact info
     

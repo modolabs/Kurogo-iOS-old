@@ -8,7 +8,7 @@
 - (id)initWithDictionary:(NSDictionary *)moduleDict {
     self = [super initWithDictionary:moduleDict];
     if (self) {
-        self.url = [moduleDict stringForKey:@"url" nilIfEmpty:YES];
+        self.url = [moduleDict nonemptyStringForKey:@"url"];
     }
     return self;
 }
@@ -25,7 +25,7 @@
 
 - (void)evaluateInitialiationPayload:(NSDictionary *)payload
 {
-    self.url = [payload stringForKey:@"url" nilIfEmpty:YES];
+    self.url = [payload nonemptyStringForKey:@"url"];
 }
 
 - (BOOL)requiresKurogoServer

@@ -74,7 +74,7 @@ KGOSign KGOGetIntegerSign(NSInteger x) {
 
         } else if ([value isKindOfClass:[NSDictionary class]]) {
             for (NSString *singleKey in [value allKeys]) {
-                NSString *singleValue = [value stringForKey:singleKey nilIfEmpty:YES];
+                NSString *singleValue = [value nonemptyStringForKey:singleKey];
                 if (singleValue) {
                     [components addObject:[NSString stringWithFormat:@"%@[%@]=%@", encodedKey, singleKey, singleValue]];
                 }
@@ -315,16 +315,6 @@ KGOSign KGOGetIntegerSign(NSInteger x) {
         }
     }
     return string;
-}
-
-- (NSString *)stringForKey:(NSString *)key nilIfEmpty:(BOOL)nilIfEmpty {
-    id object = [self objectForKey:key];
-    if ([object isKindOfClass:[NSString class]]) {
-        NSString *string = (NSString *)object;
-        if (string.length || !nilIfEmpty)
-            return string;
-    }
-    return nil;
 }
 
 - (NSNumber *)numberForKey:(NSString *)key {

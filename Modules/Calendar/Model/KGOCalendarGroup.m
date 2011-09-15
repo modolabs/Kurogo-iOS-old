@@ -51,11 +51,11 @@ NSString * const KGOEntityNameCalendarGroup = @"KGOCalendarGroup";
 + (KGOCalendarGroup *)groupWithDictionary:(NSDictionary *)aDict
 {
     KGOCalendarGroup *group = nil;
-    NSString *identifier = [aDict stringForKey:@"id" nilIfEmpty:YES];
+    NSString *identifier = [aDict nonemptyStringForKey:@"id"];
     if (identifier) {
         group = [KGOCalendarGroup groupWithID:identifier];
         
-        NSString *title = [aDict stringForKey:@"title" nilIfEmpty:YES];
+        NSString *title = [aDict nonemptyStringForKey:@"title"];
         if (![group.title isEqualToString:title]) {
             group.title = title;
         }
@@ -78,7 +78,6 @@ NSString * const KGOEntityNameCalendarGroup = @"KGOCalendarGroup";
             }
         }
     }
-    NSLog(@"%@", [group.calendars description]);
     
     return group;
 }

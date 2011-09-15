@@ -272,7 +272,7 @@ currentCategories = _currentCategories, currentStories = _currentStories;
 - (NewsCategory *)categoryWithDictionary:(NSDictionary *)categoryDict
 {
     NewsCategory *category = nil;
-    NSString *categoryId = [categoryDict stringForKey:@"id" nilIfEmpty:YES];
+    NSString *categoryId = [categoryDict nonemptyStringForKey:@"id"];
     if (categoryId) {
         category = [self categoryWithId:categoryId];
         if (!category) {
@@ -280,7 +280,7 @@ currentCategories = _currentCategories, currentStories = _currentStories;
             category.moduleTag = self.moduleTag;
             category.category_id = categoryId;
         }
-        category.title = [categoryDict stringForKey:@"title" nilIfEmpty:YES];
+        category.title = [categoryDict nonemptyStringForKey:@"title"];
         category.isMainCategory = [NSNumber numberWithBool:YES];
         category.moreStories = [NSNumber numberWithInt:-1];
         category.nextSeekId = [NSNumber numberWithInt:0];
@@ -353,7 +353,7 @@ currentCategories = _currentCategories, currentStories = _currentStories;
 
 - (NewsStory *)storyWithDictionary:(NSDictionary *)storyDict {
     // use existing story if it's already in the db
-    NSString *GUID = [storyDict stringForKey:NewsTagStoryId nilIfEmpty:YES];
+    NSString *GUID = [storyDict nonemptyStringForKey:NewsTagStoryId];
     NewsStory *story = [[CoreDataManager sharedManager] uniqueObjectForEntity:NewsStoryEntityName 
                                                                     attribute:@"identifier" 
                                                                         value:GUID];
@@ -367,12 +367,12 @@ currentCategories = _currentCategories, currentStories = _currentStories;
     NSDate *postDate = [NSDate dateWithTimeIntervalSince1970:unixtime];
     
     story.postDate = postDate;
-    story.title = [storyDict stringForKey:NewsTagTitle nilIfEmpty:YES];
-    story.link = [storyDict stringForKey:NewsTagLink nilIfEmpty:YES];
-    story.author = [storyDict stringForKey:NewsTagAuthor nilIfEmpty:YES];
-    story.summary = [storyDict stringForKey:NewsTagSummary nilIfEmpty:YES];
+    story.title = [storyDict nonemptyStringForKey:NewsTagTitle];
+    story.link = [storyDict nonemptyStringForKey:NewsTagLink];
+    story.author = [storyDict nonemptyStringForKey:NewsTagAuthor];
+    story.summary = [storyDict nonemptyStringForKey:NewsTagSummary];
     story.hasBody = [NSNumber numberWithBool:[storyDict boolForKey:NewsTagHasBody]];
-    story.body = [storyDict stringForKey:NewsTagBody nilIfEmpty:YES];
+    story.body = [storyDict nonemptyStringForKey:NewsTagBody];
     
     NSDictionary *imageDict = [storyDict dictionaryForKey:NewsTagImage];
     if (imageDict) {
@@ -381,7 +381,7 @@ currentCategories = _currentCategories, currentStories = _currentStories;
         if (!story.thumbImage) {
             story.thumbImage = [[CoreDataManager sharedManager] insertNewObjectForEntityForName:NewsImageEntityName];
         }
-        story.thumbImage.url = [imageDict stringForKey:@"src" nilIfEmpty:YES];
+        story.thumbImage.url = [imageDict nonemptyStringForKey:@"src"];
         story.thumbImage.thumbParent = story;
     } else {
         story.thumbImage = nil;

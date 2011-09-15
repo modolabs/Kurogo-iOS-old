@@ -72,7 +72,7 @@
         NSDictionary *orgDict = [aDict dictionaryForKey:@"value"];
         if (orgDict) {
             for (NSString *label in [NSArray arrayWithObjects:@"jobTitle", @"organization", @"department", nil]) {
-                NSString *value = [orgDict stringForKey:label nilIfEmpty:YES];
+                NSString *value = [orgDict nonemptyStringForKey:label];
                 if (value) {
                     [currentSection addObject:[NSDictionary dictionaryWithObjectsAndKeys:label, @"label", value, @"value", nil]];
                 }
@@ -109,7 +109,7 @@
         
         currentSection = [NSMutableArray array];
         for (NSDictionary *aDict in self.person.addresses) {
-            NSString *label = [aDict stringForKey:@"label" nilIfEmpty:NO];
+            NSString *label = [aDict stringForKey:@"label"];
             if (!label)
                 label = [NSString string];
             
@@ -300,15 +300,15 @@
 		// React if the cell tapped has text that that matches the display name of mail, telephonenumber, or postaladdress.
 		if (indexPath.section == _emailSection) {
             NSDictionary *personAttribute = [[self.sectionArray objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
-            [self emailIconTapped:[personAttribute stringForKey:@"value" nilIfEmpty:YES]];
+            [self emailIconTapped:[personAttribute nonemptyStringForKey:@"value"]];
         }
 		else if (indexPath.section == _phoneSection) {
             NSDictionary *personAttribute = [[self.sectionArray objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
-            [self phoneIconTapped:[personAttribute stringForKey:@"value" nilIfEmpty:YES]];
+            [self phoneIconTapped:[personAttribute nonemptyStringForKey:@"value"]];
         }
 		else if (indexPath.section == _addressSection) {
             NSDictionary *personAttribute = [[self.sectionArray objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
-            [self mapIconTapped:[personAttribute stringForKey:@"value" nilIfEmpty:YES]];
+            [self mapIconTapped:[personAttribute nonemptyStringForKey:@"value"]];
         }
 	}
 	

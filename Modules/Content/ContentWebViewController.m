@@ -57,18 +57,13 @@
 
 - (void)request:(KGORequest *)request didReceiveResult:(id)result {
     
-    NSLog(@"%@", [result description]);
-    
     NSDictionary * resultDict = [result dictionaryForKey:@"feedData"];
     
-    NSString * htmlStringText = [resultDict stringForKey:@"contentBody" nilIfEmpty:NO]; 
+    NSString * htmlStringText = [resultDict stringForKey:@"contentBody"]; 
     [self showHTMLString:htmlStringText];
     
-    NSString * titleString = [resultDict stringForKey:@"title" nilIfEmpty:NO];
+    NSString * titleString = [resultDict stringForKey:@"title"];
     self.title = titleString;
-    
-    NSLog(@"%@", htmlStringText);
-    
 }
 
 

@@ -64,9 +64,9 @@ NSString * const EmergencyContactsRetrievedNotification = @"EmergencyContactsRet
         if(notice != [NSNull null]) {
             NSDictionary *noticeDict = (NSDictionary *)notice;
             EmergencyNotice *noticeObject = [[CoreDataManager sharedManager] insertNewObjectForEntityForName:EmergencyNoticeEntityName];
-            noticeObject.title = [noticeDict stringForKey:@"title" nilIfEmpty:YES];
+            noticeObject.title = [noticeDict nonemptyStringForKey:@"title"];
             noticeObject.pubDate = [NSDate dateWithTimeIntervalSince1970:[[notice numberForKey:@"unixtime"] longValue]];
-            noticeObject.html = [noticeDict stringForKey:@"text" nilIfEmpty:YES];
+            noticeObject.html = [noticeDict nonemptyStringForKey:@"text"];
             noticeObject.moduleTag = tag;
             retval = EmergencyNoticeActive;
         } else {
@@ -132,10 +132,10 @@ NSString * const EmergencyContactsRetrievedNotification = @"EmergencyContactsRet
             for (int i=0; i < contacts.count; i++) {
                 NSDictionary *contactDict = [contacts objectAtIndex:i];
                 EmergencyContact *contact = [[CoreDataManager sharedManager] insertNewObjectForEntityForName:EmergencyContactEntityName];
-                contact.title = [contactDict stringForKey:@"title" nilIfEmpty:NO];
-                contact.subtitle = [contactDict stringForKey:@"subtitle" nilIfEmpty:YES];
-                contact.formattedPhone = [contactDict stringForKey:@"formattedPhone" nilIfEmpty:NO];
-                contact.dialablePhone = [contactDict stringForKey:@"dialablePhone" nilIfEmpty:NO];
+                contact.title = [contactDict stringForKey:@"title"];
+                contact.subtitle = [contactDict nonemptyStringForKey:@"subtitle"];
+                contact.formattedPhone = [contactDict stringForKey:@"formattedPhone"];
+                contact.dialablePhone = [contactDict stringForKey:@"dialablePhone"];
                 contact.order = [NSNumber numberWithInt:i];
                 contact.section = section;
             }

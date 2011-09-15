@@ -173,7 +173,7 @@
     // Configure the cell...
     
     
-    cell.textLabel.text = [listOfFeeds stringForKey:[feedKeys objectAtIndex:indexPath.row] nilIfEmpty:NO];
+    cell.textLabel.text = [listOfFeeds stringForKey:[feedKeys objectAtIndex:indexPath.row]];
     cell.selectionStyle = UITableViewCellSelectionStyleGray;
     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     
@@ -252,11 +252,11 @@
     
     for (int count=0; count < numberOfFeeds; count++){
         NSDictionary * pagesDictionary = [pages objectAtIndex:count];
-        NSString *key = [pagesDictionary stringForKey:@"key" nilIfEmpty:YES];
+        NSString *key = [pagesDictionary nonemptyStringForKey:@"key"];
         if (key) {
             [feedKeys addObject:key];
             
-            NSString *title = [pagesDictionary stringForKey:@"title" nilIfEmpty:NO];
+            NSString *title = [pagesDictionary stringForKey:@"title"];
             [listOfFeeds setValue:title forKey:key];
         }
     }
@@ -266,8 +266,8 @@
         
         NSDictionary * feedData = [resultDict dictionaryForKey:@"feedData"];
         
-        NSString * htmlStringText = [feedData stringForKey:@"contentBody" nilIfEmpty:NO]; 
-        NSString * titleString = [feedData stringForKey:@"title" nilIfEmpty: NO];
+        NSString * htmlStringText = [feedData stringForKey:@"contentBody"]; 
+        NSString * titleString = [feedData stringForKey:@"title"];
         
         [self showSingleFeedWebView:titleString htmlString:htmlStringText];
         return;

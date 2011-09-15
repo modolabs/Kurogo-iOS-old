@@ -286,7 +286,7 @@ NSString * const kHTTPSURIScheme = @"https";
     if (serverConfig) {
         BOOL useHTTPS = [serverConfig boolForKey:@"UseHTTPS"];
         NSString *apiPath = [serverConfig objectForKey:@"APIPath"];
-        NSString *pathExtension = [serverConfig stringForKey:@"PathExtension" nilIfEmpty:YES];
+        NSString *pathExtension = [serverConfig nonemptyStringForKey:@"PathExtension"];
 
         @synchronized(self) {
             _uriScheme = useHTTPS ? kHTTPSURIScheme : kHTTPURIScheme;
@@ -403,7 +403,7 @@ NSString * const kHTTPSURIScheme = @"https";
     [params setObject:@"1" forKey:@"hard"];
     NSDictionary *userInfo = [_sessionInfo dictionaryForKey:@"user"];
     if (userInfo) {
-        NSString *authority = [userInfo stringForKey:@"authority" nilIfEmpty:YES];
+        NSString *authority = [userInfo nonemptyStringForKey:@"authority"];
         if (authority) {
             [params setObject:authority forKey:@"authority"];
         }
@@ -417,7 +417,7 @@ NSString * const kHTTPSURIScheme = @"https";
 {
     NSDictionary *userInfo = [_sessionInfo dictionaryForKey:@"user"];
     if (userInfo) {
-        NSString *authority = [userInfo stringForKey:@"authority" nilIfEmpty:YES];
+        NSString *authority = [userInfo nonemptyStringForKey:@"authority"];
         if (authority) {
             return YES;
         }
@@ -475,7 +475,7 @@ NSString * const kHTTPSURIScheme = @"https";
         // TODO: coordinate with kurogo server on error codes.
         // Unauthorized appears to be 4 right now, but 401 or 403 might
         // make more sense.
-        NSString *title = [userInfo stringForKey:@"title" nilIfEmpty:YES];
+        NSString *title = [userInfo nonemptyStringForKey:@"title"];
         if ([title isEqualToString:@"Unauthorized"] && ![self isUserLoggedIn]) {
             [[NSNotificationCenter defaultCenter] removeObserver:self name:KGODidLoginNotification object:nil];
             [[NSNotificationCenter defaultCenter] addObserver:self
@@ -507,7 +507,7 @@ NSString * const kHTTPSURIScheme = @"https";
         
     } else if (request == _deviceRegistrationRequest) {
         DLog(@"registered new device for push notifications: %@", result);
-        NSString *deviceID = [result stringForKey:@"device_id" nilIfEmpty:YES];
+        NSString *deviceID = [result nonemptyStringForKey:@"device_id"];
         NSString *passKey = [result objectForKey:@"pass_key"];
         if ([passKey isKindOfClass:[NSNumber class]]) {
             passKey = [passKey description];

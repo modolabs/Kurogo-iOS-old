@@ -139,7 +139,7 @@
                 NSDictionary *itemDict = (NSDictionary *)[resultArray objectAtIndex:indexPath.row];
                 NSString * titleString = [itemDict objectForKey:@"title"];
                 
-                NSString *type = [itemDict stringForKey:@"type" nilIfEmpty:YES];
+                NSString *type = [itemDict nonemptyStringForKey:@"type"];
                 if (!type) {
                     type = @"webView";
                 }
@@ -176,7 +176,7 @@
 
         NSDictionary *itemDict = (NSDictionary *)[resultArray objectAtIndex:indexPath.row];
         
-        NSString *type = [itemDict stringForKey:@"type" nilIfEmpty:YES];
+        NSString *type = [itemDict nonemptyStringForKey:@"type"];
 
         if (!type) {
             NSDictionary *params = (NSDictionary *)[resultArray objectAtIndex:indexPath.row];

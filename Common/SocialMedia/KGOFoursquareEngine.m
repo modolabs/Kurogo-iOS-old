@@ -391,7 +391,7 @@ NSString * const FoursquareOAuthExpirationDate = @"4squareExpiration";
         _oauthRequest = nil;
         
         [_oauthToken release];
-        _oauthToken = [[response stringForKey:@"access_token" nilIfEmpty:YES] retain];
+        _oauthToken = [[response nonemptyStringForKey:@"access_token"] retain];
         
         if (_oauthToken) {
             
@@ -420,9 +420,9 @@ NSString * const FoursquareOAuthExpirationDate = @"4squareExpiration";
         
         NSDictionary *userDict = [response dictionaryForKey:@"user"];
         
-        NSString *userID = [userDict stringForKey:@"id" nilIfEmpty:YES];
-        NSString *firstName = [userDict stringForKey:@"firstName" nilIfEmpty:YES];
-        NSString *lastName = [userDict stringForKey:@"lastName" nilIfEmpty:YES];
+        NSString *userID = [userDict nonemptyStringForKey:@"id"];
+        NSString *firstName = [userDict nonemptyStringForKey:@"firstName"];
+        NSString *lastName = [userDict nonemptyStringForKey:@"lastName"];
 
         NSString *username = nil;
         if (firstName) {
@@ -490,7 +490,7 @@ NSString * const FoursquareOAuthExpirationDate = @"4squareExpiration";
                     NSDictionary *firstGroup = [groups dictionaryAtIndex:0];
                     for (NSDictionary *itemInfo in [firstGroup arrayForKey:@"items"]) {
                         NSDictionary *userInfo = [itemInfo dictionaryForKey:@"user"];
-                        if ([[userInfo stringForKey:@"relationship" nilIfEmpty:YES] isEqualToString:@"self"]) {
+                        if ([[userInfo nonemptyStringForKey:@"relationship"] isEqualToString:@"self"]) {
                             foundSelf = YES;
                             break;
                         }
@@ -516,7 +516,7 @@ NSString * const FoursquareOAuthExpirationDate = @"4squareExpiration";
                 
                 for (NSDictionary *itemDict in items) {
                     NSDictionary *venue = [itemDict dictionaryForKey:@"venue"];
-                    NSString *venueID = [venue stringForKey:@"id" nilIfEmpty:YES];
+                    NSString *venueID = [venue nonemptyStringForKey:@"id"];
                     NSLog(@"%@ %@", venueID, targetVenue);
                     if (venueID && targetVenue && [venueID isEqualToString:targetVenue]) {
                         checkedInVenueID = venueID;

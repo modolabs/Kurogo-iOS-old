@@ -257,7 +257,7 @@
             // TODO: implement paging
         }
         
-        //NSString *displayField = [result stringForKey:@"displayField" nilIfEmpty:YES];
+        //NSString *displayField = [result nonemptyStringForKey:@"displayField"];
 
         NSMutableSet *oldGroupIDs = [NSMutableSet set];
         NSArray *oldGroups = [[CoreDataManager sharedManager] objectsForEntity:KGOEntityNameCalendarGroup matchingPredicate:nil];
@@ -315,7 +315,7 @@
             // TODO: implement paging
         }
         
-        //NSString *displayField = [result stringForKey:@"displayField" nilIfEmpty:YES];
+        //NSString *displayField = [result nonemptyStringForKey:@"displayField"];
         
         NSArray *eventDicts = [result arrayForKey:@"results"];
         if (returned > eventDicts.count)

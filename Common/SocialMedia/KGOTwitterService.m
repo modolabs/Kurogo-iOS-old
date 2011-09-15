@@ -74,8 +74,8 @@ static NSString * const TwitterServiceName = @"Twitter";
 {
     self = [super init];
     if (self) {
-        _oauthKey = [[config stringForKey:@"OAuthConsumerKey" nilIfEmpty:YES] retain];
-        _oauthSecret = [[config stringForKey:@"OAuthConsumerSecret" nilIfEmpty:YES] retain];
+        _oauthKey = [[config nonemptyStringForKey:@"OAuthConsumerKey"] retain];
+        _oauthSecret = [[config nonemptyStringForKey:@"OAuthConsumerSecret"] retain];
     }
     return self;
 }

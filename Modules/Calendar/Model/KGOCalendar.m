@@ -34,14 +34,14 @@ NSString * const KGOEntityNameEventCategory = @"KGOCalendar";
 + (KGOCalendar *)calendarWithDictionary:(NSDictionary *)aDict
 {
     KGOCalendar *category = nil;
-    NSString *identifier = [aDict stringForKey:@"id" nilIfEmpty:YES];
+    NSString *identifier = [aDict nonemptyStringForKey:@"id"];
     if (identifier) {
         category = [KGOCalendar calendarWithID:identifier];
-        NSString *title = [aDict stringForKey:@"title" nilIfEmpty:YES];
+        NSString *title = [aDict nonemptyStringForKey:@"title"];
         if (title && ![category.title isEqualToString:title]) {
             category.title = title;
         }
-        NSString *type = [aDict stringForKey:@"type" nilIfEmpty:YES];
+        NSString *type = [aDict nonemptyStringForKey:@"type"];
         if (type && ![category.type isEqualToString:type]) {
             category.type = type;
         }

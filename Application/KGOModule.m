@@ -50,7 +50,7 @@
 - (void)updateWithDictionary:(NSDictionary *)moduleDict
 {
     // server syntax
-    NSString *title = [moduleDict stringForKey:@"title" nilIfEmpty:YES];
+    NSString *title = [moduleDict nonemptyStringForKey:@"title"];
     if (title) {
         self.shortName = title;
         self.longName = title;

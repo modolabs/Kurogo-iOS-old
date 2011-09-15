@@ -138,13 +138,13 @@ static KGOSocialMediaController *s_controller = nil;
 
 - (BOOL)supportsFacebookSharing {
     NSDictionary *facebookConfig = [_appConfig objectForKey:KGOSocialMediaTypeFacebook];
-    NSString *appID = [facebookConfig stringForKey:@"AppID" nilIfEmpty:YES];
+    NSString *appID = [facebookConfig nonemptyStringForKey:@"AppID"];
     return appID != nil;
 }
 
 - (BOOL)supportsTwitterSharing {
 	NSDictionary *twitterConfig = [_appConfig objectForKey:KGOSocialMediaTypeTwitter];
-    NSString *key = [twitterConfig stringForKey:@"OAuthConsumerKey" nilIfEmpty:YES];
+    NSString *key = [twitterConfig nonemptyStringForKey:@"OAuthConsumerKey"];
     return key != nil;
 }
 
@@ -154,13 +154,13 @@ static KGOSocialMediaController *s_controller = nil;
 
 - (BOOL)supportsBitlyURLShortening {
     NSDictionary *bitlyConfig = [_appConfig objectForKey:KGOSocialMediaTypeBitly];
-    NSString *username = [bitlyConfig stringForKey:@"Username" nilIfEmpty:YES];
+    NSString *username = [bitlyConfig nonemptyStringForKey:@"Username"];
     return username != nil;
 }
 
 - (BOOL)supportsFoursquare {
     NSDictionary *foursquareConfig = [_appConfig objectForKey:KGOSocialMediaTypeFoursquare];
-    NSString *clientID = [foursquareConfig stringForKey:@"ClientID" nilIfEmpty:YES];
+    NSString *clientID = [foursquareConfig nonemptyStringForKey:@"ClientID"];
     return clientID != nil;
 }
 
@@ -241,7 +241,7 @@ static KGOSocialMediaController *s_controller = nil;
     if (result && [result isKindOfClass:[NSDictionary class]]) {
         NSDictionary *urlData = [result dictionaryForKey:@"data"];
         if (urlData) {
-            NSString *shortURL = [urlData stringForKey:@"url" nilIfEmpty:YES];
+            NSString *shortURL = [urlData nonemptyStringForKey:@"url"];
 			[self.bitlyDelegate didGetBitlyURL:shortURL];
         } else if ([self.bitlyDelegate respondsToSelector:@selector(failedToGetBitlyURL)]) {
             [self.bitlyDelegate failedToGetBitlyURL];

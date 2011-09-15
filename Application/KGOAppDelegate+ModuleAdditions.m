@@ -115,7 +115,7 @@
 - (void)loadModulesFromArray:(NSArray *)moduleArray local:(BOOL)isLocal
 {
     for (NSDictionary *moduleDict in moduleArray) {
-        NSString *tag = [moduleDict stringForKey:@"tag" nilIfEmpty:YES];
+        NSString *tag = [moduleDict nonemptyStringForKey:@"tag"];
         KGOModule *aModule = [self moduleForTag:tag];
         if (aModule) {
             [aModule updateWithDictionary:moduleDict];

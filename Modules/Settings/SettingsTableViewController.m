@@ -140,7 +140,7 @@
         if (settingsSection == 0) {
             // TODO: clean up these ways of getting strings
             NSDictionary *dictionary = [[KGORequestManager sharedManager] sessionInfo];
-            NSString *name = [[dictionary dictionaryForKey:@"user"] stringForKey:@"name" nilIfEmpty:YES];
+            NSString *name = [[dictionary dictionaryForKey:@"user"] nonemptyStringForKey:@"name"];
             if (name) {
                 cellTitle = [NSString stringWithFormat:@"%@ %@",
                              NSLocalizedString(@"You are signed in as", nil),
@@ -169,11 +169,11 @@
         
     } else {
         NSDictionary *currentOption = [setting.options dictionaryAtIndex:indexPath.row];
-        cellTitle = [currentOption stringForKey:@"title" nilIfEmpty:NO];
+        cellTitle = [currentOption stringForKey:@"title"];
         if (setting.selectedValue == currentOption) {
             accessory = KGOAccessoryTypeCheckmark;
         }
-        cellSubtitle = [currentOption stringForKey:@"subtitle" nilIfEmpty:YES];
+        cellSubtitle = [currentOption nonemptyStringForKey:@"subtitle"];
     }
         
     return [[^(UITableViewCell *cell) {

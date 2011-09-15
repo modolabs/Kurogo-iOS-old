@@ -223,7 +223,7 @@
 - (void)request:(KGORequest *)request didReceiveResult:(id)result
 {
     if (_pendingPlacemark) {
-        NSString *incomingID = [result stringForKey:@"id" nilIfEmpty:YES];
+        NSString *incomingID = [result nonemptyStringForKey:@"id"];
         if ([incomingID isEqualToString:_pendingPlacemark.identifier]) {
             [_pendingPlacemark updateWithDictionary:result];
             DLog(@"%@", _pendingPlacemark);
@@ -404,7 +404,7 @@
         locationPreferences = [[appDelegate appConfig] dictionaryForKey:@"Location"];
     }
     
-    NSString *latLonString = [locationPreferences stringForKey:@"DefaultCenter" nilIfEmpty:YES];
+    NSString *latLonString = [locationPreferences nonemptyStringForKey:@"DefaultCenter"];
     if (latLonString) {
         NSArray *parts = [latLonString componentsSeparatedByString:@","];
         if (parts.count == 2) {

@@ -16,10 +16,10 @@
 + (PersonContact *)personContactWithDictionary:(NSDictionary *)aDict type:(NSString *)aType {
     PersonContact *contact = [[CoreDataManager sharedManager] insertNewObjectForEntityForName:PersonContactEntityName];
     contact.type = aType;
-    contact.url = [aDict stringForKey:@"url" nilIfEmpty:YES];
-    contact.title = [aDict stringForKey:@"title" nilIfEmpty:YES];
-    contact.subtitle = [aDict stringForKey:@"subtitle" nilIfEmpty:YES];
-    contact.group = [aDict stringForKey:@"group" nilIfEmpty:YES];
+    contact.url = [aDict nonemptyStringForKey:@"url"];
+    contact.title = [aDict nonemptyStringForKey:@"title"];
+    contact.subtitle = [aDict nonemptyStringForKey:@"subtitle"];
+    contact.group = [aDict nonemptyStringForKey:@"group"];
     return contact;
 }
 

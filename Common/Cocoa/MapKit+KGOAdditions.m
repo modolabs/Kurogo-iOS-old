@@ -14,7 +14,7 @@
     }
     MKCoordinateRegion region = self.region;
     
-    NSString *latLonString = [locationPreferences stringForKey:@"DefaultCenter" nilIfEmpty:YES];
+    NSString *latLonString = [locationPreferences nonemptyStringForKey:@"DefaultCenter"];
     if (latLonString) {
         NSArray *parts = [latLonString componentsSeparatedByString:@","];
         if (parts.count == 2) {

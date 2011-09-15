@@ -77,7 +77,6 @@ KGOSign KGOGetIntegerSign(NSInteger x);
 - (NSString *)nonemptyStringForKey:(NSString *)key;
 - (NSString *)nonemptyForcedStringForKey:(NSString *)key;
 
-- (NSString *)stringForKey:(NSString *)key nilIfEmpty:(BOOL)nilIfEmpty;
 - (NSNumber *)numberForKey:(NSString *)key;
 - (NSArray *)arrayForKey:(NSString *)key;
 - (NSDate *)dateForKey:(NSString *)key;

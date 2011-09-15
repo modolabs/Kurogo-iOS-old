@@ -94,7 +94,7 @@ NSString * const FacebookUsernameKey = @"FBUsername";
 {
     self = [super init];
     if (self) {
-        _appID = [[config stringForKey:@"AppID" nilIfEmpty:YES] retain];
+        _appID = [[config nonemptyStringForKey:@"AppID"] retain];
     }
     return self;
 }

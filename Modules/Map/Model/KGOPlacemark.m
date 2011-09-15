@@ -59,7 +59,7 @@
 
 - (void)updateWithDictionary:(NSDictionary *)dictionary
 {
-    self.title = [dictionary stringForKey:@"title" nilIfEmpty:YES];
+    self.title = [dictionary nonemptyStringForKey:@"title"];
     
     id descriptionInfo = [dictionary objectForKey:@"description"];
     if ([descriptionInfo isKindOfClass:[NSString class]] && [descriptionInfo length]) {
@@ -80,9 +80,9 @@
         self.longitude = [NSNumber numberWithFloat:lon];
     }
     
-    self.photoURL = [dictionary stringForKey:@"photo" nilIfEmpty:YES];
+    self.photoURL = [dictionary nonemptyStringForKey:@"photo"];
     
-    NSString *theGeometryType = [dictionary stringForKey:@"geometryType" nilIfEmpty:YES];
+    NSString *theGeometryType = [dictionary nonemptyStringForKey:@"geometryType"];
     if (theGeometryType) {
         self.geometryType = theGeometryType;
         if ([theGeometryType isEqualToString:@"point"]) {
