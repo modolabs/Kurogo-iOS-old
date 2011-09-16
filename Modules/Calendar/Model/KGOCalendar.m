@@ -10,6 +10,7 @@ NSString * const KGOEntityNameEventCategory = @"KGOCalendar";
 @dynamic title;
 @dynamic identifier;
 @dynamic type;
+@dynamic sortOrder;
 @dynamic subCalendars;
 @dynamic parentCalendar;
 @dynamic events;
@@ -18,36 +19,36 @@ NSString * const KGOEntityNameEventCategory = @"KGOCalendar";
 + (KGOCalendar *)calendarWithID:(NSString *)identifier
 {
     NSPredicate *pred = [NSPredicate predicateWithFormat:@"identifier like %@", identifier];
-    KGOCalendar *category = [[[CoreDataManager sharedManager] objectsForEntity:KGOEntityNameEventCategory
+    KGOCalendar *calendar = [[[CoreDataManager sharedManager] objectsForEntity:KGOEntityNameEventCategory
                                                                matchingPredicate:pred] lastObject];
-    if (!category) {
-        category = [[CoreDataManager sharedManager] insertNewObjectForEntityForName:KGOEntityNameEventCategory];
-        category.identifier = identifier;
+    if (!calendar) {
+        calendar = [[CoreDataManager sharedManager] insertNewObjectForEntityForName:KGOEntityNameEventCategory];
+        calendar.identifier = identifier;
     }
     
-    NSLog(@"%@ %d", category.identifier, category.events.count);
+    DLog(@"calendar %@ has %d events", calendar.identifier, calendar.events.count);
     
-    return category;
+    return calendar;
 }
 
 
 + (KGOCalendar *)calendarWithDictionary:(NSDictionary *)aDict
 {
-    KGOCalendar *category = nil;
+    KGOCalendar *calendar = nil;
     NSString *identifier = [aDict nonemptyStringForKey:@"id"];
     if (identifier) {
-        category = [KGOCalendar calendarWithID:identifier];
+        calendar = [KGOCalendar calendarWithID:identifier];
         NSString *title = [aDict nonemptyStringForKey:@"title"];
-        if (title && ![category.title isEqualToString:title]) {
-            category.title = title;
+        if (title && ![calendar.title isEqualToString:title]) {
+            calendar.title = title;
         }
         NSString *type = [aDict nonemptyStringForKey:@"type"];
-        if (type && ![category.type isEqualToString:type]) {
-            category.type = type;
+        if (type && ![calendar.type isEqualToString:type]) {
+            calendar.type = type;
         }
     }
     
-    return category;
+    return calendar;
 }
 
 

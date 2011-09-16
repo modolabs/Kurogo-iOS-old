@@ -66,6 +66,8 @@ typedef enum {
 @property(nonatomic, retain) NSDictionary *postParams;
 @property(nonatomic, retain) NSDate *ifModifiedSince; // If-Modified-Since header
 
+@property(nonatomic) NSTimeInterval minimumDuration;
+
 @property(nonatomic, retain) NSString *format; // default is json
 @property(nonatomic) NSURLRequestCachePolicy cachePolicy; // default is NSURLRequestReloadIgnoringLocalAndRemoteCacheData
 @property(nonatomic) NSTimeInterval timeout; // default is 30 seconds

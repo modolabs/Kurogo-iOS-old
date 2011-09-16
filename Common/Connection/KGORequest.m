@@ -6,11 +6,15 @@
 
 NSString * const KGORequestErrorDomain = @"com.modolabs.KGORequest.ErrorDomain";
 
+NSString * const KGORequestDurationPrefKey = @"KGORequestDuration";
+NSString * const KGORequestLastRequestTime = @"last";
+
 @interface KGORequest (Private)
 
 - (void)terminateWithErrorCode:(KGORequestErrorCode)errCode userInfo:(NSDictionary *)userInfo;
 
 - (void)runHandlerOnResult:(id)result;
+- (BOOL)isUnderMinimumDuration;
 
 @end
 
@@ -18,7 +22,7 @@ NSString * const KGORequestErrorDomain = @"com.modolabs.KGORequest.ErrorDomain";
 @implementation KGORequest
 
 @synthesize url, module, path, getParams, postParams, cachePolicy, ifModifiedSince;
-@synthesize format, delegate, timeout;
+@synthesize format, delegate, timeout, minimumDuration;
 @synthesize expectedResponseType, handler, result = _result;
 
 + (KGORequestErrorCode)internalCodeForNSError:(NSError *)error
@@ -85,9 +89,14 @@ NSString * const KGORequestErrorDomain = @"com.modolabs.KGORequest.ErrorDomain";
     NSDictionary *userInfo = nil;
     BOOL success = NO;
     
-	if (_connection) {
+    if (self.minimumDuration && [self isUnderMinimumDuration]) {
+        // don't want to show an error just because the data is fresh
+        return NO;
+        
+    } else if (_connection) {
         userInfo = [NSDictionary dictionaryWithObjectsAndKeys:@"could not connect because the connection is already in use", @"message", nil];
         error = [NSError errorWithDomain:KGORequestErrorDomain code:KGORequestErrorBadRequest userInfo:userInfo];
+
 	} else {
         DLog(@"requesting %@", [self.url absoluteString]);
         
@@ -138,6 +147,22 @@ NSString * const KGORequestErrorDomain = @"com.modolabs.KGORequest.ErrorDomain";
     }
     
 	return success;
+}
+
+- (BOOL)isUnderMinimumDuration
+{
+    NSDictionary *preferences = [[NSUserDefaults standardUserDefaults] dictionaryForKey:KGORequestDurationPrefKey];
+    if (preferences) {    
+        NSString *requestID = [self.url absoluteString];
+        NSDate *lastRequestTime = [preferences dateForKey:requestID];
+DLog(@"connection lastrequested at %@ %.0f", lastRequestTime, [lastRequestTime timeIntervalSinceNow]);
+        if (lastRequestTime && [lastRequestTime timeIntervalSinceNow] + self.minimumDuration >= 0) {
+            // lastRequestTime is more recent than (now - duration)
+            return YES;
+        }
+    }
+
+    return NO;
 }
 
 - (void)cancel {
@@ -269,6 +294,22 @@ NSString * const KGORequestErrorDomain = @"com.modolabs.KGORequest.ErrorDomain";
 		[self terminateWithErrorCode:KGORequestErrorBadResponse userInfo:errorInfo];
 		return;
 	}
+    
+    // at this point we consider the request successful
+    if (self.minimumDuration) {
+        NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+        NSDictionary *preferences = [userDefaults dictionaryForKey:KGORequestDurationPrefKey];
+        if (!preferences) {
+            preferences = [NSDictionary dictionary];
+        }
+        NSMutableDictionary *mutablePrefs = [[preferences mutableCopy] autorelease];
+
+        NSString *requestID = [self.url absoluteString];
+        [mutablePrefs setObject:[NSDate date] forKey:requestID];
+        
+        [userDefaults setObject:mutablePrefs forKey:KGORequestDurationPrefKey];
+        [userDefaults synchronize];
+    }
     
 	if (self.handler != nil) {
         _thread = [[NSThread alloc] initWithTarget:self selector:@selector(runHandlerOnResult:) object:self.result];

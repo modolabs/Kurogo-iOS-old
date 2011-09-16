@@ -54,6 +54,8 @@ NSString * const KGODidLogoutNotification = @"LogoutComplete";
     return [NSURL URLWithString:[NSString stringWithFormat:@"%@://%@", _uriScheme, _host]];
 }
 
+#pragma mark -
+
 - (KGORequest *)requestWithDelegate:(id<KGORequestDelegate>)delegate
                              module:(NSString *)module // TODO: now that we have hello, we should check parameter validity
                                path:(NSString *)path
@@ -99,6 +101,8 @@ NSString * const KGODidLogoutNotification = @"LogoutComplete";
 	}
 	return request;
 }
+
+#pragma mark Errors
 
 - (void)showAlertForError:(NSError *)error request:(KGORequest *)request
 {

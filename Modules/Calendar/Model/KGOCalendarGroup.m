@@ -72,7 +72,7 @@ NSString * const KGOEntityNameCalendarGroup = @"KGOCalendarGroup";
         } else if (calendars.count) {
             for (NSDictionary *calendarData in calendars) {
                 KGOCalendar *aCalendar = [KGOCalendar calendarWithDictionary:calendarData];
-                if (![group.calendars containsObject:aCalendar]) {
+                if (aCalendar && ![group.calendars containsObject:aCalendar]) {
                     [group addCalendarsObject:aCalendar];
                 }
             }
@@ -84,15 +84,20 @@ NSString * const KGOEntityNameCalendarGroup = @"KGOCalendarGroup";
 
 + (KGOCalendarGroup *)groupWithID:(NSString *)identifier
 {
-    NSPredicate *pred = [NSPredicate predicateWithFormat:@"identifier like %@", identifier];
-    KGOCalendarGroup *group = [[[CoreDataManager sharedManager] objectsForEntity:KGOEntityNameCalendarGroup
-                                                               matchingPredicate:pred] lastObject];
+    KGOCalendarGroup *group = [KGOCalendarGroup findGroupWithID:identifier];
     if (!group) {
         group = [[CoreDataManager sharedManager] insertNewObjectForEntityForName:KGOEntityNameCalendarGroup];
         group.identifier = identifier;
     }
     
     return group;
+}
+
++ (KGOCalendarGroup *)findGroupWithID:(NSString *)identifier
+{
+    NSPredicate *pred = [NSPredicate predicateWithFormat:@"identifier like %@", identifier];
+    return [[[CoreDataManager sharedManager] objectsForEntity:KGOEntityNameCalendarGroup
+                                            matchingPredicate:pred] lastObject];
 }
 
 @end

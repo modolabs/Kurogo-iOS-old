@@ -157,6 +157,10 @@
 
 - (void)removeAllRegularButtons
 {
+    _pressedButton = nil;
+    for (UIButton *aButton in _buttons) {
+        [aButton removeFromSuperview];
+    }
     [_buttons release];
     _buttons = [[NSMutableArray alloc] init];
 }
@@ -201,7 +205,7 @@
     for (UIButton *aButton in allButtons) {
         aButton.frame = CGRectMake(xOffset, aButton.frame.origin.y, aButton.frame.size.width, aButton.frame.size.height);
         xOffset += aButton.frame.size.width + SCROLL_TAB_HORIZONTAL_MARGIN;
-        if (![aButton isDescendantOfView:self]) {
+        if (![aButton isDescendantOfView:_contentView]) {
             [_contentView addSubview:aButton];
         }
         

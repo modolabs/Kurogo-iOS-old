@@ -9,12 +9,7 @@
 - (void)requestEventsForCurrentCalendar:(NSDate *)date;
 - (void)loadTableViewWithStyle:(UITableViewStyle)style;
 
-- (void)showSearchBar;
-- (void)hideSearchBar;
-
 @end
-
-
 
 
 // TODO: flesh out placeholder functions
@@ -34,19 +29,8 @@ bool isOverOneHour(NSTimeInterval interval) {
 @implementation CalendarHomeViewController
 
 @synthesize searchTerms, dataManager, moduleTag, showsGroups, currentCalendar = _currentCalendar;
-@synthesize theSearchBar;
-//@synthesize searchController;
-
-/*
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-{
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self) {
-        
-    }
-    return self;
-}
-*/
+@synthesize currentSections = _currentSections, currentEventsBySection = _currentEventsBySection,
+groupTitles = _groupTitles;
 
 - (void)dealloc
 {
@@ -54,8 +38,6 @@ bool isOverOneHour(NSTimeInterval interval) {
     [self clearCalendars];
     [self clearEvents];
     [super dealloc];
-    //[searchController release];
-    [theSearchBar release];
 }
 
 - (void)didReceiveMemoryWarning
@@ -68,11 +50,8 @@ bool isOverOneHour(NSTimeInterval interval) {
 
 - (void)clearEvents
 {
-    [_currentSections release];
-    _currentSections = nil;
-    
-    [_currentEventsBySection release];
-    _currentEventsBySection = nil;
+    self.currentSections = nil;
+    self.currentEventsBySection = nil;
 }
 
 - (void)clearCalendars
@@ -97,12 +76,13 @@ bool isOverOneHour(NSTimeInterval interval) {
         _tabstrip.delegate = self;
         [self.dataManager requestGroups]; // response to this will populate the tabstrip
     } else {
-        //_datePager.frame = _tabstrip.frame; // TODO: this might not be correct
-        //[_tabstrip removeFromSuperview];
+        _tabstrip.hidden = YES;
+        CGRect frame = _datePager.frame;
+        frame.origin.y = _tabstrip.frame.origin.y;
+        _datePager.frame = frame;
     }
     
     [_datePager setDate:[NSDate date]];
-    //[self loadTableViewWithStyle:UITableViewStylePlain];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -128,20 +108,23 @@ bool isOverOneHour(NSTimeInterval interval) {
 
 - (void)groupsDidChange:(NSArray *)groups
 {
-    [_groupTitles release];
-    _groupTitles = [[NSMutableArray alloc] init];
+    self.groupTitles = [NSMutableArray array];
     
     for (KGOCalendarGroup *aGroup in groups) {
-        [_groupTitles addObject:aGroup.title];
+        [self.groupTitles addObject:aGroup.title];
     }
     
-    [self setupTabstripButtons];
+    if (self.groupTitles.count == 1) {
+        // if there's only one group, expand the calendars in this group
+        [self.dataManager requestCalendarsForGroup:[groups objectAtIndex:0]];
+        
+    } else {
+        [self setupTabstripButtons];
+    }
 }
 
 - (void)groupDataDidChange:(KGOCalendarGroup *)group
 {
-    NSLog(@"calendars: %@", [group.calendars description]);
-
     [self clearCalendars];
     [self clearEvents];
     
@@ -149,11 +132,22 @@ bool isOverOneHour(NSTimeInterval interval) {
         [_loadingView stopAnimating];
         
         UITableViewStyle style;
+
         if (group.calendars.count > 1) {
-            style = UITableViewStyleGrouped;
-            // TODO: sort
-            _currentCategories = [[group.calendars allObjects] retain];
-            _datePager.hidden = YES;
+            NSSortDescriptor *sort = [NSSortDescriptor sortDescriptorWithKey:@"sortOrder" ascending:YES];
+            _currentCategories = [[group.calendars sortedArrayUsingDescriptors:[NSArray arrayWithObject:sort]] retain];
+            
+            if (self.groupTitles.count == 1) {
+                style = UITableViewStylePlain;
+                _datePager.hidden = NO;
+                
+                [self setupTabstripButtons];
+                
+            } else {
+                style = UITableViewStyleGrouped;
+                _datePager.hidden = YES;
+            }
+
         } else {
             style = UITableViewStylePlain;
             _datePager.hidden = NO;
@@ -162,6 +156,9 @@ bool isOverOneHour(NSTimeInterval interval) {
         [self loadTableViewWithStyle:style];
         
         self.currentCalendar = (group.calendars.count > 1) ? nil : [group.calendars anyObject];
+        
+    } else {
+        [self.dataManager requestCalendarsForGroup:group];
     }
 }
 
@@ -224,13 +221,18 @@ bool isOverOneHour(NSTimeInterval interval) {
             [eventsForCurrentSection addObject:event];
         }
     
-        _currentSections = [sectionTitles copy];
-        _currentEventsBySection = [eventsBySection copy];
+        self.currentSections = sectionTitles;
+        self.currentEventsBySection = eventsBySection;
     }
     
     [_loadingView stopAnimating];
-    self.tableView.hidden = NO;
-    [self reloadDataForTableView:self.tableView];
+
+    if (!self.tableView) {
+        [self loadTableViewWithStyle:UITableViewStylePlain];
+    } else {
+        self.tableView.hidden = NO;
+        [self reloadDataForTableView:self.tableView];
+    }
 }
 
 
@@ -266,9 +268,15 @@ bool isOverOneHour(NSTimeInterval interval) {
         [_loadingView startAnimating];
 
         _currentGroupIndex = index;
-        [self.dataManager selectGroupAtIndex:index];
-        KGOCalendarGroup *group = [self.dataManager currentGroup];
-        [self groupDataDidChange:group];
+
+        if (self.groupTitles.count > 1) {
+            [self.dataManager selectGroupAtIndex:index];
+            KGOCalendarGroup *group = [self.dataManager currentGroup];
+            [self groupDataDidChange:group];
+
+        } else if (_currentGroupIndex >= 0 && _currentGroupIndex < _currentCategories.count) {
+            self.currentCalendar = [_currentCategories objectAtIndex:_currentGroupIndex];
+        }
     }
 }
 
@@ -276,9 +284,16 @@ bool isOverOneHour(NSTimeInterval interval) {
 {
     _tabstrip.showsSearchButton = YES;
 
-    for (NSInteger i = 0; i < _groupTitles.count; i++) {
-        NSString *buttonTitle = [_groupTitles objectAtIndex:i];
-        [_tabstrip addButtonWithTitle:buttonTitle];
+    [_tabstrip removeAllRegularButtons];
+    if (self.groupTitles.count == 1) {
+        for (KGOCalendar *aCalendar in _currentCategories) {
+            [_tabstrip addButtonWithTitle:aCalendar.title];
+        }
+    
+    } else {
+        for (NSString *buttonTitle in self.groupTitles) {
+            [_tabstrip addButtonWithTitle:buttonTitle];
+        }
     }
     [_tabstrip setNeedsLayout];
     
@@ -297,16 +312,16 @@ bool isOverOneHour(NSTimeInterval interval) {
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     NSInteger num = 1;
-    if (_currentSections && _currentEventsBySection) {
-        num = _currentSections.count;
+    if (self.currentSections && self.currentEventsBySection) {
+        num = self.currentSections.count;
     }
     return num;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     NSInteger num = 0;
-    if (_currentSections && _currentEventsBySection) {
-        NSArray *eventsForSection = [_currentEventsBySection objectForKey:[_currentSections objectAtIndex:section]];
+    if (self.currentSections && self.currentEventsBySection) {
+        NSArray *eventsForSection = [self.currentEventsBySection objectForKey:[self.currentSections objectAtIndex:section]];
         num = eventsForSection.count;
 
     } else if (_currentCategories) {
@@ -318,22 +333,22 @@ bool isOverOneHour(NSTimeInterval interval) {
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
-    if (_currentSections.count >= 1) {
-        return [_currentSections objectAtIndex:section];
+    if (self.currentSections.count >= 1) {
+        return [self.currentSections objectAtIndex:section];
     }
     
     return nil;
 }
 
 - (KGOTableCellStyle)tableView:(UITableView *)tableView styleForCellAtIndexPath:(NSIndexPath *)indexPath {
-    if (_currentCategories) {
+    if (_currentCategories && self.groupTitles.count > 1) {
         return KGOTableCellStyleDefault;
     }
     return KGOTableCellStyleSubtitle;
 }
 
 - (CellManipulator)tableView:(UITableView *)tableView manipulatorForCellAtIndexPath:(NSIndexPath *)indexPath {
-    if (_currentCategories) {
+    if (_currentCategories && self.groupTitles.count > 1) {
         KGOCalendar *category = [_currentCategories objectAtIndex:indexPath.row];
         NSString *title = category.title;
         
@@ -343,8 +358,8 @@ bool isOverOneHour(NSTimeInterval interval) {
             cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         } copy] autorelease];
         
-    } else if (_currentSections && _currentEventsBySection) {
-        NSArray *eventsForSection = [_currentEventsBySection objectForKey:[_currentSections objectAtIndex:indexPath.section]];
+    } else if (self.currentSections && self.currentEventsBySection) {
+        NSArray *eventsForSection = [self.currentEventsBySection objectForKey:[self.currentSections objectAtIndex:indexPath.section]];
         KGOEventWrapper *event = [eventsForSection objectAtIndex:indexPath.row];
         
         NSString *title = event.title;
@@ -361,15 +376,15 @@ bool isOverOneHour(NSTimeInterval interval) {
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (_currentCategories) {
+    if (_currentCategories && self.groupTitles.count > 1) {
         KGOCalendar *calendar = [_currentCategories objectAtIndex:indexPath.row];
         NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:calendar, @"calendar", nil];
         [KGO_SHARED_APP_DELEGATE() showPage:LocalPathPageNameCategoryList forModuleTag:self.moduleTag params:params];
         
-    } else if (_currentSections && _currentEventsBySection) {
+    } else if (self.currentSections && self.currentEventsBySection) {
         NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:
-                                _currentEventsBySection, @"eventsBySection",
-                                _currentSections, @"sections",
+                                self.currentEventsBySection, @"eventsBySection",
+                                self.currentSections, @"sections",
                                 indexPath, @"currentIndexPath",
                                 nil];
                                

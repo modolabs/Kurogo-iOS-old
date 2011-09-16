@@ -29,7 +29,7 @@
 @property (nonatomic, retain) NSString *moduleTag;
 
 - (BOOL)requestGroups;
-//- (BOOL)requestCalendarsForGroup:(NSString *)group;
+- (BOOL)requestCalendarsForGroup:(KGOCalendarGroup *)group;
 
 - (BOOL)requestEventsForCalendar:(KGOCalendar *)calendar params:(NSDictionary *)params;
 - (BOOL)requestEventsForCalendar:(KGOCalendar *)calendar startDate:(NSDate *)startDate endDate:(NSDate *)endDate;

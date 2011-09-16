@@ -9,10 +9,8 @@ bool isOverOneMonth(NSTimeInterval interval);
 bool isOverOneDay(NSTimeInterval interval);
 bool isOverOneHour(NSTimeInterval interval);
 
-@interface CalendarHomeViewController : KGOTableViewController <KGODatePagerDelegate, KGOSearchDisplayDelegate, 
-//KGOScrollingTabstripDelegate, 
-KGOScrollingTabstripSearchDelegate,
-CalendarDataManagerDelegate> {
+@interface CalendarHomeViewController : KGOTableViewController <KGODatePagerDelegate,
+KGOScrollingTabstripSearchDelegate, CalendarDataManagerDelegate> {
     
     IBOutlet KGODatePager *_datePager;
     IBOutlet KGOScrollingTabstrip *_tabstrip;
@@ -31,13 +29,15 @@ CalendarDataManagerDelegate> {
     NSArray *_currentCategories;
 }
 
-@property (nonatomic, retain) KGOSearchBar *theSearchBar;
-//@property (nonatomic, retain) KGOSearchDisplayController *searchController;
-
 @property(nonatomic, retain) NSString *moduleTag;
 @property(nonatomic, retain) CalendarDataManager *dataManager;
 @property(nonatomic, retain) NSString *searchTerms;
 @property(nonatomic, retain) KGOCalendar *currentCalendar;
+
+@property(nonatomic, retain) NSMutableArray *groupTitles;
+@property(nonatomic, retain) NSArray *currentSections;
+@property(nonatomic, retain) NSDictionary *currentEventsBySection;
+
 @property(nonatomic) BOOL showsGroups;
 
 - (void)clearEvents;

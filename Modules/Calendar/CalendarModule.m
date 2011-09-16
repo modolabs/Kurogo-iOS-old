@@ -78,8 +78,7 @@ NSString * const KGODataModelNameCalendar = @"Calendar";
         CalendarHomeViewController *calendarVC = [[[CalendarHomeViewController alloc] initWithNibName:@"CalendarHomeViewController"
                                                                                                bundle:nil] autorelease];
         calendarVC.moduleTag = self.tag;
-        calendarVC.showsGroups = YES;
-        calendarVC.title = NSLocalizedString(@"Events", nil);
+        calendarVC.showsGroups = ![pageName isEqualToString:LocalPathPageNameCategoryList];
         
         calendarVC.dataManager = self.dataManager;
         // TODO: we might not need to set the following as long as viewWillAppear is properly invoked
@@ -93,8 +92,13 @@ NSString * const KGODataModelNameCalendar = @"Calendar";
 
         // requested category path
         KGOCalendar *calendar = [params objectForKey:@"calendar"];
-        calendarVC.currentCalendar = calendar;
-        
+        if (calendar) {
+            calendarVC.currentCalendar = calendar;
+            calendarVC.title = calendar.title;
+        } else {
+            calendarVC.title = NSLocalizedString(@"Events", nil);
+        }
+
         vc = calendarVC;
         
     } else if ([pageName isEqualToString:LocalPathPageNameDetail]) {
