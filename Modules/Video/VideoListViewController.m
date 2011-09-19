@@ -90,21 +90,17 @@ static const NSInteger kVideoListCellThumbnailTag = 0x78;
 @implementation VideoListViewController
 
 @synthesize dataManager;
-@synthesize moduleTag;
 @synthesize navScrollView;
 @synthesize videos;
 @synthesize videoSections;
 @synthesize activeSectionIndex;
 @synthesize theSearchBar;
-//@synthesize searchController;
 
 #pragma mark NSObject
 
 - (id)initWithStyle:(UITableViewStyle)style {
     self = [super initWithStyle:style];
 	if (self) {
-        self.dataManager = [[[VideoDataManager alloc] init] autorelease];
-        self.moduleTag = VideoModuleTag;
         self.activeSectionIndex = 0;
 	}
 	return self;
@@ -121,7 +117,6 @@ static const NSInteger kVideoListCellThumbnailTag = 0x78;
     [videos release];
     [navScrollView release];
     [dataManager release];
-    [moduleTag release];
     [super dealloc];
 }
 
@@ -151,7 +146,7 @@ static const NSInteger kVideoListCellThumbnailTag = 0x78;
         [blockSelf.navScrollView setNeedsLayout];
         [blockSelf requestVideosForActiveSection];
      }];
-    self.navigationItem.title = [[KGO_SHARED_APP_DELEGATE() moduleForTag:self.moduleTag] shortName];
+    self.navigationItem.title = [[KGO_SHARED_APP_DELEGATE() moduleForTag:self.dataManager.moduleTag] shortName];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -262,11 +257,12 @@ static const NSInteger kVideoListCellThumbnailTag = 0x78;
 }
 
 #pragma mark KGOScrollingTabstripDelegate
+
 - (void)tabstrip:(KGOScrollingTabstrip *)tabstrip clickedButtonAtIndex:(NSUInteger)index {
     self.activeSectionIndex = index;
     [self requestVideosForActiveSection];
     if (self.videoSections.count > self.activeSectionIndex) {
-        VideoModule *module = (VideoModule *)[KGO_SHARED_APP_DELEGATE() moduleForTag:VideoModuleTag];
+        VideoModule *module = (VideoModule *)[KGO_SHARED_APP_DELEGATE() moduleForTag:self.dataManager.moduleTag];
         module.searchSection = [[self.videoSections objectAtIndex:self.activeSectionIndex] objectForKey:@"value"];
     }
 }
@@ -293,13 +289,14 @@ static const NSInteger kVideoListCellThumbnailTag = 0x78;
 }
 
 - (NSArray *)searchControllerValidModules:(KGOSearchDisplayController *)controller {
-    return [NSArray arrayWithObject:VideoModuleTag];
+    return [NSArray arrayWithObject:self.dataManager.moduleTag];
 }
 
 - (NSString *)searchControllerModuleTag:(KGOSearchDisplayController *)controller {
-    return VideoModuleTag;
+    return self.dataManager.moduleTag;
 }
 
+// FIXME
 - (void)resultsHolder:(id<KGOSearchResultsHolder>)resultsHolder 
       didSelectResult:(id<KGOSearchResult>)aResult {
     

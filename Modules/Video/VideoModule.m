@@ -1,21 +1,22 @@
-//
-//  VideoModule.m
-//  Universitas
-//
-//  Created by Jim Kang on 3/29/11.
-//  Copyright 2011 Modo Labs. All rights reserved.
-//
-
 #import "VideoModule.h"
 #import "VideoListViewController.h"
+#import "VideoDetailViewController.h"
 
 NSString * const KGODataModelNameVideo = @"Video";
 
 @implementation VideoModule
 
 @synthesize dataManager;
-//@synthesize currentSearchResults;
 @synthesize searchSection;
+
+- (void)willLaunch
+{
+    [super willLaunch];
+    if (!self.dataManager) {
+        self.dataManager = [[[VideoDataManager alloc] init] autorelease];
+        self.dataManager.moduleTag = self.tag;
+    }
+}
 
 - (NSArray *)registeredPageNames {
     return [NSArray arrayWithObjects:LocalPathPageNameHome, LocalPathPageNameSearch, LocalPathPageNameDetail, nil];
@@ -24,14 +25,18 @@ NSString * const KGODataModelNameVideo = @"Video";
 - (UIViewController *)modulePage:(NSString *)pageName params:(NSDictionary *)params {
     UIViewController *vc = nil;
     if ([pageName isEqualToString:LocalPathPageNameHome]) {
-        vc = [[[VideoListViewController alloc]  
-               initWithStyle:UITableViewStylePlain] 
-              autorelease];        
+        VideoListViewController *listVC = [[[VideoListViewController alloc] initWithStyle:UITableViewStylePlain] autorelease];
+        listVC.dataManager = self.dataManager;
+        vc = listVC;
     } 
     else if ([pageName isEqualToString:LocalPathPageNameSearch]) {        
         // FIXME
     } else if ([pageName isEqualToString:LocalPathPageNameDetail]) {
-        // FIXME
+        Video *video = [params objectForKey:@"video"];
+        NSString *section = [params objectForKey:@"section"];
+        if (video) {
+            vc = [[[VideoDetailViewController alloc] initWithVideo:video andSection:section] autorelease];
+        }
     }
     return vc;
 }
@@ -46,7 +51,7 @@ NSString * const KGODataModelNameVideo = @"Video";
 #pragma mark Search
 
 - (BOOL)supportsFederatedSearch {
-    return YES; // TODO: Make search optionally not hit network if we can tell it's federated search.
+    return YES;
 }
 
 - (void)performSearchWithText:(NSString *)searchText 
@@ -54,11 +59,6 @@ NSString * const KGODataModelNameVideo = @"Video";
                      delegate:(id<KGOSearchResultsHolder>)delegate {
     
     self.searchDelegate = delegate;
-//    self.currentSearchResults = nil;
-    
-    if (!self.dataManager) {
-        self.dataManager = [[[VideoDataManager alloc] init] autorelease];
-    }
     
     // TODO: Get section
     __block VideoModule *blockSelf = self;
@@ -74,7 +74,6 @@ NSString * const KGODataModelNameVideo = @"Video";
 }
 
 - (void)dealloc {
-//    [currentSearchResults release];
     [dataManager release];
     [super dealloc];
 }

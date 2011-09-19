@@ -3,6 +3,7 @@
 #import "CalendarModel.h"
 #import "Foundation+KGOAdditions.h"
 #import "UIKit+KGOAdditions.h"
+#import "KGOAppDelegate+ModuleAdditions.h"
 
 @implementation KGOEventWrapper
 
@@ -19,7 +20,8 @@ rrule = _rrule,
 coordinate = _coordinate,
 calendars = _calendars,
 bookmarked = _bookmarked, 
-userInfo = _userInfo;
+userInfo = _userInfo,
+moduleTag;
 
 #pragma mark KGOSearchResult
 
@@ -28,6 +30,19 @@ userInfo = _userInfo;
     return [UIImage imageWithPathName:@"modules/calendar/event_map_pin"];
 }
 
+- (NSString *)subtitle
+{
+    NSDateFormatter *dateFormatter = [[[NSDateFormatter alloc] init] autorelease];
+    [dateFormatter setDateStyle:NSDateFormatterShortStyle];
+    [dateFormatter setTimeStyle:NSDateFormatterShortStyle];
+    return [dateFormatter stringFromDate:self.startDate]; 
+}
+
+- (BOOL)didGetSelected:(id)selector
+{
+    NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:self, @"searchResult",nil];
+    return [KGO_SHARED_APP_DELEGATE() showPage:LocalPathPageNameDetail forModuleTag:self.moduleTag params:params];
+}
 
 #pragma mark -
 

@@ -37,6 +37,7 @@ NSString * const KurogoVideoSectionsArrayKey = @"Kurogo video sections array";
         for (NSDictionary *dict in result) {
             Video *video = [Video videoWithDictionary:dict];
             if (video) {
+                video.moduleTag = self.moduleTag;
                 video.source = [request.getParams objectForKey:@"section"];
                 [self.videos addObject:video];
                 video.sortOrder = [NSNumber numberWithInt:order++];
@@ -57,6 +58,7 @@ NSString * const KurogoVideoSectionsArrayKey = @"Kurogo video sections array";
         
         for (NSDictionary *dict in result) {
             Video *video = [Video videoWithDictionary:dict];
+            video.moduleTag = self.moduleTag;
             video.source = [NSString stringWithFormat:@"search: %@|%@", 
                             [request.getParams objectForKey:@"q"],
                             [request.getParams objectForKey:@"section"]];
@@ -65,6 +67,7 @@ NSString * const KurogoVideoSectionsArrayKey = @"Kurogo video sections array";
     }
     else if ([request.path isEqualToString:@"detail"]) {
         Video *video = [Video videoWithDictionary:result];
+        video.moduleTag = self.moduleTag;
         video.source = [request.getParams objectForKey:@"section"];
         self.detailVideo = video;
         [[CoreDataManager sharedManager] saveData];
@@ -98,14 +101,11 @@ NSString * const KurogoVideoSectionsArrayKey = @"Kurogo video sections array";
 - (id)init
 {
     self = [super init];
-	if (self)
-	{
+	if (self) {
         self.responseBlocksForRequestPaths = [NSMutableDictionary dictionaryWithCapacity:3];
         self.pendingRequests = [NSMutableSet setWithCapacity:3];
         self.videos = [NSMutableArray arrayWithCapacity:30];
         self.videosFromCurrentSearch = [NSMutableArray arrayWithCapacity:30];
-        self.detailVideo = [NSMutableArray arrayWithCapacity:30];
-        self.moduleTag = VideoModuleTag;
     }
 	return self;
 }
@@ -117,6 +117,7 @@ NSString * const KurogoVideoSectionsArrayKey = @"Kurogo video sections array";
     [moduleTag release];
     [sections release];
     [pendingRequests release];
+    [detailVideo release];
     [super dealloc];
 }
 

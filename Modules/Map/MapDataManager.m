@@ -127,6 +127,7 @@
             for (NSDictionary *placemarkData in placemarks) {
                 KGOPlacemark *placemark = [KGOPlacemark placemarkWithDictionary:placemarkData];
                 if (placemark) {
+                    placemark.moduleTag = self.moduleTag;
                     placemark.sortOrder = [NSNumber numberWithInt:count];
                     KGOPlacemark *parent = (KGOPlacemark *)parentCategory;
                     [placemark addCategoriesObject:parent];
@@ -152,6 +153,7 @@
         for (id aResult in resultArray) {
             KGOPlacemark *placemark = [KGOPlacemark placemarkWithDictionary:aResult];
             if (placemark) {
+                placemark.moduleTag = self.moduleTag;
                 [searchResults addObject:placemark];
             }
         }

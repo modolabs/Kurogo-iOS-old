@@ -1,6 +1,7 @@
 #import "Video.h"
 #import "Foundation+KGOAdditions.h"
 #import "CoreDataManager.h"
+#import "KGOAppDelegate+ModuleAdditions.h"
 
 #pragma mark Private methods
 
@@ -8,7 +9,6 @@
 
 + (NSDate *)dateFromPublishedDictionary:(NSDictionary *)dictionary;
 + (NSSet *)tagsFromTagsDictionary:(NSDictionary *)dictionary;
-//- (void)setUpTranslationDictionary;
 
 @end
 
@@ -27,17 +27,7 @@
     // TODO.
     return nil;
 }
-/*
-- (void)setUpTranslationDictionary {
-    self.objectKeyCounterpartsForAPIKeys = 
-    [NSDictionary dictionaryWithObjectsAndKeys:
-     @"videoID", @"id",
-     @"videoDescription", @"description",
-     @"thumbnailURLString", @"image",
-     @"stillFrameImageURLString", @"stillFrameImage",
-     nil];
-}    
-*/
+
 @end
 
 @implementation Video 
@@ -63,20 +53,11 @@
 @dynamic publishedTimeStamp;
 @dynamic date;
 @dynamic sortOrder;
-@synthesize bookmarked;
+@dynamic bookmarked;
 
-//@synthesize objectKeyCounterpartsForAPIKeys;
-/*
-- (id)initWithEntity:(NSEntityDescription *)entity insertIntoManagedObjectContext:(NSManagedObjectContext *)context {
-    self = [super initWithEntity:entity insertIntoManagedObjectContext:context];
-    if (self) {
-        [self setUpTranslationDictionary];
-    }
-    return self;
-}
-*/
+@synthesize moduleTag;
+
 - (void)dealloc {
-    //[objectKeyCounterpartsForAPIKeys release];
 
     [super dealloc];
 }
@@ -123,6 +104,18 @@
     }
 }
 
+#pragma mark - KGOSearchResult
+
+- (NSString *)identifier
+{
+    return self.videoID;
+}
+
+- (NSString *)subtitle
+{
+    return [NSString stringWithFormat:@"(%@) %@", [self durationString], self.videoDescription];
+}
+
 - (NSString *)durationString {
     NSInteger rawDuration = [self.duration intValue];
     NSInteger totalMinutes = rawDuration / 60;
@@ -152,6 +145,17 @@
     if ([self isBookmarked]) {
         self.bookmarked = [NSNumber numberWithBool:NO];
     }
+}
+
+- (BOOL)didGetSelected:(id)selector
+{
+    NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:
+                            self, @"video",
+                            // TODO: figure out what source/section are supposed to mean
+                            nil];
+    return [KGO_SHARED_APP_DELEGATE() showPage:LocalPathPageNameDetail
+                                  forModuleTag:self.moduleTag
+                                        params:params];
 }
 
 

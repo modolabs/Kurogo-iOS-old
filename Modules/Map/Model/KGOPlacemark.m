@@ -4,6 +4,7 @@
 #import "CoreDataManager.h"
 #import <CoreLocation/CoreLocation.h>
 #import "KGOHTMLTemplate.h"
+#import "KGOAppDelegate+ModuleAdditions.h"
 
 @implementation KGOPlacemark
 
@@ -21,6 +22,8 @@
 @dynamic categories;
 @dynamic photoURL;
 @dynamic userInfo;
+
+@synthesize moduleTag;
 
 #pragma mark KGOSearchResult, MKAnnotation
 
@@ -50,9 +53,11 @@
     }
 }
 
-- (NSString *)moduleTag
+- (BOOL)didGetSelected:(id)selector
 {
-    return MapTag;
+    NSArray *placemarkArray = [NSArray arrayWithObject:self];
+    NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:placemarkArray, @"annotations", nil];
+    return [KGO_SHARED_APP_DELEGATE() showPage:LocalPathPageNameHome forModuleTag:[self moduleTag] params:params];
 }
 
 #pragma mark -

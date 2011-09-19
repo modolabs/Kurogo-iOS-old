@@ -4,9 +4,9 @@
 //
 
 #import <CoreData/CoreData.h>
+#import "KGOSearchModel.h"
 
-
-@interface Video :  NSManagedObject  
+@interface Video :  NSManagedObject <KGOSearchResult>
 {
 }
 
@@ -34,18 +34,18 @@
 // source can be "search" or the name of a section.
 @property (nonatomic, retain) NSString * source;
 
+@property (nonatomic, retain) NSString *moduleTag;
+
 + (Video *)videoWithID:(NSString *)identifier;
 + (Video *)videoWithDictionary:(NSDictionary *)dictionary;
 - (void)updateWithDictionary:(NSDictionary *)dictionary;
 
 - (NSString *)durationString;
-
+/*
 - (BOOL)isBookmarked;
 - (void)addBookmark;
 - (void)removeBookmark;
-
-//@property (nonatomic, retain) NSDictionary *objectKeyCounterpartsForAPIKeys;
-
+*/
 @end
 
 

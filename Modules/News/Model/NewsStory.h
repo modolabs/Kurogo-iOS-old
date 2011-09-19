@@ -24,5 +24,8 @@
 @property (nonatomic, retain) NewsImage * thumbImage;
 @property (nonatomic, retain) NewsImage * featuredImage;
 
+// TODO: categories associated with stories have a stored moduleTag property
+// see if there is any problem with this
+@property (nonatomic, retain) NSString *moduleTag;
 
 @end

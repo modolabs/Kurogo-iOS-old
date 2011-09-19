@@ -94,6 +94,7 @@
     _request = nil;
 }
 
+// FIXME: have data manager do this so we can figure out what module tag to assign
 - (void)request:(KGORequest *)request didReceiveResult:(id)result {
     _request = nil;
     

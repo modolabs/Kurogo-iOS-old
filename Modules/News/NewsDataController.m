@@ -363,6 +363,8 @@ currentCategories = _currentCategories, currentStories = _currentStories;
         story.identifier = GUID;
     }
     
+    story.moduleTag = self.moduleTag;
+    
     double unixtime = [storyDict floatForKey:@"pubDate"];
     NSDate *postDate = [NSDate dateWithTimeIntervalSince1970:unixtime];
     

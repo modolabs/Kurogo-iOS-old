@@ -409,11 +409,11 @@ groupTitles = _groupTitles;
 }
 
 - (NSArray *)searchControllerValidModules:(KGOSearchDisplayController *)controller {
-    return [NSArray arrayWithObject:CalendarTag];
+    return [NSArray arrayWithObject:self.moduleTag];
 }
 
 - (NSString *)searchControllerModuleTag:(KGOSearchDisplayController *)controller {
-    return CalendarTag;
+    return self.moduleTag;
 }
 
 - (void)resultsHolder:(id<KGOSearchResultsHolder>)resultsHolder didSelectResult:(id<KGOSearchResult>)aResult{

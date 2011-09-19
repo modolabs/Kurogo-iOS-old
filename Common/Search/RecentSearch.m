@@ -27,4 +27,14 @@
     // do nothing
 }
 
+- (NSString *)accessoryType
+{
+    return nil;
+}
+
+- (NSString *)moduleTag
+{
+    return nil;
+}
+
 @end

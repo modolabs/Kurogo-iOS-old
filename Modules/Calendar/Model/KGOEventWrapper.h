@@ -58,6 +58,9 @@
 @property (nonatomic) BOOL bookmarked;
 @property (nonatomic, retain) NSString *briefLocation;
 
+// allow this to be set by the data controller
+@property (nonatomic, retain) NSString *moduleTag;
+
 // server api
 
 - (id)initWithDictionary:(NSDictionary *)dictionary;

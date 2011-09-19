@@ -1,6 +1,6 @@
 #import "NewsStory.h"
 #import "NewsImage.h"
-
+#import "KGOAppDelegate+ModuleAdditions.h"
 
 @implementation NewsStory
 @dynamic body;
@@ -19,6 +19,8 @@
 @dynamic categories;
 @dynamic thumbImage;
 @dynamic featuredImage;
+
+@synthesize moduleTag;
 
 - (void)addCategoriesObject:(NSManagedObject *)value {    
     NSSet *changedObjects = [[NSSet alloc] initWithObjects:&value count:1];
@@ -48,6 +50,8 @@
     [self didChangeValueForKey:@"categories" withSetMutation:NSKeyValueMinusSetMutation usingObjects:value];
 }
 
+#pragma mark - KGOSearchResult
+
 - (NSString *)subtitle {
     return self.summary;
 }
@@ -67,6 +71,20 @@
     if ([self isBookmarked]) {
         self.bookmarked = [NSNumber numberWithBool:NO];
     }
+}
+
+- (BOOL)didGetSelected:(id)selector
+{
+    if ([self.hasBody boolValue]) {
+        NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:self, @"story", nil];
+        return [KGO_SHARED_APP_DELEGATE() showPage:LocalPathPageNameDetail
+                                      forModuleTag:self.moduleTag
+                                            params:params];
+    } else if (self.link.length) {
+        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:self.link]];
+        return YES;
+    }
+    return NO;
 }
 
 @end

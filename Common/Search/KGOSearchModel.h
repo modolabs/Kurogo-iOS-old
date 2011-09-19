@@ -1,5 +1,6 @@
 #import <UIKit/UIKit.h>
 #import "KGOTableViewController.h"
+#import "KGOTheme.h"
 
 @protocol KGOSearchResult <NSObject>
 
@@ -10,16 +11,18 @@
 - (void)addBookmark;
 - (void)removeBookmark;
 
+- (NSString *)moduleTag;
+
 @optional
 
-- (NSString *)moduleTag;
 - (NSString *)subtitle;
-- (NSArray *)viewsForTableCell; // how to be displayed in a search results or bookmarks table view
-- (UIImage *)annotationImage;   // image to use in map view (and maybe table view)
+- (NSArray *)viewsForTableCell;   // how to be displayed in a search results or bookmarks table view
 
-// not sure whether to use this yet
-// it looks like it could take some code out of table view controllers
-- (CellManipulator)manipulatorForContext:(id)context;
+- (UIImage *)annotationImage;     // image to use in map view
+- (UIImage *)tableCellThumbImage; // image to use in table view
+- (NSString *)accessoryType;
+
+- (BOOL)didGetSelected:(id)selector;
 
 @end
 
@@ -36,9 +39,6 @@
 @optional
 
 - (NSString *)moduleTag;
-
-// ditto above
-- (CellManipulator)manipulatorForContext:(id)context;
 
 @end
 

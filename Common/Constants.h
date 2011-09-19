@@ -29,12 +29,7 @@ extern NSString * const UnreadNotificationsKey;
 // module tags
 extern NSString * const HomeTag;
 extern NSString * const MapTag;
-extern NSString * const NewsTag;
 extern NSString * const PeopleTag;
-extern NSString * const PhotosTag;
-extern NSString * const VideoModuleTag;
-extern NSString * const CalendarTag;
-
 
 
 extern NSString * const LocalPathMapsSelectedAnnotation;

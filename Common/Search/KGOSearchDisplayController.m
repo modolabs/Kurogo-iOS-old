@@ -209,7 +209,8 @@ maxResultsPerSection;
 
 
 - (BOOL)canShowMapView {
-    if (self.searchResults.count) {
+    //if (self.searchResults.count) {
+    if (self.searchSources.count == 1 && self.searchResults.count) {
         for (id<KGOSearchResult> aResult in self.searchResults) {
             if ([aResult conformsToProtocol:@protocol(MKAnnotation)]) {
                 id<MKAnnotation>annotation = (id<MKAnnotation>)aResult;
@@ -422,89 +423,37 @@ maxResultsPerSection;
     NSString *source = [self.searchSources objectAtIndex:indexPath.section];
     NSArray *searchResults = [self.multiSearchResults objectForKey:source];
     id<KGOSearchResult> result = [searchResults objectAtIndex:indexPath.row];
-if ([result isKindOfClass:[NSDictionary class]]) {
-    NSLog(@"warning: non-KGOSearchResult result %@", result);
-}
-    NSString *accessoryType = [result isKindOfClass:[RecentSearch class]] ? nil : KGOAccessoryTypeChevron;
+
+    NSString *accessoryType = KGOAccessoryTypeChevron;
+    if ([result respondsToSelector:@selector(accessoryType)]) {
+        accessoryType = [result accessoryType];
+    }
     
-    // FIXME
     if (![result respondsToSelector:@selector(viewsForTableCell)] || ![result viewsForTableCell]) {
-        /*
-        if([result isKindOfClass:[NSDictionary class]]){
-            NSDictionary *story = (NSDictionary *)result; 
-            NewsStory *newsStory = [self storyWithDictionary:story]; 
-            title = newsStory.title;
-            subtitle = newsStory.summary; 
-            
-            return [[^(UITableViewCell *cell) {
-                cell.selectionStyle = UITableViewCellSelectionStyleGray;
-                cell.textLabel.text = title;
-                cell.detailTextLabel.text = subtitle;
-                cell.accessoryView = [[KGOTheme sharedTheme] accessoryViewForType:accessoryType];
-                //----Code for adding image to news search result-----////
-                //[cell.imageView setBounds:CGRectMake(0, 0, 50, 50)];
-                //[cell.imageView setClipsToBounds:NO];
-                //[cell.imageView setFrame:CGRectMake(0, 0, 50, 50)];
-                //[cell.imageView setContentMode:UIViewContentModeScaleAspectFill];
-                //NSString *URLString = newsStory.thumbImage.url; 
-                //NSData *data=[NSData dataWithContentsOfURL:[NSURL URLWithString:URLString]];
-                //UIImage *image = [UIImage imageWithData:data];
-                //cell.imageView.image = image;
-            } copy] autorelease];
-            
+        title = [result title];
+        subtitle = [result respondsToSelector:@selector(subtitle)] ? [result subtitle] : nil;
+
+        UIImage *image = nil;
+        if ([result respondsToSelector:@selector(tableCellThumbImage)]) {
+            image = [result tableCellThumbImage];
         }
-        else */
-        if([result isKindOfClass:[Video class]]){
-            Video *video = (Video *)result;
-            title = [video title];
-            subtitle = [NSString stringWithFormat:@"(%@) %@", [video durationString], video.videoDescription];
-            
-            return [[^(UITableViewCell *cell) {
-                cell.selectionStyle = UITableViewCellSelectionStyleGray;
-                cell.textLabel.text = title;
-                cell.detailTextLabel.text = subtitle;
-                cell.accessoryView = [[KGOTheme sharedTheme] accessoryViewForType:accessoryType];
-                [cell.imageView setBounds:CGRectMake(0, 0, 50, 50)];
+        
+        return [[^(UITableViewCell *cell) {
+            cell.selectionStyle = UITableViewCellSelectionStyleGray;
+            cell.textLabel.text = title;
+            cell.detailTextLabel.text = subtitle;
+            cell.accessoryView = [[KGOTheme sharedTheme] accessoryViewForType:accessoryType];
+
+            if (image) {
+                CGRect imageBounds = CGRectMake(0, 0, tableView.rowHeight, tableView.rowHeight);
+                [cell.imageView setBounds:imageBounds];
                 [cell.imageView setClipsToBounds:NO];
-                [cell.imageView setFrame:CGRectMake(0, 0, 50, 50)];
+                [cell.imageView setFrame:imageBounds];
                 [cell.imageView setContentMode:UIViewContentModeScaleAspectFill];
-                
-                NSString *URLString = video.thumbnailURLString;
-                NSData *data=[NSData dataWithContentsOfURL:[NSURL URLWithString:URLString]];
-                UIImage *pic = [UIImage imageWithData:data];
-                cell.imageView.image = pic;
-            } copy] autorelease];
+                cell.imageView.image = image;
+            }
             
-        } 
-        else if([result isKindOfClass:[KGOEventWrapper class]]){
-            KGOEventWrapper *event = (KGOEventWrapper *)result; 
-            title = [event title];
-             
-            NSDateFormatter *dateFormatter = [[[NSDateFormatter alloc] init] autorelease];
-            [dateFormatter setDateStyle:NSDateFormatterShortStyle];
-            [dateFormatter setTimeStyle:NSDateFormatterShortStyle];
-            subtitle = [dateFormatter stringFromDate:[event startDate]]; 
-            
-            return [[^(UITableViewCell *cell) {
-                cell.selectionStyle = UITableViewCellSelectionStyleGray;
-                cell.textLabel.text = title;
-                cell.detailTextLabel.text = subtitle;
-                cell.accessoryView = [[KGOTheme sharedTheme] accessoryViewForType:accessoryType];
-            } copy] autorelease];
-        }
-        else{
-            NSLog(@"%@", result);
-            title = [result title];
-            subtitle = [result respondsToSelector:@selector(subtitle)] ? [result subtitle] : nil;
-            
-            // TODO: have the objects decide this
-            return [[^(UITableViewCell *cell) {
-                cell.selectionStyle = UITableViewCellSelectionStyleGray;
-                cell.textLabel.text = title;
-                cell.detailTextLabel.text = subtitle;
-                cell.accessoryView = [[KGOTheme sharedTheme] accessoryViewForType:accessoryType];
-            } copy] autorelease];
-        }
+        } copy] autorelease];
     }
     
     return nil;
@@ -516,6 +465,7 @@ if ([result isKindOfClass:[NSDictionary class]]) {
     return KGOTableCellStyleSubtitle;
 }
 
+// TODO: localize strings
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
     //if (_showingOnlySearchResults) {
     //    return [NSString stringWithFormat:@"%d results", self.searchResults.count];
@@ -529,46 +479,6 @@ if ([result isKindOfClass:[NSDictionary class]]) {
     return [NSString stringWithFormat:@"%d results%@", searchResults.count, sourceString];
     //return nil;
 }
-
-/*
-- (NewsStory *)storyWithDictionary:(NSDictionary *)storyDict {
-    // use existing story if it's already in the db
-    NSString *GUID = [storyDict stringForKey:@"GUID" nilIfEmpty:YES];
-    NewsStory *story = [[CoreDataManager sharedManager] uniqueObjectForEntity:NewsStoryEntityName 
-                                                                    attribute:@"identifier" 
-                                                                        value:GUID];
-    // otherwise create new
-    if (!story) {
-        story = (NewsStory *)[[CoreDataManager sharedManager] insertNewObjectForEntityForName:NewsStoryEntityName];
-        story.identifier = GUID;
-    }
-    
-    double unixtime = [storyDict floatForKey:@"pubDate"];
-    NSDate *postDate = [NSDate dateWithTimeIntervalSince1970:unixtime];
-    
-    story.postDate = postDate;
-    story.title = [storyDict stringForKey:@"title" nilIfEmpty:YES];
-    story.link = [storyDict stringForKey:@"link" nilIfEmpty:YES];
-    story.author = [storyDict stringForKey:@"author" nilIfEmpty:YES];
-    story.summary = [storyDict stringForKey:@"description" nilIfEmpty:YES];
-    story.hasBody = [NSNumber numberWithBool:[storyDict boolForKey:@"hasBody"]];
-    story.body = [storyDict stringForKey:@"body" nilIfEmpty:YES];
-    
-    NSDictionary *imageDict = [storyDict objectForKey:@"image"];
-    if (imageDict) {
-        // an old thumb may already exist
-        // in which case do not create a new one
-        if (!story.thumbImage) {
-            story.thumbImage = [[CoreDataManager sharedManager] insertNewObjectForEntityForName:NewsImageEntityName];
-        }
-        story.thumbImage.url = [imageDict stringForKey:@"src" nilIfEmpty:YES];
-        story.thumbImage.thumbParent = story;
-    } else {
-        story.thumbImage = nil;
-    }
-    return story;
-}
-*/
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     return self.multiSearchResults.count;

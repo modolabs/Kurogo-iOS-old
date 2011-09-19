@@ -182,28 +182,6 @@
 - (void)setAnnotations:(NSArray *)annotations {
     [_annotations release];
     _annotations = [annotations retain];
-    
-    /*
-    if (_annotations.count == 1) {
-        id<MKAnnotation> annotation = [_annotations lastObject];
-        if ([annotation isKindOfClass:[KGOPlacemark class]] && !annotation.coordinate.latitude && !annotation.coordinate.longitude) {
-            [_pendingPlacemark release];
-            _pendingPlacemark = [annotation retain];
-            
-            // TODO: server needs a detail API
-            NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:
-                                    [_pendingPlacemark identifier], @"id",
-                                    _pendingPlacemark.category.identifier, @"category",
-                                    nil];
-            _placemarkInfoRequest = [[KGORequestManager sharedManager] requestWithDelegate:self
-                                                                                    module:self.mapModule.tag
-                                                                                      path:@"detail"
-                                                                                    params:params];
-            [_placemarkInfoRequest connect];
-            return;
-        }
-    }
-    */
 
     if (_mapView) {
         [_mapView removeAnnotations:_mapView.annotations];

@@ -5,15 +5,11 @@
 #import "ExternalURLModule.h"
 #import "UIKit+KGOAdditions.h"
 #import "SpringboardIcon.h"
-#import "KGOPersonWrapper.h"
 #import "KGOHomeScreenWidget.h"
 #import "KGOAppDelegate+ModuleAdditions.h"
 #import "KGORequestManager.h"
 #import "Foundation+KGOAdditions.h"
 #import "KGOUserSettingsManager.h"
-#import "VideoDetailViewController.h"
-#import "KGOPlacemark.h"
-#import "NewsStory.h"
 
 @interface KGOHomeScreenViewController (Private)
 
@@ -469,39 +465,8 @@
 - (void)resultsHolder:(id<KGOSearchResultsHolder>)searcher didSelectResult:(id<KGOSearchResult>)aResult {
     // FIXME: come up with a better way to figure out which module the search result belongs to
     BOOL didShow = NO;
-    if ([aResult isKindOfClass:[KGOPersonWrapper class]]) {
-        NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:aResult, @"person", nil];
-        [KGO_SHARED_APP_DELEGATE() showPage:LocalPathPageNameDetail forModuleTag:PeopleTag params:params];
-    }
-    
-    if ([aResult isKindOfClass:[Video class]]) {
-        VideoDetailViewController *detailViewController = [[VideoDetailViewController alloc] initWithVideo:(Video *)aResult andSection:nil];
-        [self.navigationController pushViewController:detailViewController animated:YES];
-        [detailViewController release];    
-    }
-    
-    if ([aResult isKindOfClass:[KGOPlacemark class]]) {
-        KGOPlacemark *placemark = (KGOPlacemark *)aResult;
-        NSArray *placemarkArray = [NSArray arrayWithObjects:placemark, nil];
-        NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:placemarkArray, @"annotations", nil];
-        KGOAppDelegate *appDelegate = KGO_SHARED_APP_DELEGATE();
-        [appDelegate showPage:LocalPathPageNameHome forModuleTag:MapTag params:params];
-    }
-    
-    if ([aResult isKindOfClass:[KGOEventWrapper class]]) {
-        NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys: aResult, @"searchResult",nil];
-        [KGO_SHARED_APP_DELEGATE() showPage:LocalPathPageNameDetail forModuleTag:CalendarTag params:params];
-    }
-    
-    if ([aResult isKindOfClass:[NewsStory class]]) {
-        NewsStory *story = aResult;
-        if([[story hasBody] boolValue]) {
-            NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:aResult, @"story", nil];
-            [KGO_SHARED_APP_DELEGATE() showPage:LocalPathPageNameDetail forModuleTag:NewsTag params:params];
-        } else {
-            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:story.link]];
-        }
-   
+    if ([aResult respondsToSelector:@selector(didGetSelected:)]) {
+        didShow = [aResult didGetSelected:self];
     }
 
     if (!didShow) {

@@ -27,7 +27,7 @@
     //self.person.viewed = [NSNumber numberWithBool:YES];
     [[CoreDataManager sharedManager] saveData];
     
-	self.title = @"Info";
+	self.title = NSLocalizedString(@"Info", @"people detail view title");
     
     [self displayPerson];
 }
@@ -368,13 +368,7 @@
 
 - (void)mapIconTapped:(NSString *)address
 {
-    /*
-    NSURL *internalURL = [NSURL internalURLWithModuleTag:MapTag
-                                                    path:LocalPathMapsSelectedAnnotation
-                                                   query:addressSearchAnnotation.uniqueID];
-
-    [[UIApplication sharedApplication] openURL:internalURL];
-    */
+    // TODO
 }
 
 - (void)phoneIconTapped:(NSString *)phone

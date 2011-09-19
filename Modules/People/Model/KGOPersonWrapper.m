@@ -5,6 +5,7 @@
 #import "PersonContact.h"
 #import "PersonOrganization.h"
 #import "PersonAddress.h"
+#import "KGOAppDelegate+ModuleAdditions.h"
 
 NSString * const KGOPersonContactTypeEmail = @"email";
 NSString * const KGOPersonContactTypePhone = @"phone";
@@ -106,6 +107,20 @@ webpages = _webpages;
 
 - (void)removeBookmark {
     // do nothing
+}
+
+- (NSString *)moduleTag
+{
+    // TODO: add separate data manager class used by home/groups view controllers
+    return PeopleTag;
+}
+
+- (BOOL)didGetSelected:(id)selector
+{
+    NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:self, @"person", nil];
+    return [KGO_SHARED_APP_DELEGATE() showPage:LocalPathPageNameDetail
+                                  forModuleTag:[self moduleTag]
+                                        params:params];
 }
 
 #pragma mark -

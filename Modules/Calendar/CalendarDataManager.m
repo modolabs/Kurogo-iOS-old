@@ -194,7 +194,9 @@ NSDate *dateForMidnightFromInterval(NSTimeInterval interval)
             
             NSMutableArray *wrappers = [NSMutableArray arrayWithCapacity:filteredEvents.count];
             for (KGOEvent *event in filteredEvents) {
-                [wrappers addObject:[[[KGOEventWrapper alloc] initWithKGOEvent:event] autorelease]];
+                KGOEventWrapper *wrapper = [[[KGOEventWrapper alloc] initWithKGOEvent:event] autorelease];
+                wrapper.moduleTag = self.moduleTag;
+                [wrappers addObject:wrapper];
             }
             
             [self.delegate eventsDidChange:wrappers calendar:calendar];
@@ -381,6 +383,7 @@ NSDate *dateForMidnightFromInterval(NSTimeInterval interval)
         for (NSInteger i = 0; i < returned; i++) {
             NSDictionary *aDict = [eventDicts objectAtIndex:i];
             KGOEventWrapper *event = [[[KGOEventWrapper alloc] initWithDictionary:aDict] autorelease];
+            event.moduleTag = self.moduleTag;
             [event addCalendar:calendar];
             [array addObject:event];
             [event convertToKGOEvent];

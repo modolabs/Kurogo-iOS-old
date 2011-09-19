@@ -18,12 +18,7 @@ NSString * const UnreadNotificationsKey = @"UnreadNotifications";
 // TODO: get rid of all uses of these tags and use the tag given by the server
 NSString * const HomeTag       = @"home";
 NSString * const MapTag        = @"map";
-NSString * const NewsTag       = @"news";
 NSString * const PeopleTag     = @"people";
-NSString * const PhotosTag     = @"photos";
-NSString * const VideoModuleTag     = @"video";
-NSString * const CalendarTag     = @"calendar";
-
 
 
 
