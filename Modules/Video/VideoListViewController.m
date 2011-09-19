@@ -1,14 +1,10 @@
-//
-//  VideoListViewController.m
-//  Universitas
-//
-
 #import "VideoListViewController.h"
 #import "Constants.h"
 #import "VideoDetailViewController.h"
 #import "CoreDataManager.h"
 #import "VideoModule.h"
 #import "KGOAppDelegate+ModuleAdditions.h"
+#import "KGOTheme.h"
 
 static const NSInteger kVideoListCellThumbnailTag = 0x78;
 
@@ -16,45 +12,11 @@ static const NSInteger kVideoListCellThumbnailTag = 0x78;
 
 @interface VideoListViewController (Private)
 
-+ (NSString *)detailTextForVideo:(Video *)video;
-- (void)updateThumbnailView:(MITThumbnailView *)thumbnailView 
-                   forVideo:(Video *)video;
 - (void)requestVideosForActiveSection;
-- (void)removeAllThumbnailViews;
 
-/*
-#pragma mark Search UI
-- (void)showSearchBar;
-- (void)hideSearchBar; 
-*/
 @end
 
 @implementation VideoListViewController (Private)
-
-// TODO: this entire category could be done by subclassing the table view cells and removing
-// unnecessary logic from this class (see MITThumbmailView delegation below)
-
-+ (NSString *)detailTextForVideo:(Video *)video {
-    return [NSString stringWithFormat:@"(%@) %@", [video durationString], video.videoDescription];
-}
-
-- (void)updateThumbnailView:(MITThumbnailView *)thumbnailView 
-                   forVideo:(Video *)video {
-    // Does this thumbnail view have the correct image loaded?
-    if (![thumbnailView.imageURL isEqualToString:video.thumbnailURLString]) {
-        // Update URL.
-        thumbnailView.imageURL = video.thumbnailURLString;
-        thumbnailView.imageData = nil;
-    }
-    // Load the image data if necessary.
-    if (!(thumbnailView.imageData)) {
-        if (video.thumbnailImageData) {
-            thumbnailView.imageData = video.thumbnailImageData;
-        }
-        [thumbnailView loadImage];
-    }
-    [thumbnailView displayImage];
-}
 
 - (void)requestVideosForActiveSection { 
     if (self.videoSections.count > self.activeSectionIndex) {
@@ -67,20 +29,6 @@ static const NSInteger kVideoListCellThumbnailTag = 0x78;
                  [blockSelf.tableView reloadData];
              }
          }];
-    }
-}
-
-
-
-- (void)removeAllThumbnailViews {
-    NSInteger sections = [self.tableView numberOfSections];
-    for (NSInteger section = 0; section < sections; ++section) {
-        NSInteger rows = [self.tableView numberOfRowsInSection:section];
-        for (NSInteger row = 0; row < rows; ++row) {
-            UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:row inSection:section]];
-            UIView *thumbnailView = [cell.contentView viewWithTag:kVideoListCellThumbnailTag];
-            [thumbnailView removeFromSuperview];
-        }
     }
 }
 
@@ -107,11 +55,6 @@ static const NSInteger kVideoListCellThumbnailTag = 0x78;
 }
 
 - (void)dealloc {
-    // Need to do this so that they don't live on and try to call this object, 
-    // which is set as their delegate.
-    [self removeAllThumbnailViews];
-    
-    //[searchController release];
     [theSearchBar release];
     [videoSections release];
     [videos release];
@@ -129,7 +72,6 @@ static const NSInteger kVideoListCellThumbnailTag = 0x78;
     self.navScrollView = [[[KGOScrollingTabstrip alloc] initWithFrame:frame] autorelease];
     self.navScrollView.showsSearchButton = YES;
     self.navScrollView.delegate = self;
-    
 }
 
 - (void)viewDidLoad {
@@ -150,17 +92,15 @@ static const NSInteger kVideoListCellThumbnailTag = 0x78;
 }
 
 - (void)viewWillAppear:(BOOL)animated {
-    BOOL bookmarksExist = [self.dataManager bookmarkedVideos].count > 0;
-    if(bookmarksExist){
+    [super viewWillAppear:animated];
+
+    if ([self.dataManager bookmarkedVideos].count) {
         [self.navScrollView setShowsBookmarkButton:YES]; 
-    }
-    else 
+    } else {
         [self.navScrollView setShowsBookmarkButton:NO]; 
-    
+    }
     
     [self.navScrollView setNeedsLayout];
-    
-    [super viewWillAppear:animated];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -192,51 +132,60 @@ static const NSInteger kVideoListCellThumbnailTag = 0x78;
         cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle 
                                        reuseIdentifier:CellIdentifier] autorelease];
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-        cell.textLabel.font = [UIFont systemFontOfSize:17.0f];
+        cell.textLabel.font = [[KGOTheme sharedTheme] fontForThemedProperty:KGOThemePropertyNavListTitle];
         cell.textLabel.numberOfLines = 2;
-        cell.detailTextLabel.font = [UIFont systemFontOfSize:13.0f];
+        cell.detailTextLabel.font = [[KGOTheme sharedTheme] fontForThemedProperty:KGOThemePropertyNavListSubtitle];
         cell.detailTextLabel.numberOfLines = 2;
         cell.indentationLevel = 1;
         cell.indentationWidth = 120;
         
         MITThumbnailView *thumbnailView = [[MITThumbnailView alloc] initWithFrame:CGRectMake(0, 0, 120, 90)];
         thumbnailView.tag = kVideoListCellThumbnailTag;
-        thumbnailView.delegate = self;
         [cell.contentView addSubview:thumbnailView];
         [thumbnailView release];
     }
-    
-    // Configure the cell...
+
     if (self.videos.count > indexPath.row) {
-        NSAutoreleasePool *cellConfigPool = [[NSAutoreleasePool alloc] init];
-        
         Video *video = [self.videos objectAtIndex:indexPath.row];
+        MITThumbnailView *thumbnailView = (MITThumbnailView *)[cell.contentView viewWithTag:kVideoListCellThumbnailTag];
+        thumbnailView.delegate = video;
         cell.textLabel.text = video.title;
-        cell.detailTextLabel.text = [[self class] detailTextForVideo:video];
-                
-        MITThumbnailView *thumbnailView = (MITThumbnailView *)[cell.contentView viewWithTag:kVideoListCellThumbnailTag];        
-        [self updateThumbnailView:thumbnailView forVideo:video];//this line places thumbnail image
+        cell.detailTextLabel.text = video.subtitle;
         
-        [cellConfigPool release];
+        if (![thumbnailView.imageURL isEqualToString:video.thumbnailURLString]) {
+            thumbnailView.imageURL = video.thumbnailURLString;
+            thumbnailView.imageData = nil;
+        }
+        if (!(thumbnailView.imageData)) {
+            if (video.thumbnailImageData) {
+                thumbnailView.imageData = video.thumbnailImageData;
+            }
+            [thumbnailView loadImage];
+        }
+        [thumbnailView displayImage];
     }
+    
     return cell;
 }
 
 #pragma mark UITableViewDelegate
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-   
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
     if (self.videos.count > indexPath.row) {
         NSString *section = [[self.videoSections objectAtIndex:self.activeSectionIndex] objectForKey:@"value"];
         Video *video = [self.videos objectAtIndex:indexPath.row];
-        // FIXME: call appDelegate showPage here, don't assume a nav controller exists
-        VideoDetailViewController *detailViewController = 
-        [[VideoDetailViewController alloc] initWithVideo:video andSection:section];
-        [self.navigationController pushViewController:detailViewController 
-                                             animated:YES];
-        [detailViewController release];
+        NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:
+                                section, @"section", video, @"video", nil];
+        [KGO_SHARED_APP_DELEGATE() showPage:LocalPathPageNameDetail
+                               forModuleTag:self.dataManager.moduleTag
+                                     params:params];
     }
-    [tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
+
+// TODO: the scrolling tabstrip is not a section header.
+// it is a control for selecting what table to show, and not logically part of the table below it.
+// also it can mess with section headers in the search results table view.
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
     return self.navScrollView;
@@ -244,16 +193,6 @@ static const NSInteger kVideoListCellThumbnailTag = 0x78;
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
     return self.navScrollView.frame.size.height;
-}
-
-#pragma mark MITThumbnailDelegate
-- (void)thumbnail:(MITThumbnailView *)thumbnail didLoadData:(NSData *)data {
-    // Store the loaded thumbnail so that it doesn't have to be loaded again.
-    Video *video = (Video *)[[CoreDataManager sharedManager] 
-                             uniqueObjectForEntity:@"Video" 
-                             attribute:@"thumbnailURLString"
-                             value:thumbnail.imageURL];
-    video.thumbnailImageData = data;
 }
 
 #pragma mark KGOScrollingTabstripDelegate
@@ -296,16 +235,17 @@ static const NSInteger kVideoListCellThumbnailTag = 0x78;
     return self.dataManager.moduleTag;
 }
 
-// FIXME
 - (void)resultsHolder:(id<KGOSearchResultsHolder>)resultsHolder 
-      didSelectResult:(id<KGOSearchResult>)aResult {
-    
+      didSelectResult:(id<KGOSearchResult>)aResult
+{
     NSString *section = [[self.videoSections objectAtIndex:self.activeSectionIndex] objectForKey:@"value"];
     
     if ([aResult isKindOfClass:[Video class]]) {
-        VideoDetailViewController *detailViewController = [[VideoDetailViewController alloc] initWithVideo:(Video *)aResult andSection:section];
-        [self.navigationController pushViewController:detailViewController animated:YES];
-        [detailViewController release];    
+        NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:
+                                section, @"section", aResult, @"video", nil];
+        [KGO_SHARED_APP_DELEGATE() showPage:LocalPathPageNameDetail
+                               forModuleTag:[aResult moduleTag]
+                                     params:params];
     }
 }
 

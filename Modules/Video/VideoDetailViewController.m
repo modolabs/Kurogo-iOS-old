@@ -1,15 +1,8 @@
-//
-//  VideoDetailViewController.m
-//  Universitas
-//
-//  Created by Jim Kang on 4/5/11.
-//  Copyright 2011 Modo Labs. All rights reserved.
-//
-
 #import "VideoDetailViewController.h"
 #import "VideoWebViewController.h"
 #import "UIKit+KGOAdditions.h"
 #import "KGOLabel.h"
+#import "KGOAppDelegate+ModuleAdditions.h"
 
 typedef enum {
     kVideoDetailScrollViewTag = 0x1890,
@@ -28,8 +21,6 @@ static const CGFloat extraScrollViewHeight = 100.0f;
 
 @interface VideoDetailViewController (Private)
 
-- (void)launchWebViewWithVideo;
-
 #pragma mark Tap actions
 - (void)videoImageTapped:(UIGestureRecognizer *)recognizer;
 
@@ -41,17 +32,11 @@ static const CGFloat extraScrollViewHeight = 100.0f;
 
 @implementation VideoDetailViewController (Private)
 
-- (void)launchWebViewWithVideo {
-    VideoWebViewController *webViewController = 
-    [[VideoWebViewController alloc] initWithURL:[NSURL URLWithString:self.video.url]];
-    webViewController.navigationItem.title = self.video.title; 
-    [self.navigationController pushViewController:webViewController animated:YES];
-    [webViewController release];
-}
-
 #pragma mark Tap actions
-- (void)videoImageTapped:(UIGestureRecognizer *)recognizer {
-    [self launchWebViewWithVideo];
+- (void)videoImageTapped:(UIGestureRecognizer *)recognizer
+{
+    NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:self.video, @"video", nil];
+    [KGO_SHARED_APP_DELEGATE() showPage:LocalPathPageNameWebViewDetail forModuleTag:self.video.moduleTag params:params];
 }
 
 #pragma mark Subview setup
@@ -62,11 +47,12 @@ static const CGFloat extraScrollViewHeight = 100.0f;
     // TODO: we should be able to use MITThumbnailView to do this.
     // no need to use a synchronous request.
     UIImage *image = [UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:self.video.stillFrameImageURLString]]];
-    UIImageView *imageView = [[UIImageView alloc] initWithImage:image];
+    UIImageView *imageView = [[[UIImageView alloc] initWithImage:image] autorelease];
     imageView.tag = kVideoDetailImageViewTag;
     CGRect imageViewFrame = imageView.frame;
     imageViewFrame.origin.x = kVideoDetailMargin;
     imageViewFrame.origin.y = kVideoDetailMargin * 2 + kVideoTitleLabelHeight + bookmarkSharingView.frame.size.height;
+    
     // Scale frame to fit in view.
     CGFloat idealFrameWidth = parentView.frame.size.width - 2 * kVideoDetailMargin;
     if (imageViewFrame.size.width > idealFrameWidth) {
@@ -84,18 +70,23 @@ static const CGFloat extraScrollViewHeight = 100.0f;
     [recognizer release];
     
     UIImage *overlayImage = [UIImage imageWithPathName:@"modules/video/playoverlay"];
-    UIImageView *overlayView = [[UIImageView alloc] initWithImage:overlayImage];
+    UIImageView *overlayView = [[[UIImageView alloc] initWithImage:overlayImage] autorelease];
+    overlayView.center = CGPointMake(floor(imageView.bounds.size.width / 2),
+                                     floor(imageView.bounds.size.height / 2));
+
+    /*
     CGRect overlayFrame = overlayView.frame;
     overlayFrame.origin.x = 
     parentView.frame.size.width / 2 - overlayFrame.size.width / 2;
     overlayFrame.origin.y = 
     imageViewFrame.size.height / 2 - overlayFrame.size.height / 2;
     overlayView.frame = overlayFrame;
+     */
     [imageView addSubview:overlayView];
     
     [parentView addSubview:imageView];
-    [imageView release];
-    [overlayView release];
+    //[imageView release];
+    //[overlayView release];
 }
 @end
 
@@ -112,7 +103,6 @@ static const CGFloat extraScrollViewHeight = 100.0f;
 
 - (id)initWithVideo:(Video *)aVideo andSection:(NSString *)videoSection
 {
-    self.dataManager = [[[VideoDataManager alloc] init] autorelease];
     self = [super initWithNibName:nil bundle:nil];
     if (self) {
         self.video = aVideo;
@@ -134,10 +124,9 @@ static const CGFloat extraScrollViewHeight = 100.0f;
     self.scrollView = [[[UIScrollView alloc] initWithFrame:self.view.bounds] autorelease];
 
     CGFloat width = self.view.bounds.size.width - 2 * kVideoDetailMargin;
-    // TODO: don't hard code fonts
     UILabel *titleLabel = [KGOLabel multilineLabelWithText:self.video.title
-                                             font:[UIFont fontWithName:@"Georgia" size:22]
-                                            width:width];
+                                                      font:[[KGOTheme sharedTheme] fontForThemedProperty:KGOThemePropertyContentTitle]
+                                                     width:width];
     titleLabel.frame = CGRectMake(kVideoDetailMargin,
                                   kVideoDetailMargin,
                                   titleLabel.frame.size.width,
@@ -153,10 +142,12 @@ static const CGFloat extraScrollViewHeight = 100.0f;
     // playable in MPMoviePlayerController, put an embedded player here conditionally.
     [self makeAndAddVideoImageViewToView:scrollView];
     
-    //Federated search doesn't have a reference to the videos section.
-    //Therfore we cannot requestVideoForDeatilView
-    if (!self.section) {
-        [self setDescription];
+    [self setDescription];
+
+    // when coming from federated search we don't know which section we're in
+    if (self.section) {
+        // TODO: don't request this every time we're loaded
+        [self requestVideoForDetailView];
     }
     
     [self.view addSubview:scrollView];
@@ -177,9 +168,8 @@ static const CGFloat extraScrollViewHeight = 100.0f;
     UIView *videoImageView = [scrollView viewWithTag:kVideoDetailImageViewTag];
     CGFloat width = self.view.bounds.size.width - 2 * kVideoDetailMargin;
     CGFloat y = kVideoDetailMargin * 3 + kVideoTitleLabelHeight + videoImageView.frame.size.height + bookmarkSharingView.frame.size.height;
-    // TODO: don't hard code fonts
     UILabel *descriptionLabel = [KGOLabel multilineLabelWithText:video.videoDescription
-                                                            font:[UIFont systemFontOfSize:15]
+                                                            font:[[KGOTheme sharedTheme] fontForThemedProperty:KGOThemePropertyBodyText]
                                                            width:width];
     descriptionLabel.frame = CGRectMake(kVideoDetailMargin, y, width, descriptionLabel.frame.size.height);
     descriptionLabel.tag = kVideoDetailDescriptionTag;

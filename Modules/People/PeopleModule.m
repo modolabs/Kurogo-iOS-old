@@ -1,6 +1,7 @@
 #import "PeopleModule.h"
 #import "PeopleHomeViewController.h"
 #import "PeopleDetailsViewController.h"
+#import "PeopleGroupContactViewController.h"
 #import "KGOPersonWrapper.h"
 #import "KGOSearchModel.h"
 #import "PersonContact.h"
@@ -61,7 +62,12 @@
 #pragma mark Navigation
 
 - (NSArray *)registeredPageNames {
-    return [NSArray arrayWithObjects:LocalPathPageNameHome, LocalPathPageNameSearch, LocalPathPageNameDetail, nil];
+    return [NSArray arrayWithObjects:
+            LocalPathPageNameHome,
+            LocalPathPageNameSearch,
+            LocalPathPageNameDetail,
+            LocalPathPageNameItemList,
+            nil];
 }
 
 - (UIViewController *)modulePage:(NSString *)pageName params:(NSDictionary *)params {
@@ -104,6 +110,10 @@
             
             [(PeopleDetailsViewController *)vc setPerson:person];
         }
+    } else if ([pageName isEqualToString:LocalPathPageNameItemList]) {
+        PersonContact *contact = [params objectForKey:@"contact"];
+        vc = [[[PeopleGroupContactViewController alloc] initWithGroup:contact.group] autorelease];
+        vc.navigationItem.title = contact.title;
     }
     return vc;
 }

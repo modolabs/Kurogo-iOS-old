@@ -1,6 +1,7 @@
 #import "VideoModule.h"
 #import "VideoListViewController.h"
 #import "VideoDetailViewController.h"
+#import "VideoWebViewController.h"
 
 NSString * const KGODataModelNameVideo = @"Video";
 
@@ -19,7 +20,11 @@ NSString * const KGODataModelNameVideo = @"Video";
 }
 
 - (NSArray *)registeredPageNames {
-    return [NSArray arrayWithObjects:LocalPathPageNameHome, LocalPathPageNameSearch, LocalPathPageNameDetail, nil];
+    return [NSArray arrayWithObjects:
+            LocalPathPageNameHome,
+            LocalPathPageNameDetail,
+            LocalPathPageNameWebViewDetail,
+            nil];
 }
 
 - (UIViewController *)modulePage:(NSString *)pageName params:(NSDictionary *)params {
@@ -28,15 +33,23 @@ NSString * const KGODataModelNameVideo = @"Video";
         VideoListViewController *listVC = [[[VideoListViewController alloc] initWithStyle:UITableViewStylePlain] autorelease];
         listVC.dataManager = self.dataManager;
         vc = listVC;
-    } 
-    else if ([pageName isEqualToString:LocalPathPageNameSearch]) {        
-        // FIXME
+
     } else if ([pageName isEqualToString:LocalPathPageNameDetail]) {
         Video *video = [params objectForKey:@"video"];
         NSString *section = [params objectForKey:@"section"];
         if (video) {
-            vc = [[[VideoDetailViewController alloc] initWithVideo:video andSection:section] autorelease];
+            VideoDetailViewController *detailVC = [[[VideoDetailViewController alloc] initWithVideo:video
+                                                                                         andSection:section] autorelease];
+            detailVC.dataManager = self.dataManager;
+            vc = detailVC;
         }
+
+    } else if ([pageName isEqualToString:LocalPathPageNameWebViewDetail]) {
+        Video *video = [params objectForKey:@"video"];
+        VideoWebViewController *webVC = [[[VideoWebViewController alloc]
+                                          initWithURL:[NSURL URLWithString:video.url]] autorelease];
+        webVC.navigationItem.title = video.title; 
+        vc = webVC;
     }
     return vc;
 }

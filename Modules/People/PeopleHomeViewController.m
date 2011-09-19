@@ -292,14 +292,12 @@ searchBar = _searchBar, module;
             PersonContact *contact = [_phoneDirectoryEntries objectAtIndex:indexPath.row];
             NSString *urlString = contact.url;
             NSURL *externURL = [NSURL URLWithString:urlString];
-            if ([[UIApplication sharedApplication] canOpenURL:externURL])
+            if ([[UIApplication sharedApplication] canOpenURL:externURL]) {
                 [[UIApplication sharedApplication] openURL:externURL];
-            else if(contact.group){
-                PeopleGroupContactViewController *pgcvc = [[PeopleGroupContactViewController alloc] initWithGroup:contact.group];
-                pgcvc.navigationItem.title = contact.title; 
-                [self.navigationController pushViewController:pgcvc animated:YES];
-                [pgcvc release];
 
+            } else if (contact.group) {
+                NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:contact, @"contact", nil];
+                [KGO_SHARED_APP_DELEGATE() showPage:LocalPathPageNameItemList forModuleTag:self.module.tag params:params];
             }
             
             break;

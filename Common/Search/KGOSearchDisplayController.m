@@ -429,7 +429,7 @@ maxResultsPerSection;
         accessoryType = [result accessoryType];
     }
     
-    if (![result respondsToSelector:@selector(viewsForTableCell)] || ![result viewsForTableCell]) {
+    //if (![result respondsToSelector:@selector(viewsForTableCell)] || ![result viewsForTableCell]) {
         title = [result title];
         subtitle = [result respondsToSelector:@selector(subtitle)] ? [result subtitle] : nil;
 
@@ -454,9 +454,9 @@ maxResultsPerSection;
             }
             
         } copy] autorelease];
-    }
+    //}
     
-    return nil;
+    //return nil;
 }
 
 

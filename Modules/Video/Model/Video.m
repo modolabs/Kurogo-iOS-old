@@ -104,6 +104,11 @@
     }
 }
 
+- (void)thumbnail:(MITThumbnailView *)thumbnail didLoadData:(NSData *)data
+{
+    self.thumbnailImageData = data;
+}
+
 #pragma mark - KGOSearchResult
 
 - (NSString *)identifier
@@ -151,7 +156,7 @@
 {
     NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:
                             self, @"video",
-                            // TODO: figure out what source/section are supposed to mean
+                            self.source, @"section",
                             nil];
     return [KGO_SHARED_APP_DELEGATE() showPage:LocalPathPageNameDetail
                                   forModuleTag:self.moduleTag

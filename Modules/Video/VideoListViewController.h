@@ -1,18 +1,12 @@
-//
-//  VideoListViewController.h
-//  Universitas
-//
-
 #import <Foundation/Foundation.h>
 #import "KGOTableViewController.h"
 #import "VideoDataManager.h"
 #import "KGOScrollingTabstrip.h"
-#import "MITThumbnailView.h"
 #import "KGOSearchBar.h"
 #import "KGOSearchDisplayController.h"
 #import "Video.h"
 
-@interface VideoListViewController : UITableViewController <MITThumbnailDelegate,
+@interface VideoListViewController : UITableViewController <
 KGOScrollingTabstripSearchDelegate> {
 
     BOOL showingBookmarks;
@@ -26,7 +20,5 @@ KGOScrollingTabstripSearchDelegate> {
 @property (assign) NSInteger activeSectionIndex;
 
 @property (nonatomic, retain) KGOSearchBar *theSearchBar;
-
-//- (void)switchToBookmarks;
 
 @end

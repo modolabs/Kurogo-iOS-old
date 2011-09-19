@@ -5,8 +5,9 @@
 
 #import <CoreData/CoreData.h>
 #import "KGOSearchModel.h"
+#import "MITThumbnailView.h"
 
-@interface Video :  NSManagedObject <KGOSearchResult>
+@interface Video :  NSManagedObject <KGOSearchResult, MITThumbnailDelegate>
 {
 }
 
