@@ -7,7 +7,8 @@
 
 
 
-@interface VideoDetailViewController : UIViewController <VideoDetailHeaderDelegate>{
+@interface VideoDetailViewController : UIViewController <MITThumbnailDelegate,
+VideoDetailHeaderDelegate> {
     KGOShareButtonController *_shareController;    
     VideoDetailHeaderView *_headerView;
     UIView *bookmarkSharingView;

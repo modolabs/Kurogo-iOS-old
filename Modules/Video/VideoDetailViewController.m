@@ -5,11 +5,11 @@
 #import "KGOAppDelegate+ModuleAdditions.h"
 
 typedef enum {
-    kVideoDetailScrollViewTag = 0x1890,
-    kVideoDetailTitleLabelTag,
+    kVideoDetailTitleLabelTag = 0x1890,
     kVideoDetailPlayerTag,
     kVideoDetailImageViewTag,
-    kVideoDetailDescriptionTag
+    kVideoDetailDescriptionTag,
+    kVideoDetailImageOverlayTag
 }
 VideoDetailSubviewTags;
 
@@ -44,50 +44,40 @@ static const CGFloat extraScrollViewHeight = 100.0f;
 // don't code this to look like it's causing side effects somewhere else.
 - (void)makeAndAddVideoImageViewToView:(UIView *)parentView
 {
-    // TODO: we should be able to use MITThumbnailView to do this.
-    // no need to use a synchronous request.
-    UIImage *image = [UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:self.video.stillFrameImageURLString]]];
-    UIImageView *imageView = [[[UIImageView alloc] initWithImage:image] autorelease];
-    imageView.tag = kVideoDetailImageViewTag;
-    CGRect imageViewFrame = imageView.frame;
-    imageViewFrame.origin.x = kVideoDetailMargin;
-    imageViewFrame.origin.y = kVideoDetailMargin * 2 + kVideoTitleLabelHeight + bookmarkSharingView.frame.size.height;
-    
     // Scale frame to fit in view.
     CGFloat idealFrameWidth = parentView.frame.size.width - 2 * kVideoDetailMargin;
-    if (imageViewFrame.size.width > idealFrameWidth) {
-        CGFloat idealToActualWidthProportion = idealFrameWidth / imageViewFrame.size.width;
-        imageViewFrame.size.width = idealFrameWidth;
-        imageViewFrame.size.height *= idealToActualWidthProportion;
-    }
-    imageView.frame = imageViewFrame;
+
+    // we will adjust the height after the image comes in
+    CGFloat probableHeight = floor(idealFrameWidth * 0.75);
+    CGRect imageFrame = CGRectMake(kVideoDetailMargin,
+                                   kVideoDetailMargin * 2 + kVideoTitleLabelHeight + bookmarkSharingView.frame.size.height, 
+                                   idealFrameWidth,
+                                   probableHeight);
+    MITThumbnailView *imageView = [[[MITThumbnailView alloc] initWithFrame:imageFrame] autorelease];
+    imageView.delegate = self;
+    imageView.tag = kVideoDetailImageViewTag;
+    imageView.imageURL = self.video.stillFrameImageURLString;
+    
     imageView.userInteractionEnabled = YES;
-    UITapGestureRecognizer *recognizer = 
-    [[UITapGestureRecognizer alloc] initWithTarget:self 
-                                         action:@selector(videoImageTapped:)];
+    UITapGestureRecognizer *recognizer = nil;
+    
+    recognizer = [[[UITapGestureRecognizer alloc] initWithTarget:self
+                                                          action:@selector(videoImageTapped:)] autorelease];
     recognizer.numberOfTapsRequired = 1;
     [imageView addGestureRecognizer:recognizer];
-    [recognizer release];
+    [imageView loadImage];
     
     UIImage *overlayImage = [UIImage imageWithPathName:@"modules/video/playoverlay"];
     UIImageView *overlayView = [[[UIImageView alloc] initWithImage:overlayImage] autorelease];
+    overlayView.tag = kVideoDetailImageOverlayTag;
     overlayView.center = CGPointMake(floor(imageView.bounds.size.width / 2),
                                      floor(imageView.bounds.size.height / 2));
 
-    /*
-    CGRect overlayFrame = overlayView.frame;
-    overlayFrame.origin.x = 
-    parentView.frame.size.width / 2 - overlayFrame.size.width / 2;
-    overlayFrame.origin.y = 
-    imageViewFrame.size.height / 2 - overlayFrame.size.height / 2;
-    overlayView.frame = overlayFrame;
-     */
     [imageView addSubview:overlayView];
     
     [parentView addSubview:imageView];
-    //[imageView release];
-    //[overlayView release];
 }
+
 @end
 
 
@@ -100,6 +90,19 @@ static const CGFloat extraScrollViewHeight = 100.0f;
 @synthesize section;
 @synthesize scrollView;
 @synthesize headerView = _headerView;
+
+- (void)thumbnail:(MITThumbnailView *)thumbnail didLoadData:(NSData *)data
+{
+    CGRect frame = thumbnail.frame;
+    CGSize imageSize = thumbnail.imageView.image.size;
+    frame.size.height = floor(thumbnail.frame.size.width * imageSize.height / imageSize.width);
+    thumbnail.frame = frame;
+    UIView *overlayView = [thumbnail viewWithTag:kVideoDetailImageOverlayTag];
+    overlayView.center = CGPointMake(floor(thumbnail.bounds.size.width / 2),
+                                     floor(thumbnail.bounds.size.height / 2));
+    [thumbnail bringSubviewToFront:overlayView];
+    [self setDescription];
+}
 
 - (id)initWithVideo:(Video *)aVideo andSection:(NSString *)videoSection
 {
@@ -122,6 +125,7 @@ static const CGFloat extraScrollViewHeight = 100.0f;
     }
     
     self.scrollView = [[[UIScrollView alloc] initWithFrame:self.view.bounds] autorelease];
+    self.scrollView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
 
     CGFloat width = self.view.bounds.size.width - 2 * kVideoDetailMargin;
     UILabel *titleLabel = [KGOLabel multilineLabelWithText:self.video.title
@@ -158,7 +162,6 @@ static const CGFloat extraScrollViewHeight = 100.0f;
     [self.dataManager requestVideoForDetailSection:self.section
                                         andVideoID:(NSString *)self.video.videoID 
                                       thenRunBlock:^(id result) {
-                                          //blockSelf.video.videoDescription = [(Video *)result videoDescription];
                                           [blockSelf setDescription];
                                       }];
 }
@@ -167,17 +170,29 @@ static const CGFloat extraScrollViewHeight = 100.0f;
 {
     UIView *videoImageView = [scrollView viewWithTag:kVideoDetailImageViewTag];
     CGFloat width = self.view.bounds.size.width - 2 * kVideoDetailMargin;
-    CGFloat y = kVideoDetailMargin * 3 + kVideoTitleLabelHeight + videoImageView.frame.size.height + bookmarkSharingView.frame.size.height;
-    UILabel *descriptionLabel = [KGOLabel multilineLabelWithText:video.videoDescription
-                                                            font:[[KGOTheme sharedTheme] fontForThemedProperty:KGOThemePropertyBodyText]
-                                                           width:width];
+    CGFloat y = kVideoDetailMargin + + videoImageView.frame.origin.y + videoImageView.frame.size.height;
+
+    UILabel *descriptionLabel = (UILabel *)[scrollView viewWithTag:kVideoDetailDescriptionTag];
+    UIFont *font = [[KGOTheme sharedTheme] fontForThemedProperty:KGOThemePropertyBodyText];
+    if (!descriptionLabel) {
+        descriptionLabel = [KGOLabel multilineLabelWithText:video.videoDescription
+                                                       font:font
+                                                      width:width];
+        descriptionLabel.tag = kVideoDetailDescriptionTag;
+        [scrollView addSubview:descriptionLabel];
+
+    } else {
+        descriptionLabel.text = video.videoDescription;
+        CGRect rect = descriptionLabel.frame;
+        rect.size.height = [descriptionLabel.text sizeWithFont:font
+                                             constrainedToSize:CGSizeMake(rect.size.width, 10000)
+                                                 lineBreakMode:UILineBreakModeWordWrap].height;
+        descriptionLabel.frame = rect;
+    }
     descriptionLabel.frame = CGRectMake(kVideoDetailMargin, y, width, descriptionLabel.frame.size.height);
-    descriptionLabel.tag = kVideoDetailDescriptionTag;
-    descriptionLabel.backgroundColor = [UIColor clearColor];
-    [scrollView addSubview:descriptionLabel];
     
-    scrollView.contentSize = CGSizeMake(self.view.frame.size.width, y + descriptionLabel.frame.size.height);
-    scrollView.tag = kVideoDetailScrollViewTag;
+    scrollView.contentSize = CGSizeMake(self.view.bounds.size.width,
+                                        y + kVideoDetailMargin + descriptionLabel.frame.size.height);
     scrollView.scrollEnabled = YES;
 }
 
