@@ -49,8 +49,10 @@ static const CGFloat extraScrollViewHeight = 100.0f;
 
     // we will adjust the height after the image comes in
     CGFloat probableHeight = floor(idealFrameWidth * 0.75);
+    CGFloat y = [self viewForTableHeader].frame.size.height + kVideoDetailMargin * 2;
     CGRect imageFrame = CGRectMake(kVideoDetailMargin,
-                                   kVideoDetailMargin * 2 + kVideoTitleLabelHeight + bookmarkSharingView.frame.size.height, 
+                                   y,
+                                   //kVideoDetailMargin * 2 + kVideoTitleLabelHeight + bookmarkSharingView.frame.size.height, 
                                    idealFrameWidth,
                                    probableHeight);
     MITThumbnailView *imageView = [[[MITThumbnailView alloc] initWithFrame:imageFrame] autorelease];
@@ -127,20 +129,9 @@ static const CGFloat extraScrollViewHeight = 100.0f;
     self.scrollView = [[[UIScrollView alloc] initWithFrame:self.view.bounds] autorelease];
     self.scrollView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
 
-    CGFloat width = self.view.bounds.size.width - 2 * kVideoDetailMargin;
-    UILabel *titleLabel = [KGOLabel multilineLabelWithText:self.video.title
-                                                      font:[[KGOTheme sharedTheme] fontForThemedProperty:KGOThemePropertyContentTitle]
-                                                     width:width];
-    titleLabel.frame = CGRectMake(kVideoDetailMargin,
-                                  kVideoDetailMargin,
-                                  titleLabel.frame.size.width,
-                                  kVideoTitleLabelHeight); // we're fixing the height despite setting numberOfLines to 0?
-    titleLabel.tag = kVideoDetailTitleLabelTag;
-    [scrollView addSubview:titleLabel];
-    
-    //add sharing and bookmark buttons
-    bookmarkSharingView = [self viewForTableHeader];
-    [scrollView addSubview:bookmarkSharingView];
+    UIView *headerView = [self viewForTableHeader];
+    headerView.autoresizingMask = UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleWidth;
+    [scrollView addSubview:headerView];
     
     // TODO: When non-YouTube feeds are worked in, if they have streams
     // playable in MPMoviePlayerController, put an embedded player here conditionally.
@@ -170,7 +161,7 @@ static const CGFloat extraScrollViewHeight = 100.0f;
 {
     UIView *videoImageView = [scrollView viewWithTag:kVideoDetailImageViewTag];
     CGFloat width = self.view.bounds.size.width - 2 * kVideoDetailMargin;
-    CGFloat y = kVideoDetailMargin + + videoImageView.frame.origin.y + videoImageView.frame.size.height;
+    CGFloat y = kVideoDetailMargin + videoImageView.frame.origin.y + videoImageView.frame.size.height;
 
     UILabel *descriptionLabel = (UILabel *)[scrollView viewWithTag:kVideoDetailDescriptionTag];
     UIFont *font = [[KGOTheme sharedTheme] fontForThemedProperty:KGOThemePropertyBodyText];
@@ -199,21 +190,20 @@ static const CGFloat extraScrollViewHeight = 100.0f;
 - (UIView *)viewForTableHeader
 {
     if (!self.headerView) {
-        self.headerView = [[[VideoDetailHeaderView alloc] initWithFrame:CGRectMake(0,
-                                                                                   kVideoTitleLabelHeight-10,
-                                                                                   self.view.bounds.size.width,
-                                                                                   30)] autorelease];
-        self.headerView.video = self.video; 
+        CGRect frame = CGRectMake(0, 0, self.view.bounds.size.width, 30);
+        self.headerView = [[[KGODetailPageHeaderView alloc] initWithFrame:frame] autorelease];
         self.headerView.delegate = self;
         self.headerView.showsBookmarkButton = YES;
-        
+        self.headerView.showsShareButton = YES;
+        self.headerView.showsSubtitle = NO;
+        // TODO: this will be broken if we add pageup/pagedown to this view
+        self.headerView.detailItem = self.video; 
     }
-    self.headerView.showsShareButton = YES;
     
     return self.headerView;
 }
 
-- (void)headerView:(VideoDetailHeaderView *)headerView shareButtonPressed:(id)sender
+- (void)headerView:(KGODetailPageHeaderView *)headerView shareButtonPressed:(id)sender
 {
     _shareController.actionSheetTitle = NSLocalizedString(@"Share Video", nil);
     _shareController.shareTitle = video.title;
@@ -221,7 +211,16 @@ static const CGFloat extraScrollViewHeight = 100.0f;
     _shareController.shareURL = video.url;
     
     [_shareController shareInView:self.view];
+}
 
+- (void)headerViewFrameDidChange:(KGODetailPageHeaderView *)headerView
+{
+    CGFloat y = [self viewForTableHeader].frame.size.height + kVideoDetailMargin * 2;
+    UIView *videoImageView = [scrollView viewWithTag:kVideoDetailImageViewTag];
+    CGRect frame = videoImageView.frame;
+    frame.origin.y = y;
+    videoImageView.frame = frame;
+    [self setDescription];
 }
 
 

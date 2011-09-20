@@ -31,7 +31,6 @@
 		562F4B7B133EFA10000B9344 /* ContentWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 562F4B78133EFA10000B9344 /* ContentWebViewController.m */; };
 		56388BDA13EF42EE005BA72E /* EventKitUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 56388BD913EF42EE005BA72E /* EventKitUI.framework */; };
 		56388BDC13EF4306005BA72E /* EventKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 56388BDB13EF4305005BA72E /* EventKit.framework */; };
-		56388C1A13FDF957005BA72E /* VideoDetailHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 56388C1913FDF957005BA72E /* VideoDetailHeaderView.m */; };
 		A627E6B0134A65FD00403110 /* VideoDataManager.m in Sources */ = {isa = PBXBuildFile; fileRef = A627E6AB134A65FD00403110 /* VideoDataManager.m */; };
 		A627E6B1134A65FD00403110 /* VideoListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A627E6AD134A65FD00403110 /* VideoListViewController.m */; };
 		A627E6B2134A65FD00403110 /* VideoModule.m in Sources */ = {isa = PBXBuildFile; fileRef = A627E6AF134A65FD00403110 /* VideoModule.m */; };
@@ -194,8 +193,6 @@
 /* Begin PBXFileReference section */
 		0B2150A114058F5600BD30A3 /* PeopleGroupContactViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PeopleGroupContactViewController.h; sourceTree = "<group>"; };
 		0B2150A214058F5700BD30A3 /* PeopleGroupContactViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PeopleGroupContactViewController.m; sourceTree = "<group>"; };
-		0B976E2513FADE6D0085CA3A /* VideoDetailHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VideoDetailHeaderView.h; path = ../Video/VideoDetailHeaderView.h; sourceTree = "<group>"; };
-		0B976E2613FADE6D0085CA3A /* VideoDetailHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VideoDetailHeaderView.m; path = ../Video/VideoDetailHeaderView.m; sourceTree = "<group>"; };
 		1D30AB110D05D00D00671497 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		1D6058910D05DD3D006BFB54 /* Universitas.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Universitas.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1DF5F4DF0D08C38300B7A737 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
@@ -233,8 +230,6 @@
 		56388BD713EF42B6005BA72E /* EventKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = EventKit.framework; path = System/Library/Frameworks/EventKit.framework; sourceTree = SDKROOT; };
 		56388BD913EF42EE005BA72E /* EventKitUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = EventKitUI.framework; path = System/Library/Frameworks/EventKitUI.framework; sourceTree = SDKROOT; };
 		56388BDB13EF4305005BA72E /* EventKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = EventKit.framework; path = System/Library/Frameworks/EventKit.framework; sourceTree = SDKROOT; };
-		56388C1813FDF957005BA72E /* VideoDetailHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VideoDetailHeaderView.h; path = ../Video/VideoDetailHeaderView.h; sourceTree = "<group>"; };
-		56388C1913FDF957005BA72E /* VideoDetailHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VideoDetailHeaderView.m; path = ../Video/VideoDetailHeaderView.m; sourceTree = "<group>"; };
 		A627E6AA134A65FD00403110 /* VideoDataManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VideoDataManager.h; path = ../../Modules/Video/VideoDataManager.h; sourceTree = SOURCE_ROOT; };
 		A627E6AB134A65FD00403110 /* VideoDataManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VideoDataManager.m; path = ../../Modules/Video/VideoDataManager.m; sourceTree = SOURCE_ROOT; };
 		A627E6AC134A65FD00403110 /* VideoListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VideoListViewController.h; path = ../../Modules/Video/VideoListViewController.h; sourceTree = SOURCE_ROOT; };
@@ -687,8 +682,6 @@
 		A627E6A4134A657000403110 /* Video */ = {
 			isa = PBXGroup;
 			children = (
-				56388C1813FDF957005BA72E /* VideoDetailHeaderView.h */,
-				56388C1913FDF957005BA72E /* VideoDetailHeaderView.m */,
 				A627E6B3134A660E00403110 /* Model */,
 				A627E6AA134A65FD00403110 /* VideoDataManager.h */,
 				A627E6AB134A65FD00403110 /* VideoDataManager.m */,
@@ -696,8 +689,6 @@
 				A627E6AD134A65FD00403110 /* VideoListViewController.m */,
 				A6F2F818134BAC75009F597D /* VideoDetailViewController.h */,
 				A6F2F819134BAC75009F597D /* VideoDetailViewController.m */,
-				0B976E2513FADE6D0085CA3A /* VideoDetailHeaderView.h */,
-				0B976E2613FADE6D0085CA3A /* VideoDetailHeaderView.m */,
 				A6F2FA1F134BE23F009F597D /* VideoWebViewController.h */,
 				A6F2FA20134BE23F009F597D /* VideoWebViewController.m */,
 				A627E6AE134A65FD00403110 /* VideoModule.h */,
@@ -1462,7 +1453,6 @@
 				EB93486A139ED48500446243 /* NewsStoryTableViewCell.m in Sources */,
 				562CD69F13B9AEA600C5CB94 /* LinksModule.m in Sources */,
 				4B2A10B013D609300028298E /* LinksTableViewController.m in Sources */,
-				56388C1A13FDF957005BA72E /* VideoDetailHeaderView.m in Sources */,
 				EB6BC7F614058A0B0095744E /* MapCategoryListViewController.m in Sources */,
 				EBE9C57B14058F390090B001 /* MapDataManager.m in Sources */,
 				0B2150A314058F5700BD30A3 /* PeopleGroupContactViewController.m in Sources */,

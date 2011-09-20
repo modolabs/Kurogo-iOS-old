@@ -8,7 +8,7 @@
 @class CalendarDetailViewController;
 
 @interface EventDetailTableView : UITableView <UITableViewDelegate,
-UITableViewDataSource, KGODetailPageHeaderDelegate, KGODetailPageCalendarButtonDelegate, MFMailComposeViewControllerDelegate,
+UITableViewDataSource, KGODetailPageHeaderDelegate, MFMailComposeViewControllerDelegate,
 KGORequestDelegate> {
     
     NSArray *_sections;
