@@ -8,8 +8,14 @@
 - (id)initWithCoder:(NSCoder *)aDecoder {
     self = [super initWithCoder:aDecoder];
     if (self) {
-        self.backgroundImage = [[KGOTheme sharedTheme] backgroundImageForToolbar];
-        self.tintColor  = [[KGOTheme sharedTheme] tintColorForToolbar];
+        UIImage *image = [[KGOTheme sharedTheme] backgroundImageForToolbar];
+        if (image) {
+            self.backgroundImage = image;
+        }
+        UIColor *color = [[KGOTheme sharedTheme] tintColorForToolbar];
+        if (color) {
+            self.tintColor = color;
+        }
     }
     return self;
 }
