@@ -39,7 +39,7 @@ searchBar = _searchBar, module;
 
     _request = [[KGORequestManager sharedManager] requestWithDelegate:self module:self.module.tag path:@"contacts" params:nil];
     if (_phoneDirectoryEntries.count) {
-        _request.minimumDuration = 7200; // TODO: make this value configured
+        _request.minimumDuration = 72; // TODO: make this value configured
     }
     _request.expectedResponseType = [NSDictionary class];
     [_request connect];
@@ -94,6 +94,11 @@ searchBar = _searchBar, module;
 
 - (void)request:(KGORequest *)request didReceiveResult:(id)result
 {
+    // TODO: make sure there are no race conditions with deleted objects
+    for (PersonContact *aContact in _phoneDirectoryEntries) {
+        [[CoreDataManager sharedManager] deleteObject:aContact];
+    }
+    
     NSArray *contacts = [result arrayForKey:@"results"];
     NSMutableArray *array = [NSMutableArray array];
     for (NSDictionary *contactDict in contacts) {
@@ -108,6 +113,8 @@ searchBar = _searchBar, module;
     }
     [_phoneDirectoryEntries release];
     _phoneDirectoryEntries = [array copy];
+    
+    [[CoreDataManager sharedManager] saveData];
     
     [self reloadDataForTableView:self.tableView];
 }

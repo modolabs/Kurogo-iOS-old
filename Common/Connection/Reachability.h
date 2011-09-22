@@ -62,6 +62,9 @@ typedef enum {
 	SCNetworkReachabilityRef reachabilityRef;
 }
 
+// added by modolabs to address warning in -reachabilityWithAddress:
+struct sockaddr_in;
+
 //reachabilityWithHostName- Use to check the reachability of a particular host name. 
 + (Reachability*) reachabilityWithHostName: (NSString*) hostName;
 

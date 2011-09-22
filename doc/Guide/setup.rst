@@ -63,6 +63,18 @@ Each server has the following options:
   http://example.com/extension, put *extension* here.
 * *UseHTTPS* - whether or not the Kurogo instance uses HTTPS.
 
+---------------------------------
+Servers and Build Configurations
+---------------------------------
 
+Kurogo comes with three build configurations: *Debug*, *Staging*, and 
+*Release*. Debug and Release follow general conventions (e,g, Debug uses less 
+optimization, Release is signed with the Distribution certificate); Staging is 
+identical to Release except for the Kurogo server it hits. Apps built under the 
+Release configuration hit the Production server configured in Config.plist, 
+while Staging hits the Staging server in Config.plist.
 
+In Debug builds, users may change the current server via the Settings module if
+it is enabled in the app.  The server can determine whether an app is a debug
+build by the presence of the *debug* parameter in API requests.
 
