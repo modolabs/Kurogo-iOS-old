@@ -1,7 +1,6 @@
 #import "AboutModule.h"
 #import "AboutTableViewController.h"
 #import "Foundation+KGOAdditions.h"
-#import "AboutMITVC.h"
 #import "KGOAppDelegate+ModuleAdditions.h"
 
 @implementation AboutModule
@@ -28,7 +27,7 @@
         self.aboutRequest = [[KGORequestManager sharedManager] requestWithDelegate:self
                                                                        module:@"about"
                                                                          path:command
-                                                                       params:[NSDictionary dictionaryWithObjectsAndKeys:nil]];
+                                                                       params:nil];
         
         self.aboutRequest.expectedResponseType = [NSString class];
         if (self.aboutRequest) {
@@ -61,7 +60,7 @@
 - (void)request:(KGORequest *)request didReceiveResult:(id)result {
     self.aboutRequest = nil;
     
-    NSLog(@"%@", [result description]);
+    DLog(@"%@", [result description]);
     
     if ([result isKindOfClass:[NSString class]])
         [KGO_SHARED_APP_DELEGATE() showPage:LocalPathPageNameWebViewDetail

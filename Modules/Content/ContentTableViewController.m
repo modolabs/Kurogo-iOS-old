@@ -1,11 +1,3 @@
-//
-//  ContentTableViewController.m
-//  Universitas
-//
-//  Created by Muhammad J Amjad on 3/26/11.
-//  Copyright 2011 ModoLabs Inc. All rights reserved.
-//
-
 #import "ContentTableViewController.h"
 #import "Foundation+KGOAdditions.h"
 #import "KGOAppDelegate+ModuleAdditions.h"
@@ -14,75 +6,71 @@
 @implementation ContentTableViewController
 @synthesize moduleTag;
 @synthesize request;
-@synthesize loadingIndicator;
-@synthesize loadingView;
-@synthesize singleFeedView;
 
-/************************************************************************************************* 
- * 
- *  Call this function from the file extending this.
- *
- * ***********************************************************************************************/
+@synthesize tableView = _tableView, contentView, loadingView, contentTitle;
 
+@synthesize listOfFeeds, feedKeys;
+@synthesize feedKey = _feedKey;
 
-- (id)initWithStyle:(UITableViewStyle)style moduleTag:(NSString *) tag
+- (void)loadView
 {
-
-    self = [super initWithStyle:style];
-    if (self) {
-        self.moduleTag = tag;
-        self.title = [self.moduleTag capitalizedString];
-        numberOfFeeds = 0;
-       
+    [super loadView];
+    
+    if (self.feedKey) {
+        [self requestPageContent];
+        
+    } else {
         self.request = [[KGORequestManager sharedManager] requestWithDelegate:self
                                                                        module:self.moduleTag
-                                                                         path:@"feeds"
-                                                                       params:[NSDictionary dictionaryWithObjectsAndKeys:nil]];
+                                                                         path:@"pages"
+                                                                       params:nil];
         self.request.expectedResponseType = [NSDictionary class];
-        if (self.request) {
-            [self.request connect];
-            [self addLoadingView];
-        }
-
+        [self.request connect];
     }
-    return self;
+    [self addLoadingView];
 }
 
-- (void) addLoadingView {
+- (void)requestPageContent
+{
+    NSDictionary *params = [NSDictionary dictionaryWithObject:self.feedKey forKey:@"key"];
+    self.request = [[KGORequestManager sharedManager] requestWithDelegate:self
+                                                                   module:self.moduleTag                            
+                                                                     path:@"page"
+                                                                   params:params];
+    self.request.expectedResponseType = [NSString class];
     
+    [self.request connect];
+}
+
+- (void)addLoadingView
+{
     self.loadingView = [[[UIView alloc] initWithFrame:self.view.bounds] autorelease];
     loadingView.backgroundColor = [UIColor whiteColor];
     loadingView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     
-    self.loadingIndicator = [[[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray] autorelease];
-    [loadingIndicator startAnimating];
-    loadingIndicator.center = self.view.center;
-    [loadingView addSubview:loadingIndicator];
+    UIActivityIndicatorView *indicator = [[[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray] autorelease];
+    [indicator startAnimating];
+    indicator.center = self.view.center;
+    [loadingView addSubview:indicator];
     [self.view addSubview:loadingView];
 }
 
-- (void) removeLoadingView {
-    [self.loadingIndicator stopAnimating];
+- (void)removeLoadingView {
     [self.loadingView removeFromSuperview];
-}
-
-
-- (void) showSingleFeedWebView: (NSString *) titleString htmlString: (NSString *) htmlStringText {
-    [self removeLoadingView];
-    self.singleFeedView = [[[UIWebView alloc] init] autorelease];
-    singleFeedView.frame = self.view.bounds;
-    
-    [singleFeedView loadHTMLString:htmlStringText baseURL:nil];
-    self.title = titleString;
-    [self.view addSubview:singleFeedView];
+    self.loadingView = nil;
 }
 
 - (void)dealloc
 {
-    self.singleFeedView = nil;
-    self.loadingIndicator = nil;
+    self.contentView = nil;
     self.loadingView = nil;
     self.moduleTag = nil;
+    self.tableView = nil;
+    self.feedKey = nil;
+
+    [self.request cancel];
+    self.request = nil;
+
     [listOfFeeds release];
     [feedKeys release];
     [super dealloc];
@@ -112,8 +100,8 @@
 - (void)viewDidUnload
 {
     [super viewDidUnload];
-    self.singleFeedView = nil;
-    self.loadingIndicator = nil;
+    self.tableView = nil;
+    self.contentView = nil;
     self.loadingView = nil;
     // Release any retained subviews of the main view.
     // e.g. self.myOutlet = nil;
@@ -122,6 +110,10 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    
+    if (self.tableView) {
+        [self.tableView deselectRowAtIndexPath:[self.tableView indexPathForSelectedRow] animated:YES];
+    }
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -158,7 +150,7 @@
 {
 
     // Return the number of rows in the section.
-    return numberOfFeeds;
+    return self.feedKeys.count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -223,9 +215,7 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    
-    NSString * feedKey = [feedKeys objectAtIndex:indexPath.row];
+    NSString *feedKey = [feedKeys objectAtIndex:indexPath.row];
         
     NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:feedKey, @"key", nil];
     [KGO_SHARED_APP_DELEGATE() showPage:LocalPathPageNameDetail forModuleTag:self.moduleTag params:params];
@@ -237,45 +227,61 @@
     self.request = nil;
 }
 
-- (void)request:(KGORequest *)request didReceiveResult:(id)result {
-    self.request = nil;
-    
-    DLog(@"%@", [result description]);
-   
-    NSDictionary *resultDict = (NSDictionary *)result; 
-    numberOfFeeds = [resultDict integerForKey:@"totalFeeds"];
-    
-    listOfFeeds = [[NSMutableDictionary alloc] initWithCapacity:numberOfFeeds];
-    feedKeys = [[NSMutableArray alloc] initWithCapacity:numberOfFeeds];
-    
-    NSArray * pages = (NSArray *)[resultDict arrayForKey:@"pages"];
-    
-    for (int count=0; count < numberOfFeeds; count++){
-        NSDictionary * pagesDictionary = [pages objectAtIndex:count];
-        NSString *key = [pagesDictionary nonemptyStringForKey:@"key"];
-        if (key) {
-            [feedKeys addObject:key];
-            
-            NSString *title = [pagesDictionary stringForKey:@"title"];
-            [listOfFeeds setValue:title forKey:key];
-        }
-    }
-    
-    // if only one feed, then directly show the feed contents in the WebView
-    if (numberOfFeeds == 1) {
+- (void)request:(KGORequest *)request didReceiveResult:(id)result
+{
+    if ([self.request.path isEqualToString:@"pages"]) {
         
-        NSDictionary * feedData = [resultDict dictionaryForKey:@"feedData"];
+        DLog(@"%@", [result description]);
         
-        NSString * htmlStringText = [feedData stringForKey:@"contentBody"]; 
-        NSString * titleString = [feedData stringForKey:@"title"];
+        NSDictionary *resultDict = (NSDictionary *)result;
         
-        [self showSingleFeedWebView:titleString htmlString:htmlStringText];
-        return;
-    }
-    
-    [self.tableView reloadData];
-    [self removeLoadingView];
+        NSArray *pages = (NSArray *)[resultDict arrayForKey:@"pages"];
+        NSInteger numberOfFeeds = pages.count;
 
+        self.listOfFeeds = [NSMutableDictionary dictionaryWithCapacity:numberOfFeeds];
+        self.feedKeys = [NSMutableArray arrayWithCapacity:numberOfFeeds];
+        
+        for (NSDictionary *pageDict in pages) {
+            NSString *key = [pageDict nonemptyStringForKey:@"key"];
+            NSString *title = [pageDict stringForKey:@"title"];
+            if (key && title) {
+                [feedKeys addObject:key];
+                [listOfFeeds setValue:title forKey:key];
+            }
+        }
+        
+        // if only one feed, then directly show the feed contents in the WebView
+        if (numberOfFeeds == 1) {
+            self.feedKey = [feedKeys objectAtIndex:0];
+            [self requestPageContent];
+
+        } else {
+            self.tableView = [[[UITableView alloc] initWithFrame:self.view.bounds
+                                                           style:UITableViewStyleGrouped] autorelease];
+            self.tableView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+
+            [self.view addSubview:self.tableView];
+            self.tableView.delegate = self;
+            self.tableView.dataSource = self;
+            
+            [self removeLoadingView];
+        }
+
+    } else if ([self.request.path isEqualToString:@"page"]) {
+        NSString *htmlString = (NSString *)result;
+        
+        [self removeLoadingView];
+        
+        self.contentView = [[[UIWebView alloc] init] autorelease];
+        self.contentView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+        contentView.frame = self.view.bounds;
+        
+        // TODO: this isn't the correct way to display the content
+        // we want to show the title above it as well (separate from nav bar)
+        [contentView loadHTMLString:htmlString baseURL:nil];
+        [self.view addSubview:contentView];
+        
+    }
 }
 
 @end

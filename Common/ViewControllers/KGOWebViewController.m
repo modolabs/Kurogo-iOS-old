@@ -20,7 +20,7 @@ enum {
 @implementation KGOWebViewController
 
 @synthesize loadsLinksInternally, webView = _webView, delegate;
-@synthesize HTMLString;
+@synthesize HTMLString = _HTMLString;
 
 - (void)dealloc
 {
@@ -55,8 +55,7 @@ enum {
     if (self.requestURL) {
         [_webView loadRequest:[NSURLRequest requestWithURL:self.requestURL]];
     }
-    
-    if (self.HTMLString != nil) {
+    else if (self.HTMLString) {
         [_webView loadHTMLString:self.HTMLString baseURL:nil];
     }
 }
@@ -114,6 +113,21 @@ enum {
     }
 }
 
+- (NSString *)HTMLString
+{
+    return _HTMLString;
+}
+
+- (void)setHTMLString:(NSString *)HTMLString
+{
+    [_HTMLString release];
+    _HTMLString = [HTMLString retain];
+    
+    if (_webView){
+        [_webView loadHTMLString:self.HTMLString baseURL:nil];
+    }
+}
+
 - (NSURL *)requestURL
 {
     return _requestURL;
@@ -146,24 +160,16 @@ enum {
     }
     
     KGOHTMLTemplate *template = [KGOHTMLTemplate templateWithPathName:filename];
-    NSString *wrappedString = [template stringWithReplacements:[NSDictionary dictionaryWithObjectsAndKeys:HTMLString, @"BODY", nil]];
+    NSString *wrappedString = [template stringWithReplacements:
+                               [NSDictionary dictionaryWithObjectsAndKeys:self.HTMLString, @"BODY", nil]];
     NSURL *url = [NSURL URLWithString:[[NSBundle mainBundle] resourcePath]];
     if (_webView) {
         [_webView loadHTMLString:wrappedString baseURL:url];
     } else {
-        HTMLString = [wrappedString retain];
+        self.HTMLString = wrappedString;
     }
 }
 
-- (void) showHTMLString: (NSString *) HTMLStringText
-{
-    [HTMLString release];
-    self.HTMLString = HTMLStringText;
-    
-    if (_webView){
-        [_webView loadHTMLString:self.HTMLString baseURL:nil];
-    }
-}
 
 /*
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.

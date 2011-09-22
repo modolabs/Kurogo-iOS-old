@@ -95,8 +95,13 @@ searchBar = _searchBar, module;
     NSArray *contacts = [result arrayForKey:@"results"];
     NSMutableArray *array = [NSMutableArray array];
     for (NSDictionary *contactDict in contacts) {
+        NSString *type = [contactDict nonemptyStringForKey:@"type"];
+        if (!type) {
+            type = [contactDict nonemptyStringForKey:@"class"];
+        }
+        
         PersonContact *aContact = [PersonContact personContactWithDictionary:contactDict
-                                                                        type:[contactDict nonemptyStringForKey:@"class"]];
+                                                                        type:type];
         [array addObject:aContact];
     }
     [_phoneDirectoryEntries release];

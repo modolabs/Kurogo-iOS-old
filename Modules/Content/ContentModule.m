@@ -1,6 +1,5 @@
 #import "ContentModule.h"
 #import "ContentTableViewController.h"
-#import "ContentWebViewController.h"
 #import "Foundation+KGOAdditions.h"
 
 @implementation ContentModule
@@ -8,18 +7,18 @@
 - (UIViewController *)modulePage:(NSString *)pageName params:(NSDictionary *)params {
     UIViewController *vc = nil;
     if ([pageName isEqualToString:LocalPathPageNameHome]) {
-        vc = [[[ContentTableViewController alloc] initWithStyle:UITableViewStyleGrouped moduleTag:self.tag] autorelease];
+        ContentTableViewController *cvc = [[[ContentTableViewController alloc] init] autorelease];
+        cvc.moduleTag = self.tag;
+        vc = cvc;
         
     } else if ([pageName isEqualToString:LocalPathPageNameDetail]) {
-        ContentWebViewController * webViewController = [[[ContentWebViewController alloc] init] autorelease];
-        KGORequest *feedRequest = [[KGORequestManager sharedManager] requestWithDelegate:webViewController                          
-                                                                                  module:self.tag                            
-                                                                                    path:@"getFeed"                           
-                                                                                  params:params];
-        
-        [feedRequest connect];
-        
-        vc = webViewController;
+        NSString *key = [params stringForKey:@"key"];
+        if (key) {
+            ContentTableViewController *cvc = [[[ContentTableViewController alloc] init] autorelease];
+            cvc.moduleTag = self.tag;
+            cvc.feedKey = key;
+            vc = cvc;
+        }
     }
     return vc;
 }

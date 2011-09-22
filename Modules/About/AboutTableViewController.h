@@ -10,7 +10,6 @@ KGORequestDelegate, MFMailComposeViewControllerDelegate> {
     NSArray * resultArray;
     
     UIView * loadingView;
-    UIActivityIndicatorView * loadingIndicator;
 }
 
 @property (nonatomic, retain) KGORequest * request;
@@ -18,7 +17,6 @@ KGORequestDelegate, MFMailComposeViewControllerDelegate> {
 @property (nonatomic, retain) NSArray * resultArray;
 
 @property (nonatomic, retain) UIView * loadingView;
-@property (nonatomic, retain) UIActivityIndicatorView * loadingIndicator;
 
 - (void) addLoadingView;
 - (void) removeLoadingView; 

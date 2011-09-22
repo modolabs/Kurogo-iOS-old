@@ -1,7 +1,6 @@
 #import "AboutTableViewController.h"
 #import "KGOAppDelegate+ModuleAdditions.h"
 #import "UIKit+KGOAdditions.h"
-#import "AboutMITVC.h"
 #import "MITMailComposeController.h"
 #import "KGOTheme.h"
 #import "Foundation+KGOAdditions.h"
@@ -11,28 +10,8 @@
 @synthesize request;
 @synthesize moduleTag;
 @synthesize resultArray;
-@synthesize loadingIndicator;
 @synthesize loadingView;
 
-- (id)initWithStyle:(UITableViewStyle)style {
-    
-    self = [super initWithStyle:style];
-    if (self) {
-        self.title = @"About";
-        
-        self.request = [[KGORequestManager sharedManager] requestWithDelegate:self
-                                                                       module:@"about"
-                                                                         path:@"index"
-                                                                        params:[NSDictionary dictionaryWithObjectsAndKeys:nil]];
-        self.request.expectedResponseType = [NSArray class];
-        if (self.request) {
-            [self.request connect];
-            [self addLoadingView];
-        }
-    }
-    return self;
-
-}
 
 - (void) addLoadingView {
     
@@ -40,27 +19,39 @@
     loadingView.backgroundColor = [UIColor whiteColor];
     loadingView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     
-    self.loadingIndicator = [[[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray] autorelease];
-    [loadingIndicator startAnimating];
-    loadingIndicator.center = self.view.center;
-    [loadingView addSubview:loadingIndicator];
+    UIActivityIndicatorView *indicator = [[[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray] autorelease];
+    [indicator startAnimating];
+    indicator.center = self.view.center;
+    [loadingView addSubview:indicator];
     [self.view addSubview:loadingView];
 }
 
 - (void) removeLoadingView {
-    [self.loadingIndicator stopAnimating];
     [self.loadingView removeFromSuperview];
+    self.loadingView = nil;
 }
 
 - (void)viewDidLoad {
     showBuildNumber = NO;
+    
+    self.title = @"About";
+    
+    self.request = [[KGORequestManager sharedManager] requestWithDelegate:self
+                                                                   module:@"about"
+                                                                     path:@"index"
+                                                                   params:nil];
+    self.request.expectedResponseType = [NSArray class];
+    if (self.request) {
+        [self.request connect];
+        [self addLoadingView];
+    }
 }
 
--(void) viewDidUnload {
+- (void)viewDidUnload {
     [super viewDidUnload];
     
+    self.loadingView = nil;
     self.resultArray = nil;
-
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
@@ -90,11 +81,7 @@
     if (cell == nil) {
         cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
     }
-    
-    cell.backgroundColor = [UIColor colorWithWhite:1.0 alpha:0.65];
-    cell.textLabel.backgroundColor = [UIColor clearColor];
-    cell.detailTextLabel.backgroundColor = [UIColor clearColor];
-    
+        
     switch (indexPath.section) {
         case 0:
             switch (indexPath.row) {
@@ -113,7 +100,6 @@
         			cell.textLabel.textColor = [[KGOTheme sharedTheme] textColorForThemedProperty:KGOThemePropertyNavListTitle];
                     cell.accessoryType = UITableViewCellAccessoryNone;
                     cell.selectionStyle = UITableViewCellSelectionStyleNone;
-                    cell.backgroundColor = [UIColor whiteColor];
                 }
                     break;
               /*  case 1:
@@ -210,6 +196,10 @@
 
 - (void)dealloc {
     [resultArray release];
+
+    self.request = nil;
+    self.moduleTag = nil;
+    self.loadingView = nil;
     
     [super dealloc];
 }
@@ -225,8 +215,9 @@
     self.request = nil;
     
     DLog(@"%@", [result description]);
-    resultArray = [result copy];
+    self.resultArray = result;
     
+    // TODO: only reload the section that will be updated
     [self.tableView reloadData];
     [self removeLoadingView];
     

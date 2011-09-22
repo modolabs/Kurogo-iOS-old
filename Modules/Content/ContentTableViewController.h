@@ -1,40 +1,38 @@
-//
-//  ContentTableViewController.h
-//  Universitas
-//
-//  Created by Muhammad J Amjad on 3/26/11.
-//  Copyright 2011 ModoLabs Inc. All rights reserved.
-//
-
 #import <UIKit/UIKit.h>
 #import "KGORequestManager.h"
 
 
-@interface ContentTableViewController : UITableViewController <KGORequestDelegate> {
+@interface ContentTableViewController : UIViewController <KGORequestDelegate,
+UITableViewDataSource, UITableViewDelegate> {
 	
-    int numberOfFeeds;
     NSMutableDictionary * listOfFeeds;
     NSMutableArray * feedKeys;
     UIView * loadingView;
-    UIActivityIndicatorView * loadingIndicator;
-    
-    UIWebView * singleFeedView;
-    
+
     NSString * moduleTag;
     
 }
 
+@property (nonatomic, retain) NSMutableDictionary *listOfFeeds;
+@property (nonatomic, retain) NSMutableArray *feedKeys;
+
 @property (nonatomic, retain) NSString * moduleTag;
+@property (nonatomic, retain) UIView *loadingView;
+
+@property (nonatomic, retain) NSString *feedKey;
 @property (nonatomic, retain) KGORequest *request;
-@property (nonatomic, retain) UIView * loadingView;
-@property (nonatomic, retain) UIActivityIndicatorView * loadingIndicator;
-@property (nonatomic, retain) UIWebView * singleFeedView;
 
-- (id)initWithStyle:(UITableViewStyle)style moduleTag:(NSString *) tag;
+// if there are multiple feeds, show a list
+@property (nonatomic, retain) UITableView *tableView;
 
-- (void) addLoadingView;
-- (void) removeLoadingView; 
-- (void) showSingleFeedWebView: (NSString *) titleString htmlString: (NSString *) htmlStringText;
+// if there's only one feed, show it directly
+@property (nonatomic, retain) UIWebView *contentView;
+@property (nonatomic, retain) NSString *contentTitle;
+
+- (void)addLoadingView;
+- (void)removeLoadingView;
+
+- (void)requestPageContent;
 
 @end
 

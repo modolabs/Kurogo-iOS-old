@@ -18,7 +18,7 @@
     UIActivityIndicatorView *_loadingView;
     NSURL *_requestURL;
     
-    NSString * HTMLString;
+    NSString *_HTMLString;
 
     NSMutableArray *_templateStack;
     
@@ -29,11 +29,9 @@
 @property (nonatomic, retain) UIWebView *webView;
 @property (nonatomic, retain) NSURL *requestURL;
 
-@property (nonatomic, retain) NSString * HTMLString;
+@property (nonatomic, retain) NSString *HTMLString;
 
 @property (nonatomic) BOOL loadsLinksInternally; // defaults to NO
-
-- (void) showHTMLString: (NSString *) HTMLStringText;
 
 - (void)applyTemplate:(NSString *)filename;
 

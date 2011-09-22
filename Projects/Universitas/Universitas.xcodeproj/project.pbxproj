@@ -28,7 +28,6 @@
 		562CD69F13B9AEA600C5CB94 /* LinksModule.m in Sources */ = {isa = PBXBuildFile; fileRef = 562CD69E13B9AEA600C5CB94 /* LinksModule.m */; };
 		562F4B79133EFA10000B9344 /* ContentModule.m in Sources */ = {isa = PBXBuildFile; fileRef = 562F4B74133EFA10000B9344 /* ContentModule.m */; };
 		562F4B7A133EFA10000B9344 /* ContentTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 562F4B76133EFA10000B9344 /* ContentTableViewController.m */; };
-		562F4B7B133EFA10000B9344 /* ContentWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 562F4B78133EFA10000B9344 /* ContentWebViewController.m */; };
 		56388BDA13EF42EE005BA72E /* EventKitUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 56388BD913EF42EE005BA72E /* EventKitUI.framework */; };
 		56388BDC13EF4306005BA72E /* EventKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 56388BDB13EF4305005BA72E /* EventKit.framework */; };
 		56388C1A13FDF957005BA72E /* VideoDetailHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 56388C1913FDF957005BA72E /* VideoDetailHeaderView.m */; };
@@ -43,7 +42,6 @@
 		A6F2F83D134BAEDD009F597D /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A6F2F83C134BAEDD009F597D /* MediaPlayer.framework */; };
 		A6F2FA21134BE23F009F597D /* VideoWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A6F2FA20134BE23F009F597D /* VideoWebViewController.m */; };
 		BD9FA7EE1047A05E00BC3C0A /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BD9FA7ED1047A05E00BC3C0A /* MessageUI.framework */; };
-		DE0F6B3411109BC500F064D6 /* AboutMITVC.m in Sources */ = {isa = PBXBuildFile; fileRef = DE0F6B3311109BC500F064D6 /* AboutMITVC.m */; };
 		DE6D9401110AD1ED00DAF213 /* SettingsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DE6D9319110A8EFA00DAF213 /* SettingsTableViewController.m */; };
 		DE728E7B10D6FF4700BFED37 /* StoryDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DE728E6510D6FF4700BFED37 /* StoryDetailViewController.m */; };
 		DE728E7C10D6FF4700BFED37 /* StoryListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DE728E6710D6FF4700BFED37 /* StoryListViewController.m */; };
@@ -228,8 +226,6 @@
 		562F4B74133EFA10000B9344 /* ContentModule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ContentModule.m; path = ../../../Modules/Content/ContentModule.m; sourceTree = "<group>"; };
 		562F4B75133EFA10000B9344 /* ContentTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ContentTableViewController.h; path = ../../../Modules/Content/ContentTableViewController.h; sourceTree = "<group>"; };
 		562F4B76133EFA10000B9344 /* ContentTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ContentTableViewController.m; path = ../../../Modules/Content/ContentTableViewController.m; sourceTree = "<group>"; };
-		562F4B77133EFA10000B9344 /* ContentWebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ContentWebViewController.h; path = ../../../Modules/Content/ContentWebViewController.h; sourceTree = "<group>"; };
-		562F4B78133EFA10000B9344 /* ContentWebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ContentWebViewController.m; path = ../../../Modules/Content/ContentWebViewController.m; sourceTree = "<group>"; };
 		56388BD713EF42B6005BA72E /* EventKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = EventKit.framework; path = System/Library/Frameworks/EventKit.framework; sourceTree = SDKROOT; };
 		56388BD913EF42EE005BA72E /* EventKitUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = EventKitUI.framework; path = System/Library/Frameworks/EventKitUI.framework; sourceTree = SDKROOT; };
 		56388BDB13EF4305005BA72E /* EventKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = EventKit.framework; path = System/Library/Frameworks/EventKit.framework; sourceTree = SDKROOT; };
@@ -252,8 +248,6 @@
 		A6F2FA1F134BE23F009F597D /* VideoWebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VideoWebViewController.h; path = ../../Modules/Video/VideoWebViewController.h; sourceTree = SOURCE_ROOT; };
 		A6F2FA20134BE23F009F597D /* VideoWebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VideoWebViewController.m; path = ../../Modules/Video/VideoWebViewController.m; sourceTree = SOURCE_ROOT; };
 		BD9FA7ED1047A05E00BC3C0A /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
-		DE0F6B3211109BC500F064D6 /* AboutMITVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AboutMITVC.h; sourceTree = "<group>"; };
-		DE0F6B3311109BC500F064D6 /* AboutMITVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AboutMITVC.m; sourceTree = "<group>"; };
 		DE6D9318110A8EFA00DAF213 /* SettingsTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingsTableViewController.h; sourceTree = "<group>"; };
 		DE6D9319110A8EFA00DAF213 /* SettingsTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingsTableViewController.m; sourceTree = "<group>"; };
 		DE728E6410D6FF4700BFED37 /* StoryDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StoryDetailViewController.h; sourceTree = "<group>"; };
@@ -678,8 +672,6 @@
 				562F4B74133EFA10000B9344 /* ContentModule.m */,
 				562F4B75133EFA10000B9344 /* ContentTableViewController.h */,
 				562F4B76133EFA10000B9344 /* ContentTableViewController.m */,
-				562F4B77133EFA10000B9344 /* ContentWebViewController.h */,
-				562F4B78133EFA10000B9344 /* ContentWebViewController.m */,
 			);
 			name = Content;
 			sourceTree = "<group>";
@@ -748,8 +740,6 @@
 				DEA3B48C10C9BB7300BDA774 /* AboutModule.m */,
 				DEC02F9B110578240054BE32 /* AboutTableViewController.h */,
 				DEC02F9C110578240054BE32 /* AboutTableViewController.m */,
-				DE0F6B3211109BC500F064D6 /* AboutMITVC.h */,
-				DE0F6B3311109BC500F064D6 /* AboutMITVC.m */,
 			);
 			name = About;
 			path = ../../../Modules/About;
@@ -1340,7 +1330,6 @@
 				DE9EFBD210FE7D8900F5F07E /* SettingsModule.m in Sources */,
 				DEC02F9D110578240054BE32 /* AboutTableViewController.m in Sources */,
 				DE6D9401110AD1ED00DAF213 /* SettingsTableViewController.m in Sources */,
-				DE0F6B3411109BC500F064D6 /* AboutMITVC.m in Sources */,
 				EB1440DD1309EEA000396753 /* CalendarModule.m in Sources */,
 				EB1440D81309EEA000396753 /* CalendarDetailViewController.m in Sources */,
 				EB1440D61309EEA000396753 /* CalendarDataManager.m in Sources */,
@@ -1410,7 +1399,6 @@
 				EB03376B133D26F100ACF2BB /* EventDetailTableView.m in Sources */,
 				562F4B79133EFA10000B9344 /* ContentModule.m in Sources */,
 				562F4B7A133EFA10000B9344 /* ContentTableViewController.m in Sources */,
-				562F4B7B133EFA10000B9344 /* ContentWebViewController.m in Sources */,
 				EB0338441340DB0500ACF2BB /* Calendar.xcdatamodeld in Sources */,
 				EB0338451340DB0500ACF2BB /* KGOAttendeeWrapper.m in Sources */,
 				EB0338461340DB0500ACF2BB /* KGOCalendar.m in Sources */,
