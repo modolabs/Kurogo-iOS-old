@@ -497,9 +497,6 @@
 		EBC1C7051347B8D20045CE9C /* release.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = release.xcconfig; sourceTree = "<group>"; };
 		EBC1C7111347C5750045CE9C /* kurogo_debug.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = kurogo_debug.xcconfig; sourceTree = "<group>"; };
 		EBE242BC13AFD3030082C277 /* libfacebook_ios_sdk.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libfacebook_ios_sdk.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		EBE242BE13AFD3030082C277 /* libOAuth.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libOAuth.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		EBE242BF13AFD3030082C277 /* libSFHFKeychainUtils.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libSFHFKeychainUtils.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		EBE242C013AFD3030082C277 /* libTwitter.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libTwitter.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		EBE2CC1C1342AD2E0037546A /* KGOBookmarksViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGOBookmarksViewController.h; sourceTree = "<group>"; };
 		EBE2CC1D1342AD2F0037546A /* KGOBookmarksViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGOBookmarksViewController.m; sourceTree = "<group>"; };
 		EBE2CC1F13438AEA0037546A /* KGODetailPageHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGODetailPageHeaderView.h; sourceTree = "<group>"; };
@@ -1005,9 +1002,6 @@
 			children = (
 				EB640C6A13FDFFFB00CFAC5B /* libjson.a */,
 				EBE242BC13AFD3030082C277 /* libfacebook_ios_sdk.a */,
-				EBE242BF13AFD3030082C277 /* libSFHFKeychainUtils.a */,
-				EBE242BE13AFD3030082C277 /* libOAuth.a */,
-				EBE242C013AFD3030082C277 /* libTwitter.a */,
 				EB138F0112F253A1004DBB7C /* GoogleAnalytics */,
 			);
 			name = Contrib;

@@ -88,7 +88,7 @@
         CGFloat sideInsets = floor((self.frame.size.width - imageSize.width) / 2);
         self.imageEdgeInsets = UIEdgeInsetsMake(0, sideInsets, self.frame.size.height - imageSize.height, sideInsets);
         self.titleEdgeInsets = UIEdgeInsetsMake(imageSize.height + titleImageGap + extraLineHeight, // want title below image
-                                               -imageSize.width,                             // and not to the right
+                                                -self.imageView.image.size.width,                   // and not to the right
                                                 0, 0);
     } else {
         // we want to left-align the label and image
