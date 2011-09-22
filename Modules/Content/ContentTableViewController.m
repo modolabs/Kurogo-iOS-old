@@ -5,11 +5,11 @@
 
 @implementation ContentTableViewController
 @synthesize moduleTag;
-@synthesize request;
+@synthesize pagesRequest, pageRequest;
 
 @synthesize tableView = _tableView, contentView, loadingView, contentTitle;
 
-@synthesize listOfFeeds, feedKeys;
+@synthesize feedTitles, feedKeys;
 @synthesize feedKey = _feedKey;
 
 - (void)loadView
@@ -20,12 +20,12 @@
         [self requestPageContent];
         
     } else {
-        self.request = [[KGORequestManager sharedManager] requestWithDelegate:self
-                                                                       module:self.moduleTag
-                                                                         path:@"pages"
-                                                                       params:nil];
-        self.request.expectedResponseType = [NSDictionary class];
-        [self.request connect];
+        self.pagesRequest = [[KGORequestManager sharedManager] requestWithDelegate:self
+                                                                            module:self.moduleTag
+                                                                              path:@"pages"
+                                                                            params:nil];
+        self.pagesRequest.expectedResponseType = [NSDictionary class];
+        [self.pagesRequest connect];
     }
     [self addLoadingView];
 }
@@ -33,13 +33,13 @@
 - (void)requestPageContent
 {
     NSDictionary *params = [NSDictionary dictionaryWithObject:self.feedKey forKey:@"key"];
-    self.request = [[KGORequestManager sharedManager] requestWithDelegate:self
-                                                                   module:self.moduleTag                            
-                                                                     path:@"page"
-                                                                   params:params];
-    self.request.expectedResponseType = [NSString class];
+    self.pageRequest = [[KGORequestManager sharedManager] requestWithDelegate:self
+                                                                       module:self.moduleTag                            
+                                                                         path:@"page"
+                                                                       params:params];
+    self.pageRequest.expectedResponseType = [NSString class];
     
-    [self.request connect];
+    [self.pageRequest connect];
 }
 
 - (void)addLoadingView
@@ -49,8 +49,10 @@
     loadingView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     
     UIActivityIndicatorView *indicator = [[[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray] autorelease];
+    CGSize size = loadingView.bounds.size;
+    indicator.center = CGPointMake(floor(size.width / 2), floor(size.height / 2));
+    indicator.autoresizingMask = UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
     [indicator startAnimating];
-    indicator.center = self.view.center;
     [loadingView addSubview:indicator];
     [self.view addSubview:loadingView];
 }
@@ -68,10 +70,13 @@
     self.tableView = nil;
     self.feedKey = nil;
 
-    [self.request cancel];
-    self.request = nil;
+    [self.pageRequest cancel];
+    self.pageRequest = nil;
+    
+    [self.pagesRequest cancel];
+    self.pagesRequest = nil;
 
-    [listOfFeeds release];
+    [feedTitles release];
     [feedKeys release];
     [super dealloc];
 }
@@ -165,7 +170,7 @@
     // Configure the cell...
     
     
-    cell.textLabel.text = [listOfFeeds stringForKey:[feedKeys objectAtIndex:indexPath.row]];
+    cell.textLabel.text = [feedTitles stringForKey:[feedKeys objectAtIndex:indexPath.row]];
     cell.selectionStyle = UITableViewCellSelectionStyleGray;
     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     
@@ -216,20 +221,29 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     NSString *feedKey = [feedKeys objectAtIndex:indexPath.row];
+    NSString *title = [self.feedTitles objectForKey:feedKey];
         
-    NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:feedKey, @"key", nil];
+    NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:
+                            feedKey, @"key",
+                            title, @"title",
+                            nil];
     [KGO_SHARED_APP_DELEGATE() showPage:LocalPathPageNameDetail forModuleTag:self.moduleTag params:params];
 }
 
 #pragma mark KGORequestDelegate
 
 - (void)requestWillTerminate:(KGORequest *)request {
-    self.request = nil;
+    if (request == self.pageRequest) {
+        self.pageRequest = nil;
+    }
+    else if (request == self.pagesRequest) {
+        self.pagesRequest = nil;
+    }
 }
 
 - (void)request:(KGORequest *)request didReceiveResult:(id)result
 {
-    if ([self.request.path isEqualToString:@"pages"]) {
+    if (request == self.pagesRequest) {
         
         DLog(@"%@", [result description]);
         
@@ -238,7 +252,7 @@
         NSArray *pages = (NSArray *)[resultDict arrayForKey:@"pages"];
         NSInteger numberOfFeeds = pages.count;
 
-        self.listOfFeeds = [NSMutableDictionary dictionaryWithCapacity:numberOfFeeds];
+        self.feedTitles = [NSMutableDictionary dictionaryWithCapacity:numberOfFeeds];
         self.feedKeys = [NSMutableArray arrayWithCapacity:numberOfFeeds];
         
         for (NSDictionary *pageDict in pages) {
@@ -246,7 +260,7 @@
             NSString *title = [pageDict stringForKey:@"title"];
             if (key && title) {
                 [feedKeys addObject:key];
-                [listOfFeeds setValue:title forKey:key];
+                [feedTitles setValue:title forKey:key];
             }
         }
         
@@ -267,7 +281,7 @@
             [self removeLoadingView];
         }
 
-    } else if ([self.request.path isEqualToString:@"page"]) {
+    } else if (request == self.pageRequest) {
         NSString *htmlString = (NSString *)result;
         
         [self removeLoadingView];

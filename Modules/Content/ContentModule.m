@@ -9,14 +9,16 @@
     if ([pageName isEqualToString:LocalPathPageNameHome]) {
         ContentTableViewController *cvc = [[[ContentTableViewController alloc] init] autorelease];
         cvc.moduleTag = self.tag;
+        cvc.title = self.shortName;
         vc = cvc;
         
     } else if ([pageName isEqualToString:LocalPathPageNameDetail]) {
-        NSString *key = [params stringForKey:@"key"];
+        NSString *key = [params nonemptyStringForKey:@"key"];
         if (key) {
             ContentTableViewController *cvc = [[[ContentTableViewController alloc] init] autorelease];
             cvc.moduleTag = self.tag;
             cvc.feedKey = key;
+            cvc.title = [params stringForKey:@"title"];
             vc = cvc;
         }
     }

@@ -13,14 +13,16 @@ UITableViewDataSource, UITableViewDelegate> {
     
 }
 
-@property (nonatomic, retain) NSMutableDictionary *listOfFeeds;
+@property (nonatomic, retain) NSMutableDictionary *feedTitles;
 @property (nonatomic, retain) NSMutableArray *feedKeys;
 
 @property (nonatomic, retain) NSString * moduleTag;
 @property (nonatomic, retain) UIView *loadingView;
 
 @property (nonatomic, retain) NSString *feedKey;
-@property (nonatomic, retain) KGORequest *request;
+
+@property (nonatomic, retain) KGORequest *pagesRequest;
+@property (nonatomic, retain) KGORequest *pageRequest;
 
 // if there are multiple feeds, show a list
 @property (nonatomic, retain) UITableView *tableView;
