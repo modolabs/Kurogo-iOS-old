@@ -7,64 +7,62 @@ Setup and Building
 System Requirements
 ===================
 
-* A server running Kurogo Mobile Web v1.1 or later.  While it is possible to 
-  run Kurogo iOS apps without an associated Kurogo server, functionality at 
-  this point is extremely limited.
+* A server running Kurogo Mobile Web v1.3 or later.
 
-* Xcode 4.x.  Applications can still be built using Xcode 3, but 
-  setting may need to be changed for dependencies to be linked properly.
+* Xcode 4.0 or above, including the iOS SDK (4.0 or above).
 
-* iOS SDK 4.0 or above.  The latest iOS SDK is recommended.
+=====================
+Getting the Code
+=====================
+
+The current Kurogo iOS framework depends on two extenral libraries that are
+also versioned using git. Thus, to check out the source code including all
+dependencies from the terminal, type the following:
+
+| :kbd:`git clone git://github.com/modolabs/Kurogo-iOS.git`
+| :kbd:`cd Kurogo-iOS`
+| :kbd:`git submodule init`
+| :kbd:`git submodule update`
 
 ===========================
 Building the Sample Project
 ===========================
 
-Kurogo iOS comes with the sample project Universitas.  To build this 
-project, the git submodules in the repository must all be included.  Git 
-submodules can be downloaded from the Kurogo-iOS source root in the 
-Terminal and typing
+From Xcode, open */path/to/Kurogo-iOS/Projects/Kurogo.xcworkspace*. Do not open
+the individual .xcodeproj files.
 
-| :kbd:`git submodule init`
-| :kbd:`git submodule update`
+Under the Build Schemes drop down menu, make sure the *Universitas* target is
+selected (instead of one of the dependencies like facebook or json), and 
+select "build" or "run". This will build Universitas into the selected 
+simulator or device.
 
 -----------------------------
 Configuring for Kurogo server
 -----------------------------
 
-In Xcode 4, open *Projects/Kurogo.xcworkspace*.  In the file navigator, 
-find and select Config.plist in the Resources folder.  Expand the options 
-in Servers and enter the address of the appropriate Kurogo Mobile Web server 
-as the value of Host.
+When building the Universitas app without modification, the app will launch and
+show an alert about failing to connect to the server. The location of a working
+server needs to be specified in Config.plist (under "Supporting Files" in the
+project), or in *secret/Config.plist*. *secret/Config.plist* is a git-ignored
+file whose settings override those in the versioned Config.plist. See 
+:ref:`config-secret` for more information.
 
-For shared projects, it is sometimes convenient to change host locations 
-without committing changes to the git repository.  For this purpose, server 
-names may be set up in Resouces/secret/Config.plist.
+In Xcode, open Config.plist and expand the *Servers* key. The default 
+configuration assumes four servers: development, testing, staging, and 
+production. If there are fewer than four servers, it is easiest to just repeat
+the same settings multiple times.
 
---------------------------
-Creating a Release build
---------------------------
+Each server has the following options:
 
-Under the Build Scheme menu, select the scheme for Universitas and Edit 
-Scheme.  Make sure each build step is set to use one of the Release 
-configurations.  The included configurations affect which server (as 
-specified in Config.plist) is used.
+* *APIPath* - the relative path of the REST API. For example, if REST APIs
+  have URLs like http://kurogo.com/rest/people/search?q=john, put *rest* here.
+* *Host* - the server domain name with no relative paths or trailing slashes,
+  e.g. *example.com*.
+* *PathExtension* - if the Kurogo instance is in a relative URL, put the 
+  relative path here. For example, if Kurogo runs off a URL of 
+  http://example.com/extension, put *extension* here.
+* *UseHTTPS* - whether or not the Kurogo instance uses HTTPS.
 
-Click OK.  The project should now build normally.
-
---------------------------
-Creating a Debug build
---------------------------
-
-Under the Build Scheme menu, select Manage Schemes.  Duplicate the 
-Universitas scheme, giving it a descriptive name like 
-"Universitas - Debug - Testing".  Edit this scheme and make sure each 
-build step is set to use one of the Debug configurations.
-
-When building for a Debug scheme, Xcode does not automatically place static 
-libraries in the correct location.  Thus, each static library needs to be 
-built separately before building the main project.  This can be done by 
-selecting the build schemes for each individual project and building.
 
 
 

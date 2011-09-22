@@ -5,6 +5,7 @@ App Configuration
 
 
 
+.. _config-secret:
 
 -------------
 Secret files
