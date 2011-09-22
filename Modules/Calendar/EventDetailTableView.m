@@ -363,11 +363,22 @@
         self.headerView = [[[KGODetailPageHeaderView alloc] initWithFrame:CGRectMake(0, 0, self.bounds.size.width, 1)] autorelease];
         self.headerView.delegate = self;
         self.headerView.showsBookmarkButton = NO;
+        self.headerView.showsShareButton = YES;
         
+        UIImage *buttonImage = [UIImage imageWithPathName:@"modules/calendar/calendar"];
+        UIImage *pressedImage = [UIImage imageWithPathName:@"modules/calendar/calendar_pressed"];
+        UIButton *calendarButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        calendarButton.frame = CGRectMake(0, 0, buttonImage.size.width, buttonImage.size.height);
+        [calendarButton setImage:buttonImage forState:UIControlStateNormal];
+        [calendarButton setImage:pressedImage forState:UIControlStateHighlighted];
+        [calendarButton addTarget:self
+                           action:@selector(calendarButtonPressed:)
+                 forControlEvents:UIControlEventTouchUpInside];
+        
+        [self.headerView addButton:calendarButton];
     }
+
     self.headerView.detailItem = self.event;
-    self.headerView.showsShareButton = YES;
-    self.headerView.showsCalendarButton = YES;
     
     // time
     NSString *dateString = [self.dataManager mediumDateStringFromDate:_event.startDate];
@@ -394,9 +405,9 @@
     }
 }
 
-# pragma mark CalendarButtonDelegate
+//# pragma mark CalendarButtonDelegate
 
-- (void) calendarButtonPressed:(id)sender {
+- (void)calendarButtonPressed:(id)sender {
     
     EKEventStore *eventStore = [[[EKEventStore alloc] init] autorelease];
     
@@ -432,7 +443,7 @@
                             _event.identifier, @"id",
                             [NSString stringWithFormat:@"%.0f", [_event.startDate timeIntervalSince1970]], @"start",
                             nil];
-    NSLog(@"%@", params);
+    DLog(@"requesting event details %@", params);
     if (_eventDetailRequest) {
         [_eventDetailRequest cancel];
         [_eventDetailRequest release];
@@ -448,7 +459,7 @@
 
 - (void)request:(KGORequest *)request didFailWithError:(NSError *)error
 {
-    NSLog(@"%@", [error description]);
+    DLog(@"request failed: %@", [error description]);
 }
 
 - (void)request:(KGORequest *)request didReceiveResult:(id)result

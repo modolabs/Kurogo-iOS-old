@@ -9,21 +9,13 @@
 - (void)headerViewFrameDidChange:(KGODetailPageHeaderView *)headerView;
 - (void)headerView:(KGODetailPageHeaderView *)headerView shareButtonPressed:(id)sender;
 
-
 @end
-
-@protocol KGODetailPageCalendarButtonDelegate <NSObject>
-
-@optional
-
-- (void) calendarButtonPressed: (id) sender;
-
-@end
-
 
 @protocol KGOSearchResult;
 
 @interface KGODetailPageHeaderView : UIView {
+    
+    NSMutableArray *_actionButtons;
     
     UIButton *_bookmarkButton;
     UIButton *_shareButton;
@@ -39,6 +31,8 @@
     id<KGOSearchResult> _detailItem;
 }
 
+@property(nonatomic, retain) NSMutableArray *actionButtons;
+
 @property(nonatomic, assign) id<KGODetailPageHeaderDelegate> delegate;
 @property(nonatomic, retain) id<KGOSearchResult> detailItem;
 @property(nonatomic) BOOL showsShareButton;
@@ -47,15 +41,18 @@
 @property(nonatomic, readonly) UILabel *titleLabel;
 @property(nonatomic, readonly) UILabel *subtitleLabel;
 
+@property(nonatomic, assign) BOOL showsSubtitle;
+
 - (void)setupBookmarkButtonImages;
-- (void)layoutBookmarkButton;
-- (void)setupCalendarButtonImages;
-- (void)layoutCalendarButton;
-- (void)layoutShareButton;
 - (void)hideShareButton;
 - (void)hideBookmarkButton;
-- (void)hideCalendarButton;
 - (void)toggleBookmark:(id)sender;
+
+- (void)layoutActionButtons;
+- (void)addShareButton;
+- (void)addBookmarkButton;
+- (void)addButton:(UIButton *)button;
+
 
 - (CGFloat)headerWidthWithButtons;
 

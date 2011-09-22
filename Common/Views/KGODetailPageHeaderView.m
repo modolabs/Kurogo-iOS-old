@@ -10,18 +10,24 @@
 @implementation KGODetailPageHeaderView
 
 @synthesize showsShareButton, showsBookmarkButton, showsCalendarButton, delegate;
-/*
+
+@synthesize showsSubtitle;
+@synthesize actionButtons = _actionButtons;
+
+
 - (id)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];
     if (self) {
-        // Initialization code
+        self.actionButtons = [NSMutableArray array];
+        self.showsSubtitle = YES;
     }
     return self;
 }
-*/
+
 - (void)dealloc
 {
+    self.actionButtons = nil;
     self.delegate = nil;
     self.detailItem = nil;
     [self hideShareButton];
@@ -38,27 +44,17 @@
     CGFloat subtitleHeight = 0;
     CGFloat buttonHeight = 0;
     
-    if (_showsShareButton) {
-        [self layoutShareButton];
-        buttonHeight = _shareButton.frame.size.height + LABEL_PADDING;
-    }
-    
-    if (_showsBookmarkButton) {
-        [self layoutBookmarkButton];
-        buttonHeight = _bookmarkButton.frame.size.height + LABEL_PADDING;
-    }
-    
-    if (_showsCalendarButton) {
-        [self layoutCalendarButton];
-        buttonHeight = _calendarButton.frame.size.height + LABEL_PADDING;
+    if (self.actionButtons.count) {
+        UIButton *aButton = [self.actionButtons objectAtIndex:0];
+        buttonHeight = aButton.frame.size.height + LABEL_PADDING;
     }
     
     if (_titleLabel) {
-        CGFloat maxWidth;
+        CGFloat maxWidth = 0;
         if (_subtitleLabel) {
             maxWidth = self.bounds.size.width - 2 * LABEL_PADDING;
         } else {
-            maxWidth = [self headerWidthWithButtons] - 2 * LABEL_PADDING;
+            maxWidth = [self headerWidthWithButtons];// - 2 * LABEL_PADDING;
         }
         CGSize constraintSize = CGSizeMake(maxWidth, _titleLabel.font.lineHeight * MAX_TITLE_LINES);
         CGSize textSize = [_titleLabel.text sizeWithFont:_titleLabel.font constrainedToSize:constraintSize];
@@ -67,27 +63,19 @@
     }
     
     if (_subtitleLabel) {
-        CGFloat maxWidth = [self headerWidthWithButtons] - 2 * LABEL_PADDING;
+        CGFloat maxWidth = [self headerWidthWithButtons];// - 2 * LABEL_PADDING;
         CGSize constraintSize = CGSizeMake(maxWidth, _subtitleLabel.font.lineHeight * MAX_SUBTITLE_LINES);
         CGSize textSize = [_subtitleLabel.text sizeWithFont:_subtitleLabel.font constrainedToSize:constraintSize];
-        CGFloat y = LABEL_PADDING;
-        if (_titleLabel) {
-            y += _titleLabel.frame.size.height + LABEL_PADDING;
-            
-            CGRect buttonFrame = _bookmarkButton.frame;
-            buttonFrame.origin.y = y;
-            _bookmarkButton.frame = buttonFrame;
-            
-            buttonFrame = _shareButton.frame;
-            buttonFrame.origin.y = y;
-            _shareButton.frame = buttonFrame;
-        }
+        CGFloat y = LABEL_PADDING + titleHeight;
         _subtitleLabel.frame = CGRectMake(LABEL_PADDING, y, maxWidth, textSize.height);
-        subtitleHeight = _subtitleLabel.frame.size.height + LABEL_PADDING;
+        // in case the row of buttons is taller than the subtitle
+        subtitleHeight = fmaxf(_subtitleLabel.frame.size.height, buttonHeight) + LABEL_PADDING;
     }
     
+    [self layoutActionButtons];
+    
     CGRect frame = self.frame;
-    frame.size.height = titleHeight + fmaxf(subtitleHeight, buttonHeight) + LABEL_PADDING;
+    frame.size.height = titleHeight + subtitleHeight + LABEL_PADDING;
     self.frame = frame;
 
     if ((self.frame.size.width != oldFrame.size.width || self.frame.size.height != oldFrame.size.height)
@@ -99,25 +87,11 @@
 
 - (UILabel *)titleLabel
 {
-    if (!_titleLabel) {
-        _titleLabel = [[UILabel alloc] init];
-        _titleLabel.backgroundColor = [UIColor clearColor];
-        _titleLabel.font = [[KGOTheme sharedTheme] fontForThemedProperty:KGOThemePropertyContentTitle];
-        _titleLabel.textColor = [[KGOTheme sharedTheme] textColorForThemedProperty:KGOThemePropertyContentTitle];
-        _titleLabel.numberOfLines = MAX_TITLE_LINES;
-    }
     return _titleLabel;
 }
 
 - (UILabel *)subtitleLabel
 {
-    if (!_subtitleLabel) {
-        _subtitleLabel = [[UILabel alloc] init];
-        _subtitleLabel.backgroundColor = [UIColor clearColor];
-        _subtitleLabel.font = [[KGOTheme sharedTheme] fontForThemedProperty:KGOThemePropertyContentSubtitle];
-        _subtitleLabel.textColor = [[KGOTheme sharedTheme] textColorForThemedProperty:KGOThemePropertyContentSubtitle];
-        _subtitleLabel.numberOfLines = MAX_SUBTITLE_LINES;
-    }
     return _subtitleLabel;
 }
 
@@ -131,17 +105,14 @@
     return _showsBookmarkButton;
 }
 
-- (BOOL)showsCalendarButton 
-{
-    return _showsCalendarButton;
-}
-
 - (void)setShowsShareButton:(BOOL)shows
 {
     _showsShareButton = shows;
     
     if (!_showsShareButton) {
         [self hideShareButton];
+    } else {
+        [self addShareButton];
     }
 }
 
@@ -151,15 +122,8 @@
     
     if (!_showsBookmarkButton) {
         [self hideBookmarkButton];
-    }
-}
-
-- (void) setShowsCalendarButton:(BOOL)shows
-{
-    _showsCalendarButton = shows;
-    
-    if (!_showsCalendarButton) {
-        [self hideCalendarButton];
+    } else {
+        [self addBookmarkButton];
     }
 }
 
@@ -177,26 +141,38 @@
     frame.size.height = 0;
     self.frame = frame;
     
+    if (!_titleLabel) {
+        _titleLabel = [[UILabel alloc] init];
+        _titleLabel.backgroundColor = [UIColor clearColor];
+        _titleLabel.font = [[KGOTheme sharedTheme] fontForThemedProperty:KGOThemePropertyContentTitle];
+        _titleLabel.textColor = [[KGOTheme sharedTheme] textColorForThemedProperty:KGOThemePropertyContentTitle];
+        _titleLabel.numberOfLines = MAX_TITLE_LINES;
+    }
     self.titleLabel.text = _detailItem.title;
     if (![_titleLabel isDescendantOfView:self]) {
         [self addSubview:_titleLabel];
     }
 
     NSString *subtitle = nil;
-    if ([_detailItem respondsToSelector:@selector(subtitle)]) {
+    if (self.showsSubtitle && [_detailItem respondsToSelector:@selector(subtitle)]) {
         subtitle = [_detailItem subtitle];
     }
+
     if (subtitle) {
-        self.subtitleLabel.text = [_detailItem subtitle];
+        if (!_subtitleLabel) {
+            _subtitleLabel = [[UILabel alloc] init];
+            _subtitleLabel.backgroundColor = [UIColor clearColor];
+            _subtitleLabel.font = [[KGOTheme sharedTheme] fontForThemedProperty:KGOThemePropertyContentSubtitle];
+            
+            _subtitleLabel.textColor = [[KGOTheme sharedTheme] textColorForThemedProperty:KGOThemePropertyContentSubtitle];
+            _subtitleLabel.numberOfLines = MAX_SUBTITLE_LINES;
+        }
+        self.subtitleLabel.text = subtitle;
         if (![_subtitleLabel isDescendantOfView:self]) {
             [self addSubview:_subtitleLabel];
         }
-    
-    } 
-    else if (self.subtitleLabel.text){
-        [self addSubview:_subtitleLabel];
-    }
-    else {
+
+    } else if (_subtitleLabel) {
         [_subtitleLabel removeFromSuperview];
         [_subtitleLabel release];
         _subtitleLabel = nil;
@@ -204,20 +180,12 @@
 }
 
 - (CGFloat)headerWidthWithButtons
-{
-    // assuming share button occupies far right
-    // and bookmark button comes after share
-    CGFloat result = self.bounds.size.width - LABEL_PADDING;
-    if (_shareButton) {
-        result -= _shareButton.frame.size.width + LABEL_PADDING;
+{    
+    CGFloat fullWidth = self.bounds.size.width - 2 * LABEL_PADDING;
+    for (UIButton *aButton in self.actionButtons) {
+        fullWidth -= aButton.frame.size.width + LABEL_PADDING;
     }
-    if (_bookmarkButton) {
-        result -= _bookmarkButton.frame.size.width + LABEL_PADDING;
-    }
-    if (_calendarButton) {
-        result -= _calendarButton.frame.size.width + LABEL_PADDING;
-    }
-    return result;
+    return fullWidth;
 }
 
 - (void)toggleBookmark:(id)sender
@@ -245,68 +213,67 @@
     [_bookmarkButton setImage:pressedButtonImage forState:UIControlStateHighlighted];
 }
 
-- (void) setupCalendarButtonImages 
+- (void)addButton:(UIButton *)button
 {
-    UIImage *buttonImage, *pressedButtonImage;
-    
-    buttonImage = [UIImage imageWithPathName:@"modules/home/calendar-tiny.png"];
-    pressedButtonImage = [UIImage imageWithPathName:@"modules/home/calendar-tiny.png"];
-    
-    [_calendarButton setImage:buttonImage forState:UIControlStateNormal];
-    [_calendarButton setImage:pressedButtonImage forState:UIControlStateHighlighted];
-
+    if (![_actionButtons containsObject:button]) {
+        [_actionButtons addObject:button];
+    }
 }
 
-- (void)layoutBookmarkButton
+- (void)addBookmarkButton
 {
     if (!_bookmarkButton) {
         UIImage *placeholder = [UIImage imageWithPathName:@"common/bookmark_off.png"];
-        CGFloat buttonX = [self headerWidthWithButtons] - placeholder.size.width;
-        CGFloat buttonY = LABEL_PADDING + (_subtitleLabel == nil ? 0 : _titleLabel.frame.size.height + LABEL_PADDING);
         
         _bookmarkButton = [[UIButton buttonWithType:UIButtonTypeCustom] retain];
-        _bookmarkButton.frame = CGRectMake(buttonX, buttonY, placeholder.size.width, placeholder.size.height);
+        _bookmarkButton.frame = CGRectMake(0, 0, placeholder.size.width, placeholder.size.height);
         
         [_bookmarkButton addTarget:self action:@selector(toggleBookmark:) forControlEvents:UIControlEventTouchUpInside];
-        [self addSubview:_bookmarkButton];
-        
     }
-    
-    [self setupBookmarkButtonImages];
-    
-    CGRect frame = _bookmarkButton.frame;
-    if (_shareButton) {
-        frame.origin.x = self.bounds.size.width - _shareButton.frame.size.width - frame.size.width - 2 * LABEL_PADDING;
-    }
-    frame.origin.y = LABEL_PADDING + (_subtitleLabel == nil ? 0 : _titleLabel.frame.size.height + LABEL_PADDING);
-    _bookmarkButton.frame = frame;
+    [self addButton:_bookmarkButton];
 }
 
-- (void) layoutCalendarButton
+- (void)addShareButton
 {
-    if (!_calendarButton) {
-        UIImage *placeholder = [UIImage imageWithPathName:@"modules/home/calendar-tiny.png"];
-        CGFloat buttonX = [self headerWidthWithButtons] - placeholder.size.width;
-        CGFloat buttonY = LABEL_PADDING + (_subtitleLabel == nil ? 0 : _titleLabel.frame.size.height + LABEL_PADDING);
-        
-        _calendarButton = [[UIButton buttonWithType:UIButtonTypeCustom] retain];
-        _calendarButton.frame = CGRectMake(buttonX, buttonY, placeholder.size.width, placeholder.size.height);
-        
-        [_calendarButton addTarget:self.delegate action:@selector(calendarButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
-        [self addSubview:_calendarButton];
+    if (!_shareButton) {
+        UIImage *buttonImage = [UIImage imageWithPathName:@"common/share.png"];
+        _shareButton = [[UIButton buttonWithType:UIButtonTypeCustom] retain];
+        _shareButton.frame = CGRectMake(0, 0, buttonImage.size.width, buttonImage.size.height);
+        [_shareButton setImage:buttonImage forState:UIControlStateNormal];
+        [_shareButton setImage:[UIImage imageWithPathName:@"common/share_pressed.png"] forState:UIControlStateHighlighted];
+        if ([self.delegate respondsToSelector:@selector(headerView:shareButtonPressed:)]) {
+            [_shareButton addTarget:self.delegate
+                             action:@selector(headerView:shareButtonPressed:)
+                   forControlEvents:UIControlEventTouchUpInside];
+        }
     }
+    [self addButton:_shareButton];
+}
+
+- (void)layoutActionButtons
+{
+    CGRect frame = CGRectZero;
+    frame.origin.x = self.bounds.size.width;
     
-    [self setupCalendarButtonImages];
-    
-    CGRect frame = _calendarButton.frame;
-    if (_shareButton) {
-        frame.origin.x = self.bounds.size.width - _shareButton.frame.size.width - frame.size.width - 2 * LABEL_PADDING;
-        
-        if (_bookmarkButton)
-            frame.origin.x -= _bookmarkButton.frame.size.width + LABEL_PADDING;
-    }
+    // if there is no subtitle, make title label narrower
+    // and align buttons at the top.
+    // if there is a subtitle, make title label the full width,
+    // subtitle label narrower, and align buttons with subtitle.
     frame.origin.y = LABEL_PADDING + (_subtitleLabel == nil ? 0 : _titleLabel.frame.size.height + LABEL_PADDING);
-    _calendarButton.frame = frame;
+
+    for (UIButton *aButton in self.actionButtons) {
+        if (![aButton isDescendantOfView:self]) {
+            [self addSubview:aButton];
+        }
+        
+        frame.size = aButton.frame.size;
+        frame.origin.x -= frame.size.width + LABEL_PADDING;
+        aButton.frame = frame;
+
+        if (aButton == _bookmarkButton) {
+            [self setupBookmarkButtonImages];
+        }
+    }
 }
 
 - (void)hideBookmarkButton
@@ -318,51 +285,12 @@
     }
 }
 
-- (void) hideCalendarButton 
-{
-    if (_calendarButton) {
-        [_calendarButton removeFromSuperview];
-        [_calendarButton release];
-        _calendarButton = nil;
-    }
-}
-
-- (void)layoutShareButton
-{
-    if (!_shareButton) {
-        UIImage *buttonImage = [UIImage imageWithPathName:@"common/share.png"];
-        CGFloat buttonX = self.frame.size.width - buttonImage.size.width - LABEL_PADDING;
-        CGFloat buttonY = LABEL_PADDING + (_titleLabel == nil ? 0 : _titleLabel.frame.size.height + LABEL_PADDING);
-        
-        _shareButton = [[UIButton buttonWithType:UIButtonTypeCustom] retain];
-        _shareButton.frame = CGRectMake(buttonX, buttonY, buttonImage.size.width, buttonImage.size.height);
-        [_shareButton setImage:buttonImage forState:UIControlStateNormal];
-        [_shareButton setImage:[UIImage imageWithPathName:@"common/share_pressed.png"] forState:UIControlStateHighlighted];
-        if ([self.delegate respondsToSelector:@selector(headerView: shareButtonPressed:)]) {
-            [_shareButton addTarget:self.delegate action:@selector(headerView: shareButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
-        }
-        [self addSubview:_shareButton];
-        
-    } else {
-        CGRect frame = _shareButton.frame;
-        frame.origin.y = LABEL_PADDING + (_titleLabel == nil ? 0 : _titleLabel.frame.size.height + LABEL_PADDING);
-        _shareButton.frame = frame;
-    }
-}
-
 - (void)hideShareButton
 {
     if (_shareButton) {
         [_shareButton removeFromSuperview];
         [_shareButton release];
         _shareButton = nil;
-    }
-    
-    // make sure bookmark button is flushed right
-    if (_bookmarkButton) {
-        CGRect frame = _bookmarkButton.frame;
-        frame.origin.x = [self headerWidthWithButtons];
-        _bookmarkButton.frame = frame;
     }
 }
 
