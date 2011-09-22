@@ -440,6 +440,11 @@
 		EB1B88C81324A6AC00108A8F /* modules */ = {isa = PBXFileReference; lastKnownFileType = folder; name = modules; path = Resources/modules; sourceTree = "<group>"; };
 		EB29B167141EA6C400D8559A /* NewsDataController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NewsDataController.h; sourceTree = "<group>"; };
 		EB29B168141EA6C400D8559A /* NewsDataController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NewsDataController.m; sourceTree = "<group>"; };
+		EB3067FD142BC15B0047C9CF /* FBConnect.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FBConnect.h; path = ../../Contrib/Facebook/FBConnect.h; sourceTree = "<group>"; };
+		EB3067FE142BC15B0047C9CF /* Facebook.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Facebook.h; path = ../../Contrib/Facebook/Facebook.h; sourceTree = "<group>"; };
+		EB3067FF142BC15B0047C9CF /* FBLoginDialog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FBLoginDialog.h; path = ../../Contrib/Facebook/FBLoginDialog.h; sourceTree = "<group>"; };
+		EB306800142BC15B0047C9CF /* FBDialog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FBDialog.h; path = ../../Contrib/Facebook/FBDialog.h; sourceTree = "<group>"; };
+		EB306804142BC1820047C9CF /* JSON.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JSON.h; path = "../../Contrib/json-framework/Classes/JSON.h"; sourceTree = "<group>"; };
 		EB46A345134EB942005796E4 /* ThemeConfig-iPad.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "ThemeConfig-iPad.plist"; path = "../../../Resources/default/ThemeConfig-iPad.plist"; sourceTree = "<group>"; };
 		EB46A347134EB97C005796E4 /* MainWindow-iPad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = "MainWindow-iPad.xib"; path = "../../Resources/MainWindow-iPad.xib"; sourceTree = "<group>"; };
 		EB46A397134F653B005796E4 /* KGOSplitViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGOSplitViewController.h; sourceTree = "<group>"; };
@@ -564,6 +569,7 @@
 				29B97317FDCFA39411CA2CEA /* Resources */,
 				EB0338261340D39C00ACF2BB /* Localization */,
 				EB14B0A31419576200B4A716 /* Supporting Files */,
+				EB3067F4142BC0D00047C9CF /* Indexing Headers */,
 				29B97323FDCFA39411CA2CEA /* Frameworks */,
 				19C28FACFE9D520D11CA2CBB /* Products */,
 				EBC1C6FF1347B8D20045CE9C /* xcconfig */,
@@ -1162,6 +1168,18 @@
 			name = Login;
 			path = ../../Modules/Login;
 			sourceTree = SOURCE_ROOT;
+		};
+		EB3067F4142BC0D00047C9CF /* Indexing Headers */ = {
+			isa = PBXGroup;
+			children = (
+				EB3067FE142BC15B0047C9CF /* Facebook.h */,
+				EB3067FD142BC15B0047C9CF /* FBConnect.h */,
+				EB306800142BC15B0047C9CF /* FBDialog.h */,
+				EB3067FF142BC15B0047C9CF /* FBLoginDialog.h */,
+				EB306804142BC1820047C9CF /* JSON.h */,
+			);
+			name = "Indexing Headers";
+			sourceTree = "<group>";
 		};
 		EB48910613310A930036AEBF /* ExternalURL */ = {
 			isa = PBXGroup;

@@ -44,6 +44,7 @@ static const NSTimeInterval kTimeoutInterval = 180.0;
                          httpMethod:(NSString *) httpMethod
                            delegate:(id<FBRequestDelegate>) delegate
                          requestURL:(NSString *) url {
+
   FBRequest* request = [[[FBRequest alloc] init] autorelease];
   request.delegate = delegate;
   request.url = url;
@@ -179,7 +180,6 @@ static const NSTimeInterval kTimeoutInterval = 180.0;
   NSString* responseString = [[[NSString alloc] initWithData:data
                                                     encoding:NSUTF8StringEncoding]
                               autorelease];
-  //SBJSON *jsonParser = [[SBJSON new] autorelease];
   SBJsonParser *jsonParser = [[SBJsonParser new] autorelease];
   if ([responseString isEqualToString:@"true"]) {
     return [NSDictionary dictionaryWithObject:@"true" forKey:@"result"];
@@ -230,7 +230,8 @@ static const NSTimeInterval kTimeoutInterval = 180.0;
 }
 
 /*
- * private helper function: call the delegate function when the request fail with Error
+ * private helper function: call the delegate function when the request
+ *                          fails with error
  */
 - (void)failWithError:(NSError *)error {
   if ([_delegate respondsToSelector:@selector(request:didFailWithError:)]) {
@@ -242,17 +243,21 @@ static const NSTimeInterval kTimeoutInterval = 180.0;
  * private helper function: handle the response data
  */
 - (void)handleResponseData:(NSData *)data {
-  if ([_delegate respondsToSelector:@selector(request:didLoadRawResponse:)]) {
+  if ([_delegate respondsToSelector:
+      @selector(request:didLoadRawResponse:)]) {
     [_delegate request:self didLoadRawResponse:data];
   }
 
   if ([_delegate respondsToSelector:@selector(request:didLoad:)] ||
-      [_delegate respondsToSelector:@selector(request:didFailWithError:)]) {
+      [_delegate respondsToSelector:
+          @selector(request:didFailWithError:)]) {
     NSError* error = nil;
     id result = [self parseJsonResponse:data error:&error];
+
     if (error) {
       [self failWithError:error];
-    } else if ([_delegate respondsToSelector:@selector(request:didLoad:)]) {
+    } else if ([_delegate respondsToSelector:
+        @selector(request:didLoad:)]) {
       [_delegate request:self didLoad:(result == nil ? data : result)];
     }
 
@@ -322,7 +327,8 @@ static const NSTimeInterval kTimeoutInterval = 180.0;
   _responseText = [[NSMutableData alloc] init];
 
   NSHTTPURLResponse* httpResponse = (NSHTTPURLResponse*)response;
-  if ([_delegate respondsToSelector:@selector(request:didReceiveResponse:)]) {
+  if ([_delegate respondsToSelector:
+      @selector(request:didReceiveResponse:)]) {
     [_delegate request:self didReceiveResponse:httpResponse];
   }
 }

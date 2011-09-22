@@ -1,5 +1,6 @@
 ALWAYS_SEARCH_USER_PATHS = NO
 ARCHS = $(ARCHS_STANDARD_32_BIT)
+ARCHS[sdk=iphoneos*] = armv6 armv7
 CODE_SIGN_IDENTITY = iPhone Distribution
 GCC_C_LANGUAGE_STANDARD = c99
 GCC_PRECOMPILE_PREFIX_HEADER = YES
@@ -7,7 +8,7 @@ GCC_PREFIX_HEADER = $(SRCROOT)/../../Supporting Files/Prefix.pch
 GCC_VERSION = com.apple.compilers.llvmgcc42
 GCC_WARN_ABOUT_RETURN_TYPE = YES
 GCC_WARN_UNUSED_VARIABLE = YES
-HEADER_SEARCH_PATHS = "${BUILT_PRODUCTS_DIR}/**" "${DSTROOT}/**" "${SDK_DIR}/usr/include/libxml2"
+HEADER_SEARCH_PATHS = "${SDK_DIR}/usr/include/libxml2"
 INFOPLIST_FILE = KGOInfo.plist
 IPHONEOS_DEPLOYMENT_TARGET = 4.0
 LIBRARY_SEARCH_PATHS = "${SDKROOT}/usr/include/libxml2" "${SRCROOT}/../../Contrib/GoogleAnalytics" "${BUILT_PRODUCTS_DIR}"
