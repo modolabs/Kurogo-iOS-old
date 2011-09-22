@@ -33,14 +33,16 @@ searchBar = _searchBar, module;
 	[super viewDidLoad];
     
     self.title = @"People";
-    
+
     [_phoneDirectoryEntries release];
-    //_phoneDirectoryEntries = [[PersonContact directoryContacts] retain];
-    if (!_phoneDirectoryEntries) {
-        _request = [[KGORequestManager sharedManager] requestWithDelegate:self module:self.module.tag path:@"contacts" params:nil];
-        _request.expectedResponseType = [NSDictionary class];
-        [_request connect];
+    _phoneDirectoryEntries = [[PersonContact directoryContacts] retain];
+
+    _request = [[KGORequestManager sharedManager] requestWithDelegate:self module:self.module.tag path:@"contacts" params:nil];
+    if (_phoneDirectoryEntries.count) {
+        _request.minimumDuration = 7200; // TODO: make this value configured
     }
+    _request.expectedResponseType = [NSDictionary class];
+    [_request connect];
     
     _searchBar = [[KGOSearchBar alloc] initWithFrame:CGRectMake(0.0f, 0.0f, self.view.frame.size.width, 44)];
     _searchBar.autoresizingMask = UIViewAutoresizingFlexibleWidth;
