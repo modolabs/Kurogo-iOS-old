@@ -35,6 +35,8 @@
     NSMutableArray *_addresses;
 }
 
+@property (nonatomic, retain) ModuleTag *moduleTag;
+
 // core data only properties
 @property (nonatomic, retain) NSString *identifier;
 @property (nonatomic, retain) NSString *name;

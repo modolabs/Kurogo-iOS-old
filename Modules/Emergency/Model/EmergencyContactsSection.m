@@ -1,6 +1,7 @@
 #import "EmergencyContactsSection.h"
 #import "EmergencyContact.h"
 
+NSString * const EmergencyContactsSectionEntityName = @"EmergencyContactsSection";
 
 @implementation EmergencyContactsSection
 @dynamic moduleTag;

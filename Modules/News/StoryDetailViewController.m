@@ -2,12 +2,11 @@
 #import "KGOAppDelegate+ModuleAdditions.h"
 #import "UIKit+KGOAdditions.h"
 #import <QuartzCore/QuartzCore.h>
-#import "NewsStory.h"
+#import "NewsModel.h"
 #import "CoreDataManager.h"
 #import "Foundation+KGOAdditions.h"
 #import "KGOHTMLTemplate.h"
 #import "StoryListViewController.h"
-#import "NewsImage.h"
 #import "KGOShareButtonController.h"
 #import "KGOToolbar.h"
 

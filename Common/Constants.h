@@ -1,6 +1,12 @@
 #import <Foundation/Foundation.h>
 #import "MITBuildInfo.h"
 
+// this file is for constants that
+// - need to be accessed all over the app
+// - do not make sense as part of a module or library (common) group
+
+typedef NSString ModuleTag;
+
 // the config strings for these are List, Grid, Portlet, Sidebar, and SplitView.
 typedef enum {
     KGONavigationStyleUnknown,
@@ -12,7 +18,10 @@ typedef enum {
     KGONavigationStyleTabletSplitView
 } KGONavigationStyle;
 
-// local path names for handleLocalPath
+#pragma mark Valid names for handleLocalPath
+// please add to this as necessary.
+// Kurogo modules have a lot of pages in common and this list
+// keeps track of all the view patterns we use
 extern NSString * const LocalPathPageNameHome;
 extern NSString * const LocalPathPageNameDetail;
 extern NSString * const LocalPathPageNameSearch;
@@ -20,65 +29,33 @@ extern NSString * const LocalPathPageNameCategoryList;
 extern NSString * const LocalPathPageNameItemList;
 extern NSString * const LocalPathPageNameMapList;
 extern NSString * const LocalPathPageNameBookmarks;
-extern NSString * const LocalPathPageNameWebViewDetail;
+extern NSString * const LocalPathPageNameWebViewDetail; // this needs a better name -- too specific
 
-// keys for NSUserDefaults dictionary go here (app preferences)
+#pragma mark Global NSUserDefaults keys
+
 extern NSString * const UnreadNotificationsKey;
 
+#pragma mark Module tags -- need to eliminate!
 
-// module tags
-extern NSString * const HomeTag;
-extern NSString * const MapTag;
-extern NSString * const PeopleTag;
+extern ModuleTag * const HomeTag;
+extern ModuleTag * const MapTag;
 
-
-extern NSString * const LocalPathMapsSelectedAnnotation;
-
-// preferences
-
-extern NSString * const MITNewsTwoFirstRunKey;
-
-extern NSString * const FacebookGroupKey;
-extern NSString * const FacebookGroupTitleKey;
-extern NSString * const TwitterHashTagKey;
-
-// notification names
+#pragma mark App-wide notification names
 
 extern NSString * const ModuleListDidChangeNotification;
-extern NSString * const UserSettingsDidChangeNotification;
 
-// core data entity names
+extern NSString * const KGOUserPreferencesKey;
+extern NSString * const KGOUserPreferencesDidChangeNotification;
 
-extern NSString * const KGOPersonEntityName;
-extern NSString * const PersonContactEntityName;
-extern NSString * const PersonOrganizationEntityName;
-extern NSString * const PersonAddressEntityName;
+extern NSString * const HelloRequestDidCompleteNotification;
+extern NSString * const HelloRequestDidFailNotification;
 
-extern NSString * const KGOPlacemarkEntityName;
-extern NSString * const MapCategoryEntityName;
+extern NSString * const KGODidLogoutNotification;
+extern NSString * const KGODidLoginNotification;
 
-extern NSString * const NewsStoryEntityName;
-extern NSString * const NewsCategoryEntityName;
-extern NSString * const NewsImageEntityName;
-extern NSString * const NewsImageRepEntityName;
+extern NSString * const CoreDataDidDeleteStoreNotification;
 
-extern NSString * const EmergencyNoticeEntityName;
-extern NSString * const EmergencyContactsSectionEntityName;
-extern NSString * const EmergencyContactEntityName;
+#pragma mark Error domains
 
 
-
-// resource names
-extern NSString * const MITImageNameUpArrow;
-extern NSString * const MITImageNameDownArrow;
-
-// errors
-extern NSString * const MapsErrorDomain;
-#define errMapProjection 0
-
-extern NSString * const ShuttlesErrorDomain;
-#define errShuttleRouteNotAvailable 0
-
-extern NSString * const JSONErrorDomain;
-#define errJSONParseFailed 0
 

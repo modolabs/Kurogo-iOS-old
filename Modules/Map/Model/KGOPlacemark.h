@@ -28,7 +28,7 @@
 
 @property (nonatomic, retain) NSSet * categories;
 
-@property (nonatomic, retain) NSString *moduleTag;
+@property (nonatomic, retain) ModuleTag *moduleTag;
 
 + (KGOPlacemark *)placemarkWithDictionary:(NSDictionary *)dictionary;
 - (void)updateWithDictionary:(NSDictionary *)dictionary;

@@ -24,7 +24,7 @@
     
 }
 
-@property(nonatomic, retain) NSString *moduleTag;
+@property(nonatomic, retain) ModuleTag *moduleTag;
 @property(nonatomic, assign) id<MapDataManagerDelegate> delegate;
 @property(nonatomic, assign) id<KGOSearchResultsHolder> searchDelegate;
 

@@ -2,16 +2,15 @@
 #import "MapCategoryListViewController.h"
 #import "KGOAppDelegate+ModuleAdditions.h"
 #import "MapModule.h"
+#import "MapModel.h"
 #import "MapSettingsViewController.h"
 #import "KGOBookmarksViewController.h"
 #import "KGOTheme.h"
 #import "Foundation+KGOAdditions.h"
-#import "KGOMapCategory.h"
 #import "CoreDataManager.h"
 #import "MapKit+KGOAdditions.h"
 #import "UIKit+KGOAdditions.h"
 #import "KGOToolbar.h"
-#import "KGOPlacemark.h"
 #import "KGOSidebarFrameViewController.h"
 #import "KGOSegmentedControl.h"
 #import <QuartzCore/QuartzCore.h>
@@ -243,13 +242,6 @@
     categoryVC.listItems = [[CoreDataManager sharedManager] objectsForEntity:MapCategoryEntityName
                                                            matchingPredicate:pred
                                                              sortDescriptors:sortDescriptors];
-    /*
-    categoryVC.categories = [[CoreDataManager sharedManager] objectsForEntity:MapCategoryEntityName
-                                                            matchingPredicate:pred
-                                                              sortDescriptors:sortDescriptors];
-     */
-    //categoryVC.categoriesRequest = [self.mapModule subcategoriesRequestForCategory:nil
-    //                                                                      delegate:categoryVC];
     
     UINavigationController *navC = [[[UINavigationController alloc] initWithRootViewController:categoryVC] autorelease];
     navC.modalPresentationStyle = UIModalPresentationFormSheet;
@@ -665,18 +657,18 @@
 }
 
 - (NSArray *)searchControllerValidModules:(KGOSearchDisplayController *)controller {
-	return [NSArray arrayWithObject:MapTag];
+	return [NSArray arrayWithObject:self.mapModule.tag];
 }
 
 - (NSString *)searchControllerModuleTag:(KGOSearchDisplayController *)controller {
-	return MapTag;
+	return self.mapModule.tag;
 }
 
 - (void)resultsHolder:(id<KGOSearchResultsHolder>)resultsHolder didSelectResult:(id<KGOSearchResult>)aResult {
     if ([resultsHolder isKindOfClass:[KGOSearchDisplayController class]]) {
         NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:aResult, @"place", resultsHolder, @"pagerController", nil];
         KGOAppDelegate *appDelegate = KGO_SHARED_APP_DELEGATE();
-        [appDelegate showPage:LocalPathPageNameDetail forModuleTag:MapTag params:params];
+        [appDelegate showPage:LocalPathPageNameDetail forModuleTag:self.mapModule.tag params:params];
 
     } else if ([aResult conformsToProtocol:@protocol(MKAnnotation)]) { // TODO: check if search is bookmarks, not by the result selected
         [_mapView removeAnnotations:[_mapView annotations]];

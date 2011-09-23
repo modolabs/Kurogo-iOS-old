@@ -1,6 +1,5 @@
 #import <UIKit/UIKit.h>
 #import "KGOTableViewController.h"
-#import "EmergencyNotice.h"
 #import "EmergencyModule.h"
 
 @interface EmergencyContactsViewController : KGOTableViewController {

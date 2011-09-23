@@ -7,15 +7,7 @@
 
 #ifdef DEBUG
 #import "KGOUserSettingsManager.h"
-// the constant KGOUserPreferencesDidChangeNotification is defined in the following file,
-// whether or not it's the appropriate place
-#import "KGOTheme.h"
 #endif
-
-NSString * const HelloRequestDidCompleteNotification = @"HelloDidComplete";
-NSString * const HelloRequestDidFailNotification = @"HelloDidFail";
-NSString * const KGODidLoginNotification = @"LoginComplete";
-NSString * const KGODidLogoutNotification = @"LogoutComplete";
 
 @implementation KGORequestManager
 
@@ -34,13 +26,13 @@ NSString * const KGODidLogoutNotification = @"LogoutComplete";
     return [_reachability currentReachabilityStatus] != NotReachable;
 }
 
-- (BOOL)isModuleAvailable:(NSString *)moduleTag
+- (BOOL)isModuleAvailable:(ModuleTag *)moduleTag
 {
     // TODO: add this to hello API
     return YES;
 }
 
-- (BOOL)isModuleAuthorized:(NSString *)moduleTag
+- (BOOL)isModuleAuthorized:(ModuleTag *)moduleTag
 {
     KGOModule *module = [KGO_SHARED_APP_DELEGATE() moduleForTag:moduleTag];
     return module.hasAccess;

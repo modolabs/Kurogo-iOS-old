@@ -38,10 +38,13 @@ KGOScrollingTabstripSearchDelegate, CalendarDataManagerDelegate> {
     NSDictionary *_currentEventsBySection;
 }
 
-@property(nonatomic, retain) NSString *moduleTag;
+@property(nonatomic, retain) ModuleTag *moduleTag;
 @property(nonatomic, retain) CalendarDataManager *dataManager;
-@property(nonatomic, retain) NSString *searchTerms;
 @property(nonatomic, retain) KGOCalendar *currentCalendar;
+
+// temporarily set by federated search
+@property(nonatomic, retain) NSString *federatedSearchTerms;
+@property(nonatomic, retain) NSArray *federatedSearchResults;
 
 @property(nonatomic, retain) NSMutableArray *groupTitles;
 @property(nonatomic, retain) NSArray *currentSections;

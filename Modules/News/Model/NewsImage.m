@@ -1,6 +1,8 @@
 #import "NewsImage.h"
 #import "NewsStory.h"
 
+NSString * const NewsImageEntityName = @"NewsImage";
+
 @implementation NewsImage 
 
 @dynamic height;

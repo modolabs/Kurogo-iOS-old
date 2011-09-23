@@ -9,7 +9,7 @@
 
 }
 
-- (NSString *)moduleTag;
+- (ModuleTag *)moduleTag;
 
 @property (nonatomic, retain) KGOModule *module;
 @property (nonatomic, assign) KGOHomeScreenViewController *springboard;

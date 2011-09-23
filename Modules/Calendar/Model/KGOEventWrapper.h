@@ -59,7 +59,7 @@
 @property (nonatomic, retain) NSString *briefLocation;
 
 // allow this to be set by the data controller
-@property (nonatomic, retain) NSString *moduleTag;
+@property (nonatomic, retain) ModuleTag *moduleTag;
 
 // server api
 

@@ -91,6 +91,8 @@ NSString * const KGORequestLastRequestTime = @"last";
     
     if (self.minimumDuration && [self isUnderMinimumDuration]) {
         // don't want to show an error just because the data is fresh
+		[self.delegate requestWillTerminate:self];
+        [self cancel];
         return NO;
         
     } else if (_connection) {

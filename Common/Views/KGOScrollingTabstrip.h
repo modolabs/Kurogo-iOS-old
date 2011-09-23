@@ -61,8 +61,8 @@
 @property (nonatomic, retain) KGOSearchBar *searchBar;
 @property (nonatomic, retain) KGOSearchDisplayController *searchController;
 
-- (void)showSearchBar;
-- (void)hideSearchBar;
+- (void)showSearchBarAnimated:(BOOL)animated;
+- (void)hideSearchBarAnimated:(BOOL)animated;
 
 @end
 

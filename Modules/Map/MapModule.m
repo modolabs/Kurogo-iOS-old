@@ -1,13 +1,12 @@
 #import "MapModule.h"
 #import "MapDetailViewController.h"
-#import "KGOPlacemark.h"
 #import "MapHomeViewController.h"
 #import "MapCategoryListViewController.h"
 #import "CoreDataManager.h"
-#import "KGOMapCategory.h"
 #import "KGOAppDelegate+ModuleAdditions.h"
 #import "Foundation+KGOAdditions.h"
 #import "KGOSidebarFrameViewController.h"
+#import "MapModel.h"
 
 NSString * const MapTypePreference = @"MapType";
 NSString * const MapTypePreferenceChanged = @"MapTypeChanged";
@@ -25,19 +24,6 @@ NSString * const MapTypePreferenceChanged = @"MapTypeChanged";
 }
 
 - (void)willLaunch {
-#ifdef DEBUG
-    /*
-    if (![self isActive]) {
-        NSLog(@"deleting map categories");
-        for (NSManagedObject *aCategory in [[CoreDataManager sharedManager] objectsForEntity:MapCategoryEntityName
-                                                                           matchingPredicate:nil]
-        ) {
-            [[CoreDataManager sharedManager] deleteObject:aCategory];
-        }
-        [[CoreDataManager sharedManager] saveData];
-    }
-     */
-#endif
     [super willLaunch];
     
     if (!self.dataManager) {
@@ -45,7 +31,6 @@ NSString * const MapTypePreferenceChanged = @"MapTypeChanged";
         self.dataManager.moduleTag = self.tag;
     }
 }
-
 
 #pragma mark Search
 
@@ -57,8 +42,6 @@ NSString * const MapTypePreferenceChanged = @"MapTypeChanged";
                        params:(NSDictionary *)params
                      delegate:(id<KGOSearchResultsHolder>)delegate
 {
-    [self willLaunch];
-    
     self.dataManager.searchDelegate = delegate;
     [self.dataManager search:searchText];
 }
@@ -103,6 +86,10 @@ NSString * const MapTypePreferenceChanged = @"MapTypeChanged";
         }
 
         NSArray *annotations = [params objectForKey:@"annotations"];
+        if (!annotations) {
+            annotations = [params objectForKey:@"searchResults"];
+        }
+
         if (annotations) {
             DLog(@"annotations: %@", annotations);
             mapVC.annotations = annotations;

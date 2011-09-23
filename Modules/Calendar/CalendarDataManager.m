@@ -83,7 +83,7 @@
     }
     
     if ([[KGORequestManager sharedManager] isReachable]) {
-        if(_groupsRequest) {
+        if (_groupsRequest) {
             return success;
         }
         
@@ -91,7 +91,9 @@
                                                                          module:self.moduleTag
                                                                            path:@"groups"
                                                                          params:nil];
-        _groupsRequest.minimumDuration = CALENDAR_GROUP_EXPIRE_TIME;
+        if (oldGroups) {
+            _groupsRequest.minimumDuration = CALENDAR_GROUP_EXPIRE_TIME;
+        }
         _groupsRequest.expectedResponseType = [NSArray class];
         success = [_groupsRequest connect];
     }

@@ -30,7 +30,7 @@ typedef void (^VideoDataRequestResponse)(id result);
 // Key: KGORequest. Value: VideoDataRequestResponse.
 @property (nonatomic, retain) NSMutableDictionary *responseBlocksForRequestPaths; 
 @property (nonatomic, retain) NSMutableSet *pendingRequests; 
-@property (nonatomic, retain) NSString *moduleTag;
+@property (nonatomic, retain) ModuleTag *moduleTag;
 @property (nonatomic, retain) NSArray *sections;
 @property (nonatomic, retain) NSMutableArray *videos;
 @property (nonatomic, retain) NSMutableArray *videosFromCurrentSearch;

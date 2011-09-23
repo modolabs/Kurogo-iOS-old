@@ -11,6 +11,8 @@
 #import "Foundation+KGOAdditions.h"
 #import "KGOUserSettingsManager.h"
 
+#define MAX_FEDERATED_SEARCH_RESULTS_PER_SECTION 2
+
 @interface KGOHomeScreenViewController (Private)
 
 - (void)loadModules;
@@ -97,7 +99,7 @@
     
     if (_searchBar && !_searchController) {
         _searchController = [[KGOSearchDisplayController alloc] initWithSearchBar:_searchBar delegate:self contentsController:self];
-        _searchController.maxResultsPerSection = 3;
+        _searchController.maxResultsPerSection = MAX_FEDERATED_SEARCH_RESULTS_PER_SECTION;
     }
     
     [self standbyForServerHello];

@@ -1,6 +1,7 @@
 #import "EmergencyDataManager.h"
 #import "Foundation+KGOAdditions.h"
 #import "CoreDataManager.h"
+#import "EmergencyModel.h"
 
 #define CONTACTS_EXPIRE 60 * 60 * 24 * 30
 

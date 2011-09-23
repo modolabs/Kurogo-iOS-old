@@ -35,7 +35,7 @@
 // source can be "search" or the name of a section.
 @property (nonatomic, retain) NSString * source;
 
-@property (nonatomic, retain) NSString *moduleTag;
+@property (nonatomic, retain) ModuleTag *moduleTag;
 
 + (Video *)videoWithID:(NSString *)identifier;
 + (Video *)videoWithDictionary:(NSDictionary *)dictionary;

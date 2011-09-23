@@ -3,8 +3,6 @@
 #import "KGOAppDelegate+ModuleAdditions.h"
 #import <objc/runtime.h>
 
-NSString * const CoreDataDidDeleteStoreNotification = @"CoreDataDidDelete";
-
 
 // not sure what to call this, just a placeholder for now, still hard coding file name below
 #define SQLLITE_PREFIX @"CoreDataXML."

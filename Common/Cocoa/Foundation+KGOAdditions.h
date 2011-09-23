@@ -11,8 +11,7 @@ KGOSign KGOGetIntegerSign(NSInteger x);
 
 @interface NSURL (MITAdditions)
 
-//+ (NSURL *)internalURLWithModuleTag:(NSString *)tag path:(NSString *)path;
-+ (NSURL *)internalURLWithModuleTag:(NSString *)tag path:(NSString *)path query:(NSString *)query;
++ (NSURL *)internalURLWithModuleTag:(ModuleTag *)tag path:(NSString *)path query:(NSString *)query;
 
 @end
 

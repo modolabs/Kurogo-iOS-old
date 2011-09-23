@@ -67,7 +67,7 @@ moduleTag;
     if (self) {
         self.identifier = identifier;
         
-        KGOEvent *storedEvent = [KGOEvent eventWithID:self.identifier];
+        KGOEvent *storedEvent = [KGOEvent findEventWithID:self.identifier];
         if (storedEvent) {
             self.KGOEvent = storedEvent;
         }

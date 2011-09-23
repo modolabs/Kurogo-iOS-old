@@ -18,7 +18,7 @@
 @synthesize loadingIndicator;
 @synthesize loadingView;
 
-- (id)initWithModuleTag: (NSString *) aModuleTag
+- (id)initWithModuleTag: (ModuleTag *) aModuleTag
 {
     self = [super initWithStyle:UITableViewStyleGrouped];
     if (self) {

@@ -1,19 +1,17 @@
 #import "MapCategoryListViewController.h"
 #import "KGOSearchModel.h"
-#import "KGOMapCategory.h"
+#import "MapModel.h"
 #import "KGOCalendar.h"
 #import "KGOAppDelegate+ModuleAdditions.h"
 #import "KGOTheme.h"
 #import "CoreDataManager.h"
 #import "Foundation+KGOAdditions.h"
-#import "KGOPlacemark.h"
-//#import "KGOEvent.h"
 #import <QuartzCore/QuartzCore.h>
 
 @implementation MapCategoryListViewController
 
-@synthesize parentCategory, //categoriesRequest, 
-categoryEntityName, //leafItemsRequest, 
+@synthesize parentCategory,
+categoryEntityName,
 leafItemEntityName,
 dataManager,
 listItems,

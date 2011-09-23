@@ -70,7 +70,7 @@
     NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:searchText, @"q", nil];
     
     _searchRequest = [[KGORequestManager sharedManager] requestWithDelegate:self
-                                                                     module:MapTag
+                                                                     module:self.moduleTag
                                                                        path:@"search"
                                                                      params:params];
     [_searchRequest connect];
@@ -83,12 +83,12 @@
     }
     
     NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:
-                            [NSString stringWithFormat:@"%.45", coordinate.latitude], @"lat",
+                            [NSString stringWithFormat:@"%.5f", coordinate.latitude], @"lat",
                             [NSString stringWithFormat:@"%.5f", coordinate.longitude], @"lon",
                             nil];
     
     _searchRequest = [[KGORequestManager sharedManager] requestWithDelegate:self
-                                                                     module:MapTag
+                                                                     module:self.moduleTag
                                                                        path:@"search"
                                                                      params:params];
     [_searchRequest connect];
@@ -104,6 +104,7 @@
         NSString *categoryID = [request.getParams objectForKey:@"category"];
         if (categoryID) {
             parentCategory = [KGOMapCategory categoryWithIdentifier:categoryID];
+            parentCategory.moduleTag = self.moduleTag;
         }
         
         NSInteger count = 0;
@@ -113,6 +114,7 @@
             for (NSDictionary *categoryData in categories) {
                 KGOMapCategory *category = [KGOMapCategory categoryWithDictionary:categoryData];
                 if (category) {
+                    category.moduleTag = self.moduleTag;
                     category.sortOrder = [NSNumber numberWithInt:count];
                     category.parentCategory = parentCategory;
                     [results addObject:category];
@@ -158,7 +160,7 @@
             }
         }
         DLog(@"%@", searchResults);
-        [self.searchDelegate receivedSearchResults:searchResults forSource:nil];
+        [self.searchDelegate receivedSearchResults:searchResults forSource:self.moduleTag];
     }
 }
 

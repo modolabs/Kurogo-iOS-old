@@ -106,7 +106,7 @@
     }
 }
 
-- (NSString *)moduleTag {
+- (ModuleTag *)moduleTag {
     return self.module.tag;
 }
     

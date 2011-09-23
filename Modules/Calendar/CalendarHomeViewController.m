@@ -28,9 +28,10 @@ bool isOverOneHour(NSTimeInterval interval) {
 
 @implementation CalendarHomeViewController
 
-@synthesize searchTerms, dataManager, moduleTag, showsGroups, currentCalendar = _currentCalendar;
+@synthesize federatedSearchTerms, dataManager, moduleTag, showsGroups, currentCalendar = _currentCalendar;
 @synthesize currentSections = _currentSections, currentEventsBySection = _currentEventsBySection,
 groupTitles = _groupTitles;
+@synthesize federatedSearchResults;
 
 - (void)dealloc
 {
@@ -71,10 +72,12 @@ groupTitles = _groupTitles;
     _datePager.contentsController = self;
     _datePager.delegate = self;
     
-    
     if (self.showsGroups) {
         _tabstrip.delegate = self;
+        _tabstrip.showsSearchButton = YES;
+        
         [self.dataManager requestGroups]; // response to this will populate the tabstrip
+        
     } else {
         _tabstrip.hidden = YES;
         CGRect frame = _datePager.frame;
@@ -183,6 +186,17 @@ groupTitles = _groupTitles;
         frame.size.height -= _tabstrip.frame.size.height;
     }
     self.tableView = [self addTableViewWithFrame:frame style:style];
+
+    if (self.federatedSearchTerms || self.federatedSearchResults) {
+        [_tabstrip showSearchBarAnimated:NO];
+        [_tabstrip.searchController setActive:NO animated:NO];
+        _tabstrip.searchController.searchBar.text = self.federatedSearchTerms;
+        
+        if (self.federatedSearchResults) {
+            [_tabstrip.searchController setSearchResults:self.federatedSearchResults
+                                            forModuleTag:self.dataManager.moduleTag];
+        }
+    }
 }
 
 
@@ -292,7 +306,6 @@ groupTitles = _groupTitles;
 - (void)setupTabstripButtons
 {
     NSInteger selectedButtonIndex = [_tabstrip indexOfSelectedButton];
-    _tabstrip.showsSearchButton = YES;
 
     [_tabstrip removeAllRegularButtons];
     if (self.groupTitles.count == 1) {
@@ -306,7 +319,7 @@ groupTitles = _groupTitles;
         }
     }
     [_tabstrip setNeedsLayout];
-
+    
     if (selectedButtonIndex >= 0 && selectedButtonIndex < [_tabstrip numberOfButtons]) {
         [_tabstrip selectButtonAtIndex:selectedButtonIndex];
     } else if ([_tabstrip numberOfButtons]) {
@@ -443,7 +456,10 @@ groupTitles = _groupTitles;
 
 
 - (void)searchController:(KGOSearchDisplayController *)controller willHideSearchResultsTableView:(UITableView *)tableView {
-    [_tabstrip hideSearchBar];
+    self.federatedSearchTerms = nil;
+    self.federatedSearchResults = nil;
+    [_tabstrip hideSearchBarAnimated:YES];
+    [self setupTabstripButtons];
     [_tabstrip selectButtonAtIndex:_currentGroupIndex];
 }
 

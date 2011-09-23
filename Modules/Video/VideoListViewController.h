@@ -21,4 +21,7 @@ KGOScrollingTabstripSearchDelegate> {
 
 @property (nonatomic, retain) KGOSearchBar *theSearchBar;
 
+@property (nonatomic, retain) NSArray *federatedSearchResults;
+@property (nonatomic, retain) NSString *federatedSearchTerms;
+
 @end

@@ -22,23 +22,14 @@
             self.tag = tag;
         }
 
-        //NSString *imageName = [moduleDict objectForKey:@"tabBarImage"];
         NSString *imageName = nil;
-        //if (!imageName) {
-            imageName = [NSString stringWithFormat:@"modules/home/tab-%@", self.tag];
-        //}
+        imageName = [NSString stringWithFormat:@"modules/home/tab-%@", self.tag];
         self.tabBarImage = [UIImage imageWithPathName:imageName];
         
-        //imageName = [moduleDict objectForKey:@"iconImage"];
-        //if (!imageName) {
-            imageName = [NSString stringWithFormat:@"modules/home/%@", self.tag];
-        //}
+        imageName = [NSString stringWithFormat:@"modules/home/%@", self.tag];
         self.iconImage = [UIImage imageWithPathName:imageName];
         
-        //imageName = [moduleDict objectForKey:@"listViewImage"];
-        //if (!imageName) {
-            imageName = [NSString stringWithFormat:@"modules/home/%@-tiny", self.tag];
-        //}
+        imageName = [NSString stringWithFormat:@"modules/home/%@-tiny", self.tag];
         self.listViewImage = [UIImage imageWithPathName:imageName];
         
         [self updateWithDictionary:moduleDict];

@@ -87,7 +87,12 @@ NSString * const KGODataModelNameCalendar = @"Calendar";
         // requested search path
         NSString *searchText = [params objectForKey:@"q"];
         if (searchText) {
-            [calendarVC setSearchTerms:searchText];
+            calendarVC.federatedSearchTerms = searchText;
+        }
+
+        NSArray *searchResults = [params objectForKey:@"searchResults"];
+        if (searchResults) {
+            calendarVC.federatedSearchResults = searchResults;
         }
 
         // requested category path
@@ -133,7 +138,7 @@ NSString * const KGODataModelNameCalendar = @"Calendar";
         anEvent.moduleTag = self.tag;
         [searchResults addObject:anEvent];
     }
-    [self.searchDelegate receivedSearchResults:searchResults forSource:self.shortName];
+    [self.searchDelegate receivedSearchResults:searchResults forSource:self.tag];
 }
 
 

@@ -2,7 +2,7 @@
 #import "EmergencyDataManager.h"
 #import "UIKit+KGOAdditions.h"
 #import "KGOAppDelegate+ModuleAdditions.h"
-
+#import "EmergencyModel.h"
 
 @interface EmergencyContactsViewController (Private)
 

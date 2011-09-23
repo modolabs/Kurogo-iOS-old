@@ -24,5 +24,6 @@
 @property (nonatomic, retain) NSSet* particpants;
 
 + (KGOEvent *)eventWithID:(NSString *)identifier;
++ (KGOEvent *)findEventWithID:(NSString *)identifier;
 
 @end

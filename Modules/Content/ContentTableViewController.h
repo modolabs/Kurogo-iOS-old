@@ -9,14 +9,14 @@ UITableViewDataSource, UITableViewDelegate> {
     NSMutableArray * feedKeys;
     UIView * loadingView;
 
-    NSString * moduleTag;
+    ModuleTag * moduleTag;
     
 }
 
 @property (nonatomic, retain) NSMutableDictionary *feedTitles;
 @property (nonatomic, retain) NSMutableArray *feedKeys;
 
-@property (nonatomic, retain) NSString * moduleTag;
+@property (nonatomic, retain) ModuleTag * moduleTag;
 @property (nonatomic, retain) UIView *loadingView;
 
 @property (nonatomic, retain) NSString *feedKey;

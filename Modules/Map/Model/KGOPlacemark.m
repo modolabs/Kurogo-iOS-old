@@ -6,6 +6,8 @@
 #import "KGOHTMLTemplate.h"
 #import "KGOAppDelegate+ModuleAdditions.h"
 
+NSString * const KGOPlacemarkEntityName = @"KGOPlacemark";
+
 @implementation KGOPlacemark
 
 @dynamic longitude;

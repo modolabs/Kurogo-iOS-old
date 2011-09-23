@@ -2,8 +2,7 @@
 #import "StoryListViewController.h"
 #import "StoryDetailViewController.h"
 #import "NewsDataController.h"
-#import "NewsStory.h"
-#import "NewsImage.h"
+#import "NewsModel.h"
 #import "CoreDataManager.h"
 #import "UIKit+KGOAdditions.h"
 #import "KGOScrollingTabstrip.h"
@@ -20,9 +19,6 @@
 - (void)setLastUpdated:(NSDate *)date;
 - (void)setProgress:(CGFloat)value;
 
-- (void)showSearchBar;
-- (void)hideSearchBar;
-
 - (NewsCategory *)activeCategory;
 
 @end
@@ -34,6 +30,8 @@
 @synthesize categories;
 @synthesize activeCategoryId;
 @synthesize featuredStory;
+
+@synthesize federatedSearchTerms, federatedSearchResults;
 
 - (void)loadView {
 	[super loadView];
@@ -57,6 +55,17 @@
                                                                                             action:@selector(refresh:)] autorelease];
     //self.dataManager.delegate = self;
     [self.dataManager fetchCategories];
+    
+    if (self.federatedSearchTerms || self.federatedSearchResults) {
+        [_navScrollView showSearchBarAnimated:NO];
+        [_navScrollView.searchController setActive:NO animated:NO];
+        _navScrollView.searchController.searchBar.text = self.federatedSearchTerms;
+        
+        if (self.federatedSearchResults) {
+            [_navScrollView.searchController setSearchResults:self.federatedSearchResults
+                                                 forModuleTag:self.dataManager.moduleTag];
+        }
+    }
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -372,7 +381,9 @@
 }
       
 - (void)searchController:(KGOSearchDisplayController *)controller willHideSearchResultsTableView:(UITableView *)tableView {
-    [_navScrollView hideSearchBar];
+    self.federatedSearchTerms = nil;
+    self.federatedSearchResults = nil;
+    [_navScrollView hideSearchBarAnimated:YES];
 }
 
 @end

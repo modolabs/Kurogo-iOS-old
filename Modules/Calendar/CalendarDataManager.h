@@ -26,7 +26,7 @@
 
 @property (nonatomic, assign) id<CalendarDataManagerDelegate> delegate;
 @property (nonatomic, readonly) KGOCalendarGroup *currentGroup;
-@property (nonatomic, retain) NSString *moduleTag;
+@property (nonatomic, retain) ModuleTag *moduleTag;
 
 - (BOOL)requestGroups;
 - (BOOL)requestCalendarsForGroup:(KGOCalendarGroup *)group;

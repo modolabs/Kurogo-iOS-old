@@ -21,10 +21,11 @@
 
 @implementation PeopleHomeViewController
 
-@synthesize searchTerms = _searchTerms,
+@synthesize federatedSearchTerms = _searchTerms,
 searchTokens = _searchTokens,
 searchController = _searchController,
-searchBar = _searchBar, module;
+searchBar = _searchBar, module,
+federatedSearchResults;
  
 
 #pragma mark view
@@ -51,11 +52,6 @@ searchBar = _searchBar, module;
     if (!_searchController) {
         _searchController = [[KGOSearchDisplayController alloc] initWithSearchBar:self.searchBar delegate:self contentsController:self];
     }
-    
-	if ([self.searchTerms length] > 0) {
-		_searchBar.text = self.searchTerms;
-        [_searchController executeSearch:self.searchTerms params:nil];
-    }
 
     [self.view addSubview:_searchBar];
     CGRect frame = CGRectMake(0.0, _searchBar.frame.size.height,
@@ -75,13 +71,28 @@ searchBar = _searchBar, module;
 	[hintsContainer addSubview:hintsLabel];
 
 	self.tableView.tableHeaderView = hintsContainer;
+    
+    if ([self.federatedSearchTerms length] > 0) {
+		_searchBar.text = self.federatedSearchTerms;
+        if (!self.federatedSearchResults) {
+            [_searchController executeSearch:self.federatedSearchTerms params:nil];
+        }
+    }
+    
+    if (self.federatedSearchResults) {
+        [_searchController setSearchResults:self.federatedSearchResults forModuleTag:self.module.tag];
+        self.federatedSearchResults = nil;
+    }
 }
 
 - (void)viewWillAppear:(BOOL)animated
 {
 	[super viewWillAppear:animated];
 
-    _recentlyViewed = [[KGOPersonWrapper fetchRecentlyViewed] retain];
+    _recentlyViewed = [[[KGOPersonWrapper fetchRecentlyViewed] mappedArrayUsingBlock:^id(id element) {
+        [(KGOPersonWrapper *)element setModuleTag:self.module.tag];
+        return element;
+    }] retain];
 	[self reloadDataForTableView:self.tableView];
 }
 

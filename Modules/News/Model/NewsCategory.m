@@ -1,6 +1,7 @@
 #import "NewsCategory.h"
 #import "NewsStory.h"
 
+NSString * const NewsCategoryEntityName = @"NewsCategory";
 
 @implementation NewsCategory
 @dynamic lastUpdated;

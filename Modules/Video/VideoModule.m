@@ -23,6 +23,7 @@ NSString * const KGODataModelNameVideo = @"Video";
     return [NSArray arrayWithObjects:
             LocalPathPageNameHome,
             LocalPathPageNameDetail,
+            LocalPathPageNameSearch,
             LocalPathPageNameWebViewDetail,
             nil];
 }
@@ -32,6 +33,22 @@ NSString * const KGODataModelNameVideo = @"Video";
     if ([pageName isEqualToString:LocalPathPageNameHome]) {
         VideoListViewController *listVC = [[[VideoListViewController alloc] initWithStyle:UITableViewStylePlain] autorelease];
         listVC.dataManager = self.dataManager;
+        vc = listVC;
+    
+    } else if ([pageName isEqualToString:LocalPathPageNameSearch]) {
+        VideoListViewController *listVC = [[[VideoListViewController alloc] initWithStyle:UITableViewStylePlain] autorelease];
+        listVC.dataManager = self.dataManager;
+        
+        NSString *searchText = [params objectForKey:@"q"];
+        if (searchText) {
+            listVC.federatedSearchTerms = searchText;
+        }
+        
+        NSArray *searchResults = [params objectForKey:@"searchResults"];
+        if (searchResults) {
+            listVC.federatedSearchResults = searchResults;
+        }
+        
         vc = listVC;
 
     } else if ([pageName isEqualToString:LocalPathPageNameDetail]) {
@@ -81,7 +98,7 @@ NSString * const KGODataModelNameVideo = @"Video";
                                     if ([result isKindOfClass:[NSArray class]])
                                     {
                                         [blockSelf.searchDelegate receivedSearchResults:result
-                                                                              forSource:blockSelf.shortName];
+                                                                              forSource:blockSelf.tag];
                                     }
                                 }];
 }

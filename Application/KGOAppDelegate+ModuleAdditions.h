@@ -39,8 +39,8 @@
 
 #pragma mark Navigation
 
-- (KGOModule *)moduleForTag:(NSString *)aTag;
-- (BOOL)showPage:(NSString *)pageName forModuleTag:(NSString *)moduleTag params:(NSDictionary *)params;
+- (KGOModule *)moduleForTag:(ModuleTag *)aTag;
+- (BOOL)showPage:(NSString *)pageName forModuleTag:(ModuleTag *)moduleTag params:(NSDictionary *)params;
 - (UIViewController *)visibleViewController;
 
 @property (nonatomic, readonly) KGONavigationStyle navigationStyle;

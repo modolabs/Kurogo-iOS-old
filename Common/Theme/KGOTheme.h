@@ -1,8 +1,5 @@
 #import <UIKit/UIKit.h>
 
-extern NSString * const KGOUserPreferencesKey;
-extern NSString * const KGOUserPreferencesDidChangeNotification;
-
 extern NSString * const KGOAccessoryTypeNone;
 extern NSString * const KGOAccessoryTypeBlank;
 extern NSString * const KGOAccessoryTypeCheckmark;

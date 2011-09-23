@@ -493,6 +493,10 @@
 		EBB121EE133A912500A4BD1D /* CalendarHomeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CalendarHomeViewController.h; sourceTree = "<group>"; };
 		EBB121EF133A913100A4BD1D /* CalendarHomeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CalendarHomeViewController.m; sourceTree = "<group>"; };
 		EBB121F0133A915200A4BD1D /* CalendarHomeViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CalendarHomeViewController.xib; sourceTree = "<group>"; };
+		EBBE60BB142CE3AA00538361 /* NewsModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NewsModel.h; sourceTree = "<group>"; };
+		EBBE60BC142CE4BD00538361 /* EmergencyModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EmergencyModel.h; sourceTree = "<group>"; };
+		EBBE60BD142CE5BB00538361 /* PeopleModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PeopleModel.h; sourceTree = "<group>"; };
+		EBBE60CA142CF79A00538361 /* MapModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MapModel.h; sourceTree = "<group>"; };
 		EBC1C7041347B8D20045CE9C /* kurogo.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = kurogo.xcconfig; sourceTree = "<group>"; };
 		EBC1C7051347B8D20045CE9C /* release.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = release.xcconfig; sourceTree = "<group>"; };
 		EBC1C7111347C5750045CE9C /* kurogo_debug.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = kurogo_debug.xcconfig; sourceTree = "<group>"; };
@@ -648,6 +652,7 @@
 				4BD4936B1349146900891968 /* EmergencyContact.m */,
 				4B3904ED134147D000CD9C6F /* EmergencyNotice.h */,
 				4B3904EE134147D000CD9C6F /* EmergencyNotice.m */,
+				EBBE60BC142CE4BD00538361 /* EmergencyModel.h */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -981,6 +986,7 @@
 				EB03386C1340DBE100ACF2BB /* NewsImage.m */,
 				EB03386D1340DBE100ACF2BB /* NewsStory.h */,
 				EB03386E1340DBE100ACF2BB /* NewsStory.m */,
+				EBBE60BB142CE3AA00538361 /* NewsModel.h */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -993,6 +999,7 @@
 				EB0338771340DBF400ACF2BB /* KGOPlacemark.m */,
 				EBE2CC621343E4D00037546A /* KGOMapCategory.h */,
 				EBE2CC631343E4D00037546A /* KGOMapCategory.m */,
+				EBBE60CA142CF79A00538361 /* MapModel.h */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -1147,6 +1154,7 @@
 				EB181F7E131EDECA003728FF /* PersonContact.m */,
 				EB181F7F131EDECA003728FF /* PersonOrganization.h */,
 				EB181F80131EDECA003728FF /* PersonOrganization.m */,
+				EBBE60BD142CE5BB00538361 /* PeopleModel.h */,
 			);
 			path = Model;
 			sourceTree = "<group>";

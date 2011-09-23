@@ -22,9 +22,11 @@ UIActionSheetDelegate, KGOSearchDisplayDelegate, KGODetailPagerController> {
 }
 
 @property (nonatomic, retain) KGOSearchDisplayController *searchController;
-@property (nonatomic, retain) NSString *searchTerms;
 @property (nonatomic, retain) NSArray *searchTokens;
 @property (nonatomic, retain) KGOSearchBar *searchBar;
+
+@property (nonatomic, retain) NSString *federatedSearchTerms;
+@property (nonatomic, retain) NSArray *federatedSearchResults;
 
 @property (nonatomic, assign) PeopleModule *module; 
 

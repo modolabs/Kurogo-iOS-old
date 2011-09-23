@@ -2,9 +2,8 @@
 #import "PeopleHomeViewController.h"
 #import "PeopleDetailsViewController.h"
 #import "PeopleGroupContactViewController.h"
-#import "KGOPersonWrapper.h"
+#import "PeopleModel.h"
 #import "KGOSearchModel.h"
-#import "PersonContact.h"
 
 @implementation PeopleModule
 
@@ -49,8 +48,7 @@
                                                                      path:@"search"
                                                                    params:mutableParams];
     self.request.expectedResponseType = [NSDictionary class];
-    if (self.request)
-        [self.request connect];
+    [self.request connect];
 }
 
 #pragma mark Data
@@ -73,8 +71,9 @@
 - (UIViewController *)modulePage:(NSString *)pageName params:(NSDictionary *)params {
     UIViewController *vc = nil;
     if ([pageName isEqualToString:LocalPathPageNameHome]) {
-        vc = [[[PeopleHomeViewController alloc] init] autorelease];
-        [(PeopleHomeViewController *)vc setModule:self];
+        PeopleHomeViewController *homeVC = [[[PeopleHomeViewController alloc] init] autorelease];
+        homeVC.module = self;
+        vc = homeVC;
         
     } else if ([pageName isEqualToString:LocalPathPageNameSearch]) {
         PeopleHomeViewController *homeVC = [[[PeopleHomeViewController alloc] init] autorelease];
@@ -82,14 +81,22 @@
 
         NSString *searchText = [params objectForKey:@"q"];
         if (searchText) {
-            homeVC.searchTerms = searchText;
+            homeVC.federatedSearchTerms = searchText;
         }
+        
+        NSArray *searchResults = [params objectForKey:@"searchResults"];
+        if (searchResults) {
+            homeVC.federatedSearchResults = searchResults;
+        }
+        
+        vc = homeVC;
         
     } else if ([pageName isEqualToString:LocalPathPageNameDetail]) {
         KGOPersonWrapper *person = nil;
         NSString *uid = [params objectForKey:@"uid"];
         if (uid) {
             person = [KGOPersonWrapper personWithUID:uid];
+            person.moduleTag = self.tag;
         } else {
             person = [params objectForKey:@"person"];
             
@@ -112,7 +119,8 @@
         }
     } else if ([pageName isEqualToString:LocalPathPageNameItemList]) {
         PersonContact *contact = [params objectForKey:@"contact"];
-        vc = [[[PeopleGroupContactViewController alloc] initWithGroup:contact.group] autorelease];
+        PeopleGroupContactViewController *pgcvc = [[[PeopleGroupContactViewController alloc] initWithGroup:contact.group] autorelease];
+        pgcvc.module = self;
         vc.navigationItem.title = contact.title;
     }
     return vc;
@@ -130,12 +138,13 @@
     NSArray *resultArray = [result arrayForKey:@"results"];
     NSMutableArray *searchResults = [NSMutableArray arrayWithCapacity:[(NSArray *)resultArray count]];
     for (id aResult in resultArray) {
-        NSLog(@"%@", [aResult description]);
         KGOPersonWrapper *person = [[[KGOPersonWrapper alloc] initWithDictionary:aResult] autorelease];
-        if (person)
+        if (person) {
+            person.moduleTag = self.tag;
             [searchResults addObject:person];
+        }
     }
-    [self.searchDelegate receivedSearchResults:searchResults forSource:self.shortName];
+    [self.searchDelegate receivedSearchResults:searchResults forSource:self.tag];
 }
 
 #pragma mark -

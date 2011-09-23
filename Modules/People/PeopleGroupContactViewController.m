@@ -1,15 +1,14 @@
 #import "PeopleGroupContactViewController.h"
 #import "PeopleHomeViewController.h"
-#import "KGOPersonWrapper.h"
 #import "KGOAppDelegate+ModuleAdditions.h"
 #import "Foundation+KGOAdditions.h"
 #import "UIKit+KGOAdditions.h"
 #import "KGOSearchBar.h"
 #import "KGOSearchDisplayController.h"
 #import "KGOTheme.h"
-#import "PersonContact.h"
 #import "CoreDataManager.h"
 #import "KGOLabel.h"
+#import "PeopleModel.h"
 #import "PeopleModule.h"
 
 @interface PeopleGroupContactViewController (Private)
@@ -60,7 +59,10 @@
     //_phoneDirectoryEntries = [[PersonContact directoryContacts] retain];
     if (!_allContacts) {
         NSDictionary *params = [NSDictionary dictionaryWithObject:_group forKey:@"group"];
-        _request = [[KGORequestManager sharedManager] requestWithDelegate:self module:PeopleTag path:@"group" params:params];
+        _request = [[KGORequestManager sharedManager] requestWithDelegate:self
+                                                                   module:self.module.tag
+                                                                     path:@"group"
+                                                                   params:params];
         _request.expectedResponseType = [NSDictionary class];
         [_request connect];
     }

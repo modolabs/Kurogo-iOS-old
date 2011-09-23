@@ -105,7 +105,7 @@
         if (aPlacemark)
             [searchResults addObject:aPlacemark];
     }
-    [_tableView receivedSearchResults:searchResults forSource:nil];
+    [_tableView receivedSearchResults:searchResults forSource:MapTag];
 }
 
 #pragma mark -

@@ -11,7 +11,7 @@
 - (void)addBookmark;
 - (void)removeBookmark;
 
-- (NSString *)moduleTag;
+- (ModuleTag *)moduleTag;
 
 @optional
 
@@ -38,7 +38,7 @@
 
 @optional
 
-- (NSString *)moduleTag;
+- (ModuleTag *)moduleTag;
 
 @end
 
@@ -46,6 +46,6 @@
 
 @protocol KGOSearchResultsHolder <NSObject>
 
-- (void)receivedSearchResults:(NSArray *)results forSource:(NSString *)source;
+- (void)receivedSearchResults:(NSArray *)results forSource:(ModuleTag *)source;
 
 @end

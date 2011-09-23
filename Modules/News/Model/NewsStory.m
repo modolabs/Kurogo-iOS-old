@@ -2,6 +2,8 @@
 #import "NewsImage.h"
 #import "KGOAppDelegate+ModuleAdditions.h"
 
+NSString * const NewsStoryEntityName = @"NewsStory";
+
 @implementation NewsStory
 @dynamic body;
 @dynamic author;

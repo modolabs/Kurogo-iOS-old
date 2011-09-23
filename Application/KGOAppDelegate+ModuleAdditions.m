@@ -195,7 +195,7 @@
 }
 
 // this should never be called on the home module.
-- (BOOL)showPage:(NSString *)pageName forModuleTag:(NSString *)moduleTag params:(NSDictionary *)params {
+- (BOOL)showPage:(NSString *)pageName forModuleTag:(ModuleTag *)moduleTag params:(NSDictionary *)params {
     BOOL didShow = NO;
 
     KGOModule *module = [self moduleForTag:moduleTag];
@@ -450,7 +450,7 @@
 
 - (BOOL)handleInternalURL:(NSURL *)url {
     NSString *path = [url path];
-    NSString *moduleTag = [url host];
+    ModuleTag *moduleTag = [url host];
     KGOModule *module = [self moduleForTag:moduleTag];
     if ([path rangeOfString:@"/"].location == 0) {
         path = [path substringFromIndex:1];

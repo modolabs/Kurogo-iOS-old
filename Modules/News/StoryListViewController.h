@@ -46,6 +46,9 @@ KGOScrollingTabstripSearchDelegate> {
 @property (nonatomic, retain) NSString *activeCategoryId;
 @property (nonatomic, retain) NewsDataController *dataManager;
 
+@property (nonatomic, retain) NSArray *federatedSearchResults;
+@property (nonatomic, retain) NSString *federatedSearchTerms;
+
 //- (void)showSearchBar;
 - (void)switchToCategory:(NSString *)category;
 - (void)switchToBookmarks;

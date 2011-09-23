@@ -1,9 +1,6 @@
 #import <Foundation/Foundation.h>
 #import "KGORequestManager.h"
-#import "EmergencyNotice.h"
-#import "EmergencyContactsSection.h"
-#import "EmergencyContact.h"
-
+#import "EmergencyModel.h"
 
 enum EmergencyNoticeStatus {
     NoCurrentEmergencyNotice,        // feed exists, but currently empty (no emergency is going on)

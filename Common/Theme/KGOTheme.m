@@ -3,9 +3,6 @@
 #import "Foundation+KGOAdditions.h"
 #import "KGOUserSettingsManager.h"
 
-NSString * const KGOUserPreferencesKey = @"KGOUserPrefs";
-NSString * const KGOUserPreferencesDidChangeNotification = @"KGOUserPrefsChanged";
-
 NSString * const KGOAccessoryTypeNone = @"None";
 NSString * const KGOAccessoryTypeBlank = @"Blank";
 NSString * const KGOAccessoryTypeChevron = @"Chevron";

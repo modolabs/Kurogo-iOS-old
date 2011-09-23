@@ -5,6 +5,8 @@
 #import "PersonOrganization.h"
 #import "CoreDataManager.h"
 
+NSString * const KGOPersonEntityName = @"KGOPerson";
+
 @implementation KGOPerson 
 
 @dynamic photoURL;

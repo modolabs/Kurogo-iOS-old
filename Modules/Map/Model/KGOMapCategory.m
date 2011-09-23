@@ -3,6 +3,8 @@
 #import "Foundation+KGOAdditions.h"
 #import "CoreDataManager.h"
 
+NSString * const MapCategoryEntityName = @"KGOMapCategory";
+
 @implementation KGOMapCategory
 
 @dynamic title;
@@ -11,18 +13,11 @@
 @dynamic places;
 @dynamic subcategories;
 @dynamic parentCategory;
-//@dynamic hasSubcategories;
-//@dynamic browsable;
 @dynamic latitude;
 @dynamic longitude;
 @dynamic subtitle;
 
-- (NSString *)moduleTag
-{
-    // TODO: find a better way to set this.
-    // would anyone have an app with multiple map modules with browse categories?
-    return MapTag;
-}
+@synthesize moduleTag;
 
 - (NSArray *)items {
 	return [self.places allObjects];

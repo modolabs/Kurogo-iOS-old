@@ -1,6 +1,8 @@
 #import "PersonAddress.h"
 #import "KGOPerson.h"
 
+NSString * const PersonAddressEntityName = @"PersonAddress";
+
 @implementation PersonAddress 
 
 @dynamic person;

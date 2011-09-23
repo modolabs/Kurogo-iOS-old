@@ -1,6 +1,7 @@
 #import "PersonOrganization.h"
-
 #import "KGOPerson.h"
+
+NSString * const PersonOrganizationEntityName = @"PersonOrganization";
 
 @implementation PersonOrganization 
 

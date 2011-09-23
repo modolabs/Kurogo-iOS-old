@@ -42,8 +42,25 @@
             NewsCategory *category = [params objectForKey:@"category"];
             [(StoryListViewController *)vc setActiveCategoryId:category.category_id];
         }
+
+    } else if ([pageName isEqualToString:LocalPathPageNameSearch]) {
+        StoryListViewController *storyVC = [[[StoryListViewController alloc] initWithNibName:@"StoryListViewController"
+                                                                                      bundle:nil] autorelease];
+        storyVC.dataManager = _dataManager;
+        _dataManager.delegate = storyVC;
+        vc = storyVC;
         
-    } else if([pageName isEqualToString:LocalPathPageNameDetail]) {
+        NSString *searchText = [params objectForKey:@"q"];
+        if (searchText) {
+            storyVC.federatedSearchTerms = searchText;
+        }
+        
+        NSArray *searchResults = [params objectForKey:@"searchResults"];
+        if (searchResults) {
+            storyVC.federatedSearchResults = searchResults;
+        }
+        
+    } else if ([pageName isEqualToString:LocalPathPageNameDetail]) {
         StoryDetailViewController *detailVC = [[[StoryDetailViewController alloc] init] autorelease];
         detailVC.dataManager = _dataManager;
         vc = detailVC;
@@ -98,7 +115,7 @@
 
 - (void)didReceiveSearchResults:(NSArray *)results forSearchTerms:(NSString *)searchTerms
 {
-    [self.searchDelegate receivedSearchResults:results forSource:self.shortName];
+    [self.searchDelegate receivedSearchResults:results forSource:self.tag];
     self.searchDelegate = nil;
 }
 

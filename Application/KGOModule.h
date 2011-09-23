@@ -32,7 +32,7 @@
 // tag should not be changed once it is set -- probably want to make readonly.
 - (void)updateWithDictionary:(NSDictionary *)moduleDict;
 
-@property (nonatomic, copy) NSString *tag;       // unique
+@property (nonatomic, copy) ModuleTag *tag;       // unique
 
 @property (nonatomic) NSInteger apiMinVersion;
 @property (nonatomic) NSInteger apiMaxVersion;

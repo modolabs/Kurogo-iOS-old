@@ -23,13 +23,19 @@ NSString * const KGOEntityNameEvent = @"KGOEvent";
 @dynamic calendars;
 @dynamic particpants;
 
-+ (KGOEvent *)eventWithID:(NSString *)identifier
++ (KGOEvent *)findEventWithID:(NSString *)identifier
 {
     NSPredicate *pred = [NSPredicate predicateWithFormat:@"identifier = %@", identifier];
     KGOEvent *event = [[[CoreDataManager sharedManager] objectsForEntity:KGOEntityNameEvent matchingPredicate:pred] lastObject];
+    return event;
+    
+}
+
++ (KGOEvent *)eventWithID:(NSString *)identifier
+{
+    KGOEvent *event = [KGOEvent findEventWithID:identifier];
     if (!event) {
         event = [[CoreDataManager sharedManager] insertNewObjectForEntityForName:KGOEntityNameEvent];
-        
         event.identifier = identifier;
     }
     return event;

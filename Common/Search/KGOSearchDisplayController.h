@@ -52,8 +52,10 @@
 @property (nonatomic, readonly) BOOL showingOnlySearchResults; // NO if tableview includes search suggestions
 @property (nonatomic, readonly) id<KGOSearchDisplayDelegate> delegate;
 
-//@property (nonatomic, retain) NSArray *searchResults;
 @property (nonatomic, readonly) NSArray *searchResults;
+
+// doing this clears out any previou search results
+- (void)setSearchResults:(NSArray *)searchResults forModuleTag:(ModuleTag *)tag;
 
 @property (nonatomic, retain) NSMutableDictionary *multiSearchResults;
 @property (nonatomic, retain) NSMutableArray *searchSources;

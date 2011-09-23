@@ -1,8 +1,6 @@
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
 
-extern NSString * const CoreDataDidDeleteStoreNotification;
-
 @interface CoreDataManager : NSObject {
 	NSManagedObjectModel *managedObjectModel;
     NSPersistentStoreCoordinator *persistentStoreCoordinator;

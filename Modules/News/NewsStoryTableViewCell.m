@@ -1,7 +1,6 @@
 #import "NewsStoryTableViewCell.h"
 #import "KGOLabel.h"
-#import "NewsStory.h"
-#import "NewsImage.h"
+#import "NewsModel.h"
 #import "UIKit+KGOAdditions.h"
 #import "CoreDataManager.h"
 

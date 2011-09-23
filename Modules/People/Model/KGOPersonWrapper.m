@@ -1,10 +1,7 @@
 #import "KGOPersonWrapper.h"
 #import "Foundation+KGOAdditions.h"
-#import "KGOPerson.h"
+#import "PeopleModel.h"
 #import "CoreDataManager.h"
-#import "PersonContact.h"
-#import "PersonOrganization.h"
-#import "PersonAddress.h"
 #import "KGOAppDelegate+ModuleAdditions.h"
 
 NSString * const KGOPersonContactTypeEmail = @"email";
@@ -34,6 +31,7 @@ NSString * const KGOPersonContactTypeAddress = @"address";
 
 @implementation KGOPersonWrapper
 
+@synthesize moduleTag;
 @synthesize identifier = _identifier,
 name = _name,
 firstName = _firstName,
@@ -107,12 +105,6 @@ webpages = _webpages;
 
 - (void)removeBookmark {
     // do nothing
-}
-
-- (NSString *)moduleTag
-{
-    // TODO: add separate data manager class used by home/groups view controllers
-    return PeopleTag;
 }
 
 - (BOOL)didGetSelected:(id)selector

@@ -3,6 +3,8 @@
 #import "Foundation+KGOAdditions.h"
 #import "CoreDataManager.h"
 
+NSString * const PersonContactEntityName = @"PersonContact";
+
 @implementation PersonContact 
 
 @dynamic person;

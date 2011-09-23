@@ -13,7 +13,7 @@ KGORequestDelegate, MFMailComposeViewControllerDelegate> {
 }
 
 @property (nonatomic, retain) KGORequest * request;
-@property (nonatomic, retain) NSString * moduleTag;
+@property (nonatomic, retain) ModuleTag * moduleTag;
 @property (nonatomic, retain) NSArray * resultArray;
 
 @property (nonatomic, retain) UIView * loadingView;

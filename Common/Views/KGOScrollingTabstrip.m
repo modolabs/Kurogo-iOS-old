@@ -250,6 +250,10 @@
         // only do this if we start the scroller in a different position
         //[self showHideScrollButtons];
     }
+    
+    if (self.searchBar) {
+        [self bringSubviewToFront:self.searchBar];
+    }
 }
 
 - (void)selectButtonAtIndex:(NSUInteger)index {
@@ -273,7 +277,7 @@
         if ([self.delegate respondsToSelector:@selector(tabstripSearchButtonPressed:)]) {
             [self.delegate tabstripSearchButtonPressed:self];
         } else {
-            [self showSearchBar]; // default action
+            [self showSearchBarAnimated:YES]; // default action
         }
 
     } else {
@@ -308,7 +312,7 @@
     }
 }
 
-- (void)showSearchBar
+- (void)showSearchBarAnimated:(BOOL)animated
 {
     if ([self.delegate conformsToProtocol:@protocol(KGOScrollingTabstripSearchDelegate)]) {
         id<KGOScrollingTabstripSearchDelegate> strictDelegate = (id<KGOScrollingTabstripSearchDelegate>)self.delegate;
@@ -332,29 +336,38 @@
             }
             
             [self bringSubviewToFront:self.searchBar];
+            
+            if (animated) {
+                __block KGOScrollingTabstrip *blockSelf = self;
+                [UIView animateWithDuration:0.4 animations:^{
+                    blockSelf.searchBar.alpha = 1.0;
+                }];
+            } else {
+                self.searchBar.alpha = 1.0;
+            }
 
-            __block KGOScrollingTabstrip *blockSelf = self;
-            [UIView animateWithDuration:0.4 animations:^{
-                blockSelf.searchBar.alpha = 1.0;
-            }];
-
-            [self.searchController setActive:YES animated:YES];
+            [self.searchController setActive:YES animated:animated];
         }
     }
 }
 
-- (void)hideSearchBar
+- (void)hideSearchBarAnimated:(BOOL)animated
 {
 	if (self.searchBar) {
-        __block KGOScrollingTabstrip *blockSelf = self;
-        [UIView animateWithDuration:0.4 animations:^{
-            blockSelf.searchBar.alpha = 0;
-        } completion:^(BOOL finished) {
-            //[self sendSubviewToBack:self.searchBar];
-            [blockSelf.searchBar removeFromSuperview];
-            blockSelf.searchBar = nil;
-            blockSelf.searchController = nil;
-        }];
+        if (animated) {
+            __block KGOScrollingTabstrip *blockSelf = self;
+            [UIView animateWithDuration:0.4 animations:^{
+                blockSelf.searchBar.alpha = 0;
+            } completion:^(BOOL finished) {
+                [blockSelf.searchBar removeFromSuperview];
+                blockSelf.searchBar = nil;
+                blockSelf.searchController = nil;
+            }];
+        } else {
+            [self.searchBar removeFromSuperview];
+            self.searchBar = nil;
+            self.searchController = nil;
+        }
 	}
 }
 

@@ -11,7 +11,7 @@ typedef enum {
 
 @interface LinksTableViewController : KGOTableViewController <KGORequestDelegate, IconGridDelegate>{
     
-    NSString *moduleTag;
+    ModuleTag *moduleTag;
     
     NSArray * linksArray;
     
@@ -35,7 +35,7 @@ typedef enum {
 @property (nonatomic, retain) UIView * loadingView;
 @property (nonatomic, retain) UIActivityIndicatorView * loadingIndicator;
 
-- (id)initWithModuleTag: (NSString *) moduleTag;
+- (id)initWithModuleTag: (ModuleTag *) moduleTag;
 - (void) addLoadingView;
 - (void) removeLoadingView;
 - (UIView *)viewForTableHeader;

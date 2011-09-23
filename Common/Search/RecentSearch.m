@@ -32,7 +32,7 @@
     return nil;
 }
 
-- (NSString *)moduleTag
+- (ModuleTag *)moduleTag
 {
     return nil;
 }

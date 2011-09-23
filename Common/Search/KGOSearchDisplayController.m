@@ -14,6 +14,9 @@
 
 
 static NSString * RecentSearchesEntityName = @"RecentSearch";
+static NSString * NotAModuleTag = @"none";
+static NSString * RecentSearchesTag = @"recent";
+
 
 @interface KGOSearchDisplayController (Private)
 
@@ -76,11 +79,15 @@ maxResultsPerSection;
 
 - (void)executeSearch:(NSString *)text params:(NSDictionary *)params {
 	_searchBar.text = text;
+
+    self.multiSearchResults = nil;
+    self.searchSources = nil;
+    
     NSArray *moduleTags = [self.delegate searchControllerValidModules:self];
     for (NSString *moduleTag in moduleTags) {
         KGOModule *module = [KGO_SHARED_APP_DELEGATE() moduleForTag:moduleTag];
         if ([module supportsFederatedSearch]) { // TODO: use a less strict check
-            [module willLaunch];
+            [module launch];
             [module performSearchWithText:text params:params delegate:self];
         }
     }
@@ -209,7 +216,6 @@ maxResultsPerSection;
 
 
 - (BOOL)canShowMapView {
-    //if (self.searchResults.count) {
     if (self.searchSources.count == 1 && self.searchResults.count) {
         for (id<KGOSearchResult> aResult in self.searchResults) {
             if ([aResult conformsToProtocol:@protocol(MKAnnotation)]) {
@@ -229,6 +235,14 @@ maxResultsPerSection;
         return [self.multiSearchResults objectForKey:[self.searchSources objectAtIndex:0]];
     }
     return nil;
+}
+
+- (void)setSearchResults:(NSArray *)searchResults forModuleTag:(NSString *)tag
+{
+    self.searchSources = nil;
+    self.multiSearchResults = nil;
+
+    [self receivedSearchResults:searchResults forSource:tag];
 }
 
 #pragma mark KGOSearchBarDelegate
@@ -316,18 +330,14 @@ maxResultsPerSection;
 			
 			NSArray *recents = [[CoreDataManager sharedManager] objectsForEntity:RecentSearchesEntityName matchingPredicate:pred];
             if (recents.count) {
-                [self receivedSearchResults:searchResults forSource:NSLocalizedString(@"recent searches", nil)];
+                [self receivedSearchResults:searchResults forSource:RecentSearchesTag];
             }
-            
-			//self.searchResults = [recents arrayByAddingObjectsFromArray:searchResults];
 			
 		} else {
             self.multiSearchResults = nil;
             self.searchSources = nil;
-			//self.searchResults = nil;
 		}
         
-        //if (self.searchResults.count) {
         if (self.multiSearchResults.count) {
             [self showSearchResultsTableView];
             [self reloadSearchResultsTableView];
@@ -350,7 +360,7 @@ maxResultsPerSection;
     }
     
     if (!source) {
-        source = @"";
+        source = NotAModuleTag;
     }
     
     if (!self.multiSearchResults) {
@@ -370,10 +380,9 @@ maxResultsPerSection;
     [oldResults addObjectsFromArray:results];
 
     // remove search suggestions if there are results
-    NSString *recentString = NSLocalizedString(@"recent searches", nil);
-    if (self.searchSources.count > 1 && [self.multiSearchResults objectForKey:recentString]) {
-        [self.multiSearchResults removeObjectForKey:recentString];
-        [self.searchSources removeObject:recentString];
+    if (self.searchSources.count > 1 && [self.multiSearchResults objectForKey:RecentSearchesTag]) {
+        [self.multiSearchResults removeObjectForKey:RecentSearchesTag];
+        [self.searchSources removeObject:RecentSearchesTag];
     }
 
     [self showSearchResultsTableView];
@@ -396,13 +405,25 @@ maxResultsPerSection;
 {
     NSString *source = [self.searchSources objectAtIndex:indexPath.section];
     NSArray *searchResults = [self.multiSearchResults objectForKey:source];
-    id<KGOSearchResult> result = [searchResults objectAtIndex:indexPath.row];
-    if ([result isKindOfClass:[RecentSearch class]]) {
-        RecentSearch *recentSearch = (RecentSearch *)result;
-        [self unfocusSearchBarAnimated:YES];
-        [self executeSearch:recentSearch.text params:nil];
+
+    if (self.maxResultsPerSection && indexPath.row == self.maxResultsPerSection) {
+        NSMutableDictionary *params = [NSMutableDictionary dictionaryWithObjectsAndKeys:
+                                       searchResults, @"searchResults",
+                                       nil];
+        if (self.searchBar.text.length) {
+            [params setObject:self.searchBar.text forKey:@"q"];
+        }
+        [KGO_SHARED_APP_DELEGATE() showPage:LocalPathPageNameSearch forModuleTag:source params:params];
+        
     } else {
-        [self.delegate resultsHolder:self didSelectResult:result];
+        id<KGOSearchResult> result = [searchResults objectAtIndex:indexPath.row];
+        if ([result isKindOfClass:[RecentSearch class]]) {
+            RecentSearch *recentSearch = (RecentSearch *)result;
+            [self unfocusSearchBarAnimated:YES];
+            [self executeSearch:recentSearch.text params:nil];
+        } else {
+            [self.delegate resultsHolder:self didSelectResult:result];
+        }
     }
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
@@ -421,42 +442,44 @@ maxResultsPerSection;
     NSString *title = nil;
     NSString *subtitle = nil;
     NSString *source = [self.searchSources objectAtIndex:indexPath.section];
-    NSArray *searchResults = [self.multiSearchResults objectForKey:source];
-    id<KGOSearchResult> result = [searchResults objectAtIndex:indexPath.row];
-
+    UIImage *image = nil;
     NSString *accessoryType = KGOAccessoryTypeChevron;
-    if ([result respondsToSelector:@selector(accessoryType)]) {
-        accessoryType = [result accessoryType];
-    }
+
+    if (self.maxResultsPerSection && indexPath.row == self.maxResultsPerSection) {
+        title = NSLocalizedString(@"More results", @"more results link in federated search");
+
+    } else {
+        NSArray *searchResults = [self.multiSearchResults objectForKey:source];
+        id<KGOSearchResult> result = [searchResults objectAtIndex:indexPath.row];
+        
+        if ([result respondsToSelector:@selector(accessoryType)]) {
+            accessoryType = [result accessoryType];
+        }
     
-    //if (![result respondsToSelector:@selector(viewsForTableCell)] || ![result viewsForTableCell]) {
         title = [result title];
         subtitle = [result respondsToSelector:@selector(subtitle)] ? [result subtitle] : nil;
 
-        UIImage *image = nil;
         if ([result respondsToSelector:@selector(tableCellThumbImage)]) {
             image = [result tableCellThumbImage];
         }
-        
-        return [[^(UITableViewCell *cell) {
-            cell.selectionStyle = UITableViewCellSelectionStyleGray;
-            cell.textLabel.text = title;
-            cell.detailTextLabel.text = subtitle;
-            cell.accessoryView = [[KGOTheme sharedTheme] accessoryViewForType:accessoryType];
-
-            if (image) {
-                CGRect imageBounds = CGRectMake(0, 0, tableView.rowHeight, tableView.rowHeight);
-                [cell.imageView setBounds:imageBounds];
-                [cell.imageView setClipsToBounds:NO];
-                [cell.imageView setFrame:imageBounds];
-                [cell.imageView setContentMode:UIViewContentModeScaleAspectFill];
-                cell.imageView.image = image;
-            }
-            
-        } copy] autorelease];
-    //}
+    }
     
-    //return nil;
+    return [[^(UITableViewCell *cell) {
+        cell.selectionStyle = UITableViewCellSelectionStyleGray;
+        cell.textLabel.text = title;
+        cell.detailTextLabel.text = subtitle;
+        cell.accessoryView = [[KGOTheme sharedTheme] accessoryViewForType:accessoryType];
+        
+        if (image) {
+            CGRect imageBounds = CGRectMake(0, 0, tableView.rowHeight, tableView.rowHeight);
+            [cell.imageView setBounds:imageBounds];
+            [cell.imageView setClipsToBounds:NO];
+            [cell.imageView setFrame:imageBounds];
+            [cell.imageView setContentMode:UIViewContentModeScaleAspectFill];
+            cell.imageView.image = image;
+        }
+        
+    } copy] autorelease];
 }
 
 
@@ -467,17 +490,14 @@ maxResultsPerSection;
 
 // TODO: localize strings
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
-    //if (_showingOnlySearchResults) {
-    //    return [NSString stringWithFormat:@"%d results", self.searchResults.count];
-    //}
     NSString *source = [self.searchSources objectAtIndex:section];
     NSArray *searchResults = [self.multiSearchResults objectForKey:source];
     NSString *sourceString = @"";
-    if (source.length) {
-        sourceString = [NSString stringWithFormat:@" from %@", source];
+    KGOModule *module = [KGO_SHARED_APP_DELEGATE() moduleForTag:source];
+    if (module) {
+        sourceString = [NSString stringWithFormat:@" from %@", module.shortName];
     }
     return [NSString stringWithFormat:@"%d results%@", searchResults.count, sourceString];
-    //return nil;
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
@@ -490,7 +510,7 @@ maxResultsPerSection;
     
     NSInteger count = searchResults.count;
     if (self.maxResultsPerSection && count > self.maxResultsPerSection) {
-        count = self.maxResultsPerSection;
+        count = self.maxResultsPerSection + 1;
     }
     
 	return count;
@@ -504,7 +524,6 @@ maxResultsPerSection;
 
 - (NSInteger)numberOfSections:(KGODetailPager *)pager {
     return self.multiSearchResults.count;
-    //return 1;
 }
 
 - (NSInteger)pager:(KGODetailPager *)pager numberOfPagesInSection:(NSInteger)section {

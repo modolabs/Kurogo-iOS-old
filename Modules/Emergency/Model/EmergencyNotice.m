@@ -1,5 +1,6 @@
 #import "EmergencyNotice.h"
 
+NSString * const EmergencyNoticeEntityName = @"EmergencyNotice";
 
 @implementation EmergencyNotice
 @dynamic title;

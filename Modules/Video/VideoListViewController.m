@@ -44,6 +44,8 @@ static const NSInteger kVideoListCellThumbnailTag = 0x78;
 @synthesize activeSectionIndex;
 @synthesize theSearchBar;
 
+@synthesize federatedSearchTerms, federatedSearchResults;
+
 #pragma mark NSObject
 
 - (id)initWithStyle:(UITableViewStyle)style {
@@ -60,6 +62,10 @@ static const NSInteger kVideoListCellThumbnailTag = 0x78;
     [videos release];
     [navScrollView release];
     [dataManager release];
+
+    self.federatedSearchTerms = nil;
+    self.federatedSearchResults = nil;
+    
     [super dealloc];
 }
 
@@ -89,6 +95,17 @@ static const NSInteger kVideoListCellThumbnailTag = 0x78;
         [blockSelf requestVideosForActiveSection];
      }];
     self.navigationItem.title = [[KGO_SHARED_APP_DELEGATE() moduleForTag:self.dataManager.moduleTag] shortName];
+    
+    if (self.federatedSearchTerms || self.federatedSearchResults) {
+        [self.navScrollView showSearchBarAnimated:NO];
+        [self.navScrollView.searchController setActive:NO animated:NO];
+        self.navScrollView.searchController.searchBar.text = self.federatedSearchTerms;
+        
+        if (self.federatedSearchResults) {
+            [self.navScrollView.searchController setSearchResults:self.federatedSearchResults
+                                                 forModuleTag:self.dataManager.moduleTag];
+        }
+    }
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -251,7 +268,9 @@ static const NSInteger kVideoListCellThumbnailTag = 0x78;
 
 - (void)searchController:(KGOSearchDisplayController *)controller willHideSearchResultsTableView:(UITableView *)tableView
 {
-    [self.navScrollView hideSearchBar];
+    self.federatedSearchTerms = nil;
+    self.federatedSearchResults = nil;
+    [self.navScrollView hideSearchBarAnimated:YES];
     [self.navScrollView selectButtonAtIndex:self.activeSectionIndex];
 }
 

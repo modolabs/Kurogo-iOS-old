@@ -1,10 +1,6 @@
 #import <Foundation/Foundation.h>
 #import "KGORequestManager.h"
-
-// needed by classes that import this
-#import "NewsCategory.h"
-#import "NewsStory.h"
-#import "NewsImage.h"
+#import "NewsModel.h"
 
 // 2 hours
 #define NEWS_CATEGORY_EXPIRES_TIME 7200.0
@@ -43,7 +39,7 @@
 @property (nonatomic, retain) NSMutableArray *currentStories;
 
 @property (nonatomic, retain) NewsCategory *currentCategory;
-@property (nonatomic, retain) NSString *moduleTag;
+@property (nonatomic, retain) ModuleTag *moduleTag;
 @property (nonatomic, assign) id<NewsDataDelegate> delegate;
 @property (nonatomic, assign) id<KGOSearchResultsHolder> searchDelegate;
 
