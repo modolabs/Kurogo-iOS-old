@@ -56,8 +56,8 @@ groupTitles = _groupTitles;
 
 - (void)clearCalendars
 {
-    [_currentCategories release];
-    _currentCategories = nil;
+    [_currentCalendars release];
+    _currentCalendars = nil;
 }
 
 #pragma mark - View lifecycle
@@ -135,7 +135,7 @@ groupTitles = _groupTitles;
 
         if (group.calendars.count > 1) {
             NSSortDescriptor *sort = [NSSortDescriptor sortDescriptorWithKey:@"sortOrder" ascending:YES];
-            _currentCategories = [[group.calendars sortedArrayUsingDescriptors:[NSArray arrayWithObject:sort]] retain];
+            _currentCalendars = [[group.calendars sortedArrayUsingDescriptors:[NSArray arrayWithObject:sort]] retain];
             
             if (self.groupTitles.count == 1) {
                 style = UITableViewStylePlain;
@@ -154,8 +154,17 @@ groupTitles = _groupTitles;
         }
         
         [self loadTableViewWithStyle:style];
-        
-        self.currentCalendar = (group.calendars.count > 1) ? nil : [group.calendars anyObject];
+
+        if (group.calendars.count == 1) {
+            // only one calendar so just pick it
+            self.currentCalendar = [group.calendars anyObject];
+        } else if (self.groupTitles.count > 1) {
+            // multiple groups and multiple calendars -- show list of calendars in table view
+            self.currentCalendar = nil;
+        } else {
+            // multiple calendars in this group -- select the first
+            self.currentCalendar = [_currentCalendars objectAtIndex:0];
+        }
         
     } else {
         [self.dataManager requestCalendarsForGroup:group];
@@ -185,10 +194,11 @@ groupTitles = _groupTitles;
     
     [self clearEvents];
     
+    NSMutableArray *sectionTitles = [NSMutableArray array];
+    NSMutableDictionary *eventsBySection = [NSMutableDictionary dictionary];
+    
     if (events.count) {
         // TODO: make sure this set of events is what we last requested
-        NSMutableDictionary *eventsBySection = [NSMutableDictionary dictionary];
-        NSMutableArray *sectionTitles = [NSMutableArray array];
         NSArray *sortDescriptors = [NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"startDate" ascending:YES]];
         NSArray *sortedEvents = [events sortedArrayUsingDescriptors:sortDescriptors];
         KGOEventWrapper *firstEvent = [sortedEvents objectAtIndex:0];
@@ -220,10 +230,10 @@ groupTitles = _groupTitles;
             }
             [eventsForCurrentSection addObject:event];
         }
-    
-        self.currentSections = sectionTitles;
-        self.currentEventsBySection = eventsBySection;
     }
+    
+    self.currentSections = sectionTitles;
+    self.currentEventsBySection = eventsBySection;
     
     [_loadingView stopAnimating];
 
@@ -234,7 +244,6 @@ groupTitles = _groupTitles;
         [self reloadDataForTableView:self.tableView];
     }
 }
-
 
 
 - (KGOCalendar *)currentCalendar
@@ -270,23 +279,24 @@ groupTitles = _groupTitles;
         _currentGroupIndex = index;
 
         if (self.groupTitles.count > 1) {
-            [self.dataManager selectGroupAtIndex:index];
+            [self.dataManager selectGroupAtIndex:_currentGroupIndex];
             KGOCalendarGroup *group = [self.dataManager currentGroup];
             [self groupDataDidChange:group];
 
-        } else if (_currentGroupIndex >= 0 && _currentGroupIndex < _currentCategories.count) {
-            self.currentCalendar = [_currentCategories objectAtIndex:_currentGroupIndex];
+        } else if (_currentGroupIndex >= 0 && _currentGroupIndex < _currentCalendars.count) {
+            self.currentCalendar = [_currentCalendars objectAtIndex:_currentGroupIndex];
         }
     }
 }
 
 - (void)setupTabstripButtons
 {
+    NSInteger selectedButtonIndex = [_tabstrip indexOfSelectedButton];
     _tabstrip.showsSearchButton = YES;
 
     [_tabstrip removeAllRegularButtons];
     if (self.groupTitles.count == 1) {
-        for (KGOCalendar *aCalendar in _currentCategories) {
+        for (KGOCalendar *aCalendar in _currentCalendars) {
             [_tabstrip addButtonWithTitle:aCalendar.title];
         }
     
@@ -296,9 +306,12 @@ groupTitles = _groupTitles;
         }
     }
     [_tabstrip setNeedsLayout];
-    
-    // TODO: preserve previous selection if any
-    [_tabstrip selectButtonAtIndex:0];
+
+    if (selectedButtonIndex >= 0 && selectedButtonIndex < [_tabstrip numberOfButtons]) {
+        [_tabstrip selectButtonAtIndex:selectedButtonIndex];
+    } else if ([_tabstrip numberOfButtons]) {
+        [_tabstrip selectButtonAtIndex:0];
+    }
 }
 
 #pragma mark - Date pager
@@ -324,8 +337,8 @@ groupTitles = _groupTitles;
         NSArray *eventsForSection = [self.currentEventsBySection objectForKey:[self.currentSections objectAtIndex:section]];
         num = eventsForSection.count;
 
-    } else if (_currentCategories) {
-        num = _currentCategories.count;
+    } else if (_currentCalendars) {
+        num = _currentCalendars.count;
     }
 
     return num;
@@ -341,15 +354,15 @@ groupTitles = _groupTitles;
 }
 
 - (KGOTableCellStyle)tableView:(UITableView *)tableView styleForCellAtIndexPath:(NSIndexPath *)indexPath {
-    if (_currentCategories && self.groupTitles.count > 1) {
+    if (_currentCalendars && self.groupTitles.count > 1) {
         return KGOTableCellStyleDefault;
     }
     return KGOTableCellStyleSubtitle;
 }
 
 - (CellManipulator)tableView:(UITableView *)tableView manipulatorForCellAtIndexPath:(NSIndexPath *)indexPath {
-    if (_currentCategories && self.groupTitles.count > 1) {
-        KGOCalendar *category = [_currentCategories objectAtIndex:indexPath.row];
+    if (_currentCalendars && self.groupTitles.count > 1) {
+        KGOCalendar *category = [_currentCalendars objectAtIndex:indexPath.row];
         NSString *title = category.title;
         
         return [[^(UITableViewCell *cell) {
@@ -376,8 +389,8 @@ groupTitles = _groupTitles;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (_currentCategories && self.groupTitles.count > 1) {
-        KGOCalendar *calendar = [_currentCategories objectAtIndex:indexPath.row];
+    if (_currentCalendars && self.groupTitles.count > 1) {
+        KGOCalendar *calendar = [_currentCalendars objectAtIndex:indexPath.row];
         NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:calendar, @"calendar", nil];
         [KGO_SHARED_APP_DELEGATE() showPage:LocalPathPageNameCategoryList forModuleTag:self.moduleTag params:params];
         

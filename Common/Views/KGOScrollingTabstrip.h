@@ -45,6 +45,7 @@
 - (id)initWithFrame:(CGRect)frame delegate:(id<KGOScrollingTabstripDelegate>)delegate buttonTitles:(NSString *)title, ...;
 
 - (void)selectButtonAtIndex:(NSUInteger)index;
+- (NSInteger)indexOfSelectedButton;
 
 @property (nonatomic) BOOL showsSearchButton;
 @property (nonatomic) BOOL showsBookmarkButton;

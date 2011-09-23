@@ -15,18 +15,27 @@ KGOScrollingTabstripSearchDelegate, CalendarDataManagerDelegate> {
     IBOutlet KGODatePager *_datePager;
     IBOutlet KGOScrollingTabstrip *_tabstrip;
     IBOutlet UIActivityIndicatorView *_loadingView;
-    
+
+    // calendars are organized in groups.
+    // groupTitles is all the top level groups.
+    // if there are multiple groups, their titles are shown in the tab strip.
     NSMutableArray *_groupTitles;
+
+    // at any given time the user can only view the contents of one group.
+    // if there are multiple groups, the group being viewed will be pressed in the tab strip.
     NSInteger _currentGroupIndex;
 
+    // currentCalendars is the list of calendars associated with the current group.
+    // if there is only one group, the calendar titles appear in the tab strip.
+    NSArray *_currentCalendars;
+    
+    // if the tab strip is showing calendar titles, this is the currently selected calendar
     KGOCalendar *_currentCalendar;
     
     // the table will either be a plain, possibly sectioned list of events
     // or a grouped, unsectioned list of categories.
     NSArray *_currentSections;
     NSDictionary *_currentEventsBySection;
-
-    NSArray *_currentCategories;
 }
 
 @property(nonatomic, retain) NSString *moduleTag;

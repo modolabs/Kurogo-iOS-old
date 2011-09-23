@@ -5,8 +5,8 @@
 
 #define EVENT_TIMEOUT -3600
 
-#define CALENDAR_GROUP_EXPIRE_TIME 72
-#define CALENDAR_LIST_EXPIRE_TIME 72
+#define CALENDAR_GROUP_EXPIRE_TIME 7200
+#define CALENDAR_LIST_EXPIRE_TIME 7200
 
 @implementation CalendarDataManager
 
@@ -143,7 +143,6 @@ NSDate *dateForMidnightFromInterval(NSTimeInterval interval)
 - (BOOL)requestEventsForCalendar:(KGOCalendar *)calendar params:(NSDictionary *)params
 {
     BOOL success = NO;
-    DLog(@"%@", params);    
     NSArray *events = [calendar.events allObjects];
     if (events.count) {
         NSArray *oldEvents = [events filteredArrayUsingPredicate:
@@ -293,7 +292,7 @@ NSDate *dateForMidnightFromInterval(NSTimeInterval interval)
 */
 - (void)request:(KGORequest *)request didReceiveResult:(id)result
 {
-    DLog(@"%@", [result description]);
+    DLog(@"received result: %@", [result description]);
 
 #pragma mark Request - groups
     if (request == _groupsRequest) {

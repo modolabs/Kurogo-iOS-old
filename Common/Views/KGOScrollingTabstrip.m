@@ -257,6 +257,15 @@
     [self buttonPressed:button];
 }
 
+- (NSInteger)indexOfSelectedButton
+{
+    NSInteger index = NSNotFound;
+    if (_buttons && _pressedButton) {
+        index = [_buttons indexOfObject:_pressedButton];
+    }
+    return index;
+}
+
 - (void)buttonPressed:(id)sender {
     UIButton *pressedButton = (UIButton *)sender;
     
