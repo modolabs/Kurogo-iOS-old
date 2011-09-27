@@ -2,14 +2,37 @@
 App Configuration
 ##################
 
+.. _config-options:
 
+====================
+Config.plist Options
+====================
 
+-------------
+Analytics
+-------------
+
+-------------
+Location
+-------------
+
+-------------
+Modules
+-------------
+
+-------------
+Servers
+-------------
+
+-------------
+SocialMedia
+-------------
 
 .. _config-secret:
 
--------------
+=============
 Secret files
--------------
+=============
 
 Many apps will include secrets (passwords, API keys, etc.) that should
 not be committed to a public repository. This is done in Kurogo by

@@ -44,9 +44,9 @@ Xcode.
 Each Xcode group (including some not listed above) is described in detail 
 below.
 
------------
+===========
 Application
------------
+===========
 
 The files in this group control the overall life cycle of the application. The 
 following classes are in files (header and implementation) in the top-level 
@@ -56,16 +56,16 @@ directory of Kurogo:
 * *KGOModule* - the superclass of all modules.
 * *KGONotification* - a wrapper around local and push notifications.
 
-------
+===========
 Common
-------
+===========
 
 This group includes groups of utility classes, common data management classes,
 and various custom views.
 
--------
+===========
 Contrib
--------
+===========
 
 This directory is meant for external code libraries. Currently used libraries 
 are
@@ -74,9 +74,9 @@ are
 * Facebook
 * GoogleAnalytics
 
------------------
+======================
 Indexing Headers
------------------
+======================
 
 These are headers for external libraries included in the project. To add static 
 library source code, include the .xcodeproj associated with the library and
@@ -87,64 +87,152 @@ all header files to "project" (as opposed to "public" or "private").
 These steps are not necessary for external libraries that do not include source 
 code. For those, just include the built product and header files in Contrib.
 
--------
+===========
 Modules
--------
+===========
 
-This directory contains default implementations of modules shipping
-with Universitas.  Projects add their own modules to the Modules
-subdirectory inside the project directory.
+This group contains default implementations of modules shipping with 
+Universitas.  Projects add their own modules to the Modules group under the 
+Site group.
 
+===========
+Resources
+===========
 
+This group contains default assets (such as images) that are embedded in the
+application. Images that exist in the Site/Resources group will override 
+images in this group.
 
+=================
+Supporting Files
+=================
 
---------
+This group is for standard files required by iOS projects that do not vary
+across applications. Currently this just includes main.m.
+
+===========
 Site
---------
+===========
 
 Each project requires an Xcode project file (.xcodeproj) and a directory 
-to hold project-specific code, configurations, and resources. For example 
-the Universitas directory contains
+to hold project-specific code, configurations, and resources. Subgroups of this
+group are the following.
 
-*Application/*
+-------------
+Application
+-------------
 
-    *KGOModule+Factory.h*
+This group contains the files for the category *KGOModule (Factory)*.
 
-    *KGOModule+Factory.m*
+The file *KGOModule+Factory.m* must import every Module file used in the 
+application, and define a mapping between module ID's returned by the server
+and the Module class to instantiate.
 
-*Config/*
+For example, an application with a home screen showing the People and News 
+modules could have a *KGOModule+Factory.m* file like the following: ::
 
-    *Config.plist* - for custom application configurations read by Kurogo.
-    These include server names, the list of modules, third-party API keys, etc.
+    #import "KGOModule+Factory.h"
+    #import "KGOModule.h"
+    #import "HomeModule.h"
+    #import "NewsModule.h"
+    #import "PeopleModule.h"
 
-    *KGOInfo.plist* - the Info.plist file associated with the application.
-    Standard application configurations go here.
+    @implementation KGOModule (Factory)
 
-    *[secret/]* - an optional git-ignored directory to place a Config.plist 
-    with values that override the required Config.plist
+    + (KGOModule *)moduleWithDictionary:(NSDictionary *)args {
+        KGOModule *module = nil;
+        NSString *className = [args objectForKey:@"class"];
+        if (!className) {
+            NSDictionary *moduleMap = [NSDictionary dictionaryWithObjectsAndKeys:
+                                       @"HomeModule", @"home",
+                                       @"NewsModule", @"news",
+                                       @"PeopleModule", @"people",
+                                       nil];
+            
+            NSString *serverID = [args objectForKey:@"id"];
+            className = [moduleMap objectForKey:serverID];
+        }
 
-*Localization/* - includes the strings files such as Localizable.strings (used 
-throughout the app) and plist files.
+        if (className) {
+            Class moduleClass = NSClassFromString(className);
+            if (moduleClass) {
+                module = [[[moduleClass alloc] initWithDictionary:args] autorelease];
+            }
+        }
+        
+        if (!module) {
+            DLog(@"could not initialize module with params: %@", [args description]);
+        }
+        
+        return module;
+    }
 
-    *en.lproj/*
+    @end
 
-*Modules/* - project-specific module implementations.
+If your application uses a different module for News, e.g. SiteNewsModule, 
+your file would import SiteNewsModule.h and map the "news" key to 
+"SiteNewsModule" instead.
 
-*Resources/*
+----------
+Modules
+----------
 
-    *common/*
+This group is for custom modules, subclassed modules, and module files that are
+specific to the project.
 
-    *modules/*
-
-    *[Default.png]*
-
-    *[Icon.png]*
-
-
-
----------
+-----------
 Resources
----------
+-----------
+
+This group contains assets embedded in the application, such as images. It 
+contains the following folder references:
+
+* *common* - application-wide assets.
+* *modules* - assets used by a specific module.
+* *ipad* - contains *common* and *modules* subfolders for assets that should
+  be used instead when the interface is iPad.
+
+Images are chosen via the function ::
+
+    [UIImage imageWithPathName:myPathName]
+
+where *myPathName* is either "common/some-image.png" or 
+"modules/people/some-image.png" (the png extension is optional for some 
+versions of iOS).
+
+When building for iPad, images that match the path name *ipad/myPathName* have
+highest priority, followed by *myPathName*, followed by *kurogo/myPathname* 
+(in the top-level Resources group). When building for iPhone, the same rules
+apply except the ipad folder is not searched.
+
+-----------------
+Supporting Files
+-----------------
+
+This group contains several .plist files that are used to store configurations.
+
+* *KGOInfo.plist* is the standard Info.plist used in every application. More
+  information is available in the `iOS documentation <http://developer.apple.com/library/ios/#documentation/general/Reference/InfoPlistKeyReference/Articles/AboutInformationPropertyListFiles.html>`_
+
+* *Config.plist* is used for Kurogo-specific configurations.  See 
+  :ref:`config-options`.
+
+* *ThemeConfig.plist* contains theme values that determine various fonts and
+  colors in the application.
+
+* *ThemeConfig.plist-iPad* (optional) is used when different theme values 
+  should be used for iPad builds.
+
+
+There is a folder called *secret* which may contain an un-versioned copy of 
+Config.plist.  See :ref:`config-secret`.
+
+-------------
+Localization
+-------------
+
+This group holds all localized/localizable assets, such as Localizable.strings
+and plist files with user-facing strings.
 
 
 

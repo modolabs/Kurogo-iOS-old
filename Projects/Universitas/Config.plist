@@ -9,8 +9,6 @@
 		<key>Provider</key>
 		<string></string>
 	</dict>
-	<key>AppFeedbackAddress</key>
-	<string>john.smith@example.com</string>
 	<key>Location</key>
 	<dict>
 		<key>DefaultCenter</key>
@@ -137,8 +135,6 @@
 			<string>About</string>
 		</dict>
 	</array>
-	<key>OrganizationName</key>
-	<string>Universitas</string>
 	<key>Servers</key>
 	<dict>
 		<key>Development</key>
