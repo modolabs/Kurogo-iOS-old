@@ -5,16 +5,7 @@
 #import "CoreDataManager.h"
 
 @implementation NewsStoryTableViewCell
-/*
-- (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
-{
-    self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
-    if (self) {
-        // Initialization code
-    }
-    return self;
-}
-*/
+
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated
 {
     [super setSelected:selected animated:animated];
@@ -74,11 +65,6 @@
         
     } else {
         _thumbnailView.imageURL = nil;
-    }
-    
-    // -setPlaceholderImage sets the background color on MITThumbnailView
-    // TODO: do some renaming so it's clearer what's happening here
-    if (!_thumbnailView.imageURL) {
         [_thumbnailView setPlaceholderImage:[UIImage imageWithPathName:@"modules/news/news-placeholder.png"]];
     }
 }

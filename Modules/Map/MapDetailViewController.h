@@ -17,6 +17,7 @@
     
 }
 
+@property (nonatomic, retain) ModuleTag *moduleTag;
 @property (nonatomic, retain) KGOPlacemark *placemark;
 @property (nonatomic, retain) KGODetailPager *pager;
 

@@ -116,8 +116,6 @@
 		EB14415D1309EFB100396753 /* HomeModule.m in Sources */ = {isa = PBXBuildFile; fileRef = EB1441591309EFB100396753 /* HomeModule.m */; };
 		EB14415F1309EFB100396753 /* KGOSpringboardViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EB14415B1309EFB100396753 /* KGOSpringboardViewController.m */; };
 		EB1441731309F09600396753 /* KGOModule.m in Sources */ = {isa = PBXBuildFile; fileRef = EB1441711309F09600396753 /* KGOModule.m */; };
-		EB1441A41309F54D00396753 /* MITBuildInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = EB1441A31309F54D00396753 /* MITBuildInfo.m */; };
-		EB14B0AA1419578000B4A716 /* secret in Resources */ = {isa = PBXBuildFile; fileRef = EB14B0A91419578000B4A716 /* secret */; };
 		EB14B0AC141957E300B4A716 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = EB14B0AB141957E300B4A716 /* main.m */; };
 		EB1637BF13690455003C69E2 /* KGOSegmentedControl.m in Sources */ = {isa = PBXBuildFile; fileRef = EB1637BE13690455003C69E2 /* KGOSegmentedControl.m */; };
 		EB1637CB13690476003C69E2 /* KGOFacebookService.m in Sources */ = {isa = PBXBuildFile; fileRef = EB1637C213690476003C69E2 /* KGOFacebookService.m */; };
@@ -141,8 +139,6 @@
 		EB181FBD131EDF30003728FF /* KGOPortletHomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EB181FB3131EDF30003728FF /* KGOPortletHomeViewController.m */; };
 		EB181FBF131EDF30003728FF /* SpringboardIcon.m in Sources */ = {isa = PBXBuildFile; fileRef = EB181FB5131EDF30003728FF /* SpringboardIcon.m */; };
 		EB181FC5131EDF43003728FF /* MapSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EB181FC3131EDF43003728FF /* MapSettingsViewController.m */; };
-		EB1B88C91324A6AC00108A8F /* common in Resources */ = {isa = PBXBuildFile; fileRef = EB1B88C71324A6AC00108A8F /* common */; };
-		EB1B88CA1324A6AC00108A8F /* modules in Resources */ = {isa = PBXBuildFile; fileRef = EB1B88C81324A6AC00108A8F /* modules */; };
 		EB29B169141EA6C400D8559A /* NewsDataController.m in Sources */ = {isa = PBXBuildFile; fileRef = EB29B168141EA6C400D8559A /* NewsDataController.m */; };
 		EB46A346134EB942005796E4 /* ThemeConfig-iPad.plist in Resources */ = {isa = PBXBuildFile; fileRef = EB46A345134EB942005796E4 /* ThemeConfig-iPad.plist */; };
 		EB46A348134EB97C005796E4 /* MainWindow-iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = EB46A347134EB97C005796E4 /* MainWindow-iPad.xib */; };
@@ -151,8 +147,6 @@
 		EB46A5411352874D005796E4 /* KGOEvent.m in Sources */ = {isa = PBXBuildFile; fileRef = EB46A5401352874C005796E4 /* KGOEvent.m */; };
 		EB46A5441352874D005796E4 /* KGOEventParticipant.m in Sources */ = {isa = PBXBuildFile; fileRef = EB46A5431352874D005796E4 /* KGOEventParticipant.m */; };
 		EB46A5471352874E005796E4 /* KGOEventParticipantRelation.m in Sources */ = {isa = PBXBuildFile; fileRef = EB46A5461352874E005796E4 /* KGOEventParticipantRelation.m */; };
-		EB46C96813259B8F00AF7B5C /* KGOModule+Factory.m in Sources */ = {isa = PBXBuildFile; fileRef = EB46C96713259B8F00AF7B5C /* KGOModule+Factory.m */; };
-		EB46CA8A1327F95E00AF7B5C /* kurogo in Resources */ = {isa = PBXBuildFile; fileRef = EB46CA891327F95E00AF7B5C /* kurogo */; };
 		EB46CA8E1327F97100AF7B5C /* ThemeConfig.plist in Resources */ = {isa = PBXBuildFile; fileRef = EB46CA8B1327F97100AF7B5C /* ThemeConfig.plist */; };
 		EB46CA951327FECB00AF7B5C /* KGOSidebarFrameViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EB46CA941327FECB00AF7B5C /* KGOSidebarFrameViewController.m */; };
 		EB46CA981327FED600AF7B5C /* MapDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EB46CA971327FED600AF7B5C /* MapDetailViewController.m */; };
@@ -163,6 +157,12 @@
 		EB6BC7F614058A0B0095744E /* MapCategoryListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EB6BC7F514058A0B0095744E /* MapCategoryListViewController.m */; };
 		EB6D02A911E3784100B65CE3 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EB6D02A811E3784100B65CE3 /* MapKit.framework */; };
 		EB6D576A14196B1A009EDA9D /* FBDialog.bundle in Resources */ = {isa = PBXBuildFile; fileRef = EB6D576914196B1A009EDA9D /* FBDialog.bundle */; };
+		EB7E9E9C143152D20093B0C7 /* MITBuildInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = EB7E9E9A143152D20093B0C7 /* MITBuildInfo.m */; };
+		EB7E9EA0143152E00093B0C7 /* KGOModule+Factory.m in Sources */ = {isa = PBXBuildFile; fileRef = EB7E9E9F143152E00093B0C7 /* KGOModule+Factory.m */; };
+		EB7E9EA2143153600093B0C7 /* kurogo in Resources */ = {isa = PBXBuildFile; fileRef = EB7E9EA1143153600093B0C7 /* kurogo */; };
+		EB7E9EA5143155BD0093B0C7 /* common in Resources */ = {isa = PBXBuildFile; fileRef = EB7E9EA3143155BD0093B0C7 /* common */; };
+		EB7E9EA6143155BD0093B0C7 /* modules in Resources */ = {isa = PBXBuildFile; fileRef = EB7E9EA4143155BD0093B0C7 /* modules */; };
+		EB7E9EAE143156260093B0C7 /* secret in Resources */ = {isa = PBXBuildFile; fileRef = EB7E9EAD143156260093B0C7 /* secret */; };
 		EB7F32D310CD6FB300188BCD /* AddressBook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EB7F32D210CD6FB300188BCD /* AddressBook.framework */; };
 		EB7F32D710CD6FBB00188BCD /* AddressBookUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EB7F32D610CD6FBB00188BCD /* AddressBookUI.framework */; };
 		EB83AE4C13C747AA006CCEDB /* Settings.plist in Resources */ = {isa = PBXBuildFile; fileRef = EB83AE4A13C747AA006CCEDB /* Settings.plist */; };
@@ -200,8 +200,8 @@
 		3A82708C103DAA2400BB4109 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = ../../../../../System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SOURCE_ROOT; };
 		3AA2194F1039D74700DB7637 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = /System/Library/Frameworks/CoreData.framework; sourceTree = "<absolute>"; };
 		4463CCB110D6F5750048CA83 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
-		4B2A10AE13D609300028298E /* LinksTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LinksTableViewController.h; path = ../../../Modules/Links/LinksTableViewController.h; sourceTree = "<group>"; };
-		4B2A10AF13D609300028298E /* LinksTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LinksTableViewController.m; path = ../../../Modules/Links/LinksTableViewController.m; sourceTree = "<group>"; };
+		4B2A10AE13D609300028298E /* LinksTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LinksTableViewController.h; sourceTree = "<group>"; };
+		4B2A10AF13D609300028298E /* LinksTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LinksTableViewController.m; sourceTree = "<group>"; };
 		4B3904E4134147D000CD9C6F /* EmergencyDataManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EmergencyDataManager.h; sourceTree = "<group>"; };
 		4B3904E5134147D000CD9C6F /* EmergencyDataManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EmergencyDataManager.m; sourceTree = "<group>"; };
 		4B3904E6134147D000CD9C6F /* EmergencyHomeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EmergencyHomeViewController.h; sourceTree = "<group>"; };
@@ -217,31 +217,31 @@
 		4BD4936B1349146900891968 /* EmergencyContact.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EmergencyContact.m; sourceTree = "<group>"; };
 		4BD4936D13492C2400891968 /* EmergencyContactsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EmergencyContactsViewController.h; sourceTree = "<group>"; };
 		4BD4936E13492C2400891968 /* EmergencyContactsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EmergencyContactsViewController.m; sourceTree = "<group>"; };
-		562CD69D13B9AEA600C5CB94 /* LinksModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LinksModule.h; path = ../../../Modules/Links/LinksModule.h; sourceTree = "<group>"; };
-		562CD69E13B9AEA600C5CB94 /* LinksModule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LinksModule.m; path = ../../../Modules/Links/LinksModule.m; sourceTree = "<group>"; };
-		562F4B73133EFA10000B9344 /* ContentModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ContentModule.h; path = ../../../Modules/Content/ContentModule.h; sourceTree = "<group>"; };
-		562F4B74133EFA10000B9344 /* ContentModule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ContentModule.m; path = ../../../Modules/Content/ContentModule.m; sourceTree = "<group>"; };
-		562F4B75133EFA10000B9344 /* ContentTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ContentTableViewController.h; path = ../../../Modules/Content/ContentTableViewController.h; sourceTree = "<group>"; };
-		562F4B76133EFA10000B9344 /* ContentTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ContentTableViewController.m; path = ../../../Modules/Content/ContentTableViewController.m; sourceTree = "<group>"; };
+		562CD69D13B9AEA600C5CB94 /* LinksModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LinksModule.h; sourceTree = "<group>"; };
+		562CD69E13B9AEA600C5CB94 /* LinksModule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LinksModule.m; sourceTree = "<group>"; };
+		562F4B73133EFA10000B9344 /* ContentModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContentModule.h; sourceTree = "<group>"; };
+		562F4B74133EFA10000B9344 /* ContentModule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContentModule.m; sourceTree = "<group>"; };
+		562F4B75133EFA10000B9344 /* ContentTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContentTableViewController.h; sourceTree = "<group>"; };
+		562F4B76133EFA10000B9344 /* ContentTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContentTableViewController.m; sourceTree = "<group>"; };
 		56388BD713EF42B6005BA72E /* EventKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = EventKit.framework; path = System/Library/Frameworks/EventKit.framework; sourceTree = SDKROOT; };
 		56388BD913EF42EE005BA72E /* EventKitUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = EventKitUI.framework; path = System/Library/Frameworks/EventKitUI.framework; sourceTree = SDKROOT; };
 		56388BDB13EF4305005BA72E /* EventKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = EventKit.framework; path = System/Library/Frameworks/EventKit.framework; sourceTree = SDKROOT; };
-		A627E6AA134A65FD00403110 /* VideoDataManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VideoDataManager.h; path = ../../Modules/Video/VideoDataManager.h; sourceTree = SOURCE_ROOT; };
-		A627E6AB134A65FD00403110 /* VideoDataManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VideoDataManager.m; path = ../../Modules/Video/VideoDataManager.m; sourceTree = SOURCE_ROOT; };
-		A627E6AC134A65FD00403110 /* VideoListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VideoListViewController.h; path = ../../Modules/Video/VideoListViewController.h; sourceTree = SOURCE_ROOT; };
-		A627E6AD134A65FD00403110 /* VideoListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VideoListViewController.m; path = ../../Modules/Video/VideoListViewController.m; sourceTree = SOURCE_ROOT; };
-		A627E6AE134A65FD00403110 /* VideoModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VideoModule.h; path = ../../Modules/Video/VideoModule.h; sourceTree = SOURCE_ROOT; };
-		A627E6AF134A65FD00403110 /* VideoModule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VideoModule.m; path = ../../Modules/Video/VideoModule.m; sourceTree = SOURCE_ROOT; };
-		A627E6B4134A662200403110 /* Video.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Video.h; path = ../../Modules/Video/Model/Video.h; sourceTree = SOURCE_ROOT; };
-		A627E6B5134A662200403110 /* Video.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Video.m; path = ../../Modules/Video/Model/Video.m; sourceTree = SOURCE_ROOT; };
-		A627E6B7134A662200403110 /* VideoTag.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VideoTag.h; path = ../../Modules/Video/Model/VideoTag.h; sourceTree = SOURCE_ROOT; };
-		A627E6B8134A662200403110 /* VideoTag.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VideoTag.m; path = ../../Modules/Video/Model/VideoTag.m; sourceTree = SOURCE_ROOT; };
+		A627E6AA134A65FD00403110 /* VideoDataManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VideoDataManager.h; sourceTree = "<group>"; };
+		A627E6AB134A65FD00403110 /* VideoDataManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VideoDataManager.m; sourceTree = "<group>"; };
+		A627E6AC134A65FD00403110 /* VideoListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VideoListViewController.h; sourceTree = "<group>"; };
+		A627E6AD134A65FD00403110 /* VideoListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VideoListViewController.m; sourceTree = "<group>"; };
+		A627E6AE134A65FD00403110 /* VideoModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VideoModule.h; sourceTree = "<group>"; };
+		A627E6AF134A65FD00403110 /* VideoModule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VideoModule.m; sourceTree = "<group>"; };
+		A627E6B4134A662200403110 /* Video.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Video.h; sourceTree = "<group>"; };
+		A627E6B5134A662200403110 /* Video.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Video.m; sourceTree = "<group>"; };
+		A627E6B7134A662200403110 /* VideoTag.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VideoTag.h; sourceTree = "<group>"; };
+		A627E6B8134A662200403110 /* VideoTag.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VideoTag.m; sourceTree = "<group>"; };
 		A6C19892134B95B3009A163B /* Video.xcdatamodel */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = wrapper.xcdatamodel; path = Video.xcdatamodel; sourceTree = "<group>"; };
-		A6F2F818134BAC75009F597D /* VideoDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VideoDetailViewController.h; path = ../../Modules/Video/VideoDetailViewController.h; sourceTree = SOURCE_ROOT; };
-		A6F2F819134BAC75009F597D /* VideoDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VideoDetailViewController.m; path = ../../Modules/Video/VideoDetailViewController.m; sourceTree = SOURCE_ROOT; };
+		A6F2F818134BAC75009F597D /* VideoDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VideoDetailViewController.h; sourceTree = "<group>"; };
+		A6F2F819134BAC75009F597D /* VideoDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VideoDetailViewController.m; sourceTree = "<group>"; };
 		A6F2F83C134BAEDD009F597D /* MediaPlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaPlayer.framework; path = System/Library/Frameworks/MediaPlayer.framework; sourceTree = SDKROOT; };
-		A6F2FA1F134BE23F009F597D /* VideoWebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VideoWebViewController.h; path = ../../Modules/Video/VideoWebViewController.h; sourceTree = SOURCE_ROOT; };
-		A6F2FA20134BE23F009F597D /* VideoWebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VideoWebViewController.m; path = ../../Modules/Video/VideoWebViewController.m; sourceTree = SOURCE_ROOT; };
+		A6F2FA1F134BE23F009F597D /* VideoWebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VideoWebViewController.h; sourceTree = "<group>"; };
+		A6F2FA20134BE23F009F597D /* VideoWebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VideoWebViewController.m; sourceTree = "<group>"; };
 		BD9FA7ED1047A05E00BC3C0A /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
 		DE6D9318110A8EFA00DAF213 /* SettingsTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingsTableViewController.h; sourceTree = "<group>"; };
 		DE6D9319110A8EFA00DAF213 /* SettingsTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingsTableViewController.m; sourceTree = "<group>"; };
@@ -259,7 +259,7 @@
 		DEA3B48C10C9BB7300BDA774 /* AboutModule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AboutModule.m; sourceTree = "<group>"; };
 		DEC02F9B110578240054BE32 /* AboutTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AboutTableViewController.h; sourceTree = "<group>"; };
 		DEC02F9C110578240054BE32 /* AboutTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AboutTableViewController.m; sourceTree = "<group>"; };
-		DED3CCE810418F5F003D3B74 /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Default.png; path = Resources/Default.png; sourceTree = "<group>"; };
+		DED3CCE810418F5F003D3B74 /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
 		EB0336A9133AEDED00ACF2BB /* ModalLoginWebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ModalLoginWebViewController.h; sourceTree = "<group>"; };
 		EB0336AA133AEDED00ACF2BB /* ModalLoginWebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ModalLoginWebViewController.m; sourceTree = "<group>"; };
 		EB0336B5133C2B8B00ACF2BB /* AnalyticsWrapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AnalyticsWrapper.h; sourceTree = "<group>"; };
@@ -388,9 +388,7 @@
 		EB1441701309F09600396753 /* KGOModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGOModule.h; sourceTree = "<group>"; };
 		EB1441711309F09600396753 /* KGOModule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGOModule.m; sourceTree = "<group>"; };
 		EB14419F1309F51100396753 /* MITBuildInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MITBuildInfo.h; sourceTree = "<group>"; };
-		EB1441A31309F54D00396753 /* MITBuildInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MITBuildInfo.m; path = Modules/About/MITBuildInfo.m; sourceTree = SOURCE_ROOT; };
-		EB14B0A91419578000B4A716 /* secret */ = {isa = PBXFileReference; lastKnownFileType = folder; path = secret; sourceTree = "<group>"; };
-		EB14B0AB141957E300B4A716 /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = "../../../Supporting Files/main.m"; sourceTree = "<group>"; };
+		EB14B0AB141957E300B4A716 /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		EB1637BD13690455003C69E2 /* KGOSegmentedControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGOSegmentedControl.h; sourceTree = "<group>"; };
 		EB1637BE13690455003C69E2 /* KGOSegmentedControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGOSegmentedControl.m; sourceTree = "<group>"; };
 		EB1637C013690476003C69E2 /* BitlyWrapperDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BitlyWrapperDelegate.h; sourceTree = "<group>"; };
@@ -404,7 +402,7 @@
 		EB1637C813690476003C69E2 /* KGOTwitterService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGOTwitterService.h; sourceTree = "<group>"; };
 		EB1637C913690476003C69E2 /* KGOTwitterService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGOTwitterService.m; sourceTree = "<group>"; };
 		EB1637CA13690476003C69E2 /* TwitterViewControllerDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TwitterViewControllerDelegate.h; sourceTree = "<group>"; };
-		EB163AB9136CFB2F003C69E2 /* Default-Portrait~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Default-Portrait~ipad.png"; path = "Resources/Default-Portrait~ipad.png"; sourceTree = "<group>"; };
+		EB163AB9136CFB2F003C69E2 /* Default-Portrait~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-Portrait~ipad.png"; sourceTree = "<group>"; };
 		EB181F75131EDECA003728FF /* KGOPerson.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGOPerson.h; sourceTree = "<group>"; };
 		EB181F76131EDECA003728FF /* KGOPerson.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGOPerson.m; sourceTree = "<group>"; };
 		EB181F77131EDECA003728FF /* KGOPersonWrapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGOPersonWrapper.h; sourceTree = "<group>"; };
@@ -436,8 +434,6 @@
 		EB181FB5131EDF30003728FF /* SpringboardIcon.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SpringboardIcon.m; sourceTree = "<group>"; };
 		EB181FC2131EDF43003728FF /* MapSettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MapSettingsViewController.h; sourceTree = "<group>"; };
 		EB181FC3131EDF43003728FF /* MapSettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MapSettingsViewController.m; sourceTree = "<group>"; };
-		EB1B88C71324A6AC00108A8F /* common */ = {isa = PBXFileReference; lastKnownFileType = folder; name = common; path = Resources/common; sourceTree = "<group>"; };
-		EB1B88C81324A6AC00108A8F /* modules */ = {isa = PBXFileReference; lastKnownFileType = folder; name = modules; path = Resources/modules; sourceTree = "<group>"; };
 		EB29B167141EA6C400D8559A /* NewsDataController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NewsDataController.h; sourceTree = "<group>"; };
 		EB29B168141EA6C400D8559A /* NewsDataController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NewsDataController.m; sourceTree = "<group>"; };
 		EB3067FD142BC15B0047C9CF /* FBConnect.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FBConnect.h; path = ../../Contrib/Facebook/FBConnect.h; sourceTree = "<group>"; };
@@ -446,19 +442,16 @@
 		EB306800142BC15B0047C9CF /* FBDialog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FBDialog.h; path = ../../Contrib/Facebook/FBDialog.h; sourceTree = "<group>"; };
 		EB306804142BC1820047C9CF /* JSON.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JSON.h; path = "../../Contrib/json-framework/Classes/JSON.h"; sourceTree = "<group>"; };
 		EB46A345134EB942005796E4 /* ThemeConfig-iPad.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "ThemeConfig-iPad.plist"; path = "../../../Resources/default/ThemeConfig-iPad.plist"; sourceTree = "<group>"; };
-		EB46A347134EB97C005796E4 /* MainWindow-iPad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = "MainWindow-iPad.xib"; path = "../../Resources/MainWindow-iPad.xib"; sourceTree = "<group>"; };
+		EB46A347134EB97C005796E4 /* MainWindow-iPad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "MainWindow-iPad.xib"; sourceTree = "<group>"; };
 		EB46A397134F653B005796E4 /* KGOSplitViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGOSplitViewController.h; sourceTree = "<group>"; };
 		EB46A398134F6540005796E4 /* KGOSplitViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGOSplitViewController.m; sourceTree = "<group>"; };
-		EB46A4B313501A7F005796E4 /* Icon-72.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Icon-72.png"; path = "Resources/Icon-72.png"; sourceTree = "<group>"; };
+		EB46A4B313501A7F005796E4 /* Icon-72.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-72.png"; sourceTree = "<group>"; };
 		EB46A53F1352874B005796E4 /* KGOEvent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGOEvent.h; sourceTree = "<group>"; };
 		EB46A5401352874C005796E4 /* KGOEvent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGOEvent.m; sourceTree = "<group>"; };
 		EB46A5421352874D005796E4 /* KGOEventParticipant.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGOEventParticipant.h; sourceTree = "<group>"; };
 		EB46A5431352874D005796E4 /* KGOEventParticipant.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGOEventParticipant.m; sourceTree = "<group>"; };
 		EB46A5451352874E005796E4 /* KGOEventParticipantRelation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGOEventParticipantRelation.h; sourceTree = "<group>"; };
 		EB46A5461352874E005796E4 /* KGOEventParticipantRelation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGOEventParticipantRelation.m; sourceTree = "<group>"; };
-		EB46C96613259B8F00AF7B5C /* KGOModule+Factory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "KGOModule+Factory.h"; path = "Application/KGOModule+Factory.h"; sourceTree = SOURCE_ROOT; };
-		EB46C96713259B8F00AF7B5C /* KGOModule+Factory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "KGOModule+Factory.m"; path = "Application/KGOModule+Factory.m"; sourceTree = SOURCE_ROOT; };
-		EB46CA891327F95E00AF7B5C /* kurogo */ = {isa = PBXFileReference; lastKnownFileType = folder; name = kurogo; path = ../../Resources/default/kurogo; sourceTree = "<group>"; };
 		EB46CA8B1327F97100AF7B5C /* ThemeConfig.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = ThemeConfig.plist; path = ../../../Resources/default/ThemeConfig.plist; sourceTree = "<group>"; };
 		EB46CA931327FECB00AF7B5C /* KGOSidebarFrameViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGOSidebarFrameViewController.h; sourceTree = "<group>"; };
 		EB46CA941327FECB00AF7B5C /* KGOSidebarFrameViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGOSidebarFrameViewController.m; sourceTree = "<group>"; };
@@ -472,7 +465,14 @@
 		EB6BC7F414058A0B0095744E /* MapCategoryListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MapCategoryListViewController.h; sourceTree = "<group>"; };
 		EB6BC7F514058A0B0095744E /* MapCategoryListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MapCategoryListViewController.m; sourceTree = "<group>"; };
 		EB6D02A811E3784100B65CE3 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
-		EB6D576914196B1A009EDA9D /* FBDialog.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = FBDialog.bundle; path = "../../Contrib/facebook-ios-sdk/src/FBDialog.bundle"; sourceTree = "<group>"; };
+		EB6D576914196B1A009EDA9D /* FBDialog.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = FBDialog.bundle; path = "facebook-ios-sdk/src/FBDialog.bundle"; sourceTree = "<group>"; };
+		EB7E9E9A143152D20093B0C7 /* MITBuildInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MITBuildInfo.m; sourceTree = "<group>"; };
+		EB7E9E9E143152E00093B0C7 /* KGOModule+Factory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "KGOModule+Factory.h"; sourceTree = "<group>"; };
+		EB7E9E9F143152E00093B0C7 /* KGOModule+Factory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "KGOModule+Factory.m"; sourceTree = "<group>"; };
+		EB7E9EA1143153600093B0C7 /* kurogo */ = {isa = PBXFileReference; lastKnownFileType = folder; name = kurogo; path = default/kurogo; sourceTree = "<group>"; };
+		EB7E9EA3143155BD0093B0C7 /* common */ = {isa = PBXFileReference; lastKnownFileType = folder; path = common; sourceTree = "<group>"; };
+		EB7E9EA4143155BD0093B0C7 /* modules */ = {isa = PBXFileReference; lastKnownFileType = folder; path = modules; sourceTree = "<group>"; };
+		EB7E9EAD143156260093B0C7 /* secret */ = {isa = PBXFileReference; lastKnownFileType = folder; path = secret; sourceTree = "<group>"; };
 		EB7F32D210CD6FB300188BCD /* AddressBook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBook.framework; path = System/Library/Frameworks/AddressBook.framework; sourceTree = SDKROOT; };
 		EB7F32D610CD6FBB00188BCD /* AddressBookUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBookUI.framework; path = System/Library/Frameworks/AddressBookUI.framework; sourceTree = SDKROOT; };
 		EB83AE4B13C747AA006CCEDB /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = en; path = en.lproj/Settings.plist; sourceTree = "<group>"; };
@@ -485,10 +485,10 @@
 		EB934867139ED48500446243 /* NewsStoryTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NewsStoryTableViewCell.m; sourceTree = "<group>"; };
 		EB934868139ED48500446243 /* NewsStoryTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NewsStoryTableViewCell.xib; sourceTree = "<group>"; };
 		EB934869139ED48500446243 /* StoryListViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = StoryListViewController.xib; sourceTree = "<group>"; };
-		EB9AF298130B56AD003B9769 /* MainWindow.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = MainWindow.xib; path = ../../Resources/MainWindow.xib; sourceTree = SOURCE_ROOT; };
-		EBAE863E1215FB0D00F370BE /* Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Icon.png; path = Resources/Icon.png; sourceTree = "<group>"; };
-		EBAE863F1215FB0D00F370BE /* Icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Icon@2x.png"; path = "Resources/Icon@2x.png"; sourceTree = "<group>"; };
-		EBAE86441215FB4900F370BE /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Default@2x.png"; path = "Resources/Default@2x.png"; sourceTree = "<group>"; };
+		EB9AF298130B56AD003B9769 /* MainWindow.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MainWindow.xib; sourceTree = "<group>"; };
+		EBAE863E1215FB0D00F370BE /* Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Icon.png; sourceTree = "<group>"; };
+		EBAE863F1215FB0D00F370BE /* Icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon@2x.png"; sourceTree = "<group>"; };
+		EBAE86441215FB4900F370BE /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default@2x.png"; sourceTree = "<group>"; };
 		EBB121EC13392F3300A4BD1D /* EventKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = EventKit.framework; path = System/Library/Frameworks/EventKit.framework; sourceTree = SDKROOT; };
 		EBB121EE133A912500A4BD1D /* CalendarHomeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CalendarHomeViewController.h; sourceTree = "<group>"; };
 		EBB121EF133A913100A4BD1D /* CalendarHomeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CalendarHomeViewController.m; sourceTree = "<group>"; };
@@ -568,7 +568,7 @@
 				EB1387B912F22DF7004DBB7C /* Contrib */,
 				DE715445102FE468005E6111 /* Modules */,
 				29B97317FDCFA39411CA2CEA /* Resources */,
-				EB0338261340D39C00ACF2BB /* Localization */,
+				EB7E9E94143144CC0093B0C7 /* Site */,
 				EB14B0A31419576200B4A716 /* Supporting Files */,
 				EB3067F4142BC0D00047C9CF /* Indexing Headers */,
 				29B97323FDCFA39411CA2CEA /* Frameworks */,
@@ -581,20 +581,12 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				EB6D576914196B1A009EDA9D /* FBDialog.bundle */,
-				EB46CA891327F95E00AF7B5C /* kurogo */,
-				EB1B88C71324A6AC00108A8F /* common */,
-				EB1B88C81324A6AC00108A8F /* modules */,
+				EB7E9EA1143153600093B0C7 /* kurogo */,
 				EB9AF298130B56AD003B9769 /* MainWindow.xib */,
 				EB46A347134EB97C005796E4 /* MainWindow-iPad.xib */,
-				EBAE86441215FB4900F370BE /* Default@2x.png */,
-				EB46A4B313501A7F005796E4 /* Icon-72.png */,
-				EBAE863E1215FB0D00F370BE /* Icon.png */,
-				EBAE863F1215FB0D00F370BE /* Icon@2x.png */,
-				DED3CCE810418F5F003D3B74 /* Default.png */,
-				EB163AB9136CFB2F003C69E2 /* Default-Portrait~ipad.png */,
 			);
 			name = Resources;
+			path = ../../Resources;
 			sourceTree = "<group>";
 		};
 		29B97323FDCFA39411CA2CEA /* Frameworks */ = {
@@ -638,8 +630,7 @@
 				4B3904E9134147D000CD9C6F /* EmergencyModule.m */,
 				4B3904EA134147D000CD9C6F /* Model */,
 			);
-			name = Emergency;
-			path = ../../../Modules/Emergency;
+			path = Emergency;
 			sourceTree = "<group>";
 		};
 		4B3904EA134147D000CD9C6F /* Model */ = {
@@ -665,7 +656,7 @@
 				562CD69D13B9AEA600C5CB94 /* LinksModule.h */,
 				562CD69E13B9AEA600C5CB94 /* LinksModule.m */,
 			);
-			name = Links;
+			path = Links;
 			sourceTree = "<group>";
 		};
 		562F4B61133EC6DE000B9344 /* Content */ = {
@@ -676,7 +667,7 @@
 				562F4B75133EFA10000B9344 /* ContentTableViewController.h */,
 				562F4B76133EFA10000B9344 /* ContentTableViewController.m */,
 			);
-			name = Content;
+			path = Content;
 			sourceTree = "<group>";
 		};
 		A627E6A4134A657000403110 /* Video */ = {
@@ -694,8 +685,7 @@
 				A627E6AE134A65FD00403110 /* VideoModule.h */,
 				A627E6AF134A65FD00403110 /* VideoModule.m */,
 			);
-			name = Video;
-			path = ../../../Modules/Settings;
+			path = Video;
 			sourceTree = "<group>";
 		};
 		A627E6B3134A660E00403110 /* Model */ = {
@@ -707,7 +697,7 @@
 				A627E6B7134A662200403110 /* VideoTag.h */,
 				A627E6B8134A662200403110 /* VideoTag.m */,
 			);
-			name = Model;
+			path = Model;
 			sourceTree = "<group>";
 		};
 		DE715445102FE468005E6111 /* Modules */ = {
@@ -727,21 +717,20 @@
 				DE9EFBCE10FE7D3200F5F07E /* Settings */,
 				A627E6A4134A657000403110 /* Video */,
 			);
-			path = Modules;
+			name = Modules;
+			path = ../../Modules;
 			sourceTree = "<group>";
 		};
 		DE81CF5E10C6BC390085573D /* About */ = {
 			isa = PBXGroup;
 			children = (
 				EB14419F1309F51100396753 /* MITBuildInfo.h */,
-				EB1441A31309F54D00396753 /* MITBuildInfo.m */,
 				DEA3B48B10C9BB7300BDA774 /* AboutModule.h */,
 				DEA3B48C10C9BB7300BDA774 /* AboutModule.m */,
 				DEC02F9B110578240054BE32 /* AboutTableViewController.h */,
 				DEC02F9C110578240054BE32 /* AboutTableViewController.m */,
 			);
-			name = About;
-			path = ../../../Modules/About;
+			path = About;
 			sourceTree = "<group>";
 		};
 		DE81CF5F10C6BC390085573D /* News */ = {
@@ -761,8 +750,7 @@
 				EB934867139ED48500446243 /* NewsStoryTableViewCell.m */,
 				EB934868139ED48500446243 /* NewsStoryTableViewCell.xib */,
 			);
-			name = News;
-			path = ../../../Modules/News;
+			path = News;
 			sourceTree = "<group>";
 		};
 		DE9EFBCE10FE7D3200F5F07E /* Settings */ = {
@@ -773,8 +761,7 @@
 				DE6D9318110A8EFA00DAF213 /* SettingsTableViewController.h */,
 				DE6D9319110A8EFA00DAF213 /* SettingsTableViewController.m */,
 			);
-			name = Settings;
-			path = ../../../Modules/Settings;
+			path = Settings;
 			sourceTree = "<group>";
 		};
 		EB0336B2133C2B8B00ACF2BB /* Common */ = {
@@ -1009,6 +996,7 @@
 			children = (
 				EB640C6A13FDFFFB00CFAC5B /* libjson.a */,
 				EBE242BC13AFD3030082C277 /* libfacebook_ios_sdk.a */,
+				EB6D576914196B1A009EDA9D /* FBDialog.bundle */,
 				EB138F0112F253A1004DBB7C /* GoogleAnalytics */,
 			);
 			name = Contrib;
@@ -1040,9 +1028,8 @@
 				EB033769133D26D600ACF2BB /* EventDetailTableView.h */,
 				EB03376A133D26E400ACF2BB /* EventDetailTableView.m */,
 			);
-			name = Calendar;
-			path = ../../Modules/Calendar;
-			sourceTree = SOURCE_ROOT;
+			path = Calendar;
+			sourceTree = "<group>";
 		};
 		EB1440E61309EEB800396753 /* Map */ = {
 			isa = PBXGroup;
@@ -1062,15 +1049,12 @@
 				EBE9C57914058F390090B001 /* MapDataManager.h */,
 				EBE9C57A14058F390090B001 /* MapDataManager.m */,
 			);
-			name = Map;
-			path = ../../Modules/Map;
-			sourceTree = SOURCE_ROOT;
+			path = Map;
+			sourceTree = "<group>";
 		};
 		EB1441361309EF7B00396753 /* Application */ = {
 			isa = PBXGroup;
 			children = (
-				EB46C96613259B8F00AF7B5C /* KGOModule+Factory.h */,
-				EB46C96713259B8F00AF7B5C /* KGOModule+Factory.m */,
 				EB1441701309F09600396753 /* KGOModule.h */,
 				EB1441711309F09600396753 /* KGOModule.m */,
 				EB1441371309EF7B00396753 /* KGOAppDelegate+ModuleAdditions.h */,
@@ -1082,7 +1066,7 @@
 			);
 			name = Application;
 			path = ../../Application;
-			sourceTree = SOURCE_ROOT;
+			sourceTree = "<group>";
 		};
 		EB1441571309EFB100396753 /* Home */ = {
 			isa = PBXGroup;
@@ -1106,21 +1090,16 @@
 				EB46A397134F653B005796E4 /* KGOSplitViewController.h */,
 				EB46A398134F6540005796E4 /* KGOSplitViewController.m */,
 			);
-			name = Home;
-			path = ../../Modules/Home;
-			sourceTree = SOURCE_ROOT;
+			path = Home;
+			sourceTree = "<group>";
 		};
 		EB14B0A31419576200B4A716 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
 				EB14B0AB141957E300B4A716 /* main.m */,
-				EB138AFC12F22F31004DBB7C /* Config.plist */,
-				EB14B0A91419578000B4A716 /* secret */,
-				EB1441321309EF5800396753 /* KGOInfo.plist */,
-				EB46CA8B1327F97100AF7B5C /* ThemeConfig.plist */,
-				EB46A345134EB942005796E4 /* ThemeConfig-iPad.plist */,
 			);
-			path = "Supporting Files";
+			name = "Supporting Files";
+			path = "../../Supporting Files";
 			sourceTree = "<group>";
 		};
 		EB181F73131EDECA003728FF /* People */ = {
@@ -1136,9 +1115,8 @@
 				0B2150A114058F5600BD30A3 /* PeopleGroupContactViewController.h */,
 				0B2150A214058F5700BD30A3 /* PeopleGroupContactViewController.m */,
 			);
-			name = People;
-			path = ../../Modules/People;
-			sourceTree = SOURCE_ROOT;
+			path = People;
+			sourceTree = "<group>";
 		};
 		EB181F74131EDECA003728FF /* Model */ = {
 			isa = PBXGroup;
@@ -1167,9 +1145,8 @@
 				EB181FA6131EDF1B003728FF /* LoginModule.h */,
 				EB181FA7131EDF1B003728FF /* LoginModule.m */,
 			);
-			name = Login;
-			path = ../../Modules/Login;
-			sourceTree = SOURCE_ROOT;
+			path = Login;
+			sourceTree = "<group>";
 		};
 		EB3067F4142BC0D00047C9CF /* Indexing Headers */ = {
 			isa = PBXGroup;
@@ -1189,9 +1166,72 @@
 				EB48910713310A930036AEBF /* ExternalURLModule.h */,
 				EB48910813310A930036AEBF /* ExternalURLModule.m */,
 			);
-			name = ExternalURL;
-			path = ../../../Modules/ExternalURL;
+			path = ExternalURL;
 			sourceTree = "<group>";
+		};
+		EB7E9E94143144CC0093B0C7 /* Site */ = {
+			isa = PBXGroup;
+			children = (
+				EB7E9E9D143152E00093B0C7 /* Application */,
+				EB7E9E97143152D20093B0C7 /* Modules */,
+				EB7E9E95143145230093B0C7 /* Resources */,
+				EB0338261340D39C00ACF2BB /* Localization */,
+				EB7E9EA7143155FB0093B0C7 /* Supporting Files */,
+			);
+			name = Site;
+			sourceTree = "<group>";
+		};
+		EB7E9E95143145230093B0C7 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				EBAE86441215FB4900F370BE /* Default@2x.png */,
+				EB46A4B313501A7F005796E4 /* Icon-72.png */,
+				EBAE863E1215FB0D00F370BE /* Icon.png */,
+				EBAE863F1215FB0D00F370BE /* Icon@2x.png */,
+				DED3CCE810418F5F003D3B74 /* Default.png */,
+				EB163AB9136CFB2F003C69E2 /* Default-Portrait~ipad.png */,
+				EB7E9EA3143155BD0093B0C7 /* common */,
+				EB7E9EA4143155BD0093B0C7 /* modules */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		EB7E9E97143152D20093B0C7 /* Modules */ = {
+			isa = PBXGroup;
+			children = (
+				EB7E9E99143152D20093B0C7 /* About */,
+			);
+			path = Modules;
+			sourceTree = "<group>";
+		};
+		EB7E9E99143152D20093B0C7 /* About */ = {
+			isa = PBXGroup;
+			children = (
+				EB7E9E9A143152D20093B0C7 /* MITBuildInfo.m */,
+			);
+			path = About;
+			sourceTree = "<group>";
+		};
+		EB7E9E9D143152E00093B0C7 /* Application */ = {
+			isa = PBXGroup;
+			children = (
+				EB7E9E9E143152E00093B0C7 /* KGOModule+Factory.h */,
+				EB7E9E9F143152E00093B0C7 /* KGOModule+Factory.m */,
+			);
+			path = Application;
+			sourceTree = "<group>";
+		};
+		EB7E9EA7143155FB0093B0C7 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				EB138AFC12F22F31004DBB7C /* Config.plist */,
+				EB1441321309EF5800396753 /* KGOInfo.plist */,
+				EB46CA8B1327F97100AF7B5C /* ThemeConfig.plist */,
+				EB46A345134EB942005796E4 /* ThemeConfig-iPad.plist */,
+				EB7E9EAD143156260093B0C7 /* secret */,
+			);
+			path = "Supporting Files";
+			sourceTree = SOURCE_ROOT;
 		};
 		EBC1C6FF1347B8D20045CE9C /* xcconfig */ = {
 			isa = PBXGroup;
@@ -1290,9 +1330,6 @@
 				EBAE86451215FB4900F370BE /* Default@2x.png in Resources */,
 				EB14410E1309EEB800396753 /* MapHomeViewController.xib in Resources */,
 				EB9AF2A7130B59C3003B9769 /* MainWindow.xib in Resources */,
-				EB1B88C91324A6AC00108A8F /* common in Resources */,
-				EB1B88CA1324A6AC00108A8F /* modules in Resources */,
-				EB46CA8A1327F95E00AF7B5C /* kurogo in Resources */,
 				EB46CA8E1327F97100AF7B5C /* ThemeConfig.plist in Resources */,
 				EBB121F2133A917200A4BD1D /* CalendarHomeViewController.xib in Resources */,
 				EB03375A133C2B8C00ACF2BB /* KGOTabbedViewController.xib in Resources */,
@@ -1305,8 +1342,11 @@
 				EB93486C139ED48500446243 /* StoryListViewController.xib in Resources */,
 				EB83AE4C13C747AA006CCEDB /* Settings.plist in Resources */,
 				EB83AE5113C747BE006CCEDB /* Localizable.strings in Resources */,
-				EB14B0AA1419578000B4A716 /* secret in Resources */,
 				EB6D576A14196B1A009EDA9D /* FBDialog.bundle in Resources */,
+				EB7E9EA2143153600093B0C7 /* kurogo in Resources */,
+				EB7E9EA5143155BD0093B0C7 /* common in Resources */,
+				EB7E9EA6143155BD0093B0C7 /* modules in Resources */,
+				EB7E9EAE143156260093B0C7 /* secret in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1350,7 +1390,6 @@
 				EB1441451309EF7B00396753 /* KGOAppDelegate+ModuleAdditions.m in Sources */,
 				EB14415D1309EFB100396753 /* HomeModule.m in Sources */,
 				EB14410D1309EEB800396753 /* MapHomeViewController.m in Sources */,
-				EB1441A41309F54D00396753 /* MITBuildInfo.m in Sources */,
 				EB1441731309F09600396753 /* KGOModule.m in Sources */,
 				EB181F88131EDECA003728FF /* KGOPerson.m in Sources */,
 				EB181F8A131EDECA003728FF /* KGOPersonWrapper.m in Sources */,
@@ -1368,7 +1407,6 @@
 				EB181FBD131EDF30003728FF /* KGOPortletHomeViewController.m in Sources */,
 				EB181FBF131EDF30003728FF /* SpringboardIcon.m in Sources */,
 				EB181FC5131EDF43003728FF /* MapSettingsViewController.m in Sources */,
-				EB46C96813259B8F00AF7B5C /* KGOModule+Factory.m in Sources */,
 				EB46CA951327FECB00AF7B5C /* KGOSidebarFrameViewController.m in Sources */,
 				EB46CA981327FED600AF7B5C /* MapDetailViewController.m in Sources */,
 				EB48910913310A930036AEBF /* ExternalURLModule.m in Sources */,
@@ -1466,6 +1504,8 @@
 				0B2150A314058F5700BD30A3 /* PeopleGroupContactViewController.m in Sources */,
 				EB14B0AC141957E300B4A716 /* main.m in Sources */,
 				EB29B169141EA6C400D8559A /* NewsDataController.m in Sources */,
+				EB7E9E9C143152D20093B0C7 /* MITBuildInfo.m in Sources */,
+				EB7E9EA0143152E00093B0C7 /* KGOModule+Factory.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -7,7 +7,7 @@
 
 @implementation MapDetailViewController
 
-@synthesize placemark, pager;
+@synthesize placemark, pager, moduleTag;
 
 #pragma mark TabbedViewDelegate
 
@@ -33,7 +33,7 @@
                                     [NSString stringWithFormat:@"%.5f", self.placemark.coordinate.longitude], @"lon",
                                     nil];
             _request = [[KGORequestManager sharedManager] requestWithDelegate:self
-                                                                       module:MapTag
+                                                                       module:self.moduleTag
                                                                          path:@"search"
                                                                        params:params];
             _request.expectedResponseType = [NSDictionary class];
@@ -105,7 +105,7 @@
         if (aPlacemark)
             [searchResults addObject:aPlacemark];
     }
-    [_tableView receivedSearchResults:searchResults forSource:MapTag];
+    [_tableView receivedSearchResults:searchResults forSource:self.moduleTag];
 }
 
 #pragma mark -

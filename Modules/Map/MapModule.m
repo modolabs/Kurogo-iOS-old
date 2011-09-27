@@ -101,6 +101,7 @@ NSString * const MapTypePreferenceChanged = @"MapTypeChanged";
         KGOPlacemark *place = [params objectForKey:@"place"];
         if (place) {
             MapDetailViewController *detailVC = [[[MapDetailViewController alloc] init] autorelease];
+            detailVC.moduleTag = self.tag;
             id<KGODetailPagerController> controller = [params objectForKey:@"pagerController"];
             if (controller) {
                 KGODetailPager *pager = [[[KGODetailPager alloc] initWithPagerController:controller delegate:detailVC] autorelease];
