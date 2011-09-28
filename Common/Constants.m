@@ -1,5 +1,8 @@
 #import "Constants.h"
 
+NSString * const KUROGO_FRAMEWORK_NAME = @"Kurogo iOS";
+NSString * const KUROGO_FRAMEWORK_VERSION = @"1.0";
+
 // local path names for handleLocalPath
 NSString * const LocalPathPageNameHome = @"index";
 NSString * const LocalPathPageNameDetail = @"detail";

@@ -5,6 +5,9 @@
 // - need to be accessed all over the app
 // - do not make sense as part of a module or library (common) group
 
+extern NSString * const KUROGO_FRAMEWORK_NAME;
+extern NSString * const KUROGO_FRAMEWORK_VERSION;
+
 typedef NSString ModuleTag;
 
 // the config strings for these are List, Grid, Portlet, Sidebar, and SplitView.

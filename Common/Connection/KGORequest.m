@@ -123,11 +123,13 @@ NSString * const KGORequestLastRequestTime = @"last";
                 carrierName = @"";
             }
             
-            userAgent = [[NSString alloc] initWithFormat:@"%@/%@ (%@ %@) %@",
+            userAgent = [[NSString alloc] initWithFormat:@"%@/%@ (%@; %@) %@/%@ %@",
                          [infoDict objectForKey:@"CFBundleName"],
                          [infoDict objectForKey:@"CFBundleVersion"],
                          [NSString stringWithCString:systemInfo.machine encoding:NSUTF8StringEncoding],
                          [[UIDevice currentDevice] systemVersion],
+                         KUROGO_FRAMEWORK_NAME,
+                         KUROGO_FRAMEWORK_VERSION,
                          carrierName];
         }
         [request setValue:userAgent forHTTPHeaderField:@"User-Agent"];
