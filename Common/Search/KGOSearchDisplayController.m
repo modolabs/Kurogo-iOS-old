@@ -355,10 +355,6 @@ maxResultsPerSection;
 
 - (void)receivedSearchResults:(NSArray *)results forSource:(NSString *)source
 {
-    if (!results.count) {
-        return;
-    }
-    
     if (!source) {
         source = NotAModuleTag;
     }

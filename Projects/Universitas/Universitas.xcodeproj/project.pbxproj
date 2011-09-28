@@ -163,6 +163,7 @@
 		EB7E9EAE143156260093B0C7 /* secret in Resources */ = {isa = PBXBuildFile; fileRef = EB7E9EAD143156260093B0C7 /* secret */; };
 		EB7E9F2E143171780093B0C7 /* Video.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = EB7E9F2C143171770093B0C7 /* Video.xcdatamodeld */; };
 		EB7E9F301433740D0093B0C7 /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EB7E9F2F143374010093B0C7 /* CoreTelephony.framework */; };
+		EB7E9F4E14337C630093B0C7 /* ipad in Resources */ = {isa = PBXBuildFile; fileRef = EB7E9F4D14337C630093B0C7 /* ipad */; };
 		EB7F32D310CD6FB300188BCD /* AddressBook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EB7F32D210CD6FB300188BCD /* AddressBook.framework */; };
 		EB7F32D710CD6FBB00188BCD /* AddressBookUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EB7F32D610CD6FBB00188BCD /* AddressBookUI.framework */; };
 		EB83AE4C13C747AA006CCEDB /* Settings.plist in Resources */ = {isa = PBXBuildFile; fileRef = EB83AE4A13C747AA006CCEDB /* Settings.plist */; };
@@ -474,6 +475,7 @@
 		EB7E9EAD143156260093B0C7 /* secret */ = {isa = PBXFileReference; lastKnownFileType = folder; path = secret; sourceTree = "<group>"; };
 		EB7E9F2D143171780093B0C7 /* Video.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Video.xcdatamodel; sourceTree = "<group>"; };
 		EB7E9F2F143374010093B0C7 /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
+		EB7E9F4D14337C630093B0C7 /* ipad */ = {isa = PBXFileReference; lastKnownFileType = folder; path = ipad; sourceTree = "<group>"; };
 		EB7F32D210CD6FB300188BCD /* AddressBook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBook.framework; path = System/Library/Frameworks/AddressBook.framework; sourceTree = SDKROOT; };
 		EB7F32D610CD6FBB00188BCD /* AddressBookUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBookUI.framework; path = System/Library/Frameworks/AddressBookUI.framework; sourceTree = SDKROOT; };
 		EB83AE4B13C747AA006CCEDB /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = en; path = en.lproj/Settings.plist; sourceTree = "<group>"; };
@@ -1195,6 +1197,7 @@
 				EB163AB9136CFB2F003C69E2 /* Default-Portrait~ipad.png */,
 				EB7E9EA3143155BD0093B0C7 /* common */,
 				EB7E9EA4143155BD0093B0C7 /* modules */,
+				EB7E9F4D14337C630093B0C7 /* ipad */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -1350,6 +1353,7 @@
 				EB7E9EA5143155BD0093B0C7 /* common in Resources */,
 				EB7E9EA6143155BD0093B0C7 /* modules in Resources */,
 				EB7E9EAE143156260093B0C7 /* secret in Resources */,
+				EB7E9F4E14337C630093B0C7 /* ipad in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
