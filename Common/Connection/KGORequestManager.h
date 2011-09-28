@@ -50,6 +50,7 @@
 - (KGORequest *)requestWithDelegate:(id<KGORequestDelegate>)delegate
                              module:(NSString *)module
                                path:(NSString *)path
+                            version:(NSUInteger)version
                              params:(NSDictionary *)params;
 
 - (void)showAlertForError:(NSError *)error request:(KGORequest *)request;

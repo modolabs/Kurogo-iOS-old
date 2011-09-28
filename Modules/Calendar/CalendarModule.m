@@ -50,7 +50,11 @@ NSString * const KGODataModelNameCalendar = @"Calendar";
                                                         endDateString, @"end", nil];
 
 
-    self.request = [[KGORequestManager sharedManager] requestWithDelegate:self module:self.tag path:@"search" params:params];
+    self.request = [[KGORequestManager sharedManager] requestWithDelegate:self
+                                                                   module:self.tag
+                                                                     path:@"search"
+                                                                  version:1
+                                                                   params:params];
     [self.request connect];
 }
 

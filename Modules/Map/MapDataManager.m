@@ -26,6 +26,7 @@
     _indexRequest = [[KGORequestManager sharedManager] requestWithDelegate:self
                                                                     module:self.moduleTag
                                                                       path:@"index"
+                                                                   version:1
                                                                     params:nil];
     [_indexRequest connect];
 }
@@ -53,6 +54,7 @@
     _categoryRequest = [[KGORequestManager sharedManager] requestWithDelegate:self
                                                                        module:self.moduleTag
                                                                          path:@"category"
+                                                                      version:1
                                                                        params:params];
     [_categoryRequest connect];
 }
@@ -72,6 +74,7 @@
     _searchRequest = [[KGORequestManager sharedManager] requestWithDelegate:self
                                                                      module:self.moduleTag
                                                                        path:@"search"
+                                                                    version:1
                                                                      params:params];
     [_searchRequest connect];
 }
@@ -90,6 +93,7 @@
     _searchRequest = [[KGORequestManager sharedManager] requestWithDelegate:self
                                                                      module:self.moduleTag
                                                                        path:@"search"
+                                                                    version:1
                                                                      params:params];
     [_searchRequest connect];
 }

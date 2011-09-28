@@ -134,7 +134,8 @@ NSString * const KurogoVideoSectionsArrayKey = @"Kurogo video sections array";
     } else {
         KGORequest *request = [[KGORequestManager sharedManager] requestWithDelegate:self
                                                                               module:self.moduleTag
-                                                                                path:@"sections" 
+                                                                                path:@"sections"
+                                                                             version:1
                                                                               params:nil];
         request.expectedResponseType = [NSArray class];
         [self.responseBlocksForRequestPaths setObject:[[responseBlock copy] autorelease] 
@@ -168,7 +169,8 @@ NSString * const KurogoVideoSectionsArrayKey = @"Kurogo video sections array";
         NSDictionary *params = [NSDictionary dictionaryWithObject:section forKey:@"section"];
         KGORequest *request = [[KGORequestManager sharedManager] requestWithDelegate:self 
                                                                               module:self.moduleTag 
-                                                                                path:@"videos" 
+                                                                                path:@"videos"
+                                                                             version:1
                                                                               params:params];
         request.expectedResponseType = [NSArray class];
         
@@ -191,7 +193,8 @@ NSString * const KurogoVideoSectionsArrayKey = @"Kurogo video sections array";
     
     KGORequest *request = [[KGORequestManager sharedManager] requestWithDelegate:self 
                                                                           module:self.moduleTag 
-                                                                            path:@"detail" 
+                                                                            path:@"detail"
+                                                                         version:1
                                                                           params:params];
     request.expectedResponseType = [NSDictionary class];
     [self.responseBlocksForRequestPaths setObject:[[responseBlock copy] autorelease]
@@ -226,7 +229,8 @@ NSString * const KurogoVideoSectionsArrayKey = @"Kurogo video sections array";
                                 nil];
         KGORequest *request = [[KGORequestManager sharedManager] requestWithDelegate:self 
                                                                               module:self.moduleTag 
-                                                                                path:@"search" 
+                                                                                path:@"search"
+                                                                             version:1
                                                                               params:params];
         request.expectedResponseType = [NSArray class];
         

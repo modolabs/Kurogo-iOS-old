@@ -1,3 +1,6 @@
+#import <sys/utsname.h>
+#import <CoreTelephony/CTCarrier.h>
+#import <CoreTelephony/CTTelephonyNetworkInfo.h>
 #import "KGORequest.h"
 #import "JSON.h"
 #import "KGORequestManager.h"
@@ -22,7 +25,7 @@ NSString * const KGORequestLastRequestTime = @"last";
 @implementation KGORequest
 
 @synthesize url, module, path, getParams, postParams, cachePolicy, ifModifiedSince;
-@synthesize format, delegate, timeout, minimumDuration;
+@synthesize format, delegate, timeout, minimumDuration, apiMaxVersion, apiMinVersion;
 @synthesize expectedResponseType, handler, result = _result;
 
 + (KGORequestErrorCode)internalCodeForNSError:(NSError *)error
@@ -105,12 +108,27 @@ NSString * const KGORequestLastRequestTime = @"last";
         NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:self.url cachePolicy:self.cachePolicy timeoutInterval:self.timeout];
         static NSString *userAgent = nil;
         if (userAgent == nil) {
+            // app info
             NSDictionary *infoDict = [[NSBundle mainBundle] infoDictionary];
-            userAgent = [[NSString alloc] initWithFormat:@"%@/%@ (%@ %@)",
+
+            // hardware info
+            struct utsname systemInfo;
+            uname(&systemInfo);
+
+            // carrier info
+            CTTelephonyNetworkInfo *networkInfo = [[[CTTelephonyNetworkInfo alloc] init] autorelease];
+            CTCarrier *carrier = [networkInfo subscriberCellularProvider];
+            NSString *carrierName = [carrier carrierName];
+            if (!carrierName) {
+                carrierName = @"";
+            }
+            
+            userAgent = [[NSString alloc] initWithFormat:@"%@/%@ (%@ %@) %@",
                          [infoDict objectForKey:@"CFBundleName"],
                          [infoDict objectForKey:@"CFBundleVersion"],
-                         (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) ? @"iPad" : @"iPhone",
-                         [[UIDevice currentDevice] systemVersion]];
+                         [NSString stringWithCString:systemInfo.machine encoding:NSUTF8StringEncoding],
+                         [[UIDevice currentDevice] systemVersion],
+                         carrierName];
         }
         [request setValue:userAgent forHTTPHeaderField:@"User-Agent"];
 

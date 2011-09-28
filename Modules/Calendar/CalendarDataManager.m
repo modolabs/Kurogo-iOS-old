@@ -90,6 +90,7 @@
         _groupsRequest = [[KGORequestManager sharedManager] requestWithDelegate:self
                                                                          module:self.moduleTag
                                                                            path:@"groups"
+                                                                        version:1
                                                                          params:nil];
         if (oldGroups) {
             _groupsRequest.minimumDuration = CALENDAR_GROUP_EXPIRE_TIME;
@@ -118,6 +119,7 @@
         request = [[KGORequestManager sharedManager] requestWithDelegate:self
                                                                   module:self.moduleTag
                                                                     path:@"calendars"
+                                                                 version:1
                                                                   params:params];
         
         [_categoriesRequests setObject:request forKey:group.identifier];
@@ -219,6 +221,7 @@ NSDate *dateForMidnightFromInterval(NSTimeInterval interval)
         request = [[KGORequestManager sharedManager] requestWithDelegate:self
                                                                   module:self.moduleTag
                                                                     path:@"events"
+                                                                 version:1
                                                                   params:params];
         request.expectedResponseType = [NSDictionary class];
         [_eventsRequests setObject:request forKey:requestIdentifier];

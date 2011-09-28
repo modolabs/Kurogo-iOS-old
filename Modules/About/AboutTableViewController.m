@@ -39,6 +39,7 @@
     self.request = [[KGORequestManager sharedManager] requestWithDelegate:self
                                                                    module:@"about"
                                                                      path:@"index"
+                                                                  version:1
                                                                    params:nil];
     self.request.expectedResponseType = [NSArray class];
     if (self.request) {

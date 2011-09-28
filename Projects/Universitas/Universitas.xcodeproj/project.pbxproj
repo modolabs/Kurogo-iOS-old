@@ -162,6 +162,7 @@
 		EB7E9EA6143155BD0093B0C7 /* modules in Resources */ = {isa = PBXBuildFile; fileRef = EB7E9EA4143155BD0093B0C7 /* modules */; };
 		EB7E9EAE143156260093B0C7 /* secret in Resources */ = {isa = PBXBuildFile; fileRef = EB7E9EAD143156260093B0C7 /* secret */; };
 		EB7E9F2E143171780093B0C7 /* Video.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = EB7E9F2C143171770093B0C7 /* Video.xcdatamodeld */; };
+		EB7E9F301433740D0093B0C7 /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EB7E9F2F143374010093B0C7 /* CoreTelephony.framework */; };
 		EB7F32D310CD6FB300188BCD /* AddressBook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EB7F32D210CD6FB300188BCD /* AddressBook.framework */; };
 		EB7F32D710CD6FBB00188BCD /* AddressBookUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EB7F32D610CD6FBB00188BCD /* AddressBookUI.framework */; };
 		EB83AE4C13C747AA006CCEDB /* Settings.plist in Resources */ = {isa = PBXBuildFile; fileRef = EB83AE4A13C747AA006CCEDB /* Settings.plist */; };
@@ -472,6 +473,7 @@
 		EB7E9EA4143155BD0093B0C7 /* modules */ = {isa = PBXFileReference; lastKnownFileType = folder; path = modules; sourceTree = "<group>"; };
 		EB7E9EAD143156260093B0C7 /* secret */ = {isa = PBXFileReference; lastKnownFileType = folder; path = secret; sourceTree = "<group>"; };
 		EB7E9F2D143171780093B0C7 /* Video.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Video.xcdatamodel; sourceTree = "<group>"; };
+		EB7E9F2F143374010093B0C7 /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
 		EB7F32D210CD6FB300188BCD /* AddressBook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBook.framework; path = System/Library/Frameworks/AddressBook.framework; sourceTree = SDKROOT; };
 		EB7F32D610CD6FBB00188BCD /* AddressBookUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBookUI.framework; path = System/Library/Frameworks/AddressBookUI.framework; sourceTree = SDKROOT; };
 		EB83AE4B13C747AA006CCEDB /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = en; path = en.lproj/Settings.plist; sourceTree = "<group>"; };
@@ -525,6 +527,7 @@
 			files = (
 				EB640C6B13FDFFFB00CFAC5B /* libjson.a in Frameworks */,
 				EBE242C113AFD3030082C277 /* libfacebook_ios_sdk.a in Frameworks */,
+				EB7E9F301433740D0093B0C7 /* CoreTelephony.framework in Frameworks */,
 				56388BDC13EF4306005BA72E /* EventKit.framework in Frameworks */,
 				56388BDA13EF42EE005BA72E /* EventKitUI.framework in Frameworks */,
 				1D60589F0D05DD5A006BFB54 /* Foundation.framework in Frameworks */,
@@ -592,6 +595,7 @@
 			isa = PBXGroup;
 			children = (
 				EB4C2CDE127F138100058748 /* libsqlite3.dylib */,
+				EB7E9F2F143374010093B0C7 /* CoreTelephony.framework */,
 				56388BDB13EF4305005BA72E /* EventKit.framework */,
 				56388BD913EF42EE005BA72E /* EventKitUI.framework */,
 				56388BD713EF42B6005BA72E /* EventKit.framework */,

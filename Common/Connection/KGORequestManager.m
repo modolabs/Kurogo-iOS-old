@@ -51,6 +51,7 @@
 - (KGORequest *)requestWithDelegate:(id<KGORequestDelegate>)delegate
                              module:(NSString *)module // TODO: now that we have hello, we should check parameter validity
                                path:(NSString *)path
+                            version:(NSUInteger)version
                              params:(NSDictionary *)params
 {
 	BOOL authorized = YES; // TODO: determine this value
@@ -61,6 +62,8 @@
 	if (authorized) {
 		request = [[[KGORequest alloc] init] autorelease];
 		request.delegate = delegate;
+        request.apiMaxVersion = version;
+        request.apiMinVersion = version;
         NSURL *requestBaseURL;
         if (module) {
             requestBaseURL = [[_baseURL URLByAppendingPathComponent:module] URLByAppendingPathComponent:path];
@@ -73,6 +76,8 @@
             // make sure this is not nil in case we want to auto-append parameters
             mutableParams = [NSMutableDictionary dictionary];
         }
+        
+        [mutableParams setObject:[NSString stringWithFormat:@"%d", version] forKey:@"v"];
 
 		if (_accessToken) {
 			[mutableParams setObject:_accessToken forKey:@"token"];
@@ -221,6 +226,7 @@ NSString * const KGODeviceTokenKey = @"KGODeviceToken";
         _deviceRegistrationRequest = [self requestWithDelegate:self
                                                         module:@"push"
                                                           path:@"updatetoken"
+                                                       version:1
                                                         params:params];
         
     } else {
@@ -233,6 +239,7 @@ NSString * const KGODeviceTokenKey = @"KGODeviceToken";
         _deviceRegistrationRequest = [self requestWithDelegate:self
                                                         module:@"push"
                                                           path:@"register"
+                                                       version:1
                                                         params:params];
     }
     
@@ -366,7 +373,11 @@ NSString * const kHTTPSURIScheme = @"https";
 
 - (void)requestServerHello
 {
-    _helloRequest = [self requestWithDelegate:self module:nil path:@"hello" params:nil];
+    _helloRequest = [self requestWithDelegate:self
+                                       module:nil
+                                         path:@"hello"
+                                      version:1
+                                       params:nil];
     _helloRequest.expectedResponseType = [NSDictionary class];
     [_helloRequest connect];
 }
@@ -405,7 +416,11 @@ NSString * const kHTTPSURIScheme = @"https";
         }
     }
 
-    _logoutRequest = [self requestWithDelegate:self module:self.loginPath path:@"logout" params:params];
+    _logoutRequest = [self requestWithDelegate:self
+                                        module:self.loginPath
+                                          path:@"logout"
+                                       version:1
+                                        params:params];
     [_logoutRequest connect];
 }
 
@@ -436,7 +451,11 @@ NSString * const kHTTPSURIScheme = @"https";
             }
         }
         
-        _sessionRequest = [self requestWithDelegate:self module:@"login" path:@"session" params:nil];
+        _sessionRequest = [self requestWithDelegate:self
+                                             module:self.loginPath
+                                               path:@"session"
+                                            version:1
+                                             params:nil];
         _sessionRequest.expectedResponseType = [NSDictionary class];
         [_sessionRequest connect];
     }

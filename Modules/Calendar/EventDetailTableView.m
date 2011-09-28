@@ -453,6 +453,7 @@
     _eventDetailRequest = [[[KGORequestManager sharedManager] requestWithDelegate:self
                                                                            module:self.dataManager.moduleTag
                                                                              path:@"detail"
+                                                                          version:1
                                                                            params:params] retain];
     [_eventDetailRequest connect];
 }

@@ -50,6 +50,7 @@ NSString * const EmergencyContactsRetrievedNotification = @"EmergencyContactsRet
                            requestWithDelegate:self
                            module:tag
                            path:@"notice"
+                           version:1
                            params:nil];
     
     __block EmergencyDataManager *blockSelf = self;
@@ -104,6 +105,7 @@ NSString * const EmergencyContactsRetrievedNotification = @"EmergencyContactsRet
                            requestWithDelegate:self
                            module:tag
                            path:@"contacts"
+                           version:1
                            params:nil];
     
     __block EmergencyDataManager *blockSelf = self;

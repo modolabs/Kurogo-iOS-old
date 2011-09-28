@@ -23,6 +23,7 @@
         self.pagesRequest = [[KGORequestManager sharedManager] requestWithDelegate:self
                                                                             module:self.moduleTag
                                                                               path:@"pages"
+                                                                           version:1
                                                                             params:nil];
         self.pagesRequest.expectedResponseType = [NSDictionary class];
         [self.pagesRequest connect];
@@ -36,6 +37,7 @@
     self.pageRequest = [[KGORequestManager sharedManager] requestWithDelegate:self
                                                                        module:self.moduleTag                            
                                                                          path:@"page"
+                                                                      version:1
                                                                        params:params];
     self.pageRequest.expectedResponseType = [NSString class];
     

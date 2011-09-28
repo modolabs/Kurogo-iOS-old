@@ -38,7 +38,11 @@ federatedSearchResults;
     [_phoneDirectoryEntries release];
     _phoneDirectoryEntries = [[PersonContact directoryContacts] retain];
 
-    _request = [[KGORequestManager sharedManager] requestWithDelegate:self module:self.module.tag path:@"contacts" params:nil];
+    _request = [[KGORequestManager sharedManager] requestWithDelegate:self
+                                                               module:self.module.tag
+                                                                 path:@"contacts"
+                                                              version:1
+                                                               params:nil];
     if (_phoneDirectoryEntries.count) {
         _request.minimumDuration = 72; // TODO: make this value configured
     }

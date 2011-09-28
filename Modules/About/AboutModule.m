@@ -25,9 +25,10 @@
         // the entire HTML as the contents of the API "response" value, and make KGOWebViewController
         // able to deal with that generically.
         self.aboutRequest = [[KGORequestManager sharedManager] requestWithDelegate:self
-                                                                       module:@"about"
-                                                                         path:command
-                                                                       params:nil];
+                                                                            module:@"about"
+                                                                              path:command
+                                                                           version:1
+                                                                            params:nil];
         
         self.aboutRequest.expectedResponseType = [NSString class];
         if (self.aboutRequest) {

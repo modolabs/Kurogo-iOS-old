@@ -32,7 +32,8 @@
         
         KGORequest *feedRequest = [[KGORequestManager sharedManager] requestWithDelegate:linksVC                          
                                                                                   module:self.tag                            
-                                                                                    path:path                           
+                                                                                    path:path
+                                                                                 version:1                         
                                                                                   params:requestParams];
         
         [feedRequest connect];

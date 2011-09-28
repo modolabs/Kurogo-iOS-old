@@ -62,6 +62,7 @@
         _request = [[KGORequestManager sharedManager] requestWithDelegate:self
                                                                    module:self.module.tag
                                                                      path:@"group"
+                                                                  version:1
                                                                    params:params];
         _request.expectedResponseType = [NSDictionary class];
         [_request connect];

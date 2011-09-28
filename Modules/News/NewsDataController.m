@@ -225,6 +225,7 @@ currentCategories = _currentCategories, currentStories = _currentStories;
     KGORequest *request = [[KGORequestManager sharedManager] requestWithDelegate:self
                                                                           module:self.moduleTag
                                                                             path:@"categories"
+                                                                         version:1
                                                                           params:nil];
     
     NSDate *date = self.feedListModifiedDate;
@@ -319,6 +320,7 @@ currentCategories = _currentCategories, currentStories = _currentStories;
     KGORequest *request = [[KGORequestManager sharedManager] requestWithDelegate:self
                                                                           module:self.moduleTag
                                                                             path:@"stories"
+                                                                         version:1
                                                                           params:params];
     self.storiesRequest = request;
     
@@ -428,6 +430,7 @@ currentCategories = _currentCategories, currentStories = _currentStories;
         KGORequest *request = [[KGORequestManager sharedManager] requestWithDelegate:self
                                                                               module:self.moduleTag
                                                                                 path:@"search"
+                                                                             version:1
                                                                               params:params];
         request.expectedResponseType = [NSArray class];
         

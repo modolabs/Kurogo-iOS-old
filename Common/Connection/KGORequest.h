@@ -66,6 +66,12 @@ typedef enum {
 @property(nonatomic, retain) NSDictionary *postParams;
 @property(nonatomic, retain) NSDate *ifModifiedSince; // If-Modified-Since header
 
+// maximum and minimum supported API versions. if either of them is
+// different from the preferred version, set them manually after
+// the request object is created.
+@property(nonatomic) NSInteger apiMaxVersion;
+@property(nonatomic) NSInteger apiMinVersion;
+
 @property(nonatomic) NSTimeInterval minimumDuration;
 
 @property(nonatomic, retain) NSString *format; // default is json

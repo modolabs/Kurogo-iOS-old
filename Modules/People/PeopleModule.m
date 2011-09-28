@@ -46,6 +46,7 @@
     self.request = [[KGORequestManager sharedManager] requestWithDelegate:self
                                                                    module:self.tag
                                                                      path:@"search"
+                                                                  version:1
                                                                    params:mutableParams];
     self.request.expectedResponseType = [NSDictionary class];
     [self.request connect];
