@@ -33,7 +33,13 @@ This guide serves as a tour of the project source code and its features.
    github
    setup
    tour
+   newapp
+   server
+   libraries
    modules
+   modulehome
+   listofmodules
+   newmodule
    config
    theming
 

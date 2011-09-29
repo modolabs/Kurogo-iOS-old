@@ -34,4 +34,3 @@ The module can support federated search by overriding the methods: ::
 
 
 
-

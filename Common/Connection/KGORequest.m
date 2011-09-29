@@ -177,7 +177,6 @@ NSString * const KGORequestLastRequestTime = @"last";
     if (preferences) {    
         NSString *requestID = [self.url absoluteString];
         NSDate *lastRequestTime = [preferences dateForKey:requestID];
-DLog(@"connection lastrequested at %@ %.0f", lastRequestTime, [lastRequestTime timeIntervalSinceNow]);
         if (lastRequestTime && [lastRequestTime timeIntervalSinceNow] + self.minimumDuration >= 0) {
             // lastRequestTime is more recent than (now - duration)
             return YES;
