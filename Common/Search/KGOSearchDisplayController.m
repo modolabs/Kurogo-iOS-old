@@ -484,16 +484,19 @@ maxResultsPerSection;
     return KGOTableCellStyleSubtitle;
 }
 
-// TODO: localize strings
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
     NSString *source = [self.searchSources objectAtIndex:section];
     NSArray *searchResults = [self.multiSearchResults objectForKey:source];
-    NSString *sourceString = @"";
     KGOModule *module = [KGO_SHARED_APP_DELEGATE() moduleForTag:source];
     if (module) {
-        sourceString = [NSString stringWithFormat:@" from %@", module.shortName];
+        return [NSString stringWithFormat:
+                NSLocalizedString(@"%d results from %@", @"search results with known module"),
+                searchResults.count,
+                module.shortName];
     }
-    return [NSString stringWithFormat:@"%d results%@", searchResults.count, sourceString];
+    return [NSString stringWithFormat:
+            NSLocalizedString(@"%d results", @"search results with unknown module"),
+            searchResults.count];
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {

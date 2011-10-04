@@ -34,6 +34,12 @@ extern NSString * const LocalPathPageNameMapList;
 extern NSString * const LocalPathPageNameBookmarks;
 extern NSString * const LocalPathPageNameWebViewDetail; // this needs a better name -- too specific
 
+#pragma mark Config keys
+// list is not yet complete
+extern NSString * const KGOAppConfigKeyModules;
+extern NSString * const KGOAppConfigKeyServers;
+extern NSString * const KGOAppConfigKeySocialMedia;
+
 #pragma mark Global NSUserDefaults keys
 
 extern NSString * const UnreadNotificationsKey;

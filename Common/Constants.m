@@ -13,6 +13,12 @@ NSString * const LocalPathPageNameMapList = @"map";
 NSString * const LocalPathPageNameBookmarks = @"bookmarks";
 NSString * const LocalPathPageNameWebViewDetail = @"webView";
 
+#pragma mark Config keys
+
+NSString * const KGOAppConfigKeyModules = @"Modules";
+NSString * const KGOAppConfigKeyServers = @"Servers";
+NSString * const KGOAppConfigKeySocialMedia = @"SocialMedia";
+
 #pragma mark Global NSUserDefaults keys
 
 NSString * const UnreadNotificationsKey = @"UnreadNotifications";

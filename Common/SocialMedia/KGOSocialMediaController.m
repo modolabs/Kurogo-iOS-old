@@ -101,7 +101,7 @@ static KGOSocialMediaController *s_controller = nil;
     self = [super init];
     if (self) {
         NSDictionary *infoDict = [KGO_SHARED_APP_DELEGATE() appConfig];
-		_appConfig = [[infoDict objectForKey:@"SocialMedia"] retain];
+		_appConfig = [[infoDict objectForKey:KGOAppConfigKeySocialMedia] retain];
 	}
 	return self;
 }

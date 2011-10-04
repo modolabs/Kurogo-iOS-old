@@ -13,12 +13,12 @@
 				<string>Georgia</string>
 			</dict>
 			<dict>
+				<key>default</key>
+				<true/>
 				<key>id</key>
 				<string>Helvetica</string>
 				<key>title</key>
 				<string>Helvetica</string>
-				<key>default</key>
-				<true/>
 			</dict>
 			<dict>
 				<key>id</key>
@@ -53,12 +53,12 @@
 				<string>Small</string>
 			</dict>
 			<dict>
+				<key>default</key>
+				<true/>
 				<key>id</key>
 				<string>Regular</string>
 				<key>title</key>
 				<string>Regular</string>
-				<key>default</key>
-				<true/>
 			</dict>
 			<dict>
 				<key>id</key>
@@ -76,35 +76,15 @@
 		<key>title</key>
 		<string>Application Font Size</string>
 	</dict>
-	<key>Modules</key>
+	<key>PrimaryModules</key>
 	<dict>
-		<key>unrestricted</key>
-		<true/>
-		<key>options</key>
-		<array>
-			<dict>
-				<key>id</key>
-				<string>default</string>
-				<key>default</key>
-				<true/>
-				<key>items</key>
-				<array>
-					<string>people</string>
-					<string>map</string>
-					<string>news</string>
-					<string>calendar</string>
-					<string>emergency</string>
-					<string>video</string>
-					<string>admissions</string>
-					<string>about</string>
-					<string>customize</string>
-					<string>mobileweb</string>
-					<string>fullweb</string>
-				</array>
-			</dict>
-		</array>
 		<key>title</key>
-		<string>Home Screen Modules</string>
+		<string>Primary Modules</string>
+	</dict>
+	<key>SecondaryModules</key>
+	<dict>
+		<key>title</key>
+		<string>Secondary Modules</string>
 	</dict>
 </dict>
 </plist>

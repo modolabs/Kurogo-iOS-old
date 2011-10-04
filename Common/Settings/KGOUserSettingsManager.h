@@ -1,7 +1,16 @@
 #import <Foundation/Foundation.h>
 
+// these strings appear as keys in Settings.plist
+extern NSString * const KGOUserSettingKeyFont;
+extern NSString * const KGOUserSettingKeyFontSize;
+extern NSString * const KGOUserSettingKeyPrimaryModules;
+extern NSString * const KGOUserSettingKeySecondaryModules;
+extern NSString * const KGOUserSettingKeyModuleOrder;
+// this string is independent from Settings.plist
+extern NSString * const KGOUserSettingKeyLogin;
+
 #ifdef DEBUG
-extern NSString * const KGOUserSettingServerKey;
+extern NSString * const KGOUserSettingKeyServer;
 #endif
 
 @class KGOUserSetting;
@@ -9,10 +18,18 @@ extern NSString * const KGOUserSettingServerKey;
 @interface KGOUserSettingsManager : NSObject {
     
     NSMutableDictionary *_settings;
-    
+    NSDictionary *_primaryModuleData;
+    NSDictionary *_secondaryModuleData;
 }
 
 + (KGOUserSettingsManager *)sharedManager;
+
+- (void)setModuleOrder:(NSArray *)order primary:(BOOL)primary;
+- (BOOL)isModuleHidden:(ModuleTag *)tag primary:(BOOL)primary;
+- (void)toggleModuleHidden:(ModuleTag *)tag primary:(BOOL)primary;
+
+@property(nonatomic, retain) NSArray *moduleSortOrder;
+@property(nonatomic, readonly) NSMutableDictionary *settings;
 
 - (NSArray *)settingsKeys;
 - (KGOUserSetting *)settingForKey:(NSString *)key;

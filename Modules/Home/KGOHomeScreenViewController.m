@@ -645,8 +645,8 @@
         aModule.enabled = networkIsReachable || ![aModule requiresKurogoServer];
     }
 
-    NSDictionary *modulePreference = [[KGOUserSettingsManager sharedManager] selectedValueDictForSetting:@"Modules"];
-    __block NSArray *moduleOrder = [modulePreference objectForKey:@"items"];
+    __block NSArray *moduleOrder = [[KGOUserSettingsManager sharedManager] moduleSortOrder];
+    DLog(@"%@", moduleOrder);
 
     NSComparisonResult (^moduleSort)(id, id) = ^(id obj1, id obj2) {
         NSInteger order1 = [moduleOrder indexOfObject:[(KGOModule *)obj1 tag]];

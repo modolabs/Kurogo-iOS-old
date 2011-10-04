@@ -10,10 +10,19 @@
 @interface SettingsTableViewController : KGOTableViewController {
     
     NSArray *_settingKeys;
-    UIButton *_editButton;
+
+    UIButton *_primaryEditButton;
+    BOOL _isEditingPrimary;
+
+    UIButton *_secondaryEditButton;
+    BOOL _isEditingSecondary;
+    
+    NSMutableDictionary *_headerViews;
 }
 
 - (void)settingDidChange:(NSNotification *)aNotification;
 - (void)editModuleButtonPressed:(id)sender;
+
+@property(nonatomic, retain) NSArray *settingKeys;
 
 @end

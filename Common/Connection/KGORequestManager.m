@@ -283,7 +283,7 @@ NSString * const kHTTPSURIScheme = @"https";
 - (void)selectServerConfig:(NSString *)config
 {
     NSDictionary *configDict = [KGO_SHARED_APP_DELEGATE() appConfig];
-    NSDictionary *servers = [configDict objectForKey:@"Servers"];
+    NSDictionary *servers = [configDict objectForKey:KGOAppConfigKeyServers];
     
     NSDictionary *serverConfig = [servers dictionaryForKey:config];
     if (serverConfig) {
@@ -316,7 +316,7 @@ NSString * const kHTTPSURIScheme = @"https";
 #ifdef DEBUG
 - (void)selectServerConfigFromPreferences
 {
-    NSString *serverSetting = [[KGOUserSettingsManager sharedManager] selectedValueForSetting:KGOUserSettingServerKey];
+    NSString *serverSetting = [[KGOUserSettingsManager sharedManager] selectedValueForSetting:KGOUserSettingKeyServer];
     if (serverSetting) {
         [self selectServerConfig:serverSetting];
     } else {

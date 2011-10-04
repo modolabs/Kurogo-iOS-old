@@ -60,7 +60,7 @@
             }
             _appConfig = [mutableDict copy];
         }
-        NSLog(@"%@", [_appConfig description]);
+        DLog(@"current app config dictionary: %@", [_appConfig description]);
     }
     return _appConfig;
 }
@@ -84,7 +84,7 @@
 #pragma mark Setup
 
 - (void)loadModules {
-    NSArray *moduleArray = [[self appConfig] arrayForKey:@"Modules"];
+    NSArray *moduleArray = [[self appConfig] arrayForKey:KGOAppConfigKeyModules];
     [self loadModulesFromArray:moduleArray local:YES];
 }
 
@@ -93,7 +93,7 @@
 // TODO: make it possible to start from any module
 - (void)loadHomeModule {
     NSDictionary *homeData = nil;
-    NSArray *moduleArray = [[self appConfig] arrayForKey:@"Modules"];
+    NSArray *moduleArray = [[self appConfig] arrayForKey:KGOAppConfigKeyModules];
     for (NSDictionary *moduleData in moduleArray) {
         if ([[moduleData objectForKey:@"id"] isEqualToString:@"home"]) {
             homeData = moduleData;
