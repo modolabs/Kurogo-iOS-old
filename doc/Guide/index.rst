@@ -21,7 +21,8 @@ Indices and tables
 Kurogo Developer's Guide
 ************************
 
-This is the iOS counterpart to the Kurogo Framework.
+This is the iOS counterpart to the 
+`Kurogo Framework <http://modolabs.com/kurogo/guide/#kurogo-developer-s-guide>`_.
 
 This guide serves as a tour of the project source code and its features.
 
@@ -33,13 +34,13 @@ This guide serves as a tour of the project source code and its features.
    github
    setup
    tour
+   xcodelayout
    newapp
    server
+   config
    libraries
    modules
    modulehome
    listofmodules
-   newmodule
-   config
    theming
 

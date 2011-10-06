@@ -49,7 +49,7 @@
 #pragma mark -
 
 - (KGORequest *)requestWithDelegate:(id<KGORequestDelegate>)delegate
-                             module:(NSString *)module // TODO: now that we have hello, we should check parameter validity
+                             module:(ModuleTag *)module // TODO: now that we have hello, we should check parameter validity
                                path:(NSString *)path
                             version:(NSUInteger)version
                              params:(NSDictionary *)params

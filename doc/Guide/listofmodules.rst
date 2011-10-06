@@ -1,5 +1,5 @@
 ###################
-Standard Modules
+Included Modules
 ###################
 
 Besides the Home module, Kurogo comes with a standard set of modules. These 
