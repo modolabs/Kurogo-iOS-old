@@ -210,9 +210,10 @@
     NSString *title = [self tableView:tableView titleForHeaderInSection:section];
     UIView *view = [_headerViews objectForKey:title];
     if (!view) {
-        
         // this will exists as long as the title is there
         view = [super tableView:tableView viewForHeaderInSection:section];
+    }
+    if (view) {
         NSString *key = [self.settingKeys objectAtIndex:section];
         
         UIButton *editButton = nil;

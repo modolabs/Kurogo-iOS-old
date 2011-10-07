@@ -155,6 +155,7 @@
 		EB6BC7F614058A0B0095744E /* MapCategoryListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EB6BC7F514058A0B0095744E /* MapCategoryListViewController.m */; };
 		EB6D02A911E3784100B65CE3 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EB6D02A811E3784100B65CE3 /* MapKit.framework */; };
 		EB6D576A14196B1A009EDA9D /* FBDialog.bundle in Resources */ = {isa = PBXBuildFile; fileRef = EB6D576914196B1A009EDA9D /* FBDialog.bundle */; };
+		EB70DC94143E7CBB00E60476 /* Settings.plist in Resources */ = {isa = PBXBuildFile; fileRef = EB70DC93143E7CBB00E60476 /* Settings.plist */; };
 		EB7E9E9C143152D20093B0C7 /* MITBuildInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = EB7E9E9A143152D20093B0C7 /* MITBuildInfo.m */; };
 		EB7E9EA0143152E00093B0C7 /* KGOModule+Factory.m in Sources */ = {isa = PBXBuildFile; fileRef = EB7E9E9F143152E00093B0C7 /* KGOModule+Factory.m */; };
 		EB7E9EA2143153600093B0C7 /* kurogo in Resources */ = {isa = PBXBuildFile; fileRef = EB7E9EA1143153600093B0C7 /* kurogo */; };
@@ -466,6 +467,7 @@
 		EB6BC7F514058A0B0095744E /* MapCategoryListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MapCategoryListViewController.m; sourceTree = "<group>"; };
 		EB6D02A811E3784100B65CE3 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		EB6D576914196B1A009EDA9D /* FBDialog.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = FBDialog.bundle; path = "facebook-ios-sdk/src/FBDialog.bundle"; sourceTree = "<group>"; };
+		EB70DC93143E7CBB00E60476 /* Settings.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Settings.plist; sourceTree = "<group>"; };
 		EB7E9E9A143152D20093B0C7 /* MITBuildInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MITBuildInfo.m; sourceTree = "<group>"; };
 		EB7E9E9E143152E00093B0C7 /* KGOModule+Factory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "KGOModule+Factory.h"; sourceTree = "<group>"; };
 		EB7E9E9F143152E00093B0C7 /* KGOModule+Factory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "KGOModule+Factory.m"; sourceTree = "<group>"; };
@@ -479,7 +481,6 @@
 		EB7F32D210CD6FB300188BCD /* AddressBook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBook.framework; path = System/Library/Frameworks/AddressBook.framework; sourceTree = SDKROOT; };
 		EB7F32D610CD6FBB00188BCD /* AddressBookUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBookUI.framework; path = System/Library/Frameworks/AddressBookUI.framework; sourceTree = SDKROOT; };
 		EB83AE4B13C747AA006CCEDB /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = en; path = en.lproj/Settings.plist; sourceTree = "<group>"; };
-		EB83AE4D13C747B3006CCEDB /* zh_TW */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = zh_TW; path = zh_TW.lproj/Settings.plist; sourceTree = "<group>"; };
 		EB83AE5013C747BE006CCEDB /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		EB83AE5213C747C5006CCEDB /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/Localizable.strings; sourceTree = "<group>"; };
 		EB83AE5413C747CF006CCEDB /* zh_TW */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = zh_TW; path = zh_TW.lproj/Localizable.strings; sourceTree = "<group>"; };
@@ -1265,6 +1266,7 @@
 		EBEB7676138AE52A00C011D3 /* Settings */ = {
 			isa = PBXGroup;
 			children = (
+				EB70DC93143E7CBB00E60476 /* Settings.plist */,
 				EBEB7677138AE55000C011D3 /* KGOUserSetting.h */,
 				EBEB7678138AE55000C011D3 /* KGOUserSetting.m */,
 				EBEB767A138AE5B700C011D3 /* KGOUserSettingsManager.h */,
@@ -1354,6 +1356,7 @@
 				EB7E9EA6143155BD0093B0C7 /* modules in Resources */,
 				EB7E9EAE143156260093B0C7 /* secret in Resources */,
 				EB7E9F4E14337C630093B0C7 /* ipad in Resources */,
+				EB70DC94143E7CBB00E60476 /* Settings.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1522,7 +1525,6 @@
 			isa = PBXVariantGroup;
 			children = (
 				EB83AE4B13C747AA006CCEDB /* en */,
-				EB83AE4D13C747B3006CCEDB /* zh_TW */,
 			);
 			name = Settings.plist;
 			sourceTree = "<group>";

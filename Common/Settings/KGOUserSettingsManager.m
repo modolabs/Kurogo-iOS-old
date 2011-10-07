@@ -225,6 +225,7 @@ NSString * const KGOUserSettingKeyServer = @"ServerSelection";
         NSDictionary *availableSettings = [NSDictionary dictionaryWithContentsOfFile:filename];
         NSDictionary *savedSettings = [[NSUserDefaults standardUserDefaults] objectForKey:KGOUserSettingPreferenceKey];
 
+        DLog(@"available settings %@", availableSettings);
         DLog(@"saved user settings %@", savedSettings);
 
         NSArray *stringSettings = [NSArray arrayWithObjects:KGOUserSettingKeyFont, KGOUserSettingKeyFontSize, nil];

@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>Font</key>
+	<dict>
+		<key>options</key>
+		<array>
+			<dict>
+				<key>id</key>
+				<string>Georgia</string>
+				<key>title</key>
+				<string>Georgia</string>
+			</dict>
+			<dict>
+				<key>default</key>
+				<true/>
+				<key>id</key>
+				<string>Helvetica</string>
+				<key>title</key>
+				<string>Helvetica</string>
+			</dict>
+			<dict>
+				<key>id</key>
+				<string>Verdana</string>
+				<key>title</key>
+				<string>Verdana</string>
+			</dict>
+			<dict>
+				<key>id</key>
+				<string>Courier</string>
+				<key>title</key>
+				<string>Courier</string>
+			</dict>
+		</array>
+		<key>title</key>
+		<string>Application Font</string>
+	</dict>
+	<key>FontSize</key>
+	<dict>
+		<key>options</key>
+		<array>
+			<dict>
+				<key>id</key>
+				<string>Tiny</string>
+				<key>title</key>
+				<string>Tiny</string>
+			</dict>
+			<dict>
+				<key>id</key>
+				<string>Small</string>
+				<key>title</key>
+				<string>Small</string>
+			</dict>
+			<dict>
+				<key>default</key>
+				<true/>
+				<key>id</key>
+				<string>Regular</string>
+				<key>title</key>
+				<string>Regular</string>
+			</dict>
+			<dict>
+				<key>id</key>
+				<string>Large</string>
+				<key>title</key>
+				<string>Large</string>
+			</dict>
+			<dict>
+				<key>id</key>
+				<string>Huge</string>
+				<key>title</key>
+				<string>Huge</string>
+			</dict>
+		</array>
+		<key>title</key>
+		<string>Application Font Size</string>
+	</dict>
+	<key>PrimaryModules</key>
+	<dict>
+		<key>title</key>
+		<string>Primary Modules</string>
+	</dict>
+	<key>SecondaryModules</key>
+	<dict>
+		<key>title</key>
+		<string>Secondary Modules</string>
+	</dict>
+</dict>
+</plist>
