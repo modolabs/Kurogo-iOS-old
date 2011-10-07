@@ -25,7 +25,9 @@
     }
 
     NSArray *settingsOrder = [NSArray arrayWithObjects:
+#ifdef DEBUG
                               KGOUserSettingKeyServer,
+#endif
                               KGOUserSettingKeyPrimaryModules,
                               KGOUserSettingKeySecondaryModules,
                               KGOUserSettingKeyFont,
