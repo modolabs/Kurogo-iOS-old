@@ -2,7 +2,7 @@
 Included Modules
 ###################
 
-Besides the Home module, Kurogo comes with a standard set of modules. These 
+Besides :doc:`modulehome`, Kurogo comes with a standard set of modules. These 
 module are covered in the following sections.
 
 .. toctree::
