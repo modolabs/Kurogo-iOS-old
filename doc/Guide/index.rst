@@ -6,21 +6,6 @@
 Welcome to Kurogo iOS's documentation!
 ======================================
 
-Contents:
-
-.. toctree::
-   :maxdepth: 2
-
-Indices and tables
-==================
-
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
-
-Kurogo Developer's Guide
-************************
-
 This is the iOS counterpart to the 
 `Kurogo Framework <http://modolabs.com/kurogo/guide/#kurogo-developer-s-guide>`_.
 
