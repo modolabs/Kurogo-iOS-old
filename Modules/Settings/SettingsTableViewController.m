@@ -106,40 +106,53 @@
     BOOL showsReorderControl = NO;
     NSString *accessory = nil;
     NSString *key = [self.settingKeys objectAtIndex:indexPath.section];
-    KGOUserSetting *setting = [[KGOUserSettingsManager sharedManager] settingForKey:key];
-    
-    NSDictionary *currentOption = [setting.options dictionaryAtIndex:indexPath.row];
-    cellTitle = [currentOption stringForKey:@"title"];
-    if (setting.selectedValue == currentOption) {
-        accessory = KGOAccessoryTypeCheckmark;
-    }
-    cellSubtitle = [currentOption nonemptyStringForKey:@"subtitle"];
-    
-    UIButton *button = nil;
-    
-    if (([key isEqualToString:KGOUserSettingKeyPrimaryModules] && _isEditingPrimary)
-        || ([key isEqualToString:KGOUserSettingKeySecondaryModules] && _isEditingSecondary)) 
-    {
-        showsReorderControl = YES;
+    UIButton *button = nil; // this is a checkbox
 
-        ModuleTag *moduleTag = [currentOption stringForKey:@"tag"];
-        BOOL isHidden = [[KGOUserSettingsManager sharedManager] isModuleHidden:moduleTag primary:_isEditingPrimary];
-        UIImage *image = nil;
-        if (isHidden) {
-            image = [UIImage imageWithPathName:@"common/checkbox-unchecked"];
+    if ([key isEqualToString:KGOUserSettingKeyLogin]) {
+        NSDictionary *dictionary = [[KGORequestManager sharedManager] sessionInfo];
+        NSString *name = [[dictionary dictionaryForKey:@"user"] nonemptyStringForKey:@"name"];
+        if (name) {
+            cellTitle = [NSString stringWithFormat:NSLocalizedString(@"You are signed in as %@", nil), name];
         } else {
-            image = [UIImage imageWithPathName:@"common/checkbox-checked"];
+            cellTitle = NSLocalizedString(@"You are signed in anonymously", nil);
         }
+        cellSubtitle = NSLocalizedString(@"Tap to sign out", nil);
 
-        button = [UIButton buttonWithType:UIButtonTypeCustom];
-        [button setImage:image forState:UIControlStateNormal];
-        button.frame = CGRectMake(8, 8, image.size.width, image.size.height);
-        button.tag = indexPath.row;
+    } else {
         
-        if (_isEditingPrimary) {
-            [button addTarget:self action:@selector(primaryModuleToggled:) forControlEvents:UIControlEventTouchUpInside];
-        } else {
-            [button addTarget:self action:@selector(secondaryModuleToggled:) forControlEvents:UIControlEventTouchUpInside];
+        KGOUserSetting *setting = [[KGOUserSettingsManager sharedManager] settingForKey:key];
+        
+        NSDictionary *currentOption = [setting.options dictionaryAtIndex:indexPath.row];
+        cellTitle = [currentOption stringForKey:@"title"];
+        if (setting.selectedValue == currentOption) {
+            accessory = KGOAccessoryTypeCheckmark;
+        }
+        cellSubtitle = [currentOption nonemptyStringForKey:@"subtitle"];
+        
+        if (([key isEqualToString:KGOUserSettingKeyPrimaryModules] && _isEditingPrimary)
+            || ([key isEqualToString:KGOUserSettingKeySecondaryModules] && _isEditingSecondary)) 
+        {
+            showsReorderControl = YES;
+            
+            ModuleTag *moduleTag = [currentOption stringForKey:@"tag"];
+            BOOL isHidden = [[KGOUserSettingsManager sharedManager] isModuleHidden:moduleTag primary:_isEditingPrimary];
+            UIImage *image = nil;
+            if (isHidden) {
+                image = [UIImage imageWithPathName:@"common/checkbox-unchecked"];
+            } else {
+                image = [UIImage imageWithPathName:@"common/checkbox-checked"];
+            }
+            
+            button = [UIButton buttonWithType:UIButtonTypeCustom];
+            [button setImage:image forState:UIControlStateNormal];
+            button.frame = CGRectMake(8, 8, image.size.width, image.size.height);
+            button.tag = indexPath.row;
+            
+            if (_isEditingPrimary) {
+                [button addTarget:self action:@selector(primaryModuleToggled:) forControlEvents:UIControlEventTouchUpInside];
+            } else {
+                [button addTarget:self action:@selector(secondaryModuleToggled:) forControlEvents:UIControlEventTouchUpInside];
+            }
         }
     }
     
@@ -355,9 +368,12 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     NSString *key = [self.settingKeys objectAtIndex:indexPath.section];
-    KGOUserSetting *setting = [[KGOUserSettingsManager sharedManager] settingForKey:key];
     
-    if (![key isEqualToString:KGOUserSettingKeyPrimaryModules] && ![key isEqualToString:KGOUserSettingKeySecondaryModules]) {
+    if ([key isEqualToString:KGOUserSettingKeyLogin]) {
+        [[KGORequestManager sharedManager] logoutKurogoServer];
+        
+    } else if (![key isEqualToString:KGOUserSettingKeyPrimaryModules] && ![key isEqualToString:KGOUserSettingKeySecondaryModules]) {
+        KGOUserSetting *setting = [[KGOUserSettingsManager sharedManager] settingForKey:key];
         [[KGOUserSettingsManager sharedManager] selectOption:indexPath.row forSetting:setting.key];
         [[KGOUserSettingsManager sharedManager] saveSettings];
         [tableView reloadSections:[NSIndexSet indexSetWithIndex:indexPath.section] withRowAnimation:UITableViewRowAnimationNone];
