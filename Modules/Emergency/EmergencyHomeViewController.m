@@ -148,7 +148,7 @@
         if (indexPath.row < self.primaryContacts.count) {
             EmergencyContact *contact = [self.primaryContacts objectAtIndex:indexPath.row];
             title = contact.title;
-            detailText = contact.summary;
+            detailText = contact.subtitle;
             accessoryTag = KGOAccessoryTypePhone;
 
         } else if(indexPath.row == self.primaryContacts.count) {
@@ -184,11 +184,10 @@
     if (indexPath.section == [self sectionIndexForContacts]) {
         if (indexPath.row < self.primaryContacts.count) {
             EmergencyContact *contact = [self.primaryContacts objectAtIndex:indexPath.row];
-            NSString *urlString = [NSString stringWithFormat:@"tel:%@", contact.dialablePhone];
-            NSURL *externURL = [NSURL URLWithString:urlString];
-            if ([[UIApplication sharedApplication] canOpenURL:externURL])
+            NSURL *externURL = [NSURL URLWithString:contact.url];
+            if ([[UIApplication sharedApplication] canOpenURL:externURL]) {
                 [[UIApplication sharedApplication] openURL:externURL];
-            
+            }
             
         } else if (indexPath.row == self.primaryContacts.count) {
             [KGO_SHARED_APP_DELEGATE() showPage:EmergencyContactsPathPageName forModuleTag:_module.tag params:nil];

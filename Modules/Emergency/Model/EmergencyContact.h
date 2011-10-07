@@ -8,11 +8,8 @@
 }
 @property (nonatomic, retain) NSString * title;
 @property (nonatomic, retain) NSString * subtitle;
-@property (nonatomic, retain) NSString * formattedPhone;
-@property (nonatomic, retain) NSString * dialablePhone;
+@property (nonatomic, retain) NSString * url;
 @property (nonatomic, retain) NSNumber * order;
 @property (nonatomic, retain) EmergencyContactsSection * section;
-
-- (NSString *)summary;
 
 @end

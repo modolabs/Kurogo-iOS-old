@@ -93,7 +93,7 @@
     
     return [[^(UITableViewCell *cell) {
         cell.textLabel.text = contact.title;
-        cell.detailTextLabel.text = contact.summary;
+        cell.detailTextLabel.text = contact.subtitle;
         cell.accessoryView = [[KGOTheme sharedTheme] accessoryViewForType:KGOAccessoryTypePhone];
     } copy] autorelease];
 }
@@ -103,10 +103,10 @@
 	[tableView deselectRowAtIndexPath:indexPath animated:YES];
 	
     EmergencyContact *contact = [self.allContacts objectAtIndex:indexPath.row];
-    NSString *urlString = [NSString stringWithFormat:@"tel:%@", contact.dialablePhone];
-    NSURL *externURL = [NSURL URLWithString:urlString];
-    if ([[UIApplication sharedApplication] canOpenURL:externURL])
+    NSURL *externURL = [NSURL URLWithString:contact.url];
+    if ([[UIApplication sharedApplication] canOpenURL:externURL]) {
         [[UIApplication sharedApplication] openURL:externURL];
+    }
 }
 
 - (KGOTableCellStyle)tableView:(UITableView *)tableView styleForCellAtIndexPath:(NSIndexPath *)indexPath {

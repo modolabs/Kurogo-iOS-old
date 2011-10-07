@@ -137,8 +137,7 @@ NSString * const EmergencyContactsRetrievedNotification = @"EmergencyContactsRet
                 EmergencyContact *contact = [[CoreDataManager sharedManager] insertNewObjectForEntityForName:EmergencyContactEntityName];
                 contact.title = [contactDict stringForKey:@"title"];
                 contact.subtitle = [contactDict nonemptyStringForKey:@"subtitle"];
-                contact.formattedPhone = [contactDict stringForKey:@"formattedPhone"];
-                contact.dialablePhone = [contactDict stringForKey:@"dialablePhone"];
+                contact.url = [contactDict stringForKey:@"url"];
                 contact.order = [NSNumber numberWithInt:i];
                 contact.section = section;
             }
@@ -149,8 +148,6 @@ NSString * const EmergencyContactsRetrievedNotification = @"EmergencyContactsRet
         // return the number of sections created
         return (NSInteger)[[emergencyContactsResult allKeys] count];
     }];
-    
-    [request connect];    
 }
 
 - (EmergencyContactsSection *)contactsSection:(NSString *)section {
