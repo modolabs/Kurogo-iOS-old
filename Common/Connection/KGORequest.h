@@ -84,9 +84,9 @@ typedef enum {
 @property(nonatomic, retain) id result;
 
 // urls are of the form
-// https://<kurogo-server>/<module>/<path>?<key>=<value>
-// https://kurogo.hq.modolabs.com/people/search?q=Some+Guy
-// https://kurogo.hq.modolabs.com/hello? (special case)
+// https://<kurogo-server>/<apipath>/<module>/<path>?<key>=<value>
+// https://kurogo.hq.modolabs.com/rest/people/search?q=Some+Guy
+// https://kurogo.hq.modolabs.com/rest/hello? (special case)
 @property(nonatomic, retain) NSURL *url;
 @property(nonatomic, assign) id<KGORequestDelegate> delegate;
 

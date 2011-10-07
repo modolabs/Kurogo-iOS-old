@@ -47,6 +47,7 @@ the current development in the project.
 Creating your Project
 =====================
 
+See :doc:`newapp`.
 
 .. _github-submit:
 

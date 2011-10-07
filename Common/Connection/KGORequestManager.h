@@ -48,7 +48,7 @@
 - (BOOL)isModuleAuthorized:(ModuleTag *)moduleTag;
 
 - (KGORequest *)requestWithDelegate:(id<KGORequestDelegate>)delegate
-                             module:(NSString *)module
+                             module:(ModuleTag *)module
                                path:(NSString *)path
                             version:(NSUInteger)version
                              params:(NSDictionary *)params;

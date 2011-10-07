@@ -63,6 +63,8 @@ Each server has the following options:
   http://example.com/extension, put *extension* here.
 * *UseHTTPS* - whether or not the Kurogo instance uses HTTPS.
 
+See :doc:`config` for more details about the Config.plist file.
+
 ---------------------------------
 Servers and Build Configurations
 ---------------------------------
