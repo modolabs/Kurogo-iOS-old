@@ -257,8 +257,10 @@
 }
 
 - (void)selectButtonAtIndex:(NSUInteger)index {
-    UIButton *button = [_buttons objectAtIndex:index];
-    [self buttonPressed:button];
+    if (index >= 0 && index < _buttons.count) {
+        UIButton *button = [_buttons objectAtIndex:index];
+        [self buttonPressed:button];
+    }
 }
 
 - (NSInteger)indexOfSelectedButton
