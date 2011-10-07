@@ -14,8 +14,16 @@
 @synthesize module = _module;
 @synthesize allContacts = _allContacts;
 
-- (id)init {
-    return [self initWithStyle:UITableViewStylePlain];
+- (id)initWithStyle:(UITableViewStyle)style
+{
+    self = [super initWithStyle:style];
+    if (self) {
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(emergencyContactsRetrieved:)
+                                                     name:EmergencyContactsRetrievedNotification
+                                                   object:nil];
+    }
+    return self; 
 }
 
 - (void)dealloc
@@ -47,19 +55,16 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    EmergencyDataManager *manager = [EmergencyDataManager managerForTag:_module.tag];
     self.navigationItem.title = @"Contacts";
     
     if(_module.contactsFeedExists) {
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(emergencyContactsRetrieved:) name:EmergencyContactsRetrievedNotification object:manager];
+        EmergencyDataManager *manager = [EmergencyDataManager managerForTag:_module.tag];
 
         // load cached contacts
         self.allContacts = [manager allContacts];
         
-        // refresh contacts (if stale)
-        if (![manager contactsFresh]) {
-            [manager fetchContacts];
-        }
+        // request contacts from server if stale
+        [manager fetchContacts];
     }
 }
 
@@ -114,8 +119,11 @@
 }
 
 - (void)emergencyContactsRetrieved:(NSNotification *)notification {
+    id object = [notification object];
     EmergencyDataManager *manager = [EmergencyDataManager managerForTag:_module.tag];
-    self.allContacts = [manager allContacts];    
-    [self reloadDataForTableView:self.tableView];
+    if (object == manager) {
+        self.allContacts = [manager allContacts];    
+        [self reloadDataForTableView:self.tableView];
+    }
 }
 @end

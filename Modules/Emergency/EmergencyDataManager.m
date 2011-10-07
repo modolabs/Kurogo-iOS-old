@@ -3,7 +3,7 @@
 #import "CoreDataManager.h"
 #import "EmergencyModel.h"
 
-#define CONTACTS_EXPIRE 60 * 60 * 24 * 30
+#define CONTACTS_EXPIRE 60 * 60 * 24
 
 NSString * const EmergencyNoticeRetrievedNotification = @"EmergencyNoticeRetrieved";
 NSString * const EmergencyContactsRetrievedNotification = @"EmergencyContactsRetrieved";
@@ -53,13 +53,15 @@ NSString * const EmergencyContactsRetrievedNotification = @"EmergencyContactsRet
                            version:1
                            params:nil];
     
-    __block EmergencyDataManager *blockSelf = self;
+    // create these on the main thread since CoreDataManager
+    // only deletes things on the main thread
+    NSArray *cachedNotices = [self cachedNotices]; 
+    
     [request connectWithResponseType:[NSDictionary class]
                             callback:^(id result) {
         NSInteger retval;
         NSDictionary *emergencyNoticeResult = (NSDictionary *)result;
         
-        NSArray *cachedNotices = [blockSelf cachedNotices];
         [[CoreDataManager sharedManager] deleteObjects:cachedNotices];
         
         id notice = [emergencyNoticeResult objectForKey:@"notice"];
@@ -74,8 +76,8 @@ NSString * const EmergencyContactsRetrievedNotification = @"EmergencyContactsRet
         } else {
             retval = NoCurrentEmergencyNotice;
         }
-        
         [[CoreDataManager sharedManager] saveData];
+        
         return retval;
     }];
 }
@@ -92,14 +94,6 @@ NSString * const EmergencyContactsRetrievedNotification = @"EmergencyContactsRet
     return [[self cachedNotices] lastObject];
 }
 
-- (BOOL)contactsFresh {
-    EmergencyContactsSection *primary = [self contactsSection:@"primary"];
-    if (primary) {
-        return (-[primary.lastUpdate timeIntervalSinceNow] < CONTACTS_EXPIRE);
-    } else {
-        return NO;
-    }
-}
 - (void)fetchContacts {
     KGORequest *request = [[KGORequestManager sharedManager] 
                            requestWithDelegate:self
@@ -108,14 +102,18 @@ NSString * const EmergencyContactsRetrievedNotification = @"EmergencyContactsRet
                            version:1
                            params:nil];
     
-    __block EmergencyDataManager *blockSelf = self;
+    EmergencyContactsSection *primary = [self contactsSection:@"primary"];
+    EmergencyContactsSection *secondary = [self contactsSection:@"secondary"];
+    
+    if (primary.contacts.count || secondary.contacts.count) {
+        request.minimumDuration = CONTACTS_EXPIRE;
+    }
+    
     [request connectWithResponseType:[NSDictionary class]
                             callback:^(id result) {
         NSDictionary *emergencyContactsResult = (NSDictionary *)result;
         
         // delete old contacts
-        EmergencyContactsSection *primary = [blockSelf contactsSection:@"primary"];
-        EmergencyContactsSection *secondary = [blockSelf contactsSection:@"secondary"];
         if (primary) {
             [[CoreDataManager sharedManager] deleteObject:primary];
         }
@@ -142,7 +140,6 @@ NSString * const EmergencyContactsRetrievedNotification = @"EmergencyContactsRet
                 contact.section = section;
             }
         }
-        
         [[CoreDataManager sharedManager] saveData];
         
         // return the number of sections created
@@ -184,7 +181,7 @@ NSString * const EmergencyContactsRetrievedNotification = @"EmergencyContactsRet
 #pragma KGORequestDelegate Methods
 
 - (void)request:(KGORequest *)request didHandleResult:(NSInteger)returnValue { 
-    if([request.path isEqualToString:@"notice"]) {
+    if ([request.path isEqualToString:@"notice"]) {
         NSMutableDictionary *userInfo = [NSMutableDictionary 
                                          dictionaryWithObject:[NSNumber numberWithInt:returnValue] 
                                          forKey:@"EmergencyStatus"];
@@ -193,7 +190,7 @@ NSString * const EmergencyContactsRetrievedNotification = @"EmergencyContactsRet
                                                             object:self 
                                                           userInfo:userInfo];
         
-    } else if([request.path isEqualToString:@"contacts"]) {
+    } else if ([request.path isEqualToString:@"contacts"]) {
         // we have the number of sections created we could possibly pass it on
         [[NSNotificationCenter defaultCenter] postNotificationName:EmergencyContactsRetrievedNotification 
                                                             object:self];

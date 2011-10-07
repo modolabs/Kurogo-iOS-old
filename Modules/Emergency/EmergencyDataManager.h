@@ -17,7 +17,6 @@ extern NSString * const EmergencyContactsRetrievedNotification;
 - (void)fetchLatestEmergencyNotice;
 - (EmergencyNotice *)latestEmergency;
 
-- (BOOL)contactsFresh;
 - (BOOL)hasSecondaryContacts;
 - (void)fetchContacts;
 - (NSArray *)primaryContacts;

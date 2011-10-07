@@ -21,9 +21,21 @@
 
 @synthesize primaryContacts = _primaryContacts;
 
-- (id)init {
-    if ((self = [self initWithStyle:UITableViewStyleGrouped])) {
+- (id)initWithStyle:(UITableViewStyle)style
+{
+    self = [super initWithStyle:style];
+    if (self) {
         loadingStatus = Loading;
+
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(emergencyNoticeRetrieved:)
+                                                     name:EmergencyNoticeRetrievedNotification
+                                                   object:nil];
+        
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(emergencyContactsRetrieved:)
+                                                     name:EmergencyContactsRetrievedNotification
+                                                   object:nil];
     }
     return self;
 }
@@ -63,21 +75,16 @@
     EmergencyDataManager *manager = [EmergencyDataManager managerForTag:_module.tag];
     
     if(_module.noticeFeedExists) {
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(emergencyNoticeRetrieved:) name:EmergencyNoticeRetrievedNotification object:manager];
         [manager fetchLatestEmergencyNotice];
     }
     
     if(_module.contactsFeedExists) {
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(emergencyContactsRetrieved:) name:EmergencyContactsRetrievedNotification object:manager];
-
         // load cached contacts
         self.primaryContacts = [manager primaryContacts];
         _hasMoreContact = [manager hasSecondaryContacts];
         
-        // refresh contacts (if stale)
-        if (![manager contactsFresh]) {
-            [manager fetchContacts];
-        }
+        // make server request if needed
+        [manager fetchContacts];
     }
     self.navigationItem.title = @"Emergency Info";
 }
@@ -252,24 +259,31 @@
 }
 
 - (void)emergencyNoticeRetrieved:(NSNotification *)notification {
-    enum EmergencyNoticeStatus status = [[[notification userInfo] objectForKey:@"EmergencyStatus"] intValue];
-    loadingStatus = Loaded;
-    
-    if(status == NoCurrentEmergencyNotice) {
-        self.notice = nil;
-    } else if (status == EmergencyNoticeActive) {
-        // reset content values
-        self.notice = [[EmergencyDataManager managerForTag:_module.tag] latestEmergency];
-    }
-    self.contentDivHeight = nil;
+    id object = [notification object];
+    EmergencyDataManager *manager = [EmergencyDataManager managerForTag:_module.tag];
+    if (object == manager) {    
+        enum EmergencyNoticeStatus status = [[[notification userInfo] objectForKey:@"EmergencyStatus"] intValue];
+        loadingStatus = Loaded;
         
-    [self reloadDataForTableView:self.tableView];
+        if(status == NoCurrentEmergencyNotice) {
+            self.notice = nil;
+        } else if (status == EmergencyNoticeActive) {
+            // reset content values
+            self.notice = [[EmergencyDataManager managerForTag:_module.tag] latestEmergency];
+        }
+        self.contentDivHeight = nil;
+        
+        [self reloadDataForTableView:self.tableView];
+    }
 }
 
 - (void)emergencyContactsRetrieved:(NSNotification *)notification {
+    id object = [notification object];
     EmergencyDataManager *manager = [EmergencyDataManager managerForTag:_module.tag];
-    self.primaryContacts = [manager primaryContacts];
-    _hasMoreContact = [manager hasSecondaryContacts];    
-    [self reloadDataForTableView:self.tableView];
+    if (object == manager) {
+        self.primaryContacts = [manager primaryContacts];
+        _hasMoreContact = [manager hasSecondaryContacts];    
+        [self reloadDataForTableView:self.tableView];
+    }
 }
 @end
