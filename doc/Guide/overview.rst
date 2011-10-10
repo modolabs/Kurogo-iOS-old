@@ -28,12 +28,14 @@ Modules are the core building block of any Kurogo application. Modules are
 contained pieces of code that (typically) connect to external services and 
 process data for display.
 
+To the user, modules behave like autonomous applications bound together by the
+overall application infrastructure.
+
 On the web, the life cycle of a module involves fetching data from a raw data
 source, parsing and processing the data into the desired pieces that the user
 requested, and displaying the data in a template based on the user's device.
 
-In the iOS framework, modules are small controller objects that persist 
-throughout the application's life cycle and help the main application select
-which views to render and which data controllers to initialize. Data sources
-consist primarily of the Kurogo REST API, though external sources like social 
-media may be involved.
+In the iOS framework, modules are minimally instantiated at application launch,
+but when engaged by the user, they perform the roles of selecting views to 
+render and data controllers to initialize. Data sources consist primarily of 
+the Kurogo REST API, though external sources like social media may be involved.

@@ -8,6 +8,9 @@ instance. The classes *KGORequestManager* and *KGORequest* are of note.
 ============================
 General REST API connection
 ============================
+
+.. _kgorequestmanager:
+
 -----------------------------
 The KGORequestManager object
 -----------------------------

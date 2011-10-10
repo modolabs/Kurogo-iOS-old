@@ -7,6 +7,8 @@ Kurogo-based applications (such as the starter application Universitas).
 
 Each Kurogo-based application has the groups below.
 
+.. _xcode-application-group:
+
 ===========
 Application
 ===========
@@ -15,9 +17,13 @@ The files in this group control the overall life cycle of the application. The
 following classes are in files (header and implementation) in the top-level 
 directory of Kurogo:
 
-* *KGOAppDelegate* - the file that implements UIApplicationDelegate.
-* *KGOModule* - the superclass of all modules.
-* *KGONotification* - a wrapper around local and push notifications.
+* *KGOAppDelegate* - The class that implements the UIApplicationDelegate 
+  protocol in the iOS framework. This class instantiates the application's
+  root view controller, a :ref:`configurable option 
+  <home-screen-configuration>`, and sends messages to each module when 
+  resources and views are needed.
+* *KGOModule* - The superclass of all modules. See :doc:`modules`.
+* *KGONotification* - A wrapper around local and push notifications.
 
 ===========
 Common
