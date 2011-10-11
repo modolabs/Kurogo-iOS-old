@@ -8,6 +8,7 @@ NSString * const PersonContactEntityName = @"PersonContact";
 @implementation PersonContact 
 
 @dynamic person;
+@dynamic contactGroup;
 
 + (NSArray *)directoryContacts 
 {
@@ -21,7 +22,6 @@ NSString * const PersonContactEntityName = @"PersonContact";
     contact.url = [aDict nonemptyStringForKey:@"url"];
     contact.title = [aDict nonemptyStringForKey:@"title"];
     contact.subtitle = [aDict nonemptyStringForKey:@"subtitle"];
-    contact.group = [aDict nonemptyStringForKey:@"group"];
     return contact;
 }
 

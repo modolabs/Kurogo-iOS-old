@@ -2,20 +2,19 @@
 #import "KGOTableViewController.h"
 #import "KGOSearchDisplayController.h"
 #import "KGODetailPager.h"
-#import "KGORequestManager.h"
+#import "PeopleDataManager.h"
 
 @class PeopleModule;
+@class PersonContactGroup;
 
-@interface PeopleGroupContactViewController : KGOTableViewController <KGORequestDelegate>{
+@interface PeopleGroupContactViewController : KGOTableViewController <PeopleDataDelegate> {
 
     NSArray *_allContacts;
-    KGORequest *_request;
-    NSString *_group; 
 }
 
+@property (nonatomic, retain) PeopleDataManager *dataManager;
+@property (nonatomic, retain) PersonContactGroup *contactGroup;
 @property (nonatomic, assign) PeopleModule *module; 
 @property (nonatomic, retain) NSArray *allContacts;
 
-
-- (id)initWithGroup:(NSString *)group;
 @end

@@ -11,26 +11,23 @@
 #import "PeopleModel.h"
 #import "PeopleModule.h"
 
-@interface PeopleGroupContactViewController (Private)
-
-
-
-@end
-
 @implementation PeopleGroupContactViewController
+
 @synthesize module = _module;
 @synthesize allContacts = _allContacts;
-
-- (id)initWithGroup:(NSString *)group {
-     _group = group;
-    return [self initWithStyle:UITableViewStylePlain];
-}
+@synthesize contactGroup;
+@synthesize dataManager;
 
 - (void)dealloc
 {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+
     self.module = nil;
     self.allContacts = nil;
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    self.dataManager.delegate = nil;
+    self.dataManager = nil;
+    self.contactGroup = nil;
+    
     [super dealloc];
 }
 
@@ -55,17 +52,29 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+
+    self.title = self.contactGroup.title;
     
-    //_phoneDirectoryEntries = [[PersonContact directoryContacts] retain];
-    if (!_allContacts) {
-        NSDictionary *params = [NSDictionary dictionaryWithObject:_group forKey:@"group"];
-        _request = [[KGORequestManager sharedManager] requestWithDelegate:self
-                                                                   module:self.module.tag
-                                                                     path:@"group"
-                                                                  version:1
-                                                                   params:params];
-        _request.expectedResponseType = [NSDictionary class];
-        [_request connect];
+    self.allContacts = [[self.contactGroup.contacts allObjects] sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2) {
+        if ([obj1 isKindOfClass:[PersonContact class]]) {
+            if ([obj2 isKindOfClass:[PersonContact class]]) {
+                return [[(PersonContact *)obj1 identifier] compare:[(PersonContact *)obj2 identifier]];
+            } else {
+                return NSOrderedAscending;
+            }
+
+        } else if ([obj2 isKindOfClass:[PersonContact class]]) {
+            return NSOrderedDescending;
+        } else {
+            return [[(PersonContactGroup *)obj1 sortOrder] compare:[(PersonContactGroup *)obj2 sortOrder]];
+        }
+    }];
+    
+    if (!self.dataManager) {
+        self.dataManager = [[[PeopleDataManager alloc] init] autorelease];
+        self.dataManager.delegate = self;
+        self.dataManager.moduleTag = self.module.tag;
+        [self.dataManager fetchContactsForGroup:self.contactGroup.identifier];
     }
 }
 
@@ -82,30 +91,15 @@
     return (interfaceOrientation == UIInterfaceOrientationPortrait);
 }
 
-#pragma mark - KGORequestDelegate
+#pragma mark - PeopleDataDelegate
 
-- (void)requestWillTerminate:(KGORequest *)request
+- (void)dataManager:(PeopleDataManager *)dataManager didReceiveContacts:(NSArray *)contacts
 {
-    _request = nil;
-}
-
-- (void)request:(KGORequest *)request didReceiveResult:(id)result
-{
-    NSDictionary *results = [result dictionaryForKey:@"results"];
-    NSArray *contacts = [results arrayForKey:@"contacts"];
-    NSMutableArray *array = [NSMutableArray array];
-    for (NSDictionary *contactDict in contacts) {
-        PersonContact *aContact = [PersonContact personContactWithDictionary:contactDict
-                                                                        type:[contactDict nonemptyStringForKey:@"class"]];
-        [array addObject:aContact];
-    }
-    [_allContacts release];
-    _allContacts = [array copy];
-    
+    self.allContacts = contacts;
     [self reloadDataForTableView:self.tableView];
 }
 
-
+#pragma mark - Table view methods
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     return 1;

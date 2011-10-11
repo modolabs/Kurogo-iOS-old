@@ -2,10 +2,20 @@
 #import "KGOTableViewController.h"
 #import "KGOTheme.h"
 
-@protocol KGOSearchResult <NSObject>
+@protocol KGOListItem <NSObject>
 
 - (NSString *)identifier;
 - (NSString *)title;
+
+@optional
+
+- (NSString *)subtitle;
+
+@end
+
+#pragma mark -
+
+@protocol KGOSearchResult <KGOListItem>
 
 - (BOOL)isBookmarked;
 - (void)addBookmark;
@@ -28,10 +38,8 @@
 
 #pragma mark -
 
-@protocol KGOCategory <NSObject>
+@protocol KGOCategory <KGOListItem>
 
-- (NSString *)identifier;
-- (NSString *)title;
 - (id<KGOCategory>)parent; // nil if this is top level category.
 - (NSArray *)children;     // an array of id<KGOCategory> objects. may be nil.
 - (NSArray *)items;        // an array of id<KGOSearchResult> objects. may be nil.

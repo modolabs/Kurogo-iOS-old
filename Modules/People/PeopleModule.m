@@ -119,10 +119,12 @@
             [(PeopleDetailsViewController *)vc setPerson:person];
         }
     } else if ([pageName isEqualToString:LocalPathPageNameItemList]) {
-        PersonContact *contact = [params objectForKey:@"contact"];
-        PeopleGroupContactViewController *pgcvc = [[[PeopleGroupContactViewController alloc] initWithGroup:contact.group] autorelease];
+        PersonContactGroup *contactGroup = [params objectForKey:@"contactGroup"];
+        vc = [[[PeopleGroupContactViewController alloc] initWithStyle:UITableViewStylePlain] autorelease];
+
+        PeopleGroupContactViewController *pgcvc = (PeopleGroupContactViewController *)vc;
+        pgcvc.contactGroup = contactGroup;
         pgcvc.module = self;
-        vc.navigationItem.title = contact.title;
     }
     return vc;
 }

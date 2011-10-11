@@ -10,6 +10,5 @@
 @dynamic title;
 @dynamic subtitle;
 @dynamic url;
-@dynamic group;
 
 @end

@@ -1,16 +1,14 @@
 #import "PeopleHomeViewController.h"
-#import "KGOPersonWrapper.h"
 #import "KGOAppDelegate+ModuleAdditions.h"
 #import "Foundation+KGOAdditions.h"
 #import "UIKit+KGOAdditions.h"
 #import "KGOSearchBar.h"
 #import "KGOSearchDisplayController.h"
 #import "KGOTheme.h"
-#import "PersonContact.h"
-#import "CoreDataManager.h"
 #import "KGOLabel.h"
+#import "CoreDataManager.h"
 #import "PeopleModule.h"
-#import "PeopleGroupContactViewController.h"
+#import "PeopleModel.h"
 
 @interface PeopleHomeViewController (Private)
 
@@ -21,12 +19,12 @@
 
 @implementation PeopleHomeViewController
 
+@synthesize module, dataManager;
 @synthesize federatedSearchTerms = _searchTerms,
 searchTokens = _searchTokens,
 searchController = _searchController,
-searchBar = _searchBar, module,
+searchBar = _searchBar,
 federatedSearchResults;
- 
 
 #pragma mark view
 
@@ -35,20 +33,6 @@ federatedSearchResults;
     
     self.title = @"People";
 
-    [_phoneDirectoryEntries release];
-    _phoneDirectoryEntries = [[PersonContact directoryContacts] retain];
-
-    _request = [[KGORequestManager sharedManager] requestWithDelegate:self
-                                                               module:self.module.tag
-                                                                 path:@"contacts"
-                                                              version:1
-                                                               params:nil];
-    if (_phoneDirectoryEntries.count) {
-        _request.minimumDuration = 72; // TODO: make this value configured
-    }
-    _request.expectedResponseType = [NSDictionary class];
-    [_request connect];
-    
     _searchBar = [[KGOSearchBar alloc] initWithFrame:CGRectMake(0.0f, 0.0f, self.view.frame.size.width, 44)];
     _searchBar.autoresizingMask = UIViewAutoresizingFlexibleWidth;
 	_searchBar.placeholder = NSLocalizedString(@"Search", nil);
@@ -61,6 +45,7 @@ federatedSearchResults;
     CGRect frame = CGRectMake(0.0, _searchBar.frame.size.height,
                               self.view.frame.size.width,
                               self.view.frame.size.height - _searchBar.frame.size.height);
+
 	self.tableView = [self addTableViewWithFrame:frame style:UITableViewStyleGrouped];
     
     // search hint
@@ -87,6 +72,13 @@ federatedSearchResults;
         [_searchController setSearchResults:self.federatedSearchResults forModuleTag:self.module.tag];
         self.federatedSearchResults = nil;
     }
+    
+    if (!self.dataManager) {
+        self.dataManager = [[[PeopleDataManager alloc] init] autorelease];
+        self.dataManager.delegate = self;
+        self.dataManager.moduleTag = self.module.tag;
+        [self.dataManager fetchStaticContacts];
+    }
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -100,37 +92,12 @@ federatedSearchResults;
 	[self reloadDataForTableView:self.tableView];
 }
 
-#pragma mark - KGORequestDelegate
+#pragma mark - PeopleDataDelegate
 
-- (void)requestWillTerminate:(KGORequest *)request
+- (void)dataManager:(PeopleDataManager *)dataManager didReceiveContacts:(NSArray *)contacts
 {
-    _request = nil;
-}
-
-- (void)request:(KGORequest *)request didReceiveResult:(id)result
-{
-    // TODO: make sure there are no race conditions with deleted objects
-    for (PersonContact *aContact in _phoneDirectoryEntries) {
-        [[CoreDataManager sharedManager] deleteObject:aContact];
-    }
-    
-    NSArray *contacts = [result arrayForKey:@"results"];
-    NSMutableArray *array = [NSMutableArray array];
-    for (NSDictionary *contactDict in contacts) {
-        NSString *type = [contactDict nonemptyStringForKey:@"type"];
-        if (!type) {
-            type = [contactDict nonemptyStringForKey:@"class"];
-        }
-        
-        PersonContact *aContact = [PersonContact personContactWithDictionary:contactDict
-                                                                        type:type];
-        [array addObject:aContact];
-    }
     [_phoneDirectoryEntries release];
-    _phoneDirectoryEntries = [array copy];
-    
-    [[CoreDataManager sharedManager] saveData];
-    
+    _phoneDirectoryEntries = [contacts retain];
     [self reloadDataForTableView:self.tableView];
 }
 
@@ -141,13 +108,15 @@ federatedSearchResults;
 }
 
 - (void)dealloc {
-    if (_request) {
-        [_request cancel];
-    }
 	[_searchTerms release];
 	[_searchTokens release];
 	[_searchController release];
     [_phoneDirectoryEntries release];
+
+    self.module = nil;
+    self.dataManager.delegate = nil;
+    self.dataManager = nil;
+    
     [super dealloc];
 }
 
@@ -245,16 +214,19 @@ federatedSearchResults;
     switch (indexPath.section) {
         case 0:
         {
-            PersonContact *contact = [_phoneDirectoryEntries objectAtIndex:indexPath.row];
-            title = contact.title;
-            if([contact.type isEqualToString:@"phone"]){
-                detailText = contact.subtitle;
-                accessoryTag = KGOAccessoryTypePhone; 
-                backgroundColor = [[KGOTheme sharedTheme] backgroundColorForSecondaryCell];
-            }
-            else{
+            NSManagedObject *contact = [_phoneDirectoryEntries objectAtIndex:indexPath.row];
+            if ([contact isKindOfClass:[PersonContactGroup class]]) {
                 accessoryTag = KGOAccessoryTypeChevron; 
                 backgroundColor = [[KGOTheme sharedTheme] backgroundColorForSecondaryCell];
+                title = [(PersonContactGroup *)contact title];
+            } else {
+                PersonContact *personContact = (PersonContact *)contact;
+                if ([personContact.type isEqualToString:@"phone"]){
+                    detailText = personContact.subtitle;
+                    accessoryTag = KGOAccessoryTypePhone; 
+                    backgroundColor = [[KGOTheme sharedTheme] backgroundColorForSecondaryCell];
+                    title = personContact.title;
+                }
             }
             break;
         }
@@ -318,14 +290,18 @@ federatedSearchResults;
     switch (indexPath.section) {
         case 0: //Static numbers and groups
         {
-            PersonContact *contact = [_phoneDirectoryEntries objectAtIndex:indexPath.row];
-            NSString *urlString = contact.url;
-            NSURL *externURL = [NSURL URLWithString:urlString];
-            if ([[UIApplication sharedApplication] canOpenURL:externURL]) {
-                [[UIApplication sharedApplication] openURL:externURL];
-
-            } else if (contact.group) {
-                NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:contact, @"contact", nil];
+            NSManagedObject *contact = [_phoneDirectoryEntries objectAtIndex:indexPath.row];
+            if ([contact isKindOfClass:[PersonContact class]]) {
+                PersonContact *personContact = (PersonContact *)contact;
+                NSString *urlString = personContact.url;
+                NSURL *externURL = [NSURL URLWithString:urlString];
+                if ([[UIApplication sharedApplication] canOpenURL:externURL]) {
+                    [[UIApplication sharedApplication] openURL:externURL];
+                }
+                
+            } else if ([contact isKindOfClass:[PersonContactGroup class]]) {
+                PersonContactGroup *contactGroup = (PersonContactGroup *)contact;
+                NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:contactGroup, @"contactGroup", nil];
                 [KGO_SHARED_APP_DELEGATE() showPage:LocalPathPageNameItemList forModuleTag:self.module.tag params:params];
             }
             

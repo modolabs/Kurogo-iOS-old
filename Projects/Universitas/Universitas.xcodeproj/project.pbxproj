@@ -156,6 +156,8 @@
 		EB6D02A911E3784100B65CE3 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EB6D02A811E3784100B65CE3 /* MapKit.framework */; };
 		EB6D576A14196B1A009EDA9D /* FBDialog.bundle in Resources */ = {isa = PBXBuildFile; fileRef = EB6D576914196B1A009EDA9D /* FBDialog.bundle */; };
 		EB70DC94143E7CBB00E60476 /* Settings.plist in Resources */ = {isa = PBXBuildFile; fileRef = EB70DC93143E7CBB00E60476 /* Settings.plist */; };
+		EB70DCED1444953900E60476 /* PersonContactGroup.m in Sources */ = {isa = PBXBuildFile; fileRef = EB70DCEC1444953900E60476 /* PersonContactGroup.m */; };
+		EB70DCF01444958300E60476 /* PeopleDataManager.m in Sources */ = {isa = PBXBuildFile; fileRef = EB70DCEF1444958200E60476 /* PeopleDataManager.m */; };
 		EB7E9E9C143152D20093B0C7 /* MITBuildInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = EB7E9E9A143152D20093B0C7 /* MITBuildInfo.m */; };
 		EB7E9EA0143152E00093B0C7 /* KGOModule+Factory.m in Sources */ = {isa = PBXBuildFile; fileRef = EB7E9E9F143152E00093B0C7 /* KGOModule+Factory.m */; };
 		EB7E9EA2143153600093B0C7 /* kurogo in Resources */ = {isa = PBXBuildFile; fileRef = EB7E9EA1143153600093B0C7 /* kurogo */; };
@@ -468,6 +470,10 @@
 		EB6D02A811E3784100B65CE3 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		EB6D576914196B1A009EDA9D /* FBDialog.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = FBDialog.bundle; path = "facebook-ios-sdk/src/FBDialog.bundle"; sourceTree = "<group>"; };
 		EB70DC93143E7CBB00E60476 /* Settings.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Settings.plist; sourceTree = "<group>"; };
+		EB70DCEB1444953900E60476 /* PersonContactGroup.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PersonContactGroup.h; sourceTree = "<group>"; };
+		EB70DCEC1444953900E60476 /* PersonContactGroup.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PersonContactGroup.m; sourceTree = "<group>"; };
+		EB70DCEE1444958200E60476 /* PeopleDataManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PeopleDataManager.h; sourceTree = "<group>"; };
+		EB70DCEF1444958200E60476 /* PeopleDataManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PeopleDataManager.m; sourceTree = "<group>"; };
 		EB7E9E9A143152D20093B0C7 /* MITBuildInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MITBuildInfo.m; sourceTree = "<group>"; };
 		EB7E9E9E143152E00093B0C7 /* KGOModule+Factory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "KGOModule+Factory.h"; sourceTree = "<group>"; };
 		EB7E9E9F143152E00093B0C7 /* KGOModule+Factory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "KGOModule+Factory.m"; sourceTree = "<group>"; };
@@ -1120,6 +1126,8 @@
 				EB181F86131EDECA003728FF /* PeopleHomeViewController.m */,
 				0B2150A114058F5600BD30A3 /* PeopleGroupContactViewController.h */,
 				0B2150A214058F5700BD30A3 /* PeopleGroupContactViewController.m */,
+				EB70DCEE1444958200E60476 /* PeopleDataManager.h */,
+				EB70DCEF1444958200E60476 /* PeopleDataManager.m */,
 			);
 			path = People;
 			sourceTree = "<group>";
@@ -1132,6 +1140,8 @@
 				EB181F77131EDECA003728FF /* KGOPersonWrapper.h */,
 				EB181F78131EDECA003728FF /* KGOPersonWrapper.m */,
 				EB181F79131EDECA003728FF /* PeopleDataModel.xcdatamodeld */,
+				EB70DCEB1444953900E60476 /* PersonContactGroup.h */,
+				EB70DCEC1444953900E60476 /* PersonContactGroup.m */,
 				EB181F7B131EDECA003728FF /* PersonAddress.h */,
 				EB181F7C131EDECA003728FF /* PersonAddress.m */,
 				EB181F7D131EDECA003728FF /* PersonContact.h */,
@@ -1515,6 +1525,8 @@
 				EB7E9E9C143152D20093B0C7 /* MITBuildInfo.m in Sources */,
 				EB7E9EA0143152E00093B0C7 /* KGOModule+Factory.m in Sources */,
 				EB7E9F2E143171780093B0C7 /* Video.xcdatamodeld in Sources */,
+				EB70DCED1444953900E60476 /* PersonContactGroup.m in Sources */,
+				EB70DCF01444958300E60476 /* PeopleDataManager.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
