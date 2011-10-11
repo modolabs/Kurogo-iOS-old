@@ -10,7 +10,7 @@
 @property (nonatomic, readonly) NSManagedObjectContext *managedObjectContext;
 @property (nonatomic, retain, readonly) NSPersistentStoreCoordinator *persistentStoreCoordinator;
 
-@property (nonatomic, readonly) NSString *applicationDocumentsDirectory;
+@property (nonatomic, readonly) NSString *applicationCachesDirectory;
 
 + (CoreDataManager *)sharedManager;
 

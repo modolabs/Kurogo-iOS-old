@@ -3,10 +3,8 @@
 #import "KGOAppDelegate+ModuleAdditions.h"
 #import <objc/runtime.h>
 
-
-// not sure what to call this, just a placeholder for now, still hard coding file name below
-#define SQLLITE_PREFIX @"CoreDataXML."
-
+NSString * const CoreDataFilenamePrefix = @"CoreData";
+NSString * const CoreDataFilenameSuffix = @"sqlite";
 
 @implementation CoreDataManager
 
@@ -338,27 +336,34 @@
 /**
  Returns the path to the application's documents directory.
  */
-- (NSString *)applicationDocumentsDirectory {
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+- (NSString *)applicationCachesDirectory {
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
     NSString *basePath = ([paths count] > 0) ? [paths objectAtIndex:0] : nil;
     return basePath;
 }
 
+/**
+ * since the only conceivable reason there would be a change in core data structure
+ * is that someone changed the xcdatamodel, the most probable indicator is a change
+ * in build version. when a new file is needed, we cache it with the version number
+ * and pick the last modified file if we somehow failed to remove older versions.
+ */
 - (NSString *)storeFileName {
 	NSString *currentFileName = [self currentStoreFileName];
 	
 	if (![[NSFileManager defaultManager] fileExistsAtPath:currentFileName]) {
-		NSInteger maxVersion = 0;
-		NSArray *files = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:[self applicationDocumentsDirectory] error:NULL];
-		// find all files like CoreDataXML.* and pick the latest one
+		NSArray *files = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:[self applicationCachesDirectory] error:NULL];
+		// find all files like CoreData.*.sqlite and pick the latest one
+        NSDate *latestDate = [NSDate distantPast];
+        NSError *error = nil;
 		for (NSString *file in files) {
-			if ([file hasPrefix:@"CoreDataXML."] && [file hasSuffix:@"sqlite"]) {
-				// if version is something like 3:4M, this takes 3 to be the pre-existing version
-				NSInteger version = [[[file componentsSeparatedByString:@"."] objectAtIndex:1] intValue];
-				if (version >= maxVersion) {
-					maxVersion = version;
-					currentFileName = [[self applicationDocumentsDirectory] stringByAppendingPathComponent:file];
-				}
+			if ([file hasPrefix:CoreDataFilenamePrefix] && [file hasSuffix:CoreDataFilenameSuffix]) {
+                NSString *path = [[self applicationCachesDirectory] stringByAppendingPathComponent:file];
+                NSDictionary *attribs = [[NSFileManager defaultManager] attributesOfItemAtPath:path error:&error];
+                NSDate *modDate = [attribs objectForKey:NSFileModificationDate];
+                if ([modDate compare:latestDate] == NSOrderedDescending) {
+                    currentFileName = path;
+                }
 			}
 		}
 	}
@@ -367,7 +372,10 @@
 }
 
 - (NSString *)currentStoreFileName {
-	return [[self applicationDocumentsDirectory] stringByAppendingPathComponent:[NSString stringWithFormat:@"CoreDataXML.%@.sqlite", MITBuildNumber]];
+    NSString *filename = [NSString stringWithFormat:
+                          @"%@.%@.%@",
+                          CoreDataFilenamePrefix, MITBuildNumber, CoreDataFilenameSuffix];
+	return [[self applicationCachesDirectory] stringByAppendingPathComponent:filename];
 }
 
 #pragma mark -
