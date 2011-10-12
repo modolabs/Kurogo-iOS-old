@@ -48,6 +48,10 @@
 
 - (void)displayPerson {
     [self.person markAsRecentlyViewed];
+
+    _addressSection = NSNotFound;
+    _phoneSection = NSNotFound;
+    _emailSection = NSNotFound;
     
     // information in header: photo, name
     
@@ -110,8 +114,12 @@
         currentSection = [NSMutableArray array];
         for (NSDictionary *aDict in self.person.addresses) {
             NSString *label = [aDict stringForKey:@"label"];
-            if (!label)
+            if (!label) {
+                label = [aDict stringForKey:@"title"];
+            }
+            if (!label) {
                 label = [NSString string];
+            }
             
             NSString *displayAddress = [NSString string];
             NSDictionary *valueDict = [aDict objectForKey:@"value"];
@@ -206,6 +214,9 @@
     } else {
 		NSDictionary *personAttribute = [[self.sectionArray objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
         NSString *label = [personAttribute objectForKey:@"label"];
+        if (!label) {
+            label = [personAttribute stringForKey:@"title"];
+        }
         title = [self displayTitleForSection:indexPath.section label:label];
 
         if (indexPath.section == _addressSection) {

@@ -214,7 +214,9 @@ webpages = _webpages;
 }
 
 + (BOOL)isValidContactDict:(id)aDict {
-    return [aDict isKindOfClass:[NSDictionary class]] && [aDict stringForKey:@"label"] && [aDict objectForKey:@"value"];
+    return [aDict isKindOfClass:[NSDictionary class]]
+        && ([aDict stringForKey:@"label"] || [aDict stringForKey:@"title"])
+        && [aDict objectForKey:@"value"];
 }
 
 #pragma mark -
@@ -319,6 +321,9 @@ webpages = _webpages;
     
     for (NSDictionary *aDict in _addresses) {
         NSString *label = [aDict stringForKey:@"label"];
+        if (!label) {
+            label = [aDict stringForKey:@"title"];
+        }
         NSDictionary *addressDict = [aDict dictionaryForKey:@"value"];
         if ([KGOPersonWrapper isValidAddressDict:addressDict]) {
             PersonAddress *anAddress = [[CoreDataManager sharedManager] insertNewObjectForEntityForName:PersonAddressEntityName];
@@ -516,6 +521,9 @@ webpages = _webpages;
         return;
 
     NSString *label = [valueDict objectForKey:@"label"];
+    if (!label) {
+        label = [valueDict stringForKey:@"title"];
+    }
     NSString *value = [valueDict objectForKey:@"value"];
     
     // check value against user declared class
@@ -572,6 +580,9 @@ webpages = _webpages;
     
     for (NSDictionary *aDict in addresses) {
         NSString *label = [aDict nonemptyStringForKey:@"label"];
+        if (!label) {
+            label = [aDict stringForKey:@"title"];
+        }
         NSDictionary *addressDict = [aDict dictionaryForKey:@"value"];
         if (addressDict) {
             NSMutableDictionary *convertedAddressDict = [NSMutableDictionary dictionary];
