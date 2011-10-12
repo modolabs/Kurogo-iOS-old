@@ -9,14 +9,7 @@ and tablets.
 
 This is the native iOS portion of the Kurogo framework. It is meant to
 be used in conjunction with a server running 
-[Kurogo Mobile Web](https://github.com/modolabs/Kurogo-Mobile-Web)
-
-## NOTICE: Pre-release version
-
-This project is in a pre-beta stage, with the first beta scheduled in
-mid April.  Please be aware that certain conventions, API and file
-locations may change. We will strive to provide detailed release notes
-when critical core behavior has been altered.
+[Kurogo Mobile Web](https://github.com/modolabs/Kurogo-Mobile-Web).
 
 ## Building the project
 
@@ -36,22 +29,6 @@ commands:
     $ cd Kurogo-iOS
     $ git submodule init
     $ git submodule update
-
-### Secret files
-
-Many apps will include secrets (passwords, API keys, etc.) that should
-not be committed to a public repository. This is done in Kurogo by
-using a secret .plist file to override public configuration settings,
-as follows:
-
-1. In your project's Resources directory, make a directory called
-   secret (if it doesn't already exist).
-
-2. Copy Config.plist from your project root into secret.
-
-3. Remove all the dictionary entries that do not need to be secret.
-
-4. Add or modify any dictionary entries with secret values.
 
 ## History
 
