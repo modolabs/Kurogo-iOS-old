@@ -296,6 +296,7 @@
         [self.tableView setEditing:YES animated:YES];
     } else if (!tableShouldBeEditing && self.tableView.editing) {
         [self.tableView setEditing:NO animated:YES];
+        [[KGOUserSettingsManager sharedManager] saveSettings];
     }
 
     void (^setButtonTitle)(UIButton *, NSString *) = ^(UIButton *button, NSString *title) {

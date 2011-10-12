@@ -168,13 +168,10 @@ NSString * const KGOUserSettingKeyServer = @"ServerSelection";
     self.moduleSortOrder = oldOrder;
     DLog(@"%@", self.moduleSortOrder);
     
-    KGOUserSetting *setting = nil;
-    if (primary) {
-        setting = [self settingForKey:KGOUserSettingKeyPrimaryModules];
-    } else {
-        setting = [self settingForKey:KGOUserSettingKeySecondaryModules];
-    }
+    NSString *settingKey = primary ? KGOUserSettingKeyPrimaryModules : KGOUserSettingKeySecondaryModules;
+    KGOUserSetting *setting = [self settingForKey:settingKey];
     [setting _setOptions:order];
+    setting.selectedValue = order;
 }
 
 - (BOOL)isModuleHidden:(ModuleTag *)tag primary:(BOOL)primary
@@ -210,10 +207,91 @@ NSString * const KGOUserSettingKeyServer = @"ServerSelection";
             [mutableOptions removeObjectAtIndex:i];
             [mutableOptions insertObject:mutableDict atIndex:i];
             [setting _setOptions:mutableOptions];
-            
+            setting.selectedValue = mutableOptions;
             return;
         }
     }
+}
+
+- (void)updateModuleSettingsFromConfig:(NSArray *)moduleConfig
+{
+    NSString *filename = [[NSBundle mainBundle] pathForResource:@"Settings" ofType:@"plist"];
+
+    __block NSDictionary *availableSettings = [NSDictionary dictionaryWithContentsOfFile:filename];
+    __block NSDictionary *savedSettings = [[NSUserDefaults standardUserDefaults] objectForKey:KGOUserSettingPreferenceKey];
+    __block NSMutableArray *moduleOrder = [NSMutableArray array];
+    
+    KGOUserSetting* (^prepareModules)(NSString *, BOOL) = ^(NSString *settingKey, BOOL isSecondary) {
+        KGOUserSetting *aSetting = [self settingForKey:settingKey];
+        NSDictionary *defaultData = [availableSettings dictionaryForKey:settingKey];
+        // whether this is present in Settings.plist determines whether or not
+        // we want to show this in the settings module
+        if (defaultData) {
+            if (!aSetting) {
+                aSetting = [[[KGOUserSetting alloc] init] autorelease];
+                [aSetting _setKey:settingKey];
+                [aSetting _setTitle:[defaultData objectForKey:@"title"]];
+            }
+            
+            NSArray *moduleSettings = [savedSettings arrayForKey:settingKey];
+            
+            if (!moduleSettings) {
+                NSMutableArray *tempSettings = [NSMutableArray array];
+                
+                for (NSDictionary *moduleData in moduleConfig) {
+                    ModuleTag *tag = [moduleData nonemptyStringForKey:@"tag"];
+                    if ([tag isEqualToString:HomeTag]) {
+                        continue;
+                    }
+                    
+                    NSString *moduleId = [moduleData nonemptyStringForKey:@"id"];
+                    if (moduleId && tag) {
+                        BOOL secondary = NO;
+
+                        id homeConfig = [moduleData objectForKey:@"home"];
+                        if (homeConfig) {
+                            if ([homeConfig isKindOfClass:[NSNumber class]] && ![homeConfig boolValue]) {
+                                continue;
+                            }
+                            secondary = [homeConfig isKindOfClass:[NSDictionary class]] 
+                                && [[homeConfig stringForKey:@"type"] isEqualToString:@"secondary"];
+                            
+                        } else {
+                            secondary = [moduleData boolForKey:@"secondary"];
+                        }
+                        
+                        if (isSecondary == secondary) {
+                            [tempSettings addObject:moduleData];
+                            [moduleOrder addObject:tag];
+                        }
+                    }
+                }
+                
+                moduleSettings = tempSettings;
+                
+            } else {
+                for (NSDictionary *moduleData in moduleSettings) {
+                    ModuleTag *tag = [moduleData nonemptyStringForKey:@"tag"];
+                    [moduleOrder addObject:tag];
+                }
+            }
+            
+            [aSetting _setOptions:moduleSettings];
+        }
+        return aSetting;
+    };
+    
+    KGOUserSetting *setting = prepareModules(KGOUserSettingKeyPrimaryModules, NO);
+    if (setting) {
+        [self.settings setObject:setting forKey:KGOUserSettingKeyPrimaryModules];
+    }
+    
+    setting = prepareModules(KGOUserSettingKeySecondaryModules, YES);
+    if (setting) {
+        [self.settings setObject:setting forKey:KGOUserSettingKeySecondaryModules];
+    }
+    
+    self.moduleSortOrder = [NSArray arrayWithArray:moduleOrder];
 }
 
 - (id)init
@@ -254,62 +332,6 @@ NSString * const KGOUserSettingKeyServer = @"ServerSelection";
                 [_settings setObject:aSetting forKey:key];
             }
         }
-
-        NSDictionary *primaryModuleData = [availableSettings dictionaryForKey:KGOUserSettingKeyPrimaryModules];
-        NSDictionary *secondaryModuleData = [availableSettings dictionaryForKey:KGOUserSettingKeySecondaryModules];
-        
-        __block NSMutableArray *moduleOrder = [NSMutableArray array];
-        __block NSArray *moduleConfig = [[KGO_SHARED_APP_DELEGATE() appConfig] arrayForKey:KGOAppConfigKeyModules];
-
-        KGOUserSetting* (^prepareModules)(NSString *, NSDictionary *, BOOL) 
-            = ^(NSString *settingKey, NSDictionary *defaultData, BOOL isSecondary)
-        {
-            KGOUserSetting *aSetting = [[[KGOUserSetting alloc] init] autorelease];
-            if (defaultData) {
-                [aSetting _setKey:settingKey];
-                [aSetting _setTitle:[defaultData objectForKey:@"title"]];
-                
-                NSArray *moduleSettings = [savedSettings arrayForKey:settingKey];
-                
-                if (!moduleSettings) {
-                    NSMutableArray *tempSettings = [NSMutableArray array];
-                    
-                    for (NSDictionary *moduleData in moduleConfig) {
-                        ModuleTag *tag = [moduleData nonemptyStringForKey:@"tag"];
-                        if ([tag isEqualToString:HomeTag]) {
-                            continue;
-                        }
-                        
-                        NSString *moduleId = [moduleData nonemptyStringForKey:@"id"];
-                        if (moduleId && tag) {
-                            if (isSecondary == [moduleData boolForKey:@"secondary"]) {
-                                [tempSettings addObject:moduleData];
-                                [moduleOrder addObject:tag];
-                            }
-                        }
-                    }
-                    
-                    moduleSettings = tempSettings;
-                    
-                } else {
-                    for (NSDictionary *moduleData in moduleSettings) {
-                        ModuleTag *tag = [moduleData nonemptyStringForKey:@"tag"];
-                        [moduleOrder addObject:tag];
-                    }
-                }
-
-                [aSetting _setOptions:moduleSettings];
-            }
-            return aSetting;
-        };
-        
-        [self.settings setObject:prepareModules(KGOUserSettingKeyPrimaryModules, primaryModuleData, NO)
-                          forKey:KGOUserSettingKeyPrimaryModules];
-
-        [self.settings setObject:prepareModules(KGOUserSettingKeySecondaryModules, secondaryModuleData, YES)
-                          forKey:KGOUserSettingKeySecondaryModules];
-        
-        self.moduleSortOrder = [NSArray arrayWithArray:moduleOrder];
 
 #ifdef DEBUG
         KGOUserSetting *serverSetting = [[[KGOUserSetting alloc] init] autorelease];

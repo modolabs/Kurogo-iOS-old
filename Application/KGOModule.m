@@ -7,17 +7,20 @@
 @implementation KGOModule
 
 @synthesize tag = _tag, shortName = _shortName, longName = _longName;
-@synthesize enabled, hidden, badgeValue, tabBarImage, iconImage, listViewImage, secondary, apiMaxVersion, apiMinVersion, hasAccess;
+@synthesize enabled, hidden, badgeValue, secondary, apiMaxVersion, apiMinVersion, hasAccess;
+@synthesize tabBarImage, iconImage, listViewImage;
 @synthesize searchDelegate;
 @synthesize userSettings;
 
 - (id)initWithDictionary:(NSDictionary *)moduleDict {
     self = [super init];
     if (self) {
-        
+
+        // locally configured values. they will be false by default
         self.hidden = [moduleDict boolForKey:@"hidden"];
-        self.secondary = [[moduleDict objectForKey:@"secondary"] boolValue];
-        NSString *tag = [moduleDict objectForKey:@"tag"];
+        self.secondary = [moduleDict boolForKey:@"secondary"];
+
+        NSString *tag = [moduleDict stringForKey:@"tag"];
         if (tag) {
             self.tag = tag;
         }
@@ -46,6 +49,14 @@
         self.shortName = title;
         self.longName = title;
     }
+    
+    id homeConfig = [moduleDict objectForKey:@"home"];
+    if ([homeConfig isKindOfClass:[NSNumber class]] && ![homeConfig boolValue]) {
+        self.hidden = YES;
+    } else if ([homeConfig isKindOfClass:[NSDictionary class]]) {
+        self.secondary = [[homeConfig stringForKey:@"type"] isEqualToString:@"secondary"];
+    }
+    // everything above is server syntax
     
     self.hasAccess = [moduleDict boolForKey:@"access"];
 

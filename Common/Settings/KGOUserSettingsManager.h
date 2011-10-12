@@ -27,6 +27,7 @@ extern NSString * const KGOUserSettingKeyServer;
 - (void)setModuleOrder:(NSArray *)order primary:(BOOL)primary;
 - (BOOL)isModuleHidden:(ModuleTag *)tag primary:(BOOL)primary;
 - (void)toggleModuleHidden:(ModuleTag *)tag primary:(BOOL)primary;
+- (void)updateModuleSettingsFromConfig:(NSArray *)moduleConfig;
 
 @property(nonatomic, retain) NSArray *moduleSortOrder;
 @property(nonatomic, readonly) NSMutableDictionary *settings;

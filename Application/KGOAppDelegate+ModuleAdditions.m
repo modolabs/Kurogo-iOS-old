@@ -1,3 +1,4 @@
+#import <AudioToolbox/AudioToolbox.h>
 #import "KGOAppDelegate+ModuleAdditions.h"
 #import "KGOSpringboardViewController.h"
 #import "HarvardNavigationController.h"
@@ -12,7 +13,7 @@
 #import "Foundation+KGOAdditions.h"
 #import "KGORequestManager.h"
 #import "KGONotification.h"
-#import "AudioToolbox/AudioToolbox.h"
+#import "KGOUserSettingsManager.h"
 
 @interface KGOAppDelegate (PrivateModuleListAdditions)
 
@@ -114,6 +115,26 @@
 
 - (void)loadModulesFromArray:(NSArray *)moduleArray local:(BOOL)isLocal
 {
+    if (!isLocal) {
+        moduleArray = [moduleArray sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2) {
+            id homeConfig1 = [(NSDictionary *)obj1 objectForKey:@"home"];
+            id homeConfig2 = [(NSDictionary *)obj2 objectForKey:@"home"];
+            if ([homeConfig1 isKindOfClass:[NSDictionary class]]) {
+                if ([homeConfig2 isKindOfClass:[NSDictionary class]]) {
+                    return [[homeConfig1 objectForKey:@"order"] compare:[homeConfig2 objectForKey:@"order"]];
+                }
+                return NSOrderedAscending; // sort all non-showing modules to the end
+            } else {
+                if ([homeConfig2 isKindOfClass:[NSDictionary class]]) {
+                    return NSOrderedDescending; // sort all non-showing modules to the end
+                }
+                return NSOrderedSame; // neither is showing so we don't care
+            }
+        }];
+    }
+    
+    [[KGOUserSettingsManager sharedManager] updateModuleSettingsFromConfig:moduleArray];
+    
     for (NSDictionary *moduleDict in moduleArray) {
         NSString *tag = [moduleDict nonemptyStringForKey:@"tag"];
         KGOModule *aModule = [self moduleForTag:tag];

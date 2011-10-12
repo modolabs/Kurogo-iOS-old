@@ -630,6 +630,11 @@
             DLog(@"skipping module %@", aModule);
             continue;
         }
+        
+        if ([[KGOUserSettingsManager sharedManager] isModuleHidden:aModule.tag primary:!aModule.secondary]) {
+            DLog(@"module %@ hidden by user", aModule);
+            continue;
+        }
 
         // TODO: make the home API report whether modules are secondary
         if ([aModule isKindOfClass:[LoginModule class]]) {
