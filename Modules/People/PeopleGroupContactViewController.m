@@ -95,7 +95,10 @@
 
 - (void)dataManager:(PeopleDataManager *)dataManager didReceiveContacts:(NSArray *)contacts
 {
-    self.allContacts = contacts;
+    NSPredicate *pred = [NSPredicate predicateWithBlock:^BOOL(id evaluatedObject, NSDictionary *bindings) {
+        return [evaluatedObject isKindOfClass:[PersonContact class]];
+    }];
+    self.allContacts = [contacts filteredArrayUsingPredicate:pred];
     [self reloadDataForTableView:self.tableView];
 }
 
@@ -105,11 +108,9 @@
     return 1;
 }
 
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    if(self.allContacts) {
-        return self.allContacts.count;
-    }
-    return 0;
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    return [self.allContacts count];
 }
 
 - (CellManipulator)tableView:(UITableView *)tableView manipulatorForCellAtIndexPath:(NSIndexPath *)indexPath {
