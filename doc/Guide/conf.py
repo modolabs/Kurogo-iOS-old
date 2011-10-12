@@ -219,8 +219,10 @@ man_pages = [
 
 # -- Intersphinx
 intersphinx_mapping = {
-    'mobileweb': ('http://modolabs.com/kurogo/guide/',
-                  'http://modolabs.com/kurogo/guide/objects.inv')
+    'mobileweb': ('http://kurogo.org/docs/mw/current',
+                  'http://kurogo.org/docs/mw/current/objects.inv'),
+    'restapi': ('http://kurogo.org/docs/rest/current',
+                'http://kurogo.org/docs/rest/current/objects.inv')
 }
 
 

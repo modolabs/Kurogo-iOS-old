@@ -7,7 +7,7 @@ Welcome to Kurogo iOS's documentation!
 ======================================
 
 This is the iOS counterpart to the 
-`Kurogo Framework <http://modolabs.com/kurogo/guide/#kurogo-developer-s-guide>`_.
+`Kurogo Framework <http://kurogo.org/docs/mw/current/#kurogo-developer-s-guide>`_.
 
 This guide serves as a tour of the project source code and its features.
 

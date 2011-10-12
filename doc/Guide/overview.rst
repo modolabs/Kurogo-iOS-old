@@ -17,7 +17,7 @@ Mobile Web REST Additions
 
 Kurogo iOS apps are intimately tied to a server running Kurogo Mobile Web.
 The Mobile Web component includes a REST API required for most modules.
-See the Mobile Web documentation for `instructions <http://modolabs.com/kurogo/guide/apimodule.html>`_ 
+See the Mobile Web documentation for `instructions <http://kurogo.org/docs/mw/current/apimodule.html>`_
 on enabling REST API output for modules.
 
 =======
