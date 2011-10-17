@@ -142,7 +142,7 @@
 			<key>APIPath</key>
 			<string>rest</string>
 			<key>Host</key>
-			<string>demo.modolabs.com</string>
+			<string>kurogo.org</string>
 			<key>PathExtension</key>
 			<string>universitas</string>
 			<key>UseHTTPS</key>
@@ -153,7 +153,7 @@
 			<key>APIPath</key>
 			<string>rest</string>
 			<key>Host</key>
-			<string>demo.modolabs.com</string>
+			<string>kurogo.org</string>
 			<key>PathExtension</key>
 			<string>universitas</string>
 			<key>UseHTTPS</key>
@@ -164,7 +164,7 @@
 			<key>APIPath</key>
 			<string>rest</string>
 			<key>Host</key>
-			<string>demo.modolabs.com</string>
+			<string>kurogo.org</string>
 			<key>PathExtension</key>
 			<string>universitas</string>
 			<key>UseHTTPS</key>
@@ -175,7 +175,7 @@
 			<key>APIPath</key>
 			<string>rest</string>
 			<key>Host</key>
-			<string>demo.modolabs.com</string>
+			<string>kurogo.org</string>
 			<key>PathExtension</key>
 			<string>universitas</string>
 			<key>UseHTTPS</key>
