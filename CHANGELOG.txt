@@ -1,0 +1,29 @@
+1.0 (17 Oct 2011)
+
+* Added support for retrieving home screen module order from the server.
+* Fixed incorrect contact information display types in People module.
+
+1.0 Release Candidate 1 (11 Oct 2011)
+
+* Added Kurogo.xcworkspace file as the primary Xcode file to be used for 
+  development.
+* Changed Xcode project groupings to include all project-specific files
+  under a "Site" group.
+* Fixed the way static libraries were being included in application 
+  projects.
+* Removed build settings that were nonstandard variations on Debug and 
+  Release. Added build settings Debug, Staging, Release.
+* Removed dependencies on MGTwitterEngine, OAuthConsumer, and
+  SFHFKeychainUtils libraries.
+* Added the ability to prompt users to retry failed connections.
+* Added singleton object for Kurogo-specific NSUserDefaults values.
+* Added interface for debug builds to toggle between REST API host servers.
+* Improved CoreDataManager methods that deal with multiple threads.
+* Implemented federated search for News, People, Map, Calendar, and Video 
+  modules.
+* Added Links module.
+* Added contact groups in People module.
+
+1.0 Beta 1 (9 Apr 2011)
+
+Initial public release
