@@ -1,0 +1,5 @@
+.gitmodules	export-ignore
+.gitignore	export-ignore
+.gitattributes	export-ignore
+doc		export-ignore
+hash2png.py	export-ignore
