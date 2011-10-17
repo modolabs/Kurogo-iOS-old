@@ -15,7 +15,10 @@ be used in conjunction with a server running
 
 ### Requirements
 
-Building the project requires Xcode 4 and iOS SDK 4.2 or above.
+Apps built with the Kurogo iOS framework are required to fetch data from a
+server running Kurogo Mobile Web version 1.3.
+
+Building the project requires Xcode 4 and above with iOS SDK 4.2 or above.
 
 ### Checking out source code and dependencies
 
