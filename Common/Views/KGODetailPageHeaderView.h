@@ -19,11 +19,9 @@
     
     UIButton *_bookmarkButton;
     UIButton *_shareButton;
-    UIButton *_calendarButton;
     
     BOOL _showsShareButton;
     BOOL _showsBookmarkButton;
-    BOOL _showsCalendarButton;
     
     UILabel *_titleLabel;
     UILabel *_subtitleLabel;
@@ -37,7 +35,6 @@
 @property(nonatomic, retain) id<KGOSearchResult> detailItem;
 @property(nonatomic) BOOL showsShareButton;
 @property(nonatomic) BOOL showsBookmarkButton;
-@property(nonatomic) BOOL showsCalendarButton;
 @property(nonatomic, readonly) UILabel *titleLabel;
 @property(nonatomic, readonly) UILabel *subtitleLabel;
 

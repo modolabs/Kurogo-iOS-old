@@ -9,7 +9,7 @@
 
 @implementation KGODetailPageHeaderView
 
-@synthesize showsShareButton, showsBookmarkButton, showsCalendarButton, delegate;
+@synthesize showsShareButton, showsBookmarkButton, delegate;
 
 @synthesize showsSubtitle;
 @synthesize actionButtons = _actionButtons;
