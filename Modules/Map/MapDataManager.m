@@ -59,8 +59,29 @@
     [_categoryRequest connect];
 }
 
-- (void)requestDetailsForPlacemark:(NSString *)placemarkID latitude:(CGFloat)lat longitude:(CGFloat)lon
+- (void)requestDetailsForPlacemark:(KGOPlacemark *)placemark
 {
+    KGOMapCategory *category = [placemark.categories anyObject];
+    KGOMapCategory *parent = category.parentCategory;
+    NSMutableArray *references = [NSMutableArray array];
+    while (parent && parent.parentCategory != parent) {
+        [references addObject:parent.identifier];
+        parent = parent.parentCategory;
+    }
+    NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:
+                            placemark.identifier, @"id",
+                            category.identifier, @"category",
+                            references, [references componentsJoinedByString:@","],
+                            nil];
+
+    [_placemarkForDetailRequest release];
+    _placemarkForDetailRequest = [placemark retain];
+    _detailRequest = [[KGORequestManager sharedManager] requestWithDelegate:self
+                                                                     module:self.moduleTag
+                                                                       path:@"detail"
+                                                                    version:1
+                                                                     params:params];
+    [_detailRequest connect];
 }
 
 - (void)search:(NSString *)searchText
@@ -103,6 +124,7 @@
 - (void)request:(KGORequest *)request didReceiveResult:(id)result
 {
     if (request == _indexRequest || request == _categoryRequest) {
+#pragma mark Index/category request response
         NSMutableArray *results = [NSMutableArray array];
         KGOMapCategory *parentCategory = nil;
         NSString *categoryID = [request.getParams objectForKey:@"category"];
@@ -145,15 +167,61 @@
         
         [[CoreDataManager sharedManager] saveData];
         
-        if (self.delegate && [self.delegate respondsToSelector:@selector(mapDataManager:didReceiveChildren:forCategory:)]) {
+        if ([self.delegate respondsToSelector:@selector(mapDataManager:didReceiveChildren:forCategory:)]) {
             [self.delegate mapDataManager:self didReceiveChildren:results forCategory:categoryID];
         }
         
     } else if (request == _detailRequest) {
-
+#pragma mark Detail request result
+        NSString *title = [result nonemptyStringForKey:@"title"];
+        if (title) {
+            _placemarkForDetailRequest.title = title;
+        }
+        NSString *address = [result nonemptyStringForKey:@"address"];
+        if (address) {
+            _placemarkForDetailRequest.street = address;
+        }
+        CGFloat lat = [result floatForKey:@"lat"];
+        if (lat) {
+            _placemarkForDetailRequest.latitude = [NSNumber numberWithFloat:lat];
+        }
+        CGFloat lon = [result floatForKey:@"lon"];
+        if (lon) {
+            _placemarkForDetailRequest.longitude = [NSNumber numberWithFloat:lon];
+        }
+        NSString *geometryType = [result nonemptyStringForKey:@"geometryType"];
+        if (geometryType) {
+            _placemarkForDetailRequest.geometryType = geometryType;
+        }
+        id geometry = [result objectForKey:@"geometry"];
+        if (geometryType && geometry) {
+            if (([geometryType isEqualToString:@"point"]
+                 && [geometry isKindOfClass:[NSDictionary class]])
+                || (([geometryType isEqualToString:@"polyline"] || [geometryType isEqualToString:@"polygon"])
+                    && [geometry isKindOfClass:[NSArray class]]))
+            {
+                _placemarkForDetailRequest.geometry = [NSKeyedArchiver archivedDataWithRootObject:geometry];
+            }
+        }
+        NSDictionary *details = [result dictionaryForKey:@"details"];
+        if (details) {
+            NSMutableDictionary *mutableDetails = [NSMutableDictionary dictionaryWithDictionary:details];
+            NSString *placemarkDescription = [mutableDetails nonemptyStringForKey:@"description"];
+            if (placemarkDescription) {
+                _placemarkForDetailRequest.info = placemarkDescription;
+                [mutableDetails removeObjectForKey:@"description"];
+            }
+            if (mutableDetails.count) {
+                _placemarkForDetailRequest.userInfo = [NSKeyedArchiver archivedDataWithRootObject:mutableDetails];
+            }
+        }
+        
+        if ([self.delegate respondsToSelector:@selector(mapDataManager:didUpdatePlacemark:)]) {
+            [self.delegate mapDataManager:self didUpdatePlacemark:_placemarkForDetailRequest];
+        }
     
     } else if (request == _searchRequest) {
-        
+#pragma mark Search request response
         NSArray *resultArray = [result arrayForKey:@"results"];
         NSMutableArray *searchResults = [NSMutableArray arrayWithCapacity:[(NSArray *)resultArray count]];
         for (id aResult in resultArray) {
@@ -176,6 +244,9 @@
         _categoryRequest = nil;
     } else if (request == _detailRequest) {
         _detailRequest = nil;
+        
+        [_placemarkForDetailRequest release];
+        _placemarkForDetailRequest = nil;
     } else if (request == _searchRequest) {
         _searchRequest = nil;
     } 
@@ -183,6 +254,19 @@
 
 - (void)request:(KGORequest *)request didFailWithError:(NSError *)error
 {
+}
+
+- (void)dealloc
+{
+    [_indexRequest cancel];
+    [_categoryRequest cancel];
+    [_detailRequest cancel];
+    [_searchRequest cancel];
+    self.delegate = nil;
+    self.searchDelegate = nil;
+    self.moduleTag = nil;
+    [_placemarkForDetailRequest release];
+    [super dealloc];
 }
 
 @end

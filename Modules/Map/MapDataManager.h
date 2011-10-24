@@ -22,6 +22,7 @@
     KGORequest *_detailRequest;
     KGORequest *_searchRequest;
     
+    KGOPlacemark *_placemarkForDetailRequest;
 }
 
 @property(nonatomic, retain) ModuleTag *moduleTag;
@@ -30,7 +31,7 @@
 
 - (void)requestBrowseIndex;
 - (void)requestChildrenForCategory:(NSString *)categoryID;
-- (void)requestDetailsForPlacemark:(NSString *)placemarkID latitude:(CGFloat)lat longitude:(CGFloat)lon;
+- (void)requestDetailsForPlacemark:(KGOPlacemark *)placemark;
 
 - (void)search:(NSString *)searchText;
 - (void)searchNearby:(CLLocationCoordinate2D)coordinate;

@@ -101,7 +101,7 @@ NSString * const MapTypePreferenceChanged = @"MapTypeChanged";
         KGOPlacemark *place = [params objectForKey:@"place"];
         if (place) {
             MapDetailViewController *detailVC = [[[MapDetailViewController alloc] init] autorelease];
-            detailVC.moduleTag = self.tag;
+            detailVC.dataManager = self.dataManager;
             id<KGODetailPagerController> controller = [params objectForKey:@"pagerController"];
             if (controller) {
                 KGODetailPager *pager = [[[KGODetailPager alloc] initWithPagerController:controller delegate:detailVC] autorelease];
@@ -147,7 +147,6 @@ NSString * const MapTypePreferenceChanged = @"MapTypeChanged";
         
         MapCategoryListViewController *categoryVC = [[[MapCategoryListViewController alloc] init] autorelease];
         categoryVC.dataManager = self.dataManager;
-        categoryVC.categoryEntityName = MapCategoryEntityName;
 
         KGOMapCategory *parentCategory = [params objectForKey:@"parentCategory"];
         if ([parentCategory isKindOfClass:[KGOMapCategory class]]) {

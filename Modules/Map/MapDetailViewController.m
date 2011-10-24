@@ -7,14 +7,14 @@
 
 @implementation MapDetailViewController
 
-@synthesize placemark, pager, moduleTag;
+@synthesize placemark, pager, dataManager;
 
 #pragma mark TabbedViewDelegate
 
 - (UIView *)tabbedControl:(KGOTabbedControl *)control containerViewAtIndex:(NSInteger)index {
     UIView *view = nil;
     if (index == _photoTabIndex) {
-
+        // TODO
     
     } else if (index == _detailsTabIndex) {
         UIWebView *webView = [[[UIWebView alloc] initWithFrame:CGRectMake(10, 10, self.tabViewContainer.frame.size.width - 20, self.tabViewContainer.frame.size.height - 20)] autorelease];
@@ -27,19 +27,8 @@
             CGRect frame = CGRectMake(0, 0, self.tabViewContainer.frame.size.width, self.tabViewContainer.frame.size.height);
             _tableView = [[[KGOSearchResultListTableView alloc] initWithFrame:frame] autorelease];
             
-            NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:
-                                    @"nearby", @"type",
-                                    [NSString stringWithFormat:@"%.5f", self.placemark.coordinate.latitude], @"lat",
-                                    [NSString stringWithFormat:@"%.5f", self.placemark.coordinate.longitude], @"lon",
-                                    nil];
-            _request = [[KGORequestManager sharedManager] requestWithDelegate:self
-                                                                       module:self.moduleTag
-                                                                         path:@"search"
-                                                                      version:1
-                                                                       params:params];
-            _request.expectedResponseType = [NSDictionary class];
-            if (_request)
-                [_request connect];
+            self.dataManager.searchDelegate = _tableView;
+            [self.dataManager searchNearby:self.placemark.coordinate];
         }
         
         view = _tableView;
@@ -60,6 +49,7 @@
         currentTabIndex++;
     }
     if (self.placemark.info) {
+        // TODO: add detail tab for placemarks with itemized fields
         [tabs addObject:NSLocalizedString(@"Details", nil)];
         _detailsTabIndex = currentTabIndex;
         currentTabIndex++;
@@ -73,6 +63,10 @@
 
 - (void)loadAnnotationContent {
     DLog(@"%@", [self.placemark description]);
+    if (!self.placemark.info) {
+        self.dataManager.delegate = self;
+        [self.dataManager requestDetailsForPlacemark:self.placemark];
+    }
 
     self.tabViewHeader.detailItem = self.placemark;
     
@@ -89,31 +83,17 @@
     }
 }
 
-#pragma mark KGORequestDelegate
+#pragma mark MapDataManager
 
-- (void)requestWillTerminate:(KGORequest *)request {
-    _request = nil;
-}
-
-// FIXME: have data manager do this so we can figure out what module tag to assign
-- (void)request:(KGORequest *)request didReceiveResult:(id)result {
-    _request = nil;
-    
-    NSArray *resultArray = [result arrayForKey:@"results"];
-    NSMutableArray *searchResults = [NSMutableArray arrayWithCapacity:[(NSArray *)resultArray count]];
-    for (id aResult in resultArray) {
-        KGOPlacemark *aPlacemark = [KGOPlacemark placemarkWithDictionary:aResult];
-        if (aPlacemark)
-            [searchResults addObject:aPlacemark];
-    }
-    [_tableView receivedSearchResults:searchResults forSource:self.moduleTag];
+- (void)mapDataManager:(MapDataManager *)dataManager didUpdatePlacemark:(KGOPlacemark *)placemark
+{
+    [self reloadTabs];
 }
 
 #pragma mark -
 
 - (void)dealloc
 {
-    [_request cancel];
     [_tableView release];
     [super dealloc];
 }
