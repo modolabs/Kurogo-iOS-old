@@ -6,6 +6,40 @@
 @synthesize tabs = _tabs, tabViewHeader = _tabViewHeader, tabViewContainer = _tabViewContainer;
 @synthesize delegate;
 
+- (void)reloadTabs
+{
+    NSInteger currentSelection = self.tabs.selectedTabIndex;
+    NSString *selectedTitle = nil;
+    UIImage *selectedImage = nil;
+    if (currentSelection != NSNotFound) {
+        selectedTitle = [self.tabs titleForTabAtIndex:currentSelection];
+        selectedImage = [self.tabs imageForTabAtIndex:currentSelection];
+    }
+    currentSelection = NSNotFound;
+
+    [self.tabs removeAllTabs];
+
+    for (id item in [self.delegate itemsForTabbedControl:self.tabs]) {
+        if ([item isKindOfClass:[NSString class]]) {
+            if ([selectedTitle isEqualToString:item]) {
+                currentSelection = self.tabs.numberOfTabs;
+            }
+            [self.tabs insertTabWithTitle:item atIndex:_tabs.numberOfTabs animated:NO];
+        } else {
+            if ([selectedImage isEqual:item]) {
+                currentSelection = self.tabs.numberOfTabs;
+            }
+            [self.tabs insertTabWithImage:item atIndex:_tabs.numberOfTabs animated:NO];
+        }
+    }
+    
+    if (currentSelection != NSNotFound) {
+        [self.tabs setSelectedTabIndex:currentSelection];
+    }
+    
+    [self.tabs setNeedsLayout];
+}
+
 - (void)reloadTabContent {
     [self tabbedControl:_tabs didSwitchToTabAtIndex:[_tabs selectedTabIndex]];
 }

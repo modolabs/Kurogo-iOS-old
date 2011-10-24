@@ -119,9 +119,10 @@
 - (void)insertTabWithTitle:(NSString *)title atIndex:(NSUInteger)index animated:(BOOL)animated {
     if (![title isKindOfClass:[NSString class]] || index > _tabContents.count) return;
     [_tabContents insertObject:title atIndex:index];
-    
+
     UIButton *button = [self buttonForTab];
     [button setTitle:title forState:UIControlStateNormal];
+    [button setTitle:title forState:UIControlStateHighlighted];
     [_tabs insertObject:button atIndex:index];
 
     [self didInsertTabAtIndex:index animated:animated];
@@ -161,6 +162,7 @@
 
 - (void)removeAllTabs {
     [_tabs removeAllObjects];
+    [_tabContents removeAllObjects];
 
     if (_tabMinWidths) {
         free(_tabMinWidths);
@@ -286,9 +288,11 @@
         if (_selectedTabIndex == tabIndex) {
             [button setBackgroundImage:[self backgroundImageForState:KGOTabStateActive atIndex:tabIndex]
                               forState:UIControlStateNormal];
+            [button setTitleColor:[self textColorForState:KGOTabStateActive] forState:UIControlStateNormal];
         } else {
             [button setBackgroundImage:[self backgroundImageForState:KGOTabStateInactive atIndex:tabIndex]
                               forState:UIControlStateNormal];
+            [button setTitleColor:[self textColorForState:KGOTabStateInactive] forState:UIControlStateNormal];
         }
         [button setBackgroundImage:[self backgroundImageForState:KGOTabStatePressed atIndex:tabIndex]
                           forState:UIControlStateHighlighted];

@@ -22,6 +22,7 @@
 @property (nonatomic, retain) UIView *tabViewContainer;
 @property (nonatomic, retain) KGOTabbedControl *tabs;
 
-- (void)reloadTabContent;
+- (void)reloadTabs;
+- (void)reloadTabContent; // just reloads the current tab
 
 @end
