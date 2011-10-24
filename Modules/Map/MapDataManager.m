@@ -71,7 +71,7 @@
     NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:
                             placemark.identifier, @"id",
                             category.identifier, @"category",
-                            references, [references componentsJoinedByString:@","],
+                            [references componentsJoinedByString:@":"], @"references",
                             nil];
 
     [_placemarkForDetailRequest release];
@@ -166,6 +166,11 @@
         }
         
         [[CoreDataManager sharedManager] saveData];
+
+        // clear out category request because it can be called repeatedly
+        if (request == _categoryRequest) {
+            _categoryRequest = nil;
+        }
         
         if ([self.delegate respondsToSelector:@selector(mapDataManager:didReceiveChildren:forCategory:)]) {
             [self.delegate mapDataManager:self didReceiveChildren:results forCategory:categoryID];
