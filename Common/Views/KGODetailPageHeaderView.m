@@ -14,6 +14,15 @@
 @synthesize showsSubtitle;
 @synthesize actionButtons = _actionButtons;
 
+- (id)initWithCoder:(NSCoder *)aDecoder
+{
+    self = [super initWithCoder:aDecoder];
+    if (self) {
+        self.actionButtons = [NSMutableArray array];
+        self.showsSubtitle = YES;
+    }
+    return self;
+}
 
 - (id)initWithFrame:(CGRect)frame
 {
