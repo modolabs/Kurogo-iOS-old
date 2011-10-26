@@ -306,7 +306,7 @@
                                            reuseIdentifier:loadMoreIdentifier] autorelease];
         }
         cell.textLabel.text = NSLocalizedString(@"Load more stories", @"new story list");
-        cell.selectionStyle = UITableViewCellSelectionStyleGray;
+        [cell applyBackgroundThemeColorForIndexPath:indexPath tableView:tableView];
         // TODO: set color to #999999 while things are loading
         cell.textLabel.textColor = [UIColor colorWithHexString:@"#1A1611"];
         
@@ -318,7 +318,7 @@
             cell = _storyCell;
         }
         [(NewsStoryTableViewCell *)cell setStory:[self.stories objectAtIndex:indexPath.row]];
-        cell.selectionStyle = UITableViewCellSelectionStyleGray;
+        [cell applyBackgroundThemeColorForIndexPath:indexPath tableView:tableView];
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     }
     return cell;

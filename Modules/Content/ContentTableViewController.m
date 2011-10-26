@@ -1,7 +1,7 @@
 #import "ContentTableViewController.h"
 #import "Foundation+KGOAdditions.h"
 #import "KGOAppDelegate+ModuleAdditions.h"
-
+#import "UIKit+KGOAdditions.h"
 
 @implementation ContentTableViewController
 @synthesize moduleTag;
@@ -173,7 +173,7 @@
     
     
     cell.textLabel.text = [feedTitles stringForKey:[feedKeys objectAtIndex:indexPath.row]];
-    cell.selectionStyle = UITableViewCellSelectionStyleGray;
+    [cell applyBackgroundThemeColorForIndexPath:indexPath tableView:tableView];
     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     
     return cell;

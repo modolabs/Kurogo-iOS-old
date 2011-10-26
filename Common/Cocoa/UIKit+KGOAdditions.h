@@ -29,7 +29,11 @@
 
 @end
 
+@interface UITableViewCell (KGOAdditions)
 
+- (void)applyBackgroundThemeColorForIndexPath:(NSIndexPath *)indexPath tableView:(UITableView *)tableView;
+
+@end
 
 @interface UIWebView (KGOAdditions)
 

@@ -7,6 +7,7 @@
 #import "CoreDataManager.h"
 #import "Foundation+KGOAdditions.h"
 #import <QuartzCore/QuartzCore.h>
+#import "UIKit+KGOAdditions.h"
 
 @implementation MapCategoryListViewController
 
@@ -182,7 +183,6 @@ headerView = _headerView;
     }
     
     return [[^(UITableViewCell *cell) {
-        cell.selectionStyle = UITableViewCellSelectionStyleGray;
         cell.textLabel.text = title;
         cell.accessoryView = [[KGOTheme sharedTheme] accessoryViewForType:accessory];
     } copy] autorelease];

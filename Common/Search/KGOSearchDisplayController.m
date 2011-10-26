@@ -9,6 +9,7 @@
 #import "RecentSearch.h"
 #import <MapKit/MKAnnotation.h>
 #import "Foundation+KGOAdditions.h"
+#import "UIKit+KGOAdditions.h"
 
 #define MAX_SEARCH_RESULTS 25
 
@@ -461,7 +462,6 @@ maxResultsPerSection;
     }
     
     return [[^(UITableViewCell *cell) {
-        cell.selectionStyle = UITableViewCellSelectionStyleGray;
         cell.textLabel.text = title;
         cell.detailTextLabel.text = subtitle;
         cell.accessoryView = [[KGOTheme sharedTheme] accessoryViewForType:accessoryType];

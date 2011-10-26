@@ -142,7 +142,7 @@
                 }
                 
                 cell.textLabel.text = titleString;
-                cell.selectionStyle = UITableViewCellSelectionStyleGray;
+                [cell applyBackgroundThemeColorForIndexPath:indexPath tableView:tableView];
             }
             break;
         }

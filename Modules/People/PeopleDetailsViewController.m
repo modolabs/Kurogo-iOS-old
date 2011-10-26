@@ -199,7 +199,6 @@
 - (CellManipulator)tableView:(UITableView *)tableView manipulatorForCellAtIndexPath:(NSIndexPath *)indexPath {
     NSString *title;
     NSString *accessoryTag = nil;
-    UITableViewCellSelectionStyle selectionStyle = UITableViewCellSelectionStyleGray;
     BOOL centerText = NO;
     
     if (indexPath.section == [self.sectionArray count]) {
@@ -231,7 +230,6 @@
     }
     
     return [[^(UITableViewCell *cell) {
-        cell.selectionStyle = selectionStyle;
         cell.textLabel.text = title;
         cell.accessoryView = [[KGOTheme sharedTheme] accessoryViewForType:accessoryTag];
         if (centerText) cell.textLabel.textAlignment = UITextAlignmentCenter;

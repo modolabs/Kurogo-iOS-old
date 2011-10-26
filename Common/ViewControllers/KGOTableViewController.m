@@ -2,6 +2,7 @@
 #import "KGOTheme.h"
 #import "KGOSearchDisplayController.h"
 #import "Foundation+KGOAdditions.h"
+#import "UIKit+KGOAdditions.h"
 
 #define GROUPED_SECTION_HEADER_VPADDING 24
 #define PLAIN_SECTION_HEADER_VPADDING 5.0f
@@ -593,6 +594,10 @@
 			[cell.contentView addSubview:aView];
 		}
 	}
+    
+    if (cell.selectionStyle != UITableViewCellSelectionStyleNone) {
+        [cell applyBackgroundThemeColorForIndexPath:indexPath tableView:tableView];
+    }
     
     return cell;
 }
