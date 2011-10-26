@@ -20,11 +20,13 @@
         
     } else if (index == _detailsTabIndex) {
         UIWebView *webView = [[[UIWebView alloc] initWithFrame:CGRectMake(10, 10, self.tabViewContainer.frame.size.width - 20, self.tabViewContainer.frame.size.height - 20)] autorelease];
-        [webView loadHTMLString:self.placemark.info baseURL:nil];
+        NSString *body = self.placemark.info ? self.placemark.info : @"";
+        [webView loadTemplate:[KGOHTMLTemplate templateWithPathName:@"modules/map/map_detail_template.html"] 
+                       values:[NSDictionary dictionaryWithObjectsAndKeys: body, @"BODY", nil]];
         if ([webView respondsToSelector: @selector(scrollView)]) {
             // iOS 5
-            webView.scrollView.bounces = NO;
-            webView.scrollView.decelerationRate = 0;
+            [[webView scrollView] setBounces:NO];
+            [[webView scrollView] setDecelerationRate:0];
         } else {
             // Icky hack for pre-iOS 5
             UIScrollView *subview = nil;
