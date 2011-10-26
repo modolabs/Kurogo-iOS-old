@@ -118,11 +118,11 @@
         KGOHTMLTemplate *template = [KGOHTMLTemplate templateWithPathName:@"modules/news/news_story_template.html"];
         NSMutableDictionary *values = [NSMutableDictionary dictionary];
         
-        if (story.title)          [values setValue:story.title forKey:@"TITLE"];
-        if (story.author)         [values setValue:story.author forKey:@"AUTHOR"];
-        if (story.thumbImage.url) [values setValue:story.thumbImage.url forKey:@"THUMBNAIL_URL"];
-        if (story.body)           [values setValue:story.body forKey:@"BODY"];
-        if (story.summary)        [values setValue:story.summary forKey:@"DEK"];
+        [values setValue:(story.title          ? story.title          : @"") forKey:@"TITLE"];
+        [values setValue:(story.author         ? story.author         : @"") forKey:@"AUTHOR"];
+        [values setValue:(story.thumbImage.url ? story.thumbImage.url : @"") forKey:@"THUMBNAIL_URL"];
+        [values setValue:(story.body           ? story.body           : @"") forKey:@"BODY"];
+        [values setValue:(story.summary        ? story.summary        : @"") forKey:@"DEK"];
 
         if (story.postDate) {
             NSDateFormatter *dateFormatter = [[[NSDateFormatter alloc] init] autorelease];
