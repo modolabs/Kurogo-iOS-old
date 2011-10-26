@@ -3,7 +3,7 @@
 #import "KGOSearchModel.h"
 #import "KGOSearchDisplayController.h"
 
-@interface KGOSearchResultListTableView : UITableView <KGOTableViewDataSource, KGOSearchResultsHolder> {
+@interface KGOSearchResultListTableView : UITableView <KGOTableViewDataSource, KGOSearchResultsHolder, KGODetailPagerController> {
     
     KGOTableController *_tableController;
     

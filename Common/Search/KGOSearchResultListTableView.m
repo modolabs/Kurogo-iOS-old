@@ -58,6 +58,16 @@
     [_tableController reloadDataForTableView:self];
 }
 
+#pragma mark KGODetailPagerController
+
+- (NSInteger)pager:(KGODetailPager *)pager numberOfPagesInSection:(NSInteger)section {
+    return self.items.count;
+}
+
+- (id<KGOSearchResult>)pager:(KGODetailPager *)pager contentForPageAtIndexPath:(NSIndexPath *)indexPath {
+    return [self.items objectAtIndex:indexPath.row];
+}
+
 #pragma mark initialization boilerplate
 
 - (id)init

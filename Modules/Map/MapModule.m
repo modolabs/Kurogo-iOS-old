@@ -106,8 +106,13 @@ NSString * const MapTypePreferenceChanged = @"MapTypeChanged";
             if (controller) {
                 KGODetailPager *pager = [[[KGODetailPager alloc] initWithPagerController:controller delegate:detailVC] autorelease];
                 detailVC.pager = pager;
+                NSIndexPath *currentIndexPath = [params objectForKey:@"currentIndexPath"];
+                if (currentIndexPath) {
+                    [pager selectPageAtSection:currentIndexPath.section row:currentIndexPath.row];
+                }
             }
             detailVC.placemark = place;
+            detailVC.mapModule = self;
             
             vc = detailVC;
         }

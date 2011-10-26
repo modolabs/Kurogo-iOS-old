@@ -4,10 +4,12 @@
 #import "KGOTheme.h"
 #import "KGOSearchResultListTableView.h"
 #import "KGORequestManager.h"
+#import "KGOAppDelegate+ModuleAdditions.h"
+#import "MapModule.h"
 
 @implementation MapDetailViewController
 
-@synthesize placemark, pager, dataManager;
+@synthesize placemark, pager, dataManager, mapModule;
 
 #pragma mark TabbedViewDelegate
 
@@ -15,7 +17,7 @@
     UIView *view = nil;
     if (index == _photoTabIndex) {
         // TODO
-    
+        
     } else if (index == _detailsTabIndex) {
         UIWebView *webView = [[[UIWebView alloc] initWithFrame:CGRectMake(10, 10, self.tabViewContainer.frame.size.width - 20, self.tabViewContainer.frame.size.height - 20)] autorelease];
         [webView loadHTMLString:self.placemark.info baseURL:nil];
@@ -26,6 +28,7 @@
         if (!_tableView) {
             CGRect frame = CGRectMake(0, 0, self.tabViewContainer.frame.size.width, self.tabViewContainer.frame.size.height);
             _tableView = [[[KGOSearchResultListTableView alloc] initWithFrame:frame] autorelease];
+            _tableView.resultsDelegate = self;
             
             self.dataManager.searchDelegate = _tableView;
             [self.dataManager searchNearby:self.placemark.coordinate];
@@ -48,14 +51,15 @@
         _photoTabIndex = currentTabIndex;
         currentTabIndex++;
     }
-    if (self.placemark.info) {
-        // TODO: add detail tab for placemarks with itemized fields
-        [tabs addObject:NSLocalizedString(@"Details", nil)];
-        _detailsTabIndex = currentTabIndex;
-        currentTabIndex++;
-    }
+    
+    // TODO: add detail tab for placemarks with itemized fields
+    [tabs addObject:NSLocalizedString(@"Details", nil)];
+    _detailsTabIndex = currentTabIndex;
+    currentTabIndex++;
+    
     [tabs addObject:NSLocalizedString(@"Nearby", nil)];
     _nearbyTabIndex = currentTabIndex;
+    
     return tabs;
 }
 
@@ -88,6 +92,24 @@
 - (void)mapDataManager:(MapDataManager *)dataManager didUpdatePlacemark:(KGOPlacemark *)placemark
 {
     [self reloadTabs];
+    if ([self.tabs selectedTabIndex] == _detailsTabIndex) {
+        [self reloadTabContent];
+    }
+}
+
+#pragma mark KGOSearchResultsDelegate
+
+- (void)resultsHolder:(id<KGOSearchResultsHolder>)resultsHolder didSelectResult:(id<KGOSearchResult>)aResult
+{
+    if ([resultsHolder isKindOfClass:[KGOSearchResultListTableView class]]) {
+        NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:
+                                aResult, @"place", 
+                                resultsHolder, @"pagerController", 
+                                [_tableView indexPathForSelectedRow], @"currentIndexPath",
+                                nil];
+        KGOAppDelegate *appDelegate = KGO_SHARED_APP_DELEGATE();
+        [appDelegate showPage:LocalPathPageNameDetail forModuleTag:self.mapModule.tag params:params];
+    }
 }
 
 #pragma mark -
