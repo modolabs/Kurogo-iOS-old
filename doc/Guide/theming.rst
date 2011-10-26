@@ -101,6 +101,8 @@ strings unless otherwise specified. The following styles are currently defined:
   home screen. This may be the path to an image.
 * *NavBarTintColor* - the tint color of buttons in the navigation bar (not the
   color of the bar itself).
+* *NavListSelectionColor* - the background tint color for selected cells in 
+  table views. If missing, the background will be blue.
 * *PlainSectionheaderBackground* - for plain table views that have section
   headings, this is the background color of the headings.
 * *PrimaryCellBackground* - background color for primary list navigation items.
