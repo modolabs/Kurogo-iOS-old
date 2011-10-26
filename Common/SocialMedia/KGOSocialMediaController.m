@@ -143,12 +143,7 @@ static KGOSocialMediaController *s_controller = nil;
 }
 
 - (BOOL)supportsTwitterSharing {
-    Class cls = NSClassFromString (@"TWTweetComposeViewController");
-    if (cls) {
-        return ([_appConfig objectForKey:KGOSocialMediaTypeTwitter] != nil);
-    } else {
-        return NO;
-    }
+    return ([_appConfig objectForKey:KGOSocialMediaTypeTwitter] != nil);
 }
 
 - (BOOL)supportsEmailSharing {

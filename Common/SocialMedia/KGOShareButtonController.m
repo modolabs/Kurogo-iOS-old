@@ -1,6 +1,7 @@
 #import "KGOShareButtonController.h"
 #import "KGOAppDelegate+ModuleAdditions.h"
 #import "MITMailComposeController.h"
+#import "Foundation+KGOAdditions.h"
 
 @implementation KGOShareButtonController
 
@@ -115,18 +116,27 @@
         [[KGOSocialMediaController facebookService] shareOnFacebook:attachment prompt:nil];
 
 	} else if ([method isEqualToString:KGOSocialMediaTypeTwitter]) {
-        // Set up the built-in twitter composition view controller.
+        // check to see if built in twitter support available
         Class TwitterComposeViewController = NSClassFromString (@"TWTweetComposeViewController");
-        
-        id tweetViewController = [[TwitterComposeViewController alloc] init];
-        [tweetViewController performSelector:@selector(setInitialText:) withObject:self.shareTitle];
-        [tweetViewController performSelector:@selector(addURL:) withObject:[NSURL URLWithString:self.shareURL]];
-        [tweetViewController performSelector:@selector(setCompletionHandler:) withObject:^(int result) {
-            [self.contentsController dismissModalViewControllerAnimated:YES];
-        }];
-
-        
-        [self.contentsController presentModalViewController:tweetViewController animated:YES];
+        if (TwitterComposeViewController) {
+            id tweetViewController = [[TwitterComposeViewController alloc] init];
+            [tweetViewController performSelector:@selector(setInitialText:) withObject:self.shareTitle];
+            [tweetViewController performSelector:@selector(addURL:) withObject:[NSURL URLWithString:self.shareURL]];
+            [tweetViewController performSelector:@selector(setCompletionHandler:) withObject:^(int result) {
+                [self.contentsController dismissModalViewControllerAnimated:YES];
+            }];
+            
+            [self.contentsController presentModalViewController:tweetViewController animated:YES];
+            
+        } else { // otherwise just open a webpage
+            
+            NSMutableDictionary *params = [NSMutableDictionary dictionary];
+            [params setObject:self.shareURL forKey:@"url"];
+            [params setObject:self.shareTitle forKey:@"text"];
+            NSString *twitterShareURLParams = [NSURL queryStringWithParameters:params];
+            NSString *twitterURLString = [NSString stringWithFormat:@"https://twitter.com/share?%@", twitterShareURLParams];
+            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:twitterURLString]];
+        }
 	}
 }
 
@@ -138,22 +148,6 @@
 }
 
 
-#pragma mark TwitterViewControllerDelegate
-
-- (BOOL)controllerShouldContinueToMessageScreen:(TwitterViewController *)controller
-{
-    return YES;
-}
-
-- (void)controllerDidPostTweet:(TwitterViewController *)controller
-{
-    [self.contentsController dismissModalViewControllerAnimated:YES];
-}
-
-- (void)controllerFailedToTweet:(TwitterViewController *)controller
-{
-    [self.contentsController dismissModalViewControllerAnimated:YES];
-}
 
 #pragma mark -
 
