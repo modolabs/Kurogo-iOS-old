@@ -2,10 +2,9 @@
 #import "AboutTableViewController.h"
 #import "Foundation+KGOAdditions.h"
 #import "KGOAppDelegate+ModuleAdditions.h"
+#import "KGORequestManager.h"
 
 @implementation AboutModule
-@synthesize aboutRequest;
-@synthesize webViewTitle;
 
 - (UIViewController *)modulePage:(NSString *)pageName params:(NSDictionary *)params {
     UIViewController *vc = nil;
@@ -13,69 +12,38 @@
         AboutTableViewController * aboutVc = [[[AboutTableViewController alloc] initWithStyle:UITableViewStyleGrouped] autorelease];
         aboutVc.moduleTag = self.tag;
         vc = aboutVc;
-        
     }
-
     else if ([pageName isEqualToString:LocalPathPageNameDetail]) {
 
-        NSString * command = [params objectForKey:@"command"];
-        self.webViewTitle = [params objectForKey:@"title"];
-
-        // this is awkward. i would think about making a standard class of REST APIs that return
-        // the entire HTML as the contents of the API "response" value, and make KGOWebViewController
-        // able to deal with that generically.
-        self.aboutRequest = [[KGORequestManager sharedManager] requestWithDelegate:self
-                                                                            module:@"about"
-                                                                              path:command
-                                                                           version:1
-                                                                            params:nil];
-        
-        self.aboutRequest.expectedResponseType = [NSString class];
-        if (self.aboutRequest) {
-            [self.aboutRequest connect];
+        NSString *command = [params objectForKey:@"command"];
+        if (command) {
+            __block KGOWebViewController *webVC = [[[KGOWebViewController alloc] init] autorelease];
+            webVC.title = [params stringForKey:@"title"];
+            [webVC applyTemplate:@"modules/about/credits.html"];
+            
+            KGORequest *request = [[KGORequestManager sharedManager] requestWithDelegate:nil
+                                                                                  module:@"about"
+                                                                                    path:command
+                                                                                 version:1
+                                                                                  params:nil];
+            request.expectedResponseType = [NSString class];
+            request.handler = ^(id jsonObject) {
+                webVC.HTMLString = jsonObject;
+                return 1;
+            };
+            [request connect];
+            
+            vc = webVC;
         }
-
     }
-    
-    else if ([pageName isEqualToString:LocalPathPageNameWebViewDetail]) {
-       
-        KGOWebViewController * webViewController = [[[KGOWebViewController alloc] init] autorelease];
-
-        
-        [webViewController setHTMLString: [params objectForKey:@"htmlString"]];
-        webViewController.title = self.webViewTitle;
-        vc = webViewController;
-    }
-
 
     return vc;
-}
-
-
-#pragma mark KGORequestDelegate
-
-- (void)requestWillTerminate:(KGORequest *)request {
-    self.aboutRequest = nil;
-}
-
-- (void)request:(KGORequest *)request didReceiveResult:(id)result {
-    self.aboutRequest = nil;
-    
-    DLog(@"%@", [result description]);
-    
-    if ([result isKindOfClass:[NSString class]])
-        [KGO_SHARED_APP_DELEGATE() showPage:LocalPathPageNameWebViewDetail
-                           forModuleTag:self.tag 
-                                 params:[NSDictionary dictionaryWithObjectsAndKeys:result, @"htmlString", nil]];    
-
 }
 
 #pragma mark -
 
 - (void)dealloc {
     [super dealloc];
-    self.aboutRequest = nil;
-    self.webViewTitle = nil;
 }
 
 

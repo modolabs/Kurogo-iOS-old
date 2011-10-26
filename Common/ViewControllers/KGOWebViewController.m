@@ -123,8 +123,16 @@ enum {
     [_HTMLString release];
     _HTMLString = [HTMLString retain];
     
-    if (_webView){
-        [_webView loadHTMLString:self.HTMLString baseURL:nil];
+    if (_webView) {
+        NSString *expandedString = self.HTMLString;
+        for (NSString *filename in _templateStack) {
+            KGOHTMLTemplate *template = [KGOHTMLTemplate templateWithPathName:filename];
+            if (template) {
+                expandedString = [template stringWithReplacements:
+                                  [NSDictionary dictionaryWithObjectsAndKeys:expandedString, @"BODY", nil]];
+            }
+        }
+        [_webView loadHTMLString:expandedString baseURL:nil];
     }
 }
 
@@ -157,16 +165,6 @@ enum {
         return;
     } else {
         [_templateStack addObject:filename];
-    }
-    
-    KGOHTMLTemplate *template = [KGOHTMLTemplate templateWithPathName:filename];
-    NSString *wrappedString = [template stringWithReplacements:
-                               [NSDictionary dictionaryWithObjectsAndKeys:self.HTMLString, @"BODY", nil]];
-    NSURL *url = [NSURL URLWithString:[[NSBundle mainBundle] resourcePath]];
-    if (_webView) {
-        [_webView loadHTMLString:wrappedString baseURL:url];
-    } else {
-        self.HTMLString = wrappedString;
     }
 }
 
