@@ -22,6 +22,7 @@
 		4B3904F1134147D000CD9C6F /* EmergencyModule.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B3904E9134147D000CD9C6F /* EmergencyModule.m */; };
 		4B3904F2134147D000CD9C6F /* Emergency.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 4B3904EB134147D000CD9C6F /* Emergency.xcdatamodeld */; };
 		4B3904F3134147D000CD9C6F /* EmergencyNotice.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B3904EE134147D000CD9C6F /* EmergencyNotice.m */; };
+		4B7F835B1458C36B001524FB /* Twitter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4B7F835A1458C36B001524FB /* Twitter.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		4BD493691349144400891968 /* EmergencyContactsSection.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BD493681349144400891968 /* EmergencyContactsSection.m */; };
 		4BD4936C1349146900891968 /* EmergencyContact.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BD4936B1349146900891968 /* EmergencyContact.m */; };
 		4BD4936F13492C2400891968 /* EmergencyContactsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BD4936E13492C2400891968 /* EmergencyContactsViewController.m */; };
@@ -216,6 +217,7 @@
 		4B3904EC134147D000CD9C6F /* Emergency.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Emergency.xcdatamodel; sourceTree = "<group>"; };
 		4B3904ED134147D000CD9C6F /* EmergencyNotice.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EmergencyNotice.h; sourceTree = "<group>"; };
 		4B3904EE134147D000CD9C6F /* EmergencyNotice.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EmergencyNotice.m; sourceTree = "<group>"; };
+		4B7F835A1458C36B001524FB /* Twitter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Twitter.framework; path = System/Library/Frameworks/Twitter.framework; sourceTree = SDKROOT; };
 		4BD493671349144400891968 /* EmergencyContactsSection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EmergencyContactsSection.h; sourceTree = "<group>"; };
 		4BD493681349144400891968 /* EmergencyContactsSection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EmergencyContactsSection.m; sourceTree = "<group>"; };
 		4BD4936A1349146900891968 /* EmergencyContact.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EmergencyContact.h; sourceTree = "<group>"; };
@@ -560,6 +562,7 @@
 				EB4C2CE1127F138900058748 /* CFNetwork.framework in Frameworks */,
 				EB138F0512F253A1004DBB7C /* libGoogleAnalytics.a in Frameworks */,
 				A6F2F83D134BAEDD009F597D /* MediaPlayer.framework in Frameworks */,
+				4B7F835B1458C36B001524FB /* Twitter.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -577,6 +580,7 @@
 		29B97314FDCFA39411CA2CEA /* CustomTemplate */ = {
 			isa = PBXGroup;
 			children = (
+				4B7F835A1458C36B001524FB /* Twitter.framework */,
 				EB1441361309EF7B00396753 /* Application */,
 				EB0336B2133C2B8B00ACF2BB /* Common */,
 				EB1387B912F22DF7004DBB7C /* Contrib */,

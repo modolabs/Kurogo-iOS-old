@@ -1,6 +1,5 @@
 #import "KGOShareButtonController.h"
 #import "KGOAppDelegate+ModuleAdditions.h"
-#import "TwitterViewController.h"
 #import "MITMailComposeController.h"
 
 @implementation KGOShareButtonController
@@ -116,16 +115,18 @@
         [[KGOSocialMediaController facebookService] shareOnFacebook:attachment prompt:nil];
 
 	} else if ([method isEqualToString:KGOSocialMediaTypeTwitter]) {
-		TwitterViewController *twitterVC = [[[TwitterViewController alloc] initWithNibName:@"TwitterViewController"
-                                                                                    bundle:nil] autorelease];
-        twitterVC.preCannedMessage = self.shareTitle;
-        twitterVC.longURL = self.shareURL;
-        twitterVC.delegate = self;
+        // Set up the built-in twitter composition view controller.
+        Class TwitterComposeViewController = NSClassFromString (@"TWTweetComposeViewController");
         
-        UINavigationController *navC = [[[UINavigationController alloc] initWithRootViewController:twitterVC] autorelease];
-        navC.modalPresentationStyle = UIModalPresentationFormSheet;
+        id tweetViewController = [[TwitterComposeViewController alloc] init];
+        [tweetViewController performSelector:@selector(setInitialText:) withObject:self.shareTitle];
+        [tweetViewController performSelector:@selector(addURL:) withObject:[NSURL URLWithString:self.shareURL]];
+        [tweetViewController performSelector:@selector(setCompletionHandler:) withObject:^(int result) {
+            [self.contentsController dismissModalViewControllerAnimated:YES];
+        }];
+
         
-		[self.contentsController presentModalViewController:navC animated:YES];
+        [self.contentsController presentModalViewController:tweetViewController animated:YES];
 	}
 }
 
