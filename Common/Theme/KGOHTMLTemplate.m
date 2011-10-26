@@ -10,7 +10,7 @@
     KGOHTMLTemplate *aTemplate = [[[KGOHTMLTemplate alloc] init] autorelease];
 
     NSString *resourcePath = [[NSBundle mainBundle] resourcePath];
-    NSURL *fileURL;
+    NSURL *fileURL = nil;
     NSError *error = nil;
     
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
@@ -29,6 +29,7 @@
         aTemplate.templateString = [NSMutableString stringWithContentsOfURL:fileURL encoding:NSUTF8StringEncoding error:&error];
     }
 
+    DLog(@"choosing file %@ at base URL %@ for template", fileURL, aTemplate.baseURL);
     NSAssert1(aTemplate.templateString != nil, @"could not find template for path name %@", pathName);
     return aTemplate;
 }
