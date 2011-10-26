@@ -125,9 +125,7 @@ const GridSpacing GridSpacingZero = {0, 0};
     CGRect currentFrame;
     for (UIView *rowView in rowIcons) {
         currentFrame = rowView.frame;
-        currentFrame.origin.x = xOrigin;
-        currentFrame.origin.y = yOrigin;
-        rowView.frame = currentFrame;
+        rowView.frame = CGRectMake(xOrigin, yOrigin, currentFrame.size.width, currentFrame.size.height);
         [self addSubview:rowView];
         
         xOrigin += currentFrame.size.width + self.spacing.width;
