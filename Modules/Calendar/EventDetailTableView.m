@@ -284,7 +284,7 @@
         NSString *accessory = [cellData objectForKey:@"accessory"];
         cell.accessoryView = [[KGOTheme sharedTheme] accessoryViewForType:accessory];
         if (accessory && ![accessory isEqualToString:KGOAccessoryTypeNone]) {
-            cell.selectionStyle = UITableViewCellSelectionStyleGray;
+            [cell applyBackgroundThemeColorForIndexPath:indexPath tableView:tableView];
 
         } else {
             cell.selectionStyle = UITableViewCellSelectionStyleNone;

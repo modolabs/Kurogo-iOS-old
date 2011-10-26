@@ -4,6 +4,7 @@
 #import "KGOAppDelegate+ModuleAdditions.h"
 #import "KGOLabel.h"
 #import "KGOTheme.h"
+#import "UIKit+KGOAdditions.h"
 
 #define OVERLAY_TAG 233
 
@@ -182,8 +183,7 @@
         UIImageView * accessoryImageView = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"kurogo/common/action-arrow.png"]] autorelease];
         cell.accessoryView = accessoryImageView;
     }
-    cell.selectionStyle = UITableViewCellSelectionStyleGray;
-    // Configure the cell...
+    [cell applyBackgroundThemeColorForIndexPath:indexPath tableView:tableView];
     
     return cell;
 }

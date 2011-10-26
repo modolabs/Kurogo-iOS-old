@@ -2,7 +2,7 @@
 #import "KGOAppDelegate+ModuleAdditions.h"
 #import "CalendarModel.h"
 #import "CalendarDetailViewController.h"
-
+#import "UIKit+KGOAdditions.h"
 
 @interface CalendarHomeViewController (Private)
 
@@ -379,7 +379,7 @@ groupTitles = _groupTitles;
         NSString *title = category.title;
         
         return [[^(UITableViewCell *cell) {
-            cell.selectionStyle = UITableViewCellSelectionStyleGray;
+            [cell applyBackgroundThemeColorForIndexPath:indexPath tableView:tableView];
             cell.textLabel.text = title;
             cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         } copy] autorelease];
@@ -392,7 +392,7 @@ groupTitles = _groupTitles;
         NSString *subtitle = [self.dataManager shortDateTimeStringFromDate:event.startDate];
         
         return [[^(UITableViewCell *cell) {
-            cell.selectionStyle = UITableViewCellSelectionStyleGray;
+            [cell applyBackgroundThemeColorForIndexPath:indexPath tableView:tableView];
             cell.textLabel.text = title;
             cell.detailTextLabel.text = subtitle;
             cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;

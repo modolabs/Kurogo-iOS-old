@@ -33,6 +33,7 @@
 
 @property (nonatomic) BOOL loadsLinksInternally; // defaults to NO
 
+// things that are applied later are "outside"
 - (void)applyTemplate:(NSString *)filename;
 
 // useful if a network connection causes a request to fail

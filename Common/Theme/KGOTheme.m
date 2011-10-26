@@ -194,6 +194,11 @@ static KGOTheme *s_sharedTheme = nil;
     return color;
 }
 
+- (UIColor *)tintColorForSelectedCell {
+    UIColor *color = [self matchBackgroundColorWithLabel:@"NavListSelectionColor"];
+    return color;
+}
+
 - (UIImage *)titleImageForNavBar {
     NSString *imageName = [[themeDict objectForKey:@"Images"] objectForKey:@"NavBarTitle"];
     if (imageName)

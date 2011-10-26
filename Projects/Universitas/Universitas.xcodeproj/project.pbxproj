@@ -100,6 +100,7 @@
 		EB0370F11396B6B500AD881F /* KGOLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = EB0370F01396B6B500AD881F /* KGOLabel.m */; };
 		EB0371401396E84500AD881F /* KGOSearchBar.m in Sources */ = {isa = PBXBuildFile; fileRef = EB03713F1396E84500AD881F /* KGOSearchBar.m */; };
 		EB0371431396E87500AD881F /* KGOSearchResultListTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = EB0371421396E87500AD881F /* KGOSearchResultListTableView.m */; };
+		EB05DAA81458953100A8F316 /* KGOGradientView.m in Sources */ = {isa = PBXBuildFile; fileRef = EB05DAA71458953100A8F316 /* KGOGradientView.m */; };
 		EB0CF98D13403141003B8E45 /* TwitterViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = EB0CF98C13403141003B8E45 /* TwitterViewController.xib */; };
 		EB138F0512F253A1004DBB7C /* libGoogleAnalytics.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EB138F0312F253A1004DBB7C /* libGoogleAnalytics.a */; };
 		EB1440D61309EEA000396753 /* CalendarDataManager.m in Sources */ = {isa = PBXBuildFile; fileRef = EB1440C21309EEA000396753 /* CalendarDataManager.m */; };
@@ -362,6 +363,8 @@
 		EB03713F1396E84500AD881F /* KGOSearchBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGOSearchBar.m; sourceTree = "<group>"; };
 		EB0371411396E87500AD881F /* KGOSearchResultListTableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGOSearchResultListTableView.h; sourceTree = "<group>"; };
 		EB0371421396E87500AD881F /* KGOSearchResultListTableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGOSearchResultListTableView.m; sourceTree = "<group>"; };
+		EB05DAA61458953100A8F316 /* KGOGradientView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGOGradientView.h; sourceTree = "<group>"; };
+		EB05DAA71458953100A8F316 /* KGOGradientView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGOGradientView.m; sourceTree = "<group>"; };
 		EB0CF98C13403141003B8E45 /* TwitterViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TwitterViewController.xib; sourceTree = "<group>"; };
 		EB138AFC12F22F31004DBB7C /* Config.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Config.plist; path = ../Config.plist; sourceTree = "<group>"; };
 		EB138F0212F253A1004DBB7C /* GANTracker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GANTracker.h; sourceTree = "<group>"; };
@@ -937,6 +940,8 @@
 				EB03371B133C2B8C00ACF2BB /* HarvardNavigationController.m */,
 				EBE2CC1F13438AEA0037546A /* KGODetailPageHeaderView.h */,
 				EBE2CC2013438AEA0037546A /* KGODetailPageHeaderView.m */,
+				EB05DAA61458953100A8F316 /* KGOGradientView.h */,
+				EB05DAA71458953100A8F316 /* KGOGradientView.m */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -1527,6 +1532,7 @@
 				EB7E9F2E143171780093B0C7 /* Video.xcdatamodeld in Sources */,
 				EB70DCED1444953900E60476 /* PersonContactGroup.m in Sources */,
 				EB70DCF01444958300E60476 /* PeopleDataManager.m in Sources */,
+				EB05DAA81458953100A8F316 /* KGOGradientView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

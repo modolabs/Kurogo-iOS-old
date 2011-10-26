@@ -255,7 +255,6 @@ federatedSearchResults;
     }
     
     return [[^(UITableViewCell *cell) {
-        cell.selectionStyle = UITableViewCellSelectionStyleGray;
         cell.textLabel.text = title;
         cell.detailTextLabel.text = detailText;
         cell.accessoryView = [[KGOTheme sharedTheme] accessoryViewForType:accessoryTag];

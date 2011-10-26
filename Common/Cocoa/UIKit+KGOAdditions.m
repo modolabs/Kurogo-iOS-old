@@ -1,5 +1,6 @@
 #import "UIKit+KGOAdditions.h"
-
+#import "KGOTheme.h"
+#import "KGOGradientView.h"
 
 @implementation UIImage (KGOAdditions)
 
@@ -171,6 +172,30 @@
 
 @end
 
+
+@implementation UITableViewCell (KGOAdditions)
+
+- (void)applyBackgroundThemeColorForIndexPath:(NSIndexPath *)indexPath tableView:(UITableView *)tableView
+{
+    UIColor *color = [[KGOTheme sharedTheme] tintColorForSelectedCell];
+    if (color) {
+        KGOGradientView *view = [[[KGOGradientView alloc] initWithFrame:self.bounds] autorelease];
+        view.tintColor = color;
+        if (tableView.style == UITableViewStyleGrouped) {
+            if (indexPath.row == 0) {
+                view.topRightCornerRadius = 10;
+                view.topLeftCornerRadius = 10;
+            }
+            else if (indexPath.row == [tableView numberOfRowsInSection:indexPath.section] - 1) {
+                view.bottomLeftCornerRadius = 10;
+                view.bottomRightCornerRadius = 10;
+            }
+        }
+        self.selectedBackgroundView = view;
+    }
+}
+
+@end
 
 @implementation UIWebView (KGOAdditions)
 

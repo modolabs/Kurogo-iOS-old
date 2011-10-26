@@ -34,6 +34,8 @@
 - (void)viewDidLoad {
     showBuildNumber = NO;
     
+    self.tableView.backgroundColor = [[KGOTheme sharedTheme] backgroundColorForApplication];
+    
     self.title = @"About";
     
     self.request = [[KGORequestManager sharedManager] requestWithDelegate:self
@@ -127,22 +129,18 @@
                 NSString * titleString = [itemDict objectForKey:@"title"];
                 
                 NSString *type = [itemDict nonemptyStringForKey:@"type"];
-                if (!type) {
-                    type = @"webView";
+                if (!type || [type isEqualToString:@"webView"]) {
+                    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
                 }
-                
-                if ([type isEqualToString:@"email"]){
+                else if ([type isEqualToString:@"email"]) {
                     cell.accessoryView = [[KGOTheme sharedTheme] accessoryViewForType:KGOAccessoryTypeEmail];
                 }
-                else if ([type isEqualToString:@"phone"]){
+                else if ([type isEqualToString:@"phone"]) {
                     cell.accessoryView = [[KGOTheme sharedTheme] accessoryViewForType:KGOAccessoryTypePhone];
-                }
-                else if ([type isEqualToString:@"webView"]){
-                    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
                 }
                 
                 cell.textLabel.text = titleString;
-                cell.selectionStyle = UITableViewCellSelectionStyleGray;
+                [cell applyBackgroundThemeColorForIndexPath:indexPath tableView:tableView];
             }
             break;
         }

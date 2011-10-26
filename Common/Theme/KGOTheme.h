@@ -61,6 +61,7 @@ typedef enum {
 - (UIColor *)tintColorForToolbar;
 - (UIColor *)tintColorForSearchBar;
 - (UIColor *)tintColorForNavBar;
+- (UIColor *)tintColorForSelectedCell;
 - (UIImage *)titleImageForNavBar;
 
 // reasonable overrides
