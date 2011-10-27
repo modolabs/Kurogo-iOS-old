@@ -168,13 +168,15 @@
     NSString * linkTitle = [(NSDictionary *)[linksArray objectAtIndex:indexPath.row] objectForKey:@"title"];
     NSString * linkSubtitle = [(NSDictionary *)[linksArray objectAtIndex:indexPath.row] objectForKey:@"subtitle"];
     
-    cell.textLabel.numberOfLines = 2;
+    cell.textLabel.numberOfLines = 0;
     cell.textLabel.lineBreakMode = UILineBreakModeTailTruncation;
     cell.textLabel.text = linkTitle;
+    cell.textLabel.font = [[KGOTheme sharedTheme] fontForThemedProperty:KGOThemePropertyNavListTitle]; 
     
-    cell.detailTextLabel.numberOfLines = 2;
+    cell.detailTextLabel.numberOfLines = 0;
     cell.detailTextLabel.lineBreakMode = UILineBreakModeTailTruncation;
     cell.detailTextLabel.text = linkSubtitle;
+    cell.detailTextLabel.font = [[KGOTheme sharedTheme] fontForThemedProperty:KGOThemePropertyNavListSubtitle];
     
     if([(NSDictionary *)[linksArray objectAtIndex:indexPath.row] objectForKey:@"url"]) {
         UIImageView * accessoryImageView = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"kurogo/common/action-external.png"]] autorelease];
@@ -186,6 +188,23 @@
     [cell applyBackgroundThemeColorForIndexPath:indexPath tableView:tableView];
     
     return cell;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    
+    // TODO help! is there any good way to know
+    // how much space the labels in the cell have?
+    CGFloat cellWidth = tableView.frame.size.width - 64;
+    UIFont *titleFont = [[KGOTheme sharedTheme] fontForThemedProperty:KGOThemePropertyNavListTitle];
+    UIFont *subtitleFont = [[KGOTheme sharedTheme] fontForThemedProperty:KGOThemePropertyNavListSubtitle];
+    NSString * linkTitle = [(NSDictionary *)[linksArray objectAtIndex:indexPath.row] objectForKey:@"title"];
+    NSString * linkSubtitle = [(NSDictionary *)[linksArray objectAtIndex:indexPath.row] objectForKey:@"subtitle"];
+    
+    CGSize titleSize = [linkTitle sizeWithFont:titleFont constrainedToSize:CGSizeMake(cellWidth, 250)];
+    CGSize subtitleSize = [linkSubtitle sizeWithFont:subtitleFont constrainedToSize:CGSizeMake(cellWidth, 250)];
+    
+    CGFloat height = titleSize.height + subtitleSize.height + 10;
+    return MAX(height, tableView.rowHeight);
 }
 
 - (void)openLink:(NSDictionary *)linkDict {
