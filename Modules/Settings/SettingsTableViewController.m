@@ -378,8 +378,10 @@
         KGOUserSetting *setting = [[KGOUserSettingsManager sharedManager] settingForKey:key];
         [[KGOUserSettingsManager sharedManager] selectOption:indexPath.row forSetting:setting.key];
         [[KGOUserSettingsManager sharedManager] saveSettings];
-        [tableView reloadSections:[NSIndexSet indexSetWithIndex:indexPath.section] withRowAnimation:UITableViewRowAnimationNone];
         [[NSNotificationCenter defaultCenter] postNotificationName:KGOUserPreferencesDidChangeNotification object:self];
+        // reload everything since we might have changed the fonts
+        // TODO: this doesn't affect the fonts of section headers
+        [self reloadDataForTableView:self.tableView];
     }
 
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
