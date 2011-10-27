@@ -186,7 +186,7 @@
                 view.topRightCornerRadius = 10;
                 view.topLeftCornerRadius = 10;
             }
-            else if (indexPath.row == [tableView numberOfRowsInSection:indexPath.section] - 1) {
+            if (indexPath.row == [tableView numberOfRowsInSection:indexPath.section] - 1) {
                 view.bottomLeftCornerRadius = 10;
                 view.bottomRightCornerRadius = 10;
             }
