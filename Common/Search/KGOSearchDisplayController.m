@@ -10,6 +10,7 @@
 #import <MapKit/MKAnnotation.h>
 #import "Foundation+KGOAdditions.h"
 #import "UIKit+KGOAdditions.h"
+#import "AnalyticsWrapper.h"
 
 #define MAX_SEARCH_RESULTS 25
 
@@ -90,6 +91,10 @@ maxResultsPerSection;
         if ([module supportsFederatedSearch]) { // TODO: use a less strict check
             [module launch];
             [module performSearchWithText:text params:params delegate:self];
+        }
+        NSString *searchModule = [self.delegate searchControllerModuleTag:self];
+        if (searchModule) {
+            [[AnalyticsWrapper sharedWrapper] trackEvent:@"search" action:searchModule label:text];
         }
     }
 }
