@@ -14,7 +14,7 @@ typedef enum {
 
 
 @interface KGOShareButtonController : NSObject <UIActionSheetDelegate,
-MFMailComposeViewControllerDelegate, TwitterViewControllerDelegate> {
+MFMailComposeViewControllerDelegate> {
     
     NSArray *_shareMethods;
     NSUInteger _shareTypes;
