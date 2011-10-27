@@ -23,6 +23,11 @@
 @property (nonatomic, retain) NSSet* calendars;
 @property (nonatomic, retain) NSSet* particpants;
 
+// new in v2:
+@property (nonatomic, retain) NSNumber * allDay;
+@property (nonatomic, retain) NSData * fields;
+
+
 + (KGOEvent *)eventWithID:(NSString *)identifier;
 + (KGOEvent *)findEventWithID:(NSString *)identifier;
 

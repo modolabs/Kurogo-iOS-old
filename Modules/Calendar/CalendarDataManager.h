@@ -38,6 +38,7 @@
 - (void)selectGroupAtIndex:(NSInteger)index;
 
 - (NSString *)mediumDateStringFromDate:(NSDate *)date;
+- (NSString *)shortDateStringFromDate:(NSDate *)date;
 - (NSString *)shortTimeStringFromDate:(NSDate *)date;
 - (NSString *)shortDateTimeStringFromDate:(NSDate *)date;
 
