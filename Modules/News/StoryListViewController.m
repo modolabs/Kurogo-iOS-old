@@ -289,6 +289,10 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     NSInteger n = self.stories.count;
+    if (showingBookmarks) {
+        return n;
+    }
+    
     if ([self.dataManager canLoadMoreStories]) {
         n++;
     }
