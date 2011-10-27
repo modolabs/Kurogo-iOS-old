@@ -383,15 +383,25 @@
     // time
     NSString *dateString = [self.dataManager mediumDateStringFromDate:_event.startDate];
     NSString *timeString = nil;
-    if (_event.endDate) {
-        timeString = [NSString stringWithFormat:@"%@\n%@-%@",
-                      dateString,
-                      [self.dataManager shortTimeStringFromDate:_event.startDate],
-                      [self.dataManager shortTimeStringFromDate:_event.endDate]];
+    if (_event.allDay) {
+        NSString *endDateString = [self.dataManager mediumDateStringFromDate:_event.endDate];
+        if ([endDateString isEqualToString:dateString]) {
+            timeString = [NSString stringWithFormat:@"%@\n%@", dateString, NSLocalizedString(@"All day", nil)];
+        } else {
+            timeString = [NSString stringWithFormat:@"%@ - %@", dateString, endDateString];
+
+        }
     } else {
-        timeString = [NSString stringWithFormat:@"%@\n%@",
-                      dateString,
-                      [self.dataManager shortTimeStringFromDate:_event.startDate]];
+        if (_event.endDate) {
+            timeString = [NSString stringWithFormat:@"%@\n%@-%@",
+                          dateString,
+                          [self.dataManager shortTimeStringFromDate:_event.startDate],
+                          [self.dataManager shortTimeStringFromDate:_event.endDate]];
+        } else {
+            timeString = [NSString stringWithFormat:@"%@\n%@",
+                          dateString,
+                          [self.dataManager shortTimeStringFromDate:_event.startDate]];
+        }
     }
     self.headerView.subtitleLabel.text = timeString;
     

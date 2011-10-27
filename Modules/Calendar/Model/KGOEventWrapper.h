@@ -16,7 +16,8 @@
     NSDate *_endDate;
     NSDate *_startDate;
     NSDate *_lastUpdate; // lastModifiedDate in EKEvent
-    BOOL _allDay;
+    BOOL _allDay;         // comes out of userInfo
+    NSDictionary *fields; // comes out of userInfo
     NSString *_location;
     NSString *_title;
     NSString *_summary; // notes in EKEvent
@@ -50,7 +51,8 @@
 @property (nonatomic, retain) NSSet *organizers; // set of KGOAttendeeWrapper objects
 @property (nonatomic, retain) NSSet *attendees;  // set of KGOAttendeeWrapper objects
 @property (nonatomic, retain) NSDictionary *userInfo;
-@property (nonatomic) BOOL allDay;
+@property (nonatomic, retain) NSDictionary *fields; // comes out of userInfo
+@property (nonatomic) BOOL allDay;                  // comes out of userInfo
 
 // non-eventkit properties
 @property (nonatomic) CLLocationCoordinate2D coordinate;
