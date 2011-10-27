@@ -277,19 +277,19 @@ static KGOTheme *s_sharedTheme = nil;
     }
     if (CellAccessoryImagesHighlighted == nil) {
         CellAccessoryImagesHighlighted = [[NSDictionary alloc] initWithObjectsAndKeys:
-                                          @"common/action-checkmark-highlighted", KGOAccessoryTypeCheckmark,
-                                          @"common/action-arrow-highlighted", KGOAccessoryTypeChevron,
-                                          @"common/action-phone-highlighted", KGOAccessoryTypePhone,
-                                          @"common/action-people-highlighted", KGOAccessoryTypePeople,
-                                          @"common/action-map-highlighted", KGOAccessoryTypeMap,
-                                          @"common/action-email-highlighted", KGOAccessoryTypeEmail,
-                                          @"common/action-external-highlighted", KGOAccessoryTypeExternal,
+                                          @"common/action-checkmark-highlight", KGOAccessoryTypeCheckmark,
+                                          @"common/action-arrow-highlight", KGOAccessoryTypeChevron,
+                                          @"common/action-phone-highlight", KGOAccessoryTypePhone,
+                                          @"common/action-people-highlight", KGOAccessoryTypePeople,
+                                          @"common/action-map-highlight", KGOAccessoryTypeMap,
+                                          @"common/action-email-highlight", KGOAccessoryTypeEmail,
+                                          @"common/action-external-highlight", KGOAccessoryTypeExternal,
                                           nil];
     }
     
     if (accessoryType && ![accessoryType isEqualToString:KGOAccessoryTypeNone]) {
         UIImage *image = [UIImage imageWithPathName:[CellAccessoryImages objectForKey:accessoryType]];
-        UIImage *highlightedImage = [UIImage imageWithPathName:[CellAccessoryImages objectForKey:accessoryType]];
+        UIImage *highlightedImage = [UIImage imageWithPathName:[CellAccessoryImagesHighlighted objectForKey:accessoryType]];
         if (image) {
             if (highlightedImage) {
                 return [[[UIImageView alloc] initWithImage:image highlightedImage:highlightedImage] autorelease];
