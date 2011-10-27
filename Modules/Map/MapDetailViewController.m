@@ -47,7 +47,7 @@
             _tableView = [[[KGOSearchResultListTableView alloc] initWithFrame:frame] autorelease];
             _tableView.resultsDelegate = self;
             
-            self.dataManager.searchDelegate = _tableView;
+            self.dataManager.searchDelegate = self;
             [self.dataManager searchNearby:self.placemark.coordinate];
         }
         
@@ -129,10 +129,23 @@
     }
 }
 
+-(void)receivedSearchResults:(NSArray *)searchResults forSource:(NSString *)source {
+    _tableView.items = searchResults;
+    NSArray *filteredArray = [searchResults filteredArrayUsingPredicate:
+                              [NSPredicate predicateWithFormat:@"identifier != %@", self.placemark.identifier]];
+    _tableView.items = filteredArray;
+    [_tableView reloadData];
+}
+
 #pragma mark -
 
 - (void)dealloc
 {
+    self.dataManager.searchDelegate = nil;
+    self.dataManager = nil;
+    self.placemark = nil;
+    self.pager = nil;
+    self.mapModule = nil;
     [_tableView release];
     [super dealloc];
 }

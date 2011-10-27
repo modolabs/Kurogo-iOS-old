@@ -9,7 +9,7 @@
 @class KGOPlacemark, KGOSearchResultListTableView, MapModule;
 
 
-@interface MapDetailViewController : KGOTabbedViewController <KGOSearchResultsDelegate, KGODetailPagerDelegate,
+@interface MapDetailViewController : KGOTabbedViewController <KGOSearchResultsDelegate, KGOSearchResultsHolder, KGODetailPagerDelegate,
 MapDataManagerDelegate, UIWebViewDelegate> {
     
     KGOSearchResultListTableView *_tableView;
