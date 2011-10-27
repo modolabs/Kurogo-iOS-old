@@ -527,12 +527,12 @@
     }
 }
 
-- (MKAnnotationView *)mapView:(MKMapView *)mapView viewForAnnotation:(id<MKAnnotation>)annotation
+- (MKAnnotationView *)mapView:(MKMapView *)aMapView viewForAnnotation:(id<MKAnnotation>)annotation
 {
     MKAnnotationView *view = nil;
     if ([annotation isKindOfClass:[KGOPlacemark class]]) {
         static NSString *AnnotationIdentifier = @"adfgweg";
-        view = [mapView dequeueReusableAnnotationViewWithIdentifier:AnnotationIdentifier];
+        view = [aMapView dequeueReusableAnnotationViewWithIdentifier:AnnotationIdentifier];
         if (!view) {
             view = [[[MKPinAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:AnnotationIdentifier] autorelease];
             view.canShowCallout = YES;
@@ -573,7 +573,7 @@
     }
 }
 
-- (void)mapView:(MKMapView *)mapView didAddAnnotationViews:(NSArray *)views
+- (void)mapView:(MKMapView *)aMapView didAddAnnotationViews:(NSArray *)views
 {
     NSInteger calloutCount = 0;
     id<MKAnnotation> selectedAnnotation = nil;
@@ -587,7 +587,7 @@
     }
     
     if (calloutCount == 1) {
-        [mapView selectAnnotation:selectedAnnotation animated:YES];
+        [aMapView selectAnnotation:selectedAnnotation animated:YES];
     }
 }
 
@@ -606,10 +606,10 @@
     }
 }
 
-- (void)mapView:(MKMapView *)mapView didDeselectAnnotationView:(MKAnnotationView *)view
+- (void)mapView:(MKMapView *)aMapView didDeselectAnnotationView:(MKAnnotationView *)view
 {
-    NSInteger searchResultAnnotationCount = mapView.selectedAnnotations.count;
-    for (id<MKAnnotation> anAnnotation in mapView.selectedAnnotations) {
+    NSInteger searchResultAnnotationCount = aMapView.selectedAnnotations.count;
+    for (id<MKAnnotation> anAnnotation in aMapView.selectedAnnotations) {
         if (view.annotation == anAnnotation // this is what was deselected
             || ![anAnnotation conformsToProtocol:@protocol(KGOSearchResult)] // we don't count annotations not provided by us
         ) {
