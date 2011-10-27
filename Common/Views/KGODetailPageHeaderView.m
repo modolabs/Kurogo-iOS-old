@@ -4,7 +4,7 @@
 #import "UIKit+KGOAdditions.h"
 
 #define LABEL_PADDING 10
-#define MAX_TITLE_LINES 3
+#define MAX_TITLE_LINES 4
 #define MAX_SUBTITLE_LINES 5
 
 @implementation KGODetailPageHeaderView
