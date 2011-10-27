@@ -389,7 +389,12 @@ groupTitles = _groupTitles;
         KGOEventWrapper *event = [eventsForSection objectAtIndex:indexPath.row];
         
         NSString *title = event.title;
-        NSString *subtitle = [self.dataManager shortDateTimeStringFromDate:event.startDate];
+        NSString *subtitle = nil;
+        if (event.allDay) {
+            subtitle = [NSString stringWithFormat:@"%@ %@", [self.dataManager shortDateStringFromDate:event.startDate], NSLocalizedString(@"All day", nil)];
+        } else {
+            subtitle = [self.dataManager shortDateTimeStringFromDate:event.startDate];
+        }
         
         return [[^(UITableViewCell *cell) {
             [cell applyBackgroundThemeColorForIndexPath:indexPath tableView:tableView];

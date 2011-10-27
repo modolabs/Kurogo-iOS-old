@@ -19,6 +19,9 @@
         NSDateFormatter *mediumDayDF = [[[NSDateFormatter alloc] init] autorelease];
         [mediumDayDF setDateStyle:NSDateFormatterMediumStyle];
         [mediumDayDF setTimeStyle:NSDateFormatterNoStyle];
+        NSDateFormatter *shortDayDF = [[[NSDateFormatter alloc] init] autorelease];
+        [shortDayDF setDateStyle:NSDateFormatterShortStyle];
+        [shortDayDF setTimeStyle:NSDateFormatterNoStyle];
         NSDateFormatter *shortTimeDF = [[[NSDateFormatter alloc] init] autorelease];
         [shortTimeDF setDateStyle:NSDateFormatterNoStyle];
         [shortTimeDF setTimeStyle:NSDateFormatterShortStyle];
@@ -31,6 +34,7 @@
         
         _dateFormatters = [[NSDictionary alloc] initWithObjectsAndKeys:
                            mediumDayDF, @"mediumDay",
+                           shortDayDF, @"shortDay",
                            shortTimeDF, @"shortTime",
                            dateTimeDF, @"dateTime",
                            nil];
@@ -41,6 +45,11 @@
 - (NSString *)mediumDateStringFromDate:(NSDate *)date
 {
     return [[_dateFormatters objectForKey:@"mediumDay"] stringFromDate:date];
+}
+
+- (NSString *)shortDateStringFromDate:(NSDate *)date
+{
+    return [[_dateFormatters objectForKey:@"shortDay"] stringFromDate:date];
 }
 
 - (NSString *)shortTimeStringFromDate:(NSDate *)date
@@ -90,7 +99,7 @@
         _groupsRequest = [[KGORequestManager sharedManager] requestWithDelegate:self
                                                                          module:self.moduleTag
                                                                            path:@"groups"
-                                                                        version:1
+                                                                        version:2
                                                                          params:nil];
         if (oldGroups) {
             _groupsRequest.minimumDuration = CALENDAR_GROUP_EXPIRE_TIME;
@@ -119,7 +128,7 @@
         request = [[KGORequestManager sharedManager] requestWithDelegate:self
                                                                   module:self.moduleTag
                                                                     path:@"calendars"
-                                                                 version:1
+                                                                 version:2
                                                                   params:params];
         
         [_categoriesRequests setObject:request forKey:group.identifier];
@@ -221,7 +230,7 @@ NSDate *dateForMidnightFromInterval(NSTimeInterval interval)
         request = [[KGORequestManager sharedManager] requestWithDelegate:self
                                                                   module:self.moduleTag
                                                                     path:@"events"
-                                                                 version:1
+                                                                 version:2
                                                                   params:params];
         request.expectedResponseType = [NSDictionary class];
         [_eventsRequests setObject:request forKey:requestIdentifier];

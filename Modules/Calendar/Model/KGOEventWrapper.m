@@ -12,6 +12,7 @@ startDate = _startDate,
 endDate = _endDate,
 lastUpdate = _lastUpdate,
 allDay = _allDay,
+fields = _fields,
 location = _location,
 briefLocation = _briefLocation,
 title = _title,
@@ -81,6 +82,8 @@ moduleTag;
 {
     // basic info
     self.title = [dictionary nonemptyStringForKey:@"title"];
+
+    // Check for v1 field
     self.summary = [dictionary nonemptyStringForKey:@"description"];
     
     // time
@@ -98,11 +101,26 @@ moduleTag;
         self.allDay = (endTimestamp - startTimestamp) + 1 >= 24 * 60 * 60;
     }
     
-    // location
+    // Check for v1 field
     self.location = [dictionary nonemptyStringForKey:@"location"];
     
-    // TODO: contact info
+    // Generic fields
+    self.fields = [dictionary objectForKey:@"fields"];
     
+    // Pull out specific v2 common fields (will overwrite any v1 fields if present)
+    for (NSDictionary *field in self.fields) {
+        NSString *key = [field nonemptyStringForKey:@"id"];
+        
+        // summary
+        if ([key isEqualToString:@"description"]) {
+            self.summary = [field nonemptyStringForKey:@"value"];
+        }
+        
+        // location
+        if ([key isEqualToString:@"location"]) {
+            self.location = [field nonemptyStringForKey:@"value"];
+        }
+    }
     
     self.lastUpdate = [NSDate date];
 }
@@ -302,6 +320,13 @@ moduleTag;
     
     _kgoEvent.lastUpdate = [NSDate date];
     
+    // new in v2:
+    _kgoEvent.allDay = [NSNumber numberWithBool:self.allDay];
+    
+    if (_fields) {
+        _kgoEvent.fields = [NSKeyedArchiver archivedDataWithRootObject:_fields];
+    }
+    
     return _kgoEvent;
 }
 
@@ -394,6 +419,15 @@ moduleTag;
     
     if (!self.userInfo && _kgoEvent.userInfo) {
         self.userInfo = [NSKeyedUnarchiver unarchiveObjectWithData:_kgoEvent.userInfo];
+    }
+
+    // new in v2:
+    if (_kgoEvent.allDay) {
+        self.allDay = [_kgoEvent.allDay boolValue];
+    }
+    
+    if (!self.fields && _kgoEvent.fields) {
+        self.fields = [NSKeyedUnarchiver unarchiveObjectWithData:_kgoEvent.fields];
     }
 }
 

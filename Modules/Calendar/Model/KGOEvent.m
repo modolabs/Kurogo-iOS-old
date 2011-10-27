@@ -22,6 +22,8 @@ NSString * const KGOEntityNameEvent = @"KGOEvent";
 @dynamic placemarkID;
 @dynamic calendars;
 @dynamic particpants;
+@dynamic allDay;
+@dynamic fields;
 
 + (KGOEvent *)findEventWithID:(NSString *)identifier
 {
