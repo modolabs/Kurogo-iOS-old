@@ -32,9 +32,6 @@ KGORequestDelegate, UIPopoverControllerDelegate> {
     
     IBOutlet UIView *_mapBorder; // ipad only
 
-	// TODO: indoor map initially won't be MKMapView
-	IBOutlet MKMapView *_mapView;
-
 	BOOL indoorMode;
 	
 	KGOSearchDisplayController *_searchController;
@@ -46,6 +43,9 @@ KGORequestDelegate, UIPopoverControllerDelegate> {
     KGOPlacemark *_pendingPlacemark;
     KGORequest *_placemarkInfoRequest;
 }
+
+// TODO: indoor map initially won't be MKMapView
+@property (nonatomic, retain) IBOutlet MKMapView *mapView;
 
 @property (nonatomic, retain) UIPopoverController *selectedPopover;
 @property (nonatomic, retain) MapModule *mapModule;

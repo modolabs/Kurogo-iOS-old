@@ -18,9 +18,10 @@
 @implementation MapHomeViewController
 
 @synthesize searchTerms, searchOnLoad, searchParams, mapModule, selectedPopover;
+@synthesize mapView;
 
 - (void)mapTypeDidChange:(NSNotification *)aNotification {
-    _mapView.mapType = [[aNotification object] integerValue];
+    self.mapView.mapType = [[aNotification object] integerValue];
 }
 
 - (void)setupToolbarButtons {
@@ -104,14 +105,14 @@
     
     self.title = self.mapModule.shortName;
 
-    _mapView.mapType = [[NSUserDefaults standardUserDefaults] integerForKey:MapTypePreference];
-    [_mapView centerAndZoomToDefaultRegion];
+    self.mapView.mapType = [[NSUserDefaults standardUserDefaults] integerForKey:MapTypePreference];
+    [self.mapView centerAndZoomToDefaultRegion];
     if (self.annotations.count) { // these would have been set before _mapView was set up
-        [_mapView addAnnotations:self.annotations];
+        [self.mapView addAnnotations:self.annotations];
         // TODO: rewrite regionForAnnotations: to return a success value
         MKCoordinateRegion region = [MapHomeViewController regionForAnnotations:self.annotations restrictedToClass:NULL];
         if (region.center.latitude && region.center.longitude) {
-            _mapView.region = region;
+            self.mapView.region = region;
         }
     }
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mapTypeDidChange:) name:MapTypePreferenceChanged object:nil];
@@ -167,7 +168,8 @@
     }
     
     [_pendingPlacemark release];
-    _mapView.delegate = nil;
+    self.mapView.delegate = nil;
+    self.mapView = nil;
     [_annotations release];
 	[_searchController release];
     [_toolbarDropShadow release];
@@ -182,10 +184,10 @@
     [_annotations release];
     _annotations = [annotations retain];
 
-    if (_mapView) {
-        [_mapView removeAnnotations:_mapView.annotations];
+    if (self.mapView) {
+        [self.mapView removeAnnotations:self.mapView.annotations];
         if (_annotations) {
-            [_mapView addAnnotations:_annotations];
+            [self.mapView addAnnotations:_annotations];
         }
     }
 }
@@ -204,8 +206,8 @@
         if ([incomingID isEqualToString:_pendingPlacemark.identifier]) {
             [_pendingPlacemark updateWithDictionary:result];
             DLog(@"%@", _pendingPlacemark);
-            [_mapView removeAnnotations:[_mapView annotations]];
-            [_mapView addAnnotation:_pendingPlacemark];
+            [self.mapView removeAnnotations:[self.mapView annotations]];
+            [self.mapView addAnnotation:_pendingPlacemark];
         }
         [_pendingPlacemark release];
         _pendingPlacemark = nil;
@@ -386,11 +388,11 @@
     DLog(@"%@ %@", location, _userLocation);
     // TODO: make maximum distance a config parameter
     if ([_userLocation distanceFromLocation:location] <= 40000) {
-        if (!_mapView.showsUserLocation) {
-            _mapView.showsUserLocation = YES;
+        if (!self.mapView.showsUserLocation) {
+            self.mapView.showsUserLocation = YES;
         } else {
             if (!_didCenter) {
-                _mapView.centerCoordinate = _userLocation.coordinate;
+                self.mapView.centerCoordinate = _userLocation.coordinate;
                 _didCenter = YES;
             }
         }
@@ -406,7 +408,7 @@
                                                    otherButtonTitles:nil] autorelease];
         [alertView show];
         
-        _mapView.showsUserLocation = NO;
+        self.mapView.showsUserLocation = NO;
         _locateUserButton.enabled = NO;
     }
 }
@@ -418,7 +420,7 @@
         [_locationManager release];
         _locationManager = nil;
 
-        _mapView.showsUserLocation = NO;
+        self.mapView.showsUserLocation = NO;
     } else {
         _locateUserButton.enabled = YES;
     }
@@ -433,7 +435,7 @@
         _locationManager = nil;
 
         _locateUserButton.enabled = NO;
-        _mapView.showsUserLocation = NO;
+        self.mapView.showsUserLocation = NO;
     }    
 }
 
@@ -496,7 +498,7 @@
 }
 
 - (void)switchToMapView {
-	[self.view bringSubviewToFront:_mapView];
+	[self.view bringSubviewToFront:self.mapView];
 	[self.view bringSubviewToFront:_bottomBar];
 	
     // TODO: fine-tune when to enable this, e.g under proximity and gps enabled conditions
@@ -520,7 +522,7 @@
 - (void)mapView:(MKMapView *)mapView didUpdateUserLocation:(MKUserLocation *)userLocation
 {
     if (!_didCenter) {
-        _mapView.centerCoordinate = userLocation.coordinate;
+        self.mapView.centerCoordinate = userLocation.coordinate;
         _didCenter = YES;
     }
 }
@@ -630,7 +632,7 @@
 - (id<KGOSearchResult>)pager:(KGODetailPager *)pager contentForPageAtIndexPath:(NSIndexPath *)indexPath
 {
     NSMutableArray *displayables = [NSMutableArray array];
-    for (id<MKAnnotation> anAnnotation in _mapView.annotations) {
+    for (id<MKAnnotation> anAnnotation in self.mapView.annotations) {
         if ([anAnnotation conformsToProtocol:@protocol(KGOSearchResult)]) {
             [displayables addObject:anAnnotation];
         }
@@ -641,7 +643,7 @@
 - (NSInteger)pager:(KGODetailPager *)pager numberOfPagesInSection:(NSInteger)section
 {
     NSInteger count = 0;
-    for (id<MKAnnotation> anAnnotation in _mapView.annotations) {
+    for (id<MKAnnotation> anAnnotation in self.mapView.annotations) {
         if ([anAnnotation conformsToProtocol:@protocol(KGOSearchResult)]) {
             count++;
         }
@@ -670,9 +672,9 @@
         [appDelegate showPage:LocalPathPageNameDetail forModuleTag:self.mapModule.tag params:params];
 
     } else if ([aResult conformsToProtocol:@protocol(MKAnnotation)]) { // TODO: check if search is bookmarks, not by the result selected
-        [_mapView removeAnnotations:[_mapView annotations]];
+        [self.mapView removeAnnotations:[self.mapView annotations]];
         id<MKAnnotation> annotation = (id<MKAnnotation>)aResult;
-        [_mapView addAnnotation:annotation];
+        [self.mapView addAnnotation:annotation];
         [self dismissPopoverAnimated:YES];
     }
 }
@@ -693,7 +695,7 @@
 		[self switchToMapView];
 	}
 	
-    [_mapView removeAnnotations:[_mapView annotations]];
+    [self.mapView removeAnnotations:[self.mapView annotations]];
     
     NSMutableArray *addedAnnotations = [NSMutableArray array];
 	for (id<KGOSearchResult> aResult in controller.searchResults) {
@@ -702,13 +704,13 @@
 		}
 	}
     
-    [_mapView addAnnotations:addedAnnotations];
+    [self.mapView addAnnotations:addedAnnotations];
     
     if (addedAnnotations.count) {
         // TODO: rewrite regionForAnnotations: to return a success value
         MKCoordinateRegion region = [MapHomeViewController regionForAnnotations:addedAnnotations restrictedToClass:NULL];
         if (region.center.latitude && region.center.longitude) {
-            _mapView.region = region;
+            self.mapView.region = region;
         }
     }
 	
@@ -720,11 +722,11 @@
 	for (id<KGOSearchResult> aResult in controller.searchResults) {
 		if ([aResult conformsToProtocol:@protocol(MKAnnotation)]) {
 			id<MKAnnotation> annotation = (id<MKAnnotation>)aResult;
-			[_mapView removeAnnotation:annotation];
+			[self.mapView removeAnnotation:annotation];
 		}
 	}
 	
-	if (!_mapView.annotations.count) {
+	if (!self.mapView.annotations.count) {
 		[self hideMapListToggle];
 	}
 
