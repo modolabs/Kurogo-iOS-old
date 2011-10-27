@@ -213,6 +213,10 @@ maxResultsPerSection;
         [self unfocusSearchBarAnimated:animated];
         [self hideSearchOverlayAnimated:animated];
     }
+    
+    if ([self.delegate respondsToSelector:@selector(searchController:didBecomeActive:)]) {
+        [self.delegate searchController:self didBecomeActive:_active];
+    }
 }
 
 
@@ -298,7 +302,10 @@ maxResultsPerSection;
 
 - (void)searchBar:(KGOSearchBar *)searchBar textDidChange:(NSString *)searchText {
     if (!_showingOnlySearchResults && [self.delegate searchControllerShouldShowSuggestions:self]) {
-		if ([searchText length]) {
+
+        BOOL shouldHideSuggestions = YES;
+
+        if ([searchText length]) {
 			NSMutableArray *searchResults = [NSMutableArray array];
 			
 			// fetch recent searches
@@ -318,7 +325,10 @@ maxResultsPerSection;
 				
 				KGOModule *module = [KGO_SHARED_APP_DELEGATE() moduleForTag:moduleTag];
 				if ([module supportsFederatedSearch]) { // TODO: use a less strict check
-					[searchResults addObjectsFromArray:[module cachedResultsForSearchText:searchText params:nil]];
+                    NSArray *cachedResults = [module cachedResultsForSearchText:searchText params:nil];
+                    if (cachedResults) {
+                        [searchResults addObjectsFromArray:cachedResults];
+                    }
 				}
 			}
 			
@@ -331,12 +341,19 @@ maxResultsPerSection;
 			
 			NSArray *recents = [[CoreDataManager sharedManager] objectsForEntity:RecentSearchesEntityName matchingPredicate:pred];
             if (recents.count) {
+                [searchResults addObjectsFromArray:recents];
+            }
+
+            if (searchResults.count) {
+                shouldHideSuggestions = NO;
                 [self receivedSearchResults:searchResults forSource:RecentSearchesTag];
             }
-			
-		} else {
+		}
+        
+        if (shouldHideSuggestions) {
             self.multiSearchResults = nil;
             self.searchSources = nil;
+            _showingOnlySearchResults = NO;
 		}
         
         if (self.multiSearchResults.count) {
@@ -367,7 +384,17 @@ maxResultsPerSection;
     if (!self.searchSources) {
         self.searchSources = [NSMutableArray array];
     }
+
+    if ([self.multiSearchResults objectForKey:RecentSearchesTag]) {
+        // always remove cached suggestions so they don't accumulate or show up next to real results
+        [self.multiSearchResults removeObjectForKey:RecentSearchesTag];
+        [self.searchSources removeObject:RecentSearchesTag];
+    }
     
+    if (![source isEqualToString:RecentSearchesTag]) {
+        _showingOnlySearchResults = YES;
+    }
+
     NSMutableArray *oldResults = [self.multiSearchResults objectForKey:source];
     if (!oldResults) {
         oldResults = [NSMutableArray array];

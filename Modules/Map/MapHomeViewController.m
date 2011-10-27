@@ -466,7 +466,7 @@
 		[_mapListToggle addTarget:self action:@selector(mapListSelectionChanged:) forControlEvents:UIControlEventValueChanged];
 	}
 	
-	if (!_searchBar.toolbarItems.count) {
+	if (!_searchBar.toolbarItems.count && ![_searchBar showsCancelButton]) {
 		UIBarButtonItem *item = [[[UIBarButtonItem alloc] initWithCustomView:_mapListToggle] autorelease];
 		item.width = width;
 		[_searchBar addToolbarButton:item animated:NO];
@@ -475,7 +475,7 @@
 
 - (void)hideMapListToggle {
 	if (_searchBar.toolbarItems.count) {
-		[_searchBar setToolbarItems:nil];
+		[_searchBar setToolbarItems:nil animated:YES];
 	}
 	
 	[_mapListToggle release];
@@ -680,7 +680,12 @@
 }
 
 - (BOOL)searchControllerShouldLinkToMap:(KGOSearchDisplayController *)controller {
-	[self showMapListToggle]; // override default behavior
+    // override default behavior
+	if (controller.showingOnlySearchResults) {
+        [_searchBar setShowsCancelButton:NO animated:YES];
+        [self showMapListToggle];
+		[self switchToMapView]; // show our map view above the list view
+	}
 	return NO; // notify the controller that it's been overridden
 }
 
@@ -725,12 +730,15 @@
 			[self.mapView removeAnnotation:annotation];
 		}
 	}
-	
-	if (!self.mapView.annotations.count) {
-		[self hideMapListToggle];
-	}
 
 	_searchResultsTableView = nil;
+}
+
+- (void)searchController:(KGOSearchDisplayController *)controller didBecomeActive:(BOOL)active
+{
+	if (!self.mapView.annotations.count && !active) {
+		[self hideMapListToggle];
+	}
 }
 
 // this is about 1km at the equator

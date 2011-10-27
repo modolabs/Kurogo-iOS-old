@@ -3,6 +3,7 @@
 #import "KGOToolbar.h"
 #import "UIKit+KGOAdditions.h"
 #import <QuartzCore/QuartzCore.h>
+#import "Foundation+KGOAdditions.h"
 
 #define TOOLBAR_BUTTON_PADDING 5
 #define TOOLBAR_BUTTON_SPACING 6
@@ -268,6 +269,11 @@
 }
 
 - (void)setToolbarItems:(NSArray *)items animated:(BOOL)animated {
+    if (_hiddenToolbarItems.count && ![items containsObject:_cancelButton] && _hiddenToolbarItems != items) {
+        [_hiddenToolbarItems release];
+        _hiddenToolbarItems = [items copy];
+    }
+    
     CGFloat toolbarWidth = TOOLBAR_MINIMUM_WIDTH;
     for (UIBarButtonItem *anItem in items) {
         toolbarWidth += anItem.width + TOOLBAR_BUTTON_SPACING + 10;

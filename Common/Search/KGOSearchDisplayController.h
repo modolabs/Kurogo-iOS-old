@@ -23,6 +23,7 @@
 
 @optional
 
+- (void)searchController:(KGOSearchDisplayController *)controller didBecomeActive:(BOOL)active;
 - (void)searchController:(KGOSearchDisplayController *)controller didShowSearchResultsTableView:(UITableView *)tableView;
 - (void)searchController:(KGOSearchDisplayController *)controller willReloadSearchResultsTableView:(UITableView *)tableView;
 - (void)searchController:(KGOSearchDisplayController *)controller willHideSearchResultsTableView:(UITableView *)tableView;
