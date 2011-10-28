@@ -111,10 +111,13 @@
 // ConnectionWrapper delegate
 - (void)connection:(ConnectionWrapper *)wrapper handleData:(NSData *)data {
     // TODO: If memory usage becomes a concern, convert images to PNG using UIImagePNGRepresentation(). PNGs use considerably less RAM.
-    self.imageData = data;
-    BOOL validImage = [self displayImage];
-    if (validImage) {
-        [self.delegate thumbnail:self didLoadData:data];
+    NSString *connectionURL = [connection.urlConnection.currentRequest.URL absoluteString];
+    if ([connectionURL isEqualToString:self.imageURL]) {
+        self.imageData = data;
+        BOOL validImage = [self displayImage];
+        if (validImage) {
+            [self.delegate thumbnail:self didLoadData:data];
+        }
     }
     
     self.connection = nil;
