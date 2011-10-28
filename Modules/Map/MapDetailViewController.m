@@ -137,6 +137,23 @@
     [_tableView reloadData];
 }
 
+#pragma mark UIWebViewDelegate
+
+- (BOOL)webView:(UIWebView*)webView shouldStartLoadWithRequest:(NSURLRequest*)request navigationType:(UIWebViewNavigationType)navigationType {
+    BOOL result = YES;
+    
+    if (navigationType == UIWebViewNavigationTypeLinkClicked) {
+        NSURL *url = [request URL];
+        NSURL *baseURL = [NSURL fileURLWithPath:[[NSBundle mainBundle] resourcePath]];
+        
+        if ([[url path] rangeOfString:[baseURL path] options:NSAnchoredSearch].location == NSNotFound) {
+            [[UIApplication sharedApplication] openURL:url];
+            result = NO;
+        }
+    }
+    return result;
+}
+
 #pragma mark -
 
 - (void)dealloc
