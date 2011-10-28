@@ -77,10 +77,11 @@ currentCategories = _currentCategories, currentStories = _currentStories;
 {
     if (!_currentCategories) {    
         NSPredicate *predicate = [NSPredicate predicateWithFormat:@"isMainCategory = YES AND moduleTag = %@", self.moduleTag];
-        NSSortDescriptor *sort = [[[NSSortDescriptor alloc] initWithKey:@"category_id" ascending:YES] autorelease];
+        NSSortDescriptor *sort = [[[NSSortDescriptor alloc] initWithKey:@"sortOrder" ascending:YES] autorelease];
+        NSSortDescriptor *catSort = [[[NSSortDescriptor alloc] initWithKey:@"category_id" ascending:YES] autorelease]; // compat
         NSArray *results = [[CoreDataManager sharedManager] objectsForEntity:NewsCategoryEntityName
                                                            matchingPredicate:predicate
-                                                             sortDescriptors:[NSArray arrayWithObject:sort]];
+                                                             sortDescriptors:[NSArray arrayWithObjects:sort, catSort, nil]];
         if (results.count) {
             self.currentCategories = results;
         }
@@ -253,12 +254,17 @@ currentCategories = _currentCategories, currentStories = _currentStories;
             }
         }
         
-        for (NSDictionary *categoryDict in newCategoryDicts) {
+        for (NSInteger i = 0; i < newCategoryDicts.count; i++) {
+            NSDictionary *categoryDict = [newCategoryDicts dictionaryAtIndex:i];
             NSString *categoryId = [categoryDict nonemptyStringForKey:@"id"];
             NewsCategory *category = [blockSelf categoryWithId:categoryId];
             if (!category) {
                 retVal = REQUEST_CATEGORIES_CHANGED;
                 category = [blockSelf categoryWithDictionary:categoryDict];
+            }
+            if (!category.sortOrder || ![category.sortOrder isEqualToNumber:[NSNumber numberWithInt: i]]) {
+                category.sortOrder = [NSNumber numberWithInt: i];
+                retVal = REQUEST_CATEGORIES_CHANGED;
             }
         }
         
