@@ -164,6 +164,8 @@
 {
     [super viewDidLoad];
     
+    self.navigationItem.title = NSLocalizedString(@"Location Info", nil);
+    
     if (self.pager) {
         self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithCustomView:self.pager] autorelease];
     }
