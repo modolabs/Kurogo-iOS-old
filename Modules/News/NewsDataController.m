@@ -477,7 +477,9 @@ currentCategories = _currentCategories, currentStories = _currentStories;
         for (NSDictionary *storyDict in (NSArray *)result) {
             NewsStory *story = [self storyWithDictionary:storyDict]; 
             story.searchResult = [NSNumber numberWithInt:1];
-            [_searchResults addObject:story];
+            if([_searchResults indexOfObject:story] == NSNotFound) {
+                [_searchResults addObject:story];
+            }
         }
     }
 }

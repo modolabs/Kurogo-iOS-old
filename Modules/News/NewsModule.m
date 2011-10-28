@@ -3,13 +3,11 @@
 #import "NewsDataController.h"
 
 @implementation NewsModule
+@synthesize dataManager;
 
 - (void)willLaunch
 {
-    if (!_dataManager) {
-        _dataManager = [[NewsDataController alloc] init];
-        _dataManager.moduleTag = self.tag;
-    }
+    [self dataManager];
 }
 
 - (void)willTerminate
@@ -23,6 +21,15 @@
     return YES;
 }
 
+- (NewsDataController *)dataManager
+{
+    if (!_dataManager) {
+        _dataManager = [[NewsDataController alloc] init];
+        _dataManager.moduleTag = self.tag;
+    }
+    return _dataManager;
+}
+
 #pragma mark Navigation
 
 - (NSArray *)registeredPageNames {
@@ -34,8 +41,8 @@
     if ([pageName isEqualToString:LocalPathPageNameHome]) {
         StoryListViewController *storyVC = [[[StoryListViewController alloc] initWithNibName:@"StoryListViewController"
                                                                                       bundle:nil] autorelease];
-        storyVC.dataManager = _dataManager;
-        _dataManager.delegate = storyVC;
+        storyVC.dataManager = self.dataManager;
+        self.dataManager.delegate = storyVC;
         vc = storyVC;
         
         if ([params objectForKey:@"category"]) {
@@ -46,8 +53,8 @@
     } else if ([pageName isEqualToString:LocalPathPageNameSearch]) {
         StoryListViewController *storyVC = [[[StoryListViewController alloc] initWithNibName:@"StoryListViewController"
                                                                                       bundle:nil] autorelease];
-        storyVC.dataManager = _dataManager;
-        _dataManager.delegate = storyVC;
+        storyVC.dataManager = self.dataManager;
+        self.dataManager.delegate = storyVC;
         vc = storyVC;
         
         NSString *searchText = [params objectForKey:@"q"];
@@ -62,7 +69,7 @@
         
     } else if ([pageName isEqualToString:LocalPathPageNameDetail]) {
         StoryDetailViewController *detailVC = [[[StoryDetailViewController alloc] init] autorelease];
-        detailVC.dataManager = _dataManager;
+        detailVC.dataManager = self.dataManager;
         vc = detailVC;
         
         NewsStory *story = [params objectForKey:@"story"];
@@ -109,8 +116,8 @@
     [_searchText release];
     _searchText = [searchText retain];
 
-    _dataManager.delegate = self;
-    [_dataManager fetchCategories];
+    self.dataManager.delegate = self;
+    [self.dataManager fetchCategories];
 }
 
 - (void)didReceiveSearchResults:(NSArray *)results forSearchTerms:(NSString *)searchTerms
@@ -134,9 +141,9 @@
 - (void)dataController:(NewsDataController *)controller didRetrieveCategories:(NSArray *)categories
 {
     if (self.searchDelegate) {
-        _dataManager.searchDelegate = self.searchDelegate;
+        self.dataManager.searchDelegate = self.searchDelegate;
         self.searchDelegate = nil;
-        [_dataManager searchStories:_searchText];
+        [self.dataManager searchStories:_searchText];
         [_searchText release];
         _searchText = nil;
     }

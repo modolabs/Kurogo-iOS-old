@@ -12,4 +12,6 @@
     NSString *_searchText;
 }
 
+@property (readonly) NewsDataController *dataManager;
+
 @end

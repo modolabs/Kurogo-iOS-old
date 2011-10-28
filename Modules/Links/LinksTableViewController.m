@@ -179,11 +179,9 @@
     cell.detailTextLabel.font = [[KGOTheme sharedTheme] fontForThemedProperty:KGOThemePropertyNavListSubtitle];
     
     if([(NSDictionary *)[linksArray objectAtIndex:indexPath.row] objectForKey:@"url"]) {
-        UIImageView * accessoryImageView = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"kurogo/common/action-external.png"]] autorelease];
-        cell.accessoryView = accessoryImageView;
+        cell.accessoryView = [[KGOTheme sharedTheme] accessoryViewForType:KGOAccessoryTypeExternal];
     } else {
-        UIImageView * accessoryImageView = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"kurogo/common/action-arrow.png"]] autorelease];
-        cell.accessoryView = accessoryImageView;
+        cell.accessoryView = [[KGOTheme sharedTheme] accessoryViewForType:KGOAccessoryTypeChevron];
     }
     [cell applyBackgroundThemeColorForIndexPath:indexPath tableView:tableView];
     
