@@ -80,47 +80,35 @@ moduleTag;
 
 - (void)updateWithDictionary:(NSDictionary *)dictionary
 {
-    // basic info
+    // Title and description
     self.title = [dictionary nonemptyStringForKey:@"title"];
-
-    // Check for v1 field
     self.summary = [dictionary nonemptyStringForKey:@"description"];
     
-    // time
+    // Location
+    self.location = [dictionary nonemptyStringForKey:@"location"];
+    self.briefLocation = [dictionary nonemptyStringForKey:@"locationLabel"]; // v2
+    NSNumber *lat = [dictionary objectForKey:@"latitude"];
+    NSNumber *lon = [dictionary objectForKey:@"longitude"];
+    if (lat && lon && [lat isKindOfClass:[NSNumber class]] && [lon isKindOfClass:[NSNumber class]]) {
+        self.coordinate = CLLocationCoordinate2DMake([lat floatValue], [lon floatValue]);
+    }
+    
+    // Date and Time
     NSTimeInterval startTimestamp = [dictionary floatForKey:@"start"];
-    self.startDate = [NSDate dateWithTimeIntervalSince1970:startTimestamp];
-
     NSTimeInterval endTimestamp = [dictionary floatForKey:@"end"];
+    NSNumber *allDay = [dictionary objectForKey:@"allday"]; // v2
+    self.startDate = [NSDate dateWithTimeIntervalSince1970:startTimestamp];
     if (endTimestamp > startTimestamp) {
         self.endDate = [NSDate dateWithTimeIntervalSince1970:endTimestamp];
     }
-    NSNumber *allDay = [dictionary objectForKey:@"allday"];
     if (allDay && [allDay isKindOfClass:[NSNumber class]]) {
         self.allDay = [allDay boolValue];
     } else {
         self.allDay = (endTimestamp - startTimestamp) + 1 >= 24 * 60 * 60;
     }
     
-    // Check for v1 field
-    self.location = [dictionary nonemptyStringForKey:@"location"];
-    
-    // Generic fields
-    self.fields = [dictionary objectForKey:@"fields"];
-    
-    // Pull out specific v2 common fields (will overwrite any v1 fields if present)
-    for (NSDictionary *field in self.fields) {
-        NSString *key = [field nonemptyStringForKey:@"id"];
-        
-        // summary
-        if ([key isEqualToString:@"description"]) {
-            self.summary = [field nonemptyStringForKey:@"value"];
-        }
-        
-        // location
-        if ([key isEqualToString:@"location"]) {
-            self.location = [field nonemptyStringForKey:@"value"];
-        }
-    }
+    // Additional attributes
+    self.fields = [dictionary objectForKey:@"fields"]; // v2
     
     self.lastUpdate = [NSDate date];
 }
