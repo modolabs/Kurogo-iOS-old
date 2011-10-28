@@ -94,8 +94,8 @@ moduleTag;
     }
     
     // Date and Time
-    NSTimeInterval startTimestamp = [dictionary floatForKey:@"start"];
-    NSTimeInterval endTimestamp = [dictionary floatForKey:@"end"];
+    NSTimeInterval startTimestamp = [[dictionary objectForKey:@"start"] doubleValue];
+    NSTimeInterval endTimestamp = [[dictionary objectForKey:@"end"] doubleValue];
     NSNumber *allDay = [dictionary objectForKey:@"allday"]; // v2
     self.startDate = [NSDate dateWithTimeIntervalSince1970:startTimestamp];
     if (endTimestamp > startTimestamp) {
