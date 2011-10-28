@@ -16,4 +16,7 @@
 @property (nonatomic, retain) NSString * url;
 @property (nonatomic, retain) NSSet* stories;
 
+// Added in v3
+@property (nonatomic, retain) NSNumber * sortOrder;
+
 @end
