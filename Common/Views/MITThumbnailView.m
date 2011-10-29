@@ -4,13 +4,14 @@
 
 @implementation MITThumbnailView
 
-@synthesize imageURL, connection, loadingView, imageView, delegate;
+@synthesize connection, loadingView, imageView, delegate;
+@dynamic imageURL;
 
 - (id)initWithFrame:(CGRect)frame {
     self = [super initWithFrame:frame];
     if (self != nil) {
         connection = nil;
-        imageURL = nil;
+        _imageURL = nil;
         _imageData = nil;
         loadingView = nil;
         imageView = nil;
@@ -34,6 +35,23 @@
         _imageData = [imageData retain];
         _didDisplayImage = NO;
     }
+}
+
+- (void)setImageURL:(NSString *)aImageURL {
+    if (![aImageURL isEqualToString:_imageURL]) {
+        if([self.connection isConnected]) {
+            [self.connection cancel];
+            self.connection.delegate = nil;
+            self.connection = nil;
+            [KGO_SHARED_APP_DELEGATE() hideNetworkActivityIndicator];
+        }
+        [_imageURL release];
+        _imageURL = [aImageURL retain];
+    }
+}
+
+- (NSString *)imageURL {
+    return _imageURL;
 }
 
 - (void)loadImage {
@@ -111,13 +129,11 @@
 // ConnectionWrapper delegate
 - (void)connection:(ConnectionWrapper *)wrapper handleData:(NSData *)data {
     // TODO: If memory usage becomes a concern, convert images to PNG using UIImagePNGRepresentation(). PNGs use considerably less RAM.
-    NSString *connectionURL = [connection.urlConnection.currentRequest.URL absoluteString];
-    if ([connectionURL isEqualToString:self.imageURL]) {
-        self.imageData = data;
-        BOOL validImage = [self displayImage];
-        if (validImage) {
-            [self.delegate thumbnail:self didLoadData:data];
-        }
+
+    self.imageData = data;
+    BOOL validImage = [self displayImage];
+    if (validImage) {
+        [self.delegate thumbnail:self didLoadData:data];
     }
     
     self.connection = nil;
@@ -140,7 +156,7 @@
     self.imageData = nil;
     [loadingView release];
     [imageView release];
-    [imageURL release];
+    [_imageURL release];
     self.delegate = nil;
     [super dealloc];
 }
