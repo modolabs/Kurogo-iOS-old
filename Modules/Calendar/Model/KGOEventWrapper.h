@@ -17,7 +17,6 @@
     NSDate *_startDate;
     NSDate *_lastUpdate; // lastModifiedDate in EKEvent
     BOOL _allDay;         // comes out of userInfo
-    NSDictionary *fields; // comes out of userInfo
     NSString *_location;
     NSString *_title;
     NSString *_summary; // notes in EKEvent
@@ -34,6 +33,7 @@
     NSMutableSet *_calendars;
     BOOL _bookmarked;
     NSString *_briefLocation;
+    NSDictionary *fields;
     NSDictionary *_userInfo;
     
     // not yet supported EKEvent properties: alarms, availability, isDetached,
@@ -50,8 +50,6 @@
 @property (nonatomic, retain) NSDictionary *rrule;
 @property (nonatomic, retain) NSSet *organizers; // set of KGOAttendeeWrapper objects
 @property (nonatomic, retain) NSSet *attendees;  // set of KGOAttendeeWrapper objects
-@property (nonatomic, retain) NSDictionary *userInfo;
-@property (nonatomic, retain) NSDictionary *fields; // comes out of userInfo
 @property (nonatomic) BOOL allDay;                  // comes out of userInfo
 
 // non-eventkit properties
@@ -59,6 +57,8 @@
 @property (nonatomic, retain) NSMutableSet *calendars;
 @property (nonatomic) BOOL bookmarked;
 @property (nonatomic, retain) NSString *briefLocation;
+@property (nonatomic, retain) NSDictionary *fields;
+@property (nonatomic, retain) NSDictionary *userInfo;
 
 // allow this to be set by the data controller
 @property (nonatomic, retain) ModuleTag *moduleTag;

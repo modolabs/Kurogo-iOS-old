@@ -70,11 +70,13 @@ NSString * const KGOEntityNameCalendarGroup = @"KGOCalendarGroup";
             }
             
         } else if (calendars.count) {
-            for (NSDictionary *calendarData in calendars) {
+            for (NSInteger i = 0; i < calendars.count; i++) {
+                NSDictionary *calendarData = [calendars dictionaryAtIndex:i];
                 KGOCalendar *aCalendar = [KGOCalendar calendarWithDictionary:calendarData];
                 if (aCalendar && ![group.calendars containsObject:aCalendar]) {
                     [group addCalendarsObject:aCalendar];
                 }
+                aCalendar.sortOrder = [NSNumber numberWithInt:i];
             }
         }
     }

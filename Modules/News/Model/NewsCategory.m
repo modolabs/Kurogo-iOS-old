@@ -14,6 +14,9 @@ NSString * const NewsCategoryEntityName = @"NewsCategory";
 @dynamic stories;
 @dynamic url;
 
+// Added in v3
+@dynamic sortOrder;
+
 - (void)addStoriesObject:(NewsStory *)value {    
     NSSet *changedObjects = [[NSSet alloc] initWithObjects:&value count:1];
     [self willChangeValueForKey:@"stories" withSetMutation:NSKeyValueUnionSetMutation usingObjects:changedObjects];

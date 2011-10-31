@@ -112,6 +112,10 @@
     if (extendedInfo.count) {
         [mutableSections addObject:extendedInfo];
     }
+    NSArray *sections = [self sectionsForFields];
+    if (sections.count) {
+        [mutableSections addObjectsFromArray: sections];
+    }
     
     [_sections release];
     _sections = [mutableSections copy];
@@ -231,6 +235,71 @@
         extendedInfo = [NSArray arrayWithObject:label];
     }
     return extendedInfo;
+}
+
+- (NSArray *)sectionsForFields
+{
+    NSMutableArray *sections = [NSMutableArray array];
+    NSMutableArray *currentSection = nil;
+    NSString *currentSectionName = @"";
+    
+    if (_event.fields) {
+        for (NSDictionary *field in _event.fields) {
+            NSString *label = [field nonemptyStringForKey:@"title"];
+            NSString *value = [field nonemptyStringForKey:@"value"];
+            NSString *type = [field nonemptyStringForKey:@"type"];
+            
+            NSString *accessory = nil;
+            NSString *url = nil;
+            if ([type isEqualToString:@"phone"]) {
+                if (!label) {
+                    label = NSLocalizedString(@"Organizer phone", nil);
+                }
+                accessory = KGOAccessoryTypePhone;
+                url = [NSString stringWithFormat:@"tel:%@", value];
+                
+            } else if ([type isEqualToString:@"email"]) {
+                if (!label) {
+                    label = NSLocalizedString(@"Organizer email", nil);
+                }
+                accessory = KGOAccessoryTypeEmail;
+                
+            } else if ([type isEqualToString:@"url"]) {
+                accessory = KGOAccessoryTypeExternal;
+                url = [field nonemptyStringForKey:@"value"];
+            }
+            
+            NSDictionary *cellInfo = nil;
+            if (label) {
+                cellInfo = [NSDictionary dictionaryWithObjectsAndKeys:
+                            label, @"title", value, @"subtitle", accessory, @"accessory", url, @"url", nil];
+            } else {
+                cellInfo = [NSDictionary dictionaryWithObjectsAndKeys:
+                            value, @"title", accessory, @"accessory", url, @"url", nil];
+            }
+            
+            NSString *sectionName = [field stringForKey:@"section"];
+            if (![sectionName isEqualToString:currentSectionName]) {
+                if ([currentSection count]) {
+                    // new section, store previous section and start over
+                    [sections addObject:currentSection];
+                    currentSection = nil;
+                }
+                currentSectionName = sectionName;
+            }
+            if (!currentSection) {
+                currentSection = [NSMutableArray array];
+            }
+            
+            [currentSection addObject:cellInfo];
+        }
+        
+        // Add last section if there is anything in it
+        if ([currentSection count]) {
+            [sections addObject:currentSection];
+        }
+    }
+    return sections;
 }
 
 
