@@ -697,6 +697,7 @@
         textColor = [[KGOTheme sharedTheme] textColorForThemedProperty:KGOThemePropertySectionHeaderGrouped];
         bgColor = [UIColor clearColor];
         viewHeight = font.lineHeight + GROUPED_SECTION_HEADER_VPADDING;
+        hPadding += [tableView marginWidth];
     }
     
     CGSize size = [title sizeWithFont:font];
