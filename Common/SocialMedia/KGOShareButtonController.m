@@ -119,7 +119,7 @@
         // check to see if built in twitter support available
         Class TwitterComposeViewController = NSClassFromString (@"TWTweetComposeViewController");
         if (TwitterComposeViewController) {
-            id tweetViewController = [[TwitterComposeViewController alloc] init];
+            id tweetViewController = [[[TwitterComposeViewController alloc] init] autorelease];
             [tweetViewController performSelector:@selector(setInitialText:) withObject:self.shareTitle];
             [tweetViewController performSelector:@selector(addURL:) withObject:[NSURL URLWithString:self.shareURL]];
             [tweetViewController performSelector:@selector(setCompletionHandler:) withObject:^(int result) {

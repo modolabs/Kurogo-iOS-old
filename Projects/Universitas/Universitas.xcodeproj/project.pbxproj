@@ -77,7 +77,6 @@
 		EB03375D133C2B8C00ACF2BB /* MITMailComposeController.m in Sources */ = {isa = PBXBuildFile; fileRef = EB033716133C2B8C00ACF2BB /* MITMailComposeController.m */; };
 		EB03375E133C2B8C00ACF2BB /* HarvardNavigationBar.m in Sources */ = {isa = PBXBuildFile; fileRef = EB033719133C2B8C00ACF2BB /* HarvardNavigationBar.m */; };
 		EB03375F133C2B8C00ACF2BB /* HarvardNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = EB03371B133C2B8C00ACF2BB /* HarvardNavigationController.m */; };
-		EB033760133C2B8C00ACF2BB /* HighlightedResultLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = EB03371D133C2B8C00ACF2BB /* HighlightedResultLabel.m */; };
 		EB033761133C2B8C00ACF2BB /* IconGrid.m in Sources */ = {isa = PBXBuildFile; fileRef = EB03371F133C2B8C00ACF2BB /* IconGrid.m */; };
 		EB033762133C2B8C00ACF2BB /* KGODatePager.m in Sources */ = {isa = PBXBuildFile; fileRef = EB033721133C2B8C00ACF2BB /* KGODatePager.m */; };
 		EB033763133C2B8C00ACF2BB /* KGODetailPager.m in Sources */ = {isa = PBXBuildFile; fileRef = EB033723133C2B8C00ACF2BB /* KGODetailPager.m */; };
@@ -321,8 +320,6 @@
 		EB033719133C2B8C00ACF2BB /* HarvardNavigationBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HarvardNavigationBar.m; sourceTree = "<group>"; };
 		EB03371A133C2B8C00ACF2BB /* HarvardNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HarvardNavigationController.h; sourceTree = "<group>"; };
 		EB03371B133C2B8C00ACF2BB /* HarvardNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HarvardNavigationController.m; sourceTree = "<group>"; };
-		EB03371C133C2B8C00ACF2BB /* HighlightedResultLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HighlightedResultLabel.h; sourceTree = "<group>"; };
-		EB03371D133C2B8C00ACF2BB /* HighlightedResultLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HighlightedResultLabel.m; sourceTree = "<group>"; };
 		EB03371E133C2B8C00ACF2BB /* IconGrid.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IconGrid.h; sourceTree = "<group>"; };
 		EB03371F133C2B8C00ACF2BB /* IconGrid.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IconGrid.m; sourceTree = "<group>"; };
 		EB033720133C2B8C00ACF2BB /* KGODatePager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGODatePager.h; sourceTree = "<group>"; };
@@ -928,8 +925,6 @@
 				EB1637BE13690455003C69E2 /* KGOSegmentedControl.m */,
 				EB033728133C2B8C00ACF2BB /* MITThumbnailView.h */,
 				EB033729133C2B8C00ACF2BB /* MITThumbnailView.m */,
-				EB03371C133C2B8C00ACF2BB /* HighlightedResultLabel.h */,
-				EB03371D133C2B8C00ACF2BB /* HighlightedResultLabel.m */,
 				EB03371E133C2B8C00ACF2BB /* IconGrid.h */,
 				EB03371F133C2B8C00ACF2BB /* IconGrid.m */,
 				EB033722133C2B8C00ACF2BB /* KGODetailPager.h */,
@@ -1468,7 +1463,6 @@
 				EB03375D133C2B8C00ACF2BB /* MITMailComposeController.m in Sources */,
 				EB03375E133C2B8C00ACF2BB /* HarvardNavigationBar.m in Sources */,
 				EB03375F133C2B8C00ACF2BB /* HarvardNavigationController.m in Sources */,
-				EB033760133C2B8C00ACF2BB /* HighlightedResultLabel.m in Sources */,
 				EB033761133C2B8C00ACF2BB /* IconGrid.m in Sources */,
 				EB033762133C2B8C00ACF2BB /* KGODatePager.m in Sources */,
 				EB033763133C2B8C00ACF2BB /* KGODetailPager.m in Sources */,

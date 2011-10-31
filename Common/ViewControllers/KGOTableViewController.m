@@ -681,11 +681,11 @@
     if (!title)
         return nil;
     
-    UIFont *font;
-    UIColor *textColor;
-    UIColor *bgColor;
+    UIFont *font = nil;
+    UIColor *textColor = nil;
+    UIColor *bgColor = nil;
     CGFloat hPadding = 10;
-    CGFloat viewHeight;
+    CGFloat viewHeight = 0;
     
     if (tableView.style == UITableViewStylePlain) {
         font = [[KGOTheme sharedTheme] fontForThemedProperty:KGOThemePropertySectionHeader];
