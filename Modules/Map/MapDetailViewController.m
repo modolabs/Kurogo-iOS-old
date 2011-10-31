@@ -180,6 +180,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    self.title = NSLocalizedString(@"Info", @"map detail page title");
     
     self.navigationItem.title = NSLocalizedString(@"Location Info", nil);
     
