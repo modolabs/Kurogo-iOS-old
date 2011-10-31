@@ -305,7 +305,7 @@ groupTitles = _groupTitles;
 
 - (void)setupTabstripButtons
 {
-    NSInteger selectedButtonIndex = [_tabstrip indexOfSelectedButton];
+    NSUInteger selectedButtonIndex = [_tabstrip indexOfSelectedButton];
 
     [_tabstrip removeAllRegularButtons];
     if (self.groupTitles.count == 1) {
@@ -320,7 +320,7 @@ groupTitles = _groupTitles;
     }
     [_tabstrip setNeedsLayout];
     
-    if (selectedButtonIndex >= 0 && selectedButtonIndex < [_tabstrip numberOfButtons]) {
+    if (selectedButtonIndex < [_tabstrip numberOfButtons]) {
         [_tabstrip selectButtonAtIndex:selectedButtonIndex];
     } else if ([_tabstrip numberOfButtons]) {
         [_tabstrip selectButtonAtIndex:0];
