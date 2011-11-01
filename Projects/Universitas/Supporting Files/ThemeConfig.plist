@@ -66,6 +66,22 @@
 		<string>Helvetica</string>
 		<key>DefaultFontSize</key>
 		<integer>15</integer>
+		<key>MediaListSubtitle</key>
+		<dict>
+			<key>color</key>
+			<string>#505050</string>
+			<key>size</key>
+			<integer>-2</integer>
+		</dict>
+		<key>MediaListTitle</key>
+		<dict>
+			<key>bold</key>
+			<true/>
+			<key>color</key>
+			<string>#171717</string>
+			<key>size</key>
+			<integer>0</integer>
+		</dict>
 		<key>NavListLabel</key>
 		<dict>
 			<key>bold</key>

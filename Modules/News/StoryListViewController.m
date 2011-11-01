@@ -320,6 +320,7 @@
         if (!cell) {
             [[NSBundle mainBundle] loadNibNamed:@"NewsStoryTableViewCell" owner:self options:nil];
             cell = _storyCell;
+            [_storyCell configureLabelsTheme];
         }
         [(NewsStoryTableViewCell *)cell setStory:[self.stories objectAtIndex:indexPath.row]];
         [cell applyBackgroundThemeColorForIndexPath:indexPath tableView:tableView];

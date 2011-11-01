@@ -13,6 +13,8 @@
 
 @property (nonatomic, retain) NewsStory *story;
 
+- (void)configureLabelsTheme;
+
 + (NSString *)commonReuseIdentifier;
 
 @end

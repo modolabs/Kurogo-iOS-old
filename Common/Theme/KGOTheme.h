@@ -18,6 +18,8 @@ extern NSString * const KGOFontPageTitle;
 extern NSString * const KGOThemePropertyPageSubtitle;
 extern NSString * const KGOThemePropertyCaption;
 extern NSString * const KGOThemePropertyByline;
+extern NSString * const KGOThemePropertyMediaListTitle;
+extern NSString * const KGOThemePropertyMediaListSubtitle;
 extern NSString * const KGOThemePropertyNavListTitle;
 extern NSString * const KGOThemePropertyNavListSubtitle;
 extern NSString * const KGOThemePropertyNavListLabel;

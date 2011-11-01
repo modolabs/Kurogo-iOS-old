@@ -29,6 +29,14 @@
     return reuseIdentifier;
 }
 
+- (void)configureLabelsTheme {
+    _titleLabel.font = [[KGOTheme sharedTheme] fontForThemedProperty:KGOThemePropertyMediaListTitle];
+    _titleLabel.textColor = [[KGOTheme sharedTheme] textColorForThemedProperty:KGOThemePropertyMediaListTitle];
+    
+    _dekLabel.font = [[KGOTheme sharedTheme] fontForThemedProperty:KGOThemePropertyMediaListSubtitle];
+    _dekLabel.textColor = [[KGOTheme sharedTheme] textColorForThemedProperty:KGOThemePropertyMediaListSubtitle];
+}
+
 - (void)setStory:(NewsStory *)story
 {
     [_story release];
