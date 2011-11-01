@@ -534,7 +534,13 @@
         static NSString *AnnotationIdentifier = @"adfgweg";
         view = [aMapView dequeueReusableAnnotationViewWithIdentifier:AnnotationIdentifier];
         if (!view) {
-            view = [[[MKPinAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:AnnotationIdentifier] autorelease];
+            UIImage *pinImage = [UIImage imageWithPathName:@"modules/map/map_pin"];
+            if (pinImage) {
+                view = [[[MKAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:AnnotationIdentifier] autorelease];
+                view.image = pinImage;
+            } else {
+                view = [[[MKPinAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:AnnotationIdentifier] autorelease];
+            }
             view.canShowCallout = YES;
             
             KGONavigationStyle navStyle = [KGO_SHARED_APP_DELEGATE() navigationStyle];
