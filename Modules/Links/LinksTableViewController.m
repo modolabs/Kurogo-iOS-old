@@ -172,11 +172,13 @@
     cell.textLabel.lineBreakMode = UILineBreakModeTailTruncation;
     cell.textLabel.text = linkTitle;
     cell.textLabel.font = [[KGOTheme sharedTheme] fontForThemedProperty:KGOThemePropertyNavListTitle]; 
+    cell.textLabel.textColor = [[KGOTheme sharedTheme] textColorForThemedProperty:KGOThemePropertyNavListTitle];
     
     cell.detailTextLabel.numberOfLines = 0;
     cell.detailTextLabel.lineBreakMode = UILineBreakModeTailTruncation;
     cell.detailTextLabel.text = linkSubtitle;
     cell.detailTextLabel.font = [[KGOTheme sharedTheme] fontForThemedProperty:KGOThemePropertyNavListSubtitle];
+    cell.detailTextLabel.textColor = [[KGOTheme sharedTheme] textColorForThemedProperty:KGOThemePropertyNavListSubtitle];
     
     if([(NSDictionary *)[linksArray objectAtIndex:indexPath.row] objectForKey:@"url"]) {
         cell.accessoryView = [[KGOTheme sharedTheme] accessoryViewForType:KGOAccessoryTypeExternal];
