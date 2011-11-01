@@ -52,9 +52,9 @@
     _titleLabel.frame = frame;
 
     // dek
-    constraint.height = self.frame.size.height - _titleLabel.frame.size.height - 14;
+    CGFloat constraintHeight = self.frame.size.height - _titleLabel.frame.size.height - 14;
     if (size.height >= _dekLabel.font.lineHeight) {
-        size = [_story.summary sizeWithFont:_dekLabel.font constrainedToSize:constraint];
+        size = [_story.summary sizeWithFont:_dekLabel.font constrainedToSize:CGSizeMake(_dekLabel.frame.size.width, constraintHeight)];
         _dekLabel.text = _story.summary;
         frame = _dekLabel.frame;
         frame.origin.y = _titleLabel.frame.size.height;

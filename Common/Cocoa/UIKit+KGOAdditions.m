@@ -206,4 +206,31 @@
 
 @end
 
+@implementation UITableView (KGOAdditions)
+
+// based on matthew thomas' answer in
+// http://stackoverflow.com/questions/4708085/how-to-determine-margin-of-a-grouped-uitableview-or-better-how-to-set-it
+- (CGFloat)marginWidth
+{
+    CGFloat selfWidth = self.bounds.size.width;
+    CGFloat marginWidth;
+    
+    if (selfWidth > 750) {
+        marginWidth = 45;
+        
+    } else if (selfWidth > 400) {
+        marginWidth = floor(0.06 * selfWidth);
+        
+    } else if (selfWidth > 20) {
+        marginWidth = 10;
+        
+    } else {
+        marginWidth = selfWidth - 10;
+    }
+    
+    return marginWidth;
+}
+
+@end
+
 

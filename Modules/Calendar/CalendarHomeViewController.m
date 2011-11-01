@@ -305,7 +305,7 @@ groupTitles = _groupTitles;
 
 - (void)setupTabstripButtons
 {
-    NSInteger selectedButtonIndex = [_tabstrip indexOfSelectedButton];
+    NSUInteger selectedButtonIndex = [_tabstrip indexOfSelectedButton];
 
     [_tabstrip removeAllRegularButtons];
     if (self.groupTitles.count == 1) {
@@ -320,7 +320,7 @@ groupTitles = _groupTitles;
     }
     [_tabstrip setNeedsLayout];
     
-    if (selectedButtonIndex >= 0 && selectedButtonIndex < [_tabstrip numberOfButtons]) {
+    if (selectedButtonIndex < [_tabstrip numberOfButtons]) {
         [_tabstrip selectButtonAtIndex:selectedButtonIndex];
     } else if ([_tabstrip numberOfButtons]) {
         [_tabstrip selectButtonAtIndex:0];
@@ -339,7 +339,11 @@ groupTitles = _groupTitles;
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     NSInteger num = 1;
     if (self.currentSections && self.currentEventsBySection) {
-        num = self.currentSections.count;
+        if (self.currentSections.count) {
+            num = self.currentSections.count;
+        } else {
+            num = 1; // error message
+        }
     }
     return num;
 }
@@ -347,9 +351,12 @@ groupTitles = _groupTitles;
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     NSInteger num = 0;
     if (self.currentSections && self.currentEventsBySection) {
-        NSArray *eventsForSection = [self.currentEventsBySection objectForKey:[self.currentSections objectAtIndex:section]];
-        num = eventsForSection.count;
-
+        if (self.currentSections.count) {
+            NSArray *eventsForSection = [self.currentEventsBySection objectForKey:[self.currentSections objectAtIndex:section]];
+            num = eventsForSection.count;
+        } else {
+            num = 1; // error message
+        }
     } else if (_currentCalendars) {
         num = _currentCalendars.count;
     }
@@ -385,23 +392,32 @@ groupTitles = _groupTitles;
         } copy] autorelease];
         
     } else if (self.currentSections && self.currentEventsBySection) {
-        NSArray *eventsForSection = [self.currentEventsBySection objectForKey:[self.currentSections objectAtIndex:indexPath.section]];
-        KGOEventWrapper *event = [eventsForSection objectAtIndex:indexPath.row];
-        
-        NSString *title = event.title;
-        NSString *subtitle = nil;
-        if (event.allDay) {
-            subtitle = [NSString stringWithFormat:@"%@ %@", [self.dataManager shortDateStringFromDate:event.startDate], NSLocalizedString(@"All day", nil)];
+        if (self.currentSections.count) {
+            NSArray *eventsForSection = [self.currentEventsBySection objectForKey:[self.currentSections objectAtIndex:indexPath.section]];
+            KGOEventWrapper *event = [eventsForSection objectAtIndex:indexPath.row];
+            
+            NSString *title = title = event.title;
+            NSString *subtitle = nil;
+            if (event.allDay) {
+                subtitle = [NSString stringWithFormat:@"%@ %@", [self.dataManager shortDateStringFromDate:event.startDate], NSLocalizedString(@"All day", nil)];
+            } else {
+                subtitle = [self.dataManager shortDateTimeStringFromDate:event.startDate];
+            }
+            return [[^(UITableViewCell *cell) {
+                [cell applyBackgroundThemeColorForIndexPath:indexPath tableView:tableView];
+                cell.textLabel.text = title;
+                cell.detailTextLabel.text = subtitle;
+                cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+            } copy] autorelease];
         } else {
-            subtitle = [self.dataManager shortDateTimeStringFromDate:event.startDate];
+            return [[^(UITableViewCell *cell) {
+                cell.textLabel.text = NSLocalizedString(@"No events found", nil);
+                cell.textLabel.textColor = [[KGOTheme sharedTheme] textColorForThemedProperty:KGOThemePropertyNavListTitle];
+                cell.textLabel.font = [[KGOTheme sharedTheme] fontForThemedProperty:KGOThemePropertyNavListTitle];
+                cell.selectionStyle = UITableViewCellSelectionStyleNone;
+                cell.accessoryType = UITableViewCellAccessoryNone;
+            } copy] autorelease];
         }
-        
-        return [[^(UITableViewCell *cell) {
-            [cell applyBackgroundThemeColorForIndexPath:indexPath tableView:tableView];
-            cell.textLabel.text = title;
-            cell.detailTextLabel.text = subtitle;
-            cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-        } copy] autorelease];
     }
     return nil;
 }
@@ -412,7 +428,7 @@ groupTitles = _groupTitles;
         NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:calendar, @"calendar", nil];
         [KGO_SHARED_APP_DELEGATE() showPage:LocalPathPageNameCategoryList forModuleTag:self.moduleTag params:params];
         
-    } else if (self.currentSections && self.currentEventsBySection) {
+    } else if (self.currentSections && self.currentEventsBySection && self.currentSections.count) {
         NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:
                                 self.currentEventsBySection, @"eventsBySection",
                                 self.currentSections, @"sections",

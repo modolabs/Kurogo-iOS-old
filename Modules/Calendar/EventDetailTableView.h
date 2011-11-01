@@ -37,6 +37,7 @@ KGORequestDelegate> {
 - (NSArray *)sectionForAttendeeInfo;
 - (NSArray *)sectionForContactInfo;
 - (NSArray *)sectionForExtendedInfo;
+- (NSArray *)sectionsForFields;
 
 - (void)requestEventDetails;
 - (void)eventDetailsDidChange;

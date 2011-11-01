@@ -33,7 +33,7 @@
 
 - (void)requestChildrenForCategory:(NSString *)categoryID
 {
-    if (_categoryRequest) {
+    if ([_categoryRequests objectForKey:categoryID]) {
         return;
     }
     
@@ -51,12 +51,16 @@
                             categoryReferences, @"references",
                             nil];
     
-    _categoryRequest = [[KGORequestManager sharedManager] requestWithDelegate:self
-                                                                       module:self.moduleTag
-                                                                         path:@"category"
-                                                                      version:1
-                                                                       params:params];
-    [_categoryRequest connect];
+    KGORequest *categoryRequest = [[KGORequestManager sharedManager] requestWithDelegate:self
+                                                                                  module:self.moduleTag
+                                                                                    path:@"category"
+                                                                                 version:1
+                                                                                  params:params];
+    if (!_categoryRequests) {
+        _categoryRequests = [[NSMutableDictionary alloc] initWithCapacity:1];
+    }
+    [_categoryRequests setObject:categoryRequest forKey:categoryID];
+    [categoryRequest connect];
 }
 
 - (void)requestDetailsForPlacemark:(KGOPlacemark *)placemark
@@ -123,7 +127,8 @@
 
 - (void)request:(KGORequest *)request didReceiveResult:(id)result
 {
-    if (request == _indexRequest || request == _categoryRequest) {
+    NSString *categoryRequestKey = [[request getParams] objectForKey:@"category"];
+    if (request == _indexRequest || (categoryRequestKey && request == [_categoryRequests objectForKey:categoryRequestKey])) {
 #pragma mark Index/category request response
         NSMutableArray *results = [NSMutableArray array];
         KGOMapCategory *parentCategory = nil;
@@ -166,10 +171,10 @@
         }
         
         [[CoreDataManager sharedManager] saveData];
-
+        
         // clear out category request because it can be called repeatedly
-        if (request == _categoryRequest) {
-            _categoryRequest = nil;
+        if (categoryRequestKey && request == [_categoryRequests objectForKey:categoryRequestKey]) {
+            [_categoryRequests removeObjectForKey:categoryRequestKey];
         }
         
         if ([self.delegate respondsToSelector:@selector(mapDataManager:didReceiveChildren:forCategory:)]) {
@@ -224,7 +229,7 @@
         if ([self.delegate respondsToSelector:@selector(mapDataManager:didUpdatePlacemark:)]) {
             [self.delegate mapDataManager:self didUpdatePlacemark:_placemarkForDetailRequest];
         }
-    
+
     } else if (request == _searchRequest) {
 #pragma mark Search request response
         NSArray *resultArray = [result arrayForKey:@"results"];
@@ -233,9 +238,18 @@
             KGOPlacemark *placemark = [KGOPlacemark placemarkWithDictionary:aResult];
             if (placemark) {
                 placemark.moduleTag = self.moduleTag;
+                if (!placemark.categories || !placemark.categories.count) {
+                    NSArray *categoryIds = [aResult arrayForKey:@"categories"];
+                    if (categoryIds && [categoryIds isKindOfClass:[NSArray class]] && [categoryIds count]) {
+                        for (NSString *categoryId in categoryIds) {
+                            [self requestChildrenForCategory:categoryId];
+                        }
+                    }
+                }
                 [searchResults addObject:placemark];
             }
         }
+        
         DLog(@"%@", searchResults);
         [self.searchDelegate receivedSearchResults:searchResults forSource:self.moduleTag];
     }
@@ -243,10 +257,12 @@
 
 - (void)requestWillTerminate:(KGORequest *)request
 {
+    NSString *categoryRequestKey = [[request getParams] objectForKey:@"category"];
+    
     if (request == _indexRequest) {
         _indexRequest = nil;
-    } else if (request == _categoryRequest) {
-        _categoryRequest = nil;
+    } else if (categoryRequestKey && request == [_categoryRequests objectForKey:categoryRequestKey]) {
+        [_categoryRequests removeObjectForKey:categoryRequestKey];
     } else if (request == _detailRequest) {
         _detailRequest = nil;
         
@@ -264,9 +280,13 @@
 - (void)dealloc
 {
     [_indexRequest cancel];
-    [_categoryRequest cancel];
     [_detailRequest cancel];
     [_searchRequest cancel];
+    for (KGORequest *categoryRequest in _categoryRequests) {
+        [categoryRequest cancel];
+    }
+    [_categoryRequests release];
+    _categoryRequests = nil;
     self.delegate = nil;
     self.searchDelegate = nil;
     self.moduleTag = nil;

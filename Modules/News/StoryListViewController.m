@@ -182,7 +182,7 @@
         
         [_navScrollView setNeedsLayout];
         
-        for (NSInteger i = 0; i < _navScrollView.numberOfButtons; i++) {
+        for (NSUInteger i = 0; i < _navScrollView.numberOfButtons; i++) {
             if ([[_navScrollView buttonTitleAtIndex:i] isEqualToString:activeCategory.title]) {
                 [_navScrollView selectButtonAtIndex:i];
                 break;

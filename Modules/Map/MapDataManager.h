@@ -18,7 +18,7 @@
 @interface MapDataManager : NSObject <KGORequestDelegate> {
     
     KGORequest *_indexRequest;
-    KGORequest *_categoryRequest;
+    NSMutableDictionary *_categoryRequests;
     KGORequest *_detailRequest;
     KGORequest *_searchRequest;
     

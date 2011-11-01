@@ -17,7 +17,7 @@ KGOScrollingTabstripSearchDelegate> {
 @property (nonatomic, retain) NSArray *videos;
 // Array of NSDictionaries containing title and value keys.
 @property (nonatomic, retain) NSArray *videoSections;
-@property (assign) NSInteger activeSectionIndex;
+@property (assign) NSUInteger activeSectionIndex;
 
 @property (nonatomic, retain) KGOSearchBar *theSearchBar;
 

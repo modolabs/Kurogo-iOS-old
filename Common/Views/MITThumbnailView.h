@@ -14,6 +14,7 @@
     NSString *imageURL;
     ConnectionWrapper *connection;
     NSData *_imageData;
+    NSString *_imageURL;
     UIActivityIndicatorView *loadingView;
     UIImageView *imageView;
     id<MITThumbnailDelegate> delegate;

@@ -92,7 +92,7 @@
     if (self.navigationBar.delegate != nil) { // someone else owns the nav bar
         self.navigationBar = nil;
     } else {
-        [self.navigationBar release];
+        [_navigationBar release];
     }
     [super dealloc];
 }

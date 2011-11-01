@@ -41,3 +41,9 @@
 
 @end
 
+@interface UITableView (KGOAdditions)
+
+- (CGFloat)marginWidth;
+
+@end
+

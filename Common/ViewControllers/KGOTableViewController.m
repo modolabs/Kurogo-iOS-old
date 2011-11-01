@@ -691,11 +691,11 @@
     if (!title)
         return nil;
     
-    UIFont *font;
-    UIColor *textColor;
-    UIColor *bgColor;
+    UIFont *font = nil;
+    UIColor *textColor = nil;
+    UIColor *bgColor = nil;
     CGFloat hPadding = 10;
-    CGFloat viewHeight;
+    CGFloat viewHeight = 0;
     
     if (tableView.style == UITableViewStylePlain) {
         font = [[KGOTheme sharedTheme] fontForThemedProperty:KGOThemePropertySectionHeader];
@@ -707,6 +707,7 @@
         textColor = [[KGOTheme sharedTheme] textColorForThemedProperty:KGOThemePropertySectionHeaderGrouped];
         bgColor = [UIColor clearColor];
         viewHeight = font.lineHeight + GROUPED_SECTION_HEADER_VPADDING;
+        hPadding += [tableView marginWidth];
     }
     
     CGSize size = [title sizeWithFont:font];
