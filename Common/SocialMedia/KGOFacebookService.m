@@ -258,13 +258,11 @@ NSString * const FacebookUsernameKey = @"FBUsername";
 
 #pragma mark Dialog
 
-- (void)shareOnFacebook:(NSString *)attachment prompt:(NSString *)prompt {
+- (void)shareOnFacebookWithTitle:(NSString *)title url:(NSString *)url body:(NSString *)body  {
     NSMutableDictionary *params = [NSMutableDictionary dictionary];
-    [params setObject:attachment forKey:@"attachment"];
-    
-	if (prompt) {
-		[params setObject:prompt forKey:@"user_message_prompt"];
-	}
+    [params setObject:title forKey:@"title"];
+    [params setObject:url forKey:@"link"];
+    [params setObject:body forKey:@"description"];
     
     [self startup];
     [_facebook dialog:@"feed" andParams:params andDelegate:self];

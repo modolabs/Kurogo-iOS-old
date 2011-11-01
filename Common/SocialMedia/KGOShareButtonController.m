@@ -113,7 +113,9 @@
                                 "\"description\":\"%@\"}",
                                 self.shareTitle, self.shareURL, self.shareBody];
         
-        [[KGOSocialMediaController facebookService] shareOnFacebook:attachment prompt:nil];
+        [[KGOSocialMediaController facebookService] shareOnFacebookWithTitle:self.shareTitle
+                                                                         url:self.shareURL 
+                                                                        body:self.shareBody];
 
 	} else if ([method isEqualToString:KGOSocialMediaTypeTwitter]) {
         // check to see if built in twitter support available
