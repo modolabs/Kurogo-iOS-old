@@ -531,7 +531,9 @@
     KGOTableCellStyle internalStyle;
     UITableViewCellStyle style;
     UIFont *titleFont = nil;
+    UIColor *titleTextColor = nil;
     UIFont *subtitleFont = nil;
+    UIColor *subtitleTextColor = nil;
 	
 	if ([dataSource respondsToSelector:@selector(tableView:styleForCellAtIndexPath:)]) {
 		internalStyle = [dataSource tableView:tableView styleForCellAtIndexPath:indexPath];
@@ -543,20 +545,27 @@
         case KGOTableCellStyleValue1:
             style = UITableViewCellStyleValue1;
             titleFont = [[KGOTheme sharedTheme] fontForThemedProperty:KGOThemePropertyNavListTitle];
+            titleTextColor = [[KGOTheme sharedTheme] textColorForThemedProperty:KGOThemePropertyNavListTitle];
             subtitleFont = [[KGOTheme sharedTheme] fontForThemedProperty:KGOThemePropertyBodyText];
+            subtitleTextColor = [[KGOTheme sharedTheme] textColorForThemedProperty:KGOThemePropertyBodyText];
             break;
         case KGOTableCellStyleValue2:
             style = UITableViewCellStyleValue2;
             titleFont = [[KGOTheme sharedTheme] fontForThemedProperty:KGOThemePropertyNavListLabel];
+            titleTextColor = [[KGOTheme sharedTheme] textColorForThemedProperty:KGOThemePropertyNavListLabel];
             subtitleFont = [[KGOTheme sharedTheme] fontForThemedProperty:KGOThemePropertyNavListValue];
+            subtitleTextColor = [[KGOTheme sharedTheme] textColorForThemedProperty:KGOThemePropertyNavListValue];
             break;
         case KGOTableCellStyleSubtitle:
             titleFont = [[KGOTheme sharedTheme] fontForThemedProperty:KGOThemePropertyNavListTitle];
+            titleTextColor = [[KGOTheme sharedTheme] textColorForThemedProperty:KGOThemePropertyNavListTitle];
             subtitleFont = [[KGOTheme sharedTheme] fontForThemedProperty:KGOThemePropertyNavListSubtitle];
+            subtitleTextColor = [[KGOTheme sharedTheme] textColorForThemedProperty:KGOThemePropertyNavListSubtitle];
             style = UITableViewCellStyleSubtitle;
             break;
         default:
             titleFont = [[KGOTheme sharedTheme] fontForThemedProperty:KGOThemePropertyNavListTitle];
+            titleTextColor = [[KGOTheme sharedTheme] textColorForThemedProperty:KGOThemePropertyNavListTitle];
             style = UITableViewCellStyleDefault;
             break;
     }
@@ -575,11 +584,12 @@
 		}
 	}
     
-    // TODO: set theme colors as well
     
     cell.textLabel.font = titleFont;
+    cell.textLabel.textColor = titleTextColor;
     if (subtitleFont) {
         cell.detailTextLabel.font = subtitleFont;
+        cell.detailTextLabel.textColor = subtitleTextColor;
     }
 	
     if ([dataSource respondsToSelector:@selector(tableView:manipulatorForCellAtIndexPath:)]) {
