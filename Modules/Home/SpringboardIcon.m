@@ -34,7 +34,7 @@
             [self setImage:image forState:UIControlStateNormal];
             
             // TODO: add config setting for icon titles to be displayed on springboard
-            NSString *title = self.module.longName;
+            NSString *title = [self.module.longName stringByReplacingOccurrencesOfString:@" " withString:@"\n"];
             [self setTitle:title forState:UIControlStateNormal];
             
             if (self.module.secondary) {
@@ -81,7 +81,7 @@
     if (self.compact) {
         // we want to top-align the label
         CGFloat extraLineHeight = 0;
-        NSArray *words = [title componentsSeparatedByString:@" "];
+        NSArray *words = [title componentsSeparatedByString:@"\n"];
         if (words.count > 1) {
             extraLineHeight = (words.count - 1) * [self.titleLabel.font lineHeight];
         }
