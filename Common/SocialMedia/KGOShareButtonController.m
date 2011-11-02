@@ -107,12 +107,6 @@
                                                        delegate:self];
 
 	} else if ([method isEqualToString:KGOSocialMediaTypeFacebook]) {
-        NSString *attachment = [NSString stringWithFormat:
-                                @"{\"name\":\"%@\","
-                                "\"href\":\"%@\","
-                                "\"description\":\"%@\"}",
-                                self.shareTitle, self.shareURL, self.shareBody];
-        
         [[KGOSocialMediaController facebookService] shareOnFacebookWithTitle:self.shareTitle
                                                                          url:self.shareURL 
                                                                         body:self.shareBody];
