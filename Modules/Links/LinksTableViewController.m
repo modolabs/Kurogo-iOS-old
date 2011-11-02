@@ -279,20 +279,22 @@
         [self.view addSubview:scrollView];
     }
     
-    if(!descriptionLabel) {
-        descriptionLabel = [[KGOLabel alloc] initWithFrame:CGRectMake(10, 0, self.view.frame.size.width-20, 300)];
-        descriptionLabel.numberOfLines = 0;
-        descriptionLabel.font = [[KGOTheme sharedTheme] fontForThemedProperty:KGOThemePropertyPageSubtitle];
-        descriptionLabel.textColor = [[KGOTheme sharedTheme] textColorForThemedProperty:KGOThemePropertyPageSubtitle];
-        descriptionLabel.backgroundColor = [UIColor clearColor];
-        [scrollView addSubview:descriptionLabel];
+    if (description && description.length) {
+        if (!descriptionLabel) {
+            descriptionLabel = [[KGOLabel alloc] initWithFrame:CGRectMake(10, 0, self.view.frame.size.width-20, 300)];
+            descriptionLabel.numberOfLines = 0;
+            descriptionLabel.font = [[KGOTheme sharedTheme] fontForThemedProperty:KGOThemePropertyPageSubtitle];
+            descriptionLabel.textColor = [[KGOTheme sharedTheme] textColorForThemedProperty:KGOThemePropertyPageSubtitle];
+            descriptionLabel.backgroundColor = [UIColor clearColor];
+            [scrollView addSubview:descriptionLabel];
+        }
+        
+        CGSize descriptionSize = [description sizeWithFont:descriptionLabel.font constrainedToSize:descriptionLabel.frame.size];
+        CGRect descriptionFrame = descriptionLabel.frame;
+        descriptionFrame.size = descriptionSize;
+        descriptionLabel.frame = descriptionFrame;
+        descriptionLabel.text = description;
     }
-    
-    CGSize descriptionSize = [description sizeWithFont:descriptionLabel.font constrainedToSize:descriptionLabel.frame.size];
-    CGRect descriptionFrame = descriptionLabel.frame;
-    descriptionFrame.size = descriptionSize;
-    descriptionLabel.frame = descriptionFrame;
-    descriptionLabel.text = description;
     
     if(!iconGrid) {
         iconGrid = [[IconGrid alloc] initWithFrame:CGRectMake(0, descriptionLabel.frame.size.height, scrollView.frame.size.width, scrollView.frame.size.height - descriptionLabel.frame.size.height)];
@@ -339,7 +341,7 @@
 
 - (UIView *)viewForTableHeader
 {
-    if (!headerView) {
+    if (!headerView && description && description.length) {
         // information in header
         
         UIFont *font = [[KGOTheme sharedTheme] fontForThemedProperty:KGOThemePropertyPageSubtitle];
