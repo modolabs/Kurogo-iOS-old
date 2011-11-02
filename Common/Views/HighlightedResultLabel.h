@@ -1,5 +1,6 @@
 #import <UIKit/UIKit.h>
 
+#warning This class is deprecated - please remove from your project if it isn't included elsewhere
 
 @interface HighlightedResultLabel : UIView {
     
