@@ -35,7 +35,7 @@ headerView = _headerView;
 - (void)loadView {
 	[super loadView];
     
-    self.title = NSLocalizedString(@"Browse", nil);
+    self.title = self.parentCategory.title;
 
     UITableViewStyle style = UITableViewStyleGrouped;
     BOOL isPopulated = NO;
