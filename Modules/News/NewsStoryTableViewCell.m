@@ -52,7 +52,8 @@
     _titleLabel.frame = frame;
 
     // dek
-    CGFloat constraintHeight = self.frame.size.height - _titleLabel.frame.size.height - 14;
+    // 2 gives the tiniest amount of bottom padding for the dek
+    CGFloat constraintHeight = self.frame.size.height - _titleLabel.frame.size.height - _titleLabel.frame.origin.y - 2;
     if (constraintHeight >= _dekLabel.font.lineHeight) {
         CGSize dekSize = [_story.summary sizeWithFont:_dekLabel.font constrainedToSize:CGSizeMake(_dekLabel.frame.size.width, constraintHeight)];
         _dekLabel.text = _story.summary;
