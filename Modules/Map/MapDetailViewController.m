@@ -140,6 +140,11 @@
     }
 }
 
+- (NSArray *)results
+{
+    return  _tableView.items;
+}
+
 -(void)receivedSearchResults:(NSArray *)searchResults forSource:(NSString *)source {
     _tableView.items = searchResults;
     NSArray *filteredArray = [searchResults filteredArrayUsingPredicate:

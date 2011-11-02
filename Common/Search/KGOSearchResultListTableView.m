@@ -52,6 +52,11 @@
 
 #pragma mark KGOSearchResultsHolder
 
+- (NSArray *)results
+{
+    return self.items;
+}
+
 - (void)receivedSearchResults:(NSArray *)results forSource:(NSString *)source
 {
     self.items = results;
