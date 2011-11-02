@@ -133,6 +133,7 @@
     }
     if (self.searchOnLoad) {
         [_searchController executeSearch:self.searchTerms params:self.searchParams];
+        [_searchController reloadSearchResultsTableView];
     }
 }
 
