@@ -15,6 +15,7 @@
 @property (nonatomic, retain) NSString * subtitle;
 @property (nonatomic, retain) NSNumber * latitude;
 @property (nonatomic, retain) NSNumber * longitude;
+@property (nonatomic, retain) NSNumber * topLevel;
 
 @property (nonatomic, retain) ModuleTag *moduleTag;
 

@@ -239,7 +239,7 @@
 - (IBAction)browseButtonPressed {
 	MapCategoryListViewController *categoryVC = [[[MapCategoryListViewController alloc] init] autorelease];
     categoryVC.dataManager = self.mapModule.dataManager;
-    NSPredicate *pred = [NSPredicate predicateWithFormat:@"parentCategory = nil"];
+    NSPredicate *pred = [NSPredicate predicateWithFormat:@"topLevel = YES"];
     NSArray *sortDescriptors = [NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"sortOrder" ascending:YES]];
     categoryVC.listItems = [[CoreDataManager sharedManager] objectsForEntity:MapCategoryEntityName
                                                            matchingPredicate:pred
