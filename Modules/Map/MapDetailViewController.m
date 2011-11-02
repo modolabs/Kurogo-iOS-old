@@ -196,8 +196,9 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    self.title = NSLocalizedString(@"Info", @"map detail page title");
     
+    // TODO: this is redundant - which string do we want?
+    self.title = NSLocalizedString(@"Info", @"map detail page title");
     self.navigationItem.title = NSLocalizedString(@"Location Info", nil);
     
     if (self.pager) {

@@ -22,6 +22,16 @@ headerView = _headerView;
     [KGO_SHARED_APP_DELEGATE() showPage:LocalPathPageNameDetail forModuleTag:self.dataManager.moduleTag params:params];
 }
 
+- (void)refreshCategories
+{
+    self.dataManager.delegate = self;
+    if (self.parentCategory) {
+        [self.dataManager requestChildrenForCategory:self.parentCategory.identifier];
+    } else {
+        [self.dataManager requestBrowseIndex];
+    }
+}
+
 - (void)loadView {
 	[super loadView];
     
@@ -66,14 +76,10 @@ headerView = _headerView;
 		self.tableView = [self addTableViewWithFrame:frame style:style];
 
 	} else {
-        self.dataManager.delegate = self;
-        if (self.parentCategory) {
-            [self.dataManager requestChildrenForCategory:self.parentCategory.identifier];
-        } else {
-            [self.dataManager requestBrowseIndex];
-        }
         [self showLoadingView];
     }
+    
+    [self refreshCategories];
 }
 
 - (void)viewDidLoad
