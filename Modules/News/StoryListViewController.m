@@ -73,18 +73,6 @@
     [super viewWillAppear:animated];
 
     [self setupNavScrollButtons]; // needed for updating bookmark status
-    
-    /*
-	if (showingBookmarks) {
-		self.stories = [self.dataManager bookmarkedStories];
-        
-        // we might want to do something special if all bookmarks are gone
-        // but i am skeptical
-        [self reloadDataForTableView:storyTable];        
-	} else if (self.stories.count) {
-        [self reloadDataForTableView:storyTable];
-    }
-     */
 }
 
 // TODO: flash last updated text in viewDidAppear
@@ -182,10 +170,15 @@
         
         [_navScrollView setNeedsLayout];
         
-        for (NSUInteger i = 0; i < _navScrollView.numberOfButtons; i++) {
-            if ([[_navScrollView buttonTitleAtIndex:i] isEqualToString:activeCategory.title]) {
-                [_navScrollView selectButtonAtIndex:i];
-                break;
+        if (showingBookmarks) {
+            [_navScrollView selectButtonAtIndex:[_navScrollView bookmarkButtonIndex]];
+            
+        } else {
+            for (NSUInteger i = 0; i < _navScrollView.numberOfButtons; i++) {
+                if ([[_navScrollView buttonTitleAtIndex:i] isEqualToString:activeCategory.title]) {
+                    [_navScrollView selectButtonAtIndex:i];
+                    break;
+                }
             }
         }
         
@@ -229,7 +222,7 @@
     showingBookmarks = YES;
     [self.dataManager fetchBookmarks];
 }
-//START HERE TO DEBUG NEWS BOOKMARK ISSUE
+
 - (void)refresh:(id)sender {    
     if (!showingBookmarks) {
         [self.dataManager requestStoriesForCategory:self.activeCategoryId afterId:nil];
