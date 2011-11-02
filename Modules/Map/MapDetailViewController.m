@@ -119,13 +119,24 @@
 - (void)resultsHolder:(id<KGOSearchResultsHolder>)resultsHolder didSelectResult:(id<KGOSearchResult>)aResult
 {
     if ([resultsHolder isKindOfClass:[KGOSearchResultListTableView class]]) {
+        KGOAppDelegate *appDelegate = KGO_SHARED_APP_DELEGATE();
+        
+        // There is a question about the appropriate behavior
+        // for what should happen when you click on a nearby location
+        // the commented out case opens up a detail screen
+        /*
         NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:
                                 aResult, @"place", 
                                 resultsHolder, @"pagerController", 
                                 [_tableView indexPathForSelectedRow], @"currentIndexPath",
                                 nil];
-        KGOAppDelegate *appDelegate = KGO_SHARED_APP_DELEGATE();
         [appDelegate showPage:LocalPathPageNameDetail forModuleTag:self.mapModule.tag params:params];
+        */
+        
+        // This case just open up a pin on the map
+        NSDictionary *params = [NSDictionary dictionaryWithObject:[NSArray arrayWithObject:aResult]
+                                                           forKey:@"annotations"];
+        [appDelegate showPage:LocalPathPageNameHome forModuleTag:self.mapModule.tag params:params];
     }
 }
 
