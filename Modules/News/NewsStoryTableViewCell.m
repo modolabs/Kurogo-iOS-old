@@ -53,13 +53,13 @@
 
     // dek
     CGFloat constraintHeight = self.frame.size.height - _titleLabel.frame.size.height - 14;
-    if (size.height >= _dekLabel.font.lineHeight) {
-        size = [_story.summary sizeWithFont:_dekLabel.font constrainedToSize:CGSizeMake(_dekLabel.frame.size.width, constraintHeight)];
+    if (constraintHeight >= _dekLabel.font.lineHeight) {
+        CGSize dekSize = [_story.summary sizeWithFont:_dekLabel.font constrainedToSize:CGSizeMake(_dekLabel.frame.size.width, constraintHeight)];
         _dekLabel.text = _story.summary;
-        frame = _dekLabel.frame;
-        frame.origin.y = _titleLabel.frame.size.height;
-        frame.size.height = size.height;
-        _dekLabel.frame = frame;
+        CGRect dekFrame = _dekLabel.frame;
+        dekFrame.origin.y = _titleLabel.frame.size.height;
+        dekFrame.size.height = dekSize.height;
+        _dekLabel.frame = dekFrame;
     } else {
         // if not even one line will fit, don't show the deck at all
         _dekLabel.text = nil;

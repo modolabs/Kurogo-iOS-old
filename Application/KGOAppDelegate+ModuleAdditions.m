@@ -172,13 +172,26 @@
             {
                 UIImage *navBarImage = [[KGOTheme sharedTheme] backgroundImageForNavBar];
                 if (navBarImage) {
-                    // for people who insist on using a background image for their nav bar, they 
-                    // get this unfortunate navigation controller subclass
-                    _appNavController = [[HarvardNavigationController alloc] initWithRootViewController:homeVC];
+                    _appNavController = [[UINavigationController alloc] initWithRootViewController:homeVC];
+                    if ([_appNavController.navigationBar respondsToSelector:@selector(setBackgroundImage:forBarMetrics:)]) {
+                        // for iOS 5
+                        [_appNavController.navigationBar setBackgroundImage:navBarImage forBarMetrics:UIBarMetricsDefault];
+                    } else {
+                        [_appNavController release];
+                        // for pre-iOS 5, use navigation controller wrapper to fake a custom nav bar
+                        _appNavController = [[HarvardNavigationController alloc] initWithRootViewController:homeVC];
+                    }
+
                 } else {
-                    // normal people get the normal navigation controller
                     _appNavController = [[UINavigationController alloc] initWithRootViewController:homeVC];
                 }
+
+                // set color of the nav bar buttons
+                UIColor *tintColor = [[KGOTheme sharedTheme] tintColorForNavBar];
+                if (tintColor) {
+                    _appNavController.navigationBar.tintColor = tintColor;
+                }
+
                 _appNavController.view.backgroundColor = [[KGOTheme sharedTheme] backgroundColorForApplication];
                 self.window.rootViewController = _appNavController;
                 break;
