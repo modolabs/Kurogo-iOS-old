@@ -235,7 +235,12 @@ groupTitles = _groupTitles;
         }
         
         for (KGOEventWrapper *event in sortedEvents) {
-            NSString *title = [formatter stringFromDate:event.startDate];
+            NSString *title = nil;
+            if (event.allDay) {
+                title = NSLocalizedString(@"All day", @"section header for all-day events");
+            } else {
+                title = [formatter stringFromDate:event.startDate];
+            }
             NSMutableArray *eventsForCurrentSection = [eventsBySection objectForKey:title];
             if (!eventsForCurrentSection) {
                 eventsForCurrentSection = [NSMutableArray array];
