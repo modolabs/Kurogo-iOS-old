@@ -19,32 +19,39 @@
         // TODO
         
     } else if (index == _detailsTabIndex) {
-        UIWebView *webView = [[[UIWebView alloc] initWithFrame:CGRectMake(10, 10, self.tabViewContainer.frame.size.width - 20, self.tabViewContainer.frame.size.height - 20)] autorelease];
-        NSString *body = self.placemark.info ? self.placemark.info : @"";
-        [webView loadTemplate:[KGOHTMLTemplate templateWithPathName:@"modules/map/map_detail_template.html"] 
-                       values:[NSDictionary dictionaryWithObjectsAndKeys: body, @"BODY", nil]];
-        if ([webView respondsToSelector: @selector(scrollView)]) {
-            // iOS 5
-            [[webView scrollView] setBounces:NO];
-            [[webView scrollView] setDecelerationRate:0];
-        } else {
-            // Icky hack for pre-iOS 5
-            UIScrollView *subview = nil;
-            for(UIView *view in webView.subviews) {
-                if([view isKindOfClass:[UIScrollView class]]) {
-                    subview = (UIScrollView *)view;
-                    subview.bounces = NO;
-                    subview.decelerationRate = 0;
+        if (!_webView) {
+            CGRect frame = CGRectMake(10, 10,
+                                      CGRectGetWidth(self.tabViewContainer.frame) - 20,
+                                      CGRectGetHeight(self.tabViewContainer.frame) - 20);
+            _webView = [[UIWebView alloc] initWithFrame:frame];
+            if ([_webView respondsToSelector: @selector(scrollView)]) {
+                // iOS 5
+                [[_webView scrollView] setBounces:NO];
+                [[_webView scrollView] setDecelerationRate:0];
+            } else {
+                // Icky hack for pre-iOS 5
+                UIScrollView *subview = nil;
+                for(UIView *view in _webView.subviews) {
+                    if([view isKindOfClass:[UIScrollView class]]) {
+                        subview = (UIScrollView *)view;
+                        subview.bounces = NO;
+                        subview.decelerationRate = 0;
+                    }
                 }
             }
         }
-        webView.delegate = self;
-        view = webView;
+        
+        NSString *body = self.placemark.info ? self.placemark.info : @"";
+        [_webView loadTemplate:[KGOHTMLTemplate templateWithPathName:@"modules/map/map_detail_template.html"] 
+                        values:[NSDictionary dictionaryWithObjectsAndKeys: body, @"BODY", nil]];
+        
+        _webView.delegate = self;
+        view = _webView;
         
     } else if (index == _nearbyTabIndex) {
         if (!_tableView) {
             CGRect frame = CGRectMake(0, 0, self.tabViewContainer.frame.size.width, self.tabViewContainer.frame.size.height);
-            _tableView = [[[KGOSearchResultListTableView alloc] initWithFrame:frame] autorelease];
+            _tableView = [[KGOSearchResultListTableView alloc] initWithFrame:frame];
             _tableView.resultsDelegate = self;
             
             self.dataManager.searchDelegate = self;
@@ -120,10 +127,10 @@
 {
     if ([resultsHolder isKindOfClass:[KGOSearchResultListTableView class]]) {
         KGOAppDelegate *appDelegate = KGO_SHARED_APP_DELEGATE();
-        
-        // There is a question about the appropriate behavior
-        // for what should happen when you click on a nearby location
-        // the commented out case opens up a detail screen
+
+        // TODO: decide if we prefer to open nearby locations in the map (active)
+        // or in another detail page (commented)
+
         /*
         NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:
                                 aResult, @"place", 
@@ -133,7 +140,6 @@
         [appDelegate showPage:LocalPathPageNameDetail forModuleTag:self.mapModule.tag params:params];
         */
         
-        // This case just open up a pin on the map
         NSDictionary *params = [NSDictionary dictionaryWithObject:[NSArray arrayWithObject:aResult]
                                                            forKey:@"annotations"];
         [appDelegate showPage:LocalPathPageNameHome forModuleTag:self.mapModule.tag params:params];
@@ -179,7 +185,10 @@
     self.placemark = nil;
     self.pager = nil;
     self.mapModule = nil;
+    _tableView.resultsDelegate = nil;
     [_tableView release];
+    _webView.delegate = nil;
+    [_webView release];
     [super dealloc];
 }
 
