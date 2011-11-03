@@ -28,7 +28,7 @@ bool isOverOneHour(NSTimeInterval interval) {
 
 @implementation CalendarHomeViewController
 
-@synthesize federatedSearchTerms, dataManager, moduleTag, showsGroups, currentCalendar = _currentCalendar;
+@synthesize federatedSearchTerms, dataManager, moduleTag, showsGroups, eventsLoaded, currentCalendar = _currentCalendar;
 @synthesize currentSections = _currentSections, currentEventsBySection = _currentEventsBySection,
 groupTitles = _groupTitles;
 @synthesize federatedSearchResults;
@@ -200,7 +200,7 @@ groupTitles = _groupTitles;
 }
 
 
-- (void)eventsDidChange:(NSArray *)events calendar:(KGOCalendar *)calendar
+- (void)eventsDidChange:(NSArray *)events calendar:(KGOCalendar *)calendar didReceiveResult:(BOOL)receivedResult
 {
     if (_currentCalendar != calendar) {
         return;
@@ -251,6 +251,10 @@ groupTitles = _groupTitles;
     
     [_loadingView stopAnimating];
 
+    if (receivedResult) {
+        self.eventsLoaded = YES;
+    }
+    
     if (!self.tableView) {
         [self loadTableViewWithStyle:UITableViewStylePlain];
     } else {
@@ -276,6 +280,7 @@ groupTitles = _groupTitles;
 - (void)requestEventsForCurrentCalendar:(NSDate *)date
 {
     if (_currentCalendar) {
+        self.eventsLoaded = NO;
         self.tableView.hidden = YES;
         [_loadingView startAnimating];
         [self.dataManager requestEventsForCalendar:_currentCalendar time:date];
@@ -354,7 +359,7 @@ groupTitles = _groupTitles;
         if (self.currentSections.count) {
             NSArray *eventsForSection = [self.currentEventsBySection objectForKey:[self.currentSections objectAtIndex:section]];
             num = eventsForSection.count;
-        } else {
+        } else if (self.eventsLoaded) {
             num = 1; // error message
         }
     } else if (_currentCalendars) {
@@ -409,11 +414,12 @@ groupTitles = _groupTitles;
                 cell.detailTextLabel.text = subtitle;
                 cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
             } copy] autorelease];
-        } else {
+        } else if (self.eventsLoaded) {
             return [[^(UITableViewCell *cell) {
                 cell.textLabel.text = NSLocalizedString(@"No events found", nil);
                 cell.textLabel.textColor = [[KGOTheme sharedTheme] textColorForThemedProperty:KGOThemePropertyNavListTitle];
                 cell.textLabel.font = [[KGOTheme sharedTheme] fontForThemedProperty:KGOThemePropertyNavListTitle];
+                cell.detailTextLabel.text = @"";
                 cell.selectionStyle = UITableViewCellSelectionStyleNone;
                 cell.accessoryType = UITableViewCellAccessoryNone;
             } copy] autorelease];

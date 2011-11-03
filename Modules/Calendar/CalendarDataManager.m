@@ -211,7 +211,7 @@ NSDate *dateForMidnightFromInterval(NSTimeInterval interval)
                 [wrappers addObject:wrapper];
             }
             
-            [self.delegate eventsDidChange:wrappers calendar:calendar];
+            [self.delegate eventsDidChange:wrappers calendar:calendar didReceiveResult:NO];
             
             if (wrappers.count) {
                 return YES;
@@ -403,7 +403,7 @@ NSDate *dateForMidnightFromInterval(NSTimeInterval interval)
         }
         
         [[CoreDataManager sharedManager] saveData];
-        [self.delegate eventsDidChange:array calendar:calendar];
+        [self.delegate eventsDidChange:array calendar:calendar didReceiveResult:YES];
     }
 }
 
