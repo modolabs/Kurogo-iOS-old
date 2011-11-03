@@ -369,7 +369,19 @@
 - (void)resultsHolder:(id<KGOSearchResultsHolder>)resultsHolder didSelectResult:(id<KGOSearchResult>)aResult {
     NewsStory *story = aResult;
     if ([[story hasBody] boolValue]) {
-        NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:aResult, @"story", nil];
+        NSArray *resultStories = [resultsHolder results];
+        NSInteger row = [resultStories indexOfObject:story];
+        NSDictionary *params = nil;
+        if (row != NSNotFound) {
+            params = [NSDictionary dictionaryWithObjectsAndKeys:
+                      resultStories, @"stories",
+                      [NSIndexPath indexPathForRow:row inSection:0], @"indexPath",
+                      nil];
+        } else {
+            params = [NSDictionary dictionaryWithObjectsAndKeys:
+                                    aResult, @"story",
+                                    nil];
+        }
         [KGO_SHARED_APP_DELEGATE() showPage:LocalPathPageNameDetail 
                                forModuleTag:self.dataManager.moduleTag
                                      params:params];
