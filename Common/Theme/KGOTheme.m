@@ -179,6 +179,15 @@ static KGOTheme *s_sharedTheme = nil;
     return color;
 }
 
+- (UIColor *)tableSeparatorColor {
+    NSString *tableSeperatorColorString = [[themeDict objectForKey:@"Colors"] objectForKey:@"TableSeparator"];
+    if (tableSeperatorColorString) {
+        return [UIColor colorWithHexString:tableSeperatorColorString];
+    } else {
+        return [UIColor colorWithWhite:0.5 alpha:1.0];
+    }
+}
+
 // this one can be nil
 // TODO: make nil/non-nil distinction more transparent
 - (UIColor *)tintColorForToolbar {

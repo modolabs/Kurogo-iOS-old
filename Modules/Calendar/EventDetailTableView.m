@@ -29,7 +29,7 @@
     if (self) {
         self.delegate = self;
         self.dataSource = self;
-        self.separatorColor = [UIColor colorWithWhite:0.5 alpha:1.0];
+        self.separatorColor = [[KGOTheme sharedTheme] tableSeparatorColor];
     }
     return self;
 }
@@ -40,7 +40,7 @@
     if (self) {
         self.delegate = self;
         self.dataSource = self;
-        self.separatorColor = [UIColor colorWithWhite:0.5 alpha:1.0];
+        self.separatorColor = [[KGOTheme sharedTheme] tableSeparatorColor];
     }
     return self;
 }
@@ -51,7 +51,7 @@
     if (self) {
         self.delegate = self;
         self.dataSource = self;
-        self.separatorColor = [UIColor colorWithWhite:0.5 alpha:1.0];
+        self.separatorColor = [[KGOTheme sharedTheme] tableSeparatorColor];
     }
     return self;
 }
