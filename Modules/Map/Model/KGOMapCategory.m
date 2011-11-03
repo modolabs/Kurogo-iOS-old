@@ -16,6 +16,7 @@ NSString * const MapCategoryEntityName = @"KGOMapCategory";
 @dynamic latitude;
 @dynamic longitude;
 @dynamic subtitle;
+@dynamic topLevel;
 
 @synthesize moduleTag;
 

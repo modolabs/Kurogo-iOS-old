@@ -376,6 +376,15 @@ maxResultsPerSection;
 
 #pragma mark KGOSearchResultsHolder
 
+- (NSArray *)results
+{
+    NSMutableArray *results = [NSMutableArray array];
+    for (NSString *source in self.searchSources) {
+        [results addObjectsFromArray:[self.multiSearchResults objectForKey:source]];
+    }
+    return results;
+}
+
 - (void)receivedSearchResults:(NSArray *)results forSource:(NSString *)source
 {
     if (!source) {

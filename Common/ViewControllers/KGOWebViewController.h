@@ -1,4 +1,5 @@
 #import <UIKit/UIKit.h>
+#import "MITMailComposeController.h"
 
 @class KGOWebViewController;
 
@@ -12,7 +13,8 @@
 @end
 
 
-@interface KGOWebViewController : UIViewController <UIWebViewDelegate, UIAlertViewDelegate> {
+@interface KGOWebViewController : UIViewController <UIWebViewDelegate, UIAlertViewDelegate,
+MFMailComposeViewControllerDelegate> {
     
     UIWebView *_webView;
     UIActivityIndicatorView *_loadingView;

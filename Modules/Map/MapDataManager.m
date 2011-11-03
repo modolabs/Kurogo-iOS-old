@@ -4,6 +4,9 @@
 #import "Foundation+KGOAdditions.h"
 #import "KGOMapCategory.h"
 
+#define CATEGORY_INDEX_CACHE_TIME 3600 * 24 * 2
+#define CHILD_CATEGORY_CACHE_TIME 3600 * 24
+
 @interface MapDataManager (Private)
 
 - (NSArray *)childrenForCategory:(NSString *)categoryID;
@@ -28,6 +31,7 @@
                                                                       path:@"index"
                                                                    version:1
                                                                     params:nil];
+    _indexRequest.minimumDuration = CATEGORY_INDEX_CACHE_TIME;
     [_indexRequest connect];
 }
 
@@ -56,6 +60,8 @@
                                                                                     path:@"category"
                                                                                  version:1
                                                                                   params:params];
+    categoryRequest.minimumDuration = CHILD_CATEGORY_CACHE_TIME;
+
     if (!_categoryRequests) {
         _categoryRequests = [[NSMutableDictionary alloc] initWithCapacity:1];
     }
@@ -148,6 +154,9 @@
                     category.moduleTag = self.moduleTag;
                     category.sortOrder = [NSNumber numberWithInt:count];
                     category.parentCategory = parentCategory;
+                    if (!parentCategory && request == _indexRequest) {
+                        category.topLevel = [NSNumber numberWithBool:YES];
+                    }
                     [results addObject:category];
                     count++;
                 }

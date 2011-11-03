@@ -9,6 +9,10 @@
 #define SCROLL_TAB_HORIZONTAL_PADDING 5.0
 #define MINIMUM_BUTTON_WIDTH 36.0
 
+// if a tabstrip has more than this number of buttons they will probably
+// have other problems before button index collision becomes an issue
+NSInteger const kBookmarkButtonIndex = 8765913;
+
 @interface KGOScrollingTabstrip (Private)
 
 - (void)showHideScrollButtons;
@@ -94,7 +98,6 @@
             _bookmarkButton = [[UIButton buttonWithType:UIButtonTypeCustom] retain];
             UIImage *image = [UIImage imageWithPathName:@"common/bookmark.png"];
             [_bookmarkButton setImage:image forState:UIControlStateNormal];
-            _bookmarkButton.adjustsImageWhenHighlighted = NO;
             // ensure that button is wide enough to tap
             CGFloat buttonWidth = image.size.width;
             CGFloat insetWidth = 0;
@@ -117,7 +120,6 @@
     return _bookmarkButton != nil;
 }
 
-// TODO: get assets from config
 - (void)addButtonWithTitle:(NSString *)title {
     UIButton *aButton = [UIButton buttonWithType:UIButtonTypeCustom];
     
@@ -257,7 +259,9 @@
 }
 
 - (void)selectButtonAtIndex:(NSUInteger)index {
-    if (index < _buttons.count) {
+    if (index == [self bookmarkButtonIndex]) {
+        [self buttonPressed:_bookmarkButton];
+    } else if (index < _buttons.count) {
         UIButton *button = [_buttons objectAtIndex:index];
         [self buttonPressed:button];
     }
@@ -270,6 +274,11 @@
         index = [_buttons indexOfObject:_pressedButton];
     }
     return index;
+}
+
+- (NSInteger)bookmarkButtonIndex
+{
+    return kBookmarkButtonIndex;
 }
 
 - (void)buttonPressed:(id)sender {

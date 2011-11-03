@@ -60,15 +60,29 @@ KGOSign KGOGetIntegerSign(NSInteger x) {
     return url;
 }
 
+// http://simonwoodside.com/weblog/2009/4/22/how_to_really_url_encode/
+// NSString's stringByAddingPercentEscapesUsingEncoding leaves out / and &.
++ (NSString *)urlEscapeWithPercents:(NSString *)string {
+	CFStringRef escapedCFString =
+    CFURLCreateStringByAddingPercentEscapes(NULL,
+                                            (CFStringRef)string,
+                                            NULL,
+                                            (CFStringRef)@"!*'\"();:@&=$,/?%#[]% ",
+                                            CFStringConvertNSStringEncodingToEncoding(NSUTF8StringEncoding));
+    NSString *escapedString = [[(NSString *)escapedCFString copy] autorelease];
+    CFRelease(escapedCFString);
+    return escapedString;
+}
+
 // http://www.faqs.org/rfcs/rfc1738.html
 + (NSString *)queryStringWithParameters:(NSDictionary *)parameters {
 	NSMutableArray *components = [NSMutableArray arrayWithCapacity:[parameters count]];
 
     [parameters enumerateKeysAndObjectsUsingBlock:^(id key, id value, BOOL *stop) {
-        NSString *encodedKey = [[key stringByReplacingOccurrencesOfString:@" " withString:@"+"] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+        NSString *encodedKey = [self urlEscapeWithPercents:key];
 
         if ([value isKindOfClass:[NSString class]]) {        
-            NSString *encodedValue = [[value stringByReplacingOccurrencesOfString:@" " withString:@"+"] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+            NSString *encodedValue = [self urlEscapeWithPercents:value];
             
             [components addObject:[NSString stringWithFormat:@"%@=%@", encodedKey, encodedValue]];
 

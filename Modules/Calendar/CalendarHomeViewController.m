@@ -464,10 +464,14 @@ groupTitles = _groupTitles;
 }
 
 - (void)resultsHolder:(id<KGOSearchResultsHolder>)resultsHolder didSelectResult:(id<KGOSearchResult>)aResult{
-    
+
+    NSString *justALookupKey = @"Section";
+    NSArray *sections = [NSArray arrayWithObject:justALookupKey];
+    NSDictionary *eventsBySection = [NSDictionary dictionaryWithObject:[resultsHolder results]
+                                                                forKey:justALookupKey];
     NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:
-                            _currentEventsBySection, @"eventsBySection",
-                            _currentSections, @"sections",
+                            eventsBySection, @"eventsBySection",
+                            sections, @"sections",
                             aResult, @"searchResult",
                             nil];
     

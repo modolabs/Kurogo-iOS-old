@@ -82,6 +82,13 @@
     return toInterfaceOrientation == UIInterfaceOrientationPortrait;
 }
 
+#pragma mark KGOSearchResultsHolder
+
+- (NSArray *)results
+{
+    return self.bookmarkedItems;
+}
+
 - (void)receivedSearchResults:(NSArray *)results forSource:(NSString *)source
 {
     self.bookmarkedItems = results;

@@ -216,9 +216,26 @@ enum {
         return !shouldOpenBrowser;
     }
     
-    if ([scheme isEqualToString:[KGO_SHARED_APP_DELEGATE() defaultURLScheme]]) {
-        [[UIApplication sharedApplication] openURL:request.URL];
+    if ([scheme isEqualToString:@"mailto"]) {
+        // NSURL doesn't parse mailto urls such that the string after ? is the query
+        NSString *emailString = [url absoluteString];
+        if (emailString.length > scheme.length + 1) {
+            emailString = [emailString substringFromIndex:scheme.length + 1];
+        }
+        NSRange queryRange = [emailString rangeOfString:@"?"];
+        if (queryRange.location != NSNotFound) {
+            emailString = [emailString substringToIndex:queryRange.location];
+        }
+        [self presentMailControllerWithEmail:emailString subject:nil body:nil delegate:self];
         return NO;
+    }
+    
+    static NSArray *allowableExternalURLSchemes = nil;
+    if (allowableExternalURLSchemes == nil) {
+        allowableExternalURLSchemes = [[NSArray alloc] initWithObjects:
+                                       @"http", @"https", @"tel",
+                                       [KGO_SHARED_APP_DELEGATE() defaultURLScheme],
+                                       nil];
     }
     
     if (navigationType == UIWebViewNavigationTypeLinkClicked
@@ -275,6 +292,13 @@ enum {
     if (buttonIndex != [alertView cancelButtonIndex]) {
         [_webView loadRequest:_webView.request];
     }
+}
+
+- (void)mailComposeController:(MFMailComposeViewController *)controller
+          didFinishWithResult:(MFMailComposeResult)result
+                        error:(NSError *)error
+{
+    [self dismissModalViewControllerAnimated:YES];
 }
 
 @end

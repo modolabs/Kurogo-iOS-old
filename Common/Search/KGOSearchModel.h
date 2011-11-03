@@ -55,5 +55,6 @@
 @protocol KGOSearchResultsHolder <NSObject>
 
 - (void)receivedSearchResults:(NSArray *)results forSource:(ModuleTag *)source;
+- (NSArray *)results;
 
 @end

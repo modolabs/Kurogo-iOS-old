@@ -22,10 +22,24 @@ headerView = _headerView;
     [KGO_SHARED_APP_DELEGATE() showPage:LocalPathPageNameDetail forModuleTag:self.dataManager.moduleTag params:params];
 }
 
+- (void)refreshCategories
+{
+    self.dataManager.delegate = self;
+    if (self.parentCategory) {
+        [self.dataManager requestChildrenForCategory:self.parentCategory.identifier];
+    } else {
+        [self.dataManager requestBrowseIndex];
+    }
+}
+
 - (void)loadView {
 	[super loadView];
     
-    self.title = NSLocalizedString(@"Browse", nil);
+    if (self.parentCategory.title.length) {
+        self.title = self.parentCategory.title;
+    } else {
+        self.title = NSLocalizedString(@"Browse", nil);
+    }
 
     UITableViewStyle style = UITableViewStyleGrouped;
     BOOL isPopulated = NO;
@@ -66,14 +80,10 @@ headerView = _headerView;
 		self.tableView = [self addTableViewWithFrame:frame style:style];
 
 	} else {
-        self.dataManager.delegate = self;
-        if (self.parentCategory) {
-            [self.dataManager requestChildrenForCategory:self.parentCategory.identifier];
-        } else {
-            [self.dataManager requestBrowseIndex];
-        }
         [self showLoadingView];
     }
+    
+    [self refreshCategories];
 }
 
 - (void)viewDidLoad

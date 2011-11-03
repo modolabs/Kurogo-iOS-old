@@ -1,6 +1,5 @@
 #import <Foundation/Foundation.h>
-
-@protocol MFMailComposeViewControllerDelegate;
+#import <MessageUI/MFMailComposeViewController.h>
 
 // TODO: add protocol for classes to do things after the controller is dismissed
 

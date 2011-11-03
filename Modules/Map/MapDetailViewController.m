@@ -140,6 +140,11 @@
     }
 }
 
+- (NSArray *)results
+{
+    return  _tableView.items;
+}
+
 -(void)receivedSearchResults:(NSArray *)searchResults forSource:(NSString *)source {
     _tableView.items = searchResults;
     NSArray *filteredArray = [searchResults filteredArrayUsingPredicate:
@@ -191,8 +196,9 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    self.title = NSLocalizedString(@"Info", @"map detail page title");
     
+    // TODO: this is redundant - which string do we want?
+    self.title = NSLocalizedString(@"Info", @"map detail page title");
     self.navigationItem.title = NSLocalizedString(@"Location Info", nil);
     
     if (self.pager) {

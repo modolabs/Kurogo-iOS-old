@@ -46,6 +46,7 @@
 
 - (void)selectButtonAtIndex:(NSUInteger)index;
 - (NSInteger)indexOfSelectedButton;
+- (NSInteger)bookmarkButtonIndex;
 
 @property (nonatomic) BOOL showsSearchButton;
 @property (nonatomic) BOOL showsBookmarkButton;

@@ -1,6 +1,5 @@
 #import "MITMailComposeController.h"
 #import "KGOTheme.h"
-#import <MessageUI/MFMailComposeViewController.h>
 
 @implementation UIViewController (MITMailComposeController)
 
