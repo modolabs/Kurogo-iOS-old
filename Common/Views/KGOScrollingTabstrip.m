@@ -105,9 +105,14 @@ NSInteger const kBookmarkButtonIndex = 8765913;
                 insetWidth = floor((MINIMUM_BUTTON_WIDTH - buttonWidth) / 2);
                 buttonWidth = MINIMUM_BUTTON_WIDTH;
             }
-            _bookmarkButton.imageEdgeInsets = UIEdgeInsetsMake(-1, insetWidth, 0, insetWidth);
-            CGFloat yOrigin = floor((self.frame.size.height - image.size.height) / 2);
-            _bookmarkButton.frame = CGRectMake(0, yOrigin, buttonWidth, image.size.height);
+            
+            UIImage *stretchableButtonImage = [[UIImage imageWithPathName:@"common/scrolltabs-selected.png"] stretchableImageWithLeftCapWidth:15 topCapHeight:0];
+            [_bookmarkButton setBackgroundImage:nil forState:UIControlStateNormal];
+            [_bookmarkButton setBackgroundImage:stretchableButtonImage forState:UIControlStateHighlighted];
+
+            _bookmarkButton.imageEdgeInsets = UIEdgeInsetsMake(0, insetWidth, 1, insetWidth); // center image vertically
+            CGFloat yOrigin = floor((self.frame.size.height - stretchableButtonImage.size.height) / 2);
+            _bookmarkButton.frame = CGRectMake(0, yOrigin, buttonWidth, stretchableButtonImage.size.height);
             [_bookmarkButton addTarget:self action:@selector(buttonPressed:) forControlEvents:UIControlEventTouchUpInside];
         } else {
             [_bookmarkButton release];
@@ -133,7 +138,6 @@ NSInteger const kBookmarkButtonIndex = 8765913;
     aButton.titleEdgeInsets = UIEdgeInsetsMake(0, 0, 1.0, 0); // needed to center text vertically within button
     CGSize size = [aButton.titleLabel.text sizeWithFont:aButton.titleLabel.font];
 
-    // TODO: make configurable
 	UIImage *stretchableButtonImage = [[UIImage imageWithPathName:@"common/scrolltabs-selected.png"] stretchableImageWithLeftCapWidth:15 topCapHeight:0];
     [aButton setBackgroundImage:nil forState:UIControlStateNormal];
     [aButton setBackgroundImage:stretchableButtonImage forState:UIControlStateHighlighted];
@@ -294,18 +298,14 @@ NSInteger const kBookmarkButtonIndex = 8765913;
     } else {
         if (pressedButton != _pressedButton) {
             
-            if (_pressedButton.adjustsImageWhenHighlighted) {
-                [_pressedButton setTitleColor:[UIColor colorWithHexString:@"#E0E0E0"] forState:UIControlStateNormal];
-                [_pressedButton setBackgroundImage:nil forState:UIControlStateNormal];
-            }
+            [_pressedButton setTitleColor:[UIColor colorWithHexString:@"#E0E0E0"] forState:UIControlStateNormal];
+            [_pressedButton setBackgroundImage:nil forState:UIControlStateNormal];
             
-            if (pressedButton.adjustsImageWhenHighlighted) {
-                UIImage *buttonImage = [UIImage imageWithPathName:@"common/scrolltabs-selected.png"];
-                UIImage *stretchableButtonImage = [buttonImage stretchableImageWithLeftCapWidth:15 topCapHeight:0];
-                
-                [pressedButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-                [pressedButton setBackgroundImage:stretchableButtonImage forState:UIControlStateNormal];
-            }
+            UIImage *buttonImage = [UIImage imageWithPathName:@"common/scrolltabs-selected.png"];
+            UIImage *stretchableButtonImage = [buttonImage stretchableImageWithLeftCapWidth:15 topCapHeight:0];
+            
+            [pressedButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+            [pressedButton setBackgroundImage:stretchableButtonImage forState:UIControlStateNormal];
             
             _pressedButton = pressedButton;
         }

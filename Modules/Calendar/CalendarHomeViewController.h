@@ -51,6 +51,7 @@ KGOScrollingTabstripSearchDelegate, CalendarDataManagerDelegate> {
 @property(nonatomic, retain) NSDictionary *currentEventsBySection;
 
 @property(nonatomic) BOOL showsGroups;
+@property(nonatomic) BOOL eventsLoaded;
 
 - (void)clearEvents;
 - (void)clearCalendars;

@@ -6,7 +6,7 @@
 
 - (void)groupsDidChange:(NSArray *)groups;
 - (void)groupDataDidChange:(KGOCalendarGroup *)group;
-- (void)eventsDidChange:(NSArray *)events calendar:(KGOCalendar *)calendar;
+- (void)eventsDidChange:(NSArray *)events calendar:(KGOCalendar *)calendar didReceiveResult:(BOOL)receivedResult;
 
 @end
 

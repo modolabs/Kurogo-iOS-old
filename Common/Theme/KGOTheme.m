@@ -34,6 +34,7 @@ NSString * const KGOThemePropertySectionHeader = @"SectionHeader";
 NSString * const KGOThemePropertySectionHeaderGrouped = @"SectionHeaderGrouped";
 NSString * const KGOThemePropertyTab = @"Tab";
 NSString * const KGOThemePropertyTabSelected = @"TabSelected";
+NSString * const KGOThemePropertyTabActive = @"TabActive";
 
 @interface KGOTheme (Private)
 
@@ -53,6 +54,8 @@ static KGOTheme *s_sharedTheme = nil;
     }
     return s_sharedTheme;
 }
+
+#pragma mark Fonts
 
 - (UIFont *)defaultFont
 {
@@ -140,14 +143,7 @@ static KGOTheme *s_sharedTheme = nil;
     return color;
 }
 
-#pragma mark Homescreen
-
-- (NSDictionary *)homescreenConfig
-{
-    return [themeDict dictionaryForKey:@"HomeScreen"];
-}
-
-#pragma mark Colors
+#pragma mark - Universal colors
 
 - (UIColor *)matchBackgroundColorWithLabel:(NSString *)label {
     UIColor *color = nil;
@@ -179,14 +175,7 @@ static KGOTheme *s_sharedTheme = nil;
     return color;
 }
 
-- (UIColor *)tableSeparatorColor {
-    NSString *tableSeperatorColorString = [[themeDict objectForKey:@"Colors"] objectForKey:@"TableSeparator"];
-    if (tableSeperatorColorString) {
-        return [UIColor colorWithHexString:tableSeperatorColorString];
-    } else {
-        return [UIColor colorWithWhite:0.5 alpha:1.0];
-    }
-}
+#pragma mark View colors
 
 // this one can be nil
 // TODO: make nil/non-nil distinction more transparent
@@ -205,10 +194,38 @@ static KGOTheme *s_sharedTheme = nil;
     return color;
 }
 
+- (UIColor *)backgroundColorForDatePager {
+    UIColor *color = [self matchBackgroundColorWithLabel:@"DatePagerBackground"];
+    if (!color) {
+        color = [UIColor grayColor];
+    }
+    return color;
+}
+
+#pragma mark Table view colors
+
 - (UIColor *)tintColorForSelectedCell {
     UIColor *color = [self matchBackgroundColorWithLabel:@"NavListSelectionColor"];
     return color;
 }
+
+- (UIColor *)backgroundColorForPlainSectionHeader {
+    UIColor *color = [self matchBackgroundColorWithLabel:@"PlainSectionHeaderBackground"];
+    if (!color)
+        color = [UIColor blackColor];
+    return color;
+}
+
+- (UIColor *)tableSeparatorColor {
+    NSString *tableSeperatorColorString = [[themeDict objectForKey:@"Colors"] objectForKey:@"TableSeparator"];
+    if (tableSeperatorColorString) {
+        return [UIColor colorWithHexString:tableSeperatorColorString];
+    } else {
+        return [UIColor colorWithWhite:0.5 alpha:1.0];
+    }
+}
+
+#pragma mark - Background Images
 
 - (UIImage *)titleImageForNavBar {
     NSString *imageName = [[themeDict objectForKey:@"Images"] objectForKey:@"NavBarTitle"];
@@ -245,19 +262,7 @@ static KGOTheme *s_sharedTheme = nil;
     return nil;
 }
 
-- (UIColor *)backgroundColorForPlainSectionHeader {
-    UIColor *color = [self matchBackgroundColorWithLabel:@"PlainSectionHeaderBackground"];
-    if (!color)
-        color = [UIColor blackColor];
-    return color;
-}
-
-- (UIColor *)backgroundColorForSecondaryCell {
-    UIColor *color = [self matchBackgroundColorWithLabel:@"SecondaryCellBackground"];
-    if (!color)
-        color = [UIColor whiteColor];
-    return color;
-}
+#pragma mark - Enumerated styles
 
 - (UIBarStyle)defaultNavBarStyle
 {
@@ -265,7 +270,21 @@ static KGOTheme *s_sharedTheme = nil;
     return UIBarStyleBlack;
 }
 
-#pragma mark UITableViewCell
+#pragma mark - Homescreen
+
+- (NSDictionary *)homescreenConfig
+{
+    return [themeDict dictionaryForKey:@"HomeScreen"];
+}
+
+#pragma mark - UITableViewCell
+
+- (UIColor *)backgroundColorForSecondaryCell {
+    UIColor *color = [self matchBackgroundColorWithLabel:@"SecondaryCellBackground"];
+    if (!color)
+        color = [UIColor whiteColor];
+    return color;
+}
 
 // provide None, Blank, and Chevron by default.
 // other styles can be defined in theme plist

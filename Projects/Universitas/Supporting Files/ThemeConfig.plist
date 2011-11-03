@@ -180,6 +180,15 @@
 			<key>size</key>
 			<integer>-2</integer>
 		</dict>
+		<key>TabActive</key>
+		<dict>
+			<key>bold</key>
+			<true/>
+			<key>color</key>
+			<string>#505050</string>
+			<key>size</key>
+			<integer>-2</integer>
+		</dict>
 		<key>ScrollTabSelected</key>
 		<dict>
 			<key>bold</key>
