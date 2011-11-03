@@ -196,6 +196,9 @@ static KGOTheme *s_sharedTheme = nil;
 
 - (UIColor *)backgroundColorForDatePager {
     UIColor *color = [self matchBackgroundColorWithLabel:@"DatePagerBackground"];
+    if (!color) {
+        color = [UIColor grayColor];
+    }
     return color;
 }
 

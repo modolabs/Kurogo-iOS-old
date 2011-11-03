@@ -12,7 +12,7 @@
     self = [super initWithCoder:aDecoder];
     if (self) {
         _dateFormatter = [[NSDateFormatter alloc] init];
-        self.backgroundColor = [UIColor grayColor];
+        self.backgroundColor = [[KGOTheme sharedTheme] backgroundColorForDatePager];
         self.incrementUnit = NSDayCalendarUnit;
     }
     return self;
@@ -23,7 +23,7 @@
     self = [super initWithFrame:frame];
     if (self) {
         _dateFormatter = [[NSDateFormatter alloc] init];
-        self.backgroundColor = [UIColor grayColor];
+        self.backgroundColor = [[KGOTheme sharedTheme] backgroundColorForDatePager];
         self.incrementUnit = NSDayCalendarUnit;
     }
     return self;
@@ -38,9 +38,11 @@
 - (void)layoutSubviews {
 
     if (!nextButton) {
-        UIImage *dropShadowImage = [[KGOTheme sharedTheme] backgroundImageForSearchBarDropShadow];
+        UIImage *dropShadowImage = [[[KGOTheme sharedTheme] backgroundImageForSearchBarDropShadow] stretchableImageWithLeftCapWidth:5
+                                                                                                                       topCapHeight:5];
         if (dropShadowImage) {
             UIImageView *dropShadow = [[[UIImageView alloc] initWithImage:dropShadowImage] autorelease];
+            dropShadow.autoresizingMask = UIViewAutoresizingFlexibleWidth;
             dropShadow.frame = CGRectMake(0, self.frame.size.height, dropShadow.frame.size.width, dropShadow.frame.size.height);
             [self addSubview:dropShadow];
             self.clipsToBounds = NO;
@@ -83,6 +85,7 @@
         
         // date label
         dateButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        // TODO: make this configurable or use system font
         dateButton.titleLabel.font = [UIFont fontWithName:@"Helvetica-Bold" size:18.0];
         dateButton.titleLabel.textColor = [UIColor whiteColor];
         dateButton.titleLabel.textAlignment = UITextAlignmentCenter;
