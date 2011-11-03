@@ -142,7 +142,9 @@
         if (categoryID) {
             parentCategory = [KGOMapCategory categoryWithIdentifier:categoryID];
             parentCategory.moduleTag = self.moduleTag;
-            parentCategory.topLevel = [NSNumber numberWithBool:YES];
+            if (request == _indexRequest) {
+                parentCategory.topLevel = [NSNumber numberWithBool:YES];
+            }
         }
         
         NSInteger count = 0;
