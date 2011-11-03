@@ -52,7 +52,7 @@
         CGRect frame = CGRectMake(0, 0, self.view.bounds.size.width, self.view.bounds.size.height);
         _tableView = [[EventDetailTableView alloc] initWithFrame:frame style:UITableViewStylePlain];
         _tableView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-        _tableView.backgroundColor = [UIColor clearColor];
+        _tableView.backgroundColor = [UIColor whiteColor];
         _tableView.viewController = self;
         _tableView.dataManager = self.dataManager;
         
