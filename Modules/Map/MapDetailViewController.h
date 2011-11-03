@@ -12,6 +12,7 @@
 @interface MapDetailViewController : KGOTabbedViewController <KGOSearchResultsDelegate, KGOSearchResultsHolder, KGODetailPagerDelegate,
 MapDataManagerDelegate, UIWebViewDelegate> {
     
+    UIWebView *_webView;
     KGOSearchResultListTableView *_tableView;
     
     NSInteger _photoTabIndex;

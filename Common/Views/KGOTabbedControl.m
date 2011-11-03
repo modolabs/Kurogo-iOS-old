@@ -3,10 +3,51 @@
 #import "UIKit+KGOAdditions.h"
 #import "KGOTheme.h"
 
+@implementation UIButton (KGOTabbedControl)
+
+- (void)setTabState:(KGOTabState)state {
+    switch (state) {
+        case KGOTabStateActive:
+            [self setBackgroundImage:[KGOTabbedControl backgroundImageForState:KGOTabStateActive]
+                              forState:UIControlStateNormal];
+            [self setBackgroundImage:[KGOTabbedControl backgroundImageForState:KGOTabStateActive]
+                              forState:UIControlStateHighlighted];
+            [self setTitleColor:[KGOTabbedControl textColorForState:KGOTabStateActive]
+                       forState:UIControlStateNormal];
+            [self setTitleColor:[KGOTabbedControl textColorForState:KGOTabStateActive]
+                       forState:UIControlStateHighlighted];
+            break;
+        case KGOTabStateInactive:
+            [self setBackgroundImage:[KGOTabbedControl backgroundImageForState:KGOTabStateInactive]
+                              forState:UIControlStateNormal];
+            [self setBackgroundImage:[KGOTabbedControl backgroundImageForState:KGOTabStatePressed]
+                              forState:UIControlStateHighlighted];
+            [self setTitleColor:[KGOTabbedControl textColorForState:KGOTabStateInactive]
+                       forState:UIControlStateNormal];
+            [self setTitleColor:[KGOTabbedControl textColorForState:KGOTabStatePressed]
+                       forState:UIControlStateHighlighted];
+            break;
+        case KGOTabStateDisabled:
+            [self setBackgroundImage:[KGOTabbedControl backgroundImageForState:KGOTabStateDisabled]
+                              forState:UIControlStateNormal];
+            [self setBackgroundImage:[KGOTabbedControl backgroundImageForState:KGOTabStateDisabled]
+                              forState:UIControlStateHighlighted];
+            [self setTitleColor:[KGOTabbedControl textColorForState:KGOTabStateDisabled]
+                       forState:UIControlStateNormal];
+            [self setTitleColor:[KGOTabbedControl textColorForState:KGOTabStateDisabled]
+                       forState:UIControlStateHighlighted];
+            break;
+        default:
+            // no separate state for pressed
+            break;
+    }
+}
+
+@end
+
 @interface KGOTabbedControl (Private)
 
 - (CGSize)foregroundSizeForTabAtIndex:(NSUInteger)tabIndex;
-- (UIColor *)textColorForState:(KGOTabState)state;
 - (void)didInsertTabAtIndex:(NSInteger)index animated:(BOOL)animated;
 - (UIButton *)buttonForTab;
 
@@ -81,22 +122,18 @@
 
 - (void)setSelectedTabIndex:(NSInteger)index {
     if (index != _selectedTabIndex) {
-        UIButton *button;
+        UIButton *button = nil;
         
         if (_selectedTabIndex != NSNotFound) {
             button = [_tabs objectAtIndex:_selectedTabIndex];
-            [button setBackgroundImage:[self backgroundImageForState:KGOTabStateInactive atIndex:_selectedTabIndex]
-                              forState:UIControlStateNormal];
-            [button setTitleColor:[self textColorForState:KGOTabStateInactive] forState:UIControlStateNormal];
+            [button setTabState:KGOTabStateInactive];
         }
         
         _selectedTabIndex = index;
         
         if (_selectedTabIndex != NSNotFound) {
             button = [_tabs objectAtIndex:_selectedTabIndex];
-            [button setBackgroundImage:[self backgroundImageForState:KGOTabStateActive atIndex:_selectedTabIndex]
-                              forState:UIControlStateNormal];
-            [button setTitleColor:[self textColorForState:KGOTabStateActive] forState:UIControlStateNormal];
+            [button setTabState:KGOTabStateActive];
         }
     }
 }
@@ -130,8 +167,10 @@
 
 - (UIButton *)buttonForTab {
     UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
-    [button setTitleColor:[self textColorForState:KGOTabStateInactive] forState:UIControlStateNormal];
-    [button setTitleColor:[self textColorForState:KGOTabStatePressed] forState:UIControlStateHighlighted];
+    [button setTitleColor:[KGOTabbedControl textColorForState:KGOTabStateInactive]
+                 forState:UIControlStateNormal];
+    [button setTitleColor:[KGOTabbedControl textColorForState:KGOTabStatePressed]
+                 forState:UIControlStateHighlighted];
     [button addTarget:self action:@selector(didSelectTab:) forControlEvents:UIControlEventTouchUpInside];
     button.titleLabel.font = self.tabFont;
     return button;
@@ -240,7 +279,11 @@
 }
 
 - (UIImage *)backgroundImageForState:(KGOTabState)state atIndex:(NSUInteger)index {
-    // TODO: use config and cache these results
+    NSLog(@"this function is deprecated - use +backgroundImageForState:");
+    return nil;
+}
+
++ (UIImage *)backgroundImageForState:(KGOTabState)state {
     
     switch (state) {
         case KGOTabStateInactive:
@@ -250,20 +293,18 @@
         case KGOTabStatePressed:
             return [[UIImage imageWithPathName:@"common/tab-inactive-pressed.png"] stretchableImageWithLeftCapWidth:15.0 topCapHeight:0];
         case KGOTabStateDisabled:
-            return [[UIImage imageWithPathName:@"common/tab-inactive.png"] stretchableImageWithLeftCapWidth:15.0 topCapHeight:0];
+            return [[UIImage imageWithPathName:@"common/tab-disabled.png"] stretchableImageWithLeftCapWidth:15.0 topCapHeight:0];
         default:
             return nil;
     }
 }
 
-- (UIColor *)textColorForState:(KGOTabState)state {
-    // TODO: config these values
-    
++ (UIColor *)textColorForState:(KGOTabState)state {
     switch (state) {
         case KGOTabStateInactive:
             return [[KGOTheme sharedTheme] textColorForThemedProperty:KGOThemePropertyTab];
         case KGOTabStateActive:
-            return [[KGOTheme sharedTheme] textColorForThemedProperty:KGOThemePropertyTabSelected];
+            return [[KGOTheme sharedTheme] textColorForThemedProperty:KGOThemePropertyTabActive];
         case KGOTabStatePressed:
             return [[KGOTheme sharedTheme] textColorForThemedProperty:KGOThemePropertyTabSelected];
         case KGOTabStateDisabled:
@@ -286,16 +327,10 @@
         UIButton *button = [_tabs objectAtIndex:tabIndex];
         
         if (_selectedTabIndex == tabIndex) {
-            [button setBackgroundImage:[self backgroundImageForState:KGOTabStateActive atIndex:tabIndex]
-                              forState:UIControlStateNormal];
-            [button setTitleColor:[self textColorForState:KGOTabStateActive] forState:UIControlStateNormal];
+            [button setTabState:KGOTabStateActive];
         } else {
-            [button setBackgroundImage:[self backgroundImageForState:KGOTabStateInactive atIndex:tabIndex]
-                              forState:UIControlStateNormal];
-            [button setTitleColor:[self textColorForState:KGOTabStateInactive] forState:UIControlStateNormal];
+            [button setTabState:KGOTabStateInactive];
         }
-        [button setBackgroundImage:[self backgroundImageForState:KGOTabStatePressed atIndex:tabIndex]
-                          forState:UIControlStateHighlighted];
         
         CGSize size = [self foregroundSizeForTabAtIndex:tabIndex];
         CGRect tabRect = CGRectMake(tabOffset, 0,

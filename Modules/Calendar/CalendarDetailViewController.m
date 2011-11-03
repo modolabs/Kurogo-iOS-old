@@ -50,7 +50,7 @@
 {
     if (!_tableView) {
         CGRect frame = CGRectMake(0, 0, self.view.bounds.size.width, self.view.bounds.size.height);
-        _tableView = [[EventDetailTableView alloc] initWithFrame:frame style:UITableViewStyleGrouped];
+        _tableView = [[EventDetailTableView alloc] initWithFrame:frame style:UITableViewStylePlain];
         _tableView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
         _tableView.backgroundColor = [UIColor clearColor];
         _tableView.viewController = self;

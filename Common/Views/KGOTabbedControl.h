@@ -56,8 +56,16 @@ typedef enum {
 
 // for subclasses
 
++ (UIColor *)textColorForState:(KGOTabState)state;
++ (UIImage *)backgroundImageForState:(KGOTabState)state;
+
+// deprecated
 - (UIImage *)backgroundImageForState:(KGOTabState)state atIndex:(NSUInteger)index;
 
 @end
 
+@interface UIButton (KGOTabbedControl)
 
+- (void)setTabState:(KGOTabState)state;
+
+@end

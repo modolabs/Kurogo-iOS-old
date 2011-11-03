@@ -154,6 +154,9 @@
                     category.moduleTag = self.moduleTag;
                     category.sortOrder = [NSNumber numberWithInt:count];
                     category.parentCategory = parentCategory;
+                    if (!parentCategory && request == _indexRequest) {
+                        category.topLevel = [NSNumber numberWithBool:YES];
+                    }
                     [results addObject:category];
                     count++;
                 }

@@ -96,7 +96,6 @@
 		EB0338711340DBE100ACF2BB /* NewsImage.m in Sources */ = {isa = PBXBuildFile; fileRef = EB03386C1340DBE100ACF2BB /* NewsImage.m */; };
 		EB0338721340DBE100ACF2BB /* NewsStory.m in Sources */ = {isa = PBXBuildFile; fileRef = EB03386E1340DBE100ACF2BB /* NewsStory.m */; };
 		EB03387B1340DBF400ACF2BB /* KGOPlacemark.m in Sources */ = {isa = PBXBuildFile; fileRef = EB0338771340DBF400ACF2BB /* KGOPlacemark.m */; };
-		EB03387C1340DBF400ACF2BB /* MapModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = EB0338781340DBF400ACF2BB /* MapModel.xcdatamodeld */; };
 		EB0370F11396B6B500AD881F /* KGOLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = EB0370F01396B6B500AD881F /* KGOLabel.m */; };
 		EB0371401396E84500AD881F /* KGOSearchBar.m in Sources */ = {isa = PBXBuildFile; fileRef = EB03713F1396E84500AD881F /* KGOSearchBar.m */; };
 		EB0371431396E87500AD881F /* KGOSearchResultListTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = EB0371421396E87500AD881F /* KGOSearchResultListTableView.m */; };
@@ -187,6 +186,7 @@
 		EBE2CC2113438AEA0037546A /* KGODetailPageHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = EBE2CC2013438AEA0037546A /* KGODetailPageHeaderView.m */; };
 		EBE2CC641343E4D00037546A /* KGOMapCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = EBE2CC631343E4D00037546A /* KGOMapCategory.m */; };
 		EBE9C57B14058F390090B001 /* MapDataManager.m in Sources */ = {isa = PBXBuildFile; fileRef = EBE9C57A14058F390090B001 /* MapDataManager.m */; };
+		EBE9F1B014620B85009589C5 /* MapModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = EBE9F1AD14620B85009589C5 /* MapModel.xcdatamodeld */; };
 		EBEB7674138AE52200C011D3 /* KGOHTMLTemplate.m in Sources */ = {isa = PBXBuildFile; fileRef = EBEB7671138AE52200C011D3 /* KGOHTMLTemplate.m */; };
 		EBEB7675138AE52200C011D3 /* KGOTheme.m in Sources */ = {isa = PBXBuildFile; fileRef = EBEB7673138AE52200C011D3 /* KGOTheme.m */; };
 		EBEB7679138AE55000C011D3 /* KGOUserSetting.m in Sources */ = {isa = PBXBuildFile; fileRef = EBEB7678138AE55000C011D3 /* KGOUserSetting.m */; };
@@ -357,7 +357,6 @@
 		EB03386E1340DBE100ACF2BB /* NewsStory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NewsStory.m; sourceTree = "<group>"; };
 		EB0338761340DBF400ACF2BB /* KGOPlacemark.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGOPlacemark.h; sourceTree = "<group>"; };
 		EB0338771340DBF400ACF2BB /* KGOPlacemark.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGOPlacemark.m; sourceTree = "<group>"; };
-		EB0338791340DBF400ACF2BB /* MapModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = MapModel.xcdatamodel; sourceTree = "<group>"; };
 		EB0370EF1396B6B500AD881F /* KGOLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGOLabel.h; sourceTree = "<group>"; };
 		EB0370F01396B6B500AD881F /* KGOLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGOLabel.m; sourceTree = "<group>"; };
 		EB03713E1396E84500AD881F /* KGOSearchBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGOSearchBar.h; sourceTree = "<group>"; };
@@ -523,6 +522,8 @@
 		EBE2CC631343E4D00037546A /* KGOMapCategory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGOMapCategory.m; sourceTree = "<group>"; };
 		EBE9C57914058F390090B001 /* MapDataManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MapDataManager.h; sourceTree = "<group>"; };
 		EBE9C57A14058F390090B001 /* MapDataManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MapDataManager.m; sourceTree = "<group>"; };
+		EBE9F1AE14620B85009589C5 /* MapModel 2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "MapModel 2.xcdatamodel"; sourceTree = "<group>"; };
+		EBE9F1AF14620B85009589C5 /* MapModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = MapModel.xcdatamodel; sourceTree = "<group>"; };
 		EBEB7670138AE52200C011D3 /* KGOHTMLTemplate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGOHTMLTemplate.h; sourceTree = "<group>"; };
 		EBEB7671138AE52200C011D3 /* KGOHTMLTemplate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGOHTMLTemplate.m; sourceTree = "<group>"; };
 		EBEB7672138AE52200C011D3 /* KGOTheme.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGOTheme.h; sourceTree = "<group>"; };
@@ -999,7 +1000,7 @@
 		EB0338731340DBF400ACF2BB /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				EB0338781340DBF400ACF2BB /* MapModel.xcdatamodeld */,
+				EBE9F1AD14620B85009589C5 /* MapModel.xcdatamodeld */,
 				EB0338761340DBF400ACF2BB /* KGOPlacemark.h */,
 				EB0338771340DBF400ACF2BB /* KGOPlacemark.m */,
 				EBE2CC621343E4D00037546A /* KGOMapCategory.h */,
@@ -1484,7 +1485,6 @@
 				EB0338711340DBE100ACF2BB /* NewsImage.m in Sources */,
 				EB0338721340DBE100ACF2BB /* NewsStory.m in Sources */,
 				EB03387B1340DBF400ACF2BB /* KGOPlacemark.m in Sources */,
-				EB03387C1340DBF400ACF2BB /* MapModel.xcdatamodeld in Sources */,
 				4B3904EF134147D000CD9C6F /* EmergencyDataManager.m in Sources */,
 				4B3904F0134147D000CD9C6F /* EmergencyHomeViewController.m in Sources */,
 				4B3904F1134147D000CD9C6F /* EmergencyModule.m in Sources */,
@@ -1533,6 +1533,7 @@
 				EB70DCED1444953900E60476 /* PersonContactGroup.m in Sources */,
 				EB70DCF01444958300E60476 /* PeopleDataManager.m in Sources */,
 				EB05DAA81458953100A8F316 /* KGOGradientView.m in Sources */,
+				EBE9F1B014620B85009589C5 /* MapModel.xcdatamodeld in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1675,16 +1676,6 @@
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;
 		};
-		EB0338781340DBF400ACF2BB /* MapModel.xcdatamodeld */ = {
-			isa = XCVersionGroup;
-			children = (
-				EB0338791340DBF400ACF2BB /* MapModel.xcdatamodel */,
-			);
-			currentVersion = EB0338791340DBF400ACF2BB /* MapModel.xcdatamodel */;
-			path = MapModel.xcdatamodeld;
-			sourceTree = "<group>";
-			versionGroupType = wrapper.xcdatamodel;
-		};
 		EB181F79131EDECA003728FF /* PeopleDataModel.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
@@ -1702,6 +1693,17 @@
 			);
 			currentVersion = EB7E9F2D143171780093B0C7 /* Video.xcdatamodel */;
 			path = Video.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+		EBE9F1AD14620B85009589C5 /* MapModel.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				EBE9F1AE14620B85009589C5 /* MapModel 2.xcdatamodel */,
+				EBE9F1AF14620B85009589C5 /* MapModel.xcdatamodel */,
+			);
+			currentVersion = EBE9F1AE14620B85009589C5 /* MapModel 2.xcdatamodel */;
+			path = MapModel.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;
 		};
