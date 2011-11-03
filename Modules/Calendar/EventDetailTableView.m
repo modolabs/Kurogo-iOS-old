@@ -12,6 +12,12 @@
 #import "KGOLabel.h"
 #import <EventKitUI/EKEventEditViewController.h>
 
+#define CELL_TITLE_TAG 31415
+#define CELL_SUBTITLE_TAG 271
+#define CELL_LABELS_HORIZONTAL_PADDING 10
+#define CELL_LABELS_VERTICAL_PADDING 10
+#define CELL_ACCESSORY_PADDING 27
+#define CELL_GROUPED_PADDING 10
 
 @implementation EventDetailTableView
 
@@ -23,6 +29,7 @@
     if (self) {
         self.delegate = self;
         self.dataSource = self;
+        self.separatorColor = [UIColor colorWithWhite:0.5 alpha:1.0];
     }
     return self;
 }
@@ -33,6 +40,7 @@
     if (self) {
         self.delegate = self;
         self.dataSource = self;
+        self.separatorColor = [UIColor colorWithWhite:0.5 alpha:1.0];
     }
     return self;
 }
@@ -43,6 +51,7 @@
     if (self) {
         self.delegate = self;
         self.dataSource = self;
+        self.separatorColor = [UIColor colorWithWhite:0.5 alpha:1.0];
     }
     return self;
 }
@@ -59,6 +68,9 @@
     self.headerView = nil;
     [super dealloc];
 }
+
+// TODO make sure the cells contents properly resize if this table view
+// is resized
 
 #pragma mark - Event
 
@@ -317,6 +329,19 @@
     return _sections.count;
 }
 
+- (CGFloat)cellLabelWidthWithAccessory:(BOOL)hasAccessory {
+    CGFloat cellWidth = self.frame.size.width;
+    cellWidth = cellWidth - 2 * CELL_LABELS_HORIZONTAL_PADDING;
+    if (hasAccessory) {
+        cellWidth = cellWidth - CELL_ACCESSORY_PADDING;
+    }
+    
+    if (self.style == UITableViewStyleGrouped) {
+        cellWidth = cellWidth - 2 * CELL_GROUPED_PADDING;
+    }
+    return cellWidth;
+}
+
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     UITableViewCellStyle style = UITableViewCellStyleDefault;
@@ -336,6 +361,22 @@
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
     if (cell == nil) {
         cell = [[[UITableViewCell alloc] initWithStyle:style reuseIdentifier:cellIdentifier] autorelease];
+        
+        UILabel *titleLabel = [[[UILabel alloc] initWithFrame:CGRectZero] autorelease];
+        titleLabel.tag = CELL_TITLE_TAG;
+        titleLabel.font = [[KGOTheme sharedTheme] fontForThemedProperty:KGOThemePropertyNavListTitle];
+        titleLabel.textColor = [[KGOTheme sharedTheme] textColorForThemedProperty:KGOThemePropertyNavListTitle];
+        titleLabel.numberOfLines = 0;
+        titleLabel.backgroundColor = [UIColor clearColor];
+        [cell.contentView addSubview:titleLabel];
+        
+        UILabel *subtitleLabel = [[[UILabel alloc] initWithFrame:CGRectZero] autorelease];
+        subtitleLabel.tag = CELL_SUBTITLE_TAG;
+        subtitleLabel.font = [[KGOTheme sharedTheme] fontForThemedProperty:KGOThemePropertyNavListSubtitle];
+        subtitleLabel.textColor = [[KGOTheme sharedTheme] textColorForThemedProperty:KGOThemePropertyNavListSubtitle];
+        subtitleLabel.numberOfLines = 0;
+        subtitleLabel.backgroundColor = [UIColor clearColor];
+        [cell.contentView addSubview:subtitleLabel];
 
     } else {
         cell.imageView.image = nil;
@@ -343,22 +384,33 @@
         [view removeFromSuperview];
     }
         
-    if ([cellData isKindOfClass:[NSDictionary class]]) {    
-        cell.textLabel.text = [cellData objectForKey:@"title"];
-        cell.detailTextLabel.text = [cellData objectForKey:@"subtitle"];
+    if ([cellData isKindOfClass:[NSDictionary class]]) {  
+        UILabel *titleLabel = (UILabel *)[cell viewWithTag:CELL_TITLE_TAG];
+        UILabel *subtitleLabel = (UILabel *)[cell viewWithTag:CELL_SUBTITLE_TAG];
+        titleLabel.text = [cellData objectForKey:@"title"];
+        subtitleLabel.text = [cellData objectForKey:@"subtitle"];
         if ([cellData objectForKey:@"image"]) {
             cell.imageView.image = [cellData objectForKey:@"image"];
         }
         
         NSString *accessory = [cellData objectForKey:@"accessory"];
         cell.accessoryView = [[KGOTheme sharedTheme] accessoryViewForType:accessory];
-        if (accessory && ![accessory isEqualToString:KGOAccessoryTypeNone]) {
+        BOOL hasAccessory = accessory && ![accessory isEqualToString:KGOAccessoryTypeNone];
+        if (hasAccessory) {
             [cell applyBackgroundThemeColorForIndexPath:indexPath tableView:tableView];
-
         } else {
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
         }
 
+        // size title and subtitle views.
+        CGFloat contentViewWidth = [self cellLabelWidthWithAccessory:hasAccessory];
+        CGSize titleSize = [titleLabel.text sizeWithFont:titleLabel.font constrainedToSize:CGSizeMake(contentViewWidth, 1000)];
+        CGSize subtitleSize = [subtitleLabel.text sizeWithFont:subtitleLabel.font constrainedToSize:CGSizeMake(contentViewWidth, 1000)];
+        titleLabel.frame = CGRectMake(CELL_LABELS_HORIZONTAL_PADDING, CELL_LABELS_VERTICAL_PADDING, 
+                                      contentViewWidth, titleSize.height);
+        subtitleLabel.frame = CGRectMake(CELL_LABELS_HORIZONTAL_PADDING, titleSize.height + CELL_LABELS_VERTICAL_PADDING, 
+                                         contentViewWidth, subtitleSize.height);
+        
     } else {
         if ([cellData isKindOfClass:[UILabel class]]) {
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
@@ -375,7 +427,21 @@
     if ([cellData isKindOfClass:[UILabel class]]) {
         return [(UILabel *)cellData frame].size.height + 20;
     }
-    return tableView.rowHeight;
+    
+    // calculate height
+    NSString *accessory = [cellData objectForKey:@"accessory"];
+    BOOL hasAccessory = accessory && ![accessory isEqualToString:KGOAccessoryTypeNone];
+    
+    CGFloat contentViewWidth = [self cellLabelWidthWithAccessory:hasAccessory];
+    UIFont *titleFont = [[KGOTheme sharedTheme] fontForThemedProperty:KGOThemePropertyNavListTitle];
+    NSString *title = [cellData objectForKey:@"title"];
+    CGSize titleSize = [title sizeWithFont:titleFont constrainedToSize:CGSizeMake(contentViewWidth, 1000)];
+    
+    UIFont *subtitleFont = [[KGOTheme sharedTheme] fontForThemedProperty:KGOThemePropertyNavListSubtitle];
+    NSString *subtitle = [cellData objectForKey:@"subtitle"];
+    CGSize subtitleSize = [subtitle sizeWithFont:subtitleFont constrainedToSize:CGSizeMake(contentViewWidth, 1000)];
+    
+    return titleSize.height + subtitleSize.height + 2 * CELL_LABELS_VERTICAL_PADDING;
 }
 
 #pragma mark - UITableViewDelegate
