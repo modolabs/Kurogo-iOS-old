@@ -54,18 +54,10 @@ typedef enum {
 - (UIImage *)imageForTabAtIndex:(NSUInteger)index;
 - (CGFloat)minimumWidthForTabAtIndex:(NSUInteger)index;
 
-// for subclasses
+// for subclasses (e.g. KGOSegmentedControl)
 
-+ (UIColor *)textColorForState:(KGOTabState)state;
-+ (UIImage *)backgroundImageForState:(KGOTabState)state;
-
-// deprecated
 - (UIImage *)backgroundImageForState:(KGOTabState)state atIndex:(NSUInteger)index;
 
 @end
 
-@interface UIButton (KGOTabbedControl)
 
-- (void)setTabState:(KGOTabState)state;
-
-@end
