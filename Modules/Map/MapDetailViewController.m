@@ -181,6 +181,7 @@
 
 - (void)dealloc
 {
+    self.dataManager.delegate = nil;
     self.dataManager.searchDelegate = nil;
     self.dataManager = nil;
     self.placemark = nil;
