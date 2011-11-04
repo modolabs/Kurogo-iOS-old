@@ -53,7 +53,7 @@ NSString * const KGODataModelNameCalendar = @"Calendar";
     self.request = [[KGORequestManager sharedManager] requestWithDelegate:self
                                                                    module:self.tag
                                                                      path:@"search"
-                                                                  version:1
+                                                                  version:2
                                                                    params:params];
     [self.request connect];
 }
