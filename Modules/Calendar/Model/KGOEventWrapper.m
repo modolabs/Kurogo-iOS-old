@@ -33,10 +33,16 @@ moduleTag;
 
 - (NSString *)subtitle
 {
-    NSDateFormatter *dateFormatter = [[[NSDateFormatter alloc] init] autorelease];
-    [dateFormatter setDateStyle:NSDateFormatterShortStyle];
-    [dateFormatter setTimeStyle:NSDateFormatterShortStyle];
-    return [dateFormatter stringFromDate:self.startDate]; 
+    if (!self.allDay) {
+        NSDateFormatter *dateFormatter = [[[NSDateFormatter alloc] init] autorelease];
+        [dateFormatter setDateStyle:NSDateFormatterShortStyle];
+        [dateFormatter setTimeStyle:NSDateFormatterShortStyle];
+        return [dateFormatter stringFromDate:self.startDate]; 
+    } else {
+        NSDateFormatter *dateFormatter = [[[NSDateFormatter alloc] init] autorelease];
+        [dateFormatter setDateStyle:NSDateFormatterShortStyle];
+        return [NSString stringWithFormat:@"%@ %@", [dateFormatter stringFromDate:self.startDate], NSLocalizedString(@"All day", nil)];
+    }
 }
 
 - (BOOL)didGetSelected:(id)selector
