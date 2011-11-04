@@ -24,6 +24,7 @@
                                       CGRectGetWidth(self.tabViewContainer.frame) - 20,
                                       CGRectGetHeight(self.tabViewContainer.frame) - 20);
             _webView = [[UIWebView alloc] initWithFrame:frame];
+            _webView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
             if ([_webView respondsToSelector: @selector(scrollView)]) {
                 // iOS 5
                 [[_webView scrollView] setBounces:NO];
