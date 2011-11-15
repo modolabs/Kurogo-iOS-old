@@ -211,6 +211,7 @@
     showingBookmarks = NO;
     if (![category isEqualToString:self.activeCategoryId]) {
 		self.activeCategoryId = category;
+        self.dataManager.delegate = self;
         [self.dataManager fetchStoriesForCategory:self.activeCategoryId startId:nil];
         
         // makes request to server if no request has been made this session
@@ -220,6 +221,7 @@
 
 - (void)switchToBookmarks {
     showingBookmarks = YES;
+    self.dataManager.delegate = self;
     [self.dataManager fetchBookmarks];
 }
 
