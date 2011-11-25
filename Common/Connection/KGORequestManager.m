@@ -295,7 +295,8 @@ NSString * const kHTTPSURIScheme = @"https";
             _uriScheme = useHTTPS ? kHTTPSURIScheme : kHTTPURIScheme;
             
             [_host release];
-            _host = [[serverConfig objectForKey:@"Host"] retain];
+            
+            _host = [[NSString stringByTrimmingURLPortNumber:(NSString *)[serverConfig objectForKey:@"Host"]] retain];
             
             [_extendedHost release];
             if (pathExtension) {

@@ -7,6 +7,17 @@ KGOSign KGOGetIntegerSign(NSInteger x) {
     return (x == 0) ? KGOSignZero : KGOSignNegative;
 }
 
+@implementation NSString (KGOAdditions)
+
++ (NSString *)stringByTrimmingURLPortNumber:(NSString *)baseString {
+    if ([baseString rangeOfString:@":"].location != 0) {
+        return [baseString substringToIndex:[baseString rangeOfString:@":"].location];
+    }
+    return baseString;
+}
+
+@end
+
 
 @implementation NSURL (MITAdditions)
 /*

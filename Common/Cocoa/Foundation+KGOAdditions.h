@@ -8,6 +8,10 @@ typedef enum {
 
 KGOSign KGOGetIntegerSign(NSInteger x);
 
+@interface NSString (KGOAdditions)
++ (NSString *)stringByTrimmingURLPortNumber:(NSString *)baseString;
+@end
+
 
 @interface NSURL (MITAdditions)
 
