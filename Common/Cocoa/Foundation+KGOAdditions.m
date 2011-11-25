@@ -10,7 +10,7 @@ KGOSign KGOGetIntegerSign(NSInteger x) {
 @implementation NSString (KGOAdditions)
 
 + (NSString *)stringByTrimmingURLPortNumber:(NSString *)baseString {
-    if ([baseString rangeOfString:@":"].location != 0) {
+    if ([baseString rangeOfString:@":"].location != NSNotFound) {
         return [baseString substringToIndex:[baseString rangeOfString:@":"].location];
     }
     return baseString;
