@@ -296,7 +296,7 @@ NSString * const kHTTPSURIScheme = @"https";
             
             [_host release];
             
-            _host = [[NSString stringByTrimmingURLPortNumber:(NSString *)[serverConfig objectForKey:@"Host"]] retain];
+            _host = [[serverConfig objectForKey:@"Host"] retain];
             
             [_extendedHost release];
             if (pathExtension) {
@@ -309,7 +309,8 @@ NSString * const kHTTPSURIScheme = @"https";
             _baseURL = [[NSURL alloc] initWithString:[NSString stringWithFormat:@"%@://%@/%@", _uriScheme, _extendedHost, apiPath]];
             
             [_reachability release];
-            _reachability = [[Reachability reachabilityWithHostName:_host] retain];
+
+            _reachability = [[Reachability reachabilityWithHostName:[NSString stringByTrimmingURLPortNumber:_host]] retain];
         }
     }
 }
