@@ -1,5 +1,5 @@
 #import "CalendarModule.h"
-#import "CalendarHomeViewController.h"
+#import "CalendarDayViewController.h"
 #import "CalendarDetailViewController.h"
 #import "CalendarDataManager.h"
 #import "CalendarModel.h"
@@ -79,7 +79,7 @@ NSString * const KGODataModelNameCalendar = @"Calendar";
         || [pageName isEqualToString:LocalPathPageNameSearch]
         || [pageName isEqualToString:LocalPathPageNameCategoryList]
     ) {
-        CalendarHomeViewController *calendarVC = [[[CalendarHomeViewController alloc] initWithNibName:@"CalendarHomeViewController"
+        CalendarDayViewController *calendarVC = [[[CalendarDayViewController alloc] initWithNibName:@"CalendarHomeViewController"
                                                                                                bundle:nil] autorelease];
         calendarVC.moduleTag = self.tag;
         calendarVC.showsGroups = ![pageName isEqualToString:LocalPathPageNameCategoryList];

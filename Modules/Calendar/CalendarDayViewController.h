@@ -9,7 +9,7 @@ bool isOverOneMonth(NSTimeInterval interval);
 bool isOverOneDay(NSTimeInterval interval);
 bool isOverOneHour(NSTimeInterval interval);
 
-@interface CalendarHomeViewController : KGOTableViewController <KGODatePagerDelegate,
+@interface CalendarDayViewController : KGOTableViewController <KGODatePagerDelegate,
 KGOScrollingTabstripSearchDelegate, CalendarDataManagerDelegate> {
     
     IBOutlet KGODatePager *_datePager;

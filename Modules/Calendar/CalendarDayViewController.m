@@ -1,10 +1,10 @@
-#import "CalendarHomeViewController.h"
+#import "CalendarDayViewController.h"
 #import "KGOAppDelegate+ModuleAdditions.h"
 #import "CalendarModel.h"
 #import "CalendarDetailViewController.h"
 #import "UIKit+KGOAdditions.h"
 
-@interface CalendarHomeViewController (Private)
+@interface CalendarDayViewController (Private)
 
 - (void)requestEventsForCurrentCalendar:(NSDate *)date;
 - (void)loadTableViewWithStyle:(UITableViewStyle)style;
@@ -26,7 +26,7 @@ bool isOverOneHour(NSTimeInterval interval) {
 }
 
 
-@implementation CalendarHomeViewController
+@implementation CalendarDayViewController
 
 @synthesize federatedSearchTerms, dataManager, moduleTag, showsGroups, eventsLoaded, currentCalendar = _currentCalendar;
 @synthesize currentSections = _currentSections, currentEventsBySection = _currentEventsBySection,

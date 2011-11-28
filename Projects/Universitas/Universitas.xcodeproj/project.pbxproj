@@ -179,8 +179,8 @@
 		EBAE86401215FB0D00F370BE /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = EBAE863E1215FB0D00F370BE /* Icon.png */; };
 		EBAE86411215FB0D00F370BE /* Icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = EBAE863F1215FB0D00F370BE /* Icon@2x.png */; };
 		EBAE86451215FB4900F370BE /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = EBAE86441215FB4900F370BE /* Default@2x.png */; };
-		EBB121F1133A917200A4BD1D /* CalendarHomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EBB121EF133A913100A4BD1D /* CalendarHomeViewController.m */; };
-		EBB121F2133A917200A4BD1D /* CalendarHomeViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = EBB121F0133A915200A4BD1D /* CalendarHomeViewController.xib */; };
+		EBB121F1133A917200A4BD1D /* CalendarDayViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EBB121EF133A913100A4BD1D /* CalendarDayViewController.m */; };
+		EBB121F2133A917200A4BD1D /* CalendarDayViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = EBB121F0133A915200A4BD1D /* CalendarDayViewController.xib */; };
 		EBE242C113AFD3030082C277 /* libfacebook_ios_sdk.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EBE242BC13AFD3030082C277 /* libfacebook_ios_sdk.a */; };
 		EBE2CC1E1342AD2F0037546A /* KGOBookmarksViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EBE2CC1D1342AD2F0037546A /* KGOBookmarksViewController.m */; };
 		EBE2CC2113438AEA0037546A /* KGODetailPageHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = EBE2CC2013438AEA0037546A /* KGODetailPageHeaderView.m */; };
@@ -503,9 +503,9 @@
 		EBAE863F1215FB0D00F370BE /* Icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon@2x.png"; sourceTree = "<group>"; };
 		EBAE86441215FB4900F370BE /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default@2x.png"; sourceTree = "<group>"; };
 		EBB121EC13392F3300A4BD1D /* EventKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = EventKit.framework; path = System/Library/Frameworks/EventKit.framework; sourceTree = SDKROOT; };
-		EBB121EE133A912500A4BD1D /* CalendarHomeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CalendarHomeViewController.h; sourceTree = "<group>"; };
-		EBB121EF133A913100A4BD1D /* CalendarHomeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CalendarHomeViewController.m; sourceTree = "<group>"; };
-		EBB121F0133A915200A4BD1D /* CalendarHomeViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CalendarHomeViewController.xib; sourceTree = "<group>"; };
+		EBB121EE133A912500A4BD1D /* CalendarDayViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; path = CalendarDayViewController.h; sourceTree = "<group>"; };
+		EBB121EF133A913100A4BD1D /* CalendarDayViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CalendarDayViewController.m; sourceTree = "<group>"; };
+		EBB121F0133A915200A4BD1D /* CalendarDayViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CalendarDayViewController.xib; sourceTree = "<group>"; };
 		EBBE60BB142CE3AA00538361 /* NewsModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NewsModel.h; sourceTree = "<group>"; };
 		EBBE60BC142CE4BD00538361 /* EmergencyModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EmergencyModel.h; sourceTree = "<group>"; };
 		EBBE60BD142CE5BB00538361 /* PeopleModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PeopleModel.h; sourceTree = "<group>"; };
@@ -1041,9 +1041,9 @@
 				EB1440C41309EEA000396753 /* CalendarDetailViewController.m */,
 				EB1440C81309EEA000396753 /* CalendarModule.h */,
 				EB1440C91309EEA000396753 /* CalendarModule.m */,
-				EBB121EE133A912500A4BD1D /* CalendarHomeViewController.h */,
-				EBB121EF133A913100A4BD1D /* CalendarHomeViewController.m */,
-				EBB121F0133A915200A4BD1D /* CalendarHomeViewController.xib */,
+				EBB121EE133A912500A4BD1D /* CalendarDayViewController.h */,
+				EBB121EF133A913100A4BD1D /* CalendarDayViewController.m */,
+				EBB121F0133A915200A4BD1D /* CalendarDayViewController.xib */,
 				EB033769133D26D600ACF2BB /* EventDetailTableView.h */,
 				EB03376A133D26E400ACF2BB /* EventDetailTableView.m */,
 			);
@@ -1356,7 +1356,7 @@
 				EB14410E1309EEB800396753 /* MapHomeViewController.xib in Resources */,
 				EB9AF2A7130B59C3003B9769 /* MainWindow.xib in Resources */,
 				EB46CA8E1327F97100AF7B5C /* ThemeConfig.plist in Resources */,
-				EBB121F2133A917200A4BD1D /* CalendarHomeViewController.xib in Resources */,
+				EBB121F2133A917200A4BD1D /* CalendarDayViewController.xib in Resources */,
 				EB03375A133C2B8C00ACF2BB /* KGOTabbedViewController.xib in Resources */,
 				EB0CF98D13403141003B8E45 /* TwitterViewController.xib in Resources */,
 				EB46A346134EB942005796E4 /* ThemeConfig-iPad.plist in Resources */,
@@ -1437,7 +1437,7 @@
 				EB46CA951327FECB00AF7B5C /* KGOSidebarFrameViewController.m in Sources */,
 				EB46CA981327FED600AF7B5C /* MapDetailViewController.m in Sources */,
 				EB48910913310A930036AEBF /* ExternalURLModule.m in Sources */,
-				EBB121F1133A917200A4BD1D /* CalendarHomeViewController.m in Sources */,
+				EBB121F1133A917200A4BD1D /* CalendarDayViewController.m in Sources */,
 				EB0336AB133AEDED00ACF2BB /* ModalLoginWebViewController.m in Sources */,
 				EB03372D133C2B8C00ACF2BB /* AnalyticsWrapper.m in Sources */,
 				EB03372E133C2B8C00ACF2BB /* Foundation+KGOAdditions.m in Sources */,
