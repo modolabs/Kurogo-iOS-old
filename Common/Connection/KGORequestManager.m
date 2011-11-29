@@ -511,6 +511,15 @@ NSString * const kHTTPSURIScheme = @"https";
         NSArray *modules = [result arrayForKey:@"modules"];
         DLog(@"received modules from hello: %@", modules);
         [KGO_SHARED_APP_DELEGATE() loadModulesFromArray:modules local:NO];
+        
+        // get server time zone
+        NSString *tzString = (NSString *)[result objectForKey:@"timezone"];
+        if (tzString != nil) {
+            NSTimeZone *tz = [NSTimeZone timeZoneWithName:tzString];
+            [KGO_SHARED_APP_DELEGATE() setTimeZone:tz];
+            DLog(@"Setting timezone to %@", tz);
+        }
+        
         [[NSNotificationCenter defaultCenter] postNotificationName:HelloRequestDidCompleteNotification object:self];
 
     } else if (request == _sessionRequest) {

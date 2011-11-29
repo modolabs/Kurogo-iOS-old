@@ -8,7 +8,7 @@
 
 @implementation KGOAppDelegate
 
-@synthesize window = _window;
+@synthesize window = _window, timeZone;
 
 #pragma mark -
 #pragma mark Application lifecycle

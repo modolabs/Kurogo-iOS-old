@@ -11,6 +11,7 @@
     KGONavigationStyle _navigationStyle;
     
     NSDictionary *_appConfig;
+    NSTimeZone *timeZone;
     
     NSMutableDictionary *_modulesByTag;
     NSMutableArray *_modules;
@@ -26,6 +27,7 @@
 }
 
 @property (nonatomic, retain) IBOutlet UIWindow *window;
+@property (nonatomic, retain) NSTimeZone *timeZone;
 
 @end
 
