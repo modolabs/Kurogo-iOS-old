@@ -131,7 +131,9 @@ KGOSign KGOGetIntegerSign(NSInteger x) {
     NSMutableDictionary *dictionary = [NSMutableDictionary dictionary];
     for (NSString *aComponent in components) {
         NSArray *parts = [aComponent componentsSeparatedByString:@"="];
-        [dictionary setObject:[parts objectAtIndex:1] forKey:[parts objectAtIndex:0]];
+        NSString *key = [[parts objectAtIndex:0] stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+        NSString *val = [[parts objectAtIndex:1] stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+        [dictionary setObject:val forKey:key];
     }
     return [NSDictionary dictionaryWithDictionary:dictionary];
 }
