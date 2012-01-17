@@ -217,7 +217,7 @@
 		<key>ModuleListSpacing</key>
 		<string>9 32</string>
 		<key>NavigationStyle</key>
-		<string>SplitView</string>
+		<string>Grid</string>
 		<key>SecondaryModuleIconSize</key>
 		<string>52 52</string>
 		<key>SecondaryModuleLabelFont</key>
