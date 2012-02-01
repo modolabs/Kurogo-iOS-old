@@ -79,7 +79,7 @@ NSString * const KGODataModelNameCalendar = @"Calendar";
         || [pageName isEqualToString:LocalPathPageNameSearch]
         || [pageName isEqualToString:LocalPathPageNameCategoryList]
     ) {
-        CalendarDayViewController *calendarVC = [[[CalendarDayViewController alloc] initWithNibName:@"CalendarHomeViewController"
+        CalendarDayViewController *calendarVC = [[[CalendarDayViewController alloc] initWithNibName:@"CalendarDayViewController"
                                                                                                bundle:nil] autorelease];
         calendarVC.moduleTag = self.tag;
         calendarVC.showsGroups = ![pageName isEqualToString:LocalPathPageNameCategoryList];
